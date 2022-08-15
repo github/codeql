@@ -7,6 +7,6 @@ class FloatLiteralExprBase extends Synth::TFloatLiteralExpr, NumberLiteralExpr {
   override string getAPrimaryQlClass() { result = "FloatLiteralExpr" }
 
   string getStringValue() {
-    result = Synth::convertFloatLiteralExprToDb(this).(Raw::FloatLiteralExpr).getStringValue()
+    result = Synth::toRawFloatLiteralExpr(this).(Raw::FloatLiteralExpr).getStringValue()
   }
 }

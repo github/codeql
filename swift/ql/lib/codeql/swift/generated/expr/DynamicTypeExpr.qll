@@ -8,9 +8,7 @@ class DynamicTypeExprBase extends Synth::TDynamicTypeExpr, Expr {
 
   Expr getImmediateBaseExpr() {
     result =
-      Synth::convertExprFromDb(Synth::convertDynamicTypeExprToDb(this)
-            .(Raw::DynamicTypeExpr)
-            .getBaseExpr())
+      Synth::fromRawExpr(Synth::toRawDynamicTypeExpr(this).(Raw::DynamicTypeExpr).getBaseExpr())
   }
 
   final Expr getBaseExpr() { result = getImmediateBaseExpr().resolve() }

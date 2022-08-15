@@ -9,16 +9,14 @@ class ObjCSelectorExprBase extends Synth::TObjCSelectorExpr, Expr {
 
   Expr getImmediateSubExpr() {
     result =
-      Synth::convertExprFromDb(Synth::convertObjCSelectorExprToDb(this)
-            .(Raw::ObjCSelectorExpr)
-            .getSubExpr())
+      Synth::fromRawExpr(Synth::toRawObjCSelectorExpr(this).(Raw::ObjCSelectorExpr).getSubExpr())
   }
 
   final Expr getSubExpr() { result = getImmediateSubExpr().resolve() }
 
   AbstractFunctionDecl getImmediateMethod() {
     result =
-      Synth::convertAbstractFunctionDeclFromDb(Synth::convertObjCSelectorExprToDb(this)
+      Synth::fromRawAbstractFunctionDecl(Synth::toRawObjCSelectorExpr(this)
             .(Raw::ObjCSelectorExpr)
             .getMethod())
   }

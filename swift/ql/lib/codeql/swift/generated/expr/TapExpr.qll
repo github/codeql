@@ -9,7 +9,7 @@ class TapExprBase extends Synth::TTapExpr, Expr {
   override string getAPrimaryQlClass() { result = "TapExpr" }
 
   Expr getImmediateSubExpr() {
-    result = Synth::convertExprFromDb(Synth::convertTapExprToDb(this).(Raw::TapExpr).getSubExpr())
+    result = Synth::fromRawExpr(Synth::toRawTapExpr(this).(Raw::TapExpr).getSubExpr())
   }
 
   final Expr getSubExpr() { result = getImmediateSubExpr().resolve() }
@@ -17,13 +17,13 @@ class TapExprBase extends Synth::TTapExpr, Expr {
   final predicate hasSubExpr() { exists(getSubExpr()) }
 
   BraceStmt getImmediateBody() {
-    result = Synth::convertBraceStmtFromDb(Synth::convertTapExprToDb(this).(Raw::TapExpr).getBody())
+    result = Synth::fromRawBraceStmt(Synth::toRawTapExpr(this).(Raw::TapExpr).getBody())
   }
 
   final BraceStmt getBody() { result = getImmediateBody().resolve() }
 
   VarDecl getImmediateVar() {
-    result = Synth::convertVarDeclFromDb(Synth::convertTapExprToDb(this).(Raw::TapExpr).getVar())
+    result = Synth::fromRawVarDecl(Synth::toRawTapExpr(this).(Raw::TapExpr).getVar())
   }
 
   final VarDecl getVar() { result = getImmediateVar().resolve() }

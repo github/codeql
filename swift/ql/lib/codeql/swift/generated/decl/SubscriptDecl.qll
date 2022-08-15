@@ -11,9 +11,7 @@ class SubscriptDeclBase extends Synth::TSubscriptDecl, AbstractStorageDecl, Gene
 
   ParamDecl getImmediateParam(int index) {
     result =
-      Synth::convertParamDeclFromDb(Synth::convertSubscriptDeclToDb(this)
-            .(Raw::SubscriptDecl)
-            .getParam(index))
+      Synth::fromRawParamDecl(Synth::toRawSubscriptDecl(this).(Raw::SubscriptDecl).getParam(index))
   }
 
   final ParamDecl getParam(int index) { result = getImmediateParam(index).resolve() }
@@ -24,9 +22,7 @@ class SubscriptDeclBase extends Synth::TSubscriptDecl, AbstractStorageDecl, Gene
 
   Type getImmediateElementType() {
     result =
-      Synth::convertTypeFromDb(Synth::convertSubscriptDeclToDb(this)
-            .(Raw::SubscriptDecl)
-            .getElementType())
+      Synth::fromRawType(Synth::toRawSubscriptDecl(this).(Raw::SubscriptDecl).getElementType())
   }
 
   final Type getElementType() { result = getImmediateElementType().resolve() }

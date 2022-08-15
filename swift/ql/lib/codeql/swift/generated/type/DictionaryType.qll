@@ -8,19 +8,14 @@ class DictionaryTypeBase extends Synth::TDictionaryType, SyntaxSugarType {
   override string getAPrimaryQlClass() { result = "DictionaryType" }
 
   Type getImmediateKeyType() {
-    result =
-      Synth::convertTypeFromDb(Synth::convertDictionaryTypeToDb(this)
-            .(Raw::DictionaryType)
-            .getKeyType())
+    result = Synth::fromRawType(Synth::toRawDictionaryType(this).(Raw::DictionaryType).getKeyType())
   }
 
   final Type getKeyType() { result = getImmediateKeyType().resolve() }
 
   Type getImmediateValueType() {
     result =
-      Synth::convertTypeFromDb(Synth::convertDictionaryTypeToDb(this)
-            .(Raw::DictionaryType)
-            .getValueType())
+      Synth::fromRawType(Synth::toRawDictionaryType(this).(Raw::DictionaryType).getValueType())
   }
 
   final Type getValueType() { result = getImmediateValueType().resolve() }

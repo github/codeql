@@ -8,13 +8,13 @@ class IfStmtBase extends Synth::TIfStmt, LabeledConditionalStmt {
   override string getAPrimaryQlClass() { result = "IfStmt" }
 
   Stmt getImmediateThen() {
-    result = Synth::convertStmtFromDb(Synth::convertIfStmtToDb(this).(Raw::IfStmt).getThen())
+    result = Synth::fromRawStmt(Synth::toRawIfStmt(this).(Raw::IfStmt).getThen())
   }
 
   final Stmt getThen() { result = getImmediateThen().resolve() }
 
   Stmt getImmediateElse() {
-    result = Synth::convertStmtFromDb(Synth::convertIfStmtToDb(this).(Raw::IfStmt).getElse())
+    result = Synth::fromRawStmt(Synth::toRawIfStmt(this).(Raw::IfStmt).getElse())
   }
 
   final Stmt getElse() { result = getImmediateElse().resolve() }

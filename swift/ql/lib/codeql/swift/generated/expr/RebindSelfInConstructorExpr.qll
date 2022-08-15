@@ -9,7 +9,7 @@ class RebindSelfInConstructorExprBase extends Synth::TRebindSelfInConstructorExp
 
   Expr getImmediateSubExpr() {
     result =
-      Synth::convertExprFromDb(Synth::convertRebindSelfInConstructorExprToDb(this)
+      Synth::fromRawExpr(Synth::toRawRebindSelfInConstructorExpr(this)
             .(Raw::RebindSelfInConstructorExpr)
             .getSubExpr())
   }
@@ -18,7 +18,7 @@ class RebindSelfInConstructorExprBase extends Synth::TRebindSelfInConstructorExp
 
   VarDecl getImmediateSelf() {
     result =
-      Synth::convertVarDeclFromDb(Synth::convertRebindSelfInConstructorExprToDb(this)
+      Synth::fromRawVarDecl(Synth::toRawRebindSelfInConstructorExpr(this)
             .(Raw::RebindSelfInConstructorExpr)
             .getSelf())
   }

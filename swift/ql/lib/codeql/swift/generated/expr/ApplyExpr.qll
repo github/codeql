@@ -6,17 +6,13 @@ import codeql.swift.elements.expr.Expr
 
 class ApplyExprBase extends Synth::TApplyExpr, Expr {
   Expr getImmediateFunction() {
-    result =
-      Synth::convertExprFromDb(Synth::convertApplyExprToDb(this).(Raw::ApplyExpr).getFunction())
+    result = Synth::fromRawExpr(Synth::toRawApplyExpr(this).(Raw::ApplyExpr).getFunction())
   }
 
   final Expr getFunction() { result = getImmediateFunction().resolve() }
 
   Argument getImmediateArgument(int index) {
-    result =
-      Synth::convertArgumentFromDb(Synth::convertApplyExprToDb(this)
-            .(Raw::ApplyExpr)
-            .getArgument(index))
+    result = Synth::fromRawArgument(Synth::toRawApplyExpr(this).(Raw::ApplyExpr).getArgument(index))
   }
 
   final Argument getArgument(int index) { result = getImmediateArgument(index).resolve() }

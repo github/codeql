@@ -8,8 +8,7 @@ class SuperRefExprBase extends Synth::TSuperRefExpr, Expr {
   override string getAPrimaryQlClass() { result = "SuperRefExpr" }
 
   VarDecl getImmediateSelf() {
-    result =
-      Synth::convertVarDeclFromDb(Synth::convertSuperRefExprToDb(this).(Raw::SuperRefExpr).getSelf())
+    result = Synth::fromRawVarDecl(Synth::toRawSuperRefExpr(this).(Raw::SuperRefExpr).getSelf())
   }
 
   final VarDecl getSelf() { result = getImmediateSelf().resolve() }

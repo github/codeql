@@ -9,7 +9,7 @@ class EnumElementPatternBase extends Synth::TEnumElementPattern, Pattern {
 
   EnumElementDecl getImmediateElement() {
     result =
-      Synth::convertEnumElementDeclFromDb(Synth::convertEnumElementPatternToDb(this)
+      Synth::fromRawEnumElementDecl(Synth::toRawEnumElementPattern(this)
             .(Raw::EnumElementPattern)
             .getElement())
   }
@@ -18,7 +18,7 @@ class EnumElementPatternBase extends Synth::TEnumElementPattern, Pattern {
 
   Pattern getImmediateSubPattern() {
     result =
-      Synth::convertPatternFromDb(Synth::convertEnumElementPatternToDb(this)
+      Synth::fromRawPattern(Synth::toRawEnumElementPattern(this)
             .(Raw::EnumElementPattern)
             .getSubPattern())
   }

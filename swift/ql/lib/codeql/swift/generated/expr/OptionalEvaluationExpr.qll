@@ -8,7 +8,7 @@ class OptionalEvaluationExprBase extends Synth::TOptionalEvaluationExpr, Expr {
 
   Expr getImmediateSubExpr() {
     result =
-      Synth::convertExprFromDb(Synth::convertOptionalEvaluationExprToDb(this)
+      Synth::fromRawExpr(Synth::toRawOptionalEvaluationExpr(this)
             .(Raw::OptionalEvaluationExpr)
             .getSubExpr())
   }

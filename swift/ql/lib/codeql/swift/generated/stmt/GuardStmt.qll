@@ -8,8 +8,7 @@ class GuardStmtBase extends Synth::TGuardStmt, LabeledConditionalStmt {
   override string getAPrimaryQlClass() { result = "GuardStmt" }
 
   BraceStmt getImmediateBody() {
-    result =
-      Synth::convertBraceStmtFromDb(Synth::convertGuardStmtToDb(this).(Raw::GuardStmt).getBody())
+    result = Synth::fromRawBraceStmt(Synth::toRawGuardStmt(this).(Raw::GuardStmt).getBody())
   }
 
   final BraceStmt getBody() { result = getImmediateBody().resolve() }

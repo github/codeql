@@ -7,7 +7,7 @@ import codeql.swift.elements.type.Type
 class UnarySyntaxSugarTypeBase extends Synth::TUnarySyntaxSugarType, SyntaxSugarType {
   Type getImmediateBaseType() {
     result =
-      Synth::convertTypeFromDb(Synth::convertUnarySyntaxSugarTypeToDb(this)
+      Synth::fromRawType(Synth::toRawUnarySyntaxSugarType(this)
             .(Raw::UnarySyntaxSugarType)
             .getBaseType())
   }

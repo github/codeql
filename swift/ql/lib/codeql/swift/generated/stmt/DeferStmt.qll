@@ -8,8 +8,7 @@ class DeferStmtBase extends Synth::TDeferStmt, Stmt {
   override string getAPrimaryQlClass() { result = "DeferStmt" }
 
   BraceStmt getImmediateBody() {
-    result =
-      Synth::convertBraceStmtFromDb(Synth::convertDeferStmtToDb(this).(Raw::DeferStmt).getBody())
+    result = Synth::fromRawBraceStmt(Synth::toRawDeferStmt(this).(Raw::DeferStmt).getBody())
   }
 
   final BraceStmt getBody() { result = getImmediateBody().resolve() }

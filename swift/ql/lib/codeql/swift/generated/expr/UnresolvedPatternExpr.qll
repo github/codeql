@@ -9,7 +9,7 @@ class UnresolvedPatternExprBase extends Synth::TUnresolvedPatternExpr, Expr {
 
   Pattern getImmediateSubPattern() {
     result =
-      Synth::convertPatternFromDb(Synth::convertUnresolvedPatternExprToDb(this)
+      Synth::fromRawPattern(Synth::toRawUnresolvedPatternExpr(this)
             .(Raw::UnresolvedPatternExpr)
             .getSubPattern())
   }

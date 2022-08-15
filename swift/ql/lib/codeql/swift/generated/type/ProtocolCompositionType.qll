@@ -8,7 +8,7 @@ class ProtocolCompositionTypeBase extends Synth::TProtocolCompositionType, Type 
 
   Type getImmediateMember(int index) {
     result =
-      Synth::convertTypeFromDb(Synth::convertProtocolCompositionTypeToDb(this)
+      Synth::fromRawType(Synth::toRawProtocolCompositionType(this)
             .(Raw::ProtocolCompositionType)
             .getMember(index))
   }

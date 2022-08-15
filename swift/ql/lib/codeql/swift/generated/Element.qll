@@ -17,5 +17,5 @@ class ElementBase extends Synth::TElement {
     result = getResolveStep().resolve()
   }
 
-  predicate isUnknown() { Synth::convertElementToDb(this).isUnknown() }
+  predicate isUnknown() { Synth::toRawElement(this).isUnknown() }
 }

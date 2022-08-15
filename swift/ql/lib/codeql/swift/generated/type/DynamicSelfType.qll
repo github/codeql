@@ -8,7 +8,7 @@ class DynamicSelfTypeBase extends Synth::TDynamicSelfType, Type {
 
   Type getImmediateStaticSelfType() {
     result =
-      Synth::convertTypeFromDb(Synth::convertDynamicSelfTypeToDb(this)
+      Synth::fromRawType(Synth::toRawDynamicSelfType(this)
             .(Raw::DynamicSelfType)
             .getStaticSelfType())
   }

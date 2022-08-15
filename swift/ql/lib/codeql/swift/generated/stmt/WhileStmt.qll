@@ -8,7 +8,7 @@ class WhileStmtBase extends Synth::TWhileStmt, LabeledConditionalStmt {
   override string getAPrimaryQlClass() { result = "WhileStmt" }
 
   Stmt getImmediateBody() {
-    result = Synth::convertStmtFromDb(Synth::convertWhileStmtToDb(this).(Raw::WhileStmt).getBody())
+    result = Synth::fromRawStmt(Synth::toRawWhileStmt(this).(Raw::WhileStmt).getBody())
   }
 
   final Stmt getBody() { result = getImmediateBody().resolve() }

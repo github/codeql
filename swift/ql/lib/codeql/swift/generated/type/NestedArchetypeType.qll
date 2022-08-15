@@ -9,7 +9,7 @@ class NestedArchetypeTypeBase extends Synth::TNestedArchetypeType, ArchetypeType
 
   ArchetypeType getImmediateParent() {
     result =
-      Synth::convertArchetypeTypeFromDb(Synth::convertNestedArchetypeTypeToDb(this)
+      Synth::fromRawArchetypeType(Synth::toRawNestedArchetypeType(this)
             .(Raw::NestedArchetypeType)
             .getParent())
   }
@@ -18,7 +18,7 @@ class NestedArchetypeTypeBase extends Synth::TNestedArchetypeType, ArchetypeType
 
   AssociatedTypeDecl getImmediateAssociatedTypeDeclaration() {
     result =
-      Synth::convertAssociatedTypeDeclFromDb(Synth::convertNestedArchetypeTypeToDb(this)
+      Synth::fromRawAssociatedTypeDecl(Synth::toRawNestedArchetypeType(this)
             .(Raw::NestedArchetypeType)
             .getAssociatedTypeDeclaration())
   }

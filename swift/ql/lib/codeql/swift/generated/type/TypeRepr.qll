@@ -8,7 +8,7 @@ class TypeReprBase extends Synth::TTypeRepr, AstNode {
   override string getAPrimaryQlClass() { result = "TypeRepr" }
 
   Type getImmediateType() {
-    result = Synth::convertTypeFromDb(Synth::convertTypeReprToDb(this).(Raw::TypeRepr).getType())
+    result = Synth::fromRawType(Synth::toRawTypeRepr(this).(Raw::TypeRepr).getType())
   }
 
   final Type getType() { result = getImmediateType().resolve() }

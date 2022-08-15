@@ -9,17 +9,13 @@ class SwitchStmtBase extends Synth::TSwitchStmt, LabeledStmt {
   override string getAPrimaryQlClass() { result = "SwitchStmt" }
 
   Expr getImmediateExpr() {
-    result =
-      Synth::convertExprFromDb(Synth::convertSwitchStmtToDb(this).(Raw::SwitchStmt).getExpr())
+    result = Synth::fromRawExpr(Synth::toRawSwitchStmt(this).(Raw::SwitchStmt).getExpr())
   }
 
   final Expr getExpr() { result = getImmediateExpr().resolve() }
 
   CaseStmt getImmediateCase(int index) {
-    result =
-      Synth::convertCaseStmtFromDb(Synth::convertSwitchStmtToDb(this)
-            .(Raw::SwitchStmt)
-            .getCase(index))
+    result = Synth::fromRawCaseStmt(Synth::toRawSwitchStmt(this).(Raw::SwitchStmt).getCase(index))
   }
 
   final CaseStmt getCase(int index) { result = getImmediateCase(index).resolve() }

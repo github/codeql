@@ -8,8 +8,7 @@ class YieldStmtBase extends Synth::TYieldStmt, Stmt {
   override string getAPrimaryQlClass() { result = "YieldStmt" }
 
   Expr getImmediateResult(int index) {
-    result =
-      Synth::convertExprFromDb(Synth::convertYieldStmtToDb(this).(Raw::YieldStmt).getResult(index))
+    result = Synth::fromRawExpr(Synth::toRawYieldStmt(this).(Raw::YieldStmt).getResult(index))
   }
 
   final Expr getResult(int index) { result = getImmediateResult(index).resolve() }

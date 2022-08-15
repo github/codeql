@@ -9,7 +9,7 @@ class IfConfigDeclBase extends Synth::TIfConfigDecl, Decl {
 
   IfConfigClause getImmediateClause(int index) {
     result =
-      Synth::convertIfConfigClauseFromDb(Synth::convertIfConfigDeclToDb(this)
+      Synth::fromRawIfConfigClause(Synth::toRawIfConfigDecl(this)
             .(Raw::IfConfigDecl)
             .getClause(index))
   }

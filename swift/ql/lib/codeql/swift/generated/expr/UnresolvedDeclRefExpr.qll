@@ -7,7 +7,7 @@ class UnresolvedDeclRefExprBase extends Synth::TUnresolvedDeclRefExpr, Expr {
   override string getAPrimaryQlClass() { result = "UnresolvedDeclRefExpr" }
 
   string getName() {
-    result = Synth::convertUnresolvedDeclRefExprToDb(this).(Raw::UnresolvedDeclRefExpr).getName()
+    result = Synth::toRawUnresolvedDeclRefExpr(this).(Raw::UnresolvedDeclRefExpr).getName()
   }
 
   final predicate hasName() { exists(getName()) }

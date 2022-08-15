@@ -11,7 +11,7 @@ class InterpolatedStringLiteralExprBase extends Synth::TInterpolatedStringLitera
 
   OpaqueValueExpr getImmediateInterpolationExpr() {
     result =
-      Synth::convertOpaqueValueExprFromDb(Synth::convertInterpolatedStringLiteralExprToDb(this)
+      Synth::fromRawOpaqueValueExpr(Synth::toRawInterpolatedStringLiteralExpr(this)
             .(Raw::InterpolatedStringLiteralExpr)
             .getInterpolationExpr())
   }
@@ -24,7 +24,7 @@ class InterpolatedStringLiteralExprBase extends Synth::TInterpolatedStringLitera
 
   Expr getImmediateInterpolationCountExpr() {
     result =
-      Synth::convertExprFromDb(Synth::convertInterpolatedStringLiteralExprToDb(this)
+      Synth::fromRawExpr(Synth::toRawInterpolatedStringLiteralExpr(this)
             .(Raw::InterpolatedStringLiteralExpr)
             .getInterpolationCountExpr())
   }
@@ -35,7 +35,7 @@ class InterpolatedStringLiteralExprBase extends Synth::TInterpolatedStringLitera
 
   Expr getImmediateLiteralCapacityExpr() {
     result =
-      Synth::convertExprFromDb(Synth::convertInterpolatedStringLiteralExprToDb(this)
+      Synth::fromRawExpr(Synth::toRawInterpolatedStringLiteralExpr(this)
             .(Raw::InterpolatedStringLiteralExpr)
             .getLiteralCapacityExpr())
   }
@@ -46,7 +46,7 @@ class InterpolatedStringLiteralExprBase extends Synth::TInterpolatedStringLitera
 
   TapExpr getImmediateAppendingExpr() {
     result =
-      Synth::convertTapExprFromDb(Synth::convertInterpolatedStringLiteralExprToDb(this)
+      Synth::fromRawTapExpr(Synth::toRawInterpolatedStringLiteralExpr(this)
             .(Raw::InterpolatedStringLiteralExpr)
             .getAppendingExpr())
   }

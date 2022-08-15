@@ -4,7 +4,7 @@ private import codeql.swift.generated.Raw
 import codeql.swift.elements.stmt.Stmt
 
 class LabeledStmtBase extends Synth::TLabeledStmt, Stmt {
-  string getLabel() { result = Synth::convertLabeledStmtToDb(this).(Raw::LabeledStmt).getLabel() }
+  string getLabel() { result = Synth::toRawLabeledStmt(this).(Raw::LabeledStmt).getLabel() }
 
   final predicate hasLabel() { exists(getLabel()) }
 }

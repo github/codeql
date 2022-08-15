@@ -7,15 +7,13 @@ class AssignExprBase extends Synth::TAssignExpr, Expr {
   override string getAPrimaryQlClass() { result = "AssignExpr" }
 
   Expr getImmediateDest() {
-    result =
-      Synth::convertExprFromDb(Synth::convertAssignExprToDb(this).(Raw::AssignExpr).getDest())
+    result = Synth::fromRawExpr(Synth::toRawAssignExpr(this).(Raw::AssignExpr).getDest())
   }
 
   final Expr getDest() { result = getImmediateDest().resolve() }
 
   Expr getImmediateSource() {
-    result =
-      Synth::convertExprFromDb(Synth::convertAssignExprToDb(this).(Raw::AssignExpr).getSource())
+    result = Synth::fromRawExpr(Synth::toRawAssignExpr(this).(Raw::AssignExpr).getSource())
   }
 
   final Expr getSource() { result = getImmediateSource().resolve() }

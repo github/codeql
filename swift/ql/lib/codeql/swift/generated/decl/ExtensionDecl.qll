@@ -11,7 +11,7 @@ class ExtensionDeclBase extends Synth::TExtensionDecl, Decl, GenericContext, Ite
 
   NominalTypeDecl getImmediateExtendedTypeDecl() {
     result =
-      Synth::convertNominalTypeDeclFromDb(Synth::convertExtensionDeclToDb(this)
+      Synth::fromRawNominalTypeDecl(Synth::toRawExtensionDecl(this)
             .(Raw::ExtensionDecl)
             .getExtendedTypeDecl())
   }

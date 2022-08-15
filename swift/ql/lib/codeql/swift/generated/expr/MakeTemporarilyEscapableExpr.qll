@@ -9,7 +9,7 @@ class MakeTemporarilyEscapableExprBase extends Synth::TMakeTemporarilyEscapableE
 
   OpaqueValueExpr getImmediateEscapingClosure() {
     result =
-      Synth::convertOpaqueValueExprFromDb(Synth::convertMakeTemporarilyEscapableExprToDb(this)
+      Synth::fromRawOpaqueValueExpr(Synth::toRawMakeTemporarilyEscapableExpr(this)
             .(Raw::MakeTemporarilyEscapableExpr)
             .getEscapingClosure())
   }
@@ -18,7 +18,7 @@ class MakeTemporarilyEscapableExprBase extends Synth::TMakeTemporarilyEscapableE
 
   Expr getImmediateNonescapingClosure() {
     result =
-      Synth::convertExprFromDb(Synth::convertMakeTemporarilyEscapableExprToDb(this)
+      Synth::fromRawExpr(Synth::toRawMakeTemporarilyEscapableExpr(this)
             .(Raw::MakeTemporarilyEscapableExpr)
             .getNonescapingClosure())
   }
@@ -27,7 +27,7 @@ class MakeTemporarilyEscapableExprBase extends Synth::TMakeTemporarilyEscapableE
 
   Expr getImmediateSubExpr() {
     result =
-      Synth::convertExprFromDb(Synth::convertMakeTemporarilyEscapableExprToDb(this)
+      Synth::fromRawExpr(Synth::toRawMakeTemporarilyEscapableExpr(this)
             .(Raw::MakeTemporarilyEscapableExpr)
             .getSubExpr())
   }

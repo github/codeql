@@ -9,7 +9,7 @@ class InfixOperatorDeclBase extends Synth::TInfixOperatorDecl, OperatorDecl {
 
   PrecedenceGroupDecl getImmediatePrecedenceGroup() {
     result =
-      Synth::convertPrecedenceGroupDeclFromDb(Synth::convertInfixOperatorDeclToDb(this)
+      Synth::fromRawPrecedenceGroupDecl(Synth::toRawInfixOperatorDecl(this)
             .(Raw::InfixOperatorDecl)
             .getPrecedenceGroup())
   }

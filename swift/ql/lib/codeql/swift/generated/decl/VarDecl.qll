@@ -7,19 +7,17 @@ import codeql.swift.elements.pattern.Pattern
 import codeql.swift.elements.type.Type
 
 class VarDeclBase extends Synth::TVarDecl, AbstractStorageDecl {
-  string getName() { result = Synth::convertVarDeclToDb(this).(Raw::VarDecl).getName() }
+  string getName() { result = Synth::toRawVarDecl(this).(Raw::VarDecl).getName() }
 
   Type getImmediateType() {
-    result = Synth::convertTypeFromDb(Synth::convertVarDeclToDb(this).(Raw::VarDecl).getType())
+    result = Synth::fromRawType(Synth::toRawVarDecl(this).(Raw::VarDecl).getType())
   }
 
   final Type getType() { result = getImmediateType().resolve() }
 
   Type getImmediateAttachedPropertyWrapperType() {
     result =
-      Synth::convertTypeFromDb(Synth::convertVarDeclToDb(this)
-            .(Raw::VarDecl)
-            .getAttachedPropertyWrapperType())
+      Synth::fromRawType(Synth::toRawVarDecl(this).(Raw::VarDecl).getAttachedPropertyWrapperType())
   }
 
   final Type getAttachedPropertyWrapperType() {
@@ -29,8 +27,7 @@ class VarDeclBase extends Synth::TVarDecl, AbstractStorageDecl {
   final predicate hasAttachedPropertyWrapperType() { exists(getAttachedPropertyWrapperType()) }
 
   Pattern getImmediateParentPattern() {
-    result =
-      Synth::convertPatternFromDb(Synth::convertVarDeclToDb(this).(Raw::VarDecl).getParentPattern())
+    result = Synth::fromRawPattern(Synth::toRawVarDecl(this).(Raw::VarDecl).getParentPattern())
   }
 
   final Pattern getParentPattern() { result = getImmediateParentPattern().resolve() }
@@ -38,8 +35,7 @@ class VarDeclBase extends Synth::TVarDecl, AbstractStorageDecl {
   final predicate hasParentPattern() { exists(getParentPattern()) }
 
   Expr getImmediateParentInitializer() {
-    result =
-      Synth::convertExprFromDb(Synth::convertVarDeclToDb(this).(Raw::VarDecl).getParentInitializer())
+    result = Synth::fromRawExpr(Synth::toRawVarDecl(this).(Raw::VarDecl).getParentInitializer())
   }
 
   final Expr getParentInitializer() { result = getImmediateParentInitializer().resolve() }

@@ -9,9 +9,7 @@ class DictionaryExprBase extends Synth::TDictionaryExpr, CollectionExpr {
 
   Expr getImmediateElement(int index) {
     result =
-      Synth::convertExprFromDb(Synth::convertDictionaryExprToDb(this)
-            .(Raw::DictionaryExpr)
-            .getElement(index))
+      Synth::fromRawExpr(Synth::toRawDictionaryExpr(this).(Raw::DictionaryExpr).getElement(index))
   }
 
   final Expr getElement(int index) { result = getImmediateElement(index).resolve() }

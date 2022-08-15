@@ -7,7 +7,7 @@ import codeql.swift.elements.Element
 class IterableDeclContextBase extends Synth::TIterableDeclContext, Element {
   Decl getImmediateMember(int index) {
     result =
-      Synth::convertDeclFromDb(Synth::convertIterableDeclContextToDb(this)
+      Synth::fromRawDecl(Synth::toRawIterableDeclContext(this)
             .(Raw::IterableDeclContext)
             .getMember(index))
   }

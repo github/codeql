@@ -8,8 +8,7 @@ class ReturnStmtBase extends Synth::TReturnStmt, Stmt {
   override string getAPrimaryQlClass() { result = "ReturnStmt" }
 
   Expr getImmediateResult() {
-    result =
-      Synth::convertExprFromDb(Synth::convertReturnStmtToDb(this).(Raw::ReturnStmt).getResult())
+    result = Synth::fromRawExpr(Synth::toRawReturnStmt(this).(Raw::ReturnStmt).getResult())
   }
 
   final Expr getResult() { result = getImmediateResult().resolve() }

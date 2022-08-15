@@ -8,17 +8,14 @@ class EnumIsCaseExprBase extends Synth::TEnumIsCaseExpr, Expr {
   override string getAPrimaryQlClass() { result = "EnumIsCaseExpr" }
 
   Expr getImmediateSubExpr() {
-    result =
-      Synth::convertExprFromDb(Synth::convertEnumIsCaseExprToDb(this)
-            .(Raw::EnumIsCaseExpr)
-            .getSubExpr())
+    result = Synth::fromRawExpr(Synth::toRawEnumIsCaseExpr(this).(Raw::EnumIsCaseExpr).getSubExpr())
   }
 
   final Expr getSubExpr() { result = getImmediateSubExpr().resolve() }
 
   EnumElementDecl getImmediateElement() {
     result =
-      Synth::convertEnumElementDeclFromDb(Synth::convertEnumIsCaseExprToDb(this)
+      Synth::fromRawEnumElementDecl(Synth::toRawEnumIsCaseExpr(this)
             .(Raw::EnumIsCaseExpr)
             .getElement())
   }

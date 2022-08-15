@@ -5,8 +5,7 @@ import codeql.swift.elements.expr.Expr
 
 class AnyTryExprBase extends Synth::TAnyTryExpr, Expr {
   Expr getImmediateSubExpr() {
-    result =
-      Synth::convertExprFromDb(Synth::convertAnyTryExprToDb(this).(Raw::AnyTryExpr).getSubExpr())
+    result = Synth::fromRawExpr(Synth::toRawAnyTryExpr(this).(Raw::AnyTryExpr).getSubExpr())
   }
 
   final Expr getSubExpr() { result = getImmediateSubExpr().resolve() }

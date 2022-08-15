@@ -6,15 +6,13 @@ import codeql.swift.elements.expr.Expr
 
 class LookupExprBase extends Synth::TLookupExpr, Expr {
   Expr getImmediateBaseExpr() {
-    result =
-      Synth::convertExprFromDb(Synth::convertLookupExprToDb(this).(Raw::LookupExpr).getBaseExpr())
+    result = Synth::fromRawExpr(Synth::toRawLookupExpr(this).(Raw::LookupExpr).getBaseExpr())
   }
 
   final Expr getBaseExpr() { result = getImmediateBaseExpr().resolve() }
 
   Decl getImmediateMember() {
-    result =
-      Synth::convertDeclFromDb(Synth::convertLookupExprToDb(this).(Raw::LookupExpr).getMember())
+    result = Synth::fromRawDecl(Synth::toRawLookupExpr(this).(Raw::LookupExpr).getMember())
   }
 
   final Decl getMember() { result = getImmediateMember().resolve() }

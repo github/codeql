@@ -8,8 +8,7 @@ class TypeExprBase extends Synth::TTypeExpr, Expr {
   override string getAPrimaryQlClass() { result = "TypeExpr" }
 
   TypeRepr getImmediateTypeRepr() {
-    result =
-      Synth::convertTypeReprFromDb(Synth::convertTypeExprToDb(this).(Raw::TypeExpr).getTypeRepr())
+    result = Synth::fromRawTypeRepr(Synth::toRawTypeExpr(this).(Raw::TypeExpr).getTypeRepr())
   }
 
   final TypeRepr getTypeRepr() { result = getImmediateTypeRepr().resolve() }

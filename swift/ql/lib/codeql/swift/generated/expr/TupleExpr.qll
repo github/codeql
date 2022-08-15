@@ -7,8 +7,7 @@ class TupleExprBase extends Synth::TTupleExpr, Expr {
   override string getAPrimaryQlClass() { result = "TupleExpr" }
 
   Expr getImmediateElement(int index) {
-    result =
-      Synth::convertExprFromDb(Synth::convertTupleExprToDb(this).(Raw::TupleExpr).getElement(index))
+    result = Synth::fromRawExpr(Synth::toRawTupleExpr(this).(Raw::TupleExpr).getElement(index))
   }
 
   final Expr getElement(int index) { result = getImmediateElement(index).resolve() }

@@ -8,10 +8,7 @@ class ModuleTypeBase extends Synth::TModuleType, Type {
   override string getAPrimaryQlClass() { result = "ModuleType" }
 
   ModuleDecl getImmediateModule() {
-    result =
-      Synth::convertModuleDeclFromDb(Synth::convertModuleTypeToDb(this)
-            .(Raw::ModuleType)
-            .getModule())
+    result = Synth::fromRawModuleDecl(Synth::toRawModuleType(this).(Raw::ModuleType).getModule())
   }
 
   final ModuleDecl getModule() { result = getImmediateModule().resolve() }

@@ -10,16 +10,13 @@ class CaseLabelItemBase extends Synth::TCaseLabelItem, AstNode {
 
   Pattern getImmediatePattern() {
     result =
-      Synth::convertPatternFromDb(Synth::convertCaseLabelItemToDb(this)
-            .(Raw::CaseLabelItem)
-            .getPattern())
+      Synth::fromRawPattern(Synth::toRawCaseLabelItem(this).(Raw::CaseLabelItem).getPattern())
   }
 
   final Pattern getPattern() { result = getImmediatePattern().resolve() }
 
   Expr getImmediateGuard() {
-    result =
-      Synth::convertExprFromDb(Synth::convertCaseLabelItemToDb(this).(Raw::CaseLabelItem).getGuard())
+    result = Synth::fromRawExpr(Synth::toRawCaseLabelItem(this).(Raw::CaseLabelItem).getGuard())
   }
 
   final Expr getGuard() { result = getImmediateGuard().resolve() }

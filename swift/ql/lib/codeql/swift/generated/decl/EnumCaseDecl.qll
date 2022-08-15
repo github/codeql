@@ -9,7 +9,7 @@ class EnumCaseDeclBase extends Synth::TEnumCaseDecl, Decl {
 
   EnumElementDecl getImmediateElement(int index) {
     result =
-      Synth::convertEnumElementDeclFromDb(Synth::convertEnumCaseDeclToDb(this)
+      Synth::fromRawEnumElementDecl(Synth::toRawEnumCaseDecl(this)
             .(Raw::EnumCaseDecl)
             .getElement(index))
   }

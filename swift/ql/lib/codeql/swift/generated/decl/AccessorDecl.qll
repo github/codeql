@@ -6,11 +6,11 @@ import codeql.swift.elements.decl.FuncDecl
 class AccessorDeclBase extends Synth::TAccessorDecl, FuncDecl {
   override string getAPrimaryQlClass() { result = "AccessorDecl" }
 
-  predicate isGetter() { Synth::convertAccessorDeclToDb(this).(Raw::AccessorDecl).isGetter() }
+  predicate isGetter() { Synth::toRawAccessorDecl(this).(Raw::AccessorDecl).isGetter() }
 
-  predicate isSetter() { Synth::convertAccessorDeclToDb(this).(Raw::AccessorDecl).isSetter() }
+  predicate isSetter() { Synth::toRawAccessorDecl(this).(Raw::AccessorDecl).isSetter() }
 
-  predicate isWillSet() { Synth::convertAccessorDeclToDb(this).(Raw::AccessorDecl).isWillSet() }
+  predicate isWillSet() { Synth::toRawAccessorDecl(this).(Raw::AccessorDecl).isWillSet() }
 
-  predicate isDidSet() { Synth::convertAccessorDeclToDb(this).(Raw::AccessorDecl).isDidSet() }
+  predicate isDidSet() { Synth::toRawAccessorDecl(this).(Raw::AccessorDecl).isDidSet() }
 }

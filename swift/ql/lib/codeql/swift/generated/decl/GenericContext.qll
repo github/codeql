@@ -7,7 +7,7 @@ import codeql.swift.elements.decl.GenericTypeParamDecl
 class GenericContextBase extends Synth::TGenericContext, Element {
   GenericTypeParamDecl getImmediateGenericTypeParam(int index) {
     result =
-      Synth::convertGenericTypeParamDeclFromDb(Synth::convertGenericContextToDb(this)
+      Synth::fromRawGenericTypeParamDecl(Synth::toRawGenericContext(this)
             .(Raw::GenericContext)
             .getGenericTypeParam(index))
   }

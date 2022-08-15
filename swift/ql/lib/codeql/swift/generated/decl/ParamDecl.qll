@@ -6,5 +6,5 @@ import codeql.swift.elements.decl.VarDecl
 class ParamDeclBase extends Synth::TParamDecl, VarDecl {
   override string getAPrimaryQlClass() { result = "ParamDecl" }
 
-  predicate isInout() { Synth::convertParamDeclToDb(this).(Raw::ParamDecl).isInout() }
+  predicate isInout() { Synth::toRawParamDecl(this).(Raw::ParamDecl).isInout() }
 }

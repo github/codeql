@@ -10,9 +10,7 @@ class ConditionElementBase extends Synth::TConditionElement, Locatable {
 
   Expr getImmediateBoolean() {
     result =
-      Synth::convertExprFromDb(Synth::convertConditionElementToDb(this)
-            .(Raw::ConditionElement)
-            .getBoolean())
+      Synth::fromRawExpr(Synth::toRawConditionElement(this).(Raw::ConditionElement).getBoolean())
   }
 
   final Expr getBoolean() { result = getImmediateBoolean().resolve() }
@@ -21,9 +19,7 @@ class ConditionElementBase extends Synth::TConditionElement, Locatable {
 
   Pattern getImmediatePattern() {
     result =
-      Synth::convertPatternFromDb(Synth::convertConditionElementToDb(this)
-            .(Raw::ConditionElement)
-            .getPattern())
+      Synth::fromRawPattern(Synth::toRawConditionElement(this).(Raw::ConditionElement).getPattern())
   }
 
   final Pattern getPattern() { result = getImmediatePattern().resolve() }
@@ -32,9 +28,7 @@ class ConditionElementBase extends Synth::TConditionElement, Locatable {
 
   Expr getImmediateInitializer() {
     result =
-      Synth::convertExprFromDb(Synth::convertConditionElementToDb(this)
-            .(Raw::ConditionElement)
-            .getInitializer())
+      Synth::fromRawExpr(Synth::toRawConditionElement(this).(Raw::ConditionElement).getInitializer())
   }
 
   final Expr getInitializer() { result = getImmediateInitializer().resolve() }

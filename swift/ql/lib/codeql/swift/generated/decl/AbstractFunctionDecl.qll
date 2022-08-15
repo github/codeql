@@ -8,6 +8,6 @@ import codeql.swift.elements.decl.ValueDecl
 class AbstractFunctionDeclBase extends Synth::TAbstractFunctionDecl, Callable, GenericContext,
   ValueDecl {
   string getName() {
-    result = Synth::convertAbstractFunctionDeclToDb(this).(Raw::AbstractFunctionDecl).getName()
+    result = Synth::toRawAbstractFunctionDecl(this).(Raw::AbstractFunctionDecl).getName()
   }
 }

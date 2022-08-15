@@ -7,8 +7,7 @@ class OneWayExprBase extends Synth::TOneWayExpr, Expr {
   override string getAPrimaryQlClass() { result = "OneWayExpr" }
 
   Expr getImmediateSubExpr() {
-    result =
-      Synth::convertExprFromDb(Synth::convertOneWayExprToDb(this).(Raw::OneWayExpr).getSubExpr())
+    result = Synth::fromRawExpr(Synth::toRawOneWayExpr(this).(Raw::OneWayExpr).getSubExpr())
   }
 
   final Expr getSubExpr() { result = getImmediateSubExpr().resolve() }

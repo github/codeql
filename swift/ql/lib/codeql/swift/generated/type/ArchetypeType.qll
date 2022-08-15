@@ -8,18 +8,14 @@ import codeql.swift.elements.type.Type
 class ArchetypeTypeBase extends Synth::TArchetypeType, SubstitutableType {
   Type getImmediateInterfaceType() {
     result =
-      Synth::convertTypeFromDb(Synth::convertArchetypeTypeToDb(this)
-            .(Raw::ArchetypeType)
-            .getInterfaceType())
+      Synth::fromRawType(Synth::toRawArchetypeType(this).(Raw::ArchetypeType).getInterfaceType())
   }
 
   final Type getInterfaceType() { result = getImmediateInterfaceType().resolve() }
 
   Type getImmediateSuperclass() {
     result =
-      Synth::convertTypeFromDb(Synth::convertArchetypeTypeToDb(this)
-            .(Raw::ArchetypeType)
-            .getSuperclass())
+      Synth::fromRawType(Synth::toRawArchetypeType(this).(Raw::ArchetypeType).getSuperclass())
   }
 
   final Type getSuperclass() { result = getImmediateSuperclass().resolve() }
@@ -28,7 +24,7 @@ class ArchetypeTypeBase extends Synth::TArchetypeType, SubstitutableType {
 
   ProtocolDecl getImmediateProtocol(int index) {
     result =
-      Synth::convertProtocolDeclFromDb(Synth::convertArchetypeTypeToDb(this)
+      Synth::fromRawProtocolDecl(Synth::toRawArchetypeType(this)
             .(Raw::ArchetypeType)
             .getProtocol(index))
   }

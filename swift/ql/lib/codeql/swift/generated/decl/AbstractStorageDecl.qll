@@ -7,7 +7,7 @@ import codeql.swift.elements.decl.ValueDecl
 class AbstractStorageDeclBase extends Synth::TAbstractStorageDecl, ValueDecl {
   AccessorDecl getImmediateAccessorDecl(int index) {
     result =
-      Synth::convertAccessorDeclFromDb(Synth::convertAbstractStorageDeclToDb(this)
+      Synth::fromRawAccessorDecl(Synth::toRawAbstractStorageDecl(this)
             .(Raw::AbstractStorageDecl)
             .getAccessorDecl(index))
   }

@@ -8,7 +8,7 @@ class ParenTypeBase extends Synth::TParenType, SugarType {
   override string getAPrimaryQlClass() { result = "ParenType" }
 
   Type getImmediateType() {
-    result = Synth::convertTypeFromDb(Synth::convertParenTypeToDb(this).(Raw::ParenType).getType())
+    result = Synth::fromRawType(Synth::toRawParenType(this).(Raw::ParenType).getType())
   }
 
   final Type getType() { result = getImmediateType().resolve() }

@@ -6,8 +6,7 @@ import codeql.swift.elements.Location
 
 class LocatableBase extends Synth::TLocatable, Element {
   Location getImmediateLocation() {
-    result =
-      Synth::convertLocationFromDb(Synth::convertLocatableToDb(this).(Raw::Locatable).getLocation())
+    result = Synth::fromRawLocation(Synth::toRawLocatable(this).(Raw::Locatable).getLocation())
   }
 
   final Location getLocation() { result = getImmediateLocation().resolve() }

@@ -10,9 +10,7 @@ class IfConfigClauseBase extends Synth::TIfConfigClause, Locatable {
 
   Expr getImmediateCondition() {
     result =
-      Synth::convertExprFromDb(Synth::convertIfConfigClauseToDb(this)
-            .(Raw::IfConfigClause)
-            .getCondition())
+      Synth::fromRawExpr(Synth::toRawIfConfigClause(this).(Raw::IfConfigClause).getCondition())
   }
 
   final Expr getCondition() { result = getImmediateCondition().resolve() }
@@ -21,9 +19,7 @@ class IfConfigClauseBase extends Synth::TIfConfigClause, Locatable {
 
   AstNode getImmediateElement(int index) {
     result =
-      Synth::convertAstNodeFromDb(Synth::convertIfConfigClauseToDb(this)
-            .(Raw::IfConfigClause)
-            .getElement(index))
+      Synth::fromRawAstNode(Synth::toRawIfConfigClause(this).(Raw::IfConfigClause).getElement(index))
   }
 
   final AstNode getElement(int index) { result = getImmediateElement(index).resolve() }
@@ -32,5 +28,5 @@ class IfConfigClauseBase extends Synth::TIfConfigClause, Locatable {
 
   final int getNumberOfElements() { result = count(getAnElement()) }
 
-  predicate isActive() { Synth::convertIfConfigClauseToDb(this).(Raw::IfConfigClause).isActive() }
+  predicate isActive() { Synth::toRawIfConfigClause(this).(Raw::IfConfigClause).isActive() }
 }

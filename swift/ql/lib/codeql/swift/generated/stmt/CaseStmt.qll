@@ -9,16 +9,13 @@ class CaseStmtBase extends Synth::TCaseStmt, Stmt {
   override string getAPrimaryQlClass() { result = "CaseStmt" }
 
   Stmt getImmediateBody() {
-    result = Synth::convertStmtFromDb(Synth::convertCaseStmtToDb(this).(Raw::CaseStmt).getBody())
+    result = Synth::fromRawStmt(Synth::toRawCaseStmt(this).(Raw::CaseStmt).getBody())
   }
 
   final Stmt getBody() { result = getImmediateBody().resolve() }
 
   CaseLabelItem getImmediateLabel(int index) {
-    result =
-      Synth::convertCaseLabelItemFromDb(Synth::convertCaseStmtToDb(this)
-            .(Raw::CaseStmt)
-            .getLabel(index))
+    result = Synth::fromRawCaseLabelItem(Synth::toRawCaseStmt(this).(Raw::CaseStmt).getLabel(index))
   }
 
   final CaseLabelItem getLabel(int index) { result = getImmediateLabel(index).resolve() }
@@ -28,10 +25,7 @@ class CaseStmtBase extends Synth::TCaseStmt, Stmt {
   final int getNumberOfLabels() { result = count(getALabel()) }
 
   VarDecl getImmediateVariable(int index) {
-    result =
-      Synth::convertVarDeclFromDb(Synth::convertCaseStmtToDb(this)
-            .(Raw::CaseStmt)
-            .getVariable(index))
+    result = Synth::fromRawVarDecl(Synth::toRawCaseStmt(this).(Raw::CaseStmt).getVariable(index))
   }
 
   final VarDecl getVariable(int index) { result = getImmediateVariable(index).resolve() }

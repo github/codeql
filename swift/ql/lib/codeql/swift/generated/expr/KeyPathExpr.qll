@@ -8,8 +8,7 @@ class KeyPathExprBase extends Synth::TKeyPathExpr, Expr {
   override string getAPrimaryQlClass() { result = "KeyPathExpr" }
 
   TypeRepr getImmediateRoot() {
-    result =
-      Synth::convertTypeReprFromDb(Synth::convertKeyPathExprToDb(this).(Raw::KeyPathExpr).getRoot())
+    result = Synth::fromRawTypeRepr(Synth::toRawKeyPathExpr(this).(Raw::KeyPathExpr).getRoot())
   }
 
   final TypeRepr getRoot() { result = getImmediateRoot().resolve() }
@@ -17,10 +16,7 @@ class KeyPathExprBase extends Synth::TKeyPathExpr, Expr {
   final predicate hasRoot() { exists(getRoot()) }
 
   Expr getImmediateParsedPath() {
-    result =
-      Synth::convertExprFromDb(Synth::convertKeyPathExprToDb(this)
-            .(Raw::KeyPathExpr)
-            .getParsedPath())
+    result = Synth::fromRawExpr(Synth::toRawKeyPathExpr(this).(Raw::KeyPathExpr).getParsedPath())
   }
 
   final Expr getParsedPath() { result = getImmediateParsedPath().resolve() }

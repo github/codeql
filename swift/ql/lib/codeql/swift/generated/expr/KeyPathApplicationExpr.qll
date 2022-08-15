@@ -8,7 +8,7 @@ class KeyPathApplicationExprBase extends Synth::TKeyPathApplicationExpr, Expr {
 
   Expr getImmediateBase() {
     result =
-      Synth::convertExprFromDb(Synth::convertKeyPathApplicationExprToDb(this)
+      Synth::fromRawExpr(Synth::toRawKeyPathApplicationExpr(this)
             .(Raw::KeyPathApplicationExpr)
             .getBase())
   }
@@ -17,7 +17,7 @@ class KeyPathApplicationExprBase extends Synth::TKeyPathApplicationExpr, Expr {
 
   Expr getImmediateKeyPath() {
     result =
-      Synth::convertExprFromDb(Synth::convertKeyPathApplicationExprToDb(this)
+      Synth::fromRawExpr(Synth::toRawKeyPathApplicationExpr(this)
             .(Raw::KeyPathApplicationExpr)
             .getKeyPath())
   }

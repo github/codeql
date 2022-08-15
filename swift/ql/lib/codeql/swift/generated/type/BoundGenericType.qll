@@ -7,7 +7,7 @@ import codeql.swift.elements.type.Type
 class BoundGenericTypeBase extends Synth::TBoundGenericType, NominalOrBoundGenericNominalType {
   Type getImmediateArgType(int index) {
     result =
-      Synth::convertTypeFromDb(Synth::convertBoundGenericTypeToDb(this)
+      Synth::fromRawType(Synth::toRawBoundGenericType(this)
             .(Raw::BoundGenericType)
             .getArgType(index))
   }

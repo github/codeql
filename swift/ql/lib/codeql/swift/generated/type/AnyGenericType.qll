@@ -6,10 +6,7 @@ import codeql.swift.elements.type.Type
 
 class AnyGenericTypeBase extends Synth::TAnyGenericType, Type {
   Type getImmediateParent() {
-    result =
-      Synth::convertTypeFromDb(Synth::convertAnyGenericTypeToDb(this)
-            .(Raw::AnyGenericType)
-            .getParent())
+    result = Synth::fromRawType(Synth::toRawAnyGenericType(this).(Raw::AnyGenericType).getParent())
   }
 
   final Type getParent() { result = getImmediateParent().resolve() }
@@ -18,9 +15,7 @@ class AnyGenericTypeBase extends Synth::TAnyGenericType, Type {
 
   Decl getImmediateDeclaration() {
     result =
-      Synth::convertDeclFromDb(Synth::convertAnyGenericTypeToDb(this)
-            .(Raw::AnyGenericType)
-            .getDeclaration())
+      Synth::fromRawDecl(Synth::toRawAnyGenericType(this).(Raw::AnyGenericType).getDeclaration())
   }
 
   final Decl getDeclaration() { result = getImmediateDeclaration().resolve() }

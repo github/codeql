@@ -10,24 +10,19 @@ class ForEachStmtBase extends Synth::TForEachStmt, LabeledStmt {
   override string getAPrimaryQlClass() { result = "ForEachStmt" }
 
   Pattern getImmediatePattern() {
-    result =
-      Synth::convertPatternFromDb(Synth::convertForEachStmtToDb(this)
-            .(Raw::ForEachStmt)
-            .getPattern())
+    result = Synth::fromRawPattern(Synth::toRawForEachStmt(this).(Raw::ForEachStmt).getPattern())
   }
 
   final Pattern getPattern() { result = getImmediatePattern().resolve() }
 
   Expr getImmediateSequence() {
-    result =
-      Synth::convertExprFromDb(Synth::convertForEachStmtToDb(this).(Raw::ForEachStmt).getSequence())
+    result = Synth::fromRawExpr(Synth::toRawForEachStmt(this).(Raw::ForEachStmt).getSequence())
   }
 
   final Expr getSequence() { result = getImmediateSequence().resolve() }
 
   Expr getImmediateWhere() {
-    result =
-      Synth::convertExprFromDb(Synth::convertForEachStmtToDb(this).(Raw::ForEachStmt).getWhere())
+    result = Synth::fromRawExpr(Synth::toRawForEachStmt(this).(Raw::ForEachStmt).getWhere())
   }
 
   final Expr getWhere() { result = getImmediateWhere().resolve() }
@@ -35,8 +30,7 @@ class ForEachStmtBase extends Synth::TForEachStmt, LabeledStmt {
   final predicate hasWhere() { exists(getWhere()) }
 
   BraceStmt getImmediateBody() {
-    result =
-      Synth::convertBraceStmtFromDb(Synth::convertForEachStmtToDb(this).(Raw::ForEachStmt).getBody())
+    result = Synth::fromRawBraceStmt(Synth::toRawForEachStmt(this).(Raw::ForEachStmt).getBody())
   }
 
   final BraceStmt getBody() { result = getImmediateBody().resolve() }

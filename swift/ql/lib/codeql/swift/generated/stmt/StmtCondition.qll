@@ -9,7 +9,7 @@ class StmtConditionBase extends Synth::TStmtCondition, AstNode {
 
   ConditionElement getImmediateElement(int index) {
     result =
-      Synth::convertConditionElementFromDb(Synth::convertStmtConditionToDb(this)
+      Synth::fromRawConditionElement(Synth::toRawStmtCondition(this)
             .(Raw::StmtCondition)
             .getElement(index))
   }

@@ -403,3294 +403,3190 @@ module Synth {
   class TUnarySyntaxSugarType = TArraySliceType or TOptionalType or TVariadicSequenceType;
 
   cached
-  TComment convertCommentFromDb(Raw::Element e) { result = TComment(e) }
+  TComment fromRawComment(Raw::Element e) { result = TComment(e) }
 
   cached
-  TDbFile convertDbFileFromDb(Raw::Element e) { result = TDbFile(e) }
+  TDbFile fromRawDbFile(Raw::Element e) { result = TDbFile(e) }
 
   cached
-  TDbLocation convertDbLocationFromDb(Raw::Element e) { result = TDbLocation(e) }
+  TDbLocation fromRawDbLocation(Raw::Element e) { result = TDbLocation(e) }
 
   cached
-  TUnknownFile convertUnknownFileFromDb(Raw::Element e) { none() }
+  TUnknownFile fromRawUnknownFile(Raw::Element e) { none() }
 
   cached
-  TUnknownLocation convertUnknownLocationFromDb(Raw::Element e) { none() }
+  TUnknownLocation fromRawUnknownLocation(Raw::Element e) { none() }
 
   cached
-  TAccessorDecl convertAccessorDeclFromDb(Raw::Element e) { result = TAccessorDecl(e) }
+  TAccessorDecl fromRawAccessorDecl(Raw::Element e) { result = TAccessorDecl(e) }
 
   cached
-  TAssociatedTypeDecl convertAssociatedTypeDeclFromDb(Raw::Element e) {
-    result = TAssociatedTypeDecl(e)
-  }
+  TAssociatedTypeDecl fromRawAssociatedTypeDecl(Raw::Element e) { result = TAssociatedTypeDecl(e) }
 
   cached
-  TClassDecl convertClassDeclFromDb(Raw::Element e) { result = TClassDecl(e) }
+  TClassDecl fromRawClassDecl(Raw::Element e) { result = TClassDecl(e) }
 
   cached
-  TConcreteFuncDecl convertConcreteFuncDeclFromDb(Raw::Element e) { result = TConcreteFuncDecl(e) }
+  TConcreteFuncDecl fromRawConcreteFuncDecl(Raw::Element e) { result = TConcreteFuncDecl(e) }
 
   cached
-  TConcreteVarDecl convertConcreteVarDeclFromDb(Raw::Element e) { result = TConcreteVarDecl(e) }
+  TConcreteVarDecl fromRawConcreteVarDecl(Raw::Element e) { result = TConcreteVarDecl(e) }
 
   cached
-  TConstructorDecl convertConstructorDeclFromDb(Raw::Element e) { result = TConstructorDecl(e) }
+  TConstructorDecl fromRawConstructorDecl(Raw::Element e) { result = TConstructorDecl(e) }
 
   cached
-  TDestructorDecl convertDestructorDeclFromDb(Raw::Element e) { result = TDestructorDecl(e) }
+  TDestructorDecl fromRawDestructorDecl(Raw::Element e) { result = TDestructorDecl(e) }
 
   cached
-  TEnumCaseDecl convertEnumCaseDeclFromDb(Raw::Element e) { result = TEnumCaseDecl(e) }
+  TEnumCaseDecl fromRawEnumCaseDecl(Raw::Element e) { result = TEnumCaseDecl(e) }
 
   cached
-  TEnumDecl convertEnumDeclFromDb(Raw::Element e) { result = TEnumDecl(e) }
+  TEnumDecl fromRawEnumDecl(Raw::Element e) { result = TEnumDecl(e) }
 
   cached
-  TEnumElementDecl convertEnumElementDeclFromDb(Raw::Element e) { result = TEnumElementDecl(e) }
+  TEnumElementDecl fromRawEnumElementDecl(Raw::Element e) { result = TEnumElementDecl(e) }
 
   cached
-  TExtensionDecl convertExtensionDeclFromDb(Raw::Element e) { result = TExtensionDecl(e) }
+  TExtensionDecl fromRawExtensionDecl(Raw::Element e) { result = TExtensionDecl(e) }
 
   cached
-  TGenericTypeParamDecl convertGenericTypeParamDeclFromDb(Raw::Element e) {
+  TGenericTypeParamDecl fromRawGenericTypeParamDecl(Raw::Element e) {
     result = TGenericTypeParamDecl(e)
   }
 
   cached
-  TIfConfigClause convertIfConfigClauseFromDb(Raw::Element e) { result = TIfConfigClause(e) }
+  TIfConfigClause fromRawIfConfigClause(Raw::Element e) { result = TIfConfigClause(e) }
 
   cached
-  TIfConfigDecl convertIfConfigDeclFromDb(Raw::Element e) { result = TIfConfigDecl(e) }
+  TIfConfigDecl fromRawIfConfigDecl(Raw::Element e) { result = TIfConfigDecl(e) }
 
   cached
-  TImportDecl convertImportDeclFromDb(Raw::Element e) { result = TImportDecl(e) }
+  TImportDecl fromRawImportDecl(Raw::Element e) { result = TImportDecl(e) }
 
   cached
-  TInfixOperatorDecl convertInfixOperatorDeclFromDb(Raw::Element e) {
-    result = TInfixOperatorDecl(e)
-  }
+  TInfixOperatorDecl fromRawInfixOperatorDecl(Raw::Element e) { result = TInfixOperatorDecl(e) }
 
   cached
-  TMissingMemberDecl convertMissingMemberDeclFromDb(Raw::Element e) {
-    result = TMissingMemberDecl(e)
-  }
+  TMissingMemberDecl fromRawMissingMemberDecl(Raw::Element e) { result = TMissingMemberDecl(e) }
 
   cached
-  TModuleDecl convertModuleDeclFromDb(Raw::Element e) { result = TModuleDecl(e) }
+  TModuleDecl fromRawModuleDecl(Raw::Element e) { result = TModuleDecl(e) }
 
   cached
-  TOpaqueTypeDecl convertOpaqueTypeDeclFromDb(Raw::Element e) { result = TOpaqueTypeDecl(e) }
+  TOpaqueTypeDecl fromRawOpaqueTypeDecl(Raw::Element e) { result = TOpaqueTypeDecl(e) }
 
   cached
-  TParamDecl convertParamDeclFromDb(Raw::Element e) { result = TParamDecl(e) }
+  TParamDecl fromRawParamDecl(Raw::Element e) { result = TParamDecl(e) }
 
   cached
-  TPatternBindingDecl convertPatternBindingDeclFromDb(Raw::Element e) {
-    result = TPatternBindingDecl(e)
-  }
+  TPatternBindingDecl fromRawPatternBindingDecl(Raw::Element e) { result = TPatternBindingDecl(e) }
 
   cached
-  TPostfixOperatorDecl convertPostfixOperatorDeclFromDb(Raw::Element e) {
+  TPostfixOperatorDecl fromRawPostfixOperatorDecl(Raw::Element e) {
     result = TPostfixOperatorDecl(e)
   }
 
   cached
-  TPoundDiagnosticDecl convertPoundDiagnosticDeclFromDb(Raw::Element e) {
+  TPoundDiagnosticDecl fromRawPoundDiagnosticDecl(Raw::Element e) {
     result = TPoundDiagnosticDecl(e)
   }
 
   cached
-  TPrecedenceGroupDecl convertPrecedenceGroupDeclFromDb(Raw::Element e) {
+  TPrecedenceGroupDecl fromRawPrecedenceGroupDecl(Raw::Element e) {
     result = TPrecedenceGroupDecl(e)
   }
 
   cached
-  TPrefixOperatorDecl convertPrefixOperatorDeclFromDb(Raw::Element e) {
-    result = TPrefixOperatorDecl(e)
-  }
+  TPrefixOperatorDecl fromRawPrefixOperatorDecl(Raw::Element e) { result = TPrefixOperatorDecl(e) }
 
   cached
-  TProtocolDecl convertProtocolDeclFromDb(Raw::Element e) { result = TProtocolDecl(e) }
+  TProtocolDecl fromRawProtocolDecl(Raw::Element e) { result = TProtocolDecl(e) }
 
   cached
-  TStructDecl convertStructDeclFromDb(Raw::Element e) { result = TStructDecl(e) }
+  TStructDecl fromRawStructDecl(Raw::Element e) { result = TStructDecl(e) }
 
   cached
-  TSubscriptDecl convertSubscriptDeclFromDb(Raw::Element e) { result = TSubscriptDecl(e) }
+  TSubscriptDecl fromRawSubscriptDecl(Raw::Element e) { result = TSubscriptDecl(e) }
 
   cached
-  TTopLevelCodeDecl convertTopLevelCodeDeclFromDb(Raw::Element e) { result = TTopLevelCodeDecl(e) }
+  TTopLevelCodeDecl fromRawTopLevelCodeDecl(Raw::Element e) { result = TTopLevelCodeDecl(e) }
 
   cached
-  TTypeAliasDecl convertTypeAliasDeclFromDb(Raw::Element e) { result = TTypeAliasDecl(e) }
+  TTypeAliasDecl fromRawTypeAliasDecl(Raw::Element e) { result = TTypeAliasDecl(e) }
 
   cached
-  TAnyHashableErasureExpr convertAnyHashableErasureExprFromDb(Raw::Element e) {
+  TAnyHashableErasureExpr fromRawAnyHashableErasureExpr(Raw::Element e) {
     result = TAnyHashableErasureExpr(e)
   }
 
   cached
-  TAppliedPropertyWrapperExpr convertAppliedPropertyWrapperExprFromDb(Raw::Element e) {
+  TAppliedPropertyWrapperExpr fromRawAppliedPropertyWrapperExpr(Raw::Element e) {
     result = TAppliedPropertyWrapperExpr(e)
   }
 
   cached
-  TArchetypeToSuperExpr convertArchetypeToSuperExprFromDb(Raw::Element e) {
+  TArchetypeToSuperExpr fromRawArchetypeToSuperExpr(Raw::Element e) {
     result = TArchetypeToSuperExpr(e)
   }
 
   cached
-  TArgument convertArgumentFromDb(Raw::Element e) { result = TArgument(e) }
+  TArgument fromRawArgument(Raw::Element e) { result = TArgument(e) }
 
   cached
-  TArrayExpr convertArrayExprFromDb(Raw::Element e) { result = TArrayExpr(e) }
+  TArrayExpr fromRawArrayExpr(Raw::Element e) { result = TArrayExpr(e) }
 
   cached
-  TArrayToPointerExpr convertArrayToPointerExprFromDb(Raw::Element e) {
-    result = TArrayToPointerExpr(e)
-  }
+  TArrayToPointerExpr fromRawArrayToPointerExpr(Raw::Element e) { result = TArrayToPointerExpr(e) }
 
   cached
-  TArrowExpr convertArrowExprFromDb(Raw::Element e) { result = TArrowExpr(e) }
+  TArrowExpr fromRawArrowExpr(Raw::Element e) { result = TArrowExpr(e) }
 
   cached
-  TAssignExpr convertAssignExprFromDb(Raw::Element e) { result = TAssignExpr(e) }
+  TAssignExpr fromRawAssignExpr(Raw::Element e) { result = TAssignExpr(e) }
 
   cached
-  TAutoClosureExpr convertAutoClosureExprFromDb(Raw::Element e) { result = TAutoClosureExpr(e) }
+  TAutoClosureExpr fromRawAutoClosureExpr(Raw::Element e) { result = TAutoClosureExpr(e) }
 
   cached
-  TAwaitExpr convertAwaitExprFromDb(Raw::Element e) { result = TAwaitExpr(e) }
+  TAwaitExpr fromRawAwaitExpr(Raw::Element e) { result = TAwaitExpr(e) }
 
   cached
-  TBinaryExpr convertBinaryExprFromDb(Raw::Element e) { result = TBinaryExpr(e) }
+  TBinaryExpr fromRawBinaryExpr(Raw::Element e) { result = TBinaryExpr(e) }
 
   cached
-  TBindOptionalExpr convertBindOptionalExprFromDb(Raw::Element e) { result = TBindOptionalExpr(e) }
+  TBindOptionalExpr fromRawBindOptionalExpr(Raw::Element e) { result = TBindOptionalExpr(e) }
 
   cached
-  TBooleanLiteralExpr convertBooleanLiteralExprFromDb(Raw::Element e) {
-    result = TBooleanLiteralExpr(e)
-  }
+  TBooleanLiteralExpr fromRawBooleanLiteralExpr(Raw::Element e) { result = TBooleanLiteralExpr(e) }
 
   cached
-  TBridgeFromObjCExpr convertBridgeFromObjCExprFromDb(Raw::Element e) {
-    result = TBridgeFromObjCExpr(e)
-  }
+  TBridgeFromObjCExpr fromRawBridgeFromObjCExpr(Raw::Element e) { result = TBridgeFromObjCExpr(e) }
 
   cached
-  TBridgeToObjCExpr convertBridgeToObjCExprFromDb(Raw::Element e) { result = TBridgeToObjCExpr(e) }
+  TBridgeToObjCExpr fromRawBridgeToObjCExpr(Raw::Element e) { result = TBridgeToObjCExpr(e) }
 
   cached
-  TCallExpr convertCallExprFromDb(Raw::Element e) { result = TCallExpr(e) }
+  TCallExpr fromRawCallExpr(Raw::Element e) { result = TCallExpr(e) }
 
   cached
-  TCaptureListExpr convertCaptureListExprFromDb(Raw::Element e) { result = TCaptureListExpr(e) }
+  TCaptureListExpr fromRawCaptureListExpr(Raw::Element e) { result = TCaptureListExpr(e) }
 
   cached
-  TClassMetatypeToObjectExpr convertClassMetatypeToObjectExprFromDb(Raw::Element e) {
+  TClassMetatypeToObjectExpr fromRawClassMetatypeToObjectExpr(Raw::Element e) {
     result = TClassMetatypeToObjectExpr(e)
   }
 
   cached
-  TClosureExpr convertClosureExprFromDb(Raw::Element e) { result = TClosureExpr(e) }
+  TClosureExpr fromRawClosureExpr(Raw::Element e) { result = TClosureExpr(e) }
 
   cached
-  TCodeCompletionExpr convertCodeCompletionExprFromDb(Raw::Element e) {
-    result = TCodeCompletionExpr(e)
-  }
+  TCodeCompletionExpr fromRawCodeCompletionExpr(Raw::Element e) { result = TCodeCompletionExpr(e) }
 
   cached
-  TCoerceExpr convertCoerceExprFromDb(Raw::Element e) { result = TCoerceExpr(e) }
+  TCoerceExpr fromRawCoerceExpr(Raw::Element e) { result = TCoerceExpr(e) }
 
   cached
-  TCollectionUpcastConversionExpr convertCollectionUpcastConversionExprFromDb(Raw::Element e) {
+  TCollectionUpcastConversionExpr fromRawCollectionUpcastConversionExpr(Raw::Element e) {
     result = TCollectionUpcastConversionExpr(e)
   }
 
   cached
-  TConditionalBridgeFromObjCExpr convertConditionalBridgeFromObjCExprFromDb(Raw::Element e) {
+  TConditionalBridgeFromObjCExpr fromRawConditionalBridgeFromObjCExpr(Raw::Element e) {
     result = TConditionalBridgeFromObjCExpr(e)
   }
 
   cached
-  TConditionalCheckedCastExpr convertConditionalCheckedCastExprFromDb(Raw::Element e) {
+  TConditionalCheckedCastExpr fromRawConditionalCheckedCastExpr(Raw::Element e) {
     result = TConditionalCheckedCastExpr(e)
   }
 
   cached
-  TConstructorRefCallExpr convertConstructorRefCallExprFromDb(Raw::Element e) {
+  TConstructorRefCallExpr fromRawConstructorRefCallExpr(Raw::Element e) {
     result = TConstructorRefCallExpr(e)
   }
 
   cached
-  TCovariantFunctionConversionExpr convertCovariantFunctionConversionExprFromDb(Raw::Element e) {
+  TCovariantFunctionConversionExpr fromRawCovariantFunctionConversionExpr(Raw::Element e) {
     result = TCovariantFunctionConversionExpr(e)
   }
 
   cached
-  TCovariantReturnConversionExpr convertCovariantReturnConversionExprFromDb(Raw::Element e) {
+  TCovariantReturnConversionExpr fromRawCovariantReturnConversionExpr(Raw::Element e) {
     result = TCovariantReturnConversionExpr(e)
   }
 
   cached
-  TDeclRefExpr convertDeclRefExprFromDb(Raw::Element e) { result = TDeclRefExpr(e) }
+  TDeclRefExpr fromRawDeclRefExpr(Raw::Element e) { result = TDeclRefExpr(e) }
 
   cached
-  TDefaultArgumentExpr convertDefaultArgumentExprFromDb(Raw::Element e) {
+  TDefaultArgumentExpr fromRawDefaultArgumentExpr(Raw::Element e) {
     result = TDefaultArgumentExpr(e)
   }
 
   cached
-  TDerivedToBaseExpr convertDerivedToBaseExprFromDb(Raw::Element e) {
-    result = TDerivedToBaseExpr(e)
-  }
+  TDerivedToBaseExpr fromRawDerivedToBaseExpr(Raw::Element e) { result = TDerivedToBaseExpr(e) }
 
   cached
-  TDestructureTupleExpr convertDestructureTupleExprFromDb(Raw::Element e) {
+  TDestructureTupleExpr fromRawDestructureTupleExpr(Raw::Element e) {
     result = TDestructureTupleExpr(e)
   }
 
   cached
-  TDictionaryExpr convertDictionaryExprFromDb(Raw::Element e) { result = TDictionaryExpr(e) }
+  TDictionaryExpr fromRawDictionaryExpr(Raw::Element e) { result = TDictionaryExpr(e) }
 
   cached
-  TDifferentiableFunctionExpr convertDifferentiableFunctionExprFromDb(Raw::Element e) {
+  TDifferentiableFunctionExpr fromRawDifferentiableFunctionExpr(Raw::Element e) {
     result = TDifferentiableFunctionExpr(e)
   }
 
   cached
-  TDifferentiableFunctionExtractOriginalExpr convertDifferentiableFunctionExtractOriginalExprFromDb(
+  TDifferentiableFunctionExtractOriginalExpr fromRawDifferentiableFunctionExtractOriginalExpr(
     Raw::Element e
   ) {
     result = TDifferentiableFunctionExtractOriginalExpr(e)
   }
 
   cached
-  TDiscardAssignmentExpr convertDiscardAssignmentExprFromDb(Raw::Element e) {
+  TDiscardAssignmentExpr fromRawDiscardAssignmentExpr(Raw::Element e) {
     result = TDiscardAssignmentExpr(e)
   }
 
   cached
-  TDotSelfExpr convertDotSelfExprFromDb(Raw::Element e) { result = TDotSelfExpr(e) }
+  TDotSelfExpr fromRawDotSelfExpr(Raw::Element e) { result = TDotSelfExpr(e) }
 
   cached
-  TDotSyntaxBaseIgnoredExpr convertDotSyntaxBaseIgnoredExprFromDb(Raw::Element e) {
+  TDotSyntaxBaseIgnoredExpr fromRawDotSyntaxBaseIgnoredExpr(Raw::Element e) {
     result = TDotSyntaxBaseIgnoredExpr(e)
   }
 
   cached
-  TDotSyntaxCallExpr convertDotSyntaxCallExprFromDb(Raw::Element e) {
-    result = TDotSyntaxCallExpr(e)
-  }
+  TDotSyntaxCallExpr fromRawDotSyntaxCallExpr(Raw::Element e) { result = TDotSyntaxCallExpr(e) }
 
   cached
-  TDynamicMemberRefExpr convertDynamicMemberRefExprFromDb(Raw::Element e) {
+  TDynamicMemberRefExpr fromRawDynamicMemberRefExpr(Raw::Element e) {
     result = TDynamicMemberRefExpr(e)
   }
 
   cached
-  TDynamicSubscriptExpr convertDynamicSubscriptExprFromDb(Raw::Element e) {
+  TDynamicSubscriptExpr fromRawDynamicSubscriptExpr(Raw::Element e) {
     result = TDynamicSubscriptExpr(e)
   }
 
   cached
-  TDynamicTypeExpr convertDynamicTypeExprFromDb(Raw::Element e) { result = TDynamicTypeExpr(e) }
+  TDynamicTypeExpr fromRawDynamicTypeExpr(Raw::Element e) { result = TDynamicTypeExpr(e) }
 
   cached
-  TEditorPlaceholderExpr convertEditorPlaceholderExprFromDb(Raw::Element e) {
+  TEditorPlaceholderExpr fromRawEditorPlaceholderExpr(Raw::Element e) {
     result = TEditorPlaceholderExpr(e)
   }
 
   cached
-  TEnumIsCaseExpr convertEnumIsCaseExprFromDb(Raw::Element e) { result = TEnumIsCaseExpr(e) }
+  TEnumIsCaseExpr fromRawEnumIsCaseExpr(Raw::Element e) { result = TEnumIsCaseExpr(e) }
 
   cached
-  TErasureExpr convertErasureExprFromDb(Raw::Element e) { result = TErasureExpr(e) }
+  TErasureExpr fromRawErasureExpr(Raw::Element e) { result = TErasureExpr(e) }
 
   cached
-  TErrorExpr convertErrorExprFromDb(Raw::Element e) { result = TErrorExpr(e) }
+  TErrorExpr fromRawErrorExpr(Raw::Element e) { result = TErrorExpr(e) }
 
   cached
-  TExistentialMetatypeToObjectExpr convertExistentialMetatypeToObjectExprFromDb(Raw::Element e) {
+  TExistentialMetatypeToObjectExpr fromRawExistentialMetatypeToObjectExpr(Raw::Element e) {
     result = TExistentialMetatypeToObjectExpr(e)
   }
 
   cached
-  TFloatLiteralExpr convertFloatLiteralExprFromDb(Raw::Element e) { result = TFloatLiteralExpr(e) }
+  TFloatLiteralExpr fromRawFloatLiteralExpr(Raw::Element e) { result = TFloatLiteralExpr(e) }
 
   cached
-  TForceTryExpr convertForceTryExprFromDb(Raw::Element e) { result = TForceTryExpr(e) }
+  TForceTryExpr fromRawForceTryExpr(Raw::Element e) { result = TForceTryExpr(e) }
 
   cached
-  TForceValueExpr convertForceValueExprFromDb(Raw::Element e) { result = TForceValueExpr(e) }
+  TForceValueExpr fromRawForceValueExpr(Raw::Element e) { result = TForceValueExpr(e) }
 
   cached
-  TForcedCheckedCastExpr convertForcedCheckedCastExprFromDb(Raw::Element e) {
+  TForcedCheckedCastExpr fromRawForcedCheckedCastExpr(Raw::Element e) {
     result = TForcedCheckedCastExpr(e)
   }
 
   cached
-  TForeignObjectConversionExpr convertForeignObjectConversionExprFromDb(Raw::Element e) {
+  TForeignObjectConversionExpr fromRawForeignObjectConversionExpr(Raw::Element e) {
     result = TForeignObjectConversionExpr(e)
   }
 
   cached
-  TFunctionConversionExpr convertFunctionConversionExprFromDb(Raw::Element e) {
+  TFunctionConversionExpr fromRawFunctionConversionExpr(Raw::Element e) {
     result = TFunctionConversionExpr(e)
   }
 
   cached
-  TIfExpr convertIfExprFromDb(Raw::Element e) { result = TIfExpr(e) }
+  TIfExpr fromRawIfExpr(Raw::Element e) { result = TIfExpr(e) }
 
   cached
-  TInOutExpr convertInOutExprFromDb(Raw::Element e) { result = TInOutExpr(e) }
+  TInOutExpr fromRawInOutExpr(Raw::Element e) { result = TInOutExpr(e) }
 
   cached
-  TInOutToPointerExpr convertInOutToPointerExprFromDb(Raw::Element e) {
-    result = TInOutToPointerExpr(e)
-  }
+  TInOutToPointerExpr fromRawInOutToPointerExpr(Raw::Element e) { result = TInOutToPointerExpr(e) }
 
   cached
-  TInjectIntoOptionalExpr convertInjectIntoOptionalExprFromDb(Raw::Element e) {
+  TInjectIntoOptionalExpr fromRawInjectIntoOptionalExpr(Raw::Element e) {
     result = TInjectIntoOptionalExpr(e)
   }
 
   cached
-  TIntegerLiteralExpr convertIntegerLiteralExprFromDb(Raw::Element e) {
-    result = TIntegerLiteralExpr(e)
-  }
+  TIntegerLiteralExpr fromRawIntegerLiteralExpr(Raw::Element e) { result = TIntegerLiteralExpr(e) }
 
   cached
-  TInterpolatedStringLiteralExpr convertInterpolatedStringLiteralExprFromDb(Raw::Element e) {
+  TInterpolatedStringLiteralExpr fromRawInterpolatedStringLiteralExpr(Raw::Element e) {
     result = TInterpolatedStringLiteralExpr(e)
   }
 
   cached
-  TIsExpr convertIsExprFromDb(Raw::Element e) { result = TIsExpr(e) }
+  TIsExpr fromRawIsExpr(Raw::Element e) { result = TIsExpr(e) }
 
   cached
-  TKeyPathApplicationExpr convertKeyPathApplicationExprFromDb(Raw::Element e) {
+  TKeyPathApplicationExpr fromRawKeyPathApplicationExpr(Raw::Element e) {
     result = TKeyPathApplicationExpr(e)
   }
 
   cached
-  TKeyPathDotExpr convertKeyPathDotExprFromDb(Raw::Element e) { result = TKeyPathDotExpr(e) }
+  TKeyPathDotExpr fromRawKeyPathDotExpr(Raw::Element e) { result = TKeyPathDotExpr(e) }
 
   cached
-  TKeyPathExpr convertKeyPathExprFromDb(Raw::Element e) { result = TKeyPathExpr(e) }
+  TKeyPathExpr fromRawKeyPathExpr(Raw::Element e) { result = TKeyPathExpr(e) }
 
   cached
-  TLazyInitializerExpr convertLazyInitializerExprFromDb(Raw::Element e) {
+  TLazyInitializerExpr fromRawLazyInitializerExpr(Raw::Element e) {
     result = TLazyInitializerExpr(e)
   }
 
   cached
-  TLinearFunctionExpr convertLinearFunctionExprFromDb(Raw::Element e) {
-    result = TLinearFunctionExpr(e)
-  }
+  TLinearFunctionExpr fromRawLinearFunctionExpr(Raw::Element e) { result = TLinearFunctionExpr(e) }
 
   cached
-  TLinearFunctionExtractOriginalExpr convertLinearFunctionExtractOriginalExprFromDb(Raw::Element e) {
+  TLinearFunctionExtractOriginalExpr fromRawLinearFunctionExtractOriginalExpr(Raw::Element e) {
     result = TLinearFunctionExtractOriginalExpr(e)
   }
 
   cached
-  TLinearToDifferentiableFunctionExpr convertLinearToDifferentiableFunctionExprFromDb(Raw::Element e) {
+  TLinearToDifferentiableFunctionExpr fromRawLinearToDifferentiableFunctionExpr(Raw::Element e) {
     result = TLinearToDifferentiableFunctionExpr(e)
   }
 
   cached
-  TLoadExpr convertLoadExprFromDb(Raw::Element e) { result = TLoadExpr(e) }
+  TLoadExpr fromRawLoadExpr(Raw::Element e) { result = TLoadExpr(e) }
 
   cached
-  TMagicIdentifierLiteralExpr convertMagicIdentifierLiteralExprFromDb(Raw::Element e) {
+  TMagicIdentifierLiteralExpr fromRawMagicIdentifierLiteralExpr(Raw::Element e) {
     result = TMagicIdentifierLiteralExpr(e)
   }
 
   cached
-  TMakeTemporarilyEscapableExpr convertMakeTemporarilyEscapableExprFromDb(Raw::Element e) {
+  TMakeTemporarilyEscapableExpr fromRawMakeTemporarilyEscapableExpr(Raw::Element e) {
     result = TMakeTemporarilyEscapableExpr(e)
   }
 
   cached
-  TMemberRefExpr convertMemberRefExprFromDb(Raw::Element e) { result = TMemberRefExpr(e) }
+  TMemberRefExpr fromRawMemberRefExpr(Raw::Element e) { result = TMemberRefExpr(e) }
 
   cached
-  TMetatypeConversionExpr convertMetatypeConversionExprFromDb(Raw::Element e) {
+  TMetatypeConversionExpr fromRawMetatypeConversionExpr(Raw::Element e) {
     result = TMetatypeConversionExpr(e)
   }
 
   cached
-  TNilLiteralExpr convertNilLiteralExprFromDb(Raw::Element e) { result = TNilLiteralExpr(e) }
+  TNilLiteralExpr fromRawNilLiteralExpr(Raw::Element e) { result = TNilLiteralExpr(e) }
 
   cached
-  TObjCSelectorExpr convertObjCSelectorExprFromDb(Raw::Element e) { result = TObjCSelectorExpr(e) }
+  TObjCSelectorExpr fromRawObjCSelectorExpr(Raw::Element e) { result = TObjCSelectorExpr(e) }
 
   cached
-  TObjectLiteralExpr convertObjectLiteralExprFromDb(Raw::Element e) {
-    result = TObjectLiteralExpr(e)
-  }
+  TObjectLiteralExpr fromRawObjectLiteralExpr(Raw::Element e) { result = TObjectLiteralExpr(e) }
 
   cached
-  TOneWayExpr convertOneWayExprFromDb(Raw::Element e) { result = TOneWayExpr(e) }
+  TOneWayExpr fromRawOneWayExpr(Raw::Element e) { result = TOneWayExpr(e) }
 
   cached
-  TOpaqueValueExpr convertOpaqueValueExprFromDb(Raw::Element e) { result = TOpaqueValueExpr(e) }
+  TOpaqueValueExpr fromRawOpaqueValueExpr(Raw::Element e) { result = TOpaqueValueExpr(e) }
 
   cached
-  TOpenExistentialExpr convertOpenExistentialExprFromDb(Raw::Element e) {
+  TOpenExistentialExpr fromRawOpenExistentialExpr(Raw::Element e) {
     result = TOpenExistentialExpr(e)
   }
 
   cached
-  TOptionalEvaluationExpr convertOptionalEvaluationExprFromDb(Raw::Element e) {
+  TOptionalEvaluationExpr fromRawOptionalEvaluationExpr(Raw::Element e) {
     result = TOptionalEvaluationExpr(e)
   }
 
   cached
-  TOptionalTryExpr convertOptionalTryExprFromDb(Raw::Element e) { result = TOptionalTryExpr(e) }
+  TOptionalTryExpr fromRawOptionalTryExpr(Raw::Element e) { result = TOptionalTryExpr(e) }
 
   cached
-  TOtherConstructorDeclRefExpr convertOtherConstructorDeclRefExprFromDb(Raw::Element e) {
+  TOtherConstructorDeclRefExpr fromRawOtherConstructorDeclRefExpr(Raw::Element e) {
     result = TOtherConstructorDeclRefExpr(e)
   }
 
   cached
-  TOverloadedDeclRefExpr convertOverloadedDeclRefExprFromDb(Raw::Element e) {
+  TOverloadedDeclRefExpr fromRawOverloadedDeclRefExpr(Raw::Element e) {
     result = TOverloadedDeclRefExpr(e)
   }
 
   cached
-  TParenExpr convertParenExprFromDb(Raw::Element e) { result = TParenExpr(e) }
+  TParenExpr fromRawParenExpr(Raw::Element e) { result = TParenExpr(e) }
 
   cached
-  TPointerToPointerExpr convertPointerToPointerExprFromDb(Raw::Element e) {
+  TPointerToPointerExpr fromRawPointerToPointerExpr(Raw::Element e) {
     result = TPointerToPointerExpr(e)
   }
 
   cached
-  TPostfixUnaryExpr convertPostfixUnaryExprFromDb(Raw::Element e) { result = TPostfixUnaryExpr(e) }
+  TPostfixUnaryExpr fromRawPostfixUnaryExpr(Raw::Element e) { result = TPostfixUnaryExpr(e) }
 
   cached
-  TPrefixUnaryExpr convertPrefixUnaryExprFromDb(Raw::Element e) { result = TPrefixUnaryExpr(e) }
+  TPrefixUnaryExpr fromRawPrefixUnaryExpr(Raw::Element e) { result = TPrefixUnaryExpr(e) }
 
   cached
-  TPropertyWrapperValuePlaceholderExpr convertPropertyWrapperValuePlaceholderExprFromDb(
-    Raw::Element e
-  ) {
+  TPropertyWrapperValuePlaceholderExpr fromRawPropertyWrapperValuePlaceholderExpr(Raw::Element e) {
     result = TPropertyWrapperValuePlaceholderExpr(e)
   }
 
   cached
-  TProtocolMetatypeToObjectExpr convertProtocolMetatypeToObjectExprFromDb(Raw::Element e) {
+  TProtocolMetatypeToObjectExpr fromRawProtocolMetatypeToObjectExpr(Raw::Element e) {
     result = TProtocolMetatypeToObjectExpr(e)
   }
 
   cached
-  TRebindSelfInConstructorExpr convertRebindSelfInConstructorExprFromDb(Raw::Element e) {
+  TRebindSelfInConstructorExpr fromRawRebindSelfInConstructorExpr(Raw::Element e) {
     result = TRebindSelfInConstructorExpr(e)
   }
 
   cached
-  TRegexLiteralExpr convertRegexLiteralExprFromDb(Raw::Element e) { result = TRegexLiteralExpr(e) }
+  TRegexLiteralExpr fromRawRegexLiteralExpr(Raw::Element e) { result = TRegexLiteralExpr(e) }
 
   cached
-  TSequenceExpr convertSequenceExprFromDb(Raw::Element e) { result = TSequenceExpr(e) }
+  TSequenceExpr fromRawSequenceExpr(Raw::Element e) { result = TSequenceExpr(e) }
 
   cached
-  TStringLiteralExpr convertStringLiteralExprFromDb(Raw::Element e) {
-    result = TStringLiteralExpr(e)
-  }
+  TStringLiteralExpr fromRawStringLiteralExpr(Raw::Element e) { result = TStringLiteralExpr(e) }
 
   cached
-  TStringToPointerExpr convertStringToPointerExprFromDb(Raw::Element e) {
+  TStringToPointerExpr fromRawStringToPointerExpr(Raw::Element e) {
     result = TStringToPointerExpr(e)
   }
 
   cached
-  TSubscriptExpr convertSubscriptExprFromDb(Raw::Element e) { result = TSubscriptExpr(e) }
+  TSubscriptExpr fromRawSubscriptExpr(Raw::Element e) { result = TSubscriptExpr(e) }
 
   cached
-  TSuperRefExpr convertSuperRefExprFromDb(Raw::Element e) { result = TSuperRefExpr(e) }
+  TSuperRefExpr fromRawSuperRefExpr(Raw::Element e) { result = TSuperRefExpr(e) }
 
   cached
-  TTapExpr convertTapExprFromDb(Raw::Element e) { result = TTapExpr(e) }
+  TTapExpr fromRawTapExpr(Raw::Element e) { result = TTapExpr(e) }
 
   cached
-  TTryExpr convertTryExprFromDb(Raw::Element e) { result = TTryExpr(e) }
+  TTryExpr fromRawTryExpr(Raw::Element e) { result = TTryExpr(e) }
 
   cached
-  TTupleElementExpr convertTupleElementExprFromDb(Raw::Element e) { result = TTupleElementExpr(e) }
+  TTupleElementExpr fromRawTupleElementExpr(Raw::Element e) { result = TTupleElementExpr(e) }
 
   cached
-  TTupleExpr convertTupleExprFromDb(Raw::Element e) { result = TTupleExpr(e) }
+  TTupleExpr fromRawTupleExpr(Raw::Element e) { result = TTupleExpr(e) }
 
   cached
-  TTypeExpr convertTypeExprFromDb(Raw::Element e) { result = TTypeExpr(e) }
+  TTypeExpr fromRawTypeExpr(Raw::Element e) { result = TTypeExpr(e) }
 
   cached
-  TUnderlyingToOpaqueExpr convertUnderlyingToOpaqueExprFromDb(Raw::Element e) {
+  TUnderlyingToOpaqueExpr fromRawUnderlyingToOpaqueExpr(Raw::Element e) {
     result = TUnderlyingToOpaqueExpr(e)
   }
 
   cached
-  TUnevaluatedInstanceExpr convertUnevaluatedInstanceExprFromDb(Raw::Element e) {
+  TUnevaluatedInstanceExpr fromRawUnevaluatedInstanceExpr(Raw::Element e) {
     result = TUnevaluatedInstanceExpr(e)
   }
 
   cached
-  TUnresolvedDeclRefExpr convertUnresolvedDeclRefExprFromDb(Raw::Element e) {
+  TUnresolvedDeclRefExpr fromRawUnresolvedDeclRefExpr(Raw::Element e) {
     result = TUnresolvedDeclRefExpr(e)
   }
 
   cached
-  TUnresolvedDotExpr convertUnresolvedDotExprFromDb(Raw::Element e) {
-    result = TUnresolvedDotExpr(e)
-  }
+  TUnresolvedDotExpr fromRawUnresolvedDotExpr(Raw::Element e) { result = TUnresolvedDotExpr(e) }
 
   cached
-  TUnresolvedMemberChainResultExpr convertUnresolvedMemberChainResultExprFromDb(Raw::Element e) {
+  TUnresolvedMemberChainResultExpr fromRawUnresolvedMemberChainResultExpr(Raw::Element e) {
     result = TUnresolvedMemberChainResultExpr(e)
   }
 
   cached
-  TUnresolvedMemberExpr convertUnresolvedMemberExprFromDb(Raw::Element e) {
+  TUnresolvedMemberExpr fromRawUnresolvedMemberExpr(Raw::Element e) {
     result = TUnresolvedMemberExpr(e)
   }
 
   cached
-  TUnresolvedPatternExpr convertUnresolvedPatternExprFromDb(Raw::Element e) {
+  TUnresolvedPatternExpr fromRawUnresolvedPatternExpr(Raw::Element e) {
     result = TUnresolvedPatternExpr(e)
   }
 
   cached
-  TUnresolvedSpecializeExpr convertUnresolvedSpecializeExprFromDb(Raw::Element e) {
+  TUnresolvedSpecializeExpr fromRawUnresolvedSpecializeExpr(Raw::Element e) {
     result = TUnresolvedSpecializeExpr(e)
   }
 
   cached
-  TUnresolvedTypeConversionExpr convertUnresolvedTypeConversionExprFromDb(Raw::Element e) {
+  TUnresolvedTypeConversionExpr fromRawUnresolvedTypeConversionExpr(Raw::Element e) {
     result = TUnresolvedTypeConversionExpr(e)
   }
 
   cached
-  TVarargExpansionExpr convertVarargExpansionExprFromDb(Raw::Element e) {
+  TVarargExpansionExpr fromRawVarargExpansionExpr(Raw::Element e) {
     result = TVarargExpansionExpr(e)
   }
 
   cached
-  TAnyPattern convertAnyPatternFromDb(Raw::Element e) { result = TAnyPattern(e) }
+  TAnyPattern fromRawAnyPattern(Raw::Element e) { result = TAnyPattern(e) }
 
   cached
-  TBindingPattern convertBindingPatternFromDb(Raw::Element e) { result = TBindingPattern(e) }
+  TBindingPattern fromRawBindingPattern(Raw::Element e) { result = TBindingPattern(e) }
 
   cached
-  TBoolPattern convertBoolPatternFromDb(Raw::Element e) { result = TBoolPattern(e) }
+  TBoolPattern fromRawBoolPattern(Raw::Element e) { result = TBoolPattern(e) }
 
   cached
-  TEnumElementPattern convertEnumElementPatternFromDb(Raw::Element e) {
-    result = TEnumElementPattern(e)
-  }
+  TEnumElementPattern fromRawEnumElementPattern(Raw::Element e) { result = TEnumElementPattern(e) }
 
   cached
-  TExprPattern convertExprPatternFromDb(Raw::Element e) { result = TExprPattern(e) }
+  TExprPattern fromRawExprPattern(Raw::Element e) { result = TExprPattern(e) }
 
   cached
-  TIsPattern convertIsPatternFromDb(Raw::Element e) { result = TIsPattern(e) }
+  TIsPattern fromRawIsPattern(Raw::Element e) { result = TIsPattern(e) }
 
   cached
-  TNamedPattern convertNamedPatternFromDb(Raw::Element e) { result = TNamedPattern(e) }
+  TNamedPattern fromRawNamedPattern(Raw::Element e) { result = TNamedPattern(e) }
 
   cached
-  TOptionalSomePattern convertOptionalSomePatternFromDb(Raw::Element e) {
+  TOptionalSomePattern fromRawOptionalSomePattern(Raw::Element e) {
     result = TOptionalSomePattern(e)
   }
 
   cached
-  TParenPattern convertParenPatternFromDb(Raw::Element e) { result = TParenPattern(e) }
+  TParenPattern fromRawParenPattern(Raw::Element e) { result = TParenPattern(e) }
 
   cached
-  TTuplePattern convertTuplePatternFromDb(Raw::Element e) { result = TTuplePattern(e) }
+  TTuplePattern fromRawTuplePattern(Raw::Element e) { result = TTuplePattern(e) }
 
   cached
-  TTypedPattern convertTypedPatternFromDb(Raw::Element e) { result = TTypedPattern(e) }
+  TTypedPattern fromRawTypedPattern(Raw::Element e) { result = TTypedPattern(e) }
 
   cached
-  TBraceStmt convertBraceStmtFromDb(Raw::Element e) { result = TBraceStmt(e) }
+  TBraceStmt fromRawBraceStmt(Raw::Element e) { result = TBraceStmt(e) }
 
   cached
-  TBreakStmt convertBreakStmtFromDb(Raw::Element e) { result = TBreakStmt(e) }
+  TBreakStmt fromRawBreakStmt(Raw::Element e) { result = TBreakStmt(e) }
 
   cached
-  TCaseLabelItem convertCaseLabelItemFromDb(Raw::Element e) { result = TCaseLabelItem(e) }
+  TCaseLabelItem fromRawCaseLabelItem(Raw::Element e) { result = TCaseLabelItem(e) }
 
   cached
-  TCaseStmt convertCaseStmtFromDb(Raw::Element e) { result = TCaseStmt(e) }
+  TCaseStmt fromRawCaseStmt(Raw::Element e) { result = TCaseStmt(e) }
 
   cached
-  TConditionElement convertConditionElementFromDb(Raw::Element e) { result = TConditionElement(e) }
+  TConditionElement fromRawConditionElement(Raw::Element e) { result = TConditionElement(e) }
 
   cached
-  TContinueStmt convertContinueStmtFromDb(Raw::Element e) { result = TContinueStmt(e) }
+  TContinueStmt fromRawContinueStmt(Raw::Element e) { result = TContinueStmt(e) }
 
   cached
-  TDeferStmt convertDeferStmtFromDb(Raw::Element e) { result = TDeferStmt(e) }
+  TDeferStmt fromRawDeferStmt(Raw::Element e) { result = TDeferStmt(e) }
 
   cached
-  TDoCatchStmt convertDoCatchStmtFromDb(Raw::Element e) { result = TDoCatchStmt(e) }
+  TDoCatchStmt fromRawDoCatchStmt(Raw::Element e) { result = TDoCatchStmt(e) }
 
   cached
-  TDoStmt convertDoStmtFromDb(Raw::Element e) { result = TDoStmt(e) }
+  TDoStmt fromRawDoStmt(Raw::Element e) { result = TDoStmt(e) }
 
   cached
-  TFailStmt convertFailStmtFromDb(Raw::Element e) { result = TFailStmt(e) }
+  TFailStmt fromRawFailStmt(Raw::Element e) { result = TFailStmt(e) }
 
   cached
-  TFallthroughStmt convertFallthroughStmtFromDb(Raw::Element e) { result = TFallthroughStmt(e) }
+  TFallthroughStmt fromRawFallthroughStmt(Raw::Element e) { result = TFallthroughStmt(e) }
 
   cached
-  TForEachStmt convertForEachStmtFromDb(Raw::Element e) { result = TForEachStmt(e) }
+  TForEachStmt fromRawForEachStmt(Raw::Element e) { result = TForEachStmt(e) }
 
   cached
-  TGuardStmt convertGuardStmtFromDb(Raw::Element e) { result = TGuardStmt(e) }
+  TGuardStmt fromRawGuardStmt(Raw::Element e) { result = TGuardStmt(e) }
 
   cached
-  TIfStmt convertIfStmtFromDb(Raw::Element e) { result = TIfStmt(e) }
+  TIfStmt fromRawIfStmt(Raw::Element e) { result = TIfStmt(e) }
 
   cached
-  TPoundAssertStmt convertPoundAssertStmtFromDb(Raw::Element e) { result = TPoundAssertStmt(e) }
+  TPoundAssertStmt fromRawPoundAssertStmt(Raw::Element e) { result = TPoundAssertStmt(e) }
 
   cached
-  TRepeatWhileStmt convertRepeatWhileStmtFromDb(Raw::Element e) { result = TRepeatWhileStmt(e) }
+  TRepeatWhileStmt fromRawRepeatWhileStmt(Raw::Element e) { result = TRepeatWhileStmt(e) }
 
   cached
-  TReturnStmt convertReturnStmtFromDb(Raw::Element e) { result = TReturnStmt(e) }
+  TReturnStmt fromRawReturnStmt(Raw::Element e) { result = TReturnStmt(e) }
 
   cached
-  TStmtCondition convertStmtConditionFromDb(Raw::Element e) { result = TStmtCondition(e) }
+  TStmtCondition fromRawStmtCondition(Raw::Element e) { result = TStmtCondition(e) }
 
   cached
-  TSwitchStmt convertSwitchStmtFromDb(Raw::Element e) { result = TSwitchStmt(e) }
+  TSwitchStmt fromRawSwitchStmt(Raw::Element e) { result = TSwitchStmt(e) }
 
   cached
-  TThrowStmt convertThrowStmtFromDb(Raw::Element e) { result = TThrowStmt(e) }
+  TThrowStmt fromRawThrowStmt(Raw::Element e) { result = TThrowStmt(e) }
 
   cached
-  TWhileStmt convertWhileStmtFromDb(Raw::Element e) { result = TWhileStmt(e) }
+  TWhileStmt fromRawWhileStmt(Raw::Element e) { result = TWhileStmt(e) }
 
   cached
-  TYieldStmt convertYieldStmtFromDb(Raw::Element e) { result = TYieldStmt(e) }
+  TYieldStmt fromRawYieldStmt(Raw::Element e) { result = TYieldStmt(e) }
 
   cached
-  TArraySliceType convertArraySliceTypeFromDb(Raw::Element e) { result = TArraySliceType(e) }
+  TArraySliceType fromRawArraySliceType(Raw::Element e) { result = TArraySliceType(e) }
 
   cached
-  TBoundGenericClassType convertBoundGenericClassTypeFromDb(Raw::Element e) {
+  TBoundGenericClassType fromRawBoundGenericClassType(Raw::Element e) {
     result = TBoundGenericClassType(e)
   }
 
   cached
-  TBoundGenericEnumType convertBoundGenericEnumTypeFromDb(Raw::Element e) {
+  TBoundGenericEnumType fromRawBoundGenericEnumType(Raw::Element e) {
     result = TBoundGenericEnumType(e)
   }
 
   cached
-  TBoundGenericStructType convertBoundGenericStructTypeFromDb(Raw::Element e) {
+  TBoundGenericStructType fromRawBoundGenericStructType(Raw::Element e) {
     result = TBoundGenericStructType(e)
   }
 
   cached
-  TBuiltinBridgeObjectType convertBuiltinBridgeObjectTypeFromDb(Raw::Element e) {
+  TBuiltinBridgeObjectType fromRawBuiltinBridgeObjectType(Raw::Element e) {
     result = TBuiltinBridgeObjectType(e)
   }
 
   cached
-  TBuiltinDefaultActorStorageType convertBuiltinDefaultActorStorageTypeFromDb(Raw::Element e) {
+  TBuiltinDefaultActorStorageType fromRawBuiltinDefaultActorStorageType(Raw::Element e) {
     result = TBuiltinDefaultActorStorageType(e)
   }
 
   cached
-  TBuiltinExecutorType convertBuiltinExecutorTypeFromDb(Raw::Element e) {
+  TBuiltinExecutorType fromRawBuiltinExecutorType(Raw::Element e) {
     result = TBuiltinExecutorType(e)
   }
 
   cached
-  TBuiltinFloatType convertBuiltinFloatTypeFromDb(Raw::Element e) { result = TBuiltinFloatType(e) }
+  TBuiltinFloatType fromRawBuiltinFloatType(Raw::Element e) { result = TBuiltinFloatType(e) }
 
   cached
-  TBuiltinIntegerLiteralType convertBuiltinIntegerLiteralTypeFromDb(Raw::Element e) {
+  TBuiltinIntegerLiteralType fromRawBuiltinIntegerLiteralType(Raw::Element e) {
     result = TBuiltinIntegerLiteralType(e)
   }
 
   cached
-  TBuiltinIntegerType convertBuiltinIntegerTypeFromDb(Raw::Element e) {
-    result = TBuiltinIntegerType(e)
-  }
+  TBuiltinIntegerType fromRawBuiltinIntegerType(Raw::Element e) { result = TBuiltinIntegerType(e) }
 
   cached
-  TBuiltinJobType convertBuiltinJobTypeFromDb(Raw::Element e) { result = TBuiltinJobType(e) }
+  TBuiltinJobType fromRawBuiltinJobType(Raw::Element e) { result = TBuiltinJobType(e) }
 
   cached
-  TBuiltinNativeObjectType convertBuiltinNativeObjectTypeFromDb(Raw::Element e) {
+  TBuiltinNativeObjectType fromRawBuiltinNativeObjectType(Raw::Element e) {
     result = TBuiltinNativeObjectType(e)
   }
 
   cached
-  TBuiltinRawPointerType convertBuiltinRawPointerTypeFromDb(Raw::Element e) {
+  TBuiltinRawPointerType fromRawBuiltinRawPointerType(Raw::Element e) {
     result = TBuiltinRawPointerType(e)
   }
 
   cached
-  TBuiltinRawUnsafeContinuationType convertBuiltinRawUnsafeContinuationTypeFromDb(Raw::Element e) {
+  TBuiltinRawUnsafeContinuationType fromRawBuiltinRawUnsafeContinuationType(Raw::Element e) {
     result = TBuiltinRawUnsafeContinuationType(e)
   }
 
   cached
-  TBuiltinUnsafeValueBufferType convertBuiltinUnsafeValueBufferTypeFromDb(Raw::Element e) {
+  TBuiltinUnsafeValueBufferType fromRawBuiltinUnsafeValueBufferType(Raw::Element e) {
     result = TBuiltinUnsafeValueBufferType(e)
   }
 
   cached
-  TBuiltinVectorType convertBuiltinVectorTypeFromDb(Raw::Element e) {
-    result = TBuiltinVectorType(e)
-  }
+  TBuiltinVectorType fromRawBuiltinVectorType(Raw::Element e) { result = TBuiltinVectorType(e) }
 
   cached
-  TClassType convertClassTypeFromDb(Raw::Element e) { result = TClassType(e) }
+  TClassType fromRawClassType(Raw::Element e) { result = TClassType(e) }
 
   cached
-  TDependentMemberType convertDependentMemberTypeFromDb(Raw::Element e) {
+  TDependentMemberType fromRawDependentMemberType(Raw::Element e) {
     result = TDependentMemberType(e)
   }
 
   cached
-  TDictionaryType convertDictionaryTypeFromDb(Raw::Element e) { result = TDictionaryType(e) }
+  TDictionaryType fromRawDictionaryType(Raw::Element e) { result = TDictionaryType(e) }
 
   cached
-  TDynamicSelfType convertDynamicSelfTypeFromDb(Raw::Element e) { result = TDynamicSelfType(e) }
+  TDynamicSelfType fromRawDynamicSelfType(Raw::Element e) { result = TDynamicSelfType(e) }
 
   cached
-  TEnumType convertEnumTypeFromDb(Raw::Element e) { result = TEnumType(e) }
+  TEnumType fromRawEnumType(Raw::Element e) { result = TEnumType(e) }
 
   cached
-  TErrorType convertErrorTypeFromDb(Raw::Element e) { result = TErrorType(e) }
+  TErrorType fromRawErrorType(Raw::Element e) { result = TErrorType(e) }
 
   cached
-  TExistentialMetatypeType convertExistentialMetatypeTypeFromDb(Raw::Element e) {
+  TExistentialMetatypeType fromRawExistentialMetatypeType(Raw::Element e) {
     result = TExistentialMetatypeType(e)
   }
 
   cached
-  TExistentialType convertExistentialTypeFromDb(Raw::Element e) { result = TExistentialType(e) }
+  TExistentialType fromRawExistentialType(Raw::Element e) { result = TExistentialType(e) }
 
   cached
-  TFunctionType convertFunctionTypeFromDb(Raw::Element e) { result = TFunctionType(e) }
+  TFunctionType fromRawFunctionType(Raw::Element e) { result = TFunctionType(e) }
 
   cached
-  TGenericFunctionType convertGenericFunctionTypeFromDb(Raw::Element e) {
+  TGenericFunctionType fromRawGenericFunctionType(Raw::Element e) {
     result = TGenericFunctionType(e)
   }
 
   cached
-  TGenericTypeParamType convertGenericTypeParamTypeFromDb(Raw::Element e) {
+  TGenericTypeParamType fromRawGenericTypeParamType(Raw::Element e) {
     result = TGenericTypeParamType(e)
   }
 
   cached
-  TInOutType convertInOutTypeFromDb(Raw::Element e) { result = TInOutType(e) }
+  TInOutType fromRawInOutType(Raw::Element e) { result = TInOutType(e) }
 
   cached
-  TLValueType convertLValueTypeFromDb(Raw::Element e) { result = TLValueType(e) }
+  TLValueType fromRawLValueType(Raw::Element e) { result = TLValueType(e) }
 
   cached
-  TMetatypeType convertMetatypeTypeFromDb(Raw::Element e) { result = TMetatypeType(e) }
+  TMetatypeType fromRawMetatypeType(Raw::Element e) { result = TMetatypeType(e) }
 
   cached
-  TModuleType convertModuleTypeFromDb(Raw::Element e) { result = TModuleType(e) }
+  TModuleType fromRawModuleType(Raw::Element e) { result = TModuleType(e) }
 
   cached
-  TNestedArchetypeType convertNestedArchetypeTypeFromDb(Raw::Element e) {
+  TNestedArchetypeType fromRawNestedArchetypeType(Raw::Element e) {
     result = TNestedArchetypeType(e)
   }
 
   cached
-  TOpaqueTypeArchetypeType convertOpaqueTypeArchetypeTypeFromDb(Raw::Element e) {
+  TOpaqueTypeArchetypeType fromRawOpaqueTypeArchetypeType(Raw::Element e) {
     result = TOpaqueTypeArchetypeType(e)
   }
 
   cached
-  TOpenedArchetypeType convertOpenedArchetypeTypeFromDb(Raw::Element e) {
+  TOpenedArchetypeType fromRawOpenedArchetypeType(Raw::Element e) {
     result = TOpenedArchetypeType(e)
   }
 
   cached
-  TOptionalType convertOptionalTypeFromDb(Raw::Element e) { result = TOptionalType(e) }
+  TOptionalType fromRawOptionalType(Raw::Element e) { result = TOptionalType(e) }
 
   cached
-  TParenType convertParenTypeFromDb(Raw::Element e) { result = TParenType(e) }
+  TParenType fromRawParenType(Raw::Element e) { result = TParenType(e) }
 
   cached
-  TPlaceholderType convertPlaceholderTypeFromDb(Raw::Element e) { result = TPlaceholderType(e) }
+  TPlaceholderType fromRawPlaceholderType(Raw::Element e) { result = TPlaceholderType(e) }
 
   cached
-  TPrimaryArchetypeType convertPrimaryArchetypeTypeFromDb(Raw::Element e) {
+  TPrimaryArchetypeType fromRawPrimaryArchetypeType(Raw::Element e) {
     result = TPrimaryArchetypeType(e)
   }
 
   cached
-  TProtocolCompositionType convertProtocolCompositionTypeFromDb(Raw::Element e) {
+  TProtocolCompositionType fromRawProtocolCompositionType(Raw::Element e) {
     result = TProtocolCompositionType(e)
   }
 
   cached
-  TProtocolType convertProtocolTypeFromDb(Raw::Element e) { result = TProtocolType(e) }
+  TProtocolType fromRawProtocolType(Raw::Element e) { result = TProtocolType(e) }
 
   cached
-  TSequenceArchetypeType convertSequenceArchetypeTypeFromDb(Raw::Element e) {
+  TSequenceArchetypeType fromRawSequenceArchetypeType(Raw::Element e) {
     result = TSequenceArchetypeType(e)
   }
 
   cached
-  TSilBlockStorageType convertSilBlockStorageTypeFromDb(Raw::Element e) {
+  TSilBlockStorageType fromRawSilBlockStorageType(Raw::Element e) {
     result = TSilBlockStorageType(e)
   }
 
   cached
-  TSilBoxType convertSilBoxTypeFromDb(Raw::Element e) { result = TSilBoxType(e) }
+  TSilBoxType fromRawSilBoxType(Raw::Element e) { result = TSilBoxType(e) }
 
   cached
-  TSilFunctionType convertSilFunctionTypeFromDb(Raw::Element e) { result = TSilFunctionType(e) }
+  TSilFunctionType fromRawSilFunctionType(Raw::Element e) { result = TSilFunctionType(e) }
 
   cached
-  TSilTokenType convertSilTokenTypeFromDb(Raw::Element e) { result = TSilTokenType(e) }
+  TSilTokenType fromRawSilTokenType(Raw::Element e) { result = TSilTokenType(e) }
 
   cached
-  TStructType convertStructTypeFromDb(Raw::Element e) { result = TStructType(e) }
+  TStructType fromRawStructType(Raw::Element e) { result = TStructType(e) }
 
   cached
-  TTupleType convertTupleTypeFromDb(Raw::Element e) { result = TTupleType(e) }
+  TTupleType fromRawTupleType(Raw::Element e) { result = TTupleType(e) }
 
   cached
-  TTypeAliasType convertTypeAliasTypeFromDb(Raw::Element e) { result = TTypeAliasType(e) }
+  TTypeAliasType fromRawTypeAliasType(Raw::Element e) { result = TTypeAliasType(e) }
 
   cached
-  TTypeRepr convertTypeReprFromDb(Raw::Element e) { result = TTypeRepr(e) }
+  TTypeRepr fromRawTypeRepr(Raw::Element e) { result = TTypeRepr(e) }
 
   cached
-  TTypeVariableType convertTypeVariableTypeFromDb(Raw::Element e) { result = TTypeVariableType(e) }
+  TTypeVariableType fromRawTypeVariableType(Raw::Element e) { result = TTypeVariableType(e) }
 
   cached
-  TUnboundGenericType convertUnboundGenericTypeFromDb(Raw::Element e) {
-    result = TUnboundGenericType(e)
-  }
+  TUnboundGenericType fromRawUnboundGenericType(Raw::Element e) { result = TUnboundGenericType(e) }
 
   cached
-  TUnmanagedStorageType convertUnmanagedStorageTypeFromDb(Raw::Element e) {
+  TUnmanagedStorageType fromRawUnmanagedStorageType(Raw::Element e) {
     result = TUnmanagedStorageType(e)
   }
 
   cached
-  TUnownedStorageType convertUnownedStorageTypeFromDb(Raw::Element e) {
-    result = TUnownedStorageType(e)
-  }
+  TUnownedStorageType fromRawUnownedStorageType(Raw::Element e) { result = TUnownedStorageType(e) }
 
   cached
-  TUnresolvedType convertUnresolvedTypeFromDb(Raw::Element e) { result = TUnresolvedType(e) }
+  TUnresolvedType fromRawUnresolvedType(Raw::Element e) { result = TUnresolvedType(e) }
 
   cached
-  TVariadicSequenceType convertVariadicSequenceTypeFromDb(Raw::Element e) {
+  TVariadicSequenceType fromRawVariadicSequenceType(Raw::Element e) {
     result = TVariadicSequenceType(e)
   }
 
   cached
-  TWeakStorageType convertWeakStorageTypeFromDb(Raw::Element e) { result = TWeakStorageType(e) }
+  TWeakStorageType fromRawWeakStorageType(Raw::Element e) { result = TWeakStorageType(e) }
 
   cached
-  TAstNode convertAstNodeFromDb(Raw::Element e) {
-    result = convertCaseLabelItemFromDb(e)
+  TAstNode fromRawAstNode(Raw::Element e) {
+    result = fromRawCaseLabelItem(e)
     or
-    result = convertDeclFromDb(e)
+    result = fromRawDecl(e)
     or
-    result = convertExprFromDb(e)
+    result = fromRawExpr(e)
     or
-    result = convertPatternFromDb(e)
+    result = fromRawPattern(e)
     or
-    result = convertStmtFromDb(e)
+    result = fromRawStmt(e)
     or
-    result = convertStmtConditionFromDb(e)
+    result = fromRawStmtCondition(e)
     or
-    result = convertTypeReprFromDb(e)
+    result = fromRawTypeRepr(e)
   }
 
   cached
-  TCallable convertCallableFromDb(Raw::Element e) {
-    result = convertAbstractClosureExprFromDb(e)
+  TCallable fromRawCallable(Raw::Element e) {
+    result = fromRawAbstractClosureExpr(e)
     or
-    result = convertAbstractFunctionDeclFromDb(e)
+    result = fromRawAbstractFunctionDecl(e)
   }
 
   cached
-  TElement convertElementFromDb(Raw::Element e) {
-    result = convertCallableFromDb(e)
+  TElement fromRawElement(Raw::Element e) {
+    result = fromRawCallable(e)
     or
-    result = convertFileFromDb(e)
+    result = fromRawFile(e)
     or
-    result = convertGenericContextFromDb(e)
+    result = fromRawGenericContext(e)
     or
-    result = convertIterableDeclContextFromDb(e)
+    result = fromRawIterableDeclContext(e)
     or
-    result = convertLocatableFromDb(e)
+    result = fromRawLocatable(e)
     or
-    result = convertLocationFromDb(e)
+    result = fromRawLocation(e)
     or
-    result = convertTypeFromDb(e)
+    result = fromRawType(e)
   }
 
   cached
-  TFile convertFileFromDb(Raw::Element e) {
-    result = convertDbFileFromDb(e)
+  TFile fromRawFile(Raw::Element e) {
+    result = fromRawDbFile(e)
     or
-    result = convertUnknownFileFromDb(e)
+    result = fromRawUnknownFile(e)
   }
 
   cached
-  TLocatable convertLocatableFromDb(Raw::Element e) {
-    result = convertArgumentFromDb(e)
+  TLocatable fromRawLocatable(Raw::Element e) {
+    result = fromRawArgument(e)
     or
-    result = convertAstNodeFromDb(e)
+    result = fromRawAstNode(e)
     or
-    result = convertCommentFromDb(e)
+    result = fromRawComment(e)
     or
-    result = convertConditionElementFromDb(e)
+    result = fromRawConditionElement(e)
     or
-    result = convertIfConfigClauseFromDb(e)
+    result = fromRawIfConfigClause(e)
   }
 
   cached
-  TLocation convertLocationFromDb(Raw::Element e) {
-    result = convertDbLocationFromDb(e)
+  TLocation fromRawLocation(Raw::Element e) {
+    result = fromRawDbLocation(e)
     or
-    result = convertUnknownLocationFromDb(e)
+    result = fromRawUnknownLocation(e)
   }
 
   cached
-  TAbstractFunctionDecl convertAbstractFunctionDeclFromDb(Raw::Element e) {
-    result = convertConstructorDeclFromDb(e)
+  TAbstractFunctionDecl fromRawAbstractFunctionDecl(Raw::Element e) {
+    result = fromRawConstructorDecl(e)
     or
-    result = convertDestructorDeclFromDb(e)
+    result = fromRawDestructorDecl(e)
     or
-    result = convertFuncDeclFromDb(e)
+    result = fromRawFuncDecl(e)
   }
 
   cached
-  TAbstractStorageDecl convertAbstractStorageDeclFromDb(Raw::Element e) {
-    result = convertSubscriptDeclFromDb(e)
+  TAbstractStorageDecl fromRawAbstractStorageDecl(Raw::Element e) {
+    result = fromRawSubscriptDecl(e)
     or
-    result = convertVarDeclFromDb(e)
+    result = fromRawVarDecl(e)
   }
 
   cached
-  TAbstractTypeParamDecl convertAbstractTypeParamDeclFromDb(Raw::Element e) {
-    result = convertAssociatedTypeDeclFromDb(e)
+  TAbstractTypeParamDecl fromRawAbstractTypeParamDecl(Raw::Element e) {
+    result = fromRawAssociatedTypeDecl(e)
     or
-    result = convertGenericTypeParamDeclFromDb(e)
+    result = fromRawGenericTypeParamDecl(e)
   }
 
   cached
-  TDecl convertDeclFromDb(Raw::Element e) {
-    result = convertEnumCaseDeclFromDb(e)
+  TDecl fromRawDecl(Raw::Element e) {
+    result = fromRawEnumCaseDecl(e)
     or
-    result = convertExtensionDeclFromDb(e)
+    result = fromRawExtensionDecl(e)
     or
-    result = convertIfConfigDeclFromDb(e)
+    result = fromRawIfConfigDecl(e)
     or
-    result = convertImportDeclFromDb(e)
+    result = fromRawImportDecl(e)
     or
-    result = convertMissingMemberDeclFromDb(e)
+    result = fromRawMissingMemberDecl(e)
     or
-    result = convertOperatorDeclFromDb(e)
+    result = fromRawOperatorDecl(e)
     or
-    result = convertPatternBindingDeclFromDb(e)
+    result = fromRawPatternBindingDecl(e)
     or
-    result = convertPoundDiagnosticDeclFromDb(e)
+    result = fromRawPoundDiagnosticDecl(e)
     or
-    result = convertPrecedenceGroupDeclFromDb(e)
+    result = fromRawPrecedenceGroupDecl(e)
     or
-    result = convertTopLevelCodeDeclFromDb(e)
+    result = fromRawTopLevelCodeDecl(e)
     or
-    result = convertValueDeclFromDb(e)
+    result = fromRawValueDecl(e)
   }
 
   cached
-  TFuncDecl convertFuncDeclFromDb(Raw::Element e) {
-    result = convertAccessorDeclFromDb(e)
+  TFuncDecl fromRawFuncDecl(Raw::Element e) {
+    result = fromRawAccessorDecl(e)
     or
-    result = convertConcreteFuncDeclFromDb(e)
+    result = fromRawConcreteFuncDecl(e)
   }
 
   cached
-  TGenericContext convertGenericContextFromDb(Raw::Element e) {
-    result = convertAbstractFunctionDeclFromDb(e)
+  TGenericContext fromRawGenericContext(Raw::Element e) {
+    result = fromRawAbstractFunctionDecl(e)
     or
-    result = convertExtensionDeclFromDb(e)
+    result = fromRawExtensionDecl(e)
     or
-    result = convertGenericTypeDeclFromDb(e)
+    result = fromRawGenericTypeDecl(e)
     or
-    result = convertSubscriptDeclFromDb(e)
+    result = fromRawSubscriptDecl(e)
   }
 
   cached
-  TGenericTypeDecl convertGenericTypeDeclFromDb(Raw::Element e) {
-    result = convertNominalTypeDeclFromDb(e)
+  TGenericTypeDecl fromRawGenericTypeDecl(Raw::Element e) {
+    result = fromRawNominalTypeDecl(e)
     or
-    result = convertOpaqueTypeDeclFromDb(e)
+    result = fromRawOpaqueTypeDecl(e)
     or
-    result = convertTypeAliasDeclFromDb(e)
+    result = fromRawTypeAliasDecl(e)
   }
 
   cached
-  TIterableDeclContext convertIterableDeclContextFromDb(Raw::Element e) {
-    result = convertExtensionDeclFromDb(e)
+  TIterableDeclContext fromRawIterableDeclContext(Raw::Element e) {
+    result = fromRawExtensionDecl(e)
     or
-    result = convertNominalTypeDeclFromDb(e)
+    result = fromRawNominalTypeDecl(e)
   }
 
   cached
-  TNominalTypeDecl convertNominalTypeDeclFromDb(Raw::Element e) {
-    result = convertClassDeclFromDb(e)
+  TNominalTypeDecl fromRawNominalTypeDecl(Raw::Element e) {
+    result = fromRawClassDecl(e)
     or
-    result = convertEnumDeclFromDb(e)
+    result = fromRawEnumDecl(e)
     or
-    result = convertProtocolDeclFromDb(e)
+    result = fromRawProtocolDecl(e)
     or
-    result = convertStructDeclFromDb(e)
+    result = fromRawStructDecl(e)
   }
 
   cached
-  TOperatorDecl convertOperatorDeclFromDb(Raw::Element e) {
-    result = convertInfixOperatorDeclFromDb(e)
+  TOperatorDecl fromRawOperatorDecl(Raw::Element e) {
+    result = fromRawInfixOperatorDecl(e)
     or
-    result = convertPostfixOperatorDeclFromDb(e)
+    result = fromRawPostfixOperatorDecl(e)
     or
-    result = convertPrefixOperatorDeclFromDb(e)
+    result = fromRawPrefixOperatorDecl(e)
   }
 
   cached
-  TTypeDecl convertTypeDeclFromDb(Raw::Element e) {
-    result = convertAbstractTypeParamDeclFromDb(e)
+  TTypeDecl fromRawTypeDecl(Raw::Element e) {
+    result = fromRawAbstractTypeParamDecl(e)
     or
-    result = convertGenericTypeDeclFromDb(e)
+    result = fromRawGenericTypeDecl(e)
     or
-    result = convertModuleDeclFromDb(e)
+    result = fromRawModuleDecl(e)
   }
 
   cached
-  TValueDecl convertValueDeclFromDb(Raw::Element e) {
-    result = convertAbstractFunctionDeclFromDb(e)
+  TValueDecl fromRawValueDecl(Raw::Element e) {
+    result = fromRawAbstractFunctionDecl(e)
     or
-    result = convertAbstractStorageDeclFromDb(e)
+    result = fromRawAbstractStorageDecl(e)
     or
-    result = convertEnumElementDeclFromDb(e)
+    result = fromRawEnumElementDecl(e)
     or
-    result = convertTypeDeclFromDb(e)
+    result = fromRawTypeDecl(e)
   }
 
   cached
-  TVarDecl convertVarDeclFromDb(Raw::Element e) {
-    result = convertConcreteVarDeclFromDb(e)
+  TVarDecl fromRawVarDecl(Raw::Element e) {
+    result = fromRawConcreteVarDecl(e)
     or
-    result = convertParamDeclFromDb(e)
+    result = fromRawParamDecl(e)
   }
 
   cached
-  TAbstractClosureExpr convertAbstractClosureExprFromDb(Raw::Element e) {
-    result = convertAutoClosureExprFromDb(e)
+  TAbstractClosureExpr fromRawAbstractClosureExpr(Raw::Element e) {
+    result = fromRawAutoClosureExpr(e)
     or
-    result = convertClosureExprFromDb(e)
+    result = fromRawClosureExpr(e)
   }
 
   cached
-  TAnyTryExpr convertAnyTryExprFromDb(Raw::Element e) {
-    result = convertForceTryExprFromDb(e)
+  TAnyTryExpr fromRawAnyTryExpr(Raw::Element e) {
+    result = fromRawForceTryExpr(e)
     or
-    result = convertOptionalTryExprFromDb(e)
+    result = fromRawOptionalTryExpr(e)
     or
-    result = convertTryExprFromDb(e)
+    result = fromRawTryExpr(e)
   }
 
   cached
-  TApplyExpr convertApplyExprFromDb(Raw::Element e) {
-    result = convertBinaryExprFromDb(e)
+  TApplyExpr fromRawApplyExpr(Raw::Element e) {
+    result = fromRawBinaryExpr(e)
     or
-    result = convertCallExprFromDb(e)
+    result = fromRawCallExpr(e)
     or
-    result = convertPostfixUnaryExprFromDb(e)
+    result = fromRawPostfixUnaryExpr(e)
     or
-    result = convertPrefixUnaryExprFromDb(e)
+    result = fromRawPrefixUnaryExpr(e)
     or
-    result = convertSelfApplyExprFromDb(e)
+    result = fromRawSelfApplyExpr(e)
   }
 
   cached
-  TBuiltinLiteralExpr convertBuiltinLiteralExprFromDb(Raw::Element e) {
-    result = convertBooleanLiteralExprFromDb(e)
+  TBuiltinLiteralExpr fromRawBuiltinLiteralExpr(Raw::Element e) {
+    result = fromRawBooleanLiteralExpr(e)
     or
-    result = convertMagicIdentifierLiteralExprFromDb(e)
+    result = fromRawMagicIdentifierLiteralExpr(e)
     or
-    result = convertNumberLiteralExprFromDb(e)
+    result = fromRawNumberLiteralExpr(e)
     or
-    result = convertStringLiteralExprFromDb(e)
+    result = fromRawStringLiteralExpr(e)
   }
 
   cached
-  TCheckedCastExpr convertCheckedCastExprFromDb(Raw::Element e) {
-    result = convertConditionalCheckedCastExprFromDb(e)
+  TCheckedCastExpr fromRawCheckedCastExpr(Raw::Element e) {
+    result = fromRawConditionalCheckedCastExpr(e)
     or
-    result = convertForcedCheckedCastExprFromDb(e)
+    result = fromRawForcedCheckedCastExpr(e)
     or
-    result = convertIsExprFromDb(e)
+    result = fromRawIsExpr(e)
   }
 
   cached
-  TCollectionExpr convertCollectionExprFromDb(Raw::Element e) {
-    result = convertArrayExprFromDb(e)
+  TCollectionExpr fromRawCollectionExpr(Raw::Element e) {
+    result = fromRawArrayExpr(e)
     or
-    result = convertDictionaryExprFromDb(e)
+    result = fromRawDictionaryExpr(e)
   }
 
   cached
-  TDynamicLookupExpr convertDynamicLookupExprFromDb(Raw::Element e) {
-    result = convertDynamicMemberRefExprFromDb(e)
+  TDynamicLookupExpr fromRawDynamicLookupExpr(Raw::Element e) {
+    result = fromRawDynamicMemberRefExpr(e)
     or
-    result = convertDynamicSubscriptExprFromDb(e)
+    result = fromRawDynamicSubscriptExpr(e)
   }
 
   cached
-  TExplicitCastExpr convertExplicitCastExprFromDb(Raw::Element e) {
-    result = convertCheckedCastExprFromDb(e)
+  TExplicitCastExpr fromRawExplicitCastExpr(Raw::Element e) {
+    result = fromRawCheckedCastExpr(e)
     or
-    result = convertCoerceExprFromDb(e)
+    result = fromRawCoerceExpr(e)
   }
 
   cached
-  TExpr convertExprFromDb(Raw::Element e) {
-    result = convertAbstractClosureExprFromDb(e)
+  TExpr fromRawExpr(Raw::Element e) {
+    result = fromRawAbstractClosureExpr(e)
     or
-    result = convertAnyTryExprFromDb(e)
+    result = fromRawAnyTryExpr(e)
     or
-    result = convertAppliedPropertyWrapperExprFromDb(e)
+    result = fromRawAppliedPropertyWrapperExpr(e)
     or
-    result = convertApplyExprFromDb(e)
+    result = fromRawApplyExpr(e)
     or
-    result = convertArrowExprFromDb(e)
+    result = fromRawArrowExpr(e)
     or
-    result = convertAssignExprFromDb(e)
+    result = fromRawAssignExpr(e)
     or
-    result = convertBindOptionalExprFromDb(e)
+    result = fromRawBindOptionalExpr(e)
     or
-    result = convertCaptureListExprFromDb(e)
+    result = fromRawCaptureListExpr(e)
     or
-    result = convertCodeCompletionExprFromDb(e)
+    result = fromRawCodeCompletionExpr(e)
     or
-    result = convertCollectionExprFromDb(e)
+    result = fromRawCollectionExpr(e)
     or
-    result = convertDeclRefExprFromDb(e)
+    result = fromRawDeclRefExpr(e)
     or
-    result = convertDefaultArgumentExprFromDb(e)
+    result = fromRawDefaultArgumentExpr(e)
     or
-    result = convertDiscardAssignmentExprFromDb(e)
+    result = fromRawDiscardAssignmentExpr(e)
     or
-    result = convertDotSyntaxBaseIgnoredExprFromDb(e)
+    result = fromRawDotSyntaxBaseIgnoredExpr(e)
     or
-    result = convertDynamicTypeExprFromDb(e)
+    result = fromRawDynamicTypeExpr(e)
     or
-    result = convertEditorPlaceholderExprFromDb(e)
+    result = fromRawEditorPlaceholderExpr(e)
     or
-    result = convertEnumIsCaseExprFromDb(e)
+    result = fromRawEnumIsCaseExpr(e)
     or
-    result = convertErrorExprFromDb(e)
+    result = fromRawErrorExpr(e)
     or
-    result = convertExplicitCastExprFromDb(e)
+    result = fromRawExplicitCastExpr(e)
     or
-    result = convertForceValueExprFromDb(e)
+    result = fromRawForceValueExpr(e)
     or
-    result = convertIdentityExprFromDb(e)
+    result = fromRawIdentityExpr(e)
     or
-    result = convertIfExprFromDb(e)
+    result = fromRawIfExpr(e)
     or
-    result = convertImplicitConversionExprFromDb(e)
+    result = fromRawImplicitConversionExpr(e)
     or
-    result = convertInOutExprFromDb(e)
+    result = fromRawInOutExpr(e)
     or
-    result = convertKeyPathApplicationExprFromDb(e)
+    result = fromRawKeyPathApplicationExpr(e)
     or
-    result = convertKeyPathDotExprFromDb(e)
+    result = fromRawKeyPathDotExpr(e)
     or
-    result = convertKeyPathExprFromDb(e)
+    result = fromRawKeyPathExpr(e)
     or
-    result = convertLazyInitializerExprFromDb(e)
+    result = fromRawLazyInitializerExpr(e)
     or
-    result = convertLiteralExprFromDb(e)
+    result = fromRawLiteralExpr(e)
     or
-    result = convertLookupExprFromDb(e)
+    result = fromRawLookupExpr(e)
     or
-    result = convertMakeTemporarilyEscapableExprFromDb(e)
+    result = fromRawMakeTemporarilyEscapableExpr(e)
     or
-    result = convertObjCSelectorExprFromDb(e)
+    result = fromRawObjCSelectorExpr(e)
     or
-    result = convertOneWayExprFromDb(e)
+    result = fromRawOneWayExpr(e)
     or
-    result = convertOpaqueValueExprFromDb(e)
+    result = fromRawOpaqueValueExpr(e)
     or
-    result = convertOpenExistentialExprFromDb(e)
+    result = fromRawOpenExistentialExpr(e)
     or
-    result = convertOptionalEvaluationExprFromDb(e)
+    result = fromRawOptionalEvaluationExpr(e)
     or
-    result = convertOtherConstructorDeclRefExprFromDb(e)
+    result = fromRawOtherConstructorDeclRefExpr(e)
     or
-    result = convertOverloadSetRefExprFromDb(e)
+    result = fromRawOverloadSetRefExpr(e)
     or
-    result = convertPropertyWrapperValuePlaceholderExprFromDb(e)
+    result = fromRawPropertyWrapperValuePlaceholderExpr(e)
     or
-    result = convertRebindSelfInConstructorExprFromDb(e)
+    result = fromRawRebindSelfInConstructorExpr(e)
     or
-    result = convertSequenceExprFromDb(e)
+    result = fromRawSequenceExpr(e)
     or
-    result = convertSuperRefExprFromDb(e)
+    result = fromRawSuperRefExpr(e)
     or
-    result = convertTapExprFromDb(e)
+    result = fromRawTapExpr(e)
     or
-    result = convertTupleElementExprFromDb(e)
+    result = fromRawTupleElementExpr(e)
     or
-    result = convertTupleExprFromDb(e)
+    result = fromRawTupleExpr(e)
     or
-    result = convertTypeExprFromDb(e)
+    result = fromRawTypeExpr(e)
     or
-    result = convertUnresolvedDeclRefExprFromDb(e)
+    result = fromRawUnresolvedDeclRefExpr(e)
     or
-    result = convertUnresolvedDotExprFromDb(e)
+    result = fromRawUnresolvedDotExpr(e)
     or
-    result = convertUnresolvedMemberExprFromDb(e)
+    result = fromRawUnresolvedMemberExpr(e)
     or
-    result = convertUnresolvedPatternExprFromDb(e)
+    result = fromRawUnresolvedPatternExpr(e)
     or
-    result = convertUnresolvedSpecializeExprFromDb(e)
+    result = fromRawUnresolvedSpecializeExpr(e)
     or
-    result = convertVarargExpansionExprFromDb(e)
+    result = fromRawVarargExpansionExpr(e)
   }
 
   cached
-  TIdentityExpr convertIdentityExprFromDb(Raw::Element e) {
-    result = convertAwaitExprFromDb(e)
+  TIdentityExpr fromRawIdentityExpr(Raw::Element e) {
+    result = fromRawAwaitExpr(e)
     or
-    result = convertDotSelfExprFromDb(e)
+    result = fromRawDotSelfExpr(e)
     or
-    result = convertParenExprFromDb(e)
+    result = fromRawParenExpr(e)
     or
-    result = convertUnresolvedMemberChainResultExprFromDb(e)
+    result = fromRawUnresolvedMemberChainResultExpr(e)
   }
 
   cached
-  TImplicitConversionExpr convertImplicitConversionExprFromDb(Raw::Element e) {
-    result = convertAnyHashableErasureExprFromDb(e)
+  TImplicitConversionExpr fromRawImplicitConversionExpr(Raw::Element e) {
+    result = fromRawAnyHashableErasureExpr(e)
     or
-    result = convertArchetypeToSuperExprFromDb(e)
+    result = fromRawArchetypeToSuperExpr(e)
     or
-    result = convertArrayToPointerExprFromDb(e)
+    result = fromRawArrayToPointerExpr(e)
     or
-    result = convertBridgeFromObjCExprFromDb(e)
+    result = fromRawBridgeFromObjCExpr(e)
     or
-    result = convertBridgeToObjCExprFromDb(e)
+    result = fromRawBridgeToObjCExpr(e)
     or
-    result = convertClassMetatypeToObjectExprFromDb(e)
+    result = fromRawClassMetatypeToObjectExpr(e)
     or
-    result = convertCollectionUpcastConversionExprFromDb(e)
+    result = fromRawCollectionUpcastConversionExpr(e)
     or
-    result = convertConditionalBridgeFromObjCExprFromDb(e)
+    result = fromRawConditionalBridgeFromObjCExpr(e)
     or
-    result = convertCovariantFunctionConversionExprFromDb(e)
+    result = fromRawCovariantFunctionConversionExpr(e)
     or
-    result = convertCovariantReturnConversionExprFromDb(e)
+    result = fromRawCovariantReturnConversionExpr(e)
     or
-    result = convertDerivedToBaseExprFromDb(e)
+    result = fromRawDerivedToBaseExpr(e)
     or
-    result = convertDestructureTupleExprFromDb(e)
+    result = fromRawDestructureTupleExpr(e)
     or
-    result = convertDifferentiableFunctionExprFromDb(e)
+    result = fromRawDifferentiableFunctionExpr(e)
     or
-    result = convertDifferentiableFunctionExtractOriginalExprFromDb(e)
+    result = fromRawDifferentiableFunctionExtractOriginalExpr(e)
     or
-    result = convertErasureExprFromDb(e)
+    result = fromRawErasureExpr(e)
     or
-    result = convertExistentialMetatypeToObjectExprFromDb(e)
+    result = fromRawExistentialMetatypeToObjectExpr(e)
     or
-    result = convertForeignObjectConversionExprFromDb(e)
+    result = fromRawForeignObjectConversionExpr(e)
     or
-    result = convertFunctionConversionExprFromDb(e)
+    result = fromRawFunctionConversionExpr(e)
     or
-    result = convertInOutToPointerExprFromDb(e)
+    result = fromRawInOutToPointerExpr(e)
     or
-    result = convertInjectIntoOptionalExprFromDb(e)
+    result = fromRawInjectIntoOptionalExpr(e)
     or
-    result = convertLinearFunctionExprFromDb(e)
+    result = fromRawLinearFunctionExpr(e)
     or
-    result = convertLinearFunctionExtractOriginalExprFromDb(e)
+    result = fromRawLinearFunctionExtractOriginalExpr(e)
     or
-    result = convertLinearToDifferentiableFunctionExprFromDb(e)
+    result = fromRawLinearToDifferentiableFunctionExpr(e)
     or
-    result = convertLoadExprFromDb(e)
+    result = fromRawLoadExpr(e)
     or
-    result = convertMetatypeConversionExprFromDb(e)
+    result = fromRawMetatypeConversionExpr(e)
     or
-    result = convertPointerToPointerExprFromDb(e)
+    result = fromRawPointerToPointerExpr(e)
     or
-    result = convertProtocolMetatypeToObjectExprFromDb(e)
+    result = fromRawProtocolMetatypeToObjectExpr(e)
     or
-    result = convertStringToPointerExprFromDb(e)
+    result = fromRawStringToPointerExpr(e)
     or
-    result = convertUnderlyingToOpaqueExprFromDb(e)
+    result = fromRawUnderlyingToOpaqueExpr(e)
     or
-    result = convertUnevaluatedInstanceExprFromDb(e)
+    result = fromRawUnevaluatedInstanceExpr(e)
     or
-    result = convertUnresolvedTypeConversionExprFromDb(e)
+    result = fromRawUnresolvedTypeConversionExpr(e)
   }
 
   cached
-  TLiteralExpr convertLiteralExprFromDb(Raw::Element e) {
-    result = convertBuiltinLiteralExprFromDb(e)
+  TLiteralExpr fromRawLiteralExpr(Raw::Element e) {
+    result = fromRawBuiltinLiteralExpr(e)
     or
-    result = convertInterpolatedStringLiteralExprFromDb(e)
+    result = fromRawInterpolatedStringLiteralExpr(e)
     or
-    result = convertNilLiteralExprFromDb(e)
+    result = fromRawNilLiteralExpr(e)
     or
-    result = convertObjectLiteralExprFromDb(e)
+    result = fromRawObjectLiteralExpr(e)
     or
-    result = convertRegexLiteralExprFromDb(e)
+    result = fromRawRegexLiteralExpr(e)
   }
 
   cached
-  TLookupExpr convertLookupExprFromDb(Raw::Element e) {
-    result = convertDynamicLookupExprFromDb(e)
+  TLookupExpr fromRawLookupExpr(Raw::Element e) {
+    result = fromRawDynamicLookupExpr(e)
     or
-    result = convertMemberRefExprFromDb(e)
+    result = fromRawMemberRefExpr(e)
     or
-    result = convertSubscriptExprFromDb(e)
+    result = fromRawSubscriptExpr(e)
   }
 
   cached
-  TNumberLiteralExpr convertNumberLiteralExprFromDb(Raw::Element e) {
-    result = convertFloatLiteralExprFromDb(e)
+  TNumberLiteralExpr fromRawNumberLiteralExpr(Raw::Element e) {
+    result = fromRawFloatLiteralExpr(e)
     or
-    result = convertIntegerLiteralExprFromDb(e)
+    result = fromRawIntegerLiteralExpr(e)
   }
 
   cached
-  TOverloadSetRefExpr convertOverloadSetRefExprFromDb(Raw::Element e) {
-    result = convertOverloadedDeclRefExprFromDb(e)
+  TOverloadSetRefExpr fromRawOverloadSetRefExpr(Raw::Element e) {
+    result = fromRawOverloadedDeclRefExpr(e)
   }
 
   cached
-  TSelfApplyExpr convertSelfApplyExprFromDb(Raw::Element e) {
-    result = convertConstructorRefCallExprFromDb(e)
+  TSelfApplyExpr fromRawSelfApplyExpr(Raw::Element e) {
+    result = fromRawConstructorRefCallExpr(e)
     or
-    result = convertDotSyntaxCallExprFromDb(e)
+    result = fromRawDotSyntaxCallExpr(e)
   }
 
   cached
-  TPattern convertPatternFromDb(Raw::Element e) {
-    result = convertAnyPatternFromDb(e)
+  TPattern fromRawPattern(Raw::Element e) {
+    result = fromRawAnyPattern(e)
     or
-    result = convertBindingPatternFromDb(e)
+    result = fromRawBindingPattern(e)
     or
-    result = convertBoolPatternFromDb(e)
+    result = fromRawBoolPattern(e)
     or
-    result = convertEnumElementPatternFromDb(e)
+    result = fromRawEnumElementPattern(e)
     or
-    result = convertExprPatternFromDb(e)
+    result = fromRawExprPattern(e)
     or
-    result = convertIsPatternFromDb(e)
+    result = fromRawIsPattern(e)
     or
-    result = convertNamedPatternFromDb(e)
+    result = fromRawNamedPattern(e)
     or
-    result = convertOptionalSomePatternFromDb(e)
+    result = fromRawOptionalSomePattern(e)
     or
-    result = convertParenPatternFromDb(e)
+    result = fromRawParenPattern(e)
     or
-    result = convertTuplePatternFromDb(e)
+    result = fromRawTuplePattern(e)
     or
-    result = convertTypedPatternFromDb(e)
+    result = fromRawTypedPattern(e)
   }
 
   cached
-  TLabeledConditionalStmt convertLabeledConditionalStmtFromDb(Raw::Element e) {
-    result = convertGuardStmtFromDb(e)
+  TLabeledConditionalStmt fromRawLabeledConditionalStmt(Raw::Element e) {
+    result = fromRawGuardStmt(e)
     or
-    result = convertIfStmtFromDb(e)
+    result = fromRawIfStmt(e)
     or
-    result = convertWhileStmtFromDb(e)
+    result = fromRawWhileStmt(e)
   }
 
   cached
-  TLabeledStmt convertLabeledStmtFromDb(Raw::Element e) {
-    result = convertDoCatchStmtFromDb(e)
+  TLabeledStmt fromRawLabeledStmt(Raw::Element e) {
+    result = fromRawDoCatchStmt(e)
     or
-    result = convertDoStmtFromDb(e)
+    result = fromRawDoStmt(e)
     or
-    result = convertForEachStmtFromDb(e)
+    result = fromRawForEachStmt(e)
     or
-    result = convertLabeledConditionalStmtFromDb(e)
+    result = fromRawLabeledConditionalStmt(e)
     or
-    result = convertRepeatWhileStmtFromDb(e)
+    result = fromRawRepeatWhileStmt(e)
     or
-    result = convertSwitchStmtFromDb(e)
+    result = fromRawSwitchStmt(e)
   }
 
   cached
-  TStmt convertStmtFromDb(Raw::Element e) {
-    result = convertBraceStmtFromDb(e)
+  TStmt fromRawStmt(Raw::Element e) {
+    result = fromRawBraceStmt(e)
     or
-    result = convertBreakStmtFromDb(e)
+    result = fromRawBreakStmt(e)
     or
-    result = convertCaseStmtFromDb(e)
+    result = fromRawCaseStmt(e)
     or
-    result = convertContinueStmtFromDb(e)
+    result = fromRawContinueStmt(e)
     or
-    result = convertDeferStmtFromDb(e)
+    result = fromRawDeferStmt(e)
     or
-    result = convertFailStmtFromDb(e)
+    result = fromRawFailStmt(e)
     or
-    result = convertFallthroughStmtFromDb(e)
+    result = fromRawFallthroughStmt(e)
     or
-    result = convertLabeledStmtFromDb(e)
+    result = fromRawLabeledStmt(e)
     or
-    result = convertPoundAssertStmtFromDb(e)
+    result = fromRawPoundAssertStmt(e)
     or
-    result = convertReturnStmtFromDb(e)
+    result = fromRawReturnStmt(e)
     or
-    result = convertThrowStmtFromDb(e)
+    result = fromRawThrowStmt(e)
     or
-    result = convertYieldStmtFromDb(e)
+    result = fromRawYieldStmt(e)
   }
 
   cached
-  TAnyBuiltinIntegerType convertAnyBuiltinIntegerTypeFromDb(Raw::Element e) {
-    result = convertBuiltinIntegerLiteralTypeFromDb(e)
+  TAnyBuiltinIntegerType fromRawAnyBuiltinIntegerType(Raw::Element e) {
+    result = fromRawBuiltinIntegerLiteralType(e)
     or
-    result = convertBuiltinIntegerTypeFromDb(e)
+    result = fromRawBuiltinIntegerType(e)
   }
 
   cached
-  TAnyFunctionType convertAnyFunctionTypeFromDb(Raw::Element e) {
-    result = convertFunctionTypeFromDb(e)
+  TAnyFunctionType fromRawAnyFunctionType(Raw::Element e) {
+    result = fromRawFunctionType(e)
     or
-    result = convertGenericFunctionTypeFromDb(e)
+    result = fromRawGenericFunctionType(e)
   }
 
   cached
-  TAnyGenericType convertAnyGenericTypeFromDb(Raw::Element e) {
-    result = convertNominalOrBoundGenericNominalTypeFromDb(e)
+  TAnyGenericType fromRawAnyGenericType(Raw::Element e) {
+    result = fromRawNominalOrBoundGenericNominalType(e)
     or
-    result = convertUnboundGenericTypeFromDb(e)
+    result = fromRawUnboundGenericType(e)
   }
 
   cached
-  TAnyMetatypeType convertAnyMetatypeTypeFromDb(Raw::Element e) {
-    result = convertExistentialMetatypeTypeFromDb(e)
+  TAnyMetatypeType fromRawAnyMetatypeType(Raw::Element e) {
+    result = fromRawExistentialMetatypeType(e)
     or
-    result = convertMetatypeTypeFromDb(e)
+    result = fromRawMetatypeType(e)
   }
 
   cached
-  TArchetypeType convertArchetypeTypeFromDb(Raw::Element e) {
-    result = convertNestedArchetypeTypeFromDb(e)
+  TArchetypeType fromRawArchetypeType(Raw::Element e) {
+    result = fromRawNestedArchetypeType(e)
     or
-    result = convertOpaqueTypeArchetypeTypeFromDb(e)
+    result = fromRawOpaqueTypeArchetypeType(e)
     or
-    result = convertOpenedArchetypeTypeFromDb(e)
+    result = fromRawOpenedArchetypeType(e)
     or
-    result = convertPrimaryArchetypeTypeFromDb(e)
+    result = fromRawPrimaryArchetypeType(e)
     or
-    result = convertSequenceArchetypeTypeFromDb(e)
+    result = fromRawSequenceArchetypeType(e)
   }
 
   cached
-  TBoundGenericType convertBoundGenericTypeFromDb(Raw::Element e) {
-    result = convertBoundGenericClassTypeFromDb(e)
+  TBoundGenericType fromRawBoundGenericType(Raw::Element e) {
+    result = fromRawBoundGenericClassType(e)
     or
-    result = convertBoundGenericEnumTypeFromDb(e)
+    result = fromRawBoundGenericEnumType(e)
     or
-    result = convertBoundGenericStructTypeFromDb(e)
+    result = fromRawBoundGenericStructType(e)
   }
 
   cached
-  TBuiltinType convertBuiltinTypeFromDb(Raw::Element e) {
-    result = convertAnyBuiltinIntegerTypeFromDb(e)
+  TBuiltinType fromRawBuiltinType(Raw::Element e) {
+    result = fromRawAnyBuiltinIntegerType(e)
     or
-    result = convertBuiltinBridgeObjectTypeFromDb(e)
+    result = fromRawBuiltinBridgeObjectType(e)
     or
-    result = convertBuiltinDefaultActorStorageTypeFromDb(e)
+    result = fromRawBuiltinDefaultActorStorageType(e)
     or
-    result = convertBuiltinExecutorTypeFromDb(e)
+    result = fromRawBuiltinExecutorType(e)
     or
-    result = convertBuiltinFloatTypeFromDb(e)
+    result = fromRawBuiltinFloatType(e)
     or
-    result = convertBuiltinJobTypeFromDb(e)
+    result = fromRawBuiltinJobType(e)
     or
-    result = convertBuiltinNativeObjectTypeFromDb(e)
+    result = fromRawBuiltinNativeObjectType(e)
     or
-    result = convertBuiltinRawPointerTypeFromDb(e)
+    result = fromRawBuiltinRawPointerType(e)
     or
-    result = convertBuiltinRawUnsafeContinuationTypeFromDb(e)
+    result = fromRawBuiltinRawUnsafeContinuationType(e)
     or
-    result = convertBuiltinUnsafeValueBufferTypeFromDb(e)
+    result = fromRawBuiltinUnsafeValueBufferType(e)
     or
-    result = convertBuiltinVectorTypeFromDb(e)
+    result = fromRawBuiltinVectorType(e)
   }
 
   cached
-  TNominalOrBoundGenericNominalType convertNominalOrBoundGenericNominalTypeFromDb(Raw::Element e) {
-    result = convertBoundGenericTypeFromDb(e)
+  TNominalOrBoundGenericNominalType fromRawNominalOrBoundGenericNominalType(Raw::Element e) {
+    result = fromRawBoundGenericType(e)
     or
-    result = convertNominalTypeFromDb(e)
+    result = fromRawNominalType(e)
   }
 
   cached
-  TNominalType convertNominalTypeFromDb(Raw::Element e) {
-    result = convertClassTypeFromDb(e)
+  TNominalType fromRawNominalType(Raw::Element e) {
+    result = fromRawClassType(e)
     or
-    result = convertEnumTypeFromDb(e)
+    result = fromRawEnumType(e)
     or
-    result = convertProtocolTypeFromDb(e)
+    result = fromRawProtocolType(e)
     or
-    result = convertStructTypeFromDb(e)
+    result = fromRawStructType(e)
   }
 
   cached
-  TReferenceStorageType convertReferenceStorageTypeFromDb(Raw::Element e) {
-    result = convertUnmanagedStorageTypeFromDb(e)
+  TReferenceStorageType fromRawReferenceStorageType(Raw::Element e) {
+    result = fromRawUnmanagedStorageType(e)
     or
-    result = convertUnownedStorageTypeFromDb(e)
+    result = fromRawUnownedStorageType(e)
     or
-    result = convertWeakStorageTypeFromDb(e)
+    result = fromRawWeakStorageType(e)
   }
 
   cached
-  TSubstitutableType convertSubstitutableTypeFromDb(Raw::Element e) {
-    result = convertArchetypeTypeFromDb(e)
+  TSubstitutableType fromRawSubstitutableType(Raw::Element e) {
+    result = fromRawArchetypeType(e)
     or
-    result = convertGenericTypeParamTypeFromDb(e)
+    result = fromRawGenericTypeParamType(e)
   }
 
   cached
-  TSugarType convertSugarTypeFromDb(Raw::Element e) {
-    result = convertParenTypeFromDb(e)
+  TSugarType fromRawSugarType(Raw::Element e) {
+    result = fromRawParenType(e)
     or
-    result = convertSyntaxSugarTypeFromDb(e)
+    result = fromRawSyntaxSugarType(e)
     or
-    result = convertTypeAliasTypeFromDb(e)
+    result = fromRawTypeAliasType(e)
   }
 
   cached
-  TSyntaxSugarType convertSyntaxSugarTypeFromDb(Raw::Element e) {
-    result = convertDictionaryTypeFromDb(e)
+  TSyntaxSugarType fromRawSyntaxSugarType(Raw::Element e) {
+    result = fromRawDictionaryType(e)
     or
-    result = convertUnarySyntaxSugarTypeFromDb(e)
+    result = fromRawUnarySyntaxSugarType(e)
   }
 
   cached
-  TType convertTypeFromDb(Raw::Element e) {
-    result = convertAnyFunctionTypeFromDb(e)
+  TType fromRawType(Raw::Element e) {
+    result = fromRawAnyFunctionType(e)
     or
-    result = convertAnyGenericTypeFromDb(e)
+    result = fromRawAnyGenericType(e)
     or
-    result = convertAnyMetatypeTypeFromDb(e)
+    result = fromRawAnyMetatypeType(e)
     or
-    result = convertBuiltinTypeFromDb(e)
+    result = fromRawBuiltinType(e)
     or
-    result = convertDependentMemberTypeFromDb(e)
+    result = fromRawDependentMemberType(e)
     or
-    result = convertDynamicSelfTypeFromDb(e)
+    result = fromRawDynamicSelfType(e)
     or
-    result = convertErrorTypeFromDb(e)
+    result = fromRawErrorType(e)
     or
-    result = convertExistentialTypeFromDb(e)
+    result = fromRawExistentialType(e)
     or
-    result = convertInOutTypeFromDb(e)
+    result = fromRawInOutType(e)
     or
-    result = convertLValueTypeFromDb(e)
+    result = fromRawLValueType(e)
     or
-    result = convertModuleTypeFromDb(e)
+    result = fromRawModuleType(e)
     or
-    result = convertPlaceholderTypeFromDb(e)
+    result = fromRawPlaceholderType(e)
     or
-    result = convertProtocolCompositionTypeFromDb(e)
+    result = fromRawProtocolCompositionType(e)
     or
-    result = convertReferenceStorageTypeFromDb(e)
+    result = fromRawReferenceStorageType(e)
     or
-    result = convertSilBlockStorageTypeFromDb(e)
+    result = fromRawSilBlockStorageType(e)
     or
-    result = convertSilBoxTypeFromDb(e)
+    result = fromRawSilBoxType(e)
     or
-    result = convertSilFunctionTypeFromDb(e)
+    result = fromRawSilFunctionType(e)
     or
-    result = convertSilTokenTypeFromDb(e)
+    result = fromRawSilTokenType(e)
     or
-    result = convertSubstitutableTypeFromDb(e)
+    result = fromRawSubstitutableType(e)
     or
-    result = convertSugarTypeFromDb(e)
+    result = fromRawSugarType(e)
     or
-    result = convertTupleTypeFromDb(e)
+    result = fromRawTupleType(e)
     or
-    result = convertTypeVariableTypeFromDb(e)
+    result = fromRawTypeVariableType(e)
     or
-    result = convertUnresolvedTypeFromDb(e)
+    result = fromRawUnresolvedType(e)
   }
 
   cached
-  TUnarySyntaxSugarType convertUnarySyntaxSugarTypeFromDb(Raw::Element e) {
-    result = convertArraySliceTypeFromDb(e)
+  TUnarySyntaxSugarType fromRawUnarySyntaxSugarType(Raw::Element e) {
+    result = fromRawArraySliceType(e)
     or
-    result = convertOptionalTypeFromDb(e)
+    result = fromRawOptionalType(e)
     or
-    result = convertVariadicSequenceTypeFromDb(e)
+    result = fromRawVariadicSequenceType(e)
   }
 
   cached
-  Raw::Element convertCommentToDb(TComment e) { e = TComment(result) }
+  Raw::Element toRawComment(TComment e) { e = TComment(result) }
 
   cached
-  Raw::Element convertDbFileToDb(TDbFile e) { e = TDbFile(result) }
+  Raw::Element toRawDbFile(TDbFile e) { e = TDbFile(result) }
 
   cached
-  Raw::Element convertDbLocationToDb(TDbLocation e) { e = TDbLocation(result) }
+  Raw::Element toRawDbLocation(TDbLocation e) { e = TDbLocation(result) }
 
   cached
-  Raw::Element convertUnknownFileToDb(TUnknownFile e) { none() }
+  Raw::Element toRawUnknownFile(TUnknownFile e) { none() }
 
   cached
-  Raw::Element convertUnknownLocationToDb(TUnknownLocation e) { none() }
+  Raw::Element toRawUnknownLocation(TUnknownLocation e) { none() }
 
   cached
-  Raw::Element convertAccessorDeclToDb(TAccessorDecl e) { e = TAccessorDecl(result) }
+  Raw::Element toRawAccessorDecl(TAccessorDecl e) { e = TAccessorDecl(result) }
 
   cached
-  Raw::Element convertAssociatedTypeDeclToDb(TAssociatedTypeDecl e) {
-    e = TAssociatedTypeDecl(result)
-  }
+  Raw::Element toRawAssociatedTypeDecl(TAssociatedTypeDecl e) { e = TAssociatedTypeDecl(result) }
 
   cached
-  Raw::Element convertClassDeclToDb(TClassDecl e) { e = TClassDecl(result) }
+  Raw::Element toRawClassDecl(TClassDecl e) { e = TClassDecl(result) }
 
   cached
-  Raw::Element convertConcreteFuncDeclToDb(TConcreteFuncDecl e) { e = TConcreteFuncDecl(result) }
+  Raw::Element toRawConcreteFuncDecl(TConcreteFuncDecl e) { e = TConcreteFuncDecl(result) }
 
   cached
-  Raw::Element convertConcreteVarDeclToDb(TConcreteVarDecl e) { e = TConcreteVarDecl(result) }
+  Raw::Element toRawConcreteVarDecl(TConcreteVarDecl e) { e = TConcreteVarDecl(result) }
 
   cached
-  Raw::Element convertConstructorDeclToDb(TConstructorDecl e) { e = TConstructorDecl(result) }
+  Raw::Element toRawConstructorDecl(TConstructorDecl e) { e = TConstructorDecl(result) }
 
   cached
-  Raw::Element convertDestructorDeclToDb(TDestructorDecl e) { e = TDestructorDecl(result) }
+  Raw::Element toRawDestructorDecl(TDestructorDecl e) { e = TDestructorDecl(result) }
 
   cached
-  Raw::Element convertEnumCaseDeclToDb(TEnumCaseDecl e) { e = TEnumCaseDecl(result) }
+  Raw::Element toRawEnumCaseDecl(TEnumCaseDecl e) { e = TEnumCaseDecl(result) }
 
   cached
-  Raw::Element convertEnumDeclToDb(TEnumDecl e) { e = TEnumDecl(result) }
+  Raw::Element toRawEnumDecl(TEnumDecl e) { e = TEnumDecl(result) }
 
   cached
-  Raw::Element convertEnumElementDeclToDb(TEnumElementDecl e) { e = TEnumElementDecl(result) }
+  Raw::Element toRawEnumElementDecl(TEnumElementDecl e) { e = TEnumElementDecl(result) }
 
   cached
-  Raw::Element convertExtensionDeclToDb(TExtensionDecl e) { e = TExtensionDecl(result) }
+  Raw::Element toRawExtensionDecl(TExtensionDecl e) { e = TExtensionDecl(result) }
 
   cached
-  Raw::Element convertGenericTypeParamDeclToDb(TGenericTypeParamDecl e) {
+  Raw::Element toRawGenericTypeParamDecl(TGenericTypeParamDecl e) {
     e = TGenericTypeParamDecl(result)
   }
 
   cached
-  Raw::Element convertIfConfigClauseToDb(TIfConfigClause e) { e = TIfConfigClause(result) }
+  Raw::Element toRawIfConfigClause(TIfConfigClause e) { e = TIfConfigClause(result) }
 
   cached
-  Raw::Element convertIfConfigDeclToDb(TIfConfigDecl e) { e = TIfConfigDecl(result) }
+  Raw::Element toRawIfConfigDecl(TIfConfigDecl e) { e = TIfConfigDecl(result) }
 
   cached
-  Raw::Element convertImportDeclToDb(TImportDecl e) { e = TImportDecl(result) }
+  Raw::Element toRawImportDecl(TImportDecl e) { e = TImportDecl(result) }
 
   cached
-  Raw::Element convertInfixOperatorDeclToDb(TInfixOperatorDecl e) { e = TInfixOperatorDecl(result) }
+  Raw::Element toRawInfixOperatorDecl(TInfixOperatorDecl e) { e = TInfixOperatorDecl(result) }
 
   cached
-  Raw::Element convertMissingMemberDeclToDb(TMissingMemberDecl e) { e = TMissingMemberDecl(result) }
+  Raw::Element toRawMissingMemberDecl(TMissingMemberDecl e) { e = TMissingMemberDecl(result) }
 
   cached
-  Raw::Element convertModuleDeclToDb(TModuleDecl e) { e = TModuleDecl(result) }
+  Raw::Element toRawModuleDecl(TModuleDecl e) { e = TModuleDecl(result) }
 
   cached
-  Raw::Element convertOpaqueTypeDeclToDb(TOpaqueTypeDecl e) { e = TOpaqueTypeDecl(result) }
+  Raw::Element toRawOpaqueTypeDecl(TOpaqueTypeDecl e) { e = TOpaqueTypeDecl(result) }
 
   cached
-  Raw::Element convertParamDeclToDb(TParamDecl e) { e = TParamDecl(result) }
+  Raw::Element toRawParamDecl(TParamDecl e) { e = TParamDecl(result) }
 
   cached
-  Raw::Element convertPatternBindingDeclToDb(TPatternBindingDecl e) {
-    e = TPatternBindingDecl(result)
-  }
+  Raw::Element toRawPatternBindingDecl(TPatternBindingDecl e) { e = TPatternBindingDecl(result) }
 
   cached
-  Raw::Element convertPostfixOperatorDeclToDb(TPostfixOperatorDecl e) {
-    e = TPostfixOperatorDecl(result)
-  }
+  Raw::Element toRawPostfixOperatorDecl(TPostfixOperatorDecl e) { e = TPostfixOperatorDecl(result) }
 
   cached
-  Raw::Element convertPoundDiagnosticDeclToDb(TPoundDiagnosticDecl e) {
-    e = TPoundDiagnosticDecl(result)
-  }
+  Raw::Element toRawPoundDiagnosticDecl(TPoundDiagnosticDecl e) { e = TPoundDiagnosticDecl(result) }
 
   cached
-  Raw::Element convertPrecedenceGroupDeclToDb(TPrecedenceGroupDecl e) {
-    e = TPrecedenceGroupDecl(result)
-  }
+  Raw::Element toRawPrecedenceGroupDecl(TPrecedenceGroupDecl e) { e = TPrecedenceGroupDecl(result) }
 
   cached
-  Raw::Element convertPrefixOperatorDeclToDb(TPrefixOperatorDecl e) {
-    e = TPrefixOperatorDecl(result)
-  }
+  Raw::Element toRawPrefixOperatorDecl(TPrefixOperatorDecl e) { e = TPrefixOperatorDecl(result) }
 
   cached
-  Raw::Element convertProtocolDeclToDb(TProtocolDecl e) { e = TProtocolDecl(result) }
+  Raw::Element toRawProtocolDecl(TProtocolDecl e) { e = TProtocolDecl(result) }
 
   cached
-  Raw::Element convertStructDeclToDb(TStructDecl e) { e = TStructDecl(result) }
+  Raw::Element toRawStructDecl(TStructDecl e) { e = TStructDecl(result) }
 
   cached
-  Raw::Element convertSubscriptDeclToDb(TSubscriptDecl e) { e = TSubscriptDecl(result) }
+  Raw::Element toRawSubscriptDecl(TSubscriptDecl e) { e = TSubscriptDecl(result) }
 
   cached
-  Raw::Element convertTopLevelCodeDeclToDb(TTopLevelCodeDecl e) { e = TTopLevelCodeDecl(result) }
+  Raw::Element toRawTopLevelCodeDecl(TTopLevelCodeDecl e) { e = TTopLevelCodeDecl(result) }
 
   cached
-  Raw::Element convertTypeAliasDeclToDb(TTypeAliasDecl e) { e = TTypeAliasDecl(result) }
+  Raw::Element toRawTypeAliasDecl(TTypeAliasDecl e) { e = TTypeAliasDecl(result) }
 
   cached
-  Raw::Element convertAnyHashableErasureExprToDb(TAnyHashableErasureExpr e) {
+  Raw::Element toRawAnyHashableErasureExpr(TAnyHashableErasureExpr e) {
     e = TAnyHashableErasureExpr(result)
   }
 
   cached
-  Raw::Element convertAppliedPropertyWrapperExprToDb(TAppliedPropertyWrapperExpr e) {
+  Raw::Element toRawAppliedPropertyWrapperExpr(TAppliedPropertyWrapperExpr e) {
     e = TAppliedPropertyWrapperExpr(result)
   }
 
   cached
-  Raw::Element convertArchetypeToSuperExprToDb(TArchetypeToSuperExpr e) {
+  Raw::Element toRawArchetypeToSuperExpr(TArchetypeToSuperExpr e) {
     e = TArchetypeToSuperExpr(result)
   }
 
   cached
-  Raw::Element convertArgumentToDb(TArgument e) { e = TArgument(result) }
+  Raw::Element toRawArgument(TArgument e) { e = TArgument(result) }
 
   cached
-  Raw::Element convertArrayExprToDb(TArrayExpr e) { e = TArrayExpr(result) }
+  Raw::Element toRawArrayExpr(TArrayExpr e) { e = TArrayExpr(result) }
 
   cached
-  Raw::Element convertArrayToPointerExprToDb(TArrayToPointerExpr e) {
-    e = TArrayToPointerExpr(result)
-  }
+  Raw::Element toRawArrayToPointerExpr(TArrayToPointerExpr e) { e = TArrayToPointerExpr(result) }
 
   cached
-  Raw::Element convertArrowExprToDb(TArrowExpr e) { e = TArrowExpr(result) }
+  Raw::Element toRawArrowExpr(TArrowExpr e) { e = TArrowExpr(result) }
 
   cached
-  Raw::Element convertAssignExprToDb(TAssignExpr e) { e = TAssignExpr(result) }
+  Raw::Element toRawAssignExpr(TAssignExpr e) { e = TAssignExpr(result) }
 
   cached
-  Raw::Element convertAutoClosureExprToDb(TAutoClosureExpr e) { e = TAutoClosureExpr(result) }
+  Raw::Element toRawAutoClosureExpr(TAutoClosureExpr e) { e = TAutoClosureExpr(result) }
 
   cached
-  Raw::Element convertAwaitExprToDb(TAwaitExpr e) { e = TAwaitExpr(result) }
+  Raw::Element toRawAwaitExpr(TAwaitExpr e) { e = TAwaitExpr(result) }
 
   cached
-  Raw::Element convertBinaryExprToDb(TBinaryExpr e) { e = TBinaryExpr(result) }
+  Raw::Element toRawBinaryExpr(TBinaryExpr e) { e = TBinaryExpr(result) }
 
   cached
-  Raw::Element convertBindOptionalExprToDb(TBindOptionalExpr e) { e = TBindOptionalExpr(result) }
+  Raw::Element toRawBindOptionalExpr(TBindOptionalExpr e) { e = TBindOptionalExpr(result) }
 
   cached
-  Raw::Element convertBooleanLiteralExprToDb(TBooleanLiteralExpr e) {
-    e = TBooleanLiteralExpr(result)
-  }
+  Raw::Element toRawBooleanLiteralExpr(TBooleanLiteralExpr e) { e = TBooleanLiteralExpr(result) }
 
   cached
-  Raw::Element convertBridgeFromObjCExprToDb(TBridgeFromObjCExpr e) {
-    e = TBridgeFromObjCExpr(result)
-  }
+  Raw::Element toRawBridgeFromObjCExpr(TBridgeFromObjCExpr e) { e = TBridgeFromObjCExpr(result) }
 
   cached
-  Raw::Element convertBridgeToObjCExprToDb(TBridgeToObjCExpr e) { e = TBridgeToObjCExpr(result) }
+  Raw::Element toRawBridgeToObjCExpr(TBridgeToObjCExpr e) { e = TBridgeToObjCExpr(result) }
 
   cached
-  Raw::Element convertCallExprToDb(TCallExpr e) { e = TCallExpr(result) }
+  Raw::Element toRawCallExpr(TCallExpr e) { e = TCallExpr(result) }
 
   cached
-  Raw::Element convertCaptureListExprToDb(TCaptureListExpr e) { e = TCaptureListExpr(result) }
+  Raw::Element toRawCaptureListExpr(TCaptureListExpr e) { e = TCaptureListExpr(result) }
 
   cached
-  Raw::Element convertClassMetatypeToObjectExprToDb(TClassMetatypeToObjectExpr e) {
+  Raw::Element toRawClassMetatypeToObjectExpr(TClassMetatypeToObjectExpr e) {
     e = TClassMetatypeToObjectExpr(result)
   }
 
   cached
-  Raw::Element convertClosureExprToDb(TClosureExpr e) { e = TClosureExpr(result) }
+  Raw::Element toRawClosureExpr(TClosureExpr e) { e = TClosureExpr(result) }
 
   cached
-  Raw::Element convertCodeCompletionExprToDb(TCodeCompletionExpr e) {
-    e = TCodeCompletionExpr(result)
-  }
+  Raw::Element toRawCodeCompletionExpr(TCodeCompletionExpr e) { e = TCodeCompletionExpr(result) }
 
   cached
-  Raw::Element convertCoerceExprToDb(TCoerceExpr e) { e = TCoerceExpr(result) }
+  Raw::Element toRawCoerceExpr(TCoerceExpr e) { e = TCoerceExpr(result) }
 
   cached
-  Raw::Element convertCollectionUpcastConversionExprToDb(TCollectionUpcastConversionExpr e) {
+  Raw::Element toRawCollectionUpcastConversionExpr(TCollectionUpcastConversionExpr e) {
     e = TCollectionUpcastConversionExpr(result)
   }
 
   cached
-  Raw::Element convertConditionalBridgeFromObjCExprToDb(TConditionalBridgeFromObjCExpr e) {
+  Raw::Element toRawConditionalBridgeFromObjCExpr(TConditionalBridgeFromObjCExpr e) {
     e = TConditionalBridgeFromObjCExpr(result)
   }
 
   cached
-  Raw::Element convertConditionalCheckedCastExprToDb(TConditionalCheckedCastExpr e) {
+  Raw::Element toRawConditionalCheckedCastExpr(TConditionalCheckedCastExpr e) {
     e = TConditionalCheckedCastExpr(result)
   }
 
   cached
-  Raw::Element convertConstructorRefCallExprToDb(TConstructorRefCallExpr e) {
+  Raw::Element toRawConstructorRefCallExpr(TConstructorRefCallExpr e) {
     e = TConstructorRefCallExpr(result)
   }
 
   cached
-  Raw::Element convertCovariantFunctionConversionExprToDb(TCovariantFunctionConversionExpr e) {
+  Raw::Element toRawCovariantFunctionConversionExpr(TCovariantFunctionConversionExpr e) {
     e = TCovariantFunctionConversionExpr(result)
   }
 
   cached
-  Raw::Element convertCovariantReturnConversionExprToDb(TCovariantReturnConversionExpr e) {
+  Raw::Element toRawCovariantReturnConversionExpr(TCovariantReturnConversionExpr e) {
     e = TCovariantReturnConversionExpr(result)
   }
 
   cached
-  Raw::Element convertDeclRefExprToDb(TDeclRefExpr e) { e = TDeclRefExpr(result) }
+  Raw::Element toRawDeclRefExpr(TDeclRefExpr e) { e = TDeclRefExpr(result) }
 
   cached
-  Raw::Element convertDefaultArgumentExprToDb(TDefaultArgumentExpr e) {
-    e = TDefaultArgumentExpr(result)
-  }
+  Raw::Element toRawDefaultArgumentExpr(TDefaultArgumentExpr e) { e = TDefaultArgumentExpr(result) }
 
   cached
-  Raw::Element convertDerivedToBaseExprToDb(TDerivedToBaseExpr e) { e = TDerivedToBaseExpr(result) }
+  Raw::Element toRawDerivedToBaseExpr(TDerivedToBaseExpr e) { e = TDerivedToBaseExpr(result) }
 
   cached
-  Raw::Element convertDestructureTupleExprToDb(TDestructureTupleExpr e) {
+  Raw::Element toRawDestructureTupleExpr(TDestructureTupleExpr e) {
     e = TDestructureTupleExpr(result)
   }
 
   cached
-  Raw::Element convertDictionaryExprToDb(TDictionaryExpr e) { e = TDictionaryExpr(result) }
+  Raw::Element toRawDictionaryExpr(TDictionaryExpr e) { e = TDictionaryExpr(result) }
 
   cached
-  Raw::Element convertDifferentiableFunctionExprToDb(TDifferentiableFunctionExpr e) {
+  Raw::Element toRawDifferentiableFunctionExpr(TDifferentiableFunctionExpr e) {
     e = TDifferentiableFunctionExpr(result)
   }
 
   cached
-  Raw::Element convertDifferentiableFunctionExtractOriginalExprToDb(
+  Raw::Element toRawDifferentiableFunctionExtractOriginalExpr(
     TDifferentiableFunctionExtractOriginalExpr e
   ) {
     e = TDifferentiableFunctionExtractOriginalExpr(result)
   }
 
   cached
-  Raw::Element convertDiscardAssignmentExprToDb(TDiscardAssignmentExpr e) {
+  Raw::Element toRawDiscardAssignmentExpr(TDiscardAssignmentExpr e) {
     e = TDiscardAssignmentExpr(result)
   }
 
   cached
-  Raw::Element convertDotSelfExprToDb(TDotSelfExpr e) { e = TDotSelfExpr(result) }
+  Raw::Element toRawDotSelfExpr(TDotSelfExpr e) { e = TDotSelfExpr(result) }
 
   cached
-  Raw::Element convertDotSyntaxBaseIgnoredExprToDb(TDotSyntaxBaseIgnoredExpr e) {
+  Raw::Element toRawDotSyntaxBaseIgnoredExpr(TDotSyntaxBaseIgnoredExpr e) {
     e = TDotSyntaxBaseIgnoredExpr(result)
   }
 
   cached
-  Raw::Element convertDotSyntaxCallExprToDb(TDotSyntaxCallExpr e) { e = TDotSyntaxCallExpr(result) }
+  Raw::Element toRawDotSyntaxCallExpr(TDotSyntaxCallExpr e) { e = TDotSyntaxCallExpr(result) }
 
   cached
-  Raw::Element convertDynamicMemberRefExprToDb(TDynamicMemberRefExpr e) {
+  Raw::Element toRawDynamicMemberRefExpr(TDynamicMemberRefExpr e) {
     e = TDynamicMemberRefExpr(result)
   }
 
   cached
-  Raw::Element convertDynamicSubscriptExprToDb(TDynamicSubscriptExpr e) {
+  Raw::Element toRawDynamicSubscriptExpr(TDynamicSubscriptExpr e) {
     e = TDynamicSubscriptExpr(result)
   }
 
   cached
-  Raw::Element convertDynamicTypeExprToDb(TDynamicTypeExpr e) { e = TDynamicTypeExpr(result) }
+  Raw::Element toRawDynamicTypeExpr(TDynamicTypeExpr e) { e = TDynamicTypeExpr(result) }
 
   cached
-  Raw::Element convertEditorPlaceholderExprToDb(TEditorPlaceholderExpr e) {
+  Raw::Element toRawEditorPlaceholderExpr(TEditorPlaceholderExpr e) {
     e = TEditorPlaceholderExpr(result)
   }
 
   cached
-  Raw::Element convertEnumIsCaseExprToDb(TEnumIsCaseExpr e) { e = TEnumIsCaseExpr(result) }
+  Raw::Element toRawEnumIsCaseExpr(TEnumIsCaseExpr e) { e = TEnumIsCaseExpr(result) }
 
   cached
-  Raw::Element convertErasureExprToDb(TErasureExpr e) { e = TErasureExpr(result) }
+  Raw::Element toRawErasureExpr(TErasureExpr e) { e = TErasureExpr(result) }
 
   cached
-  Raw::Element convertErrorExprToDb(TErrorExpr e) { e = TErrorExpr(result) }
+  Raw::Element toRawErrorExpr(TErrorExpr e) { e = TErrorExpr(result) }
 
   cached
-  Raw::Element convertExistentialMetatypeToObjectExprToDb(TExistentialMetatypeToObjectExpr e) {
+  Raw::Element toRawExistentialMetatypeToObjectExpr(TExistentialMetatypeToObjectExpr e) {
     e = TExistentialMetatypeToObjectExpr(result)
   }
 
   cached
-  Raw::Element convertFloatLiteralExprToDb(TFloatLiteralExpr e) { e = TFloatLiteralExpr(result) }
+  Raw::Element toRawFloatLiteralExpr(TFloatLiteralExpr e) { e = TFloatLiteralExpr(result) }
 
   cached
-  Raw::Element convertForceTryExprToDb(TForceTryExpr e) { e = TForceTryExpr(result) }
+  Raw::Element toRawForceTryExpr(TForceTryExpr e) { e = TForceTryExpr(result) }
 
   cached
-  Raw::Element convertForceValueExprToDb(TForceValueExpr e) { e = TForceValueExpr(result) }
+  Raw::Element toRawForceValueExpr(TForceValueExpr e) { e = TForceValueExpr(result) }
 
   cached
-  Raw::Element convertForcedCheckedCastExprToDb(TForcedCheckedCastExpr e) {
+  Raw::Element toRawForcedCheckedCastExpr(TForcedCheckedCastExpr e) {
     e = TForcedCheckedCastExpr(result)
   }
 
   cached
-  Raw::Element convertForeignObjectConversionExprToDb(TForeignObjectConversionExpr e) {
+  Raw::Element toRawForeignObjectConversionExpr(TForeignObjectConversionExpr e) {
     e = TForeignObjectConversionExpr(result)
   }
 
   cached
-  Raw::Element convertFunctionConversionExprToDb(TFunctionConversionExpr e) {
+  Raw::Element toRawFunctionConversionExpr(TFunctionConversionExpr e) {
     e = TFunctionConversionExpr(result)
   }
 
   cached
-  Raw::Element convertIfExprToDb(TIfExpr e) { e = TIfExpr(result) }
+  Raw::Element toRawIfExpr(TIfExpr e) { e = TIfExpr(result) }
 
   cached
-  Raw::Element convertInOutExprToDb(TInOutExpr e) { e = TInOutExpr(result) }
+  Raw::Element toRawInOutExpr(TInOutExpr e) { e = TInOutExpr(result) }
 
   cached
-  Raw::Element convertInOutToPointerExprToDb(TInOutToPointerExpr e) {
-    e = TInOutToPointerExpr(result)
-  }
+  Raw::Element toRawInOutToPointerExpr(TInOutToPointerExpr e) { e = TInOutToPointerExpr(result) }
 
   cached
-  Raw::Element convertInjectIntoOptionalExprToDb(TInjectIntoOptionalExpr e) {
+  Raw::Element toRawInjectIntoOptionalExpr(TInjectIntoOptionalExpr e) {
     e = TInjectIntoOptionalExpr(result)
   }
 
   cached
-  Raw::Element convertIntegerLiteralExprToDb(TIntegerLiteralExpr e) {
-    e = TIntegerLiteralExpr(result)
-  }
+  Raw::Element toRawIntegerLiteralExpr(TIntegerLiteralExpr e) { e = TIntegerLiteralExpr(result) }
 
   cached
-  Raw::Element convertInterpolatedStringLiteralExprToDb(TInterpolatedStringLiteralExpr e) {
+  Raw::Element toRawInterpolatedStringLiteralExpr(TInterpolatedStringLiteralExpr e) {
     e = TInterpolatedStringLiteralExpr(result)
   }
 
   cached
-  Raw::Element convertIsExprToDb(TIsExpr e) { e = TIsExpr(result) }
+  Raw::Element toRawIsExpr(TIsExpr e) { e = TIsExpr(result) }
 
   cached
-  Raw::Element convertKeyPathApplicationExprToDb(TKeyPathApplicationExpr e) {
+  Raw::Element toRawKeyPathApplicationExpr(TKeyPathApplicationExpr e) {
     e = TKeyPathApplicationExpr(result)
   }
 
   cached
-  Raw::Element convertKeyPathDotExprToDb(TKeyPathDotExpr e) { e = TKeyPathDotExpr(result) }
+  Raw::Element toRawKeyPathDotExpr(TKeyPathDotExpr e) { e = TKeyPathDotExpr(result) }
 
   cached
-  Raw::Element convertKeyPathExprToDb(TKeyPathExpr e) { e = TKeyPathExpr(result) }
+  Raw::Element toRawKeyPathExpr(TKeyPathExpr e) { e = TKeyPathExpr(result) }
 
   cached
-  Raw::Element convertLazyInitializerExprToDb(TLazyInitializerExpr e) {
-    e = TLazyInitializerExpr(result)
-  }
+  Raw::Element toRawLazyInitializerExpr(TLazyInitializerExpr e) { e = TLazyInitializerExpr(result) }
 
   cached
-  Raw::Element convertLinearFunctionExprToDb(TLinearFunctionExpr e) {
-    e = TLinearFunctionExpr(result)
-  }
+  Raw::Element toRawLinearFunctionExpr(TLinearFunctionExpr e) { e = TLinearFunctionExpr(result) }
 
   cached
-  Raw::Element convertLinearFunctionExtractOriginalExprToDb(TLinearFunctionExtractOriginalExpr e) {
+  Raw::Element toRawLinearFunctionExtractOriginalExpr(TLinearFunctionExtractOriginalExpr e) {
     e = TLinearFunctionExtractOriginalExpr(result)
   }
 
   cached
-  Raw::Element convertLinearToDifferentiableFunctionExprToDb(TLinearToDifferentiableFunctionExpr e) {
+  Raw::Element toRawLinearToDifferentiableFunctionExpr(TLinearToDifferentiableFunctionExpr e) {
     e = TLinearToDifferentiableFunctionExpr(result)
   }
 
   cached
-  Raw::Element convertLoadExprToDb(TLoadExpr e) { e = TLoadExpr(result) }
+  Raw::Element toRawLoadExpr(TLoadExpr e) { e = TLoadExpr(result) }
 
   cached
-  Raw::Element convertMagicIdentifierLiteralExprToDb(TMagicIdentifierLiteralExpr e) {
+  Raw::Element toRawMagicIdentifierLiteralExpr(TMagicIdentifierLiteralExpr e) {
     e = TMagicIdentifierLiteralExpr(result)
   }
 
   cached
-  Raw::Element convertMakeTemporarilyEscapableExprToDb(TMakeTemporarilyEscapableExpr e) {
+  Raw::Element toRawMakeTemporarilyEscapableExpr(TMakeTemporarilyEscapableExpr e) {
     e = TMakeTemporarilyEscapableExpr(result)
   }
 
   cached
-  Raw::Element convertMemberRefExprToDb(TMemberRefExpr e) { e = TMemberRefExpr(result) }
+  Raw::Element toRawMemberRefExpr(TMemberRefExpr e) { e = TMemberRefExpr(result) }
 
   cached
-  Raw::Element convertMetatypeConversionExprToDb(TMetatypeConversionExpr e) {
+  Raw::Element toRawMetatypeConversionExpr(TMetatypeConversionExpr e) {
     e = TMetatypeConversionExpr(result)
   }
 
   cached
-  Raw::Element convertNilLiteralExprToDb(TNilLiteralExpr e) { e = TNilLiteralExpr(result) }
+  Raw::Element toRawNilLiteralExpr(TNilLiteralExpr e) { e = TNilLiteralExpr(result) }
 
   cached
-  Raw::Element convertObjCSelectorExprToDb(TObjCSelectorExpr e) { e = TObjCSelectorExpr(result) }
+  Raw::Element toRawObjCSelectorExpr(TObjCSelectorExpr e) { e = TObjCSelectorExpr(result) }
 
   cached
-  Raw::Element convertObjectLiteralExprToDb(TObjectLiteralExpr e) { e = TObjectLiteralExpr(result) }
+  Raw::Element toRawObjectLiteralExpr(TObjectLiteralExpr e) { e = TObjectLiteralExpr(result) }
 
   cached
-  Raw::Element convertOneWayExprToDb(TOneWayExpr e) { e = TOneWayExpr(result) }
+  Raw::Element toRawOneWayExpr(TOneWayExpr e) { e = TOneWayExpr(result) }
 
   cached
-  Raw::Element convertOpaqueValueExprToDb(TOpaqueValueExpr e) { e = TOpaqueValueExpr(result) }
+  Raw::Element toRawOpaqueValueExpr(TOpaqueValueExpr e) { e = TOpaqueValueExpr(result) }
 
   cached
-  Raw::Element convertOpenExistentialExprToDb(TOpenExistentialExpr e) {
-    e = TOpenExistentialExpr(result)
-  }
+  Raw::Element toRawOpenExistentialExpr(TOpenExistentialExpr e) { e = TOpenExistentialExpr(result) }
 
   cached
-  Raw::Element convertOptionalEvaluationExprToDb(TOptionalEvaluationExpr e) {
+  Raw::Element toRawOptionalEvaluationExpr(TOptionalEvaluationExpr e) {
     e = TOptionalEvaluationExpr(result)
   }
 
   cached
-  Raw::Element convertOptionalTryExprToDb(TOptionalTryExpr e) { e = TOptionalTryExpr(result) }
+  Raw::Element toRawOptionalTryExpr(TOptionalTryExpr e) { e = TOptionalTryExpr(result) }
 
   cached
-  Raw::Element convertOtherConstructorDeclRefExprToDb(TOtherConstructorDeclRefExpr e) {
+  Raw::Element toRawOtherConstructorDeclRefExpr(TOtherConstructorDeclRefExpr e) {
     e = TOtherConstructorDeclRefExpr(result)
   }
 
   cached
-  Raw::Element convertOverloadedDeclRefExprToDb(TOverloadedDeclRefExpr e) {
+  Raw::Element toRawOverloadedDeclRefExpr(TOverloadedDeclRefExpr e) {
     e = TOverloadedDeclRefExpr(result)
   }
 
   cached
-  Raw::Element convertParenExprToDb(TParenExpr e) { e = TParenExpr(result) }
+  Raw::Element toRawParenExpr(TParenExpr e) { e = TParenExpr(result) }
 
   cached
-  Raw::Element convertPointerToPointerExprToDb(TPointerToPointerExpr e) {
+  Raw::Element toRawPointerToPointerExpr(TPointerToPointerExpr e) {
     e = TPointerToPointerExpr(result)
   }
 
   cached
-  Raw::Element convertPostfixUnaryExprToDb(TPostfixUnaryExpr e) { e = TPostfixUnaryExpr(result) }
+  Raw::Element toRawPostfixUnaryExpr(TPostfixUnaryExpr e) { e = TPostfixUnaryExpr(result) }
 
   cached
-  Raw::Element convertPrefixUnaryExprToDb(TPrefixUnaryExpr e) { e = TPrefixUnaryExpr(result) }
+  Raw::Element toRawPrefixUnaryExpr(TPrefixUnaryExpr e) { e = TPrefixUnaryExpr(result) }
 
   cached
-  Raw::Element convertPropertyWrapperValuePlaceholderExprToDb(TPropertyWrapperValuePlaceholderExpr e) {
+  Raw::Element toRawPropertyWrapperValuePlaceholderExpr(TPropertyWrapperValuePlaceholderExpr e) {
     e = TPropertyWrapperValuePlaceholderExpr(result)
   }
 
   cached
-  Raw::Element convertProtocolMetatypeToObjectExprToDb(TProtocolMetatypeToObjectExpr e) {
+  Raw::Element toRawProtocolMetatypeToObjectExpr(TProtocolMetatypeToObjectExpr e) {
     e = TProtocolMetatypeToObjectExpr(result)
   }
 
   cached
-  Raw::Element convertRebindSelfInConstructorExprToDb(TRebindSelfInConstructorExpr e) {
+  Raw::Element toRawRebindSelfInConstructorExpr(TRebindSelfInConstructorExpr e) {
     e = TRebindSelfInConstructorExpr(result)
   }
 
   cached
-  Raw::Element convertRegexLiteralExprToDb(TRegexLiteralExpr e) { e = TRegexLiteralExpr(result) }
+  Raw::Element toRawRegexLiteralExpr(TRegexLiteralExpr e) { e = TRegexLiteralExpr(result) }
 
   cached
-  Raw::Element convertSequenceExprToDb(TSequenceExpr e) { e = TSequenceExpr(result) }
+  Raw::Element toRawSequenceExpr(TSequenceExpr e) { e = TSequenceExpr(result) }
 
   cached
-  Raw::Element convertStringLiteralExprToDb(TStringLiteralExpr e) { e = TStringLiteralExpr(result) }
+  Raw::Element toRawStringLiteralExpr(TStringLiteralExpr e) { e = TStringLiteralExpr(result) }
 
   cached
-  Raw::Element convertStringToPointerExprToDb(TStringToPointerExpr e) {
-    e = TStringToPointerExpr(result)
-  }
+  Raw::Element toRawStringToPointerExpr(TStringToPointerExpr e) { e = TStringToPointerExpr(result) }
 
   cached
-  Raw::Element convertSubscriptExprToDb(TSubscriptExpr e) { e = TSubscriptExpr(result) }
+  Raw::Element toRawSubscriptExpr(TSubscriptExpr e) { e = TSubscriptExpr(result) }
 
   cached
-  Raw::Element convertSuperRefExprToDb(TSuperRefExpr e) { e = TSuperRefExpr(result) }
+  Raw::Element toRawSuperRefExpr(TSuperRefExpr e) { e = TSuperRefExpr(result) }
 
   cached
-  Raw::Element convertTapExprToDb(TTapExpr e) { e = TTapExpr(result) }
+  Raw::Element toRawTapExpr(TTapExpr e) { e = TTapExpr(result) }
 
   cached
-  Raw::Element convertTryExprToDb(TTryExpr e) { e = TTryExpr(result) }
+  Raw::Element toRawTryExpr(TTryExpr e) { e = TTryExpr(result) }
 
   cached
-  Raw::Element convertTupleElementExprToDb(TTupleElementExpr e) { e = TTupleElementExpr(result) }
+  Raw::Element toRawTupleElementExpr(TTupleElementExpr e) { e = TTupleElementExpr(result) }
 
   cached
-  Raw::Element convertTupleExprToDb(TTupleExpr e) { e = TTupleExpr(result) }
+  Raw::Element toRawTupleExpr(TTupleExpr e) { e = TTupleExpr(result) }
 
   cached
-  Raw::Element convertTypeExprToDb(TTypeExpr e) { e = TTypeExpr(result) }
+  Raw::Element toRawTypeExpr(TTypeExpr e) { e = TTypeExpr(result) }
 
   cached
-  Raw::Element convertUnderlyingToOpaqueExprToDb(TUnderlyingToOpaqueExpr e) {
+  Raw::Element toRawUnderlyingToOpaqueExpr(TUnderlyingToOpaqueExpr e) {
     e = TUnderlyingToOpaqueExpr(result)
   }
 
   cached
-  Raw::Element convertUnevaluatedInstanceExprToDb(TUnevaluatedInstanceExpr e) {
+  Raw::Element toRawUnevaluatedInstanceExpr(TUnevaluatedInstanceExpr e) {
     e = TUnevaluatedInstanceExpr(result)
   }
 
   cached
-  Raw::Element convertUnresolvedDeclRefExprToDb(TUnresolvedDeclRefExpr e) {
+  Raw::Element toRawUnresolvedDeclRefExpr(TUnresolvedDeclRefExpr e) {
     e = TUnresolvedDeclRefExpr(result)
   }
 
   cached
-  Raw::Element convertUnresolvedDotExprToDb(TUnresolvedDotExpr e) { e = TUnresolvedDotExpr(result) }
+  Raw::Element toRawUnresolvedDotExpr(TUnresolvedDotExpr e) { e = TUnresolvedDotExpr(result) }
 
   cached
-  Raw::Element convertUnresolvedMemberChainResultExprToDb(TUnresolvedMemberChainResultExpr e) {
+  Raw::Element toRawUnresolvedMemberChainResultExpr(TUnresolvedMemberChainResultExpr e) {
     e = TUnresolvedMemberChainResultExpr(result)
   }
 
   cached
-  Raw::Element convertUnresolvedMemberExprToDb(TUnresolvedMemberExpr e) {
+  Raw::Element toRawUnresolvedMemberExpr(TUnresolvedMemberExpr e) {
     e = TUnresolvedMemberExpr(result)
   }
 
   cached
-  Raw::Element convertUnresolvedPatternExprToDb(TUnresolvedPatternExpr e) {
+  Raw::Element toRawUnresolvedPatternExpr(TUnresolvedPatternExpr e) {
     e = TUnresolvedPatternExpr(result)
   }
 
   cached
-  Raw::Element convertUnresolvedSpecializeExprToDb(TUnresolvedSpecializeExpr e) {
+  Raw::Element toRawUnresolvedSpecializeExpr(TUnresolvedSpecializeExpr e) {
     e = TUnresolvedSpecializeExpr(result)
   }
 
   cached
-  Raw::Element convertUnresolvedTypeConversionExprToDb(TUnresolvedTypeConversionExpr e) {
+  Raw::Element toRawUnresolvedTypeConversionExpr(TUnresolvedTypeConversionExpr e) {
     e = TUnresolvedTypeConversionExpr(result)
   }
 
   cached
-  Raw::Element convertVarargExpansionExprToDb(TVarargExpansionExpr e) {
-    e = TVarargExpansionExpr(result)
-  }
+  Raw::Element toRawVarargExpansionExpr(TVarargExpansionExpr e) { e = TVarargExpansionExpr(result) }
 
   cached
-  Raw::Element convertAnyPatternToDb(TAnyPattern e) { e = TAnyPattern(result) }
+  Raw::Element toRawAnyPattern(TAnyPattern e) { e = TAnyPattern(result) }
 
   cached
-  Raw::Element convertBindingPatternToDb(TBindingPattern e) { e = TBindingPattern(result) }
+  Raw::Element toRawBindingPattern(TBindingPattern e) { e = TBindingPattern(result) }
 
   cached
-  Raw::Element convertBoolPatternToDb(TBoolPattern e) { e = TBoolPattern(result) }
+  Raw::Element toRawBoolPattern(TBoolPattern e) { e = TBoolPattern(result) }
 
   cached
-  Raw::Element convertEnumElementPatternToDb(TEnumElementPattern e) {
-    e = TEnumElementPattern(result)
-  }
+  Raw::Element toRawEnumElementPattern(TEnumElementPattern e) { e = TEnumElementPattern(result) }
 
   cached
-  Raw::Element convertExprPatternToDb(TExprPattern e) { e = TExprPattern(result) }
+  Raw::Element toRawExprPattern(TExprPattern e) { e = TExprPattern(result) }
 
   cached
-  Raw::Element convertIsPatternToDb(TIsPattern e) { e = TIsPattern(result) }
+  Raw::Element toRawIsPattern(TIsPattern e) { e = TIsPattern(result) }
 
   cached
-  Raw::Element convertNamedPatternToDb(TNamedPattern e) { e = TNamedPattern(result) }
+  Raw::Element toRawNamedPattern(TNamedPattern e) { e = TNamedPattern(result) }
 
   cached
-  Raw::Element convertOptionalSomePatternToDb(TOptionalSomePattern e) {
-    e = TOptionalSomePattern(result)
-  }
+  Raw::Element toRawOptionalSomePattern(TOptionalSomePattern e) { e = TOptionalSomePattern(result) }
 
   cached
-  Raw::Element convertParenPatternToDb(TParenPattern e) { e = TParenPattern(result) }
+  Raw::Element toRawParenPattern(TParenPattern e) { e = TParenPattern(result) }
 
   cached
-  Raw::Element convertTuplePatternToDb(TTuplePattern e) { e = TTuplePattern(result) }
+  Raw::Element toRawTuplePattern(TTuplePattern e) { e = TTuplePattern(result) }
 
   cached
-  Raw::Element convertTypedPatternToDb(TTypedPattern e) { e = TTypedPattern(result) }
+  Raw::Element toRawTypedPattern(TTypedPattern e) { e = TTypedPattern(result) }
 
   cached
-  Raw::Element convertBraceStmtToDb(TBraceStmt e) { e = TBraceStmt(result) }
+  Raw::Element toRawBraceStmt(TBraceStmt e) { e = TBraceStmt(result) }
 
   cached
-  Raw::Element convertBreakStmtToDb(TBreakStmt e) { e = TBreakStmt(result) }
+  Raw::Element toRawBreakStmt(TBreakStmt e) { e = TBreakStmt(result) }
 
   cached
-  Raw::Element convertCaseLabelItemToDb(TCaseLabelItem e) { e = TCaseLabelItem(result) }
+  Raw::Element toRawCaseLabelItem(TCaseLabelItem e) { e = TCaseLabelItem(result) }
 
   cached
-  Raw::Element convertCaseStmtToDb(TCaseStmt e) { e = TCaseStmt(result) }
+  Raw::Element toRawCaseStmt(TCaseStmt e) { e = TCaseStmt(result) }
 
   cached
-  Raw::Element convertConditionElementToDb(TConditionElement e) { e = TConditionElement(result) }
+  Raw::Element toRawConditionElement(TConditionElement e) { e = TConditionElement(result) }
 
   cached
-  Raw::Element convertContinueStmtToDb(TContinueStmt e) { e = TContinueStmt(result) }
+  Raw::Element toRawContinueStmt(TContinueStmt e) { e = TContinueStmt(result) }
 
   cached
-  Raw::Element convertDeferStmtToDb(TDeferStmt e) { e = TDeferStmt(result) }
+  Raw::Element toRawDeferStmt(TDeferStmt e) { e = TDeferStmt(result) }
 
   cached
-  Raw::Element convertDoCatchStmtToDb(TDoCatchStmt e) { e = TDoCatchStmt(result) }
+  Raw::Element toRawDoCatchStmt(TDoCatchStmt e) { e = TDoCatchStmt(result) }
 
   cached
-  Raw::Element convertDoStmtToDb(TDoStmt e) { e = TDoStmt(result) }
+  Raw::Element toRawDoStmt(TDoStmt e) { e = TDoStmt(result) }
 
   cached
-  Raw::Element convertFailStmtToDb(TFailStmt e) { e = TFailStmt(result) }
+  Raw::Element toRawFailStmt(TFailStmt e) { e = TFailStmt(result) }
 
   cached
-  Raw::Element convertFallthroughStmtToDb(TFallthroughStmt e) { e = TFallthroughStmt(result) }
+  Raw::Element toRawFallthroughStmt(TFallthroughStmt e) { e = TFallthroughStmt(result) }
 
   cached
-  Raw::Element convertForEachStmtToDb(TForEachStmt e) { e = TForEachStmt(result) }
+  Raw::Element toRawForEachStmt(TForEachStmt e) { e = TForEachStmt(result) }
 
   cached
-  Raw::Element convertGuardStmtToDb(TGuardStmt e) { e = TGuardStmt(result) }
+  Raw::Element toRawGuardStmt(TGuardStmt e) { e = TGuardStmt(result) }
 
   cached
-  Raw::Element convertIfStmtToDb(TIfStmt e) { e = TIfStmt(result) }
+  Raw::Element toRawIfStmt(TIfStmt e) { e = TIfStmt(result) }
 
   cached
-  Raw::Element convertPoundAssertStmtToDb(TPoundAssertStmt e) { e = TPoundAssertStmt(result) }
+  Raw::Element toRawPoundAssertStmt(TPoundAssertStmt e) { e = TPoundAssertStmt(result) }
 
   cached
-  Raw::Element convertRepeatWhileStmtToDb(TRepeatWhileStmt e) { e = TRepeatWhileStmt(result) }
+  Raw::Element toRawRepeatWhileStmt(TRepeatWhileStmt e) { e = TRepeatWhileStmt(result) }
 
   cached
-  Raw::Element convertReturnStmtToDb(TReturnStmt e) { e = TReturnStmt(result) }
+  Raw::Element toRawReturnStmt(TReturnStmt e) { e = TReturnStmt(result) }
 
   cached
-  Raw::Element convertStmtConditionToDb(TStmtCondition e) { e = TStmtCondition(result) }
+  Raw::Element toRawStmtCondition(TStmtCondition e) { e = TStmtCondition(result) }
 
   cached
-  Raw::Element convertSwitchStmtToDb(TSwitchStmt e) { e = TSwitchStmt(result) }
+  Raw::Element toRawSwitchStmt(TSwitchStmt e) { e = TSwitchStmt(result) }
 
   cached
-  Raw::Element convertThrowStmtToDb(TThrowStmt e) { e = TThrowStmt(result) }
+  Raw::Element toRawThrowStmt(TThrowStmt e) { e = TThrowStmt(result) }
 
   cached
-  Raw::Element convertWhileStmtToDb(TWhileStmt e) { e = TWhileStmt(result) }
+  Raw::Element toRawWhileStmt(TWhileStmt e) { e = TWhileStmt(result) }
 
   cached
-  Raw::Element convertYieldStmtToDb(TYieldStmt e) { e = TYieldStmt(result) }
+  Raw::Element toRawYieldStmt(TYieldStmt e) { e = TYieldStmt(result) }
 
   cached
-  Raw::Element convertArraySliceTypeToDb(TArraySliceType e) { e = TArraySliceType(result) }
+  Raw::Element toRawArraySliceType(TArraySliceType e) { e = TArraySliceType(result) }
 
   cached
-  Raw::Element convertBoundGenericClassTypeToDb(TBoundGenericClassType e) {
+  Raw::Element toRawBoundGenericClassType(TBoundGenericClassType e) {
     e = TBoundGenericClassType(result)
   }
 
   cached
-  Raw::Element convertBoundGenericEnumTypeToDb(TBoundGenericEnumType e) {
+  Raw::Element toRawBoundGenericEnumType(TBoundGenericEnumType e) {
     e = TBoundGenericEnumType(result)
   }
 
   cached
-  Raw::Element convertBoundGenericStructTypeToDb(TBoundGenericStructType e) {
+  Raw::Element toRawBoundGenericStructType(TBoundGenericStructType e) {
     e = TBoundGenericStructType(result)
   }
 
   cached
-  Raw::Element convertBuiltinBridgeObjectTypeToDb(TBuiltinBridgeObjectType e) {
+  Raw::Element toRawBuiltinBridgeObjectType(TBuiltinBridgeObjectType e) {
     e = TBuiltinBridgeObjectType(result)
   }
 
   cached
-  Raw::Element convertBuiltinDefaultActorStorageTypeToDb(TBuiltinDefaultActorStorageType e) {
+  Raw::Element toRawBuiltinDefaultActorStorageType(TBuiltinDefaultActorStorageType e) {
     e = TBuiltinDefaultActorStorageType(result)
   }
 
   cached
-  Raw::Element convertBuiltinExecutorTypeToDb(TBuiltinExecutorType e) {
-    e = TBuiltinExecutorType(result)
-  }
+  Raw::Element toRawBuiltinExecutorType(TBuiltinExecutorType e) { e = TBuiltinExecutorType(result) }
 
   cached
-  Raw::Element convertBuiltinFloatTypeToDb(TBuiltinFloatType e) { e = TBuiltinFloatType(result) }
+  Raw::Element toRawBuiltinFloatType(TBuiltinFloatType e) { e = TBuiltinFloatType(result) }
 
   cached
-  Raw::Element convertBuiltinIntegerLiteralTypeToDb(TBuiltinIntegerLiteralType e) {
+  Raw::Element toRawBuiltinIntegerLiteralType(TBuiltinIntegerLiteralType e) {
     e = TBuiltinIntegerLiteralType(result)
   }
 
   cached
-  Raw::Element convertBuiltinIntegerTypeToDb(TBuiltinIntegerType e) {
-    e = TBuiltinIntegerType(result)
-  }
+  Raw::Element toRawBuiltinIntegerType(TBuiltinIntegerType e) { e = TBuiltinIntegerType(result) }
 
   cached
-  Raw::Element convertBuiltinJobTypeToDb(TBuiltinJobType e) { e = TBuiltinJobType(result) }
+  Raw::Element toRawBuiltinJobType(TBuiltinJobType e) { e = TBuiltinJobType(result) }
 
   cached
-  Raw::Element convertBuiltinNativeObjectTypeToDb(TBuiltinNativeObjectType e) {
+  Raw::Element toRawBuiltinNativeObjectType(TBuiltinNativeObjectType e) {
     e = TBuiltinNativeObjectType(result)
   }
 
   cached
-  Raw::Element convertBuiltinRawPointerTypeToDb(TBuiltinRawPointerType e) {
+  Raw::Element toRawBuiltinRawPointerType(TBuiltinRawPointerType e) {
     e = TBuiltinRawPointerType(result)
   }
 
   cached
-  Raw::Element convertBuiltinRawUnsafeContinuationTypeToDb(TBuiltinRawUnsafeContinuationType e) {
+  Raw::Element toRawBuiltinRawUnsafeContinuationType(TBuiltinRawUnsafeContinuationType e) {
     e = TBuiltinRawUnsafeContinuationType(result)
   }
 
   cached
-  Raw::Element convertBuiltinUnsafeValueBufferTypeToDb(TBuiltinUnsafeValueBufferType e) {
+  Raw::Element toRawBuiltinUnsafeValueBufferType(TBuiltinUnsafeValueBufferType e) {
     e = TBuiltinUnsafeValueBufferType(result)
   }
 
   cached
-  Raw::Element convertBuiltinVectorTypeToDb(TBuiltinVectorType e) { e = TBuiltinVectorType(result) }
+  Raw::Element toRawBuiltinVectorType(TBuiltinVectorType e) { e = TBuiltinVectorType(result) }
 
   cached
-  Raw::Element convertClassTypeToDb(TClassType e) { e = TClassType(result) }
+  Raw::Element toRawClassType(TClassType e) { e = TClassType(result) }
 
   cached
-  Raw::Element convertDependentMemberTypeToDb(TDependentMemberType e) {
-    e = TDependentMemberType(result)
-  }
+  Raw::Element toRawDependentMemberType(TDependentMemberType e) { e = TDependentMemberType(result) }
 
   cached
-  Raw::Element convertDictionaryTypeToDb(TDictionaryType e) { e = TDictionaryType(result) }
+  Raw::Element toRawDictionaryType(TDictionaryType e) { e = TDictionaryType(result) }
 
   cached
-  Raw::Element convertDynamicSelfTypeToDb(TDynamicSelfType e) { e = TDynamicSelfType(result) }
+  Raw::Element toRawDynamicSelfType(TDynamicSelfType e) { e = TDynamicSelfType(result) }
 
   cached
-  Raw::Element convertEnumTypeToDb(TEnumType e) { e = TEnumType(result) }
+  Raw::Element toRawEnumType(TEnumType e) { e = TEnumType(result) }
 
   cached
-  Raw::Element convertErrorTypeToDb(TErrorType e) { e = TErrorType(result) }
+  Raw::Element toRawErrorType(TErrorType e) { e = TErrorType(result) }
 
   cached
-  Raw::Element convertExistentialMetatypeTypeToDb(TExistentialMetatypeType e) {
+  Raw::Element toRawExistentialMetatypeType(TExistentialMetatypeType e) {
     e = TExistentialMetatypeType(result)
   }
 
   cached
-  Raw::Element convertExistentialTypeToDb(TExistentialType e) { e = TExistentialType(result) }
+  Raw::Element toRawExistentialType(TExistentialType e) { e = TExistentialType(result) }
 
   cached
-  Raw::Element convertFunctionTypeToDb(TFunctionType e) { e = TFunctionType(result) }
+  Raw::Element toRawFunctionType(TFunctionType e) { e = TFunctionType(result) }
 
   cached
-  Raw::Element convertGenericFunctionTypeToDb(TGenericFunctionType e) {
-    e = TGenericFunctionType(result)
-  }
+  Raw::Element toRawGenericFunctionType(TGenericFunctionType e) { e = TGenericFunctionType(result) }
 
   cached
-  Raw::Element convertGenericTypeParamTypeToDb(TGenericTypeParamType e) {
+  Raw::Element toRawGenericTypeParamType(TGenericTypeParamType e) {
     e = TGenericTypeParamType(result)
   }
 
   cached
-  Raw::Element convertInOutTypeToDb(TInOutType e) { e = TInOutType(result) }
+  Raw::Element toRawInOutType(TInOutType e) { e = TInOutType(result) }
 
   cached
-  Raw::Element convertLValueTypeToDb(TLValueType e) { e = TLValueType(result) }
+  Raw::Element toRawLValueType(TLValueType e) { e = TLValueType(result) }
 
   cached
-  Raw::Element convertMetatypeTypeToDb(TMetatypeType e) { e = TMetatypeType(result) }
+  Raw::Element toRawMetatypeType(TMetatypeType e) { e = TMetatypeType(result) }
 
   cached
-  Raw::Element convertModuleTypeToDb(TModuleType e) { e = TModuleType(result) }
+  Raw::Element toRawModuleType(TModuleType e) { e = TModuleType(result) }
 
   cached
-  Raw::Element convertNestedArchetypeTypeToDb(TNestedArchetypeType e) {
-    e = TNestedArchetypeType(result)
-  }
+  Raw::Element toRawNestedArchetypeType(TNestedArchetypeType e) { e = TNestedArchetypeType(result) }
 
   cached
-  Raw::Element convertOpaqueTypeArchetypeTypeToDb(TOpaqueTypeArchetypeType e) {
+  Raw::Element toRawOpaqueTypeArchetypeType(TOpaqueTypeArchetypeType e) {
     e = TOpaqueTypeArchetypeType(result)
   }
 
   cached
-  Raw::Element convertOpenedArchetypeTypeToDb(TOpenedArchetypeType e) {
-    e = TOpenedArchetypeType(result)
-  }
+  Raw::Element toRawOpenedArchetypeType(TOpenedArchetypeType e) { e = TOpenedArchetypeType(result) }
 
   cached
-  Raw::Element convertOptionalTypeToDb(TOptionalType e) { e = TOptionalType(result) }
+  Raw::Element toRawOptionalType(TOptionalType e) { e = TOptionalType(result) }
 
   cached
-  Raw::Element convertParenTypeToDb(TParenType e) { e = TParenType(result) }
+  Raw::Element toRawParenType(TParenType e) { e = TParenType(result) }
 
   cached
-  Raw::Element convertPlaceholderTypeToDb(TPlaceholderType e) { e = TPlaceholderType(result) }
+  Raw::Element toRawPlaceholderType(TPlaceholderType e) { e = TPlaceholderType(result) }
 
   cached
-  Raw::Element convertPrimaryArchetypeTypeToDb(TPrimaryArchetypeType e) {
+  Raw::Element toRawPrimaryArchetypeType(TPrimaryArchetypeType e) {
     e = TPrimaryArchetypeType(result)
   }
 
   cached
-  Raw::Element convertProtocolCompositionTypeToDb(TProtocolCompositionType e) {
+  Raw::Element toRawProtocolCompositionType(TProtocolCompositionType e) {
     e = TProtocolCompositionType(result)
   }
 
   cached
-  Raw::Element convertProtocolTypeToDb(TProtocolType e) { e = TProtocolType(result) }
+  Raw::Element toRawProtocolType(TProtocolType e) { e = TProtocolType(result) }
 
   cached
-  Raw::Element convertSequenceArchetypeTypeToDb(TSequenceArchetypeType e) {
+  Raw::Element toRawSequenceArchetypeType(TSequenceArchetypeType e) {
     e = TSequenceArchetypeType(result)
   }
 
   cached
-  Raw::Element convertSilBlockStorageTypeToDb(TSilBlockStorageType e) {
-    e = TSilBlockStorageType(result)
-  }
+  Raw::Element toRawSilBlockStorageType(TSilBlockStorageType e) { e = TSilBlockStorageType(result) }
 
   cached
-  Raw::Element convertSilBoxTypeToDb(TSilBoxType e) { e = TSilBoxType(result) }
+  Raw::Element toRawSilBoxType(TSilBoxType e) { e = TSilBoxType(result) }
 
   cached
-  Raw::Element convertSilFunctionTypeToDb(TSilFunctionType e) { e = TSilFunctionType(result) }
+  Raw::Element toRawSilFunctionType(TSilFunctionType e) { e = TSilFunctionType(result) }
 
   cached
-  Raw::Element convertSilTokenTypeToDb(TSilTokenType e) { e = TSilTokenType(result) }
+  Raw::Element toRawSilTokenType(TSilTokenType e) { e = TSilTokenType(result) }
 
   cached
-  Raw::Element convertStructTypeToDb(TStructType e) { e = TStructType(result) }
+  Raw::Element toRawStructType(TStructType e) { e = TStructType(result) }
 
   cached
-  Raw::Element convertTupleTypeToDb(TTupleType e) { e = TTupleType(result) }
+  Raw::Element toRawTupleType(TTupleType e) { e = TTupleType(result) }
 
   cached
-  Raw::Element convertTypeAliasTypeToDb(TTypeAliasType e) { e = TTypeAliasType(result) }
+  Raw::Element toRawTypeAliasType(TTypeAliasType e) { e = TTypeAliasType(result) }
 
   cached
-  Raw::Element convertTypeReprToDb(TTypeRepr e) { e = TTypeRepr(result) }
+  Raw::Element toRawTypeRepr(TTypeRepr e) { e = TTypeRepr(result) }
 
   cached
-  Raw::Element convertTypeVariableTypeToDb(TTypeVariableType e) { e = TTypeVariableType(result) }
+  Raw::Element toRawTypeVariableType(TTypeVariableType e) { e = TTypeVariableType(result) }
 
   cached
-  Raw::Element convertUnboundGenericTypeToDb(TUnboundGenericType e) {
-    e = TUnboundGenericType(result)
-  }
+  Raw::Element toRawUnboundGenericType(TUnboundGenericType e) { e = TUnboundGenericType(result) }
 
   cached
-  Raw::Element convertUnmanagedStorageTypeToDb(TUnmanagedStorageType e) {
+  Raw::Element toRawUnmanagedStorageType(TUnmanagedStorageType e) {
     e = TUnmanagedStorageType(result)
   }
 
   cached
-  Raw::Element convertUnownedStorageTypeToDb(TUnownedStorageType e) {
-    e = TUnownedStorageType(result)
-  }
+  Raw::Element toRawUnownedStorageType(TUnownedStorageType e) { e = TUnownedStorageType(result) }
 
   cached
-  Raw::Element convertUnresolvedTypeToDb(TUnresolvedType e) { e = TUnresolvedType(result) }
+  Raw::Element toRawUnresolvedType(TUnresolvedType e) { e = TUnresolvedType(result) }
 
   cached
-  Raw::Element convertVariadicSequenceTypeToDb(TVariadicSequenceType e) {
+  Raw::Element toRawVariadicSequenceType(TVariadicSequenceType e) {
     e = TVariadicSequenceType(result)
   }
 
   cached
-  Raw::Element convertWeakStorageTypeToDb(TWeakStorageType e) { e = TWeakStorageType(result) }
+  Raw::Element toRawWeakStorageType(TWeakStorageType e) { e = TWeakStorageType(result) }
 
   cached
-  Raw::Element convertAstNodeToDb(TAstNode e) {
-    result = convertCaseLabelItemToDb(e)
+  Raw::Element toRawAstNode(TAstNode e) {
+    result = toRawCaseLabelItem(e)
     or
-    result = convertDeclToDb(e)
+    result = toRawDecl(e)
     or
-    result = convertExprToDb(e)
+    result = toRawExpr(e)
     or
-    result = convertPatternToDb(e)
+    result = toRawPattern(e)
     or
-    result = convertStmtToDb(e)
+    result = toRawStmt(e)
     or
-    result = convertStmtConditionToDb(e)
+    result = toRawStmtCondition(e)
     or
-    result = convertTypeReprToDb(e)
+    result = toRawTypeRepr(e)
   }
 
   cached
-  Raw::Element convertCallableToDb(TCallable e) {
-    result = convertAbstractClosureExprToDb(e)
+  Raw::Element toRawCallable(TCallable e) {
+    result = toRawAbstractClosureExpr(e)
     or
-    result = convertAbstractFunctionDeclToDb(e)
+    result = toRawAbstractFunctionDecl(e)
   }
 
   cached
-  Raw::Element convertElementToDb(TElement e) {
-    result = convertCallableToDb(e)
+  Raw::Element toRawElement(TElement e) {
+    result = toRawCallable(e)
     or
-    result = convertFileToDb(e)
+    result = toRawFile(e)
     or
-    result = convertGenericContextToDb(e)
+    result = toRawGenericContext(e)
     or
-    result = convertIterableDeclContextToDb(e)
+    result = toRawIterableDeclContext(e)
     or
-    result = convertLocatableToDb(e)
+    result = toRawLocatable(e)
     or
-    result = convertLocationToDb(e)
+    result = toRawLocation(e)
     or
-    result = convertTypeToDb(e)
+    result = toRawType(e)
   }
 
   cached
-  Raw::Element convertFileToDb(TFile e) {
-    result = convertDbFileToDb(e)
+  Raw::Element toRawFile(TFile e) {
+    result = toRawDbFile(e)
     or
-    result = convertUnknownFileToDb(e)
+    result = toRawUnknownFile(e)
   }
 
   cached
-  Raw::Element convertLocatableToDb(TLocatable e) {
-    result = convertArgumentToDb(e)
+  Raw::Element toRawLocatable(TLocatable e) {
+    result = toRawArgument(e)
     or
-    result = convertAstNodeToDb(e)
+    result = toRawAstNode(e)
     or
-    result = convertCommentToDb(e)
+    result = toRawComment(e)
     or
-    result = convertConditionElementToDb(e)
+    result = toRawConditionElement(e)
     or
-    result = convertIfConfigClauseToDb(e)
+    result = toRawIfConfigClause(e)
   }
 
   cached
-  Raw::Element convertLocationToDb(TLocation e) {
-    result = convertDbLocationToDb(e)
+  Raw::Element toRawLocation(TLocation e) {
+    result = toRawDbLocation(e)
     or
-    result = convertUnknownLocationToDb(e)
+    result = toRawUnknownLocation(e)
   }
 
   cached
-  Raw::Element convertAbstractFunctionDeclToDb(TAbstractFunctionDecl e) {
-    result = convertConstructorDeclToDb(e)
+  Raw::Element toRawAbstractFunctionDecl(TAbstractFunctionDecl e) {
+    result = toRawConstructorDecl(e)
     or
-    result = convertDestructorDeclToDb(e)
+    result = toRawDestructorDecl(e)
     or
-    result = convertFuncDeclToDb(e)
+    result = toRawFuncDecl(e)
   }
 
   cached
-  Raw::Element convertAbstractStorageDeclToDb(TAbstractStorageDecl e) {
-    result = convertSubscriptDeclToDb(e)
+  Raw::Element toRawAbstractStorageDecl(TAbstractStorageDecl e) {
+    result = toRawSubscriptDecl(e)
     or
-    result = convertVarDeclToDb(e)
+    result = toRawVarDecl(e)
   }
 
   cached
-  Raw::Element convertAbstractTypeParamDeclToDb(TAbstractTypeParamDecl e) {
-    result = convertAssociatedTypeDeclToDb(e)
+  Raw::Element toRawAbstractTypeParamDecl(TAbstractTypeParamDecl e) {
+    result = toRawAssociatedTypeDecl(e)
     or
-    result = convertGenericTypeParamDeclToDb(e)
+    result = toRawGenericTypeParamDecl(e)
   }
 
   cached
-  Raw::Element convertDeclToDb(TDecl e) {
-    result = convertEnumCaseDeclToDb(e)
+  Raw::Element toRawDecl(TDecl e) {
+    result = toRawEnumCaseDecl(e)
     or
-    result = convertExtensionDeclToDb(e)
+    result = toRawExtensionDecl(e)
     or
-    result = convertIfConfigDeclToDb(e)
+    result = toRawIfConfigDecl(e)
     or
-    result = convertImportDeclToDb(e)
+    result = toRawImportDecl(e)
     or
-    result = convertMissingMemberDeclToDb(e)
+    result = toRawMissingMemberDecl(e)
     or
-    result = convertOperatorDeclToDb(e)
+    result = toRawOperatorDecl(e)
     or
-    result = convertPatternBindingDeclToDb(e)
+    result = toRawPatternBindingDecl(e)
     or
-    result = convertPoundDiagnosticDeclToDb(e)
+    result = toRawPoundDiagnosticDecl(e)
     or
-    result = convertPrecedenceGroupDeclToDb(e)
+    result = toRawPrecedenceGroupDecl(e)
     or
-    result = convertTopLevelCodeDeclToDb(e)
+    result = toRawTopLevelCodeDecl(e)
     or
-    result = convertValueDeclToDb(e)
+    result = toRawValueDecl(e)
   }
 
   cached
-  Raw::Element convertFuncDeclToDb(TFuncDecl e) {
-    result = convertAccessorDeclToDb(e)
+  Raw::Element toRawFuncDecl(TFuncDecl e) {
+    result = toRawAccessorDecl(e)
     or
-    result = convertConcreteFuncDeclToDb(e)
+    result = toRawConcreteFuncDecl(e)
   }
 
   cached
-  Raw::Element convertGenericContextToDb(TGenericContext e) {
-    result = convertAbstractFunctionDeclToDb(e)
+  Raw::Element toRawGenericContext(TGenericContext e) {
+    result = toRawAbstractFunctionDecl(e)
     or
-    result = convertExtensionDeclToDb(e)
+    result = toRawExtensionDecl(e)
     or
-    result = convertGenericTypeDeclToDb(e)
+    result = toRawGenericTypeDecl(e)
     or
-    result = convertSubscriptDeclToDb(e)
+    result = toRawSubscriptDecl(e)
   }
 
   cached
-  Raw::Element convertGenericTypeDeclToDb(TGenericTypeDecl e) {
-    result = convertNominalTypeDeclToDb(e)
+  Raw::Element toRawGenericTypeDecl(TGenericTypeDecl e) {
+    result = toRawNominalTypeDecl(e)
     or
-    result = convertOpaqueTypeDeclToDb(e)
+    result = toRawOpaqueTypeDecl(e)
     or
-    result = convertTypeAliasDeclToDb(e)
+    result = toRawTypeAliasDecl(e)
   }
 
   cached
-  Raw::Element convertIterableDeclContextToDb(TIterableDeclContext e) {
-    result = convertExtensionDeclToDb(e)
+  Raw::Element toRawIterableDeclContext(TIterableDeclContext e) {
+    result = toRawExtensionDecl(e)
     or
-    result = convertNominalTypeDeclToDb(e)
+    result = toRawNominalTypeDecl(e)
   }
 
   cached
-  Raw::Element convertNominalTypeDeclToDb(TNominalTypeDecl e) {
-    result = convertClassDeclToDb(e)
+  Raw::Element toRawNominalTypeDecl(TNominalTypeDecl e) {
+    result = toRawClassDecl(e)
     or
-    result = convertEnumDeclToDb(e)
+    result = toRawEnumDecl(e)
     or
-    result = convertProtocolDeclToDb(e)
+    result = toRawProtocolDecl(e)
     or
-    result = convertStructDeclToDb(e)
+    result = toRawStructDecl(e)
   }
 
   cached
-  Raw::Element convertOperatorDeclToDb(TOperatorDecl e) {
-    result = convertInfixOperatorDeclToDb(e)
+  Raw::Element toRawOperatorDecl(TOperatorDecl e) {
+    result = toRawInfixOperatorDecl(e)
     or
-    result = convertPostfixOperatorDeclToDb(e)
+    result = toRawPostfixOperatorDecl(e)
     or
-    result = convertPrefixOperatorDeclToDb(e)
+    result = toRawPrefixOperatorDecl(e)
   }
 
   cached
-  Raw::Element convertTypeDeclToDb(TTypeDecl e) {
-    result = convertAbstractTypeParamDeclToDb(e)
+  Raw::Element toRawTypeDecl(TTypeDecl e) {
+    result = toRawAbstractTypeParamDecl(e)
     or
-    result = convertGenericTypeDeclToDb(e)
+    result = toRawGenericTypeDecl(e)
     or
-    result = convertModuleDeclToDb(e)
+    result = toRawModuleDecl(e)
   }
 
   cached
-  Raw::Element convertValueDeclToDb(TValueDecl e) {
-    result = convertAbstractFunctionDeclToDb(e)
+  Raw::Element toRawValueDecl(TValueDecl e) {
+    result = toRawAbstractFunctionDecl(e)
     or
-    result = convertAbstractStorageDeclToDb(e)
+    result = toRawAbstractStorageDecl(e)
     or
-    result = convertEnumElementDeclToDb(e)
+    result = toRawEnumElementDecl(e)
     or
-    result = convertTypeDeclToDb(e)
+    result = toRawTypeDecl(e)
   }
 
   cached
-  Raw::Element convertVarDeclToDb(TVarDecl e) {
-    result = convertConcreteVarDeclToDb(e)
+  Raw::Element toRawVarDecl(TVarDecl e) {
+    result = toRawConcreteVarDecl(e)
     or
-    result = convertParamDeclToDb(e)
+    result = toRawParamDecl(e)
   }
 
   cached
-  Raw::Element convertAbstractClosureExprToDb(TAbstractClosureExpr e) {
-    result = convertAutoClosureExprToDb(e)
+  Raw::Element toRawAbstractClosureExpr(TAbstractClosureExpr e) {
+    result = toRawAutoClosureExpr(e)
     or
-    result = convertClosureExprToDb(e)
+    result = toRawClosureExpr(e)
   }
 
   cached
-  Raw::Element convertAnyTryExprToDb(TAnyTryExpr e) {
-    result = convertForceTryExprToDb(e)
+  Raw::Element toRawAnyTryExpr(TAnyTryExpr e) {
+    result = toRawForceTryExpr(e)
     or
-    result = convertOptionalTryExprToDb(e)
+    result = toRawOptionalTryExpr(e)
     or
-    result = convertTryExprToDb(e)
+    result = toRawTryExpr(e)
   }
 
   cached
-  Raw::Element convertApplyExprToDb(TApplyExpr e) {
-    result = convertBinaryExprToDb(e)
+  Raw::Element toRawApplyExpr(TApplyExpr e) {
+    result = toRawBinaryExpr(e)
     or
-    result = convertCallExprToDb(e)
+    result = toRawCallExpr(e)
     or
-    result = convertPostfixUnaryExprToDb(e)
+    result = toRawPostfixUnaryExpr(e)
     or
-    result = convertPrefixUnaryExprToDb(e)
+    result = toRawPrefixUnaryExpr(e)
     or
-    result = convertSelfApplyExprToDb(e)
+    result = toRawSelfApplyExpr(e)
   }
 
   cached
-  Raw::Element convertBuiltinLiteralExprToDb(TBuiltinLiteralExpr e) {
-    result = convertBooleanLiteralExprToDb(e)
+  Raw::Element toRawBuiltinLiteralExpr(TBuiltinLiteralExpr e) {
+    result = toRawBooleanLiteralExpr(e)
     or
-    result = convertMagicIdentifierLiteralExprToDb(e)
+    result = toRawMagicIdentifierLiteralExpr(e)
     or
-    result = convertNumberLiteralExprToDb(e)
+    result = toRawNumberLiteralExpr(e)
     or
-    result = convertStringLiteralExprToDb(e)
+    result = toRawStringLiteralExpr(e)
   }
 
   cached
-  Raw::Element convertCheckedCastExprToDb(TCheckedCastExpr e) {
-    result = convertConditionalCheckedCastExprToDb(e)
+  Raw::Element toRawCheckedCastExpr(TCheckedCastExpr e) {
+    result = toRawConditionalCheckedCastExpr(e)
     or
-    result = convertForcedCheckedCastExprToDb(e)
+    result = toRawForcedCheckedCastExpr(e)
     or
-    result = convertIsExprToDb(e)
+    result = toRawIsExpr(e)
   }
 
   cached
-  Raw::Element convertCollectionExprToDb(TCollectionExpr e) {
-    result = convertArrayExprToDb(e)
+  Raw::Element toRawCollectionExpr(TCollectionExpr e) {
+    result = toRawArrayExpr(e)
     or
-    result = convertDictionaryExprToDb(e)
+    result = toRawDictionaryExpr(e)
   }
 
   cached
-  Raw::Element convertDynamicLookupExprToDb(TDynamicLookupExpr e) {
-    result = convertDynamicMemberRefExprToDb(e)
+  Raw::Element toRawDynamicLookupExpr(TDynamicLookupExpr e) {
+    result = toRawDynamicMemberRefExpr(e)
     or
-    result = convertDynamicSubscriptExprToDb(e)
+    result = toRawDynamicSubscriptExpr(e)
   }
 
   cached
-  Raw::Element convertExplicitCastExprToDb(TExplicitCastExpr e) {
-    result = convertCheckedCastExprToDb(e)
+  Raw::Element toRawExplicitCastExpr(TExplicitCastExpr e) {
+    result = toRawCheckedCastExpr(e)
     or
-    result = convertCoerceExprToDb(e)
+    result = toRawCoerceExpr(e)
   }
 
   cached
-  Raw::Element convertExprToDb(TExpr e) {
-    result = convertAbstractClosureExprToDb(e)
+  Raw::Element toRawExpr(TExpr e) {
+    result = toRawAbstractClosureExpr(e)
     or
-    result = convertAnyTryExprToDb(e)
+    result = toRawAnyTryExpr(e)
     or
-    result = convertAppliedPropertyWrapperExprToDb(e)
+    result = toRawAppliedPropertyWrapperExpr(e)
     or
-    result = convertApplyExprToDb(e)
+    result = toRawApplyExpr(e)
     or
-    result = convertArrowExprToDb(e)
+    result = toRawArrowExpr(e)
     or
-    result = convertAssignExprToDb(e)
+    result = toRawAssignExpr(e)
     or
-    result = convertBindOptionalExprToDb(e)
+    result = toRawBindOptionalExpr(e)
     or
-    result = convertCaptureListExprToDb(e)
+    result = toRawCaptureListExpr(e)
     or
-    result = convertCodeCompletionExprToDb(e)
+    result = toRawCodeCompletionExpr(e)
     or
-    result = convertCollectionExprToDb(e)
+    result = toRawCollectionExpr(e)
     or
-    result = convertDeclRefExprToDb(e)
+    result = toRawDeclRefExpr(e)
     or
-    result = convertDefaultArgumentExprToDb(e)
+    result = toRawDefaultArgumentExpr(e)
     or
-    result = convertDiscardAssignmentExprToDb(e)
+    result = toRawDiscardAssignmentExpr(e)
     or
-    result = convertDotSyntaxBaseIgnoredExprToDb(e)
+    result = toRawDotSyntaxBaseIgnoredExpr(e)
     or
-    result = convertDynamicTypeExprToDb(e)
+    result = toRawDynamicTypeExpr(e)
     or
-    result = convertEditorPlaceholderExprToDb(e)
+    result = toRawEditorPlaceholderExpr(e)
     or
-    result = convertEnumIsCaseExprToDb(e)
+    result = toRawEnumIsCaseExpr(e)
     or
-    result = convertErrorExprToDb(e)
+    result = toRawErrorExpr(e)
     or
-    result = convertExplicitCastExprToDb(e)
+    result = toRawExplicitCastExpr(e)
     or
-    result = convertForceValueExprToDb(e)
+    result = toRawForceValueExpr(e)
     or
-    result = convertIdentityExprToDb(e)
+    result = toRawIdentityExpr(e)
     or
-    result = convertIfExprToDb(e)
+    result = toRawIfExpr(e)
     or
-    result = convertImplicitConversionExprToDb(e)
+    result = toRawImplicitConversionExpr(e)
     or
-    result = convertInOutExprToDb(e)
+    result = toRawInOutExpr(e)
     or
-    result = convertKeyPathApplicationExprToDb(e)
+    result = toRawKeyPathApplicationExpr(e)
     or
-    result = convertKeyPathDotExprToDb(e)
+    result = toRawKeyPathDotExpr(e)
     or
-    result = convertKeyPathExprToDb(e)
+    result = toRawKeyPathExpr(e)
     or
-    result = convertLazyInitializerExprToDb(e)
+    result = toRawLazyInitializerExpr(e)
     or
-    result = convertLiteralExprToDb(e)
+    result = toRawLiteralExpr(e)
     or
-    result = convertLookupExprToDb(e)
+    result = toRawLookupExpr(e)
     or
-    result = convertMakeTemporarilyEscapableExprToDb(e)
+    result = toRawMakeTemporarilyEscapableExpr(e)
     or
-    result = convertObjCSelectorExprToDb(e)
+    result = toRawObjCSelectorExpr(e)
     or
-    result = convertOneWayExprToDb(e)
+    result = toRawOneWayExpr(e)
     or
-    result = convertOpaqueValueExprToDb(e)
+    result = toRawOpaqueValueExpr(e)
     or
-    result = convertOpenExistentialExprToDb(e)
+    result = toRawOpenExistentialExpr(e)
     or
-    result = convertOptionalEvaluationExprToDb(e)
+    result = toRawOptionalEvaluationExpr(e)
     or
-    result = convertOtherConstructorDeclRefExprToDb(e)
+    result = toRawOtherConstructorDeclRefExpr(e)
     or
-    result = convertOverloadSetRefExprToDb(e)
+    result = toRawOverloadSetRefExpr(e)
     or
-    result = convertPropertyWrapperValuePlaceholderExprToDb(e)
+    result = toRawPropertyWrapperValuePlaceholderExpr(e)
     or
-    result = convertRebindSelfInConstructorExprToDb(e)
+    result = toRawRebindSelfInConstructorExpr(e)
     or
-    result = convertSequenceExprToDb(e)
+    result = toRawSequenceExpr(e)
     or
-    result = convertSuperRefExprToDb(e)
+    result = toRawSuperRefExpr(e)
     or
-    result = convertTapExprToDb(e)
+    result = toRawTapExpr(e)
     or
-    result = convertTupleElementExprToDb(e)
+    result = toRawTupleElementExpr(e)
     or
-    result = convertTupleExprToDb(e)
+    result = toRawTupleExpr(e)
     or
-    result = convertTypeExprToDb(e)
+    result = toRawTypeExpr(e)
     or
-    result = convertUnresolvedDeclRefExprToDb(e)
+    result = toRawUnresolvedDeclRefExpr(e)
     or
-    result = convertUnresolvedDotExprToDb(e)
+    result = toRawUnresolvedDotExpr(e)
     or
-    result = convertUnresolvedMemberExprToDb(e)
+    result = toRawUnresolvedMemberExpr(e)
     or
-    result = convertUnresolvedPatternExprToDb(e)
+    result = toRawUnresolvedPatternExpr(e)
     or
-    result = convertUnresolvedSpecializeExprToDb(e)
+    result = toRawUnresolvedSpecializeExpr(e)
     or
-    result = convertVarargExpansionExprToDb(e)
+    result = toRawVarargExpansionExpr(e)
   }
 
   cached
-  Raw::Element convertIdentityExprToDb(TIdentityExpr e) {
-    result = convertAwaitExprToDb(e)
+  Raw::Element toRawIdentityExpr(TIdentityExpr e) {
+    result = toRawAwaitExpr(e)
     or
-    result = convertDotSelfExprToDb(e)
+    result = toRawDotSelfExpr(e)
     or
-    result = convertParenExprToDb(e)
+    result = toRawParenExpr(e)
     or
-    result = convertUnresolvedMemberChainResultExprToDb(e)
+    result = toRawUnresolvedMemberChainResultExpr(e)
   }
 
   cached
-  Raw::Element convertImplicitConversionExprToDb(TImplicitConversionExpr e) {
-    result = convertAnyHashableErasureExprToDb(e)
+  Raw::Element toRawImplicitConversionExpr(TImplicitConversionExpr e) {
+    result = toRawAnyHashableErasureExpr(e)
     or
-    result = convertArchetypeToSuperExprToDb(e)
+    result = toRawArchetypeToSuperExpr(e)
     or
-    result = convertArrayToPointerExprToDb(e)
+    result = toRawArrayToPointerExpr(e)
     or
-    result = convertBridgeFromObjCExprToDb(e)
+    result = toRawBridgeFromObjCExpr(e)
     or
-    result = convertBridgeToObjCExprToDb(e)
+    result = toRawBridgeToObjCExpr(e)
     or
-    result = convertClassMetatypeToObjectExprToDb(e)
+    result = toRawClassMetatypeToObjectExpr(e)
     or
-    result = convertCollectionUpcastConversionExprToDb(e)
+    result = toRawCollectionUpcastConversionExpr(e)
     or
-    result = convertConditionalBridgeFromObjCExprToDb(e)
+    result = toRawConditionalBridgeFromObjCExpr(e)
     or
-    result = convertCovariantFunctionConversionExprToDb(e)
+    result = toRawCovariantFunctionConversionExpr(e)
     or
-    result = convertCovariantReturnConversionExprToDb(e)
+    result = toRawCovariantReturnConversionExpr(e)
     or
-    result = convertDerivedToBaseExprToDb(e)
+    result = toRawDerivedToBaseExpr(e)
     or
-    result = convertDestructureTupleExprToDb(e)
+    result = toRawDestructureTupleExpr(e)
     or
-    result = convertDifferentiableFunctionExprToDb(e)
+    result = toRawDifferentiableFunctionExpr(e)
     or
-    result = convertDifferentiableFunctionExtractOriginalExprToDb(e)
+    result = toRawDifferentiableFunctionExtractOriginalExpr(e)
     or
-    result = convertErasureExprToDb(e)
+    result = toRawErasureExpr(e)
     or
-    result = convertExistentialMetatypeToObjectExprToDb(e)
+    result = toRawExistentialMetatypeToObjectExpr(e)
     or
-    result = convertForeignObjectConversionExprToDb(e)
+    result = toRawForeignObjectConversionExpr(e)
     or
-    result = convertFunctionConversionExprToDb(e)
+    result = toRawFunctionConversionExpr(e)
     or
-    result = convertInOutToPointerExprToDb(e)
+    result = toRawInOutToPointerExpr(e)
     or
-    result = convertInjectIntoOptionalExprToDb(e)
+    result = toRawInjectIntoOptionalExpr(e)
     or
-    result = convertLinearFunctionExprToDb(e)
+    result = toRawLinearFunctionExpr(e)
     or
-    result = convertLinearFunctionExtractOriginalExprToDb(e)
+    result = toRawLinearFunctionExtractOriginalExpr(e)
     or
-    result = convertLinearToDifferentiableFunctionExprToDb(e)
+    result = toRawLinearToDifferentiableFunctionExpr(e)
     or
-    result = convertLoadExprToDb(e)
+    result = toRawLoadExpr(e)
     or
-    result = convertMetatypeConversionExprToDb(e)
+    result = toRawMetatypeConversionExpr(e)
     or
-    result = convertPointerToPointerExprToDb(e)
+    result = toRawPointerToPointerExpr(e)
     or
-    result = convertProtocolMetatypeToObjectExprToDb(e)
+    result = toRawProtocolMetatypeToObjectExpr(e)
     or
-    result = convertStringToPointerExprToDb(e)
+    result = toRawStringToPointerExpr(e)
     or
-    result = convertUnderlyingToOpaqueExprToDb(e)
+    result = toRawUnderlyingToOpaqueExpr(e)
     or
-    result = convertUnevaluatedInstanceExprToDb(e)
+    result = toRawUnevaluatedInstanceExpr(e)
     or
-    result = convertUnresolvedTypeConversionExprToDb(e)
+    result = toRawUnresolvedTypeConversionExpr(e)
   }
 
   cached
-  Raw::Element convertLiteralExprToDb(TLiteralExpr e) {
-    result = convertBuiltinLiteralExprToDb(e)
+  Raw::Element toRawLiteralExpr(TLiteralExpr e) {
+    result = toRawBuiltinLiteralExpr(e)
     or
-    result = convertInterpolatedStringLiteralExprToDb(e)
+    result = toRawInterpolatedStringLiteralExpr(e)
     or
-    result = convertNilLiteralExprToDb(e)
+    result = toRawNilLiteralExpr(e)
     or
-    result = convertObjectLiteralExprToDb(e)
+    result = toRawObjectLiteralExpr(e)
     or
-    result = convertRegexLiteralExprToDb(e)
+    result = toRawRegexLiteralExpr(e)
   }
 
   cached
-  Raw::Element convertLookupExprToDb(TLookupExpr e) {
-    result = convertDynamicLookupExprToDb(e)
+  Raw::Element toRawLookupExpr(TLookupExpr e) {
+    result = toRawDynamicLookupExpr(e)
     or
-    result = convertMemberRefExprToDb(e)
+    result = toRawMemberRefExpr(e)
     or
-    result = convertSubscriptExprToDb(e)
+    result = toRawSubscriptExpr(e)
   }
 
   cached
-  Raw::Element convertNumberLiteralExprToDb(TNumberLiteralExpr e) {
-    result = convertFloatLiteralExprToDb(e)
+  Raw::Element toRawNumberLiteralExpr(TNumberLiteralExpr e) {
+    result = toRawFloatLiteralExpr(e)
     or
-    result = convertIntegerLiteralExprToDb(e)
+    result = toRawIntegerLiteralExpr(e)
   }
 
   cached
-  Raw::Element convertOverloadSetRefExprToDb(TOverloadSetRefExpr e) {
-    result = convertOverloadedDeclRefExprToDb(e)
+  Raw::Element toRawOverloadSetRefExpr(TOverloadSetRefExpr e) {
+    result = toRawOverloadedDeclRefExpr(e)
   }
 
   cached
-  Raw::Element convertSelfApplyExprToDb(TSelfApplyExpr e) {
-    result = convertConstructorRefCallExprToDb(e)
+  Raw::Element toRawSelfApplyExpr(TSelfApplyExpr e) {
+    result = toRawConstructorRefCallExpr(e)
     or
-    result = convertDotSyntaxCallExprToDb(e)
+    result = toRawDotSyntaxCallExpr(e)
   }
 
   cached
-  Raw::Element convertPatternToDb(TPattern e) {
-    result = convertAnyPatternToDb(e)
+  Raw::Element toRawPattern(TPattern e) {
+    result = toRawAnyPattern(e)
     or
-    result = convertBindingPatternToDb(e)
+    result = toRawBindingPattern(e)
     or
-    result = convertBoolPatternToDb(e)
+    result = toRawBoolPattern(e)
     or
-    result = convertEnumElementPatternToDb(e)
+    result = toRawEnumElementPattern(e)
     or
-    result = convertExprPatternToDb(e)
+    result = toRawExprPattern(e)
     or
-    result = convertIsPatternToDb(e)
+    result = toRawIsPattern(e)
     or
-    result = convertNamedPatternToDb(e)
+    result = toRawNamedPattern(e)
     or
-    result = convertOptionalSomePatternToDb(e)
+    result = toRawOptionalSomePattern(e)
     or
-    result = convertParenPatternToDb(e)
+    result = toRawParenPattern(e)
     or
-    result = convertTuplePatternToDb(e)
+    result = toRawTuplePattern(e)
     or
-    result = convertTypedPatternToDb(e)
+    result = toRawTypedPattern(e)
   }
 
   cached
-  Raw::Element convertLabeledConditionalStmtToDb(TLabeledConditionalStmt e) {
-    result = convertGuardStmtToDb(e)
+  Raw::Element toRawLabeledConditionalStmt(TLabeledConditionalStmt e) {
+    result = toRawGuardStmt(e)
     or
-    result = convertIfStmtToDb(e)
+    result = toRawIfStmt(e)
     or
-    result = convertWhileStmtToDb(e)
+    result = toRawWhileStmt(e)
   }
 
   cached
-  Raw::Element convertLabeledStmtToDb(TLabeledStmt e) {
-    result = convertDoCatchStmtToDb(e)
+  Raw::Element toRawLabeledStmt(TLabeledStmt e) {
+    result = toRawDoCatchStmt(e)
     or
-    result = convertDoStmtToDb(e)
+    result = toRawDoStmt(e)
     or
-    result = convertForEachStmtToDb(e)
+    result = toRawForEachStmt(e)
     or
-    result = convertLabeledConditionalStmtToDb(e)
+    result = toRawLabeledConditionalStmt(e)
     or
-    result = convertRepeatWhileStmtToDb(e)
+    result = toRawRepeatWhileStmt(e)
     or
-    result = convertSwitchStmtToDb(e)
+    result = toRawSwitchStmt(e)
   }
 
   cached
-  Raw::Element convertStmtToDb(TStmt e) {
-    result = convertBraceStmtToDb(e)
+  Raw::Element toRawStmt(TStmt e) {
+    result = toRawBraceStmt(e)
     or
-    result = convertBreakStmtToDb(e)
+    result = toRawBreakStmt(e)
     or
-    result = convertCaseStmtToDb(e)
+    result = toRawCaseStmt(e)
     or
-    result = convertContinueStmtToDb(e)
+    result = toRawContinueStmt(e)
     or
-    result = convertDeferStmtToDb(e)
+    result = toRawDeferStmt(e)
     or
-    result = convertFailStmtToDb(e)
+    result = toRawFailStmt(e)
     or
-    result = convertFallthroughStmtToDb(e)
+    result = toRawFallthroughStmt(e)
     or
-    result = convertLabeledStmtToDb(e)
+    result = toRawLabeledStmt(e)
     or
-    result = convertPoundAssertStmtToDb(e)
+    result = toRawPoundAssertStmt(e)
     or
-    result = convertReturnStmtToDb(e)
+    result = toRawReturnStmt(e)
     or
-    result = convertThrowStmtToDb(e)
+    result = toRawThrowStmt(e)
     or
-    result = convertYieldStmtToDb(e)
+    result = toRawYieldStmt(e)
   }
 
   cached
-  Raw::Element convertAnyBuiltinIntegerTypeToDb(TAnyBuiltinIntegerType e) {
-    result = convertBuiltinIntegerLiteralTypeToDb(e)
+  Raw::Element toRawAnyBuiltinIntegerType(TAnyBuiltinIntegerType e) {
+    result = toRawBuiltinIntegerLiteralType(e)
     or
-    result = convertBuiltinIntegerTypeToDb(e)
+    result = toRawBuiltinIntegerType(e)
   }
 
   cached
-  Raw::Element convertAnyFunctionTypeToDb(TAnyFunctionType e) {
-    result = convertFunctionTypeToDb(e)
+  Raw::Element toRawAnyFunctionType(TAnyFunctionType e) {
+    result = toRawFunctionType(e)
     or
-    result = convertGenericFunctionTypeToDb(e)
+    result = toRawGenericFunctionType(e)
   }
 
   cached
-  Raw::Element convertAnyGenericTypeToDb(TAnyGenericType e) {
-    result = convertNominalOrBoundGenericNominalTypeToDb(e)
+  Raw::Element toRawAnyGenericType(TAnyGenericType e) {
+    result = toRawNominalOrBoundGenericNominalType(e)
     or
-    result = convertUnboundGenericTypeToDb(e)
+    result = toRawUnboundGenericType(e)
   }
 
   cached
-  Raw::Element convertAnyMetatypeTypeToDb(TAnyMetatypeType e) {
-    result = convertExistentialMetatypeTypeToDb(e)
+  Raw::Element toRawAnyMetatypeType(TAnyMetatypeType e) {
+    result = toRawExistentialMetatypeType(e)
     or
-    result = convertMetatypeTypeToDb(e)
+    result = toRawMetatypeType(e)
   }
 
   cached
-  Raw::Element convertArchetypeTypeToDb(TArchetypeType e) {
-    result = convertNestedArchetypeTypeToDb(e)
+  Raw::Element toRawArchetypeType(TArchetypeType e) {
+    result = toRawNestedArchetypeType(e)
     or
-    result = convertOpaqueTypeArchetypeTypeToDb(e)
+    result = toRawOpaqueTypeArchetypeType(e)
     or
-    result = convertOpenedArchetypeTypeToDb(e)
+    result = toRawOpenedArchetypeType(e)
     or
-    result = convertPrimaryArchetypeTypeToDb(e)
+    result = toRawPrimaryArchetypeType(e)
     or
-    result = convertSequenceArchetypeTypeToDb(e)
+    result = toRawSequenceArchetypeType(e)
   }
 
   cached
-  Raw::Element convertBoundGenericTypeToDb(TBoundGenericType e) {
-    result = convertBoundGenericClassTypeToDb(e)
+  Raw::Element toRawBoundGenericType(TBoundGenericType e) {
+    result = toRawBoundGenericClassType(e)
     or
-    result = convertBoundGenericEnumTypeToDb(e)
+    result = toRawBoundGenericEnumType(e)
     or
-    result = convertBoundGenericStructTypeToDb(e)
+    result = toRawBoundGenericStructType(e)
   }
 
   cached
-  Raw::Element convertBuiltinTypeToDb(TBuiltinType e) {
-    result = convertAnyBuiltinIntegerTypeToDb(e)
+  Raw::Element toRawBuiltinType(TBuiltinType e) {
+    result = toRawAnyBuiltinIntegerType(e)
     or
-    result = convertBuiltinBridgeObjectTypeToDb(e)
+    result = toRawBuiltinBridgeObjectType(e)
     or
-    result = convertBuiltinDefaultActorStorageTypeToDb(e)
+    result = toRawBuiltinDefaultActorStorageType(e)
     or
-    result = convertBuiltinExecutorTypeToDb(e)
+    result = toRawBuiltinExecutorType(e)
     or
-    result = convertBuiltinFloatTypeToDb(e)
+    result = toRawBuiltinFloatType(e)
     or
-    result = convertBuiltinJobTypeToDb(e)
+    result = toRawBuiltinJobType(e)
     or
-    result = convertBuiltinNativeObjectTypeToDb(e)
+    result = toRawBuiltinNativeObjectType(e)
     or
-    result = convertBuiltinRawPointerTypeToDb(e)
+    result = toRawBuiltinRawPointerType(e)
     or
-    result = convertBuiltinRawUnsafeContinuationTypeToDb(e)
+    result = toRawBuiltinRawUnsafeContinuationType(e)
     or
-    result = convertBuiltinUnsafeValueBufferTypeToDb(e)
+    result = toRawBuiltinUnsafeValueBufferType(e)
     or
-    result = convertBuiltinVectorTypeToDb(e)
+    result = toRawBuiltinVectorType(e)
   }
 
   cached
-  Raw::Element convertNominalOrBoundGenericNominalTypeToDb(TNominalOrBoundGenericNominalType e) {
-    result = convertBoundGenericTypeToDb(e)
+  Raw::Element toRawNominalOrBoundGenericNominalType(TNominalOrBoundGenericNominalType e) {
+    result = toRawBoundGenericType(e)
     or
-    result = convertNominalTypeToDb(e)
+    result = toRawNominalType(e)
   }
 
   cached
-  Raw::Element convertNominalTypeToDb(TNominalType e) {
-    result = convertClassTypeToDb(e)
+  Raw::Element toRawNominalType(TNominalType e) {
+    result = toRawClassType(e)
     or
-    result = convertEnumTypeToDb(e)
+    result = toRawEnumType(e)
     or
-    result = convertProtocolTypeToDb(e)
+    result = toRawProtocolType(e)
     or
-    result = convertStructTypeToDb(e)
+    result = toRawStructType(e)
   }
 
   cached
-  Raw::Element convertReferenceStorageTypeToDb(TReferenceStorageType e) {
-    result = convertUnmanagedStorageTypeToDb(e)
+  Raw::Element toRawReferenceStorageType(TReferenceStorageType e) {
+    result = toRawUnmanagedStorageType(e)
     or
-    result = convertUnownedStorageTypeToDb(e)
+    result = toRawUnownedStorageType(e)
     or
-    result = convertWeakStorageTypeToDb(e)
+    result = toRawWeakStorageType(e)
   }
 
   cached
-  Raw::Element convertSubstitutableTypeToDb(TSubstitutableType e) {
-    result = convertArchetypeTypeToDb(e)
+  Raw::Element toRawSubstitutableType(TSubstitutableType e) {
+    result = toRawArchetypeType(e)
     or
-    result = convertGenericTypeParamTypeToDb(e)
+    result = toRawGenericTypeParamType(e)
   }
 
   cached
-  Raw::Element convertSugarTypeToDb(TSugarType e) {
-    result = convertParenTypeToDb(e)
+  Raw::Element toRawSugarType(TSugarType e) {
+    result = toRawParenType(e)
     or
-    result = convertSyntaxSugarTypeToDb(e)
+    result = toRawSyntaxSugarType(e)
     or
-    result = convertTypeAliasTypeToDb(e)
+    result = toRawTypeAliasType(e)
   }
 
   cached
-  Raw::Element convertSyntaxSugarTypeToDb(TSyntaxSugarType e) {
-    result = convertDictionaryTypeToDb(e)
+  Raw::Element toRawSyntaxSugarType(TSyntaxSugarType e) {
+    result = toRawDictionaryType(e)
     or
-    result = convertUnarySyntaxSugarTypeToDb(e)
+    result = toRawUnarySyntaxSugarType(e)
   }
 
   cached
-  Raw::Element convertTypeToDb(TType e) {
-    result = convertAnyFunctionTypeToDb(e)
+  Raw::Element toRawType(TType e) {
+    result = toRawAnyFunctionType(e)
     or
-    result = convertAnyGenericTypeToDb(e)
+    result = toRawAnyGenericType(e)
     or
-    result = convertAnyMetatypeTypeToDb(e)
+    result = toRawAnyMetatypeType(e)
     or
-    result = convertBuiltinTypeToDb(e)
+    result = toRawBuiltinType(e)
     or
-    result = convertDependentMemberTypeToDb(e)
+    result = toRawDependentMemberType(e)
     or
-    result = convertDynamicSelfTypeToDb(e)
+    result = toRawDynamicSelfType(e)
     or
-    result = convertErrorTypeToDb(e)
+    result = toRawErrorType(e)
     or
-    result = convertExistentialTypeToDb(e)
+    result = toRawExistentialType(e)
     or
-    result = convertInOutTypeToDb(e)
+    result = toRawInOutType(e)
     or
-    result = convertLValueTypeToDb(e)
+    result = toRawLValueType(e)
     or
-    result = convertModuleTypeToDb(e)
+    result = toRawModuleType(e)
     or
-    result = convertPlaceholderTypeToDb(e)
+    result = toRawPlaceholderType(e)
     or
-    result = convertProtocolCompositionTypeToDb(e)
+    result = toRawProtocolCompositionType(e)
     or
-    result = convertReferenceStorageTypeToDb(e)
+    result = toRawReferenceStorageType(e)
     or
-    result = convertSilBlockStorageTypeToDb(e)
+    result = toRawSilBlockStorageType(e)
     or
-    result = convertSilBoxTypeToDb(e)
+    result = toRawSilBoxType(e)
     or
-    result = convertSilFunctionTypeToDb(e)
+    result = toRawSilFunctionType(e)
     or
-    result = convertSilTokenTypeToDb(e)
+    result = toRawSilTokenType(e)
     or
-    result = convertSubstitutableTypeToDb(e)
+    result = toRawSubstitutableType(e)
     or
-    result = convertSugarTypeToDb(e)
+    result = toRawSugarType(e)
     or
-    result = convertTupleTypeToDb(e)
+    result = toRawTupleType(e)
     or
-    result = convertTypeVariableTypeToDb(e)
+    result = toRawTypeVariableType(e)
     or
-    result = convertUnresolvedTypeToDb(e)
+    result = toRawUnresolvedType(e)
   }
 
   cached
-  Raw::Element convertUnarySyntaxSugarTypeToDb(TUnarySyntaxSugarType e) {
-    result = convertArraySliceTypeToDb(e)
+  Raw::Element toRawUnarySyntaxSugarType(TUnarySyntaxSugarType e) {
+    result = toRawArraySliceType(e)
     or
-    result = convertOptionalTypeToDb(e)
+    result = toRawOptionalType(e)
     or
-    result = convertVariadicSequenceTypeToDb(e)
+    result = toRawVariadicSequenceType(e)
   }
 }

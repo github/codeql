@@ -9,17 +9,14 @@ class DeclRefExprBase extends Synth::TDeclRefExpr, Expr {
   override string getAPrimaryQlClass() { result = "DeclRefExpr" }
 
   Decl getImmediateDecl() {
-    result =
-      Synth::convertDeclFromDb(Synth::convertDeclRefExprToDb(this).(Raw::DeclRefExpr).getDecl())
+    result = Synth::fromRawDecl(Synth::toRawDeclRefExpr(this).(Raw::DeclRefExpr).getDecl())
   }
 
   final Decl getDecl() { result = getImmediateDecl().resolve() }
 
   Type getImmediateReplacementType(int index) {
     result =
-      Synth::convertTypeFromDb(Synth::convertDeclRefExprToDb(this)
-            .(Raw::DeclRefExpr)
-            .getReplacementType(index))
+      Synth::fromRawType(Synth::toRawDeclRefExpr(this).(Raw::DeclRefExpr).getReplacementType(index))
   }
 
   final Type getReplacementType(int index) { result = getImmediateReplacementType(index).resolve() }
@@ -29,14 +26,14 @@ class DeclRefExprBase extends Synth::TDeclRefExpr, Expr {
   final int getNumberOfReplacementTypes() { result = count(getAReplacementType()) }
 
   predicate hasDirectToStorageSemantics() {
-    Synth::convertDeclRefExprToDb(this).(Raw::DeclRefExpr).hasDirectToStorageSemantics()
+    Synth::toRawDeclRefExpr(this).(Raw::DeclRefExpr).hasDirectToStorageSemantics()
   }
 
   predicate hasDirectToImplementationSemantics() {
-    Synth::convertDeclRefExprToDb(this).(Raw::DeclRefExpr).hasDirectToImplementationSemantics()
+    Synth::toRawDeclRefExpr(this).(Raw::DeclRefExpr).hasDirectToImplementationSemantics()
   }
 
   predicate hasOrdinarySemantics() {
-    Synth::convertDeclRefExprToDb(this).(Raw::DeclRefExpr).hasOrdinarySemantics()
+    Synth::toRawDeclRefExpr(this).(Raw::DeclRefExpr).hasOrdinarySemantics()
   }
 }

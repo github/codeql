@@ -6,9 +6,7 @@ import codeql.swift.elements.expr.Expr
 class ExplicitCastExprBase extends Synth::TExplicitCastExpr, Expr {
   Expr getImmediateSubExpr() {
     result =
-      Synth::convertExprFromDb(Synth::convertExplicitCastExprToDb(this)
-            .(Raw::ExplicitCastExpr)
-            .getSubExpr())
+      Synth::fromRawExpr(Synth::toRawExplicitCastExpr(this).(Raw::ExplicitCastExpr).getSubExpr())
   }
 
   final Expr getSubExpr() { result = getImmediateSubExpr().resolve() }

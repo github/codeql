@@ -8,8 +8,7 @@ class ThrowStmtBase extends Synth::TThrowStmt, Stmt {
   override string getAPrimaryQlClass() { result = "ThrowStmt" }
 
   Expr getImmediateSubExpr() {
-    result =
-      Synth::convertExprFromDb(Synth::convertThrowStmtToDb(this).(Raw::ThrowStmt).getSubExpr())
+    result = Synth::fromRawExpr(Synth::toRawThrowStmt(this).(Raw::ThrowStmt).getSubExpr())
   }
 
   final Expr getSubExpr() { result = getImmediateSubExpr().resolve() }

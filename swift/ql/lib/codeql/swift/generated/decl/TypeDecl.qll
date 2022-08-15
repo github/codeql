@@ -5,11 +5,10 @@ import codeql.swift.elements.type.Type
 import codeql.swift.elements.decl.ValueDecl
 
 class TypeDeclBase extends Synth::TTypeDecl, ValueDecl {
-  string getName() { result = Synth::convertTypeDeclToDb(this).(Raw::TypeDecl).getName() }
+  string getName() { result = Synth::toRawTypeDecl(this).(Raw::TypeDecl).getName() }
 
   Type getImmediateBaseType(int index) {
-    result =
-      Synth::convertTypeFromDb(Synth::convertTypeDeclToDb(this).(Raw::TypeDecl).getBaseType(index))
+    result = Synth::fromRawType(Synth::toRawTypeDecl(this).(Raw::TypeDecl).getBaseType(index))
   }
 
   final Type getBaseType(int index) { result = getImmediateBaseType(index).resolve() }

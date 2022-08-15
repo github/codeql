@@ -7,8 +7,7 @@ class TupleTypeBase extends Synth::TTupleType, Type {
   override string getAPrimaryQlClass() { result = "TupleType" }
 
   Type getImmediateType(int index) {
-    result =
-      Synth::convertTypeFromDb(Synth::convertTupleTypeToDb(this).(Raw::TupleType).getType(index))
+    result = Synth::fromRawType(Synth::toRawTupleType(this).(Raw::TupleType).getType(index))
   }
 
   final Type getType(int index) { result = getImmediateType(index).resolve() }
@@ -17,9 +16,7 @@ class TupleTypeBase extends Synth::TTupleType, Type {
 
   final int getNumberOfTypes() { result = count(getAType()) }
 
-  string getName(int index) {
-    result = Synth::convertTupleTypeToDb(this).(Raw::TupleType).getName(index)
-  }
+  string getName(int index) { result = Synth::toRawTupleType(this).(Raw::TupleType).getName(index) }
 
   final string getAName() { result = getName(_) }
 

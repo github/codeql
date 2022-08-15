@@ -6,10 +6,7 @@ import codeql.swift.elements.expr.Expr
 
 class SelfApplyExprBase extends Synth::TSelfApplyExpr, ApplyExpr {
   Expr getImmediateBaseExpr() {
-    result =
-      Synth::convertExprFromDb(Synth::convertSelfApplyExprToDb(this)
-            .(Raw::SelfApplyExpr)
-            .getBaseExpr())
+    result = Synth::fromRawExpr(Synth::toRawSelfApplyExpr(this).(Raw::SelfApplyExpr).getBaseExpr())
   }
 
   final Expr getBaseExpr() { result = getImmediateBaseExpr().resolve() }

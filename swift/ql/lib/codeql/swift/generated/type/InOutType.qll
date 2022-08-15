@@ -7,8 +7,7 @@ class InOutTypeBase extends Synth::TInOutType, Type {
   override string getAPrimaryQlClass() { result = "InOutType" }
 
   Type getImmediateObjectType() {
-    result =
-      Synth::convertTypeFromDb(Synth::convertInOutTypeToDb(this).(Raw::InOutType).getObjectType())
+    result = Synth::fromRawType(Synth::toRawInOutType(this).(Raw::InOutType).getObjectType())
   }
 
   final Type getObjectType() { result = getImmediateObjectType().resolve() }
