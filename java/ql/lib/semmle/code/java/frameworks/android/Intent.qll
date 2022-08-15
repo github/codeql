@@ -283,7 +283,7 @@ private class IntentBundleFlowSteps extends SummaryModelCsv {
         "android.os;Bundle;true;putStringArrayList;;;Argument[1];Argument[-1].MapValue;value;manual",
         "android.os;Bundle;true;readFromParcel;;;Argument[0];Argument[-1].MapKey;taint;manual",
         "android.os;Bundle;true;readFromParcel;;;Argument[0];Argument[-1].MapValue;taint;manual",
-        // currently only the Extras part of the intent and the data field are fully modelled
+        // currently only the Extras part of the intent and the data field are fully modeled
         "android.content;Intent;false;Intent;(Intent);;Argument[0].SyntheticField[android.content.Intent.extras].MapKey;Argument[-1].SyntheticField[android.content.Intent.extras].MapKey;value;manual",
         "android.content;Intent;false;Intent;(Intent);;Argument[0].SyntheticField[android.content.Intent.extras].MapValue;Argument[-1].SyntheticField[android.content.Intent.extras].MapValue;value;manual",
         "android.content;Intent;false;Intent;(String,Uri);;Argument[1];Argument[-1].SyntheticField[android.content.Intent.data];value;manual",

@@ -64,13 +64,13 @@ namespace System
 
                 // Generated from `System.Security.Cryptography.X509Certificates.OpenFlags` in `System.Security.Cryptography.X509Certificates, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 [System.Flags]
-                public enum OpenFlags
+                public enum OpenFlags : int
                 {
-                    IncludeArchived,
-                    MaxAllowed,
-                    OpenExistingOnly,
-                    ReadOnly,
-                    ReadWrite,
+                    IncludeArchived = 8,
+                    MaxAllowed = 2,
+                    OpenExistingOnly = 4,
+                    ReadOnly = 0,
+                    ReadWrite = 1,
                 }
 
                 // Generated from `System.Security.Cryptography.X509Certificates.PublicKey` in `System.Security.Cryptography.X509Certificates, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -100,23 +100,23 @@ namespace System
                 }
 
                 // Generated from `System.Security.Cryptography.X509Certificates.StoreLocation` in `System.Security.Cryptography.X509Certificates, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-                public enum StoreLocation
+                public enum StoreLocation : int
                 {
-                    CurrentUser,
-                    LocalMachine,
+                    CurrentUser = 1,
+                    LocalMachine = 2,
                 }
 
                 // Generated from `System.Security.Cryptography.X509Certificates.StoreName` in `System.Security.Cryptography.X509Certificates, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-                public enum StoreName
+                public enum StoreName : int
                 {
-                    AddressBook,
-                    AuthRoot,
-                    CertificateAuthority,
-                    Disallowed,
-                    My,
-                    Root,
-                    TrustedPeople,
-                    TrustedPublisher,
+                    AddressBook = 1,
+                    AuthRoot = 2,
+                    CertificateAuthority = 3,
+                    Disallowed = 4,
+                    My = 5,
+                    Root = 6,
+                    TrustedPeople = 7,
+                    TrustedPublisher = 8,
                 }
 
                 // Generated from `System.Security.Cryptography.X509Certificates.SubjectAlternativeNameBuilder` in `System.Security.Cryptography.X509Certificates, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -147,18 +147,18 @@ namespace System
 
                 // Generated from `System.Security.Cryptography.X509Certificates.X500DistinguishedNameFlags` in `System.Security.Cryptography.X509Certificates, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 [System.Flags]
-                public enum X500DistinguishedNameFlags
+                public enum X500DistinguishedNameFlags : int
                 {
-                    DoNotUsePlusSign,
-                    DoNotUseQuotes,
-                    ForceUTF8Encoding,
-                    None,
-                    Reversed,
-                    UseCommas,
-                    UseNewLines,
-                    UseSemicolons,
-                    UseT61Encoding,
-                    UseUTF8Encoding,
+                    DoNotUsePlusSign = 32,
+                    DoNotUseQuotes = 64,
+                    ForceUTF8Encoding = 16384,
+                    None = 0,
+                    Reversed = 1,
+                    UseCommas = 128,
+                    UseNewLines = 256,
+                    UseSemicolons = 16,
+                    UseT61Encoding = 8192,
+                    UseUTF8Encoding = 4096,
                 }
 
                 // Generated from `System.Security.Cryptography.X509Certificates.X509BasicConstraintsExtension` in `System.Security.Cryptography.X509Certificates, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -451,54 +451,54 @@ namespace System
 
                 // Generated from `System.Security.Cryptography.X509Certificates.X509ChainStatusFlags` in `System.Security.Cryptography.X509Certificates, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 [System.Flags]
-                public enum X509ChainStatusFlags
+                public enum X509ChainStatusFlags : int
                 {
-                    CtlNotSignatureValid,
-                    CtlNotTimeValid,
-                    CtlNotValidForUsage,
-                    Cyclic,
-                    ExplicitDistrust,
-                    HasExcludedNameConstraint,
-                    HasNotDefinedNameConstraint,
-                    HasNotPermittedNameConstraint,
-                    HasNotSupportedCriticalExtension,
-                    HasNotSupportedNameConstraint,
-                    HasWeakSignature,
-                    InvalidBasicConstraints,
-                    InvalidExtension,
-                    InvalidNameConstraints,
-                    InvalidPolicyConstraints,
-                    NoError,
-                    NoIssuanceChainPolicy,
-                    NotSignatureValid,
-                    NotTimeNested,
-                    NotTimeValid,
-                    NotValidForUsage,
-                    OfflineRevocation,
-                    PartialChain,
-                    RevocationStatusUnknown,
-                    Revoked,
-                    UntrustedRoot,
+                    CtlNotSignatureValid = 262144,
+                    CtlNotTimeValid = 131072,
+                    CtlNotValidForUsage = 524288,
+                    Cyclic = 128,
+                    ExplicitDistrust = 67108864,
+                    HasExcludedNameConstraint = 32768,
+                    HasNotDefinedNameConstraint = 8192,
+                    HasNotPermittedNameConstraint = 16384,
+                    HasNotSupportedCriticalExtension = 134217728,
+                    HasNotSupportedNameConstraint = 4096,
+                    HasWeakSignature = 1048576,
+                    InvalidBasicConstraints = 1024,
+                    InvalidExtension = 256,
+                    InvalidNameConstraints = 2048,
+                    InvalidPolicyConstraints = 512,
+                    NoError = 0,
+                    NoIssuanceChainPolicy = 33554432,
+                    NotSignatureValid = 8,
+                    NotTimeNested = 2,
+                    NotTimeValid = 1,
+                    NotValidForUsage = 16,
+                    OfflineRevocation = 16777216,
+                    PartialChain = 65536,
+                    RevocationStatusUnknown = 64,
+                    Revoked = 4,
+                    UntrustedRoot = 32,
                 }
 
                 // Generated from `System.Security.Cryptography.X509Certificates.X509ChainTrustMode` in `System.Security.Cryptography.X509Certificates, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-                public enum X509ChainTrustMode
+                public enum X509ChainTrustMode : int
                 {
-                    CustomRootTrust,
-                    System,
+                    CustomRootTrust = 1,
+                    System = 0,
                 }
 
                 // Generated from `System.Security.Cryptography.X509Certificates.X509ContentType` in `System.Security.Cryptography.X509Certificates, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-                public enum X509ContentType
+                public enum X509ContentType : int
                 {
-                    Authenticode,
-                    Cert,
-                    Pfx,
-                    Pkcs12,
-                    Pkcs7,
-                    SerializedCert,
-                    SerializedStore,
-                    Unknown,
+                    Authenticode = 6,
+                    Cert = 1,
+                    Pfx = 3,
+                    Pkcs12 = 3,
+                    Pkcs7 = 5,
+                    SerializedCert = 2,
+                    SerializedStore = 4,
+                    Unknown = 0,
                 }
 
                 // Generated from `System.Security.Cryptography.X509Certificates.X509EnhancedKeyUsageExtension` in `System.Security.Cryptography.X509Certificates, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -552,45 +552,45 @@ namespace System
                 }
 
                 // Generated from `System.Security.Cryptography.X509Certificates.X509FindType` in `System.Security.Cryptography.X509Certificates, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-                public enum X509FindType
+                public enum X509FindType : int
                 {
-                    FindByApplicationPolicy,
-                    FindByCertificatePolicy,
-                    FindByExtension,
-                    FindByIssuerDistinguishedName,
-                    FindByIssuerName,
-                    FindByKeyUsage,
-                    FindBySerialNumber,
-                    FindBySubjectDistinguishedName,
-                    FindBySubjectKeyIdentifier,
-                    FindBySubjectName,
-                    FindByTemplateName,
-                    FindByThumbprint,
-                    FindByTimeExpired,
-                    FindByTimeNotYetValid,
-                    FindByTimeValid,
+                    FindByApplicationPolicy = 10,
+                    FindByCertificatePolicy = 11,
+                    FindByExtension = 12,
+                    FindByIssuerDistinguishedName = 4,
+                    FindByIssuerName = 3,
+                    FindByKeyUsage = 13,
+                    FindBySerialNumber = 5,
+                    FindBySubjectDistinguishedName = 2,
+                    FindBySubjectKeyIdentifier = 14,
+                    FindBySubjectName = 1,
+                    FindByTemplateName = 9,
+                    FindByThumbprint = 0,
+                    FindByTimeExpired = 8,
+                    FindByTimeNotYetValid = 7,
+                    FindByTimeValid = 6,
                 }
 
                 // Generated from `System.Security.Cryptography.X509Certificates.X509IncludeOption` in `System.Security.Cryptography.X509Certificates, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-                public enum X509IncludeOption
+                public enum X509IncludeOption : int
                 {
-                    EndCertOnly,
-                    ExcludeRoot,
-                    None,
-                    WholeChain,
+                    EndCertOnly = 2,
+                    ExcludeRoot = 1,
+                    None = 0,
+                    WholeChain = 3,
                 }
 
                 // Generated from `System.Security.Cryptography.X509Certificates.X509KeyStorageFlags` in `System.Security.Cryptography.X509Certificates, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 [System.Flags]
-                public enum X509KeyStorageFlags
+                public enum X509KeyStorageFlags : int
                 {
-                    DefaultKeySet,
-                    EphemeralKeySet,
-                    Exportable,
-                    MachineKeySet,
-                    PersistKeySet,
-                    UserKeySet,
-                    UserProtected,
+                    DefaultKeySet = 0,
+                    EphemeralKeySet = 32,
+                    Exportable = 4,
+                    MachineKeySet = 2,
+                    PersistKeySet = 16,
+                    UserKeySet = 1,
+                    UserProtected = 8,
                 }
 
                 // Generated from `System.Security.Cryptography.X509Certificates.X509KeyUsageExtension` in `System.Security.Cryptography.X509Certificates, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -605,45 +605,45 @@ namespace System
 
                 // Generated from `System.Security.Cryptography.X509Certificates.X509KeyUsageFlags` in `System.Security.Cryptography.X509Certificates, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 [System.Flags]
-                public enum X509KeyUsageFlags
+                public enum X509KeyUsageFlags : int
                 {
-                    CrlSign,
-                    DataEncipherment,
-                    DecipherOnly,
-                    DigitalSignature,
-                    EncipherOnly,
-                    KeyAgreement,
-                    KeyCertSign,
-                    KeyEncipherment,
-                    NonRepudiation,
-                    None,
+                    CrlSign = 2,
+                    DataEncipherment = 16,
+                    DecipherOnly = 32768,
+                    DigitalSignature = 128,
+                    EncipherOnly = 1,
+                    KeyAgreement = 8,
+                    KeyCertSign = 4,
+                    KeyEncipherment = 32,
+                    NonRepudiation = 64,
+                    None = 0,
                 }
 
                 // Generated from `System.Security.Cryptography.X509Certificates.X509NameType` in `System.Security.Cryptography.X509Certificates, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-                public enum X509NameType
+                public enum X509NameType : int
                 {
-                    DnsFromAlternativeName,
-                    DnsName,
-                    EmailName,
-                    SimpleName,
-                    UpnName,
-                    UrlName,
+                    DnsFromAlternativeName = 4,
+                    DnsName = 3,
+                    EmailName = 1,
+                    SimpleName = 0,
+                    UpnName = 2,
+                    UrlName = 5,
                 }
 
                 // Generated from `System.Security.Cryptography.X509Certificates.X509RevocationFlag` in `System.Security.Cryptography.X509Certificates, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-                public enum X509RevocationFlag
+                public enum X509RevocationFlag : int
                 {
-                    EndCertificateOnly,
-                    EntireChain,
-                    ExcludeRoot,
+                    EndCertificateOnly = 0,
+                    EntireChain = 1,
+                    ExcludeRoot = 2,
                 }
 
                 // Generated from `System.Security.Cryptography.X509Certificates.X509RevocationMode` in `System.Security.Cryptography.X509Certificates, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-                public enum X509RevocationMode
+                public enum X509RevocationMode : int
                 {
-                    NoCheck,
-                    Offline,
-                    Online,
+                    NoCheck = 0,
+                    Offline = 2,
+                    Online = 1,
                 }
 
                 // Generated from `System.Security.Cryptography.X509Certificates.X509SignatureGenerator` in `System.Security.Cryptography.X509Certificates, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -699,31 +699,31 @@ namespace System
                 }
 
                 // Generated from `System.Security.Cryptography.X509Certificates.X509SubjectKeyIdentifierHashAlgorithm` in `System.Security.Cryptography.X509Certificates, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-                public enum X509SubjectKeyIdentifierHashAlgorithm
+                public enum X509SubjectKeyIdentifierHashAlgorithm : int
                 {
-                    CapiSha1,
-                    Sha1,
-                    ShortSha1,
+                    CapiSha1 = 2,
+                    Sha1 = 0,
+                    ShortSha1 = 1,
                 }
 
                 // Generated from `System.Security.Cryptography.X509Certificates.X509VerificationFlags` in `System.Security.Cryptography.X509Certificates, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 [System.Flags]
-                public enum X509VerificationFlags
+                public enum X509VerificationFlags : int
                 {
-                    AllFlags,
-                    AllowUnknownCertificateAuthority,
-                    IgnoreCertificateAuthorityRevocationUnknown,
-                    IgnoreCtlNotTimeValid,
-                    IgnoreCtlSignerRevocationUnknown,
-                    IgnoreEndRevocationUnknown,
-                    IgnoreInvalidBasicConstraints,
-                    IgnoreInvalidName,
-                    IgnoreInvalidPolicy,
-                    IgnoreNotTimeNested,
-                    IgnoreNotTimeValid,
-                    IgnoreRootRevocationUnknown,
-                    IgnoreWrongUsage,
-                    NoFlag,
+                    AllFlags = 4095,
+                    AllowUnknownCertificateAuthority = 16,
+                    IgnoreCertificateAuthorityRevocationUnknown = 1024,
+                    IgnoreCtlNotTimeValid = 2,
+                    IgnoreCtlSignerRevocationUnknown = 512,
+                    IgnoreEndRevocationUnknown = 256,
+                    IgnoreInvalidBasicConstraints = 8,
+                    IgnoreInvalidName = 64,
+                    IgnoreInvalidPolicy = 128,
+                    IgnoreNotTimeNested = 4,
+                    IgnoreNotTimeValid = 1,
+                    IgnoreRootRevocationUnknown = 2048,
+                    IgnoreWrongUsage = 32,
+                    NoFlag = 0,
                 }
 
             }

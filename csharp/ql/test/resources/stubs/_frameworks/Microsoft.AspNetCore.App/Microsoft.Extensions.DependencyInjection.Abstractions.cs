@@ -152,11 +152,11 @@ namespace Microsoft
             }
 
             // Generated from `Microsoft.Extensions.DependencyInjection.ServiceLifetime` in `Microsoft.Extensions.DependencyInjection.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
-            public enum ServiceLifetime
+            public enum ServiceLifetime : int
             {
-                Scoped,
-                Singleton,
-                Transient,
+                Scoped = 1,
+                Singleton = 0,
+                Transient = 2,
             }
 
             // Generated from `Microsoft.Extensions.DependencyInjection.ServiceProviderServiceExtensions` in `Microsoft.Extensions.DependencyInjection.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`

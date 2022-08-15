@@ -110,14 +110,14 @@ namespace Microsoft
                 }
 
                 // Generated from `Microsoft.AspNetCore.DataProtection.AuthenticatedEncryption.EncryptionAlgorithm` in `Microsoft.AspNetCore.DataProtection, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
-                public enum EncryptionAlgorithm
+                public enum EncryptionAlgorithm : int
                 {
-                    AES_128_CBC,
-                    AES_128_GCM,
-                    AES_192_CBC,
-                    AES_192_GCM,
-                    AES_256_CBC,
-                    AES_256_GCM,
+                    AES_128_CBC = 0,
+                    AES_128_GCM = 3,
+                    AES_192_CBC = 1,
+                    AES_192_GCM = 4,
+                    AES_256_CBC = 2,
+                    AES_256_GCM = 5,
                 }
 
                 // Generated from `Microsoft.AspNetCore.DataProtection.AuthenticatedEncryption.IAuthenticatedEncryptor` in `Microsoft.AspNetCore.DataProtection, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
@@ -141,10 +141,10 @@ namespace Microsoft
                 }
 
                 // Generated from `Microsoft.AspNetCore.DataProtection.AuthenticatedEncryption.ValidationAlgorithm` in `Microsoft.AspNetCore.DataProtection, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
-                public enum ValidationAlgorithm
+                public enum ValidationAlgorithm : int
                 {
-                    HMACSHA256,
-                    HMACSHA512,
+                    HMACSHA256 = 0,
+                    HMACSHA512 = 1,
                 }
 
                 namespace ConfigurationModel
@@ -454,11 +454,11 @@ namespace Microsoft
 
                 // Generated from `Microsoft.AspNetCore.DataProtection.XmlEncryption.DpapiNGProtectionDescriptorFlags` in `Microsoft.AspNetCore.DataProtection, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 [System.Flags]
-                public enum DpapiNGProtectionDescriptorFlags
+                public enum DpapiNGProtectionDescriptorFlags : int
                 {
-                    MachineKey,
-                    NamedDescriptor,
-                    None,
+                    MachineKey = 32,
+                    NamedDescriptor = 1,
+                    None = 0,
                 }
 
                 // Generated from `Microsoft.AspNetCore.DataProtection.XmlEncryption.DpapiNGXmlDecryptor` in `Microsoft.AspNetCore.DataProtection, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`

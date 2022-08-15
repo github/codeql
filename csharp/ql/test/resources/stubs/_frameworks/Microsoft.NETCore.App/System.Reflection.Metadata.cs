@@ -6,86 +6,86 @@ namespace System
     {
         // Generated from `System.Reflection.AssemblyFlags` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         [System.Flags]
-        public enum AssemblyFlags
+        public enum AssemblyFlags : int
         {
-            ContentTypeMask,
-            DisableJitCompileOptimizer,
-            EnableJitCompileTracking,
-            PublicKey,
-            Retargetable,
-            WindowsRuntime,
+            ContentTypeMask = 3584,
+            DisableJitCompileOptimizer = 16384,
+            EnableJitCompileTracking = 32768,
+            PublicKey = 1,
+            Retargetable = 256,
+            WindowsRuntime = 512,
         }
 
         // Generated from `System.Reflection.AssemblyHashAlgorithm` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum AssemblyHashAlgorithm
+        public enum AssemblyHashAlgorithm : int
         {
-            MD5,
-            None,
-            Sha1,
-            Sha256,
-            Sha384,
-            Sha512,
+            MD5 = 32771,
+            None = 0,
+            Sha1 = 32772,
+            Sha256 = 32780,
+            Sha384 = 32781,
+            Sha512 = 32782,
         }
 
         // Generated from `System.Reflection.DeclarativeSecurityAction` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum DeclarativeSecurityAction
+        public enum DeclarativeSecurityAction : short
         {
-            Assert,
-            Demand,
-            Deny,
-            InheritanceDemand,
-            LinkDemand,
-            None,
-            PermitOnly,
-            RequestMinimum,
-            RequestOptional,
-            RequestRefuse,
+            Assert = 3,
+            Demand = 2,
+            Deny = 4,
+            InheritanceDemand = 7,
+            LinkDemand = 6,
+            None = 0,
+            PermitOnly = 5,
+            RequestMinimum = 8,
+            RequestOptional = 9,
+            RequestRefuse = 10,
         }
 
         // Generated from `System.Reflection.ManifestResourceAttributes` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         [System.Flags]
-        public enum ManifestResourceAttributes
+        public enum ManifestResourceAttributes : int
         {
-            Private,
-            Public,
-            VisibilityMask,
+            Private = 2,
+            Public = 1,
+            VisibilityMask = 7,
         }
 
         // Generated from `System.Reflection.MethodImportAttributes` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         [System.Flags]
-        public enum MethodImportAttributes
+        public enum MethodImportAttributes : short
         {
-            BestFitMappingDisable,
-            BestFitMappingEnable,
-            BestFitMappingMask,
-            CallingConventionCDecl,
-            CallingConventionFastCall,
-            CallingConventionMask,
-            CallingConventionStdCall,
-            CallingConventionThisCall,
-            CallingConventionWinApi,
-            CharSetAnsi,
-            CharSetAuto,
-            CharSetMask,
-            CharSetUnicode,
-            ExactSpelling,
-            None,
-            SetLastError,
-            ThrowOnUnmappableCharDisable,
-            ThrowOnUnmappableCharEnable,
-            ThrowOnUnmappableCharMask,
+            BestFitMappingDisable = 32,
+            BestFitMappingEnable = 16,
+            BestFitMappingMask = 48,
+            CallingConventionCDecl = 512,
+            CallingConventionFastCall = 1280,
+            CallingConventionMask = 1792,
+            CallingConventionStdCall = 768,
+            CallingConventionThisCall = 1024,
+            CallingConventionWinApi = 256,
+            CharSetAnsi = 2,
+            CharSetAuto = 6,
+            CharSetMask = 6,
+            CharSetUnicode = 4,
+            ExactSpelling = 1,
+            None = 0,
+            SetLastError = 64,
+            ThrowOnUnmappableCharDisable = 8192,
+            ThrowOnUnmappableCharEnable = 4096,
+            ThrowOnUnmappableCharMask = 12288,
         }
 
         // Generated from `System.Reflection.MethodSemanticsAttributes` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         [System.Flags]
-        public enum MethodSemanticsAttributes
+        public enum MethodSemanticsAttributes : int
         {
-            Adder,
-            Getter,
-            Other,
-            Raiser,
-            Remover,
-            Setter,
+            Adder = 8,
+            Getter = 2,
+            Other = 4,
+            Raiser = 32,
+            Remover = 16,
+            Setter = 1,
         }
 
         namespace Metadata
@@ -478,23 +478,23 @@ namespace System
             }
 
             // Generated from `System.Reflection.Metadata.ConstantTypeCode` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum ConstantTypeCode
+            public enum ConstantTypeCode : byte
             {
-                Boolean,
-                Byte,
-                Char,
-                Double,
-                Int16,
-                Int32,
-                Int64,
-                Invalid,
-                NullReference,
-                SByte,
-                Single,
-                String,
-                UInt16,
-                UInt32,
-                UInt64,
+                Boolean = 2,
+                Byte = 5,
+                Char = 3,
+                Double = 13,
+                Int16 = 6,
+                Int32 = 8,
+                Int64 = 10,
+                Invalid = 0,
+                NullReference = 18,
+                SByte = 4,
+                Single = 12,
+                String = 14,
+                UInt16 = 7,
+                UInt32 = 9,
+                UInt64 = 11,
             }
 
             // Generated from `System.Reflection.Metadata.CustomAttribute` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -557,10 +557,10 @@ namespace System
             }
 
             // Generated from `System.Reflection.Metadata.CustomAttributeNamedArgumentKind` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum CustomAttributeNamedArgumentKind
+            public enum CustomAttributeNamedArgumentKind : byte
             {
-                Field,
-                Property,
+                Field = 83,
+                Property = 84,
             }
 
             // Generated from `System.Reflection.Metadata.CustomAttributeTypedArgument<>` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -835,12 +835,12 @@ namespace System
             }
 
             // Generated from `System.Reflection.Metadata.ExceptionRegionKind` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum ExceptionRegionKind
+            public enum ExceptionRegionKind : ushort
             {
-                Catch,
-                Fault,
-                Filter,
-                Finally,
+                Catch = 0,
+                Fault = 4,
+                Filter = 1,
+                Finally = 2,
             }
 
             // Generated from `System.Reflection.Metadata.ExportedType` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -1089,45 +1089,45 @@ namespace System
             }
 
             // Generated from `System.Reflection.Metadata.HandleKind` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum HandleKind
+            public enum HandleKind : byte
             {
-                AssemblyDefinition,
-                AssemblyFile,
-                AssemblyReference,
-                Blob,
-                Constant,
-                CustomAttribute,
-                CustomDebugInformation,
-                DeclarativeSecurityAttribute,
-                Document,
-                EventDefinition,
-                ExportedType,
-                FieldDefinition,
-                GenericParameter,
-                GenericParameterConstraint,
-                Guid,
-                ImportScope,
-                InterfaceImplementation,
-                LocalConstant,
-                LocalScope,
-                LocalVariable,
-                ManifestResource,
-                MemberReference,
-                MethodDebugInformation,
-                MethodDefinition,
-                MethodImplementation,
-                MethodSpecification,
-                ModuleDefinition,
-                ModuleReference,
-                NamespaceDefinition,
-                Parameter,
-                PropertyDefinition,
-                StandaloneSignature,
-                String,
-                TypeDefinition,
-                TypeReference,
-                TypeSpecification,
-                UserString,
+                AssemblyDefinition = 32,
+                AssemblyFile = 38,
+                AssemblyReference = 35,
+                Blob = 113,
+                Constant = 11,
+                CustomAttribute = 12,
+                CustomDebugInformation = 55,
+                DeclarativeSecurityAttribute = 14,
+                Document = 48,
+                EventDefinition = 20,
+                ExportedType = 39,
+                FieldDefinition = 4,
+                GenericParameter = 42,
+                GenericParameterConstraint = 44,
+                Guid = 114,
+                ImportScope = 53,
+                InterfaceImplementation = 9,
+                LocalConstant = 52,
+                LocalScope = 50,
+                LocalVariable = 51,
+                ManifestResource = 40,
+                MemberReference = 10,
+                MethodDebugInformation = 49,
+                MethodDefinition = 6,
+                MethodImplementation = 25,
+                MethodSpecification = 43,
+                ModuleDefinition = 0,
+                ModuleReference = 26,
+                NamespaceDefinition = 124,
+                Parameter = 8,
+                PropertyDefinition = 23,
+                StandaloneSignature = 17,
+                String = 120,
+                TypeDefinition = 2,
+                TypeReference = 1,
+                TypeSpecification = 27,
+                UserString = 112,
             }
 
             // Generated from `System.Reflection.Metadata.IConstructedTypeProvider<>` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -1149,226 +1149,226 @@ namespace System
             }
 
             // Generated from `System.Reflection.Metadata.ILOpCode` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum ILOpCode
+            public enum ILOpCode : ushort
             {
-                Add,
-                Add_ovf,
-                Add_ovf_un,
-                And,
-                Arglist,
-                Beq,
-                Beq_s,
-                Bge,
-                Bge_s,
-                Bge_un,
-                Bge_un_s,
-                Bgt,
-                Bgt_s,
-                Bgt_un,
-                Bgt_un_s,
-                Ble,
-                Ble_s,
-                Ble_un,
-                Ble_un_s,
-                Blt,
-                Blt_s,
-                Blt_un,
-                Blt_un_s,
-                Bne_un,
-                Bne_un_s,
-                Box,
-                Br,
-                Br_s,
-                Break,
-                Brfalse,
-                Brfalse_s,
-                Brtrue,
-                Brtrue_s,
-                Call,
-                Calli,
-                Callvirt,
-                Castclass,
-                Ceq,
-                Cgt,
-                Cgt_un,
-                Ckfinite,
-                Clt,
-                Clt_un,
-                Constrained,
-                Conv_i,
-                Conv_i1,
-                Conv_i2,
-                Conv_i4,
-                Conv_i8,
-                Conv_ovf_i,
-                Conv_ovf_i1,
-                Conv_ovf_i1_un,
-                Conv_ovf_i2,
-                Conv_ovf_i2_un,
-                Conv_ovf_i4,
-                Conv_ovf_i4_un,
-                Conv_ovf_i8,
-                Conv_ovf_i8_un,
-                Conv_ovf_i_un,
-                Conv_ovf_u,
-                Conv_ovf_u1,
-                Conv_ovf_u1_un,
-                Conv_ovf_u2,
-                Conv_ovf_u2_un,
-                Conv_ovf_u4,
-                Conv_ovf_u4_un,
-                Conv_ovf_u8,
-                Conv_ovf_u8_un,
-                Conv_ovf_u_un,
-                Conv_r4,
-                Conv_r8,
-                Conv_r_un,
-                Conv_u,
-                Conv_u1,
-                Conv_u2,
-                Conv_u4,
-                Conv_u8,
-                Cpblk,
-                Cpobj,
-                Div,
-                Div_un,
-                Dup,
-                Endfilter,
-                Endfinally,
-                Initblk,
-                Initobj,
-                Isinst,
-                Jmp,
-                Ldarg,
-                Ldarg_0,
-                Ldarg_1,
-                Ldarg_2,
-                Ldarg_3,
-                Ldarg_s,
-                Ldarga,
-                Ldarga_s,
-                Ldc_i4,
-                Ldc_i4_0,
-                Ldc_i4_1,
-                Ldc_i4_2,
-                Ldc_i4_3,
-                Ldc_i4_4,
-                Ldc_i4_5,
-                Ldc_i4_6,
-                Ldc_i4_7,
-                Ldc_i4_8,
-                Ldc_i4_m1,
-                Ldc_i4_s,
-                Ldc_i8,
-                Ldc_r4,
-                Ldc_r8,
-                Ldelem,
-                Ldelem_i,
-                Ldelem_i1,
-                Ldelem_i2,
-                Ldelem_i4,
-                Ldelem_i8,
-                Ldelem_r4,
-                Ldelem_r8,
-                Ldelem_ref,
-                Ldelem_u1,
-                Ldelem_u2,
-                Ldelem_u4,
-                Ldelema,
-                Ldfld,
-                Ldflda,
-                Ldftn,
-                Ldind_i,
-                Ldind_i1,
-                Ldind_i2,
-                Ldind_i4,
-                Ldind_i8,
-                Ldind_r4,
-                Ldind_r8,
-                Ldind_ref,
-                Ldind_u1,
-                Ldind_u2,
-                Ldind_u4,
-                Ldlen,
-                Ldloc,
-                Ldloc_0,
-                Ldloc_1,
-                Ldloc_2,
-                Ldloc_3,
-                Ldloc_s,
-                Ldloca,
-                Ldloca_s,
-                Ldnull,
-                Ldobj,
-                Ldsfld,
-                Ldsflda,
-                Ldstr,
-                Ldtoken,
-                Ldvirtftn,
-                Leave,
-                Leave_s,
-                Localloc,
-                Mkrefany,
-                Mul,
-                Mul_ovf,
-                Mul_ovf_un,
-                Neg,
-                Newarr,
-                Newobj,
-                Nop,
-                Not,
-                Or,
-                Pop,
-                Readonly,
-                Refanytype,
-                Refanyval,
-                Rem,
-                Rem_un,
-                Ret,
-                Rethrow,
-                Shl,
-                Shr,
-                Shr_un,
-                Sizeof,
-                Starg,
-                Starg_s,
-                Stelem,
-                Stelem_i,
-                Stelem_i1,
-                Stelem_i2,
-                Stelem_i4,
-                Stelem_i8,
-                Stelem_r4,
-                Stelem_r8,
-                Stelem_ref,
-                Stfld,
-                Stind_i,
-                Stind_i1,
-                Stind_i2,
-                Stind_i4,
-                Stind_i8,
-                Stind_r4,
-                Stind_r8,
-                Stind_ref,
-                Stloc,
-                Stloc_0,
-                Stloc_1,
-                Stloc_2,
-                Stloc_3,
-                Stloc_s,
-                Stobj,
-                Stsfld,
-                Sub,
-                Sub_ovf,
-                Sub_ovf_un,
-                Switch,
-                Tail,
-                Throw,
-                Unaligned,
-                Unbox,
-                Unbox_any,
-                Volatile,
-                Xor,
+                Add = 88,
+                Add_ovf = 214,
+                Add_ovf_un = 215,
+                And = 95,
+                Arglist = 65024,
+                Beq = 59,
+                Beq_s = 46,
+                Bge = 60,
+                Bge_s = 47,
+                Bge_un = 65,
+                Bge_un_s = 52,
+                Bgt = 61,
+                Bgt_s = 48,
+                Bgt_un = 66,
+                Bgt_un_s = 53,
+                Ble = 62,
+                Ble_s = 49,
+                Ble_un = 67,
+                Ble_un_s = 54,
+                Blt = 63,
+                Blt_s = 50,
+                Blt_un = 68,
+                Blt_un_s = 55,
+                Bne_un = 64,
+                Bne_un_s = 51,
+                Box = 140,
+                Br = 56,
+                Br_s = 43,
+                Break = 1,
+                Brfalse = 57,
+                Brfalse_s = 44,
+                Brtrue = 58,
+                Brtrue_s = 45,
+                Call = 40,
+                Calli = 41,
+                Callvirt = 111,
+                Castclass = 116,
+                Ceq = 65025,
+                Cgt = 65026,
+                Cgt_un = 65027,
+                Ckfinite = 195,
+                Clt = 65028,
+                Clt_un = 65029,
+                Constrained = 65046,
+                Conv_i = 211,
+                Conv_i1 = 103,
+                Conv_i2 = 104,
+                Conv_i4 = 105,
+                Conv_i8 = 106,
+                Conv_ovf_i = 212,
+                Conv_ovf_i1 = 179,
+                Conv_ovf_i1_un = 130,
+                Conv_ovf_i2 = 181,
+                Conv_ovf_i2_un = 131,
+                Conv_ovf_i4 = 183,
+                Conv_ovf_i4_un = 132,
+                Conv_ovf_i8 = 185,
+                Conv_ovf_i8_un = 133,
+                Conv_ovf_i_un = 138,
+                Conv_ovf_u = 213,
+                Conv_ovf_u1 = 180,
+                Conv_ovf_u1_un = 134,
+                Conv_ovf_u2 = 182,
+                Conv_ovf_u2_un = 135,
+                Conv_ovf_u4 = 184,
+                Conv_ovf_u4_un = 136,
+                Conv_ovf_u8 = 186,
+                Conv_ovf_u8_un = 137,
+                Conv_ovf_u_un = 139,
+                Conv_r4 = 107,
+                Conv_r8 = 108,
+                Conv_r_un = 118,
+                Conv_u = 224,
+                Conv_u1 = 210,
+                Conv_u2 = 209,
+                Conv_u4 = 109,
+                Conv_u8 = 110,
+                Cpblk = 65047,
+                Cpobj = 112,
+                Div = 91,
+                Div_un = 92,
+                Dup = 37,
+                Endfilter = 65041,
+                Endfinally = 220,
+                Initblk = 65048,
+                Initobj = 65045,
+                Isinst = 117,
+                Jmp = 39,
+                Ldarg = 65033,
+                Ldarg_0 = 2,
+                Ldarg_1 = 3,
+                Ldarg_2 = 4,
+                Ldarg_3 = 5,
+                Ldarg_s = 14,
+                Ldarga = 65034,
+                Ldarga_s = 15,
+                Ldc_i4 = 32,
+                Ldc_i4_0 = 22,
+                Ldc_i4_1 = 23,
+                Ldc_i4_2 = 24,
+                Ldc_i4_3 = 25,
+                Ldc_i4_4 = 26,
+                Ldc_i4_5 = 27,
+                Ldc_i4_6 = 28,
+                Ldc_i4_7 = 29,
+                Ldc_i4_8 = 30,
+                Ldc_i4_m1 = 21,
+                Ldc_i4_s = 31,
+                Ldc_i8 = 33,
+                Ldc_r4 = 34,
+                Ldc_r8 = 35,
+                Ldelem = 163,
+                Ldelem_i = 151,
+                Ldelem_i1 = 144,
+                Ldelem_i2 = 146,
+                Ldelem_i4 = 148,
+                Ldelem_i8 = 150,
+                Ldelem_r4 = 152,
+                Ldelem_r8 = 153,
+                Ldelem_ref = 154,
+                Ldelem_u1 = 145,
+                Ldelem_u2 = 147,
+                Ldelem_u4 = 149,
+                Ldelema = 143,
+                Ldfld = 123,
+                Ldflda = 124,
+                Ldftn = 65030,
+                Ldind_i = 77,
+                Ldind_i1 = 70,
+                Ldind_i2 = 72,
+                Ldind_i4 = 74,
+                Ldind_i8 = 76,
+                Ldind_r4 = 78,
+                Ldind_r8 = 79,
+                Ldind_ref = 80,
+                Ldind_u1 = 71,
+                Ldind_u2 = 73,
+                Ldind_u4 = 75,
+                Ldlen = 142,
+                Ldloc = 65036,
+                Ldloc_0 = 6,
+                Ldloc_1 = 7,
+                Ldloc_2 = 8,
+                Ldloc_3 = 9,
+                Ldloc_s = 17,
+                Ldloca = 65037,
+                Ldloca_s = 18,
+                Ldnull = 20,
+                Ldobj = 113,
+                Ldsfld = 126,
+                Ldsflda = 127,
+                Ldstr = 114,
+                Ldtoken = 208,
+                Ldvirtftn = 65031,
+                Leave = 221,
+                Leave_s = 222,
+                Localloc = 65039,
+                Mkrefany = 198,
+                Mul = 90,
+                Mul_ovf = 216,
+                Mul_ovf_un = 217,
+                Neg = 101,
+                Newarr = 141,
+                Newobj = 115,
+                Nop = 0,
+                Not = 102,
+                Or = 96,
+                Pop = 38,
+                Readonly = 65054,
+                Refanytype = 65053,
+                Refanyval = 194,
+                Rem = 93,
+                Rem_un = 94,
+                Ret = 42,
+                Rethrow = 65050,
+                Shl = 98,
+                Shr = 99,
+                Shr_un = 100,
+                Sizeof = 65052,
+                Starg = 65035,
+                Starg_s = 16,
+                Stelem = 164,
+                Stelem_i = 155,
+                Stelem_i1 = 156,
+                Stelem_i2 = 157,
+                Stelem_i4 = 158,
+                Stelem_i8 = 159,
+                Stelem_r4 = 160,
+                Stelem_r8 = 161,
+                Stelem_ref = 162,
+                Stfld = 125,
+                Stind_i = 223,
+                Stind_i1 = 82,
+                Stind_i2 = 83,
+                Stind_i4 = 84,
+                Stind_i8 = 85,
+                Stind_r4 = 86,
+                Stind_r8 = 87,
+                Stind_ref = 81,
+                Stloc = 65038,
+                Stloc_0 = 10,
+                Stloc_1 = 11,
+                Stloc_2 = 12,
+                Stloc_3 = 13,
+                Stloc_s = 19,
+                Stobj = 129,
+                Stsfld = 128,
+                Sub = 89,
+                Sub_ovf = 218,
+                Sub_ovf_un = 219,
+                Switch = 69,
+                Tail = 65044,
+                Throw = 122,
+                Unaligned = 65042,
+                Unbox = 121,
+                Unbox_any = 165,
+                Volatile = 65043,
+                Xor = 97,
             }
 
             // Generated from `System.Reflection.Metadata.ILOpCodeExtensions` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -1447,17 +1447,17 @@ namespace System
             }
 
             // Generated from `System.Reflection.Metadata.ImportDefinitionKind` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum ImportDefinitionKind
+            public enum ImportDefinitionKind : int
             {
-                AliasAssemblyNamespace,
-                AliasAssemblyReference,
-                AliasNamespace,
-                AliasType,
-                ImportAssemblyNamespace,
-                ImportAssemblyReferenceAlias,
-                ImportNamespace,
-                ImportType,
-                ImportXmlNamespace,
+                AliasAssemblyNamespace = 8,
+                AliasAssemblyReference = 6,
+                AliasNamespace = 7,
+                AliasType = 9,
+                ImportAssemblyNamespace = 2,
+                ImportAssemblyReferenceAlias = 5,
+                ImportNamespace = 1,
+                ImportType = 3,
+                ImportXmlNamespace = 4,
             }
 
             // Generated from `System.Reflection.Metadata.ImportScope` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -1674,10 +1674,10 @@ namespace System
 
             // Generated from `System.Reflection.Metadata.LocalVariableAttributes` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             [System.Flags]
-            public enum LocalVariableAttributes
+            public enum LocalVariableAttributes : int
             {
-                DebuggerHidden,
-                None,
+                DebuggerHidden = 1,
+                None = 0,
             }
 
             // Generated from `System.Reflection.Metadata.LocalVariableHandle` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -1819,18 +1819,18 @@ namespace System
             }
 
             // Generated from `System.Reflection.Metadata.MemberReferenceKind` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum MemberReferenceKind
+            public enum MemberReferenceKind : int
             {
-                Field,
-                Method,
+                Field = 1,
+                Method = 0,
             }
 
             // Generated from `System.Reflection.Metadata.MetadataKind` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum MetadataKind
+            public enum MetadataKind : int
             {
-                Ecma335,
-                ManagedWindowsMetadata,
-                WindowsMetadata,
+                Ecma335 = 0,
+                ManagedWindowsMetadata = 2,
+                WindowsMetadata = 1,
             }
 
             // Generated from `System.Reflection.Metadata.MetadataReader` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -1920,11 +1920,11 @@ namespace System
 
             // Generated from `System.Reflection.Metadata.MetadataReaderOptions` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             [System.Flags]
-            public enum MetadataReaderOptions
+            public enum MetadataReaderOptions : int
             {
-                ApplyWindowsRuntimeProjections,
-                Default,
-                None,
+                ApplyWindowsRuntimeProjections = 1,
+                Default = 1,
+                None = 0,
             }
 
             // Generated from `System.Reflection.Metadata.MetadataReaderProvider` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -1942,11 +1942,11 @@ namespace System
 
             // Generated from `System.Reflection.Metadata.MetadataStreamOptions` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             [System.Flags]
-            public enum MetadataStreamOptions
+            public enum MetadataStreamOptions : int
             {
-                Default,
-                LeaveOpen,
-                PrefetchMetadata,
+                Default = 0,
+                LeaveOpen = 1,
+                PrefetchMetadata = 2,
             }
 
             // Generated from `System.Reflection.Metadata.MetadataStringComparer` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -2325,44 +2325,44 @@ namespace System
             }
 
             // Generated from `System.Reflection.Metadata.PrimitiveSerializationTypeCode` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum PrimitiveSerializationTypeCode
+            public enum PrimitiveSerializationTypeCode : byte
             {
-                Boolean,
-                Byte,
-                Char,
-                Double,
-                Int16,
-                Int32,
-                Int64,
-                SByte,
-                Single,
-                String,
-                UInt16,
-                UInt32,
-                UInt64,
+                Boolean = 2,
+                Byte = 5,
+                Char = 3,
+                Double = 13,
+                Int16 = 6,
+                Int32 = 8,
+                Int64 = 10,
+                SByte = 4,
+                Single = 12,
+                String = 14,
+                UInt16 = 7,
+                UInt32 = 9,
+                UInt64 = 11,
             }
 
             // Generated from `System.Reflection.Metadata.PrimitiveTypeCode` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum PrimitiveTypeCode
+            public enum PrimitiveTypeCode : byte
             {
-                Boolean,
-                Byte,
-                Char,
-                Double,
-                Int16,
-                Int32,
-                Int64,
-                IntPtr,
-                Object,
-                SByte,
-                Single,
-                String,
-                TypedReference,
-                UInt16,
-                UInt32,
-                UInt64,
-                UIntPtr,
-                Void,
+                Boolean = 2,
+                Byte = 5,
+                Char = 3,
+                Double = 13,
+                Int16 = 6,
+                Int32 = 8,
+                Int64 = 10,
+                IntPtr = 24,
+                Object = 28,
+                SByte = 4,
+                Single = 12,
+                String = 14,
+                TypedReference = 22,
+                UInt16 = 7,
+                UInt32 = 9,
+                UInt64 = 11,
+                UIntPtr = 25,
+                Void = 1,
             }
 
             // Generated from `System.Reflection.Metadata.PropertyAccessors` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -2473,48 +2473,48 @@ namespace System
             }
 
             // Generated from `System.Reflection.Metadata.SerializationTypeCode` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum SerializationTypeCode
+            public enum SerializationTypeCode : byte
             {
-                Boolean,
-                Byte,
-                Char,
-                Double,
-                Enum,
-                Int16,
-                Int32,
-                Int64,
-                Invalid,
-                SByte,
-                SZArray,
-                Single,
-                String,
-                TaggedObject,
-                Type,
-                UInt16,
-                UInt32,
-                UInt64,
+                Boolean = 2,
+                Byte = 5,
+                Char = 3,
+                Double = 13,
+                Enum = 85,
+                Int16 = 6,
+                Int32 = 8,
+                Int64 = 10,
+                Invalid = 0,
+                SByte = 4,
+                SZArray = 29,
+                Single = 12,
+                String = 14,
+                TaggedObject = 81,
+                Type = 80,
+                UInt16 = 7,
+                UInt32 = 9,
+                UInt64 = 11,
             }
 
             // Generated from `System.Reflection.Metadata.SignatureAttributes` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             [System.Flags]
-            public enum SignatureAttributes
+            public enum SignatureAttributes : byte
             {
-                ExplicitThis,
-                Generic,
-                Instance,
-                None,
+                ExplicitThis = 64,
+                Generic = 16,
+                Instance = 32,
+                None = 0,
             }
 
             // Generated from `System.Reflection.Metadata.SignatureCallingConvention` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum SignatureCallingConvention
+            public enum SignatureCallingConvention : byte
             {
-                CDecl,
-                Default,
-                FastCall,
-                StdCall,
-                ThisCall,
-                Unmanaged,
-                VarArgs,
+                CDecl = 1,
+                Default = 0,
+                FastCall = 4,
+                StdCall = 2,
+                ThisCall = 3,
+                Unmanaged = 9,
+                VarArgs = 5,
             }
 
             // Generated from `System.Reflection.Metadata.SignatureHeader` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -2540,58 +2540,58 @@ namespace System
             }
 
             // Generated from `System.Reflection.Metadata.SignatureKind` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum SignatureKind
+            public enum SignatureKind : byte
             {
-                Field,
-                LocalVariables,
-                Method,
-                MethodSpecification,
-                Property,
+                Field = 6,
+                LocalVariables = 7,
+                Method = 0,
+                MethodSpecification = 10,
+                Property = 8,
             }
 
             // Generated from `System.Reflection.Metadata.SignatureTypeCode` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum SignatureTypeCode
+            public enum SignatureTypeCode : byte
             {
-                Array,
-                Boolean,
-                ByReference,
-                Byte,
-                Char,
-                Double,
-                FunctionPointer,
-                GenericMethodParameter,
-                GenericTypeInstance,
-                GenericTypeParameter,
-                Int16,
-                Int32,
-                Int64,
-                IntPtr,
-                Invalid,
-                Object,
-                OptionalModifier,
-                Pinned,
-                Pointer,
-                RequiredModifier,
-                SByte,
-                SZArray,
-                Sentinel,
-                Single,
-                String,
-                TypeHandle,
-                TypedReference,
-                UInt16,
-                UInt32,
-                UInt64,
-                UIntPtr,
-                Void,
+                Array = 20,
+                Boolean = 2,
+                ByReference = 16,
+                Byte = 5,
+                Char = 3,
+                Double = 13,
+                FunctionPointer = 27,
+                GenericMethodParameter = 30,
+                GenericTypeInstance = 21,
+                GenericTypeParameter = 19,
+                Int16 = 6,
+                Int32 = 8,
+                Int64 = 10,
+                IntPtr = 24,
+                Invalid = 0,
+                Object = 28,
+                OptionalModifier = 32,
+                Pinned = 69,
+                Pointer = 15,
+                RequiredModifier = 31,
+                SByte = 4,
+                SZArray = 29,
+                Sentinel = 65,
+                Single = 12,
+                String = 14,
+                TypeHandle = 64,
+                TypedReference = 22,
+                UInt16 = 7,
+                UInt32 = 9,
+                UInt64 = 11,
+                UIntPtr = 25,
+                Void = 1,
             }
 
             // Generated from `System.Reflection.Metadata.SignatureTypeKind` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum SignatureTypeKind
+            public enum SignatureTypeKind : byte
             {
-                Class,
-                Unknown,
-                ValueType,
+                Class = 18,
+                Unknown = 0,
+                ValueType = 17,
             }
 
             // Generated from `System.Reflection.Metadata.StandaloneSignature` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -2622,10 +2622,10 @@ namespace System
             }
 
             // Generated from `System.Reflection.Metadata.StandaloneSignatureKind` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum StandaloneSignatureKind
+            public enum StandaloneSignatureKind : int
             {
-                LocalVariables,
-                Method,
+                LocalVariables = 1,
+                Method = 0,
             }
 
             // Generated from `System.Reflection.Metadata.StringHandle` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -2924,14 +2924,14 @@ namespace System
                 }
 
                 // Generated from `System.Reflection.Metadata.Ecma335.EditAndContinueOperation` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-                public enum EditAndContinueOperation
+                public enum EditAndContinueOperation : int
                 {
-                    AddEvent,
-                    AddField,
-                    AddMethod,
-                    AddParameter,
-                    AddProperty,
-                    Default,
+                    AddEvent = 5,
+                    AddField = 2,
+                    AddMethod = 1,
+                    AddParameter = 3,
+                    AddProperty = 4,
+                    Default = 0,
                 }
 
                 // Generated from `System.Reflection.Metadata.Ecma335.ExceptionRegionEncoder` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -2965,11 +2965,11 @@ namespace System
                 }
 
                 // Generated from `System.Reflection.Metadata.Ecma335.FunctionPointerAttributes` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-                public enum FunctionPointerAttributes
+                public enum FunctionPointerAttributes : int
                 {
-                    HasExplicitThis,
-                    HasThis,
-                    None,
+                    HasExplicitThis = 96,
+                    HasThis = 32,
+                    None = 0,
                 }
 
                 // Generated from `System.Reflection.Metadata.Ecma335.GenericTypeArgumentsEncoder` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -2982,12 +2982,12 @@ namespace System
                 }
 
                 // Generated from `System.Reflection.Metadata.Ecma335.HeapIndex` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-                public enum HeapIndex
+                public enum HeapIndex : int
                 {
-                    Blob,
-                    Guid,
-                    String,
-                    UserString,
+                    Blob = 2,
+                    Guid = 3,
+                    String = 1,
+                    UserString = 0,
                 }
 
                 // Generated from `System.Reflection.Metadata.Ecma335.InstructionEncoder` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -3251,10 +3251,10 @@ namespace System
 
                 // Generated from `System.Reflection.Metadata.Ecma335.MethodBodyAttributes` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 [System.Flags]
-                public enum MethodBodyAttributes
+                public enum MethodBodyAttributes : int
                 {
-                    InitLocals,
-                    None,
+                    InitLocals = 1,
+                    None = 0,
                 }
 
                 // Generated from `System.Reflection.Metadata.Ecma335.MethodBodyStreamEncoder` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -3434,61 +3434,61 @@ namespace System
                 }
 
                 // Generated from `System.Reflection.Metadata.Ecma335.TableIndex` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-                public enum TableIndex
+                public enum TableIndex : byte
                 {
-                    Assembly,
-                    AssemblyOS,
-                    AssemblyProcessor,
-                    AssemblyRef,
-                    AssemblyRefOS,
-                    AssemblyRefProcessor,
-                    ClassLayout,
-                    Constant,
-                    CustomAttribute,
-                    CustomDebugInformation,
-                    DeclSecurity,
-                    Document,
-                    EncLog,
-                    EncMap,
-                    Event,
-                    EventMap,
-                    EventPtr,
-                    ExportedType,
-                    Field,
-                    FieldLayout,
-                    FieldMarshal,
-                    FieldPtr,
-                    FieldRva,
-                    File,
-                    GenericParam,
-                    GenericParamConstraint,
-                    ImplMap,
-                    ImportScope,
-                    InterfaceImpl,
-                    LocalConstant,
-                    LocalScope,
-                    LocalVariable,
-                    ManifestResource,
-                    MemberRef,
-                    MethodDebugInformation,
-                    MethodDef,
-                    MethodImpl,
-                    MethodPtr,
-                    MethodSemantics,
-                    MethodSpec,
-                    Module,
-                    ModuleRef,
-                    NestedClass,
-                    Param,
-                    ParamPtr,
-                    Property,
-                    PropertyMap,
-                    PropertyPtr,
-                    StandAloneSig,
-                    StateMachineMethod,
-                    TypeDef,
-                    TypeRef,
-                    TypeSpec,
+                    Assembly = 32,
+                    AssemblyOS = 34,
+                    AssemblyProcessor = 33,
+                    AssemblyRef = 35,
+                    AssemblyRefOS = 37,
+                    AssemblyRefProcessor = 36,
+                    ClassLayout = 15,
+                    Constant = 11,
+                    CustomAttribute = 12,
+                    CustomDebugInformation = 55,
+                    DeclSecurity = 14,
+                    Document = 48,
+                    EncLog = 30,
+                    EncMap = 31,
+                    Event = 20,
+                    EventMap = 18,
+                    EventPtr = 19,
+                    ExportedType = 39,
+                    Field = 4,
+                    FieldLayout = 16,
+                    FieldMarshal = 13,
+                    FieldPtr = 3,
+                    FieldRva = 29,
+                    File = 38,
+                    GenericParam = 42,
+                    GenericParamConstraint = 44,
+                    ImplMap = 28,
+                    ImportScope = 53,
+                    InterfaceImpl = 9,
+                    LocalConstant = 52,
+                    LocalScope = 50,
+                    LocalVariable = 51,
+                    ManifestResource = 40,
+                    MemberRef = 10,
+                    MethodDebugInformation = 49,
+                    MethodDef = 6,
+                    MethodImpl = 25,
+                    MethodPtr = 5,
+                    MethodSemantics = 24,
+                    MethodSpec = 43,
+                    Module = 0,
+                    ModuleRef = 26,
+                    NestedClass = 41,
+                    Param = 8,
+                    ParamPtr = 7,
+                    Property = 23,
+                    PropertyMap = 21,
+                    PropertyPtr = 22,
+                    StandAloneSig = 17,
+                    StateMachineMethod = 54,
+                    TypeDef = 2,
+                    TypeRef = 1,
+                    TypeSpec = 27,
                 }
 
                 // Generated from `System.Reflection.Metadata.Ecma335.VectorEncoder` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -3506,23 +3506,23 @@ namespace System
         {
             // Generated from `System.Reflection.PortableExecutable.Characteristics` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             [System.Flags]
-            public enum Characteristics
+            public enum Characteristics : ushort
             {
-                AggressiveWSTrim,
-                Bit32Machine,
-                BytesReversedHi,
-                BytesReversedLo,
-                DebugStripped,
-                Dll,
-                ExecutableImage,
-                LargeAddressAware,
-                LineNumsStripped,
-                LocalSymsStripped,
-                NetRunFromSwap,
-                RelocsStripped,
-                RemovableRunFromSwap,
-                System,
-                UpSystemOnly,
+                AggressiveWSTrim = 16,
+                Bit32Machine = 256,
+                BytesReversedHi = 32768,
+                BytesReversedLo = 128,
+                DebugStripped = 512,
+                Dll = 8192,
+                ExecutableImage = 2,
+                LargeAddressAware = 32,
+                LineNumsStripped = 4,
+                LocalSymsStripped = 8,
+                NetRunFromSwap = 2048,
+                RelocsStripped = 1,
+                RemovableRunFromSwap = 1024,
+                System = 4096,
+                UpSystemOnly = 16384,
             }
 
             // Generated from `System.Reflection.PortableExecutable.CodeViewDebugDirectoryData` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -3548,15 +3548,15 @@ namespace System
 
             // Generated from `System.Reflection.PortableExecutable.CorFlags` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             [System.Flags]
-            public enum CorFlags
+            public enum CorFlags : int
             {
-                ILLibrary,
-                ILOnly,
-                NativeEntryPoint,
-                Prefers32Bit,
-                Requires32Bit,
-                StrongNameSigned,
-                TrackDebugData,
+                ILLibrary = 4,
+                ILOnly = 1,
+                NativeEntryPoint = 16,
+                Prefers32Bit = 131072,
+                Requires32Bit = 2,
+                StrongNameSigned = 8,
+                TrackDebugData = 65536,
             }
 
             // Generated from `System.Reflection.PortableExecutable.CorHeader` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -3604,14 +3604,14 @@ namespace System
             }
 
             // Generated from `System.Reflection.PortableExecutable.DebugDirectoryEntryType` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum DebugDirectoryEntryType
+            public enum DebugDirectoryEntryType : int
             {
-                CodeView,
-                Coff,
-                EmbeddedPortablePdb,
-                PdbChecksum,
-                Reproducible,
-                Unknown,
+                CodeView = 2,
+                Coff = 1,
+                EmbeddedPortablePdb = 17,
+                PdbChecksum = 19,
+                Reproducible = 16,
+                Unknown = 0,
             }
 
             // Generated from `System.Reflection.PortableExecutable.DirectoryEntry` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -3625,51 +3625,51 @@ namespace System
 
             // Generated from `System.Reflection.PortableExecutable.DllCharacteristics` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             [System.Flags]
-            public enum DllCharacteristics
+            public enum DllCharacteristics : ushort
             {
-                AppContainer,
-                DynamicBase,
-                HighEntropyVirtualAddressSpace,
-                NoBind,
-                NoIsolation,
-                NoSeh,
-                NxCompatible,
-                ProcessInit,
-                ProcessTerm,
-                TerminalServerAware,
-                ThreadInit,
-                ThreadTerm,
-                WdmDriver,
+                AppContainer = 4096,
+                DynamicBase = 64,
+                HighEntropyVirtualAddressSpace = 32,
+                NoBind = 2048,
+                NoIsolation = 512,
+                NoSeh = 1024,
+                NxCompatible = 256,
+                ProcessInit = 1,
+                ProcessTerm = 2,
+                TerminalServerAware = 32768,
+                ThreadInit = 4,
+                ThreadTerm = 8,
+                WdmDriver = 8192,
             }
 
             // Generated from `System.Reflection.PortableExecutable.Machine` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum Machine
+            public enum Machine : ushort
             {
-                AM33,
-                Alpha,
-                Alpha64,
-                Amd64,
-                Arm,
-                Arm64,
-                ArmThumb2,
-                Ebc,
-                I386,
-                IA64,
-                M32R,
-                MIPS16,
-                MipsFpu,
-                MipsFpu16,
-                PowerPC,
-                PowerPCFP,
-                SH3,
-                SH3Dsp,
-                SH3E,
-                SH4,
-                SH5,
-                Thumb,
-                Tricore,
-                Unknown,
-                WceMipsV2,
+                AM33 = 467,
+                Alpha = 388,
+                Alpha64 = 644,
+                Amd64 = 34404,
+                Arm = 448,
+                Arm64 = 43620,
+                ArmThumb2 = 452,
+                Ebc = 3772,
+                I386 = 332,
+                IA64 = 512,
+                M32R = 36929,
+                MIPS16 = 614,
+                MipsFpu = 870,
+                MipsFpu16 = 1126,
+                PowerPC = 496,
+                PowerPCFP = 497,
+                SH3 = 418,
+                SH3Dsp = 419,
+                SH3E = 420,
+                SH4 = 422,
+                SH5 = 424,
+                Thumb = 450,
+                Tricore = 1312,
+                Unknown = 0,
+                WceMipsV2 = 361,
             }
 
             // Generated from `System.Reflection.PortableExecutable.ManagedPEBuilder` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -3828,10 +3828,10 @@ namespace System
             }
 
             // Generated from `System.Reflection.PortableExecutable.PEMagic` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum PEMagic
+            public enum PEMagic : ushort
             {
-                PE32,
-                PE32Plus,
+                PE32 = 267,
+                PE32Plus = 523,
             }
 
             // Generated from `System.Reflection.PortableExecutable.PEMemoryBlock` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -3873,13 +3873,13 @@ namespace System
 
             // Generated from `System.Reflection.PortableExecutable.PEStreamOptions` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             [System.Flags]
-            public enum PEStreamOptions
+            public enum PEStreamOptions : int
             {
-                Default,
-                IsLoadedImage,
-                LeaveOpen,
-                PrefetchEntireImage,
-                PrefetchMetadata,
+                Default = 0,
+                IsLoadedImage = 8,
+                LeaveOpen = 1,
+                PrefetchEntireImage = 4,
+                PrefetchMetadata = 2,
             }
 
             // Generated from `System.Reflection.PortableExecutable.PdbChecksumDebugDirectoryData` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -3899,54 +3899,54 @@ namespace System
 
             // Generated from `System.Reflection.PortableExecutable.SectionCharacteristics` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             [System.Flags]
-            public enum SectionCharacteristics
+            public enum SectionCharacteristics : uint
             {
-                Align1024Bytes,
-                Align128Bytes,
-                Align16Bytes,
-                Align1Bytes,
-                Align2048Bytes,
-                Align256Bytes,
-                Align2Bytes,
-                Align32Bytes,
-                Align4096Bytes,
-                Align4Bytes,
-                Align512Bytes,
-                Align64Bytes,
-                Align8192Bytes,
-                Align8Bytes,
-                AlignMask,
-                ContainsCode,
-                ContainsInitializedData,
-                ContainsUninitializedData,
-                GPRel,
-                LinkerComdat,
-                LinkerInfo,
-                LinkerNRelocOvfl,
-                LinkerOther,
-                LinkerRemove,
-                Mem16Bit,
-                MemDiscardable,
-                MemExecute,
-                MemFardata,
-                MemLocked,
-                MemNotCached,
-                MemNotPaged,
-                MemPreload,
-                MemProtected,
-                MemPurgeable,
-                MemRead,
-                MemShared,
-                MemSysheap,
-                MemWrite,
-                NoDeferSpecExc,
-                TypeCopy,
-                TypeDSect,
-                TypeGroup,
-                TypeNoLoad,
-                TypeNoPad,
-                TypeOver,
-                TypeReg,
+                Align1024Bytes = 11534336,
+                Align128Bytes = 8388608,
+                Align16Bytes = 5242880,
+                Align1Bytes = 1048576,
+                Align2048Bytes = 12582912,
+                Align256Bytes = 9437184,
+                Align2Bytes = 2097152,
+                Align32Bytes = 6291456,
+                Align4096Bytes = 13631488,
+                Align4Bytes = 3145728,
+                Align512Bytes = 10485760,
+                Align64Bytes = 7340032,
+                Align8192Bytes = 14680064,
+                Align8Bytes = 4194304,
+                AlignMask = 15728640,
+                ContainsCode = 32,
+                ContainsInitializedData = 64,
+                ContainsUninitializedData = 128,
+                GPRel = 32768,
+                LinkerComdat = 4096,
+                LinkerInfo = 512,
+                LinkerNRelocOvfl = 16777216,
+                LinkerOther = 256,
+                LinkerRemove = 2048,
+                Mem16Bit = 131072,
+                MemDiscardable = 33554432,
+                MemExecute = 536870912,
+                MemFardata = 32768,
+                MemLocked = 262144,
+                MemNotCached = 67108864,
+                MemNotPaged = 134217728,
+                MemPreload = 524288,
+                MemProtected = 16384,
+                MemPurgeable = 131072,
+                MemRead = 1073741824,
+                MemShared = 268435456,
+                MemSysheap = 65536,
+                MemWrite = 2147483648,
+                NoDeferSpecExc = 16384,
+                TypeCopy = 16,
+                TypeDSect = 1,
+                TypeGroup = 4,
+                TypeNoLoad = 2,
+                TypeNoPad = 8,
+                TypeOver = 1024,
+                TypeReg = 0,
             }
 
             // Generated from `System.Reflection.PortableExecutable.SectionHeader` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -3975,22 +3975,22 @@ namespace System
             }
 
             // Generated from `System.Reflection.PortableExecutable.Subsystem` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum Subsystem
+            public enum Subsystem : ushort
             {
-                EfiApplication,
-                EfiBootServiceDriver,
-                EfiRom,
-                EfiRuntimeDriver,
-                Native,
-                NativeWindows,
-                OS2Cui,
-                PosixCui,
-                Unknown,
-                WindowsBootApplication,
-                WindowsCEGui,
-                WindowsCui,
-                WindowsGui,
-                Xbox,
+                EfiApplication = 10,
+                EfiBootServiceDriver = 11,
+                EfiRom = 13,
+                EfiRuntimeDriver = 12,
+                Native = 1,
+                NativeWindows = 8,
+                OS2Cui = 5,
+                PosixCui = 7,
+                Unknown = 0,
+                WindowsBootApplication = 16,
+                WindowsCEGui = 9,
+                WindowsCui = 3,
+                WindowsGui = 2,
+                Xbox = 14,
             }
 
         }

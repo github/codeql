@@ -67,10 +67,10 @@ namespace System
             }
 
             // Generated from `System.Security.Cryptography.FromBase64TransformMode` in `System.Security.Cryptography.Encoding, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum FromBase64TransformMode
+            public enum FromBase64TransformMode : int
             {
-                DoNotIgnoreWhiteSpaces,
-                IgnoreWhiteSpaces,
+                DoNotIgnoreWhiteSpaces = 1,
+                IgnoreWhiteSpaces = 0,
             }
 
             // Generated from `System.Security.Cryptography.Oid` in `System.Security.Cryptography.Encoding, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -112,19 +112,19 @@ namespace System
             }
 
             // Generated from `System.Security.Cryptography.OidGroup` in `System.Security.Cryptography.Encoding, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum OidGroup
+            public enum OidGroup : int
             {
-                All,
-                Attribute,
-                EncryptionAlgorithm,
-                EnhancedKeyUsage,
-                ExtensionOrAttribute,
-                HashAlgorithm,
-                KeyDerivationFunction,
-                Policy,
-                PublicKeyAlgorithm,
-                SignatureAlgorithm,
-                Template,
+                All = 0,
+                Attribute = 5,
+                EncryptionAlgorithm = 2,
+                EnhancedKeyUsage = 7,
+                ExtensionOrAttribute = 6,
+                HashAlgorithm = 1,
+                KeyDerivationFunction = 10,
+                Policy = 8,
+                PublicKeyAlgorithm = 3,
+                SignatureAlgorithm = 4,
+                Template = 9,
             }
 
             // Generated from `System.Security.Cryptography.PemEncoding` in `System.Security.Cryptography.Encoding, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`

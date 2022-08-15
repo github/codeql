@@ -92,10 +92,10 @@ namespace Microsoft
             }
 
             // Generated from `Microsoft.AspNetCore.Routing.RouteDirection` in `Microsoft.AspNetCore.Routing.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
-            public enum RouteDirection
+            public enum RouteDirection : int
             {
-                IncomingRequest,
-                UrlGeneration,
+                IncomingRequest = 0,
+                UrlGeneration = 1,
             }
 
             // Generated from `Microsoft.AspNetCore.Routing.RoutingHttpContextExtensions` in `Microsoft.AspNetCore.Routing.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`

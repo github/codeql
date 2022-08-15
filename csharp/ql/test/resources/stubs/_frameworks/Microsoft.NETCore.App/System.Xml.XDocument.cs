@@ -31,29 +31,29 @@ namespace System
 
             // Generated from `System.Xml.Linq.LoadOptions` in `System.Xml.XDocument, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             [System.Flags]
-            public enum LoadOptions
+            public enum LoadOptions : int
             {
-                None,
-                PreserveWhitespace,
-                SetBaseUri,
-                SetLineInfo,
+                None = 0,
+                PreserveWhitespace = 1,
+                SetBaseUri = 2,
+                SetLineInfo = 4,
             }
 
             // Generated from `System.Xml.Linq.ReaderOptions` in `System.Xml.XDocument, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             [System.Flags]
-            public enum ReaderOptions
+            public enum ReaderOptions : int
             {
-                None,
-                OmitDuplicateNamespaces,
+                None = 0,
+                OmitDuplicateNamespaces = 1,
             }
 
             // Generated from `System.Xml.Linq.SaveOptions` in `System.Xml.XDocument, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             [System.Flags]
-            public enum SaveOptions
+            public enum SaveOptions : int
             {
-                DisableFormatting,
-                None,
-                OmitDuplicateNamespaces,
+                DisableFormatting = 1,
+                None = 0,
+                OmitDuplicateNamespaces = 2,
             }
 
             // Generated from `System.Xml.Linq.XAttribute` in `System.Xml.XDocument, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -411,12 +411,12 @@ namespace System
             }
 
             // Generated from `System.Xml.Linq.XObjectChange` in `System.Xml.XDocument, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum XObjectChange
+            public enum XObjectChange : int
             {
-                Add,
-                Name,
-                Remove,
-                Value,
+                Add = 0,
+                Name = 2,
+                Remove = 1,
+                Value = 3,
             }
 
             // Generated from `System.Xml.Linq.XObjectChangeEventArgs` in `System.Xml.XDocument, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`

@@ -5,33 +5,33 @@ namespace System
     namespace Xml
     {
         // Generated from `System.Xml.ConformanceLevel` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum ConformanceLevel
+        public enum ConformanceLevel : int
         {
-            Auto,
-            Document,
-            Fragment,
+            Auto = 0,
+            Document = 2,
+            Fragment = 1,
         }
 
         // Generated from `System.Xml.DtdProcessing` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum DtdProcessing
+        public enum DtdProcessing : int
         {
-            Ignore,
-            Parse,
-            Prohibit,
+            Ignore = 1,
+            Parse = 2,
+            Prohibit = 0,
         }
 
         // Generated from `System.Xml.EntityHandling` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum EntityHandling
+        public enum EntityHandling : int
         {
-            ExpandCharEntities,
-            ExpandEntities,
+            ExpandCharEntities = 2,
+            ExpandEntities = 1,
         }
 
         // Generated from `System.Xml.Formatting` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum Formatting
+        public enum Formatting : int
         {
-            Indented,
-            None,
+            Indented = 1,
+            None = 0,
         }
 
         // Generated from `System.Xml.IApplicationResourceStreamResolver` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -74,58 +74,58 @@ namespace System
 
         // Generated from `System.Xml.NamespaceHandling` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         [System.Flags]
-        public enum NamespaceHandling
+        public enum NamespaceHandling : int
         {
-            Default,
-            OmitDuplicates,
+            Default = 0,
+            OmitDuplicates = 1,
         }
 
         // Generated from `System.Xml.NewLineHandling` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum NewLineHandling
+        public enum NewLineHandling : int
         {
-            Entitize,
-            None,
-            Replace,
+            Entitize = 1,
+            None = 2,
+            Replace = 0,
         }
 
         // Generated from `System.Xml.ReadState` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum ReadState
+        public enum ReadState : int
         {
-            Closed,
-            EndOfFile,
-            Error,
-            Initial,
-            Interactive,
+            Closed = 4,
+            EndOfFile = 3,
+            Error = 2,
+            Initial = 0,
+            Interactive = 1,
         }
 
         // Generated from `System.Xml.ValidationType` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum ValidationType
+        public enum ValidationType : int
         {
-            Auto,
-            DTD,
-            None,
-            Schema,
-            XDR,
+            Auto = 1,
+            DTD = 2,
+            None = 0,
+            Schema = 4,
+            XDR = 3,
         }
 
         // Generated from `System.Xml.WhitespaceHandling` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum WhitespaceHandling
+        public enum WhitespaceHandling : int
         {
-            All,
-            None,
-            Significant,
+            All = 0,
+            None = 2,
+            Significant = 1,
         }
 
         // Generated from `System.Xml.WriteState` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum WriteState
+        public enum WriteState : int
         {
-            Attribute,
-            Closed,
-            Content,
-            Element,
-            Error,
-            Prolog,
-            Start,
+            Attribute = 3,
+            Closed = 5,
+            Content = 4,
+            Element = 2,
+            Error = 6,
+            Prolog = 1,
+            Start = 0,
         }
 
         // Generated from `System.Xml.XmlAttribute` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -288,12 +288,12 @@ namespace System
         }
 
         // Generated from `System.Xml.XmlDateTimeSerializationMode` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum XmlDateTimeSerializationMode
+        public enum XmlDateTimeSerializationMode : int
         {
-            Local,
-            RoundtripKind,
-            Unspecified,
-            Utc,
+            Local = 0,
+            RoundtripKind = 3,
+            Unspecified = 2,
+            Utc = 1,
         }
 
         // Generated from `System.Xml.XmlDeclaration` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -568,11 +568,11 @@ namespace System
         }
 
         // Generated from `System.Xml.XmlNamespaceScope` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum XmlNamespaceScope
+        public enum XmlNamespaceScope : int
         {
-            All,
-            ExcludeXml,
-            Local,
+            All = 0,
+            ExcludeXml = 1,
+            Local = 2,
         }
 
         // Generated from `System.Xml.XmlNode` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -629,11 +629,11 @@ namespace System
         }
 
         // Generated from `System.Xml.XmlNodeChangedAction` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum XmlNodeChangedAction
+        public enum XmlNodeChangedAction : int
         {
-            Change,
-            Insert,
-            Remove,
+            Change = 2,
+            Insert = 0,
+            Remove = 1,
         }
 
         // Generated from `System.Xml.XmlNodeChangedEventArgs` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -665,12 +665,12 @@ namespace System
         }
 
         // Generated from `System.Xml.XmlNodeOrder` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum XmlNodeOrder
+        public enum XmlNodeOrder : int
         {
-            After,
-            Before,
-            Same,
-            Unknown,
+            After = 1,
+            Before = 0,
+            Same = 2,
+            Unknown = 3,
         }
 
         // Generated from `System.Xml.XmlNodeReader` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -724,26 +724,26 @@ namespace System
         }
 
         // Generated from `System.Xml.XmlNodeType` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum XmlNodeType
+        public enum XmlNodeType : int
         {
-            Attribute,
-            CDATA,
-            Comment,
-            Document,
-            DocumentFragment,
-            DocumentType,
-            Element,
-            EndElement,
-            EndEntity,
-            Entity,
-            EntityReference,
-            None,
-            Notation,
-            ProcessingInstruction,
-            SignificantWhitespace,
-            Text,
-            Whitespace,
-            XmlDeclaration,
+            Attribute = 2,
+            CDATA = 4,
+            Comment = 8,
+            Document = 9,
+            DocumentFragment = 11,
+            DocumentType = 10,
+            Element = 1,
+            EndElement = 15,
+            EndEntity = 16,
+            Entity = 6,
+            EntityReference = 5,
+            None = 0,
+            Notation = 12,
+            ProcessingInstruction = 7,
+            SignificantWhitespace = 14,
+            Text = 3,
+            Whitespace = 13,
+            XmlDeclaration = 17,
         }
 
         // Generated from `System.Xml.XmlNotation` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -763,12 +763,12 @@ namespace System
         }
 
         // Generated from `System.Xml.XmlOutputMethod` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum XmlOutputMethod
+        public enum XmlOutputMethod : int
         {
-            AutoDetect,
-            Html,
-            Text,
-            Xml,
+            AutoDetect = 3,
+            Html = 1,
+            Text = 2,
+            Xml = 0,
         }
 
         // Generated from `System.Xml.XmlParserContext` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -1027,11 +1027,11 @@ namespace System
         }
 
         // Generated from `System.Xml.XmlSpace` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum XmlSpace
+        public enum XmlSpace : int
         {
-            Default,
-            None,
-            Preserve,
+            Default = 1,
+            None = 0,
+            Preserve = 2,
         }
 
         // Generated from `System.Xml.XmlText` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -1176,21 +1176,21 @@ namespace System
         }
 
         // Generated from `System.Xml.XmlTokenizedType` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum XmlTokenizedType
+        public enum XmlTokenizedType : int
         {
-            CDATA,
-            ENTITIES,
-            ENTITY,
-            ENUMERATION,
-            ID,
-            IDREF,
-            IDREFS,
-            NCName,
-            NMTOKEN,
-            NMTOKENS,
-            NOTATION,
-            None,
-            QName,
+            CDATA = 0,
+            ENTITIES = 5,
+            ENTITY = 4,
+            ENUMERATION = 9,
+            ID = 1,
+            IDREF = 2,
+            IDREFS = 3,
+            NCName = 11,
+            NMTOKEN = 6,
+            NMTOKENS = 7,
+            NOTATION = 8,
+            None = 12,
+            QName = 10,
         }
 
         // Generated from `System.Xml.XmlUrlResolver` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -1416,12 +1416,12 @@ namespace System
         {
             // Generated from `System.Xml.Resolvers.XmlKnownDtds` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             [System.Flags]
-            public enum XmlKnownDtds
+            public enum XmlKnownDtds : int
             {
-                All,
-                None,
-                Rss091,
-                Xhtml10,
+                All = 65535,
+                None = 0,
+                Rss091 = 2,
+                Xhtml10 = 1,
             }
 
             // Generated from `System.Xml.Resolvers.XmlPreloadedResolver` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -1720,21 +1720,21 @@ namespace System
             }
 
             // Generated from `System.Xml.Schema.XmlSchemaContentProcessing` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum XmlSchemaContentProcessing
+            public enum XmlSchemaContentProcessing : int
             {
-                Lax,
-                None,
-                Skip,
-                Strict,
+                Lax = 2,
+                None = 0,
+                Skip = 1,
+                Strict = 3,
             }
 
             // Generated from `System.Xml.Schema.XmlSchemaContentType` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum XmlSchemaContentType
+            public enum XmlSchemaContentType : int
             {
-                ElementOnly,
-                Empty,
-                Mixed,
-                TextOnly,
+                ElementOnly = 2,
+                Empty = 1,
+                Mixed = 3,
+                TextOnly = 0,
             }
 
             // Generated from `System.Xml.Schema.XmlSchemaDatatype` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -1751,25 +1751,25 @@ namespace System
             }
 
             // Generated from `System.Xml.Schema.XmlSchemaDatatypeVariety` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum XmlSchemaDatatypeVariety
+            public enum XmlSchemaDatatypeVariety : int
             {
-                Atomic,
-                List,
-                Union,
+                Atomic = 0,
+                List = 1,
+                Union = 2,
             }
 
             // Generated from `System.Xml.Schema.XmlSchemaDerivationMethod` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             [System.Flags]
-            public enum XmlSchemaDerivationMethod
+            public enum XmlSchemaDerivationMethod : int
             {
-                All,
-                Empty,
-                Extension,
-                List,
-                None,
-                Restriction,
-                Substitution,
-                Union,
+                All = 255,
+                Empty = 0,
+                Extension = 2,
+                List = 8,
+                None = 256,
+                Restriction = 4,
+                Substitution = 1,
+                Union = 16,
             }
 
             // Generated from `System.Xml.Schema.XmlSchemaDocumentation` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -1846,11 +1846,11 @@ namespace System
             }
 
             // Generated from `System.Xml.Schema.XmlSchemaForm` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum XmlSchemaForm
+            public enum XmlSchemaForm : int
             {
-                None,
-                Qualified,
-                Unqualified,
+                None = 0,
+                Qualified = 1,
+                Unqualified = 2,
             }
 
             // Generated from `System.Xml.Schema.XmlSchemaFractionDigitsFacet` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -1912,10 +1912,10 @@ namespace System
             public class XmlSchemaInference
             {
                 // Generated from `System.Xml.Schema.XmlSchemaInference+InferenceOption` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-                public enum InferenceOption
+                public enum InferenceOption : int
                 {
-                    Relaxed,
-                    Restricted,
+                    Relaxed = 1,
+                    Restricted = 0,
                 }
 
 
@@ -2236,12 +2236,12 @@ namespace System
             }
 
             // Generated from `System.Xml.Schema.XmlSchemaUse` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum XmlSchemaUse
+            public enum XmlSchemaUse : int
             {
-                None,
-                Optional,
-                Prohibited,
-                Required,
+                None = 0,
+                Optional = 1,
+                Prohibited = 2,
+                Required = 3,
             }
 
             // Generated from `System.Xml.Schema.XmlSchemaValidationException` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -2259,14 +2259,14 @@ namespace System
 
             // Generated from `System.Xml.Schema.XmlSchemaValidationFlags` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             [System.Flags]
-            public enum XmlSchemaValidationFlags
+            public enum XmlSchemaValidationFlags : int
             {
-                AllowXmlAttributes,
-                None,
-                ProcessIdentityConstraints,
-                ProcessInlineSchema,
-                ProcessSchemaLocation,
-                ReportValidationWarnings,
+                AllowXmlAttributes = 16,
+                None = 0,
+                ProcessIdentityConstraints = 8,
+                ProcessInlineSchema = 1,
+                ProcessSchemaLocation = 2,
+                ReportValidationWarnings = 4,
             }
 
             // Generated from `System.Xml.Schema.XmlSchemaValidator` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -2300,11 +2300,11 @@ namespace System
             }
 
             // Generated from `System.Xml.Schema.XmlSchemaValidity` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum XmlSchemaValidity
+            public enum XmlSchemaValidity : int
             {
-                Invalid,
-                NotKnown,
-                Valid,
+                Invalid = 2,
+                NotKnown = 0,
+                Valid = 1,
             }
 
             // Generated from `System.Xml.Schema.XmlSchemaWhiteSpaceFacet` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -2321,70 +2321,70 @@ namespace System
             }
 
             // Generated from `System.Xml.Schema.XmlSeverityType` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum XmlSeverityType
+            public enum XmlSeverityType : int
             {
-                Error,
-                Warning,
+                Error = 0,
+                Warning = 1,
             }
 
             // Generated from `System.Xml.Schema.XmlTypeCode` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum XmlTypeCode
+            public enum XmlTypeCode : int
             {
-                AnyAtomicType,
-                AnyUri,
-                Attribute,
-                Base64Binary,
-                Boolean,
-                Byte,
-                Comment,
-                Date,
-                DateTime,
-                DayTimeDuration,
-                Decimal,
-                Document,
-                Double,
-                Duration,
-                Element,
-                Entity,
-                Float,
-                GDay,
-                GMonth,
-                GMonthDay,
-                GYear,
-                GYearMonth,
-                HexBinary,
-                Id,
-                Idref,
-                Int,
-                Integer,
-                Item,
-                Language,
-                Long,
-                NCName,
-                Name,
-                Namespace,
-                NegativeInteger,
-                NmToken,
-                Node,
-                NonNegativeInteger,
-                NonPositiveInteger,
-                None,
-                NormalizedString,
-                Notation,
-                PositiveInteger,
-                ProcessingInstruction,
-                QName,
-                Short,
-                String,
-                Text,
-                Time,
-                Token,
-                UnsignedByte,
-                UnsignedInt,
-                UnsignedLong,
-                UnsignedShort,
-                UntypedAtomic,
-                YearMonthDuration,
+                AnyAtomicType = 10,
+                AnyUri = 28,
+                Attribute = 5,
+                Base64Binary = 27,
+                Boolean = 13,
+                Byte = 46,
+                Comment = 8,
+                Date = 20,
+                DateTime = 18,
+                DayTimeDuration = 54,
+                Decimal = 14,
+                Document = 3,
+                Double = 16,
+                Duration = 17,
+                Element = 4,
+                Entity = 39,
+                Float = 15,
+                GDay = 24,
+                GMonth = 25,
+                GMonthDay = 23,
+                GYear = 22,
+                GYearMonth = 21,
+                HexBinary = 26,
+                Id = 37,
+                Idref = 38,
+                Int = 44,
+                Integer = 40,
+                Item = 1,
+                Language = 33,
+                Long = 43,
+                NCName = 36,
+                Name = 35,
+                Namespace = 6,
+                NegativeInteger = 42,
+                NmToken = 34,
+                Node = 2,
+                NonNegativeInteger = 47,
+                NonPositiveInteger = 41,
+                None = 0,
+                NormalizedString = 31,
+                Notation = 30,
+                PositiveInteger = 52,
+                ProcessingInstruction = 7,
+                QName = 29,
+                Short = 45,
+                String = 12,
+                Text = 9,
+                Time = 19,
+                Token = 32,
+                UnsignedByte = 51,
+                UnsignedInt = 49,
+                UnsignedLong = 48,
+                UnsignedShort = 50,
+                UntypedAtomic = 11,
+                YearMonthDuration = 53,
             }
 
             // Generated from `System.Xml.Schema.XmlValueGetter` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -2549,11 +2549,11 @@ namespace System
             }
 
             // Generated from `System.Xml.XPath.XPathNamespaceScope` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum XPathNamespaceScope
+            public enum XPathNamespaceScope : int
             {
-                All,
-                ExcludeXml,
-                Local,
+                All = 0,
+                ExcludeXml = 1,
+                Local = 2,
             }
 
             // Generated from `System.Xml.XPath.XPathNavigator` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -2691,52 +2691,52 @@ namespace System
             }
 
             // Generated from `System.Xml.XPath.XPathNodeType` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum XPathNodeType
+            public enum XPathNodeType : int
             {
-                All,
-                Attribute,
-                Comment,
-                Element,
-                Namespace,
-                ProcessingInstruction,
-                Root,
-                SignificantWhitespace,
-                Text,
-                Whitespace,
+                All = 9,
+                Attribute = 2,
+                Comment = 8,
+                Element = 1,
+                Namespace = 3,
+                ProcessingInstruction = 7,
+                Root = 0,
+                SignificantWhitespace = 5,
+                Text = 4,
+                Whitespace = 6,
             }
 
             // Generated from `System.Xml.XPath.XPathResultType` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum XPathResultType
+            public enum XPathResultType : int
             {
-                Any,
-                Boolean,
-                Error,
-                Navigator,
-                NodeSet,
-                Number,
-                String,
+                Any = 5,
+                Boolean = 2,
+                Error = 6,
+                Navigator = 1,
+                NodeSet = 3,
+                Number = 0,
+                String = 1,
             }
 
             // Generated from `System.Xml.XPath.XmlCaseOrder` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum XmlCaseOrder
+            public enum XmlCaseOrder : int
             {
-                LowerFirst,
-                None,
-                UpperFirst,
+                LowerFirst = 2,
+                None = 0,
+                UpperFirst = 1,
             }
 
             // Generated from `System.Xml.XPath.XmlDataType` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum XmlDataType
+            public enum XmlDataType : int
             {
-                Number,
-                Text,
+                Number = 2,
+                Text = 1,
             }
 
             // Generated from `System.Xml.XPath.XmlSortOrder` in `System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum XmlSortOrder
+            public enum XmlSortOrder : int
             {
-                Ascending,
-                Descending,
+                Ascending = 1,
+                Descending = 2,
             }
 
         }

@@ -340,25 +340,25 @@ namespace Microsoft
             namespace Rendering
             {
                 // Generated from `Microsoft.AspNetCore.Mvc.Rendering.CheckBoxHiddenInputRenderMode` in `Microsoft.AspNetCore.Mvc.ViewFeatures, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
-                public enum CheckBoxHiddenInputRenderMode
+                public enum CheckBoxHiddenInputRenderMode : int
                 {
-                    EndOfForm,
-                    Inline,
-                    None,
+                    EndOfForm = 2,
+                    Inline = 1,
+                    None = 0,
                 }
 
                 // Generated from `Microsoft.AspNetCore.Mvc.Rendering.FormMethod` in `Microsoft.AspNetCore.Mvc.ViewFeatures, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
-                public enum FormMethod
+                public enum FormMethod : int
                 {
-                    Get,
-                    Post,
+                    Get = 0,
+                    Post = 1,
                 }
 
                 // Generated from `Microsoft.AspNetCore.Mvc.Rendering.Html5DateRenderingMode` in `Microsoft.AspNetCore.Mvc.ViewFeatures, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
-                public enum Html5DateRenderingMode
+                public enum Html5DateRenderingMode : int
                 {
-                    CurrentCulture,
-                    Rfc3339,
+                    CurrentCulture = 1,
+                    Rfc3339 = 0,
                 }
 
                 // Generated from `Microsoft.AspNetCore.Mvc.Rendering.HtmlHelperComponentExtensions` in `Microsoft.AspNetCore.Mvc.ViewFeatures, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
@@ -686,13 +686,13 @@ namespace Microsoft
                 }
 
                 // Generated from `Microsoft.AspNetCore.Mvc.Rendering.RenderMode` in `Microsoft.AspNetCore.Mvc.ViewFeatures, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
-                public enum RenderMode
+                public enum RenderMode : int
                 {
-                    Server,
-                    ServerPrerendered,
-                    Static,
-                    WebAssembly,
-                    WebAssemblyPrerendered,
+                    Server = 2,
+                    ServerPrerendered = 3,
+                    Static = 1,
+                    WebAssembly = 4,
+                    WebAssemblyPrerendered = 5,
                 }
 
                 // Generated from `Microsoft.AspNetCore.Mvc.Rendering.SelectList` in `Microsoft.AspNetCore.Mvc.ViewFeatures, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
@@ -753,12 +753,12 @@ namespace Microsoft
                 }
 
                 // Generated from `Microsoft.AspNetCore.Mvc.Rendering.TagRenderMode` in `Microsoft.AspNetCore.Mvc.ViewFeatures, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
-                public enum TagRenderMode
+                public enum TagRenderMode : int
                 {
-                    EndTag,
-                    Normal,
-                    SelfClosing,
-                    StartTag,
+                    EndTag = 2,
+                    Normal = 0,
+                    SelfClosing = 3,
+                    StartTag = 1,
                 }
 
                 // Generated from `Microsoft.AspNetCore.Mvc.Rendering.ViewComponentHelperExtensions` in `Microsoft.AspNetCore.Mvc.ViewFeatures, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
@@ -1346,13 +1346,13 @@ namespace Microsoft
                 }
 
                 // Generated from `Microsoft.AspNetCore.Mvc.ViewFeatures.InputType` in `Microsoft.AspNetCore.Mvc.ViewFeatures, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
-                public enum InputType
+                public enum InputType : int
                 {
-                    CheckBox,
-                    Hidden,
-                    Password,
-                    Radio,
-                    Text,
+                    CheckBox = 0,
+                    Hidden = 1,
+                    Password = 2,
+                    Radio = 3,
+                    Text = 4,
                 }
 
                 // Generated from `Microsoft.AspNetCore.Mvc.ViewFeatures.ModelExplorer` in `Microsoft.AspNetCore.Mvc.ViewFeatures, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
