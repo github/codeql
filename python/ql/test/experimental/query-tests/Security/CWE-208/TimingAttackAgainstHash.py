@@ -17,3 +17,14 @@ def verify1(msg, sig):
  
 def verify2(msg, sig):
     return sig == sign(key, msg, hashlib.sha256) #bad
+
+def constant_time_string_compare(a, b):
+    if len(a) != len(b):
+        return False
+
+    result = 0
+
+    for x, y in zip(a, b):
+        result |= ord(x) ^ ord(y)
+
+    return result == 0
