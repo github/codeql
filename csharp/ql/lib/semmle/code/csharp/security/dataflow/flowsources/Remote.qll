@@ -171,6 +171,22 @@ class ActionMethodParameter extends RemoteFlowSource, DataFlow::ParameterNode {
 /** A data flow source of remote user input (ASP.NET Core). */
 abstract class AspNetCoreRemoteFlowSource extends RemoteFlowSource { }
 
+/** A parameter to a routing method delegate. */
+class RoutingMethodParameter extends AspNetCoreRemoteFlowSource, DataFlow::ParameterNode {
+  RoutingMethodParameter() {
+    exists(Parameter p, MethodCall m |
+      p = this.getParameter() and
+      p.fromSource()
+    |
+      m.getTarget() =
+        any(MicrosoftAspNetCoreBuilderEndpointRouteBuilderExtensions c).getMapGetMethod() and
+      p = m.getArgument(2).(AnonymousFunctionExpr).getAParameter()
+    )
+  }
+
+  override string getSourceType() { result = "ASP.NET Core routing endpoint." }
+}
+
 /**
  * Data flow for ASP.NET Core.
  *

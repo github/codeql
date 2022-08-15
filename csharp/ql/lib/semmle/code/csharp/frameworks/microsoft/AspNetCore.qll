@@ -357,3 +357,15 @@ class MicrosoftAspNetCoreHttpHtmlString extends Class {
     this.hasQualifiedName("Microsoft.AspNetCore.Html", "HtmlString")
   }
 }
+
+/**
+ * The `Microsoft.AspNetCore.Builder.EndpointRouteBuilderExtensions` class.
+ */
+class MicrosoftAspNetCoreBuilderEndpointRouteBuilderExtensions extends Class {
+  MicrosoftAspNetCoreBuilderEndpointRouteBuilderExtensions() {
+    this.hasQualifiedName("Microsoft.AspNetCore.Builder", "EndpointRouteBuilderExtensions")
+  }
+
+  /** Gets the `UseMap` extension method. */
+  Method getMapGetMethod() { result = this.getAMethod("MapGet") }
+}
