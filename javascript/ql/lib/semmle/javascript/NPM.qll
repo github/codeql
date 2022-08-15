@@ -56,7 +56,7 @@ class PackageJson extends JsonObject {
    * This can be given by the `main` or `module` property, or via the
    * `exports` property with the relative path `"."`.
    */
-  string getMain() { result = MainModulePath::of(this, ".").getValue() }
+  string getMain() { result = getExportedPath(".") }
 
   /**
    * Gets the path to the file exported with the given relative path.
