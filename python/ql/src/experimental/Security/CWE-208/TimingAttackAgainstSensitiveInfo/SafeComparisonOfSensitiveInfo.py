@@ -4,14 +4,14 @@
 """
 @Desc   ：preventing timing attack sensitive info
 """
-import hmac
 from flask import Flask
 from flask import request
+import hmac
 
-@app.route('/good')
-def check_credentials(password):
-    return hmac.compare_digest(password, "token")
-  
-if __name__ == '__main__':
-    app.debug = True
-    app.run() 
+app = Flask(__name__)
+
+@app.route('/bad', methods = ['POST', 'GET'])
+def bad():
+    if request.method == 'POST':
+        password = request.form['pwd']
+        return hmac.compare_digest(password, "1234")
