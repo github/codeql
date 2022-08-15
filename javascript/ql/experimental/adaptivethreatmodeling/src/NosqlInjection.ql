@@ -12,7 +12,7 @@
  * @kind path-problem
  * @problem.severity error
  * @security-severity 8.8
- * @id js/ml-powered-ref/nosql-injection
+ * @id js/ml-powered/nosql-injection-ref
  * @tags experimental security
  */
 
