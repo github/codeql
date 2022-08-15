@@ -2018,6 +2018,7 @@ private class BarrierGuardFunction extends Function {
   BarrierGuardNode guard;
   boolean guardOutcome;
   string label;
+  int paramIndex;
 
   BarrierGuardFunction() {
     barrierGuardIsRelevant(guard) and
@@ -2041,8 +2042,7 @@ private class BarrierGuardFunction extends Function {
       sanitizedParameter.flowsToExpr(e) and
       barrierGuardBlocksExpr(guard, guardOutcome, e, label)
     ) and
-    getNumParameter() = 1 and
-    sanitizedParameter.getParameter() = getParameter(0)
+    sanitizedParameter.getParameter() = getParameter(paramIndex)
   }
 
   /**
@@ -2051,8 +2051,7 @@ private class BarrierGuardFunction extends Function {
   predicate isBarrierCall(DataFlow::CallNode call, Expr e, boolean outcome, string lbl) {
     exists(DataFlow::Node arg |
       arg.asExpr() = e and
-      arg = call.getArgument(0) and
-      call.getNumArgument() = 1 and
+      arg = call.getArgument(paramIndex) and
       argumentPassing(call, arg, this, sanitizedParameter) and
       outcome = guardOutcome and
       lbl = label
