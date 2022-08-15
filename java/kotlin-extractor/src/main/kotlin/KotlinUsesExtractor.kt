@@ -309,8 +309,12 @@ open class KotlinUsesExtractor(
                 f.valueParameters
             }
 
-            val paramTypes = parameters.map { useType(erase(it.type)) }
-            val signature = paramTypes.joinToString(separator = ",", prefix = "(", postfix = ")") { it.javaResult.signature!! }
+            val paramSigs = parameters.map { useType(erase(it.type)).javaResult.signature }.requireNoNullsOrNull()
+            if (paramSigs == null) {
+                logger.warn("Null signature for a parameter of ${f.name}")
+                return
+            }
+            val signature = paramSigs.joinToString(separator = ",", prefix = "(", postfix = ")")
             dependencyCollector?.addDependency(f, signature)
             externalClassExtractor.extractLater(f, signature)
         }
