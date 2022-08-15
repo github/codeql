@@ -10,7 +10,6 @@
  *       external/cwe/cwe-208
  */
 
-
 import java
 import semmle.code.java.dataflow.FlowSources
 import semmle.code.java.dataflow.TaintTracking
@@ -78,9 +77,7 @@ private predicate isNonConstantComparisonCallArgument(Expr p) {
 class NonConstantTimeComparisonConfig extends TaintTracking::Configuration {
   NonConstantTimeComparisonConfig() { this = "NonConstantTimeComparisonConfig" }
 
-  override predicate isSource(DataFlow::Node source) {
-    source.asExpr() instanceof CredentialExpr
-  }
+  override predicate isSource(DataFlow::Node source) { source.asExpr() instanceof CredentialExpr }
 
   override predicate isSink(DataFlow::Node sink) {
     isNonConstantEqualsCallArgument(sink.asExpr()) or
@@ -91,4 +88,4 @@ class NonConstantTimeComparisonConfig extends TaintTracking::Configuration {
 from DataFlow::PathNode source, DataFlow::PathNode sink, NonConstantTimeComparisonConfig conf
 where conf.hasFlowPath(source, sink)
 select sink.getNode(), source, sink, "Possible timing attack against $@ validation.",
-  source.getNode()
+  source.getNode(), "time constant"
