@@ -7,12 +7,7 @@ cached module Synth {
     {{^first}}
     or
     {{/first}}
-    {{#is_ipa}}
     T{{name}}({{#params}}{{^first}}, {{/first}}{{type}} {{param}}{{/params}}){{#has_params}} { construct{{name}}({{#params}}{{^first}}, {{/first}}{{param}}{{/params}}) }{{/has_params}}
-    {{/is_ipa}}
-    {{#is_db}}
-    T{{name}}(Raw::{{name}} id){{#has_subtracted_ipa_types}} { {{#subtracted_ipa_types}}{{^first}} and {{/first}}not construct{{name}}(id){{/subtracted_ipa_types}} }{{/has_subtracted_ipa_types}}
-    {{/is_db}}
     {{/final_classes}}
 
   {{#non_final_classes}}

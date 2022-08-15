@@ -96,11 +96,16 @@ def get_ql_ipa_class(cls: schema.Class):
     if cls.ipa and cls.ipa.from_class is not None:
         source = cls.ipa.from_class
         _final_db_class_lookup.setdefault(source, ql.Synth.FinalClassDb(source)).subtract_type(cls.name)
-        return ql.Synth.FinalClassDerivedIpa(name=cls.name, params=[ql.Synth.Param("id", _to_db_type(source))])
+        return ql.Synth.FinalClassDerivedIpa(name=cls.name,
+                                             params=[ql.Synth.Param("id", _to_db_type(source))])
     if cls.ipa and cls.ipa.on_arguments is not None:
-        return ql.Synth.FinalClassFreshIpa(name=cls.name, params=[ql.Synth.Param(k, _to_db_type(v)) for k, v in
-                                                                  cls.ipa.on_arguments.items()])
-    return _final_db_class_lookup.setdefault(cls.name, ql.Synth.FinalClassDb(cls.name))
+        return ql.Synth.FinalClassFreshIpa(name=cls.name,
+                                           params=[ql.Synth.Param(k, _to_db_type(v))
+                                                   for k, v in cls.ipa.on_arguments.items()])
+    ret = ql.Synth.FinalClassDb(name=cls.name,
+                                params=[ql.Synth.Param("id", _to_db_type(cls.name))])
+    _final_db_class_lookup[cls.name] = ret
+    return ret
 
 
 def get_import(file: pathlib.Path, swift_dir: pathlib.Path):
@@ -119,14 +124,10 @@ def get_classes_used_by(cls: ql.Class):
     return sorted(set(t for t in get_types_used_by(cls) if t[0].isupper()))
 
 
-_generated_stub_re = re.compile(r"\n*private import .*\n+("
-                                r"class \w+ extends \w+ \{[ \n]?\}"
-                                "|"
-                                r"predicate construct\w+\(.*?\) \{ none\(\) \}"
-                                ")", re.MULTILINE)
+_generated_stub_re = re.compile(r"\n*private import .*\n+class \w+ extends \w+ \{[ \n]?\}", re.MULTILINE)
 
 
-def _is_generated_stub(file):
+def _is_generated_stub(file: pathlib.Path) -> bool:
     with open(file) as contents:
         for line in contents:
             if not line.startswith("// generated"):
@@ -135,12 +136,14 @@ def _is_generated_stub(file):
         else:
             # no lines
             return False
-        # one line already read, if we can read 5 other we are past the normal stub generation
-        line_threshold = 5
-        first_lines = list(itertools.islice(contents, line_threshold))
-        if len(first_lines) == line_threshold or not _generated_stub_re.match("".join(first_lines)):
-            raise ModifiedStubMarkedAsGeneratedError(
-                f"{file.name} stub was modified but is still marked as generated")
+        # we still do not detect modified synth constructors
+        if not file.name.endswith("Constructor.qll"):
+            # one line already read, if we can read 5 other we are past the normal stub generation
+            line_threshold = 5
+            first_lines = list(itertools.islice(contents, line_threshold))
+            if len(first_lines) == line_threshold or not _generated_stub_re.match("".join(first_lines)):
+                raise ModifiedStubMarkedAsGeneratedError(
+                    f"{file.name} stub was modified but is still marked as generated")
         return True
 
 
@@ -268,20 +271,24 @@ def generate(opts, renderer):
     final_ipa_types = []
     non_final_ipa_types = []
     constructor_imports = []
+    ipa_constructor_imports = []
     for cls in sorted(data.classes.values(), key=lambda cls: (cls.dir, cls.name)):
         ipa_type = get_ql_ipa_class(cls)
         if ipa_type.is_final:
             final_ipa_types.append(ipa_type)
-            if ipa_type.is_ipa and ipa_type.has_params:
-                stub_file = stub_out / cls.dir / f"{cls.name}Constructor.qll"
-                if not stub_file.is_file() or _is_generated_stub(stub_file):
-                    renderer.render(ql.Synth.ConstructorStub(ipa_type), stub_file)
-                constructor_imports.append(get_import(stub_file, opts.swift_dir))
+            stub_file = stub_out / cls.dir / f"{cls.name}Constructor.qll"
+            if not stub_file.is_file() or _is_generated_stub(stub_file):
+                renderer.render(ql.Synth.ConstructorStub(ipa_type), stub_file)
+            constructor_import = get_import(stub_file, opts.swift_dir)
+            constructor_imports.append(constructor_import)
+            if ipa_type.is_ipa:
+                ipa_constructor_imports.append(constructor_import)
         else:
             non_final_ipa_types.append(ipa_type)
 
     renderer.render(ql.Synth.Types(schema.root_class_name, final_ipa_types, non_final_ipa_types), out / "Synth.qll")
     renderer.render(ql.ImportList(constructor_imports), out / "SynthConstructors.qll")
+    renderer.render(ql.ImportList(ipa_constructor_imports), out / "PureSynthConstructors.qll")
 
     renderer.cleanup(existing)
     if opts.ql_format:

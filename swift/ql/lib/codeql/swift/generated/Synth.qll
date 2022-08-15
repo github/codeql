@@ -5,239 +5,307 @@ cached
 module Synth {
   cached
   newtype TElement =
-    TComment(Raw::Comment id) or
-    TDbFile(Raw::DbFile id) or
-    TDbLocation(Raw::DbLocation id) or
+    TComment(Raw::Comment id) { constructComment(id) } or
+    TDbFile(Raw::DbFile id) { constructDbFile(id) } or
+    TDbLocation(Raw::DbLocation id) { constructDbLocation(id) } or
     TUnknownFile() or
     TUnknownLocation() or
-    TAccessorDecl(Raw::AccessorDecl id) or
-    TAssociatedTypeDecl(Raw::AssociatedTypeDecl id) or
-    TClassDecl(Raw::ClassDecl id) or
-    TConcreteFuncDecl(Raw::ConcreteFuncDecl id) or
-    TConcreteVarDecl(Raw::ConcreteVarDecl id) or
-    TConstructorDecl(Raw::ConstructorDecl id) or
-    TDestructorDecl(Raw::DestructorDecl id) or
-    TEnumCaseDecl(Raw::EnumCaseDecl id) or
-    TEnumDecl(Raw::EnumDecl id) or
-    TEnumElementDecl(Raw::EnumElementDecl id) or
-    TExtensionDecl(Raw::ExtensionDecl id) or
-    TGenericTypeParamDecl(Raw::GenericTypeParamDecl id) or
-    TIfConfigClause(Raw::IfConfigClause id) or
-    TIfConfigDecl(Raw::IfConfigDecl id) or
-    TImportDecl(Raw::ImportDecl id) or
-    TInfixOperatorDecl(Raw::InfixOperatorDecl id) or
-    TMissingMemberDecl(Raw::MissingMemberDecl id) or
-    TModuleDecl(Raw::ModuleDecl id) or
-    TOpaqueTypeDecl(Raw::OpaqueTypeDecl id) or
-    TParamDecl(Raw::ParamDecl id) or
-    TPatternBindingDecl(Raw::PatternBindingDecl id) or
-    TPostfixOperatorDecl(Raw::PostfixOperatorDecl id) or
-    TPoundDiagnosticDecl(Raw::PoundDiagnosticDecl id) or
-    TPrecedenceGroupDecl(Raw::PrecedenceGroupDecl id) or
-    TPrefixOperatorDecl(Raw::PrefixOperatorDecl id) or
-    TProtocolDecl(Raw::ProtocolDecl id) or
-    TStructDecl(Raw::StructDecl id) or
-    TSubscriptDecl(Raw::SubscriptDecl id) or
-    TTopLevelCodeDecl(Raw::TopLevelCodeDecl id) or
-    TTypeAliasDecl(Raw::TypeAliasDecl id) or
-    TAnyHashableErasureExpr(Raw::AnyHashableErasureExpr id) or
-    TAppliedPropertyWrapperExpr(Raw::AppliedPropertyWrapperExpr id) or
-    TArchetypeToSuperExpr(Raw::ArchetypeToSuperExpr id) or
-    TArgument(Raw::Argument id) or
-    TArrayExpr(Raw::ArrayExpr id) or
-    TArrayToPointerExpr(Raw::ArrayToPointerExpr id) or
-    TArrowExpr(Raw::ArrowExpr id) or
-    TAssignExpr(Raw::AssignExpr id) or
-    TAutoClosureExpr(Raw::AutoClosureExpr id) or
-    TAwaitExpr(Raw::AwaitExpr id) or
-    TBinaryExpr(Raw::BinaryExpr id) or
-    TBindOptionalExpr(Raw::BindOptionalExpr id) or
-    TBooleanLiteralExpr(Raw::BooleanLiteralExpr id) or
-    TBridgeFromObjCExpr(Raw::BridgeFromObjCExpr id) or
-    TBridgeToObjCExpr(Raw::BridgeToObjCExpr id) or
-    TCallExpr(Raw::CallExpr id) or
-    TCaptureListExpr(Raw::CaptureListExpr id) or
-    TClassMetatypeToObjectExpr(Raw::ClassMetatypeToObjectExpr id) or
-    TClosureExpr(Raw::ClosureExpr id) or
-    TCodeCompletionExpr(Raw::CodeCompletionExpr id) or
-    TCoerceExpr(Raw::CoerceExpr id) or
-    TCollectionUpcastConversionExpr(Raw::CollectionUpcastConversionExpr id) or
-    TConditionalBridgeFromObjCExpr(Raw::ConditionalBridgeFromObjCExpr id) or
-    TConditionalCheckedCastExpr(Raw::ConditionalCheckedCastExpr id) or
-    TConstructorRefCallExpr(Raw::ConstructorRefCallExpr id) or
-    TCovariantFunctionConversionExpr(Raw::CovariantFunctionConversionExpr id) or
-    TCovariantReturnConversionExpr(Raw::CovariantReturnConversionExpr id) or
-    TDeclRefExpr(Raw::DeclRefExpr id) or
-    TDefaultArgumentExpr(Raw::DefaultArgumentExpr id) or
-    TDerivedToBaseExpr(Raw::DerivedToBaseExpr id) or
-    TDestructureTupleExpr(Raw::DestructureTupleExpr id) or
-    TDictionaryExpr(Raw::DictionaryExpr id) or
-    TDifferentiableFunctionExpr(Raw::DifferentiableFunctionExpr id) or
-    TDifferentiableFunctionExtractOriginalExpr(Raw::DifferentiableFunctionExtractOriginalExpr id) or
-    TDiscardAssignmentExpr(Raw::DiscardAssignmentExpr id) or
-    TDotSelfExpr(Raw::DotSelfExpr id) or
-    TDotSyntaxBaseIgnoredExpr(Raw::DotSyntaxBaseIgnoredExpr id) or
-    TDotSyntaxCallExpr(Raw::DotSyntaxCallExpr id) or
-    TDynamicMemberRefExpr(Raw::DynamicMemberRefExpr id) or
-    TDynamicSubscriptExpr(Raw::DynamicSubscriptExpr id) or
-    TDynamicTypeExpr(Raw::DynamicTypeExpr id) or
-    TEditorPlaceholderExpr(Raw::EditorPlaceholderExpr id) or
-    TEnumIsCaseExpr(Raw::EnumIsCaseExpr id) or
-    TErasureExpr(Raw::ErasureExpr id) or
-    TErrorExpr(Raw::ErrorExpr id) or
-    TExistentialMetatypeToObjectExpr(Raw::ExistentialMetatypeToObjectExpr id) or
-    TFloatLiteralExpr(Raw::FloatLiteralExpr id) or
-    TForceTryExpr(Raw::ForceTryExpr id) or
-    TForceValueExpr(Raw::ForceValueExpr id) or
-    TForcedCheckedCastExpr(Raw::ForcedCheckedCastExpr id) or
-    TForeignObjectConversionExpr(Raw::ForeignObjectConversionExpr id) or
-    TFunctionConversionExpr(Raw::FunctionConversionExpr id) or
-    TIfExpr(Raw::IfExpr id) or
-    TInOutExpr(Raw::InOutExpr id) or
-    TInOutToPointerExpr(Raw::InOutToPointerExpr id) or
-    TInjectIntoOptionalExpr(Raw::InjectIntoOptionalExpr id) or
-    TIntegerLiteralExpr(Raw::IntegerLiteralExpr id) or
-    TInterpolatedStringLiteralExpr(Raw::InterpolatedStringLiteralExpr id) or
-    TIsExpr(Raw::IsExpr id) or
-    TKeyPathApplicationExpr(Raw::KeyPathApplicationExpr id) or
-    TKeyPathDotExpr(Raw::KeyPathDotExpr id) or
-    TKeyPathExpr(Raw::KeyPathExpr id) or
-    TLazyInitializerExpr(Raw::LazyInitializerExpr id) or
-    TLinearFunctionExpr(Raw::LinearFunctionExpr id) or
-    TLinearFunctionExtractOriginalExpr(Raw::LinearFunctionExtractOriginalExpr id) or
-    TLinearToDifferentiableFunctionExpr(Raw::LinearToDifferentiableFunctionExpr id) or
-    TLoadExpr(Raw::LoadExpr id) or
-    TMagicIdentifierLiteralExpr(Raw::MagicIdentifierLiteralExpr id) or
-    TMakeTemporarilyEscapableExpr(Raw::MakeTemporarilyEscapableExpr id) or
-    TMemberRefExpr(Raw::MemberRefExpr id) or
-    TMetatypeConversionExpr(Raw::MetatypeConversionExpr id) or
-    TNilLiteralExpr(Raw::NilLiteralExpr id) or
-    TObjCSelectorExpr(Raw::ObjCSelectorExpr id) or
-    TObjectLiteralExpr(Raw::ObjectLiteralExpr id) or
-    TOneWayExpr(Raw::OneWayExpr id) or
-    TOpaqueValueExpr(Raw::OpaqueValueExpr id) or
-    TOpenExistentialExpr(Raw::OpenExistentialExpr id) or
-    TOptionalEvaluationExpr(Raw::OptionalEvaluationExpr id) or
-    TOptionalTryExpr(Raw::OptionalTryExpr id) or
-    TOtherConstructorDeclRefExpr(Raw::OtherConstructorDeclRefExpr id) or
-    TOverloadedDeclRefExpr(Raw::OverloadedDeclRefExpr id) or
-    TParenExpr(Raw::ParenExpr id) or
-    TPointerToPointerExpr(Raw::PointerToPointerExpr id) or
-    TPostfixUnaryExpr(Raw::PostfixUnaryExpr id) or
-    TPrefixUnaryExpr(Raw::PrefixUnaryExpr id) or
-    TPropertyWrapperValuePlaceholderExpr(Raw::PropertyWrapperValuePlaceholderExpr id) or
-    TProtocolMetatypeToObjectExpr(Raw::ProtocolMetatypeToObjectExpr id) or
-    TRebindSelfInConstructorExpr(Raw::RebindSelfInConstructorExpr id) or
-    TRegexLiteralExpr(Raw::RegexLiteralExpr id) or
-    TSequenceExpr(Raw::SequenceExpr id) or
-    TStringLiteralExpr(Raw::StringLiteralExpr id) or
-    TStringToPointerExpr(Raw::StringToPointerExpr id) or
-    TSubscriptExpr(Raw::SubscriptExpr id) or
-    TSuperRefExpr(Raw::SuperRefExpr id) or
-    TTapExpr(Raw::TapExpr id) or
-    TTryExpr(Raw::TryExpr id) or
-    TTupleElementExpr(Raw::TupleElementExpr id) or
-    TTupleExpr(Raw::TupleExpr id) or
-    TTypeExpr(Raw::TypeExpr id) or
-    TUnderlyingToOpaqueExpr(Raw::UnderlyingToOpaqueExpr id) or
-    TUnevaluatedInstanceExpr(Raw::UnevaluatedInstanceExpr id) or
-    TUnresolvedDeclRefExpr(Raw::UnresolvedDeclRefExpr id) or
-    TUnresolvedDotExpr(Raw::UnresolvedDotExpr id) or
-    TUnresolvedMemberChainResultExpr(Raw::UnresolvedMemberChainResultExpr id) or
-    TUnresolvedMemberExpr(Raw::UnresolvedMemberExpr id) or
-    TUnresolvedPatternExpr(Raw::UnresolvedPatternExpr id) or
-    TUnresolvedSpecializeExpr(Raw::UnresolvedSpecializeExpr id) or
-    TUnresolvedTypeConversionExpr(Raw::UnresolvedTypeConversionExpr id) or
-    TVarargExpansionExpr(Raw::VarargExpansionExpr id) or
-    TAnyPattern(Raw::AnyPattern id) or
-    TBindingPattern(Raw::BindingPattern id) or
-    TBoolPattern(Raw::BoolPattern id) or
-    TEnumElementPattern(Raw::EnumElementPattern id) or
-    TExprPattern(Raw::ExprPattern id) or
-    TIsPattern(Raw::IsPattern id) or
-    TNamedPattern(Raw::NamedPattern id) or
-    TOptionalSomePattern(Raw::OptionalSomePattern id) or
-    TParenPattern(Raw::ParenPattern id) or
-    TTuplePattern(Raw::TuplePattern id) or
-    TTypedPattern(Raw::TypedPattern id) or
-    TBraceStmt(Raw::BraceStmt id) or
-    TBreakStmt(Raw::BreakStmt id) or
-    TCaseLabelItem(Raw::CaseLabelItem id) or
-    TCaseStmt(Raw::CaseStmt id) or
-    TConditionElement(Raw::ConditionElement id) or
-    TContinueStmt(Raw::ContinueStmt id) or
-    TDeferStmt(Raw::DeferStmt id) or
-    TDoCatchStmt(Raw::DoCatchStmt id) or
-    TDoStmt(Raw::DoStmt id) or
-    TFailStmt(Raw::FailStmt id) or
-    TFallthroughStmt(Raw::FallthroughStmt id) or
-    TForEachStmt(Raw::ForEachStmt id) or
-    TGuardStmt(Raw::GuardStmt id) or
-    TIfStmt(Raw::IfStmt id) or
-    TPoundAssertStmt(Raw::PoundAssertStmt id) or
-    TRepeatWhileStmt(Raw::RepeatWhileStmt id) or
-    TReturnStmt(Raw::ReturnStmt id) or
-    TStmtCondition(Raw::StmtCondition id) or
-    TSwitchStmt(Raw::SwitchStmt id) or
-    TThrowStmt(Raw::ThrowStmt id) or
-    TWhileStmt(Raw::WhileStmt id) or
-    TYieldStmt(Raw::YieldStmt id) or
-    TArraySliceType(Raw::ArraySliceType id) or
-    TBoundGenericClassType(Raw::BoundGenericClassType id) or
-    TBoundGenericEnumType(Raw::BoundGenericEnumType id) or
-    TBoundGenericStructType(Raw::BoundGenericStructType id) or
-    TBuiltinBridgeObjectType(Raw::BuiltinBridgeObjectType id) or
-    TBuiltinDefaultActorStorageType(Raw::BuiltinDefaultActorStorageType id) or
-    TBuiltinExecutorType(Raw::BuiltinExecutorType id) or
-    TBuiltinFloatType(Raw::BuiltinFloatType id) or
-    TBuiltinIntegerLiteralType(Raw::BuiltinIntegerLiteralType id) or
-    TBuiltinIntegerType(Raw::BuiltinIntegerType id) or
-    TBuiltinJobType(Raw::BuiltinJobType id) or
-    TBuiltinNativeObjectType(Raw::BuiltinNativeObjectType id) or
-    TBuiltinRawPointerType(Raw::BuiltinRawPointerType id) or
-    TBuiltinRawUnsafeContinuationType(Raw::BuiltinRawUnsafeContinuationType id) or
-    TBuiltinUnsafeValueBufferType(Raw::BuiltinUnsafeValueBufferType id) or
-    TBuiltinVectorType(Raw::BuiltinVectorType id) or
-    TClassType(Raw::ClassType id) or
-    TDependentMemberType(Raw::DependentMemberType id) or
-    TDictionaryType(Raw::DictionaryType id) or
-    TDynamicSelfType(Raw::DynamicSelfType id) or
-    TEnumType(Raw::EnumType id) or
-    TErrorType(Raw::ErrorType id) or
-    TExistentialMetatypeType(Raw::ExistentialMetatypeType id) or
-    TExistentialType(Raw::ExistentialType id) or
-    TFunctionType(Raw::FunctionType id) or
-    TGenericFunctionType(Raw::GenericFunctionType id) or
-    TGenericTypeParamType(Raw::GenericTypeParamType id) or
-    TInOutType(Raw::InOutType id) or
-    TLValueType(Raw::LValueType id) or
-    TMetatypeType(Raw::MetatypeType id) or
-    TModuleType(Raw::ModuleType id) or
-    TNestedArchetypeType(Raw::NestedArchetypeType id) or
-    TOpaqueTypeArchetypeType(Raw::OpaqueTypeArchetypeType id) or
-    TOpenedArchetypeType(Raw::OpenedArchetypeType id) or
-    TOptionalType(Raw::OptionalType id) or
-    TParenType(Raw::ParenType id) or
-    TPlaceholderType(Raw::PlaceholderType id) or
-    TPrimaryArchetypeType(Raw::PrimaryArchetypeType id) or
-    TProtocolCompositionType(Raw::ProtocolCompositionType id) or
-    TProtocolType(Raw::ProtocolType id) or
-    TSequenceArchetypeType(Raw::SequenceArchetypeType id) or
-    TSilBlockStorageType(Raw::SilBlockStorageType id) or
-    TSilBoxType(Raw::SilBoxType id) or
-    TSilFunctionType(Raw::SilFunctionType id) or
-    TSilTokenType(Raw::SilTokenType id) or
-    TStructType(Raw::StructType id) or
-    TTupleType(Raw::TupleType id) or
-    TTypeAliasType(Raw::TypeAliasType id) or
-    TTypeRepr(Raw::TypeRepr id) or
-    TTypeVariableType(Raw::TypeVariableType id) or
-    TUnboundGenericType(Raw::UnboundGenericType id) or
-    TUnmanagedStorageType(Raw::UnmanagedStorageType id) or
-    TUnownedStorageType(Raw::UnownedStorageType id) or
-    TUnresolvedType(Raw::UnresolvedType id) or
-    TVariadicSequenceType(Raw::VariadicSequenceType id) or
-    TWeakStorageType(Raw::WeakStorageType id)
+    TAccessorDecl(Raw::AccessorDecl id) { constructAccessorDecl(id) } or
+    TAssociatedTypeDecl(Raw::AssociatedTypeDecl id) { constructAssociatedTypeDecl(id) } or
+    TClassDecl(Raw::ClassDecl id) { constructClassDecl(id) } or
+    TConcreteFuncDecl(Raw::ConcreteFuncDecl id) { constructConcreteFuncDecl(id) } or
+    TConcreteVarDecl(Raw::ConcreteVarDecl id) { constructConcreteVarDecl(id) } or
+    TConstructorDecl(Raw::ConstructorDecl id) { constructConstructorDecl(id) } or
+    TDestructorDecl(Raw::DestructorDecl id) { constructDestructorDecl(id) } or
+    TEnumCaseDecl(Raw::EnumCaseDecl id) { constructEnumCaseDecl(id) } or
+    TEnumDecl(Raw::EnumDecl id) { constructEnumDecl(id) } or
+    TEnumElementDecl(Raw::EnumElementDecl id) { constructEnumElementDecl(id) } or
+    TExtensionDecl(Raw::ExtensionDecl id) { constructExtensionDecl(id) } or
+    TGenericTypeParamDecl(Raw::GenericTypeParamDecl id) { constructGenericTypeParamDecl(id) } or
+    TIfConfigClause(Raw::IfConfigClause id) { constructIfConfigClause(id) } or
+    TIfConfigDecl(Raw::IfConfigDecl id) { constructIfConfigDecl(id) } or
+    TImportDecl(Raw::ImportDecl id) { constructImportDecl(id) } or
+    TInfixOperatorDecl(Raw::InfixOperatorDecl id) { constructInfixOperatorDecl(id) } or
+    TMissingMemberDecl(Raw::MissingMemberDecl id) { constructMissingMemberDecl(id) } or
+    TModuleDecl(Raw::ModuleDecl id) { constructModuleDecl(id) } or
+    TOpaqueTypeDecl(Raw::OpaqueTypeDecl id) { constructOpaqueTypeDecl(id) } or
+    TParamDecl(Raw::ParamDecl id) { constructParamDecl(id) } or
+    TPatternBindingDecl(Raw::PatternBindingDecl id) { constructPatternBindingDecl(id) } or
+    TPostfixOperatorDecl(Raw::PostfixOperatorDecl id) { constructPostfixOperatorDecl(id) } or
+    TPoundDiagnosticDecl(Raw::PoundDiagnosticDecl id) { constructPoundDiagnosticDecl(id) } or
+    TPrecedenceGroupDecl(Raw::PrecedenceGroupDecl id) { constructPrecedenceGroupDecl(id) } or
+    TPrefixOperatorDecl(Raw::PrefixOperatorDecl id) { constructPrefixOperatorDecl(id) } or
+    TProtocolDecl(Raw::ProtocolDecl id) { constructProtocolDecl(id) } or
+    TStructDecl(Raw::StructDecl id) { constructStructDecl(id) } or
+    TSubscriptDecl(Raw::SubscriptDecl id) { constructSubscriptDecl(id) } or
+    TTopLevelCodeDecl(Raw::TopLevelCodeDecl id) { constructTopLevelCodeDecl(id) } or
+    TTypeAliasDecl(Raw::TypeAliasDecl id) { constructTypeAliasDecl(id) } or
+    TAnyHashableErasureExpr(Raw::AnyHashableErasureExpr id) { constructAnyHashableErasureExpr(id) } or
+    TAppliedPropertyWrapperExpr(Raw::AppliedPropertyWrapperExpr id) {
+      constructAppliedPropertyWrapperExpr(id)
+    } or
+    TArchetypeToSuperExpr(Raw::ArchetypeToSuperExpr id) { constructArchetypeToSuperExpr(id) } or
+    TArgument(Raw::Argument id) { constructArgument(id) } or
+    TArrayExpr(Raw::ArrayExpr id) { constructArrayExpr(id) } or
+    TArrayToPointerExpr(Raw::ArrayToPointerExpr id) { constructArrayToPointerExpr(id) } or
+    TArrowExpr(Raw::ArrowExpr id) { constructArrowExpr(id) } or
+    TAssignExpr(Raw::AssignExpr id) { constructAssignExpr(id) } or
+    TAutoClosureExpr(Raw::AutoClosureExpr id) { constructAutoClosureExpr(id) } or
+    TAwaitExpr(Raw::AwaitExpr id) { constructAwaitExpr(id) } or
+    TBinaryExpr(Raw::BinaryExpr id) { constructBinaryExpr(id) } or
+    TBindOptionalExpr(Raw::BindOptionalExpr id) { constructBindOptionalExpr(id) } or
+    TBooleanLiteralExpr(Raw::BooleanLiteralExpr id) { constructBooleanLiteralExpr(id) } or
+    TBridgeFromObjCExpr(Raw::BridgeFromObjCExpr id) { constructBridgeFromObjCExpr(id) } or
+    TBridgeToObjCExpr(Raw::BridgeToObjCExpr id) { constructBridgeToObjCExpr(id) } or
+    TCallExpr(Raw::CallExpr id) { constructCallExpr(id) } or
+    TCaptureListExpr(Raw::CaptureListExpr id) { constructCaptureListExpr(id) } or
+    TClassMetatypeToObjectExpr(Raw::ClassMetatypeToObjectExpr id) {
+      constructClassMetatypeToObjectExpr(id)
+    } or
+    TClosureExpr(Raw::ClosureExpr id) { constructClosureExpr(id) } or
+    TCodeCompletionExpr(Raw::CodeCompletionExpr id) { constructCodeCompletionExpr(id) } or
+    TCoerceExpr(Raw::CoerceExpr id) { constructCoerceExpr(id) } or
+    TCollectionUpcastConversionExpr(Raw::CollectionUpcastConversionExpr id) {
+      constructCollectionUpcastConversionExpr(id)
+    } or
+    TConditionalBridgeFromObjCExpr(Raw::ConditionalBridgeFromObjCExpr id) {
+      constructConditionalBridgeFromObjCExpr(id)
+    } or
+    TConditionalCheckedCastExpr(Raw::ConditionalCheckedCastExpr id) {
+      constructConditionalCheckedCastExpr(id)
+    } or
+    TConstructorRefCallExpr(Raw::ConstructorRefCallExpr id) { constructConstructorRefCallExpr(id) } or
+    TCovariantFunctionConversionExpr(Raw::CovariantFunctionConversionExpr id) {
+      constructCovariantFunctionConversionExpr(id)
+    } or
+    TCovariantReturnConversionExpr(Raw::CovariantReturnConversionExpr id) {
+      constructCovariantReturnConversionExpr(id)
+    } or
+    TDeclRefExpr(Raw::DeclRefExpr id) { constructDeclRefExpr(id) } or
+    TDefaultArgumentExpr(Raw::DefaultArgumentExpr id) { constructDefaultArgumentExpr(id) } or
+    TDerivedToBaseExpr(Raw::DerivedToBaseExpr id) { constructDerivedToBaseExpr(id) } or
+    TDestructureTupleExpr(Raw::DestructureTupleExpr id) { constructDestructureTupleExpr(id) } or
+    TDictionaryExpr(Raw::DictionaryExpr id) { constructDictionaryExpr(id) } or
+    TDifferentiableFunctionExpr(Raw::DifferentiableFunctionExpr id) {
+      constructDifferentiableFunctionExpr(id)
+    } or
+    TDifferentiableFunctionExtractOriginalExpr(Raw::DifferentiableFunctionExtractOriginalExpr id) {
+      constructDifferentiableFunctionExtractOriginalExpr(id)
+    } or
+    TDiscardAssignmentExpr(Raw::DiscardAssignmentExpr id) { constructDiscardAssignmentExpr(id) } or
+    TDotSelfExpr(Raw::DotSelfExpr id) { constructDotSelfExpr(id) } or
+    TDotSyntaxBaseIgnoredExpr(Raw::DotSyntaxBaseIgnoredExpr id) {
+      constructDotSyntaxBaseIgnoredExpr(id)
+    } or
+    TDotSyntaxCallExpr(Raw::DotSyntaxCallExpr id) { constructDotSyntaxCallExpr(id) } or
+    TDynamicMemberRefExpr(Raw::DynamicMemberRefExpr id) { constructDynamicMemberRefExpr(id) } or
+    TDynamicSubscriptExpr(Raw::DynamicSubscriptExpr id) { constructDynamicSubscriptExpr(id) } or
+    TDynamicTypeExpr(Raw::DynamicTypeExpr id) { constructDynamicTypeExpr(id) } or
+    TEditorPlaceholderExpr(Raw::EditorPlaceholderExpr id) { constructEditorPlaceholderExpr(id) } or
+    TEnumIsCaseExpr(Raw::EnumIsCaseExpr id) { constructEnumIsCaseExpr(id) } or
+    TErasureExpr(Raw::ErasureExpr id) { constructErasureExpr(id) } or
+    TErrorExpr(Raw::ErrorExpr id) { constructErrorExpr(id) } or
+    TExistentialMetatypeToObjectExpr(Raw::ExistentialMetatypeToObjectExpr id) {
+      constructExistentialMetatypeToObjectExpr(id)
+    } or
+    TFloatLiteralExpr(Raw::FloatLiteralExpr id) { constructFloatLiteralExpr(id) } or
+    TForceTryExpr(Raw::ForceTryExpr id) { constructForceTryExpr(id) } or
+    TForceValueExpr(Raw::ForceValueExpr id) { constructForceValueExpr(id) } or
+    TForcedCheckedCastExpr(Raw::ForcedCheckedCastExpr id) { constructForcedCheckedCastExpr(id) } or
+    TForeignObjectConversionExpr(Raw::ForeignObjectConversionExpr id) {
+      constructForeignObjectConversionExpr(id)
+    } or
+    TFunctionConversionExpr(Raw::FunctionConversionExpr id) { constructFunctionConversionExpr(id) } or
+    TIfExpr(Raw::IfExpr id) { constructIfExpr(id) } or
+    TInOutExpr(Raw::InOutExpr id) { constructInOutExpr(id) } or
+    TInOutToPointerExpr(Raw::InOutToPointerExpr id) { constructInOutToPointerExpr(id) } or
+    TInjectIntoOptionalExpr(Raw::InjectIntoOptionalExpr id) { constructInjectIntoOptionalExpr(id) } or
+    TIntegerLiteralExpr(Raw::IntegerLiteralExpr id) { constructIntegerLiteralExpr(id) } or
+    TInterpolatedStringLiteralExpr(Raw::InterpolatedStringLiteralExpr id) {
+      constructInterpolatedStringLiteralExpr(id)
+    } or
+    TIsExpr(Raw::IsExpr id) { constructIsExpr(id) } or
+    TKeyPathApplicationExpr(Raw::KeyPathApplicationExpr id) { constructKeyPathApplicationExpr(id) } or
+    TKeyPathDotExpr(Raw::KeyPathDotExpr id) { constructKeyPathDotExpr(id) } or
+    TKeyPathExpr(Raw::KeyPathExpr id) { constructKeyPathExpr(id) } or
+    TLazyInitializerExpr(Raw::LazyInitializerExpr id) { constructLazyInitializerExpr(id) } or
+    TLinearFunctionExpr(Raw::LinearFunctionExpr id) { constructLinearFunctionExpr(id) } or
+    TLinearFunctionExtractOriginalExpr(Raw::LinearFunctionExtractOriginalExpr id) {
+      constructLinearFunctionExtractOriginalExpr(id)
+    } or
+    TLinearToDifferentiableFunctionExpr(Raw::LinearToDifferentiableFunctionExpr id) {
+      constructLinearToDifferentiableFunctionExpr(id)
+    } or
+    TLoadExpr(Raw::LoadExpr id) { constructLoadExpr(id) } or
+    TMagicIdentifierLiteralExpr(Raw::MagicIdentifierLiteralExpr id) {
+      constructMagicIdentifierLiteralExpr(id)
+    } or
+    TMakeTemporarilyEscapableExpr(Raw::MakeTemporarilyEscapableExpr id) {
+      constructMakeTemporarilyEscapableExpr(id)
+    } or
+    TMemberRefExpr(Raw::MemberRefExpr id) { constructMemberRefExpr(id) } or
+    TMetatypeConversionExpr(Raw::MetatypeConversionExpr id) { constructMetatypeConversionExpr(id) } or
+    TNilLiteralExpr(Raw::NilLiteralExpr id) { constructNilLiteralExpr(id) } or
+    TObjCSelectorExpr(Raw::ObjCSelectorExpr id) { constructObjCSelectorExpr(id) } or
+    TObjectLiteralExpr(Raw::ObjectLiteralExpr id) { constructObjectLiteralExpr(id) } or
+    TOneWayExpr(Raw::OneWayExpr id) { constructOneWayExpr(id) } or
+    TOpaqueValueExpr(Raw::OpaqueValueExpr id) { constructOpaqueValueExpr(id) } or
+    TOpenExistentialExpr(Raw::OpenExistentialExpr id) { constructOpenExistentialExpr(id) } or
+    TOptionalEvaluationExpr(Raw::OptionalEvaluationExpr id) { constructOptionalEvaluationExpr(id) } or
+    TOptionalTryExpr(Raw::OptionalTryExpr id) { constructOptionalTryExpr(id) } or
+    TOtherConstructorDeclRefExpr(Raw::OtherConstructorDeclRefExpr id) {
+      constructOtherConstructorDeclRefExpr(id)
+    } or
+    TOverloadedDeclRefExpr(Raw::OverloadedDeclRefExpr id) { constructOverloadedDeclRefExpr(id) } or
+    TParenExpr(Raw::ParenExpr id) { constructParenExpr(id) } or
+    TPointerToPointerExpr(Raw::PointerToPointerExpr id) { constructPointerToPointerExpr(id) } or
+    TPostfixUnaryExpr(Raw::PostfixUnaryExpr id) { constructPostfixUnaryExpr(id) } or
+    TPrefixUnaryExpr(Raw::PrefixUnaryExpr id) { constructPrefixUnaryExpr(id) } or
+    TPropertyWrapperValuePlaceholderExpr(Raw::PropertyWrapperValuePlaceholderExpr id) {
+      constructPropertyWrapperValuePlaceholderExpr(id)
+    } or
+    TProtocolMetatypeToObjectExpr(Raw::ProtocolMetatypeToObjectExpr id) {
+      constructProtocolMetatypeToObjectExpr(id)
+    } or
+    TRebindSelfInConstructorExpr(Raw::RebindSelfInConstructorExpr id) {
+      constructRebindSelfInConstructorExpr(id)
+    } or
+    TRegexLiteralExpr(Raw::RegexLiteralExpr id) { constructRegexLiteralExpr(id) } or
+    TSequenceExpr(Raw::SequenceExpr id) { constructSequenceExpr(id) } or
+    TStringLiteralExpr(Raw::StringLiteralExpr id) { constructStringLiteralExpr(id) } or
+    TStringToPointerExpr(Raw::StringToPointerExpr id) { constructStringToPointerExpr(id) } or
+    TSubscriptExpr(Raw::SubscriptExpr id) { constructSubscriptExpr(id) } or
+    TSuperRefExpr(Raw::SuperRefExpr id) { constructSuperRefExpr(id) } or
+    TTapExpr(Raw::TapExpr id) { constructTapExpr(id) } or
+    TTryExpr(Raw::TryExpr id) { constructTryExpr(id) } or
+    TTupleElementExpr(Raw::TupleElementExpr id) { constructTupleElementExpr(id) } or
+    TTupleExpr(Raw::TupleExpr id) { constructTupleExpr(id) } or
+    TTypeExpr(Raw::TypeExpr id) { constructTypeExpr(id) } or
+    TUnderlyingToOpaqueExpr(Raw::UnderlyingToOpaqueExpr id) { constructUnderlyingToOpaqueExpr(id) } or
+    TUnevaluatedInstanceExpr(Raw::UnevaluatedInstanceExpr id) {
+      constructUnevaluatedInstanceExpr(id)
+    } or
+    TUnresolvedDeclRefExpr(Raw::UnresolvedDeclRefExpr id) { constructUnresolvedDeclRefExpr(id) } or
+    TUnresolvedDotExpr(Raw::UnresolvedDotExpr id) { constructUnresolvedDotExpr(id) } or
+    TUnresolvedMemberChainResultExpr(Raw::UnresolvedMemberChainResultExpr id) {
+      constructUnresolvedMemberChainResultExpr(id)
+    } or
+    TUnresolvedMemberExpr(Raw::UnresolvedMemberExpr id) { constructUnresolvedMemberExpr(id) } or
+    TUnresolvedPatternExpr(Raw::UnresolvedPatternExpr id) { constructUnresolvedPatternExpr(id) } or
+    TUnresolvedSpecializeExpr(Raw::UnresolvedSpecializeExpr id) {
+      constructUnresolvedSpecializeExpr(id)
+    } or
+    TUnresolvedTypeConversionExpr(Raw::UnresolvedTypeConversionExpr id) {
+      constructUnresolvedTypeConversionExpr(id)
+    } or
+    TVarargExpansionExpr(Raw::VarargExpansionExpr id) { constructVarargExpansionExpr(id) } or
+    TAnyPattern(Raw::AnyPattern id) { constructAnyPattern(id) } or
+    TBindingPattern(Raw::BindingPattern id) { constructBindingPattern(id) } or
+    TBoolPattern(Raw::BoolPattern id) { constructBoolPattern(id) } or
+    TEnumElementPattern(Raw::EnumElementPattern id) { constructEnumElementPattern(id) } or
+    TExprPattern(Raw::ExprPattern id) { constructExprPattern(id) } or
+    TIsPattern(Raw::IsPattern id) { constructIsPattern(id) } or
+    TNamedPattern(Raw::NamedPattern id) { constructNamedPattern(id) } or
+    TOptionalSomePattern(Raw::OptionalSomePattern id) { constructOptionalSomePattern(id) } or
+    TParenPattern(Raw::ParenPattern id) { constructParenPattern(id) } or
+    TTuplePattern(Raw::TuplePattern id) { constructTuplePattern(id) } or
+    TTypedPattern(Raw::TypedPattern id) { constructTypedPattern(id) } or
+    TBraceStmt(Raw::BraceStmt id) { constructBraceStmt(id) } or
+    TBreakStmt(Raw::BreakStmt id) { constructBreakStmt(id) } or
+    TCaseLabelItem(Raw::CaseLabelItem id) { constructCaseLabelItem(id) } or
+    TCaseStmt(Raw::CaseStmt id) { constructCaseStmt(id) } or
+    TConditionElement(Raw::ConditionElement id) { constructConditionElement(id) } or
+    TContinueStmt(Raw::ContinueStmt id) { constructContinueStmt(id) } or
+    TDeferStmt(Raw::DeferStmt id) { constructDeferStmt(id) } or
+    TDoCatchStmt(Raw::DoCatchStmt id) { constructDoCatchStmt(id) } or
+    TDoStmt(Raw::DoStmt id) { constructDoStmt(id) } or
+    TFailStmt(Raw::FailStmt id) { constructFailStmt(id) } or
+    TFallthroughStmt(Raw::FallthroughStmt id) { constructFallthroughStmt(id) } or
+    TForEachStmt(Raw::ForEachStmt id) { constructForEachStmt(id) } or
+    TGuardStmt(Raw::GuardStmt id) { constructGuardStmt(id) } or
+    TIfStmt(Raw::IfStmt id) { constructIfStmt(id) } or
+    TPoundAssertStmt(Raw::PoundAssertStmt id) { constructPoundAssertStmt(id) } or
+    TRepeatWhileStmt(Raw::RepeatWhileStmt id) { constructRepeatWhileStmt(id) } or
+    TReturnStmt(Raw::ReturnStmt id) { constructReturnStmt(id) } or
+    TStmtCondition(Raw::StmtCondition id) { constructStmtCondition(id) } or
+    TSwitchStmt(Raw::SwitchStmt id) { constructSwitchStmt(id) } or
+    TThrowStmt(Raw::ThrowStmt id) { constructThrowStmt(id) } or
+    TWhileStmt(Raw::WhileStmt id) { constructWhileStmt(id) } or
+    TYieldStmt(Raw::YieldStmt id) { constructYieldStmt(id) } or
+    TArraySliceType(Raw::ArraySliceType id) { constructArraySliceType(id) } or
+    TBoundGenericClassType(Raw::BoundGenericClassType id) { constructBoundGenericClassType(id) } or
+    TBoundGenericEnumType(Raw::BoundGenericEnumType id) { constructBoundGenericEnumType(id) } or
+    TBoundGenericStructType(Raw::BoundGenericStructType id) { constructBoundGenericStructType(id) } or
+    TBuiltinBridgeObjectType(Raw::BuiltinBridgeObjectType id) {
+      constructBuiltinBridgeObjectType(id)
+    } or
+    TBuiltinDefaultActorStorageType(Raw::BuiltinDefaultActorStorageType id) {
+      constructBuiltinDefaultActorStorageType(id)
+    } or
+    TBuiltinExecutorType(Raw::BuiltinExecutorType id) { constructBuiltinExecutorType(id) } or
+    TBuiltinFloatType(Raw::BuiltinFloatType id) { constructBuiltinFloatType(id) } or
+    TBuiltinIntegerLiteralType(Raw::BuiltinIntegerLiteralType id) {
+      constructBuiltinIntegerLiteralType(id)
+    } or
+    TBuiltinIntegerType(Raw::BuiltinIntegerType id) { constructBuiltinIntegerType(id) } or
+    TBuiltinJobType(Raw::BuiltinJobType id) { constructBuiltinJobType(id) } or
+    TBuiltinNativeObjectType(Raw::BuiltinNativeObjectType id) {
+      constructBuiltinNativeObjectType(id)
+    } or
+    TBuiltinRawPointerType(Raw::BuiltinRawPointerType id) { constructBuiltinRawPointerType(id) } or
+    TBuiltinRawUnsafeContinuationType(Raw::BuiltinRawUnsafeContinuationType id) {
+      constructBuiltinRawUnsafeContinuationType(id)
+    } or
+    TBuiltinUnsafeValueBufferType(Raw::BuiltinUnsafeValueBufferType id) {
+      constructBuiltinUnsafeValueBufferType(id)
+    } or
+    TBuiltinVectorType(Raw::BuiltinVectorType id) { constructBuiltinVectorType(id) } or
+    TClassType(Raw::ClassType id) { constructClassType(id) } or
+    TDependentMemberType(Raw::DependentMemberType id) { constructDependentMemberType(id) } or
+    TDictionaryType(Raw::DictionaryType id) { constructDictionaryType(id) } or
+    TDynamicSelfType(Raw::DynamicSelfType id) { constructDynamicSelfType(id) } or
+    TEnumType(Raw::EnumType id) { constructEnumType(id) } or
+    TErrorType(Raw::ErrorType id) { constructErrorType(id) } or
+    TExistentialMetatypeType(Raw::ExistentialMetatypeType id) {
+      constructExistentialMetatypeType(id)
+    } or
+    TExistentialType(Raw::ExistentialType id) { constructExistentialType(id) } or
+    TFunctionType(Raw::FunctionType id) { constructFunctionType(id) } or
+    TGenericFunctionType(Raw::GenericFunctionType id) { constructGenericFunctionType(id) } or
+    TGenericTypeParamType(Raw::GenericTypeParamType id) { constructGenericTypeParamType(id) } or
+    TInOutType(Raw::InOutType id) { constructInOutType(id) } or
+    TLValueType(Raw::LValueType id) { constructLValueType(id) } or
+    TMetatypeType(Raw::MetatypeType id) { constructMetatypeType(id) } or
+    TModuleType(Raw::ModuleType id) { constructModuleType(id) } or
+    TNestedArchetypeType(Raw::NestedArchetypeType id) { constructNestedArchetypeType(id) } or
+    TOpaqueTypeArchetypeType(Raw::OpaqueTypeArchetypeType id) {
+      constructOpaqueTypeArchetypeType(id)
+    } or
+    TOpenedArchetypeType(Raw::OpenedArchetypeType id) { constructOpenedArchetypeType(id) } or
+    TOptionalType(Raw::OptionalType id) { constructOptionalType(id) } or
+    TParenType(Raw::ParenType id) { constructParenType(id) } or
+    TPlaceholderType(Raw::PlaceholderType id) { constructPlaceholderType(id) } or
+    TPrimaryArchetypeType(Raw::PrimaryArchetypeType id) { constructPrimaryArchetypeType(id) } or
+    TProtocolCompositionType(Raw::ProtocolCompositionType id) {
+      constructProtocolCompositionType(id)
+    } or
+    TProtocolType(Raw::ProtocolType id) { constructProtocolType(id) } or
+    TSequenceArchetypeType(Raw::SequenceArchetypeType id) { constructSequenceArchetypeType(id) } or
+    TSilBlockStorageType(Raw::SilBlockStorageType id) { constructSilBlockStorageType(id) } or
+    TSilBoxType(Raw::SilBoxType id) { constructSilBoxType(id) } or
+    TSilFunctionType(Raw::SilFunctionType id) { constructSilFunctionType(id) } or
+    TSilTokenType(Raw::SilTokenType id) { constructSilTokenType(id) } or
+    TStructType(Raw::StructType id) { constructStructType(id) } or
+    TTupleType(Raw::TupleType id) { constructTupleType(id) } or
+    TTypeAliasType(Raw::TypeAliasType id) { constructTypeAliasType(id) } or
+    TTypeRepr(Raw::TypeRepr id) { constructTypeRepr(id) } or
+    TTypeVariableType(Raw::TypeVariableType id) { constructTypeVariableType(id) } or
+    TUnboundGenericType(Raw::UnboundGenericType id) { constructUnboundGenericType(id) } or
+    TUnmanagedStorageType(Raw::UnmanagedStorageType id) { constructUnmanagedStorageType(id) } or
+    TUnownedStorageType(Raw::UnownedStorageType id) { constructUnownedStorageType(id) } or
+    TUnresolvedType(Raw::UnresolvedType id) { constructUnresolvedType(id) } or
+    TVariadicSequenceType(Raw::VariadicSequenceType id) { constructVariadicSequenceType(id) } or
+    TWeakStorageType(Raw::WeakStorageType id) { constructWeakStorageType(id) }
 
   class TAstNode =
     TCaseLabelItem or TDecl or TExpr or TPattern or TStmt or TStmtCondition or TTypeRepr;

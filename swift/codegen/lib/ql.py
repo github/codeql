@@ -167,24 +167,18 @@ class Synth:
         first: bool = False
 
     @dataclass
-    class FinalClass(Class):
-        is_final: ClassVar = True
-        is_derived_ipa: ClassVar = False
-        is_fresh_ipa: ClassVar = False
-        is_db: ClassVar = False
-
-        @property
-        def is_ipa(self):
-            return self.is_fresh_ipa or self.is_derived_ipa
-
-    @dataclass
     class Param:
         param: str
         type: str
         first: bool = False
 
     @dataclass
-    class FinalClassIpa(FinalClass):
+    class FinalClass(Class):
+        is_final: ClassVar = True
+        is_derived_ipa: ClassVar = False
+        is_fresh_ipa: ClassVar = False
+        is_db: ClassVar = False
+
         params: List["Synth.Param"] = field(default_factory=list)
 
         def __post_init__(self):
@@ -192,8 +186,16 @@ class Synth:
                 self.params[0].first = True
 
         @property
+        def is_ipa(self):
+            return self.is_fresh_ipa or self.is_derived_ipa
+
+        @property
         def has_params(self) -> bool:
             return bool(self.params)
+
+    @dataclass
+    class FinalClassIpa(FinalClass):
+        pass
 
     @dataclass
     class FinalClassDerivedIpa(FinalClassIpa):
@@ -246,4 +248,4 @@ class Synth:
     class ConstructorStub:
         template: ClassVar = "ql_ipa_constructor_stub"
 
-        cls: Union["Synth.FinalClassDerivedIpa", "Synth.FinalClassFreshIpa"]
+        cls: "Synth.FinalClass"
