@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Testing
@@ -18,6 +19,21 @@ namespace Testing
         public object MyAction(ViewModel viewModel)
         {
             throw null;
+        }
+    }
+
+    public class AspRoutingEndpoints
+    {
+
+        public void M1(string[] args)
+        {
+            var builder = WebApplication.CreateBuilder(args);
+            var app = builder.Build();
+
+            // The delegate parameters are considered flow sources.
+            app.MapGet("/api/redirect/{newUrl}", (string newUrl) => { });
+
+            app.Run();
         }
     }
 }
