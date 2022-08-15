@@ -152,10 +152,10 @@ namespace Microsoft
                 }
 
                 // Generated from `Microsoft.AspNetCore.Mvc.Razor.LanguageViewLocationExpanderFormat` in `Microsoft.AspNetCore.Mvc.Razor, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
-                public enum LanguageViewLocationExpanderFormat
+                public enum LanguageViewLocationExpanderFormat : int
                 {
-                    SubFolder,
-                    Suffix,
+                    SubFolder = 0,
+                    Suffix = 1,
                 }
 
                 // Generated from `Microsoft.AspNetCore.Mvc.Razor.RazorPage` in `Microsoft.AspNetCore.Mvc.Razor, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`

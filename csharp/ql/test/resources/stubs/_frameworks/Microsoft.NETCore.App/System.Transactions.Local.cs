@@ -20,10 +20,10 @@ namespace System
         }
 
         // Generated from `System.Transactions.DependentCloneOption` in `System.Transactions.Local, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
-        public enum DependentCloneOption
+        public enum DependentCloneOption : int
         {
-            BlockCommitUntilComplete,
-            RollbackIfNotComplete,
+            BlockCommitUntilComplete = 0,
+            RollbackIfNotComplete = 1,
         }
 
         // Generated from `System.Transactions.DependentTransaction` in `System.Transactions.Local, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
@@ -41,18 +41,18 @@ namespace System
 
         // Generated from `System.Transactions.EnlistmentOptions` in `System.Transactions.Local, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
         [System.Flags]
-        public enum EnlistmentOptions
+        public enum EnlistmentOptions : int
         {
-            EnlistDuringPrepareRequired,
-            None,
+            EnlistDuringPrepareRequired = 1,
+            None = 0,
         }
 
         // Generated from `System.Transactions.EnterpriseServicesInteropOption` in `System.Transactions.Local, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
-        public enum EnterpriseServicesInteropOption
+        public enum EnterpriseServicesInteropOption : int
         {
-            Automatic,
-            Full,
-            None,
+            Automatic = 1,
+            Full = 2,
+            None = 0,
         }
 
         // Generated from `System.Transactions.HostCurrentTransactionCallback` in `System.Transactions.Local, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
@@ -102,15 +102,15 @@ namespace System
         }
 
         // Generated from `System.Transactions.IsolationLevel` in `System.Transactions.Local, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
-        public enum IsolationLevel
+        public enum IsolationLevel : int
         {
-            Chaos,
-            ReadCommitted,
-            ReadUncommitted,
-            RepeatableRead,
-            Serializable,
-            Snapshot,
-            Unspecified,
+            Chaos = 5,
+            ReadCommitted = 2,
+            ReadUncommitted = 3,
+            RepeatableRead = 1,
+            Serializable = 0,
+            Snapshot = 4,
+            Unspecified = 6,
         }
 
         // Generated from `System.Transactions.PreparingEnlistment` in `System.Transactions.Local, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
@@ -290,30 +290,30 @@ namespace System
         }
 
         // Generated from `System.Transactions.TransactionScopeAsyncFlowOption` in `System.Transactions.Local, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
-        public enum TransactionScopeAsyncFlowOption
+        public enum TransactionScopeAsyncFlowOption : int
         {
-            Enabled,
-            Suppress,
+            Enabled = 1,
+            Suppress = 0,
         }
 
         // Generated from `System.Transactions.TransactionScopeOption` in `System.Transactions.Local, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
-        public enum TransactionScopeOption
+        public enum TransactionScopeOption : int
         {
-            Required,
-            RequiresNew,
-            Suppress,
+            Required = 0,
+            RequiresNew = 1,
+            Suppress = 2,
         }
 
         // Generated from `System.Transactions.TransactionStartedEventHandler` in `System.Transactions.Local, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
         public delegate void TransactionStartedEventHandler(object sender, System.Transactions.TransactionEventArgs e);
 
         // Generated from `System.Transactions.TransactionStatus` in `System.Transactions.Local, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
-        public enum TransactionStatus
+        public enum TransactionStatus : int
         {
-            Aborted,
-            Active,
-            Committed,
-            InDoubt,
+            Aborted = 2,
+            Active = 0,
+            Committed = 1,
+            InDoubt = 3,
         }
 
     }

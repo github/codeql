@@ -580,24 +580,24 @@ namespace System
 
     // Generated from `System.AttributeTargets` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     [System.Flags]
-    public enum AttributeTargets
+    public enum AttributeTargets : int
     {
-        All,
-        Assembly,
-        Class,
-        Constructor,
-        Delegate,
-        Enum,
-        Event,
-        Field,
-        GenericParameter,
-        Interface,
-        Method,
-        Module,
-        Parameter,
-        Property,
-        ReturnValue,
-        Struct,
+        All = 32767,
+        Assembly = 1,
+        Class = 4,
+        Constructor = 32,
+        Delegate = 4096,
+        Enum = 16,
+        Event = 512,
+        Field = 256,
+        GenericParameter = 16384,
+        Interface = 1024,
+        Method = 64,
+        Module = 2,
+        Parameter = 2048,
+        Property = 128,
+        ReturnValue = 8192,
+        Struct = 8,
     }
 
     // Generated from `System.AttributeUsageAttribute` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -627,10 +627,10 @@ namespace System
 
     // Generated from `System.Base64FormattingOptions` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     [System.Flags]
-    public enum Base64FormattingOptions
+    public enum Base64FormattingOptions : int
     {
-        InsertLineBreaks,
-        None,
+        InsertLineBreaks = 1,
+        None = 0,
     }
 
     // Generated from `System.BitConverter` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -1460,11 +1460,11 @@ namespace System
     }
 
     // Generated from `System.DateTimeKind` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-    public enum DateTimeKind
+    public enum DateTimeKind : int
     {
-        Local,
-        Unspecified,
-        Utc,
+        Local = 2,
+        Unspecified = 0,
+        Utc = 1,
     }
 
     // Generated from `System.DateTimeOffset` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -1564,15 +1564,15 @@ namespace System
     }
 
     // Generated from `System.DayOfWeek` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-    public enum DayOfWeek
+    public enum DayOfWeek : int
     {
-        Friday,
-        Monday,
-        Saturday,
-        Sunday,
-        Thursday,
-        Tuesday,
-        Wednesday,
+        Friday = 5,
+        Monday = 1,
+        Saturday = 6,
+        Sunday = 0,
+        Thursday = 4,
+        Tuesday = 2,
+        Wednesday = 3,
     }
 
     // Generated from `System.Decimal` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -1892,64 +1892,64 @@ namespace System
     public static class Environment
     {
         // Generated from `System.Environment+SpecialFolder` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum SpecialFolder
+        public enum SpecialFolder : int
         {
-            AdminTools,
-            ApplicationData,
-            CDBurning,
-            CommonAdminTools,
-            CommonApplicationData,
-            CommonDesktopDirectory,
-            CommonDocuments,
-            CommonMusic,
-            CommonOemLinks,
-            CommonPictures,
-            CommonProgramFiles,
-            CommonProgramFilesX86,
-            CommonPrograms,
-            CommonStartMenu,
-            CommonStartup,
-            CommonTemplates,
-            CommonVideos,
-            Cookies,
-            Desktop,
-            DesktopDirectory,
-            Favorites,
-            Fonts,
-            History,
-            InternetCache,
-            LocalApplicationData,
-            LocalizedResources,
-            MyComputer,
-            MyDocuments,
-            MyMusic,
-            MyPictures,
-            MyVideos,
-            NetworkShortcuts,
-            Personal,
-            PrinterShortcuts,
-            ProgramFiles,
-            ProgramFilesX86,
-            Programs,
-            Recent,
-            Resources,
-            SendTo,
-            StartMenu,
-            Startup,
-            System,
-            SystemX86,
-            Templates,
-            UserProfile,
-            Windows,
+            AdminTools = 48,
+            ApplicationData = 26,
+            CDBurning = 59,
+            CommonAdminTools = 47,
+            CommonApplicationData = 35,
+            CommonDesktopDirectory = 25,
+            CommonDocuments = 46,
+            CommonMusic = 53,
+            CommonOemLinks = 58,
+            CommonPictures = 54,
+            CommonProgramFiles = 43,
+            CommonProgramFilesX86 = 44,
+            CommonPrograms = 23,
+            CommonStartMenu = 22,
+            CommonStartup = 24,
+            CommonTemplates = 45,
+            CommonVideos = 55,
+            Cookies = 33,
+            Desktop = 0,
+            DesktopDirectory = 16,
+            Favorites = 6,
+            Fonts = 20,
+            History = 34,
+            InternetCache = 32,
+            LocalApplicationData = 28,
+            LocalizedResources = 57,
+            MyComputer = 17,
+            MyDocuments = 5,
+            MyMusic = 13,
+            MyPictures = 39,
+            MyVideos = 14,
+            NetworkShortcuts = 19,
+            Personal = 5,
+            PrinterShortcuts = 27,
+            ProgramFiles = 38,
+            ProgramFilesX86 = 42,
+            Programs = 2,
+            Recent = 8,
+            Resources = 56,
+            SendTo = 9,
+            StartMenu = 11,
+            Startup = 7,
+            System = 37,
+            SystemX86 = 41,
+            Templates = 21,
+            UserProfile = 40,
+            Windows = 36,
         }
 
 
         // Generated from `System.Environment+SpecialFolderOption` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum SpecialFolderOption
+        public enum SpecialFolderOption : int
         {
-            Create,
-            DoNotVerify,
-            None,
+            Create = 32768,
+            DoNotVerify = 16384,
+            None = 0,
         }
 
 
@@ -1993,11 +1993,11 @@ namespace System
     }
 
     // Generated from `System.EnvironmentVariableTarget` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-    public enum EnvironmentVariableTarget
+    public enum EnvironmentVariableTarget : int
     {
-        Machine,
-        Process,
-        User,
+        Machine = 2,
+        Process = 0,
+        User = 1,
     }
 
     // Generated from `System.EventArgs` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -2184,11 +2184,11 @@ namespace System
     }
 
     // Generated from `System.GCCollectionMode` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-    public enum GCCollectionMode
+    public enum GCCollectionMode : int
     {
-        Default,
-        Forced,
-        Optimized,
+        Default = 0,
+        Forced = 1,
+        Optimized = 2,
     }
 
     // Generated from `System.GCGenerationInfo` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -2202,12 +2202,12 @@ namespace System
     }
 
     // Generated from `System.GCKind` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-    public enum GCKind
+    public enum GCKind : int
     {
-        Any,
-        Background,
-        Ephemeral,
-        FullBlocking,
+        Any = 0,
+        Background = 3,
+        Ephemeral = 1,
+        FullBlocking = 2,
     }
 
     // Generated from `System.GCMemoryInfo` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -2233,13 +2233,13 @@ namespace System
     }
 
     // Generated from `System.GCNotificationStatus` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-    public enum GCNotificationStatus
+    public enum GCNotificationStatus : int
     {
-        Canceled,
-        Failed,
-        NotApplicable,
-        Succeeded,
-        Timeout,
+        Canceled = 2,
+        Failed = 1,
+        NotApplicable = 4,
+        Succeeded = 0,
+        Timeout = 3,
     }
 
     // Generated from `System.GenericUriParser` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -2250,20 +2250,20 @@ namespace System
 
     // Generated from `System.GenericUriParserOptions` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     [System.Flags]
-    public enum GenericUriParserOptions
+    public enum GenericUriParserOptions : int
     {
-        AllowEmptyAuthority,
-        Default,
-        DontCompressPath,
-        DontConvertPathBackslashes,
-        DontUnescapePathDotsAndSlashes,
-        GenericAuthority,
-        Idn,
-        IriParsing,
-        NoFragment,
-        NoPort,
-        NoQuery,
-        NoUserInfo,
+        AllowEmptyAuthority = 2,
+        Default = 0,
+        DontCompressPath = 128,
+        DontConvertPathBackslashes = 64,
+        DontUnescapePathDotsAndSlashes = 256,
+        GenericAuthority = 1,
+        Idn = 512,
+        IriParsing = 1024,
+        NoFragment = 32,
+        NoPort = 8,
+        NoQuery = 16,
+        NoUserInfo = 4,
     }
 
     // Generated from `System.GopherStyleUriParser` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -2784,14 +2784,14 @@ namespace System
     }
 
     // Generated from `System.LoaderOptimization` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-    public enum LoaderOptimization
+    public enum LoaderOptimization : int
     {
-        DisallowBindings,
-        DomainMask,
-        MultiDomain,
-        MultiDomainHost,
-        NotSpecified,
-        SingleDomain,
+        DisallowBindings = 4,
+        DomainMask = 3,
+        MultiDomain = 2,
+        MultiDomainHost = 3,
+        NotSpecified = 0,
+        SingleDomain = 1,
     }
 
     // Generated from `System.LoaderOptimizationAttribute` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -3038,13 +3038,13 @@ namespace System
     }
 
     // Generated from `System.MidpointRounding` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-    public enum MidpointRounding
+    public enum MidpointRounding : int
     {
-        AwayFromZero,
-        ToEven,
-        ToNegativeInfinity,
-        ToPositiveInfinity,
-        ToZero,
+        AwayFromZero = 1,
+        ToEven = 0,
+        ToNegativeInfinity = 3,
+        ToPositiveInfinity = 4,
+        ToZero = 2,
     }
 
     // Generated from `System.MissingFieldException` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -3328,16 +3328,16 @@ namespace System
     }
 
     // Generated from `System.PlatformID` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-    public enum PlatformID
+    public enum PlatformID : int
     {
-        MacOSX,
-        Other,
-        Unix,
-        Win32NT,
-        Win32S,
-        Win32Windows,
-        WinCE,
-        Xbox,
+        MacOSX = 6,
+        Other = 7,
+        Unix = 4,
+        Win32NT = 2,
+        Win32S = 0,
+        Win32Windows = 1,
+        WinCE = 3,
+        Xbox = 5,
     }
 
     // Generated from `System.PlatformNotSupportedException` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -3907,14 +3907,14 @@ namespace System
     }
 
     // Generated from `System.StringComparison` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-    public enum StringComparison
+    public enum StringComparison : int
     {
-        CurrentCulture,
-        CurrentCultureIgnoreCase,
-        InvariantCulture,
-        InvariantCultureIgnoreCase,
-        Ordinal,
-        OrdinalIgnoreCase,
+        CurrentCulture = 0,
+        CurrentCultureIgnoreCase = 1,
+        InvariantCulture = 2,
+        InvariantCultureIgnoreCase = 3,
+        Ordinal = 4,
+        OrdinalIgnoreCase = 5,
     }
 
     // Generated from `System.StringNormalizationExtensions` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -3928,11 +3928,11 @@ namespace System
 
     // Generated from `System.StringSplitOptions` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     [System.Flags]
-    public enum StringSplitOptions
+    public enum StringSplitOptions : int
     {
-        None,
-        RemoveEmptyEntries,
-        TrimEntries,
+        None = 0,
+        RemoveEmptyEntries = 1,
+        TrimEntries = 2,
     }
 
     // Generated from `System.SystemException` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -4676,26 +4676,26 @@ namespace System
     }
 
     // Generated from `System.TypeCode` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-    public enum TypeCode
+    public enum TypeCode : int
     {
-        Boolean,
-        Byte,
-        Char,
-        DBNull,
-        DateTime,
-        Decimal,
-        Double,
-        Empty,
-        Int16,
-        Int32,
-        Int64,
-        Object,
-        SByte,
-        Single,
-        String,
-        UInt16,
-        UInt32,
-        UInt64,
+        Boolean = 3,
+        Byte = 6,
+        Char = 4,
+        DBNull = 2,
+        DateTime = 16,
+        Decimal = 15,
+        Double = 14,
+        Empty = 0,
+        Int16 = 7,
+        Int32 = 9,
+        Int64 = 11,
+        Object = 1,
+        SByte = 5,
+        Single = 13,
+        String = 18,
+        UInt16 = 8,
+        UInt32 = 10,
+        UInt64 = 12,
     }
 
     // Generated from `System.TypeInitializationException` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -5053,25 +5053,25 @@ namespace System
 
     // Generated from `System.UriComponents` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     [System.Flags]
-    public enum UriComponents
+    public enum UriComponents : int
     {
-        AbsoluteUri,
-        Fragment,
-        Host,
-        HostAndPort,
-        HttpRequestUrl,
-        KeepDelimiter,
-        NormalizedHost,
-        Path,
-        PathAndQuery,
-        Port,
-        Query,
-        Scheme,
-        SchemeAndServer,
-        SerializationInfoString,
-        StrongAuthority,
-        StrongPort,
-        UserInfo,
+        AbsoluteUri = 127,
+        Fragment = 64,
+        Host = 4,
+        HostAndPort = 132,
+        HttpRequestUrl = 61,
+        KeepDelimiter = 1073741824,
+        NormalizedHost = 256,
+        Path = 16,
+        PathAndQuery = 48,
+        Port = 8,
+        Query = 32,
+        Scheme = 1,
+        SchemeAndServer = 13,
+        SerializationInfoString = -2147483648,
+        StrongAuthority = 134,
+        StrongPort = 128,
+        UserInfo = 2,
     }
 
     // Generated from `System.UriCreationOptions` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -5082,11 +5082,11 @@ namespace System
     }
 
     // Generated from `System.UriFormat` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-    public enum UriFormat
+    public enum UriFormat : int
     {
-        SafeUnescaped,
-        Unescaped,
-        UriEscaped,
+        SafeUnescaped = 3,
+        Unescaped = 2,
+        UriEscaped = 1,
     }
 
     // Generated from `System.UriFormatException` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -5100,21 +5100,21 @@ namespace System
     }
 
     // Generated from `System.UriHostNameType` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-    public enum UriHostNameType
+    public enum UriHostNameType : int
     {
-        Basic,
-        Dns,
-        IPv4,
-        IPv6,
-        Unknown,
+        Basic = 1,
+        Dns = 2,
+        IPv4 = 3,
+        IPv6 = 4,
+        Unknown = 0,
     }
 
     // Generated from `System.UriKind` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-    public enum UriKind
+    public enum UriKind : int
     {
-        Absolute,
-        Relative,
-        RelativeOrAbsolute,
+        Absolute = 1,
+        Relative = 2,
+        RelativeOrAbsolute = 0,
     }
 
     // Generated from `System.UriParser` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -5133,12 +5133,12 @@ namespace System
     }
 
     // Generated from `System.UriPartial` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-    public enum UriPartial
+    public enum UriPartial : int
     {
-        Authority,
-        Path,
-        Query,
-        Scheme,
+        Authority = 1,
+        Path = 2,
+        Query = 3,
+        Scheme = 0,
     }
 
     // Generated from `System.ValueTuple` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -5474,12 +5474,12 @@ namespace System
         }
 
         // Generated from `System.Buffers.OperationStatus` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum OperationStatus
+        public enum OperationStatus : int
         {
-            DestinationTooSmall,
-            Done,
-            InvalidData,
-            NeedMoreData,
+            DestinationTooSmall = 1,
+            Done = 0,
+            InvalidData = 3,
+            NeedMoreData = 2,
         }
 
         // Generated from `System.Buffers.ReadOnlySpanAction<,>` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -6042,11 +6042,11 @@ namespace System
         }
 
         // Generated from `System.ComponentModel.EditorBrowsableState` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum EditorBrowsableState
+        public enum EditorBrowsableState : int
         {
-            Advanced,
-            Always,
-            Never,
+            Advanced = 2,
+            Always = 0,
+            Never = 1,
         }
 
     }
@@ -6055,22 +6055,22 @@ namespace System
         namespace Assemblies
         {
             // Generated from `System.Configuration.Assemblies.AssemblyHashAlgorithm` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum AssemblyHashAlgorithm
+            public enum AssemblyHashAlgorithm : int
             {
-                MD5,
-                None,
-                SHA1,
-                SHA256,
-                SHA384,
-                SHA512,
+                MD5 = 32771,
+                None = 0,
+                SHA1 = 32772,
+                SHA256 = 32780,
+                SHA384 = 32781,
+                SHA512 = 32782,
             }
 
             // Generated from `System.Configuration.Assemblies.AssemblyVersionCompatibility` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum AssemblyVersionCompatibility
+            public enum AssemblyVersionCompatibility : int
             {
-                SameDomain,
-                SameMachine,
-                SameProcess,
+                SameDomain = 3,
+                SameMachine = 1,
+                SameProcess = 2,
             }
 
         }
@@ -6168,13 +6168,13 @@ namespace System
         {
             // Generated from `System.Diagnostics.DebuggableAttribute+DebuggingModes` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             [System.Flags]
-            public enum DebuggingModes
+            public enum DebuggingModes : int
             {
-                Default,
-                DisableOptimizations,
-                EnableEditAndContinue,
-                IgnoreSymbolStoreSequencePoints,
-                None,
+                Default = 1,
+                DisableOptimizations = 256,
+                EnableEditAndContinue = 4,
+                IgnoreSymbolStoreSequencePoints = 2,
+                None = 0,
             }
 
 
@@ -6205,11 +6205,11 @@ namespace System
         }
 
         // Generated from `System.Diagnostics.DebuggerBrowsableState` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum DebuggerBrowsableState
+        public enum DebuggerBrowsableState : int
         {
-            Collapsed,
-            Never,
-            RootHidden,
+            Collapsed = 2,
+            Never = 0,
+            RootHidden = 3,
         }
 
         // Generated from `System.Diagnostics.DebuggerDisplayAttribute` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -6342,24 +6342,24 @@ namespace System
 
             // Generated from `System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes` in `Microsoft.Extensions.Configuration.Binder, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60; Microsoft.Extensions.DependencyInjection.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60; Microsoft.Extensions.Hosting, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60; Microsoft.Extensions.Hosting.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60; Microsoft.Extensions.Http, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60; Microsoft.Extensions.Logging.Configuration, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60; Microsoft.Extensions.Options, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60; Microsoft.Extensions.Options.ConfigurationExtensions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60; Microsoft.Extensions.Options.DataAnnotations, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60; System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             [System.Flags]
-            public enum DynamicallyAccessedMemberTypes
+            public enum DynamicallyAccessedMemberTypes : int
             {
-                All,
-                Interfaces,
-                NonPublicConstructors,
-                NonPublicEvents,
-                NonPublicFields,
-                NonPublicMethods,
-                NonPublicNestedTypes,
-                NonPublicProperties,
-                None,
-                PublicConstructors,
-                PublicEvents,
-                PublicFields,
-                PublicMethods,
-                PublicNestedTypes,
-                PublicParameterlessConstructor,
-                PublicProperties,
+                All = -1,
+                Interfaces = 8192,
+                NonPublicConstructors = 4,
+                NonPublicEvents = 4096,
+                NonPublicFields = 64,
+                NonPublicMethods = 16,
+                NonPublicNestedTypes = 256,
+                NonPublicProperties = 1024,
+                None = 0,
+                PublicConstructors = 3,
+                PublicEvents = 2048,
+                PublicFields = 32,
+                PublicMethods = 8,
+                PublicNestedTypes = 128,
+                PublicParameterlessConstructor = 1,
+                PublicProperties = 512,
             }
 
             // Generated from `System.Diagnostics.CodeAnalysis.DynamicallyAccessedMembersAttribute` in `Microsoft.Extensions.Configuration.Binder, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60; Microsoft.Extensions.DependencyInjection.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60; Microsoft.Extensions.Hosting, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60; Microsoft.Extensions.Hosting.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60; Microsoft.Extensions.Http, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60; Microsoft.Extensions.Logging.Configuration, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60; Microsoft.Extensions.Options, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60; Microsoft.Extensions.Options.ConfigurationExtensions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60; Microsoft.Extensions.Options.DataAnnotations, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60; System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -6524,20 +6524,20 @@ namespace System
         }
 
         // Generated from `System.Globalization.CalendarAlgorithmType` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum CalendarAlgorithmType
+        public enum CalendarAlgorithmType : int
         {
-            LunarCalendar,
-            LunisolarCalendar,
-            SolarCalendar,
-            Unknown,
+            LunarCalendar = 2,
+            LunisolarCalendar = 3,
+            SolarCalendar = 1,
+            Unknown = 0,
         }
 
         // Generated from `System.Globalization.CalendarWeekRule` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum CalendarWeekRule
+        public enum CalendarWeekRule : int
         {
-            FirstDay,
-            FirstFourDayWeek,
-            FirstFullWeek,
+            FirstDay = 0,
+            FirstFourDayWeek = 2,
+            FirstFullWeek = 1,
         }
 
         // Generated from `System.Globalization.CharUnicodeInfo` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -6639,17 +6639,17 @@ namespace System
 
         // Generated from `System.Globalization.CompareOptions` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         [System.Flags]
-        public enum CompareOptions
+        public enum CompareOptions : int
         {
-            IgnoreCase,
-            IgnoreKanaType,
-            IgnoreNonSpace,
-            IgnoreSymbols,
-            IgnoreWidth,
-            None,
-            Ordinal,
-            OrdinalIgnoreCase,
-            StringSort,
+            IgnoreCase = 1,
+            IgnoreKanaType = 8,
+            IgnoreNonSpace = 2,
+            IgnoreSymbols = 4,
+            IgnoreWidth = 16,
+            None = 0,
+            Ordinal = 1073741824,
+            OrdinalIgnoreCase = 268435456,
+            StringSort = 536870912,
         }
 
         // Generated from `System.Globalization.CultureInfo` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -6723,16 +6723,16 @@ namespace System
 
         // Generated from `System.Globalization.CultureTypes` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         [System.Flags]
-        public enum CultureTypes
+        public enum CultureTypes : int
         {
-            AllCultures,
-            FrameworkCultures,
-            InstalledWin32Cultures,
-            NeutralCultures,
-            ReplacementCultures,
-            SpecificCultures,
-            UserCustomCulture,
-            WindowsOnlyCultures,
+            AllCultures = 7,
+            FrameworkCultures = 64,
+            InstalledWin32Cultures = 4,
+            NeutralCultures = 1,
+            ReplacementCultures = 16,
+            SpecificCultures = 2,
+            UserCustomCulture = 8,
+            WindowsOnlyCultures = 32,
         }
 
         // Generated from `System.Globalization.DateTimeFormatInfo` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -6786,18 +6786,18 @@ namespace System
 
         // Generated from `System.Globalization.DateTimeStyles` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         [System.Flags]
-        public enum DateTimeStyles
+        public enum DateTimeStyles : int
         {
-            AdjustToUniversal,
-            AllowInnerWhite,
-            AllowLeadingWhite,
-            AllowTrailingWhite,
-            AllowWhiteSpaces,
-            AssumeLocal,
-            AssumeUniversal,
-            NoCurrentDateDefault,
-            None,
-            RoundtripKind,
+            AdjustToUniversal = 16,
+            AllowInnerWhite = 4,
+            AllowLeadingWhite = 1,
+            AllowTrailingWhite = 2,
+            AllowWhiteSpaces = 7,
+            AssumeLocal = 32,
+            AssumeUniversal = 64,
+            NoCurrentDateDefault = 8,
+            None = 0,
+            RoundtripKind = 128,
         }
 
         // Generated from `System.Globalization.DaylightTime` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -6810,11 +6810,11 @@ namespace System
         }
 
         // Generated from `System.Globalization.DigitShapes` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum DigitShapes
+        public enum DigitShapes : int
         {
-            Context,
-            NativeNational,
-            None,
+            Context = 0,
+            NativeNational = 2,
+            None = 1,
         }
 
         // Generated from `System.Globalization.EastAsianLunisolarCalendar` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -6882,14 +6882,14 @@ namespace System
         }
 
         // Generated from `System.Globalization.GregorianCalendarTypes` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum GregorianCalendarTypes
+        public enum GregorianCalendarTypes : int
         {
-            Arabic,
-            Localized,
-            MiddleEastFrench,
-            TransliteratedEnglish,
-            TransliteratedFrench,
-            USEnglish,
+            Arabic = 10,
+            Localized = 1,
+            MiddleEastFrench = 9,
+            TransliteratedEnglish = 11,
+            TransliteratedFrench = 12,
+            USEnglish = 2,
         }
 
         // Generated from `System.Globalization.HebrewCalendar` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -7133,25 +7133,25 @@ namespace System
 
         // Generated from `System.Globalization.NumberStyles` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         [System.Flags]
-        public enum NumberStyles
+        public enum NumberStyles : int
         {
-            AllowCurrencySymbol,
-            AllowDecimalPoint,
-            AllowExponent,
-            AllowHexSpecifier,
-            AllowLeadingSign,
-            AllowLeadingWhite,
-            AllowParentheses,
-            AllowThousands,
-            AllowTrailingSign,
-            AllowTrailingWhite,
-            Any,
-            Currency,
-            Float,
-            HexNumber,
-            Integer,
-            None,
-            Number,
+            AllowCurrencySymbol = 256,
+            AllowDecimalPoint = 32,
+            AllowExponent = 128,
+            AllowHexSpecifier = 512,
+            AllowLeadingSign = 4,
+            AllowLeadingWhite = 1,
+            AllowParentheses = 16,
+            AllowThousands = 64,
+            AllowTrailingSign = 8,
+            AllowTrailingWhite = 2,
+            Any = 511,
+            Currency = 383,
+            Float = 167,
+            HexNumber = 515,
+            Integer = 7,
+            None = 0,
+            Number = 111,
         }
 
         // Generated from `System.Globalization.PersianCalendar` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -7359,10 +7359,10 @@ namespace System
 
         // Generated from `System.Globalization.TimeSpanStyles` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         [System.Flags]
-        public enum TimeSpanStyles
+        public enum TimeSpanStyles : int
         {
-            AssumeNegative,
-            None,
+            AssumeNegative = 1,
+            None = 0,
         }
 
         // Generated from `System.Globalization.UmAlQuraCalendar` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -7396,38 +7396,38 @@ namespace System
         }
 
         // Generated from `System.Globalization.UnicodeCategory` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum UnicodeCategory
+        public enum UnicodeCategory : int
         {
-            ClosePunctuation,
-            ConnectorPunctuation,
-            Control,
-            CurrencySymbol,
-            DashPunctuation,
-            DecimalDigitNumber,
-            EnclosingMark,
-            FinalQuotePunctuation,
-            Format,
-            InitialQuotePunctuation,
-            LetterNumber,
-            LineSeparator,
-            LowercaseLetter,
-            MathSymbol,
-            ModifierLetter,
-            ModifierSymbol,
-            NonSpacingMark,
-            OpenPunctuation,
-            OtherLetter,
-            OtherNotAssigned,
-            OtherNumber,
-            OtherPunctuation,
-            OtherSymbol,
-            ParagraphSeparator,
-            PrivateUse,
-            SpaceSeparator,
-            SpacingCombiningMark,
-            Surrogate,
-            TitlecaseLetter,
-            UppercaseLetter,
+            ClosePunctuation = 21,
+            ConnectorPunctuation = 18,
+            Control = 14,
+            CurrencySymbol = 26,
+            DashPunctuation = 19,
+            DecimalDigitNumber = 8,
+            EnclosingMark = 7,
+            FinalQuotePunctuation = 23,
+            Format = 15,
+            InitialQuotePunctuation = 22,
+            LetterNumber = 9,
+            LineSeparator = 12,
+            LowercaseLetter = 1,
+            MathSymbol = 25,
+            ModifierLetter = 3,
+            ModifierSymbol = 27,
+            NonSpacingMark = 5,
+            OpenPunctuation = 20,
+            OtherLetter = 4,
+            OtherNotAssigned = 29,
+            OtherNumber = 10,
+            OtherPunctuation = 24,
+            OtherSymbol = 28,
+            ParagraphSeparator = 13,
+            PrivateUse = 17,
+            SpaceSeparator = 11,
+            SpacingCombiningMark = 6,
+            Surrogate = 16,
+            TitlecaseLetter = 2,
+            UppercaseLetter = 0,
         }
 
     }
@@ -7751,33 +7751,33 @@ namespace System
 
         // Generated from `System.IO.FileAccess` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         [System.Flags]
-        public enum FileAccess
+        public enum FileAccess : int
         {
-            Read,
-            ReadWrite,
-            Write,
+            Read = 1,
+            ReadWrite = 3,
+            Write = 2,
         }
 
         // Generated from `System.IO.FileAttributes` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         [System.Flags]
-        public enum FileAttributes
+        public enum FileAttributes : int
         {
-            Archive,
-            Compressed,
-            Device,
-            Directory,
-            Encrypted,
-            Hidden,
-            IntegrityStream,
-            NoScrubData,
-            Normal,
-            NotContentIndexed,
-            Offline,
-            ReadOnly,
-            ReparsePoint,
-            SparseFile,
-            System,
-            Temporary,
+            Archive = 32,
+            Compressed = 2048,
+            Device = 64,
+            Directory = 16,
+            Encrypted = 16384,
+            Hidden = 2,
+            IntegrityStream = 32768,
+            NoScrubData = 131072,
+            Normal = 128,
+            NotContentIndexed = 8192,
+            Offline = 4096,
+            ReadOnly = 1,
+            ReparsePoint = 1024,
+            SparseFile = 512,
+            System = 4,
+            Temporary = 256,
         }
 
         // Generated from `System.IO.FileInfo` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -7829,14 +7829,14 @@ namespace System
         }
 
         // Generated from `System.IO.FileMode` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum FileMode
+        public enum FileMode : int
         {
-            Append,
-            Create,
-            CreateNew,
-            Open,
-            OpenOrCreate,
-            Truncate,
+            Append = 6,
+            Create = 2,
+            CreateNew = 1,
+            Open = 3,
+            OpenOrCreate = 4,
+            Truncate = 5,
         }
 
         // Generated from `System.IO.FileNotFoundException` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -7857,27 +7857,27 @@ namespace System
 
         // Generated from `System.IO.FileOptions` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         [System.Flags]
-        public enum FileOptions
+        public enum FileOptions : int
         {
-            Asynchronous,
-            DeleteOnClose,
-            Encrypted,
-            None,
-            RandomAccess,
-            SequentialScan,
-            WriteThrough,
+            Asynchronous = 1073741824,
+            DeleteOnClose = 67108864,
+            Encrypted = 16384,
+            None = 0,
+            RandomAccess = 268435456,
+            SequentialScan = 134217728,
+            WriteThrough = -2147483648,
         }
 
         // Generated from `System.IO.FileShare` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         [System.Flags]
-        public enum FileShare
+        public enum FileShare : int
         {
-            Delete,
-            Inheritable,
-            None,
-            Read,
-            ReadWrite,
-            Write,
+            Delete = 4,
+            Inheritable = 16,
+            None = 0,
+            Read = 1,
+            ReadWrite = 3,
+            Write = 2,
         }
 
         // Generated from `System.IO.FileStream` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -7973,10 +7973,10 @@ namespace System
         }
 
         // Generated from `System.IO.HandleInheritability` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum HandleInheritability
+        public enum HandleInheritability : int
         {
-            Inheritable,
-            None,
+            Inheritable = 1,
+            None = 0,
         }
 
         // Generated from `System.IO.IOException` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -7998,18 +7998,18 @@ namespace System
         }
 
         // Generated from `System.IO.MatchCasing` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum MatchCasing
+        public enum MatchCasing : int
         {
-            CaseInsensitive,
-            CaseSensitive,
-            PlatformDefault,
+            CaseInsensitive = 2,
+            CaseSensitive = 1,
+            PlatformDefault = 0,
         }
 
         // Generated from `System.IO.MatchType` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum MatchType
+        public enum MatchType : int
         {
-            Simple,
-            Win32,
+            Simple = 0,
+            Win32 = 1,
         }
 
         // Generated from `System.IO.MemoryStream` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -8131,18 +8131,18 @@ namespace System
         }
 
         // Generated from `System.IO.SearchOption` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum SearchOption
+        public enum SearchOption : int
         {
-            AllDirectories,
-            TopDirectoryOnly,
+            AllDirectories = 1,
+            TopDirectoryOnly = 0,
         }
 
         // Generated from `System.IO.SeekOrigin` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum SeekOrigin
+        public enum SeekOrigin : int
         {
-            Begin,
-            Current,
-            End,
+            Begin = 0,
+            Current = 1,
+            End = 2,
         }
 
         // Generated from `System.IO.Stream` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -8690,10 +8690,10 @@ namespace System
         }
 
         // Generated from `System.Reflection.AssemblyContentType` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum AssemblyContentType
+        public enum AssemblyContentType : int
         {
-            Default,
-            WindowsRuntime,
+            Default = 0,
+            WindowsRuntime = 1,
         }
 
         // Generated from `System.Reflection.AssemblyCopyrightAttribute` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -8809,13 +8809,13 @@ namespace System
 
         // Generated from `System.Reflection.AssemblyNameFlags` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         [System.Flags]
-        public enum AssemblyNameFlags
+        public enum AssemblyNameFlags : int
         {
-            EnableJITcompileOptimizer,
-            EnableJITcompileTracking,
-            None,
-            PublicKey,
-            Retargetable,
+            EnableJITcompileOptimizer = 16384,
+            EnableJITcompileTracking = 32768,
+            None = 0,
+            PublicKey = 1,
+            Retargetable = 256,
         }
 
         // Generated from `System.Reflection.AssemblyNameProxy` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -8875,40 +8875,40 @@ namespace System
 
         // Generated from `System.Reflection.BindingFlags` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         [System.Flags]
-        public enum BindingFlags
+        public enum BindingFlags : int
         {
-            CreateInstance,
-            DeclaredOnly,
-            Default,
-            DoNotWrapExceptions,
-            ExactBinding,
-            FlattenHierarchy,
-            GetField,
-            GetProperty,
-            IgnoreCase,
-            IgnoreReturn,
-            Instance,
-            InvokeMethod,
-            NonPublic,
-            OptionalParamBinding,
-            Public,
-            PutDispProperty,
-            PutRefDispProperty,
-            SetField,
-            SetProperty,
-            Static,
-            SuppressChangeType,
+            CreateInstance = 512,
+            DeclaredOnly = 2,
+            Default = 0,
+            DoNotWrapExceptions = 33554432,
+            ExactBinding = 65536,
+            FlattenHierarchy = 64,
+            GetField = 1024,
+            GetProperty = 4096,
+            IgnoreCase = 1,
+            IgnoreReturn = 16777216,
+            Instance = 4,
+            InvokeMethod = 256,
+            NonPublic = 32,
+            OptionalParamBinding = 262144,
+            Public = 16,
+            PutDispProperty = 16384,
+            PutRefDispProperty = 32768,
+            SetField = 2048,
+            SetProperty = 8192,
+            Static = 8,
+            SuppressChangeType = 131072,
         }
 
         // Generated from `System.Reflection.CallingConventions` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         [System.Flags]
-        public enum CallingConventions
+        public enum CallingConventions : int
         {
-            Any,
-            ExplicitThis,
-            HasThis,
-            Standard,
-            VarArgs,
+            Any = 3,
+            ExplicitThis = 64,
+            HasThis = 32,
+            Standard = 1,
+            VarArgs = 2,
         }
 
         // Generated from `System.Reflection.ConstructorInfo` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -9034,12 +9034,12 @@ namespace System
 
         // Generated from `System.Reflection.EventAttributes` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         [System.Flags]
-        public enum EventAttributes
+        public enum EventAttributes : int
         {
-            None,
-            RTSpecialName,
-            ReservedMask,
-            SpecialName,
+            None = 0,
+            RTSpecialName = 1024,
+            ReservedMask = 1024,
+            SpecialName = 512,
         }
 
         // Generated from `System.Reflection.EventInfo` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -9086,37 +9086,37 @@ namespace System
 
         // Generated from `System.Reflection.ExceptionHandlingClauseOptions` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         [System.Flags]
-        public enum ExceptionHandlingClauseOptions
+        public enum ExceptionHandlingClauseOptions : int
         {
-            Clause,
-            Fault,
-            Filter,
-            Finally,
+            Clause = 0,
+            Fault = 4,
+            Filter = 1,
+            Finally = 2,
         }
 
         // Generated from `System.Reflection.FieldAttributes` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         [System.Flags]
-        public enum FieldAttributes
+        public enum FieldAttributes : int
         {
-            Assembly,
-            FamANDAssem,
-            FamORAssem,
-            Family,
-            FieldAccessMask,
-            HasDefault,
-            HasFieldMarshal,
-            HasFieldRVA,
-            InitOnly,
-            Literal,
-            NotSerialized,
-            PinvokeImpl,
-            Private,
-            PrivateScope,
-            Public,
-            RTSpecialName,
-            ReservedMask,
-            SpecialName,
-            Static,
+            Assembly = 3,
+            FamANDAssem = 2,
+            FamORAssem = 5,
+            Family = 4,
+            FieldAccessMask = 7,
+            HasDefault = 32768,
+            HasFieldMarshal = 4096,
+            HasFieldRVA = 256,
+            InitOnly = 32,
+            Literal = 64,
+            NotSerialized = 128,
+            PinvokeImpl = 8192,
+            Private = 1,
+            PrivateScope = 0,
+            Public = 6,
+            RTSpecialName = 1024,
+            ReservedMask = 38144,
+            SpecialName = 512,
+            Static = 16,
         }
 
         // Generated from `System.Reflection.FieldInfo` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -9160,16 +9160,16 @@ namespace System
 
         // Generated from `System.Reflection.GenericParameterAttributes` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         [System.Flags]
-        public enum GenericParameterAttributes
+        public enum GenericParameterAttributes : int
         {
-            Contravariant,
-            Covariant,
-            DefaultConstructorConstraint,
-            None,
-            NotNullableValueTypeConstraint,
-            ReferenceTypeConstraint,
-            SpecialConstraintMask,
-            VarianceMask,
+            Contravariant = 2,
+            Covariant = 1,
+            DefaultConstructorConstraint = 16,
+            None = 0,
+            NotNullableValueTypeConstraint = 8,
+            ReferenceTypeConstraint = 4,
+            SpecialConstraintMask = 28,
+            VarianceMask = 3,
         }
 
         // Generated from `System.Reflection.ICustomAttributeProvider` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -9204,12 +9204,12 @@ namespace System
         }
 
         // Generated from `System.Reflection.ImageFileMachine` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum ImageFileMachine
+        public enum ImageFileMachine : int
         {
-            AMD64,
-            ARM,
-            I386,
-            IA64,
+            AMD64 = 34404,
+            ARM = 452,
+            I386 = 332,
+            IA64 = 512,
         }
 
         // Generated from `System.Reflection.InterfaceMapping` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -9284,47 +9284,47 @@ namespace System
 
         // Generated from `System.Reflection.MemberTypes` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         [System.Flags]
-        public enum MemberTypes
+        public enum MemberTypes : int
         {
-            All,
-            Constructor,
-            Custom,
-            Event,
-            Field,
-            Method,
-            NestedType,
-            Property,
-            TypeInfo,
+            All = 191,
+            Constructor = 1,
+            Custom = 64,
+            Event = 2,
+            Field = 4,
+            Method = 8,
+            NestedType = 128,
+            Property = 16,
+            TypeInfo = 32,
         }
 
         // Generated from `System.Reflection.MethodAttributes` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         [System.Flags]
-        public enum MethodAttributes
+        public enum MethodAttributes : int
         {
-            Abstract,
-            Assembly,
-            CheckAccessOnOverride,
-            FamANDAssem,
-            FamORAssem,
-            Family,
-            Final,
-            HasSecurity,
-            HideBySig,
-            MemberAccessMask,
-            NewSlot,
-            PinvokeImpl,
-            Private,
-            PrivateScope,
-            Public,
-            RTSpecialName,
-            RequireSecObject,
-            ReservedMask,
-            ReuseSlot,
-            SpecialName,
-            Static,
-            UnmanagedExport,
-            Virtual,
-            VtableLayoutMask,
+            Abstract = 1024,
+            Assembly = 3,
+            CheckAccessOnOverride = 512,
+            FamANDAssem = 2,
+            FamORAssem = 5,
+            Family = 4,
+            Final = 32,
+            HasSecurity = 16384,
+            HideBySig = 128,
+            MemberAccessMask = 7,
+            NewSlot = 256,
+            PinvokeImpl = 8192,
+            Private = 1,
+            PrivateScope = 0,
+            Public = 6,
+            RTSpecialName = 4096,
+            RequireSecObject = 32768,
+            ReservedMask = 53248,
+            ReuseSlot = 0,
+            SpecialName = 2048,
+            Static = 16,
+            UnmanagedExport = 8,
+            Virtual = 64,
+            VtableLayoutMask = 256,
         }
 
         // Generated from `System.Reflection.MethodBase` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -9383,25 +9383,25 @@ namespace System
         }
 
         // Generated from `System.Reflection.MethodImplAttributes` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum MethodImplAttributes
+        public enum MethodImplAttributes : int
         {
-            AggressiveInlining,
-            AggressiveOptimization,
-            CodeTypeMask,
-            ForwardRef,
-            IL,
-            InternalCall,
-            Managed,
-            ManagedMask,
-            MaxMethodImplVal,
-            Native,
-            NoInlining,
-            NoOptimization,
-            OPTIL,
-            PreserveSig,
-            Runtime,
-            Synchronized,
-            Unmanaged,
+            AggressiveInlining = 256,
+            AggressiveOptimization = 512,
+            CodeTypeMask = 3,
+            ForwardRef = 16,
+            IL = 0,
+            InternalCall = 4096,
+            Managed = 0,
+            ManagedMask = 4,
+            MaxMethodImplVal = 65535,
+            Native = 1,
+            NoInlining = 8,
+            NoOptimization = 64,
+            OPTIL = 2,
+            PreserveSig = 128,
+            Runtime = 3,
+            Synchronized = 32,
+            Unmanaged = 4,
         }
 
         // Generated from `System.Reflection.MethodInfo` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -9511,11 +9511,11 @@ namespace System
         }
 
         // Generated from `System.Reflection.NullabilityState` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum NullabilityState
+        public enum NullabilityState : int
         {
-            NotNull,
-            Nullable,
-            Unknown,
+            NotNull = 1,
+            Nullable = 2,
+            Unknown = 0,
         }
 
         // Generated from `System.Reflection.ObfuscateAssemblyAttribute` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -9538,19 +9538,19 @@ namespace System
 
         // Generated from `System.Reflection.ParameterAttributes` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         [System.Flags]
-        public enum ParameterAttributes
+        public enum ParameterAttributes : int
         {
-            HasDefault,
-            HasFieldMarshal,
-            In,
-            Lcid,
-            None,
-            Optional,
-            Out,
-            Reserved3,
-            Reserved4,
-            ReservedMask,
-            Retval,
+            HasDefault = 4096,
+            HasFieldMarshal = 8192,
+            In = 1,
+            Lcid = 4,
+            None = 0,
+            Optional = 16,
+            Out = 2,
+            Reserved3 = 16384,
+            Reserved4 = 32768,
+            ReservedMask = 61440,
+            Retval = 8,
         }
 
         // Generated from `System.Reflection.ParameterInfo` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -9608,39 +9608,39 @@ namespace System
 
         // Generated from `System.Reflection.PortableExecutableKinds` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         [System.Flags]
-        public enum PortableExecutableKinds
+        public enum PortableExecutableKinds : int
         {
-            ILOnly,
-            NotAPortableExecutableImage,
-            PE32Plus,
-            Preferred32Bit,
-            Required32Bit,
-            Unmanaged32Bit,
+            ILOnly = 1,
+            NotAPortableExecutableImage = 0,
+            PE32Plus = 4,
+            Preferred32Bit = 16,
+            Required32Bit = 2,
+            Unmanaged32Bit = 8,
         }
 
         // Generated from `System.Reflection.ProcessorArchitecture` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum ProcessorArchitecture
+        public enum ProcessorArchitecture : int
         {
-            Amd64,
-            Arm,
-            IA64,
-            MSIL,
-            None,
-            X86,
+            Amd64 = 4,
+            Arm = 5,
+            IA64 = 3,
+            MSIL = 1,
+            None = 0,
+            X86 = 2,
         }
 
         // Generated from `System.Reflection.PropertyAttributes` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         [System.Flags]
-        public enum PropertyAttributes
+        public enum PropertyAttributes : int
         {
-            HasDefault,
-            None,
-            RTSpecialName,
-            Reserved2,
-            Reserved3,
-            Reserved4,
-            ReservedMask,
-            SpecialName,
+            HasDefault = 4096,
+            None = 0,
+            RTSpecialName = 1024,
+            Reserved2 = 8192,
+            Reserved3 = 16384,
+            Reserved4 = 32768,
+            ReservedMask = 62464,
+            SpecialName = 512,
         }
 
         // Generated from `System.Reflection.PropertyInfo` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -9701,19 +9701,19 @@ namespace System
 
         // Generated from `System.Reflection.ResourceAttributes` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         [System.Flags]
-        public enum ResourceAttributes
+        public enum ResourceAttributes : int
         {
-            Private,
-            Public,
+            Private = 2,
+            Public = 1,
         }
 
         // Generated from `System.Reflection.ResourceLocation` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         [System.Flags]
-        public enum ResourceLocation
+        public enum ResourceLocation : int
         {
-            ContainedInAnotherAssembly,
-            ContainedInManifestFile,
-            Embedded,
+            ContainedInAnotherAssembly = 2,
+            ContainedInManifestFile = 4,
+            Embedded = 1,
         }
 
         // Generated from `System.Reflection.RuntimeReflectionExtensions` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -9770,40 +9770,40 @@ namespace System
 
         // Generated from `System.Reflection.TypeAttributes` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         [System.Flags]
-        public enum TypeAttributes
+        public enum TypeAttributes : int
         {
-            Abstract,
-            AnsiClass,
-            AutoClass,
-            AutoLayout,
-            BeforeFieldInit,
-            Class,
-            ClassSemanticsMask,
-            CustomFormatClass,
-            CustomFormatMask,
-            ExplicitLayout,
-            HasSecurity,
-            Import,
-            Interface,
-            LayoutMask,
-            NestedAssembly,
-            NestedFamANDAssem,
-            NestedFamORAssem,
-            NestedFamily,
-            NestedPrivate,
-            NestedPublic,
-            NotPublic,
-            Public,
-            RTSpecialName,
-            ReservedMask,
-            Sealed,
-            SequentialLayout,
-            Serializable,
-            SpecialName,
-            StringFormatMask,
-            UnicodeClass,
-            VisibilityMask,
-            WindowsRuntime,
+            Abstract = 128,
+            AnsiClass = 0,
+            AutoClass = 131072,
+            AutoLayout = 0,
+            BeforeFieldInit = 1048576,
+            Class = 0,
+            ClassSemanticsMask = 32,
+            CustomFormatClass = 196608,
+            CustomFormatMask = 12582912,
+            ExplicitLayout = 16,
+            HasSecurity = 262144,
+            Import = 4096,
+            Interface = 32,
+            LayoutMask = 24,
+            NestedAssembly = 5,
+            NestedFamANDAssem = 6,
+            NestedFamORAssem = 7,
+            NestedFamily = 4,
+            NestedPrivate = 3,
+            NestedPublic = 2,
+            NotPublic = 0,
+            Public = 1,
+            RTSpecialName = 2048,
+            ReservedMask = 264192,
+            Sealed = 256,
+            SequentialLayout = 8,
+            Serializable = 8192,
+            SpecialName = 1024,
+            StringFormatMask = 196608,
+            UnicodeClass = 65536,
+            VisibilityMask = 7,
+            WindowsRuntime = 16384,
         }
 
         // Generated from `System.Reflection.TypeDelegator` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -10001,10 +10001,10 @@ namespace System
         }
 
         // Generated from `System.Resources.UltimateResourceFallbackLocation` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum UltimateResourceFallbackLocation
+        public enum UltimateResourceFallbackLocation : int
         {
-            MainAssembly,
-            Satellite,
+            MainAssembly = 0,
+            Satellite = 1,
         }
 
     }
@@ -10038,20 +10038,20 @@ namespace System
         }
 
         // Generated from `System.Runtime.GCLargeObjectHeapCompactionMode` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum GCLargeObjectHeapCompactionMode
+        public enum GCLargeObjectHeapCompactionMode : int
         {
-            CompactOnce,
-            Default,
+            CompactOnce = 2,
+            Default = 1,
         }
 
         // Generated from `System.Runtime.GCLatencyMode` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum GCLatencyMode
+        public enum GCLatencyMode : int
         {
-            Batch,
-            Interactive,
-            LowLatency,
-            NoGCRegion,
-            SustainedLowLatency,
+            Batch = 0,
+            Interactive = 1,
+            LowLatency = 2,
+            NoGCRegion = 4,
+            SustainedLowLatency = 3,
         }
 
         // Generated from `System.Runtime.GCSettings` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -10263,9 +10263,9 @@ namespace System
 
             // Generated from `System.Runtime.CompilerServices.CompilationRelaxations` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             [System.Flags]
-            public enum CompilationRelaxations
+            public enum CompilationRelaxations : int
             {
-                NoStringInterning,
+                NoStringInterning = 8,
             }
 
             // Generated from `System.Runtime.CompilerServices.CompilationRelaxationsAttribute` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -10601,20 +10601,20 @@ namespace System
             }
 
             // Generated from `System.Runtime.CompilerServices.LoadHint` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum LoadHint
+            public enum LoadHint : int
             {
-                Always,
-                Default,
-                Sometimes,
+                Always = 1,
+                Default = 0,
+                Sometimes = 2,
             }
 
             // Generated from `System.Runtime.CompilerServices.MethodCodeType` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum MethodCodeType
+            public enum MethodCodeType : int
             {
-                IL,
-                Native,
-                OPTIL,
-                Runtime,
+                IL = 0,
+                Native = 1,
+                OPTIL = 2,
+                Runtime = 3,
             }
 
             // Generated from `System.Runtime.CompilerServices.MethodImplAttribute` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -10629,17 +10629,17 @@ namespace System
 
             // Generated from `System.Runtime.CompilerServices.MethodImplOptions` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             [System.Flags]
-            public enum MethodImplOptions
+            public enum MethodImplOptions : int
             {
-                AggressiveInlining,
-                AggressiveOptimization,
-                ForwardRef,
-                InternalCall,
-                NoInlining,
-                NoOptimization,
-                PreserveSig,
-                Synchronized,
-                Unmanaged,
+                AggressiveInlining = 256,
+                AggressiveOptimization = 512,
+                ForwardRef = 16,
+                InternalCall = 4096,
+                NoInlining = 8,
+                NoOptimization = 64,
+                PreserveSig = 128,
+                Synchronized = 32,
+                Unmanaged = 4,
             }
 
             // Generated from `System.Runtime.CompilerServices.ModuleInitializerAttribute` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -10894,20 +10894,20 @@ namespace System
         namespace ConstrainedExecution
         {
             // Generated from `System.Runtime.ConstrainedExecution.Cer` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum Cer
+            public enum Cer : int
             {
-                MayFail,
-                None,
-                Success,
+                MayFail = 1,
+                None = 0,
+                Success = 2,
             }
 
             // Generated from `System.Runtime.ConstrainedExecution.Consistency` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum Consistency
+            public enum Consistency : int
             {
-                MayCorruptAppDomain,
-                MayCorruptInstance,
-                MayCorruptProcess,
-                WillNotCorruptState,
+                MayCorruptAppDomain = 1,
+                MayCorruptInstance = 2,
+                MayCorruptProcess = 0,
+                WillNotCorruptState = 3,
             }
 
             // Generated from `System.Runtime.ConstrainedExecution.CriticalFinalizerObject` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -10962,12 +10962,12 @@ namespace System
         namespace InteropServices
         {
             // Generated from `System.Runtime.InteropServices.CharSet` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum CharSet
+            public enum CharSet : int
             {
-                Ansi,
-                Auto,
-                None,
-                Unicode,
+                Ansi = 2,
+                Auto = 4,
+                None = 1,
+                Unicode = 3,
             }
 
             // Generated from `System.Runtime.InteropServices.ComVisibleAttribute` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -11033,12 +11033,12 @@ namespace System
             }
 
             // Generated from `System.Runtime.InteropServices.GCHandleType` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum GCHandleType
+            public enum GCHandleType : int
             {
-                Normal,
-                Pinned,
-                Weak,
-                WeakTrackResurrection,
+                Normal = 2,
+                Pinned = 3,
+                Weak = 0,
+                WeakTrackResurrection = 1,
             }
 
             // Generated from `System.Runtime.InteropServices.InAttribute` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -11048,11 +11048,11 @@ namespace System
             }
 
             // Generated from `System.Runtime.InteropServices.LayoutKind` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum LayoutKind
+            public enum LayoutKind : int
             {
-                Auto,
-                Explicit,
-                Sequential,
+                Auto = 3,
+                Explicit = 2,
+                Sequential = 0,
             }
 
             // Generated from `System.Runtime.InteropServices.OutAttribute` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -11303,17 +11303,17 @@ namespace System
 
             // Generated from `System.Runtime.Serialization.StreamingContextStates` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             [System.Flags]
-            public enum StreamingContextStates
+            public enum StreamingContextStates : int
             {
-                All,
-                Clone,
-                CrossAppDomain,
-                CrossMachine,
-                CrossProcess,
-                File,
-                Other,
-                Persistence,
-                Remoting,
+                All = 255,
+                Clone = 64,
+                CrossAppDomain = 128,
+                CrossMachine = 2,
+                CrossProcess = 1,
+                File = 4,
+                Other = 32,
+                Persistence = 8,
+                Remoting = 16,
             }
 
         }
@@ -11328,12 +11328,12 @@ namespace System
 
             // Generated from `System.Runtime.Versioning.ComponentGuaranteesOptions` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             [System.Flags]
-            public enum ComponentGuaranteesOptions
+            public enum ComponentGuaranteesOptions : int
             {
-                Exchange,
-                None,
-                SideBySide,
-                Stable,
+                Exchange = 1,
+                None = 0,
+                SideBySide = 4,
+                Stable = 2,
             }
 
             // Generated from `System.Runtime.Versioning.FrameworkName` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -11388,15 +11388,15 @@ namespace System
 
             // Generated from `System.Runtime.Versioning.ResourceScope` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             [System.Flags]
-            public enum ResourceScope
+            public enum ResourceScope : int
             {
-                AppDomain,
-                Assembly,
-                Library,
-                Machine,
-                None,
-                Private,
-                Process,
+                AppDomain = 4,
+                Assembly = 32,
+                Library = 8,
+                Machine = 1,
+                None = 0,
+                Private = 16,
+                Process = 2,
             }
 
             // Generated from `System.Runtime.Versioning.SupportedOSPlatformAttribute` in `Microsoft.Extensions.Hosting, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60; System.Drawing.Common, Version=5.0.0.2, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51; System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -11482,10 +11482,10 @@ namespace System
         }
 
         // Generated from `System.Security.PartialTrustVisibilityLevel` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum PartialTrustVisibilityLevel
+        public enum PartialTrustVisibilityLevel : int
         {
-            NotVisibleByDefault,
-            VisibleToAllHosts,
+            NotVisibleByDefault = 1,
+            VisibleToAllHosts = 0,
         }
 
         // Generated from `System.Security.PermissionSet` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -11538,10 +11538,10 @@ namespace System
         }
 
         // Generated from `System.Security.SecurityCriticalScope` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum SecurityCriticalScope
+        public enum SecurityCriticalScope : int
         {
-            Everything,
-            Explicit,
+            Everything = 1,
+            Explicit = 0,
         }
 
         // Generated from `System.Security.SecurityElement` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -11593,11 +11593,11 @@ namespace System
         }
 
         // Generated from `System.Security.SecurityRuleSet` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum SecurityRuleSet
+        public enum SecurityRuleSet : byte
         {
-            Level1,
-            Level2,
-            None,
+            Level1 = 1,
+            Level2 = 2,
+            None = 0,
         }
 
         // Generated from `System.Security.SecurityRulesAttribute` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -11670,24 +11670,24 @@ namespace System
             }
 
             // Generated from `System.Security.Permissions.PermissionState` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum PermissionState
+            public enum PermissionState : int
             {
-                None,
-                Unrestricted,
+                None = 0,
+                Unrestricted = 1,
             }
 
             // Generated from `System.Security.Permissions.SecurityAction` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum SecurityAction
+            public enum SecurityAction : int
             {
-                Assert,
-                Demand,
-                Deny,
-                InheritanceDemand,
-                LinkDemand,
-                PermitOnly,
-                RequestMinimum,
-                RequestOptional,
-                RequestRefuse,
+                Assert = 3,
+                Demand = 2,
+                Deny = 4,
+                InheritanceDemand = 7,
+                LinkDemand = 6,
+                PermitOnly = 5,
+                RequestMinimum = 8,
+                RequestOptional = 9,
+                RequestRefuse = 10,
             }
 
             // Generated from `System.Security.Permissions.SecurityAttribute` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -11723,24 +11723,24 @@ namespace System
 
             // Generated from `System.Security.Permissions.SecurityPermissionFlag` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             [System.Flags]
-            public enum SecurityPermissionFlag
+            public enum SecurityPermissionFlag : int
             {
-                AllFlags,
-                Assertion,
-                BindingRedirects,
-                ControlAppDomain,
-                ControlDomainPolicy,
-                ControlEvidence,
-                ControlPolicy,
-                ControlPrincipal,
-                ControlThread,
-                Execution,
-                Infrastructure,
-                NoFlags,
-                RemotingConfiguration,
-                SerializationFormatter,
-                SkipVerification,
-                UnmanagedCode,
+                AllFlags = 16383,
+                Assertion = 1,
+                BindingRedirects = 8192,
+                ControlAppDomain = 1024,
+                ControlDomainPolicy = 256,
+                ControlEvidence = 32,
+                ControlPolicy = 64,
+                ControlPrincipal = 512,
+                ControlThread = 16,
+                Execution = 8,
+                Infrastructure = 4096,
+                NoFlags = 0,
+                RemotingConfiguration = 2048,
+                SerializationFormatter = 128,
+                SkipVerification = 4,
+                UnmanagedCode = 2,
             }
 
         }
@@ -11762,21 +11762,21 @@ namespace System
             }
 
             // Generated from `System.Security.Principal.PrincipalPolicy` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum PrincipalPolicy
+            public enum PrincipalPolicy : int
             {
-                NoPrincipal,
-                UnauthenticatedPrincipal,
-                WindowsPrincipal,
+                NoPrincipal = 1,
+                UnauthenticatedPrincipal = 0,
+                WindowsPrincipal = 2,
             }
 
             // Generated from `System.Security.Principal.TokenImpersonationLevel` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum TokenImpersonationLevel
+            public enum TokenImpersonationLevel : int
             {
-                Anonymous,
-                Delegation,
-                Identification,
-                Impersonation,
-                None,
+                Anonymous = 1,
+                Delegation = 4,
+                Identification = 2,
+                Impersonation = 3,
+                None = 0,
             }
 
         }
@@ -12077,12 +12077,12 @@ namespace System
         }
 
         // Generated from `System.Text.NormalizationForm` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum NormalizationForm
+        public enum NormalizationForm : int
         {
-            FormC,
-            FormD,
-            FormKC,
-            FormKD,
+            FormC = 1,
+            FormD = 2,
+            FormKC = 5,
+            FormKD = 6,
         }
 
         // Generated from `System.Text.Rune` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -12362,11 +12362,11 @@ namespace System
         }
 
         // Generated from `System.Threading.LazyThreadSafetyMode` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum LazyThreadSafetyMode
+        public enum LazyThreadSafetyMode : int
         {
-            ExecutionAndPublication,
-            None,
-            PublicationOnly,
+            ExecutionAndPublication = 2,
+            None = 0,
+            PublicationOnly = 1,
         }
 
         // Generated from `System.Threading.PeriodicTimer` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -12661,36 +12661,36 @@ namespace System
 
             // Generated from `System.Threading.Tasks.TaskContinuationOptions` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             [System.Flags]
-            public enum TaskContinuationOptions
+            public enum TaskContinuationOptions : int
             {
-                AttachedToParent,
-                DenyChildAttach,
-                ExecuteSynchronously,
-                HideScheduler,
-                LazyCancellation,
-                LongRunning,
-                None,
-                NotOnCanceled,
-                NotOnFaulted,
-                NotOnRanToCompletion,
-                OnlyOnCanceled,
-                OnlyOnFaulted,
-                OnlyOnRanToCompletion,
-                PreferFairness,
-                RunContinuationsAsynchronously,
+                AttachedToParent = 4,
+                DenyChildAttach = 8,
+                ExecuteSynchronously = 524288,
+                HideScheduler = 16,
+                LazyCancellation = 32,
+                LongRunning = 2,
+                None = 0,
+                NotOnCanceled = 262144,
+                NotOnFaulted = 131072,
+                NotOnRanToCompletion = 65536,
+                OnlyOnCanceled = 196608,
+                OnlyOnFaulted = 327680,
+                OnlyOnRanToCompletion = 393216,
+                PreferFairness = 1,
+                RunContinuationsAsynchronously = 64,
             }
 
             // Generated from `System.Threading.Tasks.TaskCreationOptions` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             [System.Flags]
-            public enum TaskCreationOptions
+            public enum TaskCreationOptions : int
             {
-                AttachedToParent,
-                DenyChildAttach,
-                HideScheduler,
-                LongRunning,
-                None,
-                PreferFairness,
-                RunContinuationsAsynchronously,
+                AttachedToParent = 4,
+                DenyChildAttach = 8,
+                HideScheduler = 16,
+                LongRunning = 2,
+                None = 0,
+                PreferFairness = 1,
+                RunContinuationsAsynchronously = 64,
             }
 
             // Generated from `System.Threading.Tasks.TaskExtensions` in `Microsoft.AspNetCore.Http.Connections, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60; System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -12861,16 +12861,16 @@ namespace System
             }
 
             // Generated from `System.Threading.Tasks.TaskStatus` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum TaskStatus
+            public enum TaskStatus : int
             {
-                Canceled,
-                Created,
-                Faulted,
-                RanToCompletion,
-                Running,
-                WaitingForActivation,
-                WaitingForChildrenToComplete,
-                WaitingToRun,
+                Canceled = 6,
+                Created = 0,
+                Faulted = 7,
+                RanToCompletion = 5,
+                Running = 3,
+                WaitingForActivation = 1,
+                WaitingForChildrenToComplete = 4,
+                WaitingToRun = 2,
             }
 
             // Generated from `System.Threading.Tasks.UnobservedTaskExceptionEventArgs` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -12967,20 +12967,20 @@ namespace System
 
                 // Generated from `System.Threading.Tasks.Sources.ValueTaskSourceOnCompletedFlags` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 [System.Flags]
-                public enum ValueTaskSourceOnCompletedFlags
+                public enum ValueTaskSourceOnCompletedFlags : int
                 {
-                    FlowExecutionContext,
-                    None,
-                    UseSchedulingContext,
+                    FlowExecutionContext = 2,
+                    None = 0,
+                    UseSchedulingContext = 1,
                 }
 
                 // Generated from `System.Threading.Tasks.Sources.ValueTaskSourceStatus` in `System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-                public enum ValueTaskSourceStatus
+                public enum ValueTaskSourceStatus : int
                 {
-                    Canceled,
-                    Faulted,
-                    Pending,
-                    Succeeded,
+                    Canceled = 3,
+                    Faulted = 2,
+                    Pending = 0,
+                    Succeeded = 1,
                 }
 
             }

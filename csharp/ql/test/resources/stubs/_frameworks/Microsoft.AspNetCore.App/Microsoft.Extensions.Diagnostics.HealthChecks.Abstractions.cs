@@ -68,11 +68,11 @@ namespace Microsoft
                 }
 
                 // Generated from `Microsoft.Extensions.Diagnostics.HealthChecks.HealthStatus` in `Microsoft.Extensions.Diagnostics.HealthChecks.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
-                public enum HealthStatus
+                public enum HealthStatus : int
                 {
-                    Degraded,
-                    Healthy,
-                    Unhealthy,
+                    Degraded = 1,
+                    Healthy = 2,
+                    Unhealthy = 0,
                 }
 
                 // Generated from `Microsoft.Extensions.Diagnostics.HealthChecks.IHealthCheck` in `Microsoft.Extensions.Diagnostics.HealthChecks.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`

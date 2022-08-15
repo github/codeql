@@ -43,12 +43,12 @@ namespace Microsoft
                 }
 
                 // Generated from `Microsoft.AspNetCore.Razor.TagHelpers.HtmlAttributeValueStyle` in `Microsoft.AspNetCore.Razor, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
-                public enum HtmlAttributeValueStyle
+                public enum HtmlAttributeValueStyle : int
                 {
-                    DoubleQuotes,
-                    Minimized,
-                    NoQuotes,
-                    SingleQuotes,
+                    DoubleQuotes = 0,
+                    Minimized = 3,
+                    NoQuotes = 2,
+                    SingleQuotes = 1,
                 }
 
                 // Generated from `Microsoft.AspNetCore.Razor.TagHelpers.HtmlTargetElementAttribute` in `Microsoft.AspNetCore.Razor, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
@@ -237,19 +237,19 @@ namespace Microsoft
                 }
 
                 // Generated from `Microsoft.AspNetCore.Razor.TagHelpers.TagMode` in `Microsoft.AspNetCore.Razor, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
-                public enum TagMode
+                public enum TagMode : int
                 {
-                    SelfClosing,
-                    StartTagAndEndTag,
-                    StartTagOnly,
+                    SelfClosing = 1,
+                    StartTagAndEndTag = 0,
+                    StartTagOnly = 2,
                 }
 
                 // Generated from `Microsoft.AspNetCore.Razor.TagHelpers.TagStructure` in `Microsoft.AspNetCore.Razor, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
-                public enum TagStructure
+                public enum TagStructure : int
                 {
-                    NormalOrSelfClosing,
-                    Unspecified,
-                    WithoutEndTag,
+                    NormalOrSelfClosing = 1,
+                    Unspecified = 0,
+                    WithoutEndTag = 2,
                 }
 
             }

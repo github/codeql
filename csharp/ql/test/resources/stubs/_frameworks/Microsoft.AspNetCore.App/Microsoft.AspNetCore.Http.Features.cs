@@ -194,12 +194,12 @@ namespace Microsoft
             }
 
             // Generated from `Microsoft.AspNetCore.Http.SameSiteMode` in `Microsoft.AspNetCore.Http.Features, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
-            public enum SameSiteMode
+            public enum SameSiteMode : int
             {
-                Lax,
-                None,
-                Strict,
-                Unspecified,
+                Lax = 1,
+                None = 0,
+                Strict = 2,
+                Unspecified = -1,
             }
 
             // Generated from `Microsoft.AspNetCore.Http.WebSocketAcceptContext` in `Microsoft.AspNetCore.Http.Features, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
@@ -216,11 +216,11 @@ namespace Microsoft
             namespace Features
             {
                 // Generated from `Microsoft.AspNetCore.Http.Features.HttpsCompressionMode` in `Microsoft.AspNetCore.Http.Features, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
-                public enum HttpsCompressionMode
+                public enum HttpsCompressionMode : int
                 {
-                    Compress,
-                    Default,
-                    DoNotCompress,
+                    Compress = 2,
+                    Default = 0,
+                    DoNotCompress = 1,
                 }
 
                 // Generated from `Microsoft.AspNetCore.Http.Features.IBadRequestExceptionFeature` in `Microsoft.AspNetCore.Http.Features, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`

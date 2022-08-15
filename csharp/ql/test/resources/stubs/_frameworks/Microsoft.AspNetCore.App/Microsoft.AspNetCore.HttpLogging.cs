@@ -18,27 +18,27 @@ namespace Microsoft
         {
             // Generated from `Microsoft.AspNetCore.HttpLogging.HttpLoggingFields` in `Microsoft.AspNetCore.HttpLogging, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             [System.Flags]
-            public enum HttpLoggingFields
+            public enum HttpLoggingFields : long
             {
-                All,
-                None,
-                Request,
-                RequestBody,
-                RequestHeaders,
-                RequestMethod,
-                RequestPath,
-                RequestProperties,
-                RequestPropertiesAndHeaders,
-                RequestProtocol,
-                RequestQuery,
-                RequestScheme,
-                RequestTrailers,
-                Response,
-                ResponseBody,
-                ResponseHeaders,
-                ResponsePropertiesAndHeaders,
-                ResponseStatusCode,
-                ResponseTrailers,
+                All = 3325,
+                None = 0,
+                Request = 1117,
+                RequestBody = 1024,
+                RequestHeaders = 64,
+                RequestMethod = 8,
+                RequestPath = 1,
+                RequestProperties = 29,
+                RequestPropertiesAndHeaders = 93,
+                RequestProtocol = 4,
+                RequestQuery = 2,
+                RequestScheme = 16,
+                RequestTrailers = 256,
+                Response = 2208,
+                ResponseBody = 2048,
+                ResponseHeaders = 128,
+                ResponsePropertiesAndHeaders = 160,
+                ResponseStatusCode = 32,
+                ResponseTrailers = 512,
             }
 
             // Generated from `Microsoft.AspNetCore.HttpLogging.HttpLoggingOptions` in `Microsoft.AspNetCore.HttpLogging, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
@@ -77,30 +77,30 @@ namespace Microsoft
 
             // Generated from `Microsoft.AspNetCore.HttpLogging.W3CLoggingFields` in `Microsoft.AspNetCore.HttpLogging, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             [System.Flags]
-            public enum W3CLoggingFields
+            public enum W3CLoggingFields : long
             {
-                All,
-                ClientIpAddress,
-                ConnectionInfoFields,
-                Cookie,
-                Date,
-                Host,
-                Method,
-                None,
-                ProtocolStatus,
-                ProtocolVersion,
-                Referer,
-                Request,
-                RequestHeaders,
-                ServerIpAddress,
-                ServerName,
-                ServerPort,
-                Time,
-                TimeTaken,
-                UriQuery,
-                UriStem,
-                UserAgent,
-                UserName,
+                All = 131071,
+                ClientIpAddress = 4,
+                ConnectionInfoFields = 100,
+                Cookie = 32768,
+                Date = 1,
+                Host = 8192,
+                Method = 128,
+                None = 0,
+                ProtocolStatus = 1024,
+                ProtocolVersion = 4096,
+                Referer = 65536,
+                Request = 95104,
+                RequestHeaders = 90112,
+                ServerIpAddress = 32,
+                ServerName = 16,
+                ServerPort = 64,
+                Time = 2,
+                TimeTaken = 2048,
+                UriQuery = 512,
+                UriStem = 256,
+                UserAgent = 16384,
+                UserName = 8,
             }
 
         }

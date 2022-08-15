@@ -18,12 +18,12 @@ namespace Microsoft
 
                 // Generated from `Microsoft.AspNetCore.Http.Connections.HttpTransportType` in `Microsoft.AspNetCore.Http.Connections.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 [System.Flags]
-                public enum HttpTransportType
+                public enum HttpTransportType : int
                 {
-                    LongPolling,
-                    None,
-                    ServerSentEvents,
-                    WebSockets,
+                    LongPolling = 4,
+                    None = 0,
+                    ServerSentEvents = 2,
+                    WebSockets = 1,
                 }
 
                 // Generated from `Microsoft.AspNetCore.Http.Connections.HttpTransports` in `Microsoft.AspNetCore.Http.Connections.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`

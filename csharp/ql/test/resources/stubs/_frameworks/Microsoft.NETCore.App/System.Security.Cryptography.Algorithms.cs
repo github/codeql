@@ -228,10 +228,10 @@ namespace System
             }
 
             // Generated from `System.Security.Cryptography.DSASignatureFormat` in `System.Security.Cryptography.Algorithms, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum DSASignatureFormat
+            public enum DSASignatureFormat : int
             {
-                IeeeP1363FixedFieldConcatenation,
-                Rfc3279DerSequence,
+                IeeeP1363FixedFieldConcatenation = 0,
+                Rfc3279DerSequence = 1,
             }
 
             // Generated from `System.Security.Cryptography.DSASignatureFormatter` in `System.Security.Cryptography.Algorithms, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -258,14 +258,14 @@ namespace System
             public struct ECCurve
             {
                 // Generated from `System.Security.Cryptography.ECCurve+ECCurveType` in `System.Security.Cryptography.Algorithms, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-                public enum ECCurveType
+                public enum ECCurveType : int
                 {
-                    Characteristic2,
-                    Implicit,
-                    Named,
-                    PrimeMontgomery,
-                    PrimeShortWeierstrass,
-                    PrimeTwistedEdwards,
+                    Characteristic2 = 4,
+                    Implicit = 0,
+                    Named = 5,
+                    PrimeMontgomery = 3,
+                    PrimeShortWeierstrass = 1,
+                    PrimeTwistedEdwards = 2,
                 }
 
 
@@ -690,10 +690,10 @@ namespace System
             }
 
             // Generated from `System.Security.Cryptography.RSAEncryptionPaddingMode` in `System.Security.Cryptography.Algorithms, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum RSAEncryptionPaddingMode
+            public enum RSAEncryptionPaddingMode : int
             {
-                Oaep,
-                Pkcs1,
+                Oaep = 1,
+                Pkcs1 = 0,
             }
 
             // Generated from `System.Security.Cryptography.RSAOAEPKeyExchangeDeformatter` in `System.Security.Cryptography.Algorithms, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -791,10 +791,10 @@ namespace System
             }
 
             // Generated from `System.Security.Cryptography.RSASignaturePaddingMode` in `System.Security.Cryptography.Algorithms, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum RSASignaturePaddingMode
+            public enum RSASignaturePaddingMode : int
             {
-                Pkcs1,
-                Pss,
+                Pkcs1 = 0,
+                Pss = 1,
             }
 
             // Generated from `System.Security.Cryptography.RandomNumberGenerator` in `System.Security.Cryptography.Algorithms, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
