@@ -52,8 +52,7 @@ class NonConstantTimeComparisonSink extends DataFlow::Node {
   Expr anotherParameter;
 
   NonConstantTimeComparisonSink() {
-    existsFailFastCheck(this.asExpr(), anotherParameter) and
-    not anotherParameter.isConstant()
+    existsFailFastCheck(this.asExpr(), anotherParameter)
   }
 
   /** Holds if remote user input was used in the comparison. */
