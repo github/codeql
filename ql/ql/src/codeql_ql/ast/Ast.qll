@@ -743,7 +743,9 @@ class Module extends TModule, ModuleDeclaration {
   }
 
   /** Gets a ref to the module that this module implements. */
-  TypeExpr getImplements(int i) { toQL(result) = mod.getImplements(i).getTypeExpr() }
+  TypeRef getImplements(int i) {
+    exists(SignatureExpr sig | sig.toQL() = mod.getImplements(i) | result = sig.asType())
+  }
 
   /** Gets the module expression that this module is an alias for, if any. */
   ModuleExpr getAlias() { toQL(result) = mod.getAFieldOrChild().(QL::ModuleAliasBody).getChild() }
