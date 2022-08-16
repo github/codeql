@@ -1,7 +1,6 @@
 /**
  * @name Using a static initialization vector for encryption
- * @description An initialization vector (IV) used for ciphers of certain modes (such as CBC or GCM) should be unique and unpredicateble.
- *              Otherwise, if the same IV is used with a the same secret key then the same plaintext results in same ciphertext, which weakens the encryption.
+ * @description An initialization vector (IV) used for ciphers of certain modes (such as CBC or GCM) should be unique and unpredictable, to maximize encryption and prevent dictionary attacks.
  * @kind path-problem
  * @problem.severity warning
  * @security-severity 7.5
