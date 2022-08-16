@@ -165,7 +165,7 @@ module AliasModels {
      * - There is no `FunctionOutput` for which `isParameterDeref(0)` holds, because `n` is neither a
      *   pointer nor a reference.
      */
-    predicate isParameterDeref(ParameterIndex i) { none() }
+    predicate isParameterDeref(ParameterIndex index) { none() }
 
     /**
      * Holds if this is the output value pointed to by the `this` pointer of an instance member
