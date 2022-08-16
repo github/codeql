@@ -2,10 +2,13 @@
  * Provides classes and predicates for queries that detect timing attacks.
  */
 
+import java
 import semmle.code.java.controlflow.Guards
 import semmle.code.java.dataflow.TaintTracking
 import semmle.code.java.dataflow.TaintTracking2
+import semmle.code.java.dataflow.DataFlow
 import semmle.code.java.dataflow.DataFlow3
+import semmle.code.java.dataflow.DataFlow2
 import semmle.code.java.dataflow.FlowSources
 
 /** A string for `match` that identifies strings that look like they represent secret data. */
@@ -329,6 +332,18 @@ class NonConstantTimeComparisonSink extends DataFlow::Node {
   }
 }
 
+/** A data flow source of the secret obtained. */
+class SecretSource extends DataFlow::Node {
+  CredentialExpr secret;
+
+  SecretSource() { secret = this.asExpr() }
+
+  /** Holds if the secret was deliverd by remote user. */
+  predicate includesUserInput() {
+    exists(UserInputSecretConfig config | config.hasFlowTo(DataFlow2::exprNode(secret)))
+  }
+}
+
 /**
  * A configuration that tracks data flow from cryptographic operations
  * to methods that compare data using a non-constant-time algorithm.
@@ -339,4 +354,15 @@ class NonConstantTimeCryptoComparisonConfig extends TaintTracking::Configuration
   override predicate isSource(DataFlow::Node source) { source instanceof CryptoOperationSource }
 
   override predicate isSink(DataFlow::Node sink) { sink instanceof NonConstantTimeComparisonSink }
+}
+
+/**
+ * A config that tracks data flow from remote user input to Variable that hold sensitive info
+ */
+class UserInputSecretConfig extends TaintTracking2::Configuration {
+  UserInputSecretConfig() { this = "UserInputSecretConfig" }
+
+  override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
+
+  override predicate isSink(DataFlow::Node sink) { sink.asExpr() instanceof CredentialExpr }
 }
