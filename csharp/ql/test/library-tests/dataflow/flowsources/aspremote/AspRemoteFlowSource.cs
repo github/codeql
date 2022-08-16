@@ -25,7 +25,7 @@ namespace Testing
 
     public class AspRoutingEndpoints
     {
-        public delegate void MapGetHandler(string delegateparam);
+        public delegate void MapGetHandler(string param);
 
         public void HandlerMethod(string param) { }
 
@@ -42,7 +42,12 @@ namespace Testing
             app.MapGet("/api/redirect/{lambdaParam}", handler);
 
             MapGetHandler handler2 = HandlerMethod;
-            app.MapGet("/api/redirect/{param}", handler2);
+            app.MapGet("/api/redirect/{mapGetParam}", handler2);
+
+            app.MapPost("/api/redirect/{mapPostParam}", (string mapPostParam) => { });
+            app.MapPut("/api/redirect/{mapPutParam}", (string mapPutParam) => { });
+            app.MapDelete("/api/redirect/{mapDeleteParam}", (string mapDeleteParam) => { });
+
             app.Run();
         }
     }

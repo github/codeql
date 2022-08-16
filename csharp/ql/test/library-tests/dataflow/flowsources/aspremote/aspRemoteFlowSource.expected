@@ -7,3 +7,6 @@ remoteFlowSources
 | AspRemoteFlowSource.cs:39:61:39:65 | myApi |
 | AspRemoteFlowSource.cs:39:75:39:79 | myUrl |
 | AspRemoteFlowSource.cs:41:46:41:56 | lambdaParam |
+| AspRemoteFlowSource.cs:47:65:47:76 | mapPostParam |
+| AspRemoteFlowSource.cs:48:63:48:73 | mapPutParam |
+| AspRemoteFlowSource.cs:49:69:49:82 | mapDeleteParam |
