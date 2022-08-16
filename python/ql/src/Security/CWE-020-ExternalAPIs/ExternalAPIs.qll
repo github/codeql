@@ -43,7 +43,12 @@ private class DefaultSafeExternalApi extends SafeExternalApi {
   }
 }
 
-/** Gets a human readable representation of `node`. */
+/**
+ * Gets a human readable representation of `node`.
+ *
+ * Note that this is only defined for API nodes that are allowed as external APIs,
+ * so `None.json.dumps` will for example not be allowed.
+ */
 string apiNodeToStringRepr(API::Node node) {
   node = API::builtin(result)
   or
@@ -51,7 +56,8 @@ string apiNodeToStringRepr(API::Node node) {
   or
   exists(API::Node base, string basename |
     base.getDepth() < node.getDepth() and
-    basename = apiNodeToStringRepr(base)
+    basename = apiNodeToStringRepr(base) and
+    not base = API::builtin("None")
   |
     exists(string m | node = base.getMember(m) | result = basename + "." + m)
     or
