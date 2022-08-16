@@ -8,7 +8,8 @@ class ExprPatternBase extends Synth::TExprPattern, Pattern {
   override string getAPrimaryQlClass() { result = "ExprPattern" }
 
   Expr getImmediateSubExpr() {
-    result = Synth::fromRawExpr(Synth::toRawExprPattern(this).(Raw::ExprPattern).getSubExpr())
+    result =
+      Synth::convertExprFromRaw(Synth::convertExprPatternToRaw(this).(Raw::ExprPattern).getSubExpr())
   }
 
   final Expr getSubExpr() { result = getImmediateSubExpr().resolve() }

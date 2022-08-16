@@ -7,7 +7,10 @@ import codeql.swift.elements.type.Type
 
 class NominalTypeDeclBase extends Synth::TNominalTypeDecl, GenericTypeDecl, IterableDeclContext {
   Type getImmediateType() {
-    result = Synth::fromRawType(Synth::toRawNominalTypeDecl(this).(Raw::NominalTypeDecl).getType())
+    result =
+      Synth::convertTypeFromRaw(Synth::convertNominalTypeDeclToRaw(this)
+            .(Raw::NominalTypeDecl)
+            .getType())
   }
 
   final Type getType() { result = getImmediateType().resolve() }

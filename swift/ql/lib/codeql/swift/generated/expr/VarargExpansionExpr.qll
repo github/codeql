@@ -8,7 +8,7 @@ class VarargExpansionExprBase extends Synth::TVarargExpansionExpr, Expr {
 
   Expr getImmediateSubExpr() {
     result =
-      Synth::fromRawExpr(Synth::toRawVarargExpansionExpr(this)
+      Synth::convertExprFromRaw(Synth::convertVarargExpansionExprToRaw(this)
             .(Raw::VarargExpansionExpr)
             .getSubExpr())
   }

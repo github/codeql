@@ -9,7 +9,7 @@ class GenericFunctionTypeBase extends Synth::TGenericFunctionType, AnyFunctionTy
 
   GenericTypeParamType getImmediateGenericParam(int index) {
     result =
-      Synth::fromRawGenericTypeParamType(Synth::toRawGenericFunctionType(this)
+      Synth::convertGenericTypeParamTypeFromRaw(Synth::convertGenericFunctionTypeToRaw(this)
             .(Raw::GenericFunctionType)
             .getGenericParam(index))
   }

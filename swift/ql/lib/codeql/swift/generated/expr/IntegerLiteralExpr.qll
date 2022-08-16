@@ -7,6 +7,6 @@ class IntegerLiteralExprBase extends Synth::TIntegerLiteralExpr, NumberLiteralEx
   override string getAPrimaryQlClass() { result = "IntegerLiteralExpr" }
 
   string getStringValue() {
-    result = Synth::toRawIntegerLiteralExpr(this).(Raw::IntegerLiteralExpr).getStringValue()
+    result = Synth::convertIntegerLiteralExprToRaw(this).(Raw::IntegerLiteralExpr).getStringValue()
   }
 }

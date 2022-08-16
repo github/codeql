@@ -202,7 +202,7 @@ private module JoinBlockPredecessors {
   private predicate idOfDbAstNode(Raw::AstNode x, int y) = equivalenceRelation(id/2)(x, y)
 
   // TODO does not work if fresh ipa entities (`ipa: on:`) turn out to be first of the block
-  private predicate idOf(AstNode x, int y) { idOfDbAstNode(Synth::toRawAstNode(x), y) }
+  private predicate idOf(AstNode x, int y) { idOfDbAstNode(Synth::convertAstNodeToRaw(x), y) }
 
   private AstNode projectToAst(ControlFlowElement n) {
     result = n.asAstNode()

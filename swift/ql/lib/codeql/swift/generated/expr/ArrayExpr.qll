@@ -8,7 +8,10 @@ class ArrayExprBase extends Synth::TArrayExpr, CollectionExpr {
   override string getAPrimaryQlClass() { result = "ArrayExpr" }
 
   Expr getImmediateElement(int index) {
-    result = Synth::fromRawExpr(Synth::toRawArrayExpr(this).(Raw::ArrayExpr).getElement(index))
+    result =
+      Synth::convertExprFromRaw(Synth::convertArrayExprToRaw(this)
+            .(Raw::ArrayExpr)
+            .getElement(index))
   }
 
   final Expr getElement(int index) { result = getImmediateElement(index).resolve() }

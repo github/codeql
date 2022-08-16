@@ -7,17 +7,19 @@ import codeql.swift.elements.pattern.Pattern
 import codeql.swift.elements.type.Type
 
 class VarDeclBase extends Synth::TVarDecl, AbstractStorageDecl {
-  string getName() { result = Synth::toRawVarDecl(this).(Raw::VarDecl).getName() }
+  string getName() { result = Synth::convertVarDeclToRaw(this).(Raw::VarDecl).getName() }
 
   Type getImmediateType() {
-    result = Synth::fromRawType(Synth::toRawVarDecl(this).(Raw::VarDecl).getType())
+    result = Synth::convertTypeFromRaw(Synth::convertVarDeclToRaw(this).(Raw::VarDecl).getType())
   }
 
   final Type getType() { result = getImmediateType().resolve() }
 
   Type getImmediateAttachedPropertyWrapperType() {
     result =
-      Synth::fromRawType(Synth::toRawVarDecl(this).(Raw::VarDecl).getAttachedPropertyWrapperType())
+      Synth::convertTypeFromRaw(Synth::convertVarDeclToRaw(this)
+            .(Raw::VarDecl)
+            .getAttachedPropertyWrapperType())
   }
 
   final Type getAttachedPropertyWrapperType() {
@@ -27,7 +29,10 @@ class VarDeclBase extends Synth::TVarDecl, AbstractStorageDecl {
   final predicate hasAttachedPropertyWrapperType() { exists(getAttachedPropertyWrapperType()) }
 
   Pattern getImmediateParentPattern() {
-    result = Synth::fromRawPattern(Synth::toRawVarDecl(this).(Raw::VarDecl).getParentPattern())
+    result =
+      Synth::convertPatternFromRaw(Synth::convertVarDeclToRaw(this)
+            .(Raw::VarDecl)
+            .getParentPattern())
   }
 
   final Pattern getParentPattern() { result = getImmediateParentPattern().resolve() }
@@ -35,7 +40,10 @@ class VarDeclBase extends Synth::TVarDecl, AbstractStorageDecl {
   final predicate hasParentPattern() { exists(getParentPattern()) }
 
   Expr getImmediateParentInitializer() {
-    result = Synth::fromRawExpr(Synth::toRawVarDecl(this).(Raw::VarDecl).getParentInitializer())
+    result =
+      Synth::convertExprFromRaw(Synth::convertVarDeclToRaw(this)
+            .(Raw::VarDecl)
+            .getParentInitializer())
   }
 
   final Expr getParentInitializer() { result = getImmediateParentInitializer().resolve() }

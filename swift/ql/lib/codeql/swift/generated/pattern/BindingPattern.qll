@@ -8,7 +8,9 @@ class BindingPatternBase extends Synth::TBindingPattern, Pattern {
 
   Pattern getImmediateSubPattern() {
     result =
-      Synth::fromRawPattern(Synth::toRawBindingPattern(this).(Raw::BindingPattern).getSubPattern())
+      Synth::convertPatternFromRaw(Synth::convertBindingPatternToRaw(this)
+            .(Raw::BindingPattern)
+            .getSubPattern())
   }
 
   final Pattern getSubPattern() { result = getImmediateSubPattern().resolve() }

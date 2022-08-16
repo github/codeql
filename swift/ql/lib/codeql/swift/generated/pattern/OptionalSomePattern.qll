@@ -8,7 +8,7 @@ class OptionalSomePatternBase extends Synth::TOptionalSomePattern, Pattern {
 
   Pattern getImmediateSubPattern() {
     result =
-      Synth::fromRawPattern(Synth::toRawOptionalSomePattern(this)
+      Synth::convertPatternFromRaw(Synth::convertOptionalSomePatternToRaw(this)
             .(Raw::OptionalSomePattern)
             .getSubPattern())
   }

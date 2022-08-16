@@ -17,7 +17,7 @@ cached module Synth {
   {{/non_final_classes}}
 
   {{#final_classes}}
-  cached T{{name}} fromRaw{{name}}(Raw::Element e) {
+  cached T{{name}} convert{{name}}FromRaw(Raw::Element e) {
     {{^is_fresh_ipa}}
     result = T{{name}}(e)
     {{/is_fresh_ipa}}
@@ -28,18 +28,18 @@ cached module Synth {
   {{/final_classes}}
 
   {{#non_final_classes}}
-  cached T{{name}} fromRaw{{name}}(Raw::Element e) {
+  cached T{{name}} convert{{name}}FromRaw(Raw::Element e) {
     {{#derived}}
     {{^first}}
     or
     {{/first}}
-    result = fromRaw{{name}}(e)
+    result = convert{{name}}FromRaw(e)
     {{/derived}}
   }
   {{/non_final_classes}}
 
   {{#final_classes}}
-  cached Raw::Element toRaw{{name}}(T{{name}} e) {
+  cached Raw::Element convert{{name}}ToRaw(T{{name}} e) {
     {{^is_fresh_ipa}}
     e = T{{name}}(result)
     {{/is_fresh_ipa}}
@@ -50,12 +50,12 @@ cached module Synth {
   {{/final_classes}}
 
   {{#non_final_classes}}
-  cached Raw::Element toRaw{{name}}(T{{name}} e) {
+  cached Raw::Element convert{{name}}ToRaw(T{{name}} e) {
     {{#derived}}
     {{^first}}
     or
     {{/first}}
-    result = toRaw{{name}}(e)
+    result = convert{{name}}ToRaw(e)
     {{/derived}}
   }
   {{/non_final_classes}}

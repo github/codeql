@@ -6,7 +6,7 @@ import codeql.swift.elements.expr.Expr
 class ImplicitConversionExprBase extends Synth::TImplicitConversionExpr, Expr {
   Expr getImmediateSubExpr() {
     result =
-      Synth::fromRawExpr(Synth::toRawImplicitConversionExpr(this)
+      Synth::convertExprFromRaw(Synth::convertImplicitConversionExprToRaw(this)
             .(Raw::ImplicitConversionExpr)
             .getSubExpr())
   }

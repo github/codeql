@@ -8,7 +8,7 @@ class DotSyntaxBaseIgnoredExprBase extends Synth::TDotSyntaxBaseIgnoredExpr, Exp
 
   Expr getImmediateQualifier() {
     result =
-      Synth::fromRawExpr(Synth::toRawDotSyntaxBaseIgnoredExpr(this)
+      Synth::convertExprFromRaw(Synth::convertDotSyntaxBaseIgnoredExprToRaw(this)
             .(Raw::DotSyntaxBaseIgnoredExpr)
             .getQualifier())
   }
@@ -17,7 +17,7 @@ class DotSyntaxBaseIgnoredExprBase extends Synth::TDotSyntaxBaseIgnoredExpr, Exp
 
   Expr getImmediateSubExpr() {
     result =
-      Synth::fromRawExpr(Synth::toRawDotSyntaxBaseIgnoredExpr(this)
+      Synth::convertExprFromRaw(Synth::convertDotSyntaxBaseIgnoredExprToRaw(this)
             .(Raw::DotSyntaxBaseIgnoredExpr)
             .getSubExpr())
   }

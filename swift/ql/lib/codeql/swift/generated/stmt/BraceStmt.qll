@@ -8,7 +8,10 @@ class BraceStmtBase extends Synth::TBraceStmt, Stmt {
   override string getAPrimaryQlClass() { result = "BraceStmt" }
 
   AstNode getImmediateElement(int index) {
-    result = Synth::fromRawAstNode(Synth::toRawBraceStmt(this).(Raw::BraceStmt).getElement(index))
+    result =
+      Synth::convertAstNodeFromRaw(Synth::convertBraceStmtToRaw(this)
+            .(Raw::BraceStmt)
+            .getElement(index))
   }
 
   final AstNode getElement(int index) { result = getImmediateElement(index).resolve() }

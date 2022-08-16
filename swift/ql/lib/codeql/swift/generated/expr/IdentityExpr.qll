@@ -5,7 +5,10 @@ import codeql.swift.elements.expr.Expr
 
 class IdentityExprBase extends Synth::TIdentityExpr, Expr {
   Expr getImmediateSubExpr() {
-    result = Synth::fromRawExpr(Synth::toRawIdentityExpr(this).(Raw::IdentityExpr).getSubExpr())
+    result =
+      Synth::convertExprFromRaw(Synth::convertIdentityExprToRaw(this)
+            .(Raw::IdentityExpr)
+            .getSubExpr())
   }
 
   final Expr getSubExpr() { result = getImmediateSubExpr().resolve() }

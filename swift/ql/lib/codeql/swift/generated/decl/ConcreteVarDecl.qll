@@ -7,6 +7,6 @@ class ConcreteVarDeclBase extends Synth::TConcreteVarDecl, VarDecl {
   override string getAPrimaryQlClass() { result = "ConcreteVarDecl" }
 
   int getIntroducerInt() {
-    result = Synth::toRawConcreteVarDecl(this).(Raw::ConcreteVarDecl).getIntroducerInt()
+    result = Synth::convertConcreteVarDeclToRaw(this).(Raw::ConcreteVarDecl).getIntroducerInt()
   }
 }

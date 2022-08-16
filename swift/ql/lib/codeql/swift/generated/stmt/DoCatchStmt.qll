@@ -9,14 +9,17 @@ class DoCatchStmtBase extends Synth::TDoCatchStmt, LabeledStmt {
   override string getAPrimaryQlClass() { result = "DoCatchStmt" }
 
   Stmt getImmediateBody() {
-    result = Synth::fromRawStmt(Synth::toRawDoCatchStmt(this).(Raw::DoCatchStmt).getBody())
+    result =
+      Synth::convertStmtFromRaw(Synth::convertDoCatchStmtToRaw(this).(Raw::DoCatchStmt).getBody())
   }
 
   final Stmt getBody() { result = getImmediateBody().resolve() }
 
   CaseStmt getImmediateCatch(int index) {
     result =
-      Synth::fromRawCaseStmt(Synth::toRawDoCatchStmt(this).(Raw::DoCatchStmt).getCatch(index))
+      Synth::convertCaseStmtFromRaw(Synth::convertDoCatchStmtToRaw(this)
+            .(Raw::DoCatchStmt)
+            .getCatch(index))
   }
 
   final CaseStmt getCatch(int index) { result = getImmediateCatch(index).resolve() }

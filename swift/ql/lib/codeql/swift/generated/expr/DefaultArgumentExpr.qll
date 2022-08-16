@@ -9,7 +9,7 @@ class DefaultArgumentExprBase extends Synth::TDefaultArgumentExpr, Expr {
 
   ParamDecl getImmediateParamDecl() {
     result =
-      Synth::fromRawParamDecl(Synth::toRawDefaultArgumentExpr(this)
+      Synth::convertParamDeclFromRaw(Synth::convertDefaultArgumentExprToRaw(this)
             .(Raw::DefaultArgumentExpr)
             .getParamDecl())
   }
@@ -17,12 +17,12 @@ class DefaultArgumentExprBase extends Synth::TDefaultArgumentExpr, Expr {
   final ParamDecl getParamDecl() { result = getImmediateParamDecl().resolve() }
 
   int getParamIndex() {
-    result = Synth::toRawDefaultArgumentExpr(this).(Raw::DefaultArgumentExpr).getParamIndex()
+    result = Synth::convertDefaultArgumentExprToRaw(this).(Raw::DefaultArgumentExpr).getParamIndex()
   }
 
   Expr getImmediateCallerSideDefault() {
     result =
-      Synth::fromRawExpr(Synth::toRawDefaultArgumentExpr(this)
+      Synth::convertExprFromRaw(Synth::convertDefaultArgumentExprToRaw(this)
             .(Raw::DefaultArgumentExpr)
             .getCallerSideDefault())
   }

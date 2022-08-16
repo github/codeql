@@ -8,7 +8,10 @@ class IsPatternBase extends Synth::TIsPattern, Pattern {
   override string getAPrimaryQlClass() { result = "IsPattern" }
 
   TypeRepr getImmediateCastTypeRepr() {
-    result = Synth::fromRawTypeRepr(Synth::toRawIsPattern(this).(Raw::IsPattern).getCastTypeRepr())
+    result =
+      Synth::convertTypeReprFromRaw(Synth::convertIsPatternToRaw(this)
+            .(Raw::IsPattern)
+            .getCastTypeRepr())
   }
 
   final TypeRepr getCastTypeRepr() { result = getImmediateCastTypeRepr().resolve() }
@@ -16,7 +19,10 @@ class IsPatternBase extends Synth::TIsPattern, Pattern {
   final predicate hasCastTypeRepr() { exists(getCastTypeRepr()) }
 
   Pattern getImmediateSubPattern() {
-    result = Synth::fromRawPattern(Synth::toRawIsPattern(this).(Raw::IsPattern).getSubPattern())
+    result =
+      Synth::convertPatternFromRaw(Synth::convertIsPatternToRaw(this)
+            .(Raw::IsPattern)
+            .getSubPattern())
   }
 
   final Pattern getSubPattern() { result = getImmediateSubPattern().resolve() }

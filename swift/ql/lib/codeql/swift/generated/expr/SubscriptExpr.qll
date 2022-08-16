@@ -9,7 +9,9 @@ class SubscriptExprBase extends Synth::TSubscriptExpr, LookupExpr {
 
   Argument getImmediateArgument(int index) {
     result =
-      Synth::fromRawArgument(Synth::toRawSubscriptExpr(this).(Raw::SubscriptExpr).getArgument(index))
+      Synth::convertArgumentFromRaw(Synth::convertSubscriptExprToRaw(this)
+            .(Raw::SubscriptExpr)
+            .getArgument(index))
   }
 
   final Argument getArgument(int index) { result = getImmediateArgument(index).resolve() }
@@ -19,14 +21,14 @@ class SubscriptExprBase extends Synth::TSubscriptExpr, LookupExpr {
   final int getNumberOfArguments() { result = count(getAnArgument()) }
 
   predicate hasDirectToStorageSemantics() {
-    Synth::toRawSubscriptExpr(this).(Raw::SubscriptExpr).hasDirectToStorageSemantics()
+    Synth::convertSubscriptExprToRaw(this).(Raw::SubscriptExpr).hasDirectToStorageSemantics()
   }
 
   predicate hasDirectToImplementationSemantics() {
-    Synth::toRawSubscriptExpr(this).(Raw::SubscriptExpr).hasDirectToImplementationSemantics()
+    Synth::convertSubscriptExprToRaw(this).(Raw::SubscriptExpr).hasDirectToImplementationSemantics()
   }
 
   predicate hasOrdinarySemantics() {
-    Synth::toRawSubscriptExpr(this).(Raw::SubscriptExpr).hasOrdinarySemantics()
+    Synth::convertSubscriptExprToRaw(this).(Raw::SubscriptExpr).hasOrdinarySemantics()
   }
 }

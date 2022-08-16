@@ -6,7 +6,7 @@ import codeql.swift.elements.type.Type
 
 class ExprBase extends Synth::TExpr, AstNode {
   Type getImmediateType() {
-    result = Synth::fromRawType(Synth::toRawExpr(this).(Raw::Expr).getType())
+    result = Synth::convertTypeFromRaw(Synth::convertExprToRaw(this).(Raw::Expr).getType())
   }
 
   final Type getType() { result = getImmediateType().resolve() }

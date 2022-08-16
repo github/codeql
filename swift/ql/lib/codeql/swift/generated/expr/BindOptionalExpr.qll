@@ -8,7 +8,9 @@ class BindOptionalExprBase extends Synth::TBindOptionalExpr, Expr {
 
   Expr getImmediateSubExpr() {
     result =
-      Synth::fromRawExpr(Synth::toRawBindOptionalExpr(this).(Raw::BindOptionalExpr).getSubExpr())
+      Synth::convertExprFromRaw(Synth::convertBindOptionalExprToRaw(this)
+            .(Raw::BindOptionalExpr)
+            .getSubExpr())
   }
 
   final Expr getSubExpr() { result = getImmediateSubExpr().resolve() }

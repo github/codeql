@@ -6,14 +6,16 @@ import codeql.swift.elements.type.Type
 class AnyFunctionTypeBase extends Synth::TAnyFunctionType, Type {
   Type getImmediateResult() {
     result =
-      Synth::fromRawType(Synth::toRawAnyFunctionType(this).(Raw::AnyFunctionType).getResult())
+      Synth::convertTypeFromRaw(Synth::convertAnyFunctionTypeToRaw(this)
+            .(Raw::AnyFunctionType)
+            .getResult())
   }
 
   final Type getResult() { result = getImmediateResult().resolve() }
 
   Type getImmediateParamType(int index) {
     result =
-      Synth::fromRawType(Synth::toRawAnyFunctionType(this)
+      Synth::convertTypeFromRaw(Synth::convertAnyFunctionTypeToRaw(this)
             .(Raw::AnyFunctionType)
             .getParamType(index))
   }
@@ -25,14 +27,16 @@ class AnyFunctionTypeBase extends Synth::TAnyFunctionType, Type {
   final int getNumberOfParamTypes() { result = count(getAParamType()) }
 
   string getParamLabel(int index) {
-    result = Synth::toRawAnyFunctionType(this).(Raw::AnyFunctionType).getParamLabel(index)
+    result = Synth::convertAnyFunctionTypeToRaw(this).(Raw::AnyFunctionType).getParamLabel(index)
   }
 
   final string getAParamLabel() { result = getParamLabel(_) }
 
   final int getNumberOfParamLabels() { result = count(getAParamLabel()) }
 
-  predicate isThrowing() { Synth::toRawAnyFunctionType(this).(Raw::AnyFunctionType).isThrowing() }
+  predicate isThrowing() {
+    Synth::convertAnyFunctionTypeToRaw(this).(Raw::AnyFunctionType).isThrowing()
+  }
 
-  predicate isAsync() { Synth::toRawAnyFunctionType(this).(Raw::AnyFunctionType).isAsync() }
+  predicate isAsync() { Synth::convertAnyFunctionTypeToRaw(this).(Raw::AnyFunctionType).isAsync() }
 }

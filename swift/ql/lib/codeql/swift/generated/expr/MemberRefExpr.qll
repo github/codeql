@@ -7,14 +7,14 @@ class MemberRefExprBase extends Synth::TMemberRefExpr, LookupExpr {
   override string getAPrimaryQlClass() { result = "MemberRefExpr" }
 
   predicate hasDirectToStorageSemantics() {
-    Synth::toRawMemberRefExpr(this).(Raw::MemberRefExpr).hasDirectToStorageSemantics()
+    Synth::convertMemberRefExprToRaw(this).(Raw::MemberRefExpr).hasDirectToStorageSemantics()
   }
 
   predicate hasDirectToImplementationSemantics() {
-    Synth::toRawMemberRefExpr(this).(Raw::MemberRefExpr).hasDirectToImplementationSemantics()
+    Synth::convertMemberRefExprToRaw(this).(Raw::MemberRefExpr).hasDirectToImplementationSemantics()
   }
 
   predicate hasOrdinarySemantics() {
-    Synth::toRawMemberRefExpr(this).(Raw::MemberRefExpr).hasOrdinarySemantics()
+    Synth::convertMemberRefExprToRaw(this).(Raw::MemberRefExpr).hasOrdinarySemantics()
   }
 }

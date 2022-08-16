@@ -6,5 +6,5 @@ import codeql.swift.elements.pattern.Pattern
 class NamedPatternBase extends Synth::TNamedPattern, Pattern {
   override string getAPrimaryQlClass() { result = "NamedPattern" }
 
-  string getName() { result = Synth::toRawNamedPattern(this).(Raw::NamedPattern).getName() }
+  string getName() { result = Synth::convertNamedPatternToRaw(this).(Raw::NamedPattern).getName() }
 }

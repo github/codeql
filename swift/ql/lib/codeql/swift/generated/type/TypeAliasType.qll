@@ -9,7 +9,9 @@ class TypeAliasTypeBase extends Synth::TTypeAliasType, SugarType {
 
   TypeAliasDecl getImmediateDecl() {
     result =
-      Synth::fromRawTypeAliasDecl(Synth::toRawTypeAliasType(this).(Raw::TypeAliasType).getDecl())
+      Synth::convertTypeAliasDeclFromRaw(Synth::convertTypeAliasTypeToRaw(this)
+            .(Raw::TypeAliasType)
+            .getDecl())
   }
 
   final TypeAliasDecl getDecl() { result = getImmediateDecl().resolve() }

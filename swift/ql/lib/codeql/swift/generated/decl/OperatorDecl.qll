@@ -4,5 +4,5 @@ private import codeql.swift.generated.Raw
 import codeql.swift.elements.decl.Decl
 
 class OperatorDeclBase extends Synth::TOperatorDecl, Decl {
-  string getName() { result = Synth::toRawOperatorDecl(this).(Raw::OperatorDecl).getName() }
+  string getName() { result = Synth::convertOperatorDeclToRaw(this).(Raw::OperatorDecl).getName() }
 }

@@ -6,5 +6,5 @@ import codeql.swift.elements.Locatable
 class CommentBase extends Synth::TComment, Locatable {
   override string getAPrimaryQlClass() { result = "Comment" }
 
-  string getText() { result = Synth::toRawComment(this).(Raw::Comment).getText() }
+  string getText() { result = Synth::convertCommentToRaw(this).(Raw::Comment).getText() }
 }

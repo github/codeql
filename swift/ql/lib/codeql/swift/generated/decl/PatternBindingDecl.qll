@@ -10,7 +10,7 @@ class PatternBindingDeclBase extends Synth::TPatternBindingDecl, Decl {
 
   Expr getImmediateInit(int index) {
     result =
-      Synth::fromRawExpr(Synth::toRawPatternBindingDecl(this)
+      Synth::convertExprFromRaw(Synth::convertPatternBindingDeclToRaw(this)
             .(Raw::PatternBindingDecl)
             .getInit(index))
   }
@@ -23,7 +23,7 @@ class PatternBindingDeclBase extends Synth::TPatternBindingDecl, Decl {
 
   Pattern getImmediatePattern(int index) {
     result =
-      Synth::fromRawPattern(Synth::toRawPatternBindingDecl(this)
+      Synth::convertPatternFromRaw(Synth::convertPatternBindingDeclToRaw(this)
             .(Raw::PatternBindingDecl)
             .getPattern(index))
   }

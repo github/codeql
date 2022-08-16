@@ -7,7 +7,10 @@ class LValueTypeBase extends Synth::TLValueType, Type {
   override string getAPrimaryQlClass() { result = "LValueType" }
 
   Type getImmediateObjectType() {
-    result = Synth::fromRawType(Synth::toRawLValueType(this).(Raw::LValueType).getObjectType())
+    result =
+      Synth::convertTypeFromRaw(Synth::convertLValueTypeToRaw(this)
+            .(Raw::LValueType)
+            .getObjectType())
   }
 
   final Type getObjectType() { result = getImmediateObjectType().resolve() }

@@ -9,7 +9,7 @@ class OpenExistentialExprBase extends Synth::TOpenExistentialExpr, Expr {
 
   Expr getImmediateSubExpr() {
     result =
-      Synth::fromRawExpr(Synth::toRawOpenExistentialExpr(this)
+      Synth::convertExprFromRaw(Synth::convertOpenExistentialExprToRaw(this)
             .(Raw::OpenExistentialExpr)
             .getSubExpr())
   }
@@ -18,7 +18,7 @@ class OpenExistentialExprBase extends Synth::TOpenExistentialExpr, Expr {
 
   Expr getImmediateExistential() {
     result =
-      Synth::fromRawExpr(Synth::toRawOpenExistentialExpr(this)
+      Synth::convertExprFromRaw(Synth::convertOpenExistentialExprToRaw(this)
             .(Raw::OpenExistentialExpr)
             .getExistential())
   }
@@ -27,7 +27,7 @@ class OpenExistentialExprBase extends Synth::TOpenExistentialExpr, Expr {
 
   OpaqueValueExpr getImmediateOpaqueExpr() {
     result =
-      Synth::fromRawOpaqueValueExpr(Synth::toRawOpenExistentialExpr(this)
+      Synth::convertOpaqueValueExprFromRaw(Synth::convertOpenExistentialExprToRaw(this)
             .(Raw::OpenExistentialExpr)
             .getOpaqueExpr())
   }

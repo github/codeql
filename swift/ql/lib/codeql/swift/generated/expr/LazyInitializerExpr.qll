@@ -8,7 +8,7 @@ class LazyInitializerExprBase extends Synth::TLazyInitializerExpr, Expr {
 
   Expr getImmediateSubExpr() {
     result =
-      Synth::fromRawExpr(Synth::toRawLazyInitializerExpr(this)
+      Synth::convertExprFromRaw(Synth::convertLazyInitializerExprToRaw(this)
             .(Raw::LazyInitializerExpr)
             .getSubExpr())
   }

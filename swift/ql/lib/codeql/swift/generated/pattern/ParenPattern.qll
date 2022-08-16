@@ -8,7 +8,9 @@ class ParenPatternBase extends Synth::TParenPattern, Pattern {
 
   Pattern getImmediateSubPattern() {
     result =
-      Synth::fromRawPattern(Synth::toRawParenPattern(this).(Raw::ParenPattern).getSubPattern())
+      Synth::convertPatternFromRaw(Synth::convertParenPatternToRaw(this)
+            .(Raw::ParenPattern)
+            .getSubPattern())
   }
 
   final Pattern getSubPattern() { result = getImmediateSubPattern().resolve() }

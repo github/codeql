@@ -7,7 +7,10 @@ class ForceValueExprBase extends Synth::TForceValueExpr, Expr {
   override string getAPrimaryQlClass() { result = "ForceValueExpr" }
 
   Expr getImmediateSubExpr() {
-    result = Synth::fromRawExpr(Synth::toRawForceValueExpr(this).(Raw::ForceValueExpr).getSubExpr())
+    result =
+      Synth::convertExprFromRaw(Synth::convertForceValueExprToRaw(this)
+            .(Raw::ForceValueExpr)
+            .getSubExpr())
   }
 
   final Expr getSubExpr() { result = getImmediateSubExpr().resolve() }

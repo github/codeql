@@ -8,10 +8,14 @@ class TupleElementExprBase extends Synth::TTupleElementExpr, Expr {
 
   Expr getImmediateSubExpr() {
     result =
-      Synth::fromRawExpr(Synth::toRawTupleElementExpr(this).(Raw::TupleElementExpr).getSubExpr())
+      Synth::convertExprFromRaw(Synth::convertTupleElementExprToRaw(this)
+            .(Raw::TupleElementExpr)
+            .getSubExpr())
   }
 
   final Expr getSubExpr() { result = getImmediateSubExpr().resolve() }
 
-  int getIndex() { result = Synth::toRawTupleElementExpr(this).(Raw::TupleElementExpr).getIndex() }
+  int getIndex() {
+    result = Synth::convertTupleElementExprToRaw(this).(Raw::TupleElementExpr).getIndex()
+  }
 }

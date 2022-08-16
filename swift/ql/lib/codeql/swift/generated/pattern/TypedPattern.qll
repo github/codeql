@@ -9,14 +9,18 @@ class TypedPatternBase extends Synth::TTypedPattern, Pattern {
 
   Pattern getImmediateSubPattern() {
     result =
-      Synth::fromRawPattern(Synth::toRawTypedPattern(this).(Raw::TypedPattern).getSubPattern())
+      Synth::convertPatternFromRaw(Synth::convertTypedPatternToRaw(this)
+            .(Raw::TypedPattern)
+            .getSubPattern())
   }
 
   final Pattern getSubPattern() { result = getImmediateSubPattern().resolve() }
 
   TypeRepr getImmediateTypeRepr() {
     result =
-      Synth::fromRawTypeRepr(Synth::toRawTypedPattern(this).(Raw::TypedPattern).getTypeRepr())
+      Synth::convertTypeReprFromRaw(Synth::convertTypedPatternToRaw(this)
+            .(Raw::TypedPattern)
+            .getTypeRepr())
   }
 
   final TypeRepr getTypeRepr() { result = getImmediateTypeRepr().resolve() }

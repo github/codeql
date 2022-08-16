@@ -8,7 +8,9 @@ class TuplePatternBase extends Synth::TTuplePattern, Pattern {
 
   Pattern getImmediateElement(int index) {
     result =
-      Synth::fromRawPattern(Synth::toRawTuplePattern(this).(Raw::TuplePattern).getElement(index))
+      Synth::convertPatternFromRaw(Synth::convertTuplePatternToRaw(this)
+            .(Raw::TuplePattern)
+            .getElement(index))
   }
 
   final Pattern getElement(int index) { result = getImmediateElement(index).resolve() }

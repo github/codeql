@@ -7,6 +7,6 @@ class StringLiteralExprBase extends Synth::TStringLiteralExpr, BuiltinLiteralExp
   override string getAPrimaryQlClass() { result = "StringLiteralExpr" }
 
   string getValue() {
-    result = Synth::toRawStringLiteralExpr(this).(Raw::StringLiteralExpr).getValue()
+    result = Synth::convertStringLiteralExprToRaw(this).(Raw::StringLiteralExpr).getValue()
   }
 }

@@ -7,6 +7,6 @@ class UnresolvedMemberExprBase extends Synth::TUnresolvedMemberExpr, Expr {
   override string getAPrimaryQlClass() { result = "UnresolvedMemberExpr" }
 
   string getName() {
-    result = Synth::toRawUnresolvedMemberExpr(this).(Raw::UnresolvedMemberExpr).getName()
+    result = Synth::convertUnresolvedMemberExprToRaw(this).(Raw::UnresolvedMemberExpr).getName()
   }
 }

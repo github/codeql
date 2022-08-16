@@ -8,12 +8,14 @@ class UnresolvedDotExprBase extends Synth::TUnresolvedDotExpr, Expr {
 
   Expr getImmediateBase() {
     result =
-      Synth::fromRawExpr(Synth::toRawUnresolvedDotExpr(this).(Raw::UnresolvedDotExpr).getBase())
+      Synth::convertExprFromRaw(Synth::convertUnresolvedDotExprToRaw(this)
+            .(Raw::UnresolvedDotExpr)
+            .getBase())
   }
 
   final Expr getBase() { result = getImmediateBase().resolve() }
 
   string getName() {
-    result = Synth::toRawUnresolvedDotExpr(this).(Raw::UnresolvedDotExpr).getName()
+    result = Synth::convertUnresolvedDotExprToRaw(this).(Raw::UnresolvedDotExpr).getName()
   }
 }

@@ -7,10 +7,10 @@ import codeql.swift.elements.Locatable
 class ArgumentBase extends Synth::TArgument, Locatable {
   override string getAPrimaryQlClass() { result = "Argument" }
 
-  string getLabel() { result = Synth::toRawArgument(this).(Raw::Argument).getLabel() }
+  string getLabel() { result = Synth::convertArgumentToRaw(this).(Raw::Argument).getLabel() }
 
   Expr getImmediateExpr() {
-    result = Synth::fromRawExpr(Synth::toRawArgument(this).(Raw::Argument).getExpr())
+    result = Synth::convertExprFromRaw(Synth::convertArgumentToRaw(this).(Raw::Argument).getExpr())
   }
 
   final Expr getExpr() { result = getImmediateExpr().resolve() }

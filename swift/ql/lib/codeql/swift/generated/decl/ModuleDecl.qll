@@ -6,7 +6,11 @@ import codeql.swift.elements.decl.TypeDecl
 class ModuleDeclBase extends Synth::TModuleDecl, TypeDecl {
   override string getAPrimaryQlClass() { result = "ModuleDecl" }
 
-  predicate isBuiltinModule() { Synth::toRawModuleDecl(this).(Raw::ModuleDecl).isBuiltinModule() }
+  predicate isBuiltinModule() {
+    Synth::convertModuleDeclToRaw(this).(Raw::ModuleDecl).isBuiltinModule()
+  }
 
-  predicate isSystemModule() { Synth::toRawModuleDecl(this).(Raw::ModuleDecl).isSystemModule() }
+  predicate isSystemModule() {
+    Synth::convertModuleDeclToRaw(this).(Raw::ModuleDecl).isSystemModule()
+  }
 }

@@ -9,7 +9,7 @@ class OtherConstructorDeclRefExprBase extends Synth::TOtherConstructorDeclRefExp
 
   ConstructorDecl getImmediateConstructorDecl() {
     result =
-      Synth::fromRawConstructorDecl(Synth::toRawOtherConstructorDeclRefExpr(this)
+      Synth::convertConstructorDeclFromRaw(Synth::convertOtherConstructorDeclRefExprToRaw(this)
             .(Raw::OtherConstructorDeclRefExpr)
             .getConstructorDecl())
   }

@@ -7,7 +7,8 @@ class InOutExprBase extends Synth::TInOutExpr, Expr {
   override string getAPrimaryQlClass() { result = "InOutExpr" }
 
   Expr getImmediateSubExpr() {
-    result = Synth::fromRawExpr(Synth::toRawInOutExpr(this).(Raw::InOutExpr).getSubExpr())
+    result =
+      Synth::convertExprFromRaw(Synth::convertInOutExprToRaw(this).(Raw::InOutExpr).getSubExpr())
   }
 
   final Expr getSubExpr() { result = getImmediateSubExpr().resolve() }

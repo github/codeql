@@ -7,11 +7,13 @@ import codeql.swift.elements.decl.ValueDecl
 class EnumElementDeclBase extends Synth::TEnumElementDecl, ValueDecl {
   override string getAPrimaryQlClass() { result = "EnumElementDecl" }
 
-  string getName() { result = Synth::toRawEnumElementDecl(this).(Raw::EnumElementDecl).getName() }
+  string getName() {
+    result = Synth::convertEnumElementDeclToRaw(this).(Raw::EnumElementDecl).getName()
+  }
 
   ParamDecl getImmediateParam(int index) {
     result =
-      Synth::fromRawParamDecl(Synth::toRawEnumElementDecl(this)
+      Synth::convertParamDeclFromRaw(Synth::convertEnumElementDeclToRaw(this)
             .(Raw::EnumElementDecl)
             .getParam(index))
   }

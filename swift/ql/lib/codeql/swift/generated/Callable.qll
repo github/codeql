@@ -7,7 +7,10 @@ import codeql.swift.elements.decl.ParamDecl
 
 class CallableBase extends Synth::TCallable, Element {
   ParamDecl getImmediateParam(int index) {
-    result = Synth::fromRawParamDecl(Synth::toRawCallable(this).(Raw::Callable).getParam(index))
+    result =
+      Synth::convertParamDeclFromRaw(Synth::convertCallableToRaw(this)
+            .(Raw::Callable)
+            .getParam(index))
   }
 
   final ParamDecl getParam(int index) { result = getImmediateParam(index).resolve() }
@@ -17,7 +20,8 @@ class CallableBase extends Synth::TCallable, Element {
   final int getNumberOfParams() { result = count(getAParam()) }
 
   BraceStmt getImmediateBody() {
-    result = Synth::fromRawBraceStmt(Synth::toRawCallable(this).(Raw::Callable).getBody())
+    result =
+      Synth::convertBraceStmtFromRaw(Synth::convertCallableToRaw(this).(Raw::Callable).getBody())
   }
 
   final BraceStmt getBody() { result = getImmediateBody().resolve() }

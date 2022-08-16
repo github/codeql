@@ -7,13 +7,16 @@ class ContinueStmtBase extends Synth::TContinueStmt, Stmt {
   override string getAPrimaryQlClass() { result = "ContinueStmt" }
 
   string getTargetName() {
-    result = Synth::toRawContinueStmt(this).(Raw::ContinueStmt).getTargetName()
+    result = Synth::convertContinueStmtToRaw(this).(Raw::ContinueStmt).getTargetName()
   }
 
   final predicate hasTargetName() { exists(getTargetName()) }
 
   Stmt getImmediateTarget() {
-    result = Synth::fromRawStmt(Synth::toRawContinueStmt(this).(Raw::ContinueStmt).getTarget())
+    result =
+      Synth::convertStmtFromRaw(Synth::convertContinueStmtToRaw(this)
+            .(Raw::ContinueStmt)
+            .getTarget())
   }
 
   final Stmt getTarget() { result = getImmediateTarget().resolve() }

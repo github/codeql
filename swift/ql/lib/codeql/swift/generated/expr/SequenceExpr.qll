@@ -8,7 +8,9 @@ class SequenceExprBase extends Synth::TSequenceExpr, Expr {
 
   Expr getImmediateElement(int index) {
     result =
-      Synth::fromRawExpr(Synth::toRawSequenceExpr(this).(Raw::SequenceExpr).getElement(index))
+      Synth::convertExprFromRaw(Synth::convertSequenceExprToRaw(this)
+            .(Raw::SequenceExpr)
+            .getElement(index))
   }
 
   final Expr getElement(int index) { result = getImmediateElement(index).resolve() }

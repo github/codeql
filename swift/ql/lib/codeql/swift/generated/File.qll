@@ -4,5 +4,5 @@ private import codeql.swift.generated.Raw
 import codeql.swift.elements.Element
 
 class FileBase extends Synth::TFile, Element {
-  string getName() { result = Synth::toRawFile(this).(Raw::File).getName() }
+  string getName() { result = Synth::convertFileToRaw(this).(Raw::File).getName() }
 }

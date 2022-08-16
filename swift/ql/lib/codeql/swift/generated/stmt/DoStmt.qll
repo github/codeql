@@ -8,7 +8,7 @@ class DoStmtBase extends Synth::TDoStmt, LabeledStmt {
   override string getAPrimaryQlClass() { result = "DoStmt" }
 
   BraceStmt getImmediateBody() {
-    result = Synth::fromRawBraceStmt(Synth::toRawDoStmt(this).(Raw::DoStmt).getBody())
+    result = Synth::convertBraceStmtFromRaw(Synth::convertDoStmtToRaw(this).(Raw::DoStmt).getBody())
   }
 
   final BraceStmt getBody() { result = getImmediateBody().resolve() }

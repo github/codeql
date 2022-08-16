@@ -9,7 +9,7 @@ class DependentMemberTypeBase extends Synth::TDependentMemberType, Type {
 
   Type getImmediateBaseType() {
     result =
-      Synth::fromRawType(Synth::toRawDependentMemberType(this)
+      Synth::convertTypeFromRaw(Synth::convertDependentMemberTypeToRaw(this)
             .(Raw::DependentMemberType)
             .getBaseType())
   }
@@ -18,7 +18,7 @@ class DependentMemberTypeBase extends Synth::TDependentMemberType, Type {
 
   AssociatedTypeDecl getImmediateAssociatedTypeDecl() {
     result =
-      Synth::fromRawAssociatedTypeDecl(Synth::toRawDependentMemberType(this)
+      Synth::convertAssociatedTypeDeclFromRaw(Synth::convertDependentMemberTypeToRaw(this)
             .(Raw::DependentMemberType)
             .getAssociatedTypeDecl())
   }

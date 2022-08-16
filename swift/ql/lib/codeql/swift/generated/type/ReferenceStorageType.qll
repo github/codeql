@@ -6,7 +6,7 @@ import codeql.swift.elements.type.Type
 class ReferenceStorageTypeBase extends Synth::TReferenceStorageType, Type {
   Type getImmediateReferentType() {
     result =
-      Synth::fromRawType(Synth::toRawReferenceStorageType(this)
+      Synth::convertTypeFromRaw(Synth::convertReferenceStorageTypeToRaw(this)
             .(Raw::ReferenceStorageType)
             .getReferentType())
   }

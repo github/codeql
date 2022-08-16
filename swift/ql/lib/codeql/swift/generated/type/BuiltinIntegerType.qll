@@ -7,7 +7,7 @@ class BuiltinIntegerTypeBase extends Synth::TBuiltinIntegerType, AnyBuiltinInteg
   override string getAPrimaryQlClass() { result = "BuiltinIntegerType" }
 
   int getWidth() {
-    result = Synth::toRawBuiltinIntegerType(this).(Raw::BuiltinIntegerType).getWidth()
+    result = Synth::convertBuiltinIntegerTypeToRaw(this).(Raw::BuiltinIntegerType).getWidth()
   }
 
   final predicate hasWidth() { exists(getWidth()) }

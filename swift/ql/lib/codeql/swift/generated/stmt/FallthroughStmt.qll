@@ -9,7 +9,7 @@ class FallthroughStmtBase extends Synth::TFallthroughStmt, Stmt {
 
   CaseStmt getImmediateFallthroughSource() {
     result =
-      Synth::fromRawCaseStmt(Synth::toRawFallthroughStmt(this)
+      Synth::convertCaseStmtFromRaw(Synth::convertFallthroughStmtToRaw(this)
             .(Raw::FallthroughStmt)
             .getFallthroughSource())
   }
@@ -18,7 +18,7 @@ class FallthroughStmtBase extends Synth::TFallthroughStmt, Stmt {
 
   CaseStmt getImmediateFallthroughDest() {
     result =
-      Synth::fromRawCaseStmt(Synth::toRawFallthroughStmt(this)
+      Synth::convertCaseStmtFromRaw(Synth::convertFallthroughStmtToRaw(this)
             .(Raw::FallthroughStmt)
             .getFallthroughDest())
   }

@@ -10,7 +10,7 @@ class CaptureListExprBase extends Synth::TCaptureListExpr, Expr {
 
   PatternBindingDecl getImmediateBindingDecl(int index) {
     result =
-      Synth::fromRawPatternBindingDecl(Synth::toRawCaptureListExpr(this)
+      Synth::convertPatternBindingDeclFromRaw(Synth::convertCaptureListExprToRaw(this)
             .(Raw::CaptureListExpr)
             .getBindingDecl(index))
   }
@@ -25,7 +25,7 @@ class CaptureListExprBase extends Synth::TCaptureListExpr, Expr {
 
   ClosureExpr getImmediateClosureBody() {
     result =
-      Synth::fromRawClosureExpr(Synth::toRawCaptureListExpr(this)
+      Synth::convertClosureExprFromRaw(Synth::convertCaptureListExprToRaw(this)
             .(Raw::CaptureListExpr)
             .getClosureBody())
   }

@@ -6,16 +6,18 @@ import codeql.swift.elements.File
 
 class LocationBase extends Synth::TLocation, Element {
   File getImmediateFile() {
-    result = Synth::fromRawFile(Synth::toRawLocation(this).(Raw::Location).getFile())
+    result = Synth::convertFileFromRaw(Synth::convertLocationToRaw(this).(Raw::Location).getFile())
   }
 
   final File getFile() { result = getImmediateFile().resolve() }
 
-  int getStartLine() { result = Synth::toRawLocation(this).(Raw::Location).getStartLine() }
+  int getStartLine() { result = Synth::convertLocationToRaw(this).(Raw::Location).getStartLine() }
 
-  int getStartColumn() { result = Synth::toRawLocation(this).(Raw::Location).getStartColumn() }
+  int getStartColumn() {
+    result = Synth::convertLocationToRaw(this).(Raw::Location).getStartColumn()
+  }
 
-  int getEndLine() { result = Synth::toRawLocation(this).(Raw::Location).getEndLine() }
+  int getEndLine() { result = Synth::convertLocationToRaw(this).(Raw::Location).getEndLine() }
 
-  int getEndColumn() { result = Synth::toRawLocation(this).(Raw::Location).getEndColumn() }
+  int getEndColumn() { result = Synth::convertLocationToRaw(this).(Raw::Location).getEndColumn() }
 }

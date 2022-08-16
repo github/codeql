@@ -10,13 +10,18 @@ class RepeatWhileStmtBase extends Synth::TRepeatWhileStmt, LabeledStmt {
 
   Expr getImmediateCondition() {
     result =
-      Synth::fromRawExpr(Synth::toRawRepeatWhileStmt(this).(Raw::RepeatWhileStmt).getCondition())
+      Synth::convertExprFromRaw(Synth::convertRepeatWhileStmtToRaw(this)
+            .(Raw::RepeatWhileStmt)
+            .getCondition())
   }
 
   final Expr getCondition() { result = getImmediateCondition().resolve() }
 
   Stmt getImmediateBody() {
-    result = Synth::fromRawStmt(Synth::toRawRepeatWhileStmt(this).(Raw::RepeatWhileStmt).getBody())
+    result =
+      Synth::convertStmtFromRaw(Synth::convertRepeatWhileStmtToRaw(this)
+            .(Raw::RepeatWhileStmt)
+            .getBody())
   }
 
   final Stmt getBody() { result = getImmediateBody().resolve() }

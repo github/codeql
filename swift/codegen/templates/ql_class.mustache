@@ -29,7 +29,7 @@ class {{name}}Base extends Synth::T{{name}}{{#bases}}, {{.}}{{/bases}} {
   {{#type_is_class}}
   {{type}} getImmediate{{singular}}({{#is_repeated}}int index{{/is_repeated}}) {
     {{^ipa}}
-    result = Synth::fromRaw{{type}}(Synth::toRaw{{name}}(this){{^root}}.(Raw::{{name}}){{/root}}.{{getter}}({{#is_repeated}}index{{/is_repeated}}))
+    result = Synth::convert{{type}}FromRaw(Synth::convert{{name}}ToRaw(this){{^root}}.(Raw::{{name}}){{/root}}.{{getter}}({{#is_repeated}}index{{/is_repeated}}))
     {{/ipa}}
     {{#ipa}}
     none()
@@ -44,7 +44,7 @@ class {{name}}Base extends Synth::T{{name}}{{#bases}}, {{.}}{{/bases}} {
   {{^type_is_class}}
   {{type}} {{getter}}({{#is_repeated}}int index{{/is_repeated}}) {
     {{^ipa}}
-    {{^is_predicate}}result = {{/is_predicate}}Synth::toRaw{{name}}(this){{^root}}.(Raw::{{name}}){{/root}}.{{getter}}({{#is_repeated}}index{{/is_repeated}})
+    {{^is_predicate}}result = {{/is_predicate}}Synth::convert{{name}}ToRaw(this){{^root}}.(Raw::{{name}}){{/root}}.{{getter}}({{#is_repeated}}index{{/is_repeated}})
     {{/ipa}}
     {{#ipa}}
     none()

@@ -7,19 +7,19 @@ class IfExprBase extends Synth::TIfExpr, Expr {
   override string getAPrimaryQlClass() { result = "IfExpr" }
 
   Expr getImmediateCondition() {
-    result = Synth::fromRawExpr(Synth::toRawIfExpr(this).(Raw::IfExpr).getCondition())
+    result = Synth::convertExprFromRaw(Synth::convertIfExprToRaw(this).(Raw::IfExpr).getCondition())
   }
 
   final Expr getCondition() { result = getImmediateCondition().resolve() }
 
   Expr getImmediateThenExpr() {
-    result = Synth::fromRawExpr(Synth::toRawIfExpr(this).(Raw::IfExpr).getThenExpr())
+    result = Synth::convertExprFromRaw(Synth::convertIfExprToRaw(this).(Raw::IfExpr).getThenExpr())
   }
 
   final Expr getThenExpr() { result = getImmediateThenExpr().resolve() }
 
   Expr getImmediateElseExpr() {
-    result = Synth::fromRawExpr(Synth::toRawIfExpr(this).(Raw::IfExpr).getElseExpr())
+    result = Synth::convertExprFromRaw(Synth::convertIfExprToRaw(this).(Raw::IfExpr).getElseExpr())
   }
 
   final Expr getElseExpr() { result = getImmediateElseExpr().resolve() }

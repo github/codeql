@@ -7,6 +7,6 @@ class BooleanLiteralExprBase extends Synth::TBooleanLiteralExpr, BuiltinLiteralE
   override string getAPrimaryQlClass() { result = "BooleanLiteralExpr" }
 
   boolean getValue() {
-    result = Synth::toRawBooleanLiteralExpr(this).(Raw::BooleanLiteralExpr).getValue()
+    result = Synth::convertBooleanLiteralExprToRaw(this).(Raw::BooleanLiteralExpr).getValue()
   }
 }

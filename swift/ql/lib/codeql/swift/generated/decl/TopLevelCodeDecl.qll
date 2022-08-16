@@ -9,7 +9,9 @@ class TopLevelCodeDeclBase extends Synth::TTopLevelCodeDecl, Decl {
 
   BraceStmt getImmediateBody() {
     result =
-      Synth::fromRawBraceStmt(Synth::toRawTopLevelCodeDecl(this).(Raw::TopLevelCodeDecl).getBody())
+      Synth::convertBraceStmtFromRaw(Synth::convertTopLevelCodeDeclToRaw(this)
+            .(Raw::TopLevelCodeDecl)
+            .getBody())
   }
 
   final BraceStmt getBody() { result = getImmediateBody().resolve() }

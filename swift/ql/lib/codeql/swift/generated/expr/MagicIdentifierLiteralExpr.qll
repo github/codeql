@@ -8,6 +8,8 @@ class MagicIdentifierLiteralExprBase extends Synth::TMagicIdentifierLiteralExpr,
 
   string getKind() {
     result =
-      Synth::toRawMagicIdentifierLiteralExpr(this).(Raw::MagicIdentifierLiteralExpr).getKind()
+      Synth::convertMagicIdentifierLiteralExprToRaw(this)
+          .(Raw::MagicIdentifierLiteralExpr)
+          .getKind()
   }
 }

@@ -8,7 +8,9 @@ class ExistentialTypeBase extends Synth::TExistentialType, Type {
 
   Type getImmediateConstraint() {
     result =
-      Synth::fromRawType(Synth::toRawExistentialType(this).(Raw::ExistentialType).getConstraint())
+      Synth::convertTypeFromRaw(Synth::convertExistentialTypeToRaw(this)
+            .(Raw::ExistentialType)
+            .getConstraint())
   }
 
   final Type getConstraint() { result = getImmediateConstraint().resolve() }
