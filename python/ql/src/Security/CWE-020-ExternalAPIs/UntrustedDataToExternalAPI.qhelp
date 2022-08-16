@@ -11,11 +11,9 @@ be modeled as either taint steps, or sinks for specific problems.</p>
 
 <p>An external API is defined as a call to a method that is not defined in the source
 code, and is not modeled as a taint step in the default taint library. External APIs may
-be from the Python standard library or dependencies. The query will report the fully qualified name,
-along with <code>[param x]</code>, where <code>x</code> indicates the position of
-the parameter receiving the untrusted data. Note that for methods and
-<code>classmethod</code>s, parameter 0 represents the class instance or class itself
-respectively.</p>
+be from the Python standard library or dependencies. The query will report the fully
+qualified name, along with <code>[position index]</code> or <code>[keyword name]</code>,
+to indicate the argument passing the untrusted data.</p>
 
 <p>Note that an excepted sink might not be included in the results, if it also defines a
 taint step. This is the case for <code>pickle.loads</code> which is a sink for the
@@ -23,8 +21,6 @@ Unsafe Deserialization query, but is also a taint step for other queries.</p>
 
 <p>Note: Compared to the Java version of this query, we currently do not give special
 care to methods that are overridden in the source code.</p>
-
-<p>Note: Currently this query will only report results for external packages that are extracted.</p>
 
 </overview>
 <recommendation>
