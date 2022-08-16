@@ -90,11 +90,11 @@ namespace System
             }
 
             // Generated from `System.Formats.Asn1.AsnEncodingRules` in `System.Formats.Asn1, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
-            public enum AsnEncodingRules
+            public enum AsnEncodingRules : int
             {
-                BER,
-                CER,
-                DER,
+                BER = 0,
+                CER = 1,
+                DER = 2,
             }
 
             // Generated from `System.Formats.Asn1.AsnReader` in `System.Formats.Asn1, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
@@ -201,58 +201,58 @@ namespace System
             }
 
             // Generated from `System.Formats.Asn1.TagClass` in `System.Formats.Asn1, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
-            public enum TagClass
+            public enum TagClass : int
             {
-                Application,
-                ContextSpecific,
-                Private,
-                Universal,
+                Application = 64,
+                ContextSpecific = 128,
+                Private = 192,
+                Universal = 0,
             }
 
             // Generated from `System.Formats.Asn1.UniversalTagNumber` in `System.Formats.Asn1, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
-            public enum UniversalTagNumber
+            public enum UniversalTagNumber : int
             {
-                BMPString,
-                BitString,
-                Boolean,
-                Date,
-                DateTime,
-                Duration,
-                Embedded,
-                EndOfContents,
-                Enumerated,
-                External,
-                GeneralString,
-                GeneralizedTime,
-                GraphicString,
-                IA5String,
-                ISO646String,
-                InstanceOf,
-                Integer,
-                Null,
-                NumericString,
-                ObjectDescriptor,
-                ObjectIdentifier,
-                ObjectIdentifierIRI,
-                OctetString,
-                PrintableString,
-                Real,
-                RelativeObjectIdentifier,
-                RelativeObjectIdentifierIRI,
-                Sequence,
-                SequenceOf,
-                Set,
-                SetOf,
-                T61String,
-                TeletexString,
-                Time,
-                TimeOfDay,
-                UTF8String,
-                UniversalString,
-                UnrestrictedCharacterString,
-                UtcTime,
-                VideotexString,
-                VisibleString,
+                BMPString = 30,
+                BitString = 3,
+                Boolean = 1,
+                Date = 31,
+                DateTime = 33,
+                Duration = 34,
+                Embedded = 11,
+                EndOfContents = 0,
+                Enumerated = 10,
+                External = 8,
+                GeneralString = 27,
+                GeneralizedTime = 24,
+                GraphicString = 25,
+                IA5String = 22,
+                ISO646String = 26,
+                InstanceOf = 8,
+                Integer = 2,
+                Null = 5,
+                NumericString = 18,
+                ObjectDescriptor = 7,
+                ObjectIdentifier = 6,
+                ObjectIdentifierIRI = 35,
+                OctetString = 4,
+                PrintableString = 19,
+                Real = 9,
+                RelativeObjectIdentifier = 13,
+                RelativeObjectIdentifierIRI = 36,
+                Sequence = 16,
+                SequenceOf = 16,
+                Set = 17,
+                SetOf = 17,
+                T61String = 20,
+                TeletexString = 20,
+                Time = 14,
+                TimeOfDay = 32,
+                UTF8String = 12,
+                UniversalString = 28,
+                UnrestrictedCharacterString = 29,
+                UtcTime = 23,
+                VideotexString = 21,
+                VisibleString = 26,
             }
 
         }

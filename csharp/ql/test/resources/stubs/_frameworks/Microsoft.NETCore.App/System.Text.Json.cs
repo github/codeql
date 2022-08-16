@@ -7,11 +7,11 @@ namespace System
         namespace Json
         {
             // Generated from `System.Text.Json.JsonCommentHandling` in `System.Text.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
-            public enum JsonCommentHandling
+            public enum JsonCommentHandling : byte
             {
-                Allow,
-                Disallow,
-                Skip,
+                Allow = 2,
+                Disallow = 0,
+                Skip = 1,
             }
 
             // Generated from `System.Text.Json.JsonDocument` in `System.Text.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
@@ -270,10 +270,10 @@ namespace System
             }
 
             // Generated from `System.Text.Json.JsonSerializerDefaults` in `System.Text.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
-            public enum JsonSerializerDefaults
+            public enum JsonSerializerDefaults : int
             {
-                General,
-                Web,
+                General = 0,
+                Web = 1,
             }
 
             // Generated from `System.Text.Json.JsonSerializerOptions` in `System.Text.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
@@ -305,33 +305,33 @@ namespace System
             }
 
             // Generated from `System.Text.Json.JsonTokenType` in `System.Text.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
-            public enum JsonTokenType
+            public enum JsonTokenType : byte
             {
-                Comment,
-                EndArray,
-                EndObject,
-                False,
-                None,
-                Null,
-                Number,
-                PropertyName,
-                StartArray,
-                StartObject,
-                String,
-                True,
+                Comment = 6,
+                EndArray = 4,
+                EndObject = 2,
+                False = 10,
+                None = 0,
+                Null = 11,
+                Number = 8,
+                PropertyName = 5,
+                StartArray = 3,
+                StartObject = 1,
+                String = 7,
+                True = 9,
             }
 
             // Generated from `System.Text.Json.JsonValueKind` in `System.Text.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
-            public enum JsonValueKind
+            public enum JsonValueKind : byte
             {
-                Array,
-                False,
-                Null,
-                Number,
-                Object,
-                String,
-                True,
-                Undefined,
+                Array = 2,
+                False = 6,
+                Null = 7,
+                Number = 4,
+                Object = 1,
+                String = 3,
+                True = 5,
+                Undefined = 0,
             }
 
             // Generated from `System.Text.Json.JsonWriterOptions` in `System.Text.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
@@ -804,12 +804,12 @@ namespace System
                 }
 
                 // Generated from `System.Text.Json.Serialization.JsonIgnoreCondition` in `System.Text.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
-                public enum JsonIgnoreCondition
+                public enum JsonIgnoreCondition : int
                 {
-                    Always,
-                    Never,
-                    WhenWritingDefault,
-                    WhenWritingNull,
+                    Always = 1,
+                    Never = 0,
+                    WhenWritingDefault = 2,
+                    WhenWritingNull = 3,
                 }
 
                 // Generated from `System.Text.Json.Serialization.JsonIncludeAttribute` in `System.Text.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
@@ -819,20 +819,20 @@ namespace System
                 }
 
                 // Generated from `System.Text.Json.Serialization.JsonKnownNamingPolicy` in `System.Text.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
-                public enum JsonKnownNamingPolicy
+                public enum JsonKnownNamingPolicy : int
                 {
-                    CamelCase,
-                    Unspecified,
+                    CamelCase = 1,
+                    Unspecified = 0,
                 }
 
                 // Generated from `System.Text.Json.Serialization.JsonNumberHandling` in `System.Text.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
                 [System.Flags]
-                public enum JsonNumberHandling
+                public enum JsonNumberHandling : int
                 {
-                    AllowNamedFloatingPointLiterals,
-                    AllowReadingFromString,
-                    Strict,
-                    WriteAsString,
+                    AllowNamedFloatingPointLiterals = 4,
+                    AllowReadingFromString = 1,
+                    Strict = 0,
+                    WriteAsString = 2,
                 }
 
                 // Generated from `System.Text.Json.Serialization.JsonNumberHandlingAttribute` in `System.Text.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
@@ -875,11 +875,11 @@ namespace System
 
                 // Generated from `System.Text.Json.Serialization.JsonSourceGenerationMode` in `System.Text.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
                 [System.Flags]
-                public enum JsonSourceGenerationMode
+                public enum JsonSourceGenerationMode : int
                 {
-                    Default,
-                    Metadata,
-                    Serialization,
+                    Default = 0,
+                    Metadata = 1,
+                    Serialization = 2,
                 }
 
                 // Generated from `System.Text.Json.Serialization.JsonSourceGenerationOptionsAttribute` in `System.Text.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
@@ -905,10 +905,10 @@ namespace System
                 }
 
                 // Generated from `System.Text.Json.Serialization.JsonUnknownTypeHandling` in `System.Text.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
-                public enum JsonUnknownTypeHandling
+                public enum JsonUnknownTypeHandling : int
                 {
-                    JsonElement,
-                    JsonNode,
+                    JsonElement = 0,
+                    JsonNode = 1,
                 }
 
                 // Generated from `System.Text.Json.Serialization.ReferenceHandler` in `System.Text.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`

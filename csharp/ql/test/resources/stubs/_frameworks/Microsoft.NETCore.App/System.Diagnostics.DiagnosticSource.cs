@@ -105,21 +105,21 @@ namespace System
         }
 
         // Generated from `System.Diagnostics.ActivityIdFormat` in `System.Diagnostics.DiagnosticSource, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
-        public enum ActivityIdFormat
+        public enum ActivityIdFormat : int
         {
-            Hierarchical,
-            Unknown,
-            W3C,
+            Hierarchical = 1,
+            Unknown = 0,
+            W3C = 2,
         }
 
         // Generated from `System.Diagnostics.ActivityKind` in `System.Diagnostics.DiagnosticSource, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
-        public enum ActivityKind
+        public enum ActivityKind : int
         {
-            Client,
-            Consumer,
-            Internal,
-            Producer,
-            Server,
+            Client = 2,
+            Consumer = 4,
+            Internal = 0,
+            Producer = 3,
+            Server = 1,
         }
 
         // Generated from `System.Diagnostics.ActivityLink` in `System.Diagnostics.DiagnosticSource, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
@@ -149,12 +149,12 @@ namespace System
         }
 
         // Generated from `System.Diagnostics.ActivitySamplingResult` in `System.Diagnostics.DiagnosticSource, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
-        public enum ActivitySamplingResult
+        public enum ActivitySamplingResult : int
         {
-            AllData,
-            AllDataAndRecorded,
-            None,
-            PropagationData,
+            AllData = 2,
+            AllDataAndRecorded = 3,
+            None = 0,
+            PropagationData = 1,
         }
 
         // Generated from `System.Diagnostics.ActivitySource` in `System.Diagnostics.DiagnosticSource, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
@@ -194,11 +194,11 @@ namespace System
         }
 
         // Generated from `System.Diagnostics.ActivityStatusCode` in `System.Diagnostics.DiagnosticSource, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
-        public enum ActivityStatusCode
+        public enum ActivityStatusCode : int
         {
-            Error,
-            Ok,
-            Unset,
+            Error = 2,
+            Ok = 1,
+            Unset = 0,
         }
 
         // Generated from `System.Diagnostics.ActivityTagsCollection` in `System.Diagnostics.DiagnosticSource, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
@@ -239,10 +239,10 @@ namespace System
 
         // Generated from `System.Diagnostics.ActivityTraceFlags` in `System.Diagnostics.DiagnosticSource, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
         [System.Flags]
-        public enum ActivityTraceFlags
+        public enum ActivityTraceFlags : int
         {
-            None,
-            Recorded,
+            None = 0,
+            Recorded = 1,
         }
 
         // Generated from `System.Diagnostics.ActivityTraceId` in `System.Diagnostics.DiagnosticSource, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`

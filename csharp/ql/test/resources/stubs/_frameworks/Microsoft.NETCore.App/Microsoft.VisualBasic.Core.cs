@@ -5,23 +5,23 @@ namespace Microsoft
     namespace VisualBasic
     {
         // Generated from `Microsoft.VisualBasic.AppWinStyle` in `Microsoft.VisualBasic.Core, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum AppWinStyle
+        public enum AppWinStyle : short
         {
-            Hide,
-            MaximizedFocus,
-            MinimizedFocus,
-            MinimizedNoFocus,
-            NormalFocus,
-            NormalNoFocus,
+            Hide = 0,
+            MaximizedFocus = 3,
+            MinimizedFocus = 2,
+            MinimizedNoFocus = 6,
+            NormalFocus = 1,
+            NormalNoFocus = 4,
         }
 
         // Generated from `Microsoft.VisualBasic.CallType` in `Microsoft.VisualBasic.Core, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum CallType
+        public enum CallType : int
         {
-            Get,
-            Let,
-            Method,
-            Set,
+            Get = 2,
+            Let = 4,
+            Method = 1,
+            Set = 8,
         }
 
         // Generated from `Microsoft.VisualBasic.Collection` in `Microsoft.VisualBasic.Core, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -69,10 +69,10 @@ namespace Microsoft
         }
 
         // Generated from `Microsoft.VisualBasic.CompareMethod` in `Microsoft.VisualBasic.Core, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum CompareMethod
+        public enum CompareMethod : int
         {
-            Binary,
-            Text,
+            Binary = 0,
+            Text = 1,
         }
 
         // Generated from `Microsoft.VisualBasic.Constants` in `Microsoft.VisualBasic.Core, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -274,35 +274,35 @@ namespace Microsoft
         }
 
         // Generated from `Microsoft.VisualBasic.DateFormat` in `Microsoft.VisualBasic.Core, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum DateFormat
+        public enum DateFormat : int
         {
-            GeneralDate,
-            LongDate,
-            LongTime,
-            ShortDate,
-            ShortTime,
+            GeneralDate = 0,
+            LongDate = 1,
+            LongTime = 3,
+            ShortDate = 2,
+            ShortTime = 4,
         }
 
         // Generated from `Microsoft.VisualBasic.DateInterval` in `Microsoft.VisualBasic.Core, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum DateInterval
+        public enum DateInterval : int
         {
-            Day,
-            DayOfYear,
-            Hour,
-            Minute,
-            Month,
-            Quarter,
-            Second,
-            WeekOfYear,
-            Weekday,
-            Year,
+            Day = 4,
+            DayOfYear = 3,
+            Hour = 7,
+            Minute = 8,
+            Month = 2,
+            Quarter = 1,
+            Second = 9,
+            WeekOfYear = 5,
+            Weekday = 6,
+            Year = 0,
         }
 
         // Generated from `Microsoft.VisualBasic.DueDate` in `Microsoft.VisualBasic.Core, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum DueDate
+        public enum DueDate : int
         {
-            BegOfPeriod,
-            EndOfPeriod,
+            BegOfPeriod = 1,
+            EndOfPeriod = 0,
         }
 
         // Generated from `Microsoft.VisualBasic.ErrObject` in `Microsoft.VisualBasic.Core, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -322,15 +322,15 @@ namespace Microsoft
 
         // Generated from `Microsoft.VisualBasic.FileAttribute` in `Microsoft.VisualBasic.Core, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         [System.Flags]
-        public enum FileAttribute
+        public enum FileAttribute : int
         {
-            Archive,
-            Directory,
-            Hidden,
-            Normal,
-            ReadOnly,
-            System,
-            Volume,
+            Archive = 32,
+            Directory = 16,
+            Hidden = 2,
+            Normal = 0,
+            ReadOnly = 1,
+            System = 4,
+            Volume = 8,
         }
 
         // Generated from `Microsoft.VisualBasic.FileSystem` in `Microsoft.VisualBasic.Core, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -440,25 +440,25 @@ namespace Microsoft
         }
 
         // Generated from `Microsoft.VisualBasic.FirstDayOfWeek` in `Microsoft.VisualBasic.Core, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum FirstDayOfWeek
+        public enum FirstDayOfWeek : int
         {
-            Friday,
-            Monday,
-            Saturday,
-            Sunday,
-            System,
-            Thursday,
-            Tuesday,
-            Wednesday,
+            Friday = 6,
+            Monday = 2,
+            Saturday = 7,
+            Sunday = 1,
+            System = 0,
+            Thursday = 5,
+            Tuesday = 3,
+            Wednesday = 4,
         }
 
         // Generated from `Microsoft.VisualBasic.FirstWeekOfYear` in `Microsoft.VisualBasic.Core, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum FirstWeekOfYear
+        public enum FirstWeekOfYear : int
         {
-            FirstFourDays,
-            FirstFullWeek,
-            Jan1,
-            System,
+            FirstFourDays = 2,
+            FirstFullWeek = 3,
+            Jan1 = 1,
+            System = 0,
         }
 
         // Generated from `Microsoft.VisualBasic.HideModuleNameAttribute` in `Microsoft.VisualBasic.Core, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -515,40 +515,40 @@ namespace Microsoft
         }
 
         // Generated from `Microsoft.VisualBasic.MsgBoxResult` in `Microsoft.VisualBasic.Core, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum MsgBoxResult
+        public enum MsgBoxResult : int
         {
-            Abort,
-            Cancel,
-            Ignore,
-            No,
-            Ok,
-            Retry,
-            Yes,
+            Abort = 3,
+            Cancel = 2,
+            Ignore = 5,
+            No = 7,
+            Ok = 1,
+            Retry = 4,
+            Yes = 6,
         }
 
         // Generated from `Microsoft.VisualBasic.MsgBoxStyle` in `Microsoft.VisualBasic.Core, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         [System.Flags]
-        public enum MsgBoxStyle
+        public enum MsgBoxStyle : int
         {
-            AbortRetryIgnore,
-            ApplicationModal,
-            Critical,
-            DefaultButton1,
-            DefaultButton2,
-            DefaultButton3,
-            Exclamation,
-            Information,
-            MsgBoxHelp,
-            MsgBoxRight,
-            MsgBoxRtlReading,
-            MsgBoxSetForeground,
-            OkCancel,
-            OkOnly,
-            Question,
-            RetryCancel,
-            SystemModal,
-            YesNo,
-            YesNoCancel,
+            AbortRetryIgnore = 2,
+            ApplicationModal = 0,
+            Critical = 16,
+            DefaultButton1 = 0,
+            DefaultButton2 = 256,
+            DefaultButton3 = 512,
+            Exclamation = 48,
+            Information = 64,
+            MsgBoxHelp = 16384,
+            MsgBoxRight = 524288,
+            MsgBoxRtlReading = 1048576,
+            MsgBoxSetForeground = 65536,
+            OkCancel = 1,
+            OkOnly = 0,
+            Question = 32,
+            RetryCancel = 5,
+            SystemModal = 4096,
+            YesNo = 4,
+            YesNoCancel = 3,
         }
 
         // Generated from `Microsoft.VisualBasic.MyGroupCollectionAttribute` in `Microsoft.VisualBasic.Core, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -562,32 +562,32 @@ namespace Microsoft
         }
 
         // Generated from `Microsoft.VisualBasic.OpenAccess` in `Microsoft.VisualBasic.Core, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum OpenAccess
+        public enum OpenAccess : int
         {
-            Default,
-            Read,
-            ReadWrite,
-            Write,
+            Default = -1,
+            Read = 1,
+            ReadWrite = 3,
+            Write = 2,
         }
 
         // Generated from `Microsoft.VisualBasic.OpenMode` in `Microsoft.VisualBasic.Core, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum OpenMode
+        public enum OpenMode : int
         {
-            Append,
-            Binary,
-            Input,
-            Output,
-            Random,
+            Append = 8,
+            Binary = 32,
+            Input = 1,
+            Output = 2,
+            Random = 4,
         }
 
         // Generated from `Microsoft.VisualBasic.OpenShare` in `Microsoft.VisualBasic.Core, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum OpenShare
+        public enum OpenShare : int
         {
-            Default,
-            LockRead,
-            LockReadWrite,
-            LockWrite,
-            Shared,
+            Default = -1,
+            LockRead = 2,
+            LockReadWrite = 0,
+            LockWrite = 1,
+            Shared = 3,
         }
 
         // Generated from `Microsoft.VisualBasic.SpcInfo` in `Microsoft.VisualBasic.Core, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -667,11 +667,11 @@ namespace Microsoft
         }
 
         // Generated from `Microsoft.VisualBasic.TriState` in `Microsoft.VisualBasic.Core, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum TriState
+        public enum TriState : int
         {
-            False,
-            True,
-            UseDefault,
+            False = 0,
+            True = -1,
+            UseDefault = -2,
         }
 
         // Generated from `Microsoft.VisualBasic.VBFixedArrayAttribute` in `Microsoft.VisualBasic.Core, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -700,45 +700,45 @@ namespace Microsoft
         }
 
         // Generated from `Microsoft.VisualBasic.VariantType` in `Microsoft.VisualBasic.Core, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum VariantType
+        public enum VariantType : int
         {
-            Array,
-            Boolean,
-            Byte,
-            Char,
-            Currency,
-            DataObject,
-            Date,
-            Decimal,
-            Double,
-            Empty,
-            Error,
-            Integer,
-            Long,
-            Null,
-            Object,
-            Short,
-            Single,
-            String,
-            UserDefinedType,
-            Variant,
+            Array = 8192,
+            Boolean = 11,
+            Byte = 17,
+            Char = 18,
+            Currency = 6,
+            DataObject = 13,
+            Date = 7,
+            Decimal = 14,
+            Double = 5,
+            Empty = 0,
+            Error = 10,
+            Integer = 3,
+            Long = 20,
+            Null = 1,
+            Object = 9,
+            Short = 2,
+            Single = 4,
+            String = 8,
+            UserDefinedType = 36,
+            Variant = 12,
         }
 
         // Generated from `Microsoft.VisualBasic.VbStrConv` in `Microsoft.VisualBasic.Core, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         [System.Flags]
-        public enum VbStrConv
+        public enum VbStrConv : int
         {
-            Hiragana,
-            Katakana,
-            LinguisticCasing,
-            Lowercase,
-            Narrow,
-            None,
-            ProperCase,
-            SimplifiedChinese,
-            TraditionalChinese,
-            Uppercase,
-            Wide,
+            Hiragana = 32,
+            Katakana = 16,
+            LinguisticCasing = 1024,
+            Lowercase = 2,
+            Narrow = 8,
+            None = 0,
+            ProperCase = 3,
+            SimplifiedChinese = 256,
+            TraditionalChinese = 512,
+            Uppercase = 1,
+            Wide = 4,
         }
 
         namespace CompilerServices
@@ -1101,17 +1101,17 @@ namespace Microsoft
         namespace FileIO
         {
             // Generated from `Microsoft.VisualBasic.FileIO.DeleteDirectoryOption` in `Microsoft.VisualBasic.Core, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum DeleteDirectoryOption
+            public enum DeleteDirectoryOption : int
             {
-                DeleteAllContents,
-                ThrowIfDirectoryNonEmpty,
+                DeleteAllContents = 5,
+                ThrowIfDirectoryNonEmpty = 4,
             }
 
             // Generated from `Microsoft.VisualBasic.FileIO.FieldType` in `Microsoft.VisualBasic.Core, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum FieldType
+            public enum FieldType : int
             {
-                Delimited,
-                FixedWidth,
+                Delimited = 0,
+                FixedWidth = 1,
             }
 
             // Generated from `Microsoft.VisualBasic.FileIO.FileSystem` in `Microsoft.VisualBasic.Core, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -1190,17 +1190,17 @@ namespace Microsoft
             }
 
             // Generated from `Microsoft.VisualBasic.FileIO.RecycleOption` in `Microsoft.VisualBasic.Core, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum RecycleOption
+            public enum RecycleOption : int
             {
-                DeletePermanently,
-                SendToRecycleBin,
+                DeletePermanently = 2,
+                SendToRecycleBin = 3,
             }
 
             // Generated from `Microsoft.VisualBasic.FileIO.SearchOption` in `Microsoft.VisualBasic.Core, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum SearchOption
+            public enum SearchOption : int
             {
-                SearchAllSubDirectories,
-                SearchTopLevelOnly,
+                SearchAllSubDirectories = 3,
+                SearchTopLevelOnly = 2,
             }
 
             // Generated from `Microsoft.VisualBasic.FileIO.SpecialDirectories` in `Microsoft.VisualBasic.Core, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -1252,17 +1252,17 @@ namespace Microsoft
             }
 
             // Generated from `Microsoft.VisualBasic.FileIO.UICancelOption` in `Microsoft.VisualBasic.Core, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum UICancelOption
+            public enum UICancelOption : int
             {
-                DoNothing,
-                ThrowException,
+                DoNothing = 2,
+                ThrowException = 3,
             }
 
             // Generated from `Microsoft.VisualBasic.FileIO.UIOption` in `Microsoft.VisualBasic.Core, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum UIOption
+            public enum UIOption : int
             {
-                AllDialogs,
-                OnlyErrorDialogs,
+                AllDialogs = 3,
+                OnlyErrorDialogs = 2,
             }
 
         }

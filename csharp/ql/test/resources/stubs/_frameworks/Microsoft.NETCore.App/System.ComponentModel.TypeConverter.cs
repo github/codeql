@@ -116,18 +116,18 @@ namespace System
         }
 
         // Generated from `System.ComponentModel.BindableSupport` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum BindableSupport
+        public enum BindableSupport : int
         {
-            Default,
-            No,
-            Yes,
+            Default = 2,
+            No = 0,
+            Yes = 1,
         }
 
         // Generated from `System.ComponentModel.BindingDirection` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum BindingDirection
+        public enum BindingDirection : int
         {
-            OneWay,
-            TwoWay,
+            OneWay = 0,
+            TwoWay = 1,
         }
 
         // Generated from `System.ComponentModel.BindingList<>` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -210,11 +210,11 @@ namespace System
         }
 
         // Generated from `System.ComponentModel.CollectionChangeAction` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum CollectionChangeAction
+        public enum CollectionChangeAction : int
         {
-            Add,
-            Refresh,
-            Remove,
+            Add = 1,
+            Refresh = 3,
+            Remove = 2,
         }
 
         // Generated from `System.ComponentModel.CollectionChangeEventArgs` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -373,13 +373,13 @@ namespace System
         }
 
         // Generated from `System.ComponentModel.DataObjectMethodType` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum DataObjectMethodType
+        public enum DataObjectMethodType : int
         {
-            Delete,
-            Fill,
-            Insert,
-            Select,
-            Update,
+            Delete = 4,
+            Fill = 0,
+            Insert = 3,
+            Select = 1,
+            Update = 2,
         }
 
         // Generated from `System.ComponentModel.DateTimeConverter` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -732,11 +732,11 @@ namespace System
         }
 
         // Generated from `System.ComponentModel.InheritanceLevel` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum InheritanceLevel
+        public enum InheritanceLevel : int
         {
-            Inherited,
-            InheritedReadOnly,
-            NotInherited,
+            Inherited = 1,
+            InheritedReadOnly = 2,
+            NotInherited = 3,
         }
 
         // Generated from `System.ComponentModel.InstallerTypeAttribute` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -851,10 +851,10 @@ namespace System
         }
 
         // Generated from `System.ComponentModel.LicenseUsageMode` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum LicenseUsageMode
+        public enum LicenseUsageMode : int
         {
-            Designtime,
-            Runtime,
+            Designtime = 1,
+            Runtime = 0,
         }
 
         // Generated from `System.ComponentModel.ListBindableAttribute` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -888,16 +888,16 @@ namespace System
         public delegate void ListChangedEventHandler(object sender, System.ComponentModel.ListChangedEventArgs e);
 
         // Generated from `System.ComponentModel.ListChangedType` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum ListChangedType
+        public enum ListChangedType : int
         {
-            ItemAdded,
-            ItemChanged,
-            ItemDeleted,
-            ItemMoved,
-            PropertyDescriptorAdded,
-            PropertyDescriptorChanged,
-            PropertyDescriptorDeleted,
-            Reset,
+            ItemAdded = 1,
+            ItemChanged = 4,
+            ItemDeleted = 2,
+            ItemMoved = 3,
+            PropertyDescriptorAdded = 5,
+            PropertyDescriptorChanged = 7,
+            PropertyDescriptorDeleted = 6,
+            Reset = 0,
         }
 
         // Generated from `System.ComponentModel.ListSortDescription` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -932,10 +932,10 @@ namespace System
         }
 
         // Generated from `System.ComponentModel.ListSortDirection` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum ListSortDirection
+        public enum ListSortDirection : int
         {
-            Ascending,
-            Descending,
+            Ascending = 0,
+            Descending = 1,
         }
 
         // Generated from `System.ComponentModel.LookupBindingPropertiesAttribute` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -1054,23 +1054,23 @@ namespace System
         }
 
         // Generated from `System.ComponentModel.MaskedTextResultHint` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum MaskedTextResultHint
+        public enum MaskedTextResultHint : int
         {
-            AlphanumericCharacterExpected,
-            AsciiCharacterExpected,
-            CharacterEscaped,
-            DigitExpected,
-            InvalidInput,
-            LetterExpected,
-            NoEffect,
-            NonEditPosition,
-            PositionOutOfRange,
-            PromptCharNotAllowed,
-            SideEffect,
-            SignedDigitExpected,
-            Success,
-            UnavailableEditPosition,
-            Unknown,
+            AlphanumericCharacterExpected = -2,
+            AsciiCharacterExpected = -1,
+            CharacterEscaped = 1,
+            DigitExpected = -3,
+            InvalidInput = -51,
+            LetterExpected = -4,
+            NoEffect = 2,
+            NonEditPosition = -54,
+            PositionOutOfRange = -55,
+            PromptCharNotAllowed = -52,
+            SideEffect = 3,
+            SignedDigitExpected = -5,
+            Success = 4,
+            UnavailableEditPosition = -53,
+            Unknown = 0,
         }
 
         // Generated from `System.ComponentModel.MemberDescriptor` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -1260,12 +1260,12 @@ namespace System
         }
 
         // Generated from `System.ComponentModel.PropertyTabScope` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum PropertyTabScope
+        public enum PropertyTabScope : int
         {
-            Component,
-            Document,
-            Global,
-            Static,
+            Component = 3,
+            Document = 2,
+            Global = 1,
+            Static = 0,
         }
 
         // Generated from `System.ComponentModel.ProvidePropertyAttribute` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -1410,12 +1410,12 @@ namespace System
         }
 
         // Generated from `System.ComponentModel.ToolboxItemFilterType` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum ToolboxItemFilterType
+        public enum ToolboxItemFilterType : int
         {
-            Allow,
-            Custom,
-            Prevent,
-            Require,
+            Allow = 0,
+            Custom = 1,
+            Prevent = 2,
+            Require = 3,
         }
 
         // Generated from `System.ComponentModel.TypeConverter` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -1855,12 +1855,12 @@ namespace System
             }
 
             // Generated from `System.ComponentModel.Design.HelpContextType` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum HelpContextType
+            public enum HelpContextType : int
             {
-                Ambient,
-                Selection,
-                ToolWindowSelection,
-                Window,
+                Ambient = 0,
+                Selection = 2,
+                ToolWindowSelection = 3,
+                Window = 1,
             }
 
             // Generated from `System.ComponentModel.Design.HelpKeywordAttribute` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -1877,11 +1877,11 @@ namespace System
             }
 
             // Generated from `System.ComponentModel.Design.HelpKeywordType` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum HelpKeywordType
+            public enum HelpKeywordType : int
             {
-                F1Keyword,
-                FilterKeyword,
-                GeneralKeyword,
+                F1Keyword = 0,
+                FilterKeyword = 2,
+                GeneralKeyword = 1,
             }
 
             // Generated from `System.ComponentModel.Design.IComponentChangeService` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -2148,19 +2148,19 @@ namespace System
 
             // Generated from `System.ComponentModel.Design.SelectionTypes` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             [System.Flags]
-            public enum SelectionTypes
+            public enum SelectionTypes : int
             {
-                Add,
-                Auto,
-                Click,
-                MouseDown,
-                MouseUp,
-                Normal,
-                Primary,
-                Remove,
-                Replace,
-                Toggle,
-                Valid,
+                Add = 64,
+                Auto = 1,
+                Click = 16,
+                MouseDown = 4,
+                MouseUp = 8,
+                Normal = 1,
+                Primary = 16,
+                Remove = 128,
+                Replace = 2,
+                Toggle = 32,
+                Valid = 31,
             }
 
             // Generated from `System.ComponentModel.Design.ServiceContainer` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -2267,11 +2267,11 @@ namespace System
             }
 
             // Generated from `System.ComponentModel.Design.ViewTechnology` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum ViewTechnology
+            public enum ViewTechnology : int
             {
-                Default,
-                Passthrough,
-                WindowsForms,
+                Default = 2,
+                Passthrough = 0,
+                WindowsForms = 1,
             }
 
             namespace Serialization

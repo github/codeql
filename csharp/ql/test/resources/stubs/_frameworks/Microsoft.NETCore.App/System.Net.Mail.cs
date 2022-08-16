@@ -79,13 +79,13 @@ namespace System
 
             // Generated from `System.Net.Mail.DeliveryNotificationOptions` in `System.Net.Mail, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
             [System.Flags]
-            public enum DeliveryNotificationOptions
+            public enum DeliveryNotificationOptions : int
             {
-                Delay,
-                Never,
-                None,
-                OnFailure,
-                OnSuccess,
+                Delay = 4,
+                Never = 134217728,
+                None = 0,
+                OnFailure = 2,
+                OnSuccess = 1,
             }
 
             // Generated from `System.Net.Mail.LinkedResource` in `System.Net.Mail, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
@@ -172,11 +172,11 @@ namespace System
             }
 
             // Generated from `System.Net.Mail.MailPriority` in `System.Net.Mail, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
-            public enum MailPriority
+            public enum MailPriority : int
             {
-                High,
-                Low,
-                Normal,
+                High = 2,
+                Low = 1,
+                Normal = 0,
             }
 
             // Generated from `System.Net.Mail.SendCompletedEventHandler` in `System.Net.Mail, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
@@ -216,18 +216,18 @@ namespace System
             }
 
             // Generated from `System.Net.Mail.SmtpDeliveryFormat` in `System.Net.Mail, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
-            public enum SmtpDeliveryFormat
+            public enum SmtpDeliveryFormat : int
             {
-                International,
-                SevenBit,
+                International = 1,
+                SevenBit = 0,
             }
 
             // Generated from `System.Net.Mail.SmtpDeliveryMethod` in `System.Net.Mail, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
-            public enum SmtpDeliveryMethod
+            public enum SmtpDeliveryMethod : int
             {
-                Network,
-                PickupDirectoryFromIis,
-                SpecifiedPickupDirectory,
+                Network = 0,
+                PickupDirectoryFromIis = 2,
+                SpecifiedPickupDirectory = 1,
             }
 
             // Generated from `System.Net.Mail.SmtpException` in `System.Net.Mail, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
@@ -273,33 +273,33 @@ namespace System
             }
 
             // Generated from `System.Net.Mail.SmtpStatusCode` in `System.Net.Mail, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
-            public enum SmtpStatusCode
+            public enum SmtpStatusCode : int
             {
-                BadCommandSequence,
-                CannotVerifyUserWillAttemptDelivery,
-                ClientNotPermitted,
-                CommandNotImplemented,
-                CommandParameterNotImplemented,
-                CommandUnrecognized,
-                ExceededStorageAllocation,
-                GeneralFailure,
-                HelpMessage,
-                InsufficientStorage,
-                LocalErrorInProcessing,
-                MailboxBusy,
-                MailboxNameNotAllowed,
-                MailboxUnavailable,
-                MustIssueStartTlsFirst,
-                Ok,
-                ServiceClosingTransmissionChannel,
-                ServiceNotAvailable,
-                ServiceReady,
-                StartMailInput,
-                SyntaxError,
-                SystemStatus,
-                TransactionFailed,
-                UserNotLocalTryAlternatePath,
-                UserNotLocalWillForward,
+                BadCommandSequence = 503,
+                CannotVerifyUserWillAttemptDelivery = 252,
+                ClientNotPermitted = 454,
+                CommandNotImplemented = 502,
+                CommandParameterNotImplemented = 504,
+                CommandUnrecognized = 500,
+                ExceededStorageAllocation = 552,
+                GeneralFailure = -1,
+                HelpMessage = 214,
+                InsufficientStorage = 452,
+                LocalErrorInProcessing = 451,
+                MailboxBusy = 450,
+                MailboxNameNotAllowed = 553,
+                MailboxUnavailable = 550,
+                MustIssueStartTlsFirst = 530,
+                Ok = 250,
+                ServiceClosingTransmissionChannel = 221,
+                ServiceNotAvailable = 421,
+                ServiceReady = 220,
+                StartMailInput = 354,
+                SyntaxError = 501,
+                SystemStatus = 211,
+                TransactionFailed = 554,
+                UserNotLocalTryAlternatePath = 551,
+                UserNotLocalWillForward = 251,
             }
 
         }
@@ -383,13 +383,13 @@ namespace System
             }
 
             // Generated from `System.Net.Mime.TransferEncoding` in `System.Net.Mail, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
-            public enum TransferEncoding
+            public enum TransferEncoding : int
             {
-                Base64,
-                EightBit,
-                QuotedPrintable,
-                SevenBit,
-                Unknown,
+                Base64 = 1,
+                EightBit = 3,
+                QuotedPrintable = 0,
+                SevenBit = 2,
+                Unknown = -1,
             }
 
         }

@@ -309,8 +309,12 @@ open class KotlinUsesExtractor(
                 f.valueParameters
             }
 
-            val paramTypes = parameters.map { useType(erase(it.type)) }
-            val signature = paramTypes.joinToString(separator = ",", prefix = "(", postfix = ")") { it.javaResult.signature!! }
+            val paramSigs = parameters.map { useType(erase(it.type)).javaResult.signature }.requireNoNullsOrNull()
+            if (paramSigs == null) {
+                logger.warn("Null signature for a parameter of ${f.name}")
+                return
+            }
+            val signature = paramSigs.joinToString(separator = ",", prefix = "(", postfix = ")")
             dependencyCollector?.addDependency(f, signature)
             externalClassExtractor.extractLater(f, signature)
         }
@@ -440,15 +444,20 @@ open class KotlinUsesExtractor(
             return null
         }
 
+        val fqName = c.fqNameWhenAvailable
+        if (fqName == null) {
+            return null
+        }
+
         fun tryGetPair(arity: Int): Pair<IrClass, List<IrTypeArgument>?>? {
-            val replaced = pluginContext.referenceClass(c.fqNameWhenAvailable!!)?.owner ?: return null
+            val replaced = pluginContext.referenceClass(fqName)?.owner ?: return null
             return Pair(replaced, List(arity) { makeTypeProjection(pluginContext.irBuiltIns.anyNType, Variance.INVARIANT) })
         }
 
         // The list of types handled here match https://github.com/JetBrains/kotlin/blob/d7c7d1efd2c0983c13b175e9e4b1cda979521159/plugins/parcelize/parcelize-compiler/src/org/jetbrains/kotlin/parcelize/ir/AndroidSymbols.kt
         // Specifically, types are added for generic types created in AndroidSymbols.kt.
         // This replacement is from a raw type to its matching parameterized type with `Object` type arguments.
-        return when (c.fqNameWhenAvailable?.asString()) {
+        return when (fqName.asString()) {
             "java.util.ArrayList" -> tryGetPair(1)
             "java.util.LinkedHashMap" -> tryGetPair(2)
             "java.util.LinkedHashSet" -> tryGetPair(1)

@@ -71,13 +71,13 @@ namespace Microsoft
 
             // Generated from `Microsoft.AspNetCore.HttpOverrides.ForwardedHeaders` in `Microsoft.AspNetCore.HttpOverrides, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             [System.Flags]
-            public enum ForwardedHeaders
+            public enum ForwardedHeaders : int
             {
-                All,
-                None,
-                XForwardedFor,
-                XForwardedHost,
-                XForwardedProto,
+                All = 7,
+                None = 0,
+                XForwardedFor = 1,
+                XForwardedHost = 2,
+                XForwardedProto = 4,
             }
 
             // Generated from `Microsoft.AspNetCore.HttpOverrides.ForwardedHeadersDefaults` in `Microsoft.AspNetCore.HttpOverrides, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`

@@ -52,7 +52,7 @@ private import NodeModuleResolutionImpl as NodeModule
 private DataFlow::Node getAValueExportedByPackage() {
   // The base case, an export from a named `package.json` file.
   result =
-    getAnExportFromModule(any(PackageJson pack | exists(pack.getPackageName())).getMainModule())
+    getAnExportFromModule(any(PackageJson pack | exists(pack.getPackageName())).getExportedModule(_))
   or
   // module.exports.bar.baz = result;
   exists(DataFlow::PropWrite write |

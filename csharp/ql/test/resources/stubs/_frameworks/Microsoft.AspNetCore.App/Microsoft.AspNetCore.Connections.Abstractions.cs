@@ -131,11 +131,11 @@ namespace Microsoft
             }
 
             // Generated from `Microsoft.AspNetCore.Connections.FileHandleType` in `Microsoft.AspNetCore.Connections.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
-            public enum FileHandleType
+            public enum FileHandleType : int
             {
-                Auto,
-                Pipe,
-                Tcp,
+                Auto = 0,
+                Pipe = 2,
+                Tcp = 1,
             }
 
             // Generated from `Microsoft.AspNetCore.Connections.IConnectionBuilder` in `Microsoft.AspNetCore.Connections.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
@@ -216,10 +216,10 @@ namespace Microsoft
 
             // Generated from `Microsoft.AspNetCore.Connections.TransferFormat` in `Microsoft.AspNetCore.Connections.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             [System.Flags]
-            public enum TransferFormat
+            public enum TransferFormat : int
             {
-                Binary,
-                Text,
+                Binary = 1,
+                Text = 2,
             }
 
             // Generated from `Microsoft.AspNetCore.Connections.UriEndPoint` in `Microsoft.AspNetCore.Connections.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`

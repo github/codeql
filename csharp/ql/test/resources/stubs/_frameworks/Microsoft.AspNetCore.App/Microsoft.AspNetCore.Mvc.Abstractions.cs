@@ -551,10 +551,10 @@ namespace Microsoft
                 }
 
                 // Generated from `Microsoft.AspNetCore.Mvc.Formatters.InputFormatterExceptionPolicy` in `Microsoft.AspNetCore.Mvc.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
-                public enum InputFormatterExceptionPolicy
+                public enum InputFormatterExceptionPolicy : int
                 {
-                    AllExceptions,
-                    MalformedInputExceptions,
+                    AllExceptions = 0,
+                    MalformedInputExceptions = 1,
                 }
 
                 // Generated from `Microsoft.AspNetCore.Mvc.Formatters.InputFormatterResult` in `Microsoft.AspNetCore.Mvc.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
@@ -644,11 +644,11 @@ namespace Microsoft
                 }
 
                 // Generated from `Microsoft.AspNetCore.Mvc.ModelBinding.EmptyBodyBehavior` in `Microsoft.AspNetCore.Mvc.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
-                public enum EmptyBodyBehavior
+                public enum EmptyBodyBehavior : int
                 {
-                    Allow,
-                    Default,
-                    Disallow,
+                    Allow = 1,
+                    Default = 0,
+                    Disallow = 2,
                 }
 
                 // Generated from `Microsoft.AspNetCore.Mvc.ModelBinding.EnumGroupAndName` in `Microsoft.AspNetCore.Mvc.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
@@ -1026,12 +1026,12 @@ namespace Microsoft
                 }
 
                 // Generated from `Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState` in `Microsoft.AspNetCore.Mvc.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
-                public enum ModelValidationState
+                public enum ModelValidationState : int
                 {
-                    Invalid,
-                    Skipped,
-                    Unvalidated,
-                    Valid,
+                    Invalid = 1,
+                    Skipped = 3,
+                    Unvalidated = 0,
+                    Valid = 2,
                 }
 
                 // Generated from `Microsoft.AspNetCore.Mvc.ModelBinding.TooManyModelErrorsException` in `Microsoft.AspNetCore.Mvc.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
@@ -1120,12 +1120,12 @@ namespace Microsoft
                     }
 
                     // Generated from `Microsoft.AspNetCore.Mvc.ModelBinding.Metadata.ModelMetadataKind` in `Microsoft.AspNetCore.Mvc.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
-                    public enum ModelMetadataKind
+                    public enum ModelMetadataKind : int
                     {
-                        Constructor,
-                        Parameter,
-                        Property,
-                        Type,
+                        Constructor = 3,
+                        Parameter = 2,
+                        Property = 1,
+                        Type = 0,
                     }
 
                 }

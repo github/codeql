@@ -49,10 +49,10 @@ namespace System
 
             // Generated from `System.Reflection.Emit.AssemblyBuilderAccess` in `System.Reflection.Emit, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             [System.Flags]
-            public enum AssemblyBuilderAccess
+            public enum AssemblyBuilderAccess : int
             {
-                Run,
-                RunAndCollect,
+                Run = 1,
+                RunAndCollect = 9,
             }
 
             // Generated from `System.Reflection.Emit.ConstructorBuilder` in `System.Reflection.Emit, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`

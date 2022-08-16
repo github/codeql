@@ -39,13 +39,13 @@ namespace Microsoft
             {
                 // Generated from `Microsoft.Extensions.FileProviders.Physical.ExclusionFilters` in `Microsoft.Extensions.FileProviders.Physical, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 [System.Flags]
-                public enum ExclusionFilters
+                public enum ExclusionFilters : int
                 {
-                    DotPrefixed,
-                    Hidden,
-                    None,
-                    Sensitive,
-                    System,
+                    DotPrefixed = 1,
+                    Hidden = 2,
+                    None = 0,
+                    Sensitive = 7,
+                    System = 4,
                 }
 
                 // Generated from `Microsoft.Extensions.FileProviders.Physical.PhysicalDirectoryInfo` in `Microsoft.Extensions.FileProviders.Physical, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
