@@ -632,7 +632,8 @@ class DeletionDefinition extends EssaNodeDefinition {
  */
 class ScopeEntryDefinition extends EssaNodeDefinition {
   ScopeEntryDefinition() {
-    this.getDefiningNode() = this.getSourceVariable().getScopeEntryDefinition() and
+    this.getDefiningNode() =
+      pragma[only_bind_out](this.getSourceVariable()).getScopeEntryDefinition() and
     not this instanceof ImplicitSubModuleDefinition
   }
 
