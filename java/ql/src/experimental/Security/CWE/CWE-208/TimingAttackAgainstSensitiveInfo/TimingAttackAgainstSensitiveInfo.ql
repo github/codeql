@@ -15,25 +15,6 @@ import semmle.code.java.dataflow.FlowSources
 import semmle.code.java.dataflow.TaintTracking
 import DataFlow::PathGraph
 
-/** A string for `match` that identifies strings that look like they represent secret data. */
-private string suspicious() {
-  result =
-    [
-      "%password%", "%passwd%", "%pwd%", "%refresh%token%", "%secret%token", "%secret%key",
-      "%passcode%", "%passphrase%", "%token%", "%secret%", "%credential%", "%UserPass%"
-    ]
-}
-
-/** A variable that may hold sensitive information, judging by its name. * */
-class CredentialExpr extends Expr {
-  CredentialExpr() {
-    exists(Variable v | this = v.getAnAccess() |
-      v.getName().toLowerCase().matches(suspicious()) and
-      not v.isFinal()
-    )
-  }
-}
-
 /**
  * A configuration that tracks data flow from variable that may hold sensitive data
  * to methods that compare data using a non-constant-time algorithm.
