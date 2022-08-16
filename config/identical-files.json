@@ -599,7 +599,7 @@
     "swift/ql/test/library-tests/parent/patterns.swift"
   ],
   "IncompleteMultiCharacterSanitization JS/Ruby": [
-    "javascript/ql/lib/semmle/javascript/security/IncompleteMultiCharacterSanitization.qll",
-    "ruby/ql/lib/codeql/ruby/security/IncompleteMultiCharacterSanitization.qll"
+    "javascript/ql/lib/semmle/javascript/security/IncompleteMultiCharacterSanitizationQuery.qll",
+    "ruby/ql/lib/codeql/ruby/security/IncompleteMultiCharacterSanitizationQuery.qll"
   ]
 }

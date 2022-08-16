@@ -13,4 +13,4 @@
  *       external/cwe/cwe-116
  */
 
-import semmle.javascript.security.IncompleteMultiCharacterSanitization
+import semmle.javascript.security.IncompleteMultiCharacterSanitizationQuery

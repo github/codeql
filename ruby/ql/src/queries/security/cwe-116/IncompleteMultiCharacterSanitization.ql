@@ -13,4 +13,4 @@
  *       external/cwe/cwe-116
  */
 
-import codeql.ruby.security.IncompleteMultiCharacterSanitization
+import codeql.ruby.security.IncompleteMultiCharacterSanitizationQuery

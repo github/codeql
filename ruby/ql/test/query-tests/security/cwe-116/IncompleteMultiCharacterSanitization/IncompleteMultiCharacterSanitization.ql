@@ -5,7 +5,7 @@
 import ruby
 import codeql.ruby.regexp.RegExpTreeView as RETV
 import codeql.ruby.DataFlow
-import codeql.ruby.security.IncompleteMultiCharacterSanitization as Query
+import codeql.ruby.security.IncompleteMultiCharacterSanitizationQuery as Query
 import TestUtilities.InlineExpectationsTest
 
 class Test extends InlineExpectationsTest {
