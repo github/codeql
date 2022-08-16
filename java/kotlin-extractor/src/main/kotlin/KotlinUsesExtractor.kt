@@ -91,25 +91,6 @@ open class KotlinUsesExtractor(
     }
 
     data class UseClassInstanceResult(val typeResult: TypeResult<DbClassorinterface>, val javaClass: IrClass)
-    /**
-     * A triple of a type's database label, its signature for use in callable signatures, and its short name for use
-     * in all tables that provide a user-facing type name.
-     *
-     * `signature` is a Java primitive name (e.g. "int"), a fully-qualified class name ("package.OuterClass.InnerClass"),
-     * or an array ("componentSignature[]")
-     * Type variables have the signature of their upper bound.
-     * Type arguments and anonymous types do not have a signature.
-     *
-     * `shortName` is a Java primitive name (e.g. "int"), a class short name with Java-style type arguments ("InnerClass<E>" or
-     * "OuterClass<ConcreteArgument>" or "OtherClass<? extends Bound>") or an array ("componentShortName[]").
-     */
-    data class TypeResult<out LabelType>(val id: Label<out LabelType>, val signature: String?, val shortName: String) {
-        fun <U> cast(): TypeResult<U> {
-            @Suppress("UNCHECKED_CAST")
-            return this as TypeResult<U>
-        }
-    }
-    data class TypeResults(val javaResult: TypeResult<DbType>, val kotlinResult: TypeResult<DbKt_type>)
 
     fun useType(t: IrType, context: TypeContext = TypeContext.OTHER): TypeResults {
         when(t) {
@@ -125,7 +106,7 @@ open class KotlinUsesExtractor(
         val typeId = tw.getLabelFor<DbErrortype>("@\"errorType\"") {
             tw.writeError_type(it)
         }
-        return TypeResult(typeId, null, "<CodeQL error type>")
+        return TypeResult(typeId, "<CodeQL error type>", "<CodeQL error type>")
     }
 
     private fun extractErrorType(): TypeResults {
@@ -134,7 +115,7 @@ open class KotlinUsesExtractor(
             tw.writeKt_nullable_types(it, javaResult.id)
         }
         return TypeResults(javaResult,
-                           TypeResult(kotlinTypeId, null, "<CodeQL error type>"))
+                           TypeResult(kotlinTypeId, "<CodeQL error type>", "<CodeQL error type>"))
     }
 
     fun getJavaEquivalentClass(c: IrClass) =
@@ -431,9 +412,17 @@ open class KotlinUsesExtractor(
             }
         }
 
+        val fqName = replacedClass.fqNameWhenAvailable
+        val signature = if (fqName == null) {
+            logger.error("Unable to find signature/fqName for ${replacedClass.name}")
+            // TODO: Should we return null here instead?
+            "<no signature available>"
+        } else {
+            fqName.asString()
+        }
         return TypeResult(
             classLabel,
-            replacedClass.fqNameWhenAvailable?.asString(),
+            signature,
             classLabelResult.shortName)
     }
 
@@ -1255,7 +1244,7 @@ open class KotlinUsesExtractor(
 
     fun getTypeArgumentLabel(
         arg: IrTypeArgument
-    ): TypeResult<DbReftype> {
+    ): TypeResultWithoutSignature<DbReftype> {
 
         fun extractBoundedWildcard(wildcardKind: Int, wildcardLabelStr: String, wildcardShortName: String, boundLabel: Label<out DbReftype>): Label<DbWildcard> =
             tw.getLabelFor(wildcardLabelStr) { wildcardLabel ->
@@ -1270,27 +1259,27 @@ open class KotlinUsesExtractor(
         return when (arg) {
             is IrStarProjection -> {
                 val anyTypeLabel = useType(pluginContext.irBuiltIns.anyType).javaResult.id.cast<DbReftype>()
-                TypeResult(extractBoundedWildcard(1, "@\"wildcard;\"", "?", anyTypeLabel), null, "?")
+                TypeResultWithoutSignature(extractBoundedWildcard(1, "@\"wildcard;\"", "?", anyTypeLabel), Unit, "?")
             }
             is IrTypeProjection -> {
                 val boundResults = useType(arg.type, TypeContext.GENERIC_ARGUMENT)
                 val boundLabel = boundResults.javaResult.id.cast<DbReftype>()
 
                 return if(arg.variance == Variance.INVARIANT)
-                    boundResults.javaResult.cast<DbReftype>()
+                    boundResults.javaResult.cast<DbReftype>().forgetSignature()
                 else {
                     val keyPrefix = if (arg.variance == Variance.IN_VARIANCE) "super" else "extends"
                     val wildcardKind = if (arg.variance == Variance.IN_VARIANCE) 2 else 1
                     val wildcardShortName = "? $keyPrefix ${boundResults.javaResult.shortName}"
-                    TypeResult(
+                    TypeResultWithoutSignature(
                         extractBoundedWildcard(wildcardKind, "@\"wildcard;$keyPrefix{$boundLabel}\"", wildcardShortName, boundLabel),
-                        null,
+                        Unit,
                         wildcardShortName)
                 }
             }
             else -> {
                 logger.error("Unexpected type argument.")
-                return extractJavaErrorType()
+                return extractJavaErrorType().forgetSignature()
             }
         }
     }
