@@ -2050,9 +2050,10 @@ private class BarrierGuardFunction extends Function {
    */
   predicate isBarrierCall(DataFlow::CallNode call, Expr e, boolean outcome, string lbl) {
     exists(DataFlow::Node arg |
+      argumentPassing(pragma[only_bind_into](call), pragma[only_bind_into](arg),
+        pragma[only_bind_into](this), pragma[only_bind_into](sanitizedParameter)) and
       arg.asExpr() = e and
       arg = call.getArgument(paramIndex) and
-      argumentPassing(call, arg, this, sanitizedParameter) and
       outcome = guardOutcome and
       lbl = label
     )
