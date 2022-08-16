@@ -5,7 +5,6 @@
  */
 
 import Expr
-private import semmle.code.csharp.dataflow.internal.DelegateDataFlow
 private import semmle.code.csharp.dataflow.internal.DataFlowDispatch
 private import semmle.code.csharp.dataflow.internal.DataFlowImplCommon
 private import semmle.code.csharp.dispatch.Dispatch
