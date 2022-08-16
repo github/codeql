@@ -24,7 +24,6 @@ namespace Testing
 
     public class AspRoutingEndpoints
     {
-
         public void M1(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
@@ -32,6 +31,7 @@ namespace Testing
 
             // The delegate parameters are considered flow sources.
             app.MapGet("/api/redirect/{newUrl}", (string newUrl) => { });
+            app.MapGet("/{myApi}/redirect/{myUrl}", (string myApi, string myUrl) => { } );
 
             app.Run();
         }

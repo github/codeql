@@ -2,4 +2,6 @@ remoteFlowSourceMembers
 | AspRemoteFlowSource.cs:9:23:9:31 | RequestId |
 remoteFlowSources
 | AspRemoteFlowSource.cs:19:42:19:50 | viewModel |
-| AspRemoteFlowSource.cs:34:58:34:63 | newUrl |
+| AspRemoteFlowSource.cs:33:58:33:63 | newUrl |
+| AspRemoteFlowSource.cs:34:61:34:65 | myApi |
+| AspRemoteFlowSource.cs:34:75:34:79 | myUrl |
