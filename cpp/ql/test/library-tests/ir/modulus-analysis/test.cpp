@@ -58,3 +58,9 @@ void loops(int cap)
     for (int k = 0; k < cap; k += 3)
         mod(k); // $ mod=0,0,3
 }
+
+int loops2 (unsigned int *i) {
+  for (; *i <= 2; (*i)++) {
+  }
+  return *i;
+}
