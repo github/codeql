@@ -75,7 +75,7 @@ predicate signSmallerWithEqualSizes(MulExpr mexp) {
       ae.getRValue().getUnderlyingType().(IntegralType).isUnsigned() and
       ae.getLValue().getUnderlyingType().(IntegralType).isSigned() and
       (
-        not exists(DivExpr de | mexp.getParent*() = de)
+        not mexp.getParent*() instanceof DivExpr
         or
         exists(DivExpr de, Expr ec |
           e2.isConstant() and
