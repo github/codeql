@@ -16,7 +16,7 @@ private module FlowSummaries {
 
 class SummarizedCallableBase = Callable;
 
-DataFlowCallable inject(SummarizedCallable c) { result.asCallable() = c }
+DataFlowCallable inject(SummarizedCallable c) { result.asSummarizedCallable() = c }
 
 /** Gets the parameter position of the instance parameter. */
 int instanceParameterPosition() { result = -1 }
