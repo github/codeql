@@ -1,1 +1,1 @@
-experimental/Security/CWE/CWE-208/PossibleTimingAttackAgainstHash.ql
+experimental/Security/CWE-208/TimingAttackAgainstHash/PossibleTimingAttackAgainstHash.ql
