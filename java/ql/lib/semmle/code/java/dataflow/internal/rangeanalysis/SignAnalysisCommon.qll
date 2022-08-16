@@ -299,7 +299,7 @@ Sign exprSign(Expr e) {
       exists(VarAccess access | access = e |
         not exists(SsaVariable v | getARead(v) = access) and
         (
-          s = fieldSign(getField(access))
+          s = fieldSign(getField(access.(FieldAccess)))
           or
           anySign(s) and not access instanceof FieldAccess
         )
