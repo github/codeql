@@ -430,7 +430,7 @@ class PersistenceCallbackMethod extends CallableEntryPoint {
 class ArbitraryXmlEntryPoint extends ReflectivelyConstructedClass {
   ArbitraryXmlEntryPoint() {
     this.fromSource() and
-    exists(XMLAttribute attribute |
+    exists(XmlAttribute attribute |
       attribute.getName() = "className" or
       attribute.getName().matches("%ClassName") or
       attribute.getName() = "class" or

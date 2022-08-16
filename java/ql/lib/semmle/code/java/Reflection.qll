@@ -33,7 +33,7 @@ predicate referencedInXmlFile(Field f) {
  * Gets an XML element with an attribute whose value is the name of `f`,
  * suggesting that it might reference `f`.
  */
-private XMLElement elementReferencingField(Field f) {
+private XmlElement elementReferencingField(Field f) {
   exists(elementReferencingType(f.getDeclaringType())) and
   result.getAnAttribute().getValue() = f.getName()
 }
@@ -42,7 +42,7 @@ private XMLElement elementReferencingField(Field f) {
  * Gets an XML element with an attribute whose value is the fully qualified
  * name of `rt`, suggesting that it might reference `rt`.
  */
-private XMLElement elementReferencingType(RefType rt) {
+private XmlElement elementReferencingType(RefType rt) {
   result.getAnAttribute().getValue() = rt.getSourceDeclaration().getQualifiedName()
 }
 
