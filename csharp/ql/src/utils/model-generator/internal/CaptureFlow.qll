@@ -12,7 +12,7 @@ private import CaptureModels
  *   }
  * ```
  * Captured Model:
- * ```Summaries;BasicFlow;false;ReturnThis;(System.Object);Argument[Qualifier];ReturnValue;value```
+ * ```Summaries;BasicFlow;false;ReturnThis;(System.Object);Argument[this];ReturnValue;value```
  * Capture APIs that transfer taint from an input parameter to an output return
  * value or parameter.
  * Allows a sequence of read steps followed by a sequence of store steps.
@@ -36,8 +36,8 @@ private import CaptureModels
  * ```
  * Captured Models:
  * ```
- * Summaries;BasicFlow;false;ReturnField;();Argument[Qualifier];ReturnValue;taint |
- * Summaries;BasicFlow;false;AssignFieldToArray;(System.Object[]);Argument[Qualifier];Argument[0].Element;taint
+ * Summaries;BasicFlow;false;ReturnField;();Argument[this];ReturnValue;taint |
+ * Summaries;BasicFlow;false;AssignFieldToArray;(System.Object[]);Argument[this];Argument[0].Element;taint
  * ```
  *
  * ```csharp
@@ -51,7 +51,7 @@ private import CaptureModels
  * }
  * ```
  * Captured Model:
- * ```Summaries;BasicFlow;false;SetField;(System.String);Argument[0];Argument[Qualifier];taint```
+ * ```Summaries;BasicFlow;false;SetField;(System.String);Argument[0];Argument[this];taint```
  *
  * ```csharp
  * public class BasicFlow {

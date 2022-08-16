@@ -83,13 +83,13 @@ private class SqlCommandSummaryModelCsv extends SummaryModelCsv {
     row =
       [
         // SqlCommand
-        "System.Data.SqlClient;SqlCommand;false;SqlCommand;(System.String);;Argument[0];Argument[Qualifier];taint;manual",
-        "System.Data.SqlClient;SqlCommand;false;SqlCommand;(System.String,System.Data.SqlClient.SqlConnection);;Argument[0];Argument[Qualifier];taint;manual",
-        "System.Data.SqlClient;SqlCommand;false;SqlCommand;(System.String,System.Data.SqlClient.SqlConnection,System.Data.SqlClient.SqlTransaction);;Argument[0];Argument[Qualifier];taint;manual",
+        "System.Data.SqlClient;SqlCommand;false;SqlCommand;(System.String);;Argument[0];Argument[this];taint;manual",
+        "System.Data.SqlClient;SqlCommand;false;SqlCommand;(System.String,System.Data.SqlClient.SqlConnection);;Argument[0];Argument[this];taint;manual",
+        "System.Data.SqlClient;SqlCommand;false;SqlCommand;(System.String,System.Data.SqlClient.SqlConnection,System.Data.SqlClient.SqlTransaction);;Argument[0];Argument[this];taint;manual",
         // SQLiteCommand.
-        "System.Data.SQLite;SQLiteCommand;false;SQLiteCommand;(System.String);;Argument[0];Argument[Qualifier];taint;manual",
-        "System.Data.SQLite;SQLiteCommand;false;SQLiteCommand;(System.String,System.Data.SQLite.SQLiteConnection);;Argument[0];Argument[Qualifier];taint;manual",
-        "System.Data.SQLite;SQLiteCommand;false;SQLiteCommand;(System.String,System.Data.SQLite.SQLiteConnection,System.Data.SQLite.SQLiteTransaction);;Argument[0];Argument[Qualifier];taint;manual",
+        "System.Data.SQLite;SQLiteCommand;false;SQLiteCommand;(System.String);;Argument[0];Argument[this];taint;manual",
+        "System.Data.SQLite;SQLiteCommand;false;SQLiteCommand;(System.String,System.Data.SQLite.SQLiteConnection);;Argument[0];Argument[this];taint;manual",
+        "System.Data.SQLite;SQLiteCommand;false;SQLiteCommand;(System.String,System.Data.SQLite.SQLiteConnection,System.Data.SQLite.SQLiteTransaction);;Argument[0];Argument[this];taint;manual",
       ]
   }
 }
