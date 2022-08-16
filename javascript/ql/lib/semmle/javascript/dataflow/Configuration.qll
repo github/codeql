@@ -523,22 +523,6 @@ abstract class LabeledBarrierGuardNode extends BarrierGuardNode {
   override predicate blocks(boolean outcome, Expr e) { none() }
 }
 
-/**
- * DEPRECATED. Subclasses should extend `SharedFlowStep` instead, unless the subclass
- * is part of a query, in which case it should be moved into the `isAdditionalFlowStep` predicate
- * of the relevant data-flow configuration.
- * Other uses of the predicate in this class should instead reference the predicates in the
- * `SharedFlowStep::` module, such as `SharedFlowStep::step`.
- *
- * A data flow edge that should be added to all data flow configurations in
- * addition to standard data flow edges.
- *
- * Note: For performance reasons, all subclasses of this class should be part
- * of the standard library. Override `Configuration::isAdditionalFlowStep`
- * for analysis-specific flow steps.
- */
-deprecated class AdditionalFlowStep = LegacyAdditionalFlowStep;
-
 // Internal version of AdditionalFlowStep that we can reference without deprecation warnings.
 abstract private class LegacyAdditionalFlowStep extends DataFlow::Node {
   /**

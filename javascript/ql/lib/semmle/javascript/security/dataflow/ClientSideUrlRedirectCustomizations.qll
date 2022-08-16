@@ -53,13 +53,6 @@ module ClientSideUrlRedirect {
   }
 
   /**
-   * DEPRECATED. Can usually be replaced with `untrustedUrlSubstring`.
-   * Query accesses via `location.hash` or `location.search` are now independent
-   * `RemoteFlowSource` instances, and only substrings of `location` need to be handled via steps.
-   */
-  deprecated predicate queryAccess = untrustedUrlSubstring/2;
-
-  /**
    * Holds if `substring` refers to a substring of `base` which is considered untrusted
    * when `base` is the current URL.
    */

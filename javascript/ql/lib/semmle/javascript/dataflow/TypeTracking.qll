@@ -450,20 +450,6 @@ module SharedTypeTrackingStep {
   }
 }
 
-/**
- * DEPRECATED. Use `SharedTypeTrackingStep` instead.
- *
- * A data flow edge that should be followed by type tracking.
- *
- * Unlike `AdditionalFlowStep`, this type of edge does not affect
- * the local data flow graph, and is not used by data-flow configurations.
- *
- * Note: For performance reasons, all subclasses of this class should be part
- * of the standard library. For query-specific steps, consider including the
- * custom steps in the type-tracking predicate itself.
- */
-deprecated class AdditionalTypeTrackingStep = LegacyTypeTrackingStep;
-
 // Internal version of AdditionalTypeTrackingStep that we can reference without deprecation warnings.
 abstract private class LegacyTypeTrackingStep extends DataFlow::Node {
   /**

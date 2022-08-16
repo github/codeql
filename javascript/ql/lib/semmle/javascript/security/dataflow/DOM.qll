@@ -53,20 +53,6 @@ deprecated predicate isDocumentUrl(Expr e) { e.flow() = DOM::locationSource() }
 deprecated predicate isDocumentURL = isDocumentUrl/1;
 
 /**
- * DEPRECATED. In most cases, a sanitizer based on this predicate can be removed, as
- * taint tracking no longer step through the properties of the location object by default.
- *
- * Holds if `pacc` accesses a part of `document.location` that is
- * not considered user-controlled, that is, anything except
- * `href`, `hash` and `search`.
- */
-deprecated predicate isSafeLocationProperty(PropAccess pacc) {
-  exists(string prop | pacc = DOM::locationRef().getAPropertyRead(prop).asExpr() |
-    prop != "href" and prop != "hash" and prop != "search"
-  )
-}
-
-/**
  * A call to a DOM method.
  */
 class DomMethodCallExpr extends MethodCallExpr {
