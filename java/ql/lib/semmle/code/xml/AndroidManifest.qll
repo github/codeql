@@ -7,10 +7,10 @@ import XML
 /**
  * An Android manifest file, named `AndroidManifest.xml`.
  */
-class AndroidManifestXmlFile extends XMLFile {
+class AndroidManifestXmlFile extends XmlFile {
   AndroidManifestXmlFile() {
     this.getBaseName() = "AndroidManifest.xml" and
-    count(XMLElement e | e = this.getAChild()) = 1 and
+    count(XmlElement e | e = this.getAChild()) = 1 and
     this.getAChild().getName() = "manifest"
   }
 
@@ -28,7 +28,7 @@ class AndroidManifestXmlFile extends XMLFile {
 /**
  * A `<manifest>` element in an Android manifest file.
  */
-class AndroidManifestXmlElement extends XMLElement {
+class AndroidManifestXmlElement extends XmlElement {
   AndroidManifestXmlElement() {
     this.getParent() instanceof AndroidManifestXmlFile and this.getName() = "manifest"
   }
@@ -47,7 +47,7 @@ class AndroidManifestXmlElement extends XMLElement {
 /**
  * An `<application>` element in an Android manifest file.
  */
-class AndroidApplicationXmlElement extends XMLElement {
+class AndroidApplicationXmlElement extends XmlElement {
   AndroidApplicationXmlElement() {
     this.getParent() instanceof AndroidManifestXmlElement and this.getName() = "application"
   }
@@ -93,7 +93,7 @@ class AndroidReceiverXmlElement extends AndroidComponentXmlElement {
 /**
  * An XML attribute with the `android:` prefix.
  */
-class AndroidXmlAttribute extends XMLAttribute {
+class AndroidXmlAttribute extends XmlAttribute {
   AndroidXmlAttribute() { this.getNamespace().getPrefix() = "android" }
 }
 
@@ -130,7 +130,7 @@ class AndroidProviderXmlElement extends AndroidComponentXmlElement {
 /**
  * The attribute `android:perrmission`, `android:readPermission`, or `android:writePermission`.
  */
-class AndroidPermissionXmlAttribute extends XMLAttribute {
+class AndroidPermissionXmlAttribute extends XmlAttribute {
   AndroidPermissionXmlAttribute() {
     this.getNamespace().getPrefix() = "android" and
     this.getName() = ["permission", "readPermission", "writePermission"]
@@ -149,7 +149,7 @@ class AndroidPermissionXmlAttribute extends XMLAttribute {
 /**
  * The `<path-permission`> element of a `<provider>` in an Android manifest file.
  */
-class AndroidPathPermissionXmlElement extends XMLElement {
+class AndroidPathPermissionXmlElement extends XmlElement {
   AndroidPathPermissionXmlElement() {
     this.getParent() instanceof AndroidProviderXmlElement and
     this.hasName("path-permission")
@@ -159,7 +159,7 @@ class AndroidPathPermissionXmlElement extends XMLElement {
 /**
  * An Android component element in an Android manifest file.
  */
-class AndroidComponentXmlElement extends XMLElement {
+class AndroidComponentXmlElement extends XmlElement {
   AndroidComponentXmlElement() {
     this.getParent() instanceof AndroidApplicationXmlElement and
     this.getName().regexpMatch("(activity|service|receiver|provider)")
@@ -174,7 +174,7 @@ class AndroidComponentXmlElement extends XMLElement {
    * Gets the value of the `android:name` attribute of this component element.
    */
   string getComponentName() {
-    exists(XMLAttribute attr |
+    exists(XmlAttribute attr |
       attr = this.getAnAttribute() and
       attr.getNamespace().getPrefix() = "android" and
       attr.getName() = "name"
@@ -191,7 +191,7 @@ class AndroidComponentXmlElement extends XMLElement {
     then
       result =
         this.getParent()
-              .(XMLElement)
+              .(XmlElement)
               .getParent()
               .(AndroidManifestXmlElement)
               .getPackageAttributeValue() + this.getComponentName()
@@ -202,7 +202,7 @@ class AndroidComponentXmlElement extends XMLElement {
    * Gets the value of the `android:exported` attribute of this component element.
    */
   string getExportedAttributeValue() {
-    exists(XMLAttribute attr |
+    exists(XmlAttribute attr |
       attr = this.getAnAttribute() and
       attr.getNamespace().getPrefix() = "android" and
       attr.getName() = "exported"
@@ -225,7 +225,7 @@ class AndroidComponentXmlElement extends XMLElement {
 /**
  * An `<intent-filter>` element in an Android manifest file.
  */
-class AndroidIntentFilterXmlElement extends XMLElement {
+class AndroidIntentFilterXmlElement extends XmlElement {
   AndroidIntentFilterXmlElement() {
     this.getFile() instanceof AndroidManifestXmlFile and this.getName() = "intent-filter"
   }
@@ -239,7 +239,7 @@ class AndroidIntentFilterXmlElement extends XMLElement {
 /**
  * An `<action>` element in an Android manifest file.
  */
-class AndroidActionXmlElement extends XMLElement {
+class AndroidActionXmlElement extends XmlElement {
   AndroidActionXmlElement() {
     this.getFile() instanceof AndroidManifestXmlFile and this.getName() = "action"
   }
@@ -248,7 +248,7 @@ class AndroidActionXmlElement extends XMLElement {
    * Gets the name of this action.
    */
   string getActionName() {
-    exists(XMLAttribute attr |
+    exists(XmlAttribute attr |
       attr = this.getAnAttribute() and
       attr.getNamespace().getPrefix() = "android" and
       attr.getName() = "name"

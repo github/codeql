@@ -5,7 +5,7 @@
 import java
 
 /** A GWT UiBinder XML template file with a `.ui.xml` suffix. */
-class GwtUiTemplateXmlFile extends XMLFile {
+class GwtUiTemplateXmlFile extends XmlFile {
   GwtUiTemplateXmlFile() { this.getBaseName().matches("%.ui.xml") }
 
   /** Gets the top-level UiBinder element. */
@@ -13,7 +13,7 @@ class GwtUiTemplateXmlFile extends XMLFile {
 }
 
 /** The top-level `<ui:UiBinder>` element of a GWT UiBinder template XML file. */
-class GwtUiBinderTemplateElement extends XMLElement {
+class GwtUiBinderTemplateElement extends XmlElement {
   GwtUiBinderTemplateElement() {
     this.getParent() instanceof GwtUiTemplateXmlFile and
     this.getName() = "UiBinder" and
@@ -24,7 +24,7 @@ class GwtUiBinderTemplateElement extends XMLElement {
 /**
  * A component reference within a GWT UiBinder template.
  */
-class GwtComponentTemplateElement extends XMLElement {
+class GwtComponentTemplateElement extends XmlElement {
   GwtComponentTemplateElement() {
     exists(GwtUiBinderTemplateElement templateElement | this = templateElement.getAChild*() |
       this.getNamespace().getURI().substring(0, 10) = "urn:import"
