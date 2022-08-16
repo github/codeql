@@ -88,7 +88,7 @@ class TTypeRef = TImport or TModuleExpr or TType;
 
 class TYamlNode = TYamlCommemt or TYamlEntry or TYamlKey or TYamlListitem or TYamlValue;
 
-class TSignatureExpr = TPredicateExpr or TType;
+class TSignatureExpr = TPredicateExpr or TType or TModuleExpr;
 
 class TComment = TQLDoc or TBlockComment or TLineComment;
 

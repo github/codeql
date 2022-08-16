@@ -2293,7 +2293,7 @@ class ModuleExpr extends TModuleExpr, TypeRef {
 
   /**
    * Gets the `i`th type argument if this module is a module instantiation.
-   * The result is either a `PredicateExpr` or a `TypeExpr`.
+   * The result is either a `PredicateExpr`, `TypeExpr`, or `ModuleExpr`.
    */
   SignatureExpr getArgument(int i) {
     result.toQL() = me.getAFieldOrChild().(QL::ModuleInstantiation).getChild(i)
@@ -2313,7 +2313,7 @@ class ModuleExpr extends TModuleExpr, TypeRef {
   }
 }
 
-/** A signature expression, either a `PredicateExpr` or a `TypeExpr`. */
+/** A signature expression, either a `PredicateExpr`, a `TypeExpr`, or a `ModuleExpr`. */
 class SignatureExpr extends TSignatureExpr, AstNode {
   QL::SignatureExpr sig;
 
@@ -2321,6 +2321,8 @@ class SignatureExpr extends TSignatureExpr, AstNode {
     toQL(this) = sig.getPredicate()
     or
     toQL(this) = sig.getTypeExpr()
+    or
+    toQL(this) = sig.getModExpr()
   }
 
   /** Gets the generated AST node that contains this signature expression. */
@@ -2329,8 +2331,8 @@ class SignatureExpr extends TSignatureExpr, AstNode {
   /** Gets this signature expression if it represents a predicate expression. */
   PredicateExpr asPredicate() { result = this }
 
-  /** Gets this signature expression if it represents a type expression. */
-  TypeExpr asType() { result = this }
+  /** Gets this signature expression if it represents a type expression (either a `TypeExpr` or a `ModuleExpr`). */
+  TypeRef asType() { result = this }
 }
 
 /** An argument to an annotation. */
