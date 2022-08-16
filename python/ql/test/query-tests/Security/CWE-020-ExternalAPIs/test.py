@@ -44,6 +44,16 @@ def unknown_lib_2():
     unknown.lib.func(kw=data)
 
 
+def handle_this(arg, application = None):
+    if application:
+        # since application could be None, we could end up reporting `None.json.dumps`
+        application.json.dumps(arg)
+
+@app.route("/optional-arg")
+def optional_arg():
+    data = request.args.get("data")
+    handle_this(data)
+
 if __name__ == "__main__":
     # http://127.0.0.1:5000/hmac-example?data=aGVsbG8gd29ybGQh
     app.run(debug=True)

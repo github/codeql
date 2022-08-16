@@ -1,3 +1,5 @@
+| None.json.dumps [position 0] | 1 | 1 |
+| builtins.None.json.dumps [position 0] | 1 | 1 |
 | hmac.new [keyword msg] | 1 | 1 |
 | hmac.new [position 1] | 1 | 1 |
 | unknown.lib.func [keyword kw] | 2 | 1 |
