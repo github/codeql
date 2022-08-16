@@ -2,8 +2,6 @@
 import codeql.swift.elements.CommentConstructor
 import codeql.swift.elements.DbFileConstructor
 import codeql.swift.elements.DbLocationConstructor
-import codeql.swift.elements.UnknownFileConstructor
-import codeql.swift.elements.UnknownLocationConstructor
 import codeql.swift.elements.decl.AccessorDeclConstructor
 import codeql.swift.elements.decl.AssociatedTypeDeclConstructor
 import codeql.swift.elements.decl.ClassDeclConstructor

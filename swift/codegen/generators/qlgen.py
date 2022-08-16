@@ -279,13 +279,14 @@ def generate(opts, renderer):
         ipa_type = get_ql_ipa_class(cls)
         if ipa_type.is_final:
             final_ipa_types.append(ipa_type)
-            stub_file = stub_out / cls.dir / f"{cls.name}Constructor.qll"
-            if not stub_file.is_file() or _is_generated_stub(stub_file):
-                renderer.render(ql.Synth.ConstructorStub(ipa_type), stub_file)
-            constructor_import = get_import(stub_file, opts.swift_dir)
-            constructor_imports.append(constructor_import)
-            if ipa_type.is_ipa:
-                ipa_constructor_imports.append(constructor_import)
+            if ipa_type.has_params:
+                stub_file = stub_out / cls.dir / f"{cls.name}Constructor.qll"
+                if not stub_file.is_file() or _is_generated_stub(stub_file):
+                    renderer.render(ql.Synth.ConstructorStub(ipa_type), stub_file)
+                constructor_import = get_import(stub_file, opts.swift_dir)
+                constructor_imports.append(constructor_import)
+                if ipa_type.is_ipa:
+                    ipa_constructor_imports.append(constructor_import)
         else:
             non_final_ipa_types.append(ipa_type)
 
