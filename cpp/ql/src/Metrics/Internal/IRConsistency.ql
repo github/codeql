@@ -10,6 +10,12 @@ import cpp
 import semmle.code.cpp.ir.implementation.aliased_ssa.IR
 import semmle.code.cpp.ir.implementation.aliased_ssa.IRConsistency as IRConsistency
 
+class PresentIRFunction extends IRConsistency::PresentIRFunction {
+  override string toString() {
+    result = min(string name | name = this.getIRFunction().getFunction().getQualifiedName() | name)
+  }
+}
+
 select count(Instruction i | IRConsistency::missingOperand(i, _, _, _) | i) as missingOperand,
   count(Instruction i | IRConsistency::unexpectedOperand(i, _, _, _) | i) as unexpectedOperand,
   count(Instruction i | IRConsistency::duplicateOperand(i, _, _, _) | i) as duplicateOperand,
