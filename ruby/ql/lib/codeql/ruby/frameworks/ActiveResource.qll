@@ -184,11 +184,12 @@ module ActiveResource {
     ModelClassMethodCall classMethodCall;
 
     Collection() {
-      exists(ModelClassMethodCall c | c.flowsTo(this) |
-        c.getMethodName() = "all"
+      classMethodCall.flowsTo(this) and
+      (
+        classMethodCall.getMethodName() = "all"
         or
-        c.getMethodName() = "find" and
-        c.getArgument(0).asExpr().getConstantValue().isStringlikeValue("all")
+        classMethodCall.getMethodName() = "find" and
+        classMethodCall.getArgument(0).asExpr().getConstantValue().isStringlikeValue("all")
       )
     }
 
