@@ -54,9 +54,6 @@ private class FunctionPointerFlowSource extends DelegateLikeFlowSource {
   override Callable getCallable() { result = c }
 }
 
-/** A sink of flow for a delegate or function pointer expression. */
-abstract private class DelegateLikeFlowSink extends DataFlow::Node { }
-
 /** A non-delegate call. */
 private class NonDelegateCall extends Expr {
   private DispatchCall dc;
