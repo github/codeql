@@ -22,7 +22,7 @@ module InstructionConsistency {
     abstract Language::Location getLocation();
   }
 
-  private class PresentIRFunction extends OptionalIRFunction, TPresentIRFunction {
+  class PresentIRFunction extends OptionalIRFunction, TPresentIRFunction {
     private IRFunction irFunc;
 
     PresentIRFunction() { this = TPresentIRFunction(irFunc) }
@@ -37,6 +37,8 @@ module InstructionConsistency {
       result =
         min(Language::Location loc | loc = irFunc.getLocation() | loc order by loc.toString())
     }
+
+    IRFunction getIRFunction() { result = irFunc }
   }
 
   private class MissingIRFunction extends OptionalIRFunction, TMissingIRFunction {
