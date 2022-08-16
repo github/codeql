@@ -366,6 +366,27 @@ class MicrosoftAspNetCoreBuilderEndpointRouteBuilderExtensions extends Class {
     this.hasQualifiedName("Microsoft.AspNetCore.Builder", "EndpointRouteBuilderExtensions")
   }
 
-  /** Gets the `UseMap` extension method. */
+  /** Gets the `Map` extension method. */
+  Method getMapMethod() { result = this.getAMethod("Map") }
+
+  /** Gets the `MapGet` extension method. */
   Method getMapGetMethod() { result = this.getAMethod("MapGet") }
+
+  /** Gets the `MapPost` extension method. */
+  Method getMapPostMethod() { result = this.getAMethod("MapPost") }
+
+  /** Gets the `MapPut` extension method. */
+  Method getMapPutMethod() { result = this.getAMethod("MapPut") }
+
+  /** Gets the `MapDelete` extension method. */
+  Method getMapDeleteMethod() { result = this.getAMethod("MapDelete") }
+
+  /** Get a `Map` like extenion methods. */
+  Method getAMapMethod() {
+    result =
+      [
+        this.getMapMethod(), this.getMapGetMethod(), this.getMapPostMethod(),
+        this.getMapPutMethod(), this.getMapDeleteMethod()
+      ]
+  }
 }

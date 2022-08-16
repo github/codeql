@@ -173,8 +173,7 @@ abstract class AspNetCoreRemoteFlowSource extends RemoteFlowSource { }
 
 private predicate reachesMapGetArg(DataFlow::Node n) {
   exists(MethodCall mc |
-    mc.getTarget() =
-      any(MicrosoftAspNetCoreBuilderEndpointRouteBuilderExtensions c).getMapGetMethod() and
+    mc.getTarget() = any(MicrosoftAspNetCoreBuilderEndpointRouteBuilderExtensions c).getAMapMethod() and
     n.asExpr() = mc.getArgument(2)
   )
   or
