@@ -38,8 +38,13 @@ private string getBoundString(SemBound b, int delta) {
   b instanceof SemZeroBound and result = delta.toString()
   or
   result =
-    strictconcat(b.(SemSsaBound).getAVariable().(SemanticExprConfig::SsaVariable).asInstruction().getAst().toString(), ":") +
-      getOffsetString(delta)
+    strictconcat(b.(SemSsaBound)
+              .getAVariable()
+              .(SemanticExprConfig::SsaVariable)
+              .asInstruction()
+              .getAst()
+              .toString(), ":"
+      ) + getOffsetString(delta)
 }
 
 private string getARangeString(SemExpr e) {
