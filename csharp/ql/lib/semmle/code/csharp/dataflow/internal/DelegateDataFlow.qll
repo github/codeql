@@ -8,7 +8,6 @@
 
 import csharp
 private import dotnet
-private import semmle.code.csharp.dataflow.CallContext
 private import semmle.code.csharp.dataflow.internal.DataFlowDispatch
 private import semmle.code.csharp.dataflow.internal.DataFlowPrivate
 private import semmle.code.csharp.dataflow.internal.DataFlowPublic
