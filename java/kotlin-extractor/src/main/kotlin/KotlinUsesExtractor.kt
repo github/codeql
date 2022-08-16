@@ -1357,7 +1357,7 @@ open class KotlinUsesExtractor(
             return useAnonymousClass(c).javaResult.id.cast<DbClass>()
         }
 
-        // For source classes, the label doesn't include and type arguments
+        // For source classes, the label doesn't include any type arguments
         val classTypeResult = addClassLabel(c, listOf())
         return classTypeResult.id
     }
