@@ -11,7 +11,7 @@ key = "e179017a-62b0-4996-8a38-e91aa9f1"
 def sign(pre_key, msg, alg):
     return hmac.new(pre_key, msg, alg).digest()
 
-def VerifyGood(msg, sig):
+def verifyGood(msg, sig):
     return constant_time_string_compare(sig, sign(key, msg, hashlib.sha256)) #good
  
 def verifyBad(msg, sig):
