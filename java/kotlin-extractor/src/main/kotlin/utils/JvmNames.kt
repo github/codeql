@@ -1,6 +1,6 @@
 package com.github.codeql.utils
 
-import org.jetbrains.kotlin.backend.common.ir.allOverridden
+import com.github.codeql.utils.versions.allOverridden
 import org.jetbrains.kotlin.builtins.StandardNames
 import org.jetbrains.kotlin.ir.declarations.IrAnnotationContainer
 import org.jetbrains.kotlin.ir.declarations.IrClass
