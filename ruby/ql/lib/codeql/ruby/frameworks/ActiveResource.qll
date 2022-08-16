@@ -178,7 +178,7 @@ module ActiveResource {
   }
 
   /**
-   *A collection of ActiveResource model objects.
+   * A collection of ActiveResource model objects.
    */
   class Collection extends DataFlow::Node {
     ModelClassMethodCall classMethodCall;
