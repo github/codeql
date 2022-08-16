@@ -558,6 +558,13 @@ private int toHex(string hex) {
 }
 
 /**
+ * A word boundary, that is, a regular expression term of the form `\b`.
+ */
+class RegExpWordBoundary extends RegExpSpecialChar {
+  RegExpWordBoundary() { this.getChar() = "\\b" }
+}
+
+/**
  * A character class escape in a regular expression.
  * That is, an escaped character that denotes multiple characters.
  *

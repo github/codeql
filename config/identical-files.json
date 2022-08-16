@@ -502,15 +502,17 @@
     "ruby/ql/lib/codeql/ruby/security/regexp/SuperlinearBackTracking.qll",
     "java/ql/lib/semmle/code/java/security/regexp/SuperlinearBackTracking.qll"
   ],
-  "RegexpMatching Python/JS/Ruby": [
+  "RegexpMatching Python/JS/Ruby/Java": [
     "javascript/ql/lib/semmle/javascript/security/regexp/RegexpMatching.qll",
     "python/ql/lib/semmle/python/security/regexp/RegexpMatching.qll",
-    "ruby/ql/lib/codeql/ruby/security/regexp/RegexpMatching.qll"
+    "ruby/ql/lib/codeql/ruby/security/regexp/RegexpMatching.qll",
+    "java/ql/lib/semmle/code/java/security/regexp/RegexpMatching.qll"
   ],
-  "BadTagFilterQuery Python/JS/Ruby": [
+  "BadTagFilterQuery Python/JS/Ruby/Java": [
     "javascript/ql/lib/semmle/javascript/security/BadTagFilterQuery.qll",
     "python/ql/lib/semmle/python/security/BadTagFilterQuery.qll",
-    "ruby/ql/lib/codeql/ruby/security/BadTagFilterQuery.qll"
+    "ruby/ql/lib/codeql/ruby/security/BadTagFilterQuery.qll",
+    "java/ql/lib/semmle/code/java/security/BadTagFilterQuery.qll"
   ],
   "OverlyLargeRange Python/JS/Ruby/Java": [
     "javascript/ql/lib/semmle/javascript/security/OverlyLargeRangeQuery.qll",
