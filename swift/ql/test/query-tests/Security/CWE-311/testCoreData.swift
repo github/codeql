@@ -65,6 +65,11 @@ func test2(obj : MyManagedObject, password : String, password_file : String) {
 	obj.myValue = password_file // GOOD (not sensitive)
 }
 
+class MyClass {
+	var harmless = "abc"
+	var password = "123"
+}
+
 func test3(obj : NSManagedObject, x : String) {
 	// alternative evidence of sensitivity...
 
@@ -74,6 +79,10 @@ func test3(obj : NSManagedObject, x : String) {
 
 	var y = getPassword();
 	obj.setValue(y, forKey: "myKey") // BAD
+
+	var z = MyClass()
+	obj.setValue(z.harmless, forKey: "myKey") // GOOD (not sensitive)
+	obj.setValue(z.password, forKey: "myKey") // BAD
 }
 
 func test4(obj : NSManagedObject, pwd : String) {
