@@ -79,10 +79,7 @@ class NonConstantTimeComparisonConfig extends TaintTracking::Configuration {
 
   override predicate isSource(DataFlow::Node source) { source.asExpr() instanceof CredentialExpr }
 
-  override predicate isSink(DataFlow::Node sink) {
-    isNonConstantEqualsCallArgument(sink.asExpr()) or
-    isNonConstantComparisonCallArgument(sink.asExpr())
-  }
+  override predicate isSink(DataFlow::Node sink) { sink instanceof NonConstantTimeComparisonSink }
 }
 
 from DataFlow::PathNode source, DataFlow::PathNode sink, NonConstantTimeComparisonConfig conf
