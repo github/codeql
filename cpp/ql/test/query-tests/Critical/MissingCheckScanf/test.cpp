@@ -1,4 +1,6 @@
-typedef struct {} FILE;
+typedef struct
+{
+} FILE;
 
 int scanf(const char *format, ...);
 int fscanf(FILE *stream, const char *format, ...);
@@ -215,6 +217,21 @@ int main()
 
 		scanf("%d", &i); // BAD: may not have written `i`
 		use(*ptr_i);
+	}
+
+	{
+		int i;
+		int *ptr_i = &i;
+
+		scanf("%d", ptr_i); // BAD: may not have written `*ptr_i`
+		use(i);
+	}
+
+	{
+		int i;
+		scanf("%d", &i);
+		i = 42;
+		use(i); // GOOD [FALSE POSITIVE]
 	}
 
 	// --- weird formatting strings ---
