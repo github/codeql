@@ -79,19 +79,19 @@ private class SystemIOTextReaderFlowModelCsv extends SummaryModelCsv {
   override predicate row(string row) {
     row =
       [
-        "System.IO;TextReader;true;Read;();;Argument[Qualifier];ReturnValue;taint;manual",
-        "System.IO;TextReader;true;Read;(System.Char[],System.Int32,System.Int32);;Argument[Qualifier];ReturnValue;taint;manual",
-        "System.IO;TextReader;true;Read;(System.Span<System.Char>);;Argument[Qualifier];ReturnValue;taint;manual",
-        "System.IO;TextReader;true;ReadAsync;(System.Char[],System.Int32,System.Int32);;Argument[Qualifier];ReturnValue;taint;manual",
-        "System.IO;TextReader;true;ReadAsync;(System.Memory<System.Char>,System.Threading.CancellationToken);;Argument[Qualifier];ReturnValue;taint;manual",
-        "System.IO;TextReader;true;ReadBlock;(System.Char[],System.Int32,System.Int32);;Argument[Qualifier];ReturnValue;taint;manual",
-        "System.IO;TextReader;true;ReadBlock;(System.Span<System.Char>);;Argument[Qualifier];ReturnValue;taint;manual",
-        "System.IO;TextReader;true;ReadBlockAsync;(System.Char[],System.Int32,System.Int32);;Argument[Qualifier];ReturnValue;taint;manual",
-        "System.IO;TextReader;true;ReadBlockAsync;(System.Memory<System.Char>,System.Threading.CancellationToken);;Argument[Qualifier];ReturnValue;taint;manual",
-        "System.IO;TextReader;true;ReadLine;();;Argument[Qualifier];ReturnValue;taint;manual",
-        "System.IO;TextReader;true;ReadLineAsync;();;Argument[Qualifier];ReturnValue;taint;manual",
-        "System.IO;TextReader;true;ReadToEnd;();;Argument[Qualifier];ReturnValue;taint;manual",
-        "System.IO;TextReader;true;ReadToEndAsync;();;Argument[Qualifier];ReturnValue;taint;manual",
+        "System.IO;TextReader;true;Read;();;Argument[this];ReturnValue;taint;manual",
+        "System.IO;TextReader;true;Read;(System.Char[],System.Int32,System.Int32);;Argument[this];ReturnValue;taint;manual",
+        "System.IO;TextReader;true;Read;(System.Span<System.Char>);;Argument[this];ReturnValue;taint;manual",
+        "System.IO;TextReader;true;ReadAsync;(System.Char[],System.Int32,System.Int32);;Argument[this];ReturnValue;taint;manual",
+        "System.IO;TextReader;true;ReadAsync;(System.Memory<System.Char>,System.Threading.CancellationToken);;Argument[this];ReturnValue;taint;manual",
+        "System.IO;TextReader;true;ReadBlock;(System.Char[],System.Int32,System.Int32);;Argument[this];ReturnValue;taint;manual",
+        "System.IO;TextReader;true;ReadBlock;(System.Span<System.Char>);;Argument[this];ReturnValue;taint;manual",
+        "System.IO;TextReader;true;ReadBlockAsync;(System.Char[],System.Int32,System.Int32);;Argument[this];ReturnValue;taint;manual",
+        "System.IO;TextReader;true;ReadBlockAsync;(System.Memory<System.Char>,System.Threading.CancellationToken);;Argument[this];ReturnValue;taint;manual",
+        "System.IO;TextReader;true;ReadLine;();;Argument[this];ReturnValue;taint;manual",
+        "System.IO;TextReader;true;ReadLineAsync;();;Argument[this];ReturnValue;taint;manual",
+        "System.IO;TextReader;true;ReadToEnd;();;Argument[this];ReturnValue;taint;manual",
+        "System.IO;TextReader;true;ReadToEndAsync;();;Argument[this];ReturnValue;taint;manual",
       ]
   }
 }
@@ -105,7 +105,7 @@ class SystemIOStringReaderClass extends SystemIOClass {
 private class SystemIOStringReaderFlowModelCsv extends SummaryModelCsv {
   override predicate row(string row) {
     row =
-      "System.IO;StringReader;false;StringReader;(System.String);;Argument[0];Argument[Qualifier];taint;manual"
+      "System.IO;StringReader;false;StringReader;(System.String);;Argument[0];Argument[this];taint;manual"
   }
 }
 
@@ -150,20 +150,20 @@ private class SystemIOStreamFlowModelCsv extends SummaryModelCsv {
   override predicate row(string row) {
     row =
       [
-        "System.IO;Stream;false;CopyTo;(System.IO.Stream);;Argument[Qualifier];Argument[0];taint;manual",
-        "System.IO;Stream;false;CopyToAsync;(System.IO.Stream);;Argument[Qualifier];Argument[0];taint;manual",
-        "System.IO;Stream;false;CopyToAsync;(System.IO.Stream,System.Int32);;Argument[Qualifier];Argument[0];taint;manual",
-        "System.IO;Stream;false;CopyToAsync;(System.IO.Stream,System.Threading.CancellationToken);;Argument[Qualifier];Argument[0];taint;manual",
-        "System.IO;Stream;false;ReadAsync;(System.Byte[],System.Int32,System.Int32);;Argument[Qualifier];Argument[0].Element;taint;manual",
-        "System.IO;Stream;false;WriteAsync;(System.Byte[],System.Int32,System.Int32);;Argument[0].Element;Argument[Qualifier];taint;manual",
-        "System.IO;Stream;true;BeginRead;(System.Byte[],System.Int32,System.Int32,System.AsyncCallback,System.Object);;Argument[Qualifier];Argument[0].Element;taint;manual",
-        "System.IO;Stream;true;BeginWrite;(System.Byte[],System.Int32,System.Int32,System.AsyncCallback,System.Object);;Argument[0].Element;Argument[Qualifier];taint;manual",
-        "System.IO;Stream;true;CopyTo;(System.IO.Stream,System.Int32);;Argument[Qualifier];Argument[0];taint;manual",
-        "System.IO;Stream;true;CopyToAsync;(System.IO.Stream,System.Int32,System.Threading.CancellationToken);;Argument[Qualifier];Argument[0];taint;manual",
-        "System.IO;Stream;true;Read;(System.Byte[],System.Int32,System.Int32);;Argument[Qualifier];Argument[0].Element;taint;manual",
-        "System.IO;Stream;true;ReadAsync;(System.Byte[],System.Int32,System.Int32,System.Threading.CancellationToken);;Argument[Qualifier];Argument[0].Element;taint;manual",
-        "System.IO;Stream;true;Write;(System.Byte[],System.Int32,System.Int32);;Argument[0].Element;Argument[Qualifier];taint;manual",
-        "System.IO;Stream;true;WriteAsync;(System.Byte[],System.Int32,System.Int32,System.Threading.CancellationToken);;Argument[0].Element;Argument[Qualifier];taint;manual"
+        "System.IO;Stream;false;CopyTo;(System.IO.Stream);;Argument[this];Argument[0];taint;manual",
+        "System.IO;Stream;false;CopyToAsync;(System.IO.Stream);;Argument[this];Argument[0];taint;manual",
+        "System.IO;Stream;false;CopyToAsync;(System.IO.Stream,System.Int32);;Argument[this];Argument[0];taint;manual",
+        "System.IO;Stream;false;CopyToAsync;(System.IO.Stream,System.Threading.CancellationToken);;Argument[this];Argument[0];taint;manual",
+        "System.IO;Stream;false;ReadAsync;(System.Byte[],System.Int32,System.Int32);;Argument[this];Argument[0].Element;taint;manual",
+        "System.IO;Stream;false;WriteAsync;(System.Byte[],System.Int32,System.Int32);;Argument[0].Element;Argument[this];taint;manual",
+        "System.IO;Stream;true;BeginRead;(System.Byte[],System.Int32,System.Int32,System.AsyncCallback,System.Object);;Argument[this];Argument[0].Element;taint;manual",
+        "System.IO;Stream;true;BeginWrite;(System.Byte[],System.Int32,System.Int32,System.AsyncCallback,System.Object);;Argument[0].Element;Argument[this];taint;manual",
+        "System.IO;Stream;true;CopyTo;(System.IO.Stream,System.Int32);;Argument[this];Argument[0];taint;manual",
+        "System.IO;Stream;true;CopyToAsync;(System.IO.Stream,System.Int32,System.Threading.CancellationToken);;Argument[this];Argument[0];taint;manual",
+        "System.IO;Stream;true;Read;(System.Byte[],System.Int32,System.Int32);;Argument[this];Argument[0].Element;taint;manual",
+        "System.IO;Stream;true;ReadAsync;(System.Byte[],System.Int32,System.Int32,System.Threading.CancellationToken);;Argument[this];Argument[0].Element;taint;manual",
+        "System.IO;Stream;true;Write;(System.Byte[],System.Int32,System.Int32);;Argument[0].Element;Argument[this];taint;manual",
+        "System.IO;Stream;true;WriteAsync;(System.Byte[],System.Int32,System.Int32,System.Threading.CancellationToken);;Argument[0].Element;Argument[this];taint;manual"
       ]
   }
 }
@@ -184,12 +184,12 @@ private class SystemIOMemoryStreamFlowModelCsv extends SummaryModelCsv {
   override predicate row(string row) {
     row =
       [
-        "System.IO;MemoryStream;false;MemoryStream;(System.Byte[]);;Argument[0];Argument[Qualifier];taint;manual",
-        "System.IO;MemoryStream;false;MemoryStream;(System.Byte[],System.Boolean);;Argument[0].Element;Argument[Qualifier];taint;manual",
-        "System.IO;MemoryStream;false;MemoryStream;(System.Byte[],System.Int32,System.Int32);;Argument[0].Element;Argument[Qualifier];taint;manual",
-        "System.IO;MemoryStream;false;MemoryStream;(System.Byte[],System.Int32,System.Int32,System.Boolean);;Argument[0].Element;Argument[Qualifier];taint;manual",
-        "System.IO;MemoryStream;false;MemoryStream;(System.Byte[],System.Int32,System.Int32,System.Boolean,System.Boolean);;Argument[0].Element;Argument[Qualifier];taint;manual",
-        "System.IO;MemoryStream;false;ToArray;();;Argument[Qualifier];ReturnValue;taint;manual"
+        "System.IO;MemoryStream;false;MemoryStream;(System.Byte[]);;Argument[0];Argument[this];taint;manual",
+        "System.IO;MemoryStream;false;MemoryStream;(System.Byte[],System.Boolean);;Argument[0].Element;Argument[this];taint;manual",
+        "System.IO;MemoryStream;false;MemoryStream;(System.Byte[],System.Int32,System.Int32);;Argument[0].Element;Argument[this];taint;manual",
+        "System.IO;MemoryStream;false;MemoryStream;(System.Byte[],System.Int32,System.Int32,System.Boolean);;Argument[0].Element;Argument[this];taint;manual",
+        "System.IO;MemoryStream;false;MemoryStream;(System.Byte[],System.Int32,System.Int32,System.Boolean,System.Boolean);;Argument[0].Element;Argument[this];taint;manual",
+        "System.IO;MemoryStream;false;ToArray;();;Argument[this];ReturnValue;taint;manual"
       ]
   }
 }
@@ -197,7 +197,7 @@ private class SystemIOMemoryStreamFlowModelCsv extends SummaryModelCsv {
 /** Sources for `System.IO.FileStream`. */
 private class SystemIOFileStreamSourceModelCsv extends SourceModelCsv {
   override predicate row(string row) {
-    row = "System.IO;FileStream;false;FileStream;;;Argument[Qualifier];file;manual"
+    row = "System.IO;FileStream;false;FileStream;;;Argument[this];file;manual"
   }
 }
 
@@ -206,12 +206,12 @@ private class SystemIOFileStreamSummaryModelCsv extends SummaryModelCsv {
   override predicate row(string row) {
     row =
       [
-        "System.IO;FileStream;false;FileStream;(System.String,System.IO.FileMode,System.IO.FileAccess,System.IO.FileShare,System.Int32,System.IO.FileOptions);;Argument[0];Argument[Qualifier];taint;manual",
-        "System.IO;FileStream;false;FileStream;(System.String,System.IO.FileMode,System.IO.FileAccess,System.IO.FileShare,System.Int32);;Argument[0];Argument[Qualifier];taint;manual",
-        "System.IO;FileStream;false;FileStream;(System.String,System.IO.FileMode,System.IO.FileAccess,System.IO.FileShare);;Argument[0];Argument[Qualifier];taint;manual",
-        "System.IO;FileStream;false;FileStream;(System.String,System.IO.FileMode,System.IO.FileAccess,System.IO.FileShare,System.Int32,System.Boolean);;Argument[0];Argument[Qualifier];taint;manual",
-        "System.IO;FileStream;false;FileStream;(System.String,System.IO.FileMode,System.IO.FileAccess);;Argument[0];Argument[Qualifier];taint;manual",
-        "System.IO;FileStream;false;FileStream;(System.String,System.IO.FileMode);;Argument[0];Argument[Qualifier];taint;manual",
+        "System.IO;FileStream;false;FileStream;(System.String,System.IO.FileMode,System.IO.FileAccess,System.IO.FileShare,System.Int32,System.IO.FileOptions);;Argument[0];Argument[this];taint;manual",
+        "System.IO;FileStream;false;FileStream;(System.String,System.IO.FileMode,System.IO.FileAccess,System.IO.FileShare,System.Int32);;Argument[0];Argument[this];taint;manual",
+        "System.IO;FileStream;false;FileStream;(System.String,System.IO.FileMode,System.IO.FileAccess,System.IO.FileShare);;Argument[0];Argument[this];taint;manual",
+        "System.IO;FileStream;false;FileStream;(System.String,System.IO.FileMode,System.IO.FileAccess,System.IO.FileShare,System.Int32,System.Boolean);;Argument[0];Argument[this];taint;manual",
+        "System.IO;FileStream;false;FileStream;(System.String,System.IO.FileMode,System.IO.FileAccess);;Argument[0];Argument[this];taint;manual",
+        "System.IO;FileStream;false;FileStream;(System.String,System.IO.FileMode);;Argument[0];Argument[this];taint;manual",
       ]
   }
 }
@@ -219,6 +219,6 @@ private class SystemIOFileStreamSummaryModelCsv extends SummaryModelCsv {
 /** Data flow for `System.IO.StreamReader`. */
 private class SystemIOStreamSummaryModelCsv extends SummaryModelCsv {
   override predicate row(string row) {
-    row = "System.IO;StreamReader;false;StreamReader;;;Argument[0];Argument[Qualifier];taint;manual"
+    row = "System.IO;StreamReader;false;StreamReader;;;Argument[0];Argument[this];taint;manual"
   }
 }

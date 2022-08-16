@@ -228,11 +228,11 @@ module JsonNET {
     override predicate row(string row) {
       row =
         [
-          "Newtonsoft.Json.Linq;JToken;false;SelectToken;(System.String);;Argument[Qualifier];ReturnValue;taint;manual",
-          "Newtonsoft.Json.Linq;JToken;false;SelectToken;(System.String,Newtonsoft.Json.Linq.JsonSelectSettings);;Argument[Qualifier];ReturnValue;taint;manual",
-          "Newtonsoft.Json.Linq;JToken;false;SelectToken;(System.String,System.Boolean);;Argument[Qualifier];ReturnValue;taint;manual",
-          "Newtonsoft.Json.Linq;JToken;false;ToString;();;Argument[Qualifier];ReturnValue;taint;manual",
-          "Newtonsoft.Json.Linq;JToken;false;ToString;(Newtonsoft.Json.Formatting,Newtonsoft.Json.JsonConverter[]);;Argument[Qualifier];ReturnValue;taint;manual",
+          "Newtonsoft.Json.Linq;JToken;false;SelectToken;(System.String);;Argument[this];ReturnValue;taint;manual",
+          "Newtonsoft.Json.Linq;JToken;false;SelectToken;(System.String,Newtonsoft.Json.Linq.JsonSelectSettings);;Argument[this];ReturnValue;taint;manual",
+          "Newtonsoft.Json.Linq;JToken;false;SelectToken;(System.String,System.Boolean);;Argument[this];ReturnValue;taint;manual",
+          "Newtonsoft.Json.Linq;JToken;false;ToString;();;Argument[this];ReturnValue;taint;manual",
+          "Newtonsoft.Json.Linq;JToken;false;ToString;(Newtonsoft.Json.Formatting,Newtonsoft.Json.JsonConverter[]);;Argument[this];ReturnValue;taint;manual",
         ]
     }
   }
@@ -253,21 +253,21 @@ module JsonNET {
     override predicate row(string row) {
       row =
         [
-          "Newtonsoft.Json.Linq;JObject;false;Add;(System.Collections.Generic.KeyValuePair<System.String,Newtonsoft.Json.Linq.JToken>);;Argument[0].Property[System.Collections.Generic.KeyValuePair<,>.Key];Argument[Qualifier].Element.Property[System.Collections.Generic.KeyValuePair<,>.Key];value;manual",
-          "Newtonsoft.Json.Linq;JObject;false;Add;(System.Collections.Generic.KeyValuePair<System.String,Newtonsoft.Json.Linq.JToken>);;Argument[0].Property[System.Collections.Generic.KeyValuePair<,>.Value];Argument[Qualifier].Element.Property[System.Collections.Generic.KeyValuePair<,>.Value];value;manual",
-          "Newtonsoft.Json.Linq;JObject;false;JObject;(Newtonsoft.Json.Linq.JObject);;Argument[0].Element.Property[System.Collections.Generic.KeyValuePair<,>.Key];Argument[Qualifier].Element.Property[System.Collections.Generic.KeyValuePair<,>.Key];value;manual",
-          "Newtonsoft.Json.Linq;JObject;false;JObject;(Newtonsoft.Json.Linq.JObject);;Argument[0].Element.Property[System.Collections.Generic.KeyValuePair<,>.Value];Argument[Qualifier].Element.Property[System.Collections.Generic.KeyValuePair<,>.Value];value;manual",
-          "Newtonsoft.Json.Linq;JObject;false;JObject;(System.Object[]);;Argument[0].Element.Property[System.Collections.Generic.KeyValuePair<,>.Key];Argument[Qualifier].Element.Property[System.Collections.Generic.KeyValuePair<,>.Key];value;manual",
-          "Newtonsoft.Json.Linq;JObject;false;JObject;(System.Object[]);;Argument[0].Element.Property[System.Collections.Generic.KeyValuePair<,>.Value];Argument[Qualifier].Element.Property[System.Collections.Generic.KeyValuePair<,>.Value];value;manual",
+          "Newtonsoft.Json.Linq;JObject;false;Add;(System.Collections.Generic.KeyValuePair<System.String,Newtonsoft.Json.Linq.JToken>);;Argument[0].Property[System.Collections.Generic.KeyValuePair<,>.Key];Argument[this].Element.Property[System.Collections.Generic.KeyValuePair<,>.Key];value;manual",
+          "Newtonsoft.Json.Linq;JObject;false;Add;(System.Collections.Generic.KeyValuePair<System.String,Newtonsoft.Json.Linq.JToken>);;Argument[0].Property[System.Collections.Generic.KeyValuePair<,>.Value];Argument[this].Element.Property[System.Collections.Generic.KeyValuePair<,>.Value];value;manual",
+          "Newtonsoft.Json.Linq;JObject;false;JObject;(Newtonsoft.Json.Linq.JObject);;Argument[0].Element.Property[System.Collections.Generic.KeyValuePair<,>.Key];Argument[this].Element.Property[System.Collections.Generic.KeyValuePair<,>.Key];value;manual",
+          "Newtonsoft.Json.Linq;JObject;false;JObject;(Newtonsoft.Json.Linq.JObject);;Argument[0].Element.Property[System.Collections.Generic.KeyValuePair<,>.Value];Argument[this].Element.Property[System.Collections.Generic.KeyValuePair<,>.Value];value;manual",
+          "Newtonsoft.Json.Linq;JObject;false;JObject;(System.Object[]);;Argument[0].Element.Property[System.Collections.Generic.KeyValuePair<,>.Key];Argument[this].Element.Property[System.Collections.Generic.KeyValuePair<,>.Key];value;manual",
+          "Newtonsoft.Json.Linq;JObject;false;JObject;(System.Object[]);;Argument[0].Element.Property[System.Collections.Generic.KeyValuePair<,>.Value];Argument[this].Element.Property[System.Collections.Generic.KeyValuePair<,>.Value];value;manual",
           "Newtonsoft.Json.Linq;JObject;false;Parse;(System.String);;Argument[0];ReturnValue;taint;manual",
           "Newtonsoft.Json.Linq;JObject;false;Parse;(System.String,Newtonsoft.Json.Linq.JsonLoadSettings);;Argument[0];ReturnValue;taint;manual",
-          "Newtonsoft.Json.Linq;JObject;false;get_Item;(System.Object);;Argument[Qualifier].Element;ReturnValue;value;manual",
-          "Newtonsoft.Json.Linq;JObject;false;get_Item;(System.Object);;Argument[Qualifier].Element.Property[System.Collections.Generic.KeyValuePair<,>.Value];ReturnValue;value;manual",
-          "Newtonsoft.Json.Linq;JObject;false;get_Item;(System.String);;Argument[Qualifier].Element;ReturnValue;value;manual",
-          "Newtonsoft.Json.Linq;JObject;false;set_Item;(System.Object,Newtonsoft.Json.Linq.JToken);;Argument[0];Argument[Qualifier].Element.Property[System.Collections.Generic.KeyValuePair<,>.Key];value;manual",
-          "Newtonsoft.Json.Linq;JObject;false;set_Item;(System.Object,Newtonsoft.Json.Linq.JToken);;Argument[1];Argument[Qualifier].Element;value;manual",
-          "Newtonsoft.Json.Linq;JObject;false;set_Item;(System.Object,Newtonsoft.Json.Linq.JToken);;Argument[1];Argument[Qualifier].Element.Property[System.Collections.Generic.KeyValuePair<,>.Value];value;manual",
-          "Newtonsoft.Json.Linq;JObject;false;set_Item;(System.String,Newtonsoft.Json.Linq.JToken);;Argument[1];Argument[Qualifier].Element;value;manual",
+          "Newtonsoft.Json.Linq;JObject;false;get_Item;(System.Object);;Argument[this].Element;ReturnValue;value;manual",
+          "Newtonsoft.Json.Linq;JObject;false;get_Item;(System.Object);;Argument[this].Element.Property[System.Collections.Generic.KeyValuePair<,>.Value];ReturnValue;value;manual",
+          "Newtonsoft.Json.Linq;JObject;false;get_Item;(System.String);;Argument[this].Element;ReturnValue;value;manual",
+          "Newtonsoft.Json.Linq;JObject;false;set_Item;(System.Object,Newtonsoft.Json.Linq.JToken);;Argument[0];Argument[this].Element.Property[System.Collections.Generic.KeyValuePair<,>.Key];value;manual",
+          "Newtonsoft.Json.Linq;JObject;false;set_Item;(System.Object,Newtonsoft.Json.Linq.JToken);;Argument[1];Argument[this].Element;value;manual",
+          "Newtonsoft.Json.Linq;JObject;false;set_Item;(System.Object,Newtonsoft.Json.Linq.JToken);;Argument[1];Argument[this].Element.Property[System.Collections.Generic.KeyValuePair<,>.Value];value;manual",
+          "Newtonsoft.Json.Linq;JObject;false;set_Item;(System.String,Newtonsoft.Json.Linq.JToken);;Argument[1];Argument[this].Element;value;manual",
         ]
     }
   }
@@ -277,8 +277,8 @@ module JsonNET {
     override predicate row(string row) {
       row =
         [
-          "Newtonsoft.Json.Linq;JArray;false;get_Item;(System.Object);;Argument[Qualifier].Element;ReturnValue;value;manual",
-          "Newtonsoft.Json.Linq;JArray;false;set_Item;(System.Object,Newtonsoft.Json.Linq.JToken);;Argument[1];Argument[Qualifier].Element;value;manual",
+          "Newtonsoft.Json.Linq;JArray;false;get_Item;(System.Object);;Argument[this].Element;ReturnValue;value;manual",
+          "Newtonsoft.Json.Linq;JArray;false;set_Item;(System.Object,Newtonsoft.Json.Linq.JToken);;Argument[1];Argument[this].Element;value;manual",
         ]
     }
   }
@@ -288,8 +288,8 @@ module JsonNET {
     override predicate row(string row) {
       row =
         [
-          "Newtonsoft.Json.Linq;JConstructor;false;get_Item;(System.Object);;Argument[Qualifier].Element;ReturnValue;value;manual",
-          "Newtonsoft.Json.Linq;JConstructor;false;set_Item;(System.Object,Newtonsoft.Json.Linq.JToken);;Argument[1];Argument[Qualifier].Element;value;manual",
+          "Newtonsoft.Json.Linq;JConstructor;false;get_Item;(System.Object);;Argument[this].Element;ReturnValue;value;manual",
+          "Newtonsoft.Json.Linq;JConstructor;false;set_Item;(System.Object,Newtonsoft.Json.Linq.JToken);;Argument[1];Argument[this].Element;value;manual",
         ]
     }
   }
@@ -298,7 +298,7 @@ module JsonNET {
   private class NewtonsoftJsonLinqJContainerFlowModelCsv extends SummaryModelCsv {
     override predicate row(string row) {
       row =
-        "Newtonsoft.Json.Linq;JContainer;true;Add;(System.Object);;Argument[0];Argument[Qualifier].Element;value;manual"
+        "Newtonsoft.Json.Linq;JContainer;true;Add;(System.Object);;Argument[0];Argument[this].Element;value;manual"
     }
   }
 }
