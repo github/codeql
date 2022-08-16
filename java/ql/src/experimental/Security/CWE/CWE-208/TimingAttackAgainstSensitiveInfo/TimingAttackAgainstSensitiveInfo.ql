@@ -22,7 +22,7 @@ import DataFlow::PathGraph
 class NonConstantTimeComparisonConfig extends TaintTracking::Configuration {
   NonConstantTimeComparisonConfig() { this = "NonConstantTimeComparisonConfig" }
 
-  override predicate isSource(DataFlow::Node source) { source.asExpr() instanceof CredentialExpr }
+  override predicate isSource(DataFlow::Node source) { source instanceof SecretSource }
 
   override predicate isSink(DataFlow::Node sink) { sink instanceof NonConstantTimeComparisonSink }
 }
