@@ -4515,14 +4515,19 @@ open class KotlinFileExtractor(
         tw.writeHasLocation(constructorBlockId, locId)
 
         // Super call
-        val superCallId = tw.getFreshIdLabel<DbSuperconstructorinvocationstmt>()
-        tw.writeStmts_superconstructorinvocationstmt(superCallId, constructorBlockId, 0, ids.constructor)
+        val baseClass = superTypes.first().classOrNull
+        if (baseClass == null) {
+            logger.warnElement("Cannot find base class", currentDeclaration)
+        } else {
+            val superCallId = tw.getFreshIdLabel<DbSuperconstructorinvocationstmt>()
+            tw.writeStmts_superconstructorinvocationstmt(superCallId, constructorBlockId, 0, ids.constructor)
 
-        val baseConstructor = superTypes.first().classOrNull!!.owner.declarations.find { it is IrFunction && it.symbol is IrConstructorSymbol }
-        val baseConstructorId = useFunction<DbConstructor>(baseConstructor as IrFunction)
+            val baseConstructor = baseClass.owner.declarations.find { it is IrFunction && it.symbol is IrConstructorSymbol }
+            val baseConstructorId = useFunction<DbConstructor>(baseConstructor as IrFunction)
 
-        tw.writeHasLocation(superCallId, locId)
-        tw.writeCallableBinding(superCallId.cast<DbCaller>(), baseConstructorId)
+            tw.writeHasLocation(superCallId, locId)
+            tw.writeCallableBinding(superCallId.cast<DbCaller>(), baseConstructorId)
+        }
 
         addModifiers(id, "final")
         addVisibilityModifierToLocalOrAnonymousClass(id)
