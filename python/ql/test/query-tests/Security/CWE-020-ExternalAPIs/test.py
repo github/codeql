@@ -32,16 +32,16 @@ def hmac_example2():
 def unknown_lib_1():
     from unknown.lib import func
     data = request.args.get("data")
-    func(data) # TODO: currently not recognized
-    func(kw=data) # TODO: currently not recognized
+    func(data)
+    func(kw=data)
 
 
 @app.route("/unknown-lib-2")
 def unknown_lib_2():
     import unknown.lib
     data = request.args.get("data")
-    unknown.lib.func(data) # TODO: currently not recognized
-    unknown.lib.func(kw=data) # TODO: currently not recognized
+    unknown.lib.func(data)
+    unknown.lib.func(kw=data)
 
 
 if __name__ == "__main__":
