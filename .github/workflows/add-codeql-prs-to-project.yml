@@ -1,0 +1,22 @@
+name: Add CodeQL pull requests to project
+
+on:
+  pull_request:
+    types:
+      - opened
+      - labeled
+
+jobs:
+  add-codeql-static-prs-to-project:
+    name: Add CodeQL static team PRs to project
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: read
+      repository-projects: write
+    steps:
+      - uses: actions/add-to-project@cb277e5c4351a2c0fdb00059bb8fdedb309a7957
+        with:
+          project-url: https://github.com/orgs/github/projects/6901
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          labeled: C#, Go, Java, Kotlin
+          label-operator: OR
