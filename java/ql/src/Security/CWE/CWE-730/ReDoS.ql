@@ -14,7 +14,7 @@
  */
 
 import java
-import semmle.code.java.security.performance.ExponentialBackTracking
+import semmle.code.java.security.regexp.ExponentialBackTracking
 
 from RegExpTerm t, string pump, State s, string prefixMsg
 where
