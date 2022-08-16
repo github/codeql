@@ -78,18 +78,3 @@ private class NonDelegateCall extends Expr {
 private class NormalReturnNode extends Node {
   NormalReturnNode() { this.(ReturnNode).getKind() instanceof NormalReturnKind }
 }
-
-pragma[noinline]
-private predicate flowIntoNonDelegateCall(NonDelegateCall call, Expr arg, DotNet::Parameter p) {
-  exists(DotNet::Callable callable, int i |
-    callable = call.getARuntimeTarget() and
-    p = callable.getAParameter() and
-    arg = call.getArgument(i) and
-    i = p.getPosition()
-  )
-}
-
-pragma[noinline]
-private predicate flowOutOfNonDelegateCall(NonDelegateCall call, NormalReturnNode ret) {
-  call.getARuntimeTarget() = ret.getEnclosingCallable()
-}
