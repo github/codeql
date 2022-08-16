@@ -39,7 +39,11 @@ deprecated class SafeExternalAPI = SafeExternalApi;
 /** The default set of "safe" external APIs. */
 private class DefaultSafeExternalApi extends SafeExternalApi {
   override DataFlow::CallCfgNode getSafeCall() {
-    result = API::builtin(["len", "isinstance", "getattr", "hasattr"]).getACall()
+    result =
+      API::builtin([
+          "len", "enumerate", "isinstance", "getattr", "hasattr", "bool", "float", "int", "repr",
+          "str", "type"
+        ]).getACall()
   }
 }
 
@@ -57,28 +61,40 @@ string apiNodeToStringRepr(API::Node node) {
   exists(API::Node base, string basename |
     base.getDepth() < node.getDepth() and
     basename = apiNodeToStringRepr(base) and
-    not base = API::builtin("None")
+    not base = API::builtin(["None", "True", "False"])
   |
     exists(string m | node = base.getMember(m) | result = basename + "." + m)
     or
     node = base.getReturn() and
-    result = basename + "()"
+    result = basename + "()" and
+    not base.getACall() = any(SafeExternalApi safe).getSafeCall()
     or
     node = base.getAwaited() and
     result = basename
   )
 }
 
+predicate resolvedCall(CallNode call) {
+  DataFlowPrivate::resolveCall(call, _, _) or
+  DataFlowPrivate::resolveClassCall(call, _)
+}
+
 newtype TInterestingExternalApiCall =
   TUnresolvedCall(DataFlow::CallCfgNode call) {
     exists(call.getLocation().getFile().getRelativePath()) and
-    not exists(DataFlowPrivate::DataFlowCall dfCall | dfCall.getNode() = call.getNode()) and
+    not resolvedCall(call.getNode()) and
     not call = any(SafeExternalApi safe).getSafeCall()
   } or
   TResolvedCall(DataFlowPrivate::DataFlowCall call) {
     exists(call.getLocation().getFile().getRelativePath()) and
     not call.getCallable() = any(SafeExternalApi safe).getSafeCallable() and
-    not exists(call.getCallable().getLocation().getFile().getRelativePath())
+    // ignore calls inside codebase, and ignore calls that are marked as  safe. This is
+    // only needed as long as we extract dependencies. When we stop doing that, all
+    // targets of resolved calls will be from user-written code.
+    not exists(call.getCallable().getLocation().getFile().getRelativePath()) and
+    not exists(DataFlow::CallCfgNode callCfgNode | callCfgNode.getNode() = call.getNode() |
+      any(SafeExternalApi safe).getSafeCall() = callCfgNode
+    )
   }
 
 abstract class InterestingExternalApiCall extends TInterestingExternalApiCall {
@@ -103,7 +119,9 @@ class ResolvedCall extends InterestingExternalApiCall, TResolvedCall {
     result = dfCall.getArgument(apos)
   }
 
-  override string toString() { result = "ExternalAPI:ResolvedCall" }
+  override string toString() {
+    result = "ExternalAPI:ResolvedCall: " + dfCall.getNode().getNode().toString()
+  }
 
   override string getApiName() {
     exists(DataFlow::CallCfgNode call, API::Node apiNode | dfCall.getNode() = call.getNode() |
@@ -124,7 +142,9 @@ class UnresolvedCall extends InterestingExternalApiCall, TUnresolvedCall {
     exists(string name | apos.isKeyword(name) | result = call.getArgByName(name))
   }
 
-  override string toString() { result = "ExternalAPI:UnresolvedCall" }
+  override string toString() {
+    result = "ExternalAPI:UnresolvedCall: " + call.getNode().getNode().toString()
+  }
 
   override string getApiName() {
     exists(API::Node apiNode |
