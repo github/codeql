@@ -40,8 +40,7 @@ private predicate global_var_scope(string name, Scope scope, GlobalVariable var)
 }
 
 pragma[nomagic]
-private predicate class_var_scope(Scope scope, string name, LocalVariable var) {
-  var.getScope() = scope and
-  scope instanceof Class and
+private predicate class_var_scope(Class cls, string name, LocalVariable var) {
+  var.getScope() = cls and
   var.getId() = name
 }
