@@ -171,16 +171,30 @@ class ActionMethodParameter extends RemoteFlowSource, DataFlow::ParameterNode {
 /** A data flow source of remote user input (ASP.NET Core). */
 abstract class AspNetCoreRemoteFlowSource extends RemoteFlowSource { }
 
+private predicate reachesMapGetArg(DataFlow::Node n) {
+  exists(MethodCall mc |
+    mc.getTarget() =
+      any(MicrosoftAspNetCoreBuilderEndpointRouteBuilderExtensions c).getMapGetMethod() and
+    n.asExpr() = mc.getArgument(2)
+  )
+  or
+  exists(DataFlow::Node mid | reachesMapGetArg(mid) |
+    DataFlow::localFlowStep(n, mid) or
+    n.asExpr() = mid.asExpr().(DelegateCreation).getArgument()
+  )
+}
+
 /** A parameter to a routing method delegate. */
-class RoutingMethodParameter extends AspNetCoreRemoteFlowSource, DataFlow::ParameterNode {
-  RoutingMethodParameter() {
-    exists(Parameter p, MethodCall m |
-      p = this.getParameter() and
-      p.fromSource()
+class AspNetCoreRoutingMethodParameter extends AspNetCoreRemoteFlowSource, DataFlow::ParameterNode {
+  AspNetCoreRoutingMethodParameter() {
+    exists(DataFlow::Node n, Callable c |
+      reachesMapGetArg(n) and
+      c.getAParameter() = this.asParameter() and
+      c.isSourceDeclaration()
     |
-      m.getTarget() =
-        any(MicrosoftAspNetCoreBuilderEndpointRouteBuilderExtensions c).getMapGetMethod() and
-      p = m.getArgument(2).(AnonymousFunctionExpr).getAParameter()
+      n.asExpr() = c
+      or
+      n.asExpr().(CallableAccess).getTarget().getUnboundDeclaration() = c
     )
   }
 
