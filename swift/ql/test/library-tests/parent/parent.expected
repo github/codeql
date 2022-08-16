@@ -877,10 +877,10 @@
 | patterns.swift:15:5:18:5 | switch 3 { ... } | SwitchStmt | patterns.swift:15:12:15:12 | 3 | IntegerLiteralExpr |
 | patterns.swift:15:5:18:5 | switch 3 { ... } | SwitchStmt | patterns.swift:16:5:16:17 | case ... | CaseStmt |
 | patterns.swift:15:5:18:5 | switch 3 { ... } | SwitchStmt | patterns.swift:17:5:17:13 | case ... | CaseStmt |
-| patterns.swift:16:5:16:17 | case ... | CaseStmt | patterns.swift:16:10:16:14 | SequenceExpr | CaseLabelItem |
+| patterns.swift:16:5:16:17 | case ... | CaseStmt | patterns.swift:16:10:16:14 | =~ ... | CaseLabelItem |
 | patterns.swift:16:5:16:17 | case ... | CaseStmt | patterns.swift:16:17:16:17 | { ... } | BraceStmt |
-| patterns.swift:16:10:16:14 | SequenceExpr | CaseLabelItem | patterns.swift:16:10:16:14 | SequenceExpr | ExprPattern |
-| patterns.swift:16:10:16:14 | SequenceExpr | ExprPattern | patterns.swift:16:10:16:14 | SequenceExpr | SequenceExpr |
+| patterns.swift:16:10:16:14 | =~ ... | CaseLabelItem | patterns.swift:16:10:16:14 | =~ ... | ExprPattern |
+| patterns.swift:16:10:16:14 | =~ ... | ExprPattern | patterns.swift:16:10:16:14 | SequenceExpr | SequenceExpr |
 | patterns.swift:16:10:16:14 | SequenceExpr | SequenceExpr | patterns.swift:16:10:16:10 | 1 | IntegerLiteralExpr |
 | patterns.swift:16:10:16:14 | SequenceExpr | SequenceExpr | patterns.swift:16:12:16:12 | OverloadedDeclRefExpr | OverloadedDeclRefExpr |
 | patterns.swift:16:10:16:14 | SequenceExpr | SequenceExpr | patterns.swift:16:14:16:14 | 2 | IntegerLiteralExpr |
@@ -1103,23 +1103,23 @@
 | statements.swift:53:1:62:1 | switch index { ... } | SwitchStmt | statements.swift:60:4:61:22 | case ... | CaseStmt |
 | statements.swift:53:1:62:1 | { ... } | BraceStmt | statements.swift:53:1:62:1 | switch index { ... } | SwitchStmt |
 | statements.swift:53:1:62:1 | { ... } | TopLevelCodeDecl | statements.swift:53:1:62:1 | { ... } | BraceStmt |
-| statements.swift:54:4:56:7 | case ... | CaseStmt | statements.swift:54:9:54:9 | 1 | CaseLabelItem |
+| statements.swift:54:4:56:7 | case ... | CaseStmt | statements.swift:54:9:54:9 | =~ ... | CaseLabelItem |
 | statements.swift:54:4:56:7 | case ... | CaseStmt | statements.swift:55:7:56:7 | { ... } | BraceStmt |
-| statements.swift:54:9:54:9 | 1 | CaseLabelItem | statements.swift:54:9:54:9 | 1 | ExprPattern |
-| statements.swift:54:9:54:9 | 1 | ExprPattern | statements.swift:54:9:54:9 | 1 | IntegerLiteralExpr |
+| statements.swift:54:9:54:9 | =~ ... | CaseLabelItem | statements.swift:54:9:54:9 | =~ ... | ExprPattern |
+| statements.swift:54:9:54:9 | =~ ... | ExprPattern | statements.swift:54:9:54:9 | 1 | IntegerLiteralExpr |
 | statements.swift:55:7:55:16 | call to print(_:separator:terminator:) | CallExpr | statements.swift:55:7:55:7 | print(_:separator:terminator:) | DeclRefExpr |
 | statements.swift:55:7:56:7 | { ... } | BraceStmt | statements.swift:55:7:55:16 | call to print(_:separator:terminator:) | CallExpr |
 | statements.swift:55:7:56:7 | { ... } | BraceStmt | statements.swift:56:7:56:7 | fallthrough | FallthroughStmt |
 | statements.swift:55:13:55:13 | (Any) ... | ErasureExpr | statements.swift:55:13:55:13 | 1 | StringLiteralExpr |
 | statements.swift:55:13:55:13 | [...] | ArrayExpr | statements.swift:55:13:55:13 | (Any) ... | ErasureExpr |
 | statements.swift:55:13:55:13 | [...] | VarargExpansionExpr | statements.swift:55:13:55:13 | [...] | ArrayExpr |
-| statements.swift:57:4:59:7 | case ... | CaseStmt | statements.swift:57:9:57:9 | 5 | CaseLabelItem |
-| statements.swift:57:4:59:7 | case ... | CaseStmt | statements.swift:57:12:57:12 | 10 | CaseLabelItem |
+| statements.swift:57:4:59:7 | case ... | CaseStmt | statements.swift:57:9:57:9 | =~ ... | CaseLabelItem |
+| statements.swift:57:4:59:7 | case ... | CaseStmt | statements.swift:57:12:57:12 | =~ ... | CaseLabelItem |
 | statements.swift:57:4:59:7 | case ... | CaseStmt | statements.swift:58:7:59:7 | { ... } | BraceStmt |
-| statements.swift:57:9:57:9 | 5 | CaseLabelItem | statements.swift:57:9:57:9 | 5 | ExprPattern |
-| statements.swift:57:9:57:9 | 5 | ExprPattern | statements.swift:57:9:57:9 | 5 | IntegerLiteralExpr |
-| statements.swift:57:12:57:12 | 10 | CaseLabelItem | statements.swift:57:12:57:12 | 10 | ExprPattern |
-| statements.swift:57:12:57:12 | 10 | ExprPattern | statements.swift:57:12:57:12 | 10 | IntegerLiteralExpr |
+| statements.swift:57:9:57:9 | =~ ... | CaseLabelItem | statements.swift:57:9:57:9 | =~ ... | ExprPattern |
+| statements.swift:57:9:57:9 | =~ ... | ExprPattern | statements.swift:57:9:57:9 | 5 | IntegerLiteralExpr |
+| statements.swift:57:12:57:12 | =~ ... | CaseLabelItem | statements.swift:57:12:57:12 | =~ ... | ExprPattern |
+| statements.swift:57:12:57:12 | =~ ... | ExprPattern | statements.swift:57:12:57:12 | 10 | IntegerLiteralExpr |
 | statements.swift:58:7:58:20 | call to print(_:separator:terminator:) | CallExpr | statements.swift:58:7:58:7 | print(_:separator:terminator:) | DeclRefExpr |
 | statements.swift:58:7:59:7 | { ... } | BraceStmt | statements.swift:58:7:58:20 | call to print(_:separator:terminator:) | CallExpr |
 | statements.swift:58:7:59:7 | { ... } | BraceStmt | statements.swift:59:7:59:7 | break | BreakStmt |

@@ -27,9 +27,23 @@ element_is_unknown(
   int id: @element ref
 );
 
+@file =
+  @db_file
+| @unknown_file
+;
+
+#keyset[id]
 files(
-  unique int id: @file,
+  int id: @file ref,
   string name: string ref
+);
+
+db_files(
+  unique int id: @db_file
+);
+
+unknown_files(
+  unique int id: @unknown_file
 );
 
 @locatable =
@@ -46,13 +60,27 @@ locatable_locations(
   int location: @location ref
 );
 
+@location =
+  @db_location
+| @unknown_location
+;
+
+#keyset[id]
 locations(
-  unique int id: @location,
+  int id: @location ref,
   int file: @file ref,
   int start_line: int ref,
   int start_column: int ref,
   int end_line: int ref,
   int end_column: int ref
+);
+
+db_locations(
+  unique int id: @db_location
+);
+
+unknown_locations(
+  unique int id: @unknown_location
 );
 
 comments(

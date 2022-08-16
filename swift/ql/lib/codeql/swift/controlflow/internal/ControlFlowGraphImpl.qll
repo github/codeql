@@ -33,6 +33,7 @@
 
 private import swift
 private import codeql.swift.controlflow.ControlFlowGraph
+private import codeql.swift.generated.Synth
 private import Completion
 private import Scope
 import ControlFlowGraphImplShared
@@ -379,9 +380,9 @@ module Stmts {
    * Control-flow for loops.
    */
   module Loops {
-    class ConditionalLoop = @while_stmt or @repeat_while_stmt;
+    class ConditionalLoop = Synth::TWhileStmt or Synth::TRepeatWhileStmt;
 
-    class LoopStmt = @for_each_stmt or ConditionalLoop;
+    class LoopStmt = Synth::TForEachStmt or ConditionalLoop;
 
     abstract class LoopTree extends AstPreOrderTree {
       LoopTree() { ast instanceof ConditionalLoop }
@@ -1706,7 +1707,8 @@ module Exprs {
   }
 
   module Conversions {
-    class ConversionOrIdentity = @identity_expr or @explicit_cast_expr or @implicit_conversion_expr;
+    class ConversionOrIdentity =
+      Synth::TIdentityExpr or Synth::TExplicitCastExpr or Synth::TImplicitConversionExpr;
 
     abstract class ConversionOrIdentityTree extends AstStandardPostOrderTree {
       ConversionOrIdentityTree() { ast instanceof ConversionOrIdentity }

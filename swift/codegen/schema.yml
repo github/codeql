@@ -19,6 +19,15 @@ Element:
 
 File:
   name: string
+  _pragma: qltest_collapse_hierarchy
+
+DbFile:
+  _extends: File
+
+UnknownFile:
+  _extends: File
+  _synth:
+    on: {}
 
 Locatable:
   location:
@@ -32,7 +41,15 @@ Location:
   start_column: int
   end_line: int
   end_column: int
-  _pragma: qltest_skip
+  _pragma: [qltest_skip, qltest_collapse_hierarchy]
+
+DbLocation:
+  _extends: Location
+
+UnknownLocation:
+  _extends: Location
+  _synth:
+    on: {}
 
 Comment:
   _extends: Locatable
@@ -411,7 +428,7 @@ EnumIsCaseExpr:
   _extends: Expr
   _children:
     sub_expr: Expr
-    element: EnumElementDecl
+  element: EnumElementDecl
 
 ErrorExpr:
   _extends: Expr
@@ -796,6 +813,12 @@ OptionalTryExpr:
 
 TryExpr:
   _extends: AnyTryExpr
+
+#MethodCallExpr:
+#  _extends: ApplyExpr
+#  _synth:
+#    from: CallExpr
+#  qualifier: Expr
 
 BinaryExpr:
   _extends: ApplyExpr
