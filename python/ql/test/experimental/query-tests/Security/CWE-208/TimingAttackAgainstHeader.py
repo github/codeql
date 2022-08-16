@@ -17,8 +17,8 @@ def bad():
 
 @app.route('/good')
 def good(): 
-    Secret = request.headers.get('X-Auth-Token')
-    if not hmac.compare_digest(Secret, "token"):
+    tok = request.headers.get('X-Auth-Token')
+    if not hmac.compare_digest(tok, "token"):
         raise Exception('bad token')
     return 'good'
  
