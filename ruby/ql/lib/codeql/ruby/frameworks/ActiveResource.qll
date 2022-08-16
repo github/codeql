@@ -41,8 +41,10 @@ module ActiveResource {
     /** Gets the API node for this model */
     API::Node getModelApiNode() { result = model }
 
+    /** Gets a call to `site=`, which sets the base URL for this model. */
     SiteAssignCall getASiteAssignment() { result.getModelClass() = this }
 
+    /** Holds if `c` sets a base URL which does not use HTTPS. */
     predicate disablesCertificateValidation(SiteAssignCall c) {
       c = this.getASiteAssignment() and
       c.disablesCertificateValidation()
