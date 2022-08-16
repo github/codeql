@@ -9,7 +9,7 @@ vulnerable to attack by command injection, because <code>wordexp</code> performs
 </overview>
 <recommendation>
 
-<p>When calling <code>wordexp</code>, pass the <code>WRDE_NOCMD</code> flag to to prevent command substitution.</p>
+<p>When calling <code>wordexp</code>, pass the <code>WRDE_NOCMD</code> flag to prevent command substitution.</p>
 
 </recommendation>
 <example>
