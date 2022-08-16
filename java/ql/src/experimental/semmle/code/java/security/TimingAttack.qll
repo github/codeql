@@ -8,6 +8,25 @@ import semmle.code.java.dataflow.TaintTracking2
 import semmle.code.java.dataflow.DataFlow3
 import semmle.code.java.dataflow.FlowSources
 
+/** A string for `match` that identifies strings that look like they represent secret data. */
+private string suspicious() {
+  result =
+    [
+      "%password%", "%passwd%", "%pwd%", "%refresh%token%", "%secret%token", "%secret%key",
+      "%passcode%", "%passphrase%", "%token%", "%secret%", "%credential%", "%UserPass%"
+    ]
+}
+
+/** A variable that may hold sensitive information, judging by its name. * */
+class CredentialExpr extends Expr {
+  CredentialExpr() {
+    exists(Variable v | this = v.getAnAccess() |
+      v.getName().toLowerCase().matches(suspicious()) and
+      not v.isFinal()
+    )
+  }
+}
+
 /** A method call that produces cryptographic result. */
 abstract private class ProduceCryptoCall extends MethodAccess {
   Expr output;
