@@ -11,8 +11,8 @@
  */
 
 import java
-import semmle.code.xml.AndroidManifest
+import semmle.code.java.security.ImplicitlyExportedAndroidComponent
 
-from AndroidComponentXmlElement compElement
-where compElement.isImplicitlyExported()
-select compElement, "This component is implicitly exported."
+from ImplicitlyExportedAndroidComponent impExpAndroidComp
+where impExpAndroidComp.isImplicitlyExported()
+select impExpAndroidComp, "This component is implicitly exported."

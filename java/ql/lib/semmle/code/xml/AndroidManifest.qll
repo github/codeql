@@ -113,7 +113,7 @@ class AndroidProviderXmlElement extends AndroidComponentXmlElement {
    * `android:permission` attribute or its `android:readPermission` and `android:writePermission`
    * attributes.
    */
-  predicate requiresPermissions() {
+  override predicate requiresPermissions() {
     this.getAnAttribute().(AndroidPermissionXmlAttribute).isFull()
     or
     this.getAnAttribute().(AndroidPermissionXmlAttribute).isWrite() and
@@ -236,16 +236,10 @@ class AndroidComponentXmlElement extends XmlElement {
    */
   predicate hasExportedAttribute() { this.hasAttribute("exported") }
 
-  // /** Holds if this component element has an attribute with the name `permission`. */
-  // predicate hasPermissionAttribute() { exists(this.getAttribute("permission")) }
-  predicate isImplicitlyExported() {
-    not this.hasExportedAttribute() and
-    this.hasAnIntentFilterElement() and // Note: did not use getAnIntentFilterElement since don't need a return value
-    not this.hasAttribute("permission") and // not seeing how isFull() is any better than this..., this seems to more directly check what I want...
-    not this.getParent().(AndroidApplicationXmlElement).hasAttribute("permission") and
-    not this.getAnIntentFilterElement().hasLauncherCategoryElement() and
-    not this.getFile().(AndroidManifestXmlFile).isInBuildDirectory()
-  }
+  /**
+   * Holds if this component element has explicitly set a value for its `android:permission` attribute.
+   */
+  predicate requiresPermissions() { this.getAnAttribute().(AndroidPermissionXmlAttribute).isFull() }
 }
 
 /**
@@ -268,10 +262,10 @@ class AndroidIntentFilterXmlElement extends XmlElement {
 
   /**
    * Holds if this `<intent-filter>` element has a `<category>` child element
-   * named "android.intent.category.LAUNCHER".
+   * named `android.intent.category.LAUNCHER`.
    */
   predicate hasLauncherCategoryElement() {
-    this.getACategoryElement().getAttributeValue("name") = "android.intent.category.LAUNCHER"
+    this.getACategoryElement().getCategoryName() = "android.intent.category.LAUNCHER"
   }
 }
 
