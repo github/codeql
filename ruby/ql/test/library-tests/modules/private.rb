@@ -38,9 +38,13 @@ class E
   def self.public3
   end
 
+  def private7
+  end
+  private :private7
+
   private
 
-  def private7
+  def private8
   end
 end
 

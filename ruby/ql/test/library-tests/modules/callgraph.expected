@@ -196,30 +196,31 @@ getTarget
 | private.rb:2:3:3:5 | call to private | calls.rb:109:5:109:20 | private |
 | private.rb:10:3:10:19 | call to private | calls.rb:109:5:109:20 | private |
 | private.rb:12:3:12:9 | call to private | calls.rb:109:5:109:20 | private |
-| private.rb:41:3:41:9 | call to private | calls.rb:109:5:109:20 | private |
-| private.rb:50:1:50:5 | call to new | calls.rb:114:5:114:16 | new |
-| private.rb:51:1:51:5 | call to new | calls.rb:114:5:114:16 | new |
-| private.rb:52:1:52:5 | call to new | calls.rb:114:5:114:16 | new |
-| private.rb:53:1:53:5 | call to new | calls.rb:114:5:114:16 | new |
+| private.rb:43:3:43:19 | call to private | calls.rb:109:5:109:20 | private |
+| private.rb:45:3:45:9 | call to private | calls.rb:109:5:109:20 | private |
 | private.rb:54:1:54:5 | call to new | calls.rb:114:5:114:16 | new |
-| private.rb:54:1:54:12 | call to public | private.rb:5:3:6:5 | public |
-| private.rb:56:1:56:15 | call to private_on_main | private.rb:47:1:48:3 | private_on_main |
-| private.rb:59:3:60:5 | call to private | calls.rb:109:5:109:20 | private |
-| private.rb:67:3:67:19 | call to private | calls.rb:109:5:109:20 | private |
-| private.rb:69:3:69:9 | call to private | calls.rb:109:5:109:20 | private |
-| private.rb:79:3:81:5 | call to private | calls.rb:109:5:109:20 | private |
-| private.rb:80:7:80:32 | call to puts | calls.rb:102:5:102:30 | puts |
+| private.rb:55:1:55:5 | call to new | calls.rb:114:5:114:16 | new |
+| private.rb:56:1:56:5 | call to new | calls.rb:114:5:114:16 | new |
+| private.rb:57:1:57:5 | call to new | calls.rb:114:5:114:16 | new |
+| private.rb:58:1:58:5 | call to new | calls.rb:114:5:114:16 | new |
+| private.rb:58:1:58:12 | call to public | private.rb:5:3:6:5 | public |
+| private.rb:60:1:60:15 | call to private_on_main | private.rb:51:1:52:3 | private_on_main |
+| private.rb:63:3:64:5 | call to private | calls.rb:109:5:109:20 | private |
+| private.rb:71:3:71:19 | call to private | calls.rb:109:5:109:20 | private |
+| private.rb:73:3:73:9 | call to private | calls.rb:109:5:109:20 | private |
 | private.rb:83:3:85:5 | call to private | calls.rb:109:5:109:20 | private |
 | private.rb:84:7:84:32 | call to puts | calls.rb:102:5:102:30 | puts |
-| private.rb:88:7:88:8 | call to m1 | private.rb:79:11:81:5 | m1 |
-| private.rb:88:7:88:8 | call to m1 | private.rb:93:11:97:5 | m1 |
-| private.rb:93:3:97:5 | call to private | calls.rb:109:5:109:20 | private |
-| private.rb:94:7:94:32 | call to puts | calls.rb:102:5:102:30 | puts |
-| private.rb:95:7:95:8 | call to m2 | private.rb:83:11:85:5 | m2 |
-| private.rb:96:7:96:26 | call to new | calls.rb:114:5:114:16 | new |
-| private.rb:100:1:100:20 | call to new | calls.rb:114:5:114:16 | new |
-| private.rb:100:1:100:28 | call to call_m1 | private.rb:87:3:89:5 | call_m1 |
-| private.rb:101:1:101:20 | call to new | calls.rb:114:5:114:16 | new |
+| private.rb:87:3:89:5 | call to private | calls.rb:109:5:109:20 | private |
+| private.rb:88:7:88:32 | call to puts | calls.rb:102:5:102:30 | puts |
+| private.rb:92:7:92:8 | call to m1 | private.rb:83:11:85:5 | m1 |
+| private.rb:92:7:92:8 | call to m1 | private.rb:97:11:101:5 | m1 |
+| private.rb:97:3:101:5 | call to private | calls.rb:109:5:109:20 | private |
+| private.rb:98:7:98:32 | call to puts | calls.rb:102:5:102:30 | puts |
+| private.rb:99:7:99:8 | call to m2 | private.rb:87:11:89:5 | m2 |
+| private.rb:100:7:100:26 | call to new | calls.rb:114:5:114:16 | new |
+| private.rb:104:1:104:20 | call to new | calls.rb:114:5:114:16 | new |
+| private.rb:104:1:104:28 | call to call_m1 | private.rb:91:3:93:5 | call_m1 |
+| private.rb:105:1:105:20 | call to new | calls.rb:114:5:114:16 | new |
 unresolvedCall
 | calls.rb:26:9:26:18 | call to instance_m |
 | calls.rb:29:5:29:14 | call to instance_m |
@@ -292,12 +293,12 @@ unresolvedCall
 | private.rb:23:3:24:5 | call to private_class_method |
 | private.rb:28:3:28:32 | call to private_class_method |
 | private.rb:30:3:30:11 | call to protected |
-| private.rb:50:1:50:14 | call to private1 |
-| private.rb:51:1:51:14 | call to private2 |
-| private.rb:52:1:52:14 | call to private3 |
-| private.rb:53:1:53:14 | call to private4 |
-| private.rb:96:7:96:29 | call to m1 |
-| private.rb:101:1:101:23 | call to m1 |
+| private.rb:54:1:54:14 | call to private1 |
+| private.rb:55:1:55:14 | call to private2 |
+| private.rb:56:1:56:14 | call to private3 |
+| private.rb:57:1:57:14 | call to private4 |
+| private.rb:100:7:100:29 | call to m1 |
+| private.rb:105:1:105:23 | call to m1 |
 privateMethod
 | calls.rb:1:1:3:3 | foo |
 | calls.rb:39:1:41:3 | call_instance_m |
@@ -318,15 +319,16 @@ privateMethod
 | private.rb:17:3:18:5 | private4 |
 | private.rb:23:24:24:5 | private5 |
 | private.rb:26:3:27:5 | private6 |
-| private.rb:43:3:44:5 | private7 |
-| private.rb:47:1:48:3 | private_on_main |
-| private.rb:59:11:60:5 | private1 |
-| private.rb:65:3:66:5 | private2 |
-| private.rb:71:3:72:5 | private3 |
-| private.rb:74:3:75:5 | private4 |
-| private.rb:79:11:81:5 | m1 |
-| private.rb:83:11:85:5 | m2 |
-| private.rb:93:11:97:5 | m1 |
+| private.rb:41:3:42:5 | private7 |
+| private.rb:47:3:48:5 | private8 |
+| private.rb:51:1:52:3 | private_on_main |
+| private.rb:63:11:64:5 | private1 |
+| private.rb:69:3:70:5 | private2 |
+| private.rb:75:3:76:5 | private3 |
+| private.rb:78:3:79:5 | private4 |
+| private.rb:83:11:85:5 | m1 |
+| private.rb:87:11:89:5 | m2 |
+| private.rb:97:11:101:5 | m1 |
 publicMethod
 | calls.rb:7:1:9:3 | bar |
 | calls.rb:13:1:15:3 | bar |
@@ -396,8 +398,8 @@ publicMethod
 | private.rb:5:3:6:5 | public |
 | private.rb:20:3:21:5 | public2 |
 | private.rb:38:3:39:5 | public3 |
-| private.rb:62:3:63:5 | public |
-| private.rb:87:3:89:5 | call_m1 |
+| private.rb:66:3:67:5 | public |
+| private.rb:91:3:93:5 | call_m1 |
 protectedMethod
 | private.rb:32:3:33:5 | protected1 |
 | private.rb:35:3:36:5 | protected2 |

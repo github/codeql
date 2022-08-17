@@ -60,7 +60,7 @@ class MethodBase extends Callable, BodyStmt, Scope, TMethodBase {
 
   /**
    * Gets the visibility modifier that defines the visibility of this method, if
-   * one exists.
+   * any.
    */
   VisibilityModifier getVisibilityModifier() { none() }
 }
@@ -170,13 +170,10 @@ class Method extends MethodBase, TMethod {
   }
 
   override VisibilityModifier getVisibilityModifier() {
-    result.getEnclosingModule() = this.getEnclosingModule() and
-    (
-      result.getMethodArgument() = this
-      or
-      result.getMethodArgument().getConstantValue().getStringlikeValue() = this.getName()
-    )
+    result = this.getExplicitVisibilityModifier()
     or
+    not exists(this.getExplicitVisibilityModifier()) and
+    result.getEnclosingModule() = this.getEnclosingModule() and
     exists(Namespace n, int methodPos | n.getStmt(methodPos) = this |
       // The relevant visibility modifier is the closest call that occurs before
       // the definition of `m` (typically this means higher up the file).
@@ -189,6 +186,27 @@ class Method extends MethodBase, TMethod {
           modifier order by modifierPos
         )
     )
+  }
+
+  /**
+   * Gets the visibility modifier that explicitly sets the visibility of this
+   * method.
+   *
+   * Examples:
+   * ```rb
+   * def f
+   * end
+   * private :f
+   *
+   * private def g
+   * end
+   * ```
+   */
+  VisibilityModifier getExplicitVisibilityModifier() {
+    result.getMethodArgument() = this
+    or
+    result.getEnclosingModule() = this.getEnclosingModule() and
+    result.getMethodArgument().getConstantValue().getStringlikeValue() = this.getName()
   }
 }
 
