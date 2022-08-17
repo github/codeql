@@ -5,7 +5,7 @@
  * @problem.severity warning
  * @security-severity 7.8
  * @precision high
- * @id js/incomplete-multi-character-sanitization
+ * @id rb/incomplete-multi-character-sanitization
  * @tags correctness
  *       security
  *       external/cwe/cwe-020
@@ -13,4 +13,4 @@
  *       external/cwe/cwe-116
  */
 
-import semmle.javascript.security.IncompleteMultiCharacterSanitizationQuery
+import codeql.ruby.security.IncompleteMultiCharacterSanitizationQuery
