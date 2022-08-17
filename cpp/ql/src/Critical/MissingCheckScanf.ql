@@ -86,16 +86,9 @@ class ScanfOutput extends Expr {
     exists(Instruction i |
       i.getUnconvertedResultExpression() = this and
       result = valueNumber(i).getAnInstruction() and
-      i.getASuccessor+() = result
+      i.getASuccessor+() = result and
+      forall(Expr child | child = this.getAChild*() implies child != result.getAst())
     )
-  }
-
-  private predicate foo(Instruction i, Instruction j, boolean sameValueNum, boolean sameAst) {
-    i.getUnconvertedResultExpression() = this and
-    i.getASuccessor+() = j and
-    (if valueNumber(i) = valueNumber(j) then sameValueNum = true else sameValueNum = false) and
-    (if i.getAst() = j.getAst() then sameAst = true else sameAst = false) and
-    (sameValueNum = true and sameAst = true)
   }
 }
 
