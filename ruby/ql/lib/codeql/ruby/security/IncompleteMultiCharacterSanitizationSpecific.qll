@@ -4,7 +4,7 @@
 
 import codeql.ruby.frameworks.core.String
 import codeql.ruby.regexp.RegExpTreeView
-import codeql.ruby.security.performance.ReDoSUtil as ReDoSUtil
+import codeql.ruby.security.regexp.NfaUtils as NfaUtils
 
 /**
  * A regexp term that matches substrings that should be replaced with the empty string.

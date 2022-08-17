@@ -3,7 +3,7 @@
  */
 
 import javascript
-import semmle.javascript.security.performance.ReDoSUtil as ReDoSUtil
+import semmle.javascript.security.regexp.NfaUtils as NfaUtils
 
 class StringSubstitutionCall = StringReplaceCall;
 
