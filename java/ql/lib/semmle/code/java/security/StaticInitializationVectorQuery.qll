@@ -1,3 +1,5 @@
+/** Definitions for the Static Initialization Vector query. */
+
 import java
 import semmle.code.java.dataflow.TaintTracking
 import semmle.code.java.dataflow.TaintTracking2
@@ -9,15 +11,14 @@ private predicate initializedWithConstants(ArrayCreationExpr array) {
   // creating an array without an initializer, for example `new byte[8]`
   not exists(array.getInit())
   or
-  // creating a multidimensional array with an initializer like `{ new byte[8], new byte[16] }`
-  // This works around https://github.com/github/codeql/issues/6552 -- change me once there is
-  // a better way to distinguish nested initializers that create zero-filled arrays
-  // (e.g. `new byte[1]`) from those with an initializer list (`new byte[] { 1 }` or just `{ 1 }`)
-  array.getInit().getAnInit().getAChildExpr() instanceof IntegerLiteral
-  or
-  // creating an array wit an initializer like `new byte[] { 1, 2 }`
-  forex(Expr element | element = array.getInit().getAnInit() |
+  initializedWithConstantsHelper(array.getInit())
+}
+
+private predicate initializedWithConstantsHelper(ArrayInit arInit) {
+  forex(Expr element | element = arInit.getAnInit() |
     element instanceof CompileTimeConstantExpr
+    or
+    initializedWithConstantsHelper(element)
   )
 }
 
@@ -74,9 +75,7 @@ private class ArrayUpdateConfig extends TaintTracking2::Configuration {
     source.asExpr() instanceof StaticByteArrayCreation
   }
 
-  override predicate isSink(DataFlow::Node sink) {
-    exists(ArrayUpdate update | update.getArray() = sink.asExpr())
-  }
+  override predicate isSink(DataFlow::Node sink) { sink.asExpr() = any(ArrayUpdate upd).getArray() }
 }
 
 /**
@@ -85,29 +84,12 @@ private class ArrayUpdateConfig extends TaintTracking2::Configuration {
 private class StaticInitializationVectorSource extends DataFlow::Node {
   StaticInitializationVectorSource() {
     exists(StaticByteArrayCreation array | array = this.asExpr() |
-      not exists(ArrayUpdateConfig config | config.hasFlow(DataFlow2::exprNode(array), _))
-    )
-  }
-}
-
-/**
- * A config that tracks initialization of a cipher for encryption.
- */
-private class EncryptionModeConfig extends TaintTracking2::Configuration {
-  EncryptionModeConfig() { this = "EncryptionModeConfig" }
-
-  override predicate isSource(DataFlow::Node source) {
-    source
-        .asExpr()
-        .(FieldRead)
-        .getField()
-        .hasQualifiedName("javax.crypto", "Cipher", "ENCRYPT_MODE")
-  }
-
-  override predicate isSink(DataFlow::Node sink) {
-    exists(MethodAccess ma, Method m | m = ma.getMethod() |
-      m.hasQualifiedName("javax.crypto", "Cipher", "init") and
-      ma.getArgument(0) = sink.asExpr()
+      not exists(ArrayUpdateConfig config | config.hasFlow(DataFlow2::exprNode(array), _)) and
+      // Reduce FPs from utility methods that return an empty array in an exceptional case
+      not exists(ReturnStmt ret |
+        array.getADimension().(CompileTimeConstantExpr).getIntValue() = 0 and
+        DataFlow::localExprFlow(array, ret.getResult())
+      )
     )
   }
 }
@@ -117,13 +99,14 @@ private class EncryptionModeConfig extends TaintTracking2::Configuration {
  */
 private class EncryptionInitializationSink extends DataFlow::Node {
   EncryptionInitializationSink() {
-    exists(MethodAccess ma, Method m, EncryptionModeConfig config | m = ma.getMethod() |
+    exists(MethodAccess ma, Method m, FieldRead fr | m = ma.getMethod() |
       m.hasQualifiedName("javax.crypto", "Cipher", "init") and
       m.getParameterType(2)
           .(RefType)
           .hasQualifiedName("java.security.spec", "AlgorithmParameterSpec") and
-      ma.getArgument(2) = this.asExpr() and
-      config.hasFlowToExpr(ma.getArgument(0))
+      fr.getField().hasQualifiedName("javax.crypto", "Cipher", "ENCRYPT_MODE") and
+      DataFlow::localExprFlow(fr, ma.getArgument(0)) and
+      ma.getArgument(2) = this.asExpr()
     )
   }
 }
