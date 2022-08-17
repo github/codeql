@@ -29,17 +29,17 @@ class ScanfOutput extends Expr {
   ScanfFunctionCall getCall() { result = call }
 
   /**
-   * The 0-based index of this output argument in the vararg list of its
-   * enclosing `scanf`-like function call.
-   */
-  int getVarargIndex() { result = varargIndex }
-
-  /**
    * Any subsequent use of this argument should be surrounded by a
    * check ensuring that the `scanf`-like function has returned a value
    * equal to at least `getMinimumGuardConstant()`.
    */
-  int getMinimumGuardConstant() { result = varargIndex + 1 }
+  int getMinimumGuardConstant() {
+    result =
+      varargIndex + 1 -
+        count(ScanfFormatLiteral f, int n |
+          n <= varargIndex and f.getUse() = call and f.parseConvSpec(n, _, _, _, "n")
+        )
+  }
 
   predicate hasGuardedAccess(Access e, boolean isGuarded) {
     e = getAnAccess() and
@@ -112,10 +112,6 @@ BasicBlock blockGuardedBy(int value, string op, ScanfFunctionCall call) {
     or
     g.ensuresLt(left, right, 1, result, true) and op = "<="
   )
-}
-
-predicate foo(ScanfFunctionCall call, int nargs) {
-  nargs = call.getTarget().getNumberOfParameters()
 }
 
 from ScanfOutput output, ScanfFunctionCall call, ScanfFunction fun, Access access

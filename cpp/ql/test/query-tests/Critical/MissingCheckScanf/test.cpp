@@ -270,11 +270,12 @@ int main()
 	// --- weird formatting strings ---
 
 	{
-		int i;
+		int i, j;
 
-		if (scanf("%n %d", &i) >= 1)
+		if (sscanf("123", "%n %*d %n", &i, &j) >= 0)
 		{
-			use(i); // GOOD (`%n` does not consume input, but writes to i)
+			use(i); // GOOD (`%n` does not consume input, but writes 0 to i)
+			use(j); // GOOD (`%n` does not consume input, but writes 3 to j)
 		}
 	}
 
@@ -301,7 +302,7 @@ int main()
 
 		if (scanf("%*d %d %n", &d, &n) == 1) {
 			use(d); // GOOD
-			use(n); // GOOD [FALSE POSITIVE]
+			use(n); // GOOD
 		}
 	}
 
