@@ -1,0 +1,22 @@
+edges
+| test.go:9:10:9:12 | selection of c [collection] : string | test.go:9:8:9:12 | <-... |
+| test.go:13:16:13:16 | definition of s [pointer, c, collection] : string | test.go:16:3:16:3 | s [pointer, c, collection] : string |
+| test.go:15:11:15:18 | call to source : string | test.go:16:10:16:13 | data : string |
+| test.go:16:3:16:3 | implicit dereference [c, collection] : string | test.go:13:16:13:16 | definition of s [pointer, c, collection] : string |
+| test.go:16:3:16:3 | implicit dereference [c, collection] : string | test.go:16:3:16:5 | selection of c [collection] : string |
+| test.go:16:3:16:3 | s [pointer, c, collection] : string | test.go:16:3:16:3 | implicit dereference [c, collection] : string |
+| test.go:16:3:16:5 | selection of c [collection] : string | test.go:9:10:9:12 | selection of c [collection] : string |
+| test.go:16:3:16:5 | selection of c [collection] : string | test.go:16:3:16:3 | implicit dereference [c, collection] : string |
+| test.go:16:10:16:13 | data : string | test.go:16:3:16:5 | selection of c [collection] : string |
+nodes
+| test.go:9:8:9:12 | <-... | semmle.label | <-... |
+| test.go:9:10:9:12 | selection of c [collection] : string | semmle.label | selection of c [collection] : string |
+| test.go:13:16:13:16 | definition of s [pointer, c, collection] : string | semmle.label | definition of s [pointer, c, collection] : string |
+| test.go:15:11:15:18 | call to source : string | semmle.label | call to source : string |
+| test.go:16:3:16:3 | implicit dereference [c, collection] : string | semmle.label | implicit dereference [c, collection] : string |
+| test.go:16:3:16:3 | s [pointer, c, collection] : string | semmle.label | s [pointer, c, collection] : string |
+| test.go:16:3:16:5 | selection of c [collection] : string | semmle.label | selection of c [collection] : string |
+| test.go:16:10:16:13 | data : string | semmle.label | data : string |
+subpaths
+#select
+| test.go:15:11:15:18 | call to source : string | test.go:15:11:15:18 | call to source : string | test.go:9:8:9:12 | <-... | path |
