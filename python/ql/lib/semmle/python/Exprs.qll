@@ -617,10 +617,10 @@ private string non_byte_prefix() {
 }
 
 /** A string constant. This is a placeholder class -- use `StrConst` instead. */
-class Str extends Str_ { }
+class Str = StrConst;
 
 /** A string constant. */
-class StrConst extends Str, ImmutableLiteral {
+class StrConst extends Str_, ImmutableLiteral {
   /* syntax: "hello" */
   predicate isUnicode() {
     this.getPrefix() = unicode_prefix()
