@@ -28,7 +28,7 @@ string getMessage(Select sel) {
  * Gets a language agnostic fingerprint for a Select.
  * The fingerPrint includes e.g. the query-id, the @kind of the query, and the number of expressions in the select.
  *
- * This fingerprint avoid false positives where two queries with the same ID behave differently (which is OK).
+ * This fingerprint avoids false positives where two queries with the same ID behave differently (which is OK).
  */
 string getSelectFingerPrint(Select sel) {
   exists(QueryDoc doc | doc = sel.getQueryDoc() |
