@@ -13,3 +13,4 @@
 | test.cpp:242:7:242:7 | i | $@ is read here, but may not have been written. It should be guarded by a check that $@() returns at least 1. | test.cpp:242:7:242:7 | i | i | test.cpp:241:3:241:7 | call to scanf | scanf |
 | test.cpp:252:8:252:12 | ptr_i | $@ is read here, but may not have been written. It should be guarded by a check that $@() returns at least 1. | test.cpp:252:8:252:12 | ptr_i | ptr_i | test.cpp:251:3:251:7 | call to scanf | scanf |
 | test.cpp:260:7:260:7 | i | $@ is read here, but may not have been written. It should be guarded by a check that $@() returns at least 1. | test.cpp:260:7:260:7 | i | i | test.cpp:259:3:259:7 | call to scanf | scanf |
+| test.cpp:354:25:354:25 | u | $@ is read here, but may not have been written. It should be guarded by a check that $@() returns at least 1. | test.cpp:354:25:354:25 | u | u | test.cpp:353:6:353:11 | call to sscanf | sscanf |

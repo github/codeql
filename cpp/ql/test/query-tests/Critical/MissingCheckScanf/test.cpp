@@ -316,7 +316,7 @@ int main()
 	}
 }
 
-// Non-local cases:
+// --- Non-local cases ---
 
 bool my_scan_int(int &i)
 {
@@ -336,4 +336,23 @@ void my_scan_int_test()
 	{
 		use(i); // GOOD
 	}
+}
+
+// --- Can be OK'd given a sufficiently smart analysis ---
+
+char *my_string_copy() {
+	static const char SRC_STRING[] = "48656C6C6F";
+	static       char DST_STRING[] = ".....";
+
+	int len = sizeof(SRC_STRING) - 1;
+    const char *src = SRC_STRING;
+    char *ptr = DST_STRING;
+
+    for (int i = 0; i < len; i += 2) {
+		unsigned int u;
+	    sscanf(src + i, "%2x", &u);
+        *ptr++ = (char) u; // GOOD [FALSE POSITIVE]: src+i+{0,1} are always valid %x digits, so this should be OK.
+    }
+	*ptr++ = 0;
+	return DST_STRING;
 }
