@@ -173,14 +173,13 @@ class Method extends MethodBase, TMethod {
     result = this.getExplicitVisibilityModifier()
     or
     not exists(this.getExplicitVisibilityModifier()) and
-    result.getEnclosingModule() = this.getEnclosingModule() and
-    exists(Namespace n, int methodPos | n.getStmt(methodPos) = this |
+    exists(Namespace n, int methodPos | isDeclaredIn(this, n, methodPos) |
       // The relevant visibility modifier is the closest call that occurs before
       // the definition of `m` (typically this means higher up the file).
       result =
         max(int modifierPos, VisibilityModifier modifier |
           modifier.modifiesAmbientVisibility() and
-          n.getStmt(modifierPos) = modifier and
+          isDeclaredIn(modifier, n, modifierPos) and
           modifierPos < methodPos
         |
           modifier order by modifierPos
@@ -205,9 +204,18 @@ class Method extends MethodBase, TMethod {
   VisibilityModifier getExplicitVisibilityModifier() {
     result.getMethodArgument() = this
     or
-    result.getEnclosingModule() = this.getEnclosingModule() and
+    isDeclaredIn(result, this.getEnclosingModule(), _) and
     result.getMethodArgument().getConstantValue().getStringlikeValue() = this.getName()
   }
+}
+
+/**
+ * Holds if statement `m` is declared in namespace `n` at position `pos`.
+ */
+pragma[noinline]
+private predicate isDeclaredIn(Stmt m, Namespace n, int pos) {
+  n = m.getEnclosingModule() and
+  n.getStmt(pos) = m
 }
 
 /** A singleton method. */
