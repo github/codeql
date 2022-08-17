@@ -2,9 +2,12 @@ typedef struct
 {
 } FILE;
 
+typedef void *locale_t;
+
 int scanf(const char *format, ...);
 int fscanf(FILE *stream, const char *format, ...);
 int sscanf(const char *s, const char *format, ...);
+int _scanf_l(const char *format, locale_t locale, ...);
 
 void use(int i);
 
@@ -14,6 +17,7 @@ bool maybe();
 
 FILE *get_a_stream();
 const char *get_a_string();
+extern locale_t get_a_locale();
 
 int main()
 {
@@ -80,6 +84,15 @@ int main()
 		use(i); // BAD: may not have written `i`
 	}
 
+	{
+		int i;
+
+		if (_scanf_l("%d", get_a_locale(), &i) == 1)
+		{
+			use(i); // GOOD [FALSE POSITIVE]
+		}
+	}
+
 	// --- different ways of checking ---
 
 	{
@@ -117,7 +130,7 @@ int main()
 
 		if (scanf("%d", &i) != 0)
 		{
-			use(i); // BAD [NOT DETECTED]: scanf can return -1 (EOF)
+			use(i); // BAD: scanf can return EOF
 		}
 	}
 
@@ -126,7 +139,7 @@ int main()
 
 		if (scanf("%d", &i) == 0)
 		{
-			use(i); // BAD [NOT DETECTED]: checks return value incorrectly
+			use(i); // BAD: checks return value incorrectly
 		}
 	}
 
@@ -155,12 +168,9 @@ int main()
 	}
 
 	{
-		bool b;
 		int i;
 
-		b = scanf("%d", &i);
-
-		if (b)
+		if (scanf("%d", &i))
 			use(i); // BAD
 	}
 
@@ -180,7 +190,7 @@ int main()
 		if (scanf("%d %d", &i, &j) >= 1)
 		{
 			use(i); // GOOD
-			use(j); // BAD: checks return value incorrectly [NOT DETECTED]
+			use(j); // BAD: checks return value incorrectly
 		}
 	}
 
@@ -264,7 +274,7 @@ int main()
 
 		if (scanf("%n %d", &i) >= 1)
 		{
-			use(i); // GOOD (`%n` does not consume input)
+			use(i); // GOOD (`%n` does not consume input, but writes to i)
 		}
 	}
 
@@ -283,6 +293,24 @@ int main()
 		if (scanf("%*d %d", &i) >= 1)
 		{
 			use(i); // GOOD (`%*d` does not consume input)
+		}
+	}
+
+	{
+		int d, n;
+
+		if (scanf("%*d %d %n", &d, &n) == 1) {
+			use(d); // GOOD
+			use(n); // GOOD [FALSE POSITIVE]
+		}
+	}
+
+	{
+		char substr[32];
+		int n;
+        if (sscanf(get_a_string(), "%31[^:]: %d", substr, &n) == 2) {
+			use(*(int *)substr); // GOOD
+            use(n); // GOOD
 		}
 	}
 }

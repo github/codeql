@@ -1,12 +1,12 @@
 /**
- * @name TODO
+ * @name Missing return-value check for a scanf-like function
  * @description TODO
  * @kind problem
  * @problem.severity warning
  * @security-severity TODO
  * @precision TODO
  * @id cpp/missing-check-scanf
- * @tags TODO
+ * @tags security
  */
 
 import cpp
@@ -16,27 +16,7 @@ import semmle.code.cpp.dataflow.DataFlow
 import semmle.code.cpp.ir.IR
 import semmle.code.cpp.ir.ValueNumbering
 
-// DataFlow::localFlow(DataFlow::parameterNode(src), DataFlow::exprNode(snk))
-/*
- * Find:
- * - all scanf calls
- *   => ScanfFunctionCall
- *
- * - relate the value number of each out-arg to:
- *   1. the return value of the scanf call, and
- *   2. the arg number, post-format, of the out-arg.
- *   => scanfOutput/3
- *
- * - Find all accesses to variables with the same
- *   value number, and if applicable, the guard condition
- *   of one of their enclosing blocks that ensures
- *   that the scanf return value is at least the
- *   associated arg-number
- *
- * - Combine into data flow tracking from out-arg to use,
- *   with usage in _other_ scanf calls as barrier.
- */
-
+/** An expression appearing as an output argument to a `scanf`-like call */
 class ScanfOutput extends Expr {
   ScanfFunctionCall call;
   int argNum;
@@ -66,24 +46,24 @@ class ScanfOutput extends Expr {
 
   /**
    * Get a subsequent access of the same underlying storage,
-   * but before it gets reset or reused in another scanf call.
+   * but before it gets reset or reused in another `scanf` call.
    */
   Access getAnAccess() {
-    exists(Instruction j |
-      j = getNextInstruction() and
-      forall(Instruction k | k = [getAReset(), getAReuse()] implies j.getASuccessor+() = k)
-    |
-      result = j.getAst()
+    exists(Instruction j | result = j.getAst() |
+      j = getASubsequentSameValuedInstruction() and
+      forall(Instruction k |
+        k = [getAResetInstruction(), getAReuseInstruction()] implies j.getASuccessor+() = k
+      )
     )
   }
 
-  private Instruction getAReset() {
-    result = getNextInstruction() and
+  private Instruction getAResetInstruction() {
+    result = getASubsequentSameValuedInstruction() and
     result = any(StoreInstruction s).getDestinationAddress()
   }
 
-  private Instruction getAReuse() {
-    result = getNextInstruction() and
+  private Instruction getAReuseInstruction() {
+    result = getASubsequentSameValuedInstruction() and
     exists(Expr e | result.getAst() = e |
       e instanceof ScanfOutput
       or
@@ -91,12 +71,20 @@ class ScanfOutput extends Expr {
     )
   }
 
-  private Instruction getNextInstruction() {
+  private Instruction getASubsequentSameValuedInstruction() {
     exists(Instruction i |
       i.getUnconvertedResultExpression() = this and
       result = valueNumber(i).getAnInstruction() and
       i.getASuccessor+() = result
     )
+  }
+
+  private predicate foo(Instruction i, Instruction j, boolean sameValueNum, boolean sameAst) {
+    i.getUnconvertedResultExpression() = this and
+    i.getASuccessor+() = j and
+    (if valueNumber(i) = valueNumber(j) then sameValueNum = true else sameValueNum = false) and
+    (if i.getAst() = j.getAst() then sameAst = true else sameAst = false) and
+    (sameValueNum = true and sameAst = true)
   }
 }
 
@@ -121,6 +109,6 @@ where
   output.getCall() = call and
   output.hasGuardedAccess(access, false)
 select access,
-  "`$@` is read here, but may not have been written. " +
-    "It should be guarded by a check that `$@()` returns at least " + output.getNumber() + ".",
+  "$@ is read here, but may not have been written. " +
+    "It should be guarded by a check that $@() returns at least " + output.getNumber() + ".",
   access, access.toString(), call, fun.getName()
