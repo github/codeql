@@ -4,6 +4,7 @@ import java
 import semmle.code.java.dataflow.FlowSources
 import semmle.code.java.dataflow.TaintTracking2
 import semmle.code.java.frameworks.android.Android
+private import semmle.code.java.frameworks.android.Intent
 
 /** The `startActivityForResult` method of Android's `Activity` class. */
 class StartActivityForResultMethod extends Method {

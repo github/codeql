@@ -15,6 +15,8 @@ import semmle.code.java.frameworks.Servlets
 import semmle.code.java.dataflow.TaintTracking
 import semmle.code.java.dataflow.TaintTracking2
 import DataFlow::PathGraph
+private import semmle.code.java.Collections
+private import semmle.code.java.Maps
 
 /**
  *  Holds if `header` sets `Access-Control-Allow-Credentials` to `true`. This ensures fair chances of exploitability.

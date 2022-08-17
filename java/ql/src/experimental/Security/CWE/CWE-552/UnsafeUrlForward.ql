@@ -17,6 +17,7 @@ import semmle.code.java.dataflow.TaintTracking
 import experimental.semmle.code.java.frameworks.Jsf
 import experimental.semmle.code.java.PathSanitizer
 import DataFlow::PathGraph
+private import semmle.code.java.frameworks.Servlets
 
 class UnsafeUrlForwardFlowConfig extends TaintTracking::Configuration {
   UnsafeUrlForwardFlowConfig() { this = "UnsafeUrlForwardFlowConfig" }

@@ -17,6 +17,7 @@ import semmle.code.java.frameworks.android.Intent
 import semmle.code.java.dataflow.FlowSources
 import semmle.code.java.NumberFormatException
 import DataFlow::PathGraph
+private import semmle.code.java.frameworks.android.Android
 
 /**
  * Taint configuration tracking flow from untrusted inputs to number conversion calls in exported Android compononents.
