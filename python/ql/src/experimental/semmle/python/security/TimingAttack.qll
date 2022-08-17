@@ -193,4 +193,3 @@ class UserInputInComparisonConfig extends TaintTracking2::Configuration {
     )
   }
 }
-    

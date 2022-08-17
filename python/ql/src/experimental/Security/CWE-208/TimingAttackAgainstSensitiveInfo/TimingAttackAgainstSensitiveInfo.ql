@@ -36,4 +36,3 @@ where
   )
 select sink.getNode(), source, sink, "Timing attack against $@ validation.", source.getNode(),
   "client-supplied token"
- 

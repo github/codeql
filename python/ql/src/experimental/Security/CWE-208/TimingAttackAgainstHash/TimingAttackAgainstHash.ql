@@ -36,4 +36,3 @@ where
   sink.getNode().(NonConstantTimeComparisonSink).includesUserInput()
 select sink.getNode(), source, sink, "Timing attack against $@ validation.", source,
   source.getNode()
-  
