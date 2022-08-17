@@ -31,13 +31,10 @@ string getMessage(Select sel) {
  * This fingerprint avoid false positives where two queries with the same ID behave differently (which is OK).
  */
 string getSelectFingerPrint(Select sel) {
-  exists(File file, QLDoc doc |
-    sel.getLocation().getFile() = file and
-    any(TopLevel top | top.getLocation().getFile() = file).getQLDoc() = doc
-  |
+  exists(QueryDoc doc | doc = sel.getQueryDoc() |
     result =
-      doc.getContents().regexpCapture("(?s).*@id (\\w+)/([\\w\\-]+)\\s.*", 2) // query ID (without lang)
-        + "-" + doc.getContents().regexpCapture("(?s).*@kind (\\w+)\\s.*", 1) // @kind
+      doc.getQueryId() // query ID (without lang)
+        + "-" + doc.getQueryKind() // @kind
         + "-" +
         strictcount(String e | e.getParent*() = sel.getExpr(any(int i | i % 2 = 1))) // the number of string constants in the select
         + "-" + count(sel.getExpr(_)) // and the total number of expressions in the select
@@ -49,10 +46,10 @@ string getSelectFingerPrint(Select sel) {
  * The query-id (without language), the language, the message from the select, and a language agnostic fingerprint.
  */
 Select parseSelect(string id, string lang, string msg, string fingerPrint) {
-  exists(File file, QLDoc doc | result.getLocation().getFile() = file |
-    any(TopLevel top | top.getLocation().getFile() = file).getQLDoc() = doc and
-    id = doc.getContents().regexpCapture("(?s).*@id (\\w+)/([\\w\\-]+)\\s.*", 2) and
-    lang = doc.getContents().regexpCapture("(?s).*@id (\\w+)/([\\w\\-]+)\\s.*", 1) and
+  exists(QueryDoc doc |
+    doc = result.getQueryDoc() and
+    id = doc.getQueryId() and
+    lang = doc.getQueryLanguage() and
     fingerPrint = getSelectFingerPrint(result) and
     msg = getMessage(result).toLowerCase() // case normalize, because some languages upper-case methods.
   ) and
