@@ -309,7 +309,7 @@ int main()
 	{
 		char substr[32];
 		int n;
-        if (sscanf(get_a_string(), "%31[^:]: %d", substr, &n) == 2) {
+        while (sscanf(get_a_string(), "%31[^:]: %d", substr, &n) == 2) { // GOOD [FALSE POSITIVE]: there is a cycle from write to unguarded access!
 			use(*(int *)substr); // GOOD
             use(n); // GOOD
 		}
