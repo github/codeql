@@ -4,7 +4,10 @@
 <qhelp>
 <overview>
 <p>The code passes user input to <code>wordexp</code>. This leaves the code
-vulnerable to attack by command injection, because <code>wordexp</code> performs command substitution.</p>
+vulnerable to attack by command injection, because <code>wordexp</code> performs command substitution.
+Command substitution is a feature that replaces <code>$(command)</code> or <code>`command`</code> with the
+output of the given command, allowing the user to run arbitrary code on the system.
+</p>
 
 </overview>
 <recommendation>
