@@ -41,8 +41,8 @@ sourceSets {
                     "utils/versions/v_1_4_32/Types.kt",
                     "utils/versions/v_1_4_32/withHasQuestionMark.kt",
 
-                    "utils/versions/v_1_5_21/Descriptors.kt",
-                    "utils/versions/v_1_6_10/Descriptors.kt",
+                    "utils/versions/v_1_5_20/Descriptors.kt",
+                    "utils/versions/v_1_6_0/Descriptors.kt",
 
                     "utils/versions/v_1_7_20-Beta/createImplicitParameterDeclarationWithWrappedDescriptor.kt",
                     "utils/versions/v_1_7_20-Beta/allOverridden.kt",
