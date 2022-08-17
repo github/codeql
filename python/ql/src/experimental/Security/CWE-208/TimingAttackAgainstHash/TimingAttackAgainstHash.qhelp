@@ -28,7 +28,7 @@ and does not depend on the contents of the arrays.
 <p>
   The following example uses <code>==</code> which is a fail fast check for validating a Hash.
 </p>
-<sample src="UnsafeComparisonOfHash.py" />
+<sample src="UnSafeComparisonOfHash.py" />
 
 <p> 
   The next example use a safe constant-time algorithm for validating a Hash:
