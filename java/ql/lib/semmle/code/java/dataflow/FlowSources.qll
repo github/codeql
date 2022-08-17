@@ -6,28 +6,28 @@ import java
 import semmle.code.java.dataflow.DataFlow
 import semmle.code.java.dataflow.TaintTracking
 import semmle.code.java.dataflow.DefUse
-import semmle.code.java.frameworks.Jdbc
-import semmle.code.java.frameworks.Networking
-import semmle.code.java.frameworks.Properties
-import semmle.code.java.frameworks.Rmi
-import semmle.code.java.frameworks.Servlets
-import semmle.code.java.frameworks.ApacheHttp
-import semmle.code.java.frameworks.android.XmlParsing
-import semmle.code.java.frameworks.android.WebView
-import semmle.code.java.frameworks.JaxWS
-import semmle.code.java.frameworks.javase.WebSocket
-import semmle.code.java.frameworks.android.Android
-import semmle.code.java.frameworks.android.ExternalStorage
-import semmle.code.java.frameworks.android.OnActivityResultSource
-import semmle.code.java.frameworks.android.Intent
-import semmle.code.java.frameworks.play.Play
-import semmle.code.java.frameworks.spring.SpringWeb
-import semmle.code.java.frameworks.spring.SpringController
-import semmle.code.java.frameworks.spring.SpringWebClient
-import semmle.code.java.frameworks.Guice
-import semmle.code.java.frameworks.struts.StrutsActions
-import semmle.code.java.frameworks.Thrift
-import semmle.code.java.frameworks.javaee.jsf.JSFRenderer
+private import semmle.code.java.frameworks.Jdbc
+private import semmle.code.java.frameworks.Networking
+private import semmle.code.java.frameworks.Properties
+private import semmle.code.java.frameworks.Rmi
+private import semmle.code.java.frameworks.Servlets
+private import semmle.code.java.frameworks.ApacheHttp
+private import semmle.code.java.frameworks.android.XmlParsing
+private import semmle.code.java.frameworks.android.WebView
+private import semmle.code.java.frameworks.JaxWS
+private import semmle.code.java.frameworks.javase.WebSocket
+private import semmle.code.java.frameworks.android.Android
+private import semmle.code.java.frameworks.android.ExternalStorage
+private import semmle.code.java.frameworks.android.OnActivityResultSource
+private import semmle.code.java.frameworks.android.Intent
+private import semmle.code.java.frameworks.play.Play
+private import semmle.code.java.frameworks.spring.SpringWeb
+private import semmle.code.java.frameworks.spring.SpringController
+private import semmle.code.java.frameworks.spring.SpringWebClient
+private import semmle.code.java.frameworks.Guice
+private import semmle.code.java.frameworks.struts.StrutsActions
+private import semmle.code.java.frameworks.Thrift
+private import semmle.code.java.frameworks.javaee.jsf.JSFRenderer
 private import semmle.code.java.dataflow.ExternalFlow
 
 /** A data flow source of remote user input. */
