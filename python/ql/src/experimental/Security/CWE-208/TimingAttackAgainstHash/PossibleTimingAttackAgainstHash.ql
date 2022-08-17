@@ -7,7 +7,7 @@
  * @kind path-problem
  * @problem.severity error
  * @precision medium
- * @id py/timing-attack-against-Hash
+ * @id py/timing-attack-against-hash
  * @tags security
  *       external/cwe/cwe-208
  */
