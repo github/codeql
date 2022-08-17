@@ -18,14 +18,11 @@ namespace Semmle.Extraction.CSharp
             if (args.Length > 0 && args[0] == "--dotnetexec")
             {
                 var compilerRegEx = new Regex(@"csc\.exe|mcs\.exe|csc\.dll", RegexOptions.Compiled);
-                var cil = args.Length > 1 && args[1] == "--cil";
-                for (var i = cil ? 2 : 1; i < args.Length; i++)
+                for (var i = 1; i < args.Length; i++)
                 {
                     if (compilerRegEx.IsMatch(args[i]))
                     {
                         var argsList = new List<string>();
-                        if (cil)
-                            argsList.Add("--cil");
                         argsList.Add("--compiler");
                         argsList.Add(args[i]);
                         if (i + 1 < args.Length)
