@@ -10,7 +10,6 @@
  */
 
 import java
-import semmle.code.java.J2EE
 import TestLib
 
 /** The `main` method in an Enterprise Java Bean. */

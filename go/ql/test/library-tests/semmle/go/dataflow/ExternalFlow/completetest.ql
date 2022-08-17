@@ -3,7 +3,6 @@
  */
 
 import go
-import semmle.go.dataflow.DataFlow
 import semmle.go.dataflow.ExternalFlow
 import semmle.go.dataflow.internal.FlowSummaryImpl as FlowSummaryImpl
 import CsvValidation
