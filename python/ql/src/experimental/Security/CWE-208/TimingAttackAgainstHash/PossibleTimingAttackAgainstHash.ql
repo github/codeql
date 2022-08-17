@@ -32,5 +32,5 @@ class PossibleTimingAttackAgainstHash extends TaintTracking::Configuration {
 
 from PossibleTimingAttackAgainstHash config, DataFlow::PathNode source, DataFlow::PathNode sink
 where config.hasFlowPath(source, sink)
-select sink.getNode(), source, sink, "Possible Timing attack against $@ validation.", source,
-  source.getNode()
+select sink.getNode(), source, sink, "Possible Timing attack against $@ validation.",
+  source.getNode(), "message"
