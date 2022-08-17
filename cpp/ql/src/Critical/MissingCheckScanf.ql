@@ -19,26 +19,37 @@ import semmle.code.cpp.ir.ValueNumbering
 /** An expression appearing as an output argument to a `scanf`-like call */
 class ScanfOutput extends Expr {
   ScanfFunctionCall call;
-  int argNum;
+  int varargIndex;
 
   ScanfOutput() {
-    this = call.getArgument(call.getFormatParameterIndex() + argNum) and
-    argNum >= 1
+    this = call.getArgument(call.getTarget().getNumberOfParameters() + varargIndex) and
+    varargIndex >= 0
   }
 
   ScanfFunctionCall getCall() { result = call }
 
-  int getNumber() { result = argNum }
+  /**
+   * The 0-based index of this output argument in the vararg list of its
+   * enclosing `scanf`-like function call.
+   */
+  int getVarargIndex() { result = varargIndex }
+
+  /**
+   * Any subsequent use of this argument should be surrounded by a
+   * check ensuring that the `scanf`-like function has returned a value
+   * equal to at least `getMinimumGuardConstant()`.
+   */
+  int getMinimumGuardConstant() { result = varargIndex + 1 }
 
   predicate hasGuardedAccess(Access e, boolean isGuarded) {
     e = getAnAccess() and
     if
-      exists(int value |
-        e.getBasicBlock() = blockGuardedBy(value, "==", call) and argNum <= value
+      exists(int value, int minGuard | minGuard = getMinimumGuardConstant() |
+        e.getBasicBlock() = blockGuardedBy(value, "==", call) and minGuard <= value
         or
-        e.getBasicBlock() = blockGuardedBy(value, "<", call) and argNum - 1 <= value
+        e.getBasicBlock() = blockGuardedBy(value, "<", call) and minGuard - 1 <= value
         or
-        e.getBasicBlock() = blockGuardedBy(value, "<=", call) and argNum <= value
+        e.getBasicBlock() = blockGuardedBy(value, "<=", call) and minGuard <= value
       )
     then isGuarded = true
     else isGuarded = false
@@ -103,6 +114,10 @@ BasicBlock blockGuardedBy(int value, string op, ScanfFunctionCall call) {
   )
 }
 
+predicate foo(ScanfFunctionCall call, int nargs) {
+  nargs = call.getTarget().getNumberOfParameters()
+}
+
 from ScanfOutput output, ScanfFunctionCall call, ScanfFunction fun, Access access
 where
   call.getTarget() = fun and
@@ -110,5 +125,5 @@ where
   output.hasGuardedAccess(access, false)
 select access,
   "$@ is read here, but may not have been written. " +
-    "It should be guarded by a check that $@() returns at least " + output.getNumber() + ".",
-  access, access.toString(), call, fun.getName()
+    "It should be guarded by a check that $@() returns at least " + output.getMinimumGuardConstant()
+    + ".", access, access.toString(), call, fun.getName()

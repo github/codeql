@@ -89,7 +89,7 @@ int main()
 
 		if (_scanf_l("%d", get_a_locale(), &i) == 1)
 		{
-			use(i); // GOOD [FALSE POSITIVE]
+			use(i); // GOOD
 		}
 	}
 
