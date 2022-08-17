@@ -58,12 +58,12 @@ Select parseSelect(string id, string lang, string msg, string fingerPrint) {
   not lang = "ql" // excluding QL-for-QL
 }
 
-from Select sel, string id, string lang, string msg, string fingerPrint, string badLangs
+from Select sel, string id, string lang, string msg, string fingerPrint, string otherLangs
 where
   // for a select with a fingerprint
   sel = parseSelect(id, lang, msg, fingerPrint) and
   // there exists other languages with the same fingerprint, but other message
-  badLangs =
+  otherLangs =
     strictconcat(string bad |
       bad != lang and
       exists(parseSelect(id, bad, any(string otherMsg | otherMsg != msg), fingerPrint))
@@ -71,4 +71,4 @@ where
       bad, ", "
     )
 select sel,
-  "The " + lang + "/" + id + " query does not have the same alert message as " + badLangs + "."
+  "The " + lang + "/" + id + " query does not have the same alert message as " + otherLangs + "."
