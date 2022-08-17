@@ -67,6 +67,9 @@ class AndroidApplicationXmlElement extends XmlElement {
       attr.getValue() = "true"
     )
   }
+
+  /** Holds if this component element has an attribute with the name `permission`. */
+  predicate hasPermissionAttribute() { exists(this.getAttribute("permission")) }
 }
 
 /**
@@ -171,6 +174,11 @@ class AndroidComponentXmlElement extends XmlElement {
   AndroidIntentFilterXmlElement getAnIntentFilterElement() { result = this.getAChild() }
 
   /**
+   * Holds if this component element has an `<intent-filter>` child element.
+   */
+  predicate hasAnIntentFilterElement() { this.getAChild().hasName("intent-filter") }
+
+  /**
    * Gets the value of the `android:name` attribute of this component element.
    */
   string getComponentName() {
@@ -220,6 +228,23 @@ class AndroidComponentXmlElement extends XmlElement {
    * Holds if the `android:exported` attribute of this component element is explicitly set to `false`.
    */
   predicate isNotExported() { this.getExportedAttributeValue() = "false" }
+
+  /**
+   * Holds if this component element has an `android:exported` attribute.
+   */
+  predicate hasExportedAttribute() { this.hasAttribute("exported") }
+
+  /** Holds if this component element has an attribute with the name `permission`. */
+  predicate hasPermissionAttribute() { exists(this.getAttribute("permission")) }
+
+  predicate isImplicitlyExported() {
+    not this.hasExportedAttribute() and
+    this.hasAnIntentFilterElement() and // Note: did not use getAnIntentFilterElement since don't need a return value
+    not this.hasPermissionAttribute() and
+    not this.getParent().(AndroidApplicationXmlElement).hasPermissionAttribute() and
+    not this.getAnIntentFilterElement().hasLauncherCategoryElement() and
+    not this.getFile().(AndroidManifestXmlFile).isInBuildDirectory()
+  }
 }
 
 /**
@@ -234,6 +259,19 @@ class AndroidIntentFilterXmlElement extends XmlElement {
    * Gets an `<action>` child element of this `<intent-filter>` element.
    */
   AndroidActionXmlElement getAnActionElement() { result = this.getAChild() }
+
+  /**
+   * Gets a `<category>` child element of this `<intent-filter>` element.
+   */
+  AndroidCategoryXmlElement getACategoryElement() { result = this.getAChild("category") }
+
+  /**
+   * Holds if this `<intent-filter>` element has a `<category>` child element
+   * named "android.intent.category.LAUNCHER".
+   */
+  predicate hasLauncherCategoryElement() {
+    this.getACategoryElement().getAttributeValue("name") = "android.intent.category.LAUNCHER"
+  }
 }
 
 /**
@@ -249,6 +287,28 @@ class AndroidActionXmlElement extends XmlElement {
    */
   string getActionName() {
     exists(XmlAttribute attr |
+      attr = this.getAnAttribute() and
+      attr.getNamespace().getPrefix() = "android" and
+      attr.getName() = "name"
+    |
+      result = attr.getValue()
+    )
+  }
+}
+
+/**
+ * A `<category>` element in an Android manifest file.
+ */
+class AndroidCategoryXmlElement extends XMLElement {
+  AndroidCategoryXmlElement() {
+    this.getFile() instanceof AndroidManifestXmlFile and this.getName() = "category"
+  }
+
+  /**
+   * Gets the name of this category.
+   */
+  string getCategoryName() {
+    exists(XMLAttribute attr |
       attr = this.getAnAttribute() and
       attr.getNamespace().getPrefix() = "android" and
       attr.getName() = "name"
