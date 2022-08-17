@@ -14,7 +14,7 @@ import java
 import semmle.code.java.security.RsaWithoutOaepQuery
 import DataFlow::PathGraph
 
-from RsaWithoutOaepConfig conf, DataFlow::Node source, DataFlow::Node sink
-where conf.hasFlow(source, sink)
+from RsaWithoutOaepConfig conf, DataFlow::PathNode source, DataFlow::PathNode sink
+where conf.hasFlowPath(source, sink)
 select source, source, sink,
   "This specification is used to initialize an RSA cipher without OAEP padding $@.", sink, "here"
