@@ -718,6 +718,10 @@ module API {
         or
         succ = MkMethodAccessNode(entry.getACall())
       )
+      or
+      // to get rid of an incompatible types error in `getUnknownMember`
+      lbl = Label::unknownMember() and
+      none()
     }
 
     /**
