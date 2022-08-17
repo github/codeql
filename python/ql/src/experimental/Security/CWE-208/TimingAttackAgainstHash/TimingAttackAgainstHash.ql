@@ -31,6 +31,9 @@ class TimingAttackAgainsthash extends TaintTracking::Configuration {
 }
 
 from TimingAttackAgainsthash config, DataFlow::PathNode source, DataFlow::PathNode sink
-where config.hasFlowPath(source, sink) and sink.getNode().(NonConstantTimeComparisonSink).includesUserInput()
+where
+  config.hasFlowPath(source, sink) and
+  sink.getNode().(NonConstantTimeComparisonSink).includesUserInput()
 select sink.getNode(), source, sink, "Timing attack against $@ validation.", source,
   source.getNode()
+  
