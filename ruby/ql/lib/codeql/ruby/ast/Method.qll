@@ -173,7 +173,7 @@ class Method extends MethodBase, TMethod {
     result = this.getExplicitVisibilityModifier()
     or
     not exists(this.getExplicitVisibilityModifier()) and
-    exists(Namespace n, int methodPos | isDeclaredIn(this, n, methodPos) |
+    exists(ModuleBase n, int methodPos | isDeclaredIn(this, n, methodPos) |
       // The relevant visibility modifier is the closest call that occurs before
       // the definition of `m` (typically this means higher up the file).
       result =
@@ -204,18 +204,35 @@ class Method extends MethodBase, TMethod {
   VisibilityModifier getExplicitVisibilityModifier() {
     result.getMethodArgument() = this
     or
-    isDeclaredIn(result, this.getEnclosingModule(), _) and
-    result.getMethodArgument().getConstantValue().getStringlikeValue() = this.getName()
+    exists(ModuleBase n, string name |
+      methodIsDeclaredIn(this, n, name) and
+      modifiesIn(result, n, name)
+    )
   }
 }
 
+pragma[nomagic]
+private predicate modifiesIn(VisibilityModifier vm, ModuleBase n, string name) {
+  n = vm.getEnclosingModule() and
+  name = vm.getMethodArgument().getConstantValue().getStringlikeValue()
+}
+
 /**
- * Holds if statement `m` is declared in namespace `n` at position `pos`.
+ * Holds if statement `s` is declared in namespace `n` at position `pos`.
  */
-pragma[noinline]
-private predicate isDeclaredIn(Stmt m, Namespace n, int pos) {
-  n = m.getEnclosingModule() and
-  n.getStmt(pos) = m
+pragma[nomagic]
+private predicate isDeclaredIn(Stmt s, ModuleBase n, int pos) {
+  n = s.getEnclosingModule() and
+  n.getStmt(pos) = s
+}
+
+/**
+ * Holds if method `m` with name `name` is declared in namespace `n`.
+ */
+pragma[nomagic]
+private predicate methodIsDeclaredIn(MethodBase m, ModuleBase n, string name) {
+  isDeclaredIn(m, n, _) and
+  name = m.getName()
 }
 
 /** A singleton method. */
@@ -273,11 +290,11 @@ class SingletonMethod extends MethodBase, TSingletonMethod {
   override predicate isPrivate() { super.isPrivate() }
 
   override VisibilityModifier getVisibilityModifier() {
-    result.getEnclosingModule() = this.getEnclosingModule() and
-    (
-      result.getMethodArgument() = this
-      or
-      result.getMethodArgument().getConstantValue().getStringlikeValue() = this.getName()
+    result.getMethodArgument() = this
+    or
+    exists(ModuleBase n, string name |
+      methodIsDeclaredIn(this, n, name) and
+      modifiesIn(result, n, name)
     )
   }
 }
