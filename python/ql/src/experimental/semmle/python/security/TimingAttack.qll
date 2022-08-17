@@ -51,9 +51,7 @@ private predicate existsFailFastCheck(Expr firstInput, Expr secondInput) {
 class NonConstantTimeComparisonSink extends DataFlow::Node {
   Expr anotherParameter;
 
-  NonConstantTimeComparisonSink() {
-    existsFailFastCheck(this.asExpr(), anotherParameter)
-  }
+  NonConstantTimeComparisonSink() { existsFailFastCheck(this.asExpr(), anotherParameter) }
 
   /** Holds if remote user input was used in the comparison. */
   predicate includesUserInput() {
@@ -195,3 +193,4 @@ class UserInputInComparisonConfig extends TaintTracking2::Configuration {
     )
   }
 }
+    
