@@ -848,7 +848,7 @@ open class KotlinFileExtractor(
                     paramTypes
                 }
 
-                val paramsSignature = allParamTypes.joinToString(separator = ",", prefix = "(", postfix = ")") { it.javaResult.signature!! }
+                val paramsSignature = allParamTypes.joinToString(separator = ",", prefix = "(", postfix = ")") { it.javaResult.signature }
 
                 val adjustedReturnType = addJavaLoweringWildcards(getAdjustedReturnType(f), false, (javaCallable as? JavaMethod)?.returnType)
                 val substReturnType = typeSubstitution?.let { it(adjustedReturnType, TypeContext.RETURN, pluginContext) } ?: adjustedReturnType
@@ -3866,7 +3866,7 @@ open class KotlinFileExtractor(
             Pair(paramId, paramType)
         }
 
-        val paramsSignature = parameters.joinToString(separator = ",", prefix = "(", postfix = ")") { it.second.javaResult.signature!! }
+        val paramsSignature = parameters.joinToString(separator = ",", prefix = "(", postfix = ")") { it.second.javaResult.signature }
 
         val rt = useType(returnType, TypeContext.RETURN)
         tw.writeMethods(methodId, name, "$name$paramsSignature", rt.javaResult.id, parentId, methodId)
@@ -4041,7 +4041,7 @@ open class KotlinFileExtractor(
     /**
      * Extracts a single wildcard type access expression with no enclosing callable and statement.
      */
-    private fun extractWildcardTypeAccess(type: TypeResults, location: Label<out DbLocation>, parent: Label<out DbExprparent>, idx: Int): Label<out DbExpr> {
+    private fun extractWildcardTypeAccess(type: TypeResultsWithoutSignatures, location: Label<out DbLocation>, parent: Label<out DbExprparent>, idx: Int): Label<out DbExpr> {
         val id = tw.getFreshIdLabel<DbWildcardtypeaccess>()
         tw.writeExprs_wildcardtypeaccess(id, type.javaResult.id, parent, idx)
         tw.writeExprsKotlinType(id, type.kotlinResult.id)
@@ -4079,7 +4079,7 @@ open class KotlinFileExtractor(
      * No enclosing callable and statement is extracted, this is useful for type access extraction in field declarations.
      */
     private fun extractWildcardTypeAccessRecursive(t: IrTypeArgument, location: Label<out DbLocation>, parent: Label<out DbExprparent>, idx: Int) {
-        val typeLabels by lazy { TypeResults(getTypeArgumentLabel(t), TypeResult(fakeKotlinType(), "TODO", "TODO")) }
+        val typeLabels by lazy { TypeResultsWithoutSignatures(getTypeArgumentLabel(t), TypeResultWithoutSignature(fakeKotlinType(), Unit, "TODO")) }
         when (t) {
             is IrStarProjection -> extractWildcardTypeAccess(typeLabels, location, parent, idx)
             is IrTypeProjection -> when(t.variance) {
