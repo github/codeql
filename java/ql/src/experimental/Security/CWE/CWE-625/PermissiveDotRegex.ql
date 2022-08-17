@@ -12,13 +12,13 @@
  */
 
 import java
+import experimental.semmle.code.java.security.SpringUrlRedirect
 import semmle.code.java.controlflow.Guards
 import semmle.code.java.dataflow.ExternalFlow
 import semmle.code.java.dataflow.FlowSources
 import semmle.code.java.security.UrlRedirect
 import DataFlow::PathGraph
 import Regex
-import SpringUrlRedirect
 
 /** Source model of remote flow source with servlets. */
 private class GetServletUriSource extends SourceModelCsv {
