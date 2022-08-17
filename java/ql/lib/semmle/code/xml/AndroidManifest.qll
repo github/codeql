@@ -68,8 +68,10 @@ class AndroidApplicationXmlElement extends XmlElement {
     )
   }
 
-  /** Holds if this component element has an attribute with the name `permission`. */
-  predicate hasPermissionAttribute() { exists(this.getAttribute("permission")) }
+  /**
+   * Holds if this application element has explicitly set a value for its `android:permission` attribute.
+   */
+  predicate requiresPermissions() { this.getAnAttribute().(AndroidPermissionXmlAttribute).isFull() }
 }
 
 /**
@@ -234,14 +236,13 @@ class AndroidComponentXmlElement extends XmlElement {
    */
   predicate hasExportedAttribute() { this.hasAttribute("exported") }
 
-  /** Holds if this component element has an attribute with the name `permission`. */
-  predicate hasPermissionAttribute() { exists(this.getAttribute("permission")) }
-
+  // /** Holds if this component element has an attribute with the name `permission`. */
+  // predicate hasPermissionAttribute() { exists(this.getAttribute("permission")) }
   predicate isImplicitlyExported() {
     not this.hasExportedAttribute() and
     this.hasAnIntentFilterElement() and // Note: did not use getAnIntentFilterElement since don't need a return value
-    not this.hasPermissionAttribute() and
-    not this.getParent().(AndroidApplicationXmlElement).hasPermissionAttribute() and
+    not this.hasAttribute("permission") and // not seeing how isFull() is any better than this..., this seems to more directly check what I want...
+    not this.getParent().(AndroidApplicationXmlElement).hasAttribute("permission") and
     not this.getAnIntentFilterElement().hasLauncherCategoryElement() and
     not this.getFile().(AndroidManifestXmlFile).isInBuildDirectory()
   }

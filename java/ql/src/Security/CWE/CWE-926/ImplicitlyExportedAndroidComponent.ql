@@ -7,7 +7,7 @@
  * @id java/android/implicitly-exported-component
  * @tags security
  *       external/cwe/cwe-926
- * @precision high
+ * @precision medium
  */
 
 import java
