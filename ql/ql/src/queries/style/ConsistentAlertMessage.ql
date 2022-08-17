@@ -17,7 +17,7 @@ import ql
 string getMessage(Select sel) {
   result =
     strictconcat(String e, Location l |
-      // is child of an expression in the select (in an uneven position, that's where the message is)
+      // is child of an expression in the select (in an odd-indexed position, that's where the message is)
       e.getParent*() = sel.getExpr(any(int i | i % 2 = 1)) and l = e.getFullLocation()
     |
       e.getValue(), " | " order by l.getStartLine(), l.getStartColumn()
