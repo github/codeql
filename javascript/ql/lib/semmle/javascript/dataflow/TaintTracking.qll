@@ -321,14 +321,6 @@ module TaintTracking {
     }
 
     /**
-     * Holds if `pred -> succ` is an edge contributed by an `AdditionalTaintStep` instance.
-     */
-    cached
-    predicate legacyAdditionalTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
-      any(InternalAdditionalTaintStep step).step(pred, succ)
-    }
-
-    /**
      * Public taint step relations.
      */
     cached
@@ -441,7 +433,6 @@ module TaintTracking {
    * Holds if `pred -> succ` is an edge used by all taint-tracking configurations.
    */
   predicate sharedTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
-    Cached::legacyAdditionalTaintStep(pred, succ) or
     Cached::genericStep(pred, succ) or
     Cached::heuristicStep(pred, succ) or
     uriStep(pred, succ) or
@@ -454,15 +445,6 @@ module TaintTracking {
     serializeStep(pred, succ) or
     deserializeStep(pred, succ) or
     promiseStep(pred, succ)
-  }
-
-  /** Internal version of `AdditionalTaintStep` that won't trigger deprecation warnings. */
-  abstract private class InternalAdditionalTaintStep extends DataFlow::Node {
-    /**
-     * Holds if `pred` &rarr; `succ` should be considered a taint-propagating
-     * data flow edge.
-     */
-    abstract predicate step(DataFlow::Node pred, DataFlow::Node succ);
   }
 
   /** Gets a data flow node referring to the client side URL. */

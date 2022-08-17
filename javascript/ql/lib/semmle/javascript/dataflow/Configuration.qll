@@ -523,58 +523,6 @@ abstract class LabeledBarrierGuardNode extends BarrierGuardNode {
   override predicate blocks(boolean outcome, Expr e) { none() }
 }
 
-// Internal version of AdditionalFlowStep that we can reference without deprecation warnings.
-abstract private class LegacyAdditionalFlowStep extends DataFlow::Node {
-  /**
-   * Holds if `pred` &rarr; `succ` should be considered a data flow edge.
-   */
-  predicate step(DataFlow::Node pred, DataFlow::Node succ) { none() }
-
-  /**
-   * Holds if `pred` &rarr; `succ` should be considered a data flow edge
-   * transforming values with label `predlbl` to have label `succlbl`.
-   */
-  predicate step(
-    DataFlow::Node pred, DataFlow::Node succ, DataFlow::FlowLabel predlbl,
-    DataFlow::FlowLabel succlbl
-  ) {
-    none()
-  }
-
-  /**
-   * EXPERIMENTAL. This API may change in the future.
-   *
-   * Holds if `pred` should be stored in the object `succ` under the property `prop`.
-   * The object `succ` must be a `DataFlow::SourceNode` for the object wherein the value is stored.
-   */
-  predicate storeStep(DataFlow::Node pred, DataFlow::SourceNode succ, string prop) { none() }
-
-  /**
-   * EXPERIMENTAL. This API may change in the future.
-   *
-   * Holds if the property `prop` of the object `pred` should be loaded into `succ`.
-   */
-  predicate loadStep(DataFlow::Node pred, DataFlow::Node succ, string prop) { none() }
-
-  /**
-   * EXPERIMENTAL. This API may change in the future.
-   *
-   * Holds if the property `prop` should be copied from the object `pred` to the object `succ`.
-   */
-  predicate loadStoreStep(DataFlow::Node pred, DataFlow::Node succ, string prop) { none() }
-
-  /**
-   * EXPERIMENTAL. This API may change in the future.
-   *
-   * Holds if the property `loadProp` should be copied from the object `pred` to the property `storeProp` of object `succ`.
-   */
-  predicate loadStoreStep(
-    DataFlow::Node pred, DataFlow::Node succ, string loadProp, string storeProp
-  ) {
-    none()
-  }
-}
-
 /**
  * A data flow edge that should be added to all data flow configurations in
  * addition to standard data flow edges.
@@ -694,40 +642,6 @@ module SharedFlowStep {
     DataFlow::Node pred, DataFlow::Node succ, string loadProp, string storeProp
   ) {
     any(SharedFlowStep s).loadStoreStep(pred, succ, loadProp, storeProp)
-  }
-}
-
-/**
- * Contributes subclasses of `AdditionalFlowStep` to `SharedFlowStep`.
- */
-private class AdditionalFlowStepAsSharedStep extends SharedFlowStep {
-  override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
-    any(LegacyAdditionalFlowStep s).step(pred, succ)
-  }
-
-  override predicate step(
-    DataFlow::Node pred, DataFlow::Node succ, DataFlow::FlowLabel predlbl,
-    DataFlow::FlowLabel succlbl
-  ) {
-    any(LegacyAdditionalFlowStep s).step(pred, succ, predlbl, succlbl)
-  }
-
-  override predicate storeStep(DataFlow::Node pred, DataFlow::SourceNode succ, string prop) {
-    any(LegacyAdditionalFlowStep s).storeStep(pred, succ, prop)
-  }
-
-  override predicate loadStep(DataFlow::Node pred, DataFlow::Node succ, string prop) {
-    any(LegacyAdditionalFlowStep s).loadStep(pred, succ, prop)
-  }
-
-  override predicate loadStoreStep(DataFlow::Node pred, DataFlow::Node succ, string prop) {
-    any(LegacyAdditionalFlowStep s).loadStoreStep(pred, succ, prop)
-  }
-
-  override predicate loadStoreStep(
-    DataFlow::Node pred, DataFlow::Node succ, string loadProp, string storeProp
-  ) {
-    any(LegacyAdditionalFlowStep s).loadStoreStep(pred, succ, loadProp, storeProp)
   }
 }
 
