@@ -44,7 +44,7 @@ jobs:
           CODEQL: ${{ steps.find-codeql.outputs.codeql-path }}
       - name: Check QL formatting
         run: |
-          find ql/ql "(" -name "*.ql" -or -name "*.qll" ")" -print0 | xargs -0 "${CODEQL}" query format --check-only
+          find ql/ql/src "(" -name "*.ql" -or -name "*.qll" ")" -print0 | xargs -0 "${CODEQL}" query format --check-only
         env:
           CODEQL: ${{ steps.find-codeql.outputs.codeql-path }}
       - name: Check QL compilation

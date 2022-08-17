@@ -36,6 +36,9 @@ getTarget
 | ParamModules.qll:59:30:59:45 | PredicateCall | ParamModules.qll:37:7:37:14 | ClasslessPredicate getThing |
 | ParamModules.qll:59:30:59:53 | MemberCall | ParamModules.qll:46:14:46:18 | ClassPredicate myFoo |
 | ParamModules.qll:61:39:61:47 | MemberCall | ParamModules.qll:46:14:46:18 | ClassPredicate myFoo |
+| ParamSig.qll:16:36:16:51 | PredicateCall | ParamSig.qll:8:5:8:12 | ClasslessPredicate getThing |
+| ParamSig.qll:16:36:16:51 | PredicateCall | ParamSig.qll:12:11:12:18 | ClasslessPredicate getThing |
+| ParamSig.qll:19:26:19:59 | PredicateCall | ParamSig.qll:16:11:16:21 | ClasslessPredicate getTheThing |
 | packs/other/OtherThing.qll:5:3:5:8 | PredicateCall | packs/lib/LibThing/Foo.qll:1:11:1:13 | ClasslessPredicate foo |
 | packs/other/OtherThing.qll:6:3:6:8 | PredicateCall | packs/src/SrcThing.qll:8:11:8:13 | ClasslessPredicate bar |
 | packs/src/SrcThing.qll:4:3:4:8 | PredicateCall | packs/lib/LibThing/Foo.qll:1:11:1:13 | ClasslessPredicate foo |
