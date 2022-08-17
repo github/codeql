@@ -207,6 +207,7 @@ private class Argument extends CfgNodes::ExprCfgNode {
 cached
 private module Cached {
   private import TaintTrackingPrivate as TaintTrackingPrivate
+  private import codeql.ruby.typetracking.TypeTrackerSpecific as TypeTrackerSpecific
 
   cached
   newtype TNode =
@@ -332,21 +333,22 @@ private module Cached {
 
   cached
   predicate isLocalSourceNode(Node n) {
-    not n instanceof SynthHashSplatParameterNode and
-    (
-      n instanceof ParameterNode
-      or
-      n instanceof PostUpdateNodes::ExprPostUpdateNode
-      or
-      // Nodes that can't be reached from another entry definition or expression.
-      not reachedFromExprOrEntrySsaDef(n)
-      or
-      // Ensure all entry SSA definitions are local sources -- for parameters, this
-      // is needed by type tracking. Note that when the parameter has a default value,
-      // it will be reachable from an expression (the default value) and therefore
-      // won't be caught by the rule above.
-      entrySsaDefinition(n)
-    )
+    n instanceof ParameterNode and
+    not n instanceof SynthHashSplatParameterNode
+    or
+    // Expressions that can't be reached from another entry definition or expression
+    n instanceof ExprNode and
+    not reachedFromExprOrEntrySsaDef(n)
+    or
+    // Ensure all entry SSA definitions are local sources -- for parameters, this
+    // is needed by type tracking
+    entrySsaDefinition(n)
+    or
+    // Needed for flow out in type tracking
+    n instanceof SynthReturnNode
+    or
+    // Needed for stores in type tracking
+    TypeTrackerSpecific::basicStoreStep(_, n, _)
   }
 
   cached
