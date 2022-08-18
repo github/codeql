@@ -62,8 +62,10 @@ private CfgNodes::ExprNodes::VariableWriteAccessCfgNode variablesInPattern(
 
 cached
 private module Cached {
+  private import codeql.ruby.internal.CachedStages
+
   cached
-  predicate forceCachingInSameStage() { any() }
+  predicate forceCachingInSameStage() { Stages::Taint::ref() }
 
   /**
    * Holds if the additional step from `nodeFrom` to `nodeTo` should be included

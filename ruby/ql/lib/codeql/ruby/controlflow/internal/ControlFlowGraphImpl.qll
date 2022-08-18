@@ -40,6 +40,7 @@ private import codeql.ruby.ast.internal.Variable
 private import codeql.ruby.controlflow.ControlFlowGraph
 private import Completion
 import ControlFlowGraphImplShared
+private import codeql.ruby.internal.CachedStages
 
 abstract class CfgScopeImpl extends AstNode {
   abstract predicate entry(AstNode first);
@@ -1448,7 +1449,7 @@ cached
 private module Cached {
   cached
   newtype TSuccessorType =
-    TSuccessorSuccessor() or
+    TSuccessorSuccessor() { Stages::CFG::ref() } or
     TBooleanSuccessor(boolean b) { b in [false, true] } or
     TEmptinessSuccessor(boolean isEmpty) { isEmpty in [false, true] } or
     TMatchingSuccessor(boolean isMatch) { isMatch in [false, true] } or

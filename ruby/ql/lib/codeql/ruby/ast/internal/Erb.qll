@@ -1,6 +1,7 @@
 import codeql.Locations
 private import TreeSitter
 private import codeql.ruby.ast.Erb
+private import codeql.ruby.internal.CachedStages
 
 cached
 private module Cached {
@@ -20,13 +21,21 @@ private module Cached {
    */
   cached
   Erb::AstNode toGenerated(ErbAstNode n) {
-    n = TCommentDirective(result) or
-    n = TDirective(result) or
-    n = TGraphqlDirective(result) or
-    n = TOutputDirective(result) or
-    n = TTemplate(result) or
-    n = TToken(result) or
-    n = TComment(result) or
+    Stages::AST::ref() and
+    n = TCommentDirective(result)
+    or
+    n = TDirective(result)
+    or
+    n = TGraphqlDirective(result)
+    or
+    n = TOutputDirective(result)
+    or
+    n = TTemplate(result)
+    or
+    n = TToken(result)
+    or
+    n = TComment(result)
+    or
     n = TCode(result)
   }
 

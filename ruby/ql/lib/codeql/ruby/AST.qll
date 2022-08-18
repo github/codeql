@@ -17,27 +17,21 @@ private import ast.internal.AST
 private import ast.internal.Scope
 private import ast.internal.Synthesis
 private import ast.internal.TreeSitter
+private import codeql.ruby.internal.CachedStages
 
-cached
-private module Cached {
-  cached
-  ModuleBase getEnclosingModule(Scope s) {
-    result = s
-    or
-    not s instanceof ModuleBase and result = getEnclosingModule(s.getOuterScope())
-  }
-
-  cached
-  MethodBase getEnclosingMethod(Scope s) {
-    result = s
-    or
-    not s instanceof MethodBase and
-    not s instanceof ModuleBase and
-    result = getEnclosingMethod(s.getOuterScope())
-  }
+private ModuleBase getEnclosingModule(Scope s) {
+  result = s
+  or
+  not s instanceof ModuleBase and result = getEnclosingModule(s.getOuterScope())
 }
 
-private import Cached
+private MethodBase getEnclosingMethod(Scope s) {
+  result = s
+  or
+  not s instanceof MethodBase and
+  not s instanceof ModuleBase and
+  result = getEnclosingMethod(s.getOuterScope())
+}
 
 /**
  * A node in the abstract syntax tree. This class is the base class for all Ruby
@@ -60,14 +54,20 @@ class AstNode extends TAstNode {
   final string getPrimaryQlClasses() { result = concat(this.getAPrimaryQlClass(), ",") }
 
   /** Gets the enclosing module, if any. */
-  ModuleBase getEnclosingModule() { result = getEnclosingModule(scopeOfInclSynth(this)) }
+  cached
+  ModuleBase getEnclosingModule() {
+    Stages::AST::ref() and result = getEnclosingModule(scopeOfInclSynth(this))
+  }
 
   /** Gets the enclosing method, if any. */
-  MethodBase getEnclosingMethod() { result = getEnclosingMethod(scopeOfInclSynth(this)) }
+  cached
+  MethodBase getEnclosingMethod() {
+    Stages::AST::ref() and result = getEnclosingMethod(scopeOfInclSynth(this))
+  }
 
   /** Gets a textual representation of this node. */
   cached
-  string toString() { none() }
+  string toString() { none() and Stages::AST::ref() and exists(result) }
 
   /** Gets the location of this node. */
   Location getLocation() { result = getLocation(this) }

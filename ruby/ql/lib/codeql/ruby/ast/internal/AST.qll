@@ -6,6 +6,7 @@ private import codeql.ruby.ast.internal.Pattern
 private import codeql.ruby.ast.internal.Variable
 private import codeql.ruby.AST as AST
 private import Synthesis
+private import codeql.ruby.internal.CachedStages
 
 module MethodName {
   predicate range(Ruby::UnderscoreMethodName g) {
@@ -649,6 +650,7 @@ private module Cached {
 
   cached
   predicate lhsExpr(AST::Expr e) {
+    Stages::AST::ref() and
     explicitAssignmentNode(toGenerated(e), _)
     or
     implicitAssignmentNode(toGenerated(e))

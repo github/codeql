@@ -8,6 +8,7 @@ private import codeql.ruby.controlflow.ControlFlowGraph
 private import internal.ControlFlowGraphImpl
 private import CfgNodes
 private import SuccessorTypes
+private import codeql.ruby.internal.CachedStages
 
 /**
  * A basic block, that is, a maximal straight-line sequence of control flow nodes
@@ -302,6 +303,7 @@ private module Cached {
    */
   cached
   JoinBlockPredecessor getJoinBlockPredecessor(JoinBlock jb, int i) {
+    Stages::CFG::ref() and
     result =
       rank[i + 1](JoinBlockPredecessor jbp |
         jbp = jb.getAPredecessor()

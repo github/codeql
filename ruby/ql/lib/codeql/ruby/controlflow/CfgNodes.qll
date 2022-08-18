@@ -8,6 +8,7 @@ private import codeql.ruby.ast.internal.Literal
 private import ControlFlowGraph
 private import internal.ControlFlowGraphImpl
 private import internal.Splitting
+private import codeql.ruby.internal.CachedStages
 
 /** An entry node for a given scope. */
 class EntryNode extends CfgNode, TEntryNode {
@@ -185,6 +186,7 @@ abstract private class ChildMapping extends AstNode {
    */
   cached
   predicate hasCfgChild(AstNode child, CfgNode cfn, CfgNode cfnChild) {
+    Stages::CFG::ref() and
     this.reachesBasicBlock(child, cfn, cfnChild.getBasicBlock()) and
     cfnChild.getNode() = desugar(child)
   }

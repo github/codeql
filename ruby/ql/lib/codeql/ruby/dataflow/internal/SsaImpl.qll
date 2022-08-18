@@ -4,6 +4,7 @@ private import codeql.ruby.AST
 private import codeql.ruby.CFG
 private import codeql.ruby.ast.Variable
 private import CfgNodes::ExprNodes
+private import codeql.ruby.internal.CachedStages
 
 /** Holds if `v` is uninitialized at index `i` in entry block `bb`. */
 predicate uninitializedWrite(EntryBasicBlock bb, int i, LocalVariable v) {
@@ -171,6 +172,7 @@ private module Cached {
    */
   cached
   predicate variableWriteActual(BasicBlock bb, int i, LocalVariable v, VariableWriteAccess write) {
+    Stages::CFG::ref() and
     exists(AstNode n |
       write.getVariable() = v and
       n = bb.getNode(i).getNode()

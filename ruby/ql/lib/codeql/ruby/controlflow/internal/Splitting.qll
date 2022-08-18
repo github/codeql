@@ -7,23 +7,19 @@ private import Completion
 private import ControlFlowGraphImpl
 private import SuccessorTypes
 private import codeql.ruby.controlflow.ControlFlowGraph
+private import codeql.ruby.internal.CachedStages
 
 cached
-private module Cached {
-  cached
-  newtype TSplitKind =
-    TConditionalCompletionSplitKind() { forceCachingInSameStage() } or
-    TEnsureSplitKind(int nestLevel) { nestLevel = any(Trees::BodyStmtTree t).getNestLevel() }
+newtype TSplitKind =
+  TConditionalCompletionSplitKind() { forceCachingInSameStage() and Stages::CFG::ref() } or
+  TEnsureSplitKind(int nestLevel) { nestLevel = any(Trees::BodyStmtTree t).getNestLevel() }
 
-  cached
-  newtype TSplit =
-    TConditionalCompletionSplit(ConditionalCompletion c) or
-    TEnsureSplit(EnsureSplitting::EnsureSplitType type, int nestLevel) {
-      nestLevel = any(Trees::BodyStmtTree t).getNestLevel()
-    }
-}
-
-import Cached
+cached
+newtype TSplit =
+  TConditionalCompletionSplit(ConditionalCompletion c) { Stages::CFG::ref() } or
+  TEnsureSplit(EnsureSplitting::EnsureSplitType type, int nestLevel) {
+    nestLevel = any(Trees::BodyStmtTree t).getNestLevel()
+  }
 
 /** A split for a control flow node. */
 class Split extends TSplit {

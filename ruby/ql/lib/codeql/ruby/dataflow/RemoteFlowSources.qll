@@ -6,6 +6,7 @@
 private import codeql.ruby.dataflow.internal.DataFlowPublic as DataFlow
 // Need to import since frameworks can extend `RemoteFlowSource::Range`
 private import codeql.ruby.Frameworks
+private import codeql.ruby.internal.CachedStages
 
 /**
  * A data flow source of remote user input.
@@ -13,13 +14,11 @@ private import codeql.ruby.Frameworks
  * Extend this class to refine existing API models. If you want to model new APIs,
  * extend `RemoteFlowSource::Range` instead.
  */
-class RemoteFlowSource extends DataFlow::Node {
-  RemoteFlowSource::Range self;
-
-  RemoteFlowSource() { this = self }
-
+cached
+class RemoteFlowSource extends DataFlow::Node instanceof RemoteFlowSource::Range {
   /** Gets a string that describes the type of this remote flow source. */
-  string getSourceType() { result = self.getSourceType() }
+  cached
+  string getSourceType() { Stages::Taint::ref() and result = super.getSourceType() }
 }
 
 /** Provides a class for modeling new sources of remote user input. */

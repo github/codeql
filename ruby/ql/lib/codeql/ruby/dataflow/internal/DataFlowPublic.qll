@@ -6,6 +6,7 @@ private import codeql.ruby.typetracking.TypeTracker
 private import codeql.ruby.dataflow.SSA
 private import FlowSummaryImpl as FlowSummaryImpl
 private import SsaImpl as SsaImpl
+private import codeql.ruby.internal.CachedStages
 
 /**
  * An element, viewed as a node in a data flow graph. Either an expression
@@ -20,11 +21,13 @@ class Node extends TNode {
 
   /** Gets a textual representation of this node. */
   cached
-  final string toString() { result = this.(NodeImpl).toStringImpl() }
+  final string toString() { result = this.(NodeImpl).toStringImpl() and Stages::DataFlow::ref() }
 
   /** Gets the location of this node. */
   cached
-  final Location getLocation() { result = this.(NodeImpl).getLocationImpl() }
+  final Location getLocation() {
+    result = this.(NodeImpl).getLocationImpl() and Stages::DataFlow::ref()
+  }
 
   /**
    * Holds if this element is at the specified location.

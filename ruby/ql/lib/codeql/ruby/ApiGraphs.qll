@@ -13,6 +13,7 @@ private import codeql.ruby.ast.internal.Module
 private import codeql.ruby.controlflow.CfgNodes
 private import codeql.ruby.dataflow.internal.DataFlowPrivate as DataFlowPrivate
 private import codeql.ruby.dataflow.internal.DataFlowDispatch as DataFlowDispatch
+private import codeql.ruby.internal.CachedStages
 
 /**
  * Provides classes and predicates for working with APIs used in a database.
@@ -98,6 +99,7 @@ module API {
      * See `asSource()` for examples.
      */
     DataFlow::Node getAValueReachableFromSource() {
+      Stages::DataFlow::ref() and
       exists(DataFlow::LocalSourceNode src | Impl::use(this, src) |
         Impl::trackUseNode(src).flowsTo(result)
       )
@@ -166,7 +168,9 @@ module API {
     /**
      * Gets a call to a method on the receiver represented by this API component.
      */
-    DataFlow::CallNode getAMethodCall(string method) { result = this.getReturn(method).asSource() }
+    DataFlow::CallNode getAMethodCall(string method) {
+      Stages::DataFlow::ref() and result = this.getReturn(method).asSource()
+    }
 
     /**
      * Gets a node representing member `m` of this API component.
@@ -176,14 +180,14 @@ module API {
      * - A submodule of a module
      * - An attribute of an object
      */
-    bindingset[m]
-    bindingset[result]
+    cached
     Node getMember(string m) { result = this.getASuccessor(Label::member(m)) }
 
     /**
      * Gets a node representing a member of this API component where the name of the member may
      * or may not be known statically.
      */
+    cached
     Node getAMember() { result = this.getASuccessor(Label::member(_)) }
 
     /**
@@ -202,6 +206,7 @@ module API {
     /**
      * Gets a node representing a call to `method` on the receiver represented by this node.
      */
+    cached
     Node getMethod(string method) {
       result = this.getASubclass().getASuccessor(Label::method(method))
     }
@@ -209,24 +214,27 @@ module API {
     /**
      * Gets a node representing the result of this call.
      */
+    cached
     Node getReturn() { result = this.getASuccessor(Label::return()) }
 
     /**
      * Gets a node representing the result of calling a method on the receiver represented by this node.
      */
+    cached
     Node getReturn(string method) { result = this.getMethod(method).getReturn() }
 
     /** Gets an API node representing the `n`th positional parameter. */
-    pragma[nomagic]
+    cached
     Node getParameter(int n) { result = this.getASuccessor(Label::parameter(n)) }
 
     /** Gets an API node representing the given keyword parameter. */
-    pragma[nomagic]
+    cached
     Node getKeywordParameter(string name) {
       result = this.getASuccessor(Label::keywordParameter(name))
     }
 
     /** Gets an API node representing the block parameter. */
+    cached
     Node getBlock() { result = this.getASuccessor(Label::blockParameter()) }
 
     /**
@@ -254,6 +262,7 @@ module API {
      * ```
      * In the example above, `getMember("A").getAnImmediateSubclass()` will return uses of `B` only.
      */
+    cached
     Node getAnImmediateSubclass() { result = this.getASuccessor(Label::subclass()) }
 
     /**
@@ -441,7 +450,7 @@ module API {
     cached
     newtype TApiNode =
       /** The root of the API graph. */
-      MkRoot() or
+      MkRoot() { Stages::DataFlow::ref() } or
       /** The method accessed at `call`, synthetically treated as a separate object. */
       MkMethodAccessNode(DataFlow::CallNode call) { isUse(call) } or
       /** A use of an API member at the node `nd`. */
