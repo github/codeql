@@ -5,12 +5,10 @@ import com.github.codeql.utils.versions.codeQlWithHasQuestionMark
 import com.github.codeql.utils.versions.isRawType
 import com.semmle.extractor.java.OdasaOutput
 import org.jetbrains.kotlin.backend.common.extensions.IrPluginContext
-import org.jetbrains.kotlin.backend.common.ir.allOverridden
-import org.jetbrains.kotlin.backend.common.ir.isFinalClass
+import org.jetbrains.kotlin.backend.common.ir.*
 import org.jetbrains.kotlin.backend.common.lower.parents
 import org.jetbrains.kotlin.backend.common.lower.parentsWithSelf
 import org.jetbrains.kotlin.backend.jvm.ir.propertyIfAccessor
-import org.jetbrains.kotlin.builtins.StandardNames
 import org.jetbrains.kotlin.codegen.JvmCodegenUtil
 import org.jetbrains.kotlin.descriptors.*
 import org.jetbrains.kotlin.ir.ObsoleteDescriptorBasedAPI
@@ -26,7 +24,6 @@ import org.jetbrains.kotlin.load.java.sources.JavaSourceElement
 import org.jetbrains.kotlin.load.java.structure.*
 import org.jetbrains.kotlin.load.kotlin.getJvmModuleNameForDeserializedDescriptor
 import org.jetbrains.kotlin.name.FqName
-import org.jetbrains.kotlin.name.Name
 import org.jetbrains.kotlin.name.NameUtils
 import org.jetbrains.kotlin.name.SpecialNames
 import org.jetbrains.kotlin.types.Variance
