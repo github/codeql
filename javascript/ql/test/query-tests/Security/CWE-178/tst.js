@@ -59,3 +59,16 @@ app.use(/\/foo\/([0-9]+)/i, (req, res) => { // OK - not middleware (also case in
 
 app.get('/foo/:param', (req, res) => { // OK - not a middleware
 });
+
+app.get(
+    new RegExp('^/bar(.*)?'), // NOT OK - case sensitive
+    unknown(),
+    function(req, res, next) {
+        if (req.params.blah) {
+            next();
+        }
+    }
+);
+
+app.get('/bar/*', (req, res) => { // OK - not a middleware
+});

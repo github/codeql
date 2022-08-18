@@ -104,13 +104,13 @@ predicate isGuardedCaseInsensitiveEndpoint(
 }
 
 /**
- * Gets an byPassExample path that will hit `endpoint`.
- * Query parameters (e.g. the ":param" in "/foo/:param") have been replaced with byPassExample values.
+ * Gets an example path that will hit `endpoint`.
+ * Query parameters (e.g. the ":param" in "/foo/:param") have been replaced with example values.
  */
 string getAnEndpointExample(Routing::RouteSetup endpoint) {
   exists(string raw |
     raw = endpoint.getRelativePath().toLowerCase() and
-    result = raw.regexpReplaceAll(":\\w+\\b", ["a", "1"])
+    result = raw.regexpReplaceAll(":\\w+\\b|\\*", ["a", "1"])
   )
 }
 
