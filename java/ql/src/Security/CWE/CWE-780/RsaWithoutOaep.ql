@@ -1,6 +1,6 @@
 /**
  * @name Use of RSA algorithm without OAEP
- * @description Using RSA encryption without OAEP padding can lead to a padding oracle attack, weakening the encryption.
+ * @description Using RSA encryption without OAEP padding can result in a padding oracle attack, leading to a weaker encryption.
  * @kind path-problem
  * @problem.severity warning
  * @security-severity 7.5

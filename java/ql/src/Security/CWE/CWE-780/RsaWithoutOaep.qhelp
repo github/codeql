@@ -2,8 +2,8 @@
 <qhelp>
 
   <overview>
-    <p>Cryptographic algorithms often use padding schemes to make the plaintext less predictable. The OAEP scheme (Optimal Asymmetric Encryption Padding) should be used with RSA encryption.
-    Using no padding or an outdated padding scheme such as PKCS1 can weaken the encryption by making it vulnerable to a padding oracle attack.
+    <p>Cryptographic algorithms often use padding schemes to make the plaintext less predictable. The OAEP (Optimal Asymmetric Encryption Padding) scheme should be used with RSA encryption.
+    Using an outdated padding scheme such as PKCS1, or no padding at all, can weaken the encryption by making it vulnerable to a padding oracle attack.
     </p>
   </overview>
 
