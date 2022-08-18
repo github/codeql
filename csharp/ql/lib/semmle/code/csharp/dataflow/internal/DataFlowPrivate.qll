@@ -1333,7 +1333,7 @@ private predicate summaryPostUpdateNodeIsOutOrRef(SummaryNode n, Parameter p) {
   exists(ParameterNodeImpl pn, DataFlowCallable c, ParameterPosition pos |
     FlowSummaryImpl::Private::summaryPostUpdateNode(n, pn) and
     pn.isParameterOf(c, pos) and
-    p = c.getUnderlyingCallable().getParameter(pos.getPosition()) and
+    p = c.asSummarizedCallable().getParameter(pos.getPosition()) and
     p.isOutOrRef()
   )
 }
