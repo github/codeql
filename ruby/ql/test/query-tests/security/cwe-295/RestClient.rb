@@ -23,7 +23,7 @@ response = resource.get
 # GOOD
 resource = RestClient::Resource.new("https://example.com", verify_ssl: OpenSSL::SSL::VERIFY_PEER)
 response = resource.get
-# BAD
+# GOOD
 resource = RestClient::Resource.new("https://example.com", { verify_ssl: OpenSSL::SSL::VERIFY_PEER })
 response = resource.get
 
