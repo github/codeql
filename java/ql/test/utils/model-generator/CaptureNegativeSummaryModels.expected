@@ -14,6 +14,7 @@
 | p;MultipleImpls$Strat1;Strat1;();generated |
 | p;MultipleImpls$Strat2;Strat2;();generated |
 | p;MultipleImpls$Strat3;Strat3;();generated |
+| p;MultipleImpls$Strategy;doSomething;(String);generated |
 | p;MultipleImpls;MultipleImpls;();generated |
 | p;ParamFlow;ParamFlow;();generated |
 | p;ParamFlow;ignorePrimitiveReturnValue;(String);generated |
