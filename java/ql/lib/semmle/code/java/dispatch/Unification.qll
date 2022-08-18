@@ -66,6 +66,24 @@ module MkUnification<unificationTarget/1 targetLeft, unificationTarget/1 targetR
       or
       failsUnification(t1.(Array).getComponentType(), t2.(Array).getComponentType())
       or
+      exists(RefType upperbound, RefType other |
+        t1.(BoundedType).getAnUltimateUpperBoundType().getSourceDeclaration() = upperbound and
+        t2.(RefType).getSourceDeclaration() = other and
+        not t2 instanceof BoundedType
+        or
+        t2.(BoundedType).getAnUltimateUpperBoundType().getSourceDeclaration() = upperbound and
+        t1.(RefType).getSourceDeclaration() = other and
+        not t1 instanceof BoundedType
+      |
+        not other.getASourceSupertype*() = upperbound
+      )
+      or
+      exists(RefType upperbound1, RefType upperbound2 |
+        t1.(BoundedType).getAnUltimateUpperBoundType() = upperbound1 and
+        t2.(BoundedType).getAnUltimateUpperBoundType() = upperbound2 and
+        notHaveIntersection(upperbound1, upperbound2)
+      )
+      or
       not (
         t1 instanceof Array and t2 instanceof Array
         or
