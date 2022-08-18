@@ -74,13 +74,9 @@ string captureFlow(TargetApi api) {
 
 /**
  * Gets the negative summary for `api`, if any.
- * A negative summary is generated, if there does not exist any positive flow that
- * shares the same summary prefix - otherwise these models will be indistinguishable.
+ * A negative summary is generated, if there does not exist any positive flow.
  */
 string captureNoFlow(TargetApi api) {
-  not exists(TargetApi other, string flow |
-    flow = captureFlow(other) and
-    partialNegativeModel(other) = partialNegativeModel(api)
-  ) and
+  not exists(captureFlow(api)) and
   result = asNegativeSummaryModel(api)
 }

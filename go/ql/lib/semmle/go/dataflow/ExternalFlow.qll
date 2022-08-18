@@ -299,12 +299,12 @@ module CsvValidation {
   }
 
   private string getInvalidModelSubtype() {
-    exists(string pred, string row, int expect |
-      sourceModel(row) and expect = 8 and pred = "source"
+    exists(string pred, string row |
+      sourceModel(row) and pred = "source"
       or
-      sinkModel(row) and expect = 8 and pred = "sink"
+      sinkModel(row) and pred = "sink"
       or
-      summaryModel(row) and expect = 9 and pred = "summary"
+      summaryModel(row) and pred = "summary"
     |
       exists(string b |
         b = row.splitAt(";", 2) and
