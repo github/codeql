@@ -7,6 +7,7 @@ private import codeql.ruby.CFG
 private import codeql.ruby.Concepts
 private import codeql.ruby.ApiGraphs
 private import codeql.ruby.DataFlow
+private import codeql.ruby.dataflow.internal.DataFlowImplForLibraries as DataFlowImplForLibraries
 
 /**
  * A call that makes an HTTP request using `RestClient`.
@@ -46,25 +47,24 @@ class RestClientHttpRequest extends HTTP::Client::Request::Range, DataFlow::Call
 
   override DataFlow::Node getResponseBody() { result = requestNode.getAMethodCall("body") }
 
-  override predicate disablesCertificateValidation(DataFlow::Node disablingNode) {
+  /** Gets the value that controls certificate validation, if any. */
+  DataFlow::Node getCertificateValidationControllingValue() {
     // `RestClient::Resource::new` takes an options hash argument, and we're
     // looking for `{ verify_ssl: OpenSSL::SSL::VERIFY_NONE }`.
-    exists(DataFlow::Node arg, int i |
-      i > 0 and
-      arg = connectionNode.getAValueReachableFromSource().(DataFlow::CallNode).getArgument(i)
-    |
-      // Either passed as an individual key:value argument, e.g.:
-      // RestClient::Resource.new(..., verify_ssl: OpenSSL::SSL::VERIFY_NONE)
-      isVerifySslNonePair(arg.asExpr()) and
-      disablingNode = arg
+    exists(DataFlow::CallNode newCall | newCall = connectionNode.getAValueReachableFromSource() |
+      result = newCall.getKeywordArgument("verify_ssl")
       or
-      // Or as a single hash argument, e.g.:
-      // RestClient::Resource.new(..., { verify_ssl: OpenSSL::SSL::VERIFY_NONE })
-      exists(DataFlow::LocalSourceNode optionsNode, CfgNodes::ExprNodes::PairCfgNode p |
+      // using a hashliteral
+      exists(
+        DataFlow::LocalSourceNode optionsNode, CfgNodes::ExprNodes::PairCfgNode p,
+        DataFlow::Node key
+      |
+        // can't flow to argument 0, since that's the URL
+        optionsNode.flowsTo(newCall.getArgument(any(int i | i > 0))) and
         p = optionsNode.asExpr().(CfgNodes::ExprNodes::HashLiteralCfgNode).getAKeyValuePair() and
-        isVerifySslNonePair(p) and
-        optionsNode.flowsTo(arg) and
-        disablingNode.asExpr() = p
+        key.asExpr() = p.getKey() and
+        key.getALocalSource().asExpr().getExpr().getConstantValue().isStringlikeValue("verify_ssl") and
+        result.asExpr() = p.getValue()
       )
     )
   }
@@ -72,31 +72,25 @@ class RestClientHttpRequest extends HTTP::Client::Request::Range, DataFlow::Call
   override predicate disablesCertificateValidation(
     DataFlow::Node disablingNode, DataFlow::Node argumentOrigin
   ) {
-    disablesCertificateValidation(disablingNode) and
-    argumentOrigin = disablingNode
+    any(RestClientDisablesCertificateValidationConfiguration config)
+        .hasFlow(argumentOrigin, disablingNode) and
+    disablingNode = this.getCertificateValidationControllingValue()
   }
 
   override string getFramework() { result = "RestClient" }
 }
 
-/** Holds if `p` is the pair `verify_ssl: OpenSSL::SSL::VERIFY_NONE`. */
-private predicate isVerifySslNonePair(CfgNodes::ExprNodes::PairCfgNode p) {
-  exists(DataFlow::Node key, DataFlow::Node value |
-    key.asExpr() = p.getKey() and
-    value.asExpr() = p.getValue() and
-    isSslVerifyModeLiteral(key) and
-    value =
-      API::getTopLevelMember("OpenSSL")
-          .getMember("SSL")
-          .getMember("VERIFY_NONE")
-          .getAValueReachableFromSource()
-  )
-}
+/** A configuration to track values that can disable certificate validation for RestClient. */
+private class RestClientDisablesCertificateValidationConfiguration extends DataFlowImplForLibraries::Configuration {
+  RestClientDisablesCertificateValidationConfiguration() {
+    this = "RestClientDisablesCertificateValidationConfiguration"
+  }
 
-/** Holds if `node` can represent the symbol literal `:verify_ssl`. */
-private predicate isSslVerifyModeLiteral(DataFlow::Node node) {
-  exists(DataFlow::LocalSourceNode literal |
-    literal.asExpr().getExpr().getConstantValue().isStringlikeValue("verify_ssl") and
-    literal.flowsTo(node)
-  )
+  override predicate isSource(DataFlow::Node source) {
+    source = API::getTopLevelMember("OpenSSL").getMember("SSL").getMember("VERIFY_NONE").asSource()
+  }
+
+  override predicate isSink(DataFlow::Node sink) {
+    sink = any(RestClientHttpRequest req).getCertificateValidationControllingValue()
+  }
 }
