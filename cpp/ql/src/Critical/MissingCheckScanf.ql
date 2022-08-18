@@ -42,9 +42,9 @@ class ScanfOutput extends Expr {
   }
 
   predicate hasGuardedAccess(Access e, boolean isGuarded) {
-    e = getAnAccess() and
+    e = this.getAnAccess() and
     if
-      exists(int value, int minGuard | minGuard = getMinimumGuardConstant() |
+      exists(int value, int minGuard | minGuard = this.getMinimumGuardConstant() |
         e.getBasicBlock() = blockGuardedBy(value, "==", call) and minGuard <= value
         or
         e.getBasicBlock() = blockGuardedBy(value, "<", call) and minGuard - 1 <= value
@@ -61,20 +61,22 @@ class ScanfOutput extends Expr {
    */
   Access getAnAccess() {
     exists(Instruction j | result = j.getAst() |
-      j = getASubsequentSameValuedInstruction() and
+      j = this.getASubsequentSameValuedInstruction() and
       forall(Instruction k |
-        k = [getAResetInstruction(), getAReuseInstruction()] implies j.getASuccessor+() = k
+        k = [this.getAResetInstruction(), this.getAReuseInstruction()]
+        implies
+        j.getASuccessor+() = k
       )
     )
   }
 
   private Instruction getAResetInstruction() {
-    result = getASubsequentSameValuedInstruction() and
+    result = this.getASubsequentSameValuedInstruction() and
     result = any(StoreInstruction s).getDestinationAddress()
   }
 
   private Instruction getAReuseInstruction() {
-    result = getASubsequentSameValuedInstruction() and
+    result = this.getASubsequentSameValuedInstruction() and
     exists(Expr e | result.getAst() = e |
       e instanceof ScanfOutput
       or
