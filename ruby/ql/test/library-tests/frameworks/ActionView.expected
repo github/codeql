@@ -14,9 +14,19 @@ rawCalls
 renderCalls
 | app/controllers/foo/bars_controller.rb:6:5:6:37 | call to render |
 | app/controllers/foo/bars_controller.rb:23:5:23:76 | call to render |
-| app/controllers/foo/bars_controller.rb:37:5:37:17 | call to render |
+| app/controllers/foo/bars_controller.rb:35:5:35:33 | call to render |
+| app/controllers/foo/bars_controller.rb:38:5:38:50 | call to render |
+| app/controllers/foo/bars_controller.rb:44:5:44:17 | call to render |
 | app/views/foo/bars/show.html.erb:31:5:31:89 | call to render |
 renderToCalls
 | app/controllers/foo/bars_controller.rb:15:16:15:97 | call to render_to_string |
+| app/controllers/foo/bars_controller.rb:36:12:36:67 | call to render_to_string |
 linkToCalls
 | app/views/foo/bars/show.html.erb:33:5:33:41 | call to link_to |
+httpResponses
+| app/controllers/foo/bars_controller.rb:15:16:15:97 | call to render_to_string | app/controllers/foo/bars_controller.rb:15:33:15:47 | "foo/bars/show" | text/html |
+| app/controllers/foo/bars_controller.rb:23:5:23:76 | call to render | app/controllers/foo/bars_controller.rb:23:12:23:26 | "foo/bars/show" | text/html |
+| app/controllers/foo/bars_controller.rb:35:5:35:33 | call to render | app/controllers/foo/bars_controller.rb:35:18:35:33 | call to [] | application/json |
+| app/controllers/foo/bars_controller.rb:36:12:36:67 | call to render_to_string | app/controllers/foo/bars_controller.rb:36:29:36:33 | @user | application/json |
+| app/controllers/foo/bars_controller.rb:38:5:38:50 | call to render | app/controllers/foo/bars_controller.rb:38:12:38:22 | call to backtrace | text/plain |
+| app/controllers/foo/bars_controller.rb:44:5:44:17 | call to render | app/controllers/foo/bars_controller.rb:44:12:44:17 | "show" | text/html |

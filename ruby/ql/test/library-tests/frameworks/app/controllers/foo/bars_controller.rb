@@ -31,6 +31,13 @@ class BarsController < ApplicationController
     redirect_back fallback_location: { action: "index" }
   end
 
+  def show_2
+    render json: { some: "data" }
+    body = render_to_string @user, content_type: "application/json"
+  rescue => e
+    render e.backtrace, content_type: "text/plain"
+  end
+
   private
 
   def unreachable_action

@@ -149,26 +149,26 @@ class CookiesSource extends HTTP::Server::RequestInputAccess::Range {
   override string getSourceType() { result = "ActionController::Metal#cookies" }
 }
 
-// A call to `cookies` from within a controller.
+/** A call to `cookies` from within a controller. */
 private class ActionControllerCookiesCall extends ActionControllerContextCall, CookiesCall { }
 
-// A call to `params` from within a controller.
+/** A call to `params` from within a controller. */
 private class ActionControllerParamsCall extends ActionControllerContextCall, ParamsCall { }
 
-// A call to `render` from within a controller.
+/** A call to `render` from within a controller. */
 private class ActionControllerRenderCall extends ActionControllerContextCall, RenderCall { }
 
-// A call to `render_to` from within a controller.
+/** A call to `render_to` from within a controller. */
 private class ActionControllerRenderToCall extends ActionControllerContextCall, RenderToCall { }
 
-// A call to `html_safe` from within a controller.
+/** A call to `html_safe` from within a controller. */
 private class ActionControllerHtmlSafeCall extends HtmlSafeCall {
   ActionControllerHtmlSafeCall() {
     this.getEnclosingModule() instanceof ActionControllerControllerClass
   }
 }
 
-// A call to `html_escape` from within a controller.
+/** A call to `html_escape` from within a controller. */
 private class ActionControllerHtmlEscapeCall extends HtmlEscapeCall {
   ActionControllerHtmlEscapeCall() {
     this.getEnclosingModule() instanceof ActionControllerControllerClass
