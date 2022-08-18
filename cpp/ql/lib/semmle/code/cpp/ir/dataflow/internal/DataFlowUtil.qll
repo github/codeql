@@ -490,15 +490,31 @@ class IndirectArgumentOutNode extends Node, TIndirectArgumentOutNode, PostUpdate
   override Location getLocationImpl() { result = operand.getLocation() }
 }
 
+pragma[nomagic]
+predicate indirectReturnOutNodeOperand0(CallInstruction call, Operand operand, int index) {
+  Ssa::hasIndirectInstruction(call, index) and
+  operandForfullyConvertedCall(operand, call)
+}
+
+pragma[nomagic]
+predicate indirectReturnOutNodeInstruction0(CallInstruction call, Instruction instr, int index) {
+  Ssa::hasIndirectInstruction(call, index) and
+  instructionForfullyConvertedCall(instr, call)
+}
+
 class IndirectReturnOutNode extends Node {
   CallInstruction call;
 
   IndirectReturnOutNode() {
-    exists(TIndirectInstruction(call, this.(IndirectOperand).getIndex())) and
-    operandForfullyConvertedCall(this.(IndirectOperand).getOperand(), call)
+    exists(Operand operand, int index |
+      indirectReturnOutNodeOperand0(call, operand, index) and
+      hasOperandAndIndex(this, operand, index)
+    )
     or
-    exists(TIndirectInstruction(call, this.(IndirectInstruction).getIndex())) and
-    instructionForfullyConvertedCall(this.(IndirectInstruction).getInstruction(), call)
+    exists(Instruction instr, int index |
+      indirectReturnOutNodeInstruction0(call, instr, index) and
+      hasInstructionAndIndex(this, instr, index)
+    )
   }
 
   CallInstruction getCallInstruction() { result = call }

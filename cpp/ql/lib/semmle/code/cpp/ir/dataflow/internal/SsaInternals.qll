@@ -310,9 +310,10 @@ pragma[inline]
 private predicate adjustForPointerArith(Node nodeFrom, Node adjusted) {
   nodeFrom = any(PostUpdateNode pun).getPreUpdateNode() and
   (
-    hasOperandAndIndex(adjusted,
-      nodeFrom.(IndirectOperand).getOperand().(PointerArithmeticAddress).getBaseAddressOperand(),
-      nodeFrom.(IndirectOperand).getIndex())
+    exists(PointerArithmeticAddress paa, int index |
+      hasOperandAndIndex(nodeFrom, paa, pragma[only_bind_into](index)) and
+      hasOperandAndIndex(adjusted, paa.getBaseAddressOperand(), pragma[only_bind_into](index))
+    )
     or
     not nodeFrom.(IndirectOperand).getOperand() instanceof PointerArithmeticAddress and
     adjusted = nodeFrom
