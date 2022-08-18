@@ -480,7 +480,7 @@ module HTTP {
      * Extend this class to refine existing API models. If you want to model new APIs,
      * extend `Request::Range` instead.
      */
-    class Request extends MethodCall instanceof Request::Range {
+    class Request extends DataFlow::Node instanceof Request::Range {
       /** Gets a node which returns the body of the response */
       DataFlow::Node getResponseBody() { result = super.getResponseBody() }
 
@@ -519,7 +519,7 @@ module HTTP {
        * Extend this class to model new APIs. If you want to refine existing API models,
        * extend `Request` instead.
        */
-      abstract class Range extends MethodCall {
+      abstract class Range extends DataFlow::Node {
         /** Gets a node which returns the body of the response */
         abstract DataFlow::Node getResponseBody();
 

@@ -23,14 +23,13 @@ private import codeql.ruby.DataFlow
  * TODO: pipelining, streaming responses
  * https://github.com/excon/excon/blob/master/README.md
  */
-class ExconHttpRequest extends HTTP::Client::Request::Range {
-  DataFlow::CallNode requestUse;
+class ExconHttpRequest extends HTTP::Client::Request::Range, DataFlow::CallNode {
   API::Node requestNode;
   API::Node connectionNode;
   DataFlow::Node connectionUse;
 
   ExconHttpRequest() {
-    requestUse = requestNode.asSource() and
+    this = requestNode.asSource() and
     connectionUse = connectionNode.asSource() and
     connectionNode =
       [
@@ -46,8 +45,7 @@ class ExconHttpRequest extends HTTP::Client::Request::Range {
               // Excon#request exists but Excon.request doesn't.
               // This shouldn't be a problem - in real code the latter would raise NoMethodError anyway.
               "get", "head", "delete", "options", "post", "put", "patch", "trace", "request"
-            ]) and
-    this = requestUse.asExpr().getExpr()
+            ])
   }
 
   override DataFlow::Node getResponseBody() { result = requestNode.getAMethodCall("body") }
@@ -56,9 +54,9 @@ class ExconHttpRequest extends HTTP::Client::Request::Range {
     // For one-off requests, the URL is in the first argument of the request method call.
     // For connection re-use, the URL is split between the first argument of the `new` call
     // and the `path` keyword argument of the request method call.
-    result = requestUse.getArgument(0) and not result.asExpr().getExpr() instanceof Pair
+    result = this.getArgument(0) and not result.asExpr().getExpr() instanceof Pair
     or
-    result = requestUse.getKeywordArgument("path")
+    result = this.getKeywordArgument("path")
     or
     result = connectionUse.(DataFlow::CallNode).getArgument(0)
   }
@@ -77,7 +75,7 @@ class ExconHttpRequest extends HTTP::Client::Request::Range {
     // the request call.
     exists(DataFlow::CallNode disableCall |
       setsDefaultVerification(disableCall, false) and
-      disableCall.asExpr().getASuccessor+() = requestUse.asExpr() and
+      disableCall.asExpr().getASuccessor+() = this.asExpr() and
       disablingNode = disableCall and
       not exists(DataFlow::Node arg, int i |
         i > 0 and

@@ -14,26 +14,26 @@ private import codeql.ruby.DataFlow
  * Typhoeus.get("http://example.com").body
  * ```
  */
-class TyphoeusHttpRequest extends HTTP::Client::Request::Range {
-  DataFlow::CallNode requestUse;
+class TyphoeusHttpRequest extends HTTP::Client::Request::Range, DataFlow::CallNode {
+
   API::Node requestNode;
 
   TyphoeusHttpRequest() {
-    requestUse = requestNode.asSource() and
+    this = requestNode.asSource() and
     requestNode =
       API::getTopLevelMember("Typhoeus")
-          .getReturn(["get", "head", "delete", "options", "post", "put", "patch"]) and
-    this = requestUse.asExpr().getExpr()
+          .getReturn(["get", "head", "delete", "options", "post", "put", "patch"])
+
   }
 
-  override DataFlow::Node getAUrlPart() { result = requestUse.getArgument(0) }
+  override DataFlow::Node getAUrlPart() { result = this.getArgument(0) }
 
   override DataFlow::Node getResponseBody() { result = requestNode.getAMethodCall("body") }
 
   override predicate disablesCertificateValidation(DataFlow::Node disablingNode) {
     // Check for `ssl_verifypeer: false` in the options hash.
     exists(DataFlow::Node arg, int i |
-      i > 0 and arg.asExpr().getExpr() = requestUse.asExpr().getExpr().(MethodCall).getArgument(i)
+      i > 0 and arg.asExpr().getExpr() = this.asExpr().getExpr().(MethodCall).getArgument(i)
     |
       // Either passed as an individual key:value argument, e.g.:
       // Typhoeus.get(..., ssl_verifypeer: false)

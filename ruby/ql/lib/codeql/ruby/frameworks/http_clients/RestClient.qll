@@ -16,14 +16,14 @@ private import codeql.ruby.DataFlow
  * RestClient::Request.execute(url: "http://example.com").body
  * ```
  */
-class RestClientHttpRequest extends HTTP::Client::Request::Range {
-  DataFlow::CallNode requestUse;
+class RestClientHttpRequest extends HTTP::Client::Request::Range, DataFlow::CallNode {
+
   API::Node requestNode;
   API::Node connectionNode;
 
   RestClientHttpRequest() {
-    requestUse = requestNode.asSource() and
-    this = requestUse.asExpr().getExpr() and
+    this = requestNode.asSource() and
+
     (
       connectionNode =
         [
@@ -39,9 +39,9 @@ class RestClientHttpRequest extends HTTP::Client::Request::Range {
   }
 
   override DataFlow::Node getAUrlPart() {
-    result = requestUse.getKeywordArgument("url")
+    result = this.getKeywordArgument("url")
     or
-    result = requestUse.getArgument(0) and
+    result = this.getArgument(0) and
     // this rules out the alternative above
     not result.asExpr().getExpr() instanceof Pair
   }

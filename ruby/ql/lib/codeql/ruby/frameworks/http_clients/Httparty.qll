@@ -23,19 +23,19 @@ private import codeql.ruby.DataFlow
  * MyClass.new("http://example.com")
  * ```
  */
-class HttpartyRequest extends HTTP::Client::Request::Range {
+class HttpartyRequest extends HTTP::Client::Request::Range,DataFlow::CallNode {
   API::Node requestNode;
-  DataFlow::CallNode requestUse;
+
 
   HttpartyRequest() {
-    requestUse = requestNode.asSource() and
+    this = requestNode.asSource() and
     requestNode =
       API::getTopLevelMember("HTTParty")
-          .getReturn(["get", "head", "delete", "options", "post", "put", "patch"]) and
-    this = requestUse.asExpr().getExpr()
+          .getReturn(["get", "head", "delete", "options", "post", "put", "patch"])
+
   }
 
-  override DataFlow::Node getAUrlPart() { result = requestUse.getArgument(0) }
+  override DataFlow::Node getAUrlPart() { result = this.getArgument(0) }
 
   override DataFlow::Node getResponseBody() {
     // If HTTParty can recognise the response type, it will parse and return it
@@ -46,7 +46,7 @@ class HttpartyRequest extends HTTP::Client::Request::Range {
     or
     // Otherwise, treat the response as the response body.
     not exists(requestNode.getAMethodCall("body")) and
-    result = requestUse
+    result = this
   }
 
   override predicate disablesCertificateValidation(DataFlow::Node disablingNode) {
@@ -55,7 +55,7 @@ class HttpartyRequest extends HTTP::Client::Request::Range {
     // `{ verify_peer: false }`.
     exists(DataFlow::Node arg, int i |
       i > 0 and
-      arg.asExpr() = requestUse.asExpr().(CfgNodes::ExprNodes::MethodCallCfgNode).getArgument(i)
+      arg.asExpr() = this.asExpr().(CfgNodes::ExprNodes::MethodCallCfgNode).getArgument(i)
     |
       // Either passed as an individual key:value argument, e.g.:
       // HTTParty.get(..., verify: false)

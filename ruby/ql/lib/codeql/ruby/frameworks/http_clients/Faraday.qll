@@ -22,11 +22,12 @@ private import codeql.ruby.DataFlow
  * connection.get("/").body
  * ```
  */
-class FaradayHttpRequest extends HTTP::Client::Request::Range {
+
+class FaradayHttpRequest extends HTTP::Client::Request::Range, DataFlow::CallNode {
   API::Node requestNode;
   API::Node connectionNode;
   DataFlow::Node connectionUse;
-  DataFlow::CallNode requestUse;
+
 
   FaradayHttpRequest() {
     connectionNode =
@@ -38,15 +39,15 @@ class FaradayHttpRequest extends HTTP::Client::Request::Range {
       ] and
     requestNode =
       connectionNode.getReturn(["get", "head", "delete", "post", "put", "patch", "trace"]) and
-    requestUse = requestNode.asSource() and
-    connectionUse = connectionNode.asSource() and
-    this = requestUse.asExpr().getExpr()
+    this = requestNode.asSource() and
+    connectionUse = connectionNode.asSource()
+
   }
 
   override DataFlow::Node getResponseBody() { result = requestNode.getAMethodCall("body") }
 
   override DataFlow::Node getAUrlPart() {
-    result = requestUse.getArgument(0) or
+    result = this.getArgument(0) or
     result = connectionUse.(DataFlow::CallNode).getArgument(0) or
     result = connectionUse.(DataFlow::CallNode).getKeywordArgument("url")
   }

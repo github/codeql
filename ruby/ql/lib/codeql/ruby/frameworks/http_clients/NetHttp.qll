@@ -18,7 +18,7 @@ private import codeql.ruby.DataFlow
  * response = req.get("/")
  * ```
  */
-class NetHttpRequest extends HTTP::Client::Request::Range {
+class NetHttpRequest extends HTTP::Client::Request::Range, DataFlow::CallNode {
   private DataFlow::CallNode request;
   private DataFlow::Node responseBody;
   private API::Node requestNode;
@@ -26,7 +26,7 @@ class NetHttpRequest extends HTTP::Client::Request::Range {
   NetHttpRequest() {
     exists(string method |
       request = requestNode.asSource() and
-      this = request.asExpr().getExpr()
+      this = request
     |
       // Net::HTTP.get(...)
       method = "get" and

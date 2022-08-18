@@ -18,9 +18,8 @@ private import codeql.ruby.frameworks.Core
  * URI.parse("http://example.com").open.read
  * ```
  */
-class OpenUriRequest extends HTTP::Client::Request::Range {
+class OpenUriRequest extends HTTP::Client::Request::Range, DataFlow::CallNode {
   API::Node requestNode;
-  DataFlow::CallNode requestUse;
 
   OpenUriRequest() {
     requestNode =
@@ -28,11 +27,10 @@ class OpenUriRequest extends HTTP::Client::Request::Range {
         [API::getTopLevelMember("URI"), API::getTopLevelMember("URI").getReturn("parse")]
             .getReturn("open"), API::getTopLevelMember("OpenURI").getReturn("open_uri")
       ] and
-    requestUse = requestNode.asSource() and
-    this = requestUse.asExpr().getExpr()
+    this = requestNode.asSource()
   }
 
-  override DataFlow::Node getAUrlPart() { result = requestUse.getArgument(0) }
+  override DataFlow::Node getAUrlPart() { result = this.getArgument(0) }
 
   override DataFlow::Node getResponseBody() {
     result = requestNode.getAMethodCall(["read", "readlines"])
@@ -40,7 +38,7 @@ class OpenUriRequest extends HTTP::Client::Request::Range {
 
   override predicate disablesCertificateValidation(DataFlow::Node disablingNode) {
     exists(DataFlow::Node arg |
-      arg.asExpr() = requestUse.asExpr().(CfgNodes::ExprNodes::MethodCallCfgNode).getAnArgument() and
+      arg.asExpr() = this.asExpr().(CfgNodes::ExprNodes::MethodCallCfgNode).getAnArgument() and
       argumentDisablesValidation(arg, disablingNode)
     )
   }
@@ -56,26 +54,23 @@ class OpenUriRequest extends HTTP::Client::Request::Range {
  * Kernel.open("http://example.com").read
  * ```
  */
-class OpenUriKernelOpenRequest extends HTTP::Client::Request::Range {
-  DataFlow::CallNode requestUse;
-
+class OpenUriKernelOpenRequest extends HTTP::Client::Request::Range, DataFlow::CallNode {
   OpenUriKernelOpenRequest() {
-    requestUse instanceof KernelMethodCall and
-    this.getMethodName() = "open" and
-    this = requestUse.asExpr().getExpr()
+    this instanceof KernelMethodCall and
+    this.getMethodName() = "open"
   }
 
-  override DataFlow::Node getAUrlPart() { result = requestUse.getArgument(0) }
+  override DataFlow::Node getAUrlPart() { result = this.getArgument(0) }
 
   override DataFlow::CallNode getResponseBody() {
     result.asExpr().getExpr().(MethodCall).getMethodName() in ["read", "readlines"] and
-    requestUse.(DataFlow::LocalSourceNode).flowsTo(result.getReceiver())
+    this.(DataFlow::LocalSourceNode).flowsTo(result.getReceiver())
   }
 
   override predicate disablesCertificateValidation(DataFlow::Node disablingNode) {
     exists(DataFlow::Node arg, int i |
       i > 0 and
-      arg.asExpr() = requestUse.asExpr().(CfgNodes::ExprNodes::MethodCallCfgNode).getArgument(i) and
+      arg.asExpr() = this.asExpr().(CfgNodes::ExprNodes::MethodCallCfgNode).getArgument(i) and
       argumentDisablesValidation(arg, disablingNode)
     )
   }
