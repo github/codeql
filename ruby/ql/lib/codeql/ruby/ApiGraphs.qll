@@ -181,19 +181,10 @@ module API {
     Node getMember(string m) { result = this.getASuccessor(Label::member(m)) }
 
     /**
-     * Gets a node representing a member of this API component where the name of the member is
-     * not known statically.
-     */
-    Node getUnknownMember() { result = this.getASuccessor(Label::unknownMember()) }
-
-    /**
      * Gets a node representing a member of this API component where the name of the member may
      * or may not be known statically.
      */
-    Node getAMember() {
-      result = this.getASuccessor(Label::member(_)) or
-      result = this.getUnknownMember()
-    }
+    Node getAMember() { result = this.getASuccessor(Label::member(_)) }
 
     /**
      * Gets a node representing an instance of this API component, that is, an object whose
@@ -718,10 +709,6 @@ module API {
         or
         succ = MkMethodAccessNode(entry.getACall())
       )
-      or
-      // to get rid of an incompatible types error in `getUnknownMember`
-      lbl = Label::unknownMember() and
-      none()
     }
 
     /**
@@ -737,7 +724,6 @@ module API {
     cached
     newtype TLabel =
       MkLabelMember(string member) { member = any(ConstantReadAccess a).getName() } or
-      MkLabelUnknownMember() or
       MkLabelMethod(string m) { m = any(DataFlow::CallNode c).getMethodName() } or
       MkLabelReturn() or
       MkLabelSubclass() or
@@ -778,11 +764,6 @@ module API {
         string getMember() { result = member }
 
         override string toString() { result = "getMember(\"" + member + "\")" }
-      }
-
-      /** A label for a member with an unknown name. */
-      class LabelUnknownMember extends ApiLabel, MkLabelUnknownMember {
-        override string toString() { result = "getUnknownMember()" }
       }
 
       /** A label for a method. */
@@ -851,9 +832,6 @@ module API {
 
     /** Gets the `member` edge label for member `m`. */
     LabelMember member(string m) { result.getMember() = m }
-
-    /** Gets the `member` edge label for the unknown member. */
-    LabelUnknownMember unknownMember() { any() }
 
     /** Gets the `method` edge label. */
     LabelMethod method(string m) { result.getMethod() = m }
