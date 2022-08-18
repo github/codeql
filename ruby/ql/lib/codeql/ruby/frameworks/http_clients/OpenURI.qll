@@ -8,6 +8,7 @@ private import codeql.ruby.Concepts
 private import codeql.ruby.ApiGraphs
 private import codeql.ruby.DataFlow
 private import codeql.ruby.frameworks.Core
+private import codeql.ruby.dataflow.internal.DataFlowImplForLibraries as DataFlowImplForLibraries
 
 /**
  * A call that makes an HTTP request using `OpenURI` via `URI.open` or
@@ -36,18 +37,32 @@ class OpenUriRequest extends HTTP::Client::Request::Range, DataFlow::CallNode {
     result = requestNode.getAMethodCall(["read", "readlines"])
   }
 
-  override predicate disablesCertificateValidation(DataFlow::Node disablingNode) {
-    exists(DataFlow::Node arg |
-      arg.asExpr() = this.asExpr().(CfgNodes::ExprNodes::MethodCallCfgNode).getAnArgument() and
-      argumentDisablesValidation(arg, disablingNode)
+  /** Gets the value that controls certificate validation, if any. */
+  DataFlow::Node getCertificateValidationControllingValue() {
+    result = this.getKeywordArgument("ssl_verify_mode")
+    or
+    // using a hashliteral
+    exists(
+      DataFlow::LocalSourceNode optionsNode, CfgNodes::ExprNodes::PairCfgNode p, DataFlow::Node key
+    |
+      optionsNode.flowsTo(this.getArgument(_)) and
+      p = optionsNode.asExpr().(CfgNodes::ExprNodes::HashLiteralCfgNode).getAKeyValuePair() and
+      key.asExpr() = p.getKey() and
+      key.getALocalSource()
+          .asExpr()
+          .getExpr()
+          .getConstantValue()
+          .isStringlikeValue("ssl_verify_mode") and
+      result.asExpr() = p.getValue()
     )
   }
 
   override predicate disablesCertificateValidation(
     DataFlow::Node disablingNode, DataFlow::Node argumentOrigin
   ) {
-    disablesCertificateValidation(disablingNode) and
-    argumentOrigin = disablingNode
+    any(OpenUriDisablesCertificateValidationConfiguration config)
+        .hasFlow(argumentOrigin, disablingNode) and
+    disablingNode = this.getCertificateValidationControllingValue()
   }
 
   override string getFramework() { result = "OpenURI" }
@@ -74,63 +89,51 @@ class OpenUriKernelOpenRequest extends HTTP::Client::Request::Range, DataFlow::C
     this.(DataFlow::LocalSourceNode).flowsTo(result.getReceiver())
   }
 
-  override predicate disablesCertificateValidation(DataFlow::Node disablingNode) {
-    exists(DataFlow::Node arg, int i |
-      i > 0 and
-      arg.asExpr() = this.asExpr().(CfgNodes::ExprNodes::MethodCallCfgNode).getArgument(i) and
-      argumentDisablesValidation(arg, disablingNode)
+  /** Gets the value that controls certificate validation, if any. */
+  DataFlow::Node getCertificateValidationControllingValue() {
+    result = this.getKeywordArgument("ssl_verify_mode")
+    or
+    // using a hashliteral
+    exists(
+      DataFlow::LocalSourceNode optionsNode, CfgNodes::ExprNodes::PairCfgNode p, DataFlow::Node key
+    |
+      // can't flow to argument 0, since that's the URL
+      optionsNode.flowsTo(this.getArgument(any(int i | i > 0))) and
+      p = optionsNode.asExpr().(CfgNodes::ExprNodes::HashLiteralCfgNode).getAKeyValuePair() and
+      key.asExpr() = p.getKey() and
+      key.getALocalSource()
+          .asExpr()
+          .getExpr()
+          .getConstantValue()
+          .isStringlikeValue("ssl_verify_mode") and
+      result.asExpr() = p.getValue()
     )
   }
 
   override predicate disablesCertificateValidation(
     DataFlow::Node disablingNode, DataFlow::Node argumentOrigin
   ) {
-    disablesCertificateValidation(disablingNode) and
-    argumentOrigin = disablingNode
+    any(OpenUriDisablesCertificateValidationConfiguration config)
+        .hasFlow(argumentOrigin, disablingNode) and
+    disablingNode = this.getCertificateValidationControllingValue()
   }
 
   override string getFramework() { result = "OpenURI" }
 }
 
-/**
- * Holds if the argument `arg` is an options hash that disables certificate
- * validation, and `disablingNode` is the specific node representing the
- * `ssl_verify_mode: OpenSSL::SSL_VERIFY_NONE` pair.
- */
-private predicate argumentDisablesValidation(DataFlow::Node arg, DataFlow::Node disablingNode) {
-  // Either passed as an individual key:value argument, e.g.:
-  // URI.open(..., ssl_verify_mode: OpenSSL::SSL::VERIFY_NONE)
-  isSslVerifyModeNonePair(arg.asExpr()) and
-  disablingNode = arg
-  or
-  // Or as a single hash argument, e.g.:
-  // URI.open(..., { ssl_verify_mode: OpenSSL::SSL::VERIFY_NONE, ... })
-  exists(DataFlow::LocalSourceNode optionsNode, CfgNodes::ExprNodes::PairCfgNode p |
-    p = optionsNode.asExpr().(CfgNodes::ExprNodes::HashLiteralCfgNode).getAKeyValuePair() and
-    isSslVerifyModeNonePair(p) and
-    optionsNode.flowsTo(arg) and
-    disablingNode.asExpr() = p
-  )
-}
+/** A configuration to track values that can disable certificate validation for OpenURI. */
+private class OpenUriDisablesCertificateValidationConfiguration extends DataFlowImplForLibraries::Configuration {
+  OpenUriDisablesCertificateValidationConfiguration() {
+    this = "OpenUriDisablesCertificateValidationConfiguration"
+  }
 
-/** Holds if `p` is the pair `ssl_verify_mode: OpenSSL::SSL::VERIFY_NONE`. */
-private predicate isSslVerifyModeNonePair(CfgNodes::ExprNodes::PairCfgNode p) {
-  exists(DataFlow::Node key, DataFlow::Node value |
-    key.asExpr() = p.getKey() and
-    value.asExpr() = p.getValue() and
-    isSslVerifyModeLiteral(key) and
-    value =
-      API::getTopLevelMember("OpenSSL")
-          .getMember("SSL")
-          .getMember("VERIFY_NONE")
-          .getAValueReachableFromSource()
-  )
-}
+  override predicate isSource(DataFlow::Node source) {
+    source = API::getTopLevelMember("OpenSSL").getMember("SSL").getMember("VERIFY_NONE").asSource()
+  }
 
-/** Holds if `node` can represent the symbol literal `:ssl_verify_mode`. */
-private predicate isSslVerifyModeLiteral(DataFlow::Node node) {
-  exists(DataFlow::LocalSourceNode literal |
-    literal.asExpr().getExpr().getConstantValue().isStringlikeValue("ssl_verify_mode") and
-    literal.flowsTo(node)
-  )
+  override predicate isSink(DataFlow::Node sink) {
+    sink = any(OpenUriRequest req).getCertificateValidationControllingValue()
+    or
+    sink = any(OpenUriKernelOpenRequest req).getCertificateValidationControllingValue()
+  }
 }

@@ -6,6 +6,7 @@ private import ruby
 private import codeql.ruby.Concepts
 private import codeql.ruby.ApiGraphs
 private import codeql.ruby.DataFlow
+private import codeql.ruby.dataflow.internal.DataFlowImplForLibraries as DataFlowImplForLibraries
 
 /**
  * A call that makes an HTTP request using `HTTPClient`.
@@ -46,24 +47,42 @@ class HttpClientRequest extends HTTP::Client::Request::Range, DataFlow::CallNode
     result = requestNode.getAMethodCall(["body", "http_body", "content", "dump"])
   }
 
-  override predicate disablesCertificateValidation(DataFlow::Node disablingNode) {
+  /** Gets the value that controls certificate validation, if any. */
+  DataFlow::Node getCertificateValidationControllingValue() {
     // Look for calls to set
     // `c.ssl_config.verify_mode = OpenSSL::SSL::VERIFY_NONE`
     // on an HTTPClient connection object `c`.
-    disablingNode = connectionNode.getReturn("ssl_config").getReturn("verify_mode=").asSource() and
-    disablingNode.(DataFlow::CallNode).getArgument(0) =
-      API::getTopLevelMember("OpenSSL")
-          .getMember("SSL")
-          .getMember("VERIFY_NONE")
-          .getAValueReachableFromSource()
+    result =
+      connectionNode
+          .getReturn("ssl_config")
+          .getReturn("verify_mode=")
+          .asSource()
+          .(DataFlow::CallNode)
+          .getArgument(0)
   }
 
   override predicate disablesCertificateValidation(
     DataFlow::Node disablingNode, DataFlow::Node argumentOrigin
   ) {
-    disablesCertificateValidation(disablingNode) and
-    argumentOrigin = disablingNode
+    any(HttpClientDisablesCertificateValidationConfiguration config)
+        .hasFlow(argumentOrigin, disablingNode) and
+    disablingNode = this.getCertificateValidationControllingValue()
   }
 
   override string getFramework() { result = "HTTPClient" }
+}
+
+/** A configuration to track values that can disable certificate validation for HttpClient. */
+private class HttpClientDisablesCertificateValidationConfiguration extends DataFlowImplForLibraries::Configuration {
+  HttpClientDisablesCertificateValidationConfiguration() {
+    this = "HttpClientDisablesCertificateValidationConfiguration"
+  }
+
+  override predicate isSource(DataFlow::Node source) {
+    source = API::getTopLevelMember("OpenSSL").getMember("SSL").getMember("VERIFY_NONE").asSource()
+  }
+
+  override predicate isSink(DataFlow::Node sink) {
+    sink = any(HttpClientRequest req).getCertificateValidationControllingValue()
+  }
 }

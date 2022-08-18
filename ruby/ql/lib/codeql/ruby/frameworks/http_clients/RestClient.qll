@@ -49,8 +49,6 @@ class RestClientHttpRequest extends HTTP::Client::Request::Range, DataFlow::Call
 
   /** Gets the value that controls certificate validation, if any. */
   DataFlow::Node getCertificateValidationControllingValue() {
-    // `RestClient::Resource::new` takes an options hash argument, and we're
-    // looking for `{ verify_ssl: OpenSSL::SSL::VERIFY_NONE }`.
     exists(DataFlow::CallNode newCall | newCall = connectionNode.getAValueReachableFromSource() |
       result = newCall.getKeywordArgument("verify_ssl")
       or

@@ -7,6 +7,7 @@ private import codeql.ruby.CFG
 private import codeql.ruby.Concepts
 private import codeql.ruby.ApiGraphs
 private import codeql.ruby.DataFlow
+private import codeql.ruby.dataflow.internal.DataFlowImplForLibraries as DataFlowImplForLibraries
 
 /**
  * A call that makes an HTTP request using `Excon`.
@@ -61,27 +62,27 @@ class ExconHttpRequest extends HTTP::Client::Request::Range, DataFlow::CallNode 
     result = connectionUse.(DataFlow::CallNode).getArgument(0)
   }
 
-  override predicate disablesCertificateValidation(DataFlow::Node disablingNode) {
-    // Check for `ssl_verify_peer: false` in the options hash.
-    exists(DataFlow::Node arg, int i |
-      i > 0 and
-      arg = connectionNode.getAValueReachableFromSource().(DataFlow::CallNode).getArgument(i)
-    |
-      argSetsVerifyPeer(arg, false, disablingNode)
-    )
-    or
-    // Or we see a call to `Excon.defaults[:ssl_verify_peer] = false` before the
-    // request, and no `ssl_verify_peer: true` in the explicit options hash for
-    // the request call.
-    exists(DataFlow::CallNode disableCall |
-      setsDefaultVerification(disableCall, false) and
-      disableCall.asExpr().getASuccessor+() = this.asExpr() and
-      disablingNode = disableCall and
-      not exists(DataFlow::Node arg, int i |
-        i > 0 and
-        arg = connectionNode.getAValueReachableFromSource().(DataFlow::CallNode).getArgument(i)
+  /** Gets the value that controls certificate validation, if any. */
+  DataFlow::Node getCertificateValidationControllingValue() {
+    exists(DataFlow::CallNode newCall | newCall = connectionNode.getAValueReachableFromSource() |
+      // Check for `ssl_verify_peer: false`
+      result = newCall.getKeywordArgument("ssl_verify_peer")
+      or
+      // using a hashliteral
+      exists(
+        DataFlow::LocalSourceNode optionsNode, CfgNodes::ExprNodes::PairCfgNode p,
+        DataFlow::Node key
       |
-        argSetsVerifyPeer(arg, true, _)
+        // can't flow to argument 0, since that's the URL
+        optionsNode.flowsTo(newCall.getArgument(any(int i | i > 0))) and
+        p = optionsNode.asExpr().(CfgNodes::ExprNodes::HashLiteralCfgNode).getAKeyValuePair() and
+        key.asExpr() = p.getKey() and
+        key.getALocalSource()
+            .asExpr()
+            .getExpr()
+            .getConstantValue()
+            .isStringlikeValue("ssl_verify_peer") and
+        result.asExpr() = p.getValue()
       )
     )
   }
@@ -89,68 +90,59 @@ class ExconHttpRequest extends HTTP::Client::Request::Range, DataFlow::CallNode 
   override predicate disablesCertificateValidation(
     DataFlow::Node disablingNode, DataFlow::Node argumentOrigin
   ) {
-    disablesCertificateValidation(disablingNode) and
-    argumentOrigin = disablingNode
+    any(ExconDisablesCertificateValidationConfiguration config)
+        .hasFlow(argumentOrigin, disablingNode) and
+    disablingNode = this.getCertificateValidationControllingValue()
+    or
+    // We set `Excon.defaults[:ssl_verify_peer]` or `Excon.ssl_verify_peer` = false`
+    // before the request, and no `ssl_verify_peer: true` in the explicit options hash
+    // for the request call.
+    exists(DataFlow::CallNode disableCall, BooleanLiteral value |
+      // Excon.defaults[:ssl_verify_peer]
+      disableCall = API::getTopLevelMember("Excon").getReturn("defaults").getAMethodCall("[]=") and
+      disableCall
+          .getArgument(0)
+          .getALocalSource()
+          .asExpr()
+          .getExpr()
+          .getConstantValue()
+          .isStringlikeValue("ssl_verify_peer") and
+      disablingNode = disableCall.getArgument(1) and
+      argumentOrigin = disablingNode.getALocalSource() and
+      value = argumentOrigin.asExpr().getExpr()
+      or
+      // Excon.ssl_verify_peer
+      disableCall = API::getTopLevelMember("Excon").getAMethodCall("ssl_verify_peer=") and
+      disablingNode = disableCall.getArgument(0) and
+      argumentOrigin = disablingNode.getALocalSource() and
+      value = argumentOrigin.asExpr().getExpr()
+    |
+      value.getValue() = false and
+      disableCall.asExpr().getASuccessor+() = this.asExpr() and
+      // no `ssl_verify_peer: true` in the request call.
+      not this.getCertificateValidationControllingValue()
+          .getALocalSource()
+          .asExpr()
+          .getExpr()
+          .(BooleanLiteral)
+          .getValue() = true
+    )
   }
 
   override string getFramework() { result = "Excon" }
 }
 
-/**
- * Holds if `arg` represents an options hash that contains the key
- * `:ssl_verify_peer` with `value`, where `kvNode` is the data-flow node for
- * this key-value pair.
- */
-predicate argSetsVerifyPeer(DataFlow::Node arg, boolean value, DataFlow::Node kvNode) {
-  // Either passed as an individual key:value argument, e.g.:
-  // Excon.get(..., ssl_verify_peer: false)
-  isSslVerifyPeerPair(arg.asExpr(), value) and
-  kvNode = arg
-  or
-  // Or as a single hash argument, e.g.:
-  // Excon.get(..., { ssl_verify_peer: false, ... })
-  exists(DataFlow::LocalSourceNode optionsNode, CfgNodes::ExprNodes::PairCfgNode p |
-    p = optionsNode.asExpr().(CfgNodes::ExprNodes::HashLiteralCfgNode).getAKeyValuePair() and
-    isSslVerifyPeerPair(p, value) and
-    optionsNode.flowsTo(arg) and
-    kvNode.asExpr() = p
-  )
-}
+/** A configuration to track values that can disable certificate validation for Excon. */
+private class ExconDisablesCertificateValidationConfiguration extends DataFlowImplForLibraries::Configuration {
+  ExconDisablesCertificateValidationConfiguration() {
+    this = "ExconDisablesCertificateValidationConfiguration"
+  }
 
-/**
- * Holds if `callNode` sets `Excon.defaults[:ssl_verify_peer]` or
- * `Excon.ssl_verify_peer` to `value`.
- */
-private predicate setsDefaultVerification(DataFlow::CallNode callNode, boolean value) {
-  callNode = API::getTopLevelMember("Excon").getReturn("defaults").getAMethodCall("[]=") and
-  isSslVerifyPeerLiteral(callNode.getArgument(0)) and
-  hasBooleanValue(callNode.getArgument(1), value)
-  or
-  callNode = API::getTopLevelMember("Excon").getAMethodCall("ssl_verify_peer=") and
-  hasBooleanValue(callNode.getArgument(0), value)
-}
+  override predicate isSource(DataFlow::Node source) {
+    source.asExpr().getExpr().(BooleanLiteral).isFalse()
+  }
 
-private predicate isSslVerifyPeerLiteral(DataFlow::Node node) {
-  exists(DataFlow::LocalSourceNode literal |
-    literal.asExpr().getExpr().getConstantValue().isStringlikeValue("ssl_verify_peer") and
-    literal.flowsTo(node)
-  )
-}
-
-/** Holds if `node` can contain `value`. */
-private predicate hasBooleanValue(DataFlow::Node node, boolean value) {
-  exists(DataFlow::LocalSourceNode literal |
-    literal.asExpr().getExpr().(BooleanLiteral).getValue() = value and
-    literal.flowsTo(node)
-  )
-}
-
-/** Holds if `p` is the pair `ssl_verify_peer: <value>`. */
-private predicate isSslVerifyPeerPair(CfgNodes::ExprNodes::PairCfgNode p, boolean value) {
-  exists(DataFlow::Node key, DataFlow::Node valueNode |
-    key.asExpr() = p.getKey() and
-    valueNode.asExpr() = p.getValue() and
-    isSslVerifyPeerLiteral(key) and
-    hasBooleanValue(valueNode, value)
-  )
+  override predicate isSink(DataFlow::Node sink) {
+    sink = any(ExconHttpRequest req).getCertificateValidationControllingValue()
+  }
 }

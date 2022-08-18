@@ -7,6 +7,7 @@ private import codeql.ruby.CFG
 private import codeql.ruby.Concepts
 private import codeql.ruby.ApiGraphs
 private import codeql.ruby.DataFlow
+private import codeql.ruby.dataflow.internal.DataFlowImplForLibraries as DataFlowImplForLibraries
 
 /**
  * A call that makes an HTTP request using `HTTParty`.
@@ -47,64 +48,49 @@ class HttpartyRequest extends HTTP::Client::Request::Range, DataFlow::CallNode {
     result = this
   }
 
-  override predicate disablesCertificateValidation(DataFlow::Node disablingNode) {
-    // The various request methods take an options hash as their second
-    // argument, and we're looking for `{ verify: false }` or
-    // `{ verify_peer: false }`.
-    exists(DataFlow::Node arg, int i |
-      i > 0 and
-      arg.asExpr() = this.asExpr().(CfgNodes::ExprNodes::MethodCallCfgNode).getArgument(i)
+  /** Gets the value that controls certificate validation, if any. */
+  DataFlow::Node getCertificateValidationControllingValue() {
+    result = this.getKeywordArgument(["verify", "verify_peer"])
+    or
+    // using a hashliteral
+    exists(
+      DataFlow::LocalSourceNode optionsNode, CfgNodes::ExprNodes::PairCfgNode p, DataFlow::Node key
     |
-      // Either passed as an individual key:value argument, e.g.:
-      // HTTParty.get(..., verify: false)
-      isVerifyFalsePair(arg.asExpr()) and
-      disablingNode = arg
-      or
-      // Or as a single hash argument, e.g.:
-      // HTTParty.get(..., { verify: false, ... })
-      exists(DataFlow::LocalSourceNode optionsNode, CfgNodes::ExprNodes::PairCfgNode p |
-        p = optionsNode.asExpr().(CfgNodes::ExprNodes::HashLiteralCfgNode).getAKeyValuePair() and
-        isVerifyFalsePair(p) and
-        optionsNode.flowsTo(arg) and
-        disablingNode.asExpr() = p
-      )
+      // can't flow to argument 0, since that's the URL
+      optionsNode.flowsTo(this.getArgument(any(int i | i > 0))) and
+      p = optionsNode.asExpr().(CfgNodes::ExprNodes::HashLiteralCfgNode).getAKeyValuePair() and
+      key.asExpr() = p.getKey() and
+      key.getALocalSource()
+          .asExpr()
+          .getExpr()
+          .getConstantValue()
+          .isStringlikeValue(["verify", "verify_peer"]) and
+      result.asExpr() = p.getValue()
     )
   }
 
   override predicate disablesCertificateValidation(
     DataFlow::Node disablingNode, DataFlow::Node argumentOrigin
   ) {
-    disablesCertificateValidation(disablingNode) and
-    argumentOrigin = disablingNode
+    any(HttpartyDisablesCertificateValidationConfiguration config)
+        .hasFlow(argumentOrigin, disablingNode) and
+    disablingNode = this.getCertificateValidationControllingValue()
   }
 
   override string getFramework() { result = "HTTParty" }
 }
 
-/** Holds if `node` represents the symbol literal `verify` or `verify_peer`. */
-private predicate isVerifyLiteral(DataFlow::Node node) {
-  exists(DataFlow::LocalSourceNode literal |
-    literal.asExpr().getExpr().getConstantValue().isStringlikeValue(["verify", "verify_peer"]) and
-    literal.flowsTo(node)
-  )
-}
+/** A configuration to track values that can disable certificate validation for Httparty. */
+private class HttpartyDisablesCertificateValidationConfiguration extends DataFlowImplForLibraries::Configuration {
+  HttpartyDisablesCertificateValidationConfiguration() {
+    this = "HttpartyDisablesCertificateValidationConfiguration"
+  }
 
-/** Holds if `node` can contain the Boolean value `false`. */
-private predicate isFalse(DataFlow::Node node) {
-  exists(DataFlow::LocalSourceNode literal |
-    literal.asExpr().getExpr().(BooleanLiteral).isFalse() and
-    literal.flowsTo(node)
-  )
-}
+  override predicate isSource(DataFlow::Node source) {
+    source.asExpr().getExpr().(BooleanLiteral).isFalse()
+  }
 
-/**
- * Holds if `p` is the pair `verify: false` or `verify_peer: false`.
- */
-private predicate isVerifyFalsePair(CfgNodes::ExprNodes::PairCfgNode p) {
-  exists(DataFlow::Node key, DataFlow::Node value |
-    key.asExpr() = p.getKey() and
-    value.asExpr() = p.getValue() and
-    isVerifyLiteral(key) and
-    isFalse(value)
-  )
+  override predicate isSink(DataFlow::Node sink) {
+    sink = any(HttpartyRequest req).getCertificateValidationControllingValue()
+  }
 }
