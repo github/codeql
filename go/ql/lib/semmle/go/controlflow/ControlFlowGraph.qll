@@ -167,20 +167,10 @@ module ControlFlow {
     }
 
     /**
-     * Holds if this node writes `rhs` to `channel`.
-     */
-    predicate writesToChannel(DataFlow::ExprNode channel, DataFlow::ExprNode rhs) {
-      exists(SendStmt send |
-        send.getChannel() = channel.asExpr() and
-        send.getValue() = rhs.asExpr()
-      )
-    }
-
-    /**
      * Holds if this node sets any field or element of `base` to `rhs`.
      */
     predicate writesComponent(DataFlow::Node base, DataFlow::Node rhs) {
-      writesElement(base, _, rhs) or writesField(base, _, rhs) or writesToChannel(base, rhs)
+      writesElement(base, _, rhs) or writesField(base, _, rhs)
     }
   }
 
