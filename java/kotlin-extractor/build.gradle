@@ -30,8 +30,8 @@ sourceSets {
             // change the excludes for building with other versions.
             // Currently 1.7.0 is configured:
             excludes = [
-                    // For 1.7.20-Beta, the below two files should be included, and the corresponding v_1_7_20-Beta ones should be excluded.
-                    //"utils/versions/v_1_4_32/allOverridden.kt",
+                    // For 1.7.20-Beta, the below two files should be included, and the corresponding v_1_7_20-Beta ones should be excluded from this list.
+                    //"utils/versions/v_1_4_32/allOverriddenIncludingSelf.kt",
                     //"utils/versions/v_1_4_32/createImplicitParameterDeclarationWithWrappedDescriptor.kt",
                     "utils/versions/v_1_4_32/Descriptors.kt",
                     "utils/versions/v_1_4_32/FileEntry.kt",
@@ -45,7 +45,7 @@ sourceSets {
                     "utils/versions/v_1_6_0/Descriptors.kt",
 
                     "utils/versions/v_1_7_20-Beta/createImplicitParameterDeclarationWithWrappedDescriptor.kt",
-                    "utils/versions/v_1_7_20-Beta/allOverridden.kt",
+                    "utils/versions/v_1_7_20-Beta/allOverriddenIncludingSelf.kt",
             ]
         }
     }
