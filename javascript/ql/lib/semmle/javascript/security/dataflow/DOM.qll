@@ -86,7 +86,7 @@ class DomMethodCallExpr extends MethodCallExpr {
   /**
    * Holds if `arg` is an argument that is used as an URL.
    */
-  predicate interpretsArgumentsAsURL(Expr arg) {
+  predicate interpretsArgumentsAsUrl(Expr arg) {
     exists(int argPos, string name |
       arg = this.getArgument(argPos) and
       name = this.getMethodName()
@@ -102,6 +102,9 @@ class DomMethodCallExpr extends MethodCallExpr {
       )
     )
   }
+
+  /** DEPRECATED: Alias for interpretsArgumentsAsUrl */
+  deprecated predicate interpretsArgumentsAsURL(Expr arg) { interpretsArgumentsAsUrl(arg) }
 
   /** DEPRECATED: Alias for interpretsArgumentsAsHtml */
   deprecated predicate interpretsArgumentsAsHTML(Expr arg) { this.interpretsArgumentsAsHtml(arg) }

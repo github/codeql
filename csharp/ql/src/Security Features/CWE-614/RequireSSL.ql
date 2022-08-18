@@ -22,9 +22,9 @@ import semmle.code.csharp.frameworks.system.Web
 from XmlElement element
 where
   element instanceof FormsElement and
-  not element.(FormsElement).isRequireSSL()
+  not element.(FormsElement).isRequireSsl()
   or
   element instanceof HttpCookiesElement and
-  not element.(HttpCookiesElement).isRequireSSL() and
+  not element.(HttpCookiesElement).isRequireSsl() and
   not any(SystemWebHttpCookie c).getSecureProperty().getAnAssignedValue().getValue() = "true"
 select element, "The 'requireSSL' attribute is not set to 'true'."

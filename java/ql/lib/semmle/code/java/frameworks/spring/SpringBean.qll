@@ -16,7 +16,7 @@ class SpringBean extends SpringXmlElement {
   SpringBean() {
     this.getName() = "bean" and
     // Do not capture Camel beans, which are different
-    not this.getNamespace().getURI() = "http://camel.apache.org/schema/spring"
+    not this.getNamespace().getUri() = "http://camel.apache.org/schema/spring"
   }
 
   override string toString() { result = this.getBeanIdentifier() }
