@@ -41,34 +41,29 @@ predicate isLikelyCaseSensitiveRegExp(RegExpTerm term) {
   )
 }
 
-/**
- * Gets a string matched by `term`, or part of such a string.
- */
-string getExampleString(RegExpTerm term) {
-  result = term.getAMatchedString()
-  or
-  // getAMatchedString does not recurse into sequences. Perform one step manually.
-  exists(RegExpSequence seq | seq = term |
-    result =
-      strictconcat(RegExpTerm child, int i, string text |
-        child = seq.getChild(i) and
-        (
-          text = child.getAMatchedString()
-          or
-          not exists(child.getAMatchedString()) and
-          text = ""
-        )
-      |
-        text order by i
-      )
+import semmle.javascript.security.regexp.NfaUtils as NfaUtils
+
+/** Holds if `s` is a relevant regexp term were we want to compute a string that matches the term (for `getCaseSensitiveBypassExample`). */
+predicate isCand(NfaUtils::State s) {
+  s.getRepr().isRootTerm() and
+  exists(DataFlow::RegExpCreationNode creation |
+    isCaseSensitiveMiddleware(_, creation, _) and
+    s.getRepr().getRootTerm() = creation.getRoot()
   )
 }
 
+import NfaUtils::PrefixConstruction<isCand/1> as Prefix
+
+/** Gets a string matched by `term`. */
+string getExampleString(RegExpTerm term) {
+  result = Prefix::prefix(any(NfaUtils::State s | s.getRepr() = term))
+}
+
 string getCaseSensitiveBypassExample(RegExpTerm term) {
-  exists(string example |
-    example = getExampleString(term) and
-    result = toOtherCase(example) and
-    result != example // getting an example string is approximate; ensure we got a proper case-change example
+  exists(string byPassExample |
+    byPassExample = getExampleString(term) and
+    result = toOtherCase(byPassExample) and
+    result != byPassExample // getting an byPassExample string is approximate; ensure we got a proper case-change byPassExample
   )
 }
 
@@ -108,14 +103,54 @@ predicate isGuardedCaseInsensitiveEndpoint(
   )
 }
 
+/**
+ * Gets an byPassExample path that will hit `endpoint`.
+ * Query parameters (e.g. the ":param" in "/foo/:param") have been replaced with byPassExample values.
+ */
+string getAnEndpointExample(Routing::RouteSetup endpoint) {
+  exists(string raw |
+    raw = endpoint.getRelativePath().toLowerCase() and
+    result = raw.regexpReplaceAll(":\\w+\\b", ["a", "1"])
+  )
+}
+
+import semmle.javascript.security.regexp.RegexpMatching as RegexpMatching
+
+/**
+ * Holds if the regexp matcher should test whether `root` matches `str`.
+ * The result is used to test whether a case-sensitive bypass exists.
+ */
+predicate isMatchingCandidate(
+  RegexpMatching::RootTerm root, string str, boolean ignorePrefix, boolean testWithGroups
+) {
+  exists(
+    Routing::RouteSetup middleware, Routing::RouteSetup endPoint,
+    DataFlow::RegExpCreationNode regexp
+  |
+    isCaseSensitiveMiddleware(middleware, regexp, _) and
+    isGuardedCaseInsensitiveEndpoint(endPoint, middleware)
+  |
+    root = regexp.getRoot() and
+    exists(getCaseSensitiveBypassExample(root)) and
+    ignorePrefix = true and
+    testWithGroups = false and
+    str = [getCaseSensitiveBypassExample(root), getAnEndpointExample(endPoint)]
+  )
+}
+
+import RegexpMatching::RegexpMatching<isMatchingCandidate/4> as Matcher
+
 from
   DataFlow::RegExpCreationNode regexp, Routing::RouteSetup middleware, Routing::RouteSetup endpoint,
-  DataFlow::Node arg, string example
+  DataFlow::Node arg, string byPassExample
 where
   isCaseSensitiveMiddleware(middleware, regexp, arg) and
-  example = getCaseSensitiveBypassExample(regexp.getRoot()) and
+  byPassExample = getCaseSensitiveBypassExample(regexp.getRoot()) and
   isGuardedCaseInsensitiveEndpoint(endpoint, middleware) and
-  exists(endpoint.getRelativePath().toLowerCase().indexOf(example.toLowerCase()))
+  exists(string endpointExample | endpointExample = getAnEndpointExample(endpoint) |
+    Matcher::matches(regexp.getRoot(), endpointExample) and
+    not Matcher::matches(regexp.getRoot(), byPassExample)
+  )
 select arg,
   "This route uses a case-sensitive path $@, but is guarding a case-insensitive path $@. A path such as '"
-    + example + "' will bypass the middleware.", regexp, "pattern", endpoint, "here"
+    + byPassExample + "' will bypass the middleware.", regexp, "pattern", endpoint, "here"
