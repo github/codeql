@@ -5,6 +5,7 @@
 | Excon.rb:30:3:30:62 | call to get | This request may run without certificate validation because it is $@. | Excon.rb:30:36:30:57 | Pair | disabled here | Excon.rb:30:36:30:57 | Pair | here |
 | Faraday.rb:5:12:5:30 | call to get | This request may run without certificate validation because it is $@. | Faraday.rb:4:48:4:69 | Pair | disabled here | Faraday.rb:4:48:4:69 | Pair | here |
 | Faraday.rb:9:12:9:30 | call to get | This request may run without certificate validation because it is $@. | Faraday.rb:8:48:8:94 | Pair | disabled here | Faraday.rb:8:48:8:94 | Pair | here |
+| Faraday.rb:44:16:44:35 | call to get | This request may run without certificate validation because it is $@. | Faraday.rb:43:36:43:60 | Pair | disabled here | Faraday.rb:43:36:43:60 | Pair | here |
 | HttpClient.rb:6:1:6:33 | call to get | This request may run without certificate validation because it is $@. | HttpClient.rb:5:1:5:29 | call to verify_mode= | disabled here | HttpClient.rb:5:1:5:29 | call to verify_mode= | here |
 | Httparty.rb:4:1:4:50 | call to get | This request may run without certificate validation because it is $@. | Httparty.rb:4:37:4:49 | Pair | disabled here | Httparty.rb:4:37:4:49 | Pair | here |
 | Httparty.rb:7:1:7:55 | call to get | This request may run without certificate validation because it is $@. | Httparty.rb:7:37:7:54 | Pair | disabled here | Httparty.rb:7:37:7:54 | Pair | here |
@@ -21,5 +22,6 @@
 | RestClient.rb:5:12:5:23 | call to get | This request may run without certificate validation because it is $@. | RestClient.rb:4:60:4:96 | Pair | disabled here | RestClient.rb:4:60:4:96 | Pair | here |
 | RestClient.rb:9:12:9:23 | call to get | This request may run without certificate validation because it is $@. | RestClient.rb:8:62:8:98 | Pair | disabled here | RestClient.rb:8:62:8:98 | Pair | here |
 | RestClient.rb:14:12:14:23 | call to get | This request may run without certificate validation because it is $@. | RestClient.rb:12:13:12:49 | Pair | disabled here | RestClient.rb:12:13:12:49 | Pair | here |
+| RestClient.rb:19:12:19:23 | call to get | This request may run without certificate validation because it is $@. | RestClient.rb:18:60:18:76 | Pair | disabled here | RestClient.rb:18:60:18:76 | Pair | here |
 | Typhoeus.rb:4:1:4:62 | call to get | This request may run without certificate validation because it is $@. | Typhoeus.rb:4:41:4:61 | Pair | disabled here | Typhoeus.rb:4:41:4:61 | Pair | here |
 | Typhoeus.rb:8:1:8:54 | call to post | This request may run without certificate validation because it is $@. | Typhoeus.rb:7:37:7:57 | Pair | disabled here | Typhoeus.rb:7:37:7:57 | Pair | here |
