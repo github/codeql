@@ -35,8 +35,8 @@ module Stages {
    */
   cached
   module AST {
-    private import codeql.ruby.AST as AST1
-    private import codeql.ruby.ast.internal.AST as AST2
+    private import codeql.ruby.AST as Ast1
+    private import codeql.ruby.ast.internal.AST as Ast2
     private import codeql.ruby.ast.internal.Erb as Erb
 
     /**
@@ -54,13 +54,13 @@ module Stages {
     predicate backref() {
       1 = 1
       or
-      exists(any(AST1::AstNode a).getEnclosingModule())
+      exists(any(Ast1::AstNode a).getEnclosingModule())
       or
-      AST2::lhsExpr(_)
+      Ast2::lhsExpr(_)
       or
       exists(Erb::toGenerated(_))
       or
-      exists(any(AST1::AstNode a).toString())
+      exists(any(Ast1::AstNode a).toString())
     }
   }
 
@@ -70,11 +70,11 @@ module Stages {
    */
   cached
   module CFG {
-    private import codeql.ruby.controlflow.internal.ControlFlowGraphImpl as CFGImpl
-    private import codeql.ruby.controlflow.internal.Splitting as CFGSplitting
-    private import codeql.ruby.controlflow.BasicBlocks as CFGBasicBlocks
+    private import codeql.ruby.controlflow.internal.ControlFlowGraphImpl as CfgImpl
+    private import codeql.ruby.controlflow.internal.Splitting as CfgSplitting
+    private import codeql.ruby.controlflow.BasicBlocks as CfgBasicBlocks
     private import codeql.ruby.dataflow.internal.SsaImpl as SsaImpl
-    private import codeql.ruby.controlflow.CfgNodes as CFGNodes
+    private import codeql.ruby.controlflow.CfgNodes as CfgNodes
 
     /**
      * Always holds.
@@ -91,17 +91,17 @@ module Stages {
     predicate backref() {
       1 = 1
       or
-      exists(CFGImpl::TSuccessorType a)
+      exists(CfgImpl::TSuccessorType a)
       or
-      exists(CFGSplitting::TSplitKind a)
+      exists(CfgSplitting::TSplitKind a)
       or
-      exists(CFGSplitting::TSplit a)
+      exists(CfgSplitting::TSplit a)
       or
-      exists(any(CFGBasicBlocks::JoinBlock b).getJoinBlockPredecessor(_))
+      exists(any(CfgBasicBlocks::JoinBlock b).getJoinBlockPredecessor(_))
       or
       SsaImpl::variableWriteActual(_, _, _, _)
       or
-      exists(any(CFGNodes::ExprNodes::AssignExprCfgNode a).getLhs())
+      exists(any(CfgNodes::ExprNodes::AssignExprCfgNode a).getLhs())
     }
   }
 
