@@ -13,7 +13,7 @@ private import semmle.code.cpp.models.Models
  * (intra-procedural) step.
  */
 predicate localTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
-  DataFlow::localFlowStep(nodeFrom, nodeTo) // TODO: Is this needed?
+  DataFlow::localFlowStep(nodeFrom, nodeTo)
   or
   localAdditionalTaintStep(nodeFrom, nodeTo)
 }
@@ -27,48 +27,34 @@ cached
 predicate localAdditionalTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
   operandToInstructionTaintStep(nodeFrom.asOperand(), nodeTo.asInstruction())
   or
-  instructionToOperandTaintStep(nodeFrom.asInstruction(), nodeTo.asOperand())
-  or
   modeledTaintStep(nodeFrom, nodeTo)
   or
-  exists(IndirectInstruction indInstr, PointerArithmeticInstruction pai |
-    indInstr.getInstruction() = pai and
-    nodeFrom.asOperand() = pai.getAnOperand() and
-    nodeTo = indInstr and
-    indInstr.getIndex() = 1
-  )
-}
-
-// private predicate indirectionTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
-//   exists(Instruction instr |
-//     instr instanceof ArithmeticInstruction
-//     or
-//     instr instanceof BitwiseInstruction
-//     or
-//     instr instanceof PointerArithmeticInstruction
-//   |
-//     nodeFrom.(OperandNode).getOperand() = instr.getAnOperand() and
-//     nodeTo.(IndirectInstruction).getInstruction() = instr and
-//     nodeTo.(IndirectInstruction).getIndex() = 1
-//   )
-// }
-private predicate instructionToOperandTaintStep(Instruction fromInstr, Operand toOperand) {
-  // Propagate flow from the definition of an operand to the operand, even when the overlap is inexact.
-  // We only do this in certain cases:
-  // 1. The instruction's result must not be conflated, and
-  // 2. The instruction's result type is one the types where we expect element-to-object flow. Currently
-  // this is array types and union types. This matches the other two cases of element-to-object flow in
-  // `DefaultTaintTracking`.
-  toOperand.getAnyDef() = fromInstr and
-  not fromInstr.isResultConflated() and
-  (
-    fromInstr.getResultType() instanceof ArrayType or
-    fromInstr.getResultType() instanceof Union
+  exists(Operand operand, int index |
+    hasOperandAndIndex(nodeFrom, operand, index) and
+    hasOperandAndIndex(nodeTo, operand, index - 1)
   )
   or
-  exists(ReadSideEffectInstruction readInstr |
-    fromInstr = readInstr.getArgumentDef() and
-    toOperand = readInstr.getSideEffectOperand()
+  exists(Operand operand |
+    hasOperandAndIndex(nodeFrom, operand, 1) and
+    nodeTo.asOperand() = operand
+  )
+  or
+  exists(Instruction instr, int index |
+    hasInstructionAndIndex(nodeFrom, instr, index) and
+    hasInstructionAndIndex(nodeTo, instr, index - 1)
+  )
+  or
+  exists(Instruction instr |
+    hasInstructionAndIndex(nodeFrom, instr, 1) and
+    nodeTo.asInstruction() = instr
+  )
+  or
+  exists(PointerArithmeticInstruction pai, int index |
+    nodeFrom.asOperand() = pai.getAnOperand() and index = 0
+    or
+    hasOperandAndIndex(nodeFrom, pai.getAnOperand(), pragma[only_bind_into](index))
+  |
+    hasInstructionAndIndex(nodeTo, pai, index + 1)
   )
 }
 

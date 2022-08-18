@@ -57,8 +57,10 @@ private DataFlow::Node getNodeForSource(Expr source) {
   result = getNodeForExpr(source)
 }
 
-private IndirectInstruction indirectExprNode(Expr e) {
-  result.getInstruction().getUnconvertedResultExpression() = e
+private Node indirectExprNode(Expr e) {
+  result.(IndirectInstruction).getInstruction().getUnconvertedResultExpression() = e
+  or
+  result.(IndirectReturnOutNode).getCallInstruction().getUnconvertedResultExpression() = e
 }
 
 DataFlow::Node getNodeForExpr(Expr node) {
@@ -235,6 +237,10 @@ private module Cached {
     )
   }
 
+  private Element adjustedSinkInstr(Instruction instr) {
+    result = adjustedSink(instructionNode(instr))
+  }
+
   cached
   Element adjustedSink(DataFlow::Node sink) {
     // TODO: is it more appropriate to use asConvertedExpr here and avoid
@@ -272,7 +278,9 @@ private module Cached {
     // Taint `e1 += e2`, `e &= e2` and friends when `e1` or `e2` is tainted.
     result.(AssignOperation).getAnOperand() = sink.asExpr()
     or
-    result = sink.asIndirectArgument()
+    result = adjustedSinkInstr(sink.(IndirectOperand).getOperand().getDef())
+    or
+    result = adjustedSinkInstr(sink.(IndirectInstruction).getInstruction())
   }
 
   /**
