@@ -20,10 +20,14 @@ private class StringSummaryCsv extends SummaryModelCsv {
         "java.lang;String;false;formatted;(Object[]);;Argument[0].ArrayElement;ReturnValue;taint;manual",
         "java.lang;String;false;getChars;;;Argument[-1];Argument[2];taint;manual",
         "java.lang;String;false;getBytes;;;Argument[-1];ReturnValue;taint;manual",
+        "java.lang;String;false;getBytes;;;Argument[-1];Argument[2];taint;manual",
         "java.lang;String;false;indent;;;Argument[-1];ReturnValue;taint;manual",
         "java.lang;String;false;intern;;;Argument[-1];ReturnValue;taint;manual",
         "java.lang;String;false;join;;;Argument[0..1];ReturnValue;taint;manual",
         "java.lang;String;false;repeat;(int);;Argument[-1];ReturnValue;taint;manual",
+        "java.lang;String;false;replace;;;Argument[-1];ReturnValue;taint;manual",
+        "java.lang;String;false;replaceAll;;;Argument[-1];ReturnValue;taint;manual",
+        "java.lang;String;false;replaceFirst;;;Argument[-1];ReturnValue;taint;manual",
         "java.lang;String;false;split;;;Argument[-1];ReturnValue;taint;manual",
         "java.lang;String;false;String;;;Argument[0];Argument[-1];taint;manual",
         "java.lang;String;false;strip;;;Argument[-1];ReturnValue;taint;manual",
@@ -55,6 +59,7 @@ private class StringSummaryCsv extends SummaryModelCsv {
         "java.lang;StringBuffer;true;StringBuffer;(CharSequence);;Argument[0];Argument[-1];taint;manual",
         "java.lang;StringBuffer;true;StringBuffer;(String);;Argument[0];Argument[-1];taint;manual",
         "java.lang;StringBuilder;true;StringBuilder;;;Argument[0];Argument[-1];taint;manual",
+        "java.lang;CharSequence;true;charAt;;;Argument[-1];ReturnValue;taint;manual",
         "java.lang;CharSequence;true;subSequence;;;Argument[-1];ReturnValue;taint;manual",
         "java.lang;CharSequence;true;toString;;;Argument[-1];ReturnValue;taint;manual"
       ]
