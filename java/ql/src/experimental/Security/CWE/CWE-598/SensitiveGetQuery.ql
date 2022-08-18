@@ -14,7 +14,6 @@ import semmle.code.java.dataflow.FlowSources
 import semmle.code.java.dataflow.TaintTracking
 import semmle.code.java.security.SensitiveActions
 import DataFlow::PathGraph
-private import semmle.code.java.frameworks.Servlets
 
 /** A variable that holds sensitive information judging by its name. */
 class SensitiveInfoExpr extends Expr {

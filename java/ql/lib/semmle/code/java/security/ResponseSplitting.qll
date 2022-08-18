@@ -3,8 +3,9 @@
 import java
 import semmle.code.java.dataflow.DataFlow
 import semmle.code.java.dataflow.FlowSources
+import semmle.code.java.frameworks.Servlets
+import semmle.code.java.frameworks.JaxWS
 private import semmle.code.java.dataflow.ExternalFlow
-private import semmle.code.java.frameworks.Servlets
 
 /** A sink that is vulnerable to an HTTP header splitting attack. */
 abstract class HeaderSplittingSink extends DataFlow::Node { }

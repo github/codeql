@@ -7,7 +7,6 @@ import semmle.code.java.dataflow.FlowSources
 import semmle.code.java.dataflow.TaintTracking
 import semmle.code.java.frameworks.spring.Spring
 import SpringFrameworkLib
-private import semmle.code.xml.MavenPom
 
 /** Holds if `Thymeleaf` templating engine is used in the project. */
 predicate thymeleafIsUsed() {

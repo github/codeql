@@ -3,7 +3,7 @@ import DataFlow
 import semmle.code.java.dataflow.FlowSources
 import semmle.code.java.dataflow.DataFlow2
 import semmle.code.java.dataflow.TaintTracking
-private import semmle.code.java.frameworks.spring.SpringController
+import semmle.code.java.frameworks.spring.SpringController
 
 /**
  * A concatenate expression using the string `redirect:` or `ajaxredirect:` or `forward:` on the left.

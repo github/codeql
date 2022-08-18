@@ -11,7 +11,6 @@
 
 import java
 import SpringViewManipulationLib
-private import semmle.code.java.frameworks.Servlets
 
 private predicate canResultInImplicitViewConversion(Method m) {
   m.getReturnType() instanceof VoidType

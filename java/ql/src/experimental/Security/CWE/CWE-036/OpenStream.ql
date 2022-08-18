@@ -15,7 +15,6 @@ import semmle.code.java.dataflow.TaintTracking
 import semmle.code.java.dataflow.FlowSources
 import semmle.code.java.dataflow.ExternalFlow
 import DataFlow::PathGraph
-private import semmle.code.java.frameworks.Networking
 
 class UrlConstructor extends ClassInstanceExpr {
   UrlConstructor() { this.getConstructor().getDeclaringType() instanceof TypeUrl }

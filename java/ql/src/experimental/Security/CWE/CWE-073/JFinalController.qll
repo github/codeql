@@ -1,7 +1,6 @@
 import java
 private import semmle.code.java.dataflow.ExternalFlow
 private import semmle.code.java.dataflow.FlowSources
-private import semmle.code.java.dataflow.FlowSteps
 
 /** The class `com.jfinal.core.Controller`. */
 class JFinalController extends RefType {

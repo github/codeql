@@ -4,9 +4,6 @@ private import semmle.code.java.dataflow.ExternalFlow
 private import semmle.code.java.dataflow.FlowSources
 private import semmle.code.java.dataflow.StringPrefixes
 private import semmle.code.java.frameworks.javaee.ejb.EJBRestrictions
-private import semmle.code.java.frameworks.Servlets
-private import semmle.code.java.frameworks.spring.SpringWeb
-private import semmle.code.java.frameworks.spring.SpringController
 
 /** A sink for unsafe URL forward vulnerabilities. */
 abstract class UnsafeUrlForwardSink extends DataFlow::Node { }
