@@ -27,8 +27,15 @@ class ResponseSplittingConfig extends TaintTracking::Configuration {
   override predicate isSink(DataFlow::Node sink) { sink instanceof HeaderSplittingSink }
 
   override predicate isSanitizer(DataFlow::Node node) {
-    node.getType() instanceof PrimitiveType or
+    node.getType() instanceof PrimitiveType
+    or
     node.getType() instanceof BoxedType
+    or
+    exists(MethodAccess ma |
+      ma.getMethod().hasQualifiedName("java.lang", "String", "replaceAll") and
+      ma.getArgument(0).(StringLiteral).getValue().matches("%[^%") and
+      node.asExpr() = ma
+    )
   }
 }
 
