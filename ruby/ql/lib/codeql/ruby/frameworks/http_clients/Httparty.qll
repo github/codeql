@@ -23,16 +23,14 @@ private import codeql.ruby.DataFlow
  * MyClass.new("http://example.com")
  * ```
  */
-class HttpartyRequest extends HTTP::Client::Request::Range,DataFlow::CallNode {
+class HttpartyRequest extends HTTP::Client::Request::Range, DataFlow::CallNode {
   API::Node requestNode;
-
 
   HttpartyRequest() {
     this = requestNode.asSource() and
     requestNode =
       API::getTopLevelMember("HTTParty")
           .getReturn(["get", "head", "delete", "options", "post", "put", "patch"])
-
   }
 
   override DataFlow::Node getAUrlPart() { result = this.getArgument(0) }
@@ -71,6 +69,13 @@ class HttpartyRequest extends HTTP::Client::Request::Range,DataFlow::CallNode {
         disablingNode.asExpr() = p
       )
     )
+  }
+
+  override predicate disablesCertificateValidation(
+    DataFlow::Node disablingNode, DataFlow::Node argumentOrigin
+  ) {
+    disablesCertificateValidation(disablingNode) and
+    argumentOrigin = disablingNode
   }
 
   override string getFramework() { result = "HTTParty" }

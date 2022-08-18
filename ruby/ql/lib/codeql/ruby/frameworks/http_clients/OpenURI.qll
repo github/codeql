@@ -43,6 +43,13 @@ class OpenUriRequest extends HTTP::Client::Request::Range, DataFlow::CallNode {
     )
   }
 
+  override predicate disablesCertificateValidation(
+    DataFlow::Node disablingNode, DataFlow::Node argumentOrigin
+  ) {
+    disablesCertificateValidation(disablingNode) and
+    argumentOrigin = disablingNode
+  }
+
   override string getFramework() { result = "OpenURI" }
 }
 
@@ -73,6 +80,13 @@ class OpenUriKernelOpenRequest extends HTTP::Client::Request::Range, DataFlow::C
       arg.asExpr() = this.asExpr().(CfgNodes::ExprNodes::MethodCallCfgNode).getArgument(i) and
       argumentDisablesValidation(arg, disablingNode)
     )
+  }
+
+  override predicate disablesCertificateValidation(
+    DataFlow::Node disablingNode, DataFlow::Node argumentOrigin
+  ) {
+    disablesCertificateValidation(disablingNode) and
+    argumentOrigin = disablingNode
   }
 
   override string getFramework() { result = "OpenURI" }

@@ -1,3 +1,4 @@
+WARNING: Predicate disablesCertificateValidation has been deprecated and may be removed in future (/home/rasmus/work/code/ql/ruby/ql/src/queries/security/cwe-295/RequestWithoutValidation.ql:19,15-44)
 | Excon.rb:6:3:6:34 | call to get | This request may run with $@. | Excon.rb:5:3:5:34 | call to []= | certificate validation disabled |
 | Excon.rb:12:3:12:34 | call to get | This request may run with $@. | Excon.rb:11:3:11:23 | call to ssl_verify_peer= | certificate validation disabled |
 | Excon.rb:18:3:18:34 | call to get | This request may run with $@. | Excon.rb:17:3:17:34 | call to []= | certificate validation disabled |

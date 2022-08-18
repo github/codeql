@@ -17,13 +17,11 @@ private import codeql.ruby.DataFlow
  * ```
  */
 class RestClientHttpRequest extends HTTP::Client::Request::Range, DataFlow::CallNode {
-
   API::Node requestNode;
   API::Node connectionNode;
 
   RestClientHttpRequest() {
     this = requestNode.asSource() and
-
     (
       connectionNode =
         [
@@ -69,6 +67,13 @@ class RestClientHttpRequest extends HTTP::Client::Request::Range, DataFlow::Call
         disablingNode.asExpr() = p
       )
     )
+  }
+
+  override predicate disablesCertificateValidation(
+    DataFlow::Node disablingNode, DataFlow::Node argumentOrigin
+  ) {
+    disablesCertificateValidation(disablingNode) and
+    argumentOrigin = disablingNode
   }
 
   override string getFramework() { result = "RestClient" }

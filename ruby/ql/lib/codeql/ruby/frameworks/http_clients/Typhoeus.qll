@@ -15,7 +15,6 @@ private import codeql.ruby.DataFlow
  * ```
  */
 class TyphoeusHttpRequest extends HTTP::Client::Request::Range, DataFlow::CallNode {
-
   API::Node requestNode;
 
   TyphoeusHttpRequest() {
@@ -23,7 +22,6 @@ class TyphoeusHttpRequest extends HTTP::Client::Request::Range, DataFlow::CallNo
     requestNode =
       API::getTopLevelMember("Typhoeus")
           .getReturn(["get", "head", "delete", "options", "post", "put", "patch"])
-
   }
 
   override DataFlow::Node getAUrlPart() { result = this.getArgument(0) }
@@ -49,6 +47,13 @@ class TyphoeusHttpRequest extends HTTP::Client::Request::Range, DataFlow::CallNo
         disablingNode.asExpr() = p
       )
     )
+  }
+
+  override predicate disablesCertificateValidation(
+    DataFlow::Node disablingNode, DataFlow::Node argumentOrigin
+  ) {
+    disablesCertificateValidation(disablingNode) and
+    argumentOrigin = disablingNode
   }
 
   override string getFramework() { result = "Typhoeus" }

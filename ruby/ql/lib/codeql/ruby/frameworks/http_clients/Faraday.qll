@@ -22,12 +22,10 @@ private import codeql.ruby.DataFlow
  * connection.get("/").body
  * ```
  */
-
 class FaradayHttpRequest extends HTTP::Client::Request::Range, DataFlow::CallNode {
   API::Node requestNode;
   API::Node connectionNode;
   DataFlow::Node connectionUse;
-
 
   FaradayHttpRequest() {
     connectionNode =
@@ -41,7 +39,6 @@ class FaradayHttpRequest extends HTTP::Client::Request::Range, DataFlow::CallNod
       connectionNode.getReturn(["get", "head", "delete", "post", "put", "patch", "trace"]) and
     this = requestNode.asSource() and
     connectionUse = connectionNode.asSource()
-
   }
 
   override DataFlow::Node getResponseBody() { result = requestNode.getAMethodCall("body") }
@@ -76,6 +73,13 @@ class FaradayHttpRequest extends HTTP::Client::Request::Range, DataFlow::CallNod
         disablingNode.asExpr() = p
       )
     )
+  }
+
+  override predicate disablesCertificateValidation(
+    DataFlow::Node disablingNode, DataFlow::Node argumentOrigin
+  ) {
+    disablesCertificateValidation(disablingNode) and
+    argumentOrigin = disablingNode
   }
 
   override string getFramework() { result = "Faraday" }

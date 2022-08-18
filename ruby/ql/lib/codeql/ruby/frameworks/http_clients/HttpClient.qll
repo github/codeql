@@ -58,5 +58,12 @@ class HttpClientRequest extends HTTP::Client::Request::Range, DataFlow::CallNode
           .getAValueReachableFromSource()
   }
 
+  override predicate disablesCertificateValidation(
+    DataFlow::Node disablingNode, DataFlow::Node argumentOrigin
+  ) {
+    disablesCertificateValidation(disablingNode) and
+    argumentOrigin = disablingNode
+  }
+
   override string getFramework() { result = "HTTPClient" }
 }
