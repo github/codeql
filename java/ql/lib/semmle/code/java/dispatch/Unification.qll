@@ -48,6 +48,12 @@ module MkUnification<unificationTarget/1 targetLeft, unificationTarget/1 targetR
     arg2 = t2.getTypeArgument(pos)
   }
 
+  private RefType getUpperBound(RefType t) {
+    if t instanceof BoundedType
+    then result = t.(BoundedType).getAnUltimateUpperBoundType()
+    else result = t
+  }
+
   /**
    * Holds if `t1` and `t2` are not unifiable.
    *
@@ -82,6 +88,28 @@ module MkUnification<unificationTarget/1 targetLeft, unificationTarget/1 targetR
         t1.(BoundedType).getAnUltimateUpperBoundType() = upperbound1 and
         t2.(BoundedType).getAnUltimateUpperBoundType() = upperbound2 and
         notHaveIntersection(upperbound1, upperbound2)
+      )
+      or
+      exists(RefType lowerbound, RefType upperbound |
+        t1.(Wildcard).getLowerBoundType().(RefType).getSourceDeclaration() = lowerbound and
+        getUpperBound(t2).getSourceDeclaration() = upperbound and
+        not lowerbound instanceof BoundedType
+        or
+        t2.(Wildcard).getLowerBoundType().(RefType).getSourceDeclaration() = lowerbound and
+        getUpperBound(t1).getSourceDeclaration() = upperbound and
+        not lowerbound instanceof BoundedType
+      |
+        not lowerbound.getASourceSupertype*() = upperbound
+      )
+      or
+      exists(BoundedType lowerbound, RefType upperbound |
+        t1.(Wildcard).getLowerBoundType() = lowerbound and
+        getUpperBound(t2) = upperbound
+        or
+        t2.(Wildcard).getLowerBoundType() = lowerbound and
+        getUpperBound(t1) = upperbound
+      |
+        notHaveIntersection(lowerbound.getUpperBoundType(), upperbound)
       )
       or
       not (
