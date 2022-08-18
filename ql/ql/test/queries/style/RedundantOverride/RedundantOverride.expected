@@ -1,0 +1,4 @@
+| RedundantOverride.qll:12:16:12:19 | ClassPredicate pred | Redundant override of $@ predicate | RedundantOverride.qll:4:7:4:10 | ClassPredicate pred | this |
+| RedundantOverride.qll:16:16:16:19 | ClassPredicate pred | Redundant override of $@ predicate | RedundantOverride.qll:4:7:4:10 | ClassPredicate pred | this |
+| RedundantOverride.qll:47:22:47:26 | ClassPredicate pred3 | Redundant override of $@ predicate | RedundantOverride.qll:8:13:8:17 | ClassPredicate pred3 | this |
+| RedundantOverride.qll:51:16:51:19 | ClassPredicate pred | Redundant override of $@ predicate | RedundantOverride.qll:4:7:4:10 | ClassPredicate pred | this |
