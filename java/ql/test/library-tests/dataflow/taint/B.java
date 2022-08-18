@@ -41,7 +41,7 @@ public class B {
     String valueOfSubstring = String.valueOf(complex.toCharArray(), 0, 1);
     sink(valueOfSubstring);
     // tainted - unsafe escape
-    String badEscape = constructed.replaceAll("(<script>)", "");
+    String badEscape = constructed.replaceAll("irrelevant", "irrelevant");
     sink(badEscape);
     // tainted - tokenized string
     String token = new StringTokenizer(badEscape).nextToken();
