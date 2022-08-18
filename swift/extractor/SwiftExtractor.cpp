@@ -96,14 +96,6 @@ static void extractDeclarations(const SwiftExtractorConfiguration& config,
   }
   TrapDomain trap{*trapTarget};
 
-  // TODO: remove this and recreate it with IPA when we have that
-  // the following cannot conflict with actual files as those have an absolute path starting with /
-  File unknownFileEntry{trap.createLabel<FileTag>("unknown")};
-  Location unknownLocationEntry{trap.createLabel<LocationTag>("unknown")};
-  unknownLocationEntry.file = unknownFileEntry.id;
-  trap.emit(unknownFileEntry);
-  trap.emit(unknownLocationEntry);
-
   std::vector<swift::Token> comments;
   if (primaryFile && primaryFile->getBufferID().hasValue()) {
     auto& sourceManager = compiler.getSourceMgr();

@@ -35,7 +35,7 @@ class SystemRuntimeCompilerServicesTaskAwaiterStruct extends SystemRuntimeCompil
 private class SystemRuntimeCompilerServicesTaskAwaiterFlowModelCsv extends SummaryModelCsv {
   override predicate row(string row) {
     row =
-      "System.Runtime.CompilerServices;TaskAwaiter<>;false;GetResult;();;Argument[Qualifier].SyntheticField[m_task_task_awaiter].Property[System.Threading.Tasks.Task<>.Result];ReturnValue;value;manual"
+      "System.Runtime.CompilerServices;TaskAwaiter<>;false;GetResult;();;Argument[this].SyntheticField[m_task_task_awaiter].Property[System.Threading.Tasks.Task<>.Result];ReturnValue;value;manual"
   }
 }
 
@@ -67,7 +67,7 @@ private class SyntheticConfiguredTaskAwaiterField extends SyntheticField {
 private class SystemRuntimeCompilerServicesConfiguredTaskAwaitableTFlowModelCsv extends SummaryModelCsv {
   override predicate row(string row) {
     row =
-      "System.Runtime.CompilerServices;ConfiguredTaskAwaitable<>;false;GetAwaiter;();;Argument[Qualifier].SyntheticField[m_configuredTaskAwaiter];ReturnValue;value;manual"
+      "System.Runtime.CompilerServices;ConfiguredTaskAwaitable<>;false;GetAwaiter;();;Argument[this].SyntheticField[m_configuredTaskAwaiter];ReturnValue;value;manual"
   }
 }
 
@@ -89,7 +89,7 @@ class SystemRuntimeCompilerServicesConfiguredTaskAwaitableTConfiguredTaskAwaiter
 private class SystemRuntimeCompilerServicesConfiguredTaskAwaitableTConfiguredTaskAwaiterFlowModelCsv extends SummaryModelCsv {
   override predicate row(string row) {
     row =
-      "System.Runtime.CompilerServices;ConfiguredTaskAwaitable<>+ConfiguredTaskAwaiter;false;GetResult;();;Argument[Qualifier].SyntheticField[m_task_configured_task_awaitable].Property[System.Threading.Tasks.Task<>.Result];ReturnValue;value;manual"
+      "System.Runtime.CompilerServices;ConfiguredTaskAwaitable<>+ConfiguredTaskAwaiter;false;GetResult;();;Argument[this].SyntheticField[m_task_configured_task_awaitable].Property[System.Threading.Tasks.Task<>.Result];ReturnValue;value;manual"
   }
 }
 

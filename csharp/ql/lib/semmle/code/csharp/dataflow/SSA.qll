@@ -163,10 +163,6 @@ module Ssa {
    * (`ImplicitDefinition`), or a phi node (`PhiNode`).
    */
   class Definition extends SsaImpl::Definition {
-    final override SourceVariable getSourceVariable() {
-      result = SsaImpl::Definition.super.getSourceVariable()
-    }
-
     /**
      * Gets the control flow node of this SSA definition, if any. Phi nodes are
      * examples of SSA definitions without a control flow node, as they are

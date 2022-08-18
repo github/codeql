@@ -199,7 +199,7 @@ string getParameterPositionCsv(ParameterPosition pos) {
   result = pos.getPosition().toString()
   or
   pos.isThisParameter() and
-  result = "Qualifier"
+  result = "this"
 }
 
 /** Gets the textual representation of an argument position in the format used for flow summaries. */
@@ -207,7 +207,7 @@ string getArgumentPositionCsv(ArgumentPosition pos) {
   result = pos.getPosition().toString()
   or
   pos.isQualifier() and
-  result = "This"
+  result = "this"
 }
 
 /** Holds if input specification component `c` needs a reference. */
@@ -287,7 +287,7 @@ bindingset[s]
 ArgumentPosition parseParamBody(string s) {
   result.getPosition() = AccessPath::parseInt(s)
   or
-  s = "This" and
+  s = "this" and
   result.isQualifier()
 }
 
@@ -296,6 +296,6 @@ bindingset[s]
 ParameterPosition parseArgBody(string s) {
   result.getPosition() = AccessPath::parseInt(s)
   or
-  s = "Qualifier" and
+  s = "this" and
   result.isThisParameter()
 }

@@ -787,7 +787,7 @@ class InterfaceType extends @interfacetype, CompositeType {
    * Note that the indexes are not contiguous.
    */
   TypeSetLiteralType getDirectlyEmbeddedTypeSetLiteral(int index) {
-    hasDirectlyEmbeddedType(index, result)
+    this.hasDirectlyEmbeddedType(index, result)
   }
 
   /**
@@ -798,7 +798,7 @@ class InterfaceType extends @interfacetype, CompositeType {
   TypeSetLiteralType getAnEmbeddedTypeSetLiteral() {
     result = this.getDirectlyEmbeddedTypeSetLiteral(_) or
     result =
-      getADirectlyEmbeddedInterface()
+      this.getADirectlyEmbeddedInterface()
           .getUnderlyingType()
           .(InterfaceType)
           .getAnEmbeddedTypeSetLiteral()

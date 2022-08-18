@@ -33,8 +33,8 @@ private Callable dispatchCand(Call c) {
  */
 pragma[nomagic]
 private predicate viableParam(Call call, int i, ParameterNode p) {
-  exists(Callable callable |
-    callable = dispatchCand(call) and
+  exists(DataFlowCallable callable |
+    callable.asCallable() = dispatchCand(call) and
     p.isParameterOf(callable, i)
   )
 }

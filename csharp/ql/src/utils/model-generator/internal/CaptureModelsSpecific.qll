@@ -69,7 +69,7 @@ predicate isRelevantType(CS::Type t) {
 /**
  * Gets the CSV string representation of the qualifier.
  */
-string qualifierString() { result = "Argument[Qualifier]" }
+string qualifierString() { result = "Argument[this]" }
 
 private string parameterAccess(CS::Parameter p) {
   if Collections::isCollectionType(p.getType())
@@ -112,7 +112,7 @@ string returnNodeAsOutput(DataFlowImplCommon::ReturnNodeExt node) {
  * Gets the enclosing callable of `ret`.
  */
 CS::Callable returnNodeEnclosingCallable(DataFlowImplCommon::ReturnNodeExt ret) {
-  result = DataFlowImplCommon::getNodeEnclosingCallable(ret).getUnderlyingCallable()
+  result = DataFlowImplCommon::getNodeEnclosingCallable(ret).asCallable()
 }
 
 /**

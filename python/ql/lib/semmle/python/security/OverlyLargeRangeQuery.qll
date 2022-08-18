@@ -4,7 +4,7 @@
 
 // We don't need the NFA utils, just the regexp tree.
 // but the below is a nice shared library that exposes the API we need.
-import performance.ReDoSUtil
+import regexp.NfaUtils
 
 /**
  * Gets a rank for `range` that is unique for ranges in the same file.

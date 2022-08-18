@@ -290,7 +290,11 @@ class PathElement extends TPathElement {
   predicate isSink(IRBlock block) { exists(this.asSink(block)) }
 
   string toString() {
-    result = [asStore().toString(), asCall(_).toString(), asMid().toString(), asSink(_).toString()]
+    result =
+      [
+        this.asStore().toString(), this.asCall(_).toString(), this.asMid().toString(),
+        this.asSink(_).toString()
+      ]
   }
 
   predicate hasLocationInfo(

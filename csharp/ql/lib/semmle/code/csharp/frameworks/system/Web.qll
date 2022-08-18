@@ -242,8 +242,8 @@ private class SystemWebHttpCookieFlowModelCsv extends SummaryModelCsv {
   override predicate row(string row) {
     row =
       [
-        "System.Web;HttpCookie;false;get_Value;();;Argument[Qualifier];ReturnValue;taint;manual",
-        "System.Web;HttpCookie;false;get_Values;();;Argument[Qualifier];ReturnValue;taint;manual"
+        "System.Web;HttpCookie;false;get_Value;();;Argument[this];ReturnValue;taint;manual",
+        "System.Web;HttpCookie;false;get_Values;();;Argument[this];ReturnValue;taint;manual"
       ]
   }
 }

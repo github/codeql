@@ -1069,6 +1069,9 @@ module QL {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "SignatureExpr" }
 
+    /** Gets the node corresponding to the field `mod_expr`. */
+    final ModuleExpr getModExpr() { ql_signature_expr_mod_expr(this, result) }
+
     /** Gets the node corresponding to the field `predicate`. */
     final PredicateExpr getPredicate() { ql_signature_expr_predicate(this, result) }
 
@@ -1077,7 +1080,9 @@ module QL {
 
     /** Gets a field or child node of this node. */
     final override AstNode getAFieldOrChild() {
-      ql_signature_expr_predicate(this, result) or ql_signature_expr_type_expr(this, result)
+      ql_signature_expr_mod_expr(this, result) or
+      ql_signature_expr_predicate(this, result) or
+      ql_signature_expr_type_expr(this, result)
     }
   }
 

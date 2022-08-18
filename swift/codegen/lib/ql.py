@@ -14,7 +14,7 @@ left behind and must be dealt with by hand.
 
 import pathlib
 from dataclasses import dataclass, field
-from typing import List, ClassVar
+from typing import List, ClassVar, Union, Optional
 
 import inflection
 
@@ -28,12 +28,11 @@ class Param:
 @dataclass
 class Property:
     singular: str
-    type: str = None
-    tablename: str = None
+    type: Optional[str] = None
+    tablename: Optional[str] = None
     tableparams: List[Param] = field(default_factory=list)
-    plural: str = None
+    plural: Optional[str] = None
     first: bool = False
-    local_var: str = "x"
     is_optional: bool = False
     is_predicate: bool = False
     is_child: bool = False
@@ -41,8 +40,6 @@ class Property:
 
     def __post_init__(self):
         if self.tableparams:
-            if self.type_is_class:
-                self.tableparams = [x if x != "result" else self.local_var for x in self.tableparams]
             self.tableparams = [Param(x) for x in self.tableparams]
             self.tableparams[0].first = True
 
@@ -82,6 +79,7 @@ class Class:
     qltest_skip: bool = False
     qltest_collapse_hierarchy: bool = False
     qltest_uncollapse_hierarchy: bool = False
+    ipa: bool = False
 
     def __post_init__(self):
         self.bases = sorted(self.bases)
@@ -89,16 +87,16 @@ class Class:
             self.properties[0].first = True
 
     @property
-    def db_id(self):
-        return "@" + inflection.underscore(self.name)
-
-    @property
-    def root(self):
+    def root(self) -> bool:
         return not self.bases
 
     @property
-    def path(self):
+    def path(self) -> pathlib.Path:
         return self.dir / self.name
+
+    @property
+    def db_id(self):
+        return "@" + inflection.underscore(self.name)
 
 
 @dataclass
@@ -107,6 +105,13 @@ class Stub:
 
     name: str
     base_import: str
+
+
+@dataclass
+class DbClasses:
+    template: ClassVar = 'ql_db'
+
+    classes: List[Class] = field(default_factory=list)
 
 
 @dataclass
@@ -126,7 +131,7 @@ class GetParentImplementation:
 @dataclass
 class PropertyForTest:
     getter: str
-    type: str = None
+    type: Optional[str] = None
     is_single: bool = False
     is_predicate: bool = False
     is_repeated: bool = False
@@ -151,3 +156,96 @@ class PropertyTester:
 @dataclass
 class MissingTestInstructions:
     template: ClassVar = 'ql_test_missing'
+
+
+class Synth:
+    @dataclass
+    class Class:
+        is_final: ClassVar = False
+
+        name: str
+        first: bool = False
+
+    @dataclass
+    class Param:
+        param: str
+        type: str
+        first: bool = False
+
+    @dataclass
+    class FinalClass(Class):
+        is_final: ClassVar = True
+        is_derived_ipa: ClassVar = False
+        is_fresh_ipa: ClassVar = False
+        is_db: ClassVar = False
+
+        params: List["Synth.Param"] = field(default_factory=list)
+
+        def __post_init__(self):
+            if self.params:
+                self.params[0].first = True
+
+        @property
+        def is_ipa(self):
+            return self.is_fresh_ipa or self.is_derived_ipa
+
+        @property
+        def has_params(self) -> bool:
+            return bool(self.params)
+
+    @dataclass
+    class FinalClassIpa(FinalClass):
+        pass
+
+    @dataclass
+    class FinalClassDerivedIpa(FinalClassIpa):
+        is_derived_ipa: ClassVar = True
+
+    @dataclass
+    class FinalClassFreshIpa(FinalClassIpa):
+        is_fresh_ipa: ClassVar = True
+
+    @dataclass
+    class FinalClassDb(FinalClass):
+        is_db: ClassVar = True
+
+        subtracted_ipa_types: List["Synth.Class"] = field(default_factory=list)
+
+        def subtract_type(self, type: str):
+            self.subtracted_ipa_types.append(Synth.Class(type, first=not self.subtracted_ipa_types))
+
+        @property
+        def has_subtracted_ipa_types(self) -> bool:
+            return bool(self.subtracted_ipa_types)
+
+        @property
+        def db_id(self) -> str:
+            return "@" + inflection.underscore(self.name)
+
+    @dataclass
+    class NonFinalClass(Class):
+        derived: List["Synth.Class"] = field(default_factory=list)
+        root: bool = False
+
+        def __post_init__(self):
+            self.derived = [Synth.Class(c) for c in self.derived]
+            if self.derived:
+                self.derived[0].first = True
+
+    @dataclass
+    class Types:
+        template: ClassVar = "ql_ipa_types"
+
+        root: str
+        final_classes: List["Synth.FinalClass"] = field(default_factory=list)
+        non_final_classes: List["Synth.NonFinalClass"] = field(default_factory=list)
+
+        def __post_init__(self):
+            if self.final_classes:
+                self.final_classes[0].first = True
+
+    @dataclass
+    class ConstructorStub:
+        template: ClassVar = "ql_ipa_constructor_stub"
+
+        cls: "Synth.FinalClass"

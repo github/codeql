@@ -314,7 +314,7 @@ private predicate definesModule(
   )
   or
   // signature module in a paramertized module
-  exists(Module mod, SignatureExpr sig, TypeExpr ty, int i |
+  exists(Module mod, SignatureExpr sig, TypeRef ty, int i |
     mod = container.asModule() and
     mod.hasParameter(i, name, sig) and
     public = false and

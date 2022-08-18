@@ -18,6 +18,11 @@ class AndroidManifestXmlFile extends XMLFile {
    * Gets the top-level `<manifest>` element in this Android manifest file.
    */
   AndroidManifestXmlElement getManifestElement() { result = this.getAChild() }
+
+  /**
+   * Holds if this Android manifest file is located in a build directory.
+   */
+  predicate isInBuildDirectory() { this.getFile().getRelativePath().matches("%build%") }
 }
 
 /**
@@ -51,6 +56,17 @@ class AndroidApplicationXmlElement extends XMLElement {
    * Gets a component child element of this `<application>` element.
    */
   AndroidComponentXmlElement getAComponentElement() { result = this.getAChild() }
+
+  /**
+   * Holds if this application element has the attribute `android:debuggable` set to `true`.
+   */
+  predicate isDebuggable() {
+    exists(AndroidXmlAttribute attr |
+      this.getAnAttribute() = attr and
+      attr.getName() = "debuggable" and
+      attr.getValue() = "true"
+    )
+  }
 }
 
 /**
