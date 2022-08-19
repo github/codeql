@@ -204,6 +204,22 @@ int main()
 		}
 	}
 
+	{
+		int i;
+
+		while(maybe()) {
+			if (maybe()) {
+				break;
+			}
+			else if (maybe() && (scanf("%d", &i) == 1)) { // GOOD [FALSE POSITIVE]
+				use(i); // GOOD [FALSE POSITIVE]
+			}
+			else if ((scanf("%d", &i) == 1) && maybe()) { // GOOD [FALSE POSITIVE]
+				use(i); // GOOD [FALSE POSITIVE]
+			}
+		}
+	}
+
 	// --- different initialization ---
 
 	{
