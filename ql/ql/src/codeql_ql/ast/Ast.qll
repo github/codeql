@@ -794,8 +794,6 @@ class Declaration extends TDeclaration, AstNode {
     or
     result = any(Class c).getQLDocFor(this)
   }
-
-  override AstNode getAChild(string pred) { result = super.getAChild(pred) }
 }
 
 /** An entity that can be declared in a module. */
@@ -1101,8 +1099,6 @@ class NoneCall extends TNoneCall, Call, Formula {
   NoneCall() { this = TNoneCall(call) }
 
   override string getAPrimaryQlClass() { result = "NoneCall" }
-
-  override AstNode getParent() { result = Call.super.getParent() }
 }
 
 /**
