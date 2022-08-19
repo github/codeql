@@ -87,10 +87,10 @@ class ScanfOutput extends Expr {
   private Instruction getASubsequentSameValuedInstruction() {
     exists(Instruction i |
       i.getUnconvertedResultExpression() = this and
-      result = valueNumber(i).getAnInstruction() and
       i.getASuccessor+() = result and
-      forall(Expr child | child = this.getAChild*() implies child != result.getAst())
-    )
+      valueNumber(i) = valueNumber(result)
+    ) and
+    not exists(Expr child | child = this.getAChild*() | child = result.getAst())
   }
 }
 
