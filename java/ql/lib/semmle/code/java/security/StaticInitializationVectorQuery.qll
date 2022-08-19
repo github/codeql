@@ -95,17 +95,15 @@ private class StaticInitializationVectorSource extends DataFlow::Node {
 }
 
 /**
- * A sink that initializes a cipher for encryption with unsafe parameters.
+ * A sink that initializes a cipher with unsafe parameters.
  */
 private class EncryptionInitializationSink extends DataFlow::Node {
   EncryptionInitializationSink() {
-    exists(MethodAccess ma, Method m, FieldRead fr | m = ma.getMethod() |
+    exists(MethodAccess ma, Method m | m = ma.getMethod() |
       m.hasQualifiedName("javax.crypto", "Cipher", "init") and
       m.getParameterType(2)
           .(RefType)
           .hasQualifiedName("java.security.spec", "AlgorithmParameterSpec") and
-      fr.getField().hasQualifiedName("javax.crypto", "Cipher", "ENCRYPT_MODE") and
-      DataFlow::localExprFlow(fr, ma.getArgument(0)) and
       ma.getArgument(2) = this.asExpr()
     )
   }
