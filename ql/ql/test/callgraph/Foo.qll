@@ -10,7 +10,9 @@ class Foo extends AstNode {
   predicate baz() { bar() }
 }
 
-class Sub extends Foo { }
+class Sub extends Foo {
+  override predicate baz() { not super.baz() }
+}
 
 query predicate test2() { any(Foo f).bar() }
 
