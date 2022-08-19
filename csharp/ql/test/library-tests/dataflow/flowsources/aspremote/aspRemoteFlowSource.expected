@@ -1,12 +1,14 @@
 remoteFlowSourceMembers
 | AspRemoteFlowSource.cs:10:23:10:31 | RequestId |
+| AspRemoteFlowSource.cs:28:23:28:29 | Tainted |
 remoteFlowSources
 | AspRemoteFlowSource.cs:20:42:20:50 | viewModel |
-| AspRemoteFlowSource.cs:30:42:30:46 | param |
-| AspRemoteFlowSource.cs:38:58:38:63 | newUrl |
-| AspRemoteFlowSource.cs:39:61:39:65 | myApi |
-| AspRemoteFlowSource.cs:39:75:39:79 | myUrl |
-| AspRemoteFlowSource.cs:41:46:41:56 | lambdaParam |
-| AspRemoteFlowSource.cs:47:65:47:76 | mapPostParam |
-| AspRemoteFlowSource.cs:48:63:48:73 | mapPutParam |
-| AspRemoteFlowSource.cs:49:69:49:82 | mapDeleteParam |
+| AspRemoteFlowSource.cs:35:42:35:46 | param |
+| AspRemoteFlowSource.cs:43:58:43:63 | newUrl |
+| AspRemoteFlowSource.cs:44:61:44:65 | myApi |
+| AspRemoteFlowSource.cs:44:75:44:79 | myUrl |
+| AspRemoteFlowSource.cs:46:46:46:56 | lambdaParam |
+| AspRemoteFlowSource.cs:52:65:52:76 | mapPostParam |
+| AspRemoteFlowSource.cs:53:63:53:73 | mapPutParam |
+| AspRemoteFlowSource.cs:54:69:54:82 | mapDeleteParam |
+| AspRemoteFlowSource.cs:56:41:56:44 | item |

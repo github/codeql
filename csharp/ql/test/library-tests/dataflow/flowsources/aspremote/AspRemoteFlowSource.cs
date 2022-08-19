@@ -23,6 +23,11 @@ namespace Testing
         }
     }
 
+    public class Item
+    {
+        public string Tainted { get; set; }
+    }
+
     public class AspRoutingEndpoints
     {
         public delegate void MapGetHandler(string param);
@@ -47,6 +52,8 @@ namespace Testing
             app.MapPost("/api/redirect/{mapPostParam}", (string mapPostParam) => { });
             app.MapPut("/api/redirect/{mapPutParam}", (string mapPutParam) => { });
             app.MapDelete("/api/redirect/{mapDeleteParam}", (string mapDeleteParam) => { });
+
+            app.MapPost("/items", (Item item) => { });
 
             app.Run();
         }
