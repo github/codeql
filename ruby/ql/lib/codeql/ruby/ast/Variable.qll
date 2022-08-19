@@ -122,8 +122,6 @@ class VariableAccess extends Expr instanceof VariableAccessImpl {
     or
     synthChild(any(BlockParameter p), 0, this)
   }
-
-  final override string toString() { result = VariableAccessImpl.super.toString() }
 }
 
 /** An access to a variable where the value is updated. */
