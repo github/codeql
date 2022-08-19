@@ -132,7 +132,7 @@ class XmlFile extends XmlParent, File {
   XmlElement getARootElement() { result = this.getAChild() }
 
   /** Gets a DTD associated with this XML file. */
-  XMLDTD getADTD() { xmlDTDs(result, _, _, _, this) }
+  XmlDTD getADTD() { xmlDTDs(result, _, _, _, this) }
 }
 
 /** DEPRECATED: Alias for XmlFile */
@@ -149,7 +149,7 @@ deprecated class XMLFile = XmlFile;
  * <!ELEMENT lastName (#PCDATA)>
  * ```
  */
-class XMLDTD extends XmlLocatable, @xmldtd {
+class XmlDTD extends XmlLocatable, @xmldtd {
   /** Gets the name of the root element of this DTD. */
   string getRoot() { xmlDTDs(this, result, _, _, _) }
 
@@ -173,6 +173,9 @@ class XMLDTD extends XmlLocatable, @xmldtd {
     result = this.getRoot() + " SYSTEM '" + this.getSystemId() + "'"
   }
 }
+
+/** DEPRECATED: Alias for XmlDTD */
+deprecated class XMLDTD = XmlDTD;
 
 /**
  * An XML element in an XML file.
