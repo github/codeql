@@ -17,7 +17,7 @@ class MethodRefExpr extends MethodRefExprBase {
       Synth::convertDeclFromRaw(this.getUnderlying().getFunction().(Raw::DeclRefExpr).getDecl())
   }
 
-  AbstractFunctionDecl getMethod() { result = getMember() }
+  AbstractFunctionDecl getMethod() { result = this.getMember() }
 
   cached
   private Raw::DotSyntaxCallExpr getUnderlying() { this = Synth::TMethodRefExpr(result) }
