@@ -154,9 +154,7 @@ class InterpretNode extends TInterpretNode {
   DataFlowCallable asCallable() { result.getUnderlyingCallable() = this.asElement() }
 
   /** Gets the target of this call, if any. */
-  AbstractFunctionDecl getCallTarget() {
-    result = this.asCall().asCall().getFunction().(ApplyExpr).getStaticTarget()
-  }
+  AbstractFunctionDecl getCallTarget() { result = this.asCall().asCall().getStaticTarget() }
 
   /** Gets a textual representation of this node. */
   string toString() {

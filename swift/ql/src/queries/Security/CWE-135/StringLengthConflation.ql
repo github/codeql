@@ -58,7 +58,7 @@ class StringLengthConflationConfiguration extends DataFlow::Configuration {
   override predicate isSource(DataFlow::Node node, string flowstate) {
     // result of a call to `String.count`
     exists(MemberRefExpr member |
-      member.getBaseExpr().getType().getName() = "String" and
+      member.getBase().getType().getName() = "String" and
       member.getMember().(VarDecl).getName() = "count" and
       node.asExpr() = member and
       flowstate = "String"
@@ -66,7 +66,7 @@ class StringLengthConflationConfiguration extends DataFlow::Configuration {
     or
     // result of a call to `NSString.length`
     exists(MemberRefExpr member |
-      member.getBaseExpr().getType().getName() = ["NSString", "NSMutableString"] and
+      member.getBase().getType().getName() = ["NSString", "NSMutableString"] and
       member.getMember().(VarDecl).getName() = "length" and
       node.asExpr() = member and
       flowstate = "NSString"
@@ -74,7 +74,7 @@ class StringLengthConflationConfiguration extends DataFlow::Configuration {
     or
     // result of a call to `String.utf8.count`
     exists(MemberRefExpr member |
-      member.getBaseExpr().getType().getName() = "String.UTF8View" and
+      member.getBase().getType().getName() = "String.UTF8View" and
       member.getMember().(VarDecl).getName() = "count" and
       node.asExpr() = member and
       flowstate = "String.utf8"
@@ -82,7 +82,7 @@ class StringLengthConflationConfiguration extends DataFlow::Configuration {
     or
     // result of a call to `String.utf16.count`
     exists(MemberRefExpr member |
-      member.getBaseExpr().getType().getName() = "String.UTF16View" and
+      member.getBase().getType().getName() = "String.UTF16View" and
       member.getMember().(VarDecl).getName() = "count" and
       node.asExpr() = member and
       flowstate = "String.utf16"
@@ -90,7 +90,7 @@ class StringLengthConflationConfiguration extends DataFlow::Configuration {
     or
     // result of a call to `String.unicodeScalars.count`
     exists(MemberRefExpr member |
-      member.getBaseExpr().getType().getName() = "String.UnicodeScalarView" and
+      member.getBase().getType().getName() = "String.UnicodeScalarView" and
       member.getMember().(VarDecl).getName() = "count" and
       node.asExpr() = member and
       flowstate = "String.unicodeScalars"
@@ -136,7 +136,7 @@ class StringLengthConflationConfiguration extends DataFlow::Configuration {
           ) and
           c.getName() = className and
           c.getAMember() = funcDecl and
-          call.getFunction().(ApplyExpr).getStaticTarget() = funcDecl and
+          call.getStaticTarget() = funcDecl and
           flowstate = "NSString"
         )
         or
@@ -169,7 +169,7 @@ class StringLengthConflationConfiguration extends DataFlow::Configuration {
           funcName = ["formIndex(_:offsetBy:)", "formIndex(_:offsetBy:limitBy:)"] and
           paramName = "distance"
         ) and
-        call.getFunction().(ApplyExpr).getStaticTarget() = funcDecl and
+        call.getStaticTarget() = funcDecl and
         flowstate = "String"
       ) and
       // match up `funcName`, `paramName`, `arg`, `node`.

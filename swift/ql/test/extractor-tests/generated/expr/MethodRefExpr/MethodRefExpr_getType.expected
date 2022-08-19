@@ -1,0 +1,4 @@
+| method_refs.swift:5:13:5:13 | .bar(_:) | (Int) -> () |
+| method_refs.swift:6:5:6:5 | .bar(_:) | (Int) -> () |
+| method_refs.swift:11:1:11:3 | .bar(_:) | (Int) -> () |
+| method_refs.swift:13:11:13:11 | .bar(_:) | (Int) -> () |
