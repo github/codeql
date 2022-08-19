@@ -50,20 +50,7 @@ class RestClientHttpRequest extends HTTP::Client::Request::Range, DataFlow::Call
   /** Gets the value that controls certificate validation, if any. */
   DataFlow::Node getCertificateValidationControllingValue() {
     exists(DataFlow::CallNode newCall | newCall = connectionNode.getAValueReachableFromSource() |
-      result = newCall.getKeywordArgument("verify_ssl")
-      or
-      // using a hashliteral
-      exists(
-        DataFlow::LocalSourceNode optionsNode, CfgNodes::ExprNodes::PairCfgNode p,
-        DataFlow::Node key
-      |
-        // can't flow to argument 0, since that's the URL
-        optionsNode.flowsTo(newCall.getArgument(any(int i | i > 0))) and
-        p = optionsNode.asExpr().(CfgNodes::ExprNodes::HashLiteralCfgNode).getAKeyValuePair() and
-        key.asExpr() = p.getKey() and
-        key.getALocalSource().asExpr().getExpr().getConstantValue().isStringlikeValue("verify_ssl") and
-        result.asExpr() = p.getValue()
-      )
+      result = newCall.getKeywordArgumentIncludeHashArgument("verify_ssl")
     )
   }
 

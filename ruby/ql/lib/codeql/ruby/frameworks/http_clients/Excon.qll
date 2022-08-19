@@ -66,24 +66,7 @@ class ExconHttpRequest extends HTTP::Client::Request::Range, DataFlow::CallNode 
   DataFlow::Node getCertificateValidationControllingValue() {
     exists(DataFlow::CallNode newCall | newCall = connectionNode.getAValueReachableFromSource() |
       // Check for `ssl_verify_peer: false`
-      result = newCall.getKeywordArgument("ssl_verify_peer")
-      or
-      // using a hashliteral
-      exists(
-        DataFlow::LocalSourceNode optionsNode, CfgNodes::ExprNodes::PairCfgNode p,
-        DataFlow::Node key
-      |
-        // can't flow to argument 0, since that's the URL
-        optionsNode.flowsTo(newCall.getArgument(any(int i | i > 0))) and
-        p = optionsNode.asExpr().(CfgNodes::ExprNodes::HashLiteralCfgNode).getAKeyValuePair() and
-        key.asExpr() = p.getKey() and
-        key.getALocalSource()
-            .asExpr()
-            .getExpr()
-            .getConstantValue()
-            .isStringlikeValue("ssl_verify_peer") and
-        result.asExpr() = p.getValue()
-      )
+      result = newCall.getKeywordArgumentIncludeHashArgument("ssl_verify_peer")
     )
   }
 

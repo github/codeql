@@ -39,22 +39,7 @@ class OpenUriRequest extends HTTP::Client::Request::Range, DataFlow::CallNode {
 
   /** Gets the value that controls certificate validation, if any. */
   DataFlow::Node getCertificateValidationControllingValue() {
-    result = this.getKeywordArgument("ssl_verify_mode")
-    or
-    // using a hashliteral
-    exists(
-      DataFlow::LocalSourceNode optionsNode, CfgNodes::ExprNodes::PairCfgNode p, DataFlow::Node key
-    |
-      optionsNode.flowsTo(this.getArgument(_)) and
-      p = optionsNode.asExpr().(CfgNodes::ExprNodes::HashLiteralCfgNode).getAKeyValuePair() and
-      key.asExpr() = p.getKey() and
-      key.getALocalSource()
-          .asExpr()
-          .getExpr()
-          .getConstantValue()
-          .isStringlikeValue("ssl_verify_mode") and
-      result.asExpr() = p.getValue()
-    )
+    result = this.getKeywordArgumentIncludeHashArgument("ssl_verify_mode")
   }
 
   override predicate disablesCertificateValidation(

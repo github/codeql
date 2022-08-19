@@ -31,20 +31,7 @@ class TyphoeusHttpRequest extends HTTP::Client::Request::Range, DataFlow::CallNo
 
   /** Gets the value that controls certificate validation, if any. */
   DataFlow::Node getCertificateValidationControllingValue() {
-    result = this.getKeywordArgument("ssl_verifypeer")
-    or
-    // using a hashliteral
-    exists(
-      DataFlow::LocalSourceNode optionsNode, CfgNodes::ExprNodes::PairCfgNode p,
-      DataFlow::Node key
-    |
-      // can't flow to argument 0, since that's the URL
-      optionsNode.flowsTo(this.getArgument(any(int i | i > 0))) and
-      p = optionsNode.asExpr().(CfgNodes::ExprNodes::HashLiteralCfgNode).getAKeyValuePair() and
-      key.asExpr() = p.getKey() and
-      key.getALocalSource().asExpr().getExpr().getConstantValue().isStringlikeValue("ssl_verifypeer") and
-      result.asExpr() = p.getValue()
-    )
+    result = this.getKeywordArgumentIncludeHashArgument("ssl_verifypeer")
   }
 
   override predicate disablesCertificateValidation(

@@ -60,20 +60,7 @@ class FaradayHttpRequest extends HTTP::Client::Request::Range, DataFlow::CallNod
     argName in ["verify", "verify_mode"] and
     exists(DataFlow::Node sslValue, DataFlow::CallNode newCall |
       newCall = connectionNode.getAValueReachableFromSource() and
-      sslValue = newCall.getKeywordArgument("ssl")
-      or
-      // using a hashliteral
-      exists(
-        DataFlow::LocalSourceNode optionsNode, CfgNodes::ExprNodes::PairCfgNode p,
-        DataFlow::Node key
-      |
-        // can't flow to argument 0, since that's the URL
-        optionsNode.flowsTo(newCall.getArgument(any(int i | i > 0))) and
-        p = optionsNode.asExpr().(CfgNodes::ExprNodes::HashLiteralCfgNode).getAKeyValuePair() and
-        key.asExpr() = p.getKey() and
-        key.getALocalSource().asExpr().getExpr().getConstantValue().isStringlikeValue("ssl") and
-        sslValue.asExpr() = p.getValue()
-      )
+      sslValue = newCall.getKeywordArgumentIncludeHashArgument("ssl")
     |
       exists(CfgNodes::ExprNodes::PairCfgNode p, DataFlow::Node key |
         p = sslValue.asExpr().(CfgNodes::ExprNodes::HashLiteralCfgNode).getAKeyValuePair() and
