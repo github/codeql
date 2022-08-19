@@ -331,15 +331,15 @@ abstract private class Expectation extends FailureLocatable {
 }
 
 private predicate onSameLine(ValidExpectation a, ActualResult b) {
-  exists(File f, int line, Location la, Location lb |
+  exists(string fname, int line, Location la, Location lb |
     // Join order intent:
     // Take the locations of ActualResults,
     // join with locations in the same file / on the same line,
     // then match those against ValidExpectations.
     la = a.getLocation() and
     pragma[only_bind_into](lb) = b.getLocation() and
-    locations_default(pragma[only_bind_into](la), f, line, _, _, _) and
-    locations_default(lb, f, line, _, _, _)
+    pragma[only_bind_into](la).hasLocationInfo(fname, line, _, _, _) and
+    lb.hasLocationInfo(fname, line, _, _, _)
   )
 }
 
