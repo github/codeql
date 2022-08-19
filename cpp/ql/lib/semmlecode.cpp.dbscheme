@@ -523,6 +523,11 @@ autoderivation(
     int derivation_type: @type ref
 );
 
+orphaned_variables(
+    int var: @localvariable ref,
+    int function: @function ref
+)
+
 enumconstants(
     unique int id: @enumconstant,
     int parent: @usertype ref,
