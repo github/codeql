@@ -93,8 +93,6 @@ class RegExpRoot extends RegExpTerm {
    * Holds if this root term is relevant to the ReDoS analysis.
    */
   predicate isRelevant() {
-    // there is at least one repetition
-    getRoot(any(InfiniteRepetitionQuantifier q)) = this and
     // is actually used as a RegExp
     this.isUsedAsRegExp() and
     // not excluded for library specific reasons

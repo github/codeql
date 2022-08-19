@@ -72,3 +72,18 @@ app.get(
 
 app.get('/bar/*', (req, res) => { // OK - not a middleware
 });
+
+app.use(/\/baz\/bla/, unknown()); // NOT OK - case sensitive
+app.get('/baz/bla', (req, resp) => {
+  resp.send({ test: 123 });
+});
+
+app.use(/\/[Bb][Aa][Zz]2\/[aA]/, unknown()); // OK - not case sensitive
+app.get('/baz2/a', (req, resp) => {
+  resp.send({ test: 123 });
+});
+
+app.use(/\/[Bb][Aa][Zz]3\/[a]/, unknown()); // NOT OK - case sensitive
+app.get('/baz3/a', (req, resp) => {
+  resp.send({ test: 123 });
+});

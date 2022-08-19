@@ -20,27 +20,6 @@ string toOtherCase(string s) {
   if s.regexpMatch(".*[a-z].*") then result = s.toUpperCase() else result = s.toLowerCase()
 }
 
-RegExpCharacterClass getEnclosingClass(RegExpTerm term) {
-  term = result.getAChild()
-  or
-  term = result.getAChild().(RegExpRange).getAChild()
-}
-
-/**
- * Holds if `term` seems to distinguish between upper and lower case letters, assuming the `i` flag is not present.
- */
-pragma[inline]
-predicate isLikelyCaseSensitiveRegExp(RegExpTerm term) {
-  exists(RegExpConstant const |
-    const = term.getAChild*() and
-    const.getValue().regexpMatch(".*[a-zA-Z].*") and
-    not getEnclosingClass(const).getAChild().(RegExpConstant).getValue() =
-      toOtherCase(const.getValue()) and
-    not const.getParent*() instanceof RegExpNegativeLookahead and
-    not const.getParent*() instanceof RegExpNegativeLookbehind
-  )
-}
-
 import semmle.javascript.security.regexp.NfaUtils as NfaUtils
 
 /** Holds if `s` is a relevant regexp term were we want to compute a string that matches the term (for `getCaseSensitiveBypassExample`). */
@@ -84,7 +63,6 @@ predicate isCaseSensitiveMiddleware(
     ) and
     arg = call.getArgument(0) and
     regexp.getAReference().flowsTo(arg) and
-    isLikelyCaseSensitiveRegExp(regexp.getRoot()) and
     exists(string flags |
       flags = regexp.getFlags() and
       not RegExp::isIgnoreCase(flags)
