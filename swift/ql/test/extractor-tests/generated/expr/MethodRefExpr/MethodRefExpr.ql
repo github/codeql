@@ -2,10 +2,9 @@
 import codeql.swift.elements
 import TestUtils
 
-from DotSyntaxCallExpr x, Expr getFunction, Expr getBase
+from MethodRefExpr x, Expr getBase
 where
   toBeTested(x) and
   not x.isUnknown() and
-  getFunction = x.getFunction() and
   getBase = x.getBase()
-select x, "getFunction:", getFunction, "getBase:", getBase
+select x, "getBase:", getBase

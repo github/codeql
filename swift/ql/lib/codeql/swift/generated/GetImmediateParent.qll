@@ -63,7 +63,7 @@ Element getAnImmediateChild(Element e) {
   or
   result = e.(DotSyntaxBaseIgnoredExpr).getImmediateSubExpr()
   or
-  result = e.(DynamicTypeExpr).getImmediateBaseExpr()
+  result = e.(DynamicTypeExpr).getImmediateBase()
   or
   result = e.(EnumIsCaseExpr).getImmediateSubExpr()
   or
@@ -99,7 +99,7 @@ Element getAnImmediateChild(Element e) {
   or
   result = e.(LazyInitializerExpr).getImmediateSubExpr()
   or
-  result = e.(LookupExpr).getImmediateBaseExpr()
+  result = e.(LookupExpr).getImmediateBase()
   or
   result = e.(MakeTemporarilyEscapableExpr).getImmediateEscapingClosure()
   or
@@ -123,7 +123,7 @@ Element getAnImmediateChild(Element e) {
   or
   result = e.(RebindSelfInConstructorExpr).getImmediateSelf()
   or
-  result = e.(SelfApplyExpr).getImmediateBaseExpr()
+  result = e.(SelfApplyExpr).getImmediateBase()
   or
   result = e.(SequenceExpr).getImmediateElement(_)
   or
