@@ -11,8 +11,6 @@ class ApplyExpr extends ApplyExprBase {
       (
         result = f.(DeclRefExpr).getDecl()
         or
-        result = f.(MethodRefExpr).getMethod()
-        or
         result = f.(ConstructorRefCallExpr).getFunction().(DeclRefExpr).getDecl()
       )
     )
@@ -34,7 +32,7 @@ class MethodApplyExpr extends ApplyExpr {
 
   MethodApplyExpr() { method = this.getFunction() }
 
-  AbstractFunctionDecl getMethodDeclaration() { result = method.getMethod() }
+  override AbstractFunctionDecl getStaticTarget() { result = method.getMethod() }
 
   override Expr getQualifier() { result = method.getBase() }
 }
