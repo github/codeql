@@ -419,7 +419,7 @@ DotSyntaxBaseIgnoredExpr:
 DynamicTypeExpr:
   _extends: Expr
   _children:
-    base_expr: Expr
+    base: Expr
 
 EditorPlaceholderExpr:
   _extends: Expr
@@ -492,7 +492,7 @@ LiteralExpr:
 LookupExpr:
   _extends: Expr
   _children:
-    base_expr: Expr
+    base: Expr
   member: Decl?
 
 MakeTemporarilyEscapableExpr:
@@ -835,7 +835,7 @@ PrefixUnaryExpr:
 SelfApplyExpr:
   _extends: ApplyExpr
   _children:
-    base_expr: Expr
+    base: Expr
 
 ArrayExpr:
   _extends: CollectionExpr
@@ -989,6 +989,11 @@ MemberRefExpr:
   has_direct_to_storage_semantics: predicate
   has_direct_to_implementation_semantics: predicate
   has_ordinary_semantics: predicate
+
+MethodRefExpr:
+  _extends: LookupExpr
+  _synth:
+    from: DotSyntaxCallExpr
 
 SubscriptExpr:
   _extends:

@@ -147,30 +147,22 @@ private string getASrcFolderName() { result = ["ts", "js", "src", "lib"] }
  */
 class MainModulePath extends PathExpr, @json_string {
   PackageJson pkg;
-  string relativePath;
 
   MainModulePath() {
-    relativePath = "." and
     this = pkg.getPropValue(["main", "module"])
     or
-    // { "exports": "path" } is sugar for { "exports": { ".": "path" }}
-    relativePath = "." and
-    this = pkg.getPropValue("exports")
-    or
-    exists(JsonValue val | val = pkg.getPropValue("exports").getPropValue(relativePath) |
-      // Either specified directly as a string: { "./path": "./path.js" }
-      this = val
-      or
-      // Or by module type: { "./path": { "require": "./path.cjs", ... }}
-      this = val.getPropValue(_)
-    )
+    this = getAPartOfExportsSection(pkg)
   }
 
   /** Gets the `package.json` file in which this path occurs. */
   PackageJson getPackageJson() { result = pkg }
 
   /** Gets the relative path under which this is exported, usually starting with a `.`. */
-  string getRelativePath() { result = relativePath }
+  string getRelativePath() {
+    result = getExportRelativePath(this)
+    or
+    not exists(getExportRelativePath(this)) and result = "."
+  }
 
   /** DEPRECATED: Alias for getPackageJson */
   deprecated PackageJSON getPackageJSON() { result = getPackageJson() }
@@ -181,6 +173,29 @@ class MainModulePath extends PathExpr, @json_string {
     priority = 0 and
     result = pkg.getFile().getParentContainer()
   }
+}
+
+private JsonValue getAPartOfExportsSection(PackageJson pkg) {
+  result = pkg.getPropValue("exports")
+  or
+  result = getAPartOfExportsSection(pkg).getPropValue(_)
+}
+
+/** Gets the text of one of the conditions or paths enclosing the given `part` of an `exports` section. */
+private string getAnEnclosingExportProperty(JsonValue part) {
+  exists(JsonObject parent, string prop |
+    parent = getAPartOfExportsSection(_) and
+    part = parent.getPropValue(prop)
+  |
+    result = prop
+    or
+    result = getAnEnclosingExportProperty(parent)
+  )
+}
+
+private string getExportRelativePath(JsonValue part) {
+  result = getAnEnclosingExportProperty(part) and
+  result.matches(".%")
 }
 
 module MainModulePath {

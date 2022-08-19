@@ -112,7 +112,7 @@ string returnNodeAsOutput(DataFlowImplCommon::ReturnNodeExt node) {
  * Gets the enclosing callable of `ret`.
  */
 CS::Callable returnNodeEnclosingCallable(DataFlowImplCommon::ReturnNodeExt ret) {
-  result = DataFlowImplCommon::getNodeEnclosingCallable(ret).getUnderlyingCallable()
+  result = DataFlowImplCommon::getNodeEnclosingCallable(ret).asCallable()
 }
 
 /**

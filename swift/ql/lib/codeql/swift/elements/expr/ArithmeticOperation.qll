@@ -48,7 +48,7 @@ class BinaryArithmeticOperation extends BinaryExpr {
  * ```
  */
 class AddExpr extends BinaryExpr {
-  AddExpr() { this.getFunction().(DotSyntaxCallExpr).getStaticTarget().getName() = "+(_:_:)" }
+  AddExpr() { this.getStaticTarget().getName() = "+(_:_:)" }
 }
 
 /**
@@ -58,7 +58,7 @@ class AddExpr extends BinaryExpr {
  * ```
  */
 class SubExpr extends BinaryExpr {
-  SubExpr() { this.getFunction().(DotSyntaxCallExpr).getStaticTarget().getName() = "-(_:_:)" }
+  SubExpr() { this.getStaticTarget().getName() = "-(_:_:)" }
 }
 
 /**
@@ -68,7 +68,7 @@ class SubExpr extends BinaryExpr {
  * ```
  */
 class MulExpr extends BinaryExpr {
-  MulExpr() { this.getFunction().(DotSyntaxCallExpr).getStaticTarget().getName() = "*(_:_:)" }
+  MulExpr() { this.getStaticTarget().getName() = "*(_:_:)" }
 }
 
 /**
@@ -78,7 +78,7 @@ class MulExpr extends BinaryExpr {
  * ```
  */
 class DivExpr extends BinaryExpr {
-  DivExpr() { this.getFunction().(DotSyntaxCallExpr).getStaticTarget().getName() = "/(_:_:)" }
+  DivExpr() { this.getStaticTarget().getName() = "/(_:_:)" }
 }
 
 /**
@@ -88,7 +88,7 @@ class DivExpr extends BinaryExpr {
  * ```
  */
 class RemExpr extends BinaryExpr {
-  RemExpr() { this.getFunction().(DotSyntaxCallExpr).getStaticTarget().getName() = "%(_:_:)" }
+  RemExpr() { this.getStaticTarget().getName() = "%(_:_:)" }
 }
 
 /**
@@ -108,5 +108,5 @@ class UnaryArithmeticOperation extends PrefixUnaryExpr {
  * ```
  */
 class UnaryMinusExpr extends PrefixUnaryExpr {
-  UnaryMinusExpr() { this.getFunction().(DotSyntaxCallExpr).getStaticTarget().getName() = "-(_:)" }
+  UnaryMinusExpr() { this.getStaticTarget().getName() = "-(_:)" }
 }

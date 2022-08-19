@@ -1,9 +1,3 @@
 | dot_syntax_call.swift:7:13:7:13 | call to ... | 0 | dot_syntax_call.swift:7:13:7:13 | : self |
-| dot_syntax_call.swift:7:13:7:13 | call to baz(_:) | 0 | file://:0:0:0:0 | : self |
-| dot_syntax_call.swift:11:1:11:3 | call to foo(_:_:) | 0 | dot_syntax_call.swift:11:1:11:1 | : X.Type |
-| dot_syntax_call.swift:12:1:12:3 | call to bar() | 0 | dot_syntax_call.swift:12:1:12:1 | : X.Type |
-| dot_syntax_call.swift:13:1:13:5 | call to baz(_:) | 0 | dot_syntax_call.swift:13:1:13:3 | : call to ... |
 | dot_syntax_call.swift:15:9:15:11 | call to ... | 0 | dot_syntax_call.swift:15:9:15:9 | : X.Type |
-| dot_syntax_call.swift:15:11:15:11 | call to bar() | 0 | file://:0:0:0:0 | : self |
-| dot_syntax_call.swift:16:9:16:13 | call to ... | 0 | dot_syntax_call.swift:16:9:16:11 | : call to ... |
-| dot_syntax_call.swift:16:13:16:13 | call to baz(_:) | 0 | file://:0:0:0:0 | : self |
+| dot_syntax_call.swift:16:9:16:13 | call to ... | 0 | dot_syntax_call.swift:16:9:16:11 | : call to init |

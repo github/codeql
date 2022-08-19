@@ -84,8 +84,8 @@ class Assertion extends Comment {
   string tryExplainFailure() {
     exists(int i, API::Node nd, string prefix, string suffix |
       nd = this.lookup(i) and
-      i < getPathLength() and
-      not exists(this.lookup([i + 1 .. getPathLength()])) and
+      i < this.getPathLength() and
+      not exists(this.lookup([i + 1 .. this.getPathLength()])) and
       prefix = nd + " has no outgoing edge labelled " + this.getEdgeLabel(i) + ";" and
       if exists(nd.getASuccessor())
       then

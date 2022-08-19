@@ -292,22 +292,20 @@ module SemanticExprConfig {
 
   class Guard = IRGuards::IRGuardCondition;
 
-  predicate guard(Guard guard, BasicBlock block) {
-    block = guard.(IRGuards::IRGuardCondition).getBlock()
-  }
+  predicate guard(Guard guard, BasicBlock block) { block = guard.getBlock() }
 
   Expr getGuardAsExpr(Guard guard) { result = guard }
 
   predicate equalityGuard(Guard guard, Expr e1, Expr e2, boolean polarity) {
-    guard.(IRGuards::IRGuardCondition).comparesEq(e1.getAUse(), e2.getAUse(), 0, true, polarity)
+    guard.comparesEq(e1.getAUse(), e2.getAUse(), 0, true, polarity)
   }
 
   predicate guardDirectlyControlsBlock(Guard guard, BasicBlock controlled, boolean branch) {
-    guard.(IRGuards::IRGuardCondition).controls(controlled, branch)
+    guard.controls(controlled, branch)
   }
 
   predicate guardHasBranchEdge(Guard guard, BasicBlock bb1, BasicBlock bb2, boolean branch) {
-    guard.(IRGuards::IRGuardCondition).controlsEdge(bb1, bb2, branch)
+    guard.controlsEdge(bb1, bb2, branch)
   }
 
   Guard comparisonGuard(Expr e) { result = e }
