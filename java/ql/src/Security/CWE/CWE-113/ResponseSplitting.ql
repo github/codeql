@@ -36,7 +36,7 @@ class ResponseSplittingConfig extends TaintTracking::Configuration {
       ma.getMethod().hasQualifiedName("java.lang", "String", methodName) and
       target = ma.getArgument(0) and
       (
-        methodName = "replace" and target.getIntValue() = [10, 13]
+        methodName = "replace" and target.getIntValue() = [10, 13] // 10 == "\n", 13 == "\r"
         or
         methodName = "replaceAll" and
         target.getStringValue().regexpMatch(".*([\n\r]|\\[\\^[^\\]\r\n]*\\]).*")
