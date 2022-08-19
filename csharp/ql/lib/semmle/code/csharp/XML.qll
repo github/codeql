@@ -36,12 +36,12 @@ class XmlLocatable extends @xmllocatable, TXmlLocatable {
 deprecated class XMLLocatable = XmlLocatable;
 
 /**
- * An `XMLParent` is either an `XMLElement` or an `XMLFile`,
+ * An `XmlParent` is either an `XmlElement` or an `XmlFile`,
  * both of which can contain other elements.
  */
 class XmlParent extends @xmlparent {
   XmlParent() {
-    // explicitly restrict `this` to be either an `XMLElement` or an `XMLFile`;
+    // explicitly restrict `this` to be either an `XmlElement` or an `XmlFile`;
     // the type `@xmlparent` currently also includes non-XML files
     this instanceof @xmlelement or xmlEncoding(this, _)
   }
