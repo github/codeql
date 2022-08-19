@@ -30,9 +30,11 @@ class ApplyExpr extends ApplyExprBase {
 }
 
 class MethodApplyExpr extends ApplyExpr {
-  MethodApplyExpr() { this.getFunction() instanceof MethodRefExpr }
+  private MethodRefExpr method;
 
-  AbstractFunctionDecl getMethod() { result = this.getFunction().(MethodRefExpr).getMethod() }
+  MethodApplyExpr() { method = this.getFunction() }
 
-  override Expr getQualifier() { result = this.getFunction().(MethodRefExpr).getBase() }
+  AbstractFunctionDecl getMethodDeclaration() { result = method.getMethod() }
+
+  override Expr getQualifier() { result = method.getBase() }
 }
