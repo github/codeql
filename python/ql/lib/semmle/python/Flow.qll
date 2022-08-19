@@ -324,7 +324,9 @@ class ControlFlowNode extends @py_flow_node {
  * This avoids wasting time on the trivial overrides on the ControlFlowNode subclasses.
  */
 
-private class AnyNode extends ControlFlowNode { }
+private class AnyNode extends ControlFlowNode {
+  override AstNode getNode() { result = super.getNode() }
+}
 
 /**
  * Check whether a SSA variable has complete points-to information.
