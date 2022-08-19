@@ -23,11 +23,11 @@ and 4 are slightly different---for further details, see the sections labeled
 **Information for macOS "Catalina" (or newer) users**. If you are using macOS
 on Apple Silicon (e.g. Apple M1), ensure that the `Xcode command-line developer
 tools <https://developer.apple.com/downloads/index.action>`__ and `Rosetta 2
-<https://support.apple.com/en-us/HT211861>`__ are installed. 
+<https://support.apple.com/en-us/HT211861>`__ are installed.
 
 .. pull-quote:: Note
 
-   The CodeQL CLI is currently not compatible with non-glibc Linux 
+   The CodeQL CLI is currently not compatible with non-glibc Linux
    distributions such as (muslc-based) Alpine Linux.
 
 For information about installing the CodeQL CLI in a CI system to create results
@@ -47,7 +47,7 @@ Conditions <https://securitylab.github.com/tools/codeql/license>`__.
 
 .. pull-quote:: Important
 
-   There are several different versions of the CLI available to download, depending
+   There are different versions of the CLI available to download, depending
    on your use case:
 
    - If you want to use the most up to date CodeQL tools and features, download the
@@ -91,7 +91,7 @@ Alternatively, you can download ``codeql.zip``, which contains the CLI for all s
       iv. Ensure the check-box labeled **Open "safe" files after downloading**.
           is unchecked.
 
-2. Extract the zip archive
+1. Extract the zip archive
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 For Linux, Windows, and macOS users (version 10.14 "Mojave", and earlier)
@@ -202,8 +202,6 @@ CLI that you will extract in step 4. If you use git on the command line, you can
 clone and rename the repository in a single step by running
 ``git clone git@github.com:github/codeql.git codeql-repo`` in the ``codeql-home`` folder.
 
-For Go analysis, run ``codeql-repo/go/scripts/install-deps.sh`` to install its dependencies.
-
 .. pull-quote:: Note
 
    The CodeQL libraries and queries for Go analysis used to live in a
@@ -213,10 +211,10 @@ For Go analysis, run ``codeql-repo/go/scripts/install-deps.sh`` to install its d
 
    For more information, see the `Relocation announcement <https://github.com/github/codeql-go/issues/741>`__.
 
-Within this repository, the queries and libraries are organized into QL
-packs. Along with the queries themselves, QL packs contain important metadata
+Within this repository, the queries and libraries are organized into CodeQL
+packs. Along with the queries themselves, CodeQL packs contain important metadata
 that tells the CodeQL CLI how to process the query files. For more information,
-see ":doc:`About QL packs <about-ql-packs>`."
+see ":doc:`About CodeQL packs <about-codeql-packs>`."
 
 .. pull-quote:: Important
 
@@ -271,8 +269,8 @@ up to create and analyze databases:
 - Run ``codeql resolve languages`` to show which languages are
   available for database creation. This will list the languages supported by
   default in your CodeQL CLI package.
-- Run ``codeql resolve qlpacks`` to show which QL packs the CLI can find. This
-  will display the names of all the QL packs directly available to the CodeQL CLI.
+- Run ``codeql resolve qlpacks`` to show which CodeQL packs the CLI can find. This
+  will display the names of all the CodeQL packs directly available to the CodeQL CLI.
   This should include:
 
   - Query packs for each supported language, for example, ``codeql/{language}-queries``.

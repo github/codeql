@@ -58,9 +58,10 @@ You can also specify:
   - a path to a directory containing query files
   - a path to a query suite file
   - the name of a CodeQL query pack
-    If omitted, the default query suite for the language
-    of the database being analyzed will be used. For more information, see the
-    :ref:`examples <database-analyze-examples>` below.
+    - with an optional a version range
+    - with an optional path to a query, directory, or query suite inside the pack
+
+  If omitted, the default query suite for the language of the database being analyzed will be used. For more information, see the :ref:`examples <database-analyze-examples>` below.
 
 - ``--sarif-category``: an identifying category for the results. Used when
   you want to upload more than one set of results for a commit.
@@ -192,10 +193,10 @@ For more information, see `Analyzing a CodeQL database <https://docs.github.com/
 or `Code scanning API <https://docs.github.com/en/rest/reference/code-scanning>`__ in the GitHub documentation.
 
 CodeQL query suites are ``.qls`` files that use directives to select queries to run
-based on certain metadata properties. The standard QL packs have metadata that specify
+based on certain metadata properties. The standard CodeQL packs have metadata that specify
 the location of the query suites used by code scanning, so the CodeQL CLI knows where to find these
 suite files automatically, and you don't have to specify the full path on the command line.
-For more information, see ":ref:`About QL packs <standard-ql-packs>`."
+For more information, see ":ref:`About CodeQL packs <standard-ql-packs>`."
 
 The standard query suites are stored at the following paths in
 the CodeQL repository::
@@ -239,18 +240,23 @@ recursively, so any queries contained in subfolders will also be executed.
 
    Important
 
-   You shouldn't specify the root of a :doc:`QL pack
-   <about-ql-packs>` when executing ``database analyze``
+   You shouldn't specify the root of a :doc:`CodeQL pack
+   <about-codeql-packs>` when executing ``database analyze``
    as it contains some special queries that aren't designed to be used with
    the command. Rather, to run a wide range of useful queries, run one of the
    LGTM.com query suites.
 
-For example, to execute all Python queries contained in the ``Functions``
-directory you would run::
+For example, to execute all Python queries contained in the ``Functions`` directory you would run::
 
    codeql database analyze <python-database> ../ql/python/ql/src/Functions/ --format=sarif-latest --output=python-analysis/python-results.sarif
 
-A SARIF results file is generated. Specifying ``--format=sarif-latest`` ensures
+If you do not have the codeql repository checked out, you can execute the same queries by specifying the query pack name and the path to the queries:
+
+   codeql database analyze --download <python-database> codeql/python-queries:Functions/ --format=sarif-latest --output=python-analysis/python-results.sarif
+
+Use the ``--download`` flag to download the query pack if it isn't yet available locally.
+
+After evaluating, a SARIF results file is generated. Specifying ``--format=sarif-latest`` ensures
 that the results are formatted according to the most recent SARIF specification
 supported by CodeQL.
 

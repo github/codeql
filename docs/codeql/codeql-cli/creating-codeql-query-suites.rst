@@ -4,7 +4,7 @@ Creating CodeQL query suites
 ============================
 
 CodeQL query suites provide a way of selecting queries, based on their
-filename, location on disk or in a QL pack, or metadata properties.
+filename, location on disk or in a CodeQL pack, or metadata properties.
 Create query suites for the queries that you want to frequently use in
 your CodeQL analyses.
 
@@ -19,7 +19,7 @@ suite definition have been executed, the result is a set of selected queries.
 .. pull-quote:: Note
 
    Any custom queries that you want to add to a query suite must be in a :doc:`QL
-   pack <about-ql-packs>` and contain the correct query metadata.
+   pack <about-codeql-packs>` and contain the correct query metadata.
    For more information, see
    ":doc:`Using custom queries with the CodeQL CLI <using-custom-queries-with-the-codeql-cli>`."
 
@@ -35,7 +35,7 @@ queries using:
 
      - query: <path-to-query>
 
-  The argument must be one or more file paths, relative to the QL pack containing
+  The argument must be one or more file paths, relative to the CodeQL pack containing
   the suite definition.
 
 - A ``queries`` instruction---tells CodeQL to recursively scan a directory
@@ -43,21 +43,29 @@ queries using:
 
    - queries: <path-to-subdirectory>
 
-  The path of the directory must be relative to the root of the QL pack that
+  The path of the directory must be relative to the root of the CodeQL pack that
   contains the suite definition file. To find the queries relative to a
-  different QL pack, add a ``from`` field::
+  different CodeQL pack, add a ``from`` field::
 
    - queries: <path-to-subdirectory>
      from: <ql-pack-name>
+     version: ^x.y.z
+
+  The ``version`` field is optional and specifies a range of compatible versions of this CodeQL pack.
+  If the version is excluded, then the most recent version of the pack is used.
 
 - A ``qlpack`` instruction---tells CodeQL to resolve queries in the default suite of the
-  named QL pack::
+  named CodeQL pack::
 
    - qlpack: <qlpack-name>
+     version: ^x.y.z
 
   The default suite of a query pack includes a recommended set of queries
   inside of that query pack. Not all query packs have a default suite. If the given query pack does not
   define a default suite, the `qlpack` instruction will resolve to all of the queries within the pack.
+
+  The ``version`` field is optional and specifies a range of compatible versions of this CodeQL pack.
+  If the version is excluded, then the most recent version of the pack is used.
 
 .. pull-quote:: Note
 
@@ -68,7 +76,7 @@ queries using:
 You must add at least one ``query``, ``queries``, or ``qlpack`` instruction to
 your suite definition, otherwise no queries will be selected. If the suite
 contains no further instructions, all the queries found from the list of files,
-in the given directory, or in the named QL pack are selected. If there are further
+in the given directory, or in the named CodeQL pack are selected. If there are further
 filtering instructions, only queries that match the constraints imposed by those
 instructions will be selected.
 
@@ -117,7 +125,7 @@ In addition to metadata tags, the keys in the constraint block can also be:
 
 - ``query filename``---matches on the last path component of the query file name.
 - ``query path``---matches on the path to the query file relative to its
-  enclosing QL pack.
+  enclosing CodeQL pack.
 - ``tags contain``---one of the given match strings must match
   one of the space-separated components of the value of the ``@tags`` metadata property.
 - ``tags contain all``---each of the given match strings must match one of the
@@ -127,7 +135,7 @@ Examples
 ~~~~~~~~
 
 To define a suite that selects all queries in the default suite of the
-``codeql/cpp-queries`` QL pack, and then refines them to only include
+``codeql/cpp-queries`` CodeQL pack, and then refines them to only include
 security queries, use::
 
    - qlpack: codeql/cpp-queries
@@ -153,7 +161,7 @@ recommendation``, use::
        problem.severity: recommendation
 
 To create a suite that selects all queries with ``@tag security`` and
-``@problem.severity high`` or ``very-high`` from the ``codeql/cpp-queries`` QL pack,
+``@problem.severity high`` or ``very-high`` from the ``codeql/cpp-queries`` CodeQL pack,
 use::
 
    - queries: .
@@ -174,12 +182,16 @@ Existing query suite definitions can be reused by specifying:
 
     - import: <path-to-query-suite>
 
-  The path to the imported suite must be relative to the QL pack containing the
+  The path to the imported suite must be relative to the CodeQL pack containing the
   current suite definition. If the imported query suite is in a different QL
   pack you can use::
 
     - import: <path-to-query-suite>
       from: <ql-pack>
+      version: ^x.y.z
+
+  The ``version`` field is optional and specifies a range of compatible versions of this CodeQL pack.
+  If the version is excluded, then the most recent version of the pack is used.
 
   Queries added using an ``import`` instruction can be filtered using subsequent
   ``exclude`` instructions.
@@ -200,6 +212,8 @@ Existing query suite definitions can be reused by specifying:
   instruction, but takes a full suite definition as the argument, rather than the
   path to a ``.qls`` file on disk.
 
+To see what queries are included in a query suite, you can run the ``codeql resolve queries my-suite.qls`` command.
+
 Example
 ~~~~~~~
 
@@ -216,28 +230,27 @@ following in a file called ``reusable-instructions.yml``::
        - high
        - very-high
 
-Add ``reusable-instructions.yml`` to the same QL pack as your current query
-suite (for example, ``my-custom-queries``). Apply the reusable instructions
-to the queries in your current suite using::
-
-  - qlpack: my-custom-queries
-  - apply: reusable-instructions.yml
-
-To apply the same conditions to a different suite or directory within the same
-QL pack, create a new definition and change (or replace) the ``qlpack``
-instruction. For example::
+Add ``reusable-instructions.yml`` to the same CodeQL pack as your current query
+suite. Then, in one or more query suites, use the ``apply`` instruction to apply
+the reusable instructions to the current suite. For example::
 
   - queries: queries/cpp/custom
   - apply: reusable-instructions.yml
 
+This will filter the queries in ``queries/cpp/custom`` to only include those that match the reusable conditions.
+
 You can also create a suite definition using ``reusable-instructions.yml`` on
-queries in a different QL pack. If the ``.qls`` file is in the same QL pack as
+queries in a different codeQL pack. If the ``.qls`` file is in the same CodeQL pack as
 the queries, you can add a ``from`` field immediately after the ``apply``
 instruction::
 
-  - qlpack: my-other-custom-queries
+  # load queries from the default suite of my-org/my-other-custom-queries
+  - qlpack: my-org/my-other-custom-queries
+
+  # apply the reusable instructions from the my-org/my-custom-instructions CodeQL pack
   - apply: reusable-instructions.yml
-    from: <name-of-ql-pack>
+    from: my-org/my-custom-instructions
+    version: ^1.2.3 # optional
 
 Naming a query suite
 --------------------
@@ -255,20 +268,20 @@ directory. For more information, see "`Specifying well-known query suites
 Saving a query suite
 --------------------
 
-Save your query suite in a file with a ``.qls`` extension and add it to a QL
-pack. For more information, see ":ref:`About QL packs <custom-ql-packs>`."
+Save your query suite in a file with a ``.qls`` extension and add it to a CodeQL
+pack. For more information, see ":ref:`About CodeQL packs <custom-codeql-packs>`."
 
 Specifying well-known query suites
 ----------------------------------
 
-You can use QL packs to declare directories that contain "well-known" query
+You can use CodeQL packs to declare directories that contain "well-known" query
 suites. You can use "well-known" query suites on the command line by referring
 to their file name,
 without providing their full path. This gives you a simple way of specifying a
-set of queries, without needing to search inside QL packs and distributions.
+set of queries, without needing to search inside CodeQL packs and distributions.
 To declare a directory that contains "well-known" query suites, add the directory
-to the ``suites`` property in the ``qlpack.yml`` file at the root of your QL pack.
-For more information, see ":ref:`About QL packs <qlpack-yml-properties>`."
+to the ``suites`` property in the ``qlpack.yml`` file at the root of your CodeQL pack.
+For more information, see ":ref:`About CodeQL packs <codeqlpack-yml-properties>`."
 
 Using query suites with CodeQL
 ------------------------------
@@ -288,7 +301,7 @@ JavaScript, visit
 https://github.com/github/codeql/tree/main/javascript/ql/src/codeql-suites.
 
 These suite definitions apply reusable filter patterns to the queries
-located in the standard QL packs for each supported language. For more
+located in the standard CodeQL packs for each supported language. For more
 information, see the `suite-helpers
 <https://github.com/github/codeql/tree/main/misc/suite-helpers>`__ in the CodeQL
 repository.

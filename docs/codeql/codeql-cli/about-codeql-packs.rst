@@ -3,6 +3,8 @@
 About CodeQL packs
 ==================
 
+.. include:: ../reusables/beta-note-package-management.rst
+
 CodeQL packs are used to create, share, depend on, and run CodeQL queries and libraries. You can publish your own CodeQL packs and download packs created by others. CodeQL packs contain queries, library files, query suites, and metadata.
 
 There are two types of CodeQL packs: query packs and library packs.
@@ -60,71 +62,114 @@ The following properties are supported in ``qlpack.yml`` files.
      - Required
      - Purpose
    * - ``name``
-     - ``name: octo-org/security-queries``
+     - .. code-block:: yaml
+
+        name: octo-org/security-queries
+
      - All packs
-     - The scope, where the CodeQL pack is published, and the name of the pack defined using alphanumeric characters and hyphens. It must be unique as CodeQL cannot differentiate between CodeQL packs with identical names. Use the pack name to specify queries to run using ``database analyze`` and to define dependencies between QL packs (see examples below).
+     - The scope, where the CodeQL pack is published, and the name of the pack defined using alphanumeric characters and hyphens. It must be unique as CodeQL cannot differentiate between CodeQL packs with identical names. Use the pack name to specify queries to run using ``database analyze`` and to define dependencies between CodeQL packs (see examples below).
    * - ``version``
-     - ``version: 0.0.0``
+     - .. code-block:: yaml
+
+        version: 0.0.0
+
      - All packs
      - A semantic version for this CodeQL pack that must adhere to the `SemVer v2.0.0 specification <https://semver.org/spec/v2.0.0.html>`__.
    * - ``dependencies``
      - .. code-block:: yaml
 
-          dependencies:
-            codeql/cpp-all: ^0.0.2
+        dependencies:
+          codeql/cpp-all: ^0.0.2
 
      - Packs that define CodeQL package dependencies on other packs
      - A map from pack references to the semantic version range that is compatible with this pack. Supported from CLI version v2.6.0 and onwards.
    * - ``defaultSuiteFile``
-     - ``defaultSuiteFile: cpp-code-scanning.qls``
+     - .. code-block:: yaml
+
+        defaultSuiteFile: cpp-code-scanning.qls
+
      - Packs that export a set of default queries to run
      - The path to a query suite file containing all of the queries that are run by default when this pack is passed to the ``codeql database analyze`` command. Supported from CLI version v2.6.0 and onwards.
    * - ``defaultSuite``
      - .. code-block:: yaml
 
-          defaultSuite:
-            queries: .
-            exclude:
-              precision: medium
+        defaultSuite:
+          queries: .
+          exclude:
+            precision: medium
 
      - Packs that export a set of default queries to run
      - An inlined query suite containing all of the queries that are run by default when this pack is passed to the ``codeql database analyze`` command. Supported from CLI version v2.6.0 and onwards.
    * - ``library``
-     - ``library: true``
+     - .. code-block:: yaml
+
+        library: true
+
      - Library packs
      - A boolean value that indicates whether this pack is a library pack. Library packs do not contain queries and are not compiled. Query packs can ignore this field or explicitly set it to ``false``.
    * - ``suites``
-     - ``suites: octo-org-query-suites``
+     - .. code-block:: yaml
+
+        suites: octo-org-query-suites
+
      - Optional
-     - The path to a directory in the pack that contains the query suites you want to make known to the CLI, defined relative to the pack directory. QL pack users can run "well-known" suites stored in this directory by specifying the pack name, without providing their full path. This is not supported for CodeQL packs downloaded from a package registry. For more information about query suites, see ":doc:`Creating CodeQL query suites <creating-codeql-query-suites>`."
+     - The path to a directory in the pack that contains the query suites you want to make known to the CLI, defined relative to the pack directory. CodeQL pack users can run "well-known" suites stored in this directory by specifying the pack name, without providing their full path. This is not supported for CodeQL packs downloaded from a package registry. For more information about query suites, see ":doc:`Creating CodeQL query suites <creating-codeql-query-suites>`."
    * - ``extractor``
-     - ``javascript``
+     - .. code-block:: yaml
+
+        extractor: javascript
+
      - All test packs
      - The CodeQL language extractor to use when the CLI creates a database in the pack. For more information about testing queries, see ":doc:`Testing custom queries <testing-custom-queries>`."
    * - ``tests``
-     - ``.``
-     - Optional for test packs
-     - The path to a directory within the pack that contains tests, defined relative to the pack directory. Use ``.`` to specify the whole pack. Any queries in this directory are run as tests when ``test run`` is run with the ``--strict-test-discovery`` option. These queries are ignored by query suite definitions that use ``queries`` or ``qlpack``    instructions to ask for all queries in a particular pack.
-   * - ``dbscheme`` TODO: Internal only. Delete?
-     - ``semmlecode.python.dbscheme``
+     - .. code-block:: yaml
+
+        tests: .
+
+     - Optional for test packs. Ignored for non-test packs.
+     - The path to a directory within the pack that contains tests, defined relative to the pack directory. Use ``.`` to specify the whole pack. Any queries in this directory are run as tests when ``test run`` is run with the ``--strict-test-discovery`` option. These queries are ignored by query suite definitions that use ``queries`` or ``qlpack`` instructions to ask for all queries in a particular pack. If this property is missing, then ``.`` is assumed.
+   * - ``dbscheme``
+     - .. code-block:: yaml
+
+        dbscheme: semmlecode.python.dbscheme
+
      - Core language packs only
      - The path to the :ref:`database schema <codeql-database-schema>` for all libraries and queries written for this CodeQL language (see example below).
-   * - ``upgrades`` TODO: Internal only. Delete?
-     - ``.``
+   * - ``upgrades``
+     - .. code-block:: yaml
+
+        upgrades: .
+
      - Core language packs only
      - The path to a directory within the pack that contains upgrade scripts, defined relative to the pack directory. The ``database upgrade`` action uses these scripts to upgrade databases that were created by an older version of an extractor or downgrade databases that were created by a newer version of the extractor so they're compatible with the current extractor (see `Upgrade scripts for a language <#upgrade-scripts-for-a-language>`__ below.)
    * - ``authors``
-     - ``example@github.com``
+     - .. code-block:: yaml
+
+        authors: author1@github.com,author2@github.com
+
      - All packs
      - Metadata that will be displayed on the packaging search page in the packages section of the account that the CodeQL pack is published to.
-   * - ``licenses``
-     - ``(LGPL-2.1 AND MIT)``
+   * - ``license``
+     - .. code-block:: yaml
+
+        license: MIT
+
      - All packs
      - Metadata that will be displayed on the packaging search page in the packages section of the account that the CodeQL pack is published to. For a list of allowed licenses, see `SPDX License List <https://spdx.org/licenses/>`__ in the SPDX Specification.
    * - ``description``
-     - ``Human-readable description of the contents of the CodeQL pack.``
+     - .. code-block:: yaml
+
+        description: Human-readable description of the contents of the CodeQL pack.
+
      - All packs
      - Metadata that will be displayed on the packaging search page in the packages section of the account that the CodeQL pack is published to.
+   * - ``libraryPathDependencies``
+     - .. code-block:: yaml
+
+        libraryPathDependencies: codeql/javascript-all
+
+     - Optional, deprecated
+     - Use the ``dependencies`` property instead. The names of any CodeQL packs that this CodeQL pack depends on, as a sequence. This gives the pack access to any libraries, database schema, and query suites defined in the dependency.
 
 .. _about-codeql-pack-lock:
 
@@ -166,9 +211,9 @@ When you write custom queries or tests, you should save them in custom CodeQL pa
 CodeQL packs for custom queries
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-A custom QL pack for queries must include a ``qlpack.yml`` file at the pack root, containing ``name``, ``version``, and ``dependencies`` properties. If the pack contains query suites, you can use the ``suites`` property to define their location. Query suites defined here are called "well-known" suites, and can be used on the command line by referring to their name only, rather than their full path. For more information about query suites, see ":doc:`Creating CodeQL query suites <creating-codeql-query-suites>`."
+A custom CodeQL pack for queries must include a ``qlpack.yml`` file at the pack root, containing ``name``, ``version``, and ``dependencies`` properties. If the pack contains query suites, you can use the ``suites`` property to define their location. Query suites defined here are called "well-known" suites, and can be used on the command line by referring to their name only, rather than their full path. For more information about query suites, see ":doc:`Creating CodeQL query suites <creating-codeql-query-suites>`."
 
-For example, a ``qlpack.yml`` file for a QL pack featuring custom C++ queries
+For example, a ``qlpack.yml`` file for a CodeQL pack featuring custom C++ queries
 and libraries may contain:
 
 .. code-block:: yaml
@@ -179,7 +224,7 @@ and libraries may contain:
      codeql/cpp-all: ^0.1.2
    suites: my-custom-suites
 
-where ``codeql/cpp-all`` is the name of the QL pack for C/C++ analysis included in the CodeQL repository. The version range ``^0.1.2`` indicates that this pack is compatible with all versions of ``codeql/cpp-all`` that are greater than or equal to ``0.1.2`` and less than ``0.2.0``.
+where ``codeql/cpp-all`` is the name of the CodeQL pack for C/C++ analysis included in the CodeQL repository. The version range ``^0.1.2`` indicates that this pack is compatible with all versions of ``codeql/cpp-all`` that are greater than or equal to ``0.1.2`` and less than ``0.2.0``.
 
 CodeQL packs for custom test files
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -249,10 +294,10 @@ contains:
 
 This query pack depends on ``codeql/cpp-all`` and ``codeql/suite-helpers``. Since these dependencies are resolved from source, it does not matter what version of the CodeQL pack they are compatible with.
 
-Tests for the core QL pack
-~~~~~~~~~~~~~~~~~~~~~~~~~~
+Tests for the core CodeQL pack
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The ``qlpack.yml`` file for the tests for the core QL packs use the following properties: ``name``, ``dependencies``, ``extractor``, ``tests``.
+The ``qlpack.yml`` file for the tests for the core CodeQL packs use the following properties: ``name``, ``dependencies``, ``extractor``, ``tests``.
 
 For example, the ``qlpack.yml`` file for `C/C++ analysis tests
 <https://github.com/github/codeql/blob/main/cpp/ql/test/qlpack.yml>`__
@@ -267,4 +312,4 @@ contains:
    extractor: cpp
    tests: .
 
-The ``dependencies`` property always specifies the core QL pack. The ``extractor`` property specifies that all the tests will use the same C++ extractor to create the database for the tests. The ``tests`` property specifies the location of the tests. In this case, the tests are in the root folder (and all sub-folders) of the pack. Note that there is no ``version`` property for the tests pack since this pack is not meant to be published.
+The ``dependencies`` property always specifies the core CodeQL pack. The ``extractor`` property specifies that all the tests will use the same C++ extractor to create the database for the tests. The ``tests`` property specifies the location of the tests. In this case, the tests are in the root folder (and all sub-folders) of the pack. Note that there is no ``version`` property for the tests pack since this pack is not meant to be published.
