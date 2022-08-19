@@ -217,12 +217,6 @@ predicate variableRead(IRBlock bb, int i, SourceVariable v, boolean certain) {
     use.hasIndexInBlock(bb, i, v) and
     certain = true
   )
-  or
-  exists(DefImpl def |
-    def.hasIndexInBlock(bb, i, v) and
-    not def.isCertain() and
-    certain = false
-  )
 }
 
 private newtype TSsaDefOrUse =
