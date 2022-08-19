@@ -17,4 +17,4 @@ from AndroidApplicationXmlElement androidAppElem
 where
   androidAppElem.allowsBackup() and
   androidAppElem.getFile().(AndroidManifestXmlFile).isInBuildDirectory()
-select androidAppElem.getAttribute("allowBackup"), "The 'android:allowBackup' attribute is enabled."
+select androidAppElem, "The 'android:allowBackup' attribute is enabled."

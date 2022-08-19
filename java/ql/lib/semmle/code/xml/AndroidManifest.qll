@@ -74,13 +74,17 @@ class AndroidApplicationXmlElement extends XmlElement {
   predicate requiresPermissions() { this.getAnAttribute().(AndroidPermissionXmlAttribute).isFull() }
 
   /**
-   * Holds if this application element has the attribute `android:allowBackup` set to `true`.
+   * Holds if this application element enables the `android:allowBackup` attribute.
+   *
+   * https://developer.android.com/guide/topics/data/autobackup
    */
   predicate allowsBackup() {
-    exists(AndroidXmlAttribute attr |
+    // The default value for the attribute `android:allowBackup` is `true`.
+    // Therefore we also check if it is not present.
+    not exists(AndroidXmlAttribute attr |
       this.getAnAttribute() = attr and
       attr.getName() = "allowBackup" and
-      attr.getValue() = "true"
+      attr.getValue() = "false"
     )
   }
 }
