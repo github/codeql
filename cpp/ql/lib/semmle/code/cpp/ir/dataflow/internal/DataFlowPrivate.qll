@@ -279,7 +279,7 @@ predicate jumpInto(GlobalOrNamespaceVariable v, Node n1, Node n2) {
   exists(StoreInstruction store |
     store = n1.asInstruction() and
     writesToGlobal(store, v) and
-    // Only do a jump step if there is no write that is guarenteed to
+    // Only do a jump step if there is no write that is guaranteed to
     // overwrite the global variable.
     not exists(StoreInstruction anotherStore |
       store != anotherStore and
