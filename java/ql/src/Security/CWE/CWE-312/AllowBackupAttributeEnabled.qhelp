@@ -1,0 +1,51 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>The Android manifest file defines configuration settings for Android 
+applications. In this file, the <code>android:allowBackup</code> attribute of
+the <code>application</code> element can be used to define whether or not the
+application can have automatic backups.</p>
+
+<p>Enabling backups may allow an attacker to extract sensitive data. Therefore,
+it is advised to set <code>android:allowBackup</code> to <code>false</code> if 
+your application uses any sensitive data.</p>
+</overview>
+
+<recommendation>
+<p>For Android applications which process sensitive data, set the 
+<code>android:allowBackup</code> setting to <code>false</code> in the manifest
+file.</p>
+
+<p>Note: Since Android 6.0 (Marshmallow), applications default to participating
+in automatic backups. Therefore, it is necessary to explicitly disable backups.
+</p>
+</recommendation>
+
+<example>
+
+<p>In the two examples below, the <code>android:allowBackup</code> setting is enabled:</p>
+
+<sample src="AllowBackupTrue.xml" />
+
+<sample src="AllowBackupEmpty.xml"/>
+
+<p>A corrected version explicity sets <code>android:allowBackup</code> to <code>false</code>:</p>
+
+<sample src="AllowBackupFalse.xml"/>
+
+</example>
+<references>
+<li>
+   Android Documentation:
+   <a href="https://developer.android.com/guide/topics/data/autobackup#EnablingAutoBackup">Back up user data with Auto Backup</a>
+</li>
+<li>
+   OWASP Mobile Security Testing Guide:
+   <a href="https://github.com/OWASP/owasp-mstg/blob/b7a93a2e5e0557cc9a12e55fc3f6675f6986bb86/Document/0x05d-Testing-Data-Storage.md#backups">
+    Android Backups
+   </a>
+</li>
+</references>
+</qhelp>
