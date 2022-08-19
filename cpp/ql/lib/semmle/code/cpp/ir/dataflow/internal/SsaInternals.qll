@@ -305,30 +305,39 @@ private predicate nodeToDefOrUse(Node nodeFrom, SsaDefOrUse defOrUse) {
   useToNode(defOrUse, nodeFrom)
 }
 
-// TODO: Prettify this
-pragma[inline]
-private predicate adjustForPointerArith(Node nodeFrom, Node adjusted) {
-  nodeFrom = any(PostUpdateNode pun).getPreUpdateNode() and
-  (
-    exists(PointerArithmeticAddress paa, int index |
-      hasOperandAndIndex(nodeFrom, paa, pragma[only_bind_into](index)) and
-      hasOperandAndIndex(adjusted, paa.getBaseAddressOperand(), pragma[only_bind_into](index))
-    )
-    or
-    not nodeFrom.(IndirectOperand).getOperand() instanceof PointerArithmeticAddress and
-    adjusted = nodeFrom
+predicate indirectConversionFlowStepExcludeFieldsStep(Node opFrom, Node opTo) {
+  not exists(UseOrPhi defOrUse |
+    nodeToDefOrUse(opTo, defOrUse) and
+    adjacentDefRead(defOrUse, _)
+  ) and
+  exists(Operand op1, Operand op2, int index |
+    hasOperandAndIndex(opFrom, op1, pragma[only_bind_into](index)) and
+    hasOperandAndIndex(opTo, op2, pragma[only_bind_into](index)) and
+    conversionFlowStepExcludeFields(op1, op2, _)
   )
-  or
-  not nodeFrom = any(PostUpdateNode pun).getPreUpdateNode() and
-  adjusted = nodeFrom
+}
+
+private predicate adjustForPointerArith(
+  Node nodeFrom, Node adjusted, DefOrUse defOrUse, UseOrPhi use
+) {
+  indirectConversionFlowStepExcludeFieldsStep*(adjusted, nodeFrom) and
+  nodeToDefOrUse(adjusted, defOrUse) and
+  adjacentDefRead(defOrUse, use)
 }
 
 predicate defUseFlow(Node nodeFrom, Node nodeTo) {
-  exists(DefOrUse defOrUse1, UseOrPhi use, Node node | adjustForPointerArith(nodeFrom, node) |
-    nodeToDefOrUse(node, defOrUse1) and
-    adjacentDefRead(defOrUse1, use) and
-    useToNode(use, nodeTo)
-  )
+  if nodeFrom = any(PostUpdateNode pun).getPreUpdateNode()
+  then
+    exists(DefOrUse defOrUse1, UseOrPhi use, Node node |
+      adjustForPointerArith(nodeFrom, node, defOrUse1, use) and
+      useToNode(use, nodeTo)
+    )
+  else
+    exists(DefOrUse defOrUse1, UseOrPhi use |
+      nodeToDefOrUse(nodeFrom, defOrUse1) and
+      adjacentDefRead(defOrUse1, use) and
+      useToNode(use, nodeTo)
+    )
 }
 
 predicate fromPhiNode(SsaPhiNode nodeFrom, Node nodeTo) {
