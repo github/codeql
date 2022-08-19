@@ -31,10 +31,16 @@ class ResponseSplittingConfig extends TaintTracking::Configuration {
     or
     node.getType() instanceof BoxedType
     or
-    exists(MethodAccess ma |
-      ma.getMethod().hasQualifiedName("java.lang", "String", "replaceAll") and
-      ma.getArgument(0).(StringLiteral).getValue().matches("%[^%") and
-      node.asExpr() = ma
+    exists(MethodAccess ma, string methodName, CompileTimeConstantExpr target |
+      node.asExpr() = ma and
+      ma.getMethod().hasQualifiedName("java.lang", "String", methodName) and
+      target = ma.getArgument(0) and
+      (
+        methodName = "replace" and target.getIntValue() = [10, 13]
+        or
+        methodName = "replaceAll" and
+        target.getStringValue().regexpMatch(".*([\n\r]|\\[\\^[^\\]\r\n]*\\]).*")
+      )
     )
   }
 }
