@@ -176,6 +176,29 @@ class QLDoc extends TQLDoc, Comment {
   override AstNode getParent() { result.getQLDoc() = this }
 }
 
+/** The QLDoc for a query (i.e. the top comment in a .ql file). */
+class QueryDoc extends QLDoc {
+  QueryDoc() {
+    this.getLocation().getFile().getExtension() = "ql" and
+    this = any(TopLevel t).getQLDoc()
+  }
+
+  override string getAPrimaryQlClass() { result = "QueryDoc" }
+
+  /** Gets the @kind for the query */
+  string getQueryKind() { result = this.getContents().regexpCapture("(?s).*@kind (\\w+)\\s.*", 1) }
+
+  /** Gets the id part (without language) of the @id */
+  string getQueryId() {
+    result = this.getContents().regexpCapture("(?s).*@id (\\w+)/([\\w\\-]+)\\s.*", 2)
+  }
+
+  /** Gets the language of the @id */
+  string getQueryLanguage() {
+    result = this.getContents().regexpCapture("(?s).*@id (\\w+)/([\\w\\-]+)\\s.*", 1)
+  }
+}
+
 class BlockComment extends TBlockComment, Comment {
   QL::BlockComment comment;
 
@@ -237,6 +260,8 @@ class Select extends TSelect, AstNode {
   }
 
   override string getAPrimaryQlClass() { result = "Select" }
+
+  QueryDoc getQueryDoc() { result.getLocation().getFile() = this.getLocation().getFile() }
 }
 
 class PredicateOrBuiltin extends TPredOrBuiltin, AstNode {
