@@ -239,6 +239,71 @@ OutNode getAnOutNode(DataFlowCall call, ReturnKind kind) {
     )
 }
 
+private predicate writesToGlobal(StoreInstruction store, GlobalOrNamespaceVariable v) {
+  v = store.getResultAddress().(VariableAddressInstruction).getAstVariable()
+}
+
+private predicate loadsFromGlobal(LoadInstruction load, GlobalOrNamespaceVariable v) {
+  v = load.getSourceAddress().(VariableAddressInstruction).getAstVariable()
+}
+
+/** Holds if `i1` is always executed after `i2` */
+bindingset[i1, i2]
+private predicate instrStrictlyPostDominates(Instruction i1, Instruction i2) {
+  i1.getBlock().strictlyPostDominates(i2.getBlock())
+  or
+  exists(IRBlock block, int index1, int index2 |
+    block = i1.getBlock() and
+    block = i2.getBlock() and
+    block.getInstruction(index1) = i1 and
+    block.getInstruction(index2) = i2 and
+    index1 > index2
+  )
+}
+
+/** Holds if `i1` is always executed before `i2` */
+bindingset[i1, i2]
+private predicate instrStrictlyDominates(Instruction i1, Instruction i2) {
+  i1.getBlock().strictlyDominates(i2.getBlock())
+  or
+  exists(IRBlock block, int index1, int index2 |
+    block = i1.getBlock() and
+    block = i2.getBlock() and
+    block.getInstruction(index1) = i1 and
+    block.getInstruction(index2) = i2 and
+    index1 < index2
+  )
+}
+
+predicate jumpInto(GlobalOrNamespaceVariable v, Node n1, Node n2) {
+  exists(StoreInstruction store |
+    store = n1.asInstruction() and
+    writesToGlobal(store, v) and
+    // Only do a jump step if there is no write that is guarenteed to
+    // overwrite the global variable.
+    not exists(StoreInstruction anotherStore |
+      store != anotherStore and
+      writesToGlobal(anotherStore, v) and
+      instrStrictlyPostDominates(anotherStore, store)
+    )
+  ) and
+  v = n2.asVariable()
+}
+
+predicate jumpOutOf(GlobalOrNamespaceVariable v, Node n1, Node n2) {
+  exists(LoadInstruction load |
+    load = n2.asInstruction() and
+    loadsFromGlobal(load, v) and
+    // Only do a jump step if there is no dominating write that has overwritten
+    // the global variable.
+    not exists(StoreInstruction store |
+      writesToGlobal(store, v) and
+      instrStrictlyDominates(store, load)
+    )
+  ) and
+  v = n1.asVariable()
+}
+
 /**
  * Holds if data can flow from `node1` to `node2` in a way that loses the
  * calling context. For example, this would happen with flow through a
@@ -246,21 +311,9 @@ OutNode getAnOutNode(DataFlowCall call, ReturnKind kind) {
  */
 predicate jumpStep(Node n1, Node n2) {
   exists(GlobalOrNamespaceVariable v |
-    v =
-      n1.asInstruction()
-          .(StoreInstruction)
-          .getResultAddress()
-          .(VariableAddressInstruction)
-          .getAstVariable() and
-    v = n2.asVariable()
+    jumpInto(v, n1, n2)
     or
-    v =
-      n2.asInstruction()
-          .(LoadInstruction)
-          .getSourceAddress()
-          .(VariableAddressInstruction)
-          .getAstVariable() and
-    v = n1.asVariable()
+    jumpOutOf(v, n1, n2)
   )
 }
 
