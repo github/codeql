@@ -1,13 +1,16 @@
 class X {
-  func bar(_: Int) {}
+  static func foo(_: Int, _:Int) {}
+  class func bar() {}
+  func baz(_: Int) {}
 
   init() {
-    let f = bar
-    bar(0)
+    let f = baz
   }
 }
 
-let x = X()
-x.bar(42)
+X.foo(1, 2)
+X.bar()
+X().baz(42)
 
-let f = x.bar
+let f = X.bar
+let g = X().baz
