@@ -253,7 +253,7 @@ private predicate isRelevantPackage(string package) {
     sourceModel(package, _, _, _) or
     sinkModel(package, _, _, _) or
     summaryModel(package, _, _, _, _, _) or
-    typeModel(package, _, _, _, _)
+    typeModel(_, _, package, _, _)
   ) and
   (
     Specific::isPackageUsed(package)
