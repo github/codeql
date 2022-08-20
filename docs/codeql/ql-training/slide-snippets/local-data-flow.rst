@@ -70,7 +70,7 @@ Local vs global data flow
 
   For further information, see:
 
-  - `About data flow analysis <https://help.semmle.com/QL/learn-ql/ql/intro-to-data-flow.html>`__
+  - `About data flow analysis <https://codeql.github.com/docs/writing-codeql-queries/about-data-flow-analysis/>`__
 
 .. rst-class:: background2
 
@@ -111,8 +111,8 @@ So all references will need to be qualified (that is, ``DataFlow::Node``)
 
   A **module** is a way of organizing QL code by grouping together related predicates, classes, and (sub-)modules. They can be either explicitly declared or implicit. A query library implicitly declares a module with the same name as the QLL file.
 
-  For further information on libraries and modules in QL, see the chapter on `Modules <https://help.semmle.com/QL/ql-handbook/modules.html>`__ in the QL language reference.
-  For further information on importing QL libraries and modules, see the chapter on `Name resolution <https://help.semmle.com/QL/ql-handbook/name-resolution.html>`__ in the QL language reference.
+  For further information on libraries and modules in QL, see the chapter on `Modules <https://codeql.github.com/docs/ql-language-reference/modules/>`__ in the QL language reference.
+  For further information on importing QL libraries and modules, see the chapter on `Name resolution <https://codeql.github.com/docs/ql-language-reference/name-resolution/>`__ in the QL language reference.
 
 Data flow graph
 ===============
@@ -131,7 +131,7 @@ Data flow graph
 
   The ``DataFlow::Node`` class is shared between both the local and global data flow graphs–the primary difference is the edges, which in the “global” case can link different functions.
 
-  ``localFlowStep`` is the “single step” flow relation–that is, it describes single edges in the local data flow graph. ``localFlow`` represents the `transitive <https://help.semmle.com/QL/ql-handbook/recursion.html#transitive-closures>`__ closure of this relation–in other words, it contains every pair of nodes where the second node is reachable from the first in the data flow graph.
+  ``localFlowStep`` is the “single step” flow relation–that is, it describes single edges in the local data flow graph. ``localFlow`` represents the `transitive <https://codeql.github.com/docs/ql-language-reference/recursion/#transitive-closures>`__ closure of this relation–in other words, it contains every pair of nodes where the second node is reachable from the first in the data flow graph.
 
   The data flow graph is separate from the `AST <https://en.wikipedia.org/wiki/Abstract_syntax_tree>`__, to allow for flexibility in how data flow is modeled. There are a small number of data flow node types–expression nodes, parameter nodes, uninitialized variable nodes, and definition by reference nodes. Each node provides mapping functions to and from the relevant AST (for example ``Expr``, ``Parameter`` etc.) or symbol table (for example ``Variable``) classes.
 

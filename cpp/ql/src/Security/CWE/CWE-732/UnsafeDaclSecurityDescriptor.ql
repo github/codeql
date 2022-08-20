@@ -11,7 +11,6 @@
  * @precision high
  * @tags security
  *       external/cwe/cwe-732
- *       external/microsoft/C6248
  */
 
 import cpp
@@ -34,9 +33,7 @@ class SetSecurityDescriptorDaclFunctionCall extends FunctionCall {
 class NullDaclConfig extends DataFlow::Configuration {
   NullDaclConfig() { this = "NullDaclConfig" }
 
-  override predicate isSource(DataFlow::Node source) {
-    exists(NullValue nullExpr | source.asExpr() = nullExpr)
-  }
+  override predicate isSource(DataFlow::Node source) { source.asExpr() instanceof NullValue }
 
   override predicate isSink(DataFlow::Node sink) {
     exists(SetSecurityDescriptorDaclFunctionCall call, VariableAccess val | val = sink.asExpr() |

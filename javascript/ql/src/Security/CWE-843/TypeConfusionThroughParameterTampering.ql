@@ -11,7 +11,7 @@
  */
 
 import javascript
-import semmle.javascript.security.dataflow.TypeConfusionThroughParameterTampering::TypeConfusionThroughParameterTampering
+import semmle.javascript.security.dataflow.TypeConfusionThroughParameterTamperingQuery
 import DataFlow::PathGraph
 
 from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink

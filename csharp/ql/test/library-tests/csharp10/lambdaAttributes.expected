@@ -1,0 +1,7 @@
+allAttributes
+| LambdaAttributes.cs:14:20:14:26 | [Example(...)] | LambdaAttributes.cs:14:28:14:28 | 1 | Parameter |
+| LambdaAttributes.cs:15:18:15:24 | [Example(...)] | LambdaAttributes.cs:15:26:15:26 | 2 | LambdaExpr |
+| LambdaAttributes.cs:16:26:16:32 | [return: Example(...)] | LambdaAttributes.cs:16:34:16:34 | 3 | LambdaExpr |
+lambdaAttributes
+| LambdaAttributes.cs:15:18:15:24 | [Example(...)] | LambdaAttributes.cs:15:26:15:26 | 2 | LambdaAttributes.cs:15:17:15:52 | (...) => ... |
+| LambdaAttributes.cs:16:26:16:32 | [return: Example(...)] | LambdaAttributes.cs:16:34:16:34 | 3 | LambdaAttributes.cs:16:17:16:60 | (...) => ... |

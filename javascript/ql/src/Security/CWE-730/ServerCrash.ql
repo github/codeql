@@ -104,7 +104,7 @@ class AsyncSentinelCall extends DataFlow::CallNode {
     exists(DataFlow::FunctionNode node | node.getAstNode() = asyncCallee |
       // manual models
       exists(string memberName |
-        not "Sync" = memberName.suffix(memberName.length() - 4) and
+        not memberName.matches("%Sync") and
         this = NodeJSLib::FS::moduleMember(memberName).getACall() and
         node = this.getCallback([1 .. 2])
       )
@@ -130,7 +130,7 @@ class AsyncCallback extends Function {
  *
  * This is the primary extension point for this query.
  */
-abstract class LikelyExceptionThrower extends ASTNode { }
+abstract class LikelyExceptionThrower extends AstNode { }
 
 /**
  * A `throw` statement.
@@ -152,7 +152,7 @@ class CompilerConfusingExceptionThrower extends LikelyExceptionThrower {
  * - step 3. exception follows the call graph backwards until an async callee is encountered
  * - step 4. (at this point, the program crashes)
  */
-query predicate edges(ASTNode pred, ASTNode succ) {
+query predicate edges(AstNode pred, AstNode succ) {
   exists(LikelyExceptionThrower thrower | main(_, _, _, thrower) |
     pred = thrower and
     succ = thrower.getContainer()
@@ -172,9 +172,9 @@ query predicate edges(ASTNode pred, ASTNode succ) {
 }
 
 /**
- * A node in the `edge/2` relation above.
+ * Holds if `node` is in the `edge/2` relation above.
  */
-query predicate nodes(ASTNode node) {
+query predicate nodes(AstNode node) {
   edges(node, _) or
   edges(_, node)
 }

@@ -1,0 +1,3 @@
+import javascript
+import semmle.javascript.security.dataflow.TemplateObjectInjectionQuery
+import testUtilities.ConsistencyChecking

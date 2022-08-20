@@ -1,0 +1,153 @@
+nodes
+| app.js:15:30:15:58 | req.que ... tedCode |
+| app.js:15:30:15:58 | req.que ... tedCode |
+| app.js:17:25:17:48 | req.que ... shSink1 |
+| app.js:17:25:17:48 | req.que ... shSink1 |
+| app.js:19:35:19:68 | req.que ... rString |
+| app.js:19:35:19:68 | req.que ... rString |
+| app.js:34:30:34:58 | req.que ... tedCode |
+| app.js:34:30:34:58 | req.que ... tedCode |
+| app.js:36:25:36:48 | req.que ... shSink1 |
+| app.js:36:25:36:48 | req.que ... shSink1 |
+| app.js:38:35:38:68 | req.que ... rString |
+| app.js:38:35:38:68 | req.que ... rString |
+| app.js:53:30:53:58 | req.que ... tedCode |
+| app.js:53:30:53:58 | req.que ... tedCode |
+| app.js:54:33:54:64 | req.que ... CodeRaw |
+| app.js:54:33:54:64 | req.que ... CodeRaw |
+| app.js:56:25:56:48 | req.que ... shSink1 |
+| app.js:56:25:56:48 | req.que ... shSink1 |
+| app.js:58:35:58:68 | req.que ... rString |
+| app.js:58:35:58:68 | req.que ... rString |
+| app.js:59:38:59:74 | req.que ... ringRaw |
+| app.js:59:38:59:74 | req.que ... ringRaw |
+| app.js:65:22:65:42 | req.que ... pedHtml |
+| app.js:65:22:65:42 | req.que ... pedHtml |
+| app.js:66:18:66:34 | req.query.rawHtml |
+| app.js:66:18:66:34 | req.query.rawHtml |
+| views/angularjs_include.ejs:2:5:2:22 | <%= escapedHtml %> |
+| views/angularjs_include.ejs:2:5:2:22 | <%= escapedHtml %> |
+| views/angularjs_include.ejs:2:9:2:19 | escapedHtml |
+| views/angularjs_include.ejs:3:5:3:18 | <%- rawHtml %> |
+| views/angularjs_include.ejs:3:5:3:18 | <%- rawHtml %> |
+| views/angularjs_include.ejs:3:9:3:15 | rawHtml |
+| views/angularjs_sinks.ejs:3:9:3:26 | <%= escapedHtml %> |
+| views/angularjs_sinks.ejs:3:9:3:26 | <%= escapedHtml %> |
+| views/angularjs_sinks.ejs:3:13:3:23 | escapedHtml |
+| views/angularjs_sinks.ejs:4:9:4:22 | <%- rawHtml %> |
+| views/angularjs_sinks.ejs:4:9:4:22 | <%- rawHtml %> |
+| views/angularjs_sinks.ejs:4:13:4:19 | rawHtml |
+| views/ejs_sinks.ejs:13:39:13:64 | <%= dataInGeneratedCode %> |
+| views/ejs_sinks.ejs:13:39:13:64 | <%= dataInGeneratedCode %> |
+| views/ejs_sinks.ejs:13:43:13:61 | dataInGeneratedCode |
+| views/ejs_sinks.ejs:16:19:16:39 | <%= backslashSink1 %> |
+| views/ejs_sinks.ejs:16:19:16:39 | <%= backslashSink1 %> |
+| views/ejs_sinks.ejs:16:23:16:36 | backslashSink1 |
+| views/ejs_sinks.ejs:21:39:21:69 | <%= dataInEventHandlerString %> |
+| views/ejs_sinks.ejs:21:39:21:69 | <%= dataInEventHandlerString %> |
+| views/ejs_sinks.ejs:21:43:21:66 | dataInE ... rString |
+| views/hbs_sinks.hbs:25:39:25:63 | {{ dataInGeneratedCode }} |
+| views/hbs_sinks.hbs:25:39:25:63 | {{ dataInGeneratedCode }} |
+| views/hbs_sinks.hbs:25:42:25:60 | dataInGeneratedCode |
+| views/hbs_sinks.hbs:28:19:28:38 | {{ backslashSink1 }} |
+| views/hbs_sinks.hbs:28:19:28:38 | {{ backslashSink1 }} |
+| views/hbs_sinks.hbs:28:22:28:35 | backslashSink1 |
+| views/hbs_sinks.hbs:33:39:33:68 | {{ dataInEventHandlerString }} |
+| views/hbs_sinks.hbs:33:39:33:68 | {{ dataInEventHandlerString }} |
+| views/hbs_sinks.hbs:33:42:33:65 | dataInE ... rString |
+| views/njk_sinks.njk:13:39:13:63 | {{ dataInGeneratedCode }} |
+| views/njk_sinks.njk:13:39:13:63 | {{ dataInGeneratedCode }} |
+| views/njk_sinks.njk:13:42:13:60 | dataInGeneratedCode |
+| views/njk_sinks.njk:14:42:14:76 | {{ dataInGeneratedCodeRaw \| safe }} |
+| views/njk_sinks.njk:14:42:14:76 | {{ dataInGeneratedCodeRaw \| safe }} |
+| views/njk_sinks.njk:14:45:14:66 | dataInG ... CodeRaw |
+| views/njk_sinks.njk:14:45:14:73 | dataInG ...  \| safe |
+| views/njk_sinks.njk:17:19:17:38 | {{ backslashSink1 }} |
+| views/njk_sinks.njk:17:19:17:38 | {{ backslashSink1 }} |
+| views/njk_sinks.njk:17:22:17:35 | backslashSink1 |
+| views/njk_sinks.njk:22:39:22:68 | {{ dataInEventHandlerString }} |
+| views/njk_sinks.njk:22:39:22:68 | {{ dataInEventHandlerString }} |
+| views/njk_sinks.njk:22:42:22:65 | dataInE ... rString |
+| views/njk_sinks.njk:23:39:23:78 | {{ dataInEventHandlerStringRaw \| safe }} |
+| views/njk_sinks.njk:23:39:23:78 | {{ dataInEventHandlerStringRaw \| safe }} |
+| views/njk_sinks.njk:23:42:23:68 | dataInE ... ringRaw |
+| views/njk_sinks.njk:23:42:23:75 | dataInE ...  \| safe |
+edges
+| app.js:15:30:15:58 | req.que ... tedCode | views/ejs_sinks.ejs:13:43:13:61 | dataInGeneratedCode |
+| app.js:15:30:15:58 | req.que ... tedCode | views/ejs_sinks.ejs:13:43:13:61 | dataInGeneratedCode |
+| app.js:17:25:17:48 | req.que ... shSink1 | views/ejs_sinks.ejs:16:23:16:36 | backslashSink1 |
+| app.js:17:25:17:48 | req.que ... shSink1 | views/ejs_sinks.ejs:16:23:16:36 | backslashSink1 |
+| app.js:19:35:19:68 | req.que ... rString | views/ejs_sinks.ejs:21:43:21:66 | dataInE ... rString |
+| app.js:19:35:19:68 | req.que ... rString | views/ejs_sinks.ejs:21:43:21:66 | dataInE ... rString |
+| app.js:34:30:34:58 | req.que ... tedCode | views/hbs_sinks.hbs:25:42:25:60 | dataInGeneratedCode |
+| app.js:34:30:34:58 | req.que ... tedCode | views/hbs_sinks.hbs:25:42:25:60 | dataInGeneratedCode |
+| app.js:36:25:36:48 | req.que ... shSink1 | views/hbs_sinks.hbs:28:22:28:35 | backslashSink1 |
+| app.js:36:25:36:48 | req.que ... shSink1 | views/hbs_sinks.hbs:28:22:28:35 | backslashSink1 |
+| app.js:38:35:38:68 | req.que ... rString | views/hbs_sinks.hbs:33:42:33:65 | dataInE ... rString |
+| app.js:38:35:38:68 | req.que ... rString | views/hbs_sinks.hbs:33:42:33:65 | dataInE ... rString |
+| app.js:53:30:53:58 | req.que ... tedCode | views/njk_sinks.njk:13:42:13:60 | dataInGeneratedCode |
+| app.js:53:30:53:58 | req.que ... tedCode | views/njk_sinks.njk:13:42:13:60 | dataInGeneratedCode |
+| app.js:54:33:54:64 | req.que ... CodeRaw | views/njk_sinks.njk:14:45:14:66 | dataInG ... CodeRaw |
+| app.js:54:33:54:64 | req.que ... CodeRaw | views/njk_sinks.njk:14:45:14:66 | dataInG ... CodeRaw |
+| app.js:56:25:56:48 | req.que ... shSink1 | views/njk_sinks.njk:17:22:17:35 | backslashSink1 |
+| app.js:56:25:56:48 | req.que ... shSink1 | views/njk_sinks.njk:17:22:17:35 | backslashSink1 |
+| app.js:58:35:58:68 | req.que ... rString | views/njk_sinks.njk:22:42:22:65 | dataInE ... rString |
+| app.js:58:35:58:68 | req.que ... rString | views/njk_sinks.njk:22:42:22:65 | dataInE ... rString |
+| app.js:59:38:59:74 | req.que ... ringRaw | views/njk_sinks.njk:23:42:23:68 | dataInE ... ringRaw |
+| app.js:59:38:59:74 | req.que ... ringRaw | views/njk_sinks.njk:23:42:23:68 | dataInE ... ringRaw |
+| app.js:65:22:65:42 | req.que ... pedHtml | views/angularjs_include.ejs:2:9:2:19 | escapedHtml |
+| app.js:65:22:65:42 | req.que ... pedHtml | views/angularjs_include.ejs:2:9:2:19 | escapedHtml |
+| app.js:65:22:65:42 | req.que ... pedHtml | views/angularjs_sinks.ejs:3:13:3:23 | escapedHtml |
+| app.js:65:22:65:42 | req.que ... pedHtml | views/angularjs_sinks.ejs:3:13:3:23 | escapedHtml |
+| app.js:66:18:66:34 | req.query.rawHtml | views/angularjs_include.ejs:3:9:3:15 | rawHtml |
+| app.js:66:18:66:34 | req.query.rawHtml | views/angularjs_include.ejs:3:9:3:15 | rawHtml |
+| app.js:66:18:66:34 | req.query.rawHtml | views/angularjs_sinks.ejs:4:13:4:19 | rawHtml |
+| app.js:66:18:66:34 | req.query.rawHtml | views/angularjs_sinks.ejs:4:13:4:19 | rawHtml |
+| views/angularjs_include.ejs:2:9:2:19 | escapedHtml | views/angularjs_include.ejs:2:5:2:22 | <%= escapedHtml %> |
+| views/angularjs_include.ejs:2:9:2:19 | escapedHtml | views/angularjs_include.ejs:2:5:2:22 | <%= escapedHtml %> |
+| views/angularjs_include.ejs:3:9:3:15 | rawHtml | views/angularjs_include.ejs:3:5:3:18 | <%- rawHtml %> |
+| views/angularjs_include.ejs:3:9:3:15 | rawHtml | views/angularjs_include.ejs:3:5:3:18 | <%- rawHtml %> |
+| views/angularjs_sinks.ejs:3:13:3:23 | escapedHtml | views/angularjs_sinks.ejs:3:9:3:26 | <%= escapedHtml %> |
+| views/angularjs_sinks.ejs:3:13:3:23 | escapedHtml | views/angularjs_sinks.ejs:3:9:3:26 | <%= escapedHtml %> |
+| views/angularjs_sinks.ejs:4:13:4:19 | rawHtml | views/angularjs_sinks.ejs:4:9:4:22 | <%- rawHtml %> |
+| views/angularjs_sinks.ejs:4:13:4:19 | rawHtml | views/angularjs_sinks.ejs:4:9:4:22 | <%- rawHtml %> |
+| views/ejs_sinks.ejs:13:43:13:61 | dataInGeneratedCode | views/ejs_sinks.ejs:13:39:13:64 | <%= dataInGeneratedCode %> |
+| views/ejs_sinks.ejs:13:43:13:61 | dataInGeneratedCode | views/ejs_sinks.ejs:13:39:13:64 | <%= dataInGeneratedCode %> |
+| views/ejs_sinks.ejs:16:23:16:36 | backslashSink1 | views/ejs_sinks.ejs:16:19:16:39 | <%= backslashSink1 %> |
+| views/ejs_sinks.ejs:16:23:16:36 | backslashSink1 | views/ejs_sinks.ejs:16:19:16:39 | <%= backslashSink1 %> |
+| views/ejs_sinks.ejs:21:43:21:66 | dataInE ... rString | views/ejs_sinks.ejs:21:39:21:69 | <%= dataInEventHandlerString %> |
+| views/ejs_sinks.ejs:21:43:21:66 | dataInE ... rString | views/ejs_sinks.ejs:21:39:21:69 | <%= dataInEventHandlerString %> |
+| views/hbs_sinks.hbs:25:42:25:60 | dataInGeneratedCode | views/hbs_sinks.hbs:25:39:25:63 | {{ dataInGeneratedCode }} |
+| views/hbs_sinks.hbs:25:42:25:60 | dataInGeneratedCode | views/hbs_sinks.hbs:25:39:25:63 | {{ dataInGeneratedCode }} |
+| views/hbs_sinks.hbs:28:22:28:35 | backslashSink1 | views/hbs_sinks.hbs:28:19:28:38 | {{ backslashSink1 }} |
+| views/hbs_sinks.hbs:28:22:28:35 | backslashSink1 | views/hbs_sinks.hbs:28:19:28:38 | {{ backslashSink1 }} |
+| views/hbs_sinks.hbs:33:42:33:65 | dataInE ... rString | views/hbs_sinks.hbs:33:39:33:68 | {{ dataInEventHandlerString }} |
+| views/hbs_sinks.hbs:33:42:33:65 | dataInE ... rString | views/hbs_sinks.hbs:33:39:33:68 | {{ dataInEventHandlerString }} |
+| views/njk_sinks.njk:13:42:13:60 | dataInGeneratedCode | views/njk_sinks.njk:13:39:13:63 | {{ dataInGeneratedCode }} |
+| views/njk_sinks.njk:13:42:13:60 | dataInGeneratedCode | views/njk_sinks.njk:13:39:13:63 | {{ dataInGeneratedCode }} |
+| views/njk_sinks.njk:14:45:14:66 | dataInG ... CodeRaw | views/njk_sinks.njk:14:45:14:73 | dataInG ...  \| safe |
+| views/njk_sinks.njk:14:45:14:73 | dataInG ...  \| safe | views/njk_sinks.njk:14:42:14:76 | {{ dataInGeneratedCodeRaw \| safe }} |
+| views/njk_sinks.njk:14:45:14:73 | dataInG ...  \| safe | views/njk_sinks.njk:14:42:14:76 | {{ dataInGeneratedCodeRaw \| safe }} |
+| views/njk_sinks.njk:17:22:17:35 | backslashSink1 | views/njk_sinks.njk:17:19:17:38 | {{ backslashSink1 }} |
+| views/njk_sinks.njk:17:22:17:35 | backslashSink1 | views/njk_sinks.njk:17:19:17:38 | {{ backslashSink1 }} |
+| views/njk_sinks.njk:22:42:22:65 | dataInE ... rString | views/njk_sinks.njk:22:39:22:68 | {{ dataInEventHandlerString }} |
+| views/njk_sinks.njk:22:42:22:65 | dataInE ... rString | views/njk_sinks.njk:22:39:22:68 | {{ dataInEventHandlerString }} |
+| views/njk_sinks.njk:23:42:23:68 | dataInE ... ringRaw | views/njk_sinks.njk:23:42:23:75 | dataInE ...  \| safe |
+| views/njk_sinks.njk:23:42:23:75 | dataInE ...  \| safe | views/njk_sinks.njk:23:39:23:78 | {{ dataInEventHandlerStringRaw \| safe }} |
+| views/njk_sinks.njk:23:42:23:75 | dataInE ...  \| safe | views/njk_sinks.njk:23:39:23:78 | {{ dataInEventHandlerStringRaw \| safe }} |
+#select
+| views/angularjs_include.ejs:2:5:2:22 | <%= escapedHtml %> | app.js:65:22:65:42 | req.que ... pedHtml | views/angularjs_include.ejs:2:5:2:22 | <%= escapedHtml %> | $@ flows to here and is interpreted by AngularJS, which may evaluate it as code. | app.js:65:22:65:42 | req.que ... pedHtml | User-provided value |
+| views/angularjs_include.ejs:3:5:3:18 | <%- rawHtml %> | app.js:66:18:66:34 | req.query.rawHtml | views/angularjs_include.ejs:3:5:3:18 | <%- rawHtml %> | $@ flows to here and is interpreted by AngularJS, which may evaluate it as code. | app.js:66:18:66:34 | req.query.rawHtml | User-provided value |
+| views/angularjs_sinks.ejs:3:9:3:26 | <%= escapedHtml %> | app.js:65:22:65:42 | req.que ... pedHtml | views/angularjs_sinks.ejs:3:9:3:26 | <%= escapedHtml %> | $@ flows to here and is interpreted by AngularJS, which may evaluate it as code. | app.js:65:22:65:42 | req.que ... pedHtml | User-provided value |
+| views/angularjs_sinks.ejs:4:9:4:22 | <%- rawHtml %> | app.js:66:18:66:34 | req.query.rawHtml | views/angularjs_sinks.ejs:4:9:4:22 | <%- rawHtml %> | $@ flows to here and is interpreted by AngularJS, which may evaluate it as code. | app.js:66:18:66:34 | req.query.rawHtml | User-provided value |
+| views/ejs_sinks.ejs:13:39:13:64 | <%= dataInGeneratedCode %> | app.js:15:30:15:58 | req.que ... tedCode | views/ejs_sinks.ejs:13:39:13:64 | <%= dataInGeneratedCode %> | $@ flows to here and is interpreted as code. | app.js:15:30:15:58 | req.que ... tedCode | User-provided value |
+| views/ejs_sinks.ejs:16:19:16:39 | <%= backslashSink1 %> | app.js:17:25:17:48 | req.que ... shSink1 | views/ejs_sinks.ejs:16:19:16:39 | <%= backslashSink1 %> | $@ flows to here and is interpreted as code. | app.js:17:25:17:48 | req.que ... shSink1 | User-provided value |
+| views/ejs_sinks.ejs:21:39:21:69 | <%= dataInEventHandlerString %> | app.js:19:35:19:68 | req.que ... rString | views/ejs_sinks.ejs:21:39:21:69 | <%= dataInEventHandlerString %> | $@ flows to here and is interpreted as code. | app.js:19:35:19:68 | req.que ... rString | User-provided value |
+| views/hbs_sinks.hbs:25:39:25:63 | {{ dataInGeneratedCode }} | app.js:34:30:34:58 | req.que ... tedCode | views/hbs_sinks.hbs:25:39:25:63 | {{ dataInGeneratedCode }} | $@ flows to here and is interpreted as code. | app.js:34:30:34:58 | req.que ... tedCode | User-provided value |
+| views/hbs_sinks.hbs:28:19:28:38 | {{ backslashSink1 }} | app.js:36:25:36:48 | req.que ... shSink1 | views/hbs_sinks.hbs:28:19:28:38 | {{ backslashSink1 }} | $@ flows to here and is interpreted as code. | app.js:36:25:36:48 | req.que ... shSink1 | User-provided value |
+| views/hbs_sinks.hbs:33:39:33:68 | {{ dataInEventHandlerString }} | app.js:38:35:38:68 | req.que ... rString | views/hbs_sinks.hbs:33:39:33:68 | {{ dataInEventHandlerString }} | $@ flows to here and is interpreted as code. | app.js:38:35:38:68 | req.que ... rString | User-provided value |
+| views/njk_sinks.njk:13:39:13:63 | {{ dataInGeneratedCode }} | app.js:53:30:53:58 | req.que ... tedCode | views/njk_sinks.njk:13:39:13:63 | {{ dataInGeneratedCode }} | $@ flows to here and is interpreted as code. | app.js:53:30:53:58 | req.que ... tedCode | User-provided value |
+| views/njk_sinks.njk:14:42:14:76 | {{ dataInGeneratedCodeRaw \| safe }} | app.js:54:33:54:64 | req.que ... CodeRaw | views/njk_sinks.njk:14:42:14:76 | {{ dataInGeneratedCodeRaw \| safe }} | $@ flows to here and is interpreted as code. | app.js:54:33:54:64 | req.que ... CodeRaw | User-provided value |
+| views/njk_sinks.njk:17:19:17:38 | {{ backslashSink1 }} | app.js:56:25:56:48 | req.que ... shSink1 | views/njk_sinks.njk:17:19:17:38 | {{ backslashSink1 }} | $@ flows to here and is interpreted as code. | app.js:56:25:56:48 | req.que ... shSink1 | User-provided value |
+| views/njk_sinks.njk:22:39:22:68 | {{ dataInEventHandlerString }} | app.js:58:35:58:68 | req.que ... rString | views/njk_sinks.njk:22:39:22:68 | {{ dataInEventHandlerString }} | $@ flows to here and is interpreted as code. | app.js:58:35:58:68 | req.que ... rString | User-provided value |
+| views/njk_sinks.njk:23:39:23:78 | {{ dataInEventHandlerStringRaw \| safe }} | app.js:59:38:59:74 | req.que ... ringRaw | views/njk_sinks.njk:23:39:23:78 | {{ dataInEventHandlerStringRaw \| safe }} | $@ flows to here and is interpreted as code. | app.js:59:38:59:74 | req.que ... ringRaw | User-provided value |

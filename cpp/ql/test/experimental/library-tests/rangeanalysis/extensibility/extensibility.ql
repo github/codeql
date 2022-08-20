@@ -29,7 +29,8 @@ class CustomAddFunctionCall extends SimpleRangeAnalysisExpr, FunctionCall {
 
 class SelfSub extends SimpleRangeAnalysisExpr, SubExpr {
   SelfSub() {
-    getLeftOperand().(VariableAccess).getTarget() = getRightOperand().(VariableAccess).getTarget()
+    this.getLeftOperand().(VariableAccess).getTarget() =
+      this.getRightOperand().(VariableAccess).getTarget()
   }
 
   override float getLowerBounds() { result = 0 }

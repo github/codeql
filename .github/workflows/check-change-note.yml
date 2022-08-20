@@ -6,7 +6,12 @@ on:
     paths:
       - "*/ql/src/**/*.ql"
       - "*/ql/src/**/*.qll"
+      - "*/ql/lib/**/*.ql"
+      - "*/ql/lib/**/*.qll"
       - "!**/experimental/**"
+      - "!ql/**"
+      - "!swift/**"
+      - ".github/workflows/check-change-note.yml"
 
 jobs:
   check-change-note:

@@ -1,0 +1,15 @@
+load("//swift:rules.bzl", "swift_cc_binary")
+
+swift_cc_binary(
+    name = "extractor",
+    srcs = glob([
+        "*.h",
+        "*.cpp",
+    ]),
+    visibility = ["//swift:__pkg__"],
+    deps = [
+        "//swift/extractor/infra",
+        "//swift/extractor/visitors",
+        "//swift/tools/prebuilt:swift-llvm-support",
+    ],
+)

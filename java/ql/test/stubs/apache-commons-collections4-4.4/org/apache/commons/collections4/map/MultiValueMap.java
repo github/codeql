@@ -13,8 +13,8 @@ import org.apache.commons.collections4.map.AbstractMapDecorator;
 
 public class MultiValueMap<K, V> extends AbstractMapDecorator<K, Object> implements MultiMap<K, V>, Serializable
 {
+    protected <C extends Collection<V>> MultiValueMap(Map<K, ? super C> p0, Factory<C> p1){}
     protected Collection<V> createCollection(int p0){ return null; }
-    protected <C> MultiValueMap(Map<K, ? super C> p0, Factory<C> p1){}
     public Collection<Object> values(){ return null; }
     public Collection<V> getCollection(Object p0){ return null; }
     public Iterator<Map.Entry<K, V>> iterator(){ return null; }
@@ -28,13 +28,9 @@ public class MultiValueMap<K, V> extends AbstractMapDecorator<K, Object> impleme
     public boolean removeMapping(Object p0, Object p1){ return false; }
     public int size(Object p0){ return 0; }
     public int totalSize(){ return 0; }
-    public static  <K, V, C> MultiValueMap<K, V> multiValueMap(Map<K, ? super C> p0, Class<C> p1){ return null; }
-    public static  <K, V, C> MultiValueMap<K, V> multiValueMap(Map<K, ? super C> p0, Factory<C> p1){ return null; }
-    public static  <K, V> MultiValueMap<K, V> multiValueMap(Map<K, ? super Collection<V>> p0){ return null; }
+    public static <K, V, C extends Collection<V>> MultiValueMap<K, V> multiValueMap(Map<K, ? super C> p0, Class<C> p1){ return null; }
+    public static <K, V, C extends Collection<V>> MultiValueMap<K, V> multiValueMap(Map<K, ? super C> p0, Factory<C> p1){ return null; }
+    public static <K, V> MultiValueMap<K, V> multiValueMap(Map<K, ? super Collection<V>> p0){ return null; }
     public void clear(){}
-    public void putAll(Map<? extends K, ?> p0){}
-    public int size(){ return 0; }
-    public Object remove(Object key){ return null; }
-    public Object get(Object key){ return null; }
-    public boolean isEmpty(){ return false; }
+    public void putAll(Map<? extends K, ? extends Object> p0){}
 }

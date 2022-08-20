@@ -13,16 +13,11 @@
 import csharp
 
 predicate controlName(string prefix) {
-  prefix = "[Ll]abel" or
-  prefix = "[Bb]utton" or
-  prefix = "[Pp]anel" or
-  prefix = "[Rr]adio[Bb]utton" or
-  prefix = "[Pp]rop" or
-  prefix = "[Ss]atus[Ss]trip" or
-  prefix = "[Tt]able[Ll]ayout[Dd]esigner" or
-  prefix = "[Tt]ext[Bb]ox" or
-  prefix = "[Tt]ool[Ss]trip" or
-  prefix = "[Pp]icture[Bb]ox"
+  prefix =
+    [
+      "[Ll]abel", "[Bb]utton", "[Pp]anel", "[Rr]adio[Bb]utton", "[Pp]rop", "[Ss]atus[Ss]trip",
+      "[Tt]able[Ll]ayout[Dd]esigner", "[Tt]ext[Bb]ox", "[Tt]ool[Ss]trip", "[Pp]icture[Bb]ox"
+    ]
 }
 
 predicate usedInHumanWrittenCode(Field f) {

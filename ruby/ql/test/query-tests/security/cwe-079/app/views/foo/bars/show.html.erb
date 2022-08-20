@@ -1,0 +1,71 @@
+<%# BAD: An instance variable rendered without escaping %>
+<a href="<%= raw @user_website %>">website</a>
+
+<%# BAD: A local rendered raw as a local variable %>
+<%= raw display_text %>
+
+<%# BAD: A local rendered raw via the local_assigns hash %>
+<%= raw local_assigns[:display_text] %>
+
+<% key = :display_text %>
+<%# BAD: A local rendered raw via the locals_assigns hash %>
+<%= raw local_assigns[key] %>
+
+<ul>
+<% for key in [:display_text, :safe_text] do %>
+  <%# BAD: A local rendered raw via the locals hash %>
+  <%# TODO: we miss that `key` can take `:display_text` as a value here %>
+  <li><%= raw local_assigns[key] %></li>
+<% end %>
+</ul>
+
+<%# GOOD: A local rendered with default escaping via the local_assigns hash %>
+<%= local_assigns[display_text] %>
+
+<%# GOOD: default escaping of rendered text %>
+<%=
+  full_text = prefix + local_assigns[:display_text]
+  full_text
+%>
+
+<%# GOOD: default escaping of rendered text (from instance var) %>
+<%= @instance_text %>
+
+<%# BAD: html_safe marks string as not requiring HTML escaping %>
+<%=
+  display_text.html_safe
+%>
+
+<%# BAD: html_safe marks string as not requiring HTML escaping %>
+<%=
+  @instance_text.html_safe
+%>
+
+<%= render partial: 'foo/bars/widget', locals: { display_text: "widget_" + display_text } %>
+
+<%# BAD: user_name is a helper method that returns unsanitized user-input %>
+<%= user_name.html_safe %>
+
+<%# BAD: user_name_memo is a helper method that returns unsanitized user-input %>
+<%# TODO: we miss this because the return value from user_name_memo is not properly linked to this call %>
+<%= user_name_memo.html_safe %>
+
+<%# BAD: unsanitized user-input should not be passed to link_to as the URL %>
+<%= link_to "user website", params[:website] %>
+
+<%# BAD: unsanitized user-input should not be passed to link_to as the URL %>
+<%= link_to params[:website], class: "user-link" do %>
+  user website
+<% end %>
+
+<%# GOOD: @safe_foo is a hardcoded string here at runtime %>
+<%= @safe_foo.html_safe %>
+
+<%# GOOD: @html_escaped is manually escaped in the controller %>
+<%= @html_escaped.html_safe %>
+
+<%# GOOD: @html_escaped is manually escaped in the controller %>
+<%=
+  html_escaped_in_template = h params[:text]
+  html_escaped_in_template.html_safe
+%>

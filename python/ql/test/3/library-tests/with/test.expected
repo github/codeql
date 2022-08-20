@@ -1,0 +1,14 @@
+| test.py:0:0:0:0 | Module test |
+| test.py:1:1:5:2 | With |
+| test.py:2:5:2:15 | CtxManager1 |
+| test.py:2:5:2:17 | CtxManager1() |
+| test.py:2:22:2:29 | example1 |
+| test.py:3:5:3:15 | CtxManager2 |
+| test.py:3:5:3:17 | CtxManager2() |
+| test.py:3:5:3:29 | With |
+| test.py:3:22:3:29 | example2 |
+| test.py:4:5:4:15 | CtxManager3 |
+| test.py:4:5:4:17 | CtxManager3() |
+| test.py:4:5:4:29 | With |
+| test.py:4:22:4:29 | example3 |
+| test.py:6:5:6:8 | Pass |

@@ -1,0 +1,7 @@
+name: codeql/ql-tests
+groups: [ql, test]
+dependencies:
+    codeql/ql: "*"
+    codeql/ql-examples: "*"
+extractor: ql
+tests: .

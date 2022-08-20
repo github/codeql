@@ -10,7 +10,7 @@ namespace Semmle.Extraction.Entities
 
         public override void Populate(TextWriter trapFile)
         {
-            trapFile.files(this, "", "", "");
+            trapFile.files(this, "");
         }
 
         public override void WriteId(EscapingTextWriter trapFile)

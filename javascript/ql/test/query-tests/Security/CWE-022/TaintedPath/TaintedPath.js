@@ -205,3 +205,11 @@ var server = http.createServer(function(req, res) {
   const parseqs = require("parseqs");
   res.write(fs.readFileSync(parseqs.decode(req.url).foo)); // NOT OK
 });
+
+const cp = require("child_process");
+var server = http.createServer(function(req, res) {
+  let path = url.parse(req.url, true).query.path;
+  cp.execSync("foobar", {cwd: path}); // NOT OK
+  cp.execFileSync("foobar", ["args"], {cwd: path}); // NOT OK
+  cp.execFileSync("foobar", {cwd: path}); // NOT OK
+});

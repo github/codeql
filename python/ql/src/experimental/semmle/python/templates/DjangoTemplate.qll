@@ -4,15 +4,15 @@ import python
 import semmle.python.web.HttpRequest
 import experimental.semmle.python.templates.SSTISink
 
-ClassValue theDjangoTemplateClass() { result = Value::named("django.template.Template") }
+deprecated ClassValue theDjangoTemplateClass() { result = Value::named("django.template.Template") }
 
 /**
- * Sink representng `django.template.Template` class instantiation argument.
+ * A sink representng `django.template.Template` class instantiation argument.
  *
  *  from django.template import Template
  *  template = Template(`sink`)
  */
-class DjangoTemplateTemplateSink extends SSTISink {
+deprecated class DjangoTemplateTemplateSink extends SSTISink {
   override string toString() { result = "argument to Django.template()" }
 
   DjangoTemplateTemplateSink() {

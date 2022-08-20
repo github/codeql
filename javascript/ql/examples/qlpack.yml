@@ -1,3 +1,6 @@
-name: codeql-javascript-examples
-version: 0.0.0
-libraryPathDependencies: codeql-javascript
+name: codeql/javascript-examples
+groups: 
+  - javascript
+  - examples
+dependencies:
+  codeql/javascript-all: "*"

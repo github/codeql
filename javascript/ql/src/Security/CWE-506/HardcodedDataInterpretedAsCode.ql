@@ -13,7 +13,7 @@
  */
 
 import javascript
-import semmle.javascript.security.dataflow.HardcodedDataInterpretedAsCode::HardcodedDataInterpretedAsCode
+import semmle.javascript.security.dataflow.HardcodedDataInterpretedAsCodeQuery
 import DataFlow::PathGraph
 
 from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink

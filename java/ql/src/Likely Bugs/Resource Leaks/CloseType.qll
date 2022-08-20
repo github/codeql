@@ -9,7 +9,7 @@ import semmle.code.java.frameworks.Mockito
 private predicate flowsInto(Expr e, Variable v) {
   e = v.getAnAssignedValue()
   or
-  exists(CastExpr c | flowsInto(c, v) | e = c.getExpr())
+  exists(CastingExpr c | flowsInto(c, v) | e = c.getExpr())
   or
   exists(ConditionalExpr c | flowsInto(c, v) | e = c.getABranchExpr())
 }
@@ -19,7 +19,7 @@ private predicate flowsInto(Expr e, Variable v) {
  * (Prior to Java 7, these types were not subtypes of `Closeable` or `AutoCloseable`.)
  */
 predicate sqlType(RefType t) {
-  exists(RefType sup | sup = t.getASupertype*() and sup.getAMethod().hasName("close") |
+  exists(RefType sup | sup = t.getAnAncestor() and sup.getAMethod().hasName("close") |
     sup.hasQualifiedName("java.sql", "Connection") or
     sup.hasQualifiedName("java.sql", "Statement") or
     sup.hasQualifiedName("java.sql", "ResultSet")
@@ -31,7 +31,7 @@ predicate sqlType(RefType t) {
  * or a closeable type in the `java.sql` package.
  */
 private predicate closeableType(RefType t) {
-  exists(RefType supertype | supertype = t.getASupertype*() |
+  exists(RefType supertype | supertype = t.getAnAncestor() |
     supertype.hasName("Closeable") or
     supertype.hasName("AutoCloseable") or
     sqlType(supertype)
@@ -45,7 +45,7 @@ private predicate closeableType(RefType t) {
 class SqlResourceOpeningMethodAccess extends MethodAccess {
   SqlResourceOpeningMethodAccess() {
     exists(Method m | this.getMethod() = m |
-      m.getDeclaringType().(RefType).hasQualifiedName("java.sql", _) and
+      m.getDeclaringType().hasQualifiedName("java.sql", _) and
       m.getReturnType().(RefType).hasQualifiedName("java.sql", _) and
       m.getName().regexpMatch("(create|prepare|execute).*") and
       closeableType(m.getReturnType()) and
@@ -228,8 +228,8 @@ private predicate closeCalled(Variable v) {
     )
     or
     // The "close" call could happen indirectly inside a helper method of unknown name.
-    exists(int i | exprs(v.getAnAccess(), _, _, e, i) |
-      exists(Parameter p, int j | params(p, _, j, e.getMethod(), _) |
+    exists(int i | e.getArgument(i) = v.getAnAccess() |
+      exists(Parameter p, int j | p.getPosition() = j and p.getCallable() = e.getMethod() |
         closeCalled(p) and i = j
         or
         // The helper method could be iterating over a varargs parameter.
@@ -301,7 +301,7 @@ predicate noNeedToClose(CloseableInitExpr cie) {
     or
     exists(CloseableInitExpr sqlStmt, LocalVariableDecl v |
       // If a `java.sql.Statement` is closed, an associated `java.sql.ResultSet` is implicitly closed.
-      sqlStmt.getType().(RefType).getASupertype*() instanceof TypeStatement and
+      sqlStmt.getType().(RefType).getAnAncestor() instanceof TypeStatement and
       flowsInto(sqlStmt, v) and
       closedResource(sqlStmt) and
       cie.getType() instanceof TypeResultSet and

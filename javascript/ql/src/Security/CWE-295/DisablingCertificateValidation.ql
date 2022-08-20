@@ -7,30 +7,30 @@
  * @precision very-high
  * @id js/disabling-certificate-validation
  * @tags security
- *       external/cwe-295
+ *       external/cwe/cwe-295
+ *       external/cwe/cwe-297
  */
 
 import javascript
 
-/**
- * Gets an options object for a TLS connection.
- */
-DataFlow::ObjectLiteralNode tlsOptions() {
-  exists(DataFlow::InvokeNode invk | result.flowsTo(invk.getAnArgument()) |
-    invk instanceof ClientRequest
-    or
-    invk = DataFlow::moduleMember("https", "Agent").getAnInstantiation()
-    or
-    exists(DataFlow::NewNode new |
-      new = DataFlow::moduleMember("tls", "TLSSocket").getAnInstantiation()
-    |
-      invk = new or
-      invk = new.getAMethodCall("renegotiate")
-    )
-    or
-    invk = DataFlow::moduleMember("tls", ["connect", "createServer"]).getACall()
+/** Gets options argument for a potential TLS connection */
+DataFlow::InvokeNode tlsInvocation() {
+  result instanceof ClientRequest
+  or
+  result = DataFlow::moduleMember("https", "Agent").getAnInstantiation()
+  or
+  exists(DataFlow::NewNode new |
+    new = DataFlow::moduleMember("tls", "TLSSocket").getAnInstantiation()
+  |
+    result = new or
+    result = new.getAMethodCall("renegotiate")
   )
+  or
+  result = DataFlow::moduleMember("tls", ["connect", "createServer"]).getACall()
 }
+
+/** Gets an options object for a TLS connection. */
+DataFlow::ObjectLiteralNode tlsOptions() { result.flowsTo(tlsInvocation().getAnArgument()) }
 
 from DataFlow::PropWrite disable
 where
@@ -40,6 +40,13 @@ where
     disable.getRhs().mayHaveStringValue("0")
   )
   or
-  disable = tlsOptions().getAPropertyWrite("rejectUnauthorized") and
+  (
+    disable = tlsOptions().getAPropertyWrite("rejectUnauthorized")
+    or
+    // the same thing, but with API-nodes if they happen to be available
+    exists(API::Node tlsInvk | tlsInvk.getAnInvocation() = tlsInvocation() |
+      disable.getRhs() = tlsInvk.getAParameter().getMember("rejectUnauthorized").asSink()
+    )
+  ) and
   disable.getRhs().(AnalyzedNode).getTheBooleanValue() = false
 select disable, "Disabling certificate validation is strongly discouraged."

@@ -4,20 +4,21 @@ Upgrading CodeQL databases
 ==========================
 
 As the CodeQL CLI tools and queries evolve, you may find that some of your
-CodeQL databases become out of date. You must upgrade out-of-date databases 
+CodeQL databases become out of date. You must upgrade out-of-date databases
 before you can analyze them.
 
 Databases become out of date when:
 
 - For databases created using the CodeQL CLI, the version of CLI tools used to
-  create them is older than your copy of the CodeQL queries. 
+  create them is older than your copy of the CodeQL queries.
 - For databases downloaded from LGTM.com, the CodeQL tools used by LGTM.com to create
   that revision of the code are older than your copy of the CodeQL queries.
 
-The ``main`` branch of the CodeQL queries is updated more often than both the
+If you have a local checkout of the ``github/codeql`` repository, please note that
+the ``main`` branch of the CodeQL queries is updated more often than both the
 CLI and LGTM.com, so databases are most likely to become out of date if you use
 the queries on this branch. For more information about the different versions of
-the CodeQL queries, see ":ref:`Getting started with the CodeQL CLI <local-copy-codeql-queries>`." 
+the CodeQL queries, see ":ref:`Getting started with the CodeQL CLI <local-copy-codeql-queries>`."
 
 Out-of-date databases must be upgraded before they can be analyzed. This topic
 shows you how to upgrade a CodeQL database using the ``database upgrade``

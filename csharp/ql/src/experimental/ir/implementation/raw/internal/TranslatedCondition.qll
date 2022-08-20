@@ -15,7 +15,10 @@ abstract class TranslatedCondition extends ConditionBase {
 
   final override string toString() { result = expr.toString() }
 
-  final override Language::AST getAST() { result = expr }
+  final override Language::AST getAst() { result = expr }
+
+  /** DEPRECATED: Alias for getAst */
+  deprecated override Language::AST getAST() { result = this.getAst() }
 
   final Expr getExpr() { result = expr }
 
@@ -139,13 +142,13 @@ class TranslatedLogicalOrExpr extends TranslatedBinaryLogicalOperation {
   override LogicalOrExpr expr;
 
   override Instruction getChildTrueSuccessor(ConditionBase child) {
-    child = getAnOperand() and
+    child = this.getAnOperand() and
     result = this.getConditionContext().getChildTrueSuccessor(this)
   }
 
   override Instruction getChildFalseSuccessor(ConditionBase child) {
     child = this.getLeftOperand() and
-    result = getRightOperand().getFirstInstruction()
+    result = this.getRightOperand().getFirstInstruction()
     or
     child = this.getRightOperand() and
     result = this.getConditionContext().getChildFalseSuccessor(this)

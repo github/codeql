@@ -1,0 +1,9 @@
+name: codeql/go-tests
+groups: 
+  - go
+  - test
+dependencies:
+  codeql/go-queries: "*"
+  codeql/go-all: "*"
+  codeql/go-examples: "*"
+extractor: go

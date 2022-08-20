@@ -1,6 +1,7 @@
 /**
  * @name Spurious Javadoc @param tags
- * @description Javadoc @param tags that do not match any parameters in the method or constructor are confusing.
+ * @description Javadoc @param tags that do not match any parameters in the method or constructor or
+ *              any type parameters of the annotated class are confusing.
  * @kind problem
  * @problem.severity recommendation
  * @precision very-high
@@ -10,21 +11,33 @@
 
 import java
 
-from Callable callable, ParamTag paramTag, string what, string msg
+from Documentable documentable, ParamTag paramTag, string msg
 where
-  callable.(Documentable).getJavadoc().getAChild() = paramTag and
-  (if callable instanceof Constructor then what = "constructor" else what = "method") and
+  documentable.getJavadoc().getAChild() = paramTag and
   if exists(paramTag.getParamName())
   then
-    // The tag's value is neither matched by a callable parameter name ...
-    not callable.getAParameter().getName() = paramTag.getParamName() and
-    // ... nor by a type parameter name.
-    not exists(TypeVariable tv | tv.getGenericCallable() = callable |
+    documentable instanceof Callable and
+    exists(string what |
+      if documentable instanceof Constructor then what = "constructor" else what = "method"
+    |
+      // The tag's value is neither matched by a callable parameter name ...
+      not documentable.(Callable).getAParameter().getName() = paramTag.getParamName() and
+      // ... nor by a type parameter name.
+      not exists(TypeVariable tv | tv.getGenericCallable() = documentable |
+        "<" + tv.getName() + ">" = paramTag.getParamName()
+      ) and
+      msg =
+        "@param tag \"" + paramTag.getParamName() + "\" does not match any actual parameter of " +
+          what + " \"" + documentable.getName() + "()\"."
+    )
+    or
+    documentable instanceof ClassOrInterface and
+    not exists(TypeVariable tv | tv.getGenericType() = documentable |
       "<" + tv.getName() + ">" = paramTag.getParamName()
     ) and
     msg =
-      "@param tag \"" + paramTag.getParamName() + "\" does not match any actual parameter of " +
-        what + " \"" + callable.getName() + "()\"."
+      "@param tag \"" + paramTag.getParamName() +
+        "\" does not match any actual type parameter of type \"" + documentable.getName() + "\"."
   else
     // The tag has no value at all.
     msg = "This @param tag does not have a value."

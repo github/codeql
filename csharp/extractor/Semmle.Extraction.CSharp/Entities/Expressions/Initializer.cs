@@ -105,12 +105,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                     if (assignment.Left is ImplicitElementAccessSyntax iea)
                     {
                         // An array/indexer initializer of the form `[...] = ...`
-
-                        var indexChild = 0;
-                        foreach (var arg in iea.ArgumentList.Arguments)
-                        {
-                            Expression.Create(Context, arg.Expression, access, indexChild++);
-                        }
+                        access.PopulateArguments(trapFile, iea.ArgumentList.Arguments, 0);
                     }
                 }
                 else

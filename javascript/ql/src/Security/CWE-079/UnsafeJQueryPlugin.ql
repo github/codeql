@@ -13,7 +13,7 @@
  */
 
 import javascript
-import semmle.javascript.security.dataflow.UnsafeJQueryPlugin::UnsafeJQueryPlugin
+import semmle.javascript.security.dataflow.UnsafeJQueryPluginQuery
 import DataFlow::PathGraph
 
 from

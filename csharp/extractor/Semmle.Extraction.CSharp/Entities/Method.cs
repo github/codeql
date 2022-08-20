@@ -46,7 +46,7 @@ namespace Semmle.Extraction.CSharp.Entities
             // so there's nothing to extract.
         }
 
-        private void PopulateMethodBody(TextWriter trapFile)
+        protected virtual void PopulateMethodBody(TextWriter trapFile)
         {
             if (!IsSourceDeclaration)
                 return;
@@ -262,10 +262,10 @@ namespace Semmle.Extraction.CSharp.Entities
                     return Destructor.Create(cx, methodDecl);
                 case MethodKind.PropertyGet:
                 case MethodKind.PropertySet:
-                    return Accessor.GetPropertySymbol(methodDecl) is null ? OrdinaryMethod.Create(cx, methodDecl) : (Method)Accessor.Create(cx, methodDecl);
+                    return Accessor.GetPropertySymbol(methodDecl) is IPropertySymbol prop ? Accessor.Create(cx, methodDecl, prop) : OrdinaryMethod.Create(cx, methodDecl);
                 case MethodKind.EventAdd:
                 case MethodKind.EventRemove:
-                    return EventAccessor.Create(cx, methodDecl);
+                    return EventAccessor.GetEventSymbol(methodDecl) is IEventSymbol @event ? EventAccessor.Create(cx, methodDecl, @event) : OrdinaryMethod.Create(cx, methodDecl);
                 case MethodKind.UserDefinedOperator:
                 case MethodKind.BuiltinOperator:
                     return UserOperator.Create(cx, methodDecl);

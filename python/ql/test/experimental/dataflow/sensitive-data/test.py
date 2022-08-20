@@ -37,6 +37,10 @@ f = not_found.get_passwd # $ SensitiveDataSource=password
 x = f()
 print(x) # $ SensitiveUse=password
 
+# some prefixes makes us ignore it as a source
+not_found.isSecret
+not_found.is_secret
+
 def my_func(non_sensitive_name):
     x = non_sensitive_name()
     print(x) # $ SensitiveUse=password
@@ -55,6 +59,11 @@ getattr(foo, x) # $ SensitiveDataSource=password
 # based on variable/parameter names
 def my_func(password): # $ SensitiveDataSource=password
     print(password) # $ SensitiveUse=password
+
+# FP where the `cert` in `uncertainty` makes us treat it like a certificate
+# https://github.com/github/codeql/issues/9632
+def my_other_func(uncertainty):
+    print(uncertainty)
 
 password = some_function() # $ SensitiveDataSource=password
 print(password) # $ SensitiveUse=password
@@ -112,3 +121,16 @@ print(foo) # $ SensitiveUse=password
 harmless = lambda: "bar"
 bar = call_wrapper(harmless)
 print(bar) # $ SPURIOUS: SensitiveUse=password
+
+# ------------------------------------------------------------------------------
+# cross-talk in dictionary.
+# ------------------------------------------------------------------------------
+
+from unknown_settings import password # $ SensitiveDataSource=password
+
+print(password) # $ SensitiveUse=password
+_config = {"sleep_timer": 5, "mysql_password": password}
+
+# since we have taint-step from store of `password`, we will consider any item in the
+# dictionary to be a password :(
+print(_config["sleep_timer"]) # $ SPURIOUS: SensitiveUse=password

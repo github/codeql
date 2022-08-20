@@ -38,13 +38,7 @@ where
     fc.getTargetType().(Class).getABaseClass+().hasGlobalOrStdName("exception") or
     fc.getTargetType().(Class).getABaseClass+().hasGlobalOrStdName("CException")
   ) and
+  fc instanceof ExprInVoidContext and
   not fc.isInMacroExpansion() and
-  not exists(ThrowExpr texp | fc.getEnclosingStmt() = texp.getEnclosingStmt()) and
-  not exists(FunctionCall fctmp | fctmp.getAnArgument() = fc) and
-  not fc instanceof ConstructorDirectInit and
-  not fc.getEnclosingStmt() instanceof DeclStmt and
-  not fc instanceof ConstructorDelegationInit and
-  not fc.getParent() instanceof Initializer and
-  not fc.getParent() instanceof AllocationExpr and
-  msg = "This object does not generate an exception."
+  msg = "Object creation of exception type on stack. Did you forget the throw keyword?"
 select fc, msg

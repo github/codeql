@@ -19,6 +19,7 @@ import cpp
 import semmle.code.cpp.dataflow.DataFlow
 import semmle.code.cpp.models.interfaces.ArrayFunction
 import semmle.code.cpp.models.interfaces.Allocation
+import semmle.code.cpp.commons.NullTermination
 
 predicate terminationProblem(AllocationExpr malloc, string msg) {
   // malloc(strlen(...))
@@ -35,13 +36,7 @@ predicate terminationProblem(AllocationExpr malloc, string msg) {
       af.hasArrayWithUnknownSize(arg)
       or
       // flows into string argument to a formatting function (such as `printf`)
-      exists(int n, FormatLiteral fl |
-        fc.getArgument(arg) = fc.(FormattingFunctionCall).getConversionArgument(n) and
-        fl = fc.(FormattingFunctionCall).getFormat() and
-        fl.getConversionType(n) instanceof PointerType and // `%s`, `%ws` etc
-        not fl.getConversionType(n) instanceof VoidPointerType and // exclude: `%p`
-        not fl.hasPrecision(n) // exclude: `%.*s`
-      )
+      formatArgumentMustBeNullTerminated(fc, fc.getArgument(arg))
     )
   ) and
   msg = "This allocation does not include space to null-terminate the string."

@@ -13,7 +13,7 @@
  */
 
 import javascript
-import semmle.javascript.security.dataflow.Xxe::Xxe
+import semmle.javascript.security.dataflow.XxeQuery
 import DataFlow::PathGraph
 
 from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink

@@ -36,7 +36,7 @@ namespace Semmle.Extraction.CSharp.Populators
 
         public override void DefaultVisit(SyntaxNode node)
         {
-            throw new InternalError(node, "Unhandled top-level syntax node");
+            throw new InternalError(node, $"Unhandled top-level syntax node of type  {node.GetType()}");
         }
 
         public override void VisitGlobalStatement(GlobalStatementSyntax node)
@@ -82,15 +82,21 @@ namespace Semmle.Extraction.CSharp.Populators
 
         public override void VisitAttributeList(AttributeListSyntax node)
         {
-            if (Cx.Extractor.Standalone)
+            if (Cx.Extractor.Mode.HasFlag(ExtractorMode.Standalone))
                 return;
 
             var outputAssembly = Assembly.CreateOutputAssembly(Cx);
+            var kind = node.Target?.Identifier.Kind() switch
+            {
+                SyntaxKind.AssemblyKeyword => Entities.AttributeKind.Assembly,
+                SyntaxKind.ModuleKeyword => Entities.AttributeKind.Module,
+                _ => throw new InternalError(node, "Unhandled global target")
+            };
             foreach (var attribute in node.Attributes)
             {
                 if (attributeLookup.Value(attribute) is AttributeData attributeData)
                 {
-                    var ae = Entities.Attribute.Create(Cx, attributeData, outputAssembly);
+                    var ae = Entities.Attribute.Create(Cx, attributeData, outputAssembly, kind);
                     Cx.BindComments(ae, attribute.GetLocation());
                 }
             }

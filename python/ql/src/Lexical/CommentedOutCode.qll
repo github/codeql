@@ -40,16 +40,6 @@ private predicate class_statement(Comment c) {
 
 private predicate triple_quote(Comment c) { c.getText().regexpMatch("#.*(\"\"\"|''').*") }
 
-private predicate triple_quoted_string_part(Comment start, Comment end) {
-  triple_quote(start) and end = start
-  or
-  exists(Comment mid |
-    triple_quoted_string_part(start, mid) and
-    end = non_empty_following(mid) and
-    not triple_quote(end)
-  )
-}
-
 private predicate maybe_code(Comment c) {
   not non_code(c) and not filler(c) and not endline_comment(c) and not file_or_url(c)
   or
@@ -158,11 +148,11 @@ private predicate commented_out_code_block(Comment start, Comment end) {
   not commented_out_code(non_empty_following(end))
 }
 
-/* A single line comment that appears to be commented out code */
+/** A single line comment that appears to be commented out code */
 class CommentedOutCodeLine extends Comment {
   CommentedOutCodeLine() { exists(CommentedOutCodeBlock b | b.contains(this)) }
 
-  /* Whether this commented-out code line is likely to be example code embedded in a larger comment. */
+  /** Holds if this commented-out code line is likely to be example code embedded in a larger comment. */
   predicate maybeExampleCode() {
     exists(CommentedOutCodeBlock block |
       block.contains(this) and
@@ -178,7 +168,7 @@ class CommentedOutCodeBlock extends @py_comment {
   /** Gets a textual representation of this element. */
   string toString() { result = "Commented out code" }
 
-  /** Whether this commented-out code block contains the comment c */
+  /** Holds if this commented-out code block contains the comment c */
   predicate contains(Comment c) {
     this = c
     or
@@ -189,7 +179,7 @@ class CommentedOutCodeBlock extends @py_comment {
     )
   }
 
-  /** The length of this comment block (in comments) */
+  /** Gets the length of this comment block (in comments) */
   int length() { result = count(Comment c | this.contains(c)) }
 
   /**
@@ -197,7 +187,7 @@ class CommentedOutCodeBlock extends @py_comment {
    * The location spans column `startcolumn` of line `startline` to
    * column `endcolumn` of line `endline` in file `filepath`.
    * For more information, see
-   * [Locations](https://help.semmle.com/QL/learn-ql/ql/locations.html).
+   * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
    */
   predicate hasLocationInfo(
     string filepath, int startline, int startcolumn, int endline, int endcolumn
@@ -210,9 +200,9 @@ class CommentedOutCodeBlock extends @py_comment {
 
   /** Whether this commented-out code block is likely to be example code embedded in a larger comment. */
   predicate maybeExampleCode() {
-    exists(CommentBlock block | block.contains(this.(Comment)) |
+    exists(CommentBlock block | block.contains(this) |
       exists(int all_code |
-        all_code = sum(CommentedOutCodeBlock code | block.contains(code.(Comment)) | code.length()) and
+        all_code = sum(CommentedOutCodeBlock code | block.contains(code) | code.length()) and
         /* This ratio may need fine tuning */
         block.length() > all_code * 2
       )
@@ -297,41 +287,17 @@ private predicate file_or_url(Comment c) {
   c.getText().regexpMatch("#[^'\"]+(\\[a-zA-Z]\\w*)+\\.[a-zA-Z]+.*")
 }
 
-private string operator_keyword() {
-  result = "import" or
-  result = "and" or
-  result = "is" or
-  result = "or" or
-  result = "in" or
-  result = "not" or
-  result = "as"
-}
+private string operator_keyword() { result in ["import", "and", "is", "or", "in", "not", "as"] }
 
 private string keyword_requiring_colon() {
-  result = "try" or
-  result = "while" or
-  result = "elif" or
-  result = "else" or
-  result = "if" or
-  result = "except" or
-  result = "def" or
-  result = "class"
+  result in ["try", "while", "elif", "else", "if", "except", "def", "class"]
 }
 
 private string other_keyword() {
-  result = "del" or
-  result = "lambda" or
-  result = "from" or
-  result = "global" or
-  result = "with" or
-  result = "assert" or
-  result = "yield" or
-  result = "finally" or
-  result = "print" or
-  result = "exec" or
-  result = "raise" or
-  result = "return" or
-  result = "for"
+  result in [
+      "del", "lambda", "raise", "return", "for", "from", "global", "with", "assert", "yield",
+      "finally", "print", "exec"
+    ]
 }
 
 private string a_keyword() {

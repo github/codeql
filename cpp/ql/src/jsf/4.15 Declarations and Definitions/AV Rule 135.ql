@@ -31,7 +31,7 @@ from Variable v, Variable shadowed
 where
   not v.getParentScope().(BlockStmt).isInMacroExpansion() and
   (
-    v.(LocalVariableOrParameter).shadowsGlobal(shadowed.(GlobalVariable)) or
+    v.(LocalVariableOrParameter).shadowsGlobal(shadowed) or
     localShadowsParameter(v, shadowed) or
     shadowing(v, shadowed)
   )

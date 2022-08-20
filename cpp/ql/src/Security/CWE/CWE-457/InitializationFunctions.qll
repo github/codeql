@@ -84,8 +84,8 @@ class ParameterNullCheck extends ParameterCheck {
     p.getFunction() instanceof InitializationFunction and
     p.getType().getUnspecifiedType() instanceof PointerType and
     exists(VariableAccess va | va = p.getAnAccess() |
-      nullSuccessor = getATrueSuccessor() and
-      notNullSuccessor = getAFalseSuccessor() and
+      nullSuccessor = this.getATrueSuccessor() and
+      notNullSuccessor = this.getAFalseSuccessor() and
       (
         va = this.(NotExpr).getOperand() or
         va = any(EQExpr eq | eq = this and eq.getAnOperand().getValue() = "0").getAnOperand() or
@@ -95,8 +95,8 @@ class ParameterNullCheck extends ParameterCheck {
               .getAnOperand()
       )
       or
-      nullSuccessor = getAFalseSuccessor() and
-      notNullSuccessor = getATrueSuccessor() and
+      nullSuccessor = this.getAFalseSuccessor() and
+      notNullSuccessor = this.getATrueSuccessor() and
       (
         va = this or
         va = any(NEExpr eq | eq = this and eq.getAnOperand().getValue() = "0").getAnOperand() or
@@ -132,7 +132,7 @@ class ValidatedExternalCondInitFunction extends ExternalData {
   ValidatedExternalCondInitFunction() { this.getDataPath().matches("%cond-init%.csv") }
 
   predicate isExternallyVerified(Function f, int param) {
-    functionSignature(f, getField(1), getField(2)) and param = getFieldAsInt(3)
+    functionSignature(f, this.getField(1), this.getField(2)) and param = this.getFieldAsInt(3)
   }
 }
 
@@ -193,7 +193,7 @@ class InitializationFunction extends Function {
             .getAnOverridingFunction+()
             .(InitializationFunction)
             .initializedParameter() or
-      getParameter(i) = any(InitializationFunctionCall c).getAnInitParameter()
+      this.getParameter(i) = any(InitializationFunctionCall c).getAnInitParameter()
     )
     or
     // If we have no definition, we look at SAL annotations
@@ -227,7 +227,7 @@ class InitializationFunction extends Function {
         result = getAnInitializedArgument(any(Call c))
         or
         exists(IfStmt check | result = check.getCondition().getAChild*() |
-          paramReassignmentCondition(check)
+          this.paramReassignmentCondition(check)
         )
       )
       or
@@ -249,15 +249,15 @@ class InitializationFunction extends Function {
 
   /** Holds if `n` can be reached without the parameter at `index` being reassigned. */
   predicate paramNotReassignedAt(ControlFlowNode n, int index, Context c) {
-    c = getAContext(index) and
+    c = this.getAContext(index) and
     (
       not exists(this.getEntryPoint()) and index = i and n = this
       or
       n = this.getEntryPoint() and index = i
       or
-      exists(ControlFlowNode mid | paramNotReassignedAt(mid, index, c) |
+      exists(ControlFlowNode mid | this.paramNotReassignedAt(mid, index, c) |
         n = mid.getASuccessor() and
-        not n = paramReassignment(index) and
+        not n = this.paramReassignment(index) and
         /*
          * Ignore successor edges where the parameter is null, because it is then confirmed to be
          * initialized.
@@ -265,7 +265,7 @@ class InitializationFunction extends Function {
 
         not exists(ParameterNullCheck nullCheck |
           nullCheck = mid and
-          nullCheck = getANullCheck(index) and
+          nullCheck = this.getANullCheck(index) and
           n = nullCheck.getNullSuccessor()
         ) and
         /*
@@ -281,13 +281,13 @@ class InitializationFunction extends Function {
 
   /** Gets a null-check on the parameter at `index`. */
   private ParameterNullCheck getANullCheck(int index) {
-    getParameter(index) = result.getParameter()
+    this.getParameter(index) = result.getParameter()
   }
 
   /** Gets a parameter which is not at the given index. */
   private Parameter getOtherParameter(int index) {
     index = i and
-    result = getAParameter() and
+    result = this.getAParameter() and
     not result.getIndex() = index
   }
 
@@ -306,10 +306,10 @@ class InitializationFunction extends Function {
     if
       strictcount(Parameter p |
         exists(Context c | c = ParamNull(p) or c = ParamNotNull(p)) and
-        p = getOtherParameter(index)
+        p = this.getOtherParameter(index)
       ) = 1
     then
-      exists(Parameter p | p = getOtherParameter(index) |
+      exists(Parameter p | p = this.getOtherParameter(index) |
         result = ParamNull(p) or result = ParamNotNull(p)
       )
     else
@@ -424,8 +424,8 @@ class ConditionalInitializationCall extends FunctionCall {
 
   /** Gets the argument passed for the given parameter to this call. */
   Expr getArgumentForParameter(Parameter p) {
-    p = getTarget().getAParameter() and
-    result = getArgument(p.getIndex())
+    p = this.getTarget().getAParameter() and
+    result = this.getArgument(p.getIndex())
   }
 
   /**
@@ -442,7 +442,7 @@ class ConditionalInitializationCall extends FunctionCall {
         context = ParamNotNull(otherP) or
         context = ParamNull(otherP)
       |
-        otherArg = getArgumentForParameter(otherP) and
+        otherArg = this.getArgumentForParameter(otherP) and
         (otherArg instanceof AddressOfExpr implies context = ParamNotNull(otherP)) and
         (otherArg.getType() instanceof ArrayType implies context = ParamNotNull(otherP)) and
         (otherArg.getValue() = "0" implies context = ParamNull(otherP))
@@ -511,8 +511,8 @@ class ConditionalInitializationCall extends FunctionCall {
         )
     )
     or
-    exists(ControlFlowNode mid | mid = uncheckedReaches(var) |
-      not mid = getStatusVariable().getAnAccess() and
+    exists(ControlFlowNode mid | mid = this.uncheckedReaches(var) |
+      not mid = this.getStatusVariable().getAnAccess() and
       not mid = var.getAnAccess() and
       not exists(VariableAccess write | result = write and write = var.getAnAccess() |
         write = any(AssignExpr a).getLValue() or

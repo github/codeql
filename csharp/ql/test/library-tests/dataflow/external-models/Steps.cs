@@ -37,7 +37,7 @@ namespace My.Qltest
 
             this.StepElementSetter(0);
 
-            var gen = new Generic<int>();
+            var gen = new Generic<int, int>();
             gen.StepGeneric(0);
             gen.StepGeneric2(false);
 
@@ -70,7 +70,7 @@ namespace My.Qltest
 
         void StepElementSetter(int value) => throw null;
 
-        class Generic<T>
+        class Generic<T, U>
         {
             public T StepGeneric(T t) => throw null;
 

@@ -21,7 +21,7 @@ Ensure that all required modules and packages can be found when running the extr
 </recommendation>
 <references>
 
-<li>Semmle Tutorial: <a href="https://help.semmle.com/codeql/codeql-cli/procedures/create-codeql-database.html">Creating a CodeQL database</a>.</li>
+<li>CodeQL Tutorial: <a href="https://codeql.github.com/docs/codeql-cli/creating-codeql-databases">Creating CodeQL databases</a>.</li>
 
 
 </references>

@@ -1,0 +1,50 @@
+loops
+| loops.rb:9:1:12:3 | for ... in ... | ForExpr | loops.rb:9:15:12:3 | do ... | StmtSequence |
+| loops.rb:16:1:19:3 | for ... in ... | ForExpr | loops.rb:16:15:19:3 | do ... | StmtSequence |
+| loops.rb:22:1:25:3 | for ... in ... | ForExpr | loops.rb:22:35:25:3 | do ... | StmtSequence |
+| loops.rb:28:1:32:3 | for ... in ... | ForExpr | loops.rb:28:37:32:3 | do ... | StmtSequence |
+| loops.rb:35:1:39:3 | while ... | WhileExpr | loops.rb:35:12:39:3 | do ... | StmtSequence |
+| loops.rb:42:1:45:3 | while ... | WhileExpr | loops.rb:42:13:45:3 | do ... | StmtSequence |
+| loops.rb:48:1:48:19 | ... while ... | WhileModifierExpr | loops.rb:48:1:48:6 | ... += ... | AssignAddExpr |
+| loops.rb:51:1:54:3 | until ... | UntilExpr | loops.rb:51:13:54:3 | do ... | StmtSequence |
+| loops.rb:57:1:60:3 | until ... | UntilExpr | loops.rb:57:13:60:3 | do ... | StmtSequence |
+| loops.rb:63:1:63:19 | ... until ... | UntilModifierExpr | loops.rb:63:1:63:6 | ... -= ... | AssignSubExpr |
+| loops.rb:66:1:67:3 | while ... | WhileExpr | loops.rb:66:13:67:3 | do ... | StmtSequence |
+conditionalLoops
+| loops.rb:35:1:39:3 | while ... | WhileExpr | loops.rb:35:7:35:11 | ... < ... | loops.rb:35:12:39:3 | do ... | StmtSequence |
+| loops.rb:42:1:45:3 | while ... | WhileExpr | loops.rb:42:7:42:11 | ... < ... | loops.rb:42:13:45:3 | do ... | StmtSequence |
+| loops.rb:48:1:48:19 | ... while ... | WhileModifierExpr | loops.rb:48:14:48:19 | ... >= ... | loops.rb:48:1:48:6 | ... += ... | AssignAddExpr |
+| loops.rb:51:1:54:3 | until ... | UntilExpr | loops.rb:51:7:51:12 | ... == ... | loops.rb:51:13:54:3 | do ... | StmtSequence |
+| loops.rb:57:1:60:3 | until ... | UntilExpr | loops.rb:57:7:57:11 | ... > ... | loops.rb:57:13:60:3 | do ... | StmtSequence |
+| loops.rb:63:1:63:19 | ... until ... | UntilModifierExpr | loops.rb:63:14:63:19 | ... == ... | loops.rb:63:1:63:6 | ... -= ... | AssignSubExpr |
+| loops.rb:66:1:67:3 | while ... | WhileExpr | loops.rb:66:7:66:11 | ... < ... | loops.rb:66:13:67:3 | do ... | StmtSequence |
+forExprs
+| loops.rb:9:1:12:3 | for ... in ... | loops.rb:9:5:9:5 | n | loops.rb:9:15:12:3 | do ... | 0 | loops.rb:10:5:10:12 | ... += ... |
+| loops.rb:9:1:12:3 | for ... in ... | loops.rb:9:5:9:5 | n | loops.rb:9:15:12:3 | do ... | 1 | loops.rb:11:5:11:11 | ... = ... |
+| loops.rb:16:1:19:3 | for ... in ... | loops.rb:16:5:16:5 | n | loops.rb:16:15:19:3 | do ... | 0 | loops.rb:17:5:17:12 | ... += ... |
+| loops.rb:16:1:19:3 | for ... in ... | loops.rb:16:5:16:5 | n | loops.rb:16:15:19:3 | do ... | 1 | loops.rb:18:5:18:12 | ... -= ... |
+| loops.rb:22:1:25:3 | for ... in ... | loops.rb:22:5:22:14 | (..., ...) | loops.rb:22:35:25:3 | do ... | 0 | loops.rb:23:3:23:14 | ... += ... |
+| loops.rb:22:1:25:3 | for ... in ... | loops.rb:22:5:22:14 | (..., ...) | loops.rb:22:35:25:3 | do ... | 1 | loops.rb:24:3:24:14 | ... *= ... |
+| loops.rb:28:1:32:3 | for ... in ... | loops.rb:28:5:28:16 | (..., ...) | loops.rb:28:37:32:3 | do ... | 0 | loops.rb:29:3:29:14 | ... += ... |
+| loops.rb:28:1:32:3 | for ... in ... | loops.rb:28:5:28:16 | (..., ...) | loops.rb:28:37:32:3 | do ... | 1 | loops.rb:30:3:30:14 | ... /= ... |
+| loops.rb:28:1:32:3 | for ... in ... | loops.rb:28:5:28:16 | (..., ...) | loops.rb:28:37:32:3 | do ... | 2 | loops.rb:31:3:31:7 | break |
+forExprsTuplePatterns
+| loops.rb:22:1:25:3 | for ... in ... | loops.rb:22:5:22:14 | (..., ...) | 0 | loops.rb:22:5:22:7 | key |
+| loops.rb:22:1:25:3 | for ... in ... | loops.rb:22:5:22:14 | (..., ...) | 1 | loops.rb:22:10:22:14 | value |
+| loops.rb:28:1:32:3 | for ... in ... | loops.rb:28:5:28:16 | (..., ...) | 0 | loops.rb:28:6:28:8 | key |
+| loops.rb:28:1:32:3 | for ... in ... | loops.rb:28:5:28:16 | (..., ...) | 1 | loops.rb:28:11:28:15 | value |
+whileExprs
+| loops.rb:35:1:39:3 | while ... | loops.rb:35:7:35:11 | ... < ... | loops.rb:35:12:39:3 | do ... | 0 | loops.rb:36:3:36:8 | ... += ... |
+| loops.rb:35:1:39:3 | while ... | loops.rb:35:7:35:11 | ... < ... | loops.rb:35:12:39:3 | do ... | 1 | loops.rb:37:3:37:8 | ... += ... |
+| loops.rb:35:1:39:3 | while ... | loops.rb:35:7:35:11 | ... < ... | loops.rb:35:12:39:3 | do ... | 2 | loops.rb:38:3:38:6 | next |
+| loops.rb:42:1:45:3 | while ... | loops.rb:42:7:42:11 | ... < ... | loops.rb:42:13:45:3 | do ... | 0 | loops.rb:43:3:43:8 | ... += ... |
+| loops.rb:42:1:45:3 | while ... | loops.rb:42:7:42:11 | ... < ... | loops.rb:42:13:45:3 | do ... | 1 | loops.rb:44:3:44:8 | ... += ... |
+whileModifierExprs
+| loops.rb:48:1:48:19 | ... while ... | loops.rb:48:14:48:19 | ... >= ... | loops.rb:48:1:48:6 | ... += ... |
+untilExprs
+| loops.rb:51:1:54:3 | until ... | loops.rb:51:7:51:12 | ... == ... | loops.rb:51:13:54:3 | do ... | 0 | loops.rb:52:3:52:8 | ... += ... |
+| loops.rb:51:1:54:3 | until ... | loops.rb:51:7:51:12 | ... == ... | loops.rb:51:13:54:3 | do ... | 1 | loops.rb:53:3:53:8 | ... -= ... |
+| loops.rb:57:1:60:3 | until ... | loops.rb:57:7:57:11 | ... > ... | loops.rb:57:13:60:3 | do ... | 0 | loops.rb:58:3:58:8 | ... += ... |
+| loops.rb:57:1:60:3 | until ... | loops.rb:57:7:57:11 | ... > ... | loops.rb:57:13:60:3 | do ... | 1 | loops.rb:59:3:59:8 | ... -= ... |
+untilModifierExprs
+| loops.rb:63:1:63:19 | ... until ... | loops.rb:63:14:63:19 | ... == ... | loops.rb:63:1:63:6 | ... -= ... |

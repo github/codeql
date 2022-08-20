@@ -1,8 +1,10 @@
-| sql.cs:66:46:66:65 | object creation of type SqlCommand | sql.cs:66:61:66:64 | access to parameter text |
-| sql.cs:67:23:67:44 | object creation of type MySqlCommand | sql.cs:67:40:67:43 | access to parameter text |
-| sql.cs:68:13:68:38 | ... = ... | sql.cs:68:35:68:38 | access to parameter text |
-| sql.cs:69:13:69:34 | object creation of type MySqlCommand | sql.cs:69:30:69:33 | access to parameter text |
-| sql.cs:69:13:69:53 | ... = ... | sql.cs:69:50:69:53 | access to parameter text |
-| sql.cs:70:13:70:36 | object creation of type SqlDataAdapter | sql.cs:70:32:70:35 | access to parameter text |
-| sql.cs:71:13:71:47 | call to method ExecuteScalar | sql.cs:71:43:71:46 | access to parameter text |
-| sql.cs:72:13:72:45 | call to method ExecuteScalar | sql.cs:72:41:72:44 | access to parameter text |
+sqlExpressions
+| sql.cs:44:23:44:44 | object creation of type MySqlCommand | sql.cs:44:40:44:43 | access to parameter text |
+| sql.cs:45:13:45:38 | ... = ... | sql.cs:45:35:45:38 | access to parameter text |
+| sql.cs:46:13:46:34 | object creation of type MySqlCommand | sql.cs:46:30:46:33 | access to parameter text |
+| sql.cs:46:13:46:53 | ... = ... | sql.cs:46:50:46:53 | access to parameter text |
+sqlCsvSinks
+| sql.cs:43:46:43:65 | object creation of type SqlCommand | sql.cs:43:61:43:64 | access to parameter text |
+| sql.cs:47:13:47:42 | object creation of type SqlDataAdapter | sql.cs:47:32:47:35 | access to parameter text |
+| sql.cs:48:13:48:47 | call to method ExecuteScalar | sql.cs:48:43:48:46 | access to parameter text |
+| sql.cs:49:13:49:75 | call to method ExecuteScalar | sql.cs:49:71:49:74 | access to parameter text |

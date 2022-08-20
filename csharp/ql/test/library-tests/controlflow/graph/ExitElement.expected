@@ -2287,10 +2287,10 @@
 | Foreach.cs:20:27:20:27 | access to parameter e | Foreach.cs:20:27:20:27 | access to parameter e | non-null |
 | Foreach.cs:20:27:20:27 | access to parameter e | Foreach.cs:20:27:20:27 | access to parameter e | null |
 | Foreach.cs:20:27:20:68 | ... ?? ... | Foreach.cs:20:27:20:68 | ... ?? ... | normal |
-| Foreach.cs:20:29:20:38 | call to method ToArray | Foreach.cs:20:27:20:27 | access to parameter e | null |
-| Foreach.cs:20:29:20:38 | call to method ToArray | Foreach.cs:20:29:20:38 | call to method ToArray | non-null |
-| Foreach.cs:20:29:20:38 | call to method ToArray | Foreach.cs:20:29:20:38 | call to method ToArray | null |
-| Foreach.cs:20:43:20:68 | call to method Empty | Foreach.cs:20:43:20:68 | call to method Empty | normal |
+| Foreach.cs:20:29:20:38 | call to method ToArray<String> | Foreach.cs:20:27:20:27 | access to parameter e | null |
+| Foreach.cs:20:29:20:38 | call to method ToArray<String> | Foreach.cs:20:29:20:38 | call to method ToArray<String> | non-null |
+| Foreach.cs:20:29:20:38 | call to method ToArray<String> | Foreach.cs:20:29:20:38 | call to method ToArray<String> | null |
+| Foreach.cs:20:43:20:68 | call to method Empty<String> | Foreach.cs:20:43:20:68 | call to method Empty<String> | normal |
 | Foreach.cs:21:11:21:11 | ; | Foreach.cs:21:11:21:11 | ; | normal |
 | Foreach.cs:25:5:28:5 | {...} | Foreach.cs:26:9:27:11 | foreach (... ... in ...) ... | empty |
 | Foreach.cs:26:9:27:11 | foreach (... ... in ...) ... | Foreach.cs:26:9:27:11 | foreach (... ... in ...) ... | empty |
@@ -2626,8 +2626,8 @@
 | LoopUnrolling.cs:69:13:69:23 | !... | LoopUnrolling.cs:69:13:69:23 | !... | false |
 | LoopUnrolling.cs:69:13:69:23 | !... | LoopUnrolling.cs:69:13:69:23 | !... | true |
 | LoopUnrolling.cs:69:14:69:17 | access to parameter args | LoopUnrolling.cs:69:14:69:17 | access to parameter args | normal |
-| LoopUnrolling.cs:69:14:69:23 | call to method Any | LoopUnrolling.cs:69:14:69:23 | call to method Any | false |
-| LoopUnrolling.cs:69:14:69:23 | call to method Any | LoopUnrolling.cs:69:14:69:23 | call to method Any | true |
+| LoopUnrolling.cs:69:14:69:23 | call to method Any<String> | LoopUnrolling.cs:69:14:69:23 | call to method Any<String> | false |
+| LoopUnrolling.cs:69:14:69:23 | call to method Any<String> | LoopUnrolling.cs:69:14:69:23 | call to method Any<String> | true |
 | LoopUnrolling.cs:70:13:70:19 | return ...; | LoopUnrolling.cs:70:13:70:19 | return ...; | return |
 | LoopUnrolling.cs:71:9:71:12 | access to parameter args | LoopUnrolling.cs:71:9:71:12 | access to parameter args | normal |
 | LoopUnrolling.cs:71:9:71:20 | call to method Clear | LoopUnrolling.cs:71:9:71:20 | call to method Clear | normal |
@@ -4153,7 +4153,7 @@
 | cflow.cs:226:9:237:9 | foreach (... ... in ...) ... | cflow.cs:226:9:237:9 | foreach (... ... in ...) ... | empty |
 | cflow.cs:226:9:237:9 | foreach (... ... in ...) ... | cflow.cs:235:17:235:22 | break; | normal [break] (0) |
 | cflow.cs:226:22:226:22 | String x | cflow.cs:226:22:226:22 | String x | normal |
-| cflow.cs:226:27:226:64 | call to method Repeat | cflow.cs:226:27:226:64 | call to method Repeat | normal |
+| cflow.cs:226:27:226:64 | call to method Repeat<String> | cflow.cs:226:27:226:64 | call to method Repeat<String> | normal |
 | cflow.cs:226:57:226:59 | "a" | cflow.cs:226:57:226:59 | "a" | normal |
 | cflow.cs:226:62:226:63 | 10 | cflow.cs:226:62:226:63 | 10 | normal |
 | cflow.cs:227:9:237:9 | {...} | cflow.cs:231:17:231:25 | continue; | continue |
@@ -4192,20 +4192,20 @@
 | cflow.cs:241:5:259:5 | {...} | cflow.cs:252:17:252:22 | break; | normal [break] (0) |
 | cflow.cs:241:5:259:5 | {...} | cflow.cs:254:17:254:27 | goto ...; | goto(Label) |
 | cflow.cs:241:5:259:5 | {...} | cflow.cs:257:17:257:22 | break; | normal [break] (0) |
-| cflow.cs:242:9:242:13 | Label: | cflow.cs:242:9:242:13 | Label: | normal |
-| cflow.cs:242:16:242:45 | if (...) ... | cflow.cs:242:20:242:40 | !... | false |
-| cflow.cs:242:16:242:45 | if (...) ... | cflow.cs:242:43:242:45 | {...} | normal |
-| cflow.cs:242:20:242:40 | !... | cflow.cs:242:20:242:40 | !... | false |
-| cflow.cs:242:20:242:40 | !... | cflow.cs:242:20:242:40 | !... | true |
-| cflow.cs:242:21:242:40 | !... | cflow.cs:242:21:242:40 | !... | false |
-| cflow.cs:242:21:242:40 | !... | cflow.cs:242:21:242:40 | !... | true |
-| cflow.cs:242:23:242:27 | access to field Field | cflow.cs:242:23:242:27 | access to field Field | normal |
-| cflow.cs:242:23:242:27 | this access | cflow.cs:242:23:242:27 | this access | normal |
-| cflow.cs:242:23:242:34 | access to property Length | cflow.cs:242:23:242:34 | access to property Length | normal |
-| cflow.cs:242:23:242:39 | ... == ... | cflow.cs:242:23:242:39 | ... == ... | false |
-| cflow.cs:242:23:242:39 | ... == ... | cflow.cs:242:23:242:39 | ... == ... | true |
-| cflow.cs:242:39:242:39 | 0 | cflow.cs:242:39:242:39 | 0 | normal |
-| cflow.cs:242:43:242:45 | {...} | cflow.cs:242:43:242:45 | {...} | normal |
+| cflow.cs:242:5:242:9 | Label: | cflow.cs:242:5:242:9 | Label: | normal |
+| cflow.cs:242:12:242:41 | if (...) ... | cflow.cs:242:16:242:36 | !... | false |
+| cflow.cs:242:12:242:41 | if (...) ... | cflow.cs:242:39:242:41 | {...} | normal |
+| cflow.cs:242:16:242:36 | !... | cflow.cs:242:16:242:36 | !... | false |
+| cflow.cs:242:16:242:36 | !... | cflow.cs:242:16:242:36 | !... | true |
+| cflow.cs:242:17:242:36 | !... | cflow.cs:242:17:242:36 | !... | false |
+| cflow.cs:242:17:242:36 | !... | cflow.cs:242:17:242:36 | !... | true |
+| cflow.cs:242:19:242:23 | access to field Field | cflow.cs:242:19:242:23 | access to field Field | normal |
+| cflow.cs:242:19:242:23 | this access | cflow.cs:242:19:242:23 | this access | normal |
+| cflow.cs:242:19:242:30 | access to property Length | cflow.cs:242:19:242:30 | access to property Length | normal |
+| cflow.cs:242:19:242:35 | ... == ... | cflow.cs:242:19:242:35 | ... == ... | false |
+| cflow.cs:242:19:242:35 | ... == ... | cflow.cs:242:19:242:35 | ... == ... | true |
+| cflow.cs:242:35:242:35 | 0 | cflow.cs:242:35:242:35 | 0 | normal |
+| cflow.cs:242:39:242:41 | {...} | cflow.cs:242:39:242:41 | {...} | normal |
 | cflow.cs:244:9:244:41 | if (...) ... | cflow.cs:244:13:244:28 | ... > ... | false |
 | cflow.cs:244:9:244:41 | if (...) ... | cflow.cs:244:31:244:41 | goto ...; | goto(Label) |
 | cflow.cs:244:13:244:17 | access to field Field | cflow.cs:244:13:244:17 | access to field Field | normal |
@@ -4307,3 +4307,10 @@
 | cflow.cs:300:56:300:64 | ... != ... | cflow.cs:300:56:300:64 | ... != ... | normal |
 | cflow.cs:300:61:300:64 | null | cflow.cs:300:61:300:64 | null | normal |
 | cflow.cs:300:70:300:71 | "" | cflow.cs:300:70:300:71 | "" | normal |
+| cflow.cs:306:60:310:5 | (...) => ... | cflow.cs:306:60:310:5 | (...) => ... | normal |
+| cflow.cs:307:5:310:5 | {...} | cflow.cs:309:9:309:17 | return ...; | return |
+| cflow.cs:308:9:308:21 | ... ...; | cflow.cs:308:16:308:20 | Object x = ... | normal |
+| cflow.cs:308:16:308:20 | Object x = ... | cflow.cs:308:16:308:20 | Object x = ... | normal |
+| cflow.cs:308:20:308:20 | access to parameter o | cflow.cs:308:20:308:20 | access to parameter o | normal |
+| cflow.cs:309:9:309:17 | return ...; | cflow.cs:309:9:309:17 | return ...; | return |
+| cflow.cs:309:16:309:16 | access to local variable x | cflow.cs:309:16:309:16 | access to local variable x | normal |

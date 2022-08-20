@@ -34,7 +34,7 @@ namespace InsecureSQLConnection
 
         public void TriggerThis()
         {
-            // BAD, Encrypt not specified [NOT DETECTED]
+            // BAD, Encrypt not specified
             SqlConnection conn = new SqlConnection("Server=myServerName\\myInstanceName;Database=myDataBase;User Id=myUsername;");
         }
 
@@ -42,7 +42,7 @@ namespace InsecureSQLConnection
         {
             string connectString =
                 "Server=1.2.3.4;Database=Anything;UID=ab;Pwd=cd";
-            // BAD, Encrypt not specified [NOT DETECTED]
+            // BAD, Encrypt not specified
             SqlConnectionStringBuilder builder = new SqlConnectionStringBuilder(connectString);
             var conn = new SqlConnection(builder.ConnectionString);
         }
@@ -51,7 +51,7 @@ namespace InsecureSQLConnection
         {
             string connectString =
                 "Server=1.2.3.4;Database=Anything;UID=ab;Pwd=cd;Encrypt=false";
-            // BAD, Encrypt set to false [NOT DETECTED]
+            // BAD, Encrypt set to false
             SqlConnectionStringBuilder builder = new SqlConnectionStringBuilder(connectString);
             var conn = new SqlConnection(builder.ConnectionString);
         }

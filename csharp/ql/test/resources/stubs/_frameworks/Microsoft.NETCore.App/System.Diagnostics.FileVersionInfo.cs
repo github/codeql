@@ -4,7 +4,7 @@ namespace System
 {
     namespace Diagnostics
     {
-        // Generated from `System.Diagnostics.FileVersionInfo` in `System.Diagnostics.FileVersionInfo, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Diagnostics.FileVersionInfo` in `System.Diagnostics.FileVersionInfo, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class FileVersionInfo
         {
             public string Comments { get => throw null; }

@@ -1053,8 +1053,8 @@
 | E.cs:35:9:35:12 | access to local variable last | non-empty | E.cs:34:20:34:20 | access to local variable s | non-empty |
 | E.cs:35:9:35:12 | access to local variable last | non-null | E.cs:34:20:34:20 | access to local variable s | non-null |
 | E.cs:35:9:35:12 | access to local variable last | null | E.cs:34:20:34:20 | access to local variable s | null |
-| E.cs:38:13:38:20 | call to method Any | false | E.cs:38:13:38:14 | access to parameter ss | empty |
-| E.cs:38:13:38:20 | call to method Any | true | E.cs:38:13:38:14 | access to parameter ss | non-empty |
+| E.cs:38:13:38:20 | call to method Any<String> | false | E.cs:38:13:38:14 | access to parameter ss | empty |
+| E.cs:38:13:38:20 | call to method Any<String> | true | E.cs:38:13:38:14 | access to parameter ss | non-empty |
 | E.cs:43:13:43:16 | access to local variable last | empty | E.cs:41:24:41:24 | access to local variable s | empty |
 | E.cs:43:13:43:16 | access to local variable last | non-empty | E.cs:41:24:41:24 | access to local variable s | non-empty |
 | E.cs:43:13:43:16 | access to local variable last | non-null | E.cs:41:24:41:24 | access to local variable s | non-null |
@@ -1292,6 +1292,14 @@
 | E.cs:411:9:411:18 | ... ?? ... | null | E.cs:411:15:411:18 | null | null |
 | E.cs:412:16:412:16 | access to local variable i | non-null | E.cs:411:9:411:18 | ... ?? ... | non-null |
 | E.cs:412:16:412:16 | access to local variable i | null | E.cs:411:9:411:18 | ... ?? ... | null |
+| E.cs:417:16:417:41 | call to method Any<Int32> | true | E.cs:417:16:417:18 | access to parameter is | non-empty |
+| E.cs:422:13:422:22 | access to property HasValue | false | E.cs:422:13:422:13 | access to parameter i | null |
+| E.cs:422:13:422:22 | access to property HasValue | true | E.cs:422:13:422:13 | access to parameter i | non-null |
+| E.cs:423:20:423:45 | call to method Any<Int32> | true | E.cs:423:20:423:22 | access to parameter is | non-empty |
+| E.cs:429:13:429:22 | access to property HasValue | false | E.cs:429:13:429:13 | access to parameter i | null |
+| E.cs:429:13:429:22 | access to property HasValue | true | E.cs:429:13:429:13 | access to parameter i | non-null |
+| E.cs:432:16:432:24 | call to method Any<Int32> | false | E.cs:432:16:432:18 | access to parameter is | empty |
+| E.cs:432:16:432:24 | call to method Any<Int32> | true | E.cs:432:16:432:18 | access to parameter is | non-empty |
 | Forwarding.cs:9:13:9:30 | !... | false | Forwarding.cs:9:14:9:30 | call to method IsNullOrEmpty | true |
 | Forwarding.cs:9:13:9:30 | !... | true | Forwarding.cs:9:14:9:30 | call to method IsNullOrEmpty | false |
 | Forwarding.cs:9:14:9:14 | access to local variable s | empty | Forwarding.cs:7:20:7:23 | null | empty |

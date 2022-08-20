@@ -94,18 +94,6 @@ class UnsafeTlsVersion extends StringLiteral {
   }
 }
 
-class SSLParameters extends RefType {
-  SSLParameters() { hasQualifiedName("javax.net.ssl", "SSLParameters") }
-}
-
-class SSLSocket extends RefType {
-  SSLSocket() { hasQualifiedName("javax.net.ssl", "SSLSocket") }
-}
-
 class SSLServerSocket extends RefType {
   SSLServerSocket() { hasQualifiedName("javax.net.ssl", "SSLServerSocket") }
-}
-
-class SSLEngine extends RefType {
-  SSLEngine() { hasQualifiedName("javax.net.ssl", "SSLEngine") }
 }

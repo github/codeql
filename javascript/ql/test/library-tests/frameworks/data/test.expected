@@ -1,0 +1,126 @@
+consistencyIssue
+taintFlow
+| paramDecorator.ts:6:54:6:54 | x | paramDecorator.ts:7:10:7:10 | x |
+| test.js:5:30:5:37 | source() | test.js:5:8:5:38 | testlib ... urce()) |
+| test.js:6:22:6:29 | source() | test.js:6:8:6:30 | preserv ... urce()) |
+| test.js:7:41:7:48 | source() | test.js:7:8:7:49 | require ... urce()) |
+| test.js:11:38:11:45 | source() | test.js:11:8:11:55 | testlib ... , 1, 1) |
+| test.js:13:44:13:51 | source() | test.js:13:8:13:55 | testlib ... e(), 1) |
+| test.js:17:47:17:54 | source() | test.js:17:8:17:61 | testlib ... , 1, 1) |
+| test.js:18:50:18:57 | source() | test.js:18:8:18:61 | testlib ... e(), 1) |
+| test.js:19:53:19:60 | source() | test.js:19:8:19:61 | testlib ... urce()) |
+| test.js:21:34:21:41 | source() | test.js:21:8:21:51 | testlib ... , 1, 1) |
+| test.js:22:37:22:44 | source() | test.js:22:8:22:51 | testlib ... , 1, 1) |
+| test.js:23:40:23:47 | source() | test.js:23:8:23:51 | testlib ... e(), 1) |
+| test.js:24:43:24:50 | source() | test.js:24:8:24:51 | testlib ... urce()) |
+| test.js:31:29:31:36 | source() | test.js:32:10:32:10 | y |
+| test.js:37:29:37:36 | source() | test.js:38:10:38:10 | y |
+| test.js:43:29:43:36 | source() | test.js:44:10:44:10 | y |
+| test.js:47:33:47:40 | source() | test.js:49:10:49:13 | this |
+| test.js:54:18:54:25 | source() | test.js:54:18:54:25 | source() |
+| test.js:55:22:55:29 | source() | test.js:55:22:55:29 | source() |
+| test.js:57:24:57:31 | source() | test.js:57:24:57:31 | source() |
+| test.js:61:27:61:34 | source() | test.js:61:27:61:34 | source() |
+| test.js:66:31:66:38 | source() | test.js:66:31:66:38 | source() |
+| test.js:70:34:70:41 | source() | test.js:70:34:70:41 | source() |
+| test.js:75:31:75:38 | source() | test.js:75:31:75:38 | source() |
+| test.js:76:34:76:41 | source() | test.js:76:34:76:41 | source() |
+| test.js:80:36:80:43 | source() | test.js:80:36:80:43 | source() |
+| test.js:81:39:81:46 | source() | test.js:81:39:81:46 | source() |
+| test.js:83:28:83:35 | source() | test.js:83:28:83:35 | source() |
+| test.js:84:31:84:38 | source() | test.js:84:31:84:38 | source() |
+| test.js:85:34:85:41 | source() | test.js:85:34:85:41 | source() |
+| test.js:89:28:89:35 | source() | test.js:89:28:89:35 | source() |
+| test.js:95:17:95:24 | source() | test.js:95:17:95:24 | source() |
+| test.js:96:17:96:24 | source() | test.js:96:17:96:24 | source() |
+| test.js:97:17:97:24 | source() | test.js:97:17:97:24 | source() |
+| test.js:102:16:102:34 | testlib.getSource() | test.js:103:8:103:13 | source |
+| test.js:102:16:102:34 | testlib.getSource() | test.js:104:8:104:24 | source.continue() |
+| test.js:111:12:111:19 | source() | test.js:111:12:111:19 | source() |
+| test.js:113:17:113:17 | x | test.js:114:10:114:10 | x |
+| test.js:132:10:132:25 | this.fieldSource | test.js:132:10:132:25 | this.fieldSource |
+| test.js:133:10:133:37 | OtherCl ... dSource | test.js:133:10:133:37 | OtherCl ... dSource |
+| test.js:134:22:134:29 | source() | test.js:134:22:134:29 | source() |
+| test.js:135:34:135:41 | source() | test.js:135:34:135:41 | source() |
+| test.js:144:16:144:23 | source() | test.js:144:16:144:23 | source() |
+| test.js:147:29:147:36 | source() | test.js:147:29:147:36 | source() |
+| test.js:150:19:150:19 | x | test.js:151:10:151:10 | x |
+| test.js:152:12:152:19 | source() | test.js:152:12:152:19 | source() |
+| test.js:156:32:156:32 | x | test.js:157:10:157:10 | x |
+| test.js:158:12:158:19 | source() | test.js:158:12:158:19 | source() |
+| test.js:162:20:162:20 | x | test.js:163:10:163:10 | x |
+| test.js:164:12:164:19 | source() | test.js:164:12:164:19 | source() |
+| test.js:172:12:172:19 | source() | test.js:172:12:172:19 | source() |
+| test.js:176:23:176:23 | x | test.js:177:10:177:10 | x |
+| test.js:182:12:182:19 | source() | test.js:182:12:182:19 | source() |
+| test.js:187:31:187:31 | x | test.js:189:10:189:10 | x |
+| test.js:203:32:203:39 | source() | test.js:203:32:203:39 | source() |
+isSink
+| test.js:54:18:54:25 | source() | test-sink |
+| test.js:55:22:55:29 | source() | test-sink |
+| test.js:57:24:57:31 | source() | test-sink |
+| test.js:61:27:61:34 | source() | test-sink |
+| test.js:63:38:63:38 | 4 | test-sink |
+| test.js:64:38:64:38 | 4 | test-sink |
+| test.js:65:38:65:38 | 4 | test-sink |
+| test.js:66:31:66:38 | source() | test-sink |
+| test.js:68:41:68:41 | 3 | test-sink |
+| test.js:69:41:69:41 | 3 | test-sink |
+| test.js:70:34:70:41 | source() | test-sink |
+| test.js:71:34:71:34 | 3 | test-sink |
+| test.js:73:38:73:38 | 3 | test-sink |
+| test.js:73:41:73:41 | 4 | test-sink |
+| test.js:74:38:74:38 | 3 | test-sink |
+| test.js:74:41:74:41 | 4 | test-sink |
+| test.js:75:31:75:38 | source() | test-sink |
+| test.js:75:41:75:41 | 4 | test-sink |
+| test.js:76:31:76:31 | 3 | test-sink |
+| test.js:76:34:76:41 | source() | test-sink |
+| test.js:78:43:78:43 | 3 | test-sink |
+| test.js:78:46:78:46 | 4 | test-sink |
+| test.js:79:43:79:43 | 3 | test-sink |
+| test.js:79:46:79:46 | 4 | test-sink |
+| test.js:80:36:80:43 | source() | test-sink |
+| test.js:80:46:80:46 | 4 | test-sink |
+| test.js:81:36:81:36 | 3 | test-sink |
+| test.js:81:39:81:46 | source() | test-sink |
+| test.js:83:28:83:35 | source() | test-sink |
+| test.js:83:38:83:38 | 2 | test-sink |
+| test.js:83:41:83:41 | 3 | test-sink |
+| test.js:84:28:84:28 | 1 | test-sink |
+| test.js:84:31:84:38 | source() | test-sink |
+| test.js:84:41:84:41 | 3 | test-sink |
+| test.js:85:28:85:28 | 1 | test-sink |
+| test.js:85:31:85:31 | 2 | test-sink |
+| test.js:85:34:85:41 | source() | test-sink |
+| test.js:86:28:86:28 | 1 | test-sink |
+| test.js:86:31:86:31 | 2 | test-sink |
+| test.js:86:34:86:34 | 3 | test-sink |
+| test.js:89:28:89:35 | source() | test-sink |
+| test.js:90:28:90:28 | 1 | test-sink |
+| test.js:95:17:95:24 | source() | test-sink |
+| test.js:96:17:96:24 | source() | test-sink |
+| test.js:97:17:97:24 | source() | test-sink |
+| test.js:111:12:111:19 | source() | test-sink |
+| test.js:134:22:134:29 | source() | test-sink |
+| test.js:135:34:135:41 | source() | test-sink |
+| test.js:144:16:144:23 | source() | test-sink |
+| test.js:147:29:147:36 | source() | test-sink |
+| test.js:152:12:152:19 | source() | test-sink |
+| test.js:158:12:158:19 | source() | test-sink |
+| test.js:164:12:164:19 | source() | test-sink |
+| test.js:172:12:172:19 | source() | test-sink |
+| test.js:182:12:182:19 | source() | test-sink |
+| test.js:196:12:196:29 | this._wrappedField | test-sink |
+| test.js:203:32:203:39 | source() | test-sink |
+syntaxErrors
+| Member[foo |
+| Member[foo] .Member[bar] |
+| Member[foo] Member[bar] |
+| Member[foo], Member[bar] |
+| Member[foo],Member[bar] |
+| Member[foo]. Member[bar] |
+| Member[foo]..Member[bar] |
+| Member[foo]Member[bar] |
+| Member[foo]] |
+| Member[foo]].Member[bar] |

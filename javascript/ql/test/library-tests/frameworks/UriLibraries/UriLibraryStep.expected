@@ -45,6 +45,7 @@
 | querystring.js:9:26:9:26 | x | querystring.js:9:5:9:27 | queryst ... cape(x) |
 | querystringify.js:3:30:3:30 | x | querystringify.js:3:9:3:31 | queryst ... arse(x) |
 | querystringify.js:5:30:5:30 | x | querystringify.js:5:5:5:31 | queryst ... gify(x) |
+| querystringify.js:8:23:8:23 | x | querystringify.js:8:1:8:24 | queryst ... arse(x) |
 | uri-js.js:3:19:3:19 | x | uri-js.js:3:9:3:20 | URI.parse(x) |
 | uri-js.js:5:19:5:19 | x | uri-js.js:5:5:5:20 | URI.serialize(x) |
 | uri-js.js:7:17:7:17 | x | uri-js.js:7:5:7:18 | URI.resolve(x) |

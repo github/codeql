@@ -22,3 +22,34 @@ fs.createReadStream('archive.zip')
     const fileName = entry.path;
     var file = fs.openSync(fileName, "w");
   });
+
+const JSZip = require('jszip');
+const zip = new JSZip();
+const path = require('path');
+function doZipSlip() {
+  for (const name in zip.files) {
+    fs.createWriteStream(name);
+  }
+
+  zip.forEach((name, file) => {
+    fs.createWriteStream(name);
+  });
+
+  const extractTo = path.resolve("/some/path/to/extract/to");
+  var files = [];
+
+  for (var name in zip.files) {
+    var entry = zip.files[name];
+
+    var targetPath = path.resolve(
+      path.join(extractTo, name)
+    );
+    if (!targetPath.startsWith(extractTo)) {
+      throw new Error("Entry is outside the extraction path");
+    }
+    files.push(name);
+  }
+  for (const file of files) {
+    fs.createWriteStream(path.join(extractTo, file)); // OK
+  }
+}

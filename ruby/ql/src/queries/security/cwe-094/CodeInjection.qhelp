@@ -1,0 +1,46 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+Directly evaluating user input (for example, an HTTP request parameter) as code without first
+sanitizing the input allows an attacker arbitrary code execution. This can occur when user
+input is passed to code that interprets it as an expression to be
+evaluated, using methods such as <code>Kernel.eval</code> or <code>Kernel.send</code>.
+</p>
+</overview>
+
+<recommendation>
+<p>
+Avoid including user input in any expression that may be dynamically evaluated. If user input must
+be included, use context-specific escaping before including it.
+It is important that the correct escaping is used for the type of evaluation that will occur.
+</p>
+</recommendation>
+
+<example>
+<p>
+The following example shows two functions setting a name from a request.
+The first function uses <code>eval</code> to execute the <code>set_name</code> method.
+This is dangerous as it can allow a malicious user to execute arbitrary code on the server.
+For example, the user could supply the value <code>"' + exec('rm -rf') + '"</code>
+to destroy the server's file system.
+The second function calls the <code>set_name</code> method directly and is thus safe.
+
+</p>
+
+<sample src="examples/code_injection.rb" />
+</example>
+
+<references>
+<li>
+OWASP:
+<a href="https://www.owasp.org/index.php/Code_Injection">Code Injection</a>.
+</li>
+<li>
+Wikipedia: <a href="https://en.wikipedia.org/wiki/Code_injection">Code Injection</a>.
+</li>
+</references>
+</qhelp>

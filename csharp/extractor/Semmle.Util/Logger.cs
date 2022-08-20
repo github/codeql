@@ -74,7 +74,7 @@ namespace Semmle.Util.Logging
             }
             catch (Exception ex)  // lgtm[cs/catch-of-all-exceptions]
             {
-                Console.Error.WriteLine("SEMMLE: Couldn't initialise C# extractor output: " + ex.Message + "\n" + ex.StackTrace);
+                Console.Error.WriteLine("CodeQL: Couldn't initialise C# extractor output: " + ex.Message + "\n" + ex.StackTrace);
                 Console.Error.Flush();
                 throw;
             }

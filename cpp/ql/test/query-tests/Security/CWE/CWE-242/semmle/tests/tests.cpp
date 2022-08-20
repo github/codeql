@@ -308,3 +308,58 @@ namespace custom_sprintf_impl {
 		sprintf(buffer8, "12345678"); // BAD: potential buffer overflow
 	}
 }
+
+void test6(unsigned unsigned_value, int value) {
+	char buffer2[2], buffer3[3], buffer4[4], buffer5[5];
+	
+	sprintf(buffer4, "%u", unsigned_value); // BAD: buffer overflow
+	sprintf(buffer4, "%d", unsigned_value); // BAD: buffer overflow
+	if (unsigned_value < 1000) {
+		sprintf(buffer4, "%u", unsigned_value); // GOOD
+	}
+
+	sprintf(buffer4, "%u", -100); // BAD: buffer overflow
+
+	if(unsigned_value == (unsigned)-100) {
+		sprintf(buffer4, "%u", unsigned_value); // BAD: buffer overflow
+	}
+
+	sprintf(buffer4, "%d", value); // BAD: buffer overflow
+	if (value < 1000) {
+		sprintf(buffer4, "%d", value); // BAD: buffer overflow
+
+		if(value > -100) {
+			sprintf(buffer4, "%d", value); // GOOD
+		}
+	}
+
+	sprintf(buffer2, "%u", 0); // GOOD
+	sprintf(buffer2, "%d", 0); // GOOD
+	sprintf(buffer2, "%u", 5); // GOOD
+	sprintf(buffer2, "%d", 5); // GOOD
+
+	sprintf(buffer2, "%d", -1); // BAD
+	sprintf(buffer2, "%d", 9); // GOOD
+	sprintf(buffer2, "%d", 10); // BAD
+
+	sprintf(buffer2, "%u", -1); // BAD
+	sprintf(buffer2, "%u", 9); // GOOD
+	sprintf(buffer2, "%u", 10); // BAD
+
+	unsigned char unsigned_char = unsigned_value;
+	sprintf(buffer3, "%u", (unsigned)unsigned_char); // BAD
+	sprintf(buffer4, "%u", (unsigned)unsigned_char); // GOOD: 0..255 fits
+
+	unsigned small = unsigned_value >> (sizeof(unsigned_value) * 8 - 9);  // in range 0..511
+	sprintf(buffer3, "%u", small); // BAD
+	sprintf(buffer4, "%u", small); // GOOD
+
+	small = unsigned_value & ((1u << 9) - 1);  // in range 0..511
+	sprintf(buffer3, "%u", small); // BAD
+	sprintf(buffer4, "%u", small); // GOOD: 0..511 fits
+
+	char c = value;
+
+	sprintf(buffer4, "%d", (int)c); // BAD: e.g. -127 does not fit
+	sprintf(buffer5, "%d", (int)c); // GOOD: -127..128 fits
+}

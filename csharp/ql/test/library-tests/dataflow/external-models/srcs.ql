@@ -8,21 +8,21 @@ class SourceModelTest extends SourceModelCsv {
   override predicate row(string row) {
     row =
       [
-        //"namespace;type;overrides;name;signature;ext;spec;kind",
-        "My.Qltest;A;false;Src1;();;ReturnValue;qltest",
-        "My.Qltest;A;false;Src1;(System.String);;ReturnValue;qltest",
-        "My.Qltest;A;false;Src1;;;ReturnValue;qltest-all-overloads",
-        "My.Qltest;A;false;Src2;();;ReturnValue;qltest",
-        "My.Qltest;A;false;Src3;();;ReturnValue;qltest",
-        "My.Qltest;A;true;Src2;();;ReturnValue;qltest-w-subtypes",
-        "My.Qltest;A;true;Src3;();;ReturnValue;qltest-w-subtypes",
-        "My.Qltest;A;false;SrcArg;(System.Object);;Argument[0];qltest-argnum",
-        "My.Qltest;A;false;SrcArg;(System.Object);;Argument;qltest-argany",
-        "My.Qltest;A;true;SrcParam;(System.Object);;Parameter[0];qltest-param-override",
-        "My.Qltest;SourceAttribute;false;;;Attribute;ReturnValue;qltest-retval",
-        "My.Qltest;SourceAttribute;false;;;Attribute;Parameter;qltest-param",
-        "My.Qltest;SourceAttribute;false;;;Attribute;;qltest-nospec",
-        "My.Qltest;A;false;SrcTwoArg;(System.String,System.String);;ReturnValue;qltest"
+        //"namespace;type;overrides;name;signature;ext;spec;kind;provenance",
+        "My.Qltest;A;false;Src1;();;ReturnValue;local;manual",
+        "My.Qltest;A;false;Src1;(System.String);;ReturnValue;local;manual",
+        "My.Qltest;A;false;Src1;;;ReturnValue;local;manual",
+        "My.Qltest;A;false;Src2;();;ReturnValue;local;manual",
+        "My.Qltest;A;false;Src3;();;ReturnValue;local;manual",
+        "My.Qltest;A;true;Src2;();;ReturnValue;local;manual",
+        "My.Qltest;A;true;Src3;();;ReturnValue;local;manual",
+        "My.Qltest;A;false;SrcArg;(System.Object);;Argument[0];local;manual",
+        "My.Qltest;A;false;SrcArg;(System.Object);;Argument;local;manual",
+        "My.Qltest;A;true;SrcParam;(System.Object);;Parameter[0];local;manual",
+        "My.Qltest;SourceAttribute;false;;;Attribute;ReturnValue;local;manual",
+        "My.Qltest;SourceAttribute;false;;;Attribute;Parameter;local;manual",
+        "My.Qltest;SourceAttribute;false;;;Attribute;;local;manual",
+        "My.Qltest;A;false;SrcTwoArg;(System.String,System.String);;ReturnValue;local;manual"
       ]
   }
 }

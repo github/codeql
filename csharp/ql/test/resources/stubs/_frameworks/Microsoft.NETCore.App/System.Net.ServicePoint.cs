@@ -4,22 +4,22 @@ namespace System
 {
     namespace Net
     {
-        // Generated from `System.Net.BindIPEndPoint` in `System.Net.ServicePoint, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
+        // Generated from `System.Net.BindIPEndPoint` in `System.Net.ServicePoint, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
         public delegate System.Net.IPEndPoint BindIPEndPoint(System.Net.ServicePoint servicePoint, System.Net.IPEndPoint remoteEndPoint, int retryCount);
 
-        // Generated from `System.Net.SecurityProtocolType` in `System.Net.ServicePoint, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
+        // Generated from `System.Net.SecurityProtocolType` in `System.Net.ServicePoint, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
         [System.Flags]
-        public enum SecurityProtocolType
+        public enum SecurityProtocolType : int
         {
-            Ssl3,
-            SystemDefault,
-            Tls,
-            Tls11,
-            Tls12,
-            Tls13,
+            Ssl3 = 48,
+            SystemDefault = 0,
+            Tls = 192,
+            Tls11 = 768,
+            Tls12 = 3072,
+            Tls13 = 12288,
         }
 
-        // Generated from `System.Net.ServicePoint` in `System.Net.ServicePoint, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
+        // Generated from `System.Net.ServicePoint` in `System.Net.ServicePoint, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
         public class ServicePoint
         {
             public System.Uri Address { get => throw null; }
@@ -41,7 +41,7 @@ namespace System
             public bool UseNagleAlgorithm { get => throw null; set => throw null; }
         }
 
-        // Generated from `System.Net.ServicePointManager` in `System.Net.ServicePoint, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
+        // Generated from `System.Net.ServicePointManager` in `System.Net.ServicePoint, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
         public class ServicePointManager
         {
             public static bool CheckCertificateRevocationList { get => throw null; set => throw null; }
@@ -52,9 +52,9 @@ namespace System
             public static bool EnableDnsRoundRobin { get => throw null; set => throw null; }
             public static System.Net.Security.EncryptionPolicy EncryptionPolicy { get => throw null; }
             public static bool Expect100Continue { get => throw null; set => throw null; }
-            public static System.Net.ServicePoint FindServicePoint(string uriString, System.Net.IWebProxy proxy) => throw null;
-            public static System.Net.ServicePoint FindServicePoint(System.Uri address, System.Net.IWebProxy proxy) => throw null;
             public static System.Net.ServicePoint FindServicePoint(System.Uri address) => throw null;
+            public static System.Net.ServicePoint FindServicePoint(System.Uri address, System.Net.IWebProxy proxy) => throw null;
+            public static System.Net.ServicePoint FindServicePoint(string uriString, System.Net.IWebProxy proxy) => throw null;
             public static int MaxServicePointIdleTime { get => throw null; set => throw null; }
             public static int MaxServicePoints { get => throw null; set => throw null; }
             public static bool ReusePort { get => throw null; set => throw null; }

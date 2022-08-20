@@ -82,6 +82,7 @@ import com.semmle.js.ast.SequenceExpression;
 import com.semmle.js.ast.SourceLocation;
 import com.semmle.js.ast.SpreadElement;
 import com.semmle.js.ast.Statement;
+import com.semmle.js.ast.StaticInitializer;
 import com.semmle.js.ast.Super;
 import com.semmle.js.ast.SwitchCase;
 import com.semmle.js.ast.SwitchStatement;
@@ -590,7 +591,7 @@ public class TypeScriptASTConverter {
         return convertTryStatement(node, loc);
       case "TupleType":
         return convertTupleType(node, loc);
-      case "NamedTupleMember": 
+      case "NamedTupleMember":
         return convertNamedTupleMember(node, loc);
       case "TypeAliasDeclaration":
         return convertTypeAliasDeclaration(node, loc);
@@ -632,6 +633,8 @@ public class TypeScriptASTConverter {
         return convertWithStatement(node, loc);
       case "YieldExpression":
         return convertYieldExpression(node, loc);
+      case "ClassStaticBlockDeclaration":
+        return convertStaticInitializerBlock(node, loc);
       default:
         throw new ParseError(
             "Unsupported TypeScript syntax " + kind, getSourceLocation(node).getStart());
@@ -864,6 +867,11 @@ public class TypeScriptASTConverter {
       default:
         return new BinaryExpression(loc, operator, left, right);
     }
+  }
+
+  private Node convertStaticInitializerBlock(JsonObject node, SourceLocation loc) throws ParseError {
+    BlockStatement body = new BlockStatement(loc, convertChildren(node.get("body").getAsJsonObject(), "statements"));
+    return new StaticInitializer(loc, body);
   }
 
   private Node convertBlock(JsonObject node, SourceLocation loc) throws ParseError {
@@ -1398,7 +1406,8 @@ public class TypeScriptASTConverter {
     boolean hasImported = hasChild(node, "propertyName");
     Identifier imported = convertChild(node, hasImported ? "propertyName" : "name");
     Identifier local = convertChild(node, "name");
-    return new ImportSpecifier(loc, imported, local);
+    boolean isTypeOnly = node.get("isTypeOnly").getAsBoolean() == true;
+    return new ImportSpecifier(loc, imported, local, isTypeOnly);
   }
 
   private Node convertImportType(JsonObject node, SourceLocation loc) throws ParseError {
@@ -1701,7 +1710,9 @@ public class TypeScriptASTConverter {
     }
     if (nameNode instanceof Literal) {
       // Declaration of form: declare module "X" {...}
-      return new ExternalModuleDeclaration(loc, (Literal) nameNode, body);
+      ExternalModuleDeclaration decl = new ExternalModuleDeclaration(loc, (Literal) nameNode, body);
+      attachSymbolInformation(decl, node);
+      return decl;
     }
     if (hasFlag(node, "GlobalAugmentation")) {
       // Declaration of form: declare global {...}

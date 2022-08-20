@@ -1,0 +1,578 @@
+nodes
+| app.js:8:18:8:34 | req.query.rawHtml |
+| app.js:8:18:8:34 | req.query.rawHtml |
+| app.js:8:18:8:34 | req.query.rawHtml |
+| app.js:11:26:11:46 | req.que ... tmlProp |
+| app.js:11:26:11:46 | req.que ... tmlProp |
+| app.js:11:26:11:46 | req.que ... tmlProp |
+| app.js:14:33:14:64 | req.que ... eralRaw |
+| app.js:14:33:14:64 | req.que ... eralRaw |
+| app.js:14:33:14:64 | req.que ... eralRaw |
+| app.js:16:33:16:64 | req.que ... CodeRaw |
+| app.js:16:33:16:64 | req.que ... CodeRaw |
+| app.js:16:33:16:64 | req.que ... CodeRaw |
+| app.js:20:38:20:74 | req.que ... ringRaw |
+| app.js:20:38:20:74 | req.que ... ringRaw |
+| app.js:20:38:20:74 | req.que ... ringRaw |
+| app.js:27:18:27:34 | req.query.rawHtml |
+| app.js:27:18:27:34 | req.query.rawHtml |
+| app.js:27:18:27:34 | req.query.rawHtml |
+| app.js:30:26:30:46 | req.que ... tmlProp |
+| app.js:30:26:30:46 | req.que ... tmlProp |
+| app.js:30:26:30:46 | req.que ... tmlProp |
+| app.js:33:33:33:64 | req.que ... eralRaw |
+| app.js:33:33:33:64 | req.que ... eralRaw |
+| app.js:33:33:33:64 | req.que ... eralRaw |
+| app.js:35:33:35:64 | req.que ... CodeRaw |
+| app.js:35:33:35:64 | req.que ... CodeRaw |
+| app.js:35:33:35:64 | req.que ... CodeRaw |
+| app.js:39:38:39:74 | req.que ... ringRaw |
+| app.js:39:38:39:74 | req.que ... ringRaw |
+| app.js:39:38:39:74 | req.que ... ringRaw |
+| app.js:46:18:46:34 | req.query.rawHtml |
+| app.js:46:18:46:34 | req.query.rawHtml |
+| app.js:46:18:46:34 | req.query.rawHtml |
+| app.js:49:26:49:46 | req.que ... tmlProp |
+| app.js:49:26:49:46 | req.que ... tmlProp |
+| app.js:49:26:49:46 | req.que ... tmlProp |
+| app.js:52:33:52:64 | req.que ... eralRaw |
+| app.js:52:33:52:64 | req.que ... eralRaw |
+| app.js:52:33:52:64 | req.que ... eralRaw |
+| app.js:54:33:54:64 | req.que ... CodeRaw |
+| app.js:54:33:54:64 | req.que ... CodeRaw |
+| app.js:54:33:54:64 | req.que ... CodeRaw |
+| app.js:55:37:55:72 | req.que ... JsonRaw |
+| app.js:55:37:55:72 | req.que ... JsonRaw |
+| app.js:55:37:55:72 | req.que ... JsonRaw |
+| app.js:59:38:59:74 | req.que ... ringRaw |
+| app.js:59:38:59:74 | req.que ... ringRaw |
+| app.js:59:38:59:74 | req.que ... ringRaw |
+| app.js:66:18:66:34 | req.query.rawHtml |
+| app.js:66:18:66:34 | req.query.rawHtml |
+| app.js:66:18:66:34 | req.query.rawHtml |
+| projectA/src/index.js:6:38:6:53 | req.query.taintA |
+| projectA/src/index.js:6:38:6:53 | req.query.taintA |
+| projectA/src/index.js:6:38:6:53 | req.query.taintA |
+| projectA/src/index.js:12:16:12:30 | req.query.sinkA |
+| projectA/src/index.js:12:16:12:30 | req.query.sinkA |
+| projectA/src/index.js:12:16:12:30 | req.query.sinkA |
+| projectA/src/index.js:17:16:17:30 | req.query.sinkA |
+| projectA/src/index.js:17:16:17:30 | req.query.sinkA |
+| projectA/src/index.js:17:16:17:30 | req.query.sinkA |
+| projectA/src/index.js:22:16:22:30 | req.query.sinkA |
+| projectA/src/index.js:22:16:22:30 | req.query.sinkA |
+| projectA/src/index.js:22:16:22:30 | req.query.sinkA |
+| projectA/src/index.js:37:16:37:30 | req.query.sinkA |
+| projectA/src/index.js:37:16:37:30 | req.query.sinkA |
+| projectA/src/index.js:37:16:37:30 | req.query.sinkA |
+| projectA/src/index.js:42:16:42:30 | req.query.sinkA |
+| projectA/src/index.js:42:16:42:30 | req.query.sinkA |
+| projectA/src/index.js:42:16:42:30 | req.query.sinkA |
+| projectA/src/index.js:47:16:47:30 | req.query.sinkA |
+| projectA/src/index.js:47:16:47:30 | req.query.sinkA |
+| projectA/src/index.js:47:16:47:30 | req.query.sinkA |
+| projectA/views/main.ejs:2:1:2:12 | <%- sinkA %> |
+| projectA/views/main.ejs:2:1:2:12 | <%- sinkA %> |
+| projectA/views/main.ejs:2:1:2:12 | <%- sinkA %> |
+| projectA/views/main.ejs:2:5:2:9 | sinkA |
+| projectA/views/main.ejs:2:5:2:9 | sinkA |
+| projectA/views/main.ejs:5:1:5:26 | <%- taintedInMiddleware %> |
+| projectA/views/main.ejs:5:1:5:26 | <%- taintedInMiddleware %> |
+| projectA/views/main.ejs:5:1:5:26 | <%- taintedInMiddleware %> |
+| projectA/views/main.ejs:5:5:5:23 | taintedInMiddleware |
+| projectA/views/main.ejs:5:5:5:23 | taintedInMiddleware |
+| projectA/views/subfolder/index.ejs:2:1:2:12 | <%- sinkA %> |
+| projectA/views/subfolder/index.ejs:2:1:2:12 | <%- sinkA %> |
+| projectA/views/subfolder/index.ejs:2:1:2:12 | <%- sinkA %> |
+| projectA/views/subfolder/index.ejs:2:5:2:9 | sinkA |
+| projectA/views/subfolder/index.ejs:2:5:2:9 | sinkA |
+| projectA/views/subfolder/other.ejs:2:1:2:12 | <%- sinkA %> |
+| projectA/views/subfolder/other.ejs:2:1:2:12 | <%- sinkA %> |
+| projectA/views/subfolder/other.ejs:2:1:2:12 | <%- sinkA %> |
+| projectA/views/subfolder/other.ejs:2:5:2:9 | sinkA |
+| projectA/views/subfolder/other.ejs:2:5:2:9 | sinkA |
+| projectA/views/upward_traversal.ejs:1:1:1:12 | <%- sinkA %> |
+| projectA/views/upward_traversal.ejs:1:1:1:12 | <%- sinkA %> |
+| projectA/views/upward_traversal.ejs:1:1:1:12 | <%- sinkA %> |
+| projectA/views/upward_traversal.ejs:1:5:1:9 | sinkA |
+| projectA/views/upward_traversal.ejs:1:5:1:9 | sinkA |
+| projectB/src/index.js:6:38:6:53 | req.query.taintB |
+| projectB/src/index.js:6:38:6:53 | req.query.taintB |
+| projectB/src/index.js:6:38:6:53 | req.query.taintB |
+| projectB/src/index.js:13:16:13:30 | req.query.sinkB |
+| projectB/src/index.js:13:16:13:30 | req.query.sinkB |
+| projectB/src/index.js:13:16:13:30 | req.query.sinkB |
+| projectB/src/index.js:18:16:18:30 | req.query.sinkB |
+| projectB/src/index.js:18:16:18:30 | req.query.sinkB |
+| projectB/src/index.js:18:16:18:30 | req.query.sinkB |
+| projectB/src/index.js:23:16:23:30 | req.query.sinkB |
+| projectB/src/index.js:23:16:23:30 | req.query.sinkB |
+| projectB/src/index.js:23:16:23:30 | req.query.sinkB |
+| projectB/src/index.js:38:16:38:30 | req.query.sinkB |
+| projectB/src/index.js:38:16:38:30 | req.query.sinkB |
+| projectB/src/index.js:38:16:38:30 | req.query.sinkB |
+| projectB/src/index.js:43:16:43:30 | req.query.sinkB |
+| projectB/src/index.js:43:16:43:30 | req.query.sinkB |
+| projectB/src/index.js:43:16:43:30 | req.query.sinkB |
+| projectB/views/main.ejs:3:1:3:12 | <%- sinkB %> |
+| projectB/views/main.ejs:3:1:3:12 | <%- sinkB %> |
+| projectB/views/main.ejs:3:1:3:12 | <%- sinkB %> |
+| projectB/views/main.ejs:3:5:3:9 | sinkB |
+| projectB/views/main.ejs:3:5:3:9 | sinkB |
+| projectB/views/main.ejs:5:1:5:26 | <%- taintedInMiddleware %> |
+| projectB/views/main.ejs:5:1:5:26 | <%- taintedInMiddleware %> |
+| projectB/views/main.ejs:5:1:5:26 | <%- taintedInMiddleware %> |
+| projectB/views/main.ejs:5:5:5:23 | taintedInMiddleware |
+| projectB/views/main.ejs:5:5:5:23 | taintedInMiddleware |
+| projectB/views/subfolder/index.ejs:3:1:3:12 | <%- sinkB %> |
+| projectB/views/subfolder/index.ejs:3:1:3:12 | <%- sinkB %> |
+| projectB/views/subfolder/index.ejs:3:1:3:12 | <%- sinkB %> |
+| projectB/views/subfolder/index.ejs:3:5:3:9 | sinkB |
+| projectB/views/subfolder/index.ejs:3:5:3:9 | sinkB |
+| projectB/views/subfolder/other.ejs:3:1:3:12 | <%- sinkB %> |
+| projectB/views/subfolder/other.ejs:3:1:3:12 | <%- sinkB %> |
+| projectB/views/subfolder/other.ejs:3:1:3:12 | <%- sinkB %> |
+| projectB/views/subfolder/other.ejs:3:5:3:9 | sinkB |
+| projectB/views/subfolder/other.ejs:3:5:3:9 | sinkB |
+| views/angularjs_include.ejs:3:5:3:18 | <%- rawHtml %> |
+| views/angularjs_include.ejs:3:5:3:18 | <%- rawHtml %> |
+| views/angularjs_include.ejs:3:5:3:18 | <%- rawHtml %> |
+| views/angularjs_include.ejs:3:9:3:15 | rawHtml |
+| views/angularjs_include.ejs:3:9:3:15 | rawHtml |
+| views/angularjs_sinks.ejs:4:9:4:22 | <%- rawHtml %> |
+| views/angularjs_sinks.ejs:4:9:4:22 | <%- rawHtml %> |
+| views/angularjs_sinks.ejs:4:9:4:22 | <%- rawHtml %> |
+| views/angularjs_sinks.ejs:4:13:4:19 | rawHtml |
+| views/angularjs_sinks.ejs:4:13:4:19 | rawHtml |
+| views/ejs_include1.ejs:1:1:1:10 | <%- foo %> |
+| views/ejs_include1.ejs:1:1:1:10 | <%- foo %> |
+| views/ejs_include1.ejs:1:1:1:10 | <%- foo %> |
+| views/ejs_include1.ejs:1:5:1:7 | foo |
+| views/ejs_include1.ejs:1:5:1:7 | foo |
+| views/ejs_include2.ejs:1:1:1:14 | <%- rawHtml %> |
+| views/ejs_include2.ejs:1:1:1:14 | <%- rawHtml %> |
+| views/ejs_include2.ejs:1:1:1:14 | <%- rawHtml %> |
+| views/ejs_include2.ejs:1:5:1:11 | rawHtml |
+| views/ejs_include2.ejs:1:5:1:11 | rawHtml |
+| views/ejs_sinks.ejs:4:9:4:22 | <%- rawHtml %> |
+| views/ejs_sinks.ejs:4:9:4:22 | <%- rawHtml %> |
+| views/ejs_sinks.ejs:4:9:4:22 | <%- rawHtml %> |
+| views/ejs_sinks.ejs:4:13:4:19 | rawHtml |
+| views/ejs_sinks.ejs:4:13:4:19 | rawHtml |
+| views/ejs_sinks.ejs:7:9:7:33 | <%- object.rawHtmlProp %> |
+| views/ejs_sinks.ejs:7:9:7:33 | <%- object.rawHtmlProp %> |
+| views/ejs_sinks.ejs:7:9:7:33 | <%- object.rawHtmlProp %> |
+| views/ejs_sinks.ejs:7:13:7:30 | object.rawHtmlProp |
+| views/ejs_sinks.ejs:7:13:7:30 | object.rawHtmlProp |
+| views/ejs_sinks.ejs:11:43:11:71 | <%- dataInStringLiteralRaw %> |
+| views/ejs_sinks.ejs:11:43:11:71 | <%- dataInStringLiteralRaw %> |
+| views/ejs_sinks.ejs:11:43:11:71 | <%- dataInStringLiteralRaw %> |
+| views/ejs_sinks.ejs:11:47:11:68 | dataInS ... eralRaw |
+| views/ejs_sinks.ejs:11:47:11:68 | dataInS ... eralRaw |
+| views/ejs_sinks.ejs:14:42:14:70 | <%- dataInGeneratedCodeRaw %> |
+| views/ejs_sinks.ejs:14:42:14:70 | <%- dataInGeneratedCodeRaw %> |
+| views/ejs_sinks.ejs:14:42:14:70 | <%- dataInGeneratedCodeRaw %> |
+| views/ejs_sinks.ejs:14:46:14:67 | dataInG ... CodeRaw |
+| views/ejs_sinks.ejs:14:46:14:67 | dataInG ... CodeRaw |
+| views/ejs_sinks.ejs:22:39:22:72 | <%- dataInEventHandlerStringRaw %> |
+| views/ejs_sinks.ejs:22:39:22:72 | <%- dataInEventHandlerStringRaw %> |
+| views/ejs_sinks.ejs:22:39:22:72 | <%- dataInEventHandlerStringRaw %> |
+| views/ejs_sinks.ejs:22:43:22:69 | dataInE ... ringRaw |
+| views/ejs_sinks.ejs:22:43:22:69 | dataInE ... ringRaw |
+| views/ejs_sinks.ejs:24:44:24:50 | rawHtml |
+| views/ejs_sinks.ejs:24:44:24:50 | rawHtml |
+| views/hbs_sinks.hbs:9:9:9:23 | {{{ rawHtml }}} |
+| views/hbs_sinks.hbs:9:9:9:23 | {{{ rawHtml }}} |
+| views/hbs_sinks.hbs:9:9:9:23 | {{{ rawHtml }}} |
+| views/hbs_sinks.hbs:9:13:9:19 | rawHtml |
+| views/hbs_sinks.hbs:9:13:9:19 | rawHtml |
+| views/hbs_sinks.hbs:10:9:10:23 | {{{~rawHtml }}} |
+| views/hbs_sinks.hbs:10:9:10:23 | {{{~rawHtml }}} |
+| views/hbs_sinks.hbs:10:9:10:23 | {{{~rawHtml }}} |
+| views/hbs_sinks.hbs:10:13:10:19 | rawHtml |
+| views/hbs_sinks.hbs:10:13:10:19 | rawHtml |
+| views/hbs_sinks.hbs:11:9:11:23 | {{{ rawHtml~}}} |
+| views/hbs_sinks.hbs:11:9:11:23 | {{{ rawHtml~}}} |
+| views/hbs_sinks.hbs:11:9:11:23 | {{{ rawHtml~}}} |
+| views/hbs_sinks.hbs:11:13:11:19 | rawHtml |
+| views/hbs_sinks.hbs:11:13:11:19 | rawHtml |
+| views/hbs_sinks.hbs:12:9:12:23 | {{{~rawHtml~}}} |
+| views/hbs_sinks.hbs:12:9:12:23 | {{{~rawHtml~}}} |
+| views/hbs_sinks.hbs:12:9:12:23 | {{{~rawHtml~}}} |
+| views/hbs_sinks.hbs:12:13:12:19 | rawHtml |
+| views/hbs_sinks.hbs:12:13:12:19 | rawHtml |
+| views/hbs_sinks.hbs:13:9:13:25 | {{{~ rawHtml ~}}} |
+| views/hbs_sinks.hbs:13:9:13:25 | {{{~ rawHtml ~}}} |
+| views/hbs_sinks.hbs:13:9:13:25 | {{{~ rawHtml ~}}} |
+| views/hbs_sinks.hbs:13:14:13:20 | rawHtml |
+| views/hbs_sinks.hbs:13:14:13:20 | rawHtml |
+| views/hbs_sinks.hbs:15:9:15:22 | {{& rawHtml }} |
+| views/hbs_sinks.hbs:15:9:15:22 | {{& rawHtml }} |
+| views/hbs_sinks.hbs:15:9:15:22 | {{& rawHtml }} |
+| views/hbs_sinks.hbs:15:13:15:19 | rawHtml |
+| views/hbs_sinks.hbs:15:13:15:19 | rawHtml |
+| views/hbs_sinks.hbs:19:9:19:34 | {{{ object.rawHtmlProp }}} |
+| views/hbs_sinks.hbs:19:9:19:34 | {{{ object.rawHtmlProp }}} |
+| views/hbs_sinks.hbs:19:9:19:34 | {{{ object.rawHtmlProp }}} |
+| views/hbs_sinks.hbs:19:13:19:30 | object.rawHtmlProp |
+| views/hbs_sinks.hbs:19:13:19:30 | object.rawHtmlProp |
+| views/hbs_sinks.hbs:23:43:23:72 | {{{ dataInStringLiteralRaw }}} |
+| views/hbs_sinks.hbs:23:43:23:72 | {{{ dataInStringLiteralRaw }}} |
+| views/hbs_sinks.hbs:23:43:23:72 | {{{ dataInStringLiteralRaw }}} |
+| views/hbs_sinks.hbs:23:47:23:68 | dataInS ... eralRaw |
+| views/hbs_sinks.hbs:23:47:23:68 | dataInS ... eralRaw |
+| views/hbs_sinks.hbs:26:42:26:71 | {{{ dataInGeneratedCodeRaw }}} |
+| views/hbs_sinks.hbs:26:42:26:71 | {{{ dataInGeneratedCodeRaw }}} |
+| views/hbs_sinks.hbs:26:42:26:71 | {{{ dataInGeneratedCodeRaw }}} |
+| views/hbs_sinks.hbs:26:46:26:67 | dataInG ... CodeRaw |
+| views/hbs_sinks.hbs:26:46:26:67 | dataInG ... CodeRaw |
+| views/hbs_sinks.hbs:34:39:34:73 | {{{ dataInEventHandlerStringRaw }}} |
+| views/hbs_sinks.hbs:34:39:34:73 | {{{ dataInEventHandlerStringRaw }}} |
+| views/hbs_sinks.hbs:34:39:34:73 | {{{ dataInEventHandlerStringRaw }}} |
+| views/hbs_sinks.hbs:34:43:34:69 | dataInE ... ringRaw |
+| views/hbs_sinks.hbs:34:43:34:69 | dataInE ... ringRaw |
+| views/njk_sinks.njk:4:12:4:18 | rawHtml |
+| views/njk_sinks.njk:4:12:4:18 | rawHtml |
+| views/njk_sinks.njk:4:12:4:18 | rawHtml |
+| views/njk_sinks.njk:7:12:7:29 | object.rawHtmlProp |
+| views/njk_sinks.njk:7:12:7:29 | object.rawHtmlProp |
+| views/njk_sinks.njk:7:12:7:29 | object.rawHtmlProp |
+| views/njk_sinks.njk:11:46:11:67 | dataInS ... eralRaw |
+| views/njk_sinks.njk:11:46:11:67 | dataInS ... eralRaw |
+| views/njk_sinks.njk:11:46:11:67 | dataInS ... eralRaw |
+| views/njk_sinks.njk:14:45:14:66 | dataInG ... CodeRaw |
+| views/njk_sinks.njk:14:45:14:66 | dataInG ... CodeRaw |
+| views/njk_sinks.njk:14:45:14:66 | dataInG ... CodeRaw |
+| views/njk_sinks.njk:15:49:15:74 | dataInG ... JsonRaw |
+| views/njk_sinks.njk:15:49:15:74 | dataInG ... JsonRaw |
+| views/njk_sinks.njk:15:49:15:81 | dataInG ...  \| json |
+| views/njk_sinks.njk:15:49:15:81 | dataInG ...  \| json |
+| views/njk_sinks.njk:15:49:15:81 | dataInG ...  \| json |
+| views/njk_sinks.njk:23:42:23:68 | dataInE ... ringRaw |
+| views/njk_sinks.njk:23:42:23:68 | dataInE ... ringRaw |
+| views/njk_sinks.njk:23:42:23:68 | dataInE ... ringRaw |
+edges
+| app.js:8:18:8:34 | req.query.rawHtml | views/ejs_include2.ejs:1:5:1:11 | rawHtml |
+| app.js:8:18:8:34 | req.query.rawHtml | views/ejs_include2.ejs:1:5:1:11 | rawHtml |
+| app.js:8:18:8:34 | req.query.rawHtml | views/ejs_include2.ejs:1:5:1:11 | rawHtml |
+| app.js:8:18:8:34 | req.query.rawHtml | views/ejs_include2.ejs:1:5:1:11 | rawHtml |
+| app.js:8:18:8:34 | req.query.rawHtml | views/ejs_sinks.ejs:4:13:4:19 | rawHtml |
+| app.js:8:18:8:34 | req.query.rawHtml | views/ejs_sinks.ejs:4:13:4:19 | rawHtml |
+| app.js:8:18:8:34 | req.query.rawHtml | views/ejs_sinks.ejs:4:13:4:19 | rawHtml |
+| app.js:8:18:8:34 | req.query.rawHtml | views/ejs_sinks.ejs:4:13:4:19 | rawHtml |
+| app.js:8:18:8:34 | req.query.rawHtml | views/ejs_sinks.ejs:24:44:24:50 | rawHtml |
+| app.js:8:18:8:34 | req.query.rawHtml | views/ejs_sinks.ejs:24:44:24:50 | rawHtml |
+| app.js:8:18:8:34 | req.query.rawHtml | views/ejs_sinks.ejs:24:44:24:50 | rawHtml |
+| app.js:8:18:8:34 | req.query.rawHtml | views/ejs_sinks.ejs:24:44:24:50 | rawHtml |
+| app.js:11:26:11:46 | req.que ... tmlProp | views/ejs_sinks.ejs:7:13:7:30 | object.rawHtmlProp |
+| app.js:11:26:11:46 | req.que ... tmlProp | views/ejs_sinks.ejs:7:13:7:30 | object.rawHtmlProp |
+| app.js:11:26:11:46 | req.que ... tmlProp | views/ejs_sinks.ejs:7:13:7:30 | object.rawHtmlProp |
+| app.js:11:26:11:46 | req.que ... tmlProp | views/ejs_sinks.ejs:7:13:7:30 | object.rawHtmlProp |
+| app.js:14:33:14:64 | req.que ... eralRaw | views/ejs_sinks.ejs:11:47:11:68 | dataInS ... eralRaw |
+| app.js:14:33:14:64 | req.que ... eralRaw | views/ejs_sinks.ejs:11:47:11:68 | dataInS ... eralRaw |
+| app.js:14:33:14:64 | req.que ... eralRaw | views/ejs_sinks.ejs:11:47:11:68 | dataInS ... eralRaw |
+| app.js:14:33:14:64 | req.que ... eralRaw | views/ejs_sinks.ejs:11:47:11:68 | dataInS ... eralRaw |
+| app.js:16:33:16:64 | req.que ... CodeRaw | views/ejs_sinks.ejs:14:46:14:67 | dataInG ... CodeRaw |
+| app.js:16:33:16:64 | req.que ... CodeRaw | views/ejs_sinks.ejs:14:46:14:67 | dataInG ... CodeRaw |
+| app.js:16:33:16:64 | req.que ... CodeRaw | views/ejs_sinks.ejs:14:46:14:67 | dataInG ... CodeRaw |
+| app.js:16:33:16:64 | req.que ... CodeRaw | views/ejs_sinks.ejs:14:46:14:67 | dataInG ... CodeRaw |
+| app.js:20:38:20:74 | req.que ... ringRaw | views/ejs_sinks.ejs:22:43:22:69 | dataInE ... ringRaw |
+| app.js:20:38:20:74 | req.que ... ringRaw | views/ejs_sinks.ejs:22:43:22:69 | dataInE ... ringRaw |
+| app.js:20:38:20:74 | req.que ... ringRaw | views/ejs_sinks.ejs:22:43:22:69 | dataInE ... ringRaw |
+| app.js:20:38:20:74 | req.que ... ringRaw | views/ejs_sinks.ejs:22:43:22:69 | dataInE ... ringRaw |
+| app.js:27:18:27:34 | req.query.rawHtml | views/hbs_sinks.hbs:9:13:9:19 | rawHtml |
+| app.js:27:18:27:34 | req.query.rawHtml | views/hbs_sinks.hbs:9:13:9:19 | rawHtml |
+| app.js:27:18:27:34 | req.query.rawHtml | views/hbs_sinks.hbs:9:13:9:19 | rawHtml |
+| app.js:27:18:27:34 | req.query.rawHtml | views/hbs_sinks.hbs:9:13:9:19 | rawHtml |
+| app.js:27:18:27:34 | req.query.rawHtml | views/hbs_sinks.hbs:10:13:10:19 | rawHtml |
+| app.js:27:18:27:34 | req.query.rawHtml | views/hbs_sinks.hbs:10:13:10:19 | rawHtml |
+| app.js:27:18:27:34 | req.query.rawHtml | views/hbs_sinks.hbs:10:13:10:19 | rawHtml |
+| app.js:27:18:27:34 | req.query.rawHtml | views/hbs_sinks.hbs:10:13:10:19 | rawHtml |
+| app.js:27:18:27:34 | req.query.rawHtml | views/hbs_sinks.hbs:11:13:11:19 | rawHtml |
+| app.js:27:18:27:34 | req.query.rawHtml | views/hbs_sinks.hbs:11:13:11:19 | rawHtml |
+| app.js:27:18:27:34 | req.query.rawHtml | views/hbs_sinks.hbs:11:13:11:19 | rawHtml |
+| app.js:27:18:27:34 | req.query.rawHtml | views/hbs_sinks.hbs:11:13:11:19 | rawHtml |
+| app.js:27:18:27:34 | req.query.rawHtml | views/hbs_sinks.hbs:12:13:12:19 | rawHtml |
+| app.js:27:18:27:34 | req.query.rawHtml | views/hbs_sinks.hbs:12:13:12:19 | rawHtml |
+| app.js:27:18:27:34 | req.query.rawHtml | views/hbs_sinks.hbs:12:13:12:19 | rawHtml |
+| app.js:27:18:27:34 | req.query.rawHtml | views/hbs_sinks.hbs:12:13:12:19 | rawHtml |
+| app.js:27:18:27:34 | req.query.rawHtml | views/hbs_sinks.hbs:13:14:13:20 | rawHtml |
+| app.js:27:18:27:34 | req.query.rawHtml | views/hbs_sinks.hbs:13:14:13:20 | rawHtml |
+| app.js:27:18:27:34 | req.query.rawHtml | views/hbs_sinks.hbs:13:14:13:20 | rawHtml |
+| app.js:27:18:27:34 | req.query.rawHtml | views/hbs_sinks.hbs:13:14:13:20 | rawHtml |
+| app.js:27:18:27:34 | req.query.rawHtml | views/hbs_sinks.hbs:15:13:15:19 | rawHtml |
+| app.js:27:18:27:34 | req.query.rawHtml | views/hbs_sinks.hbs:15:13:15:19 | rawHtml |
+| app.js:27:18:27:34 | req.query.rawHtml | views/hbs_sinks.hbs:15:13:15:19 | rawHtml |
+| app.js:27:18:27:34 | req.query.rawHtml | views/hbs_sinks.hbs:15:13:15:19 | rawHtml |
+| app.js:30:26:30:46 | req.que ... tmlProp | views/hbs_sinks.hbs:19:13:19:30 | object.rawHtmlProp |
+| app.js:30:26:30:46 | req.que ... tmlProp | views/hbs_sinks.hbs:19:13:19:30 | object.rawHtmlProp |
+| app.js:30:26:30:46 | req.que ... tmlProp | views/hbs_sinks.hbs:19:13:19:30 | object.rawHtmlProp |
+| app.js:30:26:30:46 | req.que ... tmlProp | views/hbs_sinks.hbs:19:13:19:30 | object.rawHtmlProp |
+| app.js:33:33:33:64 | req.que ... eralRaw | views/hbs_sinks.hbs:23:47:23:68 | dataInS ... eralRaw |
+| app.js:33:33:33:64 | req.que ... eralRaw | views/hbs_sinks.hbs:23:47:23:68 | dataInS ... eralRaw |
+| app.js:33:33:33:64 | req.que ... eralRaw | views/hbs_sinks.hbs:23:47:23:68 | dataInS ... eralRaw |
+| app.js:33:33:33:64 | req.que ... eralRaw | views/hbs_sinks.hbs:23:47:23:68 | dataInS ... eralRaw |
+| app.js:35:33:35:64 | req.que ... CodeRaw | views/hbs_sinks.hbs:26:46:26:67 | dataInG ... CodeRaw |
+| app.js:35:33:35:64 | req.que ... CodeRaw | views/hbs_sinks.hbs:26:46:26:67 | dataInG ... CodeRaw |
+| app.js:35:33:35:64 | req.que ... CodeRaw | views/hbs_sinks.hbs:26:46:26:67 | dataInG ... CodeRaw |
+| app.js:35:33:35:64 | req.que ... CodeRaw | views/hbs_sinks.hbs:26:46:26:67 | dataInG ... CodeRaw |
+| app.js:39:38:39:74 | req.que ... ringRaw | views/hbs_sinks.hbs:34:43:34:69 | dataInE ... ringRaw |
+| app.js:39:38:39:74 | req.que ... ringRaw | views/hbs_sinks.hbs:34:43:34:69 | dataInE ... ringRaw |
+| app.js:39:38:39:74 | req.que ... ringRaw | views/hbs_sinks.hbs:34:43:34:69 | dataInE ... ringRaw |
+| app.js:39:38:39:74 | req.que ... ringRaw | views/hbs_sinks.hbs:34:43:34:69 | dataInE ... ringRaw |
+| app.js:46:18:46:34 | req.query.rawHtml | views/njk_sinks.njk:4:12:4:18 | rawHtml |
+| app.js:46:18:46:34 | req.query.rawHtml | views/njk_sinks.njk:4:12:4:18 | rawHtml |
+| app.js:46:18:46:34 | req.query.rawHtml | views/njk_sinks.njk:4:12:4:18 | rawHtml |
+| app.js:46:18:46:34 | req.query.rawHtml | views/njk_sinks.njk:4:12:4:18 | rawHtml |
+| app.js:46:18:46:34 | req.query.rawHtml | views/njk_sinks.njk:4:12:4:18 | rawHtml |
+| app.js:46:18:46:34 | req.query.rawHtml | views/njk_sinks.njk:4:12:4:18 | rawHtml |
+| app.js:46:18:46:34 | req.query.rawHtml | views/njk_sinks.njk:4:12:4:18 | rawHtml |
+| app.js:49:26:49:46 | req.que ... tmlProp | views/njk_sinks.njk:7:12:7:29 | object.rawHtmlProp |
+| app.js:49:26:49:46 | req.que ... tmlProp | views/njk_sinks.njk:7:12:7:29 | object.rawHtmlProp |
+| app.js:49:26:49:46 | req.que ... tmlProp | views/njk_sinks.njk:7:12:7:29 | object.rawHtmlProp |
+| app.js:49:26:49:46 | req.que ... tmlProp | views/njk_sinks.njk:7:12:7:29 | object.rawHtmlProp |
+| app.js:49:26:49:46 | req.que ... tmlProp | views/njk_sinks.njk:7:12:7:29 | object.rawHtmlProp |
+| app.js:49:26:49:46 | req.que ... tmlProp | views/njk_sinks.njk:7:12:7:29 | object.rawHtmlProp |
+| app.js:49:26:49:46 | req.que ... tmlProp | views/njk_sinks.njk:7:12:7:29 | object.rawHtmlProp |
+| app.js:52:33:52:64 | req.que ... eralRaw | views/njk_sinks.njk:11:46:11:67 | dataInS ... eralRaw |
+| app.js:52:33:52:64 | req.que ... eralRaw | views/njk_sinks.njk:11:46:11:67 | dataInS ... eralRaw |
+| app.js:52:33:52:64 | req.que ... eralRaw | views/njk_sinks.njk:11:46:11:67 | dataInS ... eralRaw |
+| app.js:52:33:52:64 | req.que ... eralRaw | views/njk_sinks.njk:11:46:11:67 | dataInS ... eralRaw |
+| app.js:52:33:52:64 | req.que ... eralRaw | views/njk_sinks.njk:11:46:11:67 | dataInS ... eralRaw |
+| app.js:52:33:52:64 | req.que ... eralRaw | views/njk_sinks.njk:11:46:11:67 | dataInS ... eralRaw |
+| app.js:52:33:52:64 | req.que ... eralRaw | views/njk_sinks.njk:11:46:11:67 | dataInS ... eralRaw |
+| app.js:54:33:54:64 | req.que ... CodeRaw | views/njk_sinks.njk:14:45:14:66 | dataInG ... CodeRaw |
+| app.js:54:33:54:64 | req.que ... CodeRaw | views/njk_sinks.njk:14:45:14:66 | dataInG ... CodeRaw |
+| app.js:54:33:54:64 | req.que ... CodeRaw | views/njk_sinks.njk:14:45:14:66 | dataInG ... CodeRaw |
+| app.js:54:33:54:64 | req.que ... CodeRaw | views/njk_sinks.njk:14:45:14:66 | dataInG ... CodeRaw |
+| app.js:54:33:54:64 | req.que ... CodeRaw | views/njk_sinks.njk:14:45:14:66 | dataInG ... CodeRaw |
+| app.js:54:33:54:64 | req.que ... CodeRaw | views/njk_sinks.njk:14:45:14:66 | dataInG ... CodeRaw |
+| app.js:54:33:54:64 | req.que ... CodeRaw | views/njk_sinks.njk:14:45:14:66 | dataInG ... CodeRaw |
+| app.js:55:37:55:72 | req.que ... JsonRaw | views/njk_sinks.njk:15:49:15:74 | dataInG ... JsonRaw |
+| app.js:55:37:55:72 | req.que ... JsonRaw | views/njk_sinks.njk:15:49:15:74 | dataInG ... JsonRaw |
+| app.js:55:37:55:72 | req.que ... JsonRaw | views/njk_sinks.njk:15:49:15:74 | dataInG ... JsonRaw |
+| app.js:55:37:55:72 | req.que ... JsonRaw | views/njk_sinks.njk:15:49:15:74 | dataInG ... JsonRaw |
+| app.js:59:38:59:74 | req.que ... ringRaw | views/njk_sinks.njk:23:42:23:68 | dataInE ... ringRaw |
+| app.js:59:38:59:74 | req.que ... ringRaw | views/njk_sinks.njk:23:42:23:68 | dataInE ... ringRaw |
+| app.js:59:38:59:74 | req.que ... ringRaw | views/njk_sinks.njk:23:42:23:68 | dataInE ... ringRaw |
+| app.js:59:38:59:74 | req.que ... ringRaw | views/njk_sinks.njk:23:42:23:68 | dataInE ... ringRaw |
+| app.js:59:38:59:74 | req.que ... ringRaw | views/njk_sinks.njk:23:42:23:68 | dataInE ... ringRaw |
+| app.js:59:38:59:74 | req.que ... ringRaw | views/njk_sinks.njk:23:42:23:68 | dataInE ... ringRaw |
+| app.js:59:38:59:74 | req.que ... ringRaw | views/njk_sinks.njk:23:42:23:68 | dataInE ... ringRaw |
+| app.js:66:18:66:34 | req.query.rawHtml | views/angularjs_include.ejs:3:9:3:15 | rawHtml |
+| app.js:66:18:66:34 | req.query.rawHtml | views/angularjs_include.ejs:3:9:3:15 | rawHtml |
+| app.js:66:18:66:34 | req.query.rawHtml | views/angularjs_include.ejs:3:9:3:15 | rawHtml |
+| app.js:66:18:66:34 | req.query.rawHtml | views/angularjs_include.ejs:3:9:3:15 | rawHtml |
+| app.js:66:18:66:34 | req.query.rawHtml | views/angularjs_sinks.ejs:4:13:4:19 | rawHtml |
+| app.js:66:18:66:34 | req.query.rawHtml | views/angularjs_sinks.ejs:4:13:4:19 | rawHtml |
+| app.js:66:18:66:34 | req.query.rawHtml | views/angularjs_sinks.ejs:4:13:4:19 | rawHtml |
+| app.js:66:18:66:34 | req.query.rawHtml | views/angularjs_sinks.ejs:4:13:4:19 | rawHtml |
+| projectA/src/index.js:6:38:6:53 | req.query.taintA | projectA/views/main.ejs:5:5:5:23 | taintedInMiddleware |
+| projectA/src/index.js:6:38:6:53 | req.query.taintA | projectA/views/main.ejs:5:5:5:23 | taintedInMiddleware |
+| projectA/src/index.js:6:38:6:53 | req.query.taintA | projectA/views/main.ejs:5:5:5:23 | taintedInMiddleware |
+| projectA/src/index.js:6:38:6:53 | req.query.taintA | projectA/views/main.ejs:5:5:5:23 | taintedInMiddleware |
+| projectA/src/index.js:12:16:12:30 | req.query.sinkA | projectA/views/main.ejs:2:5:2:9 | sinkA |
+| projectA/src/index.js:12:16:12:30 | req.query.sinkA | projectA/views/main.ejs:2:5:2:9 | sinkA |
+| projectA/src/index.js:12:16:12:30 | req.query.sinkA | projectA/views/main.ejs:2:5:2:9 | sinkA |
+| projectA/src/index.js:12:16:12:30 | req.query.sinkA | projectA/views/main.ejs:2:5:2:9 | sinkA |
+| projectA/src/index.js:17:16:17:30 | req.query.sinkA | projectA/views/main.ejs:2:5:2:9 | sinkA |
+| projectA/src/index.js:17:16:17:30 | req.query.sinkA | projectA/views/main.ejs:2:5:2:9 | sinkA |
+| projectA/src/index.js:17:16:17:30 | req.query.sinkA | projectA/views/main.ejs:2:5:2:9 | sinkA |
+| projectA/src/index.js:17:16:17:30 | req.query.sinkA | projectA/views/main.ejs:2:5:2:9 | sinkA |
+| projectA/src/index.js:22:16:22:30 | req.query.sinkA | projectA/views/subfolder/index.ejs:2:5:2:9 | sinkA |
+| projectA/src/index.js:22:16:22:30 | req.query.sinkA | projectA/views/subfolder/index.ejs:2:5:2:9 | sinkA |
+| projectA/src/index.js:22:16:22:30 | req.query.sinkA | projectA/views/subfolder/index.ejs:2:5:2:9 | sinkA |
+| projectA/src/index.js:22:16:22:30 | req.query.sinkA | projectA/views/subfolder/index.ejs:2:5:2:9 | sinkA |
+| projectA/src/index.js:37:16:37:30 | req.query.sinkA | projectA/views/subfolder/other.ejs:2:5:2:9 | sinkA |
+| projectA/src/index.js:37:16:37:30 | req.query.sinkA | projectA/views/subfolder/other.ejs:2:5:2:9 | sinkA |
+| projectA/src/index.js:37:16:37:30 | req.query.sinkA | projectA/views/subfolder/other.ejs:2:5:2:9 | sinkA |
+| projectA/src/index.js:37:16:37:30 | req.query.sinkA | projectA/views/subfolder/other.ejs:2:5:2:9 | sinkA |
+| projectA/src/index.js:42:16:42:30 | req.query.sinkA | projectA/views/subfolder/other.ejs:2:5:2:9 | sinkA |
+| projectA/src/index.js:42:16:42:30 | req.query.sinkA | projectA/views/subfolder/other.ejs:2:5:2:9 | sinkA |
+| projectA/src/index.js:42:16:42:30 | req.query.sinkA | projectA/views/subfolder/other.ejs:2:5:2:9 | sinkA |
+| projectA/src/index.js:42:16:42:30 | req.query.sinkA | projectA/views/subfolder/other.ejs:2:5:2:9 | sinkA |
+| projectA/src/index.js:47:16:47:30 | req.query.sinkA | projectA/views/upward_traversal.ejs:1:5:1:9 | sinkA |
+| projectA/src/index.js:47:16:47:30 | req.query.sinkA | projectA/views/upward_traversal.ejs:1:5:1:9 | sinkA |
+| projectA/src/index.js:47:16:47:30 | req.query.sinkA | projectA/views/upward_traversal.ejs:1:5:1:9 | sinkA |
+| projectA/src/index.js:47:16:47:30 | req.query.sinkA | projectA/views/upward_traversal.ejs:1:5:1:9 | sinkA |
+| projectA/views/main.ejs:2:5:2:9 | sinkA | projectA/views/main.ejs:2:1:2:12 | <%- sinkA %> |
+| projectA/views/main.ejs:2:5:2:9 | sinkA | projectA/views/main.ejs:2:1:2:12 | <%- sinkA %> |
+| projectA/views/main.ejs:2:5:2:9 | sinkA | projectA/views/main.ejs:2:1:2:12 | <%- sinkA %> |
+| projectA/views/main.ejs:2:5:2:9 | sinkA | projectA/views/main.ejs:2:1:2:12 | <%- sinkA %> |
+| projectA/views/main.ejs:5:5:5:23 | taintedInMiddleware | projectA/views/main.ejs:5:1:5:26 | <%- taintedInMiddleware %> |
+| projectA/views/main.ejs:5:5:5:23 | taintedInMiddleware | projectA/views/main.ejs:5:1:5:26 | <%- taintedInMiddleware %> |
+| projectA/views/main.ejs:5:5:5:23 | taintedInMiddleware | projectA/views/main.ejs:5:1:5:26 | <%- taintedInMiddleware %> |
+| projectA/views/main.ejs:5:5:5:23 | taintedInMiddleware | projectA/views/main.ejs:5:1:5:26 | <%- taintedInMiddleware %> |
+| projectA/views/subfolder/index.ejs:2:5:2:9 | sinkA | projectA/views/subfolder/index.ejs:2:1:2:12 | <%- sinkA %> |
+| projectA/views/subfolder/index.ejs:2:5:2:9 | sinkA | projectA/views/subfolder/index.ejs:2:1:2:12 | <%- sinkA %> |
+| projectA/views/subfolder/index.ejs:2:5:2:9 | sinkA | projectA/views/subfolder/index.ejs:2:1:2:12 | <%- sinkA %> |
+| projectA/views/subfolder/index.ejs:2:5:2:9 | sinkA | projectA/views/subfolder/index.ejs:2:1:2:12 | <%- sinkA %> |
+| projectA/views/subfolder/other.ejs:2:5:2:9 | sinkA | projectA/views/subfolder/other.ejs:2:1:2:12 | <%- sinkA %> |
+| projectA/views/subfolder/other.ejs:2:5:2:9 | sinkA | projectA/views/subfolder/other.ejs:2:1:2:12 | <%- sinkA %> |
+| projectA/views/subfolder/other.ejs:2:5:2:9 | sinkA | projectA/views/subfolder/other.ejs:2:1:2:12 | <%- sinkA %> |
+| projectA/views/subfolder/other.ejs:2:5:2:9 | sinkA | projectA/views/subfolder/other.ejs:2:1:2:12 | <%- sinkA %> |
+| projectA/views/upward_traversal.ejs:1:5:1:9 | sinkA | projectA/views/upward_traversal.ejs:1:1:1:12 | <%- sinkA %> |
+| projectA/views/upward_traversal.ejs:1:5:1:9 | sinkA | projectA/views/upward_traversal.ejs:1:1:1:12 | <%- sinkA %> |
+| projectA/views/upward_traversal.ejs:1:5:1:9 | sinkA | projectA/views/upward_traversal.ejs:1:1:1:12 | <%- sinkA %> |
+| projectA/views/upward_traversal.ejs:1:5:1:9 | sinkA | projectA/views/upward_traversal.ejs:1:1:1:12 | <%- sinkA %> |
+| projectB/src/index.js:6:38:6:53 | req.query.taintB | projectB/views/main.ejs:5:5:5:23 | taintedInMiddleware |
+| projectB/src/index.js:6:38:6:53 | req.query.taintB | projectB/views/main.ejs:5:5:5:23 | taintedInMiddleware |
+| projectB/src/index.js:6:38:6:53 | req.query.taintB | projectB/views/main.ejs:5:5:5:23 | taintedInMiddleware |
+| projectB/src/index.js:6:38:6:53 | req.query.taintB | projectB/views/main.ejs:5:5:5:23 | taintedInMiddleware |
+| projectB/src/index.js:13:16:13:30 | req.query.sinkB | projectB/views/main.ejs:3:5:3:9 | sinkB |
+| projectB/src/index.js:13:16:13:30 | req.query.sinkB | projectB/views/main.ejs:3:5:3:9 | sinkB |
+| projectB/src/index.js:13:16:13:30 | req.query.sinkB | projectB/views/main.ejs:3:5:3:9 | sinkB |
+| projectB/src/index.js:13:16:13:30 | req.query.sinkB | projectB/views/main.ejs:3:5:3:9 | sinkB |
+| projectB/src/index.js:18:16:18:30 | req.query.sinkB | projectB/views/main.ejs:3:5:3:9 | sinkB |
+| projectB/src/index.js:18:16:18:30 | req.query.sinkB | projectB/views/main.ejs:3:5:3:9 | sinkB |
+| projectB/src/index.js:18:16:18:30 | req.query.sinkB | projectB/views/main.ejs:3:5:3:9 | sinkB |
+| projectB/src/index.js:18:16:18:30 | req.query.sinkB | projectB/views/main.ejs:3:5:3:9 | sinkB |
+| projectB/src/index.js:23:16:23:30 | req.query.sinkB | projectB/views/subfolder/index.ejs:3:5:3:9 | sinkB |
+| projectB/src/index.js:23:16:23:30 | req.query.sinkB | projectB/views/subfolder/index.ejs:3:5:3:9 | sinkB |
+| projectB/src/index.js:23:16:23:30 | req.query.sinkB | projectB/views/subfolder/index.ejs:3:5:3:9 | sinkB |
+| projectB/src/index.js:23:16:23:30 | req.query.sinkB | projectB/views/subfolder/index.ejs:3:5:3:9 | sinkB |
+| projectB/src/index.js:38:16:38:30 | req.query.sinkB | projectB/views/subfolder/other.ejs:3:5:3:9 | sinkB |
+| projectB/src/index.js:38:16:38:30 | req.query.sinkB | projectB/views/subfolder/other.ejs:3:5:3:9 | sinkB |
+| projectB/src/index.js:38:16:38:30 | req.query.sinkB | projectB/views/subfolder/other.ejs:3:5:3:9 | sinkB |
+| projectB/src/index.js:38:16:38:30 | req.query.sinkB | projectB/views/subfolder/other.ejs:3:5:3:9 | sinkB |
+| projectB/src/index.js:43:16:43:30 | req.query.sinkB | projectB/views/subfolder/other.ejs:3:5:3:9 | sinkB |
+| projectB/src/index.js:43:16:43:30 | req.query.sinkB | projectB/views/subfolder/other.ejs:3:5:3:9 | sinkB |
+| projectB/src/index.js:43:16:43:30 | req.query.sinkB | projectB/views/subfolder/other.ejs:3:5:3:9 | sinkB |
+| projectB/src/index.js:43:16:43:30 | req.query.sinkB | projectB/views/subfolder/other.ejs:3:5:3:9 | sinkB |
+| projectB/views/main.ejs:3:5:3:9 | sinkB | projectB/views/main.ejs:3:1:3:12 | <%- sinkB %> |
+| projectB/views/main.ejs:3:5:3:9 | sinkB | projectB/views/main.ejs:3:1:3:12 | <%- sinkB %> |
+| projectB/views/main.ejs:3:5:3:9 | sinkB | projectB/views/main.ejs:3:1:3:12 | <%- sinkB %> |
+| projectB/views/main.ejs:3:5:3:9 | sinkB | projectB/views/main.ejs:3:1:3:12 | <%- sinkB %> |
+| projectB/views/main.ejs:5:5:5:23 | taintedInMiddleware | projectB/views/main.ejs:5:1:5:26 | <%- taintedInMiddleware %> |
+| projectB/views/main.ejs:5:5:5:23 | taintedInMiddleware | projectB/views/main.ejs:5:1:5:26 | <%- taintedInMiddleware %> |
+| projectB/views/main.ejs:5:5:5:23 | taintedInMiddleware | projectB/views/main.ejs:5:1:5:26 | <%- taintedInMiddleware %> |
+| projectB/views/main.ejs:5:5:5:23 | taintedInMiddleware | projectB/views/main.ejs:5:1:5:26 | <%- taintedInMiddleware %> |
+| projectB/views/subfolder/index.ejs:3:5:3:9 | sinkB | projectB/views/subfolder/index.ejs:3:1:3:12 | <%- sinkB %> |
+| projectB/views/subfolder/index.ejs:3:5:3:9 | sinkB | projectB/views/subfolder/index.ejs:3:1:3:12 | <%- sinkB %> |
+| projectB/views/subfolder/index.ejs:3:5:3:9 | sinkB | projectB/views/subfolder/index.ejs:3:1:3:12 | <%- sinkB %> |
+| projectB/views/subfolder/index.ejs:3:5:3:9 | sinkB | projectB/views/subfolder/index.ejs:3:1:3:12 | <%- sinkB %> |
+| projectB/views/subfolder/other.ejs:3:5:3:9 | sinkB | projectB/views/subfolder/other.ejs:3:1:3:12 | <%- sinkB %> |
+| projectB/views/subfolder/other.ejs:3:5:3:9 | sinkB | projectB/views/subfolder/other.ejs:3:1:3:12 | <%- sinkB %> |
+| projectB/views/subfolder/other.ejs:3:5:3:9 | sinkB | projectB/views/subfolder/other.ejs:3:1:3:12 | <%- sinkB %> |
+| projectB/views/subfolder/other.ejs:3:5:3:9 | sinkB | projectB/views/subfolder/other.ejs:3:1:3:12 | <%- sinkB %> |
+| views/angularjs_include.ejs:3:9:3:15 | rawHtml | views/angularjs_include.ejs:3:5:3:18 | <%- rawHtml %> |
+| views/angularjs_include.ejs:3:9:3:15 | rawHtml | views/angularjs_include.ejs:3:5:3:18 | <%- rawHtml %> |
+| views/angularjs_include.ejs:3:9:3:15 | rawHtml | views/angularjs_include.ejs:3:5:3:18 | <%- rawHtml %> |
+| views/angularjs_include.ejs:3:9:3:15 | rawHtml | views/angularjs_include.ejs:3:5:3:18 | <%- rawHtml %> |
+| views/angularjs_sinks.ejs:4:13:4:19 | rawHtml | views/angularjs_sinks.ejs:4:9:4:22 | <%- rawHtml %> |
+| views/angularjs_sinks.ejs:4:13:4:19 | rawHtml | views/angularjs_sinks.ejs:4:9:4:22 | <%- rawHtml %> |
+| views/angularjs_sinks.ejs:4:13:4:19 | rawHtml | views/angularjs_sinks.ejs:4:9:4:22 | <%- rawHtml %> |
+| views/angularjs_sinks.ejs:4:13:4:19 | rawHtml | views/angularjs_sinks.ejs:4:9:4:22 | <%- rawHtml %> |
+| views/ejs_include1.ejs:1:5:1:7 | foo | views/ejs_include1.ejs:1:1:1:10 | <%- foo %> |
+| views/ejs_include1.ejs:1:5:1:7 | foo | views/ejs_include1.ejs:1:1:1:10 | <%- foo %> |
+| views/ejs_include1.ejs:1:5:1:7 | foo | views/ejs_include1.ejs:1:1:1:10 | <%- foo %> |
+| views/ejs_include1.ejs:1:5:1:7 | foo | views/ejs_include1.ejs:1:1:1:10 | <%- foo %> |
+| views/ejs_include2.ejs:1:5:1:11 | rawHtml | views/ejs_include2.ejs:1:1:1:14 | <%- rawHtml %> |
+| views/ejs_include2.ejs:1:5:1:11 | rawHtml | views/ejs_include2.ejs:1:1:1:14 | <%- rawHtml %> |
+| views/ejs_include2.ejs:1:5:1:11 | rawHtml | views/ejs_include2.ejs:1:1:1:14 | <%- rawHtml %> |
+| views/ejs_include2.ejs:1:5:1:11 | rawHtml | views/ejs_include2.ejs:1:1:1:14 | <%- rawHtml %> |
+| views/ejs_sinks.ejs:4:13:4:19 | rawHtml | views/ejs_sinks.ejs:4:9:4:22 | <%- rawHtml %> |
+| views/ejs_sinks.ejs:4:13:4:19 | rawHtml | views/ejs_sinks.ejs:4:9:4:22 | <%- rawHtml %> |
+| views/ejs_sinks.ejs:4:13:4:19 | rawHtml | views/ejs_sinks.ejs:4:9:4:22 | <%- rawHtml %> |
+| views/ejs_sinks.ejs:4:13:4:19 | rawHtml | views/ejs_sinks.ejs:4:9:4:22 | <%- rawHtml %> |
+| views/ejs_sinks.ejs:7:13:7:30 | object.rawHtmlProp | views/ejs_sinks.ejs:7:9:7:33 | <%- object.rawHtmlProp %> |
+| views/ejs_sinks.ejs:7:13:7:30 | object.rawHtmlProp | views/ejs_sinks.ejs:7:9:7:33 | <%- object.rawHtmlProp %> |
+| views/ejs_sinks.ejs:7:13:7:30 | object.rawHtmlProp | views/ejs_sinks.ejs:7:9:7:33 | <%- object.rawHtmlProp %> |
+| views/ejs_sinks.ejs:7:13:7:30 | object.rawHtmlProp | views/ejs_sinks.ejs:7:9:7:33 | <%- object.rawHtmlProp %> |
+| views/ejs_sinks.ejs:11:47:11:68 | dataInS ... eralRaw | views/ejs_sinks.ejs:11:43:11:71 | <%- dataInStringLiteralRaw %> |
+| views/ejs_sinks.ejs:11:47:11:68 | dataInS ... eralRaw | views/ejs_sinks.ejs:11:43:11:71 | <%- dataInStringLiteralRaw %> |
+| views/ejs_sinks.ejs:11:47:11:68 | dataInS ... eralRaw | views/ejs_sinks.ejs:11:43:11:71 | <%- dataInStringLiteralRaw %> |
+| views/ejs_sinks.ejs:11:47:11:68 | dataInS ... eralRaw | views/ejs_sinks.ejs:11:43:11:71 | <%- dataInStringLiteralRaw %> |
+| views/ejs_sinks.ejs:14:46:14:67 | dataInG ... CodeRaw | views/ejs_sinks.ejs:14:42:14:70 | <%- dataInGeneratedCodeRaw %> |
+| views/ejs_sinks.ejs:14:46:14:67 | dataInG ... CodeRaw | views/ejs_sinks.ejs:14:42:14:70 | <%- dataInGeneratedCodeRaw %> |
+| views/ejs_sinks.ejs:14:46:14:67 | dataInG ... CodeRaw | views/ejs_sinks.ejs:14:42:14:70 | <%- dataInGeneratedCodeRaw %> |
+| views/ejs_sinks.ejs:14:46:14:67 | dataInG ... CodeRaw | views/ejs_sinks.ejs:14:42:14:70 | <%- dataInGeneratedCodeRaw %> |
+| views/ejs_sinks.ejs:22:43:22:69 | dataInE ... ringRaw | views/ejs_sinks.ejs:22:39:22:72 | <%- dataInEventHandlerStringRaw %> |
+| views/ejs_sinks.ejs:22:43:22:69 | dataInE ... ringRaw | views/ejs_sinks.ejs:22:39:22:72 | <%- dataInEventHandlerStringRaw %> |
+| views/ejs_sinks.ejs:22:43:22:69 | dataInE ... ringRaw | views/ejs_sinks.ejs:22:39:22:72 | <%- dataInEventHandlerStringRaw %> |
+| views/ejs_sinks.ejs:22:43:22:69 | dataInE ... ringRaw | views/ejs_sinks.ejs:22:39:22:72 | <%- dataInEventHandlerStringRaw %> |
+| views/ejs_sinks.ejs:24:44:24:50 | rawHtml | views/ejs_include1.ejs:1:5:1:7 | foo |
+| views/ejs_sinks.ejs:24:44:24:50 | rawHtml | views/ejs_include1.ejs:1:5:1:7 | foo |
+| views/hbs_sinks.hbs:9:13:9:19 | rawHtml | views/hbs_sinks.hbs:9:9:9:23 | {{{ rawHtml }}} |
+| views/hbs_sinks.hbs:9:13:9:19 | rawHtml | views/hbs_sinks.hbs:9:9:9:23 | {{{ rawHtml }}} |
+| views/hbs_sinks.hbs:9:13:9:19 | rawHtml | views/hbs_sinks.hbs:9:9:9:23 | {{{ rawHtml }}} |
+| views/hbs_sinks.hbs:9:13:9:19 | rawHtml | views/hbs_sinks.hbs:9:9:9:23 | {{{ rawHtml }}} |
+| views/hbs_sinks.hbs:10:13:10:19 | rawHtml | views/hbs_sinks.hbs:10:9:10:23 | {{{~rawHtml }}} |
+| views/hbs_sinks.hbs:10:13:10:19 | rawHtml | views/hbs_sinks.hbs:10:9:10:23 | {{{~rawHtml }}} |
+| views/hbs_sinks.hbs:10:13:10:19 | rawHtml | views/hbs_sinks.hbs:10:9:10:23 | {{{~rawHtml }}} |
+| views/hbs_sinks.hbs:10:13:10:19 | rawHtml | views/hbs_sinks.hbs:10:9:10:23 | {{{~rawHtml }}} |
+| views/hbs_sinks.hbs:11:13:11:19 | rawHtml | views/hbs_sinks.hbs:11:9:11:23 | {{{ rawHtml~}}} |
+| views/hbs_sinks.hbs:11:13:11:19 | rawHtml | views/hbs_sinks.hbs:11:9:11:23 | {{{ rawHtml~}}} |
+| views/hbs_sinks.hbs:11:13:11:19 | rawHtml | views/hbs_sinks.hbs:11:9:11:23 | {{{ rawHtml~}}} |
+| views/hbs_sinks.hbs:11:13:11:19 | rawHtml | views/hbs_sinks.hbs:11:9:11:23 | {{{ rawHtml~}}} |
+| views/hbs_sinks.hbs:12:13:12:19 | rawHtml | views/hbs_sinks.hbs:12:9:12:23 | {{{~rawHtml~}}} |
+| views/hbs_sinks.hbs:12:13:12:19 | rawHtml | views/hbs_sinks.hbs:12:9:12:23 | {{{~rawHtml~}}} |
+| views/hbs_sinks.hbs:12:13:12:19 | rawHtml | views/hbs_sinks.hbs:12:9:12:23 | {{{~rawHtml~}}} |
+| views/hbs_sinks.hbs:12:13:12:19 | rawHtml | views/hbs_sinks.hbs:12:9:12:23 | {{{~rawHtml~}}} |
+| views/hbs_sinks.hbs:13:14:13:20 | rawHtml | views/hbs_sinks.hbs:13:9:13:25 | {{{~ rawHtml ~}}} |
+| views/hbs_sinks.hbs:13:14:13:20 | rawHtml | views/hbs_sinks.hbs:13:9:13:25 | {{{~ rawHtml ~}}} |
+| views/hbs_sinks.hbs:13:14:13:20 | rawHtml | views/hbs_sinks.hbs:13:9:13:25 | {{{~ rawHtml ~}}} |
+| views/hbs_sinks.hbs:13:14:13:20 | rawHtml | views/hbs_sinks.hbs:13:9:13:25 | {{{~ rawHtml ~}}} |
+| views/hbs_sinks.hbs:15:13:15:19 | rawHtml | views/hbs_sinks.hbs:15:9:15:22 | {{& rawHtml }} |
+| views/hbs_sinks.hbs:15:13:15:19 | rawHtml | views/hbs_sinks.hbs:15:9:15:22 | {{& rawHtml }} |
+| views/hbs_sinks.hbs:15:13:15:19 | rawHtml | views/hbs_sinks.hbs:15:9:15:22 | {{& rawHtml }} |
+| views/hbs_sinks.hbs:15:13:15:19 | rawHtml | views/hbs_sinks.hbs:15:9:15:22 | {{& rawHtml }} |
+| views/hbs_sinks.hbs:19:13:19:30 | object.rawHtmlProp | views/hbs_sinks.hbs:19:9:19:34 | {{{ object.rawHtmlProp }}} |
+| views/hbs_sinks.hbs:19:13:19:30 | object.rawHtmlProp | views/hbs_sinks.hbs:19:9:19:34 | {{{ object.rawHtmlProp }}} |
+| views/hbs_sinks.hbs:19:13:19:30 | object.rawHtmlProp | views/hbs_sinks.hbs:19:9:19:34 | {{{ object.rawHtmlProp }}} |
+| views/hbs_sinks.hbs:19:13:19:30 | object.rawHtmlProp | views/hbs_sinks.hbs:19:9:19:34 | {{{ object.rawHtmlProp }}} |
+| views/hbs_sinks.hbs:23:47:23:68 | dataInS ... eralRaw | views/hbs_sinks.hbs:23:43:23:72 | {{{ dataInStringLiteralRaw }}} |
+| views/hbs_sinks.hbs:23:47:23:68 | dataInS ... eralRaw | views/hbs_sinks.hbs:23:43:23:72 | {{{ dataInStringLiteralRaw }}} |
+| views/hbs_sinks.hbs:23:47:23:68 | dataInS ... eralRaw | views/hbs_sinks.hbs:23:43:23:72 | {{{ dataInStringLiteralRaw }}} |
+| views/hbs_sinks.hbs:23:47:23:68 | dataInS ... eralRaw | views/hbs_sinks.hbs:23:43:23:72 | {{{ dataInStringLiteralRaw }}} |
+| views/hbs_sinks.hbs:26:46:26:67 | dataInG ... CodeRaw | views/hbs_sinks.hbs:26:42:26:71 | {{{ dataInGeneratedCodeRaw }}} |
+| views/hbs_sinks.hbs:26:46:26:67 | dataInG ... CodeRaw | views/hbs_sinks.hbs:26:42:26:71 | {{{ dataInGeneratedCodeRaw }}} |
+| views/hbs_sinks.hbs:26:46:26:67 | dataInG ... CodeRaw | views/hbs_sinks.hbs:26:42:26:71 | {{{ dataInGeneratedCodeRaw }}} |
+| views/hbs_sinks.hbs:26:46:26:67 | dataInG ... CodeRaw | views/hbs_sinks.hbs:26:42:26:71 | {{{ dataInGeneratedCodeRaw }}} |
+| views/hbs_sinks.hbs:34:43:34:69 | dataInE ... ringRaw | views/hbs_sinks.hbs:34:39:34:73 | {{{ dataInEventHandlerStringRaw }}} |
+| views/hbs_sinks.hbs:34:43:34:69 | dataInE ... ringRaw | views/hbs_sinks.hbs:34:39:34:73 | {{{ dataInEventHandlerStringRaw }}} |
+| views/hbs_sinks.hbs:34:43:34:69 | dataInE ... ringRaw | views/hbs_sinks.hbs:34:39:34:73 | {{{ dataInEventHandlerStringRaw }}} |
+| views/hbs_sinks.hbs:34:43:34:69 | dataInE ... ringRaw | views/hbs_sinks.hbs:34:39:34:73 | {{{ dataInEventHandlerStringRaw }}} |
+| views/njk_sinks.njk:15:49:15:74 | dataInG ... JsonRaw | views/njk_sinks.njk:15:49:15:81 | dataInG ...  \| json |
+| views/njk_sinks.njk:15:49:15:74 | dataInG ... JsonRaw | views/njk_sinks.njk:15:49:15:81 | dataInG ...  \| json |
+| views/njk_sinks.njk:15:49:15:74 | dataInG ... JsonRaw | views/njk_sinks.njk:15:49:15:81 | dataInG ...  \| json |
+| views/njk_sinks.njk:15:49:15:74 | dataInG ... JsonRaw | views/njk_sinks.njk:15:49:15:81 | dataInG ...  \| json |
+#select
+| projectA/views/main.ejs:2:1:2:12 | <%- sinkA %> | projectA/src/index.js:12:16:12:30 | req.query.sinkA | projectA/views/main.ejs:2:1:2:12 | <%- sinkA %> | Cross-site scripting vulnerability due to $@. | projectA/src/index.js:12:16:12:30 | req.query.sinkA | user-provided value |
+| projectA/views/main.ejs:2:1:2:12 | <%- sinkA %> | projectA/src/index.js:17:16:17:30 | req.query.sinkA | projectA/views/main.ejs:2:1:2:12 | <%- sinkA %> | Cross-site scripting vulnerability due to $@. | projectA/src/index.js:17:16:17:30 | req.query.sinkA | user-provided value |
+| projectA/views/main.ejs:5:1:5:26 | <%- taintedInMiddleware %> | projectA/src/index.js:6:38:6:53 | req.query.taintA | projectA/views/main.ejs:5:1:5:26 | <%- taintedInMiddleware %> | Cross-site scripting vulnerability due to $@. | projectA/src/index.js:6:38:6:53 | req.query.taintA | user-provided value |
+| projectA/views/subfolder/index.ejs:2:1:2:12 | <%- sinkA %> | projectA/src/index.js:22:16:22:30 | req.query.sinkA | projectA/views/subfolder/index.ejs:2:1:2:12 | <%- sinkA %> | Cross-site scripting vulnerability due to $@. | projectA/src/index.js:22:16:22:30 | req.query.sinkA | user-provided value |
+| projectA/views/subfolder/other.ejs:2:1:2:12 | <%- sinkA %> | projectA/src/index.js:37:16:37:30 | req.query.sinkA | projectA/views/subfolder/other.ejs:2:1:2:12 | <%- sinkA %> | Cross-site scripting vulnerability due to $@. | projectA/src/index.js:37:16:37:30 | req.query.sinkA | user-provided value |
+| projectA/views/subfolder/other.ejs:2:1:2:12 | <%- sinkA %> | projectA/src/index.js:42:16:42:30 | req.query.sinkA | projectA/views/subfolder/other.ejs:2:1:2:12 | <%- sinkA %> | Cross-site scripting vulnerability due to $@. | projectA/src/index.js:42:16:42:30 | req.query.sinkA | user-provided value |
+| projectA/views/upward_traversal.ejs:1:1:1:12 | <%- sinkA %> | projectA/src/index.js:47:16:47:30 | req.query.sinkA | projectA/views/upward_traversal.ejs:1:1:1:12 | <%- sinkA %> | Cross-site scripting vulnerability due to $@. | projectA/src/index.js:47:16:47:30 | req.query.sinkA | user-provided value |
+| projectB/views/main.ejs:3:1:3:12 | <%- sinkB %> | projectB/src/index.js:13:16:13:30 | req.query.sinkB | projectB/views/main.ejs:3:1:3:12 | <%- sinkB %> | Cross-site scripting vulnerability due to $@. | projectB/src/index.js:13:16:13:30 | req.query.sinkB | user-provided value |
+| projectB/views/main.ejs:3:1:3:12 | <%- sinkB %> | projectB/src/index.js:18:16:18:30 | req.query.sinkB | projectB/views/main.ejs:3:1:3:12 | <%- sinkB %> | Cross-site scripting vulnerability due to $@. | projectB/src/index.js:18:16:18:30 | req.query.sinkB | user-provided value |
+| projectB/views/main.ejs:5:1:5:26 | <%- taintedInMiddleware %> | projectB/src/index.js:6:38:6:53 | req.query.taintB | projectB/views/main.ejs:5:1:5:26 | <%- taintedInMiddleware %> | Cross-site scripting vulnerability due to $@. | projectB/src/index.js:6:38:6:53 | req.query.taintB | user-provided value |
+| projectB/views/subfolder/index.ejs:3:1:3:12 | <%- sinkB %> | projectB/src/index.js:23:16:23:30 | req.query.sinkB | projectB/views/subfolder/index.ejs:3:1:3:12 | <%- sinkB %> | Cross-site scripting vulnerability due to $@. | projectB/src/index.js:23:16:23:30 | req.query.sinkB | user-provided value |
+| projectB/views/subfolder/other.ejs:3:1:3:12 | <%- sinkB %> | projectB/src/index.js:38:16:38:30 | req.query.sinkB | projectB/views/subfolder/other.ejs:3:1:3:12 | <%- sinkB %> | Cross-site scripting vulnerability due to $@. | projectB/src/index.js:38:16:38:30 | req.query.sinkB | user-provided value |
+| projectB/views/subfolder/other.ejs:3:1:3:12 | <%- sinkB %> | projectB/src/index.js:43:16:43:30 | req.query.sinkB | projectB/views/subfolder/other.ejs:3:1:3:12 | <%- sinkB %> | Cross-site scripting vulnerability due to $@. | projectB/src/index.js:43:16:43:30 | req.query.sinkB | user-provided value |
+| views/angularjs_include.ejs:3:5:3:18 | <%- rawHtml %> | app.js:66:18:66:34 | req.query.rawHtml | views/angularjs_include.ejs:3:5:3:18 | <%- rawHtml %> | Cross-site scripting vulnerability due to $@. | app.js:66:18:66:34 | req.query.rawHtml | user-provided value |
+| views/angularjs_sinks.ejs:4:9:4:22 | <%- rawHtml %> | app.js:66:18:66:34 | req.query.rawHtml | views/angularjs_sinks.ejs:4:9:4:22 | <%- rawHtml %> | Cross-site scripting vulnerability due to $@. | app.js:66:18:66:34 | req.query.rawHtml | user-provided value |
+| views/ejs_include1.ejs:1:1:1:10 | <%- foo %> | app.js:8:18:8:34 | req.query.rawHtml | views/ejs_include1.ejs:1:1:1:10 | <%- foo %> | Cross-site scripting vulnerability due to $@. | app.js:8:18:8:34 | req.query.rawHtml | user-provided value |
+| views/ejs_include2.ejs:1:1:1:14 | <%- rawHtml %> | app.js:8:18:8:34 | req.query.rawHtml | views/ejs_include2.ejs:1:1:1:14 | <%- rawHtml %> | Cross-site scripting vulnerability due to $@. | app.js:8:18:8:34 | req.query.rawHtml | user-provided value |
+| views/ejs_sinks.ejs:4:9:4:22 | <%- rawHtml %> | app.js:8:18:8:34 | req.query.rawHtml | views/ejs_sinks.ejs:4:9:4:22 | <%- rawHtml %> | Cross-site scripting vulnerability due to $@. | app.js:8:18:8:34 | req.query.rawHtml | user-provided value |
+| views/ejs_sinks.ejs:7:9:7:33 | <%- object.rawHtmlProp %> | app.js:11:26:11:46 | req.que ... tmlProp | views/ejs_sinks.ejs:7:9:7:33 | <%- object.rawHtmlProp %> | Cross-site scripting vulnerability due to $@. | app.js:11:26:11:46 | req.que ... tmlProp | user-provided value |
+| views/ejs_sinks.ejs:11:43:11:71 | <%- dataInStringLiteralRaw %> | app.js:14:33:14:64 | req.que ... eralRaw | views/ejs_sinks.ejs:11:43:11:71 | <%- dataInStringLiteralRaw %> | Cross-site scripting vulnerability due to $@. | app.js:14:33:14:64 | req.que ... eralRaw | user-provided value |
+| views/ejs_sinks.ejs:14:42:14:70 | <%- dataInGeneratedCodeRaw %> | app.js:16:33:16:64 | req.que ... CodeRaw | views/ejs_sinks.ejs:14:42:14:70 | <%- dataInGeneratedCodeRaw %> | Cross-site scripting vulnerability due to $@. | app.js:16:33:16:64 | req.que ... CodeRaw | user-provided value |
+| views/ejs_sinks.ejs:22:39:22:72 | <%- dataInEventHandlerStringRaw %> | app.js:20:38:20:74 | req.que ... ringRaw | views/ejs_sinks.ejs:22:39:22:72 | <%- dataInEventHandlerStringRaw %> | Cross-site scripting vulnerability due to $@. | app.js:20:38:20:74 | req.que ... ringRaw | user-provided value |
+| views/hbs_sinks.hbs:9:9:9:23 | {{{ rawHtml }}} | app.js:27:18:27:34 | req.query.rawHtml | views/hbs_sinks.hbs:9:9:9:23 | {{{ rawHtml }}} | Cross-site scripting vulnerability due to $@. | app.js:27:18:27:34 | req.query.rawHtml | user-provided value |
+| views/hbs_sinks.hbs:10:9:10:23 | {{{~rawHtml }}} | app.js:27:18:27:34 | req.query.rawHtml | views/hbs_sinks.hbs:10:9:10:23 | {{{~rawHtml }}} | Cross-site scripting vulnerability due to $@. | app.js:27:18:27:34 | req.query.rawHtml | user-provided value |
+| views/hbs_sinks.hbs:11:9:11:23 | {{{ rawHtml~}}} | app.js:27:18:27:34 | req.query.rawHtml | views/hbs_sinks.hbs:11:9:11:23 | {{{ rawHtml~}}} | Cross-site scripting vulnerability due to $@. | app.js:27:18:27:34 | req.query.rawHtml | user-provided value |
+| views/hbs_sinks.hbs:12:9:12:23 | {{{~rawHtml~}}} | app.js:27:18:27:34 | req.query.rawHtml | views/hbs_sinks.hbs:12:9:12:23 | {{{~rawHtml~}}} | Cross-site scripting vulnerability due to $@. | app.js:27:18:27:34 | req.query.rawHtml | user-provided value |
+| views/hbs_sinks.hbs:13:9:13:25 | {{{~ rawHtml ~}}} | app.js:27:18:27:34 | req.query.rawHtml | views/hbs_sinks.hbs:13:9:13:25 | {{{~ rawHtml ~}}} | Cross-site scripting vulnerability due to $@. | app.js:27:18:27:34 | req.query.rawHtml | user-provided value |
+| views/hbs_sinks.hbs:15:9:15:22 | {{& rawHtml }} | app.js:27:18:27:34 | req.query.rawHtml | views/hbs_sinks.hbs:15:9:15:22 | {{& rawHtml }} | Cross-site scripting vulnerability due to $@. | app.js:27:18:27:34 | req.query.rawHtml | user-provided value |
+| views/hbs_sinks.hbs:19:9:19:34 | {{{ object.rawHtmlProp }}} | app.js:30:26:30:46 | req.que ... tmlProp | views/hbs_sinks.hbs:19:9:19:34 | {{{ object.rawHtmlProp }}} | Cross-site scripting vulnerability due to $@. | app.js:30:26:30:46 | req.que ... tmlProp | user-provided value |
+| views/hbs_sinks.hbs:23:43:23:72 | {{{ dataInStringLiteralRaw }}} | app.js:33:33:33:64 | req.que ... eralRaw | views/hbs_sinks.hbs:23:43:23:72 | {{{ dataInStringLiteralRaw }}} | Cross-site scripting vulnerability due to $@. | app.js:33:33:33:64 | req.que ... eralRaw | user-provided value |
+| views/hbs_sinks.hbs:26:42:26:71 | {{{ dataInGeneratedCodeRaw }}} | app.js:35:33:35:64 | req.que ... CodeRaw | views/hbs_sinks.hbs:26:42:26:71 | {{{ dataInGeneratedCodeRaw }}} | Cross-site scripting vulnerability due to $@. | app.js:35:33:35:64 | req.que ... CodeRaw | user-provided value |
+| views/hbs_sinks.hbs:34:39:34:73 | {{{ dataInEventHandlerStringRaw }}} | app.js:39:38:39:74 | req.que ... ringRaw | views/hbs_sinks.hbs:34:39:34:73 | {{{ dataInEventHandlerStringRaw }}} | Cross-site scripting vulnerability due to $@. | app.js:39:38:39:74 | req.que ... ringRaw | user-provided value |
+| views/njk_sinks.njk:4:12:4:18 | rawHtml | app.js:46:18:46:34 | req.query.rawHtml | views/njk_sinks.njk:4:12:4:18 | rawHtml | Cross-site scripting vulnerability due to $@. | app.js:46:18:46:34 | req.query.rawHtml | user-provided value |
+| views/njk_sinks.njk:7:12:7:29 | object.rawHtmlProp | app.js:49:26:49:46 | req.que ... tmlProp | views/njk_sinks.njk:7:12:7:29 | object.rawHtmlProp | Cross-site scripting vulnerability due to $@. | app.js:49:26:49:46 | req.que ... tmlProp | user-provided value |
+| views/njk_sinks.njk:11:46:11:67 | dataInS ... eralRaw | app.js:52:33:52:64 | req.que ... eralRaw | views/njk_sinks.njk:11:46:11:67 | dataInS ... eralRaw | Cross-site scripting vulnerability due to $@. | app.js:52:33:52:64 | req.que ... eralRaw | user-provided value |
+| views/njk_sinks.njk:14:45:14:66 | dataInG ... CodeRaw | app.js:54:33:54:64 | req.que ... CodeRaw | views/njk_sinks.njk:14:45:14:66 | dataInG ... CodeRaw | Cross-site scripting vulnerability due to $@. | app.js:54:33:54:64 | req.que ... CodeRaw | user-provided value |
+| views/njk_sinks.njk:15:49:15:81 | dataInG ...  \| json | app.js:55:37:55:72 | req.que ... JsonRaw | views/njk_sinks.njk:15:49:15:81 | dataInG ...  \| json | Cross-site scripting vulnerability due to $@. | app.js:55:37:55:72 | req.que ... JsonRaw | user-provided value |
+| views/njk_sinks.njk:23:42:23:68 | dataInE ... ringRaw | app.js:59:38:59:74 | req.que ... ringRaw | views/njk_sinks.njk:23:42:23:68 | dataInE ... ringRaw | Cross-site scripting vulnerability due to $@. | app.js:59:38:59:74 | req.que ... ringRaw | user-provided value |

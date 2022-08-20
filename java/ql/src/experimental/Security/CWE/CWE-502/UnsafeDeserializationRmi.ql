@@ -39,7 +39,7 @@ private predicate hasVulnerableMethod(RefType type) {
   |
     not parameterType instanceof PrimitiveType and
     not parameterType instanceof TypeString and
-    not parameterType.(RefType).hasQualifiedName("java.io", "ObjectInputStream")
+    not parameterType instanceof TypeObjectInputStream
   )
 }
 
@@ -52,7 +52,7 @@ private class BindingUnsafeRemoteObjectConfig extends TaintTracking::Configurati
 
   override predicate isSource(DataFlow::Node source) {
     exists(ConstructorCall cc | cc = source.asExpr() |
-      hasVulnerableMethod(cc.getConstructedType().getASupertype*())
+      hasVulnerableMethod(cc.getConstructedType().getAnAncestor())
     )
   }
 

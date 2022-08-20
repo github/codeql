@@ -6,24 +6,25 @@ namespace System
     {
         namespace InteropServices
         {
-            // Generated from `System.Runtime.InteropServices.Architecture` in `System.Runtime.InteropServices.RuntimeInformation, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum Architecture
+            // Generated from `System.Runtime.InteropServices.Architecture` in `System.Runtime.InteropServices.RuntimeInformation, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            public enum Architecture : int
             {
-                Arm,
-                Arm64,
-                Wasm,
-                X64,
-                X86,
+                Arm = 2,
+                Arm64 = 3,
+                S390x = 5,
+                Wasm = 4,
+                X64 = 1,
+                X86 = 0,
             }
 
-            // Generated from `System.Runtime.InteropServices.OSPlatform` in `System.Runtime.InteropServices.RuntimeInformation, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Runtime.InteropServices.OSPlatform` in `System.Runtime.InteropServices.RuntimeInformation, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct OSPlatform : System.IEquatable<System.Runtime.InteropServices.OSPlatform>
             {
                 public static bool operator !=(System.Runtime.InteropServices.OSPlatform left, System.Runtime.InteropServices.OSPlatform right) => throw null;
                 public static bool operator ==(System.Runtime.InteropServices.OSPlatform left, System.Runtime.InteropServices.OSPlatform right) => throw null;
                 public static System.Runtime.InteropServices.OSPlatform Create(string osPlatform) => throw null;
-                public override bool Equals(object obj) => throw null;
                 public bool Equals(System.Runtime.InteropServices.OSPlatform other) => throw null;
+                public override bool Equals(object obj) => throw null;
                 public static System.Runtime.InteropServices.OSPlatform FreeBSD { get => throw null; }
                 public override int GetHashCode() => throw null;
                 public static System.Runtime.InteropServices.OSPlatform Linux { get => throw null; }
@@ -33,7 +34,7 @@ namespace System
                 public static System.Runtime.InteropServices.OSPlatform Windows { get => throw null; }
             }
 
-            // Generated from `System.Runtime.InteropServices.RuntimeInformation` in `System.Runtime.InteropServices.RuntimeInformation, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Runtime.InteropServices.RuntimeInformation` in `System.Runtime.InteropServices.RuntimeInformation, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public static class RuntimeInformation
             {
                 public static string FrameworkDescription { get => throw null; }

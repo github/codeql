@@ -33,7 +33,7 @@ namespace My.Qltest
 
         void M5()
         {
-            this.StepFieldSetter(new object());
+            Sink(((D)this.StepFieldSetter(new object()).Field2).Field);
             Sink(this.Field);
         }
 
@@ -92,6 +92,26 @@ namespace My.Qltest
             Sink(i);
         }
 
+        void M15()
+        {
+            var d1 = new D();
+            d1.Field = new object();
+            var d2 = new D();
+            Apply2(d =>
+            {
+                Sink(d);
+            }, d1, d2);
+            Sink(d1.Field);
+            Sink(d2.Field2);
+        }
+
+        void M16()
+        {
+            var f = new F();
+            f.MyProp = new object();
+            Sink(f.MyProp);
+        }
+
         object StepArgRes(object x) { return null; }
 
         void StepArgArg(object @in, object @out) { }
@@ -103,10 +123,11 @@ namespace My.Qltest
         void StepQualArg(object @out) { }
 
         object Field;
+        object Field2;
 
         object StepFieldGetter() => throw null;
 
-        void StepFieldSetter(object value) => throw null;
+        D StepFieldSetter(object value) => throw null;
 
         object Property { get; set; }
 
@@ -122,7 +143,64 @@ namespace My.Qltest
 
         static S[] Map<S, T>(S[] elements, Func<S, T> f) => throw null;
 
+        static void Apply2<S>(Action<S> f, S s1, S s2) => throw null;
+
         static void Parse(string s, out int i) => throw null;
+
+        static void Sink(object o) { }
+    }
+
+    public class E
+    {
+        object MyField;
+
+        public virtual object MyProp
+        {
+            get { throw null; }
+            set { throw null; }
+        }
+    }
+
+    public class F : E
+    {
+        public override object MyProp
+        {
+            get { throw null; }
+            set { throw null; }
+        }
+    }
+
+    public class G
+    {
+        void M1()
+        {
+            var o = new object();
+            Sink(GeneratedFlow(o));
+        }
+
+        void M2()
+        {
+            var o1 = new object();
+            Sink(GeneratedFlowArgs(o1, null));
+
+            var o2 = new object();
+            Sink(GeneratedFlowArgs(null, o2));
+        }
+
+        void M3()
+        {
+            var o1 = new object();
+            Sink(MixedFlowArgs(o1, null));
+
+            var o2 = new object();
+            Sink(MixedFlowArgs(null, o2));
+        }
+
+        object GeneratedFlow(object o) => throw null;
+
+        object GeneratedFlowArgs(object o1, object o2) => throw null;
+
+        object MixedFlowArgs(object o1, object o2) => throw null;
 
         static void Sink(object o) { }
     }

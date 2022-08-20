@@ -10,9 +10,11 @@
  * @tags security
  *       correctness
  *       external/cwe/cwe-020
+ *       external/cwe/cwe-184
  */
 
 import javascript
+import semmle.javascript.security.IncompleteBlacklistSanitizer as IncompleteBlacklistSanitizer
 
 /** A URL scheme that can be used to represent executable code. */
 class DangerousScheme extends string {
@@ -22,7 +24,7 @@ class DangerousScheme extends string {
   string getWithoutColon() { this = result + ":" }
 
   /** Gets the name of this scheme, with or without the `:`. */
-  string getWithOrWithoutColon() { result = this or result = getWithoutColon() }
+  string getWithOrWithoutColon() { result = this or result = this.getWithoutColon() }
 }
 
 /** Returns a node that refers to the scheme of `url`. */
@@ -54,6 +56,21 @@ DataFlow::SourceNode schemeOf(DataFlow::Node url) {
   )
 }
 
+/**
+ * A chain of replace calls that replaces one or more dangerous schemes.
+ */
+class SchemeReplacementChain extends IncompleteBlacklistSanitizer::StringReplaceCallSequence {
+  SchemeReplacementChain() { this.getAMember().getAReplacedString() instanceof DangerousScheme }
+
+  /**
+   * Gets the source node that the replacement happens on.
+   * The result is the receiver of the first call in the chain.
+   */
+  DataFlow::Node getReplacementSource() {
+    result = this.getReceiver+() and not result instanceof DataFlow::MethodCallNode
+  }
+}
+
 /** Gets a data-flow node that checks `nd` against the given `scheme`. */
 DataFlow::Node schemeCheck(DataFlow::Node nd, DangerousScheme scheme) {
   // check of the form `nd.startsWith(scheme)`
@@ -72,6 +89,11 @@ DataFlow::Node schemeCheck(DataFlow::Node nd, DangerousScheme scheme) {
     schemeOf(nd).flowsTo(candidate)
   )
   or
+  exists(SchemeReplacementChain chain | result = chain |
+    scheme = chain.getAMember().getAReplacedString() and
+    nd = chain.getReplacementSource()
+  )
+  or
   // propagate through trimming, case conversion, and regexp replace
   exists(DataFlow::MethodCallNode stringop |
     stringop.getMethodName().matches("trim%") or
@@ -87,8 +109,8 @@ DataFlow::Node schemeCheck(DataFlow::Node nd, DangerousScheme scheme) {
 }
 
 /** Gets a data-flow node that checks an instance of `ap` against the given `scheme`. */
-DataFlow::Node schemeCheckOn(DataFlow::SourceNode root, string path, DangerousScheme scheme) {
-  result = schemeCheck(AccessPath::getAReferenceTo(root, path), scheme)
+DataFlow::Node schemeCheckOn(DataFlow::SourceNode root, string ap, DangerousScheme scheme) {
+  result = schemeCheck(AccessPath::getAReferenceTo(root, ap), scheme)
 }
 
 from DataFlow::SourceNode root, string path, int n

@@ -1,8 +1,9 @@
 import sys
 import os
+import functools
 
 sys.path.append(os.path.dirname(os.path.dirname((__file__))))
-from testlib import *
+from testlib import expects
 
 arg = "source"
 arg1 = "source1"
@@ -29,36 +30,13 @@ def SINK_F(x, unexpected=arg):
     SINK_TEST(x, test=lambda x: x != unexpected)
 
 
-def SINK1(x):
-    SINK(x, expected=arg1)
-
-
-def SINK2(x):
-    SINK(x, expected=arg2)
-
-
-def SINK2_F(x):
-    SINK_F(x, unexpected=arg2)
-
-
-def SINK3(x):
-    SINK(x, expected=arg3)
-
-
-def SINK4(x):
-    SINK(x, expected=arg4)
-
-
-def SINK5(x):
-    SINK(x, expected=arg5)
-
-
-def SINK6(x):
-    SINK(x, expected=arg6)
-
-
-def SINK7(x):
-    SINK(x, expected=arg7)
+SINK1 = functools.partial(SINK, expected=arg1)
+SINK2 = functools.partial(SINK, expected=arg2)
+SINK3 = functools.partial(SINK, expected=arg3)
+SINK4 = functools.partial(SINK, expected=arg4)
+SINK5 = functools.partial(SINK, expected=arg5)
+SINK6 = functools.partial(SINK, expected=arg6)
+SINK7 = functools.partial(SINK, expected=arg7)
 
 
 def argument_passing(
@@ -66,9 +44,9 @@ def argument_passing(
     b,
     /,
     c,
-    d=arg4,
+    d=arg4,  #$ arg4 func=argument_passing
     *,
-    e=arg5,
+    e=arg5,  #$ arg5 func=argument_passing
     f,
     **g,
 ):
@@ -120,7 +98,7 @@ def test_multiple_kw_args():
     with_multiple_kw_args(**{"b": arg2}, **{"c": arg3}, **{"a": arg1})  #$ arg1 arg2 arg3 func=with_multiple_kw_args
 
 
-def with_default_arguments(a=arg1, b=arg2, c=arg3):  # Need a mechanism to test default arguments
+def with_default_arguments(a=arg1, b=arg2, c=arg3):  #$ arg1 arg2 arg3 func=with_default_arguments
     SINK1(a)
     SINK2(b)
     SINK3(c)

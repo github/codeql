@@ -1,0 +1,54 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+It is possible to match some single HTML tags using regular expressions (parsing general HTML using 
+regular expressions is impossible). However, if the regular expression is not written well it might 
+be possible to circumvent it, which can lead to cross-site scripting or other security issues.
+</p>
+<p>
+Some of these mistakes are caused by browsers having very forgiving HTML parsers, and
+will often render invalid HTML containing syntax errors. 
+Regular expressions that attempt to match HTML should also recognize tags containing such syntax errors.
+</p>
+</overview>
+
+<recommendation>
+<p>
+Use a well-tested sanitization or parser library if at all possible. These libraries are much more
+likely to handle corner cases correctly than a custom implementation.
+</p>
+</recommendation>
+
+<example>
+<p>
+The following example attempts to filters out all <code>&lt;script&gt;</code> tags.
+</p>
+
+<sample src="examples/BadTagFilter.py" />
+
+<p>
+The above sanitizer does not filter out all <code>&lt;script&gt;</code> tags. 
+Browsers will not only accept <code>&lt;/script&gt;</code> as script end tags, but also tags such as <code>&lt;/script foo="bar"&gt;</code> even though it is a parser error.
+This means that an attack string such as <code>&lt;script&gt;alert(1)&lt;/script foo="bar"&gt;</code> will not be filtered by 
+the function, and <code>alert(1)</code> will be executed by a browser if the string is rendered as HTML.
+</p>
+
+<p>
+Other corner cases include that HTML comments can end with <code>--!&gt;</code>, 
+and that HTML tag names can contain upper case characters.
+</p>
+</example>
+
+<references>
+<li>Securitum: <a href="https://research.securitum.com/the-curious-case-of-copy-paste/">The Curious Case of Copy &amp; Paste</a>.</li>
+<li>stackoverflow.com: <a href="https://stackoverflow.com/questions/1732348/regex-match-open-tags-except-xhtml-self-contained-tags#answer-1732454">You can't parse [X]HTML with regex</a>.</li>
+<li>HTML Standard: <a href="https://html.spec.whatwg.org/multipage/parsing.html#comment-end-bang-state">Comment end bang state</a>.</li>
+<li>stackoverflow.com: <a href="https://stackoverflow.com/questions/25559999/why-arent-browsers-strict-about-html">Why aren't browsers strict about HTML?</a>.</li>
+</references>
+</qhelp>
+
+

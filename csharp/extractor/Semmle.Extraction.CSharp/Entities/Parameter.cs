@@ -55,11 +55,17 @@ namespace Semmle.Extraction.CSharp.Entities
             }
         }
 
-        public static Parameter Create(Context cx, IParameterSymbol param, IEntity parent, Parameter? original = null) =>
-            ParameterFactory.Instance.CreateEntity(cx, param, (param, parent, original));
+        public static Parameter Create(Context cx, IParameterSymbol param, IEntity parent, Parameter? original = null)
+        {
+            var cachedSymbol = cx.GetPossiblyCachedParameterSymbol(param);
+            return ParameterFactory.Instance.CreateEntity(cx, cachedSymbol, (cachedSymbol, parent, original));
+        }
 
-        public static Parameter Create(Context cx, IParameterSymbol param) =>
-            ParameterFactory.Instance.CreateEntity(cx, param, (param, null, null));
+        public static Parameter Create(Context cx, IParameterSymbol param)
+        {
+            var cachedSymbol = cx.GetPossiblyCachedParameterSymbol(param);
+            return ParameterFactory.Instance.CreateEntity(cx, cachedSymbol, (cachedSymbol, null, null));
+        }
 
         public override void WriteId(EscapingTextWriter trapFile)
         {

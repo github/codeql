@@ -371,4 +371,41 @@ public class B {
     }
   }
 
+  public void bitwise(Object x, boolean b) {
+    boolean notnull = x != null;
+
+    boolean g1 = notnull;
+    g1 &= b;
+    if (g1) {
+      x.hashCode(); // OK
+    }
+
+    boolean g2 = b;
+    g2 &= notnull;
+    if (g2) {
+      x.hashCode(); // OK
+    }
+
+    boolean g3 = !notnull;
+    g3 |= b;
+    if (!g3) {
+      x.hashCode(); // OK
+    }
+
+    boolean g4 = b;
+    g4 |= !notnull;
+    if (!g4) {
+      x.hashCode(); // OK
+    }
+
+    boolean g5 = g1 = b & notnull;
+    if (g5) {
+      x.hashCode(); // OK
+    }
+
+    g5 |= b;
+    if (g5) {
+      x.hashCode(); // NPE
+    }
+  }
 }

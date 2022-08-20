@@ -24,7 +24,7 @@ predicate exprWithoutEnclosingStmt(Expr e) {
   // Some expressions have non-expression parents that we want to skip over.
   exprWithoutEnclosingStmt(e.getParent().(Property).getObjectExpr()) or
   exprWithoutEnclosingStmt(e.getParent().(PropertyPattern).getObjectPattern()) or
-  exprWithoutEnclosingStmt(e.getParent().(JSXAttribute).getElement())
+  exprWithoutEnclosingStmt(e.getParent().(JsxAttribute).getElement())
 }
 
 /**
@@ -37,22 +37,12 @@ predicate exprWithoutEnclosingStmt(Expr e) {
  * `"3 results for toString()"`.
  */
 predicate uniqueness_error(int number, string what, string problem) {
-  (
-    what = "toString" or
-    what = "getLocation" or
-    what = "getTopLevel" or
-    what = "getEnclosingStmt" or
-    what = "getContainer" or
-    what = "getEnclosingContainer" or
-    what = "getEntry" or
-    what = "getExit" or
-    what = "getFirstControlFlowNode" or
-    what = "getOuterScope" or
-    what = "getScopeElement" or
-    what = "getBaseName" or
-    what = "getOperator" or
-    what = "getTest"
-  ) and
+  what =
+    [
+      "toString", "getLocation", "getTopLevel", "getEnclosingStmt", "getContainer",
+      "getEnclosingContainer", "getEntry", "getExit", "getFirstControlFlowNode", "getOuterScope",
+      "getScopeElement", "getBaseName", "getOperator", "getTest"
+    ] and
   (
     number = 0 and problem = "no results for " + what + "()"
     or
@@ -75,7 +65,7 @@ predicate ast_consistency(string clsname, string problem, string what) {
     not exists(l.getLocation()) and problem = "no location" and what = l.toString()
   )
   or
-  exists(ASTNode nd | clsname = nd.getAQlClass() |
+  exists(AstNode nd | clsname = nd.getAQlClass() |
     uniqueness_error(count(nd.getTopLevel()), "getTopLevel", problem) and
     what = "at " + nd.getLocation()
   )
@@ -130,7 +120,7 @@ predicate location_consistency(string clsname, string problem, string what) {
 /**
  * Holds if function or toplevel `sc` is expected to have an associated control flow graph.
  */
-predicate hasCFG(StmtContainer sc) { not exists(Error err | err.getFile() = sc.getFile()) }
+predicate hasCfg(StmtContainer sc) { not exists(Error err | err.getFile() = sc.getFile()) }
 
 /**
  * Holds if a contract involving the CFG structure is violated, where `clsname`
@@ -138,7 +128,7 @@ predicate hasCFG(StmtContainer sc) { not exists(Error err | err.getFile() = sc.g
  * the violation, and `what` gives location information.
  */
 predicate cfg_consistency(string clsname, string problem, string what) {
-  exists(StmtContainer cont | clsname = cont.getAQlClass() and hasCFG(cont) |
+  exists(StmtContainer cont | clsname = cont.getAQlClass() and hasCfg(cont) |
     uniqueness_error(count(cont.getEntry()), "getEntry", problem) and
     what = "at " + cont.getLocation()
     or
@@ -146,7 +136,7 @@ predicate cfg_consistency(string clsname, string problem, string what) {
     what = "at " + cont.getLocation()
   )
   or
-  exists(ASTNode nd | clsname = nd.getAQlClass() and hasCFG(nd.getTopLevel()) |
+  exists(AstNode nd | clsname = nd.getAQlClass() and hasCfg(nd.getTopLevel()) |
     uniqueness_error(count(nd.getFirstControlFlowNode()), "getFirstControlFlowNode", problem) and
     what = "at " + nd.getLocation()
   )

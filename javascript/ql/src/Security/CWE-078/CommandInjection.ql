@@ -14,7 +14,7 @@
  */
 
 import javascript
-import semmle.javascript.security.dataflow.CommandInjection::CommandInjection
+import semmle.javascript.security.dataflow.CommandInjectionQuery
 import DataFlow::PathGraph
 
 from

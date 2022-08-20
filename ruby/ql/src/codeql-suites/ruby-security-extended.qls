@@ -1,0 +1,5 @@
+- description: Security-extended queries for Ruby
+- queries: .
+- apply: security-extended-selectors.yml
+  from: codeql/suite-helpers
+

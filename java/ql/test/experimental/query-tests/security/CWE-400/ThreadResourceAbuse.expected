@@ -1,0 +1,68 @@
+edges
+| ThreadResourceAbuse.java:18:25:18:57 | getParameter(...) : String | ThreadResourceAbuse.java:21:28:21:36 | delayTime : Number |
+| ThreadResourceAbuse.java:21:4:21:37 | new UncheckedSyncAction(...) [waitTime] : Number | ThreadResourceAbuse.java:71:15:71:17 | parameter this [waitTime] : Number |
+| ThreadResourceAbuse.java:21:28:21:36 | delayTime : Number | ThreadResourceAbuse.java:21:4:21:37 | new UncheckedSyncAction(...) [waitTime] : Number |
+| ThreadResourceAbuse.java:21:28:21:36 | delayTime : Number | ThreadResourceAbuse.java:66:30:66:41 | waitTime : Number |
+| ThreadResourceAbuse.java:29:82:29:114 | getParameter(...) : String | ThreadResourceAbuse.java:30:28:30:36 | delayTime : Number |
+| ThreadResourceAbuse.java:30:4:30:37 | new UncheckedSyncAction(...) [waitTime] : Number | ThreadResourceAbuse.java:71:15:71:17 | parameter this [waitTime] : Number |
+| ThreadResourceAbuse.java:30:28:30:36 | delayTime : Number | ThreadResourceAbuse.java:30:4:30:37 | new UncheckedSyncAction(...) [waitTime] : Number |
+| ThreadResourceAbuse.java:30:28:30:36 | delayTime : Number | ThreadResourceAbuse.java:66:30:66:41 | waitTime : Number |
+| ThreadResourceAbuse.java:66:30:66:41 | waitTime : Number | ThreadResourceAbuse.java:67:20:67:27 | waitTime : Number |
+| ThreadResourceAbuse.java:67:20:67:27 | waitTime : Number | ThreadResourceAbuse.java:67:4:67:7 | this [post update] [waitTime] : Number |
+| ThreadResourceAbuse.java:71:15:71:17 | parameter this [waitTime] : Number | ThreadResourceAbuse.java:74:18:74:25 | this <.field> [waitTime] : Number |
+| ThreadResourceAbuse.java:74:18:74:25 | this <.field> [waitTime] : Number | ThreadResourceAbuse.java:74:18:74:25 | waitTime |
+| ThreadResourceAbuse.java:141:27:141:43 | getValue(...) : String | ThreadResourceAbuse.java:144:34:144:42 | delayTime |
+| ThreadResourceAbuse.java:172:19:172:50 | getHeader(...) : String | ThreadResourceAbuse.java:176:17:176:26 | retryAfter |
+| ThreadResourceAbuse.java:206:28:206:56 | getParameter(...) : String | ThreadResourceAbuse.java:209:49:209:59 | uploadDelay : Number |
+| ThreadResourceAbuse.java:209:30:209:87 | new UploadListener(...) [slowUploads] : Number | UploadListener.java:28:14:28:19 | parameter this [slowUploads] : Number |
+| ThreadResourceAbuse.java:209:49:209:59 | uploadDelay : Number | ThreadResourceAbuse.java:209:30:209:87 | new UploadListener(...) [slowUploads] : Number |
+| ThreadResourceAbuse.java:209:49:209:59 | uploadDelay : Number | UploadListener.java:15:24:15:44 | sleepMilliseconds : Number |
+| UploadListener.java:15:24:15:44 | sleepMilliseconds : Number | UploadListener.java:16:17:16:33 | sleepMilliseconds : Number |
+| UploadListener.java:16:17:16:33 | sleepMilliseconds : Number | UploadListener.java:16:3:16:13 | this <.field> [post update] [slowUploads] : Number |
+| UploadListener.java:28:14:28:19 | parameter this [slowUploads] : Number | UploadListener.java:29:3:29:11 | this <.field> [slowUploads] : Number |
+| UploadListener.java:29:3:29:11 | this <.field> [slowUploads] : Number | UploadListener.java:30:3:30:15 | this <.field> [slowUploads] : Number |
+| UploadListener.java:30:3:30:15 | this <.field> [slowUploads] : Number | UploadListener.java:33:7:33:17 | this <.field> [slowUploads] : Number |
+| UploadListener.java:30:3:30:15 | this <.field> [slowUploads] : Number | UploadListener.java:35:18:35:28 | this <.field> [slowUploads] : Number |
+| UploadListener.java:33:7:33:17 | slowUploads : Number | UploadListener.java:35:18:35:28 | slowUploads |
+| UploadListener.java:33:7:33:17 | this <.field> [slowUploads] : Number | UploadListener.java:33:7:33:17 | slowUploads : Number |
+| UploadListener.java:35:18:35:28 | this <.field> [slowUploads] : Number | UploadListener.java:35:18:35:28 | slowUploads |
+nodes
+| ThreadResourceAbuse.java:18:25:18:57 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| ThreadResourceAbuse.java:21:4:21:37 | new UncheckedSyncAction(...) [waitTime] : Number | semmle.label | new UncheckedSyncAction(...) [waitTime] : Number |
+| ThreadResourceAbuse.java:21:28:21:36 | delayTime : Number | semmle.label | delayTime : Number |
+| ThreadResourceAbuse.java:29:82:29:114 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| ThreadResourceAbuse.java:30:4:30:37 | new UncheckedSyncAction(...) [waitTime] : Number | semmle.label | new UncheckedSyncAction(...) [waitTime] : Number |
+| ThreadResourceAbuse.java:30:28:30:36 | delayTime : Number | semmle.label | delayTime : Number |
+| ThreadResourceAbuse.java:66:30:66:41 | waitTime : Number | semmle.label | waitTime : Number |
+| ThreadResourceAbuse.java:67:4:67:7 | this [post update] [waitTime] : Number | semmle.label | this [post update] [waitTime] : Number |
+| ThreadResourceAbuse.java:67:20:67:27 | waitTime : Number | semmle.label | waitTime : Number |
+| ThreadResourceAbuse.java:71:15:71:17 | parameter this [waitTime] : Number | semmle.label | parameter this [waitTime] : Number |
+| ThreadResourceAbuse.java:74:18:74:25 | this <.field> [waitTime] : Number | semmle.label | this <.field> [waitTime] : Number |
+| ThreadResourceAbuse.java:74:18:74:25 | waitTime | semmle.label | waitTime |
+| ThreadResourceAbuse.java:141:27:141:43 | getValue(...) : String | semmle.label | getValue(...) : String |
+| ThreadResourceAbuse.java:144:34:144:42 | delayTime | semmle.label | delayTime |
+| ThreadResourceAbuse.java:172:19:172:50 | getHeader(...) : String | semmle.label | getHeader(...) : String |
+| ThreadResourceAbuse.java:176:17:176:26 | retryAfter | semmle.label | retryAfter |
+| ThreadResourceAbuse.java:206:28:206:56 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| ThreadResourceAbuse.java:209:30:209:87 | new UploadListener(...) [slowUploads] : Number | semmle.label | new UploadListener(...) [slowUploads] : Number |
+| ThreadResourceAbuse.java:209:49:209:59 | uploadDelay : Number | semmle.label | uploadDelay : Number |
+| UploadListener.java:15:24:15:44 | sleepMilliseconds : Number | semmle.label | sleepMilliseconds : Number |
+| UploadListener.java:16:3:16:13 | this <.field> [post update] [slowUploads] : Number | semmle.label | this <.field> [post update] [slowUploads] : Number |
+| UploadListener.java:16:17:16:33 | sleepMilliseconds : Number | semmle.label | sleepMilliseconds : Number |
+| UploadListener.java:28:14:28:19 | parameter this [slowUploads] : Number | semmle.label | parameter this [slowUploads] : Number |
+| UploadListener.java:29:3:29:11 | this <.field> [slowUploads] : Number | semmle.label | this <.field> [slowUploads] : Number |
+| UploadListener.java:30:3:30:15 | this <.field> [slowUploads] : Number | semmle.label | this <.field> [slowUploads] : Number |
+| UploadListener.java:33:7:33:17 | slowUploads : Number | semmle.label | slowUploads : Number |
+| UploadListener.java:33:7:33:17 | this <.field> [slowUploads] : Number | semmle.label | this <.field> [slowUploads] : Number |
+| UploadListener.java:35:18:35:28 | slowUploads | semmle.label | slowUploads |
+| UploadListener.java:35:18:35:28 | this <.field> [slowUploads] : Number | semmle.label | this <.field> [slowUploads] : Number |
+subpaths
+| ThreadResourceAbuse.java:21:28:21:36 | delayTime : Number | ThreadResourceAbuse.java:66:30:66:41 | waitTime : Number | ThreadResourceAbuse.java:67:4:67:7 | this [post update] [waitTime] : Number | ThreadResourceAbuse.java:21:4:21:37 | new UncheckedSyncAction(...) [waitTime] : Number |
+| ThreadResourceAbuse.java:30:28:30:36 | delayTime : Number | ThreadResourceAbuse.java:66:30:66:41 | waitTime : Number | ThreadResourceAbuse.java:67:4:67:7 | this [post update] [waitTime] : Number | ThreadResourceAbuse.java:30:4:30:37 | new UncheckedSyncAction(...) [waitTime] : Number |
+| ThreadResourceAbuse.java:209:49:209:59 | uploadDelay : Number | UploadListener.java:15:24:15:44 | sleepMilliseconds : Number | UploadListener.java:16:3:16:13 | this <.field> [post update] [slowUploads] : Number | ThreadResourceAbuse.java:209:30:209:87 | new UploadListener(...) [slowUploads] : Number |
+#select
+| ThreadResourceAbuse.java:74:18:74:25 | waitTime | ThreadResourceAbuse.java:18:25:18:57 | getParameter(...) : String | ThreadResourceAbuse.java:74:18:74:25 | waitTime | Vulnerability of uncontrolled resource consumption due to $@. | ThreadResourceAbuse.java:18:25:18:57 | getParameter(...) | user-provided value |
+| ThreadResourceAbuse.java:74:18:74:25 | waitTime | ThreadResourceAbuse.java:29:82:29:114 | getParameter(...) : String | ThreadResourceAbuse.java:74:18:74:25 | waitTime | Vulnerability of uncontrolled resource consumption due to $@. | ThreadResourceAbuse.java:29:82:29:114 | getParameter(...) | user-provided value |
+| ThreadResourceAbuse.java:144:34:144:42 | delayTime | ThreadResourceAbuse.java:141:27:141:43 | getValue(...) : String | ThreadResourceAbuse.java:144:34:144:42 | delayTime | Vulnerability of uncontrolled resource consumption due to $@. | ThreadResourceAbuse.java:141:27:141:43 | getValue(...) | user-provided value |
+| ThreadResourceAbuse.java:176:17:176:26 | retryAfter | ThreadResourceAbuse.java:172:19:172:50 | getHeader(...) : String | ThreadResourceAbuse.java:176:17:176:26 | retryAfter | Vulnerability of uncontrolled resource consumption due to $@. | ThreadResourceAbuse.java:172:19:172:50 | getHeader(...) | user-provided value |
+| UploadListener.java:35:18:35:28 | slowUploads | ThreadResourceAbuse.java:206:28:206:56 | getParameter(...) : String | UploadListener.java:35:18:35:28 | slowUploads | Vulnerability of uncontrolled resource consumption due to $@. | ThreadResourceAbuse.java:206:28:206:56 | getParameter(...) | user-provided value |

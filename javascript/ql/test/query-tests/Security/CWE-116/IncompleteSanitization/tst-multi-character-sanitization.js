@@ -134,6 +134,14 @@
 (function (content) {
 	content.replace(/<script.*\/script>/gi, ""); // NOT OK
 	content.replace(/<(script).*\/script>/gi, ""); // NOT OK
-	content.replace(/.+<(script).*\/script>/gi, ""); // OK
+	content.replace(/.+<(script).*\/script>/gi, ""); // NOT OK
 	content.replace(/.*<(script).*\/script>/gi, ""); // NOT OK
+});
+
+(function (content) {
+  content = content.replace(/<script[\s\S]*?<\/script>/gi, ""); // NOT OK
+  content = content.replace(/<[a-zA-Z\/](.|\n)*?>/g, '') || ' '; // NOT OK
+  content = content.replace(/<(script|iframe|video)[\s\S]*?<\/(script|iframe|video)>/g, '') // NOT OK
+  content = content.replace(/<(script|iframe|video)(.|\s)*?\/(script|iframe|video)>/g, '') // NOT OK
+  content = content.replace(/<[^<]*>/g, ""); // OK
 });

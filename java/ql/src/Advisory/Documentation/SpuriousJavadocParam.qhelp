@@ -6,15 +6,15 @@
 
 <overview>
 <p>
-Javadoc comments for public methods and constructors should use the <code>@param</code> tag to describe the available
-parameters. If the comment includes any empty, incorrect or outdated parameter names then this will make 
+Javadoc comments for public methods, constructors and generic classes should use the <code>@param</code> tag to describe the available
+parameters and type parameters. If the comment includes any empty, incorrect or outdated parameter names then this will make 
 the documentation more difficult to read.
 </p>
 
 </overview>
 <recommendation>
 
-<p>The Javadoc comment for a method or constructor should always use non-empty <code>@param</code> values that match actual parameter or type parameter names.</p>
+<p>The Javadoc comment for a method, constructor or generic class should always use non-empty <code>@param</code> values that match actual parameter or type parameter names.</p>
 
 </recommendation>
 <example>

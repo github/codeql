@@ -2,7 +2,7 @@
  * @name Suspicious call to memset
  * @description Use of memset where the size argument is computed as the size of
  *              some non-struct type. When initializing a buffer, you should specify
- *              its size as <number of elements> * <size of one element> to ensure
+ *              its size as `<number of elements> * <size of one element>` to ensure
  *              portability.
  * @kind problem
  * @id cpp/suspicious-call-to-memset

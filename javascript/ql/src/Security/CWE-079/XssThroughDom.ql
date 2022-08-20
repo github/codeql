@@ -13,7 +13,7 @@
  */
 
 import javascript
-import semmle.javascript.security.dataflow.XssThroughDom::XssThroughDom
+import semmle.javascript.security.dataflow.XssThroughDomQuery
 import DataFlow::PathGraph
 
 from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink

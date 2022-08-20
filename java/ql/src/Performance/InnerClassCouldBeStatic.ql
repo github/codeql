@@ -17,10 +17,11 @@ import java
  * since package-protected fields are not inherited by classes in different
  * packages, but it's enough for the purposes of this check.
  */
+pragma[nomagic]
 predicate inherits(Class c, Field f) {
   f = c.getAField()
   or
-  not f.isPrivate() and c.getASupertype+().getAField() = f
+  not f.isPrivate() and c.getAStrictAncestor().getAField() = f
 }
 
 /**
@@ -129,7 +130,9 @@ predicate potentiallyStatic(InnerClass c) {
     )
   ) and
   // JUnit Nested test classes are required to be non-static.
-  not c.hasAnnotation("org.junit.jupiter.api", "Nested")
+  not c.hasAnnotation("org.junit.jupiter.api", "Nested") and
+  // There's no `static` in kotlin:
+  not c.getLocation().getFile().isKotlinSourceFile()
 }
 
 /**

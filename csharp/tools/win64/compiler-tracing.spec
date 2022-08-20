@@ -7,3 +7,7 @@
   prepend --compiler
   prepend "${compiler}"
   prepend --cil
+**\dotnet.exe:
+  invoke ${config_dir}\Semmle.Extraction.CSharp.Driver.exe
+  prepend --dotnetexec
+  prepend --cil

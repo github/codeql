@@ -1,0 +1,48 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+  <overview>
+    <p>
+      Cookies can be used for security measures, such as authenticating a user
+      based on cookies sent with a request. Misconfiguration of cookie settings
+      in a web application can expose users to attacks that compromise these
+      security measures.
+    </p>
+  </overview>
+
+  <recommendation>
+    <p>
+      Modern web frameworks typically have good default configuration for cookie
+      settings. If an application overrides these settings, then take care to
+      ensure that these changes are necessary and that they don't weaken the
+      cookie configuration.
+    </p>
+  </recommendation>
+
+  <example>
+    <p>
+      In the first example, the value of
+      <code>config.action_dispatch.cookies_same_site_protection</code> is set to
+      <code>:none</code>. This has the effect of setting the default
+      <code>SameSite</code> attribute sent by the server when setting a cookie
+      to <code>None</code> rather than the default of <code>Lax</code>. This may
+      make the application more vulnerable to cross-site request forgery
+      attacks.
+    </p>
+
+    <p>
+      In the second example, this option is instead set to <code>:strict</code>.
+      This is a stronger restriction than the default of <code>:lax</code>, and
+      doesn't compromise on cookie security.
+    </p>
+
+    <sample src="examples/weak_cookie_configuration.rb" />
+  </example>
+
+  <references>
+    <li>OWASP: <a href="https://owasp.org/www-community/SameSite">SameSite</a>.</li>
+    <li>Rails: <a href="https://guides.rubyonrails.org/configuring.html#configuring-action-dispatch">Configuring Action Dispatch</a>.</li>
+  </references>
+</qhelp>

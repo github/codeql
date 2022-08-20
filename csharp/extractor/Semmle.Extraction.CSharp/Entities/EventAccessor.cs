@@ -3,27 +3,27 @@ using System.IO;
 
 namespace Semmle.Extraction.CSharp.Entities
 {
-    internal class EventAccessor : Accessor
+    internal class EventAccessor : Method
     {
-        private EventAccessor(Context cx, IMethodSymbol init)
-            : base(cx, init) { }
+        private readonly IEventSymbol @event;
+
+        private EventAccessor(Context cx, IMethodSymbol init, IEventSymbol @event)
+            : base(cx, init)
+        {
+            this.@event = @event;
+        }
 
         /// <summary>
-        /// Gets the event symbol associated with this accessor.
+        /// Gets the event symbol associated with accessor `symbol`, or `null`
+        /// if there is no associated symbol.
         /// </summary>
-        private IEventSymbol? EventSymbol => Symbol.AssociatedSymbol as IEventSymbol;
+        public static IEventSymbol? GetEventSymbol(IMethodSymbol symbol) =>
+            symbol.AssociatedSymbol as IEventSymbol;
 
         public override void Populate(TextWriter trapFile)
         {
             PopulateMethod(trapFile);
             ContainingType!.PopulateGenerics();
-
-            var @event = EventSymbol;
-            if (@event is null)
-            {
-                Context.ModelError(Symbol, "Unhandled event accessor associated symbol");
-                return;
-            }
 
             var parent = Event.Create(Context, @event);
             int kind;
@@ -31,16 +31,18 @@ namespace Semmle.Extraction.CSharp.Entities
             if (SymbolEqualityComparer.Default.Equals(Symbol, @event.AddMethod))
             {
                 kind = 1;
-                unboundAccessor = Create(Context, @event.OriginalDefinition.AddMethod!);
+                var orig = @event.OriginalDefinition;
+                unboundAccessor = Create(Context, orig.AddMethod!, orig);
             }
             else if (SymbolEqualityComparer.Default.Equals(Symbol, @event.RemoveMethod))
             {
                 kind = 2;
-                unboundAccessor = Create(Context, @event.OriginalDefinition.RemoveMethod!);
+                var orig = @event.OriginalDefinition;
+                unboundAccessor = Create(Context, orig.RemoveMethod!, orig);
             }
             else
             {
-                Context.ModelError(Symbol, "Undhandled event accessor kind");
+                Context.ModelError(Symbol, $"Undhandled event accessor kind {Symbol.ToDisplayString()}");
                 return;
             }
 
@@ -50,16 +52,21 @@ namespace Semmle.Extraction.CSharp.Entities
                 trapFile.event_accessor_location(this, l);
 
             Overrides(trapFile);
+
+            if (Symbol.FromSource() && Block is null)
+            {
+                trapFile.compiler_generated(this);
+            }
         }
 
-        public static new EventAccessor Create(Context cx, IMethodSymbol symbol) =>
-            EventAccessorFactory.Instance.CreateEntityFromSymbol(cx, symbol);
+        public static EventAccessor Create(Context cx, IMethodSymbol symbol, IEventSymbol @event) =>
+            EventAccessorFactory.Instance.CreateEntity(cx, symbol, (symbol, @event));
 
-        private class EventAccessorFactory : CachedEntityFactory<IMethodSymbol, EventAccessor>
+        private class EventAccessorFactory : CachedEntityFactory<(IMethodSymbol, IEventSymbol), EventAccessor>
         {
             public static EventAccessorFactory Instance { get; } = new EventAccessorFactory();
 
-            public override EventAccessor Create(Context cx, IMethodSymbol init) => new EventAccessor(cx, init);
+            public override EventAccessor Create(Context cx, (IMethodSymbol, IEventSymbol) init) => new EventAccessor(cx, init.Item1, init.Item2);
         }
     }
 }

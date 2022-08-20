@@ -12,7 +12,7 @@
  */
 
 import Clones
-import DOMProperties
+import Expressions.DOMProperties
 
 /**
  * Gets a description of expression `e`, which is assumed to be the left-hand
@@ -41,7 +41,10 @@ where
     propName = any(AccessorMethodDeclaration amd).getName()
   ) and
   // exclude DOM properties
-  not isDOMProperty(e.(PropAccess).getPropertyName()) and
+  not isDomProperty(e.(PropAccess).getPropertyName()) and
   // exclude self-assignments that have been inserted to satisfy the TypeScript JS-checker
-  not e.getAssignment().getParent().(ExprStmt).getDocumentation().getATag().getTitle() = "type"
+  not e.getAssignment().getParent().(ExprStmt).getDocumentation().getATag().getTitle() = "type" and
+  // exclude self-assignments in speculatively parsed template files
+  // named arguments may be incorrectly parsed as assignments
+  not e.getTopLevel() instanceof Templating::TemplateTopLevel
 select e.getParent(), "This expression assigns " + dsc + " to itself."

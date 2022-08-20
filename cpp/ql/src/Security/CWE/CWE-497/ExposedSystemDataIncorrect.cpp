@@ -2,4 +2,5 @@ char* path = getenv("PATH");
 
 //...
 
-fprintf(stderr, "cannot find exe on path %s\n", path);
+sprintf(buffer, "Cannot find exe on path: %s", path);
+send(socket, buffer, strlen(buffer), 0);

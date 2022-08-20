@@ -18,7 +18,15 @@ private import internal.OperandInternal
  * of `TOperand` that are used in this stage.
  */
 private class TStageOperand =
-  TRegisterOperand or TNonSSAMemoryOperand or TPhiOperand or TChiOperand;
+  TRegisterOperand or TNonSsaMemoryOperand or TPhiOperand or TChiOperand;
+
+/**
+ * A known location. Testing `loc instanceof KnownLocation` will account for non existing locations, as
+ * opposed to testing `not loc isntanceof UnknownLocation`
+ */
+private class KnownLocation extends Language::Location {
+  KnownLocation() { not this instanceof Language::UnknownLocation }
+}
 
 /**
  * An operand of an `Instruction`. The operand represents a use of the result of one instruction
@@ -30,7 +38,7 @@ class Operand extends TStageOperand {
     // Ensure that the operand does not refer to instructions from earlier stages that are unreachable here
     exists(Instruction use, Instruction def | this = registerOperand(use, _, def))
     or
-    exists(Instruction use | this = nonSSAMemoryOperand(use, _))
+    exists(Instruction use | this = nonSsaMemoryOperand(use, _))
     or
     exists(Instruction use, Instruction def, IRBlock predecessorBlock |
       this = phiOperand(use, def, predecessorBlock, _) or
@@ -45,13 +53,15 @@ class Operand extends TStageOperand {
 
   /**
    * Gets the location of the source code for this operand.
+   * By default this is where the operand is used, but some subclasses may override this
+   * using `getAnyDef()` if it makes more sense.
    */
-  final Language::Location getLocation() { result = getUse().getLocation() }
+  Language::Location getLocation() { result = this.getUse().getLocation() }
 
   /**
    * Gets the function that contains this operand.
    */
-  final IRFunction getEnclosingIRFunction() { result = getUse().getEnclosingIRFunction() }
+  final IRFunction getEnclosingIRFunction() { result = this.getUse().getEnclosingIRFunction() }
 
   /**
    * Gets the `Instruction` that consumes this operand.
@@ -74,7 +84,7 @@ class Operand extends TStageOperand {
    */
   final Instruction getDef() {
     result = this.getAnyDef() and
-    getDefinitionOverlap() instanceof MustExactlyOverlap
+    this.getDefinitionOverlap() instanceof MustExactlyOverlap
   }
 
   /**
@@ -82,7 +92,7 @@ class Operand extends TStageOperand {
    *
    * Gets the `Instruction` that consumes this operand.
    */
-  deprecated final Instruction getUseInstruction() { result = getUse() }
+  deprecated final Instruction getUseInstruction() { result = this.getUse() }
 
   /**
    * DEPRECATED: use `getAnyDef` or `getDef`. The exact replacement for this
@@ -91,7 +101,7 @@ class Operand extends TStageOperand {
    *
    * Gets the `Instruction` whose result is the value of the operand.
    */
-  deprecated final Instruction getDefinitionInstruction() { result = getAnyDef() }
+  deprecated final Instruction getDefinitionInstruction() { result = this.getAnyDef() }
 
   /**
    * Gets the overlap relationship between the operand's definition and its use.
@@ -101,7 +111,9 @@ class Operand extends TStageOperand {
   /**
    * Holds if the result of the definition instruction does not exactly overlap this use.
    */
-  final predicate isDefinitionInexact() { not getDefinitionOverlap() instanceof MustExactlyOverlap }
+  final predicate isDefinitionInexact() {
+    not this.getDefinitionOverlap() instanceof MustExactlyOverlap
+  }
 
   /**
    * Gets a prefix to use when dumping the operand in an operand list.
@@ -121,7 +133,7 @@ class Operand extends TStageOperand {
    * For example: `this:r3_5`
    */
   final string getDumpString() {
-    result = getDumpLabel() + getInexactSpecifier() + getDefinitionId()
+    result = this.getDumpLabel() + this.getInexactSpecifier() + this.getDefinitionId()
   }
 
   /**
@@ -129,9 +141,9 @@ class Operand extends TStageOperand {
    * definition is not modeled in SSA.
    */
   private string getDefinitionId() {
-    result = getAnyDef().getResultId()
+    result = this.getAnyDef().getResultId()
     or
-    not exists(getAnyDef()) and result = "m?"
+    not exists(this.getAnyDef()) and result = "m?"
   }
 
   /**
@@ -140,7 +152,7 @@ class Operand extends TStageOperand {
    * the empty string.
    */
   private string getInexactSpecifier() {
-    if isDefinitionInexact() then result = "~" else result = ""
+    if this.isDefinitionInexact() then result = "~" else result = ""
   }
 
   /**
@@ -155,7 +167,7 @@ class Operand extends TStageOperand {
    * the definition type, such as in the case of a partial read or a read from a pointer that
    * has been cast to a different type.
    */
-  Language::LanguageType getLanguageType() { result = getAnyDef().getResultLanguageType() }
+  Language::LanguageType getLanguageType() { result = this.getAnyDef().getResultLanguageType() }
 
   /**
    * Gets the language-neutral type of the value consumed by this operand. This is usually the same
@@ -164,7 +176,7 @@ class Operand extends TStageOperand {
    * from the definition type, such as in the case of a partial read or a read from a pointer that
    * has been cast to a different type.
    */
-  final IRType getIRType() { result = getLanguageType().getIRType() }
+  final IRType getIRType() { result = this.getLanguageType().getIRType() }
 
   /**
    * Gets the type of the value consumed by this operand. This is usually the same as the
@@ -173,7 +185,7 @@ class Operand extends TStageOperand {
    * the definition type, such as in the case of a partial read or a read from a pointer that
    * has been cast to a different type.
    */
-  final Language::Type getType() { getLanguageType().hasType(result, _) }
+  final Language::Type getType() { this.getLanguageType().hasType(result, _) }
 
   /**
    * Holds if the value consumed by this operand is a glvalue. If this
@@ -182,13 +194,13 @@ class Operand extends TStageOperand {
    * not hold, the value of the operand represents a value whose type is
    * given by `getType()`.
    */
-  final predicate isGLValue() { getLanguageType().hasType(_, true) }
+  final predicate isGLValue() { this.getLanguageType().hasType(_, true) }
 
   /**
    * Gets the size of the value consumed by this operand, in bytes. If the operand does not have
    * a known constant size, this predicate does not hold.
    */
-  final int getSize() { result = getLanguageType().getByteSize() }
+  final int getSize() { result = this.getLanguageType().getByteSize() }
 }
 
 /**
@@ -197,7 +209,7 @@ class Operand extends TStageOperand {
 class MemoryOperand extends Operand {
   cached
   MemoryOperand() {
-    this instanceof TNonSSAMemoryOperand or
+    this instanceof TNonSsaMemoryOperand or
     this instanceof TPhiOperand or
     this instanceof TChiOperand
   }
@@ -205,7 +217,7 @@ class MemoryOperand extends Operand {
   /**
    * Gets the kind of memory access performed by the operand.
    */
-  MemoryAccessKind getMemoryAccess() { result = getUse().getOpcode().getReadMemoryAccess() }
+  MemoryAccessKind getMemoryAccess() { result = this.getUse().getOpcode().getReadMemoryAccess() }
 
   /**
    * Holds if the memory access performed by this operand will not always read from every bit in the
@@ -215,7 +227,7 @@ class MemoryOperand extends Operand {
    * conservative estimate of the memory that might actually be accessed at runtime (for example,
    * the global side effects of a function call).
    */
-  predicate hasMayReadMemoryAccess() { getUse().getOpcode().hasMayReadMemoryAccess() }
+  predicate hasMayReadMemoryAccess() { this.getUse().getOpcode().hasMayReadMemoryAccess() }
 
   /**
    * Returns the operand that holds the memory address from which the current operand loads its
@@ -223,8 +235,8 @@ class MemoryOperand extends Operand {
    * is `r1`.
    */
   final AddressOperand getAddressOperand() {
-    getMemoryAccess().usesAddressOperand() and
-    result.getUse() = getUse()
+    this.getMemoryAccess().usesAddressOperand() and
+    result.getUse() = this.getUse()
   }
 }
 
@@ -237,7 +249,7 @@ class NonPhiOperand extends Operand {
 
   NonPhiOperand() {
     this = registerOperand(useInstr, tag, _) or
-    this = nonSSAMemoryOperand(useInstr, tag) or
+    this = nonSsaMemoryOperand(useInstr, tag) or
     this = chiOperand(useInstr, tag)
   }
 
@@ -267,6 +279,10 @@ class RegisterOperand extends NonPhiOperand, TRegisterOperand {
 
   final override string toString() { result = tag.toString() }
 
+  // most `RegisterOperands` have a more meaningful location at the definition
+  // the only exception are specific cases of `ThisArgumentOperand`
+  override Language::Location getLocation() { result = this.getAnyDef().getLocation() }
+
   final override Instruction getAnyDef() { result = defInstr }
 
   final override Overlap getDefinitionOverlap() {
@@ -283,7 +299,7 @@ class NonPhiMemoryOperand extends NonPhiOperand, MemoryOperand, TNonPhiMemoryOpe
 
   cached
   NonPhiMemoryOperand() {
-    this = nonSSAMemoryOperand(useInstr, tag)
+    this = nonSsaMemoryOperand(useInstr, tag)
     or
     this = chiOperand(useInstr, tag)
   }
@@ -291,10 +307,10 @@ class NonPhiMemoryOperand extends NonPhiOperand, MemoryOperand, TNonPhiMemoryOpe
   final override string toString() { result = tag.toString() }
 
   final override Instruction getAnyDef() {
-    result = unique(Instruction defInstr | hasDefinition(defInstr, _))
+    result = unique(Instruction defInstr | this.hasDefinition(defInstr, _))
   }
 
-  final override Overlap getDefinitionOverlap() { hasDefinition(_, result) }
+  final override Overlap getDefinitionOverlap() { this.hasDefinition(_, result) }
 
   pragma[noinline]
   private predicate hasDefinition(Instruction defInstr, Overlap overlap) {
@@ -399,11 +415,19 @@ class ArgumentOperand extends RegisterOperand {
 }
 
 /**
- * An operand representing the implicit 'this' argument to a member function
+ * An operand representing the implicit `this` argument to a member function
  * call.
  */
 class ThisArgumentOperand extends ArgumentOperand {
   override ThisArgumentOperandTag tag;
+
+  // in most cases the def location makes more sense, but in some corner cases it
+  // has an unknown location: in those cases we fall back to the use location
+  override Language::Location getLocation() {
+    if this.getAnyDef().getLocation() instanceof KnownLocation
+    then result = this.getAnyDef().getLocation()
+    else result = this.getUse().getLocation()
+  }
 }
 
 /**
@@ -449,13 +473,17 @@ class PhiInputOperand extends MemoryOperand, TPhiOperand {
 
   final override Overlap getDefinitionOverlap() { result = overlap }
 
-  final override int getDumpSortOrder() { result = 11 + getPredecessorBlock().getDisplayIndex() }
-
-  final override string getDumpLabel() {
-    result = "from " + getPredecessorBlock().getDisplayIndex().toString() + ":"
+  final override int getDumpSortOrder() {
+    result = 11 + this.getPredecessorBlock().getDisplayIndex()
   }
 
-  final override string getDumpId() { result = getPredecessorBlock().getDisplayIndex().toString() }
+  final override string getDumpLabel() {
+    result = "from " + this.getPredecessorBlock().getDisplayIndex().toString() + ":"
+  }
+
+  final override string getDumpId() {
+    result = this.getPredecessorBlock().getDisplayIndex().toString()
+  }
 
   /**
    * Gets the predecessor block from which this value comes.

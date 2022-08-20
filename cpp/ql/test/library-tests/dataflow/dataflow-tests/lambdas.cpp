@@ -18,7 +18,7 @@ void test_lambdas()
 	sink(a()); // $ ast,ir
 
 	auto b = [&] {
-		sink(t); // $ ast MISSING: ir
+		sink(t); // $ ast,ir
 		sink(u);
 		v = source(); // (v is reference captured)
 	};

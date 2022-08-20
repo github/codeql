@@ -18,6 +18,7 @@
 import cpp
 import Buffer
 private import semmle.code.cpp.valuenumbering.GlobalValueNumbering
+private import semmle.code.cpp.models.implementations.Strcpy
 
 predicate isSizePlus(Expr e, BufferSizeExpr baseSize, int plus) {
   // baseSize
@@ -38,31 +39,6 @@ predicate isSizePlus(Expr e, BufferSizeExpr baseSize, int plus) {
     se = e and
     isSizePlus(se.getLeftOperand(), baseSize, plusSub) and
     plus = plusSub - se.getRightOperand().getValue().toInt()
-  )
-}
-
-predicate strncpyFunction(Function f, int argDest, int argSrc, int argLimit) {
-  exists(string name | name = f.getName() |
-    (
-      name = "strcpy_s" or // strcpy_s(dst, max_amount, src)
-      name = "wcscpy_s" or // wcscpy_s(dst, max_amount, src)
-      name = "_mbscpy_s" // _mbscpy_s(dst, max_amount, src)
-    ) and
-    argDest = 0 and
-    argSrc = 2 and
-    argLimit = 1
-    or
-    (
-      name = "strncpy" or // strncpy(dst, src, max_amount)
-      name = "strncpy_l" or // strncpy_l(dst, src, max_amount, locale)
-      name = "wcsncpy" or // wcsncpy(dst, src, max_amount)
-      name = "_wcsncpy_l" or // _wcsncpy_l(dst, src, max_amount, locale)
-      name = "_mbsncpy" or // _mbsncpy(dst, src, max_amount)
-      name = "_mbsncpy_l" // _mbsncpy_l(dst, src, max_amount, locale)
-    ) and
-    argDest = 0 and
-    argSrc = 1 and
-    argLimit = 2
   )
 }
 
@@ -94,11 +70,13 @@ int arrayExprFixedSize(Expr e) {
 }
 
 from
-  Function f, FunctionCall fc, int argDest, int argSrc, int argLimit, int charSize, Access copyDest,
-  Access copySource, string name, string nth
+  StrcpyFunction f, FunctionCall fc, int argDest, int argSrc, int argLimit, int charSize,
+  Access copyDest, Access copySource, string name, string nth
 where
   f = fc.getTarget() and
-  strncpyFunction(f, argDest, argSrc, argLimit) and
+  argDest = f.getParamDest() and
+  argSrc = f.getParamSrc() and
+  argLimit = f.getParamSize() and
   copyDest = fc.getArgument(argDest) and
   copySource = fc.getArgument(argSrc) and
   // Some of the functions operate on a larger char type, like `wchar_t`, so we

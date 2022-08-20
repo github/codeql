@@ -1,0 +1,31 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+When opening a file with the <code>O_CREAT</code> or <code>O_TMPFILE</code> flag, the <code>mode</code> must
+be supplied. If the <code>mode</code> argument is omitted, some arbitrary bytes from the stack will be used
+as the file mode. This leaks some bits from the stack into the permissions of the file.
+</p>
+</overview>
+
+<recommendation>
+<p>
+The <code>mode</code> must be supplied when <code>O_CREAT</code> or <code>O_TMPFILE</code> is specified.
+</p>
+</recommendation>
+
+<example>
+<p>
+The first example opens a file with the <code>O_CREAT</code> flag without supplying the <code>mode</code>
+argument. In this case arbitrary bytes from the stack will be used as <code>mode</code> argument. The
+second example correctly supplies the <code>mode</code> argument and creates a file that is user readable
+and writable.
+</p>
+
+<sample src="OpenCallMissingModeArgument.c" />
+
+</example>
+</qhelp>

@@ -11,7 +11,7 @@
  */
 
 import csharp
-import Helpers
+import Linq.Helpers
 
 from ForeachStmt fes, LocalVariableDeclStmt s
 where missedOfTypeOpportunity(fes, s)

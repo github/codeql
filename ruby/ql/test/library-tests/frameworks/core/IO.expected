@@ -1,0 +1,55 @@
+ioPOpenCalls
+| IO.rb:1:1:1:30 | call to popen |
+| IO.rb:2:1:2:53 | call to popen |
+| IO.rb:3:1:3:67 | call to popen |
+| IO.rb:5:1:5:28 | call to popen |
+| IO.rb:6:1:6:51 | call to popen |
+| IO.rb:7:1:7:65 | call to popen |
+| IO.rb:9:1:9:39 | call to popen |
+| IO.rb:10:1:10:62 | call to popen |
+| IO.rb:11:1:11:76 | call to popen |
+| IO.rb:12:1:12:76 | call to popen |
+| IO.rb:14:1:14:13 | call to popen |
+| IO.rb:15:1:15:36 | call to popen |
+| IO.rb:16:1:16:50 | call to popen |
+| IO.rb:19:1:19:13 | call to popen |
+| IO.rb:20:1:20:36 | call to popen |
+| IO.rb:21:1:21:50 | call to popen |
+| IO.rb:24:1:24:13 | call to popen |
+| IO.rb:25:1:25:36 | call to popen |
+| IO.rb:26:1:26:50 | call to popen |
+| IO.rb:29:1:29:13 | call to popen |
+| IO.rb:30:1:30:36 | call to popen |
+| IO.rb:31:1:31:50 | call to popen |
+| IO.rb:34:3:34:15 | call to popen |
+ioPOpenCallArguments
+| IO.rb:1:1:1:30 | call to popen | true | IO.rb:1:10:1:29 | "cat foo.txt \| tail" |
+| IO.rb:2:1:2:53 | call to popen | true | IO.rb:2:33:2:52 | "cat foo.txt \| tail" |
+| IO.rb:3:1:3:67 | call to popen | true | IO.rb:3:33:3:52 | "cat foo.txt \| tail" |
+| IO.rb:5:1:5:28 | call to popen | false | IO.rb:5:11:5:15 | "cat" |
+| IO.rb:5:1:5:28 | call to popen | false | IO.rb:5:18:5:26 | "foo.txt" |
+| IO.rb:6:1:6:51 | call to popen | false | IO.rb:6:34:6:38 | "cat" |
+| IO.rb:6:1:6:51 | call to popen | false | IO.rb:6:41:6:49 | "foo.txt" |
+| IO.rb:7:1:7:65 | call to popen | false | IO.rb:7:34:7:38 | "cat" |
+| IO.rb:7:1:7:65 | call to popen | false | IO.rb:7:41:7:49 | "foo.txt" |
+| IO.rb:9:1:9:39 | call to popen | false | IO.rb:9:12:9:16 | "cat" |
+| IO.rb:9:1:9:39 | call to popen | false | IO.rb:9:29:9:37 | "foo.txt" |
+| IO.rb:10:1:10:62 | call to popen | false | IO.rb:10:35:10:39 | "cat" |
+| IO.rb:10:1:10:62 | call to popen | false | IO.rb:10:52:10:60 | "foo.txt" |
+| IO.rb:11:1:11:76 | call to popen | false | IO.rb:11:35:11:39 | "cat" |
+| IO.rb:11:1:11:76 | call to popen | false | IO.rb:11:52:11:60 | "foo.txt" |
+| IO.rb:12:1:12:76 | call to popen | false | IO.rb:12:35:12:39 | "cat" |
+| IO.rb:12:1:12:76 | call to popen | false | IO.rb:12:52:12:60 | "foo.txt" |
+| IO.rb:14:1:14:13 | call to popen | false | IO.rb:14:10:14:12 | "-" |
+| IO.rb:15:1:15:36 | call to popen | false | IO.rb:15:33:15:35 | "-" |
+| IO.rb:16:1:16:50 | call to popen | false | IO.rb:16:33:16:35 | "-" |
+| IO.rb:19:1:19:13 | call to popen | true | IO.rb:19:10:19:12 | cmd |
+| IO.rb:20:1:20:36 | call to popen | true | IO.rb:20:33:20:35 | cmd |
+| IO.rb:21:1:21:50 | call to popen | true | IO.rb:21:33:21:35 | cmd |
+| IO.rb:24:1:24:13 | call to popen | true | IO.rb:24:10:24:12 | cmd |
+| IO.rb:25:1:25:36 | call to popen | true | IO.rb:25:33:25:35 | cmd |
+| IO.rb:26:1:26:50 | call to popen | true | IO.rb:26:33:26:35 | cmd |
+| IO.rb:29:1:29:13 | call to popen | true | IO.rb:29:10:29:12 | cmd |
+| IO.rb:30:1:30:36 | call to popen | true | IO.rb:30:33:30:35 | cmd |
+| IO.rb:31:1:31:50 | call to popen | true | IO.rb:31:33:31:35 | cmd |
+| IO.rb:34:3:34:15 | call to popen | true | IO.rb:34:12:34:14 | cmd |

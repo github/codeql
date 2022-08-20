@@ -63,16 +63,16 @@ csharp73.cs:
 #   19|     4: [BlockStmt] {...}
 #   20|       0: [LocalVariableDeclStmt] ... ...;
 #   20|         0: [LocalVariableDeclAndInitExpr] Span<Byte> buffer = ...
-#   20|           -1: [TypeMention] Span<Byte>
+#   20|           -1: [TypeMention] Span<byte>
 #   20|             1: [TypeMention] byte
 #   20|           0: [LocalVariableAccess] access to local variable buffer
 #   20|           1: [Stackalloc] array creation of type Span<Byte>
-#   20|             -1: [TypeMention] Span<Byte>
+#   20|             -1: [TypeMention] Span<byte>
 #   20|               1: [TypeMention] byte
 #   20|             0: [IntLiteral] 10
 #   22|       1: [LocalVariableDeclStmt] ... ...;
 #   22|         0: [LocalVariableDeclAndInitExpr] Span<Int32> t = ...
-#   22|           -1: [TypeMention] Span<Int32>
+#   22|           -1: [TypeMention] Span<int>
 #   22|             1: [TypeMention] int
 #   22|           0: [LocalVariableAccess] access to local variable t
 #   22|           1: [OperatorCall] call to operator implicit conversion
@@ -102,7 +102,7 @@ csharp73.cs:
 #   46|           1: [IntLiteral] 5
 #   49|   5: [InstanceConstructor] ExpressionVariables
 #   49|     3: [ConstructorInitializer] call to constructor ExpressionVariables
-#   49|       0: [LocalVariableDeclExpr] Int32 x
+#   49|       0: [LocalVariableAccess,LocalVariableDeclExpr] Int32 x
 #   50|     4: [BlockStmt] {...}
 #   51|       0: [ExprStmt] ...;
 #   51|         0: [MethodCall] call to method WriteLine

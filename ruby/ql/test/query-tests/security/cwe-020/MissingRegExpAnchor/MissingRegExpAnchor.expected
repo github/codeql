@@ -1,0 +1,18 @@
+| missing_regexp_anchor.rb:1:1:1:19 | /www\\.example\\.com/ | When this is used as a regular expression on a URL, it may match anywhere, and arbitrary hosts may come before or after it. |
+| missing_regexp_anchor.rb:7:1:7:22 | /https?:\\/\\/good\\.com/ | When this is used as a regular expression on a URL, it may match anywhere, and arbitrary hosts may come before or after it. |
+| missing_regexp_anchor.rb:8:1:8:23 | /^https?:\\/\\/good\\.com/ | This hostname pattern may match any domain name, as it is missing a '\\z' or '/' at the end. |
+| missing_regexp_anchor.rb:19:1:19:6 | /^a\|b/ | Misleading operator precedence. The subexpression '^a' is anchored at the beginning, but the other parts of this regular expression are not |
+| missing_regexp_anchor.rb:22:1:22:8 | /^a\|b\|c/ | Misleading operator precedence. The subexpression '^a' is anchored at the beginning, but the other parts of this regular expression are not |
+| missing_regexp_anchor.rb:28:1:28:8 | /^a\|(b)/ | Misleading operator precedence. The subexpression '^a' is anchored at the beginning, but the other parts of this regular expression are not |
+| missing_regexp_anchor.rb:30:1:30:10 | /^(a)\|(b)/ | Misleading operator precedence. The subexpression '^(a)' is anchored at the beginning, but the other parts of this regular expression are not |
+| missing_regexp_anchor.rb:33:1:33:6 | /a\|b$/ | Misleading operator precedence. The subexpression 'b$' is anchored at the end, but the other parts of this regular expression are not |
+| missing_regexp_anchor.rb:36:1:36:8 | /a\|b\|c$/ | Misleading operator precedence. The subexpression 'c$' is anchored at the end, but the other parts of this regular expression are not |
+| missing_regexp_anchor.rb:42:1:42:8 | /(a)\|b$/ | Misleading operator precedence. The subexpression 'b$' is anchored at the end, but the other parts of this regular expression are not |
+| missing_regexp_anchor.rb:44:1:44:10 | /(a)\|(b)$/ | Misleading operator precedence. The subexpression '(b)$' is anchored at the end, but the other parts of this regular expression are not |
+| missing_regexp_anchor.rb:46:1:46:22 | /^good.com\|better.com/ | Misleading operator precedence. The subexpression '^good.com' is anchored at the beginning, but the other parts of this regular expression are not |
+| missing_regexp_anchor.rb:47:1:47:24 | /^good\\.com\|better\\.com/ | Misleading operator precedence. The subexpression '^good\\.com' is anchored at the beginning, but the other parts of this regular expression are not |
+| missing_regexp_anchor.rb:48:1:48:26 | /^good\\\\.com\|better\\\\.com/ | Misleading operator precedence. The subexpression '^good\\\\.com' is anchored at the beginning, but the other parts of this regular expression are not |
+| missing_regexp_anchor.rb:49:1:49:28 | /^good\\\\\\.com\|better\\\\\\.com/ | Misleading operator precedence. The subexpression '^good\\\\\\.com' is anchored at the beginning, but the other parts of this regular expression are not |
+| missing_regexp_anchor.rb:50:1:50:30 | /^good\\\\\\\\.com\|better\\\\\\\\.com/ | Misleading operator precedence. The subexpression '^good\\\\\\\\.com' is anchored at the beginning, but the other parts of this regular expression are not |
+| missing_regexp_anchor.rb:52:1:52:15 | /^foo\|bar\|baz$/ | Misleading operator precedence. The subexpression '^foo' is anchored at the beginning, but the other parts of this regular expression are not |
+| missing_regexp_anchor.rb:52:1:52:15 | /^foo\|bar\|baz$/ | Misleading operator precedence. The subexpression 'baz$' is anchored at the end, but the other parts of this regular expression are not |

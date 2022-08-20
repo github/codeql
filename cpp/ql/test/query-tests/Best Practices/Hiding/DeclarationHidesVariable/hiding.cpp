@@ -1,4 +1,4 @@
-
+// semmle-extractor-options: -std=c++17
 void f(void) {
     if (1) {
         int i;
@@ -29,4 +29,13 @@ void nestedRangeBasedFor() {
   for (auto x : xs)
     for (auto y : ys) // GOOD
       x = y = 0;
+}
+
+void structuredBinding() {
+  int xs[1] = {1};
+  auto [x] = xs;
+  {
+    auto [x] = xs; // BAD
+    auto [y] = xs; // GOOD
+  }
 }

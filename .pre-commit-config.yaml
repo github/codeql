@@ -1,0 +1,57 @@
+# See https://pre-commit.com for more information
+# See https://pre-commit.com/hooks.html for more hooks
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v3.2.0
+    hooks:
+      - id: trailing-whitespace
+        exclude: /test/.*$(?<!\.ql)(?<!\.qll)(?<!\.qlref)
+      - id: end-of-file-fixer
+        exclude: /test/.*$(?<!\.ql)(?<!\.qll)(?<!\.qlref)
+
+  - repo: https://github.com/pre-commit/mirrors-clang-format
+    rev: v13.0.1
+    hooks:
+      - id: clang-format
+        files: ^swift/.*\.(h|c|cpp)$
+
+  - repo: https://github.com/pre-commit/mirrors-autopep8
+    rev: v1.6.0
+    hooks:
+      - id: autopep8
+        files: ^swift/codegen/.*\.py
+
+  - repo: local
+    hooks:
+      - id: codeql-format
+        name: Fix QL file formatting
+        files: \.qll?$
+        language: system
+        entry: codeql query format --in-place
+
+      - id: sync-files
+        name: Fix files required to be identical
+        files: \.(qll?|qhelp|swift)$
+        language: system
+        entry: python3 config/sync-files.py --latest
+        pass_filenames: false
+
+      - id: qhelp
+        name: Check query help generation
+        files: \.qhelp$
+        language: system
+        entry: python3 misc/scripts/check-qhelp.py
+
+      - id: swift-codegen
+        name: Run Swift checked in code generation
+        files: ^swift/(codegen/|.*/generated/|ql/lib/(swift\.dbscheme$|codeql/swift/elements))
+        language: system
+        entry: bazel run //swift/codegen -- --quiet
+        pass_filenames: false
+
+      - id: swift-codegen-unit-tests
+        name: Run Swift code generation unit tests
+        files: ^swift/codegen/.*\.py$
+        language: system
+        entry: bazel test //swift/codegen/test
+        pass_filenames: false

@@ -39,7 +39,7 @@ public class Options {
         Position endLoc);
   }
 
-  private boolean allowHashBang, allowReturnOutsideFunction, allowImportExportEverywhere;
+  private boolean allowHashBang, allowReturnOutsideFunction, allowImportExportEverywhere, allowGeneratedCodeExprs;
   private boolean preserveParens, mozExtensions, jscript, esnext, v8Extensions, e4x;
   private int ecmaVersion;
   private AllowReserved allowReserved;
@@ -58,6 +58,7 @@ public class Options {
     this.allowReserved = AllowReserved.YES;
     this.allowReturnOutsideFunction = false;
     this.allowImportExportEverywhere = false;
+    this.allowGeneratedCodeExprs = true;
     this.allowHashBang = false;
     this.onToken = null;
     this.onComment = null;
@@ -75,6 +76,7 @@ public class Options {
     this.allowHashBang = that.allowHashBang;
     this.allowReturnOutsideFunction = that.allowReturnOutsideFunction;
     this.allowImportExportEverywhere = that.allowImportExportEverywhere;
+    this.allowGeneratedCodeExprs = that.allowGeneratedCodeExprs;
     this.preserveParens = that.preserveParens;
     this.mozExtensions = that.mozExtensions;
     this.jscript = that.jscript;
@@ -102,6 +104,10 @@ public class Options {
 
   public boolean allowImportExportEverywhere() {
     return allowImportExportEverywhere;
+  }
+
+  public boolean allowGeneratedCodeExprs() {
+    return allowGeneratedCodeExprs;
   }
 
   public boolean preserveParens() {

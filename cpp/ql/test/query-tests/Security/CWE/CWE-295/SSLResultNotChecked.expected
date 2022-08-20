@@ -1,0 +1,4 @@
+| test2.cpp:13:13:13:36 | call to SSL_get_peer_certificate | This call to SSL_get_peer_certificate is not followed by a call to SSL_get_verify_result. |
+| test2.cpp:28:13:28:36 | call to SSL_get_peer_certificate | This call to SSL_get_peer_certificate is not followed by a call to SSL_get_verify_result. |
+| test2.cpp:61:9:61:32 | call to SSL_get_peer_certificate | This call to SSL_get_peer_certificate is not followed by a call to SSL_get_verify_result. |
+| test2.cpp:89:9:89:32 | call to SSL_get_peer_certificate | This call to SSL_get_peer_certificate is not followed by a call to SSL_get_verify_result. |

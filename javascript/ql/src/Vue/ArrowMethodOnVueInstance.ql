@@ -11,7 +11,7 @@
 
 import javascript
 
-from Vue::Instance instance, DataFlow::Node def, DataFlow::FunctionNode arrow, ThisExpr dis
+from Vue::Component instance, DataFlow::Node def, DataFlow::FunctionNode arrow, ThisExpr dis
 where
   instance.getABoundFunction() = def and
   arrow.flowsTo(def) and

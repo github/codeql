@@ -12,7 +12,7 @@
  */
 
 import javascript
-import semmle.javascript.security.dataflow.DifferentKindsComparisonBypass::DifferentKindsComparisonBypass
+import semmle.javascript.security.dataflow.DifferentKindsComparisonBypassQuery
 
 from DifferentKindsComparison cmp, DataFlow::Node lSource, DataFlow::Node rSource
 where

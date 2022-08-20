@@ -59,16 +59,25 @@ private class MethodCallSig extends CallSignatureType {
   string getName() { result = name }
 }
 
+pragma[noinline]
+private MethodCallSig getMethodCallSigWithFingerprint(
+  string name, int optionalParams, int numParams, int requiredParms, SignatureKind kind
+) {
+  name = result.getName() and
+  optionalParams = result.getNumOptionalParameter() and
+  numParams = result.getNumParameter() and
+  requiredParms = result.getNumRequiredParameter() and
+  kind = result.getKind()
+}
+
 /**
  * Holds if the two call signatures could be overloads of each other and have the same parameter types.
  */
 predicate matchingCallSignature(MethodCallSig method, MethodCallSig other) {
-  method.getName() = other.getName() and
-  method.getNumOptionalParameter() = other.getNumOptionalParameter() and
-  method.getNumParameter() = other.getNumParameter() and
-  method.getNumRequiredParameter() = other.getNumRequiredParameter() and
+  other =
+    getMethodCallSigWithFingerprint(method.getName(), method.getNumOptionalParameter(),
+      method.getNumParameter(), method.getNumRequiredParameter(), method.getKind()) and
   // purposely not looking at number of type arguments.
-  method.getKind() = other.getKind() and
   forall(int i | i in [0 .. -1 + method.getNumParameter()] |
     method.getParameter(i) = other.getParameter(i) // This is sometimes imprecise, so it is still a good idea to compare type annotations.
   ) and
@@ -88,18 +97,24 @@ int getOverloadIndex(MethodSignature sig) {
   sig.getDeclaringType().getMethodOverload(sig.getName(), result) = sig
 }
 
+pragma[noinline]
+private MethodSignature getMethodSignatureWithFingerprint(
+  ClassOrInterface declaringType, string name, int numParameters, string kind
+) {
+  result.getDeclaringType() = declaringType and
+  result.getName() = name and
+  getKind(result) = kind and
+  result.getBody().getNumParameter() = numParameters
+}
+
 /**
  * Holds if the two method signatures are overloads of each other and have the same parameter types.
  */
 predicate signaturesMatch(MethodSignature method, MethodSignature other) {
-  // declared in the same interface/class.
-  method.getDeclaringType() = other.getDeclaringType() and
-  // same static modifier.
-  getKind(method) = getKind(other) and
-  // same name.
-  method.getName() = other.getName() and
-  // same number of parameters.
-  method.getBody().getNumParameter() = other.getBody().getNumParameter() and
+  // the initial search for another overload in a single call for better join-order.
+  other =
+    getMethodSignatureWithFingerprint(method.getDeclaringType(), method.getName(),
+      method.getBody().getNumParameter(), getKind(method)) and
   // same this parameter (if exists)
   (
     not exists(method.getBody().getThisTypeAnnotation()) and

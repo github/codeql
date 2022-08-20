@@ -4,6 +4,7 @@
  *              may cause the server to communicate with malicious servers.
  * @kind path-problem
  * @problem.severity error
+ * @security-severity 9.1
  * @precision high
  * @id java/ssrf
  * @tags security

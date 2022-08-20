@@ -84,6 +84,7 @@ nodes
 | FormatUnusedArgumentBad.cs:7:27:7:54 | "Error processing file: {0}" | semmle.label | "Error processing file: {0}" |
 | FormatUnusedArgumentBad.cs:8:27:8:60 | "Error processing file: {1} ({1})" | semmle.label | "Error processing file: {1} ({1})" |
 | FormatUnusedArgumentBad.cs:9:27:9:58 | "Error processing file: %s (%d)" | semmle.label | "Error processing file: %s (%d)" |
+subpaths
 #select
 | FormatInvalid.cs:27:23:27:28 | "{ 0}" | FormatInvalid.cs:27:23:27:28 | "{ 0}" | FormatInvalid.cs:27:23:27:28 | "{ 0}" | Invalid format string used in $@ formatting call. | FormatInvalid.cs:27:9:27:32 | call to method Format | this | FormatInvalid.cs:27:9:27:32 | call to method Format | this |
 | FormatInvalid.cs:30:23:30:31 | "{0,--1}" | FormatInvalid.cs:30:23:30:31 | "{0,--1}" | FormatInvalid.cs:30:23:30:31 | "{0,--1}" | Invalid format string used in $@ formatting call. | FormatInvalid.cs:30:9:30:35 | call to method Format | this | FormatInvalid.cs:30:9:30:35 | call to method Format | this |

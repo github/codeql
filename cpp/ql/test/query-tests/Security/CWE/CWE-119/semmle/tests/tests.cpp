@@ -114,7 +114,7 @@ void test6(bool cond)
 	
 	c = 100;
 	buffer[c] = 'x'; // BAD: over-write [NOT DETECTED]
-	ch = buffer[c]; // BAD: under-read [NOT DETECTED]
+	ch = buffer[c]; // BAD: over-read [NOT DETECTED]
 
 	d = 0;
 	d = 1000;

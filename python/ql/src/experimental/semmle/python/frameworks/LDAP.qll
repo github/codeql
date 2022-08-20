@@ -60,7 +60,7 @@ private module LDAP {
      *
      * See `LDAP2QueryMethods`
      */
-    private class LDAP2Query extends DataFlow::CallCfgNode, LDAPQuery::Range {
+    private class LDAP2Query extends DataFlow::CallCfgNode, LdapQuery::Range {
       LDAP2Query() { this.getFunction() = ldapQuery() }
 
       override DataFlow::Node getQuery() {
@@ -88,16 +88,61 @@ private module LDAP {
       result.(DataFlow::AttrRead).getAttributeName() instanceof LDAP2BindMethods
     }
 
+    /**List of SSL-demanding options */
+    private class LDAPSSLOptions extends DataFlow::Node {
+      LDAPSSLOptions() {
+        this = ldap().getMember("OPT_X_TLS_" + ["DEMAND", "HARD"]).getAValueReachableFromSource()
+      }
+    }
+
     /**
      * A class to find `ldap` methods binding a connection.
      *
      * See `LDAP2BindMethods`
      */
-    private class LDAP2Bind extends DataFlow::CallCfgNode, LDAPBind::Range {
+    private class LDAP2Bind extends DataFlow::CallCfgNode, LdapBind::Range {
       LDAP2Bind() { this.getFunction() = ldapBind() }
 
       override DataFlow::Node getPassword() {
         result in [this.getArg(1), this.getArgByName("cred")]
+      }
+
+      override DataFlow::Node getHost() {
+        exists(DataFlow::CallCfgNode initialize |
+          this.getFunction().(DataFlow::AttrRead).getObject().getALocalSource() = initialize and
+          initialize = ldapInitialize().getACall() and
+          result = initialize.getArg(0)
+        )
+      }
+
+      override predicate useSSL() {
+        // use initialize to correlate `this` and so avoid FP in several instances
+        exists(DataFlow::CallCfgNode initialize |
+          // ldap.set_option(ldap.OPT_X_TLS_%s)
+          ldap().getMember("set_option").getACall().getArg(_) instanceof LDAPSSLOptions
+          or
+          this.getFunction().(DataFlow::AttrRead).getObject().getALocalSource() = initialize and
+          initialize = ldapInitialize().getACall() and
+          (
+            // ldap_connection.start_tls_s()
+            // see https://www.python-ldap.org/en/python-ldap-3.3.0/reference/ldap.html#ldap.LDAPObject.start_tls_s
+            exists(DataFlow::MethodCallNode startTLS |
+              startTLS.getObject().getALocalSource() = initialize and
+              startTLS.getMethodName() = "start_tls_s"
+            )
+            or
+            // ldap_connection.set_option(ldap.OPT_X_TLS_%s, True)
+            exists(DataFlow::CallCfgNode setOption |
+              setOption.getFunction().(DataFlow::AttrRead).getObject().getALocalSource() =
+                initialize and
+              setOption.getFunction().(DataFlow::AttrRead).getAttributeName() = "set_option" and
+              setOption.getArg(0) instanceof LDAPSSLOptions and
+              not DataFlow::exprNode(any(False falseExpr))
+                  .(DataFlow::LocalSourceNode)
+                  .flowsTo(setOption.getArg(1))
+            )
+          )
+        )
       }
     }
 
@@ -106,7 +151,7 @@ private module LDAP {
      *
      * See https://github.com/python-ldap/python-ldap/blob/7ce471e238cdd9a4dd8d17baccd1c9e05e6f894a/Lib/ldap/dn.py#L17
      */
-    private class LDAP2EscapeDNCall extends DataFlow::CallCfgNode, LDAPEscape::Range {
+    private class LDAP2EscapeDNCall extends DataFlow::CallCfgNode, LdapEscape::Range {
       LDAP2EscapeDNCall() { this = ldap().getMember("dn").getMember("escape_dn_chars").getACall() }
 
       override DataFlow::Node getAnInput() { result = this.getArg(0) }
@@ -117,7 +162,7 @@ private module LDAP {
      *
      * See https://www.python-ldap.org/en/python-ldap-3.3.0/reference/ldap-filter.html#ldap.filter.escape_filter_chars
      */
-    private class LDAP2EscapeFilterCall extends DataFlow::CallCfgNode, LDAPEscape::Range {
+    private class LDAP2EscapeFilterCall extends DataFlow::CallCfgNode, LdapEscape::Range {
       LDAP2EscapeFilterCall() {
         this = ldap().getMember("filter").getMember("escape_filter_chars").getACall()
       }
@@ -147,7 +192,7 @@ private module LDAP {
     /**
      * A class to find `ldap3` methods executing a query.
      */
-    private class LDAP3Query extends DataFlow::CallCfgNode, LDAPQuery::Range {
+    private class LDAP3Query extends DataFlow::CallCfgNode, LdapQuery::Range {
       LDAP3Query() {
         this.getFunction().(DataFlow::AttrRead).getObject().getALocalSource() =
           ldap3Connection().getACall() and
@@ -160,11 +205,36 @@ private module LDAP {
     /**
      * A class to find `ldap3` methods binding a connection.
      */
-    class LDAP3Bind extends DataFlow::CallCfgNode, LDAPBind::Range {
+    class LDAP3Bind extends DataFlow::CallCfgNode, LdapBind::Range {
       LDAP3Bind() { this = ldap3Connection().getACall() }
 
       override DataFlow::Node getPassword() {
         result in [this.getArg(2), this.getArgByName("password")]
+      }
+
+      override DataFlow::Node getHost() {
+        exists(DataFlow::CallCfgNode serverCall |
+          serverCall = ldap3Server().getACall() and
+          this.getArg(0).getALocalSource() = serverCall and
+          result = serverCall.getArg(0)
+        )
+      }
+
+      override predicate useSSL() {
+        exists(DataFlow::CallCfgNode serverCall |
+          serverCall = ldap3Server().getACall() and
+          this.getArg(0).getALocalSource() = serverCall and
+          DataFlow::exprNode(any(True trueExpr))
+              .(DataFlow::LocalSourceNode)
+              .flowsTo([serverCall.getArg(2), serverCall.getArgByName("use_ssl")])
+        )
+        or
+        // ldap_connection.start_tls_s()
+        // see https://www.python-ldap.org/en/python-ldap-3.3.0/reference/ldap.html#ldap.LDAPObject.start_tls_s
+        exists(DataFlow::MethodCallNode startTLS |
+          startTLS.getMethodName() = "start_tls_s" and
+          startTLS.getObject().getALocalSource() = this
+        )
       }
     }
 
@@ -173,7 +243,7 @@ private module LDAP {
      *
      * See https://github.com/cannatag/ldap3/blob/4d33166f0869b929f59c6e6825a1b9505eb99967/ldap3/utils/dn.py#L390
      */
-    private class LDAP3EscapeDNCall extends DataFlow::CallCfgNode, LDAPEscape::Range {
+    private class LDAP3EscapeDNCall extends DataFlow::CallCfgNode, LdapEscape::Range {
       LDAP3EscapeDNCall() { this = ldap3Utils().getMember("dn").getMember("escape_rdn").getACall() }
 
       override DataFlow::Node getAnInput() { result = this.getArg(0) }
@@ -184,7 +254,7 @@ private module LDAP {
      *
      * See https://github.com/cannatag/ldap3/blob/4d33166f0869b929f59c6e6825a1b9505eb99967/ldap3/utils/conv.py#L91
      */
-    private class LDAP3EscapeFilterCall extends DataFlow::CallCfgNode, LDAPEscape::Range {
+    private class LDAP3EscapeFilterCall extends DataFlow::CallCfgNode, LdapEscape::Range {
       LDAP3EscapeFilterCall() {
         this = ldap3Utils().getMember("conv").getMember("escape_filter_chars").getACall()
       }

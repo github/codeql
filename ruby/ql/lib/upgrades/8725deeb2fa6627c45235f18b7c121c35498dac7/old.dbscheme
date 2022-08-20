@@ -1,0 +1,1250 @@
+// CodeQL database schema for Ruby
+// Automatically generated from the tree-sitter grammar; do not edit
+
+@location = @location_default
+
+locations_default(
+  unique int id: @location_default,
+  int file: @file ref,
+  int start_line: int ref,
+  int start_column: int ref,
+  int end_line: int ref,
+  int end_column: int ref
+);
+
+@sourceline = @file
+
+numlines(
+  int element_id: @sourceline ref,
+  int num_lines: int ref,
+  int num_code: int ref,
+  int num_comment: int ref
+);
+
+files(
+  unique int id: @file,
+  string name: string ref,
+  string simple: string ref,
+  string ext: string ref,
+  int fromSource: int ref
+);
+
+folders(
+  unique int id: @folder,
+  string name: string ref,
+  string simple: string ref
+);
+
+@container = @file | @folder
+
+containerparent(
+  int parent: @container ref,
+  unique int child: @container ref
+);
+
+sourceLocationPrefix(
+  string prefix: string ref
+);
+
+@underscore_arg = @assignment | @binary | @conditional | @operator_assignment | @range | @unary | @underscore_primary
+
+@underscore_lhs = @call | @element_reference | @scope_resolution | @token_false | @token_nil | @token_true | @underscore_variable
+
+@underscore_method_name = @delimited_symbol | @setter | @token_class_variable | @token_constant | @token_global_variable | @token_identifier | @token_instance_variable | @token_operator | @token_simple_symbol
+
+@underscore_primary = @array | @begin | @break | @case__ | @chained_string | @class | @delimited_symbol | @for | @hash | @if | @lambda | @method | @module | @next | @parenthesized_statements | @rational | @redo | @regex | @retry | @return | @singleton_class | @singleton_method | @string__ | @string_array | @subshell | @symbol_array | @token_character | @token_complex | @token_float | @token_heredoc_beginning | @token_integer | @token_simple_symbol | @unary | @underscore_lhs | @unless | @until | @while | @yield
+
+@underscore_statement = @alias | @assignment | @begin_block | @binary | @break | @call | @end_block | @if_modifier | @next | @operator_assignment | @rescue_modifier | @return | @unary | @undef | @underscore_arg | @unless_modifier | @until_modifier | @while_modifier | @yield
+
+@underscore_variable = @token_class_variable | @token_constant | @token_global_variable | @token_identifier | @token_instance_variable | @token_self | @token_super
+
+alias_def(
+  unique int id: @alias,
+  int alias: @underscore_method_name ref,
+  int name: @underscore_method_name ref,
+  int loc: @location ref
+);
+
+@argument_list_child_type = @block_argument | @break | @call | @hash_splat_argument | @next | @pair | @return | @splat_argument | @underscore_arg | @yield
+
+#keyset[argument_list, index]
+argument_list_child(
+  int argument_list: @argument_list ref,
+  int index: int ref,
+  unique int child: @argument_list_child_type ref
+);
+
+argument_list_def(
+  unique int id: @argument_list,
+  int loc: @location ref
+);
+
+@array_child_type = @block_argument | @break | @call | @hash_splat_argument | @next | @pair | @return | @splat_argument | @underscore_arg | @yield
+
+#keyset[array, index]
+array_child(
+  int array: @array ref,
+  int index: int ref,
+  unique int child: @array_child_type ref
+);
+
+array_def(
+  unique int id: @array,
+  int loc: @location ref
+);
+
+@assignment_left_type = @left_assignment_list | @underscore_lhs
+
+@assignment_right_type = @break | @call | @next | @return | @right_assignment_list | @splat_argument | @underscore_arg | @yield
+
+assignment_def(
+  unique int id: @assignment,
+  int left: @assignment_left_type ref,
+  int right: @assignment_right_type ref,
+  int loc: @location ref
+);
+
+@bare_string_child_type = @interpolation | @token_escape_sequence | @token_string_content
+
+#keyset[bare_string, index]
+bare_string_child(
+  int bare_string: @bare_string ref,
+  int index: int ref,
+  unique int child: @bare_string_child_type ref
+);
+
+bare_string_def(
+  unique int id: @bare_string,
+  int loc: @location ref
+);
+
+@bare_symbol_child_type = @interpolation | @token_escape_sequence | @token_string_content
+
+#keyset[bare_symbol, index]
+bare_symbol_child(
+  int bare_symbol: @bare_symbol ref,
+  int index: int ref,
+  unique int child: @bare_symbol_child_type ref
+);
+
+bare_symbol_def(
+  unique int id: @bare_symbol,
+  int loc: @location ref
+);
+
+@begin_child_type = @else | @ensure | @rescue | @token_empty_statement | @underscore_statement
+
+#keyset[begin, index]
+begin_child(
+  int begin: @begin ref,
+  int index: int ref,
+  unique int child: @begin_child_type ref
+);
+
+begin_def(
+  unique int id: @begin,
+  int loc: @location ref
+);
+
+@begin_block_child_type = @token_empty_statement | @underscore_statement
+
+#keyset[begin_block, index]
+begin_block_child(
+  int begin_block: @begin_block ref,
+  int index: int ref,
+  unique int child: @begin_block_child_type ref
+);
+
+begin_block_def(
+  unique int id: @begin_block,
+  int loc: @location ref
+);
+
+@binary_left_type = @break | @call | @next | @return | @underscore_arg | @yield
+
+case @binary.operator of
+  0 = @binary_bangequal
+| 1 = @binary_bangtilde
+| 2 = @binary_percent
+| 3 = @binary_ampersand
+| 4 = @binary_ampersandampersand
+| 5 = @binary_star
+| 6 = @binary_starstar
+| 7 = @binary_plus
+| 8 = @binary_minus
+| 9 = @binary_slash
+| 10 = @binary_langle
+| 11 = @binary_langlelangle
+| 12 = @binary_langleequal
+| 13 = @binary_langleequalrangle
+| 14 = @binary_equalequal
+| 15 = @binary_equalequalequal
+| 16 = @binary_equaltilde
+| 17 = @binary_rangle
+| 18 = @binary_rangleequal
+| 19 = @binary_ranglerangle
+| 20 = @binary_caret
+| 21 = @binary_and
+| 22 = @binary_or
+| 23 = @binary_pipe
+| 24 = @binary_pipepipe
+;
+
+
+@binary_right_type = @break | @call | @next | @return | @underscore_arg | @yield
+
+binary_def(
+  unique int id: @binary,
+  int left: @binary_left_type ref,
+  int operator: int ref,
+  int right: @binary_right_type ref,
+  int loc: @location ref
+);
+
+block_parameters(
+  unique int block: @block ref,
+  unique int parameters: @block_parameters ref
+);
+
+@block_child_type = @token_empty_statement | @underscore_statement
+
+#keyset[block, index]
+block_child(
+  int block: @block ref,
+  int index: int ref,
+  unique int child: @block_child_type ref
+);
+
+block_def(
+  unique int id: @block,
+  int loc: @location ref
+);
+
+block_argument_def(
+  unique int id: @block_argument,
+  int child: @underscore_arg ref,
+  int loc: @location ref
+);
+
+block_parameter_def(
+  unique int id: @block_parameter,
+  int name: @token_identifier ref,
+  int loc: @location ref
+);
+
+@block_parameters_child_type = @block_parameter | @destructured_parameter | @hash_splat_parameter | @keyword_parameter | @optional_parameter | @splat_parameter | @token_identifier
+
+#keyset[block_parameters, index]
+block_parameters_child(
+  int block_parameters: @block_parameters ref,
+  int index: int ref,
+  unique int child: @block_parameters_child_type ref
+);
+
+block_parameters_def(
+  unique int id: @block_parameters,
+  int loc: @location ref
+);
+
+break_child(
+  unique int break: @break ref,
+  unique int child: @argument_list ref
+);
+
+break_def(
+  unique int id: @break,
+  int loc: @location ref
+);
+
+call_arguments(
+  unique int call: @call ref,
+  unique int arguments: @argument_list ref
+);
+
+@call_block_type = @block | @do_block
+
+call_block(
+  unique int call: @call ref,
+  unique int block: @call_block_type ref
+);
+
+@call_method_type = @argument_list | @scope_resolution | @token_operator | @underscore_variable
+
+@call_receiver_type = @call | @underscore_primary
+
+call_receiver(
+  unique int call: @call ref,
+  unique int receiver: @call_receiver_type ref
+);
+
+call_def(
+  unique int id: @call,
+  int method: @call_method_type ref,
+  int loc: @location ref
+);
+
+case_value(
+  unique int case__: @case__ ref,
+  unique int value: @underscore_statement ref
+);
+
+@case_child_type = @else | @when
+
+#keyset[case__, index]
+case_child(
+  int case__: @case__ ref,
+  int index: int ref,
+  unique int child: @case_child_type ref
+);
+
+case_def(
+  unique int id: @case__,
+  int loc: @location ref
+);
+
+#keyset[chained_string, index]
+chained_string_child(
+  int chained_string: @chained_string ref,
+  int index: int ref,
+  unique int child: @string__ ref
+);
+
+chained_string_def(
+  unique int id: @chained_string,
+  int loc: @location ref
+);
+
+@class_name_type = @scope_resolution | @token_constant
+
+class_superclass(
+  unique int class: @class ref,
+  unique int superclass: @superclass ref
+);
+
+@class_child_type = @else | @ensure | @rescue | @token_empty_statement | @underscore_statement
+
+#keyset[class, index]
+class_child(
+  int class: @class ref,
+  int index: int ref,
+  unique int child: @class_child_type ref
+);
+
+class_def(
+  unique int id: @class,
+  int name: @class_name_type ref,
+  int loc: @location ref
+);
+
+conditional_def(
+  unique int id: @conditional,
+  int alternative: @underscore_arg ref,
+  int condition: @underscore_arg ref,
+  int consequence: @underscore_arg ref,
+  int loc: @location ref
+);
+
+@delimited_symbol_child_type = @interpolation | @token_escape_sequence | @token_string_content
+
+#keyset[delimited_symbol, index]
+delimited_symbol_child(
+  int delimited_symbol: @delimited_symbol ref,
+  int index: int ref,
+  unique int child: @delimited_symbol_child_type ref
+);
+
+delimited_symbol_def(
+  unique int id: @delimited_symbol,
+  int loc: @location ref
+);
+
+@destructured_left_assignment_child_type = @destructured_left_assignment | @rest_assignment | @underscore_lhs
+
+#keyset[destructured_left_assignment, index]
+destructured_left_assignment_child(
+  int destructured_left_assignment: @destructured_left_assignment ref,
+  int index: int ref,
+  unique int child: @destructured_left_assignment_child_type ref
+);
+
+destructured_left_assignment_def(
+  unique int id: @destructured_left_assignment,
+  int loc: @location ref
+);
+
+@destructured_parameter_child_type = @block_parameter | @destructured_parameter | @hash_splat_parameter | @keyword_parameter | @optional_parameter | @splat_parameter | @token_identifier
+
+#keyset[destructured_parameter, index]
+destructured_parameter_child(
+  int destructured_parameter: @destructured_parameter ref,
+  int index: int ref,
+  unique int child: @destructured_parameter_child_type ref
+);
+
+destructured_parameter_def(
+  unique int id: @destructured_parameter,
+  int loc: @location ref
+);
+
+@do_child_type = @token_empty_statement | @underscore_statement
+
+#keyset[do, index]
+do_child(
+  int do: @do ref,
+  int index: int ref,
+  unique int child: @do_child_type ref
+);
+
+do_def(
+  unique int id: @do,
+  int loc: @location ref
+);
+
+do_block_parameters(
+  unique int do_block: @do_block ref,
+  unique int parameters: @block_parameters ref
+);
+
+@do_block_child_type = @else | @ensure | @rescue | @token_empty_statement | @underscore_statement
+
+#keyset[do_block, index]
+do_block_child(
+  int do_block: @do_block ref,
+  int index: int ref,
+  unique int child: @do_block_child_type ref
+);
+
+do_block_def(
+  unique int id: @do_block,
+  int loc: @location ref
+);
+
+@element_reference_child_type = @block_argument | @break | @call | @hash_splat_argument | @next | @pair | @return | @splat_argument | @underscore_arg | @yield
+
+#keyset[element_reference, index]
+element_reference_child(
+  int element_reference: @element_reference ref,
+  int index: int ref,
+  unique int child: @element_reference_child_type ref
+);
+
+element_reference_def(
+  unique int id: @element_reference,
+  int object: @underscore_primary ref,
+  int loc: @location ref
+);
+
+@else_child_type = @token_empty_statement | @underscore_statement
+
+#keyset[else, index]
+else_child(
+  int else: @else ref,
+  int index: int ref,
+  unique int child: @else_child_type ref
+);
+
+else_def(
+  unique int id: @else,
+  int loc: @location ref
+);
+
+@elsif_alternative_type = @else | @elsif
+
+elsif_alternative(
+  unique int elsif: @elsif ref,
+  unique int alternative: @elsif_alternative_type ref
+);
+
+elsif_consequence(
+  unique int elsif: @elsif ref,
+  unique int consequence: @then ref
+);
+
+elsif_def(
+  unique int id: @elsif,
+  int condition: @underscore_statement ref,
+  int loc: @location ref
+);
+
+@end_block_child_type = @token_empty_statement | @underscore_statement
+
+#keyset[end_block, index]
+end_block_child(
+  int end_block: @end_block ref,
+  int index: int ref,
+  unique int child: @end_block_child_type ref
+);
+
+end_block_def(
+  unique int id: @end_block,
+  int loc: @location ref
+);
+
+@ensure_child_type = @token_empty_statement | @underscore_statement
+
+#keyset[ensure, index]
+ensure_child(
+  int ensure: @ensure ref,
+  int index: int ref,
+  unique int child: @ensure_child_type ref
+);
+
+ensure_def(
+  unique int id: @ensure,
+  int loc: @location ref
+);
+
+exception_variable_def(
+  unique int id: @exception_variable,
+  int child: @underscore_lhs ref,
+  int loc: @location ref
+);
+
+@exceptions_child_type = @splat_argument | @underscore_arg
+
+#keyset[exceptions, index]
+exceptions_child(
+  int exceptions: @exceptions ref,
+  int index: int ref,
+  unique int child: @exceptions_child_type ref
+);
+
+exceptions_def(
+  unique int id: @exceptions,
+  int loc: @location ref
+);
+
+@for_pattern_type = @left_assignment_list | @underscore_lhs
+
+for_def(
+  unique int id: @for,
+  int body: @do ref,
+  int pattern: @for_pattern_type ref,
+  int value: @in ref,
+  int loc: @location ref
+);
+
+@hash_child_type = @hash_splat_argument | @pair
+
+#keyset[hash, index]
+hash_child(
+  int hash: @hash ref,
+  int index: int ref,
+  unique int child: @hash_child_type ref
+);
+
+hash_def(
+  unique int id: @hash,
+  int loc: @location ref
+);
+
+hash_splat_argument_def(
+  unique int id: @hash_splat_argument,
+  int child: @underscore_arg ref,
+  int loc: @location ref
+);
+
+hash_splat_parameter_name(
+  unique int hash_splat_parameter: @hash_splat_parameter ref,
+  unique int name: @token_identifier ref
+);
+
+hash_splat_parameter_def(
+  unique int id: @hash_splat_parameter,
+  int loc: @location ref
+);
+
+@heredoc_body_child_type = @interpolation | @token_escape_sequence | @token_heredoc_content | @token_heredoc_end
+
+#keyset[heredoc_body, index]
+heredoc_body_child(
+  int heredoc_body: @heredoc_body ref,
+  int index: int ref,
+  unique int child: @heredoc_body_child_type ref
+);
+
+heredoc_body_def(
+  unique int id: @heredoc_body,
+  int loc: @location ref
+);
+
+@if_alternative_type = @else | @elsif
+
+if_alternative(
+  unique int if: @if ref,
+  unique int alternative: @if_alternative_type ref
+);
+
+if_consequence(
+  unique int if: @if ref,
+  unique int consequence: @then ref
+);
+
+if_def(
+  unique int id: @if,
+  int condition: @underscore_statement ref,
+  int loc: @location ref
+);
+
+@if_modifier_condition_type = @break | @call | @next | @return | @underscore_arg | @yield
+
+if_modifier_def(
+  unique int id: @if_modifier,
+  int body: @underscore_statement ref,
+  int condition: @if_modifier_condition_type ref,
+  int loc: @location ref
+);
+
+in_def(
+  unique int id: @in,
+  int child: @underscore_arg ref,
+  int loc: @location ref
+);
+
+@interpolation_child_type = @token_empty_statement | @underscore_statement
+
+#keyset[interpolation, index]
+interpolation_child(
+  int interpolation: @interpolation ref,
+  int index: int ref,
+  unique int child: @interpolation_child_type ref
+);
+
+interpolation_def(
+  unique int id: @interpolation,
+  int loc: @location ref
+);
+
+keyword_parameter_value(
+  unique int keyword_parameter: @keyword_parameter ref,
+  unique int value: @underscore_arg ref
+);
+
+keyword_parameter_def(
+  unique int id: @keyword_parameter,
+  int name: @token_identifier ref,
+  int loc: @location ref
+);
+
+@lambda_body_type = @block | @do_block
+
+lambda_parameters(
+  unique int lambda: @lambda ref,
+  unique int parameters: @lambda_parameters ref
+);
+
+lambda_def(
+  unique int id: @lambda,
+  int body: @lambda_body_type ref,
+  int loc: @location ref
+);
+
+@lambda_parameters_child_type = @block_parameter | @destructured_parameter | @hash_splat_parameter | @keyword_parameter | @optional_parameter | @splat_parameter | @token_identifier
+
+#keyset[lambda_parameters, index]
+lambda_parameters_child(
+  int lambda_parameters: @lambda_parameters ref,
+  int index: int ref,
+  unique int child: @lambda_parameters_child_type ref
+);
+
+lambda_parameters_def(
+  unique int id: @lambda_parameters,
+  int loc: @location ref
+);
+
+@left_assignment_list_child_type = @destructured_left_assignment | @rest_assignment | @underscore_lhs
+
+#keyset[left_assignment_list, index]
+left_assignment_list_child(
+  int left_assignment_list: @left_assignment_list ref,
+  int index: int ref,
+  unique int child: @left_assignment_list_child_type ref
+);
+
+left_assignment_list_def(
+  unique int id: @left_assignment_list,
+  int loc: @location ref
+);
+
+method_parameters(
+  unique int method: @method ref,
+  unique int parameters: @method_parameters ref
+);
+
+@method_child_type = @else | @ensure | @rescue | @token_empty_statement | @underscore_statement
+
+#keyset[method, index]
+method_child(
+  int method: @method ref,
+  int index: int ref,
+  unique int child: @method_child_type ref
+);
+
+method_def(
+  unique int id: @method,
+  int name: @underscore_method_name ref,
+  int loc: @location ref
+);
+
+@method_parameters_child_type = @block_parameter | @destructured_parameter | @hash_splat_parameter | @keyword_parameter | @optional_parameter | @splat_parameter | @token_identifier
+
+#keyset[method_parameters, index]
+method_parameters_child(
+  int method_parameters: @method_parameters ref,
+  int index: int ref,
+  unique int child: @method_parameters_child_type ref
+);
+
+method_parameters_def(
+  unique int id: @method_parameters,
+  int loc: @location ref
+);
+
+@module_name_type = @scope_resolution | @token_constant
+
+@module_child_type = @else | @ensure | @rescue | @token_empty_statement | @underscore_statement
+
+#keyset[module, index]
+module_child(
+  int module: @module ref,
+  int index: int ref,
+  unique int child: @module_child_type ref
+);
+
+module_def(
+  unique int id: @module,
+  int name: @module_name_type ref,
+  int loc: @location ref
+);
+
+next_child(
+  unique int next: @next ref,
+  unique int child: @argument_list ref
+);
+
+next_def(
+  unique int id: @next,
+  int loc: @location ref
+);
+
+case @operator_assignment.operator of
+  0 = @operator_assignment_percentequal
+| 1 = @operator_assignment_ampersandampersandequal
+| 2 = @operator_assignment_ampersandequal
+| 3 = @operator_assignment_starstarequal
+| 4 = @operator_assignment_starequal
+| 5 = @operator_assignment_plusequal
+| 6 = @operator_assignment_minusequal
+| 7 = @operator_assignment_slashequal
+| 8 = @operator_assignment_langlelangleequal
+| 9 = @operator_assignment_ranglerangleequal
+| 10 = @operator_assignment_caretequal
+| 11 = @operator_assignment_pipeequal
+| 12 = @operator_assignment_pipepipeequal
+;
+
+
+@operator_assignment_right_type = @break | @call | @next | @return | @underscore_arg | @yield
+
+operator_assignment_def(
+  unique int id: @operator_assignment,
+  int left: @underscore_lhs ref,
+  int operator: int ref,
+  int right: @operator_assignment_right_type ref,
+  int loc: @location ref
+);
+
+optional_parameter_def(
+  unique int id: @optional_parameter,
+  int name: @token_identifier ref,
+  int value: @underscore_arg ref,
+  int loc: @location ref
+);
+
+@pair_key_type = @string__ | @token_hash_key_symbol | @underscore_arg
+
+pair_def(
+  unique int id: @pair,
+  int key__: @pair_key_type ref,
+  int value: @underscore_arg ref,
+  int loc: @location ref
+);
+
+@parenthesized_statements_child_type = @token_empty_statement | @underscore_statement
+
+#keyset[parenthesized_statements, index]
+parenthesized_statements_child(
+  int parenthesized_statements: @parenthesized_statements ref,
+  int index: int ref,
+  unique int child: @parenthesized_statements_child_type ref
+);
+
+parenthesized_statements_def(
+  unique int id: @parenthesized_statements,
+  int loc: @location ref
+);
+
+@pattern_child_type = @splat_argument | @underscore_arg
+
+pattern_def(
+  unique int id: @pattern,
+  int child: @pattern_child_type ref,
+  int loc: @location ref
+);
+
+@program_child_type = @token_empty_statement | @token_uninterpreted | @underscore_statement
+
+#keyset[program, index]
+program_child(
+  int program: @program ref,
+  int index: int ref,
+  unique int child: @program_child_type ref
+);
+
+program_def(
+  unique int id: @program,
+  int loc: @location ref
+);
+
+range_begin(
+  unique int range: @range ref,
+  unique int begin: @underscore_arg ref
+);
+
+range_end(
+  unique int range: @range ref,
+  unique int end: @underscore_arg ref
+);
+
+case @range.operator of
+  0 = @range_dotdot
+| 1 = @range_dotdotdot
+;
+
+
+range_def(
+  unique int id: @range,
+  int operator: int ref,
+  int loc: @location ref
+);
+
+@rational_child_type = @token_float | @token_integer
+
+rational_def(
+  unique int id: @rational,
+  int child: @rational_child_type ref,
+  int loc: @location ref
+);
+
+redo_child(
+  unique int redo: @redo ref,
+  unique int child: @argument_list ref
+);
+
+redo_def(
+  unique int id: @redo,
+  int loc: @location ref
+);
+
+@regex_child_type = @interpolation | @token_escape_sequence | @token_string_content
+
+#keyset[regex, index]
+regex_child(
+  int regex: @regex ref,
+  int index: int ref,
+  unique int child: @regex_child_type ref
+);
+
+regex_def(
+  unique int id: @regex,
+  int loc: @location ref
+);
+
+rescue_body(
+  unique int rescue: @rescue ref,
+  unique int body: @then ref
+);
+
+rescue_exceptions(
+  unique int rescue: @rescue ref,
+  unique int exceptions: @exceptions ref
+);
+
+rescue_variable(
+  unique int rescue: @rescue ref,
+  unique int variable: @exception_variable ref
+);
+
+rescue_def(
+  unique int id: @rescue,
+  int loc: @location ref
+);
+
+@rescue_modifier_handler_type = @break | @call | @next | @return | @underscore_arg | @yield
+
+rescue_modifier_def(
+  unique int id: @rescue_modifier,
+  int body: @underscore_statement ref,
+  int handler: @rescue_modifier_handler_type ref,
+  int loc: @location ref
+);
+
+rest_assignment_child(
+  unique int rest_assignment: @rest_assignment ref,
+  unique int child: @underscore_lhs ref
+);
+
+rest_assignment_def(
+  unique int id: @rest_assignment,
+  int loc: @location ref
+);
+
+retry_child(
+  unique int retry: @retry ref,
+  unique int child: @argument_list ref
+);
+
+retry_def(
+  unique int id: @retry,
+  int loc: @location ref
+);
+
+return_child(
+  unique int return: @return ref,
+  unique int child: @argument_list ref
+);
+
+return_def(
+  unique int id: @return,
+  int loc: @location ref
+);
+
+@right_assignment_list_child_type = @splat_argument | @underscore_arg
+
+#keyset[right_assignment_list, index]
+right_assignment_list_child(
+  int right_assignment_list: @right_assignment_list ref,
+  int index: int ref,
+  unique int child: @right_assignment_list_child_type ref
+);
+
+right_assignment_list_def(
+  unique int id: @right_assignment_list,
+  int loc: @location ref
+);
+
+@scope_resolution_name_type = @token_constant | @token_identifier
+
+scope_resolution_scope(
+  unique int scope_resolution: @scope_resolution ref,
+  unique int scope: @underscore_primary ref
+);
+
+scope_resolution_def(
+  unique int id: @scope_resolution,
+  int name: @scope_resolution_name_type ref,
+  int loc: @location ref
+);
+
+setter_def(
+  unique int id: @setter,
+  int name: @token_identifier ref,
+  int loc: @location ref
+);
+
+@singleton_class_child_type = @else | @ensure | @rescue | @token_empty_statement | @underscore_statement
+
+#keyset[singleton_class, index]
+singleton_class_child(
+  int singleton_class: @singleton_class ref,
+  int index: int ref,
+  unique int child: @singleton_class_child_type ref
+);
+
+singleton_class_def(
+  unique int id: @singleton_class,
+  int value: @underscore_arg ref,
+  int loc: @location ref
+);
+
+@singleton_method_object_type = @underscore_arg | @underscore_variable
+
+singleton_method_parameters(
+  unique int singleton_method: @singleton_method ref,
+  unique int parameters: @method_parameters ref
+);
+
+@singleton_method_child_type = @else | @ensure | @rescue | @token_empty_statement | @underscore_statement
+
+#keyset[singleton_method, index]
+singleton_method_child(
+  int singleton_method: @singleton_method ref,
+  int index: int ref,
+  unique int child: @singleton_method_child_type ref
+);
+
+singleton_method_def(
+  unique int id: @singleton_method,
+  int name: @underscore_method_name ref,
+  int object: @singleton_method_object_type ref,
+  int loc: @location ref
+);
+
+splat_argument_def(
+  unique int id: @splat_argument,
+  int child: @underscore_arg ref,
+  int loc: @location ref
+);
+
+splat_parameter_name(
+  unique int splat_parameter: @splat_parameter ref,
+  unique int name: @token_identifier ref
+);
+
+splat_parameter_def(
+  unique int id: @splat_parameter,
+  int loc: @location ref
+);
+
+@string_child_type = @interpolation | @token_escape_sequence | @token_string_content
+
+#keyset[string__, index]
+string_child(
+  int string__: @string__ ref,
+  int index: int ref,
+  unique int child: @string_child_type ref
+);
+
+string_def(
+  unique int id: @string__,
+  int loc: @location ref
+);
+
+#keyset[string_array, index]
+string_array_child(
+  int string_array: @string_array ref,
+  int index: int ref,
+  unique int child: @bare_string ref
+);
+
+string_array_def(
+  unique int id: @string_array,
+  int loc: @location ref
+);
+
+@subshell_child_type = @interpolation | @token_escape_sequence | @token_string_content
+
+#keyset[subshell, index]
+subshell_child(
+  int subshell: @subshell ref,
+  int index: int ref,
+  unique int child: @subshell_child_type ref
+);
+
+subshell_def(
+  unique int id: @subshell,
+  int loc: @location ref
+);
+
+@superclass_child_type = @break | @call | @next | @return | @underscore_arg | @yield
+
+superclass_def(
+  unique int id: @superclass,
+  int child: @superclass_child_type ref,
+  int loc: @location ref
+);
+
+#keyset[symbol_array, index]
+symbol_array_child(
+  int symbol_array: @symbol_array ref,
+  int index: int ref,
+  unique int child: @bare_symbol ref
+);
+
+symbol_array_def(
+  unique int id: @symbol_array,
+  int loc: @location ref
+);
+
+@then_child_type = @token_empty_statement | @underscore_statement
+
+#keyset[then, index]
+then_child(
+  int then: @then ref,
+  int index: int ref,
+  unique int child: @then_child_type ref
+);
+
+then_def(
+  unique int id: @then,
+  int loc: @location ref
+);
+
+@unary_operand_type = @break | @call | @next | @parenthesized_statements | @return | @token_float | @token_integer | @underscore_arg | @yield
+
+case @unary.operator of
+  0 = @unary_bang
+| 1 = @unary_plus
+| 2 = @unary_minus
+| 3 = @unary_definedquestion
+| 4 = @unary_not
+| 5 = @unary_tilde
+;
+
+
+unary_def(
+  unique int id: @unary,
+  int operand: @unary_operand_type ref,
+  int operator: int ref,
+  int loc: @location ref
+);
+
+#keyset[undef, index]
+undef_child(
+  int undef: @undef ref,
+  int index: int ref,
+  unique int child: @underscore_method_name ref
+);
+
+undef_def(
+  unique int id: @undef,
+  int loc: @location ref
+);
+
+@unless_alternative_type = @else | @elsif
+
+unless_alternative(
+  unique int unless: @unless ref,
+  unique int alternative: @unless_alternative_type ref
+);
+
+unless_consequence(
+  unique int unless: @unless ref,
+  unique int consequence: @then ref
+);
+
+unless_def(
+  unique int id: @unless,
+  int condition: @underscore_statement ref,
+  int loc: @location ref
+);
+
+@unless_modifier_condition_type = @break | @call | @next | @return | @underscore_arg | @yield
+
+unless_modifier_def(
+  unique int id: @unless_modifier,
+  int body: @underscore_statement ref,
+  int condition: @unless_modifier_condition_type ref,
+  int loc: @location ref
+);
+
+until_def(
+  unique int id: @until,
+  int body: @do ref,
+  int condition: @underscore_statement ref,
+  int loc: @location ref
+);
+
+@until_modifier_condition_type = @break | @call | @next | @return | @underscore_arg | @yield
+
+until_modifier_def(
+  unique int id: @until_modifier,
+  int body: @underscore_statement ref,
+  int condition: @until_modifier_condition_type ref,
+  int loc: @location ref
+);
+
+when_body(
+  unique int when: @when ref,
+  unique int body: @then ref
+);
+
+#keyset[when, index]
+when_pattern(
+  int when: @when ref,
+  int index: int ref,
+  unique int pattern: @pattern ref
+);
+
+when_def(
+  unique int id: @when,
+  int loc: @location ref
+);
+
+while_def(
+  unique int id: @while,
+  int body: @do ref,
+  int condition: @underscore_statement ref,
+  int loc: @location ref
+);
+
+@while_modifier_condition_type = @break | @call | @next | @return | @underscore_arg | @yield
+
+while_modifier_def(
+  unique int id: @while_modifier,
+  int body: @underscore_statement ref,
+  int condition: @while_modifier_condition_type ref,
+  int loc: @location ref
+);
+
+yield_child(
+  unique int yield: @yield ref,
+  unique int child: @argument_list ref
+);
+
+yield_def(
+  unique int id: @yield,
+  int loc: @location ref
+);
+
+tokeninfo(
+  unique int id: @token,
+  int kind: int ref,
+  int file: @file ref,
+  int idx: int ref,
+  string value: string ref,
+  int loc: @location ref
+);
+
+case @token.kind of
+  0 = @reserved_word
+| 1 = @token_character
+| 2 = @token_class_variable
+| 3 = @token_comment
+| 4 = @token_complex
+| 5 = @token_constant
+| 6 = @token_empty_statement
+| 7 = @token_escape_sequence
+| 8 = @token_false
+| 9 = @token_float
+| 10 = @token_global_variable
+| 11 = @token_hash_key_symbol
+| 12 = @token_heredoc_beginning
+| 13 = @token_heredoc_content
+| 14 = @token_heredoc_end
+| 15 = @token_identifier
+| 16 = @token_instance_variable
+| 17 = @token_integer
+| 18 = @token_nil
+| 19 = @token_operator
+| 20 = @token_self
+| 21 = @token_simple_symbol
+| 22 = @token_string_content
+| 23 = @token_super
+| 24 = @token_true
+| 25 = @token_uninterpreted
+;
+
+
+@ast_node = @alias | @argument_list | @array | @assignment | @bare_string | @bare_symbol | @begin | @begin_block | @binary | @block | @block_argument | @block_parameter | @block_parameters | @break | @call | @case__ | @chained_string | @class | @conditional | @delimited_symbol | @destructured_left_assignment | @destructured_parameter | @do | @do_block | @element_reference | @else | @elsif | @end_block | @ensure | @exception_variable | @exceptions | @for | @hash | @hash_splat_argument | @hash_splat_parameter | @heredoc_body | @if | @if_modifier | @in | @interpolation | @keyword_parameter | @lambda | @lambda_parameters | @left_assignment_list | @method | @method_parameters | @module | @next | @operator_assignment | @optional_parameter | @pair | @parenthesized_statements | @pattern | @program | @range | @rational | @redo | @regex | @rescue | @rescue_modifier | @rest_assignment | @retry | @return | @right_assignment_list | @scope_resolution | @setter | @singleton_class | @singleton_method | @splat_argument | @splat_parameter | @string__ | @string_array | @subshell | @superclass | @symbol_array | @then | @token | @unary | @undef | @unless | @unless_modifier | @until | @until_modifier | @when | @while | @while_modifier | @yield
+
+@ast_node_parent = @ast_node | @file
+
+#keyset[parent, parent_index]
+ast_node_parent(
+  int child: @ast_node ref,
+  int parent: @ast_node_parent ref,
+  int parent_index: int ref
+);
+

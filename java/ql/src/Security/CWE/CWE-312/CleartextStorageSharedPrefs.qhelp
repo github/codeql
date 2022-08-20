@@ -1,0 +1,36 @@
+<!DOCTYPE qhelp PUBLIC "-//Semmle//qhelp//EN" "qhelp.dtd">
+<qhelp>
+  <overview>
+    <p>
+      <code>SharedPreferences</code> is an Android API that stores application preferences using simple sets of data values. It allows you to easily save, alter, and retrieve the values stored in a user's profile. However, sensitive information should not be saved in cleartext. Otherwise it can be accessed by any process or user in rooted devices, or can be disclosed through chained vulnerabilities, like unexpected access to the private storage through exposed components.
+    </p>
+  </overview>
+
+  <recommendation>
+    <p>
+      Use the <code>EncryptedSharedPreferences</code> API or other encryption algorithms for storing sensitive information.
+    </p>
+  </recommendation>
+
+  <example>
+    <p>
+      In the first example, sensitive user information is stored in cleartext.
+    </p>
+
+    <p>
+      In the second and third examples, the code encrypts sensitive information before saving it to the device.
+    </p>
+    <sample src="CleartextStorageSharedPrefs.java" />
+  </example>
+
+  <references>
+    <li>
+      Android Developers:
+      <a href="https://developer.android.com/topic/security/data">Work with data more securely</a>
+    </li>
+    <li>
+      ProAndroidDev:
+      <a href="https://proandroiddev.com/encrypted-preferences-in-android-af57a89af7c8">Encrypted Preferences in Android</a>
+    </li>
+  </references>
+</qhelp>

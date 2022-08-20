@@ -39,6 +39,7 @@ Query file metadata contains important information that defines the identifier a
  * @tags maintainability
  *       external/cwe/cwe-563
  * @precision very-high
+ * @security-severity 6.1
  */
  ```
 

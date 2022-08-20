@@ -4,7 +4,7 @@ namespace System
 {
     namespace Drawing
     {
-        // Generated from `System.Drawing.Color` in `System.Drawing.Primitives, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Drawing.Color` in `System.Drawing.Primitives, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public struct Color : System.IEquatable<System.Drawing.Color>
         {
             public static bool operator !=(System.Drawing.Color left, System.Drawing.Color right) => throw null;
@@ -55,15 +55,15 @@ namespace System
             public static System.Drawing.Color DimGray { get => throw null; }
             public static System.Drawing.Color DodgerBlue { get => throw null; }
             public static System.Drawing.Color Empty;
-            public override bool Equals(object obj) => throw null;
             public bool Equals(System.Drawing.Color other) => throw null;
+            public override bool Equals(object obj) => throw null;
             public static System.Drawing.Color Firebrick { get => throw null; }
             public static System.Drawing.Color FloralWhite { get => throw null; }
             public static System.Drawing.Color ForestGreen { get => throw null; }
-            public static System.Drawing.Color FromArgb(int red, int green, int blue) => throw null;
             public static System.Drawing.Color FromArgb(int argb) => throw null;
-            public static System.Drawing.Color FromArgb(int alpha, int red, int green, int blue) => throw null;
             public static System.Drawing.Color FromArgb(int alpha, System.Drawing.Color baseColor) => throw null;
+            public static System.Drawing.Color FromArgb(int red, int green, int blue) => throw null;
+            public static System.Drawing.Color FromArgb(int alpha, int red, int green, int blue) => throw null;
             public static System.Drawing.Color FromKnownColor(System.Drawing.KnownColor color) => throw null;
             public static System.Drawing.Color FromName(string name) => throw null;
             public static System.Drawing.Color Fuchsia { get => throw null; }
@@ -145,6 +145,7 @@ namespace System
             public static System.Drawing.Color PowderBlue { get => throw null; }
             public static System.Drawing.Color Purple { get => throw null; }
             public System.Byte R { get => throw null; }
+            public static System.Drawing.Color RebeccaPurple { get => throw null; }
             public static System.Drawing.Color Red { get => throw null; }
             public static System.Drawing.Color RosyBrown { get => throw null; }
             public static System.Drawing.Color RoyalBlue { get => throw null; }
@@ -178,7 +179,7 @@ namespace System
             public static System.Drawing.Color YellowGreen { get => throw null; }
         }
 
-        // Generated from `System.Drawing.ColorTranslator` in `System.Drawing.Primitives, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Drawing.ColorTranslator` in `System.Drawing.Primitives, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public static class ColorTranslator
         {
             public static System.Drawing.Color FromHtml(string htmlColor) => throw null;
@@ -189,186 +190,187 @@ namespace System
             public static int ToWin32(System.Drawing.Color c) => throw null;
         }
 
-        // Generated from `System.Drawing.KnownColor` in `System.Drawing.Primitives, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum KnownColor
+        // Generated from `System.Drawing.KnownColor` in `System.Drawing.Primitives, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        public enum KnownColor : int
         {
-            ActiveBorder,
-            ActiveCaption,
-            ActiveCaptionText,
-            AliceBlue,
-            AntiqueWhite,
-            AppWorkspace,
-            Aqua,
-            Aquamarine,
-            Azure,
-            Beige,
-            Bisque,
-            Black,
-            BlanchedAlmond,
-            Blue,
-            BlueViolet,
-            Brown,
-            BurlyWood,
-            ButtonFace,
-            ButtonHighlight,
-            ButtonShadow,
-            CadetBlue,
-            Chartreuse,
-            Chocolate,
-            Control,
-            ControlDark,
-            ControlDarkDark,
-            ControlLight,
-            ControlLightLight,
-            ControlText,
-            Coral,
-            CornflowerBlue,
-            Cornsilk,
-            Crimson,
-            Cyan,
-            DarkBlue,
-            DarkCyan,
-            DarkGoldenrod,
-            DarkGray,
-            DarkGreen,
-            DarkKhaki,
-            DarkMagenta,
-            DarkOliveGreen,
-            DarkOrange,
-            DarkOrchid,
-            DarkRed,
-            DarkSalmon,
-            DarkSeaGreen,
-            DarkSlateBlue,
-            DarkSlateGray,
-            DarkTurquoise,
-            DarkViolet,
-            DeepPink,
-            DeepSkyBlue,
-            Desktop,
-            DimGray,
-            DodgerBlue,
-            Firebrick,
-            FloralWhite,
-            ForestGreen,
-            Fuchsia,
-            Gainsboro,
-            GhostWhite,
-            Gold,
-            Goldenrod,
-            GradientActiveCaption,
-            GradientInactiveCaption,
-            Gray,
-            GrayText,
-            Green,
-            GreenYellow,
-            Highlight,
-            HighlightText,
-            Honeydew,
-            HotPink,
-            HotTrack,
-            InactiveBorder,
-            InactiveCaption,
-            InactiveCaptionText,
-            IndianRed,
-            Indigo,
-            Info,
-            InfoText,
-            Ivory,
-            Khaki,
-            Lavender,
-            LavenderBlush,
-            LawnGreen,
-            LemonChiffon,
-            LightBlue,
-            LightCoral,
-            LightCyan,
-            LightGoldenrodYellow,
-            LightGray,
-            LightGreen,
-            LightPink,
-            LightSalmon,
-            LightSeaGreen,
-            LightSkyBlue,
-            LightSlateGray,
-            LightSteelBlue,
-            LightYellow,
-            Lime,
-            LimeGreen,
-            Linen,
-            Magenta,
-            Maroon,
-            MediumAquamarine,
-            MediumBlue,
-            MediumOrchid,
-            MediumPurple,
-            MediumSeaGreen,
-            MediumSlateBlue,
-            MediumSpringGreen,
-            MediumTurquoise,
-            MediumVioletRed,
-            Menu,
-            MenuBar,
-            MenuHighlight,
-            MenuText,
-            MidnightBlue,
-            MintCream,
-            MistyRose,
-            Moccasin,
-            NavajoWhite,
-            Navy,
-            OldLace,
-            Olive,
-            OliveDrab,
-            Orange,
-            OrangeRed,
-            Orchid,
-            PaleGoldenrod,
-            PaleGreen,
-            PaleTurquoise,
-            PaleVioletRed,
-            PapayaWhip,
-            PeachPuff,
-            Peru,
-            Pink,
-            Plum,
-            PowderBlue,
-            Purple,
-            Red,
-            RosyBrown,
-            RoyalBlue,
-            SaddleBrown,
-            Salmon,
-            SandyBrown,
-            ScrollBar,
-            SeaGreen,
-            SeaShell,
-            Sienna,
-            Silver,
-            SkyBlue,
-            SlateBlue,
-            SlateGray,
-            Snow,
-            SpringGreen,
-            SteelBlue,
-            Tan,
-            Teal,
-            Thistle,
-            Tomato,
-            Transparent,
-            Turquoise,
-            Violet,
-            Wheat,
-            White,
-            WhiteSmoke,
-            Window,
-            WindowFrame,
-            WindowText,
-            Yellow,
-            YellowGreen,
+            ActiveBorder = 1,
+            ActiveCaption = 2,
+            ActiveCaptionText = 3,
+            AliceBlue = 28,
+            AntiqueWhite = 29,
+            AppWorkspace = 4,
+            Aqua = 30,
+            Aquamarine = 31,
+            Azure = 32,
+            Beige = 33,
+            Bisque = 34,
+            Black = 35,
+            BlanchedAlmond = 36,
+            Blue = 37,
+            BlueViolet = 38,
+            Brown = 39,
+            BurlyWood = 40,
+            ButtonFace = 168,
+            ButtonHighlight = 169,
+            ButtonShadow = 170,
+            CadetBlue = 41,
+            Chartreuse = 42,
+            Chocolate = 43,
+            Control = 5,
+            ControlDark = 6,
+            ControlDarkDark = 7,
+            ControlLight = 8,
+            ControlLightLight = 9,
+            ControlText = 10,
+            Coral = 44,
+            CornflowerBlue = 45,
+            Cornsilk = 46,
+            Crimson = 47,
+            Cyan = 48,
+            DarkBlue = 49,
+            DarkCyan = 50,
+            DarkGoldenrod = 51,
+            DarkGray = 52,
+            DarkGreen = 53,
+            DarkKhaki = 54,
+            DarkMagenta = 55,
+            DarkOliveGreen = 56,
+            DarkOrange = 57,
+            DarkOrchid = 58,
+            DarkRed = 59,
+            DarkSalmon = 60,
+            DarkSeaGreen = 61,
+            DarkSlateBlue = 62,
+            DarkSlateGray = 63,
+            DarkTurquoise = 64,
+            DarkViolet = 65,
+            DeepPink = 66,
+            DeepSkyBlue = 67,
+            Desktop = 11,
+            DimGray = 68,
+            DodgerBlue = 69,
+            Firebrick = 70,
+            FloralWhite = 71,
+            ForestGreen = 72,
+            Fuchsia = 73,
+            Gainsboro = 74,
+            GhostWhite = 75,
+            Gold = 76,
+            Goldenrod = 77,
+            GradientActiveCaption = 171,
+            GradientInactiveCaption = 172,
+            Gray = 78,
+            GrayText = 12,
+            Green = 79,
+            GreenYellow = 80,
+            Highlight = 13,
+            HighlightText = 14,
+            Honeydew = 81,
+            HotPink = 82,
+            HotTrack = 15,
+            InactiveBorder = 16,
+            InactiveCaption = 17,
+            InactiveCaptionText = 18,
+            IndianRed = 83,
+            Indigo = 84,
+            Info = 19,
+            InfoText = 20,
+            Ivory = 85,
+            Khaki = 86,
+            Lavender = 87,
+            LavenderBlush = 88,
+            LawnGreen = 89,
+            LemonChiffon = 90,
+            LightBlue = 91,
+            LightCoral = 92,
+            LightCyan = 93,
+            LightGoldenrodYellow = 94,
+            LightGray = 95,
+            LightGreen = 96,
+            LightPink = 97,
+            LightSalmon = 98,
+            LightSeaGreen = 99,
+            LightSkyBlue = 100,
+            LightSlateGray = 101,
+            LightSteelBlue = 102,
+            LightYellow = 103,
+            Lime = 104,
+            LimeGreen = 105,
+            Linen = 106,
+            Magenta = 107,
+            Maroon = 108,
+            MediumAquamarine = 109,
+            MediumBlue = 110,
+            MediumOrchid = 111,
+            MediumPurple = 112,
+            MediumSeaGreen = 113,
+            MediumSlateBlue = 114,
+            MediumSpringGreen = 115,
+            MediumTurquoise = 116,
+            MediumVioletRed = 117,
+            Menu = 21,
+            MenuBar = 173,
+            MenuHighlight = 174,
+            MenuText = 22,
+            MidnightBlue = 118,
+            MintCream = 119,
+            MistyRose = 120,
+            Moccasin = 121,
+            NavajoWhite = 122,
+            Navy = 123,
+            OldLace = 124,
+            Olive = 125,
+            OliveDrab = 126,
+            Orange = 127,
+            OrangeRed = 128,
+            Orchid = 129,
+            PaleGoldenrod = 130,
+            PaleGreen = 131,
+            PaleTurquoise = 132,
+            PaleVioletRed = 133,
+            PapayaWhip = 134,
+            PeachPuff = 135,
+            Peru = 136,
+            Pink = 137,
+            Plum = 138,
+            PowderBlue = 139,
+            Purple = 140,
+            RebeccaPurple = 175,
+            Red = 141,
+            RosyBrown = 142,
+            RoyalBlue = 143,
+            SaddleBrown = 144,
+            Salmon = 145,
+            SandyBrown = 146,
+            ScrollBar = 23,
+            SeaGreen = 147,
+            SeaShell = 148,
+            Sienna = 149,
+            Silver = 150,
+            SkyBlue = 151,
+            SlateBlue = 152,
+            SlateGray = 153,
+            Snow = 154,
+            SpringGreen = 155,
+            SteelBlue = 156,
+            Tan = 157,
+            Teal = 158,
+            Thistle = 159,
+            Tomato = 160,
+            Transparent = 27,
+            Turquoise = 161,
+            Violet = 162,
+            Wheat = 163,
+            White = 164,
+            WhiteSmoke = 165,
+            Window = 24,
+            WindowFrame = 25,
+            WindowText = 26,
+            Yellow = 166,
+            YellowGreen = 167,
         }
 
-        // Generated from `System.Drawing.Point` in `System.Drawing.Primitives, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Drawing.Point` in `System.Drawing.Primitives, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public struct Point : System.IEquatable<System.Drawing.Point>
         {
             public static bool operator !=(System.Drawing.Point left, System.Drawing.Point right) => throw null;
@@ -378,16 +380,16 @@ namespace System
             public static System.Drawing.Point Add(System.Drawing.Point pt, System.Drawing.Size sz) => throw null;
             public static System.Drawing.Point Ceiling(System.Drawing.PointF value) => throw null;
             public static System.Drawing.Point Empty;
-            public override bool Equals(object obj) => throw null;
             public bool Equals(System.Drawing.Point other) => throw null;
+            public override bool Equals(object obj) => throw null;
             public override int GetHashCode() => throw null;
             public bool IsEmpty { get => throw null; }
-            public void Offset(int dx, int dy) => throw null;
             public void Offset(System.Drawing.Point p) => throw null;
-            public Point(int x, int y) => throw null;
-            public Point(int dw) => throw null;
-            public Point(System.Drawing.Size sz) => throw null;
+            public void Offset(int dx, int dy) => throw null;
             // Stub generator skipped constructor 
+            public Point(System.Drawing.Size sz) => throw null;
+            public Point(int dw) => throw null;
+            public Point(int x, int y) => throw null;
             public static System.Drawing.Point Round(System.Drawing.PointF value) => throw null;
             public static System.Drawing.Point Subtract(System.Drawing.Point pt, System.Drawing.Size sz) => throw null;
             public override string ToString() => throw null;
@@ -398,61 +400,65 @@ namespace System
             public static implicit operator System.Drawing.PointF(System.Drawing.Point p) => throw null;
         }
 
-        // Generated from `System.Drawing.PointF` in `System.Drawing.Primitives, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Drawing.PointF` in `System.Drawing.Primitives, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public struct PointF : System.IEquatable<System.Drawing.PointF>
         {
             public static bool operator !=(System.Drawing.PointF left, System.Drawing.PointF right) => throw null;
-            public static System.Drawing.PointF operator +(System.Drawing.PointF pt, System.Drawing.SizeF sz) => throw null;
             public static System.Drawing.PointF operator +(System.Drawing.PointF pt, System.Drawing.Size sz) => throw null;
-            public static System.Drawing.PointF operator -(System.Drawing.PointF pt, System.Drawing.SizeF sz) => throw null;
+            public static System.Drawing.PointF operator +(System.Drawing.PointF pt, System.Drawing.SizeF sz) => throw null;
             public static System.Drawing.PointF operator -(System.Drawing.PointF pt, System.Drawing.Size sz) => throw null;
+            public static System.Drawing.PointF operator -(System.Drawing.PointF pt, System.Drawing.SizeF sz) => throw null;
             public static bool operator ==(System.Drawing.PointF left, System.Drawing.PointF right) => throw null;
-            public static System.Drawing.PointF Add(System.Drawing.PointF pt, System.Drawing.SizeF sz) => throw null;
             public static System.Drawing.PointF Add(System.Drawing.PointF pt, System.Drawing.Size sz) => throw null;
+            public static System.Drawing.PointF Add(System.Drawing.PointF pt, System.Drawing.SizeF sz) => throw null;
             public static System.Drawing.PointF Empty;
-            public override bool Equals(object obj) => throw null;
             public bool Equals(System.Drawing.PointF other) => throw null;
+            public override bool Equals(object obj) => throw null;
             public override int GetHashCode() => throw null;
             public bool IsEmpty { get => throw null; }
-            public PointF(float x, float y) => throw null;
             // Stub generator skipped constructor 
-            public static System.Drawing.PointF Subtract(System.Drawing.PointF pt, System.Drawing.SizeF sz) => throw null;
+            public PointF(System.Numerics.Vector2 vector) => throw null;
+            public PointF(float x, float y) => throw null;
             public static System.Drawing.PointF Subtract(System.Drawing.PointF pt, System.Drawing.Size sz) => throw null;
+            public static System.Drawing.PointF Subtract(System.Drawing.PointF pt, System.Drawing.SizeF sz) => throw null;
             public override string ToString() => throw null;
+            public System.Numerics.Vector2 ToVector2() => throw null;
             public float X { get => throw null; set => throw null; }
             public float Y { get => throw null; set => throw null; }
+            public static explicit operator System.Numerics.Vector2(System.Drawing.PointF point) => throw null;
+            public static explicit operator System.Drawing.PointF(System.Numerics.Vector2 vector) => throw null;
         }
 
-        // Generated from `System.Drawing.Rectangle` in `System.Drawing.Primitives, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Drawing.Rectangle` in `System.Drawing.Primitives, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public struct Rectangle : System.IEquatable<System.Drawing.Rectangle>
         {
             public static bool operator !=(System.Drawing.Rectangle left, System.Drawing.Rectangle right) => throw null;
             public static bool operator ==(System.Drawing.Rectangle left, System.Drawing.Rectangle right) => throw null;
             public int Bottom { get => throw null; }
             public static System.Drawing.Rectangle Ceiling(System.Drawing.RectangleF value) => throw null;
-            public bool Contains(int x, int y) => throw null;
-            public bool Contains(System.Drawing.Rectangle rect) => throw null;
             public bool Contains(System.Drawing.Point pt) => throw null;
+            public bool Contains(System.Drawing.Rectangle rect) => throw null;
+            public bool Contains(int x, int y) => throw null;
             public static System.Drawing.Rectangle Empty;
-            public override bool Equals(object obj) => throw null;
             public bool Equals(System.Drawing.Rectangle other) => throw null;
+            public override bool Equals(object obj) => throw null;
             public static System.Drawing.Rectangle FromLTRB(int left, int top, int right, int bottom) => throw null;
             public override int GetHashCode() => throw null;
             public int Height { get => throw null; set => throw null; }
-            public void Inflate(int width, int height) => throw null;
-            public void Inflate(System.Drawing.Size size) => throw null;
             public static System.Drawing.Rectangle Inflate(System.Drawing.Rectangle rect, int x, int y) => throw null;
+            public void Inflate(System.Drawing.Size size) => throw null;
+            public void Inflate(int width, int height) => throw null;
             public void Intersect(System.Drawing.Rectangle rect) => throw null;
             public static System.Drawing.Rectangle Intersect(System.Drawing.Rectangle a, System.Drawing.Rectangle b) => throw null;
             public bool IntersectsWith(System.Drawing.Rectangle rect) => throw null;
             public bool IsEmpty { get => throw null; }
             public int Left { get => throw null; }
             public System.Drawing.Point Location { get => throw null; set => throw null; }
-            public void Offset(int x, int y) => throw null;
             public void Offset(System.Drawing.Point pos) => throw null;
-            public Rectangle(int x, int y, int width, int height) => throw null;
-            public Rectangle(System.Drawing.Point location, System.Drawing.Size size) => throw null;
+            public void Offset(int x, int y) => throw null;
             // Stub generator skipped constructor 
+            public Rectangle(System.Drawing.Point location, System.Drawing.Size size) => throw null;
+            public Rectangle(int x, int y, int width, int height) => throw null;
             public int Right { get => throw null; }
             public static System.Drawing.Rectangle Round(System.Drawing.RectangleF value) => throw null;
             public System.Drawing.Size Size { get => throw null; set => throw null; }
@@ -465,54 +471,58 @@ namespace System
             public int Y { get => throw null; set => throw null; }
         }
 
-        // Generated from `System.Drawing.RectangleF` in `System.Drawing.Primitives, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Drawing.RectangleF` in `System.Drawing.Primitives, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public struct RectangleF : System.IEquatable<System.Drawing.RectangleF>
         {
             public static bool operator !=(System.Drawing.RectangleF left, System.Drawing.RectangleF right) => throw null;
             public static bool operator ==(System.Drawing.RectangleF left, System.Drawing.RectangleF right) => throw null;
             public float Bottom { get => throw null; }
-            public bool Contains(float x, float y) => throw null;
-            public bool Contains(System.Drawing.RectangleF rect) => throw null;
             public bool Contains(System.Drawing.PointF pt) => throw null;
+            public bool Contains(System.Drawing.RectangleF rect) => throw null;
+            public bool Contains(float x, float y) => throw null;
             public static System.Drawing.RectangleF Empty;
-            public override bool Equals(object obj) => throw null;
             public bool Equals(System.Drawing.RectangleF other) => throw null;
+            public override bool Equals(object obj) => throw null;
             public static System.Drawing.RectangleF FromLTRB(float left, float top, float right, float bottom) => throw null;
             public override int GetHashCode() => throw null;
             public float Height { get => throw null; set => throw null; }
-            public void Inflate(float x, float y) => throw null;
-            public void Inflate(System.Drawing.SizeF size) => throw null;
             public static System.Drawing.RectangleF Inflate(System.Drawing.RectangleF rect, float x, float y) => throw null;
+            public void Inflate(System.Drawing.SizeF size) => throw null;
+            public void Inflate(float x, float y) => throw null;
             public void Intersect(System.Drawing.RectangleF rect) => throw null;
             public static System.Drawing.RectangleF Intersect(System.Drawing.RectangleF a, System.Drawing.RectangleF b) => throw null;
             public bool IntersectsWith(System.Drawing.RectangleF rect) => throw null;
             public bool IsEmpty { get => throw null; }
             public float Left { get => throw null; }
             public System.Drawing.PointF Location { get => throw null; set => throw null; }
-            public void Offset(float x, float y) => throw null;
             public void Offset(System.Drawing.PointF pos) => throw null;
-            public RectangleF(float x, float y, float width, float height) => throw null;
-            public RectangleF(System.Drawing.PointF location, System.Drawing.SizeF size) => throw null;
+            public void Offset(float x, float y) => throw null;
             // Stub generator skipped constructor 
+            public RectangleF(System.Drawing.PointF location, System.Drawing.SizeF size) => throw null;
+            public RectangleF(System.Numerics.Vector4 vector) => throw null;
+            public RectangleF(float x, float y, float width, float height) => throw null;
             public float Right { get => throw null; }
             public System.Drawing.SizeF Size { get => throw null; set => throw null; }
             public override string ToString() => throw null;
+            public System.Numerics.Vector4 ToVector4() => throw null;
             public float Top { get => throw null; }
             public static System.Drawing.RectangleF Union(System.Drawing.RectangleF a, System.Drawing.RectangleF b) => throw null;
             public float Width { get => throw null; set => throw null; }
             public float X { get => throw null; set => throw null; }
             public float Y { get => throw null; set => throw null; }
+            public static explicit operator System.Numerics.Vector4(System.Drawing.RectangleF rectangle) => throw null;
+            public static explicit operator System.Drawing.RectangleF(System.Numerics.Vector4 vector) => throw null;
             public static implicit operator System.Drawing.RectangleF(System.Drawing.Rectangle r) => throw null;
         }
 
-        // Generated from `System.Drawing.Size` in `System.Drawing.Primitives, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Drawing.Size` in `System.Drawing.Primitives, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public struct Size : System.IEquatable<System.Drawing.Size>
         {
             public static bool operator !=(System.Drawing.Size sz1, System.Drawing.Size sz2) => throw null;
-            public static System.Drawing.SizeF operator *(float left, System.Drawing.Size right) => throw null;
             public static System.Drawing.SizeF operator *(System.Drawing.Size left, float right) => throw null;
-            public static System.Drawing.Size operator *(int left, System.Drawing.Size right) => throw null;
             public static System.Drawing.Size operator *(System.Drawing.Size left, int right) => throw null;
+            public static System.Drawing.SizeF operator *(float left, System.Drawing.Size right) => throw null;
+            public static System.Drawing.Size operator *(int left, System.Drawing.Size right) => throw null;
             public static System.Drawing.Size operator +(System.Drawing.Size sz1, System.Drawing.Size sz2) => throw null;
             public static System.Drawing.Size operator -(System.Drawing.Size sz1, System.Drawing.Size sz2) => throw null;
             public static System.Drawing.SizeF operator /(System.Drawing.Size left, float right) => throw null;
@@ -521,15 +531,15 @@ namespace System
             public static System.Drawing.Size Add(System.Drawing.Size sz1, System.Drawing.Size sz2) => throw null;
             public static System.Drawing.Size Ceiling(System.Drawing.SizeF value) => throw null;
             public static System.Drawing.Size Empty;
-            public override bool Equals(object obj) => throw null;
             public bool Equals(System.Drawing.Size other) => throw null;
+            public override bool Equals(object obj) => throw null;
             public override int GetHashCode() => throw null;
             public int Height { get => throw null; set => throw null; }
             public bool IsEmpty { get => throw null; }
             public static System.Drawing.Size Round(System.Drawing.SizeF value) => throw null;
-            public Size(int width, int height) => throw null;
-            public Size(System.Drawing.Point pt) => throw null;
             // Stub generator skipped constructor 
+            public Size(System.Drawing.Point pt) => throw null;
+            public Size(int width, int height) => throw null;
             public static System.Drawing.Size Subtract(System.Drawing.Size sz1, System.Drawing.Size sz2) => throw null;
             public override string ToString() => throw null;
             public static System.Drawing.Size Truncate(System.Drawing.SizeF value) => throw null;
@@ -538,36 +548,40 @@ namespace System
             public static implicit operator System.Drawing.SizeF(System.Drawing.Size p) => throw null;
         }
 
-        // Generated from `System.Drawing.SizeF` in `System.Drawing.Primitives, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Drawing.SizeF` in `System.Drawing.Primitives, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public struct SizeF : System.IEquatable<System.Drawing.SizeF>
         {
             public static bool operator !=(System.Drawing.SizeF sz1, System.Drawing.SizeF sz2) => throw null;
-            public static System.Drawing.SizeF operator *(float left, System.Drawing.SizeF right) => throw null;
             public static System.Drawing.SizeF operator *(System.Drawing.SizeF left, float right) => throw null;
+            public static System.Drawing.SizeF operator *(float left, System.Drawing.SizeF right) => throw null;
             public static System.Drawing.SizeF operator +(System.Drawing.SizeF sz1, System.Drawing.SizeF sz2) => throw null;
             public static System.Drawing.SizeF operator -(System.Drawing.SizeF sz1, System.Drawing.SizeF sz2) => throw null;
             public static System.Drawing.SizeF operator /(System.Drawing.SizeF left, float right) => throw null;
             public static bool operator ==(System.Drawing.SizeF sz1, System.Drawing.SizeF sz2) => throw null;
             public static System.Drawing.SizeF Add(System.Drawing.SizeF sz1, System.Drawing.SizeF sz2) => throw null;
             public static System.Drawing.SizeF Empty;
-            public override bool Equals(object obj) => throw null;
             public bool Equals(System.Drawing.SizeF other) => throw null;
+            public override bool Equals(object obj) => throw null;
             public override int GetHashCode() => throw null;
             public float Height { get => throw null; set => throw null; }
             public bool IsEmpty { get => throw null; }
-            public SizeF(float width, float height) => throw null;
-            public SizeF(System.Drawing.SizeF size) => throw null;
-            public SizeF(System.Drawing.PointF pt) => throw null;
             // Stub generator skipped constructor 
+            public SizeF(System.Drawing.PointF pt) => throw null;
+            public SizeF(System.Drawing.SizeF size) => throw null;
+            public SizeF(System.Numerics.Vector2 vector) => throw null;
+            public SizeF(float width, float height) => throw null;
             public static System.Drawing.SizeF Subtract(System.Drawing.SizeF sz1, System.Drawing.SizeF sz2) => throw null;
             public System.Drawing.PointF ToPointF() => throw null;
             public System.Drawing.Size ToSize() => throw null;
             public override string ToString() => throw null;
+            public System.Numerics.Vector2 ToVector2() => throw null;
             public float Width { get => throw null; set => throw null; }
             public static explicit operator System.Drawing.PointF(System.Drawing.SizeF size) => throw null;
+            public static explicit operator System.Numerics.Vector2(System.Drawing.SizeF size) => throw null;
+            public static explicit operator System.Drawing.SizeF(System.Numerics.Vector2 vector) => throw null;
         }
 
-        // Generated from `System.Drawing.SystemColors` in `System.Drawing.Primitives, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Drawing.SystemColors` in `System.Drawing.Primitives, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public static class SystemColors
         {
             public static System.Drawing.Color ActiveBorder { get => throw null; }

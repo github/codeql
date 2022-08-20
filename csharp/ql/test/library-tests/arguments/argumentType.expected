@@ -24,13 +24,21 @@
 | arguments.cs:45:35:45:38 | null | 0 |
 | arguments.cs:55:21:55:21 | 1 | 0 |
 | arguments.cs:55:24:55:24 | 2 | 0 |
+| arguments.cs:56:10:56:13 | access to property Prop | 0 |
+| arguments.cs:56:16:56:25 | access to indexer | 0 |
 | arguments.cs:56:21:56:21 | 3 | 0 |
 | arguments.cs:56:24:56:24 | 4 | 0 |
+| arguments.cs:56:31:56:31 | 5 | 0 |
+| arguments.cs:56:34:56:34 | 6 | 0 |
 | arguments.cs:59:14:59:14 | 8 | 0 |
 | arguments.cs:59:17:59:17 | 9 | 0 |
 | arguments.cs:60:14:60:15 | 10 | 0 |
 | arguments.cs:60:14:60:15 | 10 | 0 |
 | arguments.cs:60:18:60:19 | 11 | 0 |
 | arguments.cs:60:18:60:19 | 11 | 0 |
+| arguments.cs:61:22:61:23 | 13 | 0 |
+| arguments.cs:61:26:61:27 | 14 | 0 |
+| arguments.cs:62:10:62:13 | access to property Prop | 0 |
+| arguments.cs:62:16:62:27 | access to indexer | 0 |
 | arguments.cs:62:21:62:22 | 15 | 0 |
 | arguments.cs:62:25:62:26 | 16 | 0 |

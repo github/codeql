@@ -1,0 +1,36 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+An unreachable statement often indicates missing code or a latent bug and should be examined
+carefully.
+</p>
+</overview>
+
+<recommendation>
+<p>
+Examine the surrounding code to determine why the statement has become unreachable. If it is no
+longer needed, remove the statement.
+</p>
+</recommendation>
+
+<example>
+<p>
+In the following example, the body of the <code>for</code> statement cannot terminate normally,
+so the update statement <code>i++</code> becomes unreachable:
+</p>
+<sample src="UnreachableStatement.go" />
+<p>
+Most likely, the <code>return</code> statement should be moved inside the <code>if</code>
+statement:
+</p>
+<sample src="UnreachableStatementGood.go" />
+</example>
+
+<references>
+<li>Wikipedia: <a href="http://en.wikipedia.org/wiki/Unreachable_code">Unreachable code</a>.</li>
+</references>
+</qhelp>

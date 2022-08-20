@@ -1,6 +1,6 @@
 import javascript
 import semmle.javascript.heuristics.AdditionalSources
-import semmle.javascript.security.dataflow.CodeInjection::CodeInjection
+import semmle.javascript.security.dataflow.CodeInjectionQuery
 import DataFlow::PathGraph
 
 from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink

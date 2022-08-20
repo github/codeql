@@ -88,34 +88,34 @@ comments2.cs:
 #  111|     4: [BlockStmt] {...}
 #  112|       0: [LocalVariableDeclStmt] ... ...;
 #  112|         0: [LocalVariableDeclAndInitExpr] GenericClass<Int32> t1 = ...
-#  112|           -1: [TypeMention] GenericClass<Int32>
+#  112|           -1: [TypeMention] GenericClass<int>
 #  112|           0: [LocalVariableAccess] access to local variable t1
 #  112|           1: [ObjectCreation] object creation of type GenericClass<Int32>
-#  112|             0: [TypeMention] GenericClass<Int32>
+#  112|             0: [TypeMention] GenericClass<int>
 #  112|               1: [TypeMention] int
 #  113|       1: [LocalVariableDeclStmt] ... ...;
 #  113|         0: [LocalVariableDeclAndInitExpr] Int32 t2 = ...
 #  113|           -1: [TypeMention] int
 #  113|           0: [LocalVariableAccess] access to local variable t2
-#  113|           1: [MethodCall] call to method GenericFn
+#  113|           1: [MethodCall] call to method GenericFn<Int32>
 #  114|       2: [LocalVariableDeclStmt] ... ...;
 #  114|         0: [LocalVariableDeclAndInitExpr] GenericClass<Double> t3 = ...
-#  114|           -1: [TypeMention] GenericClass<Double>
+#  114|           -1: [TypeMention] GenericClass<double>
 #  114|           0: [LocalVariableAccess] access to local variable t3
 #  114|           1: [ObjectCreation] object creation of type GenericClass<Double>
-#  114|             0: [TypeMention] GenericClass<Double>
+#  114|             0: [TypeMention] GenericClass<double>
 #  114|               1: [TypeMention] double
 #  115|       3: [LocalVariableDeclStmt] ... ...;
 #  115|         0: [LocalVariableDeclAndInitExpr] Int32 t4 = ...
 #  115|           -1: [TypeMention] int
 #  115|           0: [LocalVariableAccess] access to local variable t4
-#  115|           1: [MethodCall] call to method GenericFn
+#  115|           1: [MethodCall] call to method GenericFn<Double>
 #  119|   18: [Class] GenericClass<>
 #-----|     1: (Type parameters)
 #  119|       0: [TypeParameter] T
 #  121|     5: [Field] f
 #  121|       -1: [TypeMention] int
-#  125|   21: [Method] GenericFn
+#  125|   21: [Method] GenericFn<>
 #  125|     -1: [TypeMention] int
 #-----|     1: (Type parameters)
 #  125|       0: [TypeParameter] T

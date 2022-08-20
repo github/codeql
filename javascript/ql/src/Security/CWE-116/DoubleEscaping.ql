@@ -45,7 +45,7 @@ predicate escapingScheme(string metachar, string regex) {
  * A call to `String.prototype.replace` that replaces all instances of a pattern.
  */
 class Replacement extends StringReplaceCall {
-  Replacement() { isGlobal() }
+  Replacement() { this.isGlobal() }
 
   /**
    * Gets the input of this replacement.
@@ -66,7 +66,7 @@ class Replacement extends StringReplaceCall {
   predicate escapes(string char, string metachar) {
     exists(string regexp, string repl |
       escapingScheme(metachar, regexp) and
-      replaces(char, repl) and
+      this.replaces(char, repl) and
       repl.regexpMatch(regexp)
     )
   }
@@ -80,7 +80,7 @@ class Replacement extends StringReplaceCall {
   predicate unescapes(string metachar, string char) {
     exists(string regexp, string orig |
       escapingScheme(metachar, regexp) and
-      replaces(orig, char) and
+      this.replaces(orig, char) and
       orig.regexpMatch(regexp)
     )
   }
@@ -88,7 +88,9 @@ class Replacement extends StringReplaceCall {
   /**
    * Gets the previous replacement in this chain of replacements.
    */
-  Replacement getPreviousReplacement() { result.getOutput() = getASimplePredecessor*(getInput()) }
+  Replacement getPreviousReplacement() {
+    result.getOutput() = getASimplePredecessor*(this.getInput())
+  }
 
   /**
    * Gets an earlier replacement in this chain of replacements that

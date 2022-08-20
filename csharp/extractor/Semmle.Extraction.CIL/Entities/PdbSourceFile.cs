@@ -25,7 +25,7 @@ namespace Semmle.Extraction.CIL.Entities
                 else
                     Context.TrapWriter.Archive(TransformedPath, text);
 
-                yield return Tuples.file_extraction_mode(this, 2);
+                yield return Tuples.file_extraction_mode(this, Context.Extractor.Mode | ExtractorMode.Pdb);
             }
         }
     }

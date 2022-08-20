@@ -24,6 +24,12 @@ query predicate instanceMethod(
   cls.getInstanceMethod(name) = inst and clsName = cls.getName()
 }
 
+query predicate staticMember(
+  DataFlow::ClassNode cls, string name, string kind, DataFlow::FunctionNode inst, string clsName
+) {
+  cls.getStaticMember(name, kind) = inst and clsName = cls.getName()
+}
+
 query predicate superClass(
   DataFlow::ClassNode cls, DataFlow::ClassNode sup, string clsName, string supName
 ) {

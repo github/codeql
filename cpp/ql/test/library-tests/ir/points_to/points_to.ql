@@ -3,12 +3,7 @@ private import TestUtilities.InlineExpectationsTest
 private import semmle.code.cpp.ir.internal.IntegerConstant as Ints
 
 private predicate ignoreAllocation(string name) {
-  name = "i" or
-  name = "p" or
-  name = "q" or
-  name = "s" or
-  name = "t" or
-  name = "?{AllAliased}"
+  name = ["i", "p", "q", "s", "t", "?{AllAliased}"]
 }
 
 private predicate ignoreFile(File file) {
@@ -45,7 +40,7 @@ module Raw {
   }
 }
 
-module UnaliasedSSA {
+module UnaliasedSsa {
   private import semmle.code.cpp.ir.implementation.unaliased_ssa.IR
   private import semmle.code.cpp.ir.implementation.aliased_ssa.internal.AliasedSSA
 
@@ -54,8 +49,8 @@ module UnaliasedSSA {
     result = getOperandMemoryLocation(instr.getAnOperand())
   }
 
-  class UnaliasedSSAPointsToTest extends InlineExpectationsTest {
-    UnaliasedSSAPointsToTest() { this = "UnaliasedSSAPointsToTest" }
+  class UnaliasedSsaPointsToTest extends InlineExpectationsTest {
+    UnaliasedSsaPointsToTest() { this = "UnaliasedSSAPointsToTest" }
 
     override string getARelevantTag() { result = "ussa" }
 

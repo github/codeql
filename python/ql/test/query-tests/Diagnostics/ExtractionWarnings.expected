@@ -1,0 +1,2 @@
+| bad_encoding.py:2:11:2:11 | Encoding Error | Extraction failed in bad_encoding.py with error 'utf-8' codec can't decode byte 0x9d in position 87: invalid start byte | 1 |
+| syntax_error.py:1:1:1:1 | Syntax Error | Extraction failed in syntax_error.py with error Syntax Error | 1 |

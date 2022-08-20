@@ -9,14 +9,14 @@
  * @id py/clear-text-logging-sensitive-data
  * @tags security
  *       external/cwe/cwe-312
- *       external/cwe/cwe-315
  *       external/cwe/cwe-359
+ *       external/cwe/cwe-532
  */
 
 import python
 private import semmle.python.dataflow.new.DataFlow
 import DataFlow::PathGraph
-import semmle.python.security.dataflow.CleartextLogging::CleartextLogging
+import semmle.python.security.dataflow.CleartextLoggingQuery
 
 from Configuration config, DataFlow::PathNode source, DataFlow::PathNode sink, string classification
 where

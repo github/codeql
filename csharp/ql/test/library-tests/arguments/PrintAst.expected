@@ -222,14 +222,14 @@ arguments.cs:
 #   66|   14: [Method] f6
 #   66|     -1: [TypeMention] Void
 #-----|     0: (Attributes)
-#   65|       1: [Attribute] [My(...)]
+#   65|       1: [DefaultAttribute] [My(...)]
 #   65|         -1: [TypeMention] MyAttribute
 #   65|         0: [BoolLiteral] false
 #   66|     4: [BlockStmt] {...}
 #   69|   15: [Method] f7
 #   69|     -1: [TypeMention] Void
 #-----|     0: (Attributes)
-#   68|       1: [Attribute] [My(...)]
+#   68|       1: [DefaultAttribute] [My(...)]
 #   68|         -1: [TypeMention] MyAttribute
 #   68|         0: [BoolLiteral] true
 #   68|         1: [StringLiteral] ""

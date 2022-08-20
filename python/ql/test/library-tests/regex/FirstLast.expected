@@ -1,6 +1,6 @@
-| 012345678 | first | 0 | 1 |
-| 012345678 | last | 8 | 9 |
-| (?!not-this)^[A-Z_]+$ | first | 3 | 4 |
+| 012345678 | first | 0 | 9 |
+| 012345678 | last | 0 | 9 |
+| (?!not-this)^[A-Z_]+$ | first | 3 | 11 |
 | (?!not-this)^[A-Z_]+$ | first | 12 | 13 |
 | (?!not-this)^[A-Z_]+$ | first | 13 | 19 |
 | (?!not-this)^[A-Z_]+$ | first | 13 | 20 |
@@ -27,9 +27,9 @@
 | (?m)^(?!$) | last | 4 | 5 |
 | (?m)^(?!$) | last | 8 | 9 |
 | (\\033\|~{) | first | 1 | 5 |
-| (\\033\|~{) | first | 6 | 7 |
+| (\\033\|~{) | first | 6 | 8 |
 | (\\033\|~{) | last | 1 | 5 |
-| (\\033\|~{) | last | 7 | 8 |
+| (\\033\|~{) | last | 6 | 8 |
 | [\ufffd-\ufffd] | first | 0 | 5 |
 | [\ufffd-\ufffd] | last | 0 | 5 |
 | [\ufffd-\ufffd][\ufffd-\ufffd] | first | 0 | 5 |
@@ -42,9 +42,19 @@
 | [^A-Z] | last | 0 | 6 |
 | [^]] | first | 0 | 4 |
 | [^]] | last | 0 | 4 |
+| \\+0 | first | 0 | 2 |
+| \\+0 | last | 2 | 3 |
 | \\A[+-]?\\d+ | first | 0 | 2 |
+| \\A[+-]?\\d+ | first | 2 | 6 |
+| \\A[+-]?\\d+ | first | 2 | 7 |
+| \\A[+-]?\\d+ | first | 7 | 9 |
+| \\A[+-]?\\d+ | first | 7 | 10 |
 | \\A[+-]?\\d+ | last | 7 | 9 |
 | \\A[+-]?\\d+ | last | 7 | 10 |
+| \\Afoo\\Z | first | 0 | 2 |
+| \\Afoo\\Z | first | 2 | 5 |
+| \\Afoo\\Z | last | 2 | 5 |
+| \\Afoo\\Z | last | 5 | 7 |
 | \\[(?P<txt>[^[]*)\\]\\((?P<uri>[^)]*) | first | 0 | 2 |
 | \\[(?P<txt>[^[]*)\\]\\((?P<uri>[^)]*) | last | 28 | 32 |
 | \\[(?P<txt>[^[]*)\\]\\((?P<uri>[^)]*) | last | 28 | 33 |
@@ -52,6 +62,8 @@
 | \\\|\\[\\][123]\|\\{\\} | first | 12 | 14 |
 | \\\|\\[\\][123]\|\\{\\} | last | 6 | 11 |
 | \\\|\\[\\][123]\|\\{\\} | last | 14 | 16 |
+| \\bfoo\\B | first | 0 | 2 |
+| \\bfoo\\B | last | 5 | 7 |
 | \|x | first | 1 | 2 |
 | \|x | last | 1 | 2 |
 | ^(^y\|^z)(u$\|v$)$ | first | 0 | 1 |
@@ -74,24 +86,24 @@
 | ^[A-Z_]+$(?<!not-this) | last | 1 | 7 |
 | ^[A-Z_]+$(?<!not-this) | last | 1 | 8 |
 | ^[A-Z_]+$(?<!not-this) | last | 8 | 9 |
-| ^[A-Z_]+$(?<!not-this) | last | 20 | 21 |
+| ^[A-Z_]+$(?<!not-this) | last | 13 | 21 |
 | ax{01,3} | first | 0 | 1 |
 | ax{01,3} | last | 1 | 2 |
 | ax{01,3} | last | 1 | 8 |
-| ax{01,3} | last | 7 | 8 |
+| ax{01,3} | last | 3 | 8 |
 | ax{3,} | first | 0 | 1 |
 | ax{3,} | last | 1 | 2 |
 | ax{3,} | last | 1 | 6 |
-| ax{3,} | last | 5 | 6 |
+| ax{3,} | last | 3 | 6 |
 | ax{3} | first | 0 | 1 |
 | ax{3} | last | 1 | 2 |
 | ax{3} | last | 1 | 5 |
-| ax{3} | last | 4 | 5 |
+| ax{3} | last | 3 | 5 |
 | ax{,3} | first | 0 | 1 |
 | ax{,3} | last | 0 | 1 |
 | ax{,3} | last | 1 | 2 |
 | ax{,3} | last | 1 | 6 |
-| ax{,3} | last | 5 | 6 |
+| ax{,3} | last | 3 | 6 |
 | x\| | first | 0 | 1 |
 | x\| | last | 0 | 1 |
 | x\|(?<!\\w)l | first | 0 | 1 |
@@ -99,5 +111,5 @@
 | x\|(?<!\\w)l | first | 9 | 10 |
 | x\|(?<!\\w)l | last | 0 | 1 |
 | x\|(?<!\\w)l | last | 9 | 10 |
-| x{Not qual} | first | 0 | 1 |
-| x{Not qual} | last | 10 | 11 |
+| x{Not qual} | first | 0 | 11 |
+| x{Not qual} | last | 0 | 11 |

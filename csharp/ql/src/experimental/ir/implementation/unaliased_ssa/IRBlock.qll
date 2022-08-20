@@ -24,7 +24,7 @@ class IRBlockBase extends TIRBlock {
   final string toString() { result = getFirstInstruction(this).toString() }
 
   /** Gets the source location of the first non-`Phi` instruction in this block. */
-  final Language::Location getLocation() { result = getFirstInstruction().getLocation() }
+  final Language::Location getLocation() { result = this.getFirstInstruction().getLocation() }
 
   /**
    * INTERNAL: Do not use.
@@ -39,7 +39,7 @@ class IRBlockBase extends TIRBlock {
     ) and
     this =
       rank[result + 1](IRBlock funcBlock, int sortOverride, int sortKey1, int sortKey2 |
-        funcBlock.getEnclosingFunction() = getEnclosingFunction() and
+        funcBlock.getEnclosingFunction() = this.getEnclosingFunction() and
         funcBlock.getFirstInstruction().hasSortKeys(sortKey1, sortKey2) and
         // Ensure that the block containing `EnterFunction` always comes first.
         if funcBlock.getFirstInstruction() instanceof EnterFunctionInstruction
@@ -59,15 +59,15 @@ class IRBlockBase extends TIRBlock {
    * Get the `Phi` instructions that appear at the start of this block.
    */
   final PhiInstruction getAPhiInstruction() {
-    Construction::getPhiInstructionBlockStart(result) = getFirstInstruction()
+    Construction::getPhiInstructionBlockStart(result) = this.getFirstInstruction()
   }
 
   /**
    * Gets an instruction in this block. This includes `Phi` instructions.
    */
   final Instruction getAnInstruction() {
-    result = getInstruction(_) or
-    result = getAPhiInstruction()
+    result = this.getInstruction(_) or
+    result = this.getAPhiInstruction()
   }
 
   /**
@@ -78,7 +78,9 @@ class IRBlockBase extends TIRBlock {
   /**
    * Gets the last instruction in this block.
    */
-  final Instruction getLastInstruction() { result = getInstruction(getInstructionCount() - 1) }
+  final Instruction getLastInstruction() {
+    result = this.getInstruction(this.getInstructionCount() - 1)
+  }
 
   /**
    * Gets the number of non-`Phi` instructions in this block.
@@ -95,7 +97,7 @@ class IRBlockBase extends TIRBlock {
   /**
    * Gets the `Function` that contains this block.
    */
-  final Language::Function getEnclosingFunction() {
+  final Language::Declaration getEnclosingFunction() {
     result = getFirstInstruction(this).getEnclosingFunction()
   }
 }
@@ -149,7 +151,7 @@ class IRBlock extends IRBlockBase {
    * Block `A` dominates block `B` if any control flow path from the entry block of the function to
    * block `B` must pass through block `A`. A block always dominates itself.
    */
-  final predicate dominates(IRBlock block) { strictlyDominates(block) or this = block }
+  final predicate dominates(IRBlock block) { this.strictlyDominates(block) or this = block }
 
   /**
    * Gets a block on the dominance frontier of this block.
@@ -159,8 +161,13 @@ class IRBlock extends IRBlockBase {
    */
   pragma[noinline]
   final IRBlock dominanceFrontier() {
-    dominates(result.getAPredecessor()) and
-    not strictlyDominates(result)
+    this.getASuccessor() = result and
+    not this.immediatelyDominates(result)
+    or
+    exists(IRBlock prev | result = prev.dominanceFrontier() |
+      this.immediatelyDominates(prev) and
+      not this.immediatelyDominates(result)
+    )
   }
 
   /**
@@ -189,7 +196,7 @@ class IRBlock extends IRBlockBase {
    * Block `A` post-dominates block `B` if any control flow path from `B` to the exit block of the
    * function must pass through block `A`. A block always post-dominates itself.
    */
-  final predicate postDominates(IRBlock block) { strictlyPostDominates(block) or this = block }
+  final predicate postDominates(IRBlock block) { this.strictlyPostDominates(block) or this = block }
 
   /**
    * Gets a block on the post-dominance frontier of this block.
@@ -198,17 +205,22 @@ class IRBlock extends IRBlockBase {
    * post-dominate block `B`, but block `A` does post-dominate an immediate successor of block `B`.
    */
   pragma[noinline]
-  final IRBlock postPominanceFrontier() {
-    postDominates(result.getASuccessor()) and
-    not strictlyPostDominates(result)
+  final IRBlock postDominanceFrontier() {
+    this.getAPredecessor() = result and
+    not this.immediatelyPostDominates(result)
+    or
+    exists(IRBlock prev | result = prev.postDominanceFrontier() |
+      this.immediatelyPostDominates(prev) and
+      not this.immediatelyPostDominates(result)
+    )
   }
 
   /**
    * Holds if this block is reachable from the entry block of its function.
    */
   final predicate isReachableFromFunctionEntry() {
-    this = getEnclosingIRFunction().getEntryBlock() or
-    getAPredecessor().isReachableFromFunctionEntry()
+    this = this.getEnclosingIRFunction().getEntryBlock() or
+    this.getAPredecessor().isReachableFromFunctionEntry()
   }
 }
 

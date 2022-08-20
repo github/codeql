@@ -1,0 +1,29 @@
+edges
+| CodeInjection.rb:3:12:3:17 | call to params :  | CodeInjection.rb:3:12:3:24 | ...[...] :  |
+| CodeInjection.rb:3:12:3:24 | ...[...] :  | CodeInjection.rb:6:10:6:13 | code |
+| CodeInjection.rb:3:12:3:24 | ...[...] :  | CodeInjection.rb:18:20:18:23 | code |
+| CodeInjection.rb:3:12:3:24 | ...[...] :  | CodeInjection.rb:21:21:21:24 | code |
+| CodeInjection.rb:3:12:3:24 | ...[...] :  | CodeInjection.rb:27:15:27:18 | code |
+| CodeInjection.rb:3:12:3:24 | ...[...] :  | CodeInjection.rb:30:19:30:22 | code |
+| CodeInjection.rb:3:12:3:24 | ...[...] :  | CodeInjection.rb:36:24:36:27 | code :  |
+| CodeInjection.rb:36:24:36:27 | code :  | CodeInjection.rb:36:10:36:28 | call to escape |
+nodes
+| CodeInjection.rb:3:12:3:17 | call to params :  | semmle.label | call to params :  |
+| CodeInjection.rb:3:12:3:24 | ...[...] :  | semmle.label | ...[...] :  |
+| CodeInjection.rb:6:10:6:13 | code | semmle.label | code |
+| CodeInjection.rb:9:10:9:15 | call to params | semmle.label | call to params |
+| CodeInjection.rb:18:20:18:23 | code | semmle.label | code |
+| CodeInjection.rb:21:21:21:24 | code | semmle.label | code |
+| CodeInjection.rb:27:15:27:18 | code | semmle.label | code |
+| CodeInjection.rb:30:19:30:22 | code | semmle.label | code |
+| CodeInjection.rb:36:10:36:28 | call to escape | semmle.label | call to escape |
+| CodeInjection.rb:36:24:36:27 | code :  | semmle.label | code :  |
+subpaths
+#select
+| CodeInjection.rb:6:10:6:13 | code | CodeInjection.rb:3:12:3:17 | call to params :  | CodeInjection.rb:6:10:6:13 | code | This code execution depends on $@. | CodeInjection.rb:3:12:3:17 | call to params | a user-provided value |
+| CodeInjection.rb:9:10:9:15 | call to params | CodeInjection.rb:9:10:9:15 | call to params | CodeInjection.rb:9:10:9:15 | call to params | This code execution depends on $@. | CodeInjection.rb:9:10:9:15 | call to params | a user-provided value |
+| CodeInjection.rb:18:20:18:23 | code | CodeInjection.rb:3:12:3:17 | call to params :  | CodeInjection.rb:18:20:18:23 | code | This code execution depends on $@. | CodeInjection.rb:3:12:3:17 | call to params | a user-provided value |
+| CodeInjection.rb:21:21:21:24 | code | CodeInjection.rb:3:12:3:17 | call to params :  | CodeInjection.rb:21:21:21:24 | code | This code execution depends on $@. | CodeInjection.rb:3:12:3:17 | call to params | a user-provided value |
+| CodeInjection.rb:27:15:27:18 | code | CodeInjection.rb:3:12:3:17 | call to params :  | CodeInjection.rb:27:15:27:18 | code | This code execution depends on $@. | CodeInjection.rb:3:12:3:17 | call to params | a user-provided value |
+| CodeInjection.rb:30:19:30:22 | code | CodeInjection.rb:3:12:3:17 | call to params :  | CodeInjection.rb:30:19:30:22 | code | This code execution depends on $@. | CodeInjection.rb:3:12:3:17 | call to params | a user-provided value |
+| CodeInjection.rb:36:10:36:28 | call to escape | CodeInjection.rb:3:12:3:17 | call to params :  | CodeInjection.rb:36:10:36:28 | call to escape | This code execution depends on $@. | CodeInjection.rb:3:12:3:17 | call to params | a user-provided value |

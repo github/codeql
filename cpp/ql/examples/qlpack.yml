@@ -1,3 +1,6 @@
-name: codeql-cpp-examples
-version: 0.0.0
-libraryPathDependencies: codeql-cpp
+name: codeql/cpp-examples
+groups: 
+  - cpp
+  - examples
+dependencies:
+  codeql/cpp-all: "*"

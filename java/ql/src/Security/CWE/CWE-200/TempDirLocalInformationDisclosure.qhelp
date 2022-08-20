@@ -1,0 +1,49 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>Local information disclosure can occur when files/directories are written into
+directories that are shared between all users on the system.</p>
+
+<p>On most <a href="https://en.wikipedia.org/wiki/Unix-like">unix-like</a> systems,
+the system temporary directory is shared between local users.
+If files/directories are created within the system temporary directory without using
+APIs that explicitly set the correct file permissions, local information disclosure
+can occur.</p>
+
+<p>Depending upon the particular file contents exposed, this vulnerability can have a
+<a href="https://nvd.nist.gov/vuln-metrics/cvss/v3-calculator?vector=AV:L/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:N&amp;version=3.1">CVSSv3.1 base score of 6.2/10</a>.</p>
+</overview>
+
+<recommendation>
+<p>Use JDK methods that specifically protect against this vulnerability:</p>
+<ul>
+    <li><a href="https://docs.oracle.com/javase/8/docs/api/java/nio/file/Files.html#createTempDirectory-java.nio.file.Path-java.lang.String-java.nio.file.attribute.FileAttribute...-">java.nio.file.Files.createTempDirectory</a></li>
+    <li><a href="https://docs.oracle.com/javase/8/docs/api/java/nio/file/Files.html#createTempFile-java.nio.file.Path-java.lang.String-java.lang.String-java.nio.file.attribute.FileAttribute...-">java.nio.file.Files.createTempFile</a></li>
+</ul>
+
+<p>Otherwise, create the file/directory by manually specifying the expected posix file permissions.
+For example: <code>PosixFilePermissions.asFileAttribute(EnumSet.of(PosixFilePermission.OWNER_READ, PosixFilePermission.OWNER_WRITE))</code></p>
+<ul>
+    <li><a href="https://docs.oracle.com/javase/8/docs/api/java/nio/file/Files.html#createFile-java.nio.file.Path-java.nio.file.attribute.FileAttribute...-">java.nio.file.Files.createFile</a></li>
+    <li><a href="https://docs.oracle.com/javase/8/docs/api/java/nio/file/Files.html#createDirectory-java.nio.file.Path-java.nio.file.attribute.FileAttribute...-">java.nio.file.Files.createDirectory</a></li>
+    <li><a href="https://docs.oracle.com/javase/8/docs/api/java/nio/file/Files.html#createDirectories-java.nio.file.Path-java.nio.file.attribute.FileAttribute...-">java.nio.file.Files.createDirectories</a></li>
+</ul>
+</recommendation>
+
+<example>
+<p>In the following example, files and directories are created with file permissions that allow other local users to read their contents.</p>
+
+<sample src="TempDirUsageVulnerable.java"/>
+
+<p>In the following example, files and directories are created with file permissions that protect their contents.</p>
+
+<sample src="TempDirUsageSafe.java"/>
+</example>
+
+<references>
+    <li>OSWAP: <a href="https://owasp.org/www-community/vulnerabilities/Insecure_Temporary_File">Insecure Temporary File</a>.</li>
+    <li>CERT: <a href="https://wiki.sei.cmu.edu/confluence/display/java/FIO00-J.+Do+not+operate+on+files+in+shared+directories">FIO00-J. Do not operate on files in shared directories</a>.</li>
+</references>
+</qhelp>

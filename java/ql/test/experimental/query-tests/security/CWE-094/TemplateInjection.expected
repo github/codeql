@@ -1,0 +1,136 @@
+edges
+| FreemarkerSSTI.java:23:17:23:44 | getParameter(...) : String | FreemarkerSSTI.java:24:36:24:39 | code : String |
+| FreemarkerSSTI.java:24:19:24:40 | new StringReader(...) : StringReader | FreemarkerSSTI.java:27:35:27:40 | reader |
+| FreemarkerSSTI.java:24:36:24:39 | code : String | FreemarkerSSTI.java:24:19:24:40 | new StringReader(...) : StringReader |
+| FreemarkerSSTI.java:33:17:33:44 | getParameter(...) : String | FreemarkerSSTI.java:34:36:34:39 | code : String |
+| FreemarkerSSTI.java:34:19:34:40 | new StringReader(...) : StringReader | FreemarkerSSTI.java:38:35:38:40 | reader |
+| FreemarkerSSTI.java:34:36:34:39 | code : String | FreemarkerSSTI.java:34:19:34:40 | new StringReader(...) : StringReader |
+| FreemarkerSSTI.java:44:17:44:44 | getParameter(...) : String | FreemarkerSSTI.java:45:36:45:39 | code : String |
+| FreemarkerSSTI.java:45:19:45:40 | new StringReader(...) : StringReader | FreemarkerSSTI.java:50:35:50:40 | reader |
+| FreemarkerSSTI.java:45:36:45:39 | code : String | FreemarkerSSTI.java:45:19:45:40 | new StringReader(...) : StringReader |
+| FreemarkerSSTI.java:56:23:56:56 | getParameter(...) : String | FreemarkerSSTI.java:61:35:61:44 | sourceCode |
+| FreemarkerSSTI.java:67:17:67:44 | getParameter(...) : String | FreemarkerSSTI.java:69:36:69:39 | code : String |
+| FreemarkerSSTI.java:69:19:69:40 | new StringReader(...) : StringReader | FreemarkerSSTI.java:73:47:73:52 | reader |
+| FreemarkerSSTI.java:69:36:69:39 | code : String | FreemarkerSSTI.java:69:19:69:40 | new StringReader(...) : StringReader |
+| FreemarkerSSTI.java:79:17:79:44 | getParameter(...) : String | FreemarkerSSTI.java:82:36:82:39 | code : String |
+| FreemarkerSSTI.java:82:19:82:40 | new StringReader(...) : StringReader | FreemarkerSSTI.java:87:47:87:52 | reader |
+| FreemarkerSSTI.java:82:36:82:39 | code : String | FreemarkerSSTI.java:82:19:82:40 | new StringReader(...) : StringReader |
+| FreemarkerSSTI.java:93:17:93:44 | getParameter(...) : String | FreemarkerSSTI.java:96:36:96:39 | code : String |
+| FreemarkerSSTI.java:96:19:96:40 | new StringReader(...) : StringReader | FreemarkerSSTI.java:100:47:100:52 | reader |
+| FreemarkerSSTI.java:96:36:96:39 | code : String | FreemarkerSSTI.java:96:19:96:40 | new StringReader(...) : StringReader |
+| FreemarkerSSTI.java:105:17:105:44 | getParameter(...) : String | FreemarkerSSTI.java:109:42:109:45 | code |
+| FreemarkerSSTI.java:114:17:114:44 | getParameter(...) : String | FreemarkerSSTI.java:119:42:119:45 | code |
+| FreemarkerSSTI.java:125:17:125:44 | getParameter(...) : String | FreemarkerSSTI.java:126:26:126:29 | code : String |
+| FreemarkerSSTI.java:126:9:126:12 | root [post update] [<map.value>] : String | FreemarkerSSTI.java:130:22:130:25 | root |
+| FreemarkerSSTI.java:126:26:126:29 | code : String | FreemarkerSSTI.java:126:9:126:12 | root [post update] [<map.value>] : String |
+| JinJavaSSTI.java:21:21:21:52 | getParameter(...) : String | JinJavaSSTI.java:25:44:25:51 | template |
+| JinJavaSSTI.java:30:21:30:52 | getParameter(...) : String | JinJavaSSTI.java:34:55:34:62 | template |
+| JinJavaSSTI.java:39:21:39:52 | getParameter(...) : String | JinJavaSSTI.java:46:55:46:62 | template |
+| PebbleSSTI.java:18:17:18:44 | getParameter(...) : String | PebbleSSTI.java:21:56:21:59 | code |
+| PebbleSSTI.java:25:17:25:44 | getParameter(...) : String | PebbleSSTI.java:28:63:28:66 | code |
+| ThymeleafSSTI.java:22:17:22:44 | getParameter(...) : String | ThymeleafSSTI.java:27:27:27:30 | code |
+| VelocitySSTI.java:31:17:31:44 | getParameter(...) : String | VelocitySSTI.java:38:45:38:48 | code |
+| VelocitySSTI.java:44:17:44:44 | getParameter(...) : String | VelocitySSTI.java:50:42:50:45 | code : String |
+| VelocitySSTI.java:50:25:50:46 | new StringReader(...) : StringReader | VelocitySSTI.java:53:45:53:50 | reader |
+| VelocitySSTI.java:50:42:50:45 | code : String | VelocitySSTI.java:50:25:50:46 | new StringReader(...) : StringReader |
+| VelocitySSTI.java:59:17:59:44 | getParameter(...) : String | VelocitySSTI.java:62:42:62:45 | code : String |
+| VelocitySSTI.java:62:25:62:46 | new StringReader(...) : StringReader | VelocitySSTI.java:63:25:63:30 | reader |
+| VelocitySSTI.java:62:42:62:45 | code : String | VelocitySSTI.java:62:25:62:46 | new StringReader(...) : StringReader |
+| VelocitySSTI.java:69:17:69:44 | getParameter(...) : String | VelocitySSTI.java:77:21:77:27 | context |
+| VelocitySSTI.java:83:17:83:44 | getParameter(...) : String | VelocitySSTI.java:89:60:89:66 | context |
+| VelocitySSTI.java:95:17:95:44 | getParameter(...) : String | VelocitySSTI.java:102:11:102:17 | context |
+| VelocitySSTI.java:108:17:108:44 | getParameter(...) : String | VelocitySSTI.java:115:11:115:17 | context |
+| VelocitySSTI.java:120:17:120:44 | getParameter(...) : String | VelocitySSTI.java:123:37:123:40 | code |
+nodes
+| FreemarkerSSTI.java:23:17:23:44 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| FreemarkerSSTI.java:24:19:24:40 | new StringReader(...) : StringReader | semmle.label | new StringReader(...) : StringReader |
+| FreemarkerSSTI.java:24:36:24:39 | code : String | semmle.label | code : String |
+| FreemarkerSSTI.java:27:35:27:40 | reader | semmle.label | reader |
+| FreemarkerSSTI.java:33:17:33:44 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| FreemarkerSSTI.java:34:19:34:40 | new StringReader(...) : StringReader | semmle.label | new StringReader(...) : StringReader |
+| FreemarkerSSTI.java:34:36:34:39 | code : String | semmle.label | code : String |
+| FreemarkerSSTI.java:38:35:38:40 | reader | semmle.label | reader |
+| FreemarkerSSTI.java:44:17:44:44 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| FreemarkerSSTI.java:45:19:45:40 | new StringReader(...) : StringReader | semmle.label | new StringReader(...) : StringReader |
+| FreemarkerSSTI.java:45:36:45:39 | code : String | semmle.label | code : String |
+| FreemarkerSSTI.java:50:35:50:40 | reader | semmle.label | reader |
+| FreemarkerSSTI.java:56:23:56:56 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| FreemarkerSSTI.java:61:35:61:44 | sourceCode | semmle.label | sourceCode |
+| FreemarkerSSTI.java:67:17:67:44 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| FreemarkerSSTI.java:69:19:69:40 | new StringReader(...) : StringReader | semmle.label | new StringReader(...) : StringReader |
+| FreemarkerSSTI.java:69:36:69:39 | code : String | semmle.label | code : String |
+| FreemarkerSSTI.java:73:47:73:52 | reader | semmle.label | reader |
+| FreemarkerSSTI.java:79:17:79:44 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| FreemarkerSSTI.java:82:19:82:40 | new StringReader(...) : StringReader | semmle.label | new StringReader(...) : StringReader |
+| FreemarkerSSTI.java:82:36:82:39 | code : String | semmle.label | code : String |
+| FreemarkerSSTI.java:87:47:87:52 | reader | semmle.label | reader |
+| FreemarkerSSTI.java:93:17:93:44 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| FreemarkerSSTI.java:96:19:96:40 | new StringReader(...) : StringReader | semmle.label | new StringReader(...) : StringReader |
+| FreemarkerSSTI.java:96:36:96:39 | code : String | semmle.label | code : String |
+| FreemarkerSSTI.java:100:47:100:52 | reader | semmle.label | reader |
+| FreemarkerSSTI.java:105:17:105:44 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| FreemarkerSSTI.java:109:42:109:45 | code | semmle.label | code |
+| FreemarkerSSTI.java:114:17:114:44 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| FreemarkerSSTI.java:119:42:119:45 | code | semmle.label | code |
+| FreemarkerSSTI.java:125:17:125:44 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| FreemarkerSSTI.java:126:9:126:12 | root [post update] [<map.value>] : String | semmle.label | root [post update] [<map.value>] : String |
+| FreemarkerSSTI.java:126:26:126:29 | code : String | semmle.label | code : String |
+| FreemarkerSSTI.java:130:22:130:25 | root | semmle.label | root |
+| JinJavaSSTI.java:21:21:21:52 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| JinJavaSSTI.java:25:44:25:51 | template | semmle.label | template |
+| JinJavaSSTI.java:30:21:30:52 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| JinJavaSSTI.java:34:55:34:62 | template | semmle.label | template |
+| JinJavaSSTI.java:39:21:39:52 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| JinJavaSSTI.java:46:55:46:62 | template | semmle.label | template |
+| PebbleSSTI.java:18:17:18:44 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| PebbleSSTI.java:21:56:21:59 | code | semmle.label | code |
+| PebbleSSTI.java:25:17:25:44 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| PebbleSSTI.java:28:63:28:66 | code | semmle.label | code |
+| ThymeleafSSTI.java:22:17:22:44 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| ThymeleafSSTI.java:27:27:27:30 | code | semmle.label | code |
+| VelocitySSTI.java:31:17:31:44 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| VelocitySSTI.java:38:45:38:48 | code | semmle.label | code |
+| VelocitySSTI.java:44:17:44:44 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| VelocitySSTI.java:50:25:50:46 | new StringReader(...) : StringReader | semmle.label | new StringReader(...) : StringReader |
+| VelocitySSTI.java:50:42:50:45 | code : String | semmle.label | code : String |
+| VelocitySSTI.java:53:45:53:50 | reader | semmle.label | reader |
+| VelocitySSTI.java:59:17:59:44 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| VelocitySSTI.java:62:25:62:46 | new StringReader(...) : StringReader | semmle.label | new StringReader(...) : StringReader |
+| VelocitySSTI.java:62:42:62:45 | code : String | semmle.label | code : String |
+| VelocitySSTI.java:63:25:63:30 | reader | semmle.label | reader |
+| VelocitySSTI.java:69:17:69:44 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| VelocitySSTI.java:77:21:77:27 | context | semmle.label | context |
+| VelocitySSTI.java:83:17:83:44 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| VelocitySSTI.java:89:60:89:66 | context | semmle.label | context |
+| VelocitySSTI.java:95:17:95:44 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| VelocitySSTI.java:102:11:102:17 | context | semmle.label | context |
+| VelocitySSTI.java:108:17:108:44 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| VelocitySSTI.java:115:11:115:17 | context | semmle.label | context |
+| VelocitySSTI.java:120:17:120:44 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| VelocitySSTI.java:123:37:123:40 | code | semmle.label | code |
+subpaths
+#select
+| FreemarkerSSTI.java:27:35:27:40 | reader | FreemarkerSSTI.java:23:17:23:44 | getParameter(...) : String | FreemarkerSSTI.java:27:35:27:40 | reader | Potential arbitrary code execution due to $@. | FreemarkerSSTI.java:23:17:23:44 | getParameter(...) | a template value loaded from a remote source. |
+| FreemarkerSSTI.java:38:35:38:40 | reader | FreemarkerSSTI.java:33:17:33:44 | getParameter(...) : String | FreemarkerSSTI.java:38:35:38:40 | reader | Potential arbitrary code execution due to $@. | FreemarkerSSTI.java:33:17:33:44 | getParameter(...) | a template value loaded from a remote source. |
+| FreemarkerSSTI.java:50:35:50:40 | reader | FreemarkerSSTI.java:44:17:44:44 | getParameter(...) : String | FreemarkerSSTI.java:50:35:50:40 | reader | Potential arbitrary code execution due to $@. | FreemarkerSSTI.java:44:17:44:44 | getParameter(...) | a template value loaded from a remote source. |
+| FreemarkerSSTI.java:61:35:61:44 | sourceCode | FreemarkerSSTI.java:56:23:56:56 | getParameter(...) : String | FreemarkerSSTI.java:61:35:61:44 | sourceCode | Potential arbitrary code execution due to $@. | FreemarkerSSTI.java:56:23:56:56 | getParameter(...) | a template value loaded from a remote source. |
+| FreemarkerSSTI.java:73:47:73:52 | reader | FreemarkerSSTI.java:67:17:67:44 | getParameter(...) : String | FreemarkerSSTI.java:73:47:73:52 | reader | Potential arbitrary code execution due to $@. | FreemarkerSSTI.java:67:17:67:44 | getParameter(...) | a template value loaded from a remote source. |
+| FreemarkerSSTI.java:87:47:87:52 | reader | FreemarkerSSTI.java:79:17:79:44 | getParameter(...) : String | FreemarkerSSTI.java:87:47:87:52 | reader | Potential arbitrary code execution due to $@. | FreemarkerSSTI.java:79:17:79:44 | getParameter(...) | a template value loaded from a remote source. |
+| FreemarkerSSTI.java:100:47:100:52 | reader | FreemarkerSSTI.java:93:17:93:44 | getParameter(...) : String | FreemarkerSSTI.java:100:47:100:52 | reader | Potential arbitrary code execution due to $@. | FreemarkerSSTI.java:93:17:93:44 | getParameter(...) | a template value loaded from a remote source. |
+| FreemarkerSSTI.java:109:42:109:45 | code | FreemarkerSSTI.java:105:17:105:44 | getParameter(...) : String | FreemarkerSSTI.java:109:42:109:45 | code | Potential arbitrary code execution due to $@. | FreemarkerSSTI.java:105:17:105:44 | getParameter(...) | a template value loaded from a remote source. |
+| FreemarkerSSTI.java:119:42:119:45 | code | FreemarkerSSTI.java:114:17:114:44 | getParameter(...) : String | FreemarkerSSTI.java:119:42:119:45 | code | Potential arbitrary code execution due to $@. | FreemarkerSSTI.java:114:17:114:44 | getParameter(...) | a template value loaded from a remote source. |
+| FreemarkerSSTI.java:130:22:130:25 | root | FreemarkerSSTI.java:125:17:125:44 | getParameter(...) : String | FreemarkerSSTI.java:130:22:130:25 | root | Potential arbitrary code execution due to $@. | FreemarkerSSTI.java:125:17:125:44 | getParameter(...) | a template value loaded from a remote source. |
+| JinJavaSSTI.java:25:44:25:51 | template | JinJavaSSTI.java:21:21:21:52 | getParameter(...) : String | JinJavaSSTI.java:25:44:25:51 | template | Potential arbitrary code execution due to $@. | JinJavaSSTI.java:21:21:21:52 | getParameter(...) | a template value loaded from a remote source. |
+| JinJavaSSTI.java:34:55:34:62 | template | JinJavaSSTI.java:30:21:30:52 | getParameter(...) : String | JinJavaSSTI.java:34:55:34:62 | template | Potential arbitrary code execution due to $@. | JinJavaSSTI.java:30:21:30:52 | getParameter(...) | a template value loaded from a remote source. |
+| JinJavaSSTI.java:46:55:46:62 | template | JinJavaSSTI.java:39:21:39:52 | getParameter(...) : String | JinJavaSSTI.java:46:55:46:62 | template | Potential arbitrary code execution due to $@. | JinJavaSSTI.java:39:21:39:52 | getParameter(...) | a template value loaded from a remote source. |
+| PebbleSSTI.java:21:56:21:59 | code | PebbleSSTI.java:18:17:18:44 | getParameter(...) : String | PebbleSSTI.java:21:56:21:59 | code | Potential arbitrary code execution due to $@. | PebbleSSTI.java:18:17:18:44 | getParameter(...) | a template value loaded from a remote source. |
+| PebbleSSTI.java:28:63:28:66 | code | PebbleSSTI.java:25:17:25:44 | getParameter(...) : String | PebbleSSTI.java:28:63:28:66 | code | Potential arbitrary code execution due to $@. | PebbleSSTI.java:25:17:25:44 | getParameter(...) | a template value loaded from a remote source. |
+| ThymeleafSSTI.java:27:27:27:30 | code | ThymeleafSSTI.java:22:17:22:44 | getParameter(...) : String | ThymeleafSSTI.java:27:27:27:30 | code | Potential arbitrary code execution due to $@. | ThymeleafSSTI.java:22:17:22:44 | getParameter(...) | a template value loaded from a remote source. |
+| VelocitySSTI.java:38:45:38:48 | code | VelocitySSTI.java:31:17:31:44 | getParameter(...) : String | VelocitySSTI.java:38:45:38:48 | code | Potential arbitrary code execution due to $@. | VelocitySSTI.java:31:17:31:44 | getParameter(...) | a template value loaded from a remote source. |
+| VelocitySSTI.java:53:45:53:50 | reader | VelocitySSTI.java:44:17:44:44 | getParameter(...) : String | VelocitySSTI.java:53:45:53:50 | reader | Potential arbitrary code execution due to $@. | VelocitySSTI.java:44:17:44:44 | getParameter(...) | a template value loaded from a remote source. |
+| VelocitySSTI.java:63:25:63:30 | reader | VelocitySSTI.java:59:17:59:44 | getParameter(...) : String | VelocitySSTI.java:63:25:63:30 | reader | Potential arbitrary code execution due to $@. | VelocitySSTI.java:59:17:59:44 | getParameter(...) | a template value loaded from a remote source. |
+| VelocitySSTI.java:77:21:77:27 | context | VelocitySSTI.java:69:17:69:44 | getParameter(...) : String | VelocitySSTI.java:77:21:77:27 | context | Potential arbitrary code execution due to $@. | VelocitySSTI.java:69:17:69:44 | getParameter(...) | a template value loaded from a remote source. |
+| VelocitySSTI.java:89:60:89:66 | context | VelocitySSTI.java:83:17:83:44 | getParameter(...) : String | VelocitySSTI.java:89:60:89:66 | context | Potential arbitrary code execution due to $@. | VelocitySSTI.java:83:17:83:44 | getParameter(...) | a template value loaded from a remote source. |
+| VelocitySSTI.java:102:11:102:17 | context | VelocitySSTI.java:95:17:95:44 | getParameter(...) : String | VelocitySSTI.java:102:11:102:17 | context | Potential arbitrary code execution due to $@. | VelocitySSTI.java:95:17:95:44 | getParameter(...) | a template value loaded from a remote source. |
+| VelocitySSTI.java:115:11:115:17 | context | VelocitySSTI.java:108:17:108:44 | getParameter(...) : String | VelocitySSTI.java:115:11:115:17 | context | Potential arbitrary code execution due to $@. | VelocitySSTI.java:108:17:108:44 | getParameter(...) | a template value loaded from a remote source. |
+| VelocitySSTI.java:123:37:123:40 | code | VelocitySSTI.java:120:17:120:44 | getParameter(...) : String | VelocitySSTI.java:123:37:123:40 | code | Potential arbitrary code execution due to $@. | VelocitySSTI.java:120:17:120:44 | getParameter(...) | a template value loaded from a remote source. |

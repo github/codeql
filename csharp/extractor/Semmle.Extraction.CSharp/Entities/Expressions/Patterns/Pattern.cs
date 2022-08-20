@@ -68,7 +68,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                         case DiscardDesignationSyntax discard:
                             return new Expressions.Discard(cx, discard, parent, child);
                         default:
-                            throw new InternalError("var pattern designation is unhandled");
+                            throw new InternalError($"var pattern designation of type {varPattern.Designation.GetType()} is unhandled");
                     }
 
                 case DiscardPatternSyntax dp:

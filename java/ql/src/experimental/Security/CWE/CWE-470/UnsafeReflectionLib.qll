@@ -35,7 +35,7 @@ predicate looksLikeResolveClassStep(DataFlow::Node fromNode, DataFlow::Node toNo
     m = ma.getMethod() and arg = ma.getArgument(i)
   |
     m.getReturnType() instanceof TypeClass and
-    m.getName().toLowerCase().regexpMatch("resolve|load|class|type") and
+    m.getName().toLowerCase() = ["resolve", "load", "class", "type"] and
     arg.getType() instanceof TypeString and
     arg = fromNode.asExpr() and
     ma = toNode.asExpr()
@@ -52,7 +52,7 @@ predicate looksLikeInstantiateClassStep(DataFlow::Node fromNode, DataFlow::Node 
     m = ma.getMethod() and arg = ma.getArgument(i)
   |
     m.getReturnType() instanceof TypeObject and
-    m.getName().toLowerCase().regexpMatch("instantiate|instance|create|make|getbean") and
+    m.getName().toLowerCase() = ["instantiate", "instance", "create", "make", "getbean"] and
     arg.getType() instanceof TypeClass and
     arg = fromNode.asExpr() and
     ma = toNode.asExpr()

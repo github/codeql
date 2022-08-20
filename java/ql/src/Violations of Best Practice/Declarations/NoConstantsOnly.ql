@@ -21,7 +21,7 @@ predicate typeWithConstantField(RefType t) { exists(ConstantField f | f.getDecla
 
 class ConstantRefType extends RefType {
   ConstantRefType() {
-    fromSource() and
+    this.fromSource() and
     (
       this instanceof Interface
       or

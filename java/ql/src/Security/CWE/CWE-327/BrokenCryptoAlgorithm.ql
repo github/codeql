@@ -8,6 +8,7 @@
  * @id java/weak-cryptographic-algorithm
  * @tags security
  *       external/cwe/cwe-327
+ *       external/cwe/cwe-328
  */
 
 import java
@@ -17,7 +18,7 @@ import DataFlow
 import PathGraph
 
 private class ShortStringLiteral extends StringLiteral {
-  ShortStringLiteral() { getLiteral().length() < 100 }
+  ShortStringLiteral() { getValue().length() < 100 }
 }
 
 class BrokenAlgoLiteral extends ShortStringLiteral {
@@ -48,4 +49,4 @@ where
   source.getNode().asExpr() = s and
   conf.hasFlowPath(source, sink)
 select c, source, sink, "Cryptographic algorithm $@ is weak and should not be used.", s,
-  s.getLiteral()
+  s.getValue()

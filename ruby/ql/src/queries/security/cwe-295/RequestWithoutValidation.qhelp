@@ -1,0 +1,52 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+Certificate validation is the standard authentication method of a secure TLS
+connection. Without it, there is no guarantee about who the other party of a TLS
+connection is, making man-in-the-middle attacks more likely to occur.
+</p>
+
+<p>
+When testing software that uses TLS connections, it may be useful to
+disable the certificate validation temporarily. But disabling it in
+production environments is strongly discouraged, unless an alternative
+method of authentication is used.
+</p>
+</overview>
+
+<recommendation>
+<p>
+Do not disable certificate validation for TLS connections.
+</p>
+</recommendation>
+
+<example>
+
+<p>
+The following example shows an HTTPS connection that makes a GET request to a
+remote server. But the connection is not secure since the
+<code>verify_mode</code> option of the connection is set to
+<code>OpenSSL::SSL::VERIFY_NONE</code>. As a consequence, anyone can impersonate
+the remote server.
+</p>
+
+<sample src="examples/RequestWithoutValidation.rb"/>
+
+<p>
+To make the connection secure, the <code>verify_mode</code> option should have
+its default value, or be explicitly set to
+<code>OpenSSL::SSL::VERIFY_PEER</code>.
+</p>
+
+</example>
+
+<references>
+<li>Wikipedia: <a href="https://en.wikipedia.org/wiki/Transport_Layer_Security">Transport Layer Security (TLS)</a></li>
+<li>Wikipedia: <a href="https://en.wikipedia.org/wiki/Man-in-the-middle_attack">Man-in-the-middle attack</a></li>
+<li>Ruby-doc: <a href="https://ruby-doc.org/stdlib-3.0.2/libdoc/net/http/rdoc/Net/HTTP.html">Net::HTTP</a></li>
+</references>
+
+</qhelp>

@@ -12,7 +12,7 @@
  */
 
 import javascript
-import semmle.javascript.security.dataflow.UnvalidatedDynamicMethodCall::UnvalidatedDynamicMethodCall
+import semmle.javascript.security.dataflow.UnvalidatedDynamicMethodCallQuery
 import DataFlow::PathGraph
 
 from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink

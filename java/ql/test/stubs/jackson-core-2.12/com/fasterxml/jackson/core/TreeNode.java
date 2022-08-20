@@ -9,7 +9,9 @@ package com.fasterxml.jackson.core;
 import java.util.Iterator;
 
 public interface TreeNode {
-    JsonParser.NumberType numberType();
+    default JsonParser.NumberType numberType() {
+        return null;
+    }
 
     int size();
 
@@ -35,6 +37,8 @@ public interface TreeNode {
 
     TreeNode at(String jsonPointerExpression) throws IllegalArgumentException;
 
-    JsonParser traverse();
+    default JsonParser traverse() {
+        return null;
+    }
 
 }

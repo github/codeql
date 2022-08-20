@@ -32,3 +32,10 @@ req2("/path/to/cert/") # GOOD
 
 #Falsey value
 requests.post('https://semmle.com', verify=0) # BAD
+
+# requests treat `None` as default value, which means it is turned on
+requests.get('https://semmle.com') # OK
+requests.get('https://semmle.com', verify=None) # OK
+
+s = requests.Session()
+s.get("url", verify=False) # BAD

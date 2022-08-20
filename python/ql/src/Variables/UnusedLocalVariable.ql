@@ -19,11 +19,23 @@ predicate unused_local(Name unused, LocalVariable v) {
     def.getVariable() = v and
     def.isUnused() and
     not exists(def.getARedef()) and
+    not exists(annotation_without_assignment(v)) and
     def.isRelevant() and
     not v = any(Nonlocal n).getAVariable() and
     not exists(def.getNode().getParentNode().(FunctionDef).getDefinedFunction().getADecorator()) and
     not exists(def.getNode().getParentNode().(ClassDef).getDefinedClass().getADecorator())
   )
+}
+
+/**
+ * Gets any annotation of the local variable `v` that does not also reassign its value.
+ *
+ * TODO: This predicate should not be needed. Rather, annotated "assignments" that do not actually
+ * assign a value should not result in the creation of an SSA variable (which then goes unused).
+ */
+private AnnAssign annotation_without_assignment(LocalVariable v) {
+  result.getTarget() = v.getAStore() and
+  not exists(result.getValue())
 }
 
 from Name unused, LocalVariable v

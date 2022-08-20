@@ -1,0 +1,1 @@
+//semmle-extractor-options: --javac-args -cp ${testdir}/../../../../../../stubs/springframework-5.3.8/:${testdir}/../../../../../../stubs/org.mybatis-3.5.4/

@@ -43,7 +43,7 @@ import com.semmle.js.ast.regexp.ZeroWidthPositiveLookahead;
 import com.semmle.js.ast.regexp.ZeroWidthPositiveLookbehind;
 import com.semmle.js.parser.RegExpParser;
 import com.semmle.js.parser.RegExpParser.Result;
-import com.semmle.util.locations.OffsetTranslation;
+import com.semmle.util.locations.SourceMap;
 import com.semmle.util.trap.TrapWriter;
 import com.semmle.util.trap.TrapWriter.Label;
 
@@ -52,8 +52,7 @@ public class RegExpExtractor {
   private final TrapWriter trapwriter;
   private final LocationManager locationManager;
   private final RegExpParser parser = new RegExpParser();
-  private Position literalStart;
-  private OffsetTranslation offsets;
+  private SourceMap sourceMap;
 
   public RegExpExtractor(TrapWriter trapwriter, LocationManager locationManager) {
     this.trapwriter = trapwriter;
@@ -122,16 +121,15 @@ public class RegExpExtractor {
   }
 
   public void emitLocation(SourceElement term, Label lbl) {
-    int col = literalStart.getColumn();
-    int sl, sc, el, ec;
-    sl = el = literalStart.getLine();
-    sc = col + offsets.get(term.getLoc().getStart().getColumn());
-    ec = col + offsets.get(term.getLoc().getEnd().getColumn());
-    sc += 1; // convert to 1-based
-    ec += 1; // convert to 1-based
-    ec -= 1; // convert to inclusive
+    int start = term.getLoc().getStart().getColumn();
+    int sl = sourceMap.getStart(start).getLine();
+    int sc = sourceMap.getStart(start).getColumn();
+    int end = term.getLoc().getEnd().getColumn();
+    int el = sourceMap.getStart(end).getLine();
+    int ec = sourceMap.getStart(end).getColumn() - 1; // convert to inclusive
     locationManager.emitSnippetLocation(lbl, sl, sc, el, ec);
   }
+
 
   private class V implements Visitor {
     private Label parent;
@@ -348,16 +346,13 @@ public class RegExpExtractor {
     }
   }
 
-  public void extract(
-      String src, OffsetTranslation offsets, Node parent, boolean isSpeculativeParsing) {
+  public void extract(String src, SourceMap sourceMap, Node parent, boolean isSpeculativeParsing) {
     Result res = parser.parse(src);
-
     if (isSpeculativeParsing && res.getErrors().size() > 0) {
       return;
     }
 
-    this.literalStart = parent.getLoc().getStart();
-    this.offsets = offsets;
+    this.sourceMap = sourceMap;
     RegExpTerm ast = res.getAST();
     new V().visit(ast, trapwriter.localID(parent), 0);
 

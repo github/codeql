@@ -33,8 +33,11 @@ class SuppressionAnnotation extends SuppressWarningsAnnotation {
   string getText() { result = text }
 
   private Annotation getASiblingAnnotation() {
-    result = getAnnotatedElement().(Annotatable).getAnAnnotation() and
-    (getAnnotatedElement() instanceof Callable or getAnnotatedElement() instanceof RefType)
+    result = this.getAnnotatedElement().(Annotatable).getAnAnnotation() and
+    (
+      this.getAnnotatedElement() instanceof Callable or
+      this.getAnnotatedElement() instanceof RefType
+    )
   }
 
   private Annotation firstAnnotation() {
@@ -50,11 +53,13 @@ class SuppressionAnnotation extends SuppressWarningsAnnotation {
    * to column `endcolumn` of line `endline` in file `filepath`.
    */
   predicate covers(string filepath, int startline, int startcolumn, int endline, int endcolumn) {
-    if firstAnnotation().hasLocationInfo(filepath, _, _, _, _)
+    if this.firstAnnotation().hasLocationInfo(filepath, _, _, _, _)
     then
-      getAnnotatedElement().hasLocationInfo(filepath, _, _, endline, endcolumn) and
-      firstAnnotation().hasLocationInfo(filepath, startline, startcolumn, _, _)
-    else getAnnotatedElement().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+      this.getAnnotatedElement().hasLocationInfo(filepath, _, _, endline, endcolumn) and
+      this.firstAnnotation().hasLocationInfo(filepath, startline, startcolumn, _, _)
+    else
+      this.getAnnotatedElement()
+          .hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
   }
 
   /** Gets the scope of this suppression. */
@@ -75,7 +80,7 @@ class SuppressionScope extends @annotation {
    * The location spans column `startcolumn` of line `startline` to
    * column `endcolumn` of line `endline` in file `filepath`.
    * For more information, see
-   * [Locations](https://help.semmle.com/QL/learn-ql/ql/locations.html).
+   * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
    */
   predicate hasLocationInfo(
     string filepath, int startline, int startcolumn, int endline, int endcolumn

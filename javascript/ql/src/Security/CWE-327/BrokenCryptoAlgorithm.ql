@@ -8,10 +8,11 @@
  * @id js/weak-cryptographic-algorithm
  * @tags security
  *       external/cwe/cwe-327
+ *       external/cwe/cwe-328
  */
 
 import javascript
-import semmle.javascript.security.dataflow.BrokenCryptoAlgorithm::BrokenCryptoAlgorithm
+import semmle.javascript.security.dataflow.BrokenCryptoAlgorithmQuery
 import semmle.javascript.security.SensitiveActions
 import DataFlow::PathGraph
 

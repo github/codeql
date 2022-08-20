@@ -101,7 +101,7 @@ void taint_x(A* pa) {
 void reverse_taint_smart_pointer() {
   std::unique_ptr<A> p = std::unique_ptr<A>(new A);
   taint_x(p.get());
-  sink(p->x); // $ ast,ir
+  sink(p->x); // $ ast MISSING: ir
 }
 
 struct C {

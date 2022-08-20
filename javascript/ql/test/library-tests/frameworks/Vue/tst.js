@@ -103,3 +103,15 @@ new Vue({
 		}
 	});
 });
+
+let base = Vue.extend({
+	data: { fromBase: 123 }
+});
+let subclass = new Vue({
+	extends: base
+});
+let subclass2 = base.extend({
+	data: {
+		fromSubclass2: 100
+	}
+});

@@ -172,7 +172,7 @@ abstractValue
 | non-null | Collections.cs:57:9:57:13 | ... = ... |
 | non-null | Collections.cs:57:13:57:13 | access to local variable x |
 | non-null | Collections.cs:62:17:62:46 | array creation of type String[] |
-| non-null | Collections.cs:62:17:62:55 | call to method ToList |
+| non-null | Collections.cs:62:17:62:55 | call to method ToList<String> |
 | non-null | Collections.cs:62:32:62:34 | "a" |
 | non-null | Collections.cs:62:37:62:39 | "b" |
 | non-null | Collections.cs:62:42:62:44 | "c" |

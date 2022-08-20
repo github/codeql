@@ -16,7 +16,7 @@
 
 import javascript
 import DataFlow::PathGraph
-import semmle.javascript.security.dataflow.IncompleteHtmlAttributeSanitization::IncompleteHtmlAttributeSanitization
+import semmle.javascript.security.dataflow.IncompleteHtmlAttributeSanitizationQuery
 import semmle.javascript.security.IncompleteBlacklistSanitizer
 
 /**

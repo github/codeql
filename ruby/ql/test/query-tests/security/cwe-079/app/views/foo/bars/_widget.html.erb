@@ -1,0 +1,11 @@
+<%# BAD: A local rendered raw as an instance variable %>
+<%= raw @display_text %>
+
+<%# BAD: A local rendered raw as a local variable %>
+<%= raw display_text %>
+
+<%# BAD: A local rendered raw via the local_assigns hash %>
+<%= raw local_assigns[:display_text] %>
+
+<%# GOOD: A local rendered with default escaping via the local_assigns hash %>
+<%= local_assigns[:display_text] %>

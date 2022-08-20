@@ -1,3 +1,6 @@
-name: codeql-csharp-examples
-version: 0.0.0
-libraryPathDependencies: codeql-csharp
+name: codeql/csharp-examples
+groups: 
+  - csharp
+  - examples
+dependencies:
+  codeql/csharp-all: "*"

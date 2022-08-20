@@ -1,4 +1,5 @@
 import semmle.code.java.dataflow.DataFlow
+import semmle.code.java.dataflow.internal.DataFlowPrivate
 import semmle.code.java.dataflow.internal.TaintTrackingUtil
 import semmle.code.java.dataflow.internal.DataFlowNodes::Private
 import semmle.code.java.dataflow.internal.FlowSummaryImpl as FlowSummaryImpl
@@ -15,7 +16,7 @@ from DataFlow::Node src, DataFlow::Node sink
 where
   (
     localAdditionalTaintStep(src, sink) or
-    FlowSummaryImpl::Private::Steps::summaryThroughStep(src, sink, false)
+    FlowSummaryImpl::Private::Steps::summaryThroughStepTaint(src, sink, _)
   ) and
   not FlowSummaryImpl::Private::Steps::summaryLocalStep(src, sink, false) and
   not FlowSummaryImpl::Private::Steps::summaryReadStep(src, _, sink) and
@@ -23,14 +24,19 @@ where
   or
   exists(ArgumentNode arg, MethodAccess call, DataFlow::ParameterNode p, int i |
     src = arg and
-    p.isParameterOf(call.getMethod().getSourceDeclaration(), i) and
-    arg.argumentOf(call, i)
+    p.isParameterOf(any(DataFlowCallable c |
+        c.asCallable() = call.getMethod().getSourceDeclaration()
+      ), i) and
+    arg.argumentOf(any(DataFlowCall c | c.asCall() = call), i)
   |
     sink.asExpr() = call and
     taintFlowThrough(p)
     or
     exists(DataFlow::ParameterNode p2, int j |
-      sink.(DataFlow::PostUpdateNode).getPreUpdateNode().(ArgumentNode).argumentOf(call, j) and
+      sink.(DataFlow::PostUpdateNode)
+          .getPreUpdateNode()
+          .(ArgumentNode)
+          .argumentOf(any(DataFlowCall c | c.asCall() = call), j) and
       taintFlowUpdate(p, p2) and
       p2.isParameterOf(_, j)
     )

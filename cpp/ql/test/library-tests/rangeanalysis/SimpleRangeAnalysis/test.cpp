@@ -95,6 +95,7 @@ int ref_to_number(int &i, const int &ci, int &aliased) {
     return alias;
 
   for (; i <= 12345; i++) { // test that widening works for references
+    i = i;
     i;
   }
 

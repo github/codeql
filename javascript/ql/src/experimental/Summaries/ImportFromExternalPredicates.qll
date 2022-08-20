@@ -35,13 +35,14 @@ external predicate additionalSteps(
  * An additional source specified through the `additionalSources` predicate.
  */
 private class AdditionalSourceFromSpec extends DataFlow::AdditionalSource {
-  Portal portal;
   string flowLabel;
   string config;
 
   AdditionalSourceFromSpec() {
-    additionalSources(portal.toString(), flowLabel, config) and
-    this = portal.getAnExitNode(_)
+    exists(Portal portal |
+      additionalSources(portal.toString(), flowLabel, config) and
+      this = portal.getAnExitNode(_)
+    )
   }
 
   override predicate isSourceFor(DataFlow::Configuration cfg, DataFlow::FlowLabel lbl) {
@@ -53,13 +54,14 @@ private class AdditionalSourceFromSpec extends DataFlow::AdditionalSource {
  * An additional sink specified through the `additionalSinks` predicate.
  */
 private class AdditionalSinkFromSpec extends DataFlow::AdditionalSink {
-  Portal portal;
   string flowLabel;
   string config;
 
   AdditionalSinkFromSpec() {
-    additionalSinks(portal.toString(), flowLabel, config) and
-    this = portal.getAnEntryNode(_)
+    exists(Portal portal |
+      additionalSinks(portal.toString(), flowLabel, config) and
+      this = portal.getAnEntryNode(_)
+    )
   }
 
   override predicate isSinkFor(DataFlow::Configuration cfg, DataFlow::FlowLabel lbl) {

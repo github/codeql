@@ -1,0 +1,5 @@
+name: codeql/ql-consistency-queries
+groups: [ql, test, consistency-queries]
+dependencies:
+  codeql/ql: "*"
+extractor: ql

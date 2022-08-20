@@ -69,6 +69,9 @@ public final class DocumentHelper {
     return null;
   }
 
+  public static Document parseText(String text) throws DocumentException {
+    return null;
+  }
 }
 
 /*

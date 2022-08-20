@@ -18,6 +18,10 @@ See the following links to learn how to get set up and run CodeQL commands:
   <creating-codeql-databases>`: Create relational
   representations of source code that can be queried like any other database.
   
+- :doc:`Extractor options
+  <extractor-options>`: Set options for the 
+  behavior of extractors that create CodeQL databases.
+
 - :doc:`Analyzing CodeQL databases with the CodeQL CLI
   <analyzing-databases-with-the-codeql-cli>`: Analyze your code using queries
   written in a specially-designed, object-oriented query language.
@@ -57,6 +61,7 @@ See the following links to learn how to get set up and run CodeQL commands:
    about-the-codeql-cli
    getting-started-with-the-codeql-cli
    creating-codeql-databases
+   extractor-options
    analyzing-databases-with-the-codeql-cli
    upgrading-codeql-databases
    using-custom-queries-with-the-codeql-cli

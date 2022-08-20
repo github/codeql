@@ -5,7 +5,8 @@ app.get("/user-files", function(req, res) {
   var file = req.param("file");
   if (file.indexOf("..") !== -1) {
     // BAD
-    // forbid paths outside the /public directory
+    // we forbid relative paths that contain ..
+    // as these could leave the public directory
     res.status(400).send("Bad request");
   } else {
     var absolute = path.resolve("/public/" + file);

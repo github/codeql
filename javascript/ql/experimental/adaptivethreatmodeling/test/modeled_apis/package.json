@@ -1,0 +1,9 @@
+{
+  "name": "",
+  "description": "",
+  "version": "0.0.0",
+  "dependencies": {
+    "mongodb": "2.2.33"
+  },
+  "devDependencies": {}
+}

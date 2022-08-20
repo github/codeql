@@ -1,6 +1,6 @@
 import csharp
 
-from Virtualizable v1, Virtualizable v2, string kind
+from Overridable v1, Overridable v2, string kind
 where
   (
     v1.getOverridee() = v2 and kind = "overrides"

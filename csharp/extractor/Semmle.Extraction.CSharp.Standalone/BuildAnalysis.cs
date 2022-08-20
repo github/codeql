@@ -160,7 +160,7 @@ namespace Semmle.BuildAnalyser
         {
             var bytes = Encoding.Unicode.GetBytes(srcDir);
 
-            using var sha1 = new SHA1CryptoServiceProvider();
+            using var sha1 = SHA1.Create();
             var sha = sha1.ComputeHash(bytes);
             var sb = new StringBuilder();
             foreach (var b in sha.Take(8))

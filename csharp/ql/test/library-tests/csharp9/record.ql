@@ -1,6 +1,6 @@
 import csharp
 
-query predicate records(Record t, string i, RecordCloneMethod clone) {
+query predicate records(RecordClass t, string i, RecordCloneMethod clone) {
   t.getABaseInterface().toStringWithTypes() = i and
   clone = t.getCloneMethod() and
   t.fromSource()
@@ -10,7 +10,7 @@ private string getMemberName(Member m) {
   result = m.getDeclaringType().getQualifiedName() + "." + m.toStringWithTypes()
 }
 
-query predicate members(Record t, string ms, string l) {
+query predicate members(RecordClass t, string ms, string l) {
   t.fromSource() and
   exists(Member m | t.hasMember(m) |
     ms = getMemberName(m) and

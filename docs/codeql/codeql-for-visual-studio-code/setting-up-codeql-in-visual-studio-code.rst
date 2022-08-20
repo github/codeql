@@ -54,7 +54,7 @@ There are two ways to do this:
 * More advanced, add the CodeQL libraries and queries to an existing workspace. For more information, see ":ref:`Updating an existing workspace for CodeQL <existing-workspace>`" below.
 
 .. pull-quote:: Note
-   
+
    For CLI users there is a third option: If you have followed the instructions in ":ref:`Getting started with the CodeQL CLI <getting-started-with-the-codeql-cli>`" to create a CodeQL directory (for example ``codeql-home``) containing the CodeQL libraries, you can open this directory in VS Code. This also gives the extension access to the CodeQL libraries.
 
 .. container:: toggle
@@ -65,12 +65,11 @@ There are two ways to do this:
 
    Your local version of the CodeQL queries and libraries should match your version of LGTM Enterprise. For example, if you
    use LGTM Enterprise 1.27, then you should clone the ``1.27.0`` branch of the `starter workspace <https://github.com/github/vscode-codeql-starter/>`__ (or the appropriate ``1.27.x`` branch, corresponding to each maintenance release).
-   
+
    This ensures that the queries and libraries you write in VS Code also work in the query console on LGTM Enterprise.
 
    If you prefer to add the CodeQL queries and libraries to an :ref:`existing workspace <existing-workspace>` instead of the starter workspace, then you should
-   clone the appropriate branch of the `general CodeQL repository <https://github.com/github/codeql>`__ and the 
-   `CodeQL repository for Go <https://github.com/github/codeql-go>`__ and add them to your workspace.
+   clone the appropriate branch of the `CodeQL repository <https://github.com/github/codeql>`__ and add it to your workspace.
 
 .. _starter-workspace:
 
@@ -78,8 +77,7 @@ Using the starter workspace
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 The starter workspace is a Git repository. It contains:
 
-* The `repository of CodeQL libraries and queries <https://github.com/github/codeql>`__ for C/C++, C#, Java, JavaScript, and Python. This is included as a submodule, so it can be updated without affecting your custom queries.
-* The `repository of CodeQL libraries and queries <https://github.com/github/codeql-go>`__ for Go. This is also included as a submodule.
+* The `repository of CodeQL libraries and queries <https://github.com/github/codeql>`__ for all supported languages. This is included as a submodule, so it can be updated without affecting your custom queries.
 * A series of folders named ``codeql-custom-queries-<language>``. These are ready for you to start developing your own custom queries for each language, using the standard libraries. There are some example queries to get you started.
 
 To use the starter workspace:
@@ -94,7 +92,7 @@ To use the starter workspace:
 
 Updating an existing workspace for CodeQL
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-You can add the CodeQL libraries to an existing workspace by making a local clone of the CodeQL repository directly: https://github.com/github/codeql. 
+You can add the CodeQL libraries to an existing workspace by making a local clone of the CodeQL repository directly: https://github.com/github/codeql.
 
 To make the standard libraries available in your workspace:
 
@@ -110,13 +108,9 @@ For example, to make a custom CodeQL folder called ``my-custom-cpp-pack`` depend
 
     name: my-custom-cpp-pack
     version: 0.0.0
-    libraryPathDependencies: codeql-cpp
+    libraryPathDependencies: codeql/cpp-all
 
 For more information about why you need to add a ``qlpack.yml`` file, see ":ref:`About QL packs <about-ql-packs>`."
-
-.. pull-quote:: Note
-
-   The CodeQL libraries for Go are not included in the ``github/codeql`` repository, but are stored separately. To analyze Go projects, clone the repository at https://github.com/github/codeql-go and add it to your workspace as above.
 
 Further reading
 ----------------

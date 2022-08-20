@@ -1,0 +1,6 @@
+name: codeql/ruby-examples
+groups: 
+  - ruby
+  - examples
+dependencies:
+  codeql/ruby-all: "*"

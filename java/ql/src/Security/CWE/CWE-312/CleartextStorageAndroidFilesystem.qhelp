@@ -1,0 +1,35 @@
+<!DOCTYPE qhelp PUBLIC "-//Semmle//qhelp//EN" "qhelp.dtd">
+<qhelp>
+  <overview>
+    <p>
+      Android applications with the appropriate permissions can write files either to the device external storage or the application internal storage, depending on the application's needs. However, sensitive information should not be saved in cleartext. Otherwise it can be accessed by any process or user in rooted devices, or can be disclosed through chained vulnerabilities, like unexpected access to the private storage through exposed components.
+    </p>
+  </overview>
+
+  <recommendation>
+    <p>
+     Consider using the <code>EncryptedFile</code> class to work with files containing sensitive data. Alternatively, use encryption algorithms to encrypt the sensitive data being stored.
+    </p>
+  </recommendation>
+
+  <example>
+    <p>
+      In the first example, sensitive user information is stored in cleartext using a local file.
+    </p>
+    <p>
+      In the second and third examples, the code encrypts sensitive information before saving it to the filesystem.
+    </p>
+    <sample src="CleartextStorageAndroidFilesystem.java" />
+  </example>
+
+  <references>
+    <li>
+      Android Developers:
+      <a href="https://developer.android.com/topic/security/data">Work with data more securely</a>
+    </li>
+    <li>
+      Android Developers:
+      <a href="https://developer.android.com/reference/androidx/security/crypto/EncryptedFile">EncryptedFile</a>
+    </li>
+  </references>
+</qhelp>

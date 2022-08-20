@@ -33,8 +33,8 @@
 | CSharp7.cs:117:13:117:15 | m11 | int |
 | CSharp7.cs:120:16:120:18 | m12 | string |
 | CSharp7.cs:121:16:121:18 | m13 | string |
-| CSharp7.cs:133:19:133:20 | f4 | Func<Int32> |
-| CSharp7.cs:137:24:137:25 | f5 | Func<Int32, Int32> |
+| CSharp7.cs:133:19:133:20 | f4 | Func<int> |
+| CSharp7.cs:137:24:137:25 | f5 | Func<int, int> |
 | CSharp7.cs:149:16:149:16 | a | Action |
 | CSharp7.cs:175:16:175:18 | src | string |
 | CSharp7.cs:180:13:180:17 | sink1 | string |
@@ -58,8 +58,8 @@
 | CSharp7.cs:260:22:260:23 | i3 | int |
 | CSharp7.cs:263:25:263:26 | s2 | string |
 | CSharp7.cs:269:22:269:23 | v2 | object |
-| CSharp7.cs:282:13:282:16 | dict | Dictionary<Int32, String> |
-| CSharp7.cs:283:13:283:16 | list | IEnumerable<(Int32,String)> |
+| CSharp7.cs:282:13:282:16 | dict | Dictionary<int, string> |
+| CSharp7.cs:283:13:283:16 | list | IEnumerable<(int, string)> |
 | CSharp7.cs:285:23:285:23 | a | int |
 | CSharp7.cs:285:33:285:33 | b | string |
 | CSharp7.cs:287:23:287:23 | a | int |

@@ -27,7 +27,7 @@ where
   )
   or
   // header checking is disabled in a configuration file
-  exists(HttpRuntimeXMLElement e, XMLAttribute a |
+  exists(HttpRuntimeXmlElement e, XMLAttribute a |
     a = e.getAttribute("enableHeaderChecking") and
     a.getValue().toLowerCase() = "false" and
     a = l

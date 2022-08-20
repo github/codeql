@@ -18,12 +18,12 @@ class SuppressionComment extends Comment {
     (
       this instanceof CppStyleComment and
       // strip the beginning slashes
-      text = getContents().suffix(2)
+      text = this.getContents().suffix(2)
       or
       this instanceof CStyleComment and
       // strip both the beginning /* and the end */ the comment
       exists(string text0 |
-        text0 = getContents().suffix(2) and
+        text0 = this.getContents().suffix(2) and
         text = text0.prefix(text0.length() - 2)
       ) and
       // The /* */ comment must be a single-line comment
@@ -60,20 +60,18 @@ class SuppressionComment extends Comment {
 /**
  * The scope of an alert suppression comment.
  */
-class SuppressionScope extends ElementBase {
-  SuppressionScope() { this instanceof SuppressionComment }
-
+class SuppressionScope extends ElementBase instanceof SuppressionComment {
   /**
    * Holds if this element is at the specified location.
    * The location spans column `startcolumn` of line `startline` to
    * column `endcolumn` of line `endline` in file `filepath`.
    * For more information, see
-   * [Locations](https://help.semmle.com/QL/learn-ql/ql/locations.html).
+   * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
    */
   predicate hasLocationInfo(
     string filepath, int startline, int startcolumn, int endline, int endcolumn
   ) {
-    this.(SuppressionComment).covers(filepath, startline, startcolumn, endline, endcolumn)
+    super.covers(filepath, startline, startcolumn, endline, endcolumn)
   }
 }
 

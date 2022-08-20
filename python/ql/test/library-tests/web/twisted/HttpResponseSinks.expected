@@ -1,3 +1,4 @@
+WARNING: Type HttpResponseTaintSink has been deprecated and may be removed in future (HttpResponseSinks.ql:5,6-27)
 | test.py:7:16:7:23 | Twisted response | externally controlled string |
 | test.py:14:16:14:23 | Twisted response | externally controlled string |
 | test.py:21:16:21:23 | Twisted response | externally controlled string |

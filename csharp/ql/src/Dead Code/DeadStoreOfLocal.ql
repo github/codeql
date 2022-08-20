@@ -37,21 +37,11 @@ Expr getADelegateExpr(Callable c) {
  */
 predicate nonEscapingCall(Call c) {
   exists(string name | c.getTarget().hasName(name) |
-    name = "ForEach" or
-    name = "Count" or
-    name = "Any" or
-    name = "All" or
-    name = "Average" or
-    name = "Aggregate" or
-    name = "First" or
-    name = "Last" or
-    name = "FirstOrDefault" or
-    name = "LastOrDefault" or
-    name = "LongCount" or
-    name = "Max" or
-    name = "Single" or
-    name = "SingleOrDefault" or
-    name = "Sum"
+    name =
+      [
+        "ForEach", "Count", "Any", "All", "Average", "Aggregate", "First", "Last", "FirstOrDefault",
+        "LastOrDefault", "LongCount", "Max", "Single", "SingleOrDefault", "Sum"
+      ]
   )
 }
 
@@ -72,7 +62,8 @@ predicate mayEscape(LocalVariable v) {
 
 class RelevantDefinition extends AssignableDefinition {
   RelevantDefinition() {
-    this instanceof AssignableDefinitions::AssignmentDefinition
+    this.(AssignableDefinitions::AssignmentDefinition).getAssignment() =
+      any(Assignment a | not a = any(UsingDeclStmt uds).getAVariableDeclExpr())
     or
     this instanceof AssignableDefinitions::MutationDefinition
     or
@@ -115,12 +106,7 @@ class RelevantDefinition extends AssignableDefinition {
   private predicate isDefaultLikeInitializer() {
     this.isInitializer() and
     exists(Expr e | e = this.getSource().stripCasts() |
-      exists(string val | val = e.getValue() |
-        val = "0" or
-        val = "-1" or
-        val = "" or
-        val = "false"
-      )
+      e.getValue() = ["0", "-1", "", "false"]
       or
       e instanceof NullLiteral
       or

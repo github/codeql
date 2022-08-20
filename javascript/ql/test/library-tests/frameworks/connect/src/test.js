@@ -28,3 +28,8 @@ app.use(function (error, req, res, next){
 app.use(function ({url, query, cookies}, res){
     cookies.get(query.foobar);
 });
+
+app.use(function (req, res){
+    var url = req.url;
+    res.end(url);
+});

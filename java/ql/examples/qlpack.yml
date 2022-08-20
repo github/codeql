@@ -1,3 +1,6 @@
-name: codeql-java-examples
-version: 0.0.0
-libraryPathDependencies: codeql-java
+name: codeql/java-examples
+groups: 
+  - java
+  - examples
+dependencies:
+  codeql/java-all: "*"

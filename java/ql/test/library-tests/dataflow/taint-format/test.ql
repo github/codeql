@@ -1,16 +1,8 @@
 import java
+import semmle.code.java.dataflow.DataFlow
 import semmle.code.java.dataflow.TaintTracking
+import TestUtilities.InlineFlowTest
 
-class Conf extends TaintTracking::Configuration {
-  Conf() { this = "qltest:dataflow:format" }
-
-  override predicate isSource(DataFlow::Node n) {
-    n.asExpr().(MethodAccess).getMethod().hasName("taint")
-  }
-
-  override predicate isSink(DataFlow::Node n) { any() }
+class TaintFlowConf extends DefaultTaintFlowConf {
+  override predicate isSink(DataFlow::Node n) { n instanceof DataFlow::ExprNode }
 }
-
-from DataFlow::Node src, DataFlow::Node sink, Conf conf
-where conf.hasFlow(src, sink)
-select src, sink

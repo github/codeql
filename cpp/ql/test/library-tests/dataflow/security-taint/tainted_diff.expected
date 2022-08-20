@@ -10,6 +10,10 @@
 | test.cpp:49:23:49:28 | call to getenv | test.cpp:50:29:50:40 | envStrGlobal | AST only |
 | test.cpp:49:23:49:28 | call to getenv | test.cpp:52:2:52:12 | * ... | AST only |
 | test.cpp:49:23:49:28 | call to getenv | test.cpp:52:3:52:12 | envStr_ptr | AST only |
+| test.cpp:49:23:49:28 | call to getenv | test.cpp:54:6:54:35 | ! ... | AST only |
+| test.cpp:49:23:49:28 | call to getenv | test.cpp:54:7:54:12 | call to strcmp | AST only |
+| test.cpp:49:23:49:28 | call to getenv | test.cpp:54:7:54:35 | (bool)... | AST only |
+| test.cpp:49:23:49:28 | call to getenv | test.cpp:54:14:54:25 | envStrGlobal | AST only |
 | test.cpp:60:29:60:34 | call to getenv | test.cpp:10:27:10:27 | s | AST only |
 | test.cpp:60:29:60:34 | call to getenv | test.cpp:60:18:60:25 | userName | AST only |
 | test.cpp:68:28:68:33 | call to getenv | test.cpp:11:20:11:21 | s1 | AST only |

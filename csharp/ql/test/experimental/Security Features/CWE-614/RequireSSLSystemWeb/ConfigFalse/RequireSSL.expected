@@ -1,0 +1,1 @@
+| Program.cs:7:22:7:60 | object creation of type HttpCookie | Cookie attribute 'Secure' is not set to true. |

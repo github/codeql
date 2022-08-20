@@ -10,7 +10,7 @@
 
 import javascript
 import semmle.javascript.dataflow.LocalObjects
-import UnusedVariable
+import Declarations.UnusedVariable
 import UnusedParameter
 import Expressions.ExprHasNoEffect
 
@@ -26,6 +26,8 @@ predicate hasUnknownPropertyRead(LocalObject obj) {
   obj.flowsToExpr(any(SpreadElement e).getOperand())
   or
   exists(obj.getAPropertyRead("hasOwnProperty"))
+  or
+  obj.flowsTo(DataFlow::globalVarRef("Object").getAMemberCall("hasOwn").getArgument(0))
   or
   exists(obj.getAPropertyRead("propertyIsEnumerable"))
 }

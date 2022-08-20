@@ -14,7 +14,7 @@
  */
 
 import javascript
-import semmle.javascript.security.dataflow.PostMessageStar::PostMessageStar
+import semmle.javascript.security.dataflow.PostMessageStarQuery
 import DataFlow::PathGraph
 
 from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink

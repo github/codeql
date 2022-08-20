@@ -1,0 +1,3 @@
+| tst.go:9:9:9:13 | selection of get | tst.go:9:9:9:9 | implicit dereference | tst.go:12:12:12:14 | get |
+| tst.go:9:9:9:13 | selection of get | tst.go:9:9:9:9 | t | tst.go:12:12:12:14 | get |
+| tst.go:18:2:18:7 | selection of bump | tst.go:18:2:18:2 | x | tst.go:7:13:7:16 | bump |

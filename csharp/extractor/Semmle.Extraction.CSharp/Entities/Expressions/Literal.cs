@@ -32,10 +32,10 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
             }
 
             var type = info.Type?.Symbol;
-            return GetExprKind(type, info.Node, info.Context);
+            return GetExprKind(type, info.Node, info.Location, info.Context);
         }
 
-        private static ExprKind GetExprKind(ITypeSymbol? type, ExpressionSyntax? expr, Context context)
+        private static ExprKind GetExprKind(ITypeSymbol? type, ExpressionSyntax? expr, Extraction.Entities.Location loc, Context context)
         {
             switch (type?.SpecialType)
             {
@@ -75,10 +75,11 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
 
                 case null:
                 default:
+                    var kind = type?.SpecialType.ToString() ?? "null";
                     if (expr is not null)
-                        context.ModelError(expr, "Unhandled literal type");
+                        context.ModelError(expr, $"Unhandled literal type {kind}");
                     else
-                        context.ModelError("Unhandled literal type");
+                        context.ModelError(loc, $"Unhandled literal type {kind}");
                     return ExprKind.UNKNOWN;
             }
         }
@@ -86,11 +87,12 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
         public static Expression CreateGenerated(Context cx, IExpressionParentEntity parent, int childIndex, ITypeSymbol type, object? value,
             Extraction.Entities.Location location)
         {
+            var kind = value is null ? ExprKind.NULL_LITERAL : GetExprKind(type, null, location, cx);
             var info = new ExpressionInfo(
                 cx,
                 AnnotatedTypeSymbol.CreateNotAnnotated(type),
                 location,
-                GetExprKind(type, null, cx),
+                kind,
                 parent,
                 childIndex,
                 true,

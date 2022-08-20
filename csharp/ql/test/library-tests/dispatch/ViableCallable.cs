@@ -461,3 +461,23 @@ class C17 : C16<string, int>
         c.M2(() => default(T));
     }
 }
+
+interface I2
+{
+    void M1();
+    void M2() => throw null;
+}
+
+class C18 : I2
+{
+    public void M1() { }
+
+    void Run(I2 i)
+    {
+        // Viable callables: C18.M1()
+        i.M1();
+
+        // Viable callables: I2.M2()
+        i.M2();
+    }
+}

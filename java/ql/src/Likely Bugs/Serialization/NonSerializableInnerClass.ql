@@ -12,9 +12,8 @@
  */
 
 import java
-import semmle.code.java.JDKAnnotations
 
-predicate isSerializable(RefType t) { exists(TypeSerializable ts | ts = t.getASupertype*()) }
+predicate isSerializable(RefType t) { t.getAnAncestor() instanceof TypeSerializable }
 
 predicate withinStaticContext(NestedClass c) {
   c.isStatic() or

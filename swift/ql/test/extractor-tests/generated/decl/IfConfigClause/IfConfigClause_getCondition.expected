@@ -1,0 +1,4 @@
+| if_config.swift:1:1:1:1 | IfConfigClause | if_config.swift:1:5:1:5 | FOO (unresolved) |
+| if_config.swift:4:1:4:1 | IfConfigClause | if_config.swift:4:9:4:19 | call to ... |
+| if_config_active.swift:3:1:3:1 | IfConfigClause | if_config_active.swift:3:5:3:5 | FOO (unresolved) |
+| if_config_active.swift:6:1:6:1 | IfConfigClause | if_config_active.swift:6:9:6:17 | call to ... |

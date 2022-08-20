@@ -53,7 +53,7 @@ namespace Semmle.Extraction.CIL.Entities
 
                 // "T3,[T4, Assembly1, Version=...],T5,T6"
                 string typeArgs;
-                (name, _, typeArgs, _) = name.Split(firstBracketIndex, firstBracketIndex + 1, lastBracketIndex - firstBracketIndex - 1);
+                (name, _, typeArgs, _) = name.Split(firstBracketIndex, firstBracketIndex + 1, lastBracketIndex);
 
                 var thisTypeArgCount = GenericsHelper.GetGenericTypeParameterCount(name);
                 if (thisTypeArgCount == 0)

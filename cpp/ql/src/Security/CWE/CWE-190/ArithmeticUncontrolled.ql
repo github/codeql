@@ -5,7 +5,7 @@
  * @kind path-problem
  * @problem.severity warning
  * @security-severity 8.6
- * @precision medium
+ * @precision high
  * @id cpp/uncontrolled-arithmetic
  * @tags security
  *       external/cwe/cwe-190
@@ -82,8 +82,11 @@ predicate missingGuard(VariableAccess va, string effect) {
     op.getUnspecifiedType().(IntegralType).isUnsigned() and
     not op instanceof MulExpr
     or
-    // overflow
-    missingGuardAgainstOverflow(op, va) and effect = "overflow"
+    // overflow - only report signed integer overflow since unsigned overflow
+    // is well-defined.
+    op.getUnspecifiedType().(IntegralType).isSigned() and
+    missingGuardAgainstOverflow(op, va) and
+    effect = "overflow"
   )
 }
 

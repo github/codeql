@@ -64,7 +64,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public static Assembly CreateOutputAssembly(Context cx)
         {
-            if (cx.Extractor.Standalone)
+            if (cx.Extractor.Mode.HasFlag(ExtractorMode.Standalone))
                 throw new InternalError("Attempting to create the output assembly in standalone extraction mode");
             return AssemblyConstructorFactory.Instance.CreateEntity(cx, outputAssemblyCacheKey, null);
         }

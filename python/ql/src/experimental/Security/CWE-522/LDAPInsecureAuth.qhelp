@@ -1,0 +1,23 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>Failing to ensure the utilization of SSL in an LDAP connection can cause the entire communication
+to be sent in cleartext making it easier for an attacker to intercept it.</p>
+</overview>
+
+<recommendation>
+<p>Always set <code>use_SSL</code> to <code>True</code>, call <code>start_tls_s()</code> or set a proper option flag (<code>ldap.OPT_X_TLS_XXXXXX</code>).</p>
+</recommendation>
+
+<example>
+<p>This example shows both good and bad ways to deal with this issue under Python 3.</p>
+
+<p>The first one sets <code>use_SSL</code> to true as a keyword argument whereas the second one fails to provide a value for it, so
+the default one is used (<code>False</code>).</p>
+<sample src="examples/LDAPInsecureAuth.py" />
+</example>
+
+</qhelp>

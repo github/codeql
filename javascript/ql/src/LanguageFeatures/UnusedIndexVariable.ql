@@ -10,7 +10,7 @@
  */
 
 import javascript
-import UnusedIndexVariable
+import LanguageFeatures.UnusedIndexVariable
 
 from RelationalComparison rel, Variable idx, Variable v
 where unusedIndexVariable(rel, idx, v)

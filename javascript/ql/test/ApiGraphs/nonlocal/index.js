@@ -2,7 +2,7 @@ const express = require('express');
 
 var app1 = new express();
 app1.get('/',
-    (req, res) => res.send('Hello World!') /* def (parameter 1 (member get (instance (member exports (module express))))) */
+    (req, res) => res.send('Hello World!') /* def=moduleImport("express").getMember("exports").getInstance().getMember("get").getParameter(1) */
 );
 
 function makeApp() {
@@ -11,5 +11,5 @@ function makeApp() {
 
 var app2 = makeApp();
 app2.get('/',
-    (req, res) => res.send('Hello World!') /* def (parameter 1 (member get (instance (member exports (module express))))) */
+    (req, res) => res.send('Hello World!') /* def=moduleImport("express").getMember("exports").getInstance().getMember("get").getParameter(1) */
 );

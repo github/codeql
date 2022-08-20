@@ -12,17 +12,16 @@
 
 import cpp
 import FilePermissions
-import semmle.code.cpp.commons.unix.Constants
 
 predicate worldWritableCreation(FileCreationExpr fc, int mode) {
   mode = localUmask(fc).mask(fc.getMode()) and
-  sets(mode, s_iwoth())
+  setsAnyBits(mode, UnixConstants::s_iwoth())
 }
 
 predicate setWorldWritable(FunctionCall fc, int mode) {
   fc.getTarget().getName() = ["chmod", "fchmod", "_chmod", "_wchmod"] and
   mode = fc.getArgument(1).getValue().toInt() and
-  sets(mode, s_iwoth())
+  setsAnyBits(mode, UnixConstants::s_iwoth())
 }
 
 from Expr fc, int mode, string message

@@ -1,0 +1,49 @@
+edges
+| UnsafeDeserialization.rb:9:39:9:44 | call to params :  | UnsafeDeserialization.rb:9:39:9:50 | ...[...] :  |
+| UnsafeDeserialization.rb:9:39:9:50 | ...[...] :  | UnsafeDeserialization.rb:10:27:10:41 | serialized_data |
+| UnsafeDeserialization.rb:15:39:15:44 | call to params :  | UnsafeDeserialization.rb:15:39:15:50 | ...[...] :  |
+| UnsafeDeserialization.rb:15:39:15:50 | ...[...] :  | UnsafeDeserialization.rb:16:30:16:44 | serialized_data |
+| UnsafeDeserialization.rb:21:17:21:22 | call to params :  | UnsafeDeserialization.rb:21:17:21:28 | ...[...] :  |
+| UnsafeDeserialization.rb:21:17:21:28 | ...[...] :  | UnsafeDeserialization.rb:22:24:22:32 | json_data |
+| UnsafeDeserialization.rb:27:17:27:22 | call to params :  | UnsafeDeserialization.rb:27:17:27:28 | ...[...] :  |
+| UnsafeDeserialization.rb:27:17:27:28 | ...[...] :  | UnsafeDeserialization.rb:28:27:28:35 | json_data |
+| UnsafeDeserialization.rb:39:17:39:22 | call to params :  | UnsafeDeserialization.rb:39:17:39:28 | ...[...] :  |
+| UnsafeDeserialization.rb:39:17:39:28 | ...[...] :  | UnsafeDeserialization.rb:40:24:40:32 | yaml_data |
+| UnsafeDeserialization.rb:51:17:51:22 | call to params :  | UnsafeDeserialization.rb:51:17:51:28 | ...[...] :  |
+| UnsafeDeserialization.rb:51:17:51:28 | ...[...] :  | UnsafeDeserialization.rb:52:22:52:30 | json_data |
+| UnsafeDeserialization.rb:51:17:51:28 | ...[...] :  | UnsafeDeserialization.rb:53:22:53:30 | json_data |
+| UnsafeDeserialization.rb:58:17:58:22 | call to params :  | UnsafeDeserialization.rb:58:17:58:28 | ...[...] :  |
+| UnsafeDeserialization.rb:58:17:58:28 | ...[...] :  | UnsafeDeserialization.rb:68:23:68:31 | json_data |
+nodes
+| UnsafeDeserialization.rb:9:39:9:44 | call to params :  | semmle.label | call to params :  |
+| UnsafeDeserialization.rb:9:39:9:50 | ...[...] :  | semmle.label | ...[...] :  |
+| UnsafeDeserialization.rb:10:27:10:41 | serialized_data | semmle.label | serialized_data |
+| UnsafeDeserialization.rb:15:39:15:44 | call to params :  | semmle.label | call to params :  |
+| UnsafeDeserialization.rb:15:39:15:50 | ...[...] :  | semmle.label | ...[...] :  |
+| UnsafeDeserialization.rb:16:30:16:44 | serialized_data | semmle.label | serialized_data |
+| UnsafeDeserialization.rb:21:17:21:22 | call to params :  | semmle.label | call to params :  |
+| UnsafeDeserialization.rb:21:17:21:28 | ...[...] :  | semmle.label | ...[...] :  |
+| UnsafeDeserialization.rb:22:24:22:32 | json_data | semmle.label | json_data |
+| UnsafeDeserialization.rb:27:17:27:22 | call to params :  | semmle.label | call to params :  |
+| UnsafeDeserialization.rb:27:17:27:28 | ...[...] :  | semmle.label | ...[...] :  |
+| UnsafeDeserialization.rb:28:27:28:35 | json_data | semmle.label | json_data |
+| UnsafeDeserialization.rb:39:17:39:22 | call to params :  | semmle.label | call to params :  |
+| UnsafeDeserialization.rb:39:17:39:28 | ...[...] :  | semmle.label | ...[...] :  |
+| UnsafeDeserialization.rb:40:24:40:32 | yaml_data | semmle.label | yaml_data |
+| UnsafeDeserialization.rb:51:17:51:22 | call to params :  | semmle.label | call to params :  |
+| UnsafeDeserialization.rb:51:17:51:28 | ...[...] :  | semmle.label | ...[...] :  |
+| UnsafeDeserialization.rb:52:22:52:30 | json_data | semmle.label | json_data |
+| UnsafeDeserialization.rb:53:22:53:30 | json_data | semmle.label | json_data |
+| UnsafeDeserialization.rb:58:17:58:22 | call to params :  | semmle.label | call to params :  |
+| UnsafeDeserialization.rb:58:17:58:28 | ...[...] :  | semmle.label | ...[...] :  |
+| UnsafeDeserialization.rb:68:23:68:31 | json_data | semmle.label | json_data |
+subpaths
+#select
+| UnsafeDeserialization.rb:10:27:10:41 | serialized_data | UnsafeDeserialization.rb:9:39:9:44 | call to params :  | UnsafeDeserialization.rb:10:27:10:41 | serialized_data | Unsafe deserialization of $@. | UnsafeDeserialization.rb:9:39:9:44 | call to params | user input |
+| UnsafeDeserialization.rb:16:30:16:44 | serialized_data | UnsafeDeserialization.rb:15:39:15:44 | call to params :  | UnsafeDeserialization.rb:16:30:16:44 | serialized_data | Unsafe deserialization of $@. | UnsafeDeserialization.rb:15:39:15:44 | call to params | user input |
+| UnsafeDeserialization.rb:22:24:22:32 | json_data | UnsafeDeserialization.rb:21:17:21:22 | call to params :  | UnsafeDeserialization.rb:22:24:22:32 | json_data | Unsafe deserialization of $@. | UnsafeDeserialization.rb:21:17:21:22 | call to params | user input |
+| UnsafeDeserialization.rb:28:27:28:35 | json_data | UnsafeDeserialization.rb:27:17:27:22 | call to params :  | UnsafeDeserialization.rb:28:27:28:35 | json_data | Unsafe deserialization of $@. | UnsafeDeserialization.rb:27:17:27:22 | call to params | user input |
+| UnsafeDeserialization.rb:40:24:40:32 | yaml_data | UnsafeDeserialization.rb:39:17:39:22 | call to params :  | UnsafeDeserialization.rb:40:24:40:32 | yaml_data | Unsafe deserialization of $@. | UnsafeDeserialization.rb:39:17:39:22 | call to params | user input |
+| UnsafeDeserialization.rb:52:22:52:30 | json_data | UnsafeDeserialization.rb:51:17:51:22 | call to params :  | UnsafeDeserialization.rb:52:22:52:30 | json_data | Unsafe deserialization of $@. | UnsafeDeserialization.rb:51:17:51:22 | call to params | user input |
+| UnsafeDeserialization.rb:53:22:53:30 | json_data | UnsafeDeserialization.rb:51:17:51:22 | call to params :  | UnsafeDeserialization.rb:53:22:53:30 | json_data | Unsafe deserialization of $@. | UnsafeDeserialization.rb:51:17:51:22 | call to params | user input |
+| UnsafeDeserialization.rb:68:23:68:31 | json_data | UnsafeDeserialization.rb:58:17:58:22 | call to params :  | UnsafeDeserialization.rb:68:23:68:31 | json_data | Unsafe deserialization of $@. | UnsafeDeserialization.rb:58:17:58:22 | call to params | user input |

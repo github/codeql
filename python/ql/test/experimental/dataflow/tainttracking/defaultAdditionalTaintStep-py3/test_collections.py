@@ -16,6 +16,15 @@ def test_access():
         tainted_list.copy(), # $ tainted
     )
 
+    for ((x, y, *z), a, b) in tainted_list:
+        ensure_tainted(
+            x, # $ tainted
+            y, # $ tainted
+            z, # $ tainted
+            a, # $ tainted
+            b, # $ tainted
+        )
+
 
 def list_clear():
     tainted_string = TAINTED_STRING

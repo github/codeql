@@ -1447,4 +1447,403 @@ void temporary_hierarchy() {
     float f = (returnValue<POD_Derived>()).f();
 }
 
+struct Inheritance_Test_B {
+  ~Inheritance_Test_B() {}
+};
+
+struct Inheritance_Test_A : public Inheritance_Test_B {
+  int x;
+  int y;
+  Inheritance_Test_A() : x(42) {
+    y = 3;
+  }
+};
+
+void array_structured_binding() {
+    int xs[2] = {1, 2};
+    // structured binding use
+    {
+        auto& [x0, x1] = xs;
+        x1 = 3;
+        int &rx1 = x1;
+        int x = x1;
+    }
+    // explicit reference version
+    {
+        auto& unnamed_local_variable = xs;
+        auto& x0 = unnamed_local_variable[0];
+        auto& x1 = unnamed_local_variable[1];
+        x1 = 3;
+        int &rx1 = x1;
+        int x = x1;
+    }
+}
+
+struct StructuredBindingDataMemberMemberStruct {
+    int x = 5;
+};
+
+struct StructuredBindingDataMemberStruct {
+    typedef int ArrayType[2];
+    typedef int &RefType;
+    int i = 1;
+    double d = 2.0;
+    unsigned int b : 3;
+    int& r = i;
+    int* p = &i;
+    ArrayType xs = {1, 2};
+    RefType r_alt = i;
+    StructuredBindingDataMemberMemberStruct m;
+};
+
+void data_member_structured_binding() {
+    StructuredBindingDataMemberStruct s;
+    // structured binding use
+    {
+        auto [i, d, b, r, p, xs, r_alt, m] = s;
+        d = 4.0;
+        double& rd = d;
+        int v = i;
+        r = 5;
+        *p = 6;
+        int& rr = r;
+        int* pr = &r;
+        int w = r;
+    }
+    // explicit reference version
+    {
+        auto unnamed_local_variable = s;
+        auto& i = unnamed_local_variable.i;
+        auto& d = unnamed_local_variable.d;
+        // no equivalent for b
+        auto& r = unnamed_local_variable.r;
+        auto& p = unnamed_local_variable.p;
+        d = 4.0;
+        double& rd = d;
+        int v = i;
+        r = 5;
+        *p = 6;
+        int& rr = r;
+        int* pr = &r;
+        int w = r;
+    }
+}
+
+namespace std {
+    template<typename T>
+    struct tuple_size;
+    template<int, typename T>
+    struct tuple_element;
+}
+
+struct StructuredBindingTupleRefGet {
+    int i = 1;
+    double d = 2.2;
+    int& r = i;
+
+    template<int i>
+    typename std::tuple_element<i, StructuredBindingTupleRefGet>::type& get();
+};
+
+template<>
+struct std::tuple_size<StructuredBindingTupleRefGet> {
+    static const unsigned int value = 3;
+};
+
+template<>
+struct std::tuple_element<0, StructuredBindingTupleRefGet> {
+    using type = int;
+};
+template<>
+struct std::tuple_element<1, StructuredBindingTupleRefGet> {
+    using type = double;
+};
+template<>
+struct std::tuple_element<2, StructuredBindingTupleRefGet> {
+    using type = int&;
+};
+
+template<>
+std::tuple_element<0, StructuredBindingTupleRefGet>::type& StructuredBindingTupleRefGet::get<0>() {
+    return i;
+}
+template<>
+std::tuple_element<1, StructuredBindingTupleRefGet>::type& StructuredBindingTupleRefGet::get<1>() {
+    return d;
+}
+template<>
+std::tuple_element<2, StructuredBindingTupleRefGet>::type& StructuredBindingTupleRefGet::get<2>() {
+    return r;
+}
+
+void tuple_structured_binding_ref_get() {
+    StructuredBindingTupleRefGet t;
+    // structured binding use
+    {
+        auto [i, d, r] = t;
+        d = 4.0;
+        double& rd = d;
+        int v = i;
+        r = 5;
+        int& rr = r;
+        int w = r;
+    }
+    // explicit reference version
+    {
+        auto unnamed_local_variable = t;
+        auto& i = unnamed_local_variable.get<0>();
+        auto& d = unnamed_local_variable.get<1>();
+        auto& r = unnamed_local_variable.get<2>();
+        d = 4.0;
+        double& rd = d;
+        int v = i;
+        r = 5;
+        int& rr = r;
+        int w = r;
+    }
+}
+
+struct StructuredBindingTupleNoRefGet {
+    int i = 1;
+    int& r = i;
+
+    template<int i>
+    typename std::tuple_element<i, StructuredBindingTupleNoRefGet>::type get();
+};
+
+template<>
+struct std::tuple_size<StructuredBindingTupleNoRefGet> {
+    static const unsigned int value = 3;
+};
+
+template<>
+struct std::tuple_element<0, StructuredBindingTupleNoRefGet> {
+    using type = int;
+};
+template<>
+struct std::tuple_element<1, StructuredBindingTupleNoRefGet> {
+    using type = int&;
+};
+template<>
+struct std::tuple_element<2, StructuredBindingTupleNoRefGet> {
+    using type = int&&;
+};
+
+template<>
+std::tuple_element<0, StructuredBindingTupleNoRefGet>::type StructuredBindingTupleNoRefGet::get<0>() {
+    return i;
+}
+template<>
+std::tuple_element<1, StructuredBindingTupleNoRefGet>::type StructuredBindingTupleNoRefGet::get<1>() {
+    return r;
+}
+template<>
+std::tuple_element<2, StructuredBindingTupleNoRefGet>::type StructuredBindingTupleNoRefGet::get<2>() {
+    return 5;
+}
+
+void tuple_structured_binding_no_ref_get() {
+    StructuredBindingTupleNoRefGet t;
+    //structured binding use
+    {
+        auto&& [i, r, rv] = t;
+        i = 4;
+        int& ri = i;
+        int v = i;
+        r = 5;
+        int& rr = r;
+        int w = r;
+    }
+    // explicit reference version
+    {
+        auto&& unnamed_local_variable = t;
+        auto&& i = unnamed_local_variable.get<0>();
+        auto& r = unnamed_local_variable.get<1>();
+        auto&& rv = unnamed_local_variable.get<2>();
+        i = 4;
+        int& ri = i;
+        int v = i;
+        r = 5;
+        int& rr = r;
+        int w = r;
+    }
+}
+
+void array_structured_binding_non_ref_init() {
+    int xs[2] = {1, 2};
+    auto [x0, x1] = xs;
+}
+
+class CapturedLambdaMyObj
+{
+public:
+    CapturedLambdaMyObj() {}
+};
+
+void captured_lambda(int x, int &y, int &&z)
+{
+    const auto &obj1 = CapturedLambdaMyObj();
+    auto obj2 = CapturedLambdaMyObj();
+
+    auto lambda_outer = [obj1, obj2, x, y, z](){
+        auto lambda_inner = [obj1, obj2, x, y, z](){;};
+    };
+}
+
+int goto_on_same_line() {
+  int x = 42;
+  goto next; next:
+  return x;
+}
+
+class TrivialLambdaClass {
+public:
+    void m() const {
+        auto l_m_outer = [*this] {
+            m();
+
+            auto l_m_inner = [*this] {
+                m();
+            };
+        };
+    };
+};
+
+void captured_lambda2(TrivialLambdaClass p1, TrivialLambdaClass &p2, TrivialLambdaClass &&p3) {
+    const TrivialLambdaClass l1;
+    const TrivialLambdaClass &l2 = TrivialLambdaClass();
+
+    auto l_outer1 = [p1, p2, p3, l1, l2] {
+        auto l_inner1 = [p1] {};
+    };
+}
+
+class CopyConstructorWithImplicitArgumentClass {
+    int x;
+public:
+    CopyConstructorWithImplicitArgumentClass() {}
+    CopyConstructorWithImplicitArgumentClass(const CopyConstructorWithImplicitArgumentClass &c) {
+        x = c.x;
+    }
+};
+
+class CopyConstructorWithBitwiseCopyClass {
+    int y;
+public:
+    CopyConstructorWithBitwiseCopyClass() {}
+};
+
+class CopyConstructorTestNonVirtualClass :
+        public CopyConstructorWithImplicitArgumentClass,
+        public CopyConstructorWithBitwiseCopyClass {
+public:
+    CopyConstructorTestNonVirtualClass() {}
+};
+
+class CopyConstructorTestVirtualClass :
+        public virtual CopyConstructorWithImplicitArgumentClass,
+        public virtual CopyConstructorWithBitwiseCopyClass {
+public:
+    CopyConstructorTestVirtualClass() {}
+};
+
+int implicit_copy_constructor_test(
+        const CopyConstructorTestNonVirtualClass &x,
+        const CopyConstructorTestVirtualClass &y) {
+    CopyConstructorTestNonVirtualClass cx = x;
+    CopyConstructorTestVirtualClass cy = y;
+}
+
+void if_initialization(int x) {
+    if (int y = x; x + 1) {
+        x = x + y;
+    }
+
+    int w;
+    if (w = x; x + 1) {
+        x = x + w;
+    }
+
+    if (w = x; int w2 = w) {
+        x = x + w;
+    }
+
+    if (int v = x; int v2 = v) {
+        x = x + v;
+    }
+
+    int z = x;
+    if (z) {
+        x = x + z;
+    }
+
+    if (int z2 = z) {
+        x += z2;
+    }
+}
+
+void switch_initialization(int x) {
+    switch (int y = x; x + 1) {
+    default:
+        x = x + y;
+    }
+
+    int w;
+    switch (w = x; x + 1) {
+    default:
+        x = x + w;
+    }
+
+    switch (w = x; int w2 = w) {
+    default:
+        x = x + w;
+    }
+
+    switch (int v = x; int v2 = v) {
+    default:
+        x = x + v;
+    }
+
+    int z = x;
+    switch (z) {
+    default:
+        x = x + z;
+    }
+
+    switch (int z2 = z) {
+    default:
+        x += z2;
+    }
+}
+
+int global_1;
+
+int global_2 = 1;
+
+const int global_3 = 2;
+
+constructor_only global_4(1);
+
+constructor_only global_5 = constructor_only(2);
+
+char *global_string = "global string";
+
+int global_6 = global_2;
+
+namespace block_assignment {
+    class A {
+        enum {} e[1];
+        virtual void f();
+    };
+    
+    struct B : A {
+        B(A *);
+    };
+
+    void foo() {
+        B v(0);
+        v = 0;
+    }
+}
+
 // semmle-extractor-options: -std=c++17 --clang

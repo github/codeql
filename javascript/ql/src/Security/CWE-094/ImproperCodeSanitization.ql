@@ -13,7 +13,7 @@
  */
 
 import javascript
-import semmle.javascript.security.dataflow.ImproperCodeSanitization::ImproperCodeSanitization
+import semmle.javascript.security.dataflow.ImproperCodeSanitizationQuery
 import DataFlow::PathGraph
 private import semmle.javascript.heuristics.HeuristicSinks
 private import semmle.javascript.security.dataflow.CodeInjectionCustomizations
@@ -50,7 +50,7 @@ private DataFlow::Node endsInCodeInjectionSink(DataFlow::TypeBackTracker t) {
     not result instanceof StringOps::ConcatenationRoot // the heuristic CodeInjection sink looks for string-concats, we are not interrested in those here.
   )
   or
-  exists(DataFlow::TypeBackTracker t2 | t = t2.smallstep(result, endsInCodeInjectionSink(t2)))
+  exists(DataFlow::TypeBackTracker t2 | t2 = t.smallstep(result, endsInCodeInjectionSink(t2)))
 }
 
 /**

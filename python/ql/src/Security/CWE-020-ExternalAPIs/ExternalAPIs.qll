@@ -35,18 +35,21 @@ private import semmle.python.objects.ObjectInternal
 //    functionality into `BuiltinFunctionValue` and `BuiltinMethodValue`, but will
 //    probably require some more work: for this query, it's totally ok to use
 //    `builtins.open` for the code `open(f)`, but well, it requires a bit of thinking to
-//    figure out if that is desireable in general. I simply skipped a corner here!
+//    figure out if that is desirable in general. I simply skipped a corner here!
 // 4. TaintTrackingPrivate: Nothing else gives us access to `defaultAdditionalTaintStep` :(
 /**
  * A callable that is considered a "safe" external API from a security perspective.
  */
-class SafeExternalAPI extends Unit {
+class SafeExternalApi extends Unit {
   /** Gets a callable that is considered a "safe" external API from a security perspective. */
   abstract DataFlowPrivate::DataFlowCallable getSafeCallable();
 }
 
+/** DEPRECATED: Alias for SafeExternalApi */
+deprecated class SafeExternalAPI = SafeExternalApi;
+
 /** The default set of "safe" external APIs. */
-private class DefaultSafeExternalAPI extends SafeExternalAPI {
+private class DefaultSafeExternalApi extends SafeExternalApi {
   override DataFlowPrivate::DataFlowCallable getSafeCallable() {
     exists(CallableValue cv | cv = result.getCallableValue() |
       cv = Value::named(["len", "isinstance", "getattr", "hasattr"])
@@ -61,15 +64,15 @@ private class DefaultSafeExternalAPI extends SafeExternalAPI {
 }
 
 /** A node representing data being passed to an external API through a call. */
-class ExternalAPIDataNode extends DataFlow::Node {
+class ExternalApiDataNode extends DataFlow::Node {
   DataFlowPrivate::DataFlowCall call;
   DataFlowPrivate::DataFlowCallable callable;
   int i;
 
-  ExternalAPIDataNode() {
+  ExternalApiDataNode() {
     exists(call.getLocation().getFile().getRelativePath()) and
     callable = call.getCallable() and
-    not any(SafeExternalAPI safe).getSafeCallable() = callable and
+    not any(SafeExternalApi safe).getSafeCallable() = callable and
     exists(Value cv | cv = callable.getCallableValue() |
       cv.isAbsent()
       or
@@ -98,38 +101,47 @@ class ExternalAPIDataNode extends DataFlow::Node {
   DataFlowPrivate::DataFlowCallable getCallable() { result = callable }
 }
 
-/** A configuration for tracking flow from `RemoteFlowSource`s to `ExternalAPIDataNode`s. */
-class UntrustedDataToExternalAPIConfig extends TaintTracking::Configuration {
-  UntrustedDataToExternalAPIConfig() { this = "UntrustedDataToExternalAPIConfig" }
+/** DEPRECATED: Alias for ExternalApiDataNode */
+deprecated class ExternalAPIDataNode = ExternalApiDataNode;
+
+/** A configuration for tracking flow from `RemoteFlowSource`s to `ExternalApiDataNode`s. */
+class UntrustedDataToExternalApiConfig extends TaintTracking::Configuration {
+  UntrustedDataToExternalApiConfig() { this = "UntrustedDataToExternalAPIConfig" }
 
   override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
 
-  override predicate isSink(DataFlow::Node sink) { sink instanceof ExternalAPIDataNode }
+  override predicate isSink(DataFlow::Node sink) { sink instanceof ExternalApiDataNode }
 }
 
+/** DEPRECATED: Alias for UntrustedDataToExternalApiConfig */
+deprecated class UntrustedDataToExternalAPIConfig = UntrustedDataToExternalApiConfig;
+
 /** A node representing untrusted data being passed to an external API. */
-class UntrustedExternalAPIDataNode extends ExternalAPIDataNode {
-  UntrustedExternalAPIDataNode() { any(UntrustedDataToExternalAPIConfig c).hasFlow(_, this) }
+class UntrustedExternalApiDataNode extends ExternalApiDataNode {
+  UntrustedExternalApiDataNode() { any(UntrustedDataToExternalApiConfig c).hasFlow(_, this) }
 
   /** Gets a source of untrusted data which is passed to this external API data node. */
   DataFlow::Node getAnUntrustedSource() {
-    any(UntrustedDataToExternalAPIConfig c).hasFlow(result, this)
+    any(UntrustedDataToExternalApiConfig c).hasFlow(result, this)
   }
 }
 
-private newtype TExternalAPI =
-  TExternalAPIParameter(DataFlowPrivate::DataFlowCallable callable, int index) {
-    exists(UntrustedExternalAPIDataNode n |
+/** DEPRECATED: Alias for UntrustedExternalApiDataNode */
+deprecated class UntrustedExternalAPIDataNode = UntrustedExternalApiDataNode;
+
+private newtype TExternalApi =
+  TExternalApiParameter(DataFlowPrivate::DataFlowCallable callable, int index) {
+    exists(UntrustedExternalApiDataNode n |
       callable = n.getCallable() and
       index = n.getIndex()
     )
   }
 
 /** An external API which is used with untrusted data. */
-class ExternalAPIUsedWithUntrustedData extends TExternalAPI {
+class ExternalApiUsedWithUntrustedData extends TExternalApi {
   /** Gets a possibly untrusted use of this external API. */
-  UntrustedExternalAPIDataNode getUntrustedDataNode() {
-    this = TExternalAPIParameter(result.getCallable(), result.getIndex())
+  UntrustedExternalApiDataNode getUntrustedDataNode() {
+    this = TExternalApiParameter(result.getCallable(), result.getIndex())
   }
 
   /** Gets the number of untrusted sources used with this external API. */
@@ -143,7 +155,7 @@ class ExternalAPIUsedWithUntrustedData extends TExternalAPI {
       DataFlowPrivate::DataFlowCallable callable, int index, string callableString,
       string indexString
     |
-      this = TExternalAPIParameter(callable, index) and
+      this = TExternalApiParameter(callable, index) and
       indexString = "param " + index and
       exists(CallableValue cv | cv = callable.getCallableValue() |
         callableString =
@@ -166,6 +178,9 @@ class ExternalAPIUsedWithUntrustedData extends TExternalAPI {
     )
   }
 }
+
+/** DEPRECATED: Alias for ExternalApiUsedWithUntrustedData */
+deprecated class ExternalAPIUsedWithUntrustedData = ExternalApiUsedWithUntrustedData;
 
 /** Gets the fully qualified name for the `BuiltinFunctionValue` bfv. */
 private string pretty_builtin_function_value(BuiltinFunctionValue bfv) {

@@ -15,6 +15,10 @@
 | A.java:76:11:76:16 | ... >= ... | Test is always false, because of $@. | A.java:74:13:74:18 | ... >= ... | this condition |
 | A.java:84:21:84:30 | ... < ... | Test is always false, because of $@. | A.java:80:12:80:21 | ... > ... | this condition |
 | A.java:88:9:88:13 | ... > ... | Test is always false. | A.java:88:9:88:13 | ... > ... | this condition |
+| CharLiterals.java:4:10:4:22 | ... >= ... | Test is always true, because of $@. | CharLiterals.java:3:8:3:20 | ... >= ... | this condition |
+| CharLiterals.java:22:10:22:17 | ... >= ... | Test is always true, because of $@. | CharLiterals.java:21:8:21:15 | ... >= ... | this condition |
+| CharLiterals.java:42:13:42:25 | ... == ... | Test is always false, because of $@. | CharLiterals.java:39:8:39:20 | ... == ... | this condition |
+| CharLiterals.java:62:13:62:20 | ... == ... | Test is always false, because of $@. | CharLiterals.java:59:8:59:15 | ... == ... | this condition |
 | Test.java:9:7:9:12 | ... >= ... | Test is always true, because of $@. | Test.java:5:7:5:11 | ... < ... | this condition |
 | Test.java:10:7:10:12 | ... >= ... | Test is always true, because of $@. | Test.java:5:16:5:20 | ... < ... | this condition |
 | Test.java:14:9:14:15 | ... == ... | Test is always false, because of $@. | Test.java:12:8:12:13 | ... < ... | this condition |

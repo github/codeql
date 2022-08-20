@@ -96,7 +96,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                     kind = ExprKind.NAMESPACE_ACCESS;
                     break;
                 default:
-                    info.Context.ModelError(info.Node, "Unhandled symbol for member access");
+                    info.Context.ModelError(info.Node, $"Unhandled symbol for member access of kind {symbol.Kind}");
                     kind = ExprKind.UNKNOWN;
                     break;
             }

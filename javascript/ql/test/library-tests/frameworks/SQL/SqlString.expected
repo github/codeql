@@ -8,6 +8,7 @@
 | mssql-types.ts:7:31:7:42 | 'SELECT 123' |
 | mysql1.js:13:18:13:43 | 'SELECT ... lution' |
 | mysql1.js:18:18:22:1 | {\\n    s ... vid']\\n} |
+| mysql1.js:19:10:19:51 | 'SELECT ... r` = ?' |
 | mysql1a.js:17:18:17:43 | 'SELECT ... lution' |
 | mysql2-promise.js:14:3:14:62 | 'SELECT ... ` > 45' |
 | mysql2-promise.js:23:3:23:56 | 'SELECT ... e` > ?' |
@@ -23,6 +24,7 @@
 | mysql3.js:26:14:26:31 | 'SELECT something' |
 | mysql4.js:14:18:14:20 | sql |
 | mysqlImport.js:3:18:5:1 | {\\n    s ... = ?',\\n} |
+| mysqlImport.js:4:10:4:51 | 'SELECT ... r` = ?' |
 | postgres1.js:37:21:37:24 | text |
 | postgres2.js:30:16:30:41 | 'SELECT ... number' |
 | postgres2.js:43:15:43:26 | 'SELECT 123' |

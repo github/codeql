@@ -1,0 +1,25 @@
+<html>
+    <body>
+        {{ escapedHtml }}
+        {{ rawHtml | safe }}
+        {{ rawHtmlSafeValue | safe }}
+
+        {{ object.rawHtmlProp | safe }}
+
+        <script>
+            var dataInStringLiteral = "{{ dataInStringLiteral }}";
+            var dataInStringLiteralRaw = "{{ dataInStringLiteralRaw | safe }}";
+
+            var dataInGeneratedCode = {{ dataInGeneratedCode }};
+            var dataInGeneratedCodeRaw = {{ dataInGeneratedCodeRaw | safe }};
+            var dataInGeneratedCodeJsonRaw = {{ dataInGeneratedCodeJsonRaw | json | safe }};
+
+            init("{{ backslashSink1 }}", "{{ backslashSink2 }}");
+
+            var ejs = "<%= rawHtml %>";
+        </script>
+
+        <button onclick="doSomething('{{ dataInEventHandlerString }}')">Click me</button>
+        <button onclick="doSomething('{{ dataInEventHandlerStringRaw | safe }}')">Click me</button>
+    </body>
+</html>

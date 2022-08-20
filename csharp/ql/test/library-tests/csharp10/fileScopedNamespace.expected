@@ -1,0 +1,7 @@
+fileScopedNamespace
+| FileScopedNamespace.cs:1:11:1:31 | MyFileScopedNamespace | FileScopedNamespace.cs:3:14:3:39 | MyFileScopedNamespaceClass |
+| FileScopedNamespace.cs:1:11:1:31 | MyFileScopedNamespace | FileScopedNamespace.cs:5:29:5:35 | myField |
+| FileScopedNamespace.cs:1:11:1:31 | MyFileScopedNamespace | FileScopedNamespace.cs:6:19:6:24 | MyProp |
+| FileScopedNamespace.cs:1:11:1:31 | MyFileScopedNamespace | FileScopedNamespace.cs:7:17:7:24 | MyMethod |
+namespaceDeclaration
+| FileScopedNamespace.cs:1:11:1:31 | namespace ... { ... } | FileScopedNamespace.cs:1:11:1:31 | MyFileScopedNamespace |

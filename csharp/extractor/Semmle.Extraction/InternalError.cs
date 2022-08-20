@@ -23,6 +23,13 @@ namespace Semmle.Extraction
             Location = node.GetLocation();
         }
 
+        public InternalError(Location? loc, string msg)
+        {
+            Text = msg;
+            EntityText = "";
+            Location = loc;
+        }
+
         public InternalError(string msg)
         {
             Text = msg;

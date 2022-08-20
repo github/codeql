@@ -1,0 +1,2 @@
+| tests.cpp:45:51:45:72 | sizeof(<expr>) | Potential buffer-overflow: 'charFirst' has size 16 not 32. |
+| tests.cpp:60:52:60:74 | sizeof(<expr>) | Potential buffer-overflow: 'charFirst' has size 16 not 32. |

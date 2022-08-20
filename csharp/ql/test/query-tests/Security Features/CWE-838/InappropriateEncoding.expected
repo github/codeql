@@ -29,6 +29,7 @@ nodes
 | SqlEncode.cs:15:46:15:50 | access to local variable query | semmle.label | access to local variable query |
 | UrlEncode.cs:10:31:10:69 | ... + ... | semmle.label | ... + ... |
 | UrlEncode.cs:10:43:10:69 | call to method HtmlEncode : String | semmle.label | call to method HtmlEncode : String |
+subpaths
 #select
 | HtmlEncode.cs:10:28:10:65 | ... + ... | HtmlEncode.cs:10:40:10:65 | call to method UrlEncode : String | HtmlEncode.cs:10:28:10:65 | ... + ... | This HTML expression may include data from a $@. | HtmlEncode.cs:10:40:10:65 | call to method UrlEncode | possibly inappropriately encoded value |
 | InappropriateEncoding.cs:18:46:18:51 | access to local variable query1 | InappropriateEncoding.cs:13:28:13:40 | call to method Encode : String | InappropriateEncoding.cs:18:46:18:51 | access to local variable query1 | This SQL expression may include data from a $@. | InappropriateEncoding.cs:13:28:13:40 | call to method Encode | possibly inappropriately encoded value |

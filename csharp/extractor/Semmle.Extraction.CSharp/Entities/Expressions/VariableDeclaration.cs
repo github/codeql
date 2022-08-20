@@ -105,7 +105,8 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                             }
                             break;
                         default:
-                            throw new InternalError(variable, "Unhandled designation type");
+                            var type = variable.GetType().ToString() ?? "null";
+                            throw new InternalError(variable, $"Unhandled designation type {type}");
                     }
 
                     elementTypes.Add(sub.Type.HasValue && sub.Type.Value.Symbol?.Kind != SymbolKind.ErrorType

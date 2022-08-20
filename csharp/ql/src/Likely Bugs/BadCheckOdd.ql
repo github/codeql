@@ -15,7 +15,7 @@ import csharp
 predicate isDefinitelyPositive(Expr e) {
   e.getValue().toInt() >= 0 or
   e.(PropertyAccess).getTarget().hasName("Length") or
-  e.(MethodCall).getTarget().hasName("Count")
+  e.(MethodCall).getTarget().hasUndecoratedName("Count")
 }
 
 from BinaryOperation t, RemExpr lhs, IntegerLiteral rhs, string parity

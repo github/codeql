@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+  <body>
+    <h1>{{title}}</h1>
+    {{{subtitle_html}}}
+    <p><%- body_html %></p>
+    <p><%= footer %></p>
+    <script>
+      var data1 = {{{ user_data1 }}};
+      var data2 = {{ user_data2 | json | safe }};
+      var data3 = <%- user_data3 %>;
+    </script>
+    <a href="{{ attr1 }}" title="{{{ attr2 }}}" data-foo="<%- attr3 %>"
+       data-bar="   {{ attr4 }} "></a>
+  </body>
+</html>

@@ -119,11 +119,11 @@
 | SignAnalysis.cs:187:31:187:31 | 2 | strictlyPositive |
 | SignAnalysis.cs:187:34:187:34 | 3 | strictlyPositive |
 | SignAnalysis.cs:188:34:188:44 | access to property Length | strictlyPositive |
-| SignAnalysis.cs:189:34:189:45 | call to method Count | positive |
-| SignAnalysis.cs:190:34:190:55 | call to method Count | positive |
+| SignAnalysis.cs:189:34:189:45 | call to method Count<Int32> | positive |
+| SignAnalysis.cs:190:34:190:55 | call to method Count<Int32> | positive |
 | SignAnalysis.cs:190:54:190:54 | 1 | strictlyPositive |
 | SignAnalysis.cs:193:34:193:41 | access to property Length | positive |
-| SignAnalysis.cs:196:34:196:51 | call to method Count | positive |
+| SignAnalysis.cs:196:34:196:51 | call to method Count<Int32> | positive |
 | SignAnalysis.cs:198:17:198:59 | 2 | strictlyPositive |
 | SignAnalysis.cs:198:17:198:59 | 3 | strictlyPositive |
 | SignAnalysis.cs:198:32:198:32 | 1 | strictlyPositive |

@@ -1,6 +1,10 @@
 C and C++ built-in support
 ================================
 
+Provided by the current versions of the
+CodeQL query pack ``codeql/cpp-queries`` (`changelog <https://github.com/github/codeql/tree/codeql-cli/latest/cpp/ql/src/CHANGELOG.md>`__, `source <https://github.com/github/codeql/tree/codeql-cli/latest/cpp/ql/src>`__)
+and the CodeQL library pack ``codeql/cpp-all`` (`changelog <https://github.com/github/codeql/tree/codeql-cli/latest/cpp/ql/lib/CHANGELOG.md>`__, `source <https://github.com/github/codeql/tree/codeql-cli/latest/cpp/ql/lib>`__).
+
 .. csv-table::
    :header-rows: 1
    :class: fullWidthTable
@@ -13,6 +17,10 @@ C and C++ built-in support
 
 C# built-in support
 ================================
+
+Provided by the current versions of the
+CodeQL query pack ``codeql/csharp-queries`` (`changelog <https://github.com/github/codeql/tree/codeql-cli/latest/csharp/ql/src/CHANGELOG.md>`__, `source <https://github.com/github/codeql/tree/codeql-cli/latest/csharp/ql/src>`__)
+and the CodeQL library pack ``codeql/csharp-all`` (`changelog <https://github.com/github/codeql/tree/codeql-cli/latest/csharp/ql/lib/CHANGELOG.md>`__, `source <https://github.com/github/codeql/tree/codeql-cli/latest/csharp/ql/lib>`__).
 
 .. csv-table::
    :header-rows: 1
@@ -32,6 +40,10 @@ C# built-in support
 
 Go built-in support
 ================================
+
+Provided by the current versions of the
+CodeQL query pack ``codeql/go-queries`` (`changelog <https://github.com/github/codeql/tree/codeql-cli/latest/go/ql/src/CHANGELOG.md>`__, `source <https://github.com/github/codeql/tree/codeql-cli/latest/go/ql/src>`__)
+and the CodeQL library pack ``codeql/go-all`` (`changelog <https://github.com/github/codeql/tree/codeql-cli/latest/go/ql/lib/CHANGELOG.md>`__, `source <https://github.com/github/codeql/tree/codeql-cli/latest/go/ql/lib>`__).
 
 .. csv-table::
    :header-rows: 1
@@ -84,6 +96,10 @@ Go built-in support
 Java built-in support
 ==================================
 
+Provided by the current versions of the
+CodeQL query pack ``codeql/java-queries`` (`changelog <https://github.com/github/codeql/tree/codeql-cli/latest/java/ql/src/CHANGELOG.md>`__, `source <https://github.com/github/codeql/tree/codeql-cli/latest/java/ql/src>`__)
+and the CodeQL library pack ``codeql/java-all`` (`changelog <https://github.com/github/codeql/tree/codeql-cli/latest/java/ql/lib/CHANGELOG.md>`__, `source <https://github.com/github/codeql/tree/codeql-cli/latest/java/ql/lib>`__).
+
 .. csv-table::
    :header-rows: 1
    :class: fullWidthTable
@@ -91,12 +107,15 @@ Java built-in support
 
    Name, Category
    Apache Commons Lang, Utility library
+   Apache Commons Collections, Data structure utility library
    Apache HTTP components, Network communicator
    Guava, Utility and collections library
    Hibernate, Database
    iBatis / MyBatis, Database
    Jackson, Serialization
+   JSON-java, Serialization
    Java Persistence API (JPA), Database
+   JaxRS, Jakarta EE API specification
    JDBC, Database
    Protobuf, Serialization
    Kryo deserialization, Serialization
@@ -110,6 +129,10 @@ Java built-in support
 JavaScript and TypeScript built-in support
 =======================================================
 
+Provided by the current versions of the
+CodeQL query pack ``codeql/javascript-queries`` (`changelog <https://github.com/github/codeql/tree/codeql-cli/latest/javascript/ql/src/CHANGELOG.md>`__, `source <https://github.com/github/codeql/tree/codeql-cli/latest/javascript/ql/src>`__)
+and the CodeQL library pack ``codeql/javascript-all`` (`changelog <https://github.com/github/codeql/tree/codeql-cli/latest/javascript/ql/lib/CHANGELOG.md>`__, `source <https://github.com/github/codeql/tree/codeql-cli/latest/javascript/ql/lib>`__).
+
 .. csv-table::
    :header-rows: 1
    :class: fullWidthTable
@@ -120,17 +143,22 @@ JavaScript and TypeScript built-in support
    angular.js (legacy version), HTML framework
    axios, Network communicator
    browser, Runtime environment
+   EJS, templating language
    electron, Runtime environment
    express, Server
+   handlebars, templating language
    hapi, Server
+   hogan, templating language
    jquery, Utility library
    koa, Server
    lodash, Utility library
    mongodb, Database
    mssql, Database
+   mustache, templating language
    mysql, Database
    node, Runtime environment
    nest.js, Server
+   nunjucks, templating language
    postgres, Database
    ramda, Utility library
    react, HTML framework
@@ -140,12 +168,17 @@ JavaScript and TypeScript built-in support
    socket.io, Network communicator
    sqlite3, Database
    superagent, Network communicator
+   swig, templating language
    underscore, Utility library
    vue, HTML framework
 
 
 Python built-in support
 ====================================
+
+Provided by the current versions of the
+CodeQL query pack ``codeql/python-queries`` (`changelog <https://github.com/github/codeql/tree/codeql-cli/latest/python/ql/src/CHANGELOG.md>`__, `source <https://github.com/github/codeql/tree/codeql-cli/latest/python/ql/src>`__)
+and the CodeQL library pack ``codeql/python-all`` (`changelog <https://github.com/github/codeql/tree/codeql-cli/latest/python/ql/lib/CHANGELOG.md>`__, `source <https://github.com/github/codeql/tree/codeql-cli/latest/python/ql/lib>`__).
 
 .. csv-table::
    :header-rows: 1
@@ -155,20 +188,38 @@ Python built-in support
    Name, Category
    aiohttp.web, Web framework
    Django, Web framework
+   djangorestframework, Web framework
+   FastAPI, Web framework
    Flask, Web framework
    Tornado, Web framework
    Twisted, Web framework
-   PyYAML, Serialization
+   Flask-Admin, Web framework
+   starlette, Asynchronous Server Gateway Interface (ASGI)
+   python-ldap, Lightweight Directory Access Protocol (LDAP)
+   ldap3, Lightweight Directory Access Protocol (LDAP)
+   httpx, HTTP client
+   pycurl, HTTP client
+   requests, HTTP client
+   urllib, HTTP client
+   urllib2, HTTP client
+   urllib3, HTTP client
    dill, Serialization
+   PyYAML, Serialization
+   ruamel.yaml, Serialization
    simplejson, Serialization
+   toml, Serialization
    ujson, Serialization
    fabric, Utility library
    idna, Utility library
    invoke, Utility library
    jmespath, Utility library
    multidict, Utility library
+   pydantic, Utility library
    yarl, Utility library
    aioch, Database
+   aiomysql, Database
+   aiopg, Database
+   asyncpg, Database
    clickhouse-driver, Database
    mysql-connector-python, Database
    mysql-connector, Database
@@ -176,8 +227,15 @@ Python built-in support
    mysqlclient, Database
    psycopg2, Database
    sqlite3, Database
+   Flask-SQLAlchemy, Database ORM
+   peewee, Database ORM
+   SQLAlchemy, Database ORM
    cryptography, Cryptography library
    pycryptodome, Cryptography library
    pycryptodomex, Cryptography library
    rsa, Cryptography library
    MarkupSafe, Escaping Library
+   libtaxii, TAXII utility library
+   libxml2, XML processing library
+   lxml, XML processing library
+   xmltodict, XML processing library

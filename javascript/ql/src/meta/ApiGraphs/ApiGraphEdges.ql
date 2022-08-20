@@ -12,4 +12,4 @@ import javascript
 import meta.MetaMetrics
 
 select projectRoot(),
-  count(API::Node pred, string lbl, API::Node succ | succ = pred.getASuccessor(lbl))
+  count(API::Node pred, API::Label::ApiLabel lbl, API::Node succ | succ = pred.getASuccessor(lbl))

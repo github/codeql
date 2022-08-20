@@ -84,25 +84,25 @@ private class TaintPropagatingCall extends Call {
 }
 
 private class JakartaType extends RefType {
-  JakartaType() { getPackage().hasName(["javax.el", "jakarta.el"]) }
+  JakartaType() { this.getPackage().hasName(["javax.el", "jakarta.el"]) }
 }
 
 private class ELProcessor extends JakartaType {
-  ELProcessor() { hasName("ELProcessor") }
+  ELProcessor() { this.hasName("ELProcessor") }
 }
 
 private class ExpressionFactory extends JakartaType {
-  ExpressionFactory() { hasName("ExpressionFactory") }
+  ExpressionFactory() { this.hasName("ExpressionFactory") }
 }
 
 private class ValueExpression extends JakartaType {
-  ValueExpression() { hasName("ValueExpression") }
+  ValueExpression() { this.hasName("ValueExpression") }
 }
 
 private class MethodExpression extends JakartaType {
-  MethodExpression() { hasName("MethodExpression") }
+  MethodExpression() { this.hasName("MethodExpression") }
 }
 
 private class LambdaExpression extends JakartaType {
-  LambdaExpression() { hasName("LambdaExpression") }
+  LambdaExpression() { this.hasName("LambdaExpression") }
 }

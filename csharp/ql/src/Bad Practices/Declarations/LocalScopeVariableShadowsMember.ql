@@ -39,6 +39,10 @@ private predicate acceptableShadowing(LocalScopeVariable v, Member m) {
     )
     or
     t.getAConstructor().getAParameter() = v
+    or
+    // Record types have auto-generated Deconstruct methods, which declare an out parameter
+    // with the same name as the property field(s).
+    t.(RecordType).getAMethod("Deconstruct").getAParameter() = v
   )
 }
 

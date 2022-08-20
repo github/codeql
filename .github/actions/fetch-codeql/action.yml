@@ -1,0 +1,14 @@
+name: Fetch CodeQL
+description: Fetches the latest version of CodeQL
+runs:
+  using: composite
+  steps:
+    - name: Fetch CodeQL
+      shell: bash
+      run: |
+        gh extension install github/gh-codeql
+        gh codeql set-channel nightly
+        gh codeql version
+        gh codeql version --format=json | jq -r .unpackedLocation >> "${GITHUB_PATH}"
+      env:
+        GITHUB_TOKEN: ${{ github.token }}

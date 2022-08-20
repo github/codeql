@@ -1,0 +1,23 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>Working with changing directories, without checking the return value or pinning the directory, may not be safe. Requires the attention of developers.</p>
+
+</overview>
+
+<example>
+<p>The following example demonstrates erroneous and corrected work with changing working directories.</p>
+<sample src="IncorrectChangingWorkingDirectory.cpp" />
+
+</example>
+<references>
+
+<li>
+  CERT C Coding Standard:
+  <a href="https://wiki.sei.cmu.edu/confluence/display/c/POS05-C.+Limit+access+to+files+by+creating+a+jail">POS05-C. Limit access to files by creating a jail.</a>
+</li>
+
+</references>
+</qhelp>

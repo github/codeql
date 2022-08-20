@@ -13,7 +13,7 @@
 
 import javascript
 import DataFlow::PathGraph
-import semmle.javascript.security.dataflow.TemplateObjectInjection::TemplateObjectInjection
+import semmle.javascript.security.dataflow.TemplateObjectInjectionQuery
 
 from DataFlow::Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink
 where cfg.hasFlowPath(source, sink)

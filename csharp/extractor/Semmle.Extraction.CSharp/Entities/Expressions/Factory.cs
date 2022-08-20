@@ -14,7 +14,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
             {
                 if (info.Node is null)
                 {
-                    info.Context.ModelError("Attempt to create a null expression");
+                    info.Context.ModelError(info.Location, "Attempt to create a null expression");
                     return new Unknown(info);
                 }
 

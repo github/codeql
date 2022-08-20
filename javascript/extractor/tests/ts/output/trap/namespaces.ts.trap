@@ -1,7 +1,7 @@
 #10000=@"/namespaces.ts;sourcefile"
-files(#10000,"/namespaces.ts","namespaces","ts",0)
+files(#10000,"/namespaces.ts")
 #10001=@"/;folder"
-folders(#10001,"/","")
+folders(#10001,"/")
 containerparent(#10001,#10000)
 #10002=@"loc,{#10000},0,0,0,0"
 locations_default(#10002,#10000,0,0,0,0)
@@ -305,11 +305,12 @@ hasLocation(#20096,#20097)
 enclosing_stmt(#20096,#20092)
 expr_containers(#20096,#20001)
 #20098=*
-exprs(#20098,79,#20096,0,"M")
+exprs(#20098,103,#20096,0,"M")
 hasLocation(#20098,#20052)
 enclosing_stmt(#20098,#20092)
 expr_containers(#20098,#20001)
 literals("M","M",#20098)
+namespacebind(#20098,#20069)
 bind(#20098,#20066)
 #20099=*
 exprs(#20099,0,#20096,1,"N")

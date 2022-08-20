@@ -11,13 +11,6 @@
 
 import csharp
 
-class ZeroFloatLiteral extends FloatLiteral {
-  ZeroFloatLiteral() {
-    this.getValue() = "0" or
-    this.getValue() = "0.0"
-  }
-}
-
 from EqualityOperation e
 where
   e.getAnOperand().getType() instanceof FloatingPointType and

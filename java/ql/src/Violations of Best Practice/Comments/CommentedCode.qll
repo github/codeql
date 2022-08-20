@@ -122,9 +122,9 @@ class CommentedOutCode extends JavadocFirst {
   }
 
   override predicate hasLocationInfo(string path, int sl, int sc, int el, int ec) {
-    path = getLocation().getFile().getAbsolutePath() and
-    sl = getLocation().getStartLine() and
-    sc = getLocation().getStartColumn() and
+    path = this.getLocation().getFile().getAbsolutePath() and
+    sl = this.getLocation().getStartLine() and
+    sc = this.getLocation().getStartColumn() and
     exists(Location end | end = this.getLastSuccessor().getLocation() |
       el = end.getEndLine() and
       ec = end.getEndColumn()

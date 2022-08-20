@@ -1,0 +1,5 @@
+name: codeql-csharp-consistency-queries
+groups: [csharp, test, consistency-queries]
+dependencies:
+  codeql/csharp-all: "*"
+extractor: csharp

@@ -1,0 +1,1 @@
+| hosttest.py:6:31:6:53 | (www\|beta).example.com/ | This regular expression has an unescaped '.' before 'example.com/', so it might match more hosts than expected. | hosttest.py:6:27:6:51 | ControlFlowNode for Str | here |

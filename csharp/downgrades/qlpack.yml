@@ -1,0 +1,4 @@
+name: codeql/csharp-downgrades
+groups: csharp
+downgrades: .
+library: true

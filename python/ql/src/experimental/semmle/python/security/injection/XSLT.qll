@@ -21,11 +21,11 @@ module XSLTInjection {
   /**
    * A kind of "taint", representing an untrusted XML string
    */
-  private class ExternalXmlStringKind extends ExternalStringKind {
+  deprecated private class ExternalXmlStringKind extends ExternalStringKind {
     ExternalXmlStringKind() { this = "etree.XML string" }
 
     override TaintKind getTaintForFlowStep(ControlFlowNode fromnode, ControlFlowNode tonode) {
-      etreeXML(fromnode, tonode) and result instanceof ExternalXmlKind
+      etreeXml(fromnode, tonode) and result instanceof ExternalXmlKind
       or
       etreeFromStringList(fromnode, tonode) and result instanceof ExternalXmlKind
       or
@@ -40,7 +40,7 @@ module XSLTInjection {
     ExternalXmlKind() { this = "lxml etree xml" }
   }
 
-  private predicate etreeXML(ControlFlowNode fromnode, CallNode tonode) {
+  private predicate etreeXml(ControlFlowNode fromnode, CallNode tonode) {
     // etree.XML("<xmlContent>")
     exists(CallNode call | call.getFunction().(AttrNode).getObject("XML").pointsTo(etree()) |
       call.getArg(0) = fromnode and

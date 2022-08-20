@@ -42,7 +42,7 @@ private class UnsafeBeanInitMethod extends Method {
     exists(Annotation a | this.getAnAnnotation() = a |
       a.getType().hasQualifiedName("org.springframework.context.annotation", "Bean") and
       if a.getValue("name") instanceof StringLiteral
-      then identifier = a.getValue("name").(StringLiteral).getRepresentedString()
+      then identifier = a.getValue("name").(StringLiteral).getValue()
       else identifier = this.getName()
     )
   }

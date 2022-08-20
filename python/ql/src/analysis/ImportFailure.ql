@@ -58,7 +58,7 @@ predicate ok_to_fail(ImportExpr ie) {
   os_specific_import(ie) != get_os()
 }
 
-class VersionTest extends @py_flow_node {
+class VersionTest extends ControlFlowNode {
   VersionTest() {
     exists(string name |
       name.matches("%version%") and
@@ -66,7 +66,7 @@ class VersionTest extends @py_flow_node {
     )
   }
 
-  string toString() { result = "VersionTest" }
+  override string toString() { result = "VersionTest" }
 }
 
 /** A guard on the version of the Python interpreter */

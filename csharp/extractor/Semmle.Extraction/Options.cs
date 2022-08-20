@@ -1,3 +1,4 @@
+using System;
 using Semmle.Util.Logging;
 using Semmle.Util;
 
@@ -45,9 +46,15 @@ namespace Semmle.Extraction
         public bool Fast { get; private set; } = false;
 
         /// <summary>
+        /// Whether extraction is done using `codeql test run`.
+        /// </summary>
+        public bool QlTest { get; private set; } = false;
+
+
+        /// <summary>
         /// The compression algorithm used for trap files.
         /// </summary>
-        public TrapWriter.CompressionMode TrapCompression { get; set; } = TrapWriter.CompressionMode.Gzip;
+        public TrapWriter.CompressionMode TrapCompression { get; private set; } = TrapWriter.CompressionMode.Brotli;
 
         public virtual bool HandleOption(string key, string value)
         {
@@ -59,6 +66,13 @@ namespace Semmle.Extraction
                 case "verbosity":
                     Verbosity = (Verbosity)int.Parse(value);
                     return true;
+                case "trap_compression":
+                    if (Enum.TryParse<TrapWriter.CompressionMode>(value, true, out var mode))
+                    {
+                        TrapCompression = mode;
+                        return true;
+                    }
+                    return false;
                 default:
                     return false;
             }
@@ -70,6 +84,10 @@ namespace Semmle.Extraction
         {
             switch (flag)
             {
+                case "silent":
+                    if (value)
+                        Verbosity = Verbosity.Off;
+                    return true;
                 case "verbose":
                     Verbosity = value ? Verbosity.Debug : Verbosity.Error;
                     return true;
@@ -90,8 +108,8 @@ namespace Semmle.Extraction
                     CIL = !value;
                     Fast = value;
                     return true;
-                case "brotli":
-                    TrapCompression = value ? TrapWriter.CompressionMode.Brotli : TrapWriter.CompressionMode.Gzip;
+                case "qltest":
+                    QlTest = value;
                     return true;
                 default:
                     return false;

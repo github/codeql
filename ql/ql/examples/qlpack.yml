@@ -1,0 +1,4 @@
+name: codeql/ql-examples
+groups: [ql, examples]
+dependencies:
+    codeql/ql: "*"

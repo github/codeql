@@ -4,7 +4,33 @@
 
 import csharp
 import DataFlow
-import DataFlow::PathGraph
+
+private predicate relevantPathNode(PathNode n) {
+  exists(File f | f = n.getNode().getLocation().getFile() |
+    f.fromSource()
+    or
+    f.getBaseName() = "DataFlow.dll"
+  )
+}
+
+query predicate edges(PathNode a, PathNode b) {
+  PathGraph::edges(a, b) and
+  relevantPathNode(a) and
+  relevantPathNode(b)
+}
+
+query predicate nodes(PathNode n, string key, string val) {
+  PathGraph::nodes(n, key, val) and
+  relevantPathNode(n)
+}
+
+query predicate subpaths(PathNode arg, PathNode par, PathNode ret, PathNode out) {
+  PathGraph::subpaths(arg, par, ret, out) and
+  relevantPathNode(arg) and
+  relevantPathNode(par) and
+  relevantPathNode(ret) and
+  relevantPathNode(out)
+}
 
 class FlowConfig extends Configuration {
   FlowConfig() { this = "FlowConfig" }
@@ -16,6 +42,6 @@ class FlowConfig extends Configuration {
   }
 }
 
-from DataFlow::PathNode source, DataFlow::PathNode sink, FlowConfig config
+from PathNode source, PathNode sink, FlowConfig config
 where config.hasFlowPath(source, sink)
 select source, sink, sink, "$@", sink, sink.toString()

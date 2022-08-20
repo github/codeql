@@ -9,10 +9,11 @@
  * @tags security
  *       external/cwe/cwe-346
  *       external/cwe/cwe-639
+ *       external/cwe/cwe-942
  */
 
 import javascript
-import semmle.javascript.security.dataflow.CorsMisconfigurationForCredentials::CorsMisconfigurationForCredentials
+import semmle.javascript.security.dataflow.CorsMisconfigurationForCredentialsQuery
 import DataFlow::PathGraph
 
 from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink

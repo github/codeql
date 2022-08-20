@@ -11,12 +11,6 @@ class UnknownCall extends Call {
   override string toString() { result = "Call (unknown target)" }
 }
 
-class UnknownLocalVariableDeclExpr extends LocalVariableDeclAndInitExpr {
-  UnknownLocalVariableDeclExpr() { not exists(this.getVariable().getType().getName()) }
-
-  override string toString() { result = "(unknown type) " + this.getName() }
-}
-
 query predicate edges(ControlFlow::Node n1, ControlFlow::Node n2) {
   not n1.getElement().fromLibrary() and n2 = n1.getASuccessor()
 }

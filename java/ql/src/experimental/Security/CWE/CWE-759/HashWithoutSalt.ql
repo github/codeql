@@ -6,7 +6,7 @@
  * @precision low
  * @id java/hash-without-salt
  * @tags security
- *       external/cwe-759
+ *       external/cwe/cwe-759
  */
 
 import java
@@ -34,16 +34,6 @@ predicate hasAddExprAncestor(AddExpr ae, Expr e) { ae.getAnOperand+() = e }
 /** The Java class `java.security.MessageDigest`. */
 class MessageDigest extends RefType {
   MessageDigest() { this.hasQualifiedName("java.security", "MessageDigest") }
-}
-
-/** The method call `MessageDigest.getInstance(...)` */
-class MDConstructor extends StaticMethodAccess {
-  MDConstructor() {
-    exists(Method m | m = this.getMethod() |
-      m.getDeclaringType() instanceof MessageDigest and
-      m.hasName("getInstance")
-    )
-  }
 }
 
 /** The method `digest()` declared in `java.security.MessageDigest`. */

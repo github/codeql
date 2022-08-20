@@ -58,15 +58,7 @@ predicate intTrivial(Literal lit) { exists(string v | trivialIntValue(v) and v =
 predicate longTrivial(Literal lit) { exists(string v | trivialLongValue(v) and v = lit.getValue()) }
 
 predicate powerOfTen(float f) {
-  f = 10 or
-  f = 100 or
-  f = 1000 or
-  f = 10000 or
-  f = 100000 or
-  f = 1000000 or
-  f = 10000000 or
-  f = 100000000 or
-  f = 1000000000
+  f = [10, 100, 1000, 10000, 100000, 1000000, 10000000, 100000000, 1000000000]
 }
 
 predicate floatTrivial(Literal lit) {

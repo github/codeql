@@ -47,6 +47,11 @@ namespace Semmle.Extraction.CSharp.Entities
                 trapFile.using_directive_location(this, Context.CreateLocation(ReportingLocation));
             }
 
+            if (node.GlobalKeyword.Kind() == SyntaxKind.GlobalKeyword)
+            {
+                trapFile.using_global(this);
+            }
+
             if (parent is not null)
             {
                 trapFile.parent_namespace_declaration(this, parent);

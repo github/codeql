@@ -9,7 +9,7 @@
  * @precision medium
  * @id java/server-directory-listing
  * @tags security
- *       external/cwe-548
+ *       external/cwe/cwe-548
  */
 
 import java
@@ -27,19 +27,22 @@ private class DefaultTomcatServlet extends WebServletClass {
 /**
  * The `<init-param>` element in a `web.xml` file, nested under a `<servlet>` element controlling directory listing.
  */
-class DirectoryListingInitParam extends WebXMLElement {
+class DirectoryListingInitParam extends WebXmlElement {
   DirectoryListingInitParam() {
-    getName() = "init-param" and
-    getAChild("param-name").getTextValue() = "listings" and
+    this.getName() = "init-param" and
+    this.getAChild("param-name").getTextValue() = "listings" and
     exists(WebServlet servlet |
-      getParent() = servlet and servlet.getAChild("servlet-class") instanceof DefaultTomcatServlet
+      this.getParent() = servlet and
+      servlet.getAChild("servlet-class") instanceof DefaultTomcatServlet
     )
   }
 
   /**
    * Check the `<param-value>` element (true - enabled, false - disabled)
    */
-  predicate isListingEnabled() { getAChild("param-value").getTextValue().toLowerCase() = "true" }
+  predicate isListingEnabled() {
+    this.getAChild("param-value").getTextValue().toLowerCase() = "true"
+  }
 }
 
 from DirectoryListingInitParam initp

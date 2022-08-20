@@ -4,7 +4,7 @@ namespace System
 {
     namespace Diagnostics
     {
-        // Generated from `System.Diagnostics.StackFrame` in `System.Diagnostics.StackTrace, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Diagnostics.StackFrame` in `System.Diagnostics.StackTrace, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class StackFrame
         {
             public virtual int GetFileColumnNumber() => throw null;
@@ -14,16 +14,16 @@ namespace System
             public virtual System.Reflection.MethodBase GetMethod() => throw null;
             public virtual int GetNativeOffset() => throw null;
             public const int OFFSET_UNKNOWN = default;
-            public StackFrame(string fileName, int lineNumber, int colNumber) => throw null;
-            public StackFrame(string fileName, int lineNumber) => throw null;
-            public StackFrame(int skipFrames, bool needFileInfo) => throw null;
-            public StackFrame(int skipFrames) => throw null;
-            public StackFrame(bool needFileInfo) => throw null;
             public StackFrame() => throw null;
+            public StackFrame(bool needFileInfo) => throw null;
+            public StackFrame(int skipFrames) => throw null;
+            public StackFrame(int skipFrames, bool needFileInfo) => throw null;
+            public StackFrame(string fileName, int lineNumber) => throw null;
+            public StackFrame(string fileName, int lineNumber, int colNumber) => throw null;
             public override string ToString() => throw null;
         }
 
-        // Generated from `System.Diagnostics.StackFrameExtensions` in `System.Diagnostics.StackTrace, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Diagnostics.StackFrameExtensions` in `System.Diagnostics.StackTrace, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public static class StackFrameExtensions
         {
             public static System.IntPtr GetNativeIP(this System.Diagnostics.StackFrame stackFrame) => throw null;
@@ -34,40 +34,40 @@ namespace System
             public static bool HasSource(this System.Diagnostics.StackFrame stackFrame) => throw null;
         }
 
-        // Generated from `System.Diagnostics.StackTrace` in `System.Diagnostics.StackTrace, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Diagnostics.StackTrace` in `System.Diagnostics.StackTrace, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class StackTrace
         {
             public virtual int FrameCount { get => throw null; }
             public virtual System.Diagnostics.StackFrame GetFrame(int index) => throw null;
             public virtual System.Diagnostics.StackFrame[] GetFrames() => throw null;
             public const int METHODS_TO_SKIP = default;
-            public StackTrace(int skipFrames, bool fNeedFileInfo) => throw null;
-            public StackTrace(int skipFrames) => throw null;
-            public StackTrace(bool fNeedFileInfo) => throw null;
-            public StackTrace(System.Exception e, int skipFrames, bool fNeedFileInfo) => throw null;
-            public StackTrace(System.Exception e, int skipFrames) => throw null;
-            public StackTrace(System.Exception e, bool fNeedFileInfo) => throw null;
-            public StackTrace(System.Exception e) => throw null;
-            public StackTrace(System.Diagnostics.StackFrame frame) => throw null;
             public StackTrace() => throw null;
+            public StackTrace(System.Exception e) => throw null;
+            public StackTrace(System.Exception e, bool fNeedFileInfo) => throw null;
+            public StackTrace(System.Exception e, int skipFrames) => throw null;
+            public StackTrace(System.Exception e, int skipFrames, bool fNeedFileInfo) => throw null;
+            public StackTrace(System.Diagnostics.StackFrame frame) => throw null;
+            public StackTrace(bool fNeedFileInfo) => throw null;
+            public StackTrace(int skipFrames) => throw null;
+            public StackTrace(int skipFrames, bool fNeedFileInfo) => throw null;
             public override string ToString() => throw null;
         }
 
         namespace SymbolStore
         {
-            // Generated from `System.Diagnostics.SymbolStore.ISymbolBinder` in `System.Diagnostics.StackTrace, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Diagnostics.SymbolStore.ISymbolBinder` in `System.Diagnostics.StackTrace, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public interface ISymbolBinder
             {
                 System.Diagnostics.SymbolStore.ISymbolReader GetReader(int importer, string filename, string searchPath);
             }
 
-            // Generated from `System.Diagnostics.SymbolStore.ISymbolBinder1` in `System.Diagnostics.StackTrace, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Diagnostics.SymbolStore.ISymbolBinder1` in `System.Diagnostics.StackTrace, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public interface ISymbolBinder1
             {
                 System.Diagnostics.SymbolStore.ISymbolReader GetReader(System.IntPtr importer, string filename, string searchPath);
             }
 
-            // Generated from `System.Diagnostics.SymbolStore.ISymbolDocument` in `System.Diagnostics.StackTrace, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Diagnostics.SymbolStore.ISymbolDocument` in `System.Diagnostics.StackTrace, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public interface ISymbolDocument
             {
                 System.Guid CheckSumAlgorithmId { get; }
@@ -82,14 +82,14 @@ namespace System
                 string URL { get; }
             }
 
-            // Generated from `System.Diagnostics.SymbolStore.ISymbolDocumentWriter` in `System.Diagnostics.StackTrace, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Diagnostics.SymbolStore.ISymbolDocumentWriter` in `System.Diagnostics.StackTrace, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public interface ISymbolDocumentWriter
             {
                 void SetCheckSum(System.Guid algorithmId, System.Byte[] checkSum);
                 void SetSource(System.Byte[] source);
             }
 
-            // Generated from `System.Diagnostics.SymbolStore.ISymbolMethod` in `System.Diagnostics.StackTrace, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Diagnostics.SymbolStore.ISymbolMethod` in `System.Diagnostics.StackTrace, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public interface ISymbolMethod
             {
                 System.Diagnostics.SymbolStore.ISymbolNamespace GetNamespace();
@@ -104,7 +104,7 @@ namespace System
                 System.Diagnostics.SymbolStore.SymbolToken Token { get; }
             }
 
-            // Generated from `System.Diagnostics.SymbolStore.ISymbolNamespace` in `System.Diagnostics.StackTrace, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Diagnostics.SymbolStore.ISymbolNamespace` in `System.Diagnostics.StackTrace, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public interface ISymbolNamespace
             {
                 System.Diagnostics.SymbolStore.ISymbolNamespace[] GetNamespaces();
@@ -112,14 +112,14 @@ namespace System
                 string Name { get; }
             }
 
-            // Generated from `System.Diagnostics.SymbolStore.ISymbolReader` in `System.Diagnostics.StackTrace, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Diagnostics.SymbolStore.ISymbolReader` in `System.Diagnostics.StackTrace, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public interface ISymbolReader
             {
                 System.Diagnostics.SymbolStore.ISymbolDocument GetDocument(string url, System.Guid language, System.Guid languageVendor, System.Guid documentType);
                 System.Diagnostics.SymbolStore.ISymbolDocument[] GetDocuments();
                 System.Diagnostics.SymbolStore.ISymbolVariable[] GetGlobalVariables();
-                System.Diagnostics.SymbolStore.ISymbolMethod GetMethod(System.Diagnostics.SymbolStore.SymbolToken method, int version);
                 System.Diagnostics.SymbolStore.ISymbolMethod GetMethod(System.Diagnostics.SymbolStore.SymbolToken method);
+                System.Diagnostics.SymbolStore.ISymbolMethod GetMethod(System.Diagnostics.SymbolStore.SymbolToken method, int version);
                 System.Diagnostics.SymbolStore.ISymbolMethod GetMethodFromDocumentPosition(System.Diagnostics.SymbolStore.ISymbolDocument document, int line, int column);
                 System.Diagnostics.SymbolStore.ISymbolNamespace[] GetNamespaces();
                 System.Byte[] GetSymAttribute(System.Diagnostics.SymbolStore.SymbolToken parent, string name);
@@ -127,7 +127,7 @@ namespace System
                 System.Diagnostics.SymbolStore.SymbolToken UserEntryPoint { get; }
             }
 
-            // Generated from `System.Diagnostics.SymbolStore.ISymbolScope` in `System.Diagnostics.StackTrace, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Diagnostics.SymbolStore.ISymbolScope` in `System.Diagnostics.StackTrace, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public interface ISymbolScope
             {
                 int EndOffset { get; }
@@ -139,7 +139,7 @@ namespace System
                 int StartOffset { get; }
             }
 
-            // Generated from `System.Diagnostics.SymbolStore.ISymbolVariable` in `System.Diagnostics.StackTrace, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Diagnostics.SymbolStore.ISymbolVariable` in `System.Diagnostics.StackTrace, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public interface ISymbolVariable
             {
                 int AddressField1 { get; }
@@ -153,7 +153,7 @@ namespace System
                 int StartOffset { get; }
             }
 
-            // Generated from `System.Diagnostics.SymbolStore.ISymbolWriter` in `System.Diagnostics.StackTrace, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Diagnostics.SymbolStore.ISymbolWriter` in `System.Diagnostics.StackTrace, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public interface ISymbolWriter
             {
                 void Close();
@@ -178,29 +178,29 @@ namespace System
                 void UsingNamespace(string fullName);
             }
 
-            // Generated from `System.Diagnostics.SymbolStore.SymAddressKind` in `System.Diagnostics.StackTrace, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum SymAddressKind
+            // Generated from `System.Diagnostics.SymbolStore.SymAddressKind` in `System.Diagnostics.StackTrace, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            public enum SymAddressKind : int
             {
-                BitField,
-                ILOffset,
-                NativeOffset,
-                NativeRVA,
-                NativeRegister,
-                NativeRegisterRegister,
-                NativeRegisterRelative,
-                NativeRegisterStack,
-                NativeSectionOffset,
-                NativeStackRegister,
+                BitField = 9,
+                ILOffset = 1,
+                NativeOffset = 5,
+                NativeRVA = 2,
+                NativeRegister = 3,
+                NativeRegisterRegister = 6,
+                NativeRegisterRelative = 4,
+                NativeRegisterStack = 7,
+                NativeSectionOffset = 10,
+                NativeStackRegister = 8,
             }
 
-            // Generated from `System.Diagnostics.SymbolStore.SymDocumentType` in `System.Diagnostics.StackTrace, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Diagnostics.SymbolStore.SymDocumentType` in `System.Diagnostics.StackTrace, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class SymDocumentType
             {
                 public SymDocumentType() => throw null;
                 public static System.Guid Text;
             }
 
-            // Generated from `System.Diagnostics.SymbolStore.SymLanguageType` in `System.Diagnostics.StackTrace, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Diagnostics.SymbolStore.SymLanguageType` in `System.Diagnostics.StackTrace, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class SymLanguageType
             {
                 public static System.Guid Basic;
@@ -217,24 +217,24 @@ namespace System
                 public SymLanguageType() => throw null;
             }
 
-            // Generated from `System.Diagnostics.SymbolStore.SymLanguageVendor` in `System.Diagnostics.StackTrace, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Diagnostics.SymbolStore.SymLanguageVendor` in `System.Diagnostics.StackTrace, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class SymLanguageVendor
             {
                 public static System.Guid Microsoft;
                 public SymLanguageVendor() => throw null;
             }
 
-            // Generated from `System.Diagnostics.SymbolStore.SymbolToken` in `System.Diagnostics.StackTrace, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Diagnostics.SymbolStore.SymbolToken` in `System.Diagnostics.StackTrace, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct SymbolToken
             {
                 public static bool operator !=(System.Diagnostics.SymbolStore.SymbolToken a, System.Diagnostics.SymbolStore.SymbolToken b) => throw null;
                 public static bool operator ==(System.Diagnostics.SymbolStore.SymbolToken a, System.Diagnostics.SymbolStore.SymbolToken b) => throw null;
-                public override bool Equals(object obj) => throw null;
                 public bool Equals(System.Diagnostics.SymbolStore.SymbolToken obj) => throw null;
+                public override bool Equals(object obj) => throw null;
                 public override int GetHashCode() => throw null;
                 public int GetToken() => throw null;
-                public SymbolToken(int val) => throw null;
                 // Stub generator skipped constructor 
+                public SymbolToken(int val) => throw null;
             }
 
         }

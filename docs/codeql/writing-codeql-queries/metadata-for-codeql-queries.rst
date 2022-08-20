@@ -49,13 +49,8 @@ The following properties are supported by all query files:
 |                       | | ``warning``             |                                                                                                                                                                                                                                                                                                                                                                       |
 |                       | | ``recommendation``      |                                                                                                                                                                                                                                                                                                                                                                       |
 +-----------------------+---------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-| ``@security-severity``| ``<score>``               | Defines the level of severity, between 0.0 and 10.0, for queries with `@tags security`. For more information about calculating `@security-severity`, see the [GitHub changelog](https://github.blog/changelog/2021-07-19-codeql-code-scanning-new-severity-levels-for-security-alerts/).                                                                              |
+| ``@security-severity``| ``<score>``               | Defines the level of severity, between 0.0 and 10.0, for queries with ``@tags security``. For more information about calculating ``@security-severity``, see the `GitHub changelog <https://github.blog/changelog/2021-07-19-codeql-code-scanning-new-severity-levels-for-security-alerts/>`__.                                                                       |
 +-----------------------+---------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-
-Additional properties for filter queries
-----------------------------------------
-
-Filter queries are used to define additional constraints to limit the results that are returned by other queries. A filter query must have the same ``@kind`` property as the query whose results it is filtering. No additional metadata properties are required.
 
 Example
 -------

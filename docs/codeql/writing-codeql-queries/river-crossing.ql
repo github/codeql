@@ -95,7 +95,7 @@ class State extends string {
     exists(string pathSoFar, string visitedStatesSoFar, Cargo cargo |
       result = this.reachesVia(pathSoFar, visitedStatesSoFar).safeFerry(cargo) and
       // The resulting state has not yet been visited.
-      not exists(int i | i = visitedStatesSoFar.indexOf(result)) and
+      not exists(visitedStatesSoFar.indexOf(result)) and
       visitedStates = visitedStatesSoFar + "/" + result and
       path = pathSoFar + "\n Ferry " + cargo
     )
@@ -115,4 +115,3 @@ class GoalState extends State {
 from string path
 where any(InitialState i).reachesVia(path, _) = any(GoalState g)
 select path
-

@@ -16,15 +16,15 @@ using System.Threading;
 
 namespace Semmle.Extraction.CSharp
 {
+    public enum ExitCode
+    {
+        Ok,         // Everything worked perfectly
+        Errors,     // Trap was generated but there were processing errors
+        Failed      // Trap could not be generated
+    }
+
     public static class Extractor
     {
-        public enum ExitCode
-        {
-            Ok,         // Everything worked perfectly
-            Errors,     // Trap was generated but there were processing errors
-            Failed      // Trap could not be generated
-        }
-
         private class LogProgressMonitor : IProgressMonitor
         {
             private readonly ILogger logger;
@@ -69,6 +69,14 @@ namespace Semmle.Extraction.CSharp
             Thread.CurrentThread.CurrentUICulture = culture;
         }
 
+        public static ILogger MakeLogger(Verbosity verbosity, bool includeConsole)
+        {
+            var fileLogger = new FileLogger(verbosity, GetCSharpLogPath());
+            return includeConsole
+                ? new CombinedLogger(new ConsoleLogger(verbosity), fileLogger)
+                : (ILogger)fileLogger;
+        }
+
         /// <summary>
         /// Command-line driver for the extractor.
         /// </summary>
@@ -86,19 +94,10 @@ namespace Semmle.Extraction.CSharp
             var stopwatch = new Stopwatch();
             stopwatch.Start();
 
-            Entities.Compilation.Settings = (Directory.GetCurrentDirectory(), args);
+            var options = Options.CreateWithEnvironment(args);
+            Entities.Compilation.Settings = (Directory.GetCurrentDirectory(), options.CompilerArguments.ToArray());
 
-            var options = Options.CreateWithEnvironment(Entities.Compilation.Settings.Args);
-            var fileLogger = new FileLogger(options.Verbosity, GetCSharpLogPath());
-            using var logger = options.Console
-                ? new CombinedLogger(new ConsoleLogger(options.Verbosity), fileLogger)
-                : (ILogger)fileLogger;
-
-            if (Environment.GetEnvironmentVariable("SEMMLE_CLRTRACER") == "1" && !options.ClrTracer)
-            {
-                logger.Log(Severity.Info, "Skipping extraction since already extracted from the CLR tracer");
-                return ExitCode.Ok;
-            }
+            using var logger = MakeLogger(options.Verbosity, options.Console);
 
             var canonicalPathCache = CanonicalPathCache.Create(logger, 1000);
             var pathTransformer = new PathTransformer(canonicalPathCache);
@@ -276,7 +275,7 @@ namespace Semmle.Extraction.CSharp
         /// The constructed syntax trees will be added (thread-safely) to the supplied
         /// list <paramref name="ret"/>.
         /// </summary>
-        private static IEnumerable<Action> ReadSyntaxTrees(IEnumerable<string> sources, Analyser analyser, CSharpParseOptions? parseOptions, Encoding? encoding, IList<SyntaxTree> ret)
+        public static IEnumerable<Action> ReadSyntaxTrees(IEnumerable<string> sources, Analyser analyser, CSharpParseOptions? parseOptions, Encoding? encoding, IList<SyntaxTree> ret)
         {
             return sources.Select<string, Action>(path => () =>
             {
@@ -298,31 +297,7 @@ namespace Semmle.Extraction.CSharp
             });
         }
 
-        public static void ExtractStandalone(
-            IEnumerable<string> sources,
-            IEnumerable<string> referencePaths,
-            IProgressMonitor pm,
-            ILogger logger,
-            CommonOptions options)
-        {
-            var stopwatch = new Stopwatch();
-            stopwatch.Start();
-
-            var canonicalPathCache = CanonicalPathCache.Create(logger, 1000);
-            var pathTransformer = new PathTransformer(canonicalPathCache);
-
-            using var analyser = new StandaloneAnalyser(pm, logger, false, pathTransformer);
-            try
-            {
-                AnalyseStandalone(analyser, sources, referencePaths, options, pm, stopwatch);
-            }
-            catch (Exception ex)  // lgtm[cs/catch-of-all-exceptions]
-            {
-                analyser.Logger.Log(Severity.Error, "  Unhandled exception: {0}", ex);
-            }
-        }
-
-        private static ExitCode Analyse(Stopwatch stopwatch, Analyser analyser, CommonOptions options,
+        public static ExitCode Analyse(Stopwatch stopwatch, Analyser analyser, CommonOptions options,
             Func<BlockingCollection<MetadataReference>, IEnumerable<Action>> getResolvedReferenceTasks,
             Func<Analyser, List<SyntaxTree>, IEnumerable<Action>> getSyntaxTreeTasks,
             Func<IEnumerable<SyntaxTree>, IEnumerable<MetadataReference>, CSharpCompilation> getCompilation,
@@ -395,37 +370,6 @@ namespace Semmle.Extraction.CSharp
             return analyser.TotalErrors == 0 ? ExitCode.Ok : ExitCode.Errors;
         }
 
-        private static void AnalyseStandalone(
-            StandaloneAnalyser analyser,
-            IEnumerable<string> sources,
-            IEnumerable<string> referencePaths,
-            CommonOptions options,
-            IProgressMonitor progressMonitor,
-            Stopwatch stopwatch)
-        {
-            Analyse(stopwatch, analyser, options,
-                references => GetResolvedReferencesStandalone(referencePaths, references),
-                (analyser, syntaxTrees) => ReadSyntaxTrees(sources, analyser, null, null, syntaxTrees),
-                (syntaxTrees, references) => CSharpCompilation.Create("csharp.dll", syntaxTrees, references),
-                (compilation, options) => analyser.InitializeStandalone(compilation, options),
-                () => { },
-                _ => { },
-                () =>
-                {
-                    foreach (var type in analyser.MissingNamespaces)
-                    {
-                        progressMonitor.MissingNamespace(type);
-                    }
-
-                    foreach (var type in analyser.MissingTypes)
-                    {
-                        progressMonitor.MissingType(type);
-                    }
-
-                    progressMonitor.MissingSummary(analyser.MissingTypes.Count(), analyser.MissingNamespaces.Count());
-                });
-        }
-
         private static ExitCode AnalyseTracing(
             TracingAnalyser analyser,
             CSharpCommandLineArguments compilerArguments,
@@ -468,15 +412,6 @@ namespace Semmle.Extraction.CSharp
                 () => { });
         }
 
-        private static IEnumerable<Action> GetResolvedReferencesStandalone(IEnumerable<string> referencePaths, BlockingCollection<MetadataReference> references)
-        {
-            return referencePaths.Select<string, Action>(path => () =>
-            {
-                var reference = MetadataReference.CreateFromFile(path);
-                references.Add(reference);
-            });
-        }
-
         /// <summary>
         /// Gets the path to the `csharp.log` file written to by the C# extractor.
         /// </summary>
@@ -492,27 +427,24 @@ namespace Semmle.Extraction.CSharp
         /// <summary>
         /// Gets a list of all `csharp.{hash}.txt` files currently written to the log directory.
         /// </summary>
-        public static IEnumerable<string> GetCSharpArgsLogs() =>
-            Directory.EnumerateFiles(GetCSharpLogDirectory(), "csharp.*.txt");
+        public static IEnumerable<string> GetCSharpArgsLogs()
+        {
+            try
+            {
+                return Directory.EnumerateFiles(GetCSharpLogDirectory(), "csharp.*.txt");
+            }
+            catch (DirectoryNotFoundException)
+            {
+                // If the directory does not exist, there are no log files
+                return Enumerable.Empty<string>();
+            }
+        }
 
         private static string GetCSharpLogDirectory()
         {
             var codeQlLogDir = Environment.GetEnvironmentVariable("CODEQL_EXTRACTOR_CSHARP_LOG_DIR");
             if (!string.IsNullOrEmpty(codeQlLogDir))
                 return codeQlLogDir;
-
-            var snapshot = Environment.GetEnvironmentVariable("ODASA_SNAPSHOT");
-            if (!string.IsNullOrEmpty(snapshot))
-                return Path.Combine(snapshot, "log");
-
-            var buildErrorDir = Environment.GetEnvironmentVariable("ODASA_BUILD_ERROR_DIR");
-            if (!string.IsNullOrEmpty(buildErrorDir))
-                // Used by `qltest`
-                return buildErrorDir;
-
-            var traps = Environment.GetEnvironmentVariable("TRAP_FOLDER");
-            if (!string.IsNullOrEmpty(traps))
-                return traps;
 
             return Directory.GetCurrentDirectory();
         }

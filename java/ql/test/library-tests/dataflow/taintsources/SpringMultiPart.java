@@ -4,22 +4,24 @@ import org.springframework.web.multipart.MultipartRequest;
 public class SpringMultiPart {
 	MultipartFile file;
 
+	private static void sink(Object o) {}
+
 	public void test() throws Exception {
-		file.getBytes();
-		file.isEmpty();
-		file.getInputStream();
-		file.getResource();
-		file.getName();
-		file.getContentType();
-		file.getOriginalFilename();
+		sink(file.getBytes()); // $hasRemoteValueFlow
+		sink(file.isEmpty()); // Safe
+		sink(file.getInputStream()); // $hasRemoteValueFlow
+		sink(file.getResource()); // $hasRemoteValueFlow
+		sink(file.getName()); // $hasRemoteValueFlow
+		sink(file.getContentType()); // $hasRemoteValueFlow
+		sink(file.getOriginalFilename()); // $hasRemoteValueFlow
 	}
-	
+
 	public void test(MultipartRequest request) {
-		request.getFile("name");
-		request.getFileMap();
-		request.getFileNames();
-		request.getFiles("name");
-		request.getMultiFileMap();
-		request.getMultipartContentType("name");
+		sink(request.getFile("name"));// $hasRemoteValueFlow
+		sink(request.getFileMap());// $hasRemoteValueFlow
+		sink(request.getFileNames());// $hasRemoteValueFlow
+		sink(request.getFiles("name"));// $hasRemoteValueFlow
+		sink(request.getMultiFileMap());// $hasRemoteValueFlow
+		sink(request.getMultipartContentType("name")); // $hasRemoteValueFlow
 	}
 }

@@ -5,7 +5,7 @@ class CheckPathSanitizerGuard extends TaintTracking::SanitizerGuardNode, DataFlo
 
   override predicate sanitizes(boolean outcome, Expr e) {
     outcome = true and
-    e = getArgument(0).asExpr()
+    e = this.getArgument(0).asExpr()
   }
 }
 

@@ -1,0 +1,14 @@
+edges
+| InsecureSQLConnection.cs:44:17:44:64 | "Server=1.2.3.4;Database=Anything;UID=ab;Pwd=cd" : String | InsecureSQLConnection.cs:46:81:46:93 | access to local variable connectString |
+| InsecureSQLConnection.cs:53:17:53:78 | "Server=1.2.3.4;Database=Anything;UID=ab;Pwd=cd;Encrypt=false" : String | InsecureSQLConnection.cs:55:81:55:93 | access to local variable connectString |
+nodes
+| InsecureSQLConnection.cs:38:52:38:128 | "Server=myServerName\\myInstanceName;Database=myDataBase;User Id=myUsername;" | semmle.label | "Server=myServerName\\myInstanceName;Database=myDataBase;User Id=myUsername;" |
+| InsecureSQLConnection.cs:44:17:44:64 | "Server=1.2.3.4;Database=Anything;UID=ab;Pwd=cd" : String | semmle.label | "Server=1.2.3.4;Database=Anything;UID=ab;Pwd=cd" : String |
+| InsecureSQLConnection.cs:46:81:46:93 | access to local variable connectString | semmle.label | access to local variable connectString |
+| InsecureSQLConnection.cs:53:17:53:78 | "Server=1.2.3.4;Database=Anything;UID=ab;Pwd=cd;Encrypt=false" : String | semmle.label | "Server=1.2.3.4;Database=Anything;UID=ab;Pwd=cd;Encrypt=false" : String |
+| InsecureSQLConnection.cs:55:81:55:93 | access to local variable connectString | semmle.label | access to local variable connectString |
+subpaths
+#select
+| InsecureSQLConnection.cs:38:52:38:128 | "Server=myServerName\\myInstanceName;Database=myDataBase;User Id=myUsername;" | InsecureSQLConnection.cs:38:52:38:128 | "Server=myServerName\\myInstanceName;Database=myDataBase;User Id=myUsername;" | InsecureSQLConnection.cs:38:52:38:128 | "Server=myServerName\\myInstanceName;Database=myDataBase;User Id=myUsername;" | $@ flows to here and does not specify `Encrypt=True`. | InsecureSQLConnection.cs:38:52:38:128 | "Server=myServerName\\myInstanceName;Database=myDataBase;User Id=myUsername;" | Connection string |
+| InsecureSQLConnection.cs:46:81:46:93 | access to local variable connectString | InsecureSQLConnection.cs:44:17:44:64 | "Server=1.2.3.4;Database=Anything;UID=ab;Pwd=cd" : String | InsecureSQLConnection.cs:46:81:46:93 | access to local variable connectString | $@ flows to here and does not specify `Encrypt=True`. | InsecureSQLConnection.cs:44:17:44:64 | "Server=1.2.3.4;Database=Anything;UID=ab;Pwd=cd" | Connection string |
+| InsecureSQLConnection.cs:55:81:55:93 | access to local variable connectString | InsecureSQLConnection.cs:53:17:53:78 | "Server=1.2.3.4;Database=Anything;UID=ab;Pwd=cd;Encrypt=false" : String | InsecureSQLConnection.cs:55:81:55:93 | access to local variable connectString | $@ flows to here and does not specify `Encrypt=True`. | InsecureSQLConnection.cs:53:17:53:78 | "Server=1.2.3.4;Database=Anything;UID=ab;Pwd=cd;Encrypt=false" | Connection string |

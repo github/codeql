@@ -12,7 +12,7 @@
  */
 
 import javascript
-import semmle.javascript.security.dataflow.UnsafeDeserialization::UnsafeDeserialization
+import semmle.javascript.security.dataflow.UnsafeDeserializationQuery
 import DataFlow::PathGraph
 
 from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink

@@ -6,7 +6,9 @@
   prepend --cil
 **/mono*:
 **/dotnet:
-  invoke ${config_dir}/extract-csharp.sh
+  invoke ${config_dir}/Semmle.Extraction.CSharp.Driver
+  prepend --dotnetexec
+  prepend --cil
 **/msbuild:
 **/xbuild:
   replace yes

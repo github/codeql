@@ -13,4 +13,4 @@ Experiment and learn how to write effective and efficient queries for CodeQL dat
    codeql-for-java
    codeql-for-javascript
    codeql-for-python
-   
+   codeql-for-ruby

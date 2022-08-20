@@ -16,9 +16,13 @@ namespace Semmle.Extraction.CSharp.Populators
                 new UsingDirective(Cx, usingDirective, (NamespaceDeclaration)Parent);
         }
 
-        public override void VisitNamespaceDeclaration(NamespaceDeclarationSyntax node)
-        {
+        private void CreateNamespaceDeclaration(BaseNamespaceDeclarationSyntax node) =>
             NamespaceDeclaration.Create(Cx, node, (NamespaceDeclaration)Parent);
-        }
+
+        public override void VisitNamespaceDeclaration(NamespaceDeclarationSyntax node) =>
+            CreateNamespaceDeclaration(node);
+
+        public override void VisitFileScopedNamespaceDeclaration(FileScopedNamespaceDeclarationSyntax node) =>
+            CreateNamespaceDeclaration(node);
     }
 }

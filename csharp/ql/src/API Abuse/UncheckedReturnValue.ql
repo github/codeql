@@ -103,11 +103,11 @@ class DiscardedMethodCall extends MethodCall {
 
   string query() {
     exists(Method m |
-      m = getTarget() and
+      m = this.getTarget() and
       not whitelist(m) and
       // Do not alert on "void wrapper methods", i.e., methods that are inserted
       // to deliberately ignore the returned value
-      not getEnclosingCallable().getStatementBody().getNumberOfStmts() = 1
+      not this.getEnclosingCallable().getStatementBody().getNumberOfStmts() = 1
     |
       important(m) and result = "should always be checked"
       or

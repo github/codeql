@@ -53,3 +53,12 @@ def ok5(seq):
 
 def ok6(seq):
     yield next(iter([]), default='foo')    
+
+# Handling for multiple exception types, one of which is `StopIteration`
+# Reported as a false positive in github/codeql#6227
+def ok7(seq, ctx):
+    try:
+        with ctx:
+            yield next(iter)
+    except (StopIteration, MemoryError):
+        return

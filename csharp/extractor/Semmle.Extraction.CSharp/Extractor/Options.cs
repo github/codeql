@@ -28,11 +28,6 @@ namespace Semmle.Extraction.CSharp
         public IList<string> CompilerArguments { get; } = new List<string>();
 
         /// <summary>
-        /// Holds if the extractor was launched from the CLR tracer.
-        /// </summary>
-        public bool ClrTracer { get; private set; } = false;
-
-        /// <summary>
         /// Holds if assembly information should be prefixed to TRAP labels.
         /// </summary>
         public bool AssemblySensitiveTrap { get; private set; } = false;
@@ -40,13 +35,14 @@ namespace Semmle.Extraction.CSharp
         public static Options CreateWithEnvironment(string[] arguments)
         {
             var options = new Options();
-            var extractionOptions = Environment.GetEnvironmentVariable("SEMMLE_EXTRACTOR_OPTIONS") ??
-                Environment.GetEnvironmentVariable("LGTM_INDEX_EXTRACTOR");
+            var extractionOptions = Environment.GetEnvironmentVariable("LGTM_INDEX_EXTRACTOR");
 
             var argsList = new List<string>(arguments);
 
             if (!string.IsNullOrEmpty(extractionOptions))
+            {
                 argsList.AddRange(extractionOptions.Split(' '));
+            }
 
             options.ParseArguments(argsList);
             return options;
@@ -86,9 +82,6 @@ namespace Semmle.Extraction.CSharp
         {
             switch (flag)
             {
-                case "clrtracer":
-                    ClrTracer = value;
-                    return true;
                 case "assemblysensitivetrap":
                     AssemblySensitiveTrap = value;
                     return true;

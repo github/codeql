@@ -1,0 +1,16 @@
+edges
+| tests.cpp:26:15:26:23 | ReturnValue | tests.cpp:51:12:51:20 | call to badSource |
+| tests.cpp:33:34:33:39 | call to getenv | tests.cpp:38:39:38:49 | environment indirection |
+| tests.cpp:38:25:38:36 | strncat output argument | tests.cpp:26:15:26:23 | ReturnValue |
+| tests.cpp:38:39:38:49 | environment indirection | tests.cpp:38:25:38:36 | strncat output argument |
+| tests.cpp:51:12:51:20 | call to badSource | tests.cpp:53:16:53:19 | data indirection |
+nodes
+| tests.cpp:26:15:26:23 | ReturnValue | semmle.label | ReturnValue |
+| tests.cpp:33:34:33:39 | call to getenv | semmle.label | call to getenv |
+| tests.cpp:38:25:38:36 | strncat output argument | semmle.label | strncat output argument |
+| tests.cpp:38:39:38:49 | environment indirection | semmle.label | environment indirection |
+| tests.cpp:51:12:51:20 | call to badSource | semmle.label | call to badSource |
+| tests.cpp:53:16:53:19 | data indirection | semmle.label | data indirection |
+subpaths
+#select
+| tests.cpp:53:16:53:19 | data | tests.cpp:33:34:33:39 | call to getenv | tests.cpp:53:16:53:19 | data indirection | This argument to an OS command is derived from $@, dangerously concatenated into $@, and then passed to system(string) | tests.cpp:33:34:33:39 | call to getenv | user input (an environment variable) | tests.cpp:38:25:38:36 | strncat output argument | strncat output argument |

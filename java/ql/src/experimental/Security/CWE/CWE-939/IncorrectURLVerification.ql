@@ -8,14 +8,14 @@
  * @precision medium
  * @id java/incorrect-url-verification
  * @tags security
- *       external/cwe-939
+ *       external/cwe/cwe-939
  */
 
 import java
 
 /**
  * The Java class `android.R.string` specific to Android applications, which contains references to application specific resources defined in /res/values/strings.xml.
- * For example, <resources>...<string name="host">example.com</string>...</resources> in the application com.example.android.web can be referred as R.string.host with the type com.example.android.web.R$string
+ * For example, `<resources>...<string name="host">example.com</string>...</resources>` in the application com.example.android.web can be referred as R.string.host with the type com.example.android.web.R$string
  */
 class AndroidRString extends RefType {
   AndroidRString() { this.hasQualifiedName(_, "R$string") }
@@ -26,8 +26,8 @@ class AndroidRString extends RefType {
  */
 class Uri extends RefType {
   Uri() {
-    hasQualifiedName("android.net", "Uri") or
-    hasQualifiedName("java.net", "URL")
+    this.hasQualifiedName("android.net", "Uri") or
+    this.hasQualifiedName("java.net", "URL")
   }
 }
 
@@ -36,14 +36,14 @@ class Uri extends RefType {
  */
 class UriGetHostMethod extends Method {
   UriGetHostMethod() {
-    getDeclaringType() instanceof Uri and
-    hasName("getHost") and
-    getNumberOfParameters() = 0
+    this.getDeclaringType() instanceof Uri and
+    this.hasName("getHost") and
+    this.getNumberOfParameters() = 0
   }
 }
 
 /**
- * The method access with incorrect string comparision
+ * The method access with incorrect string comparison
  */
 class HostVerificationMethodAccess extends MethodAccess {
   HostVerificationMethodAccess() {
@@ -54,7 +54,7 @@ class HostVerificationMethodAccess extends MethodAccess {
     ) and
     this.getMethod().getNumberOfParameters() = 1 and
     (
-      this.getArgument(0).(StringLiteral).getRepresentedString().charAt(0) != "." //string constant comparison e.g. uri.getHost().endsWith("example.com")
+      this.getArgument(0).(StringLiteral).getValue().charAt(0) != "." //string constant comparison e.g. uri.getHost().endsWith("example.com")
       or
       this.getArgument(0)
           .(AddExpr)
@@ -63,15 +63,10 @@ class HostVerificationMethodAccess extends MethodAccess {
           .getVariable()
           .getAnAssignedValue()
           .(StringLiteral)
-          .getRepresentedString()
+          .getValue()
           .charAt(0) != "." //var1+var2, check var1 starts with "." e.g. String domainName = "example"; Uri.parse(url).getHost().endsWith(domainName+".com")
       or
-      this.getArgument(0)
-          .(AddExpr)
-          .getLeftOperand()
-          .(StringLiteral)
-          .getRepresentedString()
-          .charAt(0) != "." //"."+var2, check string constant "." e.g. String domainName = "example.com";  Uri.parse(url).getHost().endsWith("www."+domainName)
+      this.getArgument(0).(AddExpr).getLeftOperand().(StringLiteral).getValue().charAt(0) != "." //"."+var2, check string constant "." e.g. String domainName = "example.com";  Uri.parse(url).getHost().endsWith("www."+domainName)
       or
       exists(MethodAccess ma, Method m, Field f |
         this.getArgument(0) = ma and
@@ -87,7 +82,7 @@ class HostVerificationMethodAccess extends MethodAccess {
           .getVariable()
           .getAnAssignedValue()
           .(StringLiteral)
-          .getRepresentedString()
+          .getValue()
           .charAt(0) != "." //check variable starts with "." e.g. String domainName = "example.com";  Uri.parse(url).getHost().endsWith(domainName)
     )
   }

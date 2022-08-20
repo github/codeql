@@ -52,10 +52,7 @@ IntValue getArrayDim(Variable arr) {
     arr.getInitializer() = ac and
     if exists(ac.getLengthArgument(0))
     then result = ac.getLengthArgument(0).getValue().toInt()
-    else
-      if exists(ac.getInitializer())
-      then result = ac.getInitializer().getNumberOfElements()
-      else none()
+    else result = ac.getInitializer().getNumberOfElements()
   )
 }
 

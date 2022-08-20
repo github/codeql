@@ -1,0 +1,46 @@
+edges
+| app/controllers/foo/stores_controller.rb:8:10:8:29 | call to read :  | app/controllers/foo/stores_controller.rb:9:22:9:23 | dt :  |
+| app/controllers/foo/stores_controller.rb:8:10:8:29 | call to read :  | app/controllers/foo/stores_controller.rb:13:55:13:56 | dt :  |
+| app/controllers/foo/stores_controller.rb:9:22:9:23 | dt :  | app/views/foo/stores/show.html.erb:38:3:38:16 | @instance_text |
+| app/controllers/foo/stores_controller.rb:12:28:12:48 | call to raw_name :  | app/views/foo/stores/show.html.erb:84:5:84:24 | @other_user_raw_name |
+| app/controllers/foo/stores_controller.rb:13:55:13:56 | dt :  | app/views/foo/stores/show.html.erb:2:9:2:20 | call to display_text |
+| app/controllers/foo/stores_controller.rb:13:55:13:56 | dt :  | app/views/foo/stores/show.html.erb:5:9:5:36 | ...[...] |
+| app/controllers/foo/stores_controller.rb:13:55:13:56 | dt :  | app/views/foo/stores/show.html.erb:9:9:9:26 | ...[...] |
+| app/controllers/foo/stores_controller.rb:13:55:13:56 | dt :  | app/views/foo/stores/show.html.erb:33:3:33:14 | call to display_text |
+| app/controllers/foo/stores_controller.rb:13:55:13:56 | dt :  | app/views/foo/stores/show.html.erb:41:76:41:87 | call to display_text :  |
+| app/views/foo/stores/show.html.erb:41:64:41:87 | ... + ... :  | app/views/foo/bars/_widget.html.erb:5:9:5:20 | call to display_text |
+| app/views/foo/stores/show.html.erb:41:64:41:87 | ... + ... :  | app/views/foo/bars/_widget.html.erb:8:9:8:36 | ...[...] |
+| app/views/foo/stores/show.html.erb:41:76:41:87 | call to display_text :  | app/views/foo/stores/show.html.erb:41:64:41:87 | ... + ... :  |
+nodes
+| app/controllers/foo/stores_controller.rb:8:10:8:29 | call to read :  | semmle.label | call to read :  |
+| app/controllers/foo/stores_controller.rb:9:22:9:23 | dt :  | semmle.label | dt :  |
+| app/controllers/foo/stores_controller.rb:12:28:12:48 | call to raw_name :  | semmle.label | call to raw_name :  |
+| app/controllers/foo/stores_controller.rb:13:55:13:56 | dt :  | semmle.label | dt :  |
+| app/views/foo/bars/_widget.html.erb:5:9:5:20 | call to display_text | semmle.label | call to display_text |
+| app/views/foo/bars/_widget.html.erb:8:9:8:36 | ...[...] | semmle.label | ...[...] |
+| app/views/foo/stores/show.html.erb:2:9:2:20 | call to display_text | semmle.label | call to display_text |
+| app/views/foo/stores/show.html.erb:5:9:5:36 | ...[...] | semmle.label | ...[...] |
+| app/views/foo/stores/show.html.erb:9:9:9:26 | ...[...] | semmle.label | ...[...] |
+| app/views/foo/stores/show.html.erb:33:3:33:14 | call to display_text | semmle.label | call to display_text |
+| app/views/foo/stores/show.html.erb:38:3:38:16 | @instance_text | semmle.label | @instance_text |
+| app/views/foo/stores/show.html.erb:41:64:41:87 | ... + ... :  | semmle.label | ... + ... :  |
+| app/views/foo/stores/show.html.erb:41:76:41:87 | call to display_text :  | semmle.label | call to display_text :  |
+| app/views/foo/stores/show.html.erb:47:5:47:16 | call to handle | semmle.label | call to handle |
+| app/views/foo/stores/show.html.erb:50:5:50:18 | call to raw_name | semmle.label | call to raw_name |
+| app/views/foo/stores/show.html.erb:64:3:64:18 | call to handle | semmle.label | call to handle |
+| app/views/foo/stores/show.html.erb:70:3:70:20 | call to raw_name | semmle.label | call to raw_name |
+| app/views/foo/stores/show.html.erb:84:5:84:24 | @other_user_raw_name | semmle.label | @other_user_raw_name |
+subpaths
+#select
+| app/views/foo/bars/_widget.html.erb:5:9:5:20 | call to display_text | app/controllers/foo/stores_controller.rb:8:10:8:29 | call to read :  | app/views/foo/bars/_widget.html.erb:5:9:5:20 | call to display_text | Cross-site scripting vulnerability due to $@ | app/controllers/foo/stores_controller.rb:8:10:8:29 | call to read | stored value |
+| app/views/foo/bars/_widget.html.erb:8:9:8:36 | ...[...] | app/controllers/foo/stores_controller.rb:8:10:8:29 | call to read :  | app/views/foo/bars/_widget.html.erb:8:9:8:36 | ...[...] | Cross-site scripting vulnerability due to $@ | app/controllers/foo/stores_controller.rb:8:10:8:29 | call to read | stored value |
+| app/views/foo/stores/show.html.erb:2:9:2:20 | call to display_text | app/controllers/foo/stores_controller.rb:8:10:8:29 | call to read :  | app/views/foo/stores/show.html.erb:2:9:2:20 | call to display_text | Cross-site scripting vulnerability due to $@ | app/controllers/foo/stores_controller.rb:8:10:8:29 | call to read | stored value |
+| app/views/foo/stores/show.html.erb:5:9:5:36 | ...[...] | app/controllers/foo/stores_controller.rb:8:10:8:29 | call to read :  | app/views/foo/stores/show.html.erb:5:9:5:36 | ...[...] | Cross-site scripting vulnerability due to $@ | app/controllers/foo/stores_controller.rb:8:10:8:29 | call to read | stored value |
+| app/views/foo/stores/show.html.erb:9:9:9:26 | ...[...] | app/controllers/foo/stores_controller.rb:8:10:8:29 | call to read :  | app/views/foo/stores/show.html.erb:9:9:9:26 | ...[...] | Cross-site scripting vulnerability due to $@ | app/controllers/foo/stores_controller.rb:8:10:8:29 | call to read | stored value |
+| app/views/foo/stores/show.html.erb:33:3:33:14 | call to display_text | app/controllers/foo/stores_controller.rb:8:10:8:29 | call to read :  | app/views/foo/stores/show.html.erb:33:3:33:14 | call to display_text | Cross-site scripting vulnerability due to $@ | app/controllers/foo/stores_controller.rb:8:10:8:29 | call to read | stored value |
+| app/views/foo/stores/show.html.erb:38:3:38:16 | @instance_text | app/controllers/foo/stores_controller.rb:8:10:8:29 | call to read :  | app/views/foo/stores/show.html.erb:38:3:38:16 | @instance_text | Cross-site scripting vulnerability due to $@ | app/controllers/foo/stores_controller.rb:8:10:8:29 | call to read | stored value |
+| app/views/foo/stores/show.html.erb:47:5:47:16 | call to handle | app/views/foo/stores/show.html.erb:47:5:47:16 | call to handle | app/views/foo/stores/show.html.erb:47:5:47:16 | call to handle | Cross-site scripting vulnerability due to $@ | app/views/foo/stores/show.html.erb:47:5:47:16 | call to handle | stored value |
+| app/views/foo/stores/show.html.erb:50:5:50:18 | call to raw_name | app/views/foo/stores/show.html.erb:50:5:50:18 | call to raw_name | app/views/foo/stores/show.html.erb:50:5:50:18 | call to raw_name | Cross-site scripting vulnerability due to $@ | app/views/foo/stores/show.html.erb:50:5:50:18 | call to raw_name | stored value |
+| app/views/foo/stores/show.html.erb:64:3:64:18 | call to handle | app/views/foo/stores/show.html.erb:64:3:64:18 | call to handle | app/views/foo/stores/show.html.erb:64:3:64:18 | call to handle | Cross-site scripting vulnerability due to $@ | app/views/foo/stores/show.html.erb:64:3:64:18 | call to handle | stored value |
+| app/views/foo/stores/show.html.erb:70:3:70:20 | call to raw_name | app/views/foo/stores/show.html.erb:70:3:70:20 | call to raw_name | app/views/foo/stores/show.html.erb:70:3:70:20 | call to raw_name | Cross-site scripting vulnerability due to $@ | app/views/foo/stores/show.html.erb:70:3:70:20 | call to raw_name | stored value |
+| app/views/foo/stores/show.html.erb:84:5:84:24 | @other_user_raw_name | app/controllers/foo/stores_controller.rb:12:28:12:48 | call to raw_name :  | app/views/foo/stores/show.html.erb:84:5:84:24 | @other_user_raw_name | Cross-site scripting vulnerability due to $@ | app/controllers/foo/stores_controller.rb:12:28:12:48 | call to raw_name | stored value |

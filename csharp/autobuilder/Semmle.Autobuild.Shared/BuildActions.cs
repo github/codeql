@@ -161,8 +161,11 @@ namespace Semmle.Autobuild.Shared
                 pi.WorkingDirectory = workingDirectory;
 
             // Environment variables can only be used when not redirecting stdout
-            if (!redirectStandardOutput && environment is not null)
-                environment.ForEach(kvp => pi.Environment[kvp.Key] = kvp.Value);
+            if (!redirectStandardOutput)
+            {
+                if (environment is not null)
+                    environment.ForEach(kvp => pi.Environment[kvp.Key] = kvp.Value);
+            }
             return pi;
         }
 

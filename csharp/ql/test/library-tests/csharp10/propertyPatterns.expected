@@ -1,0 +1,73 @@
+propertyPatterns
+| PropertyPatterns.cs:14:18:14:33 | { ... } |
+| PropertyPatterns.cs:14:24:14:31 | { ... } |
+| PropertyPatterns.cs:18:18:18:28 | { ... } |
+| PropertyPatterns.cs:18:20:18:21 | { ... } |
+| PropertyPatterns.cs:25:18:25:40 | { ... } |
+| PropertyPatterns.cs:25:23:25:38 | { ... } |
+| PropertyPatterns.cs:25:29:25:36 | { ... } |
+| PropertyPatterns.cs:29:18:29:30 | { ... } |
+| PropertyPatterns.cs:29:20:29:20 | { ... } |
+| PropertyPatterns.cs:29:22:29:23 | { ... } |
+| PropertyPatterns.cs:36:18:36:35 | { ... } |
+| PropertyPatterns.cs:36:23:36:33 | { ... } |
+| PropertyPatterns.cs:36:25:36:26 | { ... } |
+| PropertyPatterns.cs:40:18:40:35 | { ... } |
+| PropertyPatterns.cs:40:20:40:20 | { ... } |
+| PropertyPatterns.cs:40:26:40:33 | { ... } |
+| PropertyPatterns.cs:47:18:47:47 | { ... } |
+| PropertyPatterns.cs:47:24:47:31 | { ... } |
+| PropertyPatterns.cs:47:38:47:45 | { ... } |
+| PropertyPatterns.cs:51:18:51:38 | { ... } |
+| PropertyPatterns.cs:51:20:51:21 | { ... } |
+| PropertyPatterns.cs:51:29:51:30 | { ... } |
+propertyPatternChild
+| PropertyPatterns.cs:14:18:14:33 | { ... } | 0 | PropertyPatterns.cs:14:24:14:31 | { ... } |
+| PropertyPatterns.cs:14:24:14:31 | { ... } | 0 | PropertyPatterns.cs:14:29:14:29 | 1 |
+| PropertyPatterns.cs:18:18:18:28 | { ... } | 0 | PropertyPatterns.cs:18:20:18:21 | { ... } |
+| PropertyPatterns.cs:18:20:18:21 | { ... } | 0 | PropertyPatterns.cs:18:26:18:26 | 2 |
+| PropertyPatterns.cs:25:18:25:40 | { ... } | 0 | PropertyPatterns.cs:25:23:25:38 | { ... } |
+| PropertyPatterns.cs:25:23:25:38 | { ... } | 0 | PropertyPatterns.cs:25:29:25:36 | { ... } |
+| PropertyPatterns.cs:25:29:25:36 | { ... } | 0 | PropertyPatterns.cs:25:34:25:34 | 3 |
+| PropertyPatterns.cs:29:18:29:30 | { ... } | 0 | PropertyPatterns.cs:29:20:29:20 | { ... } |
+| PropertyPatterns.cs:29:20:29:20 | { ... } | 0 | PropertyPatterns.cs:29:22:29:23 | { ... } |
+| PropertyPatterns.cs:29:22:29:23 | { ... } | 0 | PropertyPatterns.cs:29:28:29:28 | 4 |
+| PropertyPatterns.cs:36:18:36:35 | { ... } | 0 | PropertyPatterns.cs:36:23:36:33 | { ... } |
+| PropertyPatterns.cs:36:23:36:33 | { ... } | 0 | PropertyPatterns.cs:36:25:36:26 | { ... } |
+| PropertyPatterns.cs:36:25:36:26 | { ... } | 0 | PropertyPatterns.cs:36:31:36:31 | 5 |
+| PropertyPatterns.cs:40:18:40:35 | { ... } | 0 | PropertyPatterns.cs:40:20:40:20 | { ... } |
+| PropertyPatterns.cs:40:20:40:20 | { ... } | 0 | PropertyPatterns.cs:40:26:40:33 | { ... } |
+| PropertyPatterns.cs:40:26:40:33 | { ... } | 0 | PropertyPatterns.cs:40:31:40:31 | 6 |
+| PropertyPatterns.cs:47:18:47:47 | { ... } | 0 | PropertyPatterns.cs:47:24:47:31 | { ... } |
+| PropertyPatterns.cs:47:18:47:47 | { ... } | 1 | PropertyPatterns.cs:47:38:47:45 | { ... } |
+| PropertyPatterns.cs:47:24:47:31 | { ... } | 0 | PropertyPatterns.cs:47:29:47:29 | 7 |
+| PropertyPatterns.cs:47:38:47:45 | { ... } | 0 | PropertyPatterns.cs:47:43:47:43 | 8 |
+| PropertyPatterns.cs:51:18:51:38 | { ... } | 0 | PropertyPatterns.cs:51:20:51:21 | { ... } |
+| PropertyPatterns.cs:51:18:51:38 | { ... } | 1 | PropertyPatterns.cs:51:29:51:30 | { ... } |
+| PropertyPatterns.cs:51:20:51:21 | { ... } | 0 | PropertyPatterns.cs:51:26:51:26 | 9 |
+| PropertyPatterns.cs:51:29:51:30 | { ... } | 0 | PropertyPatterns.cs:51:35:51:36 | 10 |
+propertyPatternLabels
+| PropertyPatterns.cs:14:24:14:31 | { ... } | P1 |
+| PropertyPatterns.cs:14:29:14:29 | 1 | X |
+| PropertyPatterns.cs:18:20:18:21 | { ... } | P1 |
+| PropertyPatterns.cs:18:26:18:26 | 2 | X |
+| PropertyPatterns.cs:25:23:25:38 | { ... } | L |
+| PropertyPatterns.cs:25:29:25:36 | { ... } | P2 |
+| PropertyPatterns.cs:25:34:25:34 | 3 | Y |
+| PropertyPatterns.cs:29:20:29:20 | { ... } | L |
+| PropertyPatterns.cs:29:22:29:23 | { ... } | P2 |
+| PropertyPatterns.cs:29:28:29:28 | 4 | Y |
+| PropertyPatterns.cs:36:23:36:33 | { ... } | L |
+| PropertyPatterns.cs:36:25:36:26 | { ... } | P2 |
+| PropertyPatterns.cs:36:31:36:31 | 5 | Y |
+| PropertyPatterns.cs:40:20:40:20 | { ... } | L |
+| PropertyPatterns.cs:40:26:40:33 | { ... } | P2 |
+| PropertyPatterns.cs:40:31:40:31 | 6 | Y |
+| PropertyPatterns.cs:47:24:47:31 | { ... } | P1 |
+| PropertyPatterns.cs:47:29:47:29 | 7 | X |
+| PropertyPatterns.cs:47:38:47:45 | { ... } | P1 |
+| PropertyPatterns.cs:47:43:47:43 | 8 | Y |
+| PropertyPatterns.cs:51:20:51:21 | { ... } | P1 |
+| PropertyPatterns.cs:51:26:51:26 | 9 | X |
+| PropertyPatterns.cs:51:29:51:30 | { ... } | P1 |
+| PropertyPatterns.cs:51:35:51:36 | 10 | Y |

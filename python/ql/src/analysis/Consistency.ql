@@ -5,18 +5,13 @@
  */
 
 import python
-import DefinitionTracking
+import analysis.DefinitionTracking
 
 predicate uniqueness_error(int number, string what, string problem) {
-  (
-    what = "toString" or
-    what = "getLocation" or
-    what = "getNode" or
-    what = "getDefinition" or
-    what = "getEntryNode" or
-    what = "getOrigin" or
-    what = "getAnInferredType"
-  ) and
+  what in [
+      "toString", "getLocation", "getNode", "getDefinition", "getEntryNode", "getOrigin",
+      "getAnInferredType"
+    ] and
   (
     number = 0 and problem = "no results for " + what + "()"
     or
@@ -141,7 +136,7 @@ predicate builtin_object_consistency(string clsname, string problem, string what
     or
     not exists(o.toString()) and
     problem = "no toString" and
-    not exists(string name | name.prefix(7) = "_semmle" | py_special_objects(o, name)) and
+    not exists(string name | name.matches("\\_semmle%") | py_special_objects(o, name)) and
     not o = unknownValue()
   )
 }
@@ -199,7 +194,7 @@ predicate function_object_consistency(string clsname, string problem, string wha
   exists(FunctionObject func | clsname = func.getAQlClass() |
     what = func.getName() and
     (
-      count(func.descriptiveString()) = 0 and problem = "no descriptiveString()"
+      not exists(func.descriptiveString()) and problem = "no descriptiveString()"
       or
       exists(int c | c = strictcount(func.descriptiveString()) and c > 1 |
         problem = c + "descriptiveString()s"
@@ -264,7 +259,7 @@ predicate file_consistency(string clsname, string problem, string what) {
   exists(Container f |
     clsname = f.getAQlClass() and
     uniqueness_error(count(f.toString()), "toString", problem) and
-    what = "file " + f.getName()
+    what = "file " + f.getAbsolutePath()
   )
 }
 

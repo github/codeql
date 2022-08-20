@@ -1,0 +1,77 @@
+| class_variables.rb:1:1:29:4 | class_variables.rb |
+| class_variables.rb:5:1:7:3 | print |
+| class_variables.rb:9:1:16:3 | X |
+| class_variables.rb:10:3:12:5 | b |
+| class_variables.rb:13:3:15:5 | s |
+| class_variables.rb:18:1:20:3 | Y |
+| class_variables.rb:22:1:24:3 | M |
+| class_variables.rb:26:1:29:3 | N |
+| instance_variables.rb:1:1:44:4 | instance_variables.rb |
+| instance_variables.rb:3:1:5:3 | foo |
+| instance_variables.rb:7:1:9:3 | print_foo |
+| instance_variables.rb:13:1:18:3 | X |
+| instance_variables.rb:15:3:17:5 | m |
+| instance_variables.rb:20:1:25:3 | M |
+| instance_variables.rb:22:2:24:4 | n |
+| instance_variables.rb:27:6:29:1 | { ... } |
+| instance_variables.rb:31:1:33:3 | bar |
+| instance_variables.rb:32:10:32:21 | { ... } |
+| instance_variables.rb:35:1:44:4 | C |
+| instance_variables.rb:37:3:43:5 | x |
+| instance_variables.rb:38:4:40:6 | y |
+| nested_scopes.rb:1:1:3:3 | a |
+| nested_scopes.rb:1:1:42:1 | nested_scopes.rb |
+| nested_scopes.rb:4:1:39:3 | C |
+| nested_scopes.rb:6:3:37:5 | M |
+| nested_scopes.rb:8:5:35:7 | N |
+| nested_scopes.rb:10:7:26:9 | D |
+| nested_scopes.rb:12:9:21:11 | show_a |
+| nested_scopes.rb:15:19:20:13 | do ... end |
+| nested_scopes.rb:16:21:19:15 | do ... end |
+| nested_scopes.rb:18:23:18:36 | { ... } |
+| nested_scopes.rb:22:9:24:11 | show_a2 |
+| nested_scopes.rb:27:7:29:9 | show |
+| nested_scopes.rb:30:7:33:9 | class << ... |
+| parameters.rb:1:1:62:1 | parameters.rb |
+| parameters.rb:1:9:5:3 | do ... end |
+| parameters.rb:7:1:13:3 | order_pizza |
+| parameters.rb:15:1:19:3 | print_map |
+| parameters.rb:16:12:18:5 | do ... end |
+| parameters.rb:21:1:23:3 | call_block |
+| parameters.rb:25:1:28:3 | opt_param |
+| parameters.rb:30:1:32:3 | key_param |
+| parameters.rb:35:1:38:3 | multi |
+| parameters.rb:40:1:43:3 | multi2 |
+| parameters.rb:45:1:47:3 | dup_underscore |
+| parameters.rb:49:1:51:3 | tuples |
+| parameters.rb:54:9:57:3 | do ... end |
+| parameters.rb:59:1:61:3 | tuples_nested |
+| scopes.rb:1:1:1:15 | a |
+| scopes.rb:1:1:49:4 | scopes.rb |
+| scopes.rb:2:9:6:3 | do ... end |
+| scopes.rb:9:9:18:3 | do ... end |
+| scopes.rb:26:1:26:12 | A |
+| scopes.rb:28:1:30:3 | B |
+| scopes.rb:31:1:33:3 | class << ... |
+| scopes.rb:34:1:36:3 | C |
+| scopes.rb:37:1:39:3 | foo |
+| scopes.rb:41:1:49:3 | M |
+| ssa.rb:1:1:16:3 | m |
+| ssa.rb:1:1:88:3 | ssa.rb |
+| ssa.rb:18:1:23:3 | m1 |
+| ssa.rb:25:1:30:3 | m2 |
+| ssa.rb:26:3:28:5 | { ... } |
+| ssa.rb:32:1:36:3 | m3 |
+| ssa.rb:33:16:35:5 | do ... end |
+| ssa.rb:38:1:42:3 | m4 |
+| ssa.rb:44:1:47:3 | m5 |
+| ssa.rb:49:1:51:3 | m6 |
+| ssa.rb:53:1:56:3 | m7 |
+| ssa.rb:58:1:62:3 | m8 |
+| ssa.rb:64:1:72:3 | m9 |
+| ssa.rb:66:11:70:5 | do ... end |
+| ssa.rb:74:1:79:3 | m10 |
+| ssa.rb:76:7:78:5 | do ... end |
+| ssa.rb:81:1:88:3 | m11 |
+| ssa.rb:83:7:87:5 | do ... end |
+| ssa.rb:84:10:86:8 | do ... end |

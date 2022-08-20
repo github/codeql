@@ -3,68 +3,92 @@
  * @description A function returns a pointer to a stack-allocated region of
  *              memory. This memory is deallocated at the end of the function,
  *              which may lead the caller to dereference a dangling pointer.
- * @kind problem
+ * @kind path-problem
  * @id cpp/return-stack-allocated-memory
  * @problem.severity warning
+ * @security-severity 9.3
  * @precision high
  * @tags reliability
+ *       security
  *       external/cwe/cwe-825
  */
 
 import cpp
-import semmle.code.cpp.dataflow.EscapesTree
-import semmle.code.cpp.models.interfaces.PointerWrapper
-import semmle.code.cpp.dataflow.DataFlow
+import semmle.code.cpp.ir.IR
+import semmle.code.cpp.ir.dataflow.MustFlow
+import PathGraph
 
-/**
- * Holds if `n1` may flow to `n2`, ignoring flow through fields because these
- * are currently modeled as an overapproximation that assumes all objects may
- * alias.
- */
-predicate conservativeDataFlowStep(DataFlow::Node n1, DataFlow::Node n2) {
-  DataFlow::localFlowStep(n1, n2) and
-  not n2.asExpr() instanceof FieldAccess and
-  not hasNontrivialConversion(n2.asExpr())
+/** Holds if `f` has a name that we interpret as evidence of intentionally returning the value of the stack pointer. */
+predicate intentionallyReturnsStackPointer(Function f) {
+  f.getName().toLowerCase().matches(["%stack%", "%sp%"])
 }
 
-/**
- * Holds if `e` has a conversion that changes it from lvalue to pointer or
- * back. As the data-flow library does not support conversions, we cannot track
- * data flow through such expressions.
- */
-predicate hasNontrivialConversion(Expr e) {
-  e instanceof Conversion and
-  not (
-    e instanceof Cast
-    or
-    e instanceof ParenthesisExpr
-  )
-  or
-  // A smart pointer can be stack-allocated while the data it points to is heap-allocated.
-  // So we exclude such "conversions" from this predicate.
-  e = any(PointerWrapper wrapper).getAnUnwrapperFunction().getACallToThisFunction()
-  or
-  hasNontrivialConversion(e.getConversion())
-}
+class ReturnStackAllocatedMemoryConfig extends MustFlowConfiguration {
+  ReturnStackAllocatedMemoryConfig() { this = "ReturnStackAllocatedMemoryConfig" }
 
-from StackVariable var, VariableAccess va, ReturnStmt r
-where
-  not var.getUnspecifiedType() instanceof ReferenceType and
-  not r.isFromUninstantiatedTemplate(_) and
-  va = var.getAnAccess() and
-  (
-    // To check if the address escapes directly from `e` in `return e`, we need
-    // to check the fully-converted `e` in case there are implicit
-    // array-to-pointer conversions or reference conversions.
-    variableAddressEscapesTree(va, r.getExpr().getFullyConverted())
-    or
-    // The data flow library doesn't support conversions, so here we check that
-    // the address escapes into some expression `pointerToLocal`, which flows
-    // in one or more steps to a returned expression.
-    exists(Expr pointerToLocal |
-      variableAddressEscapesTree(va, pointerToLocal.getFullyConverted()) and
-      not hasNontrivialConversion(pointerToLocal) and
-      conservativeDataFlowStep+(DataFlow::exprNode(pointerToLocal), DataFlow::exprNode(r.getExpr()))
+  override predicate isSource(DataFlow::Node source) {
+    // Holds if `source` is a node that represents the use of a stack variable
+    exists(VariableAddressInstruction var, Function func |
+      var = source.asInstruction() and
+      func = var.getEnclosingFunction() and
+      var.getAstVariable() instanceof StackVariable and
+      // Pointer-to-member types aren't properly handled in the dbscheme.
+      not var.getResultType() instanceof PointerToMemberType and
+      // Rule out FPs caused by extraction errors.
+      not any(ErrorExpr e).getEnclosingFunction() = func and
+      not intentionallyReturnsStackPointer(func)
     )
-  )
-select r, "May return stack-allocated memory from $@.", va, va.toString()
+  }
+
+  override predicate isSink(DataFlow::Node sink) {
+    // Holds if `sink` is a node that represents the `StoreInstruction` that is subsequently used in
+    // a `ReturnValueInstruction`.
+    // We use the `StoreInstruction` instead of the instruction that defines the
+    // `ReturnValueInstruction`'s source value oprand because the former has better location information.
+    exists(StoreInstruction store |
+      store.getDestinationAddress().(VariableAddressInstruction).getIRVariable() instanceof
+        IRReturnVariable and
+      sink.asOperand() = store.getSourceValueOperand()
+    )
+  }
+
+  //  We disable flow into callables in this query as we'd otherwise get a result on this piece of code:
+  //   ```cpp
+  //  int* id(int* px) {
+  //   return px; // this returns the local variable `x`, but it's fine as the local variable isn't declared in this scope.
+  //  }
+  //  void f() {
+  //   int x;
+  //   int* px = id(&x);
+  //  }
+  //   ```
+  override predicate allowInterproceduralFlow() { none() }
+
+  /**
+   * This configuration intentionally conflates addresses of fields and their object, and pointer offsets
+   * with their base pointer as this allows us to detect cases where an object's address flows to a
+   * return statement via a field. For example:
+   *
+   * ```cpp
+   * struct S { int x, y };
+   * int* test() {
+   *   S s;
+   *   return &s.x; // BAD: &s.x is an address of a variable on the stack.
+   * }
+   * ```
+   */
+  override predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
+    node2.asInstruction().(FieldAddressInstruction).getObjectAddressOperand() = node1.asOperand()
+    or
+    node2.asInstruction().(PointerOffsetInstruction).getLeftOperand() = node1.asOperand()
+  }
+}
+
+from
+  MustFlowPathNode source, MustFlowPathNode sink, VariableAddressInstruction var,
+  ReturnStackAllocatedMemoryConfig conf
+where
+  conf.hasFlowPath(pragma[only_bind_into](source), pragma[only_bind_into](sink)) and
+  source.getNode().asInstruction() = var
+select sink.getNode(), source, sink, "May return stack-allocated memory from $@.", var.getAst(),
+  var.getAst().toString()

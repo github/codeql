@@ -21,6 +21,7 @@ nodes
 | Test.java:195:41:195:41 | s | semmle.label | s |
 | Test.java:199:12:199:28 | Integer.MAX_VALUE : Number | semmle.label | Integer.MAX_VALUE : Number |
 | Test.java:202:37:202:37 | i | semmle.label | i |
+subpaths
 #select
 | Test.java:96:8:96:12 | ... + ... | Test.java:93:8:93:24 | Integer.MAX_VALUE : Number | Test.java:96:8:96:8 | i | Variable i is assigned an extreme value $@, and may cause an overflow. | Test.java:93:8:93:24 | Integer.MAX_VALUE | MAX_VALUE |
 | Test.java:111:13:111:17 | ... - ... | Test.java:109:13:109:26 | Long.MIN_VALUE : Number | Test.java:111:13:111:13 | i | Variable i is assigned an extreme value $@, and may cause an underflow. | Test.java:109:13:109:26 | Long.MIN_VALUE | MIN_VALUE |

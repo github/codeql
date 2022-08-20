@@ -1,0 +1,6 @@
+{
+  "name": "my-other-lib",
+  "version": "0.0.7",
+  "main": "./js/src/does-not-exist.js",
+  "module": "./moduleLib.js"
+}

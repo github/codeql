@@ -26,7 +26,7 @@
 | Capture.cs:60:27:60:38 | SSA def(e) | Capture.cs:60:27:60:38 | Func<String,Int32> e = ... |
 | Capture.cs:60:31:60:38 | SSA capture def(i) | Capture.cs:60:31:60:38 | (...) => ... |
 | Capture.cs:60:36:60:38 | SSA def(i) | Capture.cs:60:36:60:38 | ...++ |
-| Capture.cs:61:9:61:25 | SSA call def(i) | Capture.cs:61:9:61:25 | call to method Select |
+| Capture.cs:61:9:61:25 | SSA call def(i) | Capture.cs:61:9:61:25 | call to method Select<String,Int32> |
 | Capture.cs:65:45:65:51 | SSA param(strings) | Capture.cs:65:45:65:51 | strings |
 | Capture.cs:67:13:67:19 | SSA def(c) | Capture.cs:67:13:67:19 | Char c = ... |
 | Capture.cs:68:32:68:32 | SSA param(s) | Capture.cs:68:32:68:32 | s |
@@ -38,7 +38,7 @@
 | Capture.cs:76:63:76:81 | SSA def(e) | Capture.cs:76:63:76:81 | Expression<Func<String,Int32>> e = ... |
 | Capture.cs:76:67:76:81 | SSA capture def(i) | Capture.cs:76:67:76:81 | (...) => ... |
 | Capture.cs:76:80:76:80 | SSA def(i) | Capture.cs:76:72:76:81 | call to method Inc |
-| Capture.cs:77:9:77:25 | SSA call def(i) | Capture.cs:77:9:77:25 | call to method Select |
+| Capture.cs:77:9:77:25 | SSA call def(i) | Capture.cs:77:9:77:25 | call to method Select<String,Int32> |
 | Capture.cs:81:28:81:28 | SSA param(i) | Capture.cs:81:28:81:28 | i |
 | Capture.cs:81:34:81:36 | SSA def(i) | Capture.cs:81:34:81:36 | ...++ |
 | Capture.cs:83:65:83:71 | SSA param(strings) | Capture.cs:83:65:83:71 | strings |
@@ -196,7 +196,7 @@
 | Fields.cs:81:9:81:11 | SSA call def(f.xs) | Fields.cs:81:9:81:11 | delegate call |
 | Fields.cs:83:9:83:25 | SSA def(f.xs) | Fields.cs:83:9:83:25 | ... = ... |
 | Fields.cs:85:9:85:22 | SSA def(this.xs) | Fields.cs:85:9:85:22 | ... = ... |
-| Fields.cs:86:9:86:47 | SSA call def(f.xs) | Fields.cs:86:9:86:47 | call to method Select |
+| Fields.cs:86:9:86:47 | SSA call def(f.xs) | Fields.cs:86:9:86:47 | call to method Select<Int32,Int32> |
 | Fields.cs:86:24:86:46 | SSA capture def(a) | Fields.cs:86:24:86:46 | (...) => ... |
 | Fields.cs:87:9:87:22 | SSA def(this.xs) | Fields.cs:87:9:87:22 | ... = ... |
 | Fields.cs:88:9:88:25 | SSA def(f.xs) | Fields.cs:88:9:88:25 | ... = ... |
@@ -275,7 +275,7 @@
 | Properties.cs:77:9:77:11 | SSA call def(f.xs) | Properties.cs:77:9:77:11 | delegate call |
 | Properties.cs:79:9:79:25 | SSA def(f.xs) | Properties.cs:79:9:79:25 | ... = ... |
 | Properties.cs:81:9:81:22 | SSA def(this.xs) | Properties.cs:81:9:81:22 | ... = ... |
-| Properties.cs:82:9:82:47 | SSA call def(f.xs) | Properties.cs:82:9:82:47 | call to method Select |
+| Properties.cs:82:9:82:47 | SSA call def(f.xs) | Properties.cs:82:9:82:47 | call to method Select<Int32,Int32> |
 | Properties.cs:82:24:82:46 | SSA capture def(a) | Properties.cs:82:24:82:46 | (...) => ... |
 | Properties.cs:83:9:83:22 | SSA def(this.xs) | Properties.cs:83:9:83:22 | ... = ... |
 | Properties.cs:84:9:84:25 | SSA def(f.xs) | Properties.cs:84:9:84:25 | ... = ... |
@@ -321,6 +321,14 @@
 | Test.cs:57:9:57:17 | SSA def(this.field) | Test.cs:57:9:57:17 | ... = ... |
 | Test.cs:62:16:62:16 | SSA param(x) | Test.cs:62:16:62:16 | x |
 | Test.cs:68:45:68:45 | [exception: DivideByZeroException] SSA def(e) | Test.cs:68:45:68:45 | DivideByZeroException e |
+| Test.cs:76:24:76:25 | SSA param(b1) | Test.cs:76:24:76:25 | b1 |
+| Test.cs:76:33:76:34 | SSA param(b2) | Test.cs:76:33:76:34 | b2 |
+| Test.cs:76:42:76:43 | SSA param(b3) | Test.cs:76:42:76:43 | b3 |
+| Test.cs:76:51:76:52 | SSA param(b4) | Test.cs:76:51:76:52 | b4 |
+| Test.cs:76:60:76:61 | SSA param(b5) | Test.cs:76:60:76:61 | b5 |
+| Test.cs:76:69:76:70 | SSA param(b6) | Test.cs:76:69:76:70 | b6 |
+| Test.cs:78:13:78:17 | SSA def(x) | Test.cs:78:13:78:17 | Int32 x = ... |
+| Test.cs:108:13:108:17 | SSA def(x) | Test.cs:108:13:108:17 | ... = ... |
 | Tuples.cs:10:9:10:54 | SSA def(b) | Tuples.cs:10:9:10:54 | ... = ... |
 | Tuples.cs:10:9:10:54 | SSA def(s) | Tuples.cs:10:9:10:54 | ... = ... |
 | Tuples.cs:10:9:10:54 | SSA def(x) | Tuples.cs:10:9:10:54 | ... = ... |

@@ -1,0 +1,7 @@
+BasedOnStyle: Chromium
+ColumnLimit: 100
+IndentWidth: 2
+SortIncludes: false
+AllowShortIfStatementsOnASingleLine: WithoutElse
+AlwaysBreakBeforeMultilineStrings: false
+Standard: c++17

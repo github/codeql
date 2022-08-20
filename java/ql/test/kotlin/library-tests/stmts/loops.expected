@@ -1,0 +1,6 @@
+breakLabel
+| stmts.kt:25:24:25:33 | break | loop |
+continueLabel
+jumpTarget
+| stmts.kt:25:24:25:33 | break | stmts.kt:23:11:27:5 | while (...) |
+| stmts.kt:29:9:29:16 | continue | stmts.kt:28:5:29:16 | while (...) |

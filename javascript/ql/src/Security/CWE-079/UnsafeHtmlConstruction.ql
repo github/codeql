@@ -14,7 +14,7 @@
 
 import javascript
 import DataFlow::PathGraph
-import semmle.javascript.security.dataflow.UnsafeHtmlConstruction::UnsafeHtmlConstruction
+import semmle.javascript.security.dataflow.UnsafeHtmlConstructionQuery
 
 from DataFlow::Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink, Sink sinkNode
 where cfg.hasFlowPath(source, sink) and sink.getNode() = sinkNode

@@ -8,11 +8,12 @@
  * @id py/weak-sensitive-data-hashing
  * @tags security
  *       external/cwe/cwe-327
+ *       external/cwe/cwe-328
  *       external/cwe/cwe-916
  */
 
 import python
-import semmle.python.security.dataflow.WeakSensitiveDataHashing
+import semmle.python.security.dataflow.WeakSensitiveDataHashingQuery
 import semmle.python.dataflow.new.DataFlow
 import semmle.python.dataflow.new.TaintTracking
 import DataFlow::PathGraph

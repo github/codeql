@@ -74,6 +74,19 @@ def safe_path_abspath():
         f = open(npath)  # OK
 
 
+@app.route("/abspath_tricky")
+def safe_path_abspath_tricky():
+    # Normalized (by `abspath`), and checked properly. The tricky bit is that the
+    # possibly unsafe path is the being used in the `open` call, but only if it is known
+    # to be safe.
+    #
+    # FP for CVE-2021-41185
+    filename = request.args.get('filename', '')
+    possibly_unsafe_path = os.path.join(STATIC_DIR, filename)
+    if os.path.abspath(possibly_unsafe_path).startswith(STATIC_DIR):
+        f = open(possibly_unsafe_path)  # OK
+
+
 @app.route("/int-only/<int:foo_id>")
 def flask_int_only(foo_id):
     # This is OK, since the flask routing ensures that `foo_id` MUST be an integer.
@@ -127,3 +140,13 @@ def stackoverflow_solution():
     if os.path.commonprefix((os.path.realpath(path), STATIC_DIR)) != STATIC_DIR:
         return "not this time"
     f = open(path) # OK TODO: FP
+
+
+SAFE_FILES = ['foo', 'bar', 'baz']
+
+@app.route("/safe-set-of-files")
+def safe_set_of_files():
+    filename = request.args.get('filename', '')
+    if filename in SAFE_FILES:
+        path = os.path.join(STATIC_DIR, filename)
+        f = open(path) # OK TODO: FP

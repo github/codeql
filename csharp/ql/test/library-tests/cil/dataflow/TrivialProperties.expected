@@ -5,7 +5,6 @@
 | System.Reflection.AssemblyName.CodeBase |
 | System.Reflection.AssemblyName.CultureInfo |
 | System.Reflection.AssemblyName.HashAlgorithm |
-| System.Reflection.AssemblyName.KeyPair |
 | System.Reflection.AssemblyName.Name |
 | System.Reflection.AssemblyName.Version |
 | System.Reflection.AssemblyName.VersionCompatibility |

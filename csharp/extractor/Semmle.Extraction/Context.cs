@@ -400,7 +400,7 @@ namespace Semmle.Extraction
 
         private void ReportError(InternalError error)
         {
-            if (!Extractor.Standalone)
+            if (!Extractor.Mode.HasFlag(ExtractorMode.Standalone))
                 throw error;
 
             ExtractionError(error);
@@ -424,6 +424,16 @@ namespace Semmle.Extraction
         public void ModelError(ISymbol symbol, string msg)
         {
             ReportError(new InternalError(symbol, msg));
+        }
+
+        /// <summary>
+        /// Signal an error in the program model.
+        /// </summary>
+        /// <param name="loc">The location of the error.</param>
+        /// <param name="msg">The error message.</param>
+        public void ModelError(Entities.Location loc, string msg)
+        {
+            ReportError(new InternalError(loc.ReportingLocation, msg));
         }
 
         /// <summary>

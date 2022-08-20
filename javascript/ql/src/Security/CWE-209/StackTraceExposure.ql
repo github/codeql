@@ -10,10 +10,11 @@
  * @id js/stack-trace-exposure
  * @tags security
  *       external/cwe/cwe-209
+ *       external/cwe/cwe-497
  */
 
 import javascript
-import semmle.javascript.security.dataflow.StackTraceExposure::StackTraceExposure
+import semmle.javascript.security.dataflow.StackTraceExposureQuery
 import DataFlow::PathGraph
 
 from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink

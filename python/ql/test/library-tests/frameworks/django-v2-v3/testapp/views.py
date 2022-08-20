@@ -2,6 +2,7 @@ from django.http import HttpRequest, HttpResponse
 from django.views.generic import View, RedirectView
 from django.views.decorators.csrf import csrf_exempt
 
+from .models import MyModel
 
 def foo(request: HttpRequest):  # $requestHandler
     return HttpResponse("foo")  # $HttpResponse
@@ -45,3 +46,13 @@ class CustomRedirectView(RedirectView):
 class CustomRedirectView2(RedirectView):
 
     url = "https://example.com/%(foo)s"
+
+
+# Test of FileField upload_to functions
+def file_test(request: HttpRequest): # $ requestHandler
+    model = MyModel(upload=request.FILES['fieldname'])
+    try:
+        model.save()
+    except NotImplementedError:
+        pass
+    return HttpResponse("ok") # $ HttpResponse

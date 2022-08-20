@@ -30,7 +30,7 @@ predicate containsSpecialCollection(Expr e, SpecialCollectionCreation origin) {
   e = origin
   or
   exists(Variable v |
-    containsSpecialCollection(v.getAnAssignedValue(), origin) and
+    containsSpecialCollection(pragma[only_bind_into](v.getAnAssignedValue()), origin) and
     e = v.getAnAccess()
   )
   or
@@ -52,7 +52,7 @@ predicate iterOfSpecialCollection(Expr e, SpecialCollectionCreation origin) {
   )
   or
   exists(Variable v |
-    iterOfSpecialCollection(v.getAnAssignedValue(), origin) and
+    iterOfSpecialCollection(pragma[only_bind_into](v.getAnAssignedValue()), origin) and
     e = v.getAnAccess()
   )
   or

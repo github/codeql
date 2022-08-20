@@ -6,14 +6,14 @@
 import javascript
 
 /**
- * Holds if `nd` is a use of a feature introduced in ECMAScript version `ver`
+ * Holds if `nd` is a use of a feature introduced in ECMAScript `version`
  * from the given category.
  *
  * Categories are taken from Kangax' [ECMAScript 6 compatibility table]
  * (https://kangax.github.io/compat-table/es6/) and [ECMAScript next compatibility table]
  * (https://kangax.github.io/compat-table/esnext/).
  */
-predicate isES20xxFeature(ASTNode nd, int version, string category) {
+predicate isES20xxFeature(AstNode nd, int version, string category) {
   version = 2015 and
   (
     exists(nd.(Parameter).getDefault()) and category = "default function parameters"

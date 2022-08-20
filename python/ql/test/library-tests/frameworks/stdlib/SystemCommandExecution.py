@@ -34,33 +34,52 @@ def os_members():
 # VS Code extension will ignore rest of program if encountering one of these, which we
 # don't want. We could use `if False`, but just to be 100% sure we don't do anything too
 # clever in our analysis that discards that code, I used `if UNKNOWN` instead
+#
+# below, `path` is an relative/absolute path, for the `p` variants this could also be
+# the name of a executable, which will be looked up in the PATH environment variable,
+# which we call `file` to highlight this difference.
+#
+# These are also modeled as FileSystemAccess, although they are not super relevant for
+# the path-injection query -- a user being able to control which program is executed
+# doesn't sound safe even if that is restricted to be within a certain directory.
 if UNKNOWN:
     env = {"FOO": "foo"}
-    os.execl("executable", "<progname>", "arg0")  # $getCommand="executable"
-    os.execle("executable", "<progname>", "arg0", env)  # $getCommand="executable"
-    os.execlp("executable", "<progname>", "arg0")  # $getCommand="executable"
-    os.execlpe("executable", "<progname>", "arg0", env)  # $getCommand="executable"
-    os.execv("executable", ["<progname>", "arg0"])  # $getCommand="executable"
-    os.execve("executable", ["<progname>", "arg0"], env)  # $getCommand="executable"
-    os.execvp("executable", ["<progname>", "arg0"])  # $getCommand="executable"
-    os.execvpe("executable", ["<progname>", "arg0"], env)  # $getCommand="executable"
+    os.execl("path", "<progname>", "arg0")  # $ getCommand="path" getAPathArgument="path"
+    os.execle("path", "<progname>", "arg0", env)  # $ getCommand="path" getAPathArgument="path"
+    os.execlp("file", "<progname>", "arg0")  # $ getCommand="file" getAPathArgument="file"
+    os.execlpe("file", "<progname>", "arg0", env)  # $ getCommand="file" getAPathArgument="file"
+    os.execv("path", ["<progname>", "arg0"])  # $ getCommand="path" getAPathArgument="path"
+    os.execve("path", ["<progname>", "arg0"], env)  # $ getCommand="path" getAPathArgument="path"
+    os.execvp("file", ["<progname>", "arg0"])  # $ getCommand="file" getAPathArgument="file"
+    os.execvpe("file", ["<progname>", "arg0"], env)  # $ getCommand="file" getAPathArgument="file"
 
 
 ########################################
 # https://docs.python.org/3.8/library/os.html#os.spawnl
 env = {"FOO": "foo"}
-os.spawnl(os.P_WAIT, "executable", "<progname>", "arg0")  # $getCommand="executable"
-os.spawnle(os.P_WAIT, "executable", "<progname>", "arg0", env)  # $getCommand="executable"
-os.spawnlp(os.P_WAIT, "executable", "<progname>", "arg0")  # $getCommand="executable"
-os.spawnlpe(os.P_WAIT, "executable", "<progname>", "arg0", env)  # $getCommand="executable"
-os.spawnv(os.P_WAIT, "executable", ["<progname>", "arg0"])  # $getCommand="executable"
-os.spawnve(os.P_WAIT, "executable", ["<progname>", "arg0"], env)  # $getCommand="executable"
-os.spawnvp(os.P_WAIT, "executable", ["<progname>", "arg0"])  # $getCommand="executable"
-os.spawnvpe(os.P_WAIT, "executable", ["<progname>", "arg0"], env)  # $getCommand="executable"
+os.spawnl(os.P_WAIT, "path", "<progname>", "arg0")  # $ getCommand="path" getAPathArgument="path"
+os.spawnle(os.P_WAIT, "path", "<progname>", "arg0", env)  # $ getCommand="path" getAPathArgument="path"
+os.spawnlp(os.P_WAIT, "file", "<progname>", "arg0")  # $ getCommand="file" getAPathArgument="file"
+os.spawnlpe(os.P_WAIT, "file", "<progname>", "arg0", env)  # $ getCommand="file" getAPathArgument="file"
+os.spawnv(os.P_WAIT, "path", ["<progname>", "arg0"])  # $ getCommand="path" getAPathArgument="path"
+os.spawnve(os.P_WAIT, "path", ["<progname>", "arg0"], env)  # $ getCommand="path" getAPathArgument="path"
+os.spawnvp(os.P_WAIT, "file", ["<progname>", "arg0"])  # $ getCommand="file" getAPathArgument="file"
+os.spawnvpe(os.P_WAIT, "file", ["<progname>", "arg0"], env)  # $ getCommand="file" getAPathArgument="file"
 
-# Added in Python 3.8
-os.posix_spawn("executable", ["<progname>", "arg0"], env)  # $getCommand="executable"
-os.posix_spawnp("executable", ["<progname>", "arg0"], env)  # $getCommand="executable"
+# unlike os.exec*, some os.spawn* functions is usable with keyword arguments. However,
+# despite the docs using both `file` and `path` as the parameter name, you actually need
+# to use `file` in all cases.
+os.spawnv(mode=os.P_WAIT, file="path", args=["<progname>", "arg0"])  # $ getCommand="path" getAPathArgument="path"
+os.spawnve(mode=os.P_WAIT, file="path", args=["<progname>", "arg0"], env=env)  # $ getCommand="path" getAPathArgument="path"
+os.spawnvp(mode=os.P_WAIT, file="file", args=["<progname>", "arg0"])  # $ getCommand="file" getAPathArgument="file"
+os.spawnvpe(mode=os.P_WAIT, file="file", args=["<progname>", "arg0"], env=env)  # $ getCommand="file" getAPathArgument="file"
+
+# `posix_spawn` Added in Python 3.8
+os.posix_spawn("path", ["<progname>", "arg0"], env)  # $ getCommand="path" getAPathArgument="path"
+os.posix_spawn(path="path", argv=["<progname>", "arg0"], env=env)  # $ getCommand="path" getAPathArgument="path"
+
+os.posix_spawnp("path", ["<progname>", "arg0"], env)  # $ getCommand="path" getAPathArgument="path"
+os.posix_spawnp(path="path", argv=["<progname>", "arg0"], env=env)  # $ getCommand="path" getAPathArgument="path"
 
 ########################################
 
@@ -107,9 +126,9 @@ subprocess.Popen(["cmd", "/C", "vuln"])  # $getCommand="cmd" MISSING: getCommand
 subprocess.Popen(["<progname>", "-c", "vuln"], executable="/bin/bash")  # $getCommand="/bin/bash" MISSING: getCommand="vuln"
 
 if UNKNOWN:
-    os.execl("/bin/sh", "<progname>", "-c", "vuln")  # $getCommand="/bin/sh" MISSING: getCommand="vuln"
+    os.execl("/bin/sh", "<progname>", "-c", "vuln")  # $getCommand="/bin/sh" getAPathArgument="/bin/sh" MISSING: getCommand="vuln"
 
-os.spawnl(os.P_WAIT, "/bin/sh", "<progname>", "-c", "vuln")  # $getCommand="/bin/sh" MISSING: getCommand="vuln"
+os.spawnl(os.P_WAIT, "/bin/sh", "<progname>", "-c", "vuln")  # $getCommand="/bin/sh" getAPathArgument="/bin/sh" MISSING: getCommand="vuln"
 
 
 ########################################

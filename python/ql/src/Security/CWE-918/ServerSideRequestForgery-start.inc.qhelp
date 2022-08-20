@@ -1,0 +1,31 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<fragment>
+    <p>Directly incorporating user input into an HTTP request without validating the input
+      can facilitate server-side request forgery (SSRF) attacks. In these attacks, the
+      request may be changed, directed at a different server, or via a different
+      protocol. This can allow the attacker to obtain sensitive information or perform
+      actions with escalated privilege.
+    </p>
+
+    <p>
+      We make a distinctions between how much of the URL an attacker can control:
+    </p>
+
+    <ul>
+      <li><b>Full SSRF</b>: where the full URL can be controlled.</li>
+      <li><b>Partial SSRF</b>: where only part of the URL can be controlled, such as the
+        path component of a URL to a hardcoded domain.</li>
+    </ul>
+
+    <p></p>
+
+    <p>
+    Partial control of a URL is often much harder to exploit. Therefore we have created a
+    separate query for each of these.
+    </p>
+
+</fragment>
+</qhelp>

@@ -22,6 +22,9 @@ def random_choice():
 def is_safe(arg):
     return arg == "safe"
 
+def is_unsafe(arg):
+    return arg == TAINTED_STRING
+
 
 def test_basic():
     s = TAINTED_STRING
@@ -34,7 +37,22 @@ def test_basic():
     if not is_safe(s):
         ensure_tainted(s) # $ tainted
     else:
-        ensure_not_tainted(s) # $ SPURIOUS: tainted
+        ensure_not_tainted(s)
+
+
+def test_if_in_depth():
+    s = TAINTED_STRING
+
+    # ensure that value is still considered tainted after guard check
+    if is_safe(s):
+        ensure_not_tainted(s)
+    ensure_tainted(s) # $ tainted
+
+    # ensure new tainted assignment to variable is not treated as safe by guard
+    if is_safe(s):
+        ensure_not_tainted(s)
+        s = TAINTED_STRING
+        ensure_tainted(s) # $ tainted
 
 
 def test_or():
@@ -90,7 +108,7 @@ def test_and():
         ensure_tainted(s) # $ tainted
     else:
         # cannot be tainted
-        ensure_not_tainted(s) # $ SPURIOUS: tainted
+        ensure_not_tainted(s)
 
 
 def test_tricky():
@@ -109,14 +127,14 @@ def test_nesting_not():
     s = TAINTED_STRING
 
     if not(not(is_safe(s))):
-        ensure_not_tainted(s) # $ SPURIOUS: tainted
+        ensure_not_tainted(s)
     else:
         ensure_tainted(s) # $ tainted
 
     if not(not(not(is_safe(s)))):
         ensure_tainted(s) # $ tainted
     else:
-        ensure_not_tainted(s) # $ SPURIOUS: tainted
+        ensure_not_tainted(s)
 
 
 # Adding `and True` makes the sanitizer trigger when it would otherwise not. See output in
@@ -146,7 +164,16 @@ def test_with_return():
     if not is_safe(s):
         return
 
-    ensure_not_tainted(s) # $ SPURIOUS: tainted
+    ensure_not_tainted(s)
+
+
+def test_with_return_neg():
+    s = TAINTED_STRING
+
+    if is_unsafe(s):
+        return
+
+    ensure_not_tainted(s)
 
 
 def test_with_exception():
@@ -155,18 +182,32 @@ def test_with_exception():
     if not is_safe(s):
         raise Exception("unsafe")
 
-    ensure_not_tainted(s) # $ SPURIOUS: tainted
+    ensure_not_tainted(s)
+
+def test_with_exception_neg():
+    s = TAINTED_STRING
+
+    if is_unsafe(s):
+        raise Exception("unsafe")
+
+    ensure_not_tainted(s)
 
 # Make tests runable
 
 test_basic()
+test_if_in_depth()
 test_or()
 test_and()
 test_tricky()
 test_nesting_not()
 test_nesting_not_with_and_true()
 test_with_return()
+test_with_return_neg()
 try:
     test_with_exception()
+except:
+    pass
+try:
+    test_with_exception_neg()
 except:
     pass

@@ -175,6 +175,359 @@ getExprType
 | tst.ts:126:7:126:22 | this.#someMethod | () => number |
 | tst.ts:126:7:126:24 | this.#someMethod() | number |
 | tst.ts:127:14:127:28 | this.#someValue | number |
+| tst.ts:132:8:132:11 | TS44 | typeof TS44 in library-tests/TypeScript/Types/tst.ts |
+| tst.ts:133:12:133:14 | foo | (arg: unknown) => void |
+| tst.ts:133:16:133:18 | arg | unknown |
+| tst.ts:134:11:134:21 | argIsString | boolean |
+| tst.ts:134:25:134:34 | typeof arg | "string" \| "number" \| "bigint" \| "boolean" \| "s... |
+| tst.ts:134:25:134:47 | typeof  ... string" | boolean |
+| tst.ts:134:32:134:34 | arg | unknown |
+| tst.ts:134:40:134:47 | "string" | "string" |
+| tst.ts:135:9:135:19 | argIsString | boolean |
+| tst.ts:136:15:136:19 | upper | string |
+| tst.ts:136:23:136:25 | arg | string |
+| tst.ts:136:23:136:37 | arg.toUpperCase | () => string |
+| tst.ts:136:23:136:39 | arg.toUpperCase() | string |
+| tst.ts:136:27:136:37 | toUpperCase | () => string |
+| tst.ts:141:11:141:14 | kind | "circle" |
+| tst.ts:141:27:141:32 | radius | number |
+| tst.ts:142:11:142:14 | kind | "square" |
+| tst.ts:142:27:142:36 | sideLength | number |
+| tst.ts:144:12:144:15 | side | (shape: Shape) => number |
+| tst.ts:144:17:144:21 | shape | Shape |
+| tst.ts:145:15:145:18 | kind | "circle" \| "square" |
+| tst.ts:145:15:145:18 | kind | "circle" \| "square" |
+| tst.ts:145:24:145:28 | shape | Shape |
+| tst.ts:147:11:147:14 | kind | "circle" \| "square" |
+| tst.ts:147:11:147:27 | kind === "circle" | boolean |
+| tst.ts:147:20:147:27 | "circle" | "circle" |
+| tst.ts:147:39:147:43 | shape | { kind: "circle"; radius: number; } |
+| tst.ts:147:39:147:50 | shape.radius | number |
+| tst.ts:147:45:147:50 | radius | number |
+| tst.ts:148:21:148:25 | shape | { kind: "square"; sideLength: number; } |
+| tst.ts:148:21:148:36 | shape.sideLength | number |
+| tst.ts:148:27:148:36 | sideLength | number |
+| tst.ts:151:12:151:22 | symbolIndex | () => void |
+| tst.ts:153:7:153:28 | [sym: s ... number; | any |
+| tst.ts:153:8:153:10 | sym | symbol |
+| tst.ts:154:7:154:28 | [key: s ... string; | any |
+| tst.ts:154:8:154:10 | key | string |
+| tst.ts:155:7:155:29 | [num: n ... oolean; | any |
+| tst.ts:155:8:155:10 | num | number |
+| tst.ts:158:9:158:14 | colors | Colors |
+| tst.ts:158:26:158:27 | {} | Colors |
+| tst.ts:159:11:159:13 | red | number |
+| tst.ts:159:17:159:22 | colors | Colors |
+| tst.ts:159:17:159:37 | colors[ ... "red")] | number |
+| tst.ts:159:24:159:29 | Symbol | SymbolConstructor |
+| tst.ts:159:24:159:36 | Symbol("red") | symbol |
+| tst.ts:159:31:159:35 | "red" | "red" |
+| tst.ts:160:11:160:15 | green | string |
+| tst.ts:160:19:160:24 | colors | Colors |
+| tst.ts:160:19:160:33 | colors["green"] | string |
+| tst.ts:160:26:160:32 | "green" | "green" |
+| tst.ts:161:11:161:14 | blue | boolean |
+| tst.ts:161:18:161:23 | colors | Colors |
+| tst.ts:161:18:161:26 | colors[2] | boolean |
+| tst.ts:161:25:161:25 | 2 | 2 |
+| tst.ts:164:12:164:29 | stringPatternIndex | () => void |
+| tst.ts:166:7:166:37 | [key: ` ... number; | any |
+| tst.ts:168:9:168:11 | bla | Foo |
+| tst.ts:168:21:168:22 | {} | Foo |
+| tst.ts:169:11:169:13 | bar | number |
+| tst.ts:169:17:169:19 | bla | Foo |
+| tst.ts:169:17:169:28 | bla[`foo-1`] | number |
+| tst.ts:169:21:169:27 | `foo-1` | "foo-1" |
+| tst.ts:169:21:169:27 | `foo-1` | "foo-1" |
+| tst.ts:172:7:172:42 | [optNam ... oolean; | any |
+| tst.ts:172:8:172:14 | optName | string \| symbol |
+| tst.ts:175:11:175:14 | data | Data |
+| tst.ts:175:24:175:25 | {} | Data |
+| tst.ts:176:11:176:13 | baz | boolean |
+| tst.ts:176:17:176:20 | data | Data |
+| tst.ts:176:17:176:27 | data["foo"] | boolean |
+| tst.ts:176:22:176:26 | "foo" | "foo" |
+| tst.ts:179:9:179:11 | Foo | Foo |
+| tst.ts:180:21:180:21 | 0 | 0 |
+| tst.ts:182:5:184:5 | get cou ... ;\\n    } | number |
+| tst.ts:182:9:182:13 | count | number |
+| tst.ts:183:16:183:18 | Foo | typeof Foo in tst.ts:132 |
+| tst.ts:183:16:183:25 | Foo.#count | number |
+| tst.ts:186:7:186:9 | Foo | typeof Foo in tst.ts:132 |
+| tst.ts:186:7:186:16 | Foo.#count | number |
+| tst.ts:186:7:186:21 | Foo.#count += 3 | number |
+| tst.ts:186:21:186:21 | 3 | 3 |
+| tst.ts:189:11:189:15 | count | number |
+| tst.ts:189:19:189:21 | Foo | typeof Foo in tst.ts:132 |
+| tst.ts:189:19:189:28 | Foo.#count | number |
+| tst.ts:195:8:195:11 | TS45 | typeof TS45 in library-tests/TypeScript/Types/tst.ts |
+| tst.ts:207:5:207:8 | body | string |
+| tst.ts:212:7:212:13 | message | string |
+| tst.ts:215:19:215:25 | handler | (r: Success \| Error) => void |
+| tst.ts:215:27:215:27 | r | Success \| Error |
+| tst.ts:216:11:216:11 | r | Success \| Error |
+| tst.ts:216:11:216:34 | r.type  ... uccess" | boolean |
+| tst.ts:216:22:216:34 | "HttpSuccess" | "HttpSuccess" |
+| tst.ts:218:15:218:19 | token | string |
+| tst.ts:218:23:218:23 | r | Success |
+| tst.ts:218:23:218:28 | r.body | string |
+| tst.ts:218:25:218:28 | body | string |
+| tst.ts:222:9:222:14 | Person | Person |
+| tst.ts:224:5:226:5 | constru ... ;\\n    } | any |
+| tst.ts:224:17:224:20 | name | string |
+| tst.ts:225:9:225:18 | this.#name | string |
+| tst.ts:225:9:225:25 | this.#name = name | string |
+| tst.ts:225:22:225:25 | name | string |
+| tst.ts:228:5:228:10 | equals | (other: unknown) => boolean |
+| tst.ts:228:5:233:5 | equals( ... .\\n    } | (other: unknown) => boolean |
+| tst.ts:228:12:228:16 | other | unknown |
+| tst.ts:229:16:229:20 | other | unknown |
+| tst.ts:229:16:230:37 | other & ... object" | boolean |
+| tst.ts:229:16:231:26 | other & ... n other | boolean |
+| tst.ts:229:16:232:38 | other & ... r.#name | boolean |
+| tst.ts:230:13:230:24 | typeof other | "string" \| "number" \| "bigint" \| "boolean" \| "s... |
+| tst.ts:230:13:230:37 | typeof  ... object" | boolean |
+| tst.ts:230:20:230:24 | other | unknown |
+| tst.ts:230:30:230:37 | "object" | "object" |
+| tst.ts:231:13:231:26 | #name in other | boolean |
+| tst.ts:231:22:231:26 | other | object |
+| tst.ts:232:13:232:22 | this.#name | string |
+| tst.ts:232:13:232:38 | this.#n ... r.#name | boolean |
+| tst.ts:232:28:232:32 | other | Person |
+| tst.ts:232:28:232:38 | other.#name | string |
+| tst.ts:237:13:237:16 | Foo3 | { foo: string; } |
+| tst.ts:237:23:237:40 | "./something.json" | any |
+| tst.ts:238:5:238:7 | foo | string |
+| tst.ts:238:11:238:14 | Foo3 | { foo: string; } |
+| tst.ts:238:11:238:18 | Foo3.foo | string |
+| tst.ts:238:16:238:18 | foo | string |
+| tst.ts:240:8:240:11 | TS46 | typeof TS46 in library-tests/TypeScript/Types/tst.ts |
+| tst.ts:241:9:241:12 | Base | Base |
+| tst.ts:243:9:243:15 | Derived | Derived |
+| tst.ts:243:25:243:28 | Base | Base |
+| tst.ts:244:5:244:10 | myProp | boolean |
+| tst.ts:244:14:244:17 | true | true |
+| tst.ts:246:5:249:5 | constru ... ;\\n    } | any |
+| tst.ts:247:7:247:13 | console | Console |
+| tst.ts:247:7:247:17 | console.log | (...data: any[]) => void |
+| tst.ts:247:7:247:51 | console ... per()") | void |
+| tst.ts:247:15:247:17 | log | (...data: any[]) => void |
+| tst.ts:247:19:247:50 | "Doing  ... uper()" | "Doing something before super()" |
+| tst.ts:248:7:248:13 | super() | void |
+| tst.ts:253:9:253:12 | kind | "NumberContents" |
+| tst.ts:253:33:253:39 | payload | number |
+| tst.ts:254:9:254:12 | kind | "StringContents" |
+| tst.ts:254:33:254:39 | payload | string |
+| tst.ts:256:12:256:24 | processAction | (action: Action) => void |
+| tst.ts:256:26:256:31 | action | Action |
+| tst.ts:257:13:257:16 | kind | "NumberContents" \| "StringContents" |
+| tst.ts:257:13:257:16 | kind | "NumberContents" \| "StringContents" |
+| tst.ts:257:19:257:25 | payload | string \| number |
+| tst.ts:257:19:257:25 | payload | string \| number |
+| tst.ts:257:31:257:36 | action | Action |
+| tst.ts:258:9:258:12 | kind | "NumberContents" \| "StringContents" |
+| tst.ts:258:9:258:33 | kind == ... ntents" | boolean |
+| tst.ts:258:18:258:33 | "NumberContents" | "NumberContents" |
+| tst.ts:259:7:259:13 | console | Console |
+| tst.ts:259:7:259:17 | console.log | (...data: any[]) => void |
+| tst.ts:259:7:259:36 | console ... ixed()) | void |
+| tst.ts:259:15:259:17 | log | (...data: any[]) => void |
+| tst.ts:259:19:259:25 | payload | number |
+| tst.ts:259:19:259:33 | payload.toFixed | (fractionDigits?: number) => string |
+| tst.ts:259:19:259:35 | payload.toFixed() | string |
+| tst.ts:259:27:259:33 | toFixed | (fractionDigits?: number) => string |
+| tst.ts:260:16:260:19 | kind | "StringContents" |
+| tst.ts:260:16:260:40 | kind == ... ntents" | boolean |
+| tst.ts:260:25:260:40 | "StringContents" | "StringContents" |
+| tst.ts:261:7:261:13 | console | Console |
+| tst.ts:261:7:261:17 | console.log | (...data: any[]) => void |
+| tst.ts:261:7:261:40 | console ... Case()) | void |
+| tst.ts:261:15:261:17 | log | (...data: any[]) => void |
+| tst.ts:261:19:261:25 | payload | string |
+| tst.ts:261:19:261:37 | payload.toLowerCase | () => string |
+| tst.ts:261:19:261:39 | payload ... rCase() | string |
+| tst.ts:261:27:261:37 | toLowerCase | () => string |
+| tst.ts:266:5:266:10 | number | number |
+| tst.ts:267:5:267:10 | string | string |
+| tst.ts:268:5:268:11 | boolean | boolean |
+| tst.ts:273:7:273:10 | kind | K |
+| tst.ts:278:12:278:24 | processRecord | <K extends keyof TypeMap>(record: UnionRecord<K... |
+| tst.ts:278:51:278:56 | record | UnionRecord<K> |
+| tst.ts:279:5:279:10 | record | UnionRecord<K> |
+| tst.ts:279:5:279:22 | record.f(record.v) | void |
+| tst.ts:279:14:279:19 | record | UnionRecord<K> |
+| tst.ts:279:14:279:21 | record.v | any |
+| tst.ts:279:21:279:21 | v | any |
+| tst.ts:282:3:282:15 | processRecord | <K extends keyof TypeMap>(record: UnionRecord<K... |
+| tst.ts:282:3:287:4 | process ... },\\n  }) | void |
+| tst.ts:282:17:287:3 | {\\n    k ...  },\\n  } | { kind: "string"; f: (p: string) => void; } |
+| tst.ts:283:5:283:8 | kind | "string" |
+| tst.ts:283:11:283:18 | "string" | "string" |
+| tst.ts:284:5:284:5 | f | (val: string) => void |
+| tst.ts:284:8:286:5 | (val) = ... g\\n    } | (val: string) => void |
+| tst.ts:284:9:284:11 | val | string |
+| tst.ts:285:7:285:13 | console | Console |
+| tst.ts:285:7:285:17 | console.log | (...data: any[]) => void |
+| tst.ts:285:7:285:36 | console ... Case()) | void |
+| tst.ts:285:15:285:17 | log | (...data: any[]) => void |
+| tst.ts:285:19:285:21 | val | string |
+| tst.ts:285:19:285:33 | val.toUpperCase | () => string |
+| tst.ts:285:19:285:35 | val.toUpperCase() | string |
+| tst.ts:285:23:285:33 | toUpperCase | () => string |
+| tst.ts:289:19:289:22 | args | ["a", number] \| ["b", string] |
+| tst.ts:291:9:291:10 | f1 | Func |
+| tst.ts:291:20:295:3 | (kind,  ...   }\\n  } | (kind: "a" \| "b", payload: string \| number) => ... |
+| tst.ts:291:21:291:24 | kind | "a" \| "b" |
+| tst.ts:291:27:291:33 | payload | string \| number |
+| tst.ts:292:9:292:12 | kind | "a" \| "b" |
+| tst.ts:292:9:292:20 | kind === "a" | boolean |
+| tst.ts:292:18:292:20 | "a" | "a" |
+| tst.ts:293:7:293:13 | payload | number |
+| tst.ts:293:7:293:21 | payload.toFixed | (fractionDigits?: number) => string |
+| tst.ts:293:7:293:23 | payload.toFixed() | string |
+| tst.ts:293:15:293:21 | toFixed | (fractionDigits?: number) => string |
+| tst.ts:298:7:298:9 | key | typeof key |
+| tst.ts:298:13:298:18 | Symbol | SymbolConstructor |
+| tst.ts:298:13:298:20 | Symbol() | typeof key |
+| tst.ts:300:7:300:20 | numberOrString | "hello" \| 42 |
+| tst.ts:300:24:300:27 | Math | Math |
+| tst.ts:300:24:300:34 | Math.random | () => number |
+| tst.ts:300:24:300:36 | Math.random() | number |
+| tst.ts:300:24:300:42 | Math.random() < 0.5 | boolean |
+| tst.ts:300:24:300:57 | Math.ra ... "hello" | "hello" \| 42 |
+| tst.ts:300:29:300:34 | random | () => number |
+| tst.ts:300:40:300:42 | 0.5 | 0.5 |
+| tst.ts:300:46:300:47 | 42 | 42 |
+| tst.ts:300:51:300:57 | "hello" | "hello" |
+| tst.ts:302:5:302:7 | obj | { [key]: string \| number; } |
+| tst.ts:302:11:304:1 | {\\n  [ke ... ring,\\n} | { [key]: string \| number; } |
+| tst.ts:303:4:303:6 | key | typeof key |
+| tst.ts:303:10:303:23 | numberOrString | "hello" \| 42 |
+| tst.ts:306:5:306:19 | typeof obj[key] | "string" \| "number" \| "bigint" \| "boolean" \| "s... |
+| tst.ts:306:5:306:32 | typeof  ... string" | boolean |
+| tst.ts:306:12:306:14 | obj | { [key]: string \| number; } |
+| tst.ts:306:12:306:19 | obj[key] | string \| number |
+| tst.ts:306:16:306:18 | key | typeof key |
+| tst.ts:306:25:306:32 | "string" | "string" |
+| tst.ts:307:7:307:9 | str | string |
+| tst.ts:307:13:307:15 | obj | { [key]: string \| number; } |
+| tst.ts:307:13:307:20 | obj[key] | string |
+| tst.ts:307:17:307:19 | key | typeof key |
+| tst.ts:308:3:308:5 | str | string |
+| tst.ts:308:3:308:17 | str.toUpperCase | () => string |
+| tst.ts:308:3:308:19 | str.toUpperCase() | string |
+| tst.ts:308:7:308:17 | toUpperCase | () => string |
+| tst.ts:313:10:313:10 | f | <T>(arg: { produce: (n: string) => T; consume: ... |
+| tst.ts:313:15:313:17 | arg | { produce: (n: string) => T; consume: (x: T) =>... |
+| tst.ts:314:3:314:9 | produce | (n: string) => T |
+| tst.ts:314:12:314:27 | (n: string) => T | (n: string) => T |
+| tst.ts:314:13:314:13 | n | string |
+| tst.ts:315:3:315:9 | consume | (x: T) => void |
+| tst.ts:315:12:315:25 | (x: T) => void | (x: T) => void |
+| tst.ts:315:13:315:13 | x | T |
+| tst.ts:318:1:318:1 | f | <T>(arg: { produce: (n: string) => T; consume: ... |
+| tst.ts:318:1:321:2 | f({\\n  p ... se()\\n}) | void |
+| tst.ts:318:3:321:1 | {\\n  pro ... ase()\\n} | { produce: (n: string) => string; consume: (x: ... |
+| tst.ts:319:3:319:9 | produce | (n: string) => string |
+| tst.ts:319:12:319:12 | n | string |
+| tst.ts:319:12:319:17 | n => n | (n: string) => string |
+| tst.ts:319:17:319:17 | n | string |
+| tst.ts:320:3:320:9 | consume | (x: string) => string |
+| tst.ts:320:12:320:12 | x | string |
+| tst.ts:320:12:320:31 | x => x.toLowerCase() | (x: string) => string |
+| tst.ts:320:17:320:17 | x | string |
+| tst.ts:320:17:320:29 | x.toLowerCase | () => string |
+| tst.ts:320:17:320:31 | x.toLowerCase() | string |
+| tst.ts:320:19:320:29 | toLowerCase | () => string |
+| tst.ts:325:7:325:14 | ErrorMap | { new (entries?: readonly (readonly [string, Er... |
+| tst.ts:325:18:325:20 | Map | MapConstructor |
+| tst.ts:325:18:325:35 | Map<string, Error> | any |
+| tst.ts:327:7:327:14 | errorMap | Map<string, Error> |
+| tst.ts:327:18:327:31 | new ErrorMap() | Map<string, Error> |
+| tst.ts:327:22:327:29 | ErrorMap | { new (entries?: readonly (readonly [string, Er... |
+| tst.ts:338:7:338:7 | a | "a" \| "b" |
+| tst.ts:338:14:338:16 | 'a' | "a" |
+| tst.ts:343:3:343:5 | get | () => T |
+| tst.ts:343:8:343:14 | () => T | () => T |
+| tst.ts:344:3:344:5 | set | (value: T) => void |
+| tst.ts:344:8:344:25 | (value: T) => void | (value: T) => void |
+| tst.ts:344:9:344:13 | value | T |
+| tst.ts:347:7:347:11 | state | State<number> |
+| tst.ts:347:30:350:1 | {\\n  get ... > { }\\n} | State<number> |
+| tst.ts:348:3:348:5 | get | () => number |
+| tst.ts:348:8:348:15 | () => 42 | () => number |
+| tst.ts:348:14:348:15 | 42 | 42 |
+| tst.ts:349:3:349:5 | set | (value: number) => void |
+| tst.ts:349:8:349:21 | (value) => { } | (value: number) => void |
+| tst.ts:349:9:349:13 | value | number |
+| tst.ts:352:7:352:14 | fortyTwo | number |
+| tst.ts:352:18:352:22 | state | State<number> |
+| tst.ts:352:18:352:26 | state.get | () => number |
+| tst.ts:352:18:352:28 | state.get() | number |
+| tst.ts:352:24:352:26 | get | () => number |
+| tst.ts:356:8:356:18 | tstModuleES | () => "a" \| "b" |
+| tst.ts:356:25:356:43 | './tstModuleES.mjs' | any |
+| tst.ts:358:1:358:7 | console | Console |
+| tst.ts:358:1:358:11 | console.log | (...data: any[]) => void |
+| tst.ts:358:1:358:26 | console ... leES()) | void |
+| tst.ts:358:9:358:11 | log | (...data: any[]) => void |
+| tst.ts:358:13:358:23 | tstModuleES | () => "a" \| "b" |
+| tst.ts:358:13:358:25 | tstModuleES() | "a" \| "b" |
+| tst.ts:360:10:360:21 | tstModuleCJS | () => "a" \| "b" |
+| tst.ts:360:10:360:21 | tstModuleCJS | () => "a" \| "b" |
+| tst.ts:360:30:360:49 | './tstModuleCJS.cjs' | any |
+| tst.ts:362:1:362:7 | console | Console |
+| tst.ts:362:1:362:11 | console.log | (...data: any[]) => void |
+| tst.ts:362:1:362:27 | console ... eCJS()) | void |
+| tst.ts:362:9:362:11 | log | (...data: any[]) => void |
+| tst.ts:362:13:362:24 | tstModuleCJS | () => "a" \| "b" |
+| tst.ts:362:13:362:26 | tstModuleCJS() | "a" \| "b" |
+| tst.ts:368:13:368:13 | A | typeof library-tests/TypeScript/Types/tstSuffixA.ts |
+| tst.ts:368:20:368:33 | './tstSuffixA' | any |
+| tst.ts:370:1:370:7 | console | Console |
+| tst.ts:370:1:370:11 | console.log | (...data: any[]) => void |
+| tst.ts:370:1:370:29 | console ... File()) | void |
+| tst.ts:370:9:370:11 | log | (...data: any[]) => void |
+| tst.ts:370:13:370:13 | A | typeof library-tests/TypeScript/Types/tstSuffixA.ts |
+| tst.ts:370:13:370:26 | A.resolvedFile | () => "tstSuffixA.ts" |
+| tst.ts:370:13:370:28 | A.resolvedFile() | "tstSuffixA.ts" |
+| tst.ts:370:15:370:26 | resolvedFile | () => "tstSuffixA.ts" |
+| tst.ts:372:13:372:13 | B | typeof library-tests/TypeScript/Types/tstSuffixB.ios.ts |
+| tst.ts:372:20:372:33 | './tstSuffixB' | any |
+| tst.ts:374:1:374:7 | console | Console |
+| tst.ts:374:1:374:11 | console.log | (...data: any[]) => void |
+| tst.ts:374:1:374:29 | console ... File()) | void |
+| tst.ts:374:9:374:11 | log | (...data: any[]) => void |
+| tst.ts:374:13:374:13 | B | typeof library-tests/TypeScript/Types/tstSuffixB.ios.ts |
+| tst.ts:374:13:374:26 | B.resolvedFile | () => "tstSuffixB.ios.ts" |
+| tst.ts:374:13:374:28 | B.resolvedFile() | "tstSuffixB.ios.ts" |
+| tst.ts:374:15:374:26 | resolvedFile | () => "tstSuffixB.ios.ts" |
+| tstModuleCJS.cts:1:17:1:28 | tstModuleCJS | () => "a" \| "b" |
+| tstModuleCJS.cts:2:12:2:15 | Math | Math |
+| tstModuleCJS.cts:2:12:2:22 | Math.random | () => number |
+| tstModuleCJS.cts:2:12:2:24 | Math.random() | number |
+| tstModuleCJS.cts:2:12:2:30 | Math.random() > 0.5 | boolean |
+| tstModuleCJS.cts:2:12:2:42 | Math.ra ... ' : 'b' | "a" \| "b" |
+| tstModuleCJS.cts:2:17:2:22 | random | () => number |
+| tstModuleCJS.cts:2:28:2:30 | 0.5 | 0.5 |
+| tstModuleCJS.cts:2:34:2:36 | 'a' | "a" |
+| tstModuleCJS.cts:2:40:2:42 | 'b' | "b" |
+| tstModuleES.mts:1:25:1:35 | tstModuleES | () => "a" \| "b" |
+| tstModuleES.mts:2:12:2:15 | Math | Math |
+| tstModuleES.mts:2:12:2:22 | Math.random | () => number |
+| tstModuleES.mts:2:12:2:24 | Math.random() | number |
+| tstModuleES.mts:2:12:2:30 | Math.random() > 0.5 | boolean |
+| tstModuleES.mts:2:12:2:42 | Math.ra ... ' : 'b' | "a" \| "b" |
+| tstModuleES.mts:2:17:2:22 | random | () => number |
+| tstModuleES.mts:2:28:2:30 | 0.5 | 0.5 |
+| tstModuleES.mts:2:34:2:36 | 'a' | "a" |
+| tstModuleES.mts:2:40:2:42 | 'b' | "b" |
+| tstSuffixA.ts:1:17:1:28 | resolvedFile | () => "tstSuffixA.ts" |
+| tstSuffixA.ts:2:12:2:26 | 'tstSuffixA.ts' | "tstSuffixA.ts" |
+| tstSuffixB.ios.ts:1:17:1:28 | resolvedFile | () => "tstSuffixB.ios.ts" |
+| tstSuffixB.ios.ts:2:12:2:30 | 'tstSuffixB.ios.ts' | "tstSuffixB.ios.ts" |
+| tstSuffixB.ts:1:17:1:28 | resolvedFile | () => "tstSuffixB.ts" |
+| tstSuffixB.ts:2:12:2:26 | 'tstSuffixB.ts' | "tstSuffixB.ts" |
 | type_alias.ts:3:5:3:5 | b | boolean |
 | type_alias.ts:7:5:7:5 | c | ValueOrArray<number> |
 | type_alias.ts:14:9:14:32 | [proper ... ]: Json | any |
@@ -233,6 +586,26 @@ getTypeDefinitionType
 | tst.ts:91:3:95:3 | class S ...   }\\n  } | Super |
 | tst.ts:97:3:101:3 | class S ...   }\\n  } | Sub |
 | tst.ts:116:3:129:3 | class F ...   }\\n  } | Foo |
+| tst.ts:140:3:142:47 | type Sh ... mber }; | Shape |
+| tst.ts:152:5:156:5 | interfa ... ;\\n    } | Colors |
+| tst.ts:165:5:167:5 | interfa ... ;\\n    } | Foo |
+| tst.ts:171:5:173:5 | interfa ... ;\\n    } | Data |
+| tst.ts:179:3:192:3 | class F ...    \\n  } | Foo |
+| tst.ts:197:3:197:36 | type A  ... ring>>; | string |
+| tst.ts:200:3:200:45 | type B  ... ber>>>; | number |
+| tst.ts:203:3:203:46 | type C  ... mber>>; | C |
+| tst.ts:205:10:208:3 | interfa ... ng;\\n  } | Success |
+| tst.ts:210:10:213:3 | interfa ... ng;\\n  } | Error |
+| tst.ts:222:3:234:3 | class P ...   }\\n  } | Person |
+| tst.ts:241:3:241:15 | class Base {} | Base |
+| tst.ts:243:3:250:3 | class D ...   }\\n  } | Derived |
+| tst.ts:252:3:254:50 | type Ac ... ring }; | Action |
+| tst.ts:265:3:269:3 | interfa ... an;\\n  } | TypeMap |
+| tst.ts:271:3:276:7 | type Un ...   }[P]; | UnionRecord<P> |
+| tst.ts:289:3:289:63 | type Fu ... > void; | Func |
+| tst.ts:331:1:334:14 | type Fi ...  never; | FirstString<T> |
+| tst.ts:336:1:336:51 | type F  ... lean]>; | "a" \| "b" |
+| tst.ts:342:1:345:1 | interfa ... void;\\n} | State<T> |
 | type_alias.ts:1:1:1:17 | type B = boolean; | boolean |
 | type_alias.ts:5:1:5:50 | type Va ... ay<T>>; | ValueOrArray<T> |
 | type_alias.ts:9:1:15:13 | type Js ... Json[]; | Json |
@@ -369,6 +742,154 @@ getTypeExprType
 | tst.ts:111:29:111:32 | -2-3 | any |
 | tst.ts:117:20:117:25 | number | number |
 | tst.ts:121:23:121:28 | number | number |
+| tst.ts:133:21:133:27 | unknown | unknown |
+| tst.ts:140:8:140:12 | Shape | Shape |
+| tst.ts:141:7:142:46 | \| { kin ... umber } | { kind: "circle"; radius: number; } \| { kind: "... |
+| tst.ts:141:9:141:42 | { kind: ... umber } | { kind: "circle"; radius: number; } |
+| tst.ts:141:17:141:24 | "circle" | "circle" |
+| tst.ts:141:35:141:40 | number | number |
+| tst.ts:142:9:142:46 | { kind: ... umber } | { kind: "square"; sideLength: number; } |
+| tst.ts:142:17:142:24 | "square" | "square" |
+| tst.ts:142:39:142:44 | number | number |
+| tst.ts:144:24:144:28 | Shape | Shape |
+| tst.ts:144:32:144:37 | number | number |
+| tst.ts:152:15:152:20 | Colors | Colors |
+| tst.ts:153:13:153:18 | symbol | symbol |
+| tst.ts:153:22:153:27 | number | number |
+| tst.ts:154:13:154:18 | string | string |
+| tst.ts:154:22:154:27 | string | string |
+| tst.ts:155:13:155:18 | number | number |
+| tst.ts:155:22:155:28 | boolean | boolean |
+| tst.ts:158:17:158:22 | Colors | Colors |
+| tst.ts:165:15:165:17 | Foo | Foo |
+| tst.ts:166:14:166:17 | foo- | any |
+| tst.ts:166:20:166:25 | number | number |
+| tst.ts:166:31:166:36 | number | number |
+| tst.ts:168:15:168:17 | Foo | Foo |
+| tst.ts:171:15:171:18 | Data | Data |
+| tst.ts:172:17:172:22 | string | string |
+| tst.ts:172:17:172:31 | string \| symbol | string \| symbol |
+| tst.ts:172:26:172:31 | symbol | symbol |
+| tst.ts:172:35:172:41 | boolean | boolean |
+| tst.ts:175:17:175:20 | Data | Data |
+| tst.ts:197:8:197:8 | A | string |
+| tst.ts:197:12:197:18 | Awaited | Awaited<T> |
+| tst.ts:197:12:197:35 | Awaited ... tring>> | string |
+| tst.ts:197:20:197:26 | Promise | Promise<T> |
+| tst.ts:197:20:197:34 | Promise<string> | Promise<string> |
+| tst.ts:197:28:197:33 | string | string |
+| tst.ts:200:8:200:8 | B | number |
+| tst.ts:200:12:200:18 | Awaited | Awaited<T> |
+| tst.ts:200:12:200:44 | Awaited ... mber>>> | number |
+| tst.ts:200:20:200:26 | Promise | Promise<T> |
+| tst.ts:200:20:200:43 | Promise ... umber>> | Promise<Promise<number>> |
+| tst.ts:200:28:200:34 | Promise | Promise<T> |
+| tst.ts:200:28:200:42 | Promise<number> | Promise<number> |
+| tst.ts:200:36:200:41 | number | number |
+| tst.ts:203:8:203:8 | C | C |
+| tst.ts:203:12:203:18 | Awaited | Awaited<T> |
+| tst.ts:203:12:203:45 | Awaited ... umber>> | number \| boolean |
+| tst.ts:203:20:203:26 | boolean | boolean |
+| tst.ts:203:20:203:44 | boolean ... number> | boolean \| Promise<number> |
+| tst.ts:203:30:203:36 | Promise | Promise<T> |
+| tst.ts:203:30:203:44 | Promise<number> | Promise<number> |
+| tst.ts:203:38:203:43 | number | number |
+| tst.ts:205:20:205:26 | Success | Success |
+| tst.ts:206:14:206:19 | string | string |
+| tst.ts:206:21:206:27 | Success | any |
+| tst.ts:207:11:207:16 | string | string |
+| tst.ts:210:20:210:24 | Error | Error |
+| tst.ts:211:16:211:21 | string | string |
+| tst.ts:211:23:211:27 | Error | any |
+| tst.ts:212:16:212:21 | string | string |
+| tst.ts:215:30:215:36 | Success | Success |
+| tst.ts:215:30:215:44 | Success \| Error | Success \| Error |
+| tst.ts:215:40:215:44 | Error | Error |
+| tst.ts:223:12:223:17 | string | string |
+| tst.ts:224:23:224:28 | string | string |
+| tst.ts:228:19:228:25 | unknown | unknown |
+| tst.ts:252:8:252:13 | Action | Action |
+| tst.ts:253:5:254:49 | \| { kin ... tring } | { kind: "NumberContents"; payload: number; } \| ... |
+| tst.ts:253:7:253:49 | { kind: ... umber } | { kind: "NumberContents"; payload: number; } |
+| tst.ts:253:15:253:30 | "NumberContents" | "NumberContents" |
+| tst.ts:253:42:253:47 | number | number |
+| tst.ts:254:7:254:49 | { kind: ... tring } | { kind: "StringContents"; payload: string; } |
+| tst.ts:254:15:254:30 | "StringContents" | "StringContents" |
+| tst.ts:254:42:254:47 | string | string |
+| tst.ts:256:34:256:39 | Action | Action |
+| tst.ts:265:13:265:19 | TypeMap | TypeMap |
+| tst.ts:266:13:266:18 | number | number |
+| tst.ts:267:13:267:18 | string | string |
+| tst.ts:268:14:268:20 | boolean | boolean |
+| tst.ts:271:8:271:18 | UnionRecord | UnionRecord<P> |
+| tst.ts:271:20:271:20 | P | P |
+| tst.ts:271:30:271:42 | keyof TypeMap | keyof TypeMap |
+| tst.ts:271:36:271:42 | TypeMap | TypeMap |
+| tst.ts:272:6:272:6 | K | K |
+| tst.ts:272:11:272:11 | P | P |
+| tst.ts:273:13:273:13 | K | K |
+| tst.ts:274:14:274:20 | TypeMap | TypeMap |
+| tst.ts:274:22:274:22 | K | K |
+| tst.ts:274:29:274:32 | void | void |
+| tst.ts:276:5:276:5 | P | P |
+| tst.ts:278:26:278:26 | K | K |
+| tst.ts:278:36:278:48 | keyof TypeMap | keyof TypeMap |
+| tst.ts:278:42:278:48 | TypeMap | TypeMap |
+| tst.ts:278:59:278:69 | UnionRecord | UnionRecord<P> |
+| tst.ts:278:59:278:72 | UnionRecord<K> | UnionRecord<K> |
+| tst.ts:278:71:278:71 | K | K |
+| tst.ts:289:8:289:11 | Func | Func |
+| tst.ts:289:25:289:37 | ["a", number] | ["a", number] |
+| tst.ts:289:25:289:53 | ["a", n ... string] | ["a", number] \| ["b", string] |
+| tst.ts:289:26:289:28 | "a" | "a" |
+| tst.ts:289:31:289:36 | number | number |
+| tst.ts:289:41:289:53 | ["b", string] | ["b", string] |
+| tst.ts:289:42:289:44 | "b" | "b" |
+| tst.ts:289:47:289:52 | string | string |
+| tst.ts:289:59:289:62 | void | void |
+| tst.ts:291:13:291:16 | Func | Func |
+| tst.ts:313:12:313:12 | T | T |
+| tst.ts:313:20:315:27 | {\\n  pro ...  void } | { produce: (n: string) => T; consume: (x: T) =>... |
+| tst.ts:314:12:314:27 | (n: string) => T | (n: string) => T |
+| tst.ts:314:16:314:21 | string | string |
+| tst.ts:314:27:314:27 | T | T |
+| tst.ts:315:12:315:25 | (x: T) => void | (x: T) => void |
+| tst.ts:315:16:315:16 | T | T |
+| tst.ts:315:22:315:25 | void | void |
+| tst.ts:316:4:316:7 | void | void |
+| tst.ts:325:22:325:27 | string | string |
+| tst.ts:325:30:325:34 | Error | Error |
+| tst.ts:331:6:331:16 | FirstString | FirstString<T> |
+| tst.ts:331:18:331:18 | T | T |
+| tst.ts:336:6:336:6 | F | "a" \| "b" |
+| tst.ts:336:10:336:20 | FirstString | FirstString<T> |
+| tst.ts:336:10:336:50 | FirstSt ... olean]> | "a" \| "b" |
+| tst.ts:336:22:336:49 | ['a' \|  ... oolean] | ["a" \| "b", number, boolean] |
+| tst.ts:336:23:336:25 | 'a' | "a" |
+| tst.ts:336:23:336:31 | 'a' \| 'b' | "a" \| "b" |
+| tst.ts:336:29:336:31 | 'b' | "b" |
+| tst.ts:336:34:336:39 | number | number |
+| tst.ts:336:42:336:48 | boolean | boolean |
+| tst.ts:338:10:338:10 | F | "a" \| "b" |
+| tst.ts:342:11:342:15 | State | State<T> |
+| tst.ts:342:24:342:24 | T | T |
+| tst.ts:343:8:343:14 | () => T | () => T |
+| tst.ts:343:14:343:14 | T | T |
+| tst.ts:344:8:344:25 | (value: T) => void | (value: T) => void |
+| tst.ts:344:16:344:16 | T | T |
+| tst.ts:344:22:344:25 | void | void |
+| tst.ts:347:14:347:18 | State | State<T> |
+| tst.ts:347:14:347:26 | State<number> | State<number> |
+| tst.ts:347:20:347:25 | number | number |
+| tstModuleCJS.cts:1:33:1:35 | 'a' | "a" |
+| tstModuleCJS.cts:1:33:1:41 | 'a' \| 'b' | "a" \| "b" |
+| tstModuleCJS.cts:1:39:1:41 | 'b' | "b" |
+| tstModuleES.mts:1:40:1:42 | 'a' | "a" |
+| tstModuleES.mts:1:40:1:48 | 'a' \| 'b' | "a" \| "b" |
+| tstModuleES.mts:1:46:1:48 | 'b' | "b" |
+| tstSuffixA.ts:1:33:1:47 | 'tstSuffixA.ts' | "tstSuffixA.ts" |
+| tstSuffixB.ios.ts:1:33:1:51 | 'tstSuffixB.ios.ts' | "tstSuffixB.ios.ts" |
+| tstSuffixB.ts:1:33:1:47 | 'tstSuffixB.ts' | "tstSuffixB.ts" |
 | type_alias.ts:1:6:1:6 | B | boolean |
 | type_alias.ts:1:10:1:16 | boolean | boolean |
 | type_alias.ts:3:8:3:8 | B | boolean |
@@ -430,8 +951,12 @@ getTypeExprType
 | type_definitions.ts:22:32:22:37 | number | number |
 missingToString
 referenceDefinition
+| Action | tst.ts:252:3:254:50 | type Ac ... ring }; |
 | Alias<T> | type_definitions.ts:21:1:21:20 | type Alias<T> = T[]; |
 | Alias<number> | type_definitions.ts:21:1:21:20 | type Alias<T> = T[]; |
+| Base | tst.ts:241:3:241:15 | class Base {} |
+| Base | tst.ts:241:3:241:15 | class Base {} |
+| C | tst.ts:203:3:203:46 | type C  ... mber>>; |
 | C | type_definition_objects.ts:3:8:3:17 | class C {} |
 | C<T> | type_definitions.ts:8:1:10:1 | class C ...  x: T\\n} |
 | C<number> | type_definitions.ts:8:1:10:1 | class C ...  x: T\\n} |
@@ -439,9 +964,17 @@ referenceDefinition
 | Color.blue | type_definitions.ts:14:15:14:18 | blue |
 | Color.green | type_definitions.ts:14:8:14:12 | green |
 | Color.red | type_definitions.ts:14:3:14:5 | red |
+| Colors | tst.ts:152:5:156:5 | interfa ... ;\\n    } |
+| Data | tst.ts:171:5:173:5 | interfa ... ;\\n    } |
+| Derived | tst.ts:243:3:250:3 | class D ...   }\\n  } |
 | E | type_definition_objects.ts:6:8:6:16 | enum E {} |
 | EnumWithOneMember | type_definitions.ts:18:26:18:31 | member |
+| Error | tst.ts:210:10:213:3 | interfa ... ng;\\n  } |
+| FirstString<T> | tst.ts:331:1:334:14 | type Fi ...  never; |
 | Foo | tst.ts:116:3:129:3 | class F ...   }\\n  } |
+| Foo | tst.ts:165:5:167:5 | interfa ... ;\\n    } |
+| Foo | tst.ts:179:3:192:3 | class F ...    \\n  } |
+| Func | tst.ts:289:3:289:63 | type Fu ... > void; |
 | HasArea | tst.ts:58:1:60:1 | interfa ... mber;\\n} |
 | I<S> | type_definitions.ts:3:1:5:1 | interfa ... x: S;\\n} |
 | I<number> | type_definitions.ts:3:1:5:1 | interfa ... x: S;\\n} |
@@ -449,11 +982,19 @@ referenceDefinition
 | MyUnion | tst.ts:65:1:65:54 | type My ...  true}; |
 | MyUnion2 | tst.ts:68:1:68:49 | type My ...  true}; |
 | NonAbstractDummy | tst.ts:54:1:56:1 | interfa ... mber;\\n} |
+| Person | tst.ts:222:3:234:3 | class P ...   }\\n  } |
+| Shape | tst.ts:140:3:142:47 | type Sh ... mber }; |
+| State<T> | tst.ts:342:1:345:1 | interfa ... void;\\n} |
+| State<number> | tst.ts:342:1:345:1 | interfa ... void;\\n} |
 | Sub | tst.ts:97:3:101:3 | class S ...   }\\n  } |
+| Success | tst.ts:205:10:208:3 | interfa ... ng;\\n  } |
 | Super | tst.ts:91:3:95:3 | class S ...   }\\n  } |
 | Super | tst.ts:91:3:95:3 | class S ...   }\\n  } |
 | Thing | tst.ts:78:10:88:3 | class T ...   }\\n  } |
 | ThingI | tst.ts:73:3:76:3 | interfa ... n);\\n  } |
+| TypeMap | tst.ts:265:3:269:3 | interfa ... an;\\n  } |
+| UnionRecord<K> | tst.ts:271:3:276:7 | type Un ...   }[P]; |
+| UnionRecord<P> | tst.ts:271:3:276:7 | type Un ...   }[P]; |
 | ValueOrArray<T> | type_alias.ts:5:1:5:50 | type Va ... ay<T>>; |
 | ValueOrArray<number> | type_alias.ts:5:1:5:50 | type Va ... ay<T>>; |
 | VirtualNode | type_alias.ts:19:1:21:57 | type Vi ... ode[]]; |
@@ -490,50 +1031,100 @@ unknownType
 | tst.ts:40:5:40:15 | unknownType | unknown |
 | tst.ts:47:8:47:8 | e | unknown |
 | tst.ts:48:14:48:14 | e | unknown |
+| tst.ts:133:16:133:18 | arg | unknown |
+| tst.ts:134:32:134:34 | arg | unknown |
+| tst.ts:228:12:228:16 | other | unknown |
+| tst.ts:229:16:229:20 | other | unknown |
+| tst.ts:230:20:230:24 | other | unknown |
 abstractSignature
 | (): HasArea |
 | new (): HasArea |
 unionIndex
 | 1 | 0 | 1 \| 2 |
 | 2 | 1 | 1 \| 2 |
+| 42 | 1 | "hello" \| 42 |
+| "NumberContents" | 0 | "NumberContents" \| "StringContents" |
+| "StringContents" | 1 | "NumberContents" \| "StringContents" |
+| "a" | 0 | "a" \| "b" |
+| "a" | 1 | number \| "a" |
+| "a" | 3 | number \| boolean \| "a" \| "b" |
+| "b" | 1 | "a" \| "b" |
+| "b" | 4 | number \| boolean \| "a" \| "b" |
 | "bigint" | 2 | "string" \| "number" \| "bigint" \| "boolean" \| "s... |
+| "boolean" | 2 | keyof TypeMap |
 | "boolean" | 3 | "string" \| "number" \| "bigint" \| "boolean" \| "s... |
+| "circle" | 0 | "circle" \| "square" |
 | "function" | 7 | "string" \| "number" \| "bigint" \| "boolean" \| "s... |
+| "hello" | 0 | "hello" \| 42 |
 | "number" | 1 | "string" \| "number" \| "bigint" \| "boolean" \| "s... |
+| "number" | 1 | keyof TypeMap |
 | "object" | 6 | "string" \| "number" \| "bigint" \| "boolean" \| "s... |
+| "square" | 1 | "circle" \| "square" |
 | "string" | 0 | "string" \| "number" \| "bigint" \| "boolean" \| "s... |
+| "string" | 0 | keyof TypeMap |
 | "symbol" | 4 | "string" \| "number" \| "bigint" \| "boolean" \| "s... |
 | "undefined" | 5 | "string" \| "number" \| "bigint" \| "boolean" \| "s... |
+| Error | 1 | Success \| Error |
+| Error | 1 | string \| Error |
 | Json[] | 5 | string \| number \| boolean \| { [property: string... |
+| Promise<number> | 2 | boolean \| Promise<number> |
+| PromiseLike<TResult1> | 1 | TResult1 \| PromiseLike<TResult1> |
+| PromiseLike<TResult2> | 1 | TResult2 \| PromiseLike<TResult2> |
+| Success | 0 | Success \| Error |
 | T | 0 | T \| ValueOrArray<T>[] |
+| TResult1 | 0 | TResult1 \| PromiseLike<TResult1> |
+| TResult1 | 0 | TResult1 \| TResult2 |
+| TResult2 | 0 | TResult2 \| PromiseLike<TResult2> |
+| TResult2 | 1 | TResult1 \| TResult2 |
 | ValueOrArray<T>[] | 1 | T \| ValueOrArray<T>[] |
 | ValueOrArray<number>[] | 1 | number \| ValueOrArray<number>[] |
+| ["a", number] | 0 | ["a", number] \| ["b", string] |
+| ["b", string] | 1 | ["a", number] \| ["b", string] |
 | [string, { [key: string]: any; }, ...VirtualNod... | 1 | VirtualNode \| { [key: string]: any; } |
 | [string, { [key: string]: any; }, ...VirtualNod... | 1 | string \| [string, { [key: string]: any; }, ...V... |
 | false | 0 | boolean |
+| false | 0 | boolean \| Promise<number> |
+| false | 1 | number \| boolean |
+| false | 1 | number \| boolean \| "a" \| "b" |
 | false | 2 | string \| number \| boolean |
 | false | 2 | string \| number \| boolean \| { [property: string... |
+| number | 0 | number \| "a" |
 | number | 0 | number \| ValueOrArray<number>[] |
+| number | 0 | number \| boolean |
+| number | 0 | number \| boolean \| "a" \| "b" |
 | number | 1 | string \| number |
 | number | 1 | string \| number \| boolean |
 | number | 1 | string \| number \| boolean \| { [property: string... |
 | number | 1 | string \| number \| true |
 | string | 0 | VirtualNode \| { [key: string]: any; } |
+| string | 0 | string \| Error |
 | string | 0 | string \| [string, { [key: string]: any; }, ...V... |
 | string | 0 | string \| number |
 | string | 0 | string \| number \| boolean |
 | string | 0 | string \| number \| boolean \| { [property: string... |
 | string | 0 | string \| number \| true |
+| string | 0 | string \| symbol |
 | string | 0 | string \| { [key: string]: any; } |
+| symbol | 1 | string \| symbol |
 | true | 1 | boolean |
+| true | 1 | boolean \| Promise<number> |
+| true | 2 | number \| boolean |
+| true | 2 | number \| boolean \| "a" \| "b" |
 | true | 2 | string \| number \| true |
 | true | 3 | string \| number \| boolean |
 | true | 3 | string \| number \| boolean \| { [property: string... |
 | { [key: string]: any; } | 1 | string \| { [key: string]: any; } |
 | { [key: string]: any; } | 2 | VirtualNode \| { [key: string]: any; } |
 | { [property: string]: Json; } | 4 | string \| number \| boolean \| { [property: string... |
+| { kind: "NumberContents"; payload: number; } | 0 | { kind: "NumberContents"; payload: number; } \| ... |
+| { kind: "StringContents"; payload: string; } | 1 | { kind: "NumberContents"; payload: number; } \| ... |
+| { kind: "circle"; radius: number; } | 0 | { kind: "circle"; radius: number; } \| { kind: "... |
+| { kind: "square"; sideLength: number; } | 1 | { kind: "circle"; radius: number; } \| { kind: "... |
 | { myUnion: true; } | 0 | MyUnion \| { yetAnotherType: true; } |
 | { myUnion: true; } | 0 | { myUnion: true; } \| { stillMyUnion: true; } |
 | { stillMyUnion: true; } | 1 | MyUnion \| { yetAnotherType: true; } |
 | { stillMyUnion: true; } | 1 | { myUnion: true; } \| { stillMyUnion: true; } |
 | { yetAnotherType: true; } | 2 | MyUnion \| { yetAnotherType: true; } |
+getAStaticInitializerBlock
+| tst.ts:179:3:192:3 | class F ...    \\n  } | tst.ts:185:5:187:5 | static  ... ;\\n    } |
+| tst.ts:179:3:192:3 | class F ...    \\n  } | tst.ts:188:5:190:5 | static  ... ;\\n    } |

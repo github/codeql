@@ -1,0 +1,1 @@
+// semmle-extractor-options: --javac-args -cp ${testdir}/../../../stubs/apache-http-4.4.13

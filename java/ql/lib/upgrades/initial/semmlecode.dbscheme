@@ -1,0 +1,648 @@
+/*
+ * External artifacts
+ */
+
+externalDefects(
+  unique int id : @externalDefect,
+  varchar(900) queryPath : string ref,
+  int location : @location ref,
+  varchar(900) message : string ref,
+  float severity : float ref
+);
+
+externalMetrics(
+  unique int id : @externalMetric,
+  varchar(900) queryPath : string ref,
+  int location : @location ref,
+  float value : float ref
+);
+
+externalData(
+  int id : @externalDataElement,
+  varchar(900) path : string ref,
+  int column: int ref,
+  varchar(900) value : string ref
+);
+
+snapshotDate(unique date snapshotDate : date ref);
+
+sourceLocationPrefix(varchar(900) prefix : string ref);
+
+/*
+ * Duplicate code
+ */
+
+duplicateCode(
+  unique int id : @duplication,
+  varchar(900) relativePath : string ref,
+  int equivClass : int ref);
+
+similarCode(
+  unique int id : @similarity,
+  varchar(900) relativePath : string ref,
+  int equivClass : int ref);
+
+@duplication_or_similarity = @duplication | @similarity
+
+tokens(
+  int id : @duplication_or_similarity ref,
+  int offset : int ref,
+  int beginLine : int ref,
+  int beginColumn : int ref,
+  int endLine : int ref,
+  int endColumn : int ref);
+
+/*
+ * Version history
+ */
+
+svnentries(
+  int id : @svnentry,
+  varchar(500) revision : string ref,
+  varchar(500) author : string ref,
+  date revisionDate : date ref,
+  int changeSize : int ref
+)
+
+svnaffectedfiles(
+  int id : @svnentry ref,
+  int file : @file ref,
+  varchar(500) action : string ref
+)
+
+svnentrymsg(
+  int id : @svnentry ref,
+  varchar(500) message : string ref
+)
+
+svnchurn(
+  int commit : @svnentry ref,
+  int file : @file ref,
+  int churnedLines : int ref
+)
+
+/*
+ * Java dbscheme
+ */
+
+@location = @location_default ;
+
+locations_default(unique int id: @location_default,
+          int file: @file ref,
+          int beginLine: int ref,
+          int beginColumn: int ref,
+          int endLine: int ref,
+          int endColumn: int ref
+         );
+          
+hasLocation(int locatableid: @locatable ref, int id: @location ref);
+
+@sourceline = @locatable ;
+
+numlines(int element_id: @sourceline ref,
+         int num_lines: int ref,
+         int num_code: int ref,
+         int num_comment: int ref
+        );
+
+/*
+  fromSource(0) = unknown,
+  fromSource(1) = from source,
+  fromSource(2) = from library
+*/
+files(unique int id: @file,
+      varchar(900) name: string ref,
+      varchar(900) simple: string ref,
+      varchar(900) ext: string ref,
+      int fromSource: int ref);
+
+folders(unique int id: @folder,
+        varchar(900) name: string ref,
+        varchar(900) simple: string ref);
+
+@container = @folder | @file 
+
+containerparent(int parent: @container ref,
+                unique int child: @container ref);
+
+cupackage    (unique int id: @file ref, int packageid: @package ref);
+              
+/* Java */ 
+
+packages       (unique int id: @package, 
+	            varchar(900) nodeName: string ref);
+
+primitives     (unique int id: @primitive, 
+	            varchar(20)  nodeName: string ref);
+	           
+modifiers      (unique int id: @modifier, 
+	            varchar(20)  nodeName: string ref);
+
+classes        (unique int id: @class, 
+	            varchar(900) nodeName: string ref, 
+	            int parentid: @package ref, 
+	            int sourceid: @class ref);
+	           
+interfaces     (unique int id: @interface, 
+	            varchar(900) nodeName: string ref, 
+	            int parentid: @package ref, 
+	            int sourceid: @interface ref);
+	            
+fielddecls	   (unique int id: @fielddecl,
+				int parentid: @reftype ref);
+				
+fieldDeclaredIn (int fieldId: @field ref,
+				 int fieldDeclId: @fielddecl ref,
+				 int pos: int ref);
+	           
+fields         (unique int id: @field, 
+	            varchar(900) nodeName: string ref, 
+	            int typeid: @type ref, 
+	            int parentid: @reftype ref, 
+	            int sourceid: @field ref);
+	           
+constrs        (unique int id: @constructor, 
+	            varchar(900) nodeName: string ref, 
+	            varchar(900) signature: string ref, 
+	            int typeid: @type ref, 
+	            int parentid: @reftype ref,
+	            int sourceid: @constructor ref);
+	           
+methods        (unique int id: @method, 
+	            varchar(900) nodeName: string ref, 
+	            varchar(900) signature: string ref, 
+	            int typeid: @type ref, 
+	            int parentid: @reftype ref, 
+	            int sourceid: @method ref);
+	           
+params         (int id: @param, 
+	            varchar(900) nodeName: string ref, 
+	            int typeid: @type ref, 
+	            int pos: int ref, 
+	            int parentid: @callable ref, 
+	            int sourceid: @param ref);
+	           
+exceptions     (unique int id: @exception, 
+	            int typeid: @type ref, 
+	            int parentid: @callable ref);
+
+isAnnotType    (int interfaceid: @interface ref);
+
+isAnnotElem    (int methodid: @method ref);
+	           
+// annotValue(annot, id2, value) holds iff
+//   annot is an application of an annotation @A(v1=n1,...,vk=nk)]
+//   && id2=vi, value=ni for some i
+annotValue     (int parentid: @annotation ref, 
+	            int id2: @method ref,
+	            unique int value: @expr ref); // unique because source/bytecode expressions are disjoint
+	            
+isEnumType     (int classid: @class ref);
+
+isEnumConst		(int fieldid: @field ref);
+
+typeVars       (unique int id: @typevariable, 
+	            varchar(900) nodeName: string ref, 
+	            int pos: int ref, 
+	            int kind: int ref, // unused, but kept for backwards compatibility
+	            int parentid: @typeormethod ref);
+	            
+wildcards      (unique int id: @wildcard,
+                varchar(900) nodeName: string ref,
+                int kind: int ref);
+	           
+typeBounds     (unique int id: @typebound, 
+	            int typeid: @reftype ref, // reftype because there are no primitive bounds
+	            int pos: int ref, 
+	            int parentid: @boundedtype ref);
+	           
+typeArgs       (int argumentid: @reftype ref, 
+	            int pos: int ref,
+	            int parentid: @typeormethod ref);
+
+isParameterized(int memberid: @member ref);
+
+isRaw          (int memberid: @member ref);
+
+erasure        (unique int memberid: @member ref, 
+	            int erasureid: @member ref);
+
+isAnonymClass  (int classid: @class ref, 
+				int parent: @classinstancexpr ref);
+
+isLocalClass   (int classid: @class ref, 
+				int parent: @localclassdeclstmt ref);
+
+isDefConstr    (int constructorid: @constructor ref);
+
+arrays         (unique int id: @array, 
+	            varchar(900) nodeName: string ref,
+	            int elementtypeid: @type ref,
+	            int dimension: int ref,
+	            int componenttypeid: @type ref);
+
+enclInReftype  (unique int child: @reftype ref, 
+	            int parent: @reftype ref);
+
+// id1 extends id2	            
+extendsReftype (int id1: @reftype ref, 
+	            int id2: @classorinterface ref);
+	            
+implInterface  (int id1: @classorarray ref, 
+	            int id2: @interface ref);
+	            
+hasModifier    (int id1: @modifiable ref, 
+	            int id2: @modifier ref);
+
+readsField     (unique int id: @readsFieldExpr, 
+	            int id1: @callable ref, 
+	            int id2: @field ref);
+
+writesField    (unique int id: @writesFieldExpr, 
+	            int id1: @callable ref, 
+	            int id2: @field ref);
+	            
+callsMethod    (unique int id: @makesMethodCallExpr, 
+	            int id1: @callable ref, 
+	            int id2: @method ref, 
+	            int kind: int ref);
+	            	            
+callsConstr    (unique int id: @makesConstructorCallExpr, 
+	            int id1: @callable ref, 
+	            int id2: @constructor ref, 
+	            int kind: int ref);
+
+imports        (unique int id: @import,
+				      int holder: @typeorpackage ref,
+      				varchar(900) name: string ref,
+				      int kind: int ref);
+				      
+stmts (unique int id: @stmt, 
+       int kind: int ref,
+       int parent: @stmtparent ref, 
+       int idx: int ref, 
+       int bodydecl: @callable ref);
+       
+@stmtparent = @callable | @stmt;
+
+succs(int fromSuccessor: @stmt ref, 
+	  int toSuccessor: @stmtparent ref);
+
+case @stmt.kind of
+  0 = @block
+| 1 = @ifstmt
+| 2 = @forstmt
+| 3 = @enhancedforstmt
+| 4 = @whilestmt
+| 5 = @dostmt
+| 6 = @trystmt
+| 7 = @switchstmt
+| 8 = @synchronizedstmt
+| 9 = @returnstmt
+| 10 = @throwstmt
+| 11 = @breakstmt
+| 12 = @continuestmt
+| 13 = @emptystmt
+| 14 = @exprstmt
+| 15 = @labeledstmt
+| 16 = @assertstmt
+| 17 = @localvariabledeclstmt
+| 18 = @localclassdeclstmt
+| 19 = @constructorinvocationstmt
+| 20 = @superconstructorinvocationstmt
+| 21 = @case
+| 22 = @catchclause;
+
+exprs(
+  unique int id: @expr,
+  int kind: int ref,
+  int typeid: @type ref,
+  int parent: @element ref, // to deal with annotations inside annotations
+  int idx: int ref
+);
+
+callableEnclosingExpr(
+  unique int id: @expr ref,
+  int callable_id: @callable ref
+);
+
+statementEnclosingExpr(
+  unique int id: @expr ref,
+  int statement_id: @stmt ref
+);
+
+case @expr.kind of
+   1  = @arrayaccess 
+|  2  = @arraycreationexpr
+|  3  = @arrayinit
+|  4  = @assignexpr
+|  5  = @assignaddexpr
+|  6  = @assignsubexpr
+|  7  = @assignmulexpr
+|  8  = @assigndivexpr
+|  9  = @assignremexpr
+| 10  = @assignandexpr
+| 11  = @assignorexpr
+| 12  = @assignxorexpr
+| 13  = @assignlshiftexpr
+| 14  = @assignrshiftexpr
+| 15  = @assignurshiftexpr
+| 16  = @booleanliteral
+| 17  = @integerliteral
+| 18  = @longliteral
+| 19  = @floatingpointliteral
+| 20  = @doubleliteral
+| 21  = @characterliteral
+| 22  = @stringliteral
+| 23  = @nullliteral
+| 24  = @mulexpr
+| 25  = @divexpr
+| 26  = @remexpr
+| 27  = @addexpr
+| 28  = @subexpr
+| 29  = @lshiftexpr
+| 30  = @rshiftexpr
+| 31  = @urshiftexpr
+| 32  = @andbitexpr
+| 33  = @orbitexpr
+| 34  = @xorbitexpr
+| 35  = @andlogicalexpr
+| 36  = @orlogicalexpr
+| 37  = @ltexpr
+| 38  = @gtexpr
+| 39  = @leexpr
+| 40  = @geexpr
+| 41  = @eqexpr
+| 42  = @neexpr
+| 43  = @postincexpr
+| 44  = @postdecexpr
+| 45  = @preincexpr
+| 46  = @predecexpr
+| 47  = @minusexpr
+| 48  = @plusexpr
+| 49  = @bitnotexpr
+| 50  = @lognotexpr
+| 51  = @castexpr
+| 52  = @classinstancexpr
+| 53  = @conditionalexpr
+| 54  = @parexpr
+| 55  = @instanceofexpr
+| 56  = @localvariabledeclexpr
+| 57  = @typeliteral
+| 58  = @thisaccess
+| 59  = @superaccess
+| 60  = @varaccess
+| 61  = @methodaccess
+| 62  = @typeaccess
+| 63  = @arraytypeaccess
+| 64  = @packageaccess
+| 65  = @wildcardtypeaccess
+| 66  = @annotation
+| 67  = @uniontypeaccess;
+
+
+@assignment = @assignexpr 
+             | @assignop;
+
+@unaryassignment = @postincexpr                                   
+                                       | @postdecexpr             
+                                       | @preincexpr              
+                                       | @predecexpr;             
+             
+@assignop = @assignaddexpr
+             | @assignsubexpr
+             | @assignmulexpr
+             | @assigndivexpr
+             | @assignremexpr
+             | @assignandexpr
+             | @assignorexpr
+             | @assignxorexpr
+             | @assignlshiftexpr
+             | @assignrshiftexpr
+             | @assignurshiftexpr;
+
+@literal = @booleanliteral
+	         | @integerliteral
+             | @longliteral
+             | @floatingpointliteral
+             | @doubleliteral
+             | @characterliteral
+             | @stringliteral
+             | @nullliteral;
+             
+@binaryexpr = @mulexpr
+             | @divexpr
+             | @remexpr
+             | @addexpr
+             | @subexpr
+             | @lshiftexpr
+             | @rshiftexpr
+             | @urshiftexpr
+             | @andbitexpr
+             | @orbitexpr
+             | @xorbitexpr
+             | @andlogicalexpr
+             | @orlogicalexpr
+             | @ltexpr
+             | @gtexpr
+             | @leexpr
+             | @geexpr
+             | @eqexpr
+             | @neexpr;
+             
+@unaryexpr =   @postincexpr
+             | @postdecexpr
+             | @preincexpr
+             | @predecexpr
+             | @minusexpr
+             | @plusexpr
+             | @bitnotexpr
+             | @lognotexpr;
+            
+@caller =  @classinstancexpr 
+         | @methodaccess
+         | @constructorinvocationstmt 
+         | @superconstructorinvocationstmt;
+      
+@abscaller = @caller | @callExpr ;
+      
+callableBinding  (unique int callerid: @caller ref,
+               int callee: @callable ref);
+               
+@exprparent = @stmt | @expr | @callable | @field | @fielddecl | @class | @interface;
+               
+variableBinding  (unique int expr: @varaccess ref,
+               int variable: @variable ref);
+
+@variable = @localvar | @param | @field;
+@localorparam = @localvar | @param;
+
+localvars         (unique int id: @localvar, 
+	            varchar(900) nodeName: string ref, 
+	            int typeid: @type ref, 
+	            int parentid: @localvariabledeclexpr ref);
+
+@namedexprorstmt = 
+   @breakstmt
+ | @continuestmt
+ | @labeledstmt
+ | @literal;
+
+namestrings (varchar(900) name: string ref,
+             unique int parent: @namedexprorstmt ref);
+      
+javadoc        (unique int id: @javadoc);    
+
+isNormalComment(int commentid : @javadoc ref);
+
+hasJavadoc     (int documentableid: @member ref, 
+              int javadocid: @javadoc ref);  
+         
+javadocTag     (unique int id: @javadocTag,
+              varchar(900) name: string ref,
+              int parentid: @javadocParent ref,
+              int idx: int ref);
+             
+javadocText    (unique int id: @javadocText,
+              varchar(900) text: string ref,
+              int parentid: @javadocParent ref,
+              int idx: int ref);
+
+@typeorpackage = @type | @package;
+
+@child = @typeorpackage | @typeormethod | @callable;
+
+@modifiable_or_locatable = @modifiable | @locatable_element;
+
+@named_element = @commentable | @modifier_named;
+
+@typeormethod = @type | @method;
+@classorinterface = @interface | @class;
+@boundedtype = @typevariable | @wildcard;
+@reftype = @classorinterface | @array | @boundedtype;
+@classorarray = @class | @array;
+@type = @primitive | @reftype;
+@callable = @method | @constructor;
+@element = @file | @package | @primitive | @class | @interface | @method | @constructor | @modifier | @param | @exception | @field | 
+           @annotation | @boundedtype | @array | @localvar | @expr | @stmt | @import | @fielddecl;
+	            
+@modifiable = @member_modifiable| @param | @localvar ;
+
+@commentable = @package | @modifiable | @locatable_element ;
+
+@package_member = @file | @param | @member ;
+
+@member_modifiable = @class | @interface | @method | @constructor | @field ;
+
+@expression = @callExpr | @fieldAccessExpr;
+@fieldAccessExpr = @readsFieldExpr | @writesFieldExpr;
+@callExpr = @makesMethodCallExpr | @makesConstructorCallExpr;
+
+@member = @method | @constructor | @field | @reftype ;
+
+@locatable = @file | @class | @interface | @fielddecl | @field | @constructor | @method | @param | @exception
+             | @boundedtype | @typebound | @array
+             | @readsFieldExpr | @writesFieldExpr | @makesMethodCallExpr | @makesConstructorCallExpr
+             | @import | @stmt | @expr | @localvar | @javadoc | @javadocTag | @javadocText 
+             | @xmllocatable | @externalDefect | @externalMetric;
+             
+@locatable_element = @file | @class | @interface | @field | @param | @exception | @callable
+
+@named = @param | @member | @package | @typeormethod | @file;
+
+@modifier_named = @modifier | @modifiable | @named;
+
+@javadocParent = @javadoc | @javadocTag;
+@javadocElement = @javadocTag | @javadocText;
+
+/* XML Files */ 
+
+xmlEncoding  (unique int id: @file ref, varchar(900) encoding: string ref);
+
+xmlDTDs       (unique int id: @xmldtd, 
+              varchar(900) root: string ref, 
+              varchar(900) publicId: string ref, 
+              varchar(900) systemId: string ref,
+              int fileid: @file ref); 
+             
+xmlElements   (unique int id: @xmlelement, 
+              varchar(900) name: string ref, 
+              int parentid: @xmlparent ref,
+              int idx: int ref,
+              int fileid: @file ref);            
+
+xmlAttrs      (unique int id: @xmlattribute, 
+              int elementid: @xmlelement ref,
+              varchar(900) name: string ref, 
+              varchar(3600) value: string ref,
+              int idx: int ref,
+              int fileid: @file ref);  
+               
+xmlNs         (int id: @xmlnamespace, 
+              varchar(900) prefixName: string ref, 
+              varchar(900) URI: string ref,
+              int fileid: @file ref);  
+               
+xmlHasNs      (int elementId: @xmlnamespaceable ref, 
+              int nsId: @xmlnamespace ref,
+              int fileid: @file ref);  
+
+xmlComments   (unique int id: @xmlcomment, 
+              varchar(3600) text: string ref, 
+              int parentid: @xmlparent ref,
+              int fileid: @file ref); 
+               
+xmlChars      (unique int id: @xmlcharacters, 
+              varchar(3600) text: string ref, 
+              int parentid: @xmlparent ref,
+              int idx: int ref,
+              int isCDATA: int ref,
+              int fileid: @file ref);  
+	           	
+@xmlparent = @file | @xmlelement;
+@xmlnamespaceable = @xmlelement | @xmlattribute;
+
+xmllocations(int xmlElement: @xmllocatable ref,
+			int location: @location_default ref);
+
+@xmllocatable = @xmlcharacters | @xmlelement | @xmlcomment | @xmlattribute | @xmldtd | @file | @xmlnamespace;
+
+@top = @element | @locatable | @folder;
+
+/* *** Well-Founded Orders *** */
+
+/* The type hierarchy order */
+order:typeOrder(3);
+
+key:extendsReftype.order(id1, id2, typeOrder);
+key:implInterface.order(id1, id2, typeOrder);
+
+/* The AST parent-child order */ 
+
+order:astChildOrder(4);
+
+key:classes.order(id, parentid, astChildOrder); // Transitive
+key:interfaces.order(id, parentid, astChildOrder); // Transitive
+key:fields.order(id, parentid, astChildOrder);
+key:methods.order(id, parentid, astChildOrder);
+key:constrs.order(id, parentid, astChildOrder);
+key:params.order(id, parentid, astChildOrder);
+key:exceptions.order(id, parentid, astChildOrder);
+key:typeVars.order(id, parentid, astChildOrder);
+key:typeBounds.order(id, parentid, astChildOrder);
+key:stmts.order(id,parent,astChildOrder);
+key:stmts.order(id,bodydecl,astChildOrder);
+key:exprs.order(id,parent,astChildOrder);
+key:localvars.order(id,parentid,astChildOrder);
+
+/* Calls and field accesses */
+
+key:readsField.order(id, id1, astChildOrder);
+key:writesField.order(id, id1, astChildOrder);
+key:callsMethod.order(id, id1, astChildOrder);
+key:callsConstr.order(id, id1, astChildOrder);
+
+/* Binary Relations */
+
+key:enclInReftype.order(child, parent, astChildOrder);
+

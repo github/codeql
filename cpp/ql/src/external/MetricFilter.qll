@@ -8,7 +8,7 @@ import cpp
  * column `startcolumn` of line `startline` to column `endcolumn` of line `endline`
  * in file `filepath`.
  *
- * For more information, see [Locations](https://help.semmle.com/QL/learn-ql/ql/locations.html).
+ * For more information, see [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
  */
 external predicate metricResults(
   int id, string queryPath, string file, int startline, int startcol, int endline, int endcol,
@@ -67,7 +67,7 @@ class MetricResult extends int {
   /** Gets the URL corresponding to the location of this query result. */
   string getURL() {
     result =
-      "file://" + getFile().getAbsolutePath() + ":" + getStartLine() + ":" + getStartColumn() + ":" +
-        getEndLine() + ":" + getEndColumn()
+      "file://" + this.getFile().getAbsolutePath() + ":" + this.getStartLine() + ":" +
+        this.getStartColumn() + ":" + this.getEndLine() + ":" + this.getEndColumn()
   }
 }

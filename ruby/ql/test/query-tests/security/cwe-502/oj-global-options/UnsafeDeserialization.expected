@@ -1,0 +1,10 @@
+edges
+| OjGlobalOptions.rb:13:17:13:22 | call to params :  | OjGlobalOptions.rb:13:17:13:28 | ...[...] :  |
+| OjGlobalOptions.rb:13:17:13:28 | ...[...] :  | OjGlobalOptions.rb:14:22:14:30 | json_data |
+nodes
+| OjGlobalOptions.rb:13:17:13:22 | call to params :  | semmle.label | call to params :  |
+| OjGlobalOptions.rb:13:17:13:28 | ...[...] :  | semmle.label | ...[...] :  |
+| OjGlobalOptions.rb:14:22:14:30 | json_data | semmle.label | json_data |
+subpaths
+#select
+| OjGlobalOptions.rb:14:22:14:30 | json_data | OjGlobalOptions.rb:13:17:13:22 | call to params :  | OjGlobalOptions.rb:14:22:14:30 | json_data | Unsafe deserialization of $@. | OjGlobalOptions.rb:13:17:13:22 | call to params | user input |

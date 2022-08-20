@@ -1,0 +1,3 @@
+| test.cpp:20:3:20:8 | call to fclose | Second call to the $@ function is possible. | test.cpp:21:3:21:8 | call to fclose | fclose |
+| test.cpp:31:3:31:8 | call to fclose | Second call to the $@ function is possible. | test.cpp:32:3:32:8 | call to fclose | fclose |
+| test.cpp:38:3:38:8 | call to fclose | Second call to the $@ function is possible. | test.cpp:44:3:44:8 | call to fclose | fclose |

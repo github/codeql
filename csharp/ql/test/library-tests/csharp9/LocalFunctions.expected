@@ -1,7 +1,6 @@
 noBody
 | LocalFunction.cs:16:9:16:41 | localExtern |
 localFunctionModifier
-| GlobalStmt.cs:13:1:15:1 | M | private |
 | LambdaModifier.cs:8:9:8:36 | m | private |
 | LocalFunction.cs:9:9:12:9 | mul | async |
 | LocalFunction.cs:9:9:12:9 | mul | private |

@@ -1,0 +1,1 @@
+//semmle-extractor-options: --javac-args -cp ${testdir}/../../stubs/apache-log4j-2.14.1:${testdir}/../../stubs/slf4j-2.0.0

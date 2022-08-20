@@ -7,7 +7,7 @@ where
     or
     txt = "b'" + s + "'" and val = Value::forBytes(s)
   |
-    s = "a" or s = "b" or s = "c" or s = "d"
+    s in ["a", "b", "c", "d"]
   )
   or
   exists(int i | txt = i.toString() and val = Value::forInt(i) |

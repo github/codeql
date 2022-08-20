@@ -6,19 +6,39 @@
   - csharp/**/*
   - change-notes/**/*csharp*
 
+Go:
+  - go/**/*
+  - change-notes/**/*go.*
+
 Java:
-  - java/**/*
+  - any: [ 'java/**/*', '!java/kotlin-extractor/**/*', '!java/kotlin-explorer/**/*', '!java/ql/test/kotlin/**/*' ]
   - change-notes/**/*java.*
 
 JS:
-  - javascript/**/*
+  - any: [ 'javascript/**/*', '!javascript/ql/experimental/adaptivethreatmodeling/**/*' ]
   - change-notes/**/*javascript*
+
+Kotlin:
+  - java/kotlin-extractor/**/*
+  - java/kotlin-explorer/**/*
+  - java/ql/test/kotlin/**/*
 
 Python:
   - python/**/*
   - change-notes/**/*python*
 
+Ruby:
+  - ruby/**/*
+  - change-notes/**/*ruby*
+
+Swift:
+  - swift/**/*
+  - change-notes/**/*swift*
+
 documentation:
   - "**/*.qhelp"
   - "**/*.md"
   - docs/**/*
+
+"QL-for-QL":
+  - ql/**/*

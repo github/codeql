@@ -82,7 +82,7 @@ For example, the following query computes, for each folder, the number of JavaSc
 Locations
 ^^^^^^^^^
 
-Most entities in a CodeQL database have an associated source location. Locations are identified by four pieces of information: a file, a start line, a start column, an end line, and an end column. Line and column counts are 1-based (so the first character of a file is at line 1, column 1), and the end position is inclusive.
+Most entities in a CodeQL database have an associated source location. Locations are identified by five pieces of information: a file, a start line, a start column, an end line, and an end column. Line and column counts are 1-based (so the first character of a file is at line 1, column 1), and the end position is inclusive.
 
 All entities associated with a source location belong to the class `Locatable <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/Locations.qll/type.Locations$Locatable.html>`__. The location itself is modeled by the class `Location <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/Locations.qll/type.Locations$Location.html>`__ and can be accessed through the member predicate ``Locatable.getLocation()``. The `Location <https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/Locations.qll/type.Locations$Location.html>`__ class provides the following member predicates:
 
@@ -694,7 +694,7 @@ Furthermore, there are three member predicates that indicate the quality of the 
 
 -  ``DataFlow::InvokeNode.isImprecise()``: holds for invocations where the call graph builder might infer spurious call targets.
 -  ``DataFlow::InvokeNode.isIncomplete()``: holds for invocations where the call graph builder might fail to infer possible call targets.
--  ``DataFlow::InvokeNode.isUncertain()``: holds if either ``isImprecise()`` or ``isUncertain()`` holds.
+-  ``DataFlow::InvokeNode.isUncertain()``: holds if either ``isImprecise()`` or ``isIncomplete()`` holds.
 
 As an example of a call-graph-based query, here is a query to find invocations for which the call graph builder could not find any callees, despite the analysis being complete for this invocation:
 

@@ -15,7 +15,7 @@ string GeneratePassword()
         password = "mypassword" + BitConverter.ToInt32(randomBytes);
     }
 
-    // GOOD: Password is generated using a cryptographically secure RNG
+    // BAD: Membership.GeneratePassword generates a password with a bias
     password = Membership.GeneratePassword(12, 3);
 
     return password;

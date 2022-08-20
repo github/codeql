@@ -4,34 +4,34 @@ namespace System
 {
     namespace Collections
     {
-        // Generated from `System.Collections.CaseInsensitiveComparer` in `System.Collections.NonGeneric, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Collections.CaseInsensitiveComparer` in `System.Collections.NonGeneric, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class CaseInsensitiveComparer : System.Collections.IComparer
         {
-            public CaseInsensitiveComparer(System.Globalization.CultureInfo culture) => throw null;
             public CaseInsensitiveComparer() => throw null;
+            public CaseInsensitiveComparer(System.Globalization.CultureInfo culture) => throw null;
             public int Compare(object a, object b) => throw null;
             public static System.Collections.CaseInsensitiveComparer Default { get => throw null; }
             public static System.Collections.CaseInsensitiveComparer DefaultInvariant { get => throw null; }
         }
 
-        // Generated from `System.Collections.CaseInsensitiveHashCodeProvider` in `System.Collections.NonGeneric, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Collections.CaseInsensitiveHashCodeProvider` in `System.Collections.NonGeneric, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class CaseInsensitiveHashCodeProvider : System.Collections.IHashCodeProvider
         {
-            public CaseInsensitiveHashCodeProvider(System.Globalization.CultureInfo culture) => throw null;
             public CaseInsensitiveHashCodeProvider() => throw null;
+            public CaseInsensitiveHashCodeProvider(System.Globalization.CultureInfo culture) => throw null;
             public static System.Collections.CaseInsensitiveHashCodeProvider Default { get => throw null; }
             public static System.Collections.CaseInsensitiveHashCodeProvider DefaultInvariant { get => throw null; }
             public int GetHashCode(object obj) => throw null;
         }
 
-        // Generated from `System.Collections.CollectionBase` in `System.Collections.NonGeneric, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public abstract class CollectionBase : System.Collections.IList, System.Collections.IEnumerable, System.Collections.ICollection
+        // Generated from `System.Collections.CollectionBase` in `System.Collections.NonGeneric, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        public abstract class CollectionBase : System.Collections.ICollection, System.Collections.IEnumerable, System.Collections.IList
         {
             int System.Collections.IList.Add(object value) => throw null;
             public int Capacity { get => throw null; set => throw null; }
             public void Clear() => throw null;
-            protected CollectionBase(int capacity) => throw null;
             protected CollectionBase() => throw null;
+            protected CollectionBase(int capacity) => throw null;
             bool System.Collections.IList.Contains(object value) => throw null;
             void System.Collections.ICollection.CopyTo(System.Array array, int index) => throw null;
             public int Count { get => throw null; }
@@ -58,8 +58,8 @@ namespace System
             object System.Collections.ICollection.SyncRoot { get => throw null; }
         }
 
-        // Generated from `System.Collections.DictionaryBase` in `System.Collections.NonGeneric, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public abstract class DictionaryBase : System.Collections.IEnumerable, System.Collections.IDictionary, System.Collections.ICollection
+        // Generated from `System.Collections.DictionaryBase` in `System.Collections.NonGeneric, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        public abstract class DictionaryBase : System.Collections.ICollection, System.Collections.IDictionary, System.Collections.IEnumerable
         {
             void System.Collections.IDictionary.Add(object key, object value) => throw null;
             public void Clear() => throw null;
@@ -91,8 +91,8 @@ namespace System
             System.Collections.ICollection System.Collections.IDictionary.Values { get => throw null; }
         }
 
-        // Generated from `System.Collections.Queue` in `System.Collections.NonGeneric, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public class Queue : System.ICloneable, System.Collections.IEnumerable, System.Collections.ICollection
+        // Generated from `System.Collections.Queue` in `System.Collections.NonGeneric, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        public class Queue : System.Collections.ICollection, System.Collections.IEnumerable, System.ICloneable
         {
             public virtual void Clear() => throw null;
             public virtual object Clone() => throw null;
@@ -104,18 +104,18 @@ namespace System
             public virtual System.Collections.IEnumerator GetEnumerator() => throw null;
             public virtual bool IsSynchronized { get => throw null; }
             public virtual object Peek() => throw null;
-            public Queue(int capacity, float growFactor) => throw null;
-            public Queue(int capacity) => throw null;
-            public Queue(System.Collections.ICollection col) => throw null;
             public Queue() => throw null;
+            public Queue(System.Collections.ICollection col) => throw null;
+            public Queue(int capacity) => throw null;
+            public Queue(int capacity, float growFactor) => throw null;
             public virtual object SyncRoot { get => throw null; }
             public static System.Collections.Queue Synchronized(System.Collections.Queue queue) => throw null;
             public virtual object[] ToArray() => throw null;
             public virtual void TrimToSize() => throw null;
         }
 
-        // Generated from `System.Collections.ReadOnlyCollectionBase` in `System.Collections.NonGeneric, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public abstract class ReadOnlyCollectionBase : System.Collections.IEnumerable, System.Collections.ICollection
+        // Generated from `System.Collections.ReadOnlyCollectionBase` in `System.Collections.NonGeneric, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        public abstract class ReadOnlyCollectionBase : System.Collections.ICollection, System.Collections.IEnumerable
         {
             void System.Collections.ICollection.CopyTo(System.Array array, int index) => throw null;
             public virtual int Count { get => throw null; }
@@ -126,8 +126,8 @@ namespace System
             object System.Collections.ICollection.SyncRoot { get => throw null; }
         }
 
-        // Generated from `System.Collections.SortedList` in `System.Collections.NonGeneric, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public class SortedList : System.ICloneable, System.Collections.IEnumerable, System.Collections.IDictionary, System.Collections.ICollection
+        // Generated from `System.Collections.SortedList` in `System.Collections.NonGeneric, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        public class SortedList : System.Collections.ICollection, System.Collections.IDictionary, System.Collections.IEnumerable, System.ICloneable
         {
             public virtual void Add(object key, object value) => throw null;
             public virtual int Capacity { get => throw null; set => throw null; }
@@ -154,20 +154,20 @@ namespace System
             public virtual void Remove(object key) => throw null;
             public virtual void RemoveAt(int index) => throw null;
             public virtual void SetByIndex(int index, object value) => throw null;
-            public SortedList(int initialCapacity) => throw null;
-            public SortedList(System.Collections.IDictionary d, System.Collections.IComparer comparer) => throw null;
-            public SortedList(System.Collections.IDictionary d) => throw null;
-            public SortedList(System.Collections.IComparer comparer, int capacity) => throw null;
-            public SortedList(System.Collections.IComparer comparer) => throw null;
             public SortedList() => throw null;
+            public SortedList(System.Collections.IComparer comparer) => throw null;
+            public SortedList(System.Collections.IComparer comparer, int capacity) => throw null;
+            public SortedList(System.Collections.IDictionary d) => throw null;
+            public SortedList(System.Collections.IDictionary d, System.Collections.IComparer comparer) => throw null;
+            public SortedList(int initialCapacity) => throw null;
             public virtual object SyncRoot { get => throw null; }
             public static System.Collections.SortedList Synchronized(System.Collections.SortedList list) => throw null;
             public virtual void TrimToSize() => throw null;
             public virtual System.Collections.ICollection Values { get => throw null; }
         }
 
-        // Generated from `System.Collections.Stack` in `System.Collections.NonGeneric, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public class Stack : System.ICloneable, System.Collections.IEnumerable, System.Collections.ICollection
+        // Generated from `System.Collections.Stack` in `System.Collections.NonGeneric, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        public class Stack : System.Collections.ICollection, System.Collections.IEnumerable, System.ICloneable
         {
             public virtual void Clear() => throw null;
             public virtual object Clone() => throw null;
@@ -179,9 +179,9 @@ namespace System
             public virtual object Peek() => throw null;
             public virtual object Pop() => throw null;
             public virtual void Push(object obj) => throw null;
-            public Stack(int initialCapacity) => throw null;
-            public Stack(System.Collections.ICollection col) => throw null;
             public Stack() => throw null;
+            public Stack(System.Collections.ICollection col) => throw null;
+            public Stack(int initialCapacity) => throw null;
             public virtual object SyncRoot { get => throw null; }
             public static System.Collections.Stack Synchronized(System.Collections.Stack stack) => throw null;
             public virtual object[] ToArray() => throw null;
@@ -189,13 +189,13 @@ namespace System
 
         namespace Specialized
         {
-            // Generated from `System.Collections.Specialized.CollectionsUtil` in `System.Collections.NonGeneric, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Collections.Specialized.CollectionsUtil` in `System.Collections.NonGeneric, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class CollectionsUtil
             {
                 public CollectionsUtil() => throw null;
-                public static System.Collections.Hashtable CreateCaseInsensitiveHashtable(int capacity) => throw null;
-                public static System.Collections.Hashtable CreateCaseInsensitiveHashtable(System.Collections.IDictionary d) => throw null;
                 public static System.Collections.Hashtable CreateCaseInsensitiveHashtable() => throw null;
+                public static System.Collections.Hashtable CreateCaseInsensitiveHashtable(System.Collections.IDictionary d) => throw null;
+                public static System.Collections.Hashtable CreateCaseInsensitiveHashtable(int capacity) => throw null;
                 public static System.Collections.SortedList CreateCaseInsensitiveSortedList() => throw null;
             }
 

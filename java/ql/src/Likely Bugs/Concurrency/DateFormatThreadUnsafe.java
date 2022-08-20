@@ -1,5 +1,5 @@
 class DateFormattingThread implements Runnable {
-    private static DateFormat dateF = new SimpleDateFormat("yyyyMMdd");  // Static field declared
+    public static DateFormat dateF = new SimpleDateFormat("yyyyMMdd");  // Static field declared
 
     public void run() {
         for(int i=0; i < 10; i++){

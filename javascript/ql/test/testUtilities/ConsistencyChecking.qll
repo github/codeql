@@ -62,7 +62,7 @@ private class AssertionComment extends LineComment {
   /**
    * Holds if a consistency issue is expected at this location.
    */
-  predicate expectConsistencyError() { getText().matches(["%[INCONSISTENCY]%"]) }
+  predicate expectConsistencyError() { getText().matches("%[INCONSISTENCY]%") }
 }
 
 private DataFlow::Node getASink() { exists(DataFlow::Configuration cfg | cfg.hasFlow(_, result)) }
@@ -71,7 +71,7 @@ private DataFlow::Node getASink() { exists(DataFlow::Configuration cfg | cfg.has
  * Gets all the alerts for consistency consistency checking from a configuration `conf`.
  */
 private DataFlow::Node alerts(Conf conf) {
-  result = any(ConsistencyConfiguration res | res = conf).getAnAlert()
+  result = conf.(ConsistencyConfiguration).getAnAlert()
   or
   not exists(ConsistencyConfiguration r) and
   result = getASink() and
@@ -131,7 +131,7 @@ private File getATestFile(string conf) {
   result = any(LineComment comment).getFile() and
   conf = ""
   or
-  result = any(ConsistencyConfiguration res | res = conf).getAFile()
+  result = conf.(ConsistencyConfiguration).getAFile()
 }
 
 /**

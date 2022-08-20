@@ -3,7 +3,7 @@
   "qhelp.dtd">
 <qhelp>
 <overview>
-<p>The return value of a call to <code>snprintf</code> is the number of characters that <i>would have</i> been written to the buffer assuming there was sufficient space.  In the event that the operation reaches the end of the buffer and more than one character is discarded, the return value will be greater than the buffer size.  This can cause incorrect behaviour, for example:
+<p>The return value of a call to <code>snprintf</code> is the number of characters that <i>would have</i> been written to the buffer assuming there was sufficient space.  In the event that the operation reaches the end of the buffer and more than one character is discarded, the return value will be greater than the buffer size.  This can cause incorrect behavior, for example:
 </p>
 </overview>
 

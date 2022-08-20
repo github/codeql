@@ -14,7 +14,7 @@ import semmle.python.dataflow.new.DataFlow
 import semmle.python.dataflow.new.TaintTracking
 import semmle.python.dataflow.new.RemoteFlowSources
 import TestUtilities.InlineExpectationsTest
-import experimental.dataflow.TestUtil.PrintNode
+private import semmle.python.dataflow.new.internal.PrintNode
 
 DataFlow::Node shouldBeTainted() {
   exists(DataFlow::CallCfgNode call |
@@ -30,23 +30,35 @@ DataFlow::Node shouldNotBeTainted() {
   )
 }
 
-class TestTaintTrackingConfiguration extends TaintTracking::Configuration {
-  TestTaintTrackingConfiguration() { this = "TestTaintTrackingConfiguration" }
+// this module allows the configuration to be imported in other `.ql` files without the
+// top level query predicates of this file coming into scope.
+module Conf {
+  class TestTaintTrackingConfiguration extends TaintTracking::Configuration {
+    TestTaintTrackingConfiguration() { this = "TestTaintTrackingConfiguration" }
 
-  override predicate isSource(DataFlow::Node source) {
-    source.asCfgNode().(NameNode).getId() in [
-        "TAINTED_STRING", "TAINTED_BYTES", "TAINTED_LIST", "TAINTED_DICT"
-      ]
-    or
-    source instanceof RemoteFlowSource
-  }
+    override predicate isSource(DataFlow::Node source) {
+      source.asCfgNode().(NameNode).getId() in [
+          "TAINTED_STRING", "TAINTED_BYTES", "TAINTED_LIST", "TAINTED_DICT"
+        ]
+      or
+      // User defined sources
+      exists(CallNode call |
+        call.getFunction().(NameNode).getId() = "taint" and
+        source.(DataFlow::CfgNode).getNode() = call.getAnArg()
+      )
+      or
+      source instanceof RemoteFlowSource
+    }
 
-  override predicate isSink(DataFlow::Node sink) {
-    sink = shouldBeTainted()
-    or
-    sink = shouldNotBeTainted()
+    override predicate isSink(DataFlow::Node sink) {
+      sink = shouldBeTainted()
+      or
+      sink = shouldNotBeTainted()
+    }
   }
 }
+
+import Conf
 
 class InlineTaintTest extends InlineExpectationsTest {
   InlineTaintTest() { this = "InlineTaintTest" }
@@ -88,6 +100,8 @@ query predicate untaintedArgumentToEnsureTaintedNotMarkedAsMissing(
     not any(TestTaintTrackingConfiguration config).hasFlow(_, sink) and
     location = sink.getLocation() and
     not exists(FalseNegativeExpectation missingResult |
+      missingResult.getTag() = "tainted" and
+      missingResult.getLocation().getFile() = location.getFile() and
       missingResult.getLocation().getStartLine() = location.getStartLine()
     )
   )

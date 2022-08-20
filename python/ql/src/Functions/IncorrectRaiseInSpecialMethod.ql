@@ -22,49 +22,14 @@ private predicate indexing_method(string name) {
 }
 
 private predicate arithmetic_method(string name) {
-  name = "__add__" or
-  name = "__sub__" or
-  name = "__div__" or
-  name = "__pos__" or
-  name = "__abs__" or
-  name = "__floordiv__" or
-  name = "__div__" or
-  name = "__divmod__" or
-  name = "__lshift__" or
-  name = "__and__" or
-  name = "__or__" or
-  name = "__xor__" or
-  name = "__rshift__" or
-  name = "__pow__" or
-  name = "__mul__" or
-  name = "__neg__" or
-  name = "__radd__" or
-  name = "__rsub__" or
-  name = "__rdiv__" or
-  name = "__rfloordiv__" or
-  name = "__rdiv__" or
-  name = "__rlshift__" or
-  name = "__rand__" or
-  name = "__ror__" or
-  name = "__rxor__" or
-  name = "__rrshift__" or
-  name = "__rpow__" or
-  name = "__rmul__" or
-  name = "__truediv__" or
-  name = "__rtruediv__" or
-  name = "__iadd__" or
-  name = "__isub__" or
-  name = "__idiv__" or
-  name = "__ifloordiv__" or
-  name = "__idiv__" or
-  name = "__ilshift__" or
-  name = "__iand__" or
-  name = "__ior__" or
-  name = "__ixor__" or
-  name = "__irshift__" or
-  name = "__ipow__" or
-  name = "__imul__" or
-  name = "__itruediv__"
+  name in [
+      "__add__", "__sub__", "__or__", "__xor__", "__rshift__", "__pow__", "__mul__", "__neg__",
+      "__radd__", "__rsub__", "__rdiv__", "__rfloordiv__", "__div__", "__rdiv__", "__rlshift__",
+      "__rand__", "__ror__", "__rxor__", "__rrshift__", "__rpow__", "__rmul__", "__truediv__",
+      "__rtruediv__", "__pos__", "__iadd__", "__isub__", "__idiv__", "__ifloordiv__", "__idiv__",
+      "__ilshift__", "__iand__", "__ior__", "__ixor__", "__irshift__", "__abs__", "__ipow__",
+      "__imul__", "__itruediv__", "__floordiv__", "__div__", "__divmod__", "__lshift__", "__and__"
+    ]
 }
 
 private predicate ordering_method(string name) {

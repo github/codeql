@@ -128,3 +128,248 @@ module TS43 {
     }
   } 
 }
+
+module TS44 {
+  function foo(arg: unknown) {
+    const argIsString = typeof arg === "string";
+    if (argIsString) {
+        const upper = arg.toUpperCase();
+    }
+  }
+
+  type Shape =
+      | { kind: "circle", radius: number }
+      | { kind: "square", sideLength: number };
+
+  function side(shape: Shape): number {
+      const { kind } = shape;
+
+      if (kind === "circle") { return shape.radius;}
+      else { return shape.sideLength; }
+  }
+
+  function symbolIndex() {
+    interface Colors {
+      [sym: symbol]: number;
+      [key: string]: string;
+      [num: number]: boolean;
+    }
+    
+    let colors: Colors = {};
+    const red = colors[Symbol("red")];
+    const green = colors["green"];
+    const blue = colors[2];
+  }
+
+  function stringPatternIndex() {
+    interface Foo {
+      [key: `foo-${number}`]: number;
+    }
+    var bla : Foo = {};
+    const bar = bla[`foo-1`];
+
+    interface Data {
+      [optName: string | symbol]: boolean;
+    }
+
+    const data: Data = {};
+    const baz = data["foo"];
+  }
+
+  class Foo {
+    static #count = 0;
+
+    get count() {
+        return Foo.#count;
+    }
+    static {
+      Foo.#count += 3;
+    }
+    static {
+      var count = Foo.#count;
+    }
+    
+  }
+}
+
+module TS45 {
+  // A = string
+  type A = Awaited<Promise<string>>;
+
+  // B = number
+  type B = Awaited<Promise<Promise<number>>>;
+
+  // C = boolean | number
+  type C = Awaited<boolean | Promise<number>>;
+
+  export interface Success {
+    type: `${string}Success`;
+    body: string;
+  }
+
+  export interface Error {
+      type: `${string}Error`;
+      message: string;
+  }
+
+  export function handler(r: Success | Error) {
+      if (r.type === "HttpSuccess") {
+          // 'r' has type 'Success'
+          let token = r.body;
+      }
+  }
+
+  class Person {
+    #name: string;
+    constructor(name: string) {
+        this.#name = name;
+    }
+
+    equals(other: unknown) {
+        return other &&
+            typeof other === "object" &&
+            #name in other && // <- this is new!
+            this.#name === other.#name; // <- other has type Person here.
+    }
+  }
+}
+
+import * as Foo3 from "./something.json" assert { type: "json" };
+var foo = Foo3.foo;
+
+module TS46 {
+  class Base {}
+
+  class Derived extends Base {
+    myProp = true;
+
+    constructor() {
+      console.log("Doing something before super()");
+      super();
+    }
+  }
+
+  type Action =
+    | { kind: "NumberContents"; payload: number }
+    | { kind: "StringContents"; payload: string };
+
+  function processAction(action: Action) {
+    const { kind, payload } = action;
+    if (kind === "NumberContents") {
+      console.log(payload.toFixed()); // <- number
+    } else if (kind === "StringContents") {
+      console.log(payload.toLowerCase()); // <- string
+    }
+  }
+
+  interface TypeMap {
+    number: number;
+    string: string;
+    boolean: boolean;
+  }
+
+  type UnionRecord<P extends keyof TypeMap> = {
+    [K in P]: {
+      kind: K;
+      f: (p: TypeMap[K]) => void;
+    };
+  }[P];
+
+  function processRecord<K extends keyof TypeMap>(record: UnionRecord<K>) {
+    record.f(record.v);
+  }
+
+  processRecord({
+    kind: "string",
+    f: (val) => {
+      console.log(val.toUpperCase()); // <- string
+    },
+  });
+
+  type Func = (...args: ["a", number] | ["b", string]) => void;
+
+  const f1: Func = (kind, payload) => {
+    if (kind === "a") {
+      payload.toFixed(); // <- number
+    }
+  };
+}
+
+const key = Symbol();
+
+const numberOrString = Math.random() < 0.5 ? 42 : "hello";
+
+let obj = {
+  [key]: numberOrString,
+};
+
+if (typeof obj[key] === "string") {
+  let str = obj[key]; // <- string
+  str.toUpperCase();
+}
+
+//////////
+
+function f<T>(arg: {
+  produce: (n: string) => T,
+  consume: (x: T) => void }
+): void {};
+
+f({
+  produce: n => n, // <- (n: string) => string
+  consume: x => x.toLowerCase()
+});
+
+///////////
+
+const ErrorMap = Map<string, Error>;
+
+const errorMap = new ErrorMap(); // <- Map<string, Error>
+
+////////////
+
+type FirstString<T> =
+  T extends [infer S extends string, ...unknown[]]
+      ? S
+      : never;
+
+type F = FirstString<['a' | 'b', number, boolean]>;
+
+const a: F = 'a'; // <- 'a' | 'b'
+
+////////////
+
+interface State<in out T> {
+  get: () => T;
+  set: (value: T) => void;
+}
+
+const state: State<number> = {
+  get: () => 42,
+  set: (value) => { }
+}
+
+const fortyTwo = state.get(); // <- number
+
+/////////////////
+
+import tstModuleES from './tstModuleES.mjs';
+
+console.log(tstModuleES());
+
+import { tstModuleCJS } from './tstModuleCJS.cjs';
+
+console.log(tstModuleCJS());
+
+/////////////////
+
+// test file resolution order (see tsconfig: moduleSuffixes setting)
+
+import * as A from './tstSuffixA';
+
+console.log(A.resolvedFile()); // <- 'tstSuffixA.ts'
+
+import * as B from './tstSuffixB';
+
+console.log(B.resolvedFile()); // <- 'tstSuffixB.ios.ts'
+

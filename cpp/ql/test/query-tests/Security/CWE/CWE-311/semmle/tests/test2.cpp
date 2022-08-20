@@ -42,7 +42,7 @@ void tests(FILE *log, myStruct &s)
 {
 	fprintf(log, "password = %s\n", s.password); // BAD
 	fprintf(log, "thepasswd = %s\n", s.thepasswd); // BAD
-	fprintf(log, "accountkey = %s\n", s.accountkey); // DUBIOUS [NOT REPORTED]
+	fprintf(log, "accountkey = %s\n", s.accountkey); // BAD
 	fprintf(log, "password_hash = %s\n", s.password_hash); // GOOD
 	fprintf(log, "encrypted_passwd = %s\n", s.encrypted_passwd); // GOOD
 	fprintf(log, "password_file = %s\n", s.password_file); // GOOD
@@ -70,8 +70,15 @@ void tests(FILE *log, myStruct &s)
 		char buf[1024];
 
 		strcpy(buf, s.password);
-		fprintf(log, "buf = %s\n", buf); // BAD [NOT DETECTED]
+		fprintf(log, "buf = %s\n", buf); // BAD
 		
+		strcpy(buf, s.password_hash);
+		fprintf(log, "buf = %s\n", buf); // GOOD [FALSE POSITIVE]
+	}
+
+	{
+		char buf[1024];
+
 		strcpy(buf, s.password_hash);
 		fprintf(log, "buf = %s\n", buf); // GOOD
 	}
@@ -89,6 +96,17 @@ void tests(FILE *log, myStruct &s)
 		char buffer[1024];
 
 		snprintf(buffer, 1024, "password = %s", s.password);
-		fprintf(log, "log: %s", buffer); // BAD [NOT DETECTED]
+		fprintf(log, "log: %s", buffer); // BAD
+	}
+}
+
+char *gets(char *s);
+
+void test_gets()
+{
+	{
+		char password[1024];
+
+		gets(password); // BAD
 	}
 }

@@ -13,13 +13,13 @@
  *       external/cwe/cwe-079
  *       external/cwe/cwe-094
  *       external/cwe/cwe-400
+ *       external/cwe/cwe-471
  *       external/cwe/cwe-915
  */
 
 import javascript
-import semmle.javascript.security.dataflow.PrototypePollution::PrototypePollution
+import semmle.javascript.security.dataflow.PrototypePollutionQuery
 import DataFlow::PathGraph
-import semmle.javascript.dependencies.Dependencies
 
 from
   Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink, string moduleName,

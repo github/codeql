@@ -11,7 +11,7 @@
  */
 
 import csharp
-import Helpers
+import Linq.Helpers
 
 /*
  * The purpose of this query is to find loops of the following form:

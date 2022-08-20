@@ -13,7 +13,7 @@
 
 import javascript
 import DataFlow::PathGraph
-import semmle.javascript.security.dataflow.LogInjection::LogInjection
+import semmle.javascript.security.dataflow.LogInjectionQuery
 
 from LogInjectionConfiguration config, DataFlow::PathNode source, DataFlow::PathNode sink
 where config.hasFlowPath(source, sink)

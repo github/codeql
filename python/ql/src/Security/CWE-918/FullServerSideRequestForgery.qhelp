@@ -1,0 +1,11 @@
+<!DOCTYPE qhelp PUBLIC "-//Semmle//qhelp//EN" "qhelp.dtd">
+<qhelp>
+
+  <overview>
+    <include src="ServerSideRequestForgery-start.inc.qhelp" />
+
+    <!-- query specific -->
+    <p>This query covers full SSRF, to find partial SSRF use the <code>py/partial-ssrf</code> query.</p>
+  </overview>
+  <include src="ServerSideRequestForgery-end.inc.qhelp" />
+</qhelp>

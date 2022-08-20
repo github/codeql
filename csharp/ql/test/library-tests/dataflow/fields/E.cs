@@ -19,9 +19,9 @@ public class E
 
     private void M()
     {
-        var o = new object();
+        var o = Source<object>(1);
         var s = CreateS(o);
-        Sink(s.Field); // flow
+        Sink(s.Field); // $ hasValueFlow=1
 
         s = new S();
         NotASetter(s, o);
@@ -29,4 +29,6 @@ public class E
     }
 
     public static void Sink(object o) { }
+
+    static T Source<T>(object source) => throw null;
 }

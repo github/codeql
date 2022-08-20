@@ -20,10 +20,10 @@ constructors/A.java:
 #   11|         0: [ExprStmt] <Expr>;
 #   11|           0: [ClassInstanceExpr] new A(...)
 #   11|             -3: [TypeAccess] A
-#   14|     6: [FieldDeclaration] String STATIC, ...;
+#   14|     6: [FieldDeclaration] String STATIC;
 #   14|       -1: [TypeAccess] String
 #   14|       0: [StringLiteral] "static string"
-#   15|     7: [FieldDeclaration] String INSTANCE, ...;
+#   15|     7: [FieldDeclaration] String INSTANCE;
 #   15|       -1: [TypeAccess] String
 #   15|       0: [StringLiteral] "instance string"
 #   17|     8: [BlockStmt] { ... }

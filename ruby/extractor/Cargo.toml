@@ -1,0 +1,22 @@
+[package]
+name = "ruby-extractor"
+version = "0.1.0"
+authors = ["GitHub"]
+edition = "2018"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+flate2 = "1.0"
+node-types = { path = "../node-types" }
+tree-sitter = "0.19"
+tree-sitter-embedded-template = { git = "https://github.com/tree-sitter/tree-sitter-embedded-template.git", rev = "1a538da253d73f896b9f6c0c7d79cda58791ac5c" }
+tree-sitter-ruby = { git = "https://github.com/tree-sitter/tree-sitter-ruby.git", rev = "e75d04404c9dd71ad68850d5c672b226d5e694f3" }
+clap = "3.0"
+tracing = "0.1"
+tracing-subscriber = { version = "0.3.3", features = ["env-filter"] }
+rayon = "1.5.0"
+num_cpus = "1.13.0"
+regex = "1.5.5"
+encoding = "0.2"
+lazy_static = "1.4.0"

@@ -12,7 +12,7 @@
 
 import javascript
 import DataFlow::PathGraph
-import semmle.javascript.security.dataflow.DeepObjectResourceExhaustion::DeepObjectResourceExhaustion
+import semmle.javascript.security.dataflow.DeepObjectResourceExhaustionQuery
 
 from
   Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink, DataFlow::Node link,

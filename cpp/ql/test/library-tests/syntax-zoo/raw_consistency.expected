@@ -136,7 +136,7 @@ useNotDominatedByDefinition
 | VacuousDestructorCall.cpp:2:29:2:29 | Address | Operand 'Address' is not dominated by its definition in function '$@'. | VacuousDestructorCall.cpp:2:6:2:6 | void CallDestructor<int>(int, int*) | void CallDestructor<int>(int, int*) |
 | misc.c:219:47:219:48 | Address | Operand 'Address' is not dominated by its definition in function '$@'. | misc.c:219:5:219:26 | int assign_designated_init(someStruct*) | int assign_designated_init(someStruct*) |
 | static_init_templates.cpp:15:1:15:18 | Address | Operand 'Address' is not dominated by its definition in function '$@'. | static_init_templates.cpp:15:1:15:18 | void MyClass::MyClass() | void MyClass::MyClass() |
-| try_catch.cpp:21:13:21:24 | Address | Operand 'Address' is not dominated by its definition in function '$@'. | try_catch.cpp:19:6:19:23 | void throw_from_nonstmt(int) | void throw_from_nonstmt(int) |
+| try_catch.cpp:21:9:21:9 | Address | Operand 'Address' is not dominated by its definition in function '$@'. | try_catch.cpp:19:6:19:23 | void throw_from_nonstmt(int) | void throw_from_nonstmt(int) |
 | vla.c:3:27:3:30 | Address | Operand 'Address' is not dominated by its definition in function '$@'. | vla.c:3:5:3:8 | int main(int, char**) | int main(int, char**) |
 switchInstructionWithoutDefaultEdge
 notMarkedAsConflated
@@ -148,6 +148,9 @@ thisArgumentIsNonPointer
 | pmcallexpr.cpp:8:2:8:15 | Call: call to expression | Call instruction 'Call: call to expression' has a `this` argument operand that is not an address, in function '$@'. | array_delete.cpp:5:6:5:6 | void f() | void f() |
 | pointer_to_member.cpp:23:5:23:54 | Call: call to expression | Call instruction 'Call: call to expression' has a `this` argument operand that is not an address, in function '$@'. | pointer_to_member.cpp:14:5:14:9 | int usePM(int PM::*) | int usePM(int PM::*) |
 | pointer_to_member.cpp:24:5:24:49 | Call: call to expression | Call instruction 'Call: call to expression' has a `this` argument operand that is not an address, in function '$@'. | pointer_to_member.cpp:14:5:14:9 | int usePM(int PM::*) | int usePM(int PM::*) |
+nonUniqueIRVariable
+| misc.c:178:22:178:40 | VariableAddress: __PRETTY_FUNCTION__ | Variable address instruction 'VariableAddress: __PRETTY_FUNCTION__' has no associated variable, in function '$@'. | misc.c:177:6:177:14 | void magicvars() | void magicvars() |
+| misc.c:179:27:179:34 | VariableAddress: __func__ | Variable address instruction 'VariableAddress: __func__' has no associated variable, in function '$@'. | misc.c:177:6:177:14 | void magicvars() | void magicvars() |
 missingCanonicalLanguageType
 multipleCanonicalLanguageTypes
 missingIRType

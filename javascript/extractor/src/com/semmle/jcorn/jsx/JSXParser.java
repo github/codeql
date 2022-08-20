@@ -420,8 +420,9 @@ public class JSXParser extends Parser {
         && code == 60
         && this.exprAllowed
         &&
-        // avoid getting confused on HTML comments
-        this.charAt(this.pos + 1) != '!') {
+        // avoid getting confused on HTML comments or EJS-style template tags
+        this.charAt(this.pos + 1) != '!' &&
+        this.charAt(this.pos + 1) != '%') {
       ++this.pos;
       return this.finishToken(jsxTagStart);
     }

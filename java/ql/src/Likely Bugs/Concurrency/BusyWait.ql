@@ -16,13 +16,6 @@
 
 import java
 
-class ReachFromStmt extends Stmt {
-  ReachFromStmt() {
-    exists(Method m | m.getBody() = this) or
-    exists(WhileStmt w | w.getStmt() = this)
-  }
-}
-
 class SleepMethod extends Method {
   SleepMethod() {
     this.getName() = "sleep" and

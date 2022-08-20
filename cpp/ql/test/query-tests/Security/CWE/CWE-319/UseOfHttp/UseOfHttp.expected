@@ -1,0 +1,30 @@
+edges
+| test.cpp:11:26:11:28 | url | test.cpp:15:30:15:32 | url |
+| test.cpp:28:10:28:29 | http://example.com | test.cpp:11:26:11:28 | url |
+| test.cpp:35:23:35:42 | http://example.com | test.cpp:39:11:39:15 | url_l |
+| test.cpp:36:26:36:45 | http://example.com | test.cpp:40:11:40:17 | access to array |
+| test.cpp:39:11:39:15 | url_l | test.cpp:11:26:11:28 | url |
+| test.cpp:40:11:40:17 | access to array | test.cpp:11:26:11:28 | url |
+| test.cpp:46:18:46:26 | http:// | test.cpp:49:11:49:16 | buffer |
+| test.cpp:49:11:49:16 | buffer | test.cpp:11:26:11:28 | url |
+| test.cpp:110:21:110:40 | http://example.com | test.cpp:121:11:121:13 | ptr |
+| test.cpp:121:11:121:13 | ptr | test.cpp:11:26:11:28 | url |
+nodes
+| test.cpp:11:26:11:28 | url | semmle.label | url |
+| test.cpp:15:30:15:32 | url | semmle.label | url |
+| test.cpp:28:10:28:29 | http://example.com | semmle.label | http://example.com |
+| test.cpp:35:23:35:42 | http://example.com | semmle.label | http://example.com |
+| test.cpp:36:26:36:45 | http://example.com | semmle.label | http://example.com |
+| test.cpp:39:11:39:15 | url_l | semmle.label | url_l |
+| test.cpp:40:11:40:17 | access to array | semmle.label | access to array |
+| test.cpp:46:18:46:26 | http:// | semmle.label | http:// |
+| test.cpp:49:11:49:16 | buffer | semmle.label | buffer |
+| test.cpp:110:21:110:40 | http://example.com | semmle.label | http://example.com |
+| test.cpp:121:11:121:13 | ptr | semmle.label | ptr |
+subpaths
+#select
+| test.cpp:28:10:28:29 | http://example.com | test.cpp:28:10:28:29 | http://example.com | test.cpp:15:30:15:32 | url | A URL may be constructed with the HTTP protocol. |
+| test.cpp:35:23:35:42 | http://example.com | test.cpp:35:23:35:42 | http://example.com | test.cpp:15:30:15:32 | url | A URL may be constructed with the HTTP protocol. |
+| test.cpp:36:26:36:45 | http://example.com | test.cpp:36:26:36:45 | http://example.com | test.cpp:15:30:15:32 | url | A URL may be constructed with the HTTP protocol. |
+| test.cpp:46:18:46:26 | http:// | test.cpp:46:18:46:26 | http:// | test.cpp:15:30:15:32 | url | A URL may be constructed with the HTTP protocol. |
+| test.cpp:110:21:110:40 | http://example.com | test.cpp:110:21:110:40 | http://example.com | test.cpp:15:30:15:32 | url | A URL may be constructed with the HTTP protocol. |

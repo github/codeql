@@ -1,0 +1,281 @@
+getModule
+| calls.rb:15:1:24:3 | M |
+| calls.rb:29:1:44:3 | C |
+| calls.rb:51:1:55:3 | D |
+| calls.rb:77:1:80:3 | Integer |
+| calls.rb:82:1:84:3 | String |
+| calls.rb:86:1:88:3 | Kernel |
+| calls.rb:90:1:95:3 | Module |
+| calls.rb:97:1:100:3 | Object |
+| calls.rb:102:1:104:3 | Hash |
+| calls.rb:106:1:117:3 | Array |
+| calls.rb:144:1:148:3 | S |
+| calls.rb:150:1:153:3 | A |
+| calls.rb:155:1:158:3 | B |
+| file://:0:0:0:0 | BasicObject |
+| file://:0:0:0:0 | Class |
+| file://:0:0:0:0 | Complex |
+| file://:0:0:0:0 | FalseClass |
+| file://:0:0:0:0 | Float |
+| file://:0:0:0:0 | NilClass |
+| file://:0:0:0:0 | Numeric |
+| file://:0:0:0:0 | Proc |
+| file://:0:0:0:0 | Rational |
+| file://:0:0:0:0 | Symbol |
+| file://:0:0:0:0 | TrueClass |
+| hello.rb:1:1:8:3 | EnglishWords |
+| hello.rb:11:1:16:3 | Greeting |
+| hello.rb:18:1:22:3 | HelloWorld |
+| modules.rb:1:1:2:3 | Empty |
+| modules.rb:4:1:24:3 | Foo |
+| modules.rb:5:3:14:5 | Foo::Bar |
+| modules.rb:6:5:7:7 | Foo::Bar::ClassInFooBar |
+| modules.rb:19:3:20:5 | Foo::ClassInFoo |
+| modules.rb:30:3:31:5 | Foo::ClassInAnotherDefinitionOfFoo |
+| modules.rb:37:1:46:3 | Bar |
+| modules.rb:49:3:50:5 | Foo::Bar::ClassInAnotherDefinitionOfFooBar |
+| modules.rb:60:1:61:3 | MyModuleInGlobalScope |
+| modules.rb:63:1:81:3 | Test |
+| modules.rb:65:3:68:5 | Test::Foo1 |
+| modules.rb:66:5:67:7 | Test::Foo1::Bar |
+| modules.rb:70:3:74:5 | Test::Foo2 |
+| modules.rb:71:5:71:19 | Test::Foo2::Foo2 |
+| modules.rb:72:5:73:7 | Test::Foo2::Foo2::Bar |
+| modules.rb:76:3:80:5 | Test::Foo3 |
+| modules.rb:83:1:86:3 | Other |
+| modules.rb:84:3:85:5 | Other::Foo1 |
+| modules.rb:88:1:93:3 | IncludeTest |
+| modules.rb:91:3:92:5 | Test::Foo1::Y |
+| modules.rb:95:1:99:3 | IncludeTest2 |
+| modules.rb:97:3:98:5 | Test::Foo1::Z |
+| modules.rb:101:1:105:3 | PrependTest |
+| modules.rb:103:3:104:5 | Test::Foo2::Y |
+| modules.rb:107:1:110:3 | MM |
+| modules.rb:108:3:109:5 | MM::MM |
+| modules.rb:112:1:113:3 | YY |
+| modules.rb:115:1:118:3 | XX |
+| modules.rb:116:7:117:9 | XX::YY |
+| modules.rb:120:1:121:3 | Test::Foo1::Bar::Baz |
+| modules_rec.rb:1:1:2:3 | B::A |
+| modules_rec.rb:4:1:5:3 | A::B |
+| private.rb:1:1:29:3 | E |
+| private.rb:42:1:60:3 | F |
+getADeclaration
+| calls.rb:15:1:24:3 | M | calls.rb:15:1:24:3 | M |
+| calls.rb:29:1:44:3 | C | calls.rb:29:1:44:3 | C |
+| calls.rb:51:1:55:3 | D | calls.rb:51:1:55:3 | D |
+| calls.rb:77:1:80:3 | Integer | calls.rb:77:1:80:3 | Integer |
+| calls.rb:82:1:84:3 | String | calls.rb:82:1:84:3 | String |
+| calls.rb:86:1:88:3 | Kernel | calls.rb:86:1:88:3 | Kernel |
+| calls.rb:90:1:95:3 | Module | calls.rb:90:1:95:3 | Module |
+| calls.rb:97:1:100:3 | Object | calls.rb:1:1:167:16 | calls.rb |
+| calls.rb:97:1:100:3 | Object | calls.rb:97:1:100:3 | Object |
+| calls.rb:97:1:100:3 | Object | hello.rb:1:1:22:3 | hello.rb |
+| calls.rb:97:1:100:3 | Object | modules.rb:1:1:121:4 | modules.rb |
+| calls.rb:97:1:100:3 | Object | modules_rec.rb:1:1:11:10 | modules_rec.rb |
+| calls.rb:97:1:100:3 | Object | private.rb:1:1:60:3 | private.rb |
+| calls.rb:102:1:104:3 | Hash | calls.rb:102:1:104:3 | Hash |
+| calls.rb:106:1:117:3 | Array | calls.rb:106:1:117:3 | Array |
+| calls.rb:144:1:148:3 | S | calls.rb:144:1:148:3 | S |
+| calls.rb:150:1:153:3 | A | calls.rb:150:1:153:3 | A |
+| calls.rb:150:1:153:3 | A | modules_rec.rb:7:1:9:3 | A |
+| calls.rb:155:1:158:3 | B | calls.rb:155:1:158:3 | B |
+| hello.rb:1:1:8:3 | EnglishWords | hello.rb:1:1:8:3 | EnglishWords |
+| hello.rb:11:1:16:3 | Greeting | hello.rb:11:1:16:3 | Greeting |
+| hello.rb:18:1:22:3 | HelloWorld | hello.rb:18:1:22:3 | HelloWorld |
+| modules.rb:1:1:2:3 | Empty | modules.rb:1:1:2:3 | Empty |
+| modules.rb:4:1:24:3 | Foo | modules.rb:4:1:24:3 | Foo |
+| modules.rb:4:1:24:3 | Foo | modules.rb:26:1:35:3 | Foo |
+| modules.rb:5:3:14:5 | Foo::Bar | modules.rb:5:3:14:5 | Bar |
+| modules.rb:5:3:14:5 | Foo::Bar | modules.rb:48:1:57:3 | Bar |
+| modules.rb:6:5:7:7 | Foo::Bar::ClassInFooBar | modules.rb:6:5:7:7 | ClassInFooBar |
+| modules.rb:19:3:20:5 | Foo::ClassInFoo | modules.rb:19:3:20:5 | ClassInFoo |
+| modules.rb:30:3:31:5 | Foo::ClassInAnotherDefinitionOfFoo | modules.rb:30:3:31:5 | ClassInAnotherDefinitionOfFoo |
+| modules.rb:37:1:46:3 | Bar | modules.rb:37:1:46:3 | Bar |
+| modules.rb:37:1:46:3 | Bar | modules.rb:78:5:79:7 | Bar |
+| modules.rb:49:3:50:5 | Foo::Bar::ClassInAnotherDefinitionOfFooBar | modules.rb:49:3:50:5 | ClassInAnotherDefinitionOfFooBar |
+| modules.rb:60:1:61:3 | MyModuleInGlobalScope | modules.rb:60:1:61:3 | MyModuleInGlobalScope |
+| modules.rb:63:1:81:3 | Test | modules.rb:63:1:81:3 | Test |
+| modules.rb:65:3:68:5 | Test::Foo1 | modules.rb:65:3:68:5 | Foo1 |
+| modules.rb:66:5:67:7 | Test::Foo1::Bar | modules.rb:66:5:67:7 | Bar |
+| modules.rb:70:3:74:5 | Test::Foo2 | modules.rb:70:3:74:5 | Foo2 |
+| modules.rb:71:5:71:19 | Test::Foo2::Foo2 | modules.rb:71:5:71:19 | Foo2 |
+| modules.rb:72:5:73:7 | Test::Foo2::Foo2::Bar | modules.rb:72:5:73:7 | Bar |
+| modules.rb:76:3:80:5 | Test::Foo3 | modules.rb:76:3:80:5 | Foo3 |
+| modules.rb:83:1:86:3 | Other | modules.rb:83:1:86:3 | Other |
+| modules.rb:84:3:85:5 | Other::Foo1 | modules.rb:84:3:85:5 | Foo1 |
+| modules.rb:88:1:93:3 | IncludeTest | modules.rb:88:1:93:3 | IncludeTest |
+| modules.rb:91:3:92:5 | Test::Foo1::Y | modules.rb:91:3:92:5 | Y |
+| modules.rb:95:1:99:3 | IncludeTest2 | modules.rb:95:1:99:3 | IncludeTest2 |
+| modules.rb:97:3:98:5 | Test::Foo1::Z | modules.rb:97:3:98:5 | Z |
+| modules.rb:101:1:105:3 | PrependTest | modules.rb:101:1:105:3 | PrependTest |
+| modules.rb:103:3:104:5 | Test::Foo2::Y | modules.rb:103:3:104:5 | Y |
+| modules.rb:107:1:110:3 | MM | modules.rb:107:1:110:3 | MM |
+| modules.rb:108:3:109:5 | MM::MM | modules.rb:108:3:109:5 | MM |
+| modules.rb:112:1:113:3 | YY | modules.rb:112:1:113:3 | YY |
+| modules.rb:115:1:118:3 | XX | modules.rb:115:1:118:3 | XX |
+| modules.rb:116:7:117:9 | XX::YY | modules.rb:116:7:117:9 | YY |
+| modules.rb:120:1:121:3 | Test::Foo1::Bar::Baz | modules.rb:120:1:121:3 | Baz |
+| modules_rec.rb:1:1:2:3 | B::A | modules_rec.rb:1:1:2:3 | A |
+| modules_rec.rb:4:1:5:3 | A::B | modules_rec.rb:4:1:5:3 | B |
+| private.rb:1:1:29:3 | E | private.rb:1:1:29:3 | E |
+| private.rb:42:1:60:3 | F | private.rb:42:1:60:3 | F |
+getSuperClass
+| calls.rb:29:1:44:3 | C | calls.rb:97:1:100:3 | Object |
+| calls.rb:51:1:55:3 | D | calls.rb:29:1:44:3 | C |
+| calls.rb:77:1:80:3 | Integer | file://:0:0:0:0 | Numeric |
+| calls.rb:82:1:84:3 | String | calls.rb:97:1:100:3 | Object |
+| calls.rb:90:1:95:3 | Module | calls.rb:97:1:100:3 | Object |
+| calls.rb:97:1:100:3 | Object | file://:0:0:0:0 | BasicObject |
+| calls.rb:102:1:104:3 | Hash | calls.rb:97:1:100:3 | Object |
+| calls.rb:106:1:117:3 | Array | calls.rb:97:1:100:3 | Object |
+| calls.rb:144:1:148:3 | S | calls.rb:97:1:100:3 | Object |
+| calls.rb:150:1:153:3 | A | calls.rb:144:1:148:3 | S |
+| calls.rb:150:1:153:3 | A | calls.rb:155:1:158:3 | B |
+| calls.rb:155:1:158:3 | B | calls.rb:144:1:148:3 | S |
+| file://:0:0:0:0 | Class | calls.rb:90:1:95:3 | Module |
+| file://:0:0:0:0 | Complex | file://:0:0:0:0 | Numeric |
+| file://:0:0:0:0 | FalseClass | calls.rb:97:1:100:3 | Object |
+| file://:0:0:0:0 | Float | file://:0:0:0:0 | Numeric |
+| file://:0:0:0:0 | NilClass | calls.rb:97:1:100:3 | Object |
+| file://:0:0:0:0 | Numeric | calls.rb:97:1:100:3 | Object |
+| file://:0:0:0:0 | Rational | file://:0:0:0:0 | Numeric |
+| file://:0:0:0:0 | TrueClass | calls.rb:97:1:100:3 | Object |
+| hello.rb:11:1:16:3 | Greeting | calls.rb:97:1:100:3 | Object |
+| hello.rb:18:1:22:3 | HelloWorld | hello.rb:11:1:16:3 | Greeting |
+| modules.rb:6:5:7:7 | Foo::Bar::ClassInFooBar | calls.rb:97:1:100:3 | Object |
+| modules.rb:19:3:20:5 | Foo::ClassInFoo | calls.rb:97:1:100:3 | Object |
+| modules.rb:30:3:31:5 | Foo::ClassInAnotherDefinitionOfFoo | calls.rb:97:1:100:3 | Object |
+| modules.rb:37:1:46:3 | Bar | calls.rb:97:1:100:3 | Object |
+| modules.rb:49:3:50:5 | Foo::Bar::ClassInAnotherDefinitionOfFooBar | calls.rb:97:1:100:3 | Object |
+| modules.rb:66:5:67:7 | Test::Foo1::Bar | calls.rb:97:1:100:3 | Object |
+| modules.rb:72:5:73:7 | Test::Foo2::Foo2::Bar | calls.rb:97:1:100:3 | Object |
+| modules.rb:112:1:113:3 | YY | calls.rb:97:1:100:3 | Object |
+| modules.rb:116:7:117:9 | XX::YY | modules.rb:112:1:113:3 | YY |
+| modules_rec.rb:1:1:2:3 | B::A | calls.rb:97:1:100:3 | Object |
+| modules_rec.rb:4:1:5:3 | A::B | calls.rb:97:1:100:3 | Object |
+| private.rb:1:1:29:3 | E | calls.rb:97:1:100:3 | Object |
+getAPrependedModule
+| calls.rb:97:1:100:3 | Object | calls.rb:150:1:153:3 | A |
+| calls.rb:150:1:153:3 | A | modules_rec.rb:4:1:5:3 | A::B |
+| modules.rb:101:1:105:3 | PrependTest | modules.rb:63:1:81:3 | Test |
+getAnIncludedModule
+| calls.rb:29:1:44:3 | C | calls.rb:15:1:24:3 | M |
+| calls.rb:97:1:100:3 | Object | calls.rb:86:1:88:3 | Kernel |
+| hello.rb:11:1:16:3 | Greeting | hello.rb:1:1:8:3 | EnglishWords |
+| modules.rb:88:1:93:3 | IncludeTest | modules.rb:63:1:81:3 | Test |
+| modules.rb:95:1:99:3 | IncludeTest2 | modules.rb:63:1:81:3 | Test |
+resolveConstantReadAccess
+| calls.rb:26:1:26:1 | M | M |
+| calls.rb:27:1:27:1 | M | M |
+| calls.rb:30:13:30:13 | M | M |
+| calls.rb:46:5:46:5 | C | C |
+| calls.rb:51:11:51:11 | C | C |
+| calls.rb:57:5:57:5 | D | D |
+| calls.rb:72:11:72:14 | Hash | Hash |
+| calls.rb:97:16:97:21 | Module | Module |
+| calls.rb:98:13:98:18 | Kernel | Kernel |
+| calls.rb:129:1:129:13 | Array | Array |
+| calls.rb:131:1:131:7 | Array | Array |
+| calls.rb:133:1:133:7 | Array | Array |
+| calls.rb:135:1:135:8 | Array | Array |
+| calls.rb:150:11:150:11 | S | S |
+| calls.rb:155:11:155:11 | S | S |
+| calls.rb:160:1:160:1 | S | S |
+| calls.rb:161:1:161:1 | A | A |
+| calls.rb:162:1:162:1 | B | B |
+| hello.rb:12:13:12:24 | EnglishWords | EnglishWords |
+| hello.rb:18:20:18:27 | Greeting | Greeting |
+| modules.rb:48:8:48:10 | Foo | Foo |
+| modules.rb:66:11:66:14 | Foo1 | Test::Foo1 |
+| modules.rb:72:11:72:14 | Foo2 | Test::Foo2::Foo2 |
+| modules.rb:77:12:77:17 | Object | Object |
+| modules.rb:78:11:78:14 | Foo3 | Object |
+| modules.rb:89:11:89:16 | Test | Test |
+| modules.rb:90:3:90:8 | Object | Object |
+| modules.rb:90:32:90:36 | Other | Other |
+| modules.rb:91:10:91:13 | Foo1 | Test::Foo1 |
+| modules.rb:96:11:96:14 | Test | Test |
+| modules.rb:97:10:97:13 | Foo1 | Test::Foo1 |
+| modules.rb:102:11:102:16 | Test | Test |
+| modules.rb:103:10:103:13 | Foo2 | Test::Foo2 |
+| modules.rb:108:10:108:11 | MM | MM |
+| modules.rb:116:18:116:19 | YY | YY |
+| modules.rb:120:8:120:11 | Test | Test |
+| modules.rb:120:8:120:17 | Foo1 | Test::Foo1 |
+| modules.rb:120:8:120:22 | Bar | Test::Foo1::Bar |
+| modules_rec.rb:1:7:1:7 | B | B |
+| modules_rec.rb:4:7:4:7 | A | A |
+| modules_rec.rb:7:11:7:11 | B | B |
+| modules_rec.rb:8:11:8:11 | B | A::B |
+| modules_rec.rb:11:9:11:9 | A | A |
+| private.rb:34:1:34:1 | E | E |
+| private.rb:35:1:35:1 | E | E |
+| private.rb:36:1:36:1 | E | E |
+| private.rb:37:1:37:1 | E | E |
+| private.rb:38:1:38:1 | E | E |
+resolveConstantWriteAccess
+| calls.rb:15:1:24:3 | M | M |
+| calls.rb:29:1:44:3 | C | C |
+| calls.rb:51:1:55:3 | D | D |
+| calls.rb:77:1:80:3 | Integer | Integer |
+| calls.rb:82:1:84:3 | String | String |
+| calls.rb:86:1:88:3 | Kernel | Kernel |
+| calls.rb:90:1:95:3 | Module | Module |
+| calls.rb:97:1:100:3 | Object | Object |
+| calls.rb:102:1:104:3 | Hash | Hash |
+| calls.rb:106:1:117:3 | Array | Array |
+| calls.rb:144:1:148:3 | S | S |
+| calls.rb:150:1:153:3 | A | A |
+| calls.rb:155:1:158:3 | B | B |
+| hello.rb:1:1:8:3 | EnglishWords | EnglishWords |
+| hello.rb:11:1:16:3 | Greeting | Greeting |
+| hello.rb:18:1:22:3 | HelloWorld | HelloWorld |
+| modules.rb:1:1:2:3 | Empty | Empty |
+| modules.rb:4:1:24:3 | Foo | Foo |
+| modules.rb:5:3:14:5 | Bar | Foo::Bar |
+| modules.rb:6:5:7:7 | ClassInFooBar | Foo::Bar::ClassInFooBar |
+| modules.rb:19:3:20:5 | ClassInFoo | Foo::ClassInFoo |
+| modules.rb:26:1:35:3 | Foo | Foo |
+| modules.rb:30:3:31:5 | ClassInAnotherDefinitionOfFoo | Foo::ClassInAnotherDefinitionOfFoo |
+| modules.rb:37:1:46:3 | Bar | Bar |
+| modules.rb:48:1:57:3 | Bar | Foo::Bar |
+| modules.rb:49:3:50:5 | ClassInAnotherDefinitionOfFooBar | Foo::Bar::ClassInAnotherDefinitionOfFooBar |
+| modules.rb:60:1:61:3 | MyModuleInGlobalScope | MyModuleInGlobalScope |
+| modules.rb:63:1:81:3 | Test | Test |
+| modules.rb:65:3:68:5 | Foo1 | Test::Foo1 |
+| modules.rb:66:5:67:7 | Bar | Foo1::Bar |
+| modules.rb:66:5:67:7 | Bar | Test::Foo1::Bar |
+| modules.rb:70:3:74:5 | Foo2 | Test::Foo2 |
+| modules.rb:71:5:71:19 | Foo2 | Test::Foo2::Foo2 |
+| modules.rb:72:5:73:7 | Bar | Foo2::Bar |
+| modules.rb:72:5:73:7 | Bar | Test::Foo2::Bar |
+| modules.rb:72:5:73:7 | Bar | Test::Foo2::Foo2::Bar |
+| modules.rb:76:3:80:5 | Foo3 | Test::Foo3 |
+| modules.rb:77:5:77:8 | Foo3 | Test::Foo3::Foo3 |
+| modules.rb:78:5:79:7 | Bar | Foo3::Bar |
+| modules.rb:78:5:79:7 | Bar | Test::Foo3::Bar |
+| modules.rb:78:5:79:7 | Bar | Test::Foo3::Foo3::Bar |
+| modules.rb:83:1:86:3 | Other | Other |
+| modules.rb:84:3:85:5 | Foo1 | Other::Foo1 |
+| modules.rb:88:1:93:3 | IncludeTest | IncludeTest |
+| modules.rb:91:3:92:5 | Y | Foo1::Y |
+| modules.rb:91:3:92:5 | Y | Test::Foo1::Y |
+| modules.rb:95:1:99:3 | IncludeTest2 | IncludeTest2 |
+| modules.rb:97:3:98:5 | Z | Foo1::Z |
+| modules.rb:97:3:98:5 | Z | Test::Foo1::Z |
+| modules.rb:101:1:105:3 | PrependTest | PrependTest |
+| modules.rb:103:3:104:5 | Y | Foo2::Y |
+| modules.rb:103:3:104:5 | Y | Test::Foo2::Y |
+| modules.rb:107:1:110:3 | MM | MM |
+| modules.rb:108:3:109:5 | MM | MM::MM |
+| modules.rb:108:3:109:5 | MM | MM::MM::MM |
+| modules.rb:112:1:113:3 | YY | YY |
+| modules.rb:115:1:118:3 | XX | XX |
+| modules.rb:116:7:117:9 | YY | XX::YY |
+| modules.rb:120:1:121:3 | Baz | Test::Foo1::Bar::Baz |
+| modules_rec.rb:1:1:2:3 | A | B::A |
+| modules_rec.rb:4:1:5:3 | B | A::B |
+| modules_rec.rb:7:1:9:3 | A | A |
+| private.rb:1:1:29:3 | E | E |
+| private.rb:42:1:60:3 | F | F |

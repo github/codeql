@@ -1,3 +1,3 @@
-anotherUnknownFunction().foo = 42; /* !def (member foo (member exports (module imprecise-export))) */
+anotherUnknownFunction().foo = 42; /* MISSING: def=moduleExport("imprecise-export").getMember("exports").getMember("foo") */
 
 module.exports = unknownFunction();

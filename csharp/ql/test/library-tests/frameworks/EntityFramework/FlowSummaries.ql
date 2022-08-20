@@ -1,9 +1,13 @@
-import semmle.code.csharp.dataflow.FlowSummary
-import semmle.code.csharp.dataflow.internal.FlowSummaryImpl::Private::TestOutput
 import semmle.code.csharp.frameworks.EntityFramework::EntityFramework
+import shared.FlowSummaries
+import semmle.code.csharp.dataflow.ExternalFlow as ExternalFlow
 
-private class IncludeSummarizedCallable extends RelevantSummarizedCallable {
-  IncludeSummarizedCallable() { this instanceof EFSummarizedCallable }
-
-  override string getFullString() { result = this.(Callable).getQualifiedNameWithTypes() }
+private class IncludeEFSummarizedCallable extends IncludeSummarizedCallable {
+  IncludeEFSummarizedCallable() { this instanceof EFSummarizedCallable }
 }
+
+query predicate sourceNode(DataFlow::Node node, string kind) {
+  ExternalFlow::sourceNode(node, kind)
+}
+
+query predicate sinkNode(DataFlow::Node node, string kind) { ExternalFlow::sinkNode(node, kind) }

@@ -5,15 +5,17 @@ import semmle.python.web.HttpRequest
 import experimental.semmle.python.templates.SSTISink
 
 /** returns the ClassValue representing `bottle.SimpleTemplate` */
-ClassValue theBottleSimpleTemplateClass() { result = Value::named("bottle.SimpleTemplate") }
+deprecated ClassValue theBottleSimpleTemplateClass() {
+  result = Value::named("bottle.SimpleTemplate")
+}
 
 /**
- * Sink representing the `bottle.SimpleTemplate` class instantiation argument.
+ * A sink representing the `bottle.SimpleTemplate` class instantiation argument.
  *
  *  from bottle import SimpleTemplate
  *  template = SimpleTemplate(`sink`)
  */
-class BottleSimpleTemplateSink extends SSTISink {
+deprecated class BottleSimpleTemplateSink extends SSTISink {
   override string toString() { result = "argument to bottle.SimpleTemplate()" }
 
   BottleSimpleTemplateSink() {
@@ -27,12 +29,12 @@ class BottleSimpleTemplateSink extends SSTISink {
 }
 
 /**
- * Sink representing the `bottle.template` function call argument.
+ * A sink representing the `bottle.template` function call argument.
  *
  *  from bottle import template
  *  tmp = template(`sink`)
  */
-class BottleTemplateSink extends SSTISink {
+deprecated class BottleTemplateSink extends SSTISink {
   override string toString() { result = "argument to bottle.template()" }
 
   BottleTemplateSink() {

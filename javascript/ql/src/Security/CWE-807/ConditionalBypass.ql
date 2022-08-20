@@ -12,7 +12,7 @@
  */
 
 import javascript
-import semmle.javascript.security.dataflow.ConditionalBypass::ConditionalBypass
+import semmle.javascript.security.dataflow.ConditionalBypassQuery
 import DataFlow::PathGraph
 
 /**

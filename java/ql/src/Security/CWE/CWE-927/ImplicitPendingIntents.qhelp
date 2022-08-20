@@ -1,0 +1,63 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+
+<qhelp>
+
+<overview>
+<p>A <code>PendingIntent</code> is used to wrap an <code>Intent</code> that will be supplied and executed by another
+  application. When the <code>Intent</code> is executed, it behaves as if it were run directly by the supplying
+  application, using the privileges of that application.</p>
+<p>If a <code>PendingIntent</code> is configured to be mutable, the fields of its internal <code>Intent</code> can be changed by the
+  receiving application if they were not previously set. This means that a mutable <code>PendingIntent</code> that has
+  not defined a destination component (that is, an implicit <code>PendingIntent</code>) can be altered to execute an
+  arbitrary action with the privileges of the application that created it.</p>
+<p>A malicious application can access an implicit <code>PendingIntent</code> as follows:</p>
+<ul>
+  <li>It is wrapped and sent as an extra of another implicit <code>Intent</code>.</li>
+  <li>It is sent as the action of a <code>Slide</code>.</li>
+  <li>It is sent as the action of a <code>Notification</code>.</li>
+</ul>
+<p></p>
+<p>On gaining access, the attacker can modify the underlying <code>Intent</code> and execute an arbitrary action
+  with elevated privileges. This could give the malicious application access to private components of the victim
+  application, or the ability to perform actions without having the necessary permissions.</p>
+</overview>
+
+<recommendation>
+<p>Avoid creating implicit <code>PendingIntent</code>s. This means that the underlying <code>Intent</code> should always have an 
+  explicit destination component.</p>
+<p>When you add the <code>PendingIntent</code> as an extra of another <code>Intent</code>, make sure that this second <code>Intent</code> also has
+an explicit destination component, so that it is not delivered to untrusted applications.</p>
+<p>Create the <code>PendingIntent</code> using the flag <code>FLAG_IMMUTABLE</code> whenever possible,
+  to prevent the destination component from modifying empty fields of the underlying <code>Intent</code>.</p>
+</recommendation>
+
+<example>
+  <p>In the following examples, a <code>PendingIntent</code> is created and wrapped as an extra of another <code>Intent</code>.
+  </p>
+  <p>In the first example, both the <code>PendingIntent</code> and the <code>Intent</code> it is wrapped in are implicit,
+    making them vulnerable to attack.</p>
+  <p>In the second example, the issue is avoided by adding explicit destination components to the 
+    <code>PendingIntent</code> and the wrapping <code>Intent</code>.</p>
+  <p>The third example uses the <code>FLAG_IMMUTABLE</code> flag to prevent the underlying <code>Intent</code> from being modified
+    by the destination component.</p>
+<sample src="ImplicitPendingIntents.java" />
+</example>
+
+<references>
+  <li>
+    Google Help:
+    <a href="https://support.google.com/faqs/answer/10437428?hl=en">
+      Remediation for Implicit PendingIntent Vulnerability
+    </a>
+  </li>
+  <li>
+    University of Potsdam:
+    <a href="https://www.cs.uni-potsdam.de/se/papers/esorics18.pdf">
+      PIAnalyzer: A precise approach for PendingIntent vulnerability analysis
+    </a>
+  </li>
+</references>
+
+</qhelp>

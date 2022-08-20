@@ -27,3 +27,12 @@ hasher = hashlib.new('md5')
 hasher.update(b"secret") # $ CryptographicOperation CryptographicOperationInput=b"secret" CryptographicOperationAlgorithm=MD5
 hasher.update(b" message") # $ CryptographicOperation CryptographicOperationInput=b" message" CryptographicOperationAlgorithm=MD5
 print(hasher.hexdigest())
+
+
+def foo(arg):
+    hasher = hashlib.new(arg)
+    hasher.update(b"secret") # $ CryptographicOperation CryptographicOperationInput=b"secret" CryptographicOperationAlgorithm=MD5
+    hasher.update(b" message") # $ CryptographicOperation CryptographicOperationInput=b" message" CryptographicOperationAlgorithm=MD5
+    print(hasher.hexdigest())
+
+foo("md5")

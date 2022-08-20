@@ -1285,8 +1285,8 @@ ssa.cpp:
 #  294|     mu294_20(A)             = ^IndirectMayWriteSideEffect[-1] : &:r294_14
 #  294|     v294_21(void)           = Call[A]                         : func:r294_8, this:r294_7, 0:r294_14
 #  294|     mu294_22(unknown)       = ^CallSideEffect                 : ~m?
-#  294|     mu294_23(A)             = ^IndirectMayWriteSideEffect[-1] : &:r294_7
-#  294|     v294_24(void)           = ^BufferReadSideEffect[0]        : &:r294_14, ~m?
+#  294|     v294_23(void)           = ^BufferReadSideEffect[0]        : &:r294_14, ~m?
+#  294|     mu294_24(A)             = ^IndirectMayWriteSideEffect[-1] : &:r294_7
 #  294|     mu294_25(unknown)       = ^BufferMayWriteSideEffect[0]    : &:r294_14
 #  294|     r294_26(glval<int>)     = FieldAddress[i]                 : r294_7
 #  294|     r294_27(int)            = Load[?]                         : &:r294_26, ~m?

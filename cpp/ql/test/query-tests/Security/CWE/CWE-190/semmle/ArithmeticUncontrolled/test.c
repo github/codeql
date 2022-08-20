@@ -97,7 +97,7 @@ void randomTester() {
     int r = 0;
     int *ptr_r = &r;
     *ptr_r = RAND();
-    r += 100; // BAD
+    r += 100; // BAD [NOT DETECTED]
   }
 
   {
@@ -126,10 +126,17 @@ void moreTests() {
     
     r = r * 100; // BAD
   }
+
   {
     int r = rand();
     
-    r *= 100; // BAD [NOT DETECTED]
+    r *= 100; // BAD
+  }
+
+  {
+    int r = rand();
+    int v = 100;
+    v *= r; // BAD
   }
 
   {
@@ -149,4 +156,12 @@ void moreTests() {
     
     r = r - 100; // BAD
   }
+}
+
+void guarded_test(unsigned p) {
+  unsigned data = (unsigned int)rand();
+  if (p >= data) {
+    return;
+  }
+  unsigned z = data - p; // GOOD
 }

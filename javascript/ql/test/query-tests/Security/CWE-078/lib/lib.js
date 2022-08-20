@@ -489,3 +489,59 @@ module.exports.myCommand = function (myCommand) {
 	let cmd = `cd ${cwd} ; ${myCommand}`; // OK - the parameter name suggests that it is purposely a shell command.
 	cp.exec(cmd);
 }
+
+(function () {
+	var MyThing = {
+		cp: require('child_process')
+	};
+
+	module.exports.myIndirectThing = function (name) {
+		MyThing.cp.exec("rm -rf " + name); // NOT OK
+	}
+});
+  
+
+var imp = require('./isImported');
+for (var name in imp){
+  module.exports[name] = imp[name];
+}
+
+module.exports.sanitizer4 = function (name) {
+	cp.exec("rm -rf " + name); // NOT OK
+
+	if (isNaN(name)) {
+		cp.exec("rm -rf " + name); // NOT OK
+	} else {
+		cp.exec("rm -rf " + name); // OK
+	}
+
+	if (isNaN(parseInt(name))) {
+		cp.exec("rm -rf " + name); // NOT OK
+	} else {
+		cp.exec("rm -rf " + name); // OK
+	}
+
+	if (isNaN(+name)) {
+		cp.exec("rm -rf " + name); // NOT OK
+	} else {
+		cp.exec("rm -rf " + name); // OK
+	}
+
+	if (isNaN(parseInt(name, 10))) {
+		cp.exec("rm -rf " + name); // NOT OK
+	} else {
+		cp.exec("rm -rf " + name); // OK
+	}
+
+	if (isNaN(name - 0)) {
+		cp.exec("rm -rf " + name); // NOT OK
+	} else {
+		cp.exec("rm -rf " + name); // OK
+	}
+
+	if (isNaN(name | 0)) { // <- not a sanitizer
+		cp.exec("rm -rf " + name); // NOT OK
+	} else {
+		cp.exec("rm -rf " + name); // NOT OK
+	}
+}

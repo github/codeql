@@ -11,7 +11,7 @@ public class B {
 
   public static void sink(Object o) { }
 
-  public static void maintest() throws java.io.UnsupportedEncodingException, java.net.MalformedURLException {
+  public static void maintest() throws java.io.UnsupportedEncodingException, java.net.MalformedURLException, java.io.IOException {
     String[] args = taint();
     // tainted - access to main args
     String[] aaaargs = args;
@@ -46,6 +46,9 @@ public class B {
     // tainted - tokenized string
     String token = new StringTokenizer(badEscape).nextToken();
     sink(token);
+    // tainted - fluent concatenation
+    String fluentConcat = "".concat("str").concat(token).concat("bar");
+    sink(fluentConcat);
 
     // not tainted
     String safe = notTainty(complex);
@@ -100,6 +103,11 @@ public class B {
     sink(replAll);
     String replFirst = "some constant".replaceFirst(" ", s);
     sink(replFirst);
+    char[] chars = new char[10];
+    s.getChars(0, 1, chars, 0);
+    sink(chars);
+    String translated = s.translateEscapes();
+    sink(translated);
 
     ByteArrayOutputStream baos = null;
     ObjectOutput oos = null;
@@ -147,6 +155,12 @@ public class B {
 
     // Tainted File to Path to File
     sink(new java.io.File(s).toPath().toFile());
+
+    // Tainted file to absolute file
+    sink(new java.io.File(s).getAbsoluteFile());
+
+    // Tainted file to canonical file
+    sink(new java.io.File(s).getCanonicalFile());
 
     return;
   }

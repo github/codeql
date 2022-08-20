@@ -123,6 +123,8 @@ class ConstantMatchingCondition extends ConstantCondition {
       se.getCase(i).getPattern() = this.(DiscardExpr) and
       i > 0
     )
+    or
+    this = any(PositionalPatternExpr ppe).getPattern(_)
   }
 
   override string getMessage() {
