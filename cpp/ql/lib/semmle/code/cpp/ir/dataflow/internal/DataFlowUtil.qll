@@ -1071,9 +1071,13 @@ cached
 private newtype TContent =
   TFieldContent(Field f, int index) {
     index = [1 .. Ssa::getMaxIndirectionsForType(f.getUnspecifiedType())] and
-    // As reads and writes to union fields can create flow even though the reads and writes
-    // target different fields, we don't want a read (write) to create a read (write) step.
+    // Reads and writes of union fields are tracked using `UnionContent`.
     not f.getDeclaringType() instanceof Union
+  } or
+  TUnionContent(Union u, int index) {
+    // We key `UnionContent` by the union instead of its fields since a write to one field can be read by
+    // any read of the union's fields.
+    index = [1 .. max(Ssa::getMaxIndirectionsForType(u.getAField().getUnspecifiedType()))]
   } or
   TCollectionContent() or // Not used in C/C++
   TArrayContent() // Not used in C/C++.
@@ -1092,7 +1096,7 @@ class Content extends TContent {
   }
 }
 
-/** A reference through an instance field. */
+/** A reference through a non-union instance field. */
 class FieldContent extends Content, TFieldContent {
   Field f;
   int index;
@@ -1106,6 +1110,24 @@ class FieldContent extends Content, TFieldContent {
   }
 
   Field getField() { result = f }
+
+  int getIndirection() { result = index }
+}
+
+/** A reference through an instance field of a union. */
+class UnionContent extends Content, TUnionContent {
+  Union u;
+  int index;
+
+  UnionContent() { this = TUnionContent(u, index) }
+
+  override string toString() {
+    index = 1 and result = u.toString()
+    or
+    index > 1 and result = u.toString() + " indirection"
+  }
+
+  Field getAField() { result = u.getAField() }
 
   int getIndirection() { result = index }
 }

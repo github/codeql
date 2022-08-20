@@ -316,14 +316,25 @@ predicate jumpStep(Node n1, Node n2) { none() }
  * Thus, `node2` references an object with a field `f` that contains the
  * value of `node1`.
  */
-predicate storeStep(Node node1, FieldContent f, PostFieldUpdateNode node2) {
-  exists(int index1, int numberOfLoads, StoreInstruction store |
+predicate storeStep(Node node1, Content c, PostFieldUpdateNode node2) {
+  exists(int index1, int numberOfLoads, StoreInstruction store, FieldContent fc |
+    fc = c and
     nodeHasInstruction(node1, store, pragma[only_bind_into](index1)) and
-    f.getField() = node2.getUpdatedField() and
+    fc.getField() = node2.getUpdatedField() and
     node2.getIndex() = 0 and
     numberOfLoadsFromOperand(node2.getFieldAddress(), store.getDestinationAddressOperand(),
       numberOfLoads) and
-    f.getIndirection() = 1 + index1 + numberOfLoads
+    fc.getIndirection() = 1 + index1 + numberOfLoads
+  )
+  or
+  exists(int index1, int numberOfLoads, StoreInstruction store, UnionContent uc |
+    uc = c and
+    nodeHasInstruction(node1, store, pragma[only_bind_into](index1)) and
+    uc.getAField() = node2.getUpdatedField() and
+    node2.getIndex() = 0 and
+    numberOfLoadsFromOperand(node2.getFieldAddress(), store.getDestinationAddressOperand(),
+      numberOfLoads) and
+    uc.getIndirection() = 1 + index1 + numberOfLoads
   )
 }
 
@@ -369,13 +380,23 @@ predicate nodeHasInstruction(Node node, Instruction instr, int index) {
  * Thus, `node1` references an object with a field `f` whose value ends up in
  * `node2`.
  */
-predicate readStep(Node node1, FieldContent f, Node node2) {
-  exists(FieldAddress fa1, Operand operand, int numberOfLoads, int index2 |
+predicate readStep(Node node1, Content c, Node node2) {
+  exists(FieldAddress fa1, Operand operand, int numberOfLoads, int index2, FieldContent fc |
+    fc = c and
     nodeHasOperand(node2, operand, index2) and
     nodeHasOperand(node1, fa1.getObjectAddressOperand(), _) and
-    f.getField() = fa1.getField() and
+    fc.getField() = fa1.getField() and
     numberOfLoadsFromOperand(fa1, operand, numberOfLoads) and
-    f.getIndirection() = index2 + numberOfLoads
+    fc.getIndirection() = index2 + numberOfLoads
+  )
+  or
+  exists(FieldAddress fa1, Operand operand, int numberOfLoads, int index2, UnionContent uc |
+    uc = c and
+    nodeHasOperand(node2, operand, index2) and
+    nodeHasOperand(node1, fa1.getObjectAddressOperand(), _) and
+    uc.getAField() = fa1.getField() and
+    numberOfLoadsFromOperand(fa1, operand, numberOfLoads) and
+    uc.getIndirection() = index2 + numberOfLoads
   )
 }
 
