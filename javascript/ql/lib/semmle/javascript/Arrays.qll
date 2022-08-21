@@ -344,6 +344,14 @@ private module ArrayLibraries {
     result = DataFlow::globalVarRef("Array").getAMemberCall("from")
     or
     result = DataFlow::moduleImport("array-from").getACall()
+    or
+    // Array.prototype.slice.call acts the same as Array.from, and is sometimes used with e.g. the arguments object.
+    result =
+      DataFlow::globalVarRef("Array")
+          .getAPropertyRead("prototype")
+          .getAPropertyRead("slice")
+          .getAMethodCall("call") and
+    result.getNumArgument() = 1
   }
 
   /**

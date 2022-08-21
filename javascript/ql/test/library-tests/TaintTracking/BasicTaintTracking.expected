@@ -6,6 +6,7 @@ typeInferenceMismatch
 | call-apply.js:25:14:25:21 | source() | call-apply.js:21:1:23:1 | the arguments object of function foo1_sink |
 | call-apply.js:25:14:25:21 | source() | call-apply.js:27:6:27:32 | reflective call |
 | call-apply.js:25:14:25:21 | source() | call-apply.js:30:6:30:35 | reflective call |
+| call-apply.js:25:14:25:21 | source() | call-apply.js:31:6:31:35 | reflective call |
 | call-apply.js:25:14:25:21 | source() | call-apply.js:62:3:64:3 | the arguments object of function sinkArguments1 |
 | call-apply.js:25:14:25:21 | source() | call-apply.js:65:3:67:3 | the arguments object of function sinkArguments0 |
 | call-apply.js:25:14:25:21 | source() | call-apply.js:69:3:72:3 | the arguments object of function fowardArguments |
@@ -54,6 +55,8 @@ typeInferenceMismatch
 | call-apply.js:25:14:25:21 | source() | call-apply.js:22:8:22:11 | arg1 |
 | call-apply.js:25:14:25:21 | source() | call-apply.js:27:6:27:32 | foo1.ca ... ce, "") |
 | call-apply.js:25:14:25:21 | source() | call-apply.js:30:6:30:35 | foo1.ap ... e, ""]) |
+| call-apply.js:25:14:25:21 | source() | call-apply.js:31:6:31:35 | foo2.ap ... e, ""]) |
+| call-apply.js:25:14:25:21 | source() | call-apply.js:38:6:38:29 | foo1_ap ... e, ""]) |
 | call-apply.js:25:14:25:21 | source() | call-apply.js:44:6:44:28 | foo1_ca ... e, ""]) |
 | call-apply.js:25:14:25:21 | source() | call-apply.js:45:6:45:28 | foo1_ca ... ource]) |
 | call-apply.js:25:14:25:21 | source() | call-apply.js:63:10:63:21 | arguments[1] |

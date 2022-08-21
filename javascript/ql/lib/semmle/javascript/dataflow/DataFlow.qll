@@ -1661,9 +1661,7 @@ module DataFlow {
     )
   }
 
-  /**
-   * A step from a reflective parameter node to each parameter.
-   */
+  /** A load step from a reflective parameter node to each parameter. */
   private class ReflectiveParamsStep extends PreCallGraphStep {
     override predicate loadStep(DataFlow::Node obj, DataFlow::Node element, string prop) {
       exists(DataFlow::ReflectiveParametersNode params, DataFlow::FunctionNode f, int i |
@@ -1671,6 +1669,17 @@ module DataFlow {
         obj = params and
         prop = i + "" and
         element = f.getParameter(i)
+      )
+    }
+  }
+
+  /** A taint step from the reflective parameters node to any parameter. */
+  private class ReflectiveParamsTaintStep extends TaintTracking::SharedTaintStep {
+    override predicate step(DataFlow::Node obj, DataFlow::Node element) {
+      exists(DataFlow::ReflectiveParametersNode params, DataFlow::FunctionNode f |
+        f.getFunction() = params.getFunction() and
+        obj = params and
+        element = f.getAParameter()
       )
     }
   }

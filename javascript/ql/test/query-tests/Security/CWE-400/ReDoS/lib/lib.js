@@ -33,7 +33,7 @@ module.exports.useArguments = function () {
 }
 
 function usedWithArguments(name) {
-	/f*g/.test(name); // NOT OK - bit not yet recognized [INCONSITENCY]
+	/f*g/.test(name); // NOT OK
 }
 
 module.exports.snapdragon = require("./snapdragon")
