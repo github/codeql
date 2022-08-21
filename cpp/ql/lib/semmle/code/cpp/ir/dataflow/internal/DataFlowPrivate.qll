@@ -539,57 +539,60 @@ private predicate argumentValueFlowsThrough(ArgumentNode n2, Content c, OutNode 
   )
 }
 
-private predicate step(Node node1, Node node2, string msg) {
-  stepFwd(_, node1) and
-  not isBarrier(node1) and
-  not isBarrier(node2) and
-  (
-    simpleLocalFlowStep(node1, node2) and msg = "."
-    or
-    exists(Content c, string after | after = c.toString() |
-      readStep(node1, c, node2) and msg = "Read " + after
+module Step {
+  predicate step(Node node1, Node node2, string msg) {
+    stepFwd(_, node1) and
+    not isBarrier(node1) and
+    not isBarrier(node2) and
+    (
+      simpleLocalFlowStep(node1, node2) and msg = "."
       or
-      storeStep(node1, c, node2) and msg = "Store " + after
-      or
-      exists(Node n1, Node n2 |
-        n1 = node1.(PostUpdateNode).getPreUpdateNode() and
-        n2 = node2.(PostUpdateNode).getPreUpdateNode() and
-        readStep(n2, c, n1) and
-        msg = "Reverse read " + c
+      exists(Content c, string after | after = c.toString() |
+        readStep(node1, c, node2) and msg = "Read " + after
+        or
+        storeStep(node1, c, node2) and msg = "Store " + after
+        or
+        exists(Node n1, Node n2 |
+          n1 = node1.(PostUpdateNode).getPreUpdateNode() and
+          n2 = node2.(PostUpdateNode).getPreUpdateNode() and
+          readStep(n2, c, n1) and
+          msg = "Reverse read " + c
+        )
+        or
+        exists(OutNode n1, ArgumentNode n2 |
+          n2 = node2.(PostUpdateNode).getPreUpdateNode() and
+          n1 = node1.(PostUpdateNode).getPreUpdateNode() and
+          argumentValueFlowsThrough(n2, c, n1) and
+          msg = "Through " + after
+        )
       )
       or
-      exists(OutNode n1, ArgumentNode n2 |
-        n2 = node2.(PostUpdateNode).getPreUpdateNode() and
-        n1 = node1.(PostUpdateNode).getPreUpdateNode() and
-        argumentValueFlowsThrough(n2, c, n1) and
-        msg = "Through " + after
-      )
+      into(node1, node2) and msg = "into"
+      or
+      outOf(node1, node2, msg)
     )
+  }
+
+  private predicate isBarrier(Node node) {
+    // node.asExpr().(Cpp::VariableAccess).getTarget().hasName("barrier")
+    none()
+  }
+
+  // private import semmle.code.cpp.ir.dataflow.DefaultTaintTracking as DTT
+  predicate isSource(Node source) {
+    exists(Cpp::FunctionCall fc |
+      fc.getAnArgument() = source.asDefiningArgument() and
+      fc.getTarget().getName() = "source"
+    )
+  }
+
+  private predicate stepFwd(Node node1, Node node2) {
+    node1 = node2 and
+    isSource(node1)
     or
-    into(node1, node2) and msg = "into"
-    or
-    outOf(node1, node2, msg)
-  )
-}
-
-private predicate isBarrier(Node node) {
-  // node.asExpr().(Cpp::VariableAccess).getTarget().hasName("barrier")
-  none()
-}
-
-private predicate isSource(Node source) {
-  exists(Cpp::FunctionCall fc |
-    fc.getTarget().hasName("source") and
-    source.asExpr() = fc
-  )
-}
-
-private predicate stepFwd(Node node1, Node node2) {
-  node1 = node2 and
-  isSource(node1)
-  or
-  exists(Node mid |
-    stepFwd(node1, mid) and
-    step(mid, node2, _)
-  )
+    exists(Node mid |
+      stepFwd(node1, mid) and
+      step(mid, node2, _)
+    )
+  }
 }

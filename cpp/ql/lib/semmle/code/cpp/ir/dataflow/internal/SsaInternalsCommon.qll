@@ -86,14 +86,16 @@ private module DefCached {
     boolean certain, Instruction instr, Operand address, Instruction base, int ind, int index
   ) {
     exists(int ind0, CppType type, int m |
+      certain = true and
       address =
         [
           instr.(StoreInstruction).getDestinationAddressOperand(),
           instr.(InitializeParameterInstruction).getAnOperand(),
           instr.(InitializeDynamicAllocationInstruction).getAllocationAddressOperand(),
           instr.(UninitializedInstruction).getAnOperand()
-        ] and
-      isDefImpl(address, base, ind0, certain) and
+        ]
+    |
+      isDefImpl(address, base, ind0) and
       type = getLanguageType(address) and
       m = countIndirectionsForCppType(type) and
       ind = [ind0 + 1 .. ind0 + m] and
@@ -101,30 +103,21 @@ private module DefCached {
     )
   }
 
-  private predicate isPointerOrField(Instruction instr) {
-    instr instanceof PointerArithmeticInstruction
-    or
-    instr instanceof FieldAddressInstruction
-  }
-
-  private predicate isDefImpl(Operand address, Instruction base, int ind, boolean certain) {
+  private predicate isDefImpl(Operand address, Instruction base, int ind) {
     DataFlowImplCommon::forceCachingInSameStage() and
     ind = 0 and
     address.getDef() = base and
-    isSourceVariableBase(base) and
-    certain = true
+    isSourceVariableBase(base)
     or
-    exists(Operand mid, boolean certain0 |
-      isDefImpl(mid, base, ind, certain0) and
-      conversionFlow(mid, address, false, _) and
-      if isPointerOrField(address.getDef()) then certain = false else certain = certain0
+    exists(Operand mid |
+      isDefImpl(mid, base, ind) and
+      conversionFlow(mid, address, false, _)
     )
     or
     exists(int ind0 |
-      isDefImpl(address.getDef().(LoadInstruction).getSourceAddressOperand(), base, ind0, certain)
+      isDefImpl(address.getDef().(LoadInstruction).getSourceAddressOperand(), base, ind0)
       or
-      isDefImpl(address.getDef().(InitializeParameterInstruction).getAnOperand(), base, ind0,
-        certain)
+      isDefImpl(address.getDef().(InitializeParameterInstruction).getAnOperand(), base, ind0)
     |
       ind0 = ind - 1
     )
@@ -138,32 +131,31 @@ private module UseCached {
   cached
   predicate isUse(boolean certain, Operand op, Instruction base, int ind, int index) {
     not ignoreOperand(op) and
+    certain = true and
     exists(LanguageType type, int m, int ind0 |
       type = getLanguageType(op) and
       m = countIndirectionsForCppType(type) and
-      isUseImpl(certain, op, base, ind0) and
+      isUseImpl(op, base, ind0) and
       ind = [ind0 .. m + ind0] and
       index = ind - ind0
     )
   }
 
-  private predicate isUseImpl(boolean certain, Operand operand, Instruction base, int ind) {
+  private predicate isUseImpl(Operand operand, Instruction base, int ind) {
     DataFlowImplCommon::forceCachingInSameStage() and
     ind = 0 and
     operand.getDef() = base and
-    isSourceVariableBase(base) and
-    certain = true
+    isSourceVariableBase(base)
     or
     exists(Operand mid |
-      isUseImpl(certain, mid, base, ind) and
+      isUseImpl(mid, base, ind) and
       conversionFlowStepExcludeFields(mid, operand, false)
     )
     or
     exists(int ind0 |
-      isUseImpl(certain, operand.getDef().(LoadInstruction).getSourceAddressOperand(), base, ind0)
+      isUseImpl(operand.getDef().(LoadInstruction).getSourceAddressOperand(), base, ind0)
       or
-      isUseImpl(certain, operand.getDef().(InitializeParameterInstruction).getAnOperand(), base,
-        ind0)
+      isUseImpl(operand.getDef().(InitializeParameterInstruction).getAnOperand(), base, ind0)
     |
       ind0 = ind - 1
     )

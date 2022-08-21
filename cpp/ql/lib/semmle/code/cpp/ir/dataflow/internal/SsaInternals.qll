@@ -254,10 +254,10 @@ predicate adjacentDefRead(DefOrUse defOrUse1, UseOrPhi use) {
       use.asDefOrUse().(UseImpl).hasIndexInBlock(bb2, i2, v)
     )
     or
-    exists(PhiNode phi, Ssa::Definition inp |
-      inp.definesAt(v, bb1, i1) and
-      phiHasInputFromBlock(phi, inp, _) and
-      use.asPhi() = phi
+    exists(PhiNode phi |
+      lastRefRedef(_, bb1, i1, phi) and
+      use.asPhi() = phi and
+      phi.getSourceVariable() = v
     )
   )
 }
@@ -320,24 +320,25 @@ predicate indirectConversionFlowStepExcludeFieldsStep(Node opFrom, Node opTo) {
 private predicate adjustForPointerArith(
   Node nodeFrom, Node adjusted, DefOrUse defOrUse, UseOrPhi use
 ) {
+  nodeFrom = any(PostUpdateNode pun).getPreUpdateNode() and
   indirectConversionFlowStepExcludeFieldsStep*(adjusted, nodeFrom) and
   nodeToDefOrUse(adjusted, defOrUse) and
   adjacentDefRead(defOrUse, use)
 }
 
 predicate defUseFlow(Node nodeFrom, Node nodeTo) {
-  if nodeFrom = any(PostUpdateNode pun).getPreUpdateNode()
-  then
-    exists(DefOrUse defOrUse1, UseOrPhi use, Node node |
-      adjustForPointerArith(nodeFrom, node, defOrUse1, use) and
-      useToNode(use, nodeTo)
-    )
-  else
-    exists(DefOrUse defOrUse1, UseOrPhi use |
-      nodeToDefOrUse(nodeFrom, defOrUse1) and
-      adjacentDefRead(defOrUse1, use) and
-      useToNode(use, nodeTo)
-    )
+  // "nodeFrom is a pre-update node of some post-update node" is implied by adjustedForPointerArith.
+  exists(DefOrUse defOrUse1, UseOrPhi use, Node node |
+    adjustForPointerArith(nodeFrom, node, defOrUse1, use) and
+    useToNode(use, nodeTo)
+  )
+  or
+  not nodeFrom = any(PostUpdateNode pun).getPreUpdateNode() and
+  exists(DefOrUse defOrUse1, UseOrPhi use |
+    nodeToDefOrUse(nodeFrom, defOrUse1) and
+    adjacentDefRead(defOrUse1, use) and
+    useToNode(use, nodeTo)
+  )
 }
 
 predicate fromPhiNode(SsaPhiNode nodeFrom, Node nodeTo) {
@@ -404,6 +405,11 @@ module SsaCached {
   predicate adjacentDefRead(Definition def, IRBlock bb1, int i1, IRBlock bb2, int i2) {
     Ssa::adjacentDefRead(def, bb1, i1, bb2, i2)
   }
+
+  cached
+  predicate lastRefRedef(Definition def, IRBlock bb, int i, Definition next) {
+    Ssa::lastRefRedef(def, bb, i, next)
+  }
 }
 
 private newtype TSsaDefOrUse =
@@ -418,7 +424,7 @@ private newtype TSsaDefOrUse =
   TPhi(PhiNode phi)
 
 abstract private class SsaDefOrUse extends TSsaDefOrUse {
-  string toString() { result = "SsaDefOrUse" }
+  string toString() { none() }
 
   DefOrUseImpl asDefOrUse() { none() }
 
@@ -437,6 +443,8 @@ class DefOrUse extends TDefOrUse, SsaDefOrUse {
   final override Location getLocation() { result = defOrUse.getLocation() }
 
   final SourceVariable getSourceVariable() { result = defOrUse.getSourceVariable() }
+
+  override string toString() { result = defOrUse.toString() }
 }
 
 class Phi extends TPhi, SsaDefOrUse {
@@ -447,6 +455,8 @@ class Phi extends TPhi, SsaDefOrUse {
   final override PhiNode asPhi() { result = phi }
 
   final override Location getLocation() { result = phi.getBasicBlock().getLocation() }
+
+  override string toString() { result = "Phi" }
 }
 
 class UseOrPhi extends SsaDefOrUse {
