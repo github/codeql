@@ -24,7 +24,7 @@ import semmle.javascript.security.regexp.NfaUtils as NfaUtils
 
 /** Holds if `s` is a relevant regexp term were we want to compute a string that matches the term (for `getCaseSensitiveBypassExample`). */
 predicate isCand(NfaUtils::State s) {
-  s.getRepr().isRootTerm() and
+  s.getRepr() instanceof NfaUtils::RegExpRoot and
   exists(DataFlow::RegExpCreationNode creation |
     isCaseSensitiveMiddleware(_, creation, _) and
     s.getRepr().getRootTerm() = creation.getRoot()
@@ -87,12 +87,16 @@ predicate isGuardedCaseInsensitiveEndpoint(
  */
 string getAnEndpointExample(Routing::RouteSetup endpoint) {
   exists(string raw |
-    raw = endpoint.getRelativePath().toLowerCase() and
+    raw = endpoint.getRelativePath() and
     result = raw.regexpReplaceAll(":\\w+\\b|\\*", ["a", "1"])
   )
 }
 
 import semmle.javascript.security.regexp.RegexpMatching as RegexpMatching
+
+NfaUtils::RegExpRoot getARoot(DataFlow::RegExpCreationNode creator) {
+  result.getRootTerm() = creator.getRoot()
+}
 
 /**
  * Holds if the regexp matcher should test whether `root` matches `str`.
@@ -109,10 +113,10 @@ predicate isMatchingCandidate(
     isGuardedCaseInsensitiveEndpoint(endPoint, middleware)
   |
     root = regexp.getRoot() and
-    exists(getCaseSensitiveBypassExample(root)) and
+    exists(getCaseSensitiveBypassExample(getARoot(regexp))) and
     ignorePrefix = true and
     testWithGroups = false and
-    str = [getCaseSensitiveBypassExample(root), getAnEndpointExample(endPoint)]
+    str = [getCaseSensitiveBypassExample(getARoot(regexp)), getAnEndpointExample(endPoint)]
   )
 }
 
@@ -120,15 +124,14 @@ import RegexpMatching::RegexpMatching<isMatchingCandidate/4> as Matcher
 
 from
   DataFlow::RegExpCreationNode regexp, Routing::RouteSetup middleware, Routing::RouteSetup endpoint,
-  DataFlow::Node arg, string byPassExample
+  DataFlow::Node arg, string byPassExample, string endpointExample
 where
   isCaseSensitiveMiddleware(middleware, regexp, arg) and
-  byPassExample = getCaseSensitiveBypassExample(regexp.getRoot()) and
+  byPassExample = getCaseSensitiveBypassExample(getARoot(regexp)) and
   isGuardedCaseInsensitiveEndpoint(endpoint, middleware) and
-  exists(string endpointExample | endpointExample = getAnEndpointExample(endpoint) |
-    Matcher::matches(regexp.getRoot(), endpointExample) and
-    not Matcher::matches(regexp.getRoot(), byPassExample)
-  )
+  endpointExample = getAnEndpointExample(endpoint) and
+  Matcher::matches(regexp.getRoot(), endpointExample) and
+  not Matcher::matches(regexp.getRoot(), byPassExample)
 select arg,
   "This route uses a case-sensitive path $@, but is guarding a case-insensitive path $@. A path such as '"
     + byPassExample + "' will bypass the middleware.", regexp, "pattern", endpoint, "here"
