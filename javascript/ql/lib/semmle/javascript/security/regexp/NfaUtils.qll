@@ -1104,18 +1104,28 @@ module ReDoSPruning<isCandidateSig/2 isCandidate> {
       result = getAnInputSymbolMatching(char)
     }
 
+    pragma[noinline]
+    RegExpRoot relevantRoot() {
+      exists(RegExpTerm term, State s |
+        s.getRepr() = term and isCandidateState(s) and result = term.getRootTerm()
+      )
+    }
+
     /**
      * Gets a char used for finding possible suffixes inside `root`.
      */
     pragma[noinline]
     private string relevant(RegExpRoot root) {
-      exists(ascii(result)) and exists(root)
-      or
-      exists(InputSymbol s | belongsTo(s, root) | result = intersect(s, _))
-      or
-      // The characters from `hasSimpleRejectEdge`. Only `\n` is really needed (as `\n` is not in the `ascii` relation).
-      // The three chars must be kept in sync with `hasSimpleRejectEdge`.
-      result = ["|", "\n", "Z"] and exists(root)
+      root = relevantRoot() and
+      (
+        exists(ascii(result)) and exists(root)
+        or
+        exists(InputSymbol s | belongsTo(s, root) | result = intersect(s, _))
+        or
+        // The characters from `hasSimpleRejectEdge`. Only `\n` is really needed (as `\n` is not in the `ascii` relation).
+        // The three chars must be kept in sync with `hasSimpleRejectEdge`.
+        result = ["|", "\n", "Z"] and exists(root)
+      )
     }
 
     /**
