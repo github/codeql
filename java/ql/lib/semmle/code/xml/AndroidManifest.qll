@@ -25,9 +25,6 @@ class AndroidManifestXmlFile extends XmlFile {
   predicate isInBuildDirectory() { this.getFile().getRelativePath().matches("%build%") }
 }
 
-// class SourceAndroidManifestXmlFile extends AndroidManifestXmlFile {
-//   SourceAndroidManifestXmlFile() { not this.getFile().getRelativePath().matches("%build%") }
-// }
 /**
  * A `<manifest>` element in an Android manifest file.
  */
@@ -238,7 +235,6 @@ class AndroidComponentXmlElement extends XmlElement {
   /**
    * Holds if this component element has an `android:exported` attribute.
    */
-  //predicate hasExportedAttribute() { this.hasAttribute("exported") }
   predicate hasExportedAttribute() { exists(this.getExportedAttributeValue()) }
 
   /**
@@ -264,13 +260,6 @@ class AndroidIntentFilterXmlElement extends XmlElement {
    * Gets a `<category>` child element of this `<intent-filter>` element.
    */
   AndroidCategoryXmlElement getACategoryElement() { result = this.getAChild() }
-  // /**
-  //  * Holds if this `<intent-filter>` element has a `<category>` child element
-  //  * named `android.intent.category.LAUNCHER`.
-  //  */
-  // predicate hasLauncherCategoryElement() {
-  //   this.getACategoryElement().getCategoryName() = "android.intent.category.LAUNCHER"
-  // }
 }
 
 /**

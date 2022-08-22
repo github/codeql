@@ -11,19 +11,8 @@ class ImplicitlyExportedAndroidComponent extends AndroidComponentXmlElement {
       "android.intent.category.LAUNCHER" and
     not this.requiresPermissions() and
     not this.getParent().(AndroidApplicationXmlElement).requiresPermissions() and
-    //not this.getAnIntentFilterElement().hasLauncherCategoryElement() and
-    not this.getFile().(AndroidManifestXmlFile).isInBuildDirectory()
-    //this.getFile() instanceof SourceAndroidManifestXmlFile
+    not this.getFile().(AndroidManifestXmlFile).isInBuildDirectory() //and
+    //not this.getAnIntentFilterElement().getAnActionElement().getActionName() =
+    //  "android.intent.action.MAIN"
   }
-  //   predicate isImplicitlyExported() {
-  //     not this.hasExportedAttribute() and
-  //     this.hasAnIntentFilterElement() and
-  //     not this.requiresPermissions() and
-  //     not this.getParent().(AndroidApplicationXmlElement).hasAttribute("permission") and
-  //     not this.getAnIntentFilterElement().hasLauncherCategoryElement() and
-  //     not this.getFile().(AndroidManifestXmlFile).isInBuildDirectory() //and
-  //     not this.getAnIntentFilterElement().getAnActionElement().getActionName().matches("%MEDIA%") and // try MEDIA exclusion -- MRVA returns 251 results, so only removed 13
-  //     not this.getAnIntentFilterElement().getAnActionElement().getActionName() =
-  //       "android.intent.action.MAIN" // try MAIN exclusion -- MRVA returns 193 results, so removed 251-193 = 58 results
-  //   }
 }
