@@ -163,6 +163,8 @@ bindingset[c]
 SummaryComponent interpretComponentSpecific(AccessPathToken c) {
   c = "Element" and result = SummaryComponent::content(any(ElementContent ec))
   or
+  c = "WithoutElement" and result = SummaryComponent::withoutContent(any(ElementContent ec))
+  or
   // Qualified names may contain commas,such as in `Tuple<,>`, so get the entire argument list
   // rather than an individual argument.
   exists(Field f |
