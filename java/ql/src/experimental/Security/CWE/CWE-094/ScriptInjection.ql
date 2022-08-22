@@ -8,6 +8,7 @@
  * @id java/unsafe-eval
  * @tags security
  *       external/cwe/cwe-094
+ *       experimental
  */
 
 import java

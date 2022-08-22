@@ -6,7 +6,9 @@
  * @security-severity 7.8
  * @precision medium
  * @id rb/user-controlled-file-decompression
- * @tags security external/cwe/cwe-409
+ * @tags security 
+ *       external/cwe/cwe-409
+ *       experimental
  */
 
 import ruby

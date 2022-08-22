@@ -9,6 +9,7 @@
  * @tags security
  *       external/cwe/cwe-942
  *       external/cwe/cwe-346
+ *       experimental
  */
 
 import go

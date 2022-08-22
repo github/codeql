@@ -8,6 +8,7 @@
  * @id java/android-insecure-dex-loading
  * @tags security
  *       external/cwe/cwe-094
+ *       experimental
  */
 
 import java

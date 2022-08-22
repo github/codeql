@@ -7,6 +7,7 @@
  * @id java/unvalidated-cors-origin-set
  * @tags security
  *       external/cwe/cwe-346
+ *       experimental
  */
 
 import java

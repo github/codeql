@@ -9,6 +9,7 @@
  * @id java/xxe-with-experimental-sinks
  * @tags security
  *       external/cwe/cwe-611
+ *       experimental
  */
 
 import java

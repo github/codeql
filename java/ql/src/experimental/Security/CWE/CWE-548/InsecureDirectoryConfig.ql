@@ -10,6 +10,7 @@
  * @id java/server-directory-listing
  * @tags security
  *       external/cwe/cwe-548
+ *       experimental
  */
 
 import java

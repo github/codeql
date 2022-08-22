@@ -8,6 +8,7 @@
  * @id py/xslt-injection
  * @tags security
  *       external/cwe/cwe-643
+ *       experimental
  */
 
 import python

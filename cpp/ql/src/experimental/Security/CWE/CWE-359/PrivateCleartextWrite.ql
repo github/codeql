@@ -7,6 +7,7 @@
  * @id cpp/private-cleartext-write
  * @tags security
  *       external/cwe/cwe-359
+ *       experimental
  */
 
 import cpp

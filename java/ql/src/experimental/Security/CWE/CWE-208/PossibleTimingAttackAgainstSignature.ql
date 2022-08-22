@@ -10,6 +10,7 @@
  * @id java/possible-timing-attack-against-signature
  * @tags security
  *       external/cwe/cwe-208
+ *       experimental
  */
 
 import java

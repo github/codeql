@@ -8,6 +8,7 @@
  * @id java/insecure-spring-actuator-config
  * @tags security
  *       external/cwe/cwe-016
+ *       experimental
  */
 
 /*

@@ -7,6 +7,7 @@
  * @id java/sensitive-query-with-get
  * @tags security
  *       external/cwe/cwe-598
+ *       experimental
  */
 
 import java

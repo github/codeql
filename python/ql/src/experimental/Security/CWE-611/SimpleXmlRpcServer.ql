@@ -7,6 +7,7 @@
  * @id py/simple-xml-rpc-server-dos
  * @tags security
  *       external/cwe/cwe-776
+ *       experimental
  */
 
 private import python

@@ -6,6 +6,7 @@
  * @id py/improper-ldap-auth
  * @tags security
  *       external/cwe/cwe-287
+ *       experimental
  */
 
 // Determine precision above

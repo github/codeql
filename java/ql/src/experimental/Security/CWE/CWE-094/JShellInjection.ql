@@ -8,6 +8,7 @@
  * @id java/jshell-injection
  * @tags security
  *       external/cwe/cwe-094
+ *       experimental
  */
 
 import java

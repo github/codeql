@@ -8,6 +8,7 @@
  * @tags security
  *       external/cwe/cwe-119
  *       external/cwe/cwe-126
+ *       experimental
  */
 
 import go

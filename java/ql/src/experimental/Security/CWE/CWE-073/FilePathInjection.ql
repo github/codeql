@@ -9,6 +9,7 @@
  * @id java/file-path-injection
  * @tags security
  *       external/cwe-073
+ *       experimental
  */
 
 import java

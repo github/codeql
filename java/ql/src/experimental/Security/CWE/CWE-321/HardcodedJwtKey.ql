@@ -6,6 +6,7 @@
  * @id java/hardcoded-jwt-key
  * @tags security
  *       external/cwe/cwe-321
+ *       experimental
  */
 
 import java

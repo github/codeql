@@ -6,6 +6,7 @@
  * @id py/cookie-injection
  * @tags security
  *       external/cwe/cwe-614
+ *       experimental
  */
 
 // determine precision above

@@ -7,6 +7,7 @@
  * @id java/tomcat-disabled-httponly
  * @tags security
  *       external/cwe/cwe-1004
+ *       experimental
  */
 
 import java

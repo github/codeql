@@ -9,7 +9,9 @@
  * @problem.severity error
  * @security-severity 7.5
  * @id js/ml-powered/path-injection
- * @tags experimental security
+ * @tags experimental 
+ *       security
+ *       ml-generated
  *       external/cwe/cwe-022
  *       external/cwe/cwe-023
  *       external/cwe/cwe-036

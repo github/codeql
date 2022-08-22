@@ -6,6 +6,7 @@
  * @id cpp/pam-auth-bypass
  * @tags security
  *       external/cwe/cwe-285
+ *       experimental
  */
 
 import cpp

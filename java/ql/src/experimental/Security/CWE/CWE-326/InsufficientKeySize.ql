@@ -7,6 +7,7 @@
  * @id java/insufficient-key-size
  * @tags security
  *       external/cwe/cwe-326
+ *       experimental
  */
 
 import java

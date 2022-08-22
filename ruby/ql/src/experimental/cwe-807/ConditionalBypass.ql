@@ -9,6 +9,7 @@
  * @tags security
  *       external/cwe/cwe-807
  *       external/cwe/cwe-290
+ *       experimental
  */
 
 import ruby

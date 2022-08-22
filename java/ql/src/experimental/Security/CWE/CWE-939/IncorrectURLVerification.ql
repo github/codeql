@@ -9,6 +9,7 @@
  * @id java/incorrect-url-verification
  * @tags security
  *       external/cwe/cwe-939
+ *       experimental
  */
 
 import java

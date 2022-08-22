@@ -8,6 +8,7 @@
  * @id java/unsafe-reflection
  * @tags security
  *       external/cwe/cwe-470
+ *       experimental
  */
 
 import java

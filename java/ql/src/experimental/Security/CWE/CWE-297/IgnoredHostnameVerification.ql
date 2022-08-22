@@ -8,6 +8,7 @@
  * @id java/ignored-hostname-verification
  * @tags security
  *       external/cwe/cwe-297
+ *       experimental
  */
 
 import java

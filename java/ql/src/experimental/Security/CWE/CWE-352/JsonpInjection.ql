@@ -8,6 +8,7 @@
  * @id java/jsonp-injection
  * @tags security
  *       external/cwe/cwe-352
+ *       experimental
  */
 
 import java

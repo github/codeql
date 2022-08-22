@@ -7,6 +7,7 @@
  * @id py/template-injection
  * @tags security
  *       external/cwe/cwe-074
+ *       experimental
  */
 
 import python

@@ -5,6 +5,7 @@
  * @tags security
  *       cryptography
  *       external/cwe/cwe-327
+ *       experimental
  * @id py/azure-storage/unsafe-client-side-encryption-in-use
  * @problem.severity error
  * @precision medium

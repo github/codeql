@@ -6,6 +6,7 @@
  * @id go/hardcoded-key
  * @tags security
  *       external/cwe/cwe-321
+ *       experimental
  */
 
 import go

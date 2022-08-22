@@ -11,6 +11,7 @@
  * @id java/xxe-local-experimental-sinks
  * @tags security
  *       external/cwe/cwe-611
+ *       experimental
  */
 
 import java

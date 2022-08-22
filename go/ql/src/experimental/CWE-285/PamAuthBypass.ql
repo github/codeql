@@ -8,6 +8,7 @@
  *       correctness
  *       external/cwe/cwe-561
  *       external/cwe/cwe-285
+ *       experimental
  * @precision very-high
  */
 

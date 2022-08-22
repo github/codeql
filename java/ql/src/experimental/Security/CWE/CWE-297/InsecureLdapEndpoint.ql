@@ -9,6 +9,7 @@
  * @id java/insecure-ldaps-endpoint
  * @tags security
  *       external/cwe/cwe-297
+ *       experimental
  */
 
 import java

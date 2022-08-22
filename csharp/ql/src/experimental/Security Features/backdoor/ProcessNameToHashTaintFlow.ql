@@ -4,6 +4,7 @@
  * @kind path-problem
  * @tags security
  *       solorigate
+ *       experimental
  * @problem.severity warning
  * @precision medium
  * @id cs/backdoor/process-name-to-hash-function

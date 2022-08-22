@@ -9,6 +9,7 @@
  * @id java/mybatis-annotation-sql-injection
  * @tags security
  *       external/cwe/cwe-089
+ *       experimental
  */
 
 import java

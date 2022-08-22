@@ -7,6 +7,7 @@
  * @id go/html-template-escaping-passthrough
  * @tags security
  *       external/cwe/cwe-79
+ *       experimental
  */
 
 import go

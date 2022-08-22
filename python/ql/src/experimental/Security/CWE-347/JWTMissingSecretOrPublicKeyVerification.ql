@@ -6,6 +6,7 @@
  * @id py/jwt-missing-verification
  * @tags security
  *       external/cwe/cwe-347
+ *       experimental
  */
 
 // determine precision above

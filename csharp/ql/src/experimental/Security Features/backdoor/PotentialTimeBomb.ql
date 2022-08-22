@@ -7,6 +7,7 @@
  * @id cs/backdoor/potential-time-bomb
  * @tags security
  *       solorigate
+ *       experimental
  */
 
 import csharp

@@ -7,6 +7,7 @@
  * @id py/nosql-injection
  * @tags security
  *       external/cwe/cwe-943
+ *       experimental
  */
 
 import python

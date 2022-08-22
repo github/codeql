@@ -9,6 +9,7 @@
  * @id py/insecure-cookie
  * @tags security
  *       external/cwe/cwe-614
+ *       experimental
  */
 
 // TODO: determine precision above

@@ -8,6 +8,7 @@
  * @id java/xquery-injection
  * @tags security
  *       external/cwe/cwe-652
+ *       experimental
  */
 
 import java

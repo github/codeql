@@ -8,6 +8,7 @@
  * @id java/unsafe-tls-version
  * @tags security
  *       external/cwe/cwe-327
+ *       experimental
  */
 
 import java

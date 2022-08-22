@@ -7,6 +7,7 @@
  * @id cs/backdoor/dangerous-native-functions
  * @tags security
  *       solorigate
+ *       experimental
  */
 
 import csharp

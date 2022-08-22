@@ -9,6 +9,7 @@
  * @id java/mybatis-xml-sql-injection
  * @tags security
  *       external/cwe/cwe-089
+ *       experimental
  */
 
 import java

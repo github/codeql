@@ -7,6 +7,7 @@
  * @problem.severity error
  * @tags security
  *       external/cwe/cwe-200
+ *       experimental
  */
 
 import java

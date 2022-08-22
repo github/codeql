@@ -6,6 +6,7 @@
  * @id go/divide-by-zero
  * @tags security
  *       external/cwe/cwe-369
+ *       experimental
  */
 
 import go

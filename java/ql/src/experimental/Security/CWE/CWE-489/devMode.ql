@@ -8,6 +8,7 @@
  * @id java/struts-development-mode
  * @tags security
  *       external/cwe/cwe-489
+ *       experimental
  */
 
 import java

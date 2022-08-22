@@ -10,6 +10,7 @@
  * @id java/uncaught-servlet-exception
  * @tags security
  *       external/cwe/cwe-600
+ *       experimental
  */
 
 import java

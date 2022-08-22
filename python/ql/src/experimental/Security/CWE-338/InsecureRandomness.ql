@@ -10,6 +10,7 @@
  * @id py/insecure-randomness
  * @tags security
  *       external/cwe/cwe-338
+ *       experimental
  */
 
 import python

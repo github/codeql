@@ -8,6 +8,7 @@
  * @id java/spring-unvalidated-url-redirection
  * @tags security
  *       external/cwe/cwe-601
+ *       experimental
  */
 
 import java

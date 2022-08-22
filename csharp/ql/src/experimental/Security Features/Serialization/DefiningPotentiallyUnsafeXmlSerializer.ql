@@ -6,6 +6,7 @@
  * @precision medium
  * @id cs/dataset-serialization/defining-potentially-unsafe-xml-serializer
  * @tags security
+ *       experimental
  */
 
 import csharp

@@ -8,6 +8,8 @@
  * @tags external/cwe/cwe-807
  *       external/cwe/cwe-247
  *       external/cwe/cwe-350
+ *       security
+ *       experimental
  */
 
 import go

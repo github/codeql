@@ -8,6 +8,7 @@
  * @id java/timing-attack-against-headers-value
  * @tags security
  *       external/cwe/cwe-208
+ *       experimental
  */
 
 import java

@@ -5,6 +5,7 @@
  * @problem.severity warning
  * @id py/jwt-empty-secret-or-algorithm
  * @tags security
+ *       experimental
  */
 
 // determine precision above

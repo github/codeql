@@ -7,6 +7,7 @@
  * @id py/csv-injection
  * @tags security
  *       external/cwe/cwe-1236
+ *       experimental
  */
 
 import python

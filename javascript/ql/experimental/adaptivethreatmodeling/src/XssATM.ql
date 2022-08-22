@@ -9,7 +9,9 @@
  * @problem.severity error
  * @security-severity 6.1
  * @id js/ml-powered/xss
- * @tags experimental security
+ * @tags experimental 
+ *       security
+ *       ml-generated
  *       external/cwe/cwe-079
  */
 

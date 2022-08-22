@@ -7,6 +7,7 @@
  * @id java/main-method-in-enterprise-bean
  * @tags security
  *       external/cwe/cwe-489
+ *       experimental
  */
 
 import java

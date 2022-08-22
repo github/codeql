@@ -10,6 +10,7 @@
  * @tags actions
  *       security
  *       external/cwe/cwe-094
+ *       experimental
  */
 
 import javascript

@@ -8,6 +8,7 @@
  * @id java/openstream-called-on-tainted-url
  * @tags security
  *       external/cwe/cwe-036
+ *       experimental
  */
 
 import java

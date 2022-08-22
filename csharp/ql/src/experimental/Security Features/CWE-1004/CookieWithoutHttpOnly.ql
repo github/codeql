@@ -10,6 +10,7 @@
  * @id cs/web/cookie-httponly-not-set
  * @tags security
  *       external/cwe/cwe-1004
+ *       experimental
  */
 
 import csharp

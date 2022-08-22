@@ -8,6 +8,7 @@
  * @id java/ip-address-spoofing
  * @tags security
  *       external/cwe/cwe-348
+ *       experimental
  */
 
 import java

@@ -7,6 +7,7 @@
  * @precision medium
  * @tags security
  *       external/cwe/cwe-415
+ *       experimental
  */
 
 import cpp

@@ -8,6 +8,7 @@
  * @id java/sensitive-cookie-not-httponly
  * @tags security
  *       external/cwe/cwe-1004
+ *       experimental
  */
 
 /*
