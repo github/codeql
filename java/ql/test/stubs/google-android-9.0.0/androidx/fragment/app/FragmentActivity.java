@@ -2,6 +2,8 @@
 
 package androidx.fragment.app;
 
+import java.io.FileDescriptor;
+import java.io.PrintWriter;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
@@ -11,19 +13,15 @@ import android.util.AttributeSet;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import androidx.activity.ComponentActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.app.SharedElementCallback;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.loader.app.LoaderManager;
-import java.io.FileDescriptor;
-import java.io.PrintWriter;
 
-public class FragmentActivity implements ActivityCompat.OnRequestPermissionsResultCallback, ActivityCompat.RequestPermissionsRequestCodeValidator
+public class FragmentActivity extends ComponentActivity implements ActivityCompat.OnRequestPermissionsResultCallback, ActivityCompat.RequestPermissionsRequestCodeValidator
 {
     protected boolean onPrepareOptionsPanel(View p0, Menu p1){ return false; }
     protected void onActivityResult(int p0, int p1, Intent p2){}
-    protected void onCreate(Bundle p0){}
     protected void onDestroy(){}
     protected void onNewIntent(Intent p0){}
     protected void onPause(){}
