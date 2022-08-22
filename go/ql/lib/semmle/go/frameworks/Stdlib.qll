@@ -170,6 +170,25 @@ module URL {
     }
   }
 
+  /** The `JoinPath` function. */
+  class JoinPath extends TaintTracking::FunctionModel {
+    JoinPath() { this.hasQualifiedName("net/url", "JoinPath") }
+
+    override predicate hasTaintFlow(FunctionInput inp, FunctionOutput outp) {
+      inp.isParameter(_) and outp.isResult(0)
+    }
+  }
+
+  /** The method `URL.JoinPath`. */
+  class JoinPathMethod extends TaintTracking::FunctionModel, Method {
+    JoinPathMethod() { this.hasQualifiedName("net/url", "URL", "JoinPath") }
+
+    override predicate hasTaintFlow(FunctionInput inp, FunctionOutput outp) {
+      (inp.isReceiver() or inp.isParameter(_)) and
+      outp.isResult(0)
+    }
+  }
+
   /** A method that returns a part of a URL. */
   class UrlGetter extends TaintTracking::FunctionModel, Method {
     UrlGetter() {
