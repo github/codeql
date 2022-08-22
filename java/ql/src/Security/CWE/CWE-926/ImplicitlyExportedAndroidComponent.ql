@@ -1,6 +1,6 @@
 /**
  * @name Implicitly exported Android component
- * @description An Android component with an '<intent-filter>' and no 'android:exported' attribute is implicitly exported. This can allow for improper access to the component and its data.
+ * @description Android components with an '<intent-filter>' and no 'android:exported' attribute are implicitly exported, which can allow for improper access to the components themselves and to their data.
  * @kind problem
  * @problem.severity warning
  * @security-severity 8.2
