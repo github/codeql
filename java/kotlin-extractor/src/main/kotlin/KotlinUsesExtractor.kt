@@ -1574,7 +1574,7 @@ open class KotlinUsesExtractor(
     fun useEnumEntry(ee: IrEnumEntry): Label<out DbField> =
         tw.getLabelFor(getEnumEntryLabel(ee))
 
-    private fun getTypeAliasLabel(ta: IrTypeAlias): String {
+    fun getTypeAliasLabel(ta: IrTypeAlias): String {
         val parentId = useDeclarationParent(ta.parent, true)
         return "@\"type_alias;{$parentId};${ta.name.asString()}\""
     }
