@@ -99,8 +99,6 @@ thisArgumentIsNonPointer
 | pointer_to_member.cpp:23:5:23:54 | Call: call to expression | Call instruction 'Call: call to expression' has a `this` argument operand that is not an address, in function '$@'. | pointer_to_member.cpp:14:5:14:9 | int usePM(int PM::*) | int usePM(int PM::*) |
 | pointer_to_member.cpp:24:5:24:49 | Call: call to expression | Call instruction 'Call: call to expression' has a `this` argument operand that is not an address, in function '$@'. | pointer_to_member.cpp:14:5:14:9 | int usePM(int PM::*) | int usePM(int PM::*) |
 nonUniqueIRVariable
-| misc.c:178:22:178:40 | VariableAddress: __PRETTY_FUNCTION__ | Variable address instruction 'VariableAddress: __PRETTY_FUNCTION__' has no associated variable, in function '$@'. | misc.c:177:6:177:14 | void magicvars() | void magicvars() |
-| misc.c:179:27:179:34 | VariableAddress: __func__ | Variable address instruction 'VariableAddress: __func__' has no associated variable, in function '$@'. | misc.c:177:6:177:14 | void magicvars() | void magicvars() |
 missingCanonicalLanguageType
 multipleCanonicalLanguageTypes
 missingIRType
