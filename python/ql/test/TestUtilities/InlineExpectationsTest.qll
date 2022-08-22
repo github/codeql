@@ -330,6 +330,19 @@ abstract private class Expectation extends FailureLocatable {
   override Location getLocation() { result = comment.getLocation() }
 }
 
+private predicate onSameLine(ValidExpectation a, ActualResult b) {
+  exists(string fname, int line, Location la, Location lb |
+    // Join order intent:
+    // Take the locations of ActualResults,
+    // join with locations in the same file / on the same line,
+    // then match those against ValidExpectations.
+    la = a.getLocation() and
+    pragma[only_bind_into](lb) = b.getLocation() and
+    pragma[only_bind_into](la).hasLocationInfo(fname, line, _, _, _) and
+    lb.hasLocationInfo(fname, line, _, _, _)
+  )
+}
+
 private class ValidExpectation extends Expectation, TValidExpectation {
   string tag;
   string value;
@@ -344,8 +357,7 @@ private class ValidExpectation extends Expectation, TValidExpectation {
   string getKnownFailure() { result = knownFailure }
 
   predicate matchesActualResult(ActualResult actualResult) {
-    getLocation().getStartLine() = actualResult.getLocation().getStartLine() and
-    getLocation().getFile() = actualResult.getLocation().getFile() and
+    onSameLine(pragma[only_bind_into](this), actualResult) and
     getTag() = actualResult.getTag() and
     getValue() = actualResult.getValue()
   }
