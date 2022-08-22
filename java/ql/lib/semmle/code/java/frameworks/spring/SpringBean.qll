@@ -57,7 +57,7 @@ class SpringBean extends SpringXmlElement {
 
   /** Holds if the bean is abstract. */
   predicate isAbstract() {
-    exists(XMLAttribute a |
+    exists(XmlAttribute a |
       a = this.getAttribute("abstract") and
       a.getValue() = "true"
     )
@@ -255,7 +255,7 @@ class SpringBean extends SpringXmlElement {
 
   /** Holds if the bean has been declared to be a `primary` bean for autowiring. */
   predicate isPrimary() {
-    exists(XMLAttribute a | a = this.getAttribute("primary") and a.getValue() = "true")
+    exists(XmlAttribute a | a = this.getAttribute("primary") and a.getValue() = "true")
   }
 
   /** Gets the scope of the bean. */

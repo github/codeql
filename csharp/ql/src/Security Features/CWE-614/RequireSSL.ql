@@ -19,7 +19,7 @@ import semmle.code.csharp.frameworks.system.Web
 
 // the query is a subset of `cs/web/cookie-secure-not-set` and
 // should be removed once it is promoted from experimental
-from XMLElement element
+from XmlElement element
 where
   element instanceof FormsElement and
   not element.(FormsElement).isRequireSSL()
