@@ -110,6 +110,7 @@ private module Frameworks {
   private import semmle.code.csharp.frameworks.system.collections.Specialized
   private import semmle.code.csharp.frameworks.system.ComponentModel
   private import semmle.code.csharp.frameworks.system.componentmodel.Design
+  private import semmle.code.csharp.frameworks.system.Configuration
   private import semmle.code.csharp.frameworks.system.Data
   private import semmle.code.csharp.frameworks.system.data.Common
   private import semmle.code.csharp.frameworks.system.Diagnostics
