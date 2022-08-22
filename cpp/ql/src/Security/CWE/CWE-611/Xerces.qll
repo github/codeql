@@ -5,6 +5,7 @@
 import cpp
 import XML
 import semmle.code.cpp.valuenumbering.GlobalValueNumbering
+import semmle.code.cpp.ir.dataflow.DataFlow::DataFlow
 import semmle.code.cpp.ir.IR
 
 /**
@@ -65,19 +66,16 @@ class XercesDomParserLibrary extends XmlLibrary {
   override predicate configurationSource(DataFlow::Node node, string flowstate) {
     // source is the write on `this` of a call to the `XercesDOMParser`
     // constructor.
-    exists(CallInstruction call |
-      call.getStaticCallTarget() = any(XercesDomParserClass c).getAConstructor() and
-      node.asInstruction().(WriteSideEffectInstruction).getDestinationAddress() =
-        call.getThisArgument() and
-      encodeXercesFlowState(flowstate, 0, 1) // default configuration
-    )
+    node.(DefinitionByReferenceNode).getStaticCallTarget() =
+      any(XercesDomParserClass c).getAConstructor() and
+    encodeXercesFlowState(flowstate, 0, 1) // default configuration
   }
 
   override predicate configurationSink(DataFlow::Node node, string flowstate) {
     // sink is the read of the qualifier of a call to `AbstractDOMParser.parse`.
     exists(Call call |
       call.getTarget().getClassAndName("parse") instanceof AbstractDomParserClass and
-      call.getQualifier() = node.asConvertedExpr()
+      call.getQualifier() = node.asIndirectArgument()
     ) and
     flowstate instanceof XercesFlowState and
     not encodeXercesFlowState(flowstate, 1, 1) // safe configuration
@@ -151,19 +149,15 @@ class SaxParserLibrary extends XmlLibrary {
   override predicate configurationSource(DataFlow::Node node, string flowstate) {
     // source is the write on `this` of a call to the `SAXParser`
     // constructor.
-    exists(CallInstruction call |
-      call.getStaticCallTarget() = any(SaxParserClass c).getAConstructor() and
-      node.asInstruction().(WriteSideEffectInstruction).getDestinationAddress() =
-        call.getThisArgument() and
-      encodeXercesFlowState(flowstate, 0, 1) // default configuration
-    )
+    node.(DefinitionByReferenceNode).getStaticCallTarget() = any(SaxParserClass c).getAConstructor() and
+    encodeXercesFlowState(flowstate, 0, 1) // default configuration
   }
 
   override predicate configurationSink(DataFlow::Node node, string flowstate) {
     // sink is the read of the qualifier of a call to `SAXParser.parse`.
     exists(Call call |
       call.getTarget().getClassAndName("parse") instanceof SaxParserClass and
-      call.getQualifier() = node.asConvertedExpr()
+      call.getQualifier() = node.asIndirectArgument()
     ) and
     flowstate instanceof XercesFlowState and
     not encodeXercesFlowState(flowstate, 1, 1) // safe configuration

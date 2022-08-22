@@ -179,11 +179,27 @@ class Node extends TIRDataFlowNode {
    */
   Expr asExpr() { result = this.(ExprNode).getExpr() }
 
+  Expr asIndirectExpr(int index) {
+    exists(Operand operand | hasOperandAndIndex(this, operand, index) |
+      result = operand.getDef().getUnconvertedResultExpression()
+    )
+  }
+
+  Expr asIndirectExpr() { result = this.asIndirectExpr(_) }
+
   /**
    * Gets the expression corresponding to this node, if any. The returned
    * expression may be a `Conversion`.
    */
   Expr asConvertedExpr() { result = this.(ExprNode).getConvertedExpr() }
+
+  Expr asIndirectConvertedExpr(int index) {
+    exists(Operand operand | hasOperandAndIndex(this, operand, index) |
+      result = operand.getDef().getConvertedResultExpression()
+    )
+  }
+
+  Expr asIndirectConvertedExpr() { result = this.asIndirectConvertedExpr(_) }
 
   /**
    * Gets the argument that defines this `DefinitionByReferenceNode`, if any.
@@ -470,6 +486,8 @@ class IndirectArgumentOutNode extends Node, TIndirectArgumentOutNode, PostUpdate
 
   CallInstruction getCallInstruction() { result.getAnArgumentOperand() = operand }
 
+  Function getStaticCallTarget() { result = this.getCallInstruction().getStaticCallTarget() }
+
   override Declaration getEnclosingCallable() { result = this.getFunction() }
 
   override Function getFunction() { result = this.getCallInstruction().getEnclosingFunction() }
@@ -481,9 +499,9 @@ class IndirectArgumentOutNode extends Node, TIndirectArgumentOutNode, PostUpdate
   override string toStringImpl() {
     // This string should be unique enough to be helpful but common enough to
     // avoid storing too many different strings.
-    result = this.getCallInstruction().getStaticCallTarget().getName() + " output argument"
+    result = this.getStaticCallTarget().getName() + " output argument"
     or
-    not exists(this.getCallInstruction().getStaticCallTarget()) and
+    not exists(this.getStaticCallTarget()) and
     result = "output argument"
   }
 
