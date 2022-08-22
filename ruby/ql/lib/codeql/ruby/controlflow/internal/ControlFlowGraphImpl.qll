@@ -1380,10 +1380,6 @@ module Trees {
     final override predicate first(AstNode first) { this.firstInner(first) }
 
     final override predicate last(AstNode last, Completion c) { this.lastInner(last, c) }
-
-    final override predicate succ(AstNode pred, AstNode succ, Completion c) {
-      BodyStmtTree.super.succ(pred, succ, c)
-    }
   }
 
   private class UndefStmtTree extends StandardPreOrderTree, UndefStmt {
