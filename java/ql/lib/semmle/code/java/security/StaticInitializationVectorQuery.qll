@@ -54,10 +54,25 @@ private class ArrayUpdate extends Expr {
       ma = this and
       ma.getArgument(0) = array
     |
-      m.hasQualifiedName("java.io", "InputStream", "read") or
+      m.getAnOverride*().hasQualifiedName("java.io", ["InputStream", "RandomAccessFile"], "read") or
+      m.getAnOverride*().hasQualifiedName("java.io", "DataInput", "readFully") or
       m.hasQualifiedName("java.nio", "ByteBuffer", "get") or
       m.hasQualifiedName("java.security", "SecureRandom", "nextBytes") or
-      m.hasQualifiedName("java.util", "Random", "nextBytes")
+      m.hasQualifiedName("java.util", "Random", "nextBytes") or
+      m.hasQualifiedName("java.util.zip", "Inflater", "inflate") or
+      m.hasQualifiedName("io.netty.buffer", "ByteBuf", "readBytes") or
+      m.getAnOverride*().hasQualifiedName("org.bouncycastle.crypto", "Digest", "doFinal")
+    )
+    or
+    exists(MethodAccess ma, Method m |
+      m = ma.getMethod() and
+      ma = this and
+      ma.getArgument(1) = array
+    |
+      m.hasQualifiedName("org.apache.commons.io", "IOUtils", ["read", "readFully"]) or
+      m.hasQualifiedName("io.netty.buffer", "ByteBuf", "getBytes") or
+      m.hasQualifiedName("org.bouncycastle.crypto.generators",
+        any(string s | s.matches("%BytesGenerator")), "generateBytes")
     )
   }
 
