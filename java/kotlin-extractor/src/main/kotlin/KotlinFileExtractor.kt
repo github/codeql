@@ -170,6 +170,7 @@ open class KotlinFileExtractor(
             is IrProperty -> return getPropertyLabel(element)
             is IrField -> return getFieldLabel(element)
             is IrEnumEntry -> return getEnumEntryLabel(element)
+            is IrTypeAlias -> return getTypeAliasLabel(element)
 
             // Fresh entities:
             is IrBody -> return null
