@@ -79,8 +79,6 @@ class AndroidApplicationXmlElement extends XmlElement {
    * https://developer.android.com/guide/topics/data/autobackup
    */
   predicate allowsBackup() {
-    // The default value for the attribute `android:allowBackup` is `true`.
-    // Therefore we also check if it is not present.
     not exists(AndroidXmlAttribute attr |
       this.getAnAttribute() = attr and
       attr.getName() = "allowBackup" and
