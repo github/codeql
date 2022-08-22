@@ -17,7 +17,7 @@ jobs:
       - uses: actions/checkout@v3
       - name: Find codeql
         id: find-codeql
-        uses: github/codeql-action/init@aa93aea877e5fb8841bcb1193f672abf6e9f2980
+        uses: github/codeql-action/init@71a8b35ff4c80fcfcd05bc1cd932fe3c08f943ca
         with:
           languages: javascript # does not matter
       - name: Get CodeQL version
@@ -32,12 +32,12 @@ jobs:
         uses: actions/cache@v3
         with:
           path: ${{ runner.temp }}/query-pack.zip
-          key: queries-${{ hashFiles('ql/**/*.ql*') }}-${{ hashFiles('ql/**/qlpack.yml') }}-${{ hashFiles('ql/ql/src/ql.dbscheme*') }}-${{ steps.get-codeql-version.outputs.version }}
+          key: queries-${{ hashFiles('ql/**/*.ql*') }}-${{ hashFiles('ql/**/qlpack.yml') }}-${{ hashFiles('ql/ql/src/ql.dbscheme*') }}-${{ steps.get-codeql-version.outputs.version }}--${{ hashFiles('.github/workflows/ql-for-ql-build.yml') }}
       - name: Build query pack
         if: steps.cache-queries.outputs.cache-hit != 'true'
         run: |
           cd ql/ql/src
-          "${CODEQL}" pack create
+          "${CODEQL}" pack create -j 16
           cd .codeql/pack/codeql/ql/0.0.0
           zip "${PACKZIP}" -r .
           rm -rf *
@@ -151,21 +151,26 @@ jobs:
           echo "  - ql/ql/test" >> ${CONF} 
           echo "  - \"*/ql/lib/upgrades/\"" >> ${CONF} 
           echo "disable-default-queries: true" >> ${CONF}
-          echo "packs:" >> ${CONF}
-          echo "  - codeql/ql" >> ${CONF}
+          echo "queries:" >> ${CONF}
+          echo "  - uses: ./ql/ql/src/codeql-suites/ql-code-scanning.qls" >> ${CONF}
           echo "Config file: "
           cat ${CONF}
         env: 
           CONF: ./ql-for-ql-config.yml
       - name: Initialize CodeQL
-        uses: github/codeql-action/init@aa93aea877e5fb8841bcb1193f672abf6e9f2980
+        uses: github/codeql-action/init@71a8b35ff4c80fcfcd05bc1cd932fe3c08f943ca
         with:
           languages: ql
           db-location: ${{ runner.temp }}/db
           config-file: ./ql-for-ql-config.yml
+      - name: Move pack cache
+        run: |
+          cp -r ${PACK}/.cache ql/ql/src/.cache
+        env:
+          PACK: ${{ runner.temp }}/pack
 
       - name: Perform CodeQL Analysis
-        uses: github/codeql-action/analyze@aa93aea877e5fb8841bcb1193f672abf6e9f2980
+        uses: github/codeql-action/analyze@71a8b35ff4c80fcfcd05bc1cd932fe3c08f943ca
         with: 
           category: "ql-for-ql"
       - name: Copy sarif file to CWD
