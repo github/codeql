@@ -275,6 +275,7 @@ def generate(opts, renderer):
     non_final_ipa_types = []
     constructor_imports = []
     ipa_constructor_imports = []
+    stubs = {}
     for cls in sorted(data.classes.values(), key=lambda cls: (cls.dir, cls.name)):
         ipa_type = get_ql_ipa_class(cls)
         if ipa_type.is_final:
@@ -282,7 +283,8 @@ def generate(opts, renderer):
             if ipa_type.has_params:
                 stub_file = stub_out / cls.dir / f"{cls.name}Constructor.qll"
                 if not stub_file.is_file() or _is_generated_stub(stub_file):
-                    renderer.render(ql.Synth.ConstructorStub(ipa_type), stub_file)
+                    # stub rendering must be postponed as we might not have yet all subtracted ipa types in `ipa_type`
+                    stubs[stub_file] = ql.Synth.ConstructorStub(ipa_type)
                 constructor_import = get_import(stub_file, opts.swift_dir)
                 constructor_imports.append(constructor_import)
                 if ipa_type.is_ipa:
@@ -290,6 +292,8 @@ def generate(opts, renderer):
         else:
             non_final_ipa_types.append(ipa_type)
 
+    for stub_file, data in stubs.items():
+        renderer.render(data, stub_file)
     renderer.render(ql.Synth.Types(schema.root_class_name, final_ipa_types, non_final_ipa_types), out / "Synth.qll")
     renderer.render(ql.ImportList(constructor_imports), out / "SynthConstructors.qll")
     renderer.render(ql.ImportList(ipa_constructor_imports), out / "PureSynthConstructors.qll")

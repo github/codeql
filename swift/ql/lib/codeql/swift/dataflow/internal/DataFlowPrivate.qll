@@ -176,7 +176,7 @@ private module ParameterNodes {
       )
     }
 
-    override DataFlowCallable getEnclosingCallable() { isParameterOf(result, _) }
+    override DataFlowCallable getEnclosingCallable() { this.isParameterOf(result, _) }
   }
 }
 

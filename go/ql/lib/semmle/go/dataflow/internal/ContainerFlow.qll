@@ -24,7 +24,9 @@ predicate containerStoreStep(Node node1, Node node2, Content c) {
   )
   or
   c instanceof CollectionContent and
-  exists(Write w | w.writesToChannel(node2, node1))
+  exists(SendStmt send |
+    send.getChannel() = node2.(ExprNode).asExpr() and send.getValue() = node1.(ExprNode).asExpr()
+  )
   or
   c instanceof MapKeyContent and
   node2.getType() instanceof MapType and

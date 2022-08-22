@@ -4150,7 +4150,12 @@ open class KotlinFileExtractor(
         startIndex: Int = 0,
         reverse: Boolean = false
     ) {
-        extractTypeArguments((0 until c.typeArgumentsCount).map { c.getTypeArgument(it)!! }, tw.getLocation(c), parentExpr, enclosingCallable, enclosingStmt, startIndex, reverse)
+        val typeArguments = (0 until c.typeArgumentsCount).map { c.getTypeArgument(it) }.requireNoNullsOrNull()
+        if (typeArguments == null) {
+            logger.errorElement("Found a null type argument for a member access expression", c)
+        } else {
+            extractTypeArguments(typeArguments, tw.getLocation(c), parentExpr, enclosingCallable, enclosingStmt, startIndex, reverse)
+        }
     }
 
     private fun extractArrayCreationWithInitializer(
