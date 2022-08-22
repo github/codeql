@@ -1468,14 +1468,22 @@ open class KotlinFileExtractor(
                     val extractionMethod = if (isFunctionInvoke) {
                         // For `kotlin.FunctionX` and `kotlin.reflect.KFunctionX` interfaces, we're making sure that we
                         // extract the call to the `invoke` method that does exist, `kotlin.jvm.functions.FunctionX::invoke`.
-                        val interfaceType = getFunctionalInterfaceTypeWithTypeArgs(drType.arguments).classOrNull!!.owner
-                        val substituted = getJavaEquivalentClass(interfaceType) ?: interfaceType
-                        findFunction(substituted, OperatorNameConventions.INVOKE.asString())!!
+                        val functionalInterface = getFunctionalInterfaceTypeWithTypeArgs(drType.arguments)
+                        if (functionalInterface == null) {
+                            logger.warn("Cannot find functional interface type for raw method access")
+                            null
+                        } else {
+                            val interfaceType = functionalInterface.classOrNull!!.owner
+                            val substituted = getJavaEquivalentClass(interfaceType) ?: interfaceType
+                            findFunction(substituted, OperatorNameConventions.INVOKE.asString())!!
+                        }
                     } else {
                         callTarget
                     }
 
-                    if (isBigArityFunctionInvoke) {
+                    if (extractionMethod == null) {
+                        null
+                    } else if (isBigArityFunctionInvoke) {
                         // Big arity `invoke` methods have a special implementation on JVM, they are transformed to a call to
                         // `kotlin.jvm.functions.FunctionN<out R>::invoke(vararg args: Any?)`, so we only need to pass the type
                         // argument for the return type. Additionally, the arguments are extracted inside an array literal below.
@@ -1484,10 +1492,15 @@ open class KotlinFileExtractor(
                         useFunction<DbCallable>(extractionMethod, getDeclaringTypeArguments(callTarget, drType))
                     }
                 }
-                else
+                else {
                     useFunction<DbCallable>(callTarget)
+                }
 
-            tw.writeCallableBinding(id, methodId)
+            if (methodId == null) {
+                logger.warn("No method to bind call to for raw method access")
+            } else {
+                tw.writeCallableBinding(id, methodId)
+            }
 
             if (callTarget.shouldExtractAsStatic) {
                 extractStaticTypeAccessQualifier(callTarget, id, locId, enclosingCallable, enclosingStmt)
@@ -3021,11 +3034,6 @@ open class KotlinFileExtractor(
                     var types = parameters.map { it.type }
                     types += e.function.returnType
 
-                    val fnInterfaceType = getFunctionalInterfaceType(types)
-                    val id = extractGeneratedClass(
-                        e.function, // We're adding this function as a member, and changing its name to `invoke` to implement `kotlin.FunctionX<,,,>.invoke(,,)`
-                        listOf(pluginContext.irBuiltIns.anyType, fnInterfaceType))
-
                     val isBigArity = types.size > BuiltInFunctionArity.BIG_ARITY
                     if (isBigArity) {
                         implementFunctionNInvoke(e.function, ids, locId, parameters)
@@ -3042,12 +3050,21 @@ open class KotlinFileExtractor(
                     tw.writeStatementEnclosingExpr(idLambdaExpr, exprParent.enclosingStmt)
                     tw.writeCallableBinding(idLambdaExpr, ids.constructor)
 
-                    extractTypeAccessRecursive(fnInterfaceType, locId, idLambdaExpr, -3, callable, exprParent.enclosingStmt)
-
                     // todo: fix hard coded block body of lambda
                     tw.writeLambdaKind(idLambdaExpr, 1)
 
-                    tw.writeIsAnonymClass(id, idLambdaExpr)
+                    val fnInterfaceType = getFunctionalInterfaceType(types)
+                    if (fnInterfaceType == null) {
+                        logger.warnElement("Cannot find functional interface type for function expression", e)
+                    } else {
+                        val id = extractGeneratedClass(
+                            e.function, // We're adding this function as a member, and changing its name to `invoke` to implement `kotlin.FunctionX<,,,>.invoke(,,)`
+                            listOf(pluginContext.irBuiltIns.anyType, fnInterfaceType))
+
+                        extractTypeAccessRecursive(fnInterfaceType, locId, idLambdaExpr, -3, callable, exprParent.enclosingStmt)
+
+                        tw.writeIsAnonymClass(id, idLambdaExpr)
+                    }
                 }
                 is IrClassReference -> {
                     val exprParent = parent.expr(e, callable)
@@ -3737,7 +3754,6 @@ open class KotlinFileExtractor(
                 dispatchReceiverIdx = -1
             }
 
-            val targetCallableId = useFunction<DbCallable>(target.owner.realOverrideTarget, classTypeArguments)
             val locId = tw.getLocation(functionReferenceExpr)
 
             val javaResult = TypeResult(tw.getFreshIdLabel<DbClass>(), "", "")
@@ -3750,36 +3766,6 @@ open class KotlinFileExtractor(
                 constructorBlock = tw.getFreshIdLabel()
             )
 
-            val helper = CallableReferenceHelper(functionReferenceExpr, locId, ids)
-
-            val fnInterfaceType = getFunctionalInterfaceTypeWithTypeArgs(type.arguments)
-
-            val currentDeclaration = declarationStack.peek()
-            // `FunctionReference` base class is required, because that's implementing `KFunction`.
-            val baseClass = pluginContext.referenceClass(FqName("kotlin.jvm.internal.FunctionReference"))?.owner?.typeWith()
-                ?: pluginContext.irBuiltIns.anyType
-
-            val classId = extractGeneratedClass(ids, listOf(baseClass, fnInterfaceType), locId, currentDeclaration)
-
-            helper.extractReceiverField()
-
-            val isBigArity = type.arguments.size > BuiltInFunctionArity.BIG_ARITY
-            val funLabels = if (isBigArity) {
-                addFunctionNInvoke(ids.function, parameterTypes.last(), classId, locId)
-            } else {
-                addFunctionInvoke(ids.function, parameterTypes.dropLast(1), parameterTypes.last(), classId, locId)
-            }
-
-            helper.extractCallToReflectionTarget(
-                funLabels,
-                target,
-                parameterTypes.last(),
-                expressionTypeArguments,
-                classTypeArguments,
-                dispatchReceiverIdx,
-                isBigArity,
-                parameterTypes.dropLast(1))
-
             // Add constructor (member ref) call:
             val exprParent = parent.expr(functionReferenceExpr, callable)
             val idMemberRef = tw.getFreshIdLabel<DbMemberref>()
@@ -3790,40 +3776,87 @@ open class KotlinFileExtractor(
             tw.writeStatementEnclosingExpr(idMemberRef, exprParent.enclosingStmt)
             tw.writeCallableBinding(idMemberRef, ids.constructor)
 
-            val typeAccessArguments = if (isBigArity) listOf(parameterTypes.last()) else parameterTypes
-            if (target is IrConstructorSymbol) {
-                val returnType = typeAccessArguments.last()
-
-                val typeAccessId = extractTypeAccess(useType(fnInterfaceType, TypeContext.OTHER), locId, idMemberRef, -3, callable, exprParent.enclosingStmt)
-                typeAccessArguments.dropLast(1).forEachIndexed { argIdx, arg ->
-                    extractTypeAccessRecursive(arg, locId, typeAccessId, argIdx, callable, exprParent.enclosingStmt, TypeContext.GENERIC_ARGUMENT)
-                }
-
-                extractConstructorTypeAccess(returnType, useType(returnType), target, locId, typeAccessId, typeAccessArguments.count() - 1, callable, exprParent.enclosingStmt)
-            } else {
-                extractTypeAccessRecursive(fnInterfaceType, locId, idMemberRef, -3, callable, exprParent.enclosingStmt)
-            }
-
+            val targetCallableId = useFunction<DbCallable>(target.owner.realOverrideTarget, classTypeArguments)
             tw.writeMemberRefBinding(idMemberRef, targetCallableId)
 
-            helper.extractConstructorArguments(callable, idMemberRef, exprParent.enclosingStmt)
+            val helper = CallableReferenceHelper(functionReferenceExpr, locId, ids)
 
-            tw.writeIsAnonymClass(classId, idMemberRef)
+            val fnInterfaceType = getFunctionalInterfaceTypeWithTypeArgs(type.arguments)
+            if (fnInterfaceType == null) {
+                logger.warnElement("Cannot find functional interface type for function reference", functionReferenceExpr)
+            } else {
+                val currentDeclaration = declarationStack.peek()
+                // `FunctionReference` base class is required, because that's implementing `KFunction`.
+                val baseClass = pluginContext.referenceClass(FqName("kotlin.jvm.internal.FunctionReference"))?.owner?.typeWith()
+                    ?: pluginContext.irBuiltIns.anyType
+
+                val classId = extractGeneratedClass(ids, listOf(baseClass, fnInterfaceType), locId, currentDeclaration)
+
+                helper.extractReceiverField()
+
+                val isBigArity = type.arguments.size > BuiltInFunctionArity.BIG_ARITY
+                val funLabels = if (isBigArity) {
+                    addFunctionNInvoke(ids.function, parameterTypes.last(), classId, locId)
+                } else {
+                    addFunctionInvoke(ids.function, parameterTypes.dropLast(1), parameterTypes.last(), classId, locId)
+                }
+
+                helper.extractCallToReflectionTarget(
+                    funLabels,
+                    target,
+                    parameterTypes.last(),
+                    expressionTypeArguments,
+                    classTypeArguments,
+                    dispatchReceiverIdx,
+                    isBigArity,
+                    parameterTypes.dropLast(1))
+
+                val typeAccessArguments = if (isBigArity) listOf(parameterTypes.last()) else parameterTypes
+                if (target is IrConstructorSymbol) {
+                    val returnType = typeAccessArguments.last()
+
+                    val typeAccessId = extractTypeAccess(useType(fnInterfaceType, TypeContext.OTHER), locId, idMemberRef, -3, callable, exprParent.enclosingStmt)
+                    typeAccessArguments.dropLast(1).forEachIndexed { argIdx, arg ->
+                        extractTypeAccessRecursive(arg, locId, typeAccessId, argIdx, callable, exprParent.enclosingStmt, TypeContext.GENERIC_ARGUMENT)
+                    }
+
+                    extractConstructorTypeAccess(returnType, useType(returnType), target, locId, typeAccessId, typeAccessArguments.count() - 1, callable, exprParent.enclosingStmt)
+                } else {
+                    extractTypeAccessRecursive(fnInterfaceType, locId, idMemberRef, -3, callable, exprParent.enclosingStmt)
+                }
+
+                helper.extractConstructorArguments(callable, idMemberRef, exprParent.enclosingStmt)
+
+                tw.writeIsAnonymClass(classId, idMemberRef)
+            }
         }
     }
 
-    private fun getFunctionalInterfaceType(functionNTypeArguments: List<IrType>) =
+    private fun getFunctionalInterfaceType(functionNTypeArguments: List<IrType>): IrSimpleType? {
         if (functionNTypeArguments.size > BuiltInFunctionArity.BIG_ARITY) {
-            pluginContext.referenceClass(FqName("kotlin.jvm.functions.FunctionN"))!!
-                .typeWith(functionNTypeArguments.last())
+            val funName = "kotlin.jvm.functions.FunctionN"
+            val theFun = pluginContext.referenceClass(FqName(funName))
+            if (theFun == null) {
+                logger.warn("Cannot find $funName for getFunctionalInterfaceType")
+                return null
+            } else {
+                return theFun.typeWith(functionNTypeArguments.last())
+            }
         } else {
-            functionN(pluginContext)(functionNTypeArguments.size - 1).typeWith(functionNTypeArguments)
+            return functionN(pluginContext)(functionNTypeArguments.size - 1).typeWith(functionNTypeArguments)
         }
+    }
 
-    private fun getFunctionalInterfaceTypeWithTypeArgs(functionNTypeArguments: List<IrTypeArgument>) =
+    private fun getFunctionalInterfaceTypeWithTypeArgs(functionNTypeArguments: List<IrTypeArgument>): IrSimpleType? =
         if (functionNTypeArguments.size > BuiltInFunctionArity.BIG_ARITY) {
-            pluginContext.referenceClass(FqName("kotlin.jvm.functions.FunctionN"))!!
-                .typeWithArguments(listOf(functionNTypeArguments.last()))
+            val funName = "kotlin.jvm.functions.FunctionN"
+            val theFun = pluginContext.referenceClass(FqName(funName))
+            if (theFun == null) {
+                logger.warn("Cannot find $funName for getFunctionalInterfaceTypeWithTypeArgs")
+                null
+            } else {
+                theFun.typeWithArguments(listOf(functionNTypeArguments.last()))
+            }
         } else {
             functionN(pluginContext)(functionNTypeArguments.size - 1).symbol.typeWithArguments(functionNTypeArguments)
         }
@@ -4321,6 +4354,10 @@ open class KotlinFileExtractor(
 
                     // Either Function1, ... Function22 or FunctionN type, but not Function23 or above.
                     val functionType = getFunctionalInterfaceTypeWithTypeArgs(st.arguments)
+                    if (functionType == null) {
+                        logger.errorElement("Cannot find functional interface.", e)
+                        return
+                    }
 
                     val invokeMethod = functionType.classOrNull?.owner?.declarations?.filterIsInstance<IrFunction>()?.find { it.name.asString() == OperatorNameConventions.INVOKE.asString()}
                     if (invokeMethod == null) {
