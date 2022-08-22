@@ -10,8 +10,6 @@ class ImplicitlyExportedAndroidComponentTest extends InlineExpectationsTest {
   override predicate hasActualResult(Location location, string element, string tag, string value) {
     tag = "hasImplicitExport" and
     exists(ImplicitlyExportedAndroidComponent impExpAndroidComp |
-      impExpAndroidComp.isImplicitlyExported()
-    |
       impExpAndroidComp.getLocation() = location and
       element = impExpAndroidComp.toString() and
       value = ""
