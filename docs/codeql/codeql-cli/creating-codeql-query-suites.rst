@@ -240,7 +240,7 @@ the reusable instructions to the current suite. For example::
 This will filter the queries in ``queries/cpp/custom`` to only include those that match the reusable conditions.
 
 You can also create a suite definition using ``reusable-instructions.yml`` on
-queries in a different codeQL pack. If the ``.qls`` file is in the same CodeQL pack as
+queries in a different CodeQL pack. If the ``.qls`` file is in the same CodeQL pack as
 the queries, you can add a ``from`` field immediately after the ``apply``
 instruction::
 

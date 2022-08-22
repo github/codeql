@@ -91,7 +91,7 @@ Alternatively, you can download ``codeql.zip``, which contains the CLI for all s
       iv. Ensure the check-box labeled **Open "safe" files after downloading**.
           is unchecked.
 
-1. Extract the zip archive
+2. Extract the zip archive
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 For Linux, Windows, and macOS users (version 10.14 "Mojave", and earlier)

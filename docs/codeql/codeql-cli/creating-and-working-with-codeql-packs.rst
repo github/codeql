@@ -41,7 +41,7 @@ If you already have a ``qlpack.yml`` file, you can edit it manually to convert i
 
 #. Edit the ``name`` property so that it matches the format ``<scope>/<name>``, where ``<scope>`` is the name of the GitHub organization or user account that you will publish to.
 #. In the ``qlpack.yml`` file, include a ``version`` property with a semver identifier, as well as an optional ``dependencies`` block.
-#. Migrate the list of dependencies in ``libraryPathDependencies`` to the ``dependencies`` block. Specify the version range for each dependency. If the range is unimportant, or you are unsure of compatibility, you can specify ``"*"``, which indicates that any version is acceptable, with will default to the latest version when ``codeql pack install`` is run.
+#. Migrate the list of dependencies in ``libraryPathDependencies`` to the ``dependencies`` block. Specify the version range for each dependency. If the range is unimportant, or you are unsure of compatibility, you can specify ``"*"``, which indicates that any version is acceptable and will default to the latest version when ``codeql pack install`` is run.
 
 For more information about the properties, see ":ref:`About CodeQL packs <about-codeql-packs>`."
 
