@@ -494,3 +494,92 @@ void regression_with_phi_flow(int clean1) {
     x = source();
   }
 }
+
+// These tests exercise the pruning done by the `jumpStep` relation
+// that removes:
+// a write if there's a post-dominating write, and
+// a read if there's a dominating write.
+namespace pruned_jump_step_relation {
+
+  int global1;
+  int global2;
+  int global3;
+  int global4;
+
+  void flow_via_local_ssa_1()
+  {
+    global1 = source();
+    sink(global1); // $ ast,ir
+    global1 = 0;
+  }
+
+  void flow_via_local_ssa_2(bool b)
+  {
+    global2 = source();
+    sink(global2); // $ ast,ir
+    if (b) { global2 = 0; }
+  }
+
+  void flow_via_local_ssa_3(bool b)
+  {
+    if(b) { global3 = source(); }
+    sink(global3); // $ ast,ir
+    global3 = 0;
+  }
+
+  void flow_via_local_ssa_4(bool b1, bool b2)
+  {
+    if(b1) { global4 = source(); }
+    sink(global4); // $ ast,ir
+    if (b2) { global4 = 0; }
+  }
+
+  int another_global1;
+  int another_global2;
+  int another_global3;
+  int another_global4;
+
+  void useX1() {
+    sink(another_global1); // $ MISSING: ast,ir
+  }
+
+  void read_hidden_behind_call_1()
+  {
+    another_global1 = source();
+    useX1();
+    another_global1 = 0;
+  }
+
+  void useX2() {
+    sink(another_global2); // $ ir MISSING: ast
+  }
+
+  void read_hidden_behind_call_2(bool b)
+  {
+    another_global2 = source();
+    useX2();
+    if(b) { another_global2 = 0; }
+  }
+
+  void useX3() {
+    sink(another_global3); // $ MISSING: ast,ir
+  }
+
+  void read_hidden_behind_call_3(bool b)
+  {
+    if(b) { another_global3 = source(); }
+    useX3();
+    another_global3 = 0;
+  }
+
+  void useX4() {
+    sink(another_global4); // $ ir MISSING: ast
+  }
+
+  void read_hidden_behind_call_4(bool b1, bool b2)
+  {
+    if(b1) { another_global4 = source(); }
+    useX4();
+    if(b2) { another_global4 = 0; }
+  }
+}
