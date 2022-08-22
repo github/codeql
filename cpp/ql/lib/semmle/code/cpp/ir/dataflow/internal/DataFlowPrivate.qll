@@ -267,8 +267,6 @@ private predicate instrStrictlyDominates(Instruction i1, Instruction i2) {
   i1.getBlock().strictlyDominates(i2.getBlock())
   or
   exists(IRBlock block, int index1, int index2 |
-    block = i1.getBlock() and
-    block = i2.getBlock() and
     block.getInstruction(index1) = i1 and
     block.getInstruction(index2) = i2 and
     index1 < index2
@@ -282,7 +280,6 @@ predicate jumpInto(GlobalOrNamespaceVariable v, Node n1, Node n2) {
     // Only do a jump step if there is no write that is guaranteed to
     // overwrite the global variable.
     not exists(StoreInstruction anotherStore |
-      store != anotherStore and
       writesToGlobal(anotherStore, v) and
       instrStrictlyPostDominates(anotherStore, store)
     )
