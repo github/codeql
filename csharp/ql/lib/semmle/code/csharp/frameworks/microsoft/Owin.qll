@@ -125,7 +125,7 @@ class MicrosoftOwinIOwinRequestClass extends Class {
   }
 
   /** DEPRECATED: Alias for getUriProperty */
-  deprecated Property getURIProperty() { result = getUriProperty() }
+  deprecated Property getURIProperty() { result = this.getUriProperty() }
 }
 
 /** A `Microsoft.Owin.*String` class. */

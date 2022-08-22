@@ -99,7 +99,7 @@ class FormsElement extends XmlElement {
   }
 
   /** DEPRECATED: Alias for getRequireSsl */
-  deprecated string getRequireSSL() { result = getRequireSsl() }
+  deprecated string getRequireSSL() { result = this.getRequireSsl() }
 
   /**
    * Holds if `requireSSL` value is true.
@@ -107,7 +107,7 @@ class FormsElement extends XmlElement {
   predicate isRequireSsl() { this.getRequireSsl() = "true" }
 
   /** DEPRECATED: Alias for isRequireSsl */
-  deprecated predicate isRequireSSL() { isRequireSsl() }
+  deprecated predicate isRequireSSL() { this.isRequireSsl() }
 }
 
 /** A `<httpCookies>` tag in an ASP.NET configuration file. */
@@ -134,7 +134,7 @@ class HttpCookiesElement extends XmlElement {
   }
 
   /** DEPRECATED: Alias for getRequireSsl */
-  deprecated string getRequireSSL() { result = getRequireSsl() }
+  deprecated string getRequireSSL() { result = this.getRequireSsl() }
 
   /**
    * Holds if there is any chance that `requireSSL` is set to `true` either globally or for Forms.
@@ -147,5 +147,5 @@ class HttpCookiesElement extends XmlElement {
   }
 
   /** DEPRECATED: Alias for isRequireSsl */
-  deprecated predicate isRequireSSL() { isRequireSsl() }
+  deprecated predicate isRequireSSL() { this.isRequireSsl() }
 }

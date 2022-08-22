@@ -104,7 +104,7 @@ class DomMethodCallExpr extends MethodCallExpr {
   }
 
   /** DEPRECATED: Alias for interpretsArgumentsAsUrl */
-  deprecated predicate interpretsArgumentsAsURL(Expr arg) { interpretsArgumentsAsUrl(arg) }
+  deprecated predicate interpretsArgumentsAsURL(Expr arg) { this.interpretsArgumentsAsUrl(arg) }
 
   /** DEPRECATED: Alias for interpretsArgumentsAsHtml */
   deprecated predicate interpretsArgumentsAsHTML(Expr arg) { this.interpretsArgumentsAsHtml(arg) }

@@ -135,7 +135,7 @@ class XmlFile extends XmlParent, File {
   XmlDtd getADtd() { xmlDTDs(result, _, _, _, this) }
 
   /** DEPRECATED: Alias for getADtd */
-  deprecated XmlDTD getADTD() { result = getADtd() }
+  deprecated XmlDTD getADTD() { result = this.getADtd() }
 }
 
 /** DEPRECATED: Alias for XmlFile */
@@ -291,7 +291,7 @@ class XmlNamespace extends XmlLocatable, @xmlnamespace {
   string getUri() { xmlNs(this, _, result, _) }
 
   /** DEPRECATED: Alias for getUri */
-  deprecated string getURI() { result = getUri() }
+  deprecated string getURI() { result = this.getUri() }
 
   /** Holds if this namespace has no prefix. */
   predicate isDefault() { this.getPrefix() = "" }

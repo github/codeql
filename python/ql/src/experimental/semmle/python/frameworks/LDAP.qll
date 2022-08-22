@@ -146,7 +146,7 @@ private module Ldap {
       }
 
       /** DEPRECATED: Alias for useSsl */
-      deprecated override predicate useSSL() { useSsl() }
+      deprecated override predicate useSSL() { this.useSsl() }
     }
 
     /**
@@ -241,7 +241,7 @@ private module Ldap {
       }
 
       /** DEPRECATED: Alias for useSsl */
-      deprecated override predicate useSSL() { useSsl() }
+      deprecated override predicate useSSL() { this.useSsl() }
     }
 
     /**
