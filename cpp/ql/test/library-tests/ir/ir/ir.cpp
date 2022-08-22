@@ -1846,4 +1846,9 @@ namespace block_assignment {
     }
 }
 
+void magicvars() {
+    const char *pf = __PRETTY_FUNCTION__;
+    const char *strfunc = __func__;
+}
+
 // semmle-extractor-options: -std=c++17 --clang
