@@ -55,6 +55,10 @@ taintFlow
 | test.js:182:12:182:19 | source() | test.js:182:12:182:19 | source() |
 | test.js:187:31:187:31 | x | test.js:189:10:189:10 | x |
 | test.js:203:32:203:39 | source() | test.js:203:32:203:39 | source() |
+| test.js:208:34:208:41 | source() | test.js:208:34:208:41 | source() |
+| test.js:217:45:217:52 | source() | test.js:217:45:217:52 | source() |
+| test.js:219:39:219:46 | source() | test.js:219:39:219:46 | source() |
+| test.js:220:50:220:57 | source() | test.js:220:50:220:57 | source() |
 isSink
 | test.js:54:18:54:25 | source() | test-sink |
 | test.js:55:22:55:29 | source() | test-sink |
@@ -113,6 +117,11 @@ isSink
 | test.js:182:12:182:19 | source() | test-sink |
 | test.js:196:12:196:29 | this._wrappedField | test-sink |
 | test.js:203:32:203:39 | source() | test-sink |
+| test.js:208:34:208:41 | source() | test-sink |
+| test.js:216:52:216:52 | 0 | test-sink |
+| test.js:217:45:217:52 | source() | test-sink |
+| test.js:219:39:219:46 | source() | test-sink |
+| test.js:220:50:220:57 | source() | test-sink |
 syntaxErrors
 | Member[foo |
 | Member[foo] .Member[bar] |

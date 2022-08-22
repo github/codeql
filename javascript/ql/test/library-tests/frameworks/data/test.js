@@ -203,3 +203,21 @@ class OtherClass {
     this.accessorAroundField = source(); // NOT OK
   }
 }
+
+function typeVars() {
+  testlib.typevar.a.b().c.mySink(source()); // NOT OK
+
+  testlib.typevar.mySink(source()); // OK - does not match sub path
+  testlib.typevar.a.mySink(source()); // OK - does not match sub path
+  testlib.typevar.a.b.mySink(source()); // OK - does not match sub path
+  testlib.typevar.a.b.c.mySink(source()); // OK - does not match sub path
+  testlib.typevar.a.b(1).c.mySink(source()); // OK - does not match sub path
+
+  testlib.typevar.a.b().c.a.b().c.mySink(source(), 0); // OK
+  testlib.typevar.a.b().c.a.b().c.mySink(0, source()); // NOT OK
+
+  testlib.typevar.left.x.right.mySink(source()); // NOT OK
+  testlib.typevar.left.left.x.right.right.mySink(source()); // NOT OK
+  testlib.typevar.left.x.right.right.mySink(source()); // OK - mismatched left and right
+  testlib.typevar.left.left.x.right.mySink(source()); // OK - mismatched left and right
+}
