@@ -286,7 +286,7 @@ class AndroidActionXmlElement extends XmlElement {
 /**
  * A `<category>` element in an Android manifest file.
  */
-class AndroidCategoryXmlElement extends XMLElement {
+class AndroidCategoryXmlElement extends XmlElement {
   AndroidCategoryXmlElement() {
     this.getFile() instanceof AndroidManifestXmlFile and this.getName() = "category"
   }
@@ -295,7 +295,7 @@ class AndroidCategoryXmlElement extends XMLElement {
    * Gets the name of this category.
    */
   string getCategoryName() {
-    exists(XMLAttribute attr |
+    exists(XmlAttribute attr |
       attr = this.getAnAttribute() and
       attr.getNamespace().getPrefix() = "android" and
       attr.getName() = "name"
