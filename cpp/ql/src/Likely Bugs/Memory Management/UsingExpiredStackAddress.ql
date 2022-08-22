@@ -106,6 +106,26 @@ predicate inheritanceConversionTypes(
   toType = convert.getResultType()
 }
 
+private signature class ConversionInstruction extends UnaryInstruction;
+
+module Conversion<ConversionInstruction I> {
+  signature predicate hasTypes(I instr, Type fromType, Type toType);
+
+  module Using<hasTypes/3 project> {
+    pragma[nomagic]
+    predicate hasOperandAndTypes(I convert, Instruction unary, Type fromType, Type toType) {
+      project(convert, fromType, toType) and
+      unary = convert.getUnary()
+    }
+  }
+}
+
+pragma[nomagic]
+predicate hasObjectAndField(FieldAddressInstruction fai, Instruction object, Field f) {
+  fai.getObjectAddress() = object and
+  fai.getField() = f
+}
+
 /** Gets the HashCons value of an address computed by `instr`, if any. */
 TGlobalAddress globalAddress(Instruction instr) {
   result = TGlobalVariable(instr.(VariableAddressInstruction).getAstVariable())
@@ -117,25 +137,27 @@ TGlobalAddress globalAddress(Instruction instr) {
     result = TLoad(globalAddress(load.getSourceAddress()))
   )
   or
-  exists(ConvertInstruction convert, Type fromType, Type toType | instr = convert |
-    uncheckedConversionTypes(convert, fromType, toType) and
-    result = TConversion("unchecked", globalAddress(convert.getUnary()), fromType, toType)
+  exists(Type fromType, Type toType, Instruction unary |
+    Conversion<ConvertInstruction>::Using<uncheckedConversionTypes/3>::hasOperandAndTypes(instr,
+      unary, fromType, toType) and
+    result = TConversion("unchecked", globalAddress(unary), fromType, toType)
   )
   or
-  exists(CheckedConvertOrNullInstruction convert, Type fromType, Type toType | instr = convert |
-    checkedConversionTypes(convert, fromType, toType) and
-    result = TConversion("checked", globalAddress(convert.getUnary()), fromType, toType)
+  exists(Type fromType, Type toType, Instruction unary |
+    Conversion<CheckedConvertOrNullInstruction>::Using<checkedConversionTypes/3>::hasOperandAndTypes(instr,
+      unary, fromType, toType) and
+    result = TConversion("checked", globalAddress(unary), fromType, toType)
   )
   or
-  exists(InheritanceConversionInstruction convert, Type fromType, Type toType | instr = convert |
-    inheritanceConversionTypes(convert, fromType, toType) and
-    result = TConversion("inheritance", globalAddress(convert.getUnary()), fromType, toType)
+  exists(Type fromType, Type toType, Instruction unary |
+    Conversion<InheritanceConversionInstruction>::Using<inheritanceConversionTypes/3>::hasOperandAndTypes(instr,
+      unary, fromType, toType) and
+    result = TConversion("inheritance", globalAddress(unary), fromType, toType)
   )
   or
-  exists(FieldAddressInstruction fai | instr = fai |
-    result =
-      TFieldAddress(globalAddress(pragma[only_bind_into](fai.getObjectAddress())),
-        pragma[only_bind_out](fai.getField()))
+  exists(FieldAddressInstruction fai, Instruction object, Field f | instr = fai |
+    hasObjectAndField(fai, object, f) and
+    result = TFieldAddress(globalAddress(object), f)
   )
   or
   result = globalAddress(instr.(PointerOffsetInstruction).getLeft())

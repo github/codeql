@@ -908,7 +908,7 @@ dot_syntax_base_ignored_exprs(  //dir=expr
 
 dynamic_type_exprs(  //dir=expr
   unique int id: @dynamic_type_expr,
-  int base_expr: @expr ref
+  int base: @expr ref
 );
 
 editor_placeholder_exprs(  //dir=expr
@@ -1048,13 +1048,14 @@ lazy_initializer_exprs(  //dir=expr
 @lookup_expr =
   @dynamic_lookup_expr
 | @member_ref_expr
+| @method_ref_expr
 | @subscript_expr
 ;
 
 #keyset[id]
 lookup_exprs(  //dir=expr
   int id: @lookup_expr ref,
-  int base_expr: @expr ref
+  int base: @expr ref
 );
 
 #keyset[id]
@@ -1613,7 +1614,7 @@ prefix_unary_exprs(  //dir=expr
 #keyset[id]
 self_apply_exprs(  //dir=expr
   int id: @self_apply_expr ref,
-  int base_expr: @expr ref
+  int base: @expr ref
 );
 
 array_exprs(  //dir=expr
@@ -1857,6 +1858,10 @@ member_ref_expr_has_direct_to_implementation_semantics(  //dir=expr
 #keyset[id]
 member_ref_expr_has_ordinary_semantics(  //dir=expr
   int id: @member_ref_expr ref
+);
+
+method_ref_exprs(  //dir=expr
+  unique int id: @method_ref_expr
 );
 
 subscript_exprs(  //dir=expr

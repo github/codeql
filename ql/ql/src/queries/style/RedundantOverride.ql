@@ -9,27 +9,7 @@
  */
 
 import ql
-
-private predicate redundantOverride(ClassPredicate pred, ClassPredicate sup) {
-  pred.overrides(sup) and
-  // Can be made more precise, but rules out overrides needed for disambiguation
-  count(pred.getDeclaringType().getASuperType()) <= 1 and
-  exists(MemberCall mc |
-    mc.getBase() instanceof Super and
-    mc.getTarget() = sup and
-    not exists(pred.getQLDoc())
-  |
-    pred.getBody() =
-      any(ComparisonFormula comp |
-        comp.getOperator() = "=" and
-        comp.getAnOperand() instanceof ResultAccess and
-        comp.getAnOperand() = mc and
-        pred.getReturnType() = sup.getReturnType()
-      )
-    or
-    pred.getBody() = mc
-  )
-}
+import codeql_ql.style.RedundantOverrideQuery
 
 from ClassPredicate pred, ClassPredicate sup
 where redundantOverride(pred, sup)

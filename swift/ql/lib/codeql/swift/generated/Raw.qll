@@ -509,7 +509,7 @@ module Raw {
   class DynamicTypeExpr extends @dynamic_type_expr, Expr {
     override string toString() { result = "DynamicTypeExpr" }
 
-    Expr getBaseExpr() { dynamic_type_exprs(this, result) }
+    Expr getBase() { dynamic_type_exprs(this, result) }
   }
 
   class EditorPlaceholderExpr extends @editor_placeholder_expr, Expr {
@@ -657,7 +657,7 @@ module Raw {
   class LiteralExpr extends @literal_expr, Expr { }
 
   class LookupExpr extends @lookup_expr, Expr {
-    Expr getBaseExpr() { lookup_exprs(this, result) }
+    Expr getBase() { lookup_exprs(this, result) }
 
     Decl getMember() { lookup_expr_members(this, result) }
   }
@@ -1256,7 +1256,7 @@ module Raw {
   }
 
   class SelfApplyExpr extends @self_apply_expr, ApplyExpr {
-    Expr getBaseExpr() { self_apply_exprs(this, result) }
+    Expr getBase() { self_apply_exprs(this, result) }
   }
 
   class StringToPointerExpr extends @string_to_pointer_expr, ImplicitConversionExpr {

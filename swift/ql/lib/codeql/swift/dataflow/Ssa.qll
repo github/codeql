@@ -86,11 +86,11 @@ module Ssa {
     predicate isInoutDef(ExprCfgNode argument) {
       // TODO: This should probably not be only `ExprCfgNode`s.
       exists(
-        ApplyExpr c, BasicBlock bb, int blockIndex, int argIndex, VarDecl v, InOutExpr argExpr // TODO: use CFG node for assignment expr
+        ApplyExpr c, BasicBlock bb, int blockIndex, VarDecl v, InOutExpr argExpr // TODO: use CFG node for assignment expr
       |
         this.definesAt(v, bb, blockIndex) and
         bb.getNode(blockIndex).getNode().asAstNode() = c and
-        c.getArgument(argIndex).getExpr() = argExpr and
+        [c.getAnArgument().getExpr(), c.getQualifier()] = argExpr and
         argExpr = argument.getNode().asAstNode() and
         argExpr.getSubExpr() = v.getAnAccess() // TODO: fields?
       )
