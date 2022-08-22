@@ -40,6 +40,20 @@ class Sinks extends ModelInput::SinkModelCsv {
         "testlib;;Member[ParamDecoratorSink].DecoratedParameter;test-sink",
         "testlib;;AnyMember.Member[memberSink].Argument[0];test-sink",
         "testlib;;Member[overloadedSink].WithStringArgument[0=danger].Argument[1];test-sink",
+        "testlib;;Member[typevar].TypeVar[ABC].Member[mySink].Argument[0];test-sink",
+        "testlib;;Member[typevar].TypeVar[ABC].TypeVar[ABC].Member[mySink].Argument[1];test-sink",
+        "testlib;;Member[typevar].TypeVar[LeftRight].Member[mySink].Argument[0];test-sink",
+      ]
+  }
+}
+
+class TypeVars extends ModelInput::TypeVariableModelCsv {
+  override predicate row(string row) {
+    row =
+      [
+        "ABC;Member[a].Member[b].WithArity[0].ReturnValue.Member[c]", //
+        "LeftRight;Member[left].TypeVar[LeftRight].Member[right]", //
+        "LeftRight;Member[x]",
       ]
   }
 }

@@ -155,6 +155,22 @@ module ModelInput {
      */
     abstract predicate row(string row);
   }
+
+  /**
+   * A unit class for adding additional type variable model rows.
+   */
+  class TypeVariableModelCsv extends Unit {
+    /**
+     * Holds if `row` specifies a path through a type variable.
+     *
+     * A row of form,
+     * ```
+     * name;path
+     * ```
+     * means `path` can be substituted for a token `TypeVar[name]`.
+     */
+    abstract predicate row(string row);
+  }
 }
 
 private import ModelInput
@@ -181,6 +197,8 @@ private predicate sinkModel(string row) { any(SinkModelCsv s).row(inversePad(row
 private predicate summaryModel(string row) { any(SummaryModelCsv s).row(inversePad(row)) }
 
 private predicate typeModel(string row) { any(TypeModelCsv s).row(inversePad(row)) }
+
+private predicate typeVariableModel(string row) { any(TypeVariableModelCsv s).row(inversePad(row)) }
 
 /** Holds if a source model exists for the given parameters. */
 predicate sourceModel(string package, string type, string path, string kind) {
@@ -219,7 +237,7 @@ private predicate summaryModel(
   )
 }
 
-/** Holds if an type model exists for the given parameters. */
+/** Holds if a type model exists for the given parameters. */
 private predicate typeModel(
   string package1, string type1, string package2, string type2, string path
 ) {
@@ -230,6 +248,15 @@ private predicate typeModel(
     row.splitAt(";", 2) = package2 and
     row.splitAt(";", 3) = type2 and
     row.splitAt(";", 4) = path
+  )
+}
+
+/** Holds if a type variable model exists for the given parameters. */
+private predicate typeVariableModel(string name, string path) {
+  exists(string row |
+    typeVariableModel(row) and
+    row.splitAt(";", 0) = name and
+    row.splitAt(";", 1) = path
   )
 }
 
@@ -290,6 +317,8 @@ private class AccessPathRange extends AccessPath::Range {
       summaryModel(package, _, _, this, _, _) or
       summaryModel(package, _, _, _, this, _)
     )
+    or
+    typeVariableModel(_, this)
   }
 }
 
@@ -361,6 +390,60 @@ private API::Node getNodeFromPath(string package, string type, AccessPath path, 
   // Similar to the other recursive case, but where the path may have stepped through one or more call-site filters
   result =
     getSuccessorFromInvoke(getInvocationFromPath(package, type, path, n - 1), path.getToken(n - 1))
+  or
+  // Apply a subpath
+  result =
+    getNodeFromSubPath(getNodeFromPath(package, type, path, n - 1), getSubPathAt(path, n - 1))
+}
+
+/**
+ * Gets a subpath for the `TypeVar` token found at the `n`th token of `path`.
+ */
+pragma[nomagic]
+private AccessPath getSubPathAt(AccessPath path, int n) {
+  exists(string typeVarName |
+    path.getToken(n).getAnArgument("TypeVar") = typeVarName and
+    typeVariableModel(typeVarName, result)
+  )
+}
+
+/**
+ * Gets a node that is found by evaluating the first `n` tokens of `subPath` starting at `base`.
+ */
+pragma[nomagic]
+private API::Node getNodeFromSubPath(API::Node base, AccessPath subPath, int n) {
+  exists(AccessPath path, int k |
+    base = [getNodeFromPath(_, _, path, k), getNodeFromSubPath(_, path, k)] and
+    subPath = getSubPathAt(path, k) and
+    result = base and
+    n = 0
+  )
+  or
+  result = getSuccessorFromNode(getNodeFromSubPath(base, subPath, n - 1), subPath.getToken(n - 1))
+  or
+  result =
+    getSuccessorFromInvoke(getInvocationFromSubPath(base, subPath, n - 1), subPath.getToken(n - 1))
+  or
+  result =
+    getNodeFromSubPath(getNodeFromSubPath(base, subPath, n - 1), getSubPathAt(subPath, n - 1))
+}
+
+/**
+ * Gets a call site that is found by evaluating the first `n` tokens of `subPath` starting at `base`.
+ */
+private Specific::InvokeNode getInvocationFromSubPath(API::Node base, AccessPath subPath, int n) {
+  result = Specific::getAnInvocationOf(getNodeFromSubPath(base, subPath, n))
+  or
+  result = getInvocationFromSubPath(base, subPath, n - 1) and
+  invocationMatchesCallSiteFilter(result, subPath.getToken(n - 1))
+}
+
+/**
+ * Gets a node that is found by evaluating `subPath` starting at `base`.
+ */
+pragma[nomagic]
+private API::Node getNodeFromSubPath(API::Node base, AccessPath subPath) {
+  result = getNodeFromSubPath(base, subPath, subPath.getNumToken())
 }
 
 /** Gets the node identified by the given `(package, type, path)` tuple. */
@@ -390,7 +473,7 @@ Specific::InvokeNode getInvocationFromPath(string package, string type, AccessPa
  */
 bindingset[name]
 predicate isValidTokenNameInIdentifyingAccessPath(string name) {
-  name = ["Argument", "Parameter", "ReturnValue", "WithArity"]
+  name = ["Argument", "Parameter", "ReturnValue", "WithArity", "TypeVar"]
   or
   Specific::isExtraValidTokenNameInIdentifyingAccessPath(name)
 }
@@ -417,6 +500,9 @@ predicate isValidTokenArgumentInIdentifyingAccessPath(string name, string argume
   or
   name = "WithArity" and
   argument.regexpMatch("\\d+(\\.\\.(\\d+)?)?")
+  or
+  name = "TypeVar" and
+  exists(argument)
   or
   Specific::isExtraValidTokenArgumentInIdentifyingAccessPath(name, argument)
 }
@@ -489,6 +575,8 @@ module ModelOutput {
       any(SummaryModelCsv csv).row(row) and kind = "summary" and expectedArity = 6
       or
       any(TypeModelCsv csv).row(row) and kind = "type" and expectedArity = 5
+      or
+      any(TypeVariableModelCsv csv).row(row) and kind = "type-variable" and expectedArity = 2
     |
       actualArity = count(row.indexOf(";")) + 1 and
       actualArity != expectedArity and
@@ -499,7 +587,7 @@ module ModelOutput {
     or
     // Check names and arguments of access path tokens
     exists(AccessPath path, AccessPathToken token |
-      isRelevantFullPath(_, _, path) and
+      (isRelevantFullPath(_, _, path) or typeVariableModel(_, path)) and
       token = path.getToken(_)
     |
       not isValidTokenNameInIdentifyingAccessPath(token.getName()) and
