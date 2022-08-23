@@ -3570,6 +3570,11 @@ open class KotlinFileExtractor(
                 logger.errorElement("Unexpected: property reference with non simple type. ${kPropertyType.classFqName?.asString()}", propertyReferenceExpr)
                 return
             }
+            val kPropertyClass = kPropertyType.classOrNull
+            if (kPropertyClass == null) {
+                logger.errorElement("Cannot find class for kPropertyType. ${kPropertyType.classFqName?.asString()}", propertyReferenceExpr)
+                return
+            }
 
             val locId = tw.getLocation(propertyReferenceExpr)
 
@@ -3583,7 +3588,7 @@ open class KotlinFileExtractor(
             )
 
             val currentDeclaration = declarationStack.peek()
-            val prefix = if (kPropertyType.classOrNull!!.owner.name.asString().startsWith("KMutableProperty")) "Mutable" else ""
+            val prefix = if (kPropertyClass.owner.name.asString().startsWith("KMutableProperty")) "Mutable" else ""
             val baseClass = pluginContext.referenceClass(FqName("kotlin.jvm.internal.${prefix}PropertyReference${kPropertyType.arguments.size - 1}"))?.owner?.typeWith()
                 ?: pluginContext.irBuiltIns.anyType
 
