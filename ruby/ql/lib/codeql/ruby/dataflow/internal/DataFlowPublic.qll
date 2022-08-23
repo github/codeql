@@ -118,12 +118,7 @@ class CallNode extends LocalSourceNode, ExprNode {
             .asExpr()
             .(CfgNodes::ExprNodes::HashLiteralCfgNode)
             .getAKeyValuePair() and
-      exprNode(pair.getKey())
-          .getALocalSource()
-          .asExpr()
-          .getExpr()
-          .getConstantValue()
-          .isStringlikeValue(name) and
+      exprNode(pair.getKey()).getALocalSource().asExpr().getConstantValue().isStringlikeValue(name) and
       result.asExpr() = pair.getValue()
     )
   }

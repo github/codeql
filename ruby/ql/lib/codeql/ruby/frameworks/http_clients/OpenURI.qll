@@ -86,11 +86,7 @@ class OpenUriKernelOpenRequest extends HTTP::Client::Request::Range, DataFlow::C
       optionsNode.flowsTo(this.getArgument(any(int i | i > 0))) and
       p = optionsNode.asExpr().(CfgNodes::ExprNodes::HashLiteralCfgNode).getAKeyValuePair() and
       key.asExpr() = p.getKey() and
-      key.getALocalSource()
-          .asExpr()
-          .getExpr()
-          .getConstantValue()
-          .isStringlikeValue("ssl_verify_mode") and
+      key.getALocalSource().asExpr().getConstantValue().isStringlikeValue("ssl_verify_mode") and
       result.asExpr() = p.getValue()
     )
   }

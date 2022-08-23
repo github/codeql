@@ -65,7 +65,7 @@ class FaradayHttpRequest extends HTTP::Client::Request::Range, DataFlow::CallNod
       exists(CfgNodes::ExprNodes::PairCfgNode p, DataFlow::Node key |
         p = sslValue.asExpr().(CfgNodes::ExprNodes::HashLiteralCfgNode).getAKeyValuePair() and
         key.asExpr() = p.getKey() and
-        key.getALocalSource().asExpr().getExpr().getConstantValue().isStringlikeValue(argName) and
+        key.getALocalSource().asExpr().getConstantValue().isStringlikeValue(argName) and
         result.asExpr() = p.getValue()
       )
     )

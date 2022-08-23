@@ -87,7 +87,6 @@ class ExconHttpRequest extends HTTP::Client::Request::Range, DataFlow::CallNode 
           .getArgument(0)
           .getALocalSource()
           .asExpr()
-          .getExpr()
           .getConstantValue()
           .isStringlikeValue("ssl_verify_peer") and
       disablingNode = disableCall.getArgument(1) and
