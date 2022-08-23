@@ -19,6 +19,17 @@ class CallableBase extends Synth::TCallable, Element {
 
   final int getNumberOfParams() { result = count(getAParam()) }
 
+  ParamDecl getImmediateSelfParam() {
+    result =
+      Synth::convertParamDeclFromRaw(Synth::convertCallableToRaw(this)
+            .(Raw::Callable)
+            .getSelfParam())
+  }
+
+  final ParamDecl getSelfParam() { result = getImmediateSelfParam().resolve() }
+
+  final predicate hasSelfParam() { exists(getSelfParam()) }
+
   BraceStmt getImmediateBody() {
     result =
       Synth::convertBraceStmtFromRaw(Synth::convertCallableToRaw(this).(Raw::Callable).getBody())
