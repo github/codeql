@@ -1,25 +1,8 @@
-| test.kt:16:53:16:69 | // $ hasTaintFlow | Missing result:hasTaintFlow= |
-| test.kt:17:53:17:69 | // $ hasTaintFlow | Missing result:hasTaintFlow= |
-| test.kt:20:53:20:69 | // $ hasTaintFlow | Missing result:hasTaintFlow= |
-| test.kt:21:53:21:69 | // $ hasTaintFlow | Missing result:hasTaintFlow= |
-| test.kt:23:53:23:69 | // $ hasTaintFlow | Missing result:hasTaintFlow= |
-| test.kt:26:53:26:71 | // $ hasTaintFlow=a | Missing result:hasTaintFlow=a |
-| test.kt:27:53:27:71 | // $ hasTaintFlow=a | Missing result:hasTaintFlow=a |
-| test.kt:30:57:30:75 | // $ hasTaintFlow=b | Missing result:hasTaintFlow=b |
-| test.kt:31:57:31:75 | // $ hasTaintFlow=c | Missing result:hasTaintFlow=c |
-| test.kt:34:53:34:71 | // $ hasTaintFlow=d | Missing result:hasTaintFlow=d |
-| test.kt:36:53:36:71 | // $ hasTaintFlow=d | Missing result:hasTaintFlow=d |
-| test.kt:39:53:39:71 | // $ hasTaintFlow=e | Missing result:hasTaintFlow=e |
-| test.kt:40:53:40:71 | // $ hasTaintFlow=e | Missing result:hasTaintFlow=e |
-| test.kt:44:53:44:71 | // $ hasTaintFlow=a | Missing result:hasTaintFlow=a |
-| test.kt:45:53:45:71 | // $ hasTaintFlow=a | Missing result:hasTaintFlow=a |
-| test.kt:47:53:47:71 | // $ hasTaintFlow=a | Missing result:hasTaintFlow=a |
-| test.kt:51:53:51:71 | // $ hasTaintFlow=f | Missing result:hasTaintFlow=f |
-| test.kt:52:53:52:71 | // $ hasTaintFlow=f | Missing result:hasTaintFlow=f |
-| test.kt:56:53:56:71 | // $ hasTaintFlow=g | Missing result:hasTaintFlow=g |
-| test.kt:57:53:57:71 | // $ hasTaintFlow=g | Missing result:hasTaintFlow=g |
-| test.kt:61:53:61:71 | // $ hasTaintFlow=h | Missing result:hasTaintFlow=h |
-| test.kt:63:53:63:71 | // $ hasTaintFlow=h | Missing result:hasTaintFlow=h |
+| test.kt:28:16:28:21 | getSecond(...) | Unexpected result: hasTaintFlow=a |
+| test.kt:35:16:35:27 | component1(...) | Unexpected result: hasTaintFlow=d |
+| test.kt:41:17:41:22 | getSecond(...) | Unexpected result: hasTaintFlow=e |
+| test.kt:53:17:53:24 | getDuration(...) | Unexpected result: hasTaintFlow=f |
+| test.kt:58:18:58:29 | component2(...) | Unexpected result: hasTaintFlow=g |
 | test.kt:66:53:66:71 | // $ hasTaintFlow=i | Missing result:hasTaintFlow=i |
 | test.kt:67:53:67:71 | // $ hasTaintFlow=i | Missing result:hasTaintFlow=i |
 | test.kt:68:53:68:71 | // $ hasTaintFlow=i | Missing result:hasTaintFlow=i |
