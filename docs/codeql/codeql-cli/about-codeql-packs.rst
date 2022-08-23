@@ -141,7 +141,7 @@ The following properties are supported in ``qlpack.yml`` files.
         upgrades: .
 
      - Core language packs only
-     - The path to a directory within the pack that contains database upgrade scripts, defined relative to the pack directory. Database upgrades are used internally to ensure a databasae created with a different version of the CodeQL CLI is compatible with the current version.
+     - The path to a directory within the pack that contains database upgrade scripts, defined relative to the pack directory. Database upgrades are used internally to ensure a database created with a different version of the CodeQL CLI is compatible with the current version.
    * - ``authors``
      - .. code-block:: yaml
 
@@ -275,7 +275,7 @@ Each of the languages in the CodeQL repository has four main CodeQL packs:
 Core library pack
 ~~~~~~~~~~~~~~~~~
 
-Here is an example ``qlpack.yml`` file for `C/C++ analysis libraries
+Here is an example ``qlpack.yml`` file for the `C/C++ analysis libraries
 <https://github.com/github/codeql/blob/main/cpp/ql/lib/qlpack.yml>`__
 core language pack:
 
@@ -290,7 +290,7 @@ core language pack:
 Some extra notes on the following properties:
 
 - ``library``: Indicates that this is a library pack with no executable queries. It is only meant to be used as a dependency for other packs.
-- ``dbscheme`` and ``upgrades``: Properties internal to the CodeQL CLI and should only be defined in the core QL pack for a language.
+- ``dbscheme`` and ``upgrades``: These properties are internal to the CodeQL CLI and should only be defined in the core QL pack for a language.
 
 
 Core query pack
