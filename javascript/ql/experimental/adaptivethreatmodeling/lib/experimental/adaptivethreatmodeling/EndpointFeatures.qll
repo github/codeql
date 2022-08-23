@@ -515,31 +515,34 @@ private module SyntacticUtilities {
    */
   string getSimpleAccessPath(DataFlow::Node node) {
     exists(Expr e | e = node.asExpr().getUnderlyingValue() |
-      if e instanceof SuperAccess
-      then result = "super"
-      else
-        if e instanceof ThisAccess
-        then result = "this"
-        else
-          if e instanceof VarAccess
-          then result = e.(VarAccess).getName()
-          else
-            if e instanceof Import
-            then result = "import(" + getSimpleImportPath(e) + ")"
-            else
-              if e instanceof AwaitExpr
-              then result = "(await " + getSimpleAccessPath(e.(AwaitExpr).getOperand().flow()) + ")"
-              else
-                if node instanceof DataFlow::PropRead
-                then
-                  result =
-                    getSimpleAccessPath(node.(DataFlow::PropRead).getBase()) + "." +
-                      getPropertyNameOrUnknown(node)
-                else
-                  if node instanceof DataFlow::InvokeNode
-                  then
-                    result = getSimpleAccessPath(node.(DataFlow::InvokeNode).getCalleeNode()) + "()"
-                  else result = getUnknownSymbol()
+      if
+        e instanceof SuperAccess or
+        e instanceof ThisAccess or
+        e instanceof VarAccess or
+        e instanceof Import or
+        e instanceof AwaitExpr or
+        node instanceof DataFlow::PropRead or
+        node instanceof DataFlow::InvokeNode
+      then
+        e instanceof SuperAccess and result = "super"
+        or
+        e instanceof ThisAccess and result = "this"
+        or
+        e instanceof VarAccess and result = e.(VarAccess).getName()
+        or
+        e instanceof Import and result = "import(" + getSimpleImportPath(e) + ")"
+        or
+        e instanceof AwaitExpr and
+        result = "(await " + getSimpleAccessPath(e.(AwaitExpr).getOperand().flow()) + ")"
+        or
+        node instanceof DataFlow::PropRead and
+        result =
+          getSimpleAccessPath(node.(DataFlow::PropRead).getBase()) + "." +
+            getPropertyNameOrUnknown(node)
+        or
+        (node instanceof DataFlow::InvokeNode and not e instanceof Import) and
+        result = getSimpleAccessPath(node.(DataFlow::InvokeNode).getCalleeNode()) + "()"
+      else result = getUnknownSymbol()
     )
   }
 
