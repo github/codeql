@@ -891,7 +891,7 @@ module PrefixConstruction<isCandidateSig/1 isCandidate> {
     exists(RegExpRoot root |
       state =
         max(State s, Location l |
-          s = stateInPumpableRegexp() and
+          s = stateInRelevantRegexp() and
           isStartState(s) and
           getRoot(s.getRepr()) = root and
           l = s.getRepr().getLocation()
@@ -963,9 +963,9 @@ module PrefixConstruction<isCandidateSig/1 isCandidate> {
       min(string c | delta(prev, any(InputSymbol symbol | c = intersect(Any(), symbol)), next))
   }
 
-  /** Gets a state within a regular expression that has a pumpable state. */
+  /** Gets a state within a regular expression that contains a candidate state. */
   pragma[noinline]
-  State stateInPumpableRegexp() {
+  State stateInRelevantRegexp() {
     exists(State s | isCandidate(s) | getRoot(s.getRepr()) = getRoot(result.getRepr()))
   }
 }
@@ -1041,7 +1041,7 @@ module ReDoSPruning<isCandidateSig/2 isCandidate> {
      */
     pragma[noinline]
     private predicate isLikelyRejectable(State s) {
-      s = Prefix::stateInPumpableRegexp() and
+      s = Prefix::stateInRelevantRegexp() and
       (
         // exists a reject edge with some char.
         hasRejectEdge(s)
@@ -1057,7 +1057,7 @@ module ReDoSPruning<isCandidateSig/2 isCandidate> {
      * Holds if `s` is not an accept state, and there is no epsilon transition to an accept state.
      */
     predicate isRejectState(State s) {
-      s = Prefix::stateInPumpableRegexp() and not epsilonSucc*(s) = Accept(_)
+      s = Prefix::stateInRelevantRegexp() and not epsilonSucc*(s) = Accept(_)
     }
 
     /**
@@ -1065,7 +1065,7 @@ module ReDoSPruning<isCandidateSig/2 isCandidate> {
      */
     pragma[noopt]
     predicate hasEdgeToLikelyRejectable(State s) {
-      s = Prefix::stateInPumpableRegexp() and
+      s = Prefix::stateInRelevantRegexp() and
       // all edges (at least one) with some char leads to another state that is rejectable.
       // the `next` states might not share a common suffix, which can cause FPs.
       exists(string char | char = hasEdgeToLikelyRejectableHelper(s) |
@@ -1081,7 +1081,7 @@ module ReDoSPruning<isCandidateSig/2 isCandidate> {
      */
     pragma[noinline]
     private string hasEdgeToLikelyRejectableHelper(State s) {
-      s = Prefix::stateInPumpableRegexp() and
+      s = Prefix::stateInRelevantRegexp() and
       not hasRejectEdge(s) and
       not isRejectState(s) and
       deltaClosedChar(s, result, _)
@@ -1093,8 +1093,8 @@ module ReDoSPruning<isCandidateSig/2 isCandidate> {
      * `prev` to `next` that the character symbol `char`.
      */
     predicate deltaClosedChar(State prev, string char, State next) {
-      prev = Prefix::stateInPumpableRegexp() and
-      next = Prefix::stateInPumpableRegexp() and
+      prev = Prefix::stateInRelevantRegexp() and
+      next = Prefix::stateInRelevantRegexp() and
       deltaClosed(prev, getAnInputSymbolMatchingRelevant(char), next)
     }
 
