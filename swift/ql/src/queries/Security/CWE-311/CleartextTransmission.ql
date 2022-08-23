@@ -70,6 +70,11 @@ class CleartextTransmissionConfig extends TaintTracking::Configuration {
   }
 
   override predicate isSink(DataFlow::Node node) { node.asExpr() instanceof Transmitted }
+
+  override predicate isSanitizerIn(DataFlow::Node node) {
+    // make sources barriers so that we only report the closest instance
+    isSource(node)
+  }
 }
 
 from CleartextTransmissionConfig config, DataFlow::PathNode sourceNode, DataFlow::PathNode sinkNode
