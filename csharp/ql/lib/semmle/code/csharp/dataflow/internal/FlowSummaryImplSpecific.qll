@@ -201,6 +201,8 @@ private string getContentSpecificCsv(Content c) {
 string getComponentSpecificCsv(SummaryComponent sc) {
   exists(Content c | sc = TContentSummaryComponent(c) and result = getContentSpecificCsv(c))
   or
+  exists(Content c | sc = TWithoutContentSummaryComponent(c) and result = "WithoutElement")
+  or
   exists(ReturnKind rk |
     sc = TReturnSummaryComponent(rk) and
     result = "ReturnValue[" + rk + "]" and
