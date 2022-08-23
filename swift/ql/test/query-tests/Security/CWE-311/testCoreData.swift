@@ -7,10 +7,10 @@ class NSObject
 
 class NSManagedObject : NSObject
 {
-	func value(forKey: String) -> Any? { return "" }
-	func setValue(_: Any?, forKey: String) {}
-	func primitiveValue(forKey: String) -> Any? { return "" }
-	func setPrimitiveValue(_: Any?, forKey: String) {}
+	func value(forKey key: String) -> Any? { return "" }
+	func setValue(_ value: Any?, forKey key: String) {}
+	func primitiveValue(forKey key: String) -> Any? { return "" }
+	func setPrimitiveValue(_ value: Any?, forKey key: String) {}
 }
 
 class MyManagedObject : NSManagedObject
@@ -85,12 +85,12 @@ func test3(obj : NSManagedObject, x : String) {
 	obj.setValue(z.password, forKey: "myKey") // BAD
 }
 
-func test4(obj : NSManagedObject, pwd : String) {
+func test4(obj : NSManagedObject, passwd : String) {
 	// sanitizers...
 
-	var x = pwd;
-	var y = pwd;
-	var z = pwd;
+	var x = passwd;
+	var y = passwd;
+	var z = passwd;
 
 	obj.setValue(x, forKey: "myKey") // BAD
 	obj.setValue(y, forKey: "myKey") // BAD
