@@ -2,6 +2,7 @@
  * Provides classes and predicates to detect comparing a parameter to a hard-coded credential.
  */
 
+import java
 import HardcodedCredentials
 
 /**

@@ -2,6 +2,7 @@
  * Provides a predicate identifying assignments of harcoded values to password fields.
  */
 
+import java
 import HardcodedCredentials
 
 /**
