@@ -25,4 +25,4 @@ where
   forall(int op | op = lhs.(BitwiseAndExpr).getAnOperand().getValue().toInt() | op < 0) and
   // exception for cases involving macros
   not e.isAffectedByMacro()
-select e, "Potential unsafe sign check of a bitwise operation."
+select e, "Potentially unsafe sign check of a bitwise operation."

@@ -53,4 +53,4 @@ where
   not e instanceof EqualityTest and
   e.getRightOperand().getIntValue() = 0 and
   not acceptableSignCheck(b)
-select e, "Potential unsafe sign check of a bitwise operation."
+select e, "Potentially unsafe sign check of a bitwise operation."
