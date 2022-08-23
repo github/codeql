@@ -594,7 +594,7 @@ open class KotlinFileExtractor(
         }
     }
 
-    data class FieldResult(val id: Label<DbField>, val name: String)
+    private data class FieldResult(val id: Label<DbField>, val name: String)
 
     private fun useCompanionObjectClassInstance(c: IrClass): FieldResult? {
         val parent = c.parent
@@ -3273,29 +3273,43 @@ open class KotlinFileExtractor(
         }
     }
 
+    data class ReceiverInfo(val receiver: IrExpression, val type: IrType, val field: Label<DbField>, val indexOffset: Int)
+
+    private fun makeReceiverInfo(callableReferenceExpr: IrCallableReference<out IrSymbol>, receiver: IrExpression?, indexOffset: Int): ReceiverInfo? {
+        if (receiver == null) {
+            return null
+        }
+        val type = receiver.type
+        if (type == null) {
+            logger.warnElement("Receiver has no type", callableReferenceExpr)
+            return null
+        }
+        val field: Label<DbField> = tw.getFreshIdLabel()
+        return ReceiverInfo(receiver, type, field, indexOffset)
+    }
+
+    /**
+     * This is used when extracting callable references,
+     * i.e. `::someCallable` or `::someReceiver::someCallable`.
+     */
     private open inner class CallableReferenceHelper(protected val callableReferenceExpr: IrCallableReference<out IrSymbol>, locId: Label<DbLocation>, ids: GeneratedClassLabels)
         : GeneratedClassHelper(locId, ids) {
 
-        private val dispatchReceiver = callableReferenceExpr.dispatchReceiver
-        private val extensionReceiver = callableReferenceExpr.extensionReceiver
-        private val receiverType = callableReferenceExpr.dispatchReceiver?.type ?: callableReferenceExpr.extensionReceiver?.type
-
-        private val dispatchFieldId: Label<DbField>? = if (dispatchReceiver != null) tw.getFreshIdLabel() else null
-        private val extensionFieldId: Label<DbField>? = if (extensionReceiver != null) tw.getFreshIdLabel() else null
-        private val extensionParameterIndex: Int = if (dispatchReceiver != null) 1 else 0
+        // Only one of the receivers can be non-null, but we defensively handle the case when both are null anyway
+        private val dispatchReceiverInfo = makeReceiverInfo(callableReferenceExpr, callableReferenceExpr.dispatchReceiver, 0)
+        private val extensionReceiverInfo = makeReceiverInfo(callableReferenceExpr, callableReferenceExpr.extensionReceiver, if (dispatchReceiverInfo == null) 0 else 1)
 
         fun extractReceiverField() {
             val firstAssignmentStmtIdx = 1
 
-            // only one of the following can be non-null:
-            if (dispatchReceiver != null) {
-                extractField(dispatchFieldId!!, "<dispatchReceiver>", receiverType!!, classId, locId, DescriptorVisibilities.PRIVATE, callableReferenceExpr, isExternalDeclaration = false, isFinal = true)
-                extractParameterToFieldAssignmentInConstructor("<dispatchReceiver>", dispatchReceiver.type, dispatchFieldId, 0, firstAssignmentStmtIdx)
+            if (dispatchReceiverInfo != null) {
+                extractField(dispatchReceiverInfo.field, "<dispatchReceiver>", dispatchReceiverInfo.type, classId, locId, DescriptorVisibilities.PRIVATE, callableReferenceExpr, isExternalDeclaration = false, isFinal = true)
+                extractParameterToFieldAssignmentInConstructor("<dispatchReceiver>", dispatchReceiverInfo.type, dispatchReceiverInfo.field, 0 + dispatchReceiverInfo.indexOffset, firstAssignmentStmtIdx + dispatchReceiverInfo.indexOffset)
             }
 
-            if (extensionReceiver != null) {
-                extractField(extensionFieldId!!, "<extensionReceiver>", receiverType!!, classId, locId, DescriptorVisibilities.PRIVATE, callableReferenceExpr, isExternalDeclaration = false, isFinal = true)
-                extractParameterToFieldAssignmentInConstructor( "<extensionReceiver>", extensionReceiver.type, extensionFieldId, 0 + extensionParameterIndex, firstAssignmentStmtIdx + extensionParameterIndex)
+            if (extensionReceiverInfo != null) {
+                extractField(extensionReceiverInfo.field, "<extensionReceiver>", extensionReceiverInfo.type, classId, locId, DescriptorVisibilities.PRIVATE, callableReferenceExpr, isExternalDeclaration = false, isFinal = true)
+                extractParameterToFieldAssignmentInConstructor( "<extensionReceiver>", extensionReceiverInfo.type, extensionReceiverInfo.field, 0 + extensionReceiverInfo.indexOffset, firstAssignmentStmtIdx + extensionReceiverInfo.indexOffset)
             }
         }
 
@@ -3376,8 +3390,8 @@ open class KotlinFileExtractor(
             val fieldId = useField(target.owner)
             tw.writeVariableBinding(accessId, fieldId)
 
-            if (dispatchReceiver != null) {
-                writeFieldAccessInFunctionBody(receiverType!!, -1, dispatchFieldId!!, accessId, labels.methodId, stmt)
+            if (dispatchReceiverInfo != null) {
+                writeFieldAccessInFunctionBody(dispatchReceiverInfo.type, -1, dispatchReceiverInfo.field, accessId, labels.methodId, stmt)
             }
         }
 
@@ -3436,8 +3450,8 @@ open class KotlinFileExtractor(
             tw.writeCallableBinding(callId.cast<DbCaller>(), callableId)
 
             val useFirstArgAsDispatch: Boolean
-            if (dispatchReceiver != null) {
-                writeFieldAccessInFunctionBody(receiverType!!, dispatchReceiverIdx, dispatchFieldId!!, callId, labels.methodId, retId)
+            if (dispatchReceiverInfo != null) {
+                writeFieldAccessInFunctionBody(dispatchReceiverInfo.type, dispatchReceiverIdx, dispatchReceiverInfo.field, callId, labels.methodId, retId)
 
                 useFirstArgAsDispatch = false
             } else {
@@ -3456,8 +3470,8 @@ open class KotlinFileExtractor(
             }
 
             val extensionIdxOffset: Int
-            if (extensionReceiver != null) {
-                writeFieldAccessInFunctionBody(receiverType!!, 0, extensionFieldId!!, callId, labels.methodId, retId)
+            if (extensionReceiverInfo != null) {
+                writeFieldAccessInFunctionBody(extensionReceiverInfo.type, 0, extensionReceiverInfo.field, callId, labels.methodId, retId)
                 extensionIdxOffset = 1
             } else {
                 extensionIdxOffset = 0
@@ -3487,12 +3501,12 @@ open class KotlinFileExtractor(
             idCtorRef: Label<out DbClassinstancexpr>,
             enclosingStmt: Label<out DbStmt>
         ) {
-            if (dispatchReceiver != null) {
-                extractExpressionExpr(dispatchReceiver, callable, idCtorRef, 0, enclosingStmt)
+            if (dispatchReceiverInfo != null) {
+                extractExpressionExpr(dispatchReceiverInfo.receiver, callable, idCtorRef, 0 + dispatchReceiverInfo.indexOffset, enclosingStmt)
             }
 
-            if (extensionReceiver != null) {
-                extractExpressionExpr(extensionReceiver, callable, idCtorRef, 0 + extensionParameterIndex, enclosingStmt)
+            if (extensionReceiverInfo != null) {
+                extractExpressionExpr(extensionReceiverInfo.receiver, callable, idCtorRef, 0 + extensionReceiverInfo.indexOffset, enclosingStmt)
             }
         }
     }
