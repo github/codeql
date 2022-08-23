@@ -193,6 +193,7 @@ StructDecl:
 
 Decl:
   _extends: AstNode
+  module: ModuleDecl
 
 Expr:
   _extends: AstNode
@@ -310,7 +311,7 @@ IfConfigClause:
 ImportDecl:
   _extends: Decl
   is_exported: predicate
-  module: ModuleDecl
+  imported_module: ModuleDecl
   declarations: ValueDecl*
 
 MissingMemberDecl:

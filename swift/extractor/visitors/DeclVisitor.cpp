@@ -22,56 +22,50 @@ std::string constructName(const swift::DeclName& declName) {
 }
 }  // namespace
 
-std::variant<codeql::ConcreteFuncDecl, codeql::ConcreteFuncDeclsTrap>
-DeclVisitor::translateFuncDecl(const swift::FuncDecl& decl) {
-  auto id = dispatcher_.assignNewLabel(decl, mangledName(decl));
-  if (!dispatcher_.shouldEmitDeclBody(decl)) {
-    return ConcreteFuncDeclsTrap{id};
+std::optional<codeql::ConcreteFuncDecl> DeclVisitor::translateFuncDecl(
+    const swift::FuncDecl& decl) {
+  if (auto entry = createNamedEntry(decl)) {
+    fillAbstractFunctionDecl(decl, *entry);
+    return entry;
   }
-  ConcreteFuncDecl entry{id};
-  fillAbstractFunctionDecl(decl, entry);
-  return entry;
+  return std::nullopt;
 }
 
-std::variant<codeql::ConstructorDecl, codeql::ConstructorDeclsTrap>
-DeclVisitor::translateConstructorDecl(const swift::ConstructorDecl& decl) {
-  auto id = dispatcher_.assignNewLabel(decl, mangledName(decl));
-  if (!dispatcher_.shouldEmitDeclBody(decl)) {
-    return ConstructorDeclsTrap{id};
+std::optional<codeql::ConstructorDecl> DeclVisitor::translateConstructorDecl(
+    const swift::ConstructorDecl& decl) {
+  if (auto entry = createNamedEntry(decl)) {
+    fillAbstractFunctionDecl(decl, *entry);
+    return entry;
   }
-  ConstructorDecl entry{id};
-  fillAbstractFunctionDecl(decl, entry);
-  return entry;
+  return std::nullopt;
 }
 
-std::variant<codeql::DestructorDecl, codeql::DestructorDeclsTrap>
-DeclVisitor::translateDestructorDecl(const swift::DestructorDecl& decl) {
-  auto id = dispatcher_.assignNewLabel(decl, mangledName(decl));
-  if (!dispatcher_.shouldEmitDeclBody(decl)) {
-    return DestructorDeclsTrap{id};
+std::optional<codeql::DestructorDecl> DeclVisitor::translateDestructorDecl(
+    const swift::DestructorDecl& decl) {
+  if (auto entry = createNamedEntry(decl)) {
+    fillAbstractFunctionDecl(decl, *entry);
+    return entry;
   }
-  DestructorDecl entry{id};
-  fillAbstractFunctionDecl(decl, entry);
-  return entry;
+  return std::nullopt;
 }
 
 codeql::PrefixOperatorDecl DeclVisitor::translatePrefixOperatorDecl(
     const swift::PrefixOperatorDecl& decl) {
-  PrefixOperatorDecl entry{dispatcher_.assignNewLabel(decl)};
+  auto entry = createEntry(decl);
   fillOperatorDecl(decl, entry);
   return entry;
 }
 
 codeql::PostfixOperatorDecl DeclVisitor::translatePostfixOperatorDecl(
     const swift::PostfixOperatorDecl& decl) {
-  PostfixOperatorDecl entry{dispatcher_.assignNewLabel(decl)};
+  auto entry = createEntry(decl);
   fillOperatorDecl(decl, entry);
   return entry;
 }
 
 codeql::InfixOperatorDecl DeclVisitor::translateInfixOperatorDecl(
     const swift::InfixOperatorDecl& decl) {
-  InfixOperatorDecl entry{dispatcher_.assignNewLabel(decl)};
+  auto entry = createEntry(decl);
   entry.precedence_group = dispatcher_.fetchOptionalLabel(decl.getPrecedenceGroup());
   fillOperatorDecl(decl, entry);
   return entry;
@@ -79,7 +73,7 @@ codeql::InfixOperatorDecl DeclVisitor::translateInfixOperatorDecl(
 
 codeql::PrecedenceGroupDecl DeclVisitor::translatePrecedenceGroupDecl(
     const swift::PrecedenceGroupDecl& decl) {
-  PrecedenceGroupDecl entry{dispatcher_.assignNewLabel(decl)};
+  auto entry = createEntry(decl);
   return entry;
 }
 
@@ -95,7 +89,7 @@ std::optional<codeql::ParamDecl> DeclVisitor::translateParamDecl(const swift::Pa
 
 codeql::TopLevelCodeDecl DeclVisitor::translateTopLevelCodeDecl(
     const swift::TopLevelCodeDecl& decl) {
-  TopLevelCodeDecl entry{dispatcher_.assignNewLabel(decl)};
+  auto entry = createEntry(decl);
   assert(decl.getBody() && "Expect top level code to have body");
   entry.body = dispatcher_.fetchLabel(decl.getBody());
   return entry;
@@ -103,7 +97,7 @@ codeql::TopLevelCodeDecl DeclVisitor::translateTopLevelCodeDecl(
 
 codeql::PatternBindingDecl DeclVisitor::translatePatternBindingDecl(
     const swift::PatternBindingDecl& decl) {
-  PatternBindingDecl entry{dispatcher_.assignNewLabel(decl)};
+  auto entry = createEntry(decl);
   for (unsigned i = 0; i < decl.getNumPatternEntries(); ++i) {
     auto pattern = decl.getPattern(i);
     assert(pattern && "Expect pattern binding decl to have all patterns");
@@ -118,7 +112,7 @@ std::optional<codeql::ConcreteVarDecl> DeclVisitor::translateVarDecl(const swift
   // We do not deduplicate variables from non-swift (PCM, clang modules) modules as the mangler
   // crashes sometimes
   if (decl.getDeclContext()->isLocalContext() || decl.getModuleContext()->isNonSwiftModule()) {
-    entry.emplace(dispatcher_.assignNewLabel(decl));
+    entry = createEntry(decl);
   } else {
     entry = createNamedEntry(decl);
     if (!entry) {
@@ -130,123 +124,106 @@ std::optional<codeql::ConcreteVarDecl> DeclVisitor::translateVarDecl(const swift
   return entry;
 }
 
-std::variant<codeql::StructDecl, codeql::StructDeclsTrap> DeclVisitor::translateStructDecl(
-    const swift::StructDecl& decl) {
-  auto id = dispatcher_.assignNewLabel(decl, mangledName(decl));
-  if (!dispatcher_.shouldEmitDeclBody(decl)) {
-    return StructDeclsTrap{id};
+std::optional<codeql::StructDecl> DeclVisitor::translateStructDecl(const swift::StructDecl& decl) {
+  if (auto entry = createNamedEntry(decl)) {
+    fillNominalTypeDecl(decl, *entry);
+    return entry;
   }
-  StructDecl entry{id};
-  fillNominalTypeDecl(decl, entry);
-  return entry;
+  return std::nullopt;
 }
 
-std::variant<codeql::ClassDecl, codeql::ClassDeclsTrap> DeclVisitor::translateClassDecl(
-    const swift::ClassDecl& decl) {
-  auto id = dispatcher_.assignNewLabel(decl, mangledName(decl));
-  if (!dispatcher_.shouldEmitDeclBody(decl)) {
-    return ClassDeclsTrap{id};
+std::optional<codeql::ClassDecl> DeclVisitor::translateClassDecl(const swift::ClassDecl& decl) {
+  if (auto entry = createNamedEntry(decl)) {
+    fillNominalTypeDecl(decl, *entry);
+    return entry;
   }
-  ClassDecl entry{id};
-  fillNominalTypeDecl(decl, entry);
-  return entry;
+  return std::nullopt;
 }
 
-std::variant<codeql::EnumDecl, codeql::EnumDeclsTrap> DeclVisitor::translateEnumDecl(
-    const swift::EnumDecl& decl) {
-  auto id = dispatcher_.assignNewLabel(decl, mangledName(decl));
-  if (!dispatcher_.shouldEmitDeclBody(decl)) {
-    return EnumDeclsTrap{id};
+std::optional<codeql::EnumDecl> DeclVisitor::translateEnumDecl(const swift::EnumDecl& decl) {
+  if (auto entry = createNamedEntry(decl)) {
+    fillNominalTypeDecl(decl, *entry);
+    return entry;
   }
-  EnumDecl entry{id};
-  fillNominalTypeDecl(decl, entry);
-  return entry;
+  return std::nullopt;
 }
 
-std::variant<codeql::ProtocolDecl, codeql::ProtocolDeclsTrap> DeclVisitor::translateProtocolDecl(
+std::optional<codeql::ProtocolDecl> DeclVisitor::translateProtocolDecl(
     const swift::ProtocolDecl& decl) {
-  auto id = dispatcher_.assignNewLabel(decl, mangledName(decl));
-  if (!dispatcher_.shouldEmitDeclBody(decl)) {
-    return ProtocolDeclsTrap{id};
+  if (auto entry = createNamedEntry(decl)) {
+    fillNominalTypeDecl(decl, *entry);
+    return entry;
   }
-  ProtocolDecl entry{id};
-  fillNominalTypeDecl(decl, entry);
-  return entry;
+  return std::nullopt;
 }
 
 codeql::EnumCaseDecl DeclVisitor::translateEnumCaseDecl(const swift::EnumCaseDecl& decl) {
-  EnumCaseDecl entry{dispatcher_.assignNewLabel(decl)};
+  auto entry = createEntry(decl);
   entry.elements = dispatcher_.fetchRepeatedLabels(decl.getElements());
   return entry;
 }
 
-std::variant<codeql::EnumElementDecl, codeql::EnumElementDeclsTrap>
-DeclVisitor::translateEnumElementDecl(const swift::EnumElementDecl& decl) {
-  auto id = dispatcher_.assignNewLabel(decl, mangledName(decl));
-  if (!dispatcher_.shouldEmitDeclBody(decl)) {
-    return EnumElementDeclsTrap{id, decl.getNameStr().str()};
+std::optional<codeql::EnumElementDecl> DeclVisitor::translateEnumElementDecl(
+    const swift::EnumElementDecl& decl) {
+  auto entry = createNamedEntry(decl);
+  if (!entry) {
+    return std::nullopt;
   }
-  EnumElementDecl entry{id};
-  entry.name = decl.getNameStr().str();
+  entry->name = decl.getNameStr().str();
   if (decl.hasParameterList()) {
-    entry.params = dispatcher_.fetchRepeatedLabels(*decl.getParameterList());
+    entry->params = dispatcher_.fetchRepeatedLabels(*decl.getParameterList());
   }
-  fillValueDecl(decl, entry);
+  fillValueDecl(decl, *entry);
   return entry;
 }
 
 codeql::GenericTypeParamDecl DeclVisitor::translateGenericTypeParamDecl(
     const swift::GenericTypeParamDecl& decl) {
   // TODO: deduplicate
-  GenericTypeParamDecl entry{dispatcher_.assignNewLabel(decl)};
+  auto entry = createEntry(decl);
   fillTypeDecl(decl, entry);
   return entry;
 }
 
-std::variant<codeql::AssociatedTypeDecl, codeql::AssociatedTypeDeclsTrap>
-DeclVisitor::translateAssociatedTypeDecl(const swift::AssociatedTypeDecl& decl) {
-  auto id = dispatcher_.assignNewLabel(decl, mangledName(decl));
-  if (!dispatcher_.shouldEmitDeclBody(decl)) {
-    return AssociatedTypeDeclsTrap{id};
+std::optional<codeql::AssociatedTypeDecl> DeclVisitor::translateAssociatedTypeDecl(
+    const swift::AssociatedTypeDecl& decl) {
+  if (auto entry = createNamedEntry(decl)) {
+    fillTypeDecl(decl, *entry);
+    return entry;
   }
-  AssociatedTypeDecl entry{id};
-  fillTypeDecl(decl, entry);
-  return entry;
+  return std::nullopt;
 }
 
-std::variant<codeql::TypeAliasDecl, codeql::TypeAliasDeclsTrap> DeclVisitor::translateTypeAliasDecl(
+std::optional<codeql::TypeAliasDecl> DeclVisitor::translateTypeAliasDecl(
     const swift::TypeAliasDecl& decl) {
-  auto id = dispatcher_.assignNewLabel(decl, mangledName(decl));
-  if (!dispatcher_.shouldEmitDeclBody(decl)) {
-    return TypeAliasDeclsTrap{id};
+  if (auto entry = createNamedEntry(decl)) {
+    fillTypeDecl(decl, *entry);
+    return entry;
   }
-  TypeAliasDecl entry{id};
-  fillTypeDecl(decl, entry);
-  return entry;
+  return std::nullopt;
 }
 
-std::variant<codeql::AccessorDecl, codeql::AccessorDeclsTrap> DeclVisitor::translateAccessorDecl(
+std::optional<codeql::AccessorDecl> DeclVisitor::translateAccessorDecl(
     const swift::AccessorDecl& decl) {
-  auto id = dispatcher_.assignNewLabel(decl, mangledName(decl));
-  if (!dispatcher_.shouldEmitDeclBody(decl)) {
-    return AccessorDeclsTrap{id};
+  auto entry = createNamedEntry(decl);
+  if (!entry) {
+    return std::nullopt;
   }
-  AccessorDecl entry{id};
   switch (decl.getAccessorKind()) {
     case swift::AccessorKind::Get:
-      entry.is_getter = true;
+      entry->is_getter = true;
       break;
     case swift::AccessorKind::Set:
-      entry.is_setter = true;
+      entry->is_setter = true;
       break;
     case swift::AccessorKind::WillSet:
-      entry.is_will_set = true;
+      entry->is_will_set = true;
       break;
     case swift::AccessorKind::DidSet:
-      entry.is_did_set = true;
+      entry->is_did_set = true;
       break;
   }
-  fillAbstractFunctionDecl(decl, entry);
+  fillAbstractFunctionDecl(decl, *entry);
   return entry;
 }
 
@@ -265,7 +242,7 @@ std::optional<codeql::SubscriptDecl> DeclVisitor::translateSubscriptDecl(
 }
 
 codeql::ExtensionDecl DeclVisitor::translateExtensionDecl(const swift::ExtensionDecl& decl) {
-  ExtensionDecl entry{dispatcher_.assignNewLabel(decl)};
+  auto entry = createEntry(decl);
   entry.extended_type_decl = dispatcher_.fetchLabel(decl.getExtendedNominal());
   fillGenericContext(decl, entry);
   fillIterableDeclContext(decl, entry);
@@ -273,9 +250,9 @@ codeql::ExtensionDecl DeclVisitor::translateExtensionDecl(const swift::Extension
 }
 
 codeql::ImportDecl DeclVisitor::translateImportDecl(const swift::ImportDecl& decl) {
-  auto entry = dispatcher_.createEntry(decl);
+  auto entry = createEntry(decl);
   entry.is_exported = decl.isExported();
-  entry.module = dispatcher_.fetchLabel(decl.getModule());
+  entry.imported_module = dispatcher_.fetchLabel(decl.getModule());
   entry.declarations = dispatcher_.fetchRepeatedLabels(decl.getDecls());
   return entry;
 }
@@ -389,7 +366,7 @@ void DeclVisitor::fillAbstractStorageDecl(const swift::AbstractStorageDecl& decl
 }
 
 codeql::IfConfigDecl DeclVisitor::translateIfConfigDecl(const swift::IfConfigDecl& decl) {
-  auto entry = dispatcher_.createEntry(decl);
+  auto entry = createEntry(decl);
   entry.clauses = dispatcher_.fetchRepeatedLabels(decl.getClauses());
   return entry;
 }

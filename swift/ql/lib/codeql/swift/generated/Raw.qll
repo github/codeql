@@ -263,7 +263,9 @@ module Raw {
     Expr getGuard() { case_label_item_guards(this, result) }
   }
 
-  class Decl extends @decl, AstNode { }
+  class Decl extends @decl, AstNode {
+    ModuleDecl getModule() { decls(this, result) }
+  }
 
   class ExistentialMetatypeType extends @existential_metatype_type, AnyMetatypeType {
     override string toString() { result = "ExistentialMetatypeType" }
@@ -605,7 +607,7 @@ module Raw {
 
     predicate isExported() { import_decl_is_exported(this) }
 
-    ModuleDecl getModule() { import_decls(this, result) }
+    ModuleDecl getImportedModule() { import_decls(this, result) }
 
     ValueDecl getDeclaration(int index) { import_decl_declarations(this, index, result) }
   }
