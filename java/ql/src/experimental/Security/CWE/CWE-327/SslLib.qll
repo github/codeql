@@ -97,6 +97,3 @@ class UnsafeTlsVersion extends StringLiteral {
 class SslServerSocket extends RefType {
   SslServerSocket() { hasQualifiedName("javax.net.ssl", "SSLServerSocket") }
 }
-
-/** DEPRECATED: Alias for SslServerSocket */
-deprecated class SSLServerSocket = SslServerSocket;
