@@ -19,12 +19,12 @@
 | bound-function.js:45:10:45:17 | source() | bound-function.js:45:6:45:18 | id3(source()) |
 | bound-function.js:49:12:49:19 | source() | bound-function.js:54:6:54:14 | source0() |
 | bound-function.js:49:12:49:19 | source() | bound-function.js:55:6:55:14 | source1() |
-| call-apply.js:25:14:25:21 | source() | call-apply.js:22:8:22:11 | arg1 |
-| call-apply.js:25:14:25:21 | source() | call-apply.js:27:6:27:32 | foo1.ca ... ce, "") |
-| call-apply.js:25:14:25:21 | source() | call-apply.js:30:6:30:35 | foo1.ap ... e, ""]) |
-| call-apply.js:25:14:25:21 | source() | call-apply.js:44:6:44:28 | foo1_ca ... e, ""]) |
-| call-apply.js:25:14:25:21 | source() | call-apply.js:66:10:66:21 | arguments[0] |
-| call-apply.js:85:17:85:24 | source() | call-apply.js:82:8:82:11 | this |
+| call-apply.js:27:14:27:21 | source() | call-apply.js:24:8:24:11 | arg1 |
+| call-apply.js:27:14:27:21 | source() | call-apply.js:29:6:29:32 | foo1.ca ... ce, "") |
+| call-apply.js:27:14:27:21 | source() | call-apply.js:32:6:32:35 | foo1.ap ... e, ""]) |
+| call-apply.js:27:14:27:21 | source() | call-apply.js:46:6:46:28 | foo1_ca ... e, ""]) |
+| call-apply.js:27:14:27:21 | source() | call-apply.js:68:10:68:21 | arguments[0] |
+| call-apply.js:87:17:87:24 | source() | call-apply.js:84:8:84:11 | this |
 | callbacks.js:4:6:4:13 | source() | callbacks.js:34:27:34:27 | x |
 | callbacks.js:4:6:4:13 | source() | callbacks.js:35:27:35:27 | x |
 | callbacks.js:5:6:5:13 | source() | callbacks.js:34:27:34:27 | x |

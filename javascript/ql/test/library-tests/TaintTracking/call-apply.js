@@ -1,3 +1,5 @@
+import * as foolib from 'foolib';
+
 function foo1(arg1, arg2) {
   return arg1;
 }
