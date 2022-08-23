@@ -613,7 +613,9 @@ module API {
     }
 
     pragma[nomagic]
-    private DataFlow::Node useNodeStep(DataFlow::LocalSourceNode mid, TypeTracker tmid, TypeTracker t) {
+    private DataFlow::Node useNodeStep(
+      DataFlow::LocalSourceNode mid, TypeTracker tmid, TypeTracker t
+    ) {
       exists(TypeBackTracker tb |
         result = mid.track(tmid, t) and
         pragma[only_bind_into](result) = useCandRev(pragma[only_bind_into](tb)) and
