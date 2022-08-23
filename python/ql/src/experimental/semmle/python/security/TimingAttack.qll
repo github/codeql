@@ -162,7 +162,7 @@ private string sensitiveheaders() {
   result =
     [
       "x-auth-token", "x-csrf-token", "http_x_csrf_token", "x-csrf-param", "x-csrf-header",
-      "http_x_csrf_token", "x-api-key", "authorization", "proxy-authorization"
+      "http_x_csrf_token", "x-api-key", "authorization", "proxy-authorization", "x-gitlab-token"
     ]
 }
 
