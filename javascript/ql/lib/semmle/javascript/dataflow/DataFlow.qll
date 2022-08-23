@@ -1037,7 +1037,7 @@ module DataFlow {
 
     ReflectiveParametersNode() { this = TReflectiveParametersNode(function) }
 
-    override string toString() { result = "the arguments object of " + function.describe() }
+    override string toString() { result = "'arguments' object of " + function.describe() }
 
     override predicate hasLocationInfo(
       string filepath, int startline, int startcolumn, int endline, int endcolumn
@@ -1048,7 +1048,7 @@ module DataFlow {
     override BasicBlock getBasicBlock() { result = function.getEntry().getBasicBlock() }
 
     /**
-     * Gets the function corresponding to this reflektive parameters node.
+     * Gets the function whose `arguments` object is represented by this node.
      */
     Function getFunction() { result = function }
 

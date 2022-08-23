@@ -24,7 +24,7 @@ nodes
 | lib/lib.js:28:13:28:13 | y |
 | lib/lib.js:32:32:32:40 | arguments |
 | lib/lib.js:32:32:32:40 | arguments |
-| lib/lib.js:35:1:37:1 | the arguments object of function usedWithArguments |
+| lib/lib.js:35:1:37:1 | 'arguments' object of function usedWithArguments |
 | lib/lib.js:35:28:35:31 | name |
 | lib/lib.js:36:13:36:16 | name |
 | lib/lib.js:36:13:36:16 | name |
@@ -244,9 +244,9 @@ edges
 | lib/lib.js:27:6:27:19 | y | lib/lib.js:28:13:28:13 | y |
 | lib/lib.js:27:6:27:19 | y | lib/lib.js:28:13:28:13 | y |
 | lib/lib.js:27:10:27:19 | id("safe") | lib/lib.js:27:6:27:19 | y |
-| lib/lib.js:32:32:32:40 | arguments | lib/lib.js:35:1:37:1 | the arguments object of function usedWithArguments |
-| lib/lib.js:32:32:32:40 | arguments | lib/lib.js:35:1:37:1 | the arguments object of function usedWithArguments |
-| lib/lib.js:35:1:37:1 | the arguments object of function usedWithArguments | lib/lib.js:35:28:35:31 | name |
+| lib/lib.js:32:32:32:40 | arguments | lib/lib.js:35:1:37:1 | 'arguments' object of function usedWithArguments |
+| lib/lib.js:32:32:32:40 | arguments | lib/lib.js:35:1:37:1 | 'arguments' object of function usedWithArguments |
+| lib/lib.js:35:1:37:1 | 'arguments' object of function usedWithArguments | lib/lib.js:35:28:35:31 | name |
 | lib/lib.js:35:28:35:31 | name | lib/lib.js:36:13:36:16 | name |
 | lib/lib.js:35:28:35:31 | name | lib/lib.js:36:13:36:16 | name |
 | lib/moduleLib/moduleLib.js:1:28:1:31 | name | lib/moduleLib/moduleLib.js:2:13:2:16 | name |

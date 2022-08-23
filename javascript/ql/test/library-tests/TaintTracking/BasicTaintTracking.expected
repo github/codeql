@@ -1,15 +1,15 @@
 typeInferenceMismatch
-| call-apply.js:27:14:27:21 | source() | call-apply.js:3:1:5:1 | the arguments object of function foo1 |
-| call-apply.js:27:14:27:21 | source() | call-apply.js:7:1:9:1 | the arguments object of function foo2 |
+| call-apply.js:27:14:27:21 | source() | call-apply.js:3:1:5:1 | 'arguments' object of function foo1 |
+| call-apply.js:27:14:27:21 | source() | call-apply.js:7:1:9:1 | 'arguments' object of function foo2 |
 | call-apply.js:27:14:27:21 | source() | call-apply.js:12:10:12:30 | reflective call |
 | call-apply.js:27:14:27:21 | source() | call-apply.js:16:10:16:40 | reflective call |
-| call-apply.js:27:14:27:21 | source() | call-apply.js:23:1:25:1 | the arguments object of function foo1_sink |
+| call-apply.js:27:14:27:21 | source() | call-apply.js:23:1:25:1 | 'arguments' object of function foo1_sink |
 | call-apply.js:27:14:27:21 | source() | call-apply.js:29:6:29:32 | reflective call |
 | call-apply.js:27:14:27:21 | source() | call-apply.js:32:6:32:35 | reflective call |
 | call-apply.js:27:14:27:21 | source() | call-apply.js:33:6:33:35 | reflective call |
-| call-apply.js:27:14:27:21 | source() | call-apply.js:64:3:66:3 | the arguments object of function sinkArguments1 |
-| call-apply.js:27:14:27:21 | source() | call-apply.js:67:3:69:3 | the arguments object of function sinkArguments0 |
-| call-apply.js:27:14:27:21 | source() | call-apply.js:71:3:74:3 | the arguments object of function fowardArguments |
+| call-apply.js:27:14:27:21 | source() | call-apply.js:64:3:66:3 | 'arguments' object of function sinkArguments1 |
+| call-apply.js:27:14:27:21 | source() | call-apply.js:67:3:69:3 | 'arguments' object of function sinkArguments0 |
+| call-apply.js:27:14:27:21 | source() | call-apply.js:71:3:74:3 | 'arguments' object of function fowardArguments |
 | destruct.js:20:7:20:14 | source() | destruct.js:13:14:13:19 | [a, b] |
 #select
 | access-path-sanitizer.js:2:18:2:25 | source() | access-path-sanitizer.js:4:8:4:12 | obj.x |
