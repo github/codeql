@@ -24,9 +24,6 @@ class PyOpenSslContextCreation extends ContextCreation, DataFlow::CallCfgNode {
   }
 }
 
-/** DEPRECATED: Alias for PyOpenSslContextCreation */
-deprecated class PyOpenSSLContextCreation = PyOpenSslContextCreation;
-
 class ConnectionCall extends ConnectionCreation, DataFlow::CallCfgNode {
   ConnectionCall() {
     this = API::moduleImport("OpenSSL").getMember("SSL").getMember("Connection").getACall()
@@ -58,9 +55,6 @@ class UnspecificPyOpenSslContextCreation extends PyOpenSslContextCreation, Unspe
   UnspecificPyOpenSslContextCreation() { library instanceof PyOpenSsl }
 }
 
-/** DEPRECATED: Alias for UnspecificPyOpenSslContextCreation */
-deprecated class UnspecificPyOpenSSLContextCreation = UnspecificPyOpenSslContextCreation;
-
 class PyOpenSsl extends TlsLibrary {
   PyOpenSsl() { this = "pyOpenSSL" }
 
@@ -89,6 +83,3 @@ class PyOpenSsl extends TlsLibrary {
     result instanceof UnspecificPyOpenSslContextCreation
   }
 }
-
-/** DEPRECATED: Alias for PyOpenSsl */
-deprecated class PyOpenSSL = PyOpenSsl;

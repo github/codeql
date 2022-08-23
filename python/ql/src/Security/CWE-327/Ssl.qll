@@ -27,9 +27,6 @@ class SslContextCreation extends ContextCreation, DataFlow::CallCfgNode {
   }
 }
 
-/** DEPRECATED: Alias for SslContextCreation */
-deprecated class SSLContextCreation = SslContextCreation;
-
 class SslDefaultContextCreation extends ContextCreation {
   SslDefaultContextCreation() {
     this = API::moduleImport("ssl").getMember("create_default_context").getACall()
@@ -39,9 +36,6 @@ class SslDefaultContextCreation extends ContextCreation {
   // see https://docs.python.org/3/library/ssl.html#context-creation
   override string getProtocol() { result = "TLS" }
 }
-
-/** DEPRECATED: Alias for SslDefaultContextCreation */
-deprecated class SSLDefaultContextCreation = SslDefaultContextCreation;
 
 /** Gets a reference to an `ssl.Context` instance. */
 API::Node sslContextInstance() {
@@ -178,9 +172,6 @@ class UnspecificSslContextCreation extends SslContextCreation, UnspecificContext
   }
 }
 
-/** DEPRECATED: Alias for UnspecificSslContextCreation */
-deprecated class UnspecificSSLContextCreation = UnspecificSslContextCreation;
-
 class UnspecificSslDefaultContextCreation extends SslDefaultContextCreation, ProtocolUnrestriction {
   override DataFlow::Node getContext() { result = this }
 
@@ -189,9 +180,6 @@ class UnspecificSslDefaultContextCreation extends SslDefaultContextCreation, Pro
     result in ["TLSv1", "TLSv1_1", "TLSv1_2", "TLSv1_3"]
   }
 }
-
-/** DEPRECATED: Alias for UnspecificSslDefaultContextCreation */
-deprecated class UnspecificSSLDefaultContextCreation = UnspecificSslDefaultContextCreation;
 
 class Ssl extends TlsLibrary {
   Ssl() { this = "ssl" }

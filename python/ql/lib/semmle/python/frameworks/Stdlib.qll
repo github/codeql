@@ -1845,7 +1845,7 @@ private module StdlibPrivate {
   deprecated module SimpleHTTPServer = SimpleHttpServer;
 
   // ---------------------------------------------------------------------------
-  // CgiHttpServer (Python 2 only)
+  // CGIHTTPServer (Python 2 only)
   // ---------------------------------------------------------------------------
   /** Gets a reference to the `CGIHTTPServer` module. */
   API::Node cgiHttpServer() { result = API::moduleImport("CGIHTTPServer") }
