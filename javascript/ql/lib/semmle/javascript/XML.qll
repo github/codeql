@@ -135,7 +135,7 @@ class XmlFile extends XmlParent, File {
   XmlDtd getADtd() { xmlDTDs(result, _, _, _, this) }
 
   /** DEPRECATED: Alias for getADtd */
-  deprecated XmlDTD getADTD() { result = this.getADtd() }
+  deprecated XmlDtd getADTD() { result = this.getADtd() }
 }
 
 /** DEPRECATED: Alias for XmlFile */
@@ -178,10 +178,7 @@ class XmlDtd extends XmlLocatable, @xmldtd {
 }
 
 /** DEPRECATED: Alias for XmlDtd */
-deprecated class XmlDTD = XmlDtd;
-
-/** DEPRECATED: Alias for XmlDtd */
-deprecated class XMLDTD = XmlDTD;
+deprecated class XMLDTD = XmlDtd;
 
 /**
  * An XML element in an XML file.
