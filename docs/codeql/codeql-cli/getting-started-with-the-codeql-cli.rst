@@ -230,10 +230,7 @@ see ":doc:`About CodeQL packs <about-codeql-packs>`."
      may need to be upgraded before you can analyze them.
 
    - For the most up to date CodeQL queries, check out the ``main`` branch.
-     This branch represents the very latest version of CodeQL's analysis. Even
-     databases created using the most recent version of the CLI may have to be
-     upgraded before you can analyze them. For more information, see
-     ":doc:`Upgrading CodeQL databases <upgrading-codeql-databases>`."
+     This branch represents the very latest version of CodeQL's analysis.
 
    - For the queries used in a particular LGTM Enterprise release, check out the
      branch tagged with the relevant release number. For example, the branch
@@ -243,7 +240,7 @@ see ":doc:`About CodeQL packs <about-codeql-packs>`."
      <https://help.semmle.com/lgtm-enterprise/admin/help/prepare-database-upload.html>`__
      in the LGTM admin help.
 
-4. Extract the zip archive
+1. Extract the zip archive
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 For Linux, Windows, and macOS users (version 10.14 "Mojave", and earlier)

@@ -80,17 +80,6 @@ You can also specify:
 - .. include:: ../reusables/threads-query-execution.rst
 
 
-.. pull-quote::
-
-   Upgrading databases
-
-   If the CodeQL queries you want to use are newer than the
-   extractor used to create the database, then you may see a message telling you
-   that your database needs to be upgraded when you run ``database analyze``.
-   You can quickly upgrade a database by running the ``database upgrade``
-   command. For more information, see ":doc:`Upgrading CodeQL databases
-   <upgrading-codeql-databases>`."
-
 For full details of all the options you can use when analyzing databases, see
 the `database analyze reference documentation <../manual/database-analyze>`__.
 
