@@ -29,4 +29,6 @@ where
   // Rules about catch clauses belong in an exception handling query
   not exceptionVariable(ve) and
   not enhancedForVariable(ve)
-select v, "The value assigned to local variable '" + v.getName() + "' is never used."
+select v,
+  "Unused local variable " + v.getName() +
+    ". The variable is never read or written to and should be removed."
