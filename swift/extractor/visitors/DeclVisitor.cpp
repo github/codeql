@@ -327,6 +327,8 @@ void DeclVisitor::fillAbstractFunctionDecl(const swift::AbstractFunctionDecl& de
   entry.name = !decl.hasName() ? "(unnamed function decl)" : constructName(decl.getName());
   entry.body = dispatcher_.fetchOptionalLabel(decl.getBody());
   entry.params = dispatcher_.fetchRepeatedLabels(*decl.getParameters());
+  auto self = const_cast<swift::ParamDecl* const>(decl.getImplicitSelfDecl());
+  entry.self_param = dispatcher_.fetchOptionalLabel(self);
   fillValueDecl(decl, entry);
   fillGenericContext(decl, entry);
 }
