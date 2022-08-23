@@ -27,23 +27,37 @@ jobs:
         shell: bash
         env:
           CODEQL: ${{ steps.find-codeql.outputs.codeql-path }}
-      - name: Cache queries
-        id: cache-queries
+      - name: Cache entire pack
+        id: cache-pack
         uses: actions/cache@v3
         with:
           path: ${{ runner.temp }}/pack
+          key: ${{ runner.os }}-pack-${{ hashFiles('ql/**/Cargo.lock') }}-${{ hashFiles('ql/**/*.rs') }}-${{ hashFiles('ql/**/*.ql*') }}-${{ hashFiles('ql/**/qlpack.yml') }}-${{ hashFiles('ql/ql/src/ql.dbscheme*') }}-${{ steps.get-codeql-version.outputs.version }}--${{ hashFiles('.github/workflows/ql-for-ql-build.yml') }}
+      - name: Cache queries
+        if: steps.cache-pack.outputs.cache-hit != 'true'
+        id: cache-queries
+        uses: actions/cache@v3
+        with:
+          path: ${{ runner.temp }}/queries
           key: queries-${{ hashFiles('ql/**/*.ql*') }}-${{ hashFiles('ql/**/qlpack.yml') }}-${{ hashFiles('ql/ql/src/ql.dbscheme*') }}-${{ steps.get-codeql-version.outputs.version }}--${{ hashFiles('.github/workflows/ql-for-ql-build.yml') }}
       - name: Build query pack
-        if: steps.cache-queries.outputs.cache-hit != 'true'
+        if: steps.cache-queries.outputs.cache-hit != 'true' && steps.cache-pack.outputs.cache-hit != 'true'
         run: |
           cd ql/ql/src
           "${CODEQL}" pack create -j 16
-          mv .codeql/pack/codeql/ql/0.0.0 ${{ runner.temp }}/pack
+          mv .codeql/pack/codeql/ql/0.0.0 ${{ runner.temp }}/queries
+        env:
+          CODEQL: ${{ steps.find-codeql.outputs.codeql-path }}
+      - name: Move cache queries to pack
+        if: steps.cache-pack.outputs.cache-hit != 'true'
+        run: |
+          cp -r ${{ runner.temp }}/queries ${{ runner.temp }}/pack
         env:
           CODEQL: ${{ steps.find-codeql.outputs.codeql-path }}
       
       ### Build the extractor ###
       - name: Cache entire extractor
+        if: steps.cache-pack.outputs.cache-hit != 'true'
         id: cache-extractor
         uses: actions/cache@v3
         with:
@@ -54,7 +68,7 @@ jobs:
             ql/target/release/ql-extractor.exe
           key: ${{ runner.os }}-extractor-${{ hashFiles('ql/**/Cargo.lock') }}-${{ hashFiles('ql/**/*.rs') }}
       - name: Cache cargo
-        if: steps.cache-extractor.outputs.cache-hit != 'true'
+        if: steps.cache-extractor.outputs.cache-hit != 'true' && steps.cache-pack.outputs.cache-hit != 'true'
         uses: actions/cache@v3
         with:
           path: |
@@ -63,23 +77,25 @@ jobs:
             ql/target
           key: ${{ runner.os }}-rust-cargo-${{ hashFiles('ql/**/Cargo.lock') }}
       - name: Check formatting
-        if: steps.cache-extractor.outputs.cache-hit != 'true'
+        if: steps.cache-extractor.outputs.cache-hit != 'true' && steps.cache-pack.outputs.cache-hit != 'true'
         run: cd ql; cargo fmt --all -- --check
       - name: Build
-        if: steps.cache-extractor.outputs.cache-hit != 'true'
+        if: steps.cache-extractor.outputs.cache-hit != 'true' && steps.cache-pack.outputs.cache-hit != 'true'
         run: cd ql; cargo build --verbose
       - name: Run tests
-        if: steps.cache-extractor.outputs.cache-hit != 'true'
+        if: steps.cache-extractor.outputs.cache-hit != 'true' && steps.cache-pack.outputs.cache-hit != 'true'
         run: cd ql; cargo test --verbose
       - name: Release build
-        if: steps.cache-extractor.outputs.cache-hit != 'true'
+        if: steps.cache-extractor.outputs.cache-hit != 'true' && steps.cache-pack.outputs.cache-hit != 'true'
         run: cd ql; cargo build --release
       - name: Generate dbscheme
-        if: steps.cache-extractor.outputs.cache-hit != 'true'
+        if: steps.cache-extractor.outputs.cache-hit != 'true' && steps.cache-pack.outputs.cache-hit != 'true'
         run: ql/target/release/ql-generator --dbscheme ql/ql/src/ql.dbscheme --library ql/ql/src/codeql_ql/ast/internal/TreeSitter.qll
 
       ### Package the queries and extractor ###
-      - run: |
+      - name: Package pack
+        if: steps.cache-pack.outputs.cache-hit != 'true'
+        run: |
           cp -r ql/codeql-extractor.yml ql/tools ql/ql/src/ql.dbscheme.stats ${PACK}/
           mkdir -p ${PACK}/tools/linux64
           cp ql/target/release/ql-autobuilder  ${PACK}/tools/linux64/autobuilder
@@ -87,7 +103,7 @@ jobs:
           chmod +x ${PACK}/tools/linux64/autobuilder
           chmod +x ${PACK}/tools/linux64/extractor
         env:
-            PACK: ${{ runner.temp }}/pack
+          PACK: ${{ runner.temp }}/pack
 
       ### Run the analysis ###
       - name: Hack codeql-action options
