@@ -55,12 +55,58 @@ private module Dispatch {
   Method viableImpl(MethodAccess ma) { result = ObjFlow::viableImpl_out(ma) }
 
   /**
+   * Holds if `m` is a viable implementation of the method called in `ma` for
+   * which we only have imprecise open-world type-based dispatch resolution, and
+   * the dispatch type is likely to yield implausible dispatch targets.
+   */
+  cached
+  predicate lowConfidenceDispatchTarget(MethodAccess ma, Method m) {
+    m = viableImpl(ma) and lowConfidenceDispatch(ma)
+  }
+
+  /**
    * INTERNAL: Use `viableImpl` instead.
    *
    * Gets a viable implementation of the method called in the given method access.
    */
   cached
   Method viableImpl_v3(MethodAccess ma) { result = DispatchFlow::viableImpl_out(ma) }
+
+  /**
+   * Holds if the best type bounds for the qualifier of `ma` are likely to
+   * contain implausible dispatch targets.
+   */
+  private predicate lowConfidenceDispatch(VirtualMethodAccess ma) {
+    exists(RefType t | hasQualifierType(ma, t, false) |
+      lowConfidenceDispatchType(t.getSourceDeclaration())
+    ) and
+    (
+      not qualType(ma, _, _)
+      or
+      exists(RefType t | qualType(ma, t, false) |
+        lowConfidenceDispatchType(t.getSourceDeclaration())
+      )
+    ) and
+    (
+      not qualUnionType(ma, _, _)
+      or
+      exists(RefType t | qualUnionType(ma, t, false) |
+        lowConfidenceDispatchType(t.getSourceDeclaration())
+      )
+    )
+  }
+
+  private predicate lowConfidenceDispatchType(SrcRefType t) {
+    t instanceof TypeObject
+    or
+    t instanceof FunctionalInterface
+    or
+    t.hasQualifiedName("java.io", "Serializable")
+    or
+    t.hasQualifiedName("java.lang", "Cloneable")
+    or
+    t.getPackage().hasName("java.util") and t instanceof Interface
+  }
 
   /**
    * INTERNAL: Use `viableImpl` instead.
