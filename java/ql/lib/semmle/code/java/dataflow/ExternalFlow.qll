@@ -317,7 +317,12 @@ private predicate summaryModelCsv(string row) {
       "java.io;File;true;getAbsolutePath;;;Argument[-1];ReturnValue;taint;manual",
       "java.io;File;true;getCanonicalPath;;;Argument[-1];ReturnValue;taint;manual",
       "java.nio;ByteBuffer;false;array;();;Argument[-1];ReturnValue;taint;manual",
+      "java.nio.file;Path;true;normalize;;;Argument[-1];ReturnValue;taint;manual",
+      "java.nio.file;Path;true;resolve;;;Argument[-1..0];ReturnValue;taint;manual",
       "java.nio.file;Path;false;toFile;;;Argument[-1];ReturnValue;taint;manual",
+      "java.nio.file;Path;true;toString;;;Argument[-1];ReturnValue;taint;manual",
+      "java.nio.file;Path;true;toUri;;;Argument[-1];ReturnValue;taint;manual",
+      "java.nio.file;Paths;true;get;;;Argument[0..1];ReturnValue;taint;manual",
       "java.io;BufferedReader;true;readLine;;;Argument[-1];ReturnValue;taint;manual",
       "java.io;Reader;true;read;();;Argument[-1];ReturnValue;taint;manual",
       // arg to return
