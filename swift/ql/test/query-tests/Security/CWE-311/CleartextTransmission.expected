@@ -1,5 +1,18 @@
 edges
+| testURL.swift:13:54:13:54 | passwd :  | testURL.swift:13:22:13:54 | ... call to +(_:_:) ... |
+| testURL.swift:13:54:13:54 | passwd :  | testURL.swift:20:22:20:22 | passwd |
+| testURL.swift:16:55:16:55 | credit_card_no :  | testURL.swift:16:22:16:55 | ... call to +(_:_:) ... |
 nodes
+| testSend.swift:29:19:29:19 | passwordPlain | semmle.label | passwordPlain |
+| testURL.swift:13:22:13:54 | ... call to +(_:_:) ... | semmle.label | ... call to +(_:_:) ... |
+| testURL.swift:13:54:13:54 | passwd :  | semmle.label | passwd :  |
+| testURL.swift:16:22:16:55 | ... call to +(_:_:) ... | semmle.label | ... call to +(_:_:) ... |
+| testURL.swift:16:55:16:55 | credit_card_no :  | semmle.label | credit_card_no :  |
+| testURL.swift:20:22:20:22 | passwd | semmle.label | passwd |
 subpaths
 #select
-| TODO |
+| testSend.swift:29:19:29:19 | passwordPlain | testSend.swift:29:19:29:19 | passwordPlain | testSend.swift:29:19:29:19 | passwordPlain | This operation transmits 'passwordPlain', which may contain unencrypted sensitive data from $@ | testSend.swift:29:19:29:19 | passwordPlain | passwordPlain |
+| testURL.swift:13:22:13:54 | ... call to +(_:_:) ... | testURL.swift:13:54:13:54 | passwd :  | testURL.swift:13:22:13:54 | ... call to +(_:_:) ... | This operation transmits '... call to +(_:_:) ...', which may contain unencrypted sensitive data from $@ | testURL.swift:13:54:13:54 | passwd :  | passwd |
+| testURL.swift:16:22:16:55 | ... call to +(_:_:) ... | testURL.swift:16:55:16:55 | credit_card_no :  | testURL.swift:16:22:16:55 | ... call to +(_:_:) ... | This operation transmits '... call to +(_:_:) ...', which may contain unencrypted sensitive data from $@ | testURL.swift:16:55:16:55 | credit_card_no :  | credit_card_no |
+| testURL.swift:20:22:20:22 | passwd | testURL.swift:13:54:13:54 | passwd :  | testURL.swift:20:22:20:22 | passwd | This operation transmits 'passwd', which may contain unencrypted sensitive data from $@ | testURL.swift:13:54:13:54 | passwd :  | passwd |
+| testURL.swift:20:22:20:22 | passwd | testURL.swift:20:22:20:22 | passwd | testURL.swift:20:22:20:22 | passwd | This operation transmits 'passwd', which may contain unencrypted sensitive data from $@ | testURL.swift:20:22:20:22 | passwd | passwd |

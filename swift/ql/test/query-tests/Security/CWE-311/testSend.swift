@@ -34,6 +34,6 @@ func test1(passwordPlain : String, passwordHash : String) {
 	let data3 = Data(passwordHash)
 
 	nw.send(content: data1, completion: .idempotent) // GOOD (not sensitive)
-	nw.send(content: data2, completion: .idempotent) // BAD
+	nw.send(content: data2, completion: .idempotent) // BAD [NOT DETECTED]
 	nw.send(content: data3, completion: .idempotent) // GOOD (not sensitive)
 }
