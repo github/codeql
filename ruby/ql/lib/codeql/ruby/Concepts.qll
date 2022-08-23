@@ -529,7 +529,7 @@ module HTTP {
         deprecated DataFlow::Node getURL() { none() }
 
         /**
-         * DEPRECATED: overwrite `disablesCertificateValidation/2` instead.
+         * DEPRECATED: override `disablesCertificateValidation/2` instead.
          *
          * Holds if this request is made using a mode that disables SSL/TLS
          * certificate validation, where `disablingNode` represents the point at
