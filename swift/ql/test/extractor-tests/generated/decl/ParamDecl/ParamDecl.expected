@@ -2,6 +2,7 @@
 | param_decls.swift:1:18:1:29 | y | getInterfaceType: | Double | getName: | y | getType: | Double | isInout: | yes |
 | param_decls.swift:2:10:2:13 | _ | getInterfaceType: | Int | getName: | _ | getType: | Int | isInout: | no |
 | param_decls.swift:2:18:2:29 | y | getInterfaceType: | Double | getName: | y | getType: | Double | isInout: | yes |
+| param_decls.swift:4:8:4:8 | self | getInterfaceType: | S | getName: | self | getType: | S | isInout: | yes |
 | param_decls.swift:5:5:5:5 | self | getInterfaceType: | S | getName: | self | getType: | S | isInout: | yes |
 | param_decls.swift:5:15:5:15 | x | getInterfaceType: | Int | getName: | x | getType: | Int | isInout: | no |
 | param_decls.swift:5:15:5:15 | x | getInterfaceType: | Int | getName: | x | getType: | Int | isInout: | no |
@@ -9,7 +10,9 @@
 | param_decls.swift:5:23:5:23 | y | getInterfaceType: | Int | getName: | y | getType: | Int | isInout: | no |
 | param_decls.swift:5:23:5:23 | y | getInterfaceType: | Int | getName: | y | getType: | Int | isInout: | no |
 | param_decls.swift:5:23:5:26 | y | getInterfaceType: | Int | getName: | y | getType: | Int | isInout: | no |
+| param_decls.swift:6:9:6:9 | self | getInterfaceType: | S | getName: | self | getType: | S | isInout: | no |
 | param_decls.swift:7:9:7:9 | newValue | getInterfaceType: | Int? | getName: | newValue | getType: | Int? | isInout: | no |
+| param_decls.swift:7:9:7:9 | self | getInterfaceType: | S | getName: | self | getType: | S | isInout: | yes |
 | param_decls.swift:12:13:12:22 | s | getInterfaceType: | String | getName: | s | getType: | String | isInout: | yes |
 | param_decls.swift:13:13:13:22 | s | getInterfaceType: | String | getName: | s | getType: | String | isInout: | yes |
 | param_decls.swift:14:26:14:26 | $0 | getInterfaceType: | Int | getName: | $0 | getType: | Int | isInout: | no |
