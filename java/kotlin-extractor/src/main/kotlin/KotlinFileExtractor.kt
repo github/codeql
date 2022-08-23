@@ -3405,8 +3405,7 @@ open class KotlinFileExtractor(
             expressionTypeArgs: List<IrType>,                           // type arguments of the extracted expression
             classTypeArgsIncludingOuterClasses: List<IrTypeArgument>?,  // type arguments of the class containing the callable reference
             dispatchReceiverIdx: Int = -1,                              // dispatch receiver index: -1 in case of functions, -2 for constructors
-            isBigArity: Boolean = false,                                // whether a big arity `invoke` is being extracted
-            bigArityParameterTypes: List<IrType>? = null                // parameter types used for the cast expressions in the big arity `invoke` invocation
+            bigArityParameterTypes: List<IrType>? = null                // parameter types used for the cast expressions in a big arity `invoke` invocation. null if not a big arity invocation.
         ) {
             // Return statement of generated function:
             val retId = tw.getFreshIdLabel<DbReturnstmt>()
@@ -3464,10 +3463,10 @@ open class KotlinFileExtractor(
                 extensionIdxOffset = 0
             }
 
-            if (isBigArity) {
+            if (bigArityParameterTypes != null) {
                 // In case we're extracting a big arity function reference:
                 addArgumentsToInvocationInInvokeNBody(
-                    bigArityParameterTypes!!, labels, retId, callId, locId,
+                    bigArityParameterTypes, labels, retId, callId, locId,
                     { exp -> writeExpressionMetadataToTrapFile(exp, labels.methodId, retId) },
                     extensionIdxOffset, useFirstArgAsDispatch, dispatchReceiverIdx)
             } else {
@@ -3814,8 +3813,7 @@ open class KotlinFileExtractor(
                     expressionTypeArguments,
                     classTypeArguments,
                     dispatchReceiverIdx,
-                    isBigArity,
-                    parameterTypes.dropLast(1))
+                    if (isBigArity) parameterTypes.dropLast(1) else null)
 
                 val typeAccessArguments = if (isBigArity) listOf(parameterTypes.last()) else parameterTypes
                 if (target is IrConstructorSymbol) {
