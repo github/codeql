@@ -20,10 +20,17 @@ import semmle.code.cpp.ir.ValueNumbering
 class ScanfOutput extends Expr {
   ScanfFunctionCall call;
   int varargIndex;
+  Instruction instr;
+  ValueNumber valNum;
 
   ScanfOutput() {
     this = call.getArgument(call.getTarget().getNumberOfParameters() + varargIndex) and
-    varargIndex >= 0
+    varargIndex >= 0 and
+    instr.getUnconvertedResultExpression() = this and
+    valueNumber(instr) = valNum and
+    // The following line is a kludge to prohibit more than one associated `instr` field,
+    // as would occur, for example, when `this` is an access to an array variable.
+    not instr instanceof ConvertInstruction
   }
 
   ScanfFunctionCall getCall() { result = call }
@@ -60,37 +67,32 @@ class ScanfOutput extends Expr {
    * but before it gets reset or reused in another `scanf` call.
    */
   Access getAnAccess() {
-    exists(Instruction j | result = j.getAst() |
-      j = this.getASubsequentSameValuedInstruction() and
-      forall(Instruction k |
-        k = [this.getAResetInstruction(), this.getAReuseInstruction()]
-        implies
-        j.getASuccessor+() = k
-      )
+    exists(Instruction dst |
+      this.bigStep(instr) = dst and
+      dst.getAst() = result and
+      valueNumber(dst) = valNum
     )
   }
 
-  private Instruction getAResetInstruction() {
-    result = this.getASubsequentSameValuedInstruction() and
-    result = any(StoreInstruction s).getDestinationAddress()
+  private Instruction bigStep(Instruction i) {
+    result = this.smallStep(i)
+    or
+    exists(Instruction j | j = this.bigStep(i) | result = this.smallStep(j))
   }
 
-  private Instruction getAReuseInstruction() {
-    result = this.getASubsequentSameValuedInstruction() and
-    exists(Expr e | result.getAst() = e |
-      e instanceof ScanfOutput
+  private Instruction smallStep(Instruction i) {
+    instr.getASuccessor*() = i and
+    i.getASuccessor() = result and
+    not this.isBarrier(result)
+  }
+
+  private predicate isBarrier(Instruction i) {
+    valueNumber(i) = valNum and
+    exists(Expr e | i.getAst() = e |
+      i = any(StoreInstruction s).getDestinationAddress()
       or
-      e.getParent().(AddressOfExpr) instanceof ScanfOutput
+      [e, e.getParent().(AddressOfExpr)] instanceof ScanfOutput
     )
-  }
-
-  private Instruction getASubsequentSameValuedInstruction() {
-    exists(Instruction i |
-      i.getUnconvertedResultExpression() = this and
-      i.getASuccessor+() = result and
-      valueNumber(i) = valueNumber(result)
-    ) and
-    not exists(Expr child | child = this.getAChild*() | child = result.getAst())
   }
 }
 

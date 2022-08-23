@@ -68,6 +68,16 @@ int main()
 		}
 	}
 
+	{
+		int i; // Reset variable
+
+		scanf("%d", &i);
+		use(i); // BAD
+
+		i = 1;
+		use(i); // GOOD
+	}
+
 	// --- different scanf functions ---
 
 	{
@@ -205,17 +215,20 @@ int main()
 	}
 
 	{
-		int i;
+		char c[5];
+		int d;
 
 		while(maybe()) {
 			if (maybe()) {
 				break;
 			}
-			else if (maybe() && (scanf("%d", &i) == 1)) { // GOOD [FALSE POSITIVE]
-				use(i); // GOOD [FALSE POSITIVE]
+			else if (maybe() && (scanf("%5c %d", c, &d) == 1)) { // GOOD [FALSE POSITIVE]
+				use(*(int *)c); // GOOD
+				use(d); // BAD
 			}
-			else if ((scanf("%d", &i) == 1) && maybe()) { // GOOD [FALSE POSITIVE]
-				use(i); // GOOD [FALSE POSITIVE]
+			else if ((scanf("%5c %d", c, &d) == 1) && maybe()) { // GOOD [FALSE POSITIVE]
+				use(*(int *)c); // GOOD
+				use(d); // BAD
 			}
 		}
 	}
@@ -367,7 +380,7 @@ char *my_string_copy() {
     for (int i = 0; i < len; i += 2) {
 		unsigned int u;
 	    sscanf(src + i, "%2x", &u);
-        *ptr++ = (char) u; // GOOD [FALSE POSITIVE]: src+i+{0,1} are always valid %x digits, so this should be OK.
+        *ptr++ = (char) u; // GOOD [FALSE POSITIVE]? src+i+{0,1} are always valid %x digits, so this should be OK.
     }
 	*ptr++ = 0;
 	return DST_STRING;
