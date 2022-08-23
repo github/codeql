@@ -157,6 +157,25 @@ private class TornadoClientSuppliedsecret extends ClientSuppliedsecret {
   }
 }
 
+private class WerkzeugClientSuppliedsecret extends ClientSuppliedsecret {
+  WerkzeugClientSuppliedsecret() {
+    exists(RemoteFlowSource rfs, DataFlow::AttrRead get |
+      rfs.getSourceType() = "werkzeug.datastructures" and this.getFunction() = get
+    |
+      // `get` is a call to datastructures.headers.get or datastructures.headers.get_all or datastructures.headers.getlist
+      // datastructures.headers
+      get.getObject()
+          .(DataFlow::AttrRead)
+          // request
+          .getObject()
+          .getALocalSource() = rfs and
+      get.getAttributeName() in ["get", "get_all", "getlist"] and
+      get.getObject().(DataFlow::AttrRead).getAttributeName() = "Headers" and
+      this.getArg(0).asExpr().(StrConst).getText().toLowerCase() = sensitiveheaders()   
+    )
+  }
+}
+
 /** A string for `match` that identifies strings that look like they represent Sensitive Headers. */
 private string sensitiveheaders() {
   result =
