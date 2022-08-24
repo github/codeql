@@ -41,7 +41,10 @@ class CamelJavaDSLToDecl extends ProcessorDefinitionElement {
   /**
    * Gets the URI specified by this `to` declaration.
    */
-  string getURI() { result = getArgument(0).(CompileTimeConstantExpr).getStringValue() }
+  string getUri() { result = getArgument(0).(CompileTimeConstantExpr).getStringValue() }
+
+  /** DEPRECATED: Alias for getUri */
+  deprecated string getURI() { result = getUri() }
 }
 
 /**

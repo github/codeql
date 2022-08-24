@@ -132,7 +132,10 @@ class XmlFile extends XmlParent, File {
   XmlElement getARootElement() { result = this.getAChild() }
 
   /** Gets a DTD associated with this XML file. */
-  XmlDTD getADTD() { xmlDTDs(result, _, _, _, this) }
+  XmlDtd getADtd() { xmlDTDs(result, _, _, _, this) }
+
+  /** DEPRECATED: Alias for getADtd */
+  deprecated XmlDtd getADTD() { result = this.getADtd() }
 }
 
 /** DEPRECATED: Alias for XmlFile */
@@ -149,7 +152,7 @@ deprecated class XMLFile = XmlFile;
  * <!ELEMENT lastName (#PCDATA)>
  * ```
  */
-class XmlDTD extends XmlLocatable, @xmldtd {
+class XmlDtd extends XmlLocatable, @xmldtd {
   /** Gets the name of the root element of this DTD. */
   string getRoot() { xmlDTDs(this, result, _, _, _) }
 
@@ -174,8 +177,8 @@ class XmlDTD extends XmlLocatable, @xmldtd {
   }
 }
 
-/** DEPRECATED: Alias for XmlDTD */
-deprecated class XMLDTD = XmlDTD;
+/** DEPRECATED: Alias for XmlDtd */
+deprecated class XMLDTD = XmlDtd;
 
 /**
  * An XML element in an XML file.
@@ -282,15 +285,18 @@ class XmlNamespace extends XmlLocatable, @xmlnamespace {
   string getPrefix() { xmlNs(this, result, _, _) }
 
   /** Gets the URI of this namespace. */
-  string getURI() { xmlNs(this, _, result, _) }
+  string getUri() { xmlNs(this, _, result, _) }
+
+  /** DEPRECATED: Alias for getUri */
+  deprecated string getURI() { result = this.getUri() }
 
   /** Holds if this namespace has no prefix. */
   predicate isDefault() { this.getPrefix() = "" }
 
   override string toString() {
-    this.isDefault() and result = this.getURI()
+    this.isDefault() and result = this.getUri()
     or
-    not this.isDefault() and result = this.getPrefix() + ":" + this.getURI()
+    not this.isDefault() and result = this.getPrefix() + ":" + this.getUri()
   }
 }
 

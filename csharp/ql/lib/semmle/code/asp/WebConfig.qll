@@ -94,14 +94,20 @@ class FormsElement extends XmlElement {
   /**
    * Gets attribute's `requireSSL` value.
    */
-  string getRequireSSL() {
+  string getRequireSsl() {
     result = this.getAttribute("requireSSL").getValue().trim().toLowerCase()
   }
+
+  /** DEPRECATED: Alias for getRequireSsl */
+  deprecated string getRequireSSL() { result = this.getRequireSsl() }
 
   /**
    * Holds if `requireSSL` value is true.
    */
-  predicate isRequireSSL() { this.getRequireSSL() = "true" }
+  predicate isRequireSsl() { this.getRequireSsl() = "true" }
+
+  /** DEPRECATED: Alias for isRequireSsl */
+  deprecated predicate isRequireSSL() { this.isRequireSsl() }
 }
 
 /** A `<httpCookies>` tag in an ASP.NET configuration file. */
@@ -123,17 +129,23 @@ class HttpCookiesElement extends XmlElement {
   /**
    * Gets attribute's `requireSSL` value.
    */
-  string getRequireSSL() {
+  string getRequireSsl() {
     result = this.getAttribute("requireSSL").getValue().trim().toLowerCase()
   }
+
+  /** DEPRECATED: Alias for getRequireSsl */
+  deprecated string getRequireSSL() { result = this.getRequireSsl() }
 
   /**
    * Holds if there is any chance that `requireSSL` is set to `true` either globally or for Forms.
    */
-  predicate isRequireSSL() {
-    this.getRequireSSL() = "true"
+  predicate isRequireSsl() {
+    this.getRequireSsl() = "true"
     or
-    not this.getRequireSSL() = "false" and // not set all, i.e. default
-    exists(FormsElement forms | forms.getFile() = this.getFile() | forms.isRequireSSL())
+    not this.getRequireSsl() = "false" and // not set all, i.e. default
+    exists(FormsElement forms | forms.getFile() = this.getFile() | forms.isRequireSsl())
   }
+
+  /** DEPRECATED: Alias for isRequireSsl */
+  deprecated predicate isRequireSSL() { this.isRequireSsl() }
 }

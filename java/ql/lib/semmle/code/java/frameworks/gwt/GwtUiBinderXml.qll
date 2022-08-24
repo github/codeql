@@ -17,7 +17,7 @@ class GwtUiBinderTemplateElement extends XmlElement {
   GwtUiBinderTemplateElement() {
     this.getParent() instanceof GwtUiTemplateXmlFile and
     this.getName() = "UiBinder" and
-    this.getNamespace().getURI() = "urn:ui:com.google.gwt.uibinder"
+    this.getNamespace().getUri() = "urn:ui:com.google.gwt.uibinder"
   }
 }
 
@@ -27,7 +27,7 @@ class GwtUiBinderTemplateElement extends XmlElement {
 class GwtComponentTemplateElement extends XmlElement {
   GwtComponentTemplateElement() {
     exists(GwtUiBinderTemplateElement templateElement | this = templateElement.getAChild*() |
-      this.getNamespace().getURI().substring(0, 10) = "urn:import"
+      this.getNamespace().getUri().substring(0, 10) = "urn:import"
     )
   }
 
@@ -36,7 +36,7 @@ class GwtComponentTemplateElement extends XmlElement {
    */
   Class getClass() {
     exists(string namespace |
-      namespace = this.getNamespace().getURI() and
+      namespace = this.getNamespace().getUri() and
       result.getQualifiedName() = namespace.substring(11, namespace.length()) + "." + this.getName()
     )
   }
