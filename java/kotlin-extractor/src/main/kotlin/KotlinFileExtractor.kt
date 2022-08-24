@@ -1568,7 +1568,7 @@ open class KotlinFileExtractor(
         }
     }
 
-    private fun findFunction(cls: IrClass, name: String): IrFunction? = cls.declarations.find { it is IrFunction && it.name.asString() == name } as IrFunction?
+    private fun findFunction(cls: IrClass, name: String): IrFunction? = cls.declarations.findSubType<IrDeclaration,IrFunction> { it.name.asString() == name }
 
     val jvmIntrinsicsClass by lazy {
         val result = pluginContext.referenceClass(FqName("kotlin.jvm.internal.Intrinsics"))?.owner
@@ -1625,12 +1625,11 @@ open class KotlinFileExtractor(
     }
 
     val stringValueOfObjectMethod by lazy {
-        val result = javaLangString?.declarations?.find {
-            it is IrFunction &&
+        val result = javaLangString?.declarations?.findSubType<IrDeclaration,IrFunction> {
             it.name.asString() == "valueOf" &&
             it.valueParameters.size == 1 &&
             it.valueParameters[0].type == pluginContext.irBuiltIns.anyNType
-        } as IrFunction?
+        }
         if (result == null) {
             logger.error("Couldn't find declaration java.lang.String.valueOf(Object)")
         }
@@ -1638,9 +1637,9 @@ open class KotlinFileExtractor(
     }
 
     val objectCloneMethod by lazy {
-        val result = javaLangObject?.declarations?.find {
-            it is IrFunction && it.name.asString() == "clone"
-        } as IrFunction?
+        val result = javaLangObject?.declarations?.findSubType<IrDeclaration,IrFunction> {
+            it.name.asString() == "clone"
+        }
         if (result == null) {
             logger.error("Couldn't find declaration java.lang.Object.clone(...)")
         }
@@ -1654,10 +1653,9 @@ open class KotlinFileExtractor(
     }
 
     val kotlinNoWhenBranchMatchedConstructor by lazy {
-        val result = kotlinNoWhenBranchMatchedExn?.declarations?.find {
-            it is IrConstructor &&
+        val result = kotlinNoWhenBranchMatchedExn?.declarations?.findSubType<IrDeclaration,IrConstructor> {
             it.valueParameters.isEmpty()
-        } as IrConstructor?
+        }
         if (result == null) {
             logger.error("Couldn't find no-arg constructor for kotlin.NoWhenBranchMatchedException")
         }
@@ -1777,13 +1775,13 @@ open class KotlinFileExtractor(
                     return
                 }
 
-                val func = ((c.getTypeArgument(0) as? IrSimpleType)?.classifier?.owner as? IrClass)?.declarations?.find { it is IrFunction && it.name.asString() == fnName }
+                val func = ((c.getTypeArgument(0) as? IrSimpleType)?.classifier?.owner as? IrClass)?.declarations?.findSubType<IrDeclaration,IrFunction> { it.name.asString() == fnName }
                 if (func == null) {
                     logger.errorElement("Couldn't find function $fnName on enum type", c)
                     return
                 }
 
-                extractMethodAccess(func as IrFunction, false)
+                extractMethodAccess(func, false)
             }
 
             fun binopReceiver(id: Label<out DbExpr>, receiver: IrExpression?, receiverDescription: String) {
@@ -2227,10 +2225,10 @@ open class KotlinFileExtractor(
                         logger.errorElement("Argument to dataClassArrayMemberToString not a class", c)
                         return
                     }
-                    val realCallee = javaUtilArrays?.declarations?.find { decl ->
-                        decl is IrFunction && decl.name.asString() == "toString" && decl.valueParameters.size == 1 &&
+                    val realCallee = javaUtilArrays?.declarations?.findSubType<IrDeclaration,IrFunction> { decl ->
+                        decl.name.asString() == "toString" && decl.valueParameters.size == 1 &&
                                 decl.valueParameters[0].type.classOrNull?.let { it == realArrayClass } == true
-                    } as IrFunction?
+                    }
                     if (realCallee == null) {
                         logger.errorElement("Couldn't find a java.lang.Arrays.toString method matching class ${realArrayClass.owner.name}", c)
                     } else {
@@ -2254,10 +2252,10 @@ open class KotlinFileExtractor(
                         logger.errorElement("Argument to dataClassArrayMemberHashCode not a class", c)
                         return
                     }
-                    val realCallee = javaUtilArrays?.declarations?.find { decl ->
-                        decl is IrFunction && decl.name.asString() == "hashCode" && decl.valueParameters.size == 1 &&
+                    val realCallee = javaUtilArrays?.declarations?.findSubType<IrDeclaration,IrFunction> { decl ->
+                        decl.name.asString() == "hashCode" && decl.valueParameters.size == 1 &&
                                 decl.valueParameters[0].type.classOrNull?.let { it == realArrayClass } == true
-                    } as IrFunction?
+                    }
                     if (realCallee == null) {
                         logger.errorElement("Couldn't find a java.lang.Arrays.hashCode method matching class ${realArrayClass.owner.name}", c)
                     } else {
@@ -4365,7 +4363,7 @@ open class KotlinFileExtractor(
                         return
                     }
 
-                    val invokeMethod = functionType.classOrNull?.owner?.declarations?.filterIsInstance<IrFunction>()?.find { it.name.asString() == OperatorNameConventions.INVOKE.asString()}
+                    val invokeMethod = functionType.classOrNull?.owner?.declarations?.findSubType<IrDeclaration,IrFunction> { it.name.asString() == OperatorNameConventions.INVOKE.asString()}
                     if (invokeMethod == null) {
                         logger.errorElement("Couldn't find `invoke` method on functional interface.", e)
                         return
@@ -4376,7 +4374,7 @@ open class KotlinFileExtractor(
                         logger.errorElement("Expected to find SAM conversion to IrClass. Found '${typeOwner.javaClass}' instead. Can't implement SAM interface.", e)
                         return
                     }
-                    val samMember = typeOwner.declarations.filterIsInstance<IrFunction>().find { it is IrOverridableMember && it.modality == Modality.ABSTRACT }
+                    val samMember = typeOwner.declarations.findSubType<IrDeclaration,IrFunction> { it is IrOverridableMember && it.modality == Modality.ABSTRACT }
                     if (samMember == null) {
                         logger.errorElement("Couldn't find SAM member in type '${typeOwner.kotlinFqName.asString()}'. Can't implement SAM interface.", e)
                         return
@@ -4565,7 +4563,7 @@ open class KotlinFileExtractor(
             val superCallId = tw.getFreshIdLabel<DbSuperconstructorinvocationstmt>()
             tw.writeStmts_superconstructorinvocationstmt(superCallId, constructorBlockId, 0, ids.constructor)
 
-            val baseConstructor = baseClass.owner.declarations.find { it is IrFunction && it.symbol is IrConstructorSymbol }
+            val baseConstructor = baseClass.owner.declarations.findSubType<IrDeclaration,IrFunction> { it.symbol is IrConstructorSymbol }
             val baseConstructorId = useFunction<DbConstructor>(baseConstructor as IrFunction)
 
             tw.writeHasLocation(superCallId, locId)
