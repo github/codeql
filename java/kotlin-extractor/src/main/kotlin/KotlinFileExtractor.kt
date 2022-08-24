@@ -2893,8 +2893,12 @@ open class KotlinFileExtractor(
                             // Check for a desugared in-place update operator, such as "v += e":
                             val inPlaceUpdateRhs = getUpdateInPlaceRHS(e.origin, { it is IrGetValue && it.symbol.owner == e.symbol.owner }, rhsValue)
                             if (inPlaceUpdateRhs != null) {
-                                if (!writeUpdateInPlaceExpr(e.origin!!, tw, id, type, exprParent)) {
-                                    logger.errorElement("Unexpected origin", e)
+                                val origin = e.origin
+                                if (origin == null) {
+                                    logger.errorElement("No origin for set-value", e)
+                                    return
+                                } else  if (!writeUpdateInPlaceExpr(origin, tw, id, type, exprParent)) {
+                                    logger.errorElement("Unexpected origin for set-value", e)
                                     return
                                 }
                             } else {
