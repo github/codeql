@@ -2232,12 +2232,22 @@ open class KotlinFileExtractor(
                 isBuiltinCall(c, "<unsafe-coerce>", "kotlin.jvm.internal") -> {
 
                     if (c.valueArgumentsCount != 1) {
-                        logger.errorElement("Expected to find only one argument for a kotlin.jvm.internal.<unsafe-coerce>() call", c)
+                        logger.errorElement("Expected to find one argument for a kotlin.jvm.internal.<unsafe-coerce>() call, but found ${c.valueArgumentsCount}", c)
                         return
                     }
 
                     if (c.typeArgumentsCount != 2) {
-                        logger.errorElement("Expected to find two type arguments for a kotlin.jvm.internal.<unsafe-coerce>() call", c)
+                        logger.errorElement("Expected to find two type arguments for a kotlin.jvm.internal.<unsafe-coerce>() call, but found ${c.typeArgumentsCount}", c)
+                        return
+                    }
+                    val valueArg = c.getValueArgument(0)
+                    if (valueArg == null) {
+                        logger.errorElement("Cannot find value argument for a kotlin.jvm.internal.<unsafe-coerce>() call", c)
+                        return
+                    }
+                    val typeArg = c.getTypeArgument(1)
+                    if (typeArg == null) {
+                        logger.errorElement("Cannot find type argument for a kotlin.jvm.internal.<unsafe-coerce>() call", c)
                         return
                     }
 
@@ -2249,8 +2259,8 @@ open class KotlinFileExtractor(
                     tw.writeHasLocation(id, locId)
                     tw.writeCallableEnclosingExpr(id, callable)
                     tw.writeStatementEnclosingExpr(id, enclosingStmt)
-                    extractTypeAccessRecursive(c.getTypeArgument(1)!!, locId, id, 0, callable, enclosingStmt)
-                    extractExpressionExpr(c.getValueArgument(0)!!, callable, id, 1, enclosingStmt)
+                    extractTypeAccessRecursive(typeArg, locId, id, 0, callable, enclosingStmt)
+                    extractExpressionExpr(valueArg, callable, id, 1, enclosingStmt)
                 }
                 isBuiltinCallInternal(c, "dataClassArrayMemberToString") -> {
                     val arrayArg = c.getValueArgument(0)
