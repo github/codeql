@@ -16,8 +16,14 @@ import codeql.swift.dataflow.DataFlow
 import codeql.swift.dataflow.TaintTracking
 import DataFlow::PathGraph
 
+/**
+ * An `Expr` that is stored in a local database.
+ */
 abstract class Stored extends Expr { }
 
+/**
+ * An `Expr` that is stored with the Core Data library.
+ */
 class CoreDataStore extends Stored {
   CoreDataStore() {
     // `content` arg to `NWConnection.send` is a sink
@@ -27,6 +33,31 @@ class CoreDataStore extends Stored {
       f.getName() = ["setValue(_:forKey:)", "setPrimitiveValue(_:forKey:)"] and
       call.getFunction().(ApplyExpr).getStaticTarget() = f and
       call.getArgument(0).getExpr() = this
+    )
+  }
+}
+
+/**
+ * An `Expr` that is stored with the Realm database library.
+ */
+class RealmStore extends Stored {
+  RealmStore() {
+    // `object` arg to `Realm.add` is a sink
+    exists(ClassDecl c, AbstractFunctionDecl f, CallExpr call |
+      c.getName() = "Realm" and
+      c.getAMember() = f and
+      f.getName() = ["add(_:update:)"] and
+      call.getFunction().(ApplyExpr).getStaticTarget() = f and
+      call.getArgument(0).getExpr() = this
+    )
+    or
+    // `value` arg to `Realm.create` is a sink
+    exists(ClassDecl c, AbstractFunctionDecl f, CallExpr call |
+      c.getName() = "Realm" and
+      c.getAMember() = f and
+      f.getName() = ["create(_:value:update:)"] and
+      call.getFunction().(ApplyExpr).getStaticTarget() = f and
+      call.getArgument(1).getExpr() = this
     )
   }
 }
