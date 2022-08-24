@@ -2520,6 +2520,11 @@ open class KotlinFileExtractor(
                     indexVarDecl.initializer?.let { indexVarInitializer ->
                         (e.statements[2] as? IrCall)?.let { arraySetCall ->
                             if (isFunction(arraySetCall.symbol.owner, "kotlin", "(some array type)", { isArrayType(it) }, "set")) {
+                                val updateRhs = arraySetCall.getValueArgument(1)
+                                if (updateRhs == null) {
+                                    logger.errorElement("Update RHS not found", e)
+                                    return false
+                                }
                                 getUpdateInPlaceRHS(
                                     e.origin, // Using e.origin not arraySetCall.origin here distinguishes a compiler-generated block from a user manually code that looks the same.
                                     {   oldValue ->
@@ -2529,9 +2534,14 @@ open class KotlinFileExtractor(
                                             receiverVal -> receiverVal.symbol.owner == arrayVarDecl.symbol.owner
                                         } ?: false
                                     },
-                                    arraySetCall.getValueArgument(1)!!
+                                    updateRhs
                                 )?.let { updateRhs ->
-                                    val writeUpdateInPlaceExprFun = writeUpdateInPlaceExpr(e.origin!!)
+                                    val origin = e.origin
+                                    if (origin == null) {
+                                        logger.errorElement("No origin found", e)
+                                        return false
+                                    }
+                                    val writeUpdateInPlaceExprFun = writeUpdateInPlaceExpr(origin)
                                     if (writeUpdateInPlaceExprFun == null) {
                                         logger.errorElement("Unexpected origin", e)
                                         return false
