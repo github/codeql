@@ -49,7 +49,7 @@ func test1(realm : Realm, myPassword : String, myHashedPassword : String) {
 	// retrieve objects ...
 
 	var e = realm.object(ofType: MyRealmSwiftObject.self, forPrimaryKey: "key")
-	e!.data = myPassword // BAD
+	e!.data = myPassword // BAD [NOT DETECTED]
 
 	var f = realm.object(ofType: MyRealmSwiftObject.self, forPrimaryKey: "key")
 	f!.data = myHashedPassword // GOOD (not sensitive)

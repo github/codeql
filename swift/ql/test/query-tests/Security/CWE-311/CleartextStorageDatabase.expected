@@ -18,6 +18,8 @@ edges
 | testCoreData.swift:100:13:100:14 | &... :  | testCoreData.swift:38:11:38:23 | WriteDef :  |
 | testCoreData.swift:100:13:100:14 | &... :  | testCoreData.swift:38:11:38:23 | data :  |
 | testCoreData.swift:100:13:100:14 | &... :  | testCoreData.swift:100:7:100:14 | data: &... :  |
+| testRealm.swift:34:11:34:11 | myPassword :  | testRealm.swift:35:12:35:12 | a |
+| testRealm.swift:42:11:42:11 | myPassword :  | testRealm.swift:43:47:43:47 | c |
 nodes
 | testCoreData.swift:37:14:37:22 | WriteDef :  | semmle.label | WriteDef :  |
 | testCoreData.swift:37:14:37:22 | WriteDef :  | semmle.label | data :  |
@@ -49,6 +51,10 @@ nodes
 | testCoreData.swift:100:13:100:14 | &... :  | semmle.label | &... :  |
 | testCoreData.swift:103:15:103:15 | x | semmle.label | x |
 | testCoreData.swift:104:15:104:15 | y | semmle.label | y |
+| testRealm.swift:34:11:34:11 | myPassword :  | semmle.label | myPassword :  |
+| testRealm.swift:35:12:35:12 | a | semmle.label | a |
+| testRealm.swift:42:11:42:11 | myPassword :  | semmle.label | myPassword :  |
+| testRealm.swift:43:47:43:47 | c | semmle.label | c |
 subpaths
 | testCoreData.swift:99:14:99:14 | x :  | testCoreData.swift:37:14:37:22 | WriteDef :  | testCoreData.swift:37:49:37:49 | data :  | testCoreData.swift:99:6:99:15 | call to encrypt(_:) :  |
 | testCoreData.swift:99:14:99:14 | x :  | testCoreData.swift:37:14:37:22 | data :  | testCoreData.swift:37:49:37:49 | data :  | testCoreData.swift:99:6:99:15 | call to encrypt(_:) :  |
@@ -66,3 +72,5 @@ subpaths
 | testCoreData.swift:97:15:97:15 | z | testCoreData.swift:93:10:93:10 | passwd :  | testCoreData.swift:97:15:97:15 | z | This operation stores 'z' in a database. It may contain unencrypted sensitive data from $@ | testCoreData.swift:93:10:93:10 | passwd :  | passwd |
 | testCoreData.swift:103:15:103:15 | x | testCoreData.swift:91:10:91:10 | passwd :  | testCoreData.swift:103:15:103:15 | x | This operation stores 'x' in a database. It may contain unencrypted sensitive data from $@ | testCoreData.swift:91:10:91:10 | passwd :  | passwd |
 | testCoreData.swift:104:15:104:15 | y | testCoreData.swift:92:10:92:10 | passwd :  | testCoreData.swift:104:15:104:15 | y | This operation stores 'y' in a database. It may contain unencrypted sensitive data from $@ | testCoreData.swift:92:10:92:10 | passwd :  | passwd |
+| testRealm.swift:35:12:35:12 | a | testRealm.swift:34:11:34:11 | myPassword :  | testRealm.swift:35:12:35:12 | a | This operation stores 'a' in a database. It may contain unencrypted sensitive data from $@ | testRealm.swift:34:11:34:11 | myPassword :  | myPassword |
+| testRealm.swift:43:47:43:47 | c | testRealm.swift:42:11:42:11 | myPassword :  | testRealm.swift:43:47:43:47 | c | This operation stores 'c' in a database. It may contain unencrypted sensitive data from $@ | testRealm.swift:42:11:42:11 | myPassword :  | myPassword |

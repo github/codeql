@@ -82,6 +82,22 @@ class CleartextStorageConfig extends TaintTracking::Configuration {
     // make sources barriers so that we only report the closest instance
     isSource(node)
   }
+
+  override predicate isAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
+    // TODO: the following special case flows are required to catch any of the Realm test
+    // cases, I hope we'll be able to remove them once we have field flow???
+    // flow out from field accesses, i.e. `a.b` -> `a`
+    exists(MemberRefExpr m |
+      node1.asExpr() = m and // `a.b`
+      node2.asExpr() = m.getBaseExpr() // `a`
+    )
+    or
+    // flow through assignment (!)
+    exists(AssignExpr ae |
+      node1.asExpr() = ae.getSource() and
+      node2.asExpr() = ae.getDest()
+    )
+  }
 }
 
 from CleartextStorageConfig config, DataFlow::PathNode sourceNode, DataFlow::PathNode sinkNode
