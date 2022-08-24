@@ -1,10 +1,11 @@
 /**
- * @name Missing return-value check for a scanf-like function
- * @description TODO
+ * @name Missing return-value check for a 'scanf'-like function
+ * @description Without checking that a call to 'scanf' actually wrote to an
+ *              output variable, reading from it can lead to unexpected behavior.
  * @kind problem
- * @problem.severity warning
- * @security-severity TODO
- * @precision TODO
+ * @problem.severity recommendation
+ * @security-severity 4.5
+ * @precision medium
  * @id cpp/missing-check-scanf
  * @tags security
  */

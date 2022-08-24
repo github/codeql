@@ -222,11 +222,11 @@ int main()
 			if (maybe()) {
 				break;
 			}
-			else if (maybe() && (scanf("%5c %d", c, &d) == 1)) { // GOOD [FALSE POSITIVE]
+			else if (maybe() && (scanf("%5c %d", c, &d) == 1)) { // GOOD
 				use(*(int *)c); // GOOD
 				use(d); // BAD
 			}
-			else if ((scanf("%5c %d", c, &d) == 1) && maybe()) { // GOOD [FALSE POSITIVE]
+			else if ((scanf("%5c %d", c, &d) == 1) && maybe()) { // GOOD
 				use(*(int *)c); // GOOD
 				use(d); // BAD
 			}
