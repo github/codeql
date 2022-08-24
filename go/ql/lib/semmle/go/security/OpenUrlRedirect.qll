@@ -59,7 +59,7 @@ module OpenUrlRedirect {
       hostnameSanitizingPrefixEdge(node, _)
     }
 
-    override predicate isBarrierGuard(DataFlow::BarrierGuard guard) {
+    deprecated override predicate isBarrierGuard(DataFlow::BarrierGuard guard) {
       guard instanceof BarrierGuard
     }
   }

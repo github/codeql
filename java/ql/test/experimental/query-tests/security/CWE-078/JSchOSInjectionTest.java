@@ -17,17 +17,19 @@ public class JSchOSInjectionTest extends HttpServlet {
             config.put("StrictHostKeyChecking", "no");
             
             JSch jsch = new JSch();
-            Session session = jsch.getSession(user, host, 22);
-            session.setPassword(password);
-            session.setConfig(config);
-            session.connect();
+            try {
+                Session session = jsch.getSession(user, host, 22);
+                session.setPassword(password);
+                session.setConfig(config);
+                session.connect();
 
-            Channel channel = session.openChannel("exec");
-            ((ChannelExec) channel).setCommand("ping " + command);
-            channel.setInputStream(null);
-            ((ChannelExec) channel).setErrStream(System.err);
+                Channel channel = session.openChannel("exec");
+                ((ChannelExec) channel).setCommand("ping " + command);
+                channel.setInputStream(null);
+                ((ChannelExec) channel).setErrStream(System.err);
 
-            channel.connect();
+                channel.connect();
+            } catch (JSchException e) { }
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -41,16 +43,18 @@ public class JSchOSInjectionTest extends HttpServlet {
             config.put("StrictHostKeyChecking", "no");
             
             JSch jsch = new JSch();
-            Session session = jsch.getSession(user, host, 22);
-            session.setPassword(password);
-            session.setConfig(config);
-            session.connect();
+            try {
+                Session session = jsch.getSession(user, host, 22);
+                session.setPassword(password);
+                session.setConfig(config);
+                session.connect();
 
-            ChannelExec channel = (ChannelExec)session.openChannel("exec");
-            channel.setCommand("ping " + command);
-            channel.setInputStream(null);
-            channel.setErrStream(System.err);
+                ChannelExec channel = (ChannelExec)session.openChannel("exec");
+                channel.setCommand("ping " + command);
+                channel.setInputStream(null);
+                channel.setErrStream(System.err);
 
-            channel.connect();
+                channel.connect();
+            } catch (JSchException e) { }
     }
 }

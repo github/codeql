@@ -71,4 +71,4 @@ Other
 -----
 
 In the case of really severe problems within the JVM that runs ``codeql``, it might return a nonzero exit code of its own choosing.
-This should only happen if something is severely wrong with the CodeQL installation.
+This should only happen if something is severely wrong with the CodeQL installation, or if there is a memory issue with the host system running the CodeQL process. For example, Unix systems may return `Exit Code 137` to indicate that the kernel has killed a process that CodeQL has started. One way to troubleshoot this is to modify your `--ram=` flag for the `codeql database analyze` step and re-run your workflow.

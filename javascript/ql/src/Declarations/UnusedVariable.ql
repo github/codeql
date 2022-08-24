@@ -144,6 +144,9 @@ predicate whitelisted(UnusedLocal v) {
   // exclude variables mentioned in JSDoc comments in externs
   mentionedInJSDocComment(v)
   or
+  // the attributes in .vue files are not extracted, so we can get false positives in those.
+  v.getADeclaration().getFile().getExtension() = "vue"
+  or
   // exclude variables used to filter out unwanted properties
   isPropertyFilter(v)
   or
@@ -165,6 +168,9 @@ predicate whitelisted(UnusedLocal v) {
     or
     // ignore ambient declarations - too noisy
     vd.isAmbient()
+    or
+    // ignore variables in template placeholders, as each placeholder sees a different copy of the variable
+    vd.getTopLevel() instanceof Templating::TemplateTopLevel
   )
   or
   exists(Expr eval | eval instanceof DirectEval or eval instanceof GeneratedCodeExpr |

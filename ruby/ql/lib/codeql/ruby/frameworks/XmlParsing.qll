@@ -109,7 +109,7 @@ private class FeatureNONET extends Feature, TNONET {
   override string getConstantName() { result = "NONET" }
 }
 
-private class FeatureDTDLOAD extends Feature, TDTDLOAD {
+private class FeatureDtdLoad extends Feature, TDTDLOAD {
   override int getValue() { result = 4 }
 
   override string getConstantName() { result = "DTDLOAD" }
@@ -143,7 +143,7 @@ private DataFlow::LocalSourceNode trackFeature(Feature f, boolean enable, TypeTr
     or
     // Use of a constant f
     enable = true and
-    result = parseOptionsModule().getMember(f.getConstantName()).getAUse()
+    result = parseOptionsModule().getMember(f.getConstantName()).getAValueReachableFromSource()
     or
     // Treat `&`, `&=`, `|` and `|=` operators as if they preserve the on/off states
     // of their operands. This is an overapproximation but likely to work well in practice

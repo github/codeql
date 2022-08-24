@@ -2,6 +2,7 @@ private import csharp
 private import TaintTrackingPublic
 private import FlowSummaryImpl as FlowSummaryImpl
 private import semmle.code.csharp.Caching
+private import semmle.code.csharp.dataflow.internal.DataFlowDispatch
 private import semmle.code.csharp.dataflow.internal.DataFlowPrivate
 private import semmle.code.csharp.dataflow.internal.ControlFlowReachability
 private import semmle.code.csharp.dispatch.Dispatch
@@ -17,12 +18,6 @@ private import semmle.code.csharp.frameworks.WCF
  * but not in local taint.
  */
 predicate defaultTaintSanitizer(DataFlow::Node node) { none() }
-
-/**
- * Holds if `guard` should be a sanitizer guard in all global taint flow configurations
- * but not in local taint.
- */
-predicate defaultTaintSanitizerGuard(DataFlow::BarrierGuard guard) { none() }
 
 /**
  * Holds if default `TaintTracking::Configuration`s should allow implicit reads
@@ -117,19 +112,22 @@ private module Cached {
     (
       // Simple flow through library code is included in the exposed local
       // step relation, even though flow is technically inter-procedural
-      FlowSummaryImpl::Private::Steps::summaryThroughStepTaint(nodeFrom, nodeTo)
+      FlowSummaryImpl::Private::Steps::summaryThroughStepTaint(nodeFrom, nodeTo,
+        any(DataFlowSummarizedCallable sc))
       or
       // Taint collection by adding a tainted element
       exists(DataFlow::ElementContent c |
         storeStep(nodeFrom, c, nodeTo)
         or
-        FlowSummaryImpl::Private::Steps::summarySetterStep(nodeFrom, c, nodeTo)
+        FlowSummaryImpl::Private::Steps::summarySetterStep(nodeFrom, c, nodeTo,
+          any(DataFlowSummarizedCallable sc))
       )
       or
       exists(DataFlow::Content c |
         readStep(nodeFrom, c, nodeTo)
         or
-        FlowSummaryImpl::Private::Steps::summaryGetterStep(nodeFrom, c, nodeTo)
+        FlowSummaryImpl::Private::Steps::summaryGetterStep(nodeFrom, c, nodeTo,
+          any(DataFlowSummarizedCallable sc))
       |
         // Taint members
         c = any(TaintedMember m).(FieldOrProperty).getContent()
@@ -151,7 +149,7 @@ private module Cached {
     // Taint members
     readStep(nodeFrom, any(TaintedMember m).(FieldOrProperty).getContent(), nodeTo)
     or
-    // Although flow through collections is modelled precisely using stores/reads, we still
+    // Although flow through collections is modeled precisely using stores/reads, we still
     // allow flow out of a _tainted_ collection. This is needed in order to support taint-
     // tracking configurations where the source is a collection
     readStep(nodeFrom, TElementContent(), nodeTo)

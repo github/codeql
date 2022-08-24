@@ -14,7 +14,7 @@ module SharedXss {
     /**
      * Gets the kind of vulnerability to report in the alert message.
      *
-     * Defaults to `Cross-site scripting`, but may be overriden for sinks
+     * Defaults to `Cross-site scripting`, but may be overridden for sinks
      * that do not allow script injection, but injection of other undesirable HTML elements.
      */
     string getVulnerabilityKind() { result = "Cross-site scripting" }
@@ -31,8 +31,12 @@ module SharedXss {
   /** A sanitizer for XSS vulnerabilities. */
   abstract class Sanitizer extends DataFlow::Node { }
 
-  /** A sanitizer guard for XSS vulnerabilities. */
-  abstract class SanitizerGuard extends DataFlow::BarrierGuard { }
+  /**
+   * DEPRECATED: Use `Sanitizer` instead.
+   *
+   * A sanitizer guard for XSS vulnerabilities.
+   */
+  abstract deprecated class SanitizerGuard extends DataFlow::BarrierGuard { }
 
   /**
    * An expression that is sent as part of an HTTP response body, considered as an

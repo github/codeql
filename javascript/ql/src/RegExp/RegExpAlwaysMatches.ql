@@ -39,10 +39,10 @@ RegExpTerm getEffectiveRoot(RegExpTerm actualRoot) {
 /**
  * Holds if `term` contains an anchor on both ends.
  */
-predicate isPossiblyAnchoredOnBothEnds(RegExpSequence node) {
-  node.getAChild*() instanceof RegExpCaret and
-  node.getAChild*() instanceof RegExpDollar and
-  node.getNumChild() >= 2
+predicate isPossiblyAnchoredOnBothEnds(RegExpSequence term) {
+  term.getAChild*() instanceof RegExpCaret and
+  term.getAChild*() instanceof RegExpDollar and
+  term.getNumChild() >= 2
 }
 
 /**

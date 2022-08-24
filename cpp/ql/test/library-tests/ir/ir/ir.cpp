@@ -1816,4 +1816,39 @@ void switch_initialization(int x) {
     }
 }
 
+int global_1;
+
+int global_2 = 1;
+
+const int global_3 = 2;
+
+constructor_only global_4(1);
+
+constructor_only global_5 = constructor_only(2);
+
+char *global_string = "global string";
+
+int global_6 = global_2;
+
+namespace block_assignment {
+    class A {
+        enum {} e[1];
+        virtual void f();
+    };
+    
+    struct B : A {
+        B(A *);
+    };
+
+    void foo() {
+        B v(0);
+        v = 0;
+    }
+}
+
+void magicvars() {
+    const char *pf = __PRETTY_FUNCTION__;
+    const char *strfunc = __func__;
+}
+
 // semmle-extractor-options: -std=c++17 --clang

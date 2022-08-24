@@ -39,7 +39,7 @@ private module Liveness {
   /**
    * Holds if the `i`th node of basic block `bb` is a reference to `v` of kind `k`.
    */
-  private predicate ref(BasicBlock bb, int i, SourceVariable v, RefKind k) {
+  predicate ref(BasicBlock bb, int i, SourceVariable v, RefKind k) {
     exists(boolean certain | variableRead(bb, i, v, certain) | k = Read(certain))
     or
     exists(boolean certain | variableWrite(bb, i, v, certain) | k = Write(certain))
@@ -74,6 +74,10 @@ private module Liveness {
   private int maxRefRank(BasicBlock bb, SourceVariable v) {
     result = refRank(bb, _, v, _) and
     not result + 1 = refRank(bb, _, v, _)
+  }
+
+  predicate lastRefIsRead(BasicBlock bb, SourceVariable v) {
+    maxRefRank(bb, v) = refRank(bb, _, v, Read(_))
   }
 
   /**
@@ -185,28 +189,108 @@ newtype TDefinition =
 
 private module SsaDefReaches {
   newtype TSsaRefKind =
-    SsaRead() or
+    SsaActualRead() or
+    SsaPhiRead() or
     SsaDef()
+
+  class SsaRead = SsaActualRead or SsaPhiRead;
 
   /**
    * A classification of SSA variable references into reads and definitions.
    */
   class SsaRefKind extends TSsaRefKind {
     string toString() {
-      this = SsaRead() and
-      result = "SsaRead"
+      this = SsaActualRead() and
+      result = "SsaActualRead"
+      or
+      this = SsaPhiRead() and
+      result = "SsaPhiRead"
       or
       this = SsaDef() and
       result = "SsaDef"
     }
 
     int getOrder() {
-      this = SsaRead() and
+      this instanceof SsaRead and
       result = 0
       or
       this = SsaDef() and
       result = 1
     }
+  }
+
+  /**
+   * Holds if `bb` is in the dominance frontier of a block containing a
+   * read of `v`.
+   */
+  pragma[nomagic]
+  private predicate inReadDominanceFrontier(BasicBlock bb, SourceVariable v) {
+    exists(BasicBlock readbb | inDominanceFrontier(readbb, bb) |
+      lastRefIsRead(readbb, v)
+      or
+      phiRead(readbb, v)
+    )
+  }
+
+  /**
+   * Holds if a phi-read node should be inserted for variable `v` at the beginning
+   * of basic block `bb`.
+   *
+   * Phi-read nodes are like normal phi nodes, but they are inserted based on reads
+   * instead of writes, and only if the dominance-frontier block does not already
+   * contain a reference (read or write) to `v`. Unlike normal phi nodes, this is
+   * an internal implementation detail that is not exposed.
+   *
+   * The motivation for adding phi-reads is to improve performance of the use-use
+   * calculation in cases where there is a large number of reads that can reach the
+   * same join-point, and from there reach a large number of basic blocks. Example:
+   *
+   * ```cs
+   * if (a)
+   *   use(x);
+   * else if (b)
+   *   use(x);
+   * else if (c)
+   *   use(x);
+   * else if (d)
+   *   use(x);
+   * // many more ifs ...
+   *
+   * // phi-read for `x` inserted here
+   *
+   * // program not mentioning `x`, with large basic block graph
+   *
+   * use(x);
+   * ```
+   *
+   * Without phi-reads, the analysis has to replicate reachability for each of
+   * the guarded uses of `x`. However, with phi-reads, the analysis will limit
+   * each conditional use of `x` to reach the basic block containing the phi-read
+   * node for `x`, and only that basic block will have to compute reachability
+   * through the remainder of the large program.
+   *
+   * Like normal reads, each phi-read node `phi-read` can be reached from exactly
+   * one SSA definition (without passing through another definition): Assume, for
+   * the sake of contradiction, that there are two reaching definitions `def1` and
+   * `def2`. Now, if both `def1` and `def2` dominate `phi-read`, then the nearest
+   * dominating definition will prevent the other from reaching `phi-read`. So, at
+   * least one of `def1` and `def2` cannot dominate `phi-read`; assume it is `def1`.
+   * Then `def1` must go through one of its dominance-frontier blocks in order to
+   * reach `phi-read`. However, such a block will always start with a (normal) phi
+   * node, which contradicts reachability.
+   *
+   * Also, like normal reads, the unique SSA definition `def` that reaches `phi-read`,
+   * will dominate `phi-read`. Assuming it doesn't means that the path from `def`
+   * to `phi-read` goes through a dominance-frontier block, and hence a phi node,
+   * which contradicts reachability.
+   */
+  pragma[nomagic]
+  predicate phiRead(BasicBlock bb, SourceVariable v) {
+    inReadDominanceFrontier(bb, v) and
+    liveAtEntry(bb, v) and
+    // only if there are no other references to `v` inside `bb`
+    not ref(bb, _, v, _) and
+    not exists(Definition def | def.definesAt(v, bb, _))
   }
 
   /**
@@ -216,11 +300,16 @@ private module SsaDefReaches {
    *
    * Unlike `Liveness::ref`, this includes `phi` nodes.
    */
+  pragma[nomagic]
   predicate ssaRef(BasicBlock bb, int i, SourceVariable v, SsaRefKind k) {
     variableRead(bb, i, v, _) and
-    k = SsaRead()
+    k = SsaActualRead()
     or
-    exists(Definition def | def.definesAt(v, bb, i)) and
+    phiRead(bb, v) and
+    i = -1 and
+    k = SsaPhiRead()
+    or
+    any(Definition def).definesAt(v, bb, i) and
     k = SsaDef()
   }
 
@@ -273,7 +362,7 @@ private module SsaDefReaches {
     )
     or
     ssaDefReachesRank(bb, def, rnk - 1, v) and
-    rnk = ssaRefRank(bb, _, v, SsaRead())
+    rnk = ssaRefRank(bb, _, v, any(SsaRead k))
   }
 
   /**
@@ -283,7 +372,7 @@ private module SsaDefReaches {
   predicate ssaDefReachesReadWithinBlock(SourceVariable v, Definition def, BasicBlock bb, int i) {
     exists(int rnk |
       ssaDefReachesRank(bb, def, rnk, v) and
-      rnk = ssaRefRank(bb, i, v, SsaRead())
+      rnk = ssaRefRank(bb, i, v, any(SsaRead k))
     )
   }
 
@@ -309,44 +398,93 @@ private module SsaDefReaches {
     ssaDefRank(def, v, bb, i, _) = maxSsaRefRank(bb, v)
   }
 
-  predicate defOccursInBlock(Definition def, BasicBlock bb, SourceVariable v) {
-    exists(ssaDefRank(def, v, bb, _, _))
+  predicate defOccursInBlock(Definition def, BasicBlock bb, SourceVariable v, SsaRefKind k) {
+    exists(ssaDefRank(def, v, bb, _, k))
   }
 
   pragma[noinline]
   private predicate ssaDefReachesThroughBlock(Definition def, BasicBlock bb) {
     ssaDefReachesEndOfBlock(bb, def, _) and
-    not defOccursInBlock(_, bb, def.getSourceVariable())
+    not defOccursInBlock(_, bb, def.getSourceVariable(), _)
   }
 
   /**
    * Holds if `def` is accessed in basic block `bb1` (either a read or a write),
-   * `bb2` is a transitive successor of `bb1`, `def` is live at the end of `bb1`,
-   * and the underlying variable for `def` is neither read nor written in any block
-   * on the path between `bb1` and `bb2`.
+   * `bb2` is a transitive successor of `bb1`, `def` is live at the end of _some_
+   * predecessor of `bb2`, and the underlying variable for `def` is neither read
+   * nor written in any block on the path between `bb1` and `bb2`.
+   *
+   * Phi reads are considered as normal reads for this predicate.
    */
-  predicate varBlockReaches(Definition def, BasicBlock bb1, BasicBlock bb2) {
-    defOccursInBlock(def, bb1, _) and
+  pragma[nomagic]
+  private predicate varBlockReachesInclPhiRead(Definition def, BasicBlock bb1, BasicBlock bb2) {
+    defOccursInBlock(def, bb1, _, _) and
     bb2 = getABasicBlockSuccessor(bb1)
     or
     exists(BasicBlock mid |
-      varBlockReaches(def, bb1, mid) and
+      varBlockReachesInclPhiRead(def, bb1, mid) and
       ssaDefReachesThroughBlock(def, mid) and
       bb2 = getABasicBlockSuccessor(mid)
     )
   }
 
+  pragma[nomagic]
+  private predicate phiReadStep(Definition def, SourceVariable v, BasicBlock bb1, BasicBlock bb2) {
+    varBlockReachesInclPhiRead(def, bb1, bb2) and
+    defOccursInBlock(def, bb2, v, SsaPhiRead())
+  }
+
+  pragma[nomagic]
+  private predicate varBlockReachesExclPhiRead(Definition def, BasicBlock bb1, BasicBlock bb2) {
+    varBlockReachesInclPhiRead(pragma[only_bind_into](def), bb1, pragma[only_bind_into](bb2)) and
+    ssaRef(bb2, _, def.getSourceVariable(), [SsaActualRead().(TSsaRefKind), SsaDef()])
+    or
+    exists(BasicBlock mid |
+      varBlockReachesExclPhiRead(def, mid, bb2) and
+      phiReadStep(def, _, bb1, mid)
+    )
+  }
+
   /**
    * Holds if `def` is accessed in basic block `bb1` (either a read or a write),
-   * `def` is read at index `i2` in basic block `bb2`, `bb2` is in a transitive
-   * successor block of `bb1`, and `def` is neither read nor written in any block
-   * on a path between `bb1` and `bb2`.
+   * the underlying variable `v` of `def` is accessed in basic block `bb2`
+   * (either a read or a write), `bb2` is a transitive successor of `bb1`, and
+   * `v` is neither read nor written in any block on the path between `bb1`
+   * and `bb2`.
    */
+  pragma[nomagic]
+  predicate varBlockReaches(Definition def, BasicBlock bb1, BasicBlock bb2) {
+    varBlockReachesExclPhiRead(def, bb1, bb2) and
+    not defOccursInBlock(def, bb1, _, SsaPhiRead())
+  }
+
+  pragma[nomagic]
   predicate defAdjacentRead(Definition def, BasicBlock bb1, BasicBlock bb2, int i2) {
     varBlockReaches(def, bb1, bb2) and
-    ssaRefRank(bb2, i2, def.getSourceVariable(), SsaRead()) = 1
+    ssaRefRank(bb2, i2, def.getSourceVariable(), SsaActualRead()) = 1
+  }
+
+  /**
+   * Holds if `def` is accessed in basic block `bb` (either a read or a write),
+   * `bb1` can reach a transitive successor `bb2` where `def` is no longer live,
+   * and `v` is neither read nor written in any block on the path between `bb`
+   * and `bb2`.
+   */
+  pragma[nomagic]
+  predicate varBlockReachesExit(Definition def, BasicBlock bb) {
+    exists(BasicBlock bb2 | varBlockReachesInclPhiRead(def, bb, bb2) |
+      not defOccursInBlock(def, bb2, _, _) and
+      not ssaDefReachesEndOfBlock(bb2, def, _)
+    )
+    or
+    exists(BasicBlock mid |
+      varBlockReachesExit(def, mid) and
+      phiReadStep(def, _, bb, mid)
+    )
   }
 }
+
+predicate phiReadExposedForTesting = phiRead/2;
 
 private import SsaDefReaches
 
@@ -365,7 +503,8 @@ predicate liveThrough(BasicBlock bb, SourceVariable v) {
  */
 pragma[nomagic]
 predicate ssaDefReachesEndOfBlock(BasicBlock bb, Definition def, SourceVariable v) {
-  exists(int last | last = maxSsaRefRank(bb, v) |
+  exists(int last |
+    last = maxSsaRefRank(pragma[only_bind_into](bb), pragma[only_bind_into](v)) and
     ssaDefReachesRank(bb, def, last, v) and
     liveAtExit(bb, v)
   )
@@ -405,7 +544,7 @@ pragma[nomagic]
 predicate ssaDefReachesRead(SourceVariable v, Definition def, BasicBlock bb, int i) {
   ssaDefReachesReadWithinBlock(v, def, bb, i)
   or
-  variableRead(bb, i, v, _) and
+  ssaRef(bb, i, v, any(SsaRead k)) and
   ssaDefReachesEndOfBlock(getABasicBlockPredecessor(bb), def, v) and
   not ssaDefReachesReadWithinBlock(v, _, bb, i)
 }
@@ -421,7 +560,7 @@ pragma[nomagic]
 predicate adjacentDefRead(Definition def, BasicBlock bb1, int i1, BasicBlock bb2, int i2) {
   exists(int rnk |
     rnk = ssaDefRank(def, _, bb1, i1, _) and
-    rnk + 1 = ssaDefRank(def, _, bb1, i2, SsaRead()) and
+    rnk + 1 = ssaDefRank(def, _, bb1, i2, SsaActualRead()) and
     variableRead(bb1, i2, _, _) and
     bb2 = bb1
   )
@@ -538,18 +677,15 @@ predicate lastRefRedefNoUncertainReads(Definition def, BasicBlock bb, int i, Def
  */
 pragma[nomagic]
 predicate lastRef(Definition def, BasicBlock bb, int i) {
+  // Can reach another definition
   lastRefRedef(def, bb, i, _)
   or
-  lastSsaRef(def, _, bb, i) and
-  (
+  exists(SourceVariable v | lastSsaRef(def, v, bb, i) |
     // Can reach exit directly
     bb instanceof ExitBasicBlock
     or
     // Can reach a block using one or more steps, where `def` is no longer live
-    exists(BasicBlock bb2 | varBlockReaches(def, bb, bb2) |
-      not defOccursInBlock(def, bb2, _) and
-      not ssaDefReachesEndOfBlock(bb2, def, _)
-    )
+    varBlockReachesExit(def, bb)
   )
 }
 

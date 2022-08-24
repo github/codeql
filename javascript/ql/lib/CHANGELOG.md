@@ -1,3 +1,33 @@
+## 0.2.3
+
+## 0.2.2
+
+## 0.2.1
+
+### Minor Analysis Improvements
+
+* The `chownr` library is now modeled as a sink for the `js/path-injection` query.
+* Improved modeling of sensitive data sources, so common words like `certain` and `secretary` are no longer considered a certificate and a secret (respectively).
+* The `gray-matter` library is now modeled as a sink for the `js/code-injection` query.
+
+## 0.2.0
+
+### Major Analysis Improvements
+
+* Added support for TypeScript 4.7.
+
+### Minor Analysis Improvements
+
+* All new ECMAScript 2022 features are now supported.
+
+## 0.1.4
+
+## 0.1.3
+
+### Minor Analysis Improvements
+
+* The `isLibaryFile` predicate from `ClassifyFiles.qll` has been renamed to `isLibraryFile` to fix a typo. 
+
 ## 0.1.2
 
 ### Deprecated APIs

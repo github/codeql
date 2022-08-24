@@ -15,15 +15,6 @@ filegroup(
 py_binary(
     name = "codegen",
     srcs = ["codegen.py"],
-    visibility = ["//swift/codegen/test:__pkg__"],
-    deps = ["//swift/codegen/generators"],
-)
-
-# as opposed to the above, that is meant to only be run with bazel run,
-# we need to be precise with data dependencies of this which is meant be run during build
-py_binary(
-    name = "cppcodegen",
-    srcs = ["cppcodegen.py"],
     data = [
         ":schema",
         ":schema_includes",

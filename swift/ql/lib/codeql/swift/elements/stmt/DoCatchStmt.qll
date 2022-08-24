@@ -9,4 +9,6 @@ class DoCatchStmt extends DoCatchStmtBase {
       not exists(this.getCatch(i + 1))
     )
   }
+
+  override string toString() { result = "do { ... } catch { ... }" }
 }

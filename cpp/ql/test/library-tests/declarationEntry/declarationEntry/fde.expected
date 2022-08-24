@@ -10,5 +10,7 @@
 | declarationEntry.cpp:28:7:28:7 | declaration of operator= |  | 0 |  |
 | declarationEntry.cpp:28:7:28:7 | declaration of operator= |  | 0 |  |
 | declarationEntry.cpp:28:7:28:7 | declaration of operator= |  | 0 |  |
+| declarationEntry.cpp:39:7:39:7 | declaration of operator= |  | 0 |  |
+| declarationEntry.cpp:39:7:39:7 | declaration of operator= |  | 0 |  |
 | macro.c:2:1:2:3 | declaration of foo |  | 2 | c_linkage, static |
 | macro.c:4:5:4:8 | definition of main |  | 1 | c_linkage |

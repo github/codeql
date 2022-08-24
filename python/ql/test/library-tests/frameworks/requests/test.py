@@ -33,6 +33,10 @@ resp = requests.options("url") # $ clientRequestUrlPart="url"
 # ==============================================================================
 
 resp = requests.get("url", verify=False) # $ clientRequestUrlPart="url" clientRequestCertValidationDisabled
+resp = requests.get("url", verify=0) # $ clientRequestUrlPart="url" clientRequestCertValidationDisabled
+
+# in reuqests, using `verify=None` is just the default value, so does NOT turn off certificate validation
+resp = requests.get("url", verify=None) # $ clientRequestUrlPart="url"
 
 def make_get(verify_arg):
     resp = requests.get("url", verify=verify_arg) # $ clientRequestUrlPart="url" clientRequestCertValidationDisabled

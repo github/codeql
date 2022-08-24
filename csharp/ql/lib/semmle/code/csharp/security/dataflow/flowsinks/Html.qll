@@ -34,10 +34,10 @@ private class HttpResponseSinkModelCsv extends SinkModelCsv {
   override predicate row(string row) {
     row =
       [
-        "System.Web;HttpResponse;false;Write;;;Argument[0];html",
-        "System.Web;HttpResponse;false;WriteFile;;;Argument[0];html",
-        "System.Web;HttpResponse;false;TransmitFile;;;Argument[0];html",
-        "System.Web;HttpResponse;false;BinaryWrite;;;Argument[0];html"
+        "System.Web;HttpResponse;false;Write;;;Argument[0];html;manual",
+        "System.Web;HttpResponse;false;WriteFile;;;Argument[0];html;manual",
+        "System.Web;HttpResponse;false;TransmitFile;;;Argument[0];html;manual",
+        "System.Web;HttpResponse;false;BinaryWrite;;;Argument[0];html;manual"
       ]
   }
 }

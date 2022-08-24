@@ -8,8 +8,8 @@ private import semmle.python.frameworks.Django
 private import semmle.python.dataflow.new.DataFlow
 private import experimental.semmle.python.Concepts
 private import semmle.python.ApiGraphs
-import semmle.python.dataflow.new.RemoteFlowSources
 private import semmle.python.Concepts
+import semmle.python.dataflow.new.RemoteFlowSources
 
 private module ExperimentalPrivateDjango {
   private module DjangoMod {
@@ -86,11 +86,13 @@ private module ExperimentalPrivateDjango {
             t.start() and
             (
               exists(SubscriptNode subscript |
-                subscript.getObject() = baseClassRef().getReturn().getAUse().asCfgNode() and
+                subscript.getObject() =
+                  baseClassRef().getReturn().getAValueReachableFromSource().asCfgNode() and
                 result.asCfgNode() = subscript
               )
               or
-              result.(DataFlow::AttrRead).getObject() = baseClassRef().getReturn().getAUse()
+              result.(DataFlow::AttrRead).getObject() =
+                baseClassRef().getReturn().getAValueReachableFromSource()
             )
             or
             exists(DataFlow::TypeTracker t2 | result = headerInstance(t2).track(t2, t))
@@ -186,6 +188,91 @@ private module ExperimentalPrivateDjango {
 
             override DataFlow::Node getHeaderArg() { none() }
           }
+        }
+      }
+    }
+
+    module Email {
+      /** https://docs.djangoproject.com/en/3.2/topics/email/ */
+      private API::Node djangoMail() {
+        result = API::moduleImport("django").getMember("core").getMember("mail")
+      }
+
+      /**
+       * Gets a call to `django.core.mail.send_mail()`.
+       *
+       * Given the following example:
+       *
+       * ```py
+       * send_mail("Subject", "plain-text body", "from@example.com", ["to@example.com"], html_message=django.http.request.GET.get("html"))
+       * ```
+       *
+       * * `this` would be `send_mail("Subject", "plain-text body", "from@example.com", ["to@example.com"], html_message=django.http.request.GET.get("html"))`.
+       * * `getPlainTextBody()`'s result would be `"plain-text body"`.
+       * * `getHtmlBody()`'s result would be `django.http.request.GET.get("html")`.
+       * * `getTo()`'s result would be `["to@example.com"]`.
+       * * `getFrom()`'s result would be `"from@example.com"`.
+       * * `getSubject()`'s result would be `"Subject"`.
+       */
+      private class DjangoSendMail extends DataFlow::CallCfgNode, EmailSender::Range {
+        DjangoSendMail() { this = djangoMail().getMember("send_mail").getACall() }
+
+        override DataFlow::Node getPlainTextBody() {
+          result in [this.getArg(1), this.getArgByName("message")]
+        }
+
+        override DataFlow::Node getHtmlBody() {
+          result in [this.getArg(8), this.getArgByName("html_message")]
+        }
+
+        override DataFlow::Node getTo() {
+          result in [this.getArg(3), this.getArgByName("recipient_list")]
+        }
+
+        override DataFlow::Node getFrom() {
+          result in [this.getArg(2), this.getArgByName("from_email")]
+        }
+
+        override DataFlow::Node getSubject() {
+          result in [this.getArg(0), this.getArgByName("subject")]
+        }
+      }
+
+      /**
+       * Gets a call to `django.core.mail.mail_admins()` or `django.core.mail.mail_managers()`.
+       *
+       * Given the following example:
+       *
+       * ```py
+       * mail_admins("Subject", "plain-text body", html_message=django.http.request.GET.get("html"))
+       * ```
+       *
+       * * `this` would be `mail_admins("Subject", "plain-text body", html_message=django.http.request.GET.get("html"))`.
+       * * `getPlainTextBody()`'s result would be `"plain-text body"`.
+       * * `getHtmlBody()`'s result would be `django.http.request.GET.get("html")`.
+       * * `getTo()`'s result would be `none`.
+       * * `getFrom()`'s result would be `none`.
+       * * `getSubject()`'s result would be `"Subject"`.
+       */
+      private class DjangoMailInternal extends DataFlow::CallCfgNode, EmailSender::Range {
+        DjangoMailInternal() {
+          this = djangoMail().getMember(["mail_admins", "mail_managers"]).getACall()
+        }
+
+        override DataFlow::Node getPlainTextBody() {
+          result in [this.getArg(1), this.getArgByName("message")]
+        }
+
+        override DataFlow::Node getHtmlBody() {
+          result in [this.getArg(4), this.getArgByName("html_message")]
+        }
+
+        override DataFlow::Node getTo() { none() }
+
+        override DataFlow::Node getFrom() { none() }
+
+        override DataFlow::Node getSubject() {
+          result in [this.getArg(0), this.getArgByName("subject")]
         }
       }
     }

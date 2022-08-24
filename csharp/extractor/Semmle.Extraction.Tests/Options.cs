@@ -29,7 +29,6 @@ namespace Semmle.Extraction.Tests
             Assert.True(options.Threads >= 1);
             Assert.Equal(Verbosity.Info, options.Verbosity);
             Assert.False(options.Console);
-            Assert.False(options.ClrTracer);
             Assert.False(options.PDB);
             Assert.False(options.Fast);
             Assert.Equal(TrapWriter.CompressionMode.Brotli, options.TrapCompression);

@@ -714,7 +714,7 @@ module PersistentWriteAccess {
  * Extend this class to refine existing API models. If you want to model new APIs,
  * extend `CSRFProtectionSetting::Range` instead.
  */
-class CSRFProtectionSetting extends DataFlow::Node instanceof CSRFProtectionSetting::Range {
+class CsrfProtectionSetting extends DataFlow::Node instanceof CsrfProtectionSetting::Range {
   /**
    * Gets the boolean value corresponding to if CSRF protection is enabled
    * (`true`) or disabled (`false`) by this node.
@@ -722,8 +722,11 @@ class CSRFProtectionSetting extends DataFlow::Node instanceof CSRFProtectionSett
   boolean getVerificationSetting() { result = super.getVerificationSetting() }
 }
 
+/** DEPRECATED: Alias for CsrfProtectionSetting */
+deprecated class CSRFProtectionSetting = CsrfProtectionSetting;
+
 /** Provides a class for modeling new CSRF protection setting APIs. */
-module CSRFProtectionSetting {
+module CsrfProtectionSetting {
   /**
    * A data-flow node that may set or unset Cross-site request forgery protection.
    *
@@ -738,6 +741,9 @@ module CSRFProtectionSetting {
     abstract boolean getVerificationSetting();
   }
 }
+
+/** DEPRECATED: Alias for CsrfProtectionSetting */
+deprecated module CSRFProtectionSetting = CsrfProtectionSetting;
 
 /** Provides classes for modeling path-related APIs. */
 module Path {
@@ -826,7 +832,19 @@ module Logging {
  * to improve our libraries in the future to more precisely capture this aspect.
  */
 module Cryptography {
-  import security.CryptoAlgorithms
+  // Since we still rely on `isWeak` predicate on `CryptographicOperation` in Ruby, we
+  // modify that part of the shared concept... which means we have to explicitly
+  // re-export everything else.
+  // Using SC shorthand for "Shared Cryptography"
+  import codeql.ruby.internal.ConceptsShared::Cryptography as SC
+
+  class CryptographicAlgorithm = SC::CryptographicAlgorithm;
+
+  class EncryptionAlgorithm = SC::EncryptionAlgorithm;
+
+  class HashingAlgorithm = SC::HashingAlgorithm;
+
+  class PasswordHashingAlgorithm = SC::PasswordHashingAlgorithm;
 
   /**
    * A data-flow node that is an application of a cryptographic algorithm. For example,
@@ -835,15 +853,9 @@ module Cryptography {
    * Extend this class to refine existing API models. If you want to model new APIs,
    * extend `CryptographicOperation::Range` instead.
    */
-  class CryptographicOperation extends DataFlow::Node instanceof CryptographicOperation::Range {
-    /** Gets the algorithm used, if it matches a known `CryptographicAlgorithm`. */
-    CryptographicAlgorithm getAlgorithm() { result = super.getAlgorithm() }
-
-    /** Gets an input the algorithm is used on, for example the plain text input to be encrypted. */
-    DataFlow::Node getAnInput() { result = super.getAnInput() }
-
-    /** Holds if this encryption operation is known to be weak. */
-    predicate isWeak() { super.isWeak() }
+  class CryptographicOperation extends SC::CryptographicOperation instanceof CryptographicOperation::Range {
+    /** DEPRECATED: Use `getAlgorithm().isWeak() or getBlockMode().isWeak()` instead */
+    deprecated predicate isWeak() { super.isWeak() }
   }
 
   /** Provides classes for modeling new applications of a cryptographic algorithms. */
@@ -855,15 +867,11 @@ module Cryptography {
      * Extend this class to model new APIs. If you want to refine existing API models,
      * extend `CryptographicOperation` instead.
      */
-    abstract class Range extends DataFlow::Node {
-      /** Gets the algorithm used, if it matches a known `CryptographicAlgorithm`. */
-      abstract CryptographicAlgorithm getAlgorithm();
-
-      /** Gets an input the algorithm is used on, for example the plain text input to be encrypted. */
-      abstract DataFlow::Node getAnInput();
-
-      /** Holds if this encryption operation is known to be weak. */
-      abstract predicate isWeak();
+    abstract class Range extends SC::CryptographicOperation::Range {
+      /** DEPRECATED: Use `getAlgorithm().isWeak() or getBlockMode().isWeak()` instead */
+      deprecated predicate isWeak() { this.getAlgorithm().isWeak() or this.getBlockMode().isWeak() }
     }
   }
+
+  class BlockMode = SC::BlockMode;
 }

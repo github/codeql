@@ -1,0 +1,142 @@
+| file://:0:0:0:0 | .a | file://:0:0:0:0 | &... |
+| file://:0:0:0:0 | .source_value | file://:0:0:0:0 | &... |
+| file://:0:0:0:0 | .wrappedValue | file://:0:0:0:0 | &... |
+| file://:0:0:0:0 | .x | file://:0:0:0:0 | &... |
+| file://:0:0:0:0 | self | file://:0:0:0:0 | &... |
+| file://:0:0:0:0 | self | file://:0:0:0:0 | &... |
+| file://:0:0:0:0 | self | file://:0:0:0:0 | self |
+| file://:0:0:0:0 | self | file://:0:0:0:0 | self |
+| test.swift:6:9:6:13 | WriteDef | test.swift:7:15:7:15 | t1 |
+| test.swift:6:19:6:26 | call to source() | test.swift:6:9:6:13 | WriteDef |
+| test.swift:7:15:7:15 | t1 | test.swift:8:10:8:10 | t1 |
+| test.swift:8:5:8:10 | WriteDef | test.swift:10:15:10:15 | t2 |
+| test.swift:8:10:8:10 | t1 | test.swift:8:5:8:10 | WriteDef |
+| test.swift:8:10:8:10 | t1 | test.swift:9:15:9:15 | t1 |
+| test.swift:9:15:9:15 | t1 | test.swift:11:8:11:8 | t1 |
+| test.swift:12:9:12:14 | WriteDef | test.swift:13:19:13:19 | t2 |
+| test.swift:12:14:12:14 | 0 | test.swift:12:9:12:14 | WriteDef |
+| test.swift:15:5:15:5 | Phi | test.swift:15:15:15:15 | t2 |
+| test.swift:17:5:17:10 | WriteDef | test.swift:21:15:21:15 | t1 |
+| test.swift:17:10:17:10 | 0 | test.swift:17:5:17:10 | WriteDef |
+| test.swift:29:18:29:21 | x | test.swift:30:15:30:15 | x |
+| test.swift:29:26:29:29 | y | test.swift:31:15:31:15 | y |
+| test.swift:42:16:42:19 | b | test.swift:45:8:45:8 | b |
+| test.swift:43:9:43:13 | WriteDef | test.swift:46:13:46:13 | t1 |
+| test.swift:43:19:43:26 | call to source() | test.swift:43:9:43:13 | WriteDef |
+| test.swift:46:9:46:13 | WriteDef | test.swift:50:5:50:5 | Phi |
+| test.swift:46:13:46:13 | t1 | test.swift:46:9:46:13 | WriteDef |
+| test.swift:48:9:48:13 | WriteDef | test.swift:50:5:50:5 | Phi |
+| test.swift:48:13:48:13 | 1 | test.swift:48:9:48:13 | WriteDef |
+| test.swift:50:5:50:5 | Phi | test.swift:50:15:50:15 | t |
+| test.swift:54:5:54:18 | WriteDef | test.swift:53:1:56:1 | arg[return] |
+| test.swift:54:11:54:18 | call to source() | test.swift:54:5:54:18 | WriteDef |
+| test.swift:59:9:59:12 | WriteDef | test.swift:60:15:60:15 | x |
+| test.swift:59:18:59:18 | 0 | test.swift:59:9:59:12 | WriteDef |
+| test.swift:60:15:60:15 | x | test.swift:61:23:61:23 | x |
+| test.swift:61:5:61:24 | WriteDef | test.swift:62:15:62:15 | x |
+| test.swift:61:17:61:23 | arg: &... | test.swift:61:5:61:24 | WriteDef |
+| test.swift:61:23:61:23 | x | test.swift:61:22:61:23 | &... |
+| test.swift:65:16:65:28 | arg1 | test.swift:66:21:66:21 | arg1 |
+| test.swift:65:33:65:45 | arg2 | test.swift:67:12:67:12 | arg2 |
+| test.swift:66:9:66:15 | WriteDef | test.swift:68:12:68:12 | temp |
+| test.swift:66:21:66:21 | arg1 | test.swift:66:9:66:15 | WriteDef |
+| test.swift:67:5:67:12 | WriteDef | test.swift:65:1:70:1 | arg1[return] |
+| test.swift:67:12:67:12 | arg2 | test.swift:67:5:67:12 | WriteDef |
+| test.swift:68:5:68:12 | WriteDef | test.swift:65:1:70:1 | arg2[return] |
+| test.swift:68:12:68:12 | temp | test.swift:68:5:68:12 | WriteDef |
+| test.swift:73:9:73:12 | WriteDef | test.swift:75:22:75:22 | x |
+| test.swift:73:18:73:25 | call to source() | test.swift:73:9:73:12 | WriteDef |
+| test.swift:74:9:74:12 | WriteDef | test.swift:75:32:75:32 | y |
+| test.swift:74:18:74:18 | 0 | test.swift:74:9:74:12 | WriteDef |
+| test.swift:75:5:75:33 | WriteDef | test.swift:76:15:76:15 | x |
+| test.swift:75:5:75:33 | WriteDef | test.swift:77:15:77:15 | y |
+| test.swift:75:15:75:22 | arg1: &... | test.swift:75:5:75:33 | WriteDef |
+| test.swift:75:22:75:22 | x | test.swift:75:21:75:22 | &... |
+| test.swift:75:25:75:32 | arg2: &... | test.swift:75:5:75:33 | WriteDef |
+| test.swift:75:32:75:32 | y | test.swift:75:31:75:32 | &... |
+| test.swift:81:5:81:18 | WriteDef | test.swift:80:1:82:1 | arg[return] |
+| test.swift:81:11:81:18 | call to source() | test.swift:81:5:81:18 | WriteDef |
+| test.swift:84:1:91:1 | Phi | test.swift:84:1:91:1 | arg[return] |
+| test.swift:84:48:84:54 | bool | test.swift:85:8:85:8 | bool |
+| test.swift:86:9:86:22 | WriteDef | test.swift:84:1:91:1 | Phi |
+| test.swift:86:15:86:22 | call to source() | test.swift:86:9:86:22 | WriteDef |
+| test.swift:89:9:89:22 | WriteDef | test.swift:84:1:91:1 | Phi |
+| test.swift:89:15:89:22 | call to source() | test.swift:89:9:89:22 | WriteDef |
+| test.swift:93:17:93:23 | bool | test.swift:104:50:104:50 | bool |
+| test.swift:95:13:95:16 | WriteDef | test.swift:96:19:96:19 | x |
+| test.swift:95:22:95:22 | 0 | test.swift:95:13:95:16 | WriteDef |
+| test.swift:96:19:96:19 | x | test.swift:97:40:97:40 | x |
+| test.swift:97:9:97:41 | WriteDef | test.swift:98:19:98:19 | x |
+| test.swift:97:34:97:40 | arg: &... | test.swift:97:9:97:41 | WriteDef |
+| test.swift:97:40:97:40 | x | test.swift:97:39:97:40 | &... |
+| test.swift:102:13:102:16 | WriteDef | test.swift:103:19:103:19 | x |
+| test.swift:102:22:102:22 | 0 | test.swift:102:13:102:16 | WriteDef |
+| test.swift:103:19:103:19 | x | test.swift:104:41:104:41 | x |
+| test.swift:104:9:104:54 | WriteDef | test.swift:105:19:105:19 | x |
+| test.swift:104:35:104:41 | arg: &... | test.swift:104:9:104:54 | WriteDef |
+| test.swift:104:41:104:41 | x | test.swift:104:40:104:41 | &... |
+| test.swift:109:9:109:14 | arg | test.swift:110:12:110:12 | arg |
+| test.swift:113:14:113:19 | arg | test.swift:114:19:114:19 | arg |
+| test.swift:113:24:113:41 | lambda | test.swift:114:12:114:12 | lambda |
+| test.swift:118:9:118:12 | WriteDef | test.swift:119:31:119:31 | x |
+| test.swift:118:18:118:25 | call to source() | test.swift:118:9:118:12 | WriteDef |
+| test.swift:119:9:119:12 | WriteDef | test.swift:120:15:120:15 | y |
+| test.swift:119:18:119:44 | call to forward(arg:lambda:) | test.swift:119:9:119:12 | WriteDef |
+| test.swift:122:9:122:12 | WriteDef | test.swift:126:15:126:15 | z |
+| test.swift:122:18:125:6 | call to forward(arg:lambda:) | test.swift:122:9:122:12 | WriteDef |
+| test.swift:123:10:123:13 | i | test.swift:124:16:124:16 | i |
+| test.swift:128:9:128:16 | WriteDef | test.swift:132:15:132:15 | clean |
+| test.swift:128:22:131:6 | call to forward(arg:lambda:) | test.swift:128:9:128:16 | WriteDef |
+| test.swift:141:9:141:9 | WriteDef | test.swift:145:15:145:15 | lambda2 |
+| test.swift:141:19:144:5 | { ... } | test.swift:141:9:141:9 | WriteDef |
+| test.swift:142:10:142:13 | i | test.swift:143:16:143:16 | i |
+| test.swift:147:9:147:9 | WriteDef | test.swift:151:15:151:15 | lambdaSource |
+| test.swift:147:24:150:5 | { ... } | test.swift:147:9:147:9 | WriteDef |
+| test.swift:151:15:151:15 | lambdaSource | test.swift:159:16:159:16 | lambdaSource |
+| test.swift:153:9:153:9 | WriteDef | test.swift:157:5:157:5 | lambdaSink |
+| test.swift:153:22:156:5 | { ... } | test.swift:153:9:153:9 | WriteDef |
+| test.swift:154:10:154:13 | i | test.swift:155:19:155:19 | i |
+| test.swift:157:5:157:5 | lambdaSink | test.swift:159:5:159:5 | lambdaSink |
+| test.swift:163:7:163:7 | self | file://:0:0:0:0 | self |
+| test.swift:163:7:163:7 | self | file://:0:0:0:0 | self |
+| test.swift:163:7:163:7 | self | file://:0:0:0:0 | self |
+| test.swift:163:7:163:7 | value | file://:0:0:0:0 | value |
+| test.swift:165:3:165:3 | self | test.swift:166:5:166:5 | self |
+| test.swift:169:8:169:8 | self | test.swift:170:5:170:5 | self |
+| test.swift:169:12:169:22 | value | test.swift:170:9:170:9 | value |
+| test.swift:173:8:173:8 | self | test.swift:174:12:174:12 | self |
+| test.swift:179:7:179:7 | WriteDef | test.swift:180:3:180:3 | a |
+| test.swift:179:11:179:13 | call to init | test.swift:179:7:179:7 | WriteDef |
+| test.swift:180:3:180:3 | a | test.swift:181:13:181:13 | a |
+| test.swift:185:7:185:7 | self | file://:0:0:0:0 | self |
+| test.swift:185:7:185:7 | self | file://:0:0:0:0 | self |
+| test.swift:185:7:185:7 | self | file://:0:0:0:0 | self |
+| test.swift:185:7:185:7 | value | file://:0:0:0:0 | value |
+| test.swift:187:3:187:3 | self | test.swift:188:5:188:5 | self |
+| test.swift:193:7:193:7 | WriteDef | test.swift:194:3:194:3 | b |
+| test.swift:193:11:193:13 | call to init | test.swift:193:7:193:7 | WriteDef |
+| test.swift:194:3:194:3 | b | test.swift:195:13:195:13 | b |
+| test.swift:199:7:199:7 | WriteDef | test.swift:200:3:200:3 | a |
+| test.swift:199:11:199:13 | call to init | test.swift:199:7:199:7 | WriteDef |
+| test.swift:200:3:200:3 | a | test.swift:201:13:201:13 | a |
+| test.swift:205:7:205:7 | WriteDef | test.swift:206:3:206:3 | a |
+| test.swift:205:11:205:13 | call to init | test.swift:205:7:205:7 | WriteDef |
+| test.swift:206:3:206:3 | a | test.swift:207:13:207:13 | a |
+| test.swift:211:7:211:7 | WriteDef | test.swift:212:3:212:3 | a |
+| test.swift:211:11:211:13 | call to init | test.swift:211:7:211:7 | WriteDef |
+| test.swift:212:3:212:3 | a | test.swift:213:13:213:13 | a |
+| test.swift:217:7:217:7 | WriteDef | test.swift:218:3:218:3 | b |
+| test.swift:217:11:217:13 | call to init | test.swift:217:7:217:7 | WriteDef |
+| test.swift:218:3:218:3 | b | test.swift:219:13:219:13 | b |
+| test.swift:223:7:223:7 | self | file://:0:0:0:0 | self |
+| test.swift:234:7:234:7 | WriteDef | test.swift:235:13:235:13 | a |
+| test.swift:234:11:234:31 | call to init | test.swift:234:7:234:7 | WriteDef |
+| test.swift:235:13:235:13 | a | test.swift:237:3:237:3 | a |
+| test.swift:237:3:237:3 | a | test.swift:238:13:238:13 | a |
+| test.swift:242:9:242:9 | self | file://:0:0:0:0 | self |
+| test.swift:242:9:242:9 | self | file://:0:0:0:0 | self |
+| test.swift:242:9:242:9 | self | file://:0:0:0:0 | self |
+| test.swift:242:9:242:9 | value | file://:0:0:0:0 | value |
+| test.swift:243:9:243:9 | self | test.swift:243:18:243:18 | self |
+| test.swift:246:5:246:5 | self | test.swift:247:9:247:9 | self |
+| test.swift:252:23:252:23 | value | file://:0:0:0:0 | value |

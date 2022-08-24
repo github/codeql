@@ -53,13 +53,6 @@ module ClientSideUrlRedirect {
   }
 
   /**
-   * DEPRECATED. Can usually be replaced with `untrustedUrlSubstring`.
-   * Query accesses via `location.hash` or `location.search` are now independent
-   * `RemoteFlowSource` instances, and only substrings of `location` need to be handled via steps.
-   */
-  deprecated predicate queryAccess = untrustedUrlSubstring/2;
-
-  /**
    * Holds if `substring` refers to a substring of `base` which is considered untrusted
    * when `base` is the current URL.
    */
@@ -104,6 +97,10 @@ module ClientSideUrlRedirect {
       |
         name = ["replace", "assign"]
       ) and
+      xss = true
+      or
+      // A call to `navigation.navigate`
+      this = DataFlow::globalVarRef("navigation").getAMethodCall("navigate").getArgument(0) and
       xss = true
       or
       // An assignment to `location`
@@ -180,7 +177,7 @@ module ClientSideUrlRedirect {
       )
       or
       // e.g. node.setAttribute("href", sink)
-      any(DomMethodCallExpr call).interpretsArgumentsAsURL(this.asExpr())
+      any(DomMethodCallExpr call).interpretsArgumentsAsUrl(this.asExpr())
     }
 
     override predicate isXssSink() { any() }

@@ -49,7 +49,7 @@ module DomBasedXss {
       or
       // A construction of a JSDOM object (server side DOM), where scripts are allowed.
       exists(DataFlow::NewNode instance |
-        instance = API::moduleImport("jsdom").getMember("JSDOM").getInstance().getAnImmediateUse() and
+        instance = API::moduleImport("jsdom").getMember("JSDOM").getInstance().asSource() and
         this = instance.getArgument(0) and
         instance.getOptionArgument(1, "runScripts").mayHaveStringValue("dangerously")
       )

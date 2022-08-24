@@ -83,7 +83,6 @@ class TagBase:
 class Tag:
     name: str
     bases: List[TagBase]
-    index: int
     id: str
 
     def __post_init__(self):
@@ -99,20 +98,17 @@ class Tag:
 @dataclass
 class TrapList:
     template: ClassVar = 'trap_traps'
-
+    extensions = ["h", "cpp"]
     traps: List[Trap]
-    namespace: str
-    trap_affix: str
-    include_dir: str
     source: str
 
 
 @dataclass
 class TagList:
     template: ClassVar = 'trap_tags'
+    extensions = ["h"]
 
     tags: List[Tag]
-    namespace: str
     source: str
 
 
@@ -147,9 +143,8 @@ class Class:
 @dataclass
 class ClassList:
     template: ClassVar = "cpp_classes"
+    extensions: ClassVar = ["h", "cpp"]
 
     classes: List[Class]
-    namespace: str
-    trap_affix: str
-    include_dir: str
     source: str
+    include_parent: bool = False

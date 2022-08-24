@@ -1,0 +1,27 @@
+<!DOCTYPE qhelp PUBLIC
+"-//Semmle//qhelp//EN"
+"qhelp.dtd">
+<qhelp>
+  <overview>
+    <p>
+      Decompression of user-controlled data without taking proper precaution can
+      result in uncontrolled and massive decompression on the server, resulting 
+      in a denial of service.
+    </p>
+  </overview>
+  <recommendation>
+    <p>
+      When decompressing files supplied by the user, make sure that you're checking
+      the size of the incoming data chunks before writing to an output.
+    </p>
+  </recommendation>
+  <example>
+    <p>
+      In this example, the size of the input buffer chunks and total size are checked before each chunk is written to the output.
+    </p>
+    <sample src="examples/decompress.rb" />
+  </example>
+  
+  <references>
+  </references>
+</qhelp>

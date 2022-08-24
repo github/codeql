@@ -333,7 +333,7 @@ abstract class Sanitizer extends string {
   /** Holds if `taint` cannot flow through `node`. */
   predicate sanitizingNode(TaintKind taint, ControlFlowNode node) { none() }
 
-  /** Holds if `call` removes removes the `taint` */
+  /** Holds if `call` removes the `taint` */
   predicate sanitizingCall(TaintKind taint, FunctionObject callee) { none() }
 
   /** Holds if `test` shows value to be untainted with `taint` */

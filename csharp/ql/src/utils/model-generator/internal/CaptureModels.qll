@@ -44,8 +44,11 @@ private string asSummaryModel(TargetApi api, string input, string output, string
   result =
     asPartialModel(api) + input + ";" //
       + output + ";" //
-      + "generated:" + kind
+      + kind + ";" //
+      + "generated"
 }
+
+string asNegativeSummaryModel(TargetApi api) { result = asPartialNegativeModel(api) + "generated" }
 
 /**
  * Gets the value summary model for `api` with `input` and `output`.
@@ -68,7 +71,10 @@ private string asTaintModel(TargetApi api, string input, string output) {
  */
 bindingset[input, kind]
 private string asSinkModel(TargetApi api, string input, string kind) {
-  result = asPartialModel(api) + input + ";" + "generated:" + kind
+  result =
+    asPartialModel(api) + input + ";" //
+      + kind + ";" //
+      + "generated"
 }
 
 /**
@@ -76,7 +82,10 @@ private string asSinkModel(TargetApi api, string input, string kind) {
  */
 bindingset[output, kind]
 private string asSourceModel(TargetApi api, string output, string kind) {
-  result = asPartialModel(api) + output + ";" + "generated:" + kind
+  result =
+    asPartialModel(api) + output + ";" //
+      + kind + ";" //
+      + "generated"
 }
 
 /**
