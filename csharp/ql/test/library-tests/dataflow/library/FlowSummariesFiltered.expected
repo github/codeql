@@ -1,3 +1,4 @@
+summary
 | Microsoft.CSharp.RuntimeBinder;Binder;false;BinaryOperation;(Microsoft.CSharp.RuntimeBinder.CSharpBinderFlags,System.Linq.Expressions.ExpressionType,System.Type,System.Collections.Generic.IEnumerable<Microsoft.CSharp.RuntimeBinder.CSharpArgumentInfo>);;Argument[2];ReturnValue;taint;generated |
 | Microsoft.CSharp.RuntimeBinder;Binder;false;BinaryOperation;(Microsoft.CSharp.RuntimeBinder.CSharpBinderFlags,System.Linq.Expressions.ExpressionType,System.Type,System.Collections.Generic.IEnumerable<Microsoft.CSharp.RuntimeBinder.CSharpArgumentInfo>);;Argument[3].Element;ReturnValue;taint;generated |
 | Microsoft.CSharp.RuntimeBinder;Binder;false;Convert;(Microsoft.CSharp.RuntimeBinder.CSharpBinderFlags,System.Type,System.Type);;Argument[2];ReturnValue;taint;generated |
@@ -10022,3 +10023,4 @@
 | System;ValueTuple<>;false;ToString;();;Argument[this];ReturnValue;taint;generated |
 | System;ValueTuple<>;false;ValueTuple;(T1);;Argument[0];Argument[this].Field[System.ValueTuple<>.Item1];value;manual |
 | System;ValueTuple<>;false;get_Item;(System.Int32);;Argument[this].Field[System.ValueTuple<>.Item1];ReturnValue;value;manual |
+negativeSummary
