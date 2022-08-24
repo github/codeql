@@ -253,7 +253,7 @@ codeql::ExtensionDecl DeclVisitor::translateExtensionDecl(const swift::Extension
 codeql::ImportDecl DeclVisitor::translateImportDecl(const swift::ImportDecl& decl) {
   auto entry = createEntry(decl);
   entry.is_exported = decl.isExported();
-  entry.imported_module = dispatcher_.fetchLabel(decl.getModule());
+  entry.imported_module = dispatcher_.fetchOptionalLabel(decl.getModule());
   entry.declarations = dispatcher_.fetchRepeatedLabels(decl.getDecls());
   return entry;
 }
