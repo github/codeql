@@ -1474,9 +1474,21 @@ open class KotlinFileExtractor(
                             logger.warn("Cannot find functional interface type for raw method access")
                             null
                         } else {
-                            val interfaceType = functionalInterface.classOrNull!!.owner
-                            val substituted = getJavaEquivalentClass(interfaceType) ?: interfaceType
-                            findFunction(substituted, OperatorNameConventions.INVOKE.asString())!!
+                            val functionalInterfaceClass = functionalInterface.classOrNull
+                            if (functionalInterfaceClass == null) {
+                                logger.warn("Cannot find functional interface class for raw method access")
+                                null
+                            } else {
+                                val interfaceType = functionalInterfaceClass.owner
+                                val substituted = getJavaEquivalentClass(interfaceType) ?: interfaceType
+                                val function = findFunction(substituted, OperatorNameConventions.INVOKE.asString())
+                                if (function == null) {
+                                    logger.warn("Cannot find invoke function for raw method access")
+                                    null
+                                } else {
+                                    function
+                                }
+                            }
                         }
                     } else {
                         callTarget
