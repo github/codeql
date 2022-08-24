@@ -423,6 +423,12 @@ struct_decls(  //dir=decl
 | @value_decl
 ;
 
+#keyset[id]
+decls(  //dir=decl
+  int id: @decl ref,
+  int module: @module_decl ref
+);
+
 @expr =
   @abstract_closure_expr
 | @any_try_expr
@@ -704,7 +710,7 @@ if_config_clause_is_active(  //dir=decl
 
 import_decls(  //dir=decl
   unique int id: @import_decl,
-  int module: @module_decl ref
+  int imported_module: @module_decl ref
 );
 
 #keyset[id]

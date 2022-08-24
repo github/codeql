@@ -2,13 +2,16 @@
 import codeql.swift.elements
 import TestUtils
 
-from ParamDecl x, Type getInterfaceType, string getName, Type getType, string isInout
+from
+  ParamDecl x, ModuleDecl getModule, Type getInterfaceType, string getName, Type getType,
+  string isInout
 where
   toBeTested(x) and
   not x.isUnknown() and
+  getModule = x.getModule() and
   getInterfaceType = x.getInterfaceType() and
   getName = x.getName() and
   getType = x.getType() and
   if x.isInout() then isInout = "yes" else isInout = "no"
-select x, "getInterfaceType:", getInterfaceType, "getName:", getName, "getType:", getType,
-  "isInout:", isInout
+select x, "getModule:", getModule, "getInterfaceType:", getInterfaceType, "getName:", getName,
+  "getType:", getType, "isInout:", isInout
