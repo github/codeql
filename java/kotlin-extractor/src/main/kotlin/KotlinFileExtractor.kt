@@ -1776,9 +1776,14 @@ open class KotlinFileExtractor(
             fun extractMethodAccess(syntacticCallTarget: IrFunction, extractMethodTypeArguments: Boolean = true, extractClassTypeArguments: Boolean = false) {
                 val typeArgs =
                     if (extractMethodTypeArguments)
-                        (0 until c.typeArgumentsCount).map { c.getTypeArgument(it)!! }
+                        (0 until c.typeArgumentsCount).map { c.getTypeArgument(it) }.requireNoNullsOrNull()
                     else
                         listOf()
+
+                if (typeArgs == null) {
+                    logger.warn("Missing type argument in extractMethodAccess")
+                    return
+                }
 
                 extractRawMethodAccess(syntacticCallTarget, c, callable, parent, idx, enclosingStmt, (0 until c.valueArgumentsCount).map { c.getValueArgument(it) }, c.dispatchReceiver, c.extensionReceiver, typeArgs, extractClassTypeArguments, c.superQualifierSymbol)
             }
