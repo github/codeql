@@ -2049,7 +2049,12 @@ open class KotlinFileExtractor(
                     tw.writeCallableEnclosingExpr(id, callable)
 
                     if (c.typeArgumentsCount == 1) {
-                        extractTypeAccessRecursive(c.getTypeArgument(0)!!, locId, id, -1, callable, enclosingStmt, TypeContext.GENERIC_ARGUMENT)
+                        val typeArgument = c.getTypeArgument(0)
+                        if (typeArgument == null) {
+                            logger.errorElement("Type argument missing in an arrayOfNulls call", c)
+                        } else {
+                            extractTypeAccessRecursive(typeArgument, locId, id, -1, callable, enclosingStmt, TypeContext.GENERIC_ARGUMENT)
+                        }
                     } else {
                         logger.errorElement("Expected to find exactly one type argument in an arrayOfNulls call", c)
                     }
