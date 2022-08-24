@@ -18,7 +18,7 @@ suite definition have been executed, the result is a set of selected queries.
 
 .. pull-quote:: Note
 
-   Any custom queries that you want to add to a query suite must be in a :doc:`QL
+   Any custom queries that you want to add to a query suite must be in a :doc:`CodeQL
    pack <about-codeql-packs>` and contain the correct query metadata.
    For more information, see
    ":doc:`Using custom queries with the CodeQL CLI <using-custom-queries-with-the-codeql-cli>`."
@@ -52,7 +52,7 @@ queries using:
      version: ^x.y.z
 
   The ``version`` field is optional and specifies a range of compatible versions of this CodeQL pack.
-  If the version is excluded, then the most recent version of the pack is used.
+  If you don't specify a version, then the most recent version of the pack is used.
 
 - A ``qlpack`` instruction---tells CodeQL to resolve queries in the default suite of the
   named CodeQL pack::
@@ -65,7 +65,7 @@ queries using:
   define a default suite, the `qlpack` instruction will resolve to all of the queries within the pack.
 
   The ``version`` field is optional and specifies a range of compatible versions of this CodeQL pack.
-  If the version is excluded, then the most recent version of the pack is used.
+  If you don't specify a version, then the most recent version of the pack is used.
 
 .. pull-quote:: Note
 
@@ -191,7 +191,7 @@ Existing query suite definitions can be reused by specifying:
       version: ^x.y.z
 
   The ``version`` field is optional and specifies a range of compatible versions of this CodeQL pack.
-  If the version is excluded, then the most recent version of the pack is used.
+  If you don't specify a version, then the most recent version of the pack is used.
 
   Queries added using an ``import`` instruction can be filtered using subsequent
   ``exclude`` instructions.

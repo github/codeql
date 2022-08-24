@@ -258,10 +258,10 @@ databases. You may also wish to specify the ``tests`` property.
 For more information about running tests, see ":doc:`Testing custom queries
 <testing-custom-queries>`."
 
-.. _standard-ql-packs:
+.. _standard-codeql-packs:
 
 Examples of CodeQL packs in the CodeQL repository
----------------------------------------------~~~~
+-------------------------------------------------
 
 Each of the languages in the CodeQL repository has four main CodeQL packs:
 
@@ -292,6 +292,7 @@ Some extra notes on the following properties:
 - ``library``: Indicates that this is a library pack with no executable queries. It is only meant to be used as a dependency for other packs.
 - ``dbscheme`` and ``upgrades``: These properties are internal to the CodeQL CLI and should only be defined in the core QL pack for a language.
 
+.. _standard-codeql-query-packs:
 
 Core query pack
 ~~~~~~~~~~~~~~~
