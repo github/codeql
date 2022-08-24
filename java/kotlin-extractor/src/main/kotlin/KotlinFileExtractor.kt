@@ -2117,7 +2117,12 @@ open class KotlinFileExtractor(
 
                         if (isBuiltinCallKotlin(c, "arrayOf")) {
                             if (c.typeArgumentsCount == 1) {
-                                extractTypeAccessRecursive(c.getTypeArgument(0)!!, locId, id, -1, callable, enclosingStmt, TypeContext.GENERIC_ARGUMENT)
+                                val typeArgument = c.getTypeArgument(0)
+                                if (typeArgument == null) {
+                                    logger.errorElement("Type argument missing in an arrayOf call", c)
+                                } else {
+                                    extractTypeAccessRecursive(typeArgument, locId, id, -1, callable, enclosingStmt, TypeContext.GENERIC_ARGUMENT)
+                                }
                             } else {
                                 logger.errorElement("Expected to find one type argument in arrayOf call", c )
                             }
