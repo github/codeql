@@ -15,6 +15,8 @@ Element getAnImmediateChild(Element e) {
   or
   result = e.(Callable).getImmediateParam(_)
   or
+  result = e.(Callable).getImmediateSelfParam()
+  or
   result = e.(Callable).getImmediateBody()
   or
   result = e.(AbstractStorageDecl).getImmediateAccessorDecl(_)

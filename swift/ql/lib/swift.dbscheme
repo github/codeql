@@ -174,6 +174,12 @@ callable_params(
 );
 
 #keyset[id]
+callable_self_params(
+  int id: @callable ref,
+  int self_param: @param_decl ref
+);
+
+#keyset[id]
 callable_bodies(
   int id: @callable ref,
   int body: @brace_stmt ref
@@ -416,6 +422,12 @@ struct_decls(  //dir=decl
 | @top_level_code_decl
 | @value_decl
 ;
+
+#keyset[id]
+decls(  //dir=decl
+  int id: @decl ref,
+  int module: @module_decl ref
+);
 
 @expr =
   @abstract_closure_expr
@@ -698,7 +710,7 @@ if_config_clause_is_active(  //dir=decl
 
 import_decls(  //dir=decl
   unique int id: @import_decl,
-  int module: @module_decl ref
+  int imported_module: @module_decl ref
 );
 
 #keyset[id]

@@ -3,8 +3,8 @@
  */
 
 import csharp
-import semmle.code.csharp.dataflow.ExternalFlow
 import DataFlow::PathGraph
+import semmle.code.csharp.dataflow.ExternalFlow
 import CsvValidation
 
 class SummaryModelTest extends SummaryModelCsv {

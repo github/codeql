@@ -36,7 +36,8 @@ private predicate isRelevantForModels(CS::Callable api) {
   api.getDeclaringType().getNamespace().getQualifiedName() != "" and
   not api instanceof CS::ConversionOperator and
   not api instanceof Util::MainMethod and
-  not isHigherOrder(api)
+  not isHigherOrder(api) and
+  not api instanceof CS::Destructor
 }
 
 /**
@@ -54,6 +55,8 @@ class TargetApiSpecific extends DotNet::Callable {
 }
 
 predicate asPartialModel = DataFlowPrivate::Csv::asPartialModel/1;
+
+predicate asPartialNegativeModel = DataFlowPrivate::Csv::asPartialNegativeModel/1;
 
 /**
  * Holds for type `t` for fields that are relevant as an intermediate

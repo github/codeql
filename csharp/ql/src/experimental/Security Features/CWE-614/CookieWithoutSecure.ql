@@ -66,10 +66,10 @@ where
         // the `exists` below covers the `cs/web/requiressl-not-set`
         not exists(XmlElement element |
           element instanceof FormsElement and
-          element.(FormsElement).isRequireSSL()
+          element.(FormsElement).isRequireSsl()
           or
           element instanceof HttpCookiesElement and
-          element.(HttpCookiesElement).isRequireSSL()
+          element.(HttpCookiesElement).isRequireSsl()
         )
       )
     )

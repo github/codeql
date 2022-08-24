@@ -81,7 +81,7 @@ predicate exceptions(Class c, Field f) {
     // Stateless session beans are not normally serialized during their usual life-cycle
     // but are forced by their expected supertype to be serializable.
     // Arguably, warnings for their non-serializable fields can therefore be suppressed in practice.
-    c instanceof StatelessSessionEJB
+    c instanceof StatelessSessionEjb
     or
     // Enum types are serialized by name, so it doesn't matter if they have non-serializable fields.
     c instanceof EnumType

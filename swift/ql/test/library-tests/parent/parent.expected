@@ -1,10 +1,15 @@
+| declarations.swift:1:8:1:8 | init | ConstructorDecl | declarations.swift:1:8:1:8 | self | ParamDecl |
+| declarations.swift:1:8:1:8 | init | ConstructorDecl | declarations.swift:1:8:1:8 | self | ParamDecl |
 | declarations.swift:1:8:1:8 | init | ConstructorDecl | declarations.swift:1:8:1:8 | x | ParamDecl |
 | declarations.swift:1:8:1:8 | init | ConstructorDecl | declarations.swift:1:8:1:8 | { ... } | BraceStmt |
 | declarations.swift:1:8:1:8 | { ... } | BraceStmt | declarations.swift:1:8:1:8 | return | ReturnStmt |
 | declarations.swift:2:3:2:11 | var ... = ... | PatternBindingDecl | declarations.swift:2:7:2:7 | x | NamedPattern |
 | declarations.swift:2:3:2:11 | var ... = ... | PatternBindingDecl | declarations.swift:2:11:2:11 | 11 | IntegerLiteralExpr |
+| declarations.swift:2:7:2:7 | (unnamed function decl) | AccessorDecl | declarations.swift:2:7:2:7 | self | ParamDecl |
 | declarations.swift:2:7:2:7 | (unnamed function decl) | AccessorDecl | declarations.swift:2:7:2:7 | { ... } | BraceStmt |
+| declarations.swift:2:7:2:7 | get | AccessorDecl | declarations.swift:2:7:2:7 | self | ParamDecl |
 | declarations.swift:2:7:2:7 | get | AccessorDecl | declarations.swift:2:7:2:7 | { ... } | BraceStmt |
+| declarations.swift:2:7:2:7 | set | AccessorDecl | declarations.swift:2:7:2:7 | self | ParamDecl |
 | declarations.swift:2:7:2:7 | set | AccessorDecl | declarations.swift:2:7:2:7 | value | ParamDecl |
 | declarations.swift:2:7:2:7 | set | AccessorDecl | declarations.swift:2:7:2:7 | { ... } | BraceStmt |
 | declarations.swift:2:7:2:7 | x | ConcreteVarDecl | declarations.swift:2:7:2:7 | (unnamed function decl) | AccessorDecl |
@@ -15,6 +20,7 @@
 | declarations.swift:2:7:2:7 | { ... } | BraceStmt | file://:0:0:0:0 |  ... = ... | AssignExpr |
 | declarations.swift:2:7:2:7 | { ... } | BraceStmt | file://:0:0:0:0 | return ... | ReturnStmt |
 | declarations.swift:3:3:6:3 | var ... = ... | PatternBindingDecl | declarations.swift:3:7:3:14 | ... as ... | TypedPattern |
+| declarations.swift:3:7:3:7 | (unnamed function decl) | AccessorDecl | declarations.swift:3:7:3:7 | self | ParamDecl |
 | declarations.swift:3:7:3:7 | (unnamed function decl) | AccessorDecl | declarations.swift:3:7:3:7 | { ... } | BraceStmt |
 | declarations.swift:3:7:3:7 | next | ConcreteVarDecl | declarations.swift:3:7:3:7 | (unnamed function decl) | AccessorDecl |
 | declarations.swift:3:7:3:7 | next | ConcreteVarDecl | declarations.swift:4:5:4:24 | get | AccessorDecl |
@@ -23,12 +29,14 @@
 | declarations.swift:3:7:3:7 | { ... } | BraceStmt | declarations.swift:3:7:3:7 | yield ... | YieldStmt |
 | declarations.swift:3:7:3:14 | ... as ... | TypedPattern | declarations.swift:3:7:3:7 | next | NamedPattern |
 | declarations.swift:3:7:3:14 | ... as ... | TypedPattern | declarations.swift:3:14:3:14 | Int | TypeRepr |
+| declarations.swift:4:5:4:24 | get | AccessorDecl | declarations.swift:4:5:4:5 | self | ParamDecl |
 | declarations.swift:4:5:4:24 | get | AccessorDecl | declarations.swift:4:9:4:24 | { ... } | BraceStmt |
 | declarations.swift:4:9:4:24 | { ... } | BraceStmt | declarations.swift:4:11:4:22 | return ... | ReturnStmt |
 | declarations.swift:4:11:4:22 | return ... | ReturnStmt | declarations.swift:4:18:4:22 | ... .+(_:_:) ... | BinaryExpr |
 | declarations.swift:4:18:4:18 | .x | MemberRefExpr | declarations.swift:4:18:4:18 | self | DeclRefExpr |
 | declarations.swift:4:18:4:22 | ... .+(_:_:) ... | BinaryExpr | declarations.swift:4:20:4:20 | .+(_:_:) | MethodRefExpr |
 | declarations.swift:4:20:4:20 | Int.Type | TypeExpr | declarations.swift:4:20:4:20 | Int | TypeRepr |
+| declarations.swift:5:5:5:38 | set | AccessorDecl | declarations.swift:5:5:5:5 | self | ParamDecl |
 | declarations.swift:5:5:5:38 | set | AccessorDecl | declarations.swift:5:9:5:9 | newValue | ParamDecl |
 | declarations.swift:5:5:5:38 | set | AccessorDecl | declarations.swift:5:19:5:38 | { ... } | BraceStmt |
 | declarations.swift:5:19:5:38 | { ... } | BraceStmt | declarations.swift:5:21:5:36 |  ... = ... | AssignExpr |
@@ -37,13 +45,18 @@
 | declarations.swift:5:21:5:36 |  ... = ... | AssignExpr | declarations.swift:5:25:5:36 | ... .-(_:_:) ... | BinaryExpr |
 | declarations.swift:5:25:5:36 | ... .-(_:_:) ... | BinaryExpr | declarations.swift:5:34:5:34 | .-(_:_:) | MethodRefExpr |
 | declarations.swift:5:34:5:34 | Int.Type | TypeExpr | declarations.swift:5:34:5:34 | Int | TypeRepr |
+| declarations.swift:9:7:9:7 | deinit | DestructorDecl | declarations.swift:9:7:9:7 | self | ParamDecl |
 | declarations.swift:9:7:9:7 | deinit | DestructorDecl | declarations.swift:9:7:9:7 | { ... } | BraceStmt |
+| declarations.swift:9:7:9:7 | init | ConstructorDecl | declarations.swift:9:7:9:7 | self | ParamDecl |
 | declarations.swift:9:7:9:7 | init | ConstructorDecl | declarations.swift:9:7:9:7 | { ... } | BraceStmt |
 | declarations.swift:9:7:9:7 | { ... } | BraceStmt | declarations.swift:9:7:9:7 | return | ReturnStmt |
 | declarations.swift:9:13:9:30 | var ... = ... | PatternBindingDecl | declarations.swift:9:17:9:21 | ... as ... | TypedPattern |
 | declarations.swift:9:13:9:30 | var ... = ... | PatternBindingDecl | declarations.swift:9:30:9:30 | 1.3 | FloatLiteralExpr |
+| declarations.swift:9:17:9:17 | (unnamed function decl) | AccessorDecl | declarations.swift:9:17:9:17 | self | ParamDecl |
 | declarations.swift:9:17:9:17 | (unnamed function decl) | AccessorDecl | declarations.swift:9:17:9:17 | { ... } | BraceStmt |
+| declarations.swift:9:17:9:17 | get | AccessorDecl | declarations.swift:9:17:9:17 | self | ParamDecl |
 | declarations.swift:9:17:9:17 | get | AccessorDecl | declarations.swift:9:17:9:17 | { ... } | BraceStmt |
+| declarations.swift:9:17:9:17 | set | AccessorDecl | declarations.swift:9:17:9:17 | self | ParamDecl |
 | declarations.swift:9:17:9:17 | set | AccessorDecl | declarations.swift:9:17:9:17 | value | ParamDecl |
 | declarations.swift:9:17:9:17 | set | AccessorDecl | declarations.swift:9:17:9:17 | { ... } | BraceStmt |
 | declarations.swift:9:17:9:17 | x | ConcreteVarDecl | declarations.swift:9:17:9:17 | (unnamed function decl) | AccessorDecl |
@@ -69,16 +82,21 @@
 | declarations.swift:19:10:19:35 | tuple | EnumElementDecl | declarations.swift:19:21:19:21 | _ | ParamDecl |
 | declarations.swift:19:10:19:35 | tuple | EnumElementDecl | declarations.swift:19:29:19:29 | _ | ParamDecl |
 | declarations.swift:23:5:23:39 | var ... = ... | PatternBindingDecl | declarations.swift:23:9:23:25 | ... as ... | TypedPattern |
+| declarations.swift:23:9:23:9 | (unnamed function decl) | AccessorDecl | declarations.swift:23:9:23:9 | self | ParamDecl |
 | declarations.swift:23:9:23:9 | mustBeSettable | ConcreteVarDecl | declarations.swift:23:9:23:9 | (unnamed function decl) | AccessorDecl |
 | declarations.swift:23:9:23:9 | mustBeSettable | ConcreteVarDecl | declarations.swift:23:31:23:31 | get | AccessorDecl |
 | declarations.swift:23:9:23:9 | mustBeSettable | ConcreteVarDecl | declarations.swift:23:35:23:35 | set | AccessorDecl |
 | declarations.swift:23:9:23:25 | ... as ... | TypedPattern | declarations.swift:23:9:23:9 | mustBeSettable | NamedPattern |
 | declarations.swift:23:9:23:25 | ... as ... | TypedPattern | declarations.swift:23:25:23:25 | Int | TypeRepr |
+| declarations.swift:23:31:23:31 | get | AccessorDecl | declarations.swift:23:31:23:31 | self | ParamDecl |
 | declarations.swift:23:35:23:35 | set | AccessorDecl | declarations.swift:23:35:23:35 | newValue | ParamDecl |
+| declarations.swift:23:35:23:35 | set | AccessorDecl | declarations.swift:23:35:23:35 | self | ParamDecl |
 | declarations.swift:24:5:24:44 | var ... = ... | PatternBindingDecl | declarations.swift:24:9:24:34 | ... as ... | TypedPattern |
 | declarations.swift:24:9:24:9 | doesNotNeedToBeSettable | ConcreteVarDecl | declarations.swift:24:40:24:40 | get | AccessorDecl |
 | declarations.swift:24:9:24:34 | ... as ... | TypedPattern | declarations.swift:24:9:24:9 | doesNotNeedToBeSettable | NamedPattern |
 | declarations.swift:24:9:24:34 | ... as ... | TypedPattern | declarations.swift:24:34:24:34 | Int | TypeRepr |
+| declarations.swift:24:40:24:40 | get | AccessorDecl | declarations.swift:24:40:24:40 | self | ParamDecl |
+| declarations.swift:25:5:25:22 | random() | ConcreteFuncDecl | declarations.swift:25:10:25:10 | self | ParamDecl |
 | declarations.swift:28:1:28:37 | a_function(a_parameter:) | ConcreteFuncDecl | declarations.swift:28:17:28:31 | a_parameter | ParamDecl |
 | declarations.swift:28:1:28:37 | a_function(a_parameter:) | ConcreteFuncDecl | declarations.swift:28:36:28:37 | { ... } | BraceStmt |
 | declarations.swift:30:1:30:18 | var ... = ... | PatternBindingDecl | declarations.swift:30:5:30:5 | a_variable | NamedPattern |
@@ -104,11 +122,14 @@
 | declarations.swift:38:7:38:7 | [...] | ArrayExpr | declarations.swift:38:7:38:7 | (Any) ... | ErasureExpr |
 | declarations.swift:38:7:38:7 | [...] | VarargExpansionExpr | declarations.swift:38:7:38:7 | [...] | ArrayExpr |
 | declarations.swift:41:3:41:14 | var ... = ... | PatternBindingDecl | declarations.swift:41:7:41:14 | ... as ... | TypedPattern |
+| declarations.swift:41:7:41:7 | (unnamed function decl) | AccessorDecl | declarations.swift:41:7:41:7 | self | ParamDecl |
 | declarations.swift:41:7:41:7 | (unnamed function decl) | AccessorDecl | declarations.swift:41:7:41:7 | { ... } | BraceStmt |
 | declarations.swift:41:7:41:7 | field | ConcreteVarDecl | declarations.swift:41:7:41:7 | (unnamed function decl) | AccessorDecl |
 | declarations.swift:41:7:41:7 | field | ConcreteVarDecl | declarations.swift:41:7:41:7 | get | AccessorDecl |
 | declarations.swift:41:7:41:7 | field | ConcreteVarDecl | declarations.swift:41:7:41:7 | set | AccessorDecl |
+| declarations.swift:41:7:41:7 | get | AccessorDecl | declarations.swift:41:7:41:7 | self | ParamDecl |
 | declarations.swift:41:7:41:7 | get | AccessorDecl | declarations.swift:41:7:41:7 | { ... } | BraceStmt |
+| declarations.swift:41:7:41:7 | set | AccessorDecl | declarations.swift:41:7:41:7 | self | ParamDecl |
 | declarations.swift:41:7:41:7 | set | AccessorDecl | declarations.swift:41:7:41:7 | value | ParamDecl |
 | declarations.swift:41:7:41:7 | set | AccessorDecl | declarations.swift:41:7:41:7 | { ... } | BraceStmt |
 | declarations.swift:41:7:41:7 | yield ... | YieldStmt | file://:0:0:0:0 | &... | InOutExpr |
@@ -117,27 +138,32 @@
 | declarations.swift:41:7:41:7 | { ... } | BraceStmt | file://:0:0:0:0 | return ... | ReturnStmt |
 | declarations.swift:41:7:41:14 | ... as ... | TypedPattern | declarations.swift:41:7:41:7 | field | NamedPattern |
 | declarations.swift:41:7:41:14 | ... as ... | TypedPattern | declarations.swift:41:14:41:14 | Int | TypeRepr |
+| declarations.swift:42:3:44:3 | init | ConstructorDecl | declarations.swift:42:3:42:3 | self | ParamDecl |
 | declarations.swift:42:3:44:3 | init | ConstructorDecl | declarations.swift:42:10:44:3 | { ... } | BraceStmt |
 | declarations.swift:42:10:44:3 | { ... } | BraceStmt | declarations.swift:43:5:43:13 |  ... = ... | AssignExpr |
 | declarations.swift:42:10:44:3 | { ... } | BraceStmt | declarations.swift:44:3:44:3 | return | ReturnStmt |
 | declarations.swift:43:5:43:5 | .field | MemberRefExpr | declarations.swift:43:5:43:5 | self | DeclRefExpr |
 | declarations.swift:43:5:43:13 |  ... = ... | AssignExpr | declarations.swift:43:5:43:5 | .field | MemberRefExpr |
 | declarations.swift:43:5:43:13 |  ... = ... | AssignExpr | declarations.swift:43:13:43:13 | 10 | IntegerLiteralExpr |
+| declarations.swift:46:3:48:3 | deinit | DestructorDecl | declarations.swift:46:3:46:3 | self | ParamDecl |
 | declarations.swift:46:3:48:3 | deinit | DestructorDecl | declarations.swift:46:10:48:3 | { ... } | BraceStmt |
 | declarations.swift:46:10:48:3 | { ... } | BraceStmt | declarations.swift:47:5:47:13 |  ... = ... | AssignExpr |
 | declarations.swift:47:5:47:5 | .field | MemberRefExpr | declarations.swift:47:5:47:5 | self | DeclRefExpr |
 | declarations.swift:47:5:47:13 |  ... = ... | AssignExpr | declarations.swift:47:5:47:5 | .field | MemberRefExpr |
 | declarations.swift:47:5:47:13 |  ... = ... | AssignExpr | declarations.swift:47:13:47:13 | 0 | IntegerLiteralExpr |
+| declarations.swift:50:3:52:3 | +-(_:) | ConcreteFuncDecl | declarations.swift:50:22:50:22 | self | ParamDecl |
 | declarations.swift:50:3:52:3 | +-(_:) | ConcreteFuncDecl | declarations.swift:50:26:50:33 | other | ParamDecl |
 | declarations.swift:50:3:52:3 | +-(_:) | ConcreteFuncDecl | declarations.swift:50:45:52:3 | { ... } | BraceStmt |
 | declarations.swift:50:45:52:3 | { ... } | BraceStmt | declarations.swift:51:5:51:12 | return ... | ReturnStmt |
 | declarations.swift:51:5:51:12 | return ... | ReturnStmt | declarations.swift:51:12:51:12 | other | DeclRefExpr |
+| declarations.swift:68:25:68:25 | init | ConstructorDecl | declarations.swift:68:25:68:25 | self | ParamDecl |
 | declarations.swift:68:25:68:25 | init | ConstructorDecl | declarations.swift:68:25:68:25 | { ... } | BraceStmt |
 | declarations.swift:68:25:68:25 | { ... } | BraceStmt | declarations.swift:68:25:68:25 | return | ReturnStmt |
 | declarations.swift:69:3:73:3 | var ... = ... | PatternBindingDecl | declarations.swift:69:7:69:21 | ... as ... | TypedPattern |
 | declarations.swift:69:7:69:7 | wrappedValue | ConcreteVarDecl | declarations.swift:70:5:72:5 | get | AccessorDecl |
 | declarations.swift:69:7:69:21 | ... as ... | TypedPattern | declarations.swift:69:7:69:7 | wrappedValue | NamedPattern |
 | declarations.swift:69:7:69:21 | ... as ... | TypedPattern | declarations.swift:69:21:69:21 | Int | TypeRepr |
+| declarations.swift:70:5:72:5 | get | AccessorDecl | declarations.swift:70:5:70:5 | self | ParamDecl |
 | declarations.swift:70:5:72:5 | get | AccessorDecl | declarations.swift:70:9:72:5 | { ... } | BraceStmt |
 | declarations.swift:70:9:72:5 | { ... } | BraceStmt | declarations.swift:71:7:71:14 | return ... | ReturnStmt |
 | declarations.swift:71:7:71:14 | return ... | ReturnStmt | declarations.swift:71:14:71:14 | 0 | IntegerLiteralExpr |
@@ -162,7 +188,9 @@
 | declarations.swift:81:8:81:8 | init | ConstructorDecl | declarations.swift:81:8:81:8 | hasWillSet1 | ParamDecl |
 | declarations.swift:81:8:81:8 | init | ConstructorDecl | declarations.swift:81:8:81:8 | hasWillSet2 | ParamDecl |
 | declarations.swift:81:8:81:8 | init | ConstructorDecl | declarations.swift:81:8:81:8 | normalField | ParamDecl |
+| declarations.swift:81:8:81:8 | init | ConstructorDecl | declarations.swift:81:8:81:8 | self | ParamDecl |
 | declarations.swift:82:3:87:3 | var ... = ... | PatternBindingDecl | declarations.swift:82:7:82:22 | ... as ... | TypedPattern |
+| declarations.swift:82:7:82:7 | (unnamed function decl) | AccessorDecl | declarations.swift:82:7:82:7 | self | ParamDecl |
 | declarations.swift:82:7:82:7 | (unnamed function decl) | AccessorDecl | declarations.swift:82:7:82:7 | { ... } | BraceStmt |
 | declarations.swift:82:7:82:7 | settableField | ConcreteVarDecl | declarations.swift:82:7:82:7 | (unnamed function decl) | AccessorDecl |
 | declarations.swift:82:7:82:7 | settableField | ConcreteVarDecl | declarations.swift:83:5:83:11 | set | AccessorDecl |
@@ -172,7 +200,9 @@
 | declarations.swift:82:7:82:22 | ... as ... | TypedPattern | declarations.swift:82:7:82:7 | settableField | NamedPattern |
 | declarations.swift:82:7:82:22 | ... as ... | TypedPattern | declarations.swift:82:22:82:22 | Int | TypeRepr |
 | declarations.swift:83:5:83:11 | set | AccessorDecl | declarations.swift:83:5:83:5 | newValue | ParamDecl |
+| declarations.swift:83:5:83:11 | set | AccessorDecl | declarations.swift:83:5:83:5 | self | ParamDecl |
 | declarations.swift:83:5:83:11 | set | AccessorDecl | declarations.swift:83:9:83:11 | { ... } | BraceStmt |
+| declarations.swift:84:5:86:5 | get | AccessorDecl | declarations.swift:84:5:84:5 | self | ParamDecl |
 | declarations.swift:84:5:86:5 | get | AccessorDecl | declarations.swift:84:9:86:5 | { ... } | BraceStmt |
 | declarations.swift:84:9:86:5 | { ... } | BraceStmt | declarations.swift:85:7:85:14 | return ... | ReturnStmt |
 | declarations.swift:85:7:85:14 | return ... | ReturnStmt | declarations.swift:85:14:85:14 | 0 | IntegerLiteralExpr |
@@ -180,6 +210,7 @@
 | declarations.swift:91:7:91:7 | readOnlyField1 | ConcreteVarDecl | declarations.swift:91:27:93:3 | get | AccessorDecl |
 | declarations.swift:91:7:91:23 | ... as ... | TypedPattern | declarations.swift:91:7:91:7 | readOnlyField1 | NamedPattern |
 | declarations.swift:91:7:91:23 | ... as ... | TypedPattern | declarations.swift:91:23:91:23 | Int | TypeRepr |
+| declarations.swift:91:27:93:3 | get | AccessorDecl | declarations.swift:91:27:91:27 | self | ParamDecl |
 | declarations.swift:91:27:93:3 | get | AccessorDecl | declarations.swift:91:27:93:3 | { ... } | BraceStmt |
 | declarations.swift:91:27:93:3 | { ... } | BraceStmt | declarations.swift:92:5:92:12 | return ... | ReturnStmt |
 | declarations.swift:92:5:92:12 | return ... | ReturnStmt | declarations.swift:92:12:92:12 | 0 | IntegerLiteralExpr |
@@ -187,15 +218,19 @@
 | declarations.swift:96:7:96:7 | readOnlyField2 | ConcreteVarDecl | declarations.swift:97:5:99:5 | get | AccessorDecl |
 | declarations.swift:96:7:96:23 | ... as ... | TypedPattern | declarations.swift:96:7:96:7 | readOnlyField2 | NamedPattern |
 | declarations.swift:96:7:96:23 | ... as ... | TypedPattern | declarations.swift:96:23:96:23 | Int | TypeRepr |
+| declarations.swift:97:5:99:5 | get | AccessorDecl | declarations.swift:97:5:97:5 | self | ParamDecl |
 | declarations.swift:97:5:99:5 | get | AccessorDecl | declarations.swift:97:9:99:5 | { ... } | BraceStmt |
 | declarations.swift:97:9:99:5 | { ... } | BraceStmt | declarations.swift:98:7:98:14 | return ... | ReturnStmt |
 | declarations.swift:98:7:98:14 | return ... | ReturnStmt | declarations.swift:98:14:98:14 | 0 | IntegerLiteralExpr |
 | declarations.swift:102:3:102:21 | var ... = ... | PatternBindingDecl | declarations.swift:102:7:102:21 | ... as ... | TypedPattern |
+| declarations.swift:102:7:102:7 | (unnamed function decl) | AccessorDecl | declarations.swift:102:7:102:7 | self | ParamDecl |
 | declarations.swift:102:7:102:7 | (unnamed function decl) | AccessorDecl | declarations.swift:102:7:102:7 | { ... } | BraceStmt |
+| declarations.swift:102:7:102:7 | get | AccessorDecl | declarations.swift:102:7:102:7 | self | ParamDecl |
 | declarations.swift:102:7:102:7 | get | AccessorDecl | declarations.swift:102:7:102:7 | { ... } | BraceStmt |
 | declarations.swift:102:7:102:7 | normalField | ConcreteVarDecl | declarations.swift:102:7:102:7 | (unnamed function decl) | AccessorDecl |
 | declarations.swift:102:7:102:7 | normalField | ConcreteVarDecl | declarations.swift:102:7:102:7 | get | AccessorDecl |
 | declarations.swift:102:7:102:7 | normalField | ConcreteVarDecl | declarations.swift:102:7:102:7 | set | AccessorDecl |
+| declarations.swift:102:7:102:7 | set | AccessorDecl | declarations.swift:102:7:102:7 | self | ParamDecl |
 | declarations.swift:102:7:102:7 | set | AccessorDecl | declarations.swift:102:7:102:7 | value | ParamDecl |
 | declarations.swift:102:7:102:7 | set | AccessorDecl | declarations.swift:102:7:102:7 | { ... } | BraceStmt |
 | declarations.swift:102:7:102:7 | yield ... | YieldStmt | file://:0:0:0:0 | &... | InOutExpr |
@@ -204,6 +239,7 @@
 | declarations.swift:102:7:102:7 | { ... } | BraceStmt | file://:0:0:0:0 | return ... | ReturnStmt |
 | declarations.swift:102:7:102:21 | ... as ... | TypedPattern | declarations.swift:102:7:102:7 | normalField | NamedPattern |
 | declarations.swift:102:7:102:21 | ... as ... | TypedPattern | declarations.swift:102:21:102:21 | Int | TypeRepr |
+| declarations.swift:104:3:104:3 | (unnamed function decl) | AccessorDecl | declarations.swift:104:3:104:3 | self | ParamDecl |
 | declarations.swift:104:3:104:3 | (unnamed function decl) | AccessorDecl | declarations.swift:104:3:104:3 | { ... } | BraceStmt |
 | declarations.swift:104:3:104:3 | (unnamed function decl) | AccessorDecl | file://:0:0:0:0 | x | ParamDecl |
 | declarations.swift:104:3:104:3 | yield ... | YieldStmt | file://:0:0:0:0 | &... | InOutExpr |
@@ -213,27 +249,33 @@
 | declarations.swift:104:3:109:3 | subscript ... | SubscriptDecl | declarations.swift:105:5:107:5 | get | AccessorDecl |
 | declarations.swift:104:3:109:3 | subscript ... | SubscriptDecl | declarations.swift:108:5:108:11 | set | AccessorDecl |
 | declarations.swift:105:5:107:5 | get | AccessorDecl | declarations.swift:104:13:104:13 | x | ParamDecl |
+| declarations.swift:105:5:107:5 | get | AccessorDecl | declarations.swift:105:5:105:5 | self | ParamDecl |
 | declarations.swift:105:5:107:5 | get | AccessorDecl | declarations.swift:105:9:107:5 | { ... } | BraceStmt |
 | declarations.swift:105:9:107:5 | { ... } | BraceStmt | declarations.swift:106:7:106:14 | return ... | ReturnStmt |
 | declarations.swift:106:7:106:14 | return ... | ReturnStmt | declarations.swift:106:14:106:14 | 0 | IntegerLiteralExpr |
 | declarations.swift:108:5:108:11 | set | AccessorDecl | declarations.swift:104:13:104:13 | x | ParamDecl |
 | declarations.swift:108:5:108:11 | set | AccessorDecl | declarations.swift:108:5:108:5 | newValue | ParamDecl |
+| declarations.swift:108:5:108:11 | set | AccessorDecl | declarations.swift:108:5:108:5 | self | ParamDecl |
 | declarations.swift:108:5:108:11 | set | AccessorDecl | declarations.swift:108:9:108:11 | { ... } | BraceStmt |
 | declarations.swift:111:3:113:3 | subscript ... | SubscriptDecl | declarations.swift:111:13:111:16 | x | ParamDecl |
 | declarations.swift:111:3:113:3 | subscript ... | SubscriptDecl | declarations.swift:111:21:111:25 | y | ParamDecl |
 | declarations.swift:111:3:113:3 | subscript ... | SubscriptDecl | declarations.swift:111:37:113:3 | get | AccessorDecl |
 | declarations.swift:111:37:113:3 | get | AccessorDecl | declarations.swift:111:13:111:13 | x | ParamDecl |
 | declarations.swift:111:37:113:3 | get | AccessorDecl | declarations.swift:111:21:111:21 | y | ParamDecl |
+| declarations.swift:111:37:113:3 | get | AccessorDecl | declarations.swift:111:37:111:37 | self | ParamDecl |
 | declarations.swift:111:37:113:3 | get | AccessorDecl | declarations.swift:111:37:113:3 | { ... } | BraceStmt |
 | declarations.swift:111:37:113:3 | { ... } | BraceStmt | declarations.swift:112:5:112:12 | return ... | ReturnStmt |
 | declarations.swift:112:5:112:12 | return ... | ReturnStmt | declarations.swift:112:12:112:12 | 0 | IntegerLiteralExpr |
 | declarations.swift:115:3:117:3 | var ... = ... | PatternBindingDecl | declarations.swift:115:7:115:21 | ... as ... | TypedPattern |
+| declarations.swift:115:7:115:7 | (unnamed function decl) | AccessorDecl | declarations.swift:115:7:115:7 | self | ParamDecl |
 | declarations.swift:115:7:115:7 | (unnamed function decl) | AccessorDecl | declarations.swift:115:7:115:7 | { ... } | BraceStmt |
+| declarations.swift:115:7:115:7 | get | AccessorDecl | declarations.swift:115:7:115:7 | self | ParamDecl |
 | declarations.swift:115:7:115:7 | get | AccessorDecl | declarations.swift:115:7:115:7 | { ... } | BraceStmt |
 | declarations.swift:115:7:115:7 | hasWillSet1 | ConcreteVarDecl | declarations.swift:115:7:115:7 | (unnamed function decl) | AccessorDecl |
 | declarations.swift:115:7:115:7 | hasWillSet1 | ConcreteVarDecl | declarations.swift:115:7:115:7 | get | AccessorDecl |
 | declarations.swift:115:7:115:7 | hasWillSet1 | ConcreteVarDecl | declarations.swift:115:7:115:7 | set | AccessorDecl |
 | declarations.swift:115:7:115:7 | hasWillSet1 | ConcreteVarDecl | declarations.swift:116:5:116:25 | willSet | AccessorDecl |
+| declarations.swift:115:7:115:7 | set | AccessorDecl | declarations.swift:115:7:115:7 | self | ParamDecl |
 | declarations.swift:115:7:115:7 | set | AccessorDecl | declarations.swift:115:7:115:7 | value | ParamDecl |
 | declarations.swift:115:7:115:7 | set | AccessorDecl | declarations.swift:115:7:115:7 | { ... } | BraceStmt |
 | declarations.swift:115:7:115:7 | yield ... | YieldStmt | file://:0:0:0:0 | &... | InOutExpr |
@@ -243,15 +285,19 @@
 | declarations.swift:115:7:115:7 | { ... } | BraceStmt | file://:0:0:0:0 | return ... | ReturnStmt |
 | declarations.swift:115:7:115:21 | ... as ... | TypedPattern | declarations.swift:115:7:115:7 | hasWillSet1 | NamedPattern |
 | declarations.swift:115:7:115:21 | ... as ... | TypedPattern | declarations.swift:115:21:115:21 | Int | TypeRepr |
+| declarations.swift:116:5:116:25 | willSet | AccessorDecl | declarations.swift:116:5:116:5 | self | ParamDecl |
 | declarations.swift:116:5:116:25 | willSet | AccessorDecl | declarations.swift:116:13:116:13 | newValue | ParamDecl |
 | declarations.swift:116:5:116:25 | willSet | AccessorDecl | declarations.swift:116:23:116:25 | { ... } | BraceStmt |
 | declarations.swift:119:3:121:3 | var ... = ... | PatternBindingDecl | declarations.swift:119:7:119:21 | ... as ... | TypedPattern |
+| declarations.swift:119:7:119:7 | (unnamed function decl) | AccessorDecl | declarations.swift:119:7:119:7 | self | ParamDecl |
 | declarations.swift:119:7:119:7 | (unnamed function decl) | AccessorDecl | declarations.swift:119:7:119:7 | { ... } | BraceStmt |
+| declarations.swift:119:7:119:7 | get | AccessorDecl | declarations.swift:119:7:119:7 | self | ParamDecl |
 | declarations.swift:119:7:119:7 | get | AccessorDecl | declarations.swift:119:7:119:7 | { ... } | BraceStmt |
 | declarations.swift:119:7:119:7 | hasWillSet2 | ConcreteVarDecl | declarations.swift:119:7:119:7 | (unnamed function decl) | AccessorDecl |
 | declarations.swift:119:7:119:7 | hasWillSet2 | ConcreteVarDecl | declarations.swift:119:7:119:7 | get | AccessorDecl |
 | declarations.swift:119:7:119:7 | hasWillSet2 | ConcreteVarDecl | declarations.swift:119:7:119:7 | set | AccessorDecl |
 | declarations.swift:119:7:119:7 | hasWillSet2 | ConcreteVarDecl | declarations.swift:120:5:120:15 | willSet | AccessorDecl |
+| declarations.swift:119:7:119:7 | set | AccessorDecl | declarations.swift:119:7:119:7 | self | ParamDecl |
 | declarations.swift:119:7:119:7 | set | AccessorDecl | declarations.swift:119:7:119:7 | value | ParamDecl |
 | declarations.swift:119:7:119:7 | set | AccessorDecl | declarations.swift:119:7:119:7 | { ... } | BraceStmt |
 | declarations.swift:119:7:119:7 | yield ... | YieldStmt | file://:0:0:0:0 | &... | InOutExpr |
@@ -262,14 +308,18 @@
 | declarations.swift:119:7:119:21 | ... as ... | TypedPattern | declarations.swift:119:7:119:7 | hasWillSet2 | NamedPattern |
 | declarations.swift:119:7:119:21 | ... as ... | TypedPattern | declarations.swift:119:21:119:21 | Int | TypeRepr |
 | declarations.swift:120:5:120:15 | willSet | AccessorDecl | declarations.swift:120:5:120:5 | newValue | ParamDecl |
+| declarations.swift:120:5:120:15 | willSet | AccessorDecl | declarations.swift:120:5:120:5 | self | ParamDecl |
 | declarations.swift:120:5:120:15 | willSet | AccessorDecl | declarations.swift:120:13:120:15 | { ... } | BraceStmt |
 | declarations.swift:123:3:125:3 | var ... = ... | PatternBindingDecl | declarations.swift:123:7:123:20 | ... as ... | TypedPattern |
+| declarations.swift:123:7:123:7 | (unnamed function decl) | AccessorDecl | declarations.swift:123:7:123:7 | self | ParamDecl |
 | declarations.swift:123:7:123:7 | (unnamed function decl) | AccessorDecl | declarations.swift:123:7:123:7 | { ... } | BraceStmt |
+| declarations.swift:123:7:123:7 | get | AccessorDecl | declarations.swift:123:7:123:7 | self | ParamDecl |
 | declarations.swift:123:7:123:7 | get | AccessorDecl | declarations.swift:123:7:123:7 | { ... } | BraceStmt |
 | declarations.swift:123:7:123:7 | hasDidSet1 | ConcreteVarDecl | declarations.swift:123:7:123:7 | (unnamed function decl) | AccessorDecl |
 | declarations.swift:123:7:123:7 | hasDidSet1 | ConcreteVarDecl | declarations.swift:123:7:123:7 | get | AccessorDecl |
 | declarations.swift:123:7:123:7 | hasDidSet1 | ConcreteVarDecl | declarations.swift:123:7:123:7 | set | AccessorDecl |
 | declarations.swift:123:7:123:7 | hasDidSet1 | ConcreteVarDecl | declarations.swift:124:5:124:24 | didSet | AccessorDecl |
+| declarations.swift:123:7:123:7 | set | AccessorDecl | declarations.swift:123:7:123:7 | self | ParamDecl |
 | declarations.swift:123:7:123:7 | set | AccessorDecl | declarations.swift:123:7:123:7 | value | ParamDecl |
 | declarations.swift:123:7:123:7 | set | AccessorDecl | declarations.swift:123:7:123:7 | { ... } | BraceStmt |
 | declarations.swift:123:7:123:7 | yield ... | YieldStmt | file://:0:0:0:0 | &... | InOutExpr |
@@ -281,15 +331,19 @@
 | declarations.swift:123:7:123:7 | { ... } | BraceStmt | file://:0:0:0:0 | var ... = ... | PatternBindingDecl |
 | declarations.swift:123:7:123:20 | ... as ... | TypedPattern | declarations.swift:123:7:123:7 | hasDidSet1 | NamedPattern |
 | declarations.swift:123:7:123:20 | ... as ... | TypedPattern | declarations.swift:123:20:123:20 | Int | TypeRepr |
+| declarations.swift:124:5:124:24 | didSet | AccessorDecl | declarations.swift:124:5:124:5 | self | ParamDecl |
 | declarations.swift:124:5:124:24 | didSet | AccessorDecl | declarations.swift:124:12:124:12 | oldValue | ParamDecl |
 | declarations.swift:124:5:124:24 | didSet | AccessorDecl | declarations.swift:124:22:124:24 | { ... } | BraceStmt |
 | declarations.swift:127:3:129:3 | var ... = ... | PatternBindingDecl | declarations.swift:127:7:127:20 | ... as ... | TypedPattern |
+| declarations.swift:127:7:127:7 | (unnamed function decl) | AccessorDecl | declarations.swift:127:7:127:7 | self | ParamDecl |
 | declarations.swift:127:7:127:7 | (unnamed function decl) | AccessorDecl | declarations.swift:127:7:127:7 | { ... } | BraceStmt |
+| declarations.swift:127:7:127:7 | get | AccessorDecl | declarations.swift:127:7:127:7 | self | ParamDecl |
 | declarations.swift:127:7:127:7 | get | AccessorDecl | declarations.swift:127:7:127:7 | { ... } | BraceStmt |
 | declarations.swift:127:7:127:7 | hasDidSet2 | ConcreteVarDecl | declarations.swift:127:7:127:7 | (unnamed function decl) | AccessorDecl |
 | declarations.swift:127:7:127:7 | hasDidSet2 | ConcreteVarDecl | declarations.swift:127:7:127:7 | get | AccessorDecl |
 | declarations.swift:127:7:127:7 | hasDidSet2 | ConcreteVarDecl | declarations.swift:127:7:127:7 | set | AccessorDecl |
 | declarations.swift:127:7:127:7 | hasDidSet2 | ConcreteVarDecl | declarations.swift:128:5:128:14 | didSet | AccessorDecl |
+| declarations.swift:127:7:127:7 | set | AccessorDecl | declarations.swift:127:7:127:7 | self | ParamDecl |
 | declarations.swift:127:7:127:7 | set | AccessorDecl | declarations.swift:127:7:127:7 | value | ParamDecl |
 | declarations.swift:127:7:127:7 | set | AccessorDecl | declarations.swift:127:7:127:7 | { ... } | BraceStmt |
 | declarations.swift:127:7:127:7 | yield ... | YieldStmt | file://:0:0:0:0 | &... | InOutExpr |
@@ -300,15 +354,19 @@
 | declarations.swift:127:7:127:7 | { ... } | BraceStmt | file://:0:0:0:0 | return ... | ReturnStmt |
 | declarations.swift:127:7:127:20 | ... as ... | TypedPattern | declarations.swift:127:7:127:7 | hasDidSet2 | NamedPattern |
 | declarations.swift:127:7:127:20 | ... as ... | TypedPattern | declarations.swift:127:20:127:20 | Int | TypeRepr |
+| declarations.swift:128:5:128:14 | didSet | AccessorDecl | declarations.swift:128:5:128:5 | self | ParamDecl |
 | declarations.swift:128:5:128:14 | didSet | AccessorDecl | declarations.swift:128:12:128:14 | { ... } | BraceStmt |
 | declarations.swift:131:3:135:3 | var ... = ... | PatternBindingDecl | declarations.swift:131:7:131:17 | ... as ... | TypedPattern |
+| declarations.swift:131:7:131:7 | (unnamed function decl) | AccessorDecl | declarations.swift:131:7:131:7 | self | ParamDecl |
 | declarations.swift:131:7:131:7 | (unnamed function decl) | AccessorDecl | declarations.swift:131:7:131:7 | { ... } | BraceStmt |
+| declarations.swift:131:7:131:7 | get | AccessorDecl | declarations.swift:131:7:131:7 | self | ParamDecl |
 | declarations.swift:131:7:131:7 | get | AccessorDecl | declarations.swift:131:7:131:7 | { ... } | BraceStmt |
 | declarations.swift:131:7:131:7 | hasBoth | ConcreteVarDecl | declarations.swift:131:7:131:7 | (unnamed function decl) | AccessorDecl |
 | declarations.swift:131:7:131:7 | hasBoth | ConcreteVarDecl | declarations.swift:131:7:131:7 | get | AccessorDecl |
 | declarations.swift:131:7:131:7 | hasBoth | ConcreteVarDecl | declarations.swift:131:7:131:7 | set | AccessorDecl |
 | declarations.swift:131:7:131:7 | hasBoth | ConcreteVarDecl | declarations.swift:132:5:132:15 | willSet | AccessorDecl |
 | declarations.swift:131:7:131:7 | hasBoth | ConcreteVarDecl | declarations.swift:134:5:134:14 | didSet | AccessorDecl |
+| declarations.swift:131:7:131:7 | set | AccessorDecl | declarations.swift:131:7:131:7 | self | ParamDecl |
 | declarations.swift:131:7:131:7 | set | AccessorDecl | declarations.swift:131:7:131:7 | value | ParamDecl |
 | declarations.swift:131:7:131:7 | set | AccessorDecl | declarations.swift:131:7:131:7 | { ... } | BraceStmt |
 | declarations.swift:131:7:131:7 | yield ... | YieldStmt | file://:0:0:0:0 | &... | InOutExpr |
@@ -320,8 +378,11 @@
 | declarations.swift:131:7:131:17 | ... as ... | TypedPattern | declarations.swift:131:7:131:7 | hasBoth | NamedPattern |
 | declarations.swift:131:7:131:17 | ... as ... | TypedPattern | declarations.swift:131:17:131:17 | Int | TypeRepr |
 | declarations.swift:132:5:132:15 | willSet | AccessorDecl | declarations.swift:132:5:132:5 | newValue | ParamDecl |
+| declarations.swift:132:5:132:15 | willSet | AccessorDecl | declarations.swift:132:5:132:5 | self | ParamDecl |
 | declarations.swift:132:5:132:15 | willSet | AccessorDecl | declarations.swift:132:13:132:15 | { ... } | BraceStmt |
+| declarations.swift:134:5:134:14 | didSet | AccessorDecl | declarations.swift:134:5:134:5 | self | ParamDecl |
 | declarations.swift:134:5:134:14 | didSet | AccessorDecl | declarations.swift:134:12:134:14 | { ... } | BraceStmt |
+| declarations.swift:139:3:141:3 | id() | ConcreteFuncDecl | declarations.swift:139:8:139:8 | self | ParamDecl |
 | declarations.swift:139:3:141:3 | id() | ConcreteFuncDecl | declarations.swift:139:20:141:3 | { ... } | BraceStmt |
 | declarations.swift:139:20:141:3 | { ... } | BraceStmt | declarations.swift:140:5:140:12 | return ... | ReturnStmt |
 | declarations.swift:140:5:140:12 | return ... | ReturnStmt | declarations.swift:140:12:140:12 | self | DeclRefExpr |
@@ -398,7 +459,9 @@
 | expressions.swift:21:1:21:16 | { ... } | TopLevelCodeDecl | expressions.swift:21:1:21:16 | { ... } | BraceStmt |
 | expressions.swift:21:6:21:16 | (()?) ... | InjectIntoOptionalExpr | expressions.swift:21:6:21:16 | call to failure(_:) | CallExpr |
 | expressions.swift:21:6:21:16 | call to failure(_:) | CallExpr | expressions.swift:21:6:21:6 | failure(_:) | DeclRefExpr |
+| expressions.swift:23:7:23:7 | deinit | DestructorDecl | expressions.swift:23:7:23:7 | self | ParamDecl |
 | expressions.swift:23:7:23:7 | deinit | DestructorDecl | expressions.swift:23:7:23:7 | { ... } | BraceStmt |
+| expressions.swift:24:3:24:11 | init | ConstructorDecl | expressions.swift:24:3:24:3 | self | ParamDecl |
 | expressions.swift:24:3:24:11 | init | ConstructorDecl | expressions.swift:24:10:24:11 | { ... } | BraceStmt |
 | expressions.swift:24:10:24:11 | { ... } | BraceStmt | expressions.swift:24:11:24:11 | return | ReturnStmt |
 | expressions.swift:27:1:27:19 | var ... = ... | PatternBindingDecl | expressions.swift:27:5:27:5 | klass | NamedPattern |
@@ -490,8 +553,10 @@
 | expressions.swift:48:12:48:17 | ... .+(_:_:) ... | BinaryExpr | expressions.swift:48:15:48:15 | .+(_:_:) | MethodRefExpr |
 | expressions.swift:48:12:48:17 | return ... | ReturnStmt | expressions.swift:48:12:48:17 | ... .+(_:_:) ... | BinaryExpr |
 | expressions.swift:48:15:48:15 | Int.Type | TypeExpr | expressions.swift:48:15:48:15 | Int | TypeRepr |
+| expressions.swift:50:8:50:8 | init | ConstructorDecl | expressions.swift:50:8:50:8 | self | ParamDecl |
 | expressions.swift:50:8:50:8 | init | ConstructorDecl | expressions.swift:50:8:50:8 | x | ParamDecl |
 | expressions.swift:51:3:51:10 | var ... = ... | PatternBindingDecl | expressions.swift:51:7:51:10 | ... as ... | TypedPattern |
+| expressions.swift:51:7:51:7 | get | AccessorDecl | expressions.swift:51:7:51:7 | self | ParamDecl |
 | expressions.swift:51:7:51:7 | get | AccessorDecl | expressions.swift:51:7:51:7 | { ... } | BraceStmt |
 | expressions.swift:51:7:51:7 | x | ConcreteVarDecl | expressions.swift:51:7:51:7 | get | AccessorDecl |
 | expressions.swift:51:7:51:7 | { ... } | BraceStmt | file://:0:0:0:0 | return ... | ReturnStmt |
@@ -523,7 +588,9 @@
 | expressions.swift:60:33:60:63 | { ... } | ClosureExpr | expressions.swift:60:33:60:63 | { ... } | BraceStmt |
 | expressions.swift:60:35:60:61 | call to unsafeFunction(pointer:) | CallExpr | expressions.swift:60:35:60:35 | unsafeFunction(pointer:) | DeclRefExpr |
 | expressions.swift:60:35:60:61 | return ... | ReturnStmt | expressions.swift:60:35:60:61 | call to unsafeFunction(pointer:) | CallExpr |
+| expressions.swift:62:7:62:7 | deinit | DestructorDecl | expressions.swift:62:7:62:7 | self | ParamDecl |
 | expressions.swift:62:7:62:7 | deinit | DestructorDecl | expressions.swift:62:7:62:7 | { ... } | BraceStmt |
+| expressions.swift:63:3:67:3 | init | ConstructorDecl | expressions.swift:63:3:63:3 | self | ParamDecl |
 | expressions.swift:63:3:67:3 | init | ConstructorDecl | expressions.swift:63:9:63:12 | x | ParamDecl |
 | expressions.swift:63:3:67:3 | init | ConstructorDecl | expressions.swift:63:17:67:3 | { ... } | BraceStmt |
 | expressions.swift:63:17:67:3 | { ... } | BraceStmt | expressions.swift:64:5:66:5 | if ... then { ... } | IfStmt |
@@ -533,13 +600,16 @@
 | expressions.swift:64:8:64:12 | ... .<(_:_:) ... | BinaryExpr | expressions.swift:64:10:64:10 | .<(_:_:) | MethodRefExpr |
 | expressions.swift:64:10:64:10 | Int.Type | TypeExpr | expressions.swift:64:10:64:10 | Int | TypeRepr |
 | expressions.swift:64:14:66:5 | { ... } | BraceStmt | expressions.swift:65:7:65:14 | fail | FailStmt |
+| expressions.swift:70:7:70:7 | deinit | DestructorDecl | expressions.swift:70:7:70:7 | self | ParamDecl |
 | expressions.swift:70:7:70:7 | deinit | DestructorDecl | expressions.swift:70:7:70:7 | { ... } | BraceStmt |
 | expressions.swift:71:3:71:11 | var ... = ... | PatternBindingDecl | expressions.swift:71:7:71:11 | ... as ... | TypedPattern |
+| expressions.swift:71:7:71:7 | get | AccessorDecl | expressions.swift:71:7:71:7 | self | ParamDecl |
 | expressions.swift:71:7:71:7 | get | AccessorDecl | expressions.swift:71:7:71:7 | { ... } | BraceStmt |
 | expressions.swift:71:7:71:7 | xx | ConcreteVarDecl | expressions.swift:71:7:71:7 | get | AccessorDecl |
 | expressions.swift:71:7:71:7 | { ... } | BraceStmt | file://:0:0:0:0 | return ... | ReturnStmt |
 | expressions.swift:71:7:71:11 | ... as ... | TypedPattern | expressions.swift:71:7:71:7 | xx | NamedPattern |
 | expressions.swift:71:7:71:11 | ... as ... | TypedPattern | expressions.swift:71:11:71:11 | Int | TypeRepr |
+| expressions.swift:72:3:74:3 | init | ConstructorDecl | expressions.swift:72:3:72:3 | self | ParamDecl |
 | expressions.swift:72:3:74:3 | init | ConstructorDecl | expressions.swift:72:8:72:11 | x | ParamDecl |
 | expressions.swift:72:3:74:3 | init | ConstructorDecl | expressions.swift:72:16:74:3 | { ... } | BraceStmt |
 | expressions.swift:72:16:74:3 | { ... } | BraceStmt | expressions.swift:73:5:73:10 |  ... = ... | AssignExpr |
@@ -548,7 +618,9 @@
 | expressions.swift:73:5:73:10 |  ... = ... | AssignExpr | expressions.swift:73:5:73:5 | .xx | MemberRefExpr |
 | expressions.swift:73:5:73:10 |  ... = ... | AssignExpr | expressions.swift:73:10:73:10 | x | DeclRefExpr |
 | expressions.swift:77:7:77:7 | call to _unimplementedInitializer(className:initName:file:line:column:) | CallExpr | expressions.swift:77:7:77:7 | _unimplementedInitializer(className:initName:file:line:column:) | DeclRefExpr |
+| expressions.swift:77:7:77:7 | deinit | DestructorDecl | expressions.swift:77:7:77:7 | self | ParamDecl |
 | expressions.swift:77:7:77:7 | deinit | DestructorDecl | expressions.swift:77:7:77:7 | { ... } | BraceStmt |
+| expressions.swift:77:21:77:21 | init | ConstructorDecl | expressions.swift:77:21:77:21 | self | ParamDecl |
 | expressions.swift:77:21:77:21 | init | ConstructorDecl | file://:0:0:0:0 | x | ParamDecl |
 | expressions.swift:77:21:77:21 | init | ConstructorDecl | file://:0:0:0:0 | { ... } | BraceStmt |
 | expressions.swift:78:3:80:3 | init | ConstructorDecl | expressions.swift:78:10:80:3 | { ... } | BraceStmt |
@@ -556,7 +628,6 @@
 | expressions.swift:78:10:80:3 | { ... } | BraceStmt | expressions.swift:80:3:80:3 | return | ReturnStmt |
 | expressions.swift:79:5:79:11 | call to ... | DotSyntaxCallExpr | expressions.swift:79:11:79:11 | init | OtherConstructorDeclRefExpr |
 | expressions.swift:79:5:79:21 | call to ... | CallExpr | expressions.swift:79:5:79:11 | call to ... | DotSyntaxCallExpr |
-| expressions.swift:79:5:79:21 | self = ... | RebindSelfInConstructorExpr | expressions.swift:78:3:78:3 | self | ParamDecl |
 | expressions.swift:79:5:79:21 | self = ... | RebindSelfInConstructorExpr | expressions.swift:79:5:79:21 | call to ... | CallExpr |
 | expressions.swift:83:1:83:23 | var ... = ... | PatternBindingDecl | expressions.swift:83:5:83:5 | derived | NamedPattern |
 | expressions.swift:83:1:83:23 | var ... = ... | PatternBindingDecl | expressions.swift:83:15:83:23 | call to init | CallExpr |
@@ -584,7 +655,9 @@
 | expressions.swift:88:1:88:7 | ...! | ForceValueExpr | expressions.swift:88:1:88:6 | ...[...] | SubscriptExpr |
 | expressions.swift:88:1:88:7 | { ... } | BraceStmt | expressions.swift:88:1:88:7 | ...! | ForceValueExpr |
 | expressions.swift:88:1:88:7 | { ... } | TopLevelCodeDecl | expressions.swift:88:1:88:7 | { ... } | BraceStmt |
+| expressions.swift:90:7:90:7 | deinit | DestructorDecl | expressions.swift:90:7:90:7 | self | ParamDecl |
 | expressions.swift:90:7:90:7 | deinit | DestructorDecl | expressions.swift:90:7:90:7 | { ... } | BraceStmt |
+| expressions.swift:90:7:90:7 | init | ConstructorDecl | expressions.swift:90:7:90:7 | self | ParamDecl |
 | expressions.swift:90:7:90:7 | init | ConstructorDecl | expressions.swift:90:7:90:7 | { ... } | BraceStmt |
 | expressions.swift:90:7:90:7 | { ... } | BraceStmt | expressions.swift:90:7:90:7 | return | ReturnStmt |
 | expressions.swift:92:1:92:55 | var ... = ... | PatternBindingDecl | expressions.swift:92:5:92:5 | opaque | NamedPattern |
@@ -603,7 +676,9 @@
 | expressions.swift:93:1:93:35 | { ... } | TopLevelCodeDecl | expressions.swift:93:1:93:35 | { ... } | BraceStmt |
 | expressions.swift:93:29:93:29 | (UnsafeRawPointer) ... | PointerToPointerExpr | expressions.swift:93:29:93:29 | opaque | DeclRefExpr |
 | expressions.swift:95:8:95:8 | init | ConstructorDecl | expressions.swift:95:8:95:8 | normalField | ParamDecl |
+| expressions.swift:95:8:95:8 | init | ConstructorDecl | expressions.swift:95:8:95:8 | self | ParamDecl |
 | expressions.swift:96:3:101:3 | var ... = ... | PatternBindingDecl | expressions.swift:96:7:96:22 | ... as ... | TypedPattern |
+| expressions.swift:96:7:96:7 | (unnamed function decl) | AccessorDecl | expressions.swift:96:7:96:7 | self | ParamDecl |
 | expressions.swift:96:7:96:7 | (unnamed function decl) | AccessorDecl | expressions.swift:96:7:96:7 | { ... } | BraceStmt |
 | expressions.swift:96:7:96:7 | settableField | ConcreteVarDecl | expressions.swift:96:7:96:7 | (unnamed function decl) | AccessorDecl |
 | expressions.swift:96:7:96:7 | settableField | ConcreteVarDecl | expressions.swift:97:5:97:11 | set | AccessorDecl |
@@ -613,7 +688,9 @@
 | expressions.swift:96:7:96:22 | ... as ... | TypedPattern | expressions.swift:96:7:96:7 | settableField | NamedPattern |
 | expressions.swift:96:7:96:22 | ... as ... | TypedPattern | expressions.swift:96:22:96:22 | Int | TypeRepr |
 | expressions.swift:97:5:97:11 | set | AccessorDecl | expressions.swift:97:5:97:5 | newValue | ParamDecl |
+| expressions.swift:97:5:97:11 | set | AccessorDecl | expressions.swift:97:5:97:5 | self | ParamDecl |
 | expressions.swift:97:5:97:11 | set | AccessorDecl | expressions.swift:97:9:97:11 | { ... } | BraceStmt |
+| expressions.swift:98:5:100:5 | get | AccessorDecl | expressions.swift:98:5:98:5 | self | ParamDecl |
 | expressions.swift:98:5:100:5 | get | AccessorDecl | expressions.swift:98:9:100:5 | { ... } | BraceStmt |
 | expressions.swift:98:9:100:5 | { ... } | BraceStmt | expressions.swift:99:7:99:14 | return ... | ReturnStmt |
 | expressions.swift:99:7:99:14 | return ... | ReturnStmt | expressions.swift:99:14:99:14 | 0 | IntegerLiteralExpr |
@@ -621,6 +698,7 @@
 | expressions.swift:105:7:105:7 | readOnlyField1 | ConcreteVarDecl | expressions.swift:105:27:107:3 | get | AccessorDecl |
 | expressions.swift:105:7:105:23 | ... as ... | TypedPattern | expressions.swift:105:7:105:7 | readOnlyField1 | NamedPattern |
 | expressions.swift:105:7:105:23 | ... as ... | TypedPattern | expressions.swift:105:23:105:23 | Int | TypeRepr |
+| expressions.swift:105:27:107:3 | get | AccessorDecl | expressions.swift:105:27:105:27 | self | ParamDecl |
 | expressions.swift:105:27:107:3 | get | AccessorDecl | expressions.swift:105:27:107:3 | { ... } | BraceStmt |
 | expressions.swift:105:27:107:3 | { ... } | BraceStmt | expressions.swift:106:5:106:12 | return ... | ReturnStmt |
 | expressions.swift:106:5:106:12 | return ... | ReturnStmt | expressions.swift:106:12:106:12 | 0 | IntegerLiteralExpr |
@@ -628,15 +706,19 @@
 | expressions.swift:110:7:110:7 | readOnlyField2 | ConcreteVarDecl | expressions.swift:111:5:113:5 | get | AccessorDecl |
 | expressions.swift:110:7:110:23 | ... as ... | TypedPattern | expressions.swift:110:7:110:7 | readOnlyField2 | NamedPattern |
 | expressions.swift:110:7:110:23 | ... as ... | TypedPattern | expressions.swift:110:23:110:23 | Int | TypeRepr |
+| expressions.swift:111:5:113:5 | get | AccessorDecl | expressions.swift:111:5:111:5 | self | ParamDecl |
 | expressions.swift:111:5:113:5 | get | AccessorDecl | expressions.swift:111:9:113:5 | { ... } | BraceStmt |
 | expressions.swift:111:9:113:5 | { ... } | BraceStmt | expressions.swift:112:7:112:14 | return ... | ReturnStmt |
 | expressions.swift:112:7:112:14 | return ... | ReturnStmt | expressions.swift:112:14:112:14 | 0 | IntegerLiteralExpr |
 | expressions.swift:116:3:116:21 | var ... = ... | PatternBindingDecl | expressions.swift:116:7:116:21 | ... as ... | TypedPattern |
+| expressions.swift:116:7:116:7 | (unnamed function decl) | AccessorDecl | expressions.swift:116:7:116:7 | self | ParamDecl |
 | expressions.swift:116:7:116:7 | (unnamed function decl) | AccessorDecl | expressions.swift:116:7:116:7 | { ... } | BraceStmt |
+| expressions.swift:116:7:116:7 | get | AccessorDecl | expressions.swift:116:7:116:7 | self | ParamDecl |
 | expressions.swift:116:7:116:7 | get | AccessorDecl | expressions.swift:116:7:116:7 | { ... } | BraceStmt |
 | expressions.swift:116:7:116:7 | normalField | ConcreteVarDecl | expressions.swift:116:7:116:7 | (unnamed function decl) | AccessorDecl |
 | expressions.swift:116:7:116:7 | normalField | ConcreteVarDecl | expressions.swift:116:7:116:7 | get | AccessorDecl |
 | expressions.swift:116:7:116:7 | normalField | ConcreteVarDecl | expressions.swift:116:7:116:7 | set | AccessorDecl |
+| expressions.swift:116:7:116:7 | set | AccessorDecl | expressions.swift:116:7:116:7 | self | ParamDecl |
 | expressions.swift:116:7:116:7 | set | AccessorDecl | expressions.swift:116:7:116:7 | value | ParamDecl |
 | expressions.swift:116:7:116:7 | set | AccessorDecl | expressions.swift:116:7:116:7 | { ... } | BraceStmt |
 | expressions.swift:116:7:116:7 | yield ... | YieldStmt | file://:0:0:0:0 | &... | InOutExpr |
@@ -645,6 +727,7 @@
 | expressions.swift:116:7:116:7 | { ... } | BraceStmt | file://:0:0:0:0 | return ... | ReturnStmt |
 | expressions.swift:116:7:116:21 | ... as ... | TypedPattern | expressions.swift:116:7:116:7 | normalField | NamedPattern |
 | expressions.swift:116:7:116:21 | ... as ... | TypedPattern | expressions.swift:116:21:116:21 | Int | TypeRepr |
+| expressions.swift:118:3:118:3 | (unnamed function decl) | AccessorDecl | expressions.swift:118:3:118:3 | self | ParamDecl |
 | expressions.swift:118:3:118:3 | (unnamed function decl) | AccessorDecl | expressions.swift:118:3:118:3 | { ... } | BraceStmt |
 | expressions.swift:118:3:118:3 | (unnamed function decl) | AccessorDecl | file://:0:0:0:0 | x | ParamDecl |
 | expressions.swift:118:3:118:3 | yield ... | YieldStmt | file://:0:0:0:0 | &... | InOutExpr |
@@ -654,17 +737,20 @@
 | expressions.swift:118:3:123:3 | subscript ... | SubscriptDecl | expressions.swift:119:5:121:5 | get | AccessorDecl |
 | expressions.swift:118:3:123:3 | subscript ... | SubscriptDecl | expressions.swift:122:5:122:11 | set | AccessorDecl |
 | expressions.swift:119:5:121:5 | get | AccessorDecl | expressions.swift:118:13:118:13 | x | ParamDecl |
+| expressions.swift:119:5:121:5 | get | AccessorDecl | expressions.swift:119:5:119:5 | self | ParamDecl |
 | expressions.swift:119:5:121:5 | get | AccessorDecl | expressions.swift:119:9:121:5 | { ... } | BraceStmt |
 | expressions.swift:119:9:121:5 | { ... } | BraceStmt | expressions.swift:120:7:120:14 | return ... | ReturnStmt |
 | expressions.swift:120:7:120:14 | return ... | ReturnStmt | expressions.swift:120:14:120:14 | 0 | IntegerLiteralExpr |
 | expressions.swift:122:5:122:11 | set | AccessorDecl | expressions.swift:118:13:118:13 | x | ParamDecl |
 | expressions.swift:122:5:122:11 | set | AccessorDecl | expressions.swift:122:5:122:5 | newValue | ParamDecl |
+| expressions.swift:122:5:122:11 | set | AccessorDecl | expressions.swift:122:5:122:5 | self | ParamDecl |
 | expressions.swift:122:5:122:11 | set | AccessorDecl | expressions.swift:122:9:122:11 | { ... } | BraceStmt |
 | expressions.swift:125:3:127:3 | subscript ... | SubscriptDecl | expressions.swift:125:13:125:16 | x | ParamDecl |
 | expressions.swift:125:3:127:3 | subscript ... | SubscriptDecl | expressions.swift:125:21:125:25 | y | ParamDecl |
 | expressions.swift:125:3:127:3 | subscript ... | SubscriptDecl | expressions.swift:125:37:127:3 | get | AccessorDecl |
 | expressions.swift:125:37:127:3 | get | AccessorDecl | expressions.swift:125:13:125:13 | x | ParamDecl |
 | expressions.swift:125:37:127:3 | get | AccessorDecl | expressions.swift:125:21:125:21 | y | ParamDecl |
+| expressions.swift:125:37:127:3 | get | AccessorDecl | expressions.swift:125:37:125:37 | self | ParamDecl |
 | expressions.swift:125:37:127:3 | get | AccessorDecl | expressions.swift:125:37:127:3 | { ... } | BraceStmt |
 | expressions.swift:125:37:127:3 | { ... } | BraceStmt | expressions.swift:126:5:126:12 | return ... | ReturnStmt |
 | expressions.swift:126:5:126:12 | return ... | ReturnStmt | expressions.swift:126:12:126:12 | 0 | IntegerLiteralExpr |
@@ -711,10 +797,14 @@
 | expressions.swift:138:3:138:17 | return ... | ReturnStmt | expressions.swift:138:10:138:17 | ...[...] | SubscriptExpr |
 | expressions.swift:138:10:138:10 | (HasProperty) ... | LoadExpr | expressions.swift:138:10:138:10 | hp | DeclRefExpr |
 | expressions.swift:138:10:138:17 | ...[...] | SubscriptExpr | expressions.swift:138:10:138:10 | (HasProperty) ... | LoadExpr |
+| expressions.swift:141:8:141:8 | init | ConstructorDecl | expressions.swift:141:8:141:8 | self | ParamDecl |
 | expressions.swift:141:8:141:8 | init | ConstructorDecl | expressions.swift:141:8:141:8 | x | ParamDecl |
 | expressions.swift:142:3:142:11 | var ... = ... | PatternBindingDecl | expressions.swift:142:7:142:11 | ... as ... | TypedPattern |
+| expressions.swift:142:7:142:7 | (unnamed function decl) | AccessorDecl | expressions.swift:142:7:142:7 | self | ParamDecl |
 | expressions.swift:142:7:142:7 | (unnamed function decl) | AccessorDecl | expressions.swift:142:7:142:7 | { ... } | BraceStmt |
+| expressions.swift:142:7:142:7 | get | AccessorDecl | expressions.swift:142:7:142:7 | self | ParamDecl |
 | expressions.swift:142:7:142:7 | get | AccessorDecl | expressions.swift:142:7:142:7 | { ... } | BraceStmt |
+| expressions.swift:142:7:142:7 | set | AccessorDecl | expressions.swift:142:7:142:7 | self | ParamDecl |
 | expressions.swift:142:7:142:7 | set | AccessorDecl | expressions.swift:142:7:142:7 | value | ParamDecl |
 | expressions.swift:142:7:142:7 | set | AccessorDecl | expressions.swift:142:7:142:7 | { ... } | BraceStmt |
 | expressions.swift:142:7:142:7 | x | ConcreteVarDecl | expressions.swift:142:7:142:7 | (unnamed function decl) | AccessorDecl |
@@ -729,12 +819,16 @@
 | expressions.swift:145:8:145:8 | init | ConstructorDecl | expressions.swift:145:8:145:8 | b | ParamDecl |
 | expressions.swift:145:8:145:8 | init | ConstructorDecl | expressions.swift:145:8:145:8 | bs | ParamDecl |
 | expressions.swift:145:8:145:8 | init | ConstructorDecl | expressions.swift:145:8:145:8 | mayB | ParamDecl |
+| expressions.swift:145:8:145:8 | init | ConstructorDecl | expressions.swift:145:8:145:8 | self | ParamDecl |
 | expressions.swift:146:3:146:11 | var ... = ... | PatternBindingDecl | expressions.swift:146:7:146:11 | ... as ... | TypedPattern |
+| expressions.swift:146:7:146:7 | (unnamed function decl) | AccessorDecl | expressions.swift:146:7:146:7 | self | ParamDecl |
 | expressions.swift:146:7:146:7 | (unnamed function decl) | AccessorDecl | expressions.swift:146:7:146:7 | { ... } | BraceStmt |
 | expressions.swift:146:7:146:7 | b | ConcreteVarDecl | expressions.swift:146:7:146:7 | (unnamed function decl) | AccessorDecl |
 | expressions.swift:146:7:146:7 | b | ConcreteVarDecl | expressions.swift:146:7:146:7 | get | AccessorDecl |
 | expressions.swift:146:7:146:7 | b | ConcreteVarDecl | expressions.swift:146:7:146:7 | set | AccessorDecl |
+| expressions.swift:146:7:146:7 | get | AccessorDecl | expressions.swift:146:7:146:7 | self | ParamDecl |
 | expressions.swift:146:7:146:7 | get | AccessorDecl | expressions.swift:146:7:146:7 | { ... } | BraceStmt |
+| expressions.swift:146:7:146:7 | set | AccessorDecl | expressions.swift:146:7:146:7 | self | ParamDecl |
 | expressions.swift:146:7:146:7 | set | AccessorDecl | expressions.swift:146:7:146:7 | value | ParamDecl |
 | expressions.swift:146:7:146:7 | set | AccessorDecl | expressions.swift:146:7:146:7 | { ... } | BraceStmt |
 | expressions.swift:146:7:146:7 | yield ... | YieldStmt | file://:0:0:0:0 | &... | InOutExpr |
@@ -744,11 +838,14 @@
 | expressions.swift:146:7:146:11 | ... as ... | TypedPattern | expressions.swift:146:7:146:7 | b | NamedPattern |
 | expressions.swift:146:7:146:11 | ... as ... | TypedPattern | expressions.swift:146:11:146:11 | B | TypeRepr |
 | expressions.swift:147:3:147:14 | var ... = ... | PatternBindingDecl | expressions.swift:147:7:147:14 | ... as ... | TypedPattern |
+| expressions.swift:147:7:147:7 | (unnamed function decl) | AccessorDecl | expressions.swift:147:7:147:7 | self | ParamDecl |
 | expressions.swift:147:7:147:7 | (unnamed function decl) | AccessorDecl | expressions.swift:147:7:147:7 | { ... } | BraceStmt |
 | expressions.swift:147:7:147:7 | bs | ConcreteVarDecl | expressions.swift:147:7:147:7 | (unnamed function decl) | AccessorDecl |
 | expressions.swift:147:7:147:7 | bs | ConcreteVarDecl | expressions.swift:147:7:147:7 | get | AccessorDecl |
 | expressions.swift:147:7:147:7 | bs | ConcreteVarDecl | expressions.swift:147:7:147:7 | set | AccessorDecl |
+| expressions.swift:147:7:147:7 | get | AccessorDecl | expressions.swift:147:7:147:7 | self | ParamDecl |
 | expressions.swift:147:7:147:7 | get | AccessorDecl | expressions.swift:147:7:147:7 | { ... } | BraceStmt |
+| expressions.swift:147:7:147:7 | set | AccessorDecl | expressions.swift:147:7:147:7 | self | ParamDecl |
 | expressions.swift:147:7:147:7 | set | AccessorDecl | expressions.swift:147:7:147:7 | value | ParamDecl |
 | expressions.swift:147:7:147:7 | set | AccessorDecl | expressions.swift:147:7:147:7 | { ... } | BraceStmt |
 | expressions.swift:147:7:147:7 | yield ... | YieldStmt | file://:0:0:0:0 | &... | InOutExpr |
@@ -759,11 +856,14 @@
 | expressions.swift:147:7:147:14 | ... as ... | TypedPattern | expressions.swift:147:12:147:14 | [B] | TypeRepr |
 | expressions.swift:148:3:148:15 | var ... = ... | PatternBindingDecl | expressions.swift:148:7:148:15 | ... as ... | TypedPattern |
 | expressions.swift:148:3:148:15 | var ... = ... | PatternBindingDecl | file://:0:0:0:0 | nil | NilLiteralExpr |
+| expressions.swift:148:7:148:7 | (unnamed function decl) | AccessorDecl | expressions.swift:148:7:148:7 | self | ParamDecl |
 | expressions.swift:148:7:148:7 | (unnamed function decl) | AccessorDecl | expressions.swift:148:7:148:7 | { ... } | BraceStmt |
+| expressions.swift:148:7:148:7 | get | AccessorDecl | expressions.swift:148:7:148:7 | self | ParamDecl |
 | expressions.swift:148:7:148:7 | get | AccessorDecl | expressions.swift:148:7:148:7 | { ... } | BraceStmt |
 | expressions.swift:148:7:148:7 | mayB | ConcreteVarDecl | expressions.swift:148:7:148:7 | (unnamed function decl) | AccessorDecl |
 | expressions.swift:148:7:148:7 | mayB | ConcreteVarDecl | expressions.swift:148:7:148:7 | get | AccessorDecl |
 | expressions.swift:148:7:148:7 | mayB | ConcreteVarDecl | expressions.swift:148:7:148:7 | set | AccessorDecl |
+| expressions.swift:148:7:148:7 | set | AccessorDecl | expressions.swift:148:7:148:7 | self | ParamDecl |
 | expressions.swift:148:7:148:7 | set | AccessorDecl | expressions.swift:148:7:148:7 | value | ParamDecl |
 | expressions.swift:148:7:148:7 | set | AccessorDecl | expressions.swift:148:7:148:7 | { ... } | BraceStmt |
 | expressions.swift:148:7:148:7 | yield ... | YieldStmt | file://:0:0:0:0 | &... | InOutExpr |
@@ -1145,10 +1245,14 @@
 | statements.swift:71:29:71:43 | ... .==(_:_:) ... | BinaryExpr | statements.swift:71:40:71:40 | .==(_:_:) | MethodRefExpr |
 | statements.swift:71:36:71:36 | Int.Type | TypeExpr | statements.swift:71:36:71:36 | Int | TypeRepr |
 | statements.swift:71:40:71:40 | Int.Type | TypeExpr | statements.swift:71:40:71:40 | Int | TypeRepr |
+| statements.swift:74:8:74:8 | init | ConstructorDecl | statements.swift:74:8:74:8 | self | ParamDecl |
 | statements.swift:74:8:74:8 | init | ConstructorDecl | statements.swift:74:8:74:8 | x | ParamDecl |
 | statements.swift:75:3:75:11 | var ... = ... | PatternBindingDecl | statements.swift:75:7:75:11 | ... as ... | TypedPattern |
+| statements.swift:75:7:75:7 | (unnamed function decl) | AccessorDecl | statements.swift:75:7:75:7 | self | ParamDecl |
 | statements.swift:75:7:75:7 | (unnamed function decl) | AccessorDecl | statements.swift:75:7:75:7 | { ... } | BraceStmt |
+| statements.swift:75:7:75:7 | get | AccessorDecl | statements.swift:75:7:75:7 | self | ParamDecl |
 | statements.swift:75:7:75:7 | get | AccessorDecl | statements.swift:75:7:75:7 | { ... } | BraceStmt |
+| statements.swift:75:7:75:7 | set | AccessorDecl | statements.swift:75:7:75:7 | self | ParamDecl |
 | statements.swift:75:7:75:7 | set | AccessorDecl | statements.swift:75:7:75:7 | value | ParamDecl |
 | statements.swift:75:7:75:7 | set | AccessorDecl | statements.swift:75:7:75:7 | { ... } | BraceStmt |
 | statements.swift:75:7:75:7 | x | ConcreteVarDecl | statements.swift:75:7:75:7 | (unnamed function decl) | AccessorDecl |
@@ -1164,16 +1268,19 @@
 | statements.swift:76:7:76:7 | hasModify | ConcreteVarDecl | statements.swift:76:7:76:7 | set | AccessorDecl |
 | statements.swift:76:7:76:7 | hasModify | ConcreteVarDecl | statements.swift:77:5:79:5 | (unnamed function decl) | AccessorDecl |
 | statements.swift:76:7:76:7 | hasModify | ConcreteVarDecl | statements.swift:81:5:83:5 | get | AccessorDecl |
+| statements.swift:76:7:76:7 | set | AccessorDecl | statements.swift:76:7:76:7 | self | ParamDecl |
 | statements.swift:76:7:76:7 | set | AccessorDecl | statements.swift:76:7:76:7 | value | ParamDecl |
 | statements.swift:76:7:76:7 | set | AccessorDecl | statements.swift:76:7:76:7 | { ... } | BraceStmt |
 | statements.swift:76:7:76:7 | { ... } | BraceStmt | file://:0:0:0:0 |  ... = ... | AssignExpr |
 | statements.swift:76:7:76:19 | ... as ... | TypedPattern | statements.swift:76:7:76:7 | hasModify | NamedPattern |
 | statements.swift:76:7:76:19 | ... as ... | TypedPattern | statements.swift:76:19:76:19 | Int | TypeRepr |
+| statements.swift:77:5:79:5 | (unnamed function decl) | AccessorDecl | statements.swift:77:5:77:5 | self | ParamDecl |
 | statements.swift:77:5:79:5 | (unnamed function decl) | AccessorDecl | statements.swift:77:13:79:5 | { ... } | BraceStmt |
 | statements.swift:77:13:79:5 | { ... } | BraceStmt | statements.swift:78:7:78:14 | yield ... | YieldStmt |
 | statements.swift:78:7:78:14 | yield ... | YieldStmt | statements.swift:78:13:78:14 | &... | InOutExpr |
 | statements.swift:78:13:78:14 | &... | InOutExpr | statements.swift:78:14:78:14 | .x | MemberRefExpr |
 | statements.swift:78:14:78:14 | .x | MemberRefExpr | statements.swift:78:14:78:14 | self | DeclRefExpr |
+| statements.swift:81:5:83:5 | get | AccessorDecl | statements.swift:81:5:81:5 | self | ParamDecl |
 | statements.swift:81:5:83:5 | get | AccessorDecl | statements.swift:81:9:83:5 | { ... } | BraceStmt |
 | statements.swift:81:9:83:5 | { ... } | BraceStmt | statements.swift:82:7:82:14 | return ... | ReturnStmt |
 | statements.swift:82:7:82:14 | return ... | ReturnStmt | statements.swift:82:14:82:14 | 0 | IntegerLiteralExpr |

@@ -1,5 +1,12 @@
 | access-path-sanitizer.js:2:18:2:25 | source() | access-path-sanitizer.js:4:8:4:12 | obj.x |
 | advanced-callgraph.js:2:13:2:20 | source() | advanced-callgraph.js:6:22:6:22 | v |
+| arrays-init.js:2:16:2:23 | source() | arrays-init.js:17:8:17:13 | arr[1] |
+| arrays-init.js:2:16:2:23 | source() | arrays-init.js:22:8:22:13 | arr[6] |
+| arrays-init.js:2:16:2:23 | source() | arrays-init.js:28:8:28:13 | arr[1] |
+| arrays-init.js:2:16:2:23 | source() | arrays-init.js:34:8:34:13 | arr[1] |
+| arrays-init.js:2:16:2:23 | source() | arrays-init.js:43:10:43:15 | arr[i] |
+| arrays-init.js:2:16:2:23 | source() | arrays-init.js:55:10:55:15 | arr[i] |
+| arrays-init.js:2:16:2:23 | source() | arrays-init.js:61:10:61:13 | item |
 | booleanOps.js:2:11:2:18 | source() | booleanOps.js:4:8:4:8 | x |
 | booleanOps.js:2:11:2:18 | source() | booleanOps.js:7:10:7:10 | x |
 | booleanOps.js:2:11:2:18 | source() | booleanOps.js:10:10:10:10 | x |
@@ -12,6 +19,12 @@
 | bound-function.js:45:10:45:17 | source() | bound-function.js:45:6:45:18 | id3(source()) |
 | bound-function.js:49:12:49:19 | source() | bound-function.js:54:6:54:14 | source0() |
 | bound-function.js:49:12:49:19 | source() | bound-function.js:55:6:55:14 | source1() |
+| call-apply.js:27:14:27:21 | source() | call-apply.js:24:8:24:11 | arg1 |
+| call-apply.js:27:14:27:21 | source() | call-apply.js:29:6:29:32 | foo1.ca ... ce, "") |
+| call-apply.js:27:14:27:21 | source() | call-apply.js:32:6:32:35 | foo1.ap ... e, ""]) |
+| call-apply.js:27:14:27:21 | source() | call-apply.js:46:6:46:28 | foo1_ca ... e, ""]) |
+| call-apply.js:27:14:27:21 | source() | call-apply.js:68:10:68:21 | arguments[0] |
+| call-apply.js:87:17:87:24 | source() | call-apply.js:84:8:84:11 | this |
 | callbacks.js:4:6:4:13 | source() | callbacks.js:34:27:34:27 | x |
 | callbacks.js:4:6:4:13 | source() | callbacks.js:35:27:35:27 | x |
 | callbacks.js:5:6:5:13 | source() | callbacks.js:34:27:34:27 | x |

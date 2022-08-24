@@ -109,7 +109,7 @@ private class FeatureNONET extends Feature, TNONET {
   override string getConstantName() { result = "NONET" }
 }
 
-private class FeatureDTDLOAD extends Feature, TDTDLOAD {
+private class FeatureDtdLoad extends Feature, TDTDLOAD {
   override int getValue() { result = 4 }
 
   override string getConstantName() { result = "DTDLOAD" }

@@ -173,7 +173,7 @@ module Ssa {
     }
 
     /**
-     * Holds is this SSA definition is live at the end of basic block `bb`.
+     * Holds if this SSA definition is live at the end of basic block `bb`.
      * That is, this definition reaches the end of basic block `bb`, at which
      * point it is still live, without crossing another SSA definition of the
      * same source variable.

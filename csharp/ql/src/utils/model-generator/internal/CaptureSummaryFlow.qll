@@ -79,3 +79,12 @@ string captureFlow(TargetApi api) {
   result = captureQualifierFlow(api) or
   result = captureThroughFlow(api)
 }
+
+/**
+ * Gets the negative summary for `api`, if any.
+ * A negative summary is generated, if there does not exist any positive flow.
+ */
+string captureNoFlow(TargetApi api) {
+  not exists(captureFlow(api)) and
+  result = asNegativeSummaryModel(api)
+}
