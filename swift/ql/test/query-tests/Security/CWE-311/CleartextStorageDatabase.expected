@@ -1,5 +1,68 @@
 edges
+| testCoreData.swift:37:14:37:22 | WriteDef :  | testCoreData.swift:37:49:37:49 | data :  |
+| testCoreData.swift:37:14:37:22 | data :  | testCoreData.swift:37:49:37:49 | data :  |
+| testCoreData.swift:38:11:38:23 | WriteDef :  | testCoreData.swift:38:1:38:33 | data[return] :  |
+| testCoreData.swift:38:11:38:23 | data :  | testCoreData.swift:38:1:38:33 | data[return] :  |
+| testCoreData.swift:77:24:77:24 | x :  | testCoreData.swift:78:15:78:15 | x |
+| testCoreData.swift:80:10:80:22 | call to getPassword() :  | testCoreData.swift:81:15:81:15 | y |
+| testCoreData.swift:91:10:91:10 | passwd :  | testCoreData.swift:95:15:95:15 | x |
+| testCoreData.swift:91:10:91:10 | passwd :  | testCoreData.swift:99:14:99:14 | x :  |
+| testCoreData.swift:92:10:92:10 | passwd :  | testCoreData.swift:96:15:96:15 | y |
+| testCoreData.swift:92:10:92:10 | passwd :  | testCoreData.swift:100:13:100:14 | &... :  |
+| testCoreData.swift:93:10:93:10 | passwd :  | testCoreData.swift:97:15:97:15 | z |
+| testCoreData.swift:99:6:99:15 | call to encrypt(_:) :  | testCoreData.swift:103:15:103:15 | x |
+| testCoreData.swift:99:14:99:14 | x :  | testCoreData.swift:37:14:37:22 | WriteDef :  |
+| testCoreData.swift:99:14:99:14 | x :  | testCoreData.swift:37:14:37:22 | data :  |
+| testCoreData.swift:99:14:99:14 | x :  | testCoreData.swift:99:6:99:15 | call to encrypt(_:) :  |
+| testCoreData.swift:100:7:100:14 | data: &... :  | testCoreData.swift:104:15:104:15 | y |
+| testCoreData.swift:100:13:100:14 | &... :  | testCoreData.swift:38:11:38:23 | WriteDef :  |
+| testCoreData.swift:100:13:100:14 | &... :  | testCoreData.swift:38:11:38:23 | data :  |
+| testCoreData.swift:100:13:100:14 | &... :  | testCoreData.swift:100:7:100:14 | data: &... :  |
 nodes
+| testCoreData.swift:37:14:37:22 | WriteDef :  | semmle.label | WriteDef :  |
+| testCoreData.swift:37:14:37:22 | WriteDef :  | semmle.label | data :  |
+| testCoreData.swift:37:14:37:22 | data :  | semmle.label | WriteDef :  |
+| testCoreData.swift:37:14:37:22 | data :  | semmle.label | data :  |
+| testCoreData.swift:37:49:37:49 | data :  | semmle.label | data :  |
+| testCoreData.swift:38:1:38:33 | data[return] :  | semmle.label | data[return] :  |
+| testCoreData.swift:38:11:38:23 | WriteDef :  | semmle.label | WriteDef :  |
+| testCoreData.swift:38:11:38:23 | WriteDef :  | semmle.label | data :  |
+| testCoreData.swift:38:11:38:23 | data :  | semmle.label | WriteDef :  |
+| testCoreData.swift:38:11:38:23 | data :  | semmle.label | data :  |
+| testCoreData.swift:48:15:48:15 | password | semmle.label | password |
+| testCoreData.swift:51:24:51:24 | password | semmle.label | password |
+| testCoreData.swift:58:15:58:15 | password | semmle.label | password |
+| testCoreData.swift:77:24:77:24 | x :  | semmle.label | x :  |
+| testCoreData.swift:78:15:78:15 | x | semmle.label | x |
+| testCoreData.swift:80:10:80:22 | call to getPassword() :  | semmle.label | call to getPassword() :  |
+| testCoreData.swift:81:15:81:15 | y | semmle.label | y |
+| testCoreData.swift:85:15:85:17 | .password | semmle.label | .password |
+| testCoreData.swift:91:10:91:10 | passwd :  | semmle.label | passwd :  |
+| testCoreData.swift:92:10:92:10 | passwd :  | semmle.label | passwd :  |
+| testCoreData.swift:93:10:93:10 | passwd :  | semmle.label | passwd :  |
+| testCoreData.swift:95:15:95:15 | x | semmle.label | x |
+| testCoreData.swift:96:15:96:15 | y | semmle.label | y |
+| testCoreData.swift:97:15:97:15 | z | semmle.label | z |
+| testCoreData.swift:99:6:99:15 | call to encrypt(_:) :  | semmle.label | call to encrypt(_:) :  |
+| testCoreData.swift:99:14:99:14 | x :  | semmle.label | x :  |
+| testCoreData.swift:100:7:100:14 | data: &... :  | semmle.label | data: &... :  |
+| testCoreData.swift:100:13:100:14 | &... :  | semmle.label | &... :  |
+| testCoreData.swift:103:15:103:15 | x | semmle.label | x |
+| testCoreData.swift:104:15:104:15 | y | semmle.label | y |
 subpaths
+| testCoreData.swift:99:14:99:14 | x :  | testCoreData.swift:37:14:37:22 | WriteDef :  | testCoreData.swift:37:49:37:49 | data :  | testCoreData.swift:99:6:99:15 | call to encrypt(_:) :  |
+| testCoreData.swift:99:14:99:14 | x :  | testCoreData.swift:37:14:37:22 | data :  | testCoreData.swift:37:49:37:49 | data :  | testCoreData.swift:99:6:99:15 | call to encrypt(_:) :  |
+| testCoreData.swift:100:13:100:14 | &... :  | testCoreData.swift:38:11:38:23 | WriteDef :  | testCoreData.swift:38:1:38:33 | data[return] :  | testCoreData.swift:100:7:100:14 | data: &... :  |
+| testCoreData.swift:100:13:100:14 | &... :  | testCoreData.swift:38:11:38:23 | data :  | testCoreData.swift:38:1:38:33 | data[return] :  | testCoreData.swift:100:7:100:14 | data: &... :  |
 #select
-| TODO |
+| testCoreData.swift:48:15:48:15 | password | testCoreData.swift:48:15:48:15 | password | testCoreData.swift:48:15:48:15 | password | This operation stores 'password' in a database. It may contain unencrypted sensitive data from $@ | testCoreData.swift:48:15:48:15 | password | password |
+| testCoreData.swift:51:24:51:24 | password | testCoreData.swift:51:24:51:24 | password | testCoreData.swift:51:24:51:24 | password | This operation stores 'password' in a database. It may contain unencrypted sensitive data from $@ | testCoreData.swift:51:24:51:24 | password | password |
+| testCoreData.swift:58:15:58:15 | password | testCoreData.swift:58:15:58:15 | password | testCoreData.swift:58:15:58:15 | password | This operation stores 'password' in a database. It may contain unencrypted sensitive data from $@ | testCoreData.swift:58:15:58:15 | password | password |
+| testCoreData.swift:78:15:78:15 | x | testCoreData.swift:77:24:77:24 | x :  | testCoreData.swift:78:15:78:15 | x | This operation stores 'x' in a database. It may contain unencrypted sensitive data from $@ | testCoreData.swift:77:24:77:24 | x :  | x |
+| testCoreData.swift:81:15:81:15 | y | testCoreData.swift:80:10:80:22 | call to getPassword() :  | testCoreData.swift:81:15:81:15 | y | This operation stores 'y' in a database. It may contain unencrypted sensitive data from $@ | testCoreData.swift:80:10:80:22 | call to getPassword() :  | call to getPassword() |
+| testCoreData.swift:85:15:85:17 | .password | testCoreData.swift:85:15:85:17 | .password | testCoreData.swift:85:15:85:17 | .password | This operation stores '.password' in a database. It may contain unencrypted sensitive data from $@ | testCoreData.swift:85:15:85:17 | .password | .password |
+| testCoreData.swift:95:15:95:15 | x | testCoreData.swift:91:10:91:10 | passwd :  | testCoreData.swift:95:15:95:15 | x | This operation stores 'x' in a database. It may contain unencrypted sensitive data from $@ | testCoreData.swift:91:10:91:10 | passwd :  | passwd |
+| testCoreData.swift:96:15:96:15 | y | testCoreData.swift:92:10:92:10 | passwd :  | testCoreData.swift:96:15:96:15 | y | This operation stores 'y' in a database. It may contain unencrypted sensitive data from $@ | testCoreData.swift:92:10:92:10 | passwd :  | passwd |
+| testCoreData.swift:97:15:97:15 | z | testCoreData.swift:93:10:93:10 | passwd :  | testCoreData.swift:97:15:97:15 | z | This operation stores 'z' in a database. It may contain unencrypted sensitive data from $@ | testCoreData.swift:93:10:93:10 | passwd :  | passwd |
+| testCoreData.swift:103:15:103:15 | x | testCoreData.swift:91:10:91:10 | passwd :  | testCoreData.swift:103:15:103:15 | x | This operation stores 'x' in a database. It may contain unencrypted sensitive data from $@ | testCoreData.swift:91:10:91:10 | passwd :  | passwd |
+| testCoreData.swift:104:15:104:15 | y | testCoreData.swift:92:10:92:10 | passwd :  | testCoreData.swift:104:15:104:15 | y | This operation stores 'y' in a database. It may contain unencrypted sensitive data from $@ | testCoreData.swift:92:10:92:10 | passwd :  | passwd |
