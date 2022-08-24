@@ -128,6 +128,7 @@ class JacksonMixinCallableEntryPoint extends EntryPoint {
   override Callable getALiveCallable() { result = this }
 }
 
+/** A JAX annotation seen as a reflectively constructed class. */
 class JaxAnnotationReflectivelyConstructedClass extends ReflectivelyConstructedClass {
   JaxAnnotationReflectivelyConstructedClass() {
     this instanceof JaxWsEndpoint or
@@ -346,6 +347,7 @@ class GsonDeserializationEntryPoint extends ReflectivelyConstructedClass {
   }
 }
 
+/** A JAXB deserialization entry point seen as a reflectively constructed class. */
 class JaxbDeserializationEntryPoint extends ReflectivelyConstructedClass {
   JaxbDeserializationEntryPoint() {
     // A class can be deserialized by JAXB if it's an `XmlRootElement`...
