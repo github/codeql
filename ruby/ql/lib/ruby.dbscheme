@@ -247,18 +247,14 @@ ruby_binary_def(
   int right: @ruby_underscore_expression ref
 );
 
+ruby_block_body(
+  unique int ruby_block: @ruby_block ref,
+  unique int body: @ruby_block_body ref
+);
+
 ruby_block_parameters(
   unique int ruby_block: @ruby_block ref,
   unique int parameters: @ruby_block_parameters ref
-);
-
-@ruby_block_child_type = @ruby_token_empty_statement | @ruby_underscore_statement
-
-#keyset[ruby_block, index]
-ruby_block_child(
-  int ruby_block: @ruby_block ref,
-  int index: int ref,
-  unique int child: @ruby_block_child_type ref
 );
 
 ruby_block_def(
@@ -272,6 +268,19 @@ ruby_block_argument_child(
 
 ruby_block_argument_def(
   unique int id: @ruby_block_argument
+);
+
+@ruby_block_body_child_type = @ruby_token_empty_statement | @ruby_underscore_statement
+
+#keyset[ruby_block_body, index]
+ruby_block_body_child(
+  int ruby_block_body: @ruby_block_body ref,
+  int index: int ref,
+  unique int child: @ruby_block_body_child_type ref
+);
+
+ruby_block_body_def(
+  unique int id: @ruby_block_body
 );
 
 ruby_block_parameter_name(
@@ -301,6 +310,19 @@ ruby_block_parameters_child(
 
 ruby_block_parameters_def(
   unique int id: @ruby_block_parameters
+);
+
+@ruby_body_statement_child_type = @ruby_else | @ruby_ensure | @ruby_rescue | @ruby_token_empty_statement | @ruby_underscore_statement
+
+#keyset[ruby_body_statement, index]
+ruby_body_statement_child(
+  int ruby_body_statement: @ruby_body_statement ref,
+  int index: int ref,
+  unique int child: @ruby_body_statement_child_type ref
+);
+
+ruby_body_statement_def(
+  unique int id: @ruby_body_statement
 );
 
 ruby_break_child(
@@ -391,20 +413,16 @@ ruby_chained_string_def(
   unique int id: @ruby_chained_string
 );
 
+ruby_class_body(
+  unique int ruby_class: @ruby_class ref,
+  unique int body: @ruby_body_statement ref
+);
+
 @ruby_class_name_type = @ruby_scope_resolution | @ruby_token_constant
 
 ruby_class_superclass(
   unique int ruby_class: @ruby_class ref,
   unique int superclass: @ruby_superclass ref
-);
-
-@ruby_class_child_type = @ruby_else | @ruby_ensure | @ruby_rescue | @ruby_token_empty_statement | @ruby_underscore_statement
-
-#keyset[ruby_class, index]
-ruby_class_child(
-  int ruby_class: @ruby_class ref,
-  int index: int ref,
-  unique int child: @ruby_class_child_type ref
 );
 
 ruby_class_def(
@@ -478,18 +496,14 @@ ruby_do_def(
   unique int id: @ruby_do
 );
 
+ruby_do_block_body(
+  unique int ruby_do_block: @ruby_do_block ref,
+  unique int body: @ruby_body_statement ref
+);
+
 ruby_do_block_parameters(
   unique int ruby_do_block: @ruby_do_block ref,
   unique int parameters: @ruby_block_parameters ref
-);
-
-@ruby_do_block_child_type = @ruby_else | @ruby_ensure | @ruby_rescue | @ruby_token_empty_statement | @ruby_underscore_statement
-
-#keyset[ruby_do_block, index]
-ruby_do_block_child(
-  int ruby_do_block: @ruby_do_block ref,
-  int index: int ref,
-  unique int child: @ruby_do_block_child_type ref
 );
 
 ruby_do_block_def(
@@ -724,7 +738,7 @@ ruby_in_clause_def(
   int pattern: @ruby_underscore_pattern_top_expr_body ref
 );
 
-@ruby_interpolation_child_type = @ruby_token_empty_statement | @ruby_underscore_statement
+@ruby_interpolation_child_type = @ruby_token_empty_statement | @ruby_underscore_nonlocal_variable | @ruby_underscore_statement
 
 #keyset[ruby_interpolation, index]
 ruby_interpolation_child(
@@ -797,18 +811,16 @@ ruby_left_assignment_list_def(
   unique int id: @ruby_left_assignment_list
 );
 
+@ruby_method_body_type = @ruby_body_statement | @ruby_rescue_modifier | @ruby_underscore_arg
+
+ruby_method_body(
+  unique int ruby_method: @ruby_method ref,
+  unique int body: @ruby_method_body_type ref
+);
+
 ruby_method_parameters(
   unique int ruby_method: @ruby_method ref,
   unique int parameters: @ruby_method_parameters ref
-);
-
-@ruby_method_child_type = @ruby_else | @ruby_ensure | @ruby_rescue | @ruby_token_empty_statement | @ruby_underscore_arg | @ruby_underscore_statement
-
-#keyset[ruby_method, index]
-ruby_method_child(
-  int ruby_method: @ruby_method ref,
-  int index: int ref,
-  unique int child: @ruby_method_child_type ref
 );
 
 ruby_method_def(
@@ -829,16 +841,12 @@ ruby_method_parameters_def(
   unique int id: @ruby_method_parameters
 );
 
-@ruby_module_name_type = @ruby_scope_resolution | @ruby_token_constant
-
-@ruby_module_child_type = @ruby_else | @ruby_ensure | @ruby_rescue | @ruby_token_empty_statement | @ruby_underscore_statement
-
-#keyset[ruby_module, index]
-ruby_module_child(
-  int ruby_module: @ruby_module ref,
-  int index: int ref,
-  unique int child: @ruby_module_child_type ref
+ruby_module_body(
+  unique int ruby_module: @ruby_module ref,
+  unique int body: @ruby_body_statement ref
 );
+
+@ruby_module_name_type = @ruby_scope_resolution | @ruby_token_constant
 
 ruby_module_def(
   unique int id: @ruby_module,
@@ -1074,13 +1082,9 @@ ruby_setter_def(
   int name: @ruby_token_identifier ref
 );
 
-@ruby_singleton_class_child_type = @ruby_else | @ruby_ensure | @ruby_rescue | @ruby_token_empty_statement | @ruby_underscore_statement
-
-#keyset[ruby_singleton_class, index]
-ruby_singleton_class_child(
-  int ruby_singleton_class: @ruby_singleton_class ref,
-  int index: int ref,
-  unique int child: @ruby_singleton_class_child_type ref
+ruby_singleton_class_body(
+  unique int ruby_singleton_class: @ruby_singleton_class ref,
+  unique int body: @ruby_body_statement ref
 );
 
 ruby_singleton_class_def(
@@ -1088,20 +1092,18 @@ ruby_singleton_class_def(
   int value: @ruby_underscore_arg ref
 );
 
+@ruby_singleton_method_body_type = @ruby_body_statement | @ruby_rescue_modifier | @ruby_underscore_arg
+
+ruby_singleton_method_body(
+  unique int ruby_singleton_method: @ruby_singleton_method ref,
+  unique int body: @ruby_singleton_method_body_type ref
+);
+
 @ruby_singleton_method_object_type = @ruby_underscore_arg | @ruby_underscore_variable
 
 ruby_singleton_method_parameters(
   unique int ruby_singleton_method: @ruby_singleton_method ref,
   unique int parameters: @ruby_method_parameters ref
-);
-
-@ruby_singleton_method_child_type = @ruby_else | @ruby_ensure | @ruby_rescue | @ruby_token_empty_statement | @ruby_underscore_arg | @ruby_underscore_statement
-
-#keyset[ruby_singleton_method, index]
-ruby_singleton_method_child(
-  int ruby_singleton_method: @ruby_singleton_method ref,
-  int index: int ref,
-  unique int child: @ruby_singleton_method_child_type ref
 );
 
 ruby_singleton_method_def(
@@ -1344,7 +1346,7 @@ case @ruby_token.kind of
 ;
 
 
-@ruby_ast_node = @ruby_alias | @ruby_alternative_pattern | @ruby_argument_list | @ruby_array | @ruby_array_pattern | @ruby_as_pattern | @ruby_assignment | @ruby_bare_string | @ruby_bare_symbol | @ruby_begin | @ruby_begin_block | @ruby_binary | @ruby_block | @ruby_block_argument | @ruby_block_parameter | @ruby_block_parameters | @ruby_break | @ruby_call | @ruby_case__ | @ruby_case_match | @ruby_chained_string | @ruby_class | @ruby_complex | @ruby_conditional | @ruby_delimited_symbol | @ruby_destructured_left_assignment | @ruby_destructured_parameter | @ruby_do | @ruby_do_block | @ruby_element_reference | @ruby_else | @ruby_elsif | @ruby_end_block | @ruby_ensure | @ruby_exception_variable | @ruby_exceptions | @ruby_expression_reference_pattern | @ruby_find_pattern | @ruby_for | @ruby_hash | @ruby_hash_pattern | @ruby_hash_splat_argument | @ruby_hash_splat_parameter | @ruby_heredoc_body | @ruby_if | @ruby_if_guard | @ruby_if_modifier | @ruby_in | @ruby_in_clause | @ruby_interpolation | @ruby_keyword_parameter | @ruby_keyword_pattern | @ruby_lambda | @ruby_lambda_parameters | @ruby_left_assignment_list | @ruby_method | @ruby_method_parameters | @ruby_module | @ruby_next | @ruby_operator_assignment | @ruby_optional_parameter | @ruby_pair | @ruby_parenthesized_pattern | @ruby_parenthesized_statements | @ruby_pattern | @ruby_program | @ruby_range | @ruby_rational | @ruby_redo | @ruby_regex | @ruby_rescue | @ruby_rescue_modifier | @ruby_rest_assignment | @ruby_retry | @ruby_return | @ruby_right_assignment_list | @ruby_scope_resolution | @ruby_setter | @ruby_singleton_class | @ruby_singleton_method | @ruby_splat_argument | @ruby_splat_parameter | @ruby_string__ | @ruby_string_array | @ruby_subshell | @ruby_superclass | @ruby_symbol_array | @ruby_then | @ruby_token | @ruby_unary | @ruby_undef | @ruby_unless | @ruby_unless_guard | @ruby_unless_modifier | @ruby_until | @ruby_until_modifier | @ruby_variable_reference_pattern | @ruby_when | @ruby_while | @ruby_while_modifier | @ruby_yield
+@ruby_ast_node = @ruby_alias | @ruby_alternative_pattern | @ruby_argument_list | @ruby_array | @ruby_array_pattern | @ruby_as_pattern | @ruby_assignment | @ruby_bare_string | @ruby_bare_symbol | @ruby_begin | @ruby_begin_block | @ruby_binary | @ruby_block | @ruby_block_argument | @ruby_block_body | @ruby_block_parameter | @ruby_block_parameters | @ruby_body_statement | @ruby_break | @ruby_call | @ruby_case__ | @ruby_case_match | @ruby_chained_string | @ruby_class | @ruby_complex | @ruby_conditional | @ruby_delimited_symbol | @ruby_destructured_left_assignment | @ruby_destructured_parameter | @ruby_do | @ruby_do_block | @ruby_element_reference | @ruby_else | @ruby_elsif | @ruby_end_block | @ruby_ensure | @ruby_exception_variable | @ruby_exceptions | @ruby_expression_reference_pattern | @ruby_find_pattern | @ruby_for | @ruby_hash | @ruby_hash_pattern | @ruby_hash_splat_argument | @ruby_hash_splat_parameter | @ruby_heredoc_body | @ruby_if | @ruby_if_guard | @ruby_if_modifier | @ruby_in | @ruby_in_clause | @ruby_interpolation | @ruby_keyword_parameter | @ruby_keyword_pattern | @ruby_lambda | @ruby_lambda_parameters | @ruby_left_assignment_list | @ruby_method | @ruby_method_parameters | @ruby_module | @ruby_next | @ruby_operator_assignment | @ruby_optional_parameter | @ruby_pair | @ruby_parenthesized_pattern | @ruby_parenthesized_statements | @ruby_pattern | @ruby_program | @ruby_range | @ruby_rational | @ruby_redo | @ruby_regex | @ruby_rescue | @ruby_rescue_modifier | @ruby_rest_assignment | @ruby_retry | @ruby_return | @ruby_right_assignment_list | @ruby_scope_resolution | @ruby_setter | @ruby_singleton_class | @ruby_singleton_method | @ruby_splat_argument | @ruby_splat_parameter | @ruby_string__ | @ruby_string_array | @ruby_subshell | @ruby_superclass | @ruby_symbol_array | @ruby_then | @ruby_token | @ruby_unary | @ruby_undef | @ruby_unless | @ruby_unless_guard | @ruby_unless_modifier | @ruby_until | @ruby_until_modifier | @ruby_variable_reference_pattern | @ruby_when | @ruby_while | @ruby_while_modifier | @ruby_yield
 
 @ruby_ast_node_parent = @file | @ruby_ast_node
 
