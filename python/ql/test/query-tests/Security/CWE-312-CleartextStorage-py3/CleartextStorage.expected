@@ -1,21 +1,14 @@
 edges
-| file:///usr/lib/python3.8/pathlib.py:1248:26:1248:29 | ControlFlowNode for data | file:///usr/lib/python3.8/pathlib.py:1256:28:1256:31 | ControlFlowNode for data |
-| test.py:9:12:9:21 | ControlFlowNode for get_cert() | test.py:12:21:12:24 | ControlFlowNode for cert |
 | test.py:9:12:9:21 | ControlFlowNode for get_cert() | test.py:12:21:12:24 | ControlFlowNode for cert |
 | test.py:9:12:9:21 | ControlFlowNode for get_cert() | test.py:13:22:13:41 | ControlFlowNode for Attribute() |
 | test.py:9:12:9:21 | ControlFlowNode for get_cert() | test.py:15:26:15:29 | ControlFlowNode for cert |
-| test.py:12:21:12:24 | ControlFlowNode for cert | file:///usr/lib/python3.8/pathlib.py:1248:26:1248:29 | ControlFlowNode for data |
 nodes
-| file:///usr/lib/python3.8/pathlib.py:1248:26:1248:29 | ControlFlowNode for data | semmle.label | ControlFlowNode for data |
-| file:///usr/lib/python3.8/pathlib.py:1256:28:1256:31 | ControlFlowNode for data | semmle.label | ControlFlowNode for data |
 | test.py:9:12:9:21 | ControlFlowNode for get_cert() | semmle.label | ControlFlowNode for get_cert() |
-| test.py:12:21:12:24 | ControlFlowNode for cert | semmle.label | ControlFlowNode for cert |
 | test.py:12:21:12:24 | ControlFlowNode for cert | semmle.label | ControlFlowNode for cert |
 | test.py:13:22:13:41 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
 | test.py:15:26:15:29 | ControlFlowNode for cert | semmle.label | ControlFlowNode for cert |
 subpaths
 #select
-| file:///usr/lib/python3.8/pathlib.py:1256:28:1256:31 | ControlFlowNode for data | test.py:9:12:9:21 | ControlFlowNode for get_cert() | file:///usr/lib/python3.8/pathlib.py:1256:28:1256:31 | ControlFlowNode for data | This expression stores $@ as clear text. | test.py:9:12:9:21 | ControlFlowNode for get_cert() | sensitive data (certificate) |
 | test.py:12:21:12:24 | ControlFlowNode for cert | test.py:9:12:9:21 | ControlFlowNode for get_cert() | test.py:12:21:12:24 | ControlFlowNode for cert | This expression stores $@ as clear text. | test.py:9:12:9:21 | ControlFlowNode for get_cert() | sensitive data (certificate) |
 | test.py:13:22:13:41 | ControlFlowNode for Attribute() | test.py:9:12:9:21 | ControlFlowNode for get_cert() | test.py:13:22:13:41 | ControlFlowNode for Attribute() | This expression stores $@ as clear text. | test.py:9:12:9:21 | ControlFlowNode for get_cert() | sensitive data (certificate) |
 | test.py:15:26:15:29 | ControlFlowNode for cert | test.py:9:12:9:21 | ControlFlowNode for get_cert() | test.py:15:26:15:29 | ControlFlowNode for cert | This expression stores $@ as clear text. | test.py:9:12:9:21 | ControlFlowNode for get_cert() | sensitive data (certificate) |

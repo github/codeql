@@ -1,5 +1,4 @@
 edges
-| file:///usr/lib/python3.8/pathlib.py:1214:14:1214:17 | ControlFlowNode for self | file:///usr/lib/python3.8/pathlib.py:1222:24:1222:27 | ControlFlowNode for self |
 | flask_path_injection.py:0:0:0:0 | ModuleVariableNode for flask_path_injection.request | flask_path_injection.py:19:15:19:21 | ControlFlowNode for request |
 | flask_path_injection.py:1:26:1:32 | ControlFlowNode for ImportMember | flask_path_injection.py:1:26:1:32 | GSSA Variable request |
 | flask_path_injection.py:1:26:1:32 | GSSA Variable request | flask_path_injection.py:0:0:0:0 | ModuleVariableNode for flask_path_injection.request |
@@ -56,8 +55,6 @@ edges
 | pathlib_use.py:12:16:12:22 | ControlFlowNode for request | pathlib_use.py:12:16:12:27 | ControlFlowNode for Attribute |
 | pathlib_use.py:12:16:12:27 | ControlFlowNode for Attribute | pathlib_use.py:14:5:14:5 | ControlFlowNode for p |
 | pathlib_use.py:12:16:12:27 | ControlFlowNode for Attribute | pathlib_use.py:17:5:17:6 | ControlFlowNode for p2 |
-| pathlib_use.py:12:16:12:27 | ControlFlowNode for Attribute | pathlib_use.py:17:5:17:6 | ControlFlowNode for p2 |
-| pathlib_use.py:17:5:17:6 | ControlFlowNode for p2 | file:///usr/lib/python3.8/pathlib.py:1214:14:1214:17 | ControlFlowNode for self |
 | test.py:0:0:0:0 | ModuleVariableNode for test.request | test.py:9:12:9:18 | ControlFlowNode for request |
 | test.py:3:26:3:32 | ControlFlowNode for ImportMember | test.py:3:26:3:32 | GSSA Variable request |
 | test.py:3:26:3:32 | GSSA Variable request | test.py:0:0:0:0 | ModuleVariableNode for test.request |
@@ -80,8 +77,6 @@ edges
 | test.py:48:23:48:23 | ControlFlowNode for x | test.py:12:15:12:15 | ControlFlowNode for x |
 | test.py:48:23:48:23 | ControlFlowNode for x | test.py:48:13:48:24 | ControlFlowNode for normalize() |
 nodes
-| file:///usr/lib/python3.8/pathlib.py:1214:14:1214:17 | ControlFlowNode for self | semmle.label | ControlFlowNode for self |
-| file:///usr/lib/python3.8/pathlib.py:1222:24:1222:27 | ControlFlowNode for self | semmle.label | ControlFlowNode for self |
 | flask_path_injection.py:0:0:0:0 | ModuleVariableNode for flask_path_injection.request | semmle.label | ModuleVariableNode for flask_path_injection.request |
 | flask_path_injection.py:1:26:1:32 | ControlFlowNode for ImportMember | semmle.label | ControlFlowNode for ImportMember |
 | flask_path_injection.py:1:26:1:32 | GSSA Variable request | semmle.label | GSSA Variable request |
@@ -143,7 +138,6 @@ nodes
 | pathlib_use.py:12:16:12:27 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
 | pathlib_use.py:14:5:14:5 | ControlFlowNode for p | semmle.label | ControlFlowNode for p |
 | pathlib_use.py:17:5:17:6 | ControlFlowNode for p2 | semmle.label | ControlFlowNode for p2 |
-| pathlib_use.py:17:5:17:6 | ControlFlowNode for p2 | semmle.label | ControlFlowNode for p2 |
 | test.py:0:0:0:0 | ModuleVariableNode for test.request | semmle.label | ModuleVariableNode for test.request |
 | test.py:3:26:3:32 | ControlFlowNode for ImportMember | semmle.label | ControlFlowNode for ImportMember |
 | test.py:3:26:3:32 | GSSA Variable request | semmle.label | GSSA Variable request |
@@ -169,7 +163,6 @@ subpaths
 | test.py:25:19:25:19 | ControlFlowNode for x | test.py:12:15:12:15 | ControlFlowNode for x | test.py:13:12:13:30 | ControlFlowNode for Attribute() | test.py:25:9:25:20 | ControlFlowNode for normalize() |
 | test.py:48:23:48:23 | ControlFlowNode for x | test.py:12:15:12:15 | ControlFlowNode for x | test.py:13:12:13:30 | ControlFlowNode for Attribute() | test.py:48:13:48:24 | ControlFlowNode for normalize() |
 #select
-| file:///usr/lib/python3.8/pathlib.py:1222:24:1222:27 | ControlFlowNode for self | pathlib_use.py:3:26:3:32 | ControlFlowNode for ImportMember | file:///usr/lib/python3.8/pathlib.py:1222:24:1222:27 | ControlFlowNode for self | This path depends on a $@. | pathlib_use.py:3:26:3:32 | ControlFlowNode for ImportMember | user-provided value |
 | flask_path_injection.py:21:32:21:38 | ControlFlowNode for dirname | flask_path_injection.py:1:26:1:32 | ControlFlowNode for ImportMember | flask_path_injection.py:21:32:21:38 | ControlFlowNode for dirname | This path depends on a $@. | flask_path_injection.py:1:26:1:32 | ControlFlowNode for ImportMember | user-provided value |
 | path_injection.py:13:14:13:47 | ControlFlowNode for Attribute() | path_injection.py:3:26:3:32 | ControlFlowNode for ImportMember | path_injection.py:13:14:13:47 | ControlFlowNode for Attribute() | This path depends on a $@. | path_injection.py:3:26:3:32 | ControlFlowNode for ImportMember | user-provided value |
 | path_injection.py:21:14:21:18 | ControlFlowNode for npath | path_injection.py:3:26:3:32 | ControlFlowNode for ImportMember | path_injection.py:21:14:21:18 | ControlFlowNode for npath | This path depends on a $@. | path_injection.py:3:26:3:32 | ControlFlowNode for ImportMember | user-provided value |

@@ -50,7 +50,34 @@ module CleartextStorage {
 
   /** The data written to a file, considered as a flow sink. */
   class FileWriteDataAsSink extends Sink {
-    FileWriteDataAsSink() { this = any(FileSystemWriteAccess write).getADataNode() }
+    FileWriteDataAsSink() {
+      this = any(FileSystemWriteAccess write).getADataNode() and
+      // since implementation of Path.write_bytes in pathlib.py is like
+      // ```py
+      // def write_bytes(self, data):
+      //     with self.open(mode='wb') as f:
+      //         return f.write(data)
+      // ```
+      // any time we would report flow to the `Path.write_bytes` sink, we can ALSO report
+      // the flow from the `data` parameter to the `f.write` sink -- obviously we
+      // don't want that.
+      //
+      // However, simply removing taint edges out of a sink is not a good enough solution,
+      // since we would only flag one of the `p.write` calls in the following example
+      // due to use-use flow
+      // ```py
+      // p.write(user_controlled)
+      // p.write(user_controlled)
+      // ```
+      //
+      // The same approach is used in the command injection query.
+      not exists(Module pathlib |
+        pathlib.getName() = "pathlib" and
+        this.getScope().getEnclosingModule() = pathlib and
+        // do allow this call if we're analyzing pathlib.py as part of CPython though
+        not exists(pathlib.getFile().getRelativePath())
+      )
+    }
   }
 
   /** The data written to a cookie on a HTTP response, considered as a flow sink. */
