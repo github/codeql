@@ -128,14 +128,18 @@ class JacksonMixinCallableEntryPoint extends EntryPoint {
   override Callable getALiveCallable() { result = this }
 }
 
-class JAXAnnotationReflectivelyConstructedClass extends ReflectivelyConstructedClass {
-  JAXAnnotationReflectivelyConstructedClass() {
+class JaxAnnotationReflectivelyConstructedClass extends ReflectivelyConstructedClass {
+  JaxAnnotationReflectivelyConstructedClass() {
     this instanceof JaxWsEndpoint or
     this instanceof JaxbXmlRegistry or
     this instanceof JaxRsResourceClass or
     this instanceof JaxbXmlEnum
   }
 }
+
+/** DEPRECATED: Alias for JaxAnnotationReflectivelyConstructedClass */
+deprecated class JAXAnnotationReflectivelyConstructedClass =
+  JaxAnnotationReflectivelyConstructedClass;
 
 class DeserializedClass extends ReflectivelyConstructedClass {
   DeserializedClass() {
@@ -342,8 +346,8 @@ class GsonDeserializationEntryPoint extends ReflectivelyConstructedClass {
   }
 }
 
-class JAXBDeserializationEntryPoint extends ReflectivelyConstructedClass {
-  JAXBDeserializationEntryPoint() {
+class JaxbDeserializationEntryPoint extends ReflectivelyConstructedClass {
+  JaxbDeserializationEntryPoint() {
     // A class can be deserialized by JAXB if it's an `XmlRootElement`...
     this.getAnAnnotation().getType().hasQualifiedName("javax.xml.bind.annotation", "XmlRootElement")
     or
@@ -355,6 +359,9 @@ class JAXBDeserializationEntryPoint extends ReflectivelyConstructedClass {
     )
   }
 }
+
+/** DEPRECATED: Alias for JaxbDeserializationEntryPoint */
+deprecated class JAXBDeserializationEntryPoint = JaxbDeserializationEntryPoint;
 
 /**
  * A `javax.annotation` for a method that is called after or before dependency injection on a type.
