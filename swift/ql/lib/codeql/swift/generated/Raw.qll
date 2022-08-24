@@ -607,7 +607,7 @@ module Raw {
 
     predicate isExported() { import_decl_is_exported(this) }
 
-    ModuleDecl getImportedModule() { import_decls(this, result) }
+    ModuleDecl getImportedModule() { import_decl_imported_modules(this, result) }
 
     ValueDecl getDeclaration(int index) { import_decl_declarations(this, index, result) }
   }

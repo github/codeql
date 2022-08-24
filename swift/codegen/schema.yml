@@ -311,7 +311,7 @@ IfConfigClause:
 ImportDecl:
   _extends: Decl
   is_exported: predicate
-  imported_module: ModuleDecl
+  imported_module: ModuleDecl?  # may be none in inactive #if clauses
   declarations: ValueDecl*
 
 MissingMemberDecl:
