@@ -435,6 +435,10 @@ open class KotlinFileExtractor(
                     } else if (kind != ClassKind.CLASS && kind != ClassKind.OBJECT) {
                         logger.warnElement("Unrecognised class kind $kind", c)
                     }
+
+                    if (c.isData) {
+                        tw.writeKtDataClasses(classId)
+                    }
                 }
 
                 val locId = tw.getLocation(c)
