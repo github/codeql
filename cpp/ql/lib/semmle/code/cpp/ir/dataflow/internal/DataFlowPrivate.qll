@@ -193,19 +193,12 @@ class ReturnIndirectionNode extends IndirectReturnNode, ReturnNode {
   }
 }
 
-private Operand conversionStep(Instruction i) {
-  result = getAUse(i.(CopyValueInstruction))
-  or
-  result = getAUse(i.(ConvertInstruction))
-  or
-  result = getAUse(i.(CheckedConvertOrNullInstruction))
-  or
-  result = getAUse(i.(InheritanceConversionInstruction))
-  or
-  result = getAUse(i.(PointerArithmeticInstruction))
+private Operand fullyConvertedCallStep(Operand op) {
+  exists(Instruction instr |
+    conversionFlow0(op, instr, _) and
+    result = getAUse(instr)
+  )
 }
-
-private Operand fullyConvertedCallStep(Operand op) { result = conversionStep(getUse(op)) }
 
 /**
  * Gets the instruction that uses this operand, if the instruction is not
@@ -217,7 +210,7 @@ private Instruction getUse(Operand op) {
 }
 
 /** Gets a use of the instruction `instr` that is not ignored for dataflow purposes. */
-private Operand getAUse(Instruction instr) {
+Operand getAUse(Instruction instr) {
   result = instr.getAUse() and
   not Ssa::ignoreOperand(result)
 }
@@ -229,7 +222,7 @@ private Operand getAUse(Instruction instr) {
  */
 private Instruction getANonConversionUse(Operand operand) {
   result = getUse(operand) and
-  not exists(conversionStep(result))
+  not conversionFlow0(_, result, _)
 }
 
 /**

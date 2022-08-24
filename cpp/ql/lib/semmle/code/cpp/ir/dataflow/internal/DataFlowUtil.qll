@@ -18,42 +18,18 @@ cached
 private module Cached {
   /**
    * The IR dataflow graph consists of the following nodes:
-   * - `InstructionNode`, which represents an `Instruction` in the graph.
-   * - `OperandNode`, which represents an `Operand` in the graph.
-   * - `VariableNode`, which is used to model global variables.
-   * - Two kinds of `StoreNode`s:
-   *   1. `StoreNodeInstr`, which represents the value of an address computed by an `Instruction` that
-   *      has been updated by a write operation.
-   *   2. `StoreNodeOperand`, which represents the value of an address in an `ArgumentOperand` after a
-   *      function call that may have changed the value.
-   * - `ReadNode`, which represents the result of reading a field of an object.
+   * - `InstructionNode`, which injects most instructions directly into the dataflow graph.
+   * - `OperandNode`, which similarly injects most operands directly into the dataflow graph.
+   * - `VariableNode`, which is used to model flow through global variables.
+   * - `PostFieldUpdateNode`, which is used to model the state of a field after a value has been stored
+   * into an address after a number of loads.
    * - `SsaPhiNode`, which represents phi nodes as computed by the shared SSA library.
-   *
-   * The following section describes how flow is generally transferred between these nodes:
-   * - Flow between `InstructionNode`s and `OperandNode`s follow the def-use information as computed by
-   *   the IR. Because the IR compute must-alias information for memory operands, we only follow def-use
-   *   flow for register operands.
-   * - Flow can enter a `StoreNode` in two ways (both done in `StoreNode.flowInto`):
-   *   1. Flow is transferred from a `StoreValueOperand` to a `StoreNodeInstr`. Flow will then proceed
-   *      along the chain of addresses computed by `StoreNodeInstr.getInner` to identify field writes
-   *      and call `storeStep` accordingly (i.e., for an expression like `a.b.c = x`, we visit `c`, then
-   *      `b`, then `a`).
-   *   2. Flow is transferred from a `WriteSideEffectInstruction` to a `StoreNodeOperand` after flow
-   *      returns to a caller. Flow will then proceed to the defining instruction of the operand (because
-   *      the `StoreNodeInstr` computed by `StoreNodeOperand.getInner()` is the `StoreNode` containing
-   *      the defining instruction), and then along the chain computed by `StoreNodeInstr.getInner` like
-   *      above.
-   *   In both cases, flow leaves a `StoreNode` once the entire chain has been traversed, and the shared
-   *   SSA library is used to find the next use of the variable at the end of the chain.
-   * - Flow can enter a `ReadNode` through an `OperandNode` that represents an address of some variable.
-   *   Flow will then proceed along the chain of addresses computed by `ReadNode.getOuter` (i.e., for an
-   *   expression like `use(a.b.c)` we visit `a`, then `b`, then `c`) and call `readStep` accordingly.
-   *   Once the entire chain has been traversed, flow is transferred to the load instruction that reads
-   *   the final address of the chain.
-   * - Flow can enter a `SsaPhiNode` from an `InstructionNode`, a `StoreNode` or another `SsaPhiNode`
-   *   (in `toPhiNode`), depending on which node provided the previous definition of the underlying
-   *   variable. Flow leaves a `SsaPhiNode` (in `fromPhiNode`) by using the shared SSA library to
-   *   determine the next use of the variable.
+   * - `IndirectArgumentOutNode`, which represents the value of an argument (and its indirections) after
+   * it leaves a function call.
+   * - `IndirectOperand`, which represents the value of `operand` after loading the address a number
+   * of times.
+   * `IndirectInstruction`, which represents the value of `instr` after loading the address a number
+   * of times.
    */
   cached
   newtype TIRDataFlowNode =
@@ -74,69 +50,63 @@ private module Cached {
     TIndirectInstruction(Instruction instr, int index) { Ssa::hasIndirectInstruction(instr, index) }
 }
 
+/**
+ * An operand that is defined by a `FieldAddressInstruction`.
+ */
 class FieldAddress extends Operand {
   FieldAddressInstruction fai;
 
   FieldAddress() { fai = this.getDef() }
 
+  /** Gets the field associated with this instruction. */
   Field getField() { result = fai.getField() }
 
+  /** Gets the instruction whose result provides the address of the object containing the field. */
   Instruction getObjectAddress() { result = fai.getObjectAddress() }
 
+  /** Gets the operand that provides the address of the object containing the field. */
   Operand getObjectAddressOperand() { result = fai.getObjectAddressOperand() }
-
-  Operand getAUse() { result = fai.getAUse() }
 }
 
-class PointerArithmeticAddress extends Operand {
-  PointerArithmeticInstruction pai;
-
-  PointerArithmeticAddress() { pai = this.getDef() }
-
-  Instruction getBaseAddress() { result = pai.getLeft() }
-
-  Operand getBaseAddressOperand() { result = pai.getLeftOperand() }
-
-  Operand getAUse() { result = pai.getAUse() }
-}
-
-private predicate conversionFlow0(Operand opFrom, Operand opTo) {
-  opTo.getDef().(CopyValueInstruction).getSourceValueOperand() = opFrom
+/**
+ * Holds if `opFrom` is an operand whose value flows to the result of `instrTo`.
+ *
+ * `isPointerArith` is `true` if `instrTo` is a `PointerArithmeticInstruction` and `opFrom`
+ * is the left operand.
+ */
+predicate conversionFlow0(Operand opFrom, Instruction instrTo, boolean isPointerArith) {
+  isPointerArith = false and
+  (
+    instrTo.(CopyValueInstruction).getSourceValueOperand() = opFrom
+    or
+    instrTo.(ConvertInstruction).getUnaryOperand() = opFrom
+    or
+    instrTo.(CheckedConvertOrNullInstruction).getUnaryOperand() = opFrom
+    or
+    instrTo.(InheritanceConversionInstruction).getUnaryOperand() = opFrom
+  )
   or
-  opTo.getDef().(ConvertInstruction).getUnaryOperand() = opFrom
-  or
-  opTo.getDef().(CheckedConvertOrNullInstruction).getUnaryOperand() = opFrom
-  or
-  opTo.getDef().(InheritanceConversionInstruction).getUnaryOperand() = opFrom
+  isPointerArith = true and
+  instrTo.(PointerArithmeticInstruction).getLeftOperand() = opFrom
 }
 
 predicate conversionFlow(
-  Operand opFrom, Operand opTo, boolean hasFieldOffset, boolean hasPointerArithOffset
+  Operand opFrom, Operand opTo, boolean hasFieldOffset, boolean hasPointerArith
 ) {
   hasFieldOffset = false and
-  hasPointerArithOffset = false and
-  conversionFlow0(opFrom, opTo)
+  conversionFlow0(opFrom, any(Instruction instrTo | instrTo = opTo.getDef()), hasPointerArith)
   or
   exists(FieldAddress fa |
     opTo = fa and
     opFrom = fa.getObjectAddressOperand() and
     hasFieldOffset = true and
-    hasPointerArithOffset = false
-  )
-  or
-  hasFieldOffset = false and
-  hasPointerArithOffset = true and
-  exists(PointerArithmeticInstruction pai |
-    opTo.getDef() = pai and
-    pai.getLeftOperand() = opFrom
+    hasPointerArith = false
   )
 }
 
 cached
-predicate conversionFlowStepExcludeFields(
-  Operand opFrom, Operand opTo, boolean hasPointerArithOffset
-) {
-  conversionFlow(opFrom, opTo, false, hasPointerArithOffset)
+predicate conversionFlowStepExcludeFields(Operand opFrom, Operand opTo, boolean hasPointerArith) {
+  conversionFlow(opFrom, opTo, false, hasPointerArith)
 }
 
 private import Cached
