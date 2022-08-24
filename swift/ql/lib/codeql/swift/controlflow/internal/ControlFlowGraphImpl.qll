@@ -993,6 +993,9 @@ module Decls {
     AbstractFunctionDecl getAst() { result = ast }
 
     final override ControlFlowElement getChildElement(int i) {
+      i = -1 and
+      result.asAstNode() = ast.getSelfParam()
+      or
       result.asAstNode() = ast.getParam(i)
       or
       result.asAstNode() = ast.getBody() and

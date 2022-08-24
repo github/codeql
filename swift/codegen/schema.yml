@@ -81,6 +81,7 @@ AstNode:
 Callable:
   _children:
     params: ParamDecl*
+    self_param: ParamDecl?
     body: BraceStmt?
 
 ConditionElement:

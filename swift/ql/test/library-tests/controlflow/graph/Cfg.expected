@@ -949,7 +949,7 @@ cfg.swift:
 #-----|  -> ... .+(_:_:) ...
 
 #   98| deinit
-#-----|  -> { ... }
+#-----|  -> self
 
 #   98| enter deinit
 #-----|  -> deinit
@@ -958,6 +958,9 @@ cfg.swift:
 
 #   98| exit deinit (normal)
 #-----|  -> exit deinit
+
+#   98| self
+#-----|  -> { ... }
 
 #   98| { ... }
 #-----|  -> exit deinit (normal)
@@ -971,6 +974,12 @@ cfg.swift:
 #-----|  -> exit get
 
 #   99| get
+#-----|  -> self
+
+#   99| self
+
+#  100| self
+#-----|  -> n
 
 #  100| enter init
 #-----|  -> init
@@ -981,7 +990,7 @@ cfg.swift:
 #-----|  -> exit init
 
 #  100| init
-#-----|  -> n
+#-----|  -> self
 
 #  100| n
 #-----|  -> self
@@ -1010,6 +1019,9 @@ cfg.swift:
 #-----|  -> exit getMyInt()
 
 #  104| getMyInt()
+#-----|  -> self
+
+#  104| self
 #-----|  -> self
 
 #  105| return ...
@@ -4678,7 +4690,7 @@ cfg.swift:
 #-----|  -> ... .+=(_:_:) ...
 
 #  352| deinit
-#-----|  -> { ... }
+#-----|  -> self
 
 #  352| enter deinit
 #-----|  -> deinit
@@ -4687,6 +4699,9 @@ cfg.swift:
 
 #  352| exit deinit (normal)
 #-----|  -> exit deinit
+
+#  352| self
+#-----|  -> { ... }
 
 #  352| { ... }
 #-----|  -> exit deinit (normal)
@@ -4700,6 +4715,12 @@ cfg.swift:
 #-----|  -> exit get
 
 #  353| get
+#-----|  -> self
+
+#  353| self
+
+#  354| self
+#-----|  -> arg
 
 #  354| enter init
 #-----|  -> init
@@ -4710,7 +4731,7 @@ cfg.swift:
 #-----|  -> exit init
 
 #  354| init
-#-----|  -> arg
+#-----|  -> self
 
 #  354| arg
 #-----|  -> self
@@ -4739,6 +4760,9 @@ cfg.swift:
 #-----|  -> exit getOptional()
 
 #  358| getOptional()
+#-----|  -> self
+
+#  358| self
 #-----|  -> self
 
 #  359| return ...
@@ -4965,7 +4989,7 @@ cfg.swift:
 #-----|  -> #...
 
 #  377| deinit
-#-----|  -> { ... }
+#-----|  -> self
 
 #  377| enter deinit
 #-----|  -> deinit
@@ -4974,6 +4998,9 @@ cfg.swift:
 
 #  377| exit deinit (normal)
 #-----|  -> exit deinit
+
+#  377| self
+#-----|  -> { ... }
 
 #  377| { ... }
 #-----|  -> exit deinit (normal)
@@ -4987,6 +5014,12 @@ cfg.swift:
 #-----|  -> exit init
 
 #  377| init
+#-----|  -> self
+
+#  377| self
+
+#  378| self
+#-----|  -> init
 
 #  378| enter init
 #-----|  -> init
@@ -4997,7 +5030,7 @@ cfg.swift:
 #-----|  -> exit init
 
 #  378| init
-#-----|  -> init
+#-----|  -> self
 
 #  379| super
 #-----|  -> call to ...
@@ -5118,6 +5151,7 @@ cfg.swift:
 #-----|  -> return ...
 
 #  394| (unnamed function decl)
+#-----|  -> self
 
 #  394| enter (unnamed function decl)
 #-----|  -> (unnamed function decl)
@@ -5144,14 +5178,25 @@ cfg.swift:
 #-----|  -> exit set
 
 #  394| get
+#-----|  -> self
+
+#  394| self
+
+#  394| self
+#-----|  -> value
+
+#  394| self
 
 #  394| set
-#-----|  -> value
+#-----|  -> self
 
 #  394| value
 
 #  394| yield ...
 #-----|  -> exit (unnamed function decl) (normal)
+
+#  395| self
+#-----|  -> self
 
 #  395| enter init
 #-----|  -> init
@@ -5178,6 +5223,9 @@ cfg.swift:
 
 #  397| return
 #-----| return -> exit init (normal)
+
+#  399| self
+#-----|  -> self
 
 #  399| deinit
 #-----|  -> self
@@ -5258,7 +5306,7 @@ cfg.swift:
 #-----|  -> MyLocalStruct
 
 #  409| deinit
-#-----|  -> { ... }
+#-----|  -> self
 
 #  409| enter deinit
 #-----|  -> deinit
@@ -5268,10 +5316,14 @@ cfg.swift:
 #  409| exit deinit (normal)
 #-----|  -> exit deinit
 
+#  409| self
+#-----|  -> { ... }
+
 #  409| { ... }
 #-----|  -> exit deinit (normal)
 
 #  410| (unnamed function decl)
+#-----|  -> self
 
 #  410| enter (unnamed function decl)
 #-----|  -> (unnamed function decl)
@@ -5298,14 +5350,25 @@ cfg.swift:
 #-----|  -> exit set
 
 #  410| get
+#-----|  -> self
+
+#  410| self
+
+#  410| self
+#-----|  -> value
+
+#  410| self
 
 #  410| set
-#-----|  -> value
+#-----|  -> self
 
 #  410| value
 
 #  410| yield ...
 #-----|  -> exit (unnamed function decl) (normal)
+
+#  411| self
+#-----|  -> self
 
 #  411| enter init
 #-----|  -> init
@@ -5337,6 +5400,7 @@ cfg.swift:
 #-----|  -> MyLocalEnum
 
 #  417| (unnamed function decl)
+#-----|  -> self
 
 #  417| enter (unnamed function decl)
 #-----|  -> (unnamed function decl)
@@ -5363,14 +5427,25 @@ cfg.swift:
 #-----|  -> exit set
 
 #  417| get
+#-----|  -> self
+
+#  417| self
+
+#  417| self
+#-----|  -> value
+
+#  417| self
 
 #  417| set
-#-----|  -> value
+#-----|  -> self
 
 #  417| value
 
 #  417| yield ...
 #-----|  -> exit (unnamed function decl) (normal)
+
+#  418| self
+#-----|  -> self
 
 #  418| enter init
 #-----|  -> init
@@ -5420,6 +5495,7 @@ cfg.swift:
 #-----|  -> return ...
 
 #  446| (unnamed function decl)
+#-----|  -> self
 
 #  446| enter (unnamed function decl)
 #-----|  -> (unnamed function decl)
@@ -5446,9 +5522,17 @@ cfg.swift:
 #-----|  -> exit set
 
 #  446| get
+#-----|  -> self
+
+#  446| self
+
+#  446| self
+#-----|  -> value
+
+#  446| self
 
 #  446| set
-#-----|  -> value
+#-----|  -> self
 
 #  446| value
 
@@ -5456,6 +5540,7 @@ cfg.swift:
 #-----|  -> exit (unnamed function decl) (normal)
 
 #  450| (unnamed function decl)
+#-----|  -> self
 
 #  450| enter (unnamed function decl)
 #-----|  -> (unnamed function decl)
@@ -5482,9 +5567,17 @@ cfg.swift:
 #-----|  -> exit set
 
 #  450| get
+#-----|  -> self
+
+#  450| self
+
+#  450| self
+#-----|  -> value
+
+#  450| self
 
 #  450| set
-#-----|  -> value
+#-----|  -> self
 
 #  450| value
 
@@ -5492,6 +5585,7 @@ cfg.swift:
 #-----|  -> exit (unnamed function decl) (normal)
 
 #  451| (unnamed function decl)
+#-----|  -> self
 
 #  451| enter (unnamed function decl)
 #-----|  -> (unnamed function decl)
@@ -5518,9 +5612,17 @@ cfg.swift:
 #-----|  -> exit set
 
 #  451| get
+#-----|  -> self
+
+#  451| self
+
+#  451| self
+#-----|  -> value
+
+#  451| self
 
 #  451| set
-#-----|  -> value
+#-----|  -> self
 
 #  451| value
 
@@ -5528,6 +5630,7 @@ cfg.swift:
 #-----|  -> exit (unnamed function decl) (normal)
 
 #  452| (unnamed function decl)
+#-----|  -> self
 
 #  452| enter (unnamed function decl)
 #-----|  -> (unnamed function decl)
@@ -5554,9 +5657,17 @@ cfg.swift:
 #-----|  -> exit set
 
 #  452| get
+#-----|  -> self
+
+#  452| self
+
+#  452| self
+#-----|  -> value
+
+#  452| self
 
 #  452| set
-#-----|  -> value
+#-----|  -> self
 
 #  452| value
 
