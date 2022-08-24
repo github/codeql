@@ -86,10 +86,9 @@ Node callOutput(CallInstruction call, FunctionOutput output, int d) {
     n.asInstruction() = result.asInstruction()
     or
     // The side effect of a call on the value pointed to by an argument or qualifier
-    // TODO: Why d - 1?
     exists(Operand operand, int index |
       Ssa::outNodeHasAddressAndIndex(n, operand, index) and
-      Ssa::outNodeHasAddressAndIndex(result, operand, index + d - 1)
+      Ssa::outNodeHasAddressAndIndex(result, operand, index + d)
     )
   )
 }

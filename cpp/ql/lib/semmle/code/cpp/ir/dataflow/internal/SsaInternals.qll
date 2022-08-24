@@ -109,6 +109,8 @@ cached
 private newtype TDefOrUseImpl =
   TDefImpl(Operand address, int index) {
     isDef(_, _, address, _, _, index) and
+    // We only include the definition if the SSA pruning stage
+    // concluded that the definition is live after the write.
     any(SsaInternals0::Def def).getAddressOperand() = address
   } or
   TUseImpl(Operand operand, int index) {
@@ -134,8 +136,20 @@ abstract private class DefOrUseImpl extends TDefOrUseImpl {
   /** Gets the location of this element. */
   abstract Cpp::Location getLocation();
 
+  /**
+   * Gets the index (i.e., the number of loads required) of this
+   * definition or use.
+   *
+   * Note that this is _not_ the definition's (or use's) index in
+   * the enclosing basic block. To obtain this index, use
+   * `DefOrUseImpl::hasIndexInBlock/2` or `DefOrUseImpl::hasIndexInBlock/3`.
+   */
   abstract int getIndex();
 
+  /**
+   * Gets the instruction that computes the base of this definition or use.
+   * This is always a `VariableAddressInstruction` or an `AllocationInstruction`.
+   */
   abstract Instruction getBase();
 
   final BaseSourceVariable getBaseSourceVariable() {
@@ -269,21 +283,15 @@ private predicate useToNode(UseOrPhi use, Node nodeTo) {
   nodeTo.(SsaPhiNode).getPhiNode() = use.asPhi()
 }
 
-private predicate nodeToDef(Node nodeFrom, DefImpl def) {
-  nodeHasInstruction(nodeFrom, def.getDefiningInstruction(), def.getIndex())
-}
-
 pragma[noinline]
 predicate outNodeHasAddressAndIndex(IndirectArgumentOutNode out, Operand address, int index) {
   out.getAddressOperand() = address and
   out.getIndex() = index
 }
 
-private predicate defToNode(Node nodeFrom, DefOrUse def) {
-  defToNodeImpl(nodeFrom, def.asDefOrUse())
+private predicate defToNode(Node nodeFrom, Def def) {
+  nodeHasInstruction(nodeFrom, def.getDefiningInstruction(), def.getIndex())
 }
-
-predicate defToNodeImpl(Node nodeFrom, DefOrUseImpl def) { nodeToDef(nodeFrom, def) }
 
 private predicate nodeToDefOrUse(Node nodeFrom, SsaDefOrUse defOrUse) {
   // Node -> Def
@@ -293,32 +301,52 @@ private predicate nodeToDefOrUse(Node nodeFrom, SsaDefOrUse defOrUse) {
   useToNode(defOrUse, nodeFrom)
 }
 
-predicate indirectConversionFlowStepExcludeFieldsStep(Node opFrom, Node opTo) {
+/**
+ * Perform a single conversion-like step from `nFrom` to `nTo`. This relation
+ * only holds when there is no use-use relation out of `nTo`.
+ */
+predicate indirectConversionFlowStepExcludeFieldsStep(Node nFrom, Node nTo) {
   not exists(UseOrPhi defOrUse |
-    nodeToDefOrUse(opTo, defOrUse) and
+    nodeToDefOrUse(nTo, defOrUse) and
     adjacentDefRead(defOrUse, _)
   ) and
   exists(Operand op1, Operand op2, int index, Instruction instr |
-    hasOperandAndIndex(opFrom, op1, pragma[only_bind_into](index)) and
-    hasOperandAndIndex(opTo, op2, pragma[only_bind_into](index)) and
+    hasOperandAndIndex(nFrom, op1, pragma[only_bind_into](index)) and
+    hasOperandAndIndex(nTo, op2, pragma[only_bind_into](index)) and
     instr = op2.getDef() and
     conversionFlow(op1, instr, _)
   )
 }
 
-private predicate adjustForPointerArith(
-  Node nodeFrom, Node adjusted, DefOrUse defOrUse, UseOrPhi use
-) {
+/**
+ * The reason for this predicate is a bit annoying:
+ * We cannot mark a `PointerArithmeticInstruction` that computes an offset based on some SSA
+ * variable `x` as a use of `x` since this creates taint-flow in the following example:
+ * ```c
+ * int x = array[source]
+ * sink(*array)
+ * ```
+ * This is because `source` would flow from the operand of `PointerArithmeticInstruction` to the
+ * result of the instruction, and into the `IndirectOperand` that represents the value of `*array`.
+ * Then, via use-use flow, flow will arrive at `*array` in `sink(*array)`.
+ *
+ * So this predicate recurses back along conversions and `PointerArithmeticInstruction`s to find the
+ * first use that has provides use-use flow, and uses that target as the target of the `nodeFrom`.
+ */
+private predicate adjustForPointerArith(Node nodeFrom, UseOrPhi use) {
   nodeFrom = any(PostUpdateNode pun).getPreUpdateNode() and
-  indirectConversionFlowStepExcludeFieldsStep*(adjusted, nodeFrom) and
-  nodeToDefOrUse(adjusted, defOrUse) and
-  adjacentDefRead(defOrUse, use)
+  exists(DefOrUse defOrUse, Node adjusted |
+    indirectConversionFlowStepExcludeFieldsStep*(adjusted, nodeFrom) and
+    nodeToDefOrUse(adjusted, defOrUse) and
+    adjacentDefRead(defOrUse, use)
+  )
 }
 
+/** Holds if there is def-use or use-use flow from `nodeFrom` to `nodeTo`. */
 predicate defUseFlow(Node nodeFrom, Node nodeTo) {
   // `nodeFrom = any(PostUpdateNode pun).getPreUpdateNode()` is implied by adjustedForPointerArith.
-  exists(DefOrUse defOrUse1, UseOrPhi use, Node node |
-    adjustForPointerArith(nodeFrom, node, defOrUse1, use) and
+  exists(UseOrPhi use |
+    adjustForPointerArith(nodeFrom, use) and
     useToNode(use, nodeTo)
   )
   or
@@ -330,6 +358,7 @@ predicate defUseFlow(Node nodeFrom, Node nodeTo) {
   )
 }
 
+/** Holds if `nodeTo` receives flow from the phi node `nodeFrom`. */
 predicate fromPhiNode(SsaPhiNode nodeFrom, Node nodeTo) {
   exists(UseOrPhi use, IRBlock bb2, int i2, PhiNode phi, SourceVariable v |
     use.asDefOrUse().hasIndexInBlock(bb2, i2, v) and
@@ -354,6 +383,10 @@ SsaInternals0::SourceVariable getOldSourceVariable(SourceVariable v) {
     result.getBaseVariable().(SsaInternals0::BaseCallVariable).getCallInstruction()
 }
 
+/**
+ * Holds if there is a write at index `i` in basic block `bb` to variable `v` that's
+ * subsequently read (as determined by the SSA pruning stage).
+ */
 predicate variableWriteCand(IRBlock bb, int i, SourceVariable v) {
   exists(SsaInternals0::Def def, SsaInternals0::SourceVariable v0 |
     def.asDefOrUse().hasIndexInBlock(bb, i, v0) and
@@ -405,6 +438,8 @@ private newtype TSsaDefOrUse =
   TDefOrUse(DefOrUseImpl defOrUse) {
     defOrUse instanceof UseImpl
     or
+    // Like in the pruning stage, we only include definition that's live after the
+    // write as the final definitions computed by SSA.
     exists(Definition def, SourceVariable sv, IRBlock bb, int i |
       def.definesAt(sv, bb, i) and
       defOrUse.(DefImpl).hasIndexInBlock(bb, i, sv)

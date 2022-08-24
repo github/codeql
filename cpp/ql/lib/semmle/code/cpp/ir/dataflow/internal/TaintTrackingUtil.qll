@@ -167,7 +167,7 @@ predicate modeledTaintStep(DataFlow::Node nodeIn, DataFlow::Node nodeOut) {
       nodeIn = callInput(call, modelIn, d)
       or
       exists(int n |
-        d = 1 and // TODO
+        d = 1 and
         modelIn.isParameterDerefOrQualifierObject(n) and
         if n = -1
         then nodeIn = callInput(call, any(InQualifierAddress inQualifier))

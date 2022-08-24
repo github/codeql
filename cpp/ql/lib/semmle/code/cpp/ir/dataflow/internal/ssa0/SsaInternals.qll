@@ -218,7 +218,7 @@ predicate variableWrite(IRBlock bb, int i, SourceVariable v, boolean certain) {
 
 /**
  * Holds if the `i`'th read in block `bb` reads to the variable `v`.
- * `certain` is `true` if the read is guaranteed. For C++, this is always the case.
+ * `certain` is `true` if the read is guaranteed.
  */
 predicate variableRead(IRBlock bb, int i, SourceVariable v, boolean certain) {
   exists(UseImpl use | use.hasIndexInBlock(bb, i, v) |
@@ -230,6 +230,8 @@ private newtype TSsaDefOrUse =
   TDefOrUse(DefOrUseImpl defOrUse) {
     defOrUse instanceof UseImpl
     or
+    // If `defOrUse` is a definition we only include it if the
+    // SSA library concludes that it's live after the write.
     exists(Definition def, SourceVariable sv, IRBlock bb, int i |
       def.definesAt(sv, bb, i) and
       defOrUse.(DefImpl).hasIndexInBlock(bb, i, sv)
