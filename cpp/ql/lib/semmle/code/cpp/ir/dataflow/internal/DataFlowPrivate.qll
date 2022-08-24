@@ -129,14 +129,14 @@ private newtype TReturnKind =
   TNormalReturnKind(int index) {
     exists(IndirectReturnNode return |
       return.getAddressOperand() = any(ReturnValueInstruction r).getReturnAddressOperand() and
-      index = return.getIndex() - 1
+      index = return.getIndex() - 1 // We subtract one because the return loads the value.
     )
   } or
   TIndirectReturnKind(int argumentIndex, int index) {
     exists(IndirectReturnNode return, ReturnIndirectionInstruction returnInd |
       returnInd.hasIndex(argumentIndex) and
       return.getAddressOperand() = returnInd.getSourceAddressOperand() and
-      index = return.getIndex() - 1
+      index = return.getIndex() - 1 // We subtract one because the return loads the value.
     )
   }
 
@@ -207,22 +207,35 @@ private Operand conversionStep(Instruction i) {
 
 private Operand fullyConvertedCallStep(Operand op) { result = conversionStep(getUse(op)) }
 
+/**
+ * Gets the instruction that uses this operand, if the instruction is not
+ * ignored for dataflow purposes.
+ */
 private Instruction getUse(Operand op) {
   result = op.getUse() and
   not Ssa::ignoreOperand(op)
 }
 
+/** Gets a use of the instruction `instr` that is not ignored for dataflow purposes. */
 private Operand getAUse(Instruction instr) {
   result = instr.getAUse() and
   not Ssa::ignoreOperand(result)
 }
 
+/**
+ * Gets a use of `operand` that is:
+ * - not ignored for dataflow purposes, and
+ * - not a conversion-like instruction.
+ */
 private Instruction getANonConversionUse(Operand operand) {
   result = getUse(operand) and
   not exists(conversionStep(result))
 }
 
-// TODO: This is very ugly
+/**
+ * Gets the operand that represents the first use of the value of `call`
+ * following a sequnce of conversion-like instructions.
+ */
 predicate operandForfullyConvertedCall(Operand operand, CallInstruction call) {
   exists(getANonConversionUse(operand)) and
   (
@@ -232,7 +245,10 @@ predicate operandForfullyConvertedCall(Operand operand, CallInstruction call) {
   )
 }
 
-// TODO: This is very ugly
+/**
+ * Gets the instruction that represents the first use of the value of `call`
+ * following a sequnce of conversion-like instructions.
+ */
 predicate instructionForfullyConvertedCall(Instruction instr, CallInstruction call) {
   not operandForfullyConvertedCall(_, call) and
   (
