@@ -15,9 +15,9 @@ Java framework & library support
    `Apache HttpComponents <https://hc.apache.org/>`_,"``org.apache.hc.core5.*``, ``org.apache.http``",5,136,28,,,3,,,,25
    `Google Guava <https://guava.dev/>`_,``com.google.common.*``,,728,39,,6,,,,,
    `JSON-java <https://github.com/stleary/JSON-java>`_,``org.json``,,236,,,,,,,,
-   Java Standard Library,``java.*``,3,572,130,28,,,7,,,10
+   Java Standard Library,``java.*``,3,577,130,28,,,7,,,10
    Java extensions,"``javax.*``, ``jakarta.*``",63,609,32,,,4,,1,1,2
    `Spring <https://spring.io/>`_,``org.springframework.*``,29,476,101,,,,19,14,,29
    Others,"``androidx.slice``, ``cn.hutool.core.codec``, ``com.esotericsoftware.kryo.io``, ``com.esotericsoftware.kryo5.io``, ``com.fasterxml.jackson.core``, ``com.fasterxml.jackson.databind``, ``com.opensymphony.xwork2.ognl``, ``com.rabbitmq.client``, ``com.unboundid.ldap.sdk``, ``com.zaxxer.hikari``, ``flexjson``, ``groovy.lang``, ``groovy.util``, ``jodd.json``, ``kotlin.jvm.internal``, ``net.sf.saxon.s9api``, ``ognl``, ``okhttp3``, ``org.apache.commons.codec``, ``org.apache.commons.jexl2``, ``org.apache.commons.jexl3``, ``org.apache.commons.logging``, ``org.apache.commons.ognl``, ``org.apache.directory.ldap.client.api``, ``org.apache.ibatis.jdbc``, ``org.apache.log4j``, ``org.apache.logging.log4j``, ``org.apache.shiro.codec``, ``org.apache.shiro.jndi``, ``org.codehaus.groovy.control``, ``org.dom4j``, ``org.hibernate``, ``org.jboss.logging``, ``org.jdbi.v3.core``, ``org.jooq``, ``org.mvel2``, ``org.scijava.log``, ``org.slf4j``, ``org.xml.sax``, ``org.xmlpull.v1``, ``play.mvc``, ``ratpack.core.form``, ``ratpack.core.handling``, ``ratpack.core.http``, ``ratpack.exec``, ``ratpack.form``, ``ratpack.func``, ``ratpack.handling``, ``ratpack.http``, ``ratpack.util``, ``retrofit2``",65,395,932,,,,14,18,,3
-   Totals,,217,6433,1474,117,6,10,107,33,1,84
+   Totals,,217,6438,1474,117,6,10,107,33,1,84
 
