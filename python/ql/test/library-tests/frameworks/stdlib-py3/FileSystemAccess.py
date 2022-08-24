@@ -13,7 +13,7 @@ with p.open() as f:  # $ getAPathArgument=p
 
 p.write_bytes(b"hello")  # $ getAPathArgument=p fileWriteData=b"hello"
 p.write_text("hello")  # $ getAPathArgument=p fileWriteData="hello"
-p.open("wt").write("hello")  # $ getAPathArgument=p fileWriteData="hello"
+p.open("wt").write("hello")  # $ getAPathArgument=p fileWriteData="hello" SPURIOUS: getAPathArgument=self
 
 name = windows.parent.name
 o = open
