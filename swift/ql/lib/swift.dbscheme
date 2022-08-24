@@ -709,13 +709,18 @@ if_config_clause_is_active(  //dir=decl
 );
 
 import_decls(  //dir=decl
-  unique int id: @import_decl,
-  int imported_module: @module_decl ref
+  unique int id: @import_decl
 );
 
 #keyset[id]
 import_decl_is_exported(  //dir=decl
   int id: @import_decl ref
+);
+
+#keyset[id]
+import_decl_imported_modules(  //dir=decl
+  int id: @import_decl ref,
+  int imported_module: @module_decl ref
 );
 
 #keyset[id, index]
