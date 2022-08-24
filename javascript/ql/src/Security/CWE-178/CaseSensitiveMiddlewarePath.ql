@@ -116,7 +116,11 @@ predicate isMatchingCandidate(
     exists(getCaseSensitiveBypassExample(getARoot(regexp))) and
     ignorePrefix = true and
     testWithGroups = false and
-    str = [getCaseSensitiveBypassExample(getARoot(regexp)), getAnEndpointExample(endPoint)]
+    str =
+      [
+        getCaseSensitiveBypassExample(getARoot(regexp)), getAnEndpointExample(endPoint),
+        toOtherCase(getAnEndpointExample(endPoint))
+      ]
   )
 }
 
@@ -124,14 +128,17 @@ import RegexpMatching::RegexpMatching<isMatchingCandidate/4> as Matcher
 
 from
   DataFlow::RegExpCreationNode regexp, Routing::RouteSetup middleware, Routing::RouteSetup endpoint,
-  DataFlow::Node arg, string byPassExample, string endpointExample
+  DataFlow::Node arg, string byPassExample, string endpointExample, string byPassEndPoint
 where
   isCaseSensitiveMiddleware(middleware, regexp, arg) and
   byPassExample = getCaseSensitiveBypassExample(getARoot(regexp)) and
   isGuardedCaseInsensitiveEndpoint(endpoint, middleware) and
-  endpointExample = getAnEndpointExample(endpoint) and
-  Matcher::matches(regexp.getRoot(), endpointExample) and
-  not Matcher::matches(regexp.getRoot(), byPassExample)
+  // only report one example.
+  endpointExample =
+    min(string ex | ex = getAnEndpointExample(endpoint) and Matcher::matches(regexp.getRoot(), ex)) and
+  not Matcher::matches(regexp.getRoot(), byPassExample) and
+  byPassEndPoint = toOtherCase(endpointExample) and
+  not Matcher::matches(regexp.getRoot(), byPassEndPoint)
 select arg,
   "This route uses a case-sensitive path $@, but is guarding a case-insensitive path $@. A path such as '"
-    + byPassExample + "' will bypass the middleware.", regexp, "pattern", endpoint, "here"
+    + byPassEndPoint + "' will bypass the middleware.", regexp, "pattern", endpoint, "here"
