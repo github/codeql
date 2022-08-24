@@ -20,10 +20,12 @@ class DeclVisitor : public AstVisitorBase<DeclVisitor> {
     dispatcher_.emit(translateIfConfigClause(*clause));
   }
 
-  std::optional<codeql::ConcreteFuncDecl> translateFuncDecl(const swift::FuncDecl& decl);
-  std::optional<codeql::ConstructorDecl> translateConstructorDecl(
+  std::variant<codeql::ConcreteFuncDecl, codeql::ConcreteFuncDeclsTrap> translateFuncDecl(
+      const swift::FuncDecl& decl);
+  std::variant<codeql::ConstructorDecl, codeql::ConstructorDeclsTrap> translateConstructorDecl(
       const swift::ConstructorDecl& decl);
-  std::optional<codeql::DestructorDecl> translateDestructorDecl(const swift::DestructorDecl& decl);
+  std::variant<codeql::DestructorDecl, codeql::DestructorDeclsTrap> translateDestructorDecl(
+      const swift::DestructorDecl& decl);
   codeql::PrefixOperatorDecl translatePrefixOperatorDecl(const swift::PrefixOperatorDecl& decl);
   codeql::PostfixOperatorDecl translatePostfixOperatorDecl(const swift::PostfixOperatorDecl& decl);
   codeql::InfixOperatorDecl translateInfixOperatorDecl(const swift::InfixOperatorDecl& decl);
@@ -32,19 +34,25 @@ class DeclVisitor : public AstVisitorBase<DeclVisitor> {
   codeql::TopLevelCodeDecl translateTopLevelCodeDecl(const swift::TopLevelCodeDecl& decl);
   codeql::PatternBindingDecl translatePatternBindingDecl(const swift::PatternBindingDecl& decl);
   std::optional<codeql::ConcreteVarDecl> translateVarDecl(const swift::VarDecl& decl);
-  std::optional<codeql::StructDecl> translateStructDecl(const swift::StructDecl& decl);
-  std::optional<codeql::ClassDecl> translateClassDecl(const swift::ClassDecl& decl);
-  std::optional<codeql::EnumDecl> translateEnumDecl(const swift::EnumDecl& decl);
-  std::optional<codeql::ProtocolDecl> translateProtocolDecl(const swift::ProtocolDecl& decl);
+  std::variant<codeql::StructDecl, codeql::StructDeclsTrap> translateStructDecl(
+      const swift::StructDecl& decl);
+  std::variant<codeql::ClassDecl, codeql::ClassDeclsTrap> translateClassDecl(
+      const swift::ClassDecl& decl);
+  std::variant<codeql::EnumDecl, codeql::EnumDeclsTrap> translateEnumDecl(
+      const swift::EnumDecl& decl);
+  std::variant<codeql::ProtocolDecl, codeql::ProtocolDeclsTrap> translateProtocolDecl(
+      const swift::ProtocolDecl& decl);
   codeql::EnumCaseDecl translateEnumCaseDecl(const swift::EnumCaseDecl& decl);
-  std::optional<codeql::EnumElementDecl> translateEnumElementDecl(
+  std::variant<codeql::EnumElementDecl, codeql::EnumElementDeclsTrap> translateEnumElementDecl(
       const swift::EnumElementDecl& decl);
   codeql::GenericTypeParamDecl translateGenericTypeParamDecl(
       const swift::GenericTypeParamDecl& decl);
-  std::optional<codeql::AssociatedTypeDecl> translateAssociatedTypeDecl(
-      const swift::AssociatedTypeDecl& decl);
-  std::optional<codeql::TypeAliasDecl> translateTypeAliasDecl(const swift::TypeAliasDecl& decl);
-  std::optional<codeql::AccessorDecl> translateAccessorDecl(const swift::AccessorDecl& decl);
+  std::variant<codeql::AssociatedTypeDecl, codeql::AssociatedTypeDeclsTrap>
+  translateAssociatedTypeDecl(const swift::AssociatedTypeDecl& decl);
+  std::variant<codeql::TypeAliasDecl, codeql::TypeAliasDeclsTrap> translateTypeAliasDecl(
+      const swift::TypeAliasDecl& decl);
+  std::variant<codeql::AccessorDecl, codeql::AccessorDeclsTrap> translateAccessorDecl(
+      const swift::AccessorDecl& decl);
   std::optional<codeql::SubscriptDecl> translateSubscriptDecl(const swift::SubscriptDecl& decl);
   codeql::ExtensionDecl translateExtensionDecl(const swift::ExtensionDecl& decl);
   codeql::ImportDecl translateImportDecl(const swift::ImportDecl& decl);
@@ -76,6 +84,17 @@ class DeclVisitor : public AstVisitorBase<DeclVisitor> {
       fillDecl(decl, *entry);
     }
     return entry;
+  }
+
+  template <typename T, typename D, typename... Args>
+  std::variant<TrapClassOf<D>, T> createNamedEntryOr(const D& decl) {
+    auto id = dispatcher_.assignNewLabel(decl, mangledName(decl));
+    if (dispatcher_.shouldEmitDeclBody(decl)) {
+      TrapClassOf<D> entry{id};
+      fillDecl(decl, entry);
+      return entry;
+    }
+    return T{id};
   }
 
   template <typename D>
