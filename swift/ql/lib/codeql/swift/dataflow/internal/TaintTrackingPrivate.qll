@@ -32,7 +32,7 @@ private module Cached {
       nodeFrom.asExpr() = [apply.getAnArgument().getExpr(), apply.getQualifier()] and
       apply.getStaticTarget().getName() = ["appendLiteral(_:)", "appendInterpolation(_:)"] and
       e.getExpr() = [apply.getAnArgument().getExpr(), apply.getQualifier()] and
-      nodeTo.asDefinition().(Ssa::WriteDefinition).isInoutDef(e)
+      nodeTo.(PostUpdateNodeImpl).getPreUpdateNode().getCfgNode() = e
     )
     or
     // Flow from the computation of the interpolated string literal to the result of the interpolation.
