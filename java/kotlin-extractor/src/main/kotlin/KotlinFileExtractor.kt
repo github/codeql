@@ -1478,9 +1478,21 @@ open class KotlinFileExtractor(
                             logger.warn("Cannot find functional interface type for raw method access")
                             null
                         } else {
-                            val interfaceType = functionalInterface.classOrNull!!.owner
-                            val substituted = getJavaEquivalentClass(interfaceType) ?: interfaceType
-                            findFunction(substituted, OperatorNameConventions.INVOKE.asString())!!
+                            val functionalInterfaceClass = functionalInterface.classOrNull
+                            if (functionalInterfaceClass == null) {
+                                logger.warn("Cannot find functional interface class for raw method access")
+                                null
+                            } else {
+                                val interfaceType = functionalInterfaceClass.owner
+                                val substituted = getJavaEquivalentClass(interfaceType) ?: interfaceType
+                                val function = findFunction(substituted, OperatorNameConventions.INVOKE.asString())
+                                if (function == null) {
+                                    logger.warn("Cannot find invoke function for raw method access")
+                                    null
+                                } else {
+                                    function
+                                }
+                            }
                         }
                     } else {
                         callTarget
@@ -1768,9 +1780,14 @@ open class KotlinFileExtractor(
             fun extractMethodAccess(syntacticCallTarget: IrFunction, extractMethodTypeArguments: Boolean = true, extractClassTypeArguments: Boolean = false) {
                 val typeArgs =
                     if (extractMethodTypeArguments)
-                        (0 until c.typeArgumentsCount).map { c.getTypeArgument(it)!! }
+                        (0 until c.typeArgumentsCount).map { c.getTypeArgument(it) }.requireNoNullsOrNull()
                     else
                         listOf()
+
+                if (typeArgs == null) {
+                    logger.warn("Missing type argument in extractMethodAccess")
+                    return
+                }
 
                 extractRawMethodAccess(syntacticCallTarget, c, callable, parent, idx, enclosingStmt, (0 until c.valueArgumentsCount).map { c.getValueArgument(it) }, c.dispatchReceiver, c.extensionReceiver, typeArgs, extractClassTypeArguments, c.superQualifierSymbol)
             }
@@ -2036,7 +2053,12 @@ open class KotlinFileExtractor(
                     tw.writeCallableEnclosingExpr(id, callable)
 
                     if (c.typeArgumentsCount == 1) {
-                        extractTypeAccessRecursive(c.getTypeArgument(0)!!, locId, id, -1, callable, enclosingStmt, TypeContext.GENERIC_ARGUMENT)
+                        val typeArgument = c.getTypeArgument(0)
+                        if (typeArgument == null) {
+                            logger.errorElement("Type argument missing in an arrayOfNulls call", c)
+                        } else {
+                            extractTypeAccessRecursive(typeArgument, locId, id, -1, callable, enclosingStmt, TypeContext.GENERIC_ARGUMENT)
+                        }
                     } else {
                         logger.errorElement("Expected to find exactly one type argument in an arrayOfNulls call", c)
                     }
@@ -2099,7 +2121,12 @@ open class KotlinFileExtractor(
 
                         if (isBuiltinCallKotlin(c, "arrayOf")) {
                             if (c.typeArgumentsCount == 1) {
-                                extractTypeAccessRecursive(c.getTypeArgument(0)!!, locId, id, -1, callable, enclosingStmt, TypeContext.GENERIC_ARGUMENT)
+                                val typeArgument = c.getTypeArgument(0)
+                                if (typeArgument == null) {
+                                    logger.errorElement("Type argument missing in an arrayOf call", c)
+                                } else {
+                                    extractTypeAccessRecursive(typeArgument, locId, id, -1, callable, enclosingStmt, TypeContext.GENERIC_ARGUMENT)
+                                }
                             } else {
                                 logger.errorElement("Expected to find one type argument in arrayOf call", c )
                             }
@@ -2152,13 +2179,18 @@ open class KotlinFileExtractor(
                 }
                 isFunction(target, "kotlin", "(some array type)", { isArrayType(it) }, "iterator") && c.origin == IrStatementOrigin.FOR_LOOP_ITERATOR -> {
                     findTopLevelFunctionOrWarn("kotlin.jvm.internal.iterator", "kotlin.jvm.internal.ArrayIteratorKt", c)?.let { iteratorFn ->
-                        val typeArgs = (c.dispatchReceiver!!.type as IrSimpleType).arguments.map {
-                            when(it) {
-                                is IrTypeProjection -> it.type
-                                else -> pluginContext.irBuiltIns.anyNType
+                        val dispatchReceiver = c.dispatchReceiver
+                        if (dispatchReceiver == null) {
+                            logger.errorElement("No dispatch receiver found for array iterator call", c)
+                        } else {
+                            val typeArgs = (dispatchReceiver.type as IrSimpleType).arguments.map {
+                                when(it) {
+                                    is IrTypeProjection -> it.type
+                                    else -> pluginContext.irBuiltIns.anyNType
+                                }
                             }
+                            extractRawMethodAccess(iteratorFn, c, callable, parent, idx, enclosingStmt, listOf(c.dispatchReceiver), null, null, typeArgs)
                         }
-                        extractRawMethodAccess(iteratorFn, c, callable, parent, idx, enclosingStmt, listOf(c.dispatchReceiver), null, null, typeArgs)
                     }
                 }
                 isFunction(target, "kotlin", "(some array type)", { isArrayType(it) }, "get") && c.origin == IrStatementOrigin.GET_ARRAY_ELEMENT -> {
@@ -2204,12 +2236,22 @@ open class KotlinFileExtractor(
                 isBuiltinCall(c, "<unsafe-coerce>", "kotlin.jvm.internal") -> {
 
                     if (c.valueArgumentsCount != 1) {
-                        logger.errorElement("Expected to find only one argument for a kotlin.jvm.internal.<unsafe-coerce>() call", c)
+                        logger.errorElement("Expected to find one argument for a kotlin.jvm.internal.<unsafe-coerce>() call, but found ${c.valueArgumentsCount}", c)
                         return
                     }
 
                     if (c.typeArgumentsCount != 2) {
-                        logger.errorElement("Expected to find two type arguments for a kotlin.jvm.internal.<unsafe-coerce>() call", c)
+                        logger.errorElement("Expected to find two type arguments for a kotlin.jvm.internal.<unsafe-coerce>() call, but found ${c.typeArgumentsCount}", c)
+                        return
+                    }
+                    val valueArg = c.getValueArgument(0)
+                    if (valueArg == null) {
+                        logger.errorElement("Cannot find value argument for a kotlin.jvm.internal.<unsafe-coerce>() call", c)
+                        return
+                    }
+                    val typeArg = c.getTypeArgument(1)
+                    if (typeArg == null) {
+                        logger.errorElement("Cannot find type argument for a kotlin.jvm.internal.<unsafe-coerce>() call", c)
                         return
                     }
 
@@ -2221,8 +2263,8 @@ open class KotlinFileExtractor(
                     tw.writeHasLocation(id, locId)
                     tw.writeCallableEnclosingExpr(id, callable)
                     tw.writeStatementEnclosingExpr(id, enclosingStmt)
-                    extractTypeAccessRecursive(c.getTypeArgument(1)!!, locId, id, 0, callable, enclosingStmt)
-                    extractExpressionExpr(c.getValueArgument(0)!!, callable, id, 1, enclosingStmt)
+                    extractTypeAccessRecursive(typeArg, locId, id, 0, callable, enclosingStmt)
+                    extractExpressionExpr(valueArg, callable, id, 1, enclosingStmt)
                 }
                 isBuiltinCallInternal(c, "dataClassArrayMemberToString") -> {
                     val arrayArg = c.getValueArgument(0)
