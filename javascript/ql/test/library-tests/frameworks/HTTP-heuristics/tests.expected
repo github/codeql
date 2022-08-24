@@ -16,6 +16,7 @@ routeHandler
 | src/exported-middleware-attacher.js:2:13:2:32 | function(req, res){} |
 | src/handler-in-property.js:5:14:5:33 | function(req, res){} |
 | src/handler-in-property.js:12:18:12:37 | function(req, res){} |
+| src/iterated-handlers.js:4:2:4:22 | functio ...  res){} |
 | src/middleware-attacher-getter.js:4:17:4:36 | function(req, res){} |
 | src/middleware-attacher-getter.js:19:19:19:38 | function(req, res){} |
 | src/middleware-attacher-getter.js:29:32:29:51 | function(req, res){} |
