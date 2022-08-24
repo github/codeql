@@ -233,8 +233,8 @@ private Instruction getANonConversionUse(Operand operand) {
 }
 
 /**
- * Gets the operand that represents the first use of the value of `call`
- * following a sequnce of conversion-like instructions.
+ * Gets the operand that represents the first use of the value of `call` following
+ * a sequnce of conversion-like instructions.
  */
 predicate operandForfullyConvertedCall(Operand operand, CallInstruction call) {
   exists(getANonConversionUse(operand)) and
@@ -246,8 +246,11 @@ predicate operandForfullyConvertedCall(Operand operand, CallInstruction call) {
 }
 
 /**
- * Gets the instruction that represents the first use of the value of `call`
- * following a sequnce of conversion-like instructions.
+ * Gets the instruction that represents the first use of the value of `call` following
+ * a sequnce of conversion-like instructions.
+ *
+ * This predicate only holds if there is no suitable operand (i.e., no operand of a non-
+ * conversion instruction) to use to represent the value of `call` after conversions.
  */
 predicate instructionForfullyConvertedCall(Instruction instr, CallInstruction call) {
   not operandForfullyConvertedCall(_, call) and
@@ -265,6 +268,7 @@ predicate instructionForfullyConvertedCall(Instruction instr, CallInstruction ca
   )
 }
 
+/** Holds if `node` represents the output node for `call`. */
 private predicate simpleOutNode(Node node, CallInstruction call) {
   operandForfullyConvertedCall(node.asOperand(), call)
   or
@@ -274,10 +278,13 @@ private predicate simpleOutNode(Node node, CallInstruction call) {
 /** A data flow node that represents the output of a call. */
 class OutNode extends Node {
   OutNode() {
+    // Return values not hidden behind indirections
     simpleOutNode(this, _)
     or
+    // Return values hidden behind indirections
     this instanceof IndirectReturnOutNode
     or
+    // Modified arguments hidden behind indirections
     this instanceof IndirectArgumentOutNode
   }
 
@@ -333,27 +340,28 @@ predicate jumpStep(Node n1, Node n2) { none() }
  * value of `node1`.
  */
 predicate storeStep(Node node1, Content c, PostFieldUpdateNode node2) {
-  exists(int index1, int numberOfLoads, StoreInstruction store, FieldContent fc |
-    fc = c and
+  exists(int index1, int numberOfLoads, StoreInstruction store |
     nodeHasInstruction(node1, store, pragma[only_bind_into](index1)) and
-    fc.getField() = node2.getUpdatedField() and
     node2.getIndex() = 0 and
     numberOfLoadsFromOperand(node2.getFieldAddress(), store.getDestinationAddressOperand(),
-      numberOfLoads) and
-    fc.getIndirection() = 1 + index1 + numberOfLoads
-  )
-  or
-  exists(int index1, int numberOfLoads, StoreInstruction store, UnionContent uc |
-    uc = c and
-    nodeHasInstruction(node1, store, pragma[only_bind_into](index1)) and
-    uc.getAField() = node2.getUpdatedField() and
-    node2.getIndex() = 0 and
-    numberOfLoadsFromOperand(node2.getFieldAddress(), store.getDestinationAddressOperand(),
-      numberOfLoads) and
-    uc.getIndirection() = 1 + index1 + numberOfLoads
+      numberOfLoads)
+  |
+    exists(FieldContent fc | fc = c |
+      fc.getField() = node2.getUpdatedField() and
+      fc.getIndirection() = 1 + index1 + numberOfLoads
+    )
+    or
+    exists(UnionContent uc | uc = c |
+      uc.getAField() = node2.getUpdatedField() and
+      uc.getIndirection() = 1 + index1 + numberOfLoads
+    )
   )
 }
 
+/**
+ * Holds if `operandFrom` flows to `operandTo` using a sequence of conversion-like
+ * operations and exactly `n` `LoadInstruction` operations.
+ */
 private predicate numberOfLoadsFromOperandRec(Operand operandFrom, Operand operandTo, int ind) {
   exists(LoadInstruction load | load.getSourceAddressOperand() = operandFrom |
     operandTo = operandFrom and ind = 0
@@ -367,15 +375,20 @@ private predicate numberOfLoadsFromOperandRec(Operand operandFrom, Operand opera
   )
 }
 
-private predicate numberOfLoadsFromOperand(Operand operandFrom, Operand operandTo, int ind) {
-  numberOfLoadsFromOperandRec(operandFrom, operandTo, ind)
+/**
+ * Holds if `operandFrom` flows to `operandTo` using a sequence of conversion-like
+ * operations and exactly `n` `LoadInstruction` operations.
+ */
+private predicate numberOfLoadsFromOperand(Operand operandFrom, Operand operandTo, int n) {
+  numberOfLoadsFromOperandRec(operandFrom, operandTo, n)
   or
   not any(LoadInstruction load).getSourceAddressOperand() = operandFrom and
   not conversionFlowStepExcludeFields(operandFrom, _, _) and
   operandFrom = operandTo and
-  ind = 0
+  n = 0
 }
 
+// Needed to join on both an operand and an index at the same time.
 pragma[noinline]
 predicate nodeHasOperand(Node node, Operand operand, int index) {
   node.asOperand() = operand and index = 0
@@ -383,6 +396,7 @@ predicate nodeHasOperand(Node node, Operand operand, int index) {
   hasOperandAndIndex(node, operand, index)
 }
 
+// Needed to join on both an instruction and an index at the same time.
 pragma[noinline]
 predicate nodeHasInstruction(Node node, Instruction instr, int index) {
   node.asInstruction() = instr and index = 0
@@ -397,22 +411,20 @@ predicate nodeHasInstruction(Node node, Instruction instr, int index) {
  * `node2`.
  */
 predicate readStep(Node node1, Content c, Node node2) {
-  exists(FieldAddress fa1, Operand operand, int numberOfLoads, int index2, FieldContent fc |
-    fc = c and
+  exists(FieldAddress fa1, Operand operand, int numberOfLoads, int index2 |
     nodeHasOperand(node2, operand, index2) and
     nodeHasOperand(node1, fa1.getObjectAddressOperand(), _) and
-    fc.getField() = fa1.getField() and
-    numberOfLoadsFromOperand(fa1, operand, numberOfLoads) and
-    fc.getIndirection() = index2 + numberOfLoads
-  )
-  or
-  exists(FieldAddress fa1, Operand operand, int numberOfLoads, int index2, UnionContent uc |
-    uc = c and
-    nodeHasOperand(node2, operand, index2) and
-    nodeHasOperand(node1, fa1.getObjectAddressOperand(), _) and
-    uc.getAField() = fa1.getField() and
-    numberOfLoadsFromOperand(fa1, operand, numberOfLoads) and
-    uc.getIndirection() = index2 + numberOfLoads
+    numberOfLoadsFromOperand(fa1, operand, numberOfLoads)
+  |
+    exists(FieldContent fc | fc = c |
+      fc.getField() = fa1.getField() and
+      fc.getIndirection() = index2 + numberOfLoads
+    )
+    or
+    exists(UnionContent uc | uc = c |
+      uc.getAField() = fa1.getField() and
+      uc.getIndirection() = index2 + numberOfLoads
+    )
   )
 }
 
@@ -521,94 +533,5 @@ private class MyConsistencyConfiguration extends Consistency::ConsistencyConfigu
     // The rules for whether an IR argument gets a post-update node are too
     // complex to model here.
     any()
-  }
-}
-
-private import semmle.code.cpp.ir.dataflow.internal.DataFlowImplCommon as DataFlowImplCommon
-
-private predicate into(ArgumentNode node1, ParameterNode node2) {
-  exists(CallInstruction call, ParameterPosition pos |
-    node1.argumentOf(call, pos) and
-    node2.isParameterOf(call.getStaticCallTarget(), pos)
-  )
-}
-
-private predicate outOf(
-  DataFlowImplCommon::ReturnNodeExt node1, DataFlowImplCommon::OutNodeExt node2, string msg
-) {
-  exists(DataFlowImplCommon::ReturnKindExt kind |
-    node1.getKind() = kind and
-    kind.getAnOutNode(any(CallInstruction call |
-        call.getStaticCallTarget() = node1.getEnclosingCallable()
-      )) = node2 and
-    msg = kind.toString()
-  )
-}
-
-private predicate argumentValueFlowsThrough(ArgumentNode n2, Content c, OutNode n1) {
-  exists(Node mid1, ParameterNode p, ReturnNode r, Node mid2 |
-    into(n2, p) and
-    simpleLocalFlowStep*(p, mid2) and
-    readStep(mid2, c, mid1) and
-    simpleLocalFlowStep*(mid1, r) and
-    outOf(r, n1, _)
-  )
-}
-
-module Step {
-  predicate step(Node node1, Node node2, string msg) {
-    stepFwd(_, node1) and
-    not isBarrier(node1) and
-    not isBarrier(node2) and
-    (
-      simpleLocalFlowStep(node1, node2) and msg = "."
-      or
-      exists(Content c, string after | after = c.toString() |
-        readStep(node1, c, node2) and msg = "Read " + after
-        or
-        storeStep(node1, c, node2) and msg = "Store " + after
-        or
-        exists(Node n1, Node n2 |
-          n1 = node1.(PostUpdateNode).getPreUpdateNode() and
-          n2 = node2.(PostUpdateNode).getPreUpdateNode() and
-          readStep(n2, c, n1) and
-          msg = "Reverse read " + c
-        )
-        or
-        exists(OutNode n1, ArgumentNode n2 |
-          n2 = node2.(PostUpdateNode).getPreUpdateNode() and
-          n1 = node1.(PostUpdateNode).getPreUpdateNode() and
-          argumentValueFlowsThrough(n2, c, n1) and
-          msg = "Through " + after
-        )
-      )
-      or
-      into(node1, node2) and msg = "into"
-      or
-      outOf(node1, node2, msg)
-    )
-  }
-
-  private predicate isBarrier(Node node) {
-    // node.asExpr().(Cpp::VariableAccess).getTarget().hasName("barrier")
-    none()
-  }
-
-  // private import semmle.code.cpp.ir.dataflow.DefaultTaintTracking as DTT
-  predicate isSource(Node source) {
-    exists(Cpp::FunctionCall fc |
-      fc.getAnArgument() = source.asDefiningArgument() and
-      fc.getTarget().getName() = "source"
-    )
-  }
-
-  private predicate stepFwd(Node node1, Node node2) {
-    node1 = node2 and
-    isSource(node1)
-    or
-    exists(Node mid |
-      stepFwd(node1, mid) and
-      step(mid, node2, _)
-    )
   }
 }
