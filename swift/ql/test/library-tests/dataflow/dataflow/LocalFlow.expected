@@ -1,63 +1,3 @@
-| file://:0:0:0:0 | &... | test.swift:242:9:242:9 | self[return] |
-| file://:0:0:0:0 | &... | test.swift:242:9:242:9 | self[return] |
-| file://:0:0:0:0 | (no string representation) | file://:0:0:0:0 | WriteDef |
-| file://:0:0:0:0 | (no string representation) | file://:0:0:0:0 | WriteDef |
-| file://:0:0:0:0 | (no string representation) | file://:0:0:0:0 | WriteDef |
-| file://:0:0:0:0 | (no string representation) | file://:0:0:0:0 | WriteDef |
-| file://:0:0:0:0 | (no string representation) | file://:0:0:0:0 | WriteDef |
-| file://:0:0:0:0 | (no string representation) | file://:0:0:0:0 | WriteDef |
-| file://:0:0:0:0 | (no string representation) | file://:0:0:0:0 | WriteDef |
-| file://:0:0:0:0 | (no string representation) | file://:0:0:0:0 | WriteDef |
-| file://:0:0:0:0 | (no string representation) | file://:0:0:0:0 | WriteDef |
-| file://:0:0:0:0 | (no string representation) | file://:0:0:0:0 | WriteDef |
-| file://:0:0:0:0 | (no string representation) | file://:0:0:0:0 | WriteDef |
-| file://:0:0:0:0 | (no string representation) | file://:0:0:0:0 | WriteDef |
-| file://:0:0:0:0 | (no string representation) | file://:0:0:0:0 | WriteDef |
-| file://:0:0:0:0 | (no string representation) | file://:0:0:0:0 | WriteDef |
-| file://:0:0:0:0 | (no string representation) | file://:0:0:0:0 | WriteDef |
-| file://:0:0:0:0 | .a | file://:0:0:0:0 | &... |
-| file://:0:0:0:0 | .source_value | file://:0:0:0:0 | &... |
-| file://:0:0:0:0 | .wrappedValue | file://:0:0:0:0 | &... |
-| file://:0:0:0:0 | .x | file://:0:0:0:0 | &... |
-| file://:0:0:0:0 | WriteDef | file://:0:0:0:0 | self[return] |
-| file://:0:0:0:0 | WriteDef | file://:0:0:0:0 | self[return] |
-| file://:0:0:0:0 | WriteDef | file://:0:0:0:0 | self[return] |
-| file://:0:0:0:0 | WriteDef | file://:0:0:0:0 | self[return] |
-| file://:0:0:0:0 | WriteDef | file://:0:0:0:0 | self[return] |
-| file://:0:0:0:0 | WriteDef | file://:0:0:0:0 | self[return] |
-| file://:0:0:0:0 | WriteDef | file://:0:0:0:0 | self[return] |
-| file://:0:0:0:0 | WriteDef | file://:0:0:0:0 | self[return] |
-| file://:0:0:0:0 | WriteDef | file://:0:0:0:0 | self[return] |
-| file://:0:0:0:0 | WriteDef | file://:0:0:0:0 | self[return] |
-| file://:0:0:0:0 | WriteDef | file://:0:0:0:0 | self[return] |
-| file://:0:0:0:0 | WriteDef | file://:0:0:0:0 | self[return] |
-| file://:0:0:0:0 | WriteDef | file://:0:0:0:0 | self[return] |
-| file://:0:0:0:0 | WriteDef | file://:0:0:0:0 | self[return] |
-| file://:0:0:0:0 | WriteDef | file://:0:0:0:0 | self[return] |
-| file://:0:0:0:0 | [post] &... | test.swift:242:9:242:9 | self[return] |
-| file://:0:0:0:0 | [post] &... | test.swift:242:9:242:9 | self[return] |
-| file://:0:0:0:0 | [post] self | file://:0:0:0:0 | self |
-| file://:0:0:0:0 | [post] self | file://:0:0:0:0 | self |
-| file://:0:0:0:0 | [post] self | test.swift:163:7:163:7 | self[return] |
-| file://:0:0:0:0 | [post] self | test.swift:163:7:163:7 | self[return] |
-| file://:0:0:0:0 | [post] self | test.swift:163:7:163:7 | self[return] |
-| file://:0:0:0:0 | [post] self | test.swift:185:7:185:7 | self[return] |
-| file://:0:0:0:0 | [post] self | test.swift:185:7:185:7 | self[return] |
-| file://:0:0:0:0 | [post] self | test.swift:185:7:185:7 | self[return] |
-| file://:0:0:0:0 | [post] self | test.swift:223:7:223:7 | self[return] |
-| file://:0:0:0:0 | [post] self | test.swift:242:9:242:9 | self[return] |
-| file://:0:0:0:0 | self | file://:0:0:0:0 | &... |
-| file://:0:0:0:0 | self | file://:0:0:0:0 | &... |
-| file://:0:0:0:0 | self | file://:0:0:0:0 | self |
-| file://:0:0:0:0 | self | file://:0:0:0:0 | self |
-| file://:0:0:0:0 | self | test.swift:163:7:163:7 | self[return] |
-| file://:0:0:0:0 | self | test.swift:163:7:163:7 | self[return] |
-| file://:0:0:0:0 | self | test.swift:163:7:163:7 | self[return] |
-| file://:0:0:0:0 | self | test.swift:185:7:185:7 | self[return] |
-| file://:0:0:0:0 | self | test.swift:185:7:185:7 | self[return] |
-| file://:0:0:0:0 | self | test.swift:185:7:185:7 | self[return] |
-| file://:0:0:0:0 | self | test.swift:223:7:223:7 | self[return] |
-| file://:0:0:0:0 | self | test.swift:242:9:242:9 | self[return] |
 | test.swift:6:9:6:13 | WriteDef | test.swift:7:15:7:15 | t1 |
 | test.swift:6:19:6:26 | call to source() | test.swift:6:9:6:13 | WriteDef |
 | test.swift:7:15:7:15 | t1 | test.swift:8:10:8:10 | t1 |
@@ -150,10 +90,6 @@
 | test.swift:154:10:154:13 | i | test.swift:155:19:155:19 | i |
 | test.swift:157:5:157:5 | lambdaSink | test.swift:159:5:159:5 | lambdaSink |
 | test.swift:162:7:162:7 | self | test.swift:162:7:162:7 | self[return] |
-| test.swift:163:7:163:7 | self | file://:0:0:0:0 | self |
-| test.swift:163:7:163:7 | self | file://:0:0:0:0 | self |
-| test.swift:163:7:163:7 | self | file://:0:0:0:0 | self |
-| test.swift:163:7:163:7 | value | file://:0:0:0:0 | value |
 | test.swift:165:3:165:3 | self | test.swift:166:5:166:5 | self |
 | test.swift:166:5:166:5 | [post] self | test.swift:165:3:167:3 | self[return] |
 | test.swift:166:5:166:5 | self | test.swift:165:3:167:3 | self[return] |
@@ -169,10 +105,6 @@
 | test.swift:180:3:180:3 | [post] a | test.swift:181:13:181:13 | a |
 | test.swift:180:3:180:3 | a | test.swift:181:13:181:13 | a |
 | test.swift:184:7:184:7 | self | test.swift:184:7:184:7 | self[return] |
-| test.swift:185:7:185:7 | self | file://:0:0:0:0 | self |
-| test.swift:185:7:185:7 | self | file://:0:0:0:0 | self |
-| test.swift:185:7:185:7 | self | file://:0:0:0:0 | self |
-| test.swift:185:7:185:7 | value | file://:0:0:0:0 | value |
 | test.swift:187:3:187:3 | self | test.swift:188:5:188:5 | self |
 | test.swift:188:5:188:5 | [post] self | test.swift:187:3:189:3 | self[return] |
 | test.swift:188:5:188:5 | self | test.swift:187:3:189:3 | self[return] |
@@ -198,7 +130,6 @@
 | test.swift:218:3:218:3 | b | test.swift:219:13:219:13 | b |
 | test.swift:222:7:222:7 | self | test.swift:222:7:222:7 | self[return] |
 | test.swift:222:7:222:7 | self | test.swift:222:7:222:7 | self[return] |
-| test.swift:223:7:223:7 | self | file://:0:0:0:0 | self |
 | test.swift:224:5:224:5 | self | test.swift:224:5:226:5 | self[return] |
 | test.swift:227:5:227:5 | self | test.swift:227:5:229:5 | self[return] |
 | test.swift:234:7:234:7 | WriteDef | test.swift:235:13:235:13 | a |
@@ -207,14 +138,9 @@
 | test.swift:235:13:235:13 | a | test.swift:237:3:237:3 | a |
 | test.swift:237:3:237:3 | [post] a | test.swift:238:13:238:13 | a |
 | test.swift:237:3:237:3 | a | test.swift:238:13:238:13 | a |
-| test.swift:242:9:242:9 | self | file://:0:0:0:0 | self |
-| test.swift:242:9:242:9 | self | file://:0:0:0:0 | self |
-| test.swift:242:9:242:9 | self | file://:0:0:0:0 | self |
-| test.swift:242:9:242:9 | value | file://:0:0:0:0 | value |
 | test.swift:243:9:243:9 | self | test.swift:243:18:243:18 | self |
 | test.swift:243:18:243:18 | [post] self | test.swift:243:9:243:42 | self[return] |
 | test.swift:243:18:243:18 | self | test.swift:243:9:243:42 | self[return] |
 | test.swift:246:5:246:5 | self | test.swift:247:9:247:9 | self |
 | test.swift:247:9:247:9 | [post] self | test.swift:246:5:248:5 | self[return] |
 | test.swift:247:9:247:9 | self | test.swift:246:5:248:5 | self[return] |
-| test.swift:252:23:252:23 | value | file://:0:0:0:0 | value |
