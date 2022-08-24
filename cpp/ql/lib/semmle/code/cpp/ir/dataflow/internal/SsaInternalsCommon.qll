@@ -109,9 +109,10 @@ private module DefCached {
     address.getDef() = base and
     isSourceVariableBase(base)
     or
-    exists(Operand mid |
+    exists(Operand mid, Instruction instr |
       isDefImpl(mid, base, ind) and
-      conversionFlow(mid, address, false, _)
+      instr = address.getDef() and
+      conversionFlow(mid, instr, _)
     )
     or
     exists(int ind0 |
@@ -147,9 +148,10 @@ private module UseCached {
     operand.getDef() = base and
     isSourceVariableBase(base)
     or
-    exists(Operand mid |
+    exists(Operand mid, Instruction instr |
       isUseImpl(mid, base, ind) and
-      conversionFlowStepExcludeFields(mid, operand, false)
+      instr = operand.getDef() and
+      conversionFlow(mid, instr, false)
     )
     or
     exists(int ind0 |

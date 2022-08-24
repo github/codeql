@@ -263,26 +263,16 @@ predicate adjacentDefRead(DefOrUse defOrUse1, UseOrPhi use) {
 }
 
 private predicate useToNode(UseOrPhi use, Node nodeTo) {
-  exists(UseImpl useImpl | useImpl = use.asDefOrUse() |
-    useImpl.getIndex() = 0 and
-    nodeTo.asOperand() = useImpl.getOperand()
-    or
-    exists(int index |
-      index = useImpl.getIndex() and
-      index > 0 and
-      hasOperandAndIndex(nodeTo, useImpl.getOperand(), index)
-    )
+  exists(UseImpl useImpl |
+    useImpl = use.asDefOrUse() and
+    nodeHasOperand(nodeTo, useImpl.getOperand(), useImpl.getIndex())
   )
   or
   nodeTo.(SsaPhiNode).getPhiNode() = use.asPhi()
 }
 
 private predicate nodeToDef(Node nodeFrom, DefImpl def) {
-  def.getIndex() = 0 and
-  def.getDefiningInstruction() = nodeFrom.asInstruction()
-  or
-  // implies def.getIndex() > 0
-  hasInstructionAndIndex(nodeFrom, def.getDefiningInstruction(), def.getIndex())
+  nodeHasInstruction(nodeFrom, def.getDefiningInstruction(), def.getIndex())
 }
 
 pragma[noinline]
@@ -310,10 +300,11 @@ predicate indirectConversionFlowStepExcludeFieldsStep(Node opFrom, Node opTo) {
     nodeToDefOrUse(opTo, defOrUse) and
     adjacentDefRead(defOrUse, _)
   ) and
-  exists(Operand op1, Operand op2, int index |
+  exists(Operand op1, Operand op2, int index, Instruction instr |
     hasOperandAndIndex(opFrom, op1, pragma[only_bind_into](index)) and
     hasOperandAndIndex(opTo, op2, pragma[only_bind_into](index)) and
-    conversionFlowStepExcludeFields(op1, op2, _)
+    instr = op2.getDef() and
+    conversionFlow(op1, instr, _)
   )
 }
 
@@ -327,7 +318,7 @@ private predicate adjustForPointerArith(
 }
 
 predicate defUseFlow(Node nodeFrom, Node nodeTo) {
-  // "nodeFrom is a pre-update node of some post-update node" is implied by adjustedForPointerArith.
+  // `nodeFrom = any(PostUpdateNode pun).getPreUpdateNode()` is implied by adjustedForPointerArith.
   exists(DefOrUse defOrUse1, UseOrPhi use, Node node |
     adjustForPointerArith(nodeFrom, node, defOrUse1, use) and
     useToNode(use, nodeTo)

@@ -80,6 +80,8 @@ Node callOutput(CallInstruction call, FunctionOutput output, int d) {
     // The return value
     result = getIndirectReturnOutNode(n.asInstruction(), d)
     or
+    // If there isn't an indirect out node for the call with indirection `d` then
+    // we conflate this with the underlying `CallInstruction`.
     not exists(getIndirectReturnOutNode(call, d)) and
     n.asInstruction() = result.asInstruction()
     or

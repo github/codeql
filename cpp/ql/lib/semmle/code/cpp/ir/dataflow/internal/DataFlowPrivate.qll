@@ -195,7 +195,7 @@ class ReturnIndirectionNode extends IndirectReturnNode, ReturnNode {
 
 private Operand fullyConvertedCallStep(Operand op) {
   exists(Instruction instr |
-    conversionFlow0(op, instr, _) and
+    conversionFlow(op, instr, _) and
     result = getAUse(instr)
   )
 }
@@ -222,7 +222,7 @@ Operand getAUse(Instruction instr) {
  */
 private Instruction getANonConversionUse(Operand operand) {
   result = getUse(operand) and
-  not conversionFlow0(_, result, _)
+  not conversionFlow(_, result, _)
 }
 
 /**
@@ -248,14 +248,12 @@ predicate operandForfullyConvertedCall(Operand operand, CallInstruction call) {
 predicate instructionForfullyConvertedCall(Instruction instr, CallInstruction call) {
   not operandForfullyConvertedCall(_, call) and
   (
+    // If there is no use of the call then we pick the call instruction
     not exists(getAUse(call)) and
     instr = call
     or
-    exists(Operand operand |
-      operand = getAUse(call)
-      or
-      operand = fullyConvertedCallStep*(getAUse(call))
-    |
+    // Otherwise, flow to the first non-conversion use.
+    exists(Operand operand | operand = fullyConvertedCallStep*(getAUse(call)) |
       instr = getANonConversionUse(operand)
     )
   )
@@ -341,12 +339,12 @@ predicate storeStep(Node node1, Content c, PostFieldUpdateNode node2) {
   |
     exists(FieldContent fc | fc = c |
       fc.getField() = node2.getUpdatedField() and
-      fc.getIndirection() = 1 + index1 + numberOfLoads
+      fc.getIndex() = 1 + index1 + numberOfLoads
     )
     or
     exists(UnionContent uc | uc = c |
       uc.getAField() = node2.getUpdatedField() and
-      uc.getIndirection() = 1 + index1 + numberOfLoads
+      uc.getIndex() = 1 + index1 + numberOfLoads
     )
   )
 }
@@ -362,8 +360,9 @@ private predicate numberOfLoadsFromOperandRec(Operand operandFrom, Operand opera
     numberOfLoadsFromOperand(load.getAUse(), operandTo, ind - 1)
   )
   or
-  exists(Operand op |
-    conversionFlowStepExcludeFields(operandFrom, op, _) and
+  exists(Operand op, Instruction instr |
+    instr = op.getDef() and
+    conversionFlow(operandFrom, instr, _) and
     numberOfLoadsFromOperand(op, operandTo, ind)
   )
 }
@@ -376,7 +375,7 @@ private predicate numberOfLoadsFromOperand(Operand operandFrom, Operand operandT
   numberOfLoadsFromOperandRec(operandFrom, operandTo, n)
   or
   not any(LoadInstruction load).getSourceAddressOperand() = operandFrom and
-  not conversionFlowStepExcludeFields(operandFrom, _, _) and
+  not conversionFlow(operandFrom, _, _) and
   operandFrom = operandTo and
   n = 0
 }
@@ -394,8 +393,7 @@ pragma[noinline]
 predicate nodeHasInstruction(Node node, Instruction instr, int index) {
   node.asInstruction() = instr and index = 0
   or
-  node.(IndirectInstruction).getInstruction() = instr and
-  index = node.(IndirectInstruction).getIndex()
+  hasInstructionAndIndex(node, instr, index)
 }
 
 /**
@@ -411,12 +409,12 @@ predicate readStep(Node node1, Content c, Node node2) {
   |
     exists(FieldContent fc | fc = c |
       fc.getField() = fa1.getField() and
-      fc.getIndirection() = index2 + numberOfLoads
+      fc.getIndex() = index2 + numberOfLoads
     )
     or
     exists(UnionContent uc | uc = c |
       uc.getAField() = fa1.getField() and
-      uc.getIndirection() = index2 + numberOfLoads
+      uc.getIndex() = index2 + numberOfLoads
     )
   )
 }

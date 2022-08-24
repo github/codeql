@@ -74,7 +74,8 @@ class FieldAddress extends Operand {
  * `isPointerArith` is `true` if `instrTo` is a `PointerArithmeticInstruction` and `opFrom`
  * is the left operand.
  */
-predicate conversionFlow0(Operand opFrom, Instruction instrTo, boolean isPointerArith) {
+cached
+predicate conversionFlow(Operand opFrom, Instruction instrTo, boolean isPointerArith) {
   isPointerArith = false and
   (
     instrTo.(CopyValueInstruction).getSourceValueOperand() = opFrom
@@ -88,25 +89,6 @@ predicate conversionFlow0(Operand opFrom, Instruction instrTo, boolean isPointer
   or
   isPointerArith = true and
   instrTo.(PointerArithmeticInstruction).getLeftOperand() = opFrom
-}
-
-predicate conversionFlow(
-  Operand opFrom, Operand opTo, boolean hasFieldOffset, boolean hasPointerArith
-) {
-  hasFieldOffset = false and
-  conversionFlow0(opFrom, any(Instruction instrTo | instrTo = opTo.getDef()), hasPointerArith)
-  or
-  exists(FieldAddress fa |
-    opTo = fa and
-    opFrom = fa.getObjectAddressOperand() and
-    hasFieldOffset = true and
-    hasPointerArith = false
-  )
-}
-
-cached
-predicate conversionFlowStepExcludeFields(Operand opFrom, Operand opTo, boolean hasPointerArith) {
-  conversionFlow(opFrom, opTo, false, hasPointerArith)
 }
 
 private import Cached
@@ -303,9 +285,6 @@ class OperandNode extends Node, TOperandNode {
   final override Location getLocationImpl() { result = op.getLocation() }
 
   override string toStringImpl() { result = this.getOperand().toString() }
-  // override string toStringImpl() {
-  //   result = this.getOperand().getDumpString() + " @ " + this.getOperand().getUse().getResultId()
-  // }
 }
 
 class PostFieldUpdateNode extends TPostFieldUpdateNode, PartialDefinitionNode {
@@ -337,7 +316,6 @@ class PostFieldUpdateNode extends TPostFieldUpdateNode, PartialDefinitionNode {
 
   override Location getLocationImpl() { result = fieldAddress.getLocation() }
 
-  // override string toStringImpl() { result = this.getPreUpdateNode().toStringImpl() + " [post update]" }
   override string toStringImpl() { result = this.getPreUpdateNode() + " [post update]" }
 }
 
@@ -492,14 +470,15 @@ predicate indirectReturnOutNodeInstruction0(CallInstruction call, Instruction in
 
 class IndirectReturnOutNode extends Node {
   CallInstruction call;
+  int index;
 
   IndirectReturnOutNode() {
-    exists(Operand operand, int index |
+    exists(Operand operand |
       indirectReturnOutNodeOperand0(call, operand, index) and
       hasOperandAndIndex(this, operand, index)
     )
     or
-    exists(Instruction instr, int index |
+    exists(Instruction instr |
       indirectReturnOutNodeInstruction0(call, instr, index) and
       hasInstructionAndIndex(this, instr, index)
     )
@@ -507,11 +486,7 @@ class IndirectReturnOutNode extends Node {
 
   CallInstruction getCallInstruction() { result = call }
 
-  int getIndex() {
-    result = this.(IndirectOperand).getIndex()
-    or
-    result = this.(IndirectInstruction).getIndex()
-  }
+  int getIndex() { result = index }
 }
 
 class IndirectOperand extends Node, TIndirectOperand {
@@ -534,7 +509,6 @@ class IndirectOperand extends Node, TIndirectOperand {
   final override Location getLocationImpl() { result = this.getOperand().getLocation() }
 
   override string toStringImpl() {
-    // result = instructionNode(this.getOperand().getDef()).toStringImpl() + "[" + this.getIndex() + "]"
     result = instructionNode(this.getOperand().getDef()).toStringImpl() + " indirection"
   }
 }
@@ -559,7 +533,6 @@ class IndirectInstruction extends Node, TIndirectInstruction {
   final override Location getLocationImpl() { result = this.getInstruction().getLocation() }
 
   override string toStringImpl() {
-    // result = instructionNode(this.getInstruction()).toStringImpl() + "[" + this.getIndex() + "]"
     result = instructionNode(this.getInstruction()).toStringImpl() + " indirection"
   }
 }
@@ -883,22 +856,22 @@ Node uninitializedNode(LocalVariable v) { none() }
 predicate localFlowStep = simpleLocalFlowStep/2;
 
 private predicate indirectionOperandFlow(IndirectOperand nodeFrom, Node nodeTo) {
+  // Reduce the indirection count by 1 if we're passing through a `LoadInstruction`.
   exists(int ind, LoadInstruction load |
-    hasOperandAndIndex(nodeFrom, load.getSourceAddressOperand(), ind)
-  |
-    ind > 1 and
-    hasInstructionAndIndex(nodeTo, load, ind - 1)
-    or
-    ind = 1 and
-    nodeTo.asInstruction() = load
+    hasOperandAndIndex(nodeFrom, load.getSourceAddressOperand(), ind) and
+    nodeHasInstruction(nodeTo, load, ind - 1)
   )
   or
+  // If an operand flows to an instruction, then the indirection of
+  // the operand also flows to the indirction of the instruction.
   exists(Operand operand, Instruction instr, int index |
     simpleInstructionLocalFlowStep(operand, instr) and
     hasOperandAndIndex(nodeFrom, operand, index) and
     hasInstructionAndIndex(nodeTo, instr, index)
   )
   or
+  // If there's indirect flow to an operand, then there's also indirect
+  // flow to the operand after applying some pointer arithmetic.
   exists(PointerArithmeticInstruction pointerArith, int index |
     hasOperandAndIndex(nodeFrom, pointerArith.getAnOperand(), index) and
     hasInstructionAndIndex(nodeTo, pointerArith, index)
@@ -918,6 +891,8 @@ predicate hasInstructionAndIndex(IndirectInstruction indirectInstr, Instruction 
 }
 
 private predicate indirectionInstructionFlow(IndirectInstruction nodeFrom, IndirectOperand nodeTo) {
+  // If there's flow from an instruction to an operand, then there's also flow from the
+  // indirect instruction to the indirect operand.
   exists(Operand operand, Instruction instr, int index |
     simpleOperandLocalFlowStep(pragma[only_bind_into](instr), pragma[only_bind_into](operand))
   |
@@ -995,16 +970,12 @@ private class ReferenceDereferenceInstruction extends LoadInstruction {
 }
 
 private predicate simpleInstructionLocalFlowStep(Operand opFrom, Instruction iTo) {
+  // Treat all conversions as flow, even conversions between different numeric types.
+  conversionFlow(opFrom, iTo, false)
+  or
   iTo.(CopyInstruction).getSourceValueOperand() = opFrom
   or
   iTo.(PhiInstruction).getAnInputOperand() = opFrom
-  or
-  // Treat all conversions as flow, even conversions between different numeric types.
-  iTo.(ConvertInstruction).getUnaryOperand() = opFrom
-  or
-  iTo.(CheckedConvertOrNullInstruction).getUnaryOperand() = opFrom
-  or
-  iTo.(InheritanceConversionInstruction).getUnaryOperand() = opFrom
   or
   // Conflate references and values like in AST dataflow.
   iTo.(ReferenceDereferenceInstruction).getSourceAddressOperand() = opFrom
@@ -1099,7 +1070,7 @@ class FieldContent extends Content, TFieldContent {
 
   Field getField() { result = f }
 
-  int getIndirection() { result = index }
+  int getIndex() { result = index }
 }
 
 /** A reference through an instance field of a union. */
@@ -1117,7 +1088,7 @@ class UnionContent extends Content, TUnionContent {
 
   Field getAField() { result = u.getAField() }
 
-  int getIndirection() { result = index }
+  int getIndex() { result = index }
 }
 
 /** A reference through an array. */
