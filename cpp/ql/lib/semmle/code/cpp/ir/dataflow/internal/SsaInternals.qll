@@ -239,8 +239,6 @@ class UseImpl extends DefOrUseImpl, TUseImpl {
   override Instruction getBase() { isUse(_, operand, result, _, ind) }
 
   predicate isCertain() { isUse(true, operand, _, _, ind) }
-
-  predicate isUncertain() { isUse(false, operand, _, _, ind) }
 }
 
 predicate adjacentDefRead(DefOrUse defOrUse1, UseOrPhi use) {

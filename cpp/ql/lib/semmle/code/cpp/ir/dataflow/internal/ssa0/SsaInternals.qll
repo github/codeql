@@ -1,3 +1,8 @@
+/**
+ * This module defines an initial SSA pruning stage that doesn't take
+ * indirections into account.
+ */
+
 private import SsaImplCommon as Ssa
 private import semmle.code.cpp.ir.IR
 private import semmle.code.cpp.ir.dataflow.internal.DataFlowImplCommon as DataFlowImplCommon
@@ -11,7 +16,9 @@ private import semmle.code.cpp.ir.dataflow.internal.SsaInternalsCommon
 
 private module SourceVariables {
   newtype TBaseSourceVariable =
+    // Each IR variable gets its own source variable
     TBaseIRVariable(IRVariable var) or
+    // Each allocation gets its own source variable
     TBaseCallVariable(AllocationInstruction call)
 
   abstract class BaseSourceVariable extends TBaseSourceVariable {
@@ -194,6 +201,8 @@ class UseImpl extends DefOrUseImpl, TUseImpl {
   final override Cpp::Location getLocation() { result = operand.getLocation() }
 
   override Instruction getBase() { isUse(_, operand, result, _, _) }
+
+  predicate isCertain() { isUse(true, operand, _, _, _) }
 }
 
 /**
@@ -202,9 +211,8 @@ class UseImpl extends DefOrUseImpl, TUseImpl {
  */
 predicate variableWrite(IRBlock bb, int i, SourceVariable v, boolean certain) {
   DataFlowImplCommon::forceCachingInSameStage() and
-  exists(DefImpl def |
-    def.hasIndexInBlock(bb, i, v) and
-    (if def.isCertain() then certain = true else certain = false)
+  exists(DefImpl def | def.hasIndexInBlock(bb, i, v) |
+    if def.isCertain() then certain = true else certain = false
   )
 }
 
@@ -213,9 +221,8 @@ predicate variableWrite(IRBlock bb, int i, SourceVariable v, boolean certain) {
  * `certain` is `true` if the read is guaranteed. For C++, this is always the case.
  */
 predicate variableRead(IRBlock bb, int i, SourceVariable v, boolean certain) {
-  exists(UseImpl use |
-    use.hasIndexInBlock(bb, i, v) and
-    certain = true
+  exists(UseImpl use | use.hasIndexInBlock(bb, i, v) |
+    if use.isCertain() then certain = true else certain = false
   )
 }
 
