@@ -12,7 +12,7 @@ def generate_grouped(opts, renderer, input):
     opts.cpp_output = output_dir
 
     def ret(classes):
-        input.classes = classes
+        input.classes = {cls.name: cls for cls in classes}
         generated = run_generation(cppgen.generate, opts, renderer)
         for f, g in generated.items():
             assert isinstance(g, cpp.ClassList), f

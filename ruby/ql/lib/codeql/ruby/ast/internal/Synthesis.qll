@@ -132,7 +132,7 @@ int desugarLevel(AstNode n) { result = count(Desugared desugared | n = desugared
  * Holds if `n` appears in a context that is desugared. That is, a
  * transitive, reflexive parent of `n` is a desugared node.
  */
-predicate isInDesugeredContext(AstNode n) { n = any(AstNode sugar).getDesugared().getAChild*() }
+predicate isInDesugaredContext(AstNode n) { n = any(AstNode sugar).getDesugared().getAChild*() }
 
 /**
  * Holds if `n` is a node that only exists as a result of desugaring some
@@ -141,7 +141,7 @@ predicate isInDesugeredContext(AstNode n) { n = any(AstNode sugar).getDesugared(
 predicate isDesugarNode(AstNode n) {
   n = any(AstNode sugar).getDesugared()
   or
-  isInDesugeredContext(n) and
+  isInDesugaredContext(n) and
   forall(AstNode parent | parent = n.getParent() | parent.isSynthesized())
 }
 

@@ -2,10 +2,14 @@
 import codeql.swift.elements.AstNode
 import codeql.swift.elements.Callable
 import codeql.swift.elements.Comment
+import codeql.swift.elements.DbFile
+import codeql.swift.elements.DbLocation
 import codeql.swift.elements.Element
 import codeql.swift.elements.File
 import codeql.swift.elements.Locatable
 import codeql.swift.elements.Location
+import codeql.swift.elements.UnknownFile
+import codeql.swift.elements.UnknownLocation
 import codeql.swift.elements.decl.AbstractFunctionDecl
 import codeql.swift.elements.decl.AbstractStorageDecl
 import codeql.swift.elements.decl.AbstractTypeParamDecl
@@ -133,6 +137,7 @@ import codeql.swift.elements.expr.MagicIdentifierLiteralExpr
 import codeql.swift.elements.expr.MakeTemporarilyEscapableExpr
 import codeql.swift.elements.expr.MemberRefExpr
 import codeql.swift.elements.expr.MetatypeConversionExpr
+import codeql.swift.elements.expr.MethodRefExpr
 import codeql.swift.elements.expr.NilLiteralExpr
 import codeql.swift.elements.expr.NumberLiteralExpr
 import codeql.swift.elements.expr.ObjCSelectorExpr

@@ -7,14 +7,14 @@ namespace System
         namespace InteropServices
         {
             // Generated from `System.Runtime.InteropServices.Architecture` in `System.Runtime.InteropServices.RuntimeInformation, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum Architecture
+            public enum Architecture : int
             {
-                Arm,
-                Arm64,
-                S390x,
-                Wasm,
-                X64,
-                X86,
+                Arm = 2,
+                Arm64 = 3,
+                S390x = 5,
+                Wasm = 4,
+                X64 = 1,
+                X86 = 0,
             }
 
             // Generated from `System.Runtime.InteropServices.OSPlatform` in `System.Runtime.InteropServices.RuntimeInformation, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`

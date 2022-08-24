@@ -86,11 +86,11 @@ private class SystemDiagnosticsActivityTagsCollectionFlowModelCsv extends Summar
   override predicate row(string row) {
     row =
       [
-        "System.Diagnostics;ActivityTagsCollection;false;ActivityTagsCollection;(System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<System.String,System.Object>>);;Argument[0].Element.Property[System.Collections.Generic.KeyValuePair<,>.Key];ReturnValue.Element.Property[System.Collections.Generic.KeyValuePair<,>.Key];value;manual",
-        "System.Diagnostics;ActivityTagsCollection;false;ActivityTagsCollection;(System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<System.String,System.Object>>);;Argument[0].Element.Property[System.Collections.Generic.KeyValuePair<,>.Value];ReturnValue.Element.Property[System.Collections.Generic.KeyValuePair<,>.Value];value;manual",
-        "System.Diagnostics;ActivityTagsCollection;false;Add;(System.Collections.Generic.KeyValuePair<System.String,System.Object>);;Argument[0].Property[System.Collections.Generic.KeyValuePair<,>.Key];Argument[Qualifier].Element.Property[System.Collections.Generic.KeyValuePair<,>.Key];value;manual",
-        "System.Diagnostics;ActivityTagsCollection;false;Add;(System.Collections.Generic.KeyValuePair<System.String,System.Object>);;Argument[0].Property[System.Collections.Generic.KeyValuePair<,>.Value];Argument[Qualifier].Element.Property[System.Collections.Generic.KeyValuePair<,>.Value];value;manual",
-        "System.Diagnostics;ActivityTagsCollection;false;GetEnumerator;();;Argument[Qualifier].Element;ReturnValue.Property[System.Diagnostics.ActivityTagsCollection+Enumerator.Current];value;manual",
+        "System.Diagnostics;ActivityTagsCollection;false;ActivityTagsCollection;(System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<System.String,System.Object>>);;Argument[0].Element.Property[System.Collections.Generic.KeyValuePair<,>.Key];Argument[this].Element.Property[System.Collections.Generic.KeyValuePair<,>.Key];value;manual",
+        "System.Diagnostics;ActivityTagsCollection;false;ActivityTagsCollection;(System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<System.String,System.Object>>);;Argument[0].Element.Property[System.Collections.Generic.KeyValuePair<,>.Value];Argument[this].Element.Property[System.Collections.Generic.KeyValuePair<,>.Value];value;manual",
+        "System.Diagnostics;ActivityTagsCollection;false;Add;(System.Collections.Generic.KeyValuePair<System.String,System.Object>);;Argument[0].Property[System.Collections.Generic.KeyValuePair<,>.Key];Argument[this].Element.Property[System.Collections.Generic.KeyValuePair<,>.Key];value;manual",
+        "System.Diagnostics;ActivityTagsCollection;false;Add;(System.Collections.Generic.KeyValuePair<System.String,System.Object>);;Argument[0].Property[System.Collections.Generic.KeyValuePair<,>.Value];Argument[this].Element.Property[System.Collections.Generic.KeyValuePair<,>.Value];value;manual",
+        "System.Diagnostics;ActivityTagsCollection;false;GetEnumerator;();;Argument[this].Element;ReturnValue.Property[System.Diagnostics.ActivityTagsCollection+Enumerator.Current];value;manual",
       ]
   }
 }
@@ -100,14 +100,14 @@ private class SystemDiagnosticsTraceListenerCollectionFlowModelCsv extends Summa
   override predicate row(string row) {
     row =
       [
-        "System.Diagnostics;TraceListenerCollection;false;Add;(System.Diagnostics.TraceListener);;Argument[0];Argument[Qualifier].Element;value;manual",
-        "System.Diagnostics;TraceListenerCollection;false;AddRange;(System.Diagnostics.TraceListenerCollection);;Argument[0].Element;Argument[Qualifier].Element;value;manual",
-        "System.Diagnostics;TraceListenerCollection;false;AddRange;(System.Diagnostics.TraceListener[]);;Argument[0].Element;Argument[Qualifier].Element;value;manual",
-        "System.Diagnostics;TraceListenerCollection;false;CopyTo;(System.Diagnostics.TraceListener[],System.Int32);;Argument[Qualifier].Element;Argument[0].Element;value;manual",
-        "System.Diagnostics;TraceListenerCollection;false;Insert;(System.Int32,System.Diagnostics.TraceListener);;Argument[1];Argument[Qualifier].Element;value;manual",
-        "System.Diagnostics;TraceListenerCollection;false;get_Item;(System.Int32);;Argument[Qualifier].Element;ReturnValue;value;manual",
-        "System.Diagnostics;TraceListenerCollection;false;get_Item;(System.String);;Argument[Qualifier].Element;ReturnValue;value;manual",
-        "System.Diagnostics;TraceListenerCollection;false;set_Item;(System.Int32,System.Diagnostics.TraceListener);;Argument[1];Argument[Qualifier].Element;value;manual",
+        "System.Diagnostics;TraceListenerCollection;false;Add;(System.Diagnostics.TraceListener);;Argument[0];Argument[this].Element;value;manual",
+        "System.Diagnostics;TraceListenerCollection;false;AddRange;(System.Diagnostics.TraceListenerCollection);;Argument[0].Element;Argument[this].Element;value;manual",
+        "System.Diagnostics;TraceListenerCollection;false;AddRange;(System.Diagnostics.TraceListener[]);;Argument[0].Element;Argument[this].Element;value;manual",
+        "System.Diagnostics;TraceListenerCollection;false;CopyTo;(System.Diagnostics.TraceListener[],System.Int32);;Argument[this].Element;Argument[0].Element;value;manual",
+        "System.Diagnostics;TraceListenerCollection;false;Insert;(System.Int32,System.Diagnostics.TraceListener);;Argument[1];Argument[this].Element;value;manual",
+        "System.Diagnostics;TraceListenerCollection;false;get_Item;(System.Int32);;Argument[this].Element;ReturnValue;value;manual",
+        "System.Diagnostics;TraceListenerCollection;false;get_Item;(System.String);;Argument[this].Element;ReturnValue;value;manual",
+        "System.Diagnostics;TraceListenerCollection;false;set_Item;(System.Int32,System.Diagnostics.TraceListener);;Argument[1];Argument[this].Element;value;manual",
       ]
   }
 }
@@ -116,7 +116,7 @@ private class SystemDiagnosticsTraceListenerCollectionFlowModelCsv extends Summa
 private class SystemDiagnosticsProcessModuleCollectionFlowModelCsv extends SummaryModelCsv {
   override predicate row(string row) {
     row =
-      "System.Diagnostics;ProcessModuleCollection;false;CopyTo;(System.Diagnostics.ProcessModule[],System.Int32);;Argument[Qualifier].Element;Argument[0].Element;value;manual"
+      "System.Diagnostics;ProcessModuleCollection;false;CopyTo;(System.Diagnostics.ProcessModule[],System.Int32);;Argument[this].Element;Argument[0].Element;value;manual"
   }
 }
 
@@ -125,8 +125,8 @@ private class SystemDiagnosticsProcessThreadCollectionFlowModelCsv extends Summa
   override predicate row(string row) {
     row =
       [
-        "System.Diagnostics;ProcessThreadCollection;false;Add;(System.Diagnostics.ProcessThread);;Argument[0];Argument[Qualifier].Element;value;manual",
-        "System.Diagnostics;ProcessThreadCollection;false;CopyTo;(System.Diagnostics.ProcessThread[],System.Int32);;Argument[Qualifier].Element;Argument[0].Element;value;manual",
+        "System.Diagnostics;ProcessThreadCollection;false;Add;(System.Diagnostics.ProcessThread);;Argument[0];Argument[this].Element;value;manual",
+        "System.Diagnostics;ProcessThreadCollection;false;CopyTo;(System.Diagnostics.ProcessThread[],System.Int32);;Argument[this].Element;Argument[0].Element;value;manual",
       ]
   }
 }

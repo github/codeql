@@ -20,12 +20,12 @@ namespace System
 
             // Generated from `System.Diagnostics.Tracing.EventActivityOptions` in `System.Diagnostics.Tracing, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             [System.Flags]
-            public enum EventActivityOptions
+            public enum EventActivityOptions : int
             {
-                Detachable,
-                Disable,
-                None,
-                Recursive,
+                Detachable = 8,
+                Disable = 2,
+                None = 0,
+                Recursive = 4,
             }
 
             // Generated from `System.Diagnostics.Tracing.EventAttribute` in `System.Diagnostics.Tracing, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -45,22 +45,22 @@ namespace System
             }
 
             // Generated from `System.Diagnostics.Tracing.EventChannel` in `System.Diagnostics.Tracing, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum EventChannel
+            public enum EventChannel : byte
             {
-                Admin,
-                Analytic,
-                Debug,
-                None,
-                Operational,
+                Admin = 16,
+                Analytic = 18,
+                Debug = 19,
+                None = 0,
+                Operational = 17,
             }
 
             // Generated from `System.Diagnostics.Tracing.EventCommand` in `System.Diagnostics.Tracing, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum EventCommand
+            public enum EventCommand : int
             {
-                Disable,
-                Enable,
-                SendManifest,
-                Update,
+                Disable = -3,
+                Enable = -2,
+                SendManifest = -1,
+                Update = 0,
             }
 
             // Generated from `System.Diagnostics.Tracing.EventCommandEventArgs` in `System.Diagnostics.Tracing, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -97,22 +97,22 @@ namespace System
             }
 
             // Generated from `System.Diagnostics.Tracing.EventFieldFormat` in `System.Diagnostics.Tracing, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum EventFieldFormat
+            public enum EventFieldFormat : int
             {
-                Boolean,
-                Default,
-                HResult,
-                Hexadecimal,
-                Json,
-                String,
-                Xml,
+                Boolean = 3,
+                Default = 0,
+                HResult = 15,
+                Hexadecimal = 4,
+                Json = 12,
+                String = 2,
+                Xml = 11,
             }
 
             // Generated from `System.Diagnostics.Tracing.EventFieldTags` in `System.Diagnostics.Tracing, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             [System.Flags]
-            public enum EventFieldTags
+            public enum EventFieldTags : int
             {
-                None,
+                None = 0,
             }
 
             // Generated from `System.Diagnostics.Tracing.EventIgnoreAttribute` in `System.Diagnostics.Tracing, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -123,29 +123,29 @@ namespace System
 
             // Generated from `System.Diagnostics.Tracing.EventKeywords` in `System.Diagnostics.Tracing, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             [System.Flags]
-            public enum EventKeywords
+            public enum EventKeywords : long
             {
-                All,
-                AuditFailure,
-                AuditSuccess,
-                CorrelationHint,
-                EventLogClassic,
-                MicrosoftTelemetry,
-                None,
-                Sqm,
-                WdiContext,
-                WdiDiagnostic,
+                All = -1,
+                AuditFailure = 4503599627370496,
+                AuditSuccess = 9007199254740992,
+                CorrelationHint = 4503599627370496,
+                EventLogClassic = 36028797018963968,
+                MicrosoftTelemetry = 562949953421312,
+                None = 0,
+                Sqm = 2251799813685248,
+                WdiContext = 562949953421312,
+                WdiDiagnostic = 1125899906842624,
             }
 
             // Generated from `System.Diagnostics.Tracing.EventLevel` in `System.Diagnostics.Tracing, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum EventLevel
+            public enum EventLevel : int
             {
-                Critical,
-                Error,
-                Informational,
-                LogAlways,
-                Verbose,
-                Warning,
+                Critical = 1,
+                Error = 2,
+                Informational = 4,
+                LogAlways = 0,
+                Verbose = 5,
+                Warning = 3,
             }
 
             // Generated from `System.Diagnostics.Tracing.EventListener` in `System.Diagnostics.Tracing, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -166,29 +166,29 @@ namespace System
 
             // Generated from `System.Diagnostics.Tracing.EventManifestOptions` in `System.Diagnostics.Tracing, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             [System.Flags]
-            public enum EventManifestOptions
+            public enum EventManifestOptions : int
             {
-                AllCultures,
-                AllowEventSourceOverride,
-                None,
-                OnlyIfNeededForRegistration,
-                Strict,
+                AllCultures = 2,
+                AllowEventSourceOverride = 8,
+                None = 0,
+                OnlyIfNeededForRegistration = 4,
+                Strict = 1,
             }
 
             // Generated from `System.Diagnostics.Tracing.EventOpcode` in `System.Diagnostics.Tracing, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum EventOpcode
+            public enum EventOpcode : int
             {
-                DataCollectionStart,
-                DataCollectionStop,
-                Extension,
-                Info,
-                Receive,
-                Reply,
-                Resume,
-                Send,
-                Start,
-                Stop,
-                Suspend,
+                DataCollectionStart = 3,
+                DataCollectionStop = 4,
+                Extension = 5,
+                Info = 0,
+                Receive = 240,
+                Reply = 6,
+                Resume = 7,
+                Send = 9,
+                Start = 1,
+                Stop = 2,
+                Suspend = 8,
             }
 
             // Generated from `System.Diagnostics.Tracing.EventSource` in `System.Diagnostics.Tracing, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -300,25 +300,25 @@ namespace System
 
             // Generated from `System.Diagnostics.Tracing.EventSourceSettings` in `System.Diagnostics.Tracing, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             [System.Flags]
-            public enum EventSourceSettings
+            public enum EventSourceSettings : int
             {
-                Default,
-                EtwManifestEventFormat,
-                EtwSelfDescribingEventFormat,
-                ThrowOnEventWriteErrors,
+                Default = 0,
+                EtwManifestEventFormat = 4,
+                EtwSelfDescribingEventFormat = 8,
+                ThrowOnEventWriteErrors = 1,
             }
 
             // Generated from `System.Diagnostics.Tracing.EventTags` in `System.Diagnostics.Tracing, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             [System.Flags]
-            public enum EventTags
+            public enum EventTags : int
             {
-                None,
+                None = 0,
             }
 
             // Generated from `System.Diagnostics.Tracing.EventTask` in `System.Diagnostics.Tracing, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum EventTask
+            public enum EventTask : int
             {
-                None,
+                None = 0,
             }
 
             // Generated from `System.Diagnostics.Tracing.EventWrittenEventArgs` in `System.Diagnostics.Tracing, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`

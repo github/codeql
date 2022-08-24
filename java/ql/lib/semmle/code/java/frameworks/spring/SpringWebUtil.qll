@@ -9,6 +9,8 @@ private class FlowSummaries extends SummaryModelCsv {
       [
         "org.springframework.web.util;UriBuilder;true;build;;;Argument[-1];ReturnValue;taint;manual",
         "org.springframework.web.util;UriBuilder;true;build;(Map);;Argument[0].MapValue;Argument[-1];taint;manual",
+        "org.springframework.web.util;UriBuilder;true;build;(Map);;Argument[0].MapValue;ReturnValue;taint;manual",
+        "org.springframework.web.util;UriBuilder;true;build;(Object[]);;Argument[0].ArrayElement;ReturnValue;taint;manual",
         "org.springframework.web.util;UriBuilder;true;fragment;;;Argument[-1];ReturnValue;value;manual",
         "org.springframework.web.util;UriBuilder;true;fragment;;;Argument[0];Argument[-1];taint;manual",
         "org.springframework.web.util;UriBuilder;true;host;;;Argument[-1];ReturnValue;value;manual",
@@ -97,8 +99,6 @@ private class FlowSummaries extends SummaryModelCsv {
         "org.springframework.web.util;UriComponents;false;toString;;;Argument[-1];ReturnValue;taint;manual",
         "org.springframework.web.util;UriComponents;false;normalize;;;Argument[-1];ReturnValue;taint;manual",
         "org.springframework.web.util;UriComponentsBuilder;false;build;;;Argument[-1];ReturnValue;taint;manual",
-        "org.springframework.web.util;UriComponentsBuilder;false;build;(Map);;Argument[0].MapValue;ReturnValue;taint;manual",
-        "org.springframework.web.util;UriComponentsBuilder;false;build;(Object[]);;Argument[0].ArrayElement;ReturnValue;taint;manual",
         "org.springframework.web.util;UriComponentsBuilder;false;buildAndExpand;(Map);;Argument[0].MapValue;ReturnValue;taint;manual",
         "org.springframework.web.util;UriComponentsBuilder;false;buildAndExpand;(Object[]);;Argument[0].ArrayElement;ReturnValue;taint;manual",
         "org.springframework.web.util;UriComponentsBuilder;false;cloneBuilder;;;Argument[-1];ReturnValue;value;manual",

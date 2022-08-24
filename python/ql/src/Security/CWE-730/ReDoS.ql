@@ -14,7 +14,7 @@
  */
 
 import python
-import semmle.python.security.performance.ExponentialBackTracking
+import semmle.python.security.regexp.ExponentialBackTracking
 
 from RegExpTerm t, string pump, State s, string prefixMsg
 where

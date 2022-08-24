@@ -146,13 +146,13 @@ namespace System
             }
 
             // Generated from `System.Collections.Specialized.NotifyCollectionChangedAction` in `System.ObjectModel, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum NotifyCollectionChangedAction
+            public enum NotifyCollectionChangedAction : int
             {
-                Add,
-                Move,
-                Remove,
-                Replace,
-                Reset,
+                Add = 0,
+                Move = 3,
+                Remove = 1,
+                Replace = 2,
+                Reset = 4,
             }
 
             // Generated from `System.Collections.Specialized.NotifyCollectionChangedEventArgs` in `System.ObjectModel, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`

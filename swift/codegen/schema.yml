@@ -19,6 +19,15 @@ Element:
 
 File:
   name: string
+  _pragma: qltest_collapse_hierarchy
+
+DbFile:
+  _extends: File
+
+UnknownFile:
+  _extends: File
+  _synth:
+    on: {}
 
 Locatable:
   location:
@@ -32,7 +41,15 @@ Location:
   start_column: int
   end_line: int
   end_column: int
-  _pragma: qltest_skip
+  _pragma: [qltest_skip, qltest_collapse_hierarchy]
+
+DbLocation:
+  _extends: Location
+
+UnknownLocation:
+  _extends: Location
+  _synth:
+    on: {}
 
 Comment:
   _extends: Locatable
@@ -64,6 +81,7 @@ AstNode:
 Callable:
   _children:
     params: ParamDecl*
+    self_param: ParamDecl?
     body: BraceStmt?
 
 ConditionElement:
@@ -176,6 +194,7 @@ StructDecl:
 
 Decl:
   _extends: AstNode
+  module: ModuleDecl
 
 Expr:
   _extends: AstNode
@@ -293,7 +312,7 @@ IfConfigClause:
 ImportDecl:
   _extends: Decl
   is_exported: predicate
-  module: ModuleDecl
+  imported_module: ModuleDecl?  # may be none in inactive #if clauses
   declarations: ValueDecl*
 
 MissingMemberDecl:
@@ -402,7 +421,7 @@ DotSyntaxBaseIgnoredExpr:
 DynamicTypeExpr:
   _extends: Expr
   _children:
-    base_expr: Expr
+    base: Expr
 
 EditorPlaceholderExpr:
   _extends: Expr
@@ -411,7 +430,7 @@ EnumIsCaseExpr:
   _extends: Expr
   _children:
     sub_expr: Expr
-    element: EnumElementDecl
+  element: EnumElementDecl
 
 ErrorExpr:
   _extends: Expr
@@ -475,7 +494,7 @@ LiteralExpr:
 LookupExpr:
   _extends: Expr
   _children:
-    base_expr: Expr
+    base: Expr
   member: Decl?
 
 MakeTemporarilyEscapableExpr:
@@ -797,6 +816,12 @@ OptionalTryExpr:
 TryExpr:
   _extends: AnyTryExpr
 
+#MethodCallExpr:
+#  _extends: ApplyExpr
+#  _synth:
+#    from: CallExpr
+#  qualifier: Expr
+
 BinaryExpr:
   _extends: ApplyExpr
 
@@ -812,7 +837,7 @@ PrefixUnaryExpr:
 SelfApplyExpr:
   _extends: ApplyExpr
   _children:
-    base_expr: Expr
+    base: Expr
 
 ArrayExpr:
   _extends: CollectionExpr
@@ -966,6 +991,11 @@ MemberRefExpr:
   has_direct_to_storage_semantics: predicate
   has_direct_to_implementation_semantics: predicate
   has_ordinary_semantics: predicate
+
+MethodRefExpr:
+  _extends: LookupExpr
+  _synth:
+    from: DotSyntaxCallExpr
 
 SubscriptExpr:
   _extends:

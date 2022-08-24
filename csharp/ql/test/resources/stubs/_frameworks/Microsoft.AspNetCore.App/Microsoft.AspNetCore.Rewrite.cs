@@ -88,11 +88,11 @@ namespace Microsoft
             }
 
             // Generated from `Microsoft.AspNetCore.Rewrite.RuleResult` in `Microsoft.AspNetCore.Rewrite, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
-            public enum RuleResult
+            public enum RuleResult : int
             {
-                ContinueRules,
-                EndResponse,
-                SkipRemainingRules,
+                ContinueRules = 0,
+                EndResponse = 1,
+                SkipRemainingRules = 2,
             }
 
         }

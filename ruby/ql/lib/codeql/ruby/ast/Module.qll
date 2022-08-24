@@ -214,8 +214,6 @@ class Namespace extends ModuleBase, ConstantWriteAccess, TNamespace {
     result = ModuleBase.super.getAChild(pred) or
     result = ConstantWriteAccess.super.getAChild(pred)
   }
-
-  final override string toString() { result = ConstantWriteAccess.super.toString() }
 }
 
 /**

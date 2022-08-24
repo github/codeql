@@ -83,7 +83,7 @@ class Processor:
 
 def generate(opts, renderer):
     assert opts.cpp_output
-    processor = Processor({cls.name: cls for cls in schema.load(opts.schema).classes})
+    processor = Processor(schema.load(opts.schema).classes)
     out = opts.cpp_output
     for dir, classes in processor.get_classes().items():
         include_parent = (dir != pathlib.Path())

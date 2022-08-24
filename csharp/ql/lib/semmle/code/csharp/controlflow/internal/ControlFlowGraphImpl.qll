@@ -1288,7 +1288,7 @@ module Statements {
     }
 
     final override predicate first(ControlFlowElement first) {
-      // Unlike most other statements, `foreach` statements are not modelled in
+      // Unlike most other statements, `foreach` statements are not modeled in
       // pre-order, because we use the `foreach` node itself to represent the
       // emptiness test that determines whether to execute the loop body
       first(this.getIterableExpr(), first)

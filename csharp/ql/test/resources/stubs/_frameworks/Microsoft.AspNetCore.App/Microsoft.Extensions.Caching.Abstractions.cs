@@ -85,23 +85,23 @@ namespace Microsoft
                 }
 
                 // Generated from `Microsoft.Extensions.Caching.Memory.CacheItemPriority` in `Microsoft.Extensions.Caching.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
-                public enum CacheItemPriority
+                public enum CacheItemPriority : int
                 {
-                    High,
-                    Low,
-                    NeverRemove,
-                    Normal,
+                    High = 2,
+                    Low = 0,
+                    NeverRemove = 3,
+                    Normal = 1,
                 }
 
                 // Generated from `Microsoft.Extensions.Caching.Memory.EvictionReason` in `Microsoft.Extensions.Caching.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
-                public enum EvictionReason
+                public enum EvictionReason : int
                 {
-                    Capacity,
-                    Expired,
-                    None,
-                    Removed,
-                    Replaced,
-                    TokenExpired,
+                    Capacity = 5,
+                    Expired = 3,
+                    None = 0,
+                    Removed = 1,
+                    Replaced = 2,
+                    TokenExpired = 4,
                 }
 
                 // Generated from `Microsoft.Extensions.Caching.Memory.ICacheEntry` in `Microsoft.Extensions.Caching.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`

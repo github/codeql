@@ -119,15 +119,6 @@ deprecated class RouteHandlerExpressionWithRateLimiter extends Expr {
 }
 
 /**
- * DEPRECATED. Use `RateLimitingMiddleware` instead.
- *
- * A middleware that acts as a rate limiter.
- */
-deprecated class RateLimiter extends Express::RouteHandlerExpr {
-  RateLimiter() { any(RateLimitingMiddleware m).ref().flowsToExpr(this) }
-}
-
-/**
  * The creation of a middleware function that acts as a rate limiter.
  */
 abstract class RateLimitingMiddleware extends DataFlow::SourceNode {

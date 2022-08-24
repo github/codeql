@@ -78,13 +78,36 @@ class DeclVisitor : public AstVisitorBase<DeclVisitor> {
   template <typename D>
   std::optional<TrapClassOf<D>> createNamedEntry(const D& decl) {
     auto id = dispatcher_.assignNewLabel(decl, mangledName(decl));
+    std::optional<TrapClassOf<D>> entry;
     if (dispatcher_.shouldEmitDeclBody(decl)) {
-      return TrapClassOf<D>{id};
+      entry.emplace(id);
+      fillDecl(decl, *entry);
     }
-    return std::nullopt;
+    return entry;
   }
 
- private:
+  template <typename T, typename D, typename... Args>
+  std::variant<TrapClassOf<D>, T> createNamedEntryOr(const D& decl) {
+    auto id = dispatcher_.assignNewLabel(decl, mangledName(decl));
+    if (dispatcher_.shouldEmitDeclBody(decl)) {
+      TrapClassOf<D> entry{id};
+      fillDecl(decl, entry);
+      return entry;
+    }
+    return T{id};
+  }
+
+  template <typename D>
+  TrapClassOf<D> createEntry(const D& decl) {
+    TrapClassOf<D> entry{dispatcher_.template assignNewLabel(decl)};
+    fillDecl(decl, entry);
+    return entry;
+  }
+
+  void fillDecl(const swift::Decl& decl, codeql::Decl& entry) {
+    entry.module = dispatcher_.fetchLabel(decl.getModuleContext());
+  }
+
   swift::Mangle::ASTMangler mangler;
 };
 

@@ -49,10 +49,10 @@ namespace Microsoft
                 }
 
                 // Generated from `Microsoft.Extensions.Logging.Console.ConsoleLoggerFormat` in `Microsoft.Extensions.Logging.Console, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
-                public enum ConsoleLoggerFormat
+                public enum ConsoleLoggerFormat : int
                 {
-                    Default,
-                    Systemd,
+                    Default = 0,
+                    Systemd = 1,
                 }
 
                 // Generated from `Microsoft.Extensions.Logging.Console.ConsoleLoggerOptions` in `Microsoft.Extensions.Logging.Console, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
@@ -86,11 +86,11 @@ namespace Microsoft
                 }
 
                 // Generated from `Microsoft.Extensions.Logging.Console.LoggerColorBehavior` in `Microsoft.Extensions.Logging.Console, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
-                public enum LoggerColorBehavior
+                public enum LoggerColorBehavior : int
                 {
-                    Default,
-                    Disabled,
-                    Enabled,
+                    Default = 0,
+                    Disabled = 2,
+                    Enabled = 1,
                 }
 
                 // Generated from `Microsoft.Extensions.Logging.Console.SimpleConsoleFormatterOptions` in `Microsoft.Extensions.Logging.Console, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`

@@ -17,11 +17,11 @@ namespace System
             }
 
             // Generated from `System.Runtime.Serialization.EmitTypeInformation` in `System.Runtime.Serialization.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum EmitTypeInformation
+            public enum EmitTypeInformation : int
             {
-                Always,
-                AsNeeded,
-                Never,
+                Always = 1,
+                AsNeeded = 0,
+                Never = 2,
             }
 
             namespace Json
