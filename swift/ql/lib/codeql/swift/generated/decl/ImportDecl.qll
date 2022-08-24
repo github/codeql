@@ -10,14 +10,14 @@ class ImportDeclBase extends Synth::TImportDecl, Decl {
 
   predicate isExported() { Synth::convertImportDeclToRaw(this).(Raw::ImportDecl).isExported() }
 
-  ModuleDecl getImmediateModule() {
+  ModuleDecl getImmediateImportedModule() {
     result =
       Synth::convertModuleDeclFromRaw(Synth::convertImportDeclToRaw(this)
             .(Raw::ImportDecl)
-            .getModule())
+            .getImportedModule())
   }
 
-  final ModuleDecl getModule() { result = getImmediateModule().resolve() }
+  final ModuleDecl getImportedModule() { result = getImmediateImportedModule().resolve() }
 
   ValueDecl getImmediateDeclaration(int index) {
     result =

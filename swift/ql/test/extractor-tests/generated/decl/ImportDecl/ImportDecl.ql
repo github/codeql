@@ -2,10 +2,12 @@
 import codeql.swift.elements
 import TestUtils
 
-from ImportDecl x, string isExported, ModuleDecl getModule
+from ImportDecl x, ModuleDecl getModule, string isExported, ModuleDecl getImportedModule
 where
   toBeTested(x) and
   not x.isUnknown() and
+  getModule = x.getModule() and
   (if x.isExported() then isExported = "yes" else isExported = "no") and
-  getModule = x.getModule()
-select x, "isExported:", isExported, "getModule:", getModule
+  getImportedModule = x.getImportedModule()
+select x, "getModule:", getModule, "isExported:", isExported, "getImportedModule:",
+  getImportedModule
