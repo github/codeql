@@ -1,11 +1,12 @@
 /**
  * @name Cleartext transmission of sensitive information
- * @description TODO
+ * @description Transmitting sensitive information across a network in
+ *              cleartext can expose it to an attacker.
  * @kind path-problem
- * @problem.severity TODO
- * @security-severity TODO
- * @precision TODO
- * @id swift/TODO
+ * @problem.severity warning
+ * @security-severity 7.5
+ * @precision high
+ * @id swift/cleartext-transmission
  * @tags security
  *       external/cwe/cwe-319
  */

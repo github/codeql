@@ -1,11 +1,12 @@
 /**
  * @name Cleartext storage of sensitive information in a local database
- * @description TODO
+ * @description Storing sensitive information in a non-encrypted
+ *              database can expose it to an attacker.
  * @kind path-problem
- * @problem.severity TODO
- * @security-severity TODO
- * @precision TODO
- * @id swift/TODO
+ * @problem.severity warning
+ * @security-severity 7.5
+ * @precision medium
+ * @id swift/cleartext-storage-database
  * @tags security
  *       external/cwe/cwe-312
  */
