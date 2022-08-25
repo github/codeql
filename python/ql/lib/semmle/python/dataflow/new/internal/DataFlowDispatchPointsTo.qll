@@ -746,14 +746,7 @@ private class SummaryPostUpdateNode extends SummaryNode, PostUpdateNode {
 }
 
 /** Gets a viable run-time target for the call `call`. */
-DataFlowCallable viableCallable(DataFlowSourceCall call) {
-  result = call.getCallable()
-  or
-  exists(LibraryCallable callable |
-    result = TLibraryCallable(callable) and
-    call.getNode().getNode() = callable.getACall()
-  )
-}
+DataFlowCallable viableCallable(DataFlowSourceCall call) { result = call.getCallable() }
 
 private newtype TReturnKind = TNormalReturnKind()
 
