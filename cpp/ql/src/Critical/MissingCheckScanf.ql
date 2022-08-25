@@ -25,8 +25,7 @@ class ScanfOutput extends Expr {
   ValueNumber valNum;
 
   ScanfOutput() {
-    this = call.getArgument(call.getTarget().getNumberOfParameters() + varargIndex) and
-    varargIndex >= 0 and
+    this = call.getOutputArgument(varargIndex) and
     instr.getUnconvertedResultExpression() = this and
     valueNumber(instr) = valNum and
     // The following line is a kludge to prohibit more than one associated `instr` field,
