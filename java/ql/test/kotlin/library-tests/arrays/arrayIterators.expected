@@ -1,6 +1,6 @@
 | arrayIterators.kt:6:15:6:15 | iterator(...) | iterator(java.lang.Object[]) | kotlin.jvm.internal.ArrayIteratorKt |
 | arrayIterators.kt:7:15:7:15 | iterator(...) | iterator(java.lang.Object[]) | kotlin.jvm.internal.ArrayIteratorKt |
 | arrayIterators.kt:8:15:8:15 | iterator(...) | iterator(java.lang.Object[]) | kotlin.jvm.internal.ArrayIteratorKt |
-| arrayIterators.kt:10:16:10:25 | iterator(...) | iterator() | kotlin.Array<Integer> |
-| arrayIterators.kt:11:16:11:25 | iterator(...) | iterator() | kotlin.IntArray |
-| arrayIterators.kt:12:16:12:25 | iterator(...) | iterator() | kotlin.BooleanArray |
+| arrayIterators.kt:10:16:10:25 | iterator(...) | iterator(java.lang.Object[]) | kotlin.jvm.internal.ArrayIteratorKt |
+| arrayIterators.kt:11:16:11:25 | iterator(...) | iterator(java.lang.Object[]) | kotlin.jvm.internal.ArrayIteratorKt |
+| arrayIterators.kt:12:16:12:25 | iterator(...) | iterator(java.lang.Object[]) | kotlin.jvm.internal.ArrayIteratorKt |

@@ -2177,7 +2177,7 @@ open class KotlinFileExtractor(
                         extractRawMethodAccess(getter, c, callable, parent, idx, enclosingStmt, listOf(), null, ext, typeArguments)
                     }
                 }
-                isFunction(target, "kotlin", "(some array type)", { isArrayType(it) }, "iterator") && c.origin == IrStatementOrigin.FOR_LOOP_ITERATOR -> {
+                isFunction(target, "kotlin", "(some array type)", { isArrayType(it) }, "iterator") -> {
                     findTopLevelFunctionOrWarn("kotlin.jvm.internal.iterator", "kotlin.jvm.internal.ArrayIteratorKt", c)?.let { iteratorFn ->
                         val dispatchReceiver = c.dispatchReceiver
                         if (dispatchReceiver == null) {
