@@ -1070,7 +1070,8 @@ class FieldContent extends Content, TFieldContent {
 
   Field getField() { result = f }
 
-  int getIndex() { result = index }
+  pragma[inline]
+  int getIndex() { pragma[only_bind_into](result) = pragma[only_bind_out](index) }
 }
 
 /** A reference through an instance field of a union. */
@@ -1088,7 +1089,8 @@ class UnionContent extends Content, TUnionContent {
 
   Field getAField() { result = u.getAField() }
 
-  int getIndex() { result = index }
+  pragma[inline]
+  int getIndex() { pragma[only_bind_into](result) = pragma[only_bind_out](index) }
 }
 
 /** A reference through an array. */
