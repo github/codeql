@@ -172,11 +172,11 @@ class MyClass(object):
     # Since we define some_value method on the class, flow for some_value gets blocked
     # into the methods
     def some_value(self):
-        print(some_value) # $ MISSING: tracked
+        print(some_value) # $ tracked
         print(other_value) # $ tracked
 
     def other_name(self):
-        print(some_value) # $ MISSING: tracked
+        print(some_value) # $ tracked
         print(other_value) # $ tracked
 
     def with_global_modifier(self):

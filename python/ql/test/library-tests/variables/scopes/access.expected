@@ -4,7 +4,10 @@
 | in_class.py:0:0:0:0 | Module in_class | Global Variable NameError | in_class.py:17:16:17:24 | NameError |
 | in_class.py:0:0:0:0 | Module in_class | Global Variable bar | in_class.py:2:1:2:3 | bar |
 | in_class.py:0:0:0:0 | Module in_class | Global Variable bar | in_class.py:14:15:14:17 | bar |
+| in_class.py:0:0:0:0 | Module in_class | Global Variable baz | in_class.py:16:19:16:21 | baz |
 | in_class.py:0:0:0:0 | Module in_class | Global Variable foo | in_class.py:1:1:1:3 | foo |
+| in_class.py:0:0:0:0 | Module in_class | Global Variable foo | in_class.py:13:15:13:17 | foo |
+| in_class.py:0:0:0:0 | Module in_class | Global Variable foo | in_class.py:31:17:31:19 | foo |
 | in_class.py:0:0:0:0 | Module in_class | Global Variable mc | in_class.py:33:1:33:2 | mc |
 | in_class.py:0:0:0:0 | Module in_class | Global Variable mc | in_class.py:35:1:35:2 | mc |
 | in_class.py:0:0:0:0 | Module in_class | Global Variable mc | in_class.py:38:7:38:8 | mc |
@@ -26,12 +29,9 @@
 | in_class.py:0:0:0:0 | Module in_class | Global Variable print | in_class.py:41:1:41:5 | print |
 | in_class.py:5:1:5:22 | Class MyClass | Local Variable Sub | in_class.py:30:11:30:13 | Sub |
 | in_class.py:5:1:5:22 | Class MyClass | Local Variable baz | in_class.py:6:5:6:7 | baz |
-| in_class.py:5:1:5:22 | Class MyClass | Local Variable baz | in_class.py:16:19:16:21 | baz |
 | in_class.py:5:1:5:22 | Class MyClass | Local Variable baz | in_class.py:28:15:28:17 | baz |
 | in_class.py:5:1:5:22 | Class MyClass | Local Variable ex | in_class.py:28:5:28:6 | ex |
 | in_class.py:5:1:5:22 | Class MyClass | Local Variable foo | in_class.py:8:9:8:11 | foo |
-| in_class.py:5:1:5:22 | Class MyClass | Local Variable foo | in_class.py:13:15:13:17 | foo |
-| in_class.py:5:1:5:22 | Class MyClass | Local Variable foo | in_class.py:31:17:31:19 | foo |
 | in_class.py:5:1:5:22 | Class MyClass | Local Variable func | in_class.py:24:9:24:12 | func |
 | in_class.py:5:1:5:22 | Class MyClass | Local Variable func | in_class.py:28:10:28:13 | func |
 | in_class.py:5:1:5:22 | Class MyClass | Local Variable use | in_class.py:11:9:11:11 | use |

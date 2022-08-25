@@ -7,6 +7,7 @@
 | Global Variable __package__ | test.py:0:0:0:0 | Module test |
 | Global Variable bar | in_class.py:0:0:0:0 | Module in_class |
 | Global Variable base | test.py:0:0:0:0 | Module test |
+| Global Variable baz | in_class.py:0:0:0:0 | Module in_class |
 | Global Variable foo | in_class.py:0:0:0:0 | Module in_class |
 | Global Variable func0 | test.py:0:0:0:0 | Module test |
 | Global Variable func1 | test.py:0:0:0:0 | Module test |
