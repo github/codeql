@@ -31,3 +31,16 @@ def test_alias_only_direct():
     print(foo) # $ tracked
 
 test_alias_only_direct()
+
+
+def test_problem_absolute_import():
+    from pkg.problem_absolute_import import foo # $ MISSING: tracked
+    print(foo) # $ MISSING: tracked
+
+test_problem_absolute_import()
+
+def test_works_absolute_import():
+    from pkg.works_absolute_import import foo # $ tracked
+    print(foo) # $ tracked
+
+test_works_absolute_import()
