@@ -16,6 +16,7 @@ import java
 import semmle.code.java.controlflow.Guards
 import semmle.code.java.dataflow.SSA
 import semmle.code.java.dataflow.TaintTracking
+import semmle.code.java.security.PathSanitizer
 import DataFlow
 import PathGraph
 private import semmle.code.java.dataflow.ExternalFlow
@@ -132,6 +133,7 @@ class ZipSlipConfiguration extends TaintTracking::Configuration {
   }
 
   override predicate isSanitizer(Node node) {
+    // TODO: Merge this sanitizers into PathInjectionSanitizer
     exists(Guard g, SsaVariable var, RValue varuse | validateFilePath(var, g) |
       varuse = node.asExpr() and
       varuse = var.getAUse() and
@@ -144,6 +146,8 @@ class ZipSlipConfiguration extends TaintTracking::Configuration {
       adjacentUseUseSameVar(rv, node.asExpr()) and
       ma.getBasicBlock().bbDominates(node.asExpr().getBasicBlock())
     )
+    or
+    node instanceof PathInjectionSanitizer
   }
 }
 

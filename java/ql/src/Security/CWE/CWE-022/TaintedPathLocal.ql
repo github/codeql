@@ -17,6 +17,7 @@ import java
 import semmle.code.java.dataflow.FlowSources
 private import semmle.code.java.dataflow.ExternalFlow
 import semmle.code.java.security.PathCreation
+import semmle.code.java.security.PathSanitizer
 import DataFlow::PathGraph
 import TaintedPathCommon
 
@@ -26,12 +27,16 @@ class TaintedPathLocalConfig extends TaintTracking::Configuration {
   override predicate isSource(DataFlow::Node source) { source instanceof LocalUserInput }
 
   override predicate isSink(DataFlow::Node sink) {
-    (
-      sink.asExpr() = any(PathCreation p).getAnInput()
-      or
-      sinkNode(sink, "create-file")
-    ) and
-    not guarded(sink.asExpr())
+    sink.asExpr() = any(PathCreation p).getAnInput()
+    or
+    sinkNode(sink, "create-file")
+  }
+
+  override predicate isSanitizer(DataFlow::Node sanitizer) {
+    sanitizer.getType() instanceof BoxedType or
+    sanitizer.getType() instanceof PrimitiveType or
+    sanitizer.getType() instanceof NumberType or
+    sanitizer instanceof PathInjectionSanitizer
   }
 
   override predicate isAdditionalTaintStep(DataFlow::Node n1, DataFlow::Node n2) {
