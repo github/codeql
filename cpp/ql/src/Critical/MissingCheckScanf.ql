@@ -33,15 +33,16 @@ class ScanfOutput extends Expr {
   ScanfFunctionCall getCall() { result = call }
 
   /**
-   * Any subsequent use of this argument should be surrounded by a
-   * check ensuring that the `scanf`-like function has returned a value
-   * equal to at least `getMinimumGuardConstant()`.
+   * Returns the smallest possible `scanf` return value that would indicate
+   * success in writing this output argument.
    */
   int getMinimumGuardConstant() {
     result =
       varargIndex + 1 -
         count(ScanfFormatLiteral f, int n |
-          n <= varargIndex and f.getUse() = call and f.parseConvSpec(n, _, _, _, "n")
+          // Special case: %n writes to an argument without reading any input.
+          // It does not increase the count returned by `scanf`.
+          n <= varargIndex and f.getUse() = call and f.getConversionChar(n) = "n"
         )
   }
 
