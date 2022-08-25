@@ -25,12 +25,9 @@ class ScanfOutput extends Expr {
   ValueNumber valNum;
 
   ScanfOutput() {
-    this = call.getOutputArgument(varargIndex) and
-    instr.getUnconvertedResultExpression() = this and
-    valueNumber(instr) = valNum and
-    // The following line is a kludge to prohibit more than one associated `instr` field,
-    // as would occur, for example, when `this` is an access to an array variable.
-    not instr instanceof ConvertInstruction
+    this = call.getOutputArgument(varargIndex).getFullyConverted() and
+    instr.getConvertedResultExpression() = this and
+    valueNumber(instr) = valNum
   }
 
   ScanfFunctionCall getCall() { result = call }
