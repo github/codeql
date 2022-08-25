@@ -193,3 +193,9 @@ string asInputArgument(DataFlow::Node source) {
  */
 bindingset[kind]
 predicate isRelevantSinkKind(string kind) { any() }
+
+/**
+ * Holds if `kind` is a relevant source kind for creating source models.
+ */
+bindingset[kind]
+predicate isRelevantSourceKind(string kind) { not kind = "file" }
