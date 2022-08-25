@@ -15,7 +15,7 @@ import java
 import semmle.code.java.dataflow.FlowSources
 import semmle.code.java.security.PathCreation
 import JFinalController
-import experimental.semmle.code.java.PathSanitizer
+import semmle.code.java.security.PathSanitizer
 import DataFlow::PathGraph
 
 class InjectFilePathConfig extends TaintTracking::Configuration {
