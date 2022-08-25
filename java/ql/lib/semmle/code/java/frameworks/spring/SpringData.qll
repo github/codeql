@@ -12,8 +12,6 @@ private import semmle.code.java.dataflow.ExternalFlow
 private class FlowSummaries extends SummaryModelCsv {
   override predicate row(string row) {
     row =
-      [
-        "org.springframework.data.repository;CrudRepository;true;save;;;Argument[0];ReturnValue;value;manual"
-      ]
+      "org.springframework.data.repository;CrudRepository;true;save;;;Argument[0];ReturnValue;value;manual"
   }
 }
