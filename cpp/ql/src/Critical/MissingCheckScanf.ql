@@ -94,7 +94,7 @@ class ScanfOutput extends Expr {
   }
 }
 
-/** Returns a block guarded by the assertion of $value $op $call */
+/** Returns a block guarded by the assertion of `value op call` */
 BasicBlock blockGuardedBy(int value, string op, ScanfFunctionCall call) {
   exists(GuardCondition g, Expr left, Expr right |
     right = g.getAChild() and
@@ -109,12 +109,11 @@ BasicBlock blockGuardedBy(int value, string op, ScanfFunctionCall call) {
   )
 }
 
-from ScanfOutput output, ScanfFunctionCall call, ScanfFunction fun, Access access
+from ScanfOutput output, ScanfFunctionCall call, Access access
 where
-  call.getTarget() = fun and
   output.getCall() = call and
   output.hasGuardedAccess(access, false)
 select access,
   "$@ is read here, but may not have been written. " +
-    "It should be guarded by a check that $@() returns at least " + output.getMinimumGuardConstant()
-    + ".", access, access.toString(), call, fun.getName()
+    "It should be guarded by a check that the $@ returns at least " +
+    output.getMinimumGuardConstant() + ".", access, access.toString(), call, call.toString()
