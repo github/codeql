@@ -1,5 +1,5 @@
-foo = "foo"
-bar = "bar"
+foo = "foo-text"
+bar = "bar-text"
 
 
 class MyClass(object):
@@ -10,8 +10,8 @@ class MyClass(object):
 
     def use(self):
         print("! use()")
-        print(foo)
-        print(bar)
+        print(foo) # foo-text
+        print(bar) # bar-text
         try:
             print(baz)
         except NameError:
@@ -27,9 +27,15 @@ class MyClass(object):
 
     ex = func(baz)
 
+    class Sub(object):
+        stuff = foo
+
 mc = MyClass()
 print()
 mc.use()
 
 print("\n! mc.ex")
 print(mc.ex)
+
+print("\n! MyClass.Sub.stuff")
+print(MyClass.Sub().stuff) # foo-text
