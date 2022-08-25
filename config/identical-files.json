@@ -72,7 +72,7 @@
     "ruby/ql/lib/codeql/ruby/dataflow/internal/DataFlowImplConsistency.qll",
     "swift/ql/lib/codeql/swift/dataflow/internal/DataFlowImplConsistency.qll"
   ],
-  "DataFlow Java/C# Flow Summaries": [
+  "DataFlow Java/C#/Ruby/Python/Swift Flow Summaries": [
     "java/ql/lib/semmle/code/java/dataflow/internal/FlowSummaryImpl.qll",
     "csharp/ql/lib/semmle/code/csharp/dataflow/internal/FlowSummaryImpl.qll",
     "ruby/ql/lib/codeql/ruby/dataflow/internal/FlowSummaryImpl.qll",
