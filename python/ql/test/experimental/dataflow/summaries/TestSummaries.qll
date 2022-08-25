@@ -77,7 +77,7 @@ private class SummarizedCallableJsonLoads extends SummarizedCallable {
   }
 
   override DataFlow::ArgumentNode getACallback() {
-    result = API::moduleImport("json").getMember("loads").getAUse()
+    result = API::moduleImport("json").getMember("loads").getAValueReachableFromSource()
   }
 
   override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
