@@ -5,12 +5,10 @@ import com.github.codeql.utils.versions.codeQlWithHasQuestionMark
 import com.github.codeql.utils.versions.isRawType
 import com.semmle.extractor.java.OdasaOutput
 import org.jetbrains.kotlin.backend.common.extensions.IrPluginContext
-import org.jetbrains.kotlin.backend.common.ir.allOverridden
-import org.jetbrains.kotlin.backend.common.ir.isFinalClass
+import org.jetbrains.kotlin.backend.common.ir.*
 import org.jetbrains.kotlin.backend.common.lower.parents
 import org.jetbrains.kotlin.backend.common.lower.parentsWithSelf
 import org.jetbrains.kotlin.backend.jvm.ir.propertyIfAccessor
-import org.jetbrains.kotlin.builtins.StandardNames
 import org.jetbrains.kotlin.codegen.JvmCodegenUtil
 import org.jetbrains.kotlin.descriptors.*
 import org.jetbrains.kotlin.ir.ObsoleteDescriptorBasedAPI
@@ -26,7 +24,6 @@ import org.jetbrains.kotlin.load.java.sources.JavaSourceElement
 import org.jetbrains.kotlin.load.java.structure.*
 import org.jetbrains.kotlin.load.kotlin.getJvmModuleNameForDeserializedDescriptor
 import org.jetbrains.kotlin.name.FqName
-import org.jetbrains.kotlin.name.Name
 import org.jetbrains.kotlin.name.NameUtils
 import org.jetbrains.kotlin.name.SpecialNames
 import org.jetbrains.kotlin.types.Variance
@@ -91,25 +88,6 @@ open class KotlinUsesExtractor(
     }
 
     data class UseClassInstanceResult(val typeResult: TypeResult<DbClassorinterface>, val javaClass: IrClass)
-    /**
-     * A triple of a type's database label, its signature for use in callable signatures, and its short name for use
-     * in all tables that provide a user-facing type name.
-     *
-     * `signature` is a Java primitive name (e.g. "int"), a fully-qualified class name ("package.OuterClass.InnerClass"),
-     * or an array ("componentSignature[]")
-     * Type variables have the signature of their upper bound.
-     * Type arguments and anonymous types do not have a signature.
-     *
-     * `shortName` is a Java primitive name (e.g. "int"), a class short name with Java-style type arguments ("InnerClass<E>" or
-     * "OuterClass<ConcreteArgument>" or "OtherClass<? extends Bound>") or an array ("componentShortName[]").
-     */
-    data class TypeResult<out LabelType>(val id: Label<out LabelType>, val signature: String?, val shortName: String) {
-        fun <U> cast(): TypeResult<U> {
-            @Suppress("UNCHECKED_CAST")
-            return this as TypeResult<U>
-        }
-    }
-    data class TypeResults(val javaResult: TypeResult<DbType>, val kotlinResult: TypeResult<DbKt_type>)
 
     fun useType(t: IrType, context: TypeContext = TypeContext.OTHER): TypeResults {
         when(t) {
@@ -121,15 +99,20 @@ open class KotlinUsesExtractor(
         }
     }
 
-    private fun extractErrorType(): TypeResults {
+    private fun extractJavaErrorType(): TypeResult<DbErrortype> {
         val typeId = tw.getLabelFor<DbErrortype>("@\"errorType\"") {
             tw.writeError_type(it)
         }
+        return TypeResult(typeId, "<CodeQL error type>", "<CodeQL error type>")
+    }
+
+    private fun extractErrorType(): TypeResults {
+        val javaResult = extractJavaErrorType()
         val kotlinTypeId = tw.getLabelFor<DbKt_nullable_type>("@\"errorKotlinType\"") {
-            tw.writeKt_nullable_types(it, typeId)
+            tw.writeKt_nullable_types(it, javaResult.id)
         }
-        return TypeResults(TypeResult(typeId, null, "<CodeQL error type>"),
-                           TypeResult(kotlinTypeId, null, "<CodeQL error type>"))
+        return TypeResults(javaResult,
+                           TypeResult(kotlinTypeId, "<CodeQL error type>", "<CodeQL error type>"))
     }
 
     fun getJavaEquivalentClass(c: IrClass) =
@@ -304,8 +287,8 @@ open class KotlinUsesExtractor(
                 f.valueParameters
             }
 
-            val paramTypes = parameters.map { useType(erase(it.type)) }
-            val signature = paramTypes.joinToString(separator = ",", prefix = "(", postfix = ")") { it.javaResult.signature!! }
+            val paramSigs = parameters.map { useType(erase(it.type)).javaResult.signature }
+            val signature = paramSigs.joinToString(separator = ",", prefix = "(", postfix = ")")
             dependencyCollector?.addDependency(f, signature)
             externalClassExtractor.extractLater(f, signature)
         }
@@ -422,9 +405,17 @@ open class KotlinUsesExtractor(
             }
         }
 
+        val fqName = replacedClass.fqNameWhenAvailable
+        val signature = if (fqName == null) {
+            logger.error("Unable to find signature/fqName for ${replacedClass.name}")
+            // TODO: Should we return null here instead?
+            "<no signature available>"
+        } else {
+            fqName.asString()
+        }
         return TypeResult(
             classLabel,
-            replacedClass.fqNameWhenAvailable?.asString(),
+            signature,
             classLabelResult.shortName)
     }
 
@@ -435,15 +426,20 @@ open class KotlinUsesExtractor(
             return null
         }
 
+        val fqName = c.fqNameWhenAvailable
+        if (fqName == null) {
+            return null
+        }
+
         fun tryGetPair(arity: Int): Pair<IrClass, List<IrTypeArgument>?>? {
-            val replaced = pluginContext.referenceClass(c.fqNameWhenAvailable!!)?.owner ?: return null
+            val replaced = pluginContext.referenceClass(fqName)?.owner ?: return null
             return Pair(replaced, List(arity) { makeTypeProjection(pluginContext.irBuiltIns.anyNType, Variance.INVARIANT) })
         }
 
         // The list of types handled here match https://github.com/JetBrains/kotlin/blob/d7c7d1efd2c0983c13b175e9e4b1cda979521159/plugins/parcelize/parcelize-compiler/src/org/jetbrains/kotlin/parcelize/ir/AndroidSymbols.kt
         // Specifically, types are added for generic types created in AndroidSymbols.kt.
         // This replacement is from a raw type to its matching parameterized type with `Object` type arguments.
-        return when (c.fqNameWhenAvailable?.asString()) {
+        return when (fqName.asString()) {
             "java.util.ArrayList" -> tryGetPair(1)
             "java.util.LinkedHashMap" -> tryGetPair(2)
             "java.util.LinkedHashSet" -> tryGetPair(1)
@@ -719,7 +715,7 @@ open class KotlinUsesExtractor(
             }
             else -> {
                 logger.error("Unrecognised IrSimpleType: " + s.javaClass + ": " + s.render())
-                return TypeResults(TypeResult(fakeLabel(), "unknown", "unknown"), TypeResult(fakeLabel(), "unknown", "unknown"))
+                return extractErrorType()
             }
         }
     }
@@ -1241,7 +1237,7 @@ open class KotlinUsesExtractor(
 
     fun getTypeArgumentLabel(
         arg: IrTypeArgument
-    ): TypeResult<DbReftype> {
+    ): TypeResultWithoutSignature<DbReftype> {
 
         fun extractBoundedWildcard(wildcardKind: Int, wildcardLabelStr: String, wildcardShortName: String, boundLabel: Label<out DbReftype>): Label<DbWildcard> =
             tw.getLabelFor(wildcardLabelStr) { wildcardLabel ->
@@ -1256,27 +1252,27 @@ open class KotlinUsesExtractor(
         return when (arg) {
             is IrStarProjection -> {
                 val anyTypeLabel = useType(pluginContext.irBuiltIns.anyType).javaResult.id.cast<DbReftype>()
-                TypeResult(extractBoundedWildcard(1, "@\"wildcard;\"", "?", anyTypeLabel), null, "?")
+                TypeResultWithoutSignature(extractBoundedWildcard(1, "@\"wildcard;\"", "?", anyTypeLabel), Unit, "?")
             }
             is IrTypeProjection -> {
                 val boundResults = useType(arg.type, TypeContext.GENERIC_ARGUMENT)
                 val boundLabel = boundResults.javaResult.id.cast<DbReftype>()
 
                 return if(arg.variance == Variance.INVARIANT)
-                    boundResults.javaResult.cast<DbReftype>()
+                    boundResults.javaResult.cast<DbReftype>().forgetSignature()
                 else {
                     val keyPrefix = if (arg.variance == Variance.IN_VARIANCE) "super" else "extends"
                     val wildcardKind = if (arg.variance == Variance.IN_VARIANCE) 2 else 1
                     val wildcardShortName = "? $keyPrefix ${boundResults.javaResult.shortName}"
-                    TypeResult(
+                    TypeResultWithoutSignature(
                         extractBoundedWildcard(wildcardKind, "@\"wildcard;$keyPrefix{$boundLabel}\"", wildcardShortName, boundLabel),
-                        null,
+                        Unit,
                         wildcardShortName)
                 }
             }
             else -> {
                 logger.error("Unexpected type argument.")
-                return TypeResult(fakeLabel(), "unknown", "unknown")
+                return extractJavaErrorType().forgetSignature()
             }
         }
     }
@@ -1343,7 +1339,7 @@ open class KotlinUsesExtractor(
             return useAnonymousClass(c).javaResult.id.cast<DbClass>()
         }
 
-        // For source classes, the label doesn't include and type arguments
+        // For source classes, the label doesn't include any type arguments
         val classTypeResult = addClassLabel(c, listOf())
         return classTypeResult.id
     }
@@ -1578,7 +1574,7 @@ open class KotlinUsesExtractor(
     fun useEnumEntry(ee: IrEnumEntry): Label<out DbField> =
         tw.getLabelFor(getEnumEntryLabel(ee))
 
-    private fun getTypeAliasLabel(ta: IrTypeAlias): String {
+    fun getTypeAliasLabel(ta: IrTypeAlias): String {
         val parentId = useDeclarationParent(ta.parent, true)
         return "@\"type_alias;{$parentId};${ta.name.asString()}\""
     }

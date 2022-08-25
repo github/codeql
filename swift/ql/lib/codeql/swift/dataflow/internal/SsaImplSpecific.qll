@@ -29,9 +29,9 @@ predicate variableWrite(BasicBlock bb, int i, SourceVariable v, boolean certain)
     certain = true
   )
   or
-  exists(CallExpr call, Argument arg |
-    arg.getExpr().(InOutExpr).getSubExpr() = v.getAnAccess() and
-    call.getAnArgument() = arg and
+  exists(ApplyExpr call, InOutExpr expr |
+    expr = [call.getAnArgument().getExpr(), call.getQualifier()] and
+    expr.getSubExpr() = v.getAnAccess() and
     bb.getNode(i).getNode().asAstNode() = call and
     certain = false
   )
@@ -39,6 +39,13 @@ predicate variableWrite(BasicBlock bb, int i, SourceVariable v, boolean certain)
   v instanceof ParamDecl and
   bb.getNode(i).getNode().asAstNode() = v and
   certain = true
+  or
+  // Mark the subexpression as a write of the local variable declared in the `TapExpr`.
+  exists(TapExpr tap |
+    v = tap.getVar() and
+    bb.getNode(i).getNode().asAstNode() = tap.getSubExpr() and
+    certain = true
+  )
 }
 
 private predicate isLValue(DeclRefExpr ref) { any(AssignExpr assign).getDest() = ref }
@@ -56,6 +63,13 @@ predicate variableRead(BasicBlock bb, int i, SourceVariable v, boolean certain) 
     v.(ParamDecl).isInout() and
     func.getAParam() = v and
     bb.getScope() = func and
+    certain = true
+  )
+  or
+  // Mark the `TapExpr` as a read of the of the local variable.
+  exists(TapExpr tap |
+    v = tap.getVar() and
+    bb.getNode(i).getNode().asAstNode() = tap and
     certain = true
   )
 }

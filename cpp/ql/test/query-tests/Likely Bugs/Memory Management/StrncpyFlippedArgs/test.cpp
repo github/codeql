@@ -1,9 +1,11 @@
 
 typedef unsigned int size_t;
 typedef unsigned int errno_t;
+typedef void *locale_t;
 
 char *strncpy(char *__restrict destination, const char *__restrict source, size_t num);
 wchar_t *wcsncpy(wchar_t *__restrict destination, const wchar_t *__restrict source, size_t num);
+size_t wcsxfrm_l(wchar_t *ws1, const wchar_t *ws2, size_t n, locale_t locale);
 errno_t strcpy_s(char *strDestination, size_t numberOfElements, const char *strSource);
 
 size_t strlen(const char *str);
@@ -92,4 +94,18 @@ void test8(char x[], char y[]) {
   // We cannot tell if this call is good or bad. But there's a good chance
   // that it will be a false positive if we report it.
   strncpy(x, y, 32);
+}
+
+void test9()
+{
+	wchar_t buf1[10];
+	wchar_t buf2[20];
+	const wchar_t *str = L"01234567890123456789";
+
+	wcsxfrm_l(buf1, str, sizeof(buf1), nullptr);					// BAD (but not a StrncpyFlippedArgs bug)
+	wcsxfrm_l(buf1, str, sizeof(buf1) / sizeof(wchar_t), nullptr);	// GOOD
+	wcsxfrm_l(buf1, str, wcslen(str), nullptr);						// BAD
+	wcsxfrm_l(buf1, str, wcslen(str) + 1, nullptr);					// BAD
+	wcsxfrm_l(buf1, buf2, sizeof(buf2), nullptr);					// BAD
+	wcsxfrm_l(buf1, buf2, sizeof(buf2) / sizeof(wchar_t), nullptr); // BAD
 }

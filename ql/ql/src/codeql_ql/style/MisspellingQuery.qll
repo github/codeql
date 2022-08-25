@@ -52,8 +52,8 @@ bindingset[s]
 string getACommentWord(string s) { result = s.regexpFind("\\b\\w+\\b", _, _) }
 
 string getAWord(AstNode node, string kind) {
-  result = getACommentWord(node.(QLDoc).getContents()).toLowerCase() and
-  kind = "QLDoc comment"
+  result = getACommentWord(node.(Comment).getContents()).toLowerCase() and
+  kind = "comment"
   or
   exists(string nodeKind |
     result = getACamelCaseWord(getName(node, nodeKind)).toLowerCase() and

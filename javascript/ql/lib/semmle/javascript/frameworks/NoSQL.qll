@@ -4,9 +4,9 @@
 
 import javascript
 
-/** Provides classes for modeling NoSQL query sinks. */
+/** Provides classes for modeling NoSql query sinks. */
 module NoSql {
-  /** An expression that is interpreted as a NoSQL query. */
+  /** An expression that is interpreted as a NoSql query. */
   abstract class Query extends Expr {
     /** Gets an expression that is interpreted as a code operator in this query. */
     DataFlow::Node getACodeOperator() { none() }

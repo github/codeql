@@ -3,6 +3,7 @@ private import Builtins
 private import codeql_ql.ast.internal.Module
 private import codeql_ql.ast.internal.AstNodes
 
+pragma[nomagic]
 private predicate definesPredicate(
   FileOrModule m, string name, int arity, Predicate p, boolean public
 ) {

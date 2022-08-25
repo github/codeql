@@ -2543,6 +2543,8 @@ predicate typos(string wrong, string right) {
   or
   wrong = "destory" and right = "destroy"
   or
+  wrong = "desugered" and right = "desugared"
+  or
   wrong = "detailled" and right = "detailed"
   or
   wrong = "detatched" and right = "detached"

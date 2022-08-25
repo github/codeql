@@ -5,6 +5,7 @@
 #include <swift/AST/ASTVisitor.h>
 #include "swift/extractor/trap/TrapTagTraits.h"
 #include "swift/extractor/trap/generated/TrapTags.h"
+#include "swift/extractor/infra/FilePath.h"
 
 namespace codeql {
 
@@ -15,12 +16,12 @@ using SILBoxTypeTag = SilBoxTypeTag;
 using SILFunctionTypeTag = SilFunctionTypeTag;
 using SILTokenTypeTag = SilTokenTypeTag;
 
-#define MAP_TYPE_TO_TAG(TYPE, TAG)           \
-  template <>                                \
-  struct detail::ToTagFunctor<swift::TYPE> { \
-    using type = TAG;                        \
+#define MAP_TYPE_TO_TAG(TYPE, TAG)    \
+  template <>                         \
+  struct detail::ToTagFunctor<TYPE> { \
+    using type = TAG;                 \
   }
-#define MAP_TAG(TYPE) MAP_TYPE_TO_TAG(TYPE, TYPE##Tag)
+#define MAP_TAG(TYPE) MAP_TYPE_TO_TAG(swift::TYPE, TYPE##Tag)
 #define MAP_SUBTAG(TYPE, PARENT)                           \
   MAP_TAG(TYPE);                                           \
   static_assert(std::is_base_of_v<PARENT##Tag, TYPE##Tag>, \
@@ -35,7 +36,7 @@ using SILTokenTypeTag = SilTokenTypeTag;
 
 MAP_TAG(Stmt);
 MAP_TAG(StmtCondition);
-MAP_TYPE_TO_TAG(StmtConditionElement, ConditionElementTag);
+MAP_TYPE_TO_TAG(swift::StmtConditionElement, ConditionElementTag);
 MAP_TAG(CaseLabelItem);
 #define ABSTRACT_STMT(CLASS, PARENT) MAP_SUBTAG(CLASS##Stmt, PARENT)
 #define STMT(CLASS, PARENT) ABSTRACT_STMT(CLASS, PARENT)
@@ -60,13 +61,15 @@ MAP_TAG(Pattern);
 
 MAP_TAG(TypeRepr);
 
-MAP_TYPE_TO_TAG(TypeBase, TypeTag);
+MAP_TYPE_TO_TAG(swift::TypeBase, TypeTag);
 #define ABSTRACT_TYPE(CLASS, PARENT) MAP_SUBTAG(CLASS##Type, PARENT)
 #define TYPE(CLASS, PARENT) ABSTRACT_TYPE(CLASS, PARENT)
 #include <swift/AST/TypeNodes.def>
 
 OVERRIDE_TAG(FuncDecl, ConcreteFuncDeclTag);
 OVERRIDE_TAG(VarDecl, ConcreteVarDeclTag);
+
+MAP_TYPE_TO_TAG(FilePath, DbFileTag);
 
 #undef MAP_TAG
 #undef MAP_SUBTAG

@@ -680,8 +680,16 @@ module API {
         or
         // Subclassing a node
         lbl = Label::subclass() and
-        exists(DataFlow::Node superclass | pred.flowsTo(superclass) |
-          ref.asExpr().(PY::ClassExpr).getABase() = superclass.asExpr()
+        exists(PY::ClassExpr clsExpr, DataFlow::Node superclass | pred.flowsTo(superclass) |
+          clsExpr.getABase() = superclass.asExpr() and
+          // Potentially a class decorator could do anything, but we assume they are
+          // "benign" and let subclasses edges flow through anyway.
+          // see example in https://github.com/django/django/blob/c2250cfb80e27cdf8d098428824da2800a18cadf/tests/auth_tests/test_views.py#L40-L46
+          (
+            ref.asExpr() = clsExpr
+            or
+            ref.asExpr() = clsExpr.getADecoratorCall()
+          )
         )
         or
         // awaiting

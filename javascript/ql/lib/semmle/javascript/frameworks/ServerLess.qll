@@ -14,15 +14,15 @@ private module ServerLess {
    * Holds if the `.yml` file `ymlFile` contains a serverless configuration with `handler` and `codeURI` properties.
    * `codeURI` defaults to the empty string if no explicit value is set in the configuration.
    */
-  private predicate hasServerlessHandler(File ymlFile, string handler, string codeURI) {
+  private predicate hasServerlessHandler(File ymlFile, string handler, string codeUri) {
     exists(YAMLMapping resource | ymlFile = resource.getFile() |
       // There exists at least "AWS::Serverless::Function" and "Aliyun::Serverless::Function"
       resource.lookup("Type").(YAMLScalar).getValue().regexpMatch(".*::Serverless::Function") and
       exists(YAMLMapping properties | properties = resource.lookup("Properties") |
         handler = properties.lookup("Handler").(YAMLScalar).getValue() and
         if exists(properties.lookup("CodeUri"))
-        then codeURI = properties.lookup("CodeUri").(YAMLScalar).getValue()
-        else codeURI = ""
+        then codeUri = properties.lookup("CodeUri").(YAMLScalar).getValue()
+        else codeUri = ""
       )
       or
       // The `serverless` library, which specifies a top-level `functions` property
@@ -30,7 +30,7 @@ private module ServerLess {
         functions = resource.lookup("functions") and
         not exists(resource.getParentNode()) and
         handler = functions.getValue(_).(YAMLMapping).lookup("handler").(YAMLScalar).getValue() and
-        codeURI = ""
+        codeUri = ""
       )
     )
   }
@@ -58,9 +58,9 @@ private module ServerLess {
    *
    * For example if `codeURI` is "function/." and `file` is "index", then the result becomes "function/index.js".
    */
-  bindingset[codeURI, file]
-  private string getPathFromHandlerProperties(string codeURI, string file) {
-    exists(string folder | folder = removeLeadingDotSlash(removeTrailingDot(codeURI)) |
+  bindingset[codeUri, file]
+  private string getPathFromHandlerProperties(string codeUri, string file) {
+    exists(string folder | folder = removeLeadingDotSlash(removeTrailingDot(codeUri)) |
       result = folder + file + ".js"
     )
   }
@@ -69,8 +69,8 @@ private module ServerLess {
    * Holds if `file` has a serverless handler function with name `func`.
    */
   private predicate hasServerlessHandler(File file, string func) {
-    exists(File ymlFile, string handler, string codeURI, string fileName |
-      hasServerlessHandler(ymlFile, handler, codeURI) and
+    exists(File ymlFile, string handler, string codeUri, string fileName |
+      hasServerlessHandler(ymlFile, handler, codeUri) and
       // Splits a `handler` into two components. The `fileName` to the left of the dot, and the `func` to the right.
       // E.g. if `handler` is "index.foo", then `fileName` is "index" and `func` is "foo".
       exists(string pattern | pattern = "(.*)\\.(.*)" |
@@ -80,7 +80,7 @@ private module ServerLess {
     |
       file.getAbsolutePath() =
         ymlFile.getParentContainer().getAbsolutePath() + "/" +
-          getPathFromHandlerProperties(codeURI, fileName)
+          getPathFromHandlerProperties(codeUri, fileName)
     )
   }
 

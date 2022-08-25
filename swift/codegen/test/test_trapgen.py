@@ -162,10 +162,10 @@ def test_one_union_tags(generate_tags):
     assert generate_tags([
         dbscheme.Union(lhs="@left_hand_side", rhs=["@b", "@a", "@c"]),
     ]) == [
-        cpp.Tag(name="LeftHandSide", bases=[], index=0, id="@left_hand_side"),
-        cpp.Tag(name="A", bases=["LeftHandSide"], index=1, id="@a"),
-        cpp.Tag(name="B", bases=["LeftHandSide"], index=2, id="@b"),
-        cpp.Tag(name="C", bases=["LeftHandSide"], index=3, id="@c"),
+        cpp.Tag(name="LeftHandSide", bases=[], id="@left_hand_side"),
+        cpp.Tag(name="A", bases=["LeftHandSide"], id="@a"),
+        cpp.Tag(name="B", bases=["LeftHandSide"], id="@b"),
+        cpp.Tag(name="C", bases=["LeftHandSide"], id="@c"),
     ]
 
 
@@ -175,12 +175,12 @@ def test_multiple_union_tags(generate_tags):
         dbscheme.Union(lhs="@a", rhs=["@b", "@c"]),
         dbscheme.Union(lhs="@e", rhs=["@c", "@f"]),
     ]) == [
-        cpp.Tag(name="D", bases=[], index=0, id="@d"),
-        cpp.Tag(name="E", bases=[], index=1, id="@e"),
-        cpp.Tag(name="A", bases=["D"], index=2, id="@a"),
-        cpp.Tag(name="F", bases=["E"], index=3, id="@f"),
-        cpp.Tag(name="B", bases=["A"], index=4, id="@b"),
-        cpp.Tag(name="C", bases=["A", "E"], index=5, id="@c"),
+        cpp.Tag(name="D", bases=[], id="@d"),
+        cpp.Tag(name="E", bases=[], id="@e"),
+        cpp.Tag(name="A", bases=["D"], id="@a"),
+        cpp.Tag(name="F", bases=["E"], id="@f"),
+        cpp.Tag(name="B", bases=["A"], id="@b"),
+        cpp.Tag(name="C", bases=["A", "E"], id="@c"),
     ]
 
 

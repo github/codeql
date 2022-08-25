@@ -41,7 +41,7 @@ class Node extends TNode {
 
   /** Gets the enclosing callable of this node. */
   final Callable getEnclosingCallable() {
-    result = this.(NodeImpl).getEnclosingCallableImpl().getUnderlyingCallable()
+    result = this.(NodeImpl).getEnclosingCallableImpl().asCallable()
   }
 
   /** Gets the control flow node corresponding to this node, if any. */
@@ -103,7 +103,7 @@ class ParameterNode extends Node instanceof ParameterNodeImpl {
   DotNet::Parameter getParameter() {
     exists(DataFlowCallable c, ParameterPosition ppos |
       super.isParameterOf(c, ppos) and
-      result = c.getUnderlyingCallable().getParameter(ppos.getPosition())
+      result = c.asCallable().getParameter(ppos.getPosition())
     )
   }
 

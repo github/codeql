@@ -1,6 +1,6 @@
 import java
 import TestUtilities.InlineExpectationsTest
-import semmle.code.java.security.performance.PolynomialReDoSQuery
+import semmle.code.java.security.regexp.PolynomialReDoSQuery
 
 class HasPolyRedos extends InlineExpectationsTest {
   HasPolyRedos() { this = "HasPolyRedos" }

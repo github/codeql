@@ -9797,6 +9797,141 @@ ir.cpp:
 # 1831|     v1831_8(void)       = AliasedUse                : ~m?
 # 1831|     v1831_9(void)       = ExitFunction              : 
 
+# 1834| block_assignment::A& block_assignment::A::operator=(block_assignment::A&&)
+# 1834|   Block 0
+# 1834|     v1834_1(void)                   = EnterFunction                                : 
+# 1834|     mu1834_2(unknown)               = AliasedDefinition                            : 
+# 1834|     mu1834_3(unknown)               = InitializeNonLocal                           : 
+# 1834|     r1834_4(glval<unknown>)         = VariableAddress[#this]                       : 
+# 1834|     mu1834_5(glval<A>)              = InitializeParameter[#this]                   : &:r1834_4
+# 1834|     r1834_6(glval<A>)               = Load[#this]                                  : &:r1834_4, ~m?
+# 1834|     mu1834_7(A)                     = InitializeIndirection[#this]                 : &:r1834_6
+#-----|     r0_1(glval<A &&>)               = VariableAddress[(unnamed parameter 0)]       : 
+#-----|     mu0_2(A &&)                     = InitializeParameter[(unnamed parameter 0)]   : &:r0_1
+#-----|     r0_3(A &&)                      = Load[(unnamed parameter 0)]                  : &:r0_1, ~m?
+#-----|     mu0_4(unknown)                  = InitializeIndirection[(unnamed parameter 0)] : &:r0_3
+#-----|     r0_5(glval<unknown>)            = VariableAddress[#this]                       : 
+#-----|     r0_6(A *)                       = Load[#this]                                  : &:r0_5, ~m?
+#-----|     r0_7(glval<enum <unnamed>[1]>)  = FieldAddress[e]                              : r0_6
+#-----|     r0_8(glval<A &&>)               = VariableAddress[(unnamed parameter 0)]       : 
+#-----|     r0_9(A &&)                      = Load[(unnamed parameter 0)]                  : &:r0_8, ~m?
+#-----|     r0_10(glval<A>)                 = CopyValue                                    : r0_9
+#-----|     r0_11(glval<enum <unnamed>[1]>) = FieldAddress[e]                              : r0_10
+#-----|     r0_12(enum <unnamed>[1])        = Load[?]                                      : &:r0_11, ~m?
+#-----|     mu0_13(enum <unnamed>[1])       = Store[?]                                     : &:r0_7, r0_12
+#-----|     r0_14(glval<A &>)               = VariableAddress[#return]                     : 
+#-----|     r0_15(glval<unknown>)           = VariableAddress[#this]                       : 
+#-----|     r0_16(A *)                      = Load[#this]                                  : &:r0_15, ~m?
+#-----|     r0_17(glval<A>)                 = CopyValue                                    : r0_16
+#-----|     r0_18(A &)                      = CopyValue                                    : r0_17
+#-----|     mu0_19(A &)                     = Store[#return]                               : &:r0_14, r0_18
+# 1834|     v1834_8(void)                   = ReturnIndirection[#this]                     : &:r1834_6, ~m?
+#-----|     v0_20(void)                     = ReturnIndirection[(unnamed parameter 0)]     : &:r0_3, ~m?
+# 1834|     r1834_9(glval<A &>)             = VariableAddress[#return]                     : 
+# 1834|     v1834_10(void)                  = ReturnValue                                  : &:r1834_9, ~m?
+# 1834|     v1834_11(void)                  = AliasedUse                                   : ~m?
+# 1834|     v1834_12(void)                  = ExitFunction                                 : 
+
+# 1839| block_assignment::B& block_assignment::B::operator=(block_assignment::B&&)
+# 1839|   Block 0
+# 1839|     v1839_1(void)            = EnterFunction                                : 
+# 1839|     mu1839_2(unknown)        = AliasedDefinition                            : 
+# 1839|     mu1839_3(unknown)        = InitializeNonLocal                           : 
+# 1839|     r1839_4(glval<unknown>)  = VariableAddress[#this]                       : 
+# 1839|     mu1839_5(glval<B>)       = InitializeParameter[#this]                   : &:r1839_4
+# 1839|     r1839_6(glval<B>)        = Load[#this]                                  : &:r1839_4, ~m?
+# 1839|     mu1839_7(B)              = InitializeIndirection[#this]                 : &:r1839_6
+#-----|     r0_1(glval<B &&>)        = VariableAddress[(unnamed parameter 0)]       : 
+#-----|     mu0_2(B &&)              = InitializeParameter[(unnamed parameter 0)]   : &:r0_1
+#-----|     r0_3(B &&)               = Load[(unnamed parameter 0)]                  : &:r0_1, ~m?
+#-----|     mu0_4(unknown)           = InitializeIndirection[(unnamed parameter 0)] : &:r0_3
+# 1839|     r1839_8(glval<unknown>)  = VariableAddress[#this]                       : 
+# 1839|     r1839_9(B *)             = Load[#this]                                  : &:r1839_8, ~m?
+#-----|     r0_5(A *)                = ConvertToNonVirtualBase[B : A]               : r1839_9
+# 1839|     r1839_10(glval<unknown>) = FunctionAddress[operator=]                   : 
+# 1839|     r1839_11(glval<B &&>)    = VariableAddress[(unnamed parameter 0)]       : 
+# 1839|     r1839_12(B &&)           = Load[(unnamed parameter 0)]                  : &:r1839_11, ~m?
+#-----|     r0_6(glval<B>)           = CopyValue                                    : r1839_12
+# 1839|     r1839_13(B *)            = CopyValue                                    : r0_6
+#-----|     r0_7(A *)                = ConvertToNonVirtualBase[B : A]               : r1839_13
+# 1839|     r1839_14(glval<A>)       = CopyValue                                    : r0_7
+#-----|     r0_8(A &)                = CopyValue                                    : r1839_14
+# 1839|     r1839_15(A &)            = Call[operator=]                              : func:r1839_10, this:r0_5, 0:r0_8
+# 1839|     mu1839_16(unknown)       = ^CallSideEffect                              : ~m?
+#-----|     v0_9(void)               = ^IndirectReadSideEffect[-1]                  : &:r0_5, ~m?
+#-----|     v0_10(void)              = ^BufferReadSideEffect[0]                     : &:r0_8, ~m?
+#-----|     mu0_11(A)                = ^IndirectMayWriteSideEffect[-1]              : &:r0_5
+#-----|     mu0_12(unknown)          = ^BufferMayWriteSideEffect[0]                 : &:r0_8
+#-----|     r0_13(glval<A>)          = CopyValue                                    : r1839_15
+#-----|     r0_14(glval<B &>)        = VariableAddress[#return]                     : 
+#-----|     r0_15(glval<unknown>)    = VariableAddress[#this]                       : 
+#-----|     r0_16(B *)               = Load[#this]                                  : &:r0_15, ~m?
+#-----|     r0_17(glval<B>)          = CopyValue                                    : r0_16
+#-----|     r0_18(B &)               = CopyValue                                    : r0_17
+#-----|     mu0_19(B &)              = Store[#return]                               : &:r0_14, r0_18
+# 1839|     v1839_17(void)           = ReturnIndirection[#this]                     : &:r1839_6, ~m?
+#-----|     v0_20(void)              = ReturnIndirection[(unnamed parameter 0)]     : &:r0_3, ~m?
+# 1839|     r1839_18(glval<B &>)     = VariableAddress[#return]                     : 
+# 1839|     v1839_19(void)           = ReturnValue                                  : &:r1839_18, ~m?
+# 1839|     v1839_20(void)           = AliasedUse                                   : ~m?
+# 1839|     v1839_21(void)           = ExitFunction                                 : 
+
+# 1843| void block_assignment::foo()
+# 1843|   Block 0
+# 1843|     v1843_1(void)           = EnterFunction                   : 
+# 1843|     mu1843_2(unknown)       = AliasedDefinition               : 
+# 1843|     mu1843_3(unknown)       = InitializeNonLocal              : 
+# 1844|     r1844_1(glval<B>)       = VariableAddress[v]              : 
+# 1844|     mu1844_2(B)             = Uninitialized[v]                : &:r1844_1
+# 1844|     r1844_3(glval<unknown>) = FunctionAddress[B]              : 
+# 1844|     r1844_4(A *)            = Constant[0]                     : 
+# 1844|     v1844_5(void)           = Call[B]                         : func:r1844_3, this:r1844_1, 0:r1844_4
+# 1844|     mu1844_6(unknown)       = ^CallSideEffect                 : ~m?
+# 1844|     v1844_7(void)           = ^BufferReadSideEffect[0]        : &:r1844_4, ~m?
+# 1844|     mu1844_8(B)             = ^IndirectMayWriteSideEffect[-1] : &:r1844_1
+# 1844|     mu1844_9(unknown)       = ^BufferMayWriteSideEffect[0]    : &:r1844_4
+# 1845|     r1845_1(glval<B>)       = VariableAddress[v]              : 
+# 1845|     r1845_2(glval<unknown>) = FunctionAddress[operator=]      : 
+# 1845|     r1845_3(glval<B>)       = VariableAddress[#temp1845:13]   : 
+# 1845|     mu1845_4(B)             = Uninitialized[#temp1845:13]     : &:r1845_3
+# 1845|     r1845_5(glval<unknown>) = FunctionAddress[B]              : 
+# 1845|     r1845_6(A *)            = Constant[0]                     : 
+# 1845|     v1845_7(void)           = Call[B]                         : func:r1845_5, this:r1845_3, 0:r1845_6
+# 1845|     mu1845_8(unknown)       = ^CallSideEffect                 : ~m?
+# 1845|     v1845_9(void)           = ^BufferReadSideEffect[0]        : &:r1845_6, ~m?
+# 1845|     mu1845_10(B)            = ^IndirectMayWriteSideEffect[-1] : &:r1845_3
+# 1845|     mu1845_11(unknown)      = ^BufferMayWriteSideEffect[0]    : &:r1845_6
+# 1845|     r1845_12(B &)           = CopyValue                       : r1845_3
+# 1845|     r1845_13(B &)           = Call[operator=]                 : func:r1845_2, this:r1845_1, 0:r1845_12
+# 1845|     mu1845_14(unknown)      = ^CallSideEffect                 : ~m?
+# 1845|     v1845_15(void)          = ^IndirectReadSideEffect[-1]     : &:r1845_1, ~m?
+# 1845|     v1845_16(void)          = ^BufferReadSideEffect[0]        : &:r1845_12, ~m?
+# 1845|     mu1845_17(B)            = ^IndirectMayWriteSideEffect[-1] : &:r1845_1
+# 1845|     mu1845_18(unknown)      = ^BufferMayWriteSideEffect[0]    : &:r1845_12
+# 1845|     r1845_19(glval<B>)      = CopyValue                       : r1845_13
+# 1846|     v1846_1(void)           = NoOp                            : 
+# 1843|     v1843_4(void)           = ReturnVoid                      : 
+# 1843|     v1843_5(void)           = AliasedUse                      : ~m?
+# 1843|     v1843_6(void)           = ExitFunction                    : 
+
+# 1849| void magicvars()
+# 1849|   Block 0
+# 1849|     v1849_1(void)            = EnterFunction                        : 
+# 1849|     mu1849_2(unknown)        = AliasedDefinition                    : 
+# 1849|     mu1849_3(unknown)        = InitializeNonLocal                   : 
+# 1850|     r1850_1(glval<char *>)   = VariableAddress[pf]                  : 
+# 1850|     r1850_2(glval<char[17]>) = VariableAddress[__PRETTY_FUNCTION__] : 
+# 1850|     r1850_3(char *)          = Convert                              : r1850_2
+# 1850|     mu1850_4(char *)         = Store[pf]                            : &:r1850_1, r1850_3
+# 1851|     r1851_1(glval<char *>)   = VariableAddress[strfunc]             : 
+# 1851|     r1851_2(glval<char[10]>) = VariableAddress[__func__]            : 
+# 1851|     r1851_3(char *)          = Convert                              : r1851_2
+# 1851|     mu1851_4(char *)         = Store[strfunc]                       : &:r1851_1, r1851_3
+# 1852|     v1852_1(void)            = NoOp                                 : 
+# 1849|     v1849_4(void)            = ReturnVoid                           : 
+# 1849|     v1849_5(void)            = AliasedUse                           : ~m?
+# 1849|     v1849_6(void)            = ExitFunction                         : 
+
 perf-regression.cpp:
 #    6| void Big::Big()
 #    6|   Block 0

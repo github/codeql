@@ -6,10 +6,11 @@ namespace Microsoft
     {
         namespace SafeHandles
         {
-            // Generated from `Microsoft.Win32.SafeHandles.SafeProcessHandle` in `System.Diagnostics.Process, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `Microsoft.Win32.SafeHandles.SafeProcessHandle` in `System.Diagnostics.Process, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class SafeProcessHandle : Microsoft.Win32.SafeHandles.SafeHandleZeroOrMinusOneIsInvalid
             {
                 protected override bool ReleaseHandle() => throw null;
+                public SafeProcessHandle() : base(default(bool)) => throw null;
                 public SafeProcessHandle(System.IntPtr existingHandle, bool ownsHandle) : base(default(bool)) => throw null;
             }
 
@@ -20,23 +21,23 @@ namespace System
 {
     namespace Diagnostics
     {
-        // Generated from `System.Diagnostics.DataReceivedEventArgs` in `System.Diagnostics.Process, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Diagnostics.DataReceivedEventArgs` in `System.Diagnostics.Process, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class DataReceivedEventArgs : System.EventArgs
         {
             public string Data { get => throw null; }
         }
 
-        // Generated from `System.Diagnostics.DataReceivedEventHandler` in `System.Diagnostics.Process, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Diagnostics.DataReceivedEventHandler` in `System.Diagnostics.Process, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public delegate void DataReceivedEventHandler(object sender, System.Diagnostics.DataReceivedEventArgs e);
 
-        // Generated from `System.Diagnostics.MonitoringDescriptionAttribute` in `System.Diagnostics.Process, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Diagnostics.MonitoringDescriptionAttribute` in `System.Diagnostics.Process, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class MonitoringDescriptionAttribute : System.ComponentModel.DescriptionAttribute
         {
             public override string Description { get => throw null; }
             public MonitoringDescriptionAttribute(string description) => throw null;
         }
 
-        // Generated from `System.Diagnostics.Process` in `System.Diagnostics.Process, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Diagnostics.Process` in `System.Diagnostics.Process, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class Process : System.ComponentModel.Component, System.IDisposable
         {
             public int BasePriority { get => throw null; }
@@ -128,7 +129,7 @@ namespace System
             public System.Int64 WorkingSet64 { get => throw null; }
         }
 
-        // Generated from `System.Diagnostics.ProcessModule` in `System.Diagnostics.Process, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Diagnostics.ProcessModule` in `System.Diagnostics.Process, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class ProcessModule : System.ComponentModel.Component
         {
             public System.IntPtr BaseAddress { get => throw null; }
@@ -140,7 +141,7 @@ namespace System
             public override string ToString() => throw null;
         }
 
-        // Generated from `System.Diagnostics.ProcessModuleCollection` in `System.Diagnostics.Process, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Diagnostics.ProcessModuleCollection` in `System.Diagnostics.Process, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class ProcessModuleCollection : System.Collections.ReadOnlyCollectionBase
         {
             public bool Contains(System.Diagnostics.ProcessModule module) => throw null;
@@ -151,18 +152,18 @@ namespace System
             public ProcessModuleCollection(System.Diagnostics.ProcessModule[] processModules) => throw null;
         }
 
-        // Generated from `System.Diagnostics.ProcessPriorityClass` in `System.Diagnostics.Process, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum ProcessPriorityClass
+        // Generated from `System.Diagnostics.ProcessPriorityClass` in `System.Diagnostics.Process, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        public enum ProcessPriorityClass : int
         {
-            AboveNormal,
-            BelowNormal,
-            High,
-            Idle,
-            Normal,
-            RealTime,
+            AboveNormal = 32768,
+            BelowNormal = 16384,
+            High = 128,
+            Idle = 64,
+            Normal = 32,
+            RealTime = 256,
         }
 
-        // Generated from `System.Diagnostics.ProcessStartInfo` in `System.Diagnostics.Process, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Diagnostics.ProcessStartInfo` in `System.Diagnostics.Process, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class ProcessStartInfo
         {
             public System.Collections.ObjectModel.Collection<string> ArgumentList { get => throw null; }
@@ -194,7 +195,7 @@ namespace System
             public string WorkingDirectory { get => throw null; set => throw null; }
         }
 
-        // Generated from `System.Diagnostics.ProcessThread` in `System.Diagnostics.Process, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Diagnostics.ProcessThread` in `System.Diagnostics.Process, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class ProcessThread : System.ComponentModel.Component
         {
             public int BasePriority { get => throw null; }
@@ -214,7 +215,7 @@ namespace System
             public System.Diagnostics.ThreadWaitReason WaitReason { get => throw null; }
         }
 
-        // Generated from `System.Diagnostics.ProcessThreadCollection` in `System.Diagnostics.Process, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Diagnostics.ProcessThreadCollection` in `System.Diagnostics.Process, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class ProcessThreadCollection : System.Collections.ReadOnlyCollectionBase
         {
             public int Add(System.Diagnostics.ProcessThread thread) => throw null;
@@ -228,57 +229,57 @@ namespace System
             public void Remove(System.Diagnostics.ProcessThread thread) => throw null;
         }
 
-        // Generated from `System.Diagnostics.ProcessWindowStyle` in `System.Diagnostics.Process, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum ProcessWindowStyle
+        // Generated from `System.Diagnostics.ProcessWindowStyle` in `System.Diagnostics.Process, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        public enum ProcessWindowStyle : int
         {
-            Hidden,
-            Maximized,
-            Minimized,
-            Normal,
+            Hidden = 1,
+            Maximized = 3,
+            Minimized = 2,
+            Normal = 0,
         }
 
-        // Generated from `System.Diagnostics.ThreadPriorityLevel` in `System.Diagnostics.Process, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum ThreadPriorityLevel
+        // Generated from `System.Diagnostics.ThreadPriorityLevel` in `System.Diagnostics.Process, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        public enum ThreadPriorityLevel : int
         {
-            AboveNormal,
-            BelowNormal,
-            Highest,
-            Idle,
-            Lowest,
-            Normal,
-            TimeCritical,
+            AboveNormal = 1,
+            BelowNormal = -1,
+            Highest = 2,
+            Idle = -15,
+            Lowest = -2,
+            Normal = 0,
+            TimeCritical = 15,
         }
 
-        // Generated from `System.Diagnostics.ThreadState` in `System.Diagnostics.Process, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum ThreadState
+        // Generated from `System.Diagnostics.ThreadState` in `System.Diagnostics.Process, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        public enum ThreadState : int
         {
-            Initialized,
-            Ready,
-            Running,
-            Standby,
-            Terminated,
-            Transition,
-            Unknown,
-            Wait,
+            Initialized = 0,
+            Ready = 1,
+            Running = 2,
+            Standby = 3,
+            Terminated = 4,
+            Transition = 6,
+            Unknown = 7,
+            Wait = 5,
         }
 
-        // Generated from `System.Diagnostics.ThreadWaitReason` in `System.Diagnostics.Process, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum ThreadWaitReason
+        // Generated from `System.Diagnostics.ThreadWaitReason` in `System.Diagnostics.Process, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        public enum ThreadWaitReason : int
         {
-            EventPairHigh,
-            EventPairLow,
-            ExecutionDelay,
-            Executive,
-            FreePage,
-            LpcReceive,
-            LpcReply,
-            PageIn,
-            PageOut,
-            Suspended,
-            SystemAllocation,
-            Unknown,
-            UserRequest,
-            VirtualMemory,
+            EventPairHigh = 7,
+            EventPairLow = 8,
+            ExecutionDelay = 4,
+            Executive = 0,
+            FreePage = 1,
+            LpcReceive = 9,
+            LpcReply = 10,
+            PageIn = 2,
+            PageOut = 12,
+            Suspended = 5,
+            SystemAllocation = 3,
+            Unknown = 13,
+            UserRequest = 6,
+            VirtualMemory = 11,
         }
 
     }

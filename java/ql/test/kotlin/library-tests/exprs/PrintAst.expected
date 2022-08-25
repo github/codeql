@@ -3583,7 +3583,7 @@ funcExprs.kt:
 #   27|                 2: [Method] invoke
 #   27|                   3: [TypeAccess] int
 #-----|                   4: (Parameters)
-#   27|                     0: [Parameter] <anonymous parameter 0>
+#   27|                     0: [Parameter] p0
 #   27|                       0: [TypeAccess] int
 #   27|                   5: [BlockStmt] { ... }
 #   27|                     0: [ReturnStmt] return ...
@@ -3629,9 +3629,9 @@ funcExprs.kt:
 #   30|                 2: [Method] invoke
 #   30|                   3: [TypeAccess] int
 #-----|                   4: (Parameters)
-#   30|                     0: [Parameter] <anonymous parameter 0>
+#   30|                     0: [Parameter] p0
 #   30|                       0: [TypeAccess] int
-#   30|                     1: [Parameter] <anonymous parameter 1>
+#   30|                     1: [Parameter] p1
 #   30|                       0: [TypeAccess] int
 #   30|                   5: [BlockStmt] { ... }
 #   30|                     0: [ReturnStmt] return ...
@@ -3652,9 +3652,9 @@ funcExprs.kt:
 #   31|                 2: [Method] invoke
 #   31|                   3: [TypeAccess] int
 #-----|                   4: (Parameters)
-#   31|                     0: [Parameter] <anonymous parameter 0>
+#   31|                     0: [Parameter] p0
 #   31|                       0: [TypeAccess] int
-#   31|                     1: [Parameter] <anonymous parameter 1>
+#   31|                     1: [Parameter] p1
 #   31|                       0: [TypeAccess] int
 #   31|                   5: [BlockStmt] { ... }
 #   31|                     0: [ReturnStmt] return ...

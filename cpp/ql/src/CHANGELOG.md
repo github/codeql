@@ -1,3 +1,11 @@
+## 0.3.2
+
+### Minor Analysis Improvements
+
+* The query `cpp/bad-strncpy-size` now covers more `strncpy`-like functions than before, including `strxfrm`(`_l`), `wcsxfrm`(`_l`), and `stpncpy`. Users of this query may see an increase in results.
+
+## 0.3.1
+
 ## 0.3.0
 
 ### Breaking Changes

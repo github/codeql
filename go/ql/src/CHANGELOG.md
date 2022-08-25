@@ -1,3 +1,11 @@
+## 0.2.3
+
+### Minor Analysis Improvements
+
+* The query `go/path-injection` no longer considers user-controlled numeric or boolean-typed data as potentially dangerous.
+
+## 0.2.2
+
 ## 0.2.1
 
 ## 0.2.0

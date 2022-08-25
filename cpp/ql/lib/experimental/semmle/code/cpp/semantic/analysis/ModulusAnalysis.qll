@@ -160,6 +160,7 @@ private predicate phiModulusInit(SemSsaPhiNode phi, SemBound b, int val, int mod
 /**
  * Holds if all inputs to `phi` numbered `1` to `rix` are equal to `b + val` modulo `mod`.
  */
+pragma[nomagic]
 private predicate phiModulusRankStep(SemSsaPhiNode phi, SemBound b, int val, int mod, int rix) {
   rix = 0 and
   phiModulusInit(phi, b, val, mod)
@@ -169,7 +170,7 @@ private predicate phiModulusRankStep(SemSsaPhiNode phi, SemBound b, int val, int
     val = remainder(v1, mod)
   |
     exists(int v2, int m2 |
-      rankedPhiInput(phi, inp, edge, rix) and
+      rankedPhiInput(pragma[only_bind_out](phi), inp, edge, rix) and
       phiModulusRankStep(phi, b, v1, m1, rix - 1) and
       ssaModulus(inp, edge, b, v2, m2) and
       mod = m1.gcd(m2).gcd(v1 - v2)

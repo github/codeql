@@ -727,6 +727,13 @@ class CompanionObject extends Class {
 }
 
 /**
+ * A Kotlin data class declaration.
+ */
+class DataClass extends Class {
+  DataClass() { ktDataClasses(this) }
+}
+
+/**
  * A record declaration.
  */
 class Record extends Class {
@@ -1194,8 +1201,8 @@ private Type erase(Type t) {
 }
 
 /**
- * Is there a common (reflexive, transitive) subtype of the erasures of
- * types `t1` and `t2`?
+ * Holds if there is a common (reflexive, transitive) subtype of the erasures of
+ * types `t1` and `t2`.
  *
  * If there is no such common subtype, then the two types are disjoint.
  * However, the converse is not true; for example, the parameterized types
@@ -1209,6 +1216,25 @@ pragma[inline]
 predicate haveIntersection(RefType t1, RefType t2) {
   exists(RefType e1, RefType e2 | e1 = erase(t1) and e2 = erase(t2) |
     erasedHaveIntersection(e1, e2)
+  )
+}
+
+/**
+ * Holds if there is no common (reflexive, transitive) subtype of the erasures
+ * of types `t1` and `t2`.
+ *
+ * If there is no such common subtype, then the two types are disjoint.
+ * However, the converse is not true; for example, the parameterized types
+ * `List<Integer>` and `Collection<String>` are disjoint,
+ * but their erasures (`List` and `Collection`, respectively)
+ * do have common subtypes (such as `List` itself).
+ *
+ * For the definition of the notion of *erasure* see JLS v8, section 4.6 (Type Erasure).
+ */
+bindingset[t1, t2]
+predicate notHaveIntersection(RefType t1, RefType t2) {
+  exists(RefType e1, RefType e2 | e1 = erase(t1) and e2 = erase(t2) |
+    not erasedHaveIntersection(e1, e2)
   )
 }
 

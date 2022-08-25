@@ -71,6 +71,7 @@ class TypeVisitor : public TypeVisitorBase<TypeVisitor> {
       const swift::BuiltinUnsafeValueBufferType& type);
   codeql::BuiltinVectorType translateBuiltinVectorType(const swift::BuiltinVectorType& type);
   codeql::OpenedArchetypeType translateOpenedArchetypeType(const swift::OpenedArchetypeType& type);
+  codeql::ModuleType translateModuleType(const swift::ModuleType& type);
 
  private:
   void fillType(const swift::TypeBase& type, codeql::Type& entry);
@@ -83,9 +84,9 @@ class TypeVisitor : public TypeVisitorBase<TypeVisitor> {
   void emitBoundGenericType(swift::BoundGenericType* type, TrapLabel<BoundGenericTypeTag> label);
   void emitAnyGenericType(swift::AnyGenericType* type, TrapLabel<AnyGenericTypeTag> label);
 
-  template <typename T>
-  auto createTypeEntry(const T& type) {
-    auto entry = dispatcher_.createEntry(type);
+  template <typename T, typename... Args>
+  auto createTypeEntry(const T& type, const Args&... args) {
+    auto entry = dispatcher_.createEntry(type, args...);
     fillType(type, entry);
     return entry;
   }

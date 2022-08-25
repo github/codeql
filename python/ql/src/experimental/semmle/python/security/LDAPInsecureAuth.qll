@@ -122,7 +122,7 @@ class LdapInsecureAuthConfig extends TaintTracking::Configuration {
   }
 
   override predicate isSink(DataFlow::Node sink) {
-    exists(LdapBind ldapBind | not ldapBind.useSSL() and sink = ldapBind.getHost())
+    exists(LdapBind ldapBind | not ldapBind.useSsl() and sink = ldapBind.getHost())
   }
 }
 

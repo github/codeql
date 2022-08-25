@@ -261,11 +261,6 @@ private module WerkzeugOld {
       deprecated module MultiDict {
         /**
          * DEPRECATED. Use `Werkzeug::MultiDict::InstanceSource` instead.
-         */
-        abstract deprecated class InstanceSource extends DataFlow::Node { }
-
-        /**
-         * DEPRECATED. Use `Werkzeug::MultiDict::InstanceSource` instead.
          *
          * A source of instances of `werkzeug.datastructures.MultiDict`, extend this class to model new instances.
          *
@@ -312,11 +307,6 @@ private module WerkzeugOld {
        * See https://werkzeug.palletsprojects.com/en/1.0.x/datastructures/#werkzeug.datastructures.FileStorage.
        */
       deprecated module FileStorage {
-        /**
-         * DEPRECATED. Use `Werkzeug::FileStorage::InstanceSource` instead.
-         */
-        abstract deprecated class InstanceSource extends DataFlow::Node { }
-
         /**
          * DEPRECATED. Use `Werkzeug::FileStorage::InstanceSource` instead.
          *

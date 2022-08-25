@@ -50,8 +50,23 @@ class PackageJson extends JsonObject {
   /** Gets a file for this package. */
   string getAFile() { result = this.getFiles().getElementStringValue(_) }
 
-  /** Gets the main module of this package. */
-  string getMain() { result = MainModulePath::of(this).getValue() }
+  /**
+   * Gets the main module of this package.
+   *
+   * This can be given by the `main` or `module` property, or via the
+   * `exports` property with the relative path `"."`.
+   */
+  string getMain() { result = this.getExportedPath(".") }
+
+  /**
+   * Gets the path to the file exported with the given relative path.
+   *
+   * This can be given by the `exports` property, but also considers `main` and
+   * `module` paths to be exported under the relative path `"."`.
+   */
+  string getExportedPath(string relativePath) {
+    result = MainModulePath::of(this, relativePath).getValue()
+  }
 
   /** Gets the path of a command defined for this package. */
   string getBin(string cmd) {
@@ -179,6 +194,18 @@ class PackageJson extends JsonObject {
    */
   Module getMainModule() {
     result = min(Module m, int prio | m.getFile() = resolveMainModule(this, prio) | m order by prio)
+  }
+
+  /**
+   * Gets the module exported under the given relative path.
+   *
+   * The main module is considered exported under the path `"."`.
+   */
+  Module getExportedModule(string relativePath) {
+    relativePath = "." and
+    result = this.getMainModule()
+    or
+    result.getFile() = MainModulePath::of(this, relativePath).resolve()
   }
 
   /**

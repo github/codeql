@@ -1,3 +1,12 @@
+## 0.3.2
+
+## 0.3.1
+
+### New Queries
+
+* Added a new experimental query, `rb/manually-checking-http-verb`, to detect cases when the HTTP verb for an incoming request is checked and then used as part of control flow.
+* Added a new experimental query, `rb/weak-params`, to detect cases when the rails strong parameters pattern isn't followed and values flow into persistent store writes.
+
 ## 0.3.0
 
 ### Breaking Changes

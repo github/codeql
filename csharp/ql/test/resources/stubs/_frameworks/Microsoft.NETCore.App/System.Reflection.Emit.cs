@@ -6,7 +6,7 @@ namespace System
     {
         namespace Emit
         {
-            // Generated from `System.Reflection.Emit.AssemblyBuilder` in `System.Reflection.Emit, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Reflection.Emit.AssemblyBuilder` in `System.Reflection.Emit, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class AssemblyBuilder : System.Reflection.Assembly
             {
                 public override string CodeBase { get => throw null; }
@@ -36,9 +36,8 @@ namespace System
                 public override System.Reflection.Assembly GetSatelliteAssembly(System.Globalization.CultureInfo culture) => throw null;
                 public override System.Reflection.Assembly GetSatelliteAssembly(System.Globalization.CultureInfo culture, System.Version version) => throw null;
                 public override System.Type GetType(string name, bool throwOnError, bool ignoreCase) => throw null;
-                public override bool GlobalAssemblyCache { get => throw null; }
                 public override System.Int64 HostContext { get => throw null; }
-                public override string ImageRuntimeVersion { get => throw null; }
+                public override bool IsCollectible { get => throw null; }
                 public override bool IsDefined(System.Type attributeType, bool inherit) => throw null;
                 public override bool IsDynamic { get => throw null; }
                 public override string Location { get => throw null; }
@@ -48,15 +47,15 @@ namespace System
                 public void SetCustomAttribute(System.Reflection.Emit.CustomAttributeBuilder customBuilder) => throw null;
             }
 
-            // Generated from `System.Reflection.Emit.AssemblyBuilderAccess` in `System.Reflection.Emit, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Reflection.Emit.AssemblyBuilderAccess` in `System.Reflection.Emit, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             [System.Flags]
-            public enum AssemblyBuilderAccess
+            public enum AssemblyBuilderAccess : int
             {
-                Run,
-                RunAndCollect,
+                Run = 1,
+                RunAndCollect = 9,
             }
 
-            // Generated from `System.Reflection.Emit.ConstructorBuilder` in `System.Reflection.Emit, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Reflection.Emit.ConstructorBuilder` in `System.Reflection.Emit, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class ConstructorBuilder : System.Reflection.ConstructorInfo
             {
                 public override System.Reflection.MethodAttributes Attributes { get => throw null; }
@@ -73,6 +72,7 @@ namespace System
                 public override object Invoke(System.Reflection.BindingFlags invokeAttr, System.Reflection.Binder binder, object[] parameters, System.Globalization.CultureInfo culture) => throw null;
                 public override object Invoke(object obj, System.Reflection.BindingFlags invokeAttr, System.Reflection.Binder binder, object[] parameters, System.Globalization.CultureInfo culture) => throw null;
                 public override bool IsDefined(System.Type attributeType, bool inherit) => throw null;
+                public override int MetadataToken { get => throw null; }
                 public override System.RuntimeMethodHandle MethodHandle { get => throw null; }
                 public override System.Reflection.Module Module { get => throw null; }
                 public override string Name { get => throw null; }
@@ -83,12 +83,13 @@ namespace System
                 public override string ToString() => throw null;
             }
 
-            // Generated from `System.Reflection.Emit.EnumBuilder` in `System.Reflection.Emit, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public class EnumBuilder : System.Type
+            // Generated from `System.Reflection.Emit.EnumBuilder` in `System.Reflection.Emit, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            public class EnumBuilder : System.Reflection.TypeInfo
             {
                 public override System.Reflection.Assembly Assembly { get => throw null; }
                 public override string AssemblyQualifiedName { get => throw null; }
                 public override System.Type BaseType { get => throw null; }
+                public System.Type CreateType() => throw null;
                 public System.Reflection.TypeInfo CreateTypeInfo() => throw null;
                 public override System.Type DeclaringType { get => throw null; }
                 public System.Reflection.Emit.FieldBuilder DefineLiteral(string literalName, object literalValue) => throw null;
@@ -120,6 +121,7 @@ namespace System
                 protected override bool HasElementTypeImpl() => throw null;
                 public override object InvokeMember(string name, System.Reflection.BindingFlags invokeAttr, System.Reflection.Binder binder, object target, object[] args, System.Reflection.ParameterModifier[] modifiers, System.Globalization.CultureInfo culture, string[] namedParameters) => throw null;
                 protected override bool IsArrayImpl() => throw null;
+                public override bool IsAssignableFrom(System.Reflection.TypeInfo typeInfo) => throw null;
                 protected override bool IsByRefImpl() => throw null;
                 public override bool IsByRefLike { get => throw null; }
                 protected override bool IsCOMObjectImpl() => throw null;
@@ -130,7 +132,6 @@ namespace System
                 public override bool IsSZArray { get => throw null; }
                 public override bool IsTypeDefinition { get => throw null; }
                 protected override bool IsValueTypeImpl() => throw null;
-                public override bool IsVariableBoundArray { get => throw null; }
                 public override System.Type MakeArrayType() => throw null;
                 public override System.Type MakeArrayType(int rank) => throw null;
                 public override System.Type MakeByRefType() => throw null;
@@ -146,7 +147,7 @@ namespace System
                 public override System.Type UnderlyingSystemType { get => throw null; }
             }
 
-            // Generated from `System.Reflection.Emit.EventBuilder` in `System.Reflection.Emit, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Reflection.Emit.EventBuilder` in `System.Reflection.Emit, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class EventBuilder
             {
                 public void AddOtherMethod(System.Reflection.Emit.MethodBuilder mdBuilder) => throw null;
@@ -157,7 +158,7 @@ namespace System
                 public void SetRemoveOnMethod(System.Reflection.Emit.MethodBuilder mdBuilder) => throw null;
             }
 
-            // Generated from `System.Reflection.Emit.FieldBuilder` in `System.Reflection.Emit, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Reflection.Emit.FieldBuilder` in `System.Reflection.Emit, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class FieldBuilder : System.Reflection.FieldInfo
             {
                 public override System.Reflection.FieldAttributes Attributes { get => throw null; }
@@ -168,6 +169,7 @@ namespace System
                 public override object[] GetCustomAttributes(bool inherit) => throw null;
                 public override object GetValue(object obj) => throw null;
                 public override bool IsDefined(System.Type attributeType, bool inherit) => throw null;
+                public override int MetadataToken { get => throw null; }
                 public override System.Reflection.Module Module { get => throw null; }
                 public override string Name { get => throw null; }
                 public override System.Type ReflectedType { get => throw null; }
@@ -178,8 +180,8 @@ namespace System
                 public override void SetValue(object obj, object val, System.Reflection.BindingFlags invokeAttr, System.Reflection.Binder binder, System.Globalization.CultureInfo culture) => throw null;
             }
 
-            // Generated from `System.Reflection.Emit.GenericTypeParameterBuilder` in `System.Reflection.Emit, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public class GenericTypeParameterBuilder : System.Type
+            // Generated from `System.Reflection.Emit.GenericTypeParameterBuilder` in `System.Reflection.Emit, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            public class GenericTypeParameterBuilder : System.Reflection.TypeInfo
             {
                 public override System.Reflection.Assembly Assembly { get => throw null; }
                 public override string AssemblyQualifiedName { get => throw null; }
@@ -221,6 +223,7 @@ namespace System
                 public override object InvokeMember(string name, System.Reflection.BindingFlags invokeAttr, System.Reflection.Binder binder, object target, object[] args, System.Reflection.ParameterModifier[] modifiers, System.Globalization.CultureInfo culture, string[] namedParameters) => throw null;
                 protected override bool IsArrayImpl() => throw null;
                 public override bool IsAssignableFrom(System.Type c) => throw null;
+                public override bool IsAssignableFrom(System.Reflection.TypeInfo typeInfo) => throw null;
                 protected override bool IsByRefImpl() => throw null;
                 public override bool IsByRefLike { get => throw null; }
                 protected override bool IsCOMObjectImpl() => throw null;
@@ -235,12 +238,12 @@ namespace System
                 public override bool IsSubclassOf(System.Type c) => throw null;
                 public override bool IsTypeDefinition { get => throw null; }
                 protected override bool IsValueTypeImpl() => throw null;
-                public override bool IsVariableBoundArray { get => throw null; }
                 public override System.Type MakeArrayType() => throw null;
                 public override System.Type MakeArrayType(int rank) => throw null;
                 public override System.Type MakeByRefType() => throw null;
                 public override System.Type MakeGenericType(params System.Type[] typeArguments) => throw null;
                 public override System.Type MakePointerType() => throw null;
+                public override int MetadataToken { get => throw null; }
                 public override System.Reflection.Module Module { get => throw null; }
                 public override string Name { get => throw null; }
                 public override string Namespace { get => throw null; }
@@ -255,7 +258,7 @@ namespace System
                 public override System.Type UnderlyingSystemType { get => throw null; }
             }
 
-            // Generated from `System.Reflection.Emit.MethodBuilder` in `System.Reflection.Emit, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Reflection.Emit.MethodBuilder` in `System.Reflection.Emit, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class MethodBuilder : System.Reflection.MethodInfo
             {
                 public override System.Reflection.MethodAttributes Attributes { get => throw null; }
@@ -277,7 +280,6 @@ namespace System
                 public override System.Reflection.ParameterInfo[] GetParameters() => throw null;
                 public bool InitLocals { get => throw null; set => throw null; }
                 public override object Invoke(object obj, System.Reflection.BindingFlags invokeAttr, System.Reflection.Binder binder, object[] parameters, System.Globalization.CultureInfo culture) => throw null;
-                public override bool IsConstructedGenericMethod { get => throw null; }
                 public override bool IsDefined(System.Type attributeType, bool inherit) => throw null;
                 public override bool IsGenericMethod { get => throw null; }
                 public override bool IsGenericMethodDefinition { get => throw null; }
@@ -285,6 +287,7 @@ namespace System
                 public override bool IsSecuritySafeCritical { get => throw null; }
                 public override bool IsSecurityTransparent { get => throw null; }
                 public override System.Reflection.MethodInfo MakeGenericMethod(params System.Type[] typeArguments) => throw null;
+                public override int MetadataToken { get => throw null; }
                 public override System.RuntimeMethodHandle MethodHandle { get => throw null; }
                 public override System.Reflection.Module Module { get => throw null; }
                 public override string Name { get => throw null; }
@@ -301,7 +304,7 @@ namespace System
                 public override string ToString() => throw null;
             }
 
-            // Generated from `System.Reflection.Emit.ModuleBuilder` in `System.Reflection.Emit, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Reflection.Emit.ModuleBuilder` in `System.Reflection.Emit, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class ModuleBuilder : System.Reflection.Module
             {
                 public override System.Reflection.Assembly Assembly { get => throw null; }
@@ -330,6 +333,7 @@ namespace System
                 public override System.Reflection.FieldInfo GetField(string name, System.Reflection.BindingFlags bindingAttr) => throw null;
                 public override System.Reflection.FieldInfo[] GetFields(System.Reflection.BindingFlags bindingFlags) => throw null;
                 public override int GetHashCode() => throw null;
+                protected override System.Reflection.MethodInfo GetMethodImpl(string name, System.Reflection.BindingFlags bindingAttr, System.Reflection.Binder binder, System.Reflection.CallingConventions callConvention, System.Type[] types, System.Reflection.ParameterModifier[] modifiers) => throw null;
                 public override System.Reflection.MethodInfo[] GetMethods(System.Reflection.BindingFlags bindingFlags) => throw null;
                 public override void GetPEKind(out System.Reflection.PortableExecutableKinds peKind, out System.Reflection.ImageFileMachine machine) => throw null;
                 public override System.Type GetType(string className) => throw null;
@@ -353,7 +357,7 @@ namespace System
                 public void SetCustomAttribute(System.Reflection.Emit.CustomAttributeBuilder customBuilder) => throw null;
             }
 
-            // Generated from `System.Reflection.Emit.PropertyBuilder` in `System.Reflection.Emit, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Reflection.Emit.PropertyBuilder` in `System.Reflection.Emit, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class PropertyBuilder : System.Reflection.PropertyInfo
             {
                 public void AddOtherMethod(System.Reflection.Emit.MethodBuilder mdBuilder) => throw null;
@@ -383,8 +387,8 @@ namespace System
                 public override void SetValue(object obj, object value, object[] index) => throw null;
             }
 
-            // Generated from `System.Reflection.Emit.TypeBuilder` in `System.Reflection.Emit, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public class TypeBuilder : System.Type
+            // Generated from `System.Reflection.Emit.TypeBuilder` in `System.Reflection.Emit, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            public class TypeBuilder : System.Reflection.TypeInfo
             {
                 public void AddInterfaceImplementation(System.Type interfaceType) => throw null;
                 public override System.Reflection.Assembly Assembly { get => throw null; }
@@ -459,6 +463,7 @@ namespace System
                 public override object InvokeMember(string name, System.Reflection.BindingFlags invokeAttr, System.Reflection.Binder binder, object target, object[] args, System.Reflection.ParameterModifier[] modifiers, System.Globalization.CultureInfo culture, string[] namedParameters) => throw null;
                 protected override bool IsArrayImpl() => throw null;
                 public override bool IsAssignableFrom(System.Type c) => throw null;
+                public override bool IsAssignableFrom(System.Reflection.TypeInfo typeInfo) => throw null;
                 protected override bool IsByRefImpl() => throw null;
                 public override bool IsByRefLike { get => throw null; }
                 protected override bool IsCOMObjectImpl() => throw null;
@@ -476,12 +481,12 @@ namespace System
                 public override bool IsSecurityTransparent { get => throw null; }
                 public override bool IsSubclassOf(System.Type c) => throw null;
                 public override bool IsTypeDefinition { get => throw null; }
-                public override bool IsVariableBoundArray { get => throw null; }
                 public override System.Type MakeArrayType() => throw null;
                 public override System.Type MakeArrayType(int rank) => throw null;
                 public override System.Type MakeByRefType() => throw null;
                 public override System.Type MakeGenericType(params System.Type[] typeArguments) => throw null;
                 public override System.Type MakePointerType() => throw null;
+                public override int MetadataToken { get => throw null; }
                 public override System.Reflection.Module Module { get => throw null; }
                 public override string Name { get => throw null; }
                 public override string Namespace { get => throw null; }

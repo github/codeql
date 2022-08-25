@@ -1,7 +1,6 @@
 package com.github.codeql
 
 import com.github.codeql.KotlinUsesExtractor.LocallyVisibleFunctionLabels
-import com.github.codeql.KotlinUsesExtractor.TypeResults
 import com.github.codeql.utils.versions.FileEntry
 import java.io.BufferedWriter
 import java.io.File

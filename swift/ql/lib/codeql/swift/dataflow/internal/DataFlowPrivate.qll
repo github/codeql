@@ -5,7 +5,6 @@ private import codeql.swift.controlflow.ControlFlowGraph
 private import codeql.swift.controlflow.CfgNodes
 private import codeql.swift.dataflow.Ssa
 private import codeql.swift.controlflow.BasicBlocks
-private import codeql.swift.dataflow.internal.SsaImplCommon as SsaImpl
 private import codeql.swift.dataflow.FlowSummary as FlowSummary
 private import codeql.swift.dataflow.internal.FlowSummaryImpl as FlowSummaryImpl
 
@@ -51,7 +50,7 @@ private class SsaDefinitionNodeImpl extends SsaDefinitionNode, NodeImpl {
 }
 
 private predicate localFlowSsaInput(Node nodeFrom, Ssa::Definition def, Ssa::Definition next) {
-  exists(BasicBlock bb, int i | SsaImpl::lastRefRedef(def, bb, i, next) |
+  exists(BasicBlock bb, int i | def.lastRefRedef(bb, i, next) |
     def.definesAt(_, bb, i) and
     def = nodeFrom.asDefinition()
   )
@@ -65,10 +64,7 @@ private module Cached {
     TExprNode(CfgNode n, Expr e) { hasExprNode(n, e) } or
     TSsaDefinitionNode(Ssa::Definition def) or
     TInoutReturnNode(ParamDecl param) { param.isInout() } or
-    TInOutUpdateNode(ParamDecl param, CallExpr call) {
-      param.isInout() and
-      call.getStaticTarget() = param.getDeclaringFunction()
-    } or
+    TInOutUpdateNode(Argument arg) { arg.getExpr() instanceof InOutExpr } or
     TSummaryNode(FlowSummary::SummarizedCallable c, FlowSummaryImpl::Private::SummaryNodeState state)
 
   private predicate hasExprNode(CfgNode n, Expr e) {
@@ -112,12 +108,20 @@ private module Cached {
       localFlowSsaInput(nodeFrom, def, nodeTo.asDefinition())
     )
     or
+    // flow through writes to inout parameters
     exists(ParamReturnKind kind, ExprCfgNode arg |
       arg = nodeFrom.(InOutUpdateNode).getCall(kind).asCall().getArgument(kind.getIndex()) and
       nodeTo.asDefinition().(Ssa::WriteDefinition).isInoutDef(arg)
     )
     or
+    // flow through `&` (inout argument)
     nodeFrom.asExpr() = nodeTo.asExpr().(InOutExpr).getSubExpr()
+    or
+    // flow through `try!` and similar constructs
+    nodeFrom.asExpr() = nodeTo.asExpr().(AnyTryExpr).getSubExpr()
+    or
+    // flow through `!`
+    nodeFrom.asExpr() = nodeTo.asExpr().(ForceValueExpr).getSubExpr()
   }
 
   /**
@@ -150,7 +154,7 @@ private module ParameterNodes {
     predicate isParameterOf(DataFlowCallable c, ParameterPosition pos) { none() }
   }
 
-  class NormalParameterNode extends ParameterNodeImpl, SsaDefinitionNode {
+  class NormalParameterNode extends ParameterNodeImpl, SsaDefinitionNodeImpl {
     ParamDecl param;
 
     NormalParameterNode() {
@@ -165,14 +169,14 @@ private module ParameterNodes {
     override string toStringImpl() { result = param.toString() }
 
     override predicate isParameterOf(DataFlowCallable c, ParameterPosition pos) {
-      exists(Callable f, int index |
-        c = TDataFlowFunc(f) and
-        f.getParam(index) = param and
-        pos = TPositionalParameter(index)
+      exists(Callable f | c = TDataFlowFunc(f) |
+        exists(int index | f.getParam(index) = param and pos = TPositionalParameter(index))
+        or
+        f.getSelfParam() = param and pos = TThisParameter()
       )
     }
 
-    override DataFlowCallable getEnclosingCallable() { isParameterOf(result, _) }
+    override DataFlowCallable getEnclosingCallable() { this.isParameterOf(result, _) }
   }
 }
 
@@ -203,11 +207,68 @@ abstract class ArgumentNode extends Node {
 
 private module ArgumentNodes {
   class NormalArgumentNode extends ExprNode, ArgumentNode {
-    NormalArgumentNode() { exists(CallExpr call | call.getAnArgument().getExpr() = this.asExpr()) }
+    NormalArgumentNode() { exists(DataFlowCall call | call.getAnArgument() = this.getCfgNode()) }
 
     override predicate argumentOf(DataFlowCall call, ArgumentPosition pos) {
-      call.asCall().getArgument(pos.(PositionalArgumentPosition).getIndex()).getExpr() =
-        this.asExpr()
+      call.getArgument(pos.(PositionalArgumentPosition).getIndex()) = this.getCfgNode()
+      or
+      pos = TThisArgument() and
+      call.getArgument(-1) = this.getCfgNode()
+    }
+  }
+
+  class PropertyGetterArgumentNode extends ExprNode, ArgumentNode {
+    private PropertyGetterCfgNode getter;
+
+    PropertyGetterArgumentNode() { getter.getBase() = this.getCfgNode() }
+
+    override predicate argumentOf(DataFlowCall call, ArgumentPosition pos) {
+      call.(PropertyGetterCall).getGetter() = getter and
+      pos = TThisArgument()
+    }
+  }
+
+  class SetterArgumentNode extends ExprNode, ArgumentNode {
+    private PropertySetterCfgNode setter;
+
+    SetterArgumentNode() {
+      setter.getBase() = this.getCfgNode() or
+      setter.getSource() = this.getCfgNode()
+    }
+
+    override predicate argumentOf(DataFlowCall call, ArgumentPosition pos) {
+      call.(PropertySetterCall).getSetter() = setter and
+      (
+        pos = TThisArgument() and
+        setter.getBase() = this.getCfgNode()
+        or
+        pos.(PositionalArgumentPosition).getIndex() = 0 and
+        setter.getSource() = this.getCfgNode()
+      )
+    }
+  }
+
+  class ObserverArgumentNode extends ExprNode, ArgumentNode {
+    private PropertyObserverCfgNode observer;
+
+    ObserverArgumentNode() {
+      observer.getBase() = this.getCfgNode()
+      or
+      // TODO: This should be an rvalue representing the `getBase` when
+      // `observer` a `didSet` observer.
+      observer.getSource() = this.getCfgNode()
+    }
+
+    override predicate argumentOf(DataFlowCall call, ArgumentPosition pos) {
+      call.(PropertySetterCall).getSetter() = observer and
+      (
+        pos = TThisArgument() and
+        observer.getBase() = this.getCfgNode()
+        or
+        // TODO: See the comment above for `didSet` observers.
+        pos.(PositionalArgumentPosition).getIndex() = 0 and
+        observer.getSource() = this.getCfgNode()
+      )
     }
   }
 }
@@ -281,23 +342,22 @@ private module OutNodes {
   }
 
   class InOutUpdateNode extends OutNode, TInOutUpdateNode, NodeImpl {
-    ParamDecl param;
-    CallExpr call;
+    Argument arg;
 
-    InOutUpdateNode() { this = TInOutUpdateNode(param, call) }
+    InOutUpdateNode() { this = TInOutUpdateNode(arg) }
 
     override DataFlowCall getCall(ReturnKind kind) {
-      result.asCall().getExpr() = call and
-      kind.(ParamReturnKind).getIndex() = param.getIndex()
+      result.asCall().getExpr() = arg.getApplyExpr() and
+      kind.(ParamReturnKind).getIndex() = arg.getIndex()
     }
 
     override DataFlowCallable getEnclosingCallable() {
       result = this.getCall(_).getEnclosingCallable()
     }
 
-    override Location getLocationImpl() { result = call.getLocation() }
+    override Location getLocationImpl() { result = arg.getLocation() }
 
-    override string toStringImpl() { result = param.toString() }
+    override string toStringImpl() { result = arg.toString() }
   }
 }
 

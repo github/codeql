@@ -1,3 +1,21 @@
+## 0.3.3
+
+### Minor Analysis Improvements
+
+* Improved analysis of the Android class `AsyncTask` so that data can properly flow through its methods according to the life-cycle steps described here: https://developer.android.com/reference/android/os/AsyncTask#the-4-steps.
+* Added a data-flow model for the `setProperty` method of `java.util.Properties`. Additional results may be found where relevant data is stored in and then retrieved from a `Properties` instance.
+
+## 0.3.2
+
+### New Features
+
+* The QL predicate `Expr::getUnderlyingExpr` has been added. It can be used to look through casts and not-null expressions and obtain the underlying expression to which they apply.
+
+### Minor Analysis Improvements
+
+* The JUnit5 version of `AssertNotNull` is now recognized, which removes related false positives in the nullness queries.
+* Added data flow models for `java.util.Scanner`.
+
 ## 0.3.1
 
 ### New Features
