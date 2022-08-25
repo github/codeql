@@ -66,16 +66,16 @@ class ScanfOutput extends Expr {
    */
   Access getAnAccess() {
     exists(Instruction dst |
-      this.bigStep(instr) = dst and
+      this.bigStep() = dst and
       dst.getAst() = result and
       valueNumber(dst) = valNum
     )
   }
 
-  private Instruction bigStep(Instruction i) {
-    result = this.smallStep(i)
+  private Instruction bigStep() {
+    result = this.smallStep(instr)
     or
-    exists(Instruction j | j = this.bigStep(i) | result = this.smallStep(j))
+    exists(Instruction i | i = this.bigStep() | result = this.smallStep(i))
   }
 
   private Instruction smallStep(Instruction i) {
