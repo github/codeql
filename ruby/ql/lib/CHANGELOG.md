@@ -7,8 +7,7 @@
 
 ### Minor Analysis Improvements
 
-* Most deprecated predicates/classes/modules that have been deprecated for over a year have been 
-deleted.
+* Most deprecated predicates/classes/modules that have been deprecated for over a year have been deleted.
 * Calls to `render` in Rails controllers and views are now recognized as HTTP
   response bodies.
 
