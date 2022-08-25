@@ -1,1 +1,1 @@
-| UncheckedCastInEquals.cs:7:17:7:27 | (...) ... | Equals() method does not seem to check argument type. |
+| UncheckedCastInEquals.cs:7:17:7:27 | (...) ... | Equals() method does not check argument type. |
