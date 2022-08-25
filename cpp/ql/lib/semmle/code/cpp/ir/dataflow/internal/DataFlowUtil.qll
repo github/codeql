@@ -1097,9 +1097,9 @@ private predicate simpleInstructionLocalFlowStep(Operand opFrom, Instruction iTo
   conversionFlow(opFrom, iTo, false)
   or
   iTo.(CopyInstruction).getSourceValueOperand() = opFrom
-  // or
-  // // Conflate references and values like in AST dataflow.
-  // iTo.(ReferenceDereferenceInstruction).getSourceAddressOperand() = opFrom
+  or
+  // Conflate references and values like in AST dataflow.
+  iTo.(ReferenceDereferenceInstruction).getSourceAddressOperand() = opFrom
 }
 
 private predicate simpleOperandLocalFlowStep(Instruction iFrom, Operand opTo) {
