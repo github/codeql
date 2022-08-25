@@ -1600,11 +1600,13 @@ open class KotlinFileExtractor(
         return result
     }
 
-    private fun findTopLevelFunctionOrWarn(functionFilter: String, type: String, warnAgainstElement: IrElement): IrFunction? {
+    private fun findTopLevelFunctionOrWarn(functionFilter: String, type: String, parameterTypes: Array<String>, warnAgainstElement: IrElement): IrFunction? {
 
         val fn = pluginContext.referenceFunctions(FqName(functionFilter))
-            .firstOrNull { it.owner.parentClassOrNull?.fqNameWhenAvailable?.asString() == type }
-            ?.owner
+            .firstOrNull { fnSymbol ->
+                fnSymbol.owner.parentClassOrNull?.fqNameWhenAvailable?.asString() == type &&
+                fnSymbol.owner.valueParameters.map { it.type.classFqName?.asString() }.toTypedArray() contentEquals parameterTypes
+            }?.owner
 
         if (fn != null) {
             if (fn.parentClassOrNull != null) {
@@ -1753,6 +1755,12 @@ open class KotlinFileExtractor(
             "DoubleArray" -> true
             "CharArray" -> true
             "BooleanArray" -> true
+            else -> false
+        }
+
+    private fun isGenericArrayType(typeName: String) =
+        when(typeName) {
+            "Array" -> true
             else -> false
         }
 
@@ -2178,7 +2186,19 @@ open class KotlinFileExtractor(
                     }
                 }
                 isFunction(target, "kotlin", "(some array type)", { isArrayType(it) }, "iterator") -> {
-                    findTopLevelFunctionOrWarn("kotlin.jvm.internal.iterator", "kotlin.jvm.internal.ArrayIteratorKt", c)?.let { iteratorFn ->
+                    val parentClass = target.parent
+                    if (parentClass !is IrClass) {
+                        logger.errorElement("Iterator parent is not a class", c)
+                        return
+                    }
+
+                    var typeFilter = if (isGenericArrayType(parentClass.name.asString())) {
+                        "kotlin.jvm.internal.ArrayIteratorKt"
+                    } else {
+                        "kotlin.jvm.internal.ArrayIteratorsKt"
+                    }
+
+                    findTopLevelFunctionOrWarn("kotlin.jvm.internal.iterator", typeFilter, arrayOf(parentClass.kotlinFqName.asString()), c)?.let { iteratorFn ->
                         val dispatchReceiver = c.dispatchReceiver
                         if (dispatchReceiver == null) {
                             logger.errorElement("No dispatch receiver found for array iterator call", c)
