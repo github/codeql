@@ -9,8 +9,7 @@
 
 ### Minor Analysis Improvements
 
-* Most deprecated predicates/classes/modules that have been deprecated for over a year have been 
-deleted.
+* Most deprecated predicates/classes/modules that have been deprecated for over a year have been deleted.
 
 ### Bug Fixes
 
