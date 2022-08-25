@@ -15,8 +15,7 @@ import csharp
 import DataFlow
 import JsonWebTokenHandlerLib
 
-from
-  TokenValidationParametersProperty p , CallableAlwaysReturnsTrueHigherPrecision e
+from TokenValidationParametersProperty p, CallableAlwaysReturnsTrueHigherPrecision e
 where e = p.getAnAssignedValue()
 select e, "JsonWebTokenHandler security-sensitive property $@ is being delegated to $@.", p,
   p.getQualifiedName().toString(), e, "a callable that always returns \"true\""

@@ -6,12 +6,11 @@ import DataFlow
  */
 class TokenValidationParametersPropertySensitiveValidation extends Property {
   TokenValidationParametersPropertySensitiveValidation() {
-    exists(Property p, Class c |
+    exists(Class c |
       c.hasQualifiedName("Microsoft.IdentityModel.Tokens.TokenValidationParameters")
     |
-      p = this and
-      c.getAProperty() = p and
-      p.getName() in [
+      c.getAProperty() = this and
+      this.getName() in [
           "ValidateIssuer", "ValidateAudience", "ValidateLifetime", "RequireExpirationTime",
           "RequireAudience"
         ]
@@ -34,8 +33,8 @@ class FalseValueFlowsToTokenValidationParametersPropertyWriteToBypassValidation 
 
   override predicate isSink(DataFlow::Node sink) {
     exists(Assignment a |
-      sink.asExpr() = a.getRValue() and
-      a.getLValue().(PropertyAccess).getProperty() instanceof TokenValidationParametersPropertySensitiveValidation
+      sink.asExpr() =
+        any(TokenValidationParametersPropertySensitiveValidation p).getAnAssignedValue()
     )
   }
 }
@@ -106,12 +105,11 @@ private class FlowsToTokenValidationResultIsValidCall extends DataFlow::Configur
  */
 class TokenValidationParametersProperty extends Property {
   TokenValidationParametersProperty() {
-    exists(Property p, Class c |
+    exists(Class c |
       c.hasQualifiedName("Microsoft.IdentityModel.Tokens.TokenValidationParameters")
     |
-      p = this and
-      c.getAProperty() = p and
-      p.getName() in [
+      c.getAProperty() = this and
+      this.getName() in [
           "SignatureValidator", "TokenReplayValidator", "AlgorithmValidator", "AudienceValidator",
           "IssuerSigningKeyValidator", "LifetimeValidator"
         ]
@@ -153,9 +151,7 @@ class CallableAlwaysReturnsTrue extends Callable {
     or
     lambdaExprReturnsOnlyLiteralTrue(this)
     or
-    exists(AnonymousFunctionExpr le, Call call, Callable callable |
-      this = le
-    |
+    exists(AnonymousFunctionExpr le, Call call, Callable callable | this = le |
       callable.getACall() = call and
       call = le.getExpressionBody() and
       callableHasAReturnStmtAndAlwaysReturnsTrue(callable)
@@ -231,13 +227,13 @@ class CallableAlwaysReturnsParameter0 extends CallableReturnsStringAndArg0IsStri
 class CallableAlwaysReturnsParameter0MayThrowExceptions extends CallableReturnsStringAndArg0IsString {
   CallableAlwaysReturnsParameter0MayThrowExceptions() {
     forex(Expr ret | this.canReturn(ret) |
-    ret = this.getParameter(0).getAnAccess()
-    or
-    exists(CallableAlwaysReturnsParameter0MayThrowExceptions c |
-      ret = c.getACall() and
-      ret.(Call).getArgument(0) = this.getParameter(0).getAnAccess()
+      ret = this.getParameter(0).getAnAccess()
+      or
+      exists(CallableAlwaysReturnsParameter0MayThrowExceptions c |
+        ret = c.getACall() and
+        ret.(Call).getArgument(0) = this.getParameter(0).getAnAccess()
+      )
     )
-  )
   }
 }
 
