@@ -1325,7 +1325,7 @@ test.cpp:
 #  176|     r176_3(int)            = Constant[2]                  : 
 #  176|         valnum = r176_3, r178_3
 #  176|     r176_4(int)            = Call[add]                    : func:r176_1, 0:r176_2, 1:r176_3
-#  176|         valnum = r176_4, r178_4
+#  176|         valnum = unique
 #  177|     r177_1(glval<unknown>) = FunctionAddress[add]         : 
 #  177|         valnum = unique
 #  177|     r177_2(int)            = Constant[3]                  : 
@@ -1341,7 +1341,7 @@ test.cpp:
 #  178|     r178_3(int)            = Constant[2]                  : 
 #  178|         valnum = r176_3, r178_3
 #  178|     r178_4(int)            = Call[add]                    : func:r178_1, 0:r178_2, 1:r178_3
-#  178|         valnum = r176_4, r178_4
+#  178|         valnum = unique
 #  179|     v179_1(void)           = NoOp                         : 
 #  165|     v165_13(void)          = ReturnIndirection[dst]       : &:r165_7, m171_11
 #  165|     v165_14(void)          = ReturnIndirection[src]       : &:r165_11, m165_12
