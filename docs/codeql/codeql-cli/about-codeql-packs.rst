@@ -15,7 +15,7 @@ There are two types of CodeQL packs: query packs and library packs.
 You can use the package management commands in the CodeQL CLI to create CodeQL packs, add dependencies to packs, and install or update dependencies. For more information, see ":ref:`Creating and working with CodeQL packs <creating-and-working-with-codeql-packs>`." You can also publish and download CodeQL packs using the CodeQL CLI. For more information, see ":doc:`Publishing and using CodeQL packs <publishing-and-using-codeql-packs>`."
 
 
-The standard CodeQL packages for all supported languages are published in the `GitHub Container registry <https://github.com/orgs/codeql/packages>`__.`
+The standard CodeQL packages for all supported languages are published in the `GitHub Container registry <https://github.com/orgs/codeql/packages>`__.
 The `CodeQL repository <https://github.com/github/codeql>`__ contains sources for the standard CodeQL packs for all supported languages.
 
 .. _codeql-pack-structure:
@@ -209,7 +209,7 @@ The ``codeql/cpp-all`` dependency is locked to version 0.1.4. The ``my-user/my-l
 Examples of custom CodeQL packs
 -------------------------------
 
-When you write custom queries or tests, you should save them in custom CodeQL packs. For simplicity, try to organize each pack logically. For more information, see `CodeQL pack structure <#codeql-pack-structure>`__. Save files for queries and tests in separate packs and, where possible, organize custom packs into specific folders for each target language. This is particuarly useful if you intend to publish your CodeQL packs so they can be shared with others or used in GitHub `Code scanning <https://docs.github.com/en/code-security/secure-coding/automatically-scanning-your-code-for-vulnerabilities-and-errors/about-code-scanning>`__.
+When you write custom queries or tests, you should save them in custom CodeQL packs. For simplicity, try to organize each pack logically. For more information, see ""`CodeQL pack structure <#codeql-pack-structure>`__." Save files for queries and tests in separate packs and, where possible, organize custom packs into specific folders for each target language. This is particuarly useful if you intend to publish your CodeQL packs so they can be shared with others or used in GitHub `Code scanning <https://docs.github.com/en/code-security/secure-coding/automatically-scanning-your-code-for-vulnerabilities-and-errors/about-code-scanning>`__.
 
 CodeQL packs for custom libraries
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
