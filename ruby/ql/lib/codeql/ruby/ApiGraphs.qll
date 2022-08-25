@@ -606,11 +606,20 @@ module API {
       result = useCandRev() and
       t.start()
       or
-      exists(TypeTracker t2, DataFlow::LocalSourceNode mid, TypeBackTracker tb |
+      exists(TypeTracker t2, DataFlow::LocalSourceNode mid |
         mid = trackUseNode(src, t2) and
-        result = mid.track(t2, t) and
-        pragma[only_bind_out](result) = useCandRev(tb) and
-        pragma[only_bind_out](t) = pragma[only_bind_out](tb).getACompatibleTypeTracker()
+        result = useNodeStep(mid, t2, t)
+      )
+    }
+
+    pragma[nomagic]
+    private DataFlow::Node useNodeStep(
+      DataFlow::LocalSourceNode mid, TypeTracker tmid, TypeTracker t
+    ) {
+      exists(TypeBackTracker tb |
+        result = mid.track(tmid, t) and
+        pragma[only_bind_into](result) = useCandRev(pragma[only_bind_into](tb)) and
+        pragma[only_bind_out](t) = pragma[only_bind_into](tb).getACompatibleTypeTracker()
       )
     }
 
