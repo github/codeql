@@ -47,7 +47,7 @@ class RealmStore extends Stored {
     exists(ClassDecl c, AbstractFunctionDecl f, CallExpr call |
       c.getName() = "Realm" and
       c.getAMember() = f and
-      f.getName() = ["add(_:update:)"] and
+      f.getName() = "add(_:update:)" and
       call.getFunction().(ApplyExpr).getStaticTarget() = f and
       call.getArgument(0).getExpr() = this
     )
@@ -56,7 +56,7 @@ class RealmStore extends Stored {
     exists(ClassDecl c, AbstractFunctionDecl f, CallExpr call |
       c.getName() = "Realm" and
       c.getAMember() = f and
-      f.getName() = ["create(_:value:update:)"] and
+      f.getName() = "create(_:value:update:)" and
       call.getFunction().(ApplyExpr).getStaticTarget() = f and
       call.getArgument(1).getExpr() = this
     )
