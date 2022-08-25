@@ -11,17 +11,20 @@ edges
 | test.c:137:13:137:16 | call to rand | test.c:139:10:139:10 | r |
 | test.c:155:22:155:25 | call to rand | test.c:157:9:157:9 | r |
 | test.c:155:22:155:27 | (unsigned int)... | test.c:157:9:157:9 | r |
-| test.cpp:6:5:6:12 | ReturnValue | test.cpp:24:11:24:18 | call to get_rand |
-| test.cpp:8:9:8:12 | call to rand | test.cpp:6:5:6:12 | ReturnValue |
-| test.cpp:13:2:13:6 | * ... [post update] | test.cpp:30:13:30:14 | & ... [post update] |
-| test.cpp:13:10:13:13 | call to rand | test.cpp:13:2:13:6 | * ... [post update] |
-| test.cpp:13:10:13:13 | call to rand | test.cpp:30:13:30:14 | & ... [post update] |
-| test.cpp:18:2:18:5 | (reference dereference) [post update] | test.cpp:36:13:36:13 | r [post update] |
-| test.cpp:18:9:18:12 | call to rand | test.cpp:18:2:18:5 | (reference dereference) [post update] |
-| test.cpp:18:9:18:12 | call to rand | test.cpp:36:13:36:13 | r [post update] |
-| test.cpp:24:11:24:18 | call to get_rand | test.cpp:25:7:25:7 | r |
-| test.cpp:30:13:30:14 | & ... [post update] | test.cpp:31:7:31:7 | r |
-| test.cpp:36:13:36:13 | r [post update] | test.cpp:37:7:37:7 | r |
+| test.cpp:6:5:6:12 | VariableAddress indirection | test.cpp:25:7:25:7 | r |
+| test.cpp:8:9:8:12 | call to rand | test.cpp:6:5:6:12 | VariableAddress indirection |
+| test.cpp:11:21:11:24 | Load indirection | test.cpp:30:13:30:14 | get_rand2 output argument |
+| test.cpp:13:10:13:13 | call to rand | test.cpp:11:21:11:24 | Load indirection |
+| test.cpp:16:21:16:24 | Load indirection | test.cpp:36:13:36:13 | get_rand3 output argument |
+| test.cpp:18:9:18:12 | call to rand | test.cpp:16:21:16:24 | Load indirection |
+| test.cpp:30:13:30:14 | get_rand2 output argument | test.cpp:31:7:31:7 | r |
+| test.cpp:36:13:36:13 | get_rand3 output argument | test.cpp:37:7:37:7 | r |
+| test.cpp:71:23:71:31 | buf_start indirection | test.cpp:75:9:75:11 | len |
+| test.cpp:71:40:71:46 | buf_end indirection | test.cpp:75:9:75:11 | len |
+| test.cpp:80:50:80:53 | call to rand | test.cpp:81:14:81:16 | buf indirection |
+| test.cpp:80:50:80:53 | call to rand | test.cpp:81:19:81:30 | ... + ... indirection |
+| test.cpp:81:14:81:16 | buf indirection | test.cpp:71:23:71:31 | buf_start indirection |
+| test.cpp:81:19:81:30 | ... + ... indirection | test.cpp:71:40:71:46 | buf_end indirection |
 | test.cpp:86:10:86:13 | call to rand | test.cpp:90:10:90:10 | x |
 | test.cpp:98:10:98:13 | call to rand | test.cpp:102:10:102:10 | x |
 | test.cpp:137:10:137:13 | call to rand | test.cpp:146:9:146:9 | y |
@@ -57,18 +60,23 @@ nodes
 | test.c:155:22:155:25 | call to rand | semmle.label | call to rand |
 | test.c:155:22:155:27 | (unsigned int)... | semmle.label | (unsigned int)... |
 | test.c:157:9:157:9 | r | semmle.label | r |
-| test.cpp:6:5:6:12 | ReturnValue | semmle.label | ReturnValue |
+| test.cpp:6:5:6:12 | VariableAddress indirection | semmle.label | VariableAddress indirection |
 | test.cpp:8:9:8:12 | call to rand | semmle.label | call to rand |
-| test.cpp:13:2:13:6 | * ... [post update] | semmle.label | * ... [post update] |
+| test.cpp:11:21:11:24 | Load indirection | semmle.label | Load indirection |
 | test.cpp:13:10:13:13 | call to rand | semmle.label | call to rand |
-| test.cpp:18:2:18:5 | (reference dereference) [post update] | semmle.label | (reference dereference) [post update] |
+| test.cpp:16:21:16:24 | Load indirection | semmle.label | Load indirection |
 | test.cpp:18:9:18:12 | call to rand | semmle.label | call to rand |
-| test.cpp:24:11:24:18 | call to get_rand | semmle.label | call to get_rand |
 | test.cpp:25:7:25:7 | r | semmle.label | r |
-| test.cpp:30:13:30:14 | & ... [post update] | semmle.label | & ... [post update] |
+| test.cpp:30:13:30:14 | get_rand2 output argument | semmle.label | get_rand2 output argument |
 | test.cpp:31:7:31:7 | r | semmle.label | r |
-| test.cpp:36:13:36:13 | r [post update] | semmle.label | r [post update] |
+| test.cpp:36:13:36:13 | get_rand3 output argument | semmle.label | get_rand3 output argument |
 | test.cpp:37:7:37:7 | r | semmle.label | r |
+| test.cpp:71:23:71:31 | buf_start indirection | semmle.label | buf_start indirection |
+| test.cpp:71:40:71:46 | buf_end indirection | semmle.label | buf_end indirection |
+| test.cpp:75:9:75:11 | len | semmle.label | len |
+| test.cpp:80:50:80:53 | call to rand | semmle.label | call to rand |
+| test.cpp:81:14:81:16 | buf indirection | semmle.label | buf indirection |
+| test.cpp:81:19:81:30 | ... + ... indirection | semmle.label | ... + ... indirection |
 | test.cpp:86:10:86:13 | call to rand | semmle.label | call to rand |
 | test.cpp:90:10:90:10 | x | semmle.label | x |
 | test.cpp:98:10:98:13 | call to rand | semmle.label | call to rand |
@@ -107,6 +115,7 @@ subpaths
 | test.cpp:25:7:25:7 | r | test.cpp:8:9:8:12 | call to rand | test.cpp:25:7:25:7 | r | $@ flows to here and is used in arithmetic, potentially causing an overflow. | test.cpp:8:9:8:12 | call to rand | Uncontrolled value |
 | test.cpp:31:7:31:7 | r | test.cpp:13:10:13:13 | call to rand | test.cpp:31:7:31:7 | r | $@ flows to here and is used in arithmetic, potentially causing an overflow. | test.cpp:13:10:13:13 | call to rand | Uncontrolled value |
 | test.cpp:37:7:37:7 | r | test.cpp:18:9:18:12 | call to rand | test.cpp:37:7:37:7 | r | $@ flows to here and is used in arithmetic, potentially causing an overflow. | test.cpp:18:9:18:12 | call to rand | Uncontrolled value |
+| test.cpp:75:9:75:11 | len | test.cpp:80:50:80:53 | call to rand | test.cpp:75:9:75:11 | len | $@ flows to here and is used in arithmetic, potentially causing an overflow. | test.cpp:80:50:80:53 | call to rand | Uncontrolled value |
 | test.cpp:90:10:90:10 | x | test.cpp:86:10:86:13 | call to rand | test.cpp:90:10:90:10 | x | $@ flows to here and is used in arithmetic, potentially causing an overflow. | test.cpp:86:10:86:13 | call to rand | Uncontrolled value |
 | test.cpp:102:10:102:10 | x | test.cpp:98:10:98:13 | call to rand | test.cpp:102:10:102:10 | x | $@ flows to here and is used in arithmetic, potentially causing an overflow. | test.cpp:98:10:98:13 | call to rand | Uncontrolled value |
 | test.cpp:146:9:146:9 | y | test.cpp:137:10:137:13 | call to rand | test.cpp:146:9:146:9 | y | $@ flows to here and is used in arithmetic, potentially causing an overflow. | test.cpp:137:10:137:13 | call to rand | Uncontrolled value |
