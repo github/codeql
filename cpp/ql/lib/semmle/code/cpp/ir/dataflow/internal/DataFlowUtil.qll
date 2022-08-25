@@ -131,12 +131,20 @@ class Node extends TIRDataFlowNode {
    */
   Expr asExpr() { result = this.(ExprNode).getExpr() }
 
+  /**
+   * Gets the non-conversion expression that's indirectly tracked by this node
+   * under `index` number of indirections.
+   */
   Expr asIndirectExpr(int index) {
     exists(Operand operand | hasOperandAndIndex(this, operand, index) |
       result = operand.getDef().getUnconvertedResultExpression()
     )
   }
 
+  /**
+   * Gets the non-conversion expression that's indirectly tracked by this node
+   * behind a number of indirections.
+   */
   Expr asIndirectExpr() { result = this.asIndirectExpr(_) }
 
   /**
@@ -145,12 +153,20 @@ class Node extends TIRDataFlowNode {
    */
   Expr asConvertedExpr() { result = this.(ExprNode).getConvertedExpr() }
 
+  /**
+   * Gets the expression that's indirectly tracked by this node
+   * behind `index` number of indirections.
+   */
   Expr asIndirectConvertedExpr(int index) {
     exists(Operand operand | hasOperandAndIndex(this, operand, index) |
       result = operand.getDef().getConvertedResultExpression()
     )
   }
 
+  /**
+   * Gets the expression that's indirectly tracked by this node behind a
+   * number of indirections.
+   */
   Expr asIndirectConvertedExpr() { result = this.asIndirectConvertedExpr(_) }
 
   /**
@@ -162,26 +178,76 @@ class Node extends TIRDataFlowNode {
    */
   Expr asDefiningArgument() { result = this.asDefiningArgument(_) }
 
+  /**
+   * Gets the argument that defines this `DefinitionByReferenceNode`, if any.
+   *
+   * Unlike `Node::asDefiningArgument/0`, this predicate gets the node representing
+   * the value of the `index`'th indirection after leaving a function. For example,
+   * in:
+   * ```cpp
+   * void f(int**);
+   * ...
+   * int** x = ...;
+   * f(x);
+   * ```
+   * The node `n` such that `n.asDefiningArgument(1)` is the argument `x` will
+   * contain the value of `*x` after `f` has returned, and the node `n` such that
+   * `n.asDefiningArgument(2)` is the argument `x` will contain the value of `**x`
+   * after the `f` has returned.
+   */
   Expr asDefiningArgument(int index) {
-    this.(DefinitionByReferenceNode).getIndex() = index and
+    // Subtract one because `DefinitionByReferenceNode` is defined to be in
+    // the range `[0 ... n - 1]` for some `n` instead of `[1 ... n]`.
+    this.(DefinitionByReferenceNode).getIndex() = index - 1 and
     result = this.(DefinitionByReferenceNode).getArgument()
   }
 
+  /**
+   * Gets the the argument going into a function for a node that represents
+   * the indirect value of the argument after `index` loads. For example, in:
+   * ```cpp
+   * void f(int**);
+   * ...
+   * int** x = ...;
+   * f(x);
+   * ```
+   * The node `n` such that `n.asIndirectArgument(1)` represents the value of
+   * `*x` going into `f`, and the node `n` such that `n.asIndirectArgument(2)`
+   * represents the value of `**x` going into `f`.
+   */
   Expr asIndirectArgument(int index) {
     this.(SideEffectOperandNode).getIndex() = index and
     result = this.(SideEffectOperandNode).getArgument()
   }
 
+  /**
+   * Gets the the argument going into a function for a node that represents
+   * the indirect value of the argument after any non-zero number of loads.
+   */
   Expr asIndirectArgument() { result = this.asIndirectArgument(_) }
 
+  /** Gets the positional parameter corresponding to this node, if any. */
   Parameter asParameter() { result = asParameter(0) }
 
-  /** Gets the positional parameter corresponding to this node, if any. */
-  Parameter asParameter(int ind) {
-    ind = 0 and
+  /**
+   * Gets the positional parameter corresponding to the node that represents
+   * the value of the parameter after `index` number of loads, if any. For
+   * example, in:
+   * ```cpp
+   * void f(int** x) { ... }
+   * ```
+   * - The node `n` such that `n.asParameter(0)` is the parameter `x` represents
+   * the value of `x`.
+   * - The node `n` such that `n.asParameter(1)` is the parameter `x` represents
+   * the value of `*x`.
+   * The node `n` such that `n.asParameter(2)` is the parameter `x` represents
+   * the value of `**x`.
+   */
+  Parameter asParameter(int index) {
+    index = 0 and
     result = this.(ExplicitParameterNode).getParameter()
     or
-    this.(IndirectParameterNode).getIndex() = ind and
+    this.(IndirectParameterNode).getIndex() = index and
     result = this.(IndirectParameterNode).getParameter()
   }
 
@@ -261,7 +327,6 @@ class InstructionNode extends Node, TInstructionNode {
     // This predicate is overridden in subclasses. This default implementation
     // does not use `Instruction.toString` because that's expensive to compute.
     result = this.getInstruction().getOpcode().toString()
-    // result = this.getInstruction().getDumpString()
   }
 }
 
@@ -284,9 +349,17 @@ class OperandNode extends Node, TOperandNode {
 
   final override Location getLocationImpl() { result = op.getLocation() }
 
-  override string toStringImpl() { result = this.getOperand().toString() }
+  override string toStringImpl() {
+    // Instructions have a better `toString` than operands.
+    result = instructionNode(this.getOperand().getDef()).toStringImpl()
+  }
 }
 
+/**
+ * INTERNAL: do not use.
+ *
+ * The node representing the value of a field after it has been updated.
+ */
 class PostFieldUpdateNode extends TPostFieldUpdateNode, PartialDefinitionNode {
   int index;
   FieldAddress fieldAddress;
@@ -306,6 +379,8 @@ class PostFieldUpdateNode extends TPostFieldUpdateNode, PartialDefinitionNode {
   int getIndex() { result = index }
 
   override Node getPreUpdateNode() {
+    // + 1 because we're storing into an lvalue, and the original node should be the rvalue of
+    // the same address.
     hasOperandAndIndex(result, pragma[only_bind_into](fieldAddress).getObjectAddressOperand(),
       index + 1)
   }
@@ -357,6 +432,11 @@ class SsaPhiNode extends Node, TSsaPhiNode {
   override string toStringImpl() { result = "Phi" }
 }
 
+/**
+ * INTERNAL: do not use.
+ *
+ * A node representing a value after leaving a function.
+ */
 class SideEffectOperandNode extends Node, IndirectOperand {
   CallInstruction call;
   int argumentIndex;
@@ -378,12 +458,15 @@ class SideEffectOperandNode extends Node, IndirectOperand {
   Expr getArgument() { result = call.getArgument(argumentIndex).getUnconvertedResultExpression() }
 }
 
+/**
+ * INTERNAL: do not use.
+ *
+ * A node representing an indirection of a parameter.
+ */
 class IndirectParameterNode extends Node, IndirectInstruction {
   InitializeParameterInstruction init;
 
   IndirectParameterNode() { this.getInstruction() = init }
-
-  InitializeParameterInstruction getInitializeParameterInstruction() { result = init }
 
   int getArgumentIndex() { init.hasIndex(result) }
 
@@ -404,6 +487,12 @@ class IndirectParameterNode extends Node, IndirectInstruction {
   }
 }
 
+/**
+ * INTERNAL: do not use.
+ *
+ * A node representing the indirection of a value that is
+ * about to be returned from a function.
+ */
 class IndirectReturnNode extends IndirectOperand {
   IndirectReturnNode() {
     this.getOperand() = any(ReturnIndirectionInstruction ret).getSourceAddressOperand()
@@ -418,6 +507,12 @@ class IndirectReturnNode extends IndirectOperand {
   override IRType getType() { result instanceof IRVoidType }
 }
 
+/**
+ * INTERNAL: do not use.
+ *
+ * A node representing the indirection of a value after it
+ * has been returned from a function.
+ */
 class IndirectArgumentOutNode extends Node, TIndirectArgumentOutNode, PostUpdateNode {
   ArgumentOperand operand;
   int index;
@@ -468,11 +563,18 @@ predicate indirectReturnOutNodeInstruction0(CallInstruction call, Instruction in
   instructionForfullyConvertedCall(instr, call)
 }
 
+/**
+ * INTERNAL: do not use.
+ *
+ * A node representing the value of a function call.
+ */
 class IndirectReturnOutNode extends Node {
   CallInstruction call;
   int index;
 
   IndirectReturnOutNode() {
+    // Annoyingly, we need to pick the fully converted value as the output of the function to
+    // make flow through in the shared dataflow library work correctly.
     exists(Operand operand |
       indirectReturnOutNodeOperand0(call, operand, index) and
       hasOperandAndIndex(this, operand, index)
@@ -489,6 +591,12 @@ class IndirectReturnOutNode extends Node {
   int getIndex() { result = index }
 }
 
+/**
+ * INTERNAL: Do not use.
+ *
+ * A node that represents the indirect value of an operand in the IR
+ * after `index` number of loads.
+ */
 class IndirectOperand extends Node, TIndirectOperand {
   Operand operand;
   int index;
@@ -513,6 +621,12 @@ class IndirectOperand extends Node, TIndirectOperand {
   }
 }
 
+/**
+ * INTERNAL: Do not use.
+ *
+ * A node that represents the indirect value of an instruction in the IR
+ * after `index` number of loads.
+ */
 class IndirectInstruction extends Node, TIndirectInstruction {
   Instruction instr;
   int index;
@@ -543,17 +657,27 @@ private predicate isFullyConvertedArgument(Expr e) {
 
 private predicate isFullyConvertedCall(Expr e) { e = any(Call call).getFullyConverted() }
 
+/** Holds if `Node::asExpr` should map an some operand node to `e`. */
 private predicate convertedExprMustBeOperand(Expr e) {
   isFullyConvertedArgument(e)
   or
   isFullyConvertedCall(e)
 }
 
+/** Holds if `node` is an `OperandNode` that should map `node.asExpr()` to `e`. */
 predicate exprNodeShouldBeOperand(Node node, Expr e) {
   e = node.asOperand().getDef().getConvertedResultExpression() and
   convertedExprMustBeOperand(e)
 }
 
+/**
+ * Holds if `load` is a `LoadInstruction` that is the result of evaluating `e`
+ * and `node` is an `IndirctOperandNode` that should map `node.asExpr()` to `e`.
+ * 
+ * We map `e` to `node.asExpr()` when `node` semantically represents the
+ * same value as `load`. A subsequent flow step will flow `node` to
+ * the `LoadInstruction`.
+ */
 private predicate exprNodeShouldBeIndirectOperand(IndirectOperand node, Expr e, LoadInstruction load) {
   node.getIndex() = 1 and
   e = load.getConvertedResultExpression() and
@@ -561,6 +685,7 @@ private predicate exprNodeShouldBeIndirectOperand(IndirectOperand node, Expr e, 
   not convertedExprMustBeOperand(e)
 }
 
+/** Holds if `node` should be an instruction node that maps `node.asExpr()` to `e`. */
 predicate exprNodeShouldBeInstruction(Node node, Expr e) {
   e = node.asInstruction().getConvertedResultExpression() and
   not exprNodeShouldBeOperand(_, e) and
@@ -573,7 +698,7 @@ private class ExprNodeBase extends Node {
   Expr getExpr() { none() } // overridden by subclasses
 }
 
-class InstructionExprNode extends ExprNodeBase, InstructionNode {
+private class InstructionExprNode extends ExprNodeBase, InstructionNode {
   InstructionExprNode() { exprNodeShouldBeInstruction(this, _) }
 
   final override Expr getConvertedExpr() { exprNodeShouldBeInstruction(this, result) }
@@ -583,7 +708,7 @@ class InstructionExprNode extends ExprNodeBase, InstructionNode {
   final override string toStringImpl() { result = this.getConvertedExpr().toString() }
 }
 
-class OperandExprNode extends ExprNodeBase, OperandNode {
+private class OperandExprNode extends ExprNodeBase, OperandNode {
   OperandExprNode() { exprNodeShouldBeOperand(this, _) }
 
   final override Expr getConvertedExpr() { exprNodeShouldBeOperand(this, result) }
@@ -593,6 +718,8 @@ class OperandExprNode extends ExprNodeBase, OperandNode {
   }
 
   final override string toStringImpl() {
+    // Avoid generating multiple `toString` results for `ArgumentNode`s
+    // since they have a better `toString`.
     result = this.(ArgumentNode).toStringImpl()
     or
     not this instanceof ArgumentNode and
@@ -600,7 +727,7 @@ class OperandExprNode extends ExprNodeBase, OperandNode {
   }
 }
 
-class IndirectOperandExprNode extends ExprNodeBase, IndirectOperand {
+private class IndirectOperandExprNode extends ExprNodeBase, IndirectOperand {
   LoadInstruction load;
 
   IndirectOperandExprNode() { exprNodeShouldBeIndirectOperand(this, _, load) }
@@ -974,11 +1101,9 @@ private predicate simpleInstructionLocalFlowStep(Operand opFrom, Instruction iTo
   conversionFlow(opFrom, iTo, false)
   or
   iTo.(CopyInstruction).getSourceValueOperand() = opFrom
-  or
-  iTo.(PhiInstruction).getAnInputOperand() = opFrom
-  or
-  // Conflate references and values like in AST dataflow.
-  iTo.(ReferenceDereferenceInstruction).getSourceAddressOperand() = opFrom
+  // or
+  // // Conflate references and values like in AST dataflow.
+  // iTo.(ReferenceDereferenceInstruction).getSourceAddressOperand() = opFrom
 }
 
 private predicate simpleOperandLocalFlowStep(Instruction iFrom, Operand opTo) {
