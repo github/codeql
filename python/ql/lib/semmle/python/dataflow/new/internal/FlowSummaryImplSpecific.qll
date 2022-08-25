@@ -71,9 +71,6 @@ predicate negativeSummaryElement(FlowSummary::SummarizedCallable c, boolean gene
  * This covers all the Python-specific components of a flow summary.
  */
 SummaryComponent interpretComponentSpecific(AccessPathToken c) {
-  c = "Argument[_]" and // Ruby has this
-  result = FlowSummary::SummaryComponent::argument(any(ParameterPosition pos | pos.isPositional(_)))
-  or
   c = "ListElement" and
   result = FlowSummary::SummaryComponent::listElement()
 }
