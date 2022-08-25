@@ -7,8 +7,7 @@
 
 ### Minor Analysis Improvements
 
-* All deprecated predicates/classes/modules that have been deprecated for over a year have been 
-deleted.
+* All deprecated predicates/classes/modules that have been deprecated for over a year have been deleted.
 
 ## 0.3.3
 
