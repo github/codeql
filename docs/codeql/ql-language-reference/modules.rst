@@ -140,7 +140,7 @@ Parameterised modules
 
 Parameterised modules are QL's approach to generic programming.
 Similar to explicit modules, parameterised modules are defined within other modules using the keywork ``module``.
-In addition to the module name, parameterised modules define one or more parameters between the name and the module body.
+In addition to the module name, parameterised modules declare one or more parameters between the name and the module body.
 
 For example, consider the module ``ApplyFooThenBar``, which takes two predicate parameters and defines a new predicate
 that applies them one after the other:
