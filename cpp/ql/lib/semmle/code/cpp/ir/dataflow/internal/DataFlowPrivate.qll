@@ -194,6 +194,7 @@ class ReturnIndirectionNode extends IndirectReturnNode, ReturnNode {
 }
 
 private Operand fullyConvertedCallStep(Operand op) {
+  not exists(getANonConversionUse(op)) and
   exists(Instruction instr |
     conversionFlow(op, instr, _) and
     result = getAUse(instr)

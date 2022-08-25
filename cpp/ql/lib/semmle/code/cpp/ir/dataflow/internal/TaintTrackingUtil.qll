@@ -29,31 +29,23 @@ predicate localAdditionalTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeT
   or
   modeledTaintStep(nodeFrom, nodeTo)
   or
+  // Flow from `op` to `*op`.
   exists(Operand operand, int index |
-    hasOperandAndIndex(nodeFrom, operand, index) and
-    hasOperandAndIndex(nodeTo, operand, index - 1)
+    nodeHasOperand(nodeFrom, operand, index) and
+    nodeHasOperand(nodeTo, operand, index - 1)
   )
   or
-  exists(Operand operand |
-    hasOperandAndIndex(nodeFrom, operand, 1) and
-    nodeTo.asOperand() = operand
-  )
-  or
+  // Flow from `instr` to `*instr`.
   exists(Instruction instr, int index |
-    hasInstructionAndIndex(nodeFrom, instr, index) and
-    hasInstructionAndIndex(nodeTo, instr, index - 1)
+    nodeHasInstruction(nodeFrom, instr, index) and
+    nodeHasInstruction(nodeTo, instr, index - 1)
   )
   or
-  exists(Instruction instr |
-    hasInstructionAndIndex(nodeFrom, instr, 1) and
-    nodeTo.asInstruction() = instr
-  )
-  or
+  // Flow from (the indirection of) an operand of a pointer arithmetic instruction to the
+  // indirection of the pointer arithmetic instruction. This provides flow from `source`
+  // in `x[source]` to the result of the associated load instruction.
   exists(PointerArithmeticInstruction pai, int index |
-    nodeFrom.asOperand() = pai.getAnOperand() and index = 0
-    or
-    hasOperandAndIndex(nodeFrom, pai.getAnOperand(), pragma[only_bind_into](index))
-  |
+    nodeHasOperand(nodeFrom, pai.getAnOperand(), pragma[only_bind_into](index)) and
     hasInstructionAndIndex(nodeTo, pai, index + 1)
   )
 }
@@ -213,117 +205,5 @@ predicate modeledTaintStep(DataFlow::Node nodeIn, DataFlow::Node nodeOut) {
       func.(TaintFunction).hasTaintFlow(modelIn, modelOut)
     ) and
     nodeOut = callOutput(call, modelOut)
-  )
-}
-
-private import cpp as Cpp
-
-// private import semmle.code.cpp.ir.dataflow.internal.DataFlowImplCommon as DataFlowImplCommon
-private predicate into(ArgumentNode node1, ParameterNode node2) {
-  exists(CallInstruction call, ParameterPosition pos |
-    node1.argumentOf(call, pos) and
-    node2.isParameterOf(call.getStaticCallTarget(), pos)
-  )
-}
-
-private predicate outOf(
-  DataFlowImplCommon::ReturnNodeExt node1, DataFlowImplCommon::OutNodeExt node2, string msg
-) {
-  exists(DataFlowImplCommon::ReturnKindExt kind |
-    node1.getKind() = kind and
-    kind.getAnOutNode(any(CallInstruction call |
-        call.getStaticCallTarget() = node1.getEnclosingCallable()
-      )) = node2 and
-    msg = kind.toString()
-  )
-}
-
-private predicate argumentValueFlowsThrough(ArgumentNode n2, Content c, OutNode n1) {
-  exists(Node mid1, ParameterNode p, ReturnNode r, Node mid2 |
-    into(n2, p) and
-    simpleLocalFlowStep*(p, mid2) and
-    readStep(mid2, c, mid1) and
-    simpleLocalFlowStep*(mid1, r) and
-    outOf(r, n1, _)
-  )
-}
-
-private predicate step(Node node1, Node node2, string msg) {
-  stepFwd(_, node1) and
-  (
-    localTaintStep(node1, node2) and msg = "."
-    or
-    exists(Content c, string after | after = c.toString() |
-      readStep(node1, c, node2) and msg = "Read " + after
-      or
-      storeStep(node1, c, node2) and msg = "Store " + after
-      or
-      exists(Node n1, Node n2 |
-        n1 = node1.(PostUpdateNode).getPreUpdateNode() and
-        n2 = node2.(PostUpdateNode).getPreUpdateNode() and
-        readStep(n2, c, n1) and
-        msg = "Reverse read " + c
-      )
-      or
-      exists(OutNode n1, ArgumentNode n2 |
-        n2 = node2.(PostUpdateNode).getPreUpdateNode() and
-        n1 = node1.(PostUpdateNode).getPreUpdateNode() and
-        argumentValueFlowsThrough(n2, c, n1) and
-        msg = "Through " + after
-      )
-    )
-    or
-    into(node1, node2) and msg = "into"
-    or
-    outOf(node1, node2, msg)
-  )
-}
-
-private predicate isSource(Node source) {
-  exists(FunctionCall fc |
-    fc = source.asExpr() and
-    fc.getTarget().getName() = "source"
-  )
-  // source.asExpr().(Call).getTarget().hasName("source")
-  // source.(IndirectReturnOutNode).getCallInstruction().getStaticCallTarget().hasName("source")
-}
-
-private predicate stepFwd(Node node1, Node node2) {
-  node1 = node2 and
-  isSource(node1)
-  or
-  exists(Node mid |
-    stepFwd(node1, mid) and
-    step(mid, node2, _)
-  )
-}
-
-private predicate isSink(DataFlow::Node sink) {
-  exists(FunctionCall call | call.getTarget().getName() = "sink" |
-    sink.asExpr() = call.getAnArgument()
-  )
-}
-
-private predicate stepRev(Node node1, Node node2) {
-  stepFwd(_, node1) and
-  stepFwd(_, node2) and
-  (
-    node1 = node2 and
-    isSink(node2)
-    or
-    exists(Node mid |
-      stepRev(mid, node2) and
-      step(node1, mid, _)
-    )
-  )
-}
-
-private predicate step2(Node node1, Node node2, string msg) {
-  stepRev(node1, _) and
-  stepRev(node2, _) and
-  (
-    DataFlow::localFlowStep(node1, node2) and msg = "."
-    or
-    localAdditionalTaintStep(node1, node2) and msg = "taint"
   )
 }

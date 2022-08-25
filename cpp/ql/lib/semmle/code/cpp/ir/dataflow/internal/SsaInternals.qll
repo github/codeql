@@ -269,7 +269,7 @@ predicate adjacentDefRead(DefOrUse defOrUse1, UseOrPhi use) {
     exists(PhiNode phi |
       lastRefRedef(_, bb1, i1, phi) and
       use.asPhi() = phi and
-      phi.getSourceVariable() = v
+      phi.getSourceVariable() = pragma[only_bind_into](v)
     )
   )
 }
@@ -305,7 +305,7 @@ private predicate nodeToDefOrUse(Node nodeFrom, SsaDefOrUse defOrUse) {
  * Perform a single conversion-like step from `nFrom` to `nTo`. This relation
  * only holds when there is no use-use relation out of `nTo`.
  */
-predicate indirectConversionFlowStepExcludeFieldsStep(Node nFrom, Node nTo) {
+predicate indirectConversionFlowStep(Node nFrom, Node nTo) {
   not exists(UseOrPhi defOrUse |
     nodeToDefOrUse(nTo, defOrUse) and
     adjacentDefRead(defOrUse, _)
@@ -336,7 +336,7 @@ predicate indirectConversionFlowStepExcludeFieldsStep(Node nFrom, Node nTo) {
 private predicate adjustForPointerArith(Node nodeFrom, UseOrPhi use) {
   nodeFrom = any(PostUpdateNode pun).getPreUpdateNode() and
   exists(DefOrUse defOrUse, Node adjusted |
-    indirectConversionFlowStepExcludeFieldsStep*(adjusted, nodeFrom) and
+    indirectConversionFlowStep*(adjusted, nodeFrom) and
     nodeToDefOrUse(adjusted, defOrUse) and
     adjacentDefRead(defOrUse, use)
   )

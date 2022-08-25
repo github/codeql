@@ -74,7 +74,6 @@ class FieldAddress extends Operand {
  * `isPointerArith` is `true` if `instrTo` is a `PointerArithmeticInstruction` and `opFrom`
  * is the left operand.
  */
-cached
 predicate conversionFlow(Operand opFrom, Instruction instrTo, boolean isPointerArith) {
   isPointerArith = false and
   (
@@ -349,10 +348,7 @@ class OperandNode extends Node, TOperandNode {
 
   final override Location getLocationImpl() { result = op.getLocation() }
 
-  override string toStringImpl() {
-    // Instructions have a better `toString` than operands.
-    result = instructionNode(this.getOperand().getDef()).toStringImpl()
-  }
+  override string toStringImpl() { result = this.getOperand().toString() }
 }
 
 /**
@@ -673,7 +669,7 @@ predicate exprNodeShouldBeOperand(Node node, Expr e) {
 /**
  * Holds if `load` is a `LoadInstruction` that is the result of evaluating `e`
  * and `node` is an `IndirctOperandNode` that should map `node.asExpr()` to `e`.
- * 
+ *
  * We map `e` to `node.asExpr()` when `node` semantically represents the
  * same value as `load`. A subsequent flow step will flow `node` to
  * the `LoadInstruction`.
