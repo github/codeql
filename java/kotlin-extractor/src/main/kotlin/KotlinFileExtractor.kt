@@ -2486,18 +2486,21 @@ open class KotlinFileExtractor(
         }
     }
 
-    private fun writeUpdateInPlaceExpr(origin: IrStatementOrigin, tw: TrapWriter, id: Label<DbAssignexpr>, type: TypeResults, exprParent: ExprParent): Boolean {
+    private fun writeUpdateInPlaceExpr(origin: IrStatementOrigin): ((tw: TrapWriter, id: Label<out DbAssignexpr>, type: Label<out DbType>, exprParent: Label<out DbExprparent>, index: Int) -> Unit)? {
         when(origin) {
-            IrStatementOrigin.PLUSEQ -> tw.writeExprs_assignaddexpr(id.cast<DbAssignaddexpr>(), type.javaResult.id, exprParent.parent, exprParent.idx)
-            IrStatementOrigin.MINUSEQ -> tw.writeExprs_assignsubexpr(id.cast<DbAssignsubexpr>(), type.javaResult.id, exprParent.parent, exprParent.idx)
-            IrStatementOrigin.MULTEQ -> tw.writeExprs_assignmulexpr(id.cast<DbAssignmulexpr>(), type.javaResult.id, exprParent.parent, exprParent.idx)
-            IrStatementOrigin.DIVEQ -> tw.writeExprs_assigndivexpr(id.cast<DbAssigndivexpr>(), type.javaResult.id, exprParent.parent, exprParent.idx)
-            IrStatementOrigin.PERCEQ -> tw.writeExprs_assignremexpr(id.cast<DbAssignremexpr>(), type.javaResult.id, exprParent.parent, exprParent.idx)
-            else -> return false
+            IrStatementOrigin.PLUSEQ -> return { tw: TrapWriter, id: Label<out DbAssignexpr>, type: Label<out DbType>, exprParent: Label<out DbExprparent>, index: Int -> tw.writeExprs_assignaddexpr(id.cast<DbAssignaddexpr>(), type, exprParent, index) }
+            IrStatementOrigin.MINUSEQ -> return { tw: TrapWriter, id: Label<out DbAssignexpr>, type: Label<out DbType>, exprParent: Label<out DbExprparent>, index: Int -> tw.writeExprs_assignsubexpr(id.cast<DbAssignsubexpr>(), type, exprParent, index) }
+            IrStatementOrigin.MULTEQ -> return { tw: TrapWriter, id: Label<out DbAssignexpr>, type: Label<out DbType>, exprParent: Label<out DbExprparent>, index: Int -> tw.writeExprs_assignmulexpr(id.cast<DbAssignmulexpr>(), type, exprParent, index) }
+            IrStatementOrigin.DIVEQ -> return { tw: TrapWriter, id: Label<out DbAssignexpr>, type: Label<out DbType>, exprParent: Label<out DbExprparent>, index: Int -> tw.writeExprs_assigndivexpr(id.cast<DbAssigndivexpr>(), type, exprParent, index) }
+            IrStatementOrigin.PERCEQ -> return { tw: TrapWriter, id: Label<out DbAssignexpr>, type: Label<out DbType>, exprParent: Label<out DbExprparent>, index: Int -> tw.writeExprs_assignremexpr(id.cast<DbAssignremexpr>(), type, exprParent, index) }
+            else -> return null
         }
-        return true
     }
 
+    /**
+     * This tried to extract a block as an array update.
+     * It returns true if it succeeds, and false otherwise.
+     */
     private fun tryExtractArrayUpdate(e: IrContainerExpression, callable: Label<out DbCallable>, parent: StmtExprParent): Boolean {
         /*
          * We're expecting the pattern
@@ -2517,6 +2520,11 @@ open class KotlinFileExtractor(
                     indexVarDecl.initializer?.let { indexVarInitializer ->
                         (e.statements[2] as? IrCall)?.let { arraySetCall ->
                             if (isFunction(arraySetCall.symbol.owner, "kotlin", "(some array type)", { isArrayType(it) }, "set")) {
+                                val updateRhs = arraySetCall.getValueArgument(1)
+                                if (updateRhs == null) {
+                                    logger.errorElement("Update RHS not found", e)
+                                    return false
+                                }
                                 getUpdateInPlaceRHS(
                                     e.origin, // Using e.origin not arraySetCall.origin here distinguishes a compiler-generated block from a user manually code that looks the same.
                                     {   oldValue ->
@@ -2526,8 +2534,19 @@ open class KotlinFileExtractor(
                                             receiverVal -> receiverVal.symbol.owner == arrayVarDecl.symbol.owner
                                         } ?: false
                                     },
-                                    arraySetCall.getValueArgument(1)!!
+                                    updateRhs
                                 )?.let { updateRhs ->
+                                    val origin = e.origin
+                                    if (origin == null) {
+                                        logger.errorElement("No origin found", e)
+                                        return false
+                                    }
+                                    val writeUpdateInPlaceExprFun = writeUpdateInPlaceExpr(origin)
+                                    if (writeUpdateInPlaceExprFun == null) {
+                                        logger.errorElement("Unexpected origin", e)
+                                        return false
+                                    }
+
                                     // Create an assignment skeleton _ op= _
                                     val exprParent = parent.expr(e, callable)
                                     val assignId = tw.getFreshIdLabel<DbAssignexpr>()
@@ -2538,10 +2557,7 @@ open class KotlinFileExtractor(
                                     tw.writeCallableEnclosingExpr(assignId, callable)
                                     tw.writeStatementEnclosingExpr(assignId, exprParent.enclosingStmt)
 
-                                    if (!writeUpdateInPlaceExpr(e.origin!!, tw, assignId, type, exprParent)) {
-                                        logger.errorElement("Unexpected origin", e)
-                                        return false
-                                    }
+                                    writeUpdateInPlaceExprFun(tw, assignId, type.javaResult.id, exprParent.parent, exprParent.idx)
 
                                     // Extract e1[e2]
                                     val lhsId = tw.getFreshIdLabel<DbArrayaccess>()
@@ -2893,9 +2909,17 @@ open class KotlinFileExtractor(
                             // Check for a desugared in-place update operator, such as "v += e":
                             val inPlaceUpdateRhs = getUpdateInPlaceRHS(e.origin, { it is IrGetValue && it.symbol.owner == e.symbol.owner }, rhsValue)
                             if (inPlaceUpdateRhs != null) {
-                                if (!writeUpdateInPlaceExpr(e.origin!!, tw, id, type, exprParent)) {
-                                    logger.errorElement("Unexpected origin", e)
+                                val origin = e.origin
+                                if (origin == null) {
+                                    logger.errorElement("No origin for set-value", e)
                                     return
+                                } else {
+                                    val writeUpdateInPlaceExprFun = writeUpdateInPlaceExpr(origin)
+                                    if (writeUpdateInPlaceExprFun == null) {
+                                        logger.errorElement("Unexpected origin for set-value", e)
+                                        return
+                                    }
+                                    writeUpdateInPlaceExprFun(tw, id, type.javaResult.id, exprParent.parent, exprParent.idx)
                                 }
                             } else {
                                 tw.writeExprs_assignexpr(id, type.javaResult.id, exprParent.parent, exprParent.idx)
