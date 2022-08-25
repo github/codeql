@@ -44,16 +44,30 @@ newtype TValueNumber =
   TCallValueNumber(TCallPartialValueNumber vn) { callValueNumber(_, _, vn) } or
   TUniqueValueNumber(IRFunction irFunc, Instruction instr) { uniqueValueNumber(instr, irFunc) }
 
+private class NumberableCallInstruction extends CallInstruction {
+  NumberableCallInstruction() {
+    not this.getResultIRType() instanceof IRVoidType and
+    exists(SideEffect::SideEffectFunction sideEffectFunc |
+      sideEffectFunc = this.getStaticCallTarget()
+    |
+      sideEffectFunc.hasOnlySpecificReadSideEffects() and
+      sideEffectFunc.hasOnlySpecificWriteSideEffects()
+    )
+  }
+}
+
 private newtype TCallPartialValueNumber =
   TNilArgument() or
   TArgument(TCallPartialValueNumber head, TValueNumber arg) {
-    exists(CallInstruction call, int index |
+    exists(NumberableCallInstruction call, int index |
       callArgValueNumber(call, index, arg) and
       callPartialValueNumber(call, index, head)
     )
   }
 
-private predicate callValueNumber(CallInstruction call, int index, TCallPartialValueNumber vn) {
+private predicate callValueNumber(
+  NumberableCallInstruction call, int index, TCallPartialValueNumber vn
+) {
   index = max(int n | callArgRank(call, n, _) | n) and
   exists(TCallPartialValueNumber head, TValueNumber arg |
     callPartialValueNumber(call, index, pragma[only_bind_out](head)) and
@@ -61,14 +75,15 @@ private predicate callValueNumber(CallInstruction call, int index, TCallPartialV
     vn = TArgument(head, arg)
   )
   or
-  not call.getResultIRType() instanceof IRVoidType and
   not exists(int n | callArgRank(call, n, _)) and
   index = -1 and
   vn = TNilArgument()
 }
 
-private predicate callPartialValueNumber(CallInstruction call, int index, TCallPartialValueNumber head) {
-  index = 1 and head = TNilArgument() and not call.getResultIRType() instanceof IRVoidType
+private predicate callPartialValueNumber(
+  NumberableCallInstruction call, int index, TCallPartialValueNumber head
+) {
+  index = 1 and head = TNilArgument()
   or
   exists(TCallPartialValueNumber prev, TValueNumber prevVN |
     callPartialValueNumber(call, index - 1, pragma[only_bind_out](prev)) and
@@ -79,8 +94,7 @@ private predicate callPartialValueNumber(CallInstruction call, int index, TCallP
 
 /**
  */
-private predicate callArgValueNumber(CallInstruction call, int index, TValueNumber arg) {
-  not call.getResultIRType() instanceof IRVoidType and
+private predicate callArgValueNumber(NumberableCallInstruction call, int index, TValueNumber arg) {
   exists(Instruction instr |
     callArgRank(call, index, instr) and
     arg = tvalueNumber(instr)
@@ -91,28 +105,13 @@ private predicate callArgValueNumber(CallInstruction call, int index, TValueNumb
  * Holds if `arg` is the `index`th element in `call`'s extended argument list, including the `this`
  * argument and side-effect reads.
  */
-private predicate callArgRank(CallInstruction call, int index, Instruction arg) {
+private predicate callArgRank(NumberableCallInstruction call, int index, Instruction arg) {
   arg =
     rank[index](int argIndex, boolean isEffect, Instruction instr |
-      exists(CallSideEffectInstruction cse |
-        cse.getPrimaryInstruction() = call and
-        cse.getSideEffectOperand().getAnyDef() = instr and
-        argIndex = -2 and
-        isEffect = true
-      )
-      or
-      exists(CallReadSideEffectInstruction cse |
-        cse.getPrimaryInstruction() = call and
-        cse.getSideEffectOperand().getAnyDef() = instr and
-        argIndex = -2 and
-        isEffect = true
-      )
-      or
-      instr = call.getThisArgument() and
-      argIndex = -1 and
-      isEffect = false
-      or
-      instr = call.getPositionalArgument(argIndex) and
+      // There is no need to include the call's read and write side effects on
+      // all-aliased-memory as `NumberableCallInstruction`s do not read or write
+      // to all-aliased-memory.
+      instr = call.getArgument(argIndex) and
       isEffect = false
       or
       exists(ReadSideEffectInstruction read |
@@ -177,7 +176,7 @@ private predicate numberableInstruction(Instruction instr) {
   or
   instr instanceof LoadTotalOverlapInstruction
   or
-  instr instanceof CallInstruction
+  instr instanceof NumberableCallInstruction
 }
 
 private predicate filteredNumberableInstruction(Instruction instr) {
