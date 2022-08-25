@@ -1,1 +1,1 @@
-| Test.java:6:11:6:15 | x | The parameter x is unused. |
+| Test.java:6:11:6:15 | x | The parameter 'x' is never used. |
