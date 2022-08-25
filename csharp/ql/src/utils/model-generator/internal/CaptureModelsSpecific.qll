@@ -36,7 +36,8 @@ private predicate isRelevantForModels(CS::Callable api) {
   api.getDeclaringType().getNamespace().getQualifiedName() != "" and
   not api instanceof CS::ConversionOperator and
   not api instanceof Util::MainMethod and
-  not isHigherOrder(api)
+  not isHigherOrder(api) and
+  not api instanceof CS::Destructor
 }
 
 /**
@@ -55,6 +56,8 @@ class TargetApiSpecific extends DotNet::Callable {
 
 predicate asPartialModel = DataFlowPrivate::Csv::asPartialModel/1;
 
+predicate asPartialNegativeModel = DataFlowPrivate::Csv::asPartialNegativeModel/1;
+
 /**
  * Holds for type `t` for fields that are relevant as an intermediate
  * read or write step in the data flow analysis.
@@ -69,7 +72,7 @@ predicate isRelevantType(CS::Type t) {
 /**
  * Gets the CSV string representation of the qualifier.
  */
-string qualifierString() { result = "Argument[Qualifier]" }
+string qualifierString() { result = "Argument[this]" }
 
 private string parameterAccess(CS::Parameter p) {
   if Collections::isCollectionType(p.getType())
@@ -112,7 +115,7 @@ string returnNodeAsOutput(DataFlowImplCommon::ReturnNodeExt node) {
  * Gets the enclosing callable of `ret`.
  */
 CS::Callable returnNodeEnclosingCallable(DataFlowImplCommon::ReturnNodeExt ret) {
-  result = DataFlowImplCommon::getNodeEnclosingCallable(ret).getUnderlyingCallable()
+  result = DataFlowImplCommon::getNodeEnclosingCallable(ret).asCallable()
 }
 
 /**

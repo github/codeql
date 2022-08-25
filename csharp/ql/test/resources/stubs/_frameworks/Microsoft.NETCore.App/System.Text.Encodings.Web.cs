@@ -8,7 +8,7 @@ namespace System
         {
             namespace Web
             {
-                // Generated from `System.Text.Encodings.Web.HtmlEncoder` in `System.Text.Encodings.Web, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
+                // Generated from `System.Text.Encodings.Web.HtmlEncoder` in `System.Text.Encodings.Web, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
                 public abstract class HtmlEncoder : System.Text.Encodings.Web.TextEncoder
                 {
                     public static System.Text.Encodings.Web.HtmlEncoder Create(System.Text.Encodings.Web.TextEncoderSettings settings) => throw null;
@@ -17,7 +17,7 @@ namespace System
                     protected HtmlEncoder() => throw null;
                 }
 
-                // Generated from `System.Text.Encodings.Web.JavaScriptEncoder` in `System.Text.Encodings.Web, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
+                // Generated from `System.Text.Encodings.Web.JavaScriptEncoder` in `System.Text.Encodings.Web, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
                 public abstract class JavaScriptEncoder : System.Text.Encodings.Web.TextEncoder
                 {
                     public static System.Text.Encodings.Web.JavaScriptEncoder Create(System.Text.Encodings.Web.TextEncoderSettings settings) => throw null;
@@ -27,7 +27,7 @@ namespace System
                     public static System.Text.Encodings.Web.JavaScriptEncoder UnsafeRelaxedJsonEscaping { get => throw null; }
                 }
 
-                // Generated from `System.Text.Encodings.Web.TextEncoder` in `System.Text.Encodings.Web, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
+                // Generated from `System.Text.Encodings.Web.TextEncoder` in `System.Text.Encodings.Web, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
                 public abstract class TextEncoder
                 {
                     public virtual System.Buffers.OperationStatus Encode(System.ReadOnlySpan<System.Char> source, System.Span<System.Char> destination, out int charsConsumed, out int charsWritten, bool isFinalBlock = default(bool)) => throw null;
@@ -44,7 +44,7 @@ namespace System
                     public abstract bool WillEncode(int unicodeScalar);
                 }
 
-                // Generated from `System.Text.Encodings.Web.TextEncoderSettings` in `System.Text.Encodings.Web, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
+                // Generated from `System.Text.Encodings.Web.TextEncoderSettings` in `System.Text.Encodings.Web, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
                 public class TextEncoderSettings
                 {
                     public virtual void AllowCharacter(System.Char character) => throw null;
@@ -63,7 +63,7 @@ namespace System
                     public TextEncoderSettings(params System.Text.Unicode.UnicodeRange[] allowedRanges) => throw null;
                 }
 
-                // Generated from `System.Text.Encodings.Web.UrlEncoder` in `System.Text.Encodings.Web, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
+                // Generated from `System.Text.Encodings.Web.UrlEncoder` in `System.Text.Encodings.Web, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
                 public abstract class UrlEncoder : System.Text.Encodings.Web.TextEncoder
                 {
                     public static System.Text.Encodings.Web.UrlEncoder Create(System.Text.Encodings.Web.TextEncoderSettings settings) => throw null;
@@ -76,7 +76,7 @@ namespace System
         }
         namespace Unicode
         {
-            // Generated from `System.Text.Unicode.UnicodeRange` in `System.Text.Encodings.Web, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
+            // Generated from `System.Text.Unicode.UnicodeRange` in `System.Text.Encodings.Web, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
             public class UnicodeRange
             {
                 public static System.Text.Unicode.UnicodeRange Create(System.Char firstCharacter, System.Char lastCharacter) => throw null;
@@ -85,7 +85,7 @@ namespace System
                 public UnicodeRange(int firstCodePoint, int length) => throw null;
             }
 
-            // Generated from `System.Text.Unicode.UnicodeRanges` in `System.Text.Encodings.Web, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
+            // Generated from `System.Text.Unicode.UnicodeRanges` in `System.Text.Encodings.Web, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
             public static class UnicodeRanges
             {
                 public static System.Text.Unicode.UnicodeRange All { get => throw null; }

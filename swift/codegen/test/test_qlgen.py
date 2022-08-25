@@ -52,7 +52,7 @@ def generate(input, qlgen_opts, renderer):
     renderer.written = []
 
     def func(classes):
-        input.classes = classes
+        input.classes = {cls.name: cls for cls in classes}
         return run_generation(qlgen.generate, qlgen_opts, renderer)
 
     return func
@@ -101,7 +101,9 @@ def _filter_generated_classes(ret, output_test_files=False):
             str(f): ret[ql_test_output_path() / f]
             for f in test_files
         }
-    assert stub_files == base_files
+    base_files -= {pathlib.Path(f"{name}.qll") for name in
+                   ("Raw", "Synth", "SynthConstructors", "PureSynthConstructors")}
+    assert base_files <= stub_files
     return {
         str(f): (ret[stub_path() / f], ret[ql_output_path() / f])
         for f in base_files
@@ -128,6 +130,11 @@ def test_empty(generate):
     assert generate([]) == {
         import_file(): ql.ImportList(),
         children_file(): ql.GetParentImplementation(),
+        ql_output_path() / "Synth.qll": ql.Synth.Types(schema.root_class_name),
+        ql_output_path() / "SynthConstructors.qll": ql.ImportList(),
+        ql_output_path() / "PureSynthConstructors.qll": ql.ImportList(),
+        ql_output_path() / "Raw.qll": ql.DbClasses(),
+        ql_output_path() / "Raw.qll": ql.DbClasses(),
     }
 
 
@@ -192,10 +199,11 @@ def test_single_property(generate_classes):
             schema.SingleProperty("foo", "bar")]),
     ]) == {
         "MyObject.qll": (ql.Stub(name="MyObject", base_import=gen_import_prefix + "MyObject"),
-                         ql.Class(name="MyObject", final=True, properties=[
-                             ql.Property(singular="Foo", type="bar", tablename="my_objects",
-                                         tableparams=["this", "result"]),
-                         ])),
+                         ql.Class(name="MyObject", final=True,
+                                  properties=[
+                                      ql.Property(singular="Foo", type="bar", tablename="my_objects",
+                                                  tableparams=["this", "result"]),
+                                  ])),
     }
 
 
@@ -208,14 +216,15 @@ def test_single_properties(generate_classes):
         ]),
     ]) == {
         "MyObject.qll": (ql.Stub(name="MyObject", base_import=gen_import_prefix + "MyObject"),
-                         ql.Class(name="MyObject", final=True, properties=[
-                             ql.Property(singular="One", type="x", tablename="my_objects",
-                                         tableparams=["this", "result", "_", "_"]),
-                             ql.Property(singular="Two", type="y", tablename="my_objects",
-                                         tableparams=["this", "_", "result", "_"]),
-                             ql.Property(singular="Three", type="z", tablename="my_objects",
-                                         tableparams=["this", "_", "_", "result"]),
-                         ])),
+                         ql.Class(name="MyObject", final=True,
+                                  properties=[
+                                      ql.Property(singular="One", type="x", tablename="my_objects",
+                                                  tableparams=["this", "result", "_", "_"]),
+                                      ql.Property(singular="Two", type="y", tablename="my_objects",
+                                                  tableparams=["this", "_", "result", "_"]),
+                                      ql.Property(singular="Three", type="z", tablename="my_objects",
+                                                  tableparams=["this", "_", "_", "result"]),
+                                  ])),
     }
 
 

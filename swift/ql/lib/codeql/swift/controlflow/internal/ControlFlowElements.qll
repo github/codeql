@@ -91,11 +91,11 @@ predicate isPropertyObserverElement(
 }
 
 class ControlFlowElement extends TControlFlowElement {
-  string toString() { none() } // overriden in subclasses
+  string toString() { none() } // overridden in subclasses
 
   AstNode asAstNode() { none() }
 
-  Location getLocation() { none() } // overriden in subclasses
+  Location getLocation() { none() } // overridden in subclasses
 }
 
 class AstElement extends ControlFlowElement, TAstElement {
@@ -123,6 +123,8 @@ class PropertyGetterElement extends ControlFlowElement, TPropertyGetterElement {
   Expr getRef() { result = ref }
 
   AccessorDecl getAccessorDecl() { result = accessor }
+
+  Expr getBase() { result = ref.(LookupExpr).getBase() }
 }
 
 class PropertySetterElement extends ControlFlowElement, TPropertySetterElement {
@@ -138,6 +140,8 @@ class PropertySetterElement extends ControlFlowElement, TPropertySetterElement {
   AccessorDecl getAccessorDecl() { result = accessor }
 
   AssignExpr getAssignExpr() { result = assign }
+
+  Expr getBase() { result = assign.getDest().(LookupExpr).getBase() }
 }
 
 class PropertyObserverElement extends ControlFlowElement, TPropertyObserverElement {
@@ -163,6 +167,8 @@ class PropertyObserverElement extends ControlFlowElement, TPropertyObserverEleme
   predicate isDidSet() { observer.isDidSet() }
 
   AssignExpr getAssignExpr() { result = assign }
+
+  Expr getBase() { result = assign.getDest().(LookupExpr).getBase() }
 }
 
 class FuncDeclElement extends ControlFlowElement, TFuncDeclElement {

@@ -67,7 +67,7 @@ predicate findUseCharacterConversion(Expr exp, string msg) {
   exists(FunctionCall fc |
     fc = exp and
     (
-      exists(Loop lptmp | lptmp = fc.getEnclosingStmt().getParentStmt*()) and
+      fc.getEnclosingStmt().getParentStmt*() instanceof Loop and
       fc.getTarget().hasName(["mbtowc", "mbrtowc", "_mbtowc_l"]) and
       not fc.getArgument(0).isConstant() and
       not fc.getArgument(1).isConstant() and

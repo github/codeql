@@ -1,6 +1,6 @@
 import java
 import TestUtilities.InlineExpectationsTest
-import semmle.code.java.security.performance.ExponentialBackTracking
+import semmle.code.java.security.regexp.ExponentialBackTracking
 import semmle.code.java.regex.regex
 
 class HasExpRedos extends InlineExpectationsTest {

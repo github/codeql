@@ -28,11 +28,10 @@ private module Cached {
     // appendInterpolation(&$interpolated, n)
     // appendLiteral(&$interpolated, " years old.")
     // ```
-    exists(ApplyExpr apply1, ApplyExpr apply2, ExprCfgNode e |
-      nodeFrom.asExpr() = [apply1, apply2].getAnArgument().getExpr() and
-      apply1.getFunction() = apply2 and
-      apply2.getStaticTarget().getName() = ["appendLiteral(_:)", "appendInterpolation(_:)"] and
-      e.getExpr() = apply2.getAnArgument().getExpr() and
+    exists(ApplyExpr apply, ExprCfgNode e |
+      nodeFrom.asExpr() = [apply.getAnArgument().getExpr(), apply.getQualifier()] and
+      apply.getStaticTarget().getName() = ["appendLiteral(_:)", "appendInterpolation(_:)"] and
+      e.getExpr() = [apply.getAnArgument().getExpr(), apply.getQualifier()] and
       nodeTo.asDefinition().(Ssa::WriteDefinition).isInoutDef(e)
     )
     or
@@ -40,6 +39,23 @@ private module Cached {
     exists(InterpolatedStringLiteralExpr interpolated |
       nodeTo.asExpr() = interpolated and
       nodeFrom.asExpr() = interpolated.getAppendingExpr()
+    )
+    or
+    // allow flow through string concatenation.
+    exists(AddExpr ae |
+      ae.getAnOperand() = nodeFrom.asExpr() and
+      ae = nodeTo.asExpr() and
+      ae.getType().getName() = "String"
+    )
+    or
+    // allow flow through `URL.init`.
+    exists(CallExpr call, ClassDecl c, AbstractFunctionDecl f |
+      c.getName() = "URL" and
+      c.getAMember() = f and
+      f.getName() = ["init(string:)", "init(string:relativeTo:)"] and
+      call.getFunction().(ApplyExpr).getStaticTarget() = f and
+      nodeFrom.asExpr() = call.getAnArgument().getExpr() and
+      nodeTo.asExpr() = call
     )
   }
 

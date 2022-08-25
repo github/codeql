@@ -4,27 +4,27 @@ namespace Microsoft
 {
     namespace VisualBasic
     {
-        // Generated from `Microsoft.VisualBasic.AppWinStyle` in `Microsoft.VisualBasic.Core, Version=10.0.6.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum AppWinStyle
+        // Generated from `Microsoft.VisualBasic.AppWinStyle` in `Microsoft.VisualBasic.Core, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        public enum AppWinStyle : short
         {
-            Hide,
-            MaximizedFocus,
-            MinimizedFocus,
-            MinimizedNoFocus,
-            NormalFocus,
-            NormalNoFocus,
+            Hide = 0,
+            MaximizedFocus = 3,
+            MinimizedFocus = 2,
+            MinimizedNoFocus = 6,
+            NormalFocus = 1,
+            NormalNoFocus = 4,
         }
 
-        // Generated from `Microsoft.VisualBasic.CallType` in `Microsoft.VisualBasic.Core, Version=10.0.6.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum CallType
+        // Generated from `Microsoft.VisualBasic.CallType` in `Microsoft.VisualBasic.Core, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        public enum CallType : int
         {
-            Get,
-            Let,
-            Method,
-            Set,
+            Get = 2,
+            Let = 4,
+            Method = 1,
+            Set = 8,
         }
 
-        // Generated from `Microsoft.VisualBasic.Collection` in `Microsoft.VisualBasic.Core, Version=10.0.6.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `Microsoft.VisualBasic.Collection` in `Microsoft.VisualBasic.Core, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class Collection : System.Collections.ICollection, System.Collections.IEnumerable, System.Collections.IList
         {
             int System.Collections.IList.Add(object value) => throw null;
@@ -55,7 +55,7 @@ namespace Microsoft
             object System.Collections.ICollection.SyncRoot { get => throw null; }
         }
 
-        // Generated from `Microsoft.VisualBasic.ComClassAttribute` in `Microsoft.VisualBasic.Core, Version=10.0.6.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `Microsoft.VisualBasic.ComClassAttribute` in `Microsoft.VisualBasic.Core, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class ComClassAttribute : System.Attribute
         {
             public string ClassID { get => throw null; }
@@ -68,14 +68,14 @@ namespace Microsoft
             public bool InterfaceShadows { get => throw null; set => throw null; }
         }
 
-        // Generated from `Microsoft.VisualBasic.CompareMethod` in `Microsoft.VisualBasic.Core, Version=10.0.6.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum CompareMethod
+        // Generated from `Microsoft.VisualBasic.CompareMethod` in `Microsoft.VisualBasic.Core, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        public enum CompareMethod : int
         {
-            Binary,
-            Text,
+            Binary = 0,
+            Text = 1,
         }
 
-        // Generated from `Microsoft.VisualBasic.Constants` in `Microsoft.VisualBasic.Core, Version=10.0.6.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `Microsoft.VisualBasic.Constants` in `Microsoft.VisualBasic.Core, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class Constants
         {
             public const Microsoft.VisualBasic.MsgBoxResult vbAbort = default;
@@ -182,7 +182,7 @@ namespace Microsoft
             public const Microsoft.VisualBasic.MsgBoxStyle vbYesNoCancel = default;
         }
 
-        // Generated from `Microsoft.VisualBasic.ControlChars` in `Microsoft.VisualBasic.Core, Version=10.0.6.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `Microsoft.VisualBasic.ControlChars` in `Microsoft.VisualBasic.Core, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class ControlChars
         {
             public const System.Char Back = default;
@@ -198,7 +198,7 @@ namespace Microsoft
             public const System.Char VerticalTab = default;
         }
 
-        // Generated from `Microsoft.VisualBasic.Conversion` in `Microsoft.VisualBasic.Core, Version=10.0.6.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `Microsoft.VisualBasic.Conversion` in `Microsoft.VisualBasic.Core, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class Conversion
         {
             public static object CTypeDynamic(object Expression, System.Type TargetType) => throw null;
@@ -243,7 +243,7 @@ namespace Microsoft
             public static double Val(string InputStr) => throw null;
         }
 
-        // Generated from `Microsoft.VisualBasic.DateAndTime` in `Microsoft.VisualBasic.Core, Version=10.0.6.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `Microsoft.VisualBasic.DateAndTime` in `Microsoft.VisualBasic.Core, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class DateAndTime
         {
             public static System.DateTime DateAdd(Microsoft.VisualBasic.DateInterval Interval, double Number, System.DateTime DateValue) => throw null;
@@ -273,39 +273,39 @@ namespace Microsoft
             public static int Year(System.DateTime DateValue) => throw null;
         }
 
-        // Generated from `Microsoft.VisualBasic.DateFormat` in `Microsoft.VisualBasic.Core, Version=10.0.6.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum DateFormat
+        // Generated from `Microsoft.VisualBasic.DateFormat` in `Microsoft.VisualBasic.Core, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        public enum DateFormat : int
         {
-            GeneralDate,
-            LongDate,
-            LongTime,
-            ShortDate,
-            ShortTime,
+            GeneralDate = 0,
+            LongDate = 1,
+            LongTime = 3,
+            ShortDate = 2,
+            ShortTime = 4,
         }
 
-        // Generated from `Microsoft.VisualBasic.DateInterval` in `Microsoft.VisualBasic.Core, Version=10.0.6.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum DateInterval
+        // Generated from `Microsoft.VisualBasic.DateInterval` in `Microsoft.VisualBasic.Core, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        public enum DateInterval : int
         {
-            Day,
-            DayOfYear,
-            Hour,
-            Minute,
-            Month,
-            Quarter,
-            Second,
-            WeekOfYear,
-            Weekday,
-            Year,
+            Day = 4,
+            DayOfYear = 3,
+            Hour = 7,
+            Minute = 8,
+            Month = 2,
+            Quarter = 1,
+            Second = 9,
+            WeekOfYear = 5,
+            Weekday = 6,
+            Year = 0,
         }
 
-        // Generated from `Microsoft.VisualBasic.DueDate` in `Microsoft.VisualBasic.Core, Version=10.0.6.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum DueDate
+        // Generated from `Microsoft.VisualBasic.DueDate` in `Microsoft.VisualBasic.Core, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        public enum DueDate : int
         {
-            BegOfPeriod,
-            EndOfPeriod,
+            BegOfPeriod = 1,
+            EndOfPeriod = 0,
         }
 
-        // Generated from `Microsoft.VisualBasic.ErrObject` in `Microsoft.VisualBasic.Core, Version=10.0.6.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `Microsoft.VisualBasic.ErrObject` in `Microsoft.VisualBasic.Core, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class ErrObject
         {
             public void Clear() => throw null;
@@ -320,20 +320,20 @@ namespace Microsoft
             public string Source { get => throw null; set => throw null; }
         }
 
-        // Generated from `Microsoft.VisualBasic.FileAttribute` in `Microsoft.VisualBasic.Core, Version=10.0.6.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `Microsoft.VisualBasic.FileAttribute` in `Microsoft.VisualBasic.Core, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         [System.Flags]
-        public enum FileAttribute
+        public enum FileAttribute : int
         {
-            Archive,
-            Directory,
-            Hidden,
-            Normal,
-            ReadOnly,
-            System,
-            Volume,
+            Archive = 32,
+            Directory = 16,
+            Hidden = 2,
+            Normal = 0,
+            ReadOnly = 1,
+            System = 4,
+            Volume = 8,
         }
 
-        // Generated from `Microsoft.VisualBasic.FileSystem` in `Microsoft.VisualBasic.Core, Version=10.0.6.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `Microsoft.VisualBasic.FileSystem` in `Microsoft.VisualBasic.Core, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class FileSystem
         {
             public static void ChDir(string Path) => throw null;
@@ -421,7 +421,7 @@ namespace Microsoft
             public static void WriteLine(int FileNumber, params object[] Output) => throw null;
         }
 
-        // Generated from `Microsoft.VisualBasic.Financial` in `Microsoft.VisualBasic.Core, Version=10.0.6.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `Microsoft.VisualBasic.Financial` in `Microsoft.VisualBasic.Core, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class Financial
         {
             public static double DDB(double Cost, double Salvage, double Life, double Period, double Factor = default(double)) => throw null;
@@ -439,35 +439,35 @@ namespace Microsoft
             public static double SYD(double Cost, double Salvage, double Life, double Period) => throw null;
         }
 
-        // Generated from `Microsoft.VisualBasic.FirstDayOfWeek` in `Microsoft.VisualBasic.Core, Version=10.0.6.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum FirstDayOfWeek
+        // Generated from `Microsoft.VisualBasic.FirstDayOfWeek` in `Microsoft.VisualBasic.Core, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        public enum FirstDayOfWeek : int
         {
-            Friday,
-            Monday,
-            Saturday,
-            Sunday,
-            System,
-            Thursday,
-            Tuesday,
-            Wednesday,
+            Friday = 6,
+            Monday = 2,
+            Saturday = 7,
+            Sunday = 1,
+            System = 0,
+            Thursday = 5,
+            Tuesday = 3,
+            Wednesday = 4,
         }
 
-        // Generated from `Microsoft.VisualBasic.FirstWeekOfYear` in `Microsoft.VisualBasic.Core, Version=10.0.6.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum FirstWeekOfYear
+        // Generated from `Microsoft.VisualBasic.FirstWeekOfYear` in `Microsoft.VisualBasic.Core, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        public enum FirstWeekOfYear : int
         {
-            FirstFourDays,
-            FirstFullWeek,
-            Jan1,
-            System,
+            FirstFourDays = 2,
+            FirstFullWeek = 3,
+            Jan1 = 1,
+            System = 0,
         }
 
-        // Generated from `Microsoft.VisualBasic.HideModuleNameAttribute` in `Microsoft.VisualBasic.Core, Version=10.0.6.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `Microsoft.VisualBasic.HideModuleNameAttribute` in `Microsoft.VisualBasic.Core, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class HideModuleNameAttribute : System.Attribute
         {
             public HideModuleNameAttribute() => throw null;
         }
 
-        // Generated from `Microsoft.VisualBasic.Information` in `Microsoft.VisualBasic.Core, Version=10.0.6.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `Microsoft.VisualBasic.Information` in `Microsoft.VisualBasic.Core, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class Information
         {
             public static int Erl() => throw null;
@@ -489,7 +489,7 @@ namespace Microsoft
             public static string VbTypeName(string UrtName) => throw null;
         }
 
-        // Generated from `Microsoft.VisualBasic.Interaction` in `Microsoft.VisualBasic.Core, Version=10.0.6.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `Microsoft.VisualBasic.Interaction` in `Microsoft.VisualBasic.Core, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class Interaction
         {
             public static void AppActivate(int ProcessId) => throw null;
@@ -514,44 +514,44 @@ namespace Microsoft
             public static object Switch(params object[] VarExpr) => throw null;
         }
 
-        // Generated from `Microsoft.VisualBasic.MsgBoxResult` in `Microsoft.VisualBasic.Core, Version=10.0.6.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum MsgBoxResult
+        // Generated from `Microsoft.VisualBasic.MsgBoxResult` in `Microsoft.VisualBasic.Core, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        public enum MsgBoxResult : int
         {
-            Abort,
-            Cancel,
-            Ignore,
-            No,
-            Ok,
-            Retry,
-            Yes,
+            Abort = 3,
+            Cancel = 2,
+            Ignore = 5,
+            No = 7,
+            Ok = 1,
+            Retry = 4,
+            Yes = 6,
         }
 
-        // Generated from `Microsoft.VisualBasic.MsgBoxStyle` in `Microsoft.VisualBasic.Core, Version=10.0.6.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `Microsoft.VisualBasic.MsgBoxStyle` in `Microsoft.VisualBasic.Core, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         [System.Flags]
-        public enum MsgBoxStyle
+        public enum MsgBoxStyle : int
         {
-            AbortRetryIgnore,
-            ApplicationModal,
-            Critical,
-            DefaultButton1,
-            DefaultButton2,
-            DefaultButton3,
-            Exclamation,
-            Information,
-            MsgBoxHelp,
-            MsgBoxRight,
-            MsgBoxRtlReading,
-            MsgBoxSetForeground,
-            OkCancel,
-            OkOnly,
-            Question,
-            RetryCancel,
-            SystemModal,
-            YesNo,
-            YesNoCancel,
+            AbortRetryIgnore = 2,
+            ApplicationModal = 0,
+            Critical = 16,
+            DefaultButton1 = 0,
+            DefaultButton2 = 256,
+            DefaultButton3 = 512,
+            Exclamation = 48,
+            Information = 64,
+            MsgBoxHelp = 16384,
+            MsgBoxRight = 524288,
+            MsgBoxRtlReading = 1048576,
+            MsgBoxSetForeground = 65536,
+            OkCancel = 1,
+            OkOnly = 0,
+            Question = 32,
+            RetryCancel = 5,
+            SystemModal = 4096,
+            YesNo = 4,
+            YesNoCancel = 3,
         }
 
-        // Generated from `Microsoft.VisualBasic.MyGroupCollectionAttribute` in `Microsoft.VisualBasic.Core, Version=10.0.6.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `Microsoft.VisualBasic.MyGroupCollectionAttribute` in `Microsoft.VisualBasic.Core, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class MyGroupCollectionAttribute : System.Attribute
         {
             public string CreateMethod { get => throw null; }
@@ -561,43 +561,43 @@ namespace Microsoft
             public string MyGroupName { get => throw null; }
         }
 
-        // Generated from `Microsoft.VisualBasic.OpenAccess` in `Microsoft.VisualBasic.Core, Version=10.0.6.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum OpenAccess
+        // Generated from `Microsoft.VisualBasic.OpenAccess` in `Microsoft.VisualBasic.Core, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        public enum OpenAccess : int
         {
-            Default,
-            Read,
-            ReadWrite,
-            Write,
+            Default = -1,
+            Read = 1,
+            ReadWrite = 3,
+            Write = 2,
         }
 
-        // Generated from `Microsoft.VisualBasic.OpenMode` in `Microsoft.VisualBasic.Core, Version=10.0.6.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum OpenMode
+        // Generated from `Microsoft.VisualBasic.OpenMode` in `Microsoft.VisualBasic.Core, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        public enum OpenMode : int
         {
-            Append,
-            Binary,
-            Input,
-            Output,
-            Random,
+            Append = 8,
+            Binary = 32,
+            Input = 1,
+            Output = 2,
+            Random = 4,
         }
 
-        // Generated from `Microsoft.VisualBasic.OpenShare` in `Microsoft.VisualBasic.Core, Version=10.0.6.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum OpenShare
+        // Generated from `Microsoft.VisualBasic.OpenShare` in `Microsoft.VisualBasic.Core, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        public enum OpenShare : int
         {
-            Default,
-            LockRead,
-            LockReadWrite,
-            LockWrite,
-            Shared,
+            Default = -1,
+            LockRead = 2,
+            LockReadWrite = 0,
+            LockWrite = 1,
+            Shared = 3,
         }
 
-        // Generated from `Microsoft.VisualBasic.SpcInfo` in `Microsoft.VisualBasic.Core, Version=10.0.6.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `Microsoft.VisualBasic.SpcInfo` in `Microsoft.VisualBasic.Core, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public struct SpcInfo
         {
             public System.Int16 Count;
             // Stub generator skipped constructor 
         }
 
-        // Generated from `Microsoft.VisualBasic.Strings` in `Microsoft.VisualBasic.Core, Version=10.0.6.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `Microsoft.VisualBasic.Strings` in `Microsoft.VisualBasic.Core, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class Strings
         {
             public static int Asc(System.Char String) => throw null;
@@ -614,7 +614,7 @@ namespace Microsoft
             public static string FormatNumber(object Expression, int NumDigitsAfterDecimal = default(int), Microsoft.VisualBasic.TriState IncludeLeadingDigit = default(Microsoft.VisualBasic.TriState), Microsoft.VisualBasic.TriState UseParensForNegativeNumbers = default(Microsoft.VisualBasic.TriState), Microsoft.VisualBasic.TriState GroupDigits = default(Microsoft.VisualBasic.TriState)) => throw null;
             public static string FormatPercent(object Expression, int NumDigitsAfterDecimal = default(int), Microsoft.VisualBasic.TriState IncludeLeadingDigit = default(Microsoft.VisualBasic.TriState), Microsoft.VisualBasic.TriState UseParensForNegativeNumbers = default(Microsoft.VisualBasic.TriState), Microsoft.VisualBasic.TriState GroupDigits = default(Microsoft.VisualBasic.TriState)) => throw null;
             public static System.Char GetChar(string str, int Index) => throw null;
-            public static int InStr(int StartPos, string String1, string String2, Microsoft.VisualBasic.CompareMethod Compare = default(Microsoft.VisualBasic.CompareMethod)) => throw null;
+            public static int InStr(int Start, string String1, string String2, Microsoft.VisualBasic.CompareMethod Compare = default(Microsoft.VisualBasic.CompareMethod)) => throw null;
             public static int InStr(string String1, string String2, Microsoft.VisualBasic.CompareMethod Compare = default(Microsoft.VisualBasic.CompareMethod)) => throw null;
             public static int InStrRev(string StringCheck, string StringMatch, int Start = default(int), Microsoft.VisualBasic.CompareMethod Compare = default(Microsoft.VisualBasic.CompareMethod)) => throw null;
             public static string Join(object[] SourceArray, string Delimiter = default(string)) => throw null;
@@ -659,22 +659,22 @@ namespace Microsoft
             public static string UCase(string Value) => throw null;
         }
 
-        // Generated from `Microsoft.VisualBasic.TabInfo` in `Microsoft.VisualBasic.Core, Version=10.0.6.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `Microsoft.VisualBasic.TabInfo` in `Microsoft.VisualBasic.Core, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public struct TabInfo
         {
             public System.Int16 Column;
             // Stub generator skipped constructor 
         }
 
-        // Generated from `Microsoft.VisualBasic.TriState` in `Microsoft.VisualBasic.Core, Version=10.0.6.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum TriState
+        // Generated from `Microsoft.VisualBasic.TriState` in `Microsoft.VisualBasic.Core, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        public enum TriState : int
         {
-            False,
-            True,
-            UseDefault,
+            False = 0,
+            True = -1,
+            UseDefault = -2,
         }
 
-        // Generated from `Microsoft.VisualBasic.VBFixedArrayAttribute` in `Microsoft.VisualBasic.Core, Version=10.0.6.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `Microsoft.VisualBasic.VBFixedArrayAttribute` in `Microsoft.VisualBasic.Core, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class VBFixedArrayAttribute : System.Attribute
         {
             public int[] Bounds { get => throw null; }
@@ -683,14 +683,14 @@ namespace Microsoft
             public VBFixedArrayAttribute(int UpperBound1, int UpperBound2) => throw null;
         }
 
-        // Generated from `Microsoft.VisualBasic.VBFixedStringAttribute` in `Microsoft.VisualBasic.Core, Version=10.0.6.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `Microsoft.VisualBasic.VBFixedStringAttribute` in `Microsoft.VisualBasic.Core, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class VBFixedStringAttribute : System.Attribute
         {
             public int Length { get => throw null; }
             public VBFixedStringAttribute(int Length) => throw null;
         }
 
-        // Generated from `Microsoft.VisualBasic.VBMath` in `Microsoft.VisualBasic.Core, Version=10.0.6.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `Microsoft.VisualBasic.VBMath` in `Microsoft.VisualBasic.Core, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class VBMath
         {
             public static void Randomize() => throw null;
@@ -699,79 +699,79 @@ namespace Microsoft
             public static float Rnd(float Number) => throw null;
         }
 
-        // Generated from `Microsoft.VisualBasic.VariantType` in `Microsoft.VisualBasic.Core, Version=10.0.6.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum VariantType
+        // Generated from `Microsoft.VisualBasic.VariantType` in `Microsoft.VisualBasic.Core, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        public enum VariantType : int
         {
-            Array,
-            Boolean,
-            Byte,
-            Char,
-            Currency,
-            DataObject,
-            Date,
-            Decimal,
-            Double,
-            Empty,
-            Error,
-            Integer,
-            Long,
-            Null,
-            Object,
-            Short,
-            Single,
-            String,
-            UserDefinedType,
-            Variant,
+            Array = 8192,
+            Boolean = 11,
+            Byte = 17,
+            Char = 18,
+            Currency = 6,
+            DataObject = 13,
+            Date = 7,
+            Decimal = 14,
+            Double = 5,
+            Empty = 0,
+            Error = 10,
+            Integer = 3,
+            Long = 20,
+            Null = 1,
+            Object = 9,
+            Short = 2,
+            Single = 4,
+            String = 8,
+            UserDefinedType = 36,
+            Variant = 12,
         }
 
-        // Generated from `Microsoft.VisualBasic.VbStrConv` in `Microsoft.VisualBasic.Core, Version=10.0.6.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `Microsoft.VisualBasic.VbStrConv` in `Microsoft.VisualBasic.Core, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         [System.Flags]
-        public enum VbStrConv
+        public enum VbStrConv : int
         {
-            Hiragana,
-            Katakana,
-            LinguisticCasing,
-            Lowercase,
-            Narrow,
-            None,
-            ProperCase,
-            SimplifiedChinese,
-            TraditionalChinese,
-            Uppercase,
-            Wide,
+            Hiragana = 32,
+            Katakana = 16,
+            LinguisticCasing = 1024,
+            Lowercase = 2,
+            Narrow = 8,
+            None = 0,
+            ProperCase = 3,
+            SimplifiedChinese = 256,
+            TraditionalChinese = 512,
+            Uppercase = 1,
+            Wide = 4,
         }
 
         namespace CompilerServices
         {
-            // Generated from `Microsoft.VisualBasic.CompilerServices.BooleanType` in `Microsoft.VisualBasic.Core, Version=10.0.6.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `Microsoft.VisualBasic.CompilerServices.BooleanType` in `Microsoft.VisualBasic.Core, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class BooleanType
             {
                 public static bool FromObject(object Value) => throw null;
                 public static bool FromString(string Value) => throw null;
             }
 
-            // Generated from `Microsoft.VisualBasic.CompilerServices.ByteType` in `Microsoft.VisualBasic.Core, Version=10.0.6.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `Microsoft.VisualBasic.CompilerServices.ByteType` in `Microsoft.VisualBasic.Core, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class ByteType
             {
                 public static System.Byte FromObject(object Value) => throw null;
                 public static System.Byte FromString(string Value) => throw null;
             }
 
-            // Generated from `Microsoft.VisualBasic.CompilerServices.CharArrayType` in `Microsoft.VisualBasic.Core, Version=10.0.6.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `Microsoft.VisualBasic.CompilerServices.CharArrayType` in `Microsoft.VisualBasic.Core, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class CharArrayType
             {
                 public static System.Char[] FromObject(object Value) => throw null;
                 public static System.Char[] FromString(string Value) => throw null;
             }
 
-            // Generated from `Microsoft.VisualBasic.CompilerServices.CharType` in `Microsoft.VisualBasic.Core, Version=10.0.6.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `Microsoft.VisualBasic.CompilerServices.CharType` in `Microsoft.VisualBasic.Core, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class CharType
             {
                 public static System.Char FromObject(object Value) => throw null;
                 public static System.Char FromString(string Value) => throw null;
             }
 
-            // Generated from `Microsoft.VisualBasic.CompilerServices.Conversions` in `Microsoft.VisualBasic.Core, Version=10.0.6.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `Microsoft.VisualBasic.CompilerServices.Conversions` in `Microsoft.VisualBasic.Core, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class Conversions
             {
                 public static object ChangeType(object Expression, System.Type TargetType) => throw null;
@@ -829,7 +829,7 @@ namespace Microsoft
                 public static System.UInt16 ToUShort(string Value) => throw null;
             }
 
-            // Generated from `Microsoft.VisualBasic.CompilerServices.DateType` in `Microsoft.VisualBasic.Core, Version=10.0.6.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `Microsoft.VisualBasic.CompilerServices.DateType` in `Microsoft.VisualBasic.Core, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class DateType
             {
                 public static System.DateTime FromObject(object Value) => throw null;
@@ -837,7 +837,7 @@ namespace Microsoft
                 public static System.DateTime FromString(string Value, System.Globalization.CultureInfo culture) => throw null;
             }
 
-            // Generated from `Microsoft.VisualBasic.CompilerServices.DecimalType` in `Microsoft.VisualBasic.Core, Version=10.0.6.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `Microsoft.VisualBasic.CompilerServices.DecimalType` in `Microsoft.VisualBasic.Core, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class DecimalType
             {
                 public static System.Decimal FromBoolean(bool Value) => throw null;
@@ -848,13 +848,13 @@ namespace Microsoft
                 public static System.Decimal Parse(string Value, System.Globalization.NumberFormatInfo NumberFormat) => throw null;
             }
 
-            // Generated from `Microsoft.VisualBasic.CompilerServices.DesignerGeneratedAttribute` in `Microsoft.VisualBasic.Core, Version=10.0.6.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `Microsoft.VisualBasic.CompilerServices.DesignerGeneratedAttribute` in `Microsoft.VisualBasic.Core, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class DesignerGeneratedAttribute : System.Attribute
             {
                 public DesignerGeneratedAttribute() => throw null;
             }
 
-            // Generated from `Microsoft.VisualBasic.CompilerServices.DoubleType` in `Microsoft.VisualBasic.Core, Version=10.0.6.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `Microsoft.VisualBasic.CompilerServices.DoubleType` in `Microsoft.VisualBasic.Core, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class DoubleType
             {
                 public static double FromObject(object Value) => throw null;
@@ -865,20 +865,20 @@ namespace Microsoft
                 public static double Parse(string Value, System.Globalization.NumberFormatInfo NumberFormat) => throw null;
             }
 
-            // Generated from `Microsoft.VisualBasic.CompilerServices.IncompleteInitialization` in `Microsoft.VisualBasic.Core, Version=10.0.6.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `Microsoft.VisualBasic.CompilerServices.IncompleteInitialization` in `Microsoft.VisualBasic.Core, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class IncompleteInitialization : System.Exception
             {
                 public IncompleteInitialization() => throw null;
             }
 
-            // Generated from `Microsoft.VisualBasic.CompilerServices.IntegerType` in `Microsoft.VisualBasic.Core, Version=10.0.6.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `Microsoft.VisualBasic.CompilerServices.IntegerType` in `Microsoft.VisualBasic.Core, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class IntegerType
             {
                 public static int FromObject(object Value) => throw null;
                 public static int FromString(string Value) => throw null;
             }
 
-            // Generated from `Microsoft.VisualBasic.CompilerServices.LateBinding` in `Microsoft.VisualBasic.Core, Version=10.0.6.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `Microsoft.VisualBasic.CompilerServices.LateBinding` in `Microsoft.VisualBasic.Core, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class LateBinding
             {
                 public static void LateCall(object o, System.Type objType, string name, object[] args, string[] paramnames, bool[] CopyBack) => throw null;
@@ -890,21 +890,21 @@ namespace Microsoft
                 public static void LateSetComplex(object o, System.Type objType, string name, object[] args, string[] paramnames, bool OptimisticSet, bool RValueBase) => throw null;
             }
 
-            // Generated from `Microsoft.VisualBasic.CompilerServices.LikeOperator` in `Microsoft.VisualBasic.Core, Version=10.0.6.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `Microsoft.VisualBasic.CompilerServices.LikeOperator` in `Microsoft.VisualBasic.Core, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class LikeOperator
             {
                 public static object LikeObject(object Source, object Pattern, Microsoft.VisualBasic.CompareMethod CompareOption) => throw null;
                 public static bool LikeString(string Source, string Pattern, Microsoft.VisualBasic.CompareMethod CompareOption) => throw null;
             }
 
-            // Generated from `Microsoft.VisualBasic.CompilerServices.LongType` in `Microsoft.VisualBasic.Core, Version=10.0.6.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `Microsoft.VisualBasic.CompilerServices.LongType` in `Microsoft.VisualBasic.Core, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class LongType
             {
                 public static System.Int64 FromObject(object Value) => throw null;
                 public static System.Int64 FromString(string Value) => throw null;
             }
 
-            // Generated from `Microsoft.VisualBasic.CompilerServices.NewLateBinding` in `Microsoft.VisualBasic.Core, Version=10.0.6.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `Microsoft.VisualBasic.CompilerServices.NewLateBinding` in `Microsoft.VisualBasic.Core, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class NewLateBinding
             {
                 public static object FallbackCall(object Instance, string MemberName, object[] Arguments, string[] ArgumentNames, bool IgnoreReturn) => throw null;
@@ -927,10 +927,10 @@ namespace Microsoft
                 public static void LateSetComplex(object Instance, System.Type Type, string MemberName, object[] Arguments, string[] ArgumentNames, System.Type[] TypeArguments, bool OptimisticSet, bool RValueBase) => throw null;
             }
 
-            // Generated from `Microsoft.VisualBasic.CompilerServices.ObjectFlowControl` in `Microsoft.VisualBasic.Core, Version=10.0.6.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `Microsoft.VisualBasic.CompilerServices.ObjectFlowControl` in `Microsoft.VisualBasic.Core, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class ObjectFlowControl
             {
-                // Generated from `Microsoft.VisualBasic.CompilerServices.ObjectFlowControl+ForLoopControl` in `Microsoft.VisualBasic.Core, Version=10.0.6.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+                // Generated from `Microsoft.VisualBasic.CompilerServices.ObjectFlowControl+ForLoopControl` in `Microsoft.VisualBasic.Core, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public class ForLoopControl
                 {
                     public static bool ForLoopInitObj(object Counter, object Start, object Limit, object StepValue, ref object LoopForResult, ref object CounterResult) => throw null;
@@ -944,7 +944,7 @@ namespace Microsoft
                 public static void CheckForSyncLockOnValueType(object Expression) => throw null;
             }
 
-            // Generated from `Microsoft.VisualBasic.CompilerServices.ObjectType` in `Microsoft.VisualBasic.Core, Version=10.0.6.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `Microsoft.VisualBasic.CompilerServices.ObjectType` in `Microsoft.VisualBasic.Core, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class ObjectType
             {
                 public static object AddObj(object o1, object o2) => throw null;
@@ -970,7 +970,7 @@ namespace Microsoft
                 public static object XorObj(object obj1, object obj2) => throw null;
             }
 
-            // Generated from `Microsoft.VisualBasic.CompilerServices.Operators` in `Microsoft.VisualBasic.Core, Version=10.0.6.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `Microsoft.VisualBasic.CompilerServices.Operators` in `Microsoft.VisualBasic.Core, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class Operators
             {
                 public static object AddObject(object Left, object Right) => throw null;
@@ -1005,19 +1005,19 @@ namespace Microsoft
                 public static object XorObject(object Left, object Right) => throw null;
             }
 
-            // Generated from `Microsoft.VisualBasic.CompilerServices.OptionCompareAttribute` in `Microsoft.VisualBasic.Core, Version=10.0.6.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `Microsoft.VisualBasic.CompilerServices.OptionCompareAttribute` in `Microsoft.VisualBasic.Core, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class OptionCompareAttribute : System.Attribute
             {
                 public OptionCompareAttribute() => throw null;
             }
 
-            // Generated from `Microsoft.VisualBasic.CompilerServices.OptionTextAttribute` in `Microsoft.VisualBasic.Core, Version=10.0.6.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `Microsoft.VisualBasic.CompilerServices.OptionTextAttribute` in `Microsoft.VisualBasic.Core, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class OptionTextAttribute : System.Attribute
             {
                 public OptionTextAttribute() => throw null;
             }
 
-            // Generated from `Microsoft.VisualBasic.CompilerServices.ProjectData` in `Microsoft.VisualBasic.Core, Version=10.0.6.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `Microsoft.VisualBasic.CompilerServices.ProjectData` in `Microsoft.VisualBasic.Core, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class ProjectData
             {
                 public static void ClearProjectError() => throw null;
@@ -1027,14 +1027,14 @@ namespace Microsoft
                 public static void SetProjectError(System.Exception ex, int lErl) => throw null;
             }
 
-            // Generated from `Microsoft.VisualBasic.CompilerServices.ShortType` in `Microsoft.VisualBasic.Core, Version=10.0.6.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `Microsoft.VisualBasic.CompilerServices.ShortType` in `Microsoft.VisualBasic.Core, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class ShortType
             {
                 public static System.Int16 FromObject(object Value) => throw null;
                 public static System.Int16 FromString(string Value) => throw null;
             }
 
-            // Generated from `Microsoft.VisualBasic.CompilerServices.SingleType` in `Microsoft.VisualBasic.Core, Version=10.0.6.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `Microsoft.VisualBasic.CompilerServices.SingleType` in `Microsoft.VisualBasic.Core, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class SingleType
             {
                 public static float FromObject(object Value) => throw null;
@@ -1043,20 +1043,20 @@ namespace Microsoft
                 public static float FromString(string Value, System.Globalization.NumberFormatInfo NumberFormat) => throw null;
             }
 
-            // Generated from `Microsoft.VisualBasic.CompilerServices.StandardModuleAttribute` in `Microsoft.VisualBasic.Core, Version=10.0.6.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `Microsoft.VisualBasic.CompilerServices.StandardModuleAttribute` in `Microsoft.VisualBasic.Core, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class StandardModuleAttribute : System.Attribute
             {
                 public StandardModuleAttribute() => throw null;
             }
 
-            // Generated from `Microsoft.VisualBasic.CompilerServices.StaticLocalInitFlag` in `Microsoft.VisualBasic.Core, Version=10.0.6.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `Microsoft.VisualBasic.CompilerServices.StaticLocalInitFlag` in `Microsoft.VisualBasic.Core, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class StaticLocalInitFlag
             {
                 public System.Int16 State;
                 public StaticLocalInitFlag() => throw null;
             }
 
-            // Generated from `Microsoft.VisualBasic.CompilerServices.StringType` in `Microsoft.VisualBasic.Core, Version=10.0.6.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `Microsoft.VisualBasic.CompilerServices.StringType` in `Microsoft.VisualBasic.Core, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class StringType
             {
                 public static string FromBoolean(bool Value) => throw null;
@@ -1080,14 +1080,14 @@ namespace Microsoft
                 public static bool StrLikeText(string Source, string Pattern) => throw null;
             }
 
-            // Generated from `Microsoft.VisualBasic.CompilerServices.Utils` in `Microsoft.VisualBasic.Core, Version=10.0.6.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `Microsoft.VisualBasic.CompilerServices.Utils` in `Microsoft.VisualBasic.Core, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class Utils
             {
                 public static System.Array CopyArray(System.Array arySrc, System.Array aryDest) => throw null;
                 public static string GetResourceString(string ResourceKey, params string[] Args) => throw null;
             }
 
-            // Generated from `Microsoft.VisualBasic.CompilerServices.Versioned` in `Microsoft.VisualBasic.Core, Version=10.0.6.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `Microsoft.VisualBasic.CompilerServices.Versioned` in `Microsoft.VisualBasic.Core, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class Versioned
             {
                 public static object CallByName(object Instance, string MethodName, Microsoft.VisualBasic.CallType UseCallType, params object[] Arguments) => throw null;
@@ -1100,21 +1100,21 @@ namespace Microsoft
         }
         namespace FileIO
         {
-            // Generated from `Microsoft.VisualBasic.FileIO.DeleteDirectoryOption` in `Microsoft.VisualBasic.Core, Version=10.0.6.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum DeleteDirectoryOption
+            // Generated from `Microsoft.VisualBasic.FileIO.DeleteDirectoryOption` in `Microsoft.VisualBasic.Core, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            public enum DeleteDirectoryOption : int
             {
-                DeleteAllContents,
-                ThrowIfDirectoryNonEmpty,
+                DeleteAllContents = 5,
+                ThrowIfDirectoryNonEmpty = 4,
             }
 
-            // Generated from `Microsoft.VisualBasic.FileIO.FieldType` in `Microsoft.VisualBasic.Core, Version=10.0.6.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum FieldType
+            // Generated from `Microsoft.VisualBasic.FileIO.FieldType` in `Microsoft.VisualBasic.Core, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            public enum FieldType : int
             {
-                Delimited,
-                FixedWidth,
+                Delimited = 0,
+                FixedWidth = 1,
             }
 
-            // Generated from `Microsoft.VisualBasic.FileIO.FileSystem` in `Microsoft.VisualBasic.Core, Version=10.0.6.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `Microsoft.VisualBasic.FileIO.FileSystem` in `Microsoft.VisualBasic.Core, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class FileSystem
             {
                 public static string CombinePath(string baseDirectory, string relativePath) => throw null;
@@ -1175,7 +1175,7 @@ namespace Microsoft
                 public static void WriteAllText(string file, string text, bool append, System.Text.Encoding encoding) => throw null;
             }
 
-            // Generated from `Microsoft.VisualBasic.FileIO.MalformedLineException` in `Microsoft.VisualBasic.Core, Version=10.0.6.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `Microsoft.VisualBasic.FileIO.MalformedLineException` in `Microsoft.VisualBasic.Core, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class MalformedLineException : System.Exception
             {
                 public override void GetObjectData(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
@@ -1189,21 +1189,21 @@ namespace Microsoft
                 public override string ToString() => throw null;
             }
 
-            // Generated from `Microsoft.VisualBasic.FileIO.RecycleOption` in `Microsoft.VisualBasic.Core, Version=10.0.6.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum RecycleOption
+            // Generated from `Microsoft.VisualBasic.FileIO.RecycleOption` in `Microsoft.VisualBasic.Core, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            public enum RecycleOption : int
             {
-                DeletePermanently,
-                SendToRecycleBin,
+                DeletePermanently = 2,
+                SendToRecycleBin = 3,
             }
 
-            // Generated from `Microsoft.VisualBasic.FileIO.SearchOption` in `Microsoft.VisualBasic.Core, Version=10.0.6.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum SearchOption
+            // Generated from `Microsoft.VisualBasic.FileIO.SearchOption` in `Microsoft.VisualBasic.Core, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            public enum SearchOption : int
             {
-                SearchAllSubDirectories,
-                SearchTopLevelOnly,
+                SearchAllSubDirectories = 3,
+                SearchTopLevelOnly = 2,
             }
 
-            // Generated from `Microsoft.VisualBasic.FileIO.SpecialDirectories` in `Microsoft.VisualBasic.Core, Version=10.0.6.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `Microsoft.VisualBasic.FileIO.SpecialDirectories` in `Microsoft.VisualBasic.Core, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class SpecialDirectories
             {
                 public static string AllUsersApplicationData { get => throw null; }
@@ -1218,7 +1218,7 @@ namespace Microsoft
                 public static string Temp { get => throw null; }
             }
 
-            // Generated from `Microsoft.VisualBasic.FileIO.TextFieldParser` in `Microsoft.VisualBasic.Core, Version=10.0.6.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `Microsoft.VisualBasic.FileIO.TextFieldParser` in `Microsoft.VisualBasic.Core, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class TextFieldParser : System.IDisposable
             {
                 public void Close() => throw null;
@@ -1251,18 +1251,18 @@ namespace Microsoft
                 // ERR: Stub generator didn't handle member: ~TextFieldParser
             }
 
-            // Generated from `Microsoft.VisualBasic.FileIO.UICancelOption` in `Microsoft.VisualBasic.Core, Version=10.0.6.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum UICancelOption
+            // Generated from `Microsoft.VisualBasic.FileIO.UICancelOption` in `Microsoft.VisualBasic.Core, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            public enum UICancelOption : int
             {
-                DoNothing,
-                ThrowException,
+                DoNothing = 2,
+                ThrowException = 3,
             }
 
-            // Generated from `Microsoft.VisualBasic.FileIO.UIOption` in `Microsoft.VisualBasic.Core, Version=10.0.6.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum UIOption
+            // Generated from `Microsoft.VisualBasic.FileIO.UIOption` in `Microsoft.VisualBasic.Core, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            public enum UIOption : int
             {
-                AllDialogs,
-                OnlyErrorDialogs,
+                AllDialogs = 3,
+                OnlyErrorDialogs = 2,
             }
 
         }

@@ -149,7 +149,7 @@ module NetHttp {
       )
       or
       exists(TaintTracking::FunctionModel model |
-        // A modelled function conveying taint from some input to the response writer,
+        // A modeled function conveying taint from some input to the response writer,
         // e.g. `io.Copy(responseWriter, someTaintedReader)`
         model.taintStep(this, responseWriter) and
         responseWriter.getType().implements("net/http", "ResponseWriter")

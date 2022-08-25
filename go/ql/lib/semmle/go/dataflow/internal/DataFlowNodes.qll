@@ -635,7 +635,8 @@ module Public {
   }
 
   private Node getADirectlyWrittenNode() {
-    exists(Write w | w.writesField(result, _, _) or w.writesElement(result, _, _))
+    exists(Write w | w.writesComponent(result, _)) or
+    result = DataFlow::exprNode(any(SendStmt s).getChannel())
   }
 
   private DataFlow::Node getAccessPathPredecessor(DataFlow::Node node) {

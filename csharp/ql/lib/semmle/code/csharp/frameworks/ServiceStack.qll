@@ -282,13 +282,13 @@ private class ServiceStackXssSummaryModelCsv extends SummaryModelCsv {
   override predicate row(string row) {
     row =
       [
-        "ServiceStack;HttpResult;false;HttpResult;(System.String,System.String);;Argument[0];ReturnValue;taint;manual",
-        "ServiceStack;HttpResult;false;HttpResult;(System.Object,System.String,System.Net.HttpStatusCode);;Argument[0];ReturnValue;taint;manual",
-        "ServiceStack;HttpResult;false;HttpResult;(System.Object,System.String);;Argument[0];ReturnValue;taint;manual",
-        "ServiceStack;HttpResult;false;HttpResult;(System.Object,System.Net.HttpStatusCode);;Argument[0];ReturnValue;taint;manual",
-        "ServiceStack;HttpResult;false;HttpResult;(System.Object);;Argument[0];ReturnValue;taint;manual",
-        "ServiceStack;HttpResult;false;HttpResult;(System.IO.Stream,System.String);;Argument[0];ReturnValue;taint;manual",
-        "ServiceStack;HttpResult;false;HttpResult;(System.Byte[],System.String);;Argument[0];ReturnValue;taint;manual"
+        "ServiceStack;HttpResult;false;HttpResult;(System.String,System.String);;Argument[0];Argument[this];taint;manual",
+        "ServiceStack;HttpResult;false;HttpResult;(System.Object,System.String,System.Net.HttpStatusCode);;Argument[0];Argument[this];taint;manual",
+        "ServiceStack;HttpResult;false;HttpResult;(System.Object,System.String);;Argument[0];Argument[this];taint;manual",
+        "ServiceStack;HttpResult;false;HttpResult;(System.Object,System.Net.HttpStatusCode);;Argument[0];Argument[this];taint;manual",
+        "ServiceStack;HttpResult;false;HttpResult;(System.Object);;Argument[0];Argument[this];taint;manual",
+        "ServiceStack;HttpResult;false;HttpResult;(System.IO.Stream,System.String);;Argument[0];Argument[this];taint;manual",
+        "ServiceStack;HttpResult;false;HttpResult;(System.Byte[],System.String);;Argument[0];Argument[this];taint;manual"
       ]
   }
 }

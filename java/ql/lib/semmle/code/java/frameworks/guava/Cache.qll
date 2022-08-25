@@ -13,7 +13,7 @@ private class GuavaBaseCsv extends SummaryModelCsv {
         // lambda flow from Argument[1] not implemented
         "com.google.common.cache;Cache;true;get;(Object,Callable);;Argument[-1].MapValue;ReturnValue;value;manual",
         "com.google.common.cache;Cache;true;getIfPresent;(Object);;Argument[-1].MapValue;ReturnValue;value;manual",
-        // the true flow to MapKey of ReturnValue for getAllPresent is the intersection of the these inputs, but intersections cannot be modelled fully accurately.
+        // the true flow to MapKey of ReturnValue for getAllPresent is the intersection of the these inputs, but intersections cannot be modeled fully accurately.
         "com.google.common.cache;Cache;true;getAllPresent;(Iterable);;Argument[-1].MapKey;ReturnValue.MapKey;value;manual",
         "com.google.common.cache;Cache;true;getAllPresent;(Iterable);;Argument[0].Element;ReturnValue.MapKey;value;manual",
         "com.google.common.cache;Cache;true;getAllPresent;(Iterable);;Argument[-1].MapValue;ReturnValue.MapValue;value;manual",

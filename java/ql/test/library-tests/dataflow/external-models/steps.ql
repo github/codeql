@@ -1,8 +1,8 @@
 import java
 import semmle.code.java.dataflow.DataFlow
 import semmle.code.java.dataflow.ExternalFlow
-import semmle.code.java.dataflow.internal.FlowSummaryImpl as FlowSummaryImpl
 import CsvValidation
+import semmle.code.java.dataflow.internal.FlowSummaryImpl as FlowSummaryImpl
 
 class SummaryModelTest extends SummaryModelCsv {
   override predicate row(string row) {

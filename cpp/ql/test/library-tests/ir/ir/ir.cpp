@@ -1830,4 +1830,25 @@ char *global_string = "global string";
 
 int global_6 = global_2;
 
+namespace block_assignment {
+    class A {
+        enum {} e[1];
+        virtual void f();
+    };
+    
+    struct B : A {
+        B(A *);
+    };
+
+    void foo() {
+        B v(0);
+        v = 0;
+    }
+}
+
+void magicvars() {
+    const char *pf = __PRETTY_FUNCTION__;
+    const char *strfunc = __func__;
+}
+
 // semmle-extractor-options: -std=c++17 --clang

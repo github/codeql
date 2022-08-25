@@ -73,9 +73,7 @@ abstract class AttrWrite extends AttrRef {
  * ```
  * Also gives access to the `value` being written, by extending `DefinitionNode`.
  */
-private class AttributeAssignmentNode extends DefinitionNode, AttrNode {
-  override ControlFlowNode getValue() { result = DefinitionNode.super.getValue() }
-}
+private class AttributeAssignmentNode extends DefinitionNode, AttrNode { }
 
 /** A simple attribute assignment: `object.attr = value`. */
 private class AttributeAssignmentAsAttrWrite extends AttrWrite, CfgNode {

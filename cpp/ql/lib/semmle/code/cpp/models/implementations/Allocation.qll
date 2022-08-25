@@ -218,7 +218,7 @@ private class CallAllocationExpr extends AllocationExpr, FunctionCall {
       exists(target.getReallocPtrArg()) and
       this.getArgument(target.getSizeArg()).getValue().toInt() = 0
     ) and
-    // these are modelled directly (and more accurately), avoid duplication
+    // these are modeled directly (and more accurately), avoid duplication
     not exists(NewOrNewArrayExpr new | new.getAllocatorCall() = this)
   }
 

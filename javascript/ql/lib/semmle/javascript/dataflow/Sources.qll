@@ -332,6 +332,8 @@ module SourceNode {
       or
       // Include return nodes because they model the implicit Promise creation in async functions.
       DataFlow::functionReturnNode(this, _)
+      or
+      this instanceof DataFlow::ReflectiveParametersNode
     }
   }
 }

@@ -8,7 +8,6 @@ from swift.codegen.generators import dbschemegen
 from swift.codegen.lib import dbscheme
 from swift.codegen.test.utils import *
 
-
 InputExpectedPair = collections.namedtuple("InputExpectedPair", ("input", "expected"))
 
 
@@ -20,27 +19,32 @@ def dir_param(request):
     return request.param
 
 
-def generate(opts, renderer):
-    (out, data), = run_generation(dbschemegen.generate, opts, renderer).items()
-    assert out is opts.dbscheme
-    return data
+@pytest.fixture
+def generate(opts, input, renderer):
+    def func(classes):
+        input.classes = {cls.name: cls for cls in classes}
+        (out, data), = run_generation(dbschemegen.generate, opts, renderer).items()
+        assert out is opts.dbscheme
+        return data
+
+    return func
 
 
-def test_empty(opts, input, renderer):
-    assert generate(opts, renderer) == dbscheme.Scheme(
+def test_empty(generate):
+    assert generate([]) == dbscheme.Scheme(
         src=schema_file,
         includes=[],
         declarations=[],
     )
 
 
-def test_includes(opts, input, renderer):
+def test_includes(input, opts, generate):
     includes = ["foo", "bar"]
     input.includes = includes
     for i in includes:
         write(opts.schema.parent / i, i + " data")
 
-    assert generate(opts, renderer) == dbscheme.Scheme(
+    assert generate([]) == dbscheme.Scheme(
         src=schema_file,
         includes=[
             dbscheme.SchemeInclude(
@@ -52,11 +56,10 @@ def test_includes(opts, input, renderer):
     )
 
 
-def test_empty_final_class(opts, input, renderer, dir_param):
-    input.classes = [
+def test_empty_final_class(generate, dir_param):
+    assert generate([
         schema.Class("Object", dir=dir_param.input),
-    ]
-    assert generate(opts, renderer) == dbscheme.Scheme(
+    ]) == dbscheme.Scheme(
         src=schema_file,
         includes=[],
         declarations=[
@@ -71,14 +74,12 @@ def test_empty_final_class(opts, input, renderer, dir_param):
     )
 
 
-def test_final_class_with_single_scalar_field(opts, input, renderer, dir_param):
-    input.classes = [
-
+def test_final_class_with_single_scalar_field(generate, dir_param):
+    assert generate([
         schema.Class("Object", dir=dir_param.input, properties=[
             schema.SingleProperty("foo", "bar"),
         ]),
-    ]
-    assert generate(opts, renderer) == dbscheme.Scheme(
+    ]) == dbscheme.Scheme(
         src=schema_file,
         includes=[],
         declarations=[
@@ -93,13 +94,12 @@ def test_final_class_with_single_scalar_field(opts, input, renderer, dir_param):
     )
 
 
-def test_final_class_with_single_class_field(opts, input, renderer, dir_param):
-    input.classes = [
+def test_final_class_with_single_class_field(generate, dir_param):
+    assert generate([
         schema.Class("Object", dir=dir_param.input, properties=[
             schema.SingleProperty("foo", "Bar"),
         ]),
-    ]
-    assert generate(opts, renderer) == dbscheme.Scheme(
+    ]) == dbscheme.Scheme(
         src=schema_file,
         includes=[],
         declarations=[
@@ -114,13 +114,12 @@ def test_final_class_with_single_class_field(opts, input, renderer, dir_param):
     )
 
 
-def test_final_class_with_optional_field(opts, input, renderer, dir_param):
-    input.classes = [
+def test_final_class_with_optional_field(generate, dir_param):
+    assert generate([
         schema.Class("Object", dir=dir_param.input, properties=[
             schema.OptionalProperty("foo", "bar"),
         ]),
-    ]
-    assert generate(opts, renderer) == dbscheme.Scheme(
+    ]) == dbscheme.Scheme(
         src=schema_file,
         includes=[],
         declarations=[
@@ -143,13 +142,12 @@ def test_final_class_with_optional_field(opts, input, renderer, dir_param):
 
 
 @pytest.mark.parametrize("property_cls", [schema.RepeatedProperty, schema.RepeatedOptionalProperty])
-def test_final_class_with_repeated_field(opts, input, renderer, property_cls, dir_param):
-    input.classes = [
+def test_final_class_with_repeated_field(generate, property_cls, dir_param):
+    assert generate([
         schema.Class("Object", dir=dir_param.input, properties=[
             property_cls("foo", "bar"),
         ]),
-    ]
-    assert generate(opts, renderer) == dbscheme.Scheme(
+    ]) == dbscheme.Scheme(
         src=schema_file,
         includes=[],
         declarations=[
@@ -172,13 +170,12 @@ def test_final_class_with_repeated_field(opts, input, renderer, property_cls, di
     )
 
 
-def test_final_class_with_predicate_field(opts, input, renderer, dir_param):
-    input.classes = [
+def test_final_class_with_predicate_field(generate, dir_param):
+    assert generate([
         schema.Class("Object", dir=dir_param.input, properties=[
             schema.PredicateProperty("foo"),
         ]),
-    ]
-    assert generate(opts, renderer) == dbscheme.Scheme(
+    ]) == dbscheme.Scheme(
         src=schema_file,
         includes=[],
         declarations=[
@@ -199,8 +196,8 @@ def test_final_class_with_predicate_field(opts, input, renderer, dir_param):
     )
 
 
-def test_final_class_with_more_fields(opts, input, renderer, dir_param):
-    input.classes = [
+def test_final_class_with_more_fields(generate, dir_param):
+    assert generate([
         schema.Class("Object", dir=dir_param.input, properties=[
             schema.SingleProperty("one", "x"),
             schema.SingleProperty("two", "y"),
@@ -209,8 +206,7 @@ def test_final_class_with_more_fields(opts, input, renderer, dir_param):
             schema.RepeatedOptionalProperty("five", "v"),
             schema.PredicateProperty("six"),
         ]),
-    ]
-    assert generate(opts, renderer) == dbscheme.Scheme(
+    ]) == dbscheme.Scheme(
         src=schema_file,
         includes=[],
         declarations=[
@@ -259,12 +255,11 @@ def test_final_class_with_more_fields(opts, input, renderer, dir_param):
     )
 
 
-def test_empty_class_with_derived(opts, input, renderer):
-    input.classes = [
+def test_empty_class_with_derived(generate):
+    assert generate([
         schema.Class(
             name="Base", derived={"Left", "Right"}),
-    ]
-    assert generate(opts, renderer) == dbscheme.Scheme(
+    ]) == dbscheme.Scheme(
         src=schema_file,
         includes=[],
         declarations=[
@@ -276,8 +271,8 @@ def test_empty_class_with_derived(opts, input, renderer):
     )
 
 
-def test_class_with_derived_and_single_property(opts, input, renderer, dir_param):
-    input.classes = [
+def test_class_with_derived_and_single_property(generate, dir_param):
+    assert generate([
         schema.Class(
             name="Base",
             derived={"Left", "Right"},
@@ -285,8 +280,7 @@ def test_class_with_derived_and_single_property(opts, input, renderer, dir_param
             properties=[
                 schema.SingleProperty("single", "Prop"),
             ]),
-    ]
-    assert generate(opts, renderer) == dbscheme.Scheme(
+    ]) == dbscheme.Scheme(
         src=schema_file,
         includes=[],
         declarations=[
@@ -307,8 +301,8 @@ def test_class_with_derived_and_single_property(opts, input, renderer, dir_param
     )
 
 
-def test_class_with_derived_and_optional_property(opts, input, renderer, dir_param):
-    input.classes = [
+def test_class_with_derived_and_optional_property(generate, dir_param):
+    assert generate([
         schema.Class(
             name="Base",
             derived={"Left", "Right"},
@@ -316,8 +310,7 @@ def test_class_with_derived_and_optional_property(opts, input, renderer, dir_par
             properties=[
                 schema.OptionalProperty("opt", "Prop"),
             ]),
-    ]
-    assert generate(opts, renderer) == dbscheme.Scheme(
+    ]) == dbscheme.Scheme(
         src=schema_file,
         includes=[],
         declarations=[
@@ -338,8 +331,8 @@ def test_class_with_derived_and_optional_property(opts, input, renderer, dir_par
     )
 
 
-def test_class_with_derived_and_repeated_property(opts, input, renderer, dir_param):
-    input.classes = [
+def test_class_with_derived_and_repeated_property(generate, dir_param):
+    assert generate([
         schema.Class(
             name="Base",
             dir=dir_param.input,
@@ -347,8 +340,7 @@ def test_class_with_derived_and_repeated_property(opts, input, renderer, dir_par
             properties=[
                 schema.RepeatedProperty("rep", "Prop"),
             ]),
-    ]
-    assert generate(opts, renderer) == dbscheme.Scheme(
+    ]) == dbscheme.Scheme(
         src=schema_file,
         includes=[],
         declarations=[

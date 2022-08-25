@@ -4,7 +4,7 @@ namespace System
 {
     namespace Web
     {
-        // Generated from `System.Web.HttpUtility` in `System.Web.HttpUtility, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
+        // Generated from `System.Web.HttpUtility` in `System.Web.HttpUtility, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
         public class HttpUtility
         {
             public static string HtmlAttributeEncode(string s) => throw null;

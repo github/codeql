@@ -3,7 +3,7 @@
  *
  * This test checks several components of the endpoint filters for each query to see whether they
  * filter out any known sinks. It explicitly does not check the endpoint filtering step that's based
- * on whether the endpoint is an argument to a modelled function, since this necessarily filters out
+ * on whether the endpoint is an argument to a modeled function, since this necessarily filters out
  * all known sinks. However, we can test all the other filtering steps against the set of known
  * sinks.
  *

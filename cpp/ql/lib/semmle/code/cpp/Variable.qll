@@ -398,6 +398,8 @@ class LocalVariable extends LocalScopeVariable, @localvariable {
     exists(DeclStmt s | s.getADeclaration() = this and s.getEnclosingFunction() = result)
     or
     exists(ConditionDeclExpr e | e.getVariable() = this and e.getEnclosingFunction() = result)
+    or
+    orphaned_variables(underlyingElement(this), unresolveElement(result))
   }
 }
 
@@ -471,6 +473,9 @@ class GlobalOrNamespaceVariable extends Variable, @globalvariable {
   override Type getType() { globalvariables(underlyingElement(this), unresolveElement(result), _) }
 
   override Element getEnclosingElement() { none() }
+
+  /** Gets a link target which compiled or referenced this global or namespace variable. */
+  LinkTarget getALinkTarget() { this = result.getAGlobalOrNamespaceVariable() }
 }
 
 /**

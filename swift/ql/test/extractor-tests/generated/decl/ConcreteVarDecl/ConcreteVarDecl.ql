@@ -2,13 +2,16 @@
 import codeql.swift.elements
 import TestUtils
 
-from ConcreteVarDecl x, Type getInterfaceType, string getName, Type getType, int getIntroducerInt
+from
+  ConcreteVarDecl x, ModuleDecl getModule, Type getInterfaceType, string getName, Type getType,
+  int getIntroducerInt
 where
   toBeTested(x) and
   not x.isUnknown() and
+  getModule = x.getModule() and
   getInterfaceType = x.getInterfaceType() and
   getName = x.getName() and
   getType = x.getType() and
   getIntroducerInt = x.getIntroducerInt()
-select x, "getInterfaceType:", getInterfaceType, "getName:", getName, "getType:", getType,
-  "getIntroducerInt:", getIntroducerInt
+select x, "getModule:", getModule, "getInterfaceType:", getInterfaceType, "getName:", getName,
+  "getType:", getType, "getIntroducerInt:", getIntroducerInt
