@@ -6,6 +6,7 @@
 #include <queue>
 
 #include <swift/AST/SourceFile.h>
+#include <swift/AST/Builtins.h>
 #include <swift/Basic/FileTypes.h>
 #include <llvm/ADT/SmallString.h>
 #include <llvm/Support/FileSystem.h>
@@ -68,22 +69,52 @@ static std::string getFilename(swift::ModuleDecl& module, swift::SourceFile* pri
   return module.getModuleFilename().str();
 }
 
+static llvm::SmallVector<swift::ValueDecl*> getBuiltinDecls(swift::ModuleDecl& builtinModule) {
+  llvm::SmallVector<swift::ValueDecl*> values;
+  for (auto symbol : {
+           "zeroInitializer", "BridgeObject",   "Word",           "NativeObject",
+           "RawPointer",      "Int1",           "Int8",           "Int16",
+           "Int32",           "Int64",          "IntLiteral",     "FPIEEE16",
+           "FPIEEE32",        "FPIEEE64",       "FPIEEE80",       "Vec2xInt8",
+           "Vec4xInt8",       "Vec8xInt8",      "Vec16xInt8",     "Vec32xInt8",
+           "Vec64xInt8",      "Vec2xInt16",     "Vec4xInt16",     "Vec8xInt16",
+           "Vec16xInt16",     "Vec32xInt16",    "Vec64xInt16",    "Vec2xInt32",
+           "Vec4xInt32",      "Vec8xInt32",     "Vec16xInt32",    "Vec32xInt32",
+           "Vec64xInt32",     "Vec2xInt64",     "Vec4xInt64",     "Vec8xInt64",
+           "Vec16xInt64",     "Vec32xInt64",    "Vec64xInt64",    "Vec2xFPIEEE16",
+           "Vec4xFPIEEE16",   "Vec8xFPIEEE16",  "Vec16xFPIEEE16", "Vec32xFPIEEE16",
+           "Vec64xFPIEEE16",  "Vec2xFPIEEE32",  "Vec4xFPIEEE32",  "Vec8xFPIEEE32",
+           "Vec16xFPIEEE32",  "Vec32xFPIEEE32", "Vec64xFPIEEE32", "Vec2xFPIEEE64",
+           "Vec4xFPIEEE64",   "Vec8xFPIEEE64",  "Vec16xFPIEEE64", "Vec32xFPIEEE64",
+           "Vec64xFPIEEE64",
+       }) {
+    builtinModule.lookupValue(builtinModule.getASTContext().getIdentifier(symbol),
+                              swift::NLKind::QualifiedLookup, values);
+  }
+  return values;
+}
+
 static llvm::SmallVector<swift::Decl*> getTopLevelDecls(swift::ModuleDecl& module,
                                                         swift::SourceFile* primaryFile = nullptr) {
   llvm::SmallVector<swift::Decl*> ret;
   ret.push_back(&module);
   if (primaryFile) {
     primaryFile->getTopLevelDecls(ret);
+  } else if (module.isBuiltinModule()) {
+    for (auto d : getBuiltinDecls(module)) {
+      ret.push_back(d);
+    }
   } else {
     module.getTopLevelDecls(ret);
   }
   return ret;
 }
 
-static void extractDeclarations(const SwiftExtractorConfiguration& config,
-                                swift::CompilerInstance& compiler,
-                                swift::ModuleDecl& module,
-                                swift::SourceFile* primaryFile = nullptr) {
+static std::unordered_set<swift::ModuleDecl*> extractDeclarations(
+    const SwiftExtractorConfiguration& config,
+    swift::CompilerInstance& compiler,
+    swift::ModuleDecl& module,
+    swift::SourceFile* primaryFile = nullptr) {
   auto filename = getFilename(module, primaryFile);
 
   // The extractor can be called several times from different processes with
@@ -92,7 +123,7 @@ static void extractDeclarations(const SwiftExtractorConfiguration& config,
   auto trapTarget = createTargetTrapFile(config, filename);
   if (!trapTarget) {
     // another process arrived first, nothing to do for us
-    return;
+    return {};
   }
   TrapDomain trap{*trapTarget};
 
@@ -116,6 +147,7 @@ static void extractDeclarations(const SwiftExtractorConfiguration& config,
   for (auto& comment : comments) {
     visitor.extract(comment);
   }
+  return std::move(visitor).getEncounteredModules();
 }
 
 static std::unordered_set<std::string> collectInputFilenames(swift::CompilerInstance& compiler) {
@@ -132,40 +164,18 @@ static std::unordered_set<std::string> collectInputFilenames(swift::CompilerInst
   return sourceFiles;
 }
 
-static std::unordered_set<swift::ModuleDecl*> collectModules(swift::CompilerInstance& compiler) {
-  // getASTContext().getLoadedModules() does not provide all the modules available within the
-  // program.
-  // We need to iterate over all the imported modules (recursively) to see the whole "universe."
-  std::unordered_set<swift::ModuleDecl*> allModules;
-  std::queue<swift::ModuleDecl*> worklist;
-  for (auto& [_, module] : compiler.getASTContext().getLoadedModules()) {
-    worklist.push(module);
-    allModules.insert(module);
-  }
-
-  while (!worklist.empty()) {
-    auto module = worklist.front();
-    worklist.pop();
-    llvm::SmallVector<swift::ImportedModule> importedModules;
-    // TODO: we may need more than just Exported ones
-    module->getImportedModules(importedModules, swift::ModuleDecl::ImportFilterKind::Exported);
-    for (auto& imported : importedModules) {
-      if (allModules.count(imported.importedModule) == 0) {
-        worklist.push(imported.importedModule);
-        allModules.insert(imported.importedModule);
-      }
-    }
-  }
-  return allModules;
-}
-
 void codeql::extractSwiftFiles(const SwiftExtractorConfiguration& config,
                                swift::CompilerInstance& compiler) {
   auto inputFiles = collectInputFilenames(compiler);
-  auto modules = collectModules(compiler);
+  std::vector<swift::ModuleDecl*> todo = {compiler.getMainModule()};
+  std::unordered_set<swift::ModuleDecl*> processed = {};
 
-  for (auto& module : modules) {
+  while (!todo.empty()) {
+    auto module = todo.back();
+    todo.pop_back();
+    llvm::errs() << "processing module " << module->getName() << '\n';
     bool isFromSourceFile = false;
+    std::unordered_set<swift::ModuleDecl*> encounteredModules;
     for (auto file : module->getFiles()) {
       auto sourceFile = llvm::dyn_cast<swift::SourceFile>(file);
       if (!sourceFile) {
@@ -176,10 +186,16 @@ void codeql::extractSwiftFiles(const SwiftExtractorConfiguration& config,
         continue;
       }
       archiveFile(config, *sourceFile);
-      extractDeclarations(config, compiler, *module, sourceFile);
+      encounteredModules = extractDeclarations(config, compiler, *module, sourceFile);
     }
     if (!isFromSourceFile) {
-      extractDeclarations(config, compiler, *module);
+      encounteredModules = extractDeclarations(config, compiler, *module);
+    }
+    processed.insert(module);
+    for (auto encountered : encounteredModules) {
+      if (processed.count(encountered) == 0) {
+        todo.push_back(encountered);
+      }
     }
   }
 }
