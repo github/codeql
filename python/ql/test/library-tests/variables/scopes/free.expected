@@ -1,3 +1,5 @@
+| Local Variable baz | in_class.py:5:1:5:22 | Class MyClass | in_class.py:11:5:11:18 | Function use |
+| Local Variable foo | in_class.py:5:1:5:22 | Class MyClass | in_class.py:11:5:11:18 | Function use |
 | Local Variable local2 | test.py:15:1:15:12 | Function func2 | test.py:17:5:17:23 | Function inner1 |
 | Local Variable local4 | test.py:22:1:22:26 | Function func3 | test.py:24:5:24:22 | Function inner_outer |
 | Local Variable local4 | test.py:22:1:22:26 | Function func3 | test.py:25:9:25:27 | Function inner2 |
