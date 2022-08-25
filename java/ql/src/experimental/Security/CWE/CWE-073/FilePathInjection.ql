@@ -31,7 +31,7 @@ class InjectFilePathConfig extends TaintTracking::Configuration {
   override predicate isSanitizer(DataFlow::Node node) {
     exists(Type t | t = node.getType() | t instanceof BoxedType or t instanceof PrimitiveType)
     or
-    node instanceof PathTraversalSanitizer
+    node instanceof PathInjectionSanitizer
   }
 }
 

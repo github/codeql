@@ -1,17 +1,12 @@
+/** Provides classes and predicates to reason about sanitization of path injection vulnerabilities. */
+
 import java
 private import semmle.code.java.controlflow.Guards
 private import semmle.code.java.dataflow.FlowSources
 private import semmle.code.java.dataflow.ExternalFlow
 
-/**
- * DEPRECATED: Use `PathTraversalSanitizer` instead.
- *
- * A barrier guard that protects against path traversal vulnerabilities.
- */
-abstract deprecated class PathTraversalBarrierGuard extends DataFlow::BarrierGuard { }
-
-/** A sanitizer that protects against path traversal vulnerabilities. */
-abstract class PathTraversalSanitizer extends DataFlow::Node { }
+/** A sanitizer that protects against path injection vulnerabilities. */
+abstract class PathInjectionSanitizer extends DataFlow::Node { }
 
 /**
  * Holds if `g` is guard that compares a string to a trusted value.
@@ -26,7 +21,7 @@ private predicate exactStringPathMatchGuard(Guard g, Expr e, boolean branch) {
   )
 }
 
-private class ExactStringPathMatchSanitizer extends PathTraversalSanitizer {
+private class ExactStringPathMatchSanitizer extends PathInjectionSanitizer {
   ExactStringPathMatchSanitizer() {
     this = DataFlow::BarrierGuard<exactStringPathMatchGuard/3>::getABarrierNode()
   }
@@ -38,7 +33,7 @@ private class ExactStringPathMatchSanitizer extends PathTraversalSanitizer {
  * This is used to look through field accessors such as `uri.getPath()`.
  */
 private Expr getUnderlyingVarAccess(Expr e) {
-  result = getUnderlyingVarAccess(e.(MethodAccess).getQualifier())
+  result = getUnderlyingVarAccess(e.(MethodAccess).getQualifier().getUnderlyingExpr())
   or
   result = e.(VarAccess)
 }
@@ -49,7 +44,9 @@ private class AllowListGuard extends Guard instanceof MethodAccess {
     not isDisallowedWord(super.getAnArgument())
   }
 
-  Expr getCheckedExpr() { result = getUnderlyingVarAccess(super.getQualifier()) }
+  Expr getCheckedExpr() {
+    result = getUnderlyingVarAccess(super.getQualifier().getUnderlyingExpr())
+  }
 }
 
 /**
@@ -72,7 +69,7 @@ private predicate allowListGuard(Guard g, Expr e, boolean branch) {
   )
 }
 
-private class AllowListSanitizer extends PathTraversalSanitizer {
+private class AllowListSanitizer extends PathInjectionSanitizer {
   AllowListSanitizer() { this = DataFlow::BarrierGuard<allowListGuard/3>::getABarrierNode() }
 }
 
@@ -90,7 +87,7 @@ private predicate dotDotCheckGuard(Guard g, Expr e, boolean branch) {
   )
 }
 
-private class DotDotCheckSanitizer extends PathTraversalSanitizer {
+private class DotDotCheckSanitizer extends PathInjectionSanitizer {
   DotDotCheckSanitizer() { this = DataFlow::BarrierGuard<dotDotCheckGuard/3>::getABarrierNode() }
 }
 
@@ -100,7 +97,9 @@ private class BlockListGuard extends Guard instanceof MethodAccess {
     isDisallowedWord(super.getAnArgument())
   }
 
-  Expr getCheckedExpr() { result = getUnderlyingVarAccess(super.getQualifier()) }
+  Expr getCheckedExpr() {
+    result = getUnderlyingVarAccess(super.getQualifier().getUnderlyingExpr())
+  }
 }
 
 /**
@@ -123,7 +122,7 @@ private predicate blockListGuard(Guard g, Expr e, boolean branch) {
   )
 }
 
-private class BlockListSanitizer extends PathTraversalSanitizer {
+private class BlockListSanitizer extends PathInjectionSanitizer {
   BlockListSanitizer() { this = DataFlow::BarrierGuard<blockListGuard/3>::getABarrierNode() }
 }
 
@@ -140,7 +139,7 @@ private predicate urlEncodingGuard(Guard g, Expr e, boolean branch) {
   )
 }
 
-private class UrlEncodingSanitizer extends PathTraversalSanitizer {
+private class UrlEncodingSanitizer extends PathInjectionSanitizer {
   UrlEncodingSanitizer() { this = DataFlow::BarrierGuard<urlEncodingGuard/3>::getABarrierNode() }
 }
 
@@ -149,16 +148,19 @@ private class UrlEncodingSanitizer extends PathTraversalSanitizer {
  */
 private predicate isStringPartialMatch(MethodAccess ma) {
   ma.getMethod().getDeclaringType() instanceof TypeString and
-  ma.getMethod().getName() =
-    ["contains", "startsWith", "matches", "regionMatches", "indexOf", "lastIndexOf"]
+  ma.getMethod()
+      .hasName(["contains", "startsWith", "matches", "regionMatches", "indexOf", "lastIndexOf"])
 }
 
 /**
- * Holds if `ma` is a call to a method of `java.nio.file.Path` that checks a partial path match.
+ * Holds if `ma` is a call to a method that checks a partial path match.
  */
 private predicate isPathPartialMatch(MethodAccess ma) {
   ma.getMethod().getDeclaringType() instanceof TypePath and
-  ma.getMethod().getName() = "startsWith"
+  ma.getMethod().hasName("startsWith")
+  or
+  ma.getMethod().getDeclaringType().hasQualifiedName("kotlin.io", "FilesKt") and
+  ma.getMethod().hasName("startsWith")
 }
 
 private predicate isDisallowedWord(CompileTimeConstantExpr word) {
@@ -166,21 +168,31 @@ private predicate isDisallowedWord(CompileTimeConstantExpr word) {
 }
 
 /** A complementary guard that protects against path traversal, by looking for the literal `..`. */
-class PathTraversalGuard extends Guard instanceof MethodAccess {
+private class PathTraversalGuard extends Guard instanceof MethodAccess {
   PathTraversalGuard() {
     super.getMethod().getDeclaringType() instanceof TypeString and
     super.getMethod().hasName(["contains", "indexOf"]) and
     super.getAnArgument().(CompileTimeConstantExpr).getStringValue() = ".."
   }
 
-  Expr getCheckedExpr() { result = getUnderlyingVarAccess(super.getQualifier()) }
+  Expr getCheckedExpr() {
+    result = getUnderlyingVarAccess(super.getQualifier().getUnderlyingExpr())
+  }
 }
 
 /** A complementary sanitizer that protects against path traversal using path normalization. */
 private class PathNormalizeSanitizer extends MethodAccess {
   PathNormalizeSanitizer() {
-    this.getMethod().getDeclaringType().hasQualifiedName("java.nio.file", "Path") and
-    this.getMethod().hasName("normalize")
+    exists(RefType t |
+      t instanceof TypePath or
+      t.hasQualifiedName("kotlin.io", "FilesKt")
+    |
+      this.getMethod().getDeclaringType() = t and
+      this.getMethod().hasName("normalize")
+    )
+    or
+    this.getMethod().getDeclaringType() instanceof TypeFile and
+    this.getMethod().hasName(["getCanonicalPath", "getCanonicalFile"])
   }
 }
 
@@ -198,8 +210,13 @@ private class UrlEncodingGuard extends Guard instanceof MethodAccess {
 /** A complementary sanitizer that protects against double URL encoding using URL decoding. */
 private class UrlDecodeSanitizer extends MethodAccess {
   UrlDecodeSanitizer() {
-    this.getMethod().getDeclaringType().hasQualifiedName("java.net", "URLDecoder") and
-    this.getMethod().hasName("decode")
+    exists(RefType t |
+      this.getMethod().getDeclaringType() = t and
+      this.getMethod().hasName("decode")
+    |
+      t.hasQualifiedName("java.net", "URLDecoder") or
+      t.hasQualifiedName("android.net", "Uri")
+    )
   }
 }
 
@@ -207,16 +224,5 @@ private class UrlDecodeSanitizer extends MethodAccess {
 class NormalizedPathNode extends DataFlow::Node {
   NormalizedPathNode() {
     TaintTracking::localExprTaint(this.asExpr(), any(PathNormalizeSanitizer ma))
-  }
-}
-
-/** Data model related to `java.nio.file.Path`. */
-private class PathDataModel extends SummaryModelCsv {
-  override predicate row(string row) {
-    row =
-      [
-        "java.nio.file;Paths;true;get;;;Argument[0];ReturnValue;taint;manual",
-        "java.nio.file;Path;true;normalize;;;Argument[-1];ReturnValue;taint;manual"
-      ]
   }
 }

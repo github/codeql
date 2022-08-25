@@ -37,7 +37,7 @@ class UnsafeUrlForwardFlowConfig extends TaintTracking::Configuration {
 
   override predicate isSanitizer(DataFlow::Node node) {
     node instanceof UnsafeUrlForwardSanitizer or
-    node instanceof PathTraversalSanitizer
+    node instanceof PathInjectionSanitizer
   }
 
   override DataFlow::FlowFeature getAFeature() {
