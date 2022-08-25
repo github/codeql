@@ -605,7 +605,7 @@ module API {
     }
 
     /**
-     * Holds is them module `name` is imported.
+     * Holds if the module `name` is imported.
      *
      * This is determined syntactically.
      */

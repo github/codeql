@@ -465,11 +465,11 @@ abstract class DataFlowCall extends TDataFlowCall {
 
   /**
    * Gets the argument to this call that will be sent
-   * to the `n`th parameter of the callable, if such exists.
+   * to the `n`th parameter of the callable, if any.
    */
   abstract Node getArg(int n);
 
-  /** Get the control flow node representing this call, if such exists. */
+  /** Get the control flow node representing this call, if any. */
   abstract ControlFlowNode getNode();
 
   /** Gets the location of this dataflow call. */
@@ -655,7 +655,7 @@ class LibraryCall extends NormalCall {
  * map(lambda x: x + 1, [1, 2, 3])
  * ```
  *
- * there is a call to the lambda argument inside `map`.
+ * there is a synthesized call to the lambda argument inside `map`.
  */
 class SummaryCall extends DataFlowCall, TSummaryCall {
   private FlowSummaryImpl::Public::SummarizedCallable c;

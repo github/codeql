@@ -1,7 +1,7 @@
 /** Provides classes and predicates for defining flow summaries. */
 
-import python
-import semmle.python.dataflow.new.DataFlow
+private import python
+private import semmle.python.dataflow.new.DataFlow
 private import internal.FlowSummaryImpl as Impl
 private import internal.DataFlowUtil
 private import internal.DataFlowPrivate
