@@ -183,7 +183,7 @@ private module Settings {
  * production code.
  */
 private class AllowForgeryProtectionSetting extends Settings::BooleanSetting,
-  CSRFProtectionSetting::Range {
+  CsrfProtectionSetting::Range {
   AllowForgeryProtectionSetting() {
     this.getReceiver() instanceof Config::ActionControllerNode and
     this.getMethodName() = "allow_forgery_protection="
@@ -204,9 +204,9 @@ private class EncryptedCookieCipherSetting extends Settings::StringlikeSetting,
     this.getMethodName() = "encrypted_cookie_cipher="
   }
 
-  OpenSSLCipher getCipher() { this.getValueText() = result.getName() }
+  OpenSslCipher getCipher() { this.getValueText() = result.getName() }
 
-  OpenSSLCipher getDefaultCipher() { result.getName() = "aes-256-gcm" }
+  OpenSslCipher getDefaultCipher() { result.getName() = "aes-256-gcm" }
 
   override string getSecurityWarningMessage() {
     this.getCipher().isWeak() and

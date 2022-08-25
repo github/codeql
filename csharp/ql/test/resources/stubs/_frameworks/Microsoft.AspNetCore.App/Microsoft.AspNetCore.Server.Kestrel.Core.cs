@@ -108,14 +108,14 @@ namespace Microsoft
 
                     // Generated from `Microsoft.AspNetCore.Server.Kestrel.Core.HttpProtocols` in `Microsoft.AspNetCore.Server.Kestrel.Core, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                     [System.Flags]
-                    public enum HttpProtocols
+                    public enum HttpProtocols : int
                     {
-                        Http1,
-                        Http1AndHttp2,
-                        Http1AndHttp2AndHttp3,
-                        Http2,
-                        Http3,
-                        None,
+                        Http1 = 1,
+                        Http1AndHttp2 = 3,
+                        Http1AndHttp2AndHttp3 = 7,
+                        Http2 = 2,
+                        Http3 = 4,
+                        None = 0,
                     }
 
                     // Generated from `Microsoft.AspNetCore.Server.Kestrel.Core.KestrelServer` in `Microsoft.AspNetCore.Server.Kestrel.Core, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
@@ -259,19 +259,19 @@ namespace Microsoft
                         namespace Http
                         {
                             // Generated from `Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http.HttpMethod` in `Microsoft.AspNetCore.Server.Kestrel.Core, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
-                            public enum HttpMethod
+                            public enum HttpMethod : byte
                             {
-                                Connect,
-                                Custom,
-                                Delete,
-                                Get,
-                                Head,
-                                None,
-                                Options,
-                                Patch,
-                                Post,
-                                Put,
-                                Trace,
+                                Connect = 7,
+                                Custom = 9,
+                                Delete = 2,
+                                Get = 0,
+                                Head = 4,
+                                None = 255,
+                                Options = 8,
+                                Patch = 6,
+                                Post = 3,
+                                Put = 1,
+                                Trace = 5,
                             }
 
                             // Generated from `Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http.HttpParser<>` in `Microsoft.AspNetCore.Server.Kestrel.Core, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
@@ -284,21 +284,21 @@ namespace Microsoft
                             }
 
                             // Generated from `Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http.HttpScheme` in `Microsoft.AspNetCore.Server.Kestrel.Core, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
-                            public enum HttpScheme
+                            public enum HttpScheme : int
                             {
-                                Http,
-                                Https,
-                                Unknown,
+                                Http = 0,
+                                Https = 1,
+                                Unknown = -1,
                             }
 
                             // Generated from `Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http.HttpVersion` in `Microsoft.AspNetCore.Server.Kestrel.Core, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
-                            public enum HttpVersion
+                            public enum HttpVersion : sbyte
                             {
-                                Http10,
-                                Http11,
-                                Http2,
-                                Http3,
-                                Unknown,
+                                Http10 = 0,
+                                Http11 = 1,
+                                Http2 = 2,
+                                Http3 = 3,
+                                Unknown = -1,
                             }
 
                             // Generated from `Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http.HttpVersionAndMethod` in `Microsoft.AspNetCore.Server.Kestrel.Core, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
@@ -332,7 +332,7 @@ namespace Microsoft
                             }
 
                             // Generated from `Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http.RequestRejectionReason` in `Microsoft.AspNetCore.Server.Kestrel.Core, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
-                            internal enum RequestRejectionReason
+                            internal enum RequestRejectionReason : int
                             {
                             }
 
@@ -358,12 +358,12 @@ namespace Microsoft
                     }
 
                     // Generated from `Microsoft.AspNetCore.Server.Kestrel.Https.ClientCertificateMode` in `Microsoft.AspNetCore.Server.Kestrel.Core, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
-                    public enum ClientCertificateMode
+                    public enum ClientCertificateMode : int
                     {
-                        AllowCertificate,
-                        DelayCertificate,
-                        NoCertificate,
-                        RequireCertificate,
+                        AllowCertificate = 1,
+                        DelayCertificate = 3,
+                        NoCertificate = 0,
+                        RequireCertificate = 2,
                     }
 
                     // Generated from `Microsoft.AspNetCore.Server.Kestrel.Https.HttpsConnectionAdapterOptions` in `Microsoft.AspNetCore.Server.Kestrel.Core, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`

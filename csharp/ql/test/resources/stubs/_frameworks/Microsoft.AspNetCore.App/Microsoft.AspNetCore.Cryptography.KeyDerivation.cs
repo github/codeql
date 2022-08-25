@@ -15,11 +15,11 @@ namespace Microsoft
                 }
 
                 // Generated from `Microsoft.AspNetCore.Cryptography.KeyDerivation.KeyDerivationPrf` in `Microsoft.AspNetCore.Cryptography.KeyDerivation, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
-                public enum KeyDerivationPrf
+                public enum KeyDerivationPrf : int
                 {
-                    HMACSHA1,
-                    HMACSHA256,
-                    HMACSHA512,
+                    HMACSHA1 = 0,
+                    HMACSHA256 = 1,
+                    HMACSHA512 = 2,
                 }
 
             }

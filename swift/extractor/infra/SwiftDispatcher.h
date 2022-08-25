@@ -258,13 +258,13 @@ class SwiftDispatcher {
       return;
     }
     auto file = getFilePath(sourceManager.getDisplayNameForLoc(start));
-    Location entry{{}};
+    DbLocation entry{{}};
     entry.file = fetchLabel(file);
     std::tie(entry.start_line, entry.start_column) = sourceManager.getLineAndColumnInBuffer(start);
     std::tie(entry.end_line, entry.end_column) = sourceManager.getLineAndColumnInBuffer(end);
-    entry.id = trap.createLabel<LocationTag>('{', entry.file, "}:", entry.start_line, ':',
-                                             entry.start_column, ':', entry.end_line, ':',
-                                             entry.end_column);
+    entry.id = trap.createLabel<DbLocationTag>('{', entry.file, "}:", entry.start_line, ':',
+                                               entry.start_column, ':', entry.end_line, ':',
+                                               entry.end_column);
     emit(entry);
     emit(LocatableLocationsTrap{locatableLabel, entry.id});
   }

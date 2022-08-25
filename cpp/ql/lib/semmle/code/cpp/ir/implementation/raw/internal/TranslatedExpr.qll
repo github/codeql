@@ -1450,8 +1450,6 @@ class TranslatedAssignExpr extends TranslatedNonConstantExpr {
       result = this.getLeftOperand().getResult()
   }
 
-  abstract Instruction getStoredValue();
-
   final TranslatedExpr getLeftOperand() {
     result = getTranslatedExpr(expr.getLValue().getFullyConverted())
   }
@@ -1489,6 +1487,75 @@ class TranslatedAssignExpr extends TranslatedNonConstantExpr {
       or
       operandTag instanceof StoreValueOperandTag and
       result = this.getRightOperand().getResult()
+    )
+  }
+}
+
+class TranslatedBlockAssignExpr extends TranslatedNonConstantExpr {
+  override BlockAssignExpr expr;
+
+  final override TranslatedElement getChild(int id) {
+    id = 0 and result = this.getLeftOperand()
+    or
+    id = 1 and result = this.getRightOperand()
+  }
+
+  final override Instruction getFirstInstruction() {
+    // The operand evaluation order should not matter since block assignments behave like memcpy.
+    result = this.getLeftOperand().getFirstInstruction()
+  }
+
+  final override Instruction getResult() { result = this.getInstruction(AssignmentStoreTag()) }
+
+  final TranslatedExpr getLeftOperand() {
+    result = getTranslatedExpr(expr.getLValue().getFullyConverted())
+  }
+
+  final TranslatedExpr getRightOperand() {
+    result = getTranslatedExpr(expr.getRValue().getFullyConverted())
+  }
+
+  override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) {
+    tag = LoadTag() and
+    result = this.getInstruction(AssignmentStoreTag()) and
+    kind instanceof GotoEdge
+    or
+    tag = AssignmentStoreTag() and
+    result = this.getParent().getChildSuccessor(this) and
+    kind instanceof GotoEdge
+  }
+
+  override Instruction getChildSuccessor(TranslatedElement child) {
+    child = this.getLeftOperand() and
+    result = this.getRightOperand().getFirstInstruction()
+    or
+    child = this.getRightOperand() and
+    result = this.getInstruction(LoadTag())
+  }
+
+  override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType resultType) {
+    tag = LoadTag() and
+    opcode instanceof Opcode::Load and
+    resultType = getTypeForPRValue(expr.getRValue().getType())
+    or
+    tag = AssignmentStoreTag() and
+    opcode instanceof Opcode::Store and
+    // The frontend specifies that the relevant type is the one of the source.
+    resultType = getTypeForPRValue(expr.getRValue().getType())
+  }
+
+  override Instruction getInstructionRegisterOperand(InstructionTag tag, OperandTag operandTag) {
+    tag = LoadTag() and
+    operandTag instanceof AddressOperandTag and
+    result = this.getRightOperand().getResult()
+    or
+    tag = AssignmentStoreTag() and
+    (
+      operandTag instanceof AddressOperandTag and
+      result = this.getLeftOperand().getResult()
+      or
+      operandTag instanceof StoreValueOperandTag and
+      result = this.getInstruction(LoadTag())
     )
   }
 }

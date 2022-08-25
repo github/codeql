@@ -20,7 +20,7 @@ def load(tmp_path):
 
 def test_empty_schema(load):
     ret = load("{}")
-    assert ret.classes == [schema.Class(root_name)]
+    assert ret.classes == {root_name: schema.Class(root_name)}
     assert ret.includes == set()
 
 
@@ -28,10 +28,10 @@ def test_one_empty_class(load):
     ret = load("""
 MyClass: {}
 """)
-    assert ret.classes == [
-        schema.Class(root_name, derived={'MyClass'}),
-        schema.Class('MyClass', bases={root_name}),
-    ]
+    assert ret.classes == {
+        root_name: schema.Class(root_name, derived={'MyClass'}),
+        'MyClass': schema.Class('MyClass', bases={root_name}),
+    }
 
 
 def test_two_empty_classes(load):
@@ -39,11 +39,11 @@ def test_two_empty_classes(load):
 MyClass1: {}
 MyClass2: {}
 """)
-    assert ret.classes == [
-        schema.Class(root_name, derived={'MyClass1', 'MyClass2'}),
-        schema.Class('MyClass1', bases={root_name}),
-        schema.Class('MyClass2', bases={root_name}),
-    ]
+    assert ret.classes == {
+        root_name: schema.Class(root_name, derived={'MyClass1', 'MyClass2'}),
+        'MyClass1': schema.Class('MyClass1', bases={root_name}),
+        'MyClass2': schema.Class('MyClass2', bases={root_name}),
+    }
 
 
 def test_two_empty_chained_classes(load):
@@ -52,11 +52,11 @@ MyClass1: {}
 MyClass2:
     _extends: MyClass1
 """)
-    assert ret.classes == [
-        schema.Class(root_name, derived={'MyClass1'}),
-        schema.Class('MyClass1', bases={root_name}, derived={'MyClass2'}),
-        schema.Class('MyClass2', bases={'MyClass1'}),
-    ]
+    assert ret.classes == {
+        root_name: schema.Class(root_name, derived={'MyClass1'}),
+        'MyClass1': schema.Class('MyClass1', bases={root_name}, derived={'MyClass2'}),
+        'MyClass2': schema.Class('MyClass2', bases={'MyClass1'}),
+    }
 
 
 def test_empty_classes_diamond(load):
@@ -68,12 +68,12 @@ C:
         - A
         - B
 """)
-    assert ret.classes == [
-        schema.Class(root_name, derived={'A', 'B'}),
-        schema.Class('A', bases={root_name}, derived={'C'}),
-        schema.Class('B', bases={root_name}, derived={'C'}),
-        schema.Class('C', bases={'A', 'B'}),
-    ]
+    assert ret.classes == {
+        root_name: schema.Class(root_name, derived={'A', 'B'}),
+        'A': schema.Class('A', bases={root_name}, derived={'C'}),
+        'B': schema.Class('B', bases={root_name}, derived={'C'}),
+        'C': schema.Class('C', bases={'A', 'B'}),
+    }
 
 
 def test_dir(load):
@@ -81,10 +81,10 @@ def test_dir(load):
 A:
     _dir: other/dir
 """)
-    assert ret.classes == [
-        schema.Class(root_name, derived={'A'}),
-        schema.Class('A', bases={root_name}, dir=pathlib.Path("other/dir")),
-    ]
+    assert ret.classes == {
+        root_name: schema.Class(root_name, derived={'A'}),
+        'A': schema.Class('A', bases={root_name}, dir=pathlib.Path("other/dir")),
+    }
 
 
 def test_directory_filter(load):
@@ -101,16 +101,16 @@ Ax: {}
 Ay: {}
 A: {}
 """)
-    assert ret.classes == [
-        schema.Class(root_name, derived={'Afoo', 'Bbar', 'Abar', 'Bfoo', 'Ax', 'Ay', 'A'}),
-        schema.Class('Afoo', bases={root_name}, dir=pathlib.Path("second/dir")),
-        schema.Class('Bbar', bases={root_name}, dir=pathlib.Path("third/dir")),
-        schema.Class('Abar', bases={root_name}, dir=pathlib.Path("third/dir")),
-        schema.Class('Bfoo', bases={root_name}, dir=pathlib.Path("second/dir")),
-        schema.Class('Ax', bases={root_name}, dir=pathlib.Path("first/dir")),
-        schema.Class('Ay', bases={root_name}, dir=pathlib.Path("first/dir")),
-        schema.Class('A', bases={root_name}, dir=pathlib.Path()),
-    ]
+    assert ret.classes == {
+        root_name: schema.Class(root_name, derived={'Afoo', 'Bbar', 'Abar', 'Bfoo', 'Ax', 'Ay', 'A'}),
+        'Afoo': schema.Class('Afoo', bases={root_name}, dir=pathlib.Path("second/dir")),
+        'Bbar': schema.Class('Bbar', bases={root_name}, dir=pathlib.Path("third/dir")),
+        'Abar': schema.Class('Abar', bases={root_name}, dir=pathlib.Path("third/dir")),
+        'Bfoo': schema.Class('Bfoo', bases={root_name}, dir=pathlib.Path("second/dir")),
+        'Ax': schema.Class('Ax', bases={root_name}, dir=pathlib.Path("first/dir")),
+        'Ay': schema.Class('Ay', bases={root_name}, dir=pathlib.Path("first/dir")),
+        'A': schema.Class('A', bases={root_name}, dir=pathlib.Path()),
+    }
 
 
 def test_directory_filter_override(load):
@@ -120,10 +120,10 @@ _directories:
 A:
     _dir: other/dir
 """)
-    assert ret.classes == [
-        schema.Class(root_name, derived={'A'}),
-        schema.Class('A', bases={root_name}, dir=pathlib.Path("other/dir")),
-    ]
+    assert ret.classes == {
+        root_name: schema.Class(root_name, derived={'A'}),
+        'A': schema.Class('A', bases={root_name}, dir=pathlib.Path("other/dir")),
+    }
 
 
 def test_lowercase_rejected(load):
@@ -145,16 +145,16 @@ A:
      four: x?*
      five: predicate
 """)
-    assert ret.classes == [
-        schema.Class(root_name, derived={'A'}),
-        schema.Class('A', bases={root_name}, properties=[
+    assert ret.classes == {
+        root_name: schema.Class(root_name, derived={'A'}),
+        'A': schema.Class('A', bases={root_name}, properties=[
             schema.SingleProperty('one', 'string'),
             schema.OptionalProperty('two', 'int'),
             schema.RepeatedProperty('three', 'bool'),
             schema.RepeatedOptionalProperty('four', 'x'),
             schema.PredicateProperty('five'),
         ]),
-    ]
+    }
 
 
 def test_element_properties(load):
@@ -162,11 +162,11 @@ def test_element_properties(load):
 Element:
     x: string
 """)
-    assert ret.classes == [
-        schema.Class(root_name, properties=[
+    assert ret.classes == {
+        root_name: schema.Class(root_name, properties=[
             schema.SingleProperty('x', 'string'),
         ]),
-    ]
+    }
 
 
 def test_children(load):
@@ -180,9 +180,9 @@ A:
         e: E?
         f: F?*
 """)
-    assert ret.classes == [
-        schema.Class(root_name, derived={'A'}),
-        schema.Class('A', bases={root_name}, properties=[
+    assert ret.classes == {
+        root_name: schema.Class(root_name, derived={'A'}),
+        'A': schema.Class('A', bases={root_name}, properties=[
             schema.SingleProperty('a', 'string'),
             schema.RepeatedProperty('b', 'B'),
             schema.SingleProperty('c', 'C', is_child=True),
@@ -190,7 +190,7 @@ A:
             schema.OptionalProperty('e', 'E', is_child=True),
             schema.RepeatedOptionalProperty('f', 'F', is_child=True),
         ]),
-    ]
+    }
 
 
 @pytest.mark.parametrize("type", ["string", "int", "boolean", "predicate"])
@@ -209,12 +209,12 @@ A:
     x: 
       type: string*
 """)
-    assert ret.classes == [
-        schema.Class(root_name, derived={'A'}),
-        schema.Class('A', bases={root_name}, properties=[
+    assert ret.classes == {
+        root_name: schema.Class(root_name, derived={'A'}),
+        'A': schema.Class('A', bases={root_name}, properties=[
             schema.RepeatedProperty('x', 'string'),
         ]),
-    ]
+    }
 
 
 def test_property_with_explicit_type_and_pragmas(load):
@@ -224,12 +224,12 @@ A:
       type: string*
       _pragma: [foo, bar]
 """)
-    assert ret.classes == [
-        schema.Class(root_name, derived={'A'}),
-        schema.Class('A', bases={root_name}, properties=[
+    assert ret.classes == {
+        root_name: schema.Class(root_name, derived={'A'}),
+        'A': schema.Class('A', bases={root_name}, properties=[
             schema.RepeatedProperty('x', 'string', pragmas=["foo", "bar"]),
         ]),
-    ]
+    }
 
 
 def test_property_with_explicit_type_and_one_pragma(load):
@@ -239,12 +239,12 @@ A:
       type: string*
       _pragma: foo
 """)
-    assert ret.classes == [
-        schema.Class(root_name, derived={'A'}),
-        schema.Class('A', bases={root_name}, properties=[
+    assert ret.classes == {
+        root_name: schema.Class(root_name, derived={'A'}),
+        'A': schema.Class('A', bases={root_name}, properties=[
             schema.RepeatedProperty('x', 'string', pragmas=["foo"]),
         ]),
-    ]
+    }
 
 
 def test_property_with_explicit_type_and_unknown_metadata(load):
@@ -272,12 +272,12 @@ A:
     x: string*
     _pragma: [foo, bar]
 """)
-    assert ret.classes == [
-        schema.Class(root_name, derived={'A'}),
-        schema.Class('A', bases={root_name}, properties=[
+    assert ret.classes == {
+        root_name: schema.Class(root_name, derived={'A'}),
+        'A': schema.Class('A', bases={root_name}, properties=[
             schema.RepeatedProperty('x', 'string'),
         ], pragmas=["foo", "bar"]),
-    ]
+    }
 
 
 def test_class_with_one_pragma(load):
@@ -286,12 +286,12 @@ A:
     x: string*
     _pragma: foo
 """)
-    assert ret.classes == [
-        schema.Class(root_name, derived={'A'}),
-        schema.Class('A', bases={root_name}, properties=[
+    assert ret.classes == {
+        root_name: schema.Class(root_name, derived={'A'}),
+        'A': schema.Class('A', bases={root_name}, properties=[
             schema.RepeatedProperty('x', 'string'),
         ], pragmas=["foo"]),
-    ]
+    }
 
 
 def test_class_with_unknown_metadata(load):
@@ -301,6 +301,35 @@ A:
     x: string*
     _foobar: yeah
 """)
+
+
+def test_ipa_class_from(load):
+    ret = load("""
+MyClass:
+    _synth:
+        from: A
+""")
+    assert ret.classes == {
+        root_name: schema.Class(root_name, derived={'MyClass'}),
+        'MyClass': schema.Class('MyClass', bases={root_name}, ipa=schema.IpaInfo(from_class="A")),
+    }
+
+
+def test_ipa_class_on(load):
+    ret = load("""
+MyClass:
+    _synth:
+        on: 
+            x: A
+            y: int
+""")
+    assert ret.classes == {
+        root_name: schema.Class(root_name, derived={'MyClass'}),
+        'MyClass': schema.Class('MyClass', bases={root_name}, ipa=schema.IpaInfo(on_arguments={"x": "A", "y": "int"})),
+    }
+
+
+# TODO rejection tests and implementation for malformed `_synth` clauses
 
 
 if __name__ == '__main__':

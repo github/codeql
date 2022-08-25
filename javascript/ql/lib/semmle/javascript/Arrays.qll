@@ -261,14 +261,12 @@ private module ArrayDataFlow {
   /**
    * A step for creating an array and storing the elements in the array.
    */
-  private class ArrayCreationStep extends DataFlow::SharedFlowStep {
+  private class ArrayCreationStep extends PreCallGraphStep {
     override predicate storeStep(DataFlow::Node element, DataFlow::SourceNode obj, string prop) {
       exists(DataFlow::ArrayCreationNode array, int i |
         element = array.getElement(i) and
         obj = array and
-        if array = any(PromiseAllCreation c).getArrayNode()
-        then prop = arrayElement(i)
-        else prop = arrayElement()
+        prop = arrayElement(i)
       )
     }
   }
@@ -346,6 +344,14 @@ private module ArrayLibraries {
     result = DataFlow::globalVarRef("Array").getAMemberCall("from")
     or
     result = DataFlow::moduleImport("array-from").getACall()
+    or
+    // Array.prototype.slice.call acts the same as Array.from, and is sometimes used with e.g. the arguments object.
+    result =
+      DataFlow::globalVarRef("Array")
+          .getAPropertyRead("prototype")
+          .getAPropertyRead("slice")
+          .getAMethodCall("call") and
+    result.getNumArgument() = 1
   }
 
   /**

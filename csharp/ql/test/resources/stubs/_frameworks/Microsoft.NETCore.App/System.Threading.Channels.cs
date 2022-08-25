@@ -7,12 +7,12 @@ namespace System
         namespace Channels
         {
             // Generated from `System.Threading.Channels.BoundedChannelFullMode` in `System.Threading.Channels, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
-            public enum BoundedChannelFullMode
+            public enum BoundedChannelFullMode : int
             {
-                DropNewest,
-                DropOldest,
-                DropWrite,
-                Wait,
+                DropNewest = 1,
+                DropOldest = 2,
+                DropWrite = 3,
+                Wait = 0,
             }
 
             // Generated from `System.Threading.Channels.BoundedChannelOptions` in `System.Threading.Channels, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`

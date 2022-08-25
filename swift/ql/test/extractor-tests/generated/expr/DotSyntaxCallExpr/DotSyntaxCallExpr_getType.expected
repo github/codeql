@@ -1,2 +1,3 @@
-| dot_syntax_call.swift:6:1:6:3 | call to foo(_:_:) | (Int, Int) -> () |
-| dot_syntax_call.swift:7:1:7:3 | call to bar() | () -> () |
+| dot_syntax_call.swift:7:13:7:13 | call to ... | (Int) -> () |
+| dot_syntax_call.swift:15:9:15:11 | call to ... | () -> () |
+| dot_syntax_call.swift:16:9:16:13 | call to ... | (Int) -> () |

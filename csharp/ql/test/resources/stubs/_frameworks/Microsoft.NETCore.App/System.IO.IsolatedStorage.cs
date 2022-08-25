@@ -136,15 +136,15 @@ namespace System
 
             // Generated from `System.IO.IsolatedStorage.IsolatedStorageScope` in `System.IO.IsolatedStorage, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             [System.Flags]
-            public enum IsolatedStorageScope
+            public enum IsolatedStorageScope : int
             {
-                Application,
-                Assembly,
-                Domain,
-                Machine,
-                None,
-                Roaming,
-                User,
+                Application = 32,
+                Assembly = 4,
+                Domain = 2,
+                Machine = 16,
+                None = 0,
+                Roaming = 8,
+                User = 1,
             }
 
         }

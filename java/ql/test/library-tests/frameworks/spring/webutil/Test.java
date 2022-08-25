@@ -287,21 +287,6 @@ public class Test {
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "org.springframework.web.util;UriBuilder;true;build;(Map);;MapValue of Argument[0];Argument[-1];taint;manual"
-			UriBuilder out = null;
-			Map in = newMapWithValue(source());
-			out.build(in);
-			sink(out); // $hasTaintFlow
-		}
-		{
-			// "org.springframework.web.util;UriBuilder;true;build;(Map);;MapValue of Argument[0];ReturnValue;taint;manual"
-			URI out = null;
-			Map in = newMapWithValue(source());
-			UriBuilder instance = null;
-			out = instance.build(in);
-			sink(out); // $hasTaintFlow
-		}
-		{
 			// "org.springframework.web.util;UriBuilder;true;build;(Map);;MapValue of Argument[0];ReturnValue;taint;manual"
 			URI out = null;
 			Map in = newMapWithValue(source());
@@ -321,20 +306,6 @@ public class Test {
 			URI out = null;
 			UriBuilder in = (UriBuilder)source();
 			out = in.build();
-			sink(out); // $hasTaintFlow
-		}
-		{
-			// "org.springframework.web.util;UriBuilder;true;build;;;Argument[-1];ReturnValue;taint;manual"
-			URI out = null;
-			UriBuilder in = (UriBuilder)source();
-			out = in.build((Object[])null);
-			sink(out); // $hasTaintFlow
-		}
-		{
-			// "org.springframework.web.util;UriBuilder;true;build;;;Argument[-1];ReturnValue;taint;manual"
-			URI out = null;
-			UriBuilder in = (UriBuilder)source();
-			out = in.build((Map)null);
 			sink(out); // $hasTaintFlow
 		}
 		{

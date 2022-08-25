@@ -387,10 +387,10 @@ namespace Microsoft
             }
 
             // Generated from `Microsoft.AspNetCore.Identity.PasswordHasherCompatibilityMode` in `Microsoft.Extensions.Identity.Core, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
-            public enum PasswordHasherCompatibilityMode
+            public enum PasswordHasherCompatibilityMode : int
             {
-                IdentityV2,
-                IdentityV3,
+                IdentityV2 = 0,
+                IdentityV3 = 1,
             }
 
             // Generated from `Microsoft.AspNetCore.Identity.PasswordHasherOptions` in `Microsoft.Extensions.Identity.Core, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
@@ -426,11 +426,11 @@ namespace Microsoft
             }
 
             // Generated from `Microsoft.AspNetCore.Identity.PasswordVerificationResult` in `Microsoft.Extensions.Identity.Core, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
-            public enum PasswordVerificationResult
+            public enum PasswordVerificationResult : int
             {
-                Failed,
-                Success,
-                SuccessRehashNeeded,
+                Failed = 0,
+                Success = 1,
+                SuccessRehashNeeded = 2,
             }
 
             // Generated from `Microsoft.AspNetCore.Identity.PersonalDataAttribute` in `Microsoft.Extensions.Identity.Core, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`

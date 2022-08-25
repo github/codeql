@@ -64,17 +64,17 @@ namespace System
 
             // Generated from `System.Security.Cryptography.CspProviderFlags` in `System.Security.Cryptography.Csp, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             [System.Flags]
-            public enum CspProviderFlags
+            public enum CspProviderFlags : int
             {
-                CreateEphemeralKey,
-                NoFlags,
-                NoPrompt,
-                UseArchivableKey,
-                UseDefaultKeyContainer,
-                UseExistingKey,
-                UseMachineKeyStore,
-                UseNonExportableKey,
-                UseUserProtectedKey,
+                CreateEphemeralKey = 128,
+                NoFlags = 0,
+                NoPrompt = 64,
+                UseArchivableKey = 16,
+                UseDefaultKeyContainer = 2,
+                UseExistingKey = 8,
+                UseMachineKeyStore = 1,
+                UseNonExportableKey = 4,
+                UseUserProtectedKey = 32,
             }
 
             // Generated from `System.Security.Cryptography.DESCryptoServiceProvider` in `System.Security.Cryptography.Csp, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -130,10 +130,10 @@ namespace System
             }
 
             // Generated from `System.Security.Cryptography.KeyNumber` in `System.Security.Cryptography.Csp, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum KeyNumber
+            public enum KeyNumber : int
             {
-                Exchange,
-                Signature,
+                Exchange = 1,
+                Signature = 2,
             }
 
             // Generated from `System.Security.Cryptography.MD5CryptoServiceProvider` in `System.Security.Cryptography.Csp, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`

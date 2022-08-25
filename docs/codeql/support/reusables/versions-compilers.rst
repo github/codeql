@@ -30,7 +30,7 @@
     .. [1] C++20 support is currently in beta. Supported for GCC on Linux only. Modules are *not* supported.
     .. [2] Support for the clang-cl compiler is preliminary.
     .. [3] Support for the Arm Compiler (armcc) is preliminary.
-    .. [4] Builds that execute on Java 7 to 18 can be analyzed. The analysis understands Java 18 standard language features.
+    .. [4] Builds that execute on Java 7 to 19 can be analyzed. The analysis understands Java 19 standard language features.
     .. [5] ECJ is supported when the build invokes it via the Maven Compiler plugin or the Takari Lifecycle plugin.
     .. [6] JSX and Flow code, YAML, JSON, HTML, and XML files may also be analyzed with JavaScript files.
     .. [7] Requires glibc 2.17.

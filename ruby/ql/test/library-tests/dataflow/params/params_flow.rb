@@ -7,8 +7,8 @@ def sink x
 end
 
 def positional(p1, p2)
-    sink p1 # $ hasValueFlow=1
-    sink p2 # $ hasValueFlow=2
+    sink p1 # $ hasValueFlow=1 $ hasValueFlow=16 $ MISSING: hasValueFlow=18
+    sink p2 # $ hasValueFlow=2 $ MISSING: hasValueFlow=17 $ MISSING: hasValueFlow=19
 end
 
 positional(taint(1), taint(2))
@@ -39,3 +39,22 @@ kwargs(**args)
 
 args = {:p1 => taint(16) }
 keyword(p2: taint(17), **args)
+
+args = [taint(17)]
+positional(taint(16), *args)
+
+args = [taint(18), taint(19)]
+positional(*args)
+
+def posargs(p1, *posargs)
+    sink p1 # $ hasValueFlow=20 $ hasValueFlow=23 $ MISSING: hasValueFlow=24
+    sink (posargs[0]) # $ MISSING: hasValueFlow=21 $ MISSING: hasValueFlow=22 $ MISSING: hasValueFlow=25
+end
+
+posargs(taint(20), taint(21))
+
+args = [taint(22)]
+posargs(taint(23), *args)
+
+args = [taint(24), taint(25)]
+posargs(*args)

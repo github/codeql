@@ -8,41 +8,41 @@ namespace System
         {
             // Generated from `System.Security.AccessControl.AccessControlActions` in `System.Security.AccessControl, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             [System.Flags]
-            public enum AccessControlActions
+            public enum AccessControlActions : int
             {
-                Change,
-                None,
-                View,
+                Change = 2,
+                None = 0,
+                View = 1,
             }
 
             // Generated from `System.Security.AccessControl.AccessControlModification` in `System.Security.AccessControl, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum AccessControlModification
+            public enum AccessControlModification : int
             {
-                Add,
-                Remove,
-                RemoveAll,
-                RemoveSpecific,
-                Reset,
-                Set,
+                Add = 0,
+                Remove = 3,
+                RemoveAll = 4,
+                RemoveSpecific = 5,
+                Reset = 2,
+                Set = 1,
             }
 
             // Generated from `System.Security.AccessControl.AccessControlSections` in `System.Security.AccessControl, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             [System.Flags]
-            public enum AccessControlSections
+            public enum AccessControlSections : int
             {
-                Access,
-                All,
-                Audit,
-                Group,
-                None,
-                Owner,
+                Access = 2,
+                All = 15,
+                Audit = 1,
+                Group = 8,
+                None = 0,
+                Owner = 4,
             }
 
             // Generated from `System.Security.AccessControl.AccessControlType` in `System.Security.AccessControl, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum AccessControlType
+            public enum AccessControlType : int
             {
-                Allow,
-                Deny,
+                Allow = 0,
+                Deny = 1,
             }
 
             // Generated from `System.Security.AccessControl.AccessRule` in `System.Security.AccessControl, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -73,59 +73,59 @@ namespace System
 
             // Generated from `System.Security.AccessControl.AceFlags` in `System.Security.AccessControl, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             [System.Flags]
-            public enum AceFlags
+            public enum AceFlags : byte
             {
-                AuditFlags,
-                ContainerInherit,
-                FailedAccess,
-                InheritOnly,
-                InheritanceFlags,
-                Inherited,
-                NoPropagateInherit,
-                None,
-                ObjectInherit,
-                SuccessfulAccess,
+                AuditFlags = 192,
+                ContainerInherit = 2,
+                FailedAccess = 128,
+                InheritOnly = 8,
+                InheritanceFlags = 15,
+                Inherited = 16,
+                NoPropagateInherit = 4,
+                None = 0,
+                ObjectInherit = 1,
+                SuccessfulAccess = 64,
             }
 
             // Generated from `System.Security.AccessControl.AceQualifier` in `System.Security.AccessControl, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum AceQualifier
+            public enum AceQualifier : int
             {
-                AccessAllowed,
-                AccessDenied,
-                SystemAlarm,
-                SystemAudit,
+                AccessAllowed = 0,
+                AccessDenied = 1,
+                SystemAlarm = 3,
+                SystemAudit = 2,
             }
 
             // Generated from `System.Security.AccessControl.AceType` in `System.Security.AccessControl, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum AceType
+            public enum AceType : byte
             {
-                AccessAllowed,
-                AccessAllowedCallback,
-                AccessAllowedCallbackObject,
-                AccessAllowedCompound,
-                AccessAllowedObject,
-                AccessDenied,
-                AccessDeniedCallback,
-                AccessDeniedCallbackObject,
-                AccessDeniedObject,
-                MaxDefinedAceType,
-                SystemAlarm,
-                SystemAlarmCallback,
-                SystemAlarmCallbackObject,
-                SystemAlarmObject,
-                SystemAudit,
-                SystemAuditCallback,
-                SystemAuditCallbackObject,
-                SystemAuditObject,
+                AccessAllowed = 0,
+                AccessAllowedCallback = 9,
+                AccessAllowedCallbackObject = 11,
+                AccessAllowedCompound = 4,
+                AccessAllowedObject = 5,
+                AccessDenied = 1,
+                AccessDeniedCallback = 10,
+                AccessDeniedCallbackObject = 12,
+                AccessDeniedObject = 6,
+                MaxDefinedAceType = 16,
+                SystemAlarm = 3,
+                SystemAlarmCallback = 14,
+                SystemAlarmCallbackObject = 16,
+                SystemAlarmObject = 8,
+                SystemAudit = 2,
+                SystemAuditCallback = 13,
+                SystemAuditCallbackObject = 15,
+                SystemAuditObject = 7,
             }
 
             // Generated from `System.Security.AccessControl.AuditFlags` in `System.Security.AccessControl, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             [System.Flags]
-            public enum AuditFlags
+            public enum AuditFlags : int
             {
-                Failure,
-                None,
-                Success,
+                Failure = 2,
+                None = 0,
+                Success = 1,
             }
 
             // Generated from `System.Security.AccessControl.AuditRule` in `System.Security.AccessControl, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -245,32 +245,32 @@ namespace System
             }
 
             // Generated from `System.Security.AccessControl.CompoundAceType` in `System.Security.AccessControl, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum CompoundAceType
+            public enum CompoundAceType : int
             {
-                Impersonation,
+                Impersonation = 1,
             }
 
             // Generated from `System.Security.AccessControl.ControlFlags` in `System.Security.AccessControl, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             [System.Flags]
-            public enum ControlFlags
+            public enum ControlFlags : int
             {
-                DiscretionaryAclAutoInheritRequired,
-                DiscretionaryAclAutoInherited,
-                DiscretionaryAclDefaulted,
-                DiscretionaryAclPresent,
-                DiscretionaryAclProtected,
-                DiscretionaryAclUntrusted,
-                GroupDefaulted,
-                None,
-                OwnerDefaulted,
-                RMControlValid,
-                SelfRelative,
-                ServerSecurity,
-                SystemAclAutoInheritRequired,
-                SystemAclAutoInherited,
-                SystemAclDefaulted,
-                SystemAclPresent,
-                SystemAclProtected,
+                DiscretionaryAclAutoInheritRequired = 256,
+                DiscretionaryAclAutoInherited = 1024,
+                DiscretionaryAclDefaulted = 8,
+                DiscretionaryAclPresent = 4,
+                DiscretionaryAclProtected = 4096,
+                DiscretionaryAclUntrusted = 64,
+                GroupDefaulted = 2,
+                None = 0,
+                OwnerDefaulted = 1,
+                RMControlValid = 16384,
+                SelfRelative = 32768,
+                ServerSecurity = 128,
+                SystemAclAutoInheritRequired = 512,
+                SystemAclAutoInherited = 2048,
+                SystemAclDefaulted = 32,
+                SystemAclPresent = 16,
+                SystemAclProtected = 8192,
             }
 
             // Generated from `System.Security.AccessControl.CustomAce` in `System.Security.AccessControl, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -361,11 +361,11 @@ namespace System
 
             // Generated from `System.Security.AccessControl.InheritanceFlags` in `System.Security.AccessControl, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             [System.Flags]
-            public enum InheritanceFlags
+            public enum InheritanceFlags : int
             {
-                ContainerInherit,
-                None,
-                ObjectInherit,
+                ContainerInherit = 1,
+                None = 0,
+                ObjectInherit = 2,
             }
 
             // Generated from `System.Security.AccessControl.KnownAce` in `System.Security.AccessControl, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -418,11 +418,11 @@ namespace System
 
             // Generated from `System.Security.AccessControl.ObjectAceFlags` in `System.Security.AccessControl, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             [System.Flags]
-            public enum ObjectAceFlags
+            public enum ObjectAceFlags : int
             {
-                InheritedObjectAceTypePresent,
-                None,
-                ObjectAceTypePresent,
+                InheritedObjectAceTypePresent = 2,
+                None = 0,
+                ObjectAceTypePresent = 1,
             }
 
             // Generated from `System.Security.AccessControl.ObjectAuditRule` in `System.Security.AccessControl, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -524,11 +524,11 @@ namespace System
 
             // Generated from `System.Security.AccessControl.PropagationFlags` in `System.Security.AccessControl, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             [System.Flags]
-            public enum PropagationFlags
+            public enum PropagationFlags : int
             {
-                InheritOnly,
-                NoPropagateInherit,
-                None,
+                InheritOnly = 2,
+                NoPropagateInherit = 1,
+                None = 0,
             }
 
             // Generated from `System.Security.AccessControl.QualifiedAce` in `System.Security.AccessControl, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -572,31 +572,31 @@ namespace System
             }
 
             // Generated from `System.Security.AccessControl.ResourceType` in `System.Security.AccessControl, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum ResourceType
+            public enum ResourceType : int
             {
-                DSObject,
-                DSObjectAll,
-                FileObject,
-                KernelObject,
-                LMShare,
-                Printer,
-                ProviderDefined,
-                RegistryKey,
-                RegistryWow6432Key,
-                Service,
-                Unknown,
-                WindowObject,
-                WmiGuidObject,
+                DSObject = 8,
+                DSObjectAll = 9,
+                FileObject = 1,
+                KernelObject = 6,
+                LMShare = 5,
+                Printer = 3,
+                ProviderDefined = 10,
+                RegistryKey = 4,
+                RegistryWow6432Key = 12,
+                Service = 2,
+                Unknown = 0,
+                WindowObject = 7,
+                WmiGuidObject = 11,
             }
 
             // Generated from `System.Security.AccessControl.SecurityInfos` in `System.Security.AccessControl, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             [System.Flags]
-            public enum SecurityInfos
+            public enum SecurityInfos : int
             {
-                DiscretionaryAcl,
-                Group,
-                Owner,
-                SystemAcl,
+                DiscretionaryAcl = 4,
+                Group = 2,
+                Owner = 1,
+                SystemAcl = 8,
             }
 
             // Generated from `System.Security.AccessControl.SystemAcl` in `System.Security.AccessControl, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`

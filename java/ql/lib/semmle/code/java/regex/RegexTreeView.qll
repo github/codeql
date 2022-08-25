@@ -6,7 +6,7 @@ private import semmle.code.java.regex.regex
 /**
  * An element containing a regular expression term, that is, either
  * a string literal (parsed as a regular expression; the root of the parse tree)
- * or another regular expression term (a decendent of the root).
+ * or another regular expression term (a descendant of the root).
  *
  * For sequences and alternations, we require at least two children.
  * Otherwise, we wish to represent the term differently.
@@ -52,7 +52,7 @@ private newtype TRegExpParent =
 /**
  * An element containing a regular expression term, that is, either
  * a string literal (parsed as a regular expression; the root of the parse tree)
- * or another regular expression term (a decendent of the root).
+ * or another regular expression term (a descendant of the root).
  */
 class RegExpParent extends TRegExpParent {
   /** Gets a textual representation of this element. */

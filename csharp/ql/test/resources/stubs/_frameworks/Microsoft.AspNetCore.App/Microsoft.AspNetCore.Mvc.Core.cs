@@ -262,13 +262,13 @@ namespace Microsoft
             }
 
             // Generated from `Microsoft.AspNetCore.Mvc.CompatibilityVersion` in `Microsoft.AspNetCore.Mvc.Core, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
-            public enum CompatibilityVersion
+            public enum CompatibilityVersion : int
             {
-                Latest,
-                Version_2_0,
-                Version_2_1,
-                Version_2_2,
-                Version_3_0,
+                Latest = 2147483647,
+                Version_2_0 = 0,
+                Version_2_1 = 1,
+                Version_2_2 = 2,
+                Version_3_0 = 3,
             }
 
             // Generated from `Microsoft.AspNetCore.Mvc.ConflictObjectResult` in `Microsoft.AspNetCore.Mvc.Core, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
@@ -1071,11 +1071,11 @@ namespace Microsoft
             }
 
             // Generated from `Microsoft.AspNetCore.Mvc.ResponseCacheLocation` in `Microsoft.AspNetCore.Mvc.Core, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
-            public enum ResponseCacheLocation
+            public enum ResponseCacheLocation : int
             {
-                Any,
-                Client,
-                None,
+                Any = 0,
+                Client = 1,
+                None = 2,
             }
 
             // Generated from `Microsoft.AspNetCore.Mvc.RouteAttribute` in `Microsoft.AspNetCore.Mvc.Core, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
@@ -1268,12 +1268,12 @@ namespace Microsoft
                 }
 
                 // Generated from `Microsoft.AspNetCore.Mvc.ApiExplorer.ApiConventionNameMatchBehavior` in `Microsoft.AspNetCore.Mvc.Core, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
-                public enum ApiConventionNameMatchBehavior
+                public enum ApiConventionNameMatchBehavior : int
                 {
-                    Any,
-                    Exact,
-                    Prefix,
-                    Suffix,
+                    Any = 0,
+                    Exact = 1,
+                    Prefix = 2,
+                    Suffix = 3,
                 }
 
                 // Generated from `Microsoft.AspNetCore.Mvc.ApiExplorer.ApiConventionResult` in `Microsoft.AspNetCore.Mvc.Core, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
@@ -1291,10 +1291,10 @@ namespace Microsoft
                 }
 
                 // Generated from `Microsoft.AspNetCore.Mvc.ApiExplorer.ApiConventionTypeMatchBehavior` in `Microsoft.AspNetCore.Mvc.Core, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
-                public enum ApiConventionTypeMatchBehavior
+                public enum ApiConventionTypeMatchBehavior : int
                 {
-                    Any,
-                    AssignableFrom,
+                    Any = 0,
+                    AssignableFrom = 1,
                 }
 
                 // Generated from `Microsoft.AspNetCore.Mvc.ApiExplorer.IApiDefaultResponseMetadataProvider` in `Microsoft.AspNetCore.Mvc.Core, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
@@ -2769,11 +2769,11 @@ namespace Microsoft
                 }
 
                 // Generated from `Microsoft.AspNetCore.Mvc.ModelBinding.BindingBehavior` in `Microsoft.AspNetCore.Mvc.Core, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
-                public enum BindingBehavior
+                public enum BindingBehavior : int
                 {
-                    Never,
-                    Optional,
-                    Required,
+                    Never = 1,
+                    Optional = 0,
+                    Required = 2,
                 }
 
                 // Generated from `Microsoft.AspNetCore.Mvc.ModelBinding.BindingBehaviorAttribute` in `Microsoft.AspNetCore.Mvc.Core, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`

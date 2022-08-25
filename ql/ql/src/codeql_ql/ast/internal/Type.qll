@@ -327,6 +327,12 @@ private predicate defines(FileOrModule m, string name, Type t, boolean public) {
     public = getPublicBool(ty.getParent())
   )
   or
+  exists(Module mod | t = TModule(mod) |
+    getEnclosingModule(mod) = m and
+    mod.getName() = name and
+    public = getPublicBool(mod)
+  )
+  or
   exists(Class ty | t = TUnion(ty) |
     getEnclosingModule(ty) = m and
     ty.getName() = name and

@@ -6,6 +6,9 @@ namespace Summaries;
 
 public class BasicFlow
 {
+    // No flow summary and no negative summary either.
+    ~BasicFlow() { }
+
     private string tainted;
 
     public BasicFlow ReturnThis(object input)

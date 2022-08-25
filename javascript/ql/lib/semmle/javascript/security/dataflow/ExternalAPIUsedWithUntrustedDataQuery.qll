@@ -81,6 +81,7 @@ deprecated class UntrustedExternalAPIDataNode = UntrustedExternalApiDataNode;
  * Name of an external API sink, boxed in a newtype for consistency with other languages.
  */
 private newtype TExternalApi =
+  /** An external API sink with `name`. */
   MkExternalApiNode(string name) {
     exists(Sink sink |
       any(Configuration c).hasFlow(_, sink) and

@@ -20,10 +20,10 @@ namespace System
             }
 
             // Generated from `System.Net.Http.ClientCertificateOption` in `System.Net.Http, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum ClientCertificateOption
+            public enum ClientCertificateOption : int
             {
-                Automatic,
-                Manual,
+                Automatic = 1,
+                Manual = 0,
             }
 
             // Generated from `System.Net.Http.DelegatingHandler` in `System.Net.Http, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -142,10 +142,10 @@ namespace System
             }
 
             // Generated from `System.Net.Http.HttpCompletionOption` in `System.Net.Http, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum HttpCompletionOption
+            public enum HttpCompletionOption : int
             {
-                ResponseContentRead,
-                ResponseHeadersRead,
+                ResponseContentRead = 0,
+                ResponseHeadersRead = 1,
             }
 
             // Generated from `System.Net.Http.HttpContent` in `System.Net.Http, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -180,10 +180,10 @@ namespace System
             }
 
             // Generated from `System.Net.Http.HttpKeepAlivePingPolicy` in `System.Net.Http, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum HttpKeepAlivePingPolicy
+            public enum HttpKeepAlivePingPolicy : int
             {
-                Always,
-                WithActiveRequests,
+                Always = 1,
+                WithActiveRequests = 0,
             }
 
             // Generated from `System.Net.Http.HttpMessageHandler` in `System.Net.Http, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -309,11 +309,11 @@ namespace System
             }
 
             // Generated from `System.Net.Http.HttpVersionPolicy` in `System.Net.Http, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum HttpVersionPolicy
+            public enum HttpVersionPolicy : int
             {
-                RequestVersionExact,
-                RequestVersionOrHigher,
-                RequestVersionOrLower,
+                RequestVersionExact = 2,
+                RequestVersionOrHigher = 1,
+                RequestVersionOrLower = 0,
             }
 
             // Generated from `System.Net.Http.MessageProcessingHandler` in `System.Net.Http, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`

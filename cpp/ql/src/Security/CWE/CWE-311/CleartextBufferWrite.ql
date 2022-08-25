@@ -26,6 +26,10 @@ class ToBufferConfiguration extends TaintTracking::Configuration {
 
   override predicate isSource(DataFlow::Node source) { source instanceof FlowSource }
 
+  override predicate isSanitizer(DataFlow::Node node) {
+    node.asExpr().getUnspecifiedType() instanceof IntegralType
+  }
+
   override predicate isSink(DataFlow::Node sink) {
     exists(BufferWrite::BufferWrite w | w.getASource() = sink.asExpr())
   }

@@ -7,19 +7,19 @@ namespace System
         namespace Compression
         {
             // Generated from `System.IO.Compression.CompressionLevel` in `System.IO.Compression, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089`
-            public enum CompressionLevel
+            public enum CompressionLevel : int
             {
-                Fastest,
-                NoCompression,
-                Optimal,
-                SmallestSize,
+                Fastest = 1,
+                NoCompression = 2,
+                Optimal = 0,
+                SmallestSize = 3,
             }
 
             // Generated from `System.IO.Compression.CompressionMode` in `System.IO.Compression, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089`
-            public enum CompressionMode
+            public enum CompressionMode : int
             {
-                Compress,
-                Decompress,
+                Compress = 1,
+                Decompress = 0,
             }
 
             // Generated from `System.IO.Compression.DeflateStream` in `System.IO.Compression, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089`
@@ -164,11 +164,11 @@ namespace System
             }
 
             // Generated from `System.IO.Compression.ZipArchiveMode` in `System.IO.Compression, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089`
-            public enum ZipArchiveMode
+            public enum ZipArchiveMode : int
             {
-                Create,
-                Read,
-                Update,
+                Create = 1,
+                Read = 0,
+                Update = 2,
             }
 
         }

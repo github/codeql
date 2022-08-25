@@ -41,13 +41,13 @@ namespace System
             }
 
             // Generated from `System.Security.Cryptography.CipherMode` in `System.Security.Cryptography.Primitives, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum CipherMode
+            public enum CipherMode : int
             {
-                CBC,
-                CFB,
-                CTS,
-                ECB,
-                OFB,
+                CBC = 1,
+                CFB = 4,
+                CTS = 5,
+                ECB = 2,
+                OFB = 3,
             }
 
             // Generated from `System.Security.Cryptography.CryptoStream` in `System.Security.Cryptography.Primitives, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -87,10 +87,10 @@ namespace System
             }
 
             // Generated from `System.Security.Cryptography.CryptoStreamMode` in `System.Security.Cryptography.Primitives, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum CryptoStreamMode
+            public enum CryptoStreamMode : int
             {
-                Read,
-                Write,
+                Read = 0,
+                Write = 1,
             }
 
             // Generated from `System.Security.Cryptography.CryptographicOperations` in `System.Security.Cryptography.Primitives, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -212,23 +212,23 @@ namespace System
             }
 
             // Generated from `System.Security.Cryptography.PaddingMode` in `System.Security.Cryptography.Primitives, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum PaddingMode
+            public enum PaddingMode : int
             {
-                ANSIX923,
-                ISO10126,
-                None,
-                PKCS7,
-                Zeros,
+                ANSIX923 = 4,
+                ISO10126 = 5,
+                None = 1,
+                PKCS7 = 2,
+                Zeros = 3,
             }
 
             // Generated from `System.Security.Cryptography.PbeEncryptionAlgorithm` in `System.Security.Cryptography.Primitives, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum PbeEncryptionAlgorithm
+            public enum PbeEncryptionAlgorithm : int
             {
-                Aes128Cbc,
-                Aes192Cbc,
-                Aes256Cbc,
-                TripleDes3KeyPkcs12,
-                Unknown,
+                Aes128Cbc = 1,
+                Aes192Cbc = 2,
+                Aes256Cbc = 3,
+                TripleDes3KeyPkcs12 = 4,
+                Unknown = 0,
             }
 
             // Generated from `System.Security.Cryptography.PbeParameters` in `System.Security.Cryptography.Primitives, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`

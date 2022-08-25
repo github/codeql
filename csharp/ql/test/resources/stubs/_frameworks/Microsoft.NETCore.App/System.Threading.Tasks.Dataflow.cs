@@ -193,13 +193,13 @@ namespace System
                 }
 
                 // Generated from `System.Threading.Tasks.Dataflow.DataflowMessageStatus` in `System.Threading.Tasks.Dataflow, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-                public enum DataflowMessageStatus
+                public enum DataflowMessageStatus : int
                 {
-                    Accepted,
-                    Declined,
-                    DecliningPermanently,
-                    NotAvailable,
-                    Postponed,
+                    Accepted = 0,
+                    Declined = 1,
+                    DecliningPermanently = 4,
+                    NotAvailable = 3,
+                    Postponed = 2,
                 }
 
                 // Generated from `System.Threading.Tasks.Dataflow.ExecutionDataflowBlockOptions` in `System.Threading.Tasks.Dataflow, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`

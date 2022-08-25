@@ -42,3 +42,4 @@ documentation:
 
 "QL-for-QL":
   - ql/**/*
+  - .github/workflows/ql-for-ql*

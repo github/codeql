@@ -176,11 +176,11 @@ namespace Microsoft
             }
 
             // Generated from `Microsoft.AspNetCore.Http.CookieSecurePolicy` in `Microsoft.AspNetCore.Http.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
-            public enum CookieSecurePolicy
+            public enum CookieSecurePolicy : int
             {
-                SameAsRequest,
-                Always,
-                None
+                Always = 1,
+                None = 2,
+                SameAsRequest = 0,
             }
 
             // Generated from `Microsoft.AspNetCore.Http.Endpoint` in `Microsoft.AspNetCore.Http.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`

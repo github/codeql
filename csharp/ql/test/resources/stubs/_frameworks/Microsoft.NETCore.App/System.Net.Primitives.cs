@@ -6,15 +6,15 @@ namespace System
     {
         // Generated from `System.Net.AuthenticationSchemes` in `System.Net.Primitives, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         [System.Flags]
-        public enum AuthenticationSchemes
+        public enum AuthenticationSchemes : int
         {
-            Anonymous,
-            Basic,
-            Digest,
-            IntegratedWindowsAuthentication,
-            Negotiate,
-            None,
-            Ntlm,
+            Anonymous = 32768,
+            Basic = 8,
+            Digest = 1,
+            IntegratedWindowsAuthentication = 6,
+            Negotiate = 2,
+            None = 0,
+            Ntlm = 4,
         }
 
         // Generated from `System.Net.Cookie` in `System.Net.Primitives, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -113,13 +113,13 @@ namespace System
 
         // Generated from `System.Net.DecompressionMethods` in `System.Net.Primitives, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         [System.Flags]
-        public enum DecompressionMethods
+        public enum DecompressionMethods : int
         {
-            All,
-            Brotli,
-            Deflate,
-            GZip,
-            None,
+            All = -1,
+            Brotli = 4,
+            Deflate = 2,
+            GZip = 1,
+            None = 0,
         }
 
         // Generated from `System.Net.DnsEndPoint` in `System.Net.Primitives, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -145,74 +145,74 @@ namespace System
         }
 
         // Generated from `System.Net.HttpStatusCode` in `System.Net.Primitives, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum HttpStatusCode
+        public enum HttpStatusCode : int
         {
-            Accepted,
-            AlreadyReported,
-            Ambiguous,
-            BadGateway,
-            BadRequest,
-            Conflict,
-            Continue,
-            Created,
-            EarlyHints,
-            ExpectationFailed,
-            FailedDependency,
-            Forbidden,
-            Found,
-            GatewayTimeout,
-            Gone,
-            HttpVersionNotSupported,
-            IMUsed,
-            InsufficientStorage,
-            InternalServerError,
-            LengthRequired,
-            Locked,
-            LoopDetected,
-            MethodNotAllowed,
-            MisdirectedRequest,
-            Moved,
-            MovedPermanently,
-            MultiStatus,
-            MultipleChoices,
-            NetworkAuthenticationRequired,
-            NoContent,
-            NonAuthoritativeInformation,
-            NotAcceptable,
-            NotExtended,
-            NotFound,
-            NotImplemented,
-            NotModified,
-            OK,
-            PartialContent,
-            PaymentRequired,
-            PermanentRedirect,
-            PreconditionFailed,
-            PreconditionRequired,
-            Processing,
-            ProxyAuthenticationRequired,
-            Redirect,
-            RedirectKeepVerb,
-            RedirectMethod,
-            RequestEntityTooLarge,
-            RequestHeaderFieldsTooLarge,
-            RequestTimeout,
-            RequestUriTooLong,
-            RequestedRangeNotSatisfiable,
-            ResetContent,
-            SeeOther,
-            ServiceUnavailable,
-            SwitchingProtocols,
-            TemporaryRedirect,
-            TooManyRequests,
-            Unauthorized,
-            UnavailableForLegalReasons,
-            UnprocessableEntity,
-            UnsupportedMediaType,
-            Unused,
-            UpgradeRequired,
-            UseProxy,
-            VariantAlsoNegotiates,
+            Accepted = 202,
+            AlreadyReported = 208,
+            Ambiguous = 300,
+            BadGateway = 502,
+            BadRequest = 400,
+            Conflict = 409,
+            Continue = 100,
+            Created = 201,
+            EarlyHints = 103,
+            ExpectationFailed = 417,
+            FailedDependency = 424,
+            Forbidden = 403,
+            Found = 302,
+            GatewayTimeout = 504,
+            Gone = 410,
+            HttpVersionNotSupported = 505,
+            IMUsed = 226,
+            InsufficientStorage = 507,
+            InternalServerError = 500,
+            LengthRequired = 411,
+            Locked = 423,
+            LoopDetected = 508,
+            MethodNotAllowed = 405,
+            MisdirectedRequest = 421,
+            Moved = 301,
+            MovedPermanently = 301,
+            MultiStatus = 207,
+            MultipleChoices = 300,
+            NetworkAuthenticationRequired = 511,
+            NoContent = 204,
+            NonAuthoritativeInformation = 203,
+            NotAcceptable = 406,
+            NotExtended = 510,
+            NotFound = 404,
+            NotImplemented = 501,
+            NotModified = 304,
+            OK = 200,
+            PartialContent = 206,
+            PaymentRequired = 402,
+            PermanentRedirect = 308,
+            PreconditionFailed = 412,
+            PreconditionRequired = 428,
+            Processing = 102,
+            ProxyAuthenticationRequired = 407,
+            Redirect = 302,
+            RedirectKeepVerb = 307,
+            RedirectMethod = 303,
+            RequestEntityTooLarge = 413,
+            RequestHeaderFieldsTooLarge = 431,
+            RequestTimeout = 408,
+            RequestUriTooLong = 414,
+            RequestedRangeNotSatisfiable = 416,
+            ResetContent = 205,
+            SeeOther = 303,
+            ServiceUnavailable = 503,
+            SwitchingProtocols = 101,
+            TemporaryRedirect = 307,
+            TooManyRequests = 429,
+            Unauthorized = 401,
+            UnavailableForLegalReasons = 451,
+            UnprocessableEntity = 422,
+            UnsupportedMediaType = 415,
+            Unused = 306,
+            UpgradeRequired = 426,
+            UseProxy = 305,
+            VariantAlsoNegotiates = 506,
         }
 
         // Generated from `System.Net.HttpVersion` in `System.Net.Primitives, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -350,15 +350,15 @@ namespace System
         namespace Cache
         {
             // Generated from `System.Net.Cache.RequestCacheLevel` in `System.Net.Primitives, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum RequestCacheLevel
+            public enum RequestCacheLevel : int
             {
-                BypassCache,
-                CacheIfAvailable,
-                CacheOnly,
-                Default,
-                NoCacheNoStore,
-                Reload,
-                Revalidate,
+                BypassCache = 1,
+                CacheIfAvailable = 3,
+                CacheOnly = 2,
+                Default = 0,
+                NoCacheNoStore = 6,
+                Reload = 5,
+                Revalidate = 4,
             }
 
             // Generated from `System.Net.Cache.RequestCachePolicy` in `System.Net.Primitives, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -393,114 +393,114 @@ namespace System
         namespace Security
         {
             // Generated from `System.Net.Security.AuthenticationLevel` in `System.Net.Primitives, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum AuthenticationLevel
+            public enum AuthenticationLevel : int
             {
-                MutualAuthRequested,
-                MutualAuthRequired,
-                None,
+                MutualAuthRequested = 1,
+                MutualAuthRequired = 2,
+                None = 0,
             }
 
             // Generated from `System.Net.Security.SslPolicyErrors` in `System.Net.Primitives, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             [System.Flags]
-            public enum SslPolicyErrors
+            public enum SslPolicyErrors : int
             {
-                None,
-                RemoteCertificateChainErrors,
-                RemoteCertificateNameMismatch,
-                RemoteCertificateNotAvailable,
+                None = 0,
+                RemoteCertificateChainErrors = 4,
+                RemoteCertificateNameMismatch = 2,
+                RemoteCertificateNotAvailable = 1,
             }
 
         }
         namespace Sockets
         {
             // Generated from `System.Net.Sockets.AddressFamily` in `System.Net.Primitives, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum AddressFamily
+            public enum AddressFamily : int
             {
-                AppleTalk,
-                Atm,
-                Banyan,
-                Ccitt,
-                Chaos,
-                Cluster,
-                ControllerAreaNetwork,
-                DataKit,
-                DataLink,
-                DecNet,
-                Ecma,
-                FireFox,
-                HyperChannel,
-                Ieee12844,
-                ImpLink,
-                InterNetwork,
-                InterNetworkV6,
-                Ipx,
-                Irda,
-                Iso,
-                Lat,
-                Max,
-                NS,
-                NetBios,
-                NetworkDesigners,
-                Osi,
-                Packet,
-                Pup,
-                Sna,
-                Unix,
-                Unknown,
-                Unspecified,
-                VoiceView,
+                AppleTalk = 16,
+                Atm = 22,
+                Banyan = 21,
+                Ccitt = 10,
+                Chaos = 5,
+                Cluster = 24,
+                ControllerAreaNetwork = 65537,
+                DataKit = 9,
+                DataLink = 13,
+                DecNet = 12,
+                Ecma = 8,
+                FireFox = 19,
+                HyperChannel = 15,
+                Ieee12844 = 25,
+                ImpLink = 3,
+                InterNetwork = 2,
+                InterNetworkV6 = 23,
+                Ipx = 6,
+                Irda = 26,
+                Iso = 7,
+                Lat = 14,
+                Max = 29,
+                NS = 6,
+                NetBios = 17,
+                NetworkDesigners = 28,
+                Osi = 7,
+                Packet = 65536,
+                Pup = 4,
+                Sna = 11,
+                Unix = 1,
+                Unknown = -1,
+                Unspecified = 0,
+                VoiceView = 18,
             }
 
             // Generated from `System.Net.Sockets.SocketError` in `System.Net.Primitives, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum SocketError
+            public enum SocketError : int
             {
-                AccessDenied,
-                AddressAlreadyInUse,
-                AddressFamilyNotSupported,
-                AddressNotAvailable,
-                AlreadyInProgress,
-                ConnectionAborted,
-                ConnectionRefused,
-                ConnectionReset,
-                DestinationAddressRequired,
-                Disconnecting,
-                Fault,
-                HostDown,
-                HostNotFound,
-                HostUnreachable,
-                IOPending,
-                InProgress,
-                Interrupted,
-                InvalidArgument,
-                IsConnected,
-                MessageSize,
-                NetworkDown,
-                NetworkReset,
-                NetworkUnreachable,
-                NoBufferSpaceAvailable,
-                NoData,
-                NoRecovery,
-                NotConnected,
-                NotInitialized,
-                NotSocket,
-                OperationAborted,
-                OperationNotSupported,
-                ProcessLimit,
-                ProtocolFamilyNotSupported,
-                ProtocolNotSupported,
-                ProtocolOption,
-                ProtocolType,
-                Shutdown,
-                SocketError,
-                SocketNotSupported,
-                Success,
-                SystemNotReady,
-                TimedOut,
-                TooManyOpenSockets,
-                TryAgain,
-                TypeNotFound,
-                VersionNotSupported,
-                WouldBlock,
+                AccessDenied = 10013,
+                AddressAlreadyInUse = 10048,
+                AddressFamilyNotSupported = 10047,
+                AddressNotAvailable = 10049,
+                AlreadyInProgress = 10037,
+                ConnectionAborted = 10053,
+                ConnectionRefused = 10061,
+                ConnectionReset = 10054,
+                DestinationAddressRequired = 10039,
+                Disconnecting = 10101,
+                Fault = 10014,
+                HostDown = 10064,
+                HostNotFound = 11001,
+                HostUnreachable = 10065,
+                IOPending = 997,
+                InProgress = 10036,
+                Interrupted = 10004,
+                InvalidArgument = 10022,
+                IsConnected = 10056,
+                MessageSize = 10040,
+                NetworkDown = 10050,
+                NetworkReset = 10052,
+                NetworkUnreachable = 10051,
+                NoBufferSpaceAvailable = 10055,
+                NoData = 11004,
+                NoRecovery = 11003,
+                NotConnected = 10057,
+                NotInitialized = 10093,
+                NotSocket = 10038,
+                OperationAborted = 995,
+                OperationNotSupported = 10045,
+                ProcessLimit = 10067,
+                ProtocolFamilyNotSupported = 10046,
+                ProtocolNotSupported = 10043,
+                ProtocolOption = 10042,
+                ProtocolType = 10041,
+                Shutdown = 10058,
+                SocketError = -1,
+                SocketNotSupported = 10044,
+                Success = 0,
+                SystemNotReady = 10091,
+                TimedOut = 10060,
+                TooManyOpenSockets = 10024,
+                TryAgain = 11002,
+                TypeNotFound = 10109,
+                VersionNotSupported = 10092,
+                WouldBlock = 10035,
             }
 
             // Generated from `System.Net.Sockets.SocketException` in `System.Net.Primitives, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -521,52 +521,52 @@ namespace System
         namespace Authentication
         {
             // Generated from `System.Security.Authentication.CipherAlgorithmType` in `System.Net.Primitives, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum CipherAlgorithmType
+            public enum CipherAlgorithmType : int
             {
-                Aes,
-                Aes128,
-                Aes192,
-                Aes256,
-                Des,
-                None,
-                Null,
-                Rc2,
-                Rc4,
-                TripleDes,
+                Aes = 26129,
+                Aes128 = 26126,
+                Aes192 = 26127,
+                Aes256 = 26128,
+                Des = 26113,
+                None = 0,
+                Null = 24576,
+                Rc2 = 26114,
+                Rc4 = 26625,
+                TripleDes = 26115,
             }
 
             // Generated from `System.Security.Authentication.ExchangeAlgorithmType` in `System.Net.Primitives, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum ExchangeAlgorithmType
+            public enum ExchangeAlgorithmType : int
             {
-                DiffieHellman,
-                None,
-                RsaKeyX,
-                RsaSign,
+                DiffieHellman = 43522,
+                None = 0,
+                RsaKeyX = 41984,
+                RsaSign = 9216,
             }
 
             // Generated from `System.Security.Authentication.HashAlgorithmType` in `System.Net.Primitives, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum HashAlgorithmType
+            public enum HashAlgorithmType : int
             {
-                Md5,
-                None,
-                Sha1,
-                Sha256,
-                Sha384,
-                Sha512,
+                Md5 = 32771,
+                None = 0,
+                Sha1 = 32772,
+                Sha256 = 32780,
+                Sha384 = 32781,
+                Sha512 = 32782,
             }
 
             // Generated from `System.Security.Authentication.SslProtocols` in `System.Net.Primitives, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             [System.Flags]
-            public enum SslProtocols
+            public enum SslProtocols : int
             {
-                Default,
-                None,
-                Ssl2,
-                Ssl3,
-                Tls,
-                Tls11,
-                Tls12,
-                Tls13,
+                Default = 240,
+                None = 0,
+                Ssl2 = 12,
+                Ssl3 = 48,
+                Tls = 192,
+                Tls11 = 768,
+                Tls12 = 3072,
+                Tls13 = 12288,
             }
 
             namespace ExtendedProtection
@@ -580,11 +580,11 @@ namespace System
                 }
 
                 // Generated from `System.Security.Authentication.ExtendedProtection.ChannelBindingKind` in `System.Net.Primitives, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-                public enum ChannelBindingKind
+                public enum ChannelBindingKind : int
                 {
-                    Endpoint,
-                    Unique,
-                    Unknown,
+                    Endpoint = 26,
+                    Unique = 25,
+                    Unknown = 0,
                 }
 
             }
