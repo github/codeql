@@ -128,12 +128,12 @@ namespace Microsoft
                 }
 
                 // Generated from `Microsoft.AspNetCore.Components.Forms.InputDateType` in `Microsoft.AspNetCore.Components.Web, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
-                public enum InputDateType
+                public enum InputDateType : int
                 {
-                    Date,
-                    DateTimeLocal,
-                    Month,
-                    Time,
+                    Date = 0,
+                    DateTimeLocal = 1,
+                    Month = 2,
+                    Time = 3,
                 }
 
                 // Generated from `Microsoft.AspNetCore.Components.Forms.InputFile` in `Microsoft.AspNetCore.Components.Web, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
@@ -304,10 +304,10 @@ namespace Microsoft
                 }
 
                 // Generated from `Microsoft.AspNetCore.Components.Routing.NavLinkMatch` in `Microsoft.AspNetCore.Components.Web, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
-                public enum NavLinkMatch
+                public enum NavLinkMatch : int
                 {
-                    All,
-                    Prefix,
+                    All = 1,
+                    Prefix = 0,
                 }
 
             }

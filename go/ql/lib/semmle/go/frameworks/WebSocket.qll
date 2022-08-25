@@ -288,8 +288,8 @@ module WebSocketReader {
   /**
    * The `ServerWebSocket.MessageReceiveJSON` method of the `github.com/revel/revel` package.
    */
-  private class RevelServerWebSocketMessageReceiveJSON extends Range, Method {
-    RevelServerWebSocketMessageReceiveJSON() {
+  private class RevelServerWebSocketMessageReceiveJson extends Range, Method {
+    RevelServerWebSocketMessageReceiveJson() {
       // func MessageReceiveJSON(v interface{}) error
       this.hasQualifiedName(Revel::packagePath(), "ServerWebSocket", "MessageReceiveJSON")
     }

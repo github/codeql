@@ -33,6 +33,7 @@
 
 private import swift
 private import codeql.swift.controlflow.ControlFlowGraph
+private import codeql.swift.generated.Synth
 private import Completion
 private import Scope
 import ControlFlowGraphImplShared
@@ -379,9 +380,9 @@ module Stmts {
    * Control-flow for loops.
    */
   module Loops {
-    class ConditionalLoop = @while_stmt or @repeat_while_stmt;
+    class ConditionalLoop = Synth::TWhileStmt or Synth::TRepeatWhileStmt;
 
-    class LoopStmt = @for_each_stmt or ConditionalLoop;
+    class LoopStmt = Synth::TForEachStmt or ConditionalLoop;
 
     abstract class LoopTree extends AstPreOrderTree {
       LoopTree() { ast instanceof ConditionalLoop }
@@ -992,6 +993,9 @@ module Decls {
     AbstractFunctionDecl getAst() { result = ast }
 
     final override ControlFlowElement getChildElement(int i) {
+      i = -1 and
+      result.asAstNode() = ast.getSelfParam()
+      or
       result.asAstNode() = ast.getParam(i)
       or
       result.asAstNode() = ast.getBody() and
@@ -1205,13 +1209,13 @@ module Exprs {
     override SubscriptExpr ast;
 
     final override predicate propagatesAbnormal(ControlFlowElement child) {
-      child.asAstNode() = ast.getBaseExpr().getFullyConverted()
+      child.asAstNode() = ast.getBase().getFullyConverted()
       or
       child.asAstNode() = ast.getAnArgument().getExpr().getFullyConverted()
     }
 
     final override predicate first(ControlFlowElement first) {
-      astFirst(ast.getBaseExpr().getFullyConverted(), first)
+      astFirst(ast.getBase().getFullyConverted(), first)
     }
 
     final override predicate last(ControlFlowElement last, Completion c) {
@@ -1229,7 +1233,7 @@ module Exprs {
     }
 
     override predicate succ(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
-      astLast(ast.getBaseExpr().getFullyConverted(), pred, c) and
+      astLast(ast.getBase().getFullyConverted(), pred, c) and
       c instanceof NormalCompletion and
       astFirst(ast.getFirstArgument().getExpr().getFullyConverted(), succ)
       or
@@ -1295,7 +1299,7 @@ module Exprs {
     override DynamicTypeExpr ast;
 
     final override ControlFlowElement getChildElement(int i) {
-      result.asAstNode() = ast.getBaseExpr().getFullyConverted() and i = 0
+      result.asAstNode() = ast.getBase().getFullyConverted() and i = 0
     }
   }
 
@@ -1426,6 +1430,14 @@ module Exprs {
     }
   }
 
+  class MethodRefExprTree extends AstStandardPreOrderTree {
+    override MethodRefExpr ast;
+
+    override ControlFlowElement getChildElement(int i) {
+      i = 0 and result.asAstNode() = ast.getBase().getFullyConverted()
+    }
+  }
+
   module MemberRefs {
     /**
      * The control-flow of a member reference expression.
@@ -1438,11 +1450,11 @@ module Exprs {
       override MemberRefExpr ast;
 
       final override predicate propagatesAbnormal(ControlFlowElement child) {
-        child.asAstNode() = ast.getBaseExpr().getFullyConverted()
+        child.asAstNode() = ast.getBase().getFullyConverted()
       }
 
       final override predicate first(ControlFlowElement first) {
-        astFirst(ast.getBaseExpr().getFullyConverted(), first)
+        astFirst(ast.getBase().getFullyConverted(), first)
       }
     }
 
@@ -1458,7 +1470,7 @@ module Exprs {
       }
 
       override predicate succ(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
-        astLast(ast.getBaseExpr().getFullyConverted(), pred, c) and
+        astLast(ast.getBase().getFullyConverted(), pred, c) and
         c instanceof NormalCompletion and
         succ.asAstNode() = ast
       }
@@ -1488,7 +1500,7 @@ module Exprs {
       }
 
       override predicate succ(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
-        astLast(ast.getBaseExpr().getFullyConverted(), pred, c) and
+        astLast(ast.getBase().getFullyConverted(), pred, c) and
         c instanceof NormalCompletion and
         succ.asAstNode() = ast
       }
@@ -1509,7 +1521,7 @@ module Exprs {
       }
 
       override predicate succ(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
-        astLast(ast.getBaseExpr().getFullyConverted(), pred, c) and
+        astLast(ast.getBase().getFullyConverted(), pred, c) and
         c instanceof NormalCompletion and
         isPropertyGetterElement(succ, accessor, ast)
       }
@@ -1706,7 +1718,8 @@ module Exprs {
   }
 
   module Conversions {
-    class ConversionOrIdentity = @identity_expr or @explicit_cast_expr or @implicit_conversion_expr;
+    class ConversionOrIdentity =
+      Synth::TIdentityExpr or Synth::TExplicitCastExpr or Synth::TImplicitConversionExpr;
 
     abstract class ConversionOrIdentityTree extends AstStandardPostOrderTree {
       ConversionOrIdentityTree() { ast instanceof ConversionOrIdentity }

@@ -114,13 +114,13 @@ namespace System
         }
 
         // Generated from `System.Diagnostics.EventLogEntryType` in `System.Diagnostics.EventLog, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
-        public enum EventLogEntryType
+        public enum EventLogEntryType : int
         {
-            Error,
-            FailureAudit,
-            Information,
-            SuccessAudit,
-            Warning,
+            Error = 1,
+            FailureAudit = 16,
+            Information = 4,
+            SuccessAudit = 8,
+            Warning = 2,
         }
 
         // Generated from `System.Diagnostics.EventLogTraceListener` in `System.Diagnostics.EventLog, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
@@ -155,11 +155,11 @@ namespace System
         }
 
         // Generated from `System.Diagnostics.OverflowAction` in `System.Diagnostics.EventLog, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
-        public enum OverflowAction
+        public enum OverflowAction : int
         {
-            DoNotOverwrite,
-            OverwriteAsNeeded,
-            OverwriteOlder,
+            DoNotOverwrite = -1,
+            OverwriteAsNeeded = 0,
+            OverwriteOlder = 1,
         }
 
         namespace Eventing
@@ -250,11 +250,11 @@ namespace System
                 }
 
                 // Generated from `System.Diagnostics.Eventing.Reader.EventLogIsolation` in `System.Diagnostics.EventLog, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
-                public enum EventLogIsolation
+                public enum EventLogIsolation : int
                 {
-                    Application,
-                    Custom,
-                    System,
+                    Application = 0,
+                    Custom = 2,
+                    System = 1,
                 }
 
                 // Generated from `System.Diagnostics.Eventing.Reader.EventLogLink` in `System.Diagnostics.EventLog, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
@@ -266,11 +266,11 @@ namespace System
                 }
 
                 // Generated from `System.Diagnostics.Eventing.Reader.EventLogMode` in `System.Diagnostics.EventLog, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
-                public enum EventLogMode
+                public enum EventLogMode : int
                 {
-                    AutoBackup,
-                    Circular,
-                    Retain,
+                    AutoBackup = 1,
+                    Circular = 0,
+                    Retain = 2,
                 }
 
                 // Generated from `System.Diagnostics.Eventing.Reader.EventLogNotFoundException` in `System.Diagnostics.EventLog, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
@@ -402,12 +402,12 @@ namespace System
                 }
 
                 // Generated from `System.Diagnostics.Eventing.Reader.EventLogType` in `System.Diagnostics.EventLog, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
-                public enum EventLogType
+                public enum EventLogType : int
                 {
-                    Administrative,
-                    Analytical,
-                    Debug,
-                    Operational,
+                    Administrative = 0,
+                    Analytical = 2,
+                    Debug = 3,
+                    Operational = 1,
                 }
 
                 // Generated from `System.Diagnostics.Eventing.Reader.EventLogWatcher` in `System.Diagnostics.EventLog, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
@@ -503,10 +503,10 @@ namespace System
                 }
 
                 // Generated from `System.Diagnostics.Eventing.Reader.PathType` in `System.Diagnostics.EventLog, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
-                public enum PathType
+                public enum PathType : int
                 {
-                    FilePath,
-                    LogName,
+                    FilePath = 2,
+                    LogName = 1,
                 }
 
                 // Generated from `System.Diagnostics.Eventing.Reader.ProviderMetadata` in `System.Diagnostics.EventLog, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
@@ -532,61 +532,61 @@ namespace System
                 }
 
                 // Generated from `System.Diagnostics.Eventing.Reader.SessionAuthentication` in `System.Diagnostics.EventLog, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
-                public enum SessionAuthentication
+                public enum SessionAuthentication : int
                 {
-                    Default,
-                    Kerberos,
-                    Negotiate,
-                    Ntlm,
+                    Default = 0,
+                    Kerberos = 2,
+                    Negotiate = 1,
+                    Ntlm = 3,
                 }
 
                 // Generated from `System.Diagnostics.Eventing.Reader.StandardEventKeywords` in `System.Diagnostics.EventLog, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
                 [System.Flags]
-                public enum StandardEventKeywords
+                public enum StandardEventKeywords : long
                 {
-                    AuditFailure,
-                    AuditSuccess,
-                    CorrelationHint,
-                    CorrelationHint2,
-                    EventLogClassic,
-                    None,
-                    ResponseTime,
-                    Sqm,
-                    WdiContext,
-                    WdiDiagnostic,
+                    AuditFailure = 4503599627370496,
+                    AuditSuccess = 9007199254740992,
+                    CorrelationHint = 4503599627370496,
+                    CorrelationHint2 = 18014398509481984,
+                    EventLogClassic = 36028797018963968,
+                    None = 0,
+                    ResponseTime = 281474976710656,
+                    Sqm = 2251799813685248,
+                    WdiContext = 562949953421312,
+                    WdiDiagnostic = 1125899906842624,
                 }
 
                 // Generated from `System.Diagnostics.Eventing.Reader.StandardEventLevel` in `System.Diagnostics.EventLog, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
-                public enum StandardEventLevel
+                public enum StandardEventLevel : int
                 {
-                    Critical,
-                    Error,
-                    Informational,
-                    LogAlways,
-                    Verbose,
-                    Warning,
+                    Critical = 1,
+                    Error = 2,
+                    Informational = 4,
+                    LogAlways = 0,
+                    Verbose = 5,
+                    Warning = 3,
                 }
 
                 // Generated from `System.Diagnostics.Eventing.Reader.StandardEventOpcode` in `System.Diagnostics.EventLog, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
-                public enum StandardEventOpcode
+                public enum StandardEventOpcode : int
                 {
-                    DataCollectionStart,
-                    DataCollectionStop,
-                    Extension,
-                    Info,
-                    Receive,
-                    Reply,
-                    Resume,
-                    Send,
-                    Start,
-                    Stop,
-                    Suspend,
+                    DataCollectionStart = 3,
+                    DataCollectionStop = 4,
+                    Extension = 5,
+                    Info = 0,
+                    Receive = 240,
+                    Reply = 6,
+                    Resume = 7,
+                    Send = 9,
+                    Start = 1,
+                    Stop = 2,
+                    Suspend = 8,
                 }
 
                 // Generated from `System.Diagnostics.Eventing.Reader.StandardEventTask` in `System.Diagnostics.EventLog, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
-                public enum StandardEventTask
+                public enum StandardEventTask : int
                 {
-                    None,
+                    None = 0,
                 }
 
             }

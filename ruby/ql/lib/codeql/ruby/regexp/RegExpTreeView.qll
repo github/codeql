@@ -268,6 +268,9 @@ class RegExpTerm extends RegExpParent {
 
   /** Gets the primary QL class for this term. */
   override string getAPrimaryQlClass() { result = "RegExpTerm" }
+
+  /** Holds if this regular expression term can match the empty string. */
+  predicate isNullable() { none() }
 }
 
 /**
@@ -326,6 +329,8 @@ class RegExpStar extends InfiniteRepetitionQuantifier {
   RegExpStar() { this.getQualifier().charAt(0) = "*" }
 
   override string getAPrimaryQlClass() { result = "RegExpStar" }
+
+  override predicate isNullable() { any() }
 }
 
 /**
@@ -341,6 +346,8 @@ class RegExpPlus extends InfiniteRepetitionQuantifier {
   RegExpPlus() { this.getQualifier().charAt(0) = "+" }
 
   override string getAPrimaryQlClass() { result = "RegExpPlus" }
+
+  override predicate isNullable() { this.getAChild().isNullable() }
 }
 
 /**
@@ -356,6 +363,8 @@ class RegExpOpt extends RegExpQuantifier {
   RegExpOpt() { this.getQualifier().charAt(0) = "?" }
 
   override string getAPrimaryQlClass() { result = "RegExpOpt" }
+
+  override predicate isNullable() { any() }
 }
 
 /**
@@ -375,6 +384,8 @@ class RegExpRange extends RegExpQuantifier {
 
   RegExpRange() { re.multiples(part_end, end, lower, upper) }
 
+  override string getAPrimaryQlClass() { result = "RegExpRange" }
+
   /** Gets the string defining the upper bound of this range, if any. */
   string getUpper() { result = upper }
 
@@ -393,7 +404,7 @@ class RegExpRange extends RegExpQuantifier {
   /** Gets the lower bound of the range. */
   int getLowerBound() { result = this.getLower().toInt() }
 
-  override string getAPrimaryQlClass() { result = "RegExpRange" }
+  override predicate isNullable() { this.getAChild().isNullable() or this.getLowerBound() = 0 }
 }
 
 /**
@@ -440,6 +451,10 @@ class RegExpSequence extends RegExpTerm, TRegExpSequence {
   }
 
   override string getAPrimaryQlClass() { result = "RegExpSequence" }
+
+  override predicate isNullable() {
+    forall(RegExpTerm child | child = this.getAChild() | child.isNullable())
+  }
 }
 
 pragma[nomagic]
@@ -505,6 +520,8 @@ class RegExpAlt extends RegExpTerm, TRegExpAlt {
   override string getAMatchedString() { result = this.getAlternative().getAMatchedString() }
 
   override string getAPrimaryQlClass() { result = "RegExpAlt" }
+
+  override predicate isNullable() { this.getAChild().isNullable() }
 }
 
 class RegExpCharEscape = RegExpEscape;
@@ -579,6 +596,8 @@ class RegExpEscape extends RegExpNormalChar {
  */
 class RegExpWordBoundary extends RegExpSpecialChar {
   RegExpWordBoundary() { this.getChar() = "\\b" }
+
+  override predicate isNullable() { none() }
 }
 
 /**
@@ -607,6 +626,8 @@ class RegExpCharacterClassEscape extends RegExpEscape {
   override RegExpTerm getChild(int i) { none() }
 
   override string getAPrimaryQlClass() { result = "RegExpCharacterClassEscape" }
+
+  override predicate isNullable() { none() }
 }
 
 /**
@@ -663,6 +684,8 @@ class RegExpCharacterClass extends RegExpTerm, TRegExpCharacterClass {
   }
 
   override string getAPrimaryQlClass() { result = "RegExpCharacterClass" }
+
+  override predicate isNullable() { none() }
 }
 
 /**
@@ -702,6 +725,8 @@ class RegExpCharacterRange extends RegExpTerm, TRegExpCharacterRange {
   }
 
   override string getAPrimaryQlClass() { result = "RegExpCharacterRange" }
+
+  override predicate isNullable() { none() }
 }
 
 /**
@@ -773,6 +798,8 @@ class RegExpConstant extends RegExpTerm {
   override string getConstantValue() { result = this.getValue() }
 
   override string getAPrimaryQlClass() { result = "RegExpConstant" }
+
+  override predicate isNullable() { none() }
 }
 
 /**
@@ -820,6 +847,8 @@ class RegExpGroup extends RegExpTerm, TRegExpGroup {
   override string getAMatchedString() { result = this.getAChild().getAMatchedString() }
 
   override string getAPrimaryQlClass() { result = "RegExpGroup" }
+
+  override predicate isNullable() { this.getAChild().isNullable() }
 }
 
 /**
@@ -867,6 +896,8 @@ class RegExpDot extends RegExpSpecialChar {
   RegExpDot() { this.getChar() = "." }
 
   override string getAPrimaryQlClass() { result = "RegExpDot" }
+
+  override predicate isNullable() { none() }
 }
 
 /**
@@ -897,6 +928,8 @@ class RegExpDollar extends RegExpAnchor {
   RegExpDollar() { this.getChar() = ["$", "\\Z", "\\z"] }
 
   override string getAPrimaryQlClass() { result = "RegExpDollar" }
+
+  override predicate isNullable() { any() }
 }
 
 /**
@@ -912,6 +945,8 @@ class RegExpCaret extends RegExpAnchor {
   RegExpCaret() { this.getChar() = ["^", "\\A"] }
 
   override string getAPrimaryQlClass() { result = "RegExpCaret" }
+
+  override predicate isNullable() { any() }
 }
 
 /**
@@ -929,6 +964,8 @@ class RegExpZeroWidthMatch extends RegExpGroup {
   override RegExpTerm getChild(int i) { none() }
 
   override string getAPrimaryQlClass() { result = "RegExpZeroWidthMatch" }
+
+  override predicate isNullable() { any() }
 }
 
 /**
@@ -954,6 +991,8 @@ class RegExpSubPattern extends RegExpZeroWidthMatch {
       result.getEnd() = in_end
     )
   }
+
+  override predicate isNullable() { any() }
 }
 
 /**
@@ -981,6 +1020,8 @@ class RegExpPositiveLookahead extends RegExpLookahead {
   RegExpPositiveLookahead() { re.positiveLookaheadAssertionGroup(start, end) }
 
   override string getAPrimaryQlClass() { result = "RegExpPositiveLookahead" }
+
+  override predicate isNullable() { any() }
 }
 
 /**
@@ -1076,6 +1117,8 @@ class RegExpBackRef extends RegExpTerm, TRegExpBackRef {
   override RegExpTerm getChild(int i) { none() }
 
   override string getAPrimaryQlClass() { result = "RegExpBackRef" }
+
+  override predicate isNullable() { this.getGroup().isNullable() }
 }
 
 /**

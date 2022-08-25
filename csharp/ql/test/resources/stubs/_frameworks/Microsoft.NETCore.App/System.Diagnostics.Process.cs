@@ -153,14 +153,14 @@ namespace System
         }
 
         // Generated from `System.Diagnostics.ProcessPriorityClass` in `System.Diagnostics.Process, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum ProcessPriorityClass
+        public enum ProcessPriorityClass : int
         {
-            AboveNormal,
-            BelowNormal,
-            High,
-            Idle,
-            Normal,
-            RealTime,
+            AboveNormal = 32768,
+            BelowNormal = 16384,
+            High = 128,
+            Idle = 64,
+            Normal = 32,
+            RealTime = 256,
         }
 
         // Generated from `System.Diagnostics.ProcessStartInfo` in `System.Diagnostics.Process, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -230,56 +230,56 @@ namespace System
         }
 
         // Generated from `System.Diagnostics.ProcessWindowStyle` in `System.Diagnostics.Process, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum ProcessWindowStyle
+        public enum ProcessWindowStyle : int
         {
-            Hidden,
-            Maximized,
-            Minimized,
-            Normal,
+            Hidden = 1,
+            Maximized = 3,
+            Minimized = 2,
+            Normal = 0,
         }
 
         // Generated from `System.Diagnostics.ThreadPriorityLevel` in `System.Diagnostics.Process, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum ThreadPriorityLevel
+        public enum ThreadPriorityLevel : int
         {
-            AboveNormal,
-            BelowNormal,
-            Highest,
-            Idle,
-            Lowest,
-            Normal,
-            TimeCritical,
+            AboveNormal = 1,
+            BelowNormal = -1,
+            Highest = 2,
+            Idle = -15,
+            Lowest = -2,
+            Normal = 0,
+            TimeCritical = 15,
         }
 
         // Generated from `System.Diagnostics.ThreadState` in `System.Diagnostics.Process, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum ThreadState
+        public enum ThreadState : int
         {
-            Initialized,
-            Ready,
-            Running,
-            Standby,
-            Terminated,
-            Transition,
-            Unknown,
-            Wait,
+            Initialized = 0,
+            Ready = 1,
+            Running = 2,
+            Standby = 3,
+            Terminated = 4,
+            Transition = 6,
+            Unknown = 7,
+            Wait = 5,
         }
 
         // Generated from `System.Diagnostics.ThreadWaitReason` in `System.Diagnostics.Process, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum ThreadWaitReason
+        public enum ThreadWaitReason : int
         {
-            EventPairHigh,
-            EventPairLow,
-            ExecutionDelay,
-            Executive,
-            FreePage,
-            LpcReceive,
-            LpcReply,
-            PageIn,
-            PageOut,
-            Suspended,
-            SystemAllocation,
-            Unknown,
-            UserRequest,
-            VirtualMemory,
+            EventPairHigh = 7,
+            EventPairLow = 8,
+            ExecutionDelay = 4,
+            Executive = 0,
+            FreePage = 1,
+            LpcReceive = 9,
+            LpcReply = 10,
+            PageIn = 2,
+            PageOut = 12,
+            Suspended = 5,
+            SystemAllocation = 3,
+            Unknown = 13,
+            UserRequest = 6,
+            VirtualMemory = 11,
         }
 
     }

@@ -29,16 +29,16 @@ newtype TInstruction =
     UnaliasedSsa::SSA::hasUnreachedInstruction(irFunc)
   } or
   TAliasedSsaPhiInstruction(
-    TRawInstruction blockStartInstr, AliasedSSA::SSA::MemoryLocation memoryLocation
+    TRawInstruction blockStartInstr, AliasedSsa::SSA::MemoryLocation memoryLocation
   ) {
-    AliasedSSA::SSA::hasPhiInstruction(blockStartInstr, memoryLocation)
+    AliasedSsa::SSA::hasPhiInstruction(blockStartInstr, memoryLocation)
   } or
   TAliasedSsaChiInstruction(TRawInstruction primaryInstruction) {
-    not AliasedSSA::removedInstruction(primaryInstruction) and
-    AliasedSSA::SSA::hasChiInstruction(primaryInstruction)
+    not AliasedSsa::removedInstruction(primaryInstruction) and
+    AliasedSsa::SSA::hasChiInstruction(primaryInstruction)
   } or
   TAliasedSsaUnreachedInstruction(IRFunctionBase irFunc) {
-    AliasedSSA::SSA::hasUnreachedInstruction(irFunc)
+    AliasedSsa::SSA::hasUnreachedInstruction(irFunc)
   }
 
 /**
@@ -84,7 +84,7 @@ module AliasedSsaInstructions {
   class TPhiInstruction = TAliasedSsaPhiInstruction or TUnaliasedSsaPhiInstruction;
 
   TPhiInstruction phiInstruction(
-    TRawInstruction blockStartInstr, AliasedSSA::SSA::MemoryLocation memoryLocation
+    TRawInstruction blockStartInstr, AliasedSsa::SSA::MemoryLocation memoryLocation
   ) {
     result = TAliasedSsaPhiInstruction(blockStartInstr, memoryLocation)
   }

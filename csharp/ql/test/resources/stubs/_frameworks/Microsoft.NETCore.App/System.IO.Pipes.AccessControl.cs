@@ -20,25 +20,25 @@ namespace System
 
             // Generated from `System.IO.Pipes.PipeAccessRights` in `System.IO.Pipes.AccessControl, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             [System.Flags]
-            public enum PipeAccessRights
+            public enum PipeAccessRights : int
             {
-                AccessSystemSecurity,
-                ChangePermissions,
-                CreateNewInstance,
-                Delete,
-                FullControl,
-                Read,
-                ReadAttributes,
-                ReadData,
-                ReadExtendedAttributes,
-                ReadPermissions,
-                ReadWrite,
-                Synchronize,
-                TakeOwnership,
-                Write,
-                WriteAttributes,
-                WriteData,
-                WriteExtendedAttributes,
+                AccessSystemSecurity = 16777216,
+                ChangePermissions = 262144,
+                CreateNewInstance = 4,
+                Delete = 65536,
+                FullControl = 2032031,
+                Read = 131209,
+                ReadAttributes = 128,
+                ReadData = 1,
+                ReadExtendedAttributes = 8,
+                ReadPermissions = 131072,
+                ReadWrite = 131483,
+                Synchronize = 1048576,
+                TakeOwnership = 524288,
+                Write = 274,
+                WriteAttributes = 256,
+                WriteData = 2,
+                WriteExtendedAttributes = 16,
             }
 
             // Generated from `System.IO.Pipes.PipeAccessRule` in `System.IO.Pipes.AccessControl, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`

@@ -32,15 +32,15 @@ namespace System
         }
 
         // Generated from `System.IO.DriveType` in `System.IO.FileSystem.DriveInfo, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum DriveType
+        public enum DriveType : int
         {
-            CDRom,
-            Fixed,
-            Network,
-            NoRootDirectory,
-            Ram,
-            Removable,
-            Unknown,
+            CDRom = 5,
+            Fixed = 3,
+            Network = 4,
+            NoRootDirectory = 1,
+            Ram = 6,
+            Removable = 2,
+            Unknown = 0,
         }
 
     }

@@ -60,41 +60,41 @@ namespace System
             }
 
             // Generated from `System.IO.MemoryMappedFiles.MemoryMappedFileAccess` in `System.IO.MemoryMappedFiles, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum MemoryMappedFileAccess
+            public enum MemoryMappedFileAccess : int
             {
-                CopyOnWrite,
-                Read,
-                ReadExecute,
-                ReadWrite,
-                ReadWriteExecute,
-                Write,
+                CopyOnWrite = 3,
+                Read = 1,
+                ReadExecute = 4,
+                ReadWrite = 0,
+                ReadWriteExecute = 5,
+                Write = 2,
             }
 
             // Generated from `System.IO.MemoryMappedFiles.MemoryMappedFileOptions` in `System.IO.MemoryMappedFiles, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             [System.Flags]
-            public enum MemoryMappedFileOptions
+            public enum MemoryMappedFileOptions : int
             {
-                DelayAllocatePages,
-                None,
+                DelayAllocatePages = 67108864,
+                None = 0,
             }
 
             // Generated from `System.IO.MemoryMappedFiles.MemoryMappedFileRights` in `System.IO.MemoryMappedFiles, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             [System.Flags]
-            public enum MemoryMappedFileRights
+            public enum MemoryMappedFileRights : int
             {
-                AccessSystemSecurity,
-                ChangePermissions,
-                CopyOnWrite,
-                Delete,
-                Execute,
-                FullControl,
-                Read,
-                ReadExecute,
-                ReadPermissions,
-                ReadWrite,
-                ReadWriteExecute,
-                TakeOwnership,
-                Write,
+                AccessSystemSecurity = 16777216,
+                ChangePermissions = 262144,
+                CopyOnWrite = 1,
+                Delete = 65536,
+                Execute = 8,
+                FullControl = 983055,
+                Read = 4,
+                ReadExecute = 12,
+                ReadPermissions = 131072,
+                ReadWrite = 6,
+                ReadWriteExecute = 14,
+                TakeOwnership = 524288,
+                Write = 2,
             }
 
             // Generated from `System.IO.MemoryMappedFiles.MemoryMappedViewAccessor` in `System.IO.MemoryMappedFiles, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`

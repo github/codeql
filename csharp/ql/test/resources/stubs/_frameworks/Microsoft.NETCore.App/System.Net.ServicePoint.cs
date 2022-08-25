@@ -9,14 +9,14 @@ namespace System
 
         // Generated from `System.Net.SecurityProtocolType` in `System.Net.ServicePoint, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
         [System.Flags]
-        public enum SecurityProtocolType
+        public enum SecurityProtocolType : int
         {
-            Ssl3,
-            SystemDefault,
-            Tls,
-            Tls11,
-            Tls12,
-            Tls13,
+            Ssl3 = 48,
+            SystemDefault = 0,
+            Tls = 192,
+            Tls11 = 768,
+            Tls12 = 3072,
+            Tls13 = 12288,
         }
 
         // Generated from `System.Net.ServicePoint` in `System.Net.ServicePoint, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`

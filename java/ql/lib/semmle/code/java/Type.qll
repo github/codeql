@@ -727,6 +727,13 @@ class CompanionObject extends Class {
 }
 
 /**
+ * A Kotlin data class declaration.
+ */
+class DataClass extends Class {
+  DataClass() { ktDataClasses(this) }
+}
+
+/**
  * A record declaration.
  */
 class Record extends Class {

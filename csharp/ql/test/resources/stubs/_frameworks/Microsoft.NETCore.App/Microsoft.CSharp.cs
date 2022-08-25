@@ -30,31 +30,31 @@ namespace Microsoft
 
             // Generated from `Microsoft.CSharp.RuntimeBinder.CSharpArgumentInfoFlags` in `Microsoft.CSharp, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             [System.Flags]
-            public enum CSharpArgumentInfoFlags
+            public enum CSharpArgumentInfoFlags : int
             {
-                Constant,
-                IsOut,
-                IsRef,
-                IsStaticType,
-                NamedArgument,
-                None,
-                UseCompileTimeType,
+                Constant = 2,
+                IsOut = 16,
+                IsRef = 8,
+                IsStaticType = 32,
+                NamedArgument = 4,
+                None = 0,
+                UseCompileTimeType = 1,
             }
 
             // Generated from `Microsoft.CSharp.RuntimeBinder.CSharpBinderFlags` in `Microsoft.CSharp, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             [System.Flags]
-            public enum CSharpBinderFlags
+            public enum CSharpBinderFlags : int
             {
-                BinaryOperationLogical,
-                CheckedContext,
-                ConvertArrayIndex,
-                ConvertExplicit,
-                InvokeSimpleName,
-                InvokeSpecialName,
-                None,
-                ResultDiscarded,
-                ResultIndexed,
-                ValueFromCompoundAssignment,
+                BinaryOperationLogical = 8,
+                CheckedContext = 1,
+                ConvertArrayIndex = 32,
+                ConvertExplicit = 16,
+                InvokeSimpleName = 2,
+                InvokeSpecialName = 4,
+                None = 0,
+                ResultDiscarded = 256,
+                ResultIndexed = 64,
+                ValueFromCompoundAssignment = 128,
             }
 
             // Generated from `Microsoft.CSharp.RuntimeBinder.RuntimeBinderException` in `Microsoft.CSharp, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`

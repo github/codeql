@@ -52,7 +52,7 @@ namespace Microsoft
                 }
 
                 // Generated from `Microsoft.AspNetCore.Server.IIS.RequestRejectionReason` in `Microsoft.AspNetCore.Server.IIS, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
-                internal enum RequestRejectionReason
+                internal enum RequestRejectionReason : int
                 {
                 }
 

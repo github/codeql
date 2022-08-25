@@ -17,8 +17,8 @@ import semmle.code.cpp.dataflow.DataFlow
 /**
  * A call to `SSL_get_verify_result`.
  */
-class SSLGetVerifyResultCall extends FunctionCall {
-  SSLGetVerifyResultCall() { getTarget().getName() = "SSL_get_verify_result" }
+class SslGetVerifyResultCall extends FunctionCall {
+  SslGetVerifyResultCall() { getTarget().getName() = "SSL_get_verify_result" }
 }
 
 /**
@@ -29,7 +29,7 @@ class VerifyResultConfig extends DataFlow::Configuration {
   VerifyResultConfig() { this = "VerifyResultConfig" }
 
   override predicate isSource(DataFlow::Node source) {
-    source.asExpr() instanceof SSLGetVerifyResultCall
+    source.asExpr() instanceof SslGetVerifyResultCall
   }
 
   override predicate isSink(DataFlow::Node sink) {

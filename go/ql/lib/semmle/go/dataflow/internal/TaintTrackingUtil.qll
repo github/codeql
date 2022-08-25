@@ -158,8 +158,6 @@ predicate elementStep(DataFlow::Node pred, DataFlow::Node succ) {
   )
 }
 
-deprecated predicate arrayStep = elementStep/2;
-
 /** Holds if taint flows from `pred` to `succ` via an extract tuple operation. */
 predicate tupleStep(DataFlow::Node pred, DataFlow::Node succ) {
   succ = DataFlow::extractTupleElement(pred, _)

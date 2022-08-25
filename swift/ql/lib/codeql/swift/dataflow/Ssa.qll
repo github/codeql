@@ -61,7 +61,7 @@ module Ssa {
      * to the underlying variable.
      */
     cached
-    predicate assigns(ExprCfgNode value) {
+    predicate assigns(CfgNode value) {
       exists(
         AssignExpr a, BasicBlock bb, int i // TODO: use CFG node for assignment expr
       |
@@ -70,21 +70,27 @@ module Ssa {
         value.getNode().asAstNode() = a.getSource()
       )
       or
-      exists(VarDecl var, BasicBlock bb, int blockIndex, PatternBindingDecl pbd |
+      exists(VarDecl var, BasicBlock bb, int blockIndex, PatternBindingDecl pbd, Expr init |
         this.definesAt(var, bb, blockIndex) and
         pbd.getAPattern() = bb.getNode(blockIndex).getNode().asAstNode() and
-        value.getNode().asAstNode() = var.getParentInitializer()
+        init = var.getParentInitializer()
+      |
+        value.getNode().asAstNode() = init
+        or
+        // TODO: We should probably enumerate more cfg nodes here.
+        value.(PropertyGetterCfgNode).getRef() = init
       )
     }
 
     cached
     predicate isInoutDef(ExprCfgNode argument) {
+      // TODO: This should probably not be only `ExprCfgNode`s.
       exists(
-        ApplyExpr c, BasicBlock bb, int blockIndex, int argIndex, VarDecl v, InOutExpr argExpr // TODO: use CFG node for assignment expr
+        ApplyExpr c, BasicBlock bb, int blockIndex, VarDecl v, InOutExpr argExpr // TODO: use CFG node for assignment expr
       |
         this.definesAt(v, bb, blockIndex) and
         bb.getNode(blockIndex).getNode().asAstNode() = c and
-        c.getArgument(argIndex).getExpr() = argExpr and
+        [c.getAnArgument().getExpr(), c.getQualifier()] = argExpr and
         argExpr = argument.getNode().asAstNode() and
         argExpr.getSubExpr() = v.getAnAccess() // TODO: fields?
       )

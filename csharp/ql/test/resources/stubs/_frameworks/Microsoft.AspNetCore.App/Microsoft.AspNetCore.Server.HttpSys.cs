@@ -29,21 +29,21 @@ namespace Microsoft
 
                 // Generated from `Microsoft.AspNetCore.Server.HttpSys.AuthenticationSchemes` in `Microsoft.AspNetCore.Server.HttpSys, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 [System.Flags]
-                public enum AuthenticationSchemes
+                public enum AuthenticationSchemes : int
                 {
-                    Basic,
-                    Kerberos,
-                    NTLM,
-                    Negotiate,
-                    None,
+                    Basic = 1,
+                    Kerberos = 16,
+                    NTLM = 4,
+                    Negotiate = 8,
+                    None = 0,
                 }
 
                 // Generated from `Microsoft.AspNetCore.Server.HttpSys.ClientCertificateMethod` in `Microsoft.AspNetCore.Server.HttpSys, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
-                public enum ClientCertificateMethod
+                public enum ClientCertificateMethod : int
                 {
-                    AllowCertificate,
-                    AllowRenegotation,
-                    NoCertificate,
+                    AllowCertificate = 1,
+                    AllowRenegotation = 2,
+                    NoCertificate = 0,
                 }
 
                 // Generated from `Microsoft.AspNetCore.Server.HttpSys.DelegationRule` in `Microsoft.AspNetCore.Server.HttpSys, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
@@ -55,11 +55,11 @@ namespace Microsoft
                 }
 
                 // Generated from `Microsoft.AspNetCore.Server.HttpSys.Http503VerbosityLevel` in `Microsoft.AspNetCore.Server.HttpSys, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
-                public enum Http503VerbosityLevel
+                public enum Http503VerbosityLevel : long
                 {
-                    Basic,
-                    Full,
-                    Limited,
+                    Basic = 0,
+                    Full = 2,
+                    Limited = 1,
                 }
 
                 // Generated from `Microsoft.AspNetCore.Server.HttpSys.HttpSysDefaults` in `Microsoft.AspNetCore.Server.HttpSys, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
@@ -116,11 +116,11 @@ namespace Microsoft
                 }
 
                 // Generated from `Microsoft.AspNetCore.Server.HttpSys.RequestQueueMode` in `Microsoft.AspNetCore.Server.HttpSys, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
-                public enum RequestQueueMode
+                public enum RequestQueueMode : int
                 {
-                    Attach,
-                    Create,
-                    CreateOrAttach,
+                    Attach = 1,
+                    Create = 0,
+                    CreateOrAttach = 2,
                 }
 
                 // Generated from `Microsoft.AspNetCore.Server.HttpSys.TimeoutManager` in `Microsoft.AspNetCore.Server.HttpSys, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`

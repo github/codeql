@@ -70,10 +70,7 @@ predicate basicLocalFlowStep(Node nodeFrom, Node nodeTo) {
   )
   or
   // SSA -> SSA
-  exists(SsaDefinition pred, SsaDefinition succ |
-    succ.(SsaVariableCapture).getSourceVariable() = pred.(SsaExplicitDefinition).getSourceVariable() or
-    succ.(SsaPseudoDefinition).getAnInput() = pred
-  |
+  exists(SsaDefinition pred, SsaPseudoDefinition succ | succ.getAnInput() = pred |
     nodeFrom = ssaNode(pred) and
     nodeTo = ssaNode(succ)
   )
@@ -90,6 +87,12 @@ predicate basicLocalFlowStep(Node nodeFrom, Node nodeTo) {
     any(GlobalFunctionNode fn | fn.getFunction() = nodeTo.asExpr().(FunctionName).getTarget())
 }
 
+pragma[noinline]
+private Field getASparselyUsedChannelTypedField() {
+  result.getType() instanceof ChanType and
+  count(result.getARead()) = 2
+}
+
 /**
  * Holds if data can flow from `node1` to `node2` in a way that loses the
  * calling context. For example, this would happen with flow through a
@@ -101,6 +104,27 @@ predicate jumpStep(Node n1, Node n2) {
     not v instanceof Field and
     w.writes(v, n1) and
     n2 = v.getARead()
+  )
+  or
+  exists(SsaDefinition pred, SsaDefinition succ |
+    succ.(SsaVariableCapture).getSourceVariable() = pred.(SsaExplicitDefinition).getSourceVariable()
+  |
+    n1 = ssaNode(pred) and
+    n2 = ssaNode(succ)
+  )
+  or
+  // If a channel-typed field is referenced exactly once in the context of
+  // a send statement and once in a receive expression, assume the two are linked.
+  exists(
+    Field f, DataFlow::ReadNode recvRead, DataFlow::ReadNode sendRead, RecvExpr re, SendStmt ss
+  |
+    f = getASparselyUsedChannelTypedField() and
+    recvRead = f.getARead() and
+    sendRead = f.getARead() and
+    recvRead.asExpr() = re.getOperand() and
+    sendRead.asExpr() = ss.getChannel() and
+    n1.(DataFlow::PostUpdateNode).getPreUpdateNode() = sendRead and
+    n2 = recvRead
   )
 }
 

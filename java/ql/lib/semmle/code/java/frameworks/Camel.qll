@@ -10,19 +10,22 @@ import semmle.code.java.frameworks.camel.CamelJavaAnnotations
 /**
  * A string describing a URI specified in an Apache Camel "to" declaration.
  */
-class CamelToURI extends string {
-  CamelToURI() {
-    exists(SpringCamelXmlToElement toXmlElement | this = toXmlElement.getURI()) or
-    exists(CamelJavaDSLToDecl toJavaDSL | this = toJavaDSL.getURI())
+class CamelToUri extends string {
+  CamelToUri() {
+    exists(SpringCamelXmlToElement toXmlElement | this = toXmlElement.getUri()) or
+    exists(CamelJavaDSLToDecl toJavaDSL | this = toJavaDSL.getUri())
   }
 }
+
+/** DEPRECATED: Alias for CamelToUri */
+deprecated class CamelToURI = CamelToUri;
 
 /**
  * A string describing a URI specified in an Apache Camel "to" declaration that maps to a
  * SpringBean.
  */
-class CamelToBeanURI extends CamelToURI {
-  CamelToBeanURI() {
+class CamelToBeanUri extends CamelToUri {
+  CamelToBeanUri() {
     // A `<to>` element references a bean if the URI starts with "bean:", or there is no scheme.
     matches("bean:%") or
     not exists(indexOf(":"))
@@ -51,6 +54,9 @@ class CamelToBeanURI extends CamelToURI {
   SpringBean getRefBean() { result.getBeanIdentifier() = this.getBeanIdentifier() }
 }
 
+/** DEPRECATED: Alias for CamelToBeanUri */
+deprecated class CamelToBeanURI = CamelToBeanUri;
+
 /**
  * A Class whose methods may be called in response to an Apache Camel message.
  */
@@ -64,7 +70,7 @@ class CamelTargetClass extends Class {
       this = camelXmlBeanRef.getBeanType()
     )
     or
-    exists(CamelToBeanURI toBeanURI | this = toBeanURI.getRefBean().getClass())
+    exists(CamelToBeanUri toBeanUri | this = toBeanUri.getRefBean().getClass())
     or
     exists(SpringCamelXmlMethodElement xmlMethod |
       this = xmlMethod.getRefBean().getClass() or

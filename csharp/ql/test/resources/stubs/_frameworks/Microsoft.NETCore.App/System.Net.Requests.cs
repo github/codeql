@@ -74,45 +74,45 @@ namespace System
         }
 
         // Generated from `System.Net.FtpStatusCode` in `System.Net.Requests, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum FtpStatusCode
+        public enum FtpStatusCode : int
         {
-            AccountNeeded,
-            ActionAbortedLocalProcessingError,
-            ActionAbortedUnknownPageType,
-            ActionNotTakenFileUnavailable,
-            ActionNotTakenFileUnavailableOrBusy,
-            ActionNotTakenFilenameNotAllowed,
-            ActionNotTakenInsufficientSpace,
-            ArgumentSyntaxError,
-            BadCommandSequence,
-            CantOpenData,
-            ClosingControl,
-            ClosingData,
-            CommandExtraneous,
-            CommandNotImplemented,
-            CommandOK,
-            CommandSyntaxError,
-            ConnectionClosed,
-            DataAlreadyOpen,
-            DirectoryStatus,
-            EnteringPassive,
-            FileActionAborted,
-            FileActionOK,
-            FileCommandPending,
-            FileStatus,
-            LoggedInProceed,
-            NeedLoginAccount,
-            NotLoggedIn,
-            OpeningData,
-            PathnameCreated,
-            RestartMarker,
-            SendPasswordCommand,
-            SendUserCommand,
-            ServerWantsSecureSession,
-            ServiceNotAvailable,
-            ServiceTemporarilyNotAvailable,
-            SystemType,
-            Undefined,
+            AccountNeeded = 532,
+            ActionAbortedLocalProcessingError = 451,
+            ActionAbortedUnknownPageType = 551,
+            ActionNotTakenFileUnavailable = 550,
+            ActionNotTakenFileUnavailableOrBusy = 450,
+            ActionNotTakenFilenameNotAllowed = 553,
+            ActionNotTakenInsufficientSpace = 452,
+            ArgumentSyntaxError = 501,
+            BadCommandSequence = 503,
+            CantOpenData = 425,
+            ClosingControl = 221,
+            ClosingData = 226,
+            CommandExtraneous = 202,
+            CommandNotImplemented = 502,
+            CommandOK = 200,
+            CommandSyntaxError = 500,
+            ConnectionClosed = 426,
+            DataAlreadyOpen = 125,
+            DirectoryStatus = 212,
+            EnteringPassive = 227,
+            FileActionAborted = 552,
+            FileActionOK = 250,
+            FileCommandPending = 350,
+            FileStatus = 213,
+            LoggedInProceed = 230,
+            NeedLoginAccount = 332,
+            NotLoggedIn = 530,
+            OpeningData = 150,
+            PathnameCreated = 257,
+            RestartMarker = 110,
+            SendPasswordCommand = 331,
+            SendUserCommand = 220,
+            ServerWantsSecureSession = 234,
+            ServiceNotAvailable = 421,
+            ServiceTemporarilyNotAvailable = 120,
+            SystemType = 215,
+            Undefined = 0,
         }
 
         // Generated from `System.Net.FtpWebRequest` in `System.Net.Requests, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -321,29 +321,29 @@ namespace System
         }
 
         // Generated from `System.Net.WebExceptionStatus` in `System.Net.Requests, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum WebExceptionStatus
+        public enum WebExceptionStatus : int
         {
-            CacheEntryNotFound,
-            ConnectFailure,
-            ConnectionClosed,
-            KeepAliveFailure,
-            MessageLengthLimitExceeded,
-            NameResolutionFailure,
-            Pending,
-            PipelineFailure,
-            ProtocolError,
-            ProxyNameResolutionFailure,
-            ReceiveFailure,
-            RequestCanceled,
-            RequestProhibitedByCachePolicy,
-            RequestProhibitedByProxy,
-            SecureChannelFailure,
-            SendFailure,
-            ServerProtocolViolation,
-            Success,
-            Timeout,
-            TrustFailure,
-            UnknownError,
+            CacheEntryNotFound = 18,
+            ConnectFailure = 2,
+            ConnectionClosed = 8,
+            KeepAliveFailure = 12,
+            MessageLengthLimitExceeded = 17,
+            NameResolutionFailure = 1,
+            Pending = 13,
+            PipelineFailure = 5,
+            ProtocolError = 7,
+            ProxyNameResolutionFailure = 15,
+            ReceiveFailure = 3,
+            RequestCanceled = 6,
+            RequestProhibitedByCachePolicy = 19,
+            RequestProhibitedByProxy = 20,
+            SecureChannelFailure = 10,
+            SendFailure = 4,
+            ServerProtocolViolation = 11,
+            Success = 0,
+            Timeout = 14,
+            TrustFailure = 9,
+            UnknownError = 16,
         }
 
         // Generated from `System.Net.WebRequest` in `System.Net.Requests, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -454,28 +454,28 @@ namespace System
         namespace Cache
         {
             // Generated from `System.Net.Cache.HttpCacheAgeControl` in `System.Net.Requests, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum HttpCacheAgeControl
+            public enum HttpCacheAgeControl : int
             {
-                MaxAge,
-                MaxAgeAndMaxStale,
-                MaxAgeAndMinFresh,
-                MaxStale,
-                MinFresh,
-                None,
+                MaxAge = 2,
+                MaxAgeAndMaxStale = 6,
+                MaxAgeAndMinFresh = 3,
+                MaxStale = 4,
+                MinFresh = 1,
+                None = 0,
             }
 
             // Generated from `System.Net.Cache.HttpRequestCacheLevel` in `System.Net.Requests, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum HttpRequestCacheLevel
+            public enum HttpRequestCacheLevel : int
             {
-                BypassCache,
-                CacheIfAvailable,
-                CacheOnly,
-                CacheOrNextCacheOnly,
-                Default,
-                NoCacheNoStore,
-                Refresh,
-                Reload,
-                Revalidate,
+                BypassCache = 1,
+                CacheIfAvailable = 3,
+                CacheOnly = 2,
+                CacheOrNextCacheOnly = 7,
+                Default = 0,
+                NoCacheNoStore = 6,
+                Refresh = 8,
+                Reload = 5,
+                Revalidate = 4,
             }
 
             // Generated from `System.Net.Cache.HttpRequestCachePolicy` in `System.Net.Requests, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`

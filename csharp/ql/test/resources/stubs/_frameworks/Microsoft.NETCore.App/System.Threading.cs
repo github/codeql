@@ -116,10 +116,10 @@ namespace System
         }
 
         // Generated from `System.Threading.EventResetMode` in `System.Threading, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum EventResetMode
+        public enum EventResetMode : int
         {
-            AutoReset,
-            ManualReset,
+            AutoReset = 0,
+            ManualReset = 1,
         }
 
         // Generated from `System.Threading.EventWaitHandle` in `System.Threading, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -246,10 +246,10 @@ namespace System
         }
 
         // Generated from `System.Threading.LockRecursionPolicy` in `System.Threading, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum LockRecursionPolicy
+        public enum LockRecursionPolicy : int
         {
-            NoRecursion,
-            SupportsRecursion,
+            NoRecursion = 0,
+            SupportsRecursion = 1,
         }
 
         // Generated from `System.Threading.ManualResetEvent` in `System.Threading, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`

@@ -53,16 +53,16 @@ namespace System
 
         // Generated from `System.Diagnostics.SourceLevels` in `System.Diagnostics.TraceSource, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         [System.Flags]
-        public enum SourceLevels
+        public enum SourceLevels : int
         {
-            ActivityTracing,
-            All,
-            Critical,
-            Error,
-            Information,
-            Off,
-            Verbose,
-            Warning,
+            ActivityTracing = 65280,
+            All = -1,
+            Critical = 1,
+            Error = 3,
+            Information = 15,
+            Off = 0,
+            Verbose = 31,
+            Warning = 7,
         }
 
         // Generated from `System.Diagnostics.SourceSwitch` in `System.Diagnostics.TraceSource, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -163,18 +163,18 @@ namespace System
         }
 
         // Generated from `System.Diagnostics.TraceEventType` in `System.Diagnostics.TraceSource, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum TraceEventType
+        public enum TraceEventType : int
         {
-            Critical,
-            Error,
-            Information,
-            Resume,
-            Start,
-            Stop,
-            Suspend,
-            Transfer,
-            Verbose,
-            Warning,
+            Critical = 1,
+            Error = 2,
+            Information = 8,
+            Resume = 2048,
+            Start = 256,
+            Stop = 512,
+            Suspend = 1024,
+            Transfer = 4096,
+            Verbose = 16,
+            Warning = 4,
         }
 
         // Generated from `System.Diagnostics.TraceFilter` in `System.Diagnostics.TraceSource, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -185,13 +185,13 @@ namespace System
         }
 
         // Generated from `System.Diagnostics.TraceLevel` in `System.Diagnostics.TraceSource, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum TraceLevel
+        public enum TraceLevel : int
         {
-            Error,
-            Info,
-            Off,
-            Verbose,
-            Warning,
+            Error = 1,
+            Info = 3,
+            Off = 0,
+            Verbose = 4,
+            Warning = 2,
         }
 
         // Generated from `System.Diagnostics.TraceListener` in `System.Diagnostics.TraceSource, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -264,15 +264,15 @@ namespace System
 
         // Generated from `System.Diagnostics.TraceOptions` in `System.Diagnostics.TraceSource, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         [System.Flags]
-        public enum TraceOptions
+        public enum TraceOptions : int
         {
-            Callstack,
-            DateTime,
-            LogicalOperationStack,
-            None,
-            ProcessId,
-            ThreadId,
-            Timestamp,
+            Callstack = 32,
+            DateTime = 2,
+            LogicalOperationStack = 1,
+            None = 0,
+            ProcessId = 8,
+            ThreadId = 16,
+            Timestamp = 4,
         }
 
         // Generated from `System.Diagnostics.TraceSource` in `System.Diagnostics.TraceSource, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`

@@ -112,13 +112,13 @@ namespace System
 
             // Generated from `System.Security.Cryptography.CngExportPolicies` in `System.Security.Cryptography.Cng, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             [System.Flags]
-            public enum CngExportPolicies
+            public enum CngExportPolicies : int
             {
-                AllowArchiving,
-                AllowExport,
-                AllowPlaintextArchiving,
-                AllowPlaintextExport,
-                None,
+                AllowArchiving = 4,
+                AllowExport = 1,
+                AllowPlaintextArchiving = 8,
+                AllowPlaintextExport = 2,
+                None = 0,
             }
 
             // Generated from `System.Security.Cryptography.CngKey` in `System.Security.Cryptography.Cng, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -181,11 +181,11 @@ namespace System
 
             // Generated from `System.Security.Cryptography.CngKeyCreationOptions` in `System.Security.Cryptography.Cng, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             [System.Flags]
-            public enum CngKeyCreationOptions
+            public enum CngKeyCreationOptions : int
             {
-                MachineKey,
-                None,
-                OverwriteExistingKey,
+                MachineKey = 32,
+                None = 0,
+                OverwriteExistingKey = 128,
             }
 
             // Generated from `System.Security.Cryptography.CngKeyCreationParameters` in `System.Security.Cryptography.Cng, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -203,31 +203,31 @@ namespace System
 
             // Generated from `System.Security.Cryptography.CngKeyHandleOpenOptions` in `System.Security.Cryptography.Cng, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             [System.Flags]
-            public enum CngKeyHandleOpenOptions
+            public enum CngKeyHandleOpenOptions : int
             {
-                EphemeralKey,
-                None,
+                EphemeralKey = 1,
+                None = 0,
             }
 
             // Generated from `System.Security.Cryptography.CngKeyOpenOptions` in `System.Security.Cryptography.Cng, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             [System.Flags]
-            public enum CngKeyOpenOptions
+            public enum CngKeyOpenOptions : int
             {
-                MachineKey,
-                None,
-                Silent,
-                UserKey,
+                MachineKey = 32,
+                None = 0,
+                Silent = 64,
+                UserKey = 0,
             }
 
             // Generated from `System.Security.Cryptography.CngKeyUsages` in `System.Security.Cryptography.Cng, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             [System.Flags]
-            public enum CngKeyUsages
+            public enum CngKeyUsages : int
             {
-                AllUsages,
-                Decryption,
-                KeyAgreement,
-                None,
-                Signing,
+                AllUsages = 16777215,
+                Decryption = 1,
+                KeyAgreement = 4,
+                None = 0,
+                Signing = 2,
             }
 
             // Generated from `System.Security.Cryptography.CngProperty` in `System.Security.Cryptography.Cng, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -253,11 +253,11 @@ namespace System
 
             // Generated from `System.Security.Cryptography.CngPropertyOptions` in `System.Security.Cryptography.Cng, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             [System.Flags]
-            public enum CngPropertyOptions
+            public enum CngPropertyOptions : int
             {
-                CustomProperty,
-                None,
-                Persist,
+                CustomProperty = 1073741824,
+                None = 0,
+                Persist = -2147483648,
             }
 
             // Generated from `System.Security.Cryptography.CngProvider` in `System.Security.Cryptography.Cng, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -293,11 +293,11 @@ namespace System
 
             // Generated from `System.Security.Cryptography.CngUIProtectionLevels` in `System.Security.Cryptography.Cng, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             [System.Flags]
-            public enum CngUIProtectionLevels
+            public enum CngUIProtectionLevels : int
             {
-                ForceHighProtection,
-                None,
-                ProtectKey,
+                ForceHighProtection = 2,
+                None = 0,
+                ProtectKey = 1,
             }
 
             // Generated from `System.Security.Cryptography.DSACng` in `System.Security.Cryptography.Cng, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -367,11 +367,11 @@ namespace System
             }
 
             // Generated from `System.Security.Cryptography.ECDiffieHellmanKeyDerivationFunction` in `System.Security.Cryptography.Cng, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum ECDiffieHellmanKeyDerivationFunction
+            public enum ECDiffieHellmanKeyDerivationFunction : int
             {
-                Hash,
-                Hmac,
-                Tls,
+                Hash = 0,
+                Hmac = 1,
+                Tls = 2,
             }
 
             // Generated from `System.Security.Cryptography.ECDsaCng` in `System.Security.Cryptography.Cng, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -405,9 +405,9 @@ namespace System
             }
 
             // Generated from `System.Security.Cryptography.ECKeyXmlFormat` in `System.Security.Cryptography.Cng, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum ECKeyXmlFormat
+            public enum ECKeyXmlFormat : int
             {
-                Rfc4050,
+                Rfc4050 = 0,
             }
 
             // Generated from `System.Security.Cryptography.RSACng` in `System.Security.Cryptography.Cng, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
