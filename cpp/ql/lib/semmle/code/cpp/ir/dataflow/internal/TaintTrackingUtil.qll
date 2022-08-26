@@ -167,21 +167,39 @@ predicate defaultTaintSanitizer(DataFlow::Node node) { none() }
  * Holds if taint can flow from `instrIn` to `instrOut` through a call to a
  * modeled function.
  */
-predicate modeledTaintStep(Operand nodeIn, Instruction nodeOut) {
+predicate modeledTaintStep(DataFlow::Node nodeIn, DataFlow::Node nodeOut) {
+  // Normal taint steps
   exists(CallInstruction call, TaintFunction func, FunctionInput modelIn, FunctionOutput modelOut |
+    call.getStaticCallTarget() = func and
+    func.hasTaintFlow(modelIn, modelOut)
+  |
     (
       nodeIn = callInput(call, modelIn)
       or
       exists(int n |
         modelIn.isParameterDerefOrQualifierObject(n) and
         if n = -1
-        then nodeIn = callInput(call, any(InQualifierObject inQualifier))
+        then nodeIn = callInput(call, any(InQualifierAddress inQualifier))
         else nodeIn = callInput(call, any(InParameter inParam | inParam.getIndex() = n))
       )
     ) and
-    nodeOut = callOutput(call, modelOut) and
-    call.getStaticCallTarget() = func and
-    func.hasTaintFlow(modelIn, modelOut)
+    nodeOut = callOutput(call, modelOut)
+    or
+    exists(int d |
+      nodeIn = callInput(call, modelIn, d)
+      or
+      exists(int n |
+        d = 1 and
+        modelIn.isParameterDerefOrQualifierObject(n) and
+        if n = -1
+        then nodeIn = callInput(call, any(InQualifierAddress inQualifier))
+        else nodeIn = callInput(call, any(InParameter inParam | inParam.getIndex() = n))
+      )
+    |
+      call.getStaticCallTarget() = func and
+      func.hasTaintFlow(modelIn, modelOut) and
+      nodeOut = callOutput(call, modelOut, d)
+    )
   )
   or
   // Taint flow from one argument to another and data flow from an argument to a
@@ -205,12 +223,11 @@ predicate modeledTaintStep(Operand nodeIn, Instruction nodeOut) {
   // Taint flow from a pointer argument to an output, when the model specifies flow from the deref
   // to that output, but the deref is not modeled in the IR for the caller.
   exists(
-    CallInstruction call, ReadSideEffectInstruction read, Function func, FunctionInput modelIn,
-    FunctionOutput modelOut
+    CallInstruction call, DataFlow::SideEffectOperandNode indirectArgument, Function func,
+    FunctionInput modelIn, FunctionOutput modelOut
   |
-    read.getSideEffectOperand() = callInput(call, modelIn) and
-    read.getArgumentDef() = nodeIn.getDef() and
-    not read.getSideEffect().isResultModeled() and
+    indirectArgument = callInput(call, modelIn) and
+    indirectArgument.getAddressOperand() = nodeIn.asOperand() and
     call.getStaticCallTarget() = func and
     (
       func.(DataFlowFunction).hasDataFlow(modelIn, modelOut)

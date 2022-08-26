@@ -11,6 +11,7 @@ private import semmle.code.cpp.ir.IR
 private import semmle.code.cpp.controlflow.IRGuards
 private import semmle.code.cpp.models.interfaces.DataFlow
 private import DataFlowPrivate
+private import ModelUtil
 private import SsaInternals as Ssa
 
 cached
@@ -1010,45 +1011,14 @@ private predicate modelFlow(Node nodeFrom, Node nodeTo) {
     call.getStaticCallTarget() = func and
     func.hasDataFlow(modelIn, modelOut)
   |
-    (
-      modelOut.isReturnValue() and
-      iTo = call
-      or
-      // TODO: Add write side effects for return values
-      modelOut.isReturnValueDeref() and
-      iTo = call
-      or
-      exists(int index, WriteSideEffectInstruction outNode |
-        modelOut.isParameterDerefOrQualifierObject(index) and
-        iTo = outNode and
-        outNode = getSideEffectFor(call, index)
-      )
-    ) and
-    (
-      exists(int index |
-        modelIn.isParameterOrQualifierAddress(index) and
-        opFrom = call.getArgumentOperand(index)
-      )
-      or
-      exists(int index, ReadSideEffectInstruction read |
-        modelIn.isParameterDerefOrQualifierObject(index) and
-        read = getSideEffectFor(call, index) and
-        opFrom = read.getSideEffectOperand()
-      )
+    nodeFrom = callInput(call, modelIn) and
+    nodeTo = callOutput(call, modelOut)
+    or
+    exists(int d |
+      nodeFrom = callInput(call, modelIn, d) and
+      nodeTo = callOutput(call, modelOut, d)
     )
   )
-}
-
-/**
- * Holds if the result is a side effect for instruction `call` on argument
- * index `argument`. This helper predicate makes it easy to join on both of
- * these columns at once, avoiding pathological join orders in case the
- * argument index should get joined first.
- */
-pragma[noinline]
-SideEffectInstruction getSideEffectFor(CallInstruction call, int argument) {
-  call = result.getPrimaryInstruction() and
-  argument = result.(IndexedInstruction).getIndex()
 }
 
 /**
