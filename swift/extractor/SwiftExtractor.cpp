@@ -69,7 +69,21 @@ static std::string getFilename(swift::ModuleDecl& module, swift::SourceFile* pri
   return module.getModuleFilename().str();
 }
 
-static llvm::SmallVector<swift::ValueDecl*> getBuiltinDecls(swift::ModuleDecl& builtinModule) {
+/* The builtin module is special, as it does not publish any top-level declaration
+ * It creates (and caches) declarations on demand when a lookup is carried out
+ * (see BuiltinUnit in swift/AST/FileUnit.h for the cache details, and getBuiltinValueDecl in
+ * swift/AST/Builtins.h for the creation details)
+ * As we want to create the Builtin trap file once and for all so that it works for other
+ * extraction runs, rather than collecting what we need we pre-populate the builtin trap with
+ * what we expect. This list might need thus to be expanded.
+ * Notice, that while swift/AST/Builtins.def has a list of builtin symbols, it does not contain
+ * all information required to instantiate builtin variants.
+ * Other possible approaches:
+ * * create one trap per builtin declaration when encountered
+ * * expand the list to all possible builtins (of which there are a lot)
+ */
+static void getBuiltinDecls(swift::ModuleDecl& builtinModule,
+                            llvm::SmallVector<swift::Decl*>& decls) {
   llvm::SmallVector<swift::ValueDecl*> values;
   for (auto symbol : {
            "zeroInitializer", "BridgeObject",   "Word",           "NativeObject",
@@ -91,7 +105,7 @@ static llvm::SmallVector<swift::ValueDecl*> getBuiltinDecls(swift::ModuleDecl& b
     builtinModule.lookupValue(builtinModule.getASTContext().getIdentifier(symbol),
                               swift::NLKind::QualifiedLookup, values);
   }
-  return values;
+  decls.insert(decls.end(), values.begin(), values.end());
 }
 
 static llvm::SmallVector<swift::Decl*> getTopLevelDecls(swift::ModuleDecl& module,
@@ -101,9 +115,7 @@ static llvm::SmallVector<swift::Decl*> getTopLevelDecls(swift::ModuleDecl& modul
   if (primaryFile) {
     primaryFile->getTopLevelDecls(ret);
   } else if (module.isBuiltinModule()) {
-    for (auto d : getBuiltinDecls(module)) {
-      ret.push_back(d);
-    }
+    getBuiltinDecls(module, ret);
   } else {
     module.getTopLevelDecls(ret);
   }
