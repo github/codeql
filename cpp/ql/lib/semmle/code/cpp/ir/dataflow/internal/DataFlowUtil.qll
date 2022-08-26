@@ -54,19 +54,26 @@ private module Cached {
     simpleLocalFlowStep(nodeFrom, nodeTo)
   }
 
-  private predicate needsPostReadNode(Instruction iFrom) {
-    // If the instruction generates an address that flows to a load.
-    Ssa::addressFlowTC(iFrom, Ssa::getSourceAddress(_)) and
-    (
-      // And it is either a field address
-      iFrom instanceof FieldAddressInstruction
-      or
-      // Or it is instruction that either uses or is used for an address that needs a post read node.
-      exists(Instruction mid | needsPostReadNode(mid) |
-        Ssa::addressFlow(mid, iFrom) or Ssa::addressFlow(iFrom, mid)
-      )
-    )
-  }
+/**
+ * Holds if `opFrom` is an operand whose value flows to the result of `instrTo`.
+ *
+ * `isPointerArith` is `true` if `instrTo` is a `PointerArithmeticInstruction` and `opFrom`
+ * is the left operand.
+ */
+predicate conversionFlow(Operand opFrom, Instruction instrTo, boolean isPointerArith) {
+  isPointerArith = false and
+  (
+    instrTo.(CopyValueInstruction).getSourceValueOperand() = opFrom
+    or
+    instrTo.(ConvertInstruction).getUnaryOperand() = opFrom
+    or
+    instrTo.(CheckedConvertOrNullInstruction).getUnaryOperand() = opFrom
+    or
+    instrTo.(InheritanceConversionInstruction).getUnaryOperand() = opFrom
+  )
+  or
+  isPointerArith = true and
+  instrTo.(PointerArithmeticInstruction).getLeftOperand() = opFrom
 }
 
 private import Cached
@@ -853,7 +860,53 @@ Node uninitializedNode(LocalVariable v) { none() }
  * Holds if data flows from `nodeFrom` to `nodeTo` in exactly one local
  * (intra-procedural) step.
  */
-predicate localFlowStep = localFlowStepCached/2;
+predicate localFlowStep = simpleLocalFlowStep/2;
+
+private predicate indirectionOperandFlow(IndirectOperand nodeFrom, Node nodeTo) {
+  // Reduce the indirection count by 1 if we're passing through a `LoadInstruction`.
+  exists(int ind, LoadInstruction load |
+    hasOperandAndIndex(nodeFrom, load.getSourceAddressOperand(), ind) and
+    nodeHasInstruction(nodeTo, load, ind - 1)
+  )
+  or
+  // If an operand flows to an instruction, then the indirection of
+  // the operand also flows to the indirction of the instruction.
+  exists(Operand operand, Instruction instr, int index |
+    simpleInstructionLocalFlowStep(operand, instr) and
+    hasOperandAndIndex(nodeFrom, operand, index) and
+    hasInstructionAndIndex(nodeTo, instr, index)
+  )
+  or
+  // If there's indirect flow to an operand, then there's also indirect
+  // flow to the operand after applying some pointer arithmetic.
+  exists(PointerArithmeticInstruction pointerArith, int index |
+    hasOperandAndIndex(nodeFrom, pointerArith.getAnOperand(), index) and
+    hasInstructionAndIndex(nodeTo, pointerArith, index)
+  )
+}
+
+pragma[noinline]
+predicate hasOperandAndIndex(IndirectOperand indirectOperand, Operand operand, int index) {
+  indirectOperand.getOperand() = operand and
+  indirectOperand.getIndex() = index
+}
+
+pragma[noinline]
+predicate hasInstructionAndIndex(IndirectInstruction indirectInstr, Instruction instr, int index) {
+  indirectInstr.getInstruction() = instr and
+  indirectInstr.getIndex() = index
+}
+
+private predicate indirectionInstructionFlow(IndirectInstruction nodeFrom, IndirectOperand nodeTo) {
+  // If there's flow from an instruction to an operand, then there's also flow from the
+  // indirect instruction to the indirect operand.
+  exists(Operand operand, Instruction instr, int index |
+    simpleOperandLocalFlowStep(pragma[only_bind_into](instr), pragma[only_bind_into](operand))
+  |
+    hasOperandAndIndex(nodeTo, operand, index) and
+    hasInstructionAndIndex(nodeFrom, instr, index)
+  )
+}
 
 /**
  * INTERNAL: do not use.
@@ -862,158 +915,43 @@ predicate localFlowStep = localFlowStepCached/2;
  * data flow. It may have less flow than the `localFlowStep` predicate.
  */
 predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo) {
+  // Post update node -> Node flow
+  Ssa::defUseFlow(nodeFrom.(PostUpdateNode).getPreUpdateNode(), nodeTo)
+  or
+  // Def-use flow
+  Ssa::defUseFlow(nodeFrom, nodeTo)
+  or
   // Operand -> Instruction flow
   simpleInstructionLocalFlowStep(nodeFrom.asOperand(), nodeTo.asInstruction())
   or
   // Instruction -> Operand flow
   simpleOperandLocalFlowStep(nodeFrom.asInstruction(), nodeTo.asOperand())
   or
-  // Flow into, through, and out of store nodes
-  StoreNodeFlow::flowInto(nodeFrom.asInstruction(), nodeTo)
+  // Phi node -> Node flow
+  Ssa::fromPhiNode(nodeFrom, nodeTo)
   or
-  StoreNodeFlow::flowThrough(nodeFrom, nodeTo)
+  // Indirect operand -> (indirect) instruction flow
+  indirectionOperandFlow(nodeFrom, nodeTo)
   or
-  StoreNodeFlow::flowOutOf(nodeFrom, nodeTo)
+  // Indirect instruction -> indirect operand flow
+  indirectionInstructionFlow(nodeFrom, nodeTo)
   or
-  // Flow into, through, and out of read nodes
-  ReadNodeFlow::flowInto(nodeFrom, nodeTo)
+  // Flow through modeled functions
+  modelFlow(nodeFrom, nodeTo)
   or
-  ReadNodeFlow::flowThrough(nodeFrom, nodeTo)
-  or
-  ReadNodeFlow::flowOutOf(nodeFrom, nodeTo)
-  or
-  // Adjacent-def-use and adjacent-use-use flow
-  adjacentDefUseFlow(nodeFrom, nodeTo)
-}
-
-private predicate adjacentDefUseFlow(Node nodeFrom, Node nodeTo) {
-  // Flow that isn't already covered by field flow out of store/read nodes.
-  not nodeFrom.asInstruction() = any(StoreNode pun).getStoreInstruction() and
-  not nodeFrom.asInstruction() = any(ReadNode pun).getALoadInstruction() and
-  (
-    //Def-use flow
-    Ssa::ssaFlow(nodeFrom, nodeTo)
-    or
-    // Use-use flow through stores.
-    exists(Instruction loadAddress, Node store |
-      loadAddress = Ssa::getSourceAddressFromNode(nodeFrom) and
-      Ssa::explicitWrite(_, store.asInstruction(), loadAddress) and
-      Ssa::ssaFlow(store, nodeTo)
+  // Reverse flow: data that flows from the definition node back into the indirection returned
+  // by a function. This allows data to flow 'in' through references returned by a modeled
+  // function such as `operator[]`.
+  exists(Operand address, int index |
+    nodeHasOperand(nodeTo.(IndirectReturnOutNode), address, index)
+  |
+    exists(StoreInstruction store |
+      nodeHasInstruction(nodeFrom, store, index - 1) and
+      store.getDestinationAddressOperand() = address
     )
+    or
+    Ssa::outNodeHasAddressAndIndex(nodeFrom, address, index - 1)
   )
-}
-
-/**
- * INTERNAL: Do not use.
- */
-module ReadNodeFlow {
-  /** Holds if the read node `nodeTo` should receive flow from `nodeFrom`. */
-  predicate flowInto(Node nodeFrom, ReadNode nodeTo) {
-    nodeTo.isInitial() and
-    (
-      // If we entered through an address operand.
-      nodeFrom.asOperand().getDef() = nodeTo.getInstruction()
-      or
-      // If we entered flow through a memory-producing instruction.
-      // This can happen if we have flow to an `InitializeParameterIndirection` through
-      // a `ReadSideEffectInstruction`.
-      exists(Instruction load, Instruction def |
-        def = nodeFrom.asInstruction() and
-        def = Ssa::getSourceValueOperand(load).getAnyDef() and
-        not def = any(StoreNode store).getStoreInstruction() and
-        pragma[only_bind_into](nodeTo).getALoadInstruction() = load
-      )
-    )
-  }
-
-  /**
-   * Holds if the read node `nodeTo` should receive flow from the read node `nodeFrom`.
-   *
-   * This happens when `readFrom` is _not_ the source of a `readStep`, and `nodeTo` is
-   * the `ReadNode` that represents an address that directly depends on `nodeFrom`.
-   */
-  predicate flowThrough(ReadNode nodeFrom, ReadNode nodeTo) {
-    not readStep(nodeFrom, _, _) and
-    nodeFrom.getOuter() = nodeTo
-  }
-
-  /**
-   * Holds if flow should leave the read node `nFrom` and enter the node `nodeTo`.
-   * This happens either because there is use-use flow from one of the variables used in
-   * the read operation, or because we have traversed all the field dereferences in the
-   * read operation.
-   */
-  predicate flowOutOf(ReadNode nFrom, Node nodeTo) {
-    // Use-use flow to another use of the same variable instruction
-    Ssa::ssaFlow(nFrom, nodeTo)
-    or
-    not exists(nFrom.getInner()) and
-    exists(Node store |
-      Ssa::explicitWrite(_, store.asInstruction(), nFrom.getInstruction()) and
-      Ssa::ssaFlow(store, nodeTo)
-    )
-    or
-    // Flow out of read nodes and into memory instructions if we cannot move any further through
-    // read nodes.
-    nFrom.isTerminal() and
-    (
-      exists(Instruction load |
-        load = nodeTo.asInstruction() and
-        Ssa::getSourceAddress(load) = nFrom.getInstruction()
-      )
-      or
-      exists(CallInstruction call, int i |
-        call.getArgument(i) = nodeTo.asInstruction() and
-        call.getArgument(i) = nFrom.getInstruction()
-      )
-    )
-  }
-}
-
-/**
- * INTERNAL: Do not use.
- */
-module StoreNodeFlow {
-  /** Holds if the store node `nodeTo` should receive flow from `nodeFrom`. */
-  predicate flowInto(Instruction instrFrom, StoreNode nodeTo) {
-    nodeTo.flowInto(Ssa::getDestinationAddress(instrFrom))
-  }
-
-  /**
-   * Holds if the store node `nodeTo` should receive flow from `nodeFom`.
-   *
-   * This happens when `nodeFrom` is _not_ the source of a `storeStep`, and `nodeFrom` is
-   * the `Storenode` that represents an address that directly depends on `nodeTo`.
-   */
-  predicate flowThrough(StoreNode nodeFrom, StoreNode nodeTo) {
-    // Flow through a post update node that doesn't need a store step.
-    not storeStep(nodeFrom, _, _) and
-    nodeTo.getOuter() = nodeFrom
-  }
-
-  /**
-   * Holds if flow should leave the store node `nodeFrom` and enter the node `nodeTo`.
-   * This happens because we have traversed an entire chain of field dereferences
-   * after a store operation.
-   */
-  predicate flowOutOf(StoreNodeInstr nFrom, Node nodeTo) {
-    nFrom.isTerminal() and
-    Ssa::ssaFlow(nFrom, nodeTo)
-  }
-}
-
-private predicate simpleOperandLocalFlowStep(Instruction iFrom, Operand opTo) {
-  // Propagate flow from an instruction to its exact uses.
-  // We do this for all instruction/operand pairs, except when the operand is the
-  // side effect operand of a ReturnIndirectionInstruction, or the load operand of a LoadInstruction.
-  // This is because we get these flows through the shared SSA library already, and including this
-  // flow here will create multiple dataflow paths which creates a blowup in stage 3 of dataflow.
-  (
-    not any(ReturnIndirectionInstruction ret).getSideEffectOperand() = opTo and
-    not any(LoadInstruction load).getSourceValueOperand() = opTo and
-    not any(ReturnValueInstruction ret).getReturnValueOperand() = opTo
-  ) and
-  opTo.getDef() = iFrom
 }
 
 pragma[noinline]
@@ -1038,25 +976,21 @@ private class ReferenceDereferenceInstruction extends LoadInstruction {
 }
 
 private predicate simpleInstructionLocalFlowStep(Operand opFrom, Instruction iTo) {
-  iTo.(CopyInstruction).getSourceValueOperand() = opFrom
-  or
-  iTo.(PhiInstruction).getAnInputOperand() = opFrom
-  or
   // Treat all conversions as flow, even conversions between different numeric types.
-  iTo.(ConvertInstruction).getUnaryOperand() = opFrom
+  conversionFlow(opFrom, iTo, false)
   or
-  iTo.(CheckedConvertOrNullInstruction).getUnaryOperand() = opFrom
-  or
-  iTo.(InheritanceConversionInstruction).getUnaryOperand() = opFrom
+  iTo.(CopyInstruction).getSourceValueOperand() = opFrom
   or
   // Conflate references and values like in AST dataflow.
   iTo.(ReferenceDereferenceInstruction).getSourceAddressOperand() = opFrom
-  or
-  // Flow through modeled functions
-  modelFlow(opFrom, iTo)
 }
 
-private predicate modelFlow(Operand opFrom, Instruction iTo) {
+private predicate simpleOperandLocalFlowStep(Instruction iFrom, Operand opTo) {
+  not opTo instanceof MemoryOperand and
+  opTo.getDef() = iFrom
+}
+
+private predicate modelFlow(Node nodeFrom, Node nodeTo) {
   exists(
     CallInstruction call, DataFlowFunction func, FunctionInput modelIn, FunctionOutput modelOut
   |
