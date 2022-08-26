@@ -83,6 +83,7 @@ private predicate callValueNumber(
 private predicate callPartialValueNumber(
   NumberableCallInstruction call, int index, TCallPartialValueNumber head
 ) {
+  exists(call) and
   index = 1 and head = TNilArgument()
   or
   exists(TCallPartialValueNumber prev, TValueNumber prevVN |
