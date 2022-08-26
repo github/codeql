@@ -131,10 +131,42 @@ class Node extends TIRDataFlowNode {
   Expr asExpr() { result = this.(ExprNode).getExpr() }
 
   /**
+   * Gets the non-conversion expression that's indirectly tracked by this node
+   * under `index` number of indirections.
+   */
+  Expr asIndirectExpr(int index) {
+    exists(Operand operand | hasOperandAndIndex(this, operand, index) |
+      result = operand.getDef().getUnconvertedResultExpression()
+    )
+  }
+
+  /**
+   * Gets the non-conversion expression that's indirectly tracked by this node
+   * behind a number of indirections.
+   */
+  Expr asIndirectExpr() { result = this.asIndirectExpr(_) }
+
+  /**
    * Gets the expression corresponding to this node, if any. The returned
    * expression may be a `Conversion`.
    */
   Expr asConvertedExpr() { result = this.(ExprNode).getConvertedExpr() }
+
+  /**
+   * Gets the expression that's indirectly tracked by this node
+   * behind `index` number of indirections.
+   */
+  Expr asIndirectConvertedExpr(int index) {
+    exists(Operand operand | hasOperandAndIndex(this, operand, index) |
+      result = operand.getDef().getConvertedResultExpression()
+    )
+  }
+
+  /**
+   * Gets the expression that's indirectly tracked by this node behind a
+   * number of indirections.
+   */
+  Expr asIndirectConvertedExpr() { result = this.asIndirectConvertedExpr(_) }
 
   /**
    * Gets the argument that defines this `DefinitionByReferenceNode`, if any.
@@ -143,10 +175,80 @@ class Node extends TIRDataFlowNode {
    * in `f(&x)`, this predicate will have `&x` as its result for the `Node`
    * that represents the new value of `x`.
    */
-  Expr asDefiningArgument() { result = this.(DefinitionByReferenceNode).getArgument() }
+  Expr asDefiningArgument() { result = this.asDefiningArgument(_) }
+
+  /**
+   * Gets the argument that defines this `DefinitionByReferenceNode`, if any.
+   *
+   * Unlike `Node::asDefiningArgument/0`, this predicate gets the node representing
+   * the value of the `index`'th indirection after leaving a function. For example,
+   * in:
+   * ```cpp
+   * void f(int**);
+   * ...
+   * int** x = ...;
+   * f(x);
+   * ```
+   * The node `n` such that `n.asDefiningArgument(1)` is the argument `x` will
+   * contain the value of `*x` after `f` has returned, and the node `n` such that
+   * `n.asDefiningArgument(2)` is the argument `x` will contain the value of `**x`
+   * after the `f` has returned.
+   */
+  Expr asDefiningArgument(int index) {
+    // Subtract one because `DefinitionByReferenceNode` is defined to be in
+    // the range `[0 ... n - 1]` for some `n` instead of `[1 ... n]`.
+    this.(DefinitionByReferenceNode).getIndex() = index - 1 and
+    result = this.(DefinitionByReferenceNode).getArgument()
+  }
+
+  /**
+   * Gets the the argument going into a function for a node that represents
+   * the indirect value of the argument after `index` loads. For example, in:
+   * ```cpp
+   * void f(int**);
+   * ...
+   * int** x = ...;
+   * f(x);
+   * ```
+   * The node `n` such that `n.asIndirectArgument(1)` represents the value of
+   * `*x` going into `f`, and the node `n` such that `n.asIndirectArgument(2)`
+   * represents the value of `**x` going into `f`.
+   */
+  Expr asIndirectArgument(int index) {
+    this.(SideEffectOperandNode).getIndex() = index and
+    result = this.(SideEffectOperandNode).getArgument()
+  }
+
+  /**
+   * Gets the the argument going into a function for a node that represents
+   * the indirect value of the argument after any non-zero number of loads.
+   */
+  Expr asIndirectArgument() { result = this.asIndirectArgument(_) }
 
   /** Gets the positional parameter corresponding to this node, if any. */
-  Parameter asParameter() { result = this.(ExplicitParameterNode).getParameter() }
+  Parameter asParameter() { result = asParameter(0) }
+
+  /**
+   * Gets the positional parameter corresponding to the node that represents
+   * the value of the parameter after `index` number of loads, if any. For
+   * example, in:
+   * ```cpp
+   * void f(int** x) { ... }
+   * ```
+   * - The node `n` such that `n.asParameter(0)` is the parameter `x` represents
+   * the value of `x`.
+   * - The node `n` such that `n.asParameter(1)` is the parameter `x` represents
+   * the value of `*x`.
+   * The node `n` such that `n.asParameter(2)` is the parameter `x` represents
+   * the value of `**x`.
+   */
+  Parameter asParameter(int index) {
+    index = 0 and
+    result = this.(ExplicitParameterNode).getParameter()
+    or
+    this.(IndirectParameterNode).getIndex() = index and
+    result = this.(IndirectParameterNode).getParameter()
+  }
 
   /**
    * Gets the variable corresponding to this node, if any. This can be used for
