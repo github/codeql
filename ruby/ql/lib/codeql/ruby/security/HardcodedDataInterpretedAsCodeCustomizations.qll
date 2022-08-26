@@ -7,6 +7,7 @@
 private import codeql.ruby.DataFlow
 private import codeql.ruby.security.CodeInjectionCustomizations
 private import codeql.ruby.AST as AST
+private import codeql.ruby.controlflow.CfgNodes
 
 /**
  * Provides default sources, sinks and sanitizers for reasoning about hard-coded
@@ -57,11 +58,28 @@ module HardcodedDataInterpretedAsCode {
    * least one digit), viewed as a source of hard-coded data that should not be
    * interpreted as code.
    */
-  private class DefaultSource extends Source, DataFlow::LocalSourceNode {
-    DefaultSource() {
-      exists(string val | this.asExpr().getConstantValue().isString(val) |
+  private class HexStringSource extends Source {
+    HexStringSource() {
+      exists(string val |
+        this.asExpr().(ExprNodes::StringLiteralCfgNode).getConstantValue().isString(val)
+      |
         val.regexpMatch("[0-9a-fA-F]{8,}") and
         val.regexpMatch(".*[0-9].*")
+      )
+    }
+  }
+
+  /**
+   * A string literal whose raw text is made up entirely of `\x` escape
+   * sequences, viewed as a source of hard-coded data that should not be
+   * interpreted as code.
+   */
+  private class HexEscapedStringSource extends Source {
+    HexEscapedStringSource() {
+      forex(StringComponentCfgNode c |
+        c = this.asExpr().(ExprNodes::StringlikeLiteralCfgNode).getAComponent()
+      |
+        c.getNode().(AST::StringEscapeSequenceComponent).getRawText().prefix(2) = "\\x"
       )
     }
   }
