@@ -5,9 +5,9 @@ About CodeQL Workspaces
 
 .. include:: ../reusables/beta-note-package-management.rst
 
-CodeQL workspaces are used to group multiple CodeQL packs together. CodeQL packs in the same workspace are automatically available as source dependencies for each other when running any CodeQL command that resolves queries. This makes it easier to develope and maintain multiple, related CodeQL packs. A typical use case for a CodeQL workspace is for developing one or more CodeQL library packs and one or more query packs that depends on it in them in the same location.
+CodeQL workspaces are used to group multiple CodeQL packs together. A typical use case for a CodeQL workspace is for developing a set of CodeQL library and query packs that are mutually dependent. For more information on CodeQL packs, see ":doc:`About CodeQL packs <about-codeql-packs>`."
 
-The main benefit of a CodeQl workspace is that it is easier to develop and maintain multiple CodeQL packs. When a CodeQL workspace is used, all CodeQL packs in the workspace are available as source dependencies for each other when running any CodeQL command that resolves queries. This makes it easier to develope and maintain multiple, related CodeQL packs.
+The main benefit of a CodeQl workspace is that it is easier to develop and maintain multiple CodeQL packs. When a CodeQL workspace is used, all CodeQL packs in the workspace are available as *source dependencies* for each other when running any CodeQL command that resolves queries. This makes it easier to develope and maintain multiple, related CodeQL packs.
 
 In most cases, the CodeQL workspace and all CodeQL packs contained in it should be stored in the same git repository so the development environment is more easily sharable.
 
@@ -16,7 +16,7 @@ The ``codeql-workspae.yml`` file
 
 A CodeQL workspace is defined by a ``codeql-workspace.yml`` yaml file. This file contains a ``provide`` block, and optionally an ``ignore`` block. The ``provide`` block contains a list of glob patterns that define the CodeQL packs that are available in the workspace. The ``ignore`` block contains a list of glob patterns that define CodeQL packs that are not available in the workspace. Each entry in the ``provide`` or ``ignore`` section must map to a path to a ``qlpack.yml`` file. All glob patterns are relative to the directory containing the workspace file. See `@actions/glob <https://github.com/actions/toolkit/tree/main/packages/glob#patterns>` for a list of patterns accepted in this file.
 
-For example, the following ``codeql-workspace.yml`` file defines a workspace that contains all CodeQl packs recursively found in the ``codeql-packs`` directory, except for the packs in the ``experimental`` directory:
+For example, the following ``codeql-workspace.yml`` file defines a workspace that contains all CodeQL packs recursively found in the ``codeql-packs`` directory, except for the packs in the ``experimental`` directory:
 
 .. code-block:: yaml
 
@@ -27,6 +27,7 @@ For example, the following ``codeql-workspace.yml`` file defines a workspace tha
 
 To verify that you have the correct ``codeql-workspace.yml`` file, run ``codeql pack ls`` command in the same directory as your workspace. The result of the command is a list of all CodeQL packs in the workspace.
 
+
 CodeQL workspaces and query resolution
 --------------------------------------
 
@@ -35,6 +36,12 @@ All CodeQL packs in a workspace are available as source dependencies for each ot
 Similarly, publishing a CodeQL query pack to the GitHub container registry using  ``codeql pack publish`` will always use dependencies found in the workspace instead of using dependencies found in the local package cache.
 
 This ensures that any local change to a query library in a dependency in the same workspace will be automatically reflected in the published query pack.
+
+.. pull-quote::
+
+  Note
+
+  Source dependencies are CodeQL packs that are resolved from the filesystem. They might be in the same CodeQL workspace, or specified a path option in the ``--additional-packs`` argument. Source dependencies override any dependencies found in the local package cache and version constraints are ignored. This ensures that during local development version mismatches can be ignored.
 
 Example
 ~~~~~~~
