@@ -1,4 +1,4 @@
-private import cpp
+private import cpp as Cpp
 private import DataFlowUtil
 private import semmle.code.cpp.ir.IR
 private import DataFlowDispatch
@@ -337,7 +337,7 @@ OutNode getAnOutNode(DataFlowCall call, ReturnKind kind) {
  * global or static variable.
  */
 predicate jumpStep(Node n1, Node n2) {
-  exists(GlobalOrNamespaceVariable v |
+  exists(Cpp::GlobalOrNamespaceVariable v |
     v =
       n1.asInstruction()
           .(StoreInstruction)
@@ -497,7 +497,7 @@ class CastNode extends Node {
  * data-flow library discards call contexts and inserts a node in the big-step
  * relation used for human-readable path explanations.
  */
-class DataFlowCallable = Declaration;
+class DataFlowCallable = Cpp::Declaration;
 
 class DataFlowExpr = Expr;
 
