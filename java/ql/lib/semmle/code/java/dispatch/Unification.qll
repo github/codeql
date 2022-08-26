@@ -72,6 +72,8 @@ module MkUnification<unificationTarget/1 targetLeft, unificationTarget/1 targetR
       or
       failsUnification(t1.(Array).getComponentType(), t2.(Array).getComponentType())
       or
+      // Can't unify an `extends` bound against a concrete type that doesn't
+      // descend from that upper bound:
       exists(RefType upperbound, RefType other |
         t1.(BoundedType).getAnUltimateUpperBoundType().getSourceDeclaration() = upperbound and
         t2.(RefType).getSourceDeclaration() = other and
@@ -84,24 +86,28 @@ module MkUnification<unificationTarget/1 targetLeft, unificationTarget/1 targetR
         not other.getASourceSupertype*() = upperbound
       )
       or
+      // Can't unify two `extends` bounds that don't intersect:
       exists(RefType upperbound1, RefType upperbound2 |
         t1.(BoundedType).getAnUltimateUpperBoundType() = upperbound1 and
         t2.(BoundedType).getAnUltimateUpperBoundType() = upperbound2 and
         notHaveIntersection(upperbound1, upperbound2)
       )
       or
+      // Can't unify `? super X` against `Y` or `_ extends Y` where `Y` isn't an
+      // ancestor of `X`:
       exists(RefType lowerbound, RefType upperbound |
         t1.(Wildcard).getLowerBoundType().(RefType).getSourceDeclaration() = lowerbound and
-        getUpperBound(t2).getSourceDeclaration() = upperbound and
-        not lowerbound instanceof BoundedType
+        getUpperBound(t2).getSourceDeclaration() = upperbound
         or
         t2.(Wildcard).getLowerBoundType().(RefType).getSourceDeclaration() = lowerbound and
-        getUpperBound(t1).getSourceDeclaration() = upperbound and
-        not lowerbound instanceof BoundedType
+        getUpperBound(t1).getSourceDeclaration() = upperbound
       |
+        not lowerbound instanceof BoundedType and
         not lowerbound.getASourceSupertype*() = upperbound
       )
       or
+      // Can't unify `? super T`, where `T` is a type variable `T extends S`,
+      // with a type that doesn't intersect with `S`:
       exists(BoundedType lowerbound, RefType upperbound |
         t1.(Wildcard).getLowerBoundType() = lowerbound and
         getUpperBound(t2) = upperbound
