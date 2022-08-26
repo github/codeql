@@ -180,11 +180,20 @@ static std::unordered_set<std::string> collectInputFilenames(swift::CompilerInst
   return sourceFiles;
 }
 
+static std::vector<swift::ModuleDecl*> collectLoadedModules(swift::CompilerInstance& compiler) {
+  std::vector<swift::ModuleDecl*> ret;
+  for (const auto& [id, module] : compiler.getASTContext().getLoadedModules()) {
+    std::ignore = id;
+    ret.push_back(module);
+  }
+  return ret;
+}
+
 void codeql::extractSwiftFiles(const SwiftExtractorConfiguration& config,
                                swift::CompilerInstance& compiler) {
   auto inputFiles = collectInputFilenames(compiler);
-  std::vector<swift::ModuleDecl*> todo = {compiler.getMainModule()};
-  std::unordered_set<swift::ModuleDecl*> seen = {compiler.getMainModule()};
+  std::vector<swift::ModuleDecl*> todo = collectLoadedModules(compiler);
+  std::unordered_set<swift::ModuleDecl*> seen{todo.begin(), todo.end()};
 
   while (!todo.empty()) {
     auto module = todo.back();
