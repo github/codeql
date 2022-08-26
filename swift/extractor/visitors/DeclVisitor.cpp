@@ -264,6 +264,17 @@ std::optional<codeql::ModuleDecl> DeclVisitor::translateModuleDecl(const swift::
   }
   entry->is_builtin_module = decl.isBuiltinModule();
   entry->is_system_module = decl.isSystemModule();
+  using K = swift::ModuleDecl::ImportFilterKind;
+  llvm::SmallVector<swift::ImportedModule> imports;
+  decl.getImportedModules(imports, K::Default);
+  for (const auto& import : imports) {
+    entry->imported_modules.push_back(dispatcher_.fetchLabel(import.importedModule));
+  }
+  imports.clear();
+  decl.getImportedModules(imports, K::Exported);
+  for (const auto& import : imports) {
+    entry->exported_modules.push_back(dispatcher_.fetchLabel(import.importedModule));
+  }
   fillTypeDecl(decl, *entry);
   return entry;
 }

@@ -5,5 +5,8 @@ func foo(
   _: Builtin.FPIEEE64,
   _: Builtin.BridgeObject,
   _: Builtin.NativeObject,
-  _: Builtin.RawPointer
+  _: Builtin.RawPointer,
+  _: Builtin.Executor,
+  _: Builtin.Job,
+  _: Builtin.RawUnsafeContinuation
 ) {}
