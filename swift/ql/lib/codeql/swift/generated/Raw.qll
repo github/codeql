@@ -1398,6 +1398,10 @@ module Raw {
     predicate isBuiltinModule() { module_decl_is_builtin_module(this) }
 
     predicate isSystemModule() { module_decl_is_system_module(this) }
+
+    ModuleDecl getImportedModule(int index) { module_decl_imported_modules(this, index, result) }
+
+    ModuleDecl getExportedModule(int index) { module_decl_exported_modules(this, index, result) }
   }
 
   class NumberLiteralExpr extends @number_literal_expr, BuiltinLiteralExpr { }
