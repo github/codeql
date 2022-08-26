@@ -3,6 +3,8 @@ private import DataFlowUtil
 private import semmle.code.cpp.ir.IR
 private import DataFlowDispatch
 private import DataFlowImplConsistency
+private import semmle.code.cpp.ir.internal.IRCppLanguage
+private import SsaInternals as Ssa
 
 /** Gets the callable in which this node occurs. */
 DataFlowCallable nodeGetEnclosingCallable(Node n) { result = n.getEnclosingCallable() }
@@ -22,7 +24,7 @@ predicate isArgumentNode(ArgumentNode arg, DataFlowCall c, ArgumentPosition pos)
  * to the callable. Instance arguments (`this` pointer) and read side effects
  * on parameters are also included.
  */
-abstract class ArgumentNode extends OperandNode {
+abstract class ArgumentNode extends Node {
   /**
    * Holds if this argument occurs at the given position in the given call.
    * The instance argument is considered to have index `-1`.
@@ -37,7 +39,7 @@ abstract class ArgumentNode extends OperandNode {
  * A data flow node that occurs as the argument to a call, or an
  * implicit `this` pointer argument.
  */
-private class PrimaryArgumentNode extends ArgumentNode {
+private class PrimaryArgumentNode extends ArgumentNode, OperandNode {
   override ArgumentOperand op;
 
   PrimaryArgumentNode() { exists(CallInstruction call | op = call.getAnArgumentOperand()) }
@@ -46,49 +48,34 @@ private class PrimaryArgumentNode extends ArgumentNode {
     op = call.getArgumentOperand(pos.(DirectPosition).getIndex())
   }
 
-  override string toString() {
-    exists(Expr unconverted |
-      unconverted = op.getDef().getUnconvertedResultExpression() and
-      result = unconverted.toString()
-    )
-    or
-    // Certain instructions don't map to an unconverted result expression. For these cases
-    // we fall back to a simpler naming scheme. This can happen in IR-generated constructors.
-    not exists(op.getDef().getUnconvertedResultExpression()) and
-    (
-      result = "Argument " + op.(PositionalArgumentOperand).getIndex()
-      or
-      op instanceof ThisArgumentOperand and result = "Argument this"
-    )
-  }
+  override string toStringImpl() { result = argumentOperandToString(op) }
 }
 
-/**
- * A data flow node representing the read side effect of a call on a
- * specific parameter.
- */
-private class SideEffectArgumentNode extends ArgumentNode {
-  override SideEffectOperand op;
-  ReadSideEffectInstruction read;
+private string argumentOperandToString(ArgumentOperand op) {
+  exists(Expr unconverted |
+    unconverted = op.getDef().getUnconvertedResultExpression() and
+    result = unconverted.toString()
+  )
+  or
+  // Certain instructions don't map to an unconverted result expression. For these cases
+  // we fall back to a simpler naming scheme. This can happen in IR-generated constructors.
+  not exists(op.getDef().getUnconvertedResultExpression()) and
+  (
+    result = "Argument " + op.(PositionalArgumentOperand).getIndex()
+    or
+    op instanceof ThisArgumentOperand and result = "Argument this"
+  )
+}
 
-  SideEffectArgumentNode() { op = read.getSideEffectOperand() }
-
-  override predicate argumentOf(DataFlowCall call, ArgumentPosition pos) {
-    read.getPrimaryInstruction() = call and
-    pos.(IndirectionPosition).getIndex() = read.getIndex()
+private class SideEffectArgumentNode extends ArgumentNode, SideEffectOperandNode {
+  override predicate argumentOf(DataFlowCall dfCall, ArgumentPosition pos) {
+    this.getCallInstruction() = dfCall and
+    pos.(IndirectionPosition).getArgumentIndex() = this.getArgumentIndex() and
+    pos.(IndirectionPosition).getIndex() = super.getIndex()
   }
 
-  override string toString() {
-    result = read.getArgumentDef().getUnconvertedResultExpression().toString() + " indirection"
-    or
-    // Some instructions don't map to an unconverted result expression. For these cases
-    // we fall back to a simpler naming scheme. This can happen in IR-generated constructors.
-    not exists(read.getArgumentDef().getUnconvertedResultExpression()) and
-    (
-      if read.getIndex() = -1
-      then result = "Argument this indirection"
-      else result = "Argument " + read.getIndex() + " indirection"
-    )
+  override string toStringImpl() {
+    result = argumentOperandToString(this.getAddressOperand()) + " indirection"
   }
 }
 
@@ -102,47 +89,56 @@ class Position extends TPosition {
   abstract string toString();
 }
 
-class DirectPosition extends TDirectPosition {
+class DirectPosition extends Position, TDirectPosition {
   int index;
 
   DirectPosition() { this = TDirectPosition(index) }
 
-  string toString() {
-    index = -1 and
-    result = "this"
-    or
-    index != -1 and
-    result = index.toString()
-  }
+  override string toString() { if index = -1 then result = "this" else result = index.toString() }
 
   int getIndex() { result = index }
 }
 
-class IndirectionPosition extends TIndirectionPosition {
+class IndirectionPosition extends Position, TIndirectionPosition {
+  int argumentIndex;
   int index;
 
-  IndirectionPosition() { this = TIndirectionPosition(index) }
+  IndirectionPosition() { this = TIndirectionPosition(argumentIndex, index) }
 
-  string toString() {
-    index = -1 and
-    result = "this"
-    or
-    index != -1 and
-    result = index.toString()
+  override string toString() {
+    if argumentIndex = -1
+    then if index > 0 then result = "this indirection" else result = "this"
+    else
+      if index > 0
+      then result = argumentIndex.toString() + " indirection"
+      else result = argumentIndex.toString()
   }
+
+  int getArgumentIndex() { result = argumentIndex }
 
   int getIndex() { result = index }
 }
 
 newtype TPosition =
   TDirectPosition(int index) { exists(any(CallInstruction c).getArgument(index)) } or
-  TIndirectionPosition(int index) {
-    exists(ReadSideEffectInstruction instr | instr.getIndex() = index)
+  TIndirectionPosition(int argumentIndex, int index) {
+    hasOperandAndIndex(_, any(CallInstruction call).getArgumentOperand(argumentIndex), index)
   }
 
 private newtype TReturnKind =
-  TNormalReturnKind() or
-  TIndirectReturnKind(ParameterIndex index)
+  TNormalReturnKind(int index) {
+    exists(IndirectReturnNode return |
+      return.getAddressOperand() = any(ReturnValueInstruction r).getReturnAddressOperand() and
+      index = return.getIndex() - 1 // We subtract one because the return loads the value.
+    )
+  } or
+  TIndirectReturnKind(int argumentIndex, int index) {
+    exists(IndirectReturnNode return, ReturnIndirectionInstruction returnInd |
+      returnInd.hasIndex(argumentIndex) and
+      return.getAddressOperand() = returnInd.getSourceAddressOperand() and
+      index = return.getIndex() - 1 // We subtract one because the return loads the value.
+    )
+  }
 
 /**
  * A return kind. A return kind describes how a value can be returned
@@ -154,53 +150,146 @@ class ReturnKind extends TReturnKind {
 }
 
 private class NormalReturnKind extends ReturnKind, TNormalReturnKind {
-  override string toString() { result = "return" }
+  int index;
+
+  NormalReturnKind() { this = TNormalReturnKind(index) }
+
+  override string toString() { result = "indirect return" }
 }
 
 private class IndirectReturnKind extends ReturnKind, TIndirectReturnKind {
-  ParameterIndex index;
+  int argumentIndex;
+  int index;
 
-  IndirectReturnKind() { this = TIndirectReturnKind(index) }
+  IndirectReturnKind() { this = TIndirectReturnKind(argumentIndex, index) }
 
-  override string toString() { result = "outparam[" + index.toString() + "]" }
+  override string toString() { result = "indirect outparam[" + argumentIndex.toString() + "]" }
 }
 
 /** A data flow node that occurs as the result of a `ReturnStmt`. */
-class ReturnNode extends InstructionNode {
-  Instruction primary;
-
-  ReturnNode() {
-    exists(ReturnValueInstruction ret | instr = ret and primary = ret)
-    or
-    exists(ReturnIndirectionInstruction rii | instr = rii and primary = rii)
-  }
-
+class ReturnNode extends Node instanceof IndirectReturnNode {
   /** Gets the kind of this returned value. */
   abstract ReturnKind getKind();
 }
 
-class ReturnValueNode extends ReturnNode {
-  override ReturnValueInstruction primary;
-
-  override ReturnKind getKind() { result = TNormalReturnKind() }
+/**
+ * This predicate represents an annoying hack that we have to do. We use the
+ * `ReturnIndirectionInstruction` to determine which variables need flow back
+ * out of a function. However, the IR will unconditionally create those for a
+ * variable passed to a function even though the variable was never updated by
+ * the function. And if a function has too many `ReturnNode`s the dataflow
+ * library lowers its precision for that function by disabling field flow.
+ * 
+ * So we those eliminate `ReturnNode`s that would have otherwise been created
+ * by this unconditional `ReturnIndirectionInstruction` by requiring that there
+ * must exist an SSA definition of the IR variable in the function.
+ */
+private predicate hasNonInitializeParameterDef(IRVariable v) {
+  exists(Ssa::Def def |
+    not def.getDefiningInstruction() instanceof InitializeParameterInstruction and
+    v = def.getSourceVariable().getBaseVariable().(Ssa::BaseIRVariable).getIRVariable()
+  )
 }
 
-class ReturnIndirectionNode extends ReturnNode {
-  override ReturnIndirectionInstruction primary;
-
+class ReturnIndirectionNode extends IndirectReturnNode, ReturnNode {
   override ReturnKind getKind() {
-    exists(int index |
-      primary.hasIndex(index) and
-      result = TIndirectReturnKind(index)
+    exists(int argumentIndex, ReturnIndirectionInstruction returnInd |
+      returnInd.hasIndex(argumentIndex) and
+      this.getAddressOperand() = returnInd.getSourceAddressOperand() and
+      result = TIndirectReturnKind(argumentIndex, this.getIndex() - 1) and
+      hasNonInitializeParameterDef(returnInd.getIRVariable())
     )
+    or
+    this.getAddressOperand() = any(ReturnValueInstruction r).getReturnAddressOperand() and
+    result = TNormalReturnKind(this.getIndex() - 1)
   }
 }
 
+private Operand fullyConvertedCallStep(Operand op) {
+  not exists(getANonConversionUse(op)) and
+  exists(Instruction instr |
+    conversionFlow(op, instr, _) and
+    result = getAUse(instr)
+  )
+}
+
+/**
+ * Gets the instruction that uses this operand, if the instruction is not
+ * ignored for dataflow purposes.
+ */
+private Instruction getUse(Operand op) {
+  result = op.getUse() and
+  not Ssa::ignoreOperand(op)
+}
+
+/** Gets a use of the instruction `instr` that is not ignored for dataflow purposes. */
+Operand getAUse(Instruction instr) {
+  result = instr.getAUse() and
+  not Ssa::ignoreOperand(result)
+}
+
+/**
+ * Gets a use of `operand` that is:
+ * - not ignored for dataflow purposes, and
+ * - not a conversion-like instruction.
+ */
+private Instruction getANonConversionUse(Operand operand) {
+  result = getUse(operand) and
+  not conversionFlow(_, result, _)
+}
+
+/**
+ * Gets the operand that represents the first use of the value of `call` following
+ * a sequnce of conversion-like instructions.
+ */
+predicate operandForfullyConvertedCall(Operand operand, CallInstruction call) {
+  exists(getANonConversionUse(operand)) and
+  (
+    operand = getAUse(call)
+    or
+    operand = fullyConvertedCallStep*(getAUse(call))
+  )
+}
+
+/**
+ * Gets the instruction that represents the first use of the value of `call` following
+ * a sequnce of conversion-like instructions.
+ *
+ * This predicate only holds if there is no suitable operand (i.e., no operand of a non-
+ * conversion instruction) to use to represent the value of `call` after conversions.
+ */
+predicate instructionForfullyConvertedCall(Instruction instr, CallInstruction call) {
+  not operandForfullyConvertedCall(_, call) and
+  (
+    // If there is no use of the call then we pick the call instruction
+    not exists(getAUse(call)) and
+    instr = call
+    or
+    // Otherwise, flow to the first non-conversion use.
+    exists(Operand operand | operand = fullyConvertedCallStep*(getAUse(call)) |
+      instr = getANonConversionUse(operand)
+    )
+  )
+}
+
+/** Holds if `node` represents the output node for `call`. */
+private predicate simpleOutNode(Node node, CallInstruction call) {
+  operandForfullyConvertedCall(node.asOperand(), call)
+  or
+  instructionForfullyConvertedCall(node.asInstruction(), call)
+}
+
 /** A data flow node that represents the output of a call. */
-class OutNode extends InstructionNode {
+class OutNode extends Node {
   OutNode() {
-    instr instanceof CallInstruction or
-    instr instanceof WriteSideEffectInstruction
+    // Return values not hidden behind indirections
+    simpleOutNode(this, _)
+    or
+    // Return values hidden behind indirections
+    this instanceof IndirectReturnOutNode
+    or
+    // Modified arguments hidden behind indirections
+    this instanceof IndirectArgumentOutNode
   }
 
   /** Gets the underlying call. */
@@ -209,20 +298,28 @@ class OutNode extends InstructionNode {
   abstract ReturnKind getReturnKind();
 }
 
-private class CallOutNode extends OutNode {
-  override CallInstruction instr;
+private class DirectCallOutNode extends OutNode {
+  CallInstruction call;
 
-  override DataFlowCall getCall() { result = instr }
+  DirectCallOutNode() { simpleOutNode(this, call) }
 
-  override ReturnKind getReturnKind() { result instanceof NormalReturnKind }
+  override DataFlowCall getCall() { result = call }
+
+  override ReturnKind getReturnKind() { result = TNormalReturnKind(0) }
 }
 
-private class SideEffectOutNode extends OutNode {
-  override WriteSideEffectInstruction instr;
+private class IndirectCallOutNode extends OutNode, IndirectReturnOutNode {
+  override DataFlowCall getCall() { result = this.getCallInstruction() }
 
-  override DataFlowCall getCall() { result = instr.getPrimaryInstruction() }
+  override ReturnKind getReturnKind() { result = TNormalReturnKind(this.getIndex()) }
+}
 
-  override ReturnKind getReturnKind() { result = TIndirectReturnKind(instr.getIndex()) }
+private class SideEffectOutNode extends OutNode, IndirectArgumentOutNode {
+  override DataFlowCall getCall() { result = this.getCallInstruction() }
+
+  override ReturnKind getReturnKind() {
+    result = TIndirectReturnKind(this.getArgumentIndex(), this.getIndex())
+  }
 }
 
 /**
@@ -230,13 +327,8 @@ private class SideEffectOutNode extends OutNode {
  * `kind`.
  */
 OutNode getAnOutNode(DataFlowCall call, ReturnKind kind) {
-  // There should be only one `OutNode` for a given `(call, kind)` pair. Showing the optimizer that
-  // this is true helps it make better decisions downstream, especially in virtual dispatch.
-  result =
-    unique(OutNode outNode |
-      outNode.getCall() = call and
-      outNode.getReturnKind() = kind
-    )
+  result.getCall() = call and
+  result.getReturnKind() = kind
 }
 
 /**
@@ -368,17 +460,7 @@ class Unit extends TUnit {
 }
 
 /** Holds if `n` should be hidden from path explanations. */
-predicate nodeIsHidden(Node n) {
-  n instanceof OperandNode and not n instanceof ArgumentNode
-  or
-  StoreNodeFlow::flowThrough(n, _) and
-  not StoreNodeFlow::flowOutOf(n, _) and
-  not StoreNodeFlow::flowInto(_, n)
-  or
-  ReadNodeFlow::flowThrough(n, _) and
-  not ReadNodeFlow::flowOutOf(n, _) and
-  not ReadNodeFlow::flowInto(_, n)
-}
+predicate nodeIsHidden(Node n) { n instanceof OperandNode and not n instanceof ArgumentNode }
 
 class LambdaCallKind = Unit;
 
