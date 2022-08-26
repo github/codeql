@@ -66,6 +66,10 @@ static std::string getFilename(swift::ModuleDecl& module, swift::SourceFile* pri
     filename += module.getName().str();
     return filename;
   }
+  if (module.isBuiltinModule()) {
+    // The Builtin module has an empty filename, let's fix that
+    return "/<Builtin>";
+  }
   return module.getModuleFilename().str();
 }
 
