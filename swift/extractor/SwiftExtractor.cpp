@@ -180,7 +180,7 @@ void codeql::extractSwiftFiles(const SwiftExtractorConfiguration& config,
                                swift::CompilerInstance& compiler) {
   auto inputFiles = collectInputFilenames(compiler);
   std::vector<swift::ModuleDecl*> todo = {compiler.getMainModule()};
-  std::unordered_set<swift::ModuleDecl*> processed = {};
+  std::unordered_set<swift::ModuleDecl*> seen = {compiler.getMainModule()};
 
   while (!todo.empty()) {
     auto module = todo.back();
@@ -203,10 +203,10 @@ void codeql::extractSwiftFiles(const SwiftExtractorConfiguration& config,
     if (!isFromSourceFile) {
       encounteredModules = extractDeclarations(config, compiler, *module);
     }
-    processed.insert(module);
     for (auto encountered : encounteredModules) {
-      if (processed.count(encountered) == 0) {
+      if (seen.count(encountered) == 0) {
         todo.push_back(encountered);
+        seen.insert(encountered);
       }
     }
   }
