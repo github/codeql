@@ -3,6 +3,9 @@ private import semmle.code.cpp.ir.dataflow.DataFlow
 private import ModelUtil
 private import semmle.code.cpp.models.interfaces.DataFlow
 private import semmle.code.cpp.models.interfaces.SideEffect
+private import semmle.code.cpp.ir.dataflow.internal.DataFlowUtil
+private import semmle.code.cpp.ir.dataflow.internal.DataFlowPrivate
+private import semmle.code.cpp.models.Models
 
 /**
  * Holds if taint propagates from `nodeFrom` to `nodeTo` in exactly one local
@@ -23,26 +26,26 @@ cached
 predicate localAdditionalTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
   operandToInstructionTaintStep(nodeFrom.asOperand(), nodeTo.asInstruction())
   or
-  instructionToOperandTaintStep(nodeFrom.asInstruction(), nodeTo.asOperand())
-}
-
-private predicate instructionToOperandTaintStep(Instruction fromInstr, Operand toOperand) {
-  // Propagate flow from the definition of an operand to the operand, even when the overlap is inexact.
-  // We only do this in certain cases:
-  // 1. The instruction's result must not be conflated, and
-  // 2. The instruction's result type is one the types where we expect element-to-object flow. Currently
-  // this is array types and union types. This matches the other two cases of element-to-object flow in
-  // `DefaultTaintTracking`.
-  toOperand.getAnyDef() = fromInstr and
-  not fromInstr.isResultConflated() and
-  (
-    fromInstr.getResultType() instanceof ArrayType or
-    fromInstr.getResultType() instanceof Union
+  modeledTaintStep(nodeFrom, nodeTo)
+  or
+  // Flow from `op` to `*op`.
+  exists(Operand operand, int index |
+    nodeHasOperand(nodeFrom, operand, index) and
+    nodeHasOperand(nodeTo, operand, index - 1)
   )
   or
-  exists(ReadSideEffectInstruction readInstr |
-    fromInstr = readInstr.getArgumentDef() and
-    toOperand = readInstr.getSideEffectOperand()
+  // Flow from `instr` to `*instr`.
+  exists(Instruction instr, int index |
+    nodeHasInstruction(nodeFrom, instr, index) and
+    nodeHasInstruction(nodeTo, instr, index - 1)
+  )
+  or
+  // Flow from (the indirection of) an operand of a pointer arithmetic instruction to the
+  // indirection of the pointer arithmetic instruction. This provides flow from `source`
+  // in `x[source]` to the result of the associated load instruction.
+  exists(PointerArithmeticInstruction pai, int index |
+    nodeHasOperand(nodeFrom, pai.getAnOperand(), pragma[only_bind_into](index)) and
+    hasInstructionAndIndex(nodeTo, pai, index + 1)
   )
 }
 
@@ -61,12 +64,12 @@ private predicate operandToInstructionTaintStep(Operand opFrom, Instruction inst
     instrTo instanceof BitwiseInstruction
     or
     instrTo instanceof PointerArithmeticInstruction
-    or
-    // The `CopyInstruction` case is also present in non-taint data flow, but
-    // that uses `getDef` rather than `getAnyDef`. For taint, we want flow
-    // from a definition of `myStruct` to a `myStruct.myField` expression.
-    instrTo instanceof CopyInstruction
   )
+  or
+  // The `CopyInstruction` case is also present in non-taint data flow, but
+  // that uses `getDef` rather than `getAnyDef`. For taint, we want flow
+  // from a definition of `myStruct` to a `myStruct.myField` expression.
+  instrTo.(LoadInstruction).getSourceAddressOperand() = opFrom
   or
   // Unary instructions tend to preserve enough information in practice that we
   // want taint to flow through.
@@ -81,40 +84,6 @@ private predicate operandToInstructionTaintStep(Operand opFrom, Instruction inst
     or
     instrTo.(FieldAddressInstruction).getField().getDeclaringType() instanceof Union
   )
-  or
-  // Flow from an element to an array or union that contains it.
-  instrTo.(ChiInstruction).getPartialOperand() = opFrom and
-  not instrTo.isResultConflated() and
-  exists(Type t | instrTo.getResultLanguageType().hasType(t, false) |
-    t instanceof Union
-    or
-    t instanceof ArrayType
-  )
-  or
-  // Until we have flow through indirections across calls, we'll take flow out
-  // of the indirection and into the argument.
-  // When we get proper flow through indirections across calls, this code can be
-  // moved to `adjusedSink` or possibly into the `DataFlow::ExprNode` class.
-  exists(ReadSideEffectInstruction read |
-    read.getSideEffectOperand() = opFrom and
-    read.getArgumentDef() = instrTo
-  )
-  or
-  // Until we have from through indirections across calls, we'll take flow out
-  // of the parameter and into its indirection.
-  // `InitializeIndirectionInstruction` only has a single operand: the address of the
-  // value whose indirection we are initializing. When initializing an indirection of a parameter `p`,
-  // the IR looks like this:
-  // ```
-  // m1 = InitializeParameter[p] : &r1
-  // r2 = Load[p] : r2, m1
-  // m3 = InitializeIndirection[p] : &r2
-  // ```
-  // So by having flow from `r2` to `m3` we're enabling flow from `m1` to `m3`. This relies on the
-  // `LoadOperand`'s overlap being exact.
-  instrTo.(InitializeIndirectionInstruction).getAnOperand() = opFrom
-  or
-  modeledTaintStep(opFrom, instrTo)
 }
 
 /**
