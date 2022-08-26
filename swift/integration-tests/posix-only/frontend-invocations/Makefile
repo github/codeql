@@ -4,7 +4,7 @@ SDK=-sdk $(shell xcrun -show-sdk-path)
 FRONTEND=$(shell xcrun -find swift-frontend)
 else
 SDK=""
-FRONTEND=swift-frontend
+FRONTEND=swiftc
 endif
 
 all:
