@@ -1,0 +1,20 @@
+/**
+ * @name Android Webview debugging enabled
+ * @description Webview debugging should not be enabled in production builds.
+ * @kind path-problem
+ * @problem.severity warning
+ * @security-severity 7.2
+ * @id java/android/webview-debugging-enabled
+ * @tags security
+ *       external/cwe/cwe-489
+ * @precision high
+ */
+
+import java
+import semmle.code.java.security.WebviewDubuggingEnabledQuery
+import semmle.code.java.dataflow.DataFlow
+import DataFlow::PathGraph
+
+from WebviewDebugEnabledConfig conf, DataFlow::PathNode source, DataFlow::PathNode sink
+where conf.hasFlowPath(source, sink)
+select sink, source, sink, "Webview debugging is enabled here."
