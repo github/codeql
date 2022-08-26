@@ -1,7 +1,7 @@
 private import csharp as CSharp
 
 /**
- * Models the side effects of a library function.
+ * A class that models the side effects of a library function.
  */
 abstract class SideEffectFunction extends CSharp::Callable {
   /**
