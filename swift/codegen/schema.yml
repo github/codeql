@@ -1121,6 +1121,8 @@ ModuleDecl:
   _extends: TypeDecl
   is_builtin_module: predicate
   is_system_module: predicate
+  imported_modules: ModuleDecl*
+  exported_modules: ModuleDecl*
 
 ConstructorRefCallExpr:
   _extends: SelfApplyExpr
