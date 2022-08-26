@@ -79,7 +79,7 @@ module HardcodedDataInterpretedAsCode {
       forex(StringComponentCfgNode c |
         c = this.asExpr().(ExprNodes::StringlikeLiteralCfgNode).getAComponent()
       |
-        c.getNode().(AST::StringEscapeSequenceComponent).getRawText().prefix(2) = "\\x"
+        c.getNode().(AST::StringEscapeSequenceComponent).getRawText().matches("\\x%")
       )
     }
   }
