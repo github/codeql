@@ -1,6 +1,6 @@
 ---
 dependencies:
-  codeql/javascript-experimental-atm-model:
-    version: 0.2.0
+  dsp-testing/javascript-experimental-atm-model:
+    version: 0.0.12_Tue-Jun-14-03-05-53-2022.red-cartoon-ymtlr8js.a59fcdfa6281cd8a88be64c8902fa51fd473b9857f7556a7691a84bb90f85eb8
 compiled: false
 lockVersion: 1.0.0

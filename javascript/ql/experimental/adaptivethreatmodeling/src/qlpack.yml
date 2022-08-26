@@ -4,8 +4,8 @@ version: 0.3.1
 suites: codeql-suites
 defaultSuiteFile: codeql-suites/javascript-atm-code-scanning.qls
 groups:
-    - javascript
-    - experimental
+  - javascript
+  - experimental
 dependencies:
-    codeql/javascript-experimental-atm-lib: "*"
-    codeql/javascript-experimental-atm-model: "0.2.0"
+  codeql/javascript-experimental-atm-lib: "*"
+  dsp-testing/javascript-experimental-atm-model: 0.0.12_Tue-Jun-14-03-05-53-2022.red-cartoon-ymtlr8js.a59fcdfa6281cd8a88be64c8902fa51fd473b9857f7556a7691a84bb90f85eb8
