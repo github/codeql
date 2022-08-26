@@ -361,12 +361,70 @@ predicate jumpStep(Node n1, Node n2) {
  * Thus, `node2` references an object with a field `f` that contains the
  * value of `node1`.
  */
-predicate storeStep(StoreNodeInstr node1, FieldContent f, StoreNodeInstr node2) {
-  exists(FieldAddressInstruction fai |
-    node1.getInstruction() = fai and
-    node2.getInstruction() = fai.getObjectAddress() and
-    f.getField() = fai.getField()
+predicate storeStep(Node node1, Content c, PostFieldUpdateNode node2) {
+  exists(int index1, int numberOfLoads, StoreInstruction store |
+    nodeHasInstruction(node1, store, pragma[only_bind_into](index1)) and
+    node2.getIndex() = 0 and
+    numberOfLoadsFromOperand(node2.getFieldAddress(), store.getDestinationAddressOperand(),
+      numberOfLoads)
+  |
+    exists(FieldContent fc | fc = c |
+      fc.getField() = node2.getUpdatedField() and
+      fc.getIndex() = 1 + index1 + numberOfLoads
+    )
+    or
+    exists(UnionContent uc | uc = c |
+      uc.getAField() = node2.getUpdatedField() and
+      uc.getIndex() = 1 + index1 + numberOfLoads
+    )
   )
+}
+
+/**
+ * Holds if `operandFrom` flows to `operandTo` using a sequence of conversion-like
+ * operations and exactly `n` `LoadInstruction` operations.
+ */
+private predicate numberOfLoadsFromOperandRec(Operand operandFrom, Operand operandTo, int ind) {
+  exists(LoadInstruction load | load.getSourceAddressOperand() = operandFrom |
+    operandTo = operandFrom and ind = 0
+    or
+    numberOfLoadsFromOperand(load.getAUse(), operandTo, ind - 1)
+  )
+  or
+  exists(Operand op, Instruction instr |
+    instr = op.getDef() and
+    conversionFlow(operandFrom, instr, _) and
+    numberOfLoadsFromOperand(op, operandTo, ind)
+  )
+}
+
+/**
+ * Holds if `operandFrom` flows to `operandTo` using a sequence of conversion-like
+ * operations and exactly `n` `LoadInstruction` operations.
+ */
+private predicate numberOfLoadsFromOperand(Operand operandFrom, Operand operandTo, int n) {
+  numberOfLoadsFromOperandRec(operandFrom, operandTo, n)
+  or
+  not any(LoadInstruction load).getSourceAddressOperand() = operandFrom and
+  not conversionFlow(operandFrom, _, _) and
+  operandFrom = operandTo and
+  n = 0
+}
+
+// Needed to join on both an operand and an index at the same time.
+pragma[noinline]
+predicate nodeHasOperand(Node node, Operand operand, int index) {
+  node.asOperand() = operand and index = 0
+  or
+  hasOperandAndIndex(node, operand, index)
+}
+
+// Needed to join on both an instruction and an index at the same time.
+pragma[noinline]
+predicate nodeHasInstruction(Node node, Instruction instr, int index) {
+  node.asInstruction() = instr and index = 0
+  or
+  hasInstructionAndIndex(node, instr, index)
 }
 
 /**
@@ -374,11 +432,21 @@ predicate storeStep(StoreNodeInstr node1, FieldContent f, StoreNodeInstr node2) 
  * Thus, `node1` references an object with a field `f` whose value ends up in
  * `node2`.
  */
-predicate readStep(ReadNode node1, FieldContent f, ReadNode node2) {
-  exists(FieldAddressInstruction fai |
-    node1.getInstruction() = fai.getObjectAddress() and
-    node2.getInstruction() = fai and
-    f.getField() = fai.getField()
+predicate readStep(Node node1, Content c, Node node2) {
+  exists(FieldAddress fa1, Operand operand, int numberOfLoads, int index2 |
+    nodeHasOperand(node2, operand, index2) and
+    nodeHasOperand(node1, fa1.getObjectAddressOperand(), _) and
+    numberOfLoadsFromOperand(fa1, operand, numberOfLoads)
+  |
+    exists(FieldContent fc | fc = c |
+      fc.getField() = fa1.getField() and
+      fc.getIndex() = index2 + numberOfLoads
+    )
+    or
+    exists(UnionContent uc | uc = c |
+      uc.getAField() = fa1.getField() and
+      uc.getIndex() = index2 + numberOfLoads
+    )
   )
 }
 

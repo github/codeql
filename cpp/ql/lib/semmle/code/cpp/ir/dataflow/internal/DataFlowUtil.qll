@@ -49,10 +49,23 @@ private module Cached {
     TIndirectInstruction(Instruction instr, int index) { Ssa::hasIndirectInstruction(instr, index) }
 }
 
-  cached
-  predicate localFlowStepCached(Node nodeFrom, Node nodeTo) {
-    simpleLocalFlowStep(nodeFrom, nodeTo)
-  }
+/**
+ * An operand that is defined by a `FieldAddressInstruction`.
+ */
+class FieldAddress extends Operand {
+  FieldAddressInstruction fai;
+
+  FieldAddress() { fai = this.getDef() }
+
+  /** Gets the field associated with this instruction. */
+  Field getField() { result = fai.getField() }
+
+  /** Gets the instruction whose result provides the address of the object containing the field. */
+  Instruction getObjectAddress() { result = fai.getObjectAddress() }
+
+  /** Gets the operand that provides the address of the object containing the field. */
+  Operand getObjectAddressOperand() { result = fai.getObjectAddressOperand() }
+}
 
 /**
  * Holds if `opFrom` is an operand whose value flows to the result of `instrTo`.
@@ -1061,11 +1074,17 @@ predicate localInstructionFlow(Instruction e1, Instruction e2) {
 pragma[inline]
 predicate localExprFlow(Expr e1, Expr e2) { localFlow(exprNode(e1), exprNode(e2)) }
 
+cached
 private newtype TContent =
-  TFieldContent(Field f) {
-    // As reads and writes to union fields can create flow even though the reads and writes
-    // target different fields, we don't want a read (write) to create a read (write) step.
+  TFieldContent(Field f, int index) {
+    index = [1 .. Ssa::getMaxIndirectionsForType(f.getUnspecifiedType())] and
+    // Reads and writes of union fields are tracked using `UnionContent`.
     not f.getDeclaringType() instanceof Union
+  } or
+  TUnionContent(Union u, int index) {
+    // We key `UnionContent` by the union instead of its fields since a write to one
+    // field can be read by any read of the union's fields.
+    index = [1 .. max(Ssa::getMaxIndirectionsForType(u.getAField().getUnspecifiedType()))]
   } or
   TCollectionContent() or // Not used in C/C++
   TArrayContent() // Not used in C/C++.
@@ -1084,15 +1103,42 @@ class Content extends TContent {
   }
 }
 
-/** A reference through an instance field. */
+/** A reference through a non-union instance field. */
 class FieldContent extends Content, TFieldContent {
   Field f;
+  int index;
 
-  FieldContent() { this = TFieldContent(f) }
+  FieldContent() { this = TFieldContent(f, index) }
 
-  override string toString() { result = f.toString() }
+  override string toString() {
+    index = 1 and result = f.toString()
+    or
+    index > 1 and result = f.toString() + " indirection"
+  }
 
   Field getField() { result = f }
+
+  pragma[inline]
+  int getIndex() { pragma[only_bind_into](result) = pragma[only_bind_out](index) }
+}
+
+/** A reference through an instance field of a union. */
+class UnionContent extends Content, TUnionContent {
+  Union u;
+  int index;
+
+  UnionContent() { this = TUnionContent(u, index) }
+
+  override string toString() {
+    index = 1 and result = u.toString()
+    or
+    index > 1 and result = u.toString() + " indirection"
+  }
+
+  Field getAField() { result = u.getAField() }
+
+  pragma[inline]
+  int getIndex() { pragma[only_bind_into](result) = pragma[only_bind_out](index) }
 }
 
 /** A reference through an array. */
