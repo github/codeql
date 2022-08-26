@@ -1149,6 +1149,20 @@ class ContentSet instanceof Content {
   }
 }
 
+private IRBlock getBasicBlock(Node node) {
+  node.asInstruction().getBlock() = result
+  or
+  node.asOperand().getUse().getBlock() = result
+  or
+  node.(SsaPhiNode).getPhiNode().getBasicBlock() = result
+  or
+  node.(IndirectOperand).getOperand().getUse().getBlock() = result
+  or
+  node.(IndirectInstruction).getInstruction().getBlock() = result
+  or
+  result = getBasicBlock(node.(PostUpdateNode).getPreUpdateNode())
+}
+
 /**
  * Holds if the guard `g` validates the expression `e` upon evaluating to `branch`.
  *
@@ -1167,10 +1181,11 @@ signature predicate guardChecksSig(IRGuardCondition g, Expr e, boolean branch);
 module BarrierGuard<guardChecksSig/3 guardChecks> {
   /** Gets a node that is safely guarded by the given guard check. */
   ExprNode getABarrierNode() {
-    exists(IRGuardCondition g, ValueNumber value, boolean edge |
+    exists(IRGuardCondition g, Expr e, ValueNumber value, boolean edge |
+      e = value.getAnInstruction().getConvertedResultExpression() and
+      result.getConvertedExpr() = e and
       guardChecks(g, value.getAnInstruction().getConvertedResultExpression(), edge) and
-      result.asInstruction() = value.getAnInstruction() and
-      g.controls(result.asInstruction().getBlock(), edge)
+      g.controls(getBasicBlock(result), edge)
     )
   }
 }
