@@ -149,7 +149,13 @@ class Node extends TIRDataFlowNode {
   IRType getTypeBound() { result = this.getType() }
 
   /** Gets the location of this element. */
-  Location getLocation() { none() } // overridden by subclasses
+  cached
+  final Location getLocation() { result = this.getLocationImpl() }
+
+  /** INTERNAL: Do not use. */
+  Location getLocationImpl() {
+    none() // overridden by subclasses
+  }
 
   /**
    * Holds if this element is at the specified location.
@@ -165,7 +171,13 @@ class Node extends TIRDataFlowNode {
   }
 
   /** Gets a textual representation of this element. */
-  string toString() { none() } // overridden by subclasses
+  cached
+  final string toString() { result = this.toStringImpl() }
+
+  /** INTERNAL: Do not use. */
+  string toStringImpl() {
+    none() // overridden by subclasses
+  }
 }
 
 /**
@@ -185,9 +197,9 @@ class InstructionNode extends Node, TInstructionNode {
 
   override IRType getType() { result = instr.getResultIRType() }
 
-  override Location getLocation() { result = instr.getLocation() }
+  final override Location getLocationImpl() { result = instr.getLocation() }
 
-  override string toString() {
+  override string toStringImpl() {
     // This predicate is overridden in subclasses. This default implementation
     // does not use `Instruction.toString` because that's expensive to compute.
     result = this.getInstruction().getOpcode().toString()
@@ -211,199 +223,48 @@ class OperandNode extends Node, TOperandNode {
 
   override IRType getType() { result = op.getIRType() }
 
-  override Location getLocation() { result = op.getLocation() }
+  final override Location getLocationImpl() { result = op.getLocation() }
 
-  override string toString() { result = this.getOperand().toString() }
+  override string toStringImpl() { result = this.getOperand().toString() }
 }
 
 /**
  * INTERNAL: do not use.
  *
- * A `StoreNode` is a node that has been (or is about to be) the
- * source or target of a `storeStep`.
+ * The node representing the value of a field after it has been updated.
  */
-abstract private class StoreNode extends Node {
-  /** Holds if this node should receive flow from `addr`. */
-  abstract predicate flowInto(Instruction addr);
+class PostFieldUpdateNode extends TPostFieldUpdateNode, PartialDefinitionNode {
+  int index;
+  FieldAddress fieldAddress;
+
+  PostFieldUpdateNode() { this = TPostFieldUpdateNode(fieldAddress, index) }
+
+  override Function getFunction() { result = fieldAddress.getUse().getEnclosingFunction() }
 
   override Declaration getEnclosingCallable() { result = this.getFunction() }
 
-  /** Holds if this `StoreNode` is the root of the address computation used by a store operation. */
-  predicate isTerminal() {
-    not exists(this.getInner()) and
-    not storeStep(this, _, _)
+  override IRType getType() { result = fieldAddress.getIRType() }
+
+  FieldAddress getFieldAddress() { result = fieldAddress }
+
+  Field getUpdatedField() { result = fieldAddress.getField() }
+
+  int getIndex() { result = index }
+
+  override Node getPreUpdateNode() {
+    // + 1 because we're storing into an lvalue, and the original node should be the rvalue of
+    // the same address.
+    hasOperandAndIndex(result, pragma[only_bind_into](fieldAddress).getObjectAddressOperand(),
+      index + 1)
   }
 
-  /** Gets the store operation that uses the address computed by this `StoreNode`. */
-  abstract Instruction getStoreInstruction();
-
-  /** Holds if the store operation associated with this `StoreNode` overwrites the entire variable. */
-  final predicate isCertain() { Ssa::explicitWrite(true, this.getStoreInstruction(), _) }
-
-  /**
-   * Gets the `StoreNode` that computes the address used by this `StoreNode`.
-   */
-  abstract StoreNode getInner();
-
-  /** The inverse of `StoreNode.getInner`. */
-  final StoreNode getOuter() { result.getInner() = this }
-}
-
-class StoreNodeInstr extends StoreNode, TStoreNodeInstr {
-  Instruction instr;
-
-  StoreNodeInstr() { this = TStoreNodeInstr(instr) }
-
-  override predicate flowInto(Instruction addr) { this.getInstruction() = addr }
-
-  /** Gets the underlying instruction. */
-  Instruction getInstruction() { result = instr }
-
-  override Declaration getFunction() { result = this.getInstruction().getEnclosingFunction() }
-
-  override IRType getType() { result = this.getInstruction().getResultIRType() }
-
-  override Location getLocation() { result = this.getInstruction().getLocation() }
-
-  override string toString() {
-    result = instructionNode(this.getInstruction()).toString() + " [store]"
+  override Expr getDefinedExpr() {
+    result = fieldAddress.getObjectAddress().getUnconvertedResultExpression()
   }
 
-  override Instruction getStoreInstruction() {
-    Ssa::explicitWrite(_, result, this.getInstruction())
-  }
+  override Location getLocationImpl() { result = fieldAddress.getLocation() }
 
-  override StoreNodeInstr getInner() {
-    Ssa::addressFlow(result.getInstruction(), this.getInstruction())
-  }
-}
-
-/**
- * To avoid having `PostUpdateNode`s with multiple pre-update nodes (which can cause performance
- * problems) we attach the `PostUpdateNode` that represent output arguments to an operand instead of
- * an instruction.
- *
- * To see why we need this, consider the expression `b->set(new C())`. The IR of this expression looks
- * like (simplified):
- * ```
- * r1(glval<unknown>) = FunctionAddress[set]            :
- * r2(glval<unknown>) = FunctionAddress[operator new]   :
- * r3(unsigned long)  = Constant[8]                     :
- * r4(void *)         = Call[operator new]              : func:r2, 0:r3
- * r5(C *)            = Convert                         : r4
- * r6(glval<unknown>) = FunctionAddress[C]              :
- * v1(void)           = Call[C]                         : func:r6, this:r5
- * v2(void)           = Call[set]                       : func:r1, this:r0, 0:r5
- * ```
- *
- * Notice that both the call to `C` and the call to `set` will have an argument that is the
- * result of calling `operator new` (i.e., `r4`). If we only have `PostUpdateNode`s that are
- * instructions, both `PostUpdateNode`s would have `r4` as their pre-update node.
- *
- * We avoid this issue by having a `PostUpdateNode` for each argument, and let the pre-update node of
- * each `PostUpdateNode` be the argument _operand_, instead of the defining instruction.
- */
-class StoreNodeOperand extends StoreNode, TStoreNodeOperand {
-  ArgumentOperand operand;
-
-  StoreNodeOperand() { this = TStoreNodeOperand(operand) }
-
-  override predicate flowInto(Instruction addr) { this.getOperand().getDef() = addr }
-
-  /** Gets the underlying operand. */
-  Operand getOperand() { result = operand }
-
-  override Declaration getFunction() { result = operand.getDef().getEnclosingFunction() }
-
-  override IRType getType() { result = operand.getIRType() }
-
-  override Location getLocation() { result = operand.getLocation() }
-
-  override string toString() { result = operandNode(this.getOperand()).toString() + " [store]" }
-
-  override WriteSideEffectInstruction getStoreInstruction() {
-    Ssa::explicitWrite(_, result, operand.getDef())
-  }
-
-  /**
-   * The result of `StoreNodeOperand.getInner` is the `StoreNodeInstr` representation the instruction
-   * that defines this operand. This means the graph of `getInner` looks like this:
-   * ```
-   * I---I---I
-   *  \   \   \
-   *   O   O   O
-   * ```
-   * where each `StoreNodeOperand` "hooks" into the chain computed by `StoreNodeInstr.getInner`.
-   * This means that the chain of `getInner` calls on the argument `&o.f` on an expression
-   * like `func(&o.f)` is:
-   * ```
-   * r4---r3---r2
-   *  \
-   *   0:r4
-   * ```
-   * where the IR for `func(&o.f)` looks like (simplified):
-   * ```
-   * r1(glval<unknown>) = FunctionAddress[func]        :
-   * r2(glval<O>)       = VariableAddress[o]           :
-   * r3(glval<int>)     = FieldAddress[f]              : r2
-   * r4(int *)          = CopyValue                    : r3
-   * v1(void)           = Call[func]                   : func:r1, 0:r4
-   * ```
-   */
-  override StoreNodeInstr getInner() { operand.getDef() = result.getInstruction() }
-}
-
-/**
- * INTERNAL: do not use.
- *
- * A `ReadNode` is a node that has been (or is about to be) the
- * source or target of a `readStep`.
- */
-class ReadNode extends Node, TReadNode {
-  Instruction i;
-
-  ReadNode() { this = TReadNode(i) }
-
-  /** Gets the underlying instruction. */
-  Instruction getInstruction() { result = i }
-
-  override Declaration getEnclosingCallable() { result = this.getFunction() }
-
-  override Declaration getFunction() { result = this.getInstruction().getEnclosingFunction() }
-
-  override IRType getType() { result = this.getInstruction().getResultIRType() }
-
-  override Location getLocation() { result = this.getInstruction().getLocation() }
-
-  override string toString() {
-    result = instructionNode(this.getInstruction()).toString() + " [read]"
-  }
-
-  /** Gets a load instruction that uses the address computed by this read node. */
-  final Instruction getALoadInstruction() {
-    Ssa::addressFlowTC(this.getInstruction(), Ssa::getSourceAddress(result))
-  }
-
-  /**
-   * Gets a read node with an underlying instruction that is used by this
-   * underlying instruction to compute an address of a load instruction.
-   */
-  final ReadNode getInner() { Ssa::addressFlow(result.getInstruction(), this.getInstruction()) }
-
-  /** The inverse of `ReadNode.getInner`. */
-  final ReadNode getOuter() { result.getInner() = this }
-
-  /** Holds if this read node computes a value that will not be used for any future read nodes. */
-  final predicate isTerminal() {
-    not exists(this.getOuter()) and
-    not readStep(this, _, _)
-  }
-
-  /** Holds if this read node computes a value that has not yet been used for any read operations. */
-  final predicate isInitial() {
-    not exists(this.getInner()) and
-    not readStep(_, _, this)
-  }
+  override string toStringImpl() { result = this.getPreUpdateNode() + " [post update]" }
 }
 
 /**
@@ -425,7 +286,7 @@ class SsaPhiNode extends Node, TSsaPhiNode {
 
   override IRType getType() { result instanceof IRVoidType }
 
-  override Location getLocation() { result = phi.getBasicBlock().getLocation() }
+  final override Location getLocationImpl() { result = phi.getBasicBlock().getLocation() }
 
   /** Holds if this phi node has input from the `rnk`'th write operation in block `block`. */
   final predicate hasInputAtRankInBlock(IRBlock block, int rnk) {
@@ -436,35 +297,338 @@ class SsaPhiNode extends Node, TSsaPhiNode {
    * Holds if this phi node has input from the definition `input` (which is the `rnk`'th write
    * operation in block `block`).
    */
-  cached
   final predicate hasInputAtRankInBlock(IRBlock block, int rnk, Ssa::Definition input) {
-    Ssa::phiHasInputFromBlock(phi, input, _) and input.definesAt(_, block, rnk)
+    Ssa::phiHasInputFromBlock(phi, input, _) and
+    input.definesAt(_, block, rnk)
   }
 
-  override string toString() { result = "Phi" }
+  override string toStringImpl() { result = "Phi" }
+}
+
+/**
+ * INTERNAL: do not use.
+ *
+ * A node representing a value after leaving a function.
+ */
+class SideEffectOperandNode extends Node, IndirectOperand {
+  CallInstruction call;
+  int argumentIndex;
+
+  SideEffectOperandNode() { operand = call.getArgumentOperand(argumentIndex) }
+
+  CallInstruction getCallInstruction() { result = call }
+
+  Operand getAddressOperand() { result = operand }
+
+  int getArgumentIndex() { result = argumentIndex }
+
+  override Declaration getEnclosingCallable() { result = this.getFunction() }
+
+  override Function getFunction() { result = call.getEnclosingFunction() }
+
+  override IRType getType() { result instanceof IRVoidType }
+
+  Expr getArgument() { result = call.getArgument(argumentIndex).getUnconvertedResultExpression() }
+}
+
+/**
+ * INTERNAL: do not use.
+ *
+ * A node representing an indirection of a parameter.
+ */
+class IndirectParameterNode extends Node, IndirectInstruction {
+  InitializeParameterInstruction init;
+
+  IndirectParameterNode() { this.getInstruction() = init }
+
+  int getArgumentIndex() { init.hasIndex(result) }
+
+  /** Gets the parameter whose indirection is initialized. */
+  Parameter getParameter() { result = init.getParameter() }
+
+  override Declaration getEnclosingCallable() { result = this.getFunction() }
+
+  override Function getFunction() { result = this.getInstruction().getEnclosingFunction() }
+
+  override IRType getType() { result instanceof IRVoidType }
+
+  override string toStringImpl() {
+    result = this.getParameter().toString() + " indirection"
+    or
+    not exists(this.getParameter()) and
+    result = "this indirection"
+  }
+}
+
+/**
+ * INTERNAL: do not use.
+ *
+ * A node representing the indirection of a value that is
+ * about to be returned from a function.
+ */
+class IndirectReturnNode extends IndirectOperand {
+  IndirectReturnNode() {
+    this.getOperand() = any(ReturnIndirectionInstruction ret).getSourceAddressOperand()
+    or
+    this.getOperand() = any(ReturnValueInstruction ret).getReturnAddressOperand()
+  }
+
+  Operand getAddressOperand() { result = operand }
+
+  override Declaration getEnclosingCallable() { result = this.getFunction() }
+
+  override IRType getType() { result instanceof IRVoidType }
+}
+
+/**
+ * INTERNAL: do not use.
+ *
+ * A node representing the indirection of a value after it
+ * has been returned from a function.
+ */
+class IndirectArgumentOutNode extends Node, TIndirectArgumentOutNode, PostUpdateNode {
+  ArgumentOperand operand;
+  int index;
+
+  IndirectArgumentOutNode() { this = TIndirectArgumentOutNode(operand, index) }
+
+  int getIndex() { result = index }
+
+  int getArgumentIndex() {
+    exists(CallInstruction call | call.getArgumentOperand(result) = operand)
+  }
+
+  Operand getAddressOperand() { result = operand }
+
+  CallInstruction getCallInstruction() { result.getAnArgumentOperand() = operand }
+
+  Function getStaticCallTarget() { result = this.getCallInstruction().getStaticCallTarget() }
+
+  override Declaration getEnclosingCallable() { result = this.getFunction() }
+
+  override Function getFunction() { result = this.getCallInstruction().getEnclosingFunction() }
+
+  override IRType getType() { result instanceof IRVoidType }
+
+  override Node getPreUpdateNode() { hasOperandAndIndex(result, operand, index + 1) }
+
+  override string toStringImpl() {
+    // This string should be unique enough to be helpful but common enough to
+    // avoid storing too many different strings.
+    result = this.getStaticCallTarget().getName() + " output argument"
+    or
+    not exists(this.getStaticCallTarget()) and
+    result = "output argument"
+  }
+
+  override Location getLocationImpl() { result = operand.getLocation() }
+}
+
+pragma[nomagic]
+predicate indirectReturnOutNodeOperand0(CallInstruction call, Operand operand, int index) {
+  Ssa::hasIndirectInstruction(call, index) and
+  operandForfullyConvertedCall(operand, call)
+}
+
+pragma[nomagic]
+predicate indirectReturnOutNodeInstruction0(CallInstruction call, Instruction instr, int index) {
+  Ssa::hasIndirectInstruction(call, index) and
+  instructionForfullyConvertedCall(instr, call)
+}
+
+/**
+ * INTERNAL: do not use.
+ *
+ * A node representing the value of a function call.
+ */
+class IndirectReturnOutNode extends Node {
+  CallInstruction call;
+  int index;
+
+  IndirectReturnOutNode() {
+    // Annoyingly, we need to pick the fully converted value as the output of the function to
+    // make flow through in the shared dataflow library work correctly.
+    exists(Operand operand |
+      indirectReturnOutNodeOperand0(call, operand, index) and
+      hasOperandAndIndex(this, operand, index)
+    )
+    or
+    exists(Instruction instr |
+      indirectReturnOutNodeInstruction0(call, instr, index) and
+      hasInstructionAndIndex(this, instr, index)
+    )
+  }
+
+  CallInstruction getCallInstruction() { result = call }
+
+  int getIndex() { result = index }
+}
+
+/**
+ * INTERNAL: Do not use.
+ *
+ * A node that represents the indirect value of an operand in the IR
+ * after `index` number of loads.
+ */
+class IndirectOperand extends Node, TIndirectOperand {
+  Operand operand;
+  int index;
+
+  IndirectOperand() { this = TIndirectOperand(operand, index) }
+
+  /** Gets the underlying instruction. */
+  Operand getOperand() { result = operand }
+
+  int getIndex() { result = index }
+
+  override Function getFunction() { result = this.getOperand().getDef().getEnclosingFunction() }
+
+  override Declaration getEnclosingCallable() { result = this.getFunction() }
+
+  override IRType getType() { result = this.getOperand().getIRType() }
+
+  final override Location getLocationImpl() { result = this.getOperand().getLocation() }
+
+  override string toStringImpl() {
+    result = instructionNode(this.getOperand().getDef()).toStringImpl() + " indirection"
+  }
+}
+
+/**
+ * INTERNAL: Do not use.
+ *
+ * A node that represents the indirect value of an instruction in the IR
+ * after `index` number of loads.
+ */
+class IndirectInstruction extends Node, TIndirectInstruction {
+  Instruction instr;
+  int index;
+
+  IndirectInstruction() { this = TIndirectInstruction(instr, index) }
+
+  /** Gets the underlying instruction. */
+  Instruction getInstruction() { result = instr }
+
+  int getIndex() { result = index }
+
+  override Function getFunction() { result = this.getInstruction().getEnclosingFunction() }
+
+  override Declaration getEnclosingCallable() { result = this.getFunction() }
+
+  override IRType getType() { result = this.getInstruction().getResultIRType() }
+
+  final override Location getLocationImpl() { result = this.getInstruction().getLocation() }
+
+  override string toStringImpl() {
+    result = instructionNode(this.getInstruction()).toStringImpl() + " indirection"
+  }
+}
+
+private predicate isFullyConvertedArgument(Expr e) {
+  e = any(Call call).getAnArgument().getFullyConverted()
+}
+
+private predicate isFullyConvertedCall(Expr e) { e = any(Call call).getFullyConverted() }
+
+/** Holds if `Node::asExpr` should map an some operand node to `e`. */
+private predicate convertedExprMustBeOperand(Expr e) {
+  isFullyConvertedArgument(e)
+  or
+  isFullyConvertedCall(e)
+}
+
+/** Holds if `node` is an `OperandNode` that should map `node.asExpr()` to `e`. */
+predicate exprNodeShouldBeOperand(Node node, Expr e) {
+  e = node.asOperand().getDef().getConvertedResultExpression() and
+  convertedExprMustBeOperand(e)
+}
+
+/**
+ * Holds if `load` is a `LoadInstruction` that is the result of evaluating `e`
+ * and `node` is an `IndirctOperandNode` that should map `node.asExpr()` to `e`.
+ *
+ * We map `e` to `node.asExpr()` when `node` semantically represents the
+ * same value as `load`. A subsequent flow step will flow `node` to
+ * the `LoadInstruction`.
+ */
+private predicate exprNodeShouldBeIndirectOperand(IndirectOperand node, Expr e, LoadInstruction load) {
+  node.getIndex() = 1 and
+  e = load.getConvertedResultExpression() and
+  load.getSourceAddressOperand() = node.getOperand() and
+  not convertedExprMustBeOperand(e)
+}
+
+/** Holds if `node` should be an instruction node that maps `node.asExpr()` to `e`. */
+predicate exprNodeShouldBeInstruction(Node node, Expr e) {
+  e = node.asInstruction().getConvertedResultExpression() and
+  not exprNodeShouldBeOperand(_, e) and
+  not exprNodeShouldBeIndirectOperand(_, e, _)
+}
+
+private class ExprNodeBase extends Node {
+  Expr getConvertedExpr() { none() } // overridden by subclasses
+
+  Expr getExpr() { none() } // overridden by subclasses
+}
+
+private class InstructionExprNode extends ExprNodeBase, InstructionNode {
+  InstructionExprNode() { exprNodeShouldBeInstruction(this, _) }
+
+  final override Expr getConvertedExpr() { exprNodeShouldBeInstruction(this, result) }
+
+  final override Expr getExpr() { result = this.getInstruction().getUnconvertedResultExpression() }
+
+  final override string toStringImpl() { result = this.getConvertedExpr().toString() }
+}
+
+private class OperandExprNode extends ExprNodeBase, OperandNode {
+  OperandExprNode() { exprNodeShouldBeOperand(this, _) }
+
+  final override Expr getConvertedExpr() { exprNodeShouldBeOperand(this, result) }
+
+  final override Expr getExpr() {
+    result = this.getOperand().getDef().getUnconvertedResultExpression()
+  }
+
+  final override string toStringImpl() {
+    // Avoid generating multiple `toString` results for `ArgumentNode`s
+    // since they have a better `toString`.
+    result = this.(ArgumentNode).toStringImpl()
+    or
+    not this instanceof ArgumentNode and
+    result = this.getConvertedExpr().toString()
+  }
+}
+
+private class IndirectOperandExprNode extends ExprNodeBase, IndirectOperand {
+  LoadInstruction load;
+
+  IndirectOperandExprNode() { exprNodeShouldBeIndirectOperand(this, _, load) }
+
+  final override Expr getConvertedExpr() { exprNodeShouldBeIndirectOperand(this, result, load) }
+
+  final override Expr getExpr() { result = load.getUnconvertedResultExpression() }
+
+  final override string toStringImpl() { result = this.getConvertedExpr().toString() }
 }
 
 /**
  * An expression, viewed as a node in a data flow graph.
  */
-class ExprNode extends InstructionNode {
-  ExprNode() { exists(instr.getConvertedResultExpression()) }
-
+class ExprNode extends Node instanceof ExprNodeBase {
   /**
    * Gets the non-conversion expression corresponding to this node, if any. If
    * this node strictly (in the sense of `getConvertedExpr`) corresponds to a
    * `Conversion`, then the result is that `Conversion`'s non-`Conversion` base
    * expression.
    */
-  Expr getExpr() { result = instr.getUnconvertedResultExpression() }
+  Expr getExpr() { result = super.getExpr() }
 
   /**
    * Gets the expression corresponding to this node, if any. The returned
    * expression may be a `Conversion`.
    */
-  Expr getConvertedExpr() { result = instr.getConvertedResultExpression() }
-
-  override string toString() { result = this.asConvertedExpr().toString() }
+  Expr getConvertedExpr() { result = super.getConvertedExpr() }
 }
 
 /**
@@ -476,12 +640,12 @@ class ExprNode extends InstructionNode {
  * `ExplicitParameterNode`, `ThisParameterNode`, or
  * `ParameterIndirectionNode`.
  */
-class ParameterNode extends InstructionNode {
+class ParameterNode extends Node {
   ParameterNode() {
     // To avoid making this class abstract, we enumerate its values here
-    instr instanceof InitializeParameterInstruction
+    this.asInstruction() instanceof InitializeParameterInstruction
     or
-    instr instanceof InitializeIndirectionInstruction
+    this instanceof IndirectParameterNode
   }
 
   /**
@@ -493,7 +657,7 @@ class ParameterNode extends InstructionNode {
 }
 
 /** An explicit positional parameter, not including `this` or `...`. */
-private class ExplicitParameterNode extends ParameterNode {
+private class ExplicitParameterNode extends ParameterNode, InstructionNode {
   override InitializeParameterInstruction instr;
 
   ExplicitParameterNode() { exists(instr.getParameter()) }
@@ -505,11 +669,11 @@ private class ExplicitParameterNode extends ParameterNode {
   /** Gets the `Parameter` associated with this node. */
   Parameter getParameter() { result = instr.getParameter() }
 
-  override string toString() { result = instr.getParameter().toString() }
+  override string toStringImpl() { result = instr.getParameter().toString() }
 }
 
 /** An implicit `this` parameter. */
-class ThisParameterNode extends ParameterNode {
+class ThisParameterNode extends ParameterNode, InstructionNode {
   override InitializeParameterInstruction instr;
 
   ThisParameterNode() { instr.getIRVariable() instanceof IRThisVariable }
@@ -518,23 +682,34 @@ class ThisParameterNode extends ParameterNode {
     pos.(DirectPosition).getIndex() = -1 and instr.getEnclosingFunction() = f
   }
 
-  override string toString() { result = "this" }
+  override string toStringImpl() { result = "this" }
+}
+
+pragma[noinline]
+private predicate indirectPostionHasArgumentIndexAndIndex(
+  IndirectionPosition pos, int argumentIndex, int index
+) {
+  pos.getArgumentIndex() = argumentIndex and
+  pos.getIndex() = index
+}
+
+pragma[noinline]
+private predicate indirectParameterNodeHasArgumentIndexAndIndex(
+  IndirectParameterNode node, int argumentIndex, int index
+) {
+  node.getArgumentIndex() = argumentIndex and
+  node.getIndex() = index
 }
 
 /** A synthetic parameter to model the pointed-to object of a pointer parameter. */
-class ParameterIndirectionNode extends ParameterNode {
-  override InitializeIndirectionInstruction instr;
-
+class ParameterIndirectionNode extends ParameterNode instanceof IndirectParameterNode {
   override predicate isParameterOf(Function f, ParameterPosition pos) {
-    exists(int index |
-      instr.getEnclosingFunction() = f and
-      instr.hasIndex(index)
-    |
-      pos.(IndirectionPosition).getIndex() = index
+    IndirectParameterNode.super.getEnclosingCallable() = f and
+    exists(int argumentIndex, int index |
+      indirectPostionHasArgumentIndexAndIndex(pos, argumentIndex, index) and
+      indirectParameterNodeHasArgumentIndexAndIndex(this, argumentIndex, index)
     )
   }
-
-  override string toString() { result = "*" + instr.getIRVariable().toString() }
 }
 
 /**
@@ -554,8 +729,6 @@ abstract class PostUpdateNode extends Node {
    * Gets the node before the state update.
    */
   abstract Node getPreUpdateNode();
-
-  override string toString() { result = this.getPreUpdateNode() + " [post update]" }
 }
 
 /**
@@ -575,36 +748,6 @@ abstract private class PartialDefinitionNode extends PostUpdateNode {
   abstract Expr getDefinedExpr();
 }
 
-private class FieldPartialDefinitionNode extends PartialDefinitionNode, StoreNodeInstr {
-  FieldPartialDefinitionNode() {
-    this.getInstruction() = any(FieldAddressInstruction fai).getObjectAddress()
-  }
-
-  override Node getPreUpdateNode() { result.asInstruction() = this.getInstruction() }
-
-  override Expr getDefinedExpr() { result = this.getInstruction().getUnconvertedResultExpression() }
-
-  override string toString() { result = PartialDefinitionNode.super.toString() }
-}
-
-private class NonPartialDefinitionPostUpdate extends PostUpdateNode, StoreNodeInstr {
-  NonPartialDefinitionPostUpdate() { not this instanceof PartialDefinitionNode }
-
-  override Node getPreUpdateNode() { result.asInstruction() = this.getInstruction() }
-
-  override string toString() { result = PostUpdateNode.super.toString() }
-}
-
-private class ArgumentPostUpdateNode extends PartialDefinitionNode, StoreNodeOperand {
-  override ArgumentNode getPreUpdateNode() { result.asOperand() = operand }
-
-  override Expr getDefinedExpr() {
-    result = this.getOperand().getDef().getUnconvertedResultExpression()
-  }
-
-  override string toString() { result = PartialDefinitionNode.super.toString() }
-}
-
 /**
  * A node that represents the value of a variable after a function call that
  * may have changed the variable because it's passed by reference.
@@ -615,33 +758,13 @@ private class ArgumentPostUpdateNode extends PartialDefinitionNode, StoreNodeOpe
  * returned. This node will have its `getArgument()` equal to `&x` and its
  * `getVariableAccess()` equal to `x`.
  */
-class DefinitionByReferenceNode extends InstructionNode {
-  override WriteSideEffectInstruction instr;
-
+class DefinitionByReferenceNode extends IndirectArgumentOutNode {
   /** Gets the unconverted argument corresponding to this node. */
-  Expr getArgument() {
-    result =
-      instr
-          .getPrimaryInstruction()
-          .(CallInstruction)
-          .getArgument(instr.getIndex())
-          .getUnconvertedResultExpression()
-  }
+  Expr getArgument() { result = this.getAddressOperand().getDef().getUnconvertedResultExpression() }
 
   /** Gets the parameter through which this value is assigned. */
   Parameter getParameter() {
-    exists(CallInstruction ci | result = ci.getStaticCallTarget().getParameter(instr.getIndex()))
-  }
-
-  override string toString() {
-    // This string should be unique enough to be helpful but common enough to
-    // avoid storing too many different strings.
-    result =
-      instr.getPrimaryInstruction().(CallInstruction).getStaticCallTarget().getName() +
-        " output argument"
-    or
-    not exists(instr.getPrimaryInstruction().(CallInstruction).getStaticCallTarget()) and
-    result = "output argument"
+    result = this.getCallInstruction().getStaticCallTarget().getParameter(this.getArgumentIndex())
   }
 }
 
@@ -671,9 +794,9 @@ class VariableNode extends Node, TVariableNode {
 
   override IRType getType() { result.getCanonicalLanguageType().hasUnspecifiedType(v.getType(), _) }
 
-  override Location getLocation() { result = v.getLocation() }
+  final override Location getLocationImpl() { result = v.getLocation() }
 
-  override string toString() { result = v.toString() }
+  override string toStringImpl() { result = v.toString() }
 }
 
 /**
