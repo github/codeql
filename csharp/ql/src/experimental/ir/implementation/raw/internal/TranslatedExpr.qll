@@ -1710,7 +1710,7 @@ class TranslatedIsExpr extends TranslatedNonConstantExpr {
     result = this.getParent().getChildSuccessor(this)
     or
     (
-      tag = GeneratedNEQTag() and
+      tag = GeneratedNeqTag() and
       kind instanceof GotoEdge and
       if this.hasVar()
       then result = this.getInstruction(GeneratedBranchTag())
@@ -1733,7 +1733,7 @@ class TranslatedIsExpr extends TranslatedNonConstantExpr {
     kind instanceof GotoEdge and
     if this.hasVar()
     then result = this.getPatternVarDecl().getFirstInstruction()
-    else result = this.getInstruction(GeneratedNEQTag())
+    else result = this.getInstruction(GeneratedNeqTag())
   }
 
   override Instruction getChildSuccessor(TranslatedElement child) {
@@ -1742,7 +1742,7 @@ class TranslatedIsExpr extends TranslatedNonConstantExpr {
     or
     this.hasVar() and
     child = this.getPatternVarDecl() and
-    result = this.getInstruction(GeneratedNEQTag())
+    result = this.getInstruction(GeneratedNeqTag())
   }
 
   override predicate hasInstruction(Opcode opcode, InstructionTag tag, CSharpType resultType) {
@@ -1755,7 +1755,7 @@ class TranslatedIsExpr extends TranslatedNonConstantExpr {
     opcode instanceof Opcode::CheckedConvertOrNull and
     resultType = getTypeForPRValue(expr.getPattern().getType())
     or
-    tag = GeneratedNEQTag() and
+    tag = GeneratedNeqTag() and
     opcode instanceof Opcode::CompareNE and
     resultType = getTypeForPRValue(expr.getType())
     or
@@ -1775,7 +1775,7 @@ class TranslatedIsExpr extends TranslatedNonConstantExpr {
     result = "0"
   }
 
-  override Instruction getResult() { result = this.getInstruction(GeneratedNEQTag()) }
+  override Instruction getResult() { result = this.getInstruction(GeneratedNeqTag()) }
 
   override Instruction getInstructionOperand(InstructionTag tag, OperandTag operandTag) {
     tag = ConvertTag() and
@@ -1792,7 +1792,7 @@ class TranslatedIsExpr extends TranslatedNonConstantExpr {
       result = this.getPatternVarDecl().getTargetAddress()
     )
     or
-    tag = GeneratedNEQTag() and
+    tag = GeneratedNeqTag() and
     (
       operandTag instanceof LeftOperandTag and
       result = this.getInstruction(ConvertTag())
@@ -1804,7 +1804,7 @@ class TranslatedIsExpr extends TranslatedNonConstantExpr {
     this.hasVar() and
     tag = GeneratedBranchTag() and
     operandTag instanceof ConditionOperandTag and
-    result = this.getInstruction(GeneratedNEQTag())
+    result = this.getInstruction(GeneratedNeqTag())
   }
 
   private TranslatedExpr getIsExpr() { result = getTranslatedExpr(expr.getExpr()) }
