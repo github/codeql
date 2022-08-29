@@ -179,9 +179,11 @@ For example, in the previous two snippets, we relied on the predicate signature 
     bindingset[x]
     signature int transformer(int x);
 
-The instantiation of parameterized modules is applicative, meaning that repeated instantiation of a module using
-identical arguments results in the same object. This is particularly relevant for type definitions inside parameterized
-modules as :ref:`classes <classes>` or via :ref:`newtype <algebraic-datatypes>`.
+The instantiation of parameterized modules is applicative.
+That is, if you instantiate a parameterised module twice with identical arguments, the resulting object is the same.
+This is particularly relevant for type definitions inside parameterized modules as :ref:`classes <classes>`
+or via :ref:`newtype <algebraic-datatypes>`, because the duplication of such type definitions would result in
+incompatible types.
 
 The following example instantiates module ``M`` inside calls to predicate ``foo`` twice.
 The first call is valid but the second call generates an error.
