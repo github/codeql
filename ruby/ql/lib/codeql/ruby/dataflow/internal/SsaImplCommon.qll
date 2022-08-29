@@ -4,7 +4,7 @@
  */
 
 /** Provides the input specification of the SSA implementation. */
-signature module SsaInputSig {
+signature module InputSig {
   /**
    * A basic block, that is, a maximal straight-line sequence of control flow nodes
    * without branches or joins.
@@ -28,7 +28,7 @@ signature module SsaInputSig {
    * ```
    *
    * The basic block starting on line 2 is an immediate dominator of
-   * the basic block online 4 (all paths from the entry point of `M`
+   * the basic block on line 4 (all paths from the entry point of `M`
    * to `return s.Length;` must go through the null check.
    */
   BasicBlock getImmediateBasicBlockDominator(BasicBlock bb);
@@ -82,7 +82,7 @@ signature module SsaInputSig {
  * NB: If this predicate is exposed, it should be cached.
  * ```
  */
-module Make<SsaInputSig Input> {
+module Make<InputSig Input> {
   private import Input
 
   private BasicBlock getABasicBlockPredecessor(BasicBlock bb) {
