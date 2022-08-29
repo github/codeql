@@ -861,6 +861,16 @@ getTypeExprType
 | tst.ts:325:30:325:34 | Error | Error |
 | tst.ts:331:6:331:16 | FirstString | FirstString<T> |
 | tst.ts:331:18:331:18 | T | T |
+| tst.ts:332:3:332:3 | T | T |
+| tst.ts:332:13:332:50 | [infer  ... nown[]] | [S, ...unknown[]] |
+| tst.ts:332:14:332:35 | infer S ...  string | S |
+| tst.ts:332:20:332:20 | S | S |
+| tst.ts:332:30:332:35 | string | string |
+| tst.ts:332:38:332:49 | ...unknown[] | unknown |
+| tst.ts:332:41:332:47 | unknown | unknown |
+| tst.ts:332:41:332:49 | unknown[] | unknown[] |
+| tst.ts:333:9:333:9 | S | S |
+| tst.ts:334:9:334:13 | never | never |
 | tst.ts:336:6:336:6 | F | "a" \| "b" |
 | tst.ts:336:10:336:20 | FirstString | FirstString<T> |
 | tst.ts:336:10:336:50 | FirstSt ... olean]> | "a" \| "b" |
