@@ -204,38 +204,42 @@ private predicate exactType(TypeFlowNode n, RefType t) {
 
 /**
  * Holds if `n` occurs in a position where type information might be discarded;
- * `t` is the potentially boxed type of `n`, `t1` is the erasure of `t`, and
- * `t2` is the erased type of the implicit or explicit cast.
+ * `t1` is the type of `n`, `t1e` is the erasure of `t1`, `t2` is the type of
+ * the implicit or explicit cast, and `t2e` is the erasure of `t2`.
  */
-pragma[noinline]
-private predicate upcastCand(TypeFlowNode n, RefType t, RefType t1, RefType t2) {
-  t = boxIfNeeded(n.getType()) and
-  t.getErasure() = t1 and
-  (
-    exists(Variable v | v.getAnAssignedValue() = n.asExpr() and t2 = v.getType().getErasure())
-    or
-    exists(CastingExpr c | c.getExpr() = n.asExpr() and t2 = c.getType().getErasure())
-    or
-    exists(ReturnStmt ret |
-      ret.getResult() = n.asExpr() and t2 = ret.getEnclosingCallable().getReturnType().getErasure()
-    )
-    or
-    exists(MethodAccess ma | viableImpl_v1(ma) = n.asMethod() and t2 = ma.getType().getErasure())
-    or
-    exists(Parameter p | privateParamArg(p, n.asExpr()) and t2 = p.getType().getErasure())
-    or
-    exists(ChooseExpr cond |
-      cond.getAResultExpr() = n.asExpr() and
-      t2 = cond.getType().getErasure()
+pragma[nomagic]
+private predicate upcastCand(TypeFlowNode n, RefType t1, RefType t1e, RefType t2, RefType t2e) {
+  exists(TypeFlowNode next | step(n, next) or joinStep(n, next) |
+    n.getType() = t1 and
+    next.getType() = t2 and
+    t1.getErasure() = t1e and
+    t2.getErasure() = t2e and
+    t1 != t2
+  )
+}
+
+/** Holds if `t` is a raw type or parameterised type with unrestricted type arguments. */
+private predicate unbound(RefType t) {
+  t instanceof RawType
+  or
+  exists(ParameterizedType pt | pt = t |
+    forex(RefType arg | arg = pt.getATypeArgument() |
+      arg.(Wildcard).isUnconstrained()
+      or
+      arg.(BoundedType).getUpperBoundType() instanceof TypeObject and
+      not arg.(Wildcard).hasLowerBound()
     )
   )
 }
 
 /** Holds if `n` occurs in a position where type information is discarded. */
-private predicate upcast(TypeFlowNode n, RefType t) {
-  exists(RefType t1, RefType t2 |
-    upcastCand(n, t, t1, t2) and
-    t1.getASourceSupertype+() = t2
+private predicate upcast(TypeFlowNode n, RefType t1) {
+  exists(RefType t1e, RefType t2, RefType t2e | upcastCand(n, t1, t1e, t2, t2e) |
+    t1e.getASourceSupertype+() = t2e
+    or
+    t1e = t2e and
+    unbound(t2) and
+    not unbound(t1)
   )
 }
 
