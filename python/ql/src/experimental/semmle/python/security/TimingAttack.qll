@@ -98,7 +98,7 @@ class CredentialExpr extends Expr {
 abstract class ClientSuppliedSecret extends DataFlow::CallCfgNode { }
 
 private class FlaskClientSuppliedSecret extends ClientSuppliedSecret {
-  FlaskClientSuppliedsecret() {
+  FlaskClientSuppliedSecret() {
     exists(RemoteFlowSource rfs, DataFlow::AttrRead get |
       rfs.getSourceType() = "flask.request" and this.getFunction() = get
     |
@@ -117,7 +117,7 @@ private class FlaskClientSuppliedSecret extends ClientSuppliedSecret {
 }
 
 private class DjangoClientSuppliedSecret extends ClientSuppliedSecret {
-  DjangoClientSuppliedsecret() {
+  DjangoClientSuppliedSecret() {
     exists(RemoteFlowSource rfs, DataFlow::AttrRead get |
       rfs.getSourceType() = "django.http.request.HttpRequest" and this.getFunction() = get
     |
@@ -136,7 +136,7 @@ private class DjangoClientSuppliedSecret extends ClientSuppliedSecret {
 }
 
 private class TornadoClientSuppliedSecret extends ClientSuppliedSecret {
-  TornadoClientSuppliedsecret() {
+  TornadoClientSuppliedSecret() {
     exists(RemoteFlowSource rfs, DataFlow::AttrRead get |
       rfs.getSourceType() = "tornado.web.RequestHandler" and this.getFunction() = get
     |
@@ -158,7 +158,7 @@ private class TornadoClientSuppliedSecret extends ClientSuppliedSecret {
 }
 
 private class WerkzeugClientSuppliedSecret extends ClientSuppliedSecret {
-  WerkzeugClientSuppliedsecret() {
+  WerkzeugClientSuppliedSecret() {
     exists(RemoteFlowSource rfs, DataFlow::AttrRead get |
       rfs.getSourceType() = "werkzeug.datastructures" and this.getFunction() = get
     |
