@@ -183,7 +183,8 @@ The instantiation of parameterized modules is applicative, meaning that repeated
 identical arguments results in the same object. This is particularly relevant for type definitions inside parameterized
 modules as :ref:`classes <classes>` or via :ref:`newtype <algebraic-datatypes>`.
 
-For example, the following generates an error for the second call to ``foo``, but not for the first:
+The following example instantiates module ``M`` inside calls to predicate ``foo`` twice.
+The first call is valid but the second call generates an error.
 
 .. code-block:: ql
 
