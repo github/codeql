@@ -63,7 +63,7 @@ For example:
 Module signatures
 =================
 
-Module signatures declare module parameters that are to be substituted with modules at module instantiation.
+Module signatures declare module parameters that will be substituted with modules when the module is instantiated.
 Module signatures specify a collection of types and predicates that a module needs to contain under given names and
 matching given signatures.
 
