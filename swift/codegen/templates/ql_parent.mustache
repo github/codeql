@@ -2,7 +2,7 @@
 
 import codeql.swift.elements
 
-module Impl {
+private module Impl {
 {{#classes}}
 int getMaximumChildrenIndex{{name}}({{name}} e) {
   {{#root}}e = e and{{/root}}
