@@ -69,16 +69,16 @@ namespace System
 
         // Generated from `System.IO.NotifyFilters` in `System.IO.FileSystem.Watcher, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         [System.Flags]
-        public enum NotifyFilters
+        public enum NotifyFilters : int
         {
-            Attributes,
-            CreationTime,
-            DirectoryName,
-            FileName,
-            LastAccess,
-            LastWrite,
-            Security,
-            Size,
+            Attributes = 4,
+            CreationTime = 64,
+            DirectoryName = 2,
+            FileName = 1,
+            LastAccess = 32,
+            LastWrite = 16,
+            Security = 256,
+            Size = 8,
         }
 
         // Generated from `System.IO.RenamedEventArgs` in `System.IO.FileSystem.Watcher, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -104,13 +104,13 @@ namespace System
 
         // Generated from `System.IO.WatcherChangeTypes` in `System.IO.FileSystem.Watcher, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         [System.Flags]
-        public enum WatcherChangeTypes
+        public enum WatcherChangeTypes : int
         {
-            All,
-            Changed,
-            Created,
-            Deleted,
-            Renamed,
+            All = 15,
+            Changed = 4,
+            Created = 1,
+            Deleted = 2,
+            Renamed = 8,
         }
 
     }

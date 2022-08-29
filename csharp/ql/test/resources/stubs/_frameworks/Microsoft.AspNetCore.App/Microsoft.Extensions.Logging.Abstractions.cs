@@ -69,15 +69,15 @@ namespace Microsoft
             }
 
             // Generated from `Microsoft.Extensions.Logging.LogLevel` in `Microsoft.Extensions.Logging.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
-            public enum LogLevel
+            public enum LogLevel : int
             {
-                Critical,
-                Debug,
-                Error,
-                Information,
-                None,
-                Trace,
-                Warning,
+                Critical = 5,
+                Debug = 1,
+                Error = 4,
+                Information = 2,
+                None = 6,
+                Trace = 0,
+                Warning = 3,
             }
 
             // Generated from `Microsoft.Extensions.Logging.Logger<>` in `Microsoft.Extensions.Logging.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`

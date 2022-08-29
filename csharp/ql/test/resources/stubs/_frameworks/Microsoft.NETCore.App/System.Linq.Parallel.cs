@@ -219,19 +219,19 @@ namespace System
         }
 
         // Generated from `System.Linq.ParallelExecutionMode` in `System.Linq.Parallel, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum ParallelExecutionMode
+        public enum ParallelExecutionMode : int
         {
-            Default,
-            ForceParallelism,
+            Default = 0,
+            ForceParallelism = 1,
         }
 
         // Generated from `System.Linq.ParallelMergeOptions` in `System.Linq.Parallel, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum ParallelMergeOptions
+        public enum ParallelMergeOptions : int
         {
-            AutoBuffered,
-            Default,
-            FullyBuffered,
-            NotBuffered,
+            AutoBuffered = 2,
+            Default = 0,
+            FullyBuffered = 3,
+            NotBuffered = 1,
         }
 
         // Generated from `System.Linq.ParallelQuery` in `System.Linq.Parallel, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`

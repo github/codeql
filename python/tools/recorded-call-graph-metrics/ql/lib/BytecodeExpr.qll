@@ -1,6 +1,6 @@
 import python
 
-abstract class XmlBytecodeExpr extends XMLElement { }
+abstract class XmlBytecodeExpr extends XmlElement { }
 
 /** DEPRECATED: Alias for XmlBytecodeExpr */
 deprecated class XMLBytecodeExpr = XmlBytecodeExpr;

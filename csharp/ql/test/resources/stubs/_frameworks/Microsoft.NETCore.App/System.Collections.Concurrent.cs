@@ -181,10 +181,10 @@ namespace System
 
             // Generated from `System.Collections.Concurrent.EnumerablePartitionerOptions` in `System.Collections.Concurrent, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             [System.Flags]
-            public enum EnumerablePartitionerOptions
+            public enum EnumerablePartitionerOptions : int
             {
-                NoBuffering,
-                None,
+                NoBuffering = 1,
+                None = 0,
             }
 
             // Generated from `System.Collections.Concurrent.IProducerConsumerCollection<>` in `System.Collections.Concurrent, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`

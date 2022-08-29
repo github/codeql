@@ -61,25 +61,25 @@ namespace System
             }
 
             // Generated from `System.ComponentModel.DataAnnotations.DataType` in `System.ComponentModel.Annotations, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum DataType
+            public enum DataType : int
             {
-                CreditCard,
-                Currency,
-                Custom,
-                Date,
-                DateTime,
-                Duration,
-                EmailAddress,
-                Html,
-                ImageUrl,
-                MultilineText,
-                Password,
-                PhoneNumber,
-                PostalCode,
-                Text,
-                Time,
-                Upload,
-                Url,
+                CreditCard = 14,
+                Currency = 6,
+                Custom = 0,
+                Date = 2,
+                DateTime = 1,
+                Duration = 4,
+                EmailAddress = 10,
+                Html = 8,
+                ImageUrl = 13,
+                MultilineText = 9,
+                Password = 11,
+                PhoneNumber = 5,
+                PostalCode = 15,
+                Text = 7,
+                Time = 3,
+                Upload = 16,
+                Url = 12,
             }
 
             // Generated from `System.ComponentModel.DataAnnotations.DataTypeAttribute` in `System.ComponentModel.Annotations, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -406,11 +406,11 @@ namespace System
                 }
 
                 // Generated from `System.ComponentModel.DataAnnotations.Schema.DatabaseGeneratedOption` in `System.ComponentModel.Annotations, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-                public enum DatabaseGeneratedOption
+                public enum DatabaseGeneratedOption : int
                 {
-                    Computed,
-                    Identity,
-                    None,
+                    Computed = 2,
+                    Identity = 1,
+                    None = 0,
                 }
 
                 // Generated from `System.ComponentModel.DataAnnotations.Schema.ForeignKeyAttribute` in `System.ComponentModel.Annotations, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`

@@ -88,7 +88,7 @@ def cls_to_dbscheme(cls: schema.Class):
 
 
 def get_declarations(data: schema.Schema):
-    return [d for cls in data.classes for d in cls_to_dbscheme(cls)]
+    return [d for cls in data.classes.values() for d in cls_to_dbscheme(cls)]
 
 
 def get_includes(data: schema.Schema, include_dir: pathlib.Path, swift_dir: pathlib.Path):

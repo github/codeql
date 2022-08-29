@@ -3,6 +3,7 @@ private import Builtins
 private import codeql_ql.ast.internal.Module
 private import codeql_ql.ast.internal.AstNodes
 
+pragma[nomagic]
 private predicate definesPredicate(
   FileOrModule m, string name, int arity, Predicate p, boolean public
 ) {
@@ -208,7 +209,9 @@ module PredConsistency {
         not exists(p0.getAlias())
       ) and
     c > 1 and
-    resolvePredicateExpr(pe, p)
+    resolvePredicateExpr(pe, p) and
+    // parameterized modules are expected to resolve to multiple.
+    not exists(ClasslessPredicate sig | not sig.isSignature() and resolvePredicateExpr(pe, sig))
   }
 
   query predicate multipleResolveCall(Call call, int c, PredicateOrBuiltin p) {
@@ -224,6 +227,6 @@ module PredConsistency {
     c > 1 and
     resolveCall(call, p) and
     // parameterized modules are expected to resolve to multiple.
-    not exists(Predicate sig | not exists(sig.getBody()) and resolveCall(call, sig))
+    not exists(ClasslessPredicate sig | not sig.isSignature() and resolveCall(call, sig))
   }
 }

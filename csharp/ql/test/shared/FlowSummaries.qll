@@ -1,6 +1,7 @@
+private import semmle.code.csharp.dataflow.internal.DataFlowPrivate
 import semmle.code.csharp.dataflow.FlowSummary
 import semmle.code.csharp.dataflow.internal.FlowSummaryImpl::Private::TestOutput
-private import semmle.code.csharp.dataflow.internal.DataFlowPrivate
+import semmle.code.csharp.dataflow.internal.NegativeSummary
 
 abstract class IncludeSummarizedCallable extends RelevantSummarizedCallable {
   IncludeSummarizedCallable() {

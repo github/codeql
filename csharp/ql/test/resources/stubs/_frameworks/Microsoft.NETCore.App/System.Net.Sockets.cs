@@ -7,42 +7,42 @@ namespace System
         namespace Sockets
         {
             // Generated from `System.Net.Sockets.IOControlCode` in `System.Net.Sockets, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum IOControlCode
+            public enum IOControlCode : long
             {
-                AbsorbRouterAlert,
-                AddMulticastGroupOnInterface,
-                AddressListChange,
-                AddressListQuery,
-                AddressListSort,
-                AssociateHandle,
-                AsyncIO,
-                BindToInterface,
-                DataToRead,
-                DeleteMulticastGroupFromInterface,
-                EnableCircularQueuing,
-                Flush,
-                GetBroadcastAddress,
-                GetExtensionFunctionPointer,
-                GetGroupQos,
-                GetQos,
-                KeepAliveValues,
-                LimitBroadcasts,
-                MulticastInterface,
-                MulticastScope,
-                MultipointLoopback,
-                NamespaceChange,
-                NonBlockingIO,
-                OobDataRead,
-                QueryTargetPnpHandle,
-                ReceiveAll,
-                ReceiveAllIgmpMulticast,
-                ReceiveAllMulticast,
-                RoutingInterfaceChange,
-                RoutingInterfaceQuery,
-                SetGroupQos,
-                SetQos,
-                TranslateHandle,
-                UnicastInterface,
+                AbsorbRouterAlert = 2550136837,
+                AddMulticastGroupOnInterface = 2550136842,
+                AddressListChange = 671088663,
+                AddressListQuery = 1207959574,
+                AddressListSort = 3355443225,
+                AssociateHandle = 2281701377,
+                AsyncIO = 2147772029,
+                BindToInterface = 2550136840,
+                DataToRead = 1074030207,
+                DeleteMulticastGroupFromInterface = 2550136843,
+                EnableCircularQueuing = 671088642,
+                Flush = 671088644,
+                GetBroadcastAddress = 1207959557,
+                GetExtensionFunctionPointer = 3355443206,
+                GetGroupQos = 3355443208,
+                GetQos = 3355443207,
+                KeepAliveValues = 2550136836,
+                LimitBroadcasts = 2550136839,
+                MulticastInterface = 2550136841,
+                MulticastScope = 2281701386,
+                MultipointLoopback = 2281701385,
+                NamespaceChange = 2281701401,
+                NonBlockingIO = 2147772030,
+                OobDataRead = 1074033415,
+                QueryTargetPnpHandle = 1207959576,
+                ReceiveAll = 2550136833,
+                ReceiveAllIgmpMulticast = 2550136835,
+                ReceiveAllMulticast = 2550136834,
+                RoutingInterfaceChange = 2281701397,
+                RoutingInterfaceQuery = 3355443220,
+                SetGroupQos = 2281701388,
+                SetQos = 2281701387,
+                TranslateHandle = 3355443213,
+                UnicastInterface = 2550136838,
             }
 
             // Generated from `System.Net.Sockets.IPPacketInformation` in `System.Net.Sockets, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -58,12 +58,12 @@ namespace System
             }
 
             // Generated from `System.Net.Sockets.IPProtectionLevel` in `System.Net.Sockets, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum IPProtectionLevel
+            public enum IPProtectionLevel : int
             {
-                EdgeRestricted,
-                Restricted,
-                Unrestricted,
-                Unspecified,
+                EdgeRestricted = 20,
+                Restricted = 30,
+                Unrestricted = 10,
+                Unspecified = -1,
             }
 
             // Generated from `System.Net.Sockets.IPv6MulticastOption` in `System.Net.Sockets, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -137,71 +137,71 @@ namespace System
             }
 
             // Generated from `System.Net.Sockets.ProtocolFamily` in `System.Net.Sockets, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum ProtocolFamily
+            public enum ProtocolFamily : int
             {
-                AppleTalk,
-                Atm,
-                Banyan,
-                Ccitt,
-                Chaos,
-                Cluster,
-                ControllerAreaNetwork,
-                DataKit,
-                DataLink,
-                DecNet,
-                Ecma,
-                FireFox,
-                HyperChannel,
-                Ieee12844,
-                ImpLink,
-                InterNetwork,
-                InterNetworkV6,
-                Ipx,
-                Irda,
-                Iso,
-                Lat,
-                Max,
-                NS,
-                NetBios,
-                NetworkDesigners,
-                Osi,
-                Packet,
-                Pup,
-                Sna,
-                Unix,
-                Unknown,
-                Unspecified,
-                VoiceView,
+                AppleTalk = 16,
+                Atm = 22,
+                Banyan = 21,
+                Ccitt = 10,
+                Chaos = 5,
+                Cluster = 24,
+                ControllerAreaNetwork = 65537,
+                DataKit = 9,
+                DataLink = 13,
+                DecNet = 12,
+                Ecma = 8,
+                FireFox = 19,
+                HyperChannel = 15,
+                Ieee12844 = 25,
+                ImpLink = 3,
+                InterNetwork = 2,
+                InterNetworkV6 = 23,
+                Ipx = 6,
+                Irda = 26,
+                Iso = 7,
+                Lat = 14,
+                Max = 29,
+                NS = 6,
+                NetBios = 17,
+                NetworkDesigners = 28,
+                Osi = 7,
+                Packet = 65536,
+                Pup = 4,
+                Sna = 11,
+                Unix = 1,
+                Unknown = -1,
+                Unspecified = 0,
+                VoiceView = 18,
             }
 
             // Generated from `System.Net.Sockets.ProtocolType` in `System.Net.Sockets, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum ProtocolType
+            public enum ProtocolType : int
             {
-                Ggp,
-                IP,
-                IPSecAuthenticationHeader,
-                IPSecEncapsulatingSecurityPayload,
-                IPv4,
-                IPv6,
-                IPv6DestinationOptions,
-                IPv6FragmentHeader,
-                IPv6HopByHopOptions,
-                IPv6NoNextHeader,
-                IPv6RoutingHeader,
-                Icmp,
-                IcmpV6,
-                Idp,
-                Igmp,
-                Ipx,
-                ND,
-                Pup,
-                Raw,
-                Spx,
-                SpxII,
-                Tcp,
-                Udp,
-                Unknown,
-                Unspecified,
+                Ggp = 3,
+                IP = 0,
+                IPSecAuthenticationHeader = 51,
+                IPSecEncapsulatingSecurityPayload = 50,
+                IPv4 = 4,
+                IPv6 = 41,
+                IPv6DestinationOptions = 60,
+                IPv6FragmentHeader = 44,
+                IPv6HopByHopOptions = 0,
+                IPv6NoNextHeader = 59,
+                IPv6RoutingHeader = 43,
+                Icmp = 1,
+                IcmpV6 = 58,
+                Idp = 22,
+                Igmp = 2,
+                Ipx = 1000,
+                ND = 77,
+                Pup = 12,
+                Raw = 255,
+                Spx = 1256,
+                SpxII = 1257,
+                Tcp = 6,
+                Udp = 17,
+                Unknown = -1,
+                Unspecified = 0,
             }
 
             // Generated from `System.Net.Sockets.SafeSocketHandle` in `System.Net.Sockets, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -213,11 +213,11 @@ namespace System
             }
 
             // Generated from `System.Net.Sockets.SelectMode` in `System.Net.Sockets, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum SelectMode
+            public enum SelectMode : int
             {
-                SelectError,
-                SelectRead,
-                SelectWrite,
+                SelectError = 2,
+                SelectRead = 0,
+                SelectWrite = 1,
             }
 
             // Generated from `System.Net.Sockets.SendPacketsElement` in `System.Net.Sockets, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -459,33 +459,33 @@ namespace System
             }
 
             // Generated from `System.Net.Sockets.SocketAsyncOperation` in `System.Net.Sockets, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum SocketAsyncOperation
+            public enum SocketAsyncOperation : int
             {
-                Accept,
-                Connect,
-                Disconnect,
-                None,
-                Receive,
-                ReceiveFrom,
-                ReceiveMessageFrom,
-                Send,
-                SendPackets,
-                SendTo,
+                Accept = 1,
+                Connect = 2,
+                Disconnect = 3,
+                None = 0,
+                Receive = 4,
+                ReceiveFrom = 5,
+                ReceiveMessageFrom = 6,
+                Send = 7,
+                SendPackets = 8,
+                SendTo = 9,
             }
 
             // Generated from `System.Net.Sockets.SocketFlags` in `System.Net.Sockets, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             [System.Flags]
-            public enum SocketFlags
+            public enum SocketFlags : int
             {
-                Broadcast,
-                ControlDataTruncated,
-                DontRoute,
-                Multicast,
-                None,
-                OutOfBand,
-                Partial,
-                Peek,
-                Truncated,
+                Broadcast = 1024,
+                ControlDataTruncated = 512,
+                DontRoute = 4,
+                Multicast = 2048,
+                None = 0,
+                OutOfBand = 1,
+                Partial = 32768,
+                Peek = 2,
+                Truncated = 256,
             }
 
             // Generated from `System.Net.Sockets.SocketInformation` in `System.Net.Sockets, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -498,76 +498,76 @@ namespace System
 
             // Generated from `System.Net.Sockets.SocketInformationOptions` in `System.Net.Sockets, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             [System.Flags]
-            public enum SocketInformationOptions
+            public enum SocketInformationOptions : int
             {
-                Connected,
-                Listening,
-                NonBlocking,
-                UseOnlyOverlappedIO,
+                Connected = 2,
+                Listening = 4,
+                NonBlocking = 1,
+                UseOnlyOverlappedIO = 8,
             }
 
             // Generated from `System.Net.Sockets.SocketOptionLevel` in `System.Net.Sockets, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum SocketOptionLevel
+            public enum SocketOptionLevel : int
             {
-                IP,
-                IPv6,
-                Socket,
-                Tcp,
-                Udp,
+                IP = 0,
+                IPv6 = 41,
+                Socket = 65535,
+                Tcp = 6,
+                Udp = 17,
             }
 
             // Generated from `System.Net.Sockets.SocketOptionName` in `System.Net.Sockets, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum SocketOptionName
+            public enum SocketOptionName : int
             {
-                AcceptConnection,
-                AddMembership,
-                AddSourceMembership,
-                BlockSource,
-                Broadcast,
-                BsdUrgent,
-                ChecksumCoverage,
-                Debug,
-                DontFragment,
-                DontLinger,
-                DontRoute,
-                DropMembership,
-                DropSourceMembership,
-                Error,
-                ExclusiveAddressUse,
-                Expedited,
-                HeaderIncluded,
-                HopLimit,
-                IPOptions,
-                IPProtectionLevel,
-                IPv6Only,
-                IpTimeToLive,
-                KeepAlive,
-                Linger,
-                MaxConnections,
-                MulticastInterface,
-                MulticastLoopback,
-                MulticastTimeToLive,
-                NoChecksum,
-                NoDelay,
-                OutOfBandInline,
-                PacketInformation,
-                ReceiveBuffer,
-                ReceiveLowWater,
-                ReceiveTimeout,
-                ReuseAddress,
-                ReuseUnicastPort,
-                SendBuffer,
-                SendLowWater,
-                SendTimeout,
-                TcpKeepAliveInterval,
-                TcpKeepAliveRetryCount,
-                TcpKeepAliveTime,
-                Type,
-                TypeOfService,
-                UnblockSource,
-                UpdateAcceptContext,
-                UpdateConnectContext,
-                UseLoopback,
+                AcceptConnection = 2,
+                AddMembership = 12,
+                AddSourceMembership = 15,
+                BlockSource = 17,
+                Broadcast = 32,
+                BsdUrgent = 2,
+                ChecksumCoverage = 20,
+                Debug = 1,
+                DontFragment = 14,
+                DontLinger = -129,
+                DontRoute = 16,
+                DropMembership = 13,
+                DropSourceMembership = 16,
+                Error = 4103,
+                ExclusiveAddressUse = -5,
+                Expedited = 2,
+                HeaderIncluded = 2,
+                HopLimit = 21,
+                IPOptions = 1,
+                IPProtectionLevel = 23,
+                IPv6Only = 27,
+                IpTimeToLive = 4,
+                KeepAlive = 8,
+                Linger = 128,
+                MaxConnections = 2147483647,
+                MulticastInterface = 9,
+                MulticastLoopback = 11,
+                MulticastTimeToLive = 10,
+                NoChecksum = 1,
+                NoDelay = 1,
+                OutOfBandInline = 256,
+                PacketInformation = 19,
+                ReceiveBuffer = 4098,
+                ReceiveLowWater = 4100,
+                ReceiveTimeout = 4102,
+                ReuseAddress = 4,
+                ReuseUnicastPort = 12295,
+                SendBuffer = 4097,
+                SendLowWater = 4099,
+                SendTimeout = 4101,
+                TcpKeepAliveInterval = 17,
+                TcpKeepAliveRetryCount = 16,
+                TcpKeepAliveTime = 3,
+                Type = 4104,
+                TypeOfService = 3,
+                UnblockSource = 18,
+                UpdateAcceptContext = 28683,
+                UpdateConnectContext = 28688,
+                UseLoopback = 64,
             }
 
             // Generated from `System.Net.Sockets.SocketReceiveFromResult` in `System.Net.Sockets, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -589,11 +589,11 @@ namespace System
             }
 
             // Generated from `System.Net.Sockets.SocketShutdown` in `System.Net.Sockets, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum SocketShutdown
+            public enum SocketShutdown : int
             {
-                Both,
-                Receive,
-                Send,
+                Both = 2,
+                Receive = 0,
+                Send = 1,
             }
 
             // Generated from `System.Net.Sockets.SocketTaskExtensions` in `System.Net.Sockets, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -621,14 +621,14 @@ namespace System
             }
 
             // Generated from `System.Net.Sockets.SocketType` in `System.Net.Sockets, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum SocketType
+            public enum SocketType : int
             {
-                Dgram,
-                Raw,
-                Rdm,
-                Seqpacket,
-                Stream,
-                Unknown,
+                Dgram = 2,
+                Raw = 3,
+                Rdm = 4,
+                Seqpacket = 5,
+                Stream = 1,
+                Unknown = -1,
             }
 
             // Generated from `System.Net.Sockets.TcpClient` in `System.Net.Sockets, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -702,14 +702,14 @@ namespace System
 
             // Generated from `System.Net.Sockets.TransmitFileOptions` in `System.Net.Sockets, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             [System.Flags]
-            public enum TransmitFileOptions
+            public enum TransmitFileOptions : int
             {
-                Disconnect,
-                ReuseSocket,
-                UseDefaultWorkerThread,
-                UseKernelApc,
-                UseSystemThread,
-                WriteBehind,
+                Disconnect = 1,
+                ReuseSocket = 2,
+                UseDefaultWorkerThread = 0,
+                UseKernelApc = 32,
+                UseSystemThread = 16,
+                WriteBehind = 4,
             }
 
             // Generated from `System.Net.Sockets.UdpClient` in `System.Net.Sockets, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`

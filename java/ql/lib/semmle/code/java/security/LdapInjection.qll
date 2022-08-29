@@ -140,8 +140,8 @@ private predicate filterStep(DataFlow::ExprNode n1, DataFlow::ExprNode n2) {
     ma.getMethod() = m
   |
     m instanceof MethodUnboundIdFilterCreate or
-    m instanceof MethodUnboundIdFilterCreateANDFilter or
-    m instanceof MethodUnboundIdFilterCreateNOTFilter or
+    m instanceof MethodUnboundIdFilterCreateAndFilter or
+    m instanceof MethodUnboundIdFilterCreateNotFilter or
     m instanceof MethodUnboundIdFilterCreateORFilter or
     m instanceof MethodUnboundIdFilterSimplifyFilter
   )

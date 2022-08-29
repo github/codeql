@@ -11,11 +11,11 @@ namespace System
     namespace Threading
     {
         // Generated from `System.Threading.ApartmentState` in `System.Threading.Thread, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum ApartmentState
+        public enum ApartmentState : int
         {
-            MTA,
-            STA,
-            Unknown,
+            MTA = 1,
+            STA = 0,
+            Unknown = 2,
         }
 
         // Generated from `System.Threading.CompressedStack` in `System.Threading.Thread, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -144,13 +144,13 @@ namespace System
         }
 
         // Generated from `System.Threading.ThreadPriority` in `System.Threading.Thread, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum ThreadPriority
+        public enum ThreadPriority : int
         {
-            AboveNormal,
-            BelowNormal,
-            Highest,
-            Lowest,
-            Normal,
+            AboveNormal = 3,
+            BelowNormal = 1,
+            Highest = 4,
+            Lowest = 0,
+            Normal = 2,
         }
 
         // Generated from `System.Threading.ThreadStart` in `System.Threading.Thread, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -163,18 +163,18 @@ namespace System
 
         // Generated from `System.Threading.ThreadState` in `System.Threading.Thread, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         [System.Flags]
-        public enum ThreadState
+        public enum ThreadState : int
         {
-            AbortRequested,
-            Aborted,
-            Background,
-            Running,
-            StopRequested,
-            Stopped,
-            SuspendRequested,
-            Suspended,
-            Unstarted,
-            WaitSleepJoin,
+            AbortRequested = 128,
+            Aborted = 256,
+            Background = 4,
+            Running = 0,
+            StopRequested = 1,
+            Stopped = 16,
+            SuspendRequested = 2,
+            Suspended = 64,
+            Unstarted = 8,
+            WaitSleepJoin = 32,
         }
 
         // Generated from `System.Threading.ThreadStateException` in `System.Threading.Thread, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`

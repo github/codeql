@@ -154,7 +154,7 @@ private module ParameterNodes {
     predicate isParameterOf(DataFlowCallable c, ParameterPosition pos) { none() }
   }
 
-  class NormalParameterNode extends ParameterNodeImpl, SsaDefinitionNode {
+  class NormalParameterNode extends ParameterNodeImpl, SsaDefinitionNodeImpl {
     ParamDecl param;
 
     NormalParameterNode() {
@@ -169,14 +169,14 @@ private module ParameterNodes {
     override string toStringImpl() { result = param.toString() }
 
     override predicate isParameterOf(DataFlowCallable c, ParameterPosition pos) {
-      exists(Callable f, int index |
-        c = TDataFlowFunc(f) and
-        f.getParam(index) = param and
-        pos = TPositionalParameter(index)
+      exists(Callable f | c = TDataFlowFunc(f) |
+        exists(int index | f.getParam(index) = param and pos = TPositionalParameter(index))
+        or
+        f.getSelfParam() = param and pos = TThisParameter()
       )
     }
 
-    override DataFlowCallable getEnclosingCallable() { isParameterOf(result, _) }
+    override DataFlowCallable getEnclosingCallable() { this.isParameterOf(result, _) }
   }
 }
 
@@ -207,11 +207,68 @@ abstract class ArgumentNode extends Node {
 
 private module ArgumentNodes {
   class NormalArgumentNode extends ExprNode, ArgumentNode {
-    NormalArgumentNode() { exists(ApplyExpr call | call.getAnArgument().getExpr() = this.asExpr()) }
+    NormalArgumentNode() { exists(DataFlowCall call | call.getAnArgument() = this.getCfgNode()) }
 
     override predicate argumentOf(DataFlowCall call, ArgumentPosition pos) {
-      call.asCall().getArgument(pos.(PositionalArgumentPosition).getIndex()).getExpr() =
-        this.asExpr()
+      call.getArgument(pos.(PositionalArgumentPosition).getIndex()) = this.getCfgNode()
+      or
+      pos = TThisArgument() and
+      call.getArgument(-1) = this.getCfgNode()
+    }
+  }
+
+  class PropertyGetterArgumentNode extends ExprNode, ArgumentNode {
+    private PropertyGetterCfgNode getter;
+
+    PropertyGetterArgumentNode() { getter.getBase() = this.getCfgNode() }
+
+    override predicate argumentOf(DataFlowCall call, ArgumentPosition pos) {
+      call.(PropertyGetterCall).getGetter() = getter and
+      pos = TThisArgument()
+    }
+  }
+
+  class SetterArgumentNode extends ExprNode, ArgumentNode {
+    private PropertySetterCfgNode setter;
+
+    SetterArgumentNode() {
+      setter.getBase() = this.getCfgNode() or
+      setter.getSource() = this.getCfgNode()
+    }
+
+    override predicate argumentOf(DataFlowCall call, ArgumentPosition pos) {
+      call.(PropertySetterCall).getSetter() = setter and
+      (
+        pos = TThisArgument() and
+        setter.getBase() = this.getCfgNode()
+        or
+        pos.(PositionalArgumentPosition).getIndex() = 0 and
+        setter.getSource() = this.getCfgNode()
+      )
+    }
+  }
+
+  class ObserverArgumentNode extends ExprNode, ArgumentNode {
+    private PropertyObserverCfgNode observer;
+
+    ObserverArgumentNode() {
+      observer.getBase() = this.getCfgNode()
+      or
+      // TODO: This should be an rvalue representing the `getBase` when
+      // `observer` a `didSet` observer.
+      observer.getSource() = this.getCfgNode()
+    }
+
+    override predicate argumentOf(DataFlowCall call, ArgumentPosition pos) {
+      call.(PropertySetterCall).getSetter() = observer and
+      (
+        pos = TThisArgument() and
+        observer.getBase() = this.getCfgNode()
+        or
+        // TODO: See the comment above for `didSet` observers.
+        pos.(PositionalArgumentPosition).getIndex() = 0 and
+        observer.getSource() = this.getCfgNode()
+      )
     }
   }
 }

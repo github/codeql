@@ -29,9 +29,9 @@ predicate variableWrite(BasicBlock bb, int i, SourceVariable v, boolean certain)
     certain = true
   )
   or
-  exists(ApplyExpr call, Argument arg |
-    arg.getExpr().(InOutExpr).getSubExpr() = v.getAnAccess() and
-    call.getAnArgument() = arg and
+  exists(ApplyExpr call, InOutExpr expr |
+    expr = [call.getAnArgument().getExpr(), call.getQualifier()] and
+    expr.getSubExpr() = v.getAnAccess() and
     bb.getNode(i).getNode().asAstNode() = call and
     certain = false
   )

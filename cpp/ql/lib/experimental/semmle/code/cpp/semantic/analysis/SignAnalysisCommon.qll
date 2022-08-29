@@ -189,9 +189,12 @@ private class BinarySignExpr extends FlowSignExpr {
   BinarySignExpr() { binary = this }
 
   override Sign getSignRestriction() {
-    result =
-      semExprSign(binary.getLeftOperand())
-          .applyBinaryOp(semExprSign(binary.getRightOperand()), binary.getOpcode())
+    exists(SemExpr left, SemExpr right |
+      binaryExprOperands(binary, left, right) and
+      result =
+        semExprSign(pragma[only_bind_out](left))
+            .applyBinaryOp(semExprSign(pragma[only_bind_out](right)), binary.getOpcode())
+    )
     or
     exists(SemDivExpr div | div = binary |
       result = semExprSign(div.getLeftOperand()) and
@@ -199,6 +202,10 @@ private class BinarySignExpr extends FlowSignExpr {
       div.getRightOperand().(SemFloatingPointLiteralExpr).getFloatValue() = 0
     )
   }
+}
+
+private predicate binaryExprOperands(SemBinaryExpr binary, SemExpr left, SemExpr right) {
+  binary.getLeftOperand() = left and binary.getRightOperand() = right
 }
 
 /**
@@ -221,7 +228,7 @@ private class UnarySignExpr extends FlowSignExpr {
   UnarySignExpr() { unary = this and not this instanceof SemCastExpr }
 
   override Sign getSignRestriction() {
-    result = semExprSign(unary.getOperand()).applyUnaryOp(unary.getOpcode())
+    result = semExprSign(pragma[only_bind_out](unary.getOperand())).applyUnaryOp(unary.getOpcode())
   }
 }
 

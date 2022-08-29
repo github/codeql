@@ -1,3 +1,9 @@
+## 0.5.3
+
+### Minor Analysis Improvements
+
+* Change `.getASubclass()` on `API::Node` so it allows to follow subclasses even if the class has a class decorator.
+
 ## 0.5.2
 
 ## 0.5.1

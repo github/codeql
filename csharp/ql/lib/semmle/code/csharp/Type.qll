@@ -882,7 +882,7 @@ private newtype TCallingConvention =
   MkCallingConvention(int i) { function_pointer_calling_conventions(_, i) }
 
 /**
- * Represents a signature calling convention. Specifies how arguments in a given
+ * A signature representing a calling convention. Specifies how arguments in a given
  * signature are passed from the caller to the callee.
  */
 class CallingConvention extends TCallingConvention {
@@ -890,21 +890,21 @@ class CallingConvention extends TCallingConvention {
   string toString() { result = "CallingConvention" }
 }
 
-/** Managed calling convention with fixed-length argument list. */
+/** A managed calling convention with fixed-length argument list. */
 class DefaultCallingConvention extends CallingConvention {
   DefaultCallingConvention() { this = MkCallingConvention(0) }
 
   override string toString() { result = "DefaultCallingConvention" }
 }
 
-/** Unmanaged C/C++-style calling convention where the call stack is cleaned by the caller. */
+/** An unmanaged C/C++-style calling convention where the call stack is cleaned by the caller. */
 class CDeclCallingConvention extends CallingConvention {
   CDeclCallingConvention() { this = MkCallingConvention(1) }
 
   override string toString() { result = "CDeclCallingConvention" }
 }
 
-/** Unmanaged calling convention where call stack is cleaned up by the callee. */
+/** An unmanaged calling convention where call stack is cleaned up by the callee. */
 class StdCallCallingConvention extends CallingConvention {
   StdCallCallingConvention() { this = MkCallingConvention(2) }
 
@@ -912,7 +912,7 @@ class StdCallCallingConvention extends CallingConvention {
 }
 
 /**
- * Unmanaged C++-style calling convention for calling instance member functions
+ * An unmanaged C++-style calling convention for calling instance member functions
  * with a fixed argument list.
  */
 class ThisCallCallingConvention extends CallingConvention {
@@ -921,18 +921,28 @@ class ThisCallCallingConvention extends CallingConvention {
   override string toString() { result = "ThisCallCallingConvention" }
 }
 
-/** Unmanaged calling convention where arguments are passed in registers when possible. */
+/** An unmanaged calling convention where arguments are passed in registers when possible. */
 class FastCallCallingConvention extends CallingConvention {
   FastCallCallingConvention() { this = MkCallingConvention(4) }
 
   override string toString() { result = "FastCallCallingConvention" }
 }
 
-/** Managed calling convention for passing extra arguments. */
+/** A managed calling convention for passing extra arguments. */
 class VarArgsCallingConvention extends CallingConvention {
   VarArgsCallingConvention() { this = MkCallingConvention(5) }
 
   override string toString() { result = "VarArgsCallingConvention" }
+}
+
+/**
+ * An unmanaged calling convention that indicates that the specifics
+ * are encoded as modopts.
+ */
+class UnmanagedCallingConvention extends CallingConvention {
+  UnmanagedCallingConvention() { this = MkCallingConvention(9) }
+
+  override string toString() { result = "UnmanagedCallingConvention" }
 }
 
 /**

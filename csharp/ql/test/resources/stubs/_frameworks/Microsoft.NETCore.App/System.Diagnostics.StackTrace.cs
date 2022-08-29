@@ -179,18 +179,18 @@ namespace System
             }
 
             // Generated from `System.Diagnostics.SymbolStore.SymAddressKind` in `System.Diagnostics.StackTrace, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum SymAddressKind
+            public enum SymAddressKind : int
             {
-                BitField,
-                ILOffset,
-                NativeOffset,
-                NativeRVA,
-                NativeRegister,
-                NativeRegisterRegister,
-                NativeRegisterRelative,
-                NativeRegisterStack,
-                NativeSectionOffset,
-                NativeStackRegister,
+                BitField = 9,
+                ILOffset = 1,
+                NativeOffset = 5,
+                NativeRVA = 2,
+                NativeRegister = 3,
+                NativeRegisterRegister = 6,
+                NativeRegisterRelative = 4,
+                NativeRegisterStack = 7,
+                NativeSectionOffset = 10,
+                NativeStackRegister = 8,
             }
 
             // Generated from `System.Diagnostics.SymbolStore.SymDocumentType` in `System.Diagnostics.StackTrace, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`

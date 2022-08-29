@@ -22,11 +22,14 @@ private module ExperimentalPrivateDjango {
 
       module Request {
         module HttpRequest {
-          class DjangoGETParameter extends DataFlow::Node, RemoteFlowSource::Range {
-            DjangoGETParameter() { this = request().getMember("GET").getMember("get").getACall() }
+          class DjangoGetParameter extends DataFlow::Node, RemoteFlowSource::Range {
+            DjangoGetParameter() { this = request().getMember("GET").getMember("get").getACall() }
 
             override string getSourceType() { result = "django.http.request.GET.get" }
           }
+
+          /** DEPRECATED: Alias for DjangoGetParameter */
+          deprecated class DjangoGETParameter = DjangoGetParameter;
         }
       }
 

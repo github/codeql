@@ -69,7 +69,7 @@ MAP_TYPE_TO_TAG(swift::TypeBase, TypeTag);
 OVERRIDE_TAG(FuncDecl, ConcreteFuncDeclTag);
 OVERRIDE_TAG(VarDecl, ConcreteVarDeclTag);
 
-MAP_TYPE_TO_TAG(FilePath, FileTag);
+MAP_TYPE_TO_TAG(FilePath, DbFileTag);
 
 #undef MAP_TAG
 #undef MAP_SUBTAG

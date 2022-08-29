@@ -934,11 +934,11 @@ namespace Microsoft
                 }
 
                 // Generated from `Microsoft.AspNetCore.Routing.Patterns.RoutePatternParameterKind` in `Microsoft.AspNetCore.Routing, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
-                public enum RoutePatternParameterKind
+                public enum RoutePatternParameterKind : int
                 {
-                    CatchAll,
-                    Optional,
-                    Standard,
+                    CatchAll = 2,
+                    Optional = 1,
+                    Standard = 0,
                 }
 
                 // Generated from `Microsoft.AspNetCore.Routing.Patterns.RoutePatternParameterPart` in `Microsoft.AspNetCore.Routing, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
@@ -973,11 +973,11 @@ namespace Microsoft
                 }
 
                 // Generated from `Microsoft.AspNetCore.Routing.Patterns.RoutePatternPartKind` in `Microsoft.AspNetCore.Routing, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
-                public enum RoutePatternPartKind
+                public enum RoutePatternPartKind : int
                 {
-                    Literal,
-                    Parameter,
-                    Separator,
+                    Literal = 0,
+                    Parameter = 1,
+                    Separator = 2,
                 }
 
                 // Generated from `Microsoft.AspNetCore.Routing.Patterns.RoutePatternPathSegment` in `Microsoft.AspNetCore.Routing, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`

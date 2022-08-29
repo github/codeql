@@ -5,51 +5,51 @@ namespace System
     namespace Data
     {
         // Generated from `System.Data.AcceptRejectRule` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum AcceptRejectRule
+        public enum AcceptRejectRule : int
         {
-            Cascade,
-            None,
+            Cascade = 1,
+            None = 0,
         }
 
         // Generated from `System.Data.CommandBehavior` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         [System.Flags]
-        public enum CommandBehavior
+        public enum CommandBehavior : int
         {
-            CloseConnection,
-            Default,
-            KeyInfo,
-            SchemaOnly,
-            SequentialAccess,
-            SingleResult,
-            SingleRow,
+            CloseConnection = 32,
+            Default = 0,
+            KeyInfo = 4,
+            SchemaOnly = 2,
+            SequentialAccess = 16,
+            SingleResult = 1,
+            SingleRow = 8,
         }
 
         // Generated from `System.Data.CommandType` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum CommandType
+        public enum CommandType : int
         {
-            StoredProcedure,
-            TableDirect,
-            Text,
+            StoredProcedure = 4,
+            TableDirect = 512,
+            Text = 1,
         }
 
         // Generated from `System.Data.ConflictOption` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum ConflictOption
+        public enum ConflictOption : int
         {
-            CompareAllSearchableValues,
-            CompareRowVersion,
-            OverwriteChanges,
+            CompareAllSearchableValues = 1,
+            CompareRowVersion = 2,
+            OverwriteChanges = 3,
         }
 
         // Generated from `System.Data.ConnectionState` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         [System.Flags]
-        public enum ConnectionState
+        public enum ConnectionState : int
         {
-            Broken,
-            Closed,
-            Connecting,
-            Executing,
-            Fetching,
-            Open,
+            Broken = 16,
+            Closed = 0,
+            Connecting = 2,
+            Executing = 4,
+            Fetching = 8,
+            Open = 1,
         }
 
         // Generated from `System.Data.Constraint` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -334,16 +334,16 @@ namespace System
 
         // Generated from `System.Data.DataRowAction` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         [System.Flags]
-        public enum DataRowAction
+        public enum DataRowAction : int
         {
-            Add,
-            Change,
-            ChangeCurrentAndOriginal,
-            ChangeOriginal,
-            Commit,
-            Delete,
-            Nothing,
-            Rollback,
+            Add = 16,
+            Change = 2,
+            ChangeCurrentAndOriginal = 64,
+            ChangeOriginal = 32,
+            Commit = 8,
+            Delete = 1,
+            Nothing = 0,
+            Rollback = 4,
         }
 
         // Generated from `System.Data.DataRowBuilder` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -413,22 +413,22 @@ namespace System
 
         // Generated from `System.Data.DataRowState` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         [System.Flags]
-        public enum DataRowState
+        public enum DataRowState : int
         {
-            Added,
-            Deleted,
-            Detached,
-            Modified,
-            Unchanged,
+            Added = 4,
+            Deleted = 8,
+            Detached = 1,
+            Modified = 16,
+            Unchanged = 2,
         }
 
         // Generated from `System.Data.DataRowVersion` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum DataRowVersion
+        public enum DataRowVersion : int
         {
-            Current,
-            Default,
-            Original,
-            Proposed,
+            Current = 512,
+            Default = 1536,
+            Original = 256,
+            Proposed = 1024,
         }
 
         // Generated from `System.Data.DataRowView` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -573,12 +573,12 @@ namespace System
         }
 
         // Generated from `System.Data.DataSetDateTime` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum DataSetDateTime
+        public enum DataSetDateTime : int
         {
-            Local,
-            Unspecified,
-            UnspecifiedLocal,
-            Utc,
+            Local = 1,
+            Unspecified = 2,
+            UnspecifiedLocal = 3,
+            Utc = 4,
         }
 
         // Generated from `System.Data.DataSysDescriptionAttribute` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -949,16 +949,16 @@ namespace System
 
         // Generated from `System.Data.DataViewRowState` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         [System.Flags]
-        public enum DataViewRowState
+        public enum DataViewRowState : int
         {
-            Added,
-            CurrentRows,
-            Deleted,
-            ModifiedCurrent,
-            ModifiedOriginal,
-            None,
-            OriginalRows,
-            Unchanged,
+            Added = 4,
+            CurrentRows = 22,
+            Deleted = 8,
+            ModifiedCurrent = 16,
+            ModifiedOriginal = 32,
+            None = 0,
+            OriginalRows = 42,
+            Unchanged = 2,
         }
 
         // Generated from `System.Data.DataViewSetting` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -988,35 +988,35 @@ namespace System
         }
 
         // Generated from `System.Data.DbType` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum DbType
+        public enum DbType : int
         {
-            AnsiString,
-            AnsiStringFixedLength,
-            Binary,
-            Boolean,
-            Byte,
-            Currency,
-            Date,
-            DateTime,
-            DateTime2,
-            DateTimeOffset,
-            Decimal,
-            Double,
-            Guid,
-            Int16,
-            Int32,
-            Int64,
-            Object,
-            SByte,
-            Single,
-            String,
-            StringFixedLength,
-            Time,
-            UInt16,
-            UInt32,
-            UInt64,
-            VarNumeric,
-            Xml,
+            AnsiString = 0,
+            AnsiStringFixedLength = 22,
+            Binary = 1,
+            Boolean = 3,
+            Byte = 2,
+            Currency = 4,
+            Date = 5,
+            DateTime = 6,
+            DateTime2 = 26,
+            DateTimeOffset = 27,
+            Decimal = 7,
+            Double = 8,
+            Guid = 9,
+            Int16 = 10,
+            Int32 = 11,
+            Int64 = 12,
+            Object = 13,
+            SByte = 14,
+            Single = 15,
+            String = 16,
+            StringFixedLength = 23,
+            Time = 17,
+            UInt16 = 18,
+            UInt32 = 19,
+            UInt64 = 20,
+            VarNumeric = 21,
+            Xml = 25,
         }
 
         // Generated from `System.Data.DeletedRowInaccessibleException` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -1323,39 +1323,39 @@ namespace System
         }
 
         // Generated from `System.Data.IsolationLevel` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum IsolationLevel
+        public enum IsolationLevel : int
         {
-            Chaos,
-            ReadCommitted,
-            ReadUncommitted,
-            RepeatableRead,
-            Serializable,
-            Snapshot,
-            Unspecified,
+            Chaos = 16,
+            ReadCommitted = 4096,
+            ReadUncommitted = 256,
+            RepeatableRead = 65536,
+            Serializable = 1048576,
+            Snapshot = 16777216,
+            Unspecified = -1,
         }
 
         // Generated from `System.Data.KeyRestrictionBehavior` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum KeyRestrictionBehavior
+        public enum KeyRestrictionBehavior : int
         {
-            AllowOnly,
-            PreventUsage,
+            AllowOnly = 0,
+            PreventUsage = 1,
         }
 
         // Generated from `System.Data.LoadOption` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum LoadOption
+        public enum LoadOption : int
         {
-            OverwriteChanges,
-            PreserveChanges,
-            Upsert,
+            OverwriteChanges = 1,
+            PreserveChanges = 2,
+            Upsert = 3,
         }
 
         // Generated from `System.Data.MappingType` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum MappingType
+        public enum MappingType : int
         {
-            Attribute,
-            Element,
-            Hidden,
-            SimpleContent,
+            Attribute = 2,
+            Element = 1,
+            Hidden = 4,
+            SimpleContent = 3,
         }
 
         // Generated from `System.Data.MergeFailedEventArgs` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -1370,11 +1370,11 @@ namespace System
         public delegate void MergeFailedEventHandler(object sender, System.Data.MergeFailedEventArgs e);
 
         // Generated from `System.Data.MissingMappingAction` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum MissingMappingAction
+        public enum MissingMappingAction : int
         {
-            Error,
-            Ignore,
-            Passthrough,
+            Error = 3,
+            Ignore = 2,
+            Passthrough = 1,
         }
 
         // Generated from `System.Data.MissingPrimaryKeyException` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -1387,12 +1387,12 @@ namespace System
         }
 
         // Generated from `System.Data.MissingSchemaAction` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum MissingSchemaAction
+        public enum MissingSchemaAction : int
         {
-            Add,
-            AddWithKey,
-            Error,
-            Ignore,
+            Add = 1,
+            AddWithKey = 4,
+            Error = 3,
+            Ignore = 2,
         }
 
         // Generated from `System.Data.NoNullAllowedException` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -1410,12 +1410,12 @@ namespace System
         }
 
         // Generated from `System.Data.ParameterDirection` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum ParameterDirection
+        public enum ParameterDirection : int
         {
-            Input,
-            InputOutput,
-            Output,
-            ReturnValue,
+            Input = 1,
+            InputOutput = 3,
+            Output = 2,
+            ReturnValue = 6,
         }
 
         // Generated from `System.Data.PropertyCollection` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -1445,69 +1445,69 @@ namespace System
         }
 
         // Generated from `System.Data.Rule` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum Rule
+        public enum Rule : int
         {
-            Cascade,
-            None,
-            SetDefault,
-            SetNull,
+            Cascade = 1,
+            None = 0,
+            SetDefault = 3,
+            SetNull = 2,
         }
 
         // Generated from `System.Data.SchemaSerializationMode` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum SchemaSerializationMode
+        public enum SchemaSerializationMode : int
         {
-            ExcludeSchema,
-            IncludeSchema,
+            ExcludeSchema = 2,
+            IncludeSchema = 1,
         }
 
         // Generated from `System.Data.SchemaType` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum SchemaType
+        public enum SchemaType : int
         {
-            Mapped,
-            Source,
+            Mapped = 2,
+            Source = 1,
         }
 
         // Generated from `System.Data.SerializationFormat` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum SerializationFormat
+        public enum SerializationFormat : int
         {
-            Binary,
-            Xml,
+            Binary = 1,
+            Xml = 0,
         }
 
         // Generated from `System.Data.SqlDbType` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum SqlDbType
+        public enum SqlDbType : int
         {
-            BigInt,
-            Binary,
-            Bit,
-            Char,
-            Date,
-            DateTime,
-            DateTime2,
-            DateTimeOffset,
-            Decimal,
-            Float,
-            Image,
-            Int,
-            Money,
-            NChar,
-            NText,
-            NVarChar,
-            Real,
-            SmallDateTime,
-            SmallInt,
-            SmallMoney,
-            Structured,
-            Text,
-            Time,
-            Timestamp,
-            TinyInt,
-            Udt,
-            UniqueIdentifier,
-            VarBinary,
-            VarChar,
-            Variant,
-            Xml,
+            BigInt = 0,
+            Binary = 1,
+            Bit = 2,
+            Char = 3,
+            Date = 31,
+            DateTime = 4,
+            DateTime2 = 33,
+            DateTimeOffset = 34,
+            Decimal = 5,
+            Float = 6,
+            Image = 7,
+            Int = 8,
+            Money = 9,
+            NChar = 10,
+            NText = 11,
+            NVarChar = 12,
+            Real = 13,
+            SmallDateTime = 15,
+            SmallInt = 16,
+            SmallMoney = 17,
+            Structured = 30,
+            Text = 18,
+            Time = 32,
+            Timestamp = 19,
+            TinyInt = 20,
+            Udt = 29,
+            UniqueIdentifier = 14,
+            VarBinary = 21,
+            VarChar = 22,
+            Variant = 23,
+            Xml = 25,
         }
 
         // Generated from `System.Data.StateChangeEventArgs` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -1532,13 +1532,13 @@ namespace System
         public delegate void StatementCompletedEventHandler(object sender, System.Data.StatementCompletedEventArgs e);
 
         // Generated from `System.Data.StatementType` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum StatementType
+        public enum StatementType : int
         {
-            Batch,
-            Delete,
-            Insert,
-            Select,
-            Update,
+            Batch = 4,
+            Delete = 3,
+            Insert = 1,
+            Select = 0,
+            Update = 2,
         }
 
         // Generated from `System.Data.StrongTypingException` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -1602,21 +1602,21 @@ namespace System
         }
 
         // Generated from `System.Data.UpdateRowSource` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum UpdateRowSource
+        public enum UpdateRowSource : int
         {
-            Both,
-            FirstReturnedRecord,
-            None,
-            OutputParameters,
+            Both = 3,
+            FirstReturnedRecord = 2,
+            None = 0,
+            OutputParameters = 1,
         }
 
         // Generated from `System.Data.UpdateStatus` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum UpdateStatus
+        public enum UpdateStatus : int
         {
-            Continue,
-            ErrorsOccurred,
-            SkipAllRemainingRows,
-            SkipCurrentRow,
+            Continue = 0,
+            ErrorsOccurred = 1,
+            SkipAllRemainingRows = 3,
+            SkipCurrentRow = 2,
         }
 
         // Generated from `System.Data.VersionNotFoundException` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -1629,32 +1629,32 @@ namespace System
         }
 
         // Generated from `System.Data.XmlReadMode` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum XmlReadMode
+        public enum XmlReadMode : int
         {
-            Auto,
-            DiffGram,
-            Fragment,
-            IgnoreSchema,
-            InferSchema,
-            InferTypedSchema,
-            ReadSchema,
+            Auto = 0,
+            DiffGram = 4,
+            Fragment = 5,
+            IgnoreSchema = 2,
+            InferSchema = 3,
+            InferTypedSchema = 6,
+            ReadSchema = 1,
         }
 
         // Generated from `System.Data.XmlWriteMode` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum XmlWriteMode
+        public enum XmlWriteMode : int
         {
-            DiffGram,
-            IgnoreSchema,
-            WriteSchema,
+            DiffGram = 2,
+            IgnoreSchema = 1,
+            WriteSchema = 0,
         }
 
         namespace Common
         {
             // Generated from `System.Data.Common.CatalogLocation` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum CatalogLocation
+            public enum CatalogLocation : int
             {
-                End,
-                Start,
+                End = 2,
+                Start = 1,
             }
 
             // Generated from `System.Data.Common.DataAdapter` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -2435,13 +2435,13 @@ namespace System
             }
 
             // Generated from `System.Data.Common.GroupByBehavior` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum GroupByBehavior
+            public enum GroupByBehavior : int
             {
-                ExactMatch,
-                MustContainAll,
-                NotSupported,
-                Unknown,
-                Unrelated,
+                ExactMatch = 4,
+                MustContainAll = 3,
+                NotSupported = 1,
+                Unknown = 0,
+                Unrelated = 2,
             }
 
             // Generated from `System.Data.Common.IDbColumnSchemaGenerator` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -2451,11 +2451,11 @@ namespace System
             }
 
             // Generated from `System.Data.Common.IdentifierCase` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum IdentifierCase
+            public enum IdentifierCase : int
             {
-                Insensitive,
-                Sensitive,
-                Unknown,
+                Insensitive = 1,
+                Sensitive = 2,
+                Unknown = 0,
             }
 
             // Generated from `System.Data.Common.RowUpdatedEventArgs` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -2530,13 +2530,13 @@ namespace System
 
             // Generated from `System.Data.Common.SupportedJoinOperators` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             [System.Flags]
-            public enum SupportedJoinOperators
+            public enum SupportedJoinOperators : int
             {
-                FullOuter,
-                Inner,
-                LeftOuter,
-                None,
-                RightOuter,
+                FullOuter = 8,
+                Inner = 1,
+                LeftOuter = 2,
+                None = 0,
+                RightOuter = 4,
             }
 
         }
@@ -2801,15 +2801,15 @@ namespace System
 
             // Generated from `System.Data.SqlTypes.SqlCompareOptions` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             [System.Flags]
-            public enum SqlCompareOptions
+            public enum SqlCompareOptions : int
             {
-                BinarySort,
-                BinarySort2,
-                IgnoreCase,
-                IgnoreKanaType,
-                IgnoreNonSpace,
-                IgnoreWidth,
-                None,
+                BinarySort = 32768,
+                BinarySort2 = 16384,
+                IgnoreCase = 1,
+                IgnoreKanaType = 8,
+                IgnoreNonSpace = 2,
+                IgnoreWidth = 16,
+                None = 0,
             }
 
             // Generated from `System.Data.SqlTypes.SqlDateTime` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -3548,11 +3548,11 @@ namespace System
             }
 
             // Generated from `System.Data.SqlTypes.StorageState` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum StorageState
+            public enum StorageState : int
             {
-                Buffer,
-                Stream,
-                UnmanagedBuffer,
+                Buffer = 0,
+                Stream = 1,
+                UnmanagedBuffer = 2,
             }
 
         }

@@ -373,3 +373,14 @@ import * as B from './tstSuffixB';
 
 console.log(B.resolvedFile()); // <- 'tstSuffixB.ios.ts'
 
+
+/////////////////
+
+module TS48 {
+    // SomeNum used to be 'number'; now it's '100'.
+    type SomeNum = "100" extends `${infer U extends number}` ? U : never;
+
+    declare function chooseRandomly<T>(x: T, y: T): T;
+
+    let [a, b, c] = chooseRandomly([42, true, "hi!"], [0, false, "bye!"]);    
+}

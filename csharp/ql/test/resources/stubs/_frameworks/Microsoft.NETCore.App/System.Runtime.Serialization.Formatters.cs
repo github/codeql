@@ -158,18 +158,18 @@ namespace System
             namespace Formatters
             {
                 // Generated from `System.Runtime.Serialization.Formatters.FormatterAssemblyStyle` in `System.Runtime.Serialization.Formatters, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-                public enum FormatterAssemblyStyle
+                public enum FormatterAssemblyStyle : int
                 {
-                    Full,
-                    Simple,
+                    Full = 1,
+                    Simple = 0,
                 }
 
                 // Generated from `System.Runtime.Serialization.Formatters.FormatterTypeStyle` in `System.Runtime.Serialization.Formatters, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-                public enum FormatterTypeStyle
+                public enum FormatterTypeStyle : int
                 {
-                    TypesAlways,
-                    TypesWhenNeeded,
-                    XsdString,
+                    TypesAlways = 1,
+                    TypesWhenNeeded = 0,
+                    XsdString = 2,
                 }
 
                 // Generated from `System.Runtime.Serialization.Formatters.IFieldInfo` in `System.Runtime.Serialization.Formatters, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -180,10 +180,10 @@ namespace System
                 }
 
                 // Generated from `System.Runtime.Serialization.Formatters.TypeFilterLevel` in `System.Runtime.Serialization.Formatters, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-                public enum TypeFilterLevel
+                public enum TypeFilterLevel : int
                 {
-                    Full,
-                    Low,
+                    Full = 3,
+                    Low = 2,
                 }
 
                 namespace Binary

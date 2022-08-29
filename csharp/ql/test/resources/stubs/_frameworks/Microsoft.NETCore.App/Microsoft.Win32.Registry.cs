@@ -19,14 +19,14 @@ namespace Microsoft
         }
 
         // Generated from `Microsoft.Win32.RegistryHive` in `Microsoft.Win32.Registry, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum RegistryHive
+        public enum RegistryHive : int
         {
-            ClassesRoot,
-            CurrentConfig,
-            CurrentUser,
-            LocalMachine,
-            PerformanceData,
-            Users,
+            ClassesRoot = -2147483648,
+            CurrentConfig = -2147483643,
+            CurrentUser = -2147483647,
+            LocalMachine = -2147483646,
+            PerformanceData = -2147483644,
+            Users = -2147483645,
         }
 
         // Generated from `Microsoft.Win32.RegistryKey` in `Microsoft.Win32.Registry, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -78,48 +78,48 @@ namespace Microsoft
         }
 
         // Generated from `Microsoft.Win32.RegistryKeyPermissionCheck` in `Microsoft.Win32.Registry, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum RegistryKeyPermissionCheck
+        public enum RegistryKeyPermissionCheck : int
         {
-            Default,
-            ReadSubTree,
-            ReadWriteSubTree,
+            Default = 0,
+            ReadSubTree = 1,
+            ReadWriteSubTree = 2,
         }
 
         // Generated from `Microsoft.Win32.RegistryOptions` in `Microsoft.Win32.Registry, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         [System.Flags]
-        public enum RegistryOptions
+        public enum RegistryOptions : int
         {
-            None,
-            Volatile,
+            None = 0,
+            Volatile = 1,
         }
 
         // Generated from `Microsoft.Win32.RegistryValueKind` in `Microsoft.Win32.Registry, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum RegistryValueKind
+        public enum RegistryValueKind : int
         {
-            Binary,
-            DWord,
-            ExpandString,
-            MultiString,
-            None,
-            QWord,
-            String,
-            Unknown,
+            Binary = 3,
+            DWord = 4,
+            ExpandString = 2,
+            MultiString = 7,
+            None = -1,
+            QWord = 11,
+            String = 1,
+            Unknown = 0,
         }
 
         // Generated from `Microsoft.Win32.RegistryValueOptions` in `Microsoft.Win32.Registry, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         [System.Flags]
-        public enum RegistryValueOptions
+        public enum RegistryValueOptions : int
         {
-            DoNotExpandEnvironmentNames,
-            None,
+            DoNotExpandEnvironmentNames = 1,
+            None = 0,
         }
 
         // Generated from `Microsoft.Win32.RegistryView` in `Microsoft.Win32.Registry, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum RegistryView
+        public enum RegistryView : int
         {
-            Default,
-            Registry32,
-            Registry64,
+            Default = 0,
+            Registry32 = 512,
+            Registry64 = 256,
         }
 
         namespace SafeHandles
@@ -161,22 +161,22 @@ namespace System
 
             // Generated from `System.Security.AccessControl.RegistryRights` in `Microsoft.Win32.Registry, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             [System.Flags]
-            public enum RegistryRights
+            public enum RegistryRights : int
             {
-                ChangePermissions,
-                CreateLink,
-                CreateSubKey,
-                Delete,
-                EnumerateSubKeys,
-                ExecuteKey,
-                FullControl,
-                Notify,
-                QueryValues,
-                ReadKey,
-                ReadPermissions,
-                SetValue,
-                TakeOwnership,
-                WriteKey,
+                ChangePermissions = 262144,
+                CreateLink = 32,
+                CreateSubKey = 4,
+                Delete = 65536,
+                EnumerateSubKeys = 8,
+                ExecuteKey = 131097,
+                FullControl = 983103,
+                Notify = 16,
+                QueryValues = 1,
+                ReadKey = 131097,
+                ReadPermissions = 131072,
+                SetValue = 2,
+                TakeOwnership = 524288,
+                WriteKey = 131078,
             }
 
             // Generated from `System.Security.AccessControl.RegistrySecurity` in `Microsoft.Win32.Registry, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`

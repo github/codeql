@@ -39,7 +39,8 @@ class IDbCommandConstructionSqlExpr extends SqlExpr, ObjectCreation {
           .hasQualifiedName([
               // Known sealed classes:
               "System.Data.SqlClient.SqlCommand", "System.Data.Odbc.OdbcCommand",
-              "System.Data.OleDb.OleDbCommand", "System.Data.EntityClient.EntityCommand"
+              "System.Data.OleDb.OleDbCommand", "System.Data.EntityClient.EntityCommand",
+              "System.Data.SQLite.SQLiteCommand"
             ])
     )
   }
@@ -67,18 +68,46 @@ private class IDbCommandConstructionSinkModelCsv extends SinkModelCsv {
         // EntityCommand
         "System.Data.EntityClient;EntityCommand;false;EntityCommand;(System.String);;Argument[0];sql;manual",
         "System.Data.EntityClient;EntityCommand;false;EntityCommand;(System.String,System.Data.EntityClient.EntityConnection);;Argument[0];sql;manual",
-        "System.Data.EntityClient;EntityCommand;false;EntityCommand;(System.String,System.Data.EntityClient.EntityConnection,System.Data.EntityClient.EntityTransaction);;Argument[0];sql;manual"
+        "System.Data.EntityClient;EntityCommand;false;EntityCommand;(System.String,System.Data.EntityClient.EntityConnection,System.Data.EntityClient.EntityTransaction);;Argument[0];sql;manual",
+        // SQLiteCommand
+        "System.Data.SQLite;SQLiteCommand;false;SQLiteCommand;(System.String);;Argument[0];sql;manual",
+        "System.Data.SQLite;SQLiteCommand;false;SQLiteCommand;(System.String,System.Data.SQLite.SQLiteConnection);;Argument[0];sql;manual",
+        "System.Data.SQLite;SQLiteCommand;false;SQLiteCommand;(System.String,System.Data.SQLite.SQLiteConnection,System.Data.SQLite.SQLiteTransaction);;Argument[0];sql;manual",
       ]
   }
 }
 
-/** A construction of an `SqlDataAdapter` object. */
+/** Data flow for SqlCommand and friends. */
+private class SqlCommandSummaryModelCsv extends SummaryModelCsv {
+  override predicate row(string row) {
+    row =
+      [
+        // SqlCommand
+        "System.Data.SqlClient;SqlCommand;false;SqlCommand;(System.String);;Argument[0];Argument[this];taint;manual",
+        "System.Data.SqlClient;SqlCommand;false;SqlCommand;(System.String,System.Data.SqlClient.SqlConnection);;Argument[0];Argument[this];taint;manual",
+        "System.Data.SqlClient;SqlCommand;false;SqlCommand;(System.String,System.Data.SqlClient.SqlConnection,System.Data.SqlClient.SqlTransaction);;Argument[0];Argument[this];taint;manual",
+        // SQLiteCommand.
+        "System.Data.SQLite;SQLiteCommand;false;SQLiteCommand;(System.String);;Argument[0];Argument[this];taint;manual",
+        "System.Data.SQLite;SQLiteCommand;false;SQLiteCommand;(System.String,System.Data.SQLite.SQLiteConnection);;Argument[0];Argument[this];taint;manual",
+        "System.Data.SQLite;SQLiteCommand;false;SQLiteCommand;(System.String,System.Data.SQLite.SQLiteConnection,System.Data.SQLite.SQLiteTransaction);;Argument[0];Argument[this];taint;manual",
+      ]
+  }
+}
+
+/** A construction of an `Adapter` object. */
 private class SqlDataAdapterConstructionSinkModelCsv extends SinkModelCsv {
   override predicate row(string row) {
     row =
       [
+        // SqlDataAdapter
+        "System.Data.SqlClient;SqlDataAdapter;false;SqlDataAdapter;(System.Data.SqlClient.SqlCommand);;Argument[0];sql;manual",
         "System.Data.SqlClient;SqlDataAdapter;false;SqlDataAdapter;(System.String,System.String);;Argument[0];sql;manual",
-        "System.Data.SqlClient;SqlDataAdapter;false;SqlDataAdapter;(System.String,System.Data.SqlClient.SqlConnection);;Argument[0];sql;manual"
+        "System.Data.SqlClient;SqlDataAdapter;false;SqlDataAdapter;(System.String,System.Data.SqlClient.SqlConnection);;Argument[0];sql;manual",
+        // SQLiteDataAdapter
+        "System.Data.SQLite;SQLiteDataAdapter;false;SQLiteDataAdapter;(System.Data.SQLite.SQLiteCommand);;Argument[0];sql;manual",
+        "System.Data.SQLite;SQLiteDataAdapter;false;SQLiteDataAdapter;(System.String,System.Data.SQLite.SQLiteConnection);;Argument[0];sql;manual",
+        "System.Data.SQLite;SQLiteDataAdapter;false;SQLiteDataAdapter;(System.String,System.String);;Argument[0];sql;manual",
+        "System.Data.SQLite;SQLiteDataAdapter;false;SQLiteDataAdapter;(System.String,System.String,System.Boolean);;Argument[0];sql;manual",
       ]
   }
 }

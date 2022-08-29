@@ -11,6 +11,7 @@ namespace codeql {
 
 class SwiftVisitor : private SwiftDispatcher {
  public:
+  using SwiftDispatcher::getEncounteredModules;
   using SwiftDispatcher::SwiftDispatcher;
 
   template <typename T>

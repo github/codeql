@@ -107,16 +107,6 @@ module HeuristicNames {
   }
 
   /**
-   * DEPRECATED: Use `maybeSensitiveRegexp` instead.
-   */
-  deprecated predicate maybeSensitive = maybeSensitiveRegexp/1;
-
-  /**
-   * DEPRECATED: Use `notSensitiveRegexp` instead.
-   */
-  deprecated predicate notSensitive = notSensitiveRegexp/0;
-
-  /**
    * Holds if `name` may indicate the presence of sensitive data, and
    * `name` does not indicate that the data is in fact non-sensitive (for example since
    * it is hashed or encrypted). `classification` describes the kind of sensitive data

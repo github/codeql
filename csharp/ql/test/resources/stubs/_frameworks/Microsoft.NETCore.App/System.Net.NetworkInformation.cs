@@ -7,13 +7,13 @@ namespace System
         namespace NetworkInformation
         {
             // Generated from `System.Net.NetworkInformation.DuplicateAddressDetectionState` in `System.Net.NetworkInformation, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum DuplicateAddressDetectionState
+            public enum DuplicateAddressDetectionState : int
             {
-                Deprecated,
-                Duplicate,
-                Invalid,
-                Preferred,
-                Tentative,
+                Deprecated = 3,
+                Duplicate = 2,
+                Invalid = 0,
+                Preferred = 4,
+                Tentative = 1,
             }
 
             // Generated from `System.Net.NetworkInformation.GatewayIPAddressInformation` in `System.Net.NetworkInformation, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -293,13 +293,13 @@ namespace System
             }
 
             // Generated from `System.Net.NetworkInformation.NetBiosNodeType` in `System.Net.NetworkInformation, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum NetBiosNodeType
+            public enum NetBiosNodeType : int
             {
-                Broadcast,
-                Hybrid,
-                Mixed,
-                Peer2Peer,
-                Unknown,
+                Broadcast = 1,
+                Hybrid = 8,
+                Mixed = 4,
+                Peer2Peer = 2,
+                Unknown = 0,
             }
 
             // Generated from `System.Net.NetworkInformation.NetworkAddressChangedEventHandler` in `System.Net.NetworkInformation, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -356,55 +356,55 @@ namespace System
             }
 
             // Generated from `System.Net.NetworkInformation.NetworkInterfaceComponent` in `System.Net.NetworkInformation, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum NetworkInterfaceComponent
+            public enum NetworkInterfaceComponent : int
             {
-                IPv4,
-                IPv6,
+                IPv4 = 0,
+                IPv6 = 1,
             }
 
             // Generated from `System.Net.NetworkInformation.NetworkInterfaceType` in `System.Net.NetworkInformation, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum NetworkInterfaceType
+            public enum NetworkInterfaceType : int
             {
-                AsymmetricDsl,
-                Atm,
-                BasicIsdn,
-                Ethernet,
-                Ethernet3Megabit,
-                FastEthernetFx,
-                FastEthernetT,
-                Fddi,
-                GenericModem,
-                GigabitEthernet,
-                HighPerformanceSerialBus,
-                IPOverAtm,
-                Isdn,
-                Loopback,
-                MultiRateSymmetricDsl,
-                Ppp,
-                PrimaryIsdn,
-                RateAdaptDsl,
-                Slip,
-                SymmetricDsl,
-                TokenRing,
-                Tunnel,
-                Unknown,
-                VeryHighSpeedDsl,
-                Wireless80211,
-                Wman,
-                Wwanpp,
-                Wwanpp2,
+                AsymmetricDsl = 94,
+                Atm = 37,
+                BasicIsdn = 20,
+                Ethernet = 6,
+                Ethernet3Megabit = 26,
+                FastEthernetFx = 69,
+                FastEthernetT = 62,
+                Fddi = 15,
+                GenericModem = 48,
+                GigabitEthernet = 117,
+                HighPerformanceSerialBus = 144,
+                IPOverAtm = 114,
+                Isdn = 63,
+                Loopback = 24,
+                MultiRateSymmetricDsl = 143,
+                Ppp = 23,
+                PrimaryIsdn = 21,
+                RateAdaptDsl = 95,
+                Slip = 28,
+                SymmetricDsl = 96,
+                TokenRing = 9,
+                Tunnel = 131,
+                Unknown = 1,
+                VeryHighSpeedDsl = 97,
+                Wireless80211 = 71,
+                Wman = 237,
+                Wwanpp = 243,
+                Wwanpp2 = 244,
             }
 
             // Generated from `System.Net.NetworkInformation.OperationalStatus` in `System.Net.NetworkInformation, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum OperationalStatus
+            public enum OperationalStatus : int
             {
-                Dormant,
-                Down,
-                LowerLayerDown,
-                NotPresent,
-                Testing,
-                Unknown,
-                Up,
+                Dormant = 5,
+                Down = 2,
+                LowerLayerDown = 7,
+                NotPresent = 6,
+                Testing = 3,
+                Unknown = 4,
+                Up = 1,
             }
 
             // Generated from `System.Net.NetworkInformation.PhysicalAddress` in `System.Net.NetworkInformation, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -423,37 +423,37 @@ namespace System
             }
 
             // Generated from `System.Net.NetworkInformation.PrefixOrigin` in `System.Net.NetworkInformation, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum PrefixOrigin
+            public enum PrefixOrigin : int
             {
-                Dhcp,
-                Manual,
-                Other,
-                RouterAdvertisement,
-                WellKnown,
+                Dhcp = 3,
+                Manual = 1,
+                Other = 0,
+                RouterAdvertisement = 4,
+                WellKnown = 2,
             }
 
             // Generated from `System.Net.NetworkInformation.ScopeLevel` in `System.Net.NetworkInformation, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum ScopeLevel
+            public enum ScopeLevel : int
             {
-                Admin,
-                Global,
-                Interface,
-                Link,
-                None,
-                Organization,
-                Site,
-                Subnet,
+                Admin = 4,
+                Global = 14,
+                Interface = 1,
+                Link = 2,
+                None = 0,
+                Organization = 8,
+                Site = 5,
+                Subnet = 3,
             }
 
             // Generated from `System.Net.NetworkInformation.SuffixOrigin` in `System.Net.NetworkInformation, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum SuffixOrigin
+            public enum SuffixOrigin : int
             {
-                LinkLayerAddress,
-                Manual,
-                OriginDhcp,
-                Other,
-                Random,
-                WellKnown,
+                LinkLayerAddress = 4,
+                Manual = 1,
+                OriginDhcp = 3,
+                Other = 0,
+                Random = 5,
+                WellKnown = 2,
             }
 
             // Generated from `System.Net.NetworkInformation.TcpConnectionInformation` in `System.Net.NetworkInformation, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -466,21 +466,21 @@ namespace System
             }
 
             // Generated from `System.Net.NetworkInformation.TcpState` in `System.Net.NetworkInformation, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum TcpState
+            public enum TcpState : int
             {
-                CloseWait,
-                Closed,
-                Closing,
-                DeleteTcb,
-                Established,
-                FinWait1,
-                FinWait2,
-                LastAck,
-                Listen,
-                SynReceived,
-                SynSent,
-                TimeWait,
-                Unknown,
+                CloseWait = 8,
+                Closed = 1,
+                Closing = 9,
+                DeleteTcb = 12,
+                Established = 5,
+                FinWait1 = 6,
+                FinWait2 = 7,
+                LastAck = 10,
+                Listen = 2,
+                SynReceived = 4,
+                SynSent = 3,
+                TimeWait = 11,
+                Unknown = 0,
             }
 
             // Generated from `System.Net.NetworkInformation.TcpStatistics` in `System.Net.NetworkInformation, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`

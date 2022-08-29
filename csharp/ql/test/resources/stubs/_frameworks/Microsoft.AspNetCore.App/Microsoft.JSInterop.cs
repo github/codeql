@@ -78,12 +78,12 @@ namespace Microsoft
         }
 
         // Generated from `Microsoft.JSInterop.JSCallResultType` in `Microsoft.JSInterop, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
-        public enum JSCallResultType
+        public enum JSCallResultType : int
         {
-            Default,
-            JSObjectReference,
-            JSStreamReference,
-            JSVoidResult,
+            Default = 0,
+            JSObjectReference = 1,
+            JSStreamReference = 2,
+            JSVoidResult = 3,
         }
 
         // Generated from `Microsoft.JSInterop.JSDisconnectedException` in `Microsoft.JSInterop, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`

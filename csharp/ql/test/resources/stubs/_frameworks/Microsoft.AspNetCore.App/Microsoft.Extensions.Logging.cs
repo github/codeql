@@ -18,16 +18,16 @@ namespace Microsoft
         {
             // Generated from `Microsoft.Extensions.Logging.ActivityTrackingOptions` in `Microsoft.Extensions.Logging, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             [System.Flags]
-            public enum ActivityTrackingOptions
+            public enum ActivityTrackingOptions : int
             {
-                Baggage,
-                None,
-                ParentId,
-                SpanId,
-                Tags,
-                TraceFlags,
-                TraceId,
-                TraceState,
+                Baggage = 64,
+                None = 0,
+                ParentId = 4,
+                SpanId = 1,
+                Tags = 32,
+                TraceFlags = 16,
+                TraceId = 2,
+                TraceState = 8,
             }
 
             // Generated from `Microsoft.Extensions.Logging.FilterLoggingBuilderExtensions` in `Microsoft.Extensions.Logging, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`

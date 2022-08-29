@@ -1854,15 +1854,21 @@ private module StdlibPrivate {
   deprecated API::Node cgiHTTPServer() { result = cgiHttpServer() }
 
   /** Provides models for the `CGIHTTPServer` module. */
-  module CGIHTTPServer {
+  module CgiHttpServer {
     /**
      * Provides models for the `CGIHTTPServer.CGIHTTPRequestHandler` class (Python 2 only).
      */
-    module CGIHTTPRequestHandler {
-      /** Gets a reference to the `CGIHTTPServer.CGIHTTPRequestHandler` class. */
+    module CgiHttpRequestHandler {
+      /** Gets a reference to the `CGIHTTPServer.CgiHttpRequestHandler` class. */
       API::Node classRef() { result = cgiHttpServer().getMember("CGIHTTPRequestHandler") }
     }
+
+    /** DEPRECATED: Alias for CgiHttpRequestHandler */
+    deprecated module CGIHTTPRequestHandler = CgiHttpRequestHandler;
   }
+
+  /** DEPRECATED: Alias for CgiHttpServer */
+  deprecated module CGIHTTPServer = CgiHttpServer;
 
   // ---------------------------------------------------------------------------
   // http (Python 3 only)
@@ -1911,10 +1917,13 @@ private module StdlibPrivate {
        *
        * See https://docs.python.org/3.9/library/http.server.html#http.server.CGIHTTPRequestHandler.
        */
-      module CGIHTTPRequestHandler {
+      module CgiHttpRequestHandler {
         /** Gets a reference to the `http.server.CGIHTTPRequestHandler` class. */
         API::Node classRef() { result = server().getMember("CGIHTTPRequestHandler") }
       }
+
+      /** DEPRECATED: Alias for CgiHttpRequestHandler */
+      deprecated module CGIHTTPRequestHandler = CgiHttpRequestHandler;
     }
   }
 
@@ -1933,11 +1942,11 @@ private module StdlibPrivate {
           // Python 2
           BaseHttpServer::BaseHttpRequestHandler::classRef(),
           SimpleHttpServer::SimpleHttpRequestHandler::classRef(),
-          CGIHTTPServer::CGIHTTPRequestHandler::classRef(),
+          CgiHttpServer::CgiHttpRequestHandler::classRef(),
           // Python 3
           Http::Server::BaseHttpRequestHandler::classRef(),
           Http::Server::SimpleHttpRequestHandler::classRef(),
-          Http::Server::CGIHTTPRequestHandler::classRef()
+          Http::Server::CgiHttpRequestHandler::classRef()
         ].getASubclass*()
     }
 
@@ -2089,8 +2098,8 @@ private module StdlibPrivate {
      *
      * See https://docs.python.org/3.10/library/wsgiref.html#wsgiref.simple_server.WSGIRequestHandler.get_environ
      */
-    class WSGIEnvirontParameter extends RemoteFlowSource::Range, DataFlow::ParameterNode {
-      WSGIEnvirontParameter() {
+    class WsgiEnvirontParameter extends RemoteFlowSource::Range, DataFlow::ParameterNode {
+      WsgiEnvirontParameter() {
         exists(WsgirefSimpleServerApplication func |
           if func.isMethod()
           then this.getParameter() = func.getArg(1)
@@ -2102,6 +2111,9 @@ private module StdlibPrivate {
         result = "Stdlib: wsgiref.simple_server application: WSGI environment parameter"
       }
     }
+
+    /** DEPRECATED: Alias for WsgiEnvirontParameter */
+    deprecated class WSGIEnvirontParameter = WsgiEnvirontParameter;
 
     /**
      * Gets a reference to the parameter of a `WsgirefSimpleServerApplication` that

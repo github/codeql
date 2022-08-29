@@ -27,9 +27,23 @@ element_is_unknown(
   int id: @element ref
 );
 
+@file =
+  @db_file
+| @unknown_file
+;
+
+#keyset[id]
 files(
-  unique int id: @file,
+  int id: @file ref,
   string name: string ref
+);
+
+db_files(
+  unique int id: @db_file
+);
+
+unknown_files(
+  unique int id: @unknown_file
 );
 
 @locatable =
@@ -46,13 +60,27 @@ locatable_locations(
   int location: @location ref
 );
 
+@location =
+  @db_location
+| @unknown_location
+;
+
+#keyset[id]
 locations(
-  unique int id: @location,
+  int id: @location ref,
   int file: @file ref,
   int start_line: int ref,
   int start_column: int ref,
   int end_line: int ref,
   int end_column: int ref
+);
+
+db_locations(
+  unique int id: @db_location
+);
+
+unknown_locations(
+  unique int id: @unknown_location
 );
 
 comments(
@@ -143,6 +171,12 @@ callable_params(
   int id: @callable ref,
   int index: int ref,
   int param: @param_decl ref
+);
+
+#keyset[id]
+callable_self_params(
+  int id: @callable ref,
+  int self_param: @param_decl ref
 );
 
 #keyset[id]
@@ -388,6 +422,12 @@ struct_decls(  //dir=decl
 | @top_level_code_decl
 | @value_decl
 ;
+
+#keyset[id]
+decls(  //dir=decl
+  int id: @decl ref,
+  int module: @module_decl ref
+);
 
 @expr =
   @abstract_closure_expr
@@ -669,13 +709,18 @@ if_config_clause_is_active(  //dir=decl
 );
 
 import_decls(  //dir=decl
-  unique int id: @import_decl,
-  int module: @module_decl ref
+  unique int id: @import_decl
 );
 
 #keyset[id]
 import_decl_is_exported(  //dir=decl
   int id: @import_decl ref
+);
+
+#keyset[id]
+import_decl_imported_modules(  //dir=decl
+  int id: @import_decl ref,
+  int imported_module: @module_decl ref
 );
 
 #keyset[id, index]
@@ -880,7 +925,7 @@ dot_syntax_base_ignored_exprs(  //dir=expr
 
 dynamic_type_exprs(  //dir=expr
   unique int id: @dynamic_type_expr,
-  int base_expr: @expr ref
+  int base: @expr ref
 );
 
 editor_placeholder_exprs(  //dir=expr
@@ -1020,13 +1065,14 @@ lazy_initializer_exprs(  //dir=expr
 @lookup_expr =
   @dynamic_lookup_expr
 | @member_ref_expr
+| @method_ref_expr
 | @subscript_expr
 ;
 
 #keyset[id]
 lookup_exprs(  //dir=expr
   int id: @lookup_expr ref,
-  int base_expr: @expr ref
+  int base: @expr ref
 );
 
 #keyset[id]
@@ -1585,7 +1631,7 @@ prefix_unary_exprs(  //dir=expr
 #keyset[id]
 self_apply_exprs(  //dir=expr
   int id: @self_apply_expr ref,
-  int base_expr: @expr ref
+  int base: @expr ref
 );
 
 array_exprs(  //dir=expr
@@ -1831,6 +1877,10 @@ member_ref_expr_has_ordinary_semantics(  //dir=expr
   int id: @member_ref_expr ref
 );
 
+method_ref_exprs(  //dir=expr
+  unique int id: @method_ref_expr
+);
+
 subscript_exprs(  //dir=expr
   unique int id: @subscript_expr
 );
@@ -2064,6 +2114,20 @@ module_decl_is_builtin_module(  //dir=decl
 #keyset[id]
 module_decl_is_system_module(  //dir=decl
   int id: @module_decl ref
+);
+
+#keyset[id, index]
+module_decl_imported_modules(  //dir=decl
+  int id: @module_decl ref,
+  int index: int ref,
+  int imported_module: @module_decl ref
+);
+
+#keyset[id, index]
+module_decl_exported_modules(  //dir=decl
+  int id: @module_decl ref,
+  int index: int ref,
+  int exported_module: @module_decl ref
 );
 
 constructor_ref_call_exprs(  //dir=expr

@@ -169,13 +169,13 @@ namespace System
             }
 
             // Generated from `System.Runtime.InteropServices.CallingConvention` in `System.Runtime.InteropServices, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum CallingConvention
+            public enum CallingConvention : int
             {
-                Cdecl,
-                FastCall,
-                StdCall,
-                ThisCall,
-                Winapi,
+                Cdecl = 2,
+                FastCall = 5,
+                StdCall = 3,
+                ThisCall = 4,
+                Winapi = 1,
             }
 
             // Generated from `System.Runtime.InteropServices.ClassInterfaceAttribute` in `System.Runtime.InteropServices, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -187,11 +187,11 @@ namespace System
             }
 
             // Generated from `System.Runtime.InteropServices.ClassInterfaceType` in `System.Runtime.InteropServices, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum ClassInterfaceType
+            public enum ClassInterfaceType : int
             {
-                AutoDispatch,
-                AutoDual,
-                None,
+                AutoDispatch = 1,
+                AutoDual = 2,
+                None = 0,
             }
 
             // Generated from `System.Runtime.InteropServices.CoClassAttribute` in `System.Runtime.InteropServices, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -283,20 +283,20 @@ namespace System
             }
 
             // Generated from `System.Runtime.InteropServices.ComInterfaceType` in `System.Runtime.InteropServices, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum ComInterfaceType
+            public enum ComInterfaceType : int
             {
-                InterfaceIsDual,
-                InterfaceIsIDispatch,
-                InterfaceIsIInspectable,
-                InterfaceIsIUnknown,
+                InterfaceIsDual = 0,
+                InterfaceIsIDispatch = 2,
+                InterfaceIsIInspectable = 3,
+                InterfaceIsIUnknown = 1,
             }
 
             // Generated from `System.Runtime.InteropServices.ComMemberType` in `System.Runtime.InteropServices, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum ComMemberType
+            public enum ComMemberType : int
             {
-                Method,
-                PropGet,
-                PropSet,
+                Method = 0,
+                PropGet = 1,
+                PropSet = 2,
             }
 
             // Generated from `System.Runtime.InteropServices.ComRegisterFunctionAttribute` in `System.Runtime.InteropServices, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -358,22 +358,22 @@ namespace System
 
             // Generated from `System.Runtime.InteropServices.CreateComInterfaceFlags` in `System.Runtime.InteropServices, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             [System.Flags]
-            public enum CreateComInterfaceFlags
+            public enum CreateComInterfaceFlags : int
             {
-                CallerDefinedIUnknown,
-                None,
-                TrackerSupport,
+                CallerDefinedIUnknown = 1,
+                None = 0,
+                TrackerSupport = 2,
             }
 
             // Generated from `System.Runtime.InteropServices.CreateObjectFlags` in `System.Runtime.InteropServices, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             [System.Flags]
-            public enum CreateObjectFlags
+            public enum CreateObjectFlags : int
             {
-                Aggregation,
-                None,
-                TrackerObject,
-                UniqueInstance,
-                Unwrap,
+                Aggregation = 4,
+                None = 0,
+                TrackerObject = 1,
+                UniqueInstance = 2,
+                Unwrap = 8,
             }
 
             // Generated from `System.Runtime.InteropServices.CurrencyWrapper` in `System.Runtime.InteropServices, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -385,18 +385,18 @@ namespace System
             }
 
             // Generated from `System.Runtime.InteropServices.CustomQueryInterfaceMode` in `System.Runtime.InteropServices, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum CustomQueryInterfaceMode
+            public enum CustomQueryInterfaceMode : int
             {
-                Allow,
-                Ignore,
+                Allow = 1,
+                Ignore = 0,
             }
 
             // Generated from `System.Runtime.InteropServices.CustomQueryInterfaceResult` in `System.Runtime.InteropServices, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum CustomQueryInterfaceResult
+            public enum CustomQueryInterfaceResult : int
             {
-                Failed,
-                Handled,
-                NotHandled,
+                Failed = 2,
+                Handled = 0,
+                NotHandled = 1,
             }
 
             // Generated from `System.Runtime.InteropServices.DefaultCharSetAttribute` in `System.Runtime.InteropServices, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -454,15 +454,15 @@ namespace System
 
             // Generated from `System.Runtime.InteropServices.DllImportSearchPath` in `System.Runtime.InteropServices, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             [System.Flags]
-            public enum DllImportSearchPath
+            public enum DllImportSearchPath : int
             {
-                ApplicationDirectory,
-                AssemblyDirectory,
-                LegacyBehavior,
-                SafeDirectories,
-                System32,
-                UseDllDirectoryForDependencies,
-                UserDirectories,
+                ApplicationDirectory = 512,
+                AssemblyDirectory = 2,
+                LegacyBehavior = 0,
+                SafeDirectories = 4096,
+                System32 = 2048,
+                UseDllDirectoryForDependencies = 256,
+                UserDirectories = 1024,
             }
 
             // Generated from `System.Runtime.InteropServices.DynamicInterfaceCastableImplementationAttribute` in `System.Runtime.InteropServices, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -833,18 +833,18 @@ namespace System
             }
 
             // Generated from `System.Runtime.InteropServices.PosixSignal` in `System.Runtime.InteropServices, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum PosixSignal
+            public enum PosixSignal : int
             {
-                SIGCHLD,
-                SIGCONT,
-                SIGHUP,
-                SIGINT,
-                SIGQUIT,
-                SIGTERM,
-                SIGTSTP,
-                SIGTTIN,
-                SIGTTOU,
-                SIGWINCH,
+                SIGCHLD = -5,
+                SIGCONT = -6,
+                SIGHUP = -1,
+                SIGINT = -2,
+                SIGQUIT = -3,
+                SIGTERM = -4,
+                SIGTSTP = -10,
+                SIGTTIN = -8,
+                SIGTTOU = -9,
+                SIGWINCH = -7,
             }
 
             // Generated from `System.Runtime.InteropServices.PosixSignalContext` in `System.Runtime.InteropServices, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -948,21 +948,21 @@ namespace System
 
             // Generated from `System.Runtime.InteropServices.TypeLibFuncFlags` in `System.Runtime.InteropServices, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             [System.Flags]
-            public enum TypeLibFuncFlags
+            public enum TypeLibFuncFlags : int
             {
-                FBindable,
-                FDefaultBind,
-                FDefaultCollelem,
-                FDisplayBind,
-                FHidden,
-                FImmediateBind,
-                FNonBrowsable,
-                FReplaceable,
-                FRequestEdit,
-                FRestricted,
-                FSource,
-                FUiDefault,
-                FUsesGetLastError,
+                FBindable = 4,
+                FDefaultBind = 32,
+                FDefaultCollelem = 256,
+                FDisplayBind = 16,
+                FHidden = 64,
+                FImmediateBind = 4096,
+                FNonBrowsable = 1024,
+                FReplaceable = 2048,
+                FRequestEdit = 8,
+                FRestricted = 1,
+                FSource = 2,
+                FUiDefault = 512,
+                FUsesGetLastError = 128,
             }
 
             // Generated from `System.Runtime.InteropServices.TypeLibImportClassAttribute` in `System.Runtime.InteropServices, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -982,22 +982,22 @@ namespace System
 
             // Generated from `System.Runtime.InteropServices.TypeLibTypeFlags` in `System.Runtime.InteropServices, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             [System.Flags]
-            public enum TypeLibTypeFlags
+            public enum TypeLibTypeFlags : int
             {
-                FAggregatable,
-                FAppObject,
-                FCanCreate,
-                FControl,
-                FDispatchable,
-                FDual,
-                FHidden,
-                FLicensed,
-                FNonExtensible,
-                FOleAutomation,
-                FPreDeclId,
-                FReplaceable,
-                FRestricted,
-                FReverseBind,
+                FAggregatable = 1024,
+                FAppObject = 1,
+                FCanCreate = 2,
+                FControl = 32,
+                FDispatchable = 4096,
+                FDual = 64,
+                FHidden = 16,
+                FLicensed = 4,
+                FNonExtensible = 128,
+                FOleAutomation = 256,
+                FPreDeclId = 8,
+                FReplaceable = 2048,
+                FRestricted = 512,
+                FReverseBind = 8192,
             }
 
             // Generated from `System.Runtime.InteropServices.TypeLibVarAttribute` in `System.Runtime.InteropServices, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -1010,21 +1010,21 @@ namespace System
 
             // Generated from `System.Runtime.InteropServices.TypeLibVarFlags` in `System.Runtime.InteropServices, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             [System.Flags]
-            public enum TypeLibVarFlags
+            public enum TypeLibVarFlags : int
             {
-                FBindable,
-                FDefaultBind,
-                FDefaultCollelem,
-                FDisplayBind,
-                FHidden,
-                FImmediateBind,
-                FNonBrowsable,
-                FReadOnly,
-                FReplaceable,
-                FRequestEdit,
-                FRestricted,
-                FSource,
-                FUiDefault,
+                FBindable = 4,
+                FDefaultBind = 32,
+                FDefaultCollelem = 256,
+                FDisplayBind = 16,
+                FHidden = 64,
+                FImmediateBind = 4096,
+                FNonBrowsable = 1024,
+                FReadOnly = 1,
+                FReplaceable = 2048,
+                FRequestEdit = 8,
+                FRestricted = 128,
+                FSource = 2,
+                FUiDefault = 512,
             }
 
             // Generated from `System.Runtime.InteropServices.TypeLibVersionAttribute` in `System.Runtime.InteropServices, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -1069,95 +1069,95 @@ namespace System
             }
 
             // Generated from `System.Runtime.InteropServices.UnmanagedType` in `System.Runtime.InteropServices, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum UnmanagedType
+            public enum UnmanagedType : int
             {
-                AnsiBStr,
-                AsAny,
-                BStr,
-                Bool,
-                ByValArray,
-                ByValTStr,
-                Currency,
-                CustomMarshaler,
-                Error,
-                FunctionPtr,
-                HString,
-                I1,
-                I2,
-                I4,
-                I8,
-                IDispatch,
-                IInspectable,
-                IUnknown,
-                Interface,
-                LPArray,
-                LPStr,
-                LPStruct,
-                LPTStr,
-                LPUTF8Str,
-                LPWStr,
-                R4,
-                R8,
-                SafeArray,
-                Struct,
-                SysInt,
-                SysUInt,
-                TBStr,
-                U1,
-                U2,
-                U4,
-                U8,
-                VBByRefStr,
-                VariantBool,
+                AnsiBStr = 35,
+                AsAny = 40,
+                BStr = 19,
+                Bool = 2,
+                ByValArray = 30,
+                ByValTStr = 23,
+                Currency = 15,
+                CustomMarshaler = 44,
+                Error = 45,
+                FunctionPtr = 38,
+                HString = 47,
+                I1 = 3,
+                I2 = 5,
+                I4 = 7,
+                I8 = 9,
+                IDispatch = 26,
+                IInspectable = 46,
+                IUnknown = 25,
+                Interface = 28,
+                LPArray = 42,
+                LPStr = 20,
+                LPStruct = 43,
+                LPTStr = 22,
+                LPUTF8Str = 48,
+                LPWStr = 21,
+                R4 = 11,
+                R8 = 12,
+                SafeArray = 29,
+                Struct = 27,
+                SysInt = 31,
+                SysUInt = 32,
+                TBStr = 36,
+                U1 = 4,
+                U2 = 6,
+                U4 = 8,
+                U8 = 10,
+                VBByRefStr = 34,
+                VariantBool = 37,
             }
 
             // Generated from `System.Runtime.InteropServices.VarEnum` in `System.Runtime.InteropServices, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum VarEnum
+            public enum VarEnum : int
             {
-                VT_ARRAY,
-                VT_BLOB,
-                VT_BLOB_OBJECT,
-                VT_BOOL,
-                VT_BSTR,
-                VT_BYREF,
-                VT_CARRAY,
-                VT_CF,
-                VT_CLSID,
-                VT_CY,
-                VT_DATE,
-                VT_DECIMAL,
-                VT_DISPATCH,
-                VT_EMPTY,
-                VT_ERROR,
-                VT_FILETIME,
-                VT_HRESULT,
-                VT_I1,
-                VT_I2,
-                VT_I4,
-                VT_I8,
-                VT_INT,
-                VT_LPSTR,
-                VT_LPWSTR,
-                VT_NULL,
-                VT_PTR,
-                VT_R4,
-                VT_R8,
-                VT_RECORD,
-                VT_SAFEARRAY,
-                VT_STORAGE,
-                VT_STORED_OBJECT,
-                VT_STREAM,
-                VT_STREAMED_OBJECT,
-                VT_UI1,
-                VT_UI2,
-                VT_UI4,
-                VT_UI8,
-                VT_UINT,
-                VT_UNKNOWN,
-                VT_USERDEFINED,
-                VT_VARIANT,
-                VT_VECTOR,
-                VT_VOID,
+                VT_ARRAY = 8192,
+                VT_BLOB = 65,
+                VT_BLOB_OBJECT = 70,
+                VT_BOOL = 11,
+                VT_BSTR = 8,
+                VT_BYREF = 16384,
+                VT_CARRAY = 28,
+                VT_CF = 71,
+                VT_CLSID = 72,
+                VT_CY = 6,
+                VT_DATE = 7,
+                VT_DECIMAL = 14,
+                VT_DISPATCH = 9,
+                VT_EMPTY = 0,
+                VT_ERROR = 10,
+                VT_FILETIME = 64,
+                VT_HRESULT = 25,
+                VT_I1 = 16,
+                VT_I2 = 2,
+                VT_I4 = 3,
+                VT_I8 = 20,
+                VT_INT = 22,
+                VT_LPSTR = 30,
+                VT_LPWSTR = 31,
+                VT_NULL = 1,
+                VT_PTR = 26,
+                VT_R4 = 4,
+                VT_R8 = 5,
+                VT_RECORD = 36,
+                VT_SAFEARRAY = 27,
+                VT_STORAGE = 67,
+                VT_STORED_OBJECT = 69,
+                VT_STREAM = 66,
+                VT_STREAMED_OBJECT = 68,
+                VT_UI1 = 17,
+                VT_UI2 = 18,
+                VT_UI4 = 19,
+                VT_UI8 = 21,
+                VT_UINT = 23,
+                VT_UNKNOWN = 13,
+                VT_USERDEFINED = 29,
+                VT_VARIANT = 12,
+                VT_VECTOR = 4096,
+                VT_VOID = 24,
             }
 
             // Generated from `System.Runtime.InteropServices.VariantWrapper` in `System.Runtime.InteropServices, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -1171,15 +1171,15 @@ namespace System
             {
                 // Generated from `System.Runtime.InteropServices.ComTypes.ADVF` in `System.Runtime.InteropServices, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 [System.Flags]
-                public enum ADVF
+                public enum ADVF : int
                 {
-                    ADVFCACHE_FORCEBUILTIN,
-                    ADVFCACHE_NOHANDLER,
-                    ADVFCACHE_ONSAVE,
-                    ADVF_DATAONSTOP,
-                    ADVF_NODATA,
-                    ADVF_ONLYONCE,
-                    ADVF_PRIMEFIRST,
+                    ADVFCACHE_FORCEBUILTIN = 16,
+                    ADVFCACHE_NOHANDLER = 8,
+                    ADVFCACHE_ONSAVE = 32,
+                    ADVF_DATAONSTOP = 64,
+                    ADVF_NODATA = 1,
+                    ADVF_ONLYONCE = 4,
+                    ADVF_PRIMEFIRST = 2,
                 }
 
                 // Generated from `System.Runtime.InteropServices.ComTypes.BINDPTR` in `System.Runtime.InteropServices, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -1202,18 +1202,18 @@ namespace System
                 }
 
                 // Generated from `System.Runtime.InteropServices.ComTypes.CALLCONV` in `System.Runtime.InteropServices, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-                public enum CALLCONV
+                public enum CALLCONV : int
                 {
-                    CC_CDECL,
-                    CC_MACPASCAL,
-                    CC_MAX,
-                    CC_MPWCDECL,
-                    CC_MPWPASCAL,
-                    CC_MSCPASCAL,
-                    CC_PASCAL,
-                    CC_RESERVED,
-                    CC_STDCALL,
-                    CC_SYSCALL,
+                    CC_CDECL = 1,
+                    CC_MACPASCAL = 3,
+                    CC_MAX = 9,
+                    CC_MPWCDECL = 7,
+                    CC_MPWPASCAL = 8,
+                    CC_MSCPASCAL = 2,
+                    CC_PASCAL = 2,
+                    CC_RESERVED = 5,
+                    CC_STDCALL = 4,
+                    CC_SYSCALL = 6,
                 }
 
                 // Generated from `System.Runtime.InteropServices.ComTypes.CONNECTDATA` in `System.Runtime.InteropServices, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -1225,21 +1225,21 @@ namespace System
                 }
 
                 // Generated from `System.Runtime.InteropServices.ComTypes.DATADIR` in `System.Runtime.InteropServices, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-                public enum DATADIR
+                public enum DATADIR : int
                 {
-                    DATADIR_GET,
-                    DATADIR_SET,
+                    DATADIR_GET = 1,
+                    DATADIR_SET = 2,
                 }
 
                 // Generated from `System.Runtime.InteropServices.ComTypes.DESCKIND` in `System.Runtime.InteropServices, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-                public enum DESCKIND
+                public enum DESCKIND : int
                 {
-                    DESCKIND_FUNCDESC,
-                    DESCKIND_IMPLICITAPPOBJ,
-                    DESCKIND_MAX,
-                    DESCKIND_NONE,
-                    DESCKIND_TYPECOMP,
-                    DESCKIND_VARDESC,
+                    DESCKIND_FUNCDESC = 1,
+                    DESCKIND_IMPLICITAPPOBJ = 4,
+                    DESCKIND_MAX = 5,
+                    DESCKIND_NONE = 0,
+                    DESCKIND_TYPECOMP = 3,
+                    DESCKIND_VARDESC = 2,
                 }
 
                 // Generated from `System.Runtime.InteropServices.ComTypes.DISPPARAMS` in `System.Runtime.InteropServices, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -1254,12 +1254,12 @@ namespace System
 
                 // Generated from `System.Runtime.InteropServices.ComTypes.DVASPECT` in `System.Runtime.InteropServices, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 [System.Flags]
-                public enum DVASPECT
+                public enum DVASPECT : int
                 {
-                    DVASPECT_CONTENT,
-                    DVASPECT_DOCPRINT,
-                    DVASPECT_ICON,
-                    DVASPECT_THUMBNAIL,
+                    DVASPECT_CONTENT = 1,
+                    DVASPECT_DOCPRINT = 8,
+                    DVASPECT_ICON = 4,
+                    DVASPECT_THUMBNAIL = 2,
                 }
 
                 // Generated from `System.Runtime.InteropServices.ComTypes.ELEMDESC` in `System.Runtime.InteropServices, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -1333,31 +1333,31 @@ namespace System
 
                 // Generated from `System.Runtime.InteropServices.ComTypes.FUNCFLAGS` in `System.Runtime.InteropServices, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 [System.Flags]
-                public enum FUNCFLAGS
+                public enum FUNCFLAGS : short
                 {
-                    FUNCFLAG_FBINDABLE,
-                    FUNCFLAG_FDEFAULTBIND,
-                    FUNCFLAG_FDEFAULTCOLLELEM,
-                    FUNCFLAG_FDISPLAYBIND,
-                    FUNCFLAG_FHIDDEN,
-                    FUNCFLAG_FIMMEDIATEBIND,
-                    FUNCFLAG_FNONBROWSABLE,
-                    FUNCFLAG_FREPLACEABLE,
-                    FUNCFLAG_FREQUESTEDIT,
-                    FUNCFLAG_FRESTRICTED,
-                    FUNCFLAG_FSOURCE,
-                    FUNCFLAG_FUIDEFAULT,
-                    FUNCFLAG_FUSESGETLASTERROR,
+                    FUNCFLAG_FBINDABLE = 4,
+                    FUNCFLAG_FDEFAULTBIND = 32,
+                    FUNCFLAG_FDEFAULTCOLLELEM = 256,
+                    FUNCFLAG_FDISPLAYBIND = 16,
+                    FUNCFLAG_FHIDDEN = 64,
+                    FUNCFLAG_FIMMEDIATEBIND = 4096,
+                    FUNCFLAG_FNONBROWSABLE = 1024,
+                    FUNCFLAG_FREPLACEABLE = 2048,
+                    FUNCFLAG_FREQUESTEDIT = 8,
+                    FUNCFLAG_FRESTRICTED = 1,
+                    FUNCFLAG_FSOURCE = 2,
+                    FUNCFLAG_FUIDEFAULT = 512,
+                    FUNCFLAG_FUSESGETLASTERROR = 128,
                 }
 
                 // Generated from `System.Runtime.InteropServices.ComTypes.FUNCKIND` in `System.Runtime.InteropServices, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-                public enum FUNCKIND
+                public enum FUNCKIND : int
                 {
-                    FUNC_DISPATCH,
-                    FUNC_NONVIRTUAL,
-                    FUNC_PUREVIRTUAL,
-                    FUNC_STATIC,
-                    FUNC_VIRTUAL,
+                    FUNC_DISPATCH = 4,
+                    FUNC_NONVIRTUAL = 2,
+                    FUNC_PUREVIRTUAL = 1,
+                    FUNC_STATIC = 3,
+                    FUNC_VIRTUAL = 0,
                 }
 
                 // Generated from `System.Runtime.InteropServices.ComTypes.IAdviseSink` in `System.Runtime.InteropServices, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -1412,13 +1412,13 @@ namespace System
 
                 // Generated from `System.Runtime.InteropServices.ComTypes.IDLFLAG` in `System.Runtime.InteropServices, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 [System.Flags]
-                public enum IDLFLAG
+                public enum IDLFLAG : short
                 {
-                    IDLFLAG_FIN,
-                    IDLFLAG_FLCID,
-                    IDLFLAG_FOUT,
-                    IDLFLAG_FRETVAL,
-                    IDLFLAG_NONE,
+                    IDLFLAG_FIN = 1,
+                    IDLFLAG_FLCID = 4,
+                    IDLFLAG_FOUT = 2,
+                    IDLFLAG_FRETVAL = 8,
+                    IDLFLAG_NONE = 0,
                 }
 
                 // Generated from `System.Runtime.InteropServices.ComTypes.IDataObject` in `System.Runtime.InteropServices, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -1500,12 +1500,12 @@ namespace System
 
                 // Generated from `System.Runtime.InteropServices.ComTypes.IMPLTYPEFLAGS` in `System.Runtime.InteropServices, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 [System.Flags]
-                public enum IMPLTYPEFLAGS
+                public enum IMPLTYPEFLAGS : int
                 {
-                    IMPLTYPEFLAG_FDEFAULT,
-                    IMPLTYPEFLAG_FDEFAULTVTABLE,
-                    IMPLTYPEFLAG_FRESTRICTED,
-                    IMPLTYPEFLAG_FSOURCE,
+                    IMPLTYPEFLAG_FDEFAULT = 1,
+                    IMPLTYPEFLAG_FDEFAULTVTABLE = 8,
+                    IMPLTYPEFLAG_FRESTRICTED = 4,
+                    IMPLTYPEFLAG_FSOURCE = 2,
                 }
 
                 // Generated from `System.Runtime.InteropServices.ComTypes.IMoniker` in `System.Runtime.InteropServices, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -1535,12 +1535,12 @@ namespace System
 
                 // Generated from `System.Runtime.InteropServices.ComTypes.INVOKEKIND` in `System.Runtime.InteropServices, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 [System.Flags]
-                public enum INVOKEKIND
+                public enum INVOKEKIND : int
                 {
-                    INVOKE_FUNC,
-                    INVOKE_PROPERTYGET,
-                    INVOKE_PROPERTYPUT,
-                    INVOKE_PROPERTYPUTREF,
+                    INVOKE_FUNC = 1,
+                    INVOKE_PROPERTYGET = 2,
+                    INVOKE_PROPERTYPUT = 4,
+                    INVOKE_PROPERTYPUTREF = 8,
                 }
 
                 // Generated from `System.Runtime.InteropServices.ComTypes.IPersistFile` in `System.Runtime.InteropServices, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -1688,12 +1688,12 @@ namespace System
 
                 // Generated from `System.Runtime.InteropServices.ComTypes.LIBFLAGS` in `System.Runtime.InteropServices, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 [System.Flags]
-                public enum LIBFLAGS
+                public enum LIBFLAGS : short
                 {
-                    LIBFLAG_FCONTROL,
-                    LIBFLAG_FHASDISKIMAGE,
-                    LIBFLAG_FHIDDEN,
-                    LIBFLAG_FRESTRICTED,
+                    LIBFLAG_FCONTROL = 2,
+                    LIBFLAG_FHASDISKIMAGE = 8,
+                    LIBFLAG_FHIDDEN = 4,
+                    LIBFLAG_FRESTRICTED = 1,
                 }
 
                 // Generated from `System.Runtime.InteropServices.ComTypes.PARAMDESC` in `System.Runtime.InteropServices, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -1706,16 +1706,16 @@ namespace System
 
                 // Generated from `System.Runtime.InteropServices.ComTypes.PARAMFLAG` in `System.Runtime.InteropServices, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 [System.Flags]
-                public enum PARAMFLAG
+                public enum PARAMFLAG : short
                 {
-                    PARAMFLAG_FHASCUSTDATA,
-                    PARAMFLAG_FHASDEFAULT,
-                    PARAMFLAG_FIN,
-                    PARAMFLAG_FLCID,
-                    PARAMFLAG_FOPT,
-                    PARAMFLAG_FOUT,
-                    PARAMFLAG_FRETVAL,
-                    PARAMFLAG_NONE,
+                    PARAMFLAG_FHASCUSTDATA = 64,
+                    PARAMFLAG_FHASDEFAULT = 32,
+                    PARAMFLAG_FIN = 1,
+                    PARAMFLAG_FLCID = 4,
+                    PARAMFLAG_FOPT = 16,
+                    PARAMFLAG_FOUT = 2,
+                    PARAMFLAG_FRETVAL = 8,
+                    PARAMFLAG_NONE = 0,
                 }
 
                 // Generated from `System.Runtime.InteropServices.ComTypes.STATDATA` in `System.Runtime.InteropServices, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -1755,26 +1755,26 @@ namespace System
                 }
 
                 // Generated from `System.Runtime.InteropServices.ComTypes.SYSKIND` in `System.Runtime.InteropServices, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-                public enum SYSKIND
+                public enum SYSKIND : int
                 {
-                    SYS_MAC,
-                    SYS_WIN16,
-                    SYS_WIN32,
-                    SYS_WIN64,
+                    SYS_MAC = 2,
+                    SYS_WIN16 = 0,
+                    SYS_WIN32 = 1,
+                    SYS_WIN64 = 3,
                 }
 
                 // Generated from `System.Runtime.InteropServices.ComTypes.TYMED` in `System.Runtime.InteropServices, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 [System.Flags]
-                public enum TYMED
+                public enum TYMED : int
                 {
-                    TYMED_ENHMF,
-                    TYMED_FILE,
-                    TYMED_GDI,
-                    TYMED_HGLOBAL,
-                    TYMED_ISTORAGE,
-                    TYMED_ISTREAM,
-                    TYMED_MFPICT,
-                    TYMED_NULL,
+                    TYMED_ENHMF = 64,
+                    TYMED_FILE = 2,
+                    TYMED_GDI = 16,
+                    TYMED_HGLOBAL = 1,
+                    TYMED_ISTORAGE = 8,
+                    TYMED_ISTREAM = 4,
+                    TYMED_MFPICT = 32,
+                    TYMED_NULL = 0,
                 }
 
                 // Generated from `System.Runtime.InteropServices.ComTypes.TYPEATTR` in `System.Runtime.InteropServices, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -1812,37 +1812,37 @@ namespace System
 
                 // Generated from `System.Runtime.InteropServices.ComTypes.TYPEFLAGS` in `System.Runtime.InteropServices, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 [System.Flags]
-                public enum TYPEFLAGS
+                public enum TYPEFLAGS : short
                 {
-                    TYPEFLAG_FAGGREGATABLE,
-                    TYPEFLAG_FAPPOBJECT,
-                    TYPEFLAG_FCANCREATE,
-                    TYPEFLAG_FCONTROL,
-                    TYPEFLAG_FDISPATCHABLE,
-                    TYPEFLAG_FDUAL,
-                    TYPEFLAG_FHIDDEN,
-                    TYPEFLAG_FLICENSED,
-                    TYPEFLAG_FNONEXTENSIBLE,
-                    TYPEFLAG_FOLEAUTOMATION,
-                    TYPEFLAG_FPREDECLID,
-                    TYPEFLAG_FPROXY,
-                    TYPEFLAG_FREPLACEABLE,
-                    TYPEFLAG_FRESTRICTED,
-                    TYPEFLAG_FREVERSEBIND,
+                    TYPEFLAG_FAGGREGATABLE = 1024,
+                    TYPEFLAG_FAPPOBJECT = 1,
+                    TYPEFLAG_FCANCREATE = 2,
+                    TYPEFLAG_FCONTROL = 32,
+                    TYPEFLAG_FDISPATCHABLE = 4096,
+                    TYPEFLAG_FDUAL = 64,
+                    TYPEFLAG_FHIDDEN = 16,
+                    TYPEFLAG_FLICENSED = 4,
+                    TYPEFLAG_FNONEXTENSIBLE = 128,
+                    TYPEFLAG_FOLEAUTOMATION = 256,
+                    TYPEFLAG_FPREDECLID = 8,
+                    TYPEFLAG_FPROXY = 16384,
+                    TYPEFLAG_FREPLACEABLE = 2048,
+                    TYPEFLAG_FRESTRICTED = 512,
+                    TYPEFLAG_FREVERSEBIND = 8192,
                 }
 
                 // Generated from `System.Runtime.InteropServices.ComTypes.TYPEKIND` in `System.Runtime.InteropServices, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-                public enum TYPEKIND
+                public enum TYPEKIND : int
                 {
-                    TKIND_ALIAS,
-                    TKIND_COCLASS,
-                    TKIND_DISPATCH,
-                    TKIND_ENUM,
-                    TKIND_INTERFACE,
-                    TKIND_MAX,
-                    TKIND_MODULE,
-                    TKIND_RECORD,
-                    TKIND_UNION,
+                    TKIND_ALIAS = 6,
+                    TKIND_COCLASS = 5,
+                    TKIND_DISPATCH = 4,
+                    TKIND_ENUM = 0,
+                    TKIND_INTERFACE = 3,
+                    TKIND_MAX = 8,
+                    TKIND_MODULE = 2,
+                    TKIND_RECORD = 1,
+                    TKIND_UNION = 7,
                 }
 
                 // Generated from `System.Runtime.InteropServices.ComTypes.TYPELIBATTR` in `System.Runtime.InteropServices, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
@@ -1880,30 +1880,30 @@ namespace System
 
                 // Generated from `System.Runtime.InteropServices.ComTypes.VARFLAGS` in `System.Runtime.InteropServices, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 [System.Flags]
-                public enum VARFLAGS
+                public enum VARFLAGS : short
                 {
-                    VARFLAG_FBINDABLE,
-                    VARFLAG_FDEFAULTBIND,
-                    VARFLAG_FDEFAULTCOLLELEM,
-                    VARFLAG_FDISPLAYBIND,
-                    VARFLAG_FHIDDEN,
-                    VARFLAG_FIMMEDIATEBIND,
-                    VARFLAG_FNONBROWSABLE,
-                    VARFLAG_FREADONLY,
-                    VARFLAG_FREPLACEABLE,
-                    VARFLAG_FREQUESTEDIT,
-                    VARFLAG_FRESTRICTED,
-                    VARFLAG_FSOURCE,
-                    VARFLAG_FUIDEFAULT,
+                    VARFLAG_FBINDABLE = 4,
+                    VARFLAG_FDEFAULTBIND = 32,
+                    VARFLAG_FDEFAULTCOLLELEM = 256,
+                    VARFLAG_FDISPLAYBIND = 16,
+                    VARFLAG_FHIDDEN = 64,
+                    VARFLAG_FIMMEDIATEBIND = 4096,
+                    VARFLAG_FNONBROWSABLE = 1024,
+                    VARFLAG_FREADONLY = 1,
+                    VARFLAG_FREPLACEABLE = 2048,
+                    VARFLAG_FREQUESTEDIT = 8,
+                    VARFLAG_FRESTRICTED = 128,
+                    VARFLAG_FSOURCE = 2,
+                    VARFLAG_FUIDEFAULT = 512,
                 }
 
                 // Generated from `System.Runtime.InteropServices.ComTypes.VARKIND` in `System.Runtime.InteropServices, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-                public enum VARKIND
+                public enum VARKIND : int
                 {
-                    VAR_CONST,
-                    VAR_DISPATCH,
-                    VAR_PERINSTANCE,
-                    VAR_STATIC,
+                    VAR_CONST = 2,
+                    VAR_DISPATCH = 3,
+                    VAR_PERINSTANCE = 0,
+                    VAR_STATIC = 1,
                 }
 
             }
@@ -1913,19 +1913,22 @@ namespace System
                 public static class ObjectiveCMarshal
                 {
                     // Generated from `System.Runtime.InteropServices.ObjectiveC.ObjectiveCMarshal+MessageSendFunction` in `System.Runtime.InteropServices, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-                    public enum MessageSendFunction
+                    public enum MessageSendFunction : int
                     {
-                        MsgSend,
-                        MsgSendFpret,
-                        MsgSendStret,
-                        MsgSendSuper,
-                        MsgSendSuperStret,
+                        MsgSend = 0,
+                        MsgSendFpret = 1,
+                        MsgSendStret = 2,
+                        MsgSendSuper = 3,
+                        MsgSendSuperStret = 4,
                     }
 
 
+                    // Generated from `System.Runtime.InteropServices.ObjectiveC.ObjectiveCMarshal+UnhandledExceptionPropagationHandler` in `System.Runtime.InteropServices, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+                    unsafe public delegate delegate* unmanaged<System.IntPtr, void> UnhandledExceptionPropagationHandler(System.Exception exception, System.RuntimeMethodHandle lastMethod, out System.IntPtr context);
 
 
                     public static System.Runtime.InteropServices.GCHandle CreateReferenceTrackingHandle(object obj, out System.Span<System.IntPtr> taggedMemory) => throw null;
+                    unsafe public static void Initialize(delegate* unmanaged<void> beginEndCallback, delegate* unmanaged<System.IntPtr, int> isReferencedCallback, delegate* unmanaged<System.IntPtr, void> trackedObjectEnteredFinalization, System.Runtime.InteropServices.ObjectiveC.ObjectiveCMarshal.UnhandledExceptionPropagationHandler unhandledExceptionPropagationHandler) => throw null;
                     public static void SetMessageSendCallback(System.Runtime.InteropServices.ObjectiveC.ObjectiveCMarshal.MessageSendFunction msgSendFunction, System.IntPtr func) => throw null;
                     public static void SetMessageSendPendingException(System.Exception exception) => throw null;
                 }
