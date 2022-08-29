@@ -1151,7 +1151,7 @@ public class TypeScriptASTConverter {
             loc,
             hasModifier(node, "ConstKeyword"),
             hasModifier(node, "DeclareKeyword"),
-            convertChildrenNotNull(node, "decorators"),
+            convertChildrenNotNull(node, "illegalDecorators"), // as of https://github.com/microsoft/TypeScript/pull/50343/ the property is called `illegalDecorators` instead of `decorators`
             convertChild(node, "name"),
             convertChildren(node, "members"));
     attachSymbolInformation(enumDeclaration, node);
