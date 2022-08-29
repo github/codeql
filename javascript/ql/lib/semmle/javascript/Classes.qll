@@ -494,7 +494,7 @@ class MemberDeclaration extends @property, Documentable {
   predicate isStatic() { is_static(this) }
 
   /** Gets a boolean indicating if this member is static. */
-  boolean getStaticAsBool() { if isStatic() then result = true else result = false }
+  boolean getStaticAsBool() { if this.isStatic() then result = true else result = false }
 
   /**
    * Holds if this member is abstract.
