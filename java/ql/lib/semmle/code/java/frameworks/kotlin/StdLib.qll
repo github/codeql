@@ -6,6 +6,9 @@ private import semmle.code.java.dataflow.ExternalFlow
 private class KotlinStdLibSummaryCsv extends SummaryModelCsv {
   override predicate row(string row) {
     row =
-      "kotlin.jvm.internal;ArrayIteratorKt;false;iterator;(Object[]);;Argument[0].ArrayElement;ReturnValue.Element;value;manual"
+      [
+        "kotlin.jvm.internal;ArrayIteratorKt;false;iterator;(Object[]);;Argument[0].ArrayElement;ReturnValue.Element;value;manual",
+        "kotlin.collections;ArraysKt;false;withIndex;(Object[]);;Argument[0].ArrayElement;ReturnValue;taint;manual"
+      ]
   }
 }
