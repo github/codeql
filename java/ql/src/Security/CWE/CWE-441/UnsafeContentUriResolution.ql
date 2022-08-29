@@ -1,9 +1,9 @@
 /**
- * @name Uncontrolled data used in path expression
+ * @name Uncontrolled data used in content resolution
  * @description Resolving externally-provided content URIs without validation can allow an attacker
  *              to access unexpected resources.
  * @kind path-problem
- * @problem.severity error
+ * @problem.severity warning
  * @precision high
  * @id java/android/unsafe-content-uri-resolution
  * @tags security
@@ -12,11 +12,10 @@
  */
 
 import java
-import UnsafeContentUriResolutionQuery
+import semmle.code.java.security.UnsafeContentUriResolutionQuery
 import DataFlow::PathGraph
 
 from DataFlow::PathNode src, DataFlow::PathNode sink
 where any(UnsafeContentResolutionConf c).hasFlowPath(src, sink)
-select sink.getNode(), src, sink,
-  "This $@ flows to a ContentResolver method that resolves a URI. The result is then used in a write operation.",
+select sink.getNode(), src, sink, "This $@ flows to a ContentResolver method that resolves a URI.",
   src.getNode(), "user input"

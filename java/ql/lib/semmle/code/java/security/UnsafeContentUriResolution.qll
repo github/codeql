@@ -1,14 +1,12 @@
 /** Provides classes to reason about vulnerabilites related to content URIs. */
 
 import java
-import semmle.code.java.dataflow.DataFlow
-import semmle.code.java.frameworks.android.Android
+private import semmle.code.java.dataflow.TaintTracking
+private import semmle.code.java.frameworks.android.Android
+private import semmle.code.java.security.PathSanitizer
 
 /** A URI that gets resolved by a `ContentResolver`. */
-abstract class ContentUriResolutionSink extends DataFlow::Node {
-  /** Gets the call node that resolves this URI. */
-  abstract DataFlow::Node getCallNode();
-}
+abstract class ContentUriResolutionSink extends DataFlow::Node { }
 
 /** A sanitizer for content URIs. */
 abstract class ContentUriResolutionSanitizer extends DataFlow::Node { }
@@ -31,10 +29,16 @@ private class DefaultContentUriResolutionSink extends ContentUriResolutionSink {
       this.getType().(RefType).hasQualifiedName("android.net", "Uri")
     )
   }
+}
 
-  /** Gets the call node of this argument. */
-  override DataFlow::Node getCallNode() {
-    result = DataFlow::exprNode(this.asExpr().(Argument).getCall())
+/** A `ContentResolver` method that resolves a URI. */
+private class UriOpeningContentResolverMethod extends Method {
+  UriOpeningContentResolverMethod() {
+    this.hasName([
+        "openInputStream", "openOutputStream", "openAssetFile", "openAssetFileDescriptor",
+        "openFile", "openFileDescriptor", "openTypedAssetFile", "openTypedAssetFileDescriptor",
+      ]) and
+    this.getDeclaringType() instanceof AndroidContentResolver
   }
 }
 
@@ -44,6 +48,9 @@ private class UninterestingTypeSanitizer extends ContentUriResolutionSanitizer {
     this.getType() instanceof PrimitiveType or
     this.getType() instanceof NumberType
   }
+}
+
+private class PathSanitizer extends ContentUriResolutionSanitizer instanceof PathInjectionSanitizer {
 }
 
 private class FilenameOnlySanitizer extends ContentUriResolutionSanitizer {
@@ -73,19 +80,8 @@ private class DecodedAsAnImageSanitizer extends ContentUriResolutionSanitizer {
               "decodeStream"
             ])
     |
-      DataFlow::localFlow(this.(ContentUriResolutionSink).getCallNode(),
-        DataFlow::exprNode(decodeArg))
+      TaintTracking::localExprTaint(this.(ContentUriResolutionSink).asExpr().(Argument).getCall(),
+        decodeArg)
     )
-  }
-}
-
-/** A `ContentResolver` method that resolves a URI. */
-private class UriOpeningContentResolverMethod extends Method {
-  UriOpeningContentResolverMethod() {
-    this.hasName([
-        "openInputStream", "openOutputStream", "openAssetFile", "openAssetFileDescriptor",
-        "openFile", "openFileDescriptor", "openTypedAssetFile", "openTypedAssetFileDescriptor",
-      ]) and
-    this.getDeclaringType() instanceof AndroidContentResolver
   }
 }
