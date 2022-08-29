@@ -82,6 +82,7 @@ private class FileSummaryModels extends SummaryModelCsv {
         "java.io;File;true;getCanonicalFile;;;Argument[-1];ReturnValue;taint;manual",
         "java.io;File;true;getCanonicalPath;;;Argument[-1];ReturnValue;taint;manual",
         "java.io;File;true;toPath;;;Argument[-1];ReturnValue;taint;manual",
+        "java.io;File;true;toString;;;Argument[-1];ReturnValue;taint;manual",
         "java.io;File;true;toURI;;;Argument[-1];ReturnValue;taint;manual",
         "java.nio.file;Path;true;normalize;;;Argument[-1];ReturnValue;taint;manual",
         "java.nio.file;Path;true;resolve;;;Argument[-1..0];ReturnValue;taint;manual",

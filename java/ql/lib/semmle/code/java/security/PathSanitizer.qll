@@ -72,7 +72,8 @@ private class ExactPathMatchSanitizer extends PathInjectionSanitizer {
 private class AllowListGuard extends Guard instanceof MethodAccess {
   AllowListGuard() {
     (isStringPrefixMatch(this) or isPathPrefixMatch(this)) and
-    not isDisallowedPrefix(super.getAnArgument())
+    not isDisallowedPrefix(super.getAnArgument()) and
+    not isDisallowedWord(super.getAnArgument())
   }
 
   Expr getCheckedExpr() { result = super.getQualifier() }
@@ -86,11 +87,13 @@ private class AllowListGuard extends Guard instanceof MethodAccess {
 private predicate allowListGuard(Guard g, Expr e, boolean branch) {
   branch = true and
   TaintTracking::localExprTaint(e, g.(AllowListGuard).getCheckedExpr()) and
-  exists(MethodAccess previousGuard |
+  exists(Expr previousGuard |
     TaintTracking::localExprTaint(previousGuard.(PathNormalizeSanitizer),
       g.(AllowListGuard).getCheckedExpr())
     or
-    previousGuard.(PathTraversalGuard).controls(g.getBasicBlock().(ConditionBlock), false)
+    previousGuard
+        .(PathTraversalGuard)
+        .controls(g.getBasicBlock().(ConditionBlock), previousGuard.(PathTraversalGuard).getBranch())
   )
 }
 
@@ -106,9 +109,9 @@ private class AllowListSanitizer extends PathInjectionSanitizer {
  * been checked for a trusted prefix.
  */
 private predicate dotDotCheckGuard(Guard g, Expr e, boolean branch) {
-  branch = false and
+  branch = g.(PathTraversalGuard).getBranch() and
   TaintTracking::localExprTaint(e, g.(PathTraversalGuard).getCheckedExpr()) and
-  exists(MethodAccess previousGuard |
+  exists(Guard previousGuard |
     previousGuard.(AllowListGuard).controls(g.getBasicBlock().(ConditionBlock), true)
     or
     previousGuard.(BlockListGuard).controls(g.getBasicBlock().(ConditionBlock), false)
@@ -142,11 +145,13 @@ private class BlockListGuard extends Guard instanceof MethodAccess {
 private predicate blockListGuard(Guard g, Expr e, boolean branch) {
   branch = false and
   TaintTracking::localExprTaint(e, g.(BlockListGuard).getCheckedExpr()) and
-  exists(MethodAccess previousGuard |
+  exists(Expr previousGuard |
     TaintTracking::localExprTaint(previousGuard.(PathNormalizeSanitizer),
       g.(BlockListGuard).getCheckedExpr())
     or
-    previousGuard.(PathTraversalGuard).controls(g.getBasicBlock().(ConditionBlock), false)
+    previousGuard
+        .(PathTraversalGuard)
+        .controls(g.getBasicBlock().(ConditionBlock), previousGuard.(PathTraversalGuard).getBranch())
   )
 }
 
@@ -200,14 +205,35 @@ private predicate isDisallowedWord(CompileTimeConstantExpr word) {
 }
 
 /** A complementary guard that protects against path traversal, by looking for the literal `..`. */
-private class PathTraversalGuard extends Guard instanceof MethodAccess {
+private class PathTraversalGuard extends Guard {
   PathTraversalGuard() {
-    super.getMethod().getDeclaringType() instanceof TypeString and
-    super.getMethod().hasName(["contains", "indexOf"]) and
-    super.getAnArgument().(CompileTimeConstantExpr).getStringValue() = ".."
+    exists(MethodAccess ma |
+      ma.getMethod().getDeclaringType() instanceof TypeString and
+      ma.getAnArgument().(CompileTimeConstantExpr).getStringValue() = ".."
+    |
+      this = ma and
+      ma.getMethod().hasName("contains")
+      or
+      exists(EqualityTest eq |
+        this = eq and
+        ma.getMethod().hasName(["indexOf", "lastIndexOf"]) and
+        eq.getAnOperand() = ma and
+        eq.getAnOperand().(CompileTimeConstantExpr).getIntValue() = -1
+      )
+    )
   }
 
-  Expr getCheckedExpr() { result = super.getQualifier() }
+  Expr getCheckedExpr() {
+    exists(MethodAccess ma | ma = this.(BinaryExpr).getAnOperand() or ma = this |
+      result = ma.getQualifier()
+    )
+  }
+
+  boolean getBranch() {
+    this instanceof MethodAccess and result = false
+    or
+    result = this.(EqualityTest).polarity()
+  }
 }
 
 /** A complementary sanitizer that protects against path traversal using path normalization. */
