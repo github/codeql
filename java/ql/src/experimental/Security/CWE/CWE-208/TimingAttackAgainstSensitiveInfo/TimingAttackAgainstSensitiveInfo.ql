@@ -31,7 +31,7 @@ from DataFlow::PathNode source, DataFlow::PathNode sink, NonConstantTimeComparis
 where
   conf.hasFlowPath(source, sink) and
   (
-    source.getNode().(SecretSource).includesUserInput() and
+    source.getNode().(SecretSource).includesUserInput() or
     sink.getNode().(NonConstantTimeComparisonSink).includesUserInput()
   )
 select sink.getNode(), source, sink, "timing attack against $@ validation.",
