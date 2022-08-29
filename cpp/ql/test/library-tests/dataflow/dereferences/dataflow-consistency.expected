@@ -1,0 +1,126 @@
+uniqueEnclosingCallable
+uniqueType
+uniqueNodeLocation
+missingLocation
+uniqueNodeToString
+missingToString
+parameterCallable
+localFlowIsLocal
+compatibleTypesReflexive
+unreachableNodeCCtx
+localCallNodes
+postIsNotPre
+postHasUniquePre
+uniquePostUpdate
+postIsInSameCallable
+reverseRead
+argHasPostUpdate
+| test.cpp:9:8:9:10 | * ... | ArgumentNode is missing PostUpdateNode. |
+| test.cpp:10:8:10:11 | * ... | ArgumentNode is missing PostUpdateNode. |
+| test.cpp:15:8:15:10 | * ... | ArgumentNode is missing PostUpdateNode. |
+| test.cpp:16:8:16:11 | * ... | ArgumentNode is missing PostUpdateNode. |
+| test.cpp:17:8:17:12 | * ... | ArgumentNode is missing PostUpdateNode. |
+| test.cpp:20:21:20:23 | * ... | ArgumentNode is missing PostUpdateNode. |
+| test.cpp:22:8:22:10 | * ... | ArgumentNode is missing PostUpdateNode. |
+| test.cpp:23:8:23:11 | * ... | ArgumentNode is missing PostUpdateNode. |
+| test.cpp:24:8:24:12 | * ... | ArgumentNode is missing PostUpdateNode. |
+| test.cpp:27:21:27:24 | * ... | ArgumentNode is missing PostUpdateNode. |
+| test.cpp:29:8:29:10 | * ... | ArgumentNode is missing PostUpdateNode. |
+| test.cpp:30:8:30:11 | * ... | ArgumentNode is missing PostUpdateNode. |
+| test.cpp:31:8:31:12 | * ... | ArgumentNode is missing PostUpdateNode. |
+| test.cpp:34:21:34:25 | * ... | ArgumentNode is missing PostUpdateNode. |
+| test.cpp:36:8:36:10 | * ... | ArgumentNode is missing PostUpdateNode. |
+| test.cpp:37:8:37:11 | * ... | ArgumentNode is missing PostUpdateNode. |
+| test.cpp:38:8:38:12 | * ... | ArgumentNode is missing PostUpdateNode. |
+| test.cpp:45:8:45:10 | * ... | ArgumentNode is missing PostUpdateNode. |
+| test.cpp:46:8:46:11 | * ... | ArgumentNode is missing PostUpdateNode. |
+| test.cpp:51:8:51:10 | * ... | ArgumentNode is missing PostUpdateNode. |
+| test.cpp:52:8:52:11 | * ... | ArgumentNode is missing PostUpdateNode. |
+| test.cpp:53:8:53:12 | * ... | ArgumentNode is missing PostUpdateNode. |
+| test.cpp:56:21:56:23 | * ... | ArgumentNode is missing PostUpdateNode. |
+| test.cpp:58:8:58:10 | * ... | ArgumentNode is missing PostUpdateNode. |
+| test.cpp:59:8:59:11 | * ... | ArgumentNode is missing PostUpdateNode. |
+| test.cpp:60:8:60:12 | * ... | ArgumentNode is missing PostUpdateNode. |
+| test.cpp:63:21:63:24 | * ... | ArgumentNode is missing PostUpdateNode. |
+| test.cpp:65:8:65:10 | * ... | ArgumentNode is missing PostUpdateNode. |
+| test.cpp:66:8:66:11 | * ... | ArgumentNode is missing PostUpdateNode. |
+| test.cpp:67:8:67:12 | * ... | ArgumentNode is missing PostUpdateNode. |
+| test.cpp:70:21:70:25 | * ... | ArgumentNode is missing PostUpdateNode. |
+| test.cpp:72:8:72:10 | * ... | ArgumentNode is missing PostUpdateNode. |
+| test.cpp:73:8:73:11 | * ... | ArgumentNode is missing PostUpdateNode. |
+| test.cpp:74:8:74:12 | * ... | ArgumentNode is missing PostUpdateNode. |
+| test.cpp:81:8:81:10 | * ... | ArgumentNode is missing PostUpdateNode. |
+| test.cpp:82:8:82:11 | * ... | ArgumentNode is missing PostUpdateNode. |
+| test.cpp:87:8:87:10 | * ... | ArgumentNode is missing PostUpdateNode. |
+| test.cpp:88:8:88:11 | * ... | ArgumentNode is missing PostUpdateNode. |
+| test.cpp:89:8:89:12 | * ... | ArgumentNode is missing PostUpdateNode. |
+| test.cpp:92:21:92:23 | * ... | ArgumentNode is missing PostUpdateNode. |
+| test.cpp:94:8:94:10 | * ... | ArgumentNode is missing PostUpdateNode. |
+| test.cpp:95:8:95:11 | * ... | ArgumentNode is missing PostUpdateNode. |
+| test.cpp:96:8:96:12 | * ... | ArgumentNode is missing PostUpdateNode. |
+| test.cpp:99:21:99:24 | * ... | ArgumentNode is missing PostUpdateNode. |
+| test.cpp:101:8:101:10 | * ... | ArgumentNode is missing PostUpdateNode. |
+| test.cpp:102:8:102:11 | * ... | ArgumentNode is missing PostUpdateNode. |
+| test.cpp:103:8:103:12 | * ... | ArgumentNode is missing PostUpdateNode. |
+| test.cpp:106:21:106:25 | * ... | ArgumentNode is missing PostUpdateNode. |
+| test.cpp:108:8:108:10 | * ... | ArgumentNode is missing PostUpdateNode. |
+| test.cpp:109:8:109:11 | * ... | ArgumentNode is missing PostUpdateNode. |
+| test.cpp:110:8:110:12 | * ... | ArgumentNode is missing PostUpdateNode. |
+| test.cpp:125:8:125:13 | * ... | ArgumentNode is missing PostUpdateNode. |
+| test.cpp:126:8:126:14 | * ... | ArgumentNode is missing PostUpdateNode. |
+| test.cpp:131:8:131:13 | * ... | ArgumentNode is missing PostUpdateNode. |
+| test.cpp:132:8:132:14 | * ... | ArgumentNode is missing PostUpdateNode. |
+| test.cpp:133:8:133:15 | * ... | ArgumentNode is missing PostUpdateNode. |
+| test.cpp:136:21:136:26 | * ... | ArgumentNode is missing PostUpdateNode. |
+| test.cpp:138:8:138:13 | * ... | ArgumentNode is missing PostUpdateNode. |
+| test.cpp:139:8:139:14 | * ... | ArgumentNode is missing PostUpdateNode. |
+| test.cpp:140:8:140:15 | * ... | ArgumentNode is missing PostUpdateNode. |
+| test.cpp:143:21:143:27 | * ... | ArgumentNode is missing PostUpdateNode. |
+| test.cpp:145:8:145:13 | * ... | ArgumentNode is missing PostUpdateNode. |
+| test.cpp:146:8:146:14 | * ... | ArgumentNode is missing PostUpdateNode. |
+| test.cpp:147:8:147:15 | * ... | ArgumentNode is missing PostUpdateNode. |
+| test.cpp:150:21:150:28 | * ... | ArgumentNode is missing PostUpdateNode. |
+| test.cpp:152:8:152:13 | * ... | ArgumentNode is missing PostUpdateNode. |
+| test.cpp:153:8:153:14 | * ... | ArgumentNode is missing PostUpdateNode. |
+| test.cpp:154:8:154:15 | * ... | ArgumentNode is missing PostUpdateNode. |
+| test.cpp:161:8:161:13 | * ... | ArgumentNode is missing PostUpdateNode. |
+| test.cpp:162:8:162:14 | * ... | ArgumentNode is missing PostUpdateNode. |
+| test.cpp:167:8:167:13 | * ... | ArgumentNode is missing PostUpdateNode. |
+| test.cpp:168:8:168:14 | * ... | ArgumentNode is missing PostUpdateNode. |
+| test.cpp:169:8:169:15 | * ... | ArgumentNode is missing PostUpdateNode. |
+| test.cpp:172:21:172:26 | * ... | ArgumentNode is missing PostUpdateNode. |
+| test.cpp:174:8:174:13 | * ... | ArgumentNode is missing PostUpdateNode. |
+| test.cpp:175:8:175:14 | * ... | ArgumentNode is missing PostUpdateNode. |
+| test.cpp:176:8:176:15 | * ... | ArgumentNode is missing PostUpdateNode. |
+| test.cpp:179:21:179:27 | * ... | ArgumentNode is missing PostUpdateNode. |
+| test.cpp:181:8:181:13 | * ... | ArgumentNode is missing PostUpdateNode. |
+| test.cpp:182:8:182:14 | * ... | ArgumentNode is missing PostUpdateNode. |
+| test.cpp:183:8:183:15 | * ... | ArgumentNode is missing PostUpdateNode. |
+| test.cpp:186:21:186:28 | * ... | ArgumentNode is missing PostUpdateNode. |
+| test.cpp:188:8:188:13 | * ... | ArgumentNode is missing PostUpdateNode. |
+| test.cpp:189:8:189:14 | * ... | ArgumentNode is missing PostUpdateNode. |
+| test.cpp:190:8:190:15 | * ... | ArgumentNode is missing PostUpdateNode. |
+| test.cpp:197:8:197:13 | * ... | ArgumentNode is missing PostUpdateNode. |
+| test.cpp:198:8:198:14 | * ... | ArgumentNode is missing PostUpdateNode. |
+| test.cpp:203:8:203:13 | * ... | ArgumentNode is missing PostUpdateNode. |
+| test.cpp:204:8:204:14 | * ... | ArgumentNode is missing PostUpdateNode. |
+| test.cpp:205:8:205:15 | * ... | ArgumentNode is missing PostUpdateNode. |
+| test.cpp:208:21:208:26 | * ... | ArgumentNode is missing PostUpdateNode. |
+| test.cpp:210:8:210:13 | * ... | ArgumentNode is missing PostUpdateNode. |
+| test.cpp:211:8:211:14 | * ... | ArgumentNode is missing PostUpdateNode. |
+| test.cpp:212:8:212:15 | * ... | ArgumentNode is missing PostUpdateNode. |
+| test.cpp:215:21:215:27 | * ... | ArgumentNode is missing PostUpdateNode. |
+| test.cpp:217:8:217:13 | * ... | ArgumentNode is missing PostUpdateNode. |
+| test.cpp:218:8:218:14 | * ... | ArgumentNode is missing PostUpdateNode. |
+| test.cpp:219:8:219:15 | * ... | ArgumentNode is missing PostUpdateNode. |
+| test.cpp:222:21:222:28 | * ... | ArgumentNode is missing PostUpdateNode. |
+| test.cpp:224:8:224:13 | * ... | ArgumentNode is missing PostUpdateNode. |
+| test.cpp:225:8:225:14 | * ... | ArgumentNode is missing PostUpdateNode. |
+| test.cpp:226:8:226:15 | * ... | ArgumentNode is missing PostUpdateNode. |
+postWithInFlow
+| test.cpp:7:22:7:23 | p0 [inner post update] | PostUpdateNode should not be the target of local flow. |
+| test.cpp:43:22:43:23 | p0 [inner post update] | PostUpdateNode should not be the target of local flow. |
+| test.cpp:79:22:79:23 | p0 [inner post update] | PostUpdateNode should not be the target of local flow. |
+| test.cpp:123:25:123:26 | p0 [inner post update] | PostUpdateNode should not be the target of local flow. |
+| test.cpp:159:25:159:26 | p0 [inner post update] | PostUpdateNode should not be the target of local flow. |
+| test.cpp:195:25:195:26 | p0 [inner post update] | PostUpdateNode should not be the target of local flow. |
