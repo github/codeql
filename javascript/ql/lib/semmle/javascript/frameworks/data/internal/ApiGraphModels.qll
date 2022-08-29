@@ -339,33 +339,43 @@ private predicate invocationMatchesCallSiteFilter(Specific::InvokeNode invoke, A
   Specific::invocationMatchesExtraCallSiteFilter(invoke, token)
 }
 
+pragma[nomagic]
+private API::Node getABaseNode(string package, string type) {
+  isRelevantFullPath(package, type, _) and
+  exists(string package2, string type2, AccessPath path2 |
+    typeModel(package, type, package2, type2, path2) and
+    result = getNodeFromPath(package2, type2, path2)
+  )
+  or
+  // Language-specific cases, such as handling of global variables
+  exists(AccessPath path |
+    isRelevantFullPath(package, type, path) and
+    result = Specific::getExtraNodeFromPath(package, type, path, 0)
+  )
+}
+
 /**
  * Gets the API node identified by the first `n` tokens of `path` in the given `(package, type, path)` tuple.
  */
 pragma[nomagic]
-private API::Node getNodeFromPath(string package, string type, AccessPath path, int n) {
-  isRelevantFullPath(package, type, path) and
-  (
+private API::Node getNodeFromBase(API::Node base, AccessPath path, int n) {
+  result = base and
+  exists(string package, string type | isRelevantFullPath(package, type, path) |
     n = 0 and
-    exists(string package2, string type2, AccessPath path2 |
-      typeModel(package, type, package2, type2, path2) and
-      result = getNodeFromPath(package2, type2, path2, path2.getNumToken())
-    )
+    result = getABaseNode(package, type)
     or
-    // Language-specific cases, such as handling of global variables
     result = Specific::getExtraNodeFromPath(package, type, path, n)
   )
   or
-  result = getSuccessorFromNode(getNodeFromPath(package, type, path, n - 1), path.getToken(n - 1))
+  result = getSuccessorFromNode(getNodeFromBase(base, path, n - 1), path.getToken(n - 1))
   or
   // Similar to the other recursive case, but where the path may have stepped through one or more call-site filters
-  result =
-    getSuccessorFromInvoke(getInvocationFromPath(package, type, path, n - 1), path.getToken(n - 1))
+  result = getSuccessorFromInvoke(getInvocationFromBase(base, path, n - 1), path.getToken(n - 1))
 }
 
 /** Gets the node identified by the given `(package, type, path)` tuple. */
 API::Node getNodeFromPath(string package, string type, AccessPath path) {
-  result = getNodeFromPath(package, type, path, path.getNumToken())
+  result = getNodeFromBase(getABaseNode(package, type), path, path.getNumToken())
 }
 
 /**
@@ -373,16 +383,16 @@ API::Node getNodeFromPath(string package, string type, AccessPath path) {
  *
  * Unlike `getNodeFromPath`, the `path` may end with one or more call-site filters.
  */
-Specific::InvokeNode getInvocationFromPath(string package, string type, AccessPath path, int n) {
-  result = Specific::getAnInvocationOf(getNodeFromPath(package, type, path, n))
+Specific::InvokeNode getInvocationFromBase(API::Node base, AccessPath path, int n) {
+  result = Specific::getAnInvocationOf(getNodeFromBase(base, path, n))
   or
-  result = getInvocationFromPath(package, type, path, n - 1) and
+  result = getInvocationFromBase(base, path, n - 1) and
   invocationMatchesCallSiteFilter(result, path.getToken(n - 1))
 }
 
 /** Gets an invocation identified by the given `(package, type, path)` tuple. */
 Specific::InvokeNode getInvocationFromPath(string package, string type, AccessPath path) {
-  result = getInvocationFromPath(package, type, path, path.getNumToken())
+  result = getInvocationFromBase(getABaseNode(package, type), path, path.getNumToken())
 }
 
 /**
@@ -466,13 +476,31 @@ module ModelOutput {
   }
 
   /**
-   * Holds if `node` is seen as an instance of `(package,type)` due to a type definition
-   * contributed by a CSV model.
+   * Gets an instance of `(package,type)` as contributed by a type definition row in a CSV model.
    */
   API::Node getATypeNode(string package, string type) {
     exists(string package2, string type2, AccessPath path |
       typeModel(package, type, package2, type2, path) and
       result = getNodeFromPath(package2, type2, path)
+    )
+  }
+
+  /**
+   * Gets an instance of `(package,type)` as contributed by a type definition row
+   * whose access path base was `base`.
+   *
+   * More specifically, given a type definition row,
+   * ```
+   * package; type; package2; type2; path
+   * ```
+   * the `base` refers to a value identified by `package2,type2`, and the result is a node
+   * found by evaluating `path` from that base node.
+   */
+  API::Node getATypeNode(string package, string type, API::Node base) {
+    exists(string package2, string type2, AccessPath path |
+      typeModel(package, type, package2, type2, path) and
+      base = getABaseNode(package2, type2) and
+      result = getNodeFromBase(base, path, path.getNumToken())
     )
   }
 
