@@ -156,7 +156,7 @@ that applies them one after the other:
 
 Parameterized modules cannot be directly referenced.
 Instead, you instantiate a parameterized module by passing arguments enclosed in angle brackets (``<`` and ``>``) to the module.
-Instantiated parameterized modules can be used as a module expression, identical to explicit module references.
+Instantiated parameterized modules can be used as a :ref:`module expression <name-resolution>`, identical to explicit module references.
 
 For example, we can instantiate ``ApplyFooThenBar`` with two identical arguments ``increment``, creating a module
 containing a predicate that adds 2:
