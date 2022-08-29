@@ -53,6 +53,16 @@ private class TypeFlowNode extends TTypeFlowNode {
   }
 }
 
+private int getNodeKind(TypeFlowNode n) {
+  result = 1 and n instanceof TField
+  or
+  result = 2 and n instanceof TSsa
+  or
+  result = 3 and n instanceof TExpr
+  or
+  result = 4 and n instanceof TMethod
+}
+
 /** Gets `t` if it is a `RefType` or the boxed type if `t` is a primitive type. */
 private RefType boxIfNeeded(Type t) {
   t.(PrimitiveType).getBoxedType() = result or
@@ -146,27 +156,165 @@ private predicate joinStep(TypeFlowNode n1, TypeFlowNode n2) {
   joinStep0(n1, n2) and not isNull(n1)
 }
 
-private predicate joinStepRank1(int r, TypeFlowNode n1, TypeFlowNode n2) {
-  n1 =
-    rank[r](TypeFlowNode n |
-      joinStep(n, n2)
+private predicate anyStep(TypeFlowNode n1, TypeFlowNode n2) { joinStep(n1, n2) or step(n1, n2) }
+
+private predicate sccEdge(TypeFlowNode n1, TypeFlowNode n2) { anyStep(n1, n2) and anyStep+(n2, n1) }
+
+/*
+ * SCC reduction.
+ *
+ * This ought to be as easy as `equivalenceRelation(sccEdge/2)(n, scc)`, but
+ * this HOP is not currently supported for newtypes.
+ *
+ * A straightforward implementation would be:
+ * ```
+ * predicate sccRepr(TypeFlowNode n, TypeFlowNode scc) {
+ *  scc =
+ *    max(TypeFlowNode n2 |
+ *      sccEdge+(n, n2)
+ *    |
+ *      n2
+ *      order by
+ *        n2.getLocation().getStartLine(), n2.getLocation().getStartColumn(), getNodeKind(n2)
+ *    )
+ * }
+ *
+ * ```
+ * but this is quadratic in the size of the SCCs.
+ *
+ * Instead we find local maxima and determine the SCC representatives from those.
+ * (This is still worst-case quadratic in the size of the SCCs, but generally
+ * performs better.)
+ */
+
+private predicate sccEdgeWithMax(TypeFlowNode n1, TypeFlowNode n2, TypeFlowNode m) {
+  sccEdge(n1, n2) and
+  m =
+    max(TypeFlowNode n |
+      n = [n1, n2]
     |
-      n order by n.getLocation().getStartLine(), n.getLocation().getStartColumn()
+      n order by n.getLocation().getStartLine(), n.getLocation().getStartColumn(), getNodeKind(n)
     )
 }
 
-private predicate joinStepRank2(int r2, int r1, TypeFlowNode n) {
-  r1 = rank[r2](int r | joinStepRank1(r, _, n) | r)
-}
-
-private predicate joinStepRank(int r, TypeFlowNode n1, TypeFlowNode n2) {
-  exists(int r1 |
-    joinStepRank1(r1, n1, n2) and
-    joinStepRank2(r, r1, n2)
+private predicate hasLargerNeighbor(TypeFlowNode n) {
+  exists(TypeFlowNode n2 |
+    sccEdgeWithMax(n, n2, n2) and
+    not sccEdgeWithMax(n, n2, n)
+    or
+    sccEdgeWithMax(n2, n, n2) and
+    not sccEdgeWithMax(n2, n, n)
   )
 }
 
-private int lastRank(TypeFlowNode n) { result = max(int r | joinStepRank(r, _, n)) }
+private predicate localMax(TypeFlowNode m) {
+  sccEdgeWithMax(_, _, m) and
+  not hasLargerNeighbor(m)
+}
+
+private predicate sccReprFromLocalMax(TypeFlowNode scc) {
+  exists(TypeFlowNode m |
+    localMax(m) and
+    scc =
+      max(TypeFlowNode n2 |
+        sccEdge+(m, n2) and localMax(n2)
+      |
+        n2
+        order by
+          n2.getLocation().getStartLine(), n2.getLocation().getStartColumn(), getNodeKind(n2)
+      )
+  )
+}
+
+private predicate sccRepr(TypeFlowNode n, TypeFlowNode scc) {
+  sccEdge+(n, scc) and sccReprFromLocalMax(scc)
+}
+
+private predicate sccJoinStep(TypeFlowNode n, TypeFlowNode scc) {
+  exists(TypeFlowNode mid |
+    joinStep(n, mid) and
+    sccRepr(mid, scc) and
+    not sccRepr(n, scc)
+  )
+}
+
+private signature predicate edgeSig(TypeFlowNode n1, TypeFlowNode n2);
+
+private signature module RankedEdge {
+  predicate edgeRank(int r, TypeFlowNode n1, TypeFlowNode n2);
+
+  int lastRank(TypeFlowNode n);
+}
+
+private module RankEdge<edgeSig/2 edge> implements RankedEdge {
+  private predicate edgeRank1(int r, TypeFlowNode n1, TypeFlowNode n2) {
+    n1 =
+      rank[r](TypeFlowNode n |
+        edge(n, n2)
+      |
+        n order by n.getLocation().getStartLine(), n.getLocation().getStartColumn()
+      )
+  }
+
+  private predicate edgeRank2(int r2, int r1, TypeFlowNode n) {
+    r1 = rank[r2](int r | edgeRank1(r, _, n) | r)
+  }
+
+  predicate edgeRank(int r, TypeFlowNode n1, TypeFlowNode n2) {
+    exists(int r1 |
+      edgeRank1(r1, n1, n2) and
+      edgeRank2(r, r1, n2)
+    )
+  }
+
+  int lastRank(TypeFlowNode n) { result = max(int r | edgeRank(r, _, n)) }
+}
+
+private signature module TypePropagation {
+  predicate candType(TypeFlowNode n, RefType t);
+
+  bindingset[t]
+  predicate supportsType(TypeFlowNode n, RefType t);
+}
+
+/** Implements recursion through `forall` by way of edge ranking. */
+private module ForAll<RankedEdge Edge, TypePropagation T> {
+  /**
+   * Holds if `t` is a bound that holds on one of the incoming edges to `n` and
+   * thus is a candidate bound for `n`.
+   */
+  pragma[nomagic]
+  private predicate candJoinType(TypeFlowNode n, RefType t) {
+    exists(TypeFlowNode mid |
+      T::candType(mid, t) and
+      Edge::edgeRank(_, mid, n)
+    )
+  }
+
+  /**
+   * Holds if `t` is a candidate bound for `n` that is also valid for data coming
+   * through the edges into `n` ranked from `1` to `r`.
+   */
+  private predicate flowJoin(int r, TypeFlowNode n, RefType t) {
+    (
+      r = 1 and candJoinType(n, t)
+      or
+      flowJoin(r - 1, n, t) and Edge::edgeRank(r, _, n)
+    ) and
+    forall(TypeFlowNode mid | Edge::edgeRank(r, mid, n) | T::supportsType(mid, t))
+  }
+
+  /**
+   * Holds if `t` is a candidate bound for `n` that is also valid for data
+   * coming through all the incoming edges, and therefore is a valid bound for
+   * `n`.
+   */
+  predicate flowJoin(TypeFlowNode n, RefType t) { flowJoin(Edge::lastRank(n), n, t) }
+}
+
+module RankedJoinStep = RankEdge<joinStep/2>;
+
+module RankedSccJoinStep = RankEdge<sccJoinStep/2>;
 
 private predicate exactTypeBase(TypeFlowNode n, RefType t) {
   exists(ClassInstanceExpr e |
@@ -177,15 +325,10 @@ private predicate exactTypeBase(TypeFlowNode n, RefType t) {
   )
 }
 
-private predicate exactTypeRank(int r, TypeFlowNode n, RefType t) {
-  forall(TypeFlowNode mid | joinStepRank(r, mid, n) | exactType(mid, t)) and
-  joinStepRank(r, _, n)
-}
+private module ExactTypePropagation implements TypePropagation {
+  predicate candType = exactType/2;
 
-private predicate exactTypeJoin(int r, TypeFlowNode n, RefType t) {
-  exactTypeRank(1, n, t) and r = 1
-  or
-  exactTypeJoin(r - 1, n, t) and exactTypeRank(r, n, t)
+  predicate supportsType = exactType/2;
 }
 
 /**
@@ -199,7 +342,14 @@ private predicate exactType(TypeFlowNode n, RefType t) {
   or
   // The following is an optimized version of
   // `forex(TypeFlowNode mid | joinStep(mid, n) | exactType(mid, t))`
-  exactTypeJoin(lastRank(n), n, t)
+  ForAll<RankedJoinStep, ExactTypePropagation>::flowJoin(n, t)
+  or
+  exists(TypeFlowNode scc |
+    sccRepr(n, scc) and
+    // Optimized version of
+    // `forex(TypeFlowNode mid | sccJoinStep(mid, scc) | exactType(mid, t))`
+    ForAll<RankedSccJoinStep, ExactTypePropagation>::flowJoin(scc, t)
+  )
 }
 
 /**
@@ -343,30 +493,15 @@ private predicate typeFlowBase(TypeFlowNode n, RefType t) {
   )
 }
 
-/**
- * Holds if `t` is a bound that holds on one of the incoming edges to `n` and
- * thus is a candidate bound for `n`.
- */
-pragma[noinline]
-private predicate typeFlowJoinCand(TypeFlowNode n, RefType t) {
-  exists(TypeFlowNode mid | joinStep(mid, n) | typeFlow(mid, t))
-}
+private module TypeFlowPropagation implements TypePropagation {
+  predicate candType = typeFlow/2;
 
-/**
- * Holds if `t` is a candidate bound for `n` that is also valid for data coming
- * through the edges into `n` ranked from `1` to `r`.
- */
-private predicate typeFlowJoin(int r, TypeFlowNode n, RefType t) {
-  (
-    r = 1 and typeFlowJoinCand(n, t)
-    or
-    typeFlowJoin(r - 1, n, t) and joinStepRank(r, _, n)
-  ) and
-  forall(TypeFlowNode mid | joinStepRank(r, mid, n) |
+  bindingset[t]
+  predicate supportsType(TypeFlowNode mid, RefType t) {
     exists(RefType midtyp | exactType(mid, midtyp) or typeFlow(mid, midtyp) |
       pragma[only_bind_out](midtyp).getAnAncestor() = t
     )
-  )
+  }
 }
 
 /**
@@ -378,7 +513,12 @@ private predicate typeFlow(TypeFlowNode n, RefType t) {
   or
   exists(TypeFlowNode mid | typeFlow(mid, t) and step(mid, n))
   or
-  typeFlowJoin(lastRank(n), n, t)
+  ForAll<RankedJoinStep, TypeFlowPropagation>::flowJoin(n, t)
+  or
+  exists(TypeFlowNode scc |
+    sccRepr(n, scc) and
+    ForAll<RankedSccJoinStep, TypeFlowPropagation>::flowJoin(scc, t)
+  )
 }
 
 pragma[nomagic]
