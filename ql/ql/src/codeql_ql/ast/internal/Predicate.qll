@@ -211,7 +211,7 @@ module PredConsistency {
     c > 1 and
     resolvePredicateExpr(pe, p) and
     // parameterized modules are expected to resolve to multiple.
-    not exists(Predicate sig | not exists(sig.getBody()) and resolvePredicateExpr(pe, sig))
+    not exists(ClasslessPredicate sig | not sig.isSignature() and resolvePredicateExpr(pe, sig))
   }
 
   query predicate multipleResolveCall(Call call, int c, PredicateOrBuiltin p) {
@@ -227,6 +227,6 @@ module PredConsistency {
     c > 1 and
     resolveCall(call, p) and
     // parameterized modules are expected to resolve to multiple.
-    not exists(Predicate sig | not exists(sig.getBody()) and resolveCall(call, sig))
+    not exists(ClasslessPredicate sig | not sig.isSignature() and resolveCall(call, sig))
   }
 }

@@ -521,6 +521,9 @@ class ClasslessPredicate extends TClasslessPredicate, Predicate, ModuleDeclarati
   }
 
   override predicate isPrivate() { Predicate.super.isPrivate() }
+
+  /** Holds if this classless predicate is a signature predicate with no body. */
+  predicate isSignature() { not exists(this.getBody()) }
 }
 
 /**
