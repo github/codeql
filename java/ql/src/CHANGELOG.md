@@ -1,3 +1,66 @@
+## 0.3.2
+
+### New Queries
+
+* A new query "Android `WebView` that accepts all certificates" (`java/improper-webview-certificate-validation`) has been added. This query finds implementations of `WebViewClient`s that accept all certificates in the case of an SSL error.
+
+### Major Analysis Improvements
+
+* The query `java/sensitive-log` has been improved to no longer report results that are effectively duplicates due to one source flowing to another source.
+
+### Minor Analysis Improvements
+
+* The query `java/path-injection` now recognises vulnerable APIs defined using the `SinkModelCsv` class with the `create-file` type. Out of the box this includes Apache Commons-IO functions, as well as any user-defined sinks.
+
+## 0.3.1
+
+## 0.3.0
+
+### Breaking Changes
+
+* Contextual queries and the query libraries they depend on have been moved to the `codeql/java-all` package.
+
+### New Queries
+
+* A new query "Improper verification of intent by broadcast receiver" (`java/improper-intent-verification`) has been added. 
+  This query finds instances of Android `BroadcastReceiver`s that don't verify the action string of received intents when registered
+  to receive system intents.
+
+## 0.2.0
+
+### Minor Analysis Improvements
+
+* The query `java/log-injection` now reports problems at the source (user-controlled data) instead of at the ultimate logging call. This was changed because user functions that wrap the ultimate logging call could result in most alerts being reported in an uninformative location.
+
+## 0.1.4
+
+## 0.1.3
+
+### New Queries
+
+* Two new queries "Inefficient regular expression" (`java/redos`) and "Polynomial regular expression used on uncontrolled data" (`java/polynomial-redos`) have been added.
+These queries help find instances of Regular Expression Denial of Service vulnerabilities. 
+
+### Minor Analysis Improvements
+
+* Query `java/sensitive-log` has received several improvements.
+  * It no longer considers usernames as sensitive information.
+  * The conditions to consider a variable a constant (and therefore exclude it as user-provided sensitive information) have been tightened.
+  * A sanitizer has been added to handle certain elements introduced by a Kotlin compiler plugin that have deceptive names.
+
+## 0.1.2
+
+### Query Metadata Changes
+
+* Query `java/predictable-seed` now has a tag for CWE-337. 
+
+### Minor Analysis Improvements
+
+* Query `java/insecure-cookie` now tolerates setting a cookie's secure flag to `request.isSecure()`. This means servlets that intentionally accept unencrypted connections will no longer raise an alert.
+* The query `java/non-https-urls` has been simplified
+and no longer requires its sinks to be `MethodAccess`es.
+* The logic to detect `WebView`s with JavaScript (and optionally file access) enabled in the query `java/android/unsafe-android-webview-fetch` has been improved.
+
 ## 0.1.1
 
 ### Minor Analysis Improvements
@@ -26,7 +89,7 @@ this respect.
 
 ### Minor Analysis Improvements
 
-* Updated "Local information disclosure in a temporary directory" (`java/local-temp-file-or-directory-information-disclosure`) to remove false-positives when OS is properly used as logical guard.
+ * Updated "Local information disclosure in a temporary directory" (`java/local-temp-file-or-directory-information-disclosure`) to remove false-positives when OS is properly used as logical guard.
 
 ## 0.0.11
 

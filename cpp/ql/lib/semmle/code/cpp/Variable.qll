@@ -6,6 +6,7 @@ import semmle.code.cpp.Element
 import semmle.code.cpp.exprs.Access
 import semmle.code.cpp.Initializer
 private import semmle.code.cpp.internal.ResolveClass
+private import semmle.code.cpp.internal.ResolveGlobalVariable
 
 /**
  * A C/C++ variable. For example, in the following code there are four
@@ -32,6 +33,8 @@ private import semmle.code.cpp.internal.ResolveClass
  * can have multiple declarations.
  */
 class Variable extends Declaration, @variable {
+  Variable() { isVariable(underlyingElement(this)) }
+
   override string getAPrimaryQlClass() { result = "Variable" }
 
   /** Gets the initializer of this variable, if any. */
@@ -395,6 +398,8 @@ class LocalVariable extends LocalScopeVariable, @localvariable {
     exists(DeclStmt s | s.getADeclaration() = this and s.getEnclosingFunction() = result)
     or
     exists(ConditionDeclExpr e | e.getVariable() = this and e.getEnclosingFunction() = result)
+    or
+    orphaned_variables(underlyingElement(this), unresolveElement(result))
   }
 }
 
@@ -468,6 +473,9 @@ class GlobalOrNamespaceVariable extends Variable, @globalvariable {
   override Type getType() { globalvariables(underlyingElement(this), unresolveElement(result), _) }
 
   override Element getEnclosingElement() { none() }
+
+  /** Gets a link target which compiled or referenced this global or namespace variable. */
+  LinkTarget getALinkTarget() { this = result.getAGlobalOrNamespaceVariable() }
 }
 
 /**

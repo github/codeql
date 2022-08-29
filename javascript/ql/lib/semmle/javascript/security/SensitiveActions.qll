@@ -25,24 +25,6 @@ abstract class SensitiveExpr extends Expr {
   abstract SensitiveDataClassification getClassification();
 }
 
-/** DEPRECATED: Use `SensitiveDataClassification` and helpers instead. */
-deprecated module SensitiveExpr {
-  /** DEPRECATED: Use `SensitiveDataClassification` instead. */
-  deprecated class Classification = SensitiveDataClassification;
-
-  /** DEPRECATED: Use `SensitiveDataClassification::secret` instead. */
-  deprecated predicate secret = SensitiveDataClassification::secret/0;
-
-  /** DEPRECATED: Use `SensitiveDataClassification::id` instead. */
-  deprecated predicate id = SensitiveDataClassification::id/0;
-
-  /** DEPRECATED: Use `SensitiveDataClassification::password` instead. */
-  deprecated predicate password = SensitiveDataClassification::password/0;
-
-  /** DEPRECATED: Use `SensitiveDataClassification::certificate` instead. */
-  deprecated predicate certificate = SensitiveDataClassification::certificate/0;
-}
-
 /** A function call that might produce sensitive data. */
 class SensitiveCall extends SensitiveExpr, InvokeExpr {
   SensitiveDataClassification classification;

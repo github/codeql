@@ -281,7 +281,7 @@ private module JQueryClientRequest {
               .getParameter(0)
         or
         result =
-          getAResponseNodeFromAnXHRObject(this.getOptionArgument([0 .. 1],
+          getAResponseNodeFromAnXhrObject(this.getOptionArgument([0 .. 1],
               any(string method | method = "error" or method = "complete"))
                 .getALocalSource()
                 .(DataFlow::FunctionNode)
@@ -303,18 +303,19 @@ private module JQueryClientRequest {
           .getParameter(0)
     or
     result =
-      getAResponseNodeFromAnXHRObject(request.getAMemberCall("fail").getCallback(0).getParameter(0))
+      getAResponseNodeFromAnXhrObject(request.getAMemberCall("fail").getCallback(0).getParameter(0))
   }
 
   /**
-   * Gets a node refering to the response contained in an `jqXHR` object.
+   * Gets a node referring to the response contained in an `jqXHR` object.
    */
-  private DataFlow::SourceNode getAResponseNodeFromAnXHRObject(DataFlow::SourceNode obj) {
+  private DataFlow::SourceNode getAResponseNodeFromAnXhrObject(DataFlow::SourceNode jqXhr) {
     result =
-      obj.getAPropertyRead(any(string s |
-          s = "responseText" or
-          s = "responseXML"
-        ))
+      jqXhr
+          .getAPropertyRead(any(string s |
+              s = "responseText" or
+              s = "responseXML"
+            ))
   }
 
   /**
@@ -406,11 +407,11 @@ module JQuery {
 
     private class DefaultRange extends Range {
       DefaultRange() {
-        // either a reference to a global variable `$` or `jQuery`
-        this = DataFlow::globalVarRef(any(string jq | jq = "$" or jq = "jQuery"))
+        // either a reference to a global variable `$`, `jQuery`, or `cash`
+        this = DataFlow::globalVarRef(["$", "jQuery", "cash"])
         or
-        // or imported from a module named `jquery` or `zepto`
-        this = DataFlow::moduleImport(["jquery", "zepto"])
+        // or imported from a module named `jquery`, `zepto`, or `cash-dom`
+        this = DataFlow::moduleImport(["jquery", "zepto", "cash-dom"])
         or
         this.hasUnderlyingType("JQueryStatic")
       }

@@ -114,6 +114,18 @@ foos(
     ]
 
 
+def test_load_table_with_multiple_columns_and_dir(load):
+    columns = ",\n".join(c for c, _ in expected_columns)
+    expected = [deepcopy(e) for _, e in expected_columns]
+    assert load(f"""
+foos(     //dir=foo/bar/baz
+{columns}
+);
+""") == [
+        dbscheme.Table(name="foos", columns=expected, dir=pathlib.Path("foo/bar/baz"))
+    ]
+
+
 def test_load_multiple_table_with_columns(load):
     tables = [f"table{i}({col});" for i, (col, _) in enumerate(expected_columns)]
     expected = [dbscheme.Table(name=f"table{i}", columns=[deepcopy(e)]) for i, (_, e) in enumerate(expected_columns)]
@@ -151,4 +163,4 @@ int ignored: int ref*/);
 
 
 if __name__ == '__main__':
-    sys.exit(pytest.main())
+    sys.exit(pytest.main([__file__] + sys.argv[1:]))

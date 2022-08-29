@@ -15,23 +15,19 @@ import DataFlow
 import UnsafeReflectionLib
 import semmle.code.java.dataflow.DataFlow
 import semmle.code.java.dataflow.FlowSources
+import semmle.code.java.controlflow.Guards
 import DataFlow::PathGraph
 
-private class ContainsSanitizer extends DataFlow::BarrierGuard {
-  ContainsSanitizer() { this.(MethodAccess).getMethod().hasName("contains") }
-
-  override predicate checks(Expr e, boolean branch) {
-    e = this.(MethodAccess).getArgument(0) and branch = true
-  }
+private predicate containsSanitizer(Guard g, Expr e, boolean branch) {
+  g.(MethodAccess).getMethod().hasName("contains") and
+  e = g.(MethodAccess).getArgument(0) and
+  branch = true
 }
 
-private class EqualsSanitizer extends DataFlow::BarrierGuard {
-  EqualsSanitizer() { this.(MethodAccess).getMethod().hasName("equals") }
-
-  override predicate checks(Expr e, boolean branch) {
-    e = [this.(MethodAccess).getArgument(0), this.(MethodAccess).getQualifier()] and
-    branch = true
-  }
+private predicate equalsSanitizer(Guard g, Expr e, boolean branch) {
+  g.(MethodAccess).getMethod().hasName("equals") and
+  e = [g.(MethodAccess).getArgument(0), g.(MethodAccess).getQualifier()] and
+  branch = true
 }
 
 class UnsafeReflectionConfig extends TaintTracking::Configuration {
@@ -78,8 +74,9 @@ class UnsafeReflectionConfig extends TaintTracking::Configuration {
     )
   }
 
-  override predicate isSanitizerGuard(DataFlow::BarrierGuard guard) {
-    guard instanceof ContainsSanitizer or guard instanceof EqualsSanitizer
+  override predicate isSanitizer(DataFlow::Node node) {
+    node = DataFlow::BarrierGuard<containsSanitizer/3>::getABarrierNode() or
+    node = DataFlow::BarrierGuard<equalsSanitizer/3>::getABarrierNode()
   }
 }
 

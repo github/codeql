@@ -19,7 +19,7 @@ private predicate xUnitDetected() {
 private predicate possiblyAttribute(Expr e, string name) {
   exists(Identifier id | id = e or id = e.(CallExpr).getCallee() |
     name = id.getName() and
-    name.regexpMatch("Async|Data|Fact|Fixture|Import|ImportJson|Skip|Trait")
+    name = ["Async", "Data", "Fact", "Fixture", "Import", "ImportJson", "Skip", "Trait"]
   )
 }
 
@@ -43,8 +43,6 @@ abstract private class BracketedListOfExpressions extends Expr {
  * An array expression viewed as a bracketed list of expressions.
  */
 private class ArrayExprIsABracketedListOfExpressions extends ArrayExpr, BracketedListOfExpressions {
-  override predicate isImpure() { ArrayExpr.super.isImpure() }
-
   /** Gets the `i`th element of this array literal. */
   override Expr getElement(int i) { result = ArrayExpr.super.getElement(i) }
 }

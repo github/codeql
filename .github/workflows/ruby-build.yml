@@ -5,6 +5,8 @@ on:
     paths:
       - "ruby/**"
       - .github/workflows/ruby-build.yml
+      - .github/actions/fetch-codeql/action.yml
+      - codeql-workspace.yml
     branches:
       - main
       - "rc/*"
@@ -12,6 +14,8 @@ on:
     paths:
       - "ruby/**"
       - .github/workflows/ruby-build.yml
+      - .github/actions/fetch-codeql/action.yml
+      - codeql-workspace.yml
     branches:
       - main
       - "rc/*"
@@ -88,19 +92,14 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Fetch CodeQL
-        run: |
-          LATEST=$(gh release list --repo https://github.com/github/codeql-cli-binaries | cut -f 1 | grep -v beta | sort --version-sort | tail -1)
-          gh release download --repo https://github.com/github/codeql-cli-binaries --pattern codeql-linux64.zip "$LATEST"
-          unzip -q codeql-linux64.zip
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
+        uses: ./.github/actions/fetch-codeql
       - name: Build Query Pack
         run: |
-          codeql/codeql pack create ql/lib --output target/packs
-          codeql/codeql pack install ql/src
-          codeql/codeql pack create ql/src --output target/packs
+          codeql pack create ql/lib --output target/packs
+          codeql pack install ql/src
+          codeql pack create ql/src --output target/packs
           PACK_FOLDER=$(readlink -f target/packs/codeql/ruby-queries/*)
-          codeql/codeql generate query-help --format=sarifv2.1.0 --output="${PACK_FOLDER}/rules.sarif" ql/src
+          codeql generate query-help --format=sarifv2.1.0 --output="${PACK_FOLDER}/rules.sarif" ql/src
           (cd ql/src; find queries \( -name '*.qhelp' -o -name '*.rb' -o -name '*.erb' \) -exec bash -c 'mkdir -p "'"${PACK_FOLDER}"'/$(dirname "{}")"' \; -exec cp "{}" "${PACK_FOLDER}/{}" \;)
       - uses: actions/upload-artifact@v3
         with:
@@ -178,18 +177,14 @@ jobs:
     needs: [package]
     steps:
       - uses: actions/checkout@v3
+      - name: Fetch CodeQL
+        uses: ./.github/actions/fetch-codeql
+
+      - uses: actions/checkout@v3
         with:
           repository: Shopify/example-ruby-app
           ref: 67a0decc5eb550f3a9228eda53925c3afd40dfe9
-      - name: Fetch CodeQL
-        shell: bash
-        run: |
-          LATEST=$(gh release list --repo https://github.com/github/codeql-cli-binaries | cut -f 1 | grep -v beta | sort --version-sort | tail -1)
-          gh release download --repo https://github.com/github/codeql-cli-binaries --pattern codeql.zip "$LATEST"
-          unzip -q codeql.zip
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
-        working-directory: ${{ runner.temp }}
+
       - name: Download Ruby bundle
         uses: actions/download-artifact@v3
         with:
@@ -213,12 +208,12 @@ jobs:
       - name: Run QL test
         shell: bash
         run: |
-          "${{ runner.temp }}/codeql/codeql" test run --search-path "${{ runner.temp }}/ruby-bundle" --additional-packs "${{ runner.temp }}/ruby-bundle" .
+          codeql test run --search-path "${{ runner.temp }}/ruby-bundle" --additional-packs "${{ runner.temp }}/ruby-bundle" .
       - name: Create database
         shell: bash
         run: |
-          "${{ runner.temp }}/codeql/codeql" database create --search-path "${{ runner.temp }}/ruby-bundle" --language ruby --source-root . ../database
+          codeql database create --search-path "${{ runner.temp }}/ruby-bundle" --language ruby --source-root . ../database
       - name: Analyze database
         shell: bash
         run: |
-          "${{ runner.temp }}/codeql/codeql" database analyze --search-path "${{ runner.temp }}/ruby-bundle" --format=sarifv2.1.0 --output=out.sarif ../database ruby-code-scanning.qls
+          codeql database analyze --search-path "${{ runner.temp }}/ruby-bundle" --format=sarifv2.1.0 --output=out.sarif ../database ruby-code-scanning.qls

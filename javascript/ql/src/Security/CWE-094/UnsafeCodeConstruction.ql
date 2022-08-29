@@ -1,5 +1,5 @@
 /**
- * @name Unsafe code constructed from libary input
+ * @name Unsafe code constructed from library input
  * @description Using externally controlled strings to construct code may allow a malicious
  *              user to execute arbitrary code.
  * @kind path-problem

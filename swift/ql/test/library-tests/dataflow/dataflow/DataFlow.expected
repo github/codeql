@@ -1,0 +1,137 @@
+edges
+| test.swift:6:19:6:26 | call to source() :  | test.swift:7:15:7:15 | t1 |
+| test.swift:6:19:6:26 | call to source() :  | test.swift:9:15:9:15 | t1 |
+| test.swift:6:19:6:26 | call to source() :  | test.swift:10:15:10:15 | t2 |
+| test.swift:25:20:25:27 | call to source() :  | test.swift:29:18:29:21 | x :  |
+| test.swift:26:26:26:33 | call to source() :  | test.swift:29:26:29:29 | y :  |
+| test.swift:29:18:29:21 | x :  | test.swift:30:15:30:15 | x |
+| test.swift:29:26:29:29 | y :  | test.swift:31:15:31:15 | y |
+| test.swift:35:12:35:19 | call to source() :  | test.swift:39:15:39:29 | call to callee_source() |
+| test.swift:43:19:43:26 | call to source() :  | test.swift:50:15:50:15 | t |
+| test.swift:53:1:56:1 | arg[return] :  | test.swift:61:17:61:23 | arg: &... :  |
+| test.swift:54:11:54:18 | call to source() :  | test.swift:53:1:56:1 | arg[return] :  |
+| test.swift:61:17:61:23 | arg: &... :  | test.swift:62:15:62:15 | x |
+| test.swift:65:16:65:28 | arg1 :  | test.swift:65:1:70:1 | arg2[return] :  |
+| test.swift:73:18:73:25 | call to source() :  | test.swift:75:21:75:22 | &... :  |
+| test.swift:75:21:75:22 | &... :  | test.swift:65:16:65:28 | arg1 :  |
+| test.swift:75:21:75:22 | &... :  | test.swift:75:25:75:32 | arg2: &... :  |
+| test.swift:75:25:75:32 | arg2: &... :  | test.swift:77:15:77:15 | y |
+| test.swift:80:1:82:1 | arg[return] :  | test.swift:97:34:97:40 | arg: &... :  |
+| test.swift:81:11:81:18 | call to source() :  | test.swift:80:1:82:1 | arg[return] :  |
+| test.swift:84:1:91:1 | arg[return] :  | test.swift:104:35:104:41 | arg: &... :  |
+| test.swift:86:15:86:22 | call to source() :  | test.swift:84:1:91:1 | arg[return] :  |
+| test.swift:89:15:89:22 | call to source() :  | test.swift:84:1:91:1 | arg[return] :  |
+| test.swift:97:34:97:40 | arg: &... :  | test.swift:98:19:98:19 | x |
+| test.swift:104:35:104:41 | arg: &... :  | test.swift:105:19:105:19 | x |
+| test.swift:109:9:109:14 | arg :  | test.swift:110:12:110:12 | arg :  |
+| test.swift:113:14:113:19 | arg :  | test.swift:114:19:114:19 | arg :  |
+| test.swift:113:14:113:19 | arg :  | test.swift:114:19:114:19 | arg :  |
+| test.swift:114:19:114:19 | arg :  | test.swift:109:9:109:14 | arg :  |
+| test.swift:114:19:114:19 | arg :  | test.swift:114:12:114:22 | call to ... :  |
+| test.swift:114:19:114:19 | arg :  | test.swift:114:12:114:22 | call to ... :  |
+| test.swift:114:19:114:19 | arg :  | test.swift:123:10:123:13 | i :  |
+| test.swift:118:18:118:25 | call to source() :  | test.swift:119:31:119:31 | x :  |
+| test.swift:119:18:119:44 | call to forward(arg:lambda:) :  | test.swift:120:15:120:15 | y |
+| test.swift:119:31:119:31 | x :  | test.swift:113:14:113:19 | arg :  |
+| test.swift:119:31:119:31 | x :  | test.swift:119:18:119:44 | call to forward(arg:lambda:) :  |
+| test.swift:122:18:125:6 | call to forward(arg:lambda:) :  | test.swift:126:15:126:15 | z |
+| test.swift:122:31:122:38 | call to source() :  | test.swift:113:14:113:19 | arg :  |
+| test.swift:122:31:122:38 | call to source() :  | test.swift:122:18:125:6 | call to forward(arg:lambda:) :  |
+| test.swift:123:10:123:13 | i :  | test.swift:124:16:124:16 | i :  |
+| test.swift:142:10:142:13 | i :  | test.swift:143:16:143:16 | i :  |
+| test.swift:145:23:145:30 | call to source() :  | test.swift:142:10:142:13 | i :  |
+| test.swift:145:23:145:30 | call to source() :  | test.swift:145:15:145:31 | call to ... |
+| test.swift:149:16:149:23 | call to source() :  | test.swift:151:15:151:28 | call to ... |
+| test.swift:149:16:149:23 | call to source() :  | test.swift:159:16:159:29 | call to ... :  |
+| test.swift:154:10:154:13 | i :  | test.swift:155:19:155:19 | i |
+| test.swift:157:16:157:23 | call to source() :  | test.swift:154:10:154:13 | i :  |
+| test.swift:159:16:159:29 | call to ... :  | test.swift:154:10:154:13 | i :  |
+nodes
+| test.swift:6:19:6:26 | call to source() :  | semmle.label | call to source() :  |
+| test.swift:7:15:7:15 | t1 | semmle.label | t1 |
+| test.swift:9:15:9:15 | t1 | semmle.label | t1 |
+| test.swift:10:15:10:15 | t2 | semmle.label | t2 |
+| test.swift:25:20:25:27 | call to source() :  | semmle.label | call to source() :  |
+| test.swift:26:26:26:33 | call to source() :  | semmle.label | call to source() :  |
+| test.swift:29:18:29:21 | x :  | semmle.label | x :  |
+| test.swift:29:26:29:29 | y :  | semmle.label | y :  |
+| test.swift:30:15:30:15 | x | semmle.label | x |
+| test.swift:31:15:31:15 | y | semmle.label | y |
+| test.swift:35:12:35:19 | call to source() :  | semmle.label | call to source() :  |
+| test.swift:39:15:39:29 | call to callee_source() | semmle.label | call to callee_source() |
+| test.swift:43:19:43:26 | call to source() :  | semmle.label | call to source() :  |
+| test.swift:50:15:50:15 | t | semmle.label | t |
+| test.swift:53:1:56:1 | arg[return] :  | semmle.label | arg[return] :  |
+| test.swift:54:11:54:18 | call to source() :  | semmle.label | call to source() :  |
+| test.swift:61:17:61:23 | arg: &... :  | semmle.label | arg: &... :  |
+| test.swift:62:15:62:15 | x | semmle.label | x |
+| test.swift:65:1:70:1 | arg2[return] :  | semmle.label | arg2[return] :  |
+| test.swift:65:16:65:28 | arg1 :  | semmle.label | arg1 :  |
+| test.swift:73:18:73:25 | call to source() :  | semmle.label | call to source() :  |
+| test.swift:75:21:75:22 | &... :  | semmle.label | &... :  |
+| test.swift:75:25:75:32 | arg2: &... :  | semmle.label | arg2: &... :  |
+| test.swift:77:15:77:15 | y | semmle.label | y |
+| test.swift:80:1:82:1 | arg[return] :  | semmle.label | arg[return] :  |
+| test.swift:81:11:81:18 | call to source() :  | semmle.label | call to source() :  |
+| test.swift:84:1:91:1 | arg[return] :  | semmle.label | arg[return] :  |
+| test.swift:86:15:86:22 | call to source() :  | semmle.label | call to source() :  |
+| test.swift:89:15:89:22 | call to source() :  | semmle.label | call to source() :  |
+| test.swift:97:34:97:40 | arg: &... :  | semmle.label | arg: &... :  |
+| test.swift:98:19:98:19 | x | semmle.label | x |
+| test.swift:104:35:104:41 | arg: &... :  | semmle.label | arg: &... :  |
+| test.swift:105:19:105:19 | x | semmle.label | x |
+| test.swift:109:9:109:14 | arg :  | semmle.label | arg :  |
+| test.swift:110:12:110:12 | arg :  | semmle.label | arg :  |
+| test.swift:113:14:113:19 | arg :  | semmle.label | arg :  |
+| test.swift:113:14:113:19 | arg :  | semmle.label | arg :  |
+| test.swift:114:12:114:22 | call to ... :  | semmle.label | call to ... :  |
+| test.swift:114:12:114:22 | call to ... :  | semmle.label | call to ... :  |
+| test.swift:114:19:114:19 | arg :  | semmle.label | arg :  |
+| test.swift:114:19:114:19 | arg :  | semmle.label | arg :  |
+| test.swift:118:18:118:25 | call to source() :  | semmle.label | call to source() :  |
+| test.swift:119:18:119:44 | call to forward(arg:lambda:) :  | semmle.label | call to forward(arg:lambda:) :  |
+| test.swift:119:31:119:31 | x :  | semmle.label | x :  |
+| test.swift:120:15:120:15 | y | semmle.label | y |
+| test.swift:122:18:125:6 | call to forward(arg:lambda:) :  | semmle.label | call to forward(arg:lambda:) :  |
+| test.swift:122:31:122:38 | call to source() :  | semmle.label | call to source() :  |
+| test.swift:123:10:123:13 | i :  | semmle.label | i :  |
+| test.swift:124:16:124:16 | i :  | semmle.label | i :  |
+| test.swift:126:15:126:15 | z | semmle.label | z |
+| test.swift:138:19:138:26 | call to source() | semmle.label | call to source() |
+| test.swift:142:10:142:13 | i :  | semmle.label | i :  |
+| test.swift:143:16:143:16 | i :  | semmle.label | i :  |
+| test.swift:145:15:145:31 | call to ... | semmle.label | call to ... |
+| test.swift:145:23:145:30 | call to source() :  | semmle.label | call to source() :  |
+| test.swift:149:16:149:23 | call to source() :  | semmle.label | call to source() :  |
+| test.swift:151:15:151:28 | call to ... | semmle.label | call to ... |
+| test.swift:154:10:154:13 | i :  | semmle.label | i :  |
+| test.swift:155:19:155:19 | i | semmle.label | i |
+| test.swift:157:16:157:23 | call to source() :  | semmle.label | call to source() :  |
+| test.swift:159:16:159:29 | call to ... :  | semmle.label | call to ... :  |
+subpaths
+| test.swift:75:21:75:22 | &... :  | test.swift:65:16:65:28 | arg1 :  | test.swift:65:1:70:1 | arg2[return] :  | test.swift:75:25:75:32 | arg2: &... :  |
+| test.swift:114:19:114:19 | arg :  | test.swift:109:9:109:14 | arg :  | test.swift:110:12:110:12 | arg :  | test.swift:114:12:114:22 | call to ... :  |
+| test.swift:114:19:114:19 | arg :  | test.swift:123:10:123:13 | i :  | test.swift:124:16:124:16 | i :  | test.swift:114:12:114:22 | call to ... :  |
+| test.swift:119:31:119:31 | x :  | test.swift:113:14:113:19 | arg :  | test.swift:114:12:114:22 | call to ... :  | test.swift:119:18:119:44 | call to forward(arg:lambda:) :  |
+| test.swift:122:31:122:38 | call to source() :  | test.swift:113:14:113:19 | arg :  | test.swift:114:12:114:22 | call to ... :  | test.swift:122:18:125:6 | call to forward(arg:lambda:) :  |
+| test.swift:145:23:145:30 | call to source() :  | test.swift:142:10:142:13 | i :  | test.swift:143:16:143:16 | i :  | test.swift:145:15:145:31 | call to ... |
+#select
+| test.swift:7:15:7:15 | t1 | test.swift:6:19:6:26 | call to source() :  | test.swift:7:15:7:15 | t1 | result |
+| test.swift:9:15:9:15 | t1 | test.swift:6:19:6:26 | call to source() :  | test.swift:9:15:9:15 | t1 | result |
+| test.swift:10:15:10:15 | t2 | test.swift:6:19:6:26 | call to source() :  | test.swift:10:15:10:15 | t2 | result |
+| test.swift:30:15:30:15 | x | test.swift:25:20:25:27 | call to source() :  | test.swift:30:15:30:15 | x | result |
+| test.swift:31:15:31:15 | y | test.swift:26:26:26:33 | call to source() :  | test.swift:31:15:31:15 | y | result |
+| test.swift:39:15:39:29 | call to callee_source() | test.swift:35:12:35:19 | call to source() :  | test.swift:39:15:39:29 | call to callee_source() | result |
+| test.swift:50:15:50:15 | t | test.swift:43:19:43:26 | call to source() :  | test.swift:50:15:50:15 | t | result |
+| test.swift:62:15:62:15 | x | test.swift:54:11:54:18 | call to source() :  | test.swift:62:15:62:15 | x | result |
+| test.swift:77:15:77:15 | y | test.swift:73:18:73:25 | call to source() :  | test.swift:77:15:77:15 | y | result |
+| test.swift:98:19:98:19 | x | test.swift:81:11:81:18 | call to source() :  | test.swift:98:19:98:19 | x | result |
+| test.swift:105:19:105:19 | x | test.swift:86:15:86:22 | call to source() :  | test.swift:105:19:105:19 | x | result |
+| test.swift:105:19:105:19 | x | test.swift:89:15:89:22 | call to source() :  | test.swift:105:19:105:19 | x | result |
+| test.swift:120:15:120:15 | y | test.swift:118:18:118:25 | call to source() :  | test.swift:120:15:120:15 | y | result |
+| test.swift:126:15:126:15 | z | test.swift:122:31:122:38 | call to source() :  | test.swift:126:15:126:15 | z | result |
+| test.swift:138:19:138:26 | call to source() | test.swift:138:19:138:26 | call to source() | test.swift:138:19:138:26 | call to source() | result |
+| test.swift:145:15:145:31 | call to ... | test.swift:145:23:145:30 | call to source() :  | test.swift:145:15:145:31 | call to ... | result |
+| test.swift:151:15:151:28 | call to ... | test.swift:149:16:149:23 | call to source() :  | test.swift:151:15:151:28 | call to ... | result |
+| test.swift:155:19:155:19 | i | test.swift:149:16:149:23 | call to source() :  | test.swift:155:19:155:19 | i | result |
+| test.swift:155:19:155:19 | i | test.swift:157:16:157:23 | call to source() :  | test.swift:155:19:155:19 | i | result |

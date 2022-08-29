@@ -147,3 +147,46 @@ class JavadocText extends JavadocElement, @javadocText {
 
   override string getAPrimaryQlClass() { result = "JavadocText" }
 }
+
+/** A Kotlin comment. */
+class KtComment extends Top, @ktcomment {
+  /** Gets the full text of this comment. */
+  string getText() { ktComments(this, _, result) }
+
+  /** Holds if this comment is an EOL comment. */
+  predicate isEolComment() { ktComments(this, 1, _) }
+
+  /** Holds if this comment is a block comment. */
+  predicate isBlockComment() { ktComments(this, 2, _) }
+
+  /** Holds if this comment is a KDoc comment. */
+  predicate isDocComment() { ktComments(this, 3, _) }
+
+  /** Gets the sections of this comment. */
+  KtCommentSection getSections() { ktCommentSections(result, this, _) }
+
+  /** Gets the owner of this comment, if any. */
+  Top getOwner() { ktCommentOwners(this, result) }
+
+  override string toString() { result = this.getText() }
+
+  override string getAPrimaryQlClass() { result = "KtComment" }
+}
+
+/** A Kotlin comment. */
+class KtCommentSection extends @ktcommentsection {
+  /** Gets the content text of this section. */
+  string getContent() { ktCommentSections(this, _, result) }
+
+  /** Gets the parent comment. */
+  KtComment getParent() { ktCommentSections(this, result, _) }
+
+  /** Gets the section name if any. */
+  string getName() { ktCommentSectionNames(this, result) }
+
+  /** Gets the section subject name if any. */
+  string getSubjectName() { ktCommentSectionSubjectNames(this, result) }
+
+  /** Gets the string representation of this section. */
+  string toString() { result = this.getContent() }
+}

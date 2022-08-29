@@ -9,7 +9,7 @@ private import internal.Splitting
 private import internal.Completion
 
 /** An AST node with an associated control-flow graph. */
-class CfgScope extends Scope instanceof CfgScope::Range_ {
+class CfgScope extends Scope instanceof CfgScopeImpl {
   /** Gets the CFG scope that this scope is nested under, if any. */
   final CfgScope getOuterCfgScope() {
     exists(AstNode parent |
@@ -28,6 +28,9 @@ class CfgScope extends Scope instanceof CfgScope::Range_ {
  * Only nodes that can be reached from an entry point are included in the CFG.
  */
 class CfgNode extends TCfgNode {
+  /** Gets the name of the primary QL class for this node. */
+  string getAPrimaryQlClass() { none() }
+
   /** Gets a textual representation of this control flow node. */
   string toString() { none() }
 

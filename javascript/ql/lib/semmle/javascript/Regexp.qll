@@ -1005,7 +1005,10 @@ module RegExpPatterns {
    * Gets a pattern that matches common top-level domain names in lower case.
    * DEPRECATED: use `getACommonTld` instead
    */
-  deprecated predicate commonTLD = getACommonTld/0;
+  deprecated predicate commonTld = getACommonTld/0;
+
+  /** DEPRECATED: Alias for commonTld */
+  deprecated predicate commonTLD = commonTld/0;
 }
 
 /**
@@ -1309,7 +1312,7 @@ module RegExp {
   }
 
   /**
-   * Holds if `term` can match any occurence of `char` within a string (not taking into account
+   * Holds if `term` can match any occurrence of `char` within a string (not taking into account
    * the context in which `term` appears).
    *
    * This predicate is under-approximate and never considers sequences to guarantee a match.

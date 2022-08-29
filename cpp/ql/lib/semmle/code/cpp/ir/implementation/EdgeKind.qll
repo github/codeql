@@ -67,7 +67,7 @@ class DefaultEdge extends EdgeKind, TDefaultEdge {
 
 /**
  * A "case" edge, representing the successor of a `Switch` instruction when the
- * the condition value matches a correponding `case` label.
+ * the condition value matches a corresponding `case` label.
  */
 class CaseEdge extends EdgeKind, TCaseEdge {
   string minValue;

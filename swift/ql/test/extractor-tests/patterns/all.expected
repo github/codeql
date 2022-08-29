@@ -1,0 +1,41 @@
+| patterns.swift:2:9:2:9 | an_int |
+| patterns.swift:3:9:3:9 | a_string |
+| patterns.swift:3:9:3:19 | ... as ... |
+| patterns.swift:4:9:4:17 | (...) |
+| patterns.swift:4:10:4:10 | x |
+| patterns.swift:4:13:4:13 | y |
+| patterns.swift:4:16:4:16 | z |
+| patterns.swift:5:9:5:9 | _ |
+| patterns.swift:6:9:6:11 | (...) |
+| patterns.swift:6:10:6:10 | _ |
+| patterns.swift:10:9:10:9 | point |
+| patterns.swift:12:10:12:21 | let ... |
+| patterns.swift:12:14:12:21 | (...) |
+| patterns.swift:12:15:12:15 | xx |
+| patterns.swift:12:19:12:19 | yy |
+| patterns.swift:16:10:16:14 | =~ ... |
+| patterns.swift:17:10:17:10 | _ |
+| patterns.swift:24:9:24:9 | v |
+| patterns.swift:24:9:24:12 | ... as ... |
+| patterns.swift:27:10:27:11 | .bar |
+| patterns.swift:28:10:28:23 | let ... |
+| patterns.swift:28:14:28:23 | .baz(...) |
+| patterns.swift:28:18:28:23 | (...) |
+| patterns.swift:28:19:28:19 | i |
+| patterns.swift:28:22:28:22 | s |
+| patterns.swift:31:9:31:9 | w |
+| patterns.swift:31:9:31:15 | ... as ... |
+| patterns.swift:34:10:34:15 | let ... |
+| patterns.swift:34:14:34:14 | n |
+| patterns.swift:34:14:34:15 | let ...? |
+| patterns.swift:35:10:35:10 | _ |
+| patterns.swift:38:9:38:9 | a |
+| patterns.swift:38:9:38:12 | ... as ... |
+| patterns.swift:41:10:41:13 | ... is ... |
+| patterns.swift:42:10:42:19 | let ... |
+| patterns.swift:42:14:42:14 | x |
+| patterns.swift:42:14:42:19 | ... is ... |
+| patterns.swift:43:10:43:10 | _ |
+| patterns.swift:46:9:46:9 | b |
+| patterns.swift:49:10:49:10 | true |
+| patterns.swift:50:10:50:10 | false |

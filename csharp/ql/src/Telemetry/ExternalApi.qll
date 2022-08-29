@@ -1,6 +1,7 @@
 /** Provides classes and predicates related to handling APIs from external libraries. */
 
 private import csharp
+private import dotnet
 private import semmle.code.csharp.dispatch.Dispatch
 private import semmle.code.csharp.dataflow.ExternalFlow
 private import semmle.code.csharp.dataflow.FlowSummary
@@ -24,8 +25,8 @@ class TestLibrary extends RefType {
 /**
  * An external API from either the C# Standard Library or a 3rd party library.
  */
-class ExternalApi extends DataFlowDispatch::DataFlowCallable {
-  ExternalApi() { this.fromLibrary() }
+class ExternalApi extends DotNet::Callable {
+  ExternalApi() { this.isUnboundDeclaration() and this.fromLibrary() }
 
   /**
    * Gets the unbound type, name and parameter types of this API.
@@ -79,11 +80,12 @@ class ExternalApi extends DataFlowDispatch::DataFlowCallable {
 
   /** Holds if this API has a supported summary. */
   predicate hasSummary() {
-    this instanceof SummarizedCallable or
+    this instanceof SummarizedCallable
+    or
     defaultAdditionalTaintStep(this.getAnInput(), _)
   }
 
-  /** Holds if this API is is a constructor without parameters. */
+  /** Holds if this API is a constructor without parameters. */
   private predicate isParameterlessConstructor() {
     this instanceof Constructor and this.getNumberOfParameters() = 0
   }
@@ -104,4 +106,37 @@ class ExternalApi extends DataFlowDispatch::DataFlowCallable {
 
   /** Holds if this API is supported by existing CodeQL libraries, that is, it is either a recognized source or sink or has a flow summary. */
   predicate isSupported() { this.hasSummary() or this.isSource() or this.isSink() }
+}
+
+/**
+ * Gets the limit for the number of results produced by a telemetry query.
+ */
+int resultLimit() { result = 1000 }
+
+/**
+ * Holds if the relevant usage count of `api` is `usages`.
+ */
+signature predicate relevantUsagesSig(ExternalApi api, int usages);
+
+/**
+ * Given a predicate to count relevant API usages, this module provides a predicate
+ * for restricting the number or returned results based on a certain limit.
+ */
+module Results<relevantUsagesSig/2 getRelevantUsages> {
+  private int getOrder(ExternalApi api) {
+    api =
+      rank[result](ExternalApi a, int usages |
+        getRelevantUsages(a, usages)
+      |
+        a order by usages desc, a.getInfo()
+      )
+  }
+
+  /**
+   * Holds if `api` is being used `usages` times and if it is
+   * in the top results (guarded by resultLimit).
+   */
+  predicate restrict(ExternalApi api, int usages) {
+    getRelevantUsages(api, usages) and getOrder(api) <= resultLimit()
+  }
 }

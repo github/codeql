@@ -119,16 +119,21 @@ module Path {
   }
 
   /** A data-flow node that checks that a path is safe to access. */
-  class SafeAccessCheck extends DataFlow::BarrierGuard instanceof SafeAccessCheck::Range {
-    override predicate checks(ControlFlowNode node, boolean branch) {
-      SafeAccessCheck::Range.super.checks(node, branch)
-    }
+  class SafeAccessCheck extends DataFlow::ExprNode {
+    SafeAccessCheck() { this = DataFlow::BarrierGuard<safeAccessCheck/3>::getABarrierNode() }
+  }
+
+  private predicate safeAccessCheck(DataFlow::GuardNode g, ControlFlowNode node, boolean branch) {
+    g.(SafeAccessCheck::Range).checks(node, branch)
   }
 
   /** Provides a class for modeling new path safety checks. */
   module SafeAccessCheck {
     /** A data-flow node that checks that a path is safe to access. */
-    abstract class Range extends DataFlow::BarrierGuard { }
+    abstract class Range extends DataFlow::GuardNode {
+      /** Holds if this guard validates `node` upon evaluating to `branch`. */
+      abstract predicate checks(ControlFlowNode node, boolean branch);
+    }
   }
 }
 
@@ -496,6 +501,65 @@ module XML {
        * This is used for nice alert messages and should include the module if possible.
        */
       abstract string getName();
+    }
+  }
+
+  /**
+   * A kind of XML vulnerability.
+   *
+   * See overview of kinds at https://pypi.org/project/defusedxml/#python-xml-libraries
+   *
+   * See PoC at `python/PoCs/XmlParsing/PoC.py` for some tests of vulnerable XML parsing.
+   */
+  class XmlParsingVulnerabilityKind extends string {
+    XmlParsingVulnerabilityKind() { this in ["XML bomb", "XXE", "DTD retrieval"] }
+
+    /**
+     * Holds for XML bomb vulnerability kind, such as 'Billion Laughs' and 'Quadratic
+     * Blowup'.
+     *
+     * While a parser could technically be vulnerable to one and not the other, from our
+     * point of view the interesting part is that it IS vulnerable to these types of
+     * attacks, and not so much which one specifically works. In practice I haven't seen
+     * a parser that is vulnerable to one and not the other.
+     */
+    predicate isXmlBomb() { this = "XML bomb" }
+
+    /** Holds for XXE vulnerability kind. */
+    predicate isXxe() { this = "XXE" }
+
+    /** Holds for DTD retrieval vulnerability kind. */
+    predicate isDtdRetrieval() { this = "DTD retrieval" }
+  }
+
+  /**
+   * A data-flow node that parses XML.
+   *
+   * Extend this class to model new APIs. If you want to refine existing API models,
+   * extend `XmlParsing` instead.
+   */
+  class XmlParsing extends Decoding instanceof XmlParsing::Range {
+    /**
+     * Holds if this XML parsing is vulnerable to `kind`.
+     */
+    predicate vulnerableTo(XmlParsingVulnerabilityKind kind) { super.vulnerableTo(kind) }
+  }
+
+  /** Provides classes for modeling XML parsing APIs. */
+  module XmlParsing {
+    /**
+     * A data-flow node that parses XML.
+     *
+     * Extend this class to model new APIs. If you want to refine existing API models,
+     * extend `XmlParsing` instead.
+     */
+    abstract class Range extends Decoding::Range {
+      /**
+       * Holds if this XML parsing is vulnerable to `kind`.
+       */
+      abstract predicate vulnerableTo(XmlParsingVulnerabilityKind kind);
+
+      override string getFormat() { result = "XML" }
     }
   }
 }
@@ -910,6 +974,76 @@ module HTTP {
         abstract DataFlow::Node getValueArg();
       }
     }
+
+    /**
+     * A data-flow node that enables or disables Cross-site request forgery protection
+     * in a global manner.
+     *
+     * Extend this class to refine existing API models. If you want to model new APIs,
+     * extend `CsrfProtectionSetting::Range` instead.
+     */
+    class CsrfProtectionSetting extends DataFlow::Node instanceof CsrfProtectionSetting::Range {
+      /**
+       * Gets the boolean value corresponding to if CSRF protection is enabled
+       * (`true`) or disabled (`false`) by this node.
+       */
+      boolean getVerificationSetting() { result = super.getVerificationSetting() }
+    }
+
+    /** Provides a class for modeling new CSRF protection setting APIs. */
+    module CsrfProtectionSetting {
+      /**
+       * A data-flow node that enables or disables Cross-site request forgery protection
+       * in a global manner.
+       *
+       * Extend this class to model new APIs. If you want to refine existing API models,
+       * extend `CsrfProtectionSetting` instead.
+       */
+      abstract class Range extends DataFlow::Node {
+        /**
+         * Gets the boolean value corresponding to if CSRF protection is enabled
+         * (`true`) or disabled (`false`) by this node.
+         */
+        abstract boolean getVerificationSetting();
+      }
+    }
+
+    /**
+     * A data-flow node that enables or disables Cross-site request forgery protection
+     * for a specific part of an application.
+     *
+     * Extend this class to refine existing API models. If you want to model new APIs,
+     * extend `CsrfLocalProtectionSetting::Range` instead.
+     */
+    class CsrfLocalProtectionSetting extends DataFlow::Node instanceof CsrfLocalProtectionSetting::Range {
+      /**
+       * Gets a request handler whose CSRF protection is changed.
+       */
+      Function getRequestHandler() { result = super.getRequestHandler() }
+
+      /** Holds if CSRF protection is enabled by this setting */
+      predicate csrfEnabled() { super.csrfEnabled() }
+    }
+
+    /** Provides a class for modeling new CSRF protection setting APIs. */
+    module CsrfLocalProtectionSetting {
+      /**
+       * A data-flow node that enables or disables Cross-site request forgery protection
+       * for a specific part of an application.
+       *
+       * Extend this class to model new APIs. If you want to refine existing API models,
+       * extend `CsrfLocalProtectionSetting` instead.
+       */
+      abstract class Range extends DataFlow::Node {
+        /**
+         * Gets a request handler whose CSRF protection is changed.
+         */
+        abstract Function getRequestHandler();
+
+        /** Holds if CSRF protection is enabled by this setting */
+        abstract predicate csrfEnabled();
+      }
+    }
   }
 
   /** Provides classes for modeling HTTP clients. */
@@ -1082,38 +1216,5 @@ module Cryptography {
     }
   }
 
-  import semmle.python.concepts.CryptoAlgorithms
-
-  /**
-   * A data-flow node that is an application of a cryptographic algorithm. For example,
-   * encryption, decryption, signature-validation.
-   *
-   * Extend this class to refine existing API models. If you want to model new APIs,
-   * extend `CryptographicOperation::Range` instead.
-   */
-  class CryptographicOperation extends DataFlow::Node instanceof CryptographicOperation::Range {
-    /** Gets the algorithm used, if it matches a known `CryptographicAlgorithm`. */
-    CryptographicAlgorithm getAlgorithm() { result = super.getAlgorithm() }
-
-    /** Gets an input the algorithm is used on, for example the plain text input to be encrypted. */
-    DataFlow::Node getAnInput() { result = super.getAnInput() }
-  }
-
-  /** Provides classes for modeling new applications of a cryptographic algorithms. */
-  module CryptographicOperation {
-    /**
-     * A data-flow node that is an application of a cryptographic algorithm. For example,
-     * encryption, decryption, signature-validation.
-     *
-     * Extend this class to model new APIs. If you want to refine existing API models,
-     * extend `CryptographicOperation` instead.
-     */
-    abstract class Range extends DataFlow::Node {
-      /** Gets the algorithm used, if it matches a known `CryptographicAlgorithm`. */
-      abstract CryptographicAlgorithm getAlgorithm();
-
-      /** Gets an input the algorithm is used on, for example the plain text input to be encrypted. */
-      abstract DataFlow::Node getAnInput();
-    }
-  }
+  import semmle.python.internal.ConceptsShared::Cryptography
 }

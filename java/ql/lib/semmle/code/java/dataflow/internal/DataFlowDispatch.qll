@@ -4,13 +4,14 @@ private import DataFlowUtil
 private import semmle.code.java.dataflow.InstanceAccess
 private import semmle.code.java.dataflow.FlowSummary
 private import semmle.code.java.dispatch.VirtualDispatch as VirtualDispatch
+private import semmle.code.java.dispatch.internal.Unification
 
 private module DispatchImpl {
   /** Gets a viable implementation of the target of the given `Call`. */
   DataFlowCallable viableCallable(DataFlowCall c) {
     result.asCallable() = VirtualDispatch::viableCallable(c.asCall())
     or
-    result.(SummarizedCallable).asCallable() = c.asCall().getCallee().getSourceDeclaration()
+    result.asSummarizedCallable() = c.asCall().getCallee().getSourceDeclaration()
   }
 
   /**
@@ -115,74 +116,20 @@ private module DispatchImpl {
       exact = false and
       exists(RefType t2 |
         result.asCallable() = VirtualDispatch::viableMethodImpl(def, t.getSourceDeclaration(), t2) and
-        not failsUnification(t, t2)
+        not Unification::failsUnification(t, t2)
       )
       or
-      result.asCallable() = def and result instanceof SummarizedCallable
+      result.asSummarizedCallable() = def
     )
   }
 
-  pragma[noinline]
-  private predicate unificationTargetLeft(ParameterizedType t1, GenericType g) {
-    contextArgHasType(_, _, t1, _) and t1.getGenericType() = g
+  private predicate unificationTargetLeft(ParameterizedType t1) { contextArgHasType(_, _, t1, _) }
+
+  private predicate unificationTargetRight(ParameterizedType t2) {
+    exists(VirtualDispatch::viableMethodImpl(_, _, t2))
   }
 
-  pragma[noinline]
-  private predicate unificationTargetRight(ParameterizedType t2, GenericType g) {
-    exists(VirtualDispatch::viableMethodImpl(_, _, t2)) and t2.getGenericType() = g
-  }
-
-  private predicate unificationTargets(Type t1, Type t2) {
-    exists(GenericType g | unificationTargetLeft(t1, g) and unificationTargetRight(t2, g))
-    or
-    exists(Array a1, Array a2 |
-      unificationTargets(a1, a2) and
-      t1 = a1.getComponentType() and
-      t2 = a2.getComponentType()
-    )
-    or
-    exists(ParameterizedType pt1, ParameterizedType pt2, int pos |
-      unificationTargets(pt1, pt2) and
-      not pt1.getSourceDeclaration() != pt2.getSourceDeclaration() and
-      t1 = pt1.getTypeArgument(pos) and
-      t2 = pt2.getTypeArgument(pos)
-    )
-  }
-
-  pragma[noinline]
-  private predicate typeArgsOfUnificationTargets(
-    ParameterizedType t1, ParameterizedType t2, int pos, RefType arg1, RefType arg2
-  ) {
-    unificationTargets(t1, t2) and
-    arg1 = t1.getTypeArgument(pos) and
-    arg2 = t2.getTypeArgument(pos)
-  }
-
-  private predicate failsUnification(Type t1, Type t2) {
-    unificationTargets(t1, t2) and
-    (
-      exists(RefType arg1, RefType arg2 |
-        typeArgsOfUnificationTargets(t1, t2, _, arg1, arg2) and
-        failsUnification(arg1, arg2)
-      )
-      or
-      failsUnification(t1.(Array).getComponentType(), t2.(Array).getComponentType())
-      or
-      not (
-        t1 instanceof Array and t2 instanceof Array
-        or
-        t1.(PrimitiveType) = t2.(PrimitiveType)
-        or
-        t1.(Class).getSourceDeclaration() = t2.(Class).getSourceDeclaration()
-        or
-        t1.(Interface).getSourceDeclaration() = t2.(Interface).getSourceDeclaration()
-        or
-        t1 instanceof BoundedType and t2 instanceof RefType
-        or
-        t1 instanceof RefType and t2 instanceof BoundedType
-      )
-    )
-  }
+  private module Unification = MkUnification<unificationTargetLeft/1, unificationTargetRight/1>;
 
   private int parameterPosition() { result in [-1, any(Parameter p).getPosition()] }
 

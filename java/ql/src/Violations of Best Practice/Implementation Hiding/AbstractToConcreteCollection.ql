@@ -33,7 +33,7 @@ predicate guardedByInstanceOf(VarAccess e, RefType t) {
   )
 }
 
-from CastExpr e, CollectionType c, CollectionType coll, string abstractName, string concreteName
+from CastingExpr e, CollectionType c, CollectionType coll, string abstractName, string concreteName
 where
   coll instanceof Interface and
   c instanceof Class and

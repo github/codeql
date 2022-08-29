@@ -1,0 +1,49 @@
+comments
+| comments.kt:1:1:1:25 | /** Kdoc with no owner */ | /** Kdoc with no owner */ |
+| comments.kt:4:1:11:3 | /**\n * A group of *members*.\n *\n * This class has no useful logic; it's just a documentation example.\n *\n * @property name the name of this group.\n * @constructor Creates an empty group.\n */ | /**\n * A group of *members*.\n *\n * This class has no useful logic; it's just a documentation example.\n *\n * @property name the name of this group.\n * @constructor Creates an empty group.\n */ |
+| comments.kt:14:5:16:7 | /**\n     * Members of this group.\n     */ | /**\n     * Members of this group.\n     */ |
+| comments.kt:19:5:22:7 | /**\n     * Adds a [member] to this group.\n     * @return the new size of the group.\n     */ | /**\n     * Adds a [member] to this group.\n     * @return the new size of the group.\n     */ |
+| comments.kt:24:9:24:25 | // A line comment | // A line comment |
+| comments.kt:28:5:30:6 | /*\n    A block comment\n    */ | /*\n    A block comment\n    */ |
+| comments.kt:35:5:35:34 | /** Medium is in the middle */ | /** Medium is in the middle */ |
+| comments.kt:37:5:37:23 | /** This is high */ | /** This is high */ |
+| comments.kt:42:5:44:6 | /**\n     * A variable.\n    */ | /**\n     * A variable.\n    */ |
+| comments.kt:48:1:50:3 | /**\n * A type alias comment\n */ | /**\n * A type alias comment\n */ |
+commentOwners
+| comments.kt:4:1:11:3 | /**\n * A group of *members*.\n *\n * This class has no useful logic; it's just a documentation example.\n *\n * @property name the name of this group.\n * @constructor Creates an empty group.\n */ | comments.kt:12:1:31:1 | Group |
+| comments.kt:4:1:11:3 | /**\n * A group of *members*.\n *\n * This class has no useful logic; it's just a documentation example.\n *\n * @property name the name of this group.\n * @constructor Creates an empty group.\n */ | comments.kt:12:1:31:1 | Group |
+| comments.kt:14:5:16:7 | /**\n     * Members of this group.\n     */ | comments.kt:17:5:17:46 | members |
+| comments.kt:14:5:16:7 | /**\n     * Members of this group.\n     */ | comments.kt:17:5:17:46 | members |
+| comments.kt:14:5:16:7 | /**\n     * Members of this group.\n     */ | comments.kt:17:13:17:46 | getMembers$private |
+| comments.kt:19:5:22:7 | /**\n     * Adds a [member] to this group.\n     * @return the new size of the group.\n     */ | comments.kt:23:5:26:5 | add |
+| comments.kt:35:5:35:34 | /** Medium is in the middle */ | comments.kt:36:5:36:14 | Medium |
+| comments.kt:37:5:37:23 | /** This is high */ | comments.kt:38:5:38:11 | High |
+| comments.kt:42:5:44:6 | /**\n     * A variable.\n    */ | comments.kt:45:5:45:13 | int a |
+| comments.kt:48:1:50:3 | /**\n * A type alias comment\n */ | comments.kt:51:1:51:24 | MyType |
+commentSections
+| comments.kt:1:1:1:25 | /** Kdoc with no owner */ | Kdoc with no owner |
+| comments.kt:4:1:11:3 | /**\n * A group of *members*.\n *\n * This class has no useful logic; it's just a documentation example.\n *\n * @property name the name of this group.\n * @constructor Creates an empty group.\n */ | A group of *members*.\n\nThis class has no useful logic; it's just a documentation example.\n\n |
+| comments.kt:4:1:11:3 | /**\n * A group of *members*.\n *\n * This class has no useful logic; it's just a documentation example.\n *\n * @property name the name of this group.\n * @constructor Creates an empty group.\n */ | Creates an empty group. |
+| comments.kt:4:1:11:3 | /**\n * A group of *members*.\n *\n * This class has no useful logic; it's just a documentation example.\n *\n * @property name the name of this group.\n * @constructor Creates an empty group.\n */ | the name of this group. |
+| comments.kt:14:5:16:7 | /**\n     * Members of this group.\n     */ | Members of this group. |
+| comments.kt:19:5:22:7 | /**\n     * Adds a [member] to this group.\n     * @return the new size of the group.\n     */ | Adds a [member] to this group.\n |
+| comments.kt:35:5:35:34 | /** Medium is in the middle */ | Medium is in the middle |
+| comments.kt:37:5:37:23 | /** This is high */ | This is high |
+| comments.kt:42:5:44:6 | /**\n     * A variable.\n    */ | A variable. |
+| comments.kt:48:1:50:3 | /**\n * A type alias comment\n */ | A type alias comment |
+commentSectionContents
+| A group of *members*.\n\nThis class has no useful logic; it's just a documentation example.\n\n | A group of *members*.\n\nThis class has no useful logic; it's just a documentation example.\n\n |
+| A type alias comment | A type alias comment |
+| A variable. | A variable. |
+| Adds a [member] to this group.\n | Adds a [member] to this group.\n |
+| Creates an empty group. | Creates an empty group. |
+| Kdoc with no owner | Kdoc with no owner |
+| Medium is in the middle | Medium is in the middle |
+| Members of this group. | Members of this group. |
+| This is high | This is high |
+| the name of this group. | the name of this group. |
+commentSectionNames
+| Creates an empty group. | constructor |
+| the name of this group. | property |
+commentSectionSubjectNames
+| the name of this group. | name |

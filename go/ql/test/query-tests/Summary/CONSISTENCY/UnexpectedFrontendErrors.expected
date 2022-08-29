@@ -1,0 +1,5 @@
+| -:0:0:0:0 | package ; expected main |
+| empty-file.go:1:1:1:1 | expected ';', found 'EOF' |
+| empty-file.go:1:1:1:1 | expected 'IDENT', found 'EOF' |
+| empty-file.go:1:1:1:1 | expected 'package', found 'EOF' |
+| empty-file.go:1:1:1:1 | expected 'package', found 'EOF' |

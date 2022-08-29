@@ -54,7 +54,7 @@ private predicate hasNamedExports(ES2015Module mod) {
 }
 
 /**
- * Holds if this module contains a `default` export.
+ * Holds if this module contains a default export.
  */
 private predicate hasDefaultExport(ES2015Module mod) {
   // export default foo;
@@ -68,7 +68,7 @@ private predicate hasDefaultExport(ES2015Module mod) {
  * Holds if `mod` contains both named and `default` exports.
  *
  * This is used to determine whether a default-import of the module should be reinterpreted
- * as a namespace-import, to accomodate the non-standard behavior implemented by some compilers.
+ * as a namespace-import, to accommodate the non-standard behavior implemented by some compilers.
  */
 private predicate hasBothNamedAndDefaultExports(ES2015Module mod) {
   hasNamedExports(mod) and
@@ -337,7 +337,7 @@ class BulkReExportDeclaration extends ReExportDeclaration, @export_all_declarati
 }
 
 /**
- * Holds if the given bulk export should not re-export `name` because there is an explicit export
+ * Holds if the given bulk export `reExport` should not re-export `name` because there is an explicit export
  * of that name in the same module.
  *
  * At compile time, shadowing works across declaration spaces.
@@ -615,7 +615,7 @@ class ReExportDefaultSpecifier extends ExportDefaultSpecifier {
 }
 
 /**
- * A namespace export specifier, that is `*` or `* as x` occuring in an export declaration.
+ * A namespace export specifier, that is `*` or `* as x` occurring in an export declaration.
  *
  * Examples:
  *

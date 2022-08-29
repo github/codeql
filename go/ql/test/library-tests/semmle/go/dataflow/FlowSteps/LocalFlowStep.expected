@@ -1,0 +1,186 @@
+| file://:0:0:0:0 | function Encode | url.go:51:14:51:21 | selection of Encode |
+| file://:0:0:0:0 | function EscapedPath | url.go:28:14:28:26 | selection of EscapedPath |
+| file://:0:0:0:0 | function Get | url.go:52:14:52:18 | selection of Get |
+| file://:0:0:0:0 | function Hostname | url.go:29:14:29:23 | selection of Hostname |
+| file://:0:0:0:0 | function JoinPath | url.go:57:16:57:27 | selection of JoinPath |
+| file://:0:0:0:0 | function JoinPath | url.go:58:16:58:27 | selection of JoinPath |
+| file://:0:0:0:0 | function JoinPath | url.go:60:15:60:28 | selection of JoinPath |
+| file://:0:0:0:0 | function JoinPath | url.go:66:9:66:25 | selection of JoinPath |
+| file://:0:0:0:0 | function MarshalBinary | url.go:30:11:30:25 | selection of MarshalBinary |
+| file://:0:0:0:0 | function Parse | url.go:23:10:23:18 | selection of Parse |
+| file://:0:0:0:0 | function Parse | url.go:32:9:32:15 | selection of Parse |
+| file://:0:0:0:0 | function Parse | url.go:59:14:59:22 | selection of Parse |
+| file://:0:0:0:0 | function Parse | url.go:65:17:65:25 | selection of Parse |
+| file://:0:0:0:0 | function ParseQuery | url.go:50:10:50:23 | selection of ParseQuery |
+| file://:0:0:0:0 | function ParseRequestURI | url.go:27:9:27:27 | selection of ParseRequestURI |
+| file://:0:0:0:0 | function Password | url.go:43:11:43:21 | selection of Password |
+| file://:0:0:0:0 | function PathEscape | url.go:12:31:12:44 | selection of PathEscape |
+| file://:0:0:0:0 | function PathUnescape | url.go:12:14:12:29 | selection of PathUnescape |
+| file://:0:0:0:0 | function Port | url.go:33:14:33:19 | selection of Port |
+| file://:0:0:0:0 | function Println | url.go:28:2:28:12 | selection of Println |
+| file://:0:0:0:0 | function Println | url.go:29:2:29:12 | selection of Println |
+| file://:0:0:0:0 | function Println | url.go:31:2:31:12 | selection of Println |
+| file://:0:0:0:0 | function Println | url.go:33:2:33:12 | selection of Println |
+| file://:0:0:0:0 | function Println | url.go:34:2:34:12 | selection of Println |
+| file://:0:0:0:0 | function Println | url.go:35:2:35:12 | selection of Println |
+| file://:0:0:0:0 | function Println | url.go:44:2:44:12 | selection of Println |
+| file://:0:0:0:0 | function Println | url.go:45:2:45:12 | selection of Println |
+| file://:0:0:0:0 | function Println | url.go:51:2:51:12 | selection of Println |
+| file://:0:0:0:0 | function Println | url.go:52:2:52:12 | selection of Println |
+| file://:0:0:0:0 | function Query | url.go:34:14:34:20 | selection of Query |
+| file://:0:0:0:0 | function QueryEscape | url.go:14:32:14:46 | selection of QueryEscape |
+| file://:0:0:0:0 | function QueryUnescape | url.go:14:14:14:30 | selection of QueryUnescape |
+| file://:0:0:0:0 | function Replace | strings.go:9:8:9:22 | selection of Replace |
+| file://:0:0:0:0 | function ReplaceAll | strings.go:10:8:10:25 | selection of ReplaceAll |
+| file://:0:0:0:0 | function RequestURI | url.go:35:14:35:25 | selection of RequestURI |
+| file://:0:0:0:0 | function ResolveReference | url.go:36:6:36:23 | selection of ResolveReference |
+| file://:0:0:0:0 | function Sprint | strings.go:11:9:11:18 | selection of Sprint |
+| file://:0:0:0:0 | function Sprintf | strings.go:11:30:11:40 | selection of Sprintf |
+| file://:0:0:0:0 | function Sprintln | strings.go:11:54:11:65 | selection of Sprintln |
+| file://:0:0:0:0 | function User | url.go:41:8:41:15 | selection of User |
+| file://:0:0:0:0 | function UserPassword | url.go:42:7:42:22 | selection of UserPassword |
+| file://:0:0:0:0 | function Username | url.go:45:14:45:24 | selection of Username |
+| file://:0:0:0:0 | function append | main.go:39:8:39:13 | append |
+| file://:0:0:0:0 | function append | main.go:40:8:40:13 | append |
+| file://:0:0:0:0 | function copy | main.go:42:2:42:5 | copy |
+| file://:0:0:0:0 | function make | main.go:41:8:41:11 | make |
+| main.go:3:6:3:10 | function test1 | main.go:34:2:34:6 | test1 |
+| main.go:3:12:3:12 | argument corresponding to x | main.go:3:12:3:12 | definition of x |
+| main.go:3:12:3:12 | definition of x | main.go:5:5:5:5 | x |
+| main.go:3:12:3:12 | definition of x | main.go:6:7:6:7 | x |
+| main.go:3:12:3:12 | definition of x | main.go:8:8:8:8 | x |
+| main.go:3:12:3:12 | definition of x | main.go:10:7:10:7 | x |
+| main.go:3:12:3:12 | definition of x | main.go:10:22:10:22 | x |
+| main.go:3:19:3:20 | argument corresponding to fn | main.go:3:19:3:20 | definition of fn |
+| main.go:3:19:3:20 | definition of fn | main.go:10:24:10:25 | fn |
+| main.go:6:3:6:3 | definition of y | main.go:10:2:10:2 | y = phi(def@6:3, def@8:3) |
+| main.go:6:7:6:7 | x | main.go:6:3:6:3 | definition of y |
+| main.go:8:3:8:3 | definition of y | main.go:10:2:10:2 | y = phi(def@6:3, def@8:3) |
+| main.go:8:7:8:8 | -... | main.go:8:3:8:3 | definition of y |
+| main.go:10:2:10:2 | definition of z | main.go:11:14:11:14 | z |
+| main.go:10:2:10:2 | y = phi(def@6:3, def@8:3) | main.go:10:12:10:12 | y |
+| main.go:10:2:10:2 | y = phi(def@6:3, def@8:3) | main.go:10:17:10:17 | y |
+| main.go:10:7:10:12 | ...<=... | main.go:10:7:10:27 | ...&&... |
+| main.go:10:7:10:27 | ...&&... | main.go:10:2:10:2 | definition of z |
+| main.go:10:17:10:27 | ...>=... | main.go:10:7:10:27 | ...&&... |
+| main.go:11:14:11:14 | z | main.go:11:9:11:15 | type conversion |
+| main.go:14:6:14:10 | function test2 | main.go:34:8:34:12 | test2 |
+| main.go:14:6:14:10 | function test2 | main.go:34:19:34:23 | test2 |
+| main.go:15:9:15:9 | 0 | main.go:15:2:15:4 | definition of acc |
+| main.go:16:9:16:9 | capture variable acc | main.go:17:3:17:5 | acc |
+| main.go:17:3:17:7 | definition of acc | main.go:18:10:18:12 | acc |
+| main.go:17:3:17:7 | rhs of increment statement | main.go:17:3:17:7 | definition of acc |
+| main.go:22:12:22:12 | argument corresponding to b | main.go:22:12:22:12 | definition of b |
+| main.go:22:12:22:12 | definition of b | main.go:23:5:23:5 | b |
+| main.go:22:20:22:20 | argument corresponding to x | main.go:22:20:22:20 | definition of x |
+| main.go:22:20:22:20 | definition of x | main.go:24:10:24:10 | x |
+| main.go:22:20:22:20 | definition of x | main.go:26:11:26:11 | x |
+| main.go:24:10:24:10 | x | main.go:24:10:24:19 | type assertion |
+| main.go:26:2:26:2 | definition of n | main.go:27:11:27:11 | n |
+| main.go:26:2:26:17 | ... := ...[0] | main.go:26:2:26:2 | definition of n |
+| main.go:26:2:26:17 | ... := ...[1] | main.go:26:5:26:6 | definition of ok |
+| main.go:26:5:26:6 | definition of ok | main.go:27:5:27:6 | ok |
+| main.go:26:11:26:11 | x | main.go:26:2:26:17 | ... := ...[0] |
+| main.go:38:2:38:2 | definition of s | main.go:39:15:39:15 | s |
+| main.go:38:2:38:2 | definition of s | main.go:40:15:40:15 | s |
+| main.go:38:2:38:2 | definition of s | main.go:42:7:42:7 | s |
+| main.go:38:7:38:20 | slice literal | main.go:38:2:38:2 | definition of s |
+| main.go:39:2:39:3 | definition of s1 | main.go:40:18:40:19 | s1 |
+| main.go:39:8:39:25 | call to append | main.go:39:2:39:3 | definition of s1 |
+| main.go:40:2:40:3 | definition of s2 | main.go:43:9:43:10 | s2 |
+| main.go:40:8:40:23 | call to append | main.go:40:2:40:3 | definition of s2 |
+| main.go:41:2:41:3 | definition of s4 | main.go:42:10:42:11 | s4 |
+| main.go:41:8:41:21 | call to make | main.go:41:2:41:3 | definition of s4 |
+| main.go:46:13:46:14 | argument corresponding to xs | main.go:46:13:46:14 | definition of xs |
+| main.go:46:13:46:14 | definition of xs | main.go:47:20:47:21 | xs |
+| main.go:46:24:46:27 | definition of keys | main.go:47:20:47:20 | keys = phi(def@46:24, def@49:3) |
+| main.go:46:24:46:27 | zero value for keys | main.go:46:24:46:27 | definition of keys |
+| main.go:46:34:46:37 | definition of vals | main.go:47:20:47:20 | vals = phi(def@46:34, def@48:3) |
+| main.go:46:34:46:37 | zero value for vals | main.go:46:34:46:37 | definition of vals |
+| main.go:47:2:50:2 | range statement[0] | main.go:47:6:47:6 | definition of k |
+| main.go:47:2:50:2 | range statement[1] | main.go:47:9:47:9 | definition of v |
+| main.go:47:6:47:6 | definition of k | main.go:49:11:49:11 | k |
+| main.go:47:9:47:9 | definition of v | main.go:48:11:48:11 | v |
+| main.go:47:20:47:20 | keys = phi(def@46:24, def@49:3) | main.go:46:24:46:27 | implicit read of keys |
+| main.go:47:20:47:20 | keys = phi(def@46:24, def@49:3) | main.go:49:3:49:6 | keys |
+| main.go:47:20:47:20 | vals = phi(def@46:34, def@48:3) | main.go:46:34:46:37 | implicit read of vals |
+| main.go:47:20:47:20 | vals = phi(def@46:34, def@48:3) | main.go:48:3:48:6 | vals |
+| main.go:48:3:48:6 | definition of vals | main.go:47:20:47:20 | vals = phi(def@46:34, def@48:3) |
+| main.go:48:3:48:11 | ... += ... | main.go:48:3:48:6 | definition of vals |
+| main.go:49:3:49:6 | definition of keys | main.go:47:20:47:20 | keys = phi(def@46:24, def@49:3) |
+| main.go:49:3:49:11 | ... += ... | main.go:49:3:49:6 | definition of keys |
+| main.go:55:6:55:7 | definition of ch | main.go:56:2:56:3 | ch |
+| main.go:55:6:55:7 | definition of ch | main.go:57:4:57:5 | ch |
+| main.go:55:6:55:7 | zero value for ch | main.go:55:6:55:7 | definition of ch |
+| strings.go:8:12:8:12 | argument corresponding to s | strings.go:8:12:8:12 | definition of s |
+| strings.go:8:12:8:12 | definition of s | strings.go:9:24:9:24 | s |
+| strings.go:8:12:8:12 | definition of s | strings.go:10:27:10:27 | s |
+| strings.go:9:2:9:3 | definition of s2 | strings.go:11:20:11:21 | s2 |
+| strings.go:9:2:9:3 | definition of s2 | strings.go:11:48:11:49 | s2 |
+| strings.go:9:8:9:38 | call to Replace | strings.go:9:2:9:3 | definition of s2 |
+| strings.go:10:2:10:3 | definition of s3 | strings.go:11:24:11:25 | s3 |
+| strings.go:10:2:10:3 | definition of s3 | strings.go:11:67:11:68 | s3 |
+| strings.go:10:8:10:42 | call to ReplaceAll | strings.go:10:2:10:3 | definition of s3 |
+| url.go:8:12:8:12 | argument corresponding to b | url.go:8:12:8:12 | definition of b |
+| url.go:8:12:8:12 | definition of b | url.go:11:5:11:5 | b |
+| url.go:8:20:8:20 | argument corresponding to s | url.go:8:20:8:20 | definition of s |
+| url.go:8:20:8:20 | definition of s | url.go:12:46:12:46 | s |
+| url.go:8:20:8:20 | definition of s | url.go:14:48:14:48 | s |
+| url.go:12:3:12:5 | definition of res | url.go:16:5:16:5 | res = phi(def@12:3, def@14:3) |
+| url.go:12:3:12:48 | ... = ...[0] | url.go:12:3:12:5 | definition of res |
+| url.go:12:3:12:48 | ... = ...[1] | url.go:12:8:12:10 | definition of err |
+| url.go:12:8:12:10 | definition of err | url.go:16:5:16:5 | err = phi(def@12:8, def@14:8) |
+| url.go:14:3:14:5 | definition of res | url.go:16:5:16:5 | res = phi(def@12:3, def@14:3) |
+| url.go:14:3:14:50 | ... = ...[0] | url.go:14:3:14:5 | definition of res |
+| url.go:14:3:14:50 | ... = ...[1] | url.go:14:8:14:10 | definition of err |
+| url.go:14:8:14:10 | definition of err | url.go:16:5:16:5 | err = phi(def@12:8, def@14:8) |
+| url.go:16:5:16:5 | err = phi(def@12:8, def@14:8) | url.go:16:5:16:7 | err |
+| url.go:16:5:16:5 | res = phi(def@12:3, def@14:3) | url.go:19:9:19:11 | res |
+| url.go:22:12:22:12 | argument corresponding to i | url.go:22:12:22:12 | definition of i |
+| url.go:22:12:22:12 | definition of i | url.go:24:5:24:5 | i |
+| url.go:22:19:22:19 | argument corresponding to s | url.go:22:19:22:19 | definition of s |
+| url.go:22:19:22:19 | definition of s | url.go:23:20:23:20 | s |
+| url.go:22:19:22:19 | definition of s | url.go:27:29:27:29 | s |
+| url.go:23:2:23:2 | definition of u | url.go:25:10:25:10 | u |
+| url.go:23:2:23:21 | ... := ...[0] | url.go:23:2:23:2 | definition of u |
+| url.go:27:2:27:2 | definition of u | url.go:28:14:28:14 | u |
+| url.go:27:2:27:2 | definition of u | url.go:29:14:29:14 | u |
+| url.go:27:2:27:2 | definition of u | url.go:30:11:30:11 | u |
+| url.go:27:2:27:2 | definition of u | url.go:32:9:32:9 | u |
+| url.go:27:2:27:30 | ... = ...[0] | url.go:27:2:27:2 | definition of u |
+| url.go:30:2:30:3 | definition of bs | url.go:31:14:31:15 | bs |
+| url.go:30:2:30:27 | ... := ...[0] | url.go:30:2:30:3 | definition of bs |
+| url.go:32:2:32:2 | definition of u | url.go:33:14:33:14 | u |
+| url.go:32:2:32:2 | definition of u | url.go:34:14:34:14 | u |
+| url.go:32:2:32:2 | definition of u | url.go:35:14:35:14 | u |
+| url.go:32:2:32:2 | definition of u | url.go:36:6:36:6 | u |
+| url.go:32:2:32:2 | definition of u | url.go:36:25:36:25 | u |
+| url.go:32:2:32:23 | ... = ...[0] | url.go:32:2:32:2 | definition of u |
+| url.go:36:2:36:2 | definition of u | url.go:37:9:37:9 | u |
+| url.go:36:6:36:26 | call to ResolveReference | url.go:36:2:36:2 | definition of u |
+| url.go:42:2:42:3 | definition of ui | url.go:43:11:43:12 | ui |
+| url.go:42:2:42:3 | definition of ui | url.go:45:14:45:15 | ui |
+| url.go:42:2:42:3 | definition of ui | url.go:46:9:46:10 | ui |
+| url.go:42:7:42:38 | call to UserPassword | url.go:42:2:42:3 | definition of ui |
+| url.go:43:2:43:3 | definition of pw | url.go:44:14:44:15 | pw |
+| url.go:43:2:43:23 | ... := ...[0] | url.go:43:2:43:3 | definition of pw |
+| url.go:49:12:49:12 | argument corresponding to q | url.go:49:12:49:12 | definition of q |
+| url.go:49:12:49:12 | definition of q | url.go:50:25:50:25 | q |
+| url.go:50:2:50:2 | definition of v | url.go:51:14:51:14 | v |
+| url.go:50:2:50:2 | definition of v | url.go:52:14:52:14 | v |
+| url.go:50:2:50:2 | definition of v | url.go:53:9:53:9 | v |
+| url.go:50:2:50:26 | ... := ...[0] | url.go:50:2:50:2 | definition of v |
+| url.go:56:12:56:12 | argument corresponding to q | url.go:56:12:56:12 | definition of q |
+| url.go:56:12:56:12 | definition of q | url.go:57:29:57:29 | q |
+| url.go:57:2:57:8 | definition of joined1 | url.go:58:38:58:44 | joined1 |
+| url.go:57:2:57:39 | ... := ...[0] | url.go:57:2:57:8 | definition of joined1 |
+| url.go:58:2:58:8 | definition of joined2 | url.go:59:24:59:30 | joined2 |
+| url.go:58:2:58:45 | ... := ...[0] | url.go:58:2:58:8 | definition of joined2 |
+| url.go:59:2:59:6 | definition of asUrl | url.go:60:15:60:19 | asUrl |
+| url.go:59:2:59:31 | ... := ...[0] | url.go:59:2:59:6 | definition of asUrl |
+| url.go:60:2:60:10 | definition of joinedUrl | url.go:61:9:61:17 | joinedUrl |
+| url.go:60:15:60:37 | call to JoinPath | url.go:60:2:60:10 | definition of joinedUrl |
+| url.go:64:13:64:13 | argument corresponding to q | url.go:64:13:64:13 | definition of q |
+| url.go:64:13:64:13 | definition of q | url.go:66:27:66:27 | q |
+| url.go:65:2:65:9 | definition of cleanUrl | url.go:66:9:66:16 | cleanUrl |
+| url.go:65:2:65:48 | ... := ...[0] | url.go:65:2:65:9 | definition of cleanUrl |

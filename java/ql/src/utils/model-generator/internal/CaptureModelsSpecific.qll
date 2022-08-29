@@ -98,20 +98,42 @@ private string typeAsSummaryModel(TargetApiSpecific api) {
   result = typeAsModel(bestTypeForModel(api))
 }
 
+private predicate partialModel(TargetApiSpecific api, string type, string name, string parameters) {
+  type = typeAsSummaryModel(api) and
+  name = api.getName() and
+  parameters = ExternalFlow::paramsString(api)
+}
+
 /**
  * Computes the first 6 columns for CSV rows.
  */
 string asPartialModel(TargetApiSpecific api) {
-  result =
-    typeAsSummaryModel(api) + ";" //
-      + isExtensible(bestTypeForModel(api)) + ";" //
-      + api.getName() + ";" //
-      + ExternalFlow::paramsString(api) + ";" //
-      + /* ext + */ ";" //
+  exists(string type, string name, string parameters |
+    partialModel(api, type, name, parameters) and
+    result =
+      type + ";" //
+        + isExtensible(bestTypeForModel(api)) + ";" //
+        + name + ";" //
+        + parameters + ";" //
+        + /* ext + */ ";" //
+  )
+}
+
+/**
+ * Computes the first 4 columns for negative CSV rows.
+ */
+string asPartialNegativeModel(TargetApiSpecific api) {
+  exists(string type, string name, string parameters |
+    partialModel(api, type, name, parameters) and
+    result =
+      type + ";" //
+        + name + ";" //
+        + parameters + ";" //
+  )
 }
 
 private predicate isPrimitiveTypeUsedForBulkData(J::Type t) {
-  t.getName().regexpMatch("byte|char|Byte|Character")
+  t.hasName(["byte", "char", "Byte", "Character"])
 }
 
 /**
@@ -232,4 +254,8 @@ string asInputArgument(DataFlow::Node source) {
  * Holds if `kind` is a relevant sink kind for creating sink models.
  */
 bindingset[kind]
-predicate isRelevantSinkKind(string kind) { not kind = "logging" }
+predicate isRelevantSinkKind(string kind) {
+  not kind = "logging" and
+  not kind.matches("regex-use%") and
+  not kind = "write-file"
+}

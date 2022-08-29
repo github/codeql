@@ -5,63 +5,77 @@ from swift.codegen.lib import ql
 from swift.codegen.test.utils import *
 
 
-def test_property_has_first_param_marked():
-    params = [ql.Param("a", "x"), ql.Param("b", "y"), ql.Param("c", "z")]
-    expected = deepcopy(params)
-    expected[0].first = True
-    prop = ql.Property("Prop", "foo", "props", ["this"], params=params)
-    assert prop.params == expected
-
-
 def test_property_has_first_table_param_marked():
     tableparams = ["a", "b", "c"]
     prop = ql.Property("Prop", "foo", "props", tableparams)
     assert prop.tableparams[0].first
     assert [p.param for p in prop.tableparams] == tableparams
-    assert all(p.type is None for p in prop.tableparams)
 
 
-@pytest.mark.parametrize("params,expected_local_var", [
-    (["a", "b", "c"], "x"),
-    (["a", "x", "c"], "x_"),
-    (["a", "x", "x_", "c"], "x__"),
-    (["a", "x", "x_", "x__"], "x___"),
+@pytest.mark.parametrize("type,expected", [
+    ("Foo", True),
+    ("Bar", True),
+    ("foo", False),
+    ("bar", False),
+    (None, False),
 ])
-def test_property_local_var_avoids_params_collision(params, expected_local_var):
-    prop = ql.Property("Prop", "foo", "props", ["this"], params=[ql.Param(p) for p in params])
-    assert prop.local_var == expected_local_var
+def test_property_is_a_class(type, expected):
+    tableparams = ["a", "result", "b"]
+    expected_tableparams = ["a", "result" if expected else "result", "b"]
+    prop = ql.Property("Prop", type, tableparams=tableparams)
+    assert prop.type_is_class is expected
+    assert [p.param for p in prop.tableparams] == expected_tableparams
 
 
-def test_property_not_a_class():
-    tableparams = ["x", "result", "y"]
-    prop = ql.Property("Prop", "foo", "props", tableparams)
-    assert not prop.type_is_class
-    assert [p.param for p in prop.tableparams] == tableparams
-
-
-def test_property_is_a_class():
-    tableparams = ["x", "result", "y"]
-    prop = ql.Property("Prop", "Foo", "props", tableparams)
-    assert prop.type_is_class
-    assert [p.param for p in prop.tableparams] == ["x", prop.local_var, "y"]
-
-
-@pytest.mark.parametrize("name,expected_article", [
-    ("Argument", "An"),
-    ("Element", "An"),
-    ("Integer", "An"),
-    ("Operator", "An"),
-    ("Unit", "A"),
-    ("Whatever", "A"),
+@pytest.mark.parametrize("name,expected_getter", [
+    ("Argument", "getAnArgument"),
+    ("Element", "getAnElement"),
+    ("Integer", "getAnInteger"),
+    ("Operator", "getAnOperator"),
+    ("Unit", "getAUnit"),
+    ("Whatever", "getAWhatever"),
 ])
-def test_property_indefinite_article(name, expected_article):
-    prop = ql.Property(name, "Foo", "props", ["x"], plural="X")
-    assert prop.indefinite_article == expected_article
+def test_property_indefinite_article(name, expected_getter):
+    prop = ql.Property(name, plural="X")
+    assert prop.indefinite_getter == expected_getter
 
 
-def test_property_no_plural_no_indefinite_article():
-    prop = ql.Property("Prop", "Foo", "props", ["x"])
-    assert prop.indefinite_article is None
+@pytest.mark.parametrize("plural,expected", [
+    (None, False),
+    ("", False),
+    ("X", True),
+])
+def test_property_is_repeated(plural, expected):
+    prop = ql.Property("foo", "Foo", "props", ["result"], plural=plural)
+    assert prop.is_repeated is expected
+
+
+@pytest.mark.parametrize("is_optional,is_predicate,plural,expected", [
+    (False, False, None, True),
+    (False, False, "", True),
+    (False, False, "X", False),
+    (True, False, None, False),
+    (False, True, None, False),
+])
+def test_property_is_single(is_optional, is_predicate, plural, expected):
+    prop = ql.Property("foo", "Foo", "props", ["result"], plural=plural,
+                       is_predicate=is_predicate, is_optional=is_optional)
+    assert prop.is_single is expected
+
+
+def test_property_no_plural_no_indefinite_getter():
+    prop = ql.Property("Prop", "Foo", "props", ["result"])
+    assert prop.indefinite_getter is None
+
+
+def test_property_getter():
+    prop = ql.Property("Prop", "Foo")
+    assert prop.getter == "getProp"
+
+
+def test_property_predicate_getter():
+    prop = ql.Property("prop", is_predicate=True)
+    assert prop.getter == "prop"
 
 
 def test_class_sorts_bases():
@@ -81,11 +95,6 @@ def test_class_has_first_property_marked():
     assert cls.properties == expected
 
 
-def test_class_db_id():
-    cls = ql.Class("ThisIsMyClass")
-    assert cls.db_id == "@this_is_my_class"
-
-
 def test_root_class():
     cls = ql.Class("Class")
     assert cls.root
@@ -97,4 +106,4 @@ def test_non_root_class():
 
 
 if __name__ == '__main__':
-    sys.exit(pytest.main())
+    sys.exit(pytest.main([__file__] + sys.argv[1:]))

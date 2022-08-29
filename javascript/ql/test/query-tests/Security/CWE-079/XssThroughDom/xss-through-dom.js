@@ -132,3 +132,11 @@ class Sub extends Super {
 	$("#id").html(linkText); // NOT OK
 	elem.innerText = linkText; // OK
 })();
+
+const cashDom = require("cash-dom");
+
+(function () {
+    const src = document.getElementById("#link").src;
+	cash("#id").html(src); // NOT OK.
+    cashDom("#id").html(src); // NOT OK
+})();

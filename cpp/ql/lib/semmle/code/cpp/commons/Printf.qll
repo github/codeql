@@ -168,7 +168,7 @@ private predicate callsVariadicFormatter(
 ) {
   // calls a variadic formatter with `formatParamIndex`, `outputParamIndex` linked
   exists(FunctionCall fc, int format, int output |
-    variadicFormatter(fc.getTarget(), type, format, output) and
+    variadicFormatter(pragma[only_bind_into](fc.getTarget()), type, format, output) and
     fc.getEnclosingFunction() = f and
     fc.getArgument(format) = f.getParameter(formatParamIndex).getAnAccess() and
     fc.getArgument(output) = f.getParameter(outputParamIndex).getAnAccess()
@@ -176,7 +176,7 @@ private predicate callsVariadicFormatter(
   or
   // calls a variadic formatter with only `formatParamIndex` linked
   exists(FunctionCall fc, string calledType, int format, int output |
-    variadicFormatter(fc.getTarget(), calledType, format, output) and
+    variadicFormatter(pragma[only_bind_into](fc.getTarget()), calledType, format, output) and
     fc.getEnclosingFunction() = f and
     fc.getArgument(format) = f.getParameter(formatParamIndex).getAnAccess() and
     not fc.getArgument(output) = f.getParameter(_).getAnAccess() and
@@ -872,7 +872,7 @@ class FormatLiteral extends Literal {
 
   private Type getConversionType1(int n) {
     exists(string cnv | cnv = this.getConversionChar(n) |
-      cnv.regexpMatch("d|i") and
+      cnv = ["d", "i"] and
       result = this.getIntegralConversion(n) and
       not result.getUnderlyingType().(IntegralType).isExplicitlySigned() and
       not result.getUnderlyingType().(IntegralType).isExplicitlyUnsigned()
@@ -912,7 +912,7 @@ class FormatLiteral extends Literal {
 
   private Type getConversionType2(int n) {
     exists(string cnv | cnv = this.getConversionChar(n) |
-      cnv.regexpMatch("o|u|x|X") and
+      cnv = ["o", "u", "x", "X"] and
       result = this.getIntegralConversion(n) and
       result.getUnderlyingType().(IntegralType).isUnsigned()
     )
@@ -920,7 +920,7 @@ class FormatLiteral extends Literal {
 
   private Type getConversionType3(int n) {
     exists(string cnv | cnv = this.getConversionChar(n) |
-      cnv.regexpMatch("a|A|e|E|f|F|g|G") and result = this.getFloatingPointConversion(n)
+      cnv = ["a", "A", "e", "E", "f", "F", "g", "G"] and result = this.getFloatingPointConversion(n)
     )
   }
 
@@ -1312,7 +1312,7 @@ class FormatLiteral extends Literal {
         len =
           min(int v |
             v = this.getPrecision(n) or
-            v = this.getUse().getFormatArgument(n).(AnalysedString).getMaxLength() - 1 // (don't count null terminator)
+            v = this.getUse().getFormatArgument(n).(AnalyzedString).getMaxLength() - 1 // (don't count null terminator)
           ) and
         reason = TValueFlowAnalysis()
       )

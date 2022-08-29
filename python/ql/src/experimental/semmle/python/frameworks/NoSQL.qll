@@ -15,6 +15,10 @@ private module NoSql {
   /** Gets a reference to `pymongo.MongoClient` */
   private API::Node pyMongo() {
     result = API::moduleImport("pymongo").getMember("MongoClient").getReturn()
+    or
+    // see https://pymongo.readthedocs.io/en/stable/api/pymongo/mongo_client.html#pymongo.mongo_client.MongoClient
+    result =
+      API::moduleImport("pymongo").getMember("mongo_client").getMember("MongoClient").getReturn()
   }
 
   /** Gets a reference to `flask_pymongo.PyMongo` */
@@ -34,40 +38,36 @@ private module NoSql {
    * Gets a reference to an initialized `Mongo` instance.
    * See `pyMongo()`, `flask_PyMongo()`
    */
-  private API::Node mongoInstance() {
+  private API::Node mongoClientInstance() {
     result = pyMongo() or
     result = flask_PyMongo()
   }
 
   /**
-   * Gets a reference to an initialized `Mongo` DB instance.
-   * See `mongoEngine()`, `flask_MongoEngine()`
+   * Gets a reference to a `Mongo` DB instance.
    */
-  private API::Node mongoDBInstance() {
-    result = mongoEngine().getMember(["get_db", "connect"]).getReturn() or
-    result = mongoEngine().getMember("connection").getMember(["get_db", "connect"]).getReturn() or
-    result = flask_MongoEngine().getMember("get_db").getReturn()
-  }
-
-  /**
-   * Gets a reference to a `Mongo` DB use.
-   *
-   * See `mongoInstance()`, `mongoDBInstance()`.
-   */
-  private DataFlow::LocalSourceNode mongoDB(DataFlow::TypeTracker t) {
+  private DataFlow::LocalSourceNode mongoDBInstance(DataFlow::TypeTracker t) {
     t.start() and
     (
       exists(SubscriptNode subscript |
-        subscript.getObject() = mongoInstance().getAUse().asCfgNode() and
+        subscript.getObject() = mongoClientInstance().getAValueReachableFromSource().asCfgNode() and
         result.asCfgNode() = subscript
       )
       or
-      result.(DataFlow::AttrRead).getObject() = mongoInstance().getAUse()
+      result.(DataFlow::AttrRead).getObject() = mongoClientInstance().getAValueReachableFromSource()
       or
-      result = mongoDBInstance().getAnImmediateUse()
+      result = mongoEngine().getMember(["get_db", "connect"]).getACall()
+      or
+      result = mongoEngine().getMember("connection").getMember(["get_db", "connect"]).getACall()
+      or
+      result = flask_MongoEngine().getMember("get_db").getACall()
+      or
+      // see https://pymongo.readthedocs.io/en/stable/api/pymongo/mongo_client.html#pymongo.mongo_client.MongoClient.get_default_database
+      // see https://pymongo.readthedocs.io/en/stable/api/pymongo/mongo_client.html#pymongo.mongo_client.MongoClient.get_database
+      result = mongoClientInstance().getMember(["get_default_database", "get_database"]).getACall()
     )
     or
-    exists(DataFlow::TypeTracker t2 | result = mongoDB(t2).track(t2, t))
+    exists(DataFlow::TypeTracker t2 | result = mongoDBInstance(t2).track(t2, t))
   }
 
   /**
@@ -81,21 +81,27 @@ private module NoSql {
    *
    * `mongo.db` would be a use of a `Mongo` instance, and so the result.
    */
-  private DataFlow::Node mongoDB() { mongoDB(DataFlow::TypeTracker::end()).flowsTo(result) }
+  private DataFlow::Node mongoDBInstance() {
+    mongoDBInstance(DataFlow::TypeTracker::end()).flowsTo(result)
+  }
 
   /**
    * Gets a reference to a `Mongo` collection use.
-   *
-   * See `mongoDB()`.
    */
   private DataFlow::LocalSourceNode mongoCollection(DataFlow::TypeTracker t) {
     t.start() and
     (
       exists(SubscriptNode subscript | result.asCfgNode() = subscript |
-        subscript.getObject() = mongoDB().asCfgNode()
+        subscript.getObject() = mongoDBInstance().asCfgNode()
       )
       or
-      result.(DataFlow::AttrRead).getObject() = mongoDB()
+      result.(DataFlow::AttrRead).getObject() = mongoDBInstance()
+      or
+      // see https://pymongo.readthedocs.io/en/stable/api/pymongo/database.html#pymongo.database.Database.get_collection
+      // see https://pymongo.readthedocs.io/en/stable/api/pymongo/database.html#pymongo.database.Database.create_collection
+      result
+          .(DataFlow::MethodCallNode)
+          .calls(mongoDBInstance(), ["get_collection", "create_collection"])
     )
     or
     exists(DataFlow::TypeTracker t2 | result = mongoCollection(t2).track(t2, t))
@@ -204,10 +210,13 @@ private module NoSql {
    */
   private class BsonObjectIdCall extends DataFlow::CallCfgNode, NoSqlSanitizer::Range {
     BsonObjectIdCall() {
-      this =
-        API::moduleImport(["bson", "bson.objectid", "bson.json_util"])
-            .getMember("ObjectId")
-            .getACall()
+      exists(API::Node mod |
+        mod = API::moduleImport("bson")
+        or
+        mod = API::moduleImport("bson").getMember(["objectid", "json_util"])
+      |
+        this = mod.getMember("ObjectId").getACall()
+      )
     }
 
     override DataFlow::Node getAnInput() { result = this.getArg(0) }

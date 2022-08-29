@@ -40,8 +40,8 @@ class Node extends TNode {
   final DotNet::Type getType() { result = this.(NodeImpl).getTypeImpl() }
 
   /** Gets the enclosing callable of this node. */
-  final DataFlowCallable getEnclosingCallable() {
-    result = this.(NodeImpl).getEnclosingCallableImpl()
+  final Callable getEnclosingCallable() {
+    result = this.(NodeImpl).getEnclosingCallableImpl().asCallable()
   }
 
   /** Gets the control flow node corresponding to this node, if any. */
@@ -103,7 +103,7 @@ class ParameterNode extends Node instanceof ParameterNodeImpl {
   DotNet::Parameter getParameter() {
     exists(DataFlowCallable c, ParameterPosition ppos |
       super.isParameterOf(c, ppos) and
-      result = c.getParameter(ppos.getPosition())
+      result = c.asCallable().getParameter(ppos.getPosition())
     )
   }
 
@@ -173,6 +173,33 @@ abstract class NonLocalJumpNode extends Node {
 }
 
 /**
+ * Holds if the guard `g` validates the expression `e` upon evaluating to `v`.
+ *
+ * The expression `e` is expected to be a syntactic part of the guard `g`.
+ * For example, the guard `g` might be a call `isSafe(x)` and the expression `e`
+ * the argument `x`.
+ */
+signature predicate guardChecksSig(Guard g, Expr e, AbstractValue v);
+
+/**
+ * Provides a set of barrier nodes for a guard that validates an expression.
+ *
+ * This is expected to be used in `isBarrier`/`isSanitizer` definitions
+ * in data flow and taint tracking.
+ */
+module BarrierGuard<guardChecksSig/3 guardChecks> {
+  /** Gets a node that is safely guarded by the given guard check. */
+  ExprNode getABarrierNode() {
+    exists(Guard g, Expr e, AbstractValue v |
+      guardChecks(g, e, v) and
+      g.controlsNode(result.getControlFlowNode(), e, v)
+    )
+  }
+}
+
+/**
+ * DEPRECATED: Use `BarrierGuard` module instead.
+ *
  * A guard that validates some expression.
  *
  * To use this in a configuration, extend the class and provide a
@@ -181,7 +208,7 @@ abstract class NonLocalJumpNode extends Node {
  *
  * It is important that all extending classes in scope are disjoint.
  */
-class BarrierGuard extends Guard {
+deprecated class BarrierGuard extends Guard {
   /** Holds if this guard validates `e` upon evaluating to `v`. */
   abstract predicate checks(Expr e, AbstractValue v);
 

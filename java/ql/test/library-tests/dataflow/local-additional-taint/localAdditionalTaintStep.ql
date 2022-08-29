@@ -16,7 +16,7 @@ from DataFlow::Node src, DataFlow::Node sink
 where
   (
     localAdditionalTaintStep(src, sink) or
-    FlowSummaryImpl::Private::Steps::summaryThroughStep(src, sink, false)
+    FlowSummaryImpl::Private::Steps::summaryThroughStepTaint(src, sink, _)
   ) and
   not FlowSummaryImpl::Private::Steps::summaryLocalStep(src, sink, false) and
   not FlowSummaryImpl::Private::Steps::summaryReadStep(src, _, sink) and
@@ -24,7 +24,9 @@ where
   or
   exists(ArgumentNode arg, MethodAccess call, DataFlow::ParameterNode p, int i |
     src = arg and
-    p.isParameterOf(call.getMethod().getSourceDeclaration(), i) and
+    p.isParameterOf(any(DataFlowCallable c |
+        c.asCallable() = call.getMethod().getSourceDeclaration()
+      ), i) and
     arg.argumentOf(any(DataFlowCall c | c.asCall() = call), i)
   |
     sink.asExpr() = call and

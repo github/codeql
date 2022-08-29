@@ -65,6 +65,9 @@ def to_inner_scope():
     also_x = foo() # $ MISSING: tracked
     print(also_x) # $ MISSING: tracked
 
+# ------------------------------------------------------------------------------
+# Function decorator
+# ------------------------------------------------------------------------------
 
 def my_decorator(func):
     # This part doesn't make any sense in a normal decorator, but just shows how we
@@ -135,7 +138,7 @@ class Bar(Foo):
     def track_self(self): # $ tracked_self
         self.meth1() # $ tracked_self
         super().meth2()
-        super(Bar, self).foo3() # $ tracked_self
+        super(Bar, self).meth3() # $ tracked_self
 
 # ------------------------------------------------------------------------------
 # Tracking of attribute lookup after "long" import chain

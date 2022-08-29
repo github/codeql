@@ -6,7 +6,7 @@ namespace System
     {
         namespace RegularExpressions
         {
-            // Generated from `System.Text.RegularExpressions.Capture` in `System.Text.RegularExpressions, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Text.RegularExpressions.Capture` in `System.Text.RegularExpressions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class Capture
             {
                 internal Capture() => throw null;
@@ -14,9 +14,10 @@ namespace System
                 public int Length { get => throw null; }
                 public override string ToString() => throw null;
                 public string Value { get => throw null; }
+                public System.ReadOnlySpan<System.Char> ValueSpan { get => throw null; }
             }
 
-            // Generated from `System.Text.RegularExpressions.CaptureCollection` in `System.Text.RegularExpressions, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Text.RegularExpressions.CaptureCollection` in `System.Text.RegularExpressions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class CaptureCollection : System.Collections.Generic.ICollection<System.Text.RegularExpressions.Capture>, System.Collections.Generic.IEnumerable<System.Text.RegularExpressions.Capture>, System.Collections.Generic.IList<System.Text.RegularExpressions.Capture>, System.Collections.Generic.IReadOnlyCollection<System.Text.RegularExpressions.Capture>, System.Collections.Generic.IReadOnlyList<System.Text.RegularExpressions.Capture>, System.Collections.ICollection, System.Collections.IEnumerable, System.Collections.IList
             {
                 void System.Collections.Generic.ICollection<System.Text.RegularExpressions.Capture>.Add(System.Text.RegularExpressions.Capture item) => throw null;
@@ -47,7 +48,7 @@ namespace System
                 public object SyncRoot { get => throw null; }
             }
 
-            // Generated from `System.Text.RegularExpressions.Group` in `System.Text.RegularExpressions, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Text.RegularExpressions.Group` in `System.Text.RegularExpressions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class Group : System.Text.RegularExpressions.Capture
             {
                 public System.Text.RegularExpressions.CaptureCollection Captures { get => throw null; }
@@ -57,7 +58,7 @@ namespace System
                 public static System.Text.RegularExpressions.Group Synchronized(System.Text.RegularExpressions.Group inner) => throw null;
             }
 
-            // Generated from `System.Text.RegularExpressions.GroupCollection` in `System.Text.RegularExpressions, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Text.RegularExpressions.GroupCollection` in `System.Text.RegularExpressions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class GroupCollection : System.Collections.Generic.ICollection<System.Text.RegularExpressions.Group>, System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<string, System.Text.RegularExpressions.Group>>, System.Collections.Generic.IEnumerable<System.Text.RegularExpressions.Group>, System.Collections.Generic.IList<System.Text.RegularExpressions.Group>, System.Collections.Generic.IReadOnlyCollection<System.Collections.Generic.KeyValuePair<string, System.Text.RegularExpressions.Group>>, System.Collections.Generic.IReadOnlyCollection<System.Text.RegularExpressions.Group>, System.Collections.Generic.IReadOnlyDictionary<string, System.Text.RegularExpressions.Group>, System.Collections.Generic.IReadOnlyList<System.Text.RegularExpressions.Group>, System.Collections.ICollection, System.Collections.IEnumerable, System.Collections.IList
             {
                 void System.Collections.Generic.ICollection<System.Text.RegularExpressions.Group>.Add(System.Text.RegularExpressions.Group item) => throw null;
@@ -94,7 +95,7 @@ namespace System
                 public System.Collections.Generic.IEnumerable<System.Text.RegularExpressions.Group> Values { get => throw null; }
             }
 
-            // Generated from `System.Text.RegularExpressions.Match` in `System.Text.RegularExpressions, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Text.RegularExpressions.Match` in `System.Text.RegularExpressions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class Match : System.Text.RegularExpressions.Group
             {
                 public static System.Text.RegularExpressions.Match Empty { get => throw null; }
@@ -104,7 +105,7 @@ namespace System
                 public static System.Text.RegularExpressions.Match Synchronized(System.Text.RegularExpressions.Match inner) => throw null;
             }
 
-            // Generated from `System.Text.RegularExpressions.MatchCollection` in `System.Text.RegularExpressions, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Text.RegularExpressions.MatchCollection` in `System.Text.RegularExpressions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class MatchCollection : System.Collections.Generic.ICollection<System.Text.RegularExpressions.Match>, System.Collections.Generic.IEnumerable<System.Text.RegularExpressions.Match>, System.Collections.Generic.IList<System.Text.RegularExpressions.Match>, System.Collections.Generic.IReadOnlyCollection<System.Text.RegularExpressions.Match>, System.Collections.Generic.IReadOnlyList<System.Text.RegularExpressions.Match>, System.Collections.ICollection, System.Collections.IEnumerable, System.Collections.IList
             {
                 void System.Collections.Generic.ICollection<System.Text.RegularExpressions.Match>.Add(System.Text.RegularExpressions.Match item) => throw null;
@@ -135,10 +136,10 @@ namespace System
                 public object SyncRoot { get => throw null; }
             }
 
-            // Generated from `System.Text.RegularExpressions.MatchEvaluator` in `System.Text.RegularExpressions, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Text.RegularExpressions.MatchEvaluator` in `System.Text.RegularExpressions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public delegate string MatchEvaluator(System.Text.RegularExpressions.Match match);
 
-            // Generated from `System.Text.RegularExpressions.Regex` in `System.Text.RegularExpressions, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Text.RegularExpressions.Regex` in `System.Text.RegularExpressions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class Regex : System.Runtime.Serialization.ISerializable
             {
                 public static int CacheSize { get => throw null; set => throw null; }
@@ -212,7 +213,7 @@ namespace System
                 protected internal System.Text.RegularExpressions.RegexOptions roptions;
             }
 
-            // Generated from `System.Text.RegularExpressions.RegexCompilationInfo` in `System.Text.RegularExpressions, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Text.RegularExpressions.RegexCompilationInfo` in `System.Text.RegularExpressions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class RegexCompilationInfo
             {
                 public bool IsPublic { get => throw null; set => throw null; }
@@ -225,7 +226,7 @@ namespace System
                 public RegexCompilationInfo(string pattern, System.Text.RegularExpressions.RegexOptions options, string name, string fullnamespace, bool ispublic, System.TimeSpan matchTimeout) => throw null;
             }
 
-            // Generated from `System.Text.RegularExpressions.RegexMatchTimeoutException` in `System.Text.RegularExpressions, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Text.RegularExpressions.RegexMatchTimeoutException` in `System.Text.RegularExpressions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class RegexMatchTimeoutException : System.TimeoutException, System.Runtime.Serialization.ISerializable
             {
                 void System.Runtime.Serialization.ISerializable.GetObjectData(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
@@ -239,60 +240,60 @@ namespace System
                 public RegexMatchTimeoutException(string regexInput, string regexPattern, System.TimeSpan matchTimeout) => throw null;
             }
 
-            // Generated from `System.Text.RegularExpressions.RegexOptions` in `System.Text.RegularExpressions, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Text.RegularExpressions.RegexOptions` in `System.Text.RegularExpressions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             [System.Flags]
-            public enum RegexOptions
+            public enum RegexOptions : int
             {
-                Compiled,
-                CultureInvariant,
-                ECMAScript,
-                ExplicitCapture,
-                IgnoreCase,
-                IgnorePatternWhitespace,
-                Multiline,
-                None,
-                RightToLeft,
-                Singleline,
+                Compiled = 8,
+                CultureInvariant = 512,
+                ECMAScript = 256,
+                ExplicitCapture = 4,
+                IgnoreCase = 1,
+                IgnorePatternWhitespace = 32,
+                Multiline = 2,
+                None = 0,
+                RightToLeft = 64,
+                Singleline = 16,
             }
 
-            // Generated from `System.Text.RegularExpressions.RegexParseError` in `System.Text.RegularExpressions, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum RegexParseError
+            // Generated from `System.Text.RegularExpressions.RegexParseError` in `System.Text.RegularExpressions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            public enum RegexParseError : int
             {
-                AlternationHasComment,
-                AlternationHasMalformedCondition,
-                AlternationHasMalformedReference,
-                AlternationHasNamedCapture,
-                AlternationHasTooManyConditions,
-                AlternationHasUndefinedReference,
-                CaptureGroupNameInvalid,
-                CaptureGroupOfZero,
-                ExclusionGroupNotLast,
-                InsufficientClosingParentheses,
-                InsufficientOpeningParentheses,
-                InsufficientOrInvalidHexDigits,
-                InvalidGroupingConstruct,
-                InvalidUnicodePropertyEscape,
-                MalformedNamedReference,
-                MalformedUnicodePropertyEscape,
-                MissingControlCharacter,
-                NestedQuantifiersNotParenthesized,
-                QuantifierAfterNothing,
-                QuantifierOrCaptureGroupOutOfRange,
-                ReversedCharacterRange,
-                ReversedQuantifierRange,
-                ShorthandClassInCharacterRange,
-                UndefinedNamedReference,
-                UndefinedNumberedReference,
-                UnescapedEndingBackslash,
-                Unknown,
-                UnrecognizedControlCharacter,
-                UnrecognizedEscape,
-                UnrecognizedUnicodeProperty,
-                UnterminatedBracket,
-                UnterminatedComment,
+                AlternationHasComment = 17,
+                AlternationHasMalformedCondition = 2,
+                AlternationHasMalformedReference = 18,
+                AlternationHasNamedCapture = 16,
+                AlternationHasTooManyConditions = 1,
+                AlternationHasUndefinedReference = 19,
+                CaptureGroupNameInvalid = 20,
+                CaptureGroupOfZero = 21,
+                ExclusionGroupNotLast = 23,
+                InsufficientClosingParentheses = 26,
+                InsufficientOpeningParentheses = 30,
+                InsufficientOrInvalidHexDigits = 8,
+                InvalidGroupingConstruct = 15,
+                InvalidUnicodePropertyEscape = 3,
+                MalformedNamedReference = 12,
+                MalformedUnicodePropertyEscape = 4,
+                MissingControlCharacter = 7,
+                NestedQuantifiersNotParenthesized = 28,
+                QuantifierAfterNothing = 29,
+                QuantifierOrCaptureGroupOutOfRange = 9,
+                ReversedCharacterRange = 24,
+                ReversedQuantifierRange = 27,
+                ShorthandClassInCharacterRange = 25,
+                UndefinedNamedReference = 10,
+                UndefinedNumberedReference = 11,
+                UnescapedEndingBackslash = 13,
+                Unknown = 0,
+                UnrecognizedControlCharacter = 6,
+                UnrecognizedEscape = 5,
+                UnrecognizedUnicodeProperty = 31,
+                UnterminatedBracket = 22,
+                UnterminatedComment = 14,
             }
 
-            // Generated from `System.Text.RegularExpressions.RegexParseException` in `System.Text.RegularExpressions, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Text.RegularExpressions.RegexParseException` in `System.Text.RegularExpressions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class RegexParseException : System.ArgumentException
             {
                 public System.Text.RegularExpressions.RegexParseError Error { get => throw null; }
@@ -300,7 +301,7 @@ namespace System
                 public int Offset { get => throw null; }
             }
 
-            // Generated from `System.Text.RegularExpressions.RegexRunner` in `System.Text.RegularExpressions, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Text.RegularExpressions.RegexRunner` in `System.Text.RegularExpressions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public abstract class RegexRunner
             {
                 protected void Capture(int capnum, int start, int end) => throw null;
@@ -343,7 +344,7 @@ namespace System
                 protected internal int runtrackpos;
             }
 
-            // Generated from `System.Text.RegularExpressions.RegexRunnerFactory` in `System.Text.RegularExpressions, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Text.RegularExpressions.RegexRunnerFactory` in `System.Text.RegularExpressions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public abstract class RegexRunnerFactory
             {
                 protected internal abstract System.Text.RegularExpressions.RegexRunner CreateInstance();

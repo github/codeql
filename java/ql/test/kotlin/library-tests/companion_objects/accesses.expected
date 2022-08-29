@@ -1,0 +1,2 @@
+| companion_objects.kt:3:5:5:5 | MyClassCompanion | companion_objects.kt:23:5:23:11 | MyClassCompanion |
+| companion_objects.kt:10:5:12:5 | MyInterfaceCompanion | companion_objects.kt:25:5:25:15 | MyInterfaceCompanion |

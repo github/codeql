@@ -5,9 +5,12 @@ on:
     branches:
      - main
      - 'rc/**'
+    tags:
+     - 'codeql-cli/*'
   pull_request:
     paths:
       - '.github/workflows/query-list.yml'
+      - '.github/actions/fetch-codeql/action.yml'
       - 'misc/scripts/generate-code-scanning-query-list.py'
 
 jobs:
@@ -20,30 +23,18 @@ jobs:
       uses: actions/checkout@v3
       with:
         path: codeql 
-    - name: Clone github/codeql-go
-      uses: actions/checkout@v3
-      with:
-        repository: 'github/codeql-go'
-        path: codeql-go
     - name: Set up Python 3.8
-      uses: actions/setup-python@v3
+      uses: actions/setup-python@v4
       with:
         python-version: 3.8
     - name: Download CodeQL CLI
-      uses: dsaltares/fetch-gh-release-asset@aa37ae5c44d3c9820bc12fe675e8670ecd93bd1c
-      with:
-        repo: "github/codeql-cli-binaries"
-        version: "latest"
-        file: "codeql-linux64.zip"
-        token: ${{ secrets.GITHUB_TOKEN }}
-    - name: Unzip CodeQL CLI
-      run: unzip -d codeql-cli codeql-linux64.zip
+      # Look under the `codeql` directory, as this is where we checked out the `github/codeql` repo
+      uses: ./codeql/.github/actions/fetch-codeql
     - name: Build code scanning query list
       run: |
-        PATH="$PATH:codeql-cli/codeql" python codeql/misc/scripts/generate-code-scanning-query-list.py > code-scanning-query-list.csv
+        python codeql/misc/scripts/generate-code-scanning-query-list.py > code-scanning-query-list.csv
     - name: Upload code scanning query list
       uses: actions/upload-artifact@v3
       with:
         name: code-scanning-query-list
         path: code-scanning-query-list.csv
-    

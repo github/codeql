@@ -13,7 +13,7 @@ class FitFixtureEntryPoint extends CallableEntryPoint {
  * FitNesse entry points externally defined.
  */
 class FitNesseSlimEntryPointData extends ExternalData {
-  FitNesseSlimEntryPointData() { getDataPath().matches("fitnesse.csv") }
+  FitNesseSlimEntryPointData() { getDataPath() = "fitnesse.csv" }
 
   /**
    * Gets the class name.

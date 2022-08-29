@@ -24,7 +24,7 @@ app.get('/login2', function (req, res) { // OK
 });
 
 // using passport
-app.get('/passport', passport.authenticate('local'), function (req, res) { // NOT OK - no regenerate
+app.get('/passport', passport.authenticate('local'), function (req, res) { // OK - passport is safe
     res.send('logged in');
 });
 

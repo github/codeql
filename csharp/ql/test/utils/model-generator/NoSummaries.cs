@@ -99,3 +99,15 @@ public class HigherOrderParameters
         return map(o);
     }
 }
+
+public abstract class BaseClass
+{
+    // Negative summary.
+    public virtual string M1(string s)
+    {
+        return "";
+    }
+
+    // Negative summary.
+    public abstract string M2(string s);
+}

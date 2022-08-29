@@ -1,0 +1,1 @@
+| main.go:29:2:29:4 | assignment to err | main.go:29:9:29:31 | call to test1 |

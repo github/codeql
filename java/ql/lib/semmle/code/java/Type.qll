@@ -413,8 +413,12 @@ class RefType extends Type, Annotatable, Modifiable, @reftype {
   /** Gets a direct or indirect supertype of this type, including itself. */
   RefType getAnAncestor() { hasDescendant(result, this) }
 
-  /** Gets a direct or indirect supertype of this type, not including itself. */
-  RefType getAStrictAncestor() { result = this.getAnAncestor() and result != this }
+  /**
+   * Gets a direct or indirect supertype of this type.
+   * This does not including itself, unless this type is part of a cycle
+   * in the type hierarchy.
+   */
+  RefType getAStrictAncestor() { result = this.getASupertype().getAnAncestor() }
 
   /**
    * Gets the source declaration of a direct supertype of this type, excluding itself.
@@ -666,6 +670,14 @@ class RefType extends Type, Annotatable, Modifiable, @reftype {
   }
 }
 
+/**
+ * An `ErrorType` is generated when CodeQL is unable to correctly
+ * extract a type.
+ */
+class ErrorType extends RefType, @errortype {
+  override string getAPrimaryQlClass() { result = "ErrorType" }
+}
+
 /** A type that is the same as its source declaration. */
 class SrcRefType extends RefType {
   SrcRefType() { this.isSourceDeclaration() }
@@ -696,6 +708,29 @@ class Class extends ClassOrInterface, @class {
   }
 
   override string getAPrimaryQlClass() { result = "Class" }
+}
+
+/** A Kotlin `object`. */
+class ClassObject extends Class {
+  ClassObject() { class_object(this, _) }
+
+  /** Gets the instance variable that implements this `object`. */
+  Field getInstance() { class_object(this, result) }
+}
+
+/** A Kotlin `companion object`. */
+class CompanionObject extends Class {
+  CompanionObject() { type_companion_object(_, _, this) }
+
+  /** Gets the instance variable that implements this `companion object`. */
+  Field getInstance() { type_companion_object(_, result, this) }
+}
+
+/**
+ * A Kotlin data class declaration.
+ */
+class DataClass extends Class {
+  DataClass() { ktDataClasses(this) }
 }
 
 /**
@@ -935,6 +970,9 @@ class ClassOrInterface extends RefType, @classorinterface {
 
   /** Holds if this class or interface is explicitly or implicitly a sealed class (Java 17 feature). */
   predicate isSealed() { exists(this.getAPermittedSubtype()) }
+
+  /** Get the companion object of this class or interface, if any. */
+  CompanionObject getCompanionObject() { type_companion_object(this, _, result) }
 }
 
 private string getAPublicObjectMethodSignature() {
@@ -983,7 +1021,9 @@ class FunctionalInterface extends Interface {
  * and `double`.
  */
 class PrimitiveType extends Type, @primitive {
-  PrimitiveType() { this.getName().regexpMatch("float|double|int|boolean|short|byte|char|long") }
+  PrimitiveType() {
+    this.getName() = ["float", "double", "int", "boolean", "short", "byte", "char", "long"]
+  }
 
   /** Gets the boxed type corresponding to this primitive type. */
   BoxedType getBoxedType() { result.getPrimitiveType() = this }
@@ -1161,8 +1201,8 @@ private Type erase(Type t) {
 }
 
 /**
- * Is there a common (reflexive, transitive) subtype of the erasures of
- * types `t1` and `t2`?
+ * Holds if there is a common (reflexive, transitive) subtype of the erasures of
+ * types `t1` and `t2`.
  *
  * If there is no such common subtype, then the two types are disjoint.
  * However, the converse is not true; for example, the parameterized types
@@ -1176,6 +1216,25 @@ pragma[inline]
 predicate haveIntersection(RefType t1, RefType t2) {
   exists(RefType e1, RefType e2 | e1 = erase(t1) and e2 = erase(t2) |
     erasedHaveIntersection(e1, e2)
+  )
+}
+
+/**
+ * Holds if there is no common (reflexive, transitive) subtype of the erasures
+ * of types `t1` and `t2`.
+ *
+ * If there is no such common subtype, then the two types are disjoint.
+ * However, the converse is not true; for example, the parameterized types
+ * `List<Integer>` and `Collection<String>` are disjoint,
+ * but their erasures (`List` and `Collection`, respectively)
+ * do have common subtypes (such as `List` itself).
+ *
+ * For the definition of the notion of *erasure* see JLS v8, section 4.6 (Type Erasure).
+ */
+bindingset[t1, t2]
+predicate notHaveIntersection(RefType t1, RefType t2) {
+  exists(RefType e1, RefType e2 | e1 = erase(t1) and e2 = erase(t2) |
+    not erasedHaveIntersection(e1, e2)
   )
 }
 
@@ -1198,9 +1257,9 @@ predicate erasedHaveIntersection(RefType t1, RefType t2) {
 class IntegralType extends Type {
   IntegralType() {
     exists(string name |
-      name = this.(PrimitiveType).getName() or name = this.(BoxedType).getPrimitiveType().getName()
+      name = [this.(PrimitiveType).getName(), this.(BoxedType).getPrimitiveType().getName()]
     |
-      name.regexpMatch("byte|char|short|int|long")
+      name = ["byte", "char", "short", "int", "long"]
     )
   }
 }
@@ -1209,7 +1268,7 @@ class IntegralType extends Type {
 class BooleanType extends Type {
   BooleanType() {
     exists(string name |
-      name = this.(PrimitiveType).getName() or name = this.(BoxedType).getPrimitiveType().getName()
+      name = [this.(PrimitiveType).getName(), this.(BoxedType).getPrimitiveType().getName()]
     |
       name = "boolean"
     )
@@ -1220,9 +1279,20 @@ class BooleanType extends Type {
 class CharacterType extends Type {
   CharacterType() {
     exists(string name |
-      name = this.(PrimitiveType).getName() or name = this.(BoxedType).getPrimitiveType().getName()
+      name = [this.(PrimitiveType).getName(), this.(BoxedType).getPrimitiveType().getName()]
     |
       name = "char"
+    )
+  }
+}
+
+/** A numeric type, including both primitive and boxed types. */
+class NumericType extends Type {
+  NumericType() {
+    exists(string name |
+      name = [this.(PrimitiveType).getName(), this.(BoxedType).getPrimitiveType().getName()]
+    |
+      name = ["byte", "short", "int", "long", "double", "float"]
     )
   }
 }
@@ -1231,9 +1301,9 @@ class CharacterType extends Type {
 class NumericOrCharType extends Type {
   NumericOrCharType() {
     exists(string name |
-      name = this.(PrimitiveType).getName() or name = this.(BoxedType).getPrimitiveType().getName()
+      name = [this.(PrimitiveType).getName(), this.(BoxedType).getPrimitiveType().getName()]
     |
-      name.regexpMatch("byte|char|short|int|long|double|float")
+      name = ["byte", "char", "short", "int", "long", "double", "float"]
     )
   }
 }
@@ -1242,9 +1312,9 @@ class NumericOrCharType extends Type {
 class FloatingPointType extends Type {
   FloatingPointType() {
     exists(string name |
-      name = this.(PrimitiveType).getName() or name = this.(BoxedType).getPrimitiveType().getName()
+      name = [this.(PrimitiveType).getName(), this.(BoxedType).getPrimitiveType().getName()]
     |
-      name.regexpMatch("float|double")
+      name = ["float", "double"]
     )
   }
 }

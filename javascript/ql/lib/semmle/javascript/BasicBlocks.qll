@@ -146,7 +146,7 @@ class BasicBlock extends @cfg_node, NodeInStmtContainer {
   /** Holds if this basic block uses variable `v` in its `i`th node `u`. */
   predicate useAt(int i, Variable v, VarUse u) { useAt(this, i, v, u) }
 
-  /** Holds if this basic block defines variable `v` in its `i`th node `u`. */
+  /** Holds if this basic block defines variable `v` in its `i`th node `d`. */
   predicate defAt(int i, Variable v, VarDef d) { defAt(this, i, v, d) }
 
   /**

@@ -8,9 +8,7 @@ module History {
   private class HistoryGlobalEntry extends API::EntryPoint {
     HistoryGlobalEntry() { this = "HistoryLibrary" }
 
-    override DataFlow::SourceNode getAUse() { result = DataFlow::globalVarRef("HistoryLibrary") }
-
-    override DataFlow::Node getARhs() { none() }
+    override DataFlow::SourceNode getASource() { result = DataFlow::globalVarRef("HistoryLibrary") }
   }
 
   /**
@@ -35,16 +33,16 @@ module History {
   /**
    * A user-controlled location value read from the [history](http://npmjs.org/package/history) library.
    */
-  private class HistoryLibaryRemoteFlow extends ClientSideRemoteFlowSource {
+  private class HistoryLibraryRemoteFlow extends ClientSideRemoteFlowSource {
     ClientSideRemoteFlowKind kind;
 
-    HistoryLibaryRemoteFlow() {
+    HistoryLibraryRemoteFlow() {
       exists(API::Node loc | loc = [getBrowserHistory(), getHashHistory()].getMember("location") |
-        this = loc.getMember("hash").getAnImmediateUse() and kind.isFragment()
+        this = loc.getMember("hash").asSource() and kind.isFragment()
         or
-        this = loc.getMember("pathname").getAnImmediateUse() and kind.isPath()
+        this = loc.getMember("pathname").asSource() and kind.isPath()
         or
-        this = loc.getMember("search").getAnImmediateUse() and kind.isQuery()
+        this = loc.getMember("search").asSource() and kind.isQuery()
       )
     }
 

@@ -216,10 +216,9 @@ private module LambdaFlow {
     or
     // jump step
     exists(Node mid, DataFlowType t0 |
-      revLambdaFlow(lambdaCall, kind, mid, t0, _, _, _) and
+      revLambdaFlow(lambdaCall, kind, mid, t0, _, _, lastCall) and
       toReturn = false and
-      toJump = true and
-      lastCall = TDataFlowCallNone()
+      toJump = true
     |
       jumpStepCached(node, mid) and
       t = t0
@@ -305,7 +304,7 @@ cached
 private module Cached {
   /**
    * If needed, call this predicate from `DataFlowImplSpecific.qll` in order to
-   * force a stage-dependency on the `DataFlowImplCommon.qll` stage and therby
+   * force a stage-dependency on the `DataFlowImplCommon.qll` stage and thereby
    * collapsing the two stages.
    */
   cached
@@ -789,24 +788,31 @@ private module Cached {
   cached
   predicate readSet(Node node1, ContentSet c, Node node2) { readStep(node1, c, node2) }
 
+  cached
+  predicate storeSet(
+    Node node1, ContentSet c, Node node2, DataFlowType contentType, DataFlowType containerType
+  ) {
+    storeStep(node1, c, node2) and
+    contentType = getNodeDataFlowType(node1) and
+    containerType = getNodeDataFlowType(node2)
+    or
+    exists(Node n1, Node n2 |
+      n1 = node1.(PostUpdateNode).getPreUpdateNode() and
+      n2 = node2.(PostUpdateNode).getPreUpdateNode()
+    |
+      argumentValueFlowsThrough(n2, TReadStepTypesSome(containerType, c, contentType), n1)
+      or
+      readSet(n2, c, n1) and
+      contentType = getNodeDataFlowType(n1) and
+      containerType = getNodeDataFlowType(n2)
+    )
+  }
+
   private predicate store(
     Node node1, Content c, Node node2, DataFlowType contentType, DataFlowType containerType
   ) {
-    exists(ContentSet cs | c = cs.getAStoreContent() |
-      storeStep(node1, cs, node2) and
-      contentType = getNodeDataFlowType(node1) and
-      containerType = getNodeDataFlowType(node2)
-      or
-      exists(Node n1, Node n2 |
-        n1 = node1.(PostUpdateNode).getPreUpdateNode() and
-        n2 = node2.(PostUpdateNode).getPreUpdateNode()
-      |
-        argumentValueFlowsThrough(n2, TReadStepTypesSome(containerType, cs, contentType), n1)
-        or
-        readSet(n2, cs, n1) and
-        contentType = getNodeDataFlowType(n1) and
-        containerType = getNodeDataFlowType(n2)
-      )
+    exists(ContentSet cs |
+      c = cs.getAStoreContent() and storeSet(node1, cs, node2, contentType, containerType)
     )
   }
 

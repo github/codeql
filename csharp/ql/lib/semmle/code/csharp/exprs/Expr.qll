@@ -937,7 +937,7 @@ class ThrowExpr extends Expr, ThrowElement, @throw_expr {
    * For example, `new ArgumentException("i")` in
    * `return i != 0 ? 1 / i : throw new ArgumentException("i");`.
    */
-  // overriden for more precise qldoc
+  // overridden for more precise qldoc
   override Expr getExpr() { result = ThrowElement.super.getExpr() }
 
   override string getAPrimaryQlClass() { result = "ThrowExpr" }
@@ -1035,9 +1035,6 @@ class TupleExpr extends Expr, @tuple_expr {
 
   /** Gets an argument of this tuple. */
   Expr getAnArgument() { result = this.getArgument(_) }
-
-  /** Holds if this tuple is a read access. */
-  deprecated predicate isReadAccess() { not this = getAnAssignOrForeachChild() }
 
   /** Holds if this expression is a tuple construction. */
   predicate isConstruction() {
@@ -1173,7 +1170,7 @@ class WithExpr extends Expr, @with_expr {
   /** Gets the expression on which this `with` is called. */
   Expr getExpr() { result = this.getChild(0) }
 
-  /** Gets the clone method of the `record` that is targetted by this `with` expression. */
+  /** Gets the clone method of the `record` that is targeted by this `with` expression. */
   RecordCloneMethod getCloneMethod() {
     result = this.getExpr().getType().(RecordClass).getCloneMethod()
   }

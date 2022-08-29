@@ -1,0 +1,114 @@
+name: "Go: Run Tests"
+on:
+  pull_request:
+    paths:
+      - "go/**"
+      - .github/workflows/go-tests.yml
+      - .github/actions/fetch-codeql/action.yml
+      - codeql-workspace.yml
+jobs:
+  test-linux:
+    name: Test Linux (Ubuntu)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up Go 1.19
+        uses: actions/setup-go@v3
+        with:
+          go-version: 1.19
+        id: go
+
+      - name: Check out code
+        uses: actions/checkout@v2
+
+      - name: Set up CodeQL CLI
+        uses: ./.github/actions/fetch-codeql
+
+      - name: Enable problem matchers in repository
+        shell: bash
+        run: 'find .github/problem-matchers -name \*.json -exec echo "::add-matcher::{}" \;'
+
+      - name: Build
+        run: |
+          cd go
+          make
+
+      - name: Check that all QL and Go code is autoformatted
+        run: |
+          cd go
+          make check-formatting
+
+      - name: Compile qhelp files to markdown
+        run: |
+          cd go
+          env QHELP_OUT_DIR=qhelp-out make qhelp-to-markdown
+
+      - name: Upload qhelp markdown
+        uses: actions/upload-artifact@v2
+        with:
+          name: qhelp-markdown
+          path: go/qhelp-out/**/*.md
+
+      - name: Test
+        run: |
+          cd go
+          make test
+
+  test-mac:
+    name: Test MacOS
+    runs-on: macos-latest
+    steps:
+      - name: Set up Go 1.19
+        uses: actions/setup-go@v3
+        with:
+          go-version: 1.19
+        id: go
+
+      - name: Check out code
+        uses: actions/checkout@v2
+
+      - name: Set up CodeQL CLI
+        uses: ./.github/actions/fetch-codeql
+
+      - name: Enable problem matchers in repository
+        shell: bash
+        run: 'find .github/problem-matchers -name \*.json -exec echo "::add-matcher::{}" \;'
+
+      - name: Build
+        run: |
+          cd go
+          make
+
+      - name: Test
+        run: |
+          cd go
+          make test
+
+  test-win:
+    name: Test Windows
+    runs-on: windows-2019
+    steps:
+      - name: Set up Go 1.19
+        uses: actions/setup-go@v3
+        with:
+          go-version: 1.19
+        id: go
+
+      - name: Check out code
+        uses: actions/checkout@v2
+
+      - name: Set up CodeQL CLI
+        uses: ./.github/actions/fetch-codeql
+
+      - name: Enable problem matchers in repository
+        shell: bash
+        run: 'find .github/problem-matchers -name \*.json -exec echo "::add-matcher::{}" \;'
+
+      - name: Build
+        run: |
+          cd go
+          make
+
+      - name: Test
+        run: |
+          cd go
+          make test

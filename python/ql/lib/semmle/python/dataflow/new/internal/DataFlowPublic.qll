@@ -528,18 +528,86 @@ class StarPatternElementNode extends Node, TStarPatternElementNode {
 }
 
 /**
- * A node that controls whether other nodes are evaluated.
+ * Gets a node that controls whether other nodes are evaluated.
+ *
+ * In the base case, this is the last node of `conditionBlock`, and `flipped` is `false`.
+ * This definition accounts for (short circuting) `and`- and `or`-expressions, as the structure
+ * of basic blocks will reflect their semantics.
+ *
+ * However, in the program
+ * ```python
+ * if not is_safe(path):
+ *   return
+ * ```
+ * the last node in the `ConditionBlock` is `not is_safe(path)`.
+ *
+ * We would like to consider also `is_safe(path)` a guard node, albeit with `flipped` being `true`.
+ * Thus we recurse through `not`-expressions.
  */
-class GuardNode extends ControlFlowNode {
-  ConditionBlock conditionBlock;
-
-  GuardNode() { this = conditionBlock.getLastNode() }
-
-  /** Holds if this guard controls block `b` upon evaluating to `branch`. */
-  predicate controlsBlock(BasicBlock b, boolean branch) { conditionBlock.controls(b, branch) }
+ControlFlowNode guardNode(ConditionBlock conditionBlock, boolean flipped) {
+  // Base case: the last node truly does determine which successor is chosen
+  result = conditionBlock.getLastNode() and
+  flipped = false
+  or
+  // Recursive case: if a guard node is a `not`-expression,
+  // the operand is also a guard node, but with inverted polarity.
+  exists(UnaryExprNode notNode |
+    result = notNode.getOperand() and
+    notNode.getNode().getOp() instanceof Not
+  |
+    notNode = guardNode(conditionBlock, flipped.booleanNot())
+  )
 }
 
 /**
+ * A node that controls whether other nodes are evaluated.
+ *
+ * The field `flipped` allows us to match `GuardNode`s underneath
+ * `not`-expressions and still choose the appropriate branch.
+ */
+class GuardNode extends ControlFlowNode {
+  ConditionBlock conditionBlock;
+  boolean flipped;
+
+  GuardNode() { this = guardNode(conditionBlock, flipped) }
+
+  /** Holds if this guard controls block `b` upon evaluating to `branch`. */
+  predicate controlsBlock(BasicBlock b, boolean branch) {
+    branch in [true, false] and
+    conditionBlock.controls(b, branch.booleanXor(flipped))
+  }
+}
+
+/**
+ * Holds if the guard `g` validates `node` upon evaluating to `branch`.
+ *
+ * The expression `e` is expected to be a syntactic part of the guard `g`.
+ * For example, the guard `g` might be a call `isSafe(x)` and the expression `e`
+ * the argument `x`.
+ */
+signature predicate guardChecksSig(GuardNode g, ControlFlowNode node, boolean branch);
+
+/**
+ * Provides a set of barrier nodes for a guard that validates a node.
+ *
+ * This is expected to be used in `isBarrier`/`isSanitizer` definitions
+ * in data flow and taint tracking.
+ */
+module BarrierGuard<guardChecksSig/3 guardChecks> {
+  /** Gets a node that is safely guarded by the given guard check. */
+  ExprNode getABarrierNode() {
+    exists(GuardNode g, EssaDefinition def, ControlFlowNode node, boolean branch |
+      AdjacentUses::useOfDef(def, node) and
+      guardChecks(g, node, branch) and
+      AdjacentUses::useOfDef(def, result.asCfgNode()) and
+      g.controlsBlock(result.asCfgNode().getBasicBlock(), branch)
+    )
+  }
+}
+
+/**
+ * DEPRECATED: Use `BarrierGuard` module instead.
+ *
  * A guard that validates some expression.
  *
  * To use this in a configuration, extend the class and provide a
@@ -548,7 +616,7 @@ class GuardNode extends ControlFlowNode {
  *
  * It is important that all extending classes in scope are disjoint.
  */
-class BarrierGuard extends GuardNode {
+deprecated class BarrierGuard extends GuardNode {
   /** Holds if this guard validates `node` upon evaluating to `branch`. */
   abstract predicate checks(ControlFlowNode node, boolean branch);
 

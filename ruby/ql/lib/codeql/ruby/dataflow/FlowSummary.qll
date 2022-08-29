@@ -25,6 +25,10 @@ module SummaryComponent {
 
   predicate content = SC::content/1;
 
+  predicate withoutContent = SC::withoutContent/1;
+
+  predicate withContent = SC::withContent/1;
+
   /** Gets a summary component that represents a receiver. */
   SummaryComponent receiver() { result = argument(any(ParameterPosition pos | pos.isSelf())) }
 
@@ -53,6 +57,24 @@ module SummaryComponent {
    */
   SummaryComponent elementAny() { result = SC::content(TAnyElementContent()) }
 
+  /**
+   * Gets a summary component that represents an element in a collection at known
+   * integer index `lower` or above.
+   */
+  SummaryComponent elementLowerBound(int lower) {
+    result = SC::content(TElementLowerBoundContent(lower))
+  }
+
+  /** Gets a summary component that represents a value in a pair at an unknown key. */
+  SummaryComponent pairValueUnknown() {
+    result = SC::content(TSingletonContent(TUnknownPairValueContent()))
+  }
+
+  /** Gets a summary component that represents a value in a pair at a known key. */
+  SummaryComponent pairValueKnown(ConstantValue key) {
+    result = SC::content(TSingletonContent(TKnownPairValueContent(key)))
+  }
+
   /** Gets a summary component that represents the return value of a call. */
   SummaryComponent return() { result = SC::return(any(NormalReturnKind rk)) }
 }
@@ -80,36 +102,9 @@ module SummaryComponentStack {
 }
 
 /** A callable with a flow summary, identified by a unique string. */
-abstract class SummarizedCallable extends LibraryCallable {
+abstract class SummarizedCallable extends LibraryCallable, Impl::Public::SummarizedCallable {
   bindingset[this]
   SummarizedCallable() { any() }
-
-  /**
-   * Holds if data may flow from `input` to `output` through this callable.
-   *
-   * `preservesValue` indicates whether this is a value-preserving step
-   * or a taint-step.
-   *
-   * Input specifications are restricted to stacks that end with
-   * `SummaryComponent::argument(_)`, preceded by zero or more
-   * `SummaryComponent::return()` or `SummaryComponent::content(_)` components.
-   *
-   * Output specifications are restricted to stacks that end with
-   * `SummaryComponent::return()` or `SummaryComponent::argument(_)`.
-   *
-   * Output stacks ending with `SummaryComponent::return()` can be preceded by zero
-   * or more `SummaryComponent::content(_)` components.
-   *
-   * Output stacks ending with `SummaryComponent::argument(_)` can be preceded by an
-   * optional `SummaryComponent::parameter(_)` component, which in turn can be preceded
-   * by zero or more `SummaryComponent::content(_)` components.
-   */
-  pragma[nomagic]
-  predicate propagatesFlow(
-    SummaryComponentStack input, SummaryComponentStack output, boolean preservesValue
-  ) {
-    none()
-  }
 
   /**
    * Same as
@@ -124,13 +119,6 @@ abstract class SummarizedCallable extends LibraryCallable {
    */
   pragma[nomagic]
   predicate propagatesFlowExt(string input, string output, boolean preservesValue) { none() }
-
-  /**
-   * Holds if values stored inside `content` are cleared on objects passed as
-   * arguments at position `pos` to this callable.
-   */
-  pragma[nomagic]
-  predicate clearsContent(ParameterPosition pos, DataFlow::ContentSet content) { none() }
 }
 
 /**
@@ -144,22 +132,6 @@ abstract class SimpleSummarizedCallable extends SummarizedCallable {
   SimpleSummarizedCallable() { mc.getMethodName() = this }
 
   final override MethodCall getACall() { result = mc }
-}
-
-private class SummarizedCallableAdapter extends Impl::Public::SummarizedCallable {
-  private SummarizedCallable sc;
-
-  SummarizedCallableAdapter() { this = TLibraryCallable(sc) }
-
-  final override predicate propagatesFlow(
-    SummaryComponentStack input, SummaryComponentStack output, boolean preservesValue
-  ) {
-    sc.propagatesFlow(input, output, preservesValue)
-  }
-
-  final override predicate clearsContent(ParameterPosition pos, DataFlow::ContentSet content) {
-    sc.clearsContent(pos, content)
-  }
 }
 
 class RequiredSummaryComponentStack = Impl::Public::RequiredSummaryComponentStack;

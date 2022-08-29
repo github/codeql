@@ -1,11 +1,9 @@
 #pragma once
 
+#include <cassert>
 #include <iomanip>
 #include <iostream>
 #include <string>
-
-#include "swift/extractor/trap/TrapTagTraits.h"
-#include "swift/extractor/trap/TrapTags.h"
 
 namespace codeql {
 
@@ -13,13 +11,21 @@ class UntypedTrapLabel {
   uint64_t id_;
 
   friend class std::hash<UntypedTrapLabel>;
+  template <typename Tag>
+  friend class TrapLabel;
+
+  static constexpr uint64_t undefined = 0xffffffffffffffff;
 
  protected:
-  UntypedTrapLabel() : id_{0xffffffffffffffff} {}
+  UntypedTrapLabel() : id_{undefined} {}
   UntypedTrapLabel(uint64_t id) : id_{id} {}
 
  public:
   friend std::ostream& operator<<(std::ostream& out, UntypedTrapLabel l) {
+    // TODO: this is a temporary fix to catch us from outputting undefined labels to trap
+    // this should be moved to a validity check, probably aided by code generation and carried out
+    // by `SwiftDispatcher`
+    assert(l.id_ != undefined && "outputting an undefined label!");
     out << '#' << std::hex << l.id_ << std::dec;
     return out;
   }
@@ -27,7 +33,7 @@ class UntypedTrapLabel {
   friend bool operator==(UntypedTrapLabel lhs, UntypedTrapLabel rhs) { return lhs.id_ == rhs.id_; }
 };
 
-template <typename Tag>
+template <typename TagParam>
 class TrapLabel : public UntypedTrapLabel {
   template <typename OtherTag>
   friend class TrapLabel;
@@ -35,18 +41,17 @@ class TrapLabel : public UntypedTrapLabel {
   using UntypedTrapLabel::UntypedTrapLabel;
 
  public:
+  using Tag = TagParam;
+
   TrapLabel() = default;
+
+  // The caller is responsible for ensuring ID uniqueness.
+  static TrapLabel unsafeCreateFromExplicitId(uint64_t id) { return {id}; }
+  static TrapLabel unsafeCreateFromUntyped(UntypedTrapLabel label) { return {label.id_}; }
 
   template <typename OtherTag>
   TrapLabel(const TrapLabel<OtherTag>& other) : UntypedTrapLabel(other) {
-    // we temporarily need to bypass the label type system for unknown AST nodes and types
-    if constexpr (std::is_same_v<Tag, UnknownAstNodeTag>) {
-      static_assert(std::is_base_of_v<AstNodeTag, OtherTag>, "wrong label assignment!");
-    } else if constexpr (std::is_same_v<Tag, UnknownTypeTag>) {
-      static_assert(std::is_base_of_v<TypeTag, OtherTag>, "wrong label assignment!");
-    } else {
-      static_assert(std::is_base_of_v<Tag, OtherTag>, "wrong label assignment!");
-    }
+    static_assert(std::is_base_of_v<Tag, OtherTag>, "wrong label assignment!");
   }
 };
 
