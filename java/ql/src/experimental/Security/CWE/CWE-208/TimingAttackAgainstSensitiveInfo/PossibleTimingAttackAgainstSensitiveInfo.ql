@@ -4,7 +4,7 @@
  *              possibly allowing a timing attack to infer the info's expected value.
  * @kind path-problem
  * @problem.severity error
- * @precision high
+ * @precision medium
  * @id java/timing-attack-against-sensitive-info
  * @tags security
  *       external/cwe/cwe-208
