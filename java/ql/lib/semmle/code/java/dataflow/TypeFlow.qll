@@ -220,7 +220,7 @@ private predicate upcastCand(TypeFlowNode n, RefType t, RefType t1, RefType t2) 
       ret.getResult() = n.asExpr() and t2 = ret.getEnclosingCallable().getReturnType().getErasure()
     )
     or
-    exists(MethodAccess ma | viableImpl_v1(ma) = n.asMethod() and t2 = ma.getType())
+    exists(MethodAccess ma | viableImpl_v1(ma) = n.asMethod() and t2 = ma.getType().getErasure())
     or
     exists(Parameter p | privateParamArg(p, n.asExpr()) and t2 = p.getType().getErasure())
     or
