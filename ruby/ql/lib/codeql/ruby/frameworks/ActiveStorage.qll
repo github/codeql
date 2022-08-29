@@ -118,10 +118,8 @@ module ActiveStorage {
    * ```
    */
   private class AttachmentInstance extends DataFlow::CallNode {
-    Association assoc;
-
     AttachmentInstance() {
-      exists(string model | model = assoc.getTargetModelName() |
+      exists(Association assoc, string model | model = assoc.getTargetModelName() |
         this.getReceiver().(ActiveRecordInstance).getClass() = assoc.getSourceClass() and
         (
           assoc.isSingular() and this.getMethodName() = model
