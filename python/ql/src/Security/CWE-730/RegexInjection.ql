@@ -5,6 +5,7 @@
  *              exponential time on certain inputs.
  * @kind path-problem
  * @problem.severity error
+ * @security-severity 7.5
  * @precision high
  * @id py/regex-injection
  * @tags security
