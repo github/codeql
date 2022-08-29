@@ -1,6 +1,6 @@
 | declarations.swift:1:1:7:1 | Foo |
-| declarations.swift:1:8:1:8 | init |
-| declarations.swift:1:8:1:8 | init |
+| declarations.swift:1:8:1:8 | init() |
+| declarations.swift:1:8:1:8 | init(x:) |
 | declarations.swift:1:8:1:8 | self |
 | declarations.swift:1:8:1:8 | self |
 | declarations.swift:1:8:1:8 | x |
@@ -23,8 +23,8 @@
 | declarations.swift:5:5:5:38 | set |
 | declarations.swift:5:9:5:9 | newValue |
 | declarations.swift:9:1:9:34 | Bar |
-| declarations.swift:9:7:9:7 | deinit |
-| declarations.swift:9:7:9:7 | init |
+| declarations.swift:9:7:9:7 | deinit() |
+| declarations.swift:9:7:9:7 | init() |
 | declarations.swift:9:7:9:7 | self |
 | declarations.swift:9:7:9:7 | self |
 | declarations.swift:9:13:9:30 | var ... = ... |
@@ -95,9 +95,9 @@
 | declarations.swift:41:7:41:7 | set |
 | declarations.swift:41:7:41:7 | value |
 | declarations.swift:42:3:42:3 | self |
-| declarations.swift:42:3:44:3 | init |
+| declarations.swift:42:3:44:3 | init() |
 | declarations.swift:46:3:46:3 | self |
-| declarations.swift:46:3:48:3 | deinit |
+| declarations.swift:46:3:48:3 | deinit() |
 | declarations.swift:50:3:52:3 | +-(_:) |
 | declarations.swift:50:22:50:22 | self |
 | declarations.swift:50:26:50:33 | other |
@@ -106,7 +106,7 @@
 | declarations.swift:64:7:64:16 | +++ |
 | declarations.swift:66:7:66:21 | *** |
 | declarations.swift:68:18:74:1 | ZeroWrapper |
-| declarations.swift:68:25:68:25 | init |
+| declarations.swift:68:25:68:25 | init() |
 | declarations.swift:68:25:68:25 | self |
 | declarations.swift:69:3:73:3 | var ... = ... |
 | declarations.swift:69:7:69:7 | wrappedValue |
@@ -123,7 +123,7 @@
 | declarations.swift:81:8:81:8 | hasDidSet2 |
 | declarations.swift:81:8:81:8 | hasWillSet1 |
 | declarations.swift:81:8:81:8 | hasWillSet2 |
-| declarations.swift:81:8:81:8 | init |
+| declarations.swift:81:8:81:8 | init(normalField:hasWillSet1:hasWillSet2:hasDidSet1:hasDidSet2:hasBoth:) |
 | declarations.swift:81:8:81:8 | normalField |
 | declarations.swift:81:8:81:8 | self |
 | declarations.swift:82:3:87:3 | var ... = ... |

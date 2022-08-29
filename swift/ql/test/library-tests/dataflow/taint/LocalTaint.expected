@@ -1,9 +1,9 @@
 | data.swift:12:6:12:6 | WriteDef | data.swift:16:12:16:12 | dataClean |
-| data.swift:12:18:12:36 | call to init | data.swift:12:6:12:6 | WriteDef |
+| data.swift:12:18:12:36 | call to init(_:) | data.swift:12:6:12:6 | WriteDef |
 | data.swift:13:6:13:6 | WriteDef | data.swift:14:26:14:26 | dataTainted |
-| data.swift:13:20:13:38 | call to init | data.swift:13:6:13:6 | WriteDef |
+| data.swift:13:20:13:38 | call to init(_:) | data.swift:13:6:13:6 | WriteDef |
 | data.swift:14:6:14:6 | WriteDef | data.swift:18:12:18:12 | dataTainted2 |
-| data.swift:14:21:14:37 | call to init | data.swift:14:6:14:6 | WriteDef |
+| data.swift:14:21:14:37 | call to init(_:) | data.swift:14:6:14:6 | WriteDef |
 | data.swift:14:26:14:26 | dataTainted | data.swift:17:12:17:12 | dataTainted |
 | data.swift:16:12:16:12 | dataClean | data.swift:20:33:20:33 | dataClean |
 | string.swift:5:7:5:7 | WriteDef | string.swift:7:16:7:16 | x |
@@ -161,28 +161,28 @@
 | url.swift:13:6:13:6 | WriteDef | url.swift:15:31:15:31 | tainted |
 | url.swift:13:16:13:23 | call to source() | url.swift:13:6:13:6 | WriteDef |
 | url.swift:14:6:14:6 | WriteDef | url.swift:17:12:17:12 | urlClean |
-| url.swift:14:17:14:34 | call to init | url.swift:14:17:14:35 | ...! |
+| url.swift:14:17:14:34 | call to init(string:) | url.swift:14:17:14:35 | ...! |
 | url.swift:14:17:14:35 | ...! | url.swift:14:6:14:6 | WriteDef |
 | url.swift:14:29:14:29 | clean | url.swift:20:24:20:24 | clean |
 | url.swift:15:6:15:6 | WriteDef | url.swift:18:12:18:12 | urlTainted |
-| url.swift:15:19:15:38 | call to init | url.swift:15:19:15:39 | ...! |
+| url.swift:15:19:15:38 | call to init(string:) | url.swift:15:19:15:39 | ...! |
 | url.swift:15:19:15:39 | ...! | url.swift:15:6:15:6 | WriteDef |
 | url.swift:15:31:15:31 | tainted | url.swift:21:24:21:24 | tainted |
 | url.swift:17:12:17:12 | urlClean | url.swift:22:43:22:43 | urlClean |
 | url.swift:18:12:18:12 | urlTainted | url.swift:23:43:23:43 | urlTainted |
-| url.swift:20:12:20:46 | call to init | url.swift:20:12:20:47 | ...! |
+| url.swift:20:12:20:46 | call to init(string:relativeTo:) | url.swift:20:12:20:47 | ...! |
 | url.swift:20:24:20:24 | clean | url.swift:22:24:22:24 | clean |
-| url.swift:21:12:21:48 | call to init | url.swift:21:12:21:49 | ...! |
+| url.swift:21:12:21:48 | call to init(string:relativeTo:) | url.swift:21:12:21:49 | ...! |
 | url.swift:21:24:21:24 | tainted | url.swift:29:25:29:25 | tainted |
-| url.swift:22:12:22:51 | call to init | url.swift:22:12:22:52 | ...! |
+| url.swift:22:12:22:51 | call to init(string:relativeTo:) | url.swift:22:12:22:52 | ...! |
 | url.swift:22:24:22:24 | clean | url.swift:23:24:23:24 | clean |
-| url.swift:23:12:23:53 | call to init | url.swift:23:12:23:54 | ...! |
+| url.swift:23:12:23:53 | call to init(string:relativeTo:) | url.swift:23:12:23:54 | ...! |
 | url.swift:23:24:23:24 | clean | url.swift:25:25:25:25 | clean |
 | url.swift:25:25:25:25 | clean | url.swift:34:26:34:26 | clean |
 | url.swift:29:25:29:25 | tainted | url.swift:38:28:38:28 | tainted |
 | url.swift:34:2:34:31 | WriteDef | url.swift:35:12:35:12 | urlClean2 |
-| url.swift:34:14:34:31 | call to init | url.swift:34:2:34:31 | WriteDef |
+| url.swift:34:14:34:31 | call to init(string:) | url.swift:34:2:34:31 | WriteDef |
 | url.swift:35:12:35:12 | urlClean2 | url.swift:35:12:35:12 | ...! |
 | url.swift:38:2:38:35 | WriteDef | url.swift:39:12:39:12 | urlTainted2 |
-| url.swift:38:16:38:35 | call to init | url.swift:38:2:38:35 | WriteDef |
+| url.swift:38:16:38:35 | call to init(string:) | url.swift:38:2:38:35 | WriteDef |
 | url.swift:39:12:39:12 | urlTainted2 | url.swift:39:12:39:12 | ...! |
