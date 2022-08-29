@@ -394,6 +394,9 @@ private API::Node getNodeFromPath(string package, string type, AccessPath path, 
   // Apply a subpath
   result =
     getNodeFromSubPath(getNodeFromPath(package, type, path, n - 1), getSubPathAt(path, n - 1))
+  or
+  // Apply a receiver step
+  typeStep(getNodeFromPath(package, type, path, n), result)
 }
 
 /**
@@ -415,6 +418,13 @@ private API::Node getNodeFromSubPath(API::Node base, AccessPath subPath, int n) 
   exists(AccessPath path, int k |
     base = [getNodeFromPath(_, _, path, k), getNodeFromSubPath(_, path, k)] and
     subPath = getSubPathAt(path, k) and
+    result = base and
+    n = 0
+  )
+  or
+  exists(string package, string type, AccessPath basePath |
+    typeStepModel(package, type, basePath, subPath) and
+    base = getNodeFromPath(package, type, basePath) and
     result = base and
     n = 0
   )
@@ -449,6 +459,20 @@ private API::Node getNodeFromSubPath(API::Node base, AccessPath subPath) {
 /** Gets the node identified by the given `(package, type, path)` tuple. */
 API::Node getNodeFromPath(string package, string type, AccessPath path) {
   result = getNodeFromPath(package, type, path, path.getNumToken())
+}
+
+pragma[nomagic]
+private predicate typeStepModel(string package, string type, AccessPath basePath, AccessPath output) {
+  summaryModel(package, type, basePath, "", output, "type")
+}
+
+pragma[nomagic]
+private predicate typeStep(API::Node pred, API::Node succ) {
+  exists(string package, string type, AccessPath basePath, AccessPath output |
+    typeStepModel(package, type, basePath, output) and
+    pred = getNodeFromPath(package, type, basePath) and
+    succ = getNodeFromSubPath(pred, output)
+  )
 }
 
 /**
