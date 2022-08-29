@@ -142,15 +142,15 @@ Parameterized modules are QL's approach to generic programming.
 Similar to explicit modules, parameterized modules are defined within other modules using the keywork ``module``.
 In addition to the module name, parameterized modules declare one or more parameters between the name and the module body.
 
-For example, consider the module ``ApplyFooThenBar``, which takes two predicate parameters and defines a new predicate
+For example, consider the module ``M``, which takes two predicate parameters and defines a new predicate
 that applies them one after the other:
 
 .. code-block:: ql
 
-    module ApplyFooThenBar<transformer/1 foo, transformer/1 bar> {
+    module M<transformer/1 first, transformer/1 second> {
       bindingset[x]
-      int apply(int x) {
-        result = bar(foo(x))
+      int applyBoth(int x) {
+        result = second(first(x))
       }
     }
 
@@ -158,7 +158,7 @@ Parameterized modules cannot be directly referenced.
 Instead, you instantiate a parameterized module by passing arguments enclosed in angle brackets (``<`` and ``>``) to the module.
 Instantiated parameterized modules can be used as a :ref:`module expression <name-resolution>`, identical to explicit module references.
 
-For example, we can instantiate ``ApplyFooThenBar`` with two identical arguments ``increment``, creating a module
+For example, we can instantiate ``M`` with two identical arguments ``increment``, creating a module
 containing a predicate that adds 2:
 
 .. code-block:: ql
@@ -166,9 +166,9 @@ containing a predicate that adds 2:
     bindingset[result] bindingset[x]
     int increment(int x) { result = x + 1 }
 
-    module IncrementTwice = ApplyFooThenBar<increment/1, increment/1>;
+    module IncrementTwice = M<increment/1, increment/1>;
 
-    select IncrementTwice::apply(40) // 42
+    select IncrementTwice::applyBoth(40) // 42
 
 The parameters of a parameterized module are (meta-)typed with :ref:`signatures <signatures>`.
 
