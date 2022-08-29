@@ -15,7 +15,7 @@ Predicate signatures
 
 Predicate signatures declare module parameters that will be substituted with predicates when the module is instantiated.
 
-The substitution of predicate signatures relies on structural typing, i.e. predicates do not have to be explicitly
+The substitution of predicate signatures relies on structural typing. That is, predicates do not have to be explicitly
 defined as implementing a predicate signature - they just have to match the return and argument types.
 
 Predicate signatures are defined much like predicates themselves, but they do not have a body.
