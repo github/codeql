@@ -155,7 +155,7 @@ that applies them one after the other:
     }
 
 Parameterized modules cannot be directly referenced.
-Instead, they are instantiated with arguments passed between ``<`` and ``>``.
+Instead, you instantiate a parameterized module by passing arguments enclosed in angle brackets (``<`` and ``>``) to the module.
 Instantiated parameterized modules can be used as a module expression, identical to explicit module references.
 
 For example, we can instantiate ``ApplyFooThenBar`` with two identical arguments ``increment``, creating a module
