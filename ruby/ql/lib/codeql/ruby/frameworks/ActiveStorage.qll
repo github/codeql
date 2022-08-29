@@ -10,6 +10,10 @@ private import codeql.ruby.dataflow.FlowSummary
 private import codeql.ruby.frameworks.data.ModelsAsData
 private import codeql.ruby.frameworks.ActiveRecord
 
+/**
+ * Provides modeling for the `ActiveStorage` library.
+ * Version: 6.0.0.
+ */
 module ActiveStorage {
   /** A call to `ActiveStorage::Filename#sanitized`, considered as a path sanitizer. */
   private class FilenameSanitizedCall extends Path::PathSanitization::Range, DataFlow::CallNode {
