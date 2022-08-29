@@ -5705,10 +5705,10 @@ cfg.swift:
 
 #  456| #keyPath(...)
 #-----|  -> var ... = ...
+#-----|  -> exit #keyPath(...) (normal)
 
 #  456| #keyPath(...)
 #-----|  -> var ... = ...
-#-----|  -> exit #keyPath(...) (normal)
 
 #  456| enter #keyPath(...)
 #-----|  -> #keyPath(...)
@@ -5747,10 +5747,10 @@ cfg.swift:
 
 #  457| #keyPath(...)
 #-----|  -> var ... = ...
+#-----|  -> exit #keyPath(...) (normal)
 
 #  457| #keyPath(...)
 #-----|  -> var ... = ...
-#-----|  -> exit #keyPath(...) (normal)
 
 #  457| enter #keyPath(...)
 #-----|  -> #keyPath(...)
@@ -5801,10 +5801,10 @@ cfg.swift:
 
 #  458| #keyPath(...)
 #-----|  -> var ... = ...
+#-----|  -> exit #keyPath(...) (normal)
 
 #  458| #keyPath(...)
 #-----|  -> var ... = ...
-#-----|  -> exit #keyPath(...) (normal)
 
 #  458| enter #keyPath(...)
 #-----|  -> #keyPath(...)
@@ -5867,10 +5867,10 @@ cfg.swift:
 
 #  459| #keyPath(...)
 #-----|  -> var ... = ...
+#-----|  -> exit #keyPath(...) (normal)
 
 #  459| #keyPath(...)
 #-----|  -> var ... = ...
-#-----|  -> exit #keyPath(...) (normal)
 
 #  459| enter #keyPath(...)
 #-----|  -> #keyPath(...)
@@ -6211,15 +6211,15 @@ cfg.swift:
 #-----|  -> apply_kpGet_mayB_x
 
 #  464| apply_kpGet_mayB_x
+
+#  464| apply_kpGet_mayB_x
+
+#  464| apply_kpGet_mayB_x
+
+#  464| apply_kpGet_mayB_x
+
+#  464| apply_kpGet_mayB_x
 #-----|  -> exit test(a:) (normal)
-
-#  464| apply_kpGet_mayB_x
-
-#  464| apply_kpGet_mayB_x
-
-#  464| apply_kpGet_mayB_x
-
-#  464| apply_kpGet_mayB_x
 
 #  464| apply_kpGet_mayB_x
 #-----| match -> a
