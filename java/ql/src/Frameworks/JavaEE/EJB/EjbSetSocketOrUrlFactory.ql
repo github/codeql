@@ -4,7 +4,6 @@
  *              or the stream handler factory used by URL. Such operations could
  *              compromise security or interfere with the EJB container's operation.
  * @kind problem
- * @problem.severity error
  * @security-severity 5.8
  * @precision low
  * @id java/ejb/socket-or-stream-handler-factory
