@@ -1,0 +1,7 @@
+{
+    "name": "test-package",
+    "main": "main.js",
+    "exports": {
+        "./main": "./main.js"
+    }
+}
