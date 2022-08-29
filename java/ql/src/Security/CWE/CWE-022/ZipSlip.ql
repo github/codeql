@@ -36,41 +36,6 @@ class ArchiveEntryNameMethod extends Method {
   }
 }
 
-/**
- * Holds if `n1` to `n2` is a dataflow step that converts between `String`,
- * `File`, and `Path`.
- */
-predicate filePathStep(ExprNode n1, ExprNode n2) {
-  exists(ConstructorCall cc | cc.getConstructedType() instanceof TypeFile |
-    n1.asExpr() = cc.getAnArgument() and
-    n2.asExpr() = cc
-  )
-  or
-  exists(MethodAccess ma, Method m |
-    ma.getMethod() = m and
-    n1.asExpr() = ma.getQualifier() and
-    n2.asExpr() = ma
-  |
-    m.getDeclaringType() instanceof TypeFile and m.hasName("toPath")
-    or
-    m.getDeclaringType() instanceof TypePath and m.hasName("toAbsolutePath")
-    or
-    m.getDeclaringType() instanceof TypePath and m.hasName("toFile")
-  )
-}
-
-predicate fileTaintStep(ExprNode n1, ExprNode n2) {
-  exists(MethodAccess ma, Method m |
-    n1.asExpr() = ma.getQualifier() or
-    n1.asExpr() = ma.getAnArgument()
-  |
-    n2.asExpr() = ma and
-    ma.getMethod() = m and
-    m.getDeclaringType() instanceof TypePath and
-    m.hasName("resolve")
-  )
-}
-
 class ZipSlipConfiguration extends TaintTracking::Configuration {
   ZipSlipConfiguration() { this = "ZipSlip" }
 
@@ -79,10 +44,6 @@ class ZipSlipConfiguration extends TaintTracking::Configuration {
   }
 
   override predicate isSink(Node sink) { sink instanceof FileCreationSink }
-
-  override predicate isAdditionalTaintStep(Node n1, Node n2) {
-    filePathStep(n1, n2) or fileTaintStep(n1, n2)
-  }
 
   override predicate isSanitizer(Node node) { node instanceof PathInjectionSanitizer }
 }
