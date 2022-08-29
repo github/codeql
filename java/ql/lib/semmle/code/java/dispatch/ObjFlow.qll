@@ -15,7 +15,7 @@ private import semmle.code.java.dataflow.internal.DataFlowUtil
 private import semmle.code.java.dataflow.internal.DataFlowPrivate
 private import semmle.code.java.dataflow.internal.ContainerFlow
 private import semmle.code.java.dataflow.InstanceAccess
-private import semmle.code.java.dispatch.Unification
+private import semmle.code.java.dispatch.internal.Unification
 
 /**
  * Gets a viable dispatch target for `ma`. This is the input dispatch relation.

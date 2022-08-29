@@ -9,7 +9,7 @@ private import DispatchFlow as DispatchFlow
 private import ObjFlow as ObjFlow
 private import semmle.code.java.dataflow.internal.BaseSSA
 private import semmle.code.java.controlflow.Guards
-private import semmle.code.java.dispatch.Unification
+private import semmle.code.java.dispatch.internal.Unification
 
 /**
  * A conservative analysis that returns a single method - if we can establish

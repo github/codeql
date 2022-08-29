@@ -4,7 +4,7 @@ private import DataFlowUtil
 private import semmle.code.java.dataflow.InstanceAccess
 private import semmle.code.java.dataflow.FlowSummary
 private import semmle.code.java.dispatch.VirtualDispatch as VirtualDispatch
-private import semmle.code.java.dispatch.Unification
+private import semmle.code.java.dispatch.internal.Unification
 
 private module DispatchImpl {
   /** Gets a viable implementation of the target of the given `Call`. */
