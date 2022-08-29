@@ -5,7 +5,7 @@
  * @kind path-problem
  * @problem.severity error
  * @precision medium
- * @id py/timing-attack-sensitive-info
+ * @id py/possible-timing-attack-sensitive-info
  * @tags security
  *       external/cwe/cwe-208
  */
