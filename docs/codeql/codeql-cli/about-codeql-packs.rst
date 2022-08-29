@@ -176,7 +176,7 @@ The following properties are supported in ``qlpack.yml`` files.
 About ``codeql-pack.lock.yml`` files
 ------------------------------------
 
-``codeql-pack.lock.yml`` files store the versions of the resolved transitive dependencies of a CodeQL pack. This file is created by the ``codeql pack install`` command if it does not already exist and should be added to your version control system. The ``dependencies`` section of the ``qlpack.yml`` file contains version ranges that are compatible with the pack. The ``codeql-pack.lock.yml`` file locks the versions to precise dependencies. This ensures that anyone running ``codeql pack install`` on this the pack will always retrieve the same versions of dependencies even if newer compatible versions exist.
+``codeql-pack.lock.yml`` files store the versions of the resolved transitive dependencies of a CodeQL pack. This file is created by the ``codeql pack install`` command if it does not already exist and should be added to your version control system. The ``dependencies`` section of the ``qlpack.yml`` file contains version ranges that are compatible with the pack. The ``codeql-pack.lock.yml`` file locks the versions to precise dependencies. This ensures that running ``codeql pack install`` on this the pack will always retrieve the same versions of dependencies even if newer compatible versions exist.
 
 For example, if a ``qlpack.yml`` file contains the following dependencies:
 
@@ -199,10 +199,13 @@ The ``codeql-pack.lock.yml`` file will contain something like the following:
      my-user/transitive-dependency:
        version: 1.2.4
 
+
 ..
   TODO: Add a link to the CodeQL CLI documentation for query resolution, specifically in regards to resolving from source
 
 The ``codeql/cpp-all`` dependency is locked to version 0.1.4. The ``my-user/my-lib`` dependency is locked to version 0.2.4. The ``my-user/transitive-dependency``, which is a transitive dependency and is not specified in the ``qlpack.yml`` file, is locked to version 1.2.4. The ``other-dependency/from-source`` is absent from the lock file since it is resolved from source. This dependency must be available in the same CodeQL workspace as the pack.
+
+In most cases, the ``codeql-pack.lock.yml`` file is only relevant for query packs since library packs are non-executable and usually do not need their transitive dependencies to be fixed. The exception to this is for library packs that contain tests. In this case, the ``codeql-pack.lock.yml`` file is used to ensure that the tests are always run with the same versions of dependencies to avoid spurious failures when there are mismatched dependencies.
 
 .. _custom-codeql-packs:
 
