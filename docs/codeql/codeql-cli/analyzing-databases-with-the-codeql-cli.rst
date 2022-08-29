@@ -84,10 +84,13 @@ You can also specify:
 
    Upgrading databases
 
-   For databases that were creaated by CodeQL CLI v2.3.3 or earlier, you will need
+   For databases that were created by CodeQL CLI v2.3.3 or earlier, you will need
    to explicitly upgrade the database before you can run an analysis with a newer
    version of the CodeQL CLI. If this step is necessary, then you will see a message telling you
    that your database needs to be upgraded when you run ``database analyze``.
+
+   For databases that were created by CodeQL CLI v2.3.4 or later, the CLI will implicitly run any
+   required upgrades. Explicitly running the upgrade command is not necessary.
 
    CodeQL databases are upgraded by running the following command::
 
