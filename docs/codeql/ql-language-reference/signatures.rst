@@ -13,7 +13,7 @@ There are three categories of signatures: **predicate signatures**, **type signa
 Predicate signatures
 ====================
 
-Predicate signatures declare module parameters that are to be substituted with predicates at module instantiation.
+Predicate signatures declare module parameters that will be substituted with predicates when the module is instantiated.
 
 The substitution of predicate signatures relies on structural typing, i.e. predicates do not have to be explicitly
 defined as implementing a predicate signature - they just have to match the return and argument types.
