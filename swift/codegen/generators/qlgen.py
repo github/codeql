@@ -29,11 +29,11 @@ class ModifiedStubMarkedAsGeneratedError(Error):
     pass
 
 
-def get_ql_property(cls: schema.Class, prop: schema.Property) -> ql.Property:
+def get_ql_property(cls: schema.Class, prop: schema.Property, prev_child: str = "") -> ql.Property:
     args = dict(
         type=prop.type if not prop.is_predicate else "predicate",
         qltest_skip="qltest_skip" in prop.pragmas,
-        is_child=prop.is_child,
+        prev_child=prev_child if prop.is_child else None,
         is_optional=prop.is_optional,
         is_predicate=prop.is_predicate,
     )
@@ -69,11 +69,18 @@ def get_ql_property(cls: schema.Class, prop: schema.Property) -> ql.Property:
 
 def get_ql_class(cls: schema.Class, lookup: typing.Dict[str, schema.Class]):
     pragmas = {k: True for k in cls.pragmas if k.startswith("ql")}
+    prev_child = ""
+    properties = []
+    for p in cls.properties:
+        prop = get_ql_property(cls, p, prev_child)
+        if prop.is_child:
+            prev_child = prop.singular
+        properties.append(prop)
     return ql.Class(
         name=cls.name,
         bases=cls.bases,
         final=not cls.derived,
-        properties=[get_ql_property(cls, p) for p in cls.properties],
+        properties=properties,
         dir=cls.dir,
         ipa=bool(cls.ipa),
         **pragmas,
@@ -230,7 +237,8 @@ def generate(opts, renderer):
     imports = {}
 
     inheritance_graph = {name: cls.bases for name, cls in data.classes.items()}
-    db_classes = [classes[name] for name in toposort_flatten(inheritance_graph) if not classes[name].ipa]
+    toposorted_names = toposort_flatten(inheritance_graph)
+    db_classes = [classes[name] for name in toposorted_names if not classes[name].ipa]
     renderer.render(ql.DbClasses(db_classes), out / "Raw.qll")
 
     classes_by_dir_and_name = sorted(classes.values(), key=lambda cls: (cls.dir, cls.name))
@@ -251,7 +259,8 @@ def generate(opts, renderer):
     include_file = stub_out.with_suffix(".qll")
     renderer.render(ql.ImportList(list(imports.values())), include_file)
 
-    renderer.render(ql.GetParentImplementation(classes_by_dir_and_name), out / 'GetImmediateParent.qll')
+    toposorted_classes = [classes[name] for name in toposorted_names]
+    renderer.render(ql.GetParentImplementation(toposorted_classes), out / 'ParentChild.qll')
 
     for c in data.classes.values():
         if _should_skip_qltest(c, data.classes):

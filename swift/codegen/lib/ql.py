@@ -35,7 +35,7 @@ class Property:
     first: bool = False
     is_optional: bool = False
     is_predicate: bool = False
-    is_child: bool = False
+    prev_child: Optional[str] = None
     qltest_skip: bool = False
 
     def __post_init__(self):
@@ -64,6 +64,10 @@ class Property:
     @property
     def is_single(self):
         return not (self.is_optional or self.is_repeated or self.is_predicate)
+
+    @property
+    def is_child(self):
+        return self.prev_child is not None
 
 
 @dataclass
@@ -97,6 +101,10 @@ class Class:
     @property
     def db_id(self):
         return "@" + inflection.underscore(self.name)
+
+    @property
+    def has_children(self):
+        return any(p.is_child for p in self.properties)
 
 
 @dataclass

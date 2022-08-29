@@ -29,7 +29,7 @@ def ql_test_output_path(): return paths.swift_dir / "ql/test/path"
 def import_file(): return stub_path().with_suffix(".qll")
 
 
-def children_file(): return ql_output_path() / "GetImmediateParent.qll"
+def children_file(): return ql_output_path() / "ParentChild.qll"
 
 
 stub_import_prefix = "stub.path."
@@ -207,6 +207,42 @@ def test_single_property(generate_classes):
     }
 
 
+def test_children(generate_classes):
+    assert generate_classes([
+        schema.Class("MyObject", properties=[
+            schema.SingleProperty("a", "int"),
+            schema.SingleProperty("child1", "int", is_child=True),
+            schema.RepeatedProperty("b", "int"),
+            schema.RepeatedProperty("child2", "int", is_child=True),
+            schema.OptionalProperty("c", "int"),
+            schema.OptionalProperty("child3", "int", is_child=True),
+            schema.RepeatedOptionalProperty("d", "int"),
+            schema.RepeatedOptionalProperty("child4", "int", is_child=True),
+        ]),
+    ]) == {
+        "MyObject.qll": (ql.Stub(name="MyObject", base_import=gen_import_prefix + "MyObject"),
+                         ql.Class(name="MyObject", final=True,
+                                  properties=[
+                                      ql.Property(singular="A", type="int", tablename="my_objects",
+                                                  tableparams=["this", "result", "_"]),
+                                      ql.Property(singular="Child1", type="int", tablename="my_objects",
+                                                  tableparams=["this", "_", "result"], prev_child=""),
+                                      ql.Property(singular="B", plural="Bs", type="int", tablename="my_object_bs",
+                                                  tableparams=["this", "index", "result"]),
+                                      ql.Property(singular="Child2", plural="Child2s", type="int", tablename="my_object_child2s",
+                                                  tableparams=["this", "index", "result"], prev_child="Child1"),
+                                      ql.Property(singular="C", type="int", tablename="my_object_cs",
+                                                  tableparams=["this", "result"], is_optional=True),
+                                      ql.Property(singular="Child3", type="int", tablename="my_object_child3s",
+                                                  tableparams=["this", "result"], is_optional=True, prev_child="Child2"),
+                                      ql.Property(singular="D", plural="Ds", type="int", tablename="my_object_ds",
+                                                  tableparams=["this", "index", "result"], is_optional=True),
+                                      ql.Property(singular="Child4", plural="Child4s", type="int", tablename="my_object_child4s",
+                                                  tableparams=["this", "index", "result"], is_optional=True, prev_child="Child3"),
+                                  ])),
+    }
+
+
 def test_single_properties(generate_classes):
     assert generate_classes([
         schema.Class("MyObject", properties=[
@@ -228,8 +264,8 @@ def test_single_properties(generate_classes):
     }
 
 
-@pytest.mark.parametrize("is_child", [False, True])
-def test_optional_property(generate_classes, is_child):
+@pytest.mark.parametrize("is_child,prev_child", [(False, None), (True, "")])
+def test_optional_property(generate_classes, is_child, prev_child):
     assert generate_classes([
         schema.Class("MyObject", properties=[
             schema.OptionalProperty("foo", "bar", is_child=is_child)]),
@@ -238,13 +274,13 @@ def test_optional_property(generate_classes, is_child):
                          ql.Class(name="MyObject", final=True, properties=[
                              ql.Property(singular="Foo", type="bar", tablename="my_object_foos",
                                          tableparams=["this", "result"],
-                                         is_optional=True, is_child=is_child),
+                                         is_optional=True, prev_child=prev_child),
                          ])),
     }
 
 
-@pytest.mark.parametrize("is_child", [False, True])
-def test_repeated_property(generate_classes, is_child):
+@pytest.mark.parametrize("is_child,prev_child", [(False, None), (True, "")])
+def test_repeated_property(generate_classes, is_child, prev_child):
     assert generate_classes([
         schema.Class("MyObject", properties=[
             schema.RepeatedProperty("foo", "bar", is_child=is_child)]),
@@ -252,13 +288,13 @@ def test_repeated_property(generate_classes, is_child):
         "MyObject.qll": (ql.Stub(name="MyObject", base_import=gen_import_prefix + "MyObject"),
                          ql.Class(name="MyObject", final=True, properties=[
                              ql.Property(singular="Foo", plural="Foos", type="bar", tablename="my_object_foos",
-                                         tableparams=["this", "index", "result"], is_child=is_child),
+                                         tableparams=["this", "index", "result"], prev_child=prev_child),
                          ])),
     }
 
 
-@pytest.mark.parametrize("is_child", [False, True])
-def test_repeated_optional_property(generate_classes, is_child):
+@pytest.mark.parametrize("is_child,prev_child", [(False, None), (True, "")])
+def test_repeated_optional_property(generate_classes, is_child, prev_child):
     assert generate_classes([
         schema.Class("MyObject", properties=[
             schema.RepeatedOptionalProperty("foo", "bar", is_child=is_child)]),
@@ -267,7 +303,7 @@ def test_repeated_optional_property(generate_classes, is_child):
                          ql.Class(name="MyObject", final=True, properties=[
                              ql.Property(singular="Foo", plural="Foos", type="bar", tablename="my_object_foos",
                                          tableparams=["this", "index", "result"], is_optional=True,
-                                         is_child=is_child),
+                                         prev_child=prev_child),
                          ])),
     }
 
@@ -286,8 +322,8 @@ def test_predicate_property(generate_classes):
     }
 
 
-@pytest.mark.parametrize("is_child", [False, True])
-def test_single_class_property(generate_classes, is_child):
+@pytest.mark.parametrize("is_child,prev_child", [(False, None), (True, "")])
+def test_single_class_property(generate_classes, is_child, prev_child):
     assert generate_classes([
         schema.Class("MyObject", properties=[
             schema.SingleProperty("foo", "Bar", is_child=is_child)]),
@@ -299,7 +335,7 @@ def test_single_class_property(generate_classes, is_child):
                 ql.Property(singular="Foo", type="Bar", tablename="my_objects",
                             tableparams=[
                                 "this", "result"],
-                            is_child=is_child),
+                            prev_child=prev_child),
             ],
         )),
         "Bar.qll": (ql.Stub(name="Bar", base_import=gen_import_prefix + "Bar"),
