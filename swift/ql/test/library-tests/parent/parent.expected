@@ -623,6 +623,7 @@
 | expressions.swift:77:21:77:21 | init | ConstructorDecl | expressions.swift:77:21:77:21 | self | ParamDecl |
 | expressions.swift:77:21:77:21 | init | ConstructorDecl | file://:0:0:0:0 | x | ParamDecl |
 | expressions.swift:77:21:77:21 | init | ConstructorDecl | file://:0:0:0:0 | { ... } | BraceStmt |
+| expressions.swift:78:3:80:3 | init | ConstructorDecl | expressions.swift:78:3:78:3 | self | ParamDecl |
 | expressions.swift:78:3:80:3 | init | ConstructorDecl | expressions.swift:78:10:80:3 | { ... } | BraceStmt |
 | expressions.swift:78:10:80:3 | { ... } | BraceStmt | expressions.swift:79:5:79:21 | self = ... | RebindSelfInConstructorExpr |
 | expressions.swift:78:10:80:3 | { ... } | BraceStmt | expressions.swift:80:3:80:3 | return | ReturnStmt |

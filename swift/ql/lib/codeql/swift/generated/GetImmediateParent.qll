@@ -13,9 +13,9 @@ Element getAnImmediateChild(Element e) {
   // * none() simplifies generation, as we can append `or ...` without a special case for the first item
   none()
   or
-  result = e.(Callable).getImmediateParam(_)
-  or
   result = e.(Callable).getImmediateSelfParam()
+  or
+  result = e.(Callable).getImmediateParam(_)
   or
   result = e.(Callable).getImmediateBody()
   or
@@ -122,8 +122,6 @@ Element getAnImmediateChild(Element e) {
   result = e.(OptionalEvaluationExpr).getImmediateSubExpr()
   or
   result = e.(RebindSelfInConstructorExpr).getImmediateSubExpr()
-  or
-  result = e.(RebindSelfInConstructorExpr).getImmediateSelf()
   or
   result = e.(SelfApplyExpr).getImmediateBase()
   or

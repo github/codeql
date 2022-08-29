@@ -2098,8 +2098,8 @@ private module StdlibPrivate {
      *
      * See https://docs.python.org/3.10/library/wsgiref.html#wsgiref.simple_server.WSGIRequestHandler.get_environ
      */
-    class WSGIEnvirontParameter extends RemoteFlowSource::Range, DataFlow::ParameterNode {
-      WSGIEnvirontParameter() {
+    class WsgiEnvirontParameter extends RemoteFlowSource::Range, DataFlow::ParameterNode {
+      WsgiEnvirontParameter() {
         exists(WsgirefSimpleServerApplication func |
           if func.isMethod()
           then this.getParameter() = func.getArg(1)
@@ -2111,6 +2111,9 @@ private module StdlibPrivate {
         result = "Stdlib: wsgiref.simple_server application: WSGI environment parameter"
       }
     }
+
+    /** DEPRECATED: Alias for WsgiEnvirontParameter */
+    deprecated class WSGIEnvirontParameter = WsgiEnvirontParameter;
 
     /**
      * Gets a reference to the parameter of a `WsgirefSimpleServerApplication` that

@@ -441,7 +441,7 @@ getExprType
 | tst.ts:320:19:320:29 | toLowerCase | () => string |
 | tst.ts:325:7:325:14 | ErrorMap | { new (entries?: readonly (readonly [string, Er... |
 | tst.ts:325:18:325:20 | Map | MapConstructor |
-| tst.ts:325:18:325:35 | Map<string, Error> | any |
+| tst.ts:325:18:325:35 | Map<string, Error> | { new (entries?: readonly (readonly [string, Er... |
 | tst.ts:327:7:327:14 | errorMap | Map<string, Error> |
 | tst.ts:327:18:327:31 | new ErrorMap() | Map<string, Error> |
 | tst.ts:327:22:327:29 | ErrorMap | { new (entries?: readonly (readonly [string, Er... |
@@ -502,6 +502,23 @@ getExprType
 | tst.ts:374:13:374:26 | B.resolvedFile | () => "tstSuffixB.ios.ts" |
 | tst.ts:374:13:374:28 | B.resolvedFile() | "tstSuffixB.ios.ts" |
 | tst.ts:374:15:374:26 | resolvedFile | () => "tstSuffixB.ios.ts" |
+| tst.ts:379:8:379:11 | TS48 | typeof TS48 in library-tests/TypeScript/Types/tst.ts |
+| tst.ts:383:22:383:35 | chooseRandomly | <T>(x: T, y: T) => T |
+| tst.ts:383:40:383:40 | x | T |
+| tst.ts:383:46:383:46 | y | T |
+| tst.ts:385:10:385:10 | a | number |
+| tst.ts:385:13:385:13 | b | boolean |
+| tst.ts:385:16:385:16 | c | string |
+| tst.ts:385:21:385:34 | chooseRandomly | <T>(x: T, y: T) => T |
+| tst.ts:385:21:385:73 | chooseR ... bye!"]) | [number, boolean, string] |
+| tst.ts:385:36:385:52 | [42, true, "hi!"] | [number, boolean, string] |
+| tst.ts:385:37:385:38 | 42 | 42 |
+| tst.ts:385:41:385:44 | true | true |
+| tst.ts:385:47:385:51 | "hi!" | "hi!" |
+| tst.ts:385:55:385:72 | [0, false, "bye!"] | [number, boolean, string] |
+| tst.ts:385:56:385:56 | 0 | 0 |
+| tst.ts:385:59:385:63 | false | false |
+| tst.ts:385:66:385:71 | "bye!" | "bye!" |
 | tstModuleCJS.cts:1:17:1:28 | tstModuleCJS | () => "a" \| "b" |
 | tstModuleCJS.cts:2:12:2:15 | Math | Math |
 | tstModuleCJS.cts:2:12:2:22 | Math.random | () => number |
@@ -606,6 +623,7 @@ getTypeDefinitionType
 | tst.ts:331:1:334:14 | type Fi ...  never; | FirstString<T> |
 | tst.ts:336:1:336:51 | type F  ... lean]>; | "a" \| "b" |
 | tst.ts:342:1:345:1 | interfa ... void;\\n} | State<T> |
+| tst.ts:381:5:381:73 | type So ...  never; | 100 |
 | type_alias.ts:1:1:1:17 | type B = boolean; | boolean |
 | type_alias.ts:5:1:5:50 | type Va ... ay<T>>; | ValueOrArray<T> |
 | type_alias.ts:9:1:15:13 | type Js ... Json[]; | Json |
@@ -861,6 +879,16 @@ getTypeExprType
 | tst.ts:325:30:325:34 | Error | Error |
 | tst.ts:331:6:331:16 | FirstString | FirstString<T> |
 | tst.ts:331:18:331:18 | T | T |
+| tst.ts:332:3:332:3 | T | T |
+| tst.ts:332:13:332:50 | [infer  ... nown[]] | [S, ...unknown[]] |
+| tst.ts:332:14:332:35 | infer S ...  string | S |
+| tst.ts:332:20:332:20 | S | S |
+| tst.ts:332:30:332:35 | string | string |
+| tst.ts:332:38:332:49 | ...unknown[] | unknown |
+| tst.ts:332:41:332:47 | unknown | unknown |
+| tst.ts:332:41:332:49 | unknown[] | unknown[] |
+| tst.ts:333:9:333:9 | S | S |
+| tst.ts:334:9:334:13 | never | never |
 | tst.ts:336:6:336:6 | F | "a" \| "b" |
 | tst.ts:336:10:336:20 | FirstString | FirstString<T> |
 | tst.ts:336:10:336:50 | FirstSt ... olean]> | "a" \| "b" |
@@ -881,6 +909,12 @@ getTypeExprType
 | tst.ts:347:14:347:18 | State | State<T> |
 | tst.ts:347:14:347:26 | State<number> | State<number> |
 | tst.ts:347:20:347:25 | number | number |
+| tst.ts:381:10:381:16 | SomeNum | 100 |
+| tst.ts:381:20:381:72 | "100" e ... : never | 100 |
+| tst.ts:383:37:383:37 | T | T |
+| tst.ts:383:43:383:43 | T | T |
+| tst.ts:383:49:383:49 | T | T |
+| tst.ts:383:53:383:53 | T | T |
 | tstModuleCJS.cts:1:33:1:35 | 'a' | "a" |
 | tstModuleCJS.cts:1:33:1:41 | 'a' \| 'b' | "a" \| "b" |
 | tstModuleCJS.cts:1:39:1:41 | 'b' | "b" |
@@ -1027,6 +1061,15 @@ tupleTypes
 | tst.ts:42:25:42:30 | [1, 2] | readonly [1, 2] | 1 | 2 | 2 | no-rest |
 | tst.ts:42:25:42:39 | [1, 2] as const | readonly [1, 2] | 0 | 1 | 2 | no-rest |
 | tst.ts:42:25:42:39 | [1, 2] as const | readonly [1, 2] | 1 | 2 | 2 | no-rest |
+| tst.ts:385:21:385:73 | chooseR ... bye!"]) | [number, boolean, string] | 0 | number | 3 | no-rest |
+| tst.ts:385:21:385:73 | chooseR ... bye!"]) | [number, boolean, string] | 1 | boolean | 3 | no-rest |
+| tst.ts:385:21:385:73 | chooseR ... bye!"]) | [number, boolean, string] | 2 | string | 3 | no-rest |
+| tst.ts:385:36:385:52 | [42, true, "hi!"] | [number, boolean, string] | 0 | number | 3 | no-rest |
+| tst.ts:385:36:385:52 | [42, true, "hi!"] | [number, boolean, string] | 1 | boolean | 3 | no-rest |
+| tst.ts:385:36:385:52 | [42, true, "hi!"] | [number, boolean, string] | 2 | string | 3 | no-rest |
+| tst.ts:385:55:385:72 | [0, false, "bye!"] | [number, boolean, string] | 0 | number | 3 | no-rest |
+| tst.ts:385:55:385:72 | [0, false, "bye!"] | [number, boolean, string] | 1 | boolean | 3 | no-rest |
+| tst.ts:385:55:385:72 | [0, false, "bye!"] | [number, boolean, string] | 2 | string | 3 | no-rest |
 unknownType
 | tst.ts:40:5:40:15 | unknownType | unknown |
 | tst.ts:47:8:47:8 | e | unknown |

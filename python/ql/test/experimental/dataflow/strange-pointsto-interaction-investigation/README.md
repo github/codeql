@@ -39,7 +39,7 @@ diff '--color=auto' -u -r test-1-normal/NormalDataflowTest.expected test-5-max-i
 --- test-1-normal/NormalDataflowTest.expected	2022-02-27 10:33:00.603882599 +0100
 +++ test-5-max-import-depth-3/NormalDataflowTest.expected	2022-02-28 10:10:08.930743800 +0100
 @@ -1,2 +1,3 @@
- missingAnnotationOnSINK
+ missingAnnotationOnSink
  failures
 +| ../src/urandom_problem.py:43:6:43:8 | ControlFlowNode for foo | Fixed missing result:flow="SOURCE, l:-15 -> foo" |
 diff '--color=auto' -u -r test-1-normal/options test-5-max-import-depth-3/options
@@ -88,7 +88,7 @@ diff '--color=auto' -u -r test-4-max-import-depth-100/NormalDataflowTest.expecte
 --- test-4-max-import-depth-100/NormalDataflowTest.expected     2022-02-28 10:10:02.206608379 +0100
 +++ test-6-max-import-depth-2/NormalDataflowTest.expected       2022-02-28 10:10:13.882716665 +0100
 @@ -1,3 +1,5 @@
- missingAnnotationOnSINK
+ missingAnnotationOnSink
 +| ../src/isfile_no_problem.py:43:6:43:8 | ../src/isfile_no_problem.py:43 | ERROR, you should add `# $ MISSING: flow` annotation | foo |
  failures
 +| ../src/isfile_no_problem.py:43:11:43:41 | Comment # $ flow="SOURCE, l:-15 -> foo" | Missing result:flow="SOURCE, l:-15 -> foo" |
