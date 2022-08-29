@@ -202,6 +202,12 @@ export function augmentAst(ast: AugmentedSourceFile, code: string, project: Proj
             }
         }
 
+        // This PR: https://github.com/microsoft/TypeScript/pull/50343/ changed how illegal decorators are stored, this hack reverts it.
+        // Those decorator uses are syntax errors, but people use them anyway.
+        if ((node as any).illegalDecorators) {
+            (node as any).decorators = (node as any).illegalDecorators;
+        }
+
         if (typeChecker != null && insideConditionalTypes === 0) {
             if (isTypedNode(node)) {
                 let contextualType = isContextuallyTypedNode(node)
