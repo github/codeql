@@ -166,17 +166,17 @@ nominal_type_decls(  //dir=decl
 | @abstract_function_decl
 ;
 
+#keyset[id]
+callable_self_params(
+  int id: @callable ref,
+  int self_param: @param_decl ref
+);
+
 #keyset[id, index]
 callable_params(
   int id: @callable ref,
   int index: int ref,
   int param: @param_decl ref
-);
-
-#keyset[id]
-callable_self_params(
-  int id: @callable ref,
-  int self_param: @param_decl ref
 );
 
 #keyset[id]

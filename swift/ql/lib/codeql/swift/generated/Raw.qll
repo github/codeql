@@ -6,9 +6,9 @@ module Raw {
   }
 
   class Callable extends @callable, Element {
-    ParamDecl getParam(int index) { callable_params(this, index, result) }
-
     ParamDecl getSelfParam() { callable_self_params(this, result) }
+
+    ParamDecl getParam(int index) { callable_params(this, index, result) }
 
     BraceStmt getBody() { callable_bodies(this, result) }
   }

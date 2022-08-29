@@ -80,8 +80,8 @@ AstNode:
 
 Callable:
   _children:
-    params: ParamDecl*
     self_param: ParamDecl?
+    params: ParamDecl*
     body: BraceStmt?
 
 ConditionElement:
@@ -545,7 +545,7 @@ RebindSelfInConstructorExpr:
   _extends: Expr
   _children:
     sub_expr: Expr
-    self: VarDecl
+  self: VarDecl
 
 SequenceExpr:
   _extends: Expr
