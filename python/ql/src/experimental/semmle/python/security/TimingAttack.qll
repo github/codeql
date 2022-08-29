@@ -95,9 +95,9 @@ class CredentialExpr extends Expr {
  *
  * For example: `request.headers.get("X-Auth-Token")`.
  */
-abstract class ClientSuppliedsecret extends DataFlow::CallCfgNode { }
+abstract class ClientSuppliedSecret extends DataFlow::CallCfgNode { }
 
-private class FlaskClientSuppliedsecret extends ClientSuppliedsecret {
+private class FlaskClientSuppliedSecret extends ClientSuppliedSecret {
   FlaskClientSuppliedsecret() {
     exists(RemoteFlowSource rfs, DataFlow::AttrRead get |
       rfs.getSourceType() = "flask.request" and this.getFunction() = get
@@ -116,7 +116,7 @@ private class FlaskClientSuppliedsecret extends ClientSuppliedsecret {
   }
 }
 
-private class DjangoClientSuppliedsecret extends ClientSuppliedsecret {
+private class DjangoClientSuppliedSecret extends ClientSuppliedSecret {
   DjangoClientSuppliedsecret() {
     exists(RemoteFlowSource rfs, DataFlow::AttrRead get |
       rfs.getSourceType() = "django.http.request.HttpRequest" and this.getFunction() = get
@@ -135,7 +135,7 @@ private class DjangoClientSuppliedsecret extends ClientSuppliedsecret {
   }
 }
 
-private class TornadoClientSuppliedsecret extends ClientSuppliedsecret {
+private class TornadoClientSuppliedSecret extends ClientSuppliedSecret {
   TornadoClientSuppliedsecret() {
     exists(RemoteFlowSource rfs, DataFlow::AttrRead get |
       rfs.getSourceType() = "tornado.web.RequestHandler" and this.getFunction() = get
@@ -157,7 +157,7 @@ private class TornadoClientSuppliedsecret extends ClientSuppliedsecret {
   }
 }
 
-private class WerkzeugClientSuppliedsecret extends ClientSuppliedsecret {
+private class WerkzeugClientSuppliedSecret extends ClientSuppliedSecret {
   WerkzeugClientSuppliedsecret() {
     exists(RemoteFlowSource rfs, DataFlow::AttrRead get |
       rfs.getSourceType() = "werkzeug.datastructures" and this.getFunction() = get
