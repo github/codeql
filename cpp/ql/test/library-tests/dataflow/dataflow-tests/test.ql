@@ -54,9 +54,9 @@ module IRTest {
    * S in `if (guarded(x)) S`.
    */
   // This is tested in `BarrierGuard.cpp`.
-  predicate testBarrierGuard(IRGuardCondition g, Instruction checked, boolean isTrue) {
+  predicate testBarrierGuard(IRGuardCondition g, Expr checked, boolean isTrue) {
     g.(CallInstruction).getStaticCallTarget().getName() = "guarded" and
-    checked = g.(CallInstruction).getPositionalArgument(0) and
+    checked = g.(CallInstruction).getPositionalArgument(0).getConvertedResultExpression() and
     isTrue = true
   }
 
@@ -89,7 +89,7 @@ module IRTest {
 
     override predicate isBarrier(DataFlow::Node barrier) {
       barrier.asExpr().(VariableAccess).getTarget().hasName("barrier") or
-      barrier = DataFlow::InstructionBarrierGuard<testBarrierGuard/3>::getABarrierNode()
+      barrier = DataFlow::BarrierGuard<testBarrierGuard/3>::getABarrierNode()
     }
   }
 

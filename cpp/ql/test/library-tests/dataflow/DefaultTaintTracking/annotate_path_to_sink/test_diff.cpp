@@ -91,39 +91,39 @@ class CRTPDoesNotCallSink : public CRTP<CRTPDoesNotCallSink> {
 int main(int argc, char *argv[]) {
     sink(argv[0]); // $ ast,ir-path,ir-sink
 
-    sink(reinterpret_cast<int>(argv)); // $ ast,ir-sink
+    sink(reinterpret_cast<int>(argv)); // $ ast,ir-path,ir-sink
 
-    calls_sink_with_argv(argv[1]); // $ ast,ir-path
+    calls_sink_with_argv(argv[1]); // $ ast ir-path ir-path=92:10 ir-path=94:10 ir-path=94:32 ir-path=96:26
 
     char*** p = &argv; // $ ast,ir-path
 
-    sink(*p[0]); // $ ast ir-sink=96:26 ir-sink=98:18
+    sink(*p[0]); // $ ast ir-sink=92:10 ir-sink=96:26 ir-sink=98:18 ir-sink=92:10 ir-sink=94:10 ir-sink=94:32
 
-    calls_sink_with_argv(*p[i]); // $ ir-path=96:26 ir-path=98:18 MISSING:ast
+    calls_sink_with_argv(*p[i]); // $ ir-path=92:10 ir-path=94:10 ir-path=94:32 ir-path=96:26 ir-path=98:18 MISSING:ast
 
-    sink(*(argv + 1)); // $ ast ir-path ir-sink
+    sink(*(argv + 1)); // $ ast ir-path ir-sink=92:10 ir-sink=94:10 ir-sink=94:32 ir-sink=96:26 ir-sink=98:18 ir-sink=104:12
 
     BaseWithPureVirtual* b = new DerivedCallsSink;
 
-    b->f(argv[1]); // $ ast,ir-path
+    b->f(argv[1]); // $ ast ir-path ir-path=92:10 ir-path=94:10 ir-path=94:32 ir-path=96:26 ir-path=98:18 ir-path=104:12 ir-path=108:10
 
     b = new DerivedDoesNotCallSink;
-    b->f(argv[0]); // $ SPURIOUS: ast
+    b->f(argv[0]); // $ ir-path SPURIOUS: ast
 
     BaseWithPureVirtual* b2 = new DerivesMultiple;
 
-    b2->f(argv[i]); // $ ast,ir-path
+    b2->f(argv[i]); // $ ast ir-path ir-path=92:10 ir-path=94:10 ir-path=94:32 ir-path=96:26 ir-path=98:18 ir-path=104:12 ir-path=108:10 ir-path=111:10 ir-path=115:11
 
     CRTP<CRTPDoesNotCallSink> crtp_not_call_sink;
-    crtp_not_call_sink.f(argv[0]); // clean
+    crtp_not_call_sink.f(argv[0]); // $ ir-path
 
     CRTP<CRTPCallsSink> crtp_calls_sink;
-    crtp_calls_sink.f(argv[0]); // $ ast,ir-path
+    crtp_calls_sink.f(argv[0]); // $ ast ir-path ir-path=92:10 ir-path=94:10 ir-path=94:32 ir-path=96:26 ir-path=98:18 ir-path=104:12 ir-path=108:10 ir-path=111:10 ir-path=115:11 ir-path=118:26 ir-path=121:23
 
     Derived1* calls_sink = new Derived3;
-    calls_sink->f(argv[1]); // $ ast,ir-path
+    calls_sink->f(argv[1]); // $ ast ir-path ir-path=92:10 ir-path=94:10 ir-path=94:32 ir-path=96:26 ir-path=98:18 ir-path=104:12 ir-path=108:10 ir-path=111:10 ir-path=115:11 ir-path=118:26 ir-path=121:23 ir-path=124:19
 
-    static_cast<Derived2*>(calls_sink)->f(argv[1]); // $ ast,ir-path
+    static_cast<Derived2*>(calls_sink)->f(argv[1]); // $ ast ir-path ir-path=92:10 ir-path=94:10 ir-path=94:32 ir-path=96:26 ir-path=98:18 ir-path=104:12 ir-path=108:10 ir-path=111:10 ir-path=115:11 ir-path=118:26 ir-path=121:23 ir-path=124:19 ir-path=126:43
 
-    dynamic_cast<Derived2*>(calls_sink)->f(argv[1]); // $ ast,ir-path
+    dynamic_cast<Derived2*>(calls_sink)->f(argv[1]); // $ ast ir-path ir-path=92:10 ir-path=94:10 ir-path=94:32 ir-path=96:26 ir-path=98:18 ir-path=104:12 ir-path=108:10 ir-path=111:10 ir-path=115:11 ir-path=118:26 ir-path=121:23 ir-path=124:19 ir-path=126:43 ir-path=128:44
 }
