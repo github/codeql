@@ -7,7 +7,7 @@
 Signatures
 ##########
 
-Parameterised modules use signatures as a type system for their parameters.
+Parameterized modules use signatures as a type system for their parameters.
 There are three categories of signatures: **predicate signatures**, **type signatures**, and **module signatures**.
 
 Predicate signatures
@@ -76,7 +76,7 @@ In detail, a type signature definition consists of:
 #. The keyword ``module``.
 #. The name of the module signature. This is an `identifier <https://codeql.github.com/docs/ql-language-reference/ql-language-specification/#identifiers>`_
    starting with a uppercase letter.
-#. Optionally, a list of parameters for :ref:`parameterised module signatures <parameterised-module-signatures>`.
+#. Optionally, a list of parameters for :ref:`parameterized module signatures <parameterized-module-signatures>`.
 #. The module signature body, consisting of type signatures and predicate signatures enclosed in braces.
    The ``signature`` keyword is omitted for these contained signatures.
 
@@ -95,12 +95,12 @@ For example:
       predicate restriction(T t) { t = A() }
     }
 
-.. _parameterised-module-signatures:
+.. _parameterized-module-signatures:
 
-Parameterised module signatures
+Parameterized module signatures
 -------------------------------
 
-Module signatures can themselves be paramterised in exactly the same way as parameterised modules.
+Module signatures can themselves be parameterized in exactly the same way as parameterized modules.
 This is particularly useful in combination with the dependent typing of module parameters.
 
 For example:

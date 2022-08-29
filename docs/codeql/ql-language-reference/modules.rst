@@ -133,14 +133,14 @@ defined :ref:`above <library-modules>`:
 This defines an explicit module named ``M``. The body of this module defines
 the class ``OneTwo``.
 
-.. _parameterised-modules:
+.. _parameterized-modules:
 
-Parameterised modules
+Parameterized modules
 =====================
 
-Parameterised modules are QL's approach to generic programming.
-Similar to explicit modules, parameterised modules are defined within other modules using the keywork ``module``.
-In addition to the module name, parameterised modules declare one or more parameters between the name and the module body.
+Parameterized modules are QL's approach to generic programming.
+Similar to explicit modules, parameterized modules are defined within other modules using the keywork ``module``.
+In addition to the module name, parameterized modules declare one or more parameters between the name and the module body.
 
 For example, consider the module ``ApplyFooThenBar``, which takes two predicate parameters and defines a new predicate
 that applies them one after the other:
@@ -154,9 +154,9 @@ that applies them one after the other:
       }
     }
 
-Parameterised modules cannot be directly referenced.
+Parameterized modules cannot be directly referenced.
 Instead, they are instantiated with arguments passed between ``<`` and ``>``.
-Instantiated parameterised modules can be used as a module expression, identical to explicit module references.
+Instantiated parameterized modules can be used as a module expression, identical to explicit module references.
 
 For example, we can instantiate ``ApplyFooThenBar`` with two identical arguments ``increment``, creating a module
 containing a predicate that adds 2:
@@ -170,7 +170,7 @@ containing a predicate that adds 2:
 
     select IncrementTwice::apply(40) // 42
 
-The parameters of a parameterised module are (meta-)typed with :ref:`signatures <signatures>`.
+The parameters of a parameterized module are (meta-)typed with :ref:`signatures <signatures>`.
 
 For example, in the previous two snippets, we relied on the predicate signature ``transformer``:
 
@@ -179,8 +179,8 @@ For example, in the previous two snippets, we relied on the predicate signature 
     bindingset[x]
     signature int transformer(int x);
 
-The instantiation of parameterised modules is applicative, meaning that repeated instantiation of a module using
-identical arguments results in the same object. This is particularly relevant for type definitions inside parameterised
+The instantiation of parameterized modules is applicative, meaning that repeated instantiation of a module using
+identical arguments results in the same object. This is particularly relevant for type definitions inside parameterized
 modules as :ref:`classes <classes>` or via :ref:`newtype <algebraic-datatypes>`.
 
 For example, the following generates an error for the second call to ``foo``, but not for the first:
@@ -211,10 +211,10 @@ between the two parameters:
 
     module Extends<TSig T> { signature class Type extends T; }
 
-    module ParameterisedModule<TSig T1, Extends<T1>::Type T2> { ... }
+    module ParameterizedModule<TSig T1, Extends<T1>::Type T2> { ... }
 
 Dependently typed parameters are particularly useful in combination with
-:ref:`parameterised module signatures <parameterised-module-signatures>`.
+:ref:`parameterized module signatures <parameterized-module-signatures>`.
 
 .. _module-bodies:
 
