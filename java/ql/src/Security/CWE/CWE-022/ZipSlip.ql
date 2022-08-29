@@ -71,54 +71,6 @@ predicate fileTaintStep(ExprNode n1, ExprNode n2) {
   )
 }
 
-predicate localFileValueStep(Node n1, Node n2) {
-  localFlowStep(n1, n2) or
-  filePathStep(n1, n2)
-}
-
-predicate localFileValueStepPlus(Node n1, Node n2) = fastTC(localFileValueStep/2)(n1, n2)
-
-/**
- * Holds if `check` is a guard that checks whether `var` is a file path with a
- * specific prefix when put in canonical form, thus guarding against ZipSlip.
- */
-predicate validateFilePath(SsaVariable var, Guard check) {
-  // `var.getCanonicalFile().toPath().startsWith(...)`,
-  // `var.getCanonicalPath().startsWith(...)`, or
-  // `var.toPath().normalize().startsWith(...)`
-  exists(MethodAccess normalize, MethodAccess startsWith, Node n1, Node n2, Node n3, Node n4 |
-    n1.asExpr() = var.getAUse() and
-    n2.asExpr() = normalize.getQualifier() and
-    (n1 = n2 or localFileValueStepPlus(n1, n2)) and
-    n3.asExpr() = normalize and
-    n4.asExpr() = startsWith.getQualifier() and
-    (n3 = n4 or localFileValueStepPlus(n3, n4)) and
-    check = startsWith and
-    startsWith.getMethod().hasName("startsWith") and
-    (
-      normalize.getMethod().hasName("getCanonicalFile") or
-      normalize.getMethod().hasName("getCanonicalPath") or
-      normalize.getMethod().hasName("normalize")
-    )
-  )
-}
-
-/**
- * Holds if `m` validates its `arg`th parameter.
- */
-predicate validationMethod(Method m, int arg) {
-  exists(Guard check, SsaImplicitInit var, ControlFlowNode exit, ControlFlowNode normexit |
-    validateFilePath(var, check) and
-    var.isParameterDefinition(m.getParameter(arg)) and
-    exit = m and
-    normexit.getANormalSuccessor() = exit and
-    1 = strictcount(ControlFlowNode n | n.getANormalSuccessor() = exit)
-  |
-    check.(ConditionNode).getATrueSuccessor() = exit or
-    check.controls(normexit.getBasicBlock(), true)
-  )
-}
-
 class ZipSlipConfiguration extends TaintTracking::Configuration {
   ZipSlipConfiguration() { this = "ZipSlip" }
 
@@ -132,23 +84,7 @@ class ZipSlipConfiguration extends TaintTracking::Configuration {
     filePathStep(n1, n2) or fileTaintStep(n1, n2)
   }
 
-  override predicate isSanitizer(Node node) {
-    // TODO: Merge this sanitizers into PathInjectionSanitizer
-    exists(Guard g, SsaVariable var, RValue varuse | validateFilePath(var, g) |
-      varuse = node.asExpr() and
-      varuse = var.getAUse() and
-      g.controls(varuse.getBasicBlock(), true)
-    )
-    or
-    exists(MethodAccess ma, int pos, RValue rv |
-      validationMethod(ma.getMethod(), pos) and
-      ma.getArgument(pos) = rv and
-      adjacentUseUseSameVar(rv, node.asExpr()) and
-      ma.getBasicBlock().bbDominates(node.asExpr().getBasicBlock())
-    )
-    or
-    node instanceof PathInjectionSanitizer
-  }
+  override predicate isSanitizer(Node node) { node instanceof PathInjectionSanitizer }
 }
 
 /**
