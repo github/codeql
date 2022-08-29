@@ -14,7 +14,7 @@ CodeQL command-line interface
 The CodeQL command-line interface (CLI) is primarily used to create databases for 
 security research. You can also query CodeQL databases directly from the command line 
 or using the Visual Studio Code extension.
-It can be downloaded from `GitHub releases <https://github.com/github/codeql-cli-binaries/releases>`__.
+The CodeQL CLI can be downloaded from `GitHub releases <https://github.com/github/codeql-cli-binaries/releases>`__.
 For more information, see ":ref:`CodeQL CLI <codeql-cli>`" and the `CLI changelog <https://github.com/github/codeql-cli-binaries/blob/main/CHANGELOG.md>`__.
 
 CodeQL packs
@@ -45,7 +45,7 @@ CodeQL bundle
 -----------------------------
 
 The CodeQL bundle consists of the CodeQL CLI together with the standard CodeQL query and library packs
-maintained by GitHub. It can be downloaded from `GitHub releases <https://github.com/github/codeql-action/releases>`__.
+maintained by GitHub. The bundle can be downloaded from `GitHub releases <https://github.com/github/codeql-action/releases>`__.
 Use this when running `code scanning with CodeQL <https://docs.github.com/en/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/about-code-scanning-with-codeql>`__ on GitHub Actions or in another CI system.
 
 CodeQL for Visual Studio Code
