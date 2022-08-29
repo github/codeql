@@ -44,7 +44,7 @@ find query suite definitions.
 
 The contents of the CodeQL pack (queries or libraries used in CodeQL analysis) is included in the same directory as ``qlpack.yml``, or its subdirectories.
 
-The location of ``qlpack.yml`` defines the library path for the content of the CodeQL pack. That is, for all ``.ql`` and ``.qll`` files in the pack, CodeQL will resolve all import statements relative to the ``qlpack.yml`` at the pack's root.
+The directory containing the ``qlpack.yml`` file serves as the root directory for the content of the CodeQL pack. That is, for all ``.ql`` and ``.qll`` files in the pack, CodeQL will resolve all import statements relative to the directory containing ``qlpack.yml`` at the pack's root.
 
 .. _codeqlpack-yml-properties:
 
@@ -119,14 +119,14 @@ The following properties are supported in ``qlpack.yml`` files.
 
         extractor: javascript
 
-     - All test packs
-     - The CodeQL language extractor to use when the CLI creates a database in the pack. For more information about testing queries, see ":doc:`Testing custom queries <testing-custom-queries>`."
+     - All packs containing CodeQL tests
+     - The CodeQL language extractor to use when running the CodeQL tests in the pack. For more information about testing queries, see ":doc:`Testing custom queries <testing-custom-queries>`."
    * - ``tests``
      - .. code-block:: yaml
 
         tests: .
 
-     - Optional for test packs. Ignored for non-test packs.
+     - Optional for packs containing CodeQL tests. Ignored for packs without tests.
      - The path to a directory within the pack that contains tests, defined relative to the pack directory. Use ``.`` to specify the whole pack. Any queries in this directory are run as tests when ``test run`` is run with the ``--strict-test-discovery`` option. These queries are ignored by query suite definitions that use ``queries`` or ``qlpack`` instructions to ask for all queries in a particular pack. If this property is missing, then ``.`` is assumed.
    * - ``dbscheme``
      - .. code-block:: yaml
@@ -176,7 +176,7 @@ The following properties are supported in ``qlpack.yml`` files.
 About ``codeql-pack.lock.yml`` files
 ------------------------------------
 
-``codeql-pack.lock.yml`` files store the versions of the resolved transitive dependencies of a CodeQL pack. This file is created by the ``codeql pack install`` if it does not already exist and should be added to your version control system. The ``dependencies`` section of the ``qlpack.yml`` file contains version ranges that are compatible with the pack. The ``codeql-pack.lock.yml`` file locks the versions to precise dependencies. This ensures that anyone running ``codeql pack install`` on this the pack will always retrieve the same versions of dependencies even if newer compatible versions exist. Only query packs can have ``codeql-pack.lock.yml`` files. This is because library packs are not compiled independently of query packs. Without being compiled, there is no need to specify precise versions of their dependencies.
+``codeql-pack.lock.yml`` files store the versions of the resolved transitive dependencies of a CodeQL pack. This file is created by the ``codeql pack install`` command if it does not already exist and should be added to your version control system. The ``dependencies`` section of the ``qlpack.yml`` file contains version ranges that are compatible with the pack. The ``codeql-pack.lock.yml`` file locks the versions to precise dependencies. This ensures that anyone running ``codeql pack install`` on this the pack will always retrieve the same versions of dependencies even if newer compatible versions exist.
 
 For example, if a ``qlpack.yml`` file contains the following dependencies:
 
