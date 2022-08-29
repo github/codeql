@@ -42,10 +42,8 @@ predicate hasUpperBoundsCheck(Variable var) {
   )
 }
 
-predicate nodeIsBarrierEqualityCandidate(DataFlow::Node node, Operand access, Variable checkedVar) {
-  exists(VariableAccess va |
-    va = node.asExpr() and
-    va.getTarget() = checkedVar and
+predicate nodeIsBarrierEqualityCandidate(VariableAccess va) {
+  exists(Operand access |
     access.getDef().getAst() = va and
     any(IRGuardCondition guard).ensuresEq(access, _, _, access.getDef().getBlock(), true)
   )
@@ -61,7 +59,13 @@ class TaintedAllocationSizeConfiguration extends TaintTracking::Configuration {
   override predicate isSink(DataFlow::Node sink) { allocSink(_, sink) }
 
   override predicate isSanitizer(DataFlow::Node node) {
-    exists(Expr e | e = node.asExpr() |
+    exists(Expr e |
+      e =
+        [
+          node.asExpr(), node.asIndirectExpr(),
+          node.asOperand().getDef().getUnconvertedResultExpression()
+        ]
+    |
       // There can be two separate reasons for `convertedExprMightOverflow` not holding:
       // 1. `e` really cannot overflow.
       // 2. `e` isn't analyzable.
@@ -78,14 +82,12 @@ class TaintedAllocationSizeConfiguration extends TaintTracking::Configuration {
       // result is well-defined (i.e., the two pointers point to the same object), and thus the result
       // will likely be small.
       e = any(PointerDiffExpr diff).getAnOperand()
-    )
-    or
-    exists(Variable checkedVar | checkedVar = node.asExpr().(VariableAccess).getTarget() |
-      hasUpperBoundsCheck(checkedVar)
-    )
-    or
-    exists(Variable checkedVar, Operand access |
-      nodeIsBarrierEqualityCandidate(node, access, checkedVar)
+      or
+      exists(Variable checkedVar | checkedVar = e.(VariableAccess).getTarget() |
+        hasUpperBoundsCheck(checkedVar)
+      )
+      or
+      nodeIsBarrierEqualityCandidate(e)
     )
   }
 }
