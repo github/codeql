@@ -55,7 +55,8 @@ private predicate isJdkInternal(J::CompilationUnit cu) {
 private predicate isRelevantForModels(J::Callable api) {
   not isInTestFile(api.getCompilationUnit().getFile()) and
   not isJdkInternal(api.getCompilationUnit()) and
-  not api instanceof J::MainMethod
+  not api instanceof J::MainMethod and
+  not api instanceof J::StaticInitializer
 }
 
 /**
