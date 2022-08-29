@@ -42,7 +42,7 @@ Type signatures
 Type signatures declare module parameters that are to be substituted with types at module instantiation.
 Type signature are the simplest category of signatures, as the only thing they allow is the specification of supertypes.
 
-The substitution of type signatures relies on structural typing, i.e. types do not have to be explicitly defined as
+The substitution of type signatures relies on structural typing. That is, types do not have to be explicitly defined as
 implementing a type signature - they just need to have the specified (transitive) supertypes.
 
 In detail, a type signature definition consists of:
