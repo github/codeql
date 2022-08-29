@@ -68,7 +68,7 @@ Module signatures specify a collection of types and predicates that a module nee
 matching given signatures.
 
 Unlike type signatures and predicate signatures, the substitution of type signatures relies on nominal typing.
-i.e. modules need to declare at their definition the module signatures they implement.
+That is, the definition of a module must declare the module signatures it implements.
 
 In detail, a type signature definition consists of:
 
