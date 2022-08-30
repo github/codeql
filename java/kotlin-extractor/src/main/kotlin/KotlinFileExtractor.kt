@@ -172,6 +172,17 @@ open class KotlinFileExtractor(
             is IrEnumEntry -> return getEnumEntryLabel(element)
             is IrTypeAlias -> return getTypeAliasLabel(element)
 
+            is IrAnonymousInitializer -> {
+                val parentClass = element.parentClassOrNull
+                if (parentClass == null) {
+                    logger.errorElement("Parent of anonymous initializer is not a class", element)
+                    return null
+                }
+                // Assign the comment to the class. The content of the `init` blocks might be extracted in multiple constructors.
+                return getClassLabel(parentClass, listOf()).classLabel
+            }
+
+
             // Fresh entities:
             is IrBody -> return null
             is IrExpression -> return null

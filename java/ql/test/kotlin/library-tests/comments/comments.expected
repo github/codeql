@@ -21,6 +21,7 @@ commentOwners
 | comments.kt:37:5:37:23 | /** This is high */ | comments.kt:38:5:38:11 | High |
 | comments.kt:42:5:44:6 | /**\n     * A variable.\n    */ | comments.kt:45:5:45:13 | int a |
 | comments.kt:48:1:50:3 | /**\n * A type alias comment\n */ | comments.kt:51:1:51:24 | MyType |
+| comments.kt:54:5:56:7 | /**\n     * An init block comment\n     */ | comments.kt:53:1:58:1 | InitBlock |
 commentSections
 | comments.kt:1:1:1:25 | /** Kdoc with no owner */ | Kdoc with no owner |
 | comments.kt:4:1:11:3 | /**\n * A group of *members*.\n *\n * This class has no useful logic; it's just a documentation example.\n *\n * @property name the name of this group.\n * @constructor Creates an empty group.\n */ | A group of *members*.\n\nThis class has no useful logic; it's just a documentation example.\n\n |
