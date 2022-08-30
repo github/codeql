@@ -1,11 +1,15 @@
 private import codeql.ruby.AST as AST
 private import codeql.ruby.CFG as CFG
 private import CFG::CfgNodes
+private import codeql.ruby.dataflow.FlowSummary
 private import codeql.ruby.dataflow.internal.DataFlowImplCommon as DataFlowImplCommon
 private import codeql.ruby.dataflow.internal.DataFlowPublic as DataFlowPublic
 private import codeql.ruby.dataflow.internal.DataFlowPrivate as DataFlowPrivate
 private import codeql.ruby.dataflow.internal.DataFlowDispatch as DataFlowDispatch
 private import codeql.ruby.dataflow.internal.SsaImpl as SsaImpl
+private import codeql.ruby.dataflow.internal.FlowSummaryImpl as FlowSummaryImpl
+private import codeql.ruby.dataflow.internal.FlowSummaryImplSpecific as FlowSummaryImplSpecific
+private import codeql.ruby.dataflow.internal.AccessPathSyntax
 
 class Node = DataFlowPublic::Node;
 
@@ -169,6 +173,27 @@ predicate returnStep(Node nodeFrom, Node nodeTo) {
  * called.
  */
 predicate basicStoreStep(Node nodeFrom, Node nodeTo, TypeTrackerContent content) {
+  postUpdateStoreStep(nodeFrom, nodeTo, content)
+  or
+  exists(
+    DataFlowPublic::CallNode call, SummaryComponent input, DataFlowPublic::ContentSet contents,
+    SummaryComponent output
+  |
+    summarizableCall(call.asExpr().getExpr(), //
+      SummaryComponentStack::singleton(input),
+      SummaryComponentStack::push(SummaryComponent::content(contents),
+        SummaryComponentStack::singleton(output))) and
+    nodeFrom = evaluateSummaryComponentLocal(call, input) and
+    nodeTo = evaluateSummaryComponentLocal(call, output) and
+    content.asContent() = contents.getAStoreContent()
+  )
+}
+
+/**
+ * A `content`-store step from `nodeFrom -> nodeTo` where the destination node is a post-update
+ * node that should be treated as a local source node.
+ */
+predicate postUpdateStoreStep(Node nodeFrom, Node nodeTo, TypeTrackerContent content) {
   // TODO: support SetterMethodCall inside TuplePattern
   exists(ExprNodes::MethodCallCfgNode call |
     content = MkAttribute(getSetterCallAttributeName(call.getExpr())) and
@@ -205,6 +230,19 @@ predicate basicLoadStep(Node nodeFrom, Node nodeTo, TypeTrackerContent content) 
     nodeFrom.asExpr() = call.getReceiver() and
     nodeTo.asExpr() = call
   )
+  or
+  exists(
+    DataFlowPublic::CallNode call, SummaryComponent input, DataFlowPublic::ContentSet contents,
+    SummaryComponent output
+  |
+    summarizableCall(call.asExpr().getExpr(), //
+      SummaryComponentStack::push(SummaryComponent::content(contents),
+        SummaryComponentStack::singleton(input)), //
+      SummaryComponentStack::singleton(output)) and
+    nodeFrom = evaluateSummaryComponentLocal(call, input) and
+    nodeTo = evaluateSummaryComponentLocal(call, output) and
+    content.asContent() = contents.getAReadContent()
+  )
 }
 
 /**
@@ -212,4 +250,44 @@ predicate basicLoadStep(Node nodeFrom, Node nodeTo, TypeTrackerContent content) 
  */
 class Boolean extends boolean {
   Boolean() { this = true or this = false }
+}
+
+/** Holds if `call` has a summary consisting of the given `input`/`output` pair. */
+private predicate summarizableCall(
+  MethodCall call, SummaryComponentStack input, SummaryComponentStack output
+) {
+  exists(SummarizedCallable callable |
+    call = callable.getACallSimple() and
+    callable.propagatesFlow(input, output, true)
+  )
+}
+
+/**
+ * Gets a data flow node corresponding an argument or return value of `call`,
+ * as specified by `component`.
+ */
+bindingset[call, component]
+private DataFlowPublic::Node evaluateSummaryComponentLocal(
+  DataFlowPublic::CallNode call, SummaryComponent component
+) {
+  exists(DataFlowDispatch::ParameterPosition pos | component = SummaryComponent::argument(pos) |
+    exists(int i |
+      pos.isPositional(i) and
+      result = call.getPositionalArgument(i)
+    )
+    or
+    exists(string name |
+      pos.isKeyword(name) and
+      result = call.getKeywordArgument(name)
+    )
+    or
+    pos.isBlock() and
+    result = call.getBlock()
+    or
+    pos.isSelf() and
+    result = call.getReceiver()
+  )
+  or
+  component = SummaryComponent::return() and
+  result = call
 }

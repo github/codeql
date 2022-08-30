@@ -68,3 +68,6 @@ def userDefinedFunction(x, y)
     x.customEntryPointCall(y) #$ call=entryPoint("CustomEntryPointCall") use=entryPoint("CustomEntryPointCall").getReturn() rhs=entryPoint("CustomEntryPointCall").getParameter(0)
     x.customEntryPointUse(y) #$ use=entryPoint("CustomEntryPointUse")
 end
+
+array = [A::B::C] #$ use=getMember("Array").getMethod("[]").getReturn()
+array[0].m #$ use=getMember("A").getMember("B").getMember("C").getMethod("m").getReturn()

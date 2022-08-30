@@ -358,7 +358,7 @@ private module Cached {
     n instanceof SynthReturnNode
     or
     // Needed for stores in type tracking
-    TypeTrackerSpecific::basicStoreStep(_, n, _)
+    TypeTrackerSpecific::postUpdateStoreStep(_, n, _)
   }
 
   cached
