@@ -11,6 +11,37 @@ class Node = DataFlowPublic::Node;
 
 class TypeTrackingNode = DataFlowPublic::LocalSourceNode;
 
+private newtype TOptionalTypeTrackerContent =
+  MkAttribute(string name) { name = getSetterCallAttributeName(_) } or
+  MkContent(DataFlowPublic::Content content) or
+  MkNoContent()
+
+/** A content for use by type trackers, or the empty content `noContent()` */
+class OptionalTypeTrackerContent extends TOptionalTypeTrackerContent {
+  /** Gets a textual representation of this content. */
+  string toString() {
+    result = "attribute " + this.asAttributeName()
+    or
+    result = this.asContent().toString()
+    or
+    this instanceof MkNoContent and result = "no content"
+  }
+
+  /** Gets the attribute name represented by this content, if any. */
+  string asAttributeName() { this = MkAttribute(result) }
+
+  /** Gets the data flow content by this type-tracker content, if any. */
+  DataFlowPublic::Content asContent() { this = MkContent(result) }
+}
+
+/** Gets the value representing no content, that is, the empty access path. */
+OptionalTypeTrackerContent noContent() { result = MkNoContent() }
+
+private class TTypeTrackerContent = MkAttribute or MkContent;
+
+/** A content for use by type trackers. */
+class TypeTrackerContent extends OptionalTypeTrackerContent, TTypeTrackerContent { }
+
 /** Holds if there is a simple local flow step from `nodeFrom` to `nodeTo` */
 predicate simpleLocalFlowStep = DataFlowPrivate::localFlowStepTypeTracker/2;
 
@@ -36,14 +67,6 @@ private predicate summarizedLocalStep(Node nodeFrom, Node nodeTo) {
 
 /** Holds if there is a level step from `nodeFrom` to `nodeTo`. */
 predicate levelStep(Node nodeFrom, Node nodeTo) { summarizedLocalStep(nodeFrom, nodeTo) }
-
-/**
- * Gets the name of a possible piece of content. This will usually include things like
- *
- * - Attribute names (in Python)
- * - Property names (in JavaScript)
- */
-string getPossibleContentName() { result = getSetterCallAttributeName(_) }
 
 pragma[noinline]
 private predicate argumentPositionMatch(
@@ -145,10 +168,10 @@ predicate returnStep(Node nodeFrom, Node nodeTo) {
  * to `z` inside `bar`, even though this content write happens _after_ `bar` is
  * called.
  */
-predicate basicStoreStep(Node nodeFrom, Node nodeTo, string content) {
+predicate basicStoreStep(Node nodeFrom, Node nodeTo, TypeTrackerContent content) {
   // TODO: support SetterMethodCall inside TuplePattern
   exists(ExprNodes::MethodCallCfgNode call |
-    content = getSetterCallAttributeName(call.getExpr()) and
+    content = MkAttribute(getSetterCallAttributeName(call.getExpr())) and
     nodeTo.(DataFlowPublic::PostUpdateNode).getPreUpdateNode().asExpr() = call.getReceiver() and
     call.getExpr() instanceof AST::SetterMethodCall and
     call.getArgument(call.getNumberOfArguments() - 1) =
@@ -175,10 +198,10 @@ private string getSetterCallAttributeName(AST::SetterMethodCall call) {
 /**
  * Holds if `nodeTo` is the result of accessing the `content` content of `nodeFrom`.
  */
-predicate basicLoadStep(Node nodeFrom, Node nodeTo, string content) {
+predicate basicLoadStep(Node nodeFrom, Node nodeTo, TypeTrackerContent content) {
   exists(ExprNodes::MethodCallCfgNode call |
     call.getExpr().getNumberOfArguments() = 0 and
-    content = call.getExpr().getMethodName() and
+    content = MkAttribute(call.getExpr().getMethodName()) and
     nodeFrom.asExpr() = call.getReceiver() and
     nodeTo.asExpr() = call
   )
