@@ -6,6 +6,8 @@ private import semmle.python.dataflow.new.DataFlow
 private import semmle.python.dataflow.new.DataFlow2
 private import semmle.python.ApiGraphs
 private import semmle.python.dataflow.new.RemoteFlowSources
+private import semmle.python.frameworks.Flask
+private import semmle.python.frameworks.Django
 
 /** A data flow source of the hash obtained */
 class ProduceHashCall extends DataFlow::CallCfgNode {
