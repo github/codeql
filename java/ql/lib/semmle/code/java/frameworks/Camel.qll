@@ -13,7 +13,7 @@ import semmle.code.java.frameworks.camel.CamelJavaAnnotations
 class CamelToUri extends string {
   CamelToUri() {
     exists(SpringCamelXmlToElement toXmlElement | this = toXmlElement.getUri()) or
-    exists(CamelJavaDSLToDecl toJavaDSL | this = toJavaDSL.getUri())
+    exists(CamelJavaDslToDecl toJavaDsl | this = toJavaDsl.getUri())
   }
 }
 
@@ -77,13 +77,13 @@ class CamelTargetClass extends Class {
       this = xmlMethod.getBeanType()
     )
     or
-    exists(CamelJavaDSLMethodDecl methodDecl | this = methodDecl.getABean())
+    exists(CamelJavaDslMethodDecl methodDecl | this = methodDecl.getABean())
     or
     // Any beans referred to in Java DSL bean or beanRef elements are considered as possible
     // targets. Whether the route builder is ever constructed or called is not considered.
-    exists(CamelJavaDSLBeanDecl beanDecl | this = beanDecl.getABeanClass())
+    exists(CamelJavaDslBeanDecl beanDecl | this = beanDecl.getABeanClass())
     or
-    exists(CamelJavaDSLBeanRefDecl beanRefDecl | this = beanRefDecl.getABeanClass())
+    exists(CamelJavaDslBeanRefDecl beanRefDecl | this = beanRefDecl.getABeanClass())
   }
 
   /**

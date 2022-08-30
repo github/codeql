@@ -14,6 +14,7 @@ left behind and must be dealt with by hand.
 
 import pathlib
 from dataclasses import dataclass, field
+import itertools
 from typing import List, ClassVar, Union, Optional
 
 import inflection
@@ -35,7 +36,7 @@ class Property:
     first: bool = False
     is_optional: bool = False
     is_predicate: bool = False
-    is_child: bool = False
+    prev_child: Optional[str] = None
     qltest_skip: bool = False
 
     def __post_init__(self):
@@ -65,13 +66,26 @@ class Property:
     def is_single(self):
         return not (self.is_optional or self.is_repeated or self.is_predicate)
 
+    @property
+    def is_child(self):
+        return self.prev_child is not None
+
+
+@dataclass
+class Base:
+    base: str
+    prev: str = ""
+
+    def __str__(self):
+        return self.base
+
 
 @dataclass
 class Class:
     template: ClassVar = 'ql_class'
 
     name: str
-    bases: List[str] = field(default_factory=list)
+    bases: List[Base] = field(default_factory=list)
     final: bool = False
     properties: List[Property] = field(default_factory=list)
     dir: pathlib.Path = pathlib.Path()
@@ -82,7 +96,8 @@ class Class:
     ipa: bool = False
 
     def __post_init__(self):
-        self.bases = sorted(self.bases)
+        bases = sorted(str(b) for b in self.bases)
+        self.bases = [Base(str(b), prev) for b, prev in zip(bases, itertools.chain([""], bases))]
         if self.properties:
             self.properties[0].first = True
 
@@ -95,8 +110,16 @@ class Class:
         return self.dir / self.name
 
     @property
-    def db_id(self):
+    def db_id(self) -> str:
         return "@" + inflection.underscore(self.name)
+
+    @property
+    def has_children(self) -> bool:
+        return any(p.is_child for p in self.properties)
+
+    @property
+    def last_base(self) -> str:
+        return self.bases[-1].base if self.bases else ""
 
 
 @dataclass

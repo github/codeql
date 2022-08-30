@@ -238,8 +238,13 @@ module RangePrinter {
 
 /** Gets a char range that is overly large because of `reason`. */
 RegExpCharacterRange getABadRange(string reason, int priority) {
+  result instanceof OverlyWideRange and
   priority = 0 and
-  reason = "is equivalent to " + result.(OverlyWideRange).printEquivalent()
+  exists(string equiv | equiv = result.(OverlyWideRange).printEquivalent() |
+    if equiv.length() <= 50
+    then reason = "is equivalent to " + equiv
+    else reason = "is equivalent to " + equiv.substring(0, 50) + "..."
+  )
   or
   priority = 1 and
   exists(RegExpCharacterRange other |

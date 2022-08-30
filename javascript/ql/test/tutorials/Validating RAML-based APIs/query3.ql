@@ -3,15 +3,15 @@ import javascript
 string httpVerb() { result = ["get", "put", "post", "delete"] }
 
 /** A RAML specification. */
-class RamlSpec extends YAMLDocument, YAMLMapping {
+class RamlSpec extends YamlDocument, YamlMapping {
   RamlSpec() { getLocation().getFile().getExtension() = "raml" }
 }
 
 /** A RAML resource specification. */
-class RamlResource extends YAMLMapping {
+class RamlResource extends YamlMapping {
   RamlResource() {
     getDocument() instanceof RamlSpec and
-    exists(YAMLMapping m, string name |
+    exists(YamlMapping m, string name |
       this = m.lookup(name) and
       name.matches("/%")
     )
@@ -34,10 +34,10 @@ class RamlResource extends YAMLMapping {
   }
 }
 
-class RamlMethod extends YAMLValue {
+class RamlMethod extends YamlValue {
   RamlMethod() {
     getDocument() instanceof RamlSpec and
-    exists(YAMLMapping obj | this = obj.lookup(httpVerb()))
+    exists(YamlMapping obj | this = obj.lookup(httpVerb()))
   }
 }
 

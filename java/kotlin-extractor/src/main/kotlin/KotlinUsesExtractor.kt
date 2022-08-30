@@ -326,11 +326,11 @@ open class KotlinUsesExtractor(
         if (replacementClass === parentClass)
             return f
         return globalExtensionState.syntheticToRealFunctionMap.getOrPut(f) {
-            val result = replacementClass.declarations.find { replacementDecl ->
+            val result = replacementClass.declarations.findSubType<IrSimpleFunction> { replacementDecl ->
                 replacementDecl is IrSimpleFunction && replacementDecl.name == f.name && replacementDecl.valueParameters.size == f.valueParameters.size && replacementDecl.valueParameters.zip(f.valueParameters).all {
                     erase(it.first.type) == erase(it.second.type)
                 }
-            } as IrFunction?
+            }
             if (result == null) {
                 logger.warn("Failed to replace synthetic class function ${f.name}")
             } else {
@@ -351,9 +351,9 @@ open class KotlinUsesExtractor(
         if (replacementClass === parentClass)
             return f
         return globalExtensionState.syntheticToRealFieldMap.getOrPut(f) {
-            val result = replacementClass.declarations.find { replacementDecl ->
-                replacementDecl is IrField && replacementDecl.name == f.name
-            } as IrField?
+            val result = replacementClass.declarations.findSubType<IrField> { replacementDecl ->
+                replacementDecl.name == f.name
+            }
             if (result == null) {
                 logger.warn("Failed to replace synthetic class field ${f.name}")
             } else {
@@ -1097,7 +1097,7 @@ open class KotlinUsesExtractor(
             return f.returnType
         }
 
-        val otherKeySet = parentClass.declarations.filterIsInstance<IrFunction>().find { it.name.asString() == "keySet" && it.valueParameters.size == 1 }
+        val otherKeySet = parentClass.declarations.findSubType<IrFunction> { it.name.asString() == "keySet" && it.valueParameters.size == 1 }
             ?: return f.returnType
 
         return otherKeySet.returnType.codeQlWithHasQuestionMark(false)
@@ -1177,8 +1177,7 @@ open class KotlinUsesExtractor(
                 getJavaEquivalentClass(parentClass)?.let { javaClass ->
                     if (javaClass != parentClass)
                         // Look for an exact type match...
-                        javaClass.declarations.find { decl ->
-                            decl is IrFunction &&
+                        javaClass.declarations.findSubType<IrFunction> { decl ->
                             decl.name == f.name &&
                             decl.valueParameters.size == f.valueParameters.size &&
                             // Note matching by classifier not the whole type so that generic arguments are allowed to differ,
@@ -1194,7 +1193,7 @@ open class KotlinUsesExtractor(
                         } ?:
                         // Or check property accessors:
                         if (f.isAccessor) {
-                            val prop = javaClass.declarations.filterIsInstance<IrProperty>().find { decl ->
+                            val prop = javaClass.declarations.findSubType<IrProperty> { decl ->
                                 decl.name == (f.propertyIfAccessor as IrProperty).name
                             }
                             if (prop?.getter?.name == f.name)
