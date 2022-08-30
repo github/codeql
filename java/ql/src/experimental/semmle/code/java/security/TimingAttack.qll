@@ -16,7 +16,8 @@ private string suspicious() {
   result =
     [
       "%password%", "%passwd%", "%pwd%", "%refresh%token%", "%secret%token", "%secret%key",
-      "%passcode%", "%passphrase%", "%token%", "%secret%", "%credential%", "%userpass%"
+      "%passcode%", "%passphrase%", "%token%", "%secret%", "%credential%", "%userpass%", 
+      "%digest%", "%signature%", "%mac%"
     ]
 }
 
