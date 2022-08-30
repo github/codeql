@@ -5,12 +5,13 @@
 
 private import python
 private import internal.TypeTracker as Internal
+private import internal.TypeTrackerSpecific as InternalSpecific
 
 /** A string that may appear as the name of an attribute or access path. */
-class AttributeName = Internal::ContentName;
+class AttributeName = InternalSpecific::TypeTrackerContent;
 
 /** An attribute name, or the empty string (representing no attribute). */
-class OptionalAttributeName = Internal::OptionalContentName;
+class OptionalAttributeName = InternalSpecific::OptionalTypeTrackerContent;
 
 /**
  * The summary of the steps needed to track a value to a given dataflow node.
