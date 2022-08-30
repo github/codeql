@@ -5,7 +5,7 @@
  * @kind path-problem
  * @problem.severity error
  * @precision medium
- * @id java/timing-attack-against-sensitive-info
+ * @id java/possible-timing-attack-against-sensitive-info
  * @tags security
  *       external/cwe/cwe-208
  */
