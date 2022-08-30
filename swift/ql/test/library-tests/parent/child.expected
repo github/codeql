@@ -1,3 +1,9 @@
+| declarations.swift:1:1:7:1 | Foo | 0 | getImmediateMember(0) | declarations.swift:2:3:2:11 | var ... = ... |
+| declarations.swift:1:1:7:1 | Foo | 1 | getImmediateMember(1) | declarations.swift:2:7:2:7 | x |
+| declarations.swift:1:1:7:1 | Foo | 2 | getImmediateMember(2) | declarations.swift:3:3:6:3 | var ... = ... |
+| declarations.swift:1:1:7:1 | Foo | 3 | getImmediateMember(3) | declarations.swift:3:7:3:7 | next |
+| declarations.swift:1:1:7:1 | Foo | 4 | getImmediateMember(4) | declarations.swift:1:8:1:8 | init() |
+| declarations.swift:1:1:7:1 | Foo | 5 | getImmediateMember(5) | declarations.swift:1:8:1:8 | init(x:) |
 | declarations.swift:1:8:1:8 | init() | 0 | getImmediateSelfParam() | declarations.swift:1:8:1:8 | self |
 | declarations.swift:1:8:1:8 | init() | 1 | getImmediateBody() | declarations.swift:1:8:1:8 | { ... } |
 | declarations.swift:1:8:1:8 | init(x:) | 0 | getImmediateSelfParam() | declarations.swift:1:8:1:8 | self |
@@ -47,6 +53,10 @@
 | declarations.swift:5:25:5:36 | ... .-(_:_:) ... | 0 | getImmediateFunction() | declarations.swift:5:34:5:34 | .-(_:_:) |
 | declarations.swift:5:34:5:34 | .-(_:_:) | 0 | getImmediateBase() | declarations.swift:5:34:5:34 | Int.Type |
 | declarations.swift:5:34:5:34 | Int.Type | 0 | getImmediateTypeRepr() | declarations.swift:5:34:5:34 | Int |
+| declarations.swift:9:1:9:34 | Bar | 0 | getImmediateMember(0) | declarations.swift:9:13:9:30 | var ... = ... |
+| declarations.swift:9:1:9:34 | Bar | 1 | getImmediateMember(1) | declarations.swift:9:17:9:17 | x |
+| declarations.swift:9:1:9:34 | Bar | 2 | getImmediateMember(2) | declarations.swift:9:7:9:7 | deinit() |
+| declarations.swift:9:1:9:34 | Bar | 3 | getImmediateMember(3) | declarations.swift:9:7:9:7 | init() |
 | declarations.swift:9:7:9:7 | deinit() | 0 | getImmediateSelfParam() | declarations.swift:9:7:9:7 | self |
 | declarations.swift:9:7:9:7 | deinit() | 1 | getImmediateBody() | declarations.swift:9:7:9:7 | { ... } |
 | declarations.swift:9:7:9:7 | init() | 0 | getImmediateSelfParam() | declarations.swift:9:7:9:7 | self |
@@ -70,19 +80,33 @@
 | declarations.swift:9:17:9:17 | { ... } | 0 | getImmediateElement(0) | file://:0:0:0:0 | return ... |
 | declarations.swift:9:17:9:21 | ... as ... | 0 | getImmediateSubPattern() | declarations.swift:9:17:9:17 | x |
 | declarations.swift:9:17:9:21 | ... as ... | 1 | getImmediateTypeRepr() | declarations.swift:9:21:9:21 | Double |
-| declarations.swift:12:5:12:18 | case ... | 0 | getImmediateElement(0) | declarations.swift:12:10:12:10 | value1 |
-| declarations.swift:12:5:12:18 | case ... | 1 | getImmediateElement(1) | declarations.swift:12:18:12:18 | value2 |
-| declarations.swift:13:5:13:26 | case ... | 0 | getImmediateElement(0) | declarations.swift:13:10:13:10 | value3 |
-| declarations.swift:13:5:13:26 | case ... | 1 | getImmediateElement(1) | declarations.swift:13:18:13:18 | value4 |
-| declarations.swift:13:5:13:26 | case ... | 2 | getImmediateElement(2) | declarations.swift:13:26:13:26 | value5 |
-| declarations.swift:17:5:17:22 | case ... | 0 | getImmediateElement(0) | declarations.swift:17:10:17:22 | nodata1 |
+| declarations.swift:11:1:14:1 | EnumValues | 0 | getImmediateMember(0) | declarations.swift:12:5:12:18 | case ... |
+| declarations.swift:11:1:14:1 | EnumValues | 1 | getImmediateMember(1) | declarations.swift:12:10:12:10 | value1 |
+| declarations.swift:11:1:14:1 | EnumValues | 2 | getImmediateMember(2) | declarations.swift:12:18:12:18 | value2 |
+| declarations.swift:11:1:14:1 | EnumValues | 3 | getImmediateMember(3) | declarations.swift:13:5:13:26 | case ... |
+| declarations.swift:11:1:14:1 | EnumValues | 4 | getImmediateMember(4) | declarations.swift:13:10:13:10 | value3 |
+| declarations.swift:11:1:14:1 | EnumValues | 5 | getImmediateMember(5) | declarations.swift:13:18:13:18 | value4 |
+| declarations.swift:11:1:14:1 | EnumValues | 6 | getImmediateMember(6) | declarations.swift:13:26:13:26 | value5 |
+| declarations.swift:11:1:14:1 | EnumValues | 7 | getImmediateMember(7) | file://:0:0:0:0 | __derived_enum_equals(_:_:) |
+| declarations.swift:11:1:14:1 | EnumValues | 8 | getImmediateMember(8) | file://:0:0:0:0 | var ... = ... |
+| declarations.swift:11:1:14:1 | EnumValues | 9 | getImmediateMember(9) | file://:0:0:0:0 | hash(into:) |
+| declarations.swift:11:1:14:1 | EnumValues | 10 | getImmediateMember(10) | file://:0:0:0:0 | hashValue |
+| declarations.swift:16:1:20:1 | EnumWithParams | 0 | getImmediateMember(0) | declarations.swift:17:5:17:22 | case ... |
+| declarations.swift:16:1:20:1 | EnumWithParams | 1 | getImmediateMember(1) | declarations.swift:17:10:17:22 | nodata1 |
+| declarations.swift:16:1:20:1 | EnumWithParams | 2 | getImmediateMember(2) | declarations.swift:18:5:18:21 | case ... |
+| declarations.swift:16:1:20:1 | EnumWithParams | 3 | getImmediateMember(3) | declarations.swift:18:10:18:21 | intdata |
+| declarations.swift:16:1:20:1 | EnumWithParams | 4 | getImmediateMember(4) | declarations.swift:19:5:19:35 | case ... |
+| declarations.swift:16:1:20:1 | EnumWithParams | 5 | getImmediateMember(5) | declarations.swift:19:10:19:35 | tuple |
 | declarations.swift:17:10:17:22 | nodata1 | 0 | getImmediateParam(0) | declarations.swift:17:18:17:18 | _ |
-| declarations.swift:18:5:18:21 | case ... | 0 | getImmediateElement(0) | declarations.swift:18:10:18:21 | intdata |
 | declarations.swift:18:10:18:21 | intdata | 0 | getImmediateParam(0) | declarations.swift:18:18:18:18 | _ |
-| declarations.swift:19:5:19:35 | case ... | 0 | getImmediateElement(0) | declarations.swift:19:10:19:35 | tuple |
 | declarations.swift:19:10:19:35 | tuple | 0 | getImmediateParam(0) | declarations.swift:19:16:19:16 | _ |
 | declarations.swift:19:10:19:35 | tuple | 1 | getImmediateParam(1) | declarations.swift:19:21:19:21 | _ |
 | declarations.swift:19:10:19:35 | tuple | 2 | getImmediateParam(2) | declarations.swift:19:29:19:29 | _ |
+| declarations.swift:22:1:26:1 | MyProtocol | 0 | getImmediateMember(0) | declarations.swift:23:5:23:39 | var ... = ... |
+| declarations.swift:22:1:26:1 | MyProtocol | 1 | getImmediateMember(1) | declarations.swift:23:9:23:9 | mustBeSettable |
+| declarations.swift:22:1:26:1 | MyProtocol | 2 | getImmediateMember(2) | declarations.swift:24:5:24:44 | var ... = ... |
+| declarations.swift:22:1:26:1 | MyProtocol | 3 | getImmediateMember(3) | declarations.swift:24:9:24:9 | doesNotNeedToBeSettable |
+| declarations.swift:22:1:26:1 | MyProtocol | 4 | getImmediateMember(4) | declarations.swift:25:5:25:22 | random() |
 | declarations.swift:23:5:23:39 | var ... = ... | 0 | getImmediatePattern(0) | declarations.swift:23:9:23:25 | ... as ... |
 | declarations.swift:23:9:23:9 | (unnamed function decl) | 0 | getImmediateSelfParam() | declarations.swift:23:9:23:9 | self |
 | declarations.swift:23:9:23:9 | mustBeSettable | 0 | getImmediateAccessorDecl(0) | declarations.swift:23:31:23:31 | get |
@@ -123,6 +147,11 @@
 | declarations.swift:38:7:38:7 | (Any) ... | 0 | getImmediateSubExpr() | declarations.swift:38:7:38:7 | some top level statement |
 | declarations.swift:38:7:38:7 | [...] | 0 | getImmediateElement(0) | declarations.swift:38:7:38:7 | (Any) ... |
 | declarations.swift:38:7:38:7 | [...] | 0 | getImmediateSubExpr() | declarations.swift:38:7:38:7 | [...] |
+| declarations.swift:40:1:53:1 | Baz | 0 | getImmediateMember(0) | declarations.swift:41:3:41:14 | var ... = ... |
+| declarations.swift:40:1:53:1 | Baz | 1 | getImmediateMember(1) | declarations.swift:41:7:41:7 | field |
+| declarations.swift:40:1:53:1 | Baz | 2 | getImmediateMember(2) | declarations.swift:42:3:44:3 | init() |
+| declarations.swift:40:1:53:1 | Baz | 3 | getImmediateMember(3) | declarations.swift:46:3:48:3 | deinit() |
+| declarations.swift:40:1:53:1 | Baz | 4 | getImmediateMember(4) | declarations.swift:50:3:52:3 | +-(_:) |
 | declarations.swift:41:3:41:14 | var ... = ... | 0 | getImmediatePattern(0) | declarations.swift:41:7:41:14 | ... as ... |
 | declarations.swift:41:7:41:7 | (unnamed function decl) | 0 | getImmediateSelfParam() | declarations.swift:41:7:41:7 | self |
 | declarations.swift:41:7:41:7 | (unnamed function decl) | 1 | getImmediateBody() | declarations.swift:41:7:41:7 | { ... } |
@@ -158,6 +187,9 @@
 | declarations.swift:50:3:52:3 | +-(_:) | 2 | getImmediateBody() | declarations.swift:50:45:52:3 | { ... } |
 | declarations.swift:50:45:52:3 | { ... } | 0 | getImmediateElement(0) | declarations.swift:51:5:51:12 | return ... |
 | declarations.swift:51:5:51:12 | return ... | 0 | getImmediateResult() | declarations.swift:51:12:51:12 | other |
+| declarations.swift:68:18:74:1 | ZeroWrapper | 0 | getImmediateMember(0) | declarations.swift:69:3:73:3 | var ... = ... |
+| declarations.swift:68:18:74:1 | ZeroWrapper | 1 | getImmediateMember(1) | declarations.swift:69:7:69:7 | wrappedValue |
+| declarations.swift:68:18:74:1 | ZeroWrapper | 2 | getImmediateMember(2) | declarations.swift:68:25:68:25 | init() |
 | declarations.swift:68:25:68:25 | init() | 0 | getImmediateSelfParam() | declarations.swift:68:25:68:25 | self |
 | declarations.swift:68:25:68:25 | init() | 1 | getImmediateBody() | declarations.swift:68:25:68:25 | { ... } |
 | declarations.swift:68:25:68:25 | { ... } | 0 | getImmediateElement(0) | declarations.swift:68:25:68:25 | return |
@@ -176,7 +208,6 @@
 | declarations.swift:77:4:77:4 | ZeroWrapper.Type | 0 | getImmediateTypeRepr() | declarations.swift:77:4:77:4 | ZeroWrapper |
 | declarations.swift:77:4:77:4 | call to init() | 0 | getImmediateFunction() | declarations.swift:77:4:77:4 | call to init() |
 | declarations.swift:77:4:77:4 | call to init() | 0 | getImmediateFunction() | declarations.swift:77:4:77:4 | init() |
-| declarations.swift:77:4:77:4 | call to init() | 2 | getImmediateBase() | declarations.swift:77:4:77:4 | ZeroWrapper.Type |
 | declarations.swift:77:16:77:23 | var ... = ... | 0 | getImmediatePattern(0) | declarations.swift:77:20:77:23 | ... as ... |
 | declarations.swift:77:20:77:20 | ... as ... | 0 | getImmediateSubPattern() | declarations.swift:77:20:77:20 | _x |
 | declarations.swift:77:20:77:20 | get | 1 | getImmediateBody() | declarations.swift:77:20:77:20 | { ... } |
@@ -185,6 +216,27 @@
 | declarations.swift:77:20:77:23 | ... as ... | 0 | getImmediateSubPattern() | declarations.swift:77:20:77:20 | x |
 | declarations.swift:77:20:77:23 | ... as ... | 1 | getImmediateTypeRepr() | declarations.swift:77:23:77:23 | Int |
 | declarations.swift:78:3:78:10 | return ... | 0 | getImmediateResult() | declarations.swift:78:10:78:10 | x |
+| declarations.swift:81:1:136:1 | HasPropertyAndObserver | 0 | getImmediateMember(0) | declarations.swift:82:3:87:3 | var ... = ... |
+| declarations.swift:81:1:136:1 | HasPropertyAndObserver | 1 | getImmediateMember(1) | declarations.swift:82:7:82:7 | settableField |
+| declarations.swift:81:1:136:1 | HasPropertyAndObserver | 2 | getImmediateMember(2) | declarations.swift:91:3:93:3 | var ... = ... |
+| declarations.swift:81:1:136:1 | HasPropertyAndObserver | 3 | getImmediateMember(3) | declarations.swift:91:7:91:7 | readOnlyField1 |
+| declarations.swift:81:1:136:1 | HasPropertyAndObserver | 4 | getImmediateMember(4) | declarations.swift:96:3:100:3 | var ... = ... |
+| declarations.swift:81:1:136:1 | HasPropertyAndObserver | 5 | getImmediateMember(5) | declarations.swift:96:7:96:7 | readOnlyField2 |
+| declarations.swift:81:1:136:1 | HasPropertyAndObserver | 6 | getImmediateMember(6) | declarations.swift:102:3:102:21 | var ... = ... |
+| declarations.swift:81:1:136:1 | HasPropertyAndObserver | 7 | getImmediateMember(7) | declarations.swift:102:7:102:7 | normalField |
+| declarations.swift:81:1:136:1 | HasPropertyAndObserver | 8 | getImmediateMember(8) | declarations.swift:104:3:109:3 | subscript ... |
+| declarations.swift:81:1:136:1 | HasPropertyAndObserver | 9 | getImmediateMember(9) | declarations.swift:111:3:113:3 | subscript ... |
+| declarations.swift:81:1:136:1 | HasPropertyAndObserver | 10 | getImmediateMember(10) | declarations.swift:115:3:117:3 | var ... = ... |
+| declarations.swift:81:1:136:1 | HasPropertyAndObserver | 11 | getImmediateMember(11) | declarations.swift:115:7:115:7 | hasWillSet1 |
+| declarations.swift:81:1:136:1 | HasPropertyAndObserver | 12 | getImmediateMember(12) | declarations.swift:119:3:121:3 | var ... = ... |
+| declarations.swift:81:1:136:1 | HasPropertyAndObserver | 13 | getImmediateMember(13) | declarations.swift:119:7:119:7 | hasWillSet2 |
+| declarations.swift:81:1:136:1 | HasPropertyAndObserver | 14 | getImmediateMember(14) | declarations.swift:123:3:125:3 | var ... = ... |
+| declarations.swift:81:1:136:1 | HasPropertyAndObserver | 15 | getImmediateMember(15) | declarations.swift:123:7:123:7 | hasDidSet1 |
+| declarations.swift:81:1:136:1 | HasPropertyAndObserver | 16 | getImmediateMember(16) | declarations.swift:127:3:129:3 | var ... = ... |
+| declarations.swift:81:1:136:1 | HasPropertyAndObserver | 17 | getImmediateMember(17) | declarations.swift:127:7:127:7 | hasDidSet2 |
+| declarations.swift:81:1:136:1 | HasPropertyAndObserver | 18 | getImmediateMember(18) | declarations.swift:131:3:135:3 | var ... = ... |
+| declarations.swift:81:1:136:1 | HasPropertyAndObserver | 19 | getImmediateMember(19) | declarations.swift:131:7:131:7 | hasBoth |
+| declarations.swift:81:1:136:1 | HasPropertyAndObserver | 20 | getImmediateMember(20) | declarations.swift:81:8:81:8 | init(normalField:hasWillSet1:hasWillSet2:hasDidSet1:hasDidSet2:hasBoth:) |
 | declarations.swift:81:8:81:8 | init(normalField:hasWillSet1:hasWillSet2:hasDidSet1:hasDidSet2:hasBoth:) | 0 | getImmediateSelfParam() | declarations.swift:81:8:81:8 | self |
 | declarations.swift:81:8:81:8 | init(normalField:hasWillSet1:hasWillSet2:hasDidSet1:hasDidSet2:hasBoth:) | 1 | getImmediateParam(0) | declarations.swift:81:8:81:8 | normalField |
 | declarations.swift:81:8:81:8 | init(normalField:hasWillSet1:hasWillSet2:hasDidSet1:hasDidSet2:hasBoth:) | 2 | getImmediateParam(1) | declarations.swift:81:8:81:8 | hasWillSet1 |
@@ -385,6 +437,7 @@
 | declarations.swift:132:5:132:15 | willSet | 2 | getImmediateBody() | declarations.swift:132:13:132:15 | { ... } |
 | declarations.swift:134:5:134:14 | didSet | 0 | getImmediateSelfParam() | declarations.swift:134:5:134:5 | self |
 | declarations.swift:134:5:134:14 | didSet | 1 | getImmediateBody() | declarations.swift:134:12:134:14 | { ... } |
+| declarations.swift:138:1:142:1 | extension | 0 | getImmediateMember(0) | declarations.swift:139:3:141:3 | id() |
 | declarations.swift:139:3:141:3 | id() | 0 | getImmediateSelfParam() | declarations.swift:139:8:139:8 | self |
 | declarations.swift:139:3:141:3 | id() | 1 | getImmediateBody() | declarations.swift:139:20:141:3 | { ... } |
 | declarations.swift:139:20:141:3 | { ... } | 0 | getImmediateElement(0) | declarations.swift:140:5:140:12 | return ... |
@@ -445,7 +498,12 @@
 | expressions.swift:8:1:8:15 | { ... } | 0 | getImmediateElement(0) | expressions.swift:8:1:8:15 | var ... = ... |
 | expressions.swift:8:5:8:11 | ... as ... | 0 | getImmediateSubPattern() | expressions.swift:8:5:8:5 | n |
 | expressions.swift:8:5:8:11 | ... as ... | 1 | getImmediateTypeRepr() | expressions.swift:8:8:8:11 | Int? |
-| expressions.swift:11:3:11:8 | case ... | 0 | getImmediateElement(0) | expressions.swift:11:8:11:8 | failed |
+| expressions.swift:10:1:12:1 | AnError | 0 | getImmediateMember(0) | expressions.swift:11:3:11:8 | case ... |
+| expressions.swift:10:1:12:1 | AnError | 1 | getImmediateMember(1) | expressions.swift:11:8:11:8 | failed |
+| expressions.swift:10:1:12:1 | AnError | 2 | getImmediateMember(2) | file://:0:0:0:0 | __derived_enum_equals(_:_:) |
+| expressions.swift:10:1:12:1 | AnError | 3 | getImmediateMember(3) | file://:0:0:0:0 | var ... = ... |
+| expressions.swift:10:1:12:1 | AnError | 4 | getImmediateMember(4) | file://:0:0:0:0 | hash(into:) |
+| expressions.swift:10:1:12:1 | AnError | 5 | getImmediateMember(5) | file://:0:0:0:0 | hashValue |
 | expressions.swift:14:1:18:1 | failure(_:) | 1 | getImmediateParam(0) | expressions.swift:14:14:14:19 | x |
 | expressions.swift:14:1:18:1 | failure(_:) | 2 | getImmediateBody() | expressions.swift:14:31:18:1 | { ... } |
 | expressions.swift:14:31:18:1 | { ... } | 0 | getImmediateElement(0) | expressions.swift:15:3:17:3 | guard ... else { ... } |
@@ -468,6 +526,8 @@
 | expressions.swift:21:1:21:16 | { ... } | 0 | getImmediateElement(0) | expressions.swift:21:1:21:16 | try? ... |
 | expressions.swift:21:6:21:16 | (()?) ... | 0 | getImmediateSubExpr() | expressions.swift:21:6:21:16 | call to failure(_:) |
 | expressions.swift:21:6:21:16 | call to failure(_:) | 0 | getImmediateFunction() | expressions.swift:21:6:21:6 | failure(_:) |
+| expressions.swift:23:1:25:1 | Klass | 0 | getImmediateMember(0) | expressions.swift:24:3:24:11 | init() |
+| expressions.swift:23:1:25:1 | Klass | 1 | getImmediateMember(1) | expressions.swift:23:7:23:7 | deinit() |
 | expressions.swift:23:7:23:7 | deinit() | 0 | getImmediateSelfParam() | expressions.swift:23:7:23:7 | self |
 | expressions.swift:23:7:23:7 | deinit() | 1 | getImmediateBody() | expressions.swift:23:7:23:7 | { ... } |
 | expressions.swift:24:3:24:11 | init() | 0 | getImmediateSelfParam() | expressions.swift:24:3:24:3 | self |
@@ -479,7 +539,6 @@
 | expressions.swift:27:1:27:19 | { ... } | 0 | getImmediateElement(0) | expressions.swift:27:1:27:19 | var ... = ... |
 | expressions.swift:27:13:27:13 | Klass.Type | 0 | getImmediateTypeRepr() | expressions.swift:27:13:27:13 | Klass |
 | expressions.swift:27:13:27:13 | call to init() | 0 | getImmediateFunction() | expressions.swift:27:13:27:13 | init() |
-| expressions.swift:27:13:27:13 | call to init() | 2 | getImmediateBase() | expressions.swift:27:13:27:13 | Klass.Type |
 | expressions.swift:27:13:27:19 | call to init() | 0 | getImmediateFunction() | expressions.swift:27:13:27:13 | call to init() |
 | expressions.swift:29:1:29:19 | var ... = ... | 0 | getImmediateInit(0) | expressions.swift:29:9:29:19 | [...] |
 | expressions.swift:29:1:29:19 | var ... = ... | 1 | getImmediatePattern(0) | expressions.swift:29:5:29:5 | d |
@@ -567,6 +626,9 @@
 | expressions.swift:48:12:48:17 | return ... | 0 | getImmediateResult() | expressions.swift:48:12:48:17 | ... .+(_:_:) ... |
 | expressions.swift:48:15:48:15 | .+(_:_:) | 0 | getImmediateBase() | expressions.swift:48:15:48:15 | Int.Type |
 | expressions.swift:48:15:48:15 | Int.Type | 0 | getImmediateTypeRepr() | expressions.swift:48:15:48:15 | Int |
+| expressions.swift:50:1:52:1 | S | 0 | getImmediateMember(0) | expressions.swift:51:3:51:10 | var ... = ... |
+| expressions.swift:50:1:52:1 | S | 1 | getImmediateMember(1) | expressions.swift:51:7:51:7 | x |
+| expressions.swift:50:1:52:1 | S | 2 | getImmediateMember(2) | expressions.swift:50:8:50:8 | init(x:) |
 | expressions.swift:50:8:50:8 | init(x:) | 0 | getImmediateSelfParam() | expressions.swift:50:8:50:8 | self |
 | expressions.swift:50:8:50:8 | init(x:) | 1 | getImmediateParam(0) | expressions.swift:50:8:50:8 | x |
 | expressions.swift:51:3:51:10 | var ... = ... | 0 | getImmediatePattern(0) | expressions.swift:51:7:51:10 | ... as ... |
@@ -602,6 +664,8 @@
 | expressions.swift:60:33:60:63 | { ... } | 2 | getImmediateBody() | expressions.swift:60:33:60:63 | { ... } |
 | expressions.swift:60:35:60:61 | call to unsafeFunction(pointer:) | 0 | getImmediateFunction() | expressions.swift:60:35:60:35 | unsafeFunction(pointer:) |
 | expressions.swift:60:35:60:61 | return ... | 0 | getImmediateResult() | expressions.swift:60:35:60:61 | call to unsafeFunction(pointer:) |
+| expressions.swift:62:1:68:1 | FailingToInit | 0 | getImmediateMember(0) | expressions.swift:63:3:67:3 | init(x:) |
+| expressions.swift:62:1:68:1 | FailingToInit | 1 | getImmediateMember(1) | expressions.swift:62:7:62:7 | deinit() |
 | expressions.swift:62:7:62:7 | deinit() | 0 | getImmediateSelfParam() | expressions.swift:62:7:62:7 | self |
 | expressions.swift:62:7:62:7 | deinit() | 1 | getImmediateBody() | expressions.swift:62:7:62:7 | { ... } |
 | expressions.swift:63:3:67:3 | init(x:) | 0 | getImmediateSelfParam() | expressions.swift:63:3:63:3 | self |
@@ -615,6 +679,10 @@
 | expressions.swift:64:10:64:10 | .<(_:_:) | 0 | getImmediateBase() | expressions.swift:64:10:64:10 | Int.Type |
 | expressions.swift:64:10:64:10 | Int.Type | 0 | getImmediateTypeRepr() | expressions.swift:64:10:64:10 | Int |
 | expressions.swift:64:14:66:5 | { ... } | 0 | getImmediateElement(0) | expressions.swift:65:7:65:14 | fail |
+| expressions.swift:70:1:75:1 | Base | 0 | getImmediateMember(0) | expressions.swift:71:3:71:11 | var ... = ... |
+| expressions.swift:70:1:75:1 | Base | 1 | getImmediateMember(1) | expressions.swift:71:7:71:7 | xx |
+| expressions.swift:70:1:75:1 | Base | 2 | getImmediateMember(2) | expressions.swift:72:3:74:3 | init(x:) |
+| expressions.swift:70:1:75:1 | Base | 3 | getImmediateMember(3) | expressions.swift:70:7:70:7 | deinit() |
 | expressions.swift:70:7:70:7 | deinit() | 0 | getImmediateSelfParam() | expressions.swift:70:7:70:7 | self |
 | expressions.swift:70:7:70:7 | deinit() | 1 | getImmediateBody() | expressions.swift:70:7:70:7 | { ... } |
 | expressions.swift:71:3:71:11 | var ... = ... | 0 | getImmediatePattern(0) | expressions.swift:71:7:71:11 | ... as ... |
@@ -632,6 +700,9 @@
 | expressions.swift:73:5:73:5 | .xx | 0 | getImmediateBase() | expressions.swift:73:5:73:5 | self |
 | expressions.swift:73:5:73:10 |  ... = ... | 0 | getImmediateDest() | expressions.swift:73:5:73:5 | .xx |
 | expressions.swift:73:5:73:10 |  ... = ... | 1 | getImmediateSource() | expressions.swift:73:10:73:10 | x |
+| expressions.swift:77:1:81:1 | Derived | 0 | getImmediateMember(0) | expressions.swift:78:3:80:3 | init() |
+| expressions.swift:77:1:81:1 | Derived | 1 | getImmediateMember(1) | expressions.swift:77:21:77:21 | init(x:) |
+| expressions.swift:77:1:81:1 | Derived | 2 | getImmediateMember(2) | expressions.swift:77:7:77:7 | deinit() |
 | expressions.swift:77:7:77:7 | call to _unimplementedInitializer(className:initName:file:line:column:) | 0 | getImmediateFunction() | expressions.swift:77:7:77:7 | _unimplementedInitializer(className:initName:file:line:column:) |
 | expressions.swift:77:7:77:7 | deinit() | 0 | getImmediateSelfParam() | expressions.swift:77:7:77:7 | self |
 | expressions.swift:77:7:77:7 | deinit() | 1 | getImmediateBody() | expressions.swift:77:7:77:7 | { ... } |
@@ -643,7 +714,6 @@
 | expressions.swift:78:10:80:3 | { ... } | 0 | getImmediateElement(0) | expressions.swift:79:5:79:21 | self = ... |
 | expressions.swift:78:10:80:3 | { ... } | 1 | getImmediateElement(1) | expressions.swift:80:3:80:3 | return |
 | expressions.swift:79:5:79:11 | call to ... | 0 | getImmediateFunction() | expressions.swift:79:11:79:11 | init(x:) |
-| expressions.swift:79:5:79:11 | call to ... | 2 | getImmediateBase() | expressions.swift:79:5:79:5 | super |
 | expressions.swift:79:5:79:21 | call to ... | 0 | getImmediateFunction() | expressions.swift:79:5:79:11 | call to ... |
 | expressions.swift:79:5:79:21 | self = ... | 0 | getImmediateSubExpr() | expressions.swift:79:5:79:21 | call to ... |
 | expressions.swift:83:1:83:23 | var ... = ... | 0 | getImmediateInit(0) | expressions.swift:83:15:83:23 | call to init() |
@@ -652,7 +722,6 @@
 | expressions.swift:83:1:83:23 | { ... } | 0 | getImmediateElement(0) | expressions.swift:83:1:83:23 | var ... = ... |
 | expressions.swift:83:15:83:15 | Derived.Type | 0 | getImmediateTypeRepr() | expressions.swift:83:15:83:15 | Derived |
 | expressions.swift:83:15:83:15 | call to init() | 0 | getImmediateFunction() | expressions.swift:83:15:83:15 | init() |
-| expressions.swift:83:15:83:15 | call to init() | 2 | getImmediateBase() | expressions.swift:83:15:83:15 | Derived.Type |
 | expressions.swift:83:15:83:23 | call to init() | 0 | getImmediateFunction() | expressions.swift:83:15:83:15 | call to init() |
 | expressions.swift:84:1:84:13 |  ... = ... | 0 | getImmediateDest() | expressions.swift:84:1:84:1 | _ |
 | expressions.swift:84:1:84:13 |  ... = ... | 1 | getImmediateSource() | expressions.swift:84:5:84:13 | .xx |
@@ -673,6 +742,8 @@
 | expressions.swift:88:1:88:7 | ...! | 0 | getImmediateSubExpr() | expressions.swift:88:1:88:6 | ...[...] |
 | expressions.swift:88:1:88:7 | { ... } | 0 | getImmediateBody() | expressions.swift:88:1:88:7 | { ... } |
 | expressions.swift:88:1:88:7 | { ... } | 0 | getImmediateElement(0) | expressions.swift:88:1:88:7 | ...! |
+| expressions.swift:90:1:90:14 | ToPtr | 0 | getImmediateMember(0) | expressions.swift:90:7:90:7 | deinit() |
+| expressions.swift:90:1:90:14 | ToPtr | 1 | getImmediateMember(1) | expressions.swift:90:7:90:7 | init() |
 | expressions.swift:90:7:90:7 | deinit() | 0 | getImmediateSelfParam() | expressions.swift:90:7:90:7 | self |
 | expressions.swift:90:7:90:7 | deinit() | 1 | getImmediateBody() | expressions.swift:90:7:90:7 | { ... } |
 | expressions.swift:90:7:90:7 | init() | 0 | getImmediateSelfParam() | expressions.swift:90:7:90:7 | self |
@@ -689,7 +760,6 @@
 | expressions.swift:92:14:92:55 | call to toOpaque() | 0 | getImmediateFunction() | expressions.swift:92:14:92:46 | .toOpaque() |
 | expressions.swift:92:37:92:37 | ToPtr.Type | 0 | getImmediateTypeRepr() | expressions.swift:92:37:92:37 | ToPtr |
 | expressions.swift:92:37:92:37 | call to init() | 0 | getImmediateFunction() | expressions.swift:92:37:92:37 | init() |
-| expressions.swift:92:37:92:37 | call to init() | 2 | getImmediateBase() | expressions.swift:92:37:92:37 | ToPtr.Type |
 | expressions.swift:92:37:92:43 | call to init() | 0 | getImmediateFunction() | expressions.swift:92:37:92:37 | call to init() |
 | expressions.swift:93:1:93:16 | Unmanaged<ToPtr>.Type | 0 | getImmediateTypeRepr() | expressions.swift:93:1:93:16 | Unmanaged<ToPtr> |
 | expressions.swift:93:1:93:18 | .fromOpaque(_:) | 0 | getImmediateBase() | expressions.swift:93:1:93:16 | Unmanaged<ToPtr>.Type |
@@ -697,6 +767,17 @@
 | expressions.swift:93:1:93:35 | { ... } | 0 | getImmediateBody() | expressions.swift:93:1:93:35 | { ... } |
 | expressions.swift:93:1:93:35 | { ... } | 0 | getImmediateElement(0) | expressions.swift:93:1:93:35 | call to fromOpaque(_:) |
 | expressions.swift:93:29:93:29 | (UnsafeRawPointer) ... | 0 | getImmediateSubExpr() | expressions.swift:93:29:93:29 | opaque |
+| expressions.swift:95:1:128:1 | HasProperty | 0 | getImmediateMember(0) | expressions.swift:96:3:101:3 | var ... = ... |
+| expressions.swift:95:1:128:1 | HasProperty | 1 | getImmediateMember(1) | expressions.swift:96:7:96:7 | settableField |
+| expressions.swift:95:1:128:1 | HasProperty | 2 | getImmediateMember(2) | expressions.swift:105:3:107:3 | var ... = ... |
+| expressions.swift:95:1:128:1 | HasProperty | 3 | getImmediateMember(3) | expressions.swift:105:7:105:7 | readOnlyField1 |
+| expressions.swift:95:1:128:1 | HasProperty | 4 | getImmediateMember(4) | expressions.swift:110:3:114:3 | var ... = ... |
+| expressions.swift:95:1:128:1 | HasProperty | 5 | getImmediateMember(5) | expressions.swift:110:7:110:7 | readOnlyField2 |
+| expressions.swift:95:1:128:1 | HasProperty | 6 | getImmediateMember(6) | expressions.swift:116:3:116:21 | var ... = ... |
+| expressions.swift:95:1:128:1 | HasProperty | 7 | getImmediateMember(7) | expressions.swift:116:7:116:7 | normalField |
+| expressions.swift:95:1:128:1 | HasProperty | 8 | getImmediateMember(8) | expressions.swift:118:3:123:3 | subscript ... |
+| expressions.swift:95:1:128:1 | HasProperty | 9 | getImmediateMember(9) | expressions.swift:125:3:127:3 | subscript ... |
+| expressions.swift:95:1:128:1 | HasProperty | 10 | getImmediateMember(10) | expressions.swift:95:8:95:8 | init(normalField:) |
 | expressions.swift:95:8:95:8 | init(normalField:) | 0 | getImmediateSelfParam() | expressions.swift:95:8:95:8 | self |
 | expressions.swift:95:8:95:8 | init(normalField:) | 1 | getImmediateParam(0) | expressions.swift:95:8:95:8 | normalField |
 | expressions.swift:96:3:101:3 | var ... = ... | 0 | getImmediatePattern(0) | expressions.swift:96:7:96:22 | ... as ... |
@@ -819,6 +900,9 @@
 | expressions.swift:138:3:138:17 | return ... | 0 | getImmediateResult() | expressions.swift:138:10:138:17 | ...[...] |
 | expressions.swift:138:10:138:10 | (HasProperty) ... | 0 | getImmediateSubExpr() | expressions.swift:138:10:138:10 | hp |
 | expressions.swift:138:10:138:17 | ...[...] | 0 | getImmediateBase() | expressions.swift:138:10:138:10 | (HasProperty) ... |
+| expressions.swift:141:1:143:1 | B | 0 | getImmediateMember(0) | expressions.swift:142:3:142:11 | var ... = ... |
+| expressions.swift:141:1:143:1 | B | 1 | getImmediateMember(1) | expressions.swift:142:7:142:7 | x |
+| expressions.swift:141:1:143:1 | B | 2 | getImmediateMember(2) | expressions.swift:141:8:141:8 | init(x:) |
 | expressions.swift:141:8:141:8 | init(x:) | 0 | getImmediateSelfParam() | expressions.swift:141:8:141:8 | self |
 | expressions.swift:141:8:141:8 | init(x:) | 1 | getImmediateParam(0) | expressions.swift:141:8:141:8 | x |
 | expressions.swift:142:3:142:11 | var ... = ... | 0 | getImmediatePattern(0) | expressions.swift:142:7:142:11 | ... as ... |
@@ -838,6 +922,13 @@
 | expressions.swift:142:7:142:7 | { ... } | 0 | getImmediateElement(0) | file://:0:0:0:0 | return ... |
 | expressions.swift:142:7:142:11 | ... as ... | 0 | getImmediateSubPattern() | expressions.swift:142:7:142:7 | x |
 | expressions.swift:142:7:142:11 | ... as ... | 1 | getImmediateTypeRepr() | expressions.swift:142:11:142:11 | Int |
+| expressions.swift:145:1:149:1 | A | 0 | getImmediateMember(0) | expressions.swift:146:3:146:11 | var ... = ... |
+| expressions.swift:145:1:149:1 | A | 1 | getImmediateMember(1) | expressions.swift:146:7:146:7 | b |
+| expressions.swift:145:1:149:1 | A | 2 | getImmediateMember(2) | expressions.swift:147:3:147:14 | var ... = ... |
+| expressions.swift:145:1:149:1 | A | 3 | getImmediateMember(3) | expressions.swift:147:7:147:7 | bs |
+| expressions.swift:145:1:149:1 | A | 4 | getImmediateMember(4) | expressions.swift:148:3:148:15 | var ... = ... |
+| expressions.swift:145:1:149:1 | A | 5 | getImmediateMember(5) | expressions.swift:148:7:148:7 | mayB |
+| expressions.swift:145:1:149:1 | A | 6 | getImmediateMember(6) | expressions.swift:145:8:145:8 | init(b:bs:mayB:) |
 | expressions.swift:145:8:145:8 | init(b:bs:mayB:) | 0 | getImmediateSelfParam() | expressions.swift:145:8:145:8 | self |
 | expressions.swift:145:8:145:8 | init(b:bs:mayB:) | 1 | getImmediateParam(0) | expressions.swift:145:8:145:8 | b |
 | expressions.swift:145:8:145:8 | init(b:bs:mayB:) | 2 | getImmediateParam(1) | expressions.swift:145:8:145:8 | bs |
@@ -995,8 +1086,9 @@
 | patterns.swift:17:5:17:13 | case ... | 1 | getImmediateLabel(0) | patterns.swift:17:10:17:10 | _ |
 | patterns.swift:17:10:17:10 | _ | 0 | getImmediatePattern() | patterns.swift:17:10:17:10 | _ |
 | patterns.swift:17:13:17:13 | { ... } | 0 | getImmediateElement(0) | patterns.swift:17:13:17:13 |  |
-| patterns.swift:21:9:21:34 | case ... | 0 | getImmediateElement(0) | patterns.swift:21:14:21:14 | bar |
-| patterns.swift:21:9:21:34 | case ... | 1 | getImmediateElement(1) | patterns.swift:21:19:21:34 | baz |
+| patterns.swift:20:5:22:5 | Foo | 0 | getImmediateMember(0) | patterns.swift:21:9:21:34 | case ... |
+| patterns.swift:20:5:22:5 | Foo | 1 | getImmediateMember(1) | patterns.swift:21:14:21:14 | bar |
+| patterns.swift:20:5:22:5 | Foo | 2 | getImmediateMember(2) | patterns.swift:21:19:21:34 | baz |
 | patterns.swift:21:19:21:34 | baz | 0 | getImmediateParam(0) | patterns.swift:21:23:21:23 | _ |
 | patterns.swift:21:19:21:34 | baz | 1 | getImmediateParam(1) | patterns.swift:21:28:21:28 | _ |
 | patterns.swift:24:5:24:19 | var ... = ... | 0 | getImmediateInit(0) | patterns.swift:24:18:24:19 | .bar |
@@ -1169,7 +1261,12 @@
 | statements.swift:30:11:30:11 | (Any) ... | 0 | getImmediateSubExpr() | statements.swift:30:11:30:11 | error |
 | statements.swift:30:11:30:11 | [...] | 0 | getImmediateElement(0) | statements.swift:30:11:30:11 | (Any) ... |
 | statements.swift:30:11:30:11 | [...] | 0 | getImmediateSubExpr() | statements.swift:30:11:30:11 | [...] |
-| statements.swift:35:3:35:8 | case ... | 0 | getImmediateElement(0) | statements.swift:35:8:35:8 | failed |
+| statements.swift:34:1:36:1 | AnError | 0 | getImmediateMember(0) | statements.swift:35:3:35:8 | case ... |
+| statements.swift:34:1:36:1 | AnError | 1 | getImmediateMember(1) | statements.swift:35:8:35:8 | failed |
+| statements.swift:34:1:36:1 | AnError | 2 | getImmediateMember(2) | file://:0:0:0:0 | __derived_enum_equals(_:_:) |
+| statements.swift:34:1:36:1 | AnError | 3 | getImmediateMember(3) | file://:0:0:0:0 | var ... = ... |
+| statements.swift:34:1:36:1 | AnError | 4 | getImmediateMember(4) | file://:0:0:0:0 | hash(into:) |
+| statements.swift:34:1:36:1 | AnError | 5 | getImmediateMember(5) | file://:0:0:0:0 | hashValue |
 | statements.swift:38:1:42:1 | failure(_:) | 1 | getImmediateParam(0) | statements.swift:38:14:38:19 | x |
 | statements.swift:38:1:42:1 | failure(_:) | 2 | getImmediateBody() | statements.swift:38:31:42:1 | { ... } |
 | statements.swift:38:31:42:1 | { ... } | 0 | getImmediateElement(0) | statements.swift:39:3:41:3 | guard ... else { ... } |
@@ -1278,6 +1375,11 @@
 | statements.swift:71:36:71:36 | Int.Type | 0 | getImmediateTypeRepr() | statements.swift:71:36:71:36 | Int |
 | statements.swift:71:40:71:40 | .==(_:_:) | 0 | getImmediateBase() | statements.swift:71:40:71:40 | Int.Type |
 | statements.swift:71:40:71:40 | Int.Type | 0 | getImmediateTypeRepr() | statements.swift:71:40:71:40 | Int |
+| statements.swift:74:1:85:1 | HasModifyAccessorDecl | 0 | getImmediateMember(0) | statements.swift:75:3:75:11 | var ... = ... |
+| statements.swift:74:1:85:1 | HasModifyAccessorDecl | 1 | getImmediateMember(1) | statements.swift:75:7:75:7 | x |
+| statements.swift:74:1:85:1 | HasModifyAccessorDecl | 2 | getImmediateMember(2) | statements.swift:76:3:84:3 | var ... = ... |
+| statements.swift:74:1:85:1 | HasModifyAccessorDecl | 3 | getImmediateMember(3) | statements.swift:76:7:76:7 | hasModify |
+| statements.swift:74:1:85:1 | HasModifyAccessorDecl | 4 | getImmediateMember(4) | statements.swift:74:8:74:8 | init(x:) |
 | statements.swift:74:8:74:8 | init(x:) | 0 | getImmediateSelfParam() | statements.swift:74:8:74:8 | self |
 | statements.swift:74:8:74:8 | init(x:) | 1 | getImmediateParam(0) | statements.swift:74:8:74:8 | x |
 | statements.swift:75:3:75:11 | var ... = ... | 0 | getImmediatePattern(0) | statements.swift:75:7:75:11 | ... as ... |

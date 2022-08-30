@@ -1,3 +1,9 @@
+| declarations.swift:1:1:7:1 | Foo | StructDecl | declarations.swift:1:8:1:8 | init() | ConstructorDecl |
+| declarations.swift:1:1:7:1 | Foo | StructDecl | declarations.swift:1:8:1:8 | init(x:) | ConstructorDecl |
+| declarations.swift:1:1:7:1 | Foo | StructDecl | declarations.swift:2:3:2:11 | var ... = ... | PatternBindingDecl |
+| declarations.swift:1:1:7:1 | Foo | StructDecl | declarations.swift:2:7:2:7 | x | ConcreteVarDecl |
+| declarations.swift:1:1:7:1 | Foo | StructDecl | declarations.swift:3:3:6:3 | var ... = ... | PatternBindingDecl |
+| declarations.swift:1:1:7:1 | Foo | StructDecl | declarations.swift:3:7:3:7 | next | ConcreteVarDecl |
 | declarations.swift:1:8:1:8 | init() | ConstructorDecl | declarations.swift:1:8:1:8 | self | ParamDecl |
 | declarations.swift:1:8:1:8 | init() | ConstructorDecl | declarations.swift:1:8:1:8 | { ... } | BraceStmt |
 | declarations.swift:1:8:1:8 | init(x:) | ConstructorDecl | declarations.swift:1:8:1:8 | self | ParamDecl |
@@ -45,6 +51,10 @@
 | declarations.swift:5:21:5:36 |  ... = ... | AssignExpr | declarations.swift:5:25:5:36 | ... .-(_:_:) ... | BinaryExpr |
 | declarations.swift:5:25:5:36 | ... .-(_:_:) ... | BinaryExpr | declarations.swift:5:34:5:34 | .-(_:_:) | MethodRefExpr |
 | declarations.swift:5:34:5:34 | Int.Type | TypeExpr | declarations.swift:5:34:5:34 | Int | TypeRepr |
+| declarations.swift:9:1:9:34 | Bar | ClassDecl | declarations.swift:9:7:9:7 | deinit() | DestructorDecl |
+| declarations.swift:9:1:9:34 | Bar | ClassDecl | declarations.swift:9:7:9:7 | init() | ConstructorDecl |
+| declarations.swift:9:1:9:34 | Bar | ClassDecl | declarations.swift:9:13:9:30 | var ... = ... | PatternBindingDecl |
+| declarations.swift:9:1:9:34 | Bar | ClassDecl | declarations.swift:9:17:9:17 | x | ConcreteVarDecl |
 | declarations.swift:9:7:9:7 | deinit() | DestructorDecl | declarations.swift:9:7:9:7 | self | ParamDecl |
 | declarations.swift:9:7:9:7 | deinit() | DestructorDecl | declarations.swift:9:7:9:7 | { ... } | BraceStmt |
 | declarations.swift:9:7:9:7 | init() | ConstructorDecl | declarations.swift:9:7:9:7 | self | ParamDecl |
@@ -68,19 +78,33 @@
 | declarations.swift:9:17:9:17 | { ... } | BraceStmt | file://:0:0:0:0 | return ... | ReturnStmt |
 | declarations.swift:9:17:9:21 | ... as ... | TypedPattern | declarations.swift:9:17:9:17 | x | NamedPattern |
 | declarations.swift:9:17:9:21 | ... as ... | TypedPattern | declarations.swift:9:21:9:21 | Double | TypeRepr |
-| declarations.swift:12:5:12:18 | case ... | EnumCaseDecl | declarations.swift:12:10:12:10 | value1 | EnumElementDecl |
-| declarations.swift:12:5:12:18 | case ... | EnumCaseDecl | declarations.swift:12:18:12:18 | value2 | EnumElementDecl |
-| declarations.swift:13:5:13:26 | case ... | EnumCaseDecl | declarations.swift:13:10:13:10 | value3 | EnumElementDecl |
-| declarations.swift:13:5:13:26 | case ... | EnumCaseDecl | declarations.swift:13:18:13:18 | value4 | EnumElementDecl |
-| declarations.swift:13:5:13:26 | case ... | EnumCaseDecl | declarations.swift:13:26:13:26 | value5 | EnumElementDecl |
-| declarations.swift:17:5:17:22 | case ... | EnumCaseDecl | declarations.swift:17:10:17:22 | nodata1 | EnumElementDecl |
+| declarations.swift:11:1:14:1 | EnumValues | EnumDecl | declarations.swift:12:5:12:18 | case ... | EnumCaseDecl |
+| declarations.swift:11:1:14:1 | EnumValues | EnumDecl | declarations.swift:12:10:12:10 | value1 | EnumElementDecl |
+| declarations.swift:11:1:14:1 | EnumValues | EnumDecl | declarations.swift:12:18:12:18 | value2 | EnumElementDecl |
+| declarations.swift:11:1:14:1 | EnumValues | EnumDecl | declarations.swift:13:5:13:26 | case ... | EnumCaseDecl |
+| declarations.swift:11:1:14:1 | EnumValues | EnumDecl | declarations.swift:13:10:13:10 | value3 | EnumElementDecl |
+| declarations.swift:11:1:14:1 | EnumValues | EnumDecl | declarations.swift:13:18:13:18 | value4 | EnumElementDecl |
+| declarations.swift:11:1:14:1 | EnumValues | EnumDecl | declarations.swift:13:26:13:26 | value5 | EnumElementDecl |
+| declarations.swift:11:1:14:1 | EnumValues | EnumDecl | file://:0:0:0:0 | __derived_enum_equals(_:_:) | ConcreteFuncDecl |
+| declarations.swift:11:1:14:1 | EnumValues | EnumDecl | file://:0:0:0:0 | hash(into:) | ConcreteFuncDecl |
+| declarations.swift:11:1:14:1 | EnumValues | EnumDecl | file://:0:0:0:0 | hashValue | ConcreteVarDecl |
+| declarations.swift:11:1:14:1 | EnumValues | EnumDecl | file://:0:0:0:0 | var ... = ... | PatternBindingDecl |
+| declarations.swift:16:1:20:1 | EnumWithParams | EnumDecl | declarations.swift:17:5:17:22 | case ... | EnumCaseDecl |
+| declarations.swift:16:1:20:1 | EnumWithParams | EnumDecl | declarations.swift:17:10:17:22 | nodata1 | EnumElementDecl |
+| declarations.swift:16:1:20:1 | EnumWithParams | EnumDecl | declarations.swift:18:5:18:21 | case ... | EnumCaseDecl |
+| declarations.swift:16:1:20:1 | EnumWithParams | EnumDecl | declarations.swift:18:10:18:21 | intdata | EnumElementDecl |
+| declarations.swift:16:1:20:1 | EnumWithParams | EnumDecl | declarations.swift:19:5:19:35 | case ... | EnumCaseDecl |
+| declarations.swift:16:1:20:1 | EnumWithParams | EnumDecl | declarations.swift:19:10:19:35 | tuple | EnumElementDecl |
 | declarations.swift:17:10:17:22 | nodata1 | EnumElementDecl | declarations.swift:17:18:17:18 | _ | ParamDecl |
-| declarations.swift:18:5:18:21 | case ... | EnumCaseDecl | declarations.swift:18:10:18:21 | intdata | EnumElementDecl |
 | declarations.swift:18:10:18:21 | intdata | EnumElementDecl | declarations.swift:18:18:18:18 | _ | ParamDecl |
-| declarations.swift:19:5:19:35 | case ... | EnumCaseDecl | declarations.swift:19:10:19:35 | tuple | EnumElementDecl |
 | declarations.swift:19:10:19:35 | tuple | EnumElementDecl | declarations.swift:19:16:19:16 | _ | ParamDecl |
 | declarations.swift:19:10:19:35 | tuple | EnumElementDecl | declarations.swift:19:21:19:21 | _ | ParamDecl |
 | declarations.swift:19:10:19:35 | tuple | EnumElementDecl | declarations.swift:19:29:19:29 | _ | ParamDecl |
+| declarations.swift:22:1:26:1 | MyProtocol | ProtocolDecl | declarations.swift:23:5:23:39 | var ... = ... | PatternBindingDecl |
+| declarations.swift:22:1:26:1 | MyProtocol | ProtocolDecl | declarations.swift:23:9:23:9 | mustBeSettable | ConcreteVarDecl |
+| declarations.swift:22:1:26:1 | MyProtocol | ProtocolDecl | declarations.swift:24:5:24:44 | var ... = ... | PatternBindingDecl |
+| declarations.swift:22:1:26:1 | MyProtocol | ProtocolDecl | declarations.swift:24:9:24:9 | doesNotNeedToBeSettable | ConcreteVarDecl |
+| declarations.swift:22:1:26:1 | MyProtocol | ProtocolDecl | declarations.swift:25:5:25:22 | random() | ConcreteFuncDecl |
 | declarations.swift:23:5:23:39 | var ... = ... | PatternBindingDecl | declarations.swift:23:9:23:25 | ... as ... | TypedPattern |
 | declarations.swift:23:9:23:9 | (unnamed function decl) | AccessorDecl | declarations.swift:23:9:23:9 | self | ParamDecl |
 | declarations.swift:23:9:23:9 | mustBeSettable | ConcreteVarDecl | declarations.swift:23:9:23:9 | (unnamed function decl) | AccessorDecl |
@@ -121,6 +145,11 @@
 | declarations.swift:38:7:38:7 | (Any) ... | ErasureExpr | declarations.swift:38:7:38:7 | some top level statement | StringLiteralExpr |
 | declarations.swift:38:7:38:7 | [...] | ArrayExpr | declarations.swift:38:7:38:7 | (Any) ... | ErasureExpr |
 | declarations.swift:38:7:38:7 | [...] | VarargExpansionExpr | declarations.swift:38:7:38:7 | [...] | ArrayExpr |
+| declarations.swift:40:1:53:1 | Baz | ClassDecl | declarations.swift:41:3:41:14 | var ... = ... | PatternBindingDecl |
+| declarations.swift:40:1:53:1 | Baz | ClassDecl | declarations.swift:41:7:41:7 | field | ConcreteVarDecl |
+| declarations.swift:40:1:53:1 | Baz | ClassDecl | declarations.swift:42:3:44:3 | init() | ConstructorDecl |
+| declarations.swift:40:1:53:1 | Baz | ClassDecl | declarations.swift:46:3:48:3 | deinit() | DestructorDecl |
+| declarations.swift:40:1:53:1 | Baz | ClassDecl | declarations.swift:50:3:52:3 | +-(_:) | ConcreteFuncDecl |
 | declarations.swift:41:3:41:14 | var ... = ... | PatternBindingDecl | declarations.swift:41:7:41:14 | ... as ... | TypedPattern |
 | declarations.swift:41:7:41:7 | (unnamed function decl) | AccessorDecl | declarations.swift:41:7:41:7 | self | ParamDecl |
 | declarations.swift:41:7:41:7 | (unnamed function decl) | AccessorDecl | declarations.swift:41:7:41:7 | { ... } | BraceStmt |
@@ -156,6 +185,9 @@
 | declarations.swift:50:3:52:3 | +-(_:) | ConcreteFuncDecl | declarations.swift:50:45:52:3 | { ... } | BraceStmt |
 | declarations.swift:50:45:52:3 | { ... } | BraceStmt | declarations.swift:51:5:51:12 | return ... | ReturnStmt |
 | declarations.swift:51:5:51:12 | return ... | ReturnStmt | declarations.swift:51:12:51:12 | other | DeclRefExpr |
+| declarations.swift:68:18:74:1 | ZeroWrapper | StructDecl | declarations.swift:68:25:68:25 | init() | ConstructorDecl |
+| declarations.swift:68:18:74:1 | ZeroWrapper | StructDecl | declarations.swift:69:3:73:3 | var ... = ... | PatternBindingDecl |
+| declarations.swift:68:18:74:1 | ZeroWrapper | StructDecl | declarations.swift:69:7:69:7 | wrappedValue | ConcreteVarDecl |
 | declarations.swift:68:25:68:25 | init() | ConstructorDecl | declarations.swift:68:25:68:25 | self | ParamDecl |
 | declarations.swift:68:25:68:25 | init() | ConstructorDecl | declarations.swift:68:25:68:25 | { ... } | BraceStmt |
 | declarations.swift:68:25:68:25 | { ... } | BraceStmt | declarations.swift:68:25:68:25 | return | ReturnStmt |
@@ -182,6 +214,27 @@
 | declarations.swift:77:20:77:23 | ... as ... | TypedPattern | declarations.swift:77:20:77:20 | x | NamedPattern |
 | declarations.swift:77:20:77:23 | ... as ... | TypedPattern | declarations.swift:77:23:77:23 | Int | TypeRepr |
 | declarations.swift:78:3:78:10 | return ... | ReturnStmt | declarations.swift:78:10:78:10 | x | DeclRefExpr |
+| declarations.swift:81:1:136:1 | HasPropertyAndObserver | StructDecl | declarations.swift:81:8:81:8 | init(normalField:hasWillSet1:hasWillSet2:hasDidSet1:hasDidSet2:hasBoth:) | ConstructorDecl |
+| declarations.swift:81:1:136:1 | HasPropertyAndObserver | StructDecl | declarations.swift:82:3:87:3 | var ... = ... | PatternBindingDecl |
+| declarations.swift:81:1:136:1 | HasPropertyAndObserver | StructDecl | declarations.swift:82:7:82:7 | settableField | ConcreteVarDecl |
+| declarations.swift:81:1:136:1 | HasPropertyAndObserver | StructDecl | declarations.swift:91:3:93:3 | var ... = ... | PatternBindingDecl |
+| declarations.swift:81:1:136:1 | HasPropertyAndObserver | StructDecl | declarations.swift:91:7:91:7 | readOnlyField1 | ConcreteVarDecl |
+| declarations.swift:81:1:136:1 | HasPropertyAndObserver | StructDecl | declarations.swift:96:3:100:3 | var ... = ... | PatternBindingDecl |
+| declarations.swift:81:1:136:1 | HasPropertyAndObserver | StructDecl | declarations.swift:96:7:96:7 | readOnlyField2 | ConcreteVarDecl |
+| declarations.swift:81:1:136:1 | HasPropertyAndObserver | StructDecl | declarations.swift:102:3:102:21 | var ... = ... | PatternBindingDecl |
+| declarations.swift:81:1:136:1 | HasPropertyAndObserver | StructDecl | declarations.swift:102:7:102:7 | normalField | ConcreteVarDecl |
+| declarations.swift:81:1:136:1 | HasPropertyAndObserver | StructDecl | declarations.swift:104:3:109:3 | subscript ... | SubscriptDecl |
+| declarations.swift:81:1:136:1 | HasPropertyAndObserver | StructDecl | declarations.swift:111:3:113:3 | subscript ... | SubscriptDecl |
+| declarations.swift:81:1:136:1 | HasPropertyAndObserver | StructDecl | declarations.swift:115:3:117:3 | var ... = ... | PatternBindingDecl |
+| declarations.swift:81:1:136:1 | HasPropertyAndObserver | StructDecl | declarations.swift:115:7:115:7 | hasWillSet1 | ConcreteVarDecl |
+| declarations.swift:81:1:136:1 | HasPropertyAndObserver | StructDecl | declarations.swift:119:3:121:3 | var ... = ... | PatternBindingDecl |
+| declarations.swift:81:1:136:1 | HasPropertyAndObserver | StructDecl | declarations.swift:119:7:119:7 | hasWillSet2 | ConcreteVarDecl |
+| declarations.swift:81:1:136:1 | HasPropertyAndObserver | StructDecl | declarations.swift:123:3:125:3 | var ... = ... | PatternBindingDecl |
+| declarations.swift:81:1:136:1 | HasPropertyAndObserver | StructDecl | declarations.swift:123:7:123:7 | hasDidSet1 | ConcreteVarDecl |
+| declarations.swift:81:1:136:1 | HasPropertyAndObserver | StructDecl | declarations.swift:127:3:129:3 | var ... = ... | PatternBindingDecl |
+| declarations.swift:81:1:136:1 | HasPropertyAndObserver | StructDecl | declarations.swift:127:7:127:7 | hasDidSet2 | ConcreteVarDecl |
+| declarations.swift:81:1:136:1 | HasPropertyAndObserver | StructDecl | declarations.swift:131:3:135:3 | var ... = ... | PatternBindingDecl |
+| declarations.swift:81:1:136:1 | HasPropertyAndObserver | StructDecl | declarations.swift:131:7:131:7 | hasBoth | ConcreteVarDecl |
 | declarations.swift:81:8:81:8 | init(normalField:hasWillSet1:hasWillSet2:hasDidSet1:hasDidSet2:hasBoth:) | ConstructorDecl | declarations.swift:81:8:81:8 | hasBoth | ParamDecl |
 | declarations.swift:81:8:81:8 | init(normalField:hasWillSet1:hasWillSet2:hasDidSet1:hasDidSet2:hasBoth:) | ConstructorDecl | declarations.swift:81:8:81:8 | hasDidSet1 | ParamDecl |
 | declarations.swift:81:8:81:8 | init(normalField:hasWillSet1:hasWillSet2:hasDidSet1:hasDidSet2:hasBoth:) | ConstructorDecl | declarations.swift:81:8:81:8 | hasDidSet2 | ParamDecl |
@@ -382,6 +435,7 @@
 | declarations.swift:132:5:132:15 | willSet | AccessorDecl | declarations.swift:132:13:132:15 | { ... } | BraceStmt |
 | declarations.swift:134:5:134:14 | didSet | AccessorDecl | declarations.swift:134:5:134:5 | self | ParamDecl |
 | declarations.swift:134:5:134:14 | didSet | AccessorDecl | declarations.swift:134:12:134:14 | { ... } | BraceStmt |
+| declarations.swift:138:1:142:1 | extension | ExtensionDecl | declarations.swift:139:3:141:3 | id() | ConcreteFuncDecl |
 | declarations.swift:139:3:141:3 | id() | ConcreteFuncDecl | declarations.swift:139:8:139:8 | self | ParamDecl |
 | declarations.swift:139:3:141:3 | id() | ConcreteFuncDecl | declarations.swift:139:20:141:3 | { ... } | BraceStmt |
 | declarations.swift:139:20:141:3 | { ... } | BraceStmt | declarations.swift:140:5:140:12 | return ... | ReturnStmt |
@@ -438,7 +492,12 @@
 | expressions.swift:8:1:8:15 | { ... } | TopLevelCodeDecl | expressions.swift:8:1:8:15 | { ... } | BraceStmt |
 | expressions.swift:8:5:8:11 | ... as ... | TypedPattern | expressions.swift:8:5:8:5 | n | NamedPattern |
 | expressions.swift:8:5:8:11 | ... as ... | TypedPattern | expressions.swift:8:8:8:11 | Int? | TypeRepr |
-| expressions.swift:11:3:11:8 | case ... | EnumCaseDecl | expressions.swift:11:8:11:8 | failed | EnumElementDecl |
+| expressions.swift:10:1:12:1 | AnError | EnumDecl | expressions.swift:11:3:11:8 | case ... | EnumCaseDecl |
+| expressions.swift:10:1:12:1 | AnError | EnumDecl | expressions.swift:11:8:11:8 | failed | EnumElementDecl |
+| expressions.swift:10:1:12:1 | AnError | EnumDecl | file://:0:0:0:0 | __derived_enum_equals(_:_:) | ConcreteFuncDecl |
+| expressions.swift:10:1:12:1 | AnError | EnumDecl | file://:0:0:0:0 | hash(into:) | ConcreteFuncDecl |
+| expressions.swift:10:1:12:1 | AnError | EnumDecl | file://:0:0:0:0 | hashValue | ConcreteVarDecl |
+| expressions.swift:10:1:12:1 | AnError | EnumDecl | file://:0:0:0:0 | var ... = ... | PatternBindingDecl |
 | expressions.swift:14:1:18:1 | failure(_:) | ConcreteFuncDecl | expressions.swift:14:14:14:19 | x | ParamDecl |
 | expressions.swift:14:1:18:1 | failure(_:) | ConcreteFuncDecl | expressions.swift:14:31:18:1 | { ... } | BraceStmt |
 | expressions.swift:14:31:18:1 | { ... } | BraceStmt | expressions.swift:15:3:17:3 | guard ... else { ... } | GuardStmt |
@@ -459,6 +518,8 @@
 | expressions.swift:21:1:21:16 | { ... } | TopLevelCodeDecl | expressions.swift:21:1:21:16 | { ... } | BraceStmt |
 | expressions.swift:21:6:21:16 | (()?) ... | InjectIntoOptionalExpr | expressions.swift:21:6:21:16 | call to failure(_:) | CallExpr |
 | expressions.swift:21:6:21:16 | call to failure(_:) | CallExpr | expressions.swift:21:6:21:6 | failure(_:) | DeclRefExpr |
+| expressions.swift:23:1:25:1 | Klass | ClassDecl | expressions.swift:23:7:23:7 | deinit() | DestructorDecl |
+| expressions.swift:23:1:25:1 | Klass | ClassDecl | expressions.swift:24:3:24:11 | init() | ConstructorDecl |
 | expressions.swift:23:7:23:7 | deinit() | DestructorDecl | expressions.swift:23:7:23:7 | self | ParamDecl |
 | expressions.swift:23:7:23:7 | deinit() | DestructorDecl | expressions.swift:23:7:23:7 | { ... } | BraceStmt |
 | expressions.swift:24:3:24:11 | init() | ConstructorDecl | expressions.swift:24:3:24:3 | self | ParamDecl |
@@ -553,6 +614,9 @@
 | expressions.swift:48:12:48:17 | ... .+(_:_:) ... | BinaryExpr | expressions.swift:48:15:48:15 | .+(_:_:) | MethodRefExpr |
 | expressions.swift:48:12:48:17 | return ... | ReturnStmt | expressions.swift:48:12:48:17 | ... .+(_:_:) ... | BinaryExpr |
 | expressions.swift:48:15:48:15 | Int.Type | TypeExpr | expressions.swift:48:15:48:15 | Int | TypeRepr |
+| expressions.swift:50:1:52:1 | S | StructDecl | expressions.swift:50:8:50:8 | init(x:) | ConstructorDecl |
+| expressions.swift:50:1:52:1 | S | StructDecl | expressions.swift:51:3:51:10 | var ... = ... | PatternBindingDecl |
+| expressions.swift:50:1:52:1 | S | StructDecl | expressions.swift:51:7:51:7 | x | ConcreteVarDecl |
 | expressions.swift:50:8:50:8 | init(x:) | ConstructorDecl | expressions.swift:50:8:50:8 | self | ParamDecl |
 | expressions.swift:50:8:50:8 | init(x:) | ConstructorDecl | expressions.swift:50:8:50:8 | x | ParamDecl |
 | expressions.swift:51:3:51:10 | var ... = ... | PatternBindingDecl | expressions.swift:51:7:51:10 | ... as ... | TypedPattern |
@@ -588,6 +652,8 @@
 | expressions.swift:60:33:60:63 | { ... } | ClosureExpr | expressions.swift:60:33:60:63 | { ... } | BraceStmt |
 | expressions.swift:60:35:60:61 | call to unsafeFunction(pointer:) | CallExpr | expressions.swift:60:35:60:35 | unsafeFunction(pointer:) | DeclRefExpr |
 | expressions.swift:60:35:60:61 | return ... | ReturnStmt | expressions.swift:60:35:60:61 | call to unsafeFunction(pointer:) | CallExpr |
+| expressions.swift:62:1:68:1 | FailingToInit | ClassDecl | expressions.swift:62:7:62:7 | deinit() | DestructorDecl |
+| expressions.swift:62:1:68:1 | FailingToInit | ClassDecl | expressions.swift:63:3:67:3 | init(x:) | ConstructorDecl |
 | expressions.swift:62:7:62:7 | deinit() | DestructorDecl | expressions.swift:62:7:62:7 | self | ParamDecl |
 | expressions.swift:62:7:62:7 | deinit() | DestructorDecl | expressions.swift:62:7:62:7 | { ... } | BraceStmt |
 | expressions.swift:63:3:67:3 | init(x:) | ConstructorDecl | expressions.swift:63:3:63:3 | self | ParamDecl |
@@ -600,6 +666,10 @@
 | expressions.swift:64:8:64:12 | ... .<(_:_:) ... | BinaryExpr | expressions.swift:64:10:64:10 | .<(_:_:) | MethodRefExpr |
 | expressions.swift:64:10:64:10 | Int.Type | TypeExpr | expressions.swift:64:10:64:10 | Int | TypeRepr |
 | expressions.swift:64:14:66:5 | { ... } | BraceStmt | expressions.swift:65:7:65:14 | fail | FailStmt |
+| expressions.swift:70:1:75:1 | Base | ClassDecl | expressions.swift:70:7:70:7 | deinit() | DestructorDecl |
+| expressions.swift:70:1:75:1 | Base | ClassDecl | expressions.swift:71:3:71:11 | var ... = ... | PatternBindingDecl |
+| expressions.swift:70:1:75:1 | Base | ClassDecl | expressions.swift:71:7:71:7 | xx | ConcreteVarDecl |
+| expressions.swift:70:1:75:1 | Base | ClassDecl | expressions.swift:72:3:74:3 | init(x:) | ConstructorDecl |
 | expressions.swift:70:7:70:7 | deinit() | DestructorDecl | expressions.swift:70:7:70:7 | self | ParamDecl |
 | expressions.swift:70:7:70:7 | deinit() | DestructorDecl | expressions.swift:70:7:70:7 | { ... } | BraceStmt |
 | expressions.swift:71:3:71:11 | var ... = ... | PatternBindingDecl | expressions.swift:71:7:71:11 | ... as ... | TypedPattern |
@@ -617,6 +687,9 @@
 | expressions.swift:73:5:73:5 | .xx | MemberRefExpr | expressions.swift:73:5:73:5 | self | DeclRefExpr |
 | expressions.swift:73:5:73:10 |  ... = ... | AssignExpr | expressions.swift:73:5:73:5 | .xx | MemberRefExpr |
 | expressions.swift:73:5:73:10 |  ... = ... | AssignExpr | expressions.swift:73:10:73:10 | x | DeclRefExpr |
+| expressions.swift:77:1:81:1 | Derived | ClassDecl | expressions.swift:77:7:77:7 | deinit() | DestructorDecl |
+| expressions.swift:77:1:81:1 | Derived | ClassDecl | expressions.swift:77:21:77:21 | init(x:) | ConstructorDecl |
+| expressions.swift:77:1:81:1 | Derived | ClassDecl | expressions.swift:78:3:80:3 | init() | ConstructorDecl |
 | expressions.swift:77:7:77:7 | call to _unimplementedInitializer(className:initName:file:line:column:) | CallExpr | expressions.swift:77:7:77:7 | _unimplementedInitializer(className:initName:file:line:column:) | DeclRefExpr |
 | expressions.swift:77:7:77:7 | deinit() | DestructorDecl | expressions.swift:77:7:77:7 | self | ParamDecl |
 | expressions.swift:77:7:77:7 | deinit() | DestructorDecl | expressions.swift:77:7:77:7 | { ... } | BraceStmt |
@@ -656,6 +729,8 @@
 | expressions.swift:88:1:88:7 | ...! | ForceValueExpr | expressions.swift:88:1:88:6 | ...[...] | SubscriptExpr |
 | expressions.swift:88:1:88:7 | { ... } | BraceStmt | expressions.swift:88:1:88:7 | ...! | ForceValueExpr |
 | expressions.swift:88:1:88:7 | { ... } | TopLevelCodeDecl | expressions.swift:88:1:88:7 | { ... } | BraceStmt |
+| expressions.swift:90:1:90:14 | ToPtr | ClassDecl | expressions.swift:90:7:90:7 | deinit() | DestructorDecl |
+| expressions.swift:90:1:90:14 | ToPtr | ClassDecl | expressions.swift:90:7:90:7 | init() | ConstructorDecl |
 | expressions.swift:90:7:90:7 | deinit() | DestructorDecl | expressions.swift:90:7:90:7 | self | ParamDecl |
 | expressions.swift:90:7:90:7 | deinit() | DestructorDecl | expressions.swift:90:7:90:7 | { ... } | BraceStmt |
 | expressions.swift:90:7:90:7 | init() | ConstructorDecl | expressions.swift:90:7:90:7 | self | ParamDecl |
@@ -676,6 +751,17 @@
 | expressions.swift:93:1:93:35 | { ... } | BraceStmt | expressions.swift:93:1:93:35 | call to fromOpaque(_:) | CallExpr |
 | expressions.swift:93:1:93:35 | { ... } | TopLevelCodeDecl | expressions.swift:93:1:93:35 | { ... } | BraceStmt |
 | expressions.swift:93:29:93:29 | (UnsafeRawPointer) ... | PointerToPointerExpr | expressions.swift:93:29:93:29 | opaque | DeclRefExpr |
+| expressions.swift:95:1:128:1 | HasProperty | StructDecl | expressions.swift:95:8:95:8 | init(normalField:) | ConstructorDecl |
+| expressions.swift:95:1:128:1 | HasProperty | StructDecl | expressions.swift:96:3:101:3 | var ... = ... | PatternBindingDecl |
+| expressions.swift:95:1:128:1 | HasProperty | StructDecl | expressions.swift:96:7:96:7 | settableField | ConcreteVarDecl |
+| expressions.swift:95:1:128:1 | HasProperty | StructDecl | expressions.swift:105:3:107:3 | var ... = ... | PatternBindingDecl |
+| expressions.swift:95:1:128:1 | HasProperty | StructDecl | expressions.swift:105:7:105:7 | readOnlyField1 | ConcreteVarDecl |
+| expressions.swift:95:1:128:1 | HasProperty | StructDecl | expressions.swift:110:3:114:3 | var ... = ... | PatternBindingDecl |
+| expressions.swift:95:1:128:1 | HasProperty | StructDecl | expressions.swift:110:7:110:7 | readOnlyField2 | ConcreteVarDecl |
+| expressions.swift:95:1:128:1 | HasProperty | StructDecl | expressions.swift:116:3:116:21 | var ... = ... | PatternBindingDecl |
+| expressions.swift:95:1:128:1 | HasProperty | StructDecl | expressions.swift:116:7:116:7 | normalField | ConcreteVarDecl |
+| expressions.swift:95:1:128:1 | HasProperty | StructDecl | expressions.swift:118:3:123:3 | subscript ... | SubscriptDecl |
+| expressions.swift:95:1:128:1 | HasProperty | StructDecl | expressions.swift:125:3:127:3 | subscript ... | SubscriptDecl |
 | expressions.swift:95:8:95:8 | init(normalField:) | ConstructorDecl | expressions.swift:95:8:95:8 | normalField | ParamDecl |
 | expressions.swift:95:8:95:8 | init(normalField:) | ConstructorDecl | expressions.swift:95:8:95:8 | self | ParamDecl |
 | expressions.swift:96:3:101:3 | var ... = ... | PatternBindingDecl | expressions.swift:96:7:96:22 | ... as ... | TypedPattern |
@@ -798,6 +884,9 @@
 | expressions.swift:138:3:138:17 | return ... | ReturnStmt | expressions.swift:138:10:138:17 | ...[...] | SubscriptExpr |
 | expressions.swift:138:10:138:10 | (HasProperty) ... | LoadExpr | expressions.swift:138:10:138:10 | hp | DeclRefExpr |
 | expressions.swift:138:10:138:17 | ...[...] | SubscriptExpr | expressions.swift:138:10:138:10 | (HasProperty) ... | LoadExpr |
+| expressions.swift:141:1:143:1 | B | StructDecl | expressions.swift:141:8:141:8 | init(x:) | ConstructorDecl |
+| expressions.swift:141:1:143:1 | B | StructDecl | expressions.swift:142:3:142:11 | var ... = ... | PatternBindingDecl |
+| expressions.swift:141:1:143:1 | B | StructDecl | expressions.swift:142:7:142:7 | x | ConcreteVarDecl |
 | expressions.swift:141:8:141:8 | init(x:) | ConstructorDecl | expressions.swift:141:8:141:8 | self | ParamDecl |
 | expressions.swift:141:8:141:8 | init(x:) | ConstructorDecl | expressions.swift:141:8:141:8 | x | ParamDecl |
 | expressions.swift:142:3:142:11 | var ... = ... | PatternBindingDecl | expressions.swift:142:7:142:11 | ... as ... | TypedPattern |
@@ -817,6 +906,13 @@
 | expressions.swift:142:7:142:7 | { ... } | BraceStmt | file://:0:0:0:0 | return ... | ReturnStmt |
 | expressions.swift:142:7:142:11 | ... as ... | TypedPattern | expressions.swift:142:7:142:7 | x | NamedPattern |
 | expressions.swift:142:7:142:11 | ... as ... | TypedPattern | expressions.swift:142:11:142:11 | Int | TypeRepr |
+| expressions.swift:145:1:149:1 | A | StructDecl | expressions.swift:145:8:145:8 | init(b:bs:mayB:) | ConstructorDecl |
+| expressions.swift:145:1:149:1 | A | StructDecl | expressions.swift:146:3:146:11 | var ... = ... | PatternBindingDecl |
+| expressions.swift:145:1:149:1 | A | StructDecl | expressions.swift:146:7:146:7 | b | ConcreteVarDecl |
+| expressions.swift:145:1:149:1 | A | StructDecl | expressions.swift:147:3:147:14 | var ... = ... | PatternBindingDecl |
+| expressions.swift:145:1:149:1 | A | StructDecl | expressions.swift:147:7:147:7 | bs | ConcreteVarDecl |
+| expressions.swift:145:1:149:1 | A | StructDecl | expressions.swift:148:3:148:15 | var ... = ... | PatternBindingDecl |
+| expressions.swift:145:1:149:1 | A | StructDecl | expressions.swift:148:7:148:7 | mayB | ConcreteVarDecl |
 | expressions.swift:145:8:145:8 | init(b:bs:mayB:) | ConstructorDecl | expressions.swift:145:8:145:8 | b | ParamDecl |
 | expressions.swift:145:8:145:8 | init(b:bs:mayB:) | ConstructorDecl | expressions.swift:145:8:145:8 | bs | ParamDecl |
 | expressions.swift:145:8:145:8 | init(b:bs:mayB:) | ConstructorDecl | expressions.swift:145:8:145:8 | mayB | ParamDecl |
@@ -974,8 +1070,9 @@
 | patterns.swift:17:5:17:13 | case ... | CaseStmt | patterns.swift:17:13:17:13 | { ... } | BraceStmt |
 | patterns.swift:17:10:17:10 | _ | CaseLabelItem | patterns.swift:17:10:17:10 | _ | AnyPattern |
 | patterns.swift:17:13:17:13 | { ... } | BraceStmt | patterns.swift:17:13:17:13 |  | StringLiteralExpr |
-| patterns.swift:21:9:21:34 | case ... | EnumCaseDecl | patterns.swift:21:14:21:14 | bar | EnumElementDecl |
-| patterns.swift:21:9:21:34 | case ... | EnumCaseDecl | patterns.swift:21:19:21:34 | baz | EnumElementDecl |
+| patterns.swift:20:5:22:5 | Foo | EnumDecl | patterns.swift:21:9:21:34 | case ... | EnumCaseDecl |
+| patterns.swift:20:5:22:5 | Foo | EnumDecl | patterns.swift:21:14:21:14 | bar | EnumElementDecl |
+| patterns.swift:20:5:22:5 | Foo | EnumDecl | patterns.swift:21:19:21:34 | baz | EnumElementDecl |
 | patterns.swift:21:19:21:34 | baz | EnumElementDecl | patterns.swift:21:23:21:23 | _ | ParamDecl |
 | patterns.swift:21:19:21:34 | baz | EnumElementDecl | patterns.swift:21:28:21:28 | _ | ParamDecl |
 | patterns.swift:24:5:24:19 | var ... = ... | PatternBindingDecl | patterns.swift:24:9:24:12 | ... as ... | TypedPattern |
@@ -1141,7 +1238,12 @@
 | statements.swift:30:11:30:11 | (Any) ... | ErasureExpr | statements.swift:30:11:30:11 | error | StringLiteralExpr |
 | statements.swift:30:11:30:11 | [...] | ArrayExpr | statements.swift:30:11:30:11 | (Any) ... | ErasureExpr |
 | statements.swift:30:11:30:11 | [...] | VarargExpansionExpr | statements.swift:30:11:30:11 | [...] | ArrayExpr |
-| statements.swift:35:3:35:8 | case ... | EnumCaseDecl | statements.swift:35:8:35:8 | failed | EnumElementDecl |
+| statements.swift:34:1:36:1 | AnError | EnumDecl | file://:0:0:0:0 | __derived_enum_equals(_:_:) | ConcreteFuncDecl |
+| statements.swift:34:1:36:1 | AnError | EnumDecl | file://:0:0:0:0 | hash(into:) | ConcreteFuncDecl |
+| statements.swift:34:1:36:1 | AnError | EnumDecl | file://:0:0:0:0 | hashValue | ConcreteVarDecl |
+| statements.swift:34:1:36:1 | AnError | EnumDecl | file://:0:0:0:0 | var ... = ... | PatternBindingDecl |
+| statements.swift:34:1:36:1 | AnError | EnumDecl | statements.swift:35:3:35:8 | case ... | EnumCaseDecl |
+| statements.swift:34:1:36:1 | AnError | EnumDecl | statements.swift:35:8:35:8 | failed | EnumElementDecl |
 | statements.swift:38:1:42:1 | failure(_:) | ConcreteFuncDecl | statements.swift:38:14:38:19 | x | ParamDecl |
 | statements.swift:38:1:42:1 | failure(_:) | ConcreteFuncDecl | statements.swift:38:31:42:1 | { ... } | BraceStmt |
 | statements.swift:38:31:42:1 | { ... } | BraceStmt | statements.swift:39:3:41:3 | guard ... else { ... } | GuardStmt |
@@ -1246,6 +1348,11 @@
 | statements.swift:71:29:71:43 | ... .==(_:_:) ... | BinaryExpr | statements.swift:71:40:71:40 | .==(_:_:) | MethodRefExpr |
 | statements.swift:71:36:71:36 | Int.Type | TypeExpr | statements.swift:71:36:71:36 | Int | TypeRepr |
 | statements.swift:71:40:71:40 | Int.Type | TypeExpr | statements.swift:71:40:71:40 | Int | TypeRepr |
+| statements.swift:74:1:85:1 | HasModifyAccessorDecl | StructDecl | statements.swift:74:8:74:8 | init(x:) | ConstructorDecl |
+| statements.swift:74:1:85:1 | HasModifyAccessorDecl | StructDecl | statements.swift:75:3:75:11 | var ... = ... | PatternBindingDecl |
+| statements.swift:74:1:85:1 | HasModifyAccessorDecl | StructDecl | statements.swift:75:7:75:7 | x | ConcreteVarDecl |
+| statements.swift:74:1:85:1 | HasModifyAccessorDecl | StructDecl | statements.swift:76:3:84:3 | var ... = ... | PatternBindingDecl |
+| statements.swift:74:1:85:1 | HasModifyAccessorDecl | StructDecl | statements.swift:76:7:76:7 | hasModify | ConcreteVarDecl |
 | statements.swift:74:8:74:8 | init(x:) | ConstructorDecl | statements.swift:74:8:74:8 | self | ParamDecl |
 | statements.swift:74:8:74:8 | init(x:) | ConstructorDecl | statements.swift:74:8:74:8 | x | ParamDecl |
 | statements.swift:75:3:75:11 | var ... = ... | PatternBindingDecl | statements.swift:75:7:75:11 | ... as ... | TypedPattern |
