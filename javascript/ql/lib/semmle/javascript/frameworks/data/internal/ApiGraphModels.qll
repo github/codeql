@@ -395,7 +395,7 @@ private API::Node getNodeFromPath(string package, string type, AccessPath path, 
   result =
     getNodeFromSubPath(getNodeFromPath(package, type, path, n - 1), getSubPathAt(path, n - 1))
   or
-  // Apply a receiver step
+  // Apply a type step
   typeStep(getNodeFromPath(package, type, path, n), result)
 }
 
