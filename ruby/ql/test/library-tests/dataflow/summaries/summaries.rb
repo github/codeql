@@ -118,3 +118,12 @@ Foo.sinkAnyNamedArg(key: tainted) # $ hasValueFlow=tainted
 
 "magic_string".method(tainted) # $ hasValueFlow=tainted
 "magic_string2".method(tainted)
+
+Foo.getSinks()[0].mySink(tainted) # $ hasValueFlow=tainted
+Foo.arraySink(tainted)
+Foo.arraySink([tainted]) # $ hasValueFlow=tainted
+
+Foo.secondArrayElementIsSink([tainted, "safe", "safe"])
+Foo.secondArrayElementIsSink(["safe", tainted, "safe"]) # $ hasValueFlow=tainted
+Foo.secondArrayElementIsSink(["safe", "safe", tainted])
+Foo.secondArrayElementIsSink([tainted] * 10) # $ MISSING: hasValueFlow=tainted
