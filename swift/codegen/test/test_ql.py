@@ -78,9 +78,9 @@ def test_property_predicate_getter():
     assert prop.getter == "prop"
 
 
-def test_class_sorts_bases():
+def test_class_processes_bases():
     bases = ["B", "Ab", "C", "Aa"]
-    expected = ["Aa", "Ab", "B", "C"]
+    expected = [ql.Base("Aa"), ql.Base("Ab", prev="Aa"), ql.Base("B", prev="Ab"), ql.Base("C", prev="B")]
     cls = ql.Class("Foo", bases=bases)
     assert cls.bases == expected
 

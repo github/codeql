@@ -357,6 +357,13 @@ def test_class_dir(generate_classes):
     }
 
 
+def test_root_element_cannot_have_children(generate_classes):
+    with pytest.raises(qlgen.RootElementHasChildren):
+        generate_classes([
+            schema.Class(schema.root_class_name, properties=[schema.SingleProperty("x", is_child=True)])
+        ])
+
+
 def test_class_dir_imports(generate_import_list):
     dir = pathlib.Path("another/rel/path")
     assert generate_import_list([

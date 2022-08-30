@@ -29,6 +29,10 @@ class ModifiedStubMarkedAsGeneratedError(Error):
     pass
 
 
+class RootElementHasChildren(Error):
+    pass
+
+
 def get_ql_property(cls: schema.Class, prop: schema.Property, prev_child: str = "") -> ql.Property:
     args = dict(
         type=prop.type if not prop.is_predicate else "predicate",
@@ -123,14 +127,14 @@ def get_import(file: pathlib.Path, swift_dir: pathlib.Path):
     return str(stem).replace("/", ".")
 
 
-def get_types_used_by(cls: ql.Class):
+def get_types_used_by(cls: ql.Class) -> typing.Iterable[str]:
     for b in cls.bases:
-        yield b
+        yield b.base
     for p in cls.properties:
         yield p.type
 
 
-def get_classes_used_by(cls: ql.Class):
+def get_classes_used_by(cls: ql.Class) -> typing.List[str]:
     return sorted(set(t for t in get_types_used_by(cls) if t[0].isupper()))
 
 
@@ -234,6 +238,10 @@ def generate(opts, renderer):
     data = schema.load(input)
 
     classes = {name: get_ql_class(cls, data.classes) for name, cls in data.classes.items()}
+    # element root is absent in tests
+    if schema.root_class_name in classes and classes[schema.root_class_name].has_children:
+        raise RootElementHasChildren
+
     imports = {}
 
     inheritance_graph = {name: cls.bases for name, cls in data.classes.items()}

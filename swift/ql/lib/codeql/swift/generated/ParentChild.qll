@@ -2,1996 +2,3343 @@
 import codeql.swift.elements
 
 private module Impl {
-  int getMaximumChildrenIndexElement(Element e) {
-    e = e and
-    result = 0
-  }
-
-  int getMaximumChildrenIndexCallable(Callable e) {
-    result =
-      0 + getMaximumChildrenIndexElement(e) + 1 + 1 +
-        max(int i | exists(e.getImmediateParam(i)) | i) + 1
-  }
-
-  int getMaximumChildrenIndexFile(File e) { result = 0 + getMaximumChildrenIndexElement(e) }
-
-  int getMaximumChildrenIndexGenericContext(GenericContext e) {
-    result = 0 + getMaximumChildrenIndexElement(e)
-  }
-
-  int getMaximumChildrenIndexIterableDeclContext(IterableDeclContext e) {
-    result = 0 + getMaximumChildrenIndexElement(e)
-  }
-
-  int getMaximumChildrenIndexLocatable(Locatable e) {
-    result = 0 + getMaximumChildrenIndexElement(e)
-  }
-
-  int getMaximumChildrenIndexLocation(Location e) { result = 0 + getMaximumChildrenIndexElement(e) }
-
-  int getMaximumChildrenIndexType(Type e) { result = 0 + getMaximumChildrenIndexElement(e) }
-
-  int getMaximumChildrenIndexAnyFunctionType(AnyFunctionType e) {
-    result = 0 + getMaximumChildrenIndexType(e)
-  }
-
-  int getMaximumChildrenIndexAnyGenericType(AnyGenericType e) {
-    result = 0 + getMaximumChildrenIndexType(e)
-  }
-
-  int getMaximumChildrenIndexAnyMetatypeType(AnyMetatypeType e) {
-    result = 0 + getMaximumChildrenIndexType(e)
-  }
-
-  int getMaximumChildrenIndexArgument(Argument e) {
-    result = 0 + getMaximumChildrenIndexLocatable(e) + 1
-  }
-
-  int getMaximumChildrenIndexAstNode(AstNode e) { result = 0 + getMaximumChildrenIndexLocatable(e) }
-
-  int getMaximumChildrenIndexBuiltinType(BuiltinType e) {
-    result = 0 + getMaximumChildrenIndexType(e)
-  }
-
-  int getMaximumChildrenIndexComment(Comment e) { result = 0 + getMaximumChildrenIndexLocatable(e) }
-
-  int getMaximumChildrenIndexConditionElement(ConditionElement e) {
-    result = 0 + getMaximumChildrenIndexLocatable(e) + 1 + 1 + 1
-  }
-
-  int getMaximumChildrenIndexDbFile(DbFile e) { result = 0 + getMaximumChildrenIndexFile(e) }
-
-  int getMaximumChildrenIndexDbLocation(DbLocation e) {
-    result = 0 + getMaximumChildrenIndexLocation(e)
-  }
-
-  int getMaximumChildrenIndexDependentMemberType(DependentMemberType e) {
-    result = 0 + getMaximumChildrenIndexType(e)
-  }
-
-  int getMaximumChildrenIndexDynamicSelfType(DynamicSelfType e) {
-    result = 0 + getMaximumChildrenIndexType(e)
-  }
-
-  int getMaximumChildrenIndexErrorType(ErrorType e) { result = 0 + getMaximumChildrenIndexType(e) }
-
-  int getMaximumChildrenIndexExistentialType(ExistentialType e) {
-    result = 0 + getMaximumChildrenIndexType(e)
-  }
-
-  int getMaximumChildrenIndexIfConfigClause(IfConfigClause e) {
-    result =
-      0 + getMaximumChildrenIndexLocatable(e) + 1 + 1 +
-        max(int i | exists(e.getImmediateElement(i)) | i)
-  }
-
-  int getMaximumChildrenIndexInOutType(InOutType e) { result = 0 + getMaximumChildrenIndexType(e) }
-
-  int getMaximumChildrenIndexLValueType(LValueType e) {
-    result = 0 + getMaximumChildrenIndexType(e)
-  }
-
-  int getMaximumChildrenIndexModuleType(ModuleType e) {
-    result = 0 + getMaximumChildrenIndexType(e)
-  }
-
-  int getMaximumChildrenIndexPlaceholderType(PlaceholderType e) {
-    result = 0 + getMaximumChildrenIndexType(e)
-  }
-
-  int getMaximumChildrenIndexProtocolCompositionType(ProtocolCompositionType e) {
-    result = 0 + getMaximumChildrenIndexType(e)
-  }
-
-  int getMaximumChildrenIndexReferenceStorageType(ReferenceStorageType e) {
-    result = 0 + getMaximumChildrenIndexType(e)
-  }
-
-  int getMaximumChildrenIndexSilBlockStorageType(SilBlockStorageType e) {
-    result = 0 + getMaximumChildrenIndexType(e)
-  }
-
-  int getMaximumChildrenIndexSilBoxType(SilBoxType e) {
-    result = 0 + getMaximumChildrenIndexType(e)
-  }
-
-  int getMaximumChildrenIndexSilFunctionType(SilFunctionType e) {
-    result = 0 + getMaximumChildrenIndexType(e)
-  }
-
-  int getMaximumChildrenIndexSilTokenType(SilTokenType e) {
-    result = 0 + getMaximumChildrenIndexType(e)
-  }
-
-  int getMaximumChildrenIndexSubstitutableType(SubstitutableType e) {
-    result = 0 + getMaximumChildrenIndexType(e)
-  }
-
-  int getMaximumChildrenIndexSugarType(SugarType e) { result = 0 + getMaximumChildrenIndexType(e) }
-
-  int getMaximumChildrenIndexTupleType(TupleType e) { result = 0 + getMaximumChildrenIndexType(e) }
-
-  int getMaximumChildrenIndexTypeVariableType(TypeVariableType e) {
-    result = 0 + getMaximumChildrenIndexType(e)
-  }
-
-  int getMaximumChildrenIndexUnknownFile(UnknownFile e) {
-    result = 0 + getMaximumChildrenIndexFile(e)
-  }
-
-  int getMaximumChildrenIndexUnknownLocation(UnknownLocation e) {
-    result = 0 + getMaximumChildrenIndexLocation(e)
-  }
-
-  int getMaximumChildrenIndexUnresolvedType(UnresolvedType e) {
-    result = 0 + getMaximumChildrenIndexType(e)
-  }
-
-  int getMaximumChildrenIndexAnyBuiltinIntegerType(AnyBuiltinIntegerType e) {
-    result = 0 + getMaximumChildrenIndexBuiltinType(e)
-  }
-
-  int getMaximumChildrenIndexArchetypeType(ArchetypeType e) {
-    result = 0 + getMaximumChildrenIndexSubstitutableType(e)
-  }
-
-  int getMaximumChildrenIndexBuiltinBridgeObjectType(BuiltinBridgeObjectType e) {
-    result = 0 + getMaximumChildrenIndexBuiltinType(e)
-  }
-
-  int getMaximumChildrenIndexBuiltinDefaultActorStorageType(BuiltinDefaultActorStorageType e) {
-    result = 0 + getMaximumChildrenIndexBuiltinType(e)
-  }
-
-  int getMaximumChildrenIndexBuiltinExecutorType(BuiltinExecutorType e) {
-    result = 0 + getMaximumChildrenIndexBuiltinType(e)
-  }
-
-  int getMaximumChildrenIndexBuiltinFloatType(BuiltinFloatType e) {
-    result = 0 + getMaximumChildrenIndexBuiltinType(e)
-  }
-
-  int getMaximumChildrenIndexBuiltinJobType(BuiltinJobType e) {
-    result = 0 + getMaximumChildrenIndexBuiltinType(e)
-  }
-
-  int getMaximumChildrenIndexBuiltinNativeObjectType(BuiltinNativeObjectType e) {
-    result = 0 + getMaximumChildrenIndexBuiltinType(e)
-  }
-
-  int getMaximumChildrenIndexBuiltinRawPointerType(BuiltinRawPointerType e) {
-    result = 0 + getMaximumChildrenIndexBuiltinType(e)
-  }
-
-  int getMaximumChildrenIndexBuiltinRawUnsafeContinuationType(BuiltinRawUnsafeContinuationType e) {
-    result = 0 + getMaximumChildrenIndexBuiltinType(e)
-  }
-
-  int getMaximumChildrenIndexBuiltinUnsafeValueBufferType(BuiltinUnsafeValueBufferType e) {
-    result = 0 + getMaximumChildrenIndexBuiltinType(e)
-  }
-
-  int getMaximumChildrenIndexBuiltinVectorType(BuiltinVectorType e) {
-    result = 0 + getMaximumChildrenIndexBuiltinType(e)
-  }
-
-  int getMaximumChildrenIndexCaseLabelItem(CaseLabelItem e) {
-    result = 0 + getMaximumChildrenIndexAstNode(e) + 1 + 1
-  }
-
-  int getMaximumChildrenIndexDecl(Decl e) { result = 0 + getMaximumChildrenIndexAstNode(e) }
-
-  int getMaximumChildrenIndexExistentialMetatypeType(ExistentialMetatypeType e) {
-    result = 0 + getMaximumChildrenIndexAnyMetatypeType(e)
-  }
-
-  int getMaximumChildrenIndexExpr(Expr e) { result = 0 + getMaximumChildrenIndexAstNode(e) }
-
-  int getMaximumChildrenIndexFunctionType(FunctionType e) {
-    result = 0 + getMaximumChildrenIndexAnyFunctionType(e)
-  }
-
-  int getMaximumChildrenIndexGenericFunctionType(GenericFunctionType e) {
-    result = 0 + getMaximumChildrenIndexAnyFunctionType(e)
-  }
-
-  int getMaximumChildrenIndexGenericTypeParamType(GenericTypeParamType e) {
-    result = 0 + getMaximumChildrenIndexSubstitutableType(e)
-  }
-
-  int getMaximumChildrenIndexMetatypeType(MetatypeType e) {
-    result = 0 + getMaximumChildrenIndexAnyMetatypeType(e)
-  }
-
-  int getMaximumChildrenIndexNominalOrBoundGenericNominalType(NominalOrBoundGenericNominalType e) {
-    result = 0 + getMaximumChildrenIndexAnyGenericType(e)
-  }
-
-  int getMaximumChildrenIndexParenType(ParenType e) {
-    result = 0 + getMaximumChildrenIndexSugarType(e)
-  }
-
-  int getMaximumChildrenIndexPattern(Pattern e) { result = 0 + getMaximumChildrenIndexAstNode(e) }
-
-  int getMaximumChildrenIndexStmt(Stmt e) { result = 0 + getMaximumChildrenIndexAstNode(e) }
-
-  int getMaximumChildrenIndexStmtCondition(StmtCondition e) {
-    result =
-      0 + getMaximumChildrenIndexAstNode(e) + 1 + max(int i | exists(e.getImmediateElement(i)) | i)
-  }
-
-  int getMaximumChildrenIndexSyntaxSugarType(SyntaxSugarType e) {
-    result = 0 + getMaximumChildrenIndexSugarType(e)
-  }
-
-  int getMaximumChildrenIndexTypeAliasType(TypeAliasType e) {
-    result = 0 + getMaximumChildrenIndexSugarType(e)
-  }
-
-  int getMaximumChildrenIndexTypeRepr(TypeRepr e) { result = 0 + getMaximumChildrenIndexAstNode(e) }
-
-  int getMaximumChildrenIndexUnboundGenericType(UnboundGenericType e) {
-    result = 0 + getMaximumChildrenIndexAnyGenericType(e)
-  }
-
-  int getMaximumChildrenIndexUnmanagedStorageType(UnmanagedStorageType e) {
-    result = 0 + getMaximumChildrenIndexReferenceStorageType(e)
-  }
-
-  int getMaximumChildrenIndexUnownedStorageType(UnownedStorageType e) {
-    result = 0 + getMaximumChildrenIndexReferenceStorageType(e)
-  }
-
-  int getMaximumChildrenIndexWeakStorageType(WeakStorageType e) {
-    result = 0 + getMaximumChildrenIndexReferenceStorageType(e)
-  }
-
-  int getMaximumChildrenIndexAbstractClosureExpr(AbstractClosureExpr e) {
-    result = 0 + getMaximumChildrenIndexCallable(e) + getMaximumChildrenIndexExpr(e)
-  }
-
-  int getMaximumChildrenIndexAnyPattern(AnyPattern e) {
-    result = 0 + getMaximumChildrenIndexPattern(e)
-  }
-
-  int getMaximumChildrenIndexAnyTryExpr(AnyTryExpr e) {
-    result = 0 + getMaximumChildrenIndexExpr(e) + 1
-  }
-
-  int getMaximumChildrenIndexAppliedPropertyWrapperExpr(AppliedPropertyWrapperExpr e) {
-    result = 0 + getMaximumChildrenIndexExpr(e)
-  }
-
-  int getMaximumChildrenIndexApplyExpr(ApplyExpr e) {
-    result =
-      0 + getMaximumChildrenIndexExpr(e) + 1 + 1 +
-        max(int i | exists(e.getImmediateArgument(i)) | i)
-  }
-
-  int getMaximumChildrenIndexArrowExpr(ArrowExpr e) { result = 0 + getMaximumChildrenIndexExpr(e) }
-
-  int getMaximumChildrenIndexAssignExpr(AssignExpr e) {
-    result = 0 + getMaximumChildrenIndexExpr(e) + 1 + 1
-  }
-
-  int getMaximumChildrenIndexBindOptionalExpr(BindOptionalExpr e) {
-    result = 0 + getMaximumChildrenIndexExpr(e) + 1
-  }
-
-  int getMaximumChildrenIndexBindingPattern(BindingPattern e) {
-    result = 0 + getMaximumChildrenIndexPattern(e) + 1
-  }
-
-  int getMaximumChildrenIndexBoolPattern(BoolPattern e) {
-    result = 0 + getMaximumChildrenIndexPattern(e)
-  }
-
-  int getMaximumChildrenIndexBoundGenericType(BoundGenericType e) {
-    result = 0 + getMaximumChildrenIndexNominalOrBoundGenericNominalType(e)
-  }
-
-  int getMaximumChildrenIndexBraceStmt(BraceStmt e) {
-    result =
-      0 + getMaximumChildrenIndexStmt(e) + 1 + max(int i | exists(e.getImmediateElement(i)) | i)
-  }
-
-  int getMaximumChildrenIndexBreakStmt(BreakStmt e) { result = 0 + getMaximumChildrenIndexStmt(e) }
-
-  int getMaximumChildrenIndexBuiltinIntegerLiteralType(BuiltinIntegerLiteralType e) {
-    result = 0 + getMaximumChildrenIndexAnyBuiltinIntegerType(e)
-  }
-
-  int getMaximumChildrenIndexBuiltinIntegerType(BuiltinIntegerType e) {
-    result = 0 + getMaximumChildrenIndexAnyBuiltinIntegerType(e)
-  }
-
-  int getMaximumChildrenIndexCaptureListExpr(CaptureListExpr e) {
-    result =
-      0 + getMaximumChildrenIndexExpr(e) + 1 + max(int i | exists(e.getImmediateBindingDecl(i)) | i)
-        + 1
-  }
-
-  int getMaximumChildrenIndexCaseStmt(CaseStmt e) {
-    result =
-      0 + getMaximumChildrenIndexStmt(e) + 1 + 1 + max(int i | exists(e.getImmediateLabel(i)) | i)
-  }
-
-  int getMaximumChildrenIndexCodeCompletionExpr(CodeCompletionExpr e) {
-    result = 0 + getMaximumChildrenIndexExpr(e)
-  }
-
-  int getMaximumChildrenIndexCollectionExpr(CollectionExpr e) {
-    result = 0 + getMaximumChildrenIndexExpr(e)
-  }
-
-  int getMaximumChildrenIndexContinueStmt(ContinueStmt e) {
-    result = 0 + getMaximumChildrenIndexStmt(e)
-  }
-
-  int getMaximumChildrenIndexDeclRefExpr(DeclRefExpr e) {
-    result = 0 + getMaximumChildrenIndexExpr(e)
-  }
-
-  int getMaximumChildrenIndexDefaultArgumentExpr(DefaultArgumentExpr e) {
-    result = 0 + getMaximumChildrenIndexExpr(e)
-  }
-
-  int getMaximumChildrenIndexDeferStmt(DeferStmt e) {
-    result = 0 + getMaximumChildrenIndexStmt(e) + 1
-  }
-
-  int getMaximumChildrenIndexDictionaryType(DictionaryType e) {
-    result = 0 + getMaximumChildrenIndexSyntaxSugarType(e)
-  }
-
-  int getMaximumChildrenIndexDiscardAssignmentExpr(DiscardAssignmentExpr e) {
-    result = 0 + getMaximumChildrenIndexExpr(e)
-  }
-
-  int getMaximumChildrenIndexDotSyntaxBaseIgnoredExpr(DotSyntaxBaseIgnoredExpr e) {
-    result = 0 + getMaximumChildrenIndexExpr(e) + 1 + 1
-  }
-
-  int getMaximumChildrenIndexDynamicTypeExpr(DynamicTypeExpr e) {
-    result = 0 + getMaximumChildrenIndexExpr(e) + 1
-  }
-
-  int getMaximumChildrenIndexEditorPlaceholderExpr(EditorPlaceholderExpr e) {
-    result = 0 + getMaximumChildrenIndexExpr(e)
-  }
-
-  int getMaximumChildrenIndexEnumCaseDecl(EnumCaseDecl e) {
-    result =
-      0 + getMaximumChildrenIndexDecl(e) + 1 + max(int i | exists(e.getImmediateElement(i)) | i)
-  }
-
-  int getMaximumChildrenIndexEnumElementPattern(EnumElementPattern e) {
-    result = 0 + getMaximumChildrenIndexPattern(e) + 1
-  }
-
-  int getMaximumChildrenIndexEnumIsCaseExpr(EnumIsCaseExpr e) {
-    result = 0 + getMaximumChildrenIndexExpr(e) + 1
-  }
-
-  int getMaximumChildrenIndexErrorExpr(ErrorExpr e) { result = 0 + getMaximumChildrenIndexExpr(e) }
-
-  int getMaximumChildrenIndexExplicitCastExpr(ExplicitCastExpr e) {
-    result = 0 + getMaximumChildrenIndexExpr(e) + 1
-  }
-
-  int getMaximumChildrenIndexExprPattern(ExprPattern e) {
-    result = 0 + getMaximumChildrenIndexPattern(e) + 1
-  }
-
-  int getMaximumChildrenIndexExtensionDecl(ExtensionDecl e) {
-    result =
-      0 + getMaximumChildrenIndexDecl(e) + getMaximumChildrenIndexGenericContext(e) +
-        getMaximumChildrenIndexIterableDeclContext(e)
-  }
-
-  int getMaximumChildrenIndexFailStmt(FailStmt e) { result = 0 + getMaximumChildrenIndexStmt(e) }
-
-  int getMaximumChildrenIndexFallthroughStmt(FallthroughStmt e) {
-    result = 0 + getMaximumChildrenIndexStmt(e)
-  }
-
-  int getMaximumChildrenIndexForceValueExpr(ForceValueExpr e) {
-    result = 0 + getMaximumChildrenIndexExpr(e) + 1
-  }
-
-  int getMaximumChildrenIndexIdentityExpr(IdentityExpr e) {
-    result = 0 + getMaximumChildrenIndexExpr(e) + 1
-  }
-
-  int getMaximumChildrenIndexIfConfigDecl(IfConfigDecl e) {
-    result =
-      0 + getMaximumChildrenIndexDecl(e) + 1 + max(int i | exists(e.getImmediateClause(i)) | i)
-  }
-
-  int getMaximumChildrenIndexIfExpr(IfExpr e) {
-    result = 0 + getMaximumChildrenIndexExpr(e) + 1 + 1 + 1
-  }
-
-  int getMaximumChildrenIndexImplicitConversionExpr(ImplicitConversionExpr e) {
-    result = 0 + getMaximumChildrenIndexExpr(e) + 1
-  }
-
-  int getMaximumChildrenIndexImportDecl(ImportDecl e) {
-    result = 0 + getMaximumChildrenIndexDecl(e)
-  }
-
-  int getMaximumChildrenIndexInOutExpr(InOutExpr e) {
-    result = 0 + getMaximumChildrenIndexExpr(e) + 1
-  }
-
-  int getMaximumChildrenIndexIsPattern(IsPattern e) {
-    result = 0 + getMaximumChildrenIndexPattern(e) + 1 + 1
-  }
-
-  int getMaximumChildrenIndexKeyPathApplicationExpr(KeyPathApplicationExpr e) {
-    result = 0 + getMaximumChildrenIndexExpr(e) + 1 + 1
-  }
-
-  int getMaximumChildrenIndexKeyPathDotExpr(KeyPathDotExpr e) {
-    result = 0 + getMaximumChildrenIndexExpr(e)
-  }
-
-  int getMaximumChildrenIndexKeyPathExpr(KeyPathExpr e) {
-    result = 0 + getMaximumChildrenIndexExpr(e) + 1 + 1
-  }
-
-  int getMaximumChildrenIndexLabeledStmt(LabeledStmt e) {
-    result = 0 + getMaximumChildrenIndexStmt(e)
-  }
-
-  int getMaximumChildrenIndexLazyInitializerExpr(LazyInitializerExpr e) {
-    result = 0 + getMaximumChildrenIndexExpr(e) + 1
-  }
-
-  int getMaximumChildrenIndexLiteralExpr(LiteralExpr e) {
-    result = 0 + getMaximumChildrenIndexExpr(e)
-  }
-
-  int getMaximumChildrenIndexLookupExpr(LookupExpr e) {
-    result = 0 + getMaximumChildrenIndexExpr(e) + 1
-  }
-
-  int getMaximumChildrenIndexMakeTemporarilyEscapableExpr(MakeTemporarilyEscapableExpr e) {
-    result = 0 + getMaximumChildrenIndexExpr(e) + 1 + 1 + 1
-  }
-
-  int getMaximumChildrenIndexMissingMemberDecl(MissingMemberDecl e) {
-    result = 0 + getMaximumChildrenIndexDecl(e)
-  }
-
-  int getMaximumChildrenIndexNamedPattern(NamedPattern e) {
-    result = 0 + getMaximumChildrenIndexPattern(e)
-  }
-
-  int getMaximumChildrenIndexNestedArchetypeType(NestedArchetypeType e) {
-    result = 0 + getMaximumChildrenIndexArchetypeType(e)
-  }
-
-  int getMaximumChildrenIndexNominalType(NominalType e) {
-    result = 0 + getMaximumChildrenIndexNominalOrBoundGenericNominalType(e)
-  }
-
-  int getMaximumChildrenIndexObjCSelectorExpr(ObjCSelectorExpr e) {
-    result = 0 + getMaximumChildrenIndexExpr(e) + 1
-  }
-
-  int getMaximumChildrenIndexOneWayExpr(OneWayExpr e) {
-    result = 0 + getMaximumChildrenIndexExpr(e) + 1
-  }
-
-  int getMaximumChildrenIndexOpaqueTypeArchetypeType(OpaqueTypeArchetypeType e) {
-    result = 0 + getMaximumChildrenIndexArchetypeType(e)
-  }
-
-  int getMaximumChildrenIndexOpaqueValueExpr(OpaqueValueExpr e) {
-    result = 0 + getMaximumChildrenIndexExpr(e)
-  }
-
-  int getMaximumChildrenIndexOpenExistentialExpr(OpenExistentialExpr e) {
-    result = 0 + getMaximumChildrenIndexExpr(e) + 1 + 1 + 1
-  }
-
-  int getMaximumChildrenIndexOpenedArchetypeType(OpenedArchetypeType e) {
-    result = 0 + getMaximumChildrenIndexArchetypeType(e)
-  }
-
-  int getMaximumChildrenIndexOperatorDecl(OperatorDecl e) {
-    result = 0 + getMaximumChildrenIndexDecl(e)
-  }
-
-  int getMaximumChildrenIndexOptionalEvaluationExpr(OptionalEvaluationExpr e) {
-    result = 0 + getMaximumChildrenIndexExpr(e) + 1
-  }
-
-  int getMaximumChildrenIndexOptionalSomePattern(OptionalSomePattern e) {
-    result = 0 + getMaximumChildrenIndexPattern(e) + 1
-  }
-
-  int getMaximumChildrenIndexOtherConstructorDeclRefExpr(OtherConstructorDeclRefExpr e) {
-    result = 0 + getMaximumChildrenIndexExpr(e)
-  }
-
-  int getMaximumChildrenIndexOverloadSetRefExpr(OverloadSetRefExpr e) {
-    result = 0 + getMaximumChildrenIndexExpr(e)
-  }
-
-  int getMaximumChildrenIndexParenPattern(ParenPattern e) {
-    result = 0 + getMaximumChildrenIndexPattern(e) + 1
-  }
-
-  int getMaximumChildrenIndexPatternBindingDecl(PatternBindingDecl e) {
-    result =
-      0 + getMaximumChildrenIndexDecl(e) + 1 + max(int i | exists(e.getImmediateInit(i)) | i) + 1 +
-        max(int i | exists(e.getImmediatePattern(i)) | i)
-  }
-
-  int getMaximumChildrenIndexPoundAssertStmt(PoundAssertStmt e) {
-    result = 0 + getMaximumChildrenIndexStmt(e)
-  }
-
-  int getMaximumChildrenIndexPoundDiagnosticDecl(PoundDiagnosticDecl e) {
-    result = 0 + getMaximumChildrenIndexDecl(e)
-  }
-
-  int getMaximumChildrenIndexPrecedenceGroupDecl(PrecedenceGroupDecl e) {
-    result = 0 + getMaximumChildrenIndexDecl(e)
-  }
-
-  int getMaximumChildrenIndexPrimaryArchetypeType(PrimaryArchetypeType e) {
-    result = 0 + getMaximumChildrenIndexArchetypeType(e)
-  }
-
-  int getMaximumChildrenIndexPropertyWrapperValuePlaceholderExpr(
-    PropertyWrapperValuePlaceholderExpr e
-  ) {
-    result = 0 + getMaximumChildrenIndexExpr(e)
-  }
-
-  int getMaximumChildrenIndexRebindSelfInConstructorExpr(RebindSelfInConstructorExpr e) {
-    result = 0 + getMaximumChildrenIndexExpr(e) + 1
-  }
-
-  int getMaximumChildrenIndexReturnStmt(ReturnStmt e) {
-    result = 0 + getMaximumChildrenIndexStmt(e) + 1
-  }
-
-  int getMaximumChildrenIndexSequenceArchetypeType(SequenceArchetypeType e) {
-    result = 0 + getMaximumChildrenIndexArchetypeType(e)
-  }
-
-  int getMaximumChildrenIndexSequenceExpr(SequenceExpr e) {
-    result =
-      0 + getMaximumChildrenIndexExpr(e) + 1 + max(int i | exists(e.getImmediateElement(i)) | i)
-  }
-
-  int getMaximumChildrenIndexSuperRefExpr(SuperRefExpr e) {
-    result = 0 + getMaximumChildrenIndexExpr(e)
-  }
-
-  int getMaximumChildrenIndexTapExpr(TapExpr e) {
-    result = 0 + getMaximumChildrenIndexExpr(e) + 1 + 1
-  }
-
-  int getMaximumChildrenIndexThrowStmt(ThrowStmt e) {
-    result = 0 + getMaximumChildrenIndexStmt(e) + 1
-  }
-
-  int getMaximumChildrenIndexTopLevelCodeDecl(TopLevelCodeDecl e) {
-    result = 0 + getMaximumChildrenIndexDecl(e) + 1
-  }
-
-  int getMaximumChildrenIndexTupleElementExpr(TupleElementExpr e) {
-    result = 0 + getMaximumChildrenIndexExpr(e) + 1
-  }
-
-  int getMaximumChildrenIndexTupleExpr(TupleExpr e) {
-    result =
-      0 + getMaximumChildrenIndexExpr(e) + 1 + max(int i | exists(e.getImmediateElement(i)) | i)
-  }
-
-  int getMaximumChildrenIndexTuplePattern(TuplePattern e) {
-    result =
-      0 + getMaximumChildrenIndexPattern(e) + 1 + max(int i | exists(e.getImmediateElement(i)) | i)
-  }
-
-  int getMaximumChildrenIndexTypeExpr(TypeExpr e) {
-    result = 0 + getMaximumChildrenIndexExpr(e) + 1
-  }
-
-  int getMaximumChildrenIndexTypedPattern(TypedPattern e) {
-    result = 0 + getMaximumChildrenIndexPattern(e) + 1 + 1
-  }
-
-  int getMaximumChildrenIndexUnarySyntaxSugarType(UnarySyntaxSugarType e) {
-    result = 0 + getMaximumChildrenIndexSyntaxSugarType(e)
-  }
-
-  int getMaximumChildrenIndexUnresolvedDeclRefExpr(UnresolvedDeclRefExpr e) {
-    result = 0 + getMaximumChildrenIndexExpr(e)
-  }
-
-  int getMaximumChildrenIndexUnresolvedDotExpr(UnresolvedDotExpr e) {
-    result = 0 + getMaximumChildrenIndexExpr(e) + 1
-  }
-
-  int getMaximumChildrenIndexUnresolvedMemberExpr(UnresolvedMemberExpr e) {
-    result = 0 + getMaximumChildrenIndexExpr(e)
-  }
-
-  int getMaximumChildrenIndexUnresolvedPatternExpr(UnresolvedPatternExpr e) {
-    result = 0 + getMaximumChildrenIndexExpr(e) + 1
-  }
-
-  int getMaximumChildrenIndexUnresolvedSpecializeExpr(UnresolvedSpecializeExpr e) {
-    result = 0 + getMaximumChildrenIndexExpr(e)
-  }
-
-  int getMaximumChildrenIndexValueDecl(ValueDecl e) { result = 0 + getMaximumChildrenIndexDecl(e) }
-
-  int getMaximumChildrenIndexVarargExpansionExpr(VarargExpansionExpr e) {
-    result = 0 + getMaximumChildrenIndexExpr(e) + 1
-  }
-
-  int getMaximumChildrenIndexYieldStmt(YieldStmt e) {
-    result =
-      0 + getMaximumChildrenIndexStmt(e) + 1 + max(int i | exists(e.getImmediateResult(i)) | i)
-  }
-
-  int getMaximumChildrenIndexAbstractFunctionDecl(AbstractFunctionDecl e) {
-    result =
-      0 + getMaximumChildrenIndexCallable(e) + getMaximumChildrenIndexGenericContext(e) +
-        getMaximumChildrenIndexValueDecl(e)
-  }
-
-  int getMaximumChildrenIndexAbstractStorageDecl(AbstractStorageDecl e) {
-    result =
-      0 + getMaximumChildrenIndexValueDecl(e) + 1 +
-        max(int i | exists(e.getImmediateAccessorDecl(i)) | i)
-  }
-
-  int getMaximumChildrenIndexAnyHashableErasureExpr(AnyHashableErasureExpr e) {
-    result = 0 + getMaximumChildrenIndexImplicitConversionExpr(e)
-  }
-
-  int getMaximumChildrenIndexArchetypeToSuperExpr(ArchetypeToSuperExpr e) {
-    result = 0 + getMaximumChildrenIndexImplicitConversionExpr(e)
-  }
-
-  int getMaximumChildrenIndexArrayExpr(ArrayExpr e) {
-    result =
-      0 + getMaximumChildrenIndexCollectionExpr(e) + 1 +
-        max(int i | exists(e.getImmediateElement(i)) | i)
-  }
-
-  int getMaximumChildrenIndexArraySliceType(ArraySliceType e) {
-    result = 0 + getMaximumChildrenIndexUnarySyntaxSugarType(e)
-  }
-
-  int getMaximumChildrenIndexArrayToPointerExpr(ArrayToPointerExpr e) {
-    result = 0 + getMaximumChildrenIndexImplicitConversionExpr(e)
-  }
-
-  int getMaximumChildrenIndexAutoClosureExpr(AutoClosureExpr e) {
-    result = 0 + getMaximumChildrenIndexAbstractClosureExpr(e)
-  }
-
-  int getMaximumChildrenIndexAwaitExpr(AwaitExpr e) {
-    result = 0 + getMaximumChildrenIndexIdentityExpr(e)
-  }
-
-  int getMaximumChildrenIndexBinaryExpr(BinaryExpr e) {
-    result = 0 + getMaximumChildrenIndexApplyExpr(e)
-  }
-
-  int getMaximumChildrenIndexBoundGenericClassType(BoundGenericClassType e) {
-    result = 0 + getMaximumChildrenIndexBoundGenericType(e)
-  }
-
-  int getMaximumChildrenIndexBoundGenericEnumType(BoundGenericEnumType e) {
-    result = 0 + getMaximumChildrenIndexBoundGenericType(e)
-  }
-
-  int getMaximumChildrenIndexBoundGenericStructType(BoundGenericStructType e) {
-    result = 0 + getMaximumChildrenIndexBoundGenericType(e)
-  }
-
-  int getMaximumChildrenIndexBridgeFromObjCExpr(BridgeFromObjCExpr e) {
-    result = 0 + getMaximumChildrenIndexImplicitConversionExpr(e)
-  }
-
-  int getMaximumChildrenIndexBridgeToObjCExpr(BridgeToObjCExpr e) {
-    result = 0 + getMaximumChildrenIndexImplicitConversionExpr(e)
-  }
-
-  int getMaximumChildrenIndexBuiltinLiteralExpr(BuiltinLiteralExpr e) {
-    result = 0 + getMaximumChildrenIndexLiteralExpr(e)
-  }
-
-  int getMaximumChildrenIndexCallExpr(CallExpr e) {
-    result = 0 + getMaximumChildrenIndexApplyExpr(e)
-  }
-
-  int getMaximumChildrenIndexCheckedCastExpr(CheckedCastExpr e) {
-    result = 0 + getMaximumChildrenIndexExplicitCastExpr(e)
-  }
-
-  int getMaximumChildrenIndexClassMetatypeToObjectExpr(ClassMetatypeToObjectExpr e) {
-    result = 0 + getMaximumChildrenIndexImplicitConversionExpr(e)
-  }
-
-  int getMaximumChildrenIndexClassType(ClassType e) {
-    result = 0 + getMaximumChildrenIndexNominalType(e)
-  }
-
-  int getMaximumChildrenIndexClosureExpr(ClosureExpr e) {
-    result = 0 + getMaximumChildrenIndexAbstractClosureExpr(e)
-  }
-
-  int getMaximumChildrenIndexCoerceExpr(CoerceExpr e) {
-    result = 0 + getMaximumChildrenIndexExplicitCastExpr(e)
-  }
-
-  int getMaximumChildrenIndexCollectionUpcastConversionExpr(CollectionUpcastConversionExpr e) {
-    result = 0 + getMaximumChildrenIndexImplicitConversionExpr(e)
-  }
-
-  int getMaximumChildrenIndexConditionalBridgeFromObjCExpr(ConditionalBridgeFromObjCExpr e) {
-    result = 0 + getMaximumChildrenIndexImplicitConversionExpr(e)
-  }
-
-  int getMaximumChildrenIndexCovariantFunctionConversionExpr(CovariantFunctionConversionExpr e) {
-    result = 0 + getMaximumChildrenIndexImplicitConversionExpr(e)
-  }
-
-  int getMaximumChildrenIndexCovariantReturnConversionExpr(CovariantReturnConversionExpr e) {
-    result = 0 + getMaximumChildrenIndexImplicitConversionExpr(e)
-  }
-
-  int getMaximumChildrenIndexDerivedToBaseExpr(DerivedToBaseExpr e) {
-    result = 0 + getMaximumChildrenIndexImplicitConversionExpr(e)
-  }
-
-  int getMaximumChildrenIndexDestructureTupleExpr(DestructureTupleExpr e) {
-    result = 0 + getMaximumChildrenIndexImplicitConversionExpr(e)
-  }
-
-  int getMaximumChildrenIndexDictionaryExpr(DictionaryExpr e) {
-    result =
-      0 + getMaximumChildrenIndexCollectionExpr(e) + 1 +
-        max(int i | exists(e.getImmediateElement(i)) | i)
-  }
-
-  int getMaximumChildrenIndexDifferentiableFunctionExpr(DifferentiableFunctionExpr e) {
-    result = 0 + getMaximumChildrenIndexImplicitConversionExpr(e)
-  }
-
-  int getMaximumChildrenIndexDifferentiableFunctionExtractOriginalExpr(
-    DifferentiableFunctionExtractOriginalExpr e
-  ) {
-    result = 0 + getMaximumChildrenIndexImplicitConversionExpr(e)
-  }
-
-  int getMaximumChildrenIndexDoCatchStmt(DoCatchStmt e) {
-    result =
-      0 + getMaximumChildrenIndexLabeledStmt(e) + 1 + 1 +
-        max(int i | exists(e.getImmediateCatch(i)) | i)
-  }
-
-  int getMaximumChildrenIndexDoStmt(DoStmt e) {
-    result = 0 + getMaximumChildrenIndexLabeledStmt(e) + 1
-  }
-
-  int getMaximumChildrenIndexDotSelfExpr(DotSelfExpr e) {
-    result = 0 + getMaximumChildrenIndexIdentityExpr(e)
-  }
-
-  int getMaximumChildrenIndexDynamicLookupExpr(DynamicLookupExpr e) {
-    result = 0 + getMaximumChildrenIndexLookupExpr(e)
-  }
-
-  int getMaximumChildrenIndexEnumElementDecl(EnumElementDecl e) {
-    result =
-      0 + getMaximumChildrenIndexValueDecl(e) + 1 + max(int i | exists(e.getImmediateParam(i)) | i)
-  }
-
-  int getMaximumChildrenIndexEnumType(EnumType e) {
-    result = 0 + getMaximumChildrenIndexNominalType(e)
-  }
-
-  int getMaximumChildrenIndexErasureExpr(ErasureExpr e) {
-    result = 0 + getMaximumChildrenIndexImplicitConversionExpr(e)
-  }
-
-  int getMaximumChildrenIndexExistentialMetatypeToObjectExpr(ExistentialMetatypeToObjectExpr e) {
-    result = 0 + getMaximumChildrenIndexImplicitConversionExpr(e)
-  }
-
-  int getMaximumChildrenIndexForEachStmt(ForEachStmt e) {
-    result = 0 + getMaximumChildrenIndexLabeledStmt(e) + 1 + 1 + 1 + 1
-  }
-
-  int getMaximumChildrenIndexForceTryExpr(ForceTryExpr e) {
-    result = 0 + getMaximumChildrenIndexAnyTryExpr(e)
-  }
-
-  int getMaximumChildrenIndexForeignObjectConversionExpr(ForeignObjectConversionExpr e) {
-    result = 0 + getMaximumChildrenIndexImplicitConversionExpr(e)
-  }
-
-  int getMaximumChildrenIndexFunctionConversionExpr(FunctionConversionExpr e) {
-    result = 0 + getMaximumChildrenIndexImplicitConversionExpr(e)
-  }
-
-  int getMaximumChildrenIndexInOutToPointerExpr(InOutToPointerExpr e) {
-    result = 0 + getMaximumChildrenIndexImplicitConversionExpr(e)
-  }
-
-  int getMaximumChildrenIndexInfixOperatorDecl(InfixOperatorDecl e) {
-    result = 0 + getMaximumChildrenIndexOperatorDecl(e)
-  }
-
-  int getMaximumChildrenIndexInjectIntoOptionalExpr(InjectIntoOptionalExpr e) {
-    result = 0 + getMaximumChildrenIndexImplicitConversionExpr(e)
-  }
-
-  int getMaximumChildrenIndexInterpolatedStringLiteralExpr(InterpolatedStringLiteralExpr e) {
-    result = 0 + getMaximumChildrenIndexLiteralExpr(e) + 1 + 1 + 1
-  }
-
-  int getMaximumChildrenIndexLabeledConditionalStmt(LabeledConditionalStmt e) {
-    result = 0 + getMaximumChildrenIndexLabeledStmt(e) + 1
-  }
-
-  int getMaximumChildrenIndexLinearFunctionExpr(LinearFunctionExpr e) {
-    result = 0 + getMaximumChildrenIndexImplicitConversionExpr(e)
-  }
-
-  int getMaximumChildrenIndexLinearFunctionExtractOriginalExpr(LinearFunctionExtractOriginalExpr e) {
-    result = 0 + getMaximumChildrenIndexImplicitConversionExpr(e)
-  }
-
-  int getMaximumChildrenIndexLinearToDifferentiableFunctionExpr(LinearToDifferentiableFunctionExpr e) {
-    result = 0 + getMaximumChildrenIndexImplicitConversionExpr(e)
-  }
-
-  int getMaximumChildrenIndexLoadExpr(LoadExpr e) {
-    result = 0 + getMaximumChildrenIndexImplicitConversionExpr(e)
-  }
-
-  int getMaximumChildrenIndexMemberRefExpr(MemberRefExpr e) {
-    result = 0 + getMaximumChildrenIndexLookupExpr(e)
-  }
-
-  int getMaximumChildrenIndexMetatypeConversionExpr(MetatypeConversionExpr e) {
-    result = 0 + getMaximumChildrenIndexImplicitConversionExpr(e)
-  }
-
-  int getMaximumChildrenIndexMethodRefExpr(MethodRefExpr e) {
-    result = 0 + getMaximumChildrenIndexLookupExpr(e)
-  }
-
-  int getMaximumChildrenIndexNilLiteralExpr(NilLiteralExpr e) {
-    result = 0 + getMaximumChildrenIndexLiteralExpr(e)
-  }
-
-  int getMaximumChildrenIndexObjectLiteralExpr(ObjectLiteralExpr e) {
-    result = 0 + getMaximumChildrenIndexLiteralExpr(e)
-  }
-
-  int getMaximumChildrenIndexOptionalTryExpr(OptionalTryExpr e) {
-    result = 0 + getMaximumChildrenIndexAnyTryExpr(e)
-  }
-
-  int getMaximumChildrenIndexOptionalType(OptionalType e) {
-    result = 0 + getMaximumChildrenIndexUnarySyntaxSugarType(e)
-  }
-
-  int getMaximumChildrenIndexOverloadedDeclRefExpr(OverloadedDeclRefExpr e) {
-    result = 0 + getMaximumChildrenIndexOverloadSetRefExpr(e)
-  }
-
-  int getMaximumChildrenIndexParenExpr(ParenExpr e) {
-    result = 0 + getMaximumChildrenIndexIdentityExpr(e)
-  }
-
-  int getMaximumChildrenIndexPointerToPointerExpr(PointerToPointerExpr e) {
-    result = 0 + getMaximumChildrenIndexImplicitConversionExpr(e)
-  }
-
-  int getMaximumChildrenIndexPostfixOperatorDecl(PostfixOperatorDecl e) {
-    result = 0 + getMaximumChildrenIndexOperatorDecl(e)
-  }
-
-  int getMaximumChildrenIndexPostfixUnaryExpr(PostfixUnaryExpr e) {
-    result = 0 + getMaximumChildrenIndexApplyExpr(e)
-  }
-
-  int getMaximumChildrenIndexPrefixOperatorDecl(PrefixOperatorDecl e) {
-    result = 0 + getMaximumChildrenIndexOperatorDecl(e)
-  }
-
-  int getMaximumChildrenIndexPrefixUnaryExpr(PrefixUnaryExpr e) {
-    result = 0 + getMaximumChildrenIndexApplyExpr(e)
-  }
-
-  int getMaximumChildrenIndexProtocolMetatypeToObjectExpr(ProtocolMetatypeToObjectExpr e) {
-    result = 0 + getMaximumChildrenIndexImplicitConversionExpr(e)
-  }
-
-  int getMaximumChildrenIndexProtocolType(ProtocolType e) {
-    result = 0 + getMaximumChildrenIndexNominalType(e)
-  }
-
-  int getMaximumChildrenIndexRegexLiteralExpr(RegexLiteralExpr e) {
-    result = 0 + getMaximumChildrenIndexLiteralExpr(e)
-  }
-
-  int getMaximumChildrenIndexRepeatWhileStmt(RepeatWhileStmt e) {
-    result = 0 + getMaximumChildrenIndexLabeledStmt(e) + 1 + 1
-  }
-
-  int getMaximumChildrenIndexSelfApplyExpr(SelfApplyExpr e) {
-    result = 0 + getMaximumChildrenIndexApplyExpr(e) + 1
-  }
-
-  int getMaximumChildrenIndexStringToPointerExpr(StringToPointerExpr e) {
-    result = 0 + getMaximumChildrenIndexImplicitConversionExpr(e)
-  }
-
-  int getMaximumChildrenIndexStructType(StructType e) {
-    result = 0 + getMaximumChildrenIndexNominalType(e)
-  }
-
-  int getMaximumChildrenIndexSubscriptExpr(SubscriptExpr e) {
-    result =
-      0 + getMaximumChildrenIndexLookupExpr(e) + 1 +
-        max(int i | exists(e.getImmediateArgument(i)) | i)
-  }
-
-  int getMaximumChildrenIndexSwitchStmt(SwitchStmt e) {
-    result =
-      0 + getMaximumChildrenIndexLabeledStmt(e) + 1 + 1 +
-        max(int i | exists(e.getImmediateCase(i)) | i)
-  }
-
-  int getMaximumChildrenIndexTryExpr(TryExpr e) {
-    result = 0 + getMaximumChildrenIndexAnyTryExpr(e)
-  }
-
-  int getMaximumChildrenIndexTypeDecl(TypeDecl e) {
-    result = 0 + getMaximumChildrenIndexValueDecl(e)
-  }
-
-  int getMaximumChildrenIndexUnderlyingToOpaqueExpr(UnderlyingToOpaqueExpr e) {
-    result = 0 + getMaximumChildrenIndexImplicitConversionExpr(e)
-  }
-
-  int getMaximumChildrenIndexUnevaluatedInstanceExpr(UnevaluatedInstanceExpr e) {
-    result = 0 + getMaximumChildrenIndexImplicitConversionExpr(e)
-  }
-
-  int getMaximumChildrenIndexUnresolvedMemberChainResultExpr(UnresolvedMemberChainResultExpr e) {
-    result = 0 + getMaximumChildrenIndexIdentityExpr(e)
-  }
-
-  int getMaximumChildrenIndexUnresolvedTypeConversionExpr(UnresolvedTypeConversionExpr e) {
-    result = 0 + getMaximumChildrenIndexImplicitConversionExpr(e)
-  }
-
-  int getMaximumChildrenIndexVariadicSequenceType(VariadicSequenceType e) {
-    result = 0 + getMaximumChildrenIndexUnarySyntaxSugarType(e)
-  }
-
-  int getMaximumChildrenIndexAbstractTypeParamDecl(AbstractTypeParamDecl e) {
-    result = 0 + getMaximumChildrenIndexTypeDecl(e)
-  }
-
-  int getMaximumChildrenIndexBooleanLiteralExpr(BooleanLiteralExpr e) {
-    result = 0 + getMaximumChildrenIndexBuiltinLiteralExpr(e)
-  }
-
-  int getMaximumChildrenIndexConditionalCheckedCastExpr(ConditionalCheckedCastExpr e) {
-    result = 0 + getMaximumChildrenIndexCheckedCastExpr(e)
-  }
-
-  int getMaximumChildrenIndexConstructorDecl(ConstructorDecl e) {
-    result = 0 + getMaximumChildrenIndexAbstractFunctionDecl(e)
-  }
-
-  int getMaximumChildrenIndexConstructorRefCallExpr(ConstructorRefCallExpr e) {
-    result = 0 + getMaximumChildrenIndexSelfApplyExpr(e)
-  }
-
-  int getMaximumChildrenIndexDestructorDecl(DestructorDecl e) {
-    result = 0 + getMaximumChildrenIndexAbstractFunctionDecl(e)
-  }
-
-  int getMaximumChildrenIndexDotSyntaxCallExpr(DotSyntaxCallExpr e) {
-    result = 0 + getMaximumChildrenIndexSelfApplyExpr(e)
-  }
-
-  int getMaximumChildrenIndexDynamicMemberRefExpr(DynamicMemberRefExpr e) {
-    result = 0 + getMaximumChildrenIndexDynamicLookupExpr(e)
-  }
-
-  int getMaximumChildrenIndexDynamicSubscriptExpr(DynamicSubscriptExpr e) {
-    result = 0 + getMaximumChildrenIndexDynamicLookupExpr(e)
-  }
-
-  int getMaximumChildrenIndexForcedCheckedCastExpr(ForcedCheckedCastExpr e) {
-    result = 0 + getMaximumChildrenIndexCheckedCastExpr(e)
-  }
-
-  int getMaximumChildrenIndexFuncDecl(FuncDecl e) {
-    result = 0 + getMaximumChildrenIndexAbstractFunctionDecl(e)
-  }
-
-  int getMaximumChildrenIndexGenericTypeDecl(GenericTypeDecl e) {
-    result = 0 + getMaximumChildrenIndexGenericContext(e) + getMaximumChildrenIndexTypeDecl(e)
-  }
-
-  int getMaximumChildrenIndexGuardStmt(GuardStmt e) {
-    result = 0 + getMaximumChildrenIndexLabeledConditionalStmt(e) + 1
-  }
-
-  int getMaximumChildrenIndexIfStmt(IfStmt e) {
-    result = 0 + getMaximumChildrenIndexLabeledConditionalStmt(e) + 1 + 1
-  }
-
-  int getMaximumChildrenIndexIsExpr(IsExpr e) {
-    result = 0 + getMaximumChildrenIndexCheckedCastExpr(e)
-  }
-
-  int getMaximumChildrenIndexMagicIdentifierLiteralExpr(MagicIdentifierLiteralExpr e) {
-    result = 0 + getMaximumChildrenIndexBuiltinLiteralExpr(e)
-  }
-
-  int getMaximumChildrenIndexModuleDecl(ModuleDecl e) {
-    result = 0 + getMaximumChildrenIndexTypeDecl(e)
-  }
-
-  int getMaximumChildrenIndexNumberLiteralExpr(NumberLiteralExpr e) {
-    result = 0 + getMaximumChildrenIndexBuiltinLiteralExpr(e)
-  }
-
-  int getMaximumChildrenIndexStringLiteralExpr(StringLiteralExpr e) {
-    result = 0 + getMaximumChildrenIndexBuiltinLiteralExpr(e)
-  }
-
-  int getMaximumChildrenIndexSubscriptDecl(SubscriptDecl e) {
-    result =
-      0 + getMaximumChildrenIndexAbstractStorageDecl(e) + getMaximumChildrenIndexGenericContext(e) +
-        1 + max(int i | exists(e.getImmediateParam(i)) | i)
-  }
-
-  int getMaximumChildrenIndexVarDecl(VarDecl e) {
-    result = 0 + getMaximumChildrenIndexAbstractStorageDecl(e)
-  }
-
-  int getMaximumChildrenIndexWhileStmt(WhileStmt e) {
-    result = 0 + getMaximumChildrenIndexLabeledConditionalStmt(e) + 1
-  }
-
-  int getMaximumChildrenIndexAccessorDecl(AccessorDecl e) {
-    result = 0 + getMaximumChildrenIndexFuncDecl(e)
-  }
-
-  int getMaximumChildrenIndexAssociatedTypeDecl(AssociatedTypeDecl e) {
-    result = 0 + getMaximumChildrenIndexAbstractTypeParamDecl(e)
-  }
-
-  int getMaximumChildrenIndexConcreteFuncDecl(ConcreteFuncDecl e) {
-    result = 0 + getMaximumChildrenIndexFuncDecl(e)
-  }
-
-  int getMaximumChildrenIndexConcreteVarDecl(ConcreteVarDecl e) {
-    result = 0 + getMaximumChildrenIndexVarDecl(e)
-  }
-
-  int getMaximumChildrenIndexFloatLiteralExpr(FloatLiteralExpr e) {
-    result = 0 + getMaximumChildrenIndexNumberLiteralExpr(e)
-  }
-
-  int getMaximumChildrenIndexGenericTypeParamDecl(GenericTypeParamDecl e) {
-    result = 0 + getMaximumChildrenIndexAbstractTypeParamDecl(e)
-  }
-
-  int getMaximumChildrenIndexIntegerLiteralExpr(IntegerLiteralExpr e) {
-    result = 0 + getMaximumChildrenIndexNumberLiteralExpr(e)
-  }
-
-  int getMaximumChildrenIndexNominalTypeDecl(NominalTypeDecl e) {
-    result =
-      0 + getMaximumChildrenIndexGenericTypeDecl(e) + getMaximumChildrenIndexIterableDeclContext(e)
-  }
-
-  int getMaximumChildrenIndexOpaqueTypeDecl(OpaqueTypeDecl e) {
-    result = 0 + getMaximumChildrenIndexGenericTypeDecl(e)
-  }
-
-  int getMaximumChildrenIndexParamDecl(ParamDecl e) {
-    result = 0 + getMaximumChildrenIndexVarDecl(e)
-  }
-
-  int getMaximumChildrenIndexTypeAliasDecl(TypeAliasDecl e) {
-    result = 0 + getMaximumChildrenIndexGenericTypeDecl(e)
-  }
-
-  int getMaximumChildrenIndexClassDecl(ClassDecl e) {
-    result = 0 + getMaximumChildrenIndexNominalTypeDecl(e)
-  }
-
-  int getMaximumChildrenIndexEnumDecl(EnumDecl e) {
-    result = 0 + getMaximumChildrenIndexNominalTypeDecl(e)
-  }
-
-  int getMaximumChildrenIndexProtocolDecl(ProtocolDecl e) {
-    result = 0 + getMaximumChildrenIndexNominalTypeDecl(e)
-  }
-
-  int getMaximumChildrenIndexStructDecl(StructDecl e) {
-    result = 0 + getMaximumChildrenIndexNominalTypeDecl(e)
-  }
-
-  /**
-   * Gets any of the "immediate" children of `e`. "Immediate" means not taking into account node resolution: for example
-   * if the AST child is the first of a series of conversions that would normally be hidden away, this will select the
-   * next conversion down the hidden AST tree instead of the corresponding fully uncoverted node at the bottom.
-   * Outside this module this file is mainly intended to be used to test uniqueness of parents.
-   */
-  cached
-  Element getImmediateChild(Element e, int index, string partialAccessor) {
-    // why does this look more complicated than it should?
-    // * none() simplifies generation, as we can append `or ...` without a special case for the first item
-    none()
-    or
-    exists(int n, int nSelfParam, int nParam, int nBody |
-      n = 0 + getMaximumChildrenIndexElement(e) and
+  Element getImmediateChildOfElement(Element e, int index, string partialPredicateCall) { none() }
+
+  Element getImmediateChildOfCallable(Callable e, int index, string partialPredicateCall) {
+    exists(int b, int bElement, int n, int nSelfParam, int nParam, int nBody |
+      b = 0 and
+      bElement = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfElement(e, i, _)) | i) and
+      n = bElement and
       nSelfParam = n + 1 and
-      nParam = nSelfParam + 1 + max(int i | i = 0 or exists(e.(Callable).getImmediateParam(i)) | i) and
+      nParam = nSelfParam + 1 + max(int i | i = -1 or exists(e.getImmediateParam(i)) | i) and
       nBody = nParam + 1 and
       (
         none()
         or
-        index = n and
-        result = e.(Callable).getImmediateSelfParam() and
-        partialAccessor = "SelfParam()"
+        result = getImmediateChildOfElement(e, index - b, partialPredicateCall)
         or
-        result = e.(Callable).getImmediateParam(index - nSelfParam) and
-        partialAccessor = "Param(" + (index - nSelfParam).toString() + ")"
+        index = n and result = e.getImmediateSelfParam() and partialPredicateCall = "SelfParam()"
         or
-        index = nParam and result = e.(Callable).getImmediateBody() and partialAccessor = "Body()"
+        result = e.getImmediateParam(index - nSelfParam) and
+        partialPredicateCall = "Param(" + (index - nSelfParam).toString() + ")"
+        or
+        index = nParam and result = e.getImmediateBody() and partialPredicateCall = "Body()"
       )
     )
-    or
-    exists(int n, int nExpr |
-      n = 0 + getMaximumChildrenIndexLocatable(e) and
+  }
+
+  Element getImmediateChildOfFile(File e, int index, string partialPredicateCall) {
+    exists(int b, int bElement, int n |
+      b = 0 and
+      bElement = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfElement(e, i, _)) | i) and
+      n = bElement and
+      (
+        none()
+        or
+        result = getImmediateChildOfElement(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfGenericContext(GenericContext e, int index, string partialPredicateCall) {
+    exists(int b, int bElement, int n |
+      b = 0 and
+      bElement = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfElement(e, i, _)) | i) and
+      n = bElement and
+      (
+        none()
+        or
+        result = getImmediateChildOfElement(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfIterableDeclContext(
+    IterableDeclContext e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bElement, int n |
+      b = 0 and
+      bElement = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfElement(e, i, _)) | i) and
+      n = bElement and
+      (
+        none()
+        or
+        result = getImmediateChildOfElement(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfLocatable(Locatable e, int index, string partialPredicateCall) {
+    exists(int b, int bElement, int n |
+      b = 0 and
+      bElement = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfElement(e, i, _)) | i) and
+      n = bElement and
+      (
+        none()
+        or
+        result = getImmediateChildOfElement(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfLocation(Location e, int index, string partialPredicateCall) {
+    exists(int b, int bElement, int n |
+      b = 0 and
+      bElement = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfElement(e, i, _)) | i) and
+      n = bElement and
+      (
+        none()
+        or
+        result = getImmediateChildOfElement(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfType(Type e, int index, string partialPredicateCall) {
+    exists(int b, int bElement, int n |
+      b = 0 and
+      bElement = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfElement(e, i, _)) | i) and
+      n = bElement and
+      (
+        none()
+        or
+        result = getImmediateChildOfElement(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfAnyFunctionType(
+    AnyFunctionType e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bType, int n |
+      b = 0 and
+      bType = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfType(e, i, _)) | i) and
+      n = bType and
+      (
+        none()
+        or
+        result = getImmediateChildOfType(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfAnyGenericType(AnyGenericType e, int index, string partialPredicateCall) {
+    exists(int b, int bType, int n |
+      b = 0 and
+      bType = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfType(e, i, _)) | i) and
+      n = bType and
+      (
+        none()
+        or
+        result = getImmediateChildOfType(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfAnyMetatypeType(
+    AnyMetatypeType e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bType, int n |
+      b = 0 and
+      bType = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfType(e, i, _)) | i) and
+      n = bType and
+      (
+        none()
+        or
+        result = getImmediateChildOfType(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfArgument(Argument e, int index, string partialPredicateCall) {
+    exists(int b, int bLocatable, int n, int nExpr |
+      b = 0 and
+      bLocatable = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfLocatable(e, i, _)) | i) and
+      n = bLocatable and
       nExpr = n + 1 and
       (
         none()
         or
-        index = n and result = e.(Argument).getImmediateExpr() and partialAccessor = "Expr()"
+        result = getImmediateChildOfLocatable(e, index - b, partialPredicateCall)
+        or
+        index = n and result = e.getImmediateExpr() and partialPredicateCall = "Expr()"
       )
     )
-    or
-    exists(int n, int nBoolean, int nPattern, int nInitializer |
-      n = 0 + getMaximumChildrenIndexLocatable(e) and
+  }
+
+  Element getImmediateChildOfAstNode(AstNode e, int index, string partialPredicateCall) {
+    exists(int b, int bLocatable, int n |
+      b = 0 and
+      bLocatable = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfLocatable(e, i, _)) | i) and
+      n = bLocatable and
+      (
+        none()
+        or
+        result = getImmediateChildOfLocatable(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfBuiltinType(BuiltinType e, int index, string partialPredicateCall) {
+    exists(int b, int bType, int n |
+      b = 0 and
+      bType = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfType(e, i, _)) | i) and
+      n = bType and
+      (
+        none()
+        or
+        result = getImmediateChildOfType(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfComment(Comment e, int index, string partialPredicateCall) {
+    exists(int b, int bLocatable, int n |
+      b = 0 and
+      bLocatable = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfLocatable(e, i, _)) | i) and
+      n = bLocatable and
+      (
+        none()
+        or
+        result = getImmediateChildOfLocatable(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfConditionElement(
+    ConditionElement e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bLocatable, int n, int nBoolean, int nPattern, int nInitializer |
+      b = 0 and
+      bLocatable = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfLocatable(e, i, _)) | i) and
+      n = bLocatable and
       nBoolean = n + 1 and
       nPattern = nBoolean + 1 and
       nInitializer = nPattern + 1 and
       (
         none()
         or
-        index = n and
-        result = e.(ConditionElement).getImmediateBoolean() and
-        partialAccessor = "Boolean()"
+        result = getImmediateChildOfLocatable(e, index - b, partialPredicateCall)
         or
-        index = nBoolean and
-        result = e.(ConditionElement).getImmediatePattern() and
-        partialAccessor = "Pattern()"
+        index = n and result = e.getImmediateBoolean() and partialPredicateCall = "Boolean()"
+        or
+        index = nBoolean and result = e.getImmediatePattern() and partialPredicateCall = "Pattern()"
         or
         index = nPattern and
-        result = e.(ConditionElement).getImmediateInitializer() and
-        partialAccessor = "Initializer()"
+        result = e.getImmediateInitializer() and
+        partialPredicateCall = "Initializer()"
       )
     )
-    or
-    exists(int n, int nCondition, int nElement |
-      n = 0 + getMaximumChildrenIndexLocatable(e) and
-      nCondition = n + 1 and
-      nElement =
-        nCondition + 1 + max(int i | i = 0 or exists(e.(IfConfigClause).getImmediateElement(i)) | i) and
+  }
+
+  Element getImmediateChildOfDbFile(DbFile e, int index, string partialPredicateCall) {
+    exists(int b, int bFile, int n |
+      b = 0 and
+      bFile = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfFile(e, i, _)) | i) and
+      n = bFile and
       (
         none()
         or
-        index = n and
-        result = e.(IfConfigClause).getImmediateCondition() and
-        partialAccessor = "Condition()"
-        or
-        result = e.(IfConfigClause).getImmediateElement(index - nCondition) and
-        partialAccessor = "Element(" + (index - nCondition).toString() + ")"
+        result = getImmediateChildOfFile(e, index - b, partialPredicateCall)
       )
     )
-    or
-    exists(int n, int nPattern, int nGuard |
-      n = 0 + getMaximumChildrenIndexAstNode(e) and
+  }
+
+  Element getImmediateChildOfDbLocation(DbLocation e, int index, string partialPredicateCall) {
+    exists(int b, int bLocation, int n |
+      b = 0 and
+      bLocation = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfLocation(e, i, _)) | i) and
+      n = bLocation and
+      (
+        none()
+        or
+        result = getImmediateChildOfLocation(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfDependentMemberType(
+    DependentMemberType e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bType, int n |
+      b = 0 and
+      bType = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfType(e, i, _)) | i) and
+      n = bType and
+      (
+        none()
+        or
+        result = getImmediateChildOfType(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfDynamicSelfType(
+    DynamicSelfType e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bType, int n |
+      b = 0 and
+      bType = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfType(e, i, _)) | i) and
+      n = bType and
+      (
+        none()
+        or
+        result = getImmediateChildOfType(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfErrorType(ErrorType e, int index, string partialPredicateCall) {
+    exists(int b, int bType, int n |
+      b = 0 and
+      bType = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfType(e, i, _)) | i) and
+      n = bType and
+      (
+        none()
+        or
+        result = getImmediateChildOfType(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfExistentialType(
+    ExistentialType e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bType, int n |
+      b = 0 and
+      bType = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfType(e, i, _)) | i) and
+      n = bType and
+      (
+        none()
+        or
+        result = getImmediateChildOfType(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfIfConfigClause(IfConfigClause e, int index, string partialPredicateCall) {
+    exists(int b, int bLocatable, int n, int nCondition, int nElement |
+      b = 0 and
+      bLocatable = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfLocatable(e, i, _)) | i) and
+      n = bLocatable and
+      nCondition = n + 1 and
+      nElement = nCondition + 1 + max(int i | i = -1 or exists(e.getImmediateElement(i)) | i) and
+      (
+        none()
+        or
+        result = getImmediateChildOfLocatable(e, index - b, partialPredicateCall)
+        or
+        index = n and result = e.getImmediateCondition() and partialPredicateCall = "Condition()"
+        or
+        result = e.getImmediateElement(index - nCondition) and
+        partialPredicateCall = "Element(" + (index - nCondition).toString() + ")"
+      )
+    )
+  }
+
+  Element getImmediateChildOfInOutType(InOutType e, int index, string partialPredicateCall) {
+    exists(int b, int bType, int n |
+      b = 0 and
+      bType = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfType(e, i, _)) | i) and
+      n = bType and
+      (
+        none()
+        or
+        result = getImmediateChildOfType(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfLValueType(LValueType e, int index, string partialPredicateCall) {
+    exists(int b, int bType, int n |
+      b = 0 and
+      bType = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfType(e, i, _)) | i) and
+      n = bType and
+      (
+        none()
+        or
+        result = getImmediateChildOfType(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfModuleType(ModuleType e, int index, string partialPredicateCall) {
+    exists(int b, int bType, int n |
+      b = 0 and
+      bType = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfType(e, i, _)) | i) and
+      n = bType and
+      (
+        none()
+        or
+        result = getImmediateChildOfType(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfPlaceholderType(
+    PlaceholderType e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bType, int n |
+      b = 0 and
+      bType = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfType(e, i, _)) | i) and
+      n = bType and
+      (
+        none()
+        or
+        result = getImmediateChildOfType(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfProtocolCompositionType(
+    ProtocolCompositionType e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bType, int n |
+      b = 0 and
+      bType = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfType(e, i, _)) | i) and
+      n = bType and
+      (
+        none()
+        or
+        result = getImmediateChildOfType(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfReferenceStorageType(
+    ReferenceStorageType e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bType, int n |
+      b = 0 and
+      bType = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfType(e, i, _)) | i) and
+      n = bType and
+      (
+        none()
+        or
+        result = getImmediateChildOfType(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfSilBlockStorageType(
+    SilBlockStorageType e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bType, int n |
+      b = 0 and
+      bType = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfType(e, i, _)) | i) and
+      n = bType and
+      (
+        none()
+        or
+        result = getImmediateChildOfType(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfSilBoxType(SilBoxType e, int index, string partialPredicateCall) {
+    exists(int b, int bType, int n |
+      b = 0 and
+      bType = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfType(e, i, _)) | i) and
+      n = bType and
+      (
+        none()
+        or
+        result = getImmediateChildOfType(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfSilFunctionType(
+    SilFunctionType e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bType, int n |
+      b = 0 and
+      bType = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfType(e, i, _)) | i) and
+      n = bType and
+      (
+        none()
+        or
+        result = getImmediateChildOfType(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfSilTokenType(SilTokenType e, int index, string partialPredicateCall) {
+    exists(int b, int bType, int n |
+      b = 0 and
+      bType = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfType(e, i, _)) | i) and
+      n = bType and
+      (
+        none()
+        or
+        result = getImmediateChildOfType(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfSubstitutableType(
+    SubstitutableType e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bType, int n |
+      b = 0 and
+      bType = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfType(e, i, _)) | i) and
+      n = bType and
+      (
+        none()
+        or
+        result = getImmediateChildOfType(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfSugarType(SugarType e, int index, string partialPredicateCall) {
+    exists(int b, int bType, int n |
+      b = 0 and
+      bType = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfType(e, i, _)) | i) and
+      n = bType and
+      (
+        none()
+        or
+        result = getImmediateChildOfType(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfTupleType(TupleType e, int index, string partialPredicateCall) {
+    exists(int b, int bType, int n |
+      b = 0 and
+      bType = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfType(e, i, _)) | i) and
+      n = bType and
+      (
+        none()
+        or
+        result = getImmediateChildOfType(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfTypeVariableType(
+    TypeVariableType e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bType, int n |
+      b = 0 and
+      bType = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfType(e, i, _)) | i) and
+      n = bType and
+      (
+        none()
+        or
+        result = getImmediateChildOfType(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfUnknownFile(UnknownFile e, int index, string partialPredicateCall) {
+    exists(int b, int bFile, int n |
+      b = 0 and
+      bFile = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfFile(e, i, _)) | i) and
+      n = bFile and
+      (
+        none()
+        or
+        result = getImmediateChildOfFile(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfUnknownLocation(
+    UnknownLocation e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bLocation, int n |
+      b = 0 and
+      bLocation = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfLocation(e, i, _)) | i) and
+      n = bLocation and
+      (
+        none()
+        or
+        result = getImmediateChildOfLocation(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfUnresolvedType(UnresolvedType e, int index, string partialPredicateCall) {
+    exists(int b, int bType, int n |
+      b = 0 and
+      bType = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfType(e, i, _)) | i) and
+      n = bType and
+      (
+        none()
+        or
+        result = getImmediateChildOfType(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfAnyBuiltinIntegerType(
+    AnyBuiltinIntegerType e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bBuiltinType, int n |
+      b = 0 and
+      bBuiltinType =
+        b + 1 + max(int i | i = -1 or exists(getImmediateChildOfBuiltinType(e, i, _)) | i) and
+      n = bBuiltinType and
+      (
+        none()
+        or
+        result = getImmediateChildOfBuiltinType(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfArchetypeType(ArchetypeType e, int index, string partialPredicateCall) {
+    exists(int b, int bSubstitutableType, int n |
+      b = 0 and
+      bSubstitutableType =
+        b + 1 + max(int i | i = -1 or exists(getImmediateChildOfSubstitutableType(e, i, _)) | i) and
+      n = bSubstitutableType and
+      (
+        none()
+        or
+        result = getImmediateChildOfSubstitutableType(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfBuiltinBridgeObjectType(
+    BuiltinBridgeObjectType e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bBuiltinType, int n |
+      b = 0 and
+      bBuiltinType =
+        b + 1 + max(int i | i = -1 or exists(getImmediateChildOfBuiltinType(e, i, _)) | i) and
+      n = bBuiltinType and
+      (
+        none()
+        or
+        result = getImmediateChildOfBuiltinType(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfBuiltinDefaultActorStorageType(
+    BuiltinDefaultActorStorageType e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bBuiltinType, int n |
+      b = 0 and
+      bBuiltinType =
+        b + 1 + max(int i | i = -1 or exists(getImmediateChildOfBuiltinType(e, i, _)) | i) and
+      n = bBuiltinType and
+      (
+        none()
+        or
+        result = getImmediateChildOfBuiltinType(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfBuiltinExecutorType(
+    BuiltinExecutorType e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bBuiltinType, int n |
+      b = 0 and
+      bBuiltinType =
+        b + 1 + max(int i | i = -1 or exists(getImmediateChildOfBuiltinType(e, i, _)) | i) and
+      n = bBuiltinType and
+      (
+        none()
+        or
+        result = getImmediateChildOfBuiltinType(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfBuiltinFloatType(
+    BuiltinFloatType e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bBuiltinType, int n |
+      b = 0 and
+      bBuiltinType =
+        b + 1 + max(int i | i = -1 or exists(getImmediateChildOfBuiltinType(e, i, _)) | i) and
+      n = bBuiltinType and
+      (
+        none()
+        or
+        result = getImmediateChildOfBuiltinType(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfBuiltinJobType(BuiltinJobType e, int index, string partialPredicateCall) {
+    exists(int b, int bBuiltinType, int n |
+      b = 0 and
+      bBuiltinType =
+        b + 1 + max(int i | i = -1 or exists(getImmediateChildOfBuiltinType(e, i, _)) | i) and
+      n = bBuiltinType and
+      (
+        none()
+        or
+        result = getImmediateChildOfBuiltinType(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfBuiltinNativeObjectType(
+    BuiltinNativeObjectType e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bBuiltinType, int n |
+      b = 0 and
+      bBuiltinType =
+        b + 1 + max(int i | i = -1 or exists(getImmediateChildOfBuiltinType(e, i, _)) | i) and
+      n = bBuiltinType and
+      (
+        none()
+        or
+        result = getImmediateChildOfBuiltinType(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfBuiltinRawPointerType(
+    BuiltinRawPointerType e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bBuiltinType, int n |
+      b = 0 and
+      bBuiltinType =
+        b + 1 + max(int i | i = -1 or exists(getImmediateChildOfBuiltinType(e, i, _)) | i) and
+      n = bBuiltinType and
+      (
+        none()
+        or
+        result = getImmediateChildOfBuiltinType(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfBuiltinRawUnsafeContinuationType(
+    BuiltinRawUnsafeContinuationType e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bBuiltinType, int n |
+      b = 0 and
+      bBuiltinType =
+        b + 1 + max(int i | i = -1 or exists(getImmediateChildOfBuiltinType(e, i, _)) | i) and
+      n = bBuiltinType and
+      (
+        none()
+        or
+        result = getImmediateChildOfBuiltinType(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfBuiltinUnsafeValueBufferType(
+    BuiltinUnsafeValueBufferType e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bBuiltinType, int n |
+      b = 0 and
+      bBuiltinType =
+        b + 1 + max(int i | i = -1 or exists(getImmediateChildOfBuiltinType(e, i, _)) | i) and
+      n = bBuiltinType and
+      (
+        none()
+        or
+        result = getImmediateChildOfBuiltinType(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfBuiltinVectorType(
+    BuiltinVectorType e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bBuiltinType, int n |
+      b = 0 and
+      bBuiltinType =
+        b + 1 + max(int i | i = -1 or exists(getImmediateChildOfBuiltinType(e, i, _)) | i) and
+      n = bBuiltinType and
+      (
+        none()
+        or
+        result = getImmediateChildOfBuiltinType(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfCaseLabelItem(CaseLabelItem e, int index, string partialPredicateCall) {
+    exists(int b, int bAstNode, int n, int nPattern, int nGuard |
+      b = 0 and
+      bAstNode = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfAstNode(e, i, _)) | i) and
+      n = bAstNode and
       nPattern = n + 1 and
       nGuard = nPattern + 1 and
       (
         none()
         or
-        index = n and
-        result = e.(CaseLabelItem).getImmediatePattern() and
-        partialAccessor = "Pattern()"
+        result = getImmediateChildOfAstNode(e, index - b, partialPredicateCall)
         or
-        index = nPattern and
-        result = e.(CaseLabelItem).getImmediateGuard() and
-        partialAccessor = "Guard()"
+        index = n and result = e.getImmediatePattern() and partialPredicateCall = "Pattern()"
+        or
+        index = nPattern and result = e.getImmediateGuard() and partialPredicateCall = "Guard()"
       )
     )
-    or
-    exists(int n, int nElement |
-      n = 0 + getMaximumChildrenIndexAstNode(e) and
-      nElement = n + 1 + max(int i | i = 0 or exists(e.(StmtCondition).getImmediateElement(i)) | i) and
+  }
+
+  Element getImmediateChildOfDecl(Decl e, int index, string partialPredicateCall) {
+    exists(int b, int bAstNode, int n |
+      b = 0 and
+      bAstNode = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfAstNode(e, i, _)) | i) and
+      n = bAstNode and
       (
         none()
         or
-        result = e.(StmtCondition).getImmediateElement(index - n) and
-        partialAccessor = "Element(" + (index - n).toString() + ")"
+        result = getImmediateChildOfAstNode(e, index - b, partialPredicateCall)
       )
     )
-    or
-    exists(int n, int nSubExpr |
-      n = 0 + getMaximumChildrenIndexExpr(e) and
+  }
+
+  Element getImmediateChildOfExistentialMetatypeType(
+    ExistentialMetatypeType e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bAnyMetatypeType, int n |
+      b = 0 and
+      bAnyMetatypeType =
+        b + 1 + max(int i | i = -1 or exists(getImmediateChildOfAnyMetatypeType(e, i, _)) | i) and
+      n = bAnyMetatypeType and
+      (
+        none()
+        or
+        result = getImmediateChildOfAnyMetatypeType(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfExpr(Expr e, int index, string partialPredicateCall) {
+    exists(int b, int bAstNode, int n |
+      b = 0 and
+      bAstNode = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfAstNode(e, i, _)) | i) and
+      n = bAstNode and
+      (
+        none()
+        or
+        result = getImmediateChildOfAstNode(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfFunctionType(FunctionType e, int index, string partialPredicateCall) {
+    exists(int b, int bAnyFunctionType, int n |
+      b = 0 and
+      bAnyFunctionType =
+        b + 1 + max(int i | i = -1 or exists(getImmediateChildOfAnyFunctionType(e, i, _)) | i) and
+      n = bAnyFunctionType and
+      (
+        none()
+        or
+        result = getImmediateChildOfAnyFunctionType(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfGenericFunctionType(
+    GenericFunctionType e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bAnyFunctionType, int n |
+      b = 0 and
+      bAnyFunctionType =
+        b + 1 + max(int i | i = -1 or exists(getImmediateChildOfAnyFunctionType(e, i, _)) | i) and
+      n = bAnyFunctionType and
+      (
+        none()
+        or
+        result = getImmediateChildOfAnyFunctionType(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfGenericTypeParamType(
+    GenericTypeParamType e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bSubstitutableType, int n |
+      b = 0 and
+      bSubstitutableType =
+        b + 1 + max(int i | i = -1 or exists(getImmediateChildOfSubstitutableType(e, i, _)) | i) and
+      n = bSubstitutableType and
+      (
+        none()
+        or
+        result = getImmediateChildOfSubstitutableType(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfMetatypeType(MetatypeType e, int index, string partialPredicateCall) {
+    exists(int b, int bAnyMetatypeType, int n |
+      b = 0 and
+      bAnyMetatypeType =
+        b + 1 + max(int i | i = -1 or exists(getImmediateChildOfAnyMetatypeType(e, i, _)) | i) and
+      n = bAnyMetatypeType and
+      (
+        none()
+        or
+        result = getImmediateChildOfAnyMetatypeType(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfNominalOrBoundGenericNominalType(
+    NominalOrBoundGenericNominalType e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bAnyGenericType, int n |
+      b = 0 and
+      bAnyGenericType =
+        b + 1 + max(int i | i = -1 or exists(getImmediateChildOfAnyGenericType(e, i, _)) | i) and
+      n = bAnyGenericType and
+      (
+        none()
+        or
+        result = getImmediateChildOfAnyGenericType(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfParenType(ParenType e, int index, string partialPredicateCall) {
+    exists(int b, int bSugarType, int n |
+      b = 0 and
+      bSugarType = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfSugarType(e, i, _)) | i) and
+      n = bSugarType and
+      (
+        none()
+        or
+        result = getImmediateChildOfSugarType(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfPattern(Pattern e, int index, string partialPredicateCall) {
+    exists(int b, int bAstNode, int n |
+      b = 0 and
+      bAstNode = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfAstNode(e, i, _)) | i) and
+      n = bAstNode and
+      (
+        none()
+        or
+        result = getImmediateChildOfAstNode(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfStmt(Stmt e, int index, string partialPredicateCall) {
+    exists(int b, int bAstNode, int n |
+      b = 0 and
+      bAstNode = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfAstNode(e, i, _)) | i) and
+      n = bAstNode and
+      (
+        none()
+        or
+        result = getImmediateChildOfAstNode(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfStmtCondition(StmtCondition e, int index, string partialPredicateCall) {
+    exists(int b, int bAstNode, int n, int nElement |
+      b = 0 and
+      bAstNode = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfAstNode(e, i, _)) | i) and
+      n = bAstNode and
+      nElement = n + 1 + max(int i | i = -1 or exists(e.getImmediateElement(i)) | i) and
+      (
+        none()
+        or
+        result = getImmediateChildOfAstNode(e, index - b, partialPredicateCall)
+        or
+        result = e.getImmediateElement(index - n) and
+        partialPredicateCall = "Element(" + (index - n).toString() + ")"
+      )
+    )
+  }
+
+  Element getImmediateChildOfSyntaxSugarType(
+    SyntaxSugarType e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bSugarType, int n |
+      b = 0 and
+      bSugarType = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfSugarType(e, i, _)) | i) and
+      n = bSugarType and
+      (
+        none()
+        or
+        result = getImmediateChildOfSugarType(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfTypeAliasType(TypeAliasType e, int index, string partialPredicateCall) {
+    exists(int b, int bSugarType, int n |
+      b = 0 and
+      bSugarType = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfSugarType(e, i, _)) | i) and
+      n = bSugarType and
+      (
+        none()
+        or
+        result = getImmediateChildOfSugarType(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfTypeRepr(TypeRepr e, int index, string partialPredicateCall) {
+    exists(int b, int bAstNode, int n |
+      b = 0 and
+      bAstNode = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfAstNode(e, i, _)) | i) and
+      n = bAstNode and
+      (
+        none()
+        or
+        result = getImmediateChildOfAstNode(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfUnboundGenericType(
+    UnboundGenericType e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bAnyGenericType, int n |
+      b = 0 and
+      bAnyGenericType =
+        b + 1 + max(int i | i = -1 or exists(getImmediateChildOfAnyGenericType(e, i, _)) | i) and
+      n = bAnyGenericType and
+      (
+        none()
+        or
+        result = getImmediateChildOfAnyGenericType(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfUnmanagedStorageType(
+    UnmanagedStorageType e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bReferenceStorageType, int n |
+      b = 0 and
+      bReferenceStorageType =
+        b + 1 + max(int i | i = -1 or exists(getImmediateChildOfReferenceStorageType(e, i, _)) | i) and
+      n = bReferenceStorageType and
+      (
+        none()
+        or
+        result = getImmediateChildOfReferenceStorageType(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfUnownedStorageType(
+    UnownedStorageType e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bReferenceStorageType, int n |
+      b = 0 and
+      bReferenceStorageType =
+        b + 1 + max(int i | i = -1 or exists(getImmediateChildOfReferenceStorageType(e, i, _)) | i) and
+      n = bReferenceStorageType and
+      (
+        none()
+        or
+        result = getImmediateChildOfReferenceStorageType(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfWeakStorageType(
+    WeakStorageType e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bReferenceStorageType, int n |
+      b = 0 and
+      bReferenceStorageType =
+        b + 1 + max(int i | i = -1 or exists(getImmediateChildOfReferenceStorageType(e, i, _)) | i) and
+      n = bReferenceStorageType and
+      (
+        none()
+        or
+        result = getImmediateChildOfReferenceStorageType(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfAbstractClosureExpr(
+    AbstractClosureExpr e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bCallable, int bExpr, int n |
+      b = 0 and
+      bCallable = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfCallable(e, i, _)) | i) and
+      bExpr = bCallable + 1 + max(int i | i = -1 or exists(getImmediateChildOfExpr(e, i, _)) | i) and
+      n = bExpr and
+      (
+        none()
+        or
+        result = getImmediateChildOfCallable(e, index - b, partialPredicateCall)
+        or
+        result = getImmediateChildOfExpr(e, index - bCallable, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfAnyPattern(AnyPattern e, int index, string partialPredicateCall) {
+    exists(int b, int bPattern, int n |
+      b = 0 and
+      bPattern = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfPattern(e, i, _)) | i) and
+      n = bPattern and
+      (
+        none()
+        or
+        result = getImmediateChildOfPattern(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfAnyTryExpr(AnyTryExpr e, int index, string partialPredicateCall) {
+    exists(int b, int bExpr, int n, int nSubExpr |
+      b = 0 and
+      bExpr = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfExpr(e, i, _)) | i) and
+      n = bExpr and
       nSubExpr = n + 1 and
       (
         none()
         or
-        index = n and
-        result = e.(AnyTryExpr).getImmediateSubExpr() and
-        partialAccessor = "SubExpr()"
+        result = getImmediateChildOfExpr(e, index - b, partialPredicateCall)
+        or
+        index = n and result = e.getImmediateSubExpr() and partialPredicateCall = "SubExpr()"
       )
     )
-    or
-    exists(int n, int nFunction, int nArgument |
-      n = 0 + getMaximumChildrenIndexExpr(e) and
-      nFunction = n + 1 and
-      nArgument =
-        nFunction + 1 + max(int i | i = 0 or exists(e.(ApplyExpr).getImmediateArgument(i)) | i) and
+  }
+
+  Element getImmediateChildOfAppliedPropertyWrapperExpr(
+    AppliedPropertyWrapperExpr e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bExpr, int n |
+      b = 0 and
+      bExpr = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfExpr(e, i, _)) | i) and
+      n = bExpr and
       (
         none()
         or
-        index = n and
-        result = e.(ApplyExpr).getImmediateFunction() and
-        partialAccessor = "Function()"
-        or
-        result = e.(ApplyExpr).getImmediateArgument(index - nFunction) and
-        partialAccessor = "Argument(" + (index - nFunction).toString() + ")"
+        result = getImmediateChildOfExpr(e, index - b, partialPredicateCall)
       )
     )
-    or
-    exists(int n, int nDest, int nSource |
-      n = 0 + getMaximumChildrenIndexExpr(e) and
+  }
+
+  Element getImmediateChildOfApplyExpr(ApplyExpr e, int index, string partialPredicateCall) {
+    exists(int b, int bExpr, int n, int nFunction, int nArgument |
+      b = 0 and
+      bExpr = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfExpr(e, i, _)) | i) and
+      n = bExpr and
+      nFunction = n + 1 and
+      nArgument = nFunction + 1 + max(int i | i = -1 or exists(e.getImmediateArgument(i)) | i) and
+      (
+        none()
+        or
+        result = getImmediateChildOfExpr(e, index - b, partialPredicateCall)
+        or
+        index = n and result = e.getImmediateFunction() and partialPredicateCall = "Function()"
+        or
+        result = e.getImmediateArgument(index - nFunction) and
+        partialPredicateCall = "Argument(" + (index - nFunction).toString() + ")"
+      )
+    )
+  }
+
+  Element getImmediateChildOfArrowExpr(ArrowExpr e, int index, string partialPredicateCall) {
+    exists(int b, int bExpr, int n |
+      b = 0 and
+      bExpr = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfExpr(e, i, _)) | i) and
+      n = bExpr and
+      (
+        none()
+        or
+        result = getImmediateChildOfExpr(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfAssignExpr(AssignExpr e, int index, string partialPredicateCall) {
+    exists(int b, int bExpr, int n, int nDest, int nSource |
+      b = 0 and
+      bExpr = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfExpr(e, i, _)) | i) and
+      n = bExpr and
       nDest = n + 1 and
       nSource = nDest + 1 and
       (
         none()
         or
-        index = n and result = e.(AssignExpr).getImmediateDest() and partialAccessor = "Dest()"
+        result = getImmediateChildOfExpr(e, index - b, partialPredicateCall)
         or
-        index = nDest and
-        result = e.(AssignExpr).getImmediateSource() and
-        partialAccessor = "Source()"
+        index = n and result = e.getImmediateDest() and partialPredicateCall = "Dest()"
+        or
+        index = nDest and result = e.getImmediateSource() and partialPredicateCall = "Source()"
       )
     )
-    or
-    exists(int n, int nSubExpr |
-      n = 0 + getMaximumChildrenIndexExpr(e) and
+  }
+
+  Element getImmediateChildOfBindOptionalExpr(
+    BindOptionalExpr e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bExpr, int n, int nSubExpr |
+      b = 0 and
+      bExpr = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfExpr(e, i, _)) | i) and
+      n = bExpr and
       nSubExpr = n + 1 and
       (
         none()
         or
-        index = n and
-        result = e.(BindOptionalExpr).getImmediateSubExpr() and
-        partialAccessor = "SubExpr()"
+        result = getImmediateChildOfExpr(e, index - b, partialPredicateCall)
+        or
+        index = n and result = e.getImmediateSubExpr() and partialPredicateCall = "SubExpr()"
       )
     )
-    or
-    exists(int n, int nSubPattern |
-      n = 0 + getMaximumChildrenIndexPattern(e) and
+  }
+
+  Element getImmediateChildOfBindingPattern(BindingPattern e, int index, string partialPredicateCall) {
+    exists(int b, int bPattern, int n, int nSubPattern |
+      b = 0 and
+      bPattern = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfPattern(e, i, _)) | i) and
+      n = bPattern and
       nSubPattern = n + 1 and
       (
         none()
         or
-        index = n and
-        result = e.(BindingPattern).getImmediateSubPattern() and
-        partialAccessor = "SubPattern()"
+        result = getImmediateChildOfPattern(e, index - b, partialPredicateCall)
+        or
+        index = n and result = e.getImmediateSubPattern() and partialPredicateCall = "SubPattern()"
       )
     )
-    or
-    exists(int n, int nElement |
-      n = 0 + getMaximumChildrenIndexStmt(e) and
-      nElement = n + 1 + max(int i | i = 0 or exists(e.(BraceStmt).getImmediateElement(i)) | i) and
+  }
+
+  Element getImmediateChildOfBoolPattern(BoolPattern e, int index, string partialPredicateCall) {
+    exists(int b, int bPattern, int n |
+      b = 0 and
+      bPattern = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfPattern(e, i, _)) | i) and
+      n = bPattern and
       (
         none()
         or
-        result = e.(BraceStmt).getImmediateElement(index - n) and
-        partialAccessor = "Element(" + (index - n).toString() + ")"
+        result = getImmediateChildOfPattern(e, index - b, partialPredicateCall)
       )
     )
-    or
-    exists(int n, int nBindingDecl, int nClosureBody |
-      n = 0 + getMaximumChildrenIndexExpr(e) and
-      nBindingDecl =
-        n + 1 + max(int i | i = 0 or exists(e.(CaptureListExpr).getImmediateBindingDecl(i)) | i) and
+  }
+
+  Element getImmediateChildOfBoundGenericType(
+    BoundGenericType e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bNominalOrBoundGenericNominalType, int n |
+      b = 0 and
+      bNominalOrBoundGenericNominalType =
+        b + 1 +
+          max(int i |
+            i = -1 or exists(getImmediateChildOfNominalOrBoundGenericNominalType(e, i, _))
+          |
+            i
+          ) and
+      n = bNominalOrBoundGenericNominalType and
+      (
+        none()
+        or
+        result =
+          getImmediateChildOfNominalOrBoundGenericNominalType(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfBraceStmt(BraceStmt e, int index, string partialPredicateCall) {
+    exists(int b, int bStmt, int n, int nElement |
+      b = 0 and
+      bStmt = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfStmt(e, i, _)) | i) and
+      n = bStmt and
+      nElement = n + 1 + max(int i | i = -1 or exists(e.getImmediateElement(i)) | i) and
+      (
+        none()
+        or
+        result = getImmediateChildOfStmt(e, index - b, partialPredicateCall)
+        or
+        result = e.getImmediateElement(index - n) and
+        partialPredicateCall = "Element(" + (index - n).toString() + ")"
+      )
+    )
+  }
+
+  Element getImmediateChildOfBreakStmt(BreakStmt e, int index, string partialPredicateCall) {
+    exists(int b, int bStmt, int n |
+      b = 0 and
+      bStmt = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfStmt(e, i, _)) | i) and
+      n = bStmt and
+      (
+        none()
+        or
+        result = getImmediateChildOfStmt(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfBuiltinIntegerLiteralType(
+    BuiltinIntegerLiteralType e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bAnyBuiltinIntegerType, int n |
+      b = 0 and
+      bAnyBuiltinIntegerType =
+        b + 1 + max(int i | i = -1 or exists(getImmediateChildOfAnyBuiltinIntegerType(e, i, _)) | i) and
+      n = bAnyBuiltinIntegerType and
+      (
+        none()
+        or
+        result = getImmediateChildOfAnyBuiltinIntegerType(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfBuiltinIntegerType(
+    BuiltinIntegerType e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bAnyBuiltinIntegerType, int n |
+      b = 0 and
+      bAnyBuiltinIntegerType =
+        b + 1 + max(int i | i = -1 or exists(getImmediateChildOfAnyBuiltinIntegerType(e, i, _)) | i) and
+      n = bAnyBuiltinIntegerType and
+      (
+        none()
+        or
+        result = getImmediateChildOfAnyBuiltinIntegerType(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfCaptureListExpr(
+    CaptureListExpr e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bExpr, int n, int nBindingDecl, int nClosureBody |
+      b = 0 and
+      bExpr = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfExpr(e, i, _)) | i) and
+      n = bExpr and
+      nBindingDecl = n + 1 + max(int i | i = -1 or exists(e.getImmediateBindingDecl(i)) | i) and
       nClosureBody = nBindingDecl + 1 and
       (
         none()
         or
-        result = e.(CaptureListExpr).getImmediateBindingDecl(index - n) and
-        partialAccessor = "BindingDecl(" + (index - n).toString() + ")"
+        result = getImmediateChildOfExpr(e, index - b, partialPredicateCall)
+        or
+        result = e.getImmediateBindingDecl(index - n) and
+        partialPredicateCall = "BindingDecl(" + (index - n).toString() + ")"
         or
         index = nBindingDecl and
-        result = e.(CaptureListExpr).getImmediateClosureBody() and
-        partialAccessor = "ClosureBody()"
+        result = e.getImmediateClosureBody() and
+        partialPredicateCall = "ClosureBody()"
       )
     )
-    or
-    exists(int n, int nBody, int nLabel |
-      n = 0 + getMaximumChildrenIndexStmt(e) and
+  }
+
+  Element getImmediateChildOfCaseStmt(CaseStmt e, int index, string partialPredicateCall) {
+    exists(int b, int bStmt, int n, int nBody, int nLabel |
+      b = 0 and
+      bStmt = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfStmt(e, i, _)) | i) and
+      n = bStmt and
       nBody = n + 1 and
-      nLabel = nBody + 1 + max(int i | i = 0 or exists(e.(CaseStmt).getImmediateLabel(i)) | i) and
+      nLabel = nBody + 1 + max(int i | i = -1 or exists(e.getImmediateLabel(i)) | i) and
       (
         none()
         or
-        index = n and result = e.(CaseStmt).getImmediateBody() and partialAccessor = "Body()"
+        result = getImmediateChildOfStmt(e, index - b, partialPredicateCall)
         or
-        result = e.(CaseStmt).getImmediateLabel(index - nBody) and
-        partialAccessor = "Label(" + (index - nBody).toString() + ")"
+        index = n and result = e.getImmediateBody() and partialPredicateCall = "Body()"
+        or
+        result = e.getImmediateLabel(index - nBody) and
+        partialPredicateCall = "Label(" + (index - nBody).toString() + ")"
       )
     )
-    or
-    exists(int n, int nBody |
-      n = 0 + getMaximumChildrenIndexStmt(e) and
+  }
+
+  Element getImmediateChildOfCodeCompletionExpr(
+    CodeCompletionExpr e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bExpr, int n |
+      b = 0 and
+      bExpr = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfExpr(e, i, _)) | i) and
+      n = bExpr and
+      (
+        none()
+        or
+        result = getImmediateChildOfExpr(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfCollectionExpr(CollectionExpr e, int index, string partialPredicateCall) {
+    exists(int b, int bExpr, int n |
+      b = 0 and
+      bExpr = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfExpr(e, i, _)) | i) and
+      n = bExpr and
+      (
+        none()
+        or
+        result = getImmediateChildOfExpr(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfContinueStmt(ContinueStmt e, int index, string partialPredicateCall) {
+    exists(int b, int bStmt, int n |
+      b = 0 and
+      bStmt = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfStmt(e, i, _)) | i) and
+      n = bStmt and
+      (
+        none()
+        or
+        result = getImmediateChildOfStmt(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfDeclRefExpr(DeclRefExpr e, int index, string partialPredicateCall) {
+    exists(int b, int bExpr, int n |
+      b = 0 and
+      bExpr = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfExpr(e, i, _)) | i) and
+      n = bExpr and
+      (
+        none()
+        or
+        result = getImmediateChildOfExpr(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfDefaultArgumentExpr(
+    DefaultArgumentExpr e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bExpr, int n |
+      b = 0 and
+      bExpr = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfExpr(e, i, _)) | i) and
+      n = bExpr and
+      (
+        none()
+        or
+        result = getImmediateChildOfExpr(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfDeferStmt(DeferStmt e, int index, string partialPredicateCall) {
+    exists(int b, int bStmt, int n, int nBody |
+      b = 0 and
+      bStmt = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfStmt(e, i, _)) | i) and
+      n = bStmt and
       nBody = n + 1 and
       (
         none()
         or
-        index = n and result = e.(DeferStmt).getImmediateBody() and partialAccessor = "Body()"
+        result = getImmediateChildOfStmt(e, index - b, partialPredicateCall)
+        or
+        index = n and result = e.getImmediateBody() and partialPredicateCall = "Body()"
       )
     )
-    or
-    exists(int n, int nQualifier, int nSubExpr |
-      n = 0 + getMaximumChildrenIndexExpr(e) and
+  }
+
+  Element getImmediateChildOfDictionaryType(DictionaryType e, int index, string partialPredicateCall) {
+    exists(int b, int bSyntaxSugarType, int n |
+      b = 0 and
+      bSyntaxSugarType =
+        b + 1 + max(int i | i = -1 or exists(getImmediateChildOfSyntaxSugarType(e, i, _)) | i) and
+      n = bSyntaxSugarType and
+      (
+        none()
+        or
+        result = getImmediateChildOfSyntaxSugarType(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfDiscardAssignmentExpr(
+    DiscardAssignmentExpr e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bExpr, int n |
+      b = 0 and
+      bExpr = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfExpr(e, i, _)) | i) and
+      n = bExpr and
+      (
+        none()
+        or
+        result = getImmediateChildOfExpr(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfDotSyntaxBaseIgnoredExpr(
+    DotSyntaxBaseIgnoredExpr e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bExpr, int n, int nQualifier, int nSubExpr |
+      b = 0 and
+      bExpr = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfExpr(e, i, _)) | i) and
+      n = bExpr and
       nQualifier = n + 1 and
       nSubExpr = nQualifier + 1 and
       (
         none()
         or
-        index = n and
-        result = e.(DotSyntaxBaseIgnoredExpr).getImmediateQualifier() and
-        partialAccessor = "Qualifier()"
+        result = getImmediateChildOfExpr(e, index - b, partialPredicateCall)
+        or
+        index = n and result = e.getImmediateQualifier() and partialPredicateCall = "Qualifier()"
         or
         index = nQualifier and
-        result = e.(DotSyntaxBaseIgnoredExpr).getImmediateSubExpr() and
-        partialAccessor = "SubExpr()"
+        result = e.getImmediateSubExpr() and
+        partialPredicateCall = "SubExpr()"
       )
     )
-    or
-    exists(int n, int nBase |
-      n = 0 + getMaximumChildrenIndexExpr(e) and
+  }
+
+  Element getImmediateChildOfDynamicTypeExpr(
+    DynamicTypeExpr e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bExpr, int n, int nBase |
+      b = 0 and
+      bExpr = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfExpr(e, i, _)) | i) and
+      n = bExpr and
       nBase = n + 1 and
       (
         none()
         or
-        index = n and result = e.(DynamicTypeExpr).getImmediateBase() and partialAccessor = "Base()"
+        result = getImmediateChildOfExpr(e, index - b, partialPredicateCall)
+        or
+        index = n and result = e.getImmediateBase() and partialPredicateCall = "Base()"
       )
     )
-    or
-    exists(int n, int nElement |
-      n = 0 + getMaximumChildrenIndexDecl(e) and
-      nElement = n + 1 + max(int i | i = 0 or exists(e.(EnumCaseDecl).getImmediateElement(i)) | i) and
+  }
+
+  Element getImmediateChildOfEditorPlaceholderExpr(
+    EditorPlaceholderExpr e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bExpr, int n |
+      b = 0 and
+      bExpr = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfExpr(e, i, _)) | i) and
+      n = bExpr and
       (
         none()
         or
-        result = e.(EnumCaseDecl).getImmediateElement(index - n) and
-        partialAccessor = "Element(" + (index - n).toString() + ")"
+        result = getImmediateChildOfExpr(e, index - b, partialPredicateCall)
       )
     )
-    or
-    exists(int n, int nSubPattern |
-      n = 0 + getMaximumChildrenIndexPattern(e) and
+  }
+
+  Element getImmediateChildOfEnumCaseDecl(EnumCaseDecl e, int index, string partialPredicateCall) {
+    exists(int b, int bDecl, int n, int nElement |
+      b = 0 and
+      bDecl = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfDecl(e, i, _)) | i) and
+      n = bDecl and
+      nElement = n + 1 + max(int i | i = -1 or exists(e.getImmediateElement(i)) | i) and
+      (
+        none()
+        or
+        result = getImmediateChildOfDecl(e, index - b, partialPredicateCall)
+        or
+        result = e.getImmediateElement(index - n) and
+        partialPredicateCall = "Element(" + (index - n).toString() + ")"
+      )
+    )
+  }
+
+  Element getImmediateChildOfEnumElementPattern(
+    EnumElementPattern e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bPattern, int n, int nSubPattern |
+      b = 0 and
+      bPattern = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfPattern(e, i, _)) | i) and
+      n = bPattern and
       nSubPattern = n + 1 and
       (
         none()
         or
-        index = n and
-        result = e.(EnumElementPattern).getImmediateSubPattern() and
-        partialAccessor = "SubPattern()"
+        result = getImmediateChildOfPattern(e, index - b, partialPredicateCall)
+        or
+        index = n and result = e.getImmediateSubPattern() and partialPredicateCall = "SubPattern()"
       )
     )
-    or
-    exists(int n, int nSubExpr |
-      n = 0 + getMaximumChildrenIndexExpr(e) and
+  }
+
+  Element getImmediateChildOfEnumIsCaseExpr(EnumIsCaseExpr e, int index, string partialPredicateCall) {
+    exists(int b, int bExpr, int n, int nSubExpr |
+      b = 0 and
+      bExpr = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfExpr(e, i, _)) | i) and
+      n = bExpr and
       nSubExpr = n + 1 and
       (
         none()
         or
-        index = n and
-        result = e.(EnumIsCaseExpr).getImmediateSubExpr() and
-        partialAccessor = "SubExpr()"
+        result = getImmediateChildOfExpr(e, index - b, partialPredicateCall)
+        or
+        index = n and result = e.getImmediateSubExpr() and partialPredicateCall = "SubExpr()"
       )
     )
-    or
-    exists(int n, int nSubExpr |
-      n = 0 + getMaximumChildrenIndexExpr(e) and
+  }
+
+  Element getImmediateChildOfErrorExpr(ErrorExpr e, int index, string partialPredicateCall) {
+    exists(int b, int bExpr, int n |
+      b = 0 and
+      bExpr = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfExpr(e, i, _)) | i) and
+      n = bExpr and
+      (
+        none()
+        or
+        result = getImmediateChildOfExpr(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfExplicitCastExpr(
+    ExplicitCastExpr e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bExpr, int n, int nSubExpr |
+      b = 0 and
+      bExpr = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfExpr(e, i, _)) | i) and
+      n = bExpr and
       nSubExpr = n + 1 and
       (
         none()
         or
-        index = n and
-        result = e.(ExplicitCastExpr).getImmediateSubExpr() and
-        partialAccessor = "SubExpr()"
+        result = getImmediateChildOfExpr(e, index - b, partialPredicateCall)
+        or
+        index = n and result = e.getImmediateSubExpr() and partialPredicateCall = "SubExpr()"
       )
     )
-    or
-    exists(int n, int nSubExpr |
-      n = 0 + getMaximumChildrenIndexPattern(e) and
+  }
+
+  Element getImmediateChildOfExprPattern(ExprPattern e, int index, string partialPredicateCall) {
+    exists(int b, int bPattern, int n, int nSubExpr |
+      b = 0 and
+      bPattern = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfPattern(e, i, _)) | i) and
+      n = bPattern and
       nSubExpr = n + 1 and
       (
         none()
         or
-        index = n and
-        result = e.(ExprPattern).getImmediateSubExpr() and
-        partialAccessor = "SubExpr()"
+        result = getImmediateChildOfPattern(e, index - b, partialPredicateCall)
+        or
+        index = n and result = e.getImmediateSubExpr() and partialPredicateCall = "SubExpr()"
       )
     )
-    or
-    exists(int n, int nSubExpr |
-      n = 0 + getMaximumChildrenIndexExpr(e) and
+  }
+
+  Element getImmediateChildOfExtensionDecl(ExtensionDecl e, int index, string partialPredicateCall) {
+    exists(int b, int bDecl, int bGenericContext, int bIterableDeclContext, int n |
+      b = 0 and
+      bDecl = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfDecl(e, i, _)) | i) and
+      bGenericContext =
+        bDecl + 1 + max(int i | i = -1 or exists(getImmediateChildOfGenericContext(e, i, _)) | i) and
+      bIterableDeclContext =
+        bGenericContext + 1 +
+          max(int i | i = -1 or exists(getImmediateChildOfIterableDeclContext(e, i, _)) | i) and
+      n = bIterableDeclContext and
+      (
+        none()
+        or
+        result = getImmediateChildOfDecl(e, index - b, partialPredicateCall)
+        or
+        result = getImmediateChildOfGenericContext(e, index - bDecl, partialPredicateCall)
+        or
+        result =
+          getImmediateChildOfIterableDeclContext(e, index - bGenericContext, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfFailStmt(FailStmt e, int index, string partialPredicateCall) {
+    exists(int b, int bStmt, int n |
+      b = 0 and
+      bStmt = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfStmt(e, i, _)) | i) and
+      n = bStmt and
+      (
+        none()
+        or
+        result = getImmediateChildOfStmt(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfFallthroughStmt(
+    FallthroughStmt e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bStmt, int n |
+      b = 0 and
+      bStmt = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfStmt(e, i, _)) | i) and
+      n = bStmt and
+      (
+        none()
+        or
+        result = getImmediateChildOfStmt(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfForceValueExpr(ForceValueExpr e, int index, string partialPredicateCall) {
+    exists(int b, int bExpr, int n, int nSubExpr |
+      b = 0 and
+      bExpr = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfExpr(e, i, _)) | i) and
+      n = bExpr and
       nSubExpr = n + 1 and
       (
         none()
         or
-        index = n and
-        result = e.(ForceValueExpr).getImmediateSubExpr() and
-        partialAccessor = "SubExpr()"
+        result = getImmediateChildOfExpr(e, index - b, partialPredicateCall)
+        or
+        index = n and result = e.getImmediateSubExpr() and partialPredicateCall = "SubExpr()"
       )
     )
-    or
-    exists(int n, int nSubExpr |
-      n = 0 + getMaximumChildrenIndexExpr(e) and
+  }
+
+  Element getImmediateChildOfIdentityExpr(IdentityExpr e, int index, string partialPredicateCall) {
+    exists(int b, int bExpr, int n, int nSubExpr |
+      b = 0 and
+      bExpr = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfExpr(e, i, _)) | i) and
+      n = bExpr and
       nSubExpr = n + 1 and
       (
         none()
         or
-        index = n and
-        result = e.(IdentityExpr).getImmediateSubExpr() and
-        partialAccessor = "SubExpr()"
+        result = getImmediateChildOfExpr(e, index - b, partialPredicateCall)
+        or
+        index = n and result = e.getImmediateSubExpr() and partialPredicateCall = "SubExpr()"
       )
     )
-    or
-    exists(int n, int nClause |
-      n = 0 + getMaximumChildrenIndexDecl(e) and
-      nClause = n + 1 + max(int i | i = 0 or exists(e.(IfConfigDecl).getImmediateClause(i)) | i) and
+  }
+
+  Element getImmediateChildOfIfConfigDecl(IfConfigDecl e, int index, string partialPredicateCall) {
+    exists(int b, int bDecl, int n, int nClause |
+      b = 0 and
+      bDecl = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfDecl(e, i, _)) | i) and
+      n = bDecl and
+      nClause = n + 1 + max(int i | i = -1 or exists(e.getImmediateClause(i)) | i) and
       (
         none()
         or
-        result = e.(IfConfigDecl).getImmediateClause(index - n) and
-        partialAccessor = "Clause(" + (index - n).toString() + ")"
+        result = getImmediateChildOfDecl(e, index - b, partialPredicateCall)
+        or
+        result = e.getImmediateClause(index - n) and
+        partialPredicateCall = "Clause(" + (index - n).toString() + ")"
       )
     )
-    or
-    exists(int n, int nCondition, int nThenExpr, int nElseExpr |
-      n = 0 + getMaximumChildrenIndexExpr(e) and
+  }
+
+  Element getImmediateChildOfIfExpr(IfExpr e, int index, string partialPredicateCall) {
+    exists(int b, int bExpr, int n, int nCondition, int nThenExpr, int nElseExpr |
+      b = 0 and
+      bExpr = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfExpr(e, i, _)) | i) and
+      n = bExpr and
       nCondition = n + 1 and
       nThenExpr = nCondition + 1 and
       nElseExpr = nThenExpr + 1 and
       (
         none()
         or
-        index = n and
-        result = e.(IfExpr).getImmediateCondition() and
-        partialAccessor = "Condition()"
+        result = getImmediateChildOfExpr(e, index - b, partialPredicateCall)
+        or
+        index = n and result = e.getImmediateCondition() and partialPredicateCall = "Condition()"
         or
         index = nCondition and
-        result = e.(IfExpr).getImmediateThenExpr() and
-        partialAccessor = "ThenExpr()"
+        result = e.getImmediateThenExpr() and
+        partialPredicateCall = "ThenExpr()"
         or
         index = nThenExpr and
-        result = e.(IfExpr).getImmediateElseExpr() and
-        partialAccessor = "ElseExpr()"
+        result = e.getImmediateElseExpr() and
+        partialPredicateCall = "ElseExpr()"
       )
     )
-    or
-    exists(int n, int nSubExpr |
-      n = 0 + getMaximumChildrenIndexExpr(e) and
+  }
+
+  Element getImmediateChildOfImplicitConversionExpr(
+    ImplicitConversionExpr e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bExpr, int n, int nSubExpr |
+      b = 0 and
+      bExpr = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfExpr(e, i, _)) | i) and
+      n = bExpr and
       nSubExpr = n + 1 and
       (
         none()
         or
-        index = n and
-        result = e.(ImplicitConversionExpr).getImmediateSubExpr() and
-        partialAccessor = "SubExpr()"
+        result = getImmediateChildOfExpr(e, index - b, partialPredicateCall)
+        or
+        index = n and result = e.getImmediateSubExpr() and partialPredicateCall = "SubExpr()"
       )
     )
-    or
-    exists(int n, int nSubExpr |
-      n = 0 + getMaximumChildrenIndexExpr(e) and
+  }
+
+  Element getImmediateChildOfImportDecl(ImportDecl e, int index, string partialPredicateCall) {
+    exists(int b, int bDecl, int n |
+      b = 0 and
+      bDecl = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfDecl(e, i, _)) | i) and
+      n = bDecl and
+      (
+        none()
+        or
+        result = getImmediateChildOfDecl(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfInOutExpr(InOutExpr e, int index, string partialPredicateCall) {
+    exists(int b, int bExpr, int n, int nSubExpr |
+      b = 0 and
+      bExpr = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfExpr(e, i, _)) | i) and
+      n = bExpr and
       nSubExpr = n + 1 and
       (
         none()
         or
-        index = n and result = e.(InOutExpr).getImmediateSubExpr() and partialAccessor = "SubExpr()"
+        result = getImmediateChildOfExpr(e, index - b, partialPredicateCall)
+        or
+        index = n and result = e.getImmediateSubExpr() and partialPredicateCall = "SubExpr()"
       )
     )
-    or
-    exists(int n, int nCastTypeRepr, int nSubPattern |
-      n = 0 + getMaximumChildrenIndexPattern(e) and
+  }
+
+  Element getImmediateChildOfIsPattern(IsPattern e, int index, string partialPredicateCall) {
+    exists(int b, int bPattern, int n, int nCastTypeRepr, int nSubPattern |
+      b = 0 and
+      bPattern = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfPattern(e, i, _)) | i) and
+      n = bPattern and
       nCastTypeRepr = n + 1 and
       nSubPattern = nCastTypeRepr + 1 and
       (
         none()
         or
+        result = getImmediateChildOfPattern(e, index - b, partialPredicateCall)
+        or
         index = n and
-        result = e.(IsPattern).getImmediateCastTypeRepr() and
-        partialAccessor = "CastTypeRepr()"
+        result = e.getImmediateCastTypeRepr() and
+        partialPredicateCall = "CastTypeRepr()"
         or
         index = nCastTypeRepr and
-        result = e.(IsPattern).getImmediateSubPattern() and
-        partialAccessor = "SubPattern()"
+        result = e.getImmediateSubPattern() and
+        partialPredicateCall = "SubPattern()"
       )
     )
-    or
-    exists(int n, int nBase, int nKeyPath |
-      n = 0 + getMaximumChildrenIndexExpr(e) and
+  }
+
+  Element getImmediateChildOfKeyPathApplicationExpr(
+    KeyPathApplicationExpr e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bExpr, int n, int nBase, int nKeyPath |
+      b = 0 and
+      bExpr = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfExpr(e, i, _)) | i) and
+      n = bExpr and
       nBase = n + 1 and
       nKeyPath = nBase + 1 and
       (
         none()
         or
-        index = n and
-        result = e.(KeyPathApplicationExpr).getImmediateBase() and
-        partialAccessor = "Base()"
+        result = getImmediateChildOfExpr(e, index - b, partialPredicateCall)
         or
-        index = nBase and
-        result = e.(KeyPathApplicationExpr).getImmediateKeyPath() and
-        partialAccessor = "KeyPath()"
+        index = n and result = e.getImmediateBase() and partialPredicateCall = "Base()"
+        or
+        index = nBase and result = e.getImmediateKeyPath() and partialPredicateCall = "KeyPath()"
       )
     )
-    or
-    exists(int n, int nRoot, int nParsedPath |
-      n = 0 + getMaximumChildrenIndexExpr(e) and
+  }
+
+  Element getImmediateChildOfKeyPathDotExpr(KeyPathDotExpr e, int index, string partialPredicateCall) {
+    exists(int b, int bExpr, int n |
+      b = 0 and
+      bExpr = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfExpr(e, i, _)) | i) and
+      n = bExpr and
+      (
+        none()
+        or
+        result = getImmediateChildOfExpr(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfKeyPathExpr(KeyPathExpr e, int index, string partialPredicateCall) {
+    exists(int b, int bExpr, int n, int nRoot, int nParsedPath |
+      b = 0 and
+      bExpr = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfExpr(e, i, _)) | i) and
+      n = bExpr and
       nRoot = n + 1 and
       nParsedPath = nRoot + 1 and
       (
         none()
         or
-        index = n and result = e.(KeyPathExpr).getImmediateRoot() and partialAccessor = "Root()"
+        result = getImmediateChildOfExpr(e, index - b, partialPredicateCall)
+        or
+        index = n and result = e.getImmediateRoot() and partialPredicateCall = "Root()"
         or
         index = nRoot and
-        result = e.(KeyPathExpr).getImmediateParsedPath() and
-        partialAccessor = "ParsedPath()"
+        result = e.getImmediateParsedPath() and
+        partialPredicateCall = "ParsedPath()"
       )
     )
-    or
-    exists(int n, int nSubExpr |
-      n = 0 + getMaximumChildrenIndexExpr(e) and
+  }
+
+  Element getImmediateChildOfLabeledStmt(LabeledStmt e, int index, string partialPredicateCall) {
+    exists(int b, int bStmt, int n |
+      b = 0 and
+      bStmt = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfStmt(e, i, _)) | i) and
+      n = bStmt and
+      (
+        none()
+        or
+        result = getImmediateChildOfStmt(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfLazyInitializerExpr(
+    LazyInitializerExpr e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bExpr, int n, int nSubExpr |
+      b = 0 and
+      bExpr = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfExpr(e, i, _)) | i) and
+      n = bExpr and
       nSubExpr = n + 1 and
       (
         none()
         or
-        index = n and
-        result = e.(LazyInitializerExpr).getImmediateSubExpr() and
-        partialAccessor = "SubExpr()"
+        result = getImmediateChildOfExpr(e, index - b, partialPredicateCall)
+        or
+        index = n and result = e.getImmediateSubExpr() and partialPredicateCall = "SubExpr()"
       )
     )
-    or
-    exists(int n, int nBase |
-      n = 0 + getMaximumChildrenIndexExpr(e) and
+  }
+
+  Element getImmediateChildOfLiteralExpr(LiteralExpr e, int index, string partialPredicateCall) {
+    exists(int b, int bExpr, int n |
+      b = 0 and
+      bExpr = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfExpr(e, i, _)) | i) and
+      n = bExpr and
+      (
+        none()
+        or
+        result = getImmediateChildOfExpr(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfLookupExpr(LookupExpr e, int index, string partialPredicateCall) {
+    exists(int b, int bExpr, int n, int nBase |
+      b = 0 and
+      bExpr = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfExpr(e, i, _)) | i) and
+      n = bExpr and
       nBase = n + 1 and
       (
         none()
         or
-        index = n and result = e.(LookupExpr).getImmediateBase() and partialAccessor = "Base()"
+        result = getImmediateChildOfExpr(e, index - b, partialPredicateCall)
+        or
+        index = n and result = e.getImmediateBase() and partialPredicateCall = "Base()"
       )
     )
-    or
-    exists(int n, int nEscapingClosure, int nNonescapingClosure, int nSubExpr |
-      n = 0 + getMaximumChildrenIndexExpr(e) and
+  }
+
+  Element getImmediateChildOfMakeTemporarilyEscapableExpr(
+    MakeTemporarilyEscapableExpr e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bExpr, int n, int nEscapingClosure, int nNonescapingClosure, int nSubExpr |
+      b = 0 and
+      bExpr = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfExpr(e, i, _)) | i) and
+      n = bExpr and
       nEscapingClosure = n + 1 and
       nNonescapingClosure = nEscapingClosure + 1 and
       nSubExpr = nNonescapingClosure + 1 and
       (
         none()
         or
+        result = getImmediateChildOfExpr(e, index - b, partialPredicateCall)
+        or
         index = n and
-        result = e.(MakeTemporarilyEscapableExpr).getImmediateEscapingClosure() and
-        partialAccessor = "EscapingClosure()"
+        result = e.getImmediateEscapingClosure() and
+        partialPredicateCall = "EscapingClosure()"
         or
         index = nEscapingClosure and
-        result = e.(MakeTemporarilyEscapableExpr).getImmediateNonescapingClosure() and
-        partialAccessor = "NonescapingClosure()"
+        result = e.getImmediateNonescapingClosure() and
+        partialPredicateCall = "NonescapingClosure()"
         or
         index = nNonescapingClosure and
-        result = e.(MakeTemporarilyEscapableExpr).getImmediateSubExpr() and
-        partialAccessor = "SubExpr()"
+        result = e.getImmediateSubExpr() and
+        partialPredicateCall = "SubExpr()"
       )
     )
-    or
-    exists(int n, int nSubExpr |
-      n = 0 + getMaximumChildrenIndexExpr(e) and
+  }
+
+  Element getImmediateChildOfMissingMemberDecl(
+    MissingMemberDecl e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bDecl, int n |
+      b = 0 and
+      bDecl = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfDecl(e, i, _)) | i) and
+      n = bDecl and
+      (
+        none()
+        or
+        result = getImmediateChildOfDecl(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfNamedPattern(NamedPattern e, int index, string partialPredicateCall) {
+    exists(int b, int bPattern, int n |
+      b = 0 and
+      bPattern = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfPattern(e, i, _)) | i) and
+      n = bPattern and
+      (
+        none()
+        or
+        result = getImmediateChildOfPattern(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfNestedArchetypeType(
+    NestedArchetypeType e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bArchetypeType, int n |
+      b = 0 and
+      bArchetypeType =
+        b + 1 + max(int i | i = -1 or exists(getImmediateChildOfArchetypeType(e, i, _)) | i) and
+      n = bArchetypeType and
+      (
+        none()
+        or
+        result = getImmediateChildOfArchetypeType(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfNominalType(NominalType e, int index, string partialPredicateCall) {
+    exists(int b, int bNominalOrBoundGenericNominalType, int n |
+      b = 0 and
+      bNominalOrBoundGenericNominalType =
+        b + 1 +
+          max(int i |
+            i = -1 or exists(getImmediateChildOfNominalOrBoundGenericNominalType(e, i, _))
+          |
+            i
+          ) and
+      n = bNominalOrBoundGenericNominalType and
+      (
+        none()
+        or
+        result =
+          getImmediateChildOfNominalOrBoundGenericNominalType(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfObjCSelectorExpr(
+    ObjCSelectorExpr e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bExpr, int n, int nSubExpr |
+      b = 0 and
+      bExpr = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfExpr(e, i, _)) | i) and
+      n = bExpr and
       nSubExpr = n + 1 and
       (
         none()
         or
-        index = n and
-        result = e.(ObjCSelectorExpr).getImmediateSubExpr() and
-        partialAccessor = "SubExpr()"
+        result = getImmediateChildOfExpr(e, index - b, partialPredicateCall)
+        or
+        index = n and result = e.getImmediateSubExpr() and partialPredicateCall = "SubExpr()"
       )
     )
-    or
-    exists(int n, int nSubExpr |
-      n = 0 + getMaximumChildrenIndexExpr(e) and
+  }
+
+  Element getImmediateChildOfOneWayExpr(OneWayExpr e, int index, string partialPredicateCall) {
+    exists(int b, int bExpr, int n, int nSubExpr |
+      b = 0 and
+      bExpr = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfExpr(e, i, _)) | i) and
+      n = bExpr and
       nSubExpr = n + 1 and
       (
         none()
         or
-        index = n and
-        result = e.(OneWayExpr).getImmediateSubExpr() and
-        partialAccessor = "SubExpr()"
+        result = getImmediateChildOfExpr(e, index - b, partialPredicateCall)
+        or
+        index = n and result = e.getImmediateSubExpr() and partialPredicateCall = "SubExpr()"
       )
     )
-    or
-    exists(int n, int nSubExpr, int nExistential, int nOpaqueExpr |
-      n = 0 + getMaximumChildrenIndexExpr(e) and
+  }
+
+  Element getImmediateChildOfOpaqueTypeArchetypeType(
+    OpaqueTypeArchetypeType e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bArchetypeType, int n |
+      b = 0 and
+      bArchetypeType =
+        b + 1 + max(int i | i = -1 or exists(getImmediateChildOfArchetypeType(e, i, _)) | i) and
+      n = bArchetypeType and
+      (
+        none()
+        or
+        result = getImmediateChildOfArchetypeType(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfOpaqueValueExpr(
+    OpaqueValueExpr e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bExpr, int n |
+      b = 0 and
+      bExpr = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfExpr(e, i, _)) | i) and
+      n = bExpr and
+      (
+        none()
+        or
+        result = getImmediateChildOfExpr(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfOpenExistentialExpr(
+    OpenExistentialExpr e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bExpr, int n, int nSubExpr, int nExistential, int nOpaqueExpr |
+      b = 0 and
+      bExpr = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfExpr(e, i, _)) | i) and
+      n = bExpr and
       nSubExpr = n + 1 and
       nExistential = nSubExpr + 1 and
       nOpaqueExpr = nExistential + 1 and
       (
         none()
         or
-        index = n and
-        result = e.(OpenExistentialExpr).getImmediateSubExpr() and
-        partialAccessor = "SubExpr()"
+        result = getImmediateChildOfExpr(e, index - b, partialPredicateCall)
+        or
+        index = n and result = e.getImmediateSubExpr() and partialPredicateCall = "SubExpr()"
         or
         index = nSubExpr and
-        result = e.(OpenExistentialExpr).getImmediateExistential() and
-        partialAccessor = "Existential()"
+        result = e.getImmediateExistential() and
+        partialPredicateCall = "Existential()"
         or
         index = nExistential and
-        result = e.(OpenExistentialExpr).getImmediateOpaqueExpr() and
-        partialAccessor = "OpaqueExpr()"
+        result = e.getImmediateOpaqueExpr() and
+        partialPredicateCall = "OpaqueExpr()"
       )
     )
-    or
-    exists(int n, int nSubExpr |
-      n = 0 + getMaximumChildrenIndexExpr(e) and
+  }
+
+  Element getImmediateChildOfOpenedArchetypeType(
+    OpenedArchetypeType e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bArchetypeType, int n |
+      b = 0 and
+      bArchetypeType =
+        b + 1 + max(int i | i = -1 or exists(getImmediateChildOfArchetypeType(e, i, _)) | i) and
+      n = bArchetypeType and
+      (
+        none()
+        or
+        result = getImmediateChildOfArchetypeType(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfOperatorDecl(OperatorDecl e, int index, string partialPredicateCall) {
+    exists(int b, int bDecl, int n |
+      b = 0 and
+      bDecl = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfDecl(e, i, _)) | i) and
+      n = bDecl and
+      (
+        none()
+        or
+        result = getImmediateChildOfDecl(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfOptionalEvaluationExpr(
+    OptionalEvaluationExpr e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bExpr, int n, int nSubExpr |
+      b = 0 and
+      bExpr = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfExpr(e, i, _)) | i) and
+      n = bExpr and
       nSubExpr = n + 1 and
       (
         none()
         or
-        index = n and
-        result = e.(OptionalEvaluationExpr).getImmediateSubExpr() and
-        partialAccessor = "SubExpr()"
+        result = getImmediateChildOfExpr(e, index - b, partialPredicateCall)
+        or
+        index = n and result = e.getImmediateSubExpr() and partialPredicateCall = "SubExpr()"
       )
     )
-    or
-    exists(int n, int nSubPattern |
-      n = 0 + getMaximumChildrenIndexPattern(e) and
+  }
+
+  Element getImmediateChildOfOptionalSomePattern(
+    OptionalSomePattern e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bPattern, int n, int nSubPattern |
+      b = 0 and
+      bPattern = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfPattern(e, i, _)) | i) and
+      n = bPattern and
       nSubPattern = n + 1 and
       (
         none()
         or
-        index = n and
-        result = e.(OptionalSomePattern).getImmediateSubPattern() and
-        partialAccessor = "SubPattern()"
+        result = getImmediateChildOfPattern(e, index - b, partialPredicateCall)
+        or
+        index = n and result = e.getImmediateSubPattern() and partialPredicateCall = "SubPattern()"
       )
     )
-    or
-    exists(int n, int nSubPattern |
-      n = 0 + getMaximumChildrenIndexPattern(e) and
+  }
+
+  Element getImmediateChildOfOtherConstructorDeclRefExpr(
+    OtherConstructorDeclRefExpr e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bExpr, int n |
+      b = 0 and
+      bExpr = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfExpr(e, i, _)) | i) and
+      n = bExpr and
+      (
+        none()
+        or
+        result = getImmediateChildOfExpr(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfOverloadSetRefExpr(
+    OverloadSetRefExpr e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bExpr, int n |
+      b = 0 and
+      bExpr = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfExpr(e, i, _)) | i) and
+      n = bExpr and
+      (
+        none()
+        or
+        result = getImmediateChildOfExpr(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfParenPattern(ParenPattern e, int index, string partialPredicateCall) {
+    exists(int b, int bPattern, int n, int nSubPattern |
+      b = 0 and
+      bPattern = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfPattern(e, i, _)) | i) and
+      n = bPattern and
       nSubPattern = n + 1 and
       (
         none()
         or
-        index = n and
-        result = e.(ParenPattern).getImmediateSubPattern() and
-        partialAccessor = "SubPattern()"
+        result = getImmediateChildOfPattern(e, index - b, partialPredicateCall)
+        or
+        index = n and result = e.getImmediateSubPattern() and partialPredicateCall = "SubPattern()"
       )
     )
-    or
-    exists(int n, int nInit, int nPattern |
-      n = 0 + getMaximumChildrenIndexDecl(e) and
-      nInit = n + 1 + max(int i | i = 0 or exists(e.(PatternBindingDecl).getImmediateInit(i)) | i) and
-      nPattern =
-        nInit + 1 + max(int i | i = 0 or exists(e.(PatternBindingDecl).getImmediatePattern(i)) | i) and
+  }
+
+  Element getImmediateChildOfPatternBindingDecl(
+    PatternBindingDecl e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bDecl, int n, int nInit, int nPattern |
+      b = 0 and
+      bDecl = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfDecl(e, i, _)) | i) and
+      n = bDecl and
+      nInit = n + 1 + max(int i | i = -1 or exists(e.getImmediateInit(i)) | i) and
+      nPattern = nInit + 1 + max(int i | i = -1 or exists(e.getImmediatePattern(i)) | i) and
       (
         none()
         or
-        result = e.(PatternBindingDecl).getImmediateInit(index - n) and
-        partialAccessor = "Init(" + (index - n).toString() + ")"
+        result = getImmediateChildOfDecl(e, index - b, partialPredicateCall)
         or
-        result = e.(PatternBindingDecl).getImmediatePattern(index - nInit) and
-        partialAccessor = "Pattern(" + (index - nInit).toString() + ")"
+        result = e.getImmediateInit(index - n) and
+        partialPredicateCall = "Init(" + (index - n).toString() + ")"
+        or
+        result = e.getImmediatePattern(index - nInit) and
+        partialPredicateCall = "Pattern(" + (index - nInit).toString() + ")"
       )
     )
-    or
-    exists(int n, int nSubExpr |
-      n = 0 + getMaximumChildrenIndexExpr(e) and
+  }
+
+  Element getImmediateChildOfPoundAssertStmt(
+    PoundAssertStmt e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bStmt, int n |
+      b = 0 and
+      bStmt = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfStmt(e, i, _)) | i) and
+      n = bStmt and
+      (
+        none()
+        or
+        result = getImmediateChildOfStmt(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfPoundDiagnosticDecl(
+    PoundDiagnosticDecl e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bDecl, int n |
+      b = 0 and
+      bDecl = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfDecl(e, i, _)) | i) and
+      n = bDecl and
+      (
+        none()
+        or
+        result = getImmediateChildOfDecl(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfPrecedenceGroupDecl(
+    PrecedenceGroupDecl e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bDecl, int n |
+      b = 0 and
+      bDecl = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfDecl(e, i, _)) | i) and
+      n = bDecl and
+      (
+        none()
+        or
+        result = getImmediateChildOfDecl(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfPrimaryArchetypeType(
+    PrimaryArchetypeType e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bArchetypeType, int n |
+      b = 0 and
+      bArchetypeType =
+        b + 1 + max(int i | i = -1 or exists(getImmediateChildOfArchetypeType(e, i, _)) | i) and
+      n = bArchetypeType and
+      (
+        none()
+        or
+        result = getImmediateChildOfArchetypeType(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfPropertyWrapperValuePlaceholderExpr(
+    PropertyWrapperValuePlaceholderExpr e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bExpr, int n |
+      b = 0 and
+      bExpr = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfExpr(e, i, _)) | i) and
+      n = bExpr and
+      (
+        none()
+        or
+        result = getImmediateChildOfExpr(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfRebindSelfInConstructorExpr(
+    RebindSelfInConstructorExpr e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bExpr, int n, int nSubExpr |
+      b = 0 and
+      bExpr = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfExpr(e, i, _)) | i) and
+      n = bExpr and
       nSubExpr = n + 1 and
       (
         none()
         or
-        index = n and
-        result = e.(RebindSelfInConstructorExpr).getImmediateSubExpr() and
-        partialAccessor = "SubExpr()"
+        result = getImmediateChildOfExpr(e, index - b, partialPredicateCall)
+        or
+        index = n and result = e.getImmediateSubExpr() and partialPredicateCall = "SubExpr()"
       )
     )
-    or
-    exists(int n, int nResult |
-      n = 0 + getMaximumChildrenIndexStmt(e) and
+  }
+
+  Element getImmediateChildOfReturnStmt(ReturnStmt e, int index, string partialPredicateCall) {
+    exists(int b, int bStmt, int n, int nResult |
+      b = 0 and
+      bStmt = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfStmt(e, i, _)) | i) and
+      n = bStmt and
       nResult = n + 1 and
       (
         none()
         or
-        index = n and result = e.(ReturnStmt).getImmediateResult() and partialAccessor = "Result()"
+        result = getImmediateChildOfStmt(e, index - b, partialPredicateCall)
+        or
+        index = n and result = e.getImmediateResult() and partialPredicateCall = "Result()"
       )
     )
-    or
-    exists(int n, int nElement |
-      n = 0 + getMaximumChildrenIndexExpr(e) and
-      nElement = n + 1 + max(int i | i = 0 or exists(e.(SequenceExpr).getImmediateElement(i)) | i) and
+  }
+
+  Element getImmediateChildOfSequenceArchetypeType(
+    SequenceArchetypeType e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bArchetypeType, int n |
+      b = 0 and
+      bArchetypeType =
+        b + 1 + max(int i | i = -1 or exists(getImmediateChildOfArchetypeType(e, i, _)) | i) and
+      n = bArchetypeType and
       (
         none()
         or
-        result = e.(SequenceExpr).getImmediateElement(index - n) and
-        partialAccessor = "Element(" + (index - n).toString() + ")"
+        result = getImmediateChildOfArchetypeType(e, index - b, partialPredicateCall)
       )
     )
-    or
-    exists(int n, int nSubExpr, int nBody |
-      n = 0 + getMaximumChildrenIndexExpr(e) and
+  }
+
+  Element getImmediateChildOfSequenceExpr(SequenceExpr e, int index, string partialPredicateCall) {
+    exists(int b, int bExpr, int n, int nElement |
+      b = 0 and
+      bExpr = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfExpr(e, i, _)) | i) and
+      n = bExpr and
+      nElement = n + 1 + max(int i | i = -1 or exists(e.getImmediateElement(i)) | i) and
+      (
+        none()
+        or
+        result = getImmediateChildOfExpr(e, index - b, partialPredicateCall)
+        or
+        result = e.getImmediateElement(index - n) and
+        partialPredicateCall = "Element(" + (index - n).toString() + ")"
+      )
+    )
+  }
+
+  Element getImmediateChildOfSuperRefExpr(SuperRefExpr e, int index, string partialPredicateCall) {
+    exists(int b, int bExpr, int n |
+      b = 0 and
+      bExpr = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfExpr(e, i, _)) | i) and
+      n = bExpr and
+      (
+        none()
+        or
+        result = getImmediateChildOfExpr(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfTapExpr(TapExpr e, int index, string partialPredicateCall) {
+    exists(int b, int bExpr, int n, int nSubExpr, int nBody |
+      b = 0 and
+      bExpr = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfExpr(e, i, _)) | i) and
+      n = bExpr and
       nSubExpr = n + 1 and
       nBody = nSubExpr + 1 and
       (
         none()
         or
-        index = n and result = e.(TapExpr).getImmediateSubExpr() and partialAccessor = "SubExpr()"
+        result = getImmediateChildOfExpr(e, index - b, partialPredicateCall)
         or
-        index = nSubExpr and result = e.(TapExpr).getImmediateBody() and partialAccessor = "Body()"
+        index = n and result = e.getImmediateSubExpr() and partialPredicateCall = "SubExpr()"
+        or
+        index = nSubExpr and result = e.getImmediateBody() and partialPredicateCall = "Body()"
       )
     )
-    or
-    exists(int n, int nSubExpr |
-      n = 0 + getMaximumChildrenIndexStmt(e) and
+  }
+
+  Element getImmediateChildOfThrowStmt(ThrowStmt e, int index, string partialPredicateCall) {
+    exists(int b, int bStmt, int n, int nSubExpr |
+      b = 0 and
+      bStmt = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfStmt(e, i, _)) | i) and
+      n = bStmt and
       nSubExpr = n + 1 and
       (
         none()
         or
-        index = n and result = e.(ThrowStmt).getImmediateSubExpr() and partialAccessor = "SubExpr()"
+        result = getImmediateChildOfStmt(e, index - b, partialPredicateCall)
+        or
+        index = n and result = e.getImmediateSubExpr() and partialPredicateCall = "SubExpr()"
       )
     )
-    or
-    exists(int n, int nBody |
-      n = 0 + getMaximumChildrenIndexDecl(e) and
+  }
+
+  Element getImmediateChildOfTopLevelCodeDecl(
+    TopLevelCodeDecl e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bDecl, int n, int nBody |
+      b = 0 and
+      bDecl = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfDecl(e, i, _)) | i) and
+      n = bDecl and
       nBody = n + 1 and
       (
         none()
         or
-        index = n and
-        result = e.(TopLevelCodeDecl).getImmediateBody() and
-        partialAccessor = "Body()"
+        result = getImmediateChildOfDecl(e, index - b, partialPredicateCall)
+        or
+        index = n and result = e.getImmediateBody() and partialPredicateCall = "Body()"
       )
     )
-    or
-    exists(int n, int nSubExpr |
-      n = 0 + getMaximumChildrenIndexExpr(e) and
+  }
+
+  Element getImmediateChildOfTupleElementExpr(
+    TupleElementExpr e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bExpr, int n, int nSubExpr |
+      b = 0 and
+      bExpr = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfExpr(e, i, _)) | i) and
+      n = bExpr and
       nSubExpr = n + 1 and
       (
         none()
         or
-        index = n and
-        result = e.(TupleElementExpr).getImmediateSubExpr() and
-        partialAccessor = "SubExpr()"
+        result = getImmediateChildOfExpr(e, index - b, partialPredicateCall)
+        or
+        index = n and result = e.getImmediateSubExpr() and partialPredicateCall = "SubExpr()"
       )
     )
-    or
-    exists(int n, int nElement |
-      n = 0 + getMaximumChildrenIndexExpr(e) and
-      nElement = n + 1 + max(int i | i = 0 or exists(e.(TupleExpr).getImmediateElement(i)) | i) and
+  }
+
+  Element getImmediateChildOfTupleExpr(TupleExpr e, int index, string partialPredicateCall) {
+    exists(int b, int bExpr, int n, int nElement |
+      b = 0 and
+      bExpr = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfExpr(e, i, _)) | i) and
+      n = bExpr and
+      nElement = n + 1 + max(int i | i = -1 or exists(e.getImmediateElement(i)) | i) and
       (
         none()
         or
-        result = e.(TupleExpr).getImmediateElement(index - n) and
-        partialAccessor = "Element(" + (index - n).toString() + ")"
+        result = getImmediateChildOfExpr(e, index - b, partialPredicateCall)
+        or
+        result = e.getImmediateElement(index - n) and
+        partialPredicateCall = "Element(" + (index - n).toString() + ")"
       )
     )
-    or
-    exists(int n, int nElement |
-      n = 0 + getMaximumChildrenIndexPattern(e) and
-      nElement = n + 1 + max(int i | i = 0 or exists(e.(TuplePattern).getImmediateElement(i)) | i) and
+  }
+
+  Element getImmediateChildOfTuplePattern(TuplePattern e, int index, string partialPredicateCall) {
+    exists(int b, int bPattern, int n, int nElement |
+      b = 0 and
+      bPattern = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfPattern(e, i, _)) | i) and
+      n = bPattern and
+      nElement = n + 1 + max(int i | i = -1 or exists(e.getImmediateElement(i)) | i) and
       (
         none()
         or
-        result = e.(TuplePattern).getImmediateElement(index - n) and
-        partialAccessor = "Element(" + (index - n).toString() + ")"
+        result = getImmediateChildOfPattern(e, index - b, partialPredicateCall)
+        or
+        result = e.getImmediateElement(index - n) and
+        partialPredicateCall = "Element(" + (index - n).toString() + ")"
       )
     )
-    or
-    exists(int n, int nTypeRepr |
-      n = 0 + getMaximumChildrenIndexExpr(e) and
+  }
+
+  Element getImmediateChildOfTypeExpr(TypeExpr e, int index, string partialPredicateCall) {
+    exists(int b, int bExpr, int n, int nTypeRepr |
+      b = 0 and
+      bExpr = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfExpr(e, i, _)) | i) and
+      n = bExpr and
       nTypeRepr = n + 1 and
       (
         none()
         or
-        index = n and
-        result = e.(TypeExpr).getImmediateTypeRepr() and
-        partialAccessor = "TypeRepr()"
+        result = getImmediateChildOfExpr(e, index - b, partialPredicateCall)
+        or
+        index = n and result = e.getImmediateTypeRepr() and partialPredicateCall = "TypeRepr()"
       )
     )
-    or
-    exists(int n, int nSubPattern, int nTypeRepr |
-      n = 0 + getMaximumChildrenIndexPattern(e) and
+  }
+
+  Element getImmediateChildOfTypedPattern(TypedPattern e, int index, string partialPredicateCall) {
+    exists(int b, int bPattern, int n, int nSubPattern, int nTypeRepr |
+      b = 0 and
+      bPattern = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfPattern(e, i, _)) | i) and
+      n = bPattern and
       nSubPattern = n + 1 and
       nTypeRepr = nSubPattern + 1 and
       (
         none()
         or
-        index = n and
-        result = e.(TypedPattern).getImmediateSubPattern() and
-        partialAccessor = "SubPattern()"
+        result = getImmediateChildOfPattern(e, index - b, partialPredicateCall)
+        or
+        index = n and result = e.getImmediateSubPattern() and partialPredicateCall = "SubPattern()"
         or
         index = nSubPattern and
-        result = e.(TypedPattern).getImmediateTypeRepr() and
-        partialAccessor = "TypeRepr()"
+        result = e.getImmediateTypeRepr() and
+        partialPredicateCall = "TypeRepr()"
       )
     )
-    or
-    exists(int n, int nBase |
-      n = 0 + getMaximumChildrenIndexExpr(e) and
+  }
+
+  Element getImmediateChildOfUnarySyntaxSugarType(
+    UnarySyntaxSugarType e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bSyntaxSugarType, int n |
+      b = 0 and
+      bSyntaxSugarType =
+        b + 1 + max(int i | i = -1 or exists(getImmediateChildOfSyntaxSugarType(e, i, _)) | i) and
+      n = bSyntaxSugarType and
+      (
+        none()
+        or
+        result = getImmediateChildOfSyntaxSugarType(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfUnresolvedDeclRefExpr(
+    UnresolvedDeclRefExpr e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bExpr, int n |
+      b = 0 and
+      bExpr = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfExpr(e, i, _)) | i) and
+      n = bExpr and
+      (
+        none()
+        or
+        result = getImmediateChildOfExpr(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfUnresolvedDotExpr(
+    UnresolvedDotExpr e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bExpr, int n, int nBase |
+      b = 0 and
+      bExpr = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfExpr(e, i, _)) | i) and
+      n = bExpr and
       nBase = n + 1 and
       (
         none()
         or
-        index = n and
-        result = e.(UnresolvedDotExpr).getImmediateBase() and
-        partialAccessor = "Base()"
+        result = getImmediateChildOfExpr(e, index - b, partialPredicateCall)
+        or
+        index = n and result = e.getImmediateBase() and partialPredicateCall = "Base()"
       )
     )
-    or
-    exists(int n, int nSubPattern |
-      n = 0 + getMaximumChildrenIndexExpr(e) and
+  }
+
+  Element getImmediateChildOfUnresolvedMemberExpr(
+    UnresolvedMemberExpr e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bExpr, int n |
+      b = 0 and
+      bExpr = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfExpr(e, i, _)) | i) and
+      n = bExpr and
+      (
+        none()
+        or
+        result = getImmediateChildOfExpr(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfUnresolvedPatternExpr(
+    UnresolvedPatternExpr e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bExpr, int n, int nSubPattern |
+      b = 0 and
+      bExpr = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfExpr(e, i, _)) | i) and
+      n = bExpr and
       nSubPattern = n + 1 and
       (
         none()
         or
-        index = n and
-        result = e.(UnresolvedPatternExpr).getImmediateSubPattern() and
-        partialAccessor = "SubPattern()"
+        result = getImmediateChildOfExpr(e, index - b, partialPredicateCall)
+        or
+        index = n and result = e.getImmediateSubPattern() and partialPredicateCall = "SubPattern()"
       )
     )
-    or
-    exists(int n, int nSubExpr |
-      n = 0 + getMaximumChildrenIndexExpr(e) and
+  }
+
+  Element getImmediateChildOfUnresolvedSpecializeExpr(
+    UnresolvedSpecializeExpr e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bExpr, int n |
+      b = 0 and
+      bExpr = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfExpr(e, i, _)) | i) and
+      n = bExpr and
+      (
+        none()
+        or
+        result = getImmediateChildOfExpr(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfValueDecl(ValueDecl e, int index, string partialPredicateCall) {
+    exists(int b, int bDecl, int n |
+      b = 0 and
+      bDecl = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfDecl(e, i, _)) | i) and
+      n = bDecl and
+      (
+        none()
+        or
+        result = getImmediateChildOfDecl(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfVarargExpansionExpr(
+    VarargExpansionExpr e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bExpr, int n, int nSubExpr |
+      b = 0 and
+      bExpr = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfExpr(e, i, _)) | i) and
+      n = bExpr and
       nSubExpr = n + 1 and
       (
         none()
         or
-        index = n and
-        result = e.(VarargExpansionExpr).getImmediateSubExpr() and
-        partialAccessor = "SubExpr()"
+        result = getImmediateChildOfExpr(e, index - b, partialPredicateCall)
+        or
+        index = n and result = e.getImmediateSubExpr() and partialPredicateCall = "SubExpr()"
       )
     )
-    or
-    exists(int n, int nResult |
-      n = 0 + getMaximumChildrenIndexStmt(e) and
-      nResult = n + 1 + max(int i | i = 0 or exists(e.(YieldStmt).getImmediateResult(i)) | i) and
+  }
+
+  Element getImmediateChildOfYieldStmt(YieldStmt e, int index, string partialPredicateCall) {
+    exists(int b, int bStmt, int n, int nResult |
+      b = 0 and
+      bStmt = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfStmt(e, i, _)) | i) and
+      n = bStmt and
+      nResult = n + 1 + max(int i | i = -1 or exists(e.getImmediateResult(i)) | i) and
       (
         none()
         or
-        result = e.(YieldStmt).getImmediateResult(index - n) and
-        partialAccessor = "Result(" + (index - n).toString() + ")"
+        result = getImmediateChildOfStmt(e, index - b, partialPredicateCall)
+        or
+        result = e.getImmediateResult(index - n) and
+        partialPredicateCall = "Result(" + (index - n).toString() + ")"
       )
     )
-    or
-    exists(int n, int nAccessorDecl |
-      n = 0 + getMaximumChildrenIndexValueDecl(e) and
-      nAccessorDecl =
-        n + 1 +
-          max(int i | i = 0 or exists(e.(AbstractStorageDecl).getImmediateAccessorDecl(i)) | i) and
+  }
+
+  Element getImmediateChildOfAbstractFunctionDecl(
+    AbstractFunctionDecl e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bCallable, int bGenericContext, int bValueDecl, int n |
+      b = 0 and
+      bCallable = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfCallable(e, i, _)) | i) and
+      bGenericContext =
+        bCallable + 1 +
+          max(int i | i = -1 or exists(getImmediateChildOfGenericContext(e, i, _)) | i) and
+      bValueDecl =
+        bGenericContext + 1 +
+          max(int i | i = -1 or exists(getImmediateChildOfValueDecl(e, i, _)) | i) and
+      n = bValueDecl and
       (
         none()
         or
-        result = e.(AbstractStorageDecl).getImmediateAccessorDecl(index - n) and
-        partialAccessor = "AccessorDecl(" + (index - n).toString() + ")"
+        result = getImmediateChildOfCallable(e, index - b, partialPredicateCall)
+        or
+        result = getImmediateChildOfGenericContext(e, index - bCallable, partialPredicateCall)
+        or
+        result = getImmediateChildOfValueDecl(e, index - bGenericContext, partialPredicateCall)
       )
     )
-    or
-    exists(int n, int nElement |
-      n = 0 + getMaximumChildrenIndexCollectionExpr(e) and
-      nElement = n + 1 + max(int i | i = 0 or exists(e.(ArrayExpr).getImmediateElement(i)) | i) and
+  }
+
+  Element getImmediateChildOfAbstractStorageDecl(
+    AbstractStorageDecl e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bValueDecl, int n, int nAccessorDecl |
+      b = 0 and
+      bValueDecl = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfValueDecl(e, i, _)) | i) and
+      n = bValueDecl and
+      nAccessorDecl = n + 1 + max(int i | i = -1 or exists(e.getImmediateAccessorDecl(i)) | i) and
       (
         none()
         or
-        result = e.(ArrayExpr).getImmediateElement(index - n) and
-        partialAccessor = "Element(" + (index - n).toString() + ")"
+        result = getImmediateChildOfValueDecl(e, index - b, partialPredicateCall)
+        or
+        result = e.getImmediateAccessorDecl(index - n) and
+        partialPredicateCall = "AccessorDecl(" + (index - n).toString() + ")"
       )
     )
-    or
-    exists(int n, int nElement |
-      n = 0 + getMaximumChildrenIndexCollectionExpr(e) and
-      nElement = n + 1 + max(int i | i = 0 or exists(e.(DictionaryExpr).getImmediateElement(i)) | i) and
+  }
+
+  Element getImmediateChildOfAnyHashableErasureExpr(
+    AnyHashableErasureExpr e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bImplicitConversionExpr, int n |
+      b = 0 and
+      bImplicitConversionExpr =
+        b + 1 +
+          max(int i | i = -1 or exists(getImmediateChildOfImplicitConversionExpr(e, i, _)) | i) and
+      n = bImplicitConversionExpr and
       (
         none()
         or
-        result = e.(DictionaryExpr).getImmediateElement(index - n) and
-        partialAccessor = "Element(" + (index - n).toString() + ")"
+        result = getImmediateChildOfImplicitConversionExpr(e, index - b, partialPredicateCall)
       )
     )
-    or
-    exists(int n, int nBody, int nCatch |
-      n = 0 + getMaximumChildrenIndexLabeledStmt(e) and
+  }
+
+  Element getImmediateChildOfArchetypeToSuperExpr(
+    ArchetypeToSuperExpr e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bImplicitConversionExpr, int n |
+      b = 0 and
+      bImplicitConversionExpr =
+        b + 1 +
+          max(int i | i = -1 or exists(getImmediateChildOfImplicitConversionExpr(e, i, _)) | i) and
+      n = bImplicitConversionExpr and
+      (
+        none()
+        or
+        result = getImmediateChildOfImplicitConversionExpr(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfArrayExpr(ArrayExpr e, int index, string partialPredicateCall) {
+    exists(int b, int bCollectionExpr, int n, int nElement |
+      b = 0 and
+      bCollectionExpr =
+        b + 1 + max(int i | i = -1 or exists(getImmediateChildOfCollectionExpr(e, i, _)) | i) and
+      n = bCollectionExpr and
+      nElement = n + 1 + max(int i | i = -1 or exists(e.getImmediateElement(i)) | i) and
+      (
+        none()
+        or
+        result = getImmediateChildOfCollectionExpr(e, index - b, partialPredicateCall)
+        or
+        result = e.getImmediateElement(index - n) and
+        partialPredicateCall = "Element(" + (index - n).toString() + ")"
+      )
+    )
+  }
+
+  Element getImmediateChildOfArraySliceType(ArraySliceType e, int index, string partialPredicateCall) {
+    exists(int b, int bUnarySyntaxSugarType, int n |
+      b = 0 and
+      bUnarySyntaxSugarType =
+        b + 1 + max(int i | i = -1 or exists(getImmediateChildOfUnarySyntaxSugarType(e, i, _)) | i) and
+      n = bUnarySyntaxSugarType and
+      (
+        none()
+        or
+        result = getImmediateChildOfUnarySyntaxSugarType(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfArrayToPointerExpr(
+    ArrayToPointerExpr e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bImplicitConversionExpr, int n |
+      b = 0 and
+      bImplicitConversionExpr =
+        b + 1 +
+          max(int i | i = -1 or exists(getImmediateChildOfImplicitConversionExpr(e, i, _)) | i) and
+      n = bImplicitConversionExpr and
+      (
+        none()
+        or
+        result = getImmediateChildOfImplicitConversionExpr(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfAutoClosureExpr(
+    AutoClosureExpr e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bAbstractClosureExpr, int n |
+      b = 0 and
+      bAbstractClosureExpr =
+        b + 1 + max(int i | i = -1 or exists(getImmediateChildOfAbstractClosureExpr(e, i, _)) | i) and
+      n = bAbstractClosureExpr and
+      (
+        none()
+        or
+        result = getImmediateChildOfAbstractClosureExpr(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfAwaitExpr(AwaitExpr e, int index, string partialPredicateCall) {
+    exists(int b, int bIdentityExpr, int n |
+      b = 0 and
+      bIdentityExpr =
+        b + 1 + max(int i | i = -1 or exists(getImmediateChildOfIdentityExpr(e, i, _)) | i) and
+      n = bIdentityExpr and
+      (
+        none()
+        or
+        result = getImmediateChildOfIdentityExpr(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfBinaryExpr(BinaryExpr e, int index, string partialPredicateCall) {
+    exists(int b, int bApplyExpr, int n |
+      b = 0 and
+      bApplyExpr = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfApplyExpr(e, i, _)) | i) and
+      n = bApplyExpr and
+      (
+        none()
+        or
+        result = getImmediateChildOfApplyExpr(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfBoundGenericClassType(
+    BoundGenericClassType e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bBoundGenericType, int n |
+      b = 0 and
+      bBoundGenericType =
+        b + 1 + max(int i | i = -1 or exists(getImmediateChildOfBoundGenericType(e, i, _)) | i) and
+      n = bBoundGenericType and
+      (
+        none()
+        or
+        result = getImmediateChildOfBoundGenericType(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfBoundGenericEnumType(
+    BoundGenericEnumType e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bBoundGenericType, int n |
+      b = 0 and
+      bBoundGenericType =
+        b + 1 + max(int i | i = -1 or exists(getImmediateChildOfBoundGenericType(e, i, _)) | i) and
+      n = bBoundGenericType and
+      (
+        none()
+        or
+        result = getImmediateChildOfBoundGenericType(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfBoundGenericStructType(
+    BoundGenericStructType e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bBoundGenericType, int n |
+      b = 0 and
+      bBoundGenericType =
+        b + 1 + max(int i | i = -1 or exists(getImmediateChildOfBoundGenericType(e, i, _)) | i) and
+      n = bBoundGenericType and
+      (
+        none()
+        or
+        result = getImmediateChildOfBoundGenericType(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfBridgeFromObjCExpr(
+    BridgeFromObjCExpr e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bImplicitConversionExpr, int n |
+      b = 0 and
+      bImplicitConversionExpr =
+        b + 1 +
+          max(int i | i = -1 or exists(getImmediateChildOfImplicitConversionExpr(e, i, _)) | i) and
+      n = bImplicitConversionExpr and
+      (
+        none()
+        or
+        result = getImmediateChildOfImplicitConversionExpr(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfBridgeToObjCExpr(
+    BridgeToObjCExpr e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bImplicitConversionExpr, int n |
+      b = 0 and
+      bImplicitConversionExpr =
+        b + 1 +
+          max(int i | i = -1 or exists(getImmediateChildOfImplicitConversionExpr(e, i, _)) | i) and
+      n = bImplicitConversionExpr and
+      (
+        none()
+        or
+        result = getImmediateChildOfImplicitConversionExpr(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfBuiltinLiteralExpr(
+    BuiltinLiteralExpr e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bLiteralExpr, int n |
+      b = 0 and
+      bLiteralExpr =
+        b + 1 + max(int i | i = -1 or exists(getImmediateChildOfLiteralExpr(e, i, _)) | i) and
+      n = bLiteralExpr and
+      (
+        none()
+        or
+        result = getImmediateChildOfLiteralExpr(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfCallExpr(CallExpr e, int index, string partialPredicateCall) {
+    exists(int b, int bApplyExpr, int n |
+      b = 0 and
+      bApplyExpr = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfApplyExpr(e, i, _)) | i) and
+      n = bApplyExpr and
+      (
+        none()
+        or
+        result = getImmediateChildOfApplyExpr(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfCheckedCastExpr(
+    CheckedCastExpr e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bExplicitCastExpr, int n |
+      b = 0 and
+      bExplicitCastExpr =
+        b + 1 + max(int i | i = -1 or exists(getImmediateChildOfExplicitCastExpr(e, i, _)) | i) and
+      n = bExplicitCastExpr and
+      (
+        none()
+        or
+        result = getImmediateChildOfExplicitCastExpr(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfClassMetatypeToObjectExpr(
+    ClassMetatypeToObjectExpr e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bImplicitConversionExpr, int n |
+      b = 0 and
+      bImplicitConversionExpr =
+        b + 1 +
+          max(int i | i = -1 or exists(getImmediateChildOfImplicitConversionExpr(e, i, _)) | i) and
+      n = bImplicitConversionExpr and
+      (
+        none()
+        or
+        result = getImmediateChildOfImplicitConversionExpr(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfClassType(ClassType e, int index, string partialPredicateCall) {
+    exists(int b, int bNominalType, int n |
+      b = 0 and
+      bNominalType =
+        b + 1 + max(int i | i = -1 or exists(getImmediateChildOfNominalType(e, i, _)) | i) and
+      n = bNominalType and
+      (
+        none()
+        or
+        result = getImmediateChildOfNominalType(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfClosureExpr(ClosureExpr e, int index, string partialPredicateCall) {
+    exists(int b, int bAbstractClosureExpr, int n |
+      b = 0 and
+      bAbstractClosureExpr =
+        b + 1 + max(int i | i = -1 or exists(getImmediateChildOfAbstractClosureExpr(e, i, _)) | i) and
+      n = bAbstractClosureExpr and
+      (
+        none()
+        or
+        result = getImmediateChildOfAbstractClosureExpr(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfCoerceExpr(CoerceExpr e, int index, string partialPredicateCall) {
+    exists(int b, int bExplicitCastExpr, int n |
+      b = 0 and
+      bExplicitCastExpr =
+        b + 1 + max(int i | i = -1 or exists(getImmediateChildOfExplicitCastExpr(e, i, _)) | i) and
+      n = bExplicitCastExpr and
+      (
+        none()
+        or
+        result = getImmediateChildOfExplicitCastExpr(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfCollectionUpcastConversionExpr(
+    CollectionUpcastConversionExpr e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bImplicitConversionExpr, int n |
+      b = 0 and
+      bImplicitConversionExpr =
+        b + 1 +
+          max(int i | i = -1 or exists(getImmediateChildOfImplicitConversionExpr(e, i, _)) | i) and
+      n = bImplicitConversionExpr and
+      (
+        none()
+        or
+        result = getImmediateChildOfImplicitConversionExpr(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfConditionalBridgeFromObjCExpr(
+    ConditionalBridgeFromObjCExpr e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bImplicitConversionExpr, int n |
+      b = 0 and
+      bImplicitConversionExpr =
+        b + 1 +
+          max(int i | i = -1 or exists(getImmediateChildOfImplicitConversionExpr(e, i, _)) | i) and
+      n = bImplicitConversionExpr and
+      (
+        none()
+        or
+        result = getImmediateChildOfImplicitConversionExpr(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfCovariantFunctionConversionExpr(
+    CovariantFunctionConversionExpr e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bImplicitConversionExpr, int n |
+      b = 0 and
+      bImplicitConversionExpr =
+        b + 1 +
+          max(int i | i = -1 or exists(getImmediateChildOfImplicitConversionExpr(e, i, _)) | i) and
+      n = bImplicitConversionExpr and
+      (
+        none()
+        or
+        result = getImmediateChildOfImplicitConversionExpr(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfCovariantReturnConversionExpr(
+    CovariantReturnConversionExpr e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bImplicitConversionExpr, int n |
+      b = 0 and
+      bImplicitConversionExpr =
+        b + 1 +
+          max(int i | i = -1 or exists(getImmediateChildOfImplicitConversionExpr(e, i, _)) | i) and
+      n = bImplicitConversionExpr and
+      (
+        none()
+        or
+        result = getImmediateChildOfImplicitConversionExpr(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfDerivedToBaseExpr(
+    DerivedToBaseExpr e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bImplicitConversionExpr, int n |
+      b = 0 and
+      bImplicitConversionExpr =
+        b + 1 +
+          max(int i | i = -1 or exists(getImmediateChildOfImplicitConversionExpr(e, i, _)) | i) and
+      n = bImplicitConversionExpr and
+      (
+        none()
+        or
+        result = getImmediateChildOfImplicitConversionExpr(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfDestructureTupleExpr(
+    DestructureTupleExpr e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bImplicitConversionExpr, int n |
+      b = 0 and
+      bImplicitConversionExpr =
+        b + 1 +
+          max(int i | i = -1 or exists(getImmediateChildOfImplicitConversionExpr(e, i, _)) | i) and
+      n = bImplicitConversionExpr and
+      (
+        none()
+        or
+        result = getImmediateChildOfImplicitConversionExpr(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfDictionaryExpr(DictionaryExpr e, int index, string partialPredicateCall) {
+    exists(int b, int bCollectionExpr, int n, int nElement |
+      b = 0 and
+      bCollectionExpr =
+        b + 1 + max(int i | i = -1 or exists(getImmediateChildOfCollectionExpr(e, i, _)) | i) and
+      n = bCollectionExpr and
+      nElement = n + 1 + max(int i | i = -1 or exists(e.getImmediateElement(i)) | i) and
+      (
+        none()
+        or
+        result = getImmediateChildOfCollectionExpr(e, index - b, partialPredicateCall)
+        or
+        result = e.getImmediateElement(index - n) and
+        partialPredicateCall = "Element(" + (index - n).toString() + ")"
+      )
+    )
+  }
+
+  Element getImmediateChildOfDifferentiableFunctionExpr(
+    DifferentiableFunctionExpr e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bImplicitConversionExpr, int n |
+      b = 0 and
+      bImplicitConversionExpr =
+        b + 1 +
+          max(int i | i = -1 or exists(getImmediateChildOfImplicitConversionExpr(e, i, _)) | i) and
+      n = bImplicitConversionExpr and
+      (
+        none()
+        or
+        result = getImmediateChildOfImplicitConversionExpr(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfDifferentiableFunctionExtractOriginalExpr(
+    DifferentiableFunctionExtractOriginalExpr e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bImplicitConversionExpr, int n |
+      b = 0 and
+      bImplicitConversionExpr =
+        b + 1 +
+          max(int i | i = -1 or exists(getImmediateChildOfImplicitConversionExpr(e, i, _)) | i) and
+      n = bImplicitConversionExpr and
+      (
+        none()
+        or
+        result = getImmediateChildOfImplicitConversionExpr(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfDoCatchStmt(DoCatchStmt e, int index, string partialPredicateCall) {
+    exists(int b, int bLabeledStmt, int n, int nBody, int nCatch |
+      b = 0 and
+      bLabeledStmt =
+        b + 1 + max(int i | i = -1 or exists(getImmediateChildOfLabeledStmt(e, i, _)) | i) and
+      n = bLabeledStmt and
       nBody = n + 1 and
-      nCatch = nBody + 1 + max(int i | i = 0 or exists(e.(DoCatchStmt).getImmediateCatch(i)) | i) and
+      nCatch = nBody + 1 + max(int i | i = -1 or exists(e.getImmediateCatch(i)) | i) and
       (
         none()
         or
-        index = n and result = e.(DoCatchStmt).getImmediateBody() and partialAccessor = "Body()"
+        result = getImmediateChildOfLabeledStmt(e, index - b, partialPredicateCall)
         or
-        result = e.(DoCatchStmt).getImmediateCatch(index - nBody) and
-        partialAccessor = "Catch(" + (index - nBody).toString() + ")"
+        index = n and result = e.getImmediateBody() and partialPredicateCall = "Body()"
+        or
+        result = e.getImmediateCatch(index - nBody) and
+        partialPredicateCall = "Catch(" + (index - nBody).toString() + ")"
       )
     )
-    or
-    exists(int n, int nBody |
-      n = 0 + getMaximumChildrenIndexLabeledStmt(e) and
+  }
+
+  Element getImmediateChildOfDoStmt(DoStmt e, int index, string partialPredicateCall) {
+    exists(int b, int bLabeledStmt, int n, int nBody |
+      b = 0 and
+      bLabeledStmt =
+        b + 1 + max(int i | i = -1 or exists(getImmediateChildOfLabeledStmt(e, i, _)) | i) and
+      n = bLabeledStmt and
       nBody = n + 1 and
       (
         none()
         or
-        index = n and result = e.(DoStmt).getImmediateBody() and partialAccessor = "Body()"
+        result = getImmediateChildOfLabeledStmt(e, index - b, partialPredicateCall)
+        or
+        index = n and result = e.getImmediateBody() and partialPredicateCall = "Body()"
       )
     )
-    or
-    exists(int n, int nParam |
-      n = 0 + getMaximumChildrenIndexValueDecl(e) and
-      nParam = n + 1 + max(int i | i = 0 or exists(e.(EnumElementDecl).getImmediateParam(i)) | i) and
+  }
+
+  Element getImmediateChildOfDotSelfExpr(DotSelfExpr e, int index, string partialPredicateCall) {
+    exists(int b, int bIdentityExpr, int n |
+      b = 0 and
+      bIdentityExpr =
+        b + 1 + max(int i | i = -1 or exists(getImmediateChildOfIdentityExpr(e, i, _)) | i) and
+      n = bIdentityExpr and
       (
         none()
         or
-        result = e.(EnumElementDecl).getImmediateParam(index - n) and
-        partialAccessor = "Param(" + (index - n).toString() + ")"
+        result = getImmediateChildOfIdentityExpr(e, index - b, partialPredicateCall)
       )
     )
-    or
-    exists(int n, int nPattern, int nSequence, int nWhere, int nBody |
-      n = 0 + getMaximumChildrenIndexLabeledStmt(e) and
+  }
+
+  Element getImmediateChildOfDynamicLookupExpr(
+    DynamicLookupExpr e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bLookupExpr, int n |
+      b = 0 and
+      bLookupExpr =
+        b + 1 + max(int i | i = -1 or exists(getImmediateChildOfLookupExpr(e, i, _)) | i) and
+      n = bLookupExpr and
+      (
+        none()
+        or
+        result = getImmediateChildOfLookupExpr(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfEnumElementDecl(
+    EnumElementDecl e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bValueDecl, int n, int nParam |
+      b = 0 and
+      bValueDecl = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfValueDecl(e, i, _)) | i) and
+      n = bValueDecl and
+      nParam = n + 1 + max(int i | i = -1 or exists(e.getImmediateParam(i)) | i) and
+      (
+        none()
+        or
+        result = getImmediateChildOfValueDecl(e, index - b, partialPredicateCall)
+        or
+        result = e.getImmediateParam(index - n) and
+        partialPredicateCall = "Param(" + (index - n).toString() + ")"
+      )
+    )
+  }
+
+  Element getImmediateChildOfEnumType(EnumType e, int index, string partialPredicateCall) {
+    exists(int b, int bNominalType, int n |
+      b = 0 and
+      bNominalType =
+        b + 1 + max(int i | i = -1 or exists(getImmediateChildOfNominalType(e, i, _)) | i) and
+      n = bNominalType and
+      (
+        none()
+        or
+        result = getImmediateChildOfNominalType(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfErasureExpr(ErasureExpr e, int index, string partialPredicateCall) {
+    exists(int b, int bImplicitConversionExpr, int n |
+      b = 0 and
+      bImplicitConversionExpr =
+        b + 1 +
+          max(int i | i = -1 or exists(getImmediateChildOfImplicitConversionExpr(e, i, _)) | i) and
+      n = bImplicitConversionExpr and
+      (
+        none()
+        or
+        result = getImmediateChildOfImplicitConversionExpr(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfExistentialMetatypeToObjectExpr(
+    ExistentialMetatypeToObjectExpr e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bImplicitConversionExpr, int n |
+      b = 0 and
+      bImplicitConversionExpr =
+        b + 1 +
+          max(int i | i = -1 or exists(getImmediateChildOfImplicitConversionExpr(e, i, _)) | i) and
+      n = bImplicitConversionExpr and
+      (
+        none()
+        or
+        result = getImmediateChildOfImplicitConversionExpr(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfForEachStmt(ForEachStmt e, int index, string partialPredicateCall) {
+    exists(int b, int bLabeledStmt, int n, int nPattern, int nSequence, int nWhere, int nBody |
+      b = 0 and
+      bLabeledStmt =
+        b + 1 + max(int i | i = -1 or exists(getImmediateChildOfLabeledStmt(e, i, _)) | i) and
+      n = bLabeledStmt and
       nPattern = n + 1 and
       nSequence = nPattern + 1 and
       nWhere = nSequence + 1 and
@@ -1999,161 +3346,1784 @@ private module Impl {
       (
         none()
         or
-        index = n and
-        result = e.(ForEachStmt).getImmediatePattern() and
-        partialAccessor = "Pattern()"
+        result = getImmediateChildOfLabeledStmt(e, index - b, partialPredicateCall)
+        or
+        index = n and result = e.getImmediatePattern() and partialPredicateCall = "Pattern()"
         or
         index = nPattern and
-        result = e.(ForEachStmt).getImmediateSequence() and
-        partialAccessor = "Sequence()"
+        result = e.getImmediateSequence() and
+        partialPredicateCall = "Sequence()"
         or
-        index = nSequence and
-        result = e.(ForEachStmt).getImmediateWhere() and
-        partialAccessor = "Where()"
+        index = nSequence and result = e.getImmediateWhere() and partialPredicateCall = "Where()"
         or
-        index = nWhere and
-        result = e.(ForEachStmt).getImmediateBody() and
-        partialAccessor = "Body()"
+        index = nWhere and result = e.getImmediateBody() and partialPredicateCall = "Body()"
       )
     )
-    or
-    exists(int n, int nInterpolationCountExpr, int nLiteralCapacityExpr, int nAppendingExpr |
-      n = 0 + getMaximumChildrenIndexLiteralExpr(e) and
+  }
+
+  Element getImmediateChildOfForceTryExpr(ForceTryExpr e, int index, string partialPredicateCall) {
+    exists(int b, int bAnyTryExpr, int n |
+      b = 0 and
+      bAnyTryExpr =
+        b + 1 + max(int i | i = -1 or exists(getImmediateChildOfAnyTryExpr(e, i, _)) | i) and
+      n = bAnyTryExpr and
+      (
+        none()
+        or
+        result = getImmediateChildOfAnyTryExpr(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfForeignObjectConversionExpr(
+    ForeignObjectConversionExpr e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bImplicitConversionExpr, int n |
+      b = 0 and
+      bImplicitConversionExpr =
+        b + 1 +
+          max(int i | i = -1 or exists(getImmediateChildOfImplicitConversionExpr(e, i, _)) | i) and
+      n = bImplicitConversionExpr and
+      (
+        none()
+        or
+        result = getImmediateChildOfImplicitConversionExpr(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfFunctionConversionExpr(
+    FunctionConversionExpr e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bImplicitConversionExpr, int n |
+      b = 0 and
+      bImplicitConversionExpr =
+        b + 1 +
+          max(int i | i = -1 or exists(getImmediateChildOfImplicitConversionExpr(e, i, _)) | i) and
+      n = bImplicitConversionExpr and
+      (
+        none()
+        or
+        result = getImmediateChildOfImplicitConversionExpr(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfInOutToPointerExpr(
+    InOutToPointerExpr e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bImplicitConversionExpr, int n |
+      b = 0 and
+      bImplicitConversionExpr =
+        b + 1 +
+          max(int i | i = -1 or exists(getImmediateChildOfImplicitConversionExpr(e, i, _)) | i) and
+      n = bImplicitConversionExpr and
+      (
+        none()
+        or
+        result = getImmediateChildOfImplicitConversionExpr(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfInfixOperatorDecl(
+    InfixOperatorDecl e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bOperatorDecl, int n |
+      b = 0 and
+      bOperatorDecl =
+        b + 1 + max(int i | i = -1 or exists(getImmediateChildOfOperatorDecl(e, i, _)) | i) and
+      n = bOperatorDecl and
+      (
+        none()
+        or
+        result = getImmediateChildOfOperatorDecl(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfInjectIntoOptionalExpr(
+    InjectIntoOptionalExpr e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bImplicitConversionExpr, int n |
+      b = 0 and
+      bImplicitConversionExpr =
+        b + 1 +
+          max(int i | i = -1 or exists(getImmediateChildOfImplicitConversionExpr(e, i, _)) | i) and
+      n = bImplicitConversionExpr and
+      (
+        none()
+        or
+        result = getImmediateChildOfImplicitConversionExpr(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfInterpolatedStringLiteralExpr(
+    InterpolatedStringLiteralExpr e, int index, string partialPredicateCall
+  ) {
+    exists(
+      int b, int bLiteralExpr, int n, int nInterpolationCountExpr, int nLiteralCapacityExpr,
+      int nAppendingExpr
+    |
+      b = 0 and
+      bLiteralExpr =
+        b + 1 + max(int i | i = -1 or exists(getImmediateChildOfLiteralExpr(e, i, _)) | i) and
+      n = bLiteralExpr and
       nInterpolationCountExpr = n + 1 and
       nLiteralCapacityExpr = nInterpolationCountExpr + 1 and
       nAppendingExpr = nLiteralCapacityExpr + 1 and
       (
         none()
         or
+        result = getImmediateChildOfLiteralExpr(e, index - b, partialPredicateCall)
+        or
         index = n and
-        result = e.(InterpolatedStringLiteralExpr).getImmediateInterpolationCountExpr() and
-        partialAccessor = "InterpolationCountExpr()"
+        result = e.getImmediateInterpolationCountExpr() and
+        partialPredicateCall = "InterpolationCountExpr()"
         or
         index = nInterpolationCountExpr and
-        result = e.(InterpolatedStringLiteralExpr).getImmediateLiteralCapacityExpr() and
-        partialAccessor = "LiteralCapacityExpr()"
+        result = e.getImmediateLiteralCapacityExpr() and
+        partialPredicateCall = "LiteralCapacityExpr()"
         or
         index = nLiteralCapacityExpr and
-        result = e.(InterpolatedStringLiteralExpr).getImmediateAppendingExpr() and
-        partialAccessor = "AppendingExpr()"
+        result = e.getImmediateAppendingExpr() and
+        partialPredicateCall = "AppendingExpr()"
       )
     )
-    or
-    exists(int n, int nCondition |
-      n = 0 + getMaximumChildrenIndexLabeledStmt(e) and
+  }
+
+  Element getImmediateChildOfLabeledConditionalStmt(
+    LabeledConditionalStmt e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bLabeledStmt, int n, int nCondition |
+      b = 0 and
+      bLabeledStmt =
+        b + 1 + max(int i | i = -1 or exists(getImmediateChildOfLabeledStmt(e, i, _)) | i) and
+      n = bLabeledStmt and
       nCondition = n + 1 and
       (
         none()
         or
-        index = n and
-        result = e.(LabeledConditionalStmt).getImmediateCondition() and
-        partialAccessor = "Condition()"
+        result = getImmediateChildOfLabeledStmt(e, index - b, partialPredicateCall)
+        or
+        index = n and result = e.getImmediateCondition() and partialPredicateCall = "Condition()"
       )
     )
-    or
-    exists(int n, int nCondition, int nBody |
-      n = 0 + getMaximumChildrenIndexLabeledStmt(e) and
+  }
+
+  Element getImmediateChildOfLinearFunctionExpr(
+    LinearFunctionExpr e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bImplicitConversionExpr, int n |
+      b = 0 and
+      bImplicitConversionExpr =
+        b + 1 +
+          max(int i | i = -1 or exists(getImmediateChildOfImplicitConversionExpr(e, i, _)) | i) and
+      n = bImplicitConversionExpr and
+      (
+        none()
+        or
+        result = getImmediateChildOfImplicitConversionExpr(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfLinearFunctionExtractOriginalExpr(
+    LinearFunctionExtractOriginalExpr e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bImplicitConversionExpr, int n |
+      b = 0 and
+      bImplicitConversionExpr =
+        b + 1 +
+          max(int i | i = -1 or exists(getImmediateChildOfImplicitConversionExpr(e, i, _)) | i) and
+      n = bImplicitConversionExpr and
+      (
+        none()
+        or
+        result = getImmediateChildOfImplicitConversionExpr(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfLinearToDifferentiableFunctionExpr(
+    LinearToDifferentiableFunctionExpr e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bImplicitConversionExpr, int n |
+      b = 0 and
+      bImplicitConversionExpr =
+        b + 1 +
+          max(int i | i = -1 or exists(getImmediateChildOfImplicitConversionExpr(e, i, _)) | i) and
+      n = bImplicitConversionExpr and
+      (
+        none()
+        or
+        result = getImmediateChildOfImplicitConversionExpr(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfLoadExpr(LoadExpr e, int index, string partialPredicateCall) {
+    exists(int b, int bImplicitConversionExpr, int n |
+      b = 0 and
+      bImplicitConversionExpr =
+        b + 1 +
+          max(int i | i = -1 or exists(getImmediateChildOfImplicitConversionExpr(e, i, _)) | i) and
+      n = bImplicitConversionExpr and
+      (
+        none()
+        or
+        result = getImmediateChildOfImplicitConversionExpr(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfMemberRefExpr(MemberRefExpr e, int index, string partialPredicateCall) {
+    exists(int b, int bLookupExpr, int n |
+      b = 0 and
+      bLookupExpr =
+        b + 1 + max(int i | i = -1 or exists(getImmediateChildOfLookupExpr(e, i, _)) | i) and
+      n = bLookupExpr and
+      (
+        none()
+        or
+        result = getImmediateChildOfLookupExpr(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfMetatypeConversionExpr(
+    MetatypeConversionExpr e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bImplicitConversionExpr, int n |
+      b = 0 and
+      bImplicitConversionExpr =
+        b + 1 +
+          max(int i | i = -1 or exists(getImmediateChildOfImplicitConversionExpr(e, i, _)) | i) and
+      n = bImplicitConversionExpr and
+      (
+        none()
+        or
+        result = getImmediateChildOfImplicitConversionExpr(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfMethodRefExpr(MethodRefExpr e, int index, string partialPredicateCall) {
+    exists(int b, int bLookupExpr, int n |
+      b = 0 and
+      bLookupExpr =
+        b + 1 + max(int i | i = -1 or exists(getImmediateChildOfLookupExpr(e, i, _)) | i) and
+      n = bLookupExpr and
+      (
+        none()
+        or
+        result = getImmediateChildOfLookupExpr(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfNilLiteralExpr(NilLiteralExpr e, int index, string partialPredicateCall) {
+    exists(int b, int bLiteralExpr, int n |
+      b = 0 and
+      bLiteralExpr =
+        b + 1 + max(int i | i = -1 or exists(getImmediateChildOfLiteralExpr(e, i, _)) | i) and
+      n = bLiteralExpr and
+      (
+        none()
+        or
+        result = getImmediateChildOfLiteralExpr(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfObjectLiteralExpr(
+    ObjectLiteralExpr e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bLiteralExpr, int n |
+      b = 0 and
+      bLiteralExpr =
+        b + 1 + max(int i | i = -1 or exists(getImmediateChildOfLiteralExpr(e, i, _)) | i) and
+      n = bLiteralExpr and
+      (
+        none()
+        or
+        result = getImmediateChildOfLiteralExpr(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfOptionalTryExpr(
+    OptionalTryExpr e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bAnyTryExpr, int n |
+      b = 0 and
+      bAnyTryExpr =
+        b + 1 + max(int i | i = -1 or exists(getImmediateChildOfAnyTryExpr(e, i, _)) | i) and
+      n = bAnyTryExpr and
+      (
+        none()
+        or
+        result = getImmediateChildOfAnyTryExpr(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfOptionalType(OptionalType e, int index, string partialPredicateCall) {
+    exists(int b, int bUnarySyntaxSugarType, int n |
+      b = 0 and
+      bUnarySyntaxSugarType =
+        b + 1 + max(int i | i = -1 or exists(getImmediateChildOfUnarySyntaxSugarType(e, i, _)) | i) and
+      n = bUnarySyntaxSugarType and
+      (
+        none()
+        or
+        result = getImmediateChildOfUnarySyntaxSugarType(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfOverloadedDeclRefExpr(
+    OverloadedDeclRefExpr e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bOverloadSetRefExpr, int n |
+      b = 0 and
+      bOverloadSetRefExpr =
+        b + 1 + max(int i | i = -1 or exists(getImmediateChildOfOverloadSetRefExpr(e, i, _)) | i) and
+      n = bOverloadSetRefExpr and
+      (
+        none()
+        or
+        result = getImmediateChildOfOverloadSetRefExpr(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfParenExpr(ParenExpr e, int index, string partialPredicateCall) {
+    exists(int b, int bIdentityExpr, int n |
+      b = 0 and
+      bIdentityExpr =
+        b + 1 + max(int i | i = -1 or exists(getImmediateChildOfIdentityExpr(e, i, _)) | i) and
+      n = bIdentityExpr and
+      (
+        none()
+        or
+        result = getImmediateChildOfIdentityExpr(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfPointerToPointerExpr(
+    PointerToPointerExpr e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bImplicitConversionExpr, int n |
+      b = 0 and
+      bImplicitConversionExpr =
+        b + 1 +
+          max(int i | i = -1 or exists(getImmediateChildOfImplicitConversionExpr(e, i, _)) | i) and
+      n = bImplicitConversionExpr and
+      (
+        none()
+        or
+        result = getImmediateChildOfImplicitConversionExpr(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfPostfixOperatorDecl(
+    PostfixOperatorDecl e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bOperatorDecl, int n |
+      b = 0 and
+      bOperatorDecl =
+        b + 1 + max(int i | i = -1 or exists(getImmediateChildOfOperatorDecl(e, i, _)) | i) and
+      n = bOperatorDecl and
+      (
+        none()
+        or
+        result = getImmediateChildOfOperatorDecl(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfPostfixUnaryExpr(
+    PostfixUnaryExpr e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bApplyExpr, int n |
+      b = 0 and
+      bApplyExpr = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfApplyExpr(e, i, _)) | i) and
+      n = bApplyExpr and
+      (
+        none()
+        or
+        result = getImmediateChildOfApplyExpr(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfPrefixOperatorDecl(
+    PrefixOperatorDecl e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bOperatorDecl, int n |
+      b = 0 and
+      bOperatorDecl =
+        b + 1 + max(int i | i = -1 or exists(getImmediateChildOfOperatorDecl(e, i, _)) | i) and
+      n = bOperatorDecl and
+      (
+        none()
+        or
+        result = getImmediateChildOfOperatorDecl(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfPrefixUnaryExpr(
+    PrefixUnaryExpr e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bApplyExpr, int n |
+      b = 0 and
+      bApplyExpr = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfApplyExpr(e, i, _)) | i) and
+      n = bApplyExpr and
+      (
+        none()
+        or
+        result = getImmediateChildOfApplyExpr(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfProtocolMetatypeToObjectExpr(
+    ProtocolMetatypeToObjectExpr e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bImplicitConversionExpr, int n |
+      b = 0 and
+      bImplicitConversionExpr =
+        b + 1 +
+          max(int i | i = -1 or exists(getImmediateChildOfImplicitConversionExpr(e, i, _)) | i) and
+      n = bImplicitConversionExpr and
+      (
+        none()
+        or
+        result = getImmediateChildOfImplicitConversionExpr(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfProtocolType(ProtocolType e, int index, string partialPredicateCall) {
+    exists(int b, int bNominalType, int n |
+      b = 0 and
+      bNominalType =
+        b + 1 + max(int i | i = -1 or exists(getImmediateChildOfNominalType(e, i, _)) | i) and
+      n = bNominalType and
+      (
+        none()
+        or
+        result = getImmediateChildOfNominalType(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfRegexLiteralExpr(
+    RegexLiteralExpr e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bLiteralExpr, int n |
+      b = 0 and
+      bLiteralExpr =
+        b + 1 + max(int i | i = -1 or exists(getImmediateChildOfLiteralExpr(e, i, _)) | i) and
+      n = bLiteralExpr and
+      (
+        none()
+        or
+        result = getImmediateChildOfLiteralExpr(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfRepeatWhileStmt(
+    RepeatWhileStmt e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bLabeledStmt, int n, int nCondition, int nBody |
+      b = 0 and
+      bLabeledStmt =
+        b + 1 + max(int i | i = -1 or exists(getImmediateChildOfLabeledStmt(e, i, _)) | i) and
+      n = bLabeledStmt and
       nCondition = n + 1 and
       nBody = nCondition + 1 and
       (
         none()
         or
-        index = n and
-        result = e.(RepeatWhileStmt).getImmediateCondition() and
-        partialAccessor = "Condition()"
+        result = getImmediateChildOfLabeledStmt(e, index - b, partialPredicateCall)
         or
-        index = nCondition and
-        result = e.(RepeatWhileStmt).getImmediateBody() and
-        partialAccessor = "Body()"
+        index = n and result = e.getImmediateCondition() and partialPredicateCall = "Condition()"
+        or
+        index = nCondition and result = e.getImmediateBody() and partialPredicateCall = "Body()"
       )
     )
-    or
-    exists(int n, int nBase |
-      n = 0 + getMaximumChildrenIndexApplyExpr(e) and
+  }
+
+  Element getImmediateChildOfSelfApplyExpr(SelfApplyExpr e, int index, string partialPredicateCall) {
+    exists(int b, int bApplyExpr, int n, int nBase |
+      b = 0 and
+      bApplyExpr = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfApplyExpr(e, i, _)) | i) and
+      n = bApplyExpr and
       nBase = n + 1 and
       (
         none()
         or
-        index = n and result = e.(SelfApplyExpr).getImmediateBase() and partialAccessor = "Base()"
+        result = getImmediateChildOfApplyExpr(e, index - b, partialPredicateCall)
+        or
+        index = n and result = e.getImmediateBase() and partialPredicateCall = "Base()"
       )
     )
-    or
-    exists(int n, int nArgument |
-      n = 0 + getMaximumChildrenIndexLookupExpr(e) and
-      nArgument =
-        n + 1 + max(int i | i = 0 or exists(e.(SubscriptExpr).getImmediateArgument(i)) | i) and
+  }
+
+  Element getImmediateChildOfStringToPointerExpr(
+    StringToPointerExpr e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bImplicitConversionExpr, int n |
+      b = 0 and
+      bImplicitConversionExpr =
+        b + 1 +
+          max(int i | i = -1 or exists(getImmediateChildOfImplicitConversionExpr(e, i, _)) | i) and
+      n = bImplicitConversionExpr and
       (
         none()
         or
-        result = e.(SubscriptExpr).getImmediateArgument(index - n) and
-        partialAccessor = "Argument(" + (index - n).toString() + ")"
+        result = getImmediateChildOfImplicitConversionExpr(e, index - b, partialPredicateCall)
       )
     )
-    or
-    exists(int n, int nExpr, int nCase |
-      n = 0 + getMaximumChildrenIndexLabeledStmt(e) and
+  }
+
+  Element getImmediateChildOfStructType(StructType e, int index, string partialPredicateCall) {
+    exists(int b, int bNominalType, int n |
+      b = 0 and
+      bNominalType =
+        b + 1 + max(int i | i = -1 or exists(getImmediateChildOfNominalType(e, i, _)) | i) and
+      n = bNominalType and
+      (
+        none()
+        or
+        result = getImmediateChildOfNominalType(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfSubscriptExpr(SubscriptExpr e, int index, string partialPredicateCall) {
+    exists(int b, int bLookupExpr, int n, int nArgument |
+      b = 0 and
+      bLookupExpr =
+        b + 1 + max(int i | i = -1 or exists(getImmediateChildOfLookupExpr(e, i, _)) | i) and
+      n = bLookupExpr and
+      nArgument = n + 1 + max(int i | i = -1 or exists(e.getImmediateArgument(i)) | i) and
+      (
+        none()
+        or
+        result = getImmediateChildOfLookupExpr(e, index - b, partialPredicateCall)
+        or
+        result = e.getImmediateArgument(index - n) and
+        partialPredicateCall = "Argument(" + (index - n).toString() + ")"
+      )
+    )
+  }
+
+  Element getImmediateChildOfSwitchStmt(SwitchStmt e, int index, string partialPredicateCall) {
+    exists(int b, int bLabeledStmt, int n, int nExpr, int nCase |
+      b = 0 and
+      bLabeledStmt =
+        b + 1 + max(int i | i = -1 or exists(getImmediateChildOfLabeledStmt(e, i, _)) | i) and
+      n = bLabeledStmt and
       nExpr = n + 1 and
-      nCase = nExpr + 1 + max(int i | i = 0 or exists(e.(SwitchStmt).getImmediateCase(i)) | i) and
+      nCase = nExpr + 1 + max(int i | i = -1 or exists(e.getImmediateCase(i)) | i) and
       (
         none()
         or
-        index = n and result = e.(SwitchStmt).getImmediateExpr() and partialAccessor = "Expr()"
+        result = getImmediateChildOfLabeledStmt(e, index - b, partialPredicateCall)
         or
-        result = e.(SwitchStmt).getImmediateCase(index - nExpr) and
-        partialAccessor = "Case(" + (index - nExpr).toString() + ")"
+        index = n and result = e.getImmediateExpr() and partialPredicateCall = "Expr()"
+        or
+        result = e.getImmediateCase(index - nExpr) and
+        partialPredicateCall = "Case(" + (index - nExpr).toString() + ")"
       )
     )
-    or
-    exists(int n, int nBody |
-      n = 0 + getMaximumChildrenIndexLabeledConditionalStmt(e) and
+  }
+
+  Element getImmediateChildOfTryExpr(TryExpr e, int index, string partialPredicateCall) {
+    exists(int b, int bAnyTryExpr, int n |
+      b = 0 and
+      bAnyTryExpr =
+        b + 1 + max(int i | i = -1 or exists(getImmediateChildOfAnyTryExpr(e, i, _)) | i) and
+      n = bAnyTryExpr and
+      (
+        none()
+        or
+        result = getImmediateChildOfAnyTryExpr(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfTypeDecl(TypeDecl e, int index, string partialPredicateCall) {
+    exists(int b, int bValueDecl, int n |
+      b = 0 and
+      bValueDecl = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfValueDecl(e, i, _)) | i) and
+      n = bValueDecl and
+      (
+        none()
+        or
+        result = getImmediateChildOfValueDecl(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfUnderlyingToOpaqueExpr(
+    UnderlyingToOpaqueExpr e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bImplicitConversionExpr, int n |
+      b = 0 and
+      bImplicitConversionExpr =
+        b + 1 +
+          max(int i | i = -1 or exists(getImmediateChildOfImplicitConversionExpr(e, i, _)) | i) and
+      n = bImplicitConversionExpr and
+      (
+        none()
+        or
+        result = getImmediateChildOfImplicitConversionExpr(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfUnevaluatedInstanceExpr(
+    UnevaluatedInstanceExpr e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bImplicitConversionExpr, int n |
+      b = 0 and
+      bImplicitConversionExpr =
+        b + 1 +
+          max(int i | i = -1 or exists(getImmediateChildOfImplicitConversionExpr(e, i, _)) | i) and
+      n = bImplicitConversionExpr and
+      (
+        none()
+        or
+        result = getImmediateChildOfImplicitConversionExpr(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfUnresolvedMemberChainResultExpr(
+    UnresolvedMemberChainResultExpr e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bIdentityExpr, int n |
+      b = 0 and
+      bIdentityExpr =
+        b + 1 + max(int i | i = -1 or exists(getImmediateChildOfIdentityExpr(e, i, _)) | i) and
+      n = bIdentityExpr and
+      (
+        none()
+        or
+        result = getImmediateChildOfIdentityExpr(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfUnresolvedTypeConversionExpr(
+    UnresolvedTypeConversionExpr e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bImplicitConversionExpr, int n |
+      b = 0 and
+      bImplicitConversionExpr =
+        b + 1 +
+          max(int i | i = -1 or exists(getImmediateChildOfImplicitConversionExpr(e, i, _)) | i) and
+      n = bImplicitConversionExpr and
+      (
+        none()
+        or
+        result = getImmediateChildOfImplicitConversionExpr(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfVariadicSequenceType(
+    VariadicSequenceType e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bUnarySyntaxSugarType, int n |
+      b = 0 and
+      bUnarySyntaxSugarType =
+        b + 1 + max(int i | i = -1 or exists(getImmediateChildOfUnarySyntaxSugarType(e, i, _)) | i) and
+      n = bUnarySyntaxSugarType and
+      (
+        none()
+        or
+        result = getImmediateChildOfUnarySyntaxSugarType(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfAbstractTypeParamDecl(
+    AbstractTypeParamDecl e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bTypeDecl, int n |
+      b = 0 and
+      bTypeDecl = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfTypeDecl(e, i, _)) | i) and
+      n = bTypeDecl and
+      (
+        none()
+        or
+        result = getImmediateChildOfTypeDecl(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfBooleanLiteralExpr(
+    BooleanLiteralExpr e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bBuiltinLiteralExpr, int n |
+      b = 0 and
+      bBuiltinLiteralExpr =
+        b + 1 + max(int i | i = -1 or exists(getImmediateChildOfBuiltinLiteralExpr(e, i, _)) | i) and
+      n = bBuiltinLiteralExpr and
+      (
+        none()
+        or
+        result = getImmediateChildOfBuiltinLiteralExpr(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfConditionalCheckedCastExpr(
+    ConditionalCheckedCastExpr e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bCheckedCastExpr, int n |
+      b = 0 and
+      bCheckedCastExpr =
+        b + 1 + max(int i | i = -1 or exists(getImmediateChildOfCheckedCastExpr(e, i, _)) | i) and
+      n = bCheckedCastExpr and
+      (
+        none()
+        or
+        result = getImmediateChildOfCheckedCastExpr(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfConstructorDecl(
+    ConstructorDecl e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bAbstractFunctionDecl, int n |
+      b = 0 and
+      bAbstractFunctionDecl =
+        b + 1 + max(int i | i = -1 or exists(getImmediateChildOfAbstractFunctionDecl(e, i, _)) | i) and
+      n = bAbstractFunctionDecl and
+      (
+        none()
+        or
+        result = getImmediateChildOfAbstractFunctionDecl(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfConstructorRefCallExpr(
+    ConstructorRefCallExpr e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bSelfApplyExpr, int n |
+      b = 0 and
+      bSelfApplyExpr =
+        b + 1 + max(int i | i = -1 or exists(getImmediateChildOfSelfApplyExpr(e, i, _)) | i) and
+      n = bSelfApplyExpr and
+      (
+        none()
+        or
+        result = getImmediateChildOfSelfApplyExpr(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfDestructorDecl(DestructorDecl e, int index, string partialPredicateCall) {
+    exists(int b, int bAbstractFunctionDecl, int n |
+      b = 0 and
+      bAbstractFunctionDecl =
+        b + 1 + max(int i | i = -1 or exists(getImmediateChildOfAbstractFunctionDecl(e, i, _)) | i) and
+      n = bAbstractFunctionDecl and
+      (
+        none()
+        or
+        result = getImmediateChildOfAbstractFunctionDecl(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfDotSyntaxCallExpr(
+    DotSyntaxCallExpr e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bSelfApplyExpr, int n |
+      b = 0 and
+      bSelfApplyExpr =
+        b + 1 + max(int i | i = -1 or exists(getImmediateChildOfSelfApplyExpr(e, i, _)) | i) and
+      n = bSelfApplyExpr and
+      (
+        none()
+        or
+        result = getImmediateChildOfSelfApplyExpr(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfDynamicMemberRefExpr(
+    DynamicMemberRefExpr e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bDynamicLookupExpr, int n |
+      b = 0 and
+      bDynamicLookupExpr =
+        b + 1 + max(int i | i = -1 or exists(getImmediateChildOfDynamicLookupExpr(e, i, _)) | i) and
+      n = bDynamicLookupExpr and
+      (
+        none()
+        or
+        result = getImmediateChildOfDynamicLookupExpr(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfDynamicSubscriptExpr(
+    DynamicSubscriptExpr e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bDynamicLookupExpr, int n |
+      b = 0 and
+      bDynamicLookupExpr =
+        b + 1 + max(int i | i = -1 or exists(getImmediateChildOfDynamicLookupExpr(e, i, _)) | i) and
+      n = bDynamicLookupExpr and
+      (
+        none()
+        or
+        result = getImmediateChildOfDynamicLookupExpr(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfForcedCheckedCastExpr(
+    ForcedCheckedCastExpr e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bCheckedCastExpr, int n |
+      b = 0 and
+      bCheckedCastExpr =
+        b + 1 + max(int i | i = -1 or exists(getImmediateChildOfCheckedCastExpr(e, i, _)) | i) and
+      n = bCheckedCastExpr and
+      (
+        none()
+        or
+        result = getImmediateChildOfCheckedCastExpr(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfFuncDecl(FuncDecl e, int index, string partialPredicateCall) {
+    exists(int b, int bAbstractFunctionDecl, int n |
+      b = 0 and
+      bAbstractFunctionDecl =
+        b + 1 + max(int i | i = -1 or exists(getImmediateChildOfAbstractFunctionDecl(e, i, _)) | i) and
+      n = bAbstractFunctionDecl and
+      (
+        none()
+        or
+        result = getImmediateChildOfAbstractFunctionDecl(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfGenericTypeDecl(
+    GenericTypeDecl e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bGenericContext, int bTypeDecl, int n |
+      b = 0 and
+      bGenericContext =
+        b + 1 + max(int i | i = -1 or exists(getImmediateChildOfGenericContext(e, i, _)) | i) and
+      bTypeDecl =
+        bGenericContext + 1 +
+          max(int i | i = -1 or exists(getImmediateChildOfTypeDecl(e, i, _)) | i) and
+      n = bTypeDecl and
+      (
+        none()
+        or
+        result = getImmediateChildOfGenericContext(e, index - b, partialPredicateCall)
+        or
+        result = getImmediateChildOfTypeDecl(e, index - bGenericContext, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfGuardStmt(GuardStmt e, int index, string partialPredicateCall) {
+    exists(int b, int bLabeledConditionalStmt, int n, int nBody |
+      b = 0 and
+      bLabeledConditionalStmt =
+        b + 1 +
+          max(int i | i = -1 or exists(getImmediateChildOfLabeledConditionalStmt(e, i, _)) | i) and
+      n = bLabeledConditionalStmt and
       nBody = n + 1 and
       (
         none()
         or
-        index = n and result = e.(GuardStmt).getImmediateBody() and partialAccessor = "Body()"
+        result = getImmediateChildOfLabeledConditionalStmt(e, index - b, partialPredicateCall)
+        or
+        index = n and result = e.getImmediateBody() and partialPredicateCall = "Body()"
       )
     )
-    or
-    exists(int n, int nThen, int nElse |
-      n = 0 + getMaximumChildrenIndexLabeledConditionalStmt(e) and
+  }
+
+  Element getImmediateChildOfIfStmt(IfStmt e, int index, string partialPredicateCall) {
+    exists(int b, int bLabeledConditionalStmt, int n, int nThen, int nElse |
+      b = 0 and
+      bLabeledConditionalStmt =
+        b + 1 +
+          max(int i | i = -1 or exists(getImmediateChildOfLabeledConditionalStmt(e, i, _)) | i) and
+      n = bLabeledConditionalStmt and
       nThen = n + 1 and
       nElse = nThen + 1 and
       (
         none()
         or
-        index = n and result = e.(IfStmt).getImmediateThen() and partialAccessor = "Then()"
+        result = getImmediateChildOfLabeledConditionalStmt(e, index - b, partialPredicateCall)
         or
-        index = nThen and result = e.(IfStmt).getImmediateElse() and partialAccessor = "Else()"
+        index = n and result = e.getImmediateThen() and partialPredicateCall = "Then()"
+        or
+        index = nThen and result = e.getImmediateElse() and partialPredicateCall = "Else()"
       )
     )
-    or
-    exists(int n, int nParam |
-      n =
-        0 + getMaximumChildrenIndexAbstractStorageDecl(e) + getMaximumChildrenIndexGenericContext(e) and
-      nParam = n + 1 + max(int i | i = 0 or exists(e.(SubscriptDecl).getImmediateParam(i)) | i) and
+  }
+
+  Element getImmediateChildOfIsExpr(IsExpr e, int index, string partialPredicateCall) {
+    exists(int b, int bCheckedCastExpr, int n |
+      b = 0 and
+      bCheckedCastExpr =
+        b + 1 + max(int i | i = -1 or exists(getImmediateChildOfCheckedCastExpr(e, i, _)) | i) and
+      n = bCheckedCastExpr and
       (
         none()
         or
-        result = e.(SubscriptDecl).getImmediateParam(index - n) and
-        partialAccessor = "Param(" + (index - n).toString() + ")"
+        result = getImmediateChildOfCheckedCastExpr(e, index - b, partialPredicateCall)
       )
     )
-    or
-    exists(int n, int nBody |
-      n = 0 + getMaximumChildrenIndexLabeledConditionalStmt(e) and
+  }
+
+  Element getImmediateChildOfMagicIdentifierLiteralExpr(
+    MagicIdentifierLiteralExpr e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bBuiltinLiteralExpr, int n |
+      b = 0 and
+      bBuiltinLiteralExpr =
+        b + 1 + max(int i | i = -1 or exists(getImmediateChildOfBuiltinLiteralExpr(e, i, _)) | i) and
+      n = bBuiltinLiteralExpr and
+      (
+        none()
+        or
+        result = getImmediateChildOfBuiltinLiteralExpr(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfModuleDecl(ModuleDecl e, int index, string partialPredicateCall) {
+    exists(int b, int bTypeDecl, int n |
+      b = 0 and
+      bTypeDecl = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfTypeDecl(e, i, _)) | i) and
+      n = bTypeDecl and
+      (
+        none()
+        or
+        result = getImmediateChildOfTypeDecl(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfNumberLiteralExpr(
+    NumberLiteralExpr e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bBuiltinLiteralExpr, int n |
+      b = 0 and
+      bBuiltinLiteralExpr =
+        b + 1 + max(int i | i = -1 or exists(getImmediateChildOfBuiltinLiteralExpr(e, i, _)) | i) and
+      n = bBuiltinLiteralExpr and
+      (
+        none()
+        or
+        result = getImmediateChildOfBuiltinLiteralExpr(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfStringLiteralExpr(
+    StringLiteralExpr e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bBuiltinLiteralExpr, int n |
+      b = 0 and
+      bBuiltinLiteralExpr =
+        b + 1 + max(int i | i = -1 or exists(getImmediateChildOfBuiltinLiteralExpr(e, i, _)) | i) and
+      n = bBuiltinLiteralExpr and
+      (
+        none()
+        or
+        result = getImmediateChildOfBuiltinLiteralExpr(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfSubscriptDecl(SubscriptDecl e, int index, string partialPredicateCall) {
+    exists(int b, int bAbstractStorageDecl, int bGenericContext, int n, int nParam |
+      b = 0 and
+      bAbstractStorageDecl =
+        b + 1 + max(int i | i = -1 or exists(getImmediateChildOfAbstractStorageDecl(e, i, _)) | i) and
+      bGenericContext =
+        bAbstractStorageDecl + 1 +
+          max(int i | i = -1 or exists(getImmediateChildOfGenericContext(e, i, _)) | i) and
+      n = bGenericContext and
+      nParam = n + 1 + max(int i | i = -1 or exists(e.getImmediateParam(i)) | i) and
+      (
+        none()
+        or
+        result = getImmediateChildOfAbstractStorageDecl(e, index - b, partialPredicateCall)
+        or
+        result =
+          getImmediateChildOfGenericContext(e, index - bAbstractStorageDecl, partialPredicateCall)
+        or
+        result = e.getImmediateParam(index - n) and
+        partialPredicateCall = "Param(" + (index - n).toString() + ")"
+      )
+    )
+  }
+
+  Element getImmediateChildOfVarDecl(VarDecl e, int index, string partialPredicateCall) {
+    exists(int b, int bAbstractStorageDecl, int n |
+      b = 0 and
+      bAbstractStorageDecl =
+        b + 1 + max(int i | i = -1 or exists(getImmediateChildOfAbstractStorageDecl(e, i, _)) | i) and
+      n = bAbstractStorageDecl and
+      (
+        none()
+        or
+        result = getImmediateChildOfAbstractStorageDecl(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfWhileStmt(WhileStmt e, int index, string partialPredicateCall) {
+    exists(int b, int bLabeledConditionalStmt, int n, int nBody |
+      b = 0 and
+      bLabeledConditionalStmt =
+        b + 1 +
+          max(int i | i = -1 or exists(getImmediateChildOfLabeledConditionalStmt(e, i, _)) | i) and
+      n = bLabeledConditionalStmt and
       nBody = n + 1 and
       (
         none()
         or
-        index = n and result = e.(WhileStmt).getImmediateBody() and partialAccessor = "Body()"
+        result = getImmediateChildOfLabeledConditionalStmt(e, index - b, partialPredicateCall)
+        or
+        index = n and result = e.getImmediateBody() and partialPredicateCall = "Body()"
       )
     )
+  }
+
+  Element getImmediateChildOfAccessorDecl(AccessorDecl e, int index, string partialPredicateCall) {
+    exists(int b, int bFuncDecl, int n |
+      b = 0 and
+      bFuncDecl = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfFuncDecl(e, i, _)) | i) and
+      n = bFuncDecl and
+      (
+        none()
+        or
+        result = getImmediateChildOfFuncDecl(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfAssociatedTypeDecl(
+    AssociatedTypeDecl e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bAbstractTypeParamDecl, int n |
+      b = 0 and
+      bAbstractTypeParamDecl =
+        b + 1 + max(int i | i = -1 or exists(getImmediateChildOfAbstractTypeParamDecl(e, i, _)) | i) and
+      n = bAbstractTypeParamDecl and
+      (
+        none()
+        or
+        result = getImmediateChildOfAbstractTypeParamDecl(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfConcreteFuncDecl(
+    ConcreteFuncDecl e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bFuncDecl, int n |
+      b = 0 and
+      bFuncDecl = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfFuncDecl(e, i, _)) | i) and
+      n = bFuncDecl and
+      (
+        none()
+        or
+        result = getImmediateChildOfFuncDecl(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfConcreteVarDecl(
+    ConcreteVarDecl e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bVarDecl, int n |
+      b = 0 and
+      bVarDecl = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfVarDecl(e, i, _)) | i) and
+      n = bVarDecl and
+      (
+        none()
+        or
+        result = getImmediateChildOfVarDecl(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfFloatLiteralExpr(
+    FloatLiteralExpr e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bNumberLiteralExpr, int n |
+      b = 0 and
+      bNumberLiteralExpr =
+        b + 1 + max(int i | i = -1 or exists(getImmediateChildOfNumberLiteralExpr(e, i, _)) | i) and
+      n = bNumberLiteralExpr and
+      (
+        none()
+        or
+        result = getImmediateChildOfNumberLiteralExpr(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfGenericTypeParamDecl(
+    GenericTypeParamDecl e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bAbstractTypeParamDecl, int n |
+      b = 0 and
+      bAbstractTypeParamDecl =
+        b + 1 + max(int i | i = -1 or exists(getImmediateChildOfAbstractTypeParamDecl(e, i, _)) | i) and
+      n = bAbstractTypeParamDecl and
+      (
+        none()
+        or
+        result = getImmediateChildOfAbstractTypeParamDecl(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfIntegerLiteralExpr(
+    IntegerLiteralExpr e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bNumberLiteralExpr, int n |
+      b = 0 and
+      bNumberLiteralExpr =
+        b + 1 + max(int i | i = -1 or exists(getImmediateChildOfNumberLiteralExpr(e, i, _)) | i) and
+      n = bNumberLiteralExpr and
+      (
+        none()
+        or
+        result = getImmediateChildOfNumberLiteralExpr(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfNominalTypeDecl(
+    NominalTypeDecl e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bGenericTypeDecl, int bIterableDeclContext, int n |
+      b = 0 and
+      bGenericTypeDecl =
+        b + 1 + max(int i | i = -1 or exists(getImmediateChildOfGenericTypeDecl(e, i, _)) | i) and
+      bIterableDeclContext =
+        bGenericTypeDecl + 1 +
+          max(int i | i = -1 or exists(getImmediateChildOfIterableDeclContext(e, i, _)) | i) and
+      n = bIterableDeclContext and
+      (
+        none()
+        or
+        result = getImmediateChildOfGenericTypeDecl(e, index - b, partialPredicateCall)
+        or
+        result =
+          getImmediateChildOfIterableDeclContext(e, index - bGenericTypeDecl, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfOpaqueTypeDecl(OpaqueTypeDecl e, int index, string partialPredicateCall) {
+    exists(int b, int bGenericTypeDecl, int n |
+      b = 0 and
+      bGenericTypeDecl =
+        b + 1 + max(int i | i = -1 or exists(getImmediateChildOfGenericTypeDecl(e, i, _)) | i) and
+      n = bGenericTypeDecl and
+      (
+        none()
+        or
+        result = getImmediateChildOfGenericTypeDecl(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfParamDecl(ParamDecl e, int index, string partialPredicateCall) {
+    exists(int b, int bVarDecl, int n |
+      b = 0 and
+      bVarDecl = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfVarDecl(e, i, _)) | i) and
+      n = bVarDecl and
+      (
+        none()
+        or
+        result = getImmediateChildOfVarDecl(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfTypeAliasDecl(TypeAliasDecl e, int index, string partialPredicateCall) {
+    exists(int b, int bGenericTypeDecl, int n |
+      b = 0 and
+      bGenericTypeDecl =
+        b + 1 + max(int i | i = -1 or exists(getImmediateChildOfGenericTypeDecl(e, i, _)) | i) and
+      n = bGenericTypeDecl and
+      (
+        none()
+        or
+        result = getImmediateChildOfGenericTypeDecl(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfClassDecl(ClassDecl e, int index, string partialPredicateCall) {
+    exists(int b, int bNominalTypeDecl, int n |
+      b = 0 and
+      bNominalTypeDecl =
+        b + 1 + max(int i | i = -1 or exists(getImmediateChildOfNominalTypeDecl(e, i, _)) | i) and
+      n = bNominalTypeDecl and
+      (
+        none()
+        or
+        result = getImmediateChildOfNominalTypeDecl(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfEnumDecl(EnumDecl e, int index, string partialPredicateCall) {
+    exists(int b, int bNominalTypeDecl, int n |
+      b = 0 and
+      bNominalTypeDecl =
+        b + 1 + max(int i | i = -1 or exists(getImmediateChildOfNominalTypeDecl(e, i, _)) | i) and
+      n = bNominalTypeDecl and
+      (
+        none()
+        or
+        result = getImmediateChildOfNominalTypeDecl(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfProtocolDecl(ProtocolDecl e, int index, string partialPredicateCall) {
+    exists(int b, int bNominalTypeDecl, int n |
+      b = 0 and
+      bNominalTypeDecl =
+        b + 1 + max(int i | i = -1 or exists(getImmediateChildOfNominalTypeDecl(e, i, _)) | i) and
+      n = bNominalTypeDecl and
+      (
+        none()
+        or
+        result = getImmediateChildOfNominalTypeDecl(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  Element getImmediateChildOfStructDecl(StructDecl e, int index, string partialPredicateCall) {
+    exists(int b, int bNominalTypeDecl, int n |
+      b = 0 and
+      bNominalTypeDecl =
+        b + 1 + max(int i | i = -1 or exists(getImmediateChildOfNominalTypeDecl(e, i, _)) | i) and
+      n = bNominalTypeDecl and
+      (
+        none()
+        or
+        result = getImmediateChildOfNominalTypeDecl(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  cached
+  Element getImmediateChild(Element e, int index, string partialAccessor) {
+    // why does this look more complicated than it should?
+    // * none() simplifies generation, as we can append `or ...` without a special case for the first item
+    none()
+    or
+    result = getImmediateChildOfArgument(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfComment(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfConditionElement(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfDbFile(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfDbLocation(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfDependentMemberType(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfDynamicSelfType(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfErrorType(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfExistentialType(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfIfConfigClause(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfInOutType(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfLValueType(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfModuleType(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfPlaceholderType(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfProtocolCompositionType(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfSilBlockStorageType(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfSilBoxType(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfSilFunctionType(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfSilTokenType(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfTupleType(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfTypeVariableType(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfUnknownFile(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfUnknownLocation(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfUnresolvedType(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfBuiltinBridgeObjectType(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfBuiltinDefaultActorStorageType(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfBuiltinExecutorType(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfBuiltinFloatType(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfBuiltinJobType(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfBuiltinNativeObjectType(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfBuiltinRawPointerType(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfBuiltinRawUnsafeContinuationType(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfBuiltinUnsafeValueBufferType(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfBuiltinVectorType(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfCaseLabelItem(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfExistentialMetatypeType(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfFunctionType(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfGenericFunctionType(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfGenericTypeParamType(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfMetatypeType(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfParenType(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfStmtCondition(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfTypeAliasType(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfTypeRepr(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfUnboundGenericType(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfUnmanagedStorageType(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfUnownedStorageType(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfWeakStorageType(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfAnyPattern(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfAppliedPropertyWrapperExpr(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfArrowExpr(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfAssignExpr(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfBindOptionalExpr(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfBindingPattern(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfBoolPattern(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfBraceStmt(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfBreakStmt(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfBuiltinIntegerLiteralType(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfBuiltinIntegerType(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfCaptureListExpr(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfCaseStmt(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfCodeCompletionExpr(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfContinueStmt(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfDeclRefExpr(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfDefaultArgumentExpr(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfDeferStmt(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfDictionaryType(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfDiscardAssignmentExpr(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfDotSyntaxBaseIgnoredExpr(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfDynamicTypeExpr(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfEditorPlaceholderExpr(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfEnumCaseDecl(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfEnumElementPattern(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfEnumIsCaseExpr(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfErrorExpr(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfExprPattern(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfExtensionDecl(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfFailStmt(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfFallthroughStmt(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfForceValueExpr(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfIfConfigDecl(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfIfExpr(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfImportDecl(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfInOutExpr(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfIsPattern(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfKeyPathApplicationExpr(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfKeyPathDotExpr(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfKeyPathExpr(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfLazyInitializerExpr(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfMakeTemporarilyEscapableExpr(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfMissingMemberDecl(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfNamedPattern(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfNestedArchetypeType(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfObjCSelectorExpr(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfOneWayExpr(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfOpaqueTypeArchetypeType(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfOpaqueValueExpr(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfOpenExistentialExpr(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfOpenedArchetypeType(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfOptionalEvaluationExpr(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfOptionalSomePattern(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfOtherConstructorDeclRefExpr(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfParenPattern(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfPatternBindingDecl(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfPoundAssertStmt(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfPoundDiagnosticDecl(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfPrecedenceGroupDecl(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfPrimaryArchetypeType(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfPropertyWrapperValuePlaceholderExpr(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfRebindSelfInConstructorExpr(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfReturnStmt(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfSequenceArchetypeType(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfSequenceExpr(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfSuperRefExpr(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfTapExpr(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfThrowStmt(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfTopLevelCodeDecl(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfTupleElementExpr(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfTupleExpr(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfTuplePattern(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfTypeExpr(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfTypedPattern(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfUnresolvedDeclRefExpr(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfUnresolvedDotExpr(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfUnresolvedMemberExpr(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfUnresolvedPatternExpr(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfUnresolvedSpecializeExpr(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfVarargExpansionExpr(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfYieldStmt(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfAnyHashableErasureExpr(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfArchetypeToSuperExpr(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfArrayExpr(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfArraySliceType(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfArrayToPointerExpr(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfAutoClosureExpr(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfAwaitExpr(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfBinaryExpr(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfBoundGenericClassType(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfBoundGenericEnumType(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfBoundGenericStructType(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfBridgeFromObjCExpr(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfBridgeToObjCExpr(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfCallExpr(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfClassMetatypeToObjectExpr(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfClassType(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfClosureExpr(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfCoerceExpr(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfCollectionUpcastConversionExpr(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfConditionalBridgeFromObjCExpr(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfCovariantFunctionConversionExpr(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfCovariantReturnConversionExpr(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfDerivedToBaseExpr(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfDestructureTupleExpr(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfDictionaryExpr(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfDifferentiableFunctionExpr(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfDifferentiableFunctionExtractOriginalExpr(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfDoCatchStmt(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfDoStmt(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfDotSelfExpr(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfEnumElementDecl(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfEnumType(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfErasureExpr(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfExistentialMetatypeToObjectExpr(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfForEachStmt(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfForceTryExpr(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfForeignObjectConversionExpr(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfFunctionConversionExpr(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfInOutToPointerExpr(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfInfixOperatorDecl(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfInjectIntoOptionalExpr(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfInterpolatedStringLiteralExpr(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfLinearFunctionExpr(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfLinearFunctionExtractOriginalExpr(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfLinearToDifferentiableFunctionExpr(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfLoadExpr(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfMemberRefExpr(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfMetatypeConversionExpr(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfMethodRefExpr(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfNilLiteralExpr(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfObjectLiteralExpr(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfOptionalTryExpr(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfOptionalType(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfOverloadedDeclRefExpr(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfParenExpr(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfPointerToPointerExpr(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfPostfixOperatorDecl(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfPostfixUnaryExpr(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfPrefixOperatorDecl(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfPrefixUnaryExpr(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfProtocolMetatypeToObjectExpr(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfProtocolType(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfRegexLiteralExpr(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfRepeatWhileStmt(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfStringToPointerExpr(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfStructType(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfSubscriptExpr(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfSwitchStmt(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfTryExpr(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfUnderlyingToOpaqueExpr(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfUnevaluatedInstanceExpr(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfUnresolvedMemberChainResultExpr(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfUnresolvedTypeConversionExpr(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfVariadicSequenceType(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfBooleanLiteralExpr(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfConditionalCheckedCastExpr(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfConstructorDecl(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfConstructorRefCallExpr(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfDestructorDecl(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfDotSyntaxCallExpr(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfDynamicMemberRefExpr(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfDynamicSubscriptExpr(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfForcedCheckedCastExpr(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfGuardStmt(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfIfStmt(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfIsExpr(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfMagicIdentifierLiteralExpr(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfModuleDecl(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfStringLiteralExpr(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfSubscriptDecl(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfWhileStmt(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfAccessorDecl(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfAssociatedTypeDecl(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfConcreteFuncDecl(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfConcreteVarDecl(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfFloatLiteralExpr(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfGenericTypeParamDecl(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfIntegerLiteralExpr(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfOpaqueTypeDecl(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfParamDecl(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfTypeAliasDecl(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfClassDecl(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfEnumDecl(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfProtocolDecl(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfStructDecl(e, index, partialAccessor)
   }
 }
 
 /**
  * Gets the "immediate" parent of `e`. "Immediate" means not taking into account node resolution: for example
- * if `e` has conversions, `getImmediateParent(e)` will give the bottom conversion in the hidden AST.
+ * if `e` has conversions, `getImmediateParent(e)` will give the innermost conversion in the hidden AST.
  */
 Element getImmediateParent(Element e) {
   // `unique` is used here to tell the optimizer that there is in fact only one result
@@ -2162,7 +5132,7 @@ Element getImmediateParent(Element e) {
 }
 
 /**
- * Gets the immediate child indexed at `index`. Indexes are not guaranteed to be contiguous, but are guaranteed to be distinct. `accessor` is bound the the method giving the given child.
+ * Gets the immediate child indexed at `index`. Indexes are not guaranteed to be contiguous, but are guaranteed to be distinct. `accessor` is bound the member predicate call resulting in the given child.
  */
 Element getImmediateChildAndAccessor(Element e, int index, string accessor) {
   exists(string partialAccessor |
@@ -2172,7 +5142,7 @@ Element getImmediateChildAndAccessor(Element e, int index, string accessor) {
 }
 
 /**
- * Gets the child indexed at `index`. Indexes are not guaranteed to be contiguous, but are guaranteed to be distinct. `accessor` is bound the the method giving the given child. Node resolution is carried out.
+ * Gets the child indexed at `index`. Indexes are not guaranteed to be contiguous, but are guaranteed to be distinct. `accessor` is bound the member predicate call resulting in the given child.
  */
 Element getChildAndAccessor(Element e, int index, string accessor) {
   exists(string partialAccessor |
