@@ -58,10 +58,10 @@ func test2(obj : MyManagedObject, password : String, password_file : String) {
 	obj.setValue(password, forKey: "myKey") // BAD
 	obj.setValue(password_file, forKey: "myKey") // GOOD (not sensitive)
 
-	obj.setIndirect(value: password) // BAD
+	obj.setIndirect(value: password) // BAD [reported on line 19]
 	obj.setIndirect(value: password_file) // GOOD (not sensitive)
 
-	obj.myValue = password // BAD
+	obj.myValue = password // BAD [reported on line 32]
 	obj.myValue = password_file // GOOD (not sensitive)
 }
 
@@ -73,7 +73,7 @@ class MyClass {
 func test3(obj : NSManagedObject, x : String) {
 	// alternative evidence of sensitivity...
 
-	obj.setValue(x, forKey: "myKey") // BAD
+	obj.setValue(x, forKey: "myKey") // BAD [NOT REPORTED]
 	doSomething(password: x);
 	obj.setValue(x, forKey: "myKey") // BAD
 
@@ -100,7 +100,7 @@ func test4(obj : NSManagedObject, passwd : String) {
 	hash(data: &y);
 	z = "";
 
-	obj.setValue(x, forKey: "myKey") // GOOD (not sensitive)
-	obj.setValue(y, forKey: "myKey") // GOOD (not sensitive)
+	obj.setValue(x, forKey: "myKey") // GOOD (not sensitive) [FALSE POSITIVE]
+	obj.setValue(y, forKey: "myKey") // GOOD (not sensitive) [FALSE POSITIVE]
 	obj.setValue(z, forKey: "myKey") // GOOD (not sensitive)
 }
