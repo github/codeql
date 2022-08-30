@@ -910,7 +910,13 @@ getTypeExprType
 | tst.ts:347:14:347:26 | State<number> | State<number> |
 | tst.ts:347:20:347:25 | number | number |
 | tst.ts:381:10:381:16 | SomeNum | 100 |
+| tst.ts:381:20:381:24 | "100" | "100" |
 | tst.ts:381:20:381:72 | "100" e ... : never | 100 |
+| tst.ts:381:37:381:58 | infer U ...  number | U |
+| tst.ts:381:43:381:43 | U | U |
+| tst.ts:381:53:381:58 | number | number |
+| tst.ts:381:64:381:64 | U | U |
+| tst.ts:381:68:381:72 | never | never |
 | tst.ts:383:37:383:37 | T | T |
 | tst.ts:383:43:383:43 | T | T |
 | tst.ts:383:49:383:49 | T | T |
