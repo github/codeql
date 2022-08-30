@@ -15,6 +15,11 @@ import semmle.code.xml.AndroidManifest
 
 from AndroidApplicationXmlElement androidAppElem
 where
-  androidAppElem.allowsBackup() and
-  androidAppElem.getFile().(AndroidManifestXmlFile).isInBuildDirectory()
+  not androidAppElem.getFile().(AndroidManifestXmlFile).isInBuildDirectory() and
+  (
+    androidAppElem.allowsBackupExplicitly()
+    or
+    androidAppElem.providesMainIntent() and
+    androidAppElem.allowsBackup()
+  )
 select androidAppElem, "The 'android:allowBackup' attribute is enabled."

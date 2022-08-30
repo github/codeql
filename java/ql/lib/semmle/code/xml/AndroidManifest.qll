@@ -98,6 +98,16 @@ class AndroidApplicationXmlElement extends XmlElement {
       attr.getValue() = "true"
     )
   }
+
+  predicate providesMainIntent() {
+    exists(AndroidActivityXmlElement activity |
+      activity = this.getAChild() and
+      exists(AndroidIntentFilterXmlElement intentFilter |
+        intentFilter = activity.getAChild() and
+        intentFilter.getAnActionElement().getActionName() = "android.intent.action.MAIN"
+      )
+    )
+  }
 }
 
 /**
