@@ -12,8 +12,8 @@ improper return-value checking.
 <p>
 Specifically, the query flags uses of variables that may have been modified by
 <tt>scanf</tt> and subsequently are used without being guarded by a correct
-return-value check. A proper check is one that asserts the corresponding
-<tt>scanf</tt> to have returned (at least) a certain minimum constant.
+return-value check. A proper check is one that ensures that the corresponding
+<tt>scanf</tt> has returned (at least) a certain minimum constant.
 </p>
 <p>
 Functions in the <tt>scanf</tt> family return either EOF (a negative value)
@@ -24,7 +24,7 @@ is not enough.
 <warning>
 This query has medium precision because, in the current implementation, it
 takes a strict stance on unguarded uses of output variables, and flags them
-as problematic even if they had already been initialized.
+as problematic even if they have already been initialized.
 </warning>
 </overview>
 
@@ -46,6 +46,6 @@ input. This can be done by comparing the return value to a numerical constant.
 <references>
 <li>SEI CERT C++ Coding Standard: <a href="https://wiki.sei.cmu.edu/confluence/display/cplusplus/ERR62-CPP.+Detect+errors+when+converting+a+string+to+a+number">ERR62-CPP. Detect errors when converting a string to a number</a>.</li>
 <li>SEI CERT C Coding Standard: <a href="https://wiki.sei.cmu.edu/confluence/display/c/ERR33-C.+Detect+and+handle+standard+library+errors">ERR33-C. Detect and handle standard library errors</a>.</li>
-<li>cppreference.com: <a href="https://en.cppreference.com/w/c/io/fscanf">scanf, fscanf, sscanf, scanf_s, fscanf_s, sscanf_s</a></li>
+<li>cppreference.com: <a href="https://en.cppreference.com/w/c/io/fscanf">scanf, fscanf, sscanf, scanf_s, fscanf_s, sscanf_s</a>.</li>
 </references>
 </qhelp>

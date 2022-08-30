@@ -1,7 +1,7 @@
 /**
  * @name Missing return-value check for a 'scanf'-like function
- * @description Without checking that a call to 'scanf' actually wrote to an
- *              output variable, reading from it can lead to unexpected behavior.
+ * @description Failing to check that a call to 'scanf' actually writes to an
+ *              output variable can lead to unexpected behavior at reading time.
  * @kind problem
  * @problem.severity recommendation
  * @security-severity 4.5
