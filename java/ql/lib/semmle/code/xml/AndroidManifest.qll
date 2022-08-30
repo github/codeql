@@ -99,6 +99,10 @@ class AndroidApplicationXmlElement extends XmlElement {
     )
   }
 
+  /**
+   * Holds if the application element contains a child element which provides the
+   * `android.intent.action.MAIN` intent.
+   */
   predicate providesMainIntent() {
     exists(AndroidActivityXmlElement activity |
       activity = this.getAChild() and
