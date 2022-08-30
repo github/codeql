@@ -83,7 +83,8 @@ open class KotlinFileExtractor(
             }
 
             file.declarations.forEach { extractDeclaration(it, extractPrivateMembers = true, extractFunctionBodies = true) }
-            extractStaticInitializer(file, null)
+            val fileClassId = extractFileClass(file)
+            extractStaticInitializer(file, fileClassId)
             CommentExtractor(this, file, tw.fileId).extract()
         }
     }
@@ -667,10 +668,9 @@ open class KotlinFileExtractor(
         return type
     }
 
-    private fun extractStaticInitializer(container: IrDeclarationContainer, classLabel: Label<out DbClassorinterface>?) {
+    private fun extractStaticInitializer(container: IrDeclarationContainer, parentId: Label<out DbClassorinterface>) {
         with("static initializer extraction", container) {
             extractDeclInitializers(container.declarations, true) {
-                val parentId = classLabel ?: extractFileClass(container as IrFile)
                 val clinitLabel = getFunctionLabel(
                     container,
                     parentId,
