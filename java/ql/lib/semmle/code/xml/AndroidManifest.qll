@@ -85,6 +85,19 @@ class AndroidApplicationXmlElement extends XmlElement {
       attr.getValue() = "false"
     )
   }
+
+  /**
+   * Holds if this application element sets the `android:allowBackup` attribute to `true`.
+   *
+   * https://developer.android.com/guide/topics/data/autobackup
+   */
+  predicate allowsBackupExplicitly() {
+    exists(AndroidXmlAttribute attr |
+      this.getAnAttribute() = attr and
+      attr.getName() = "allowBackup" and
+      attr.getValue() = "true"
+    )
+  }
 }
 
 /**
