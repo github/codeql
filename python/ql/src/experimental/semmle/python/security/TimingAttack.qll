@@ -96,84 +96,48 @@ class CredentialExpr extends Expr {
  *
  * For example: `request.headers.get("X-Auth-Token")`.
  */
-abstract class ClientSuppliedSecret extends DataFlow::CallCfgNode { }
+abstract class ClientSuppliedSecret extends API::CallNode { }
 
 private class FlaskClientSuppliedSecret extends ClientSuppliedSecret {
   FlaskClientSuppliedSecret() {
-    exists(RemoteFlowSource rfs, DataFlow::AttrRead get |
-      rfs.getSourceType() = "flask.request" and this.getFunction() = get
-    |
-      // `get` is a call to request.headers.get or request.headers.get_all or request.headers.getlist
-      // request.headers
-      get.getObject()
-          .(DataFlow::AttrRead)
-          // request
-          .getObject()
-          .getALocalSource() = rfs and
-      get.getAttributeName() in ["get", "get_all", "getlist"] and
-      get.getObject().(DataFlow::AttrRead).getAttributeName() = "headers" and
-      this.getArg(0).asExpr().(StrConst).getText().toLowerCase() = sensitiveheaders()
-    )
+    this = Flask::request().getMember("headers").getMember(["get", "get_all", "getlist"]).getACall() and
+    this.getParameter(0, ["key", "name"]).toString().toLowerCase() = sensitiveheaders()
   }
 }
 
 private class DjangoClientSuppliedSecret extends ClientSuppliedSecret {
   DjangoClientSuppliedSecret() {
-    exists(RemoteFlowSource rfs, DataFlow::AttrRead get |
-      rfs.getSourceType() = "django.http.request.HttpRequest" and this.getFunction() = get
-    |
-      // `get` is a call to request.headers.get or request.META.get
-      // request.headers
-      get.getObject()
-          .(DataFlow::AttrRead)
-          // request
-          .getObject()
-          .getALocalSource() = rfs and
-      get.getAttributeName() = "get" and
-      get.getObject().(DataFlow::AttrRead).getAttributeName() in ["headers", "META"] and
-      this.getArg(0).asExpr().(StrConst).getText().toLowerCase() = sensitiveheaders()
-    )
+    this =
+      PrivateDjango::DjangoImpl::Http::Request::HttpRequest::classRef()
+          .getMember(["headers", "META"])
+          .getMember("get")
+          .getACall() and
+    this.getParameter(0, "key").toString().toLowerCase() = sensitiveheaders()
   }
+}
+
+/** Gets a reference to the `tornado.web.RequestHandler` module. */
+API::Node requesthandler() {
+  result = API::moduleImport("tornado").getMember("web").getMember("RequestHandler")
 }
 
 private class TornadoClientSuppliedSecret extends ClientSuppliedSecret {
   TornadoClientSuppliedSecret() {
-    exists(RemoteFlowSource rfs, DataFlow::AttrRead get |
-      rfs.getSourceType() = "tornado.web.RequestHandler" and this.getFunction() = get
-    |
-      // `get` is a call to `rfs`.request.headers.get
-      // `rfs`.request.headers
-      get.getObject()
-          .(DataFlow::AttrRead)
-          // `rfs`.request
-          .getObject()
-          .(DataFlow::AttrRead)
-          // `rfs`
-          .getObject()
-          .getALocalSource() = rfs and
-      get.getAttributeName() in ["get", "get_list"] and
-      get.getObject().(DataFlow::AttrRead).getAttributeName() = "headers" and
-      this.getArg(0).asExpr().(StrConst).getText().toLowerCase() = sensitiveheaders()
-    )
+    this = requesthandler().getMember(["headers", "META"]).getMember("get").getACall() and
+    this.getParameter(0, "key").toString().toLowerCase() = sensitiveheaders()
   }
+}
+
+/** Gets a reference to the `werkzeug.datastructures.Headers` module. */
+API::Node headers() {
+  result = API::moduleImport("werkzeug").getMember("datastructures").getMember("Headers")
 }
 
 private class WerkzeugClientSuppliedSecret extends ClientSuppliedSecret {
   WerkzeugClientSuppliedSecret() {
-    exists(RemoteFlowSource rfs, DataFlow::AttrRead get |
-      rfs.getSourceType() = "werkzeug.datastructures" and this.getFunction() = get
-    |
-      // `get` is a call to datastructures.headers.get or datastructures.headers.get_all or datastructures.headers.getlist
-      // datastructures.headers
-      get.getObject()
-          .(DataFlow::AttrRead)
-          // request
-          .getObject()
-          .getALocalSource() = rfs and
-      get.getAttributeName() in ["get", "get_all", "getlist"] and
-      get.getObject().(DataFlow::AttrRead).getAttributeName() = "Headers" and
-      this.getArg(0).asExpr().(StrConst).getText().toLowerCase() = sensitiveheaders()   
-    )
+    this =
+      headers().getMember(["headers", "META"]).getMember(["get", "get_all", "getlist"]).getACall() and
+    this.getParameter(0, ["key", "name"]).toString().toLowerCase() = sensitiveheaders()
   }
 }
 
