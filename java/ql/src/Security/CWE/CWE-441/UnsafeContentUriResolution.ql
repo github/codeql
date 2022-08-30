@@ -4,6 +4,7 @@
  *              to access unexpected resources.
  * @kind path-problem
  * @problem.severity warning
+ * @security-severity 7.5
  * @precision high
  * @id java/android/unsafe-content-uri-resolution
  * @tags security
