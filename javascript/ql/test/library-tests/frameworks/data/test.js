@@ -226,4 +226,9 @@ function typeVars() {
   testlib.typevar.left.left.x.right.right.mySink(source()); // NOT OK
   testlib.typevar.left.x.right.right.mySink(source()); // OK - mismatched left and right
   testlib.typevar.left.left.x.right.mySink(source()); // OK - mismatched left and right
+
+  testlib.typevar.getThis().getThis().left.x.right.mySink(source()); // NOT OK
+  testlib.typevar.left.getThis().getThis().x.right.mySink(source()); // NOT OK
+  testlib.typevar.left.x.getThis().getThis().right.mySink(source()); // NOT OK
+  testlib.typevar.left.x.right.getThis().getThis().mySink(source()); // NOT OK
 }

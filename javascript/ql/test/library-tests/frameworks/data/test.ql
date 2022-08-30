@@ -14,6 +14,17 @@ class Steps extends ModelInput::SummaryModelCsv {
         "testlib;;Member[preserveAllButFirstArgument];Argument[1..];ReturnValue;taint",
         "testlib;;Member[preserveAllIfCall].Call;Argument[0..];ReturnValue;taint",
         "testlib;;Member[getSource].ReturnValue.Member[continue];Argument[this];ReturnValue;taint",
+        "testlib;~HasThisFlow;;;Member[getThis].ReturnValue;type",
+      ]
+  }
+}
+
+class TypeDefs extends ModelInput::TypeModelCsv {
+  override predicate row(string row) {
+    row =
+      [
+        "testlib;~HasThisFlow;testlib;;Member[typevar]",
+        "testlib;~HasThisFlow;testlib;~HasThisFlow;Member[left,right,x]",
       ]
   }
 }
