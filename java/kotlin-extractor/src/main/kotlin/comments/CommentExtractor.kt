@@ -140,7 +140,7 @@ class CommentExtractor(private val fileExtractor: KotlinFileExtractor, private v
                     is IrAnonymousInitializer -> {
                         val parentClass = element.parentClassOrNull
                         if (parentClass == null) {
-                            logger.errorElement("Parent of anonymous initializer is not a class", element)
+                            logger.warnElement("Parent of anonymous initializer is not a class", element)
                             return null
                         }
                         // Assign the comment to the class. The content of the `init` blocks might be extracted in multiple constructors.
@@ -153,7 +153,7 @@ class CommentExtractor(private val fileExtractor: KotlinFileExtractor, private v
 
                     // todo add others:
                     else -> {
-                        logger.errorElement("Unhandled element type: ${element::class}", element)
+                        logger.warnElement("Unhandled element type found during comment extraction: ${element::class}", element)
                         return null
                     }
                 }
