@@ -132,6 +132,9 @@ private class SinkFromModel extends ModelInput::SinkModelCsv {
         "test;FooOrBar;Method[method].Argument[0];test-sink", //
         ";;Member[Foo].Method[sinkAnyArg].Argument[any];test-sink", //
         ";;Member[Foo].Method[sinkAnyNamedArg].Argument[any-named];test-sink", //
+        ";;Member[Foo].Method[getSinks].ReturnValue.Element[any].Method[mySink].Argument[0];test-sink", //
+        ";;Member[Foo].Method[arraySink].Argument[0].Element[any];test-sink", //
+        ";;Member[Foo].Method[secondArrayElementIsSink].Argument[0].Element[1];test-sink", //
       ]
   }
 }
