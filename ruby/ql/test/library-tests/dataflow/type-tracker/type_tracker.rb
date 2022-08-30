@@ -30,3 +30,8 @@ end
 keyword(p1: 3, p2: 4)
 keyword(p2: 5, p1: 6)
 keyword(:p2 => 7, :p1 => 8)
+
+def throughArray(obj)
+    tmp = [obj]
+    tmp[0]
+end
