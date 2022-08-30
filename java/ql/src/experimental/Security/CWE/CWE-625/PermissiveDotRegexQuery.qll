@@ -102,14 +102,14 @@ class CompileRegexSink extends DataFlow::ExprNode {
 /**
  * A flow configuration for permissive dot regex.
  */
-class PermissiveDotRegexConfig extends DataFlow::Configuration {
+class PermissiveDotRegexConfig extends DataFlow2::Configuration {
   PermissiveDotRegexConfig() { this = "PermissiveDotRegex::PermissiveDotRegexConfig" }
 
-  override predicate isSource(DataFlow::Node src) { src.asExpr() instanceof PermissiveDotStr }
+  override predicate isSource(DataFlow2::Node src) { src.asExpr() instanceof PermissiveDotStr }
 
-  override predicate isSink(DataFlow::Node sink) { sink instanceof CompileRegexSink }
+  override predicate isSink(DataFlow2::Node sink) { sink instanceof CompileRegexSink }
 
-  override predicate isBarrier(DataFlow::Node node) {
+  override predicate isBarrier(DataFlow2::Node node) {
     exists(
       MethodAccess ma, Field f // Pattern.compile(PATTERN, Pattern.DOTALL)
     |
@@ -152,6 +152,23 @@ class MatchRegexConfiguration extends TaintTracking::Configuration {
         DataFlow::exprNode(se) instanceof SpringUrlRedirectSink
       ) and
       guard.controls(se.getBasicBlock(), true)
+    ) and
+    exists(MethodAccess ma | any(PermissiveDotRegexConfig conf2).hasFlowToExpr(ma.getArgument(0)) |
+      // input.matches(regexPattern)
+      ma.getMethod() instanceof StringMatchMethod and
+      ma.getQualifier() = sink.asExpr()
+      or
+      // p = Pattern.compile(regexPattern); p.matcher(input)
+      ma.getMethod() instanceof PatternCompileMethod and
+      exists(MethodAccess pma |
+        pma.getMethod() instanceof PatternMatcherMethod and
+        sink.asExpr() = pma.getArgument(0) and
+        DataFlow::localExprFlow(ma, pma.getQualifier())
+      )
+      or
+      // p = Pattern.matches(regexPattern, input)
+      ma.getMethod() instanceof PatternMatchMethod and
+      sink.asExpr() = ma.getArgument(1)
     )
   }
 }
