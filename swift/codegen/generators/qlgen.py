@@ -1,5 +1,24 @@
-#!/usr/bin/env python3
-# TODO this should probably be split in different generators now: ql, qltest, maybe qlipa
+"""
+QL code generation
+
+`generate(opts, renderer)` will generate in the library directory:
+ * generated/Raw.qll with thin class wrappers around DB types
+ * generated/Synth.qll with the base algebraic datatypes for AST entities
+ * generated/<group>/<Class>.qll with generated properties for each class
+ * if not already modified, a elements/<group>/<Class>.qll stub to customize the above classes
+ * elements.qll importing all the above stubs
+ * if not already modified, a elements/<group>/<Class>Constructor.qll stub to customize the algebraic datatype
+   characteristic predicate
+ * generated/SynthConstructors.qll importing all the above constructor stubs
+ * generated/PureSynthConstructors.qll importing constructor stubs for pure synthesized types (that is, not
+   corresponding to raw types)
+Moreover in the test directory for each <Class> in <group> it will generate beneath the
+extractor-tests/generated/<group>/<Class> directory either
+ * a `MISSING_SOURCE.txt` explanation file if no `swift` source is present, or
+ * one `<Class>.ql` test query for all single properties and on `<Class>_<property>.ql` test query for each optional or
+   repeated property
+"""
+# TODO this should probably be split in different generators now: ql, qltest, maybe qlsynth
 
 import logging
 import pathlib
