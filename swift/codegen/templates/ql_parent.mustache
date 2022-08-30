@@ -4,13 +4,13 @@ import codeql.swift.elements
 
 private module Impl {
 {{#classes}}
-    Element getImmediateChildOf{{name}}({{name}} e, int index, string partialPredicateCall) {
+    private Element getImmediateChildOf{{name}}({{name}} e, int index, string partialPredicateCall) {
     {{! avoid unused argument warnings on root element, assuming the root element has no children }}
     {{#root}}none(){{/root}}
     {{^root}}
     {{! b is the base offset 0, for ease of generation }}
     {{! b<base> is constructed to be strictly greater than the indexes required for children coming from <base> }}
-    {{! n is the base offset for direct children, equal to the last base offsets from above }}
+    {{! n is the base offset for direct children, equal to the last base offset from above }}
     {{! n<child> is constructed to be strictly greater than the indexes for <child> children }}
         exists(int b{{#bases}}, int b{{.}}{{/bases}}, int n{{#properties}}{{#is_child}}, int n{{singular}}{{/is_child}}{{/properties}} |
         b = 0
