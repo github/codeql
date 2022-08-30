@@ -9,6 +9,7 @@
 private import codeql.ruby.AST
 private import codeql.ruby.DataFlow
 private import codeql.ruby.typetracking.TypeTracker
+private import codeql.ruby.typetracking.TypeTrackerSpecific as TypeTrackerSpecific
 private import codeql.ruby.ast.internal.Module
 private import codeql.ruby.controlflow.CfgNodes
 private import codeql.ruby.dataflow.internal.DataFlowPrivate as DataFlowPrivate
@@ -258,6 +259,32 @@ module API {
     Node getAnImmediateSubclass() { result = this.getASuccessor(Label::subclass()) }
 
     /**
+     * Gets a node representing the `content` stored on the base object.
+     */
+    Node getContent(DataFlow::Content content) {
+      result = this.getASuccessor(Label::content(content))
+    }
+
+    /**
+     * Gets a node representing the `contents` stored on the base object.
+     */
+    Node getContents(DataFlow::ContentSet contents) {
+      this instanceof API::Use and
+      result = this.getContent(contents.getAStoreContent()) // The library has stored a value of interest in `contents`
+      or
+      this instanceof API::Def and
+      result = this.getContent(contents.getAReadContent()) // The library going to read a value stored in `contents`
+    }
+
+    /** Gets a node representing the instance field of the given `name`, which must include the `@` character. */
+    Node getField(string name) { result = this.getContent(DataFlowPrivate::TFieldContent(name)) }
+
+    /** Gets a node representing an element of this collection. */
+    Node getAnElement() {
+      result = this.getContents(any(DataFlow::ContentSet set | set.isAnyElement()))
+    }
+
+    /**
      * Gets a string representation of the lexicographically least among all shortest access paths
      * from the root to this node.
      */
@@ -495,7 +522,23 @@ module API {
         ref.asExpr() = c and
         read = c.getExpr()
       )
+      or
+      exists(TypeTrackerSpecific::TypeTrackerContent c |
+        TypeTrackerSpecific::basicLoadStep(node, ref, c) and
+        lbl = Label::content(c.asContent())
+      )
       // note: method calls are not handled here as there is no DataFlow::Node for the intermediate MkMethodAccessNode API node
+    }
+
+    /**
+     * Holds if `rhs` is a definition of a node that should have an incoming edge labeled `lbl`,
+     * from a def node that is reachable from `node`.
+     */
+    private predicate defStep(Label::ApiLabel lbl, DataFlow::Node node, DataFlow::Node rhs) {
+      exists(TypeTrackerSpecific::TypeTrackerContent c |
+        TypeTrackerSpecific::basicStoreStep(rhs, node, c) and
+        lbl = Label::content(c.asContent())
+      )
     }
 
     pragma[nomagic]
@@ -559,6 +602,8 @@ module API {
     private predicate isDef(DataFlow::Node rhs) {
       // If a call node is relevant as a use-node, treat its arguments as def-nodes
       argumentStep(_, useCandFwd(), rhs)
+      or
+      defStep(_, trackDefNode(_), rhs)
       or
       rhs = any(EntryPoint entry).getASink()
     }
@@ -680,6 +725,12 @@ module API {
           pred = MkDef(callback) and
           parameterStep(lbl, trackDefNode(callback), ref)
         )
+      )
+      or
+      exists(DataFlow::Node predNode, DataFlow::Node succNode |
+        def(pred, predNode) and
+        def(succ, succNode) and
+        defStep(lbl, trackDefNode(predNode), succNode)
       )
       or
       // `pred` is a use of class A
