@@ -2,7 +2,7 @@
 <qhelp>
 <overview>
 
-<p>Sensitive information that is stored unencrypted in a database is accessible to an attacker who gains access to that database. For example the information could be accessed by any process or user in a rooted device, or exposed through another vulnerability.</p>
+<p>Sensitive information that is stored unencrypted in a database is accessible to an attacker who gains access to that database. For example, the information could be accessed by any process or user in a rooted device, or exposed through another vulnerability.</p>
 
 </overview>
 <recommendation>
@@ -12,7 +12,7 @@
 </recommendation>
 <example>
 
-<p>The following example shows three cases of storing information using the Core Data library. In the 'BAD' case, the data that is stored is sensitive (a credit card number) and is not encrypted.  In the 'GOOD' cases, the data is either not sensitive or is protected with encryption.</p>
+<p>The following example shows three cases of storing information using the Core Data library. In the 'BAD' case, the data that is stored is sensitive (a credit card number) and is not encrypted.  In the 'GOOD' cases, the data is either not sensitive, or is protected with encryption.</p>
 
 <sample src="CleartextStorageDatabase.swift" />
 

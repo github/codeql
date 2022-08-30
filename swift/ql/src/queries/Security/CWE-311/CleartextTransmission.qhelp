@@ -12,7 +12,7 @@
 </recommendation>
 <example>
 
-<p>The following example shows three cases of transmitting information. In the 'BAD' case, the data transmitted is sensitive (a credit card number) and is not encrypted.  In the 'GOOD' cases, the data is either not sensitive or is protected with encryption.</p>
+<p>The following example shows three cases of transmitting information. In the 'BAD' case, the data transmitted is sensitive (a credit card number) and is not encrypted.  In the 'GOOD' cases, the data is either not sensitive, or is protected with encryption.</p>
 
 <sample src="CleartextTransmission.swift" />
 
@@ -21,7 +21,7 @@
 
 <li>
   OWASP Top 10:2021:
-  <a href="https://owasp.org/Top10/A02_2021-Cryptographic_Failures/">A02:2021 – Cryptographic Failures</a>
+  <a href="https://owasp.org/Top10/A02_2021-Cryptographic_Failures/">A02:2021 ï¿½ Cryptographic Failures</a>.
 </li>
 
 </references>
