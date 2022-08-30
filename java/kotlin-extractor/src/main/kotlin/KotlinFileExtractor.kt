@@ -159,42 +159,6 @@ open class KotlinFileExtractor(
         }
     }
 
-
-
-    fun getLabel(element: IrElement) : String? {
-        when (element) {
-            is IrClass -> return getClassLabel(element, listOf()).classLabel
-            is IrTypeParameter -> return getTypeParameterLabel(element)
-            is IrFunction -> return getFunctionLabel(element, null)
-            is IrValueParameter -> return getValueParameterLabel(element, null)
-            is IrProperty -> return getPropertyLabel(element)
-            is IrField -> return getFieldLabel(element)
-            is IrEnumEntry -> return getEnumEntryLabel(element)
-            is IrTypeAlias -> return getTypeAliasLabel(element)
-
-            is IrAnonymousInitializer -> {
-                val parentClass = element.parentClassOrNull
-                if (parentClass == null) {
-                    logger.errorElement("Parent of anonymous initializer is not a class", element)
-                    return null
-                }
-                // Assign the comment to the class. The content of the `init` blocks might be extracted in multiple constructors.
-                return getClassLabel(parentClass, listOf()).classLabel
-            }
-
-
-            // Fresh entities:
-            is IrBody -> return null
-            is IrExpression -> return null
-
-            // todo add others:
-            else -> {
-                logger.errorElement("Unhandled element type: ${element::class}", element)
-                return null
-            }
-        }
-    }
-
     private fun extractTypeParameter(tp: IrTypeParameter, apparentIndex: Int, javaTypeParameter: JavaTypeParameter?): Label<out DbTypevariable>? {
         with("type parameter", tp) {
             val parentId = getTypeParameterParentLabel(tp) ?: return null
