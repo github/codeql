@@ -22,22 +22,6 @@ private string asSummaryModel(TargetApi api, string input, string output, string
 string asNegativeSummaryModel(TargetApi api) { result = asPartialNegativeModel(api) + "generated" }
 
 /**
- * Gets the value summary model for `api` with `input` and `output`.
- */
-bindingset[input, output]
-private string asValueModel(TargetApi api, string input, string output) {
-  result = asSummaryModel(api, input, output, "value")
-}
-
-/**
- * Gets the taint summary model for `api` with `input` and `output`.
- */
-bindingset[input, output]
-private string asTaintModel(TargetApi api, string input, string output) {
-  result = asSummaryModel(api, input, output, "taint")
-}
-
-/**
  * Gets the sink model for `api` with `input` and `kind`.
  */
 bindingset[input, kind]
@@ -137,6 +121,15 @@ string captureThroughFlow(TargetApi api) {
     (if preservesValue = true then kind = "value" else kind = "taint") and
     result = asSummaryModel(api, input, output, kind)
   )
+}
+
+/**
+ * Gets the negative summary for `api`, if any.
+ * A negative summary is generated, if there does not exist any positive flow.
+ */
+string captureNoFlow(TargetApi api) {
+  not exists(captureThroughFlow(api)) and
+  result = asNegativeSummaryModel(api)
 }
 
 /**

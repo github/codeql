@@ -17,10 +17,15 @@
 | p;MultipleImpls$Strategy;doSomething;(String);generated |
 | p;MultipleImpls;MultipleImpls;();generated |
 | p;ParamFlow;ParamFlow;();generated |
+| p;ParamFlow;addTo;(String,List);generated |
 | p;ParamFlow;ignorePrimitiveReturnValue;(String);generated |
 | p;ParamFlow;mapType;(Class);generated |
+| p;ParamFlow;returnCollectionElement;(List);generated |
+| p;ParamFlow;returnIterableElement;(Iterable);generated |
+| p;ParamFlow;returnIteratorElement;(Iterator);generated |
 | p;Pojo;Pojo;();generated |
 | p;Pojo;doNotSetValue;(String);generated |
+| p;Pojo;fillIn;(List);generated |
 | p;Pojo;getBigDecimal;();generated |
 | p;Pojo;getBigInt;();generated |
 | p;Pojo;getBoxedArray;();generated |

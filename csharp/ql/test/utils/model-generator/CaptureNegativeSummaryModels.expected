@@ -25,4 +25,7 @@
 | Sources;NewSources;WrapConsoleReadLineAndProcees;(System.String);generated |
 | Summaries;EqualsGetHashCodeNoFlow;Equals;(System.Object);generated |
 | Summaries;EqualsGetHashCodeNoFlow;GetHashCode;();generated |
+| Summaries;IDictionaryFlow;ReturnIDictionaryValue;(System.Collections.Generic.IDictionary<System.Object,System.Object>,System.Object);generated |
+| Summaries;NestedFieldFlow;MoveNested;();generated |
+| Summaries;NestedFieldFlow;ReverseFields;();generated |
 | Summaries;OperatorFlow;op_Increment;(Summaries.OperatorFlow);generated |

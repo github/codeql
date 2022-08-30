@@ -8,7 +8,6 @@
 
 private import semmle.code.csharp.dataflow.ExternalFlow
 private import internal.CaptureModels
-private import internal.CaptureSummaryFlow
 
 /*
  * Capture fluent APIs that return `this`.

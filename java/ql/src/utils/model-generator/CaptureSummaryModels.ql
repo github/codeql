@@ -7,7 +7,6 @@
  */
 
 private import internal.CaptureModels
-private import internal.CaptureSummaryFlow
 
 from TargetApi api, string flow
 where flow = captureThroughFlow(api)
