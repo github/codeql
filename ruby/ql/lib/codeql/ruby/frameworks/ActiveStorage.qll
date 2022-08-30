@@ -53,7 +53,8 @@ module ActiveStorage {
           "activestorage;Blob;activestorage;;Member[ActiveStorage].Member[Blob].Method[create_before_direct_upload!].ReturnValue",
           // ActiveStorage::Blob.compose(blobs : [Blob]) : Blob
           "activestorage;Blob;activestorage;;Member[ActiveStorage].Member[Blob].Method[compose].ReturnValue",
-          "activestorage;Blob;activestorage;;Member[ActiveStorage].Member[Blob].Method[compose].Argument[0].Element[any]",
+          // gives error: Invalid name 'Element' in access path
+          // "activestorage;Blob;activestorage;;Member[ActiveStorage].Member[Blob].Method[compose].Argument[0].Element[any]",
           // ActiveStorage::Blob.find_signed(!) : Blob
           "activestorage;Blob;activestorage;;Member[ActiveStorage].Member[Blob].Method[find_signed,find_signed!].ReturnValue",
           // ActiveStorage::Attachment#blob : Blob
