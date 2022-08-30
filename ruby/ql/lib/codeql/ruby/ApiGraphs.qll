@@ -754,7 +754,8 @@ module API {
         any(DataFlowDispatch::ParameterPosition c).isPositional(n)
       } or
       MkLabelBlockParameter() or
-      MkLabelEntryPoint(EntryPoint name)
+      MkLabelEntryPoint(EntryPoint name) or
+      MkLabelContent(DataFlow::Content content)
   }
 
   /** Provides classes modeling the various edges (labels) in the API graph. */
@@ -844,6 +845,20 @@ module API {
         /** Gets the name of the entry point. */
         API::EntryPoint getName() { result = name }
       }
+
+      /** A label representing contents of an object. */
+      class LabelContent extends ApiLabel, MkLabelContent {
+        private DataFlow::Content content;
+
+        LabelContent() { this = MkLabelContent(content) }
+
+        override string toString() {
+          result = "getContent(" + content.toString().replaceAll(" ", "_") + ")"
+        }
+
+        /** Gets the content represented by this label. */
+        DataFlow::Content getContent() { result = content }
+      }
     }
 
     /** Gets the `member` edge label for member `m`. */
@@ -869,6 +884,9 @@ module API {
 
     /** Gets the label for the edge from the root node to a custom entry point of the given name. */
     LabelEntryPoint entryPoint(API::EntryPoint name) { result.getName() = name }
+
+    /** Gets a label representing the given content. */
+    LabelContent content(DataFlow::Content content) { result.getContent() = content }
 
     /** Gets the API graph label corresponding to the given argument position. */
     Label::ApiLabel getLabelFromArgumentPosition(DataFlowDispatch::ArgumentPosition pos) {
