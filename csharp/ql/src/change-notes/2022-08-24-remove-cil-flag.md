@@ -1,4 +1,4 @@
 ---
 category: minorAnalysis
 ---
-* The `--cil` flag that could be provided to the `codeql` CLI has been replaced by an extactor option. Furthermore, the extractor default is now set to do CIL extraction. To disable CIL extraction provide `-Ocil=false` to the CLI.
+* A new extractor option has been introduced for disabling CIL extraction. Either pass `-Ocil=false` to the `codeql` CLI or set the environment variable `CODEQL_EXTRACTOR_CSHARP_OPTION_CIL=false`.
