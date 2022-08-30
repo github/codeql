@@ -41,6 +41,7 @@
 | declarations.swift:4:11:4:22 | return ... | ReturnStmt | declarations.swift:4:18:4:22 | ... .+(_:_:) ... | BinaryExpr |
 | declarations.swift:4:18:4:18 | .x | MemberRefExpr | declarations.swift:4:18:4:18 | self | DeclRefExpr |
 | declarations.swift:4:18:4:22 | ... .+(_:_:) ... | BinaryExpr | declarations.swift:4:20:4:20 | .+(_:_:) | MethodRefExpr |
+| declarations.swift:4:20:4:20 | .+(_:_:) | MethodRefExpr | declarations.swift:4:20:4:20 | Int.Type | TypeExpr |
 | declarations.swift:4:20:4:20 | Int.Type | TypeExpr | declarations.swift:4:20:4:20 | Int | TypeRepr |
 | declarations.swift:5:5:5:38 | set | AccessorDecl | declarations.swift:5:5:5:5 | self | ParamDecl |
 | declarations.swift:5:5:5:38 | set | AccessorDecl | declarations.swift:5:9:5:9 | newValue | ParamDecl |
@@ -50,6 +51,7 @@
 | declarations.swift:5:21:5:36 |  ... = ... | AssignExpr | declarations.swift:5:21:5:21 | .x | MemberRefExpr |
 | declarations.swift:5:21:5:36 |  ... = ... | AssignExpr | declarations.swift:5:25:5:36 | ... .-(_:_:) ... | BinaryExpr |
 | declarations.swift:5:25:5:36 | ... .-(_:_:) ... | BinaryExpr | declarations.swift:5:34:5:34 | .-(_:_:) | MethodRefExpr |
+| declarations.swift:5:34:5:34 | .-(_:_:) | MethodRefExpr | declarations.swift:5:34:5:34 | Int.Type | TypeExpr |
 | declarations.swift:5:34:5:34 | Int.Type | TypeExpr | declarations.swift:5:34:5:34 | Int | TypeRepr |
 | declarations.swift:9:1:9:34 | Bar | ClassDecl | declarations.swift:9:7:9:7 | deinit() | DestructorDecl |
 | declarations.swift:9:1:9:34 | Bar | ClassDecl | declarations.swift:9:7:9:7 | init() | ConstructorDecl |
@@ -440,6 +442,7 @@
 | declarations.swift:139:3:141:3 | id() | ConcreteFuncDecl | declarations.swift:139:20:141:3 | { ... } | BraceStmt |
 | declarations.swift:139:20:141:3 | { ... } | BraceStmt | declarations.swift:140:5:140:12 | return ... | ReturnStmt |
 | declarations.swift:140:5:140:12 | return ... | ReturnStmt | declarations.swift:140:12:140:12 | self | DeclRefExpr |
+| declarations.swift:144:1:144:4 | .id() | MethodRefExpr | declarations.swift:144:1:144:1 | 42 | IntegerLiteralExpr |
 | declarations.swift:144:1:144:7 | call to id() | CallExpr | declarations.swift:144:1:144:4 | .id() | MethodRefExpr |
 | declarations.swift:144:1:144:7 | { ... } | BraceStmt | declarations.swift:144:1:144:7 | call to id() | CallExpr |
 | declarations.swift:144:1:144:7 | { ... } | TopLevelCodeDecl | declarations.swift:144:1:144:7 | { ... } | BraceStmt |
@@ -482,9 +485,12 @@
 | expressions.swift:7:10:7:10 | { ... } | BraceStmt | file://:0:0:0:0 | $interpolation | ConcreteVarDecl |
 | expressions.swift:7:11:7:10 | call to appendLiteral(_:) | CallExpr | expressions.swift:7:11:7:11 | .appendLiteral(_:) | MethodRefExpr |
 | expressions.swift:7:11:7:11 | &... | InOutExpr | expressions.swift:7:11:7:11 | $interpolation | DeclRefExpr |
+| expressions.swift:7:11:7:11 | .appendLiteral(_:) | MethodRefExpr | expressions.swift:7:11:7:11 | &... | InOutExpr |
 | expressions.swift:7:18:7:18 | &... | InOutExpr | expressions.swift:7:18:7:18 | $interpolation | DeclRefExpr |
+| expressions.swift:7:18:7:18 | .appendInterpolation(_:) | MethodRefExpr | expressions.swift:7:18:7:18 | &... | InOutExpr |
 | expressions.swift:7:18:7:20 | call to appendInterpolation(_:) | CallExpr | expressions.swift:7:18:7:18 | .appendInterpolation(_:) | MethodRefExpr |
 | expressions.swift:7:21:7:21 | &... | InOutExpr | expressions.swift:7:21:7:21 | $interpolation | DeclRefExpr |
+| expressions.swift:7:21:7:21 | .appendLiteral(_:) | MethodRefExpr | expressions.swift:7:21:7:21 | &... | InOutExpr |
 | expressions.swift:7:21:7:21 | call to appendLiteral(_:) | CallExpr | expressions.swift:7:21:7:21 | .appendLiteral(_:) | MethodRefExpr |
 | expressions.swift:8:1:8:15 | var ... = ... | PatternBindingDecl | expressions.swift:8:5:8:11 | ... as ... | TypedPattern |
 | expressions.swift:8:1:8:15 | var ... = ... | PatternBindingDecl | expressions.swift:8:15:8:15 | nil | NilLiteralExpr |
@@ -504,11 +510,13 @@
 | expressions.swift:15:3:17:3 | guard ... else { ... } | GuardStmt | expressions.swift:15:9:15:14 | StmtCondition | StmtCondition |
 | expressions.swift:15:3:17:3 | guard ... else { ... } | GuardStmt | expressions.swift:15:21:17:3 | { ... } | BraceStmt |
 | expressions.swift:15:9:15:14 | ... .!=(_:_:) ... | BinaryExpr | expressions.swift:15:11:15:11 | .!=(_:_:) | MethodRefExpr |
+| expressions.swift:15:11:15:11 | .!=(_:_:) | MethodRefExpr | expressions.swift:15:11:15:11 | Int.Type | TypeExpr |
 | expressions.swift:15:11:15:11 | Int.Type | TypeExpr | expressions.swift:15:11:15:11 | Int | TypeRepr |
 | expressions.swift:15:21:17:3 | { ... } | BraceStmt | expressions.swift:16:5:16:19 | throw ... | ThrowStmt |
 | expressions.swift:16:5:16:19 | throw ... | ThrowStmt | expressions.swift:16:11:16:19 | (Error) ... | ErasureExpr |
 | expressions.swift:16:11:16:11 | AnError.Type | TypeExpr | expressions.swift:16:11:16:11 | AnError | TypeRepr |
 | expressions.swift:16:11:16:19 | (Error) ... | ErasureExpr | expressions.swift:16:11:16:19 | .failed | MethodRefExpr |
+| expressions.swift:16:11:16:19 | .failed | MethodRefExpr | expressions.swift:16:11:16:11 | AnError.Type | TypeExpr |
 | expressions.swift:20:1:20:16 | try! ... | ForceTryExpr | expressions.swift:20:6:20:16 | call to failure(_:) | CallExpr |
 | expressions.swift:20:1:20:16 | { ... } | BraceStmt | expressions.swift:20:1:20:16 | try! ... | ForceTryExpr |
 | expressions.swift:20:1:20:16 | { ... } | TopLevelCodeDecl | expressions.swift:20:1:20:16 | { ... } | BraceStmt |
@@ -583,6 +591,7 @@
 | expressions.swift:41:10:43:1 | { ... } | ClosureExpr | expressions.swift:41:21:41:24 | y | ParamDecl |
 | expressions.swift:42:5:42:16 | return ... | ReturnStmt | expressions.swift:42:12:42:16 | ... .+(_:_:) ... | BinaryExpr |
 | expressions.swift:42:12:42:16 | ... .+(_:_:) ... | BinaryExpr | expressions.swift:42:14:42:14 | .+(_:_:) | MethodRefExpr |
+| expressions.swift:42:14:42:14 | .+(_:_:) | MethodRefExpr | expressions.swift:42:14:42:14 | Int.Type | TypeExpr |
 | expressions.swift:42:14:42:14 | Int.Type | TypeExpr | expressions.swift:42:14:42:14 | Int | TypeRepr |
 | expressions.swift:44:1:46:1 | call to closured(closure:) | CallExpr | expressions.swift:44:1:44:1 | closured(closure:) | DeclRefExpr |
 | expressions.swift:44:1:46:1 | { ... } | BraceStmt | expressions.swift:44:1:46:1 | call to closured(closure:) | CallExpr |
@@ -593,6 +602,7 @@
 | expressions.swift:44:10:46:1 | { ... } | ClosureExpr | expressions.swift:44:15:44:15 | y | ParamDecl |
 | expressions.swift:45:5:45:16 | return ... | ReturnStmt | expressions.swift:45:12:45:16 | ... .+(_:_:) ... | BinaryExpr |
 | expressions.swift:45:12:45:16 | ... .+(_:_:) ... | BinaryExpr | expressions.swift:45:14:45:14 | .+(_:_:) | MethodRefExpr |
+| expressions.swift:45:14:45:14 | .+(_:_:) | MethodRefExpr | expressions.swift:45:14:45:14 | Int.Type | TypeExpr |
 | expressions.swift:45:14:45:14 | Int.Type | TypeExpr | expressions.swift:45:14:45:14 | Int | TypeRepr |
 | expressions.swift:47:1:47:27 | call to closured(closure:) | CallExpr | expressions.swift:47:1:47:1 | closured(closure:) | DeclRefExpr |
 | expressions.swift:47:1:47:27 | { ... } | BraceStmt | expressions.swift:47:1:47:27 | call to closured(closure:) | CallExpr |
@@ -603,6 +613,7 @@
 | expressions.swift:47:10:47:27 | { ... } | ClosureExpr | expressions.swift:47:10:47:27 | { ... } | BraceStmt |
 | expressions.swift:47:12:47:24 | return ... | ReturnStmt | expressions.swift:47:19:47:24 | ... .+(_:_:) ... | BinaryExpr |
 | expressions.swift:47:19:47:24 | ... .+(_:_:) ... | BinaryExpr | expressions.swift:47:22:47:22 | .+(_:_:) | MethodRefExpr |
+| expressions.swift:47:22:47:22 | .+(_:_:) | MethodRefExpr | expressions.swift:47:22:47:22 | Int.Type | TypeExpr |
 | expressions.swift:47:22:47:22 | Int.Type | TypeExpr | expressions.swift:47:22:47:22 | Int | TypeRepr |
 | expressions.swift:48:1:48:20 | call to closured(closure:) | CallExpr | expressions.swift:48:1:48:1 | closured(closure:) | DeclRefExpr |
 | expressions.swift:48:1:48:20 | { ... } | BraceStmt | expressions.swift:48:1:48:20 | call to closured(closure:) | CallExpr |
@@ -613,6 +624,7 @@
 | expressions.swift:48:10:48:20 | { ... } | ClosureExpr | expressions.swift:48:10:48:20 | { ... } | BraceStmt |
 | expressions.swift:48:12:48:17 | ... .+(_:_:) ... | BinaryExpr | expressions.swift:48:15:48:15 | .+(_:_:) | MethodRefExpr |
 | expressions.swift:48:12:48:17 | return ... | ReturnStmt | expressions.swift:48:12:48:17 | ... .+(_:_:) ... | BinaryExpr |
+| expressions.swift:48:15:48:15 | .+(_:_:) | MethodRefExpr | expressions.swift:48:15:48:15 | Int.Type | TypeExpr |
 | expressions.swift:48:15:48:15 | Int.Type | TypeExpr | expressions.swift:48:15:48:15 | Int | TypeRepr |
 | expressions.swift:50:1:52:1 | S | StructDecl | expressions.swift:50:8:50:8 | init(x:) | ConstructorDecl |
 | expressions.swift:50:1:52:1 | S | StructDecl | expressions.swift:51:3:51:10 | var ... = ... | PatternBindingDecl |
@@ -664,6 +676,7 @@
 | expressions.swift:64:5:66:5 | if ... then { ... } | IfStmt | expressions.swift:64:8:64:12 | StmtCondition | StmtCondition |
 | expressions.swift:64:5:66:5 | if ... then { ... } | IfStmt | expressions.swift:64:14:66:5 | { ... } | BraceStmt |
 | expressions.swift:64:8:64:12 | ... .<(_:_:) ... | BinaryExpr | expressions.swift:64:10:64:10 | .<(_:_:) | MethodRefExpr |
+| expressions.swift:64:10:64:10 | .<(_:_:) | MethodRefExpr | expressions.swift:64:10:64:10 | Int.Type | TypeExpr |
 | expressions.swift:64:10:64:10 | Int.Type | TypeExpr | expressions.swift:64:10:64:10 | Int | TypeRepr |
 | expressions.swift:64:14:66:5 | { ... } | BraceStmt | expressions.swift:65:7:65:14 | fail | FailStmt |
 | expressions.swift:70:1:75:1 | Base | ClassDecl | expressions.swift:70:7:70:7 | deinit() | DestructorDecl |
@@ -741,12 +754,15 @@
 | expressions.swift:92:1:92:55 | { ... } | BraceStmt | expressions.swift:92:1:92:55 | var ... = ... | PatternBindingDecl |
 | expressions.swift:92:1:92:55 | { ... } | TopLevelCodeDecl | expressions.swift:92:1:92:55 | { ... } | BraceStmt |
 | expressions.swift:92:14:92:14 | Unmanaged<ToPtr>.Type | TypeExpr | expressions.swift:92:14:92:14 | Unmanaged<ToPtr> | TypeRepr |
+| expressions.swift:92:14:92:24 | .passRetained(_:) | MethodRefExpr | expressions.swift:92:14:92:14 | Unmanaged<ToPtr>.Type | TypeExpr |
 | expressions.swift:92:14:92:44 | call to passRetained(_:) | CallExpr | expressions.swift:92:14:92:24 | .passRetained(_:) | MethodRefExpr |
+| expressions.swift:92:14:92:46 | .toOpaque() | MethodRefExpr | expressions.swift:92:14:92:44 | call to passRetained(_:) | CallExpr |
 | expressions.swift:92:14:92:55 | call to toOpaque() | CallExpr | expressions.swift:92:14:92:46 | .toOpaque() | MethodRefExpr |
 | expressions.swift:92:37:92:37 | ToPtr.Type | TypeExpr | expressions.swift:92:37:92:37 | ToPtr | TypeRepr |
 | expressions.swift:92:37:92:37 | call to init() | ConstructorRefCallExpr | expressions.swift:92:37:92:37 | init() | DeclRefExpr |
 | expressions.swift:92:37:92:43 | call to init() | CallExpr | expressions.swift:92:37:92:37 | call to init() | ConstructorRefCallExpr |
 | expressions.swift:93:1:93:16 | Unmanaged<ToPtr>.Type | TypeExpr | expressions.swift:93:1:93:16 | Unmanaged<ToPtr> | TypeRepr |
+| expressions.swift:93:1:93:18 | .fromOpaque(_:) | MethodRefExpr | expressions.swift:93:1:93:16 | Unmanaged<ToPtr>.Type | TypeExpr |
 | expressions.swift:93:1:93:35 | call to fromOpaque(_:) | CallExpr | expressions.swift:93:1:93:18 | .fromOpaque(_:) | MethodRefExpr |
 | expressions.swift:93:1:93:35 | { ... } | BraceStmt | expressions.swift:93:1:93:35 | call to fromOpaque(_:) | CallExpr |
 | expressions.swift:93:1:93:35 | { ... } | TopLevelCodeDecl | expressions.swift:93:1:93:35 | { ... } | BraceStmt |
@@ -1080,6 +1096,7 @@
 | patterns.swift:24:9:24:12 | ... as ... | TypedPattern | patterns.swift:24:9:24:9 | v | NamedPattern |
 | patterns.swift:24:9:24:12 | ... as ... | TypedPattern | patterns.swift:24:12:24:12 | Foo | TypeRepr |
 | patterns.swift:24:18:24:18 | Foo.Type | TypeExpr | patterns.swift:24:18:24:18 | Foo | TypeRepr |
+| patterns.swift:24:18:24:19 | .bar | MethodRefExpr | patterns.swift:24:18:24:18 | Foo.Type | TypeExpr |
 | patterns.swift:26:5:29:5 | switch v { ... } | SwitchStmt | patterns.swift:26:12:26:12 | v | DeclRefExpr |
 | patterns.swift:26:5:29:5 | switch v { ... } | SwitchStmt | patterns.swift:27:5:27:16 | case ... | CaseStmt |
 | patterns.swift:26:5:29:5 | switch v { ... } | SwitchStmt | patterns.swift:28:5:28:26 | case ... | CaseStmt |
@@ -1163,12 +1180,14 @@
 | statements.swift:2:3:8:3 | for ... in ... { ... } | ForEachStmt | statements.swift:2:20:2:24 | ... ....(_:_:) ... | BinaryExpr |
 | statements.swift:2:3:8:3 | for ... in ... { ... } | ForEachStmt | statements.swift:2:26:8:3 | { ... } | BraceStmt |
 | statements.swift:2:20:2:24 | ... ....(_:_:) ... | BinaryExpr | statements.swift:2:21:2:21 | ....(_:_:) | MethodRefExpr |
+| statements.swift:2:21:2:21 | ....(_:_:) | MethodRefExpr | statements.swift:2:21:2:21 | Int.Type | TypeExpr |
 | statements.swift:2:21:2:21 | Int.Type | TypeExpr | statements.swift:2:21:2:21 | Int | TypeRepr |
 | statements.swift:2:26:8:3 | { ... } | BraceStmt | statements.swift:3:5:7:5 | if ... then { ... } else { ... } | IfStmt |
 | statements.swift:3:5:7:5 | if ... then { ... } else { ... } | IfStmt | statements.swift:3:8:3:13 | StmtCondition | StmtCondition |
 | statements.swift:3:5:7:5 | if ... then { ... } else { ... } | IfStmt | statements.swift:3:15:5:5 | { ... } | BraceStmt |
 | statements.swift:3:5:7:5 | if ... then { ... } else { ... } | IfStmt | statements.swift:5:12:7:5 | { ... } | BraceStmt |
 | statements.swift:3:8:3:13 | ... .==(_:_:) ... | BinaryExpr | statements.swift:3:10:3:10 | .==(_:_:) | MethodRefExpr |
+| statements.swift:3:10:3:10 | .==(_:_:) | MethodRefExpr | statements.swift:3:10:3:10 | Int.Type | TypeExpr |
 | statements.swift:3:10:3:10 | Int.Type | TypeExpr | statements.swift:3:10:3:10 | Int | TypeRepr |
 | statements.swift:3:15:5:5 | { ... } | BraceStmt | statements.swift:4:9:4:9 | break | BreakStmt |
 | statements.swift:5:12:7:5 | { ... } | BraceStmt | statements.swift:6:9:6:9 | continue | ContinueStmt |
@@ -1179,12 +1198,14 @@
 | statements.swift:10:17:10:24 | (...) | ParenExpr | statements.swift:10:18:10:22 | ... .<(_:_:) ... | BinaryExpr |
 | statements.swift:10:18:10:18 | (Int) ... | LoadExpr | statements.swift:10:18:10:18 | i | DeclRefExpr |
 | statements.swift:10:18:10:22 | ... .<(_:_:) ... | BinaryExpr | statements.swift:10:20:10:20 | .<(_:_:) | MethodRefExpr |
+| statements.swift:10:20:10:20 | .<(_:_:) | MethodRefExpr | statements.swift:10:20:10:20 | Int.Type | TypeExpr |
 | statements.swift:10:20:10:20 | Int.Type | TypeExpr | statements.swift:10:20:10:20 | Int | TypeRepr |
 | statements.swift:10:26:12:3 | { ... } | BraceStmt | statements.swift:11:5:11:13 |  ... = ... | AssignExpr |
 | statements.swift:11:5:11:13 |  ... = ... | AssignExpr | statements.swift:11:5:11:5 | i | DeclRefExpr |
 | statements.swift:11:5:11:13 |  ... = ... | AssignExpr | statements.swift:11:9:11:13 | ... .+(_:_:) ... | BinaryExpr |
 | statements.swift:11:9:11:9 | (Int) ... | LoadExpr | statements.swift:11:9:11:9 | i | DeclRefExpr |
 | statements.swift:11:9:11:13 | ... .+(_:_:) ... | BinaryExpr | statements.swift:11:11:11:11 | .+(_:_:) | MethodRefExpr |
+| statements.swift:11:11:11:11 | .+(_:_:) | MethodRefExpr | statements.swift:11:11:11:11 | Int.Type | TypeExpr |
 | statements.swift:11:11:11:11 | Int.Type | TypeExpr | statements.swift:11:11:11:11 | Int | TypeRepr |
 | statements.swift:14:3:14:7 |  ... = ... | AssignExpr | statements.swift:14:3:14:3 | i | DeclRefExpr |
 | statements.swift:14:3:14:7 |  ... = ... | AssignExpr | statements.swift:14:7:14:7 | 0 | IntegerLiteralExpr |
@@ -1195,10 +1216,12 @@
 | statements.swift:16:5:16:13 |  ... = ... | AssignExpr | statements.swift:16:9:16:13 | ... .+(_:_:) ... | BinaryExpr |
 | statements.swift:16:9:16:9 | (Int) ... | LoadExpr | statements.swift:16:9:16:9 | i | DeclRefExpr |
 | statements.swift:16:9:16:13 | ... .+(_:_:) ... | BinaryExpr | statements.swift:16:11:16:11 | .+(_:_:) | MethodRefExpr |
+| statements.swift:16:11:16:11 | .+(_:_:) | MethodRefExpr | statements.swift:16:11:16:11 | Int.Type | TypeExpr |
 | statements.swift:16:11:16:11 | Int.Type | TypeExpr | statements.swift:16:11:16:11 | Int | TypeRepr |
 | statements.swift:17:11:17:18 | (...) | ParenExpr | statements.swift:17:12:17:16 | ... .<(_:_:) ... | BinaryExpr |
 | statements.swift:17:12:17:12 | (Int) ... | LoadExpr | statements.swift:17:12:17:12 | i | DeclRefExpr |
 | statements.swift:17:12:17:16 | ... .<(_:_:) ... | BinaryExpr | statements.swift:17:14:17:14 | .<(_:_:) | MethodRefExpr |
+| statements.swift:17:14:17:14 | .<(_:_:) | MethodRefExpr | statements.swift:17:14:17:14 | Int.Type | TypeExpr |
 | statements.swift:17:14:17:14 | Int.Type | TypeExpr | statements.swift:17:14:17:14 | Int | TypeRepr |
 | statements.swift:19:3:23:3 | do { ... } catch { ... } | DoCatchStmt | statements.swift:19:6:21:3 | { ... } | BraceStmt |
 | statements.swift:19:3:23:3 | do { ... } catch { ... } | DoCatchStmt | statements.swift:21:5:23:3 | case ... | CaseStmt |
@@ -1250,11 +1273,13 @@
 | statements.swift:39:3:41:3 | guard ... else { ... } | GuardStmt | statements.swift:39:9:39:14 | StmtCondition | StmtCondition |
 | statements.swift:39:3:41:3 | guard ... else { ... } | GuardStmt | statements.swift:39:21:41:3 | { ... } | BraceStmt |
 | statements.swift:39:9:39:14 | ... .!=(_:_:) ... | BinaryExpr | statements.swift:39:11:39:11 | .!=(_:_:) | MethodRefExpr |
+| statements.swift:39:11:39:11 | .!=(_:_:) | MethodRefExpr | statements.swift:39:11:39:11 | Int.Type | TypeExpr |
 | statements.swift:39:11:39:11 | Int.Type | TypeExpr | statements.swift:39:11:39:11 | Int | TypeRepr |
 | statements.swift:39:21:41:3 | { ... } | BraceStmt | statements.swift:40:5:40:19 | throw ... | ThrowStmt |
 | statements.swift:40:5:40:19 | throw ... | ThrowStmt | statements.swift:40:11:40:19 | (Error) ... | ErasureExpr |
 | statements.swift:40:11:40:11 | AnError.Type | TypeExpr | statements.swift:40:11:40:11 | AnError | TypeRepr |
 | statements.swift:40:11:40:19 | (Error) ... | ErasureExpr | statements.swift:40:11:40:19 | .failed | MethodRefExpr |
+| statements.swift:40:11:40:19 | .failed | MethodRefExpr | statements.swift:40:11:40:11 | AnError.Type | TypeExpr |
 | statements.swift:44:1:46:1 | defer { ... } | DeferStmt | statements.swift:44:7:46:1 | { ... } | BraceStmt |
 | statements.swift:44:1:46:1 | { ... } | BraceStmt | statements.swift:44:1:46:1 | defer { ... } | DeferStmt |
 | statements.swift:44:1:46:1 | { ... } | TopLevelCodeDecl | statements.swift:44:1:46:1 | { ... } | BraceStmt |
@@ -1346,7 +1371,9 @@
 | statements.swift:71:1:72:1 | { ... } | TopLevelCodeDecl | statements.swift:71:1:72:1 | { ... } | BraceStmt |
 | statements.swift:71:29:71:38 | ... .%(_:_:) ... | BinaryExpr | statements.swift:71:36:71:36 | .%(_:_:) | MethodRefExpr |
 | statements.swift:71:29:71:43 | ... .==(_:_:) ... | BinaryExpr | statements.swift:71:40:71:40 | .==(_:_:) | MethodRefExpr |
+| statements.swift:71:36:71:36 | .%(_:_:) | MethodRefExpr | statements.swift:71:36:71:36 | Int.Type | TypeExpr |
 | statements.swift:71:36:71:36 | Int.Type | TypeExpr | statements.swift:71:36:71:36 | Int | TypeRepr |
+| statements.swift:71:40:71:40 | .==(_:_:) | MethodRefExpr | statements.swift:71:40:71:40 | Int.Type | TypeExpr |
 | statements.swift:71:40:71:40 | Int.Type | TypeExpr | statements.swift:71:40:71:40 | Int | TypeRepr |
 | statements.swift:74:1:85:1 | HasModifyAccessorDecl | StructDecl | statements.swift:74:8:74:8 | init(x:) | ConstructorDecl |
 | statements.swift:74:1:85:1 | HasModifyAccessorDecl | StructDecl | statements.swift:75:3:75:11 | var ... = ... | PatternBindingDecl |
