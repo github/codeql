@@ -436,6 +436,8 @@ private API::Node getNodeFromSubPath(API::Node base, AccessPath subPath, int n) 
   or
   result =
     getNodeFromSubPath(getNodeFromSubPath(base, subPath, n - 1), getSubPathAt(subPath, n - 1))
+  or
+  typeStep(getNodeFromSubPath(base, subPath, n), result)
 }
 
 /**
