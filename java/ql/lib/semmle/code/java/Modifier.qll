@@ -46,8 +46,11 @@ abstract class Modifiable extends Element {
   // TODO: `isSealed()` conflicts with `ClassOrInterface.isSealed()`. What name do we want to use here?
   predicate isSealedKotlin() { this.hasModifier("sealed") }
 
-  /** Holds if this element has a `public` modifier or is implicitly public. */
-  predicate isPublic() { this.hasModifier("public") }
+  /**
+   * Holds if this element has a `public` modifier or is implicitly public.
+   * Kotlin `internal` members, which are `public` in JVM Bytecode, are not considered `public`.
+   */
+  predicate isPublic() { this.hasModifier("public") and not this.isInternal() }
 
   /** Holds if this element has a `protected` modifier. */
   predicate isProtected() { this.hasModifier("protected") }

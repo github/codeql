@@ -1,5 +1,4 @@
 isPublic
-| Kotlin.kt:2:11:3:2 | kotlinFun$main |
 isInternal
 | Kotlin.kt:2:11:3:2 | kotlinFun$main |
 #select
