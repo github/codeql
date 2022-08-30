@@ -38,6 +38,8 @@ class Sinks extends ModelInput::SinkModelCsv {
         "testlib;;Member[MethodDecorator].DecoratedMember.ReturnValue;test-sink",
         "testlib;;Member[MethodDecoratorWithArgs].ReturnValue.DecoratedMember.ReturnValue;test-sink",
         "testlib;;Member[ParamDecoratorSink].DecoratedParameter;test-sink",
+        "testlib;;AnyMember.Member[memberSink].Argument[0];test-sink",
+        "testlib;;Member[overloadedSink].WithStringArgument[0=danger].Argument[1];test-sink",
       ]
   }
 }

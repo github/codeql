@@ -203,3 +203,9 @@ class OtherClass {
     this.accessorAroundField = source(); // NOT OK
   }
 }
+
+testlib.foo.memberSink(source()); // NOT OK
+testlib.bar.memberSink(source()); // NOT OK
+testlib.memberSink(source()); // OK
+testlib.overloadedSink('safe', source()); // OK
+testlib.overloadedSink('danger', source()); // NOT OK
