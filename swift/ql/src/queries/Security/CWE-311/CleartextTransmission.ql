@@ -32,7 +32,7 @@ class NWConnectionSend extends Transmitted {
       c.getName() = "NWConnection" and
       c.getAMember() = f and
       f.getName() = "send(content:contentContext:isComplete:completion:)" and
-      call.getFunction().(ApplyExpr).getStaticTarget() = f and
+      call.getStaticTarget() = f and
       call.getArgument(0).getExpr() = this
     )
   }
@@ -50,7 +50,7 @@ class URL extends Transmitted {
       c.getName() = "URL" and
       c.getAMember() = f and
       f.getName() = ["init(string:)", "init(string:relativeTo:)"] and
-      call.getFunction().(ApplyExpr).getStaticTarget() = f and
+      call.getStaticTarget() = f and
       call.getArgument(0).getExpr() = this
     )
   }

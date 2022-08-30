@@ -32,7 +32,7 @@ class CoreDataStore extends Stored {
       c.getName() = "NSManagedObject" and
       c.getAMember() = f and
       f.getName() = ["setValue(_:forKey:)", "setPrimitiveValue(_:forKey:)"] and
-      call.getFunction().(ApplyExpr).getStaticTarget() = f and
+      call.getStaticTarget() = f and
       call.getArgument(0).getExpr() = this
     )
   }
@@ -48,7 +48,7 @@ class RealmStore extends Stored {
       c.getName() = "Realm" and
       c.getAMember() = f and
       f.getName() = "add(_:update:)" and
-      call.getFunction().(ApplyExpr).getStaticTarget() = f and
+      call.getStaticTarget() = f and
       call.getArgument(0).getExpr() = this
     )
     or
@@ -57,7 +57,7 @@ class RealmStore extends Stored {
       c.getName() = "Realm" and
       c.getAMember() = f and
       f.getName() = "create(_:value:update:)" and
-      call.getFunction().(ApplyExpr).getStaticTarget() = f and
+      call.getStaticTarget() = f and
       call.getArgument(1).getExpr() = this
     )
   }
@@ -90,7 +90,7 @@ class CleartextStorageConfig extends TaintTracking::Configuration {
     // flow out from field accesses, i.e. `a.b` -> `a`
     exists(MemberRefExpr m |
       node1.asExpr() = m and // `a.b`
-      node2.asExpr() = m.getBaseExpr() // `a`
+      node2.asExpr() = m.getImmediateBase() // `a`
     )
     or
     // flow through assignment (!)
