@@ -173,7 +173,7 @@ module RangePrinter {
   }
 
   /** Gets the number of parts we should print for a given `range`. */
-  private int parts(OverlyWideRange range) { result = 1 + strictcount(cutoff(range, _)) }
+  private int parts(OverlyWideRange range) { result = 1 + count(cutoff(range, _)) }
 
   /** Holds if the given part of a range should span from `low` to `high`. */
   private predicate part(OverlyWideRange range, int part, string low, string high) {
