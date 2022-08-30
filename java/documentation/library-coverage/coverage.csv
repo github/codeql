@@ -91,6 +91,7 @@ org.springframework.beans,,,30,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,30
 org.springframework.boot.jdbc,1,,,,,,,,,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 org.springframework.cache,,,13,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,13
 org.springframework.context,,,3,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,3,
+org.springframework.data.repository,,,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,1
 org.springframework.http,14,,70,,,,,,,,,,,,,,14,,,,,,,,,,,,,,,,,,,,60,10
 org.springframework.jdbc.core,10,,,,,,,,,,,,,,,,,,,,,,,,,10,,,,,,,,,,,,
 org.springframework.jdbc.datasource,4,,,,,,,,,4,,,,,,,,,,,,,,,,,,,,,,,,,,,,
