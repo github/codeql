@@ -1584,7 +1584,7 @@ open class KotlinFileExtractor(
         }
     }
 
-    private fun findFunction(cls: IrClass, name: String): IrFunction? = cls.declarations.find { it is IrFunction && it.name.asString() == name } as IrFunction?
+    private fun findFunction(cls: IrClass, name: String): IrFunction? = cls.declarations.findSubType<IrFunction> { it.name.asString() == name }
 
     val jvmIntrinsicsClass by lazy {
         val result = pluginContext.referenceClass(FqName("kotlin.jvm.internal.Intrinsics"))?.owner
@@ -1600,11 +1600,13 @@ open class KotlinFileExtractor(
         return result
     }
 
-    private fun findTopLevelFunctionOrWarn(functionFilter: String, type: String, warnAgainstElement: IrElement): IrFunction? {
+    private fun findTopLevelFunctionOrWarn(functionFilter: String, type: String, parameterTypes: Array<String>, warnAgainstElement: IrElement): IrFunction? {
 
         val fn = pluginContext.referenceFunctions(FqName(functionFilter))
-            .firstOrNull { it.owner.parentClassOrNull?.fqNameWhenAvailable?.asString() == type }
-            ?.owner
+            .firstOrNull { fnSymbol ->
+                fnSymbol.owner.parentClassOrNull?.fqNameWhenAvailable?.asString() == type &&
+                fnSymbol.owner.valueParameters.map { it.type.classFqName?.asString() }.toTypedArray() contentEquals parameterTypes
+            }?.owner
 
         if (fn != null) {
             if (fn.parentClassOrNull != null) {
@@ -1641,12 +1643,11 @@ open class KotlinFileExtractor(
     }
 
     val stringValueOfObjectMethod by lazy {
-        val result = javaLangString?.declarations?.find {
-            it is IrFunction &&
+        val result = javaLangString?.declarations?.findSubType<IrFunction> {
             it.name.asString() == "valueOf" &&
             it.valueParameters.size == 1 &&
             it.valueParameters[0].type == pluginContext.irBuiltIns.anyNType
-        } as IrFunction?
+        }
         if (result == null) {
             logger.error("Couldn't find declaration java.lang.String.valueOf(Object)")
         }
@@ -1654,9 +1655,9 @@ open class KotlinFileExtractor(
     }
 
     val objectCloneMethod by lazy {
-        val result = javaLangObject?.declarations?.find {
-            it is IrFunction && it.name.asString() == "clone"
-        } as IrFunction?
+        val result = javaLangObject?.declarations?.findSubType<IrFunction> {
+            it.name.asString() == "clone"
+        }
         if (result == null) {
             logger.error("Couldn't find declaration java.lang.Object.clone(...)")
         }
@@ -1670,10 +1671,9 @@ open class KotlinFileExtractor(
     }
 
     val kotlinNoWhenBranchMatchedConstructor by lazy {
-        val result = kotlinNoWhenBranchMatchedExn?.declarations?.find {
-            it is IrConstructor &&
+        val result = kotlinNoWhenBranchMatchedExn?.declarations?.findSubType<IrConstructor> {
             it.valueParameters.isEmpty()
-        } as IrConstructor?
+        }
         if (result == null) {
             logger.error("Couldn't find no-arg constructor for kotlin.NoWhenBranchMatchedException")
         }
@@ -1756,6 +1756,12 @@ open class KotlinFileExtractor(
             else -> false
         }
 
+    private fun isGenericArrayType(typeName: String) =
+        when(typeName) {
+            "Array" -> true
+            else -> false
+        }
+
     private fun extractCall(c: IrCall, callable: Label<out DbCallable>, stmtExprParent: StmtExprParent) {
         with("call", c) {
             val target = tryReplaceSyntheticFunction(c.symbol.owner)
@@ -1798,13 +1804,13 @@ open class KotlinFileExtractor(
                     return
                 }
 
-                val func = ((c.getTypeArgument(0) as? IrSimpleType)?.classifier?.owner as? IrClass)?.declarations?.find { it is IrFunction && it.name.asString() == fnName }
+                val func = ((c.getTypeArgument(0) as? IrSimpleType)?.classifier?.owner as? IrClass)?.declarations?.findSubType<IrFunction> { it.name.asString() == fnName }
                 if (func == null) {
                     logger.errorElement("Couldn't find function $fnName on enum type", c)
                     return
                 }
 
-                extractMethodAccess(func as IrFunction, false)
+                extractMethodAccess(func, false)
             }
 
             fun binopReceiver(id: Label<out DbExpr>, receiver: IrExpression?, receiverDescription: String) {
@@ -2177,8 +2183,20 @@ open class KotlinFileExtractor(
                         extractRawMethodAccess(getter, c, callable, parent, idx, enclosingStmt, listOf(), null, ext, typeArguments)
                     }
                 }
-                isFunction(target, "kotlin", "(some array type)", { isArrayType(it) }, "iterator") && c.origin == IrStatementOrigin.FOR_LOOP_ITERATOR -> {
-                    findTopLevelFunctionOrWarn("kotlin.jvm.internal.iterator", "kotlin.jvm.internal.ArrayIteratorKt", c)?.let { iteratorFn ->
+                isFunction(target, "kotlin", "(some array type)", { isArrayType(it) }, "iterator") -> {
+                    val parentClass = target.parent
+                    if (parentClass !is IrClass) {
+                        logger.errorElement("Iterator parent is not a class", c)
+                        return
+                    }
+
+                    var typeFilter = if (isGenericArrayType(parentClass.name.asString())) {
+                        "kotlin.jvm.internal.ArrayIteratorKt"
+                    } else {
+                        "kotlin.jvm.internal.ArrayIteratorsKt"
+                    }
+
+                    findTopLevelFunctionOrWarn("kotlin.jvm.internal.iterator", typeFilter, arrayOf(parentClass.kotlinFqName.asString()), c)?.let { iteratorFn ->
                         val dispatchReceiver = c.dispatchReceiver
                         if (dispatchReceiver == null) {
                             logger.errorElement("No dispatch receiver found for array iterator call", c)
@@ -2273,10 +2291,10 @@ open class KotlinFileExtractor(
                         logger.errorElement("Argument to dataClassArrayMemberToString not a class", c)
                         return
                     }
-                    val realCallee = javaUtilArrays?.declarations?.find { decl ->
-                        decl is IrFunction && decl.name.asString() == "toString" && decl.valueParameters.size == 1 &&
+                    val realCallee = javaUtilArrays?.declarations?.findSubType<IrFunction> { decl ->
+                        decl.name.asString() == "toString" && decl.valueParameters.size == 1 &&
                                 decl.valueParameters[0].type.classOrNull?.let { it == realArrayClass } == true
-                    } as IrFunction?
+                    }
                     if (realCallee == null) {
                         logger.errorElement("Couldn't find a java.lang.Arrays.toString method matching class ${realArrayClass.owner.name}", c)
                     } else {
@@ -2300,10 +2318,10 @@ open class KotlinFileExtractor(
                         logger.errorElement("Argument to dataClassArrayMemberHashCode not a class", c)
                         return
                     }
-                    val realCallee = javaUtilArrays?.declarations?.find { decl ->
-                        decl is IrFunction && decl.name.asString() == "hashCode" && decl.valueParameters.size == 1 &&
+                    val realCallee = javaUtilArrays?.declarations?.findSubType<IrFunction> { decl ->
+                        decl.name.asString() == "hashCode" && decl.valueParameters.size == 1 &&
                                 decl.valueParameters[0].type.classOrNull?.let { it == realArrayClass } == true
-                    } as IrFunction?
+                    }
                     if (realCallee == null) {
                         logger.errorElement("Couldn't find a java.lang.Arrays.hashCode method matching class ${realArrayClass.owner.name}", c)
                     } else {
@@ -2486,18 +2504,21 @@ open class KotlinFileExtractor(
         }
     }
 
-    private fun writeUpdateInPlaceExpr(origin: IrStatementOrigin, tw: TrapWriter, id: Label<DbAssignexpr>, type: TypeResults, exprParent: ExprParent): Boolean {
+    private fun writeUpdateInPlaceExpr(origin: IrStatementOrigin): ((tw: TrapWriter, id: Label<out DbAssignexpr>, type: Label<out DbType>, exprParent: Label<out DbExprparent>, index: Int) -> Unit)? {
         when(origin) {
-            IrStatementOrigin.PLUSEQ -> tw.writeExprs_assignaddexpr(id.cast<DbAssignaddexpr>(), type.javaResult.id, exprParent.parent, exprParent.idx)
-            IrStatementOrigin.MINUSEQ -> tw.writeExprs_assignsubexpr(id.cast<DbAssignsubexpr>(), type.javaResult.id, exprParent.parent, exprParent.idx)
-            IrStatementOrigin.MULTEQ -> tw.writeExprs_assignmulexpr(id.cast<DbAssignmulexpr>(), type.javaResult.id, exprParent.parent, exprParent.idx)
-            IrStatementOrigin.DIVEQ -> tw.writeExprs_assigndivexpr(id.cast<DbAssigndivexpr>(), type.javaResult.id, exprParent.parent, exprParent.idx)
-            IrStatementOrigin.PERCEQ -> tw.writeExprs_assignremexpr(id.cast<DbAssignremexpr>(), type.javaResult.id, exprParent.parent, exprParent.idx)
-            else -> return false
+            IrStatementOrigin.PLUSEQ -> return { tw: TrapWriter, id: Label<out DbAssignexpr>, type: Label<out DbType>, exprParent: Label<out DbExprparent>, index: Int -> tw.writeExprs_assignaddexpr(id.cast<DbAssignaddexpr>(), type, exprParent, index) }
+            IrStatementOrigin.MINUSEQ -> return { tw: TrapWriter, id: Label<out DbAssignexpr>, type: Label<out DbType>, exprParent: Label<out DbExprparent>, index: Int -> tw.writeExprs_assignsubexpr(id.cast<DbAssignsubexpr>(), type, exprParent, index) }
+            IrStatementOrigin.MULTEQ -> return { tw: TrapWriter, id: Label<out DbAssignexpr>, type: Label<out DbType>, exprParent: Label<out DbExprparent>, index: Int -> tw.writeExprs_assignmulexpr(id.cast<DbAssignmulexpr>(), type, exprParent, index) }
+            IrStatementOrigin.DIVEQ -> return { tw: TrapWriter, id: Label<out DbAssignexpr>, type: Label<out DbType>, exprParent: Label<out DbExprparent>, index: Int -> tw.writeExprs_assigndivexpr(id.cast<DbAssigndivexpr>(), type, exprParent, index) }
+            IrStatementOrigin.PERCEQ -> return { tw: TrapWriter, id: Label<out DbAssignexpr>, type: Label<out DbType>, exprParent: Label<out DbExprparent>, index: Int -> tw.writeExprs_assignremexpr(id.cast<DbAssignremexpr>(), type, exprParent, index) }
+            else -> return null
         }
-        return true
     }
 
+    /**
+     * This tried to extract a block as an array update.
+     * It returns true if it succeeds, and false otherwise.
+     */
     private fun tryExtractArrayUpdate(e: IrContainerExpression, callable: Label<out DbCallable>, parent: StmtExprParent): Boolean {
         /*
          * We're expecting the pattern
@@ -2517,6 +2538,11 @@ open class KotlinFileExtractor(
                     indexVarDecl.initializer?.let { indexVarInitializer ->
                         (e.statements[2] as? IrCall)?.let { arraySetCall ->
                             if (isFunction(arraySetCall.symbol.owner, "kotlin", "(some array type)", { isArrayType(it) }, "set")) {
+                                val updateRhs = arraySetCall.getValueArgument(1)
+                                if (updateRhs == null) {
+                                    logger.errorElement("Update RHS not found", e)
+                                    return false
+                                }
                                 getUpdateInPlaceRHS(
                                     e.origin, // Using e.origin not arraySetCall.origin here distinguishes a compiler-generated block from a user manually code that looks the same.
                                     {   oldValue ->
@@ -2526,8 +2552,19 @@ open class KotlinFileExtractor(
                                             receiverVal -> receiverVal.symbol.owner == arrayVarDecl.symbol.owner
                                         } ?: false
                                     },
-                                    arraySetCall.getValueArgument(1)!!
+                                    updateRhs
                                 )?.let { updateRhs ->
+                                    val origin = e.origin
+                                    if (origin == null) {
+                                        logger.errorElement("No origin found", e)
+                                        return false
+                                    }
+                                    val writeUpdateInPlaceExprFun = writeUpdateInPlaceExpr(origin)
+                                    if (writeUpdateInPlaceExprFun == null) {
+                                        logger.errorElement("Unexpected origin", e)
+                                        return false
+                                    }
+
                                     // Create an assignment skeleton _ op= _
                                     val exprParent = parent.expr(e, callable)
                                     val assignId = tw.getFreshIdLabel<DbAssignexpr>()
@@ -2538,10 +2575,7 @@ open class KotlinFileExtractor(
                                     tw.writeCallableEnclosingExpr(assignId, callable)
                                     tw.writeStatementEnclosingExpr(assignId, exprParent.enclosingStmt)
 
-                                    if (!writeUpdateInPlaceExpr(e.origin!!, tw, assignId, type, exprParent)) {
-                                        logger.errorElement("Unexpected origin", e)
-                                        return false
-                                    }
+                                    writeUpdateInPlaceExprFun(tw, assignId, type.javaResult.id, exprParent.parent, exprParent.idx)
 
                                     // Extract e1[e2]
                                     val lhsId = tw.getFreshIdLabel<DbArrayaccess>()
@@ -2893,9 +2927,17 @@ open class KotlinFileExtractor(
                             // Check for a desugared in-place update operator, such as "v += e":
                             val inPlaceUpdateRhs = getUpdateInPlaceRHS(e.origin, { it is IrGetValue && it.symbol.owner == e.symbol.owner }, rhsValue)
                             if (inPlaceUpdateRhs != null) {
-                                if (!writeUpdateInPlaceExpr(e.origin!!, tw, id, type, exprParent)) {
-                                    logger.errorElement("Unexpected origin", e)
+                                val origin = e.origin
+                                if (origin == null) {
+                                    logger.errorElement("No origin for set-value", e)
                                     return
+                                } else {
+                                    val writeUpdateInPlaceExprFun = writeUpdateInPlaceExpr(origin)
+                                    if (writeUpdateInPlaceExprFun == null) {
+                                        logger.errorElement("Unexpected origin for set-value", e)
+                                        return
+                                    }
+                                    writeUpdateInPlaceExprFun(tw, id, type.javaResult.id, exprParent.parent, exprParent.idx)
                                 }
                             } else {
                                 tw.writeExprs_assignexpr(id, type.javaResult.id, exprParent.parent, exprParent.idx)
@@ -4428,7 +4470,7 @@ open class KotlinFileExtractor(
                         return
                     }
 
-                    val invokeMethod = functionType.classOrNull?.owner?.declarations?.filterIsInstance<IrFunction>()?.find { it.name.asString() == OperatorNameConventions.INVOKE.asString()}
+                    val invokeMethod = functionType.classOrNull?.owner?.declarations?.findSubType<IrFunction> { it.name.asString() == OperatorNameConventions.INVOKE.asString()}
                     if (invokeMethod == null) {
                         logger.errorElement("Couldn't find `invoke` method on functional interface.", e)
                         return
@@ -4439,7 +4481,7 @@ open class KotlinFileExtractor(
                         logger.errorElement("Expected to find SAM conversion to IrClass. Found '${typeOwner.javaClass}' instead. Can't implement SAM interface.", e)
                         return
                     }
-                    val samMember = typeOwner.declarations.filterIsInstance<IrFunction>().find { it is IrOverridableMember && it.modality == Modality.ABSTRACT }
+                    val samMember = typeOwner.declarations.findSubType<IrFunction> { it is IrOverridableMember && it.modality == Modality.ABSTRACT }
                     if (samMember == null) {
                         logger.errorElement("Couldn't find SAM member in type '${typeOwner.kotlinFqName.asString()}'. Can't implement SAM interface.", e)
                         return
@@ -4628,7 +4670,7 @@ open class KotlinFileExtractor(
             val superCallId = tw.getFreshIdLabel<DbSuperconstructorinvocationstmt>()
             tw.writeStmts_superconstructorinvocationstmt(superCallId, constructorBlockId, 0, ids.constructor)
 
-            val baseConstructor = baseClass.owner.declarations.find { it is IrFunction && it.symbol is IrConstructorSymbol }
+            val baseConstructor = baseClass.owner.declarations.findSubType<IrFunction> { it.symbol is IrConstructorSymbol }
             val baseConstructorId = useFunction<DbConstructor>(baseConstructor as IrFunction)
 
             tw.writeHasLocation(superCallId, locId)

@@ -1,8 +1,9 @@
 import swift
-import codeql.swift.generated.GetImmediateParent
+import codeql.swift.generated.ParentChild
+import TestUtils
 
 from AstNode parent, AstNode child
 where
-  parent = getImmediateParent(child) and
-  parent.getLocation().getFile().getName().matches("%swift/ql/test%")
+  toBeTested(parent) and
+  parent = getImmediateParent(child)
 select parent, parent.getPrimaryQlClasses(), child, child.getPrimaryQlClasses()

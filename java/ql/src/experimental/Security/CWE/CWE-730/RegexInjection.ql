@@ -85,5 +85,5 @@ class RegexInjectionConfiguration extends TaintTracking::Configuration {
 
 from DataFlow::PathNode source, DataFlow::PathNode sink, RegexInjectionConfiguration c
 where c.hasFlowPath(source, sink)
-select sink.getNode(), source, sink, "$@ is user controlled.", source.getNode(),
-  "This regular expression pattern"
+select sink.getNode(), source, sink, "This regular expression is constructed from a $@.",
+  source.getNode(), "user-provided value"

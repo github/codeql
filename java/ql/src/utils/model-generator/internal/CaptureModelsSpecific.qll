@@ -259,3 +259,9 @@ predicate isRelevantSinkKind(string kind) {
   not kind.matches("regex-use%") and
   not kind = "write-file"
 }
+
+/**
+ * Holds if `kind` is a relevant source kind for creating source models.
+ */
+bindingset[kind]
+predicate isRelevantSourceKind(string kind) { any() }

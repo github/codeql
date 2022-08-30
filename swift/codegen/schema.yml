@@ -80,8 +80,8 @@ AstNode:
 
 Callable:
   _children:
-    params: ParamDecl*
     self_param: ParamDecl?
+    params: ParamDecl*
     body: BraceStmt?
 
 ConditionElement:
@@ -545,7 +545,7 @@ RebindSelfInConstructorExpr:
   _extends: Expr
   _children:
     sub_expr: Expr
-    self: VarDecl
+  self: VarDecl
 
 SequenceExpr:
   _extends: Expr
@@ -1121,6 +1121,8 @@ ModuleDecl:
   _extends: TypeDecl
   is_builtin_module: predicate
   is_system_module: predicate
+  imported_modules: ModuleDecl*
+  exported_modules: ModuleDecl*
 
 ConstructorRefCallExpr:
   _extends: SelfApplyExpr

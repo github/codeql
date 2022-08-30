@@ -1,5 +1,24 @@
-#!/usr/bin/env python3
-# TODO this should probably be split in different generators now: ql, qltest, maybe qlipa
+"""
+QL code generation
+
+`generate(opts, renderer)` will generate in the library directory:
+ * generated/Raw.qll with thin class wrappers around DB types
+ * generated/Synth.qll with the base algebraic datatypes for AST entities
+ * generated/<group>/<Class>.qll with generated properties for each class
+ * if not already modified, a elements/<group>/<Class>.qll stub to customize the above classes
+ * elements.qll importing all the above stubs
+ * if not already modified, a elements/<group>/<Class>Constructor.qll stub to customize the algebraic datatype
+   characteristic predicate
+ * generated/SynthConstructors.qll importing all the above constructor stubs
+ * generated/PureSynthConstructors.qll importing constructor stubs for pure synthesized types (that is, not
+   corresponding to raw types)
+Moreover in the test directory for each <Class> in <group> it will generate beneath the
+extractor-tests/generated/<group>/<Class> directory either
+ * a `MISSING_SOURCE.txt` explanation file if no `swift` source is present, or
+ * one `<Class>.ql` test query for all single properties and on `<Class>_<property>.ql` test query for each optional or
+   repeated property
+"""
+# TODO this should probably be split in different generators now: ql, qltest, maybe qlsynth
 
 import logging
 import pathlib
@@ -29,11 +48,15 @@ class ModifiedStubMarkedAsGeneratedError(Error):
     pass
 
 
-def get_ql_property(cls: schema.Class, prop: schema.Property) -> ql.Property:
+class RootElementHasChildren(Error):
+    pass
+
+
+def get_ql_property(cls: schema.Class, prop: schema.Property, prev_child: str = "") -> ql.Property:
     args = dict(
         type=prop.type if not prop.is_predicate else "predicate",
         qltest_skip="qltest_skip" in prop.pragmas,
-        is_child=prop.is_child,
+        prev_child=prev_child if prop.is_child else None,
         is_optional=prop.is_optional,
         is_predicate=prop.is_predicate,
     )
@@ -69,11 +92,18 @@ def get_ql_property(cls: schema.Class, prop: schema.Property) -> ql.Property:
 
 def get_ql_class(cls: schema.Class, lookup: typing.Dict[str, schema.Class]):
     pragmas = {k: True for k in cls.pragmas if k.startswith("ql")}
+    prev_child = ""
+    properties = []
+    for p in cls.properties:
+        prop = get_ql_property(cls, p, prev_child)
+        if prop.is_child:
+            prev_child = prop.singular
+        properties.append(prop)
     return ql.Class(
         name=cls.name,
         bases=cls.bases,
         final=not cls.derived,
-        properties=[get_ql_property(cls, p) for p in cls.properties],
+        properties=properties,
         dir=cls.dir,
         ipa=bool(cls.ipa),
         **pragmas,
@@ -116,14 +146,14 @@ def get_import(file: pathlib.Path, swift_dir: pathlib.Path):
     return str(stem).replace("/", ".")
 
 
-def get_types_used_by(cls: ql.Class):
+def get_types_used_by(cls: ql.Class) -> typing.Iterable[str]:
     for b in cls.bases:
-        yield b
+        yield b.base
     for p in cls.properties:
         yield p.type
 
 
-def get_classes_used_by(cls: ql.Class):
+def get_classes_used_by(cls: ql.Class) -> typing.List[str]:
     return sorted(set(t for t in get_types_used_by(cls) if t[0].isupper()))
 
 
@@ -227,10 +257,15 @@ def generate(opts, renderer):
     data = schema.load(input)
 
     classes = {name: get_ql_class(cls, data.classes) for name, cls in data.classes.items()}
+    # element root is absent in tests
+    if schema.root_class_name in classes and classes[schema.root_class_name].has_children:
+        raise RootElementHasChildren
+
     imports = {}
 
     inheritance_graph = {name: cls.bases for name, cls in data.classes.items()}
-    db_classes = [classes[name] for name in toposort_flatten(inheritance_graph) if not classes[name].ipa]
+    toposorted_names = toposort_flatten(inheritance_graph)
+    db_classes = [classes[name] for name in toposorted_names if not classes[name].ipa]
     renderer.render(ql.DbClasses(db_classes), out / "Raw.qll")
 
     classes_by_dir_and_name = sorted(classes.values(), key=lambda cls: (cls.dir, cls.name))
@@ -251,7 +286,8 @@ def generate(opts, renderer):
     include_file = stub_out.with_suffix(".qll")
     renderer.render(ql.ImportList(list(imports.values())), include_file)
 
-    renderer.render(ql.GetParentImplementation(classes_by_dir_and_name), out / 'GetImmediateParent.qll')
+    toposorted_classes = [classes[name] for name in toposorted_names]
+    renderer.render(ql.GetParentImplementation(toposorted_classes), out / 'ParentChild.qll')
 
     for c in data.classes.values():
         if _should_skip_qltest(c, data.classes):

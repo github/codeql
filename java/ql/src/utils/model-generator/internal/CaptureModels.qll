@@ -234,6 +234,7 @@ string captureSource(TargetApi api) {
     config.hasFlow(source, sink) and
     ExternalFlow::sourceNode(source, kind) and
     api = sink.getEnclosingCallable() and
+    isRelevantSourceKind(kind) and
     result = asSourceModel(api, returnNodeAsOutput(sink), kind)
   )
 }
