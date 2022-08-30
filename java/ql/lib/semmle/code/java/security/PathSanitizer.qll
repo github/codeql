@@ -224,7 +224,7 @@ private class PathTraversalGuard extends Guard {
   }
 
   Expr getCheckedExpr() {
-    exists(MethodAccess ma | ma = this.(BinaryExpr).getAnOperand() or ma = this |
+    exists(MethodAccess ma | ma = this.(EqualityTest).getAnOperand() or ma = this |
       result = ma.getQualifier()
     )
   }
