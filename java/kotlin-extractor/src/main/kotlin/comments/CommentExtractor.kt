@@ -144,7 +144,7 @@ class CommentExtractor(private val fileExtractor: KotlinFileExtractor, private v
                             return null
                         }
                         // Assign the comment to the class. The content of the `init` blocks might be extracted in multiple constructors.
-                        return fileExtractor.getClassLabel(parentClass, listOf()).classLabel
+                        return getLabel(parentClass)
                     }
 
                     // Fresh entities:
