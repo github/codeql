@@ -51,7 +51,7 @@ function RegisterExtractorPack(id)
     local windowsMatchers = {
         DotnetMatcherBuild,
         CreatePatternMatcher({ '^csc.*%.exe$' }, MatchCompilerName, extractor, {
-            prepend = { '--cil', '--compiler', '"${compiler}"' },
+            prepend = {'--compiler', '"${compiler}"' },
             order = ORDER_BEFORE
         }),
         CreatePatternMatcher({ '^fakes.*%.exe$', 'moles.*%.exe' },
@@ -64,7 +64,7 @@ function RegisterExtractorPack(id)
 
             local seenCompilerCall = false
             local argv = NativeArgumentsToArgv(compilerArguments.nativeArgumentPointer)
-            local extractorArgs = { '--cil', '--compiler' }
+            local extractorArgs = { '--compiler' }
             for _, arg in ipairs(argv) do
                 if arg:match('csc%.dll$') then
                     seenCompilerCall = true
@@ -92,7 +92,7 @@ function RegisterExtractorPack(id)
         DotnetMatcherBuild,
         CreatePatternMatcher({ '^mcs%.exe$', '^csc%.exe$' }, MatchCompilerName,
             extractor, {
-            prepend = { '--cil', '--compiler', '"${compiler}"' },
+            prepend = { '--compiler', '"${compiler}"' },
             order = ORDER_BEFORE
         }), function(compilerName, compilerPath, compilerArguments, _languageId)
             if MatchCompilerName('^msbuild$', compilerName, compilerPath,
@@ -118,7 +118,7 @@ function RegisterExtractorPack(id)
 
             local seenCompilerCall = false
             local argv = compilerArguments.argv
-            local extractorArgs = { '--cil', '--compiler' }
+            local extractorArgs = { '--compiler' }
             for _, arg in ipairs(argv) do
                 if arg:match('csc%.dll$') or arg:match('csc%.exe$') or arg:match('mcs%.exe$') then
                     seenCompilerCall = true

@@ -36,9 +36,10 @@ compilations(
  * --- | ---
  * 0   | --compiler
  * 1   | *path to compiler*
- * 2   | f1.cs
- * 3   | f2.cs
- * 4   | f3.cs
+ * 2   | --cil
+ * 3   | f1.cs
+ * 4   | f2.cs
+ * 5   | f3.cs
  */
 #keyset[id, num]
 compilation_args(
