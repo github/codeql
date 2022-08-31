@@ -7,7 +7,9 @@
  * @security-severity 7.5
  * @precision medium
  * @id cpp/missing-check-scanf
- * @tags security cwe-252 cwe-253
+ * @tags security
+ *       external/cwe/cwe-252
+ *       external/cwe/cwe-253
  */
 
 import cpp
