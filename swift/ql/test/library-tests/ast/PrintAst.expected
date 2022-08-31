@@ -64,8 +64,6 @@ declarations.swift:
 #    1|   getMember(5): [ConstructorDecl] init(x:)
 #    1|     getSelfParam(): [ParamDecl] self
 #    1|     getParam(0): [ParamDecl] x
-#    4| [DeclRefExpr] +(_:_:)
-#    5| [DeclRefExpr] -(_:_:)
 #    9| [ClassDecl] Bar
 #    9|   getMember(0): [PatternBindingDecl] var ... = ...
 #    9|     getInit(0): [FloatLiteralExpr] 1.3
@@ -454,7 +452,6 @@ declarations.swift:
 #  144|     getElement(0): [CallExpr] call to id()
 #  144|       getFunction(): [MethodRefExpr] .id()
 #  144|         getBase(): [IntegerLiteralExpr] 42
-#  144| [DeclRefExpr] id()
 expressions.swift:
 #    1| [TopLevelCodeDecl] { ... }
 #    1|   getBody(): [BraceStmt] { ... }
@@ -519,7 +516,6 @@ expressions.swift:
 #    7|                 getExpr(): [StringLiteralExpr] 
 #    7|       getPattern(0): [NamedPattern] s1
 #    7| [ConcreteVarDecl] s1
-#    7| [DeclRefExpr] appendInterpolation(_:)
 #    8| [TopLevelCodeDecl] { ... }
 #    8|   getBody(): [BraceStmt] { ... }
 #    8|     getElement(0): [PatternBindingDecl] var ... = ...
@@ -550,8 +546,6 @@ expressions.swift:
 #   16|           getSubExpr(): [MethodRefExpr] .failed
 #   16|             getBase(): [TypeExpr] AnError.Type
 #   16|               getTypeRepr(): [TypeRepr] AnError
-#   15| [DeclRefExpr] !=(_:_:)
-#   16| [DeclRefExpr] failed
 #   20| [TopLevelCodeDecl] { ... }
 #   20|   getBody(): [BraceStmt] { ... }
 #   20|     getElement(0): [ForceTryExpr] try! ...
@@ -661,7 +655,6 @@ expressions.swift:
 #   42|                   getExpr(): [DeclRefExpr] x
 #   42|                 getArgument(1): [Argument] : y
 #   42|                   getExpr(): [DeclRefExpr] y
-#   42| [DeclRefExpr] +(_:_:)
 #   44| [TopLevelCodeDecl] { ... }
 #   44|   getBody(): [BraceStmt] { ... }
 #   44|     getElement(0): [CallExpr] call to closured(closure:)
@@ -680,7 +673,6 @@ expressions.swift:
 #   45|                   getExpr(): [DeclRefExpr] x
 #   45|                 getArgument(1): [Argument] : y
 #   45|                   getExpr(): [DeclRefExpr] y
-#   45| [DeclRefExpr] +(_:_:)
 #   47| [TopLevelCodeDecl] { ... }
 #   47|   getBody(): [BraceStmt] { ... }
 #   47|     getElement(0): [CallExpr] call to closured(closure:)
@@ -699,7 +691,6 @@ expressions.swift:
 #   47|                   getExpr(): [DeclRefExpr] $0
 #   47|                 getArgument(1): [Argument] : $1
 #   47|                   getExpr(): [DeclRefExpr] $1
-#   47| [DeclRefExpr] +(_:_:)
 #   48| [TopLevelCodeDecl] { ... }
 #   48|   getBody(): [BraceStmt] { ... }
 #   48|     getElement(0): [CallExpr] call to closured(closure:)
@@ -718,7 +709,6 @@ expressions.swift:
 #   48|                   getExpr(): [DeclRefExpr] $0
 #   48|                 getArgument(1): [Argument] : $1
 #   48|                   getExpr(): [DeclRefExpr] $1
-#   48| [DeclRefExpr] +(_:_:)
 #   50| [StructDecl] S
 #   51|   getMember(0): [PatternBindingDecl] var ... = ...
 #   51|     getPattern(0): [TypedPattern] ... as ...
@@ -790,7 +780,6 @@ expressions.swift:
 #   62|   getMember(1): [DestructorDecl] deinit()
 #   62|     getSelfParam(): [ParamDecl] self
 #   62|     getBody(): [BraceStmt] { ... }
-#   64| [DeclRefExpr] <(_:_:)
 #   70| [ClassDecl] Base
 #   71|   getMember(0): [PatternBindingDecl] var ... = ...
 #   71|     getPattern(0): [TypedPattern] ... as ...
@@ -903,8 +892,6 @@ expressions.swift:
 #   92|                       getTypeRepr(): [TypeRepr] ToPtr
 #   92|       getPattern(0): [NamedPattern] opaque
 #   92| [ConcreteVarDecl] opaque
-#   92| [DeclRefExpr] passRetained(_:)
-#   92| [DeclRefExpr] toOpaque()
 #   93| [TopLevelCodeDecl] { ... }
 #   93|   getBody(): [BraceStmt] { ... }
 #   93|     getElement(0): [CallExpr] call to fromOpaque(_:)
@@ -913,7 +900,6 @@ expressions.swift:
 #   93|           getTypeRepr(): [TypeRepr] Unmanaged<ToPtr>
 #   93|       getArgument(0): [Argument] : opaque
 #   93|         getExpr(): [DeclRefExpr] opaque
-#   93| [DeclRefExpr] fromOpaque(_:)
 #   95| [StructDecl] HasProperty
 #   96|   getMember(0): [PatternBindingDecl] var ... = ...
 #   96|     getPattern(0): [TypedPattern] ... as ...
@@ -1310,7 +1296,6 @@ patterns.swift:
 #   50|           getPattern(): [BoolPattern] false
 #   12| [ConcreteVarDecl] xx
 #   12| [ConcreteVarDecl] yy
-#   24| [DeclRefExpr] bar
 #   28| [ConcreteVarDecl] i
 #   28| [ConcreteVarDecl] s
 #   34| [ConcreteVarDecl] n
@@ -1453,12 +1438,6 @@ statements.swift:
 #   29|           getPattern(): [BindingPattern] let ...
 #   29|             getSubPattern(): [NamedPattern] error
 #    2| [ConcreteVarDecl] i
-#    2| [DeclRefExpr] ...(_:_:)
-#    3| [DeclRefExpr] ==(_:_:)
-#   10| [DeclRefExpr] <(_:_:)
-#   11| [DeclRefExpr] +(_:_:)
-#   16| [DeclRefExpr] +(_:_:)
-#   17| [DeclRefExpr] <(_:_:)
 #   21| [ConcreteVarDecl] error
 #   29| [ConcreteVarDecl] error
 #   34| [EnumDecl] AnError
@@ -1483,8 +1462,6 @@ statements.swift:
 #   40|           getSubExpr(): [MethodRefExpr] .failed
 #   40|             getBase(): [TypeExpr] AnError.Type
 #   40|               getTypeRepr(): [TypeRepr] AnError
-#   39| [DeclRefExpr] !=(_:_:)
-#   40| [DeclRefExpr] failed
 #   44| [TopLevelCodeDecl] { ... }
 #   44|   getBody(): [BraceStmt] { ... }
 #   44|     getElement(0): [DeferStmt] defer { ... }
@@ -1630,8 +1607,6 @@ statements.swift:
 #   71|           getExpr(): [IntegerLiteralExpr] 0
 #   71|       getBody(): [BraceStmt] { ... }
 #   71| [ConcreteVarDecl] number
-#   71| [DeclRefExpr] %(_:_:)
-#   71| [DeclRefExpr] ==(_:_:)
 #   74| [StructDecl] HasModifyAccessorDecl
 #   75|   getMember(0): [PatternBindingDecl] var ... = ...
 #   75|     getPattern(0): [TypedPattern] ... as ...

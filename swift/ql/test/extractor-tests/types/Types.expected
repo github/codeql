@@ -8,7 +8,6 @@
 | types.swift:3:7:3:11 | ... .+(_:_:) ... | Int |
 | types.swift:3:7:3:11 | [...] | Any... |
 | types.swift:3:7:3:11 | [...] | Any... |
-| types.swift:3:9:3:9 | +(_:_:) | (Int.Type) -> (Int, Int) -> Int |
 | types.swift:3:9:3:9 | .+(_:_:) | (Int, Int) -> Int |
 | types.swift:3:9:3:9 | Int.Type | Int.Type |
 | types.swift:3:11:3:11 | 10 | Int |
@@ -26,7 +25,6 @@
 | types.swift:14:24:14:24 | init() | (C.Nested.Type) -> () -> C.Nested |
 | types.swift:17:10:17:10 | x | Int |
 | types.swift:17:10:17:14 | ... .+(_:_:) ... | Int |
-| types.swift:17:12:17:12 | +(_:_:) | (Int.Type) -> (Int, Int) -> Int |
 | types.swift:17:12:17:12 | .+(_:_:) | (Int, Int) -> Int |
 | types.swift:17:12:17:12 | Int.Type | Int.Type |
 | types.swift:17:14:17:14 | y | Int |
