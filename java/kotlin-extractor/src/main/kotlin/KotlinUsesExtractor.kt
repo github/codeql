@@ -667,11 +667,15 @@ open class KotlinUsesExtractor(
                     dimensions++
                     if (elementType.isPrimitiveArray())
                         isPrimitiveArray = true
-                    if (((elementType as IrSimpleType).arguments.singleOrNull() as? IrTypeProjection)?.variance == Variance.IN_VARIANCE) {
-                        // Because Java's arrays are covariant, Kotlin will render Array<in X> as Object[], Array<Array<in X>> as Object[][] etc.
-                        componentType = replaceComponentTypeWithAny(s, dimensions - 1)
-                        elementType = pluginContext.irBuiltIns.anyType as IrSimpleType
-                        break
+                    if (elementType is IrSimpleType) {
+                        if ((elementType.arguments.singleOrNull() as? IrTypeProjection)?.variance == Variance.IN_VARIANCE) {
+                            // Because Java's arrays are covariant, Kotlin will render Array<in X> as Object[], Array<Array<in X>> as Object[][] etc.
+                            componentType = replaceComponentTypeWithAny(s, dimensions - 1)
+                            elementType = pluginContext.irBuiltIns.anyType
+                            break
+                        }
+                    } else {
+                        logger.warn("Unexpected element type representation ${elementType.javaClass} for ${s.render()}")
                     }
                     elementType = elementType.getArrayElementType(pluginContext.irBuiltIns)
                 }
