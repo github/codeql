@@ -1544,18 +1544,17 @@ open class KotlinFileExtractor(
     }
 
     private fun extractStaticTypeAccessQualifier(target: IrDeclaration, parentExpr: Label<out DbExprparent>, locId: Label<DbLocation>, enclosingCallable: Label<out DbCallable>, enclosingStmt: Label<out DbStmt>) {
-        if (target.shouldExtractAsStaticMemberOfClass) {
-            extractTypeAccessRecursive(target.parentAsClass.toRawType(), locId, parentExpr, -1, enclosingCallable, enclosingStmt)
-        } else if (target.shouldExtractAsStaticMemberOfFile) {
-            extractTypeAccess(useFileClassType(target.parent as IrFile), locId, parentExpr, -1, enclosingCallable, enclosingStmt)
+        if (target.shouldExtractAsStatic) {
+            val parent = target.parent
+            if (parent is IrClass) {
+                extractTypeAccessRecursive(parent.toRawType(), locId, parentExpr, -1, enclosingCallable, enclosingStmt)
+            } else if (parent is IrFile) {
+                extractTypeAccess(useFileClassType(parent), locId, parentExpr, -1, enclosingCallable, enclosingStmt)
+            } else {
+                logger.warnElement("Unexpected static type access qualifer ${parent.javaClass}", target)
+            }
         }
     }
-
-    private val IrDeclaration.shouldExtractAsStaticMemberOfClass: Boolean
-        get() = this.shouldExtractAsStatic && parent is IrClass
-
-    private val IrDeclaration.shouldExtractAsStaticMemberOfFile: Boolean
-        get() = this.shouldExtractAsStatic && parent is IrFile
 
     private fun isStaticAnnotatedNonCompanionMember(f: IrSimpleFunction) =
         f.parentClassOrNull?.isNonCompanionObject == true &&
