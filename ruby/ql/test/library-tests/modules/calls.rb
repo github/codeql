@@ -126,13 +126,13 @@ funny { |i| puts i.capitalize}
 1.bit_length
 1.abs
 
-["a","b","c"].foreach { |i, v| puts "#{i} -> #{v.capitalize}"} # TODO should resolve to String.capitalize
+["a","b","c"].foreach { |i, v| puts "#{i} -> #{v.capitalize}"}
 
 [1,2,3].foreach { |i| i.bit_length}
 
 [1,2,3].foreach { |i| puts i.capitalize} # NoMethodError
 
-[1,-2,3].foreach { |_, v| puts v.abs} # TODO should resolve to Integer.abs
+[1,-2,3].foreach { |_, v| puts v.abs}
 
 def indirect &b
     call_block &b

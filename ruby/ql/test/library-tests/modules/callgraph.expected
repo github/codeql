@@ -43,12 +43,14 @@ getTarget
 | calls.rb:127:1:127:5 | call to abs | calls.rb:79:5:79:16 | abs |
 | calls.rb:129:1:129:62 | call to foreach | calls.rb:110:3:116:5 | foreach |
 | calls.rb:129:32:129:61 | call to puts | calls.rb:87:5:87:17 | puts |
+| calls.rb:129:48:129:59 | call to capitalize | calls.rb:83:5:83:23 | capitalize |
 | calls.rb:131:1:131:35 | call to foreach | calls.rb:110:3:116:5 | foreach |
 | calls.rb:131:23:131:34 | call to bit_length | calls.rb:78:5:78:23 | bit_length |
 | calls.rb:133:1:133:40 | call to foreach | calls.rb:110:3:116:5 | foreach |
 | calls.rb:133:23:133:39 | call to puts | calls.rb:87:5:87:17 | puts |
 | calls.rb:135:1:135:37 | call to foreach | calls.rb:110:3:116:5 | foreach |
 | calls.rb:135:27:135:36 | call to puts | calls.rb:87:5:87:17 | puts |
+| calls.rb:135:32:135:36 | call to abs | calls.rb:79:5:79:16 | abs |
 | calls.rb:138:5:138:17 | call to call_block | calls.rb:67:1:69:3 | call_block |
 | calls.rb:141:1:141:28 | call to indirect | calls.rb:137:1:139:3 | indirect |
 | calls.rb:141:16:141:27 | call to bit_length | calls.rb:78:5:78:23 | bit_length |
@@ -108,13 +110,11 @@ unresolvedCall
 | calls.rb:112:11:112:25 | ... < ... |
 | calls.rb:114:11:114:12 | ... + ... |
 | calls.rb:129:1:129:13 | call to [] |
-| calls.rb:129:48:129:59 | call to capitalize |
 | calls.rb:131:1:131:7 | call to [] |
 | calls.rb:133:1:133:7 | call to [] |
 | calls.rb:133:28:133:39 | call to capitalize |
 | calls.rb:135:1:135:8 | call to [] |
 | calls.rb:135:4:135:5 | - ... |
-| calls.rb:135:32:135:36 | call to abs |
 | hello.rb:20:16:20:26 | ... + ... |
 | hello.rb:20:16:20:34 | ... + ... |
 | hello.rb:20:16:20:40 | ... + ... |
