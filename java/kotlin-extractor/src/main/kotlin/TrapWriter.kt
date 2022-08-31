@@ -319,7 +319,7 @@ class SourceFileTrapWriter (
     lm: TrapLabelManager,
     bw: BufferedWriter,
     diagnosticTrapWriter: TrapWriter?,
-    irFile: IrFile,
+    val irFile: IrFile,
     populateFileTables: Boolean) :
     FileTrapWriter(loggerBase, lm, bw, diagnosticTrapWriter, irFile.path, populateFileTables) {
 
