@@ -186,7 +186,7 @@ abstract class ClientSuppliedSecret extends API::CallNode { }
 private class FlaskClientSuppliedSecret extends ClientSuppliedSecret {
   FlaskClientSuppliedSecret() {
     this = Flask::request().getMember("headers").getMember(["get", "get_all", "getlist"]).getACall() and
-    this.getParameter(0, "key").asSink().asExpr().(StrConst).getText().toLowerCase() = sensitiveheaders()
+    this.getParameter(0, ["key", "name"]).asSink().asExpr().(StrConst).getText().toLowerCase() = sensitiveheaders()
   }
 }
 
@@ -222,7 +222,7 @@ private class WerkzeugClientSuppliedSecret extends ClientSuppliedSecret {
   WerkzeugClientSuppliedSecret() {
     this =
       headers().getMember(["headers", "META"]).getMember(["get", "get_all", "getlist"]).getACall() and
-    this.getParameter(0, "key").asSink().asExpr().(StrConst).getText().toLowerCase() = sensitiveheaders()
+    this.getParameter(0, ["key", "name"]).asSink().asExpr().(StrConst).getText().toLowerCase() = sensitiveheaders()
   }
 }
 
