@@ -45,14 +45,19 @@ private module Impl {
   private Element getImmediateChildOfGenericContext(
     GenericContext e, int index, string partialPredicateCall
   ) {
-    exists(int b, int bElement, int n |
+    exists(int b, int bElement, int n, int nGenericTypeParam |
       b = 0 and
       bElement = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfElement(e, i, _)) | i) and
       n = bElement and
+      nGenericTypeParam =
+        n + 1 + max(int i | i = -1 or exists(e.getImmediateGenericTypeParam(i)) | i) and
       (
         none()
         or
         result = getImmediateChildOfElement(e, index - b, partialPredicateCall)
+        or
+        result = e.getImmediateGenericTypeParam(index - n) and
+        partialPredicateCall = "GenericTypeParam(" + (index - n).toString() + ")"
       )
     )
   }

@@ -1109,7 +1109,8 @@ AbstractTypeParamDecl:
   _extends: TypeDecl
 
 GenericContext:
-  generic_type_params: GenericTypeParamDecl*
+  _children:
+    generic_type_params: GenericTypeParamDecl*
 
 GenericTypeDecl:
   _extends:
