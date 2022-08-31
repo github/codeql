@@ -122,6 +122,13 @@ private class ProduceCiphertextCall extends ProduceCryptoCall {
           .getMember(["DES", "DES3", "ARC2", "ARC4", "Blowfish", "PKCS1_v1_5"])
           .getMember(["ARC4Cipher", "new", "PKCS115_Cipher"])
           .getMember("encrypt")
+          .getACall() or
+    this =
+      cryptographylib()
+          .getMember("ciphers")
+          .getMember("Cipher")
+          .getReturn()
+          .getMember("finalize")
           .getACall()
   }
 
