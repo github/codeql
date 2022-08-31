@@ -84,16 +84,21 @@ class CleartextStorageConfig extends TaintTracking::Configuration {
     isSource(node)
   }
 
-  override predicate isAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
-    // TODO: the following special case flows are required to catch any of the Realm test
-    // cases, I hope we'll be able to remove them once we have field flow???
-    // flow out from field accesses, i.e. `a.b` -> `a`
-    exists(MemberRefExpr m |
-      node1.asExpr() = m and // `a.b`
-      node2.asExpr() = m.getImmediateBase() // `a`
+  override predicate allowImplicitRead(DataFlow::Node node, DataFlow::ContentSet c) {
+    // flow out from fields of a `RealmSwiftObject` at the sink, for example in `obj.var = tainted; sink(obj)`.
+    isSink(node) and
+    exists(ClassDecl cd |
+      c.getAReadContent().(DataFlow::Content::FieldContent).getField() = cd.getAMember() and
+      cd.getName() = ["RealmSwiftObject", "MyRealmSwiftObject"]
+      // TODO: should be cd.getParent*().getName() = "RealmSwiftObject"
     )
     or
-    // flow through assignment (!)
+    // any default implicit reads
+    super.allowImplicitRead(node, c)
+  }
+
+  override predicate isAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
+    // flow through assignment (!) TODO: we really shouldn't need this as a special case
     exists(AssignExpr ae |
       node1.asExpr() = ae.getSource() and
       node2.asExpr() = ae.getDest()
