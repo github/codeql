@@ -659,7 +659,7 @@ open class KotlinUsesExtractor(
                             }
                         }.buildSimpleType()
 
-                var componentType = s.getArrayElementType(pluginContext.irBuiltIns)
+                var componentType: IrType = s.getArrayElementType(pluginContext.irBuiltIns)
                 var isPrimitiveArray = false
                 var dimensions = 0
                 var elementType: IrType = s
