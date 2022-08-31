@@ -60,14 +60,18 @@ private module Impl {
   private Element getImmediateChildOfIterableDeclContext(
     IterableDeclContext e, int index, string partialPredicateCall
   ) {
-    exists(int b, int bElement, int n |
+    exists(int b, int bElement, int n, int nMember |
       b = 0 and
       bElement = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfElement(e, i, _)) | i) and
       n = bElement and
+      nMember = n + 1 + max(int i | i = -1 or exists(e.getImmediateMember(i)) | i) and
       (
         none()
         or
         result = getImmediateChildOfElement(e, index - b, partialPredicateCall)
+        or
+        result = e.getImmediateMember(index - n) and
+        partialPredicateCall = "Member(" + (index - n).toString() + ")"
       )
     )
   }
@@ -1562,18 +1566,14 @@ private module Impl {
   private Element getImmediateChildOfEnumCaseDecl(
     EnumCaseDecl e, int index, string partialPredicateCall
   ) {
-    exists(int b, int bDecl, int n, int nElement |
+    exists(int b, int bDecl, int n |
       b = 0 and
       bDecl = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfDecl(e, i, _)) | i) and
       n = bDecl and
-      nElement = n + 1 + max(int i | i = -1 or exists(e.getImmediateElement(i)) | i) and
       (
         none()
         or
         result = getImmediateChildOfDecl(e, index - b, partialPredicateCall)
-        or
-        result = e.getImmediateElement(index - n) and
-        partialPredicateCall = "Element(" + (index - n).toString() + ")"
       )
     )
   }
@@ -3970,17 +3970,14 @@ private module Impl {
   private Element getImmediateChildOfSelfApplyExpr(
     SelfApplyExpr e, int index, string partialPredicateCall
   ) {
-    exists(int b, int bApplyExpr, int n, int nBase |
+    exists(int b, int bApplyExpr, int n |
       b = 0 and
       bApplyExpr = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfApplyExpr(e, i, _)) | i) and
       n = bApplyExpr and
-      nBase = n + 1 and
       (
         none()
         or
         result = getImmediateChildOfApplyExpr(e, index - b, partialPredicateCall)
-        or
-        index = n and result = e.getImmediateBase() and partialPredicateCall = "Base()"
       )
     )
   }

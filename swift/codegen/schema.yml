@@ -60,7 +60,8 @@ Type:
   canonical_type: Type
 
 IterableDeclContext:
-  members: Decl*
+  _children:
+    members: Decl*
 
 ExtensionDecl:
   extended_type_decl: NominalTypeDecl
@@ -293,8 +294,7 @@ TypeAliasType:
 
 EnumCaseDecl:
   _extends: Decl
-  _children:
-    elements: EnumElementDecl*
+  elements: EnumElementDecl*
 
 IfConfigDecl:
   _extends: Decl
@@ -836,8 +836,7 @@ PrefixUnaryExpr:
 
 SelfApplyExpr:
   _extends: ApplyExpr
-  _children:
-    base: Expr
+  base: Expr
 
 ArrayExpr:
   _extends: CollectionExpr
