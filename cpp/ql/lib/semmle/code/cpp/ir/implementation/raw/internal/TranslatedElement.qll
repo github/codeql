@@ -168,6 +168,11 @@ private predicate isInvalidFunction(Function func) {
     expr.getEnclosingFunction() = func and
     not exists(expr.getType())
   )
+  or
+  exists(DeclStmt declStmt |
+    declStmt.getEnclosingFunction() = func and
+    not exists(declStmt.getADeclarationEntry())
+  )
 }
 
 /**
