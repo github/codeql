@@ -1095,17 +1095,18 @@ private module Impl {
   private Element getImmediateChildOfAbstractClosureExpr(
     AbstractClosureExpr e, int index, string partialPredicateCall
   ) {
-    exists(int b, int bCallable, int bExpr, int n |
+    exists(int b, int bExpr, int bCallable, int n |
       b = 0 and
-      bCallable = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfCallable(e, i, _)) | i) and
-      bExpr = bCallable + 1 + max(int i | i = -1 or exists(getImmediateChildOfExpr(e, i, _)) | i) and
-      n = bExpr and
+      bExpr = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfExpr(e, i, _)) | i) and
+      bCallable =
+        bExpr + 1 + max(int i | i = -1 or exists(getImmediateChildOfCallable(e, i, _)) | i) and
+      n = bCallable and
       (
         none()
         or
-        result = getImmediateChildOfCallable(e, index - b, partialPredicateCall)
+        result = getImmediateChildOfExpr(e, index - b, partialPredicateCall)
         or
-        result = getImmediateChildOfExpr(e, index - bCallable, partialPredicateCall)
+        result = getImmediateChildOfCallable(e, index - bExpr, partialPredicateCall)
       )
     )
   }
@@ -1666,24 +1667,26 @@ private module Impl {
   private Element getImmediateChildOfExtensionDecl(
     ExtensionDecl e, int index, string partialPredicateCall
   ) {
-    exists(int b, int bDecl, int bGenericContext, int bIterableDeclContext, int n |
+    exists(int b, int bGenericContext, int bIterableDeclContext, int bDecl, int n |
       b = 0 and
-      bDecl = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfDecl(e, i, _)) | i) and
       bGenericContext =
-        bDecl + 1 + max(int i | i = -1 or exists(getImmediateChildOfGenericContext(e, i, _)) | i) and
+        b + 1 + max(int i | i = -1 or exists(getImmediateChildOfGenericContext(e, i, _)) | i) and
       bIterableDeclContext =
         bGenericContext + 1 +
           max(int i | i = -1 or exists(getImmediateChildOfIterableDeclContext(e, i, _)) | i) and
-      n = bIterableDeclContext and
+      bDecl =
+        bIterableDeclContext + 1 +
+          max(int i | i = -1 or exists(getImmediateChildOfDecl(e, i, _)) | i) and
+      n = bDecl and
       (
         none()
         or
-        result = getImmediateChildOfDecl(e, index - b, partialPredicateCall)
-        or
-        result = getImmediateChildOfGenericContext(e, index - bDecl, partialPredicateCall)
+        result = getImmediateChildOfGenericContext(e, index - b, partialPredicateCall)
         or
         result =
           getImmediateChildOfIterableDeclContext(e, index - bGenericContext, partialPredicateCall)
+        or
+        result = getImmediateChildOfDecl(e, index - bIterableDeclContext, partialPredicateCall)
       )
     )
   }
@@ -2773,24 +2776,24 @@ private module Impl {
   private Element getImmediateChildOfAbstractFunctionDecl(
     AbstractFunctionDecl e, int index, string partialPredicateCall
   ) {
-    exists(int b, int bCallable, int bGenericContext, int bValueDecl, int n |
+    exists(int b, int bGenericContext, int bValueDecl, int bCallable, int n |
       b = 0 and
-      bCallable = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfCallable(e, i, _)) | i) and
       bGenericContext =
-        bCallable + 1 +
-          max(int i | i = -1 or exists(getImmediateChildOfGenericContext(e, i, _)) | i) and
+        b + 1 + max(int i | i = -1 or exists(getImmediateChildOfGenericContext(e, i, _)) | i) and
       bValueDecl =
         bGenericContext + 1 +
           max(int i | i = -1 or exists(getImmediateChildOfValueDecl(e, i, _)) | i) and
-      n = bValueDecl and
+      bCallable =
+        bValueDecl + 1 + max(int i | i = -1 or exists(getImmediateChildOfCallable(e, i, _)) | i) and
+      n = bCallable and
       (
         none()
         or
-        result = getImmediateChildOfCallable(e, index - b, partialPredicateCall)
-        or
-        result = getImmediateChildOfGenericContext(e, index - bCallable, partialPredicateCall)
+        result = getImmediateChildOfGenericContext(e, index - b, partialPredicateCall)
         or
         result = getImmediateChildOfValueDecl(e, index - bGenericContext, partialPredicateCall)
+        or
+        result = getImmediateChildOfCallable(e, index - bValueDecl, partialPredicateCall)
       )
     )
   }
@@ -4642,21 +4645,21 @@ private module Impl {
   private Element getImmediateChildOfNominalTypeDecl(
     NominalTypeDecl e, int index, string partialPredicateCall
   ) {
-    exists(int b, int bGenericTypeDecl, int bIterableDeclContext, int n |
+    exists(int b, int bIterableDeclContext, int bGenericTypeDecl, int n |
       b = 0 and
-      bGenericTypeDecl =
-        b + 1 + max(int i | i = -1 or exists(getImmediateChildOfGenericTypeDecl(e, i, _)) | i) and
       bIterableDeclContext =
-        bGenericTypeDecl + 1 +
-          max(int i | i = -1 or exists(getImmediateChildOfIterableDeclContext(e, i, _)) | i) and
-      n = bIterableDeclContext and
+        b + 1 + max(int i | i = -1 or exists(getImmediateChildOfIterableDeclContext(e, i, _)) | i) and
+      bGenericTypeDecl =
+        bIterableDeclContext + 1 +
+          max(int i | i = -1 or exists(getImmediateChildOfGenericTypeDecl(e, i, _)) | i) and
+      n = bGenericTypeDecl and
       (
         none()
         or
-        result = getImmediateChildOfGenericTypeDecl(e, index - b, partialPredicateCall)
+        result = getImmediateChildOfIterableDeclContext(e, index - b, partialPredicateCall)
         or
         result =
-          getImmediateChildOfIterableDeclContext(e, index - bGenericTypeDecl, partialPredicateCall)
+          getImmediateChildOfGenericTypeDecl(e, index - bIterableDeclContext, partialPredicateCall)
       )
     )
   }
