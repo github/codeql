@@ -1,0 +1,38 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>The <code>WebView.setWebContentsDebuggingEnabled</code> method enables or disables the contents of any <code>WebView</code> in the application to be debugged.</p>
+
+<p>Enabling debugging featues could allow for additional entry points or leaking sensitive information. 
+As such, debugging should only be anabled during development, and disabled during production builds.
+</overview>
+<recommendation>
+Ensure that debugging features are not enabled during production builds. 
+If <code>WebView.setWebContentsDebuggingEnabled(true)</code> is used, ensure that it is guarded by a flag indicating that this is a debug build.
+
+</recommendation>
+<example>
+
+<p>In the code below, the BAD case shows debugging always being enabled, 
+whereas the GOOD case only enables debugging if the <code>android:debuggable</code> attribute is set to <code>true</code>.</p>
+
+<sample src="WebviewDebuggingEnabled.java" />
+
+</example>
+<references>
+
+<li>
+  Android Developers: 
+  <a href="https://developer.android.com/reference/android/webkit/WebView.html#setWebContentsDebuggingEnabled(boolean)">setWebContentsDebuggingEnabled</a>.
+</li>
+
+<li>
+  Android Developers: 
+  <a href="https://developer.chrome.com/docs/devtools/remote-debugging/webviews/">Remote debugging WebViews</a>.
+</li>
+
+</references>
+</qhelp>
