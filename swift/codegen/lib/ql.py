@@ -96,8 +96,7 @@ class Class:
     ipa: bool = False
 
     def __post_init__(self):
-        bases = sorted(str(b) for b in self.bases)
-        self.bases = [Base(str(b), prev) for b, prev in zip(bases, itertools.chain([""], bases))]
+        self.bases = [Base(str(b), str(prev)) for b, prev in zip(self.bases, itertools.chain([""], self.bases))]
         if self.properties:
             self.properties[0].first = True
 
