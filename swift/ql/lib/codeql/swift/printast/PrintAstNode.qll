@@ -141,3 +141,25 @@ class PrintExpr extends PrintLocatable {
     child = TConversionContainer(ast)
   }
 }
+
+/**
+ * A specialization of graph node for `VarDecl`, to add typing information.
+ */
+class PrintVarDecl extends PrintLocatable {
+  override VarDecl ast;
+
+  override string getProperty(string key) {
+    key = "getType()" and result = ast.getType().toString()
+  }
+}
+
+/**
+ * A specialization of graph node for `AbstractFunctionDecl`, to add typing information.
+ */
+class PrintCallable extends PrintLocatable {
+  override AbstractFunctionDecl ast;
+
+  override string getProperty(string key) {
+    key = "getInterfaceType()" and result = ast.getInterfaceType().toString()
+  }
+}
