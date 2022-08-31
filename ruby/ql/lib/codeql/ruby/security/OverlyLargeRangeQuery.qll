@@ -173,7 +173,7 @@ module RangePrinter {
   }
 
   /** Gets the number of parts we should print for a given `range`. */
-  private int parts(OverlyWideRange range) { result = 1 + strictcount(cutoff(range, _)) }
+  private int parts(OverlyWideRange range) { result = 1 + count(cutoff(range, _)) }
 
   /** Holds if the given part of a range should span from `low` to `high`. */
   private predicate part(OverlyWideRange range, int part, string low, string high) {
@@ -238,8 +238,13 @@ module RangePrinter {
 
 /** Gets a char range that is overly large because of `reason`. */
 RegExpCharacterRange getABadRange(string reason, int priority) {
+  result instanceof OverlyWideRange and
   priority = 0 and
-  reason = "is equivalent to " + result.(OverlyWideRange).printEquivalent()
+  exists(string equiv | equiv = result.(OverlyWideRange).printEquivalent() |
+    if equiv.length() <= 50
+    then reason = "is equivalent to " + equiv
+    else reason = "is equivalent to " + equiv.substring(0, 50) + "..."
+  )
   or
   priority = 1 and
   exists(RegExpCharacterRange other |

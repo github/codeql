@@ -112,7 +112,7 @@ module Electron {
      */
     class ProcessSender extends Process {
       ProcessSender() {
-        exists(IPCSendRegistration reg | reg.getEmitter() instanceof MainProcess |
+        exists(IpcSendRegistration reg | reg.getEmitter() instanceof MainProcess |
           this = reg.getABoundCallbackParameter(1, 0).getAPropertyRead("sender")
         )
       }
@@ -123,28 +123,31 @@ module Electron {
      * Does mostly the same as an EventEmitter event handler,
      * except that values can be returned through the `event.returnValue` property.
      */
-    class IPCSendRegistration extends EventRegistration::DefaultEventRegistration,
+    class IpcSendRegistration extends EventRegistration::DefaultEventRegistration,
       DataFlow::MethodCallNode {
       override Process emitter;
 
-      IPCSendRegistration() { this = emitter.ref().getAMethodCall(EventEmitter::on()) }
+      IpcSendRegistration() { this = emitter.ref().getAMethodCall(EventEmitter::on()) }
 
       override DataFlow::Node getAReturnedValue() {
         result = this.getABoundCallbackParameter(1, 0).getAPropertyWrite("returnValue").getRhs()
       }
 
-      override IPCDispatch getAReturnDispatch() { result.getCalleeName() = "sendSync" }
+      override IpcDispatch getAReturnDispatch() { result.getCalleeName() = "sendSync" }
     }
+
+    /** DEPRECATED: Alias for IpcSendRegistration */
+    deprecated class IPCSendRegistration = IpcSendRegistration;
 
     /**
      * A dispatch of an IPC event.
      * An IPC event is sent from the renderer to the main process.
      * And a value can be returned through the `returnValue` property of the event (first parameter in the callback).
      */
-    class IPCDispatch extends EventDispatch::DefaultEventDispatch, DataFlow::InvokeNode {
+    class IpcDispatch extends EventDispatch::DefaultEventDispatch, DataFlow::InvokeNode {
       override Process emitter;
 
-      IPCDispatch() {
+      IpcDispatch() {
         exists(string methodName | methodName = "sendSync" or methodName = "send" |
           this = emitter.ref().getAMemberCall(methodName)
         )
@@ -163,7 +166,7 @@ module Electron {
       /**
        * Gets a registration that this dispatch can send an event to.
        */
-      override IPCSendRegistration getAReceiver() {
+      override IpcSendRegistration getAReceiver() {
         this.getEmitter() instanceof RendererProcess and
         result.getEmitter() instanceof MainProcess
         or
@@ -171,6 +174,9 @@ module Electron {
         result.getEmitter() instanceof RendererProcess
       }
     }
+
+    /** DEPRECATED: Alias for IpcDispatch */
+    deprecated class IPCDispatch = IpcDispatch;
   }
 
   /**

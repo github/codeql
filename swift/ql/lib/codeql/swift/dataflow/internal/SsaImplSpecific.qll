@@ -4,6 +4,7 @@ private import swift
 private import codeql.swift.controlflow.BasicBlocks as BasicBlocks
 private import codeql.swift.controlflow.ControlFlowGraph
 private import codeql.swift.controlflow.CfgNodes
+private import DataFlowPrivate
 
 class BasicBlock = BasicBlocks::BasicBlock;
 
@@ -29,13 +30,6 @@ predicate variableWrite(BasicBlock bb, int i, SourceVariable v, boolean certain)
     certain = true
   )
   or
-  exists(ApplyExpr call, InOutExpr expr |
-    expr = [call.getAnArgument().getExpr(), call.getQualifier()] and
-    expr.getSubExpr() = v.getAnAccess() and
-    bb.getNode(i).getNode().asAstNode() = call and
-    certain = false
-  )
-  or
   v instanceof ParamDecl and
   bb.getNode(i).getNode().asAstNode() = v and
   certain = true
@@ -48,8 +42,6 @@ predicate variableWrite(BasicBlock bb, int i, SourceVariable v, boolean certain)
   )
 }
 
-private predicate isLValue(DeclRefExpr ref) { any(AssignExpr assign).getDest() = ref }
-
 predicate variableRead(BasicBlock bb, int i, SourceVariable v, boolean certain) {
   exists(DeclRefExpr ref |
     not isLValue(ref) and
@@ -58,10 +50,17 @@ predicate variableRead(BasicBlock bb, int i, SourceVariable v, boolean certain) 
     certain = true
   )
   or
+  exists(InOutExpr expr |
+    bb.getNode(i).getNode().asAstNode() = expr and
+    expr.getSubExpr() = v.getAnAccess() and
+    certain = true
+  )
+  or
   exists(ExitNode exit, AbstractFunctionDecl func |
+    func.getAParam() = v or func.getSelfParam() = v
+  |
     bb.getNode(i) = exit and
-    v.(ParamDecl).isInout() and
-    func.getAParam() = v and
+    modifiableParam(v) and
     bb.getScope() = func and
     certain = true
   )

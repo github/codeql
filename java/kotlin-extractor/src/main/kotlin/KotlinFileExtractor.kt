@@ -159,31 +159,6 @@ open class KotlinFileExtractor(
         }
     }
 
-
-
-    fun getLabel(element: IrElement) : String? {
-        when (element) {
-            is IrClass -> return getClassLabel(element, listOf()).classLabel
-            is IrTypeParameter -> return getTypeParameterLabel(element)
-            is IrFunction -> return getFunctionLabel(element, null)
-            is IrValueParameter -> return getValueParameterLabel(element, null)
-            is IrProperty -> return getPropertyLabel(element)
-            is IrField -> return getFieldLabel(element)
-            is IrEnumEntry -> return getEnumEntryLabel(element)
-            is IrTypeAlias -> return getTypeAliasLabel(element)
-
-            // Fresh entities:
-            is IrBody -> return null
-            is IrExpression -> return null
-
-            // todo add others:
-            else -> {
-                logger.errorElement("Unhandled element type: ${element::class}", element)
-                return null
-            }
-        }
-    }
-
     private fun extractTypeParameter(tp: IrTypeParameter, apparentIndex: Int, javaTypeParameter: JavaTypeParameter?): Label<out DbTypevariable>? {
         with("type parameter", tp) {
             val parentId = getTypeParameterParentLabel(tp) ?: return null
@@ -1544,18 +1519,17 @@ open class KotlinFileExtractor(
     }
 
     private fun extractStaticTypeAccessQualifier(target: IrDeclaration, parentExpr: Label<out DbExprparent>, locId: Label<DbLocation>, enclosingCallable: Label<out DbCallable>, enclosingStmt: Label<out DbStmt>) {
-        if (target.shouldExtractAsStaticMemberOfClass) {
-            extractTypeAccessRecursive(target.parentAsClass.toRawType(), locId, parentExpr, -1, enclosingCallable, enclosingStmt)
-        } else if (target.shouldExtractAsStaticMemberOfFile) {
-            extractTypeAccess(useFileClassType(target.parent as IrFile), locId, parentExpr, -1, enclosingCallable, enclosingStmt)
+        if (target.shouldExtractAsStatic) {
+            val parent = target.parent
+            if (parent is IrClass) {
+                extractTypeAccessRecursive(parent.toRawType(), locId, parentExpr, -1, enclosingCallable, enclosingStmt)
+            } else if (parent is IrFile) {
+                extractTypeAccess(useFileClassType(parent), locId, parentExpr, -1, enclosingCallable, enclosingStmt)
+            } else {
+                logger.warnElement("Unexpected static type access qualifer ${parent.javaClass}", target)
+            }
         }
     }
-
-    private val IrDeclaration.shouldExtractAsStaticMemberOfClass: Boolean
-        get() = this.shouldExtractAsStatic && parent is IrClass
-
-    private val IrDeclaration.shouldExtractAsStaticMemberOfFile: Boolean
-        get() = this.shouldExtractAsStatic && parent is IrFile
 
     private fun isStaticAnnotatedNonCompanionMember(f: IrSimpleFunction) =
         f.parentClassOrNull?.isNonCompanionObject == true &&
@@ -1600,11 +1574,13 @@ open class KotlinFileExtractor(
         return result
     }
 
-    private fun findTopLevelFunctionOrWarn(functionFilter: String, type: String, warnAgainstElement: IrElement): IrFunction? {
+    private fun findTopLevelFunctionOrWarn(functionFilter: String, type: String, parameterTypes: Array<String>, warnAgainstElement: IrElement): IrFunction? {
 
         val fn = pluginContext.referenceFunctions(FqName(functionFilter))
-            .firstOrNull { it.owner.parentClassOrNull?.fqNameWhenAvailable?.asString() == type }
-            ?.owner
+            .firstOrNull { fnSymbol ->
+                fnSymbol.owner.parentClassOrNull?.fqNameWhenAvailable?.asString() == type &&
+                fnSymbol.owner.valueParameters.map { it.type.classFqName?.asString() }.toTypedArray() contentEquals parameterTypes
+            }?.owner
 
         if (fn != null) {
             if (fn.parentClassOrNull != null) {
@@ -1751,6 +1727,12 @@ open class KotlinFileExtractor(
             "DoubleArray" -> true
             "CharArray" -> true
             "BooleanArray" -> true
+            else -> false
+        }
+
+    private fun isGenericArrayType(typeName: String) =
+        when(typeName) {
+            "Array" -> true
             else -> false
         }
 
@@ -2175,8 +2157,20 @@ open class KotlinFileExtractor(
                         extractRawMethodAccess(getter, c, callable, parent, idx, enclosingStmt, listOf(), null, ext, typeArguments)
                     }
                 }
-                isFunction(target, "kotlin", "(some array type)", { isArrayType(it) }, "iterator") && c.origin == IrStatementOrigin.FOR_LOOP_ITERATOR -> {
-                    findTopLevelFunctionOrWarn("kotlin.jvm.internal.iterator", "kotlin.jvm.internal.ArrayIteratorKt", c)?.let { iteratorFn ->
+                isFunction(target, "kotlin", "(some array type)", { isArrayType(it) }, "iterator") -> {
+                    val parentClass = target.parent
+                    if (parentClass !is IrClass) {
+                        logger.errorElement("Iterator parent is not a class", c)
+                        return
+                    }
+
+                    var typeFilter = if (isGenericArrayType(parentClass.name.asString())) {
+                        "kotlin.jvm.internal.ArrayIteratorKt"
+                    } else {
+                        "kotlin.jvm.internal.ArrayIteratorsKt"
+                    }
+
+                    findTopLevelFunctionOrWarn("kotlin.jvm.internal.iterator", typeFilter, arrayOf(parentClass.kotlinFqName.asString()), c)?.let { iteratorFn ->
                         val dispatchReceiver = c.dispatchReceiver
                         if (dispatchReceiver == null) {
                             logger.errorElement("No dispatch receiver found for array iterator call", c)

@@ -30,7 +30,7 @@ MyClass: {}
 """)
     assert ret.classes == {
         root_name: schema.Class(root_name, derived={'MyClass'}),
-        'MyClass': schema.Class('MyClass', bases={root_name}),
+        'MyClass': schema.Class('MyClass', bases=[root_name]),
     }
 
 
@@ -41,8 +41,8 @@ MyClass2: {}
 """)
     assert ret.classes == {
         root_name: schema.Class(root_name, derived={'MyClass1', 'MyClass2'}),
-        'MyClass1': schema.Class('MyClass1', bases={root_name}),
-        'MyClass2': schema.Class('MyClass2', bases={root_name}),
+        'MyClass1': schema.Class('MyClass1', bases=[root_name]),
+        'MyClass2': schema.Class('MyClass2', bases=[root_name]),
     }
 
 
@@ -54,8 +54,8 @@ MyClass2:
 """)
     assert ret.classes == {
         root_name: schema.Class(root_name, derived={'MyClass1'}),
-        'MyClass1': schema.Class('MyClass1', bases={root_name}, derived={'MyClass2'}),
-        'MyClass2': schema.Class('MyClass2', bases={'MyClass1'}),
+        'MyClass1': schema.Class('MyClass1', bases=[root_name], derived={'MyClass2'}),
+        'MyClass2': schema.Class('MyClass2', bases=['MyClass1']),
     }
 
 
@@ -70,9 +70,9 @@ C:
 """)
     assert ret.classes == {
         root_name: schema.Class(root_name, derived={'A', 'B'}),
-        'A': schema.Class('A', bases={root_name}, derived={'C'}),
-        'B': schema.Class('B', bases={root_name}, derived={'C'}),
-        'C': schema.Class('C', bases={'A', 'B'}),
+        'A': schema.Class('A', bases=[root_name], derived={'C'}),
+        'B': schema.Class('B', bases=[root_name], derived={'C'}),
+        'C': schema.Class('C', bases=['A', 'B']),
     }
 
 
@@ -83,7 +83,7 @@ A:
 """)
     assert ret.classes == {
         root_name: schema.Class(root_name, derived={'A'}),
-        'A': schema.Class('A', bases={root_name}, dir=pathlib.Path("other/dir")),
+        'A': schema.Class('A', bases=[root_name], dir=pathlib.Path("other/dir")),
     }
 
 
@@ -103,13 +103,13 @@ A: {}
 """)
     assert ret.classes == {
         root_name: schema.Class(root_name, derived={'Afoo', 'Bbar', 'Abar', 'Bfoo', 'Ax', 'Ay', 'A'}),
-        'Afoo': schema.Class('Afoo', bases={root_name}, dir=pathlib.Path("second/dir")),
-        'Bbar': schema.Class('Bbar', bases={root_name}, dir=pathlib.Path("third/dir")),
-        'Abar': schema.Class('Abar', bases={root_name}, dir=pathlib.Path("third/dir")),
-        'Bfoo': schema.Class('Bfoo', bases={root_name}, dir=pathlib.Path("second/dir")),
-        'Ax': schema.Class('Ax', bases={root_name}, dir=pathlib.Path("first/dir")),
-        'Ay': schema.Class('Ay', bases={root_name}, dir=pathlib.Path("first/dir")),
-        'A': schema.Class('A', bases={root_name}, dir=pathlib.Path()),
+        'Afoo': schema.Class('Afoo', bases=[root_name], dir=pathlib.Path("second/dir")),
+        'Bbar': schema.Class('Bbar', bases=[root_name], dir=pathlib.Path("third/dir")),
+        'Abar': schema.Class('Abar', bases=[root_name], dir=pathlib.Path("third/dir")),
+        'Bfoo': schema.Class('Bfoo', bases=[root_name], dir=pathlib.Path("second/dir")),
+        'Ax': schema.Class('Ax', bases=[root_name], dir=pathlib.Path("first/dir")),
+        'Ay': schema.Class('Ay', bases=[root_name], dir=pathlib.Path("first/dir")),
+        'A': schema.Class('A', bases=[root_name], dir=pathlib.Path()),
     }
 
 
@@ -122,7 +122,7 @@ A:
 """)
     assert ret.classes == {
         root_name: schema.Class(root_name, derived={'A'}),
-        'A': schema.Class('A', bases={root_name}, dir=pathlib.Path("other/dir")),
+        'A': schema.Class('A', bases=[root_name], dir=pathlib.Path("other/dir")),
     }
 
 
@@ -147,7 +147,7 @@ A:
 """)
     assert ret.classes == {
         root_name: schema.Class(root_name, derived={'A'}),
-        'A': schema.Class('A', bases={root_name}, properties=[
+        'A': schema.Class('A', bases=[root_name], properties=[
             schema.SingleProperty('one', 'string'),
             schema.OptionalProperty('two', 'int'),
             schema.RepeatedProperty('three', 'bool'),
@@ -182,7 +182,7 @@ A:
 """)
     assert ret.classes == {
         root_name: schema.Class(root_name, derived={'A'}),
-        'A': schema.Class('A', bases={root_name}, properties=[
+        'A': schema.Class('A', bases=[root_name], properties=[
             schema.SingleProperty('a', 'string'),
             schema.RepeatedProperty('b', 'B'),
             schema.SingleProperty('c', 'C', is_child=True),
@@ -211,7 +211,7 @@ A:
 """)
     assert ret.classes == {
         root_name: schema.Class(root_name, derived={'A'}),
-        'A': schema.Class('A', bases={root_name}, properties=[
+        'A': schema.Class('A', bases=[root_name], properties=[
             schema.RepeatedProperty('x', 'string'),
         ]),
     }
@@ -226,7 +226,7 @@ A:
 """)
     assert ret.classes == {
         root_name: schema.Class(root_name, derived={'A'}),
-        'A': schema.Class('A', bases={root_name}, properties=[
+        'A': schema.Class('A', bases=[root_name], properties=[
             schema.RepeatedProperty('x', 'string', pragmas=["foo", "bar"]),
         ]),
     }
@@ -241,7 +241,7 @@ A:
 """)
     assert ret.classes == {
         root_name: schema.Class(root_name, derived={'A'}),
-        'A': schema.Class('A', bases={root_name}, properties=[
+        'A': schema.Class('A', bases=[root_name], properties=[
             schema.RepeatedProperty('x', 'string', pragmas=["foo"]),
         ]),
     }
@@ -274,7 +274,7 @@ A:
 """)
     assert ret.classes == {
         root_name: schema.Class(root_name, derived={'A'}),
-        'A': schema.Class('A', bases={root_name}, properties=[
+        'A': schema.Class('A', bases=[root_name], properties=[
             schema.RepeatedProperty('x', 'string'),
         ], pragmas=["foo", "bar"]),
     }
@@ -288,7 +288,7 @@ A:
 """)
     assert ret.classes == {
         root_name: schema.Class(root_name, derived={'A'}),
-        'A': schema.Class('A', bases={root_name}, properties=[
+        'A': schema.Class('A', bases=[root_name], properties=[
             schema.RepeatedProperty('x', 'string'),
         ], pragmas=["foo"]),
     }
@@ -311,7 +311,7 @@ MyClass:
 """)
     assert ret.classes == {
         root_name: schema.Class(root_name, derived={'MyClass'}),
-        'MyClass': schema.Class('MyClass', bases={root_name}, ipa=schema.IpaInfo(from_class="A")),
+        'MyClass': schema.Class('MyClass', bases=[root_name], ipa=schema.IpaInfo(from_class="A")),
     }
 
 
@@ -325,7 +325,7 @@ MyClass:
 """)
     assert ret.classes == {
         root_name: schema.Class(root_name, derived={'MyClass'}),
-        'MyClass': schema.Class('MyClass', bases={root_name}, ipa=schema.IpaInfo(on_arguments={"x": "A", "y": "int"})),
+        'MyClass': schema.Class('MyClass', bases=[root_name], ipa=schema.IpaInfo(on_arguments={"x": "A", "y": "int"})),
     }
 
 

@@ -584,19 +584,19 @@
   ],
   "Swift declarations test file": [
     "swift/ql/test/extractor-tests/declarations/declarations.swift",
-    "swift/ql/test/library-tests/parent/declarations.swift"
+    "swift/ql/test/library-tests/ast/declarations.swift"
   ],
   "Swift statements test file": [
     "swift/ql/test/extractor-tests/statements/statements.swift",
-    "swift/ql/test/library-tests/parent/statements.swift"
+    "swift/ql/test/library-tests/ast/statements.swift"
   ],
   "Swift expressions test file": [
     "swift/ql/test/extractor-tests/expressions/expressions.swift",
-    "swift/ql/test/library-tests/parent/expressions.swift"
+    "swift/ql/test/library-tests/ast/expressions.swift"
   ],
   "Swift patterns test file": [
     "swift/ql/test/extractor-tests/patterns/patterns.swift",
-    "swift/ql/test/library-tests/parent/patterns.swift"
+    "swift/ql/test/library-tests/ast/patterns.swift"
   ],
   "IncompleteMultiCharacterSanitization JS/Ruby": [
     "javascript/ql/lib/semmle/javascript/security/IncompleteMultiCharacterSanitizationQuery.qll",

@@ -55,7 +55,8 @@ private predicate isJdkInternal(J::CompilationUnit cu) {
 private predicate isRelevantForModels(J::Callable api) {
   not isInTestFile(api.getCompilationUnit().getFile()) and
   not isJdkInternal(api.getCompilationUnit()) and
-  not api instanceof J::MainMethod
+  not api instanceof J::MainMethod and
+  not api instanceof J::StaticInitializer
 }
 
 /**
@@ -259,3 +260,9 @@ predicate isRelevantSinkKind(string kind) {
   not kind.matches("regex-use%") and
   not kind = "write-file"
 }
+
+/**
+ * Holds if `kind` is a relevant source kind for creating source models.
+ */
+bindingset[kind]
+predicate isRelevantSourceKind(string kind) { any() }
