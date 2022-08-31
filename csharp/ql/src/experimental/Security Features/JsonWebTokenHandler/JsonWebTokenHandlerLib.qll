@@ -32,10 +32,7 @@ class FalseValueFlowsToTokenValidationParametersPropertyWriteToBypassValidation 
   }
 
   override predicate isSink(DataFlow::Node sink) {
-    exists(Assignment a |
-      sink.asExpr() =
-        any(TokenValidationParametersPropertySensitiveValidation p).getAnAssignedValue()
-    )
+    sink.asExpr() = any(TokenValidationParametersPropertySensitiveValidation p).getAnAssignedValue()
   }
 }
 
@@ -245,7 +242,7 @@ class CallableAlwaysReturnsParameter0MayThrowExceptions extends CallableReturnsS
 predicate isExpressionAlwaysTrue(Expr e) {
   e.(BoolLiteral).getBoolValue() = true
   or
-  e.(Expr).getValue() = "true"
+  e.getValue() = "true"
   or
   e instanceof ConditionalExpr and
   isExpressionAlwaysTrue(e.(ConditionalExpr).getThen()) and
