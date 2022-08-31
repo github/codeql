@@ -52,10 +52,6 @@ class Baz {
   }
 }
 
-class Derived : Baz {}
-
-var d: Baz? = Derived() as Baz
-
 prefix operator +-
 
 precedencegroup NewPrecedence {
@@ -152,3 +148,8 @@ class GenericClass<A, B: Baz, C: MyProtocol> {
 }
 
 func genericFunc<A, B: Baz, C: MyProtocol>(_: A, _: B, _: C) {}
+
+class Derived : Baz {}
+
+// multiple conversions
+var d: Baz? = Derived() as Baz
