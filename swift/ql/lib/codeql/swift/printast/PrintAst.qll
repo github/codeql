@@ -5,18 +5,16 @@
 import swift
 import codeql.swift.generated.ParentChild
 
+private newtype TPrintAstConfiguration = TMakePrintAstConfiguration()
+
 /**
- * Hook to customize the files and functions printed by this module.
- *
- * For an AstNode to be printed, it always requires `shouldPrintFile(f)` to hold
- * for its containing file `f`, and additionally requires `shouldPrintFunction(fun)`
- * to hold if it is, or is a child of, function `fun`.
+ * The hook to customize the files and functions printed by this module.
  */
-class PrintAstConfiguration extends string {
+class PrintAstConfiguration extends TPrintAstConfiguration {
   /**
-   * Restrict to a single string, making this a singleton type.
+   * Gets the string representation of this singleton
    */
-  PrintAstConfiguration() { this = "PrintAstConfiguration" }
+  string toString() { result = "PrintAstConfiguration" }
 
   /**
    * Holds if the AST for `e` should be printed. By default, holds for all.

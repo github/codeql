@@ -12,14 +12,14 @@ import codeql.swift.printast.PrintAst
 import IDEContextual
 
 /**
- * The source file to generate an AST from.
+ * Gets the source file to generate an AST from.
  */
 external string selectedSourceFile();
 
 class PrintAstConfigurationOverride extends PrintAstConfiguration {
   /**
    * Holds if the location matches the selected file in the VS Code extension and
-   * the element is `fromSource`.
+   * the element is `e`.
    */
   override predicate shouldPrint(Locatable e) {
     super.shouldPrint(e) and
