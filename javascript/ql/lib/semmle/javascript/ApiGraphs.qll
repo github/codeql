@@ -663,7 +663,14 @@ module API {
         or
         any(Type t).hasUnderlyingType(m, _)
       } or
-      MkClassInstance(DataFlow::ClassNode cls) { cls = trackDefNode(_) and hasSemantics(cls) } or
+      MkClassInstance(DataFlow::ClassNode cls) {
+        hasSemantics(cls) and
+        (
+          cls = trackDefNode(_)
+          or
+          cls.getAnInstanceReference() = trackDefNode(_)
+        )
+      } or
       MkAsyncFuncResult(DataFlow::FunctionNode f) {
         f = trackDefNode(_) and f.getFunction().isAsync() and hasSemantics(f)
       } or
@@ -754,16 +761,6 @@ module API {
               pred.(DataFlow::ClassNode)
                   .getStaticMember(name, DataFlow::MemberKind::getter())
                   .getAReturn()
-          )
-          or
-          // If `new C()` escapes, generate edges to its instance members
-          exists(DataFlow::ClassNode cls, string name |
-            pred = cls.getAClassReference().getAnInstantiation() and
-            lbl = Label::member(name)
-          |
-            rhs = cls.getInstanceMethod(name)
-            or
-            rhs = cls.getInstanceMember(name, DataFlow::MemberKind::getter()).getAReturn()
           )
         )
         or
@@ -1253,9 +1250,13 @@ module API {
         succ = MkUse(ref)
       )
       or
-      exists(DataFlow::Node rhs |
-        rhs(pred, lbl, rhs) and
+      exists(DataFlow::Node rhs | rhs(pred, lbl, rhs) |
         succ = MkDef(rhs)
+        or
+        exists(DataFlow::ClassNode cls |
+          cls.getAnInstanceReference() = rhs and
+          succ = MkClassInstance(cls)
+        )
       )
       or
       exists(DataFlow::Node def |
