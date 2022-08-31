@@ -156,7 +156,7 @@ class PrintVarDecl extends PrintLocatable {
 /**
  * A specialization of graph node for `AbstractFunctionDecl`, to add typing information.
  */
-class PrintCallable extends PrintLocatable {
+class PrintAbstractFunctionDecl extends PrintLocatable {
   override AbstractFunctionDecl ast;
 
   override string getProperty(string key) {
