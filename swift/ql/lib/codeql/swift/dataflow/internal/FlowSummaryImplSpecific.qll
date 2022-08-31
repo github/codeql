@@ -27,7 +27,7 @@ Node summaryNode(SummarizedCallable c, SummaryNodeState state) { result = TSumma
 SummaryCall summaryDataFlowCall(Node receiver) { receiver = result.getReceiver() }
 
 /** Gets the type of content `c`. */
-DataFlowType getContentType(Content c) { any() }
+DataFlowType getContentType(ContentSet c) { any() }
 
 /** Gets the return type of kind `rk` for callable `c`. */
 bindingset[c]
@@ -109,13 +109,13 @@ SummaryComponent interpretComponentSpecific(AccessPathToken c) {
 }
 
 /** Gets the textual representation of the content in the format used for flow summaries. */
-private string getContentSpecificCsv(Content c) {
+private string getContentSpecificCsv(ContentSet c) {
   none() // TODO once we have field flow
 }
 
 /** Gets the textual representation of a summary component in the format used for flow summaries. */
 string getComponentSpecificCsv(SummaryComponent sc) {
-  exists(Content c | sc = TContentSummaryComponent(c) and result = getContentSpecificCsv(c))
+  exists(ContentSet c | sc = TContentSummaryComponent(c) and result = getContentSpecificCsv(c))
   or
   exists(ReturnKind rk |
     sc = TReturnSummaryComponent(rk) and
