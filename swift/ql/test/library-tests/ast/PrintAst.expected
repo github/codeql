@@ -162,6 +162,8 @@ declarations.swift:
 #   38|         getExpr(): [VarargExpansionExpr] [...]
 #   38|           getSubExpr(): [ArrayExpr] [...]
 #   38|             getElement(0): [StringLiteralExpr] some top level statement
+#   38|               conversions: 
+#   38|                 getConversion(0): [ErasureExpr] (Any) ...
 #   38|       getArgument(1): [Argument] separator: default separator
 #   38|         getExpr(): [DefaultArgumentExpr] default separator
 #   38|       getArgument(2): [Argument] terminator: default terminator
@@ -204,152 +206,155 @@ declarations.swift:
 #   50|     getBody(): [BraceStmt] { ... }
 #   51|       getElement(0): [ReturnStmt] return ...
 #   51|         getResult(): [DeclRefExpr] other
-#   55| [PrefixOperatorDecl] +-
-#   57| [PrecedenceGroupDecl] precedencegroup ...
-#   64| [InfixOperatorDecl] +++
-#   66| [InfixOperatorDecl] ***
-#   68| [StructDecl] ZeroWrapper
-#   69|   getMember(0): [PatternBindingDecl] var ... = ...
-#   69|     getPattern(0): [TypedPattern] ... as ...
-#   69|       getSubPattern(): [NamedPattern] wrappedValue
-#   69|       getTypeRepr(): [TypeRepr] Int
-#   69|   getMember(1): [ConcreteVarDecl] wrappedValue
-#   70|     getAccessorDecl(0): [AccessorDecl] get
-#   70|       getSelfParam(): [ParamDecl] self
-#   70|       getBody(): [BraceStmt] { ... }
-#   71|         getElement(0): [ReturnStmt] return ...
-#   71|           getResult(): [IntegerLiteralExpr] 0
-#   68|   getMember(2): [ConstructorDecl] init()
-#   68|     getSelfParam(): [ParamDecl] self
-#   68|     getBody(): [BraceStmt] { ... }
-#   68|       getElement(0): [ReturnStmt] return
-#   76| [ConcreteFuncDecl] foo()
-#   76|   getBody(): [BraceStmt] { ... }
-#   77|     getElement(0): [PatternBindingDecl] var ... = ...
-#   77|       getPattern(0): [TypedPattern] ... as ...
-#   77|         getSubPattern(): [NamedPattern] x
-#   77|         getTypeRepr(): [TypeRepr] Int
-#   77|     getElement(1): [ConcreteVarDecl] x
-#   77|       getAccessorDecl(0): [AccessorDecl] get
-#   77|         getBody(): [BraceStmt] { ... }
-#   78|     getElement(2): [ReturnStmt] return ...
-#   78|       getResult(): [DeclRefExpr] x
-#   77| [CallExpr] call to init()
-#   77|   getFunction(): [ConstructorRefCallExpr] call to init()
-#   77|     getFunction(): [DeclRefExpr] init()
-#   77|     getArgument(0): [Argument] : ZeroWrapper.Type
-#   77|       getExpr(): [TypeExpr] ZeroWrapper.Type
-#   77|         getTypeRepr(): [TypeRepr] ZeroWrapper
-#   77| [TypedPattern] ... as ...
-#   77|   getSubPattern(): [NamedPattern] _x
-#   77| [ConcreteVarDecl] _x
-#   81| [StructDecl] HasPropertyAndObserver
-#   82|   getMember(0): [PatternBindingDecl] var ... = ...
-#   82|     getPattern(0): [TypedPattern] ... as ...
-#   82|       getSubPattern(): [NamedPattern] settableField
-#   82|       getTypeRepr(): [TypeRepr] Int
-#   82|   getMember(1): [ConcreteVarDecl] settableField
-#   83|     getAccessorDecl(0): [AccessorDecl] set
-#   83|       getSelfParam(): [ParamDecl] self
-#   83|       getParam(0): [ParamDecl] newValue
-#   83|       getBody(): [BraceStmt] { ... }
-#   84|     getAccessorDecl(1): [AccessorDecl] get
-#   84|       getSelfParam(): [ParamDecl] self
-#   84|       getBody(): [BraceStmt] { ... }
-#   85|         getElement(0): [ReturnStmt] return ...
-#   85|           getResult(): [IntegerLiteralExpr] 0
-#   82|     getAccessorDecl(2): [AccessorDecl] (unnamed function decl)
-#   82|       getSelfParam(): [ParamDecl] self
-#   82|       getBody(): [BraceStmt] { ... }
-#   82|         getElement(0): [YieldStmt] yield ...
-#   91|   getMember(2): [PatternBindingDecl] var ... = ...
-#   91|     getPattern(0): [TypedPattern] ... as ...
-#   91|       getSubPattern(): [NamedPattern] readOnlyField1
-#   91|       getTypeRepr(): [TypeRepr] Int
-#   91|   getMember(3): [ConcreteVarDecl] readOnlyField1
-#   91|     getAccessorDecl(0): [AccessorDecl] get
-#   91|       getSelfParam(): [ParamDecl] self
-#   91|       getBody(): [BraceStmt] { ... }
-#   92|         getElement(0): [ReturnStmt] return ...
-#   92|           getResult(): [IntegerLiteralExpr] 0
-#   96|   getMember(4): [PatternBindingDecl] var ... = ...
-#   96|     getPattern(0): [TypedPattern] ... as ...
-#   96|       getSubPattern(): [NamedPattern] readOnlyField2
-#   96|       getTypeRepr(): [TypeRepr] Int
-#   96|   getMember(5): [ConcreteVarDecl] readOnlyField2
-#   97|     getAccessorDecl(0): [AccessorDecl] get
-#   97|       getSelfParam(): [ParamDecl] self
-#   97|       getBody(): [BraceStmt] { ... }
-#   98|         getElement(0): [ReturnStmt] return ...
-#   98|           getResult(): [IntegerLiteralExpr] 0
-#  102|   getMember(6): [PatternBindingDecl] var ... = ...
-#  102|     getPattern(0): [TypedPattern] ... as ...
-#  102|       getSubPattern(): [NamedPattern] normalField
-#  102|       getTypeRepr(): [TypeRepr] Int
-#  102|   getMember(7): [ConcreteVarDecl] normalField
-#  102|     getAccessorDecl(0): [AccessorDecl] get
-#  102|       getSelfParam(): [ParamDecl] self
-#  102|       getBody(): [BraceStmt] { ... }
-#  102|     getAccessorDecl(1): [AccessorDecl] set
-#  102|       getSelfParam(): [ParamDecl] self
-#  102|       getParam(0): [ParamDecl] value
-#  102|       getBody(): [BraceStmt] { ... }
-#  102|     getAccessorDecl(2): [AccessorDecl] (unnamed function decl)
-#  102|       getSelfParam(): [ParamDecl] self
-#  102|       getBody(): [BraceStmt] { ... }
-#  102|         getElement(0): [YieldStmt] yield ...
-#  104|   getMember(8): [SubscriptDecl] subscript ...
-#  105|     getAccessorDecl(0): [AccessorDecl] get
-#  105|       getSelfParam(): [ParamDecl] self
-#  104|       getParam(0): [ParamDecl] x
-#  105|       getBody(): [BraceStmt] { ... }
-#  106|         getElement(0): [ReturnStmt] return ...
-#  106|           getResult(): [IntegerLiteralExpr] 0
-#  108|     getAccessorDecl(1): [AccessorDecl] set
+#   55| [ClassDecl] Derived
+#   55|   getMember(0): [ConstructorDecl] init()
+#   55|     getSelfParam(): [ParamDecl] self
+#   55|   getMember(1): [DestructorDecl] deinit()
+#   55|     getSelfParam(): [ParamDecl] self
+#   55|     getBody(): [BraceStmt] { ... }
+#   57| [TopLevelCodeDecl] { ... }
+#   57|   getBody(): [BraceStmt] { ... }
+#   57|     getElement(0): [PatternBindingDecl] var ... = ...
+#   57|       getInit(0): [CallExpr] call to init()
+#   57|         conversions: 
+#   57|           getConversion(0): [DerivedToBaseExpr] (Baz) ...
+#   57|           getConversion(1): [CoerceExpr] (Baz) ...
+#   57|           getConversion(2): [InjectIntoOptionalExpr] (Baz?) ...
+#   57|         getFunction(): [ConstructorRefCallExpr] call to init()
+#   57|           getFunction(): [DeclRefExpr] init()
+#   57|           getArgument(0): [Argument] : Derived.Type
+#   57|             getExpr(): [TypeExpr] Derived.Type
+#   57|               getTypeRepr(): [TypeRepr] Derived
+#   57|       getPattern(0): [TypedPattern] ... as ...
+#   57|         getSubPattern(): [NamedPattern] d
+#   57|         getTypeRepr(): [TypeRepr] Baz?
+#   57| [ConcreteVarDecl] d
+#   59| [PrefixOperatorDecl] +-
+#   61| [PrecedenceGroupDecl] precedencegroup ...
+#   68| [InfixOperatorDecl] +++
+#   70| [InfixOperatorDecl] ***
+#   72| [StructDecl] ZeroWrapper
+#   73|   getMember(0): [PatternBindingDecl] var ... = ...
+#   73|     getPattern(0): [TypedPattern] ... as ...
+#   73|       getSubPattern(): [NamedPattern] wrappedValue
+#   73|       getTypeRepr(): [TypeRepr] Int
+#   73|   getMember(1): [ConcreteVarDecl] wrappedValue
+#   74|     getAccessorDecl(0): [AccessorDecl] get
+#   74|       getSelfParam(): [ParamDecl] self
+#   74|       getBody(): [BraceStmt] { ... }
+#   75|         getElement(0): [ReturnStmt] return ...
+#   75|           getResult(): [IntegerLiteralExpr] 0
+#   72|   getMember(2): [ConstructorDecl] init()
+#   72|     getSelfParam(): [ParamDecl] self
+#   72|     getBody(): [BraceStmt] { ... }
+#   72|       getElement(0): [ReturnStmt] return
+#   80| [ConcreteFuncDecl] foo()
+#   80|   getBody(): [BraceStmt] { ... }
+#   81|     getElement(0): [PatternBindingDecl] var ... = ...
+#   81|       getPattern(0): [TypedPattern] ... as ...
+#   81|         getSubPattern(): [NamedPattern] x
+#   81|         getTypeRepr(): [TypeRepr] Int
+#   81|     getElement(1): [ConcreteVarDecl] x
+#   81|       getAccessorDecl(0): [AccessorDecl] get
+#   81|         getBody(): [BraceStmt] { ... }
+#   82|     getElement(2): [ReturnStmt] return ...
+#   82|       getResult(): [DeclRefExpr] x
+#   81| [CallExpr] call to init()
+#   81|   getFunction(): [ConstructorRefCallExpr] call to init()
+#   81|     getFunction(): [DeclRefExpr] init()
+#   81|     getArgument(0): [Argument] : ZeroWrapper.Type
+#   81|       getExpr(): [TypeExpr] ZeroWrapper.Type
+#   81|         getTypeRepr(): [TypeRepr] ZeroWrapper
+#   81| [TypedPattern] ... as ...
+#   81|   getSubPattern(): [NamedPattern] _x
+#   81| [ConcreteVarDecl] _x
+#   85| [StructDecl] HasPropertyAndObserver
+#   86|   getMember(0): [PatternBindingDecl] var ... = ...
+#   86|     getPattern(0): [TypedPattern] ... as ...
+#   86|       getSubPattern(): [NamedPattern] settableField
+#   86|       getTypeRepr(): [TypeRepr] Int
+#   86|   getMember(1): [ConcreteVarDecl] settableField
+#   87|     getAccessorDecl(0): [AccessorDecl] set
+#   87|       getSelfParam(): [ParamDecl] self
+#   87|       getParam(0): [ParamDecl] newValue
+#   87|       getBody(): [BraceStmt] { ... }
+#   88|     getAccessorDecl(1): [AccessorDecl] get
+#   88|       getSelfParam(): [ParamDecl] self
+#   88|       getBody(): [BraceStmt] { ... }
+#   89|         getElement(0): [ReturnStmt] return ...
+#   89|           getResult(): [IntegerLiteralExpr] 0
+#   86|     getAccessorDecl(2): [AccessorDecl] (unnamed function decl)
+#   86|       getSelfParam(): [ParamDecl] self
+#   86|       getBody(): [BraceStmt] { ... }
+#   86|         getElement(0): [YieldStmt] yield ...
+#   95|   getMember(2): [PatternBindingDecl] var ... = ...
+#   95|     getPattern(0): [TypedPattern] ... as ...
+#   95|       getSubPattern(): [NamedPattern] readOnlyField1
+#   95|       getTypeRepr(): [TypeRepr] Int
+#   95|   getMember(3): [ConcreteVarDecl] readOnlyField1
+#   95|     getAccessorDecl(0): [AccessorDecl] get
+#   95|       getSelfParam(): [ParamDecl] self
+#   95|       getBody(): [BraceStmt] { ... }
+#   96|         getElement(0): [ReturnStmt] return ...
+#   96|           getResult(): [IntegerLiteralExpr] 0
+#  100|   getMember(4): [PatternBindingDecl] var ... = ...
+#  100|     getPattern(0): [TypedPattern] ... as ...
+#  100|       getSubPattern(): [NamedPattern] readOnlyField2
+#  100|       getTypeRepr(): [TypeRepr] Int
+#  100|   getMember(5): [ConcreteVarDecl] readOnlyField2
+#  101|     getAccessorDecl(0): [AccessorDecl] get
+#  101|       getSelfParam(): [ParamDecl] self
+#  101|       getBody(): [BraceStmt] { ... }
+#  102|         getElement(0): [ReturnStmt] return ...
+#  102|           getResult(): [IntegerLiteralExpr] 0
+#  106|   getMember(6): [PatternBindingDecl] var ... = ...
+#  106|     getPattern(0): [TypedPattern] ... as ...
+#  106|       getSubPattern(): [NamedPattern] normalField
+#  106|       getTypeRepr(): [TypeRepr] Int
+#  106|   getMember(7): [ConcreteVarDecl] normalField
+#  106|     getAccessorDecl(0): [AccessorDecl] get
+#  106|       getSelfParam(): [ParamDecl] self
+#  106|       getBody(): [BraceStmt] { ... }
+#  106|     getAccessorDecl(1): [AccessorDecl] set
+#  106|       getSelfParam(): [ParamDecl] self
+#  106|       getParam(0): [ParamDecl] value
+#  106|       getBody(): [BraceStmt] { ... }
+#  106|     getAccessorDecl(2): [AccessorDecl] (unnamed function decl)
+#  106|       getSelfParam(): [ParamDecl] self
+#  106|       getBody(): [BraceStmt] { ... }
+#  106|         getElement(0): [YieldStmt] yield ...
+#  108|   getMember(8): [SubscriptDecl] subscript ...
+#  109|     getAccessorDecl(0): [AccessorDecl] get
+#  109|       getSelfParam(): [ParamDecl] self
+#  108|       getParam(0): [ParamDecl] x
+#  109|       getBody(): [BraceStmt] { ... }
+#  110|         getElement(0): [ReturnStmt] return ...
+#  110|           getResult(): [IntegerLiteralExpr] 0
+#  112|     getAccessorDecl(1): [AccessorDecl] set
+#  112|       getSelfParam(): [ParamDecl] self
+#  112|       getParam(0): [ParamDecl] newValue
+#  108|       getParam(1): [ParamDecl] x
+#  112|       getBody(): [BraceStmt] { ... }
+#  108|     getAccessorDecl(2): [AccessorDecl] (unnamed function decl)
 #  108|       getSelfParam(): [ParamDecl] self
-#  108|       getParam(0): [ParamDecl] newValue
-#  104|       getParam(1): [ParamDecl] x
 #  108|       getBody(): [BraceStmt] { ... }
-#  104|     getAccessorDecl(2): [AccessorDecl] (unnamed function decl)
-#  104|       getSelfParam(): [ParamDecl] self
-#  104|       getBody(): [BraceStmt] { ... }
-#  104|         getElement(0): [YieldStmt] yield ...
-#  104|     getParam(0): [ParamDecl] x
-#  111|   getMember(9): [SubscriptDecl] subscript ...
-#  111|     getAccessorDecl(0): [AccessorDecl] get
-#  111|       getSelfParam(): [ParamDecl] self
-#  111|       getParam(0): [ParamDecl] x
-#  111|       getParam(1): [ParamDecl] y
-#  111|       getBody(): [BraceStmt] { ... }
-#  112|         getElement(0): [ReturnStmt] return ...
-#  112|           getResult(): [IntegerLiteralExpr] 0
-#  111|     getParam(0): [ParamDecl] x
-#  111|     getParam(1): [ParamDecl] y
-#  115|   getMember(10): [PatternBindingDecl] var ... = ...
-#  115|     getPattern(0): [TypedPattern] ... as ...
-#  115|       getSubPattern(): [NamedPattern] hasWillSet1
-#  115|       getTypeRepr(): [TypeRepr] Int
-#  115|   getMember(11): [ConcreteVarDecl] hasWillSet1
-#  116|     getAccessorDecl(0): [AccessorDecl] willSet
-#  116|       getSelfParam(): [ParamDecl] self
-#  116|       getParam(0): [ParamDecl] newValue
-#  116|       getBody(): [BraceStmt] { ... }
-#  115|     getAccessorDecl(1): [AccessorDecl] get
+#  108|         getElement(0): [YieldStmt] yield ...
+#  108|     getParam(0): [ParamDecl] x
+#  115|   getMember(9): [SubscriptDecl] subscript ...
+#  115|     getAccessorDecl(0): [AccessorDecl] get
 #  115|       getSelfParam(): [ParamDecl] self
+#  115|       getParam(0): [ParamDecl] x
+#  115|       getParam(1): [ParamDecl] y
 #  115|       getBody(): [BraceStmt] { ... }
-#  115|     getAccessorDecl(2): [AccessorDecl] set
-#  115|       getSelfParam(): [ParamDecl] self
-#  115|       getParam(0): [ParamDecl] value
-#  115|       getBody(): [BraceStmt] { ... }
-#  115|     getAccessorDecl(3): [AccessorDecl] (unnamed function decl)
-#  115|       getSelfParam(): [ParamDecl] self
-#  115|       getBody(): [BraceStmt] { ... }
-#  115|         getElement(0): [YieldStmt] yield ...
-#  119|   getMember(12): [PatternBindingDecl] var ... = ...
+#  116|         getElement(0): [ReturnStmt] return ...
+#  116|           getResult(): [IntegerLiteralExpr] 0
+#  115|     getParam(0): [ParamDecl] x
+#  115|     getParam(1): [ParamDecl] y
+#  119|   getMember(10): [PatternBindingDecl] var ... = ...
 #  119|     getPattern(0): [TypedPattern] ... as ...
-#  119|       getSubPattern(): [NamedPattern] hasWillSet2
+#  119|       getSubPattern(): [NamedPattern] hasWillSet1
 #  119|       getTypeRepr(): [TypeRepr] Int
-#  119|   getMember(13): [ConcreteVarDecl] hasWillSet2
+#  119|   getMember(11): [ConcreteVarDecl] hasWillSet1
 #  120|     getAccessorDecl(0): [AccessorDecl] willSet
 #  120|       getSelfParam(): [ParamDecl] self
 #  120|       getParam(0): [ParamDecl] newValue
@@ -365,14 +370,14 @@ declarations.swift:
 #  119|       getSelfParam(): [ParamDecl] self
 #  119|       getBody(): [BraceStmt] { ... }
 #  119|         getElement(0): [YieldStmt] yield ...
-#  123|   getMember(14): [PatternBindingDecl] var ... = ...
+#  123|   getMember(12): [PatternBindingDecl] var ... = ...
 #  123|     getPattern(0): [TypedPattern] ... as ...
-#  123|       getSubPattern(): [NamedPattern] hasDidSet1
+#  123|       getSubPattern(): [NamedPattern] hasWillSet2
 #  123|       getTypeRepr(): [TypeRepr] Int
-#  123|   getMember(15): [ConcreteVarDecl] hasDidSet1
-#  124|     getAccessorDecl(0): [AccessorDecl] didSet
+#  123|   getMember(13): [ConcreteVarDecl] hasWillSet2
+#  124|     getAccessorDecl(0): [AccessorDecl] willSet
 #  124|       getSelfParam(): [ParamDecl] self
-#  124|       getParam(0): [ParamDecl] oldValue
+#  124|       getParam(0): [ParamDecl] newValue
 #  124|       getBody(): [BraceStmt] { ... }
 #  123|     getAccessorDecl(1): [AccessorDecl] get
 #  123|       getSelfParam(): [ParamDecl] self
@@ -385,13 +390,14 @@ declarations.swift:
 #  123|       getSelfParam(): [ParamDecl] self
 #  123|       getBody(): [BraceStmt] { ... }
 #  123|         getElement(0): [YieldStmt] yield ...
-#  127|   getMember(16): [PatternBindingDecl] var ... = ...
+#  127|   getMember(14): [PatternBindingDecl] var ... = ...
 #  127|     getPattern(0): [TypedPattern] ... as ...
-#  127|       getSubPattern(): [NamedPattern] hasDidSet2
+#  127|       getSubPattern(): [NamedPattern] hasDidSet1
 #  127|       getTypeRepr(): [TypeRepr] Int
-#  127|   getMember(17): [ConcreteVarDecl] hasDidSet2
+#  127|   getMember(15): [ConcreteVarDecl] hasDidSet1
 #  128|     getAccessorDecl(0): [AccessorDecl] didSet
 #  128|       getSelfParam(): [ParamDecl] self
+#  128|       getParam(0): [ParamDecl] oldValue
 #  128|       getBody(): [BraceStmt] { ... }
 #  127|     getAccessorDecl(1): [AccessorDecl] get
 #  127|       getSelfParam(): [ParamDecl] self
@@ -404,79 +410,98 @@ declarations.swift:
 #  127|       getSelfParam(): [ParamDecl] self
 #  127|       getBody(): [BraceStmt] { ... }
 #  127|         getElement(0): [YieldStmt] yield ...
-#  131|   getMember(18): [PatternBindingDecl] var ... = ...
+#  131|   getMember(16): [PatternBindingDecl] var ... = ...
 #  131|     getPattern(0): [TypedPattern] ... as ...
-#  131|       getSubPattern(): [NamedPattern] hasBoth
+#  131|       getSubPattern(): [NamedPattern] hasDidSet2
 #  131|       getTypeRepr(): [TypeRepr] Int
-#  131|   getMember(19): [ConcreteVarDecl] hasBoth
-#  132|     getAccessorDecl(0): [AccessorDecl] willSet
+#  131|   getMember(17): [ConcreteVarDecl] hasDidSet2
+#  132|     getAccessorDecl(0): [AccessorDecl] didSet
 #  132|       getSelfParam(): [ParamDecl] self
-#  132|       getParam(0): [ParamDecl] newValue
 #  132|       getBody(): [BraceStmt] { ... }
-#  134|     getAccessorDecl(1): [AccessorDecl] didSet
-#  134|       getSelfParam(): [ParamDecl] self
-#  134|       getBody(): [BraceStmt] { ... }
-#  131|     getAccessorDecl(2): [AccessorDecl] get
+#  131|     getAccessorDecl(1): [AccessorDecl] get
 #  131|       getSelfParam(): [ParamDecl] self
 #  131|       getBody(): [BraceStmt] { ... }
-#  131|     getAccessorDecl(3): [AccessorDecl] set
+#  131|     getAccessorDecl(2): [AccessorDecl] set
 #  131|       getSelfParam(): [ParamDecl] self
 #  131|       getParam(0): [ParamDecl] value
 #  131|       getBody(): [BraceStmt] { ... }
-#  131|     getAccessorDecl(4): [AccessorDecl] (unnamed function decl)
+#  131|     getAccessorDecl(3): [AccessorDecl] (unnamed function decl)
 #  131|       getSelfParam(): [ParamDecl] self
 #  131|       getBody(): [BraceStmt] { ... }
 #  131|         getElement(0): [YieldStmt] yield ...
-#   81|   getMember(20): [ConstructorDecl] init(normalField:hasWillSet1:hasWillSet2:hasDidSet1:hasDidSet2:hasBoth:)
-#   81|     getSelfParam(): [ParamDecl] self
-#   81|     getParam(0): [ParamDecl] normalField
-#   81|     getParam(1): [ParamDecl] hasWillSet1
-#   81|     getParam(2): [ParamDecl] hasWillSet2
-#   81|     getParam(3): [ParamDecl] hasDidSet1
-#   81|     getParam(4): [ParamDecl] hasDidSet2
-#   81|     getParam(5): [ParamDecl] hasBoth
-#   89| [Comment] // A field can be marked as read-only by dirctly implementing
-#   89| 
-#   90| [Comment] // the getter between the braces.
-#   90| 
-#   95| [Comment] // Or by adding an access declaration
-#   95| 
-#  138| [ExtensionDecl] extension
-#  139|   getMember(0): [ConcreteFuncDecl] id()
-#  139|     getSelfParam(): [ParamDecl] self
-#  139|     getBody(): [BraceStmt] { ... }
-#  140|       getElement(0): [ReturnStmt] return ...
-#  140|         getResult(): [DeclRefExpr] self
-#  144| [TopLevelCodeDecl] { ... }
-#  144|   getBody(): [BraceStmt] { ... }
-#  144|     getElement(0): [CallExpr] call to id()
-#  144|       getFunction(): [MethodRefExpr] .id()
-#  144|         getBase(): [IntegerLiteralExpr] 42
-#  146| [ClassDecl] GenericClass
-#  146|   getGenericTypeParam(0): [GenericTypeParamDecl] A
-#  146|   getGenericTypeParam(1): [GenericTypeParamDecl] B
-#  146|   getGenericTypeParam(2): [GenericTypeParamDecl] C
-#  147|   getMember(0): [ConcreteFuncDecl] genericMethod(_:_:_:)
-#  147|     getSelfParam(): [ParamDecl] self
-#  147|     getParam(0): [ParamDecl] _
-#  147|     getParam(1): [ParamDecl] _
-#  147|     getParam(2): [ParamDecl] _
-#  147|     getBody(): [BraceStmt] { ... }
-#  146|   getMember(1): [DestructorDecl] deinit()
-#  146|     getSelfParam(): [ParamDecl] self
-#  146|     getBody(): [BraceStmt] { ... }
-#  146|   getMember(2): [ConstructorDecl] init()
-#  146|     getSelfParam(): [ParamDecl] self
-#  146|     getBody(): [BraceStmt] { ... }
-#  146|       getElement(0): [ReturnStmt] return
-#  150| [ConcreteFuncDecl] genericFunc(_:_:_:)
+#  135|   getMember(18): [PatternBindingDecl] var ... = ...
+#  135|     getPattern(0): [TypedPattern] ... as ...
+#  135|       getSubPattern(): [NamedPattern] hasBoth
+#  135|       getTypeRepr(): [TypeRepr] Int
+#  135|   getMember(19): [ConcreteVarDecl] hasBoth
+#  136|     getAccessorDecl(0): [AccessorDecl] willSet
+#  136|       getSelfParam(): [ParamDecl] self
+#  136|       getParam(0): [ParamDecl] newValue
+#  136|       getBody(): [BraceStmt] { ... }
+#  138|     getAccessorDecl(1): [AccessorDecl] didSet
+#  138|       getSelfParam(): [ParamDecl] self
+#  138|       getBody(): [BraceStmt] { ... }
+#  135|     getAccessorDecl(2): [AccessorDecl] get
+#  135|       getSelfParam(): [ParamDecl] self
+#  135|       getBody(): [BraceStmt] { ... }
+#  135|     getAccessorDecl(3): [AccessorDecl] set
+#  135|       getSelfParam(): [ParamDecl] self
+#  135|       getParam(0): [ParamDecl] value
+#  135|       getBody(): [BraceStmt] { ... }
+#  135|     getAccessorDecl(4): [AccessorDecl] (unnamed function decl)
+#  135|       getSelfParam(): [ParamDecl] self
+#  135|       getBody(): [BraceStmt] { ... }
+#  135|         getElement(0): [YieldStmt] yield ...
+#   85|   getMember(20): [ConstructorDecl] init(normalField:hasWillSet1:hasWillSet2:hasDidSet1:hasDidSet2:hasBoth:)
+#   85|     getSelfParam(): [ParamDecl] self
+#   85|     getParam(0): [ParamDecl] normalField
+#   85|     getParam(1): [ParamDecl] hasWillSet1
+#   85|     getParam(2): [ParamDecl] hasWillSet2
+#   85|     getParam(3): [ParamDecl] hasDidSet1
+#   85|     getParam(4): [ParamDecl] hasDidSet2
+#   85|     getParam(5): [ParamDecl] hasBoth
+#   93| [Comment] // A field can be marked as read-only by dirctly implementing
+#   93| 
+#   94| [Comment] // the getter between the braces.
+#   94| 
+#   99| [Comment] // Or by adding an access declaration
+#   99| 
+#  142| [ExtensionDecl] extension
+#  143|   getMember(0): [ConcreteFuncDecl] id()
+#  143|     getSelfParam(): [ParamDecl] self
+#  143|     getBody(): [BraceStmt] { ... }
+#  144|       getElement(0): [ReturnStmt] return ...
+#  144|         getResult(): [DeclRefExpr] self
+#  148| [TopLevelCodeDecl] { ... }
+#  148|   getBody(): [BraceStmt] { ... }
+#  148|     getElement(0): [CallExpr] call to id()
+#  148|       getFunction(): [MethodRefExpr] .id()
+#  148|         getBase(): [IntegerLiteralExpr] 42
+#  150| [ClassDecl] GenericClass
 #  150|   getGenericTypeParam(0): [GenericTypeParamDecl] A
 #  150|   getGenericTypeParam(1): [GenericTypeParamDecl] B
 #  150|   getGenericTypeParam(2): [GenericTypeParamDecl] C
-#  150|   getParam(0): [ParamDecl] _
-#  150|   getParam(1): [ParamDecl] _
-#  150|   getParam(2): [ParamDecl] _
-#  150|   getBody(): [BraceStmt] { ... }
+#  151|   getMember(0): [ConcreteFuncDecl] genericMethod(_:_:_:)
+#  151|     getSelfParam(): [ParamDecl] self
+#  151|     getParam(0): [ParamDecl] _
+#  151|     getParam(1): [ParamDecl] _
+#  151|     getParam(2): [ParamDecl] _
+#  151|     getBody(): [BraceStmt] { ... }
+#  150|   getMember(1): [DestructorDecl] deinit()
+#  150|     getSelfParam(): [ParamDecl] self
+#  150|     getBody(): [BraceStmt] { ... }
+#  150|   getMember(2): [ConstructorDecl] init()
+#  150|     getSelfParam(): [ParamDecl] self
+#  150|     getBody(): [BraceStmt] { ... }
+#  150|       getElement(0): [ReturnStmt] return
+#  154| [ConcreteFuncDecl] genericFunc(_:_:_:)
+#  154|   getGenericTypeParam(0): [GenericTypeParamDecl] A
+#  154|   getGenericTypeParam(1): [GenericTypeParamDecl] B
+#  154|   getGenericTypeParam(2): [GenericTypeParamDecl] C
+#  154|   getParam(0): [ParamDecl] _
+#  154|   getParam(1): [ParamDecl] _
+#  154|   getParam(2): [ParamDecl] _
+#  154|   getBody(): [BraceStmt] { ... }
 expressions.swift:
 #    1| [TopLevelCodeDecl] { ... }
 #    1|   getBody(): [BraceStmt] { ... }
@@ -569,6 +594,8 @@ expressions.swift:
 #   15|       getBody(): [BraceStmt] { ... }
 #   16|         getElement(0): [ThrowStmt] throw ...
 #   16|           getSubExpr(): [MethodRefExpr] .failed
+#   16|             conversions: 
+#   16|               getConversion(0): [ErasureExpr] (Error) ...
 #   16|             getBase(): [TypeExpr] AnError.Type
 #   16|               getTypeRepr(): [TypeRepr] AnError
 #   20| [TopLevelCodeDecl] { ... }
@@ -582,6 +609,8 @@ expressions.swift:
 #   21|   getBody(): [BraceStmt] { ... }
 #   21|     getElement(0): [OptionalTryExpr] try? ...
 #   21|       getSubExpr(): [CallExpr] call to failure(_:)
+#   21|         conversions: 
+#   21|           getConversion(0): [InjectIntoOptionalExpr] (()?) ...
 #   21|         getFunction(): [DeclRefExpr] failure(_:)
 #   21|         getArgument(0): [Argument] : 11
 #   21|           getExpr(): [IntegerLiteralExpr] 11
@@ -623,21 +652,29 @@ expressions.swift:
 #   31|     getElement(0): [AssignExpr]  ... = ...
 #   31|       getDest(): [DiscardAssignmentExpr] _
 #   31|       getSource(): [IntegerLiteralExpr] 15
+#   31|         conversions: 
+#   31|           getConversion(0): [IsExpr] ... is ...
 #   32| [TopLevelCodeDecl] { ... }
 #   32|   getBody(): [BraceStmt] { ... }
 #   32|     getElement(0): [AssignExpr]  ... = ...
 #   32|       getDest(): [DiscardAssignmentExpr] _
 #   32|       getSource(): [IntegerLiteralExpr] 15
+#   32|         conversions: 
+#   32|           getConversion(0): [CoerceExpr] (Double) ...
 #   33| [TopLevelCodeDecl] { ... }
 #   33|   getBody(): [BraceStmt] { ... }
 #   33|     getElement(0): [AssignExpr]  ... = ...
 #   33|       getDest(): [DiscardAssignmentExpr] _
 #   33|       getSource(): [IntegerLiteralExpr] 15
+#   33|         conversions: 
+#   33|           getConversion(0): [ConditionalCheckedCastExpr] (Double?) ...
 #   34| [TopLevelCodeDecl] { ... }
 #   34|   getBody(): [BraceStmt] { ... }
 #   34|     getElement(0): [AssignExpr]  ... = ...
 #   34|       getDest(): [DiscardAssignmentExpr] _
 #   34|       getSource(): [IntegerLiteralExpr] 15
+#   34|         conversions: 
+#   34|           getConversion(0): [ForcedCheckedCastExpr] (Double) ...
 #   35| [TopLevelCodeDecl] { ... }
 #   35|   getBody(): [BraceStmt] { ... }
 #   35|     getElement(0): [CallExpr] call to print(_:separator:terminator:)
@@ -646,6 +683,8 @@ expressions.swift:
 #   35|         getExpr(): [VarargExpansionExpr] [...]
 #   35|           getSubExpr(): [ArrayExpr] [...]
 #   35|             getElement(0): [SubscriptExpr] ...[...]
+#   35|               conversions: 
+#   35|                 getConversion(0): [ErasureExpr] (Any) ...
 #   35|               getBase(): [DeclRefExpr] d
 #   35|               getArgument(0): [Argument] : 1
 #   35|                 getExpr(): [StringLiteralExpr] 1
@@ -767,6 +806,8 @@ expressions.swift:
 #   59|       getFunction(): [DeclRefExpr] unsafeFunction(pointer:)
 #   59|       getArgument(0): [Argument] pointer: &...
 #   59|         getExpr(): [InOutExpr] &...
+#   59|           conversions: 
+#   59|             getConversion(0): [InOutToPointerExpr] (UnsafePointer<Int>) ...
 #   59|           getSubExpr(): [DeclRefExpr] myNumber
 #   60| [TopLevelCodeDecl] { ... }
 #   60|   getBody(): [BraceStmt] { ... }
@@ -774,8 +815,12 @@ expressions.swift:
 #   60|       getFunction(): [DeclRefExpr] withUnsafePointer(to:_:)
 #   60|       getArgument(0): [Argument] to: myNumber
 #   60|         getExpr(): [DeclRefExpr] myNumber
+#   60|           conversions: 
+#   60|             getConversion(0): [LoadExpr] (Int) ...
 #   60|       getArgument(1): [Argument] : { ... }
 #   60|         getExpr(): [ClosureExpr] { ... }
+#   60|           conversions: 
+#   60|             getConversion(0): [FunctionConversionExpr] ((UnsafePointer<Int>) throws -> ()) ...
 #   60|           getParam(0): [ParamDecl] $0
 #   60|           getBody(): [BraceStmt] { ... }
 #   60|             getElement(0): [ReturnStmt] return ...
@@ -873,6 +918,8 @@ expressions.swift:
 #   84|       getDest(): [DiscardAssignmentExpr] _
 #   84|       getSource(): [MemberRefExpr] .xx
 #   84|         getBase(): [DeclRefExpr] derived
+#   84|           conversions: 
+#   84|             getConversion(0): [DerivedToBaseExpr] (Base) ...
 #   86| [TopLevelCodeDecl] { ... }
 #   86|   getBody(): [BraceStmt] { ... }
 #   86|     getElement(0): [PatternBindingDecl] var ... = ...
@@ -925,6 +972,8 @@ expressions.swift:
 #   93|           getTypeRepr(): [TypeRepr] Unmanaged<ToPtr>
 #   93|       getArgument(0): [Argument] : opaque
 #   93|         getExpr(): [DeclRefExpr] opaque
+#   93|           conversions: 
+#   93|             getConversion(0): [PointerToPointerExpr] (UnsafeRawPointer) ...
 #   95| [StructDecl] HasProperty
 #   96|   getMember(0): [PatternBindingDecl] var ... = ...
 #   96|     getPattern(0): [TypedPattern] ... as ...
@@ -1025,17 +1074,23 @@ expressions.swift:
 #  131|       getSource(): [IntegerLiteralExpr] 42
 #  132|     getElement(1): [PatternBindingDecl] var ... = ...
 #  132|       getInit(0): [MemberRefExpr] .settableField
+#  132|         conversions: 
+#  132|           getConversion(0): [LoadExpr] (Int) ...
 #  132|         getBase(): [DeclRefExpr] hp
 #  132|       getPattern(0): [NamedPattern] x
 #  132|     getElement(2): [ConcreteVarDecl] x
 #  133|     getElement(3): [PatternBindingDecl] var ... = ...
 #  133|       getInit(0): [MemberRefExpr] .readOnlyField1
 #  133|         getBase(): [DeclRefExpr] hp
+#  133|           conversions: 
+#  133|             getConversion(0): [LoadExpr] (HasProperty) ...
 #  133|       getPattern(0): [NamedPattern] y
 #  133|     getElement(4): [ConcreteVarDecl] y
 #  134|     getElement(5): [PatternBindingDecl] var ... = ...
 #  134|       getInit(0): [MemberRefExpr] .readOnlyField2
 #  134|         getBase(): [DeclRefExpr] hp
+#  134|           conversions: 
+#  134|             getConversion(0): [LoadExpr] (HasProperty) ...
 #  134|       getPattern(0): [NamedPattern] z
 #  134|     getElement(6): [ConcreteVarDecl] z
 #  135|     getElement(7): [AssignExpr]  ... = ...
@@ -1044,6 +1099,8 @@ expressions.swift:
 #  135|       getSource(): [IntegerLiteralExpr] 99
 #  136|     getElement(8): [PatternBindingDecl] var ... = ...
 #  136|       getInit(0): [MemberRefExpr] .normalField
+#  136|         conversions: 
+#  136|           getConversion(0): [LoadExpr] (Int) ...
 #  136|         getBase(): [DeclRefExpr] hp
 #  136|       getPattern(0): [NamedPattern] w
 #  136|     getElement(9): [ConcreteVarDecl] w
@@ -1057,6 +1114,8 @@ expressions.swift:
 #  138|     getElement(11): [ReturnStmt] return ...
 #  138|       getResult(): [SubscriptExpr] ...[...]
 #  138|         getBase(): [DeclRefExpr] hp
+#  138|           conversions: 
+#  138|             getConversion(0): [LoadExpr] (HasProperty) ...
 #  138|         getArgument(0): [Argument] : 3
 #  138|           getExpr(): [IntegerLiteralExpr] 3
 #  138|         getArgument(1): [Argument] : 4
@@ -1278,6 +1337,8 @@ patterns.swift:
 #   35|           getPattern(): [AnyPattern] _
 #   38|     getElement(11): [PatternBindingDecl] var ... = ...
 #   38|       getInit(0): [StringLiteralExpr] any
+#   38|         conversions: 
+#   38|           getConversion(0): [ErasureExpr] (Any) ...
 #   38|       getPattern(0): [TypedPattern] ... as ...
 #   38|         getSubPattern(): [NamedPattern] a
 #   38|         getTypeRepr(): [TypeRepr] Any
@@ -1362,11 +1423,15 @@ statements.swift:
 #   10|       getCondition(): [StmtCondition] StmtCondition
 #   10|         getElement(0): [ConditionElement] ... .<(_:_:) ...
 #   10|           getBoolean(): [BinaryExpr] ... .<(_:_:) ...
+#   10|             conversions: 
+#   10|               getConversion(0): [ParenExpr] (...)
 #   10|             getFunction(): [MethodRefExpr] .<(_:_:)
 #   10|               getBase(): [TypeExpr] Int.Type
 #   10|                 getTypeRepr(): [TypeRepr] Int
 #   10|             getArgument(0): [Argument] : i
 #   10|               getExpr(): [DeclRefExpr] i
+#   10|                 conversions: 
+#   10|                   getConversion(0): [LoadExpr] (Int) ...
 #   10|             getArgument(1): [Argument] : 12
 #   10|               getExpr(): [IntegerLiteralExpr] 12
 #   10|       getBody(): [BraceStmt] { ... }
@@ -1378,6 +1443,8 @@ statements.swift:
 #   11|                 getTypeRepr(): [TypeRepr] Int
 #   11|             getArgument(0): [Argument] : i
 #   11|               getExpr(): [DeclRefExpr] i
+#   11|                 conversions: 
+#   11|                   getConversion(0): [LoadExpr] (Int) ...
 #   11|             getArgument(1): [Argument] : 1
 #   11|               getExpr(): [IntegerLiteralExpr] 1
 #   14|     getElement(4): [AssignExpr]  ... = ...
@@ -1385,11 +1452,15 @@ statements.swift:
 #   14|       getSource(): [IntegerLiteralExpr] 0
 #   15|     getElement(5): [RepeatWhileStmt] repeat { ... } while ... 
 #   17|       getCondition(): [BinaryExpr] ... .<(_:_:) ...
+#   17|         conversions: 
+#   17|           getConversion(0): [ParenExpr] (...)
 #   17|         getFunction(): [MethodRefExpr] .<(_:_:)
 #   17|           getBase(): [TypeExpr] Int.Type
 #   17|             getTypeRepr(): [TypeRepr] Int
 #   17|         getArgument(0): [Argument] : i
 #   17|           getExpr(): [DeclRefExpr] i
+#   17|             conversions: 
+#   17|               getConversion(0): [LoadExpr] (Int) ...
 #   17|         getArgument(1): [Argument] : 12
 #   17|           getExpr(): [IntegerLiteralExpr] 12
 #   15|       getBody(): [BraceStmt] { ... }
@@ -1401,6 +1472,8 @@ statements.swift:
 #   16|                 getTypeRepr(): [TypeRepr] Int
 #   16|             getArgument(0): [Argument] : i
 #   16|               getExpr(): [DeclRefExpr] i
+#   16|                 conversions: 
+#   16|                   getConversion(0): [LoadExpr] (Int) ...
 #   16|             getArgument(1): [Argument] : 1
 #   16|               getExpr(): [IntegerLiteralExpr] 1
 #   19|     getElement(6): [DoCatchStmt] do { ... } catch { ... }
@@ -1418,6 +1491,8 @@ statements.swift:
 #   22|               getExpr(): [VarargExpansionExpr] [...]
 #   22|                 getSubExpr(): [ArrayExpr] [...]
 #   22|                   getElement(0): [StringLiteralExpr] error
+#   22|                     conversions: 
+#   22|                       getConversion(0): [ErasureExpr] (Any) ...
 #   22|             getArgument(1): [Argument] separator: default separator
 #   22|               getExpr(): [DefaultArgumentExpr] default separator
 #   22|             getArgument(2): [Argument] terminator: default terminator
@@ -1440,6 +1515,8 @@ statements.swift:
 #   28|               getExpr(): [VarargExpansionExpr] [...]
 #   28|                 getSubExpr(): [ArrayExpr] [...]
 #   28|                   getElement(0): [StringLiteralExpr] AnError.failed
+#   28|                     conversions: 
+#   28|                       getConversion(0): [ErasureExpr] (Any) ...
 #   28|             getArgument(1): [Argument] separator: default separator
 #   28|               getExpr(): [DefaultArgumentExpr] default separator
 #   28|             getArgument(2): [Argument] terminator: default terminator
@@ -1455,6 +1532,8 @@ statements.swift:
 #   30|               getExpr(): [VarargExpansionExpr] [...]
 #   30|                 getSubExpr(): [ArrayExpr] [...]
 #   30|                   getElement(0): [StringLiteralExpr] error
+#   30|                     conversions: 
+#   30|                       getConversion(0): [ErasureExpr] (Any) ...
 #   30|             getArgument(1): [Argument] separator: default separator
 #   30|               getExpr(): [DefaultArgumentExpr] default separator
 #   30|             getArgument(2): [Argument] terminator: default terminator
@@ -1485,6 +1564,8 @@ statements.swift:
 #   39|       getBody(): [BraceStmt] { ... }
 #   40|         getElement(0): [ThrowStmt] throw ...
 #   40|           getSubExpr(): [MethodRefExpr] .failed
+#   40|             conversions: 
+#   40|               getConversion(0): [ErasureExpr] (Error) ...
 #   40|             getBase(): [TypeExpr] AnError.Type
 #   40|               getTypeRepr(): [TypeRepr] AnError
 #   44| [TopLevelCodeDecl] { ... }
@@ -1497,6 +1578,8 @@ statements.swift:
 #   45|             getExpr(): [VarargExpansionExpr] [...]
 #   45|               getSubExpr(): [ArrayExpr] [...]
 #   45|                 getElement(0): [StringLiteralExpr] done
+#   45|                   conversions: 
+#   45|                     getConversion(0): [ErasureExpr] (Any) ...
 #   45|           getArgument(1): [Argument] separator: default separator
 #   45|             getExpr(): [DefaultArgumentExpr] default separator
 #   45|           getArgument(2): [Argument] terminator: default terminator
@@ -1511,6 +1594,8 @@ statements.swift:
 #   49|             getExpr(): [VarargExpansionExpr] [...]
 #   49|               getSubExpr(): [ArrayExpr] [...]
 #   49|                 getElement(0): [StringLiteralExpr] doing
+#   49|                   conversions: 
+#   49|                     getConversion(0): [ErasureExpr] (Any) ...
 #   49|           getArgument(1): [Argument] separator: default separator
 #   49|             getExpr(): [DefaultArgumentExpr] default separator
 #   49|           getArgument(2): [Argument] terminator: default terminator
@@ -1533,6 +1618,8 @@ statements.swift:
 #   55|               getExpr(): [VarargExpansionExpr] [...]
 #   55|                 getSubExpr(): [ArrayExpr] [...]
 #   55|                   getElement(0): [StringLiteralExpr] 1
+#   55|                     conversions: 
+#   55|                       getConversion(0): [ErasureExpr] (Any) ...
 #   55|             getArgument(1): [Argument] separator: default separator
 #   55|               getExpr(): [DefaultArgumentExpr] default separator
 #   55|             getArgument(2): [Argument] terminator: default terminator
@@ -1549,6 +1636,8 @@ statements.swift:
 #   58|               getExpr(): [VarargExpansionExpr] [...]
 #   58|                 getSubExpr(): [ArrayExpr] [...]
 #   58|                   getElement(0): [StringLiteralExpr] 5, 10
+#   58|                     conversions: 
+#   58|                       getConversion(0): [ErasureExpr] (Any) ...
 #   58|             getArgument(1): [Argument] separator: default separator
 #   58|               getExpr(): [DefaultArgumentExpr] default separator
 #   58|             getArgument(2): [Argument] terminator: default terminator
@@ -1568,6 +1657,8 @@ statements.swift:
 #   61|               getExpr(): [VarargExpansionExpr] [...]
 #   61|                 getSubExpr(): [ArrayExpr] [...]
 #   61|                   getElement(0): [StringLiteralExpr] default
+#   61|                     conversions: 
+#   61|                       getConversion(0): [ErasureExpr] (Any) ...
 #   61|             getArgument(1): [Argument] separator: default separator
 #   61|               getExpr(): [DefaultArgumentExpr] default separator
 #   61|             getArgument(2): [Argument] terminator: default terminator
@@ -1578,6 +1669,8 @@ statements.swift:
 #   64|   getBody(): [BraceStmt] { ... }
 #   64|     getElement(0): [PatternBindingDecl] var ... = ...
 #   64|       getInit(0): [IntegerLiteralExpr] 4
+#   64|         conversions: 
+#   64|           getConversion(0): [InjectIntoOptionalExpr] (Int?) ...
 #   64|       getPattern(0): [TypedPattern] ... as ...
 #   64|         getSubPattern(): [NamedPattern] x
 #   64|         getTypeRepr(): [TypeRepr] Int?

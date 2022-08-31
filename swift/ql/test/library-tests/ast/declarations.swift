@@ -52,6 +52,10 @@ class Baz {
   }
 }
 
+class Derived : Baz {}
+
+var d: Baz? = Derived() as Baz
+
 prefix operator +-
 
 precedencegroup NewPrecedence {

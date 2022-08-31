@@ -32,7 +32,9 @@ private newtype TPrintAstNode =
   TLocatable(Locatable ast) {
     // Only consider resolved nodes (that is not within the hidden conversion AST)
     ast = ast.resolve()
-  }
+  } or
+  TConversion(Expr conv) { conv.isConversion() } or
+  TConversionContainer(Expr e) { e = e.resolve() and e.hasConversions() }
 
 /**
  * A node in the output tree.
@@ -66,6 +68,10 @@ class PrintAstNode extends TPrintAstNode {
   string getProperty(string key) { none() }
 }
 
+private string prettyPrint(Locatable e) {
+  result = "[" + concat(e.getPrimaryQlClasses(), ", ") + "] " + e
+}
+
 /**
  * A graph node representing a real Locatable node.
  */
@@ -74,13 +80,64 @@ class PrintLocatable extends PrintAstNode, TLocatable {
 
   PrintLocatable() { this = TLocatable(ast) }
 
+  override string toString() { result = prettyPrint(ast) }
+
   final override predicate shouldBePrinted() { shouldPrint(ast) }
 
   override predicate hasChild(PrintAstNode child, int index, string accessor) {
     child = TLocatable(getChildAndAccessor(ast, index, accessor))
   }
 
-  override string toString() { result = "[" + concat(ast.getPrimaryQlClasses(), ", ") + "] " + ast }
-
   final override Location getLocation() { result = ast.getLocation() }
+}
+
+/**
+ * A graph node representing a conversion.
+ */
+class PrintConversion extends PrintAstNode, TConversion {
+  Expr conv;
+
+  PrintConversion() { this = TConversion(conv) }
+
+  override string toString() { result = prettyPrint(conv) }
+
+  final override predicate shouldBePrinted() { shouldPrint(conv.resolve()) }
+
+  override predicate hasChild(PrintAstNode child, int index, string accessor) { none() }
+
+  final override Location getLocation() { result = conv.getLocation() }
+}
+
+/**
+ * A graph node representing a virtual container for conversions.
+ */
+class PrintConversionContainer extends PrintAstNode, TConversionContainer {
+  Expr convertee;
+
+  PrintConversionContainer() { this = TConversionContainer(convertee) }
+
+  override string toString() { result = "" }
+
+  final override predicate shouldBePrinted() { shouldPrint(convertee) }
+
+  override predicate hasChild(PrintAstNode child, int index, string accessor) {
+    child = TConversion(convertee.getConversion(index)) and
+    accessor = "getConversion(" + index + ")"
+  }
+
+  final override Location getLocation() { result = convertee.getFullyConverted().getLocation() }
+}
+
+/** A graph node specialization for expressions to show conversions. */
+class PrintExpr extends PrintLocatable {
+  override Expr ast;
+
+  override predicate hasChild(PrintAstNode child, int index, string accessor) {
+    super.hasChild(child, index, accessor)
+    or
+    ast.hasConversions() and
+    index = -1 and
+    accessor = "conversions" and
+    child = TConversionContainer(ast)
+  }
 }
