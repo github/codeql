@@ -8,6 +8,7 @@
  * @precision medium
  * @id cpp/missing-check-scanf
  * @tags security
+ *       correctness
  *       external/cwe/cwe-252
  *       external/cwe/cwe-253
  */
