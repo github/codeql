@@ -1195,17 +1195,15 @@ open class KotlinUsesExtractor(
                             decl.valueParameters.size == f.valueParameters.size
                         } ?:
                         // Or check property accessors:
-                        if (f.isAccessor) {
-                            val prop = javaClass.declarations.findSubType<IrProperty> { decl ->
-                                decl.name == (f.propertyIfAccessor as IrProperty).name
+                        (f.propertyIfAccessor as? IrProperty?)?.let { kotlinProp ->
+                            val javaProp = javaClass.declarations.findSubType<IrProperty> { decl ->
+                                decl.name == kotlinProp.name
                             }
-                            if (prop?.getter?.name == f.name)
-                                prop.getter
-                            else if (prop?.setter?.name == f.name)
-                                prop.setter
+                            if (javaProp?.getter?.name == f.name)
+                                javaProp.getter
+                            else if (javaProp?.setter?.name == f.name)
+                                javaProp.setter
                             else null
-                        } else {
-                            null
                         } ?: run {
                             val parentFqName = parentClass.fqNameWhenAvailable?.asString()
                             if (!expectedMissingEquivalents.contains(parentFqName)) {
