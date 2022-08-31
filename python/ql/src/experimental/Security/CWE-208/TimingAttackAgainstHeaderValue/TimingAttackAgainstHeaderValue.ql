@@ -22,7 +22,7 @@ import DataFlow::PathGraph
 class ClientSuppliedSecretConfig extends TaintTracking::Configuration {
   ClientSuppliedSecretConfig() { this = "ClientSuppliedSecretConfig" }
 
-  override predicate isSource(DataFlow::Node source) { source instanceof ClientSuppliedsecret }
+  override predicate isSource(DataFlow::Node source) { source instanceof ClientSuppliedSecret }
 
   override predicate isSink(DataFlow::Node sink) {
     exists(Compare cmp, Expr left, Expr right, Cmpop cmpop |
