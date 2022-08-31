@@ -1480,7 +1480,7 @@ module Raw {
     string getStringValue() { integer_literal_exprs(this, result) }
   }
 
-  class NominalTypeDecl extends @nominal_type_decl, IterableDeclContext, GenericTypeDecl {
+  class NominalTypeDecl extends @nominal_type_decl, GenericTypeDecl, IterableDeclContext {
     Type getType() { nominal_type_decls(this, result) }
   }
 

@@ -4650,21 +4650,21 @@ private module Impl {
   private Element getImmediateChildOfNominalTypeDecl(
     NominalTypeDecl e, int index, string partialPredicateCall
   ) {
-    exists(int b, int bIterableDeclContext, int bGenericTypeDecl, int n |
+    exists(int b, int bGenericTypeDecl, int bIterableDeclContext, int n |
       b = 0 and
-      bIterableDeclContext =
-        b + 1 + max(int i | i = -1 or exists(getImmediateChildOfIterableDeclContext(e, i, _)) | i) and
       bGenericTypeDecl =
-        bIterableDeclContext + 1 +
-          max(int i | i = -1 or exists(getImmediateChildOfGenericTypeDecl(e, i, _)) | i) and
-      n = bGenericTypeDecl and
+        b + 1 + max(int i | i = -1 or exists(getImmediateChildOfGenericTypeDecl(e, i, _)) | i) and
+      bIterableDeclContext =
+        bGenericTypeDecl + 1 +
+          max(int i | i = -1 or exists(getImmediateChildOfIterableDeclContext(e, i, _)) | i) and
+      n = bIterableDeclContext and
       (
         none()
         or
-        result = getImmediateChildOfIterableDeclContext(e, index - b, partialPredicateCall)
+        result = getImmediateChildOfGenericTypeDecl(e, index - b, partialPredicateCall)
         or
         result =
-          getImmediateChildOfGenericTypeDecl(e, index - bIterableDeclContext, partialPredicateCall)
+          getImmediateChildOfIterableDeclContext(e, index - bGenericTypeDecl, partialPredicateCall)
       )
     )
   }

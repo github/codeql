@@ -72,8 +72,8 @@ ExtensionDecl:
 
 NominalTypeDecl:
   _extends:
-    - IterableDeclContext
     - GenericTypeDecl
+    - IterableDeclContext
   type: Type
 
 AstNode:
