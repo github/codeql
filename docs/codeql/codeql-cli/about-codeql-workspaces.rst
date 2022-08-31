@@ -14,7 +14,7 @@ In most cases, the CodeQL workspace and all CodeQL packs contained in it should 
 The ``codeql-workspae.yml`` file
 --------------------------------
 
-A CodeQL workspace is defined by a ``codeql-workspace.yml`` yaml file. This file contains a ``provide`` block, and optionally an ``ignore`` block. The ``provide`` block contains a list of glob patterns that define the CodeQL packs that are available in the workspace. The ``ignore`` block contains a list of glob patterns that define CodeQL packs that are not available in the workspace. Each entry in the ``provide`` or ``ignore`` section must map to a path to a ``qlpack.yml`` file. All glob patterns are relative to the directory containing the workspace file. See `@actions/glob <https://github.com/actions/toolkit/tree/main/packages/glob#patterns>` for a list of patterns accepted in this file.
+A CodeQL workspace is defined by a ``codeql-workspace.yml`` yaml file. This file contains a ``provide`` block, and optionally an ``ignore`` block. The ``provide`` block contains a list of glob patterns that define the CodeQL packs that are available in the workspace. The ``ignore`` block contains a list of glob patterns that define CodeQL packs that are not available in the workspace. Each entry in the ``provide`` or ``ignore`` section must map to a path to a ``qlpack.yml`` file. All glob patterns are relative to the directory containing the workspace file. See `@actions/glob <https://github.com/actions/toolkit/tree/main/packages/glob#patterns>`__ for a list of patterns accepted in this file.
 
 For example, the following ``codeql-workspace.yml`` file defines a workspace that contains all CodeQL packs recursively found in the ``codeql-packs`` directory, except for the packs in the ``experimental`` directory:
 
