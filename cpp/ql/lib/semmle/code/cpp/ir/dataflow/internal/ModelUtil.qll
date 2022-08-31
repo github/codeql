@@ -19,9 +19,9 @@ DataFlow::Node callInput(CallInstruction call, FunctionInput input) {
   )
   or
   // A value pointed to by an argument or qualifier
-  exists(int index, int ind |
-    hasOperandAndIndex(result, call.getArgumentOperand(index), ind) and
-    input.isParameterDerefOrQualifierObject(index, ind)
+  exists(int index, int indirectionIndex |
+    hasOperandAndIndex(result, call.getArgumentOperand(index), indirectionIndex) and
+    input.isParameterDerefOrQualifierObject(index, indirectionIndex)
   )
   or
   exists(int ind |
@@ -39,11 +39,11 @@ Node callOutput(CallInstruction call, FunctionOutput output) {
   output.isReturnValue()
   or
   // The side effect of a call on the value pointed to by an argument or qualifier
-  exists(int index, int ind |
+  exists(int index, int indirectionIndex |
     result.(IndirectArgumentOutNode).getArgumentIndex() = index and
-    result.(IndirectArgumentOutNode).getIndex() + 1 = ind and
+    result.(IndirectArgumentOutNode).getIndirectionIndex() + 1 = indirectionIndex and
     result.(IndirectArgumentOutNode).getCallInstruction() = call and
-    output.isParameterDerefOrQualifierObject(index, ind)
+    output.isParameterDerefOrQualifierObject(index, indirectionIndex)
   )
   or
   exists(int ind |
@@ -57,17 +57,17 @@ DataFlow::Node callInput(CallInstruction call, FunctionInput input, int d) {
     // An argument or qualifier
     hasOperandAndIndex(result, n.asOperand(), d)
     or
-    exists(Operand operand, int index |
+    exists(Operand operand, int indirectionIndex |
       // A value pointed to by an argument or qualifier
-      hasOperandAndIndex(n, operand, index) and
-      hasOperandAndIndex(result, operand, index + d)
+      hasOperandAndIndex(n, operand, indirectionIndex) and
+      hasOperandAndIndex(result, operand, indirectionIndex + d)
     )
   )
 }
 
 private IndirectReturnOutNode getIndirectReturnOutNode(CallInstruction call, int d) {
   result.getCallInstruction() = call and
-  result.getIndex() = d
+  result.getIndirectionIndex() = d
 }
 
 /**
@@ -85,9 +85,9 @@ Node callOutput(CallInstruction call, FunctionOutput output, int d) {
     n.asInstruction() = result.asInstruction()
     or
     // The side effect of a call on the value pointed to by an argument or qualifier
-    exists(Operand operand, int index |
-      Ssa::outNodeHasAddressAndIndex(n, operand, index) and
-      Ssa::outNodeHasAddressAndIndex(result, operand, index + d)
+    exists(Operand operand, int indirectionIndex |
+      Ssa::outNodeHasAddressAndIndex(n, operand, indirectionIndex) and
+      Ssa::outNodeHasAddressAndIndex(result, operand, indirectionIndex + d)
     )
   )
 }

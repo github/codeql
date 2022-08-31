@@ -71,7 +71,7 @@ private class SideEffectArgumentNode extends ArgumentNode, SideEffectOperandNode
   override predicate argumentOf(DataFlowCall dfCall, ArgumentPosition pos) {
     this.getCallInstruction() = dfCall and
     pos.(IndirectionPosition).getArgumentIndex() = this.getArgumentIndex() and
-    pos.(IndirectionPosition).getIndex() = super.getIndex()
+    pos.(IndirectionPosition).getIndirectionIndex() = super.getIndirectionIndex()
   }
 
   override string toStringImpl() {
@@ -101,42 +101,43 @@ class DirectPosition extends Position, TDirectPosition {
 
 class IndirectionPosition extends Position, TIndirectionPosition {
   int argumentIndex;
-  int index;
+  int indirectionIndex;
 
-  IndirectionPosition() { this = TIndirectionPosition(argumentIndex, index) }
+  IndirectionPosition() { this = TIndirectionPosition(argumentIndex, indirectionIndex) }
 
   override string toString() {
     if argumentIndex = -1
-    then if index > 0 then result = "this indirection" else result = "this"
+    then if indirectionIndex > 0 then result = "this indirection" else result = "this"
     else
-      if index > 0
+      if indirectionIndex > 0
       then result = argumentIndex.toString() + " indirection"
       else result = argumentIndex.toString()
   }
 
   int getArgumentIndex() { result = argumentIndex }
 
-  int getIndex() { result = index }
+  int getIndirectionIndex() { result = indirectionIndex }
 }
 
 newtype TPosition =
   TDirectPosition(int index) { exists(any(CallInstruction c).getArgument(index)) } or
-  TIndirectionPosition(int argumentIndex, int index) {
-    hasOperandAndIndex(_, any(CallInstruction call).getArgumentOperand(argumentIndex), index)
+  TIndirectionPosition(int argumentIndex, int indirectionIndex) {
+    hasOperandAndIndex(_, any(CallInstruction call).getArgumentOperand(argumentIndex),
+      indirectionIndex)
   }
 
 private newtype TReturnKind =
   TNormalReturnKind(int index) {
     exists(IndirectReturnNode return |
       return.getAddressOperand() = any(ReturnValueInstruction r).getReturnAddressOperand() and
-      index = return.getIndex() - 1 // We subtract one because the return loads the value.
+      index = return.getIndirectionIndex() - 1 // We subtract one because the return loads the value.
     )
   } or
-  TIndirectReturnKind(int argumentIndex, int index) {
+  TIndirectReturnKind(int argumentIndex, int indirectionIndex) {
     exists(IndirectReturnNode return, ReturnIndirectionInstruction returnInd |
       returnInd.hasIndex(argumentIndex) and
       return.getAddressOperand() = returnInd.getSourceAddressOperand() and
-      index = return.getIndex() - 1 // We subtract one because the return loads the value.
+      indirectionIndex = return.getIndirectionIndex() - 1 // We subtract one because the return loads the value.
     )
   }
 
@@ -159,9 +160,9 @@ private class NormalReturnKind extends ReturnKind, TNormalReturnKind {
 
 private class IndirectReturnKind extends ReturnKind, TIndirectReturnKind {
   int argumentIndex;
-  int index;
+  int indirectionIndex;
 
-  IndirectReturnKind() { this = TIndirectReturnKind(argumentIndex, index) }
+  IndirectReturnKind() { this = TIndirectReturnKind(argumentIndex, indirectionIndex) }
 
   override string toString() { result = "indirect outparam[" + argumentIndex.toString() + "]" }
 }
@@ -179,7 +180,7 @@ class ReturnNode extends Node instanceof IndirectReturnNode {
  * variable passed to a function even though the variable was never updated by
  * the function. And if a function has too many `ReturnNode`s the dataflow
  * library lowers its precision for that function by disabling field flow.
- * 
+ *
  * So we those eliminate `ReturnNode`s that would have otherwise been created
  * by this unconditional `ReturnIndirectionInstruction` by requiring that there
  * must exist an SSA definition of the IR variable in the function.
@@ -196,12 +197,12 @@ class ReturnIndirectionNode extends IndirectReturnNode, ReturnNode {
     exists(int argumentIndex, ReturnIndirectionInstruction returnInd |
       returnInd.hasIndex(argumentIndex) and
       this.getAddressOperand() = returnInd.getSourceAddressOperand() and
-      result = TIndirectReturnKind(argumentIndex, this.getIndex() - 1) and
+      result = TIndirectReturnKind(argumentIndex, this.getIndirectionIndex() - 1) and
       hasNonInitializeParameterDef(returnInd.getIRVariable())
     )
     or
     this.getAddressOperand() = any(ReturnValueInstruction r).getReturnAddressOperand() and
-    result = TNormalReturnKind(this.getIndex() - 1)
+    result = TNormalReturnKind(this.getIndirectionIndex() - 1)
   }
 }
 
@@ -311,14 +312,14 @@ private class DirectCallOutNode extends OutNode {
 private class IndirectCallOutNode extends OutNode, IndirectReturnOutNode {
   override DataFlowCall getCall() { result = this.getCallInstruction() }
 
-  override ReturnKind getReturnKind() { result = TNormalReturnKind(this.getIndex()) }
+  override ReturnKind getReturnKind() { result = TNormalReturnKind(this.getIndirectionIndex()) }
 }
 
 private class SideEffectOutNode extends OutNode, IndirectArgumentOutNode {
   override DataFlowCall getCall() { result = this.getCallInstruction() }
 
   override ReturnKind getReturnKind() {
-    result = TIndirectReturnKind(this.getArgumentIndex(), this.getIndex())
+    result = TIndirectReturnKind(this.getArgumentIndex(), this.getIndirectionIndex())
   }
 }
 
@@ -362,20 +363,20 @@ predicate jumpStep(Node n1, Node n2) {
  * value of `node1`.
  */
 predicate storeStep(Node node1, Content c, PostFieldUpdateNode node2) {
-  exists(int index1, int numberOfLoads, StoreInstruction store |
-    nodeHasInstruction(node1, store, pragma[only_bind_into](index1)) and
-    node2.getIndex() = 0 and
+  exists(int indirectionIndex1, int numberOfLoads, StoreInstruction store |
+    nodeHasInstruction(node1, store, pragma[only_bind_into](indirectionIndex1)) and
+    node2.getIndirectionIndex() = 0 and
     numberOfLoadsFromOperand(node2.getFieldAddress(), store.getDestinationAddressOperand(),
       numberOfLoads)
   |
     exists(FieldContent fc | fc = c |
       fc.getField() = node2.getUpdatedField() and
-      fc.getIndex() = 1 + index1 + numberOfLoads
+      fc.getIndirectionIndex() = 1 + indirectionIndex1 + numberOfLoads
     )
     or
     exists(UnionContent uc | uc = c |
       uc.getAField() = node2.getUpdatedField() and
-      uc.getIndex() = 1 + index1 + numberOfLoads
+      uc.getIndirectionIndex() = 1 + indirectionIndex1 + numberOfLoads
     )
   )
 }
@@ -413,18 +414,18 @@ private predicate numberOfLoadsFromOperand(Operand operandFrom, Operand operandT
 
 // Needed to join on both an operand and an index at the same time.
 pragma[noinline]
-predicate nodeHasOperand(Node node, Operand operand, int index) {
-  node.asOperand() = operand and index = 0
+predicate nodeHasOperand(Node node, Operand operand, int indirectionIndex) {
+  node.asOperand() = operand and indirectionIndex = 0
   or
-  hasOperandAndIndex(node, operand, index)
+  hasOperandAndIndex(node, operand, indirectionIndex)
 }
 
 // Needed to join on both an instruction and an index at the same time.
 pragma[noinline]
-predicate nodeHasInstruction(Node node, Instruction instr, int index) {
-  node.asInstruction() = instr and index = 0
+predicate nodeHasInstruction(Node node, Instruction instr, int indirectionIndex) {
+  node.asInstruction() = instr and indirectionIndex = 0
   or
-  hasInstructionAndIndex(node, instr, index)
+  hasInstructionAndIndex(node, instr, indirectionIndex)
 }
 
 /**
@@ -433,19 +434,19 @@ predicate nodeHasInstruction(Node node, Instruction instr, int index) {
  * `node2`.
  */
 predicate readStep(Node node1, Content c, Node node2) {
-  exists(FieldAddress fa1, Operand operand, int numberOfLoads, int index2 |
-    nodeHasOperand(node2, operand, index2) and
+  exists(FieldAddress fa1, Operand operand, int numberOfLoads, int indirectionIndex2 |
+    nodeHasOperand(node2, operand, indirectionIndex2) and
     nodeHasOperand(node1, fa1.getObjectAddressOperand(), _) and
     numberOfLoadsFromOperand(fa1, operand, numberOfLoads)
   |
     exists(FieldContent fc | fc = c |
       fc.getField() = fa1.getField() and
-      fc.getIndex() = index2 + numberOfLoads
+      fc.getIndirectionIndex() = indirectionIndex2 + numberOfLoads
     )
     or
     exists(UnionContent uc | uc = c |
       uc.getAField() = fa1.getField() and
-      uc.getIndex() = index2 + numberOfLoads
+      uc.getIndirectionIndex() = indirectionIndex2 + numberOfLoads
     )
   )
 }

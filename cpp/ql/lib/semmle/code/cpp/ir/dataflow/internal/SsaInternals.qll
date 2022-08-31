@@ -87,34 +87,34 @@ private module SourceVariables {
 
 import SourceVariables
 
-predicate hasIndirectOperand(Operand op, int index) {
+predicate hasIndirectOperand(Operand op, int indirectionIndex) {
   exists(CppType type, int m |
     not ignoreOperand(op) and
     type = getLanguageType(op) and
     m = countIndirectionsForCppType(type) and
-    index = [1 .. m]
+    indirectionIndex = [1 .. m]
   )
 }
 
-predicate hasIndirectInstruction(Instruction instr, int index) {
+predicate hasIndirectInstruction(Instruction instr, int indirectionIndex) {
   exists(CppType type, int m |
     not ignoreInstruction(instr) and
     type = getResultLanguageType(instr) and
     m = countIndirectionsForCppType(type) and
-    index = [1 .. m]
+    indirectionIndex = [1 .. m]
   )
 }
 
 cached
 private newtype TDefOrUseImpl =
-  TDefImpl(Operand address, int index) {
-    isDef(_, _, address, _, _, index) and
+  TDefImpl(Operand address, int indirectionIndex) {
+    isDef(_, _, address, _, _, indirectionIndex) and
     // We only include the definition if the SSA pruning stage
     // concluded that the definition is live after the write.
     any(SsaInternals0::Def def).getAddressOperand() = address
   } or
-  TUseImpl(Operand operand, int index) {
-    isUse(_, operand, _, _, index) and
+  TUseImpl(Operand operand, int indirectionIndex) {
+    isUse(_, operand, _, _, indirectionIndex) and
     not isDef(_, _, operand, _, _, _)
   }
 
@@ -144,7 +144,7 @@ abstract private class DefOrUseImpl extends TDefOrUseImpl {
    * the enclosing basic block. To obtain this index, use
    * `DefOrUseImpl::hasIndexInBlock/2` or `DefOrUseImpl::hasIndexInBlock/3`.
    */
-  abstract int getIndex();
+  abstract int getIndirectionIndex();
 
   /**
    * Gets the instruction that computes the base of this definition or use.
@@ -211,7 +211,7 @@ class DefImpl extends DefOrUseImpl, TDefImpl {
 
   int getIndirection() { isDef(_, _, address, _, result, ind) }
 
-  override int getIndex() { result = ind }
+  override int getIndirectionIndex() { result = ind }
 
   Instruction getDefiningInstruction() { isDef(_, result, address, _, _, _) }
 
@@ -248,7 +248,7 @@ class UseImpl extends DefOrUseImpl, TUseImpl {
 
   final int getIndirection() { isUse(_, operand, _, result, ind) }
 
-  override int getIndex() { result = ind }
+  override int getIndirectionIndex() { result = ind }
 
   override Instruction getBase() { isUse(_, operand, result, _, ind) }
 
@@ -277,20 +277,22 @@ predicate adjacentDefRead(DefOrUse defOrUse1, UseOrPhi use) {
 private predicate useToNode(UseOrPhi use, Node nodeTo) {
   exists(UseImpl useImpl |
     useImpl = use.asDefOrUse() and
-    nodeHasOperand(nodeTo, useImpl.getOperand(), useImpl.getIndex())
+    nodeHasOperand(nodeTo, useImpl.getOperand(), useImpl.getIndirectionIndex())
   )
   or
   nodeTo.(SsaPhiNode).getPhiNode() = use.asPhi()
 }
 
 pragma[noinline]
-predicate outNodeHasAddressAndIndex(IndirectArgumentOutNode out, Operand address, int index) {
+predicate outNodeHasAddressAndIndex(
+  IndirectArgumentOutNode out, Operand address, int indirectionIndex
+) {
   out.getAddressOperand() = address and
-  out.getIndex() = index
+  out.getIndirectionIndex() = indirectionIndex
 }
 
 private predicate defToNode(Node nodeFrom, Def def) {
-  nodeHasInstruction(nodeFrom, def.getDefiningInstruction(), def.getIndex())
+  nodeHasInstruction(nodeFrom, def.getDefiningInstruction(), def.getIndirectionIndex())
 }
 
 private predicate nodeToDefOrUse(Node nodeFrom, SsaDefOrUse defOrUse) {
@@ -310,9 +312,9 @@ private predicate indirectConversionFlowStep(Node nFrom, Node nTo) {
     nodeToDefOrUse(nTo, defOrUse) and
     adjacentDefRead(defOrUse, _)
   ) and
-  exists(Operand op1, Operand op2, int index, Instruction instr |
-    hasOperandAndIndex(nFrom, op1, pragma[only_bind_into](index)) and
-    hasOperandAndIndex(nTo, op2, pragma[only_bind_into](index)) and
+  exists(Operand op1, Operand op2, int indirectionIndex, Instruction instr |
+    hasOperandAndIndex(nFrom, op1, pragma[only_bind_into](indirectionIndex)) and
+    hasOperandAndIndex(nTo, op2, pragma[only_bind_into](indirectionIndex)) and
     instr = op2.getDef() and
     conversionFlow(op1, instr, _)
   )
@@ -510,7 +512,9 @@ class Def extends DefOrUse {
    * instead of the other way around.
    */
   pragma[inline]
-  int getIndex() { pragma[only_bind_into](result) = pragma[only_bind_out](defOrUse).getIndex() }
+  int getIndirectionIndex() {
+    pragma[only_bind_into](result) = pragma[only_bind_out](defOrUse).getIndirectionIndex()
+  }
 
   Instruction getDefiningInstruction() { result = defOrUse.getDefiningInstruction() }
 }

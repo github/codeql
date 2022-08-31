@@ -29,23 +29,23 @@ predicate localAdditionalTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeT
   modeledTaintStep(nodeFrom, nodeTo)
   or
   // Flow from `op` to `*op`.
-  exists(Operand operand, int index |
-    nodeHasOperand(nodeFrom, operand, index) and
-    nodeHasOperand(nodeTo, operand, index - 1)
+  exists(Operand operand, int indirectionIndex |
+    nodeHasOperand(nodeFrom, operand, indirectionIndex) and
+    nodeHasOperand(nodeTo, operand, indirectionIndex - 1)
   )
   or
   // Flow from `instr` to `*instr`.
-  exists(Instruction instr, int index |
-    nodeHasInstruction(nodeFrom, instr, index) and
-    nodeHasInstruction(nodeTo, instr, index - 1)
+  exists(Instruction instr, int indirectionIndex |
+    nodeHasInstruction(nodeFrom, instr, indirectionIndex) and
+    nodeHasInstruction(nodeTo, instr, indirectionIndex - 1)
   )
   or
   // Flow from (the indirection of) an operand of a pointer arithmetic instruction to the
   // indirection of the pointer arithmetic instruction. This provides flow from `source`
   // in `x[source]` to the result of the associated load instruction.
-  exists(PointerArithmeticInstruction pai, int index |
-    nodeHasOperand(nodeFrom, pai.getAnOperand(), pragma[only_bind_into](index)) and
-    hasInstructionAndIndex(nodeTo, pai, index + 1)
+  exists(PointerArithmeticInstruction pai, int indirectionIndex |
+    nodeHasOperand(nodeFrom, pai.getAnOperand(), pragma[only_bind_into](indirectionIndex)) and
+    hasInstructionAndIndex(nodeTo, pai, indirectionIndex + 1)
   )
 }
 

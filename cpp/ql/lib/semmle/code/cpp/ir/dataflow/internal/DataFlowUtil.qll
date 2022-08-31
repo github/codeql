@@ -36,18 +36,22 @@ private module Cached {
     TInstructionNode(Instruction i) { not Ssa::ignoreInstruction(i) } or
     TOperandNode(Operand op) { not Ssa::ignoreOperand(op) } or
     TVariableNode(Variable var) or
-    TPostFieldUpdateNode(FieldAddress operand, int index) {
-      index =
+    TPostFieldUpdateNode(FieldAddress operand, int indirectionIndex) {
+      indirectionIndex =
         [0 .. Ssa::countIndirectionsForCppType(operand.getObjectAddress().getResultLanguageType()) -
             1]
     } or
     TSsaPhiNode(Ssa::PhiNode phi) or
-    TIndirectArgumentOutNode(ArgumentOperand operand, int index) {
+    TIndirectArgumentOutNode(ArgumentOperand operand, int indirectionIndex) {
       Ssa::isModifiableByCall(operand) and
-      index = [0 .. Ssa::countIndirectionsForCppType(operand.getLanguageType()) - 1]
+      indirectionIndex = [0 .. Ssa::countIndirectionsForCppType(operand.getLanguageType()) - 1]
     } or
-    TIndirectOperand(Operand op, int index) { Ssa::hasIndirectOperand(op, index) } or
-    TIndirectInstruction(Instruction instr, int index) { Ssa::hasIndirectInstruction(instr, index) }
+    TIndirectOperand(Operand op, int indirectionIndex) {
+      Ssa::hasIndirectOperand(op, indirectionIndex)
+    } or
+    TIndirectInstruction(Instruction instr, int indirectionIndex) {
+      Ssa::hasIndirectInstruction(instr, indirectionIndex)
+    }
 }
 
 /**
@@ -197,7 +201,7 @@ class Node extends TIRDataFlowNode {
   Expr asDefiningArgument(int index) {
     // Subtract one because `DefinitionByReferenceNode` is defined to be in
     // the range `[0 ... n - 1]` for some `n` instead of `[1 ... n]`.
-    this.(DefinitionByReferenceNode).getIndex() = index - 1 and
+    this.(DefinitionByReferenceNode).getIndirectionIndex() = index - 1 and
     result = this.(DefinitionByReferenceNode).getArgument()
   }
 
@@ -215,7 +219,7 @@ class Node extends TIRDataFlowNode {
    * represents the value of `**x` going into `f`.
    */
   Expr asIndirectArgument(int index) {
-    this.(SideEffectOperandNode).getIndex() = index and
+    this.(SideEffectOperandNode).getIndirectionIndex() = index and
     result = this.(SideEffectOperandNode).getArgument()
   }
 
@@ -246,7 +250,7 @@ class Node extends TIRDataFlowNode {
     index = 0 and
     result = this.(ExplicitParameterNode).getParameter()
     or
-    this.(IndirectParameterNode).getIndex() = index and
+    this.(IndirectParameterNode).getIndirectionIndex() = index and
     result = this.(IndirectParameterNode).getParameter()
   }
 
@@ -357,10 +361,10 @@ class OperandNode extends Node, TOperandNode {
  * The node representing the value of a field after it has been updated.
  */
 class PostFieldUpdateNode extends TPostFieldUpdateNode, PartialDefinitionNode {
-  int index;
+  int indirectionIndex;
   FieldAddress fieldAddress;
 
-  PostFieldUpdateNode() { this = TPostFieldUpdateNode(fieldAddress, index) }
+  PostFieldUpdateNode() { this = TPostFieldUpdateNode(fieldAddress, indirectionIndex) }
 
   override Function getFunction() { result = fieldAddress.getUse().getEnclosingFunction() }
 
@@ -372,13 +376,13 @@ class PostFieldUpdateNode extends TPostFieldUpdateNode, PartialDefinitionNode {
 
   Field getUpdatedField() { result = fieldAddress.getField() }
 
-  int getIndex() { result = index }
+  int getIndirectionIndex() { result = indirectionIndex }
 
   override Node getPreUpdateNode() {
     // + 1 because we're storing into an lvalue, and the original node should be the rvalue of
     // the same address.
     hasOperandAndIndex(result, pragma[only_bind_into](fieldAddress).getObjectAddressOperand(),
-      index + 1)
+      indirectionIndex + 1)
   }
 
   override Expr getDefinedExpr() {
@@ -511,11 +515,11 @@ class IndirectReturnNode extends IndirectOperand {
  */
 class IndirectArgumentOutNode extends Node, TIndirectArgumentOutNode, PostUpdateNode {
   ArgumentOperand operand;
-  int index;
+  int indirectionIndex;
 
-  IndirectArgumentOutNode() { this = TIndirectArgumentOutNode(operand, index) }
+  IndirectArgumentOutNode() { this = TIndirectArgumentOutNode(operand, indirectionIndex) }
 
-  int getIndex() { result = index }
+  int getIndirectionIndex() { result = indirectionIndex }
 
   int getArgumentIndex() {
     exists(CallInstruction call | call.getArgumentOperand(result) = operand)
@@ -533,7 +537,7 @@ class IndirectArgumentOutNode extends Node, TIndirectArgumentOutNode, PostUpdate
 
   override IRType getType() { result instanceof IRVoidType }
 
-  override Node getPreUpdateNode() { hasOperandAndIndex(result, operand, index + 1) }
+  override Node getPreUpdateNode() { hasOperandAndIndex(result, operand, indirectionIndex + 1) }
 
   override string toStringImpl() {
     // This string should be unique enough to be helpful but common enough to
@@ -548,14 +552,16 @@ class IndirectArgumentOutNode extends Node, TIndirectArgumentOutNode, PostUpdate
 }
 
 pragma[nomagic]
-predicate indirectReturnOutNodeOperand0(CallInstruction call, Operand operand, int index) {
-  Ssa::hasIndirectInstruction(call, index) and
+predicate indirectReturnOutNodeOperand0(CallInstruction call, Operand operand, int indirectionIndex) {
+  Ssa::hasIndirectInstruction(call, indirectionIndex) and
   operandForfullyConvertedCall(operand, call)
 }
 
 pragma[nomagic]
-predicate indirectReturnOutNodeInstruction0(CallInstruction call, Instruction instr, int index) {
-  Ssa::hasIndirectInstruction(call, index) and
+predicate indirectReturnOutNodeInstruction0(
+  CallInstruction call, Instruction instr, int indirectionIndex
+) {
+  Ssa::hasIndirectInstruction(call, indirectionIndex) and
   instructionForfullyConvertedCall(instr, call)
 }
 
@@ -566,25 +572,25 @@ predicate indirectReturnOutNodeInstruction0(CallInstruction call, Instruction in
  */
 class IndirectReturnOutNode extends Node {
   CallInstruction call;
-  int index;
+  int indirectionIndex;
 
   IndirectReturnOutNode() {
     // Annoyingly, we need to pick the fully converted value as the output of the function to
     // make flow through in the shared dataflow library work correctly.
     exists(Operand operand |
-      indirectReturnOutNodeOperand0(call, operand, index) and
-      hasOperandAndIndex(this, operand, index)
+      indirectReturnOutNodeOperand0(call, operand, indirectionIndex) and
+      hasOperandAndIndex(this, operand, indirectionIndex)
     )
     or
     exists(Instruction instr |
-      indirectReturnOutNodeInstruction0(call, instr, index) and
-      hasInstructionAndIndex(this, instr, index)
+      indirectReturnOutNodeInstruction0(call, instr, indirectionIndex) and
+      hasInstructionAndIndex(this, instr, indirectionIndex)
     )
   }
 
   CallInstruction getCallInstruction() { result = call }
 
-  int getIndex() { result = index }
+  int getIndirectionIndex() { result = indirectionIndex }
 }
 
 /**
@@ -595,14 +601,14 @@ class IndirectReturnOutNode extends Node {
  */
 class IndirectOperand extends Node, TIndirectOperand {
   Operand operand;
-  int index;
+  int indirectionIndex;
 
-  IndirectOperand() { this = TIndirectOperand(operand, index) }
+  IndirectOperand() { this = TIndirectOperand(operand, indirectionIndex) }
 
   /** Gets the underlying instruction. */
   Operand getOperand() { result = operand }
 
-  int getIndex() { result = index }
+  int getIndirectionIndex() { result = indirectionIndex }
 
   override Function getFunction() { result = this.getOperand().getDef().getEnclosingFunction() }
 
@@ -625,14 +631,14 @@ class IndirectOperand extends Node, TIndirectOperand {
  */
 class IndirectInstruction extends Node, TIndirectInstruction {
   Instruction instr;
-  int index;
+  int indirectionIndex;
 
-  IndirectInstruction() { this = TIndirectInstruction(instr, index) }
+  IndirectInstruction() { this = TIndirectInstruction(instr, indirectionIndex) }
 
   /** Gets the underlying instruction. */
   Instruction getInstruction() { result = instr }
 
-  int getIndex() { result = index }
+  int getIndirectionIndex() { result = indirectionIndex }
 
   override Function getFunction() { result = this.getInstruction().getEnclosingFunction() }
 
@@ -675,7 +681,7 @@ predicate exprNodeShouldBeOperand(Node node, Expr e) {
  * the `LoadInstruction`.
  */
 private predicate exprNodeShouldBeIndirectOperand(IndirectOperand node, Expr e, LoadInstruction load) {
-  node.getIndex() = 1 and
+  node.getIndirectionIndex() = 1 and
   e = load.getConvertedResultExpression() and
   load.getSourceAddressOperand() = node.getOperand() and
   not convertedExprMustBeOperand(e)
@@ -810,27 +816,27 @@ class ThisParameterNode extends ParameterNode, InstructionNode {
 
 pragma[noinline]
 private predicate indirectPostionHasArgumentIndexAndIndex(
-  IndirectionPosition pos, int argumentIndex, int index
+  IndirectionPosition pos, int argumentIndex, int indirectionIndex
 ) {
   pos.getArgumentIndex() = argumentIndex and
-  pos.getIndex() = index
+  pos.getIndirectionIndex() = indirectionIndex
 }
 
 pragma[noinline]
 private predicate indirectParameterNodeHasArgumentIndexAndIndex(
-  IndirectParameterNode node, int argumentIndex, int index
+  IndirectParameterNode node, int argumentIndex, int indirectionIndex
 ) {
   node.getArgumentIndex() = argumentIndex and
-  node.getIndex() = index
+  node.getIndirectionIndex() = indirectionIndex
 }
 
 /** A synthetic parameter to model the pointed-to object of a pointer parameter. */
 class ParameterIndirectionNode extends ParameterNode instanceof IndirectParameterNode {
   override predicate isParameterOf(Function f, ParameterPosition pos) {
     IndirectParameterNode.super.getEnclosingCallable() = f and
-    exists(int argumentIndex, int index |
-      indirectPostionHasArgumentIndexAndIndex(pos, argumentIndex, index) and
-      indirectParameterNodeHasArgumentIndexAndIndex(this, argumentIndex, index)
+    exists(int argumentIndex, int indirectionIndex |
+      indirectPostionHasArgumentIndexAndIndex(pos, argumentIndex, indirectionIndex) and
+      indirectParameterNodeHasArgumentIndexAndIndex(this, argumentIndex, indirectionIndex)
     )
   }
 }
@@ -987,40 +993,42 @@ private predicate indirectionOperandFlow(IndirectOperand nodeFrom, Node nodeTo) 
   or
   // If an operand flows to an instruction, then the indirection of
   // the operand also flows to the indirction of the instruction.
-  exists(Operand operand, Instruction instr, int index |
+  exists(Operand operand, Instruction instr, int indirectionIndex |
     simpleInstructionLocalFlowStep(operand, instr) and
-    hasOperandAndIndex(nodeFrom, operand, index) and
-    hasInstructionAndIndex(nodeTo, instr, index)
+    hasOperandAndIndex(nodeFrom, operand, indirectionIndex) and
+    hasInstructionAndIndex(nodeTo, instr, indirectionIndex)
   )
   or
   // If there's indirect flow to an operand, then there's also indirect
   // flow to the operand after applying some pointer arithmetic.
-  exists(PointerArithmeticInstruction pointerArith, int index |
-    hasOperandAndIndex(nodeFrom, pointerArith.getAnOperand(), index) and
-    hasInstructionAndIndex(nodeTo, pointerArith, index)
+  exists(PointerArithmeticInstruction pointerArith, int indirectionIndex |
+    hasOperandAndIndex(nodeFrom, pointerArith.getAnOperand(), indirectionIndex) and
+    hasInstructionAndIndex(nodeTo, pointerArith, indirectionIndex)
   )
 }
 
 pragma[noinline]
-predicate hasOperandAndIndex(IndirectOperand indirectOperand, Operand operand, int index) {
+predicate hasOperandAndIndex(IndirectOperand indirectOperand, Operand operand, int indirectionIndex) {
   indirectOperand.getOperand() = operand and
-  indirectOperand.getIndex() = index
+  indirectOperand.getIndirectionIndex() = indirectionIndex
 }
 
 pragma[noinline]
-predicate hasInstructionAndIndex(IndirectInstruction indirectInstr, Instruction instr, int index) {
+predicate hasInstructionAndIndex(
+  IndirectInstruction indirectInstr, Instruction instr, int indirectionIndex
+) {
   indirectInstr.getInstruction() = instr and
-  indirectInstr.getIndex() = index
+  indirectInstr.getIndirectionIndex() = indirectionIndex
 }
 
 private predicate indirectionInstructionFlow(IndirectInstruction nodeFrom, IndirectOperand nodeTo) {
   // If there's flow from an instruction to an operand, then there's also flow from the
   // indirect instruction to the indirect operand.
-  exists(Operand operand, Instruction instr, int index |
+  exists(Operand operand, Instruction instr, int indirectionIndex |
     simpleOperandLocalFlowStep(pragma[only_bind_into](instr), pragma[only_bind_into](operand))
   |
-    hasOperandAndIndex(nodeTo, operand, index) and
-    hasInstructionAndIndex(nodeFrom, instr, index)
+    hasOperandAndIndex(nodeTo, operand, indirectionIndex) and
+    hasInstructionAndIndex(nodeFrom, instr, indirectionIndex)
   )
 }
 
@@ -1058,15 +1066,15 @@ predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo) {
   // Reverse flow: data that flows from the definition node back into the indirection returned
   // by a function. This allows data to flow 'in' through references returned by a modeled
   // function such as `operator[]`.
-  exists(Operand address, int index |
-    nodeHasOperand(nodeTo.(IndirectReturnOutNode), address, index)
+  exists(Operand address, int indirectionIndex |
+    nodeHasOperand(nodeTo.(IndirectReturnOutNode), address, indirectionIndex)
   |
     exists(StoreInstruction store |
-      nodeHasInstruction(nodeFrom, store, index - 1) and
+      nodeHasInstruction(nodeFrom, store, indirectionIndex - 1) and
       store.getDestinationAddressOperand() = address
     )
     or
-    Ssa::outNodeHasAddressAndIndex(nodeFrom, address, index - 1)
+    Ssa::outNodeHasAddressAndIndex(nodeFrom, address, indirectionIndex - 1)
   )
 }
 
@@ -1148,15 +1156,16 @@ predicate localExprFlow(Expr e1, Expr e2) { localFlow(exprNode(e1), exprNode(e2)
 
 cached
 private newtype TContent =
-  TFieldContent(Field f, int index) {
-    index = [1 .. Ssa::getMaxIndirectionsForType(f.getUnspecifiedType())] and
+  TFieldContent(Field f, int indirectionIndex) {
+    indirectionIndex = [1 .. Ssa::getMaxIndirectionsForType(f.getUnspecifiedType())] and
     // Reads and writes of union fields are tracked using `UnionContent`.
     not f.getDeclaringType() instanceof Union
   } or
-  TUnionContent(Union u, int index) {
+  TUnionContent(Union u, int indirectionIndex) {
     // We key `UnionContent` by the union instead of its fields since a write to one
     // field can be read by any read of the union's fields.
-    index = [1 .. max(Ssa::getMaxIndirectionsForType(u.getAField().getUnspecifiedType()))]
+    indirectionIndex =
+      [1 .. max(Ssa::getMaxIndirectionsForType(u.getAField().getUnspecifiedType()))]
   } or
   TCollectionContent() or // Not used in C/C++
   TArrayContent() // Not used in C/C++.
@@ -1178,39 +1187,43 @@ class Content extends TContent {
 /** A reference through a non-union instance field. */
 class FieldContent extends Content, TFieldContent {
   Field f;
-  int index;
+  int indirectionIndex;
 
-  FieldContent() { this = TFieldContent(f, index) }
+  FieldContent() { this = TFieldContent(f, indirectionIndex) }
 
   override string toString() {
-    index = 1 and result = f.toString()
+    indirectionIndex = 1 and result = f.toString()
     or
-    index > 1 and result = f.toString() + " indirection"
+    indirectionIndex > 1 and result = f.toString() + " indirection"
   }
 
   Field getField() { result = f }
 
   pragma[inline]
-  int getIndex() { pragma[only_bind_into](result) = pragma[only_bind_out](index) }
+  int getIndirectionIndex() {
+    pragma[only_bind_into](result) = pragma[only_bind_out](indirectionIndex)
+  }
 }
 
 /** A reference through an instance field of a union. */
 class UnionContent extends Content, TUnionContent {
   Union u;
-  int index;
+  int indirectionIndex;
 
-  UnionContent() { this = TUnionContent(u, index) }
+  UnionContent() { this = TUnionContent(u, indirectionIndex) }
 
   override string toString() {
-    index = 1 and result = u.toString()
+    indirectionIndex = 1 and result = u.toString()
     or
-    index > 1 and result = u.toString() + " indirection"
+    indirectionIndex > 1 and result = u.toString() + " indirection"
   }
 
   Field getAField() { result = u.getAField() }
 
   pragma[inline]
-  int getIndex() { pragma[only_bind_into](result) = pragma[only_bind_out](index) }
+  int getIndirectionIndex() {
+    pragma[only_bind_into](result) = pragma[only_bind_out](indirectionIndex)
+  }
 }
 
 /** A reference through an array. */

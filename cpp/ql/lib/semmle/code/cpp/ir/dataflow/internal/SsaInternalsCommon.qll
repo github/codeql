@@ -83,7 +83,8 @@ cached
 private module DefCached {
   cached
   predicate isDef(
-    boolean certain, Instruction instr, Operand address, Instruction base, int ind, int index
+    boolean certain, Instruction instr, Operand address, Instruction base, int ind,
+    int indirectionIndex
   ) {
     exists(int ind0, CppType type, int m |
       certain = true and
@@ -99,7 +100,7 @@ private module DefCached {
       type = getLanguageType(address) and
       m = countIndirectionsForCppType(type) and
       ind = [ind0 + 1 .. ind0 + m] and
-      index = ind - (ind0 + 1)
+      indirectionIndex = ind - (ind0 + 1)
     )
   }
 
@@ -130,7 +131,7 @@ import DefCached
 cached
 private module UseCached {
   cached
-  predicate isUse(boolean certain, Operand op, Instruction base, int ind, int index) {
+  predicate isUse(boolean certain, Operand op, Instruction base, int ind, int indirectionIndex) {
     not ignoreOperand(op) and
     certain = true and
     exists(LanguageType type, int m, int ind0 |
@@ -138,7 +139,7 @@ private module UseCached {
       m = countIndirectionsForCppType(type) and
       isUseImpl(op, base, ind0) and
       ind = [ind0 .. m + ind0] and
-      index = ind - ind0
+      indirectionIndex = ind - ind0
     )
   }
 
