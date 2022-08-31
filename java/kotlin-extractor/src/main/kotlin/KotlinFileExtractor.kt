@@ -905,7 +905,6 @@ open class KotlinFileExtractor(
     private fun extractField(f: IrField, parentId: Label<out DbReftype>): Label<out DbField> {
         with("field", f) {
            DeclarationStackAdjuster(f).use {
-               declarationStack.push(f)
                val fNameSuffix = getExtensionReceiverType(f)?.let { it.classFqName?.asString()?.replace(".", "$$") } ?: ""
                return extractField(useField(f), "${f.name.asString()}$fNameSuffix", f.type, parentId, tw.getLocation(f), f.visibility, f, isExternalDeclaration(f), f.isFinal)
            }
