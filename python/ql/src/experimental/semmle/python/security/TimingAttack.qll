@@ -9,9 +9,23 @@ private import semmle.python.dataflow.new.RemoteFlowSources
 private import semmle.python.frameworks.Flask
 private import semmle.python.frameworks.Django
 
-/** A data flow source of the hash obtained */
-class ProduceHashCall extends DataFlow::CallCfgNode {
-  ProduceHashCall() {
+/** A method call that produces cryptographic result. */
+abstract private class ProduceCryptoCall extends API::CallNode {
+  /** Gets a type of cryptographic operation such as HMAC, signature or ciphertext. */
+  abstract string getResultType();
+}
+
+/** Gets a reference to the `cryptography.hazmat.primitives` module. */
+API::Node cryptographylib() {
+  result = API::moduleImport("cryptography").getMember("hazmat").getMember("primitives")
+}
+
+/** Gets a reference to the `Crypto` module. */
+API::Node cryptodome() { result = API::moduleImport(["Crypto", "Cryptodome"]) }
+
+/** A method call that produces a MAC. */
+class ProduceMacCall extends ProduceCryptoCall {
+  ProduceMacCall() {
     this = API::moduleImport("hmac").getMember("digest").getACall() or
     this =
       API::moduleImport("hmac")
@@ -20,14 +34,84 @@ class ProduceHashCall extends DataFlow::CallCfgNode {
           .getMember(["digest", "hexdigest"])
           .getACall() or
     this =
+      cryptodome()
+          .getMember("Hash")
+          .getMember("HMAC")
+          .getMember(["new", "HMAC"])
+          .getMember(["digest", "hexdigest"])
+          .getACall() or
+    this =
+      cryptographylib()
+          .getMember("hmac")
+          .getMember("HMAC")
+          .getReturn()
+          .getMember("finalize")
+          .getACall() or
+    this =
+      cryptographylib()
+          .getMember("cmac")
+          .getMember("CMAC")
+          .getReturn()
+          .getMember("finalize")
+          .getACall() or
+    this =
+      cryptodome()
+          .getMember("Hash")
+          .getMember("CMAC")
+          .getMember(["new", "CMAC"])
+          .getMember(["digest", "hexdigest"])
+          .getACall()
+  }
+
+  override string getResultType() { result = "MAC" }
+}
+
+/** A method call that produces a signature. */
+private class ProduceSignatureCall extends ProduceCryptoCall {
+  ProduceSignatureCall() {
+    this =
+      cryptodome()
+          .getMember("Signature")
+          .getMember(["DSS", "pkcs1_15", "pss", "eddsa"])
+          .getMember("new")
+          .getReturn()
+          .getMember("sign")
+          .getACall()
+  }
+
+  override string getResultType() { result = "signature" }
+}
+
+private string hashalgo() {
+  result = ["sha1", "sha224", "sha256", "sha384", "sha512", "blake2b", "blake2s", "md5"]
+}
+
+/** A method call that produces a Hash. */
+private class ProduceHashCall extends ProduceCryptoCall {
+  ProduceHashCall() {
+    this =
+      cryptographylib()
+          .getMember("hashes")
+          .getMember("Hash")
+          .getReturn()
+          .getMember("finalize")
+          .getACall() or
+    this =
       API::moduleImport("hashlib")
-          .getMember([
-              "new", "sha1", "sha224", "sha256", "sha384", "sha512", "blake2b", "blake2s", "md5"
-            ])
+          .getMember(["new", hashalgo()])
+          .getReturn()
+          .getMember(["digest", "hexdigest"])
+          .getACall() or
+    this =
+      cryptodome()
+          .getMember(hashalgo())
+          .getMember("new")
           .getReturn()
           .getMember(["digest", "hexdigest"])
           .getACall()
   }
+
+  override string getResultType() { result = "Hash" }
 }
 
 /** A data flow sink for comparison. */
