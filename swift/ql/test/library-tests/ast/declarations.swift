@@ -143,3 +143,8 @@ extension Int {
 
 42.id()
 
+class GenericClass<A, B: Baz, C: MyProtocol> {
+  func genericMethod(_: A, _: B, _: C) {}
+}
+
+func genericFunc<A, B: Baz, C: MyProtocol>(_: A, _: B, _: C) {}

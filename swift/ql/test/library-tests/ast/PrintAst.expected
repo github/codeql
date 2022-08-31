@@ -452,6 +452,31 @@ declarations.swift:
 #  144|     getElement(0): [CallExpr] call to id()
 #  144|       getFunction(): [MethodRefExpr] .id()
 #  144|         getBase(): [IntegerLiteralExpr] 42
+#  146| [ClassDecl] GenericClass
+#  146|   getGenericTypeParam(0): [GenericTypeParamDecl] A
+#  146|   getGenericTypeParam(1): [GenericTypeParamDecl] B
+#  146|   getGenericTypeParam(2): [GenericTypeParamDecl] C
+#  147|   getMember(0): [ConcreteFuncDecl] genericMethod(_:_:_:)
+#  147|     getSelfParam(): [ParamDecl] self
+#  147|     getParam(0): [ParamDecl] _
+#  147|     getParam(1): [ParamDecl] _
+#  147|     getParam(2): [ParamDecl] _
+#  147|     getBody(): [BraceStmt] { ... }
+#  146|   getMember(1): [DestructorDecl] deinit()
+#  146|     getSelfParam(): [ParamDecl] self
+#  146|     getBody(): [BraceStmt] { ... }
+#  146|   getMember(2): [ConstructorDecl] init()
+#  146|     getSelfParam(): [ParamDecl] self
+#  146|     getBody(): [BraceStmt] { ... }
+#  146|       getElement(0): [ReturnStmt] return
+#  150| [ConcreteFuncDecl] genericFunc(_:_:_:)
+#  150|   getGenericTypeParam(0): [GenericTypeParamDecl] A
+#  150|   getGenericTypeParam(1): [GenericTypeParamDecl] B
+#  150|   getGenericTypeParam(2): [GenericTypeParamDecl] C
+#  150|   getParam(0): [ParamDecl] _
+#  150|   getParam(1): [ParamDecl] _
+#  150|   getParam(2): [ParamDecl] _
+#  150|   getBody(): [BraceStmt] { ... }
 expressions.swift:
 #    1| [TopLevelCodeDecl] { ... }
 #    1|   getBody(): [BraceStmt] { ... }
