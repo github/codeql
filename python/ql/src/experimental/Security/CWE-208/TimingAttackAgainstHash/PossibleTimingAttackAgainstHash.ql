@@ -25,7 +25,7 @@ import DataFlow::PathGraph
 class PossibleTimingAttackAgainstHash extends TaintTracking::Configuration {
   PossibleTimingAttackAgainstHash() { this = "PossibleTimingAttackAgainstHash" }
 
-  override predicate isSource(DataFlow::Node source) { source instanceof ProduceHashCall }
+  override predicate isSource(DataFlow::Node source) { source instanceof ProduceCryptoCall }
 
   override predicate isSink(DataFlow::Node sink) { sink instanceof NonConstantTimeComparisonSink }
 }
@@ -33,4 +33,4 @@ class PossibleTimingAttackAgainstHash extends TaintTracking::Configuration {
 from PossibleTimingAttackAgainstHash config, DataFlow::PathNode source, DataFlow::PathNode sink
 where config.hasFlowPath(source, sink)
 select sink.getNode(), source, sink, "Possible Timing attack against $@ validation.",
-  source.getNode(), "message"
+  source.getNode().(ProduceCryptoCall).getResultType(), "message"
