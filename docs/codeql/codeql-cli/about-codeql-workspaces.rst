@@ -41,7 +41,7 @@ This ensures that any local change to a query library in a dependency in the sam
 
   Note
 
-  Source dependencies are CodeQL packs that are resolved from the filesystem. They might be in the same CodeQL workspace, or specified a path option in the ``--additional-packs`` argument. Source dependencies override any dependencies found in the local package cache and version constraints are ignored. This ensures that during local development version mismatches can be ignored.
+  Source dependencies are CodeQL packs that are resolved from the filesystem. They might be in the same CodeQL workspace, or specified as a path option in the ``--additional-packs`` argument. Source dependencies override any dependencies found in the local package cache and version constraints are ignored. This ensures that during local development version mismatches can be ignored.
 
 Example
 ~~~~~~~
@@ -71,9 +71,9 @@ And the following CodeQL query pack ``qlpack.yml`` file in the workspace:
       my-company/my-library: "*"
       codeql/cpp-all: ~0.2.0
 
-Notice that ``"*"`` is specified as the version constraint for the library pack. Because the library pack is a source dependency, the version constraint is not needed since the library pack's content is always resolved from inside of the workspace. Any version constraint will be ignored in this case, but it is recommended to use ``"*"`` for source dependencies to avoid confusion.
+Notice that, for ``my-company/my-queries``, ``"*"`` is specified as the version constraint for the library pack in the ``dependencies`` block. The library pack is defined as a source dependency in ``codeql-workspace.yml``, so the version constraint is not needed since the library pack's content is always resolved from inside of the workspace. Any version constraint will be ignored in this case, but it is recommended to use ``"*"`` for source dependencies to avoid confusion.
 
-When ``codeql pack install`` is executed from the query pack directory, an appropriate version of ``codeql/cpp-all`` will be downloaded to the local package cache. Also, a ``codeql-pack.lock.yml`` file will be created that contains the resolved version of ``codeql/cpp-all``, but no entry for ``my-company/my-library`` since it is resolved from source. The ``codeql-pack.lock.yml`` file will look something like this:
+When ``codeql pack install`` is executed from the query pack directory, an appropriate version of ``codeql/cpp-all`` will be downloaded to the local package cache. Also, a ``codeql-pack.lock.yml`` file will be created that contains the resolved version of ``codeql/cpp-all``. The lock file won't contain an entry for ``my-company/my-library`` since it is resolved from source. The ``codeql-pack.lock.yml`` file will look something like this:
 
 .. code-block:: yaml
 

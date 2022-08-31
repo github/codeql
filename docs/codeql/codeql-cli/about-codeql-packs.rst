@@ -200,7 +200,7 @@ The ``codeql-pack.lock.yml`` file will contain something like the following:
        version: 1.2.4
 
 
-The ``codeql/cpp-all`` dependency is locked to version 0.1.4. The ``my-user/my-lib`` dependency is locked to version 0.2.4. The ``my-user/transitive-dependency``, which is a transitive dependency and is not specified in the ``qlpack.yml`` file, is locked to version 1.2.4. The ``other-dependency/from-source`` is absent from the lock file since it is resolved from source. This dependency must be available in the same CodeQL workspace as the pack. For more information about CodeQL workspaces and resolving dependencies from source see ":doc:`About CodeQL Workspaces <about-codeql-workspaces>`."
+The ``codeql/cpp-all`` dependency is locked to version 0.1.4. The ``my-user/my-lib`` dependency is locked to version 0.2.4. The ``my-user/transitive-dependency``, which is a transitive dependency and is not specified in the ``qlpack.yml`` file, is locked to version 1.2.4. The ``other-dependency/from-source`` is absent from the lock file since it is resolved from source. This dependency must be available in the same CodeQL workspace as the pack. For more information about CodeQL workspaces and resolving dependencies from source, see ":doc:`About CodeQL Workspaces <about-codeql-workspaces>`."
 
 .. _custom-codeql-packs:
 
