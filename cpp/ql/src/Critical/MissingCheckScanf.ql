@@ -3,11 +3,11 @@
  * @description Failing to check that a call to 'scanf' actually writes to an
  *              output variable can lead to unexpected behavior at reading time.
  * @kind problem
- * @problem.severity recommendation
- * @security-severity 4.5
+ * @problem.severity warning
+ * @security-severity 7.5
  * @precision medium
  * @id cpp/missing-check-scanf
- * @tags security
+ * @tags security cwe-252 cwe-253
  */
 
 import cpp
