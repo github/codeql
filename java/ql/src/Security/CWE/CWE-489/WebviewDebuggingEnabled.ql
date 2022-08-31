@@ -12,7 +12,6 @@
 
 import java
 import semmle.code.java.security.WebviewDubuggingEnabledQuery
-import semmle.code.java.dataflow.DataFlow
 import DataFlow::PathGraph
 
 from WebviewDebugEnabledConfig conf, DataFlow::PathNode source, DataFlow::PathNode sink

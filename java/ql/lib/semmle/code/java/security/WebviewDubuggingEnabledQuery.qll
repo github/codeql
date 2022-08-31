@@ -22,7 +22,7 @@ private predicate isDebugCheck(Expr ex) {
   )
 }
 
-/** Configuration to find instances of `setWebContentDebuggingEnabled` called with `true` values. */
+/** A configuration to find instances of `setWebContentDebuggingEnabled` called with `true` values. */
 class WebviewDebugEnabledConfig extends DataFlow::Configuration {
   WebviewDebugEnabledConfig() { this = "WebviewDebugEnabledConfig" }
 
