@@ -1,10 +1,8 @@
-import swift
-private import codeql.swift.generated.ParentChild
+private import codeql.swift.printast.PrintAstNode
 
-from AstNode parent1, AstNode parent2, AstNode child
+from PrintAstNode parent1, PrintAstNode parent2, PrintAstNode child
 where
   parent1 != parent2 and
-  child = getImmediateChildAndAccessor(parent1, _, _) and
-  child = getImmediateChildAndAccessor(parent2, _, _)
-select parent1, parent1.getPrimaryQlClasses(), parent2, parent2.getPrimaryQlClasses(), child,
-  child.getPrimaryQlClasses()
+  parent1.hasChild(child, _, _) and
+  parent2.hasChild(child, _, _)
+select parent1, parent2, child
