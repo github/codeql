@@ -98,8 +98,6 @@ namespace Semmle.Autobuild.Shared
                 command.RunCommand(msBuild);
                 command.QuoteArgument(projectOrSolution.FullPath);
 
-                command.Argument("/p:UseSharedCompilation=false");
-
                 var target = builder.Options.MsBuildTarget ?? "rebuild";
                 var platform = builder.Options.MsBuildPlatform ?? (projectOrSolution is ISolution s1 ? s1.DefaultPlatformName : null);
                 var configuration = builder.Options.MsBuildConfiguration ?? (projectOrSolution is ISolution s2 ? s2.DefaultConfigurationName : null);
