@@ -1,0 +1,14 @@
+| Summaries;CollectionTheorems1<>;false;Add;(T);;Argument[0];Argument[this].SyntheticField[ArgT].Element;taint;generated |
+| Summaries;CollectionTheorems1<>;false;First;();;Argument[this].SyntheticField[ArgT].Element;ReturnValue;taint;generated |
+| Summaries;Theorems1<>;false;Apply;(System.Func<T,System.Int32>);;Argument[this].SyntheticField[ArgT];Argument[0].Parameter[0];taint;generated |
+| Summaries;Theorems1<>;false;Get;();;Argument[this].SyntheticField[ArgT];ReturnValue;taint;generated |
+| Summaries;Theorems1<>;false;Get;(System.Object);;Argument[this].SyntheticField[ArgT];ReturnValue;taint;generated |
+| Summaries;Theorems1<>;false;Id;(T);;Argument[0];ReturnValue;taint;generated |
+| Summaries;Theorems1<>;false;Set;(System.Int32,T);;Argument[1];Argument[this].SyntheticField[ArgT];taint;generated |
+| Summaries;Theorems1<>;false;Set;(T);;Argument[0];Argument[this].SyntheticField[ArgT];taint;generated |
+| Summaries;Theorems1<>;false;Theorems1;(T);;Argument[0];Argument[this].SyntheticField[ArgT];taint;generated |
+| Summaries;Theorems1<>;false;Transform;(System.Int32,T);;Argument[1];ReturnValue;taint;generated |
+| Summaries;Theorems1<>;false;Transform<>;(S);;Argument[0];ReturnValue;taint;generated |
+| Summaries;Theorems1<>;false;get_Prop;();;Argument[this].SyntheticField[ArgT];ReturnValue;taint;generated |
+| Summaries;Theorems1<>;false;set_Prop;(T);;Argument[0];Argument[this].SyntheticField[ArgT];taint;generated |
+| Summaries;Theorems2;false;Transform<>;(T);;Argument[0];ReturnValue;taint;generated |
