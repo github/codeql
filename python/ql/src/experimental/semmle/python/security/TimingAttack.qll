@@ -10,7 +10,7 @@ private import semmle.python.frameworks.Django
 
 /** A method call that produces cryptographic result. */
 abstract class ProduceCryptoCall extends API::CallNode {
-  /** Gets a type of cryptographic operation such as HMAC, signature or Hash. */
+  /** Gets a type of cryptographic operation such as MAC, signature, Hash or ciphertext. */
   abstract string getResultType();
 }
 
@@ -111,6 +111,21 @@ private class ProduceHashCall extends ProduceCryptoCall {
   }
 
   override string getResultType() { result = "Hash" }
+}
+
+/** A method call that produces a ciphertext. */
+private class ProduceCiphertextCall extends ProduceCryptoCall {
+  ProduceCiphertextCall() {
+    this =
+      cryptodome()
+          .getMember("Cipher")
+          .getMember(["DES", "DES3", "ARC2", "ARC4", "Blowfish", "PKCS1_v1_5"])
+          .getMember(["ARC4Cipher", "new", "PKCS115_Cipher"])
+          .getMember("encrypt")
+          .getACall()
+  }
+
+  override string getResultType() { result = "ciphertext" }
 }
 
 /** A data flow sink for comparison. */
