@@ -31,6 +31,13 @@ public class Test extends Activity {
             ContentResolver contentResolver = getContentResolver();
             Uri uri = (Uri) getIntent().getParcelableExtra("URI_EXTRA");
             contentResolver.openInputStream(uri); // $ hasTaintFlow
+            contentResolver.openOutputStream(uri); // $ hasTaintFlow
+            contentResolver.openAssetFile(uri, null, null); // $ hasTaintFlow
+            contentResolver.openAssetFileDescriptor(uri, null); // $ hasTaintFlow
+            contentResolver.openFile(uri, null, null); // $ hasTaintFlow
+            contentResolver.openFileDescriptor(uri, null); // $ hasTaintFlow
+            contentResolver.openTypedAssetFile(uri, null, null, null); // $ hasTaintFlow
+            contentResolver.openTypedAssetFileDescriptor(uri, null, null); // $ hasTaintFlow
         }
         {
             ContentResolver contentResolver = getContentResolver();
