@@ -61,7 +61,8 @@ function RegisterExtractorPack(id)
                     compilerPath,
                     compilerArguments,
                     nil, {
-                    '/p:UseSharedCompilation=false'
+                    '/p:UseSharedCompilation=false',
+                    '/p:MvcBuildViews=true'
                 })
 
             }

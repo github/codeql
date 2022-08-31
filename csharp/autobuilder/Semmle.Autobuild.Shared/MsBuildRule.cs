@@ -109,7 +109,6 @@ namespace Semmle.Autobuild.Shared
                     command.Argument(string.Format("/p:Platform=\"{0}\"", platform));
                 if (configuration is not null)
                     command.Argument(string.Format("/p:Configuration=\"{0}\"", configuration));
-                command.Argument("/p:MvcBuildViews=true");
 
                 command.Argument(builder.Options.MsBuildArguments);
 
