@@ -649,9 +649,9 @@ open class KotlinUsesExtractor(
 
             (s.isBoxedArray && s.arguments.isNotEmpty()) || s.isPrimitiveArray() -> {
 
-                fun replaceComponentTypeWithAny(t: IrSimpleType, dimensions: Int): IrSimpleType =
+                fun replaceComponentTypeWithAny(t: IrSimpleType, dimensions: Int): IrType =
                     if (dimensions == 0)
-                        pluginContext.irBuiltIns.anyType as IrSimpleType
+                        pluginContext.irBuiltIns.anyType
                     else
                         t.toBuilder().also { it.arguments = (it.arguments[0] as IrTypeProjection)
                             .let { oldArg ->
