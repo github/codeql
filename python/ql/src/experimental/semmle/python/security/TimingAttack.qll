@@ -10,7 +10,7 @@ private import semmle.python.frameworks.Django
 
 /** A method call that produces cryptographic result. */
 abstract private class ProduceCryptoCall extends API::CallNode {
-  /** Gets a type of cryptographic operation such as HMAC, signature or ciphertext. */
+  /** Gets a type of cryptographic operation such as HMAC, signature or Hash. */
   abstract string getResultType();
 }
 
