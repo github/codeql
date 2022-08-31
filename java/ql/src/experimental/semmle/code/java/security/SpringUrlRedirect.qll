@@ -1,9 +1,7 @@
-import java
-import DataFlow
-import semmle.code.java.dataflow.FlowSources
-import semmle.code.java.dataflow.DataFlow2
-import semmle.code.java.dataflow.TaintTracking
-import semmle.code.java.frameworks.spring.SpringController
+/** Provides classes and predicates related to Spring URL redirect. */
+
+private import java
+private import semmle.code.java.dataflow.FlowSources
 
 /**
  * A concatenate expression using the string `redirect:` or `ajaxredirect:` or `forward:` on the left.
@@ -42,6 +40,13 @@ abstract class SpringUrlRedirectSink extends DataFlow::Node { }
  */
 private class SpringViewUrlRedirectSink extends SpringUrlRedirectSink {
   SpringViewUrlRedirectSink() {
+    // Hardcoded redirect such as "redirect:login"
+    this.asExpr()
+        .(CompileTimeConstantExpr)
+        .getStringValue()
+        .indexOf(["redirect:", "ajaxredirect:", "forward:"]) = 0 and
+    any(SpringRequestMappingMethod sqmm).polyCalls*(this.getEnclosingCallable())
+    or
     exists(RedirectBuilderExpr rbe |
       rbe.getRightOperand() = this.asExpr() and
       any(SpringRequestMappingMethod sqmm).polyCalls*(this.getEnclosingCallable())
