@@ -92,12 +92,6 @@ You can also specify:
    For databases that were created by CodeQL CLI v2.3.4 or later, the CLI will implicitly run any
    required upgrades. Explicitly running the upgrade command is not necessary.
 
-   CodeQL databases are upgraded by running the following command::
-
-       codeql database upgrade <database>
-
-   For full details of all the options you can use when upgrading databases,
-   see the "`database upgrade <../manual/database-upgrade>`__"  reference documentation.
 
 For full details of all the options you can use when analyzing databases, see
 the `database analyze reference documentation <../manual/database-analyze>`__.
