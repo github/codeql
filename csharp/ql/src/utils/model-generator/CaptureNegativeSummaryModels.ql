@@ -6,10 +6,12 @@
  * @tags model-generator
  */
 
-private import semmle.code.csharp.dataflow.ExternalFlow
-private import internal.CaptureModels
-private import internal.CaptureSummaryFlow
+import semmle.code.csharp.dataflow.ExternalFlow
+import internal.CaptureModels
+import internal.CaptureSummaryFlow
 
-from TargetApi api, string noflow
-where noflow = captureNoFlow(api) and not hasSummary(api, false)
+from DataFlowTargetApi api, string noflow
+where
+  noflow = captureNoFlow(api) and
+  not hasSummary(api, false)
 select noflow order by noflow

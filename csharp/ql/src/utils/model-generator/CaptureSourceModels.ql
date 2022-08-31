@@ -6,8 +6,8 @@
  * @tags model-generator
  */
 
-private import internal.CaptureModels
+import internal.CaptureModels
 
-from TargetApi api, string source
+from DataFlowTargetApi api, string source
 where source = captureSource(api)
 select source order by source

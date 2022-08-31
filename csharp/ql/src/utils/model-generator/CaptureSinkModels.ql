@@ -6,8 +6,8 @@
  * @tags model-generator
  */
 
-private import internal.CaptureModels
+import internal.CaptureModels
 
-from TargetApi api, string sink
+from DataFlowTargetApi api, string sink
 where sink = captureSink(api)
 select sink order by sink
