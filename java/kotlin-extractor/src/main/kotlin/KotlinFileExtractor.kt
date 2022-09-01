@@ -2185,7 +2185,7 @@ open class KotlinFileExtractor(
                         }
                     }
                 }
-                isFunction(target, "kotlin", "(some array type)", { isArrayType(it) }, "get") && c.origin == IrStatementOrigin.GET_ARRAY_ELEMENT -> {
+                isFunction(target, "kotlin", "(some array type)", { isArrayType(it) }, "get") && c.origin == IrStatementOrigin.GET_ARRAY_ELEMENT && c.dispatchReceiver != null -> {
                     val id = tw.getFreshIdLabel<DbArrayaccess>()
                     val type = useType(c.type)
                     tw.writeExprs_arrayaccess(id, type.javaResult.id, parent, idx)
