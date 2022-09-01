@@ -5,7 +5,7 @@
  * @tags security
  *       JsonWebTokenHandler
  *       manual-verification-required
- * @id cs/JsonWebTokenHandler/security-validations-disabled
+ * @id cs/json-webtoken-handler/security-validations-disabled
  * @problem.severity error
  * @precision high
  */

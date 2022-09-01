@@ -6,7 +6,7 @@
  * @tags security
  *       JsonWebTokenHandler
  *       manual-verification-required
- * @id cs/JsonWebTokenHandler/delegated-security-validations-always-return-true
+ * @id cs/json-webtoken-handler/delegated-security-validations-always-return-true
  * @problem.severity error
  * @precision high
  */
