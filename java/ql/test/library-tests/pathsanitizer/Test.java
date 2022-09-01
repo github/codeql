@@ -258,10 +258,10 @@ public class Test {
         }
         {
             String source = (String) source();
-            if (!source.startsWith("/data") && source.indexOf("..") == -1)
-                sink(source); // Safe
-            else
+            if (source.startsWith("/data") || source.indexOf("..") != -1)
                 sink(source); // $ hasTaintFlow
+            else
+                sink(source); // Safe
         }
         {
             String source = (String) source();
