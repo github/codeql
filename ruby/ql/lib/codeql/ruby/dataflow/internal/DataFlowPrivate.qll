@@ -170,6 +170,10 @@ module LocalFlow {
   }
 }
 
+private predicate isUnresolvableConstant(CfgNodes::ExprCfgNode n) {
+  n.getExpr() = any(ConstantReadAccess read | not exists(read.getValue()))
+}
+
 /** An argument of a call (including qualifier arguments, excluding block arguments). */
 private class Argument extends CfgNodes::ExprCfgNode {
   private CfgNodes::ExprNodes::CallCfgNode call;
@@ -190,7 +194,9 @@ private class Argument extends CfgNodes::ExprCfgNode {
       arg.isKeyword(p.getKey().getConstantValue().getSymbol())
     )
     or
-    this = call.getReceiver() and arg.isSelf()
+    this = call.getReceiver() and
+    arg.isSelf() and
+    not isUnresolvableConstant(this)
     or
     this = call.getAnArgument() and
     this.getExpr() instanceof HashSplatExpr and
@@ -1036,11 +1042,15 @@ predicate readStep(Node node1, ContentSet c, Node node2) {
   // (instance variable assignment or setter method call).
   node2.asExpr() =
     any(CfgNodes::ExprNodes::MethodCallCfgNode call |
-      node1.asExpr() = call.getReceiver() and
-      call.getNumberOfArguments() = 0 and
-      c.isSingleton(any(Content::FieldContent ct |
-          ct.getName() = "@" + call.getExpr().getMethodName()
-        ))
+      node1.asExpr() =
+        any(CfgNodes::ExprCfgNode receiver |
+          receiver = call.getReceiver() and
+          call.getNumberOfArguments() = 0 and
+          c.isSingleton(any(Content::FieldContent ct |
+              ct.getName() = "@" + call.getExpr().getMethodName()
+            )) and
+          not isUnresolvableConstant(receiver)
+        )
     )
   or
   node2 = node1.(SynthHashSplatParameterNode).getAKeywordParameter(c)
