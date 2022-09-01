@@ -11,17 +11,22 @@
  */
 
 import python
+private import semmle.python.ApiGraphs
 
-FunctionValue iter() { result = Value::named("iter") }
+API::Node iter() { result = API::builtin("iter") }
 
-BuiltinFunctionValue next() { result = Value::named("next") }
+API::Node next() { result = API::builtin("next") }
+
+API::Node stopIteration() { result = API::builtin("StopIteration") }
 
 predicate call_to_iter(CallNode call, EssaVariable sequence) {
-  sequence.getAUse() = iter().getArgumentForCall(call, 0)
+  call = iter().getACall().asCfgNode() and
+  call.getArg(0) = sequence.getAUse()
 }
 
 predicate call_to_next(CallNode call, ControlFlowNode iter) {
-  iter = next().getArgumentForCall(call, 0)
+  call = next().getACall().asCfgNode() and
+  call.getArg(0) = iter
 }
 
 predicate call_to_next_has_default(CallNode call) {
@@ -47,7 +52,7 @@ predicate iter_not_exhausted(EssaVariable iterator) {
 predicate stop_iteration_handled(CallNode call) {
   exists(Try t |
     t.containsInScope(call.getNode()) and
-    t.getAHandler().getType().pointsTo(ClassValue::stopIteration())
+    t.getAHandler().getType() = stopIteration().getAValueReachableFromSource().asExpr()
   )
 }
 
