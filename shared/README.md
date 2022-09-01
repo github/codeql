@@ -2,11 +2,16 @@
 
 This folder contains shared, language-agnostic CodeQL libraries.
 
-They can be used by adding
+Libraries are organized into separate query packs, in order to allow for
+individual versioning. For example, the shared static single assignment (SSA)
+library exists in the `codeql/shared-ssa` pack, which can be referenced by adding
 
 ```
 dependencies:
-  codeql/shared-all: "*"
+  codeql/shared-ssa: "*"
 ```
 
-to `qlpack.yml`, and the libraries all belong to the `codeql.shared` namespace.
+to `qlpack.yml`.
+
+All shared libraries will belong to a `codeql/shared-<name>` pack, and live in the
+namespace `codeql.shared.<name>`.

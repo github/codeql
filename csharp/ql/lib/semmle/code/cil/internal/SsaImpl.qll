@@ -1,5 +1,5 @@
 private import cil
-private import codeql.shared.dataflow.Ssa as SsaImplCommon
+private import codeql.shared.ssa.Ssa as SsaImplCommon
 
 private module SsaInput implements SsaImplCommon::InputSig {
   class BasicBlock = CIL::BasicBlock;
