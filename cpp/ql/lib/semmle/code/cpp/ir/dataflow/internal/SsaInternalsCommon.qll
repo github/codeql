@@ -80,7 +80,41 @@ predicate isModifiableByCall(ArgumentOperand operand) {
 }
 
 cached
-private module DefCached {
+private module Cached {
+  cached
+  predicate isUse(boolean certain, Operand op, Instruction base, int ind, int indirectionIndex) {
+    not ignoreOperand(op) and
+    certain = true and
+    exists(LanguageType type, int m, int ind0 |
+      type = getLanguageType(op) and
+      m = countIndirectionsForCppType(type) and
+      isUseImpl(op, base, ind0) and
+      ind = [ind0 .. m + ind0] and
+      indirectionIndex = ind - ind0
+    )
+  }
+
+  private predicate isUseImpl(Operand operand, Instruction base, int ind) {
+    DataFlowImplCommon::forceCachingInSameStage() and
+    ind = 0 and
+    operand.getDef() = base and
+    isSourceVariableBase(base)
+    or
+    exists(Operand mid, Instruction instr |
+      isUseImpl(mid, base, ind) and
+      instr = operand.getDef() and
+      conversionFlow(mid, instr, false)
+    )
+    or
+    exists(int ind0 |
+      isUseImpl(operand.getDef().(LoadInstruction).getSourceAddressOperand(), base, ind0)
+      or
+      isUseImpl(operand.getDef().(InitializeParameterInstruction).getAnOperand(), base, ind0)
+    |
+      ind0 = ind - 1
+    )
+  }
+
   cached
   predicate isDef(
     boolean certain, Instruction instr, Operand address, Instruction base, int ind,
@@ -126,46 +160,7 @@ private module DefCached {
   }
 }
 
-import DefCached
-
-cached
-private module UseCached {
-  cached
-  predicate isUse(boolean certain, Operand op, Instruction base, int ind, int indirectionIndex) {
-    not ignoreOperand(op) and
-    certain = true and
-    exists(LanguageType type, int m, int ind0 |
-      type = getLanguageType(op) and
-      m = countIndirectionsForCppType(type) and
-      isUseImpl(op, base, ind0) and
-      ind = [ind0 .. m + ind0] and
-      indirectionIndex = ind - ind0
-    )
-  }
-
-  private predicate isUseImpl(Operand operand, Instruction base, int ind) {
-    DataFlowImplCommon::forceCachingInSameStage() and
-    ind = 0 and
-    operand.getDef() = base and
-    isSourceVariableBase(base)
-    or
-    exists(Operand mid, Instruction instr |
-      isUseImpl(mid, base, ind) and
-      instr = operand.getDef() and
-      conversionFlow(mid, instr, false)
-    )
-    or
-    exists(int ind0 |
-      isUseImpl(operand.getDef().(LoadInstruction).getSourceAddressOperand(), base, ind0)
-      or
-      isUseImpl(operand.getDef().(InitializeParameterInstruction).getAnOperand(), base, ind0)
-    |
-      ind0 = ind - 1
-    )
-  }
-}
-
-import UseCached
+import Cached
 
 module InputSigCommon {
   class BasicBlock = IRBlock;
