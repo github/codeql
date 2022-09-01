@@ -8,11 +8,7 @@ import semmle.code.java.security.SecurityTests
 /** Holds if `ex` looks like a check that this is a debug build. */
 private predicate isDebugCheck(Expr ex) {
   exists(Expr subex, string debug |
-    (
-      debug.toLowerCase().matches("%debug%")
-      or
-      debug.toLowerCase().matches("%test%")
-    ) and
+    debug.toLowerCase().matches(["%debug%", "%test%"]) and
     subex.getParent*() = ex
   |
     subex.(VarAccess).getVariable().getName() = debug
