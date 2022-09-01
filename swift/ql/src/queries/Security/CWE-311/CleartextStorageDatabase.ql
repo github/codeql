@@ -89,7 +89,7 @@ class CleartextStorageConfig extends TaintTracking::Configuration {
     isSink(node) and
     exists(ClassDecl cd |
       c.getAReadContent().(DataFlow::Content::FieldContent).getField() = cd.getAMember() and
-      cd.getType().(NominalType).getABaseType*().getName() = "RealmSwiftObject"
+      cd.getABaseTypeDecl*().getName() = "RealmSwiftObject"
     )
     or
     // any default implicit reads
