@@ -20,7 +20,7 @@ abstract class Modifiable extends Element {
    * For most purposes, the more specialized predicates `isAbstract`, `isPublic`, etc.
    * should be used.
    *
-   * Both this method and those specialized predicates take implicit modifiers into account.
+   * Those specialized predicates also take implicit modifiers into account.
    * For instance, non-default instance methods in interfaces are implicitly
    * abstract, so `isAbstract()` will hold for them even if `hasModifier("abstract")`
    * does not.
