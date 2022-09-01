@@ -21,7 +21,6 @@ class RangeAnalysisIRConfig extends IRConfiguration {
   }
 }
 
-
 predicate bounded(Instruction i, Bound b, int delta, boolean upper) {
   // TODO: reason
   semBounded(getSemanticExpr(i), b, delta, upper, _)
@@ -31,9 +30,9 @@ class ArraySizeConfiguration extends ProductFlow::Configuration {
   ArraySizeConfiguration() { this = "ArraySizeConfiguration" }
 
   override predicate isSourcePair(DataFlow::Node source1, DataFlow::Node source2) {
-    exists(GVN sizeGVN |
-      source1.asConvertedExpr().(AllocationExpr).getSizeExpr() = sizeGVN.getAnExpr() and
-      source2.asConvertedExpr() = sizeGVN.getAnExpr()
+    exists(GVN sizeGvn |
+      source1.asConvertedExpr().(AllocationExpr).getSizeExpr() = sizeGvn.getAnExpr() and
+      source2.asConvertedExpr() = sizeGvn.getAnExpr()
     )
   }
 
@@ -43,7 +42,16 @@ class ArraySizeConfiguration extends ProductFlow::Configuration {
       pai.getLeft() = sink1.asInstruction() and
       bounded(index, b, delta, true) and
       sink2.asInstruction() = b.getInstruction() and
-      delta >= 0
+      (
+        delta = 0 and
+        exists(DataFlow::Node paiNode, DataFlow::Node derefNode |
+          DataFlow::localFlow(paiNode, derefNode) and
+          paiNode.asInstruction() = pai and
+          derefNode.asOperand() instanceof AddressOperand
+        )
+        or
+        delta >= 1
+      )
     )
   }
 }

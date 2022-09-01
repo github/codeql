@@ -3,11 +3,11 @@ char *malloc(int size);
 void test1(int size) {
     char *arr = malloc(size);
     for (int i = 0; i < size; i++) {
-        arr[i] = 0;
+        arr[i] = 0; // GOOD
     }
 
     for (int i = 0; i <= size; i++) {
-        arr[i] = i;
+        arr[i] = i; // BAD
     }
 }
 
@@ -32,7 +32,7 @@ void test2(int size) {
     }
 
     for (int i = 0; i <= arr.size; i++) {
-        arr.p[i] = i; // BAD
+        arr.p[i] = i; // BAD [NOT DETECTED]
     }
 }
 
@@ -42,7 +42,7 @@ void test3_callee(array_t arr) {
     }
 
     for (int i = 0; i <= arr.size; i++) {
-        arr.p[i] = i; // BAD
+        arr.p[i] = i; // BAD [NOT DETECTED]
     }
 }
 
@@ -96,4 +96,15 @@ void test6_callee(array_t *arr) {
 
 void test6(int size) {
     test6_callee(mk_array_p(size));
+}
+
+void test7(int size) {
+    char *arr = malloc(size);
+    for (char *p = arr; p < arr + size; p++) {
+        *p = 0; // GOOD
+    }
+
+    for (char *p = arr; p <= arr + size; p++) {
+        *p = 0; // BAD [NOT DETECTED]
+    }
 }
