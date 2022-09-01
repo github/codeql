@@ -16,7 +16,7 @@ class Node = DataFlowPublic::Node;
 class TypeTrackingNode = DataFlowPublic::LocalSourceNode;
 
 private newtype TOptionalTypeTrackerContent =
-  MkAttribute(string name) { name = getSetterCallAttributeName(_) } or
+  MkAttribute(string name) { name = any(AST::SetterMethodCall c).getTargetName() } or
   MkContent(DataFlowPublic::Content content) or
   MkNoContent()
 
@@ -196,25 +196,12 @@ predicate basicStoreStep(Node nodeFrom, Node nodeTo, TypeTrackerContent content)
 predicate postUpdateStoreStep(Node nodeFrom, Node nodeTo, TypeTrackerContent content) {
   // TODO: support SetterMethodCall inside TuplePattern
   exists(ExprNodes::MethodCallCfgNode call |
-    content = MkAttribute(getSetterCallAttributeName(call.getExpr())) and
+    content = MkAttribute(call.getExpr().(AST::SetterMethodCall).getTargetName()) and
     nodeTo.(DataFlowPublic::PostUpdateNode).getPreUpdateNode().asExpr() = call.getReceiver() and
     call.getExpr() instanceof AST::SetterMethodCall and
     call.getArgument(call.getNumberOfArguments() - 1) =
       nodeFrom.(DataFlowPublic::ExprNode).getExprNode()
   )
-}
-
-/**
- * Returns the name of the attribute being set by the setter method call, i.e.
- * the name of the setter method without the trailing `=`. In the following
- * example, the result is `"bar"`.
- *
- * ```rb
- * foo.bar = 1
- * ```
- */
-private string getSetterCallAttributeName(AST::SetterMethodCall call) {
-  result = call.getTargetName()
 }
 
 /**
