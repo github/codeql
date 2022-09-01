@@ -96,14 +96,6 @@ class CleartextStorageConfig extends TaintTracking::Configuration {
     // any default implicit reads
     super.allowImplicitRead(node, c)
   }
-
-  override predicate isAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
-    // flow through assignment (!) TODO: we really shouldn't need this as a special case
-    exists(AssignExpr ae |
-      node1.asExpr() = ae.getSource() and
-      node2.asExpr() = ae.getDest()
-    )
-  }
 }
 
 from CleartextStorageConfig config, DataFlow::PathNode sourceNode, DataFlow::PathNode sinkNode
