@@ -421,13 +421,13 @@ public class Test {
                 sink(normalized); // $ hasTaintFlow
             }
         }
-        // PathInjectionSanitizer + partial string match with prefixes is considered unsafe
+        // PathInjectionSanitizer + partial string match with disallowed prefixes
         {
             String source = (String) source();
             String normalized = Paths.get(source).normalize().toString();
-            if (normalized.contains("/data")) {
-                sink(source); // $ hasTaintFlow
-                sink(normalized); // $ hasTaintFlow
+            if (!normalized.contains("/data")) {
+                sink(source); // Safe
+                sink(normalized); // Safe
             } else {
                 sink(source); // $ hasTaintFlow
                 sink(normalized); // $ hasTaintFlow
@@ -436,9 +436,9 @@ public class Test {
         {
             String source = (String) source();
             String normalized = Paths.get(source).normalize().toString();
-            if (normalized.regionMatches(1, "/data", 0, 5)) {
-                sink(source); // $ hasTaintFlow
-                sink(normalized); // $ hasTaintFlow
+            if (!normalized.regionMatches(1, "/data", 0, 5)) {
+                sink(source); // Safe
+                sink(normalized); // Safe
             } else {
                 sink(source); // $ hasTaintFlow
                 sink(normalized); // $ hasTaintFlow
@@ -447,9 +447,9 @@ public class Test {
         {
             String source = (String) source();
             String normalized = Paths.get(source).normalize().toString();
-            if (normalized.matches(".*/data/.*")) {
-                sink(source); // $ hasTaintFlow
-                sink(normalized); // $ hasTaintFlow
+            if (!normalized.matches(".*/data/.*")) {
+                sink(source); // Safe
+                sink(normalized); // Safe
             } else {
                 sink(source); // $ hasTaintFlow
                 sink(normalized); // $ hasTaintFlow

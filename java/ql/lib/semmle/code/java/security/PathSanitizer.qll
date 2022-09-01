@@ -72,7 +72,6 @@ private class ExactPathMatchSanitizer extends PathInjectionSanitizer {
 private class AllowListGuard extends Guard instanceof MethodAccess {
   AllowListGuard() {
     (isStringPrefixMatch(this) or isPathPrefixMatch(this)) and
-    not isDisallowedPrefix(super.getAnArgument()) and
     not isDisallowedWord(super.getAnArgument())
   }
 
@@ -127,10 +126,7 @@ private class DotDotCheckSanitizer extends PathInjectionSanitizer {
 
 private class BlockListGuard extends Guard instanceof MethodAccess {
   BlockListGuard() {
-    (isStringPrefixMatch(this) or isPathPrefixMatch(this)) and
-    isDisallowedPrefix(super.getAnArgument())
-    or
-    isStringPartialMatch(this) and
+    (isStringPartialMatch(this) or isPathPrefixMatch(this)) and
     isDisallowedWord(super.getAnArgument())
   }
 
@@ -178,6 +174,8 @@ private predicate isStringPrefixMatch(MethodAccess ma) {
  * Holds if `ma` is a call to a method that checks a partial string match.
  */
 private predicate isStringPartialMatch(MethodAccess ma) {
+  isStringPrefixMatch(ma)
+  or
   ma.getMethod().getDeclaringType() instanceof TypeString and
   ma.getMethod().hasName(["contains", "matches", "regionMatches", "indexOf", "lastIndexOf"])
 }
@@ -196,12 +194,8 @@ private predicate isPathPrefixMatch(MethodAccess ma) {
   )
 }
 
-private predicate isDisallowedPrefix(CompileTimeConstantExpr prefix) {
-  prefix.getStringValue().matches(["%WEB-INF%", "/data%"])
-}
-
 private predicate isDisallowedWord(CompileTimeConstantExpr word) {
-  word.getStringValue().matches(["/", "\\"])
+  word.getStringValue().matches(["/", "\\", "%WEB-INF%", "%/data%"])
 }
 
 /** A complementary guard that protects against path traversal, by looking for the literal `..`. */
