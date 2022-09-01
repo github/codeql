@@ -6,7 +6,7 @@ import codeql.swift.elements.decl.GenericContext
 import codeql.swift.elements.decl.IterableDeclContext
 import codeql.swift.elements.decl.NominalTypeDecl
 
-class ExtensionDeclBase extends Synth::TExtensionDecl, Decl, GenericContext, IterableDeclContext {
+class ExtensionDeclBase extends Synth::TExtensionDecl, GenericContext, IterableDeclContext, Decl {
   override string getAPrimaryQlClass() { result = "ExtensionDecl" }
 
   NominalTypeDecl getImmediateExtendedTypeDecl() {

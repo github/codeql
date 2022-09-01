@@ -123,14 +123,17 @@ private fun IrTypeArgument.lowerBound(context: IrPluginContext) =
 
 fun IrType.substituteTypeAndArguments(substitutionMap: Map<IrTypeParameterSymbol, IrTypeArgument>?, useContext: KotlinUsesExtractor.TypeContext, pluginContext: IrPluginContext): IrType =
     substitutionMap?.let { substMap ->
-        this.classifierOrNull?.let { typeClassifier ->
+        if (this is IrSimpleType) {
+            val typeClassifier = this.classifier
             substMap[typeClassifier]?.let {
                 when(useContext) {
                     KotlinUsesExtractor.TypeContext.RETURN -> it.upperBound(pluginContext)
                     else -> it.lowerBound(pluginContext)
                 }
-            } ?: (this as IrSimpleType).substituteTypeArguments(substMap)
-        } ?: this
+            } ?: this.substituteTypeArguments(substMap)
+        } else {
+            this
+        }
     } ?: this
 
 object RawTypeAnnotation {

@@ -346,7 +346,7 @@ module Raw {
     override string toString() { result = "WeakStorageType" }
   }
 
-  class AbstractClosureExpr extends @abstract_closure_expr, Callable, Expr { }
+  class AbstractClosureExpr extends @abstract_closure_expr, Expr, Callable { }
 
   class AnyPattern extends @any_pattern, Pattern {
     override string toString() { result = "AnyPattern" }
@@ -556,7 +556,7 @@ module Raw {
     Expr getSubExpr() { expr_patterns(this, result) }
   }
 
-  class ExtensionDecl extends @extension_decl, Decl, GenericContext, IterableDeclContext {
+  class ExtensionDecl extends @extension_decl, GenericContext, IterableDeclContext, Decl {
     override string toString() { result = "ExtensionDecl" }
 
     NominalTypeDecl getExtendedTypeDecl() { extension_decls(this, result) }
@@ -926,7 +926,7 @@ module Raw {
     Expr getResult(int index) { yield_stmt_results(this, index, result) }
   }
 
-  class AbstractFunctionDecl extends @abstract_function_decl, Callable, GenericContext, ValueDecl {
+  class AbstractFunctionDecl extends @abstract_function_decl, GenericContext, ValueDecl, Callable {
     string getName() { abstract_function_decls(this, result) }
   }
 

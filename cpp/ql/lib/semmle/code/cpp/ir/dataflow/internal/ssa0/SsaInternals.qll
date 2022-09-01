@@ -3,7 +3,7 @@
  * indirections into account.
  */
 
-private import SsaImplCommon as Ssa
+private import semmle.code.cpp.ir.dataflow.internal.SsaImplCommon as SsaImplCommon
 private import semmle.code.cpp.ir.IR
 private import semmle.code.cpp.ir.dataflow.internal.DataFlowImplCommon as DataFlowImplCommon
 private import semmle.code.cpp.models.interfaces.Allocation as Alloc
@@ -205,25 +205,30 @@ class UseImpl extends DefOrUseImpl, TUseImpl {
   predicate isCertain() { isUse(true, operand, _, _, _) }
 }
 
-/**
- * Holds if the `i`'th write in block `bb` writes to the variable `v`.
- * `certain` is `true` if the write is guaranteed to overwrite the entire variable.
- */
-predicate variableWrite(IRBlock bb, int i, SourceVariable v, boolean certain) {
-  DataFlowImplCommon::forceCachingInSameStage() and
-  exists(DefImpl def | def.hasIndexInBlock(bb, i, v) |
-    if def.isCertain() then certain = true else certain = false
-  )
-}
+private module SsaInput implements SsaImplCommon::InputSig {
+  import InputSigCommon
+  import SourceVariables
 
-/**
- * Holds if the `i`'th read in block `bb` reads to the variable `v`.
- * `certain` is `true` if the read is guaranteed.
- */
-predicate variableRead(IRBlock bb, int i, SourceVariable v, boolean certain) {
-  exists(UseImpl use | use.hasIndexInBlock(bb, i, v) |
-    if use.isCertain() then certain = true else certain = false
-  )
+  /**
+   * Holds if the `i`'th write in block `bb` writes to the variable `v`.
+   * `certain` is `true` if the write is guaranteed to overwrite the entire variable.
+   */
+  predicate variableWrite(IRBlock bb, int i, SourceVariable v, boolean certain) {
+    DataFlowImplCommon::forceCachingInSameStage() and
+    exists(DefImpl def | def.hasIndexInBlock(bb, i, v) |
+      if def.isCertain() then certain = true else certain = false
+    )
+  }
+
+  /**
+   * Holds if the `i`'th read in block `bb` reads to the variable `v`.
+   * `certain` is `true` if the read is guaranteed.
+   */
+  predicate variableRead(IRBlock bb, int i, SourceVariable v, boolean certain) {
+    exists(UseImpl use | use.hasIndexInBlock(bb, i, v) |
+      if use.isCertain() then certain = true else certain = false
+    )
+  }
 }
 
 private newtype TSsaDefOrUse =
@@ -302,6 +307,8 @@ class Def extends DefOrUse {
   override string toString() { result = this.asDefOrUse().toString() + " (def)" }
 }
 
-class PhiNode = Ssa::PhiNode;
+private module SsaImpl = SsaImplCommon::Make<SsaInput>;
 
-class Definition = Ssa::Definition;
+class PhiNode = SsaImpl::PhiNode;
+
+class Definition = SsaImpl::Definition;

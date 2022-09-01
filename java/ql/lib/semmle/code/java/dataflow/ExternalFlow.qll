@@ -12,6 +12,7 @@
  *   `namespace; type; subtypes; name; signature; ext; input; output; kind; provenance`
  * - Negative Summaries:
  *   `namespace; type; name; signature; provenance`
+ *   A negative summary is used to indicate that there is no flow via a callable.
  *
  * The interpretation of a row is similar to API-graphs with a left-to-right
  * reading.

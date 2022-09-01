@@ -89,6 +89,18 @@ module CallGraph {
       result = getAFunctionReference(outer, 0, t.continue()).getAnInvocation() and
       locallyReturnedFunction(outer, function)
     )
+    or
+    // dynamic dispatch to unknown property of an object
+    exists(DataFlow::ObjectLiteralNode obj, DataFlow::PropRead read |
+      getAFunctionReference(function, 0, t.continue()) = obj.getAPropertySource() and
+      obj.getAPropertyRead() = read and
+      not exists(read.getPropertyName()) and
+      result = read and
+      // there exists only local reads of the object, nothing else.
+      forex(DataFlow::Node ref | ref = obj.getALocalUse() and exists(ref.asExpr()) |
+        ref = [obj, any(DataFlow::PropRead r).getBase()]
+      )
+    )
   }
 
   private predicate locallyReturnedFunction(

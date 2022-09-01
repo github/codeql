@@ -667,11 +667,15 @@ open class KotlinUsesExtractor(
                     dimensions++
                     if (elementType.isPrimitiveArray())
                         isPrimitiveArray = true
-                    if (((elementType as IrSimpleType).arguments.singleOrNull() as? IrTypeProjection)?.variance == Variance.IN_VARIANCE) {
-                        // Because Java's arrays are covariant, Kotlin will render Array<in X> as Object[], Array<Array<in X>> as Object[][] etc.
-                        componentType = replaceComponentTypeWithAny(s, dimensions - 1)
-                        elementType = pluginContext.irBuiltIns.anyType as IrSimpleType
-                        break
+                    if (elementType is IrSimpleType) {
+                        if ((elementType.arguments.singleOrNull() as? IrTypeProjection)?.variance == Variance.IN_VARIANCE) {
+                            // Because Java's arrays are covariant, Kotlin will render Array<in X> as Object[], Array<Array<in X>> as Object[][] etc.
+                            componentType = replaceComponentTypeWithAny(s, dimensions - 1)
+                            elementType = pluginContext.irBuiltIns.anyType
+                            break
+                        }
+                    } else {
+                        logger.warn("Unexpected element type representation ${elementType.javaClass} for ${s.render()}")
                     }
                     elementType = elementType.getArrayElementType(pluginContext.irBuiltIns)
                 }
@@ -1169,7 +1173,7 @@ open class KotlinUsesExtractor(
         "kotlin.Boolean", "kotlin.Byte", "kotlin.Char", "kotlin.Double", "kotlin.Float", "kotlin.Int", "kotlin.Long", "kotlin.Number", "kotlin.Short"
     )
 
-    private fun kotlinFunctionToJavaEquivalent(f: IrFunction, noReplace: Boolean) =
+    private fun kotlinFunctionToJavaEquivalent(f: IrFunction, noReplace: Boolean): IrFunction =
         if (noReplace)
             f
         else
@@ -1186,8 +1190,7 @@ open class KotlinUsesExtractor(
                             decl.valueParameters.zip(f.valueParameters).all { p -> p.first.type.classifierOrNull == p.second.type.classifierOrNull }
                         } ?:
                         // Or if there is none, look for the only viable overload
-                        javaClass.declarations.singleOrNull { decl ->
-                            decl is IrFunction &&
+                        javaClass.declarations.singleOrNullSubType<IrFunction> { decl ->
                             decl.name == f.name &&
                             decl.valueParameters.size == f.valueParameters.size
                         } ?:
@@ -1213,7 +1216,7 @@ open class KotlinUsesExtractor(
                     else
                         null
                 }
-            } as IrFunction? ?: f
+            } ?: f
 
     fun <T: DbCallable> useFunction(f: IrFunction, classTypeArgsIncludingOuterClasses: List<IrTypeArgument>? = null, noReplace: Boolean = false): Label<out T> {
         return useFunction(f, null, classTypeArgsIncludingOuterClasses, noReplace)
@@ -1415,12 +1418,11 @@ open class KotlinUsesExtractor(
         for(t in subbedSupertypes) {
             when(t) {
                 is IrSimpleType -> {
-                    when (t.classifier.owner) {
+                    val owner = t.classifier.owner
+                    when (owner) {
                         is IrClass -> {
-                            val classifier: IrClassifierSymbol = t.classifier
-                            val tcls: IrClass = classifier.owner as IrClass
                             val typeArgs = if (t.arguments.isNotEmpty() && mode is ExtractSupertypesMode.Raw) null else t.arguments
-                            val l = useClassInstance(tcls, typeArgs, inReceiverContext).typeResult.id
+                            val l = useClassInstance(owner, typeArgs, inReceiverContext).typeResult.id
                             tw.writeExtendsReftype(id, l)
                         }
                         else -> {
@@ -1458,13 +1460,13 @@ open class KotlinUsesExtractor(
                 return eraseTypeParameter(owner)
             }
 
-            if (t.isArray() || t.isNullableArray()) {
-                val elementType = t.getArrayElementType(pluginContext.irBuiltIns)
-                val erasedElementType = erase(elementType)
-                return (classifier as IrClassSymbol).typeWith(erasedElementType).codeQlWithHasQuestionMark(t.hasQuestionMark)
-            }
-
             if (owner is IrClass) {
+                if (t.isArray() || t.isNullableArray()) {
+                    val elementType = t.getArrayElementType(pluginContext.irBuiltIns)
+                    val erasedElementType = erase(elementType)
+                    return owner.typeWith(erasedElementType).codeQlWithHasQuestionMark(t.hasQuestionMark)
+                }
+
                 return if (t.arguments.isNotEmpty())
                     t.addAnnotations(listOf(RawTypeAnnotation.annotationConstructor))
                 else

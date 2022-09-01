@@ -166,3 +166,15 @@ private module UseCached {
 }
 
 import UseCached
+
+module InputSigCommon {
+  class BasicBlock = IRBlock;
+
+  BasicBlock getImmediateBasicBlockDominator(BasicBlock bb) { result.immediatelyDominates(bb) }
+
+  BasicBlock getABasicBlockSuccessor(BasicBlock bb) { result = bb.getASuccessor() }
+
+  class ExitBasicBlock extends IRBlock {
+    ExitBasicBlock() { this.getLastInstruction() instanceof ExitFunctionInstruction }
+  }
+}

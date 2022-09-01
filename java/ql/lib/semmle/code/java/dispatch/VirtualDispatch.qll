@@ -211,10 +211,14 @@ private module Dispatch {
     exists(Method m | t.hasMethod(m, _, _) and impl = m.getSourceDeclaration())
   }
 
+  private predicate isAbstractWithSubclass(SrcRefType t) {
+    t.isAbstract() and exists(Class c | c.getASourceSupertype() = t)
+  }
+
   private predicate hasViableSubtype(RefType t, SrcRefType sub) {
     sub.extendsOrImplements*(t) and
     not sub instanceof Interface and
-    not sub.isAbstract()
+    not isAbstractWithSubclass(sub)
   }
 }
 

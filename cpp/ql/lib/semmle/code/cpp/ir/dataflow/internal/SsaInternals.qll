@@ -1,4 +1,4 @@
-private import SsaImplCommon as Ssa
+private import SsaImplCommon as SsaImplCommon
 private import semmle.code.cpp.ir.IR
 private import DataFlowUtil
 private import DataFlowImplCommon as DataFlowImplCommon
@@ -6,7 +6,6 @@ private import semmle.code.cpp.models.interfaces.Allocation as Alloc
 private import semmle.code.cpp.models.interfaces.DataFlow as DataFlow
 private import semmle.code.cpp.ir.internal.IRCppLanguage
 private import DataFlowPrivate
-private import ssa0.SsaImplCommon as SsaImplCommon0
 private import ssa0.SsaInternals as SsaInternals0
 import semmle.code.cpp.ir.dataflow.internal.SsaInternalsCommon
 
@@ -396,26 +395,31 @@ private predicate variableWriteCand(IRBlock bb, int i, SourceVariable v) {
   )
 }
 
-/**
- * Holds if the `i`'th write in block `bb` writes to the variable `v`.
- * `certain` is `true` if the write is guaranteed to overwrite the entire variable.
- */
-predicate variableWrite(IRBlock bb, int i, SourceVariable v, boolean certain) {
-  DataFlowImplCommon::forceCachingInSameStage() and
-  variableWriteCand(bb, i, v) and
-  exists(DefImpl def | def.hasIndexInBlock(bb, i, v) |
-    if def.isCertain() then certain = true else certain = false
-  )
-}
+private module SsaInput implements SsaImplCommon::InputSig {
+  import InputSigCommon
+  import SourceVariables
 
-/**
- * Holds if the `i`'th read in block `bb` reads to the variable `v`.
- * `certain` is `true` if the read is guaranteed. For C++, this is always the case.
- */
-predicate variableRead(IRBlock bb, int i, SourceVariable v, boolean certain) {
-  exists(UseImpl use | use.hasIndexInBlock(bb, i, v) |
-    if use.isCertain() then certain = true else certain = false
-  )
+  /**
+   * Holds if the `i`'th write in block `bb` writes to the variable `v`.
+   * `certain` is `true` if the write is guaranteed to overwrite the entire variable.
+   */
+  predicate variableWrite(IRBlock bb, int i, SourceVariable v, boolean certain) {
+    DataFlowImplCommon::forceCachingInSameStage() and
+    variableWriteCand(bb, i, v) and
+    exists(DefImpl def | def.hasIndexInBlock(bb, i, v) |
+      if def.isCertain() then certain = true else certain = false
+    )
+  }
+
+  /**
+   * Holds if the `i`'th read in block `bb` reads to the variable `v`.
+   * `certain` is `true` if the read is guaranteed. For C++, this is always the case.
+   */
+  predicate variableRead(IRBlock bb, int i, SourceVariable v, boolean certain) {
+    exists(UseImpl use | use.hasIndexInBlock(bb, i, v) |
+      if use.isCertain() then certain = true else certain = false
+    )
+  }
 }
 
 /**
@@ -425,17 +429,17 @@ cached
 module SsaCached {
   cached
   predicate phiHasInputFromBlock(PhiNode phi, Definition inp, IRBlock bb) {
-    Ssa::phiHasInputFromBlock(phi, inp, bb)
+    SsaImpl::phiHasInputFromBlock(phi, inp, bb)
   }
 
   cached
   predicate adjacentDefRead(Definition def, IRBlock bb1, int i1, IRBlock bb2, int i2) {
-    Ssa::adjacentDefRead(def, bb1, i1, bb2, i2)
+    SsaImpl::adjacentDefRead(def, bb1, i1, bb2, i2)
   }
 
   cached
   predicate lastRefRedef(Definition def, IRBlock bb, int i, Definition next) {
-    Ssa::lastRefRedef(def, bb, i, next)
+    SsaImpl::lastRefRedef(def, bb, i, next)
   }
 }
 
@@ -519,8 +523,10 @@ class Def extends DefOrUse {
   Instruction getDefiningInstruction() { result = defOrUse.getDefiningInstruction() }
 }
 
+private module SsaImpl = SsaImplCommon::Make<SsaInput>;
+
+class PhiNode = SsaImpl::PhiNode;
+
+class Definition = SsaImpl::Definition;
+
 import SsaCached
-
-class PhiNode = Ssa::PhiNode;
-
-class Definition = Ssa::Definition;
