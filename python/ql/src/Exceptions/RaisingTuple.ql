@@ -10,11 +10,14 @@
  */
 
 import python
+import semmle.python.dataflow.new.DataFlow
 
-from Raise r, Value v, AstNode origin
+from Raise r, DataFlow::LocalSourceNode origin
 where
-  r.getException().pointsTo(v, origin) and
-  v.getClass() = ClassValue::tuple() and
+  exists(DataFlow::Node exception | exception.asExpr() = r.getException() |
+    origin.flowsTo(exception)
+  ) and
+  origin.asExpr() instanceof Tuple and
   major_version() = 2
 /* Raising a tuple is a type error in Python 3, so is handled by the IllegalRaise query. */
 select r,
