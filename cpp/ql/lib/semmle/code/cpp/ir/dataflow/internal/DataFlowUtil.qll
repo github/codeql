@@ -1026,10 +1026,10 @@ private predicate indirectionInstructionFlow(IndirectInstruction nodeFrom, Indir
  */
 predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo) {
   // Post update node -> Node flow
-  Ssa::defUseFlow(nodeFrom.(PostUpdateNode).getPreUpdateNode(), nodeTo)
+  Ssa::ssaFlow(nodeFrom.(PostUpdateNode).getPreUpdateNode(), nodeTo)
   or
-  // Def-use flow
-  Ssa::defUseFlow(nodeFrom, nodeTo)
+  // Def-use/Use-use flow
+  Ssa::ssaFlow(nodeFrom, nodeTo)
   or
   // Operand -> Instruction flow
   simpleInstructionLocalFlowStep(nodeFrom.asOperand(), nodeTo.asInstruction())

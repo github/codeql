@@ -351,7 +351,7 @@ private predicate adjustForPointerArith(Node nodeFrom, UseOrPhi use) {
 }
 
 /** Holds if there is def-use or use-use flow from `nodeFrom` to `nodeTo`. */
-predicate defUseFlow(Node nodeFrom, Node nodeTo) {
+predicate ssaFlow(Node nodeFrom, Node nodeTo) {
   // `nodeFrom = any(PostUpdateNode pun).getPreUpdateNode()` is implied by adjustedForPointerArith.
   exists(UseOrPhi use |
     adjustForPointerArith(nodeFrom, use) and
