@@ -235,14 +235,17 @@ predicate localExprFlow(CfgNodes::ExprCfgNode e1, CfgNodes::ExprCfgNode e2) {
   localFlow(exprNode(e1), exprNode(e2))
 }
 
-/** A reference contained in an object. */
-class Content extends TContent {
+/** A reference contained in an object, or the `noContent()` value. */
+class OptionalContent extends TOptionalContent {
   /** Gets a textual representation of this content. */
   string toString() { none() }
 
   /** Gets the location of this content. */
   Location getLocation() { none() }
 }
+
+/** A reference contained in an object. */
+class Content extends OptionalContent, TContent { }
 
 /** Provides different sub classes of `Content`. */
 module Content {
@@ -314,6 +317,34 @@ module Content {
   class UnknownPairValueContent extends PairValueContent, TUnknownPairValueContent {
     override string toString() { result = "pair" }
   }
+
+  /**
+   * A value stored behind a getter/setter pair.
+   *
+   * This is used (only) by type-tracking, as a heuristic since getter/setter pairs tend to operate
+   * on similar types of objects (i.e. the type flowing into a setter will likely flow out of the getter).
+   */
+  class AttributeNameContent extends Content, TAttributeName {
+    private string name;
+
+    AttributeNameContent() { this = TAttributeName(name) }
+
+    override string toString() { result = "attribute " + name }
+
+    /** Gets the attribute name. */
+    string getName() { result = name }
+  }
+
+  /** Gets `AttributeNameContent` of the given name. */
+  AttributeNameContent getAttributeName(string name) { result.getName() = name }
+
+  /** A value representing no content. */
+  class NoContent extends OptionalContent, TNoContent {
+    override string toString() { result = "noContent()" }
+  }
+
+  /** Gets the `noContent()` value. */
+  NoContent noContent() { any() }
 }
 
 /**

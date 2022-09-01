@@ -20,31 +20,9 @@ private newtype TOptionalTypeTrackerContent =
   MkContent(DataFlowPublic::Content content) or
   MkNoContent()
 
-/** A content for use by type trackers, or the empty content `noContent()` */
-class OptionalTypeTrackerContent extends TOptionalTypeTrackerContent {
-  /** Gets a textual representation of this content. */
-  string toString() {
-    result = "attribute " + this.asAttributeName()
-    or
-    result = this.asContent().toString()
-    or
-    this instanceof MkNoContent and result = "no content"
-  }
+class TypeTrackerContent = DataFlowPublic::Content;
 
-  /** Gets the attribute name represented by this content, if any. */
-  string asAttributeName() { this = MkAttribute(result) }
-
-  /** Gets the data flow content by this type-tracker content, if any. */
-  DataFlowPublic::Content asContent() { this = MkContent(result) }
-}
-
-/** Gets the value representing no content, that is, the empty access path. */
-OptionalTypeTrackerContent noContent() { result = MkNoContent() }
-
-private class TTypeTrackerContent = MkAttribute or MkContent;
-
-/** A content for use by type trackers. */
-class TypeTrackerContent extends OptionalTypeTrackerContent, TTypeTrackerContent { }
+predicate noContent = DataFlowPublic::Content::noContent/0;
 
 /** Holds if there is a simple local flow step from `nodeFrom` to `nodeTo` */
 predicate simpleLocalFlowStep = DataFlowPrivate::localFlowStepTypeTracker/2;
@@ -185,7 +163,7 @@ predicate basicStoreStep(Node nodeFrom, Node nodeTo, TypeTrackerContent content)
         SummaryComponentStack::singleton(output))) and
     nodeFrom = evaluateSummaryComponentLocal(call, input) and
     nodeTo = evaluateSummaryComponentLocal(call, output) and
-    content.asContent() = contents.getAStoreContent()
+    content = contents.getAStoreContent()
   )
 }
 
@@ -196,7 +174,10 @@ predicate basicStoreStep(Node nodeFrom, Node nodeTo, TypeTrackerContent content)
 predicate postUpdateStoreStep(Node nodeFrom, Node nodeTo, TypeTrackerContent content) {
   // TODO: support SetterMethodCall inside TuplePattern
   exists(ExprNodes::MethodCallCfgNode call |
-    content = MkAttribute(call.getExpr().(Ast::SetterMethodCall).getTargetName()) and
+    content =
+      DataFlowPublic::Content::getAttributeName(call.getExpr()
+            .(Ast::SetterMethodCall)
+            .getTargetName()) and
     nodeTo.(DataFlowPublic::PostUpdateNode).getPreUpdateNode().asExpr() = call.getReceiver() and
     call.getExpr() instanceof Ast::SetterMethodCall and
     call.getArgument(call.getNumberOfArguments() - 1) =
@@ -210,7 +191,7 @@ predicate postUpdateStoreStep(Node nodeFrom, Node nodeTo, TypeTrackerContent con
 predicate basicLoadStep(Node nodeFrom, Node nodeTo, TypeTrackerContent content) {
   exists(ExprNodes::MethodCallCfgNode call |
     call.getExpr().getNumberOfArguments() = 0 and
-    content = MkAttribute(call.getExpr().getMethodName()) and
+    content = DataFlowPublic::Content::getAttributeName(call.getExpr().getMethodName()) and
     nodeFrom.asExpr() = call.getReceiver() and
     nodeTo.asExpr() = call
   )
@@ -225,7 +206,7 @@ predicate basicLoadStep(Node nodeFrom, Node nodeTo, TypeTrackerContent content) 
       SummaryComponentStack::singleton(output)) and
     nodeFrom = evaluateSummaryComponentLocal(call, input) and
     nodeTo = evaluateSummaryComponentLocal(call, output) and
-    content.asContent() = contents.getAReadContent()
+    content = contents.getAReadContent()
   )
 }
 

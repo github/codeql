@@ -525,7 +525,7 @@ module API {
       or
       exists(TypeTrackerSpecific::TypeTrackerContent c |
         TypeTrackerSpecific::basicLoadStep(node, ref, c) and
-        lbl = Label::content(c.asContent())
+        lbl = Label::content(c)
       )
       // note: method calls are not handled here as there is no DataFlow::Node for the intermediate MkMethodAccessNode API node
     }
@@ -537,7 +537,7 @@ module API {
     private predicate defStep(Label::ApiLabel lbl, DataFlow::Node node, DataFlow::Node rhs) {
       exists(TypeTrackerSpecific::TypeTrackerContent c |
         TypeTrackerSpecific::basicStoreStep(rhs, node, c) and
-        lbl = Label::content(c.asContent())
+        lbl = Label::content(c)
       )
     }
 

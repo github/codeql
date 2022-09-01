@@ -1,6 +1,7 @@
 private import codeql.ruby.AST
 private import codeql.ruby.ast.internal.Synthesis
 private import codeql.ruby.CFG
+private import codeql.ruby.AST as AST
 private import codeql.ruby.dataflow.SSA
 private import DataFlowPublic
 private import DataFlowDispatch
@@ -385,7 +386,8 @@ private module Cached {
     }
 
   cached
-  newtype TContent =
+  newtype TOptionalContent =
+    TNoContent() or
     TKnownElementContent(ConstantValue cv) {
       not cv.isInt(_) or
       cv.getInt() in [0 .. 10]
@@ -408,7 +410,14 @@ private module Cached {
       |
         name = [input, output].regexpFind("(?<=(^|\\.)Field\\[)[^\\]]+(?=\\])", _, _).trim()
       )
-    }
+    } or
+    // Only used by type-tracking
+    TAttributeName(string name) { name = any(AST::SetterMethodCall c).getTargetName() }
+
+  cached
+  class TContent =
+    TKnownElementContent or TUnknownElementContent or TKnownPairValueContent or
+        TUnknownPairValueContent or TFieldContent or TAttributeName;
 
   /**
    * Holds if `e` is an `ExprNode` that may be returned by a call to `c`.
