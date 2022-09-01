@@ -17,8 +17,16 @@ import ql
  */
 pragma[noinline]
 predicate alwaysBindsVar(VarDef var, AstNode node) {
-  // base case
-  node.(VarAccess).getDeclaration() = var and
+  (
+    // base case
+    node.(VarAccess).getDeclaration() = var
+    or
+    exists(Class clz |
+      node.(FieldAccess).getDeclaration().getVarDecl() = var and
+      node.(FieldAccess).getDeclaration() = clz.getAField() and // <- ensuring that the field is not inherited from a super class
+      node.getEnclosingPredicate() = clz.getCharPred() // <- in non-charpred, the fields are implicitly bound by their relation to `this`.
+    )
+  ) and
   not isSmallType(var.getType()) // <- early pruning
   or
   // recursive cases
@@ -111,12 +119,14 @@ class EffectiveDisjunction extends AstNode {
  * Holds if `disj` only uses `var` in one of its branches.
  */
 pragma[noinline]
-predicate onlyUseInOneBranch(EffectiveDisjunction disj, VarDef var) {
+predicate onlyUseInOneBranch(EffectiveDisjunction disj, VarDef var, AstNode notBoundIn) {
   alwaysBindsVar(var, disj.getLeft()) and
-  not alwaysBindsVar(var, disj.getRight())
+  not alwaysBindsVar(var, disj.getRight()) and
+  notBoundIn = disj.getRight()
   or
   not alwaysBindsVar(var, disj.getLeft()) and
-  alwaysBindsVar(var, disj.getRight())
+  alwaysBindsVar(var, disj.getRight()) and
+  notBoundIn = disj.getLeft()
 }
 
 /**
@@ -162,7 +172,7 @@ class EffectiveConjunction extends AstNode {
 predicate varIsAlwaysBound(VarDef var, AstNode node) {
   // base case
   alwaysBindsVar(var, node) and
-  onlyUseInOneBranch(_, var) // <- manual magic
+  onlyUseInOneBranch(_, var, _) // <- manual magic
   or
   // recursive cases
   exists(AstNode parent | node.getParent() = parent | varIsAlwaysBound(var, parent))
@@ -186,8 +196,8 @@ predicate varIsAlwaysBound(VarDef var, AstNode node) {
  * Holds if `disj` only uses `var` in one of its branches.
  * And we should report it as being a bad thing.
  */
-predicate badDisjunction(EffectiveDisjunction disj, VarDef var) {
-  onlyUseInOneBranch(disj, var) and
+predicate badDisjunction(EffectiveDisjunction disj, VarDef var, AstNode notBoundIn) {
+  onlyUseInOneBranch(disj, var, notBoundIn) and
   // it's fine if it's always bound further up
   not varIsAlwaysBound(var, disj) and
   // none() on one side makes everything fine. (this happens, it's a type-system hack)
@@ -205,8 +215,9 @@ predicate badDisjunction(EffectiveDisjunction disj, VarDef var) {
   not isTinyAssignment(disj.getAnOperand())
 }
 
-from EffectiveDisjunction disj, VarDef var
+from EffectiveDisjunction disj, VarDef var, AstNode notBoundIn, string type
 where
-  badDisjunction(disj, var) and
-  not badDisjunction(disj.getParent(), var) // avoid duplicate reporting of the same error
-select disj, "The variable " + var.getName() + " is only used in one side of disjunct."
+  badDisjunction(disj, var, notBoundIn) and
+  not badDisjunction(disj.getParent(), var, _) and // avoid duplicate reporting of the same error
+  if var.getParent() instanceof FieldDecl then type = "field" else type = "variable"
+select disj, "The $@ is only used in one side of disjunct.", var, type + " " + var.getName()

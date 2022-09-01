@@ -162,7 +162,7 @@ class LiveClass extends SourceClassOrInterface {
     exists(LiveField f | f.getDeclaringType() = this |
       // A `serialVersionUID` field is considered to be a live field, but is
       // not be enough to be make this class live.
-      not f instanceof SerialVersionUIDField
+      not f instanceof SerialVersionUidField
     )
     or
     // If this is a namespace class, it is live if there is at least one live nested class.
@@ -250,7 +250,7 @@ class DeadMethod extends Callable {
     // These getters and setters are often generated in an ad-hoc way by the developer, which leads to
     // methods that are theoretically dead, but uninteresting. We therefore ignore them, so long as
     // they are "simple".
-    not exists(JPAReadField readField | this.getDeclaringType() = readField.getDeclaringType() |
+    not exists(JpaReadField readField | this.getDeclaringType() = readField.getDeclaringType() |
       this.(GetterMethod).getField() = readField or
       this.(SetterMethod).getField() = readField
     )

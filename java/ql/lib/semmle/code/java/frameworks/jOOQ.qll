@@ -24,5 +24,7 @@ predicate jOOQSqlMethod(Method m) {
 }
 
 private class SqlSinkCsv extends SinkModelCsv {
-  override predicate row(string row) { row = "org.jooq;PlainSQL;false;;;Annotated;Argument[0];sql" }
+  override predicate row(string row) {
+    row = "org.jooq;PlainSQL;false;;;Annotated;Argument[0];sql;manual"
+  }
 }

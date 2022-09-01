@@ -6,37 +6,38 @@ namespace Microsoft
     {
         namespace Hosting
         {
-            // Generated from `Microsoft.AspNetCore.Hosting.KestrelServerOptionsSystemdExtensions` in `Microsoft.AspNetCore.Server.Kestrel.Core, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
+            // Generated from `Microsoft.AspNetCore.Hosting.KestrelServerOptionsSystemdExtensions` in `Microsoft.AspNetCore.Server.Kestrel.Core, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public static class KestrelServerOptionsSystemdExtensions
             {
-                public static Microsoft.AspNetCore.Server.Kestrel.Core.KestrelServerOptions UseSystemd(this Microsoft.AspNetCore.Server.Kestrel.Core.KestrelServerOptions options, System.Action<Microsoft.AspNetCore.Server.Kestrel.Core.ListenOptions> configure) => throw null;
                 public static Microsoft.AspNetCore.Server.Kestrel.Core.KestrelServerOptions UseSystemd(this Microsoft.AspNetCore.Server.Kestrel.Core.KestrelServerOptions options) => throw null;
+                public static Microsoft.AspNetCore.Server.Kestrel.Core.KestrelServerOptions UseSystemd(this Microsoft.AspNetCore.Server.Kestrel.Core.KestrelServerOptions options, System.Action<Microsoft.AspNetCore.Server.Kestrel.Core.ListenOptions> configure) => throw null;
             }
 
-            // Generated from `Microsoft.AspNetCore.Hosting.ListenOptionsConnectionLoggingExtensions` in `Microsoft.AspNetCore.Server.Kestrel.Core, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
+            // Generated from `Microsoft.AspNetCore.Hosting.ListenOptionsConnectionLoggingExtensions` in `Microsoft.AspNetCore.Server.Kestrel.Core, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public static class ListenOptionsConnectionLoggingExtensions
             {
-                public static Microsoft.AspNetCore.Server.Kestrel.Core.ListenOptions UseConnectionLogging(this Microsoft.AspNetCore.Server.Kestrel.Core.ListenOptions listenOptions, string loggerName) => throw null;
                 public static Microsoft.AspNetCore.Server.Kestrel.Core.ListenOptions UseConnectionLogging(this Microsoft.AspNetCore.Server.Kestrel.Core.ListenOptions listenOptions) => throw null;
+                public static Microsoft.AspNetCore.Server.Kestrel.Core.ListenOptions UseConnectionLogging(this Microsoft.AspNetCore.Server.Kestrel.Core.ListenOptions listenOptions, string loggerName) => throw null;
             }
 
-            // Generated from `Microsoft.AspNetCore.Hosting.ListenOptionsHttpsExtensions` in `Microsoft.AspNetCore.Server.Kestrel.Core, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
+            // Generated from `Microsoft.AspNetCore.Hosting.ListenOptionsHttpsExtensions` in `Microsoft.AspNetCore.Server.Kestrel.Core, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public static class ListenOptionsHttpsExtensions
             {
-                public static Microsoft.AspNetCore.Server.Kestrel.Core.ListenOptions UseHttps(this Microsoft.AspNetCore.Server.Kestrel.Core.ListenOptions listenOptions, string fileName, string password, System.Action<Microsoft.AspNetCore.Server.Kestrel.Https.HttpsConnectionAdapterOptions> configureOptions) => throw null;
-                public static Microsoft.AspNetCore.Server.Kestrel.Core.ListenOptions UseHttps(this Microsoft.AspNetCore.Server.Kestrel.Core.ListenOptions listenOptions, string fileName, string password) => throw null;
-                public static Microsoft.AspNetCore.Server.Kestrel.Core.ListenOptions UseHttps(this Microsoft.AspNetCore.Server.Kestrel.Core.ListenOptions listenOptions, string fileName) => throw null;
-                public static Microsoft.AspNetCore.Server.Kestrel.Core.ListenOptions UseHttps(this Microsoft.AspNetCore.Server.Kestrel.Core.ListenOptions listenOptions, System.Security.Cryptography.X509Certificates.X509Certificate2 serverCertificate, System.Action<Microsoft.AspNetCore.Server.Kestrel.Https.HttpsConnectionAdapterOptions> configureOptions) => throw null;
-                public static Microsoft.AspNetCore.Server.Kestrel.Core.ListenOptions UseHttps(this Microsoft.AspNetCore.Server.Kestrel.Core.ListenOptions listenOptions, System.Security.Cryptography.X509Certificates.X509Certificate2 serverCertificate) => throw null;
-                public static Microsoft.AspNetCore.Server.Kestrel.Core.ListenOptions UseHttps(this Microsoft.AspNetCore.Server.Kestrel.Core.ListenOptions listenOptions, System.Security.Cryptography.X509Certificates.StoreName storeName, string subject, bool allowInvalid, System.Security.Cryptography.X509Certificates.StoreLocation location, System.Action<Microsoft.AspNetCore.Server.Kestrel.Https.HttpsConnectionAdapterOptions> configureOptions) => throw null;
-                public static Microsoft.AspNetCore.Server.Kestrel.Core.ListenOptions UseHttps(this Microsoft.AspNetCore.Server.Kestrel.Core.ListenOptions listenOptions, System.Security.Cryptography.X509Certificates.StoreName storeName, string subject, bool allowInvalid, System.Security.Cryptography.X509Certificates.StoreLocation location) => throw null;
-                public static Microsoft.AspNetCore.Server.Kestrel.Core.ListenOptions UseHttps(this Microsoft.AspNetCore.Server.Kestrel.Core.ListenOptions listenOptions, System.Security.Cryptography.X509Certificates.StoreName storeName, string subject, bool allowInvalid) => throw null;
-                public static Microsoft.AspNetCore.Server.Kestrel.Core.ListenOptions UseHttps(this Microsoft.AspNetCore.Server.Kestrel.Core.ListenOptions listenOptions, System.Security.Cryptography.X509Certificates.StoreName storeName, string subject) => throw null;
-                public static Microsoft.AspNetCore.Server.Kestrel.Core.ListenOptions UseHttps(this Microsoft.AspNetCore.Server.Kestrel.Core.ListenOptions listenOptions, System.Net.Security.ServerOptionsSelectionCallback serverOptionsSelectionCallback, object state, System.TimeSpan handshakeTimeout) => throw null;
-                public static Microsoft.AspNetCore.Server.Kestrel.Core.ListenOptions UseHttps(this Microsoft.AspNetCore.Server.Kestrel.Core.ListenOptions listenOptions, System.Net.Security.ServerOptionsSelectionCallback serverOptionsSelectionCallback, object state) => throw null;
+                public static Microsoft.AspNetCore.Server.Kestrel.Core.ListenOptions UseHttps(this Microsoft.AspNetCore.Server.Kestrel.Core.ListenOptions listenOptions) => throw null;
                 public static Microsoft.AspNetCore.Server.Kestrel.Core.ListenOptions UseHttps(this Microsoft.AspNetCore.Server.Kestrel.Core.ListenOptions listenOptions, System.Action<Microsoft.AspNetCore.Server.Kestrel.Https.HttpsConnectionAdapterOptions> configureOptions) => throw null;
                 public static Microsoft.AspNetCore.Server.Kestrel.Core.ListenOptions UseHttps(this Microsoft.AspNetCore.Server.Kestrel.Core.ListenOptions listenOptions, Microsoft.AspNetCore.Server.Kestrel.Https.HttpsConnectionAdapterOptions httpsOptions) => throw null;
-                public static Microsoft.AspNetCore.Server.Kestrel.Core.ListenOptions UseHttps(this Microsoft.AspNetCore.Server.Kestrel.Core.ListenOptions listenOptions) => throw null;
+                public static Microsoft.AspNetCore.Server.Kestrel.Core.ListenOptions UseHttps(this Microsoft.AspNetCore.Server.Kestrel.Core.ListenOptions listenOptions, System.Net.Security.ServerOptionsSelectionCallback serverOptionsSelectionCallback, object state) => throw null;
+                public static Microsoft.AspNetCore.Server.Kestrel.Core.ListenOptions UseHttps(this Microsoft.AspNetCore.Server.Kestrel.Core.ListenOptions listenOptions, System.Net.Security.ServerOptionsSelectionCallback serverOptionsSelectionCallback, object state, System.TimeSpan handshakeTimeout) => throw null;
+                public static Microsoft.AspNetCore.Server.Kestrel.Core.ListenOptions UseHttps(this Microsoft.AspNetCore.Server.Kestrel.Core.ListenOptions listenOptions, System.Security.Cryptography.X509Certificates.StoreName storeName, string subject) => throw null;
+                public static Microsoft.AspNetCore.Server.Kestrel.Core.ListenOptions UseHttps(this Microsoft.AspNetCore.Server.Kestrel.Core.ListenOptions listenOptions, System.Security.Cryptography.X509Certificates.StoreName storeName, string subject, bool allowInvalid) => throw null;
+                public static Microsoft.AspNetCore.Server.Kestrel.Core.ListenOptions UseHttps(this Microsoft.AspNetCore.Server.Kestrel.Core.ListenOptions listenOptions, System.Security.Cryptography.X509Certificates.StoreName storeName, string subject, bool allowInvalid, System.Security.Cryptography.X509Certificates.StoreLocation location) => throw null;
+                public static Microsoft.AspNetCore.Server.Kestrel.Core.ListenOptions UseHttps(this Microsoft.AspNetCore.Server.Kestrel.Core.ListenOptions listenOptions, System.Security.Cryptography.X509Certificates.StoreName storeName, string subject, bool allowInvalid, System.Security.Cryptography.X509Certificates.StoreLocation location, System.Action<Microsoft.AspNetCore.Server.Kestrel.Https.HttpsConnectionAdapterOptions> configureOptions) => throw null;
+                public static Microsoft.AspNetCore.Server.Kestrel.Core.ListenOptions UseHttps(this Microsoft.AspNetCore.Server.Kestrel.Core.ListenOptions listenOptions, Microsoft.AspNetCore.Server.Kestrel.Https.TlsHandshakeCallbackOptions callbackOptions) => throw null;
+                public static Microsoft.AspNetCore.Server.Kestrel.Core.ListenOptions UseHttps(this Microsoft.AspNetCore.Server.Kestrel.Core.ListenOptions listenOptions, System.Security.Cryptography.X509Certificates.X509Certificate2 serverCertificate) => throw null;
+                public static Microsoft.AspNetCore.Server.Kestrel.Core.ListenOptions UseHttps(this Microsoft.AspNetCore.Server.Kestrel.Core.ListenOptions listenOptions, System.Security.Cryptography.X509Certificates.X509Certificate2 serverCertificate, System.Action<Microsoft.AspNetCore.Server.Kestrel.Https.HttpsConnectionAdapterOptions> configureOptions) => throw null;
+                public static Microsoft.AspNetCore.Server.Kestrel.Core.ListenOptions UseHttps(this Microsoft.AspNetCore.Server.Kestrel.Core.ListenOptions listenOptions, string fileName) => throw null;
+                public static Microsoft.AspNetCore.Server.Kestrel.Core.ListenOptions UseHttps(this Microsoft.AspNetCore.Server.Kestrel.Core.ListenOptions listenOptions, string fileName, string password) => throw null;
+                public static Microsoft.AspNetCore.Server.Kestrel.Core.ListenOptions UseHttps(this Microsoft.AspNetCore.Server.Kestrel.Core.ListenOptions listenOptions, string fileName, string password, System.Action<Microsoft.AspNetCore.Server.Kestrel.Https.HttpsConnectionAdapterOptions> configureOptions) => throw null;
             }
 
         }
@@ -44,7 +45,7 @@ namespace Microsoft
         {
             namespace Kestrel
             {
-                // Generated from `Microsoft.AspNetCore.Server.Kestrel.EndpointConfiguration` in `Microsoft.AspNetCore.Server.Kestrel.Core, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
+                // Generated from `Microsoft.AspNetCore.Server.Kestrel.EndpointConfiguration` in `Microsoft.AspNetCore.Server.Kestrel.Core, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class EndpointConfiguration
                 {
                     public Microsoft.Extensions.Configuration.IConfigurationSection ConfigSection { get => throw null; }
@@ -53,38 +54,38 @@ namespace Microsoft
                     public Microsoft.AspNetCore.Server.Kestrel.Core.ListenOptions ListenOptions { get => throw null; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Server.Kestrel.KestrelConfigurationLoader` in `Microsoft.AspNetCore.Server.Kestrel.Core, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
+                // Generated from `Microsoft.AspNetCore.Server.Kestrel.KestrelConfigurationLoader` in `Microsoft.AspNetCore.Server.Kestrel.Core, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class KestrelConfigurationLoader
                 {
-                    public Microsoft.AspNetCore.Server.Kestrel.KestrelConfigurationLoader AnyIPEndpoint(int port, System.Action<Microsoft.AspNetCore.Server.Kestrel.Core.ListenOptions> configure) => throw null;
                     public Microsoft.AspNetCore.Server.Kestrel.KestrelConfigurationLoader AnyIPEndpoint(int port) => throw null;
+                    public Microsoft.AspNetCore.Server.Kestrel.KestrelConfigurationLoader AnyIPEndpoint(int port, System.Action<Microsoft.AspNetCore.Server.Kestrel.Core.ListenOptions> configure) => throw null;
                     public Microsoft.Extensions.Configuration.IConfiguration Configuration { get => throw null; set => throw null; }
-                    public Microsoft.AspNetCore.Server.Kestrel.KestrelConfigurationLoader Endpoint(string name, System.Action<Microsoft.AspNetCore.Server.Kestrel.EndpointConfiguration> configureOptions) => throw null;
-                    public Microsoft.AspNetCore.Server.Kestrel.KestrelConfigurationLoader Endpoint(System.Net.IPEndPoint endPoint, System.Action<Microsoft.AspNetCore.Server.Kestrel.Core.ListenOptions> configure) => throw null;
-                    public Microsoft.AspNetCore.Server.Kestrel.KestrelConfigurationLoader Endpoint(System.Net.IPEndPoint endPoint) => throw null;
-                    public Microsoft.AspNetCore.Server.Kestrel.KestrelConfigurationLoader Endpoint(System.Net.IPAddress address, int port, System.Action<Microsoft.AspNetCore.Server.Kestrel.Core.ListenOptions> configure) => throw null;
                     public Microsoft.AspNetCore.Server.Kestrel.KestrelConfigurationLoader Endpoint(System.Net.IPAddress address, int port) => throw null;
-                    public Microsoft.AspNetCore.Server.Kestrel.KestrelConfigurationLoader HandleEndpoint(System.UInt64 handle, System.Action<Microsoft.AspNetCore.Server.Kestrel.Core.ListenOptions> configure) => throw null;
+                    public Microsoft.AspNetCore.Server.Kestrel.KestrelConfigurationLoader Endpoint(System.Net.IPAddress address, int port, System.Action<Microsoft.AspNetCore.Server.Kestrel.Core.ListenOptions> configure) => throw null;
+                    public Microsoft.AspNetCore.Server.Kestrel.KestrelConfigurationLoader Endpoint(System.Net.IPEndPoint endPoint) => throw null;
+                    public Microsoft.AspNetCore.Server.Kestrel.KestrelConfigurationLoader Endpoint(System.Net.IPEndPoint endPoint, System.Action<Microsoft.AspNetCore.Server.Kestrel.Core.ListenOptions> configure) => throw null;
+                    public Microsoft.AspNetCore.Server.Kestrel.KestrelConfigurationLoader Endpoint(string name, System.Action<Microsoft.AspNetCore.Server.Kestrel.EndpointConfiguration> configureOptions) => throw null;
                     public Microsoft.AspNetCore.Server.Kestrel.KestrelConfigurationLoader HandleEndpoint(System.UInt64 handle) => throw null;
+                    public Microsoft.AspNetCore.Server.Kestrel.KestrelConfigurationLoader HandleEndpoint(System.UInt64 handle, System.Action<Microsoft.AspNetCore.Server.Kestrel.Core.ListenOptions> configure) => throw null;
                     public void Load() => throw null;
-                    public Microsoft.AspNetCore.Server.Kestrel.KestrelConfigurationLoader LocalhostEndpoint(int port, System.Action<Microsoft.AspNetCore.Server.Kestrel.Core.ListenOptions> configure) => throw null;
                     public Microsoft.AspNetCore.Server.Kestrel.KestrelConfigurationLoader LocalhostEndpoint(int port) => throw null;
+                    public Microsoft.AspNetCore.Server.Kestrel.KestrelConfigurationLoader LocalhostEndpoint(int port, System.Action<Microsoft.AspNetCore.Server.Kestrel.Core.ListenOptions> configure) => throw null;
                     public Microsoft.AspNetCore.Server.Kestrel.Core.KestrelServerOptions Options { get => throw null; }
-                    public Microsoft.AspNetCore.Server.Kestrel.KestrelConfigurationLoader UnixSocketEndpoint(string socketPath, System.Action<Microsoft.AspNetCore.Server.Kestrel.Core.ListenOptions> configure) => throw null;
                     public Microsoft.AspNetCore.Server.Kestrel.KestrelConfigurationLoader UnixSocketEndpoint(string socketPath) => throw null;
+                    public Microsoft.AspNetCore.Server.Kestrel.KestrelConfigurationLoader UnixSocketEndpoint(string socketPath, System.Action<Microsoft.AspNetCore.Server.Kestrel.Core.ListenOptions> configure) => throw null;
                 }
 
                 namespace Core
                 {
-                    // Generated from `Microsoft.AspNetCore.Server.Kestrel.Core.BadHttpRequestException` in `Microsoft.AspNetCore.Server.Kestrel.Core, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
+                    // Generated from `Microsoft.AspNetCore.Server.Kestrel.Core.BadHttpRequestException` in `Microsoft.AspNetCore.Server.Kestrel.Core, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                     public class BadHttpRequestException : Microsoft.AspNetCore.Http.BadHttpRequestException
                     {
-                        internal BadHttpRequestException(string message, int statusCode, Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http.RequestRejectionReason reason, Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http.HttpMethod? requiredMethod) : base(default(string)) => throw null;
                         internal BadHttpRequestException(string message, int statusCode, Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http.RequestRejectionReason reason) : base(default(string)) => throw null;
+                        internal BadHttpRequestException(string message, int statusCode, Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http.RequestRejectionReason reason, Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http.HttpMethod? requiredMethod) : base(default(string)) => throw null;
                         public int StatusCode { get => throw null; }
                     }
 
-                    // Generated from `Microsoft.AspNetCore.Server.Kestrel.Core.Http2Limits` in `Microsoft.AspNetCore.Server.Kestrel.Core, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
+                    // Generated from `Microsoft.AspNetCore.Server.Kestrel.Core.Http2Limits` in `Microsoft.AspNetCore.Server.Kestrel.Core, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                     public class Http2Limits
                     {
                         public int HeaderTableSize { get => throw null; set => throw null; }
@@ -98,28 +99,27 @@ namespace Microsoft
                         public int MaxStreamsPerConnection { get => throw null; set => throw null; }
                     }
 
-                    // Generated from `Microsoft.AspNetCore.Server.Kestrel.Core.Http3Limits` in `Microsoft.AspNetCore.Server.Kestrel.Core, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
+                    // Generated from `Microsoft.AspNetCore.Server.Kestrel.Core.Http3Limits` in `Microsoft.AspNetCore.Server.Kestrel.Core, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                     public class Http3Limits
                     {
-                        public int HeaderTableSize { get => throw null; set => throw null; }
                         public Http3Limits() => throw null;
                         public int MaxRequestHeaderFieldSize { get => throw null; set => throw null; }
                     }
 
-                    // Generated from `Microsoft.AspNetCore.Server.Kestrel.Core.HttpProtocols` in `Microsoft.AspNetCore.Server.Kestrel.Core, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
+                    // Generated from `Microsoft.AspNetCore.Server.Kestrel.Core.HttpProtocols` in `Microsoft.AspNetCore.Server.Kestrel.Core, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                     [System.Flags]
-                    public enum HttpProtocols
+                    public enum HttpProtocols : int
                     {
-                        Http1,
-                        Http1AndHttp2,
-                        Http1AndHttp2AndHttp3,
-                        Http2,
-                        Http3,
-                        None,
+                        Http1 = 1,
+                        Http1AndHttp2 = 3,
+                        Http1AndHttp2AndHttp3 = 7,
+                        Http2 = 2,
+                        Http3 = 4,
+                        None = 0,
                     }
 
-                    // Generated from `Microsoft.AspNetCore.Server.Kestrel.Core.KestrelServer` in `Microsoft.AspNetCore.Server.Kestrel.Core, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
-                    public class KestrelServer : System.IDisposable, Microsoft.AspNetCore.Hosting.Server.IServer
+                    // Generated from `Microsoft.AspNetCore.Server.Kestrel.Core.KestrelServer` in `Microsoft.AspNetCore.Server.Kestrel.Core, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
+                    public class KestrelServer : Microsoft.AspNetCore.Hosting.Server.IServer, System.IDisposable
                     {
                         public void Dispose() => throw null;
                         public Microsoft.AspNetCore.Http.Features.IFeatureCollection Features { get => throw null; }
@@ -129,7 +129,7 @@ namespace Microsoft
                         public System.Threading.Tasks.Task StopAsync(System.Threading.CancellationToken cancellationToken) => throw null;
                     }
 
-                    // Generated from `Microsoft.AspNetCore.Server.Kestrel.Core.KestrelServerLimits` in `Microsoft.AspNetCore.Server.Kestrel.Core, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
+                    // Generated from `Microsoft.AspNetCore.Server.Kestrel.Core.KestrelServerLimits` in `Microsoft.AspNetCore.Server.Kestrel.Core, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                     public class KestrelServerLimits
                     {
                         public Microsoft.AspNetCore.Server.Kestrel.Core.Http2Limits Http2 { get => throw null; }
@@ -149,45 +149,49 @@ namespace Microsoft
                         public System.TimeSpan RequestHeadersTimeout { get => throw null; set => throw null; }
                     }
 
-                    // Generated from `Microsoft.AspNetCore.Server.Kestrel.Core.KestrelServerOptions` in `Microsoft.AspNetCore.Server.Kestrel.Core, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
+                    // Generated from `Microsoft.AspNetCore.Server.Kestrel.Core.KestrelServerOptions` in `Microsoft.AspNetCore.Server.Kestrel.Core, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                     public class KestrelServerOptions
                     {
                         public bool AddServerHeader { get => throw null; set => throw null; }
+                        public bool AllowAlternateSchemes { get => throw null; set => throw null; }
                         public bool AllowResponseHeaderCompression { get => throw null; set => throw null; }
                         public bool AllowSynchronousIO { get => throw null; set => throw null; }
                         public System.IServiceProvider ApplicationServices { get => throw null; set => throw null; }
                         public Microsoft.AspNetCore.Server.Kestrel.KestrelConfigurationLoader ConfigurationLoader { get => throw null; set => throw null; }
-                        public Microsoft.AspNetCore.Server.Kestrel.KestrelConfigurationLoader Configure(Microsoft.Extensions.Configuration.IConfiguration config, bool reloadOnChange) => throw null;
-                        public Microsoft.AspNetCore.Server.Kestrel.KestrelConfigurationLoader Configure(Microsoft.Extensions.Configuration.IConfiguration config) => throw null;
                         public Microsoft.AspNetCore.Server.Kestrel.KestrelConfigurationLoader Configure() => throw null;
+                        public Microsoft.AspNetCore.Server.Kestrel.KestrelConfigurationLoader Configure(Microsoft.Extensions.Configuration.IConfiguration config) => throw null;
+                        public Microsoft.AspNetCore.Server.Kestrel.KestrelConfigurationLoader Configure(Microsoft.Extensions.Configuration.IConfiguration config, bool reloadOnChange) => throw null;
                         public void ConfigureEndpointDefaults(System.Action<Microsoft.AspNetCore.Server.Kestrel.Core.ListenOptions> configureOptions) => throw null;
                         public void ConfigureHttpsDefaults(System.Action<Microsoft.AspNetCore.Server.Kestrel.Https.HttpsConnectionAdapterOptions> configureOptions) => throw null;
                         public bool DisableStringReuse { get => throw null; set => throw null; }
                         public bool EnableAltSvc { get => throw null; set => throw null; }
                         public KestrelServerOptions() => throw null;
                         public Microsoft.AspNetCore.Server.Kestrel.Core.KestrelServerLimits Limits { get => throw null; }
-                        public void Listen(System.Net.IPEndPoint endPoint, System.Action<Microsoft.AspNetCore.Server.Kestrel.Core.ListenOptions> configure) => throw null;
-                        public void Listen(System.Net.IPEndPoint endPoint) => throw null;
-                        public void Listen(System.Net.IPAddress address, int port, System.Action<Microsoft.AspNetCore.Server.Kestrel.Core.ListenOptions> configure) => throw null;
-                        public void Listen(System.Net.IPAddress address, int port) => throw null;
-                        public void Listen(System.Net.EndPoint endPoint, System.Action<Microsoft.AspNetCore.Server.Kestrel.Core.ListenOptions> configure) => throw null;
                         public void Listen(System.Net.EndPoint endPoint) => throw null;
-                        public void ListenAnyIP(int port, System.Action<Microsoft.AspNetCore.Server.Kestrel.Core.ListenOptions> configure) => throw null;
+                        public void Listen(System.Net.EndPoint endPoint, System.Action<Microsoft.AspNetCore.Server.Kestrel.Core.ListenOptions> configure) => throw null;
+                        public void Listen(System.Net.IPAddress address, int port) => throw null;
+                        public void Listen(System.Net.IPAddress address, int port, System.Action<Microsoft.AspNetCore.Server.Kestrel.Core.ListenOptions> configure) => throw null;
+                        public void Listen(System.Net.IPEndPoint endPoint) => throw null;
+                        public void Listen(System.Net.IPEndPoint endPoint, System.Action<Microsoft.AspNetCore.Server.Kestrel.Core.ListenOptions> configure) => throw null;
                         public void ListenAnyIP(int port) => throw null;
-                        public void ListenHandle(System.UInt64 handle, System.Action<Microsoft.AspNetCore.Server.Kestrel.Core.ListenOptions> configure) => throw null;
+                        public void ListenAnyIP(int port, System.Action<Microsoft.AspNetCore.Server.Kestrel.Core.ListenOptions> configure) => throw null;
                         public void ListenHandle(System.UInt64 handle) => throw null;
-                        public void ListenLocalhost(int port, System.Action<Microsoft.AspNetCore.Server.Kestrel.Core.ListenOptions> configure) => throw null;
+                        public void ListenHandle(System.UInt64 handle, System.Action<Microsoft.AspNetCore.Server.Kestrel.Core.ListenOptions> configure) => throw null;
                         public void ListenLocalhost(int port) => throw null;
-                        public void ListenUnixSocket(string socketPath, System.Action<Microsoft.AspNetCore.Server.Kestrel.Core.ListenOptions> configure) => throw null;
+                        public void ListenLocalhost(int port, System.Action<Microsoft.AspNetCore.Server.Kestrel.Core.ListenOptions> configure) => throw null;
                         public void ListenUnixSocket(string socketPath) => throw null;
+                        public void ListenUnixSocket(string socketPath, System.Action<Microsoft.AspNetCore.Server.Kestrel.Core.ListenOptions> configure) => throw null;
                         public System.Func<string, System.Text.Encoding> RequestHeaderEncodingSelector { get => throw null; set => throw null; }
+                        public System.Func<string, System.Text.Encoding> ResponseHeaderEncodingSelector { get => throw null; set => throw null; }
                     }
 
-                    // Generated from `Microsoft.AspNetCore.Server.Kestrel.Core.ListenOptions` in `Microsoft.AspNetCore.Server.Kestrel.Core, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
-                    public class ListenOptions : Microsoft.AspNetCore.Connections.IConnectionBuilder
+                    // Generated from `Microsoft.AspNetCore.Server.Kestrel.Core.ListenOptions` in `Microsoft.AspNetCore.Server.Kestrel.Core, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
+                    public class ListenOptions : Microsoft.AspNetCore.Connections.IConnectionBuilder, Microsoft.AspNetCore.Connections.IMultiplexedConnectionBuilder
                     {
                         public System.IServiceProvider ApplicationServices { get => throw null; }
                         public Microsoft.AspNetCore.Connections.ConnectionDelegate Build() => throw null;
+                        Microsoft.AspNetCore.Connections.MultiplexedConnectionDelegate Microsoft.AspNetCore.Connections.IMultiplexedConnectionBuilder.Build() => throw null;
+                        public bool DisableAltSvcHeader { get => throw null; set => throw null; }
                         public System.Net.EndPoint EndPoint { get => throw null; set => throw null; }
                         public System.UInt64 FileHandle { get => throw null; }
                         public System.Net.IPEndPoint IPEndPoint { get => throw null; }
@@ -197,19 +201,21 @@ namespace Microsoft
                         public string SocketPath { get => throw null; }
                         public override string ToString() => throw null;
                         public Microsoft.AspNetCore.Connections.IConnectionBuilder Use(System.Func<Microsoft.AspNetCore.Connections.ConnectionDelegate, Microsoft.AspNetCore.Connections.ConnectionDelegate> middleware) => throw null;
+                        Microsoft.AspNetCore.Connections.IMultiplexedConnectionBuilder Microsoft.AspNetCore.Connections.IMultiplexedConnectionBuilder.Use(System.Func<Microsoft.AspNetCore.Connections.MultiplexedConnectionDelegate, Microsoft.AspNetCore.Connections.MultiplexedConnectionDelegate> middleware) => throw null;
                     }
 
-                    // Generated from `Microsoft.AspNetCore.Server.Kestrel.Core.MinDataRate` in `Microsoft.AspNetCore.Server.Kestrel.Core, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
+                    // Generated from `Microsoft.AspNetCore.Server.Kestrel.Core.MinDataRate` in `Microsoft.AspNetCore.Server.Kestrel.Core, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                     public class MinDataRate
                     {
                         public double BytesPerSecond { get => throw null; }
                         public System.TimeSpan GracePeriod { get => throw null; }
                         public MinDataRate(double bytesPerSecond, System.TimeSpan gracePeriod) => throw null;
+                        public override string ToString() => throw null;
                     }
 
                     namespace Features
                     {
-                        // Generated from `Microsoft.AspNetCore.Server.Kestrel.Core.Features.IConnectionTimeoutFeature` in `Microsoft.AspNetCore.Server.Kestrel.Core, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
+                        // Generated from `Microsoft.AspNetCore.Server.Kestrel.Core.Features.IConnectionTimeoutFeature` in `Microsoft.AspNetCore.Server.Kestrel.Core, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                         public interface IConnectionTimeoutFeature
                         {
                             void CancelTimeout();
@@ -217,31 +223,31 @@ namespace Microsoft
                             void SetTimeout(System.TimeSpan timeSpan);
                         }
 
-                        // Generated from `Microsoft.AspNetCore.Server.Kestrel.Core.Features.IDecrementConcurrentConnectionCountFeature` in `Microsoft.AspNetCore.Server.Kestrel.Core, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
+                        // Generated from `Microsoft.AspNetCore.Server.Kestrel.Core.Features.IDecrementConcurrentConnectionCountFeature` in `Microsoft.AspNetCore.Server.Kestrel.Core, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                         public interface IDecrementConcurrentConnectionCountFeature
                         {
                             void ReleaseConnection();
                         }
 
-                        // Generated from `Microsoft.AspNetCore.Server.Kestrel.Core.Features.IHttp2StreamIdFeature` in `Microsoft.AspNetCore.Server.Kestrel.Core, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
+                        // Generated from `Microsoft.AspNetCore.Server.Kestrel.Core.Features.IHttp2StreamIdFeature` in `Microsoft.AspNetCore.Server.Kestrel.Core, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                         public interface IHttp2StreamIdFeature
                         {
                             int StreamId { get; }
                         }
 
-                        // Generated from `Microsoft.AspNetCore.Server.Kestrel.Core.Features.IHttpMinRequestBodyDataRateFeature` in `Microsoft.AspNetCore.Server.Kestrel.Core, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
+                        // Generated from `Microsoft.AspNetCore.Server.Kestrel.Core.Features.IHttpMinRequestBodyDataRateFeature` in `Microsoft.AspNetCore.Server.Kestrel.Core, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                         public interface IHttpMinRequestBodyDataRateFeature
                         {
                             Microsoft.AspNetCore.Server.Kestrel.Core.MinDataRate MinDataRate { get; set; }
                         }
 
-                        // Generated from `Microsoft.AspNetCore.Server.Kestrel.Core.Features.IHttpMinResponseDataRateFeature` in `Microsoft.AspNetCore.Server.Kestrel.Core, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
+                        // Generated from `Microsoft.AspNetCore.Server.Kestrel.Core.Features.IHttpMinResponseDataRateFeature` in `Microsoft.AspNetCore.Server.Kestrel.Core, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                         public interface IHttpMinResponseDataRateFeature
                         {
                             Microsoft.AspNetCore.Server.Kestrel.Core.MinDataRate MinDataRate { get; set; }
                         }
 
-                        // Generated from `Microsoft.AspNetCore.Server.Kestrel.Core.Features.ITlsApplicationProtocolFeature` in `Microsoft.AspNetCore.Server.Kestrel.Core, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
+                        // Generated from `Microsoft.AspNetCore.Server.Kestrel.Core.Features.ITlsApplicationProtocolFeature` in `Microsoft.AspNetCore.Server.Kestrel.Core, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                         public interface ITlsApplicationProtocolFeature
                         {
                             System.ReadOnlyMemory<System.Byte> ApplicationProtocol { get; }
@@ -252,92 +258,92 @@ namespace Microsoft
                     {
                         namespace Http
                         {
-                            // Generated from `Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http.HttpMethod` in `Microsoft.AspNetCore.Server.Kestrel.Core, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
-                            public enum HttpMethod
+                            // Generated from `Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http.HttpMethod` in `Microsoft.AspNetCore.Server.Kestrel.Core, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
+                            public enum HttpMethod : byte
                             {
-                                Connect,
-                                Custom,
-                                Delete,
-                                Get,
-                                Head,
-                                None,
-                                Options,
-                                Patch,
-                                Post,
-                                Put,
-                                Trace,
+                                Connect = 7,
+                                Custom = 9,
+                                Delete = 2,
+                                Get = 0,
+                                Head = 4,
+                                None = 255,
+                                Options = 8,
+                                Patch = 6,
+                                Post = 3,
+                                Put = 1,
+                                Trace = 5,
                             }
 
-                            // Generated from `Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http.HttpParser<>` in `Microsoft.AspNetCore.Server.Kestrel.Core, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
-                            public class HttpParser<TRequestHandler> where TRequestHandler : Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http.IHttpRequestLineHandler, Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http.IHttpHeadersHandler
+                            // Generated from `Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http.HttpParser<>` in `Microsoft.AspNetCore.Server.Kestrel.Core, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
+                            public class HttpParser<TRequestHandler> where TRequestHandler : Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http.IHttpHeadersHandler, Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http.IHttpRequestLineHandler
                             {
-                                public HttpParser(bool showErrorDetails) => throw null;
                                 public HttpParser() => throw null;
+                                public HttpParser(bool showErrorDetails) => throw null;
                                 public bool ParseHeaders(TRequestHandler handler, ref System.Buffers.SequenceReader<System.Byte> reader) => throw null;
                                 public bool ParseRequestLine(TRequestHandler handler, ref System.Buffers.SequenceReader<System.Byte> reader) => throw null;
                             }
 
-                            // Generated from `Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http.HttpScheme` in `Microsoft.AspNetCore.Server.Kestrel.Core, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
-                            public enum HttpScheme
+                            // Generated from `Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http.HttpScheme` in `Microsoft.AspNetCore.Server.Kestrel.Core, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
+                            public enum HttpScheme : int
                             {
-                                Http,
-                                Https,
-                                Unknown,
+                                Http = 0,
+                                Https = 1,
+                                Unknown = -1,
                             }
 
-                            // Generated from `Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http.HttpVersion` in `Microsoft.AspNetCore.Server.Kestrel.Core, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
-                            public enum HttpVersion
+                            // Generated from `Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http.HttpVersion` in `Microsoft.AspNetCore.Server.Kestrel.Core, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
+                            public enum HttpVersion : sbyte
                             {
-                                Http10,
-                                Http11,
-                                Http2,
-                                Http3,
-                                Unknown,
+                                Http10 = 0,
+                                Http11 = 1,
+                                Http2 = 2,
+                                Http3 = 3,
+                                Unknown = -1,
                             }
 
-                            // Generated from `Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http.HttpVersionAndMethod` in `Microsoft.AspNetCore.Server.Kestrel.Core, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
+                            // Generated from `Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http.HttpVersionAndMethod` in `Microsoft.AspNetCore.Server.Kestrel.Core, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                             public struct HttpVersionAndMethod
                             {
-                                public HttpVersionAndMethod(Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http.HttpMethod method, int methodEnd) => throw null;
                                 // Stub generator skipped constructor 
+                                public HttpVersionAndMethod(Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http.HttpMethod method, int methodEnd) => throw null;
                                 public Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http.HttpMethod Method { get => throw null; }
                                 public int MethodEnd { get => throw null; }
                                 public Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http.HttpVersion Version { get => throw null; set => throw null; }
                             }
 
-                            // Generated from `Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http.IHttpHeadersHandler` in `Microsoft.AspNetCore.Server.Kestrel.Core, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
+                            // Generated from `Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http.IHttpHeadersHandler` in `Microsoft.AspNetCore.Server.Kestrel.Core, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                             public interface IHttpHeadersHandler
                             {
                                 void OnHeader(System.ReadOnlySpan<System.Byte> name, System.ReadOnlySpan<System.Byte> value);
                                 void OnHeadersComplete(bool endStream);
-                                void OnStaticIndexedHeader(int index, System.ReadOnlySpan<System.Byte> value);
                                 void OnStaticIndexedHeader(int index);
+                                void OnStaticIndexedHeader(int index, System.ReadOnlySpan<System.Byte> value);
                             }
 
-                            // Generated from `Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http.IHttpParser<>` in `Microsoft.AspNetCore.Server.Kestrel.Core, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
-                            internal interface IHttpParser<TRequestHandler> where TRequestHandler : Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http.IHttpRequestLineHandler, Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http.IHttpHeadersHandler
+                            // Generated from `Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http.IHttpParser<>` in `Microsoft.AspNetCore.Server.Kestrel.Core, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
+                            internal interface IHttpParser<TRequestHandler> where TRequestHandler : Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http.IHttpHeadersHandler, Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http.IHttpRequestLineHandler
                             {
                             }
 
-                            // Generated from `Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http.IHttpRequestLineHandler` in `Microsoft.AspNetCore.Server.Kestrel.Core, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
+                            // Generated from `Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http.IHttpRequestLineHandler` in `Microsoft.AspNetCore.Server.Kestrel.Core, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                             public interface IHttpRequestLineHandler
                             {
                                 void OnStartLine(Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http.HttpVersionAndMethod versionAndMethod, Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http.TargetOffsetPathLength targetPath, System.Span<System.Byte> startLine);
                             }
 
-                            // Generated from `Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http.RequestRejectionReason` in `Microsoft.AspNetCore.Server.Kestrel.Core, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
-                            internal enum RequestRejectionReason
+                            // Generated from `Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http.RequestRejectionReason` in `Microsoft.AspNetCore.Server.Kestrel.Core, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
+                            internal enum RequestRejectionReason : int
                             {
                             }
 
-                            // Generated from `Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http.TargetOffsetPathLength` in `Microsoft.AspNetCore.Server.Kestrel.Core, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
+                            // Generated from `Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http.TargetOffsetPathLength` in `Microsoft.AspNetCore.Server.Kestrel.Core, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                             public struct TargetOffsetPathLength
                             {
                                 public bool IsEncoded { get => throw null; }
                                 public int Length { get => throw null; }
                                 public int Offset { get => throw null; }
-                                public TargetOffsetPathLength(int offset, int length, bool isEncoded) => throw null;
                                 // Stub generator skipped constructor 
+                                public TargetOffsetPathLength(int offset, int length, bool isEncoded) => throw null;
                             }
 
                         }
@@ -345,21 +351,22 @@ namespace Microsoft
                 }
                 namespace Https
                 {
-                    // Generated from `Microsoft.AspNetCore.Server.Kestrel.Https.CertificateLoader` in `Microsoft.AspNetCore.Server.Kestrel.Core, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
+                    // Generated from `Microsoft.AspNetCore.Server.Kestrel.Https.CertificateLoader` in `Microsoft.AspNetCore.Server.Kestrel.Core, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                     public static class CertificateLoader
                     {
                         public static System.Security.Cryptography.X509Certificates.X509Certificate2 LoadFromStoreCert(string subject, string storeName, System.Security.Cryptography.X509Certificates.StoreLocation storeLocation, bool allowInvalid) => throw null;
                     }
 
-                    // Generated from `Microsoft.AspNetCore.Server.Kestrel.Https.ClientCertificateMode` in `Microsoft.AspNetCore.Server.Kestrel.Core, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
-                    public enum ClientCertificateMode
+                    // Generated from `Microsoft.AspNetCore.Server.Kestrel.Https.ClientCertificateMode` in `Microsoft.AspNetCore.Server.Kestrel.Core, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
+                    public enum ClientCertificateMode : int
                     {
-                        AllowCertificate,
-                        NoCertificate,
-                        RequireCertificate,
+                        AllowCertificate = 1,
+                        DelayCertificate = 3,
+                        NoCertificate = 0,
+                        RequireCertificate = 2,
                     }
 
-                    // Generated from `Microsoft.AspNetCore.Server.Kestrel.Https.HttpsConnectionAdapterOptions` in `Microsoft.AspNetCore.Server.Kestrel.Core, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
+                    // Generated from `Microsoft.AspNetCore.Server.Kestrel.Https.HttpsConnectionAdapterOptions` in `Microsoft.AspNetCore.Server.Kestrel.Core, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                     public class HttpsConnectionAdapterOptions
                     {
                         public void AllowAnyClientCertificate() => throw null;
@@ -372,6 +379,27 @@ namespace Microsoft
                         public System.Security.Cryptography.X509Certificates.X509Certificate2 ServerCertificate { get => throw null; set => throw null; }
                         public System.Func<Microsoft.AspNetCore.Connections.ConnectionContext, string, System.Security.Cryptography.X509Certificates.X509Certificate2> ServerCertificateSelector { get => throw null; set => throw null; }
                         public System.Security.Authentication.SslProtocols SslProtocols { get => throw null; set => throw null; }
+                    }
+
+                    // Generated from `Microsoft.AspNetCore.Server.Kestrel.Https.TlsHandshakeCallbackContext` in `Microsoft.AspNetCore.Server.Kestrel.Core, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
+                    public class TlsHandshakeCallbackContext
+                    {
+                        public bool AllowDelayedClientCertificateNegotation { get => throw null; set => throw null; }
+                        public System.Threading.CancellationToken CancellationToken { get => throw null; set => throw null; }
+                        public System.Net.Security.SslClientHelloInfo ClientHelloInfo { get => throw null; set => throw null; }
+                        public Microsoft.AspNetCore.Connections.ConnectionContext Connection { get => throw null; set => throw null; }
+                        public System.Net.Security.SslStream SslStream { get => throw null; set => throw null; }
+                        public object State { get => throw null; set => throw null; }
+                        public TlsHandshakeCallbackContext() => throw null;
+                    }
+
+                    // Generated from `Microsoft.AspNetCore.Server.Kestrel.Https.TlsHandshakeCallbackOptions` in `Microsoft.AspNetCore.Server.Kestrel.Core, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
+                    public class TlsHandshakeCallbackOptions
+                    {
+                        public System.TimeSpan HandshakeTimeout { get => throw null; set => throw null; }
+                        public System.Func<Microsoft.AspNetCore.Server.Kestrel.Https.TlsHandshakeCallbackContext, System.Threading.Tasks.ValueTask<System.Net.Security.SslServerAuthenticationOptions>> OnConnection { get => throw null; set => throw null; }
+                        public object OnConnectionState { get => throw null; set => throw null; }
+                        public TlsHandshakeCallbackOptions() => throw null;
                     }
 
                 }

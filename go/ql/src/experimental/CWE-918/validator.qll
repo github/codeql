@@ -69,11 +69,16 @@ class AlphanumericStructFieldRead extends DataFlow::Node {
 class CheckedAlphanumericStructFieldRead extends AlphanumericStructFieldRead {
   CheckedAlphanumericStructFieldRead() {
     exists(StructValidationFunction guard, SelectorExpr selector |
-      guard.getAGuardedNode().asExpr() = selector.getBase() and
+      DataFlow::BarrierGuard<structValidationFunction/3>::getABarrierNodeForGuard(guard).asExpr() =
+        selector.getBase() and
       selector = this.asExpr() and
       this.getKey() = guard.getValidationKindKey()
     )
   }
+}
+
+private predicate structValidationFunction(DataFlow::Node g, Expr e, boolean branch) {
+  g.(StructValidationFunction).checks(e, branch)
 }
 
 /**
@@ -82,7 +87,7 @@ class CheckedAlphanumericStructFieldRead extends AlphanumericStructFieldRead {
  * The Gin `Context.Bind` family of functions apply checks according to a `binding:` tag, and the
  * Go-Playground Validator checks fields that have a `validate:` tag.
  */
-private class StructValidationFunction extends DataFlow::BarrierGuard, DataFlow::EqualityTestNode {
+private class StructValidationFunction extends DataFlow::EqualityTestNode {
   Expr checked;
   boolean safeOutcome;
   string validationKindKey;
@@ -113,7 +118,7 @@ private class StructValidationFunction extends DataFlow::BarrierGuard, DataFlow:
     )
   }
 
-  override predicate checks(Expr e, boolean branch) { e = checked and branch = safeOutcome }
+  predicate checks(Expr e, boolean branch) { e = checked and branch = safeOutcome }
 
   /**
    * Returns the struct tag key from which this validation function draws its validation kind.
@@ -133,27 +138,25 @@ private Expr dereference(DataFlow::Node nd) {
   nd.asExpr() = result
 }
 
+private predicate validatorVarCheck(DataFlow::Node g, Expr e, boolean outcome) {
+  exists(DataFlow::CallNode callToValidator, Method validatorMethod, DataFlow::Node resultErr |
+    g instanceof DataFlow::EqualityTestNode and
+    validatorMethod.hasQualifiedName("github.com/go-playground/validator", "Validate", "Var") and
+    callToValidator = validatorMethod.getACall() and
+    isAlphanumericValidationKind(callToValidator.getArgument(1).getStringValue()) and
+    resultErr = callToValidator.getResult().getASuccessor*() and
+    nilProperty().checkOn(g, outcome, resultErr) and
+    callToValidator.getArgument(0).asExpr() = e
+  )
+}
+
 /**
  * A validation performed by package `validator`'s method `Var` to check that an expression is
  * alphanumeric (see `isAlphanumericValidationKind` for more information) sanitizes guarded uses
  * of the same variable.
  */
-class ValidatorVarCheck extends DataFlow::BarrierGuard, DataFlow::EqualityTestNode {
-  DataFlow::CallNode callToValidator;
-  boolean outcome;
-
-  ValidatorVarCheck() {
-    exists(Method validatorMethod, DataFlow::Node resultErr |
-      validatorMethod.hasQualifiedName("github.com/go-playground/validator", "Validate", "Var") and
-      callToValidator = validatorMethod.getACall() and
-      isAlphanumericValidationKind(callToValidator.getArgument(1).getStringValue()) and
-      resultErr = callToValidator.getResult().getASuccessor*() and
-      nilProperty().checkOn(this, outcome, resultErr)
-    )
-  }
-
-  override predicate checks(Expr e, boolean branch) {
-    callToValidator.getArgument(0).asExpr() = e and
-    branch = outcome
+class ValidatorVarCheckBarrier extends DataFlow::Node {
+  ValidatorVarCheckBarrier() {
+    this = DataFlow::BarrierGuard<validatorVarCheck/3>::getABarrierNode()
   }
 }

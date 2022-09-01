@@ -226,7 +226,8 @@ commands that you can specify for compiled languages.
 
 - Java project built using Gradle::
 
-     codeql database create java-database --language=java --command='gradle clean test'
+     # Use `--no-daemon` because a build delegated to an existing daemon cannot be detected by CodeQL:
+     codeql database create java-database --language=java --command='gradle --no-daemon clean test'
 
 - Java project built using Maven::
 

@@ -1,0 +1,29 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>CSV Injection, also known as Formula Injection, occurs when websites embed untrusted input inside CSV files.</p>
+<p>When a CSV format file is opened with a spreadsheet program such as Microsoft Excel or LibreOffice Calc. 
+this software interprets entries beginning with <code>=</code> as formulas, which may attempt information exfiltration  
+or other malicious activity when automatically executed by the spreadsheet software.</p>
+</overview>
+<recommendation>
+
+<p>When generating CSV output, ensure that formula-sensitive metacharacters are effectively escaped or removed from all data before storage in the resultant CSV.
+Risky characters include <code>=</code>(equal), <code>+</code>(plus), <code>-</code>(minus), and <code>@</code>(at).</p>
+
+</recommendation>
+<example>
+
+<p>The following examples show the bad case and the good case respectively.
+In <code>bad1</code> method, the data provided by the user is directly stored in the CSV file, which may be attacked. 
+But in the <code>good1</code> method, the program will check the data provided by the user, and process the data starting with <code>=</code>(equal), <code>+</code>(plus), <code>-</code>(minus), and <code>@</code>(at) characters safely.</p>
+
+<sample src="CsvInjection.py" />
+
+</example>
+<references>
+  <li>OWASP: <a href="https://owasp.org/www-community/attacks/CSV_Injection">CSV Injection</a>.</li>
+</references>
+</qhelp>

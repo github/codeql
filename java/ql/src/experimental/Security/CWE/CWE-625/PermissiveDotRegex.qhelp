@@ -1,0 +1,40 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>By default, "dot" (<code>.</code>) in regular expressions matches all characters except newline characters <code>\n</code> and
+<code>\r</code>. Regular expressions containing a dot can be bypassed with the characters \r(%0a) , \n(%0d) when the default regex
+matching implementations of Java are used. When regular expressions serve to match protected resource patterns to grant access
+to protected application resources, attackers can gain access to unauthorized paths.</p>
+</overview>
+
+<recommendation>
+<p>To guard against unauthorized access, it is advisable to properly specify regex patterns for validating user input. The Java
+Pattern Matcher API <code>Pattern.compile(PATTERN, Pattern.DOTALL)</code> with the <code>DOTALL</code> flag set can be adopted
+to address this vulnerability.</p>
+</recommendation>
+
+<example>
+<p>The following examples show the bad case and the good case respectively. The <code>bad</code> methods show a regex pattern allowing
+bypass. In the <code>good</code> methods, it is shown how to solve this problem by either specifying the regex pattern correctly or
+use the Java API that can detect new line characters. 
+</p>
+
+<sample src="DotRegex.java" />
+</example>
+
+<references>
+<li>Lay0us1:
+  <a href="https://github.com/Lay0us1/CVE-2022-32532">CVE 2022-22978: Authorization Bypass in RegexRequestMatcher</a>.
+</li>
+<li>Apache Shiro:
+  <a href="https://github.com/apache/shiro/commit/6bcb92e06fa588b9c7790dd01bc02135d58d3f5b">Address the RegexRequestMatcher issue in 1.9.1</a>.
+</li>
+<li>CVE-2022-32532:
+  <a href="https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-32532">Applications using RegExPatternMatcher with "." in the regular expression are possibly vulnerable to an authorization bypass</a>.
+</li>
+</references>
+
+</qhelp>

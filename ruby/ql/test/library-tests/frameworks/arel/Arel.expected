@@ -1,0 +1,3 @@
+failures
+#select
+| arel.rb:3:8:3:18 | call to sql | arel.rb:2:7:2:14 | call to source :  | arel.rb:3:8:3:18 | call to sql | $@ | arel.rb:2:7:2:14 | call to source :  | call to source :  |

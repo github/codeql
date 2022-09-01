@@ -7,6 +7,9 @@ import com.intellij.psi.PsiComment
 import com.intellij.psi.PsiElement
 import org.jetbrains.kotlin.ir.IrElement
 import org.jetbrains.kotlin.ir.declarations.*
+import org.jetbrains.kotlin.ir.expressions.IrBody
+import org.jetbrains.kotlin.ir.expressions.IrExpression
+import org.jetbrains.kotlin.ir.util.parentClassOrNull
 import org.jetbrains.kotlin.kdoc.psi.api.KDoc
 import org.jetbrains.kotlin.lexer.KtTokens
 import org.jetbrains.kotlin.psi.KtVisitor
@@ -16,7 +19,8 @@ import org.jetbrains.kotlin.psi.psiUtil.startOffset
 class CommentExtractor(private val fileExtractor: KotlinFileExtractor, private val file: IrFile, private val fileLabel: Label<out DbFile>) {
     private val tw = fileExtractor.tw
     private val logger = fileExtractor.logger
-    private val ktFile = Psi2Ir().getKtFile(file)
+    private val psi2Ir = Psi2Ir(logger)
+    private val ktFile = psi2Ir.getKtFile(file)
 
     fun extract() {
         if (ktFile == null) {
@@ -85,7 +89,7 @@ class CommentExtractor(private val fileExtractor: KotlinFileExtractor, private v
                 val ownerPsi = getKDocOwner(comment) ?: return
 
                 val owners = mutableListOf<IrElement>()
-                file.accept(IrVisitorLookup(ownerPsi, file), owners)
+                file.accept(IrVisitorLookup(psi2Ir, ownerPsi, file), owners)
 
                 for (ownerIr in owners) {
                     val ownerLabel =
@@ -101,7 +105,7 @@ class CommentExtractor(private val fileExtractor: KotlinFileExtractor, private v
                                 label = "variable ${ownerIr.name.asString()}"
                                 tw.getExistingVariableLabelFor(ownerIr)
                             } else {
-                                label = fileExtractor.getLabel(ownerIr) ?: continue
+                                label = getLabel(ownerIr) ?: continue
                                 tw.getExistingLabelFor<DbTop>(label)
                             }
                             if (existingLabel == null) {
@@ -117,9 +121,42 @@ class CommentExtractor(private val fileExtractor: KotlinFileExtractor, private v
             private fun getKDocOwner(comment: KDoc) : PsiElement? {
                 val owner = comment.owner
                 if (owner == null) {
-                    logger.warn("Couldn't get owner of KDoc.")
+                    logger.warn("Couldn't get owner of KDoc. The comment is extracted without an owner.")
                 }
                 return owner
             }
+
+            private fun getLabel(element: IrElement) : String? {
+                when (element) {
+                    is IrClass -> return fileExtractor.getClassLabel(element, listOf()).classLabel
+                    is IrTypeParameter -> return fileExtractor.getTypeParameterLabel(element)
+                    is IrFunction -> return fileExtractor.getFunctionLabel(element, null)
+                    is IrValueParameter -> return fileExtractor.getValueParameterLabel(element, null)
+                    is IrProperty -> return fileExtractor.getPropertyLabel(element)
+                    is IrField -> return fileExtractor.getFieldLabel(element)
+                    is IrEnumEntry -> return fileExtractor.getEnumEntryLabel(element)
+                    is IrTypeAlias -> return fileExtractor.getTypeAliasLabel(element)
+
+                    is IrAnonymousInitializer -> {
+                        val parentClass = element.parentClassOrNull
+                        if (parentClass == null) {
+                            logger.warnElement("Parent of anonymous initializer is not a class", element)
+                            return null
+                        }
+                        // Assign the comment to the class. The content of the `init` blocks might be extracted in multiple constructors.
+                        return getLabel(parentClass)
+                    }
+
+                    // Fresh entities:
+                    is IrBody -> return null
+                    is IrExpression -> return null
+
+                    // todo add others:
+                    else -> {
+                        logger.warnElement("Unhandled element type found during comment extraction: ${element::class}", element)
+                        return null
+                    }
+                }
         }
+    }
 }

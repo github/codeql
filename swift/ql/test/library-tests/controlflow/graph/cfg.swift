@@ -398,9 +398,68 @@ class Structors {
 
   deinit {
     field = 0
-  }  
+  }
 }
 
 func dictionaryLiteral(x: Int, y: Int) -> [String: Int] {
   return ["x": x, "y": y]
+}
+
+func localDeclarations() -> Int {
+  class MyLocalClass {
+    var x: Int
+    init() {
+      x = 10
+    }
+  }
+
+  struct MyLocalStruct {
+    var x: Int
+    init() {
+      x = 10
+    }
+  }
+
+  enum MyLocalEnum {
+    case A
+    case B
+  }
+
+  var myLocalVar : Int;
+
+  // Error: declaration is only valid at file scope
+  // extension Int {
+  //   func myExtensionMethod() -> Int {
+  //     return self
+  //   }
+  // }
+
+  // protocol 'MyProtocol' cannot be nested inside another declaration
+  //   protocol MyProtocol {
+  //     func myMethod()
+  //   }
+
+  return 0
+}
+
+struct B {
+  var x : Int
+}
+
+struct A {
+  var b : B
+  var bs : [B]
+  var mayB : B?
+}
+
+func test(a : A) {
+  var kpGet_b_x = \A.b.x
+  var kpGet_bs_0_x = \A.bs[0].x
+  var kpGet_mayB_force_x = \A.mayB!.x
+  var kpGet_mayB_x = \A.mayB?.x
+
+  var apply_kpGet_b_x = a[keyPath: kpGet_b_x]
+  var apply_kpGet_bs_0_x = a[keyPath: kpGet_bs_0_x]
+  var apply_kpGet_mayB_force_x = a[keyPath: kpGet_mayB_force_x]
+  var apply_kpGet_mayB_x = a[keyPath: kpGet_mayB_x]
 }

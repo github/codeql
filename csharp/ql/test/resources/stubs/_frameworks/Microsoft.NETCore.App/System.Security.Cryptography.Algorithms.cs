@@ -6,7 +6,7 @@ namespace System
     {
         namespace Cryptography
         {
-            // Generated from `System.Security.Cryptography.Aes` in `System.Security.Cryptography.Algorithms, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Security.Cryptography.Aes` in `System.Security.Cryptography.Algorithms, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public abstract class Aes : System.Security.Cryptography.SymmetricAlgorithm
             {
                 protected Aes() => throw null;
@@ -14,7 +14,7 @@ namespace System
                 public static System.Security.Cryptography.Aes Create(string algorithmName) => throw null;
             }
 
-            // Generated from `System.Security.Cryptography.AesCcm` in `System.Security.Cryptography.Algorithms, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Security.Cryptography.AesCcm` in `System.Security.Cryptography.Algorithms, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class AesCcm : System.IDisposable
             {
                 public AesCcm(System.Byte[] key) => throw null;
@@ -24,11 +24,12 @@ namespace System
                 public void Dispose() => throw null;
                 public void Encrypt(System.Byte[] nonce, System.Byte[] plaintext, System.Byte[] ciphertext, System.Byte[] tag, System.Byte[] associatedData = default(System.Byte[])) => throw null;
                 public void Encrypt(System.ReadOnlySpan<System.Byte> nonce, System.ReadOnlySpan<System.Byte> plaintext, System.Span<System.Byte> ciphertext, System.Span<System.Byte> tag, System.ReadOnlySpan<System.Byte> associatedData = default(System.ReadOnlySpan<System.Byte>)) => throw null;
+                public static bool IsSupported { get => throw null; }
                 public static System.Security.Cryptography.KeySizes NonceByteSizes { get => throw null; }
                 public static System.Security.Cryptography.KeySizes TagByteSizes { get => throw null; }
             }
 
-            // Generated from `System.Security.Cryptography.AesGcm` in `System.Security.Cryptography.Algorithms, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Security.Cryptography.AesGcm` in `System.Security.Cryptography.Algorithms, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class AesGcm : System.IDisposable
             {
                 public AesGcm(System.Byte[] key) => throw null;
@@ -38,11 +39,12 @@ namespace System
                 public void Dispose() => throw null;
                 public void Encrypt(System.Byte[] nonce, System.Byte[] plaintext, System.Byte[] ciphertext, System.Byte[] tag, System.Byte[] associatedData = default(System.Byte[])) => throw null;
                 public void Encrypt(System.ReadOnlySpan<System.Byte> nonce, System.ReadOnlySpan<System.Byte> plaintext, System.Span<System.Byte> ciphertext, System.Span<System.Byte> tag, System.ReadOnlySpan<System.Byte> associatedData = default(System.ReadOnlySpan<System.Byte>)) => throw null;
+                public static bool IsSupported { get => throw null; }
                 public static System.Security.Cryptography.KeySizes NonceByteSizes { get => throw null; }
                 public static System.Security.Cryptography.KeySizes TagByteSizes { get => throw null; }
             }
 
-            // Generated from `System.Security.Cryptography.AesManaged` in `System.Security.Cryptography.Algorithms, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Security.Cryptography.AesManaged` in `System.Security.Cryptography.Algorithms, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class AesManaged : System.Security.Cryptography.Aes
             {
                 public AesManaged() => throw null;
@@ -64,7 +66,7 @@ namespace System
                 public override System.Security.Cryptography.PaddingMode Padding { get => throw null; set => throw null; }
             }
 
-            // Generated from `System.Security.Cryptography.AsymmetricKeyExchangeDeformatter` in `System.Security.Cryptography.Algorithms, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Security.Cryptography.AsymmetricKeyExchangeDeformatter` in `System.Security.Cryptography.Algorithms, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public abstract class AsymmetricKeyExchangeDeformatter
             {
                 protected AsymmetricKeyExchangeDeformatter() => throw null;
@@ -73,7 +75,7 @@ namespace System
                 public abstract void SetKey(System.Security.Cryptography.AsymmetricAlgorithm key);
             }
 
-            // Generated from `System.Security.Cryptography.AsymmetricKeyExchangeFormatter` in `System.Security.Cryptography.Algorithms, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Security.Cryptography.AsymmetricKeyExchangeFormatter` in `System.Security.Cryptography.Algorithms, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public abstract class AsymmetricKeyExchangeFormatter
             {
                 protected AsymmetricKeyExchangeFormatter() => throw null;
@@ -83,7 +85,7 @@ namespace System
                 public abstract void SetKey(System.Security.Cryptography.AsymmetricAlgorithm key);
             }
 
-            // Generated from `System.Security.Cryptography.AsymmetricSignatureDeformatter` in `System.Security.Cryptography.Algorithms, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Security.Cryptography.AsymmetricSignatureDeformatter` in `System.Security.Cryptography.Algorithms, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public abstract class AsymmetricSignatureDeformatter
             {
                 protected AsymmetricSignatureDeformatter() => throw null;
@@ -93,7 +95,7 @@ namespace System
                 public virtual bool VerifySignature(System.Security.Cryptography.HashAlgorithm hash, System.Byte[] rgbSignature) => throw null;
             }
 
-            // Generated from `System.Security.Cryptography.AsymmetricSignatureFormatter` in `System.Security.Cryptography.Algorithms, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Security.Cryptography.AsymmetricSignatureFormatter` in `System.Security.Cryptography.Algorithms, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public abstract class AsymmetricSignatureFormatter
             {
                 protected AsymmetricSignatureFormatter() => throw null;
@@ -103,7 +105,20 @@ namespace System
                 public abstract void SetKey(System.Security.Cryptography.AsymmetricAlgorithm key);
             }
 
-            // Generated from `System.Security.Cryptography.CryptoConfig` in `System.Security.Cryptography.Algorithms, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Security.Cryptography.ChaCha20Poly1305` in `System.Security.Cryptography.Algorithms, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            public class ChaCha20Poly1305 : System.IDisposable
+            {
+                public ChaCha20Poly1305(System.Byte[] key) => throw null;
+                public ChaCha20Poly1305(System.ReadOnlySpan<System.Byte> key) => throw null;
+                public void Decrypt(System.Byte[] nonce, System.Byte[] ciphertext, System.Byte[] tag, System.Byte[] plaintext, System.Byte[] associatedData = default(System.Byte[])) => throw null;
+                public void Decrypt(System.ReadOnlySpan<System.Byte> nonce, System.ReadOnlySpan<System.Byte> ciphertext, System.ReadOnlySpan<System.Byte> tag, System.Span<System.Byte> plaintext, System.ReadOnlySpan<System.Byte> associatedData = default(System.ReadOnlySpan<System.Byte>)) => throw null;
+                public void Dispose() => throw null;
+                public void Encrypt(System.Byte[] nonce, System.Byte[] plaintext, System.Byte[] ciphertext, System.Byte[] tag, System.Byte[] associatedData = default(System.Byte[])) => throw null;
+                public void Encrypt(System.ReadOnlySpan<System.Byte> nonce, System.ReadOnlySpan<System.Byte> plaintext, System.Span<System.Byte> ciphertext, System.Span<System.Byte> tag, System.ReadOnlySpan<System.Byte> associatedData = default(System.ReadOnlySpan<System.Byte>)) => throw null;
+                public static bool IsSupported { get => throw null; }
+            }
+
+            // Generated from `System.Security.Cryptography.CryptoConfig` in `System.Security.Cryptography.Algorithms, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class CryptoConfig
             {
                 public static void AddAlgorithm(System.Type algorithm, params string[] names) => throw null;
@@ -116,7 +131,7 @@ namespace System
                 public static string MapNameToOID(string name) => throw null;
             }
 
-            // Generated from `System.Security.Cryptography.DES` in `System.Security.Cryptography.Algorithms, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Security.Cryptography.DES` in `System.Security.Cryptography.Algorithms, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public abstract class DES : System.Security.Cryptography.SymmetricAlgorithm
             {
                 public static System.Security.Cryptography.DES Create() => throw null;
@@ -127,7 +142,7 @@ namespace System
                 public override System.Byte[] Key { get => throw null; set => throw null; }
             }
 
-            // Generated from `System.Security.Cryptography.DSA` in `System.Security.Cryptography.Algorithms, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Security.Cryptography.DSA` in `System.Security.Cryptography.Algorithms, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public abstract class DSA : System.Security.Cryptography.AsymmetricAlgorithm
             {
                 public static System.Security.Cryptography.DSA Create() => throw null;
@@ -188,7 +203,7 @@ namespace System
                 protected virtual bool VerifySignatureCore(System.ReadOnlySpan<System.Byte> hash, System.ReadOnlySpan<System.Byte> signature, System.Security.Cryptography.DSASignatureFormat signatureFormat) => throw null;
             }
 
-            // Generated from `System.Security.Cryptography.DSAParameters` in `System.Security.Cryptography.Algorithms, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Security.Cryptography.DSAParameters` in `System.Security.Cryptography.Algorithms, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct DSAParameters
             {
                 public int Counter;
@@ -202,7 +217,7 @@ namespace System
                 public System.Byte[] Y;
             }
 
-            // Generated from `System.Security.Cryptography.DSASignatureDeformatter` in `System.Security.Cryptography.Algorithms, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Security.Cryptography.DSASignatureDeformatter` in `System.Security.Cryptography.Algorithms, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class DSASignatureDeformatter : System.Security.Cryptography.AsymmetricSignatureDeformatter
             {
                 public DSASignatureDeformatter() => throw null;
@@ -212,14 +227,14 @@ namespace System
                 public override bool VerifySignature(System.Byte[] rgbHash, System.Byte[] rgbSignature) => throw null;
             }
 
-            // Generated from `System.Security.Cryptography.DSASignatureFormat` in `System.Security.Cryptography.Algorithms, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum DSASignatureFormat
+            // Generated from `System.Security.Cryptography.DSASignatureFormat` in `System.Security.Cryptography.Algorithms, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            public enum DSASignatureFormat : int
             {
-                IeeeP1363FixedFieldConcatenation,
-                Rfc3279DerSequence,
+                IeeeP1363FixedFieldConcatenation = 0,
+                Rfc3279DerSequence = 1,
             }
 
-            // Generated from `System.Security.Cryptography.DSASignatureFormatter` in `System.Security.Cryptography.Algorithms, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Security.Cryptography.DSASignatureFormatter` in `System.Security.Cryptography.Algorithms, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class DSASignatureFormatter : System.Security.Cryptography.AsymmetricSignatureFormatter
             {
                 public override System.Byte[] CreateSignature(System.Byte[] rgbHash) => throw null;
@@ -229,7 +244,7 @@ namespace System
                 public override void SetKey(System.Security.Cryptography.AsymmetricAlgorithm key) => throw null;
             }
 
-            // Generated from `System.Security.Cryptography.DeriveBytes` in `System.Security.Cryptography.Algorithms, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Security.Cryptography.DeriveBytes` in `System.Security.Cryptography.Algorithms, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public abstract class DeriveBytes : System.IDisposable
             {
                 protected DeriveBytes() => throw null;
@@ -239,22 +254,22 @@ namespace System
                 public abstract void Reset();
             }
 
-            // Generated from `System.Security.Cryptography.ECCurve` in `System.Security.Cryptography.Algorithms, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Security.Cryptography.ECCurve` in `System.Security.Cryptography.Algorithms, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct ECCurve
             {
-                // Generated from `System.Security.Cryptography.ECCurve+ECCurveType` in `System.Security.Cryptography.Algorithms, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-                public enum ECCurveType
+                // Generated from `System.Security.Cryptography.ECCurve+ECCurveType` in `System.Security.Cryptography.Algorithms, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+                public enum ECCurveType : int
                 {
-                    Characteristic2,
-                    Implicit,
-                    Named,
-                    PrimeMontgomery,
-                    PrimeShortWeierstrass,
-                    PrimeTwistedEdwards,
+                    Characteristic2 = 4,
+                    Implicit = 0,
+                    Named = 5,
+                    PrimeMontgomery = 3,
+                    PrimeShortWeierstrass = 1,
+                    PrimeTwistedEdwards = 2,
                 }
 
 
-                // Generated from `System.Security.Cryptography.ECCurve+NamedCurves` in `System.Security.Cryptography.Algorithms, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+                // Generated from `System.Security.Cryptography.ECCurve+NamedCurves` in `System.Security.Cryptography.Algorithms, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public static class NamedCurves
                 {
                     public static System.Security.Cryptography.ECCurve brainpoolP160r1 { get => throw null; }
@@ -299,7 +314,7 @@ namespace System
                 public void Validate() => throw null;
             }
 
-            // Generated from `System.Security.Cryptography.ECDiffieHellman` in `System.Security.Cryptography.Algorithms, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Security.Cryptography.ECDiffieHellman` in `System.Security.Cryptography.Algorithms, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public abstract class ECDiffieHellman : System.Security.Cryptography.AsymmetricAlgorithm
             {
                 public static System.Security.Cryptography.ECDiffieHellman Create() => throw null;
@@ -338,7 +353,7 @@ namespace System
                 public override bool TryExportSubjectPublicKeyInfo(System.Span<System.Byte> destination, out int bytesWritten) => throw null;
             }
 
-            // Generated from `System.Security.Cryptography.ECDiffieHellmanPublicKey` in `System.Security.Cryptography.Algorithms, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Security.Cryptography.ECDiffieHellmanPublicKey` in `System.Security.Cryptography.Algorithms, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public abstract class ECDiffieHellmanPublicKey : System.IDisposable
             {
                 public void Dispose() => throw null;
@@ -347,11 +362,13 @@ namespace System
                 protected ECDiffieHellmanPublicKey(System.Byte[] keyBlob) => throw null;
                 public virtual System.Security.Cryptography.ECParameters ExportExplicitParameters() => throw null;
                 public virtual System.Security.Cryptography.ECParameters ExportParameters() => throw null;
+                public virtual System.Byte[] ExportSubjectPublicKeyInfo() => throw null;
                 public virtual System.Byte[] ToByteArray() => throw null;
                 public virtual string ToXmlString() => throw null;
+                public virtual bool TryExportSubjectPublicKeyInfo(System.Span<System.Byte> destination, out int bytesWritten) => throw null;
             }
 
-            // Generated from `System.Security.Cryptography.ECDsa` in `System.Security.Cryptography.Algorithms, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Security.Cryptography.ECDsa` in `System.Security.Cryptography.Algorithms, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public abstract class ECDsa : System.Security.Cryptography.AsymmetricAlgorithm
             {
                 public static System.Security.Cryptography.ECDsa Create() => throw null;
@@ -419,7 +436,7 @@ namespace System
                 protected virtual bool VerifyHashCore(System.ReadOnlySpan<System.Byte> hash, System.ReadOnlySpan<System.Byte> signature, System.Security.Cryptography.DSASignatureFormat signatureFormat) => throw null;
             }
 
-            // Generated from `System.Security.Cryptography.ECParameters` in `System.Security.Cryptography.Algorithms, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Security.Cryptography.ECParameters` in `System.Security.Cryptography.Algorithms, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct ECParameters
             {
                 public System.Security.Cryptography.ECCurve Curve;
@@ -429,7 +446,7 @@ namespace System
                 public void Validate() => throw null;
             }
 
-            // Generated from `System.Security.Cryptography.ECPoint` in `System.Security.Cryptography.Algorithms, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Security.Cryptography.ECPoint` in `System.Security.Cryptography.Algorithms, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct ECPoint
             {
                 // Stub generator skipped constructor 
@@ -437,7 +454,7 @@ namespace System
                 public System.Byte[] Y;
             }
 
-            // Generated from `System.Security.Cryptography.HKDF` in `System.Security.Cryptography.Algorithms, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Security.Cryptography.HKDF` in `System.Security.Cryptography.Algorithms, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public static class HKDF
             {
                 public static System.Byte[] DeriveKey(System.Security.Cryptography.HashAlgorithmName hashAlgorithmName, System.Byte[] ikm, int outputLength, System.Byte[] salt = default(System.Byte[]), System.Byte[] info = default(System.Byte[])) => throw null;
@@ -448,7 +465,7 @@ namespace System
                 public static int Extract(System.Security.Cryptography.HashAlgorithmName hashAlgorithmName, System.ReadOnlySpan<System.Byte> ikm, System.ReadOnlySpan<System.Byte> salt, System.Span<System.Byte> prk) => throw null;
             }
 
-            // Generated from `System.Security.Cryptography.HMACMD5` in `System.Security.Cryptography.Algorithms, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Security.Cryptography.HMACMD5` in `System.Security.Cryptography.Algorithms, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class HMACMD5 : System.Security.Cryptography.HMAC
             {
                 protected override void Dispose(bool disposing) => throw null;
@@ -456,13 +473,17 @@ namespace System
                 public HMACMD5(System.Byte[] key) => throw null;
                 protected override void HashCore(System.Byte[] rgb, int ib, int cb) => throw null;
                 protected override void HashCore(System.ReadOnlySpan<System.Byte> source) => throw null;
+                public static System.Byte[] HashData(System.Byte[] key, System.Byte[] source) => throw null;
+                public static System.Byte[] HashData(System.ReadOnlySpan<System.Byte> key, System.ReadOnlySpan<System.Byte> source) => throw null;
+                public static int HashData(System.ReadOnlySpan<System.Byte> key, System.ReadOnlySpan<System.Byte> source, System.Span<System.Byte> destination) => throw null;
                 protected override System.Byte[] HashFinal() => throw null;
                 public override void Initialize() => throw null;
                 public override System.Byte[] Key { get => throw null; set => throw null; }
+                public static bool TryHashData(System.ReadOnlySpan<System.Byte> key, System.ReadOnlySpan<System.Byte> source, System.Span<System.Byte> destination, out int bytesWritten) => throw null;
                 protected override bool TryHashFinal(System.Span<System.Byte> destination, out int bytesWritten) => throw null;
             }
 
-            // Generated from `System.Security.Cryptography.HMACSHA1` in `System.Security.Cryptography.Algorithms, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Security.Cryptography.HMACSHA1` in `System.Security.Cryptography.Algorithms, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class HMACSHA1 : System.Security.Cryptography.HMAC
             {
                 protected override void Dispose(bool disposing) => throw null;
@@ -471,13 +492,17 @@ namespace System
                 public HMACSHA1(System.Byte[] key, bool useManagedSha1) => throw null;
                 protected override void HashCore(System.Byte[] rgb, int ib, int cb) => throw null;
                 protected override void HashCore(System.ReadOnlySpan<System.Byte> source) => throw null;
+                public static System.Byte[] HashData(System.Byte[] key, System.Byte[] source) => throw null;
+                public static System.Byte[] HashData(System.ReadOnlySpan<System.Byte> key, System.ReadOnlySpan<System.Byte> source) => throw null;
+                public static int HashData(System.ReadOnlySpan<System.Byte> key, System.ReadOnlySpan<System.Byte> source, System.Span<System.Byte> destination) => throw null;
                 protected override System.Byte[] HashFinal() => throw null;
                 public override void Initialize() => throw null;
                 public override System.Byte[] Key { get => throw null; set => throw null; }
+                public static bool TryHashData(System.ReadOnlySpan<System.Byte> key, System.ReadOnlySpan<System.Byte> source, System.Span<System.Byte> destination, out int bytesWritten) => throw null;
                 protected override bool TryHashFinal(System.Span<System.Byte> destination, out int bytesWritten) => throw null;
             }
 
-            // Generated from `System.Security.Cryptography.HMACSHA256` in `System.Security.Cryptography.Algorithms, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Security.Cryptography.HMACSHA256` in `System.Security.Cryptography.Algorithms, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class HMACSHA256 : System.Security.Cryptography.HMAC
             {
                 protected override void Dispose(bool disposing) => throw null;
@@ -485,13 +510,17 @@ namespace System
                 public HMACSHA256(System.Byte[] key) => throw null;
                 protected override void HashCore(System.Byte[] rgb, int ib, int cb) => throw null;
                 protected override void HashCore(System.ReadOnlySpan<System.Byte> source) => throw null;
+                public static System.Byte[] HashData(System.Byte[] key, System.Byte[] source) => throw null;
+                public static System.Byte[] HashData(System.ReadOnlySpan<System.Byte> key, System.ReadOnlySpan<System.Byte> source) => throw null;
+                public static int HashData(System.ReadOnlySpan<System.Byte> key, System.ReadOnlySpan<System.Byte> source, System.Span<System.Byte> destination) => throw null;
                 protected override System.Byte[] HashFinal() => throw null;
                 public override void Initialize() => throw null;
                 public override System.Byte[] Key { get => throw null; set => throw null; }
+                public static bool TryHashData(System.ReadOnlySpan<System.Byte> key, System.ReadOnlySpan<System.Byte> source, System.Span<System.Byte> destination, out int bytesWritten) => throw null;
                 protected override bool TryHashFinal(System.Span<System.Byte> destination, out int bytesWritten) => throw null;
             }
 
-            // Generated from `System.Security.Cryptography.HMACSHA384` in `System.Security.Cryptography.Algorithms, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Security.Cryptography.HMACSHA384` in `System.Security.Cryptography.Algorithms, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class HMACSHA384 : System.Security.Cryptography.HMAC
             {
                 protected override void Dispose(bool disposing) => throw null;
@@ -499,14 +528,18 @@ namespace System
                 public HMACSHA384(System.Byte[] key) => throw null;
                 protected override void HashCore(System.Byte[] rgb, int ib, int cb) => throw null;
                 protected override void HashCore(System.ReadOnlySpan<System.Byte> source) => throw null;
+                public static System.Byte[] HashData(System.Byte[] key, System.Byte[] source) => throw null;
+                public static System.Byte[] HashData(System.ReadOnlySpan<System.Byte> key, System.ReadOnlySpan<System.Byte> source) => throw null;
+                public static int HashData(System.ReadOnlySpan<System.Byte> key, System.ReadOnlySpan<System.Byte> source, System.Span<System.Byte> destination) => throw null;
                 protected override System.Byte[] HashFinal() => throw null;
                 public override void Initialize() => throw null;
                 public override System.Byte[] Key { get => throw null; set => throw null; }
                 public bool ProduceLegacyHmacValues { get => throw null; set => throw null; }
+                public static bool TryHashData(System.ReadOnlySpan<System.Byte> key, System.ReadOnlySpan<System.Byte> source, System.Span<System.Byte> destination, out int bytesWritten) => throw null;
                 protected override bool TryHashFinal(System.Span<System.Byte> destination, out int bytesWritten) => throw null;
             }
 
-            // Generated from `System.Security.Cryptography.HMACSHA512` in `System.Security.Cryptography.Algorithms, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Security.Cryptography.HMACSHA512` in `System.Security.Cryptography.Algorithms, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class HMACSHA512 : System.Security.Cryptography.HMAC
             {
                 protected override void Dispose(bool disposing) => throw null;
@@ -514,14 +547,18 @@ namespace System
                 public HMACSHA512(System.Byte[] key) => throw null;
                 protected override void HashCore(System.Byte[] rgb, int ib, int cb) => throw null;
                 protected override void HashCore(System.ReadOnlySpan<System.Byte> source) => throw null;
+                public static System.Byte[] HashData(System.Byte[] key, System.Byte[] source) => throw null;
+                public static System.Byte[] HashData(System.ReadOnlySpan<System.Byte> key, System.ReadOnlySpan<System.Byte> source) => throw null;
+                public static int HashData(System.ReadOnlySpan<System.Byte> key, System.ReadOnlySpan<System.Byte> source, System.Span<System.Byte> destination) => throw null;
                 protected override System.Byte[] HashFinal() => throw null;
                 public override void Initialize() => throw null;
                 public override System.Byte[] Key { get => throw null; set => throw null; }
                 public bool ProduceLegacyHmacValues { get => throw null; set => throw null; }
+                public static bool TryHashData(System.ReadOnlySpan<System.Byte> key, System.ReadOnlySpan<System.Byte> source, System.Span<System.Byte> destination, out int bytesWritten) => throw null;
                 protected override bool TryHashFinal(System.Span<System.Byte> destination, out int bytesWritten) => throw null;
             }
 
-            // Generated from `System.Security.Cryptography.IncrementalHash` in `System.Security.Cryptography.Algorithms, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Security.Cryptography.IncrementalHash` in `System.Security.Cryptography.Algorithms, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class IncrementalHash : System.IDisposable
             {
                 public System.Security.Cryptography.HashAlgorithmName AlgorithmName { get => throw null; }
@@ -541,7 +578,7 @@ namespace System
                 public bool TryGetHashAndReset(System.Span<System.Byte> destination, out int bytesWritten) => throw null;
             }
 
-            // Generated from `System.Security.Cryptography.MD5` in `System.Security.Cryptography.Algorithms, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Security.Cryptography.MD5` in `System.Security.Cryptography.Algorithms, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public abstract class MD5 : System.Security.Cryptography.HashAlgorithm
             {
                 public static System.Security.Cryptography.MD5 Create() => throw null;
@@ -553,14 +590,14 @@ namespace System
                 public static bool TryHashData(System.ReadOnlySpan<System.Byte> source, System.Span<System.Byte> destination, out int bytesWritten) => throw null;
             }
 
-            // Generated from `System.Security.Cryptography.MaskGenerationMethod` in `System.Security.Cryptography.Algorithms, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Security.Cryptography.MaskGenerationMethod` in `System.Security.Cryptography.Algorithms, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public abstract class MaskGenerationMethod
             {
                 public abstract System.Byte[] GenerateMask(System.Byte[] rgbSeed, int cbReturn);
                 protected MaskGenerationMethod() => throw null;
             }
 
-            // Generated from `System.Security.Cryptography.PKCS1MaskGenerationMethod` in `System.Security.Cryptography.Algorithms, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Security.Cryptography.PKCS1MaskGenerationMethod` in `System.Security.Cryptography.Algorithms, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class PKCS1MaskGenerationMethod : System.Security.Cryptography.MaskGenerationMethod
             {
                 public override System.Byte[] GenerateMask(System.Byte[] rgbSeed, int cbReturn) => throw null;
@@ -568,7 +605,7 @@ namespace System
                 public PKCS1MaskGenerationMethod() => throw null;
             }
 
-            // Generated from `System.Security.Cryptography.RC2` in `System.Security.Cryptography.Algorithms, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Security.Cryptography.RC2` in `System.Security.Cryptography.Algorithms, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public abstract class RC2 : System.Security.Cryptography.SymmetricAlgorithm
             {
                 public static System.Security.Cryptography.RC2 Create() => throw null;
@@ -579,7 +616,7 @@ namespace System
                 protected RC2() => throw null;
             }
 
-            // Generated from `System.Security.Cryptography.RSA` in `System.Security.Cryptography.Algorithms, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Security.Cryptography.RSA` in `System.Security.Cryptography.Algorithms, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public abstract class RSA : System.Security.Cryptography.AsymmetricAlgorithm
             {
                 public static System.Security.Cryptography.RSA Create() => throw null;
@@ -633,7 +670,7 @@ namespace System
                 public virtual bool VerifyHash(System.ReadOnlySpan<System.Byte> hash, System.ReadOnlySpan<System.Byte> signature, System.Security.Cryptography.HashAlgorithmName hashAlgorithm, System.Security.Cryptography.RSASignaturePadding padding) => throw null;
             }
 
-            // Generated from `System.Security.Cryptography.RSAEncryptionPadding` in `System.Security.Cryptography.Algorithms, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Security.Cryptography.RSAEncryptionPadding` in `System.Security.Cryptography.Algorithms, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class RSAEncryptionPadding : System.IEquatable<System.Security.Cryptography.RSAEncryptionPadding>
             {
                 public static bool operator !=(System.Security.Cryptography.RSAEncryptionPadding left, System.Security.Cryptography.RSAEncryptionPadding right) => throw null;
@@ -652,14 +689,14 @@ namespace System
                 public override string ToString() => throw null;
             }
 
-            // Generated from `System.Security.Cryptography.RSAEncryptionPaddingMode` in `System.Security.Cryptography.Algorithms, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum RSAEncryptionPaddingMode
+            // Generated from `System.Security.Cryptography.RSAEncryptionPaddingMode` in `System.Security.Cryptography.Algorithms, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            public enum RSAEncryptionPaddingMode : int
             {
-                Oaep,
-                Pkcs1,
+                Oaep = 1,
+                Pkcs1 = 0,
             }
 
-            // Generated from `System.Security.Cryptography.RSAOAEPKeyExchangeDeformatter` in `System.Security.Cryptography.Algorithms, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Security.Cryptography.RSAOAEPKeyExchangeDeformatter` in `System.Security.Cryptography.Algorithms, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class RSAOAEPKeyExchangeDeformatter : System.Security.Cryptography.AsymmetricKeyExchangeDeformatter
             {
                 public override System.Byte[] DecryptKeyExchange(System.Byte[] rgbData) => throw null;
@@ -669,7 +706,7 @@ namespace System
                 public override void SetKey(System.Security.Cryptography.AsymmetricAlgorithm key) => throw null;
             }
 
-            // Generated from `System.Security.Cryptography.RSAOAEPKeyExchangeFormatter` in `System.Security.Cryptography.Algorithms, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Security.Cryptography.RSAOAEPKeyExchangeFormatter` in `System.Security.Cryptography.Algorithms, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class RSAOAEPKeyExchangeFormatter : System.Security.Cryptography.AsymmetricKeyExchangeFormatter
             {
                 public override System.Byte[] CreateKeyExchange(System.Byte[] rgbData) => throw null;
@@ -682,7 +719,7 @@ namespace System
                 public override void SetKey(System.Security.Cryptography.AsymmetricAlgorithm key) => throw null;
             }
 
-            // Generated from `System.Security.Cryptography.RSAPKCS1KeyExchangeDeformatter` in `System.Security.Cryptography.Algorithms, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Security.Cryptography.RSAPKCS1KeyExchangeDeformatter` in `System.Security.Cryptography.Algorithms, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class RSAPKCS1KeyExchangeDeformatter : System.Security.Cryptography.AsymmetricKeyExchangeDeformatter
             {
                 public override System.Byte[] DecryptKeyExchange(System.Byte[] rgbIn) => throw null;
@@ -693,7 +730,7 @@ namespace System
                 public override void SetKey(System.Security.Cryptography.AsymmetricAlgorithm key) => throw null;
             }
 
-            // Generated from `System.Security.Cryptography.RSAPKCS1KeyExchangeFormatter` in `System.Security.Cryptography.Algorithms, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Security.Cryptography.RSAPKCS1KeyExchangeFormatter` in `System.Security.Cryptography.Algorithms, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class RSAPKCS1KeyExchangeFormatter : System.Security.Cryptography.AsymmetricKeyExchangeFormatter
             {
                 public override System.Byte[] CreateKeyExchange(System.Byte[] rgbData) => throw null;
@@ -705,7 +742,7 @@ namespace System
                 public override void SetKey(System.Security.Cryptography.AsymmetricAlgorithm key) => throw null;
             }
 
-            // Generated from `System.Security.Cryptography.RSAPKCS1SignatureDeformatter` in `System.Security.Cryptography.Algorithms, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Security.Cryptography.RSAPKCS1SignatureDeformatter` in `System.Security.Cryptography.Algorithms, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class RSAPKCS1SignatureDeformatter : System.Security.Cryptography.AsymmetricSignatureDeformatter
             {
                 public RSAPKCS1SignatureDeformatter() => throw null;
@@ -715,7 +752,7 @@ namespace System
                 public override bool VerifySignature(System.Byte[] rgbHash, System.Byte[] rgbSignature) => throw null;
             }
 
-            // Generated from `System.Security.Cryptography.RSAPKCS1SignatureFormatter` in `System.Security.Cryptography.Algorithms, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Security.Cryptography.RSAPKCS1SignatureFormatter` in `System.Security.Cryptography.Algorithms, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class RSAPKCS1SignatureFormatter : System.Security.Cryptography.AsymmetricSignatureFormatter
             {
                 public override System.Byte[] CreateSignature(System.Byte[] rgbHash) => throw null;
@@ -725,7 +762,7 @@ namespace System
                 public override void SetKey(System.Security.Cryptography.AsymmetricAlgorithm key) => throw null;
             }
 
-            // Generated from `System.Security.Cryptography.RSAParameters` in `System.Security.Cryptography.Algorithms, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Security.Cryptography.RSAParameters` in `System.Security.Cryptography.Algorithms, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct RSAParameters
             {
                 public System.Byte[] D;
@@ -739,7 +776,7 @@ namespace System
                 // Stub generator skipped constructor 
             }
 
-            // Generated from `System.Security.Cryptography.RSASignaturePadding` in `System.Security.Cryptography.Algorithms, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Security.Cryptography.RSASignaturePadding` in `System.Security.Cryptography.Algorithms, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class RSASignaturePadding : System.IEquatable<System.Security.Cryptography.RSASignaturePadding>
             {
                 public static bool operator !=(System.Security.Cryptography.RSASignaturePadding left, System.Security.Cryptography.RSASignaturePadding right) => throw null;
@@ -753,14 +790,14 @@ namespace System
                 public override string ToString() => throw null;
             }
 
-            // Generated from `System.Security.Cryptography.RSASignaturePaddingMode` in `System.Security.Cryptography.Algorithms, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum RSASignaturePaddingMode
+            // Generated from `System.Security.Cryptography.RSASignaturePaddingMode` in `System.Security.Cryptography.Algorithms, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            public enum RSASignaturePaddingMode : int
             {
-                Pkcs1,
-                Pss,
+                Pkcs1 = 0,
+                Pss = 1,
             }
 
-            // Generated from `System.Security.Cryptography.RandomNumberGenerator` in `System.Security.Cryptography.Algorithms, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Security.Cryptography.RandomNumberGenerator` in `System.Security.Cryptography.Algorithms, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public abstract class RandomNumberGenerator : System.IDisposable
             {
                 public static System.Security.Cryptography.RandomNumberGenerator Create() => throw null;
@@ -771,6 +808,7 @@ namespace System
                 public abstract void GetBytes(System.Byte[] data);
                 public virtual void GetBytes(System.Byte[] data, int offset, int count) => throw null;
                 public virtual void GetBytes(System.Span<System.Byte> data) => throw null;
+                public static System.Byte[] GetBytes(int count) => throw null;
                 public static int GetInt32(int toExclusive) => throw null;
                 public static int GetInt32(int fromInclusive, int toExclusive) => throw null;
                 public virtual void GetNonZeroBytes(System.Byte[] data) => throw null;
@@ -778,7 +816,7 @@ namespace System
                 protected RandomNumberGenerator() => throw null;
             }
 
-            // Generated from `System.Security.Cryptography.Rfc2898DeriveBytes` in `System.Security.Cryptography.Algorithms, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Security.Cryptography.Rfc2898DeriveBytes` in `System.Security.Cryptography.Algorithms, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class Rfc2898DeriveBytes : System.Security.Cryptography.DeriveBytes
             {
                 public System.Byte[] CryptDeriveKey(string algname, string alghashname, int keySize, System.Byte[] rgbIV) => throw null;
@@ -786,6 +824,12 @@ namespace System
                 public override System.Byte[] GetBytes(int cb) => throw null;
                 public System.Security.Cryptography.HashAlgorithmName HashAlgorithm { get => throw null; }
                 public int IterationCount { get => throw null; set => throw null; }
+                public static System.Byte[] Pbkdf2(System.Byte[] password, System.Byte[] salt, int iterations, System.Security.Cryptography.HashAlgorithmName hashAlgorithm, int outputLength) => throw null;
+                public static void Pbkdf2(System.ReadOnlySpan<System.Byte> password, System.ReadOnlySpan<System.Byte> salt, System.Span<System.Byte> destination, int iterations, System.Security.Cryptography.HashAlgorithmName hashAlgorithm) => throw null;
+                public static System.Byte[] Pbkdf2(System.ReadOnlySpan<System.Byte> password, System.ReadOnlySpan<System.Byte> salt, int iterations, System.Security.Cryptography.HashAlgorithmName hashAlgorithm, int outputLength) => throw null;
+                public static void Pbkdf2(System.ReadOnlySpan<System.Char> password, System.ReadOnlySpan<System.Byte> salt, System.Span<System.Byte> destination, int iterations, System.Security.Cryptography.HashAlgorithmName hashAlgorithm) => throw null;
+                public static System.Byte[] Pbkdf2(System.ReadOnlySpan<System.Char> password, System.ReadOnlySpan<System.Byte> salt, int iterations, System.Security.Cryptography.HashAlgorithmName hashAlgorithm, int outputLength) => throw null;
+                public static System.Byte[] Pbkdf2(string password, System.Byte[] salt, int iterations, System.Security.Cryptography.HashAlgorithmName hashAlgorithm, int outputLength) => throw null;
                 public override void Reset() => throw null;
                 public Rfc2898DeriveBytes(System.Byte[] password, System.Byte[] salt, int iterations) => throw null;
                 public Rfc2898DeriveBytes(System.Byte[] password, System.Byte[] salt, int iterations, System.Security.Cryptography.HashAlgorithmName hashAlgorithm) => throw null;
@@ -798,7 +842,7 @@ namespace System
                 public System.Byte[] Salt { get => throw null; set => throw null; }
             }
 
-            // Generated from `System.Security.Cryptography.Rijndael` in `System.Security.Cryptography.Algorithms, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Security.Cryptography.Rijndael` in `System.Security.Cryptography.Algorithms, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public abstract class Rijndael : System.Security.Cryptography.SymmetricAlgorithm
             {
                 public static System.Security.Cryptography.Rijndael Create() => throw null;
@@ -806,7 +850,7 @@ namespace System
                 protected Rijndael() => throw null;
             }
 
-            // Generated from `System.Security.Cryptography.RijndaelManaged` in `System.Security.Cryptography.Algorithms, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Security.Cryptography.RijndaelManaged` in `System.Security.Cryptography.Algorithms, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class RijndaelManaged : System.Security.Cryptography.Rijndael
             {
                 public override int BlockSize { get => throw null; set => throw null; }
@@ -815,6 +859,7 @@ namespace System
                 public override System.Security.Cryptography.ICryptoTransform CreateEncryptor() => throw null;
                 public override System.Security.Cryptography.ICryptoTransform CreateEncryptor(System.Byte[] rgbKey, System.Byte[] rgbIV) => throw null;
                 protected override void Dispose(bool disposing) => throw null;
+                public override int FeedbackSize { get => throw null; set => throw null; }
                 public override void GenerateIV() => throw null;
                 public override void GenerateKey() => throw null;
                 public override System.Byte[] IV { get => throw null; set => throw null; }
@@ -826,7 +871,7 @@ namespace System
                 public RijndaelManaged() => throw null;
             }
 
-            // Generated from `System.Security.Cryptography.SHA1` in `System.Security.Cryptography.Algorithms, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Security.Cryptography.SHA1` in `System.Security.Cryptography.Algorithms, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public abstract class SHA1 : System.Security.Cryptography.HashAlgorithm
             {
                 public static System.Security.Cryptography.SHA1 Create() => throw null;
@@ -838,7 +883,7 @@ namespace System
                 public static bool TryHashData(System.ReadOnlySpan<System.Byte> source, System.Span<System.Byte> destination, out int bytesWritten) => throw null;
             }
 
-            // Generated from `System.Security.Cryptography.SHA1Managed` in `System.Security.Cryptography.Algorithms, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Security.Cryptography.SHA1Managed` in `System.Security.Cryptography.Algorithms, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class SHA1Managed : System.Security.Cryptography.SHA1
             {
                 protected override void Dispose(bool disposing) => throw null;
@@ -850,7 +895,7 @@ namespace System
                 protected override bool TryHashFinal(System.Span<System.Byte> destination, out int bytesWritten) => throw null;
             }
 
-            // Generated from `System.Security.Cryptography.SHA256` in `System.Security.Cryptography.Algorithms, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Security.Cryptography.SHA256` in `System.Security.Cryptography.Algorithms, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public abstract class SHA256 : System.Security.Cryptography.HashAlgorithm
             {
                 public static System.Security.Cryptography.SHA256 Create() => throw null;
@@ -862,7 +907,7 @@ namespace System
                 public static bool TryHashData(System.ReadOnlySpan<System.Byte> source, System.Span<System.Byte> destination, out int bytesWritten) => throw null;
             }
 
-            // Generated from `System.Security.Cryptography.SHA256Managed` in `System.Security.Cryptography.Algorithms, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Security.Cryptography.SHA256Managed` in `System.Security.Cryptography.Algorithms, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class SHA256Managed : System.Security.Cryptography.SHA256
             {
                 protected override void Dispose(bool disposing) => throw null;
@@ -874,7 +919,7 @@ namespace System
                 protected override bool TryHashFinal(System.Span<System.Byte> destination, out int bytesWritten) => throw null;
             }
 
-            // Generated from `System.Security.Cryptography.SHA384` in `System.Security.Cryptography.Algorithms, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Security.Cryptography.SHA384` in `System.Security.Cryptography.Algorithms, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public abstract class SHA384 : System.Security.Cryptography.HashAlgorithm
             {
                 public static System.Security.Cryptography.SHA384 Create() => throw null;
@@ -886,7 +931,7 @@ namespace System
                 public static bool TryHashData(System.ReadOnlySpan<System.Byte> source, System.Span<System.Byte> destination, out int bytesWritten) => throw null;
             }
 
-            // Generated from `System.Security.Cryptography.SHA384Managed` in `System.Security.Cryptography.Algorithms, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Security.Cryptography.SHA384Managed` in `System.Security.Cryptography.Algorithms, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class SHA384Managed : System.Security.Cryptography.SHA384
             {
                 protected override void Dispose(bool disposing) => throw null;
@@ -898,7 +943,7 @@ namespace System
                 protected override bool TryHashFinal(System.Span<System.Byte> destination, out int bytesWritten) => throw null;
             }
 
-            // Generated from `System.Security.Cryptography.SHA512` in `System.Security.Cryptography.Algorithms, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Security.Cryptography.SHA512` in `System.Security.Cryptography.Algorithms, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public abstract class SHA512 : System.Security.Cryptography.HashAlgorithm
             {
                 public static System.Security.Cryptography.SHA512 Create() => throw null;
@@ -910,7 +955,7 @@ namespace System
                 public static bool TryHashData(System.ReadOnlySpan<System.Byte> source, System.Span<System.Byte> destination, out int bytesWritten) => throw null;
             }
 
-            // Generated from `System.Security.Cryptography.SHA512Managed` in `System.Security.Cryptography.Algorithms, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Security.Cryptography.SHA512Managed` in `System.Security.Cryptography.Algorithms, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class SHA512Managed : System.Security.Cryptography.SHA512
             {
                 protected override void Dispose(bool disposing) => throw null;
@@ -922,7 +967,7 @@ namespace System
                 protected override bool TryHashFinal(System.Span<System.Byte> destination, out int bytesWritten) => throw null;
             }
 
-            // Generated from `System.Security.Cryptography.SignatureDescription` in `System.Security.Cryptography.Algorithms, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Security.Cryptography.SignatureDescription` in `System.Security.Cryptography.Algorithms, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class SignatureDescription
             {
                 public virtual System.Security.Cryptography.AsymmetricSignatureDeformatter CreateDeformatter(System.Security.Cryptography.AsymmetricAlgorithm key) => throw null;
@@ -936,7 +981,7 @@ namespace System
                 public SignatureDescription(System.Security.SecurityElement el) => throw null;
             }
 
-            // Generated from `System.Security.Cryptography.TripleDES` in `System.Security.Cryptography.Algorithms, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Security.Cryptography.TripleDES` in `System.Security.Cryptography.Algorithms, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public abstract class TripleDES : System.Security.Cryptography.SymmetricAlgorithm
             {
                 public static System.Security.Cryptography.TripleDES Create() => throw null;

@@ -14,8 +14,8 @@
  *       external/cwe/cwe-400
  */
 
-import codeql.ruby.security.performance.ExponentialBackTracking
-import codeql.ruby.security.performance.ReDoSUtil
+import codeql.ruby.security.regexp.ExponentialBackTracking
+import codeql.ruby.security.regexp.NfaUtils
 import codeql.ruby.Regexp
 
 from RegExpTerm t, string pump, State s, string prefixMsg

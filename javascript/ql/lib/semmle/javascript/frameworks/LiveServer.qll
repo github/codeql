@@ -12,7 +12,7 @@ private module LiveServer {
   class ServerDefinition extends HTTP::Servers::StandardServerDefinition {
     ServerDefinition() { this = DataFlow::moduleImport("live-server").asExpr() }
 
-    API::Node getImportNode() { result.getAnImmediateUse().asExpr() = this }
+    API::Node getImportNode() { result.asSource().asExpr() = this }
   }
 
   /**
@@ -41,7 +41,7 @@ private module LiveServer {
 
     override DataFlow::SourceNode getARouteHandler() {
       exists(DataFlow::SourceNode middleware |
-        middleware = call.getParameter(0).getMember("middleware").getAValueReachingRhs()
+        middleware = call.getParameter(0).getMember("middleware").getAValueReachingSink()
       |
         result = middleware.getAMemberCall(["push", "unshift"]).getArgument(0).getAFunctionValue()
         or

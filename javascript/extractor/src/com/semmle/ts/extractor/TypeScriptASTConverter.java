@@ -591,7 +591,7 @@ public class TypeScriptASTConverter {
         return convertTryStatement(node, loc);
       case "TupleType":
         return convertTupleType(node, loc);
-      case "NamedTupleMember": 
+      case "NamedTupleMember":
         return convertNamedTupleMember(node, loc);
       case "TypeAliasDeclaration":
         return convertTypeAliasDeclaration(node, loc);
@@ -976,8 +976,9 @@ public class TypeScriptASTConverter {
             hasDeclareKeyword,
             hasAbstractKeyword);
     attachSymbolInformation(classDecl.getClassDef(), node);
-    if (node.has("decorators")) {
-      classDecl.addDecorators(convertChildren(node, "decorators"));
+    List<Decorator> decorators = getDecorators(node);
+    if (!decorators.isEmpty()) {
+      classDecl.addDecorators(decorators);
       advanceUntilAfter(loc, classDecl.getDecorators());
     }
     Node exportedDecl = fixExports(loc, classDecl);
@@ -987,6 +988,17 @@ public class TypeScriptASTConverter {
           exportedDecl.getLoc(), new ClassExpression(classDecl.getLoc(), classDecl.getClassDef()));
     }
     return exportedDecl;
+  }
+
+  List<Decorator> getDecorators(JsonObject node) throws ParseError {
+    List<Decorator> result = new ArrayList<>();
+    for (JsonElement elt : getChildIterable(node, "modifiers")) {
+      JsonObject modifier = elt.getAsJsonObject();
+      if (hasKind(modifier, "Decorator")) {
+        result.add((Decorator) convertNode(modifier));
+      }
+    }
+    return result;
   }
 
   private Node convertCommaListExpression(JsonObject node, SourceLocation loc) throws ParseError {
@@ -1041,7 +1053,7 @@ public class TypeScriptASTConverter {
   private List<DecoratorList> convertParameterDecorators(JsonObject function) throws ParseError {
     List<DecoratorList> decoratorLists = new ArrayList<>();
     for (JsonElement parameter : getProperParameters(function)) {
-      decoratorLists.add(makeDecoratorList(parameter.getAsJsonObject().get("decorators")));
+      decoratorLists.add(makeDecoratorList(parameter.getAsJsonObject().get("modifiers")));
     }
     return decoratorLists;
   }
@@ -1139,7 +1151,7 @@ public class TypeScriptASTConverter {
             loc,
             hasModifier(node, "ConstKeyword"),
             hasModifier(node, "DeclareKeyword"),
-            convertChildrenNotNull(node, "decorators"),
+            convertChildrenNotNull(node, "illegalDecorators"), // as of https://github.com/microsoft/TypeScript/pull/50343/ the property is called `illegalDecorators` instead of `decorators`
             convertChild(node, "name"),
             convertChildren(node, "members"));
     attachSymbolInformation(enumDeclaration, node);
@@ -1664,8 +1676,9 @@ public class TypeScriptASTConverter {
     FunctionExpression method = convertImplicitFunction(node, loc);
     MethodDefinition methodDefinition =
         new MethodDefinition(loc, flags, methodKind, convertChild(node, "name"), method);
-    if (node.has("decorators")) {
-      methodDefinition.addDecorators(convertChildren(node, "decorators"));
+    List<Decorator> decorators = getDecorators(node);
+    if (!decorators.isEmpty()) {
+      methodDefinition.addDecorators(decorators);
       advanceUntilAfter(loc, methodDefinition.getDecorators());
     }
     return methodDefinition;
@@ -1710,7 +1723,9 @@ public class TypeScriptASTConverter {
     }
     if (nameNode instanceof Literal) {
       // Declaration of form: declare module "X" {...}
-      return new ExternalModuleDeclaration(loc, (Literal) nameNode, body);
+      ExternalModuleDeclaration decl = new ExternalModuleDeclaration(loc, (Literal) nameNode, body);
+      attachSymbolInformation(decl, node);
+      return decl;
     }
     if (hasFlag(node, "GlobalAugmentation")) {
       // Declaration of form: declare global {...}
@@ -2077,8 +2092,9 @@ public class TypeScriptASTConverter {
             convertChild(node, "name"),
             convertChild(node, "initializer"),
             convertChildAsType(node, "type"));
-    if (node.has("decorators")) {
-      fieldDefinition.addDecorators(convertChildren(node, "decorators"));
+    List<Decorator> decorators = getDecorators(node);
+    if (!decorators.isEmpty()) {
+      fieldDefinition.addDecorators(decorators);
       advanceUntilAfter(loc, fieldDefinition.getDecorators());
     }
     return fieldDefinition;

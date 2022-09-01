@@ -6,7 +6,7 @@ namespace System
     {
         namespace Serialization
         {
-            // Generated from `System.Runtime.Serialization.DataContractResolver` in `System.Runtime.Serialization.Xml, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Runtime.Serialization.DataContractResolver` in `System.Runtime.Serialization.Xml, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public abstract class DataContractResolver
             {
                 protected DataContractResolver() => throw null;
@@ -14,7 +14,7 @@ namespace System
                 public abstract bool TryResolveType(System.Type type, System.Type declaredType, System.Runtime.Serialization.DataContractResolver knownTypeResolver, out System.Xml.XmlDictionaryString typeName, out System.Xml.XmlDictionaryString typeNamespace);
             }
 
-            // Generated from `System.Runtime.Serialization.DataContractSerializer` in `System.Runtime.Serialization.Xml, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Runtime.Serialization.DataContractSerializer` in `System.Runtime.Serialization.Xml, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class DataContractSerializer : System.Runtime.Serialization.XmlObjectSerializer
             {
                 public System.Runtime.Serialization.DataContractResolver DataContractResolver { get => throw null; }
@@ -46,14 +46,14 @@ namespace System
                 public override void WriteStartObject(System.Xml.XmlWriter writer, object graph) => throw null;
             }
 
-            // Generated from `System.Runtime.Serialization.DataContractSerializerExtensions` in `System.Runtime.Serialization.Xml, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Runtime.Serialization.DataContractSerializerExtensions` in `System.Runtime.Serialization.Xml, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public static class DataContractSerializerExtensions
             {
                 public static System.Runtime.Serialization.ISerializationSurrogateProvider GetSerializationSurrogateProvider(this System.Runtime.Serialization.DataContractSerializer serializer) => throw null;
                 public static void SetSerializationSurrogateProvider(this System.Runtime.Serialization.DataContractSerializer serializer, System.Runtime.Serialization.ISerializationSurrogateProvider provider) => throw null;
             }
 
-            // Generated from `System.Runtime.Serialization.DataContractSerializerSettings` in `System.Runtime.Serialization.Xml, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Runtime.Serialization.DataContractSerializerSettings` in `System.Runtime.Serialization.Xml, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class DataContractSerializerSettings
             {
                 public System.Runtime.Serialization.DataContractResolver DataContractResolver { get => throw null; set => throw null; }
@@ -67,32 +67,32 @@ namespace System
                 public bool SerializeReadOnlyTypes { get => throw null; set => throw null; }
             }
 
-            // Generated from `System.Runtime.Serialization.ExportOptions` in `System.Runtime.Serialization.Xml, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Runtime.Serialization.ExportOptions` in `System.Runtime.Serialization.Xml, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class ExportOptions
             {
                 public ExportOptions() => throw null;
                 public System.Collections.ObjectModel.Collection<System.Type> KnownTypes { get => throw null; }
             }
 
-            // Generated from `System.Runtime.Serialization.ExtensionDataObject` in `System.Runtime.Serialization.Xml, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Runtime.Serialization.ExtensionDataObject` in `System.Runtime.Serialization.Xml, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class ExtensionDataObject
             {
             }
 
-            // Generated from `System.Runtime.Serialization.IExtensibleDataObject` in `System.Runtime.Serialization.Xml, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Runtime.Serialization.IExtensibleDataObject` in `System.Runtime.Serialization.Xml, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public interface IExtensibleDataObject
             {
                 System.Runtime.Serialization.ExtensionDataObject ExtensionData { get; set; }
             }
 
-            // Generated from `System.Runtime.Serialization.XPathQueryGenerator` in `System.Runtime.Serialization.Xml, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Runtime.Serialization.XPathQueryGenerator` in `System.Runtime.Serialization.Xml, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public static class XPathQueryGenerator
             {
                 public static string CreateFromDataContractSerializer(System.Type type, System.Reflection.MemberInfo[] pathToMember, System.Text.StringBuilder rootElementXpath, out System.Xml.XmlNamespaceManager namespaces) => throw null;
                 public static string CreateFromDataContractSerializer(System.Type type, System.Reflection.MemberInfo[] pathToMember, out System.Xml.XmlNamespaceManager namespaces) => throw null;
             }
 
-            // Generated from `System.Runtime.Serialization.XmlObjectSerializer` in `System.Runtime.Serialization.Xml, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Runtime.Serialization.XmlObjectSerializer` in `System.Runtime.Serialization.Xml, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public abstract class XmlObjectSerializer
             {
                 public abstract bool IsStartObject(System.Xml.XmlDictionaryReader reader);
@@ -114,7 +114,7 @@ namespace System
                 protected XmlObjectSerializer() => throw null;
             }
 
-            // Generated from `System.Runtime.Serialization.XmlSerializableServices` in `System.Runtime.Serialization.Xml, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Runtime.Serialization.XmlSerializableServices` in `System.Runtime.Serialization.Xml, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public static class XmlSerializableServices
             {
                 public static void AddDefaultSchema(System.Xml.Schema.XmlSchemaSet schemas, System.Xml.XmlQualifiedName typeQName) => throw null;
@@ -122,7 +122,7 @@ namespace System
                 public static void WriteNodes(System.Xml.XmlWriter xmlWriter, System.Xml.XmlNode[] nodes) => throw null;
             }
 
-            // Generated from `System.Runtime.Serialization.XsdDataContractExporter` in `System.Runtime.Serialization.Xml, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Runtime.Serialization.XsdDataContractExporter` in `System.Runtime.Serialization.Xml, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class XsdDataContractExporter
             {
                 public bool CanExport(System.Collections.Generic.ICollection<System.Reflection.Assembly> assemblies) => throw null;
@@ -144,7 +144,7 @@ namespace System
     }
     namespace Xml
     {
-        // Generated from `System.Xml.IFragmentCapableXmlDictionaryWriter` in `System.Runtime.Serialization.Xml, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Xml.IFragmentCapableXmlDictionaryWriter` in `System.Runtime.Serialization.Xml, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public interface IFragmentCapableXmlDictionaryWriter
         {
             bool CanFragment { get; }
@@ -153,27 +153,27 @@ namespace System
             void WriteFragment(System.Byte[] buffer, int offset, int count);
         }
 
-        // Generated from `System.Xml.IStreamProvider` in `System.Runtime.Serialization.Xml, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Xml.IStreamProvider` in `System.Runtime.Serialization.Xml, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public interface IStreamProvider
         {
             System.IO.Stream GetStream();
             void ReleaseStream(System.IO.Stream stream);
         }
 
-        // Generated from `System.Xml.IXmlBinaryReaderInitializer` in `System.Runtime.Serialization.Xml, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Xml.IXmlBinaryReaderInitializer` in `System.Runtime.Serialization.Xml, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public interface IXmlBinaryReaderInitializer
         {
             void SetInput(System.Byte[] buffer, int offset, int count, System.Xml.IXmlDictionary dictionary, System.Xml.XmlDictionaryReaderQuotas quotas, System.Xml.XmlBinaryReaderSession session, System.Xml.OnXmlDictionaryReaderClose onClose);
             void SetInput(System.IO.Stream stream, System.Xml.IXmlDictionary dictionary, System.Xml.XmlDictionaryReaderQuotas quotas, System.Xml.XmlBinaryReaderSession session, System.Xml.OnXmlDictionaryReaderClose onClose);
         }
 
-        // Generated from `System.Xml.IXmlBinaryWriterInitializer` in `System.Runtime.Serialization.Xml, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Xml.IXmlBinaryWriterInitializer` in `System.Runtime.Serialization.Xml, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public interface IXmlBinaryWriterInitializer
         {
             void SetOutput(System.IO.Stream stream, System.Xml.IXmlDictionary dictionary, System.Xml.XmlBinaryWriterSession session, bool ownsStream);
         }
 
-        // Generated from `System.Xml.IXmlDictionary` in `System.Runtime.Serialization.Xml, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Xml.IXmlDictionary` in `System.Runtime.Serialization.Xml, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public interface IXmlDictionary
         {
             bool TryLookup(System.Xml.XmlDictionaryString value, out System.Xml.XmlDictionaryString result);
@@ -181,23 +181,23 @@ namespace System
             bool TryLookup(string value, out System.Xml.XmlDictionaryString result);
         }
 
-        // Generated from `System.Xml.IXmlTextReaderInitializer` in `System.Runtime.Serialization.Xml, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Xml.IXmlTextReaderInitializer` in `System.Runtime.Serialization.Xml, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public interface IXmlTextReaderInitializer
         {
             void SetInput(System.Byte[] buffer, int offset, int count, System.Text.Encoding encoding, System.Xml.XmlDictionaryReaderQuotas quotas, System.Xml.OnXmlDictionaryReaderClose onClose);
             void SetInput(System.IO.Stream stream, System.Text.Encoding encoding, System.Xml.XmlDictionaryReaderQuotas quotas, System.Xml.OnXmlDictionaryReaderClose onClose);
         }
 
-        // Generated from `System.Xml.IXmlTextWriterInitializer` in `System.Runtime.Serialization.Xml, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Xml.IXmlTextWriterInitializer` in `System.Runtime.Serialization.Xml, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public interface IXmlTextWriterInitializer
         {
             void SetOutput(System.IO.Stream stream, System.Text.Encoding encoding, bool ownsStream);
         }
 
-        // Generated from `System.Xml.OnXmlDictionaryReaderClose` in `System.Runtime.Serialization.Xml, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Xml.OnXmlDictionaryReaderClose` in `System.Runtime.Serialization.Xml, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public delegate void OnXmlDictionaryReaderClose(System.Xml.XmlDictionaryReader reader);
 
-        // Generated from `System.Xml.UniqueId` in `System.Runtime.Serialization.Xml, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Xml.UniqueId` in `System.Runtime.Serialization.Xml, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class UniqueId
         {
             public static bool operator !=(System.Xml.UniqueId id1, System.Xml.UniqueId id2) => throw null;
@@ -218,7 +218,7 @@ namespace System
             public UniqueId(string value) => throw null;
         }
 
-        // Generated from `System.Xml.XmlBinaryReaderSession` in `System.Runtime.Serialization.Xml, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Xml.XmlBinaryReaderSession` in `System.Runtime.Serialization.Xml, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class XmlBinaryReaderSession : System.Xml.IXmlDictionary
         {
             public System.Xml.XmlDictionaryString Add(int id, string value) => throw null;
@@ -229,7 +229,7 @@ namespace System
             public XmlBinaryReaderSession() => throw null;
         }
 
-        // Generated from `System.Xml.XmlBinaryWriterSession` in `System.Runtime.Serialization.Xml, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Xml.XmlBinaryWriterSession` in `System.Runtime.Serialization.Xml, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class XmlBinaryWriterSession
         {
             public void Reset() => throw null;
@@ -237,7 +237,7 @@ namespace System
             public XmlBinaryWriterSession() => throw null;
         }
 
-        // Generated from `System.Xml.XmlDictionary` in `System.Runtime.Serialization.Xml, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Xml.XmlDictionary` in `System.Runtime.Serialization.Xml, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class XmlDictionary : System.Xml.IXmlDictionary
         {
             public virtual System.Xml.XmlDictionaryString Add(string value) => throw null;
@@ -249,7 +249,7 @@ namespace System
             public XmlDictionary(int capacity) => throw null;
         }
 
-        // Generated from `System.Xml.XmlDictionaryReader` in `System.Runtime.Serialization.Xml, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Xml.XmlDictionaryReader` in `System.Runtime.Serialization.Xml, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public abstract class XmlDictionaryReader : System.Xml.XmlReader
         {
             public virtual bool CanCanonicalize { get => throw null; }
@@ -378,18 +378,18 @@ namespace System
             protected XmlDictionaryReader() => throw null;
         }
 
-        // Generated from `System.Xml.XmlDictionaryReaderQuotaTypes` in `System.Runtime.Serialization.Xml, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Xml.XmlDictionaryReaderQuotaTypes` in `System.Runtime.Serialization.Xml, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         [System.Flags]
-        public enum XmlDictionaryReaderQuotaTypes
+        public enum XmlDictionaryReaderQuotaTypes : int
         {
-            MaxArrayLength,
-            MaxBytesPerRead,
-            MaxDepth,
-            MaxNameTableCharCount,
-            MaxStringContentLength,
+            MaxArrayLength = 4,
+            MaxBytesPerRead = 8,
+            MaxDepth = 1,
+            MaxNameTableCharCount = 16,
+            MaxStringContentLength = 2,
         }
 
-        // Generated from `System.Xml.XmlDictionaryReaderQuotas` in `System.Runtime.Serialization.Xml, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Xml.XmlDictionaryReaderQuotas` in `System.Runtime.Serialization.Xml, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class XmlDictionaryReaderQuotas
         {
             public void CopyTo(System.Xml.XmlDictionaryReaderQuotas quotas) => throw null;
@@ -403,7 +403,7 @@ namespace System
             public XmlDictionaryReaderQuotas() => throw null;
         }
 
-        // Generated from `System.Xml.XmlDictionaryString` in `System.Runtime.Serialization.Xml, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Xml.XmlDictionaryString` in `System.Runtime.Serialization.Xml, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class XmlDictionaryString
         {
             public System.Xml.IXmlDictionary Dictionary { get => throw null; }
@@ -414,7 +414,7 @@ namespace System
             public XmlDictionaryString(System.Xml.IXmlDictionary dictionary, string value, int key) => throw null;
         }
 
-        // Generated from `System.Xml.XmlDictionaryWriter` in `System.Runtime.Serialization.Xml, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Xml.XmlDictionaryWriter` in `System.Runtime.Serialization.Xml, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public abstract class XmlDictionaryWriter : System.Xml.XmlWriter
         {
             public virtual bool CanCanonicalize { get => throw null; }

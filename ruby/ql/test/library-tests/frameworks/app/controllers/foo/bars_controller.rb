@@ -23,6 +23,21 @@ class BarsController < ApplicationController
     render "foo/bars/show", locals: { display_text: dt, safe_text: "hello" }
   end
   
+  def go_back
+    redirect_back_or_to action: "index"
+  end
+
+  def go_back_2
+    redirect_back fallback_location: { action: "index" }
+  end
+
+  def show_2
+    render json: { some: "data" }
+    body = render_to_string @user, content_type: "application/json"
+  rescue => e
+    render e.backtrace, content_type: "text/plain"
+  end
+
   private
 
   def unreachable_action

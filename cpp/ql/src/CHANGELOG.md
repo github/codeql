@@ -1,3 +1,28 @@
+## 0.3.2
+
+### Minor Analysis Improvements
+
+* The query `cpp/bad-strncpy-size` now covers more `strncpy`-like functions than before, including `strxfrm`(`_l`), `wcsxfrm`(`_l`), and `stpncpy`. Users of this query may see an increase in results.
+
+## 0.3.1
+
+## 0.3.0
+
+### Breaking Changes
+
+* Contextual queries and the query libraries they depend on have been moved to the `codeql/cpp-all` package.
+
+## 0.2.0
+
+## 0.1.4
+
+## 0.1.3
+
+### Minor Analysis Improvements
+
+* The "XML external entity expansion" (`cpp/external-entity-expansion`) query precision has been increased to `high`.
+* The `cpp/unused-local-variable` no longer ignores functions that include `if` and `switch` statements with C++17-style initializers.
+
 ## 0.1.2
 
 ### Minor Analysis Improvements

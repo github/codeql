@@ -108,20 +108,20 @@ private module CryptodomeModel {
     DataFlow::CallCfgNode {
     string methodName;
     string cipherName;
+    API::CallNode newCall;
 
     CryptodomeGenericCipherOperation() {
       methodName in [
           "encrypt", "decrypt", "verify", "update", "hexverify", "encrypt_and_digest",
           "decrypt_and_verify"
         ] and
-      this =
+      newCall =
         API::moduleImport(["Crypto", "Cryptodome"])
             .getMember("Cipher")
             .getMember(cipherName)
             .getMember("new")
-            .getReturn()
-            .getMember(methodName)
-            .getACall()
+            .getACall() and
+      this = newCall.getReturn().getMember(methodName).getACall()
     }
 
     override Cryptography::CryptographicAlgorithm getAlgorithm() { result.matchesName(cipherName) }
@@ -154,6 +154,20 @@ private module CryptodomeModel {
           this.getArg(0), this.getArgByName("ciphertext"), this.getArg(1),
           this.getArgByName("mac_tag")
         ]
+    }
+
+    override Cryptography::BlockMode getBlockMode() {
+      // `modeName` is of the form "MODE_<BlockMode>"
+      exists(string modeName |
+        newCall.getArg(1) =
+          API::moduleImport(["Crypto", "Cryptodome"])
+              .getMember("Cipher")
+              .getMember(cipherName)
+              .getMember(modeName)
+              .getAValueReachableFromSource()
+      |
+        result = modeName.splitAt("_", 1)
+      )
     }
   }
 
@@ -192,6 +206,8 @@ private module CryptodomeModel {
         result in [this.getArg(1), this.getArgByName("signature")]
       )
     }
+
+    override Cryptography::BlockMode getBlockMode() { none() }
   }
 
   /**
@@ -215,5 +231,7 @@ private module CryptodomeModel {
     override Cryptography::CryptographicAlgorithm getAlgorithm() { result.matchesName(hashName) }
 
     override DataFlow::Node getAnInput() { result in [this.getArg(0), this.getArgByName("data")] }
+
+    override Cryptography::BlockMode getBlockMode() { none() }
   }
 }

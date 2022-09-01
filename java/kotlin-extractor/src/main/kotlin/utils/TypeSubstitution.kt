@@ -2,8 +2,9 @@ package com.github.codeql.utils
 
 import com.github.codeql.KotlinUsesExtractor
 import com.github.codeql.getJavaEquivalentClassId
+import com.github.codeql.utils.versions.codeQlWithHasQuestionMark
+import com.github.codeql.utils.versions.createImplicitParameterDeclarationWithWrappedDescriptor
 import org.jetbrains.kotlin.backend.common.extensions.IrPluginContext
-import org.jetbrains.kotlin.backend.common.ir.createImplicitParameterDeclarationWithWrappedDescriptor
 import org.jetbrains.kotlin.backend.common.lower.parents
 import org.jetbrains.kotlin.descriptors.ClassKind
 import org.jetbrains.kotlin.ir.builders.declarations.addConstructor
@@ -24,7 +25,6 @@ import org.jetbrains.kotlin.ir.types.impl.makeTypeProjection
 import org.jetbrains.kotlin.ir.util.classId
 import org.jetbrains.kotlin.ir.util.constructedClassType
 import org.jetbrains.kotlin.ir.util.constructors
-import org.jetbrains.kotlin.ir.util.parentAsClass
 import org.jetbrains.kotlin.name.FqName
 import org.jetbrains.kotlin.name.Name
 import org.jetbrains.kotlin.types.Variance
@@ -35,6 +35,30 @@ fun IrType.substituteTypeArguments(params: List<IrTypeParameter>, arguments: Lis
         is IrSimpleType -> substituteTypeArguments(params.map { it.symbol }.zip(arguments).toMap())
         else -> this
     }
+
+private fun IrSimpleType.substituteTypeArguments(substitutionMap: Map<IrTypeParameterSymbol, IrTypeArgument>): IrSimpleType {
+    if (substitutionMap.isEmpty()) return this
+
+    val newArguments = arguments.map {
+        if (it is IrTypeProjection) {
+            val itType = it.type
+            if (itType is IrSimpleType) {
+                subProjectedType(substitutionMap, itType, it.variance)
+            } else {
+                it
+            }
+        } else {
+            it
+        }
+    }
+
+    return IrSimpleTypeImpl(
+        classifier,
+        hasQuestionMark,
+        newArguments,
+        annotations
+    )
+}
 
 /**
  * Returns true if substituting `innerVariance T` into the context `outerVariance []` discards all knowledge about
@@ -66,7 +90,7 @@ private fun subProjectedType(substitutionMap: Map<IrTypeParameterSymbol, IrTypeA
             if (conflictingVariance(outerVariance, substitutedTypeArg.variance))
                 IrStarProjectionImpl
             else {
-                val newProjectedType = substitutedTypeArg.type.let { if (t.hasQuestionMark) it.withHasQuestionMark(true) else it }
+                val newProjectedType = substitutedTypeArg.type.let { if (t.hasQuestionMark) it.codeQlWithHasQuestionMark(true) else it }
                 val newVariance = combineVariance(outerVariance, substitutedTypeArg.variance)
                 makeTypeProjection(newProjectedType, newVariance)
             }
@@ -75,31 +99,7 @@ private fun subProjectedType(substitutionMap: Map<IrTypeParameterSymbol, IrTypeA
         }
     } ?: makeTypeProjection(t.substituteTypeArguments(substitutionMap), outerVariance)
 
-fun IrSimpleType.substituteTypeArguments(substitutionMap: Map<IrTypeParameterSymbol, IrTypeArgument>): IrSimpleType {
-    if (substitutionMap.isEmpty()) return this
-
-    val newArguments = arguments.map {
-        if (it is IrTypeProjection) {
-            val itType = it.type
-            if (itType is IrSimpleType) {
-                subProjectedType(substitutionMap, itType, it.variance)
-            } else {
-                it
-            }
-        } else {
-            it
-        }
-    }
-
-    return IrSimpleTypeImpl(
-        classifier,
-        hasQuestionMark,
-        newArguments,
-        annotations
-    )
-}
-
-fun IrTypeArgument.upperBound(context: IrPluginContext) =
+private fun IrTypeArgument.upperBound(context: IrPluginContext) =
     when(this) {
         is IrStarProjection -> context.irBuiltIns.anyNType
         is IrTypeProjection -> when(this.variance) {
@@ -110,7 +110,7 @@ fun IrTypeArgument.upperBound(context: IrPluginContext) =
         else -> context.irBuiltIns.anyNType
     }
 
-fun IrTypeArgument.lowerBound(context: IrPluginContext) =
+private fun IrTypeArgument.lowerBound(context: IrPluginContext) =
     when(this) {
         is IrStarProjection -> context.irBuiltIns.nothingType
         is IrTypeProjection -> when(this.variance) {
@@ -123,14 +123,17 @@ fun IrTypeArgument.lowerBound(context: IrPluginContext) =
 
 fun IrType.substituteTypeAndArguments(substitutionMap: Map<IrTypeParameterSymbol, IrTypeArgument>?, useContext: KotlinUsesExtractor.TypeContext, pluginContext: IrPluginContext): IrType =
     substitutionMap?.let { substMap ->
-        this.classifierOrNull?.let { typeClassifier ->
+        if (this is IrSimpleType) {
+            val typeClassifier = this.classifier
             substMap[typeClassifier]?.let {
                 when(useContext) {
                     KotlinUsesExtractor.TypeContext.RETURN -> it.upperBound(pluginContext)
                     else -> it.lowerBound(pluginContext)
                 }
-            } ?: (this as IrSimpleType).substituteTypeArguments(substMap)
-        } ?: this
+            } ?: this.substituteTypeArguments(substMap)
+        } else {
+            this
+        }
     } ?: this
 
 object RawTypeAnnotation {
@@ -191,7 +194,7 @@ fun IrTypeArgument.withQuestionMark(b: Boolean): IrTypeArgument =
         is IrStarProjection -> this
         is IrTypeProjection ->
             this.type.let { when(it) {
-                is IrSimpleType -> if (it.hasQuestionMark == b) this else makeTypeProjection(it.withHasQuestionMark(b), this.variance)
+                is IrSimpleType -> if (it.hasQuestionMark == b) this else makeTypeProjection(it.codeQlWithHasQuestionMark(b), this.variance)
                 else -> this
             }}
         else -> this
@@ -199,7 +202,7 @@ fun IrTypeArgument.withQuestionMark(b: Boolean): IrTypeArgument =
 
 typealias TypeSubstitution = (IrType, KotlinUsesExtractor.TypeContext, IrPluginContext) -> IrType
 
-fun matchingTypeParameters(l: IrTypeParameter?, r: IrTypeParameter): Boolean {
+private fun matchingTypeParameters(l: IrTypeParameter?, r: IrTypeParameter): Boolean {
     if (l === r)
         return true
     if (l == null)

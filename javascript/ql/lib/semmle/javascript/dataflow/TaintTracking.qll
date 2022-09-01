@@ -321,14 +321,6 @@ module TaintTracking {
     }
 
     /**
-     * Holds if `pred -> succ` is an edge contributed by an `AdditionalTaintStep` instance.
-     */
-    cached
-    predicate legacyAdditionalTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
-      any(InternalAdditionalTaintStep step).step(pred, succ)
-    }
-
-    /**
      * Public taint step relations.
      */
     cached
@@ -441,7 +433,6 @@ module TaintTracking {
    * Holds if `pred -> succ` is an edge used by all taint-tracking configurations.
    */
   predicate sharedTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
-    Cached::legacyAdditionalTaintStep(pred, succ) or
     Cached::genericStep(pred, succ) or
     Cached::heuristicStep(pred, succ) or
     uriStep(pred, succ) or
@@ -454,31 +445,6 @@ module TaintTracking {
     serializeStep(pred, succ) or
     deserializeStep(pred, succ) or
     promiseStep(pred, succ)
-  }
-
-  /**
-   * DEPRECATED. Subclasses should extend `SharedTaintStep` instead, unless the subclass
-   * is part of a query, in which case it should be moved into the `isAdditionalTaintStep` predicate
-   * of the relevant taint-tracking configuration.
-   * Other uses of the `step` relation in this class should instead use the `TaintTracking::sharedTaintStep`
-   * predicate.
-   *
-   * A taint-propagating data flow edge that should be added to all taint tracking
-   * configurations in addition to standard data flow edges.
-   *
-   * Note: For performance reasons, all subclasses of this class should be part
-   * of the standard library. Override `Configuration::isAdditionalTaintStep`
-   * for analysis-specific taint steps.
-   */
-  deprecated class AdditionalTaintStep = InternalAdditionalTaintStep;
-
-  /** Internal version of `AdditionalTaintStep` that won't trigger deprecation warnings. */
-  abstract private class InternalAdditionalTaintStep extends DataFlow::Node {
-    /**
-     * Holds if `pred` &rarr; `succ` should be considered a taint-propagating
-     * data flow edge.
-     */
-    abstract predicate step(DataFlow::Node pred, DataFlow::Node succ);
   }
 
   /** Gets a data flow node referring to the client side URL. */
@@ -831,7 +797,7 @@ module TaintTracking {
     }
 
     /**
-     * Holds if the property `loadStep` should be copied from the object `pred` to the property `storeStep` of object `succ`.
+     * Holds if the property `loadProp` should be copied from the object `pred` to the property `storeProp` of object `succ`.
      *
      * This step is used to copy the value of our pseudo-property that can later be accessed using a `get` or `getAll` call.
      * For an expression `url.searchParams`, the property `hiddenUrlPseudoProperty()` from the `url` object is stored in the property `getableUrlPseudoProperty()` on `url.searchParams`.
@@ -1027,18 +993,16 @@ module TaintTracking {
   class WhitelistContainmentCallSanitizer extends AdditionalSanitizerGuardNode,
     DataFlow::MethodCallNode {
     WhitelistContainmentCallSanitizer() {
-      exists(string name |
-        name = "contains" or
-        name = "has" or
-        name = "hasOwnProperty"
-      |
-        this.getMethodName() = name
-      )
+      this.getMethodName() = ["contains", "has", "hasOwnProperty", "hasOwn"]
     }
 
     override predicate sanitizes(boolean outcome, Expr e) {
-      outcome = true and
-      e = this.getArgument(0).asExpr()
+      exists(int propertyIndex |
+        if this.getMethodName() = "hasOwn" then propertyIndex = 1 else propertyIndex = 0
+      |
+        outcome = true and
+        e = this.getArgument(propertyIndex).asExpr()
+      )
     }
 
     override predicate appliesTo(Configuration cfg) { any() }
@@ -1125,6 +1089,19 @@ module TaintTracking {
     exists(Expr str, TypeofExpr typeof | test.hasOperands(str, typeof) |
       str.mayHaveStringValue(tag) and
       typeof.getOperand() = operand
+    )
+  }
+
+  /** A test for the value of `typeof x`, restricting the potential types of `x`. */
+  predicate isStringTypeGuard(EqualityTest test, Expr operand, boolean polarity) {
+    exists(TypeofTag tag | TaintTracking::isTypeofGuard(test, operand, tag) |
+      // typeof x === "string" sanitizes `x` when it evaluates to false
+      tag = "string" and
+      polarity = test.getPolarity().booleanNot()
+      or
+      // typeof x === "object" sanitizes `x` when it evaluates to true
+      tag != "string" and
+      polarity = test.getPolarity()
     )
   }
 

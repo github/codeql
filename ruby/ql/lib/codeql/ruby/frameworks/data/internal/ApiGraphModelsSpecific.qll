@@ -40,7 +40,7 @@ private import codeql.ruby.dataflow.internal.DataFlowDispatch as DataFlowDispatc
  */
 bindingset[package]
 predicate isPackageUsed(string package) {
-  // For now everything is modelled as an access path starting at any top-level, so the package name has no effect.
+  // For now everything is modeled as an access path starting at any top-level, so the package name has no effect.
   //
   // We allow an arbitrary package name so that the model can record the name of the package in case it's needed in the future.
   //
@@ -115,7 +115,7 @@ API::Node getExtraSuccessorFromNode(API::Node node, AccessPathToken token) {
   or
   token.getName() = "Parameter" and
   result =
-    node.getASuccessor(API::Label::getLabelFromArgumentPosition(FlowSummaryImplSpecific::parseParamBody(token
+    node.getASuccessor(API::Label::getLabelFromParameterPosition(FlowSummaryImplSpecific::parseArgBody(token
               .getAnArgument())))
   // Note: The "Element" token is not implemented yet, as it ultimately requires type-tracking and
   // API graphs to be aware of the steps involving Element contributed by the standard library model.
@@ -129,7 +129,7 @@ bindingset[token]
 API::Node getExtraSuccessorFromInvoke(InvokeNode node, AccessPathToken token) {
   token.getName() = "Argument" and
   result =
-    node.getASuccessor(API::Label::getLabelFromParameterPosition(FlowSummaryImplSpecific::parseArgBody(token
+    node.getASuccessor(API::Label::getLabelFromArgumentPosition(FlowSummaryImplSpecific::parseParamBody(token
               .getAnArgument())))
 }
 
@@ -181,7 +181,7 @@ predicate isExtraValidTokenArgumentInIdentifyingAccessPath(string name, string a
   or
   name = ["Argument", "Parameter"] and
   (
-    argument = ["self", "block"]
+    argument = ["self", "block", "any", "any-named"]
     or
     argument.regexpMatch("\\w+:") // keyword argument
   )

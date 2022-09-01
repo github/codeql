@@ -2543,6 +2543,8 @@ predicate typos(string wrong, string right) {
   or
   wrong = "destory" and right = "destroy"
   or
+  wrong = "desugered" and right = "desugared"
+  or
   wrong = "detailled" and right = "detailed"
   or
   wrong = "detatched" and right = "detached"
@@ -5792,6 +5794,8 @@ predicate typos(string wrong, string right) {
   wrong = "paramater" and right = "parameter"
   or
   wrong = "paramters" and right = "parameters"
+  or
+  wrong = "parametarized" and right = "parameterized"
   or
   wrong = "paranthesis" and right = "parenthesis"
   or

@@ -27,6 +27,8 @@ predicate hasUnknownPropertyRead(LocalObject obj) {
   or
   exists(obj.getAPropertyRead("hasOwnProperty"))
   or
+  obj.flowsTo(DataFlow::globalVarRef("Object").getAMemberCall("hasOwn").getArgument(0))
+  or
   exists(obj.getAPropertyRead("propertyIsEnumerable"))
 }
 

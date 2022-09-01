@@ -548,3 +548,42 @@ function mergeUsingCallback3(dst, src) {
         }
     });
 }
+
+function copyHasOwnProperty2(dst, src) {
+    for (let key in src) {
+        // Guarding the recursive case by dst.hasOwnProperty (or Object.hasOwn) is safe,
+        // since '__proto__' and 'constructor' are not own properties of the destination object.
+        if (Object.hasOwn(dst, key)) {
+            copyHasOwnProperty2(dst[key], src[key]);
+        } else {
+            dst[key] = src[key]; // OK
+        }
+    }
+}
+
+function copyHasOwnProperty3(dst, src) {
+    for (let key in src) {
+        // Guarding the recursive case by dst.hasOwnProperty (or Object.hasOwn) is safe,
+        // since '__proto__' and 'constructor' are not own properties of the destination object.
+        if (_.has(dst, key)) {
+            copyHasOwnProperty3(dst[key], src[key]);
+        } else {
+            dst[key] = src[key]; // OK
+        }
+    }
+}
+
+function indirectHasOwn(dst, src) {
+    for (let key in src) {
+        if (!src.hasOwnProperty(key)) continue;
+        if (hasOwn(dst, key) && isObject(dst[key])) {
+            indirectHasOwn(dst[key], src[key]);
+        } else {
+            dst[key] = src[key];
+        }
+    }
+}
+
+function hasOwn(obj, key) {
+    return obj.hasOwnProperty(key)
+}

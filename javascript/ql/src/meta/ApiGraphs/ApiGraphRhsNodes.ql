@@ -12,4 +12,4 @@
 import javascript
 import meta.MetaMetrics
 
-select projectRoot(), count(any(API::Node nd).getARhs())
+select projectRoot(), count(any(API::Node nd).asSink())

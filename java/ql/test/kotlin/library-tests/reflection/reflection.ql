@@ -1,5 +1,4 @@
 import java
-import semmle.code.java.dataflow.internal.DataFlowPrivate
 
 // Stop external filepaths from appearing in the results
 class ClassOrInterfaceLocation extends ClassOrInterface {
@@ -30,9 +29,9 @@ query predicate variableInitializerType(
   decl.getInitializer().getType() = t2 and
   t2.extendsOrImplements(t3) and
   (
-    compatible = true and compatibleTypes(t1, t2)
+    compatible = true and haveIntersection(t1, t2)
     or
-    compatible = false and not compatibleTypes(t1, t2)
+    compatible = false and notHaveIntersection(t1, t2)
   )
 }
 

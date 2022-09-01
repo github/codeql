@@ -61,9 +61,7 @@ private class GlobalApiEntryPoint extends API::EntryPoint {
     this = "GlobalApiEntryPoint:" + global
   }
 
-  override DataFlow::SourceNode getAUse() { result = DataFlow::globalVarRef(global) }
-
-  override DataFlow::Node getARhs() { none() }
+  override DataFlow::SourceNode getASource() { result = DataFlow::globalVarRef(global) }
 
   /** Gets the name of the global variable. */
   string getGlobal() { result = global }
@@ -105,6 +103,9 @@ bindingset[token]
 API::Node getExtraSuccessorFromNode(API::Node node, AccessPathToken token) {
   token.getName() = "Member" and
   result = node.getMember(token.getAnArgument())
+  or
+  token.getName() = "AnyMember" and
+  result = node.getAMember()
   or
   token.getName() = "Instance" and
   result = node.getInstance()
@@ -151,7 +152,7 @@ API::Node getExtraSuccessorFromInvoke(API::InvokeNode node, AccessPathToken toke
   or
   token.getName() = "Argument" and
   token.getAnArgument() = "this" and
-  result.getARhs() = node.(DataFlow::CallNode).getReceiver()
+  result.asSink() = node.(DataFlow::CallNode).getReceiver()
 }
 
 /**
@@ -165,6 +166,16 @@ predicate invocationMatchesExtraCallSiteFilter(API::InvokeNode invoke, AccessPat
   token.getName() = "Call" and
   invoke instanceof API::CallNode and
   invoke instanceof DataFlow::CallNode // Workaround compiler bug
+  or
+  token.getName() = "WithStringArgument" and
+  exists(string operand, string argIndex, string stringValue |
+    operand = token.getAnArgument() and
+    argIndex = operand.splitAt("=", 0) and
+    stringValue = operand.splitAt("=", 1) and
+    invoke
+        .getArgument(AccessPath::parseIntWithArity(argIndex, invoke.getNumArgument()))
+        .getStringValue() = stringValue
+  )
 }
 
 /**
@@ -227,8 +238,9 @@ bindingset[name]
 predicate isExtraValidTokenNameInIdentifyingAccessPath(string name) {
   name =
     [
-      "Member", "Instance", "Awaited", "ArrayElement", "Element", "MapValue", "NewCall", "Call",
-      "DecoratedClass", "DecoratedMember", "DecoratedParameter"
+      "Member", "AnyMember", "Instance", "Awaited", "ArrayElement", "Element", "MapValue",
+      "NewCall", "Call", "DecoratedClass", "DecoratedMember", "DecoratedParameter",
+      "WithStringArgument"
     ]
 }
 
@@ -239,7 +251,7 @@ predicate isExtraValidTokenNameInIdentifyingAccessPath(string name) {
 predicate isExtraValidNoArgumentTokenInIdentifyingAccessPath(string name) {
   name =
     [
-      "Instance", "Awaited", "ArrayElement", "Element", "MapValue", "NewCall", "Call",
+      "AnyMember", "Instance", "Awaited", "ArrayElement", "Element", "MapValue", "NewCall", "Call",
       "DecoratedClass", "DecoratedMember", "DecoratedParameter"
     ]
 }
@@ -252,4 +264,8 @@ bindingset[name, argument]
 predicate isExtraValidTokenArgumentInIdentifyingAccessPath(string name, string argument) {
   name = ["Member"] and
   exists(argument)
+  or
+  name = "WithStringArgument" and
+  exists(argument.indexOf("=")) and
+  exists(AccessPath::parseIntWithArity(argument.splitAt("=", 0), 10))
 }

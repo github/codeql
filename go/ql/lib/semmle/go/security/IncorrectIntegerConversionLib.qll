@@ -98,7 +98,7 @@ class ConversionWithoutBoundsCheckConfig extends TaintTracking::Configuration {
       ) and
       // `effectiveBitSize` could be any value between 0 and 64, but we
       // can round it up to the nearest size of an integer type without
-      // changing behaviour.
+      // changing behavior.
       sourceBitSize = min(int b | b in [0, 8, 16, 32, 64] and b >= effectiveBitSize)
     )
   }
@@ -127,11 +127,14 @@ class ConversionWithoutBoundsCheckConfig extends TaintTracking::Configuration {
 
   override predicate isSink(DataFlow::Node sink) { this.isSink(sink, sinkBitSize) }
 
-  override predicate isSanitizerGuard(DataFlow::BarrierGuard guard) {
+  override predicate isSanitizer(DataFlow::Node node) {
     // To catch flows that only happen on 32-bit architectures we
     // consider an architecture-dependent sink bit size to be 32.
-    exists(int bitSize | if sinkBitSize != 0 then bitSize = sinkBitSize else bitSize = 32 |
-      guard.(UpperBoundCheckGuard).isBoundFor(bitSize, sourceIsSigned)
+    exists(UpperBoundCheckGuard g, int bitSize |
+      if sinkBitSize != 0 then bitSize = sinkBitSize else bitSize = 32
+    |
+      node = DataFlow::BarrierGuard<upperBoundCheckGuard/3>::getABarrierNodeForGuard(g) and
+      g.isBoundFor(bitSize, sourceIsSigned)
     )
   }
 
@@ -142,8 +145,12 @@ class ConversionWithoutBoundsCheckConfig extends TaintTracking::Configuration {
   }
 }
 
+private predicate upperBoundCheckGuard(DataFlow::Node g, Expr e, boolean branch) {
+  g.(UpperBoundCheckGuard).checks(e, branch)
+}
+
 /** An upper bound check that compares a variable to a constant value. */
-class UpperBoundCheckGuard extends DataFlow::BarrierGuard, DataFlow::RelationalComparisonNode {
+class UpperBoundCheckGuard extends DataFlow::RelationalComparisonNode {
   UpperBoundCheckGuard() {
     count(expr.getAnOperand().getExactValue()) = 1 and
     expr.getAnOperand().getType().getUnderlyingType() instanceof IntegerType
@@ -180,7 +187,8 @@ class UpperBoundCheckGuard extends DataFlow::BarrierGuard, DataFlow::RelationalC
     )
   }
 
-  override predicate checks(Expr e, boolean branch) {
+  /** Holds if this guard validates `e` upon evaluating to `branch`. */
+  predicate checks(Expr e, boolean branch) {
     this.leq(branch, DataFlow::exprNode(e), _, _) and
     not e.isConst()
   }

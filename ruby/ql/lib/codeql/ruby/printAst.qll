@@ -9,6 +9,7 @@
 private import AST
 private import codeql.ruby.Regexp as RE
 private import codeql.ruby.ast.internal.Synthesis
+private import ast.internal.AST
 
 /**
  * The query can extend this class to control which nodes are printed.
@@ -34,6 +35,8 @@ private predicate shouldPrintNode(AstNode n) {
 private predicate shouldPrintAstEdge(AstNode parent, string edgeName, AstNode child) {
   any(PrintAstConfiguration config).shouldPrintAstEdge(parent, edgeName, child)
 }
+
+private int nonSynthIndex() { result = min([-1, any(int i | exists(getSynthChild(_, i)))]) - 1 }
 
 newtype TPrintNode =
   TPrintRegularAstNode(AstNode n) { shouldPrintNode(n) } or
@@ -112,13 +115,22 @@ class PrintRegularAstNode extends PrintAstNode, TPrintRegularAstNode {
     )
   }
 
+  private int getSynthAstNodeIndex() {
+    not astNode.isSynthesized() and result = nonSynthIndex()
+    or
+    astNode = getSynthChild(astNode.getParent(), result)
+  }
+
   override int getOrder() {
     this =
       rank[result](PrintRegularAstNode p, Location l, File f |
         l = p.getLocation() and
         f = l.getFile()
       |
-        p order by f.getBaseName(), f.getAbsolutePath(), l.getStartLine(), l.getStartColumn()
+        p
+        order by
+          f.getBaseName(), f.getAbsolutePath(), l.getStartLine(), l.getStartColumn(),
+          l.getEndLine(), l.getEndColumn(), p.getSynthAstNodeIndex()
       )
   }
 

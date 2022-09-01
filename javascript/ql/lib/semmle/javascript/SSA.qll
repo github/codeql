@@ -501,7 +501,7 @@ class SsaExplicitDefinition extends SsaDefinition, TExplicitDef {
   }
 
   /** This SSA definition corresponds to the definition of `v` at `def`. */
-  predicate defines(VarDef d, SsaSourceVariable v) { this = TExplicitDef(_, _, d, v) }
+  predicate defines(VarDef def, SsaSourceVariable v) { this = TExplicitDef(_, _, def, v) }
 
   /** Gets the variable definition wrapped by this SSA definition. */
   VarDef getDef() { this = TExplicitDef(_, _, result, _) }

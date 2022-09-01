@@ -14,6 +14,17 @@ class Steps extends ModelInput::SummaryModelCsv {
         "testlib;;Member[preserveAllButFirstArgument];Argument[1..];ReturnValue;taint",
         "testlib;;Member[preserveAllIfCall].Call;Argument[0..];ReturnValue;taint",
         "testlib;;Member[getSource].ReturnValue.Member[continue];Argument[this];ReturnValue;taint",
+        "testlib;~HasThisFlow;;;Member[getThis].ReturnValue;type",
+      ]
+  }
+}
+
+class TypeDefs extends ModelInput::TypeModelCsv {
+  override predicate row(string row) {
+    row =
+      [
+        "testlib;~HasThisFlow;testlib;;Member[typevar]",
+        "testlib;~HasThisFlow;testlib;~HasThisFlow;Member[left,right,x]",
       ]
   }
 }
@@ -38,6 +49,22 @@ class Sinks extends ModelInput::SinkModelCsv {
         "testlib;;Member[MethodDecorator].DecoratedMember.ReturnValue;test-sink",
         "testlib;;Member[MethodDecoratorWithArgs].ReturnValue.DecoratedMember.ReturnValue;test-sink",
         "testlib;;Member[ParamDecoratorSink].DecoratedParameter;test-sink",
+        "testlib;;AnyMember.Member[memberSink].Argument[0];test-sink",
+        "testlib;;Member[overloadedSink].WithStringArgument[0=danger].Argument[1];test-sink",
+        "testlib;;Member[typevar].TypeVar[ABC].Member[mySink].Argument[0];test-sink",
+        "testlib;;Member[typevar].TypeVar[ABC].TypeVar[ABC].Member[mySink].Argument[1];test-sink",
+        "testlib;;Member[typevar].TypeVar[LeftRight].Member[mySink].Argument[0];test-sink",
+      ]
+  }
+}
+
+class TypeVars extends ModelInput::TypeVariableModelCsv {
+  override predicate row(string row) {
+    row =
+      [
+        "ABC;Member[a].Member[b].WithArity[0].ReturnValue.Member[c]", //
+        "LeftRight;Member[left].TypeVar[LeftRight].Member[right]", //
+        "LeftRight;Member[x]",
       ]
   }
 }
@@ -62,13 +89,13 @@ class BasicTaintTracking extends TaintTracking::Configuration {
   override predicate isSource(DataFlow::Node source) {
     source.(DataFlow::CallNode).getCalleeName() = "source"
     or
-    source = ModelOutput::getASourceNode("test-source").getAnImmediateUse()
+    source = ModelOutput::getASourceNode("test-source").asSource()
   }
 
   override predicate isSink(DataFlow::Node sink) {
     sink = any(DataFlow::CallNode call | call.getCalleeName() = "sink").getAnArgument()
     or
-    sink = ModelOutput::getASinkNode("test-sink").getARhs()
+    sink = ModelOutput::getASinkNode("test-sink").asSink()
   }
 }
 
@@ -77,7 +104,7 @@ query predicate taintFlow(DataFlow::Node source, DataFlow::Node sink) {
 }
 
 query predicate isSink(DataFlow::Node node, string kind) {
-  node = ModelOutput::getASinkNode(kind).getARhs()
+  node = ModelOutput::getASinkNode(kind).asSink()
 }
 
 class SyntaxErrorTest extends ModelInput::SinkModelCsv {

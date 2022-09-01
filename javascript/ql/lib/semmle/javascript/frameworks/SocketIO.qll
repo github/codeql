@@ -41,7 +41,7 @@ module SocketIO {
   class ServerObject extends SocketIOObject {
     API::Node node;
 
-    ServerObject() { node = newServer() and this = node.getAnImmediateUse() }
+    ServerObject() { node = newServer() and this = node.asSource() }
 
     /** Gets the Api node for this server. */
     API::Node asApiNode() { result = node }
@@ -55,7 +55,7 @@ module SocketIO {
     /** Gets the namespace with the given path of this server. */
     NamespaceObject getNamespace(string path) { result = MkNamespace(this, path) }
 
-    /** Gets a api node that may refer to the socket.io server created at `srv`. */
+    /** Gets a api node that may refer to a socket.io server. */
     private API::Node server() {
       result = node
       or
@@ -81,7 +81,7 @@ module SocketIO {
       )
     }
 
-    override DataFlow::SourceNode ref() { result = this.server().getAUse() }
+    override DataFlow::SourceNode ref() { result = this.server().getAValueReachableFromSource() }
   }
 
   /** A data flow node that may produce (that is, create or return) a socket.io server. */
@@ -119,7 +119,7 @@ module SocketIO {
     API::Node node;
 
     NamespaceBase() {
-      this = node.getAnImmediateUse() and
+      this = node.asSource() and
       exists(ServerObject srv |
         // namespace lookup on `srv`
         node = srv.asApiNode().getMember("sockets") and
@@ -144,7 +144,7 @@ module SocketIO {
     override NamespaceObject getNamespace() { result = ns }
 
     /**
-     * Gets a data flow node that may refer to the socket.io namespace created at `ns`.
+     * Gets a data flow node that may refer a the socket.io namespace.
      */
     private API::Node namespace() {
       result = node
@@ -158,7 +158,7 @@ module SocketIO {
       )
     }
 
-    override DataFlow::SourceNode ref() { result = this.namespace().getAUse() }
+    override DataFlow::SourceNode ref() { result = this.namespace().getAValueReachableFromSource() }
   }
 
   /** A data flow node that may produce a namespace object. */

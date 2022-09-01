@@ -1656,10 +1656,56 @@ constants/constants.rb:
 #   73|         1: [ReservedWord] ::
 #   73|         2: [Constant] FOURTY_SIX
 #   74|     5: [ReservedWord] end
+#   78|   13: [Assignment] Assignment
+#   78|     0: [Identifier] a
+#   78|     1: [ReservedWord] =
+#   78|     2: [Array] Array
+#   78|       0: [ReservedWord] [
+#   78|       1: [Integer] 1
+#   78|       2: [ReservedWord] ,
+#   78|       3: [Integer] 2
+#   78|       4: [ReservedWord] ,
+#   78|       5: [Integer] 3
+#   78|       6: [ReservedWord] ]
+#   79|   14: [Assignment] Assignment
+#   79|     0: [Constant] A
+#   79|     1: [ReservedWord] =
+#   79|     2: [Array] Array
+#   79|       0: [ReservedWord] [
+#   79|       1: [Integer] 1
+#   79|       2: [ReservedWord] ,
+#   79|       3: [Integer] 2
+#   79|       4: [ReservedWord] ,
+#   79|       5: [Integer] 3
+#   79|       6: [ReservedWord] ]
+#   80|   15: [Assignment] Assignment
+#   80|     0: [Constant] B
+#   80|     1: [ReservedWord] =
+#   80|     2: [Identifier] a
+#   81|   16: [Assignment] Assignment
+#   81|     0: [Constant] C
+#   81|     1: [ReservedWord] =
+#   81|     2: [Constant] A
+#   82|   17: [Assignment] Assignment
+#   82|     0: [Identifier] b
+#   82|     1: [ReservedWord] =
+#   82|     2: [Constant] B
+#   84|   18: [If] If
+#   84|     0: [ReservedWord] if
+#   84|     1: [Identifier] condition
+#   84|     2: [Then] Then
+#   85|       0: [Assignment] Assignment
+#   85|         0: [Identifier] c
+#   85|         1: [ReservedWord] =
+#   85|         2: [Identifier] b
+#   86|     3: [ReservedWord] end
+#   87|   19: [Identifier] c
 #   26| [Comment] # A call to Kernel::Array; despite beginning with an upper-case character,
 #   27| [Comment] # we don't consider this to be a constant access.
 #   55| [Comment] # refers to ::ModuleA::FOURTY_FOUR
 #   57| [Comment] # refers to ::ModuleA::ModuleB::ClassB::FOURTY_FOUR
+#   76| [Comment] # Array constants
+#   87| [Comment] # not recognised
 control/cases.rb:
 #    1| [Program] Program
 #    2|   0: [Assignment] Assignment
@@ -4558,6 +4604,17 @@ literals/literals.rb:
 #  193|    cat file.txt
 #  193|   
 #  195|   1: [HeredocEnd] SCRIPT
+misc/iso-8859-15.rb:
+#    1| [Program] Program
+#    4|   0: [Call] Call
+#    4|     0: [Identifier] print
+#    4|     1: [ArgumentList] ArgumentList
+#    4|       0: [String] String
+#    4|         0: [ReservedWord] "
+#    4|         1: [StringContent] EUR = €
+#    4|         2: [ReservedWord] "
+#    1| [Comment] #! /usr/bin/ruby
+#    2| [Comment] # coding: iso-8859-15
 misc/misc.erb:
 #    2| [Program] Program
 #    2|   0: [Call] Call

@@ -92,7 +92,7 @@ private module Tornado {
 
         /** A RequestHandler class (most likely in project code). */
         class RequestHandlerClass extends Class {
-          RequestHandlerClass() { this.getParent() = subclassRef().getAnImmediateUse().asExpr() }
+          RequestHandlerClass() { this.getParent() = subclassRef().asSource().asExpr() }
 
           /** Gets a function that could handle incoming requests, if any. */
           Function getARequestHandler() {

@@ -7,26 +7,26 @@ private class SystemComponentModelPropertyDescriptorCollectionFlowModelCsv exten
   override predicate row(string row) {
     row =
       [
-        "System.ComponentModel;PropertyDescriptorCollection;false;Add;(System.ComponentModel.PropertyDescriptor);;Argument[0];Argument[Qualifier].Element;value",
-        "System.ComponentModel;PropertyDescriptorCollection;false;Add;(System.ComponentModel.PropertyDescriptor);;Argument[0].Property[System.Collections.Generic.KeyValuePair<,>.Key];Argument[Qualifier].Element.Property[System.Collections.Generic.KeyValuePair<,>.Key];value",
-        "System.ComponentModel;PropertyDescriptorCollection;false;Add;(System.ComponentModel.PropertyDescriptor);;Argument[0].Property[System.Collections.Generic.KeyValuePair<,>.Value];Argument[Qualifier].Element.Property[System.Collections.Generic.KeyValuePair<,>.Value];value",
-        "System.ComponentModel;PropertyDescriptorCollection;false;Add;(System.Object);;Argument[0].Property[System.Collections.Generic.KeyValuePair<,>.Key];Argument[Qualifier].Element.Property[System.Collections.Generic.KeyValuePair<,>.Key];value",
-        "System.ComponentModel;PropertyDescriptorCollection;false;Add;(System.Object);;Argument[0].Property[System.Collections.Generic.KeyValuePair<,>.Value];Argument[Qualifier].Element.Property[System.Collections.Generic.KeyValuePair<,>.Value];value",
-        "System.ComponentModel;PropertyDescriptorCollection;false;Find;(System.String,System.Boolean);;Argument[Qualifier].Element;ReturnValue;value",
-        "System.ComponentModel;PropertyDescriptorCollection;false;GetEnumerator;();;Argument[Qualifier].Element;ReturnValue.Property[System.Collections.IEnumerator.Current];value",
-        "System.ComponentModel;PropertyDescriptorCollection;false;Insert;(System.Int32,System.ComponentModel.PropertyDescriptor);;Argument[1];Argument[Qualifier].Element;value",
-        "System.ComponentModel;PropertyDescriptorCollection;false;PropertyDescriptorCollection;(System.ComponentModel.PropertyDescriptor[]);;Argument[0].Element.Property[System.Collections.Generic.KeyValuePair<,>.Key];ReturnValue.Element.Property[System.Collections.Generic.KeyValuePair<,>.Key];value",
-        "System.ComponentModel;PropertyDescriptorCollection;false;PropertyDescriptorCollection;(System.ComponentModel.PropertyDescriptor[]);;Argument[0].Element.Property[System.Collections.Generic.KeyValuePair<,>.Value];ReturnValue.Element.Property[System.Collections.Generic.KeyValuePair<,>.Value];value",
-        "System.ComponentModel;PropertyDescriptorCollection;false;PropertyDescriptorCollection;(System.ComponentModel.PropertyDescriptor[],System.Boolean);;Argument[0].Element.Property[System.Collections.Generic.KeyValuePair<,>.Key];ReturnValue.Element.Property[System.Collections.Generic.KeyValuePair<,>.Key];value",
-        "System.ComponentModel;PropertyDescriptorCollection;false;PropertyDescriptorCollection;(System.ComponentModel.PropertyDescriptor[],System.Boolean);;Argument[0].Element.Property[System.Collections.Generic.KeyValuePair<,>.Value];ReturnValue.Element.Property[System.Collections.Generic.KeyValuePair<,>.Value];value",
-        "System.ComponentModel;PropertyDescriptorCollection;false;get_Item;(System.Int32);;Argument[Qualifier].Element;ReturnValue;value",
-        "System.ComponentModel;PropertyDescriptorCollection;false;get_Item;(System.Int32);;Argument[Qualifier].Element.Property[System.Collections.Generic.KeyValuePair<,>.Value];ReturnValue;value",
-        "System.ComponentModel;PropertyDescriptorCollection;false;get_Item;(System.Object);;Argument[Qualifier].Element;ReturnValue;value",
-        "System.ComponentModel;PropertyDescriptorCollection;false;get_Item;(System.String);;Argument[Qualifier].Element;ReturnValue;value",
-        "System.ComponentModel;PropertyDescriptorCollection;false;get_Item;(System.String);;Argument[Qualifier].Element.Property[System.Collections.Generic.KeyValuePair<,>.Value];ReturnValue;value",
-        "System.ComponentModel;PropertyDescriptorCollection;false;set_Item;(System.Int32,System.Object);;Argument[0];Argument[Qualifier].Element.Property[System.Collections.Generic.KeyValuePair<,>.Key];value",
-        "System.ComponentModel;PropertyDescriptorCollection;false;set_Item;(System.Int32,System.Object);;Argument[1];Argument[Qualifier].Element.Property[System.Collections.Generic.KeyValuePair<,>.Value];value",
-        "System.ComponentModel;PropertyDescriptorCollection;false;set_Item;(System.Object,System.Object);;Argument[1];Argument[Qualifier].Element;value",
+        "System.ComponentModel;PropertyDescriptorCollection;false;Add;(System.ComponentModel.PropertyDescriptor);;Argument[0];Argument[this].Element;value;manual",
+        "System.ComponentModel;PropertyDescriptorCollection;false;Add;(System.ComponentModel.PropertyDescriptor);;Argument[0].Property[System.Collections.Generic.KeyValuePair<,>.Key];Argument[this].Element.Property[System.Collections.Generic.KeyValuePair<,>.Key];value;manual",
+        "System.ComponentModel;PropertyDescriptorCollection;false;Add;(System.ComponentModel.PropertyDescriptor);;Argument[0].Property[System.Collections.Generic.KeyValuePair<,>.Value];Argument[this].Element.Property[System.Collections.Generic.KeyValuePair<,>.Value];value;manual",
+        "System.ComponentModel;PropertyDescriptorCollection;false;Add;(System.Object);;Argument[0].Property[System.Collections.Generic.KeyValuePair<,>.Key];Argument[this].Element.Property[System.Collections.Generic.KeyValuePair<,>.Key];value;manual",
+        "System.ComponentModel;PropertyDescriptorCollection;false;Add;(System.Object);;Argument[0].Property[System.Collections.Generic.KeyValuePair<,>.Value];Argument[this].Element.Property[System.Collections.Generic.KeyValuePair<,>.Value];value;manual",
+        "System.ComponentModel;PropertyDescriptorCollection;false;Find;(System.String,System.Boolean);;Argument[this].Element;ReturnValue;value;manual",
+        "System.ComponentModel;PropertyDescriptorCollection;false;GetEnumerator;();;Argument[this].Element;ReturnValue.Property[System.Collections.IEnumerator.Current];value;manual",
+        "System.ComponentModel;PropertyDescriptorCollection;false;Insert;(System.Int32,System.ComponentModel.PropertyDescriptor);;Argument[1];Argument[this].Element;value;manual",
+        "System.ComponentModel;PropertyDescriptorCollection;false;PropertyDescriptorCollection;(System.ComponentModel.PropertyDescriptor[]);;Argument[0].Element.Property[System.Collections.Generic.KeyValuePair<,>.Key];Argument[this].Element.Property[System.Collections.Generic.KeyValuePair<,>.Key];value;manual",
+        "System.ComponentModel;PropertyDescriptorCollection;false;PropertyDescriptorCollection;(System.ComponentModel.PropertyDescriptor[]);;Argument[0].Element.Property[System.Collections.Generic.KeyValuePair<,>.Value];Argument[this].Element.Property[System.Collections.Generic.KeyValuePair<,>.Value];value;manual",
+        "System.ComponentModel;PropertyDescriptorCollection;false;PropertyDescriptorCollection;(System.ComponentModel.PropertyDescriptor[],System.Boolean);;Argument[0].Element.Property[System.Collections.Generic.KeyValuePair<,>.Key];Argument[this].Element.Property[System.Collections.Generic.KeyValuePair<,>.Key];value;manual",
+        "System.ComponentModel;PropertyDescriptorCollection;false;PropertyDescriptorCollection;(System.ComponentModel.PropertyDescriptor[],System.Boolean);;Argument[0].Element.Property[System.Collections.Generic.KeyValuePair<,>.Value];Argument[this].Element.Property[System.Collections.Generic.KeyValuePair<,>.Value];value;manual",
+        "System.ComponentModel;PropertyDescriptorCollection;false;get_Item;(System.Int32);;Argument[this].Element;ReturnValue;value;manual",
+        "System.ComponentModel;PropertyDescriptorCollection;false;get_Item;(System.Int32);;Argument[this].Element.Property[System.Collections.Generic.KeyValuePair<,>.Value];ReturnValue;value;manual",
+        "System.ComponentModel;PropertyDescriptorCollection;false;get_Item;(System.Object);;Argument[this].Element;ReturnValue;value;manual",
+        "System.ComponentModel;PropertyDescriptorCollection;false;get_Item;(System.String);;Argument[this].Element;ReturnValue;value;manual",
+        "System.ComponentModel;PropertyDescriptorCollection;false;get_Item;(System.String);;Argument[this].Element.Property[System.Collections.Generic.KeyValuePair<,>.Value];ReturnValue;value;manual",
+        "System.ComponentModel;PropertyDescriptorCollection;false;set_Item;(System.Int32,System.Object);;Argument[0];Argument[this].Element.Property[System.Collections.Generic.KeyValuePair<,>.Key];value;manual",
+        "System.ComponentModel;PropertyDescriptorCollection;false;set_Item;(System.Int32,System.Object);;Argument[1];Argument[this].Element.Property[System.Collections.Generic.KeyValuePair<,>.Value];value;manual",
+        "System.ComponentModel;PropertyDescriptorCollection;false;set_Item;(System.Object,System.Object);;Argument[1];Argument[this].Element;value;manual",
       ]
   }
 }
@@ -36,12 +36,12 @@ private class SystemComponentModelEventDescriptorCollectionFlowModelCsv extends 
   override predicate row(string row) {
     row =
       [
-        "System.ComponentModel;EventDescriptorCollection;false;Add;(System.ComponentModel.EventDescriptor);;Argument[0];Argument[Qualifier].Element;value",
-        "System.ComponentModel;EventDescriptorCollection;false;Find;(System.String,System.Boolean);;Argument[Qualifier].Element;ReturnValue;value",
-        "System.ComponentModel;EventDescriptorCollection;false;GetEnumerator;();;Argument[Qualifier].Element;ReturnValue.Property[System.Collections.IEnumerator.Current];value",
-        "System.ComponentModel;EventDescriptorCollection;false;Insert;(System.Int32,System.ComponentModel.EventDescriptor);;Argument[1];Argument[Qualifier].Element;value",
-        "System.ComponentModel;EventDescriptorCollection;false;get_Item;(System.Int32);;Argument[Qualifier].Element;ReturnValue;value",
-        "System.ComponentModel;EventDescriptorCollection;false;get_Item;(System.String);;Argument[Qualifier].Element;ReturnValue;value",
+        "System.ComponentModel;EventDescriptorCollection;false;Add;(System.ComponentModel.EventDescriptor);;Argument[0];Argument[this].Element;value;manual",
+        "System.ComponentModel;EventDescriptorCollection;false;Find;(System.String,System.Boolean);;Argument[this].Element;ReturnValue;value;manual",
+        "System.ComponentModel;EventDescriptorCollection;false;GetEnumerator;();;Argument[this].Element;ReturnValue.Property[System.Collections.IEnumerator.Current];value;manual",
+        "System.ComponentModel;EventDescriptorCollection;false;Insert;(System.Int32,System.ComponentModel.EventDescriptor);;Argument[1];Argument[this].Element;value;manual",
+        "System.ComponentModel;EventDescriptorCollection;false;get_Item;(System.Int32);;Argument[this].Element;ReturnValue;value;manual",
+        "System.ComponentModel;EventDescriptorCollection;false;get_Item;(System.String);;Argument[this].Element;ReturnValue;value;manual",
       ]
   }
 }
@@ -51,8 +51,8 @@ private class SystemComponentModelListSortDescriptionCollectionFlowModelCsv exte
   override predicate row(string row) {
     row =
       [
-        "System.ComponentModel;ListSortDescriptionCollection;false;get_Item;(System.Int32);;Argument[Qualifier].Element;ReturnValue;value",
-        "System.ComponentModel;ListSortDescriptionCollection;false;set_Item;(System.Int32,System.ComponentModel.ListSortDescription);;Argument[1];Argument[Qualifier].Element;value",
+        "System.ComponentModel;ListSortDescriptionCollection;false;get_Item;(System.Int32);;Argument[this].Element;ReturnValue;value;manual",
+        "System.ComponentModel;ListSortDescriptionCollection;false;set_Item;(System.Int32,System.ComponentModel.ListSortDescription);;Argument[1];Argument[this].Element;value;manual",
       ]
   }
 }
@@ -61,7 +61,7 @@ private class SystemComponentModelListSortDescriptionCollectionFlowModelCsv exte
 private class SystemComponentModelComponentCollectionFlowModelCsv extends SummaryModelCsv {
   override predicate row(string row) {
     row =
-      "System.ComponentModel;ComponentCollection;false;CopyTo;(System.ComponentModel.IComponent[],System.Int32);;Argument[Qualifier].Element;Argument[0].Element;value"
+      "System.ComponentModel;ComponentCollection;false;CopyTo;(System.ComponentModel.IComponent[],System.Int32);;Argument[this].Element;Argument[0].Element;value;manual"
   }
 }
 
@@ -69,7 +69,7 @@ private class SystemComponentModelComponentCollectionFlowModelCsv extends Summar
 private class SystemComponentModelAttributeCollectionFlowModelCsv extends SummaryModelCsv {
   override predicate row(string row) {
     row =
-      "System.ComponentModel;AttributeCollection;false;GetEnumerator;();;Argument[Qualifier].Element;ReturnValue.Property[System.Collections.IEnumerator.Current];value"
+      "System.ComponentModel;AttributeCollection;false;GetEnumerator;();;Argument[this].Element;ReturnValue.Property[System.Collections.IEnumerator.Current];value;manual"
   }
 }
 
@@ -77,6 +77,6 @@ private class SystemComponentModelAttributeCollectionFlowModelCsv extends Summar
 private class SystemComponentModelIBindingListFlowModelCsv extends SummaryModelCsv {
   override predicate row(string row) {
     row =
-      "System.ComponentModel;IBindingList;true;Find;(System.ComponentModel.PropertyDescriptor,System.Object);;Argument[Qualifier].Element;ReturnValue;value"
+      "System.ComponentModel;IBindingList;true;Find;(System.ComponentModel.PropertyDescriptor,System.Object);;Argument[this].Element;ReturnValue;value;manual"
   }
 }

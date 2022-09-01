@@ -229,10 +229,10 @@ module MembershipCandidate {
         membersNode = inExpr.getRightOperand()
       )
       or
-      exists(MethodCallExpr hasOwn |
-        this = hasOwn.getArgument(0).flow() and
-        test = hasOwn and
-        hasOwn.calls(membersNode, "hasOwnProperty")
+      exists(HasOwnPropertyCall hasOwn |
+        this = hasOwn.getProperty() and
+        test = hasOwn.asExpr() and
+        membersNode = hasOwn.getObject().asExpr()
       )
     }
 

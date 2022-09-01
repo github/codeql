@@ -9,6 +9,7 @@ on:
       - main
     paths:
       - ".github/workflows/mad_regenerate-models.yml"
+      - ".github/actions/fetch-codeql/action.yml"
 
 jobs:
   regenerate-models:
@@ -20,7 +21,7 @@ jobs:
         ref: ["placeholder"]
         include:
           - slug: "apache/commons-io"
-            ref: "8985de8fe74f6622a419b37a6eed0dbc484dc128"
+            ref: "13258ce2d07aa0e764bbaa8020af4dcd3a02a620"
         exclude:
           - slug: "placeholder"
             ref: "placeholder"
