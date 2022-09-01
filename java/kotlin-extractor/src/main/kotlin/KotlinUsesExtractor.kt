@@ -1195,7 +1195,7 @@ open class KotlinUsesExtractor(
                             decl.valueParameters.size == f.valueParameters.size
                         } ?:
                         // Or check property accessors:
-                        (f.propertyIfAccessor as? IrProperty?)?.let { kotlinProp ->
+                        (f.propertyIfAccessor as? IrProperty)?.let { kotlinProp ->
                             val javaProp = javaClass.declarations.findSubType<IrProperty> { decl ->
                                 decl.name == kotlinProp.name
                             }
