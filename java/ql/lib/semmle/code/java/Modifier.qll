@@ -7,7 +7,13 @@ import Element
 /** A modifier such as `private`, `static` or `abstract`. */
 class Modifier extends Element, @modifier {
   /** Gets the element to which this modifier applies. */
-  Element getElement() { hasModifier(result, this) }
+  Element getElement() {
+    hasModifier(result, this) and
+    // Kotlin "internal" elements may also get "public" modifiers, so we want to filter those out
+    not exists(Modifier mod2 |
+      hasModifier(result, mod2) and modifiers(this, "public") and modifiers(mod2, "internal")
+    )
+  }
 
   override string getAPrimaryQlClass() { result = "Modifier" }
 }
@@ -25,7 +31,15 @@ abstract class Modifiable extends Element {
    * abstract, so `isAbstract()` will hold for them even if `hasModifier("abstract")`
    * does not.
    */
-  predicate hasModifier(string m) { modifiers(this.getAModifier(), m) }
+  predicate hasModifier(string m) {
+    exists(Modifier mod | mod = this.getAModifier() |
+      modifiers(mod, m) and
+      // Kotlin "internal" elements may also get "public" modifiers, so we want to filter those out
+      not exists(Modifier mod2 |
+        hasModifier(this, mod2) and modifiers(mod, "public") and modifiers(mod2, "internal")
+      )
+    )
+  }
 
   /** Holds if this element has no modifier. */
   predicate hasNoModifier() { not hasModifier(this, _) }
@@ -46,11 +60,8 @@ abstract class Modifiable extends Element {
   // TODO: `isSealed()` conflicts with `ClassOrInterface.isSealed()`. What name do we want to use here?
   predicate isSealedKotlin() { this.hasModifier("sealed") }
 
-  /**
-   * Holds if this element has a `public` modifier or is implicitly public.
-   * Kotlin `internal` members, which are `public` in JVM Bytecode, are not considered `public`.
-   */
-  predicate isPublic() { this.hasModifier("public") and not this.isInternal() }
+  /** Holds if this element has a `public` modifier or is implicitly public. */
+  predicate isPublic() { this.hasModifier("public") }
 
   /** Holds if this element has a `protected` modifier. */
   predicate isProtected() { this.hasModifier("protected") }
