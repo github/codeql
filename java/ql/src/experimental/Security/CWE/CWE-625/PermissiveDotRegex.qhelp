@@ -4,10 +4,10 @@
 <qhelp>
 
 <overview>
-<p>By default, "dot" (<code>.</code>) in regular expressions matches all characters except newline characters <code>\n</code> and
-<code>\r</code>. Regular expressions containing a dot can be bypassed with the characters \r(%0a) , \n(%0d) when the default regex
-matching implementations of Java are used. When regular expressions serve to match protected resource patterns to grant access
-to protected application resources, attackers can gain access to unauthorized paths.</p>
+<p>By default, a "dot" (<code>.</code>) in a regular expression matches all characters except the new line characters <code>\n</code> and
+<code>\r</code>. Regular expressions containing a dot can be bypassed with the characters <code>\r</code>(<code>%0a</code>) and 
+<code>\n</code>(<code>%0d</code>) when the default Java regular expression matching implementations are used. This becomes a security issue
+if these regular expressions are used to decide whether to grant access to protected application resources.</p>
 </overview>
 
 <recommendation>
@@ -17,18 +17,15 @@ to address this vulnerability.</p>
 </recommendation>
 
 <example>
-<p>The following examples show the bad case and the good case respectively. The <code>bad</code> methods show a regex pattern allowing
-bypass. In the <code>good</code> methods, it is shown how to solve this problem by either specifying the regex pattern correctly or
-use the Java API that can detect new line characters. 
+<p>The following snippets show a vulnerable example and a secure example respectively. The <code>bad</code> methods show a regex pattern allowing
+a bypass by using line break characters. In the <code>good</code> methods, it is shown how to solve this problem by either specifying the regex 
+pattern correctly or using a Java API that properly matches new line characters.
 </p>
 
 <sample src="DotRegex.java" />
 </example>
 
 <references>
-<li>Lay0us1:
-  <a href="https://github.com/Lay0us1/CVE-2022-32532">CVE 2022-22978: Authorization Bypass in RegexRequestMatcher</a>.
-</li>
 <li>Apache Shiro:
   <a href="https://github.com/apache/shiro/commit/6bcb92e06fa588b9c7790dd01bc02135d58d3f5b">Address the RegexRequestMatcher issue in 1.9.1</a>.
 </li>

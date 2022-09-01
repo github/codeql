@@ -9,7 +9,7 @@ import semmle.code.java.security.UrlRedirect
 import Regex
 
 /** A string that ends with `.*` not prefixed with `\`. */
-class PermissiveDotStr extends StringLiteral {
+private class PermissiveDotStr extends StringLiteral {
   PermissiveDotStr() {
     exists(string s, int i | this.getValue() = s |
       s.indexOf(".*") = i and
@@ -19,7 +19,7 @@ class PermissiveDotStr extends StringLiteral {
   }
 }
 
-/** Source model of remote flow source with servlets. */
+/** Remote flow sources obtained from the URI of a serlvet request. */
 private class GetServletUriSource extends SourceModelCsv {
   override predicate row(string row) {
     row =
@@ -33,7 +33,7 @@ private class GetServletUriSource extends SourceModelCsv {
   }
 }
 
-/** Sink of servlet dispatcher. */
+/** The qualifier of a request dispatch method call. */
 private class UrlDispatchSink extends UrlRedirectSink {
   UrlDispatchSink() {
     exists(MethodAccess ma |
@@ -51,7 +51,7 @@ private class ServletFilterMethod extends Method {
   }
 }
 
-/** Sink of servlet filter. */
+/** The qualifier of a servlet filter method call. */
 private class UrlFilterSink extends UrlRedirectSink {
   UrlFilterSink() {
     exists(MethodAccess ma |
@@ -61,8 +61,8 @@ private class UrlFilterSink extends UrlRedirectSink {
   }
 }
 
-/** A Spring framework annotation indicating remote uri user input. */
-class SpringUriInputAnnotation extends Annotation {
+/** A Spring framework annotation indicating that a URI is user-provided. */
+private class SpringUriInputAnnotation extends Annotation {
   SpringUriInputAnnotation() {
     this.getType()
         .hasQualifiedName("org.springframework.web.bind.annotation",
@@ -70,7 +70,8 @@ class SpringUriInputAnnotation extends Annotation {
   }
 }
 
-class SpringUriInputParameterSource extends DataFlow::Node {
+/** A user-provided URI parameter of a request mapping method. */
+private class SpringUriInputParameterSource extends DataFlow::Node {
   SpringUriInputParameterSource() {
     this.asParameter() =
       any(SpringRequestMappingParameter srmp |
@@ -82,7 +83,7 @@ class SpringUriInputParameterSource extends DataFlow::Node {
 /**
  * A data flow sink to construct regular expressions.
  */
-class CompileRegexSink extends DataFlow::ExprNode {
+private class CompileRegexSink extends DataFlow::ExprNode {
   CompileRegexSink() {
     exists(MethodAccess ma, Method m | m = ma.getMethod() |
       (
@@ -100,9 +101,9 @@ class CompileRegexSink extends DataFlow::ExprNode {
 }
 
 /**
- * A flow configuration for permissive dot regex.
+ * A data flow configuration for regular expressions that include permissive dots.
  */
-class PermissiveDotRegexConfig extends DataFlow2::Configuration {
+private class PermissiveDotRegexConfig extends DataFlow2::Configuration {
   PermissiveDotRegexConfig() { this = "PermissiveDotRegex::PermissiveDotRegexConfig" }
 
   override predicate isSource(DataFlow2::Node src) { src.asExpr() instanceof PermissiveDotStr }
@@ -123,7 +124,8 @@ class PermissiveDotRegexConfig extends DataFlow2::Configuration {
 }
 
 /**
- * A taint-tracking configuration for untrusted user input used to match regular expressions.
+ * A taint-tracking configuration for untrusted user input used to match regular expressions
+ * that include permissive dots.
  */
 class MatchRegexConfiguration extends TaintTracking::Configuration {
   MatchRegexConfiguration() { this = "PermissiveDotRegex::MatchRegexConfiguration" }
@@ -173,12 +175,15 @@ class MatchRegexConfiguration extends TaintTracking::Configuration {
   }
 }
 
+/**
+ * A data flow sink representing a string being matched against a regular expression.
+ */
 abstract class MatchRegexSink extends DataFlow::ExprNode { }
 
 /**
- * A data flow sink to string match regular expressions.
+ * A string being matched against a regular expression.
  */
-class StringMatchRegexSink extends MatchRegexSink {
+private class StringMatchRegexSink extends MatchRegexSink {
   StringMatchRegexSink() {
     exists(MethodAccess ma, Method m | m = ma.getMethod() |
       (
@@ -190,9 +195,9 @@ class StringMatchRegexSink extends MatchRegexSink {
 }
 
 /**
- * A data flow sink to `pattern.matches` regular expressions.
+ * A string being matched against a regular expression using a pattern.
  */
-class PatternMatchRegexSink extends MatchRegexSink {
+private class PatternMatchRegexSink extends MatchRegexSink {
   PatternMatchRegexSink() {
     exists(MethodAccess ma, Method m | m = ma.getMethod() |
       (
@@ -204,9 +209,9 @@ class PatternMatchRegexSink extends MatchRegexSink {
 }
 
 /**
- * A data flow sink to `pattern.matcher` match regular expressions.
+ * A string being used to create a pattern matcher.
  */
-class PatternMatcherRegexSink extends MatchRegexSink {
+private class PatternMatcherRegexSink extends MatchRegexSink {
   PatternMatcherRegexSink() {
     exists(MethodAccess ma, Method m | m = ma.getMethod() |
       (
