@@ -69,8 +69,8 @@ private class ExactPathMatchSanitizer extends PathInjectionSanitizer {
   }
 }
 
-private class AllowListGuard extends Guard instanceof MethodAccess {
-  AllowListGuard() {
+private class AllowedPrefixGuard extends Guard instanceof MethodAccess {
+  AllowedPrefixGuard() {
     (isStringPrefixMatch(this) or isPathPrefixMatch(this)) and
     not isDisallowedWord(super.getAnArgument())
   }
@@ -79,16 +79,16 @@ private class AllowListGuard extends Guard instanceof MethodAccess {
 }
 
 /**
- * Holds if `g` is a guard that considers a path safe because it is checked against an allowlist of partial trusted values.
+ * Holds if `g` is a guard that considers a path safe because it is checked against trusted prefixes.
  * This requires additional protection against path traversal, either another guard (`PathTraversalGuard`)
  * or a sanitizer (`PathNormalizeSanitizer`), to ensure any internal `..` components are removed from the path.
  */
-private predicate allowListGuard(Guard g, Expr e, boolean branch) {
+private predicate allowedPrefixGuard(Guard g, Expr e, boolean branch) {
   branch = true and
-  TaintTracking::localExprTaint(e, g.(AllowListGuard).getCheckedExpr()) and
+  TaintTracking::localExprTaint(e, g.(AllowedPrefixGuard).getCheckedExpr()) and
   exists(Expr previousGuard |
     TaintTracking::localExprTaint(previousGuard.(PathNormalizeSanitizer),
-      g.(AllowListGuard).getCheckedExpr())
+      g.(AllowedPrefixGuard).getCheckedExpr())
     or
     previousGuard
         .(PathTraversalGuard)
@@ -96,10 +96,10 @@ private predicate allowListGuard(Guard g, Expr e, boolean branch) {
   )
 }
 
-private class AllowListSanitizer extends PathInjectionSanitizer {
-  AllowListSanitizer() {
-    this = DataFlow::BarrierGuard<allowListGuard/3>::getABarrierNode() or
-    this = ValidationMethod<allowListGuard/3>::getAValidatedNode()
+private class AllowedPrefixSanitizer extends PathInjectionSanitizer {
+  AllowedPrefixSanitizer() {
+    this = DataFlow::BarrierGuard<allowedPrefixGuard/3>::getABarrierNode() or
+    this = ValidationMethod<allowedPrefixGuard/3>::getAValidatedNode()
   }
 }
 
@@ -111,7 +111,7 @@ private predicate dotDotCheckGuard(Guard g, Expr e, boolean branch) {
   branch = g.(PathTraversalGuard).getBranch() and
   TaintTracking::localExprTaint(e, g.(PathTraversalGuard).getCheckedExpr()) and
   exists(Guard previousGuard |
-    previousGuard.(AllowListGuard).controls(g.getBasicBlock().(ConditionBlock), true)
+    previousGuard.(AllowedPrefixGuard).controls(g.getBasicBlock().(ConditionBlock), true)
     or
     previousGuard.(BlockListGuard).controls(g.getBasicBlock().(ConditionBlock), false)
   )
