@@ -541,6 +541,12 @@ open class KotlinUsesExtractor(
 
     private fun useArrayType(arrayType: IrSimpleType, componentType: IrType, elementType: IrType, dimensions: Int, isPrimitiveArray: Boolean): TypeResults {
 
+        val arrayClass = arrayType.classifier.owner
+        if (arrayClass !is IrClass) {
+            error("Unexpected owner type for array type: ${arrayClass.javaClass}")
+            return extractErrorType()
+        }
+
         // Ensure we extract Array<Int> as Integer[], not int[], for example:
         fun nullableIfNotPrimitive(type: IrType) = if (type.isPrimitiveType() && !isPrimitiveArray) type.makeNullable() else type
 
@@ -557,7 +563,7 @@ open class KotlinUsesExtractor(
                 dimensions,
                 componentTypeResults.javaResult.id)
 
-            extractClassSupertypes(arrayType.classifier.owner as IrClass, it, ExtractSupertypesMode.Specialised(arrayType.arguments))
+            extractClassSupertypes(arrayClass, it, ExtractSupertypesMode.Specialised(arrayType.arguments))
 
             // array.length
             val length = tw.getLabelFor<DbField>("@\"field;{$it};length\"")
@@ -582,7 +588,7 @@ open class KotlinUsesExtractor(
             componentTypeResults.javaResult.signature + "[]",
             javaShortName)
 
-        val arrayClassResult = useSimpleTypeClass(arrayType.classifier.owner as IrClass, arrayType.arguments, arrayType.hasQuestionMark)
+        val arrayClassResult = useSimpleTypeClass(arrayClass, arrayType.arguments, arrayType.hasQuestionMark)
         return TypeResults(javaResult, arrayClassResult.kotlinResult)
     }
 
