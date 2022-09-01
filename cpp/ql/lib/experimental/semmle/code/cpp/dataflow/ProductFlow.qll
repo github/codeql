@@ -24,8 +24,7 @@ module ProductFlow {
       DataFlow::PathNode source1, DataFlow2::PathNode source2, DataFlow::PathNode sink1,
       DataFlow2::PathNode sink2
     ) {
-      isSinkPair(sink1.getNode(), sink2.getNode()) and
-      reachablePair2(this, source1, source2, sink1, sink2)
+      reachable(this, source1, source2, sink1, sink2)
     }
   }
 
@@ -62,58 +61,59 @@ module ProductFlow {
     }
   }
 
-  private predicate reachablePair1(
-    Configuration conf, DataFlow::PathNode source1, DataFlow2::PathNode source2,
-    DataFlow::PathNode node1, DataFlow2::PathNode node2
-  ) {
-    reachablePair(conf, source1, source2, node1, node2)
-    or
-    exists(DataFlow::PathNode mid1 |
-      reachablePair1(conf, source1, source2, mid1, node2) and
-      mid1.getASuccessor() = node1 and
-      mid1.getNode().getEnclosingCallable() = node1.getNode().getEnclosingCallable()
-    )
-  }
 
-  private predicate reachablePair2(
-    Configuration conf, DataFlow::PathNode source1, DataFlow2::PathNode source2,
-    DataFlow::PathNode node1, DataFlow2::PathNode node2
-  ) {
-    reachablePair1(conf, source1, source2, node1, node2) // TODO: restrict more
-    or
-    exists(DataFlow2::PathNode mid2 |
-      reachablePair2(conf, source1, source2, node1, mid2) and
-      mid2.getASuccessor() = node2 and
-      mid2.getNode().getEnclosingCallable() = node2.getNode().getEnclosingCallable()
-    )
-  }
-
-  private predicate interprocStep(
-    Configuration conf, DataFlow::PathNode source1, DataFlow2::PathNode source2,
-    DataFlow::PathNode node1, DataFlow2::PathNode node2
-  ) {
-    exists(DataFlow::PathNode mid1, DataFlow2::PathNode mid2, Function funcMid, Function func |
-      reachablePair2(conf, source1, source2, mid1, mid2) and
-      mid1.getASuccessor() = node1 and
-      mid2.getASuccessor() = node2 and
-      mid1.getNode().getEnclosingCallable() = funcMid and // TODO: recursive function weirdness?
-      mid2.getNode().getEnclosingCallable() = funcMid and
-      node1.getNode().getEnclosingCallable() = func and
-      node2.getNode().getEnclosingCallable() = func and
-      funcMid != func
-    )
-  }
-
-  private predicate reachablePair(
+  private predicate reachableInterprocEntry(
     Configuration conf, DataFlow::PathNode source1, DataFlow2::PathNode source2,
     DataFlow::PathNode node1, DataFlow2::PathNode node2
   ) {
     conf.isSourcePair(node1.getNode(), node2.getNode()) and
-    node1.isSource() and
-    node2.isSource() and
-    source1 = node1 and
-    source2 = node2
+    node1 = source1 and
+    node2 = source2
     or
-    interprocStep(conf, source1, source2, node1, node2)
+    exists(
+      DataFlow::PathNode midEntry1, DataFlow2::PathNode midEntry2, DataFlow::PathNode midExit1,
+      DataFlow2::PathNode midExit2
+    |
+      reachableInterprocEntry(conf, source1, source2, midEntry1, midEntry2) and
+      interprocEdgePair(midExit1, midExit2, node1, node2) and
+      localPathStep1*(midEntry1, midExit1) and
+      localPathStep2*(midEntry2, midExit2)
+    )
+  }
+
+  private predicate localPathStep1(DataFlow::PathNode pred, DataFlow::PathNode succ) {
+    DataFlow::PathGraph::edges(pred, succ) and
+    pred.getNode().getEnclosingCallable() = succ.getNode().getEnclosingCallable()
+  }
+
+  private predicate localPathStep2(DataFlow2::PathNode pred, DataFlow2::PathNode succ) {
+    DataFlow2::PathGraph::edges(pred, succ) and
+    pred.getNode().getEnclosingCallable() = succ.getNode().getEnclosingCallable()
+  }
+
+  private predicate interprocEdgePair(
+    DataFlow::PathNode pred1, DataFlow2::PathNode pred2, DataFlow::PathNode succ1,
+    DataFlow2::PathNode succ2
+  ) {
+    exists(Declaration predDecl, Declaration succDecl |
+      DataFlow::PathGraph::edges(pred1, succ1) and
+      DataFlow2::PathGraph::edges(pred2, succ2) and
+      predDecl != succDecl and
+      pred1.getNode().getEnclosingCallable() = predDecl and
+      pred2.getNode().getEnclosingCallable() = predDecl and
+      succ1.getNode().getEnclosingCallable() = succDecl and
+      succ2.getNode().getEnclosingCallable() = succDecl
+    )
+  }
+
+  private predicate reachable(
+    Configuration conf, DataFlow::PathNode source1, DataFlow2::PathNode source2, DataFlow::PathNode sink1, DataFlow2::PathNode sink2
+  ) {
+    exists(DataFlow::PathNode mid1, DataFlow2::PathNode mid2 |
+      reachableInterprocEntry(conf, source1, source2, mid1, mid2) and
+      conf.isSinkPair(sink1.getNode(), sink2.getNode()) and
+      localPathStep1*(mid1, sink1) and
+      localPathStep2*(mid2, sink2)
+    )
   }
 }
