@@ -1,0 +1,2 @@
+| test.kt:3:5:3:13 | Dispatch receiver not found |
+| test.kt:3:5:3:13 | Extra arguments found |
