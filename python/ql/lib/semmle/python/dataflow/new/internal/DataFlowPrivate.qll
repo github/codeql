@@ -335,11 +335,7 @@ predicate runtimeJumpStep(Node nodeFrom, Node nodeTo) {
   nodeFrom = nodeTo.(ModuleVariableNode).getAWrite()
   or
   // Setting the possible values of the variable at the end of import time
-  exists(SsaVariable def |
-    def = any(SsaVariable var).getAnUltimateDefinition() and
-    def.getDefinition() = nodeFrom.asCfgNode() and
-    def.getVariable() = nodeTo.(ModuleVariableNode).getVariable()
-  )
+  nodeFrom = nodeTo.(ModuleVariableNode).getADefiningWrite()
 }
 
 /**
