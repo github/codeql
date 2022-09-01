@@ -19,6 +19,8 @@ class OptionalTypeTrackerContent = DataFlowPublic::OptionalContent;
 
 class TypeTrackerContent = DataFlowPublic::Content;
 
+class TypeTrackerContentSet = DataFlowPublic::ContentSet;
+
 predicate noContent = DataFlowPublic::Content::noContent/0;
 
 /** Holds if there is a simple local flow step from `nodeFrom` to `nodeTo` */
@@ -145,20 +147,16 @@ predicate returnStep(Node nodeFrom, Node nodeTo) {
  * to `z` inside `bar`, even though this content write happens _after_ `bar` is
  * called.
  */
-predicate basicStoreStep(Node nodeFrom, Node nodeTo, TypeTrackerContent content) {
-  postUpdateStoreStep(nodeFrom, nodeTo, content)
+predicate basicStoreStep(Node nodeFrom, Node nodeTo, TypeTrackerContentSet contents) {
+  postUpdateStoreStep(nodeFrom, nodeTo, contents)
   or
-  exists(
-    DataFlowPublic::CallNode call, SummaryComponent input, DataFlowPublic::ContentSet contents,
-    SummaryComponent output
-  |
+  exists(DataFlowPublic::CallNode call, SummaryComponent input, SummaryComponent output |
     summarizableCall(call.asExpr().getExpr(), //
       SummaryComponentStack::singleton(input),
       SummaryComponentStack::push(SummaryComponent::content(contents),
         SummaryComponentStack::singleton(output))) and
     nodeFrom = evaluateSummaryComponentLocal(call, input) and
-    nodeTo = evaluateSummaryComponentLocal(call, output) and
-    content = contents.getAStoreContent()
+    nodeTo = evaluateSummaryComponentLocal(call, output)
   )
 }
 
@@ -166,13 +164,13 @@ predicate basicStoreStep(Node nodeFrom, Node nodeTo, TypeTrackerContent content)
  * Holds if `nodeFrom -> nodeTo` is a store step where the destination node is a post-update
  * node that should be treated as a local source node.
  */
-predicate postUpdateStoreStep(Node nodeFrom, Node nodeTo, TypeTrackerContent content) {
+predicate postUpdateStoreStep(Node nodeFrom, Node nodeTo, TypeTrackerContentSet contents) {
   // TODO: support SetterMethodCall inside TuplePattern
   exists(ExprNodes::MethodCallCfgNode call |
-    content =
-      DataFlowPublic::Content::getAttributeName(call.getExpr()
-            .(AST::SetterMethodCall)
-            .getTargetName()) and
+    contents
+        .isSingleton(DataFlowPublic::Content::getAttributeName(call.getExpr()
+                .(AST::SetterMethodCall)
+                .getTargetName())) and
     nodeTo.(DataFlowPublic::PostUpdateNode).getPreUpdateNode().asExpr() = call.getReceiver() and
     call.getExpr() instanceof AST::SetterMethodCall and
     call.getArgument(call.getNumberOfArguments() - 1) =
@@ -183,25 +181,21 @@ predicate postUpdateStoreStep(Node nodeFrom, Node nodeTo, TypeTrackerContent con
 /**
  * Holds if `nodeTo` is the result of accessing the `content` content of `nodeFrom`.
  */
-predicate basicLoadStep(Node nodeFrom, Node nodeTo, TypeTrackerContent content) {
+predicate basicLoadStep(Node nodeFrom, Node nodeTo, TypeTrackerContentSet contents) {
   exists(ExprNodes::MethodCallCfgNode call |
     call.getExpr().getNumberOfArguments() = 0 and
-    content = DataFlowPublic::Content::getAttributeName(call.getExpr().getMethodName()) and
+    contents.isSingleton(DataFlowPublic::Content::getAttributeName(call.getExpr().getMethodName())) and
     nodeFrom.asExpr() = call.getReceiver() and
     nodeTo.asExpr() = call
   )
   or
-  exists(
-    DataFlowPublic::CallNode call, SummaryComponent input, DataFlowPublic::ContentSet contents,
-    SummaryComponent output
-  |
+  exists(DataFlowPublic::CallNode call, SummaryComponent input, SummaryComponent output |
     summarizableCall(call.asExpr().getExpr(), //
       SummaryComponentStack::push(SummaryComponent::content(contents),
         SummaryComponentStack::singleton(input)), //
       SummaryComponentStack::singleton(output)) and
     nodeFrom = evaluateSummaryComponentLocal(call, input) and
-    nodeTo = evaluateSummaryComponentLocal(call, output) and
-    content = contents.getAReadContent()
+    nodeTo = evaluateSummaryComponentLocal(call, output)
   )
 }
 

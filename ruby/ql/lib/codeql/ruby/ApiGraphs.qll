@@ -269,11 +269,8 @@ module API {
      * Gets a node representing the `contents` stored on the base object.
      */
     Node getContents(DataFlow::ContentSet contents) {
-      this instanceof API::Use and
-      result = this.getContent(contents.getAStoreContent()) // The library has stored a value of interest in `contents`
-      or
-      this instanceof API::Def and
-      result = this.getContent(contents.getAReadContent()) // The library going to read a value stored in `contents`
+      // We already use getAStoreContent when generating the graph, and we always use getAReadContent when querying the graph.
+      result = this.getContent(contents.getAReadContent())
     }
 
     /** Gets a node representing the instance field of the given `name`, which must include the `@` character. */
@@ -523,9 +520,9 @@ module API {
         read = c.getExpr()
       )
       or
-      exists(TypeTrackerSpecific::TypeTrackerContent c |
+      exists(TypeTrackerSpecific::TypeTrackerContentSet c |
         TypeTrackerSpecific::basicLoadStep(node, ref, c) and
-        lbl = Label::content(c)
+        lbl = Label::content(c.getAStoreContent())
       )
       // note: method calls are not handled here as there is no DataFlow::Node for the intermediate MkMethodAccessNode API node
     }
@@ -535,9 +532,9 @@ module API {
      * from a def node that is reachable from `node`.
      */
     private predicate defStep(Label::ApiLabel lbl, DataFlow::Node node, DataFlow::Node rhs) {
-      exists(TypeTrackerSpecific::TypeTrackerContent c |
+      exists(TypeTrackerSpecific::TypeTrackerContentSet c |
         TypeTrackerSpecific::basicStoreStep(rhs, node, c) and
-        lbl = Label::content(c)
+        lbl = Label::content(c.getAStoreContent())
       )
     }
 
