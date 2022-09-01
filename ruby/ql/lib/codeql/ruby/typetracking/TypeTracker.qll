@@ -16,6 +16,11 @@ private module Cached {
     LoadStep(TypeTrackerContentSet contents) or
     JumpStep()
 
+  pragma[nomagic]
+  private TypeTracker noContentTypeTracker(boolean hasCall) {
+    result = MkTypeTracker(hasCall, noContent())
+  }
+
   /** Gets the summary resulting from appending `step` to type-tracking summary `tt`. */
   cached
   TypeTracker append(TypeTracker tt, StepSummary step) {
@@ -28,21 +33,24 @@ private module Cached {
       or
       step = ReturnStep() and hasCall = false and result = tt
       or
-      exists(TypeTrackerContentSet contents |
-        step = LoadStep(contents) and
-        currentContent = contents.getAReadContent() and
-        result = MkTypeTracker(hasCall, noContent())
-      )
-      or
-      exists(TypeTrackerContentSet contents |
-        step = StoreStep(contents) and
-        currentContent = noContent() and
-        result = MkTypeTracker(hasCall, contents.getAStoreContent())
-      )
-      or
       step = JumpStep() and
       result = MkTypeTracker(false, currentContent)
     )
+    or
+    exists(TypeTrackerContentSet contents, boolean hasCall |
+      step = LoadStep(pragma[only_bind_into](contents)) and
+      tt = MkTypeTracker(hasCall, contents.getAReadContent()) and
+      result = noContentTypeTracker(hasCall)
+      or
+      step = StoreStep(pragma[only_bind_into](contents)) and
+      tt = noContentTypeTracker(hasCall) and
+      result = MkTypeTracker(hasCall, contents.getAStoreContent())
+    )
+  }
+
+  pragma[nomagic]
+  private TypeBackTracker noContentTypeBackTracker(boolean hasReturn) {
+    result = MkTypeBackTracker(hasReturn, noContent())
   }
 
   /** Gets the summary resulting from prepending `step` to this type-tracking summary. */
@@ -57,20 +65,18 @@ private module Cached {
       or
       step = ReturnStep() and result = MkTypeBackTracker(true, content)
       or
-      exists(TypeTrackerContentSet contents |
-        step = LoadStep(contents) and
-        content = noContent() and
-        result = MkTypeBackTracker(hasReturn, contents.getAStoreContent())
-      )
-      or
-      exists(TypeTrackerContentSet contents |
-        step = StoreStep(contents) and
-        content = contents.getAReadContent() and
-        result = MkTypeBackTracker(hasReturn, noContent())
-      )
-      or
       step = JumpStep() and
       result = MkTypeBackTracker(false, content)
+    )
+    or
+    exists(TypeTrackerContentSet contents, boolean hasReturn |
+      step = StoreStep(pragma[only_bind_into](contents)) and
+      tbt = MkTypeBackTracker(hasReturn, contents.getAReadContent()) and
+      result = noContentTypeBackTracker(hasReturn)
+      or
+      step = LoadStep(pragma[only_bind_into](contents)) and
+      tbt = noContentTypeBackTracker(hasReturn) and
+      result = MkTypeBackTracker(hasReturn, contents.getAStoreContent())
     )
   }
 
