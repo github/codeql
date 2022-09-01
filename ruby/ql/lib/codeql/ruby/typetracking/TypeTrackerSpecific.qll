@@ -214,10 +214,7 @@ predicate postUpdateStoreStep(Node nodeFrom, Node nodeTo, TypeTrackerContent con
  * ```
  */
 private string getSetterCallAttributeName(AST::SetterMethodCall call) {
-  // TODO: this should be exposed in `SetterMethodCall`
-  exists(string setterName |
-    setterName = call.getMethodName() and result = setterName.prefix(setterName.length() - 1)
-  )
+  result = call.getTargetName()
 }
 
 /**
