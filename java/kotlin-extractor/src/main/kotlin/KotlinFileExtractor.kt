@@ -2372,18 +2372,23 @@ open class KotlinFileExtractor(
         callable: Label<out DbCallable>,
         enclosingStmt: Label<out DbStmt>
     ) {
-        val isAnonymous = e.type.isAnonymous
+        val eType = e.type
+        if (eType !is IrSimpleType) {
+            logger.errorElement("Constructor call has non-simple type ${eType.javaClass}", e)
+            return
+        }
+        val isAnonymous = eType.isAnonymous
         val type: TypeResults = if (isAnonymous) {
             if (e.typeArgumentsCount > 0) {
-                logger.warn("Unexpected type arguments for anonymous class constructor call")
+                logger.warnElement("Unexpected type arguments (${e.typeArgumentsCount}) for anonymous class constructor call", e)
             }
-            val c = (e.type as IrSimpleType).classifier.owner as IrClass
+            val c = eType.classifier.owner as IrClass
             useAnonymousClass(c)
         } else {
-            useType(e.type)
+            useType(eType)
         }
         val locId = tw.getLocation(e)
-        val id = extractNewExpr(e.symbol.owner, (e.type as? IrSimpleType)?.arguments, type, locId, parent, idx, callable, enclosingStmt)
+        val id = extractNewExpr(e.symbol.owner, eType.arguments, type, locId, parent, idx, callable, enclosingStmt)
 
         if (isAnonymous) {
             tw.writeIsAnonymClass(type.javaResult.id.cast<DbClass>(), id)
@@ -2397,7 +2402,7 @@ open class KotlinFileExtractor(
         }
 
         val typeAccessType = if (isAnonymous) {
-            val c = (e.type as IrSimpleType).classifier.owner as IrClass
+            val c = eType.classifier.owner as IrClass
             if (c.superTypes.size == 1) {
                 useType(c.superTypes.first())
             } else {
@@ -2408,7 +2413,7 @@ open class KotlinFileExtractor(
         }
 
         if (e is IrConstructorCall) {
-            extractConstructorTypeAccess(e.type, typeAccessType, e.symbol, locId, id, -3, callable, enclosingStmt)
+            extractConstructorTypeAccess(eType, typeAccessType, e.symbol, locId, id, -3, callable, enclosingStmt)
         } else {
             val typeAccessId =
                 extractTypeAccess(typeAccessType, locId, id, -3, callable, enclosingStmt)
