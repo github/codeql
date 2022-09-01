@@ -66,5 +66,12 @@ where
   ) and
   call.getNode().getScope().(Function).isGenerator() and
   not exists(Comp comp | comp.contains(call.getNode())) and
-  not stop_iteration_handled(call)
+  not stop_iteration_handled(call) and
+  // PEP 479 removes this concern from 3.5 onwards
+  // see: https://peps.python.org/pep-0479/
+  (
+    major_version() = 2
+    or
+    major_version() = 3 and minor_version() < 5
+  )
 select call, "Call to next() in a generator"
