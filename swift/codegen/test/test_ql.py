@@ -80,7 +80,7 @@ def test_property_predicate_getter():
 
 def test_class_processes_bases():
     bases = ["B", "Ab", "C", "Aa"]
-    expected = [ql.Base("Aa"), ql.Base("Ab", prev="Aa"), ql.Base("B", prev="Ab"), ql.Base("C", prev="B")]
+    expected = [ql.Base("B"), ql.Base("Ab", prev="B"), ql.Base("C", prev="Ab"), ql.Base("Aa", prev="C")]
     cls = ql.Class("Foo", bases=bases)
     assert cls.bases == expected
 

@@ -104,6 +104,9 @@ API::Node getExtraSuccessorFromNode(API::Node node, AccessPathToken token) {
   token.getName() = "Member" and
   result = node.getMember(token.getAnArgument())
   or
+  token.getName() = "AnyMember" and
+  result = node.getAMember()
+  or
   token.getName() = "Instance" and
   result = node.getInstance()
   or
@@ -163,6 +166,16 @@ predicate invocationMatchesExtraCallSiteFilter(API::InvokeNode invoke, AccessPat
   token.getName() = "Call" and
   invoke instanceof API::CallNode and
   invoke instanceof DataFlow::CallNode // Workaround compiler bug
+  or
+  token.getName() = "WithStringArgument" and
+  exists(string operand, string argIndex, string stringValue |
+    operand = token.getAnArgument() and
+    argIndex = operand.splitAt("=", 0) and
+    stringValue = operand.splitAt("=", 1) and
+    invoke
+        .getArgument(AccessPath::parseIntWithArity(argIndex, invoke.getNumArgument()))
+        .getStringValue() = stringValue
+  )
 }
 
 /**
@@ -225,8 +238,9 @@ bindingset[name]
 predicate isExtraValidTokenNameInIdentifyingAccessPath(string name) {
   name =
     [
-      "Member", "Instance", "Awaited", "ArrayElement", "Element", "MapValue", "NewCall", "Call",
-      "DecoratedClass", "DecoratedMember", "DecoratedParameter"
+      "Member", "AnyMember", "Instance", "Awaited", "ArrayElement", "Element", "MapValue",
+      "NewCall", "Call", "DecoratedClass", "DecoratedMember", "DecoratedParameter",
+      "WithStringArgument"
     ]
 }
 
@@ -237,7 +251,7 @@ predicate isExtraValidTokenNameInIdentifyingAccessPath(string name) {
 predicate isExtraValidNoArgumentTokenInIdentifyingAccessPath(string name) {
   name =
     [
-      "Instance", "Awaited", "ArrayElement", "Element", "MapValue", "NewCall", "Call",
+      "AnyMember", "Instance", "Awaited", "ArrayElement", "Element", "MapValue", "NewCall", "Call",
       "DecoratedClass", "DecoratedMember", "DecoratedParameter"
     ]
 }
@@ -250,4 +264,8 @@ bindingset[name, argument]
 predicate isExtraValidTokenArgumentInIdentifyingAccessPath(string name, string argument) {
   name = ["Member"] and
   exists(argument)
+  or
+  name = "WithStringArgument" and
+  exists(argument.indexOf("=")) and
+  exists(AccessPath::parseIntWithArity(argument.splitAt("=", 0), 10))
 }
