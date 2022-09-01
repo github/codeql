@@ -4,6 +4,7 @@ import semmle.javascript.security.dataflow.CommandInjection
 import semmle.javascript.security.dataflow.IndirectCommandInjection
 import semmle.javascript.security.dataflow.ShellCommandInjectionFromEnvironment
 import semmle.javascript.security.dataflow.UnsafeShellCommandConstruction
+import semmle.javascript.security.dataflow.SecondOrderCommandInjectionQuery
 
 class CommandInjectionConsistency extends ConsistencyConfiguration {
   CommandInjectionConsistency() { this = "ComandInjection" }
