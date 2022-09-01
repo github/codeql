@@ -28,7 +28,7 @@ private module Cached {
    * it leaves a function call.
    * - `IndirectOperand`, which represents the value of `operand` after loading the address a number
    * of times.
-   * `IndirectInstruction`, which represents the value of `instr` after loading the address a number
+   * - `IndirectInstruction`, which represents the value of `instr` after loading the address a number
    * of times.
    */
   cached
