@@ -254,6 +254,13 @@ class UseImpl extends DefOrUseImpl, TUseImpl {
   predicate isCertain() { isUse(true, operand, _, _, ind) }
 }
 
+/**
+ * Holds if `defOrUse1` is a definition which is first read by `use`,
+ * or if `defOrUse1` is a use and `use` is the next subsequent use.
+ *
+ * In both cases, `use` can either be an explicit use written in the
+ * source file, or it can be a phi node as computed by the SSA library.
+ */
 predicate adjacentDefRead(DefOrUse defOrUse1, UseOrPhi use) {
   exists(IRBlock bb1, int i1, SourceVariable v |
     defOrUse1.asDefOrUse().hasIndexInBlock(bb1, i1, v)
