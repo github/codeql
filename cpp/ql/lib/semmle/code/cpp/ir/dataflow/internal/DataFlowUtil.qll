@@ -415,20 +415,6 @@ class SsaPhiNode extends Node, TSsaPhiNode {
 
   final override Location getLocationImpl() { result = phi.getBasicBlock().getLocation() }
 
-  /** Holds if this phi node has input from the `rnk`'th write operation in block `block`. */
-  final predicate hasInputAtRankInBlock(IRBlock block, int rnk) {
-    this.hasInputAtRankInBlock(block, rnk, _)
-  }
-
-  /**
-   * Holds if this phi node has input from the definition `input` (which is the `rnk`'th write
-   * operation in block `block`).
-   */
-  final predicate hasInputAtRankInBlock(IRBlock block, int rnk, Ssa::Definition input) {
-    Ssa::phiHasInputFromBlock(phi, input, _) and
-    input.definesAt(_, block, rnk)
-  }
-
   override string toStringImpl() { result = "Phi" }
 }
 

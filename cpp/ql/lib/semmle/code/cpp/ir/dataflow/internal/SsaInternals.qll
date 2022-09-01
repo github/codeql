@@ -368,18 +368,20 @@ predicate defUseFlow(Node nodeFrom, Node nodeTo) {
 
 /** Holds if `nodeTo` receives flow from the phi node `nodeFrom`. */
 predicate fromPhiNode(SsaPhiNode nodeFrom, Node nodeTo) {
-  exists(UseOrPhi use, IRBlock bb2, int i2, PhiNode phi, SourceVariable v |
-    use.asDefOrUse().hasIndexInBlock(bb2, i2, v) and
+  exists(PhiNode phi, SourceVariable sv, IRBlock bb1, int i1, UseOrPhi use |
     phi = nodeFrom.getPhiNode() and
-    phi.getSourceVariable() = v and
-    adjacentDefRead(phi, _, -1, bb2, i2) and
+    phi.definesAt(sv, bb1, i1) and
     useToNode(use, nodeTo)
-  )
-  or
-  exists(PhiNode phiFrom, PhiNode phiTo |
-    nodeFrom.getPhiNode() = phiFrom and
-    phiHasInputFromBlock(phiTo, phiFrom, _) and
-    nodeTo.(SsaPhiNode).getPhiNode() = phiTo
+  |
+    exists(IRBlock bb2, int i2 |
+      use.asDefOrUse().hasIndexInBlock(bb2, i2, sv) and
+      adjacentDefRead(phi, bb1, i1, bb2, i2)
+    )
+    or
+    exists(PhiNode phiTo |
+      lastRefRedef(phi, _, _, phiTo) and
+      nodeTo.(SsaPhiNode).getPhiNode() = phiTo
+    )
   )
 }
 
@@ -434,16 +436,21 @@ private module SsaInput implements SsaImplCommon::InputSig {
  */
 cached
 module SsaCached {
-  cached
-  predicate phiHasInputFromBlock(PhiNode phi, Definition inp, IRBlock bb) {
-    SsaImpl::phiHasInputFromBlock(phi, inp, bb)
-  }
-
+  /**
+   * Holds if `def` is accessed at index `i1` in basic block `bb1` (either a read
+   * or a write), `def` is read at index `i2` in basic block `bb2`, and there is a
+   * path between them without any read of `def`.
+   */
   cached
   predicate adjacentDefRead(Definition def, IRBlock bb1, int i1, IRBlock bb2, int i2) {
     SsaImpl::adjacentDefRead(def, bb1, i1, bb2, i2)
   }
 
+  /**
+   * Holds if the node at index `i` in `bb` is a last reference to SSA definition
+   * `def`. The reference is last because it can reach another write `next`,
+   * without passing through another read or write.
+   */
   cached
   predicate lastRefRedef(Definition def, IRBlock bb, int i, Definition next) {
     SsaImpl::lastRefRedef(def, bb, i, next)
