@@ -24,9 +24,13 @@ where
     PredConsistency::noResolvePredicateExpr(node) and
     msg = "PredConsistency::noResolvePredicateExpr"
     or
-    PredConsistency::multipleResolveCall(node, _, _) and
-    msg = "PredConsistency::multipleResolveCall"
-    or
+    // Can be multiple with parameterized modules
+    /*
+     * PredConsistency::multipleResolveCall(node, _, _) and
+     *    msg = "PredConsistency::multipleResolveCall"
+     *    or
+     */
+
     PredConsistency::multipleResolvePredicateExpr(node, _, _) and
     msg = "PredConsistency::multipleResolvePredicateExpr"
     or

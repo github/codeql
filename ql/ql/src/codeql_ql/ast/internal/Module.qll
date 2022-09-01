@@ -388,6 +388,10 @@ module ModConsistency {
       not exists(mod.asModule().getAlias())
     ) >= 2 and
     // paramerized modules are not treated nicely, so we ignore them here.
+    not exists(FileOrModule mod |
+      mod = i.getResolvedModule() and
+      mod.asModule().hasAnnotation("signature")
+    ) and
     not i.getResolvedModule().getEnclosing*().asModule().hasParameter(_, _, _) and
     not i.getLocation()
         .getFile()
