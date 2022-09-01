@@ -2598,8 +2598,15 @@ open class KotlinFileExtractor(
 
                     val irCallable = declarationStack.peek()
 
-                    val delegatingClass = e.symbol.owner.parent as IrClass
-                    val currentClass = irCallable.parent as IrClass
+                    val delegatingClass = e.symbol.owner.parent
+                    val currentClass = irCallable.parent
+
+                    if (delegatingClass !is IrClass) {
+                        logger.warnElement("Delegating class isn't a class: " + delegatingClass.javaClass, e)
+                    }
+                    if (currentClass !is IrClass) {
+                        logger.warnElement("Current class isn't a class: " + currentClass.javaClass, e)
+                    }
 
                     val id: Label<out DbStmt>
                     if (delegatingClass != currentClass) {
