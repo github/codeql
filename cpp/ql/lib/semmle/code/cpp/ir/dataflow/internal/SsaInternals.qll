@@ -450,6 +450,7 @@ module SsaCached {
   }
 }
 
+cached
 private newtype TSsaDefOrUse =
   TDefOrUse(DefOrUseImpl defOrUse) {
     defOrUse instanceof UseImpl
