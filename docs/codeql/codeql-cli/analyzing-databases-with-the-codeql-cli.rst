@@ -80,7 +80,7 @@ You can also specify:
 
 - .. include:: ../reusables/threads-query-execution.rst
 
-. pull-quote::
+.. pull-quote::
 
    Upgrading databases
 
