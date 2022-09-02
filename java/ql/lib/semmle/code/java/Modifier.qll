@@ -7,7 +7,13 @@ import Element
 /** A modifier such as `private`, `static` or `abstract`. */
 class Modifier extends Element, @modifier {
   /** Gets the element to which this modifier applies. */
-  Element getElement() { hasModifier(result, this) }
+  Element getElement() {
+    hasModifier(result, this) and
+    // Kotlin "internal" elements may also get "public" modifiers, so we want to filter those out
+    not exists(Modifier mod2 |
+      hasModifier(result, mod2) and modifiers(this, "public") and modifiers(mod2, "internal")
+    )
+  }
 
   override string getAPrimaryQlClass() { result = "Modifier" }
 }
