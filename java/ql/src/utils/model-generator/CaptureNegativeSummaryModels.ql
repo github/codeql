@@ -6,9 +6,9 @@
  * @tags model-generator
  */
 
-private import internal.CaptureModels
-private import internal.CaptureSummaryFlow
+import internal.CaptureModels
+import internal.CaptureSummaryFlow
 
-from TargetApi api, string noflow
+from DataFlowTargetApi api, string noflow
 where noflow = captureNoFlow(api)
 select noflow order by noflow
