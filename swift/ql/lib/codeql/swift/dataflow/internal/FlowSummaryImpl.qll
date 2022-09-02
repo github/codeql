@@ -919,12 +919,17 @@ module Private {
         AccessPath inSpec, AccessPath outSpec, string kind
       ) {
         summaryElement(this, inSpec, outSpec, kind, true) and
+<<<<<<< HEAD
         not summaryElement(this, _, _, _, false)
+||||||| parent of 739a32f473 (Only use generated summaries.)
+        not summaryElement(this, _, _, _, false) and
+        not this.clearsContent(_, _)
+=======
+        not this.clearsContent(_, _)
+>>>>>>> 739a32f473 (Only use generated summaries.)
       }
 
       private predicate relevantSummaryElement(AccessPath inSpec, AccessPath outSpec, string kind) {
-        summaryElement(this, inSpec, outSpec, kind, false)
-        or
         this.relevantSummaryElementGenerated(inSpec, outSpec, kind)
       }
 

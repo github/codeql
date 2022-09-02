@@ -918,13 +918,10 @@ module Private {
       private predicate relevantSummaryElementGenerated(
         AccessPath inSpec, AccessPath outSpec, string kind
       ) {
-        summaryElement(this, inSpec, outSpec, kind, true) and
-        not summaryElement(this, _, _, _, false)
+        summaryElement(this, inSpec, outSpec, kind, true)
       }
 
       private predicate relevantSummaryElement(AccessPath inSpec, AccessPath outSpec, string kind) {
-        summaryElement(this, inSpec, outSpec, kind, false)
-        or
         this.relevantSummaryElementGenerated(inSpec, outSpec, kind)
       }
 
