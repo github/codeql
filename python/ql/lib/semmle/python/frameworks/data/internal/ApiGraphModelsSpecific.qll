@@ -28,6 +28,9 @@ class Unit = PY::Unit;
 
 // Re-export libraries needed by ApiGraphModels.qll
 import semmle.python.frameworks.data.internal.AccessPathSyntax as AccessPathSyntax
+
+module DF = DataFlow;
+
 private import AccessPathSyntax
 
 /**
