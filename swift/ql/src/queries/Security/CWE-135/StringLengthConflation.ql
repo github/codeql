@@ -135,7 +135,7 @@ class StringLengthConflationConfiguration extends DataFlow::Configuration {
             paramName = "at"
           ) and
           c.getName() = className and
-          c.getAMember() = funcDecl and
+          c.getABaseTypeDecl*().(ClassDecl).getAMember() = funcDecl and
           call.getStaticTarget() = funcDecl and
           flowstate = "NSString"
         )
