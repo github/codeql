@@ -1,6 +1,6 @@
 modelClasses
 | active_resource.rb:1:1:3:3 | Person | active_resource.rb:2:3:2:11 | call to site= | false |
-| active_resource.rb:29:1:31:3 | Post | active_resource.rb:30:3:30:11 | call to site= | false |
+| active_resource.rb:29:1:31:3 | Post | active_resource.rb:30:3:30:11 | call to site= | true |
 modelClassMethodCalls
 | active_resource.rb:2:3:2:11 | call to site= |
 | active_resource.rb:5:9:5:33 | call to new |

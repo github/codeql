@@ -93,7 +93,13 @@ module ActiveResource {
 
     /** Holds if this site value specifies HTTP rather than HTTPS. */
     predicate disablesCertificateValidation() {
-      this.getAUrlPart().asExpr().getConstantValue().getString().regexpMatch("^http(^s)")
+      this.getAUrlPart()
+          .asExpr()
+          .(ExprNodes::AssignExprCfgNode)
+          .getRhs()
+          .getConstantValue()
+          .getString()
+          .regexpMatch("^http[^s].+")
     }
   }
 
