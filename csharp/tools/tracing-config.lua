@@ -31,7 +31,7 @@ function RegisterExtractorPack(id)
             local firstCharacter = string.sub(arg, 1, 1)
             if not (firstCharacter == '-') and not (firstCharacter == '/') then
                 Log(1, 'Dotnet subcommand detected: %s', arg)
-                if arg == 'build' or arg == 'msbuild' then match = true end
+                if arg == 'build' or arg == 'msbuild' or arg == 'publish' then match = true end
                 break
             end
         end
