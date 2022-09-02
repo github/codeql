@@ -98,8 +98,6 @@ namespace Semmle.Autobuild.Shared
                 command.RunCommand(msBuild);
                 command.QuoteArgument(projectOrSolution.FullPath);
 
-                command.Argument("/p:UseSharedCompilation=false");
-
                 var target = builder.Options.MsBuildTarget ?? "rebuild";
                 var platform = builder.Options.MsBuildPlatform ?? (projectOrSolution is ISolution s1 ? s1.DefaultPlatformName : null);
                 var configuration = builder.Options.MsBuildConfiguration ?? (projectOrSolution is ISolution s2 ? s2.DefaultConfigurationName : null);
@@ -109,7 +107,6 @@ namespace Semmle.Autobuild.Shared
                     command.Argument(string.Format("/p:Platform=\"{0}\"", platform));
                 if (configuration is not null)
                     command.Argument(string.Format("/p:Configuration=\"{0}\"", configuration));
-                command.Argument("/p:MvcBuildViews=true");
 
                 command.Argument(builder.Options.MsBuildArguments);
 
