@@ -378,10 +378,6 @@ module API {
    *
    * Anything in the global scope is considered to be an entry point, but
    * additional entry points may be added by extending this class.
-   *
-   * By default, instances of this class will have a single edge from the root
-   * of the API graph. If you wish to construct more complex paths to an entry
-   * point, override the `edge` predicate.
    */
   abstract class EntryPoint extends string {
     bindingset[this]
@@ -404,41 +400,6 @@ module API {
 
     /** Gets an API-node for this entry point. */
     API::Node getANode() { result = root().getASuccessor(Label::entryPoint(this)) }
-
-    /**
-     * Holds if there is an edge from `pred` to this entry point, with label
-     * `lbl`. Override this predicate to define new paths to this entry point.
-     *
-     * For example, to define an entry point for `ActiveStorage::Attachment` we
-     * can use an intermediate entry point for `ActiveStorage`:
-     *
-     * ```ql
-     * class ActiveStorage extends EntryPoint {
-     *   ActiveStorage() { this = "ActiveStorage" }
-     *
-     *   override predicate edge(Node pred, Label::ApiLabel lbl) {
-     *     pred = root() and lbl = Label::member("ActiveStorage")
-     *   }
-     * }
-     *
-     * class Attachment extends EntryPoint {
-     *   Attachment() { this = "ActiveStorage::Attachment" }
-     *
-     *   override predicate edge(Node pred, Label::ApiLabel lbl) {
-     *     pred = getTopLevelMember("ActiveStorage") and
-     *     lbl = Label::member("Attachment")
-     *   }
-     *
-     *   override DataFlow::LocalSourceNode getAUse() { result = customAttachmentPredicate() }
-     * }
-     * ```
-     *
-     * This means that
-     * `getTopLevelMember("ActiveStorage").getMember("Attachment")` will return
-     * results from `customAttachmentPredicate()`, even if there are no
-     * references to `ActiveStorage` or `Attachment` in the codebase.
-     */
-    predicate edge(API::Node pred, Label::ApiLabel lbl) { none() }
   }
 
   // Ensure all entry points are imported from ApiGraphs.qll
@@ -757,8 +718,6 @@ module API {
       exists(EntryPoint entry |
         pred = root() and
         lbl = Label::entryPoint(entry)
-        or
-        entry.edge(pred, lbl)
       |
         succ = MkDef(entry.getASink())
         or
