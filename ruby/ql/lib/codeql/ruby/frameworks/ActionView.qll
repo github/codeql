@@ -3,6 +3,7 @@
  */
 
 private import codeql.ruby.AST
+private import codeql.ruby.ApiGraphs
 private import codeql.ruby.Concepts
 private import codeql.ruby.controlflow.CfgNodes
 private import codeql.ruby.DataFlow
@@ -203,5 +204,16 @@ class LinkToCall extends ActionViewContextCall {
     or
     not exists(this.getBlock()) and result = this.getArgument(1)
   }
+}
+
+/**
+ * An instantation of `ActionView::FileSystemResolver`, considered as a `FileSystemAccess`.
+ */
+class FileSystemResolverAccess extends DataFlow::CallNode, FileSystemAccess::Range {
+  FileSystemResolverAccess() {
+    this = API::getTopLevelMember("ActionView").getMember("FileSystemResolver").getAnInstantiation()
+  }
+
+  override DataFlow::Node getAPathArgument() { result = this.getArgument(0) }
 }
 // TODO: model flow in/out of template files properly,
