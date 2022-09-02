@@ -72,6 +72,8 @@ private class Unit = Specific::Unit;
 
 private module API = Specific::API;
 
+private module DataFlow = Specific::DF;
+
 private import Specific::AccessPathSyntax
 
 /** Module containing hooks for providing input data to be interpreted as a model. */
@@ -154,6 +156,22 @@ module ModelInput {
      * indicates that `(package2, type2, path)` should be seen as an instance of `(package1, type1)`.
      */
     abstract predicate row(string row);
+  }
+
+  /**
+   * A unit class for adding additional type model rows from CodeQL models.
+   */
+  class TypeModel extends Unit {
+    /**
+     * Gets a data-flow node that is a source of the type `package;type`.
+     */
+    DataFlow::Node getASource(string package, string type) { none() }
+
+    /**
+     * Gets a data flow node that is a sink of the type `package;type`,
+     * usually because it is an argument passed to a parameter of that type.
+     */
+    DataFlow::Node getASink(string package, string type) { none() }
   }
 
   /**
@@ -368,6 +386,58 @@ private predicate invocationMatchesCallSiteFilter(Specific::InvokeNode invoke, A
   Specific::invocationMatchesExtraCallSiteFilter(invoke, token)
 }
 
+private class TypeModelUseEntry extends API::EntryPoint {
+  private string package;
+  private string type;
+
+  TypeModelUseEntry() {
+    exists(any(TypeModel tm).getASource(package, type)) and
+    this = "TypeModelUseEntry;" + package + ";" + type
+  }
+
+  override DataFlow::LocalSourceNode getASource() {
+    result = any(TypeModel tm).getASource(package, type)
+  }
+
+  API::Node getNodeForType(string package_, string type_) {
+    package = package_ and type = type_ and result = this.getANode()
+  }
+}
+
+private class TypeModelDefEntry extends API::EntryPoint {
+  private string package;
+  private string type;
+
+  TypeModelDefEntry() {
+    exists(any(TypeModel tm).getASink(package, type)) and
+    this = "TypeModelDefEntry;" + package + ";" + type
+  }
+
+  override DataFlow::Node getASink() { result = any(TypeModel tm).getASink(package, type) }
+
+  API::Node getNodeForType(string package_, string type_) {
+    package = package_ and type = type_ and result = this.getANode()
+  }
+}
+
+/**
+ * Gets an API node identified by the given `(package,type)` pair.
+ */
+pragma[nomagic]
+private API::Node getNodeFromType(string package, string type) {
+  exists(string package2, string type2, AccessPath path2 |
+    typeModel(package, type, package2, type2, path2) and
+    result = getNodeFromPath(package2, type2, path2, path2.getNumToken())
+  )
+  or
+  result = any(TypeModelUseEntry e).getNodeForType(package, type)
+  or
+  result = any(TypeModelDefEntry e).getNodeForType(package, type)
+  or
+  isRelevantFullPath(package, type, _) and
+  result = Specific::getExtraNodeFromPath(package, type, _, 0)
+}
+
 /**
  * Gets the API node identified by the first `n` tokens of `path` in the given `(package, type, path)` tuple.
  */
@@ -376,12 +446,8 @@ private API::Node getNodeFromPath(string package, string type, AccessPath path, 
   isRelevantFullPath(package, type, path) and
   (
     n = 0 and
-    exists(string package2, string type2, AccessPath path2 |
-      typeModel(package, type, package2, type2, path2) and
-      result = getNodeFromPath(package2, type2, path2, path2.getNumToken())
-    )
+    result = getNodeFromType(package, type)
     or
-    // Language-specific cases, such as handling of global variables
     result = Specific::getExtraNodeFromPath(package, type, path, n)
   )
   or
@@ -581,12 +647,7 @@ module ModelOutput {
    * Holds if `node` is seen as an instance of `(package,type)` due to a type definition
    * contributed by a CSV model.
    */
-  API::Node getATypeNode(string package, string type) {
-    exists(string package2, string type2, AccessPath path |
-      typeModel(package, type, package2, type2, path) and
-      result = getNodeFromPath(package2, type2, path)
-    )
-  }
+  API::Node getATypeNode(string package, string type) { result = getNodeFromType(package, type) }
 
   /**
    * Gets an error message relating to an invalid CSV row in a model.

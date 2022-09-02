@@ -28,6 +28,8 @@ class Unit = JS::Unit;
 // Re-export libraries needed by ApiGraphModels.qll
 module API = JS::API;
 
+module DF = DataFlow;
+
 import semmle.javascript.frameworks.data.internal.AccessPathSyntax as AccessPathSyntax
 private import AccessPathSyntax
 
