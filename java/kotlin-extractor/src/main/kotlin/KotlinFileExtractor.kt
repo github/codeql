@@ -1336,16 +1336,25 @@ open class KotlinFileExtractor(
         }
 
         // If a path was found, repeatedly substitute types to get the corresponding specialisation of that ancestor.
-        return if (!walkFrom(receiverClass)) {
+        if (!walkFrom(receiverClass)) {
             logger.errorElement("Failed to find a class declaring ${callTarget.name} starting at ${receiverClass.name}", callTarget)
-            listOf()
+            return listOf()
         } else {
-            var subbedType = receiverType
+            var subbedType: IrSimpleType = receiverType
             ancestorTypes.forEach {
                 val thisClass = subbedType.classifier.owner as IrClass
-                subbedType = it.substituteTypeArguments(thisClass.typeParameters, subbedType.arguments) as IrSimpleType
+                if (thisClass !is IrClass) {
+                    logger.errorElement("Found ancestor with unexpected type ${thisClass.javaClass}", callTarget)
+                    return listOf()
+                }
+                val itSubbed = it.substituteTypeArguments(thisClass.typeParameters, subbedType.arguments)
+                if (itSubbed !is IrSimpleType) {
+                    logger.errorElement("Substituted type has unexpected type ${itSubbed.javaClass}", callTarget)
+                    return listOf()
+                }
+                subbedType = itSubbed
             }
-            subbedType.arguments
+            return subbedType.arguments
         }
     }
 
