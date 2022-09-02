@@ -14,6 +14,7 @@ import java
 import semmle.code.java.dataflow.FlowSources
 import semmle.code.java.dataflow.TaintTracking
 import DataFlow::PathGraph
+import experimental.semmle.code.java.security.TimingAttack
 
 /**
  * A configuration that tracks data flow from variable that may hold sensitive data
