@@ -406,17 +406,17 @@ class ConstructedType extends ValueOrRefType, ConstructedGeneric {
 
   override UnboundGenericType getUnboundGeneric() { constructed_generic(this, getTypeRef(result)) }
 
-  final override Type getChild(int n) { result = this.getTypeArgument(n) }
+  override Type getChild(int n) { result = this.getTypeArgument(n) }
 
-  final override string toStringWithTypes() {
+  override string toStringWithTypes() {
     result = this.getUndecoratedName() + "<" + getTypeArgumentsToString(this) + ">"
   }
 
-  final override string getName() {
+  override string getName() {
     result = this.getUndecoratedName() + "<" + getTypeArgumentsNames(this) + ">"
   }
 
-  final override predicate hasQualifiedName(string qualifier, string name) {
+  override predicate hasQualifiedName(string qualifier, string name) {
     exists(string name0 | name = name0 + "<" + getTypeArgumentsQualifiedNames(this) + ">" |
       exists(string enclosing |
         this.getDeclaringType().hasQualifiedName(qualifier, enclosing) and

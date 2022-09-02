@@ -402,9 +402,19 @@ class NonNestedType extends ValueOrRefType {
 }
 
 /**
+ * A value type.
+ *
+ * Either a simple type (`SimpleType`), an `enum` (`Enum`), a `struct` (`Struct`),
+ * or a nullable type (`NullableType`).
+ */
+class ValueType extends ValueOrRefType, @value_type {
+  override predicate isValueType() { any() }
+}
+
+/**
  * The `void` type.
  */
-class VoidType extends DotNet::ValueOrRefType, Type, @void_type {
+class VoidType extends ValueType, Type, @void_type {
   override predicate hasQualifiedName(string qualifier, string name) {
     qualifier = "System" and
     name = "Void"
@@ -417,16 +427,6 @@ class VoidType extends DotNet::ValueOrRefType, Type, @void_type {
   override SystemNamespace getDeclaringNamespace() { any() }
 
   override string getAPrimaryQlClass() { result = "VoidType" }
-}
-
-/**
- * A value type.
- *
- * Either a simple type (`SimpleType`), an `enum` (`Enum`), a `struct` (`Struct`),
- * or a nullable type (`NullableType`).
- */
-class ValueType extends ValueOrRefType, @value_type {
-  override predicate isValueType() { any() }
 }
 
 /**
@@ -989,7 +989,7 @@ class NullType extends RefType, @null_type {
 /**
  * A nullable type, for example `int?`.
  */
-class NullableType extends ValueType, DotNet::ConstructedGeneric, @nullable_type {
+class NullableType extends ValueType, ConstructedType, @nullable_type {
   /**
    * Gets the underlying value type of this nullable type.
    * For example `int` in `int?`.

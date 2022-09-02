@@ -456,7 +456,7 @@ case @type.kind of
 @unsigned_integral_type = @byte_type  | @ushort_type | @uint_type | @ulong_type;
 @floating_point_type = @float_type | @double_type;
 @value_type = @simple_type | @enum_type | @struct_type | @nullable_type | @int_ptr_type
-            | @uint_ptr_type | @tuple_type;
+            | @uint_ptr_type | @tuple_type | @void_type;
 @ref_type = @class_type | @interface_type | @array_type | @delegate_type | @null_type
           | @dynamic_type;
 @value_or_ref_type = @value_type | @ref_type;
@@ -2037,7 +2037,7 @@ cil_attribute_positional_argument(
 @dotnet_type = @type | @cil_type;
 @dotnet_call = @call | @cil_call_any;
 @dotnet_throw = @throw_element | @cil_throw_any;
-@dotnet_valueorreftype = @cil_valueorreftype | @value_or_ref_type | @cil_array_type | @void_type;
+@dotnet_valueorreftype = @cil_valueorreftype | @value_or_ref_type | @cil_array_type;
 @dotnet_typeparameter = @type_parameter | @cil_typeparameter;
 @dotnet_array_type = @array_type | @cil_array_type;
 @dotnet_pointer_type = @pointer_type | @cil_pointer_type;
