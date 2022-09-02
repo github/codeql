@@ -4653,14 +4653,18 @@ open class KotlinFileExtractor(
         if (baseClass == null) {
             logger.warnElement("Cannot find base class", currentDeclaration)
         } else {
-            val superCallId = tw.getFreshIdLabel<DbSuperconstructorinvocationstmt>()
-            tw.writeStmts_superconstructorinvocationstmt(superCallId, constructorBlockId, 0, ids.constructor)
-
             val baseConstructor = baseClass.owner.declarations.findSubType<IrFunction> { it.symbol is IrConstructorSymbol }
-            val baseConstructorId = useFunction<DbConstructor>(baseConstructor as IrFunction)
+            if (baseConstructor == null) {
+                logger.warnElement("Cannot find base constructor", currentDeclaration)
+            } else {
+                val superCallId = tw.getFreshIdLabel<DbSuperconstructorinvocationstmt>()
+                tw.writeStmts_superconstructorinvocationstmt(superCallId, constructorBlockId, 0, ids.constructor)
 
-            tw.writeHasLocation(superCallId, locId)
-            tw.writeCallableBinding(superCallId.cast<DbCaller>(), baseConstructorId)
+                val baseConstructorId = useFunction<DbConstructor>(baseConstructor)
+
+                tw.writeHasLocation(superCallId, locId)
+                tw.writeCallableBinding(superCallId.cast<DbCaller>(), baseConstructorId)
+            }
         }
 
         addModifiers(id, "final")
