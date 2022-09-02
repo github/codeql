@@ -1723,6 +1723,18 @@
 | exprs.kt:268:3:268:9 | updated | exprs.kt:261:1:270:1 | inPlaceOperators | VarAccess |
 | exprs.kt:268:3:268:14 | ...%=... | exprs.kt:261:1:270:1 | inPlaceOperators | AssignRemExpr |
 | exprs.kt:268:14:268:14 | 1 | exprs.kt:261:1:270:1 | inPlaceOperators | IntegerLiteral |
+| exprs.kt:272:8:272:66 | T | file://:0:0:0:0 | <none> | TypeAccess |
+| exprs.kt:272:8:272:66 | T[] | file://:0:0:0:0 | <none> | TypeAccess |
+| exprs.kt:274:1:277:1 | Unit | file://:0:0:0:0 | <none> | TypeAccess |
+| exprs.kt:275:5:275:23 | <implicit coercion to unit> | exprs.kt:274:1:277:1 | callToEnumValues | ImplicitCoercionToUnitExpr |
+| exprs.kt:275:5:275:23 | Color | exprs.kt:274:1:277:1 | callToEnumValues | TypeAccess |
+| exprs.kt:275:5:275:23 | Unit | exprs.kt:274:1:277:1 | callToEnumValues | TypeAccess |
+| exprs.kt:275:5:275:23 | values(...) | exprs.kt:274:1:277:1 | callToEnumValues | MethodAccess |
+| exprs.kt:276:5:276:26 | <implicit coercion to unit> | exprs.kt:274:1:277:1 | callToEnumValues | ImplicitCoercionToUnitExpr |
+| exprs.kt:276:5:276:26 | Color | exprs.kt:274:1:277:1 | callToEnumValues | TypeAccess |
+| exprs.kt:276:5:276:26 | ExprsKt | exprs.kt:274:1:277:1 | callToEnumValues | TypeAccess |
+| exprs.kt:276:5:276:26 | Unit | exprs.kt:274:1:277:1 | callToEnumValues | TypeAccess |
+| exprs.kt:276:5:276:26 | getEnumValues(...) | exprs.kt:274:1:277:1 | callToEnumValues | MethodAccess |
 | funcExprs.kt:1:1:1:46 | Unit | file://:0:0:0:0 | <none> | TypeAccess |
 | funcExprs.kt:1:26:1:37 | Function0<Integer> | file://:0:0:0:0 | <none> | TypeAccess |
 | funcExprs.kt:1:26:1:37 | Integer | file://:0:0:0:0 | <none> | TypeAccess |
