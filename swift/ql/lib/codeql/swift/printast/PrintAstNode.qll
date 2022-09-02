@@ -93,7 +93,7 @@ class PrintLocatable extends PrintAstNode, TLocatable {
         index = 2 * i + 1 and
         (
           if c instanceof Expr
-          then label = accessor + ".getFullyUncoverted()"
+          then label = accessor + ".getFullyConverted()"
           else label = accessor + ".getFullyUnresolved()"
         )
       )
