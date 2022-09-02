@@ -1725,6 +1725,7 @@
 | exprs.kt:268:14:268:14 | 1 | exprs.kt:261:1:270:1 | inPlaceOperators | IntegerLiteral |
 | exprs.kt:272:8:272:66 | T | file://:0:0:0:0 | <none> | TypeAccess |
 | exprs.kt:272:8:272:66 | T[] | file://:0:0:0:0 | <none> | TypeAccess |
+| exprs.kt:272:52:272:66 | <error expr> | exprs.kt:272:8:272:66 | getEnumValues | ErrorExpr |
 | exprs.kt:274:1:277:1 | Unit | file://:0:0:0:0 | <none> | TypeAccess |
 | exprs.kt:275:5:275:23 | <implicit coercion to unit> | exprs.kt:274:1:277:1 | callToEnumValues | ImplicitCoercionToUnitExpr |
 | exprs.kt:275:5:275:23 | Color | exprs.kt:274:1:277:1 | callToEnumValues | TypeAccess |

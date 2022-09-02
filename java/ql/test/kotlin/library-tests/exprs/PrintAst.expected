@@ -2839,6 +2839,7 @@ exprs.kt:
 #  272|         0: [TypeAccess] T
 #  272|       5: [BlockStmt] { ... }
 #  272|         0: [ReturnStmt] return ...
+#  272|           0: [ErrorExpr] <error expr>
 #  274|     13: [Method] callToEnumValues
 #  274|       3: [TypeAccess] Unit
 #  274|       5: [BlockStmt] { ... }
