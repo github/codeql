@@ -1427,8 +1427,8 @@ open class KotlinFileExtractor(
         // type arguments at index -2, -3, ...
         extractTypeArguments(typeArguments, locId, id, enclosingCallable, enclosingStmt, -2, true)
 
-        val isFunctionInvoke = drType != null
-                && drType is IrSimpleType
+        val isFunctionInvoke =
+                   drType is IrSimpleType
                 && drType.isFunctionOrKFunction()
                 && callTarget.name.asString() == OperatorNameConventions.INVOKE.asString()
         val isBigArityFunctionInvoke = isFunctionInvoke
@@ -1443,7 +1443,7 @@ open class KotlinFileExtractor(
             extractNewExprForLocalFunction(ids, id, locId, enclosingCallable, enclosingStmt)
         } else {
             val methodId =
-                if (drType != null && extractClassTypeArguments && drType is IrSimpleType && !isUnspecialised(drType)) {
+                if (extractClassTypeArguments && drType is IrSimpleType && !isUnspecialised(drType)) {
 
                     val extractionMethod = if (isFunctionInvoke) {
                         // For `kotlin.FunctionX` and `kotlin.reflect.KFunctionX` interfaces, we're making sure that we
