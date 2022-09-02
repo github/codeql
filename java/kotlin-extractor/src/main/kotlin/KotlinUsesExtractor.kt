@@ -709,7 +709,7 @@ open class KotlinUsesExtractor(
                 return useSimpleTypeClass(owner, args, s.hasQuestionMark)
             }
             owner is IrTypeParameter -> {
-                val javaResult = useTypeParameter(owner as IrTypeParameter)
+                val javaResult = useTypeParameter(owner)
                 val aClassId = makeClass("kotlin", "TypeParam") // TODO: Wrong
                 val kotlinResult = if (true) TypeResult(fakeKotlinType(), "TODO", "TODO") else
                     if (s.hasQuestionMark) {
