@@ -56,10 +56,10 @@ class StringLengthConflationConfiguration extends DataFlow::Configuration {
   StringLengthConflationConfiguration() { this = "StringLengthConflationConfiguration" }
 
   override predicate isSource(DataFlow::Node node, string flowstate) {
-    exists(MemberRefExpr member, string className, string varName |
-      member.getBase().getType().(NominalType).getABaseType*().getName() = className and
-      member.getMember().(VarDecl).getName() = varName and
-      node.asExpr() = member and
+    exists(MemberRefExpr memberRef, string className, string varName |
+      memberRef.getBase().getType().(NominalType).getABaseType*().getName() = className and
+      memberRef.getMember().(VarDecl).getName() = varName and
+      node.asExpr() = memberRef and
       (
         // result of a call to `String.count`
         className = "String" and
