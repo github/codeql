@@ -14,10 +14,10 @@ In most cases, you should store the CodeQL workspace and the CodeQL packs contai
 The ``codeql-workspace.yml`` file
 --------------------------------
 
-A CodeQL workspace is defined by a ``codeql-workspace.yml`` yaml file. This file contains a ``provide`` block, and optionally an ``ignore`` block. 
+A CodeQL workspace is defined by a ``codeql-workspace.yml`` yaml file. This file contains a ``provide`` block, and optionally an ``ignore`` block.
 
-* The ``provide`` block contains a list of glob patterns that define the CodeQL packs that are available in the workspace. 
-* The ``ignore`` block contains a list of glob patterns that define CodeQL packs that are not available in the workspace. 
+* The ``provide`` block contains a list of glob patterns that define the CodeQL packs that are available in the workspace.
+* The ``ignore`` block contains a list of glob patterns that define CodeQL packs that are not available in the workspace.
 
 Each entry in the ``provide`` or ``ignore`` section must map to the location of a ``qlpack.yml`` file. All glob patterns are defined relative to the directory that contains the workspace file. For a list of patterns accepted in this file, see" `@actions/glob <https://github.com/actions/toolkit/tree/main/packages/glob#patterns>`__ .
 
@@ -30,7 +30,7 @@ For example, the following ``codeql-workspace.yml`` file defines a workspace tha
     ignore:
       - "*/codeql-packs/**/experimental/**/qlpack.yml"
 
-To verify that you have the correct ``codeql-workspace.yml`` file, run ``codeql pack ls`` command in the same directory as your workspace. The result of the command is a list of all CodeQL packs in the workspace.
+To verify that your ``codeql-workspace.yml`` file includes the CodeQL packs that you expect, run ``codeql pack ls`` command in the same directory as your workspace. The result of the command is a list of all CodeQL packs in the workspace.
 
 
 CodeQL workspaces and query resolution
@@ -46,7 +46,12 @@ This ensures that any local changes you make to a query library in a dependency 
 
   Note
 
-  Source dependencies are CodeQL packs that are resolved from the filesystem. They might be in the same CodeQL workspace, or specified as a path option in the ``--additional-packs`` argument. Source dependencies override any dependencies found in the local package cache and version constraints are ignored. This ensures that during local development version mismatches can be ignored.
+  Source dependencies are CodeQL packs that are resolved from the local file system. These dependencies can be in the same CodeQL workspace, or specified as a path option using the ``--additional-packs`` argument. When you compile and run queries locally, source dependencies override any dependencies found in the local package cache as well as version constraints defined in the ``qlpack.yml``.
+
+  This is particularly useful in the following situations:
+
+  - One of the dependencies of the query pack you are running is not yet published. Resolving from source is the only way to refernce that pack.
+  - You are making changes to multiple packs at the same time and want to test them together. Resolving from source ensures that you are using the version of the pack with your changes in it.
 
 Example
 ~~~~~~~
