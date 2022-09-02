@@ -165,7 +165,7 @@ module ActiveStorage {
   }
 
   /**
-   * A call on an ActiveStorage  object that results in an image transformation.
+   * A call on an ActiveStorage object that results in an image transformation.
    * Arguments to these calls may be executed as system commands.
    */
   private class ImageProcessingCall extends DataFlow::CallNode, SystemCommandExecution::Range {
