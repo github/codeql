@@ -165,3 +165,22 @@ def private_on_main
 end
 
 private_on_main
+
+class Singletons
+    def self.singleton_a
+        self.singleton_b
+    end
+    
+    def self.singleton_b
+        self.singleton_c
+    end
+    
+    def self.singleton_c
+    end
+    
+    def self.singleton_d
+        self.singleton_a
+    end
+end
+  
+Singletons.singleton_a

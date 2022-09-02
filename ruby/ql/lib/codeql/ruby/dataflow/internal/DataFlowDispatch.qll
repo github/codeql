@@ -437,6 +437,12 @@ private DataFlow::LocalSourceNode trackModule(Module tp, TypeTracker t) {
       tp = scope.(ModuleBase).getModule() and
       not scope instanceof Toplevel // handled in `trackInstance`
     )
+    or
+    // `self` reference to Module
+    exists(Scope scope |
+      scope = result.(SsaSelfDefinitionNode).getSelfScope() and
+      tp = scope.(SingletonMethod).getEnclosingModule().getModule()
+    )
   )
   or
   exists(TypeTracker t2, StepSummary summary |
