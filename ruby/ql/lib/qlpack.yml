@@ -6,4 +6,4 @@ dbscheme: ruby.dbscheme
 upgrades: upgrades
 library: true
 dependencies:
-  codeql/shared-ssa: "*"
+  codeql/shared-ssa: 0.0.1-dev

@@ -8,7 +8,7 @@ library exists in the `codeql/shared-ssa` pack, which can be referenced by addin
 
 ```
 dependencies:
-  codeql/shared-ssa: "*"
+  codeql/shared-ssa: 0.0.1-dev
 ```
 
 to `qlpack.yml`.
