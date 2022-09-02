@@ -14,7 +14,7 @@ To analyze a project, you need to add a :ref:`CodeQL database <codeql-database>`
 
 #. Open the CodeQL Databases view in the sidebar.
 
-#. Hover over the **Databases** title bar and click the appropriate icon to add your database. You can add a database from a local ZIP archive or folder, from a public URL, or from a project slug or URL on LGTM.com.
+#. Hover over the **Databases** title bar and click the appropriate icon to add your database. You can add a database from a local ZIP archive or folder, from a public URL, or from a project slug on GitHub.com.
 
    .. image:: ../images/codeql-for-visual-studio-code/choose-database.png
       :width: 350
@@ -30,8 +30,6 @@ Obtaining a local database
 If you have a CodeQL database saved locally, as an unarchived folder or as a ZIP file, you can add it to Visual Studio Code. There are several ways to obtain a local CodeQL database. 
 
 - To create a database with the CodeQL CLI, see ":ref:`Creating CodeQL databases <creating-codeql-databases>`."
-
-- .. include:: ../reusables/download-lgtm-database.rst
 
 - To analyze a test database, add a ``.testproj`` folder to the Databases view.
   Test databases (that is, folders with a ``.testproj`` extension) are generated when you run regression tests on custom queries using the :ref:`CodeQL CLI <codeql-cli>`.
