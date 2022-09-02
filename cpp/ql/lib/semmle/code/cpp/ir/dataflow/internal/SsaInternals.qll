@@ -256,7 +256,7 @@ class UseImpl extends DefOrUseImpl, TUseImpl {
 
 /**
  * Holds if `defOrUse1` is a definition which is first read by `use`,
- * or if `defOrUse1` is a use and `use` is the next subsequent use.
+ * or if `defOrUse1` is a use and `use` is a next subsequent use.
  *
  * In both cases, `use` can either be an explicit use written in the
  * source file, or it can be a phi node as computed by the SSA library.
