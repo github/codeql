@@ -4,4 +4,3 @@
 sourceLocationPrefix(
   string prefix: string ref
 );
-

@@ -51,6 +51,10 @@ class RootElementHasChildren(Error):
     pass
 
 
+class NoClasses(Error):
+    pass
+
+
 def get_ql_property(cls: schema.Class, prop: schema.Property, prev_child: str = "") -> ql.Property:
     args = dict(
         type=prop.type if not prop.is_predicate else "predicate",
@@ -103,7 +107,7 @@ def get_ql_class(cls: schema.Class, lookup: typing.Dict[str, schema.Class]):
         bases=cls.bases,
         final=not cls.derived,
         properties=properties,
-        dir=cls.dir,
+        dir=pathlib.Path(cls.group or ""),
         ipa=bool(cls.ipa),
         **pragmas,
     )
@@ -127,7 +131,7 @@ def get_ql_ipa_class_db(name: str) -> ql.Synth.FinalClassDb:
 def get_ql_ipa_class(cls: schema.Class):
     if cls.derived:
         return ql.Synth.NonFinalClass(name=cls.name, derived=sorted(cls.derived),
-                                      root=(cls.name == schema.root_class_name))
+                                      root=not cls.bases)
     if cls.ipa and cls.ipa.from_class is not None:
         source = cls.ipa.from_class
         get_ql_ipa_class_db(source).subtract_type(cls.name)
@@ -253,12 +257,14 @@ def generate(opts, renderer):
     existing |= {q for q in test_out.rglob("*.ql")}
     existing |= {q for q in test_out.rglob(missing_test_source_filename)}
 
-    data = schema.load(input)
+    data = schema.load_file(input)
 
     classes = {name: get_ql_class(cls, data.classes) for name, cls in data.classes.items()}
-    # element root is absent in tests
-    if schema.root_class_name in classes and classes[schema.root_class_name].has_children:
-        raise RootElementHasChildren
+    if not classes:
+        raise NoClasses
+    root = next(iter(classes.values()))
+    if root.has_children:
+        raise RootElementHasChildren(root)
 
     imports = {}
 
@@ -288,10 +294,10 @@ def generate(opts, renderer):
     for c in data.classes.values():
         if _should_skip_qltest(c, data.classes):
             continue
-        test_dir = test_out / c.dir / c.name
+        test_dir = test_out / c.group / c.name
         test_dir.mkdir(parents=True, exist_ok=True)
         if not any(test_dir.glob("*.swift")):
-            log.warning(f"no test source in {c.dir / c.name}")
+            log.warning(f"no test source in {test_dir.relative_to(test_out)}")
             renderer.render(ql.MissingTestInstructions(),
                             test_dir / missing_test_source_filename)
             continue
@@ -308,12 +314,12 @@ def generate(opts, renderer):
     constructor_imports = []
     ipa_constructor_imports = []
     stubs = {}
-    for cls in sorted(data.classes.values(), key=lambda cls: (cls.dir, cls.name)):
+    for cls in sorted(data.classes.values(), key=lambda cls: (cls.group, cls.name)):
         ipa_type = get_ql_ipa_class(cls)
         if ipa_type.is_final:
             final_ipa_types.append(ipa_type)
             if ipa_type.has_params:
-                stub_file = stub_out / cls.dir / f"{cls.name}Constructor.qll"
+                stub_file = stub_out / cls.group / f"{cls.name}Constructor.qll"
                 if not stub_file.is_file() or _is_generated_stub(stub_file):
                     # stub rendering must be postponed as we might not have yet all subtracted ipa types in `ipa_type`
                     stubs[stub_file] = ql.Synth.ConstructorStub(ipa_type)
@@ -326,7 +332,7 @@ def generate(opts, renderer):
 
     for stub_file, data in stubs.items():
         renderer.render(data, stub_file)
-    renderer.render(ql.Synth.Types(schema.root_class_name, final_ipa_types, non_final_ipa_types), out / "Synth.qll")
+    renderer.render(ql.Synth.Types(root.name, final_ipa_types, non_final_ipa_types), out / "Synth.qll")
     renderer.render(ql.ImportList(constructor_imports), out / "SynthConstructors.qll")
     renderer.render(ql.ImportList(ipa_constructor_imports), out / "PureSynthConstructors.qll")
 

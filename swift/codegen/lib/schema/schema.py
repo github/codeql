@@ -1,13 +1,13 @@
 """ schema.yml format representation """
-
 import pathlib
-import re
+import types
+import typing
 from dataclasses import dataclass, field
-from typing import List, Set, Union, Dict, ClassVar, Optional
+from typing import List, Set, Union, Dict, Optional
+from enum import Enum, auto
+import functools
+import importlib.util
 from toposort import toposort_flatten
-
-import yaml
-
 
 class Error(Exception):
 
@@ -15,46 +15,49 @@ class Error(Exception):
         return self.args[0]
 
 
-root_class_name = "Element"
+def _check_type(t: Optional[str], known: typing.Iterable[str]):
+    if t is not None and t not in known:
+        raise Error(f"Unknown type {t}")
 
 
 @dataclass
 class Property:
-    is_single: ClassVar = False
-    is_optional: ClassVar = False
-    is_repeated: ClassVar = False
-    is_predicate: ClassVar = False
+    class Kind(Enum):
+        SINGLE = auto()
+        REPEATED = auto()
+        OPTIONAL = auto()
+        REPEATED_OPTIONAL = auto()
+        PREDICATE = auto()
 
-    name: str
-    type: str = None
+    kind: Kind
+    name: Optional[str] = None
+    type: Optional[str] = None
     is_child: bool = False
     pragmas: List[str] = field(default_factory=list)
 
+    @property
+    def is_single(self) -> bool:
+        return self.kind == self.Kind.SINGLE
 
-@dataclass
-class SingleProperty(Property):
-    is_single: ClassVar = True
+    @property
+    def is_optional(self) -> bool:
+        return self.kind in (self.Kind.OPTIONAL, self.Kind.REPEATED_OPTIONAL)
 
+    @property
+    def is_repeated(self) -> bool:
+        return self.kind in (self.Kind.REPEATED, self.Kind.REPEATED_OPTIONAL)
 
-@dataclass
-class OptionalProperty(Property):
-    is_optional: ClassVar = True
-
-
-@dataclass
-class RepeatedProperty(Property):
-    is_repeated: ClassVar = True
-
-
-@dataclass
-class RepeatedOptionalProperty(Property):
-    is_optional: ClassVar = True
-    is_repeated: ClassVar = True
+    @property
+    def is_predicate(self) -> bool:
+        return self.kind == self.Kind.PREDICATE
 
 
-@dataclass
-class PredicateProperty(Property):
-    is_predicate: ClassVar = True
+SingleProperty = functools.partial(Property, Property.Kind.SINGLE)
+OptionalProperty = functools.partial(Property, Property.Kind.OPTIONAL)
+RepeatedProperty = functools.partial(Property, Property.Kind.REPEATED)
+RepeatedOptionalProperty = functools.partial(
+    Property, Property.Kind.REPEATED_OPTIONAL)
+PredicateProperty = functools.partial(Property, Property.Kind.PREDICATE)
 
 
 @dataclass
@@ -66,119 +69,161 @@ class IpaInfo:
 @dataclass
 class Class:
     name: str
-    bases: List[str] = field(default_factory=set)
+    bases: List[str] = field(default_factory=list)
     derived: Set[str] = field(default_factory=set)
     properties: List[Property] = field(default_factory=list)
-    dir: pathlib.Path = pathlib.Path()
+    group: str = ""
     pragmas: List[str] = field(default_factory=list)
     ipa: Optional[IpaInfo] = None
 
     @property
     def final(self):
         return not self.derived
+    def check_types(self, known: typing.Iterable[str]):
+        for b in self.bases:
+            _check_type(b, known)
+        for d in self.derived:
+            _check_type(d, known)
+        for p in self.properties:
+            _check_type(p.type, known)
+        if self.ipa is not None:
+            _check_type(self.ipa.from_class, known)
+            if self.ipa.on_arguments is not None:
+                for t in self.ipa.on_arguments.values():
+                    _check_type(t, known)
 
 
 @dataclass
 class Schema:
-    classes: Dict[str, Class]
+    classes: Dict[str, Class] = field(default_factory=dict)
     includes: Set[str] = field(default_factory=set)
 
 
-_StrOrList = Union[str, List[str]]
+predicate_marker = object()
+
+TypeRef = Union[type, str]
 
 
-def _auto_list(data: _StrOrList) -> List[str]:
-    if isinstance(data, list):
-        return data
-    return [data]
+@functools.singledispatch
+def get_type_name(arg: TypeRef) -> str:
+    raise Error(f"Not a schema type or string ({arg})")
 
 
-def _parse_property(name: str, data: Union[str, Dict[str, _StrOrList]], is_child: bool = False):
-    if isinstance(data, dict):
-        if "type" not in data:
-            raise Error(f"property {name} has no type")
-        pragmas = _auto_list(data.pop("_pragma", []))
-        type = data.pop("type")
-        if data:
-            raise Error(f"unknown metadata {', '.join(data)} in property {name}")
-    else:
-        pragmas = []
-        type = data
-    if is_child and type[0].islower():
-        raise Error(f"children must have class type, got {type} for {name}")
-    if type.endswith("?*"):
-        return RepeatedOptionalProperty(name, type[:-2], is_child=is_child, pragmas=pragmas)
-    elif type.endswith("*"):
-        return RepeatedProperty(name, type[:-1], is_child=is_child, pragmas=pragmas)
-    elif type.endswith("?"):
-        return OptionalProperty(name, type[:-1], is_child=is_child, pragmas=pragmas)
-    elif type == "predicate":
-        return PredicateProperty(name, pragmas=pragmas)
-    else:
-        return SingleProperty(name, type, is_child=is_child, pragmas=pragmas)
+@get_type_name.register
+def _(arg: type):
+    return arg.__name__
 
 
-def _parse_ipa(data: Dict[str, Union[str, Dict[str, str]]]):
-    return IpaInfo(from_class=data.get("from"),
-                   on_arguments=data.get(True))  # 'on' is parsed as boolean True in yaml
+@get_type_name.register
+def _(arg: str):
+    return arg
 
 
-class _DirSelector:
-    """ Default output subdirectory selector for generated QL files, based on the `_directories` global field"""
-
-    def __init__(self, dir_to_patterns):
-        self.selector = [(re.compile(p), pathlib.Path(d)) for d, p in dir_to_patterns]
-        self.selector.append((re.compile(""), pathlib.Path()))
-
-    def get(self, name):
-        return next(d for p, d in self.selector if p.search(name))
+@functools.singledispatch
+def _make_property(arg: object) -> Property:
+    if arg is predicate_marker:
+        return PredicateProperty()
+    raise Error(f"Illegal property specifier {arg}")
 
 
-def load(path):
-    """ Parse the schema from the file at `path` """
-    with open(path) as input:
-        data = yaml.load(input, Loader=yaml.SafeLoader)
-    grouper = _DirSelector(data.get("_directories", {}).items())
-    classes = {root_class_name: Class(root_class_name)}
-    classes.update((cls, Class(cls, dir=grouper.get(cls))) for cls in data if not cls.startswith("_"))
-    for name, info in data.items():
-        if name.startswith("_"):
-            continue
-        if not name[0].isupper():
-            raise Error(f"keys in the schema file must be capitalized class names or metadata, got {name}")
-        cls = classes[name]
-        for k, v in info.items():
-            if not k.startswith("_"):
-                cls.properties.append(_parse_property(k, v))
-            elif k == "_extends":
-                cls.bases = _auto_list(v)
-                for base in cls.bases:
-                    classes[base].derived.add(name)
-            elif k == "_dir":
-                cls.dir = pathlib.Path(v)
-            elif k == "_children":
-                cls.properties.extend(_parse_property(kk, vv, is_child=True) for kk, vv in v.items())
-            elif k == "_pragma":
-                cls.pragmas = _auto_list(v)
-            elif k == "_synth":
-                cls.ipa = _parse_ipa(v)
-            else:
-                raise Error(f"unknown metadata {k} for class {name}")
-        if not cls.bases and cls.name != root_class_name:
-            cls.bases = [root_class_name]
-            classes[root_class_name].derived.add(name)
+@_make_property.register(str)
+@_make_property.register(type)
+def _(arg: TypeRef):
+    return SingleProperty(type=get_type_name(arg))
 
+
+@_make_property.register
+def _(arg: Property):
+    return arg
+
+
+class PropertyModifier:
+    """ Modifier of `Property` objects.
+        Being on the right of `|` it will trigger construction of a `Property` from
+        the left operand.
+    """
+
+    def __ror__(self, other: object) -> Property:
+        ret = _make_property(other)
+        self.modify(ret)
+        return ret
+
+    def modify(self, prop: Property):
+        raise NotImplementedError
+
+
+@dataclass
+class _PropertyNamer(PropertyModifier):
+    name: str
+
+    def modify(self, prop: Property):
+        prop.name = self.name.rstrip("_")
+
+
+def _get_class(cls: type) -> Class:
+    if not isinstance(cls, type):
+        raise Error(f"Only class definitions allowed in schema, found {cls}")
+    if cls.__name__[0].islower():
+        raise Error(f"Class name must be capitalized, found {cls.__name__}")
+    if len({b.group for b in cls.__bases__ if hasattr(b, "group")}) > 1:
+        raise Error(f"Bases with mixed groups for {cls.__name__}")
+    return Class(name=cls.__name__,
+                 bases=[b.__name__ for b in cls.__bases__ if b is not object],
+                 derived={d.__name__ for d in cls.__subclasses__()},
+                 # getattr to inherit from bases
+                 group=getattr(cls, "group", ""),
+                 # not getattr not to inherit from bases
+                 pragmas=cls.__dict__.get("pragmas", []),
+                 # not getattr not to inherit from bases
+                 ipa=cls.__dict__.get("ipa", None),
+                 properties=[
+                     a | _PropertyNamer(n)
+                     for n, a in cls.__annotations__.items()
+                 ],
+                 )
+
+
+def _toposort_classes_by_group(classes: typing.Dict[str, Class]) -> typing.Dict[str, Class]:
     groups = {}
+    ret = {}
 
     for name, cls in classes.items():
-        groups.setdefault(cls.dir, []).append(name)
+        groups.setdefault(cls.group, []).append(name)
 
-    sorted_classes = {}
-
-    for dir in sorted(groups):
-        group = groups[dir]
-        inheritance = {name: classes[name].bases for name in group}
+    for group, grouped in sorted(groups.items()):
+        inheritance = {name: classes[name].bases for name in grouped}
         for name in toposort_flatten(inheritance):
-            sorted_classes[name] = classes[name]
+            ret[name] = classes[name]
 
-    return Schema(classes=sorted_classes, includes=set(data.get("_includes", [])))
+    return ret
+
+
+def load(m: types.ModuleType) -> Schema:
+    includes = set()
+    classes = {}
+    known = {"int", "string", "boolean"}
+    known.update(n for n in m.__dict__ if not n.startswith("__"))
+    import swift.codegen.lib.schema.defs as defs
+    for name, data in m.__dict__.items():
+        if hasattr(defs, name):
+            continue
+        if name == "__includes":
+            includes = set(data)
+            continue
+        if name.startswith("__"):
+            continue
+        cls = _get_class(data)
+        if classes and not cls.bases:
+            raise Error(
+                f"Only one root class allowed, found second root {name}")
+        cls.check_types(known)
+        classes[name] = cls
+
+    return Schema(includes=includes, classes=_toposort_classes_by_group(classes))
+
+
+def load_file(path: pathlib.Path) -> Schema:
+    spec = importlib.util.spec_from_file_location("schema", path)
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return load(module)

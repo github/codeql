@@ -23,7 +23,7 @@ def _parse_args() -> argparse.Namespace:
     p.add_argument("--swift-dir", type=_abspath, default=paths.swift_dir,
                    help="the directory that should be regarded as the root of the swift codebase. Used to compute QL "
                         "imports and in some comments (default %(default)s)")
-    p.add_argument("--schema", type=_abspath, default=paths.swift_dir / "codegen/schema.yml",
+    p.add_argument("--schema", type=_abspath, default=paths.swift_dir / "schema.py",
                    help="input schema file (default %(default)s)")
     p.add_argument("--dbscheme", type=_abspath, default=paths.swift_dir / "ql/lib/swift.dbscheme",
                    help="output file for dbscheme generation, input file for trap generation (default %(default)s)")
