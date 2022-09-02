@@ -57,11 +57,23 @@ module ActiveStorage {
           // "activestorage;Blob;activestorage;;Member[ActiveStorage].Member[Blob].Method[compose].Argument[0].Element[any]",
           // ActiveStorage::Blob.find_signed(!) : Blob
           "activestorage;Blob;activestorage;;Member[ActiveStorage].Member[Blob].Method[find_signed,find_signed!].ReturnValue",
-          // ActiveStorage::Attachment#blob : Blob
-          "activestorage;Blob;activestorage;;Member[ActiveStorage].Member[Attachment].Instance.Method[blob].ReturnValue",
-          // ActiveStorage::Attachment delegates method calls to its associated Blob
-          "activestorage;Blob;activestorage;;Member[ActiveStorage].Member[Attachment].Instance",
         ]
+    }
+  }
+
+  private class BlobInstance extends DataFlow::Node {
+    BlobInstance() {
+      this = ModelOutput::getATypeNode("activestorage", "Blob").getAValueReachableFromSource()
+      or
+      // ActiveStorage::Attachment#blob : Blob
+      exists(DataFlow::CallNode call |
+        call = this and
+        call.getReceiver() instanceof AttachmentInstance and
+        call.getMethodName() = "blob"
+      )
+      or
+      // ActiveStorage::Attachment delegates method calls to its associated Blob
+      this instanceof AttachmentInstance
     }
   }
 
@@ -78,11 +90,16 @@ module ActiveStorage {
               .getASubclass*()
               .getAMethodCall(["create_after_unfurling!", "create_and_upload!"]),
           // Instance methods
-          ModelOutput::getATypeNode("activestorage", "Blob")
-              .getAMethodCall([
-                  "upload", "upload_without_unfurling", "download", "download_chunk", "delete",
-                  "purge"
-                ])
+          any(BlobInstance i, DataFlow::CallNode c |
+            i.(DataFlow::LocalSourceNode).flowsTo(c.getReceiver()) and
+            c.getMethodName() =
+              [
+                "upload", "upload_without_unfurling", "download", "download_chunk", "delete",
+                "purge"
+              ]
+          |
+            c
+          )
         ].asExpr().getExpr()
     }
 
@@ -110,7 +127,7 @@ module ActiveStorage {
   }
 
   /**
-   * An ActiveStorage attachment, instantiated via an association with an
+   * An ActiveStorage attachment, instantiated directly or via an association with an
    * ActiveRecord model.
    *
    * ```rb
@@ -120,18 +137,30 @@ module ActiveStorage {
    *
    * user = User.find(id)
    * user.avatar
+   * ActiveStorage::Attachment.new
    * ```
    */
-  private class AttachmentInstance extends DataFlow::CallNode {
+  class AttachmentInstance extends DataFlow::Node {
     AttachmentInstance() {
-      exists(Association assoc, string model | model = assoc.getTargetModelName() |
-        this.getReceiver().(ActiveRecordInstance).getClass() = assoc.getSourceClass() and
+      this =
+        API::getTopLevelMember("ActiveStorage")
+            .getMember("Attachment")
+            .getInstance()
+            .getAValueReachableFromSource()
+      or
+      exists(Association assoc, string model, DataFlow::CallNode call |
+        model = assoc.getTargetModelName()
+      |
+        call = this and
+        call.getReceiver().(ActiveRecordInstance).getClass() = assoc.getSourceClass() and
         (
-          assoc.isSingular() and this.getMethodName() = model
+          assoc.isSingular() and call.getMethodName() = model
           or
-          assoc.isCollection() and this.getMethodName() = model
+          assoc.isCollection() and call.getMethodName() = model
         )
       )
+      or
+      any(AttachmentInstance i).(DataFlow::LocalSourceNode).flowsTo(this)
     }
   }
 
@@ -141,35 +170,41 @@ module ActiveStorage {
    */
   private class ImageProcessingCall extends DataFlow::CallNode, SystemCommandExecution::Range {
     ImageProcessingCall() {
-      this =
-        ModelOutput::getATypeNode("activestorage", "Blob")
-            .getAMethodCall(["variant", "preview", "representation"]) or
+      this.getReceiver() instanceof BlobInstance and
+      this.getMethodName() = ["variant", "preview", "representation"]
+      or
       this =
         API::getTopLevelMember("ActiveStorage")
             .getMember("Attachment")
             .getInstance()
-            .getAMethodCall(["variant", "preview", "representation"]) or
+            .getAMethodCall(["variant", "preview", "representation"])
+      or
       this =
         API::getTopLevelMember("ActiveStorage")
             .getMember("Variation")
-            .getAMethodCall(["new", "wrap", "encode"]) or
+            .getAMethodCall(["new", "wrap", "encode"])
+      or
       this =
         API::getTopLevelMember("ActiveStorage")
             .getMember("Variation")
             .getInstance()
-            .getAMethodCall("transformations=") or
+            .getAMethodCall("transformations=")
+      or
       this =
         API::getTopLevelMember("ActiveStorage")
             .getMember("Transformers")
             .getMember("ImageProcessingTransformer")
-            .getAMethodCall("new") or
+            .getAMethodCall("new")
+      or
       this =
         API::getTopLevelMember("ActiveStorage")
             .getMember(["Preview", "VariantWithRecord"])
-            .getAMethodCall("new") or
+            .getAMethodCall("new")
+      or
       // `ActiveStorage.paths` is a global hash whose values are passed to
       // a `system` call.
-      this = API::getTopLevelMember("ActiveStorage").getAMethodCall("paths=") or
+      this = API::getTopLevelMember("ActiveStorage").getAMethodCall("paths=")
+      or
       // `ActiveStorage.video_preview_arguments` is passed to a `system` call.
       this = API::getTopLevelMember("ActiveStorage").getAMethodCall("video_preview_arguments=")
     }
@@ -186,58 +221,5 @@ module ActiveStorage {
     }
 
     override DataFlow::Node getCode() { result = this.getArgument(0) }
-  }
-
-  /**
-   * Adds ActiveStorage instances to the API graph.
-   * Source code may not mention `ActiveStorage` or `ActiveStorage::Attachment`,
-   * so we add synthetic nodes for them.
-   */
-  private module ApiNodes {
-    class ActiveStorage extends API::EntryPoint {
-      ActiveStorage() { this = "ActiveStorage" }
-
-      override predicate edge(API::Node pred, API::Label::ApiLabel lbl) {
-        pred = API::root() and lbl = API::Label::member("ActiveStorage")
-      }
-    }
-
-    class Attachment extends API::EntryPoint {
-      Attachment() { this = "ActiveStorage::Attachment" }
-
-      override predicate edge(API::Node pred, API::Label::ApiLabel lbl) {
-        pred = API::getTopLevelMember("ActiveStorage") and
-        lbl = API::Label::member("Attachment")
-      }
-    }
-
-    class AttachmentNew extends API::EntryPoint {
-      AttachmentNew() { this = "ActiveStorage::Attachment.new" }
-
-      override predicate edge(API::Node pred, API::Label::ApiLabel lbl) {
-        pred = API::getTopLevelMember("ActiveStorage").getMember("Attachment") and
-        lbl = API::Label::method("new")
-      }
-    }
-
-    /**
-     * An API entry point for instances of `ActiveStorage::Attachment`.
-     * These arise from calls to methods generated by `has_one_attached` and
-     * `has_many_attached` associations.
-     */
-    class AttachmentInstanceNode extends API::EntryPoint {
-      AttachmentInstanceNode() { this = "ActiveStorage::Attachment.new.ReturnValue" }
-
-      override predicate edge(API::Node pred, API::Label::ApiLabel lbl) {
-        pred = API::getTopLevelMember("ActiveStorage").getMember("Attachment").getMethod("new") and
-        lbl = API::Label::return()
-      }
-
-      override DataFlow::LocalSourceNode getAUse() { result = any(AttachmentInstance i) }
-
-      override DataFlow::CallNode getACall() {
-        any(AttachmentInstance i).flowsTo(result.getReceiver())
-      }
-    }
   }
 }

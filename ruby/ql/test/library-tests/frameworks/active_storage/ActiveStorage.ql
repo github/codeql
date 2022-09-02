@@ -2,14 +2,9 @@ import ruby
 import codeql.ruby.ApiGraphs
 import codeql.ruby.DataFlow
 import codeql.ruby.Concepts
+import codeql.ruby.frameworks.ActiveStorage
 
-query predicate attachmentInstances(DataFlow::Node n) {
-  n =
-    API::getTopLevelMember("ActiveStorage")
-        .getMember("Attachment")
-        .getInstance()
-        .getAValueReachableFromSource()
-}
+query predicate attachmentInstances(ActiveStorage::AttachmentInstance n) { any() }
 
 query predicate httpRequests(HTTP::Client::Request r, string framework, DataFlow::Node responseBody) {
   r.getFramework() = framework and r.getResponseBody() = responseBody
