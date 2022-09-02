@@ -28,13 +28,7 @@ private predicate shouldPrint(Locatable e) { any(PrintAstConfiguration config).s
 /**
  * An AST node that should be printed.
  */
-private newtype TPrintAstNode =
-  TLocatable(Locatable ast) {
-    // Only consider resolved nodes (that is not within the hidden conversion AST)
-    ast = ast.resolve()
-  } or
-  TConversion(Expr conv) { conv.isConversion() } or
-  TConversionContainer(Expr e) { e = e.resolve() and e.hasConversions() }
+private newtype TPrintAstNode = TLocatable(Locatable ast)
 
 /**
  * A node in the output tree.
@@ -49,7 +43,7 @@ class PrintAstNode extends TPrintAstNode {
    * Gets the child node at index `index`. Child indices must be unique,
    * but need not be contiguous.
    */
-  abstract predicate hasChild(PrintAstNode child, int index, string accessor);
+  abstract predicate hasChild(PrintAstNode child, int index, string label);
 
   /**
    * Holds if this node should be printed in the output.
@@ -72,6 +66,10 @@ private string prettyPrint(Locatable e) {
   result = "[" + concat(e.getPrimaryQlClasses(), ", ") + "] " + e
 }
 
+private class Unresolved extends Locatable {
+  Unresolved() { this != this.resolve() }
+}
+
 /**
  * A graph node representing a real Locatable node.
  */
@@ -84,61 +82,37 @@ class PrintLocatable extends PrintAstNode, TLocatable {
 
   final override predicate shouldBePrinted() { shouldPrint(ast) }
 
-  override predicate hasChild(PrintAstNode child, int index, string accessor) {
-    child = TLocatable(getChildAndAccessor(ast, index, accessor))
+  override predicate hasChild(PrintAstNode child, int index, string label) {
+    exists(Locatable c, int i, string accessor |
+      c = getChildAndAccessor(ast, i, accessor) and
+      (
+        // use even indexes for normal children, leaving odd slots for conversions if any
+        child = TLocatable(c) and index = 2 * i and label = accessor
+        or
+        child = TLocatable(c.getFullyUnresolved().(Unresolved)) and
+        index = 2 * i + 1 and
+        (
+          if c instanceof Expr
+          then label = accessor + ".getFullyUncoverted()"
+          else label = accessor + ".getFullyUnresolved()"
+        )
+      )
+    )
   }
 
   final override Location getLocation() { result = ast.getLocation() }
 }
 
 /**
- * A graph node representing a conversion.
+ * A specialization of graph node for "unresolved" children, that is nodes in
+ * the parallel conversion AST.
  */
-class PrintConversion extends PrintAstNode, TConversion {
-  Expr conv;
+class PrintUnresolved extends PrintLocatable {
+  override Unresolved ast;
 
-  PrintConversion() { this = TConversion(conv) }
-
-  override string toString() { result = prettyPrint(conv) }
-
-  final override predicate shouldBePrinted() { shouldPrint(conv.resolve()) }
-
-  override predicate hasChild(PrintAstNode child, int index, string accessor) { none() }
-
-  final override Location getLocation() { result = conv.getLocation() }
-}
-
-/**
- * A graph node representing a virtual container for conversions.
- */
-class PrintConversionContainer extends PrintAstNode, TConversionContainer {
-  Expr convertee;
-
-  PrintConversionContainer() { this = TConversionContainer(convertee) }
-
-  override string toString() { result = "" }
-
-  final override predicate shouldBePrinted() { shouldPrint(convertee) }
-
-  override predicate hasChild(PrintAstNode child, int index, string accessor) {
-    child = TConversion(convertee.getConversion(index)) and
-    accessor = "getConversion(" + index + ")"
-  }
-
-  final override Location getLocation() { result = convertee.getFullyConverted().getLocation() }
-}
-
-/** A graph node specialization for expressions to show conversions. */
-class PrintExpr extends PrintLocatable {
-  override Expr ast;
-
-  override predicate hasChild(PrintAstNode child, int index, string accessor) {
-    super.hasChild(child, index, accessor)
-    or
-    ast.hasConversions() and
-    index = -1 and
-    accessor = "conversions" and
-    child = TConversionContainer(ast)
+  override predicate hasChild(PrintAstNode child, int index, string label) {
+    // only print immediate unresolved children from the "parallel" AST
+    child = TLocatable(getImmediateChildAndAccessor(ast, index, label).(Unresolved))
   }
 }
 
