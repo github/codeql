@@ -53,7 +53,7 @@ private module Cached {
       c.getName() = "URL" and
       c.getAMember() = f and
       f.getName() = ["init(string:)", "init(string:relativeTo:)"] and
-      call.getFunction().(ApplyExpr).getStaticTarget() = f and
+      call.getStaticTarget() = f and
       nodeFrom.asExpr() = call.getAnArgument().getExpr() and
       nodeTo.asExpr() = call
     )
