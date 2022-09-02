@@ -18,4 +18,4 @@ from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink
 where cfg.hasFlowPath(source, sink)
 select sink, source, sink,
   "Invocation of method derived from $@ may lead to remote code execution.", source.getNode(),
-  "user-controlled value"
+  "a user-controlled value"
