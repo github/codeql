@@ -13,9 +13,9 @@ package com.github.codeql
  * "OuterClass<ConcreteArgument>" or "OtherClass<? extends Bound>") or an array ("componentShortName[]").
  */
 data class TypeResultGeneric<SignatureType,out LabelType: AnyDbType>(val id: Label<out LabelType>, val signature: SignatureType, val shortName: String) {
-    fun <U: AnyDbType> cast(): TypeResult<U> {
+    fun <U: AnyDbType> cast(): TypeResultGeneric<SignatureType,U> {
         @Suppress("UNCHECKED_CAST")
-        return this as TypeResult<U>
+        return this as TypeResultGeneric<SignatureType,U>
     }
 }
 data class TypeResultsGeneric<SignatureType>(val javaResult: TypeResultGeneric<SignatureType,DbType>, val kotlinResult: TypeResultGeneric<SignatureType,DbKt_type>)
