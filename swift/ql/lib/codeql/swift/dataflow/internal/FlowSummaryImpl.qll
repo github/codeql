@@ -950,9 +950,7 @@ module Private {
       }
 
       private predicate relevantSummaryElement(AccessPath inSpec, AccessPath outSpec, string kind) {
-        summaryElement(this, inSpec, outSpec, kind, false)
-        or
-        this.relevantSummaryElementGenerated(inSpec, outSpec, kind)
+        none()
       }
 
       override predicate propagatesFlow(
