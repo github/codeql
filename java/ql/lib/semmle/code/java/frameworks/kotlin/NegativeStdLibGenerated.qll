@@ -201,13 +201,10 @@ private class StdLibGeneratedNegativesummaryCsv extends NegativeSummaryModelCsv 
         "kotlin.collections;ArraysKt;contains;(int[],int);generated",
         "kotlin.collections;ArraysKt;contains;(long[],long);generated",
         "kotlin.collections;ArraysKt;contains;(short[],short);generated",
-        "kotlin.collections;ArraysKt;contentDeepEquals;(Object[],Object[]);generated",
         "kotlin.collections;ArraysKt;contentDeepEqualsInline;(Object[],Object[]);generated",
         "kotlin.collections;ArraysKt;contentDeepEqualsNullable;(Object[],Object[]);generated",
-        "kotlin.collections;ArraysKt;contentDeepHashCode;(Object[]);generated",
         "kotlin.collections;ArraysKt;contentDeepHashCodeInline;(Object[]);generated",
         "kotlin.collections;ArraysKt;contentDeepHashCodeNullable;(Object[]);generated",
-        "kotlin.collections;ArraysKt;contentDeepToString;(Object[]);generated",
         "kotlin.collections;ArraysKt;contentDeepToStringInline;(Object[]);generated",
         "kotlin.collections;ArraysKt;contentDeepToStringNullable;(Object[]);generated",
         "kotlin.collections;ArraysKt;contentEquals;(Object[],Object[]);generated",
@@ -282,12 +279,6 @@ private class StdLibGeneratedNegativesummaryCsv extends NegativeSummaryModelCsv 
         "kotlin.collections;ArraysKt;copyOf;(long[],int);generated",
         "kotlin.collections;ArraysKt;copyOf;(short[]);generated",
         "kotlin.collections;ArraysKt;copyOf;(short[],int);generated",
-        "kotlin.collections;ArraysKt;copyOfRange;(boolean[],int,int);generated",
-        "kotlin.collections;ArraysKt;copyOfRange;(double[],int,int);generated",
-        "kotlin.collections;ArraysKt;copyOfRange;(float[],int,int);generated",
-        "kotlin.collections;ArraysKt;copyOfRange;(int[],int,int);generated",
-        "kotlin.collections;ArraysKt;copyOfRange;(long[],int,int);generated",
-        "kotlin.collections;ArraysKt;copyOfRange;(short[],int,int);generated",
         "kotlin.collections;ArraysKt;copyOfRangeInline;(boolean[],int,int);generated",
         "kotlin.collections;ArraysKt;copyOfRangeInline;(double[],int,int);generated",
         "kotlin.collections;ArraysKt;copyOfRangeInline;(float[],int,int);generated",
@@ -2782,7 +2773,6 @@ private class StdLibGeneratedNegativesummaryCsv extends NegativeSummaryModelCsv 
         "kotlin.jvm.internal;TypeParameterReference;hashCode;();generated",
         "kotlin.jvm.internal;TypeParameterReference;toString;();generated",
         "kotlin.jvm.internal;TypeReference;equals;(Object);generated",
-        "kotlin.jvm.internal;TypeReference;getFlags$kotlin_stdlib;();generated",
         "kotlin.jvm.internal;TypeReference;hashCode;();generated",
         "kotlin.jvm;JvmClassMappingKt;getAnnotationClass;(Annotation);generated",
         "kotlin.jvm;JvmClassMappingKt;getDeclaringJavaClass;(Enum);generated",
@@ -3642,7 +3632,6 @@ private class StdLibGeneratedNegativesummaryCsv extends NegativeSummaryModelCsv 
         "kotlin.text;StringsKt;removeRange;(String,IntRange);generated",
         "kotlin.text;StringsKt;removeRange;(String,int,int);generated",
         "kotlin.text;StringsKt;replace;(String,String,String,boolean);generated",
-        "kotlin.text;StringsKt;replace;(String,char,char,boolean);generated",
         "kotlin.text;StringsKt;replaceIndent;(String,String);generated",
         "kotlin.text;StringsKt;replaceIndentByMargin;(String,String,String);generated",
         "kotlin.text;StringsKt;replaceRange;(String,IntRange,CharSequence);generated",
@@ -4419,9 +4408,7 @@ private class StdLibGeneratedNegativesummaryCsv extends NegativeSummaryModelCsv 
         "kotlin;UnsupportedOperationException;UnsupportedOperationException;(String,Throwable);generated",
         "kotlin;UnsupportedOperationException;UnsupportedOperationException;(Throwable);generated",
         "kotlin;UseExperimental;UseExperimental;(KClass[]);generated",
-        "kotlin;UseExperimental;markerClass;();generated",
-        "kotlin;WasExperimental;WasExperimental;(KClass[]);generated",
-        "kotlin;WasExperimental;markerClass;();generated"
+        "kotlin;UseExperimental;markerClass;();generated"
       ]
   }
 }

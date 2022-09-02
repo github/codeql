@@ -1,5 +1,4 @@
 invalidModelRow
-| Dubious name "getPlatformTypeUpperBound$kotlin_stdlib" in summary model. |
 #select
 | B.java:6:11:6:14 | arg1 | qltest |
 | B.java:9:5:9:33 | this <.method> | qltest-arg |

@@ -1,5 +1,4 @@
 invalidModelRow
-| Dubious name "getPlatformTypeUpperBound$kotlin_stdlib" in summary model. |
 #select
 | C.java:6:16:6:19 | arg1 | C.java:6:5:6:20 | stepArgRes(...) |
 | C.java:10:16:10:21 | argIn1 | C.java:10:24:10:30 | argOut1 [post update] |
