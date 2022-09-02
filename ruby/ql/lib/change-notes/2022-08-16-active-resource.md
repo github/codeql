@@ -1,4 +1,4 @@
 ---
 category: minorAnalysis
 ---
-* Accesses of ActiveResource models are now recognised as HTTP requests.
+* Accesses of ActiveResource models are now recognized as HTTP requests.

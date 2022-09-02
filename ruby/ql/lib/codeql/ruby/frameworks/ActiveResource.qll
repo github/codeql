@@ -25,7 +25,7 @@ module ActiveResource {
   /**
    * An ActiveResource class.
    *
-   * ``rb
+   * ```rb
    * class Person < ActiveResource::Base
    * end
    * ```
