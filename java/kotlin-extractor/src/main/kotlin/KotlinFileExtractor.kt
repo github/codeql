@@ -2175,13 +2175,18 @@ open class KotlinFileExtractor(
                         if (dispatchReceiver == null) {
                             logger.errorElement("No dispatch receiver found for array iterator call", c)
                         } else {
-                            val typeArgs = (dispatchReceiver.type as IrSimpleType).arguments.map {
-                                when(it) {
-                                    is IrTypeProjection -> it.type
-                                    else -> pluginContext.irBuiltIns.anyNType
+                            val drType = dispatchReceiver.type
+                            if (drType !is IrSimpleType) {
+                                logger.errorElement("Dispatch receiver with unexpected type rep found for array iterator call: ${drType.javaClass}", c)
+                            } else {
+                                val typeArgs = drType.arguments.map {
+                                    when(it) {
+                                        is IrTypeProjection -> it.type
+                                        else -> pluginContext.irBuiltIns.anyNType
+                                    }
                                 }
+                                extractRawMethodAccess(iteratorFn, c, callable, parent, idx, enclosingStmt, listOf(c.dispatchReceiver), null, null, typeArgs)
                             }
-                            extractRawMethodAccess(iteratorFn, c, callable, parent, idx, enclosingStmt, listOf(c.dispatchReceiver), null, null, typeArgs)
                         }
                     }
                 }
