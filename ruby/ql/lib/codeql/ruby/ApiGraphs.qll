@@ -838,7 +838,7 @@ module API {
 
         LabelEntryPoint() { this = MkLabelEntryPoint(name) }
 
-        override string toString() { result = name }
+        override string toString() { result = "entryPoint(\"" + name + "\")" }
 
         /** Gets the name of the entry point. */
         API::EntryPoint getName() { result = name }
