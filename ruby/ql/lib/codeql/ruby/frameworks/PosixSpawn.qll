@@ -62,9 +62,9 @@ module PosixSpawn {
     // is shell interpreted unless there is another argument with a string
     // constant value.
     override predicate isShellInterpreted(DataFlow::Node arg) {
+      this.argument(arg) and
       not exists(DataFlow::Node otherArg |
         otherArg != arg and
-        this.argument(arg) and
         this.argument(otherArg) and
         otherArg.asExpr().getConstantValue().isString(_)
       )

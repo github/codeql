@@ -13,8 +13,7 @@ sourceLocationPrefix(
 // from codegen/schema.yml
 
 @element =
-  @argument
-| @callable
+  @callable
 | @file
 | @generic_context
 | @iterable_decl_context
@@ -28,14 +27,31 @@ element_is_unknown(
   int id: @element ref
 );
 
+@file =
+  @db_file
+| @unknown_file
+;
+
+#keyset[id]
 files(
-  unique int id: @file,
+  int id: @file ref,
   string name: string ref
 );
 
+db_files(
+  unique int id: @db_file
+);
+
+unknown_files(
+  unique int id: @unknown_file
+);
+
 @locatable =
-  @ast_node
+  @argument
+| @ast_node
+| @comment
 | @condition_element
+| @if_config_clause
 ;
 
 #keyset[id]
@@ -44,13 +60,32 @@ locatable_locations(
   int location: @location ref
 );
 
+@location =
+  @db_location
+| @unknown_location
+;
+
+#keyset[id]
 locations(
-  unique int id: @location,
+  int id: @location ref,
   int file: @file ref,
   int start_line: int ref,
   int start_column: int ref,
   int end_line: int ref,
   int end_column: int ref
+);
+
+db_locations(
+  unique int id: @db_location
+);
+
+unknown_locations(
+  unique int id: @unknown_location
+);
+
+comments(
+  unique int id: @comment,
+  string text: string ref
 );
 
 @type =
@@ -130,6 +165,12 @@ nominal_type_decls(  //dir=decl
   @abstract_closure_expr
 | @abstract_function_decl
 ;
+
+#keyset[id]
+callable_self_params(
+  int id: @callable ref,
+  int self_param: @param_decl ref
+);
 
 #keyset[id, index]
 callable_params(
@@ -263,7 +304,8 @@ l_value_types(  //dir=type
 );
 
 module_types(  //dir=type
-  unique int id: @module_type
+  unique int id: @module_type,
+  int module: @module_decl ref
 );
 
 placeholder_types(  //dir=type
@@ -381,6 +423,12 @@ struct_decls(  //dir=decl
 | @value_decl
 ;
 
+#keyset[id]
+decls(  //dir=decl
+  int id: @decl ref,
+  int module: @module_decl ref
+);
+
 @expr =
   @abstract_closure_expr
 | @any_try_expr
@@ -471,27 +519,15 @@ expr_types(  //dir=expr
 | @yield_stmt
 ;
 
-@type_repr =
-  @array_type_repr
-| @attributed_type_repr
-| @composition_type_repr
-| @dictionary_type_repr
-| @error_type_repr
-| @existential_type_repr
-| @fixed_type_repr
-| @function_type_repr
-| @ident_type_repr
-| @implicitly_unwrapped_optional_type_repr
-| @metatype_type_repr
-| @named_opaque_return_type_repr
-| @opaque_return_type_repr
-| @optional_type_repr
-| @placeholder_type_repr
-| @protocol_type_repr
-| @sil_box_type_repr
-| @specifier_type_repr
-| @tuple_type_repr
-;
+type_reprs(  //dir=type
+  unique int id: @type_repr
+);
+
+#keyset[id]
+type_repr_types(  //dir=type
+  int id: @type_repr ref,
+  int type_: @type ref
+);
 
 function_types(  //dir=type
   unique int id: @function_type
@@ -643,14 +679,48 @@ if_config_decls(  //dir=decl
   unique int id: @if_config_decl
 );
 
+#keyset[id, index]
+if_config_decl_clauses(  //dir=decl
+  int id: @if_config_decl ref,
+  int index: int ref,
+  int clause: @if_config_clause ref
+);
+
+if_config_clauses(  //dir=decl
+  unique int id: @if_config_clause
+);
+
+#keyset[id]
+if_config_clause_conditions(  //dir=decl
+  int id: @if_config_clause ref,
+  int condition: @expr ref
+);
+
+#keyset[id, index]
+if_config_clause_elements(  //dir=decl
+  int id: @if_config_clause ref,
+  int index: int ref,
+  int element: @ast_node ref
+);
+
+#keyset[id]
+if_config_clause_is_active(  //dir=decl
+  int id: @if_config_clause ref
+);
+
 import_decls(  //dir=decl
-  unique int id: @import_decl,
-  int module: @module_decl ref
+  unique int id: @import_decl
 );
 
 #keyset[id]
 import_decl_is_exported(  //dir=decl
   int id: @import_decl ref
+);
+
+#keyset[id]
+import_decl_imported_modules(  //dir=decl
+  int id: @import_decl ref,
+  int imported_module: @module_decl ref
 );
 
 #keyset[id, index]
@@ -855,7 +925,7 @@ dot_syntax_base_ignored_exprs(  //dir=expr
 
 dynamic_type_exprs(  //dir=expr
   unique int id: @dynamic_type_expr,
-  int base_expr: @expr ref
+  int base: @expr ref
 );
 
 editor_placeholder_exprs(  //dir=expr
@@ -865,7 +935,6 @@ editor_placeholder_exprs(  //dir=expr
 enum_is_case_exprs(  //dir=expr
   unique int id: @enum_is_case_expr,
   int sub_expr: @expr ref,
-  int type_repr: @type_repr ref,
   int element: @enum_element_decl ref
 );
 
@@ -969,9 +1038,9 @@ key_path_exprs(  //dir=expr
 );
 
 #keyset[id]
-key_path_expr_parsed_roots(  //dir=expr
+key_path_expr_roots(  //dir=expr
   int id: @key_path_expr ref,
-  int parsed_root: @expr ref
+  int root: @type_repr ref
 );
 
 #keyset[id]
@@ -996,13 +1065,14 @@ lazy_initializer_exprs(  //dir=expr
 @lookup_expr =
   @dynamic_lookup_expr
 | @member_ref_expr
+| @method_ref_expr
 | @subscript_expr
 ;
 
 #keyset[id]
 lookup_exprs(  //dir=expr
   int id: @lookup_expr ref,
-  int base_expr: @expr ref
+  int base: @expr ref
 );
 
 #keyset[id]
@@ -1141,7 +1211,8 @@ unresolved_member_exprs(  //dir=expr
 );
 
 unresolved_pattern_exprs(  //dir=expr
-  unique int id: @unresolved_pattern_expr
+  unique int id: @unresolved_pattern_expr,
+  int sub_pattern: @pattern ref
 );
 
 unresolved_specialize_exprs(  //dir=expr
@@ -1560,7 +1631,7 @@ prefix_unary_exprs(  //dir=expr
 #keyset[id]
 self_apply_exprs(  //dir=expr
   int id: @self_apply_expr ref,
-  int base_expr: @expr ref
+  int base: @expr ref
 );
 
 array_exprs(  //dir=expr
@@ -1806,6 +1877,10 @@ member_ref_expr_has_ordinary_semantics(  //dir=expr
   int id: @member_ref_expr ref
 );
 
+method_ref_exprs(  //dir=expr
+  unique int id: @method_ref_expr
+);
+
 subscript_exprs(  //dir=expr
   unique int id: @subscript_expr
 );
@@ -2041,6 +2116,20 @@ module_decl_is_system_module(  //dir=decl
   int id: @module_decl ref
 );
 
+#keyset[id, index]
+module_decl_imported_modules(  //dir=decl
+  int id: @module_decl ref,
+  int index: int ref,
+  int imported_module: @module_decl ref
+);
+
+#keyset[id, index]
+module_decl_exported_modules(  //dir=decl
+  int id: @module_decl ref,
+  int index: int ref,
+  int exported_module: @module_decl ref
+);
+
 constructor_ref_call_exprs(  //dir=expr
   unique int id: @constructor_ref_call_expr
 );
@@ -2176,122 +2265,4 @@ float_literal_exprs(  //dir=expr
 integer_literal_exprs(  //dir=expr
   unique int id: @integer_literal_expr,
   string string_value: string ref
-);
-
-error_type_reprs(  //dir=typerepr
-  unique int id: @error_type_repr
-);
-
-attributed_type_reprs(  //dir=typerepr
-  unique int id: @attributed_type_repr
-);
-
-@ident_type_repr =
-  @component_ident_type_repr
-| @compound_ident_type_repr
-;
-
-@component_ident_type_repr =
-  @generic_ident_type_repr
-| @simple_ident_type_repr
-;
-
-simple_ident_type_reprs(  //dir=typerepr
-  unique int id: @simple_ident_type_repr
-);
-
-generic_ident_type_reprs(  //dir=typerepr
-  unique int id: @generic_ident_type_repr
-);
-
-compound_ident_type_reprs(  //dir=typerepr
-  unique int id: @compound_ident_type_repr
-);
-
-function_type_reprs(  //dir=typerepr
-  unique int id: @function_type_repr
-);
-
-array_type_reprs(  //dir=typerepr
-  unique int id: @array_type_repr
-);
-
-dictionary_type_reprs(  //dir=typerepr
-  unique int id: @dictionary_type_repr
-);
-
-optional_type_reprs(  //dir=typerepr
-  unique int id: @optional_type_repr
-);
-
-implicitly_unwrapped_optional_type_reprs(  //dir=typerepr
-  unique int id: @implicitly_unwrapped_optional_type_repr
-);
-
-tuple_type_reprs(  //dir=typerepr
-  unique int id: @tuple_type_repr
-);
-
-composition_type_reprs(  //dir=typerepr
-  unique int id: @composition_type_repr
-);
-
-metatype_type_reprs(  //dir=typerepr
-  unique int id: @metatype_type_repr
-);
-
-protocol_type_reprs(  //dir=typerepr
-  unique int id: @protocol_type_repr
-);
-
-opaque_return_type_reprs(  //dir=typerepr
-  unique int id: @opaque_return_type_repr
-);
-
-named_opaque_return_type_reprs(  //dir=typerepr
-  unique int id: @named_opaque_return_type_repr
-);
-
-existential_type_reprs(  //dir=typerepr
-  unique int id: @existential_type_repr
-);
-
-placeholder_type_reprs(  //dir=typerepr
-  unique int id: @placeholder_type_repr
-);
-
-@specifier_type_repr =
-  @compile_time_const_type_repr
-| @in_out_type_repr
-| @isolated_type_repr
-| @owned_type_repr
-| @shared_type_repr
-;
-
-in_out_type_reprs(  //dir=typerepr
-  unique int id: @in_out_type_repr
-);
-
-shared_type_reprs(  //dir=typerepr
-  unique int id: @shared_type_repr
-);
-
-owned_type_reprs(  //dir=typerepr
-  unique int id: @owned_type_repr
-);
-
-isolated_type_reprs(  //dir=typerepr
-  unique int id: @isolated_type_repr
-);
-
-compile_time_const_type_reprs(  //dir=typerepr
-  unique int id: @compile_time_const_type_repr
-);
-
-fixed_type_reprs(  //dir=typerepr
-  unique int id: @fixed_type_repr
-);
-
-sil_box_type_reprs(  //dir=typerepr
-  unique int id: @sil_box_type_repr
 );

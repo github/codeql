@@ -1,3 +1,61 @@
+## 0.3.4
+
+### Deprecated APIs
+
+* Many classes/predicates/modules with upper-case acronyms in their name have been renamed to follow our style-guide. 
+  The old name still exists as a deprecated alias.
+* The utility files previously in the `semmle.code.java.security.performance` package have been moved to the `semmle.code.java.security.regexp` package.  
+  The previous files still exist as deprecated aliases.
+
+### New Features
+
+* Added a new predicate, `requiresPermissions`, in the `AndroidComponentXmlElement` and `AndroidApplicationXmlElement` classes to detect if the element has explicitly set a value for its `android:permission` attribute.
+* Added a new predicate, `hasAnIntentFilterElement`, in the `AndroidComponentXmlElement` class to detect if a component contains an intent filter element.
+* Added a new predicate, `hasExportedAttribute`, in the `AndroidComponentXmlElement` class to detect if a component has an `android:exported` attribute.
+* Added a new class, `AndroidCategoryXmlElement`, to represent a category element in an Android manifest file.
+* Added a new predicate, `getACategoryElement`, in the `AndroidIntentFilterXmlElement` class to get a category element of an intent filter.
+* Added a new predicate, `isInBuildDirectory`, in the `AndroidManifestXmlFile` class. This predicate detects if the manifest file is located in a build directory.
+* Added a new predicate, `isDebuggable`, in the `AndroidApplicationXmlElement` class. This predicate detects if the application element has its `android:debuggable` attribute enabled.
+
+### Minor Analysis Improvements
+
+* Added new flow steps for the classes `java.io.Path` and `java.nio.Paths`.
+* The class `AndroidFragment` now also models the Android Jetpack version of the `Fragment` class (`androidx.fragment.app.Fragment`).
+* Java 19 builds can now be extracted. There are no non-preview new language features in this release, so the only user-visible change is that the CodeQL extractor will now correctly trace compilations using the JDK 19 release of `javac`.
+* Classes and methods that are seen with several different paths during the extraction process (for example, packaged into different JAR files) now report an arbitrarily selected location via their `getLocation` and `hasLocationInfo` predicates, rather than reporting all of them. This may lead to reduced alert duplication.
+* The query `java/hardcoded-credential-api-call` now recognises methods that consume usernames, passwords and keys from the JSch, Ganymed, Apache SSHD, sshj, Trilead SSH-2, Apache FTPClient and MongoDB projects. 
+
+## 0.3.3
+
+### Minor Analysis Improvements
+
+* Improved analysis of the Android class `AsyncTask` so that data can properly flow through its methods according to the life-cycle steps described here: https://developer.android.com/reference/android/os/AsyncTask#the-4-steps.
+* Added a data-flow model for the `setProperty` method of `java.util.Properties`. Additional results may be found where relevant data is stored in and then retrieved from a `Properties` instance.
+
+## 0.3.2
+
+### New Features
+
+* The QL predicate `Expr::getUnderlyingExpr` has been added. It can be used to look through casts and not-null expressions and obtain the underlying expression to which they apply.
+
+### Minor Analysis Improvements
+
+* The JUnit5 version of `AssertNotNull` is now recognized, which removes related false positives in the nullness queries.
+* Added data flow models for `java.util.Scanner`.
+
+## 0.3.1
+
+### New Features
+
+* Added an `ErrorType` class. An instance of this class will be used if an extractor is unable to extract a type, or if an up/downgrade script is unable to provide a type.
+
+### Minor Analysis Improvements
+
+* Added data-flow models for `java.util.Properites`. Additional results may be found where relevant data is stored in and then retrieved from a `Properties` instance.
+* Added `Modifier.isInline()`.
+* Removed Kotlin-specific database and QL structures for loops and `break`/`continue` statements. The Kotlin extractor was changed to reuse the Java structures for these constructs.
+* Added additional flow sources for uses of external storage on Android. 
+
 ## 0.3.0
 
 ### Deprecated APIs

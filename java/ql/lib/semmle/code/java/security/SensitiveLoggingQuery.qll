@@ -17,6 +17,14 @@ class CredentialExpr extends Expr {
   }
 }
 
+/** An instantiation of a (reflexive, transitive) subtype of `java.lang.reflect.Type`. */
+private class TypeType extends RefType {
+  pragma[nomagic]
+  TypeType() {
+    this.getSourceDeclaration().getASourceSupertype*().hasQualifiedName("java.lang.reflect", "Type")
+  }
+}
+
 /** A data-flow configuration for identifying potentially-sensitive data flowing to a log output. */
 class SensitiveLoggerConfiguration extends TaintTracking::Configuration {
   SensitiveLoggerConfiguration() { this = "SensitiveLoggerConfiguration" }
@@ -26,6 +34,12 @@ class SensitiveLoggerConfiguration extends TaintTracking::Configuration {
   override predicate isSink(DataFlow::Node sink) { sinkNode(sink, "logging") }
 
   override predicate isSanitizer(DataFlow::Node sanitizer) {
-    sanitizer.asExpr() instanceof LiveLiteral
+    sanitizer.asExpr() instanceof LiveLiteral or
+    sanitizer.getType() instanceof PrimitiveType or
+    sanitizer.getType() instanceof BoxedType or
+    sanitizer.getType() instanceof NumberType or
+    sanitizer.getType() instanceof TypeType
   }
+
+  override predicate isSanitizerIn(Node node) { this.isSource(node) }
 }

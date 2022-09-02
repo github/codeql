@@ -4,93 +4,93 @@ namespace System
 {
     namespace Reflection
     {
-        // Generated from `System.Reflection.AssemblyFlags` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Reflection.AssemblyFlags` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         [System.Flags]
-        public enum AssemblyFlags
+        public enum AssemblyFlags : int
         {
-            ContentTypeMask,
-            DisableJitCompileOptimizer,
-            EnableJitCompileTracking,
-            PublicKey,
-            Retargetable,
-            WindowsRuntime,
+            ContentTypeMask = 3584,
+            DisableJitCompileOptimizer = 16384,
+            EnableJitCompileTracking = 32768,
+            PublicKey = 1,
+            Retargetable = 256,
+            WindowsRuntime = 512,
         }
 
-        // Generated from `System.Reflection.AssemblyHashAlgorithm` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum AssemblyHashAlgorithm
+        // Generated from `System.Reflection.AssemblyHashAlgorithm` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        public enum AssemblyHashAlgorithm : int
         {
-            MD5,
-            None,
-            Sha1,
-            Sha256,
-            Sha384,
-            Sha512,
+            MD5 = 32771,
+            None = 0,
+            Sha1 = 32772,
+            Sha256 = 32780,
+            Sha384 = 32781,
+            Sha512 = 32782,
         }
 
-        // Generated from `System.Reflection.DeclarativeSecurityAction` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum DeclarativeSecurityAction
+        // Generated from `System.Reflection.DeclarativeSecurityAction` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        public enum DeclarativeSecurityAction : short
         {
-            Assert,
-            Demand,
-            Deny,
-            InheritanceDemand,
-            LinkDemand,
-            None,
-            PermitOnly,
-            RequestMinimum,
-            RequestOptional,
-            RequestRefuse,
+            Assert = 3,
+            Demand = 2,
+            Deny = 4,
+            InheritanceDemand = 7,
+            LinkDemand = 6,
+            None = 0,
+            PermitOnly = 5,
+            RequestMinimum = 8,
+            RequestOptional = 9,
+            RequestRefuse = 10,
         }
 
-        // Generated from `System.Reflection.ManifestResourceAttributes` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Reflection.ManifestResourceAttributes` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         [System.Flags]
-        public enum ManifestResourceAttributes
+        public enum ManifestResourceAttributes : int
         {
-            Private,
-            Public,
-            VisibilityMask,
+            Private = 2,
+            Public = 1,
+            VisibilityMask = 7,
         }
 
-        // Generated from `System.Reflection.MethodImportAttributes` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Reflection.MethodImportAttributes` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         [System.Flags]
-        public enum MethodImportAttributes
+        public enum MethodImportAttributes : short
         {
-            BestFitMappingDisable,
-            BestFitMappingEnable,
-            BestFitMappingMask,
-            CallingConventionCDecl,
-            CallingConventionFastCall,
-            CallingConventionMask,
-            CallingConventionStdCall,
-            CallingConventionThisCall,
-            CallingConventionWinApi,
-            CharSetAnsi,
-            CharSetAuto,
-            CharSetMask,
-            CharSetUnicode,
-            ExactSpelling,
-            None,
-            SetLastError,
-            ThrowOnUnmappableCharDisable,
-            ThrowOnUnmappableCharEnable,
-            ThrowOnUnmappableCharMask,
+            BestFitMappingDisable = 32,
+            BestFitMappingEnable = 16,
+            BestFitMappingMask = 48,
+            CallingConventionCDecl = 512,
+            CallingConventionFastCall = 1280,
+            CallingConventionMask = 1792,
+            CallingConventionStdCall = 768,
+            CallingConventionThisCall = 1024,
+            CallingConventionWinApi = 256,
+            CharSetAnsi = 2,
+            CharSetAuto = 6,
+            CharSetMask = 6,
+            CharSetUnicode = 4,
+            ExactSpelling = 1,
+            None = 0,
+            SetLastError = 64,
+            ThrowOnUnmappableCharDisable = 8192,
+            ThrowOnUnmappableCharEnable = 4096,
+            ThrowOnUnmappableCharMask = 12288,
         }
 
-        // Generated from `System.Reflection.MethodSemanticsAttributes` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Reflection.MethodSemanticsAttributes` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         [System.Flags]
-        public enum MethodSemanticsAttributes
+        public enum MethodSemanticsAttributes : int
         {
-            Adder,
-            Getter,
-            Other,
-            Raiser,
-            Remover,
-            Setter,
+            Adder = 8,
+            Getter = 2,
+            Other = 4,
+            Raiser = 32,
+            Remover = 16,
+            Setter = 1,
         }
 
         namespace Metadata
         {
-            // Generated from `System.Reflection.Metadata.ArrayShape` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Reflection.Metadata.ArrayShape` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct ArrayShape
             {
                 // Stub generator skipped constructor 
@@ -100,7 +100,7 @@ namespace System
                 public System.Collections.Immutable.ImmutableArray<int> Sizes { get => throw null; }
             }
 
-            // Generated from `System.Reflection.Metadata.AssemblyDefinition` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Reflection.Metadata.AssemblyDefinition` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct AssemblyDefinition
             {
                 // Stub generator skipped constructor 
@@ -115,7 +115,7 @@ namespace System
                 public System.Version Version { get => throw null; }
             }
 
-            // Generated from `System.Reflection.Metadata.AssemblyDefinitionHandle` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Reflection.Metadata.AssemblyDefinitionHandle` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct AssemblyDefinitionHandle : System.IEquatable<System.Reflection.Metadata.AssemblyDefinitionHandle>
             {
                 public static bool operator !=(System.Reflection.Metadata.AssemblyDefinitionHandle left, System.Reflection.Metadata.AssemblyDefinitionHandle right) => throw null;
@@ -131,7 +131,7 @@ namespace System
                 public static implicit operator System.Reflection.Metadata.Handle(System.Reflection.Metadata.AssemblyDefinitionHandle handle) => throw null;
             }
 
-            // Generated from `System.Reflection.Metadata.AssemblyFile` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Reflection.Metadata.AssemblyFile` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct AssemblyFile
             {
                 // Stub generator skipped constructor 
@@ -141,7 +141,7 @@ namespace System
                 public System.Reflection.Metadata.StringHandle Name { get => throw null; }
             }
 
-            // Generated from `System.Reflection.Metadata.AssemblyFileHandle` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Reflection.Metadata.AssemblyFileHandle` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct AssemblyFileHandle : System.IEquatable<System.Reflection.Metadata.AssemblyFileHandle>
             {
                 public static bool operator !=(System.Reflection.Metadata.AssemblyFileHandle left, System.Reflection.Metadata.AssemblyFileHandle right) => throw null;
@@ -157,10 +157,10 @@ namespace System
                 public static implicit operator System.Reflection.Metadata.Handle(System.Reflection.Metadata.AssemblyFileHandle handle) => throw null;
             }
 
-            // Generated from `System.Reflection.Metadata.AssemblyFileHandleCollection` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Reflection.Metadata.AssemblyFileHandleCollection` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct AssemblyFileHandleCollection : System.Collections.Generic.IEnumerable<System.Reflection.Metadata.AssemblyFileHandle>, System.Collections.Generic.IReadOnlyCollection<System.Reflection.Metadata.AssemblyFileHandle>, System.Collections.IEnumerable
             {
-                // Generated from `System.Reflection.Metadata.AssemblyFileHandleCollection+Enumerator` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+                // Generated from `System.Reflection.Metadata.AssemblyFileHandleCollection+Enumerator` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public struct Enumerator : System.Collections.Generic.IEnumerator<System.Reflection.Metadata.AssemblyFileHandle>, System.Collections.IEnumerator, System.IDisposable
                 {
                     public System.Reflection.Metadata.AssemblyFileHandle Current { get => throw null; }
@@ -179,7 +179,7 @@ namespace System
                 System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => throw null;
             }
 
-            // Generated from `System.Reflection.Metadata.AssemblyReference` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Reflection.Metadata.AssemblyReference` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct AssemblyReference
             {
                 // Stub generator skipped constructor 
@@ -193,7 +193,7 @@ namespace System
                 public System.Version Version { get => throw null; }
             }
 
-            // Generated from `System.Reflection.Metadata.AssemblyReferenceHandle` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Reflection.Metadata.AssemblyReferenceHandle` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct AssemblyReferenceHandle : System.IEquatable<System.Reflection.Metadata.AssemblyReferenceHandle>
             {
                 public static bool operator !=(System.Reflection.Metadata.AssemblyReferenceHandle left, System.Reflection.Metadata.AssemblyReferenceHandle right) => throw null;
@@ -209,10 +209,10 @@ namespace System
                 public static implicit operator System.Reflection.Metadata.Handle(System.Reflection.Metadata.AssemblyReferenceHandle handle) => throw null;
             }
 
-            // Generated from `System.Reflection.Metadata.AssemblyReferenceHandleCollection` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Reflection.Metadata.AssemblyReferenceHandleCollection` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct AssemblyReferenceHandleCollection : System.Collections.Generic.IEnumerable<System.Reflection.Metadata.AssemblyReferenceHandle>, System.Collections.Generic.IReadOnlyCollection<System.Reflection.Metadata.AssemblyReferenceHandle>, System.Collections.IEnumerable
             {
-                // Generated from `System.Reflection.Metadata.AssemblyReferenceHandleCollection+Enumerator` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+                // Generated from `System.Reflection.Metadata.AssemblyReferenceHandleCollection+Enumerator` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public struct Enumerator : System.Collections.Generic.IEnumerator<System.Reflection.Metadata.AssemblyReferenceHandle>, System.Collections.IEnumerator, System.IDisposable
                 {
                     public System.Reflection.Metadata.AssemblyReferenceHandle Current { get => throw null; }
@@ -231,7 +231,7 @@ namespace System
                 System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => throw null;
             }
 
-            // Generated from `System.Reflection.Metadata.Blob` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Reflection.Metadata.Blob` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct Blob
             {
                 // Stub generator skipped constructor 
@@ -240,10 +240,10 @@ namespace System
                 public int Length { get => throw null; }
             }
 
-            // Generated from `System.Reflection.Metadata.BlobBuilder` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Reflection.Metadata.BlobBuilder` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class BlobBuilder
             {
-                // Generated from `System.Reflection.Metadata.BlobBuilder+Blobs` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+                // Generated from `System.Reflection.Metadata.BlobBuilder+Blobs` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public struct Blobs : System.Collections.Generic.IEnumerable<System.Reflection.Metadata.Blob>, System.Collections.Generic.IEnumerator<System.Reflection.Metadata.Blob>, System.Collections.IEnumerable, System.Collections.IEnumerator, System.IDisposable
                 {
                     // Stub generator skipped constructor 
@@ -316,7 +316,7 @@ namespace System
                 public void WriteUserString(string value) => throw null;
             }
 
-            // Generated from `System.Reflection.Metadata.BlobContentId` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Reflection.Metadata.BlobContentId` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct BlobContentId : System.IEquatable<System.Reflection.Metadata.BlobContentId>
             {
                 public static bool operator !=(System.Reflection.Metadata.BlobContentId left, System.Reflection.Metadata.BlobContentId right) => throw null;
@@ -336,7 +336,7 @@ namespace System
                 public System.UInt32 Stamp { get => throw null; }
             }
 
-            // Generated from `System.Reflection.Metadata.BlobHandle` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Reflection.Metadata.BlobHandle` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct BlobHandle : System.IEquatable<System.Reflection.Metadata.BlobHandle>
             {
                 public static bool operator !=(System.Reflection.Metadata.BlobHandle left, System.Reflection.Metadata.BlobHandle right) => throw null;
@@ -350,7 +350,7 @@ namespace System
                 public static implicit operator System.Reflection.Metadata.Handle(System.Reflection.Metadata.BlobHandle handle) => throw null;
             }
 
-            // Generated from `System.Reflection.Metadata.BlobReader` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Reflection.Metadata.BlobReader` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct BlobReader
             {
                 public void Align(System.Byte alignment) => throw null;
@@ -395,7 +395,7 @@ namespace System
                 public bool TryReadCompressedSignedInteger(out int value) => throw null;
             }
 
-            // Generated from `System.Reflection.Metadata.BlobWriter` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Reflection.Metadata.BlobWriter` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct BlobWriter
             {
                 public void Align(int alignment) => throw null;
@@ -452,7 +452,7 @@ namespace System
                 public void WriteUserString(string value) => throw null;
             }
 
-            // Generated from `System.Reflection.Metadata.Constant` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Reflection.Metadata.Constant` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct Constant
             {
                 // Stub generator skipped constructor 
@@ -461,7 +461,7 @@ namespace System
                 public System.Reflection.Metadata.BlobHandle Value { get => throw null; }
             }
 
-            // Generated from `System.Reflection.Metadata.ConstantHandle` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Reflection.Metadata.ConstantHandle` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct ConstantHandle : System.IEquatable<System.Reflection.Metadata.ConstantHandle>
             {
                 public static bool operator !=(System.Reflection.Metadata.ConstantHandle left, System.Reflection.Metadata.ConstantHandle right) => throw null;
@@ -477,27 +477,27 @@ namespace System
                 public static implicit operator System.Reflection.Metadata.Handle(System.Reflection.Metadata.ConstantHandle handle) => throw null;
             }
 
-            // Generated from `System.Reflection.Metadata.ConstantTypeCode` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum ConstantTypeCode
+            // Generated from `System.Reflection.Metadata.ConstantTypeCode` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            public enum ConstantTypeCode : byte
             {
-                Boolean,
-                Byte,
-                Char,
-                Double,
-                Int16,
-                Int32,
-                Int64,
-                Invalid,
-                NullReference,
-                SByte,
-                Single,
-                String,
-                UInt16,
-                UInt32,
-                UInt64,
+                Boolean = 2,
+                Byte = 5,
+                Char = 3,
+                Double = 13,
+                Int16 = 6,
+                Int32 = 8,
+                Int64 = 10,
+                Invalid = 0,
+                NullReference = 18,
+                SByte = 4,
+                Single = 12,
+                String = 14,
+                UInt16 = 7,
+                UInt32 = 9,
+                UInt64 = 11,
             }
 
-            // Generated from `System.Reflection.Metadata.CustomAttribute` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Reflection.Metadata.CustomAttribute` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct CustomAttribute
             {
                 public System.Reflection.Metadata.EntityHandle Constructor { get => throw null; }
@@ -507,7 +507,7 @@ namespace System
                 public System.Reflection.Metadata.BlobHandle Value { get => throw null; }
             }
 
-            // Generated from `System.Reflection.Metadata.CustomAttributeHandle` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Reflection.Metadata.CustomAttributeHandle` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct CustomAttributeHandle : System.IEquatable<System.Reflection.Metadata.CustomAttributeHandle>
             {
                 public static bool operator !=(System.Reflection.Metadata.CustomAttributeHandle left, System.Reflection.Metadata.CustomAttributeHandle right) => throw null;
@@ -523,10 +523,10 @@ namespace System
                 public static implicit operator System.Reflection.Metadata.Handle(System.Reflection.Metadata.CustomAttributeHandle handle) => throw null;
             }
 
-            // Generated from `System.Reflection.Metadata.CustomAttributeHandleCollection` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Reflection.Metadata.CustomAttributeHandleCollection` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct CustomAttributeHandleCollection : System.Collections.Generic.IEnumerable<System.Reflection.Metadata.CustomAttributeHandle>, System.Collections.Generic.IReadOnlyCollection<System.Reflection.Metadata.CustomAttributeHandle>, System.Collections.IEnumerable
             {
-                // Generated from `System.Reflection.Metadata.CustomAttributeHandleCollection+Enumerator` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+                // Generated from `System.Reflection.Metadata.CustomAttributeHandleCollection+Enumerator` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public struct Enumerator : System.Collections.Generic.IEnumerator<System.Reflection.Metadata.CustomAttributeHandle>, System.Collections.IEnumerator, System.IDisposable
                 {
                     public System.Reflection.Metadata.CustomAttributeHandle Current { get => throw null; }
@@ -545,7 +545,7 @@ namespace System
                 System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => throw null;
             }
 
-            // Generated from `System.Reflection.Metadata.CustomAttributeNamedArgument<>` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Reflection.Metadata.CustomAttributeNamedArgument<>` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct CustomAttributeNamedArgument<TType>
             {
                 // Stub generator skipped constructor 
@@ -556,14 +556,14 @@ namespace System
                 public object Value { get => throw null; }
             }
 
-            // Generated from `System.Reflection.Metadata.CustomAttributeNamedArgumentKind` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum CustomAttributeNamedArgumentKind
+            // Generated from `System.Reflection.Metadata.CustomAttributeNamedArgumentKind` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            public enum CustomAttributeNamedArgumentKind : byte
             {
-                Field,
-                Property,
+                Field = 83,
+                Property = 84,
             }
 
-            // Generated from `System.Reflection.Metadata.CustomAttributeTypedArgument<>` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Reflection.Metadata.CustomAttributeTypedArgument<>` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct CustomAttributeTypedArgument<TType>
             {
                 // Stub generator skipped constructor 
@@ -572,7 +572,7 @@ namespace System
                 public object Value { get => throw null; }
             }
 
-            // Generated from `System.Reflection.Metadata.CustomAttributeValue<>` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Reflection.Metadata.CustomAttributeValue<>` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct CustomAttributeValue<TType>
             {
                 // Stub generator skipped constructor 
@@ -581,7 +581,7 @@ namespace System
                 public System.Collections.Immutable.ImmutableArray<System.Reflection.Metadata.CustomAttributeNamedArgument<TType>> NamedArguments { get => throw null; }
             }
 
-            // Generated from `System.Reflection.Metadata.CustomDebugInformation` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Reflection.Metadata.CustomDebugInformation` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct CustomDebugInformation
             {
                 // Stub generator skipped constructor 
@@ -590,7 +590,7 @@ namespace System
                 public System.Reflection.Metadata.BlobHandle Value { get => throw null; }
             }
 
-            // Generated from `System.Reflection.Metadata.CustomDebugInformationHandle` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Reflection.Metadata.CustomDebugInformationHandle` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct CustomDebugInformationHandle : System.IEquatable<System.Reflection.Metadata.CustomDebugInformationHandle>
             {
                 public static bool operator !=(System.Reflection.Metadata.CustomDebugInformationHandle left, System.Reflection.Metadata.CustomDebugInformationHandle right) => throw null;
@@ -606,10 +606,10 @@ namespace System
                 public static implicit operator System.Reflection.Metadata.Handle(System.Reflection.Metadata.CustomDebugInformationHandle handle) => throw null;
             }
 
-            // Generated from `System.Reflection.Metadata.CustomDebugInformationHandleCollection` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Reflection.Metadata.CustomDebugInformationHandleCollection` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct CustomDebugInformationHandleCollection : System.Collections.Generic.IEnumerable<System.Reflection.Metadata.CustomDebugInformationHandle>, System.Collections.Generic.IReadOnlyCollection<System.Reflection.Metadata.CustomDebugInformationHandle>, System.Collections.IEnumerable
             {
-                // Generated from `System.Reflection.Metadata.CustomDebugInformationHandleCollection+Enumerator` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+                // Generated from `System.Reflection.Metadata.CustomDebugInformationHandleCollection+Enumerator` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public struct Enumerator : System.Collections.Generic.IEnumerator<System.Reflection.Metadata.CustomDebugInformationHandle>, System.Collections.IEnumerator, System.IDisposable
                 {
                     public System.Reflection.Metadata.CustomDebugInformationHandle Current { get => throw null; }
@@ -628,7 +628,7 @@ namespace System
                 System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => throw null;
             }
 
-            // Generated from `System.Reflection.Metadata.DebugMetadataHeader` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Reflection.Metadata.DebugMetadataHeader` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class DebugMetadataHeader
             {
                 public System.Reflection.Metadata.MethodDefinitionHandle EntryPoint { get => throw null; }
@@ -636,7 +636,7 @@ namespace System
                 public int IdStartOffset { get => throw null; }
             }
 
-            // Generated from `System.Reflection.Metadata.DeclarativeSecurityAttribute` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Reflection.Metadata.DeclarativeSecurityAttribute` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct DeclarativeSecurityAttribute
             {
                 public System.Reflection.DeclarativeSecurityAction Action { get => throw null; }
@@ -645,7 +645,7 @@ namespace System
                 public System.Reflection.Metadata.BlobHandle PermissionSet { get => throw null; }
             }
 
-            // Generated from `System.Reflection.Metadata.DeclarativeSecurityAttributeHandle` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Reflection.Metadata.DeclarativeSecurityAttributeHandle` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct DeclarativeSecurityAttributeHandle : System.IEquatable<System.Reflection.Metadata.DeclarativeSecurityAttributeHandle>
             {
                 public static bool operator !=(System.Reflection.Metadata.DeclarativeSecurityAttributeHandle left, System.Reflection.Metadata.DeclarativeSecurityAttributeHandle right) => throw null;
@@ -661,10 +661,10 @@ namespace System
                 public static implicit operator System.Reflection.Metadata.Handle(System.Reflection.Metadata.DeclarativeSecurityAttributeHandle handle) => throw null;
             }
 
-            // Generated from `System.Reflection.Metadata.DeclarativeSecurityAttributeHandleCollection` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Reflection.Metadata.DeclarativeSecurityAttributeHandleCollection` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct DeclarativeSecurityAttributeHandleCollection : System.Collections.Generic.IEnumerable<System.Reflection.Metadata.DeclarativeSecurityAttributeHandle>, System.Collections.Generic.IReadOnlyCollection<System.Reflection.Metadata.DeclarativeSecurityAttributeHandle>, System.Collections.IEnumerable
             {
-                // Generated from `System.Reflection.Metadata.DeclarativeSecurityAttributeHandleCollection+Enumerator` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+                // Generated from `System.Reflection.Metadata.DeclarativeSecurityAttributeHandleCollection+Enumerator` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public struct Enumerator : System.Collections.Generic.IEnumerator<System.Reflection.Metadata.DeclarativeSecurityAttributeHandle>, System.Collections.IEnumerator, System.IDisposable
                 {
                     public System.Reflection.Metadata.DeclarativeSecurityAttributeHandle Current { get => throw null; }
@@ -683,7 +683,7 @@ namespace System
                 System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => throw null;
             }
 
-            // Generated from `System.Reflection.Metadata.Document` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Reflection.Metadata.Document` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct Document
             {
                 // Stub generator skipped constructor 
@@ -693,7 +693,7 @@ namespace System
                 public System.Reflection.Metadata.DocumentNameBlobHandle Name { get => throw null; }
             }
 
-            // Generated from `System.Reflection.Metadata.DocumentHandle` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Reflection.Metadata.DocumentHandle` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct DocumentHandle : System.IEquatable<System.Reflection.Metadata.DocumentHandle>
             {
                 public static bool operator !=(System.Reflection.Metadata.DocumentHandle left, System.Reflection.Metadata.DocumentHandle right) => throw null;
@@ -709,10 +709,10 @@ namespace System
                 public static implicit operator System.Reflection.Metadata.Handle(System.Reflection.Metadata.DocumentHandle handle) => throw null;
             }
 
-            // Generated from `System.Reflection.Metadata.DocumentHandleCollection` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Reflection.Metadata.DocumentHandleCollection` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct DocumentHandleCollection : System.Collections.Generic.IEnumerable<System.Reflection.Metadata.DocumentHandle>, System.Collections.Generic.IReadOnlyCollection<System.Reflection.Metadata.DocumentHandle>, System.Collections.IEnumerable
             {
-                // Generated from `System.Reflection.Metadata.DocumentHandleCollection+Enumerator` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+                // Generated from `System.Reflection.Metadata.DocumentHandleCollection+Enumerator` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public struct Enumerator : System.Collections.Generic.IEnumerator<System.Reflection.Metadata.DocumentHandle>, System.Collections.IEnumerator, System.IDisposable
                 {
                     public System.Reflection.Metadata.DocumentHandle Current { get => throw null; }
@@ -731,7 +731,7 @@ namespace System
                 System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => throw null;
             }
 
-            // Generated from `System.Reflection.Metadata.DocumentNameBlobHandle` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Reflection.Metadata.DocumentNameBlobHandle` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct DocumentNameBlobHandle : System.IEquatable<System.Reflection.Metadata.DocumentNameBlobHandle>
             {
                 public static bool operator !=(System.Reflection.Metadata.DocumentNameBlobHandle left, System.Reflection.Metadata.DocumentNameBlobHandle right) => throw null;
@@ -745,7 +745,7 @@ namespace System
                 public static implicit operator System.Reflection.Metadata.BlobHandle(System.Reflection.Metadata.DocumentNameBlobHandle handle) => throw null;
             }
 
-            // Generated from `System.Reflection.Metadata.EntityHandle` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Reflection.Metadata.EntityHandle` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct EntityHandle : System.IEquatable<System.Reflection.Metadata.EntityHandle>
             {
                 public static bool operator !=(System.Reflection.Metadata.EntityHandle left, System.Reflection.Metadata.EntityHandle right) => throw null;
@@ -762,7 +762,7 @@ namespace System
                 public static implicit operator System.Reflection.Metadata.Handle(System.Reflection.Metadata.EntityHandle handle) => throw null;
             }
 
-            // Generated from `System.Reflection.Metadata.EventAccessors` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Reflection.Metadata.EventAccessors` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct EventAccessors
             {
                 public System.Reflection.Metadata.MethodDefinitionHandle Adder { get => throw null; }
@@ -772,7 +772,7 @@ namespace System
                 public System.Reflection.Metadata.MethodDefinitionHandle Remover { get => throw null; }
             }
 
-            // Generated from `System.Reflection.Metadata.EventDefinition` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Reflection.Metadata.EventDefinition` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct EventDefinition
             {
                 public System.Reflection.EventAttributes Attributes { get => throw null; }
@@ -783,7 +783,7 @@ namespace System
                 public System.Reflection.Metadata.EntityHandle Type { get => throw null; }
             }
 
-            // Generated from `System.Reflection.Metadata.EventDefinitionHandle` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Reflection.Metadata.EventDefinitionHandle` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct EventDefinitionHandle : System.IEquatable<System.Reflection.Metadata.EventDefinitionHandle>
             {
                 public static bool operator !=(System.Reflection.Metadata.EventDefinitionHandle left, System.Reflection.Metadata.EventDefinitionHandle right) => throw null;
@@ -799,10 +799,10 @@ namespace System
                 public static implicit operator System.Reflection.Metadata.Handle(System.Reflection.Metadata.EventDefinitionHandle handle) => throw null;
             }
 
-            // Generated from `System.Reflection.Metadata.EventDefinitionHandleCollection` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Reflection.Metadata.EventDefinitionHandleCollection` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct EventDefinitionHandleCollection : System.Collections.Generic.IEnumerable<System.Reflection.Metadata.EventDefinitionHandle>, System.Collections.Generic.IReadOnlyCollection<System.Reflection.Metadata.EventDefinitionHandle>, System.Collections.IEnumerable
             {
-                // Generated from `System.Reflection.Metadata.EventDefinitionHandleCollection+Enumerator` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+                // Generated from `System.Reflection.Metadata.EventDefinitionHandleCollection+Enumerator` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public struct Enumerator : System.Collections.Generic.IEnumerator<System.Reflection.Metadata.EventDefinitionHandle>, System.Collections.IEnumerator, System.IDisposable
                 {
                     public System.Reflection.Metadata.EventDefinitionHandle Current { get => throw null; }
@@ -821,7 +821,7 @@ namespace System
                 System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => throw null;
             }
 
-            // Generated from `System.Reflection.Metadata.ExceptionRegion` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Reflection.Metadata.ExceptionRegion` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct ExceptionRegion
             {
                 public System.Reflection.Metadata.EntityHandle CatchType { get => throw null; }
@@ -834,16 +834,16 @@ namespace System
                 public int TryOffset { get => throw null; }
             }
 
-            // Generated from `System.Reflection.Metadata.ExceptionRegionKind` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum ExceptionRegionKind
+            // Generated from `System.Reflection.Metadata.ExceptionRegionKind` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            public enum ExceptionRegionKind : ushort
             {
-                Catch,
-                Fault,
-                Filter,
-                Finally,
+                Catch = 0,
+                Fault = 4,
+                Filter = 1,
+                Finally = 2,
             }
 
-            // Generated from `System.Reflection.Metadata.ExportedType` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Reflection.Metadata.ExportedType` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct ExportedType
             {
                 public System.Reflection.TypeAttributes Attributes { get => throw null; }
@@ -856,7 +856,7 @@ namespace System
                 public System.Reflection.Metadata.NamespaceDefinitionHandle NamespaceDefinition { get => throw null; }
             }
 
-            // Generated from `System.Reflection.Metadata.ExportedTypeHandle` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Reflection.Metadata.ExportedTypeHandle` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct ExportedTypeHandle : System.IEquatable<System.Reflection.Metadata.ExportedTypeHandle>
             {
                 public static bool operator !=(System.Reflection.Metadata.ExportedTypeHandle left, System.Reflection.Metadata.ExportedTypeHandle right) => throw null;
@@ -872,10 +872,10 @@ namespace System
                 public static implicit operator System.Reflection.Metadata.Handle(System.Reflection.Metadata.ExportedTypeHandle handle) => throw null;
             }
 
-            // Generated from `System.Reflection.Metadata.ExportedTypeHandleCollection` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Reflection.Metadata.ExportedTypeHandleCollection` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct ExportedTypeHandleCollection : System.Collections.Generic.IEnumerable<System.Reflection.Metadata.ExportedTypeHandle>, System.Collections.Generic.IReadOnlyCollection<System.Reflection.Metadata.ExportedTypeHandle>, System.Collections.IEnumerable
             {
-                // Generated from `System.Reflection.Metadata.ExportedTypeHandleCollection+Enumerator` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+                // Generated from `System.Reflection.Metadata.ExportedTypeHandleCollection+Enumerator` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public struct Enumerator : System.Collections.Generic.IEnumerator<System.Reflection.Metadata.ExportedTypeHandle>, System.Collections.IEnumerator, System.IDisposable
                 {
                     public System.Reflection.Metadata.ExportedTypeHandle Current { get => throw null; }
@@ -894,7 +894,7 @@ namespace System
                 System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => throw null;
             }
 
-            // Generated from `System.Reflection.Metadata.FieldDefinition` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Reflection.Metadata.FieldDefinition` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct FieldDefinition
             {
                 public System.Reflection.FieldAttributes Attributes { get => throw null; }
@@ -910,7 +910,7 @@ namespace System
                 public System.Reflection.Metadata.BlobHandle Signature { get => throw null; }
             }
 
-            // Generated from `System.Reflection.Metadata.FieldDefinitionHandle` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Reflection.Metadata.FieldDefinitionHandle` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct FieldDefinitionHandle : System.IEquatable<System.Reflection.Metadata.FieldDefinitionHandle>
             {
                 public static bool operator !=(System.Reflection.Metadata.FieldDefinitionHandle left, System.Reflection.Metadata.FieldDefinitionHandle right) => throw null;
@@ -926,10 +926,10 @@ namespace System
                 public static implicit operator System.Reflection.Metadata.Handle(System.Reflection.Metadata.FieldDefinitionHandle handle) => throw null;
             }
 
-            // Generated from `System.Reflection.Metadata.FieldDefinitionHandleCollection` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Reflection.Metadata.FieldDefinitionHandleCollection` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct FieldDefinitionHandleCollection : System.Collections.Generic.IEnumerable<System.Reflection.Metadata.FieldDefinitionHandle>, System.Collections.Generic.IReadOnlyCollection<System.Reflection.Metadata.FieldDefinitionHandle>, System.Collections.IEnumerable
             {
-                // Generated from `System.Reflection.Metadata.FieldDefinitionHandleCollection+Enumerator` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+                // Generated from `System.Reflection.Metadata.FieldDefinitionHandleCollection+Enumerator` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public struct Enumerator : System.Collections.Generic.IEnumerator<System.Reflection.Metadata.FieldDefinitionHandle>, System.Collections.IEnumerator, System.IDisposable
                 {
                     public System.Reflection.Metadata.FieldDefinitionHandle Current { get => throw null; }
@@ -948,7 +948,7 @@ namespace System
                 System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => throw null;
             }
 
-            // Generated from `System.Reflection.Metadata.GenericParameter` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Reflection.Metadata.GenericParameter` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct GenericParameter
             {
                 public System.Reflection.GenericParameterAttributes Attributes { get => throw null; }
@@ -960,7 +960,7 @@ namespace System
                 public System.Reflection.Metadata.EntityHandle Parent { get => throw null; }
             }
 
-            // Generated from `System.Reflection.Metadata.GenericParameterConstraint` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Reflection.Metadata.GenericParameterConstraint` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct GenericParameterConstraint
             {
                 // Stub generator skipped constructor 
@@ -969,7 +969,7 @@ namespace System
                 public System.Reflection.Metadata.EntityHandle Type { get => throw null; }
             }
 
-            // Generated from `System.Reflection.Metadata.GenericParameterConstraintHandle` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Reflection.Metadata.GenericParameterConstraintHandle` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct GenericParameterConstraintHandle : System.IEquatable<System.Reflection.Metadata.GenericParameterConstraintHandle>
             {
                 public static bool operator !=(System.Reflection.Metadata.GenericParameterConstraintHandle left, System.Reflection.Metadata.GenericParameterConstraintHandle right) => throw null;
@@ -985,10 +985,10 @@ namespace System
                 public static implicit operator System.Reflection.Metadata.Handle(System.Reflection.Metadata.GenericParameterConstraintHandle handle) => throw null;
             }
 
-            // Generated from `System.Reflection.Metadata.GenericParameterConstraintHandleCollection` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Reflection.Metadata.GenericParameterConstraintHandleCollection` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct GenericParameterConstraintHandleCollection : System.Collections.Generic.IEnumerable<System.Reflection.Metadata.GenericParameterConstraintHandle>, System.Collections.Generic.IReadOnlyCollection<System.Reflection.Metadata.GenericParameterConstraintHandle>, System.Collections.Generic.IReadOnlyList<System.Reflection.Metadata.GenericParameterConstraintHandle>, System.Collections.IEnumerable
             {
-                // Generated from `System.Reflection.Metadata.GenericParameterConstraintHandleCollection+Enumerator` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+                // Generated from `System.Reflection.Metadata.GenericParameterConstraintHandleCollection+Enumerator` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public struct Enumerator : System.Collections.Generic.IEnumerator<System.Reflection.Metadata.GenericParameterConstraintHandle>, System.Collections.IEnumerator, System.IDisposable
                 {
                     public System.Reflection.Metadata.GenericParameterConstraintHandle Current { get => throw null; }
@@ -1008,7 +1008,7 @@ namespace System
                 public System.Reflection.Metadata.GenericParameterConstraintHandle this[int index] { get => throw null; }
             }
 
-            // Generated from `System.Reflection.Metadata.GenericParameterHandle` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Reflection.Metadata.GenericParameterHandle` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct GenericParameterHandle : System.IEquatable<System.Reflection.Metadata.GenericParameterHandle>
             {
                 public static bool operator !=(System.Reflection.Metadata.GenericParameterHandle left, System.Reflection.Metadata.GenericParameterHandle right) => throw null;
@@ -1024,10 +1024,10 @@ namespace System
                 public static implicit operator System.Reflection.Metadata.Handle(System.Reflection.Metadata.GenericParameterHandle handle) => throw null;
             }
 
-            // Generated from `System.Reflection.Metadata.GenericParameterHandleCollection` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Reflection.Metadata.GenericParameterHandleCollection` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct GenericParameterHandleCollection : System.Collections.Generic.IEnumerable<System.Reflection.Metadata.GenericParameterHandle>, System.Collections.Generic.IReadOnlyCollection<System.Reflection.Metadata.GenericParameterHandle>, System.Collections.Generic.IReadOnlyList<System.Reflection.Metadata.GenericParameterHandle>, System.Collections.IEnumerable
             {
-                // Generated from `System.Reflection.Metadata.GenericParameterHandleCollection+Enumerator` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+                // Generated from `System.Reflection.Metadata.GenericParameterHandleCollection+Enumerator` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public struct Enumerator : System.Collections.Generic.IEnumerator<System.Reflection.Metadata.GenericParameterHandle>, System.Collections.IEnumerator, System.IDisposable
                 {
                     public System.Reflection.Metadata.GenericParameterHandle Current { get => throw null; }
@@ -1047,7 +1047,7 @@ namespace System
                 public System.Reflection.Metadata.GenericParameterHandle this[int index] { get => throw null; }
             }
 
-            // Generated from `System.Reflection.Metadata.GuidHandle` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Reflection.Metadata.GuidHandle` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct GuidHandle : System.IEquatable<System.Reflection.Metadata.GuidHandle>
             {
                 public static bool operator !=(System.Reflection.Metadata.GuidHandle left, System.Reflection.Metadata.GuidHandle right) => throw null;
@@ -1061,7 +1061,7 @@ namespace System
                 public static implicit operator System.Reflection.Metadata.Handle(System.Reflection.Metadata.GuidHandle handle) => throw null;
             }
 
-            // Generated from `System.Reflection.Metadata.Handle` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Reflection.Metadata.Handle` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct Handle : System.IEquatable<System.Reflection.Metadata.Handle>
             {
                 public static bool operator !=(System.Reflection.Metadata.Handle left, System.Reflection.Metadata.Handle right) => throw null;
@@ -1076,7 +1076,7 @@ namespace System
                 public static System.Reflection.Metadata.ModuleDefinitionHandle ModuleDefinition;
             }
 
-            // Generated from `System.Reflection.Metadata.HandleComparer` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Reflection.Metadata.HandleComparer` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class HandleComparer : System.Collections.Generic.IComparer<System.Reflection.Metadata.EntityHandle>, System.Collections.Generic.IComparer<System.Reflection.Metadata.Handle>, System.Collections.Generic.IEqualityComparer<System.Reflection.Metadata.EntityHandle>, System.Collections.Generic.IEqualityComparer<System.Reflection.Metadata.Handle>
             {
                 public int Compare(System.Reflection.Metadata.EntityHandle x, System.Reflection.Metadata.EntityHandle y) => throw null;
@@ -1088,49 +1088,49 @@ namespace System
                 public int GetHashCode(System.Reflection.Metadata.Handle obj) => throw null;
             }
 
-            // Generated from `System.Reflection.Metadata.HandleKind` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum HandleKind
+            // Generated from `System.Reflection.Metadata.HandleKind` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            public enum HandleKind : byte
             {
-                AssemblyDefinition,
-                AssemblyFile,
-                AssemblyReference,
-                Blob,
-                Constant,
-                CustomAttribute,
-                CustomDebugInformation,
-                DeclarativeSecurityAttribute,
-                Document,
-                EventDefinition,
-                ExportedType,
-                FieldDefinition,
-                GenericParameter,
-                GenericParameterConstraint,
-                Guid,
-                ImportScope,
-                InterfaceImplementation,
-                LocalConstant,
-                LocalScope,
-                LocalVariable,
-                ManifestResource,
-                MemberReference,
-                MethodDebugInformation,
-                MethodDefinition,
-                MethodImplementation,
-                MethodSpecification,
-                ModuleDefinition,
-                ModuleReference,
-                NamespaceDefinition,
-                Parameter,
-                PropertyDefinition,
-                StandaloneSignature,
-                String,
-                TypeDefinition,
-                TypeReference,
-                TypeSpecification,
-                UserString,
+                AssemblyDefinition = 32,
+                AssemblyFile = 38,
+                AssemblyReference = 35,
+                Blob = 113,
+                Constant = 11,
+                CustomAttribute = 12,
+                CustomDebugInformation = 55,
+                DeclarativeSecurityAttribute = 14,
+                Document = 48,
+                EventDefinition = 20,
+                ExportedType = 39,
+                FieldDefinition = 4,
+                GenericParameter = 42,
+                GenericParameterConstraint = 44,
+                Guid = 114,
+                ImportScope = 53,
+                InterfaceImplementation = 9,
+                LocalConstant = 52,
+                LocalScope = 50,
+                LocalVariable = 51,
+                ManifestResource = 40,
+                MemberReference = 10,
+                MethodDebugInformation = 49,
+                MethodDefinition = 6,
+                MethodImplementation = 25,
+                MethodSpecification = 43,
+                ModuleDefinition = 0,
+                ModuleReference = 26,
+                NamespaceDefinition = 124,
+                Parameter = 8,
+                PropertyDefinition = 23,
+                StandaloneSignature = 17,
+                String = 120,
+                TypeDefinition = 2,
+                TypeReference = 1,
+                TypeSpecification = 27,
+                UserString = 112,
             }
 
-            // Generated from `System.Reflection.Metadata.IConstructedTypeProvider<>` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Reflection.Metadata.IConstructedTypeProvider<>` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public interface IConstructedTypeProvider<TType> : System.Reflection.Metadata.ISZArrayTypeProvider<TType>
             {
                 TType GetArrayType(TType elementType, System.Reflection.Metadata.ArrayShape shape);
@@ -1139,7 +1139,7 @@ namespace System
                 TType GetPointerType(TType elementType);
             }
 
-            // Generated from `System.Reflection.Metadata.ICustomAttributeTypeProvider<>` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Reflection.Metadata.ICustomAttributeTypeProvider<>` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public interface ICustomAttributeTypeProvider<TType> : System.Reflection.Metadata.ISZArrayTypeProvider<TType>, System.Reflection.Metadata.ISimpleTypeProvider<TType>
             {
                 TType GetSystemType();
@@ -1148,230 +1148,230 @@ namespace System
                 bool IsSystemType(TType type);
             }
 
-            // Generated from `System.Reflection.Metadata.ILOpCode` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum ILOpCode
+            // Generated from `System.Reflection.Metadata.ILOpCode` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            public enum ILOpCode : ushort
             {
-                Add,
-                Add_ovf,
-                Add_ovf_un,
-                And,
-                Arglist,
-                Beq,
-                Beq_s,
-                Bge,
-                Bge_s,
-                Bge_un,
-                Bge_un_s,
-                Bgt,
-                Bgt_s,
-                Bgt_un,
-                Bgt_un_s,
-                Ble,
-                Ble_s,
-                Ble_un,
-                Ble_un_s,
-                Blt,
-                Blt_s,
-                Blt_un,
-                Blt_un_s,
-                Bne_un,
-                Bne_un_s,
-                Box,
-                Br,
-                Br_s,
-                Break,
-                Brfalse,
-                Brfalse_s,
-                Brtrue,
-                Brtrue_s,
-                Call,
-                Calli,
-                Callvirt,
-                Castclass,
-                Ceq,
-                Cgt,
-                Cgt_un,
-                Ckfinite,
-                Clt,
-                Clt_un,
-                Constrained,
-                Conv_i,
-                Conv_i1,
-                Conv_i2,
-                Conv_i4,
-                Conv_i8,
-                Conv_ovf_i,
-                Conv_ovf_i1,
-                Conv_ovf_i1_un,
-                Conv_ovf_i2,
-                Conv_ovf_i2_un,
-                Conv_ovf_i4,
-                Conv_ovf_i4_un,
-                Conv_ovf_i8,
-                Conv_ovf_i8_un,
-                Conv_ovf_i_un,
-                Conv_ovf_u,
-                Conv_ovf_u1,
-                Conv_ovf_u1_un,
-                Conv_ovf_u2,
-                Conv_ovf_u2_un,
-                Conv_ovf_u4,
-                Conv_ovf_u4_un,
-                Conv_ovf_u8,
-                Conv_ovf_u8_un,
-                Conv_ovf_u_un,
-                Conv_r4,
-                Conv_r8,
-                Conv_r_un,
-                Conv_u,
-                Conv_u1,
-                Conv_u2,
-                Conv_u4,
-                Conv_u8,
-                Cpblk,
-                Cpobj,
-                Div,
-                Div_un,
-                Dup,
-                Endfilter,
-                Endfinally,
-                Initblk,
-                Initobj,
-                Isinst,
-                Jmp,
-                Ldarg,
-                Ldarg_0,
-                Ldarg_1,
-                Ldarg_2,
-                Ldarg_3,
-                Ldarg_s,
-                Ldarga,
-                Ldarga_s,
-                Ldc_i4,
-                Ldc_i4_0,
-                Ldc_i4_1,
-                Ldc_i4_2,
-                Ldc_i4_3,
-                Ldc_i4_4,
-                Ldc_i4_5,
-                Ldc_i4_6,
-                Ldc_i4_7,
-                Ldc_i4_8,
-                Ldc_i4_m1,
-                Ldc_i4_s,
-                Ldc_i8,
-                Ldc_r4,
-                Ldc_r8,
-                Ldelem,
-                Ldelem_i,
-                Ldelem_i1,
-                Ldelem_i2,
-                Ldelem_i4,
-                Ldelem_i8,
-                Ldelem_r4,
-                Ldelem_r8,
-                Ldelem_ref,
-                Ldelem_u1,
-                Ldelem_u2,
-                Ldelem_u4,
-                Ldelema,
-                Ldfld,
-                Ldflda,
-                Ldftn,
-                Ldind_i,
-                Ldind_i1,
-                Ldind_i2,
-                Ldind_i4,
-                Ldind_i8,
-                Ldind_r4,
-                Ldind_r8,
-                Ldind_ref,
-                Ldind_u1,
-                Ldind_u2,
-                Ldind_u4,
-                Ldlen,
-                Ldloc,
-                Ldloc_0,
-                Ldloc_1,
-                Ldloc_2,
-                Ldloc_3,
-                Ldloc_s,
-                Ldloca,
-                Ldloca_s,
-                Ldnull,
-                Ldobj,
-                Ldsfld,
-                Ldsflda,
-                Ldstr,
-                Ldtoken,
-                Ldvirtftn,
-                Leave,
-                Leave_s,
-                Localloc,
-                Mkrefany,
-                Mul,
-                Mul_ovf,
-                Mul_ovf_un,
-                Neg,
-                Newarr,
-                Newobj,
-                Nop,
-                Not,
-                Or,
-                Pop,
-                Readonly,
-                Refanytype,
-                Refanyval,
-                Rem,
-                Rem_un,
-                Ret,
-                Rethrow,
-                Shl,
-                Shr,
-                Shr_un,
-                Sizeof,
-                Starg,
-                Starg_s,
-                Stelem,
-                Stelem_i,
-                Stelem_i1,
-                Stelem_i2,
-                Stelem_i4,
-                Stelem_i8,
-                Stelem_r4,
-                Stelem_r8,
-                Stelem_ref,
-                Stfld,
-                Stind_i,
-                Stind_i1,
-                Stind_i2,
-                Stind_i4,
-                Stind_i8,
-                Stind_r4,
-                Stind_r8,
-                Stind_ref,
-                Stloc,
-                Stloc_0,
-                Stloc_1,
-                Stloc_2,
-                Stloc_3,
-                Stloc_s,
-                Stobj,
-                Stsfld,
-                Sub,
-                Sub_ovf,
-                Sub_ovf_un,
-                Switch,
-                Tail,
-                Throw,
-                Unaligned,
-                Unbox,
-                Unbox_any,
-                Volatile,
-                Xor,
+                Add = 88,
+                Add_ovf = 214,
+                Add_ovf_un = 215,
+                And = 95,
+                Arglist = 65024,
+                Beq = 59,
+                Beq_s = 46,
+                Bge = 60,
+                Bge_s = 47,
+                Bge_un = 65,
+                Bge_un_s = 52,
+                Bgt = 61,
+                Bgt_s = 48,
+                Bgt_un = 66,
+                Bgt_un_s = 53,
+                Ble = 62,
+                Ble_s = 49,
+                Ble_un = 67,
+                Ble_un_s = 54,
+                Blt = 63,
+                Blt_s = 50,
+                Blt_un = 68,
+                Blt_un_s = 55,
+                Bne_un = 64,
+                Bne_un_s = 51,
+                Box = 140,
+                Br = 56,
+                Br_s = 43,
+                Break = 1,
+                Brfalse = 57,
+                Brfalse_s = 44,
+                Brtrue = 58,
+                Brtrue_s = 45,
+                Call = 40,
+                Calli = 41,
+                Callvirt = 111,
+                Castclass = 116,
+                Ceq = 65025,
+                Cgt = 65026,
+                Cgt_un = 65027,
+                Ckfinite = 195,
+                Clt = 65028,
+                Clt_un = 65029,
+                Constrained = 65046,
+                Conv_i = 211,
+                Conv_i1 = 103,
+                Conv_i2 = 104,
+                Conv_i4 = 105,
+                Conv_i8 = 106,
+                Conv_ovf_i = 212,
+                Conv_ovf_i1 = 179,
+                Conv_ovf_i1_un = 130,
+                Conv_ovf_i2 = 181,
+                Conv_ovf_i2_un = 131,
+                Conv_ovf_i4 = 183,
+                Conv_ovf_i4_un = 132,
+                Conv_ovf_i8 = 185,
+                Conv_ovf_i8_un = 133,
+                Conv_ovf_i_un = 138,
+                Conv_ovf_u = 213,
+                Conv_ovf_u1 = 180,
+                Conv_ovf_u1_un = 134,
+                Conv_ovf_u2 = 182,
+                Conv_ovf_u2_un = 135,
+                Conv_ovf_u4 = 184,
+                Conv_ovf_u4_un = 136,
+                Conv_ovf_u8 = 186,
+                Conv_ovf_u8_un = 137,
+                Conv_ovf_u_un = 139,
+                Conv_r4 = 107,
+                Conv_r8 = 108,
+                Conv_r_un = 118,
+                Conv_u = 224,
+                Conv_u1 = 210,
+                Conv_u2 = 209,
+                Conv_u4 = 109,
+                Conv_u8 = 110,
+                Cpblk = 65047,
+                Cpobj = 112,
+                Div = 91,
+                Div_un = 92,
+                Dup = 37,
+                Endfilter = 65041,
+                Endfinally = 220,
+                Initblk = 65048,
+                Initobj = 65045,
+                Isinst = 117,
+                Jmp = 39,
+                Ldarg = 65033,
+                Ldarg_0 = 2,
+                Ldarg_1 = 3,
+                Ldarg_2 = 4,
+                Ldarg_3 = 5,
+                Ldarg_s = 14,
+                Ldarga = 65034,
+                Ldarga_s = 15,
+                Ldc_i4 = 32,
+                Ldc_i4_0 = 22,
+                Ldc_i4_1 = 23,
+                Ldc_i4_2 = 24,
+                Ldc_i4_3 = 25,
+                Ldc_i4_4 = 26,
+                Ldc_i4_5 = 27,
+                Ldc_i4_6 = 28,
+                Ldc_i4_7 = 29,
+                Ldc_i4_8 = 30,
+                Ldc_i4_m1 = 21,
+                Ldc_i4_s = 31,
+                Ldc_i8 = 33,
+                Ldc_r4 = 34,
+                Ldc_r8 = 35,
+                Ldelem = 163,
+                Ldelem_i = 151,
+                Ldelem_i1 = 144,
+                Ldelem_i2 = 146,
+                Ldelem_i4 = 148,
+                Ldelem_i8 = 150,
+                Ldelem_r4 = 152,
+                Ldelem_r8 = 153,
+                Ldelem_ref = 154,
+                Ldelem_u1 = 145,
+                Ldelem_u2 = 147,
+                Ldelem_u4 = 149,
+                Ldelema = 143,
+                Ldfld = 123,
+                Ldflda = 124,
+                Ldftn = 65030,
+                Ldind_i = 77,
+                Ldind_i1 = 70,
+                Ldind_i2 = 72,
+                Ldind_i4 = 74,
+                Ldind_i8 = 76,
+                Ldind_r4 = 78,
+                Ldind_r8 = 79,
+                Ldind_ref = 80,
+                Ldind_u1 = 71,
+                Ldind_u2 = 73,
+                Ldind_u4 = 75,
+                Ldlen = 142,
+                Ldloc = 65036,
+                Ldloc_0 = 6,
+                Ldloc_1 = 7,
+                Ldloc_2 = 8,
+                Ldloc_3 = 9,
+                Ldloc_s = 17,
+                Ldloca = 65037,
+                Ldloca_s = 18,
+                Ldnull = 20,
+                Ldobj = 113,
+                Ldsfld = 126,
+                Ldsflda = 127,
+                Ldstr = 114,
+                Ldtoken = 208,
+                Ldvirtftn = 65031,
+                Leave = 221,
+                Leave_s = 222,
+                Localloc = 65039,
+                Mkrefany = 198,
+                Mul = 90,
+                Mul_ovf = 216,
+                Mul_ovf_un = 217,
+                Neg = 101,
+                Newarr = 141,
+                Newobj = 115,
+                Nop = 0,
+                Not = 102,
+                Or = 96,
+                Pop = 38,
+                Readonly = 65054,
+                Refanytype = 65053,
+                Refanyval = 194,
+                Rem = 93,
+                Rem_un = 94,
+                Ret = 42,
+                Rethrow = 65050,
+                Shl = 98,
+                Shr = 99,
+                Shr_un = 100,
+                Sizeof = 65052,
+                Starg = 65035,
+                Starg_s = 16,
+                Stelem = 164,
+                Stelem_i = 155,
+                Stelem_i1 = 156,
+                Stelem_i2 = 157,
+                Stelem_i4 = 158,
+                Stelem_i8 = 159,
+                Stelem_r4 = 160,
+                Stelem_r8 = 161,
+                Stelem_ref = 162,
+                Stfld = 125,
+                Stind_i = 223,
+                Stind_i1 = 82,
+                Stind_i2 = 83,
+                Stind_i4 = 84,
+                Stind_i8 = 85,
+                Stind_r4 = 86,
+                Stind_r8 = 87,
+                Stind_ref = 81,
+                Stloc = 65038,
+                Stloc_0 = 10,
+                Stloc_1 = 11,
+                Stloc_2 = 12,
+                Stloc_3 = 13,
+                Stloc_s = 19,
+                Stobj = 129,
+                Stsfld = 128,
+                Sub = 89,
+                Sub_ovf = 218,
+                Sub_ovf_un = 219,
+                Switch = 69,
+                Tail = 65044,
+                Throw = 122,
+                Unaligned = 65042,
+                Unbox = 121,
+                Unbox_any = 165,
+                Volatile = 65043,
+                Xor = 97,
             }
 
-            // Generated from `System.Reflection.Metadata.ILOpCodeExtensions` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Reflection.Metadata.ILOpCodeExtensions` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public static class ILOpCodeExtensions
             {
                 public static int GetBranchOperandSize(this System.Reflection.Metadata.ILOpCode opCode) => throw null;
@@ -1380,13 +1380,13 @@ namespace System
                 public static bool IsBranch(this System.Reflection.Metadata.ILOpCode opCode) => throw null;
             }
 
-            // Generated from `System.Reflection.Metadata.ISZArrayTypeProvider<>` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Reflection.Metadata.ISZArrayTypeProvider<>` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public interface ISZArrayTypeProvider<TType>
             {
                 TType GetSZArrayType(TType elementType);
             }
 
-            // Generated from `System.Reflection.Metadata.ISignatureTypeProvider<,>` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Reflection.Metadata.ISignatureTypeProvider<,>` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public interface ISignatureTypeProvider<TType, TGenericContext> : System.Reflection.Metadata.IConstructedTypeProvider<TType>, System.Reflection.Metadata.ISZArrayTypeProvider<TType>, System.Reflection.Metadata.ISimpleTypeProvider<TType>
             {
                 TType GetFunctionPointerType(System.Reflection.Metadata.MethodSignature<TType> signature);
@@ -1397,7 +1397,7 @@ namespace System
                 TType GetTypeFromSpecification(System.Reflection.Metadata.MetadataReader reader, TGenericContext genericContext, System.Reflection.Metadata.TypeSpecificationHandle handle, System.Byte rawTypeKind);
             }
 
-            // Generated from `System.Reflection.Metadata.ISimpleTypeProvider<>` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Reflection.Metadata.ISimpleTypeProvider<>` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public interface ISimpleTypeProvider<TType>
             {
                 TType GetPrimitiveType(System.Reflection.Metadata.PrimitiveTypeCode typeCode);
@@ -1405,7 +1405,7 @@ namespace System
                 TType GetTypeFromReference(System.Reflection.Metadata.MetadataReader reader, System.Reflection.Metadata.TypeReferenceHandle handle, System.Byte rawTypeKind);
             }
 
-            // Generated from `System.Reflection.Metadata.ImageFormatLimitationException` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Reflection.Metadata.ImageFormatLimitationException` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class ImageFormatLimitationException : System.Exception
             {
                 public ImageFormatLimitationException() => throw null;
@@ -1414,7 +1414,7 @@ namespace System
                 public ImageFormatLimitationException(string message, System.Exception innerException) => throw null;
             }
 
-            // Generated from `System.Reflection.Metadata.ImportDefinition` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Reflection.Metadata.ImportDefinition` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct ImportDefinition
             {
                 public System.Reflection.Metadata.BlobHandle Alias { get => throw null; }
@@ -1425,10 +1425,10 @@ namespace System
                 public System.Reflection.Metadata.EntityHandle TargetType { get => throw null; }
             }
 
-            // Generated from `System.Reflection.Metadata.ImportDefinitionCollection` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Reflection.Metadata.ImportDefinitionCollection` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct ImportDefinitionCollection : System.Collections.Generic.IEnumerable<System.Reflection.Metadata.ImportDefinition>, System.Collections.IEnumerable
             {
-                // Generated from `System.Reflection.Metadata.ImportDefinitionCollection+Enumerator` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+                // Generated from `System.Reflection.Metadata.ImportDefinitionCollection+Enumerator` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public struct Enumerator : System.Collections.Generic.IEnumerator<System.Reflection.Metadata.ImportDefinition>, System.Collections.IEnumerator, System.IDisposable
                 {
                     public System.Reflection.Metadata.ImportDefinition Current { get => throw null; }
@@ -1446,21 +1446,21 @@ namespace System
                 // Stub generator skipped constructor 
             }
 
-            // Generated from `System.Reflection.Metadata.ImportDefinitionKind` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum ImportDefinitionKind
+            // Generated from `System.Reflection.Metadata.ImportDefinitionKind` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            public enum ImportDefinitionKind : int
             {
-                AliasAssemblyNamespace,
-                AliasAssemblyReference,
-                AliasNamespace,
-                AliasType,
-                ImportAssemblyNamespace,
-                ImportAssemblyReferenceAlias,
-                ImportNamespace,
-                ImportType,
-                ImportXmlNamespace,
+                AliasAssemblyNamespace = 8,
+                AliasAssemblyReference = 6,
+                AliasNamespace = 7,
+                AliasType = 9,
+                ImportAssemblyNamespace = 2,
+                ImportAssemblyReferenceAlias = 5,
+                ImportNamespace = 1,
+                ImportType = 3,
+                ImportXmlNamespace = 4,
             }
 
-            // Generated from `System.Reflection.Metadata.ImportScope` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Reflection.Metadata.ImportScope` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct ImportScope
             {
                 public System.Reflection.Metadata.ImportDefinitionCollection GetImports() => throw null;
@@ -1469,10 +1469,10 @@ namespace System
                 public System.Reflection.Metadata.ImportScopeHandle Parent { get => throw null; }
             }
 
-            // Generated from `System.Reflection.Metadata.ImportScopeCollection` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Reflection.Metadata.ImportScopeCollection` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct ImportScopeCollection : System.Collections.Generic.IEnumerable<System.Reflection.Metadata.ImportScopeHandle>, System.Collections.Generic.IReadOnlyCollection<System.Reflection.Metadata.ImportScopeHandle>, System.Collections.IEnumerable
             {
-                // Generated from `System.Reflection.Metadata.ImportScopeCollection+Enumerator` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+                // Generated from `System.Reflection.Metadata.ImportScopeCollection+Enumerator` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public struct Enumerator : System.Collections.Generic.IEnumerator<System.Reflection.Metadata.ImportScopeHandle>, System.Collections.IEnumerator, System.IDisposable
                 {
                     public System.Reflection.Metadata.ImportScopeHandle Current { get => throw null; }
@@ -1491,7 +1491,7 @@ namespace System
                 // Stub generator skipped constructor 
             }
 
-            // Generated from `System.Reflection.Metadata.ImportScopeHandle` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Reflection.Metadata.ImportScopeHandle` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct ImportScopeHandle : System.IEquatable<System.Reflection.Metadata.ImportScopeHandle>
             {
                 public static bool operator !=(System.Reflection.Metadata.ImportScopeHandle left, System.Reflection.Metadata.ImportScopeHandle right) => throw null;
@@ -1507,7 +1507,7 @@ namespace System
                 public static implicit operator System.Reflection.Metadata.Handle(System.Reflection.Metadata.ImportScopeHandle handle) => throw null;
             }
 
-            // Generated from `System.Reflection.Metadata.InterfaceImplementation` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Reflection.Metadata.InterfaceImplementation` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct InterfaceImplementation
             {
                 public System.Reflection.Metadata.CustomAttributeHandleCollection GetCustomAttributes() => throw null;
@@ -1515,7 +1515,7 @@ namespace System
                 // Stub generator skipped constructor 
             }
 
-            // Generated from `System.Reflection.Metadata.InterfaceImplementationHandle` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Reflection.Metadata.InterfaceImplementationHandle` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct InterfaceImplementationHandle : System.IEquatable<System.Reflection.Metadata.InterfaceImplementationHandle>
             {
                 public static bool operator !=(System.Reflection.Metadata.InterfaceImplementationHandle left, System.Reflection.Metadata.InterfaceImplementationHandle right) => throw null;
@@ -1531,10 +1531,10 @@ namespace System
                 public static implicit operator System.Reflection.Metadata.Handle(System.Reflection.Metadata.InterfaceImplementationHandle handle) => throw null;
             }
 
-            // Generated from `System.Reflection.Metadata.InterfaceImplementationHandleCollection` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Reflection.Metadata.InterfaceImplementationHandleCollection` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct InterfaceImplementationHandleCollection : System.Collections.Generic.IEnumerable<System.Reflection.Metadata.InterfaceImplementationHandle>, System.Collections.Generic.IReadOnlyCollection<System.Reflection.Metadata.InterfaceImplementationHandle>, System.Collections.IEnumerable
             {
-                // Generated from `System.Reflection.Metadata.InterfaceImplementationHandleCollection+Enumerator` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+                // Generated from `System.Reflection.Metadata.InterfaceImplementationHandleCollection+Enumerator` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public struct Enumerator : System.Collections.Generic.IEnumerator<System.Reflection.Metadata.InterfaceImplementationHandle>, System.Collections.IEnumerator, System.IDisposable
                 {
                     public System.Reflection.Metadata.InterfaceImplementationHandle Current { get => throw null; }
@@ -1553,7 +1553,7 @@ namespace System
                 // Stub generator skipped constructor 
             }
 
-            // Generated from `System.Reflection.Metadata.LocalConstant` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Reflection.Metadata.LocalConstant` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct LocalConstant
             {
                 // Stub generator skipped constructor 
@@ -1561,7 +1561,7 @@ namespace System
                 public System.Reflection.Metadata.BlobHandle Signature { get => throw null; }
             }
 
-            // Generated from `System.Reflection.Metadata.LocalConstantHandle` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Reflection.Metadata.LocalConstantHandle` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct LocalConstantHandle : System.IEquatable<System.Reflection.Metadata.LocalConstantHandle>
             {
                 public static bool operator !=(System.Reflection.Metadata.LocalConstantHandle left, System.Reflection.Metadata.LocalConstantHandle right) => throw null;
@@ -1577,10 +1577,10 @@ namespace System
                 public static implicit operator System.Reflection.Metadata.Handle(System.Reflection.Metadata.LocalConstantHandle handle) => throw null;
             }
 
-            // Generated from `System.Reflection.Metadata.LocalConstantHandleCollection` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Reflection.Metadata.LocalConstantHandleCollection` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct LocalConstantHandleCollection : System.Collections.Generic.IEnumerable<System.Reflection.Metadata.LocalConstantHandle>, System.Collections.Generic.IReadOnlyCollection<System.Reflection.Metadata.LocalConstantHandle>, System.Collections.IEnumerable
             {
-                // Generated from `System.Reflection.Metadata.LocalConstantHandleCollection+Enumerator` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+                // Generated from `System.Reflection.Metadata.LocalConstantHandleCollection+Enumerator` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public struct Enumerator : System.Collections.Generic.IEnumerator<System.Reflection.Metadata.LocalConstantHandle>, System.Collections.IEnumerator, System.IDisposable
                 {
                     public System.Reflection.Metadata.LocalConstantHandle Current { get => throw null; }
@@ -1599,7 +1599,7 @@ namespace System
                 // Stub generator skipped constructor 
             }
 
-            // Generated from `System.Reflection.Metadata.LocalScope` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Reflection.Metadata.LocalScope` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct LocalScope
             {
                 public int EndOffset { get => throw null; }
@@ -1613,7 +1613,7 @@ namespace System
                 public int StartOffset { get => throw null; }
             }
 
-            // Generated from `System.Reflection.Metadata.LocalScopeHandle` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Reflection.Metadata.LocalScopeHandle` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct LocalScopeHandle : System.IEquatable<System.Reflection.Metadata.LocalScopeHandle>
             {
                 public static bool operator !=(System.Reflection.Metadata.LocalScopeHandle left, System.Reflection.Metadata.LocalScopeHandle right) => throw null;
@@ -1629,10 +1629,10 @@ namespace System
                 public static implicit operator System.Reflection.Metadata.Handle(System.Reflection.Metadata.LocalScopeHandle handle) => throw null;
             }
 
-            // Generated from `System.Reflection.Metadata.LocalScopeHandleCollection` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Reflection.Metadata.LocalScopeHandleCollection` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct LocalScopeHandleCollection : System.Collections.Generic.IEnumerable<System.Reflection.Metadata.LocalScopeHandle>, System.Collections.Generic.IReadOnlyCollection<System.Reflection.Metadata.LocalScopeHandle>, System.Collections.IEnumerable
             {
-                // Generated from `System.Reflection.Metadata.LocalScopeHandleCollection+ChildrenEnumerator` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+                // Generated from `System.Reflection.Metadata.LocalScopeHandleCollection+ChildrenEnumerator` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public struct ChildrenEnumerator : System.Collections.Generic.IEnumerator<System.Reflection.Metadata.LocalScopeHandle>, System.Collections.IEnumerator, System.IDisposable
                 {
                     // Stub generator skipped constructor 
@@ -1644,7 +1644,7 @@ namespace System
                 }
 
 
-                // Generated from `System.Reflection.Metadata.LocalScopeHandleCollection+Enumerator` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+                // Generated from `System.Reflection.Metadata.LocalScopeHandleCollection+Enumerator` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public struct Enumerator : System.Collections.Generic.IEnumerator<System.Reflection.Metadata.LocalScopeHandle>, System.Collections.IEnumerator, System.IDisposable
                 {
                     public System.Reflection.Metadata.LocalScopeHandle Current { get => throw null; }
@@ -1663,7 +1663,7 @@ namespace System
                 // Stub generator skipped constructor 
             }
 
-            // Generated from `System.Reflection.Metadata.LocalVariable` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Reflection.Metadata.LocalVariable` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct LocalVariable
             {
                 public System.Reflection.Metadata.LocalVariableAttributes Attributes { get => throw null; }
@@ -1672,15 +1672,15 @@ namespace System
                 public System.Reflection.Metadata.StringHandle Name { get => throw null; }
             }
 
-            // Generated from `System.Reflection.Metadata.LocalVariableAttributes` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Reflection.Metadata.LocalVariableAttributes` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             [System.Flags]
-            public enum LocalVariableAttributes
+            public enum LocalVariableAttributes : int
             {
-                DebuggerHidden,
-                None,
+                DebuggerHidden = 1,
+                None = 0,
             }
 
-            // Generated from `System.Reflection.Metadata.LocalVariableHandle` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Reflection.Metadata.LocalVariableHandle` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct LocalVariableHandle : System.IEquatable<System.Reflection.Metadata.LocalVariableHandle>
             {
                 public static bool operator !=(System.Reflection.Metadata.LocalVariableHandle left, System.Reflection.Metadata.LocalVariableHandle right) => throw null;
@@ -1696,10 +1696,10 @@ namespace System
                 public static implicit operator System.Reflection.Metadata.Handle(System.Reflection.Metadata.LocalVariableHandle handle) => throw null;
             }
 
-            // Generated from `System.Reflection.Metadata.LocalVariableHandleCollection` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Reflection.Metadata.LocalVariableHandleCollection` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct LocalVariableHandleCollection : System.Collections.Generic.IEnumerable<System.Reflection.Metadata.LocalVariableHandle>, System.Collections.Generic.IReadOnlyCollection<System.Reflection.Metadata.LocalVariableHandle>, System.Collections.IEnumerable
             {
-                // Generated from `System.Reflection.Metadata.LocalVariableHandleCollection+Enumerator` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+                // Generated from `System.Reflection.Metadata.LocalVariableHandleCollection+Enumerator` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public struct Enumerator : System.Collections.Generic.IEnumerator<System.Reflection.Metadata.LocalVariableHandle>, System.Collections.IEnumerator, System.IDisposable
                 {
                     public System.Reflection.Metadata.LocalVariableHandle Current { get => throw null; }
@@ -1718,7 +1718,7 @@ namespace System
                 // Stub generator skipped constructor 
             }
 
-            // Generated from `System.Reflection.Metadata.ManifestResource` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Reflection.Metadata.ManifestResource` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct ManifestResource
             {
                 public System.Reflection.ManifestResourceAttributes Attributes { get => throw null; }
@@ -1729,7 +1729,7 @@ namespace System
                 public System.Int64 Offset { get => throw null; }
             }
 
-            // Generated from `System.Reflection.Metadata.ManifestResourceHandle` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Reflection.Metadata.ManifestResourceHandle` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct ManifestResourceHandle : System.IEquatable<System.Reflection.Metadata.ManifestResourceHandle>
             {
                 public static bool operator !=(System.Reflection.Metadata.ManifestResourceHandle left, System.Reflection.Metadata.ManifestResourceHandle right) => throw null;
@@ -1745,10 +1745,10 @@ namespace System
                 public static implicit operator System.Reflection.Metadata.Handle(System.Reflection.Metadata.ManifestResourceHandle handle) => throw null;
             }
 
-            // Generated from `System.Reflection.Metadata.ManifestResourceHandleCollection` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Reflection.Metadata.ManifestResourceHandleCollection` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct ManifestResourceHandleCollection : System.Collections.Generic.IEnumerable<System.Reflection.Metadata.ManifestResourceHandle>, System.Collections.Generic.IReadOnlyCollection<System.Reflection.Metadata.ManifestResourceHandle>, System.Collections.IEnumerable
             {
-                // Generated from `System.Reflection.Metadata.ManifestResourceHandleCollection+Enumerator` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+                // Generated from `System.Reflection.Metadata.ManifestResourceHandleCollection+Enumerator` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public struct Enumerator : System.Collections.Generic.IEnumerator<System.Reflection.Metadata.ManifestResourceHandle>, System.Collections.IEnumerator, System.IDisposable
                 {
                     public System.Reflection.Metadata.ManifestResourceHandle Current { get => throw null; }
@@ -1767,7 +1767,7 @@ namespace System
                 // Stub generator skipped constructor 
             }
 
-            // Generated from `System.Reflection.Metadata.MemberReference` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Reflection.Metadata.MemberReference` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct MemberReference
             {
                 public TType DecodeFieldSignature<TType, TGenericContext>(System.Reflection.Metadata.ISignatureTypeProvider<TType, TGenericContext> provider, TGenericContext genericContext) => throw null;
@@ -1780,7 +1780,7 @@ namespace System
                 public System.Reflection.Metadata.BlobHandle Signature { get => throw null; }
             }
 
-            // Generated from `System.Reflection.Metadata.MemberReferenceHandle` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Reflection.Metadata.MemberReferenceHandle` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct MemberReferenceHandle : System.IEquatable<System.Reflection.Metadata.MemberReferenceHandle>
             {
                 public static bool operator !=(System.Reflection.Metadata.MemberReferenceHandle left, System.Reflection.Metadata.MemberReferenceHandle right) => throw null;
@@ -1796,10 +1796,10 @@ namespace System
                 public static implicit operator System.Reflection.Metadata.Handle(System.Reflection.Metadata.MemberReferenceHandle handle) => throw null;
             }
 
-            // Generated from `System.Reflection.Metadata.MemberReferenceHandleCollection` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Reflection.Metadata.MemberReferenceHandleCollection` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct MemberReferenceHandleCollection : System.Collections.Generic.IEnumerable<System.Reflection.Metadata.MemberReferenceHandle>, System.Collections.Generic.IReadOnlyCollection<System.Reflection.Metadata.MemberReferenceHandle>, System.Collections.IEnumerable
             {
-                // Generated from `System.Reflection.Metadata.MemberReferenceHandleCollection+Enumerator` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+                // Generated from `System.Reflection.Metadata.MemberReferenceHandleCollection+Enumerator` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public struct Enumerator : System.Collections.Generic.IEnumerator<System.Reflection.Metadata.MemberReferenceHandle>, System.Collections.IEnumerator, System.IDisposable
                 {
                     public System.Reflection.Metadata.MemberReferenceHandle Current { get => throw null; }
@@ -1818,22 +1818,22 @@ namespace System
                 // Stub generator skipped constructor 
             }
 
-            // Generated from `System.Reflection.Metadata.MemberReferenceKind` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum MemberReferenceKind
+            // Generated from `System.Reflection.Metadata.MemberReferenceKind` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            public enum MemberReferenceKind : int
             {
-                Field,
-                Method,
+                Field = 1,
+                Method = 0,
             }
 
-            // Generated from `System.Reflection.Metadata.MetadataKind` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum MetadataKind
+            // Generated from `System.Reflection.Metadata.MetadataKind` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            public enum MetadataKind : int
             {
-                Ecma335,
-                ManagedWindowsMetadata,
-                WindowsMetadata,
+                Ecma335 = 0,
+                ManagedWindowsMetadata = 2,
+                WindowsMetadata = 1,
             }
 
-            // Generated from `System.Reflection.Metadata.MetadataReader` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Reflection.Metadata.MetadataReader` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class MetadataReader
             {
                 public System.Reflection.Metadata.AssemblyFileHandleCollection AssemblyFiles { get => throw null; }
@@ -1918,16 +1918,16 @@ namespace System
                 public System.Reflection.Metadata.MetadataStringDecoder UTF8Decoder { get => throw null; }
             }
 
-            // Generated from `System.Reflection.Metadata.MetadataReaderOptions` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Reflection.Metadata.MetadataReaderOptions` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             [System.Flags]
-            public enum MetadataReaderOptions
+            public enum MetadataReaderOptions : int
             {
-                ApplyWindowsRuntimeProjections,
-                Default,
-                None,
+                ApplyWindowsRuntimeProjections = 1,
+                Default = 1,
+                None = 0,
             }
 
-            // Generated from `System.Reflection.Metadata.MetadataReaderProvider` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Reflection.Metadata.MetadataReaderProvider` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class MetadataReaderProvider : System.IDisposable
             {
                 public void Dispose() => throw null;
@@ -1940,16 +1940,16 @@ namespace System
                 public System.Reflection.Metadata.MetadataReader GetMetadataReader(System.Reflection.Metadata.MetadataReaderOptions options = default(System.Reflection.Metadata.MetadataReaderOptions), System.Reflection.Metadata.MetadataStringDecoder utf8Decoder = default(System.Reflection.Metadata.MetadataStringDecoder)) => throw null;
             }
 
-            // Generated from `System.Reflection.Metadata.MetadataStreamOptions` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Reflection.Metadata.MetadataStreamOptions` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             [System.Flags]
-            public enum MetadataStreamOptions
+            public enum MetadataStreamOptions : int
             {
-                Default,
-                LeaveOpen,
-                PrefetchMetadata,
+                Default = 0,
+                LeaveOpen = 1,
+                PrefetchMetadata = 2,
             }
 
-            // Generated from `System.Reflection.Metadata.MetadataStringComparer` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Reflection.Metadata.MetadataStringComparer` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct MetadataStringComparer
             {
                 public bool Equals(System.Reflection.Metadata.DocumentNameBlobHandle handle, string value) => throw null;
@@ -1963,7 +1963,7 @@ namespace System
                 public bool StartsWith(System.Reflection.Metadata.StringHandle handle, string value, bool ignoreCase) => throw null;
             }
 
-            // Generated from `System.Reflection.Metadata.MetadataStringDecoder` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Reflection.Metadata.MetadataStringDecoder` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class MetadataStringDecoder
             {
                 public static System.Reflection.Metadata.MetadataStringDecoder DefaultUTF8 { get => throw null; }
@@ -1972,7 +1972,7 @@ namespace System
                 public MetadataStringDecoder(System.Text.Encoding encoding) => throw null;
             }
 
-            // Generated from `System.Reflection.Metadata.MethodBodyBlock` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Reflection.Metadata.MethodBodyBlock` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class MethodBodyBlock
             {
                 public static System.Reflection.Metadata.MethodBodyBlock Create(System.Reflection.Metadata.BlobReader reader) => throw null;
@@ -1986,7 +1986,7 @@ namespace System
                 public int Size { get => throw null; }
             }
 
-            // Generated from `System.Reflection.Metadata.MethodDebugInformation` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Reflection.Metadata.MethodDebugInformation` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct MethodDebugInformation
             {
                 public System.Reflection.Metadata.DocumentHandle Document { get => throw null; }
@@ -1997,7 +1997,7 @@ namespace System
                 public System.Reflection.Metadata.BlobHandle SequencePointsBlob { get => throw null; }
             }
 
-            // Generated from `System.Reflection.Metadata.MethodDebugInformationHandle` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Reflection.Metadata.MethodDebugInformationHandle` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct MethodDebugInformationHandle : System.IEquatable<System.Reflection.Metadata.MethodDebugInformationHandle>
             {
                 public static bool operator !=(System.Reflection.Metadata.MethodDebugInformationHandle left, System.Reflection.Metadata.MethodDebugInformationHandle right) => throw null;
@@ -2014,10 +2014,10 @@ namespace System
                 public static implicit operator System.Reflection.Metadata.Handle(System.Reflection.Metadata.MethodDebugInformationHandle handle) => throw null;
             }
 
-            // Generated from `System.Reflection.Metadata.MethodDebugInformationHandleCollection` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Reflection.Metadata.MethodDebugInformationHandleCollection` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct MethodDebugInformationHandleCollection : System.Collections.Generic.IEnumerable<System.Reflection.Metadata.MethodDebugInformationHandle>, System.Collections.Generic.IReadOnlyCollection<System.Reflection.Metadata.MethodDebugInformationHandle>, System.Collections.IEnumerable
             {
-                // Generated from `System.Reflection.Metadata.MethodDebugInformationHandleCollection+Enumerator` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+                // Generated from `System.Reflection.Metadata.MethodDebugInformationHandleCollection+Enumerator` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public struct Enumerator : System.Collections.Generic.IEnumerator<System.Reflection.Metadata.MethodDebugInformationHandle>, System.Collections.IEnumerator, System.IDisposable
                 {
                     public System.Reflection.Metadata.MethodDebugInformationHandle Current { get => throw null; }
@@ -2036,7 +2036,7 @@ namespace System
                 // Stub generator skipped constructor 
             }
 
-            // Generated from `System.Reflection.Metadata.MethodDefinition` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Reflection.Metadata.MethodDefinition` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct MethodDefinition
             {
                 public System.Reflection.MethodAttributes Attributes { get => throw null; }
@@ -2054,7 +2054,7 @@ namespace System
                 public System.Reflection.Metadata.BlobHandle Signature { get => throw null; }
             }
 
-            // Generated from `System.Reflection.Metadata.MethodDefinitionHandle` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Reflection.Metadata.MethodDefinitionHandle` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct MethodDefinitionHandle : System.IEquatable<System.Reflection.Metadata.MethodDefinitionHandle>
             {
                 public static bool operator !=(System.Reflection.Metadata.MethodDefinitionHandle left, System.Reflection.Metadata.MethodDefinitionHandle right) => throw null;
@@ -2071,10 +2071,10 @@ namespace System
                 public static implicit operator System.Reflection.Metadata.Handle(System.Reflection.Metadata.MethodDefinitionHandle handle) => throw null;
             }
 
-            // Generated from `System.Reflection.Metadata.MethodDefinitionHandleCollection` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Reflection.Metadata.MethodDefinitionHandleCollection` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct MethodDefinitionHandleCollection : System.Collections.Generic.IEnumerable<System.Reflection.Metadata.MethodDefinitionHandle>, System.Collections.Generic.IReadOnlyCollection<System.Reflection.Metadata.MethodDefinitionHandle>, System.Collections.IEnumerable
             {
-                // Generated from `System.Reflection.Metadata.MethodDefinitionHandleCollection+Enumerator` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+                // Generated from `System.Reflection.Metadata.MethodDefinitionHandleCollection+Enumerator` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public struct Enumerator : System.Collections.Generic.IEnumerator<System.Reflection.Metadata.MethodDefinitionHandle>, System.Collections.IEnumerator, System.IDisposable
                 {
                     public System.Reflection.Metadata.MethodDefinitionHandle Current { get => throw null; }
@@ -2093,7 +2093,7 @@ namespace System
                 // Stub generator skipped constructor 
             }
 
-            // Generated from `System.Reflection.Metadata.MethodImplementation` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Reflection.Metadata.MethodImplementation` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct MethodImplementation
             {
                 public System.Reflection.Metadata.CustomAttributeHandleCollection GetCustomAttributes() => throw null;
@@ -2103,7 +2103,7 @@ namespace System
                 public System.Reflection.Metadata.TypeDefinitionHandle Type { get => throw null; }
             }
 
-            // Generated from `System.Reflection.Metadata.MethodImplementationHandle` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Reflection.Metadata.MethodImplementationHandle` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct MethodImplementationHandle : System.IEquatable<System.Reflection.Metadata.MethodImplementationHandle>
             {
                 public static bool operator !=(System.Reflection.Metadata.MethodImplementationHandle left, System.Reflection.Metadata.MethodImplementationHandle right) => throw null;
@@ -2119,10 +2119,10 @@ namespace System
                 public static implicit operator System.Reflection.Metadata.Handle(System.Reflection.Metadata.MethodImplementationHandle handle) => throw null;
             }
 
-            // Generated from `System.Reflection.Metadata.MethodImplementationHandleCollection` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Reflection.Metadata.MethodImplementationHandleCollection` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct MethodImplementationHandleCollection : System.Collections.Generic.IEnumerable<System.Reflection.Metadata.MethodImplementationHandle>, System.Collections.Generic.IReadOnlyCollection<System.Reflection.Metadata.MethodImplementationHandle>, System.Collections.IEnumerable
             {
-                // Generated from `System.Reflection.Metadata.MethodImplementationHandleCollection+Enumerator` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+                // Generated from `System.Reflection.Metadata.MethodImplementationHandleCollection+Enumerator` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public struct Enumerator : System.Collections.Generic.IEnumerator<System.Reflection.Metadata.MethodImplementationHandle>, System.Collections.IEnumerator, System.IDisposable
                 {
                     public System.Reflection.Metadata.MethodImplementationHandle Current { get => throw null; }
@@ -2141,7 +2141,7 @@ namespace System
                 // Stub generator skipped constructor 
             }
 
-            // Generated from `System.Reflection.Metadata.MethodImport` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Reflection.Metadata.MethodImport` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct MethodImport
             {
                 public System.Reflection.MethodImportAttributes Attributes { get => throw null; }
@@ -2150,7 +2150,7 @@ namespace System
                 public System.Reflection.Metadata.StringHandle Name { get => throw null; }
             }
 
-            // Generated from `System.Reflection.Metadata.MethodSignature<>` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Reflection.Metadata.MethodSignature<>` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct MethodSignature<TType>
             {
                 public int GenericParameterCount { get => throw null; }
@@ -2162,7 +2162,7 @@ namespace System
                 public TType ReturnType { get => throw null; }
             }
 
-            // Generated from `System.Reflection.Metadata.MethodSpecification` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Reflection.Metadata.MethodSpecification` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct MethodSpecification
             {
                 public System.Collections.Immutable.ImmutableArray<TType> DecodeSignature<TType, TGenericContext>(System.Reflection.Metadata.ISignatureTypeProvider<TType, TGenericContext> provider, TGenericContext genericContext) => throw null;
@@ -2172,7 +2172,7 @@ namespace System
                 public System.Reflection.Metadata.BlobHandle Signature { get => throw null; }
             }
 
-            // Generated from `System.Reflection.Metadata.MethodSpecificationHandle` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Reflection.Metadata.MethodSpecificationHandle` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct MethodSpecificationHandle : System.IEquatable<System.Reflection.Metadata.MethodSpecificationHandle>
             {
                 public static bool operator !=(System.Reflection.Metadata.MethodSpecificationHandle left, System.Reflection.Metadata.MethodSpecificationHandle right) => throw null;
@@ -2188,7 +2188,7 @@ namespace System
                 public static implicit operator System.Reflection.Metadata.Handle(System.Reflection.Metadata.MethodSpecificationHandle handle) => throw null;
             }
 
-            // Generated from `System.Reflection.Metadata.ModuleDefinition` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Reflection.Metadata.ModuleDefinition` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct ModuleDefinition
             {
                 public System.Reflection.Metadata.GuidHandle BaseGenerationId { get => throw null; }
@@ -2200,7 +2200,7 @@ namespace System
                 public System.Reflection.Metadata.StringHandle Name { get => throw null; }
             }
 
-            // Generated from `System.Reflection.Metadata.ModuleDefinitionHandle` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Reflection.Metadata.ModuleDefinitionHandle` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct ModuleDefinitionHandle : System.IEquatable<System.Reflection.Metadata.ModuleDefinitionHandle>
             {
                 public static bool operator !=(System.Reflection.Metadata.ModuleDefinitionHandle left, System.Reflection.Metadata.ModuleDefinitionHandle right) => throw null;
@@ -2216,7 +2216,7 @@ namespace System
                 public static implicit operator System.Reflection.Metadata.Handle(System.Reflection.Metadata.ModuleDefinitionHandle handle) => throw null;
             }
 
-            // Generated from `System.Reflection.Metadata.ModuleReference` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Reflection.Metadata.ModuleReference` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct ModuleReference
             {
                 public System.Reflection.Metadata.CustomAttributeHandleCollection GetCustomAttributes() => throw null;
@@ -2224,7 +2224,7 @@ namespace System
                 public System.Reflection.Metadata.StringHandle Name { get => throw null; }
             }
 
-            // Generated from `System.Reflection.Metadata.ModuleReferenceHandle` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Reflection.Metadata.ModuleReferenceHandle` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct ModuleReferenceHandle : System.IEquatable<System.Reflection.Metadata.ModuleReferenceHandle>
             {
                 public static bool operator !=(System.Reflection.Metadata.ModuleReferenceHandle left, System.Reflection.Metadata.ModuleReferenceHandle right) => throw null;
@@ -2240,7 +2240,7 @@ namespace System
                 public static implicit operator System.Reflection.Metadata.Handle(System.Reflection.Metadata.ModuleReferenceHandle handle) => throw null;
             }
 
-            // Generated from `System.Reflection.Metadata.NamespaceDefinition` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Reflection.Metadata.NamespaceDefinition` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct NamespaceDefinition
             {
                 public System.Collections.Immutable.ImmutableArray<System.Reflection.Metadata.ExportedTypeHandle> ExportedTypes { get => throw null; }
@@ -2251,7 +2251,7 @@ namespace System
                 public System.Collections.Immutable.ImmutableArray<System.Reflection.Metadata.TypeDefinitionHandle> TypeDefinitions { get => throw null; }
             }
 
-            // Generated from `System.Reflection.Metadata.NamespaceDefinitionHandle` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Reflection.Metadata.NamespaceDefinitionHandle` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct NamespaceDefinitionHandle : System.IEquatable<System.Reflection.Metadata.NamespaceDefinitionHandle>
             {
                 public static bool operator !=(System.Reflection.Metadata.NamespaceDefinitionHandle left, System.Reflection.Metadata.NamespaceDefinitionHandle right) => throw null;
@@ -2265,7 +2265,7 @@ namespace System
                 public static implicit operator System.Reflection.Metadata.Handle(System.Reflection.Metadata.NamespaceDefinitionHandle handle) => throw null;
             }
 
-            // Generated from `System.Reflection.Metadata.PEReaderExtensions` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Reflection.Metadata.PEReaderExtensions` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public static class PEReaderExtensions
             {
                 public static System.Reflection.Metadata.MetadataReader GetMetadataReader(this System.Reflection.PortableExecutable.PEReader peReader) => throw null;
@@ -2274,7 +2274,7 @@ namespace System
                 public static System.Reflection.Metadata.MethodBodyBlock GetMethodBody(this System.Reflection.PortableExecutable.PEReader peReader, int relativeVirtualAddress) => throw null;
             }
 
-            // Generated from `System.Reflection.Metadata.Parameter` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Reflection.Metadata.Parameter` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct Parameter
             {
                 public System.Reflection.ParameterAttributes Attributes { get => throw null; }
@@ -2286,7 +2286,7 @@ namespace System
                 public int SequenceNumber { get => throw null; }
             }
 
-            // Generated from `System.Reflection.Metadata.ParameterHandle` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Reflection.Metadata.ParameterHandle` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct ParameterHandle : System.IEquatable<System.Reflection.Metadata.ParameterHandle>
             {
                 public static bool operator !=(System.Reflection.Metadata.ParameterHandle left, System.Reflection.Metadata.ParameterHandle right) => throw null;
@@ -2302,10 +2302,10 @@ namespace System
                 public static implicit operator System.Reflection.Metadata.Handle(System.Reflection.Metadata.ParameterHandle handle) => throw null;
             }
 
-            // Generated from `System.Reflection.Metadata.ParameterHandleCollection` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Reflection.Metadata.ParameterHandleCollection` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct ParameterHandleCollection : System.Collections.Generic.IEnumerable<System.Reflection.Metadata.ParameterHandle>, System.Collections.Generic.IReadOnlyCollection<System.Reflection.Metadata.ParameterHandle>, System.Collections.IEnumerable
             {
-                // Generated from `System.Reflection.Metadata.ParameterHandleCollection+Enumerator` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+                // Generated from `System.Reflection.Metadata.ParameterHandleCollection+Enumerator` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public struct Enumerator : System.Collections.Generic.IEnumerator<System.Reflection.Metadata.ParameterHandle>, System.Collections.IEnumerator, System.IDisposable
                 {
                     public System.Reflection.Metadata.ParameterHandle Current { get => throw null; }
@@ -2324,48 +2324,48 @@ namespace System
                 // Stub generator skipped constructor 
             }
 
-            // Generated from `System.Reflection.Metadata.PrimitiveSerializationTypeCode` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum PrimitiveSerializationTypeCode
+            // Generated from `System.Reflection.Metadata.PrimitiveSerializationTypeCode` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            public enum PrimitiveSerializationTypeCode : byte
             {
-                Boolean,
-                Byte,
-                Char,
-                Double,
-                Int16,
-                Int32,
-                Int64,
-                SByte,
-                Single,
-                String,
-                UInt16,
-                UInt32,
-                UInt64,
+                Boolean = 2,
+                Byte = 5,
+                Char = 3,
+                Double = 13,
+                Int16 = 6,
+                Int32 = 8,
+                Int64 = 10,
+                SByte = 4,
+                Single = 12,
+                String = 14,
+                UInt16 = 7,
+                UInt32 = 9,
+                UInt64 = 11,
             }
 
-            // Generated from `System.Reflection.Metadata.PrimitiveTypeCode` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum PrimitiveTypeCode
+            // Generated from `System.Reflection.Metadata.PrimitiveTypeCode` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            public enum PrimitiveTypeCode : byte
             {
-                Boolean,
-                Byte,
-                Char,
-                Double,
-                Int16,
-                Int32,
-                Int64,
-                IntPtr,
-                Object,
-                SByte,
-                Single,
-                String,
-                TypedReference,
-                UInt16,
-                UInt32,
-                UInt64,
-                UIntPtr,
-                Void,
+                Boolean = 2,
+                Byte = 5,
+                Char = 3,
+                Double = 13,
+                Int16 = 6,
+                Int32 = 8,
+                Int64 = 10,
+                IntPtr = 24,
+                Object = 28,
+                SByte = 4,
+                Single = 12,
+                String = 14,
+                TypedReference = 22,
+                UInt16 = 7,
+                UInt32 = 9,
+                UInt64 = 11,
+                UIntPtr = 25,
+                Void = 1,
             }
 
-            // Generated from `System.Reflection.Metadata.PropertyAccessors` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Reflection.Metadata.PropertyAccessors` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct PropertyAccessors
             {
                 public System.Reflection.Metadata.MethodDefinitionHandle Getter { get => throw null; }
@@ -2374,7 +2374,7 @@ namespace System
                 public System.Reflection.Metadata.MethodDefinitionHandle Setter { get => throw null; }
             }
 
-            // Generated from `System.Reflection.Metadata.PropertyDefinition` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Reflection.Metadata.PropertyDefinition` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct PropertyDefinition
             {
                 public System.Reflection.PropertyAttributes Attributes { get => throw null; }
@@ -2387,7 +2387,7 @@ namespace System
                 public System.Reflection.Metadata.BlobHandle Signature { get => throw null; }
             }
 
-            // Generated from `System.Reflection.Metadata.PropertyDefinitionHandle` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Reflection.Metadata.PropertyDefinitionHandle` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct PropertyDefinitionHandle : System.IEquatable<System.Reflection.Metadata.PropertyDefinitionHandle>
             {
                 public static bool operator !=(System.Reflection.Metadata.PropertyDefinitionHandle left, System.Reflection.Metadata.PropertyDefinitionHandle right) => throw null;
@@ -2403,10 +2403,10 @@ namespace System
                 public static implicit operator System.Reflection.Metadata.Handle(System.Reflection.Metadata.PropertyDefinitionHandle handle) => throw null;
             }
 
-            // Generated from `System.Reflection.Metadata.PropertyDefinitionHandleCollection` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Reflection.Metadata.PropertyDefinitionHandleCollection` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct PropertyDefinitionHandleCollection : System.Collections.Generic.IEnumerable<System.Reflection.Metadata.PropertyDefinitionHandle>, System.Collections.Generic.IReadOnlyCollection<System.Reflection.Metadata.PropertyDefinitionHandle>, System.Collections.IEnumerable
             {
-                // Generated from `System.Reflection.Metadata.PropertyDefinitionHandleCollection+Enumerator` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+                // Generated from `System.Reflection.Metadata.PropertyDefinitionHandleCollection+Enumerator` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public struct Enumerator : System.Collections.Generic.IEnumerator<System.Reflection.Metadata.PropertyDefinitionHandle>, System.Collections.IEnumerator, System.IDisposable
                 {
                     public System.Reflection.Metadata.PropertyDefinitionHandle Current { get => throw null; }
@@ -2425,7 +2425,7 @@ namespace System
                 // Stub generator skipped constructor 
             }
 
-            // Generated from `System.Reflection.Metadata.ReservedBlob<>` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Reflection.Metadata.ReservedBlob<>` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct ReservedBlob<THandle> where THandle : struct
             {
                 public System.Reflection.Metadata.Blob Content { get => throw null; }
@@ -2434,7 +2434,7 @@ namespace System
                 // Stub generator skipped constructor 
             }
 
-            // Generated from `System.Reflection.Metadata.SequencePoint` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Reflection.Metadata.SequencePoint` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct SequencePoint : System.IEquatable<System.Reflection.Metadata.SequencePoint>
             {
                 public System.Reflection.Metadata.DocumentHandle Document { get => throw null; }
@@ -2451,10 +2451,10 @@ namespace System
                 public int StartLine { get => throw null; }
             }
 
-            // Generated from `System.Reflection.Metadata.SequencePointCollection` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Reflection.Metadata.SequencePointCollection` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct SequencePointCollection : System.Collections.Generic.IEnumerable<System.Reflection.Metadata.SequencePoint>, System.Collections.IEnumerable
             {
-                // Generated from `System.Reflection.Metadata.SequencePointCollection+Enumerator` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+                // Generated from `System.Reflection.Metadata.SequencePointCollection+Enumerator` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public struct Enumerator : System.Collections.Generic.IEnumerator<System.Reflection.Metadata.SequencePoint>, System.Collections.IEnumerator, System.IDisposable
                 {
                     public System.Reflection.Metadata.SequencePoint Current { get => throw null; }
@@ -2472,52 +2472,52 @@ namespace System
                 // Stub generator skipped constructor 
             }
 
-            // Generated from `System.Reflection.Metadata.SerializationTypeCode` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum SerializationTypeCode
+            // Generated from `System.Reflection.Metadata.SerializationTypeCode` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            public enum SerializationTypeCode : byte
             {
-                Boolean,
-                Byte,
-                Char,
-                Double,
-                Enum,
-                Int16,
-                Int32,
-                Int64,
-                Invalid,
-                SByte,
-                SZArray,
-                Single,
-                String,
-                TaggedObject,
-                Type,
-                UInt16,
-                UInt32,
-                UInt64,
+                Boolean = 2,
+                Byte = 5,
+                Char = 3,
+                Double = 13,
+                Enum = 85,
+                Int16 = 6,
+                Int32 = 8,
+                Int64 = 10,
+                Invalid = 0,
+                SByte = 4,
+                SZArray = 29,
+                Single = 12,
+                String = 14,
+                TaggedObject = 81,
+                Type = 80,
+                UInt16 = 7,
+                UInt32 = 9,
+                UInt64 = 11,
             }
 
-            // Generated from `System.Reflection.Metadata.SignatureAttributes` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Reflection.Metadata.SignatureAttributes` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             [System.Flags]
-            public enum SignatureAttributes
+            public enum SignatureAttributes : byte
             {
-                ExplicitThis,
-                Generic,
-                Instance,
-                None,
+                ExplicitThis = 64,
+                Generic = 16,
+                Instance = 32,
+                None = 0,
             }
 
-            // Generated from `System.Reflection.Metadata.SignatureCallingConvention` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum SignatureCallingConvention
+            // Generated from `System.Reflection.Metadata.SignatureCallingConvention` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            public enum SignatureCallingConvention : byte
             {
-                CDecl,
-                Default,
-                FastCall,
-                StdCall,
-                ThisCall,
-                Unmanaged,
-                VarArgs,
+                CDecl = 1,
+                Default = 0,
+                FastCall = 4,
+                StdCall = 2,
+                ThisCall = 3,
+                Unmanaged = 9,
+                VarArgs = 5,
             }
 
-            // Generated from `System.Reflection.Metadata.SignatureHeader` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Reflection.Metadata.SignatureHeader` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct SignatureHeader : System.IEquatable<System.Reflection.Metadata.SignatureHeader>
             {
                 public static bool operator !=(System.Reflection.Metadata.SignatureHeader left, System.Reflection.Metadata.SignatureHeader right) => throw null;
@@ -2539,62 +2539,62 @@ namespace System
                 public override string ToString() => throw null;
             }
 
-            // Generated from `System.Reflection.Metadata.SignatureKind` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum SignatureKind
+            // Generated from `System.Reflection.Metadata.SignatureKind` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            public enum SignatureKind : byte
             {
-                Field,
-                LocalVariables,
-                Method,
-                MethodSpecification,
-                Property,
+                Field = 6,
+                LocalVariables = 7,
+                Method = 0,
+                MethodSpecification = 10,
+                Property = 8,
             }
 
-            // Generated from `System.Reflection.Metadata.SignatureTypeCode` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum SignatureTypeCode
+            // Generated from `System.Reflection.Metadata.SignatureTypeCode` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            public enum SignatureTypeCode : byte
             {
-                Array,
-                Boolean,
-                ByReference,
-                Byte,
-                Char,
-                Double,
-                FunctionPointer,
-                GenericMethodParameter,
-                GenericTypeInstance,
-                GenericTypeParameter,
-                Int16,
-                Int32,
-                Int64,
-                IntPtr,
-                Invalid,
-                Object,
-                OptionalModifier,
-                Pinned,
-                Pointer,
-                RequiredModifier,
-                SByte,
-                SZArray,
-                Sentinel,
-                Single,
-                String,
-                TypeHandle,
-                TypedReference,
-                UInt16,
-                UInt32,
-                UInt64,
-                UIntPtr,
-                Void,
+                Array = 20,
+                Boolean = 2,
+                ByReference = 16,
+                Byte = 5,
+                Char = 3,
+                Double = 13,
+                FunctionPointer = 27,
+                GenericMethodParameter = 30,
+                GenericTypeInstance = 21,
+                GenericTypeParameter = 19,
+                Int16 = 6,
+                Int32 = 8,
+                Int64 = 10,
+                IntPtr = 24,
+                Invalid = 0,
+                Object = 28,
+                OptionalModifier = 32,
+                Pinned = 69,
+                Pointer = 15,
+                RequiredModifier = 31,
+                SByte = 4,
+                SZArray = 29,
+                Sentinel = 65,
+                Single = 12,
+                String = 14,
+                TypeHandle = 64,
+                TypedReference = 22,
+                UInt16 = 7,
+                UInt32 = 9,
+                UInt64 = 11,
+                UIntPtr = 25,
+                Void = 1,
             }
 
-            // Generated from `System.Reflection.Metadata.SignatureTypeKind` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum SignatureTypeKind
+            // Generated from `System.Reflection.Metadata.SignatureTypeKind` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            public enum SignatureTypeKind : byte
             {
-                Class,
-                Unknown,
-                ValueType,
+                Class = 18,
+                Unknown = 0,
+                ValueType = 17,
             }
 
-            // Generated from `System.Reflection.Metadata.StandaloneSignature` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Reflection.Metadata.StandaloneSignature` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct StandaloneSignature
             {
                 public System.Collections.Immutable.ImmutableArray<TType> DecodeLocalSignature<TType, TGenericContext>(System.Reflection.Metadata.ISignatureTypeProvider<TType, TGenericContext> provider, TGenericContext genericContext) => throw null;
@@ -2605,7 +2605,7 @@ namespace System
                 // Stub generator skipped constructor 
             }
 
-            // Generated from `System.Reflection.Metadata.StandaloneSignatureHandle` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Reflection.Metadata.StandaloneSignatureHandle` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct StandaloneSignatureHandle : System.IEquatable<System.Reflection.Metadata.StandaloneSignatureHandle>
             {
                 public static bool operator !=(System.Reflection.Metadata.StandaloneSignatureHandle left, System.Reflection.Metadata.StandaloneSignatureHandle right) => throw null;
@@ -2621,14 +2621,14 @@ namespace System
                 public static implicit operator System.Reflection.Metadata.Handle(System.Reflection.Metadata.StandaloneSignatureHandle handle) => throw null;
             }
 
-            // Generated from `System.Reflection.Metadata.StandaloneSignatureKind` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum StandaloneSignatureKind
+            // Generated from `System.Reflection.Metadata.StandaloneSignatureKind` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            public enum StandaloneSignatureKind : int
             {
-                LocalVariables,
-                Method,
+                LocalVariables = 1,
+                Method = 0,
             }
 
-            // Generated from `System.Reflection.Metadata.StringHandle` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Reflection.Metadata.StringHandle` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct StringHandle : System.IEquatable<System.Reflection.Metadata.StringHandle>
             {
                 public static bool operator !=(System.Reflection.Metadata.StringHandle left, System.Reflection.Metadata.StringHandle right) => throw null;
@@ -2642,7 +2642,7 @@ namespace System
                 public static implicit operator System.Reflection.Metadata.Handle(System.Reflection.Metadata.StringHandle handle) => throw null;
             }
 
-            // Generated from `System.Reflection.Metadata.TypeDefinition` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Reflection.Metadata.TypeDefinition` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct TypeDefinition
             {
                 public System.Reflection.TypeAttributes Attributes { get => throw null; }
@@ -2666,7 +2666,7 @@ namespace System
                 // Stub generator skipped constructor 
             }
 
-            // Generated from `System.Reflection.Metadata.TypeDefinitionHandle` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Reflection.Metadata.TypeDefinitionHandle` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct TypeDefinitionHandle : System.IEquatable<System.Reflection.Metadata.TypeDefinitionHandle>
             {
                 public static bool operator !=(System.Reflection.Metadata.TypeDefinitionHandle left, System.Reflection.Metadata.TypeDefinitionHandle right) => throw null;
@@ -2682,10 +2682,10 @@ namespace System
                 public static implicit operator System.Reflection.Metadata.Handle(System.Reflection.Metadata.TypeDefinitionHandle handle) => throw null;
             }
 
-            // Generated from `System.Reflection.Metadata.TypeDefinitionHandleCollection` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Reflection.Metadata.TypeDefinitionHandleCollection` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct TypeDefinitionHandleCollection : System.Collections.Generic.IEnumerable<System.Reflection.Metadata.TypeDefinitionHandle>, System.Collections.Generic.IReadOnlyCollection<System.Reflection.Metadata.TypeDefinitionHandle>, System.Collections.IEnumerable
             {
-                // Generated from `System.Reflection.Metadata.TypeDefinitionHandleCollection+Enumerator` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+                // Generated from `System.Reflection.Metadata.TypeDefinitionHandleCollection+Enumerator` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public struct Enumerator : System.Collections.Generic.IEnumerator<System.Reflection.Metadata.TypeDefinitionHandle>, System.Collections.IEnumerator, System.IDisposable
                 {
                     public System.Reflection.Metadata.TypeDefinitionHandle Current { get => throw null; }
@@ -2704,7 +2704,7 @@ namespace System
                 // Stub generator skipped constructor 
             }
 
-            // Generated from `System.Reflection.Metadata.TypeLayout` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Reflection.Metadata.TypeLayout` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct TypeLayout
             {
                 public bool IsDefault { get => throw null; }
@@ -2714,7 +2714,7 @@ namespace System
                 public TypeLayout(int size, int packingSize) => throw null;
             }
 
-            // Generated from `System.Reflection.Metadata.TypeReference` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Reflection.Metadata.TypeReference` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct TypeReference
             {
                 public System.Reflection.Metadata.StringHandle Name { get => throw null; }
@@ -2723,7 +2723,7 @@ namespace System
                 // Stub generator skipped constructor 
             }
 
-            // Generated from `System.Reflection.Metadata.TypeReferenceHandle` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Reflection.Metadata.TypeReferenceHandle` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct TypeReferenceHandle : System.IEquatable<System.Reflection.Metadata.TypeReferenceHandle>
             {
                 public static bool operator !=(System.Reflection.Metadata.TypeReferenceHandle left, System.Reflection.Metadata.TypeReferenceHandle right) => throw null;
@@ -2739,10 +2739,10 @@ namespace System
                 public static implicit operator System.Reflection.Metadata.Handle(System.Reflection.Metadata.TypeReferenceHandle handle) => throw null;
             }
 
-            // Generated from `System.Reflection.Metadata.TypeReferenceHandleCollection` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Reflection.Metadata.TypeReferenceHandleCollection` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct TypeReferenceHandleCollection : System.Collections.Generic.IEnumerable<System.Reflection.Metadata.TypeReferenceHandle>, System.Collections.Generic.IReadOnlyCollection<System.Reflection.Metadata.TypeReferenceHandle>, System.Collections.IEnumerable
             {
-                // Generated from `System.Reflection.Metadata.TypeReferenceHandleCollection+Enumerator` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+                // Generated from `System.Reflection.Metadata.TypeReferenceHandleCollection+Enumerator` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public struct Enumerator : System.Collections.Generic.IEnumerator<System.Reflection.Metadata.TypeReferenceHandle>, System.Collections.IEnumerator, System.IDisposable
                 {
                     public System.Reflection.Metadata.TypeReferenceHandle Current { get => throw null; }
@@ -2761,7 +2761,7 @@ namespace System
                 // Stub generator skipped constructor 
             }
 
-            // Generated from `System.Reflection.Metadata.TypeSpecification` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Reflection.Metadata.TypeSpecification` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct TypeSpecification
             {
                 public TType DecodeSignature<TType, TGenericContext>(System.Reflection.Metadata.ISignatureTypeProvider<TType, TGenericContext> provider, TGenericContext genericContext) => throw null;
@@ -2770,7 +2770,7 @@ namespace System
                 // Stub generator skipped constructor 
             }
 
-            // Generated from `System.Reflection.Metadata.TypeSpecificationHandle` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Reflection.Metadata.TypeSpecificationHandle` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct TypeSpecificationHandle : System.IEquatable<System.Reflection.Metadata.TypeSpecificationHandle>
             {
                 public static bool operator !=(System.Reflection.Metadata.TypeSpecificationHandle left, System.Reflection.Metadata.TypeSpecificationHandle right) => throw null;
@@ -2786,7 +2786,7 @@ namespace System
                 public static implicit operator System.Reflection.Metadata.Handle(System.Reflection.Metadata.TypeSpecificationHandle handle) => throw null;
             }
 
-            // Generated from `System.Reflection.Metadata.UserStringHandle` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Reflection.Metadata.UserStringHandle` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct UserStringHandle : System.IEquatable<System.Reflection.Metadata.UserStringHandle>
             {
                 public static bool operator !=(System.Reflection.Metadata.UserStringHandle left, System.Reflection.Metadata.UserStringHandle right) => throw null;
@@ -2802,7 +2802,7 @@ namespace System
 
             namespace Ecma335
             {
-                // Generated from `System.Reflection.Metadata.Ecma335.ArrayShapeEncoder` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+                // Generated from `System.Reflection.Metadata.Ecma335.ArrayShapeEncoder` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public struct ArrayShapeEncoder
                 {
                     // Stub generator skipped constructor 
@@ -2811,7 +2811,7 @@ namespace System
                     public void Shape(int rank, System.Collections.Immutable.ImmutableArray<int> sizes, System.Collections.Immutable.ImmutableArray<int> lowerBounds) => throw null;
                 }
 
-                // Generated from `System.Reflection.Metadata.Ecma335.BlobEncoder` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+                // Generated from `System.Reflection.Metadata.Ecma335.BlobEncoder` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public struct BlobEncoder
                 {
                     // Stub generator skipped constructor 
@@ -2829,7 +2829,7 @@ namespace System
                     public System.Reflection.Metadata.Ecma335.SignatureTypeEncoder TypeSpecificationSignature() => throw null;
                 }
 
-                // Generated from `System.Reflection.Metadata.Ecma335.CodedIndex` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+                // Generated from `System.Reflection.Metadata.Ecma335.CodedIndex` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public static class CodedIndex
                 {
                     public static int CustomAttributeType(System.Reflection.Metadata.EntityHandle handle) => throw null;
@@ -2849,7 +2849,7 @@ namespace System
                     public static int TypeOrMethodDef(System.Reflection.Metadata.EntityHandle handle) => throw null;
                 }
 
-                // Generated from `System.Reflection.Metadata.Ecma335.ControlFlowBuilder` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+                // Generated from `System.Reflection.Metadata.Ecma335.ControlFlowBuilder` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public class ControlFlowBuilder
                 {
                     public void AddCatchRegion(System.Reflection.Metadata.Ecma335.LabelHandle tryStart, System.Reflection.Metadata.Ecma335.LabelHandle tryEnd, System.Reflection.Metadata.Ecma335.LabelHandle handlerStart, System.Reflection.Metadata.Ecma335.LabelHandle handlerEnd, System.Reflection.Metadata.EntityHandle catchType) => throw null;
@@ -2859,7 +2859,7 @@ namespace System
                     public ControlFlowBuilder() => throw null;
                 }
 
-                // Generated from `System.Reflection.Metadata.Ecma335.CustomAttributeArrayTypeEncoder` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+                // Generated from `System.Reflection.Metadata.Ecma335.CustomAttributeArrayTypeEncoder` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public struct CustomAttributeArrayTypeEncoder
                 {
                     public System.Reflection.Metadata.BlobBuilder Builder { get => throw null; }
@@ -2869,7 +2869,7 @@ namespace System
                     public void ObjectArray() => throw null;
                 }
 
-                // Generated from `System.Reflection.Metadata.Ecma335.CustomAttributeElementTypeEncoder` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+                // Generated from `System.Reflection.Metadata.Ecma335.CustomAttributeElementTypeEncoder` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public struct CustomAttributeElementTypeEncoder
                 {
                     public void Boolean() => throw null;
@@ -2893,7 +2893,7 @@ namespace System
                     public void UInt64() => throw null;
                 }
 
-                // Generated from `System.Reflection.Metadata.Ecma335.CustomAttributeNamedArgumentsEncoder` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+                // Generated from `System.Reflection.Metadata.Ecma335.CustomAttributeNamedArgumentsEncoder` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public struct CustomAttributeNamedArgumentsEncoder
                 {
                     public System.Reflection.Metadata.BlobBuilder Builder { get => throw null; }
@@ -2902,7 +2902,7 @@ namespace System
                     public CustomAttributeNamedArgumentsEncoder(System.Reflection.Metadata.BlobBuilder builder) => throw null;
                 }
 
-                // Generated from `System.Reflection.Metadata.Ecma335.CustomModifiersEncoder` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+                // Generated from `System.Reflection.Metadata.Ecma335.CustomModifiersEncoder` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public struct CustomModifiersEncoder
                 {
                     public System.Reflection.Metadata.Ecma335.CustomModifiersEncoder AddModifier(System.Reflection.Metadata.EntityHandle type, bool isOptional) => throw null;
@@ -2911,7 +2911,7 @@ namespace System
                     public CustomModifiersEncoder(System.Reflection.Metadata.BlobBuilder builder) => throw null;
                 }
 
-                // Generated from `System.Reflection.Metadata.Ecma335.EditAndContinueLogEntry` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+                // Generated from `System.Reflection.Metadata.Ecma335.EditAndContinueLogEntry` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public struct EditAndContinueLogEntry : System.IEquatable<System.Reflection.Metadata.Ecma335.EditAndContinueLogEntry>
                 {
                     // Stub generator skipped constructor 
@@ -2923,18 +2923,18 @@ namespace System
                     public System.Reflection.Metadata.Ecma335.EditAndContinueOperation Operation { get => throw null; }
                 }
 
-                // Generated from `System.Reflection.Metadata.Ecma335.EditAndContinueOperation` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-                public enum EditAndContinueOperation
+                // Generated from `System.Reflection.Metadata.Ecma335.EditAndContinueOperation` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+                public enum EditAndContinueOperation : int
                 {
-                    AddEvent,
-                    AddField,
-                    AddMethod,
-                    AddParameter,
-                    AddProperty,
-                    Default,
+                    AddEvent = 5,
+                    AddField = 2,
+                    AddMethod = 1,
+                    AddParameter = 3,
+                    AddProperty = 4,
+                    Default = 0,
                 }
 
-                // Generated from `System.Reflection.Metadata.Ecma335.ExceptionRegionEncoder` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+                // Generated from `System.Reflection.Metadata.Ecma335.ExceptionRegionEncoder` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public struct ExceptionRegionEncoder
                 {
                     public System.Reflection.Metadata.Ecma335.ExceptionRegionEncoder Add(System.Reflection.Metadata.ExceptionRegionKind kind, int tryOffset, int tryLength, int handlerOffset, int handlerLength, System.Reflection.Metadata.EntityHandle catchType = default(System.Reflection.Metadata.EntityHandle), int filterOffset = default(int)) => throw null;
@@ -2949,13 +2949,13 @@ namespace System
                     public static bool IsSmallRegionCount(int exceptionRegionCount) => throw null;
                 }
 
-                // Generated from `System.Reflection.Metadata.Ecma335.ExportedTypeExtensions` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+                // Generated from `System.Reflection.Metadata.Ecma335.ExportedTypeExtensions` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public static class ExportedTypeExtensions
                 {
                     public static int GetTypeDefinitionId(this System.Reflection.Metadata.ExportedType exportedType) => throw null;
                 }
 
-                // Generated from `System.Reflection.Metadata.Ecma335.FixedArgumentsEncoder` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+                // Generated from `System.Reflection.Metadata.Ecma335.FixedArgumentsEncoder` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public struct FixedArgumentsEncoder
                 {
                     public System.Reflection.Metadata.Ecma335.LiteralEncoder AddArgument() => throw null;
@@ -2964,15 +2964,15 @@ namespace System
                     public FixedArgumentsEncoder(System.Reflection.Metadata.BlobBuilder builder) => throw null;
                 }
 
-                // Generated from `System.Reflection.Metadata.Ecma335.FunctionPointerAttributes` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-                public enum FunctionPointerAttributes
+                // Generated from `System.Reflection.Metadata.Ecma335.FunctionPointerAttributes` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+                public enum FunctionPointerAttributes : int
                 {
-                    HasExplicitThis,
-                    HasThis,
-                    None,
+                    HasExplicitThis = 96,
+                    HasThis = 32,
+                    None = 0,
                 }
 
-                // Generated from `System.Reflection.Metadata.Ecma335.GenericTypeArgumentsEncoder` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+                // Generated from `System.Reflection.Metadata.Ecma335.GenericTypeArgumentsEncoder` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public struct GenericTypeArgumentsEncoder
                 {
                     public System.Reflection.Metadata.Ecma335.SignatureTypeEncoder AddArgument() => throw null;
@@ -2981,16 +2981,16 @@ namespace System
                     public GenericTypeArgumentsEncoder(System.Reflection.Metadata.BlobBuilder builder) => throw null;
                 }
 
-                // Generated from `System.Reflection.Metadata.Ecma335.HeapIndex` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-                public enum HeapIndex
+                // Generated from `System.Reflection.Metadata.Ecma335.HeapIndex` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+                public enum HeapIndex : int
                 {
-                    Blob,
-                    Guid,
-                    String,
-                    UserString,
+                    Blob = 2,
+                    Guid = 3,
+                    String = 1,
+                    UserString = 0,
                 }
 
-                // Generated from `System.Reflection.Metadata.Ecma335.InstructionEncoder` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+                // Generated from `System.Reflection.Metadata.Ecma335.InstructionEncoder` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public struct InstructionEncoder
                 {
                     public void Branch(System.Reflection.Metadata.ILOpCode code, System.Reflection.Metadata.Ecma335.LabelHandle label) => throw null;
@@ -3022,7 +3022,7 @@ namespace System
                     public void Token(int token) => throw null;
                 }
 
-                // Generated from `System.Reflection.Metadata.Ecma335.LabelHandle` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+                // Generated from `System.Reflection.Metadata.Ecma335.LabelHandle` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public struct LabelHandle : System.IEquatable<System.Reflection.Metadata.Ecma335.LabelHandle>
                 {
                     public static bool operator !=(System.Reflection.Metadata.Ecma335.LabelHandle left, System.Reflection.Metadata.Ecma335.LabelHandle right) => throw null;
@@ -3035,7 +3035,7 @@ namespace System
                     // Stub generator skipped constructor 
                 }
 
-                // Generated from `System.Reflection.Metadata.Ecma335.LiteralEncoder` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+                // Generated from `System.Reflection.Metadata.Ecma335.LiteralEncoder` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public struct LiteralEncoder
                 {
                     public System.Reflection.Metadata.BlobBuilder Builder { get => throw null; }
@@ -3049,7 +3049,7 @@ namespace System
                     public System.Reflection.Metadata.Ecma335.VectorEncoder Vector() => throw null;
                 }
 
-                // Generated from `System.Reflection.Metadata.Ecma335.LiteralsEncoder` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+                // Generated from `System.Reflection.Metadata.Ecma335.LiteralsEncoder` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public struct LiteralsEncoder
                 {
                     public System.Reflection.Metadata.Ecma335.LiteralEncoder AddLiteral() => throw null;
@@ -3058,7 +3058,7 @@ namespace System
                     public LiteralsEncoder(System.Reflection.Metadata.BlobBuilder builder) => throw null;
                 }
 
-                // Generated from `System.Reflection.Metadata.Ecma335.LocalVariableTypeEncoder` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+                // Generated from `System.Reflection.Metadata.Ecma335.LocalVariableTypeEncoder` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public struct LocalVariableTypeEncoder
                 {
                     public System.Reflection.Metadata.BlobBuilder Builder { get => throw null; }
@@ -3069,7 +3069,7 @@ namespace System
                     public void TypedReference() => throw null;
                 }
 
-                // Generated from `System.Reflection.Metadata.Ecma335.LocalVariablesEncoder` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+                // Generated from `System.Reflection.Metadata.Ecma335.LocalVariablesEncoder` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public struct LocalVariablesEncoder
                 {
                     public System.Reflection.Metadata.Ecma335.LocalVariableTypeEncoder AddVariable() => throw null;
@@ -3078,7 +3078,7 @@ namespace System
                     public LocalVariablesEncoder(System.Reflection.Metadata.BlobBuilder builder) => throw null;
                 }
 
-                // Generated from `System.Reflection.Metadata.Ecma335.MetadataAggregator` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+                // Generated from `System.Reflection.Metadata.Ecma335.MetadataAggregator` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public class MetadataAggregator
                 {
                     public System.Reflection.Metadata.Handle GetGenerationHandle(System.Reflection.Metadata.Handle handle, out int generation) => throw null;
@@ -3086,7 +3086,7 @@ namespace System
                     public MetadataAggregator(System.Reflection.Metadata.MetadataReader baseReader, System.Collections.Generic.IReadOnlyList<System.Reflection.Metadata.MetadataReader> deltaReaders) => throw null;
                 }
 
-                // Generated from `System.Reflection.Metadata.Ecma335.MetadataBuilder` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+                // Generated from `System.Reflection.Metadata.Ecma335.MetadataBuilder` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public class MetadataBuilder
                 {
                     public System.Reflection.Metadata.AssemblyDefinitionHandle AddAssembly(System.Reflection.Metadata.StringHandle name, System.Version version, System.Reflection.Metadata.StringHandle culture, System.Reflection.Metadata.BlobHandle publicKey, System.Reflection.AssemblyFlags flags, System.Reflection.AssemblyHashAlgorithm hashAlgorithm) => throw null;
@@ -3152,7 +3152,7 @@ namespace System
                     public void SetCapacity(System.Reflection.Metadata.Ecma335.TableIndex table, int rowCount) => throw null;
                 }
 
-                // Generated from `System.Reflection.Metadata.Ecma335.MetadataReaderExtensions` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+                // Generated from `System.Reflection.Metadata.Ecma335.MetadataReaderExtensions` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public static class MetadataReaderExtensions
                 {
                     public static System.Collections.Generic.IEnumerable<System.Reflection.Metadata.Ecma335.EditAndContinueLogEntry> GetEditAndContinueLogEntries(this System.Reflection.Metadata.MetadataReader reader) => throw null;
@@ -3170,7 +3170,7 @@ namespace System
                     public static System.Reflection.Metadata.SignatureTypeKind ResolveSignatureTypeKind(this System.Reflection.Metadata.MetadataReader reader, System.Reflection.Metadata.EntityHandle typeHandle, System.Byte rawTypeKind) => throw null;
                 }
 
-                // Generated from `System.Reflection.Metadata.Ecma335.MetadataRootBuilder` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+                // Generated from `System.Reflection.Metadata.Ecma335.MetadataRootBuilder` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public class MetadataRootBuilder
                 {
                     public MetadataRootBuilder(System.Reflection.Metadata.Ecma335.MetadataBuilder tablesAndHeaps, string metadataVersion = default(string), bool suppressValidation = default(bool)) => throw null;
@@ -3180,7 +3180,7 @@ namespace System
                     public bool SuppressValidation { get => throw null; }
                 }
 
-                // Generated from `System.Reflection.Metadata.Ecma335.MetadataSizes` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+                // Generated from `System.Reflection.Metadata.Ecma335.MetadataSizes` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public class MetadataSizes
                 {
                     public System.Collections.Immutable.ImmutableArray<int> ExternalRowCounts { get => throw null; }
@@ -3189,7 +3189,7 @@ namespace System
                     public System.Collections.Immutable.ImmutableArray<int> RowCounts { get => throw null; }
                 }
 
-                // Generated from `System.Reflection.Metadata.Ecma335.MetadataTokens` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+                // Generated from `System.Reflection.Metadata.Ecma335.MetadataTokens` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public static class MetadataTokens
                 {
                     public static System.Reflection.Metadata.AssemblyFileHandle AssemblyFileHandle(int rowNumber) => throw null;
@@ -3249,18 +3249,18 @@ namespace System
                     public static System.Reflection.Metadata.UserStringHandle UserStringHandle(int offset) => throw null;
                 }
 
-                // Generated from `System.Reflection.Metadata.Ecma335.MethodBodyAttributes` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+                // Generated from `System.Reflection.Metadata.Ecma335.MethodBodyAttributes` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 [System.Flags]
-                public enum MethodBodyAttributes
+                public enum MethodBodyAttributes : int
                 {
-                    InitLocals,
-                    None,
+                    InitLocals = 1,
+                    None = 0,
                 }
 
-                // Generated from `System.Reflection.Metadata.Ecma335.MethodBodyStreamEncoder` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+                // Generated from `System.Reflection.Metadata.Ecma335.MethodBodyStreamEncoder` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public struct MethodBodyStreamEncoder
                 {
-                    // Generated from `System.Reflection.Metadata.Ecma335.MethodBodyStreamEncoder+MethodBody` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+                    // Generated from `System.Reflection.Metadata.Ecma335.MethodBodyStreamEncoder+MethodBody` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                     public struct MethodBody
                     {
                         public System.Reflection.Metadata.Ecma335.ExceptionRegionEncoder ExceptionRegions { get => throw null; }
@@ -3279,7 +3279,7 @@ namespace System
                     public MethodBodyStreamEncoder(System.Reflection.Metadata.BlobBuilder builder) => throw null;
                 }
 
-                // Generated from `System.Reflection.Metadata.Ecma335.MethodSignatureEncoder` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+                // Generated from `System.Reflection.Metadata.Ecma335.MethodSignatureEncoder` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public struct MethodSignatureEncoder
                 {
                     public System.Reflection.Metadata.BlobBuilder Builder { get => throw null; }
@@ -3290,7 +3290,7 @@ namespace System
                     public void Parameters(int parameterCount, out System.Reflection.Metadata.Ecma335.ReturnTypeEncoder returnType, out System.Reflection.Metadata.Ecma335.ParametersEncoder parameters) => throw null;
                 }
 
-                // Generated from `System.Reflection.Metadata.Ecma335.NameEncoder` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+                // Generated from `System.Reflection.Metadata.Ecma335.NameEncoder` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public struct NameEncoder
                 {
                     public System.Reflection.Metadata.BlobBuilder Builder { get => throw null; }
@@ -3299,7 +3299,7 @@ namespace System
                     public NameEncoder(System.Reflection.Metadata.BlobBuilder builder) => throw null;
                 }
 
-                // Generated from `System.Reflection.Metadata.Ecma335.NamedArgumentTypeEncoder` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+                // Generated from `System.Reflection.Metadata.Ecma335.NamedArgumentTypeEncoder` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public struct NamedArgumentTypeEncoder
                 {
                     public System.Reflection.Metadata.BlobBuilder Builder { get => throw null; }
@@ -3310,7 +3310,7 @@ namespace System
                     public System.Reflection.Metadata.Ecma335.CustomAttributeElementTypeEncoder ScalarType() => throw null;
                 }
 
-                // Generated from `System.Reflection.Metadata.Ecma335.NamedArgumentsEncoder` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+                // Generated from `System.Reflection.Metadata.Ecma335.NamedArgumentsEncoder` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public struct NamedArgumentsEncoder
                 {
                     public void AddArgument(bool isField, System.Action<System.Reflection.Metadata.Ecma335.NamedArgumentTypeEncoder> type, System.Action<System.Reflection.Metadata.Ecma335.NameEncoder> name, System.Action<System.Reflection.Metadata.Ecma335.LiteralEncoder> literal) => throw null;
@@ -3320,7 +3320,7 @@ namespace System
                     public NamedArgumentsEncoder(System.Reflection.Metadata.BlobBuilder builder) => throw null;
                 }
 
-                // Generated from `System.Reflection.Metadata.Ecma335.ParameterTypeEncoder` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+                // Generated from `System.Reflection.Metadata.Ecma335.ParameterTypeEncoder` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public struct ParameterTypeEncoder
                 {
                     public System.Reflection.Metadata.BlobBuilder Builder { get => throw null; }
@@ -3331,7 +3331,7 @@ namespace System
                     public void TypedReference() => throw null;
                 }
 
-                // Generated from `System.Reflection.Metadata.Ecma335.ParametersEncoder` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+                // Generated from `System.Reflection.Metadata.Ecma335.ParametersEncoder` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public struct ParametersEncoder
                 {
                     public System.Reflection.Metadata.Ecma335.ParameterTypeEncoder AddParameter() => throw null;
@@ -3342,7 +3342,7 @@ namespace System
                     public System.Reflection.Metadata.Ecma335.ParametersEncoder StartVarArgs() => throw null;
                 }
 
-                // Generated from `System.Reflection.Metadata.Ecma335.PermissionSetEncoder` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+                // Generated from `System.Reflection.Metadata.Ecma335.PermissionSetEncoder` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public struct PermissionSetEncoder
                 {
                     public System.Reflection.Metadata.Ecma335.PermissionSetEncoder AddPermission(string typeName, System.Reflection.Metadata.BlobBuilder encodedArguments) => throw null;
@@ -3352,7 +3352,7 @@ namespace System
                     public PermissionSetEncoder(System.Reflection.Metadata.BlobBuilder builder) => throw null;
                 }
 
-                // Generated from `System.Reflection.Metadata.Ecma335.PortablePdbBuilder` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+                // Generated from `System.Reflection.Metadata.Ecma335.PortablePdbBuilder` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public class PortablePdbBuilder
                 {
                     public System.UInt16 FormatVersion { get => throw null; }
@@ -3362,7 +3362,7 @@ namespace System
                     public System.Reflection.Metadata.BlobContentId Serialize(System.Reflection.Metadata.BlobBuilder builder) => throw null;
                 }
 
-                // Generated from `System.Reflection.Metadata.Ecma335.ReturnTypeEncoder` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+                // Generated from `System.Reflection.Metadata.Ecma335.ReturnTypeEncoder` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public struct ReturnTypeEncoder
                 {
                     public System.Reflection.Metadata.BlobBuilder Builder { get => throw null; }
@@ -3374,7 +3374,7 @@ namespace System
                     public void Void() => throw null;
                 }
 
-                // Generated from `System.Reflection.Metadata.Ecma335.ScalarEncoder` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+                // Generated from `System.Reflection.Metadata.Ecma335.ScalarEncoder` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public struct ScalarEncoder
                 {
                     public System.Reflection.Metadata.BlobBuilder Builder { get => throw null; }
@@ -3385,7 +3385,7 @@ namespace System
                     public void SystemType(string serializedTypeName) => throw null;
                 }
 
-                // Generated from `System.Reflection.Metadata.Ecma335.SignatureDecoder<,>` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+                // Generated from `System.Reflection.Metadata.Ecma335.SignatureDecoder<,>` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public struct SignatureDecoder<TType, TGenericContext>
                 {
                     public TType DecodeFieldSignature(ref System.Reflection.Metadata.BlobReader blobReader) => throw null;
@@ -3397,7 +3397,7 @@ namespace System
                     public SignatureDecoder(System.Reflection.Metadata.ISignatureTypeProvider<TType, TGenericContext> provider, System.Reflection.Metadata.MetadataReader metadataReader, TGenericContext genericContext) => throw null;
                 }
 
-                // Generated from `System.Reflection.Metadata.Ecma335.SignatureTypeEncoder` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+                // Generated from `System.Reflection.Metadata.Ecma335.SignatureTypeEncoder` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public struct SignatureTypeEncoder
                 {
                     public void Array(System.Action<System.Reflection.Metadata.Ecma335.SignatureTypeEncoder> elementType, System.Action<System.Reflection.Metadata.Ecma335.ArrayShapeEncoder> arrayShape) => throw null;
@@ -3433,65 +3433,65 @@ namespace System
                     public void VoidPointer() => throw null;
                 }
 
-                // Generated from `System.Reflection.Metadata.Ecma335.TableIndex` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-                public enum TableIndex
+                // Generated from `System.Reflection.Metadata.Ecma335.TableIndex` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+                public enum TableIndex : byte
                 {
-                    Assembly,
-                    AssemblyOS,
-                    AssemblyProcessor,
-                    AssemblyRef,
-                    AssemblyRefOS,
-                    AssemblyRefProcessor,
-                    ClassLayout,
-                    Constant,
-                    CustomAttribute,
-                    CustomDebugInformation,
-                    DeclSecurity,
-                    Document,
-                    EncLog,
-                    EncMap,
-                    Event,
-                    EventMap,
-                    EventPtr,
-                    ExportedType,
-                    Field,
-                    FieldLayout,
-                    FieldMarshal,
-                    FieldPtr,
-                    FieldRva,
-                    File,
-                    GenericParam,
-                    GenericParamConstraint,
-                    ImplMap,
-                    ImportScope,
-                    InterfaceImpl,
-                    LocalConstant,
-                    LocalScope,
-                    LocalVariable,
-                    ManifestResource,
-                    MemberRef,
-                    MethodDebugInformation,
-                    MethodDef,
-                    MethodImpl,
-                    MethodPtr,
-                    MethodSemantics,
-                    MethodSpec,
-                    Module,
-                    ModuleRef,
-                    NestedClass,
-                    Param,
-                    ParamPtr,
-                    Property,
-                    PropertyMap,
-                    PropertyPtr,
-                    StandAloneSig,
-                    StateMachineMethod,
-                    TypeDef,
-                    TypeRef,
-                    TypeSpec,
+                    Assembly = 32,
+                    AssemblyOS = 34,
+                    AssemblyProcessor = 33,
+                    AssemblyRef = 35,
+                    AssemblyRefOS = 37,
+                    AssemblyRefProcessor = 36,
+                    ClassLayout = 15,
+                    Constant = 11,
+                    CustomAttribute = 12,
+                    CustomDebugInformation = 55,
+                    DeclSecurity = 14,
+                    Document = 48,
+                    EncLog = 30,
+                    EncMap = 31,
+                    Event = 20,
+                    EventMap = 18,
+                    EventPtr = 19,
+                    ExportedType = 39,
+                    Field = 4,
+                    FieldLayout = 16,
+                    FieldMarshal = 13,
+                    FieldPtr = 3,
+                    FieldRva = 29,
+                    File = 38,
+                    GenericParam = 42,
+                    GenericParamConstraint = 44,
+                    ImplMap = 28,
+                    ImportScope = 53,
+                    InterfaceImpl = 9,
+                    LocalConstant = 52,
+                    LocalScope = 50,
+                    LocalVariable = 51,
+                    ManifestResource = 40,
+                    MemberRef = 10,
+                    MethodDebugInformation = 49,
+                    MethodDef = 6,
+                    MethodImpl = 25,
+                    MethodPtr = 5,
+                    MethodSemantics = 24,
+                    MethodSpec = 43,
+                    Module = 0,
+                    ModuleRef = 26,
+                    NestedClass = 41,
+                    Param = 8,
+                    ParamPtr = 7,
+                    Property = 23,
+                    PropertyMap = 21,
+                    PropertyPtr = 22,
+                    StandAloneSig = 17,
+                    StateMachineMethod = 54,
+                    TypeDef = 2,
+                    TypeRef = 1,
+                    TypeSpec = 27,
                 }
 
-                // Generated from `System.Reflection.Metadata.Ecma335.VectorEncoder` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+                // Generated from `System.Reflection.Metadata.Ecma335.VectorEncoder` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public struct VectorEncoder
                 {
                     public System.Reflection.Metadata.BlobBuilder Builder { get => throw null; }
@@ -3504,28 +3504,28 @@ namespace System
         }
         namespace PortableExecutable
         {
-            // Generated from `System.Reflection.PortableExecutable.Characteristics` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Reflection.PortableExecutable.Characteristics` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             [System.Flags]
-            public enum Characteristics
+            public enum Characteristics : ushort
             {
-                AggressiveWSTrim,
-                Bit32Machine,
-                BytesReversedHi,
-                BytesReversedLo,
-                DebugStripped,
-                Dll,
-                ExecutableImage,
-                LargeAddressAware,
-                LineNumsStripped,
-                LocalSymsStripped,
-                NetRunFromSwap,
-                RelocsStripped,
-                RemovableRunFromSwap,
-                System,
-                UpSystemOnly,
+                AggressiveWSTrim = 16,
+                Bit32Machine = 256,
+                BytesReversedHi = 32768,
+                BytesReversedLo = 128,
+                DebugStripped = 512,
+                Dll = 8192,
+                ExecutableImage = 2,
+                LargeAddressAware = 32,
+                LineNumsStripped = 4,
+                LocalSymsStripped = 8,
+                NetRunFromSwap = 2048,
+                RelocsStripped = 1,
+                RemovableRunFromSwap = 1024,
+                System = 4096,
+                UpSystemOnly = 16384,
             }
 
-            // Generated from `System.Reflection.PortableExecutable.CodeViewDebugDirectoryData` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Reflection.PortableExecutable.CodeViewDebugDirectoryData` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct CodeViewDebugDirectoryData
             {
                 public int Age { get => throw null; }
@@ -3534,7 +3534,7 @@ namespace System
                 public string Path { get => throw null; }
             }
 
-            // Generated from `System.Reflection.PortableExecutable.CoffHeader` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Reflection.PortableExecutable.CoffHeader` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class CoffHeader
             {
                 public System.Reflection.PortableExecutable.Characteristics Characteristics { get => throw null; }
@@ -3546,20 +3546,20 @@ namespace System
                 public int TimeDateStamp { get => throw null; }
             }
 
-            // Generated from `System.Reflection.PortableExecutable.CorFlags` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Reflection.PortableExecutable.CorFlags` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             [System.Flags]
-            public enum CorFlags
+            public enum CorFlags : int
             {
-                ILLibrary,
-                ILOnly,
-                NativeEntryPoint,
-                Prefers32Bit,
-                Requires32Bit,
-                StrongNameSigned,
-                TrackDebugData,
+                ILLibrary = 4,
+                ILOnly = 1,
+                NativeEntryPoint = 16,
+                Prefers32Bit = 131072,
+                Requires32Bit = 2,
+                StrongNameSigned = 8,
+                TrackDebugData = 65536,
             }
 
-            // Generated from `System.Reflection.PortableExecutable.CorHeader` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Reflection.PortableExecutable.CorHeader` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class CorHeader
             {
                 public System.Reflection.PortableExecutable.DirectoryEntry CodeManagerTableDirectory { get => throw null; }
@@ -3575,10 +3575,11 @@ namespace System
                 public System.Reflection.PortableExecutable.DirectoryEntry VtableFixupsDirectory { get => throw null; }
             }
 
-            // Generated from `System.Reflection.PortableExecutable.DebugDirectoryBuilder` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Reflection.PortableExecutable.DebugDirectoryBuilder` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class DebugDirectoryBuilder
             {
                 public void AddCodeViewEntry(string pdbPath, System.Reflection.Metadata.BlobContentId pdbContentId, System.UInt16 portablePdbVersion) => throw null;
+                public void AddCodeViewEntry(string pdbPath, System.Reflection.Metadata.BlobContentId pdbContentId, System.UInt16 portablePdbVersion, int age) => throw null;
                 public void AddEmbeddedPortablePdbEntry(System.Reflection.Metadata.BlobBuilder debugMetadata, System.UInt16 portablePdbVersion) => throw null;
                 public void AddEntry(System.Reflection.PortableExecutable.DebugDirectoryEntryType type, System.UInt32 version, System.UInt32 stamp) => throw null;
                 public void AddEntry<TData>(System.Reflection.PortableExecutable.DebugDirectoryEntryType type, System.UInt32 version, System.UInt32 stamp, TData data, System.Action<System.Reflection.Metadata.BlobBuilder, TData> dataSerializer) => throw null;
@@ -3587,7 +3588,7 @@ namespace System
                 public DebugDirectoryBuilder() => throw null;
             }
 
-            // Generated from `System.Reflection.PortableExecutable.DebugDirectoryEntry` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Reflection.PortableExecutable.DebugDirectoryEntry` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct DebugDirectoryEntry
             {
                 public int DataPointer { get => throw null; }
@@ -3602,18 +3603,18 @@ namespace System
                 public System.Reflection.PortableExecutable.DebugDirectoryEntryType Type { get => throw null; }
             }
 
-            // Generated from `System.Reflection.PortableExecutable.DebugDirectoryEntryType` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum DebugDirectoryEntryType
+            // Generated from `System.Reflection.PortableExecutable.DebugDirectoryEntryType` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            public enum DebugDirectoryEntryType : int
             {
-                CodeView,
-                Coff,
-                EmbeddedPortablePdb,
-                PdbChecksum,
-                Reproducible,
-                Unknown,
+                CodeView = 2,
+                Coff = 1,
+                EmbeddedPortablePdb = 17,
+                PdbChecksum = 19,
+                Reproducible = 16,
+                Unknown = 0,
             }
 
-            // Generated from `System.Reflection.PortableExecutable.DirectoryEntry` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Reflection.PortableExecutable.DirectoryEntry` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct DirectoryEntry
             {
                 // Stub generator skipped constructor 
@@ -3622,56 +3623,56 @@ namespace System
                 public int Size;
             }
 
-            // Generated from `System.Reflection.PortableExecutable.DllCharacteristics` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Reflection.PortableExecutable.DllCharacteristics` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             [System.Flags]
-            public enum DllCharacteristics
+            public enum DllCharacteristics : ushort
             {
-                AppContainer,
-                DynamicBase,
-                HighEntropyVirtualAddressSpace,
-                NoBind,
-                NoIsolation,
-                NoSeh,
-                NxCompatible,
-                ProcessInit,
-                ProcessTerm,
-                TerminalServerAware,
-                ThreadInit,
-                ThreadTerm,
-                WdmDriver,
+                AppContainer = 4096,
+                DynamicBase = 64,
+                HighEntropyVirtualAddressSpace = 32,
+                NoBind = 2048,
+                NoIsolation = 512,
+                NoSeh = 1024,
+                NxCompatible = 256,
+                ProcessInit = 1,
+                ProcessTerm = 2,
+                TerminalServerAware = 32768,
+                ThreadInit = 4,
+                ThreadTerm = 8,
+                WdmDriver = 8192,
             }
 
-            // Generated from `System.Reflection.PortableExecutable.Machine` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum Machine
+            // Generated from `System.Reflection.PortableExecutable.Machine` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            public enum Machine : ushort
             {
-                AM33,
-                Alpha,
-                Alpha64,
-                Amd64,
-                Arm,
-                Arm64,
-                ArmThumb2,
-                Ebc,
-                I386,
-                IA64,
-                M32R,
-                MIPS16,
-                MipsFpu,
-                MipsFpu16,
-                PowerPC,
-                PowerPCFP,
-                SH3,
-                SH3Dsp,
-                SH3E,
-                SH4,
-                SH5,
-                Thumb,
-                Tricore,
-                Unknown,
-                WceMipsV2,
+                AM33 = 467,
+                Alpha = 388,
+                Alpha64 = 644,
+                Amd64 = 34404,
+                Arm = 448,
+                Arm64 = 43620,
+                ArmThumb2 = 452,
+                Ebc = 3772,
+                I386 = 332,
+                IA64 = 512,
+                M32R = 36929,
+                MIPS16 = 614,
+                MipsFpu = 870,
+                MipsFpu16 = 1126,
+                PowerPC = 496,
+                PowerPCFP = 497,
+                SH3 = 418,
+                SH3Dsp = 419,
+                SH3E = 420,
+                SH4 = 422,
+                SH5 = 424,
+                Thumb = 450,
+                Tricore = 1312,
+                Unknown = 0,
+                WceMipsV2 = 361,
             }
 
-            // Generated from `System.Reflection.PortableExecutable.ManagedPEBuilder` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Reflection.PortableExecutable.ManagedPEBuilder` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class ManagedPEBuilder : System.Reflection.PortableExecutable.PEBuilder
             {
                 protected override System.Collections.Immutable.ImmutableArray<System.Reflection.PortableExecutable.PEBuilder.Section> CreateSections() => throw null;
@@ -3683,10 +3684,10 @@ namespace System
                 public void Sign(System.Reflection.Metadata.BlobBuilder peImage, System.Func<System.Collections.Generic.IEnumerable<System.Reflection.Metadata.Blob>, System.Byte[]> signatureProvider) => throw null;
             }
 
-            // Generated from `System.Reflection.PortableExecutable.PEBuilder` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Reflection.PortableExecutable.PEBuilder` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public abstract class PEBuilder
             {
-                // Generated from `System.Reflection.PortableExecutable.PEBuilder+Section` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+                // Generated from `System.Reflection.PortableExecutable.PEBuilder+Section` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 protected struct Section
                 {
                     public System.Reflection.PortableExecutable.SectionCharacteristics Characteristics;
@@ -3707,7 +3708,7 @@ namespace System
                 protected abstract System.Reflection.Metadata.BlobBuilder SerializeSection(string name, System.Reflection.PortableExecutable.SectionLocation location);
             }
 
-            // Generated from `System.Reflection.PortableExecutable.PEDirectoriesBuilder` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Reflection.PortableExecutable.PEDirectoriesBuilder` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class PEDirectoriesBuilder
             {
                 public int AddressOfEntryPoint { get => throw null; set => throw null; }
@@ -3728,7 +3729,7 @@ namespace System
                 public System.Reflection.PortableExecutable.DirectoryEntry ThreadLocalStorageTable { get => throw null; set => throw null; }
             }
 
-            // Generated from `System.Reflection.PortableExecutable.PEHeader` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Reflection.PortableExecutable.PEHeader` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class PEHeader
             {
                 public int AddressOfEntryPoint { get => throw null; }
@@ -3776,7 +3777,7 @@ namespace System
                 public System.Reflection.PortableExecutable.DirectoryEntry ThreadLocalStorageTableDirectory { get => throw null; }
             }
 
-            // Generated from `System.Reflection.PortableExecutable.PEHeaderBuilder` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Reflection.PortableExecutable.PEHeaderBuilder` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class PEHeaderBuilder
             {
                 public static System.Reflection.PortableExecutable.PEHeaderBuilder CreateExecutableHeader() => throw null;
@@ -3803,7 +3804,7 @@ namespace System
                 public System.Reflection.PortableExecutable.Subsystem Subsystem { get => throw null; }
             }
 
-            // Generated from `System.Reflection.PortableExecutable.PEHeaders` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Reflection.PortableExecutable.PEHeaders` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class PEHeaders
             {
                 public System.Reflection.PortableExecutable.CoffHeader CoffHeader { get => throw null; }
@@ -3826,14 +3827,14 @@ namespace System
                 public bool TryGetDirectoryOffset(System.Reflection.PortableExecutable.DirectoryEntry directory, out int offset) => throw null;
             }
 
-            // Generated from `System.Reflection.PortableExecutable.PEMagic` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum PEMagic
+            // Generated from `System.Reflection.PortableExecutable.PEMagic` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            public enum PEMagic : ushort
             {
-                PE32,
-                PE32Plus,
+                PE32 = 267,
+                PE32Plus = 523,
             }
 
-            // Generated from `System.Reflection.PortableExecutable.PEMemoryBlock` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Reflection.PortableExecutable.PEMemoryBlock` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct PEMemoryBlock
             {
                 public System.Collections.Immutable.ImmutableArray<System.Byte> GetContent() => throw null;
@@ -3845,7 +3846,7 @@ namespace System
                 unsafe public System.Byte* Pointer { get => throw null; }
             }
 
-            // Generated from `System.Reflection.PortableExecutable.PEReader` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Reflection.PortableExecutable.PEReader` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class PEReader : System.IDisposable
             {
                 public void Dispose() => throw null;
@@ -3870,18 +3871,18 @@ namespace System
                 public bool TryOpenAssociatedPortablePdb(string peImagePath, System.Func<string, System.IO.Stream> pdbFileStreamProvider, out System.Reflection.Metadata.MetadataReaderProvider pdbReaderProvider, out string pdbPath) => throw null;
             }
 
-            // Generated from `System.Reflection.PortableExecutable.PEStreamOptions` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Reflection.PortableExecutable.PEStreamOptions` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             [System.Flags]
-            public enum PEStreamOptions
+            public enum PEStreamOptions : int
             {
-                Default,
-                IsLoadedImage,
-                LeaveOpen,
-                PrefetchEntireImage,
-                PrefetchMetadata,
+                Default = 0,
+                IsLoadedImage = 8,
+                LeaveOpen = 1,
+                PrefetchEntireImage = 4,
+                PrefetchMetadata = 2,
             }
 
-            // Generated from `System.Reflection.PortableExecutable.PdbChecksumDebugDirectoryData` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Reflection.PortableExecutable.PdbChecksumDebugDirectoryData` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct PdbChecksumDebugDirectoryData
             {
                 public string AlgorithmName { get => throw null; }
@@ -3889,66 +3890,66 @@ namespace System
                 // Stub generator skipped constructor 
             }
 
-            // Generated from `System.Reflection.PortableExecutable.ResourceSectionBuilder` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Reflection.PortableExecutable.ResourceSectionBuilder` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public abstract class ResourceSectionBuilder
             {
                 protected ResourceSectionBuilder() => throw null;
                 protected internal abstract void Serialize(System.Reflection.Metadata.BlobBuilder builder, System.Reflection.PortableExecutable.SectionLocation location);
             }
 
-            // Generated from `System.Reflection.PortableExecutable.SectionCharacteristics` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Reflection.PortableExecutable.SectionCharacteristics` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             [System.Flags]
-            public enum SectionCharacteristics
+            public enum SectionCharacteristics : uint
             {
-                Align1024Bytes,
-                Align128Bytes,
-                Align16Bytes,
-                Align1Bytes,
-                Align2048Bytes,
-                Align256Bytes,
-                Align2Bytes,
-                Align32Bytes,
-                Align4096Bytes,
-                Align4Bytes,
-                Align512Bytes,
-                Align64Bytes,
-                Align8192Bytes,
-                Align8Bytes,
-                AlignMask,
-                ContainsCode,
-                ContainsInitializedData,
-                ContainsUninitializedData,
-                GPRel,
-                LinkerComdat,
-                LinkerInfo,
-                LinkerNRelocOvfl,
-                LinkerOther,
-                LinkerRemove,
-                Mem16Bit,
-                MemDiscardable,
-                MemExecute,
-                MemFardata,
-                MemLocked,
-                MemNotCached,
-                MemNotPaged,
-                MemPreload,
-                MemProtected,
-                MemPurgeable,
-                MemRead,
-                MemShared,
-                MemSysheap,
-                MemWrite,
-                NoDeferSpecExc,
-                TypeCopy,
-                TypeDSect,
-                TypeGroup,
-                TypeNoLoad,
-                TypeNoPad,
-                TypeOver,
-                TypeReg,
+                Align1024Bytes = 11534336,
+                Align128Bytes = 8388608,
+                Align16Bytes = 5242880,
+                Align1Bytes = 1048576,
+                Align2048Bytes = 12582912,
+                Align256Bytes = 9437184,
+                Align2Bytes = 2097152,
+                Align32Bytes = 6291456,
+                Align4096Bytes = 13631488,
+                Align4Bytes = 3145728,
+                Align512Bytes = 10485760,
+                Align64Bytes = 7340032,
+                Align8192Bytes = 14680064,
+                Align8Bytes = 4194304,
+                AlignMask = 15728640,
+                ContainsCode = 32,
+                ContainsInitializedData = 64,
+                ContainsUninitializedData = 128,
+                GPRel = 32768,
+                LinkerComdat = 4096,
+                LinkerInfo = 512,
+                LinkerNRelocOvfl = 16777216,
+                LinkerOther = 256,
+                LinkerRemove = 2048,
+                Mem16Bit = 131072,
+                MemDiscardable = 33554432,
+                MemExecute = 536870912,
+                MemFardata = 32768,
+                MemLocked = 262144,
+                MemNotCached = 67108864,
+                MemNotPaged = 134217728,
+                MemPreload = 524288,
+                MemProtected = 16384,
+                MemPurgeable = 131072,
+                MemRead = 1073741824,
+                MemShared = 268435456,
+                MemSysheap = 65536,
+                MemWrite = 2147483648,
+                NoDeferSpecExc = 16384,
+                TypeCopy = 16,
+                TypeDSect = 1,
+                TypeGroup = 4,
+                TypeNoLoad = 2,
+                TypeNoPad = 8,
+                TypeOver = 1024,
+                TypeReg = 0,
             }
 
-            // Generated from `System.Reflection.PortableExecutable.SectionHeader` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Reflection.PortableExecutable.SectionHeader` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct SectionHeader
             {
                 public string Name { get => throw null; }
@@ -3964,7 +3965,7 @@ namespace System
                 public int VirtualSize { get => throw null; }
             }
 
-            // Generated from `System.Reflection.PortableExecutable.SectionLocation` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Reflection.PortableExecutable.SectionLocation` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct SectionLocation
             {
                 public int PointerToRawData { get => throw null; }
@@ -3973,23 +3974,23 @@ namespace System
                 public SectionLocation(int relativeVirtualAddress, int pointerToRawData) => throw null;
             }
 
-            // Generated from `System.Reflection.PortableExecutable.Subsystem` in `System.Reflection.Metadata, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum Subsystem
+            // Generated from `System.Reflection.PortableExecutable.Subsystem` in `System.Reflection.Metadata, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            public enum Subsystem : ushort
             {
-                EfiApplication,
-                EfiBootServiceDriver,
-                EfiRom,
-                EfiRuntimeDriver,
-                Native,
-                NativeWindows,
-                OS2Cui,
-                PosixCui,
-                Unknown,
-                WindowsBootApplication,
-                WindowsCEGui,
-                WindowsCui,
-                WindowsGui,
-                Xbox,
+                EfiApplication = 10,
+                EfiBootServiceDriver = 11,
+                EfiRom = 13,
+                EfiRuntimeDriver = 12,
+                Native = 1,
+                NativeWindows = 8,
+                OS2Cui = 5,
+                PosixCui = 7,
+                Unknown = 0,
+                WindowsBootApplication = 16,
+                WindowsCEGui = 9,
+                WindowsCui = 3,
+                WindowsGui = 2,
+                Xbox = 14,
             }
 
         }

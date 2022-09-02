@@ -1,0 +1,7 @@
+| var_decls.swift:4:7:4:7 | i | getModule: | file://:0:0:0:0 | var_decls | getInterfaceType: | Int | getName: | i | getType: | Int | getIntroducerInt: | 1 |
+| var_decls.swift:7:5:7:5 | numbers | getModule: | file://:0:0:0:0 | var_decls | getInterfaceType: | [Int] | getName: | numbers | getType: | [Int] | getIntroducerInt: | 1 |
+| var_decls.swift:10:12:10:12 | numbers | getModule: | file://:0:0:0:0 | var_decls | getInterfaceType: | [Int] | getName: | numbers | getType: | [Int] | getIntroducerInt: | 0 |
+| var_decls.swift:15:7:15:7 | wrappedValue | getModule: | file://:0:0:0:0 | var_decls | getInterfaceType: | T | getName: | wrappedValue | getType: | T | getIntroducerInt: | 1 |
+| var_decls.swift:20:7:20:7 | wrappedValue | getModule: | file://:0:0:0:0 | var_decls | getInterfaceType: | Int | getName: | wrappedValue | getType: | Int | getIntroducerInt: | 1 |
+| var_decls.swift:24:15:24:15 | _wrapped | getModule: | file://:0:0:0:0 | var_decls | getInterfaceType: | X<Y> | getName: | _wrapped | getType: | X<Y> | getIntroducerInt: | 1 |
+| var_decls.swift:24:15:24:15 | wrapped | getModule: | file://:0:0:0:0 | var_decls | getInterfaceType: | Int | getName: | wrapped | getType: | Int | getIntroducerInt: | 1 |

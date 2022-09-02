@@ -2,14 +2,10 @@ load("//swift:rules.bzl", "swift_cc_binary")
 
 swift_cc_binary(
     name = "extractor",
-    srcs = [
-        "SwiftOutputRewrite.cpp",
-        "SwiftOutputRewrite.h",
-        "SwiftExtractor.cpp",
-        "SwiftExtractor.h",
-        "SwiftExtractorConfiguration.h",
-        "main.cpp",
-    ],
+    srcs = glob([
+        "*.h",
+        "*.cpp",
+    ]),
     visibility = ["//swift:__pkg__"],
     deps = [
         "//swift/extractor/infra",

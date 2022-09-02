@@ -28,7 +28,7 @@ predicate isIncompleteHostNameRegexpPattern(string pattern, string hostPart) {
             "(?<!\\\\)[.]" +
             // immediately followed by a sequence of subdomains, perhaps with some regex characters mixed in,
             // followed by a known TLD
-            "(([():|?a-z0-9-]+(\\\\)?[.])?" + commonTLD() + ")" + ".*", 1)
+            "(([():|?a-z0-9-]+(\\\\)?[.])?" + commonTld() + ")" + ".*", 1)
 }
 
 /** Holds if `b` sets the HTTP status code (represented by a pseudo-header named  `status`) */

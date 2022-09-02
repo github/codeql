@@ -7,20 +7,32 @@ _includes:
 _directories:
   decl: Decl$|Context$
   pattern: Pattern$
-  type: Type$
-  typerepr: TypeRepr$
+  type: Type(Repr)?$
   expr: Expr$
   stmt: Stmt$
 
 Element:
-  is_unknown: predicate
+  is_unknown:
+    type: predicate
+    _pragma: cpp_skip  # this is emitted using trap entries directly
   _pragma: qltest_skip
 
 File:
   name: string
+  _pragma: qltest_collapse_hierarchy
+
+DbFile:
+  _extends: File
+
+UnknownFile:
+  _extends: File
+  _synth:
+    on: {}
 
 Locatable:
-  location: Location?
+  location:
+    type: Location?
+    _pragma: cpp_skip  # this is emitted using trap entries directly
   _pragma: qltest_skip
 
 Location:
@@ -29,14 +41,27 @@ Location:
   start_column: int
   end_line: int
   end_column: int
-  _pragma: qltest_skip
+  _pragma: [qltest_skip, qltest_collapse_hierarchy]
+
+DbLocation:
+  _extends: Location
+
+UnknownLocation:
+  _extends: Location
+  _synth:
+    on: {}
+
+Comment:
+  _extends: Locatable
+  text: string
 
 Type:
   name: string
   canonical_type: Type
 
 IterableDeclContext:
-  members: Decl*
+  _children:
+    members: Decl*
 
 ExtensionDecl:
   extended_type_decl: NominalTypeDecl
@@ -47,8 +72,8 @@ ExtensionDecl:
 
 NominalTypeDecl:
   _extends:
-    - IterableDeclContext
     - GenericTypeDecl
+    - IterableDeclContext
   type: Type
 
 AstNode:
@@ -56,6 +81,7 @@ AstNode:
 
 Callable:
   _children:
+    self_param: ParamDecl?
     params: ParamDecl*
     body: BraceStmt?
 
@@ -109,6 +135,7 @@ LValueType:
 
 ModuleType:
   _extends: Type
+  module: ModuleDecl
 
 PlaceholderType:
   _extends: Type
@@ -168,6 +195,7 @@ StructDecl:
 
 Decl:
   _extends: AstNode
+  module: ModuleDecl
 
 Expr:
   _extends: AstNode
@@ -181,6 +209,7 @@ Stmt:
 
 TypeRepr:
   _extends: AstNode
+  type: Type?  # type can be absent on unresolved entities
 
 FunctionType:
   _extends: AnyFunctionType
@@ -265,16 +294,25 @@ TypeAliasType:
 
 EnumCaseDecl:
   _extends: Decl
-  _children:
-    elements: EnumElementDecl*
+  elements: EnumElementDecl*
 
 IfConfigDecl:
   _extends: Decl
+  _children:
+    clauses: IfConfigClause*
+
+IfConfigClause:
+  _extends: Locatable
+  _children:
+    condition: Expr?
+    elements: AstNode*
+  is_active: predicate
+  _dir: decl
 
 ImportDecl:
   _extends: Decl
   is_exported: predicate
-  module: ModuleDecl
+  imported_module: ModuleDecl?  # may be none in inactive #if clauses
   declarations: ValueDecl*
 
 MissingMemberDecl:
@@ -319,6 +357,7 @@ AppliedPropertyWrapperExpr:
   _extends: Expr
 
 Argument:
+  _extends: Locatable
   label: string
   _children:
     expr: Expr
@@ -382,7 +421,7 @@ DotSyntaxBaseIgnoredExpr:
 DynamicTypeExpr:
   _extends: Expr
   _children:
-    base_expr: Expr
+    base: Expr
 
 EditorPlaceholderExpr:
   _extends: Expr
@@ -391,8 +430,7 @@ EnumIsCaseExpr:
   _extends: Expr
   _children:
     sub_expr: Expr
-    type_repr: TypeRepr
-    element: EnumElementDecl
+  element: EnumElementDecl
 
 ErrorExpr:
   _extends: Expr
@@ -442,7 +480,7 @@ KeyPathDotExpr:
 KeyPathExpr:
   _extends: Expr
   _children:
-    parsed_root: Expr?
+    root: TypeRepr?
     parsed_path: Expr?
 
 LazyInitializerExpr:
@@ -456,7 +494,7 @@ LiteralExpr:
 LookupExpr:
   _extends: Expr
   _children:
-    base_expr: Expr
+    base: Expr
   member: Decl?
 
 MakeTemporarilyEscapableExpr:
@@ -507,7 +545,7 @@ RebindSelfInConstructorExpr:
   _extends: Expr
   _children:
     sub_expr: Expr
-    self: VarDecl
+  self: VarDecl
 
 SequenceExpr:
   _extends: Expr
@@ -545,7 +583,6 @@ TypeExpr:
 UnresolvedDeclRefExpr:
   _extends: Expr
   name: string?
-  _pragma: qltest_skip  # we should really never extract these
 
 UnresolvedDotExpr:
   _extends: Expr
@@ -560,7 +597,8 @@ UnresolvedMemberExpr:
 
 UnresolvedPatternExpr:
   _extends: Expr
-  _pragma: qltest_skip  # we should really never extract these
+  _children:
+    sub_pattern: Pattern
 
 UnresolvedSpecializeExpr:
   _extends: Expr
@@ -778,6 +816,12 @@ OptionalTryExpr:
 TryExpr:
   _extends: AnyTryExpr
 
+#MethodCallExpr:
+#  _extends: ApplyExpr
+#  _synth:
+#    from: CallExpr
+#  qualifier: Expr
+
 BinaryExpr:
   _extends: ApplyExpr
 
@@ -792,8 +836,7 @@ PrefixUnaryExpr:
 
 SelfApplyExpr:
   _extends: ApplyExpr
-  _children:
-    base_expr: Expr
+  base: Expr
 
 ArrayExpr:
   _extends: CollectionExpr
@@ -948,6 +991,11 @@ MemberRefExpr:
   has_direct_to_implementation_semantics: predicate
   has_ordinary_semantics: predicate
 
+MethodRefExpr:
+  _extends: LookupExpr
+  _synth:
+    from: DotSyntaxCallExpr
+
 SubscriptExpr:
   _extends:
     - LookupExpr
@@ -1061,7 +1109,8 @@ AbstractTypeParamDecl:
   _extends: TypeDecl
 
 GenericContext:
-  generic_type_params: GenericTypeParamDecl*
+  _children:
+    generic_type_params: GenericTypeParamDecl*
 
 GenericTypeDecl:
   _extends:
@@ -1072,6 +1121,8 @@ ModuleDecl:
   _extends: TypeDecl
   is_builtin_module: predicate
   is_system_module: predicate
+  imported_modules: ModuleDecl*
+  exported_modules: ModuleDecl*
 
 ConstructorRefCallExpr:
   _extends: SelfApplyExpr
@@ -1162,87 +1213,3 @@ FloatLiteralExpr:
 IntegerLiteralExpr:
   _extends: NumberLiteralExpr
   string_value: string
-
-ErrorTypeRepr:
-  _extends: TypeRepr
-
-AttributedTypeRepr:
-  _extends: TypeRepr
-
-IdentTypeRepr:
-  _extends: TypeRepr
-
-ComponentIdentTypeRepr:
-  _extends: IdentTypeRepr
-
-SimpleIdentTypeRepr:
-  _extends: ComponentIdentTypeRepr
-
-GenericIdentTypeRepr:
-  _extends: ComponentIdentTypeRepr
-
-CompoundIdentTypeRepr:
-  _extends: IdentTypeRepr
-
-FunctionTypeRepr:
-  _extends: TypeRepr
-
-ArrayTypeRepr:
-  _extends: TypeRepr
-
-DictionaryTypeRepr:
-  _extends: TypeRepr
-
-OptionalTypeRepr:
-  _extends: TypeRepr
-
-ImplicitlyUnwrappedOptionalTypeRepr:
-  _extends: TypeRepr
-
-TupleTypeRepr:
-  _extends: TypeRepr
-
-CompositionTypeRepr:
-  _extends: TypeRepr
-
-MetatypeTypeRepr:
-  _extends: TypeRepr
-
-ProtocolTypeRepr:
-  _extends: TypeRepr
-
-OpaqueReturnTypeRepr:
-  _extends: TypeRepr
-
-NamedOpaqueReturnTypeRepr:
-  _extends: TypeRepr
-
-ExistentialTypeRepr:
-  _extends: TypeRepr
-
-PlaceholderTypeRepr:
-  _extends: TypeRepr
-
-SpecifierTypeRepr:
-  _extends: TypeRepr
-
-InOutTypeRepr:
-  _extends: SpecifierTypeRepr
-
-SharedTypeRepr:
-  _extends: SpecifierTypeRepr
-
-OwnedTypeRepr:
-  _extends: SpecifierTypeRepr
-
-IsolatedTypeRepr:
-  _extends: SpecifierTypeRepr
-
-CompileTimeConstTypeRepr:
-  _extends: SpecifierTypeRepr
-
-FixedTypeRepr:
-  _extends: TypeRepr
-
-SilBoxTypeRepr:
-  _extends: TypeRepr

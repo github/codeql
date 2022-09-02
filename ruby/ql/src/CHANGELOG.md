@@ -1,3 +1,29 @@
+## 0.3.3
+
+### New Queries
+
+* Added a new query, `rb/log-inection`, to detect cases where a malicious user may be able to forge log entries.
+* Added a new query, `rb/incomplete-multi-character-sanitization`. The query
+  finds string transformations that do not replace all occurrences of a
+  multi-character substring.
+* Added a new query, `rb/suspicious-regexp-range`, to detect character ranges in regular expressions that seem to match 
+  too many characters.
+
+## 0.3.2
+
+## 0.3.1
+
+### New Queries
+
+* Added a new experimental query, `rb/manually-checking-http-verb`, to detect cases when the HTTP verb for an incoming request is checked and then used as part of control flow.
+* Added a new experimental query, `rb/weak-params`, to detect cases when the rails strong parameters pattern isn't followed and values flow into persistent store writes.
+
+## 0.3.0
+
+### Breaking Changes
+
+* Contextual queries and the query libraries they depend on have been moved to the `codeql/ruby-all` package.
+
 ## 0.2.0
 
 ### New Queries

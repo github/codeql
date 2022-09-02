@@ -69,6 +69,9 @@ class DataFlowCallable extends TDataFlowCallable {
 cached
 newtype TDataFlowCall =
   TNormalCall(ApplyExprCfgNode call) or
+  TPropertyGetterCall(PropertyGetterCfgNode getter) or
+  TPropertySetterCall(PropertySetterCfgNode setter) or
+  TPropertyObserverCall(PropertyObserverCfgNode obserer) or
   TSummaryCall(FlowSummaryImpl::Public::SummarizedCallable c, Node receiver) {
     FlowSummaryImpl::Private::summaryCallbackRange(c, receiver)
   }
@@ -83,6 +86,14 @@ class DataFlowCall extends TDataFlowCall {
 
   /** Gets the underlying source code call, if any. */
   ApplyExprCfgNode asCall() { none() }
+
+  /**
+   * Gets the i'th argument of call.class
+   * The qualifier is considered to have index `-1`.
+   */
+  CfgNode getArgument(int i) { none() }
+
+  final CfgNode getAnArgument() { result = this.getArgument(_) }
 
   /** Gets a textual representation of this call. */
   string toString() { none() }
@@ -111,11 +122,90 @@ private class NormalCall extends DataFlowCall, TNormalCall {
 
   override ApplyExprCfgNode asCall() { result = apply }
 
+  override CfgNode getArgument(int i) {
+    i = -1 and
+    result = apply.getQualifier()
+    or
+    result = apply.getArgument(i)
+  }
+
   override DataFlowCallable getEnclosingCallable() { result = TDataFlowFunc(apply.getScope()) }
 
   override string toString() { result = apply.toString() }
 
   override Location getLocation() { result = apply.getLocation() }
+}
+
+class PropertyGetterCall extends DataFlowCall, TPropertyGetterCall {
+  private PropertyGetterCfgNode getter;
+
+  PropertyGetterCall() { this = TPropertyGetterCall(getter) }
+
+  override CfgNode getArgument(int i) {
+    i = -1 and
+    result = getter.getBase()
+  }
+
+  override DataFlowCallable getEnclosingCallable() { result = TDataFlowFunc(getter.getScope()) }
+
+  PropertyGetterCfgNode getGetter() { result = getter }
+
+  override string toString() { result = getter.toString() }
+
+  override Location getLocation() { result = getter.getLocation() }
+
+  AccessorDecl getAccessorDecl() { result = getter.getAccessorDecl() }
+}
+
+class PropertySetterCall extends DataFlowCall, TPropertySetterCall {
+  private PropertySetterCfgNode setter;
+
+  PropertySetterCall() { this = TPropertySetterCall(setter) }
+
+  override CfgNode getArgument(int i) {
+    i = -1 and
+    result = setter.getBase()
+    or
+    i = 0 and
+    result = setter.getSource()
+  }
+
+  override DataFlowCallable getEnclosingCallable() { result = TDataFlowFunc(setter.getScope()) }
+
+  PropertySetterCfgNode getSetter() { result = setter }
+
+  override string toString() { result = setter.toString() }
+
+  override Location getLocation() { result = setter.getLocation() }
+
+  AccessorDecl getAccessorDecl() { result = setter.getAccessorDecl() }
+}
+
+class PropertyObserverCall extends DataFlowCall, TPropertyObserverCall {
+  private PropertyObserverCfgNode observer;
+
+  PropertyObserverCall() { this = TPropertyObserverCall(observer) }
+
+  override CfgNode getArgument(int i) {
+    i = -1 and
+    result = observer.getBase()
+    or
+    // TODO: This is correct for `willSet` (which takes a `newValue` parameter),
+    // but for `didSet` (which takes an `oldValue` paramter) we need an rvalue
+    // for `getBase()`.
+    i = 0 and
+    result = observer.getSource()
+  }
+
+  override DataFlowCallable getEnclosingCallable() { result = TDataFlowFunc(observer.getScope()) }
+
+  PropertyObserverCfgNode getObserver() { result = observer }
+
+  override string toString() { result = observer.toString() }
+
+  override Location getLocation() { result = observer.getLocation() }
+
+  AccessorDecl getAccessorDecl() { result = observer.getAccessorDecl() }
 }
 
 class SummaryCall extends DataFlowCall, TSummaryCall {
@@ -145,6 +235,12 @@ private module Cached {
   cached
   DataFlowCallable viableCallable(DataFlowCall call) {
     result = TDataFlowFunc(call.asCall().getStaticTarget())
+    or
+    result = TDataFlowFunc(call.(PropertyGetterCall).getAccessorDecl())
+    or
+    result = TDataFlowFunc(call.(PropertySetterCall).getAccessorDecl())
+    or
+    result = TDataFlowFunc(call.(PropertyObserverCall).getAccessorDecl())
   }
 
   cached

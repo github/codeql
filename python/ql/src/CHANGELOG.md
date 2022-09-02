@@ -1,3 +1,24 @@
+## 0.4.2
+
+### New Queries
+
+* Added a new query, `py/suspicious-regexp-range`, to detect character ranges in regular expressions that seem to match 
+  too many characters.
+
+## 0.4.1
+
+## 0.4.0
+
+### Breaking Changes
+
+* Contextual queries and the query libraries they depend on have been moved to the `codeql/python-all` package.
+
+## 0.3.0
+
+### Breaking Changes
+
+* Contextual queries and the query libraries they depend on have been moved to the `codeql/python-all` package.
+
 ## 0.2.0
 
 ### Major Analysis Improvements

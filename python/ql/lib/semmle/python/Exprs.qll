@@ -616,6 +616,9 @@ private string non_byte_prefix() {
   not result.charAt(_) in ["b", "B"]
 }
 
+/** A string constant. This is a placeholder class -- use `StrConst` instead. */
+class Str = StrConst;
+
 /** A string constant. */
 class StrConst extends Str_, ImmutableLiteral {
   /* syntax: "hello" */

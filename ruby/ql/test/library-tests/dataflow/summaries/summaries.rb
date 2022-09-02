@@ -50,6 +50,8 @@ end
 
 sink(Foo.namedArg(foo: tainted)) # $ hasTaintFlow=tainted
 sink(Foo.namedArg(tainted))
+args = { foo: source("tainted") }
+sink(Foo.namedArg(**args)) # $ hasTaintFlow=tainted
 
 sink(Foo.anyArg(foo: tainted)) # $ hasTaintFlow=tainted
 sink(Foo.anyArg(tainted)) # $ hasTaintFlow=tainted

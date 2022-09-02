@@ -65,7 +65,7 @@ class Processor:
         return cpp.Class(
             name=name,
             bases=[self._get_class(b) for b in cls.bases],
-            fields=[_get_field(cls, p) for p in cls.properties],
+            fields=[_get_field(cls, p) for p in cls.properties if "cpp_skip" not in p.pragmas],
             final=not cls.derived,
             trap_name=trap_name,
         )
@@ -83,7 +83,7 @@ class Processor:
 
 def generate(opts, renderer):
     assert opts.cpp_output
-    processor = Processor({cls.name: cls for cls in schema.load(opts.schema).classes})
+    processor = Processor(schema.load(opts.schema).classes)
     out = opts.cpp_output
     for dir, classes in processor.get_classes().items():
         include_parent = (dir != pathlib.Path())

@@ -103,9 +103,9 @@ private class SystemDataDataViewFlowModelCsv extends SummaryModelCsv {
   override predicate row(string row) {
     row =
       [
-        "System.Data;DataView;false;Find;(System.Object);;Argument[Qualifier].Element;ReturnValue;value;manual",
-        "System.Data;DataView;false;Find;(System.Object[]);;Argument[Qualifier].Element;ReturnValue;value;manual",
-        "System.Data;DataView;false;get_Item;(System.Int32);;Argument[Qualifier].Element;ReturnValue;value;manual",
+        "System.Data;DataView;false;Find;(System.Object);;Argument[this].Element;ReturnValue;value;manual",
+        "System.Data;DataView;false;Find;(System.Object[]);;Argument[this].Element;ReturnValue;value;manual",
+        "System.Data;DataView;false;get_Item;(System.Int32);;Argument[this].Element;ReturnValue;value;manual",
       ]
   }
 }
@@ -115,8 +115,8 @@ private class SystemDataIColumnMappingCollectionFlowModelCsv extends SummaryMode
   override predicate row(string row) {
     row =
       [
-        "System.Data;IColumnMappingCollection;true;get_Item;(System.String);;Argument[Qualifier].Element;ReturnValue;value;manual",
-        "System.Data;IColumnMappingCollection;true;set_Item;(System.String,System.Object);;Argument[1];Argument[Qualifier].Element;value;manual",
+        "System.Data;IColumnMappingCollection;true;get_Item;(System.String);;Argument[this].Element;ReturnValue;value;manual",
+        "System.Data;IColumnMappingCollection;true;set_Item;(System.String,System.Object);;Argument[1];Argument[this].Element;value;manual",
       ]
   }
 }
@@ -126,8 +126,8 @@ private class SystemDataIDataParameterCollectionFlowModelCsv extends SummaryMode
   override predicate row(string row) {
     row =
       [
-        "System.Data;IDataParameterCollection;true;get_Item;(System.String);;Argument[Qualifier].Element;ReturnValue;value;manual",
-        "System.Data;IDataParameterCollection;true;set_Item;(System.String,System.Object);;Argument[1];Argument[Qualifier].Element;value;manual",
+        "System.Data;IDataParameterCollection;true;get_Item;(System.String);;Argument[this].Element;ReturnValue;value;manual",
+        "System.Data;IDataParameterCollection;true;set_Item;(System.String,System.Object);;Argument[1];Argument[this].Element;value;manual",
       ]
   }
 }
@@ -137,8 +137,8 @@ private class SystemDataITableMappingCollectionFlowModelCsv extends SummaryModel
   override predicate row(string row) {
     row =
       [
-        "System.Data;ITableMappingCollection;true;get_Item;(System.String);;Argument[Qualifier].Element;ReturnValue;value;manual",
-        "System.Data;ITableMappingCollection;true;set_Item;(System.String,System.Object);;Argument[1];Argument[Qualifier].Element;value;manual",
+        "System.Data;ITableMappingCollection;true;get_Item;(System.String);;Argument[this].Element;ReturnValue;value;manual",
+        "System.Data;ITableMappingCollection;true;set_Item;(System.String,System.Object);;Argument[1];Argument[this].Element;value;manual",
       ]
   }
 }
@@ -148,9 +148,9 @@ private class SystemDataConstraintCollectionFlowModelCsv extends SummaryModelCsv
   override predicate row(string row) {
     row =
       [
-        "System.Data;ConstraintCollection;false;Add;(System.Data.Constraint);;Argument[0];Argument[Qualifier].Element;value;manual",
-        "System.Data;ConstraintCollection;false;AddRange;(System.Data.Constraint[]);;Argument[0].Element;Argument[Qualifier].Element;value;manual",
-        "System.Data;ConstraintCollection;false;CopyTo;(System.Data.Constraint[],System.Int32);;Argument[Qualifier].Element;Argument[0].Element;value;manual",
+        "System.Data;ConstraintCollection;false;Add;(System.Data.Constraint);;Argument[0];Argument[this].Element;value;manual",
+        "System.Data;ConstraintCollection;false;AddRange;(System.Data.Constraint[]);;Argument[0].Element;Argument[this].Element;value;manual",
+        "System.Data;ConstraintCollection;false;CopyTo;(System.Data.Constraint[],System.Int32);;Argument[this].Element;Argument[0].Element;value;manual",
       ]
   }
 }
@@ -160,10 +160,10 @@ private class SystemDataDataColumnCollectionFlowModelCsv extends SummaryModelCsv
   override predicate row(string row) {
     row =
       [
-        "System.Data;DataColumnCollection;false;Add;(System.Data.DataColumn);;Argument[0];Argument[Qualifier].Element;value;manual",
-        "System.Data;DataColumnCollection;false;Add;(System.String);;Argument[0];Argument[Qualifier].Element;value;manual",
-        "System.Data;DataColumnCollection;false;AddRange;(System.Data.DataColumn[]);;Argument[0].Element;Argument[Qualifier].Element;value;manual",
-        "System.Data;DataColumnCollection;false;CopyTo;(System.Data.DataColumn[],System.Int32);;Argument[Qualifier].Element;Argument[0].Element;value;manual",
+        "System.Data;DataColumnCollection;false;Add;(System.Data.DataColumn);;Argument[0];Argument[this].Element;value;manual",
+        "System.Data;DataColumnCollection;false;Add;(System.String);;Argument[0];Argument[this].Element;value;manual",
+        "System.Data;DataColumnCollection;false;AddRange;(System.Data.DataColumn[]);;Argument[0].Element;Argument[this].Element;value;manual",
+        "System.Data;DataColumnCollection;false;CopyTo;(System.Data.DataColumn[],System.Int32);;Argument[this].Element;Argument[0].Element;value;manual",
       ]
   }
 }
@@ -173,9 +173,9 @@ private class SystemDataDataRelationCollectionFlowModelCsv extends SummaryModelC
   override predicate row(string row) {
     row =
       [
-        "System.Data;DataRelationCollection;false;Add;(System.Data.DataRelation);;Argument[0];Argument[Qualifier].Element;value;manual",
-        "System.Data;DataRelationCollection;false;CopyTo;(System.Data.DataRelation[],System.Int32);;Argument[Qualifier].Element;Argument[0].Element;value;manual",
-        "System.Data;DataRelationCollection;true;AddRange;(System.Data.DataRelation[]);;Argument[0].Element;Argument[Qualifier].Element;value;manual",
+        "System.Data;DataRelationCollection;false;Add;(System.Data.DataRelation);;Argument[0];Argument[this].Element;value;manual",
+        "System.Data;DataRelationCollection;false;CopyTo;(System.Data.DataRelation[],System.Int32);;Argument[this].Element;Argument[0].Element;value;manual",
+        "System.Data;DataRelationCollection;true;AddRange;(System.Data.DataRelation[]);;Argument[0].Element;Argument[this].Element;value;manual",
       ]
   }
 }
@@ -185,11 +185,11 @@ private class SystemDataDataRawCollectionFlowModelCsv extends SummaryModelCsv {
   override predicate row(string row) {
     row =
       [
-        "System.Data;DataRowCollection;false;Add;(System.Data.DataRow);;Argument[0];Argument[Qualifier].Element;value;manual",
-        "System.Data;DataRowCollection;false;Add;(System.Object[]);;Argument[0];Argument[Qualifier].Element;value;manual",
-        "System.Data;DataRowCollection;false;CopyTo;(System.Data.DataRow[],System.Int32);;Argument[Qualifier].Element;Argument[0].Element;value;manual",
-        "System.Data;DataRowCollection;false;Find;(System.Object);;Argument[Qualifier].Element;ReturnValue;value;manual",
-        "System.Data;DataRowCollection;false;Find;(System.Object[]);;Argument[Qualifier].Element;ReturnValue;value;manual",
+        "System.Data;DataRowCollection;false;Add;(System.Data.DataRow);;Argument[0];Argument[this].Element;value;manual",
+        "System.Data;DataRowCollection;false;Add;(System.Object[]);;Argument[0];Argument[this].Element;value;manual",
+        "System.Data;DataRowCollection;false;CopyTo;(System.Data.DataRow[],System.Int32);;Argument[this].Element;Argument[0].Element;value;manual",
+        "System.Data;DataRowCollection;false;Find;(System.Object);;Argument[this].Element;ReturnValue;value;manual",
+        "System.Data;DataRowCollection;false;Find;(System.Object[]);;Argument[this].Element;ReturnValue;value;manual",
       ]
   }
 }
@@ -199,10 +199,10 @@ private class SystemDataDataTableCollectionFlowModelCsv extends SummaryModelCsv 
   override predicate row(string row) {
     row =
       [
-        "System.Data;DataTableCollection;false;Add;(System.Data.DataTable);;Argument[0];Argument[Qualifier].Element;value;manual",
-        "System.Data;DataTableCollection;false;Add;(System.String);;Argument[0];Argument[Qualifier].Element;value;manual",
-        "System.Data;DataTableCollection;false;AddRange;(System.Data.DataTable[]);;Argument[0].Element;Argument[Qualifier].Element;value;manual",
-        "System.Data;DataTableCollection;false;CopyTo;(System.Data.DataTable[],System.Int32);;Argument[Qualifier].Element;Argument[0].Element;value;manual",
+        "System.Data;DataTableCollection;false;Add;(System.Data.DataTable);;Argument[0];Argument[this].Element;value;manual",
+        "System.Data;DataTableCollection;false;Add;(System.String);;Argument[0];Argument[this].Element;value;manual",
+        "System.Data;DataTableCollection;false;AddRange;(System.Data.DataTable[]);;Argument[0].Element;Argument[this].Element;value;manual",
+        "System.Data;DataTableCollection;false;CopyTo;(System.Data.DataTable[],System.Int32);;Argument[this].Element;Argument[0].Element;value;manual",
       ]
   }
 }
@@ -211,7 +211,7 @@ private class SystemDataDataTableCollectionFlowModelCsv extends SummaryModelCsv 
 private class SystemDataDataViewSettingCollectionFlowModelCsv extends SummaryModelCsv {
   override predicate row(string row) {
     row =
-      "System.Data;DataViewSettingCollection;false;CopyTo;(System.Data.DataViewSetting[],System.Int32);;Argument[Qualifier].Element;Argument[0].Element;value;manual"
+      "System.Data;DataViewSettingCollection;false;CopyTo;(System.Data.DataViewSetting[],System.Int32);;Argument[this].Element;Argument[0].Element;value;manual"
   }
 }
 

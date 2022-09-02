@@ -1,6 +1,6 @@
 package com.github.codeql.utils
 
-import org.jetbrains.kotlin.backend.common.ir.allOverridden
+import com.github.codeql.utils.versions.allOverriddenIncludingSelf
 import org.jetbrains.kotlin.builtins.StandardNames
 import org.jetbrains.kotlin.ir.declarations.IrAnnotationContainer
 import org.jetbrains.kotlin.ir.declarations.IrClass
@@ -51,13 +51,15 @@ private val specialFunctions = mapOf(
     makeDescription(FqName("java.lang.Number"), "toFloat") to "floatValue",
     makeDescription(StandardNames.FqNames.number.toSafe(), "toDouble") to "doubleValue",
     makeDescription(FqName("java.lang.Number"), "toDouble") to "doubleValue",
+    makeDescription(StandardNames.FqNames.string.toSafe(), "get") to "charAt",
+    makeDescription(FqName("java.lang.String"), "get") to "charAt",
 )
 
 private val specialFunctionShortNames = specialFunctions.keys.map { it.functionName }.toSet()
 
 private fun getSpecialJvmName(f: IrFunction): String? {
     if (specialFunctionShortNames.contains(f.name) && f is IrSimpleFunction) {
-        f.allOverridden(true).forEach { overriddenFunc ->
+        f.allOverriddenIncludingSelf().forEach { overriddenFunc ->
             overriddenFunc.parentClassOrNull?.fqNameWhenAvailable?.let { parentFqName ->
                 specialFunctions[MethodKey(parentFqName, f.name)]?.let {
                     return it

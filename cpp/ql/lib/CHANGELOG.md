@@ -1,3 +1,43 @@
+## 0.3.4
+
+### Deprecated APIs
+
+* Many classes/predicates/modules with upper-case acronyms in their name have been renamed to follow our style-guide. 
+  The old name still exists as a deprecated alias.
+
+### New Features
+
+* Added support for getting the link targets of global and namespace variables.
+* Added a `BlockAssignExpr` class, which models a `memcpy`-like operation used in compiler generated copy/move constructors and assignment operations.
+
+### Minor Analysis Improvements
+
+* All deprecated predicates/classes/modules that have been deprecated for over a year have been deleted.
+
+## 0.3.3
+
+### New Features
+
+* Added a predicate `getValueConstant` to `AttributeArgument` that yields the argument value as an `Expr` when the value is a constant expression.
+* A new class predicate `MustFlowConfiguration::allowInterproceduralFlow` has been added to the `semmle.code.cpp.ir.dataflow.MustFlow` library. The new predicate can be overridden to disable interprocedural flow.
+* Added subclasses of `BuiltInOperations` for `__builtin_bit_cast`, `__builtin_shuffle`, `__has_unique_object_representations`, `__is_aggregate`, and `__is_assignable`.
+
+### Major Analysis Improvements
+
+* The IR dataflow library now includes flow through global variables. This enables new findings in many scenarios.
+
+## 0.3.2
+
+### Bug Fixes
+
+* Under certain circumstances a variable declaration that is not also a definition could be associated with a `Variable` that did not have the definition as a `VariableDeclarationEntry`. This is now fixed, and a unique `Variable` will exist that has both the declaration and the definition as a `VariableDeclarationEntry`.
+
+## 0.3.1
+
+### Minor Analysis Improvements
+
+* `AnalysedExpr::isNullCheck` and `AnalysedExpr::isValidCheck` have been updated to handle variable accesses on the left-hand side of the C++ logical "and", and variable declarations in conditions.
+
 ## 0.3.0
 
 ### Deprecated APIs

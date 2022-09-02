@@ -234,8 +234,6 @@ class File extends Container, @file {
   /** Gets a toplevel piece of JavaScript code in this file. */
   TopLevel getATopLevel() { result.getFile() = this }
 
-  override string toString() { result = Container.super.toString() }
-
   /** Gets the URL of this file. */
   override string getURL() { result = "file://" + this.getAbsolutePath() + ":0:0:0:0" }
 

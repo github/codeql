@@ -1,3 +1,39 @@
+## 0.5.4
+
+### Deprecated APIs
+
+* Many classes/predicates/modules with upper-case acronyms in their name have been renamed to follow our style-guide. 
+  The old name still exists as a deprecated alias.
+* The utility files previously in the `semmle.python.security.performance` package have been moved to the `semmle.python.security.regexp` package.  
+  The previous files still exist as deprecated aliases.
+
+### Minor Analysis Improvements
+
+* Most deprecated predicates/classes/modules that have been deprecated for over a year have been deleted.
+
+## 0.5.3
+
+### Minor Analysis Improvements
+
+* Change `.getASubclass()` on `API::Node` so it allows to follow subclasses even if the class has a class decorator.
+
+## 0.5.2
+
+## 0.5.1
+
+### Deprecated APIs
+
+- The documentation of API graphs (the `API` module) has been expanded, and some of the members predicates of `API::Node`
+  have been renamed as follows:
+  - `getAnImmediateUse` -> `asSource`
+  - `getARhs` -> `asSink`
+  - `getAUse` -> `getAValueReachableFromSource`
+  - `getAValueReachingRhs` -> `getAValueReachingSink`
+
+### Minor Analysis Improvements
+
+* Improved modeling of sensitive data sources, so common words like `certain` and `secretary` are no longer considered a certificate and a secret (respectively).
+
 ## 0.5.0
 
 ### Deprecated APIs

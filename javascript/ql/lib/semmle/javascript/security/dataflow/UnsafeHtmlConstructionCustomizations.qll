@@ -22,7 +22,7 @@ module UnsafeHtmlConstruction {
   /**
    * A parameter of an exported function, seen as a source for usnafe HTML constructed from input.
    */
-  class ExternalInputSource extends Source, DataFlow::ParameterNode {
+  class ExternalInputSource extends Source {
     ExternalInputSource() {
       this = Exports::getALibraryInputParameter() and
       // An AMD-style module sometimes loads the jQuery library in a way which looks like library input.
@@ -80,7 +80,7 @@ module UnsafeHtmlConstruction {
     t.start() and
     result = sink
     or
-    exists(DataFlow::TypeBackTracker t2 | t = t2.smallstep(result, isUsedInXssSink(t2, sink)))
+    exists(DataFlow::TypeBackTracker t2 | t2 = t.smallstep(result, isUsedInXssSink(t2, sink)))
     or
     exists(DataFlow::TypeBackTracker t2 |
       t.continue() = t2 and

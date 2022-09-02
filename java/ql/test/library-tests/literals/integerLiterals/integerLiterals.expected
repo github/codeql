@@ -18,7 +18,7 @@
 | IntegerLiterals.java:23:3:23:13 | 0xffff_ffff | -1 | -1 |
 | IntegerLiterals.java:24:3:24:16 | 0377_7777_7777 | -1 | -1 |
 | IntegerLiterals.java:25:3:25:43 | 0b1111_1111_1111_1111_1111_1111_1111_1111 | -1 | -1 |
-| IntegerLiterals.java:27:8:27:8 | 0 | 0 | 0 |
+| IntegerLiterals.java:27:3:27:8 | \\u0030 | 0 | 0 |
 | IntegerLiterals.java:32:4:32:4 | 0 | 0 | 0 |
 | IntegerLiterals.java:33:4:33:4 | 0 | 0 | 0 |
 | IntegerLiterals.java:34:4:34:4 | 1 | 1 | 1 |

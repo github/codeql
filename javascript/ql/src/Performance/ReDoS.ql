@@ -15,8 +15,8 @@
  */
 
 import javascript
-import semmle.javascript.security.performance.ReDoSUtil
-import semmle.javascript.security.performance.ExponentialBackTracking
+import semmle.javascript.security.regexp.NfaUtils
+import semmle.javascript.security.regexp.ExponentialBackTracking
 
 from RegExpTerm t, string pump, State s, string prefixMsg
 where hasReDoSResult(t, pump, s, prefixMsg)

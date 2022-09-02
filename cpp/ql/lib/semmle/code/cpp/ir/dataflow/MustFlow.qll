@@ -38,6 +38,9 @@ abstract class MustFlowConfiguration extends string {
    */
   predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) { none() }
 
+  /** Holds if this configuration allows flow from arguments to parameters. */
+  predicate allowInterproceduralFlow() { any() }
+
   /**
    * Holds if data must flow from `source` to `sink` for this configuration.
    *
@@ -204,10 +207,25 @@ private module Cached {
   }
 }
 
+/**
+ * Gets the enclosing callable of `n`. Unlike `n.getEnclosingCallable()`, this
+ * predicate ensures that joins go from `n` to the result instead of the other
+ * way around.
+ */
+pragma[inline]
+private Declaration getEnclosingCallable(DataFlow::Node n) {
+  pragma[only_bind_into](result) = pragma[only_bind_out](n).getEnclosingCallable()
+}
+
 /** Holds if `nodeFrom` flows to `nodeTo`. */
 private predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo, MustFlowConfiguration config) {
   exists(config) and
-  Cached::step(nodeFrom, nodeTo)
+  Cached::step(pragma[only_bind_into](nodeFrom), pragma[only_bind_into](nodeTo)) and
+  (
+    config.allowInterproceduralFlow()
+    or
+    getEnclosingCallable(nodeFrom) = getEnclosingCallable(nodeTo)
+  )
   or
   config.isAdditionalFlowStep(nodeFrom, nodeTo)
 }

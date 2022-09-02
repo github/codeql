@@ -14,6 +14,7 @@ class Generator:
         self.generateSinks = False
         self.generateSources = False
         self.generateSummaries = False
+        self.generateNegativeSummaries = False
         self.dryRun = False
 
 
@@ -25,11 +26,13 @@ This generates summary, source and sink models for the code in the database.
 The files will be placed in `{self.language}/ql/lib/semmle/code/{self.language}/frameworks/<outputQll>` where
 outputQll is the name (and path) of the output QLL file. Usually, models are grouped by their
 respective frameworks.
+If negative summaries are produced a file prefixed with `Negative` will be generated and stored in the same folder.
 
 Which models are generated is controlled by the flags:
     --with-sinks
     --with-sources
     --with-summaries
+    --with-negative-summaries
 If none of these flags are specified, all models are generated.
 
     --dry-run: Only run the queries, but don't write to file.
@@ -46,12 +49,14 @@ Requirements: `codeql` should both appear on your path.
         self.codeQlRoot = subprocess.check_output(["git", "rev-parse", "--show-toplevel"]).decode("utf-8").strip()
         if not target.endswith(".qll"):
             target += ".qll"
-        self.filename = os.path.basename(target)
-        self.shortname = self.filename[:-4]
+        filename = os.path.basename(target)
+        dirname = os.path.dirname(target)
+        self.shortname = filename[:-4]
         self.database = database
         self.generatedFrameworks = os.path.join(
             self.codeQlRoot, f"{self.language}/ql/lib/semmle/code/{self.language}/frameworks/")
-        self.frameworkTarget = os.path.join(self.generatedFrameworks, target)
+        self.frameworkTarget = os.path.join(self.generatedFrameworks, dirname, filename)
+        self.negativeFrameworkTarget = os.path.join(self.generatedFrameworks, dirname, "Negative" + filename)
 
         self.workDir = tempfile.mkdtemp()
         os.makedirs(self.generatedFrameworks, exist_ok=True)
@@ -76,12 +81,16 @@ Requirements: `codeql` should both appear on your path.
             sys.argv.remove("--with-summaries")
             generator.generateSummaries = True
 
+        if "--with-negative-summaries" in sys.argv:
+            sys.argv.remove("--with-negative-summaries")
+            generator.generateNegativeSummaries = True
+
         if "--dry-run" in sys.argv:
             sys.argv.remove("--dry-run")
             generator.dryRun = True
 
-        if not generator.generateSinks and not generator.generateSources and not generator.generateSummaries:
-            generator.generateSinks = generator.generateSources = generator.generateSummaries = True
+        if not generator.generateSinks and not generator.generateSources and not generator.generateSummaries and not generator.generateNegativeSummaries:
+            generator.generateSinks = generator.generateSources = generator.generateSummaries = generator.generateNegativeSummaries = True
 
         if len(sys.argv) != 3:
             generator.printHelp()
@@ -181,26 +190,51 @@ private import semmle.code.{self.language}.dataflow.ExternalFlow
 
         """
 
+    def makeNegativeContent(self):
+        if self.generateNegativeSummaries:
+            negativeSummaryRows = self.runQuery("negative summary models", "CaptureNegativeSummaryModels.ql")
+            negativeSummaryCsv = self.asCsvModel("NegativeSummaryModelCsv", "NegativeSummary", negativeSummaryRows)
+        else:
+            negativeSummaryCsv = ""
 
-    def save(self, content):
-        with open(self.frameworkTarget, "w") as frameworkQll:
-            frameworkQll.write(content)
+        return f"""
+/** 
+ * THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+ * Definitions of negative summaries in the {self.shortname} framework.
+ */
 
-        cmd = ['codeql', 'query', 'format', '--in-place', self.frameworkTarget]
+import {self.language}
+private import semmle.code.{self.language}.dataflow.ExternalFlow
+
+{negativeSummaryCsv}
+
+        """
+
+
+    def save(self, content, target):
+        with open(target, "w") as targetQll:
+            targetQll.write(content)
+
+        cmd = ['codeql', 'query', 'format', '--in-place', target]
         ret = subprocess.call(cmd)
         if ret != 0:
             print("Failed to format query. Failed command was: " + shlex.join(cmd))
             sys.exit(1)
 
         print("")
-        print("CSV model written to " + self.frameworkTarget)
+        print("CSV model written to " + target)
 
 
     def run(self):
         content = self.makeContent()
+        negativeContent = self.makeNegativeContent()
 
         if self.dryRun:
             print("CSV Models generated, but not written to file.")
             sys.exit(0)
         
-        self.save(content)
+        if self.generateSinks or self.generateSinks or self.generateSummaries:
+            self.save(content, self.frameworkTarget)
+
+        if self.generateNegativeSummaries:
+            self.save(negativeContent, self.negativeFrameworkTarget)

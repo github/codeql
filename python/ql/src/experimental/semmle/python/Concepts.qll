@@ -182,7 +182,10 @@ module LdapBind {
     /**
      * Holds if the binding process use SSL.
      */
-    abstract predicate useSSL();
+    abstract predicate useSsl();
+
+    /** DEPRECATED: Alias for useSsl */
+    deprecated predicate useSSL() { useSsl() }
   }
 }
 
@@ -213,7 +216,10 @@ class LdapBind extends DataFlow::Node {
   /**
    * Holds if the binding process use SSL.
    */
-  predicate useSSL() { range.useSSL() }
+  predicate useSsl() { range.useSsl() }
+
+  /** DEPRECATED: Alias for useSsl */
+  deprecated predicate useSSL() { useSsl() }
 }
 
 /** DEPRECATED: Alias for LdapBind */

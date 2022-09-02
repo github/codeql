@@ -2,9 +2,8 @@
 
 import pathlib
 import re
-import typing
 from dataclasses import dataclass, field
-from typing import List, Set, Union, Dict, ClassVar
+from typing import List, Set, Union, Dict, ClassVar, Optional
 
 import yaml
 
@@ -58,18 +57,29 @@ class PredicateProperty(Property):
 
 
 @dataclass
+class IpaInfo:
+    from_class: Optional[str] = None
+    on_arguments: Optional[Dict[str, str]] = None
+
+
+@dataclass
 class Class:
     name: str
-    bases: Set[str] = field(default_factory=set)
+    bases: List[str] = field(default_factory=set)
     derived: Set[str] = field(default_factory=set)
     properties: List[Property] = field(default_factory=list)
     dir: pathlib.Path = pathlib.Path()
     pragmas: List[str] = field(default_factory=list)
+    ipa: Optional[IpaInfo] = None
+
+    @property
+    def final(self):
+        return not self.derived
 
 
 @dataclass
 class Schema:
-    classes: List[Class]
+    classes: Dict[str, Class]
     includes: Set[str] = field(default_factory=set)
 
 
@@ -107,6 +117,11 @@ def _parse_property(name: str, data: Union[str, Dict[str, _StrOrList]], is_child
         return SingleProperty(name, type, is_child=is_child, pragmas=pragmas)
 
 
+def _parse_ipa(data: Dict[str, Union[str, Dict[str, str]]]):
+    return IpaInfo(from_class=data.get("from"),
+                   on_arguments=data.get(True))  # 'on' is parsed as boolean True in yaml
+
+
 class _DirSelector:
     """ Default output subdirectory selector for generated QL files, based on the `_directories` global field"""
 
@@ -135,9 +150,8 @@ def load(path):
             if not k.startswith("_"):
                 cls.properties.append(_parse_property(k, v))
             elif k == "_extends":
-                v = _auto_list(v)
-                for base in v:
-                    cls.bases.add(base)
+                cls.bases = _auto_list(v)
+                for base in cls.bases:
                     classes[base].derived.add(name)
             elif k == "_dir":
                 cls.dir = pathlib.Path(v)
@@ -145,10 +159,12 @@ def load(path):
                 cls.properties.extend(_parse_property(kk, vv, is_child=True) for kk, vv in v.items())
             elif k == "_pragma":
                 cls.pragmas = _auto_list(v)
+            elif k == "_synth":
+                cls.ipa = _parse_ipa(v)
             else:
                 raise Error(f"unknown metadata {k} for class {name}")
         if not cls.bases and cls.name != root_class_name:
-            cls.bases.add(root_class_name)
+            cls.bases = [root_class_name]
             classes[root_class_name].derived.add(name)
 
-    return Schema(classes=list(classes.values()), includes=set(data.get("_includes", [])))
+    return Schema(classes=classes, includes=set(data.get("_includes", [])))

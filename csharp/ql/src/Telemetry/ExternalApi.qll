@@ -85,7 +85,7 @@ class ExternalApi extends DotNet::Callable {
     defaultAdditionalTaintStep(this.getAnInput(), _)
   }
 
-  /** Holds if this API is is a constructor without parameters. */
+  /** Holds if this API is a constructor without parameters. */
   private predicate isParameterlessConstructor() {
     this instanceof Constructor and this.getNumberOfParameters() = 0
   }

@@ -3,6 +3,10 @@
 private import ruby
 private import codeql.ruby.DataFlow
 private import codeql.ruby.CFG
+private import codeql.ruby.controlflow.CfgNodes
+private import codeql.ruby.dataflow.SSA
+private import codeql.ruby.ast.internal.Constant
+private import codeql.ruby.InclusionTests
 
 private predicate stringConstCompare(CfgNodes::ExprCfgNode g, CfgNode e, boolean branch) {
   exists(CfgNodes::ExprNodes::ComparisonOperationCfgNode c |
@@ -61,19 +65,7 @@ deprecated class StringConstCompare extends DataFlow::BarrierGuard,
   // The value of the condition that results in the node being validated.
   private boolean checkedBranch;
 
-  StringConstCompare() {
-    exists(CfgNodes::ExprNodes::StringLiteralCfgNode strLitNode |
-      this.getExpr() instanceof EqExpr and checkedBranch = true
-      or
-      this.getExpr() instanceof CaseEqExpr and checkedBranch = true
-      or
-      this.getExpr() instanceof NEExpr and checkedBranch = false
-    |
-      this.getLeftOperand() = strLitNode and this.getRightOperand() = checkedNode
-      or
-      this.getLeftOperand() = checkedNode and this.getRightOperand() = strLitNode
-    )
-  }
+  StringConstCompare() { stringConstCompare(this, checkedNode, checkedBranch) }
 
   override predicate checks(CfgNode expr, boolean branch) {
     expr = checkedNode and branch = checkedBranch
@@ -81,15 +73,19 @@ deprecated class StringConstCompare extends DataFlow::BarrierGuard,
 }
 
 private predicate stringConstArrayInclusionCall(CfgNodes::ExprCfgNode g, CfgNode e, boolean branch) {
-  exists(CfgNodes::ExprNodes::MethodCallCfgNode mc, ArrayLiteral aLit |
-    mc = g and
-    mc.getExpr().getMethodName() = "include?" and
-    [mc.getExpr().getReceiver(), mc.getExpr().getReceiver().(ConstantReadAccess).getValue()] = aLit
+  exists(InclusionTest t |
+    t.asExpr() = g and
+    e = t.getContainedNode().asExpr() and
+    branch = t.getPolarity()
   |
-    forall(Expr elem | elem = aLit.getAnElement() | elem instanceof StringLiteral) and
-    mc.getArgument(0) = e
-  ) and
-  branch = true
+    exists(ExprNodes::ArrayLiteralCfgNode arr |
+      isArrayConstant(t.getContainerNode().asExpr(), arr)
+    |
+      forall(ExprCfgNode elem | elem = arr.getAnArgument() |
+        elem instanceof ExprNodes::StringLiteralCfgNode
+      )
+    )
+  )
 }
 
 /**
@@ -132,16 +128,7 @@ deprecated class StringConstArrayInclusionCall extends DataFlow::BarrierGuard,
   CfgNodes::ExprNodes::MethodCallCfgNode {
   private CfgNode checkedNode;
 
-  StringConstArrayInclusionCall() {
-    exists(ArrayLiteral aLit |
-      this.getExpr().getMethodName() = "include?" and
-      [this.getExpr().getReceiver(), this.getExpr().getReceiver().(ConstantReadAccess).getValue()] =
-        aLit
-    |
-      forall(Expr elem | elem = aLit.getAnElement() | elem instanceof StringLiteral) and
-      this.getArgument(0) = checkedNode
-    )
-  }
+  StringConstArrayInclusionCall() { stringConstArrayInclusionCall(this, checkedNode, true) }
 
   override predicate checks(CfgNode expr, boolean branch) { expr = checkedNode and branch = true }
 }

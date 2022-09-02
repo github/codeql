@@ -1,3 +1,20 @@
+## 0.3.4
+
+### Deprecated APIs
+
+* Many classes/predicates/modules with upper-case acronyms in their name have been renamed to follow our style-guide. 
+  The old name still exists as a deprecated alias.
+
+### Minor Analysis Improvements
+
+* All deprecated predicates/classes/modules that have been deprecated for over a year have been deleted.
+
+## 0.3.3
+
+## 0.3.2
+
+## 0.3.1
+
 ## 0.3.0
 
 ### Deprecated APIs

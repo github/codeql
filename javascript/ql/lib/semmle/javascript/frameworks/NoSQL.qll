@@ -4,9 +4,9 @@
 
 import javascript
 
-/** Provides classes for modeling NoSQL query sinks. */
+/** Provides classes for modeling NoSql query sinks. */
 module NoSql {
-  /** An expression that is interpreted as a NoSQL query. */
+  /** An expression that is interpreted as a NoSql query. */
   abstract class Query extends Expr {
     /** Gets an expression that is interpreted as a code operator in this query. */
     DataFlow::Node getACodeOperator() { none() }
@@ -583,11 +583,11 @@ private module Minimongo {
    */
   module CollectionMethodSignatures {
     /**
-     * Holds if Collection method `name` interprets parameter `n` as a query.
+     * Holds if Collection method `name` interprets parameter `queryArgIdx` as a query.
      */
-    predicate interpretsArgumentAsQuery(string m, int queryArgIdx) {
+    predicate interpretsArgumentAsQuery(string name, int queryArgIdx) {
       // implements most of the MongoDB interface
-      MongoDB::CollectionMethodSignatures::interpretsArgumentAsQuery(m, queryArgIdx)
+      MongoDB::CollectionMethodSignatures::interpretsArgumentAsQuery(name, queryArgIdx)
     }
   }
 

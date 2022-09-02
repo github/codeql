@@ -12,7 +12,7 @@ def generate_grouped(opts, renderer, input):
     opts.cpp_output = output_dir
 
     def ret(classes):
-        input.classes = classes
+        input.classes = {cls.name: cls for cls in classes}
         generated = run_generation(cppgen.generate, opts, renderer)
         for f, g in generated.items():
             assert isinstance(g, cpp.ClassList), f
@@ -49,7 +49,7 @@ def test_two_class_hierarchy(generate):
     base = cpp.Class(name="A")
     assert generate([
         schema.Class(name="A", derived={"B"}),
-        schema.Class(name="B", bases={"A"}),
+        schema.Class(name="B", bases=["A"]),
     ]) == [
         base,
         cpp.Class(name="B", bases=[base], final=True, trap_name="Bs"),
@@ -64,11 +64,11 @@ def test_complex_hierarchy_topologically_ordered(generate):
     e = cpp.Class(name="E", bases=[b, c, d], final=True, trap_name="Es")
     f = cpp.Class(name="F", bases=[c], final=True, trap_name="Fs")
     assert generate([
-        schema.Class(name="F", bases={"C"}),
+        schema.Class(name="F", bases=["C"]),
         schema.Class(name="B", derived={"E"}),
-        schema.Class(name="D", bases={"A"}, derived={"E"}),
-        schema.Class(name="C", bases={"A"}, derived={"E", "F"}),
-        schema.Class(name="E", bases={"B", "C", "D"}),
+        schema.Class(name="D", bases=["A"], derived={"E"}),
+        schema.Class(name="C", bases=["A"], derived={"E", "F"}),
+        schema.Class(name="E", bases=["B", "C", "D"]),
         schema.Class(name="A", derived={"C", "D"}),
     ]) == [a, b, c, d, e, f]
 
@@ -154,7 +154,7 @@ def test_classes_with_dirs(generate_grouped):
     assert generate_grouped([
         schema.Class(name="A"),
         schema.Class(name="B", dir=pathlib.Path("foo")),
-        schema.Class(name="C", bases={"CBase"}, dir=pathlib.Path("bar")),
+        schema.Class(name="C", bases=["CBase"], dir=pathlib.Path("bar")),
         schema.Class(name="CBase", derived={"C"}, dir=pathlib.Path("bar")),
         schema.Class(name="D", dir=pathlib.Path("foo/bar/baz")),
     ]) == {
@@ -163,6 +163,19 @@ def test_classes_with_dirs(generate_grouped):
         "bar": [cbase, cpp.Class(name="C", bases=[cbase], trap_name="Cs", final=True)],
         "foo/bar/baz": [cpp.Class(name="D", trap_name="Ds", final=True)],
     }
+
+
+def test_cpp_skip_pragma(generate):
+    assert generate([
+        schema.Class(name="A", properties=[
+            schema.SingleProperty("x", "foo"),
+            schema.SingleProperty("y", "bar", pragmas=["x", "cpp_skip", "y"]),
+        ])
+    ]) == [
+        cpp.Class(name="A", final=True, trap_name="As", fields=[
+            cpp.Field("x", "foo"),
+        ]),
+    ]
 
 
 if __name__ == '__main__':

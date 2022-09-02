@@ -1,3 +1,23 @@
+## 0.3.3
+
+### Minor Analysis Improvements
+
+* The "Cleartext storage of sensitive information in buffer" (`cpp/cleartext-storage-buffer`) query has been improved to produce fewer false positives.
+
+## 0.3.2
+
+### Minor Analysis Improvements
+
+* The query `cpp/bad-strncpy-size` now covers more `strncpy`-like functions than before, including `strxfrm`(`_l`), `wcsxfrm`(`_l`), and `stpncpy`. Users of this query may see an increase in results.
+
+## 0.3.1
+
+## 0.3.0
+
+### Breaking Changes
+
+* Contextual queries and the query libraries they depend on have been moved to the `codeql/cpp-all` package.
+
 ## 0.2.0
 
 ## 0.1.4

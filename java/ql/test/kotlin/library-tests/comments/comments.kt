@@ -44,3 +44,15 @@ fun fn1() {
     */
     val a = 1
 }
+
+/**
+ * A type alias comment
+ */
+typealias MyType = Group
+
+class InitBlock {
+    /**
+     * An init block comment
+     */
+    init { }
+}

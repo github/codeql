@@ -1,10 +1,10 @@
-| enum_is_case.swift:4:1:4:17 | ... is some | getSubExpr: | enum_is_case.swift:4:1:4:17 | OptionalEvaluationExpr | getTypeRepr: | enum_is_case.swift:4:22:4:22 | SimpleIdentTypeRepr | getElement: | file://:0:0:0:0 | some |
-| enum_is_case.swift:5:1:5:32 | ... is some | getSubExpr: | enum_is_case.swift:5:1:5:32 | OptionalEvaluationExpr | getTypeRepr: | enum_is_case.swift:5:37:5:37 | SimpleIdentTypeRepr | getElement: | file://:0:0:0:0 | some |
-| enum_is_case.swift:6:1:6:1 | ... is some | getSubExpr: | enum_is_case.swift:6:1:6:1 | 42 | getTypeRepr: | enum_is_case.swift:6:7:6:10 | ...? | getElement: | file://:0:0:0:0 | some |
-| enum_is_case.swift:7:1:7:1 | ... is some | getSubExpr: | enum_is_case.swift:7:1:7:1 | 42 | getTypeRepr: | enum_is_case.swift:7:7:7:11 | ...? | getElement: | file://:0:0:0:0 | some |
-| enum_is_case.swift:9:1:9:19 | ... is some | getSubExpr: | enum_is_case.swift:9:1:9:19 | [...] | getTypeRepr: | enum_is_case.swift:9:24:9:28 | [...] | getElement: | file://:0:0:0:0 | some |
-| enum_is_case.swift:19:1:19:18 | ... is some | getSubExpr: | enum_is_case.swift:19:1:19:18 | OptionalEvaluationExpr | getTypeRepr: | enum_is_case.swift:19:23:19:23 | SimpleIdentTypeRepr | getElement: | file://:0:0:0:0 | some |
-| enum_is_case.swift:21:1:21:5 | ... is some | getSubExpr: | enum_is_case.swift:21:1:21:5 | [...] | getTypeRepr: | enum_is_case.swift:21:10:21:12 | [...] | getElement: | file://:0:0:0:0 | some |
-| enum_is_case.swift:22:1:22:10 | ... is some | getSubExpr: | enum_is_case.swift:22:1:22:10 | [...] | getTypeRepr: | enum_is_case.swift:22:15:22:25 | [... : ...] | getElement: | file://:0:0:0:0 | some |
-| enum_is_case.swift:23:1:23:10 | ... is some | getSubExpr: | enum_is_case.swift:23:1:23:10 | [...] | getTypeRepr: | enum_is_case.swift:23:15:23:25 | [... : ...] | getElement: | file://:0:0:0:0 | some |
-| enum_is_case.swift:24:1:24:8 | ... is some | getSubExpr: | enum_is_case.swift:24:1:24:8 | call to ... | getTypeRepr: | enum_is_case.swift:24:13:24:18 | ...<...> | getElement: | file://:0:0:0:0 | some |
+| enum_is_case.swift:4:1:4:17 | ... is some | getSubExpr: | enum_is_case.swift:4:1:4:17 | OptionalEvaluationExpr | getElement: | file://:0:0:0:0 | some |
+| enum_is_case.swift:5:1:5:32 | ... is some | getSubExpr: | enum_is_case.swift:5:1:5:32 | OptionalEvaluationExpr | getElement: | file://:0:0:0:0 | some |
+| enum_is_case.swift:6:1:6:1 | ... is some | getSubExpr: | enum_is_case.swift:6:1:6:1 | 42 | getElement: | file://:0:0:0:0 | some |
+| enum_is_case.swift:7:1:7:1 | ... is some | getSubExpr: | enum_is_case.swift:7:1:7:1 | 42 | getElement: | file://:0:0:0:0 | some |
+| enum_is_case.swift:9:1:9:19 | ... is some | getSubExpr: | enum_is_case.swift:9:1:9:19 | [...] | getElement: | file://:0:0:0:0 | some |
+| enum_is_case.swift:19:1:19:18 | ... is some | getSubExpr: | enum_is_case.swift:19:1:19:18 | OptionalEvaluationExpr | getElement: | file://:0:0:0:0 | some |
+| enum_is_case.swift:21:1:21:5 | ... is some | getSubExpr: | enum_is_case.swift:21:1:21:5 | [...] | getElement: | file://:0:0:0:0 | some |
+| enum_is_case.swift:22:1:22:10 | ... is some | getSubExpr: | enum_is_case.swift:22:1:22:10 | [...] | getElement: | file://:0:0:0:0 | some |
+| enum_is_case.swift:23:1:23:10 | ... is some | getSubExpr: | enum_is_case.swift:23:1:23:10 | [...] | getElement: | file://:0:0:0:0 | some |
+| enum_is_case.swift:24:1:24:8 | ... is some | getSubExpr: | enum_is_case.swift:24:1:24:8 | call to init() | getElement: | file://:0:0:0:0 | some |

@@ -42,7 +42,7 @@ private module NotExposed {
   // Implementation below
   // ---------------------------------------------------------------------------
   //
-  // We are looking to find all subclassed of the already modelled classes, and ideally
+  // We are looking to find all subclassed of the already modeled classes, and ideally
   // we would identify an `API::Node` for each (then `toString` would give the API
   // path).
   //
@@ -74,9 +74,7 @@ private module NotExposed {
   }
 
   /** DEPRECATED: Alias for fullyQualifiedToApiGraphPath */
-  deprecated string fullyQualifiedToAPIGraphPath(string fullyQaulified) {
-    result = fullyQualifiedToApiGraphPath(fullyQaulified)
-  }
+  deprecated predicate fullyQualifiedToAPIGraphPath = fullyQualifiedToApiGraphPath/1;
 
   bindingset[this]
   abstract class FindSubclassesSpec extends string {

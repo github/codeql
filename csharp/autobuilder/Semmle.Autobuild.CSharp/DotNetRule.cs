@@ -5,7 +5,6 @@ using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 using System.IO;
 using Semmle.Util;
-using System.Text.RegularExpressions;
 using Semmle.Autobuild.Shared;
 
 namespace Semmle.Autobuild.CSharp
@@ -81,9 +80,6 @@ namespace Semmle.Autobuild.CSharp
                     env = null;
                 }
 
-                if (env is null)
-                    env = new Dictionary<string, string>();
-                env.Add("UseSharedCompilation", "false");
                 return f(installDir, env);
             });
         }
@@ -245,8 +241,7 @@ namespace Semmle.Autobuild.CSharp
                 Argument("--no-incremental");
 
             return
-                script.Argument("/p:UseSharedCompilation=false").
-                    Argument(builder.Options.DotNetArguments).
+                script.Argument(builder.Options.DotNetArguments).
                     QuoteArgument(projOrSln).
                     Script;
         }

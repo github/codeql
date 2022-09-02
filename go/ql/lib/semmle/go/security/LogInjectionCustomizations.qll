@@ -4,7 +4,6 @@
  */
 
 import go
-private import semmle.go.StringOps
 
 /**
  * Provides extension points for customizing the data-flow tracking configuration for reasoning

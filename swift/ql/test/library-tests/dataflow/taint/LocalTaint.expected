@@ -1,0 +1,139 @@
+| string.swift:7:13:7:13 |  | string.swift:7:13:7:13 | [post]  |
+| string.swift:7:13:7:13 |  | string.swift:7:14:7:14 | [post] &... |
+| string.swift:7:13:7:13 | TapExpr | string.swift:7:13:7:13 | "..." |
+| string.swift:7:14:7:14 | &... | string.swift:7:13:7:13 | [post]  |
+| string.swift:7:14:7:14 | &... | string.swift:7:14:7:14 | [post] &... |
+| string.swift:7:15:7:15 | &... | string.swift:7:15:7:15 | [post] &... |
+| string.swift:7:16:7:16 | x | string.swift:7:15:7:15 | [post] &... |
+| string.swift:7:18:7:18 |  | string.swift:7:18:7:18 | [post]  |
+| string.swift:7:18:7:18 |  | string.swift:7:18:7:18 | [post] &... |
+| string.swift:7:18:7:18 | &... | string.swift:7:18:7:18 | [post]  |
+| string.swift:7:18:7:18 | &... | string.swift:7:18:7:18 | [post] &... |
+| string.swift:9:13:9:13 |  | string.swift:9:13:9:13 | [post]  |
+| string.swift:9:13:9:13 |  | string.swift:9:14:9:14 | [post] &... |
+| string.swift:9:13:9:13 | TapExpr | string.swift:9:13:9:13 | "..." |
+| string.swift:9:14:9:14 | &... | string.swift:9:13:9:13 | [post]  |
+| string.swift:9:14:9:14 | &... | string.swift:9:14:9:14 | [post] &... |
+| string.swift:9:15:9:15 | &... | string.swift:9:15:9:15 | [post] &... |
+| string.swift:9:16:9:16 | x | string.swift:9:15:9:15 | [post] &... |
+| string.swift:9:18:9:18 |   | string.swift:9:18:9:18 | [post]   |
+| string.swift:9:18:9:18 |   | string.swift:9:18:9:18 | [post] &... |
+| string.swift:9:18:9:18 | &... | string.swift:9:18:9:18 | [post]   |
+| string.swift:9:18:9:18 | &... | string.swift:9:18:9:18 | [post] &... |
+| string.swift:9:20:9:20 | &... | string.swift:9:20:9:20 | [post] &... |
+| string.swift:9:21:9:21 | x | string.swift:9:20:9:20 | [post] &... |
+| string.swift:9:23:9:23 |  | string.swift:9:23:9:23 | [post]  |
+| string.swift:9:23:9:23 |  | string.swift:9:23:9:23 | [post] &... |
+| string.swift:9:23:9:23 | &... | string.swift:9:23:9:23 | [post]  |
+| string.swift:9:23:9:23 | &... | string.swift:9:23:9:23 | [post] &... |
+| string.swift:11:13:11:13 |  | string.swift:11:13:11:13 | [post]  |
+| string.swift:11:13:11:13 |  | string.swift:11:14:11:14 | [post] &... |
+| string.swift:11:13:11:13 | TapExpr | string.swift:11:13:11:13 | "..." |
+| string.swift:11:14:11:14 | &... | string.swift:11:13:11:13 | [post]  |
+| string.swift:11:14:11:14 | &... | string.swift:11:14:11:14 | [post] &... |
+| string.swift:11:15:11:15 | &... | string.swift:11:15:11:15 | [post] &... |
+| string.swift:11:16:11:16 | x | string.swift:11:15:11:15 | [post] &... |
+| string.swift:11:18:11:18 |   | string.swift:11:18:11:18 | [post]   |
+| string.swift:11:18:11:18 |   | string.swift:11:18:11:18 | [post] &... |
+| string.swift:11:18:11:18 | &... | string.swift:11:18:11:18 | [post]   |
+| string.swift:11:18:11:18 | &... | string.swift:11:18:11:18 | [post] &... |
+| string.swift:11:20:11:20 | &... | string.swift:11:20:11:20 | [post] &... |
+| string.swift:11:20:11:20 | &... | string.swift:11:21:11:21 | [post] 0 |
+| string.swift:11:21:11:21 | 0 | string.swift:11:20:11:20 | [post] &... |
+| string.swift:11:21:11:21 | 0 | string.swift:11:21:11:21 | [post] 0 |
+| string.swift:11:23:11:23 |   | string.swift:11:23:11:23 | [post]   |
+| string.swift:11:23:11:23 |   | string.swift:11:23:11:23 | [post] &... |
+| string.swift:11:23:11:23 | &... | string.swift:11:23:11:23 | [post]   |
+| string.swift:11:23:11:23 | &... | string.swift:11:23:11:23 | [post] &... |
+| string.swift:11:25:11:25 | &... | string.swift:11:25:11:25 | [post] &... |
+| string.swift:11:26:11:26 | x | string.swift:11:25:11:25 | [post] &... |
+| string.swift:11:28:11:28 |  | string.swift:11:28:11:28 | [post]  |
+| string.swift:11:28:11:28 |  | string.swift:11:28:11:28 | [post] &... |
+| string.swift:11:28:11:28 | &... | string.swift:11:28:11:28 | [post]  |
+| string.swift:11:28:11:28 | &... | string.swift:11:28:11:28 | [post] &... |
+| string.swift:14:13:14:13 |  | string.swift:14:13:14:13 | [post]  |
+| string.swift:14:13:14:13 |  | string.swift:14:14:14:14 | [post] &... |
+| string.swift:14:13:14:13 | TapExpr | string.swift:14:13:14:13 | "..." |
+| string.swift:14:14:14:14 | &... | string.swift:14:13:14:13 | [post]  |
+| string.swift:14:14:14:14 | &... | string.swift:14:14:14:14 | [post] &... |
+| string.swift:14:15:14:15 | &... | string.swift:14:15:14:15 | [post] &... |
+| string.swift:14:16:14:16 | y | string.swift:14:15:14:15 | [post] &... |
+| string.swift:14:18:14:18 |  | string.swift:14:18:14:18 | [post]  |
+| string.swift:14:18:14:18 |  | string.swift:14:18:14:18 | [post] &... |
+| string.swift:14:18:14:18 | &... | string.swift:14:18:14:18 | [post]  |
+| string.swift:14:18:14:18 | &... | string.swift:14:18:14:18 | [post] &... |
+| string.swift:16:13:16:13 |  | string.swift:16:13:16:13 | [post]  |
+| string.swift:16:13:16:13 |  | string.swift:16:14:16:14 | [post] &... |
+| string.swift:16:13:16:13 | TapExpr | string.swift:16:13:16:13 | "..." |
+| string.swift:16:14:16:14 | &... | string.swift:16:13:16:13 | [post]  |
+| string.swift:16:14:16:14 | &... | string.swift:16:14:16:14 | [post] &... |
+| string.swift:16:15:16:15 | &... | string.swift:16:15:16:15 | [post] &... |
+| string.swift:16:16:16:16 | x | string.swift:16:15:16:15 | [post] &... |
+| string.swift:16:18:16:18 |  hello  | string.swift:16:18:16:18 | [post]  hello  |
+| string.swift:16:18:16:18 |  hello  | string.swift:16:18:16:18 | [post] &... |
+| string.swift:16:18:16:18 | &... | string.swift:16:18:16:18 | [post]  hello  |
+| string.swift:16:18:16:18 | &... | string.swift:16:18:16:18 | [post] &... |
+| string.swift:16:26:16:26 | &... | string.swift:16:26:16:26 | [post] &... |
+| string.swift:16:27:16:27 | y | string.swift:16:26:16:26 | [post] &... |
+| string.swift:16:29:16:29 |  | string.swift:16:29:16:29 | [post]  |
+| string.swift:16:29:16:29 |  | string.swift:16:29:16:29 | [post] &... |
+| string.swift:16:29:16:29 | &... | string.swift:16:29:16:29 | [post]  |
+| string.swift:16:29:16:29 | &... | string.swift:16:29:16:29 | [post] &... |
+| string.swift:18:13:18:13 |  | string.swift:18:13:18:13 | [post]  |
+| string.swift:18:13:18:13 |  | string.swift:18:14:18:14 | [post] &... |
+| string.swift:18:13:18:13 | TapExpr | string.swift:18:13:18:13 | "..." |
+| string.swift:18:14:18:14 | &... | string.swift:18:13:18:13 | [post]  |
+| string.swift:18:14:18:14 | &... | string.swift:18:14:18:14 | [post] &... |
+| string.swift:18:15:18:15 | &... | string.swift:18:15:18:15 | [post] &... |
+| string.swift:18:16:18:16 | y | string.swift:18:15:18:15 | [post] &... |
+| string.swift:18:18:18:18 |  world  | string.swift:18:18:18:18 | [post]  world  |
+| string.swift:18:18:18:18 |  world  | string.swift:18:18:18:18 | [post] &... |
+| string.swift:18:18:18:18 | &... | string.swift:18:18:18:18 | [post]  world  |
+| string.swift:18:18:18:18 | &... | string.swift:18:18:18:18 | [post] &... |
+| string.swift:18:26:18:26 | &... | string.swift:18:26:18:26 | [post] &... |
+| string.swift:18:27:18:27 | x | string.swift:18:26:18:26 | [post] &... |
+| string.swift:18:29:18:29 |  | string.swift:18:29:18:29 | [post]  |
+| string.swift:18:29:18:29 |  | string.swift:18:29:18:29 | [post] &... |
+| string.swift:18:29:18:29 | &... | string.swift:18:29:18:29 | [post]  |
+| string.swift:18:29:18:29 | &... | string.swift:18:29:18:29 | [post] &... |
+| string.swift:21:13:21:13 |  | string.swift:21:13:21:13 | [post]  |
+| string.swift:21:13:21:13 |  | string.swift:21:14:21:14 | [post] &... |
+| string.swift:21:13:21:13 | TapExpr | string.swift:21:13:21:13 | "..." |
+| string.swift:21:14:21:14 | &... | string.swift:21:13:21:13 | [post]  |
+| string.swift:21:14:21:14 | &... | string.swift:21:14:21:14 | [post] &... |
+| string.swift:21:15:21:15 | &... | string.swift:21:15:21:15 | [post] &... |
+| string.swift:21:16:21:16 | x | string.swift:21:15:21:15 | [post] &... |
+| string.swift:21:18:21:18 |  | string.swift:21:18:21:18 | [post]  |
+| string.swift:21:18:21:18 |  | string.swift:21:18:21:18 | [post] &... |
+| string.swift:21:18:21:18 | &... | string.swift:21:18:21:18 | [post]  |
+| string.swift:21:18:21:18 | &... | string.swift:21:18:21:18 | [post] &... |
+| string.swift:33:13:33:13 | clean | string.swift:33:13:33:21 | ... .+(_:_:) ... |
+| string.swift:33:21:33:21 | clean | string.swift:33:13:33:21 | ... .+(_:_:) ... |
+| string.swift:34:13:34:13 | clean | string.swift:34:13:34:21 | ... .+(_:_:) ... |
+| string.swift:34:21:34:21 | tainted | string.swift:34:13:34:21 | ... .+(_:_:) ... |
+| string.swift:35:13:35:13 | tainted | string.swift:35:13:35:23 | ... .+(_:_:) ... |
+| string.swift:35:23:35:23 | clean | string.swift:35:13:35:23 | ... .+(_:_:) ... |
+| string.swift:36:13:36:13 | tainted | string.swift:36:13:36:23 | ... .+(_:_:) ... |
+| string.swift:36:23:36:23 | tainted | string.swift:36:13:36:23 | ... .+(_:_:) ... |
+| string.swift:38:13:38:13 | > | string.swift:38:13:38:19 | ... .+(_:_:) ... |
+| string.swift:38:13:38:19 | ... .+(_:_:) ... | string.swift:38:13:38:27 | ... .+(_:_:) ... |
+| string.swift:38:19:38:19 | clean | string.swift:38:13:38:19 | ... .+(_:_:) ... |
+| string.swift:38:27:38:27 | < | string.swift:38:13:38:27 | ... .+(_:_:) ... |
+| string.swift:39:13:39:13 | > | string.swift:39:13:39:19 | ... .+(_:_:) ... |
+| string.swift:39:13:39:19 | ... .+(_:_:) ... | string.swift:39:13:39:29 | ... .+(_:_:) ... |
+| string.swift:39:19:39:19 | tainted | string.swift:39:13:39:19 | ... .+(_:_:) ... |
+| string.swift:39:29:39:29 | < | string.swift:39:13:39:29 | ... .+(_:_:) ... |
+| url.swift:14:29:14:29 | clean | url.swift:14:17:14:34 | call to init(string:) |
+| url.swift:15:31:15:31 | tainted | url.swift:15:19:15:38 | call to init(string:) |
+| url.swift:20:24:20:24 | clean | url.swift:20:12:20:46 | call to init(string:relativeTo:) |
+| url.swift:20:43:20:43 | nil | url.swift:20:12:20:46 | call to init(string:relativeTo:) |
+| url.swift:21:24:21:24 | tainted | url.swift:21:12:21:48 | call to init(string:relativeTo:) |
+| url.swift:21:45:21:45 | nil | url.swift:21:12:21:48 | call to init(string:relativeTo:) |
+| url.swift:22:24:22:24 | clean | url.swift:22:12:22:51 | call to init(string:relativeTo:) |
+| url.swift:22:43:22:43 | urlClean | url.swift:22:12:22:51 | call to init(string:relativeTo:) |
+| url.swift:23:24:23:24 | clean | url.swift:23:12:23:53 | call to init(string:relativeTo:) |
+| url.swift:23:43:23:43 | urlTainted | url.swift:23:12:23:53 | call to init(string:relativeTo:) |
+| url.swift:25:25:25:25 | clean | url.swift:25:13:25:30 | call to init(string:) |
+| url.swift:29:25:29:25 | tainted | url.swift:29:13:29:32 | call to init(string:) |
+| url.swift:34:26:34:26 | clean | url.swift:34:14:34:31 | call to init(string:) |
+| url.swift:38:28:38:28 | tainted | url.swift:38:16:38:35 | call to init(string:) |
