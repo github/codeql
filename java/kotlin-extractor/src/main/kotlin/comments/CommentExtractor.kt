@@ -2,6 +2,7 @@ package com.github.codeql.comments
 
 import com.github.codeql.*
 import com.github.codeql.utils.IrVisitorLookup
+import com.github.codeql.utils.isLocalFunction
 import com.github.codeql.utils.versions.Psi2Ir
 import com.intellij.psi.PsiComment
 import com.intellij.psi.PsiElement
@@ -104,7 +105,11 @@ class CommentExtractor(private val fileExtractor: KotlinFileExtractor, private v
                             val existingLabel = if (ownerIr is IrVariable) {
                                 label = "variable ${ownerIr.name.asString()}"
                                 tw.getExistingVariableLabelFor(ownerIr)
-                            } else {
+                            } else if (ownerIr is IrFunction && ownerIr.isLocalFunction()) {
+                                label = "local function ${ownerIr.name.asString()}"
+                                fileExtractor.getLocallyVisibleFunctionLabels(ownerIr).function
+                            }
+                            else {
                                 label = getLabel(ownerIr) ?: continue
                                 tw.getExistingLabelFor<DbTop>(label)
                             }
@@ -130,7 +135,13 @@ class CommentExtractor(private val fileExtractor: KotlinFileExtractor, private v
                 when (element) {
                     is IrClass -> return fileExtractor.getClassLabel(element, listOf()).classLabel
                     is IrTypeParameter -> return fileExtractor.getTypeParameterLabel(element)
-                    is IrFunction -> return fileExtractor.getFunctionLabel(element, null)
+                    is IrFunction -> {
+                        return if (element.isLocalFunction()) {
+                            null
+                        } else {
+                            fileExtractor.getFunctionLabel(element, null)
+                        }
+                    }
                     is IrValueParameter -> return fileExtractor.getValueParameterLabel(element, null)
                     is IrProperty -> return fileExtractor.getPropertyLabel(element)
                     is IrField -> return fileExtractor.getFieldLabel(element)

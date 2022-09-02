@@ -1121,10 +1121,6 @@ open class KotlinUsesExtractor(
         // Note not using `parentsWithSelf` as that only works if `d` is an IrDeclarationParent
         d.parents.any { (it as? IrAnnotationContainer)?.hasAnnotation(jvmWildcardSuppressionAnnotaton) == true }
 
-    protected fun IrFunction.isLocalFunction(): Boolean {
-        return this.visibility == DescriptorVisibilities.LOCAL
-    }
-
     /**
      * Class to hold labels for generated classes around local functions, lambdas, function references, and property references.
      */
