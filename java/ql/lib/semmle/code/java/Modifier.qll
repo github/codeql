@@ -31,15 +31,7 @@ abstract class Modifiable extends Element {
    * abstract, so `isAbstract()` will hold for them even if `hasModifier("abstract")`
    * does not.
    */
-  predicate hasModifier(string m) {
-    exists(Modifier mod | mod = this.getAModifier() |
-      modifiers(mod, m) and
-      // Kotlin "internal" elements may also get "public" modifiers, so we want to filter those out
-      not exists(Modifier mod2 |
-        hasModifier(this, mod2) and modifiers(mod, "public") and modifiers(mod2, "internal")
-      )
-    )
-  }
+  predicate hasModifier(string m) { modifiers(this.getAModifier(), m) }
 
   /** Holds if this element has no modifier. */
   predicate hasNoModifier() { not hasModifier(this, _) }
