@@ -39,7 +39,7 @@ Example
 A query reference file to test a JavaScript alert query:
 `DeadAngularJSEventListener.qlref <https://github.com/github/codeql/blob/main/javascript/ql/test/query-tests/AngularJS/DeadAngularJSEventListener/DeadAngularJSEventListener.qlref>`__
 
-The `CodeQL pack <https://github.com/github/codeql/blob/main/javascript/ql/test/qlpack.yml>`__
+The ```qlpack.yml`` file <https://github.com/github/codeql/blob/main/javascript/ql/test/qlpack.yml>`__
 for the CodeQL pack at ``javascript/ql/test`` defines ``codeql/javascript-queries`` as
 a dependency. So the query reference file defines the location of the query relative
 to the ``codeql/javascript-queries`` CodeQL pack::

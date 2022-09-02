@@ -16,7 +16,7 @@ You can use the package management commands in the CodeQL CLI to create CodeQL p
 
 
 The standard CodeQL packages for all supported languages are published in the `GitHub Container registry <https://github.com/orgs/codeql/packages>`__.
-The `CodeQL repository <https://github.com/github/codeql>`__ contains sources for the standard CodeQL packs for all supported languages.
+The `CodeQL repository <https://github.com/github/codeql>`__ contains source files for the standard CodeQL packs for all supported languages.
 
 .. _codeql-pack-structure:
 
@@ -38,13 +38,13 @@ When executing query-related commands, CodeQL first looks in siblings of the ins
 Then it checks the package cache for CodeQL packs which have been downloaded. This means that when you are developing queries locally, the local packages
 in the installation directory override packages of the same name in the package cache, so that you can test your local changes.
 
-The metadata in each `qlpack.yml`` file tells
+The metadata in each ``qlpack.yml`` file tells
 CodeQL how to compile any queries in the pack, what libraries the pack depends on, and where to
 find query suite definitions.
 
 The contents of the CodeQL pack (queries or libraries used in CodeQL analysis) is included in the same directory as ``qlpack.yml``, or its subdirectories.
 
-The directory containing the ``qlpack.yml`` file serves as the root directory for the content of the CodeQL pack. That is, for all ``.ql`` and ``.qll`` files in the pack, CodeQL will resolve all import statements relative to the directory containing ``qlpack.yml`` at the pack's root.
+The directory containing the ``qlpack.yml`` file serves as the root directory for the content of the CodeQL pack. That is, for all ``.ql`` and ``.qll`` files in the pack, CodeQL will resolve all import statements relative to the directory containing the ``qlpack.yml`` file at the pack's root.
 
 .. _codeqlpack-yml-properties:
 
@@ -141,7 +141,7 @@ The following properties are supported in ``qlpack.yml`` files.
         upgrades: .
 
      - Core language packs only
-     - The path to a directory within the pack that contains database upgrade scripts, defined relative to the pack directory. Database upgrades are used internally to ensure a database created with a different version of the CodeQL CLI is compatible with the current version.
+     - The path to a directory within the pack that contains database upgrade scripts, defined relative to the pack directory. Database upgrades are used internally to ensure that a database created with a different version of the CodeQL CLI is compatible with the current version of the CLI.
    * - ``authors``
      - .. code-block:: yaml
 
@@ -212,7 +212,7 @@ In most cases, the ``codeql-pack.lock.yml`` file is only relevant for query pack
 Examples of custom CodeQL packs
 -------------------------------
 
-When you write custom queries or tests, you should save them in custom CodeQL packs. For simplicity, try to organize each pack logically. For more information, see ""`CodeQL pack structure <#codeql-pack-structure>`__." Save files for queries and tests in separate packs and, where possible, organize custom packs into specific folders for each target language. This is particuarly useful if you intend to publish your CodeQL packs so they can be shared with others or used in GitHub `Code scanning <https://docs.github.com/en/code-security/secure-coding/automatically-scanning-your-code-for-vulnerabilities-and-errors/about-code-scanning>`__.
+When you write custom queries or tests, you should save them in custom CodeQL packs. For simplicity, try to organize each pack logically. For more information, see "`CodeQL pack structure <#codeql-pack-structure>`__." Save files for queries and tests in separate packs and, where possible, organize custom packs into specific folders for each target language. This is particuarly useful if you intend to publish your CodeQL packs so they can be shared with others or used in GitHub `Code scanning <https://docs.github.com/en/code-security/secure-coding/automatically-scanning-your-code-for-vulnerabilities-and-errors/about-code-scanning>`__.
 
 CodeQL packs for custom libraries
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
