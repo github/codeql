@@ -23,6 +23,9 @@
             "sequelize;Sequelize;Member[query].Argument[0].Member[query];sql-injection",
             "sequelize;Sequelize;Member[query].Argument[0];sql-injection",
             "sequelize;SequelizeStaticAndInstance;Member[asIs,literal].Argument[0];sql-injection"
+        ],
+        "typeDefinitions": [
+            "sequelize;Sequelize;sequelize-typescript;Sequelize;"
         ]
     },
     "generatedModel": {

@@ -252,6 +252,7 @@ private class Types extends ModelInput::TypeModelCsv {
         "sequelize;QueryOptions;sequelize;QueryInterface;Member[increment,update,upsert].Argument[4]", //
         "sequelize;QueryOptions;sequelize;Sequelize;Member[authenticate,validate].Argument[0]", //
         "sequelize;QueryOptions;sequelize;Sequelize;Member[query].Argument[1]", //
+        "sequelize;Sequelize;sequelize-typescript;Sequelize;", //
         "sequelize;Sequelize;sequelize;Hooks;Member[afterInit].Argument[1].Argument[0]", //
         "sequelize;Sequelize;sequelize;Hooks;Member[afterInit].WithArity[1].Argument[0].Argument[0]", //
         "sequelize;Sequelize;sequelize;Instance;Member[sequelize]", //
