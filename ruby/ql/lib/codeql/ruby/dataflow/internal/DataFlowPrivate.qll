@@ -232,7 +232,7 @@ private module Cached {
       p instanceof KeywordParameter or
       p instanceof HashSplatParameter
     } or
-    TSelfParameterNode(MethodBase m) or
+    TSelfParameterNode(MethodBase m) { not m instanceof SingletonMethod } or
     TBlockParameterNode(MethodBase m) or
     TSynthHashSplatParameterNode(DataFlowCallable c) {
       isParameterNode(_, c, any(ParameterPosition p | p.isKeyword(_)))
