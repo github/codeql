@@ -579,23 +579,6 @@ module API {
     /** Gets a node reachable from a use-node. */
     private DataFlow::LocalSourceNode useCandFwd() { result = useCandFwd(TypeTracker::end()) }
 
-    private DataFlow::Node useCandRev(TypeBackTracker tb) {
-      result = useCandFwd() and
-      tb.start()
-      or
-      exists(TypeBackTracker tb2, DataFlow::LocalSourceNode mid, TypeTracker t |
-        mid = useCandRev(tb2) and
-        result = mid.backtrack(tb2, tb) and
-        pragma[only_bind_out](result) = useCandFwd(t) and
-        pragma[only_bind_out](t) = pragma[only_bind_out](tb).getACompatibleTypeTracker()
-      )
-    }
-
-    private DataFlow::LocalSourceNode useCandRev() {
-      result = useCandRev(TypeBackTracker::end()) and
-      isUse(result)
-    }
-
     private predicate isDef(DataFlow::Node rhs) {
       // If a call node is relevant as a use-node, treat its arguments as def-nodes
       argumentStep(_, useCandFwd(), rhs)
@@ -650,26 +633,12 @@ module API {
      *
      * The flow from `src` to the returned node may be inter-procedural.
      */
-    private DataFlow::Node trackUseNode(DataFlow::LocalSourceNode src, TypeTracker t) {
+    private DataFlow::LocalSourceNode trackUseNode(DataFlow::LocalSourceNode src, TypeTracker t) {
       result = src and
-      result = useCandRev() and
+      isUse(src) and
       t.start()
       or
-      exists(TypeTracker t2, DataFlow::LocalSourceNode mid |
-        mid = trackUseNode(src, t2) and
-        result = useNodeStep(mid, t2, t)
-      )
-    }
-
-    pragma[nomagic]
-    private DataFlow::Node useNodeStep(
-      DataFlow::LocalSourceNode mid, TypeTracker tmid, TypeTracker t
-    ) {
-      exists(TypeBackTracker tb |
-        result = mid.track(tmid, t) and
-        pragma[only_bind_into](result) = useCandRev(pragma[only_bind_into](tb)) and
-        pragma[only_bind_out](t) = pragma[only_bind_into](tb).getACompatibleTypeTracker()
-      )
+      exists(TypeTracker t2 | result = trackUseNode(src, t2).track(t2, t))
     }
 
     /**
