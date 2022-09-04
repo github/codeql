@@ -371,6 +371,39 @@ class HeaderDeclaration extends DataFlow::Node {
   DataFlow::Node getValueArg() { result = range.getValueArg() }
 }
 
+/** Provides classes for modeling HTTP Header APIs. */
+module HeaderCollection {
+  /**
+   * A data-flow node that collects functions getting HTTP Headers.
+   *
+   * Extend this class to model new APIs. If you want to refine existing API models,
+   * extend `HeaderCollection` instead.
+   */
+  abstract class Range extends DataFlow::Node {
+    /**
+     * Gets the argument containing the header name.
+     */
+    abstract DataFlow::Node getNameArg();
+  }
+}
+
+/**
+ * A data-flow node that collects functions getting HTTP Headers.
+ *
+ * Extend this class to refine existing API models. If you want to model new APIs,
+ * extend `HeaderCollection::Range` instead.
+ */
+class HeaderCollection extends DataFlow::Node {
+  HeaderCollection::Range range;
+
+  HeaderCollection() { this = range }
+
+  /**
+   * Gets the argument containing the header name.
+   */
+  DataFlow::Node getNameArg() { result = range.getNameArg() }
+}
+
 /** Provides classes for modeling Csv writer APIs. */
 module CsvWriter {
   /**
