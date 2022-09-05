@@ -890,7 +890,7 @@ module PrefixConstruction<isCandidateSig/1 isCandidate> {
   private predicate lastStartState(RelevantState state) {
     exists(RegExpRoot root |
       state =
-        max(State s, Location l |
+        max(RelevantState s, Location l |
           isStartState(s) and
           getRoot(s.getRepr()) = root and
           l = s.getRepr().getLocation()
