@@ -3845,7 +3845,11 @@ open class KotlinFileExtractor(
                 return
             }
 
-            val parameterTypes = type.arguments.map { it as IrType }
+            val parameterTypes = type.arguments.map { it as? IrType }.requireNoNullsOrNull()
+            if (parameterTypes == null) {
+                logger.errorElement("Unexpected: Non-IrType parameter.", functionReferenceExpr)
+                return
+            }
 
             val dispatchReceiverIdx: Int
             val expressionTypeArguments: List<IrType>
