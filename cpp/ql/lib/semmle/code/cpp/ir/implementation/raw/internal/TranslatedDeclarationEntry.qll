@@ -238,40 +238,6 @@ class TranslatedStaticLocalVariableInitialization extends TranslatedElement,
   final override Function getFunction() { result = var.getFunction() }
 }
 
-/**
- * Gets the `TranslatedRangeBasedForVariableDeclaration` that represents the declaration of
- * `var`.
- */
-TranslatedRangeBasedForVariableDeclaration getTranslatedRangeBasedForVariableDeclaration(
-  LocalVariable var
-) {
-  result.getVariable() = var
-}
-
-/**
- * Represents the IR translation of a compiler-generated variable in a range-based `for` loop.
- */
-class TranslatedRangeBasedForVariableDeclaration extends TranslatedLocalVariableDeclaration,
-  TTranslatedRangeBasedForVariableDeclaration {
-  RangeBasedForStmt forStmt;
-  LocalVariable var;
-
-  TranslatedRangeBasedForVariableDeclaration() {
-    this = TTranslatedRangeBasedForVariableDeclaration(forStmt, var)
-  }
-
-  override string toString() { result = var.toString() }
-
-  override Locatable getAst() { result = var }
-
-  /** DEPRECATED: Alias for getAst */
-  deprecated override Locatable getAST() { result = getAst() }
-
-  override Function getFunction() { result = forStmt.getEnclosingFunction() }
-
-  override LocalVariable getVariable() { result = var }
-}
-
 TranslatedConditionDecl getTranslatedConditionDecl(ConditionDeclExpr expr) {
   result.getAst() = expr
 }
