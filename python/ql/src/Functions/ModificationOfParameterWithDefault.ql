@@ -19,5 +19,5 @@ from
   ModificationOfParameterWithDefault::Configuration config, DataFlow::PathNode source,
   DataFlow::PathNode sink
 where config.hasFlowPath(source, sink)
-select sink.getNode(), source, sink, "This value modification depends on a $@.", source.getNode(),
-  "default value"
+select sink.getNode(), source, sink, "This expression mutates $@.", source.getNode(),
+  "a default value"
