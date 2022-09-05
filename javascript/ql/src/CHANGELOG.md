@@ -1,3 +1,10 @@
+## 0.3.3
+
+### New Queries
+
+* Added a new query, `py/suspicious-regexp-range`, to detect character ranges in regular expressions that seem to match 
+  too many characters.
+
 ## 0.3.2
 
 ## 0.3.1

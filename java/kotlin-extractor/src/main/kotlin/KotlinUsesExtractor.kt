@@ -541,6 +541,12 @@ open class KotlinUsesExtractor(
 
     private fun useArrayType(arrayType: IrSimpleType, componentType: IrType, elementType: IrType, dimensions: Int, isPrimitiveArray: Boolean): TypeResults {
 
+        val arrayClass = arrayType.classifier.owner
+        if (arrayClass !is IrClass) {
+            error("Unexpected owner type for array type: ${arrayClass.javaClass}")
+            return extractErrorType()
+        }
+
         // Ensure we extract Array<Int> as Integer[], not int[], for example:
         fun nullableIfNotPrimitive(type: IrType) = if (type.isPrimitiveType() && !isPrimitiveArray) type.makeNullable() else type
 
@@ -557,7 +563,7 @@ open class KotlinUsesExtractor(
                 dimensions,
                 componentTypeResults.javaResult.id)
 
-            extractClassSupertypes(arrayType.classifier.owner as IrClass, it, ExtractSupertypesMode.Specialised(arrayType.arguments))
+            extractClassSupertypes(arrayClass, it, ExtractSupertypesMode.Specialised(arrayType.arguments))
 
             // array.length
             val length = tw.getLabelFor<DbField>("@\"field;{$it};length\"")
@@ -582,7 +588,7 @@ open class KotlinUsesExtractor(
             componentTypeResults.javaResult.signature + "[]",
             javaShortName)
 
-        val arrayClassResult = useSimpleTypeClass(arrayType.classifier.owner as IrClass, arrayType.arguments, arrayType.hasQuestionMark)
+        val arrayClassResult = useSimpleTypeClass(arrayClass, arrayType.arguments, arrayType.hasQuestionMark)
         return TypeResults(javaResult, arrayClassResult.kotlinResult)
     }
 
@@ -637,15 +643,23 @@ open class KotlinUsesExtractor(
             return TypeResults(javaResult, kotlinResult)
         }
 
+        val owner = s.classifier.owner
         val primitiveInfo = primitiveTypeMapping.getPrimitiveInfo(s)
 
         when {
-            primitiveInfo != null -> return primitiveType(
-                s.classifier.owner as IrClass,
-                primitiveInfo.primitiveName, primitiveInfo.otherIsPrimitive,
-                primitiveInfo.javaClass,
-                primitiveInfo.kotlinPackageName, primitiveInfo.kotlinClassName
-            )
+            primitiveInfo != null -> {
+                if (owner is IrClass) {
+                    return primitiveType(
+                        owner,
+                        primitiveInfo.primitiveName, primitiveInfo.otherIsPrimitive,
+                        primitiveInfo.javaClass,
+                        primitiveInfo.kotlinPackageName, primitiveInfo.kotlinClassName
+                    )
+                } else {
+                    logger.error("Got primitive info for non-class (${owner.javaClass}) for ${s.render()}")
+                    return extractErrorType()
+                }
+            }
 
             (s.isBoxedArray && s.arguments.isNotEmpty()) || s.isPrimitiveArray() -> {
 
@@ -689,15 +703,13 @@ open class KotlinUsesExtractor(
                 )
             }
 
-            s.classifier.owner is IrClass -> {
-                val classifier: IrClassifierSymbol = s.classifier
-                val cls: IrClass = classifier.owner as IrClass
+            owner is IrClass -> {
                 val args = if (s.isRawType()) null else s.arguments
 
-                return useSimpleTypeClass(cls, args, s.hasQuestionMark)
+                return useSimpleTypeClass(owner, args, s.hasQuestionMark)
             }
-            s.classifier.owner is IrTypeParameter -> {
-                val javaResult = useTypeParameter(s.classifier.owner as IrTypeParameter)
+            owner is IrTypeParameter -> {
+                val javaResult = useTypeParameter(owner as IrTypeParameter)
                 val aClassId = makeClass("kotlin", "TypeParam") // TODO: Wrong
                 val kotlinResult = if (true) TypeResult(fakeKotlinType(), "TODO", "TODO") else
                     if (s.hasQuestionMark) {
@@ -1195,17 +1207,15 @@ open class KotlinUsesExtractor(
                             decl.valueParameters.size == f.valueParameters.size
                         } ?:
                         // Or check property accessors:
-                        if (f.isAccessor) {
-                            val prop = javaClass.declarations.findSubType<IrProperty> { decl ->
-                                decl.name == (f.propertyIfAccessor as IrProperty).name
+                        (f.propertyIfAccessor as? IrProperty)?.let { kotlinProp ->
+                            val javaProp = javaClass.declarations.findSubType<IrProperty> { decl ->
+                                decl.name == kotlinProp.name
                             }
-                            if (prop?.getter?.name == f.name)
-                                prop.getter
-                            else if (prop?.setter?.name == f.name)
-                                prop.setter
+                            if (javaProp?.getter?.name == f.name)
+                                javaProp.getter
+                            else if (javaProp?.setter?.name == f.name)
+                                javaProp.setter
                             else null
-                        } else {
-                            null
                         } ?: run {
                             val parentFqName = parentClass.fqNameWhenAvailable?.asString()
                             if (!expectedMissingEquivalents.contains(parentFqName)) {

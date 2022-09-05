@@ -1,7 +1,9 @@
 function RegisterExtractorPack(id)
-    local extractor = GetPlatformToolsDirectory() ..
-        'Semmle.Extraction.CSharp.Driver'
-    if OperatingSystem == 'windows' then extractor = extractor .. '.exe' end
+    function Exify(path)
+        if OperatingSystem == 'windows' then return path .. '.exe' else return path end
+    end
+
+    local extractor = Exify(GetPlatformToolsDirectory() .. 'Semmle.Extraction.CSharp.Driver')
 
     function DotnetMatcherBuild(compilerName, compilerPath, compilerArguments,
                                 _languageId)
@@ -48,10 +50,30 @@ function RegisterExtractorPack(id)
         return nil
     end
 
+    function MsBuildMatcher(compilerName, compilerPath, compilerArguments, _languageId)
+        if MatchCompilerName('^' .. Exify('msbuild') .. '$', compilerName, compilerPath,
+            compilerArguments) or
+            MatchCompilerName('^' .. Exify('xbuild') .. '$', compilerName, compilerPath,
+                compilerArguments) then
+            return {
+                order = ORDER_REPLACE,
+                invocation = BuildExtractorInvocation(id, compilerPath,
+                    compilerPath,
+                    compilerArguments,
+                    nil, {
+                    '/p:UseSharedCompilation=false',
+                    '/p:MvcBuildViews=true'
+                })
+
+            }
+        end
+    end
+
     local windowsMatchers = {
         DotnetMatcherBuild,
+        MsBuildMatcher,
         CreatePatternMatcher({ '^csc.*%.exe$' }, MatchCompilerName, extractor, {
-            prepend = {'--compiler', '"${compiler}"' },
+            prepend = { '--compiler', '"${compiler}"' },
             order = ORDER_BEFORE
         }),
         CreatePatternMatcher({ '^fakes.*%.exe$', 'moles.*%.exe' },
@@ -94,23 +116,9 @@ function RegisterExtractorPack(id)
             extractor, {
             prepend = { '--compiler', '"${compiler}"' },
             order = ORDER_BEFORE
-        }), function(compilerName, compilerPath, compilerArguments, _languageId)
-            if MatchCompilerName('^msbuild$', compilerName, compilerPath,
-                compilerArguments) or
-                MatchCompilerName('^xbuild$', compilerName, compilerPath,
-                    compilerArguments) then
-                return {
-                    order = ORDER_REPLACE,
-                    invocation = BuildExtractorInvocation(id, compilerPath,
-                        compilerPath,
-                        compilerArguments,
-                        nil, {
-                        '/p:UseSharedCompilation=false'
-                    })
-
-                }
-            end
-        end, function(compilerName, compilerPath, compilerArguments, _languageId)
+        }),
+        MsBuildMatcher,
+        function(compilerName, compilerPath, compilerArguments, _languageId)
             -- handle cases like `dotnet exec csc.dll <args>` and `mono(-sgen64) csc.exe <args>`
             if compilerName ~= 'dotnet' and not compilerName:match('^mono') then
                 return nil

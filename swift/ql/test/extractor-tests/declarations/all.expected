@@ -255,3 +255,11 @@
 | declarations.swift:150:44:150:47 | _ |
 | declarations.swift:150:50:150:53 | _ |
 | declarations.swift:150:56:150:59 | _ |
+| declarations.swift:152:1:152:22 | Derived |
+| declarations.swift:152:7:152:7 | deinit() |
+| declarations.swift:152:7:152:7 | self |
+| declarations.swift:152:21:152:21 | init() |
+| declarations.swift:152:21:152:21 | self |
+| declarations.swift:155:1:155:28 | var ... = ... |
+| declarations.swift:155:1:155:28 | { ... } |
+| declarations.swift:155:5:155:5 | d |

@@ -1336,16 +1336,25 @@ open class KotlinFileExtractor(
         }
 
         // If a path was found, repeatedly substitute types to get the corresponding specialisation of that ancestor.
-        return if (!walkFrom(receiverClass)) {
+        if (!walkFrom(receiverClass)) {
             logger.errorElement("Failed to find a class declaring ${callTarget.name} starting at ${receiverClass.name}", callTarget)
-            listOf()
+            return listOf()
         } else {
-            var subbedType = receiverType
+            var subbedType: IrSimpleType = receiverType
             ancestorTypes.forEach {
                 val thisClass = subbedType.classifier.owner as IrClass
-                subbedType = it.substituteTypeArguments(thisClass.typeParameters, subbedType.arguments) as IrSimpleType
+                if (thisClass !is IrClass) {
+                    logger.errorElement("Found ancestor with unexpected type ${thisClass.javaClass}", callTarget)
+                    return listOf()
+                }
+                val itSubbed = it.substituteTypeArguments(thisClass.typeParameters, subbedType.arguments)
+                if (itSubbed !is IrSimpleType) {
+                    logger.errorElement("Substituted type has unexpected type ${itSubbed.javaClass}", callTarget)
+                    return listOf()
+                }
+                subbedType = itSubbed
             }
-            subbedType.arguments
+            return subbedType.arguments
         }
     }
 
@@ -1427,12 +1436,14 @@ open class KotlinFileExtractor(
         // type arguments at index -2, -3, ...
         extractTypeArguments(typeArguments, locId, id, enclosingCallable, enclosingStmt, -2, true)
 
-        val isFunctionInvoke = drType != null
-                && drType is IrSimpleType
-                && drType.isFunctionOrKFunction()
-                && callTarget.name.asString() == OperatorNameConventions.INVOKE.asString()
-        val isBigArityFunctionInvoke = isFunctionInvoke
-                && (drType as IrSimpleType).arguments.size > BuiltInFunctionArity.BIG_ARITY
+        val (isFunctionInvoke, isBigArityFunctionInvoke) =
+                if (drType is IrSimpleType &&
+                    drType.isFunctionOrKFunction() &&
+                    callTarget.name.asString() == OperatorNameConventions.INVOKE.asString()) {
+                    Pair(true, drType.arguments.size > BuiltInFunctionArity.BIG_ARITY)
+                } else {
+                    Pair(false, false)
+                }
 
         if (callTarget.isLocalFunction()) {
             val ids = getLocallyVisibleFunctionLabels(callTarget)
@@ -1443,7 +1454,7 @@ open class KotlinFileExtractor(
             extractNewExprForLocalFunction(ids, id, locId, enclosingCallable, enclosingStmt)
         } else {
             val methodId =
-                if (drType != null && extractClassTypeArguments && drType is IrSimpleType && !isUnspecialised(drType)) {
+                if (extractClassTypeArguments && drType is IrSimpleType && !isUnspecialised(drType)) {
 
                     val extractionMethod = if (isFunctionInvoke) {
                         // For `kotlin.FunctionX` and `kotlin.reflect.KFunctionX` interfaces, we're making sure that we
@@ -2175,13 +2186,18 @@ open class KotlinFileExtractor(
                         if (dispatchReceiver == null) {
                             logger.errorElement("No dispatch receiver found for array iterator call", c)
                         } else {
-                            val typeArgs = (dispatchReceiver.type as IrSimpleType).arguments.map {
-                                when(it) {
-                                    is IrTypeProjection -> it.type
-                                    else -> pluginContext.irBuiltIns.anyNType
+                            val drType = dispatchReceiver.type
+                            if (drType !is IrSimpleType) {
+                                logger.errorElement("Dispatch receiver with unexpected type rep found for array iterator call: ${drType.javaClass}", c)
+                            } else {
+                                val typeArgs = drType.arguments.map {
+                                    when(it) {
+                                        is IrTypeProjection -> it.type
+                                        else -> pluginContext.irBuiltIns.anyNType
+                                    }
                                 }
+                                extractRawMethodAccess(iteratorFn, c, callable, parent, idx, enclosingStmt, listOf(c.dispatchReceiver), null, null, typeArgs)
                             }
-                            extractRawMethodAccess(iteratorFn, c, callable, parent, idx, enclosingStmt, listOf(c.dispatchReceiver), null, null, typeArgs)
                         }
                     }
                 }
