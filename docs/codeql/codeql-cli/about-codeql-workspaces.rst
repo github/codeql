@@ -12,7 +12,7 @@ The main benefit of a CodeQL workspace is that it makes it easier for you to dev
 In most cases, you should store the CodeQL workspace and the CodeQL packs contained in it in one git repository. This makes it easier to share your CodeQL development environment.
 
 The ``codeql-workspace.yml`` file
---------------------------------
+----------------------------------
 
 A CodeQL workspace is defined by a ``codeql-workspace.yml`` yaml file. This file contains a ``provide`` block, and optionally an ``ignore`` block.
 
