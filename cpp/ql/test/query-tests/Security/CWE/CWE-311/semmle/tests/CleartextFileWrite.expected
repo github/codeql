@@ -1,5 +1,4 @@
 edges
-| test2.cpp:52:44:52:57 | password_tries | test2.cpp:52:40:52:58 | * ... |
 | test2.cpp:62:18:62:25 | password | test2.cpp:65:31:65:34 | cpy1 |
 | test2.cpp:72:17:72:24 | password | test2.cpp:73:30:73:32 | buf |
 | test2.cpp:72:17:72:24 | password | test2.cpp:76:30:76:32 | buf |
@@ -9,8 +8,6 @@ nodes
 | test2.cpp:44:37:44:45 | thepasswd | semmle.label | thepasswd |
 | test2.cpp:45:38:45:47 | accountkey | semmle.label | accountkey |
 | test2.cpp:50:41:50:53 | passwd_config | semmle.label | passwd_config |
-| test2.cpp:52:40:52:58 | * ... | semmle.label | * ... |
-| test2.cpp:52:44:52:57 | password_tries | semmle.label | password_tries |
 | test2.cpp:54:41:54:52 | widepassword | semmle.label | widepassword |
 | test2.cpp:55:40:55:51 | widepassword | semmle.label | widepassword |
 | test2.cpp:57:39:57:49 | call to getPassword | semmle.label | call to getPassword |

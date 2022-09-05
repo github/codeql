@@ -234,6 +234,10 @@ class FromSensitiveConfiguration extends TaintTracking::Configuration {
     // flow through encryption functions to the return value (in case we can reach other sinks)
     node2.asExpr().(Encrypted).(FunctionCall).getAnArgument() = node1.asExpr()
   }
+
+  override predicate isSanitizer(DataFlow::Node node) {
+    node.asExpr().getUnspecifiedType() instanceof IntegralType
+  }
 }
 
 from

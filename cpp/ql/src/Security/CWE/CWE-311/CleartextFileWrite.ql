@@ -29,6 +29,10 @@ class FromSensitiveConfiguration extends TaintTracking::Configuration {
   override predicate isSource(DataFlow::Node source) { source.asExpr() instanceof SensitiveExpr }
 
   override predicate isSink(DataFlow::Node sink) { any(FileWrite w).getASource() = sink.asExpr() }
+
+  override predicate isSanitizer(DataFlow::Node node) {
+    node.asExpr().getUnspecifiedType() instanceof IntegralType
+  }
 }
 
 /**
