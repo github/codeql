@@ -1191,20 +1191,22 @@ open class KotlinUsesExtractor(
         else
             f.parentClassOrNull?.let { parentClass ->
                 getJavaEquivalentClass(parentClass)?.let { javaClass ->
-                    if (javaClass != parentClass)
+                    if (javaClass != parentClass) {
+                        val jvmName = getSpecialJvmName(f) ?: f.name.asString()
                         // Look for an exact type match...
                         javaClass.declarations.findSubType<IrFunction> { decl ->
-                            decl.name == f.name &&
-                            decl.valueParameters.size == f.valueParameters.size &&
-                            // Note matching by classifier not the whole type so that generic arguments are allowed to differ,
-                            // as they always will for method type parameters occurring in parameter types (e.g. <T> toArray(T[] array)
-                            // Differing only by nullability would also be insignificant if it came up.
-                            decl.valueParameters.zip(f.valueParameters).all { p -> p.first.type.classifierOrNull == p.second.type.classifierOrNull }
+                            decl.name.asString() == jvmName &&
+                                    decl.valueParameters.size == f.valueParameters.size &&
+                                    // Note matching by classifier not the whole type so that generic arguments are allowed to differ,
+                                    // as they always will for method type parameters occurring in parameter types (e.g. <T> toArray(T[] array)
+                                    // Differing only by nullability would also be insignificant if it came up.
+                                    decl.valueParameters.zip(f.valueParameters)
+                                        .all { p -> p.first.type.classifierOrNull == p.second.type.classifierOrNull }
                         } ?:
                         // Or if there is none, look for the only viable overload
                         javaClass.declarations.singleOrNullSubType<IrFunction> { decl ->
-                            decl.name == f.name &&
-                            decl.valueParameters.size == f.valueParameters.size
+                            decl.name.asString() == jvmName &&
+                                    decl.valueParameters.size == f.valueParameters.size
                         } ?:
                         // Or check property accessors:
                         (f.propertyIfAccessor as? IrProperty)?.let { kotlinProp ->
@@ -1223,6 +1225,7 @@ open class KotlinUsesExtractor(
                             }
                             null
                         }
+                    }
                     else
                         null
                 }

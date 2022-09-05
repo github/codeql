@@ -1,13 +1,6 @@
 diag
-| file://:0:0:0:0 | Couldn't find a Java equivalent function to kotlin.CharSequence.<get-length> in java.lang.CharSequence |
-| file://:0:0:0:0 | Couldn't find a Java equivalent function to kotlin.collections.Collection.<get-size> in java.util.Collection |
-| file://:0:0:0:0 | Couldn't find a Java equivalent function to kotlin.collections.Collection.<get-size> in java.util.Collection |
-| file://:0:0:0:0 | Couldn't find a Java equivalent function to kotlin.collections.Map.<get-entries> in java.util.Map |
-| file://:0:0:0:0 | Couldn't find a Java equivalent function to kotlin.collections.Map.<get-keys> in java.util.Map |
-| file://:0:0:0:0 | Couldn't find a Java equivalent function to kotlin.collections.Map.<get-size> in java.util.Map |
-| file://:0:0:0:0 | Couldn't find a Java equivalent function to kotlin.collections.Map.<get-values> in java.util.Map |
 #select
-| test.kt:1:84:1:89 | length(...) | kotlin.CharSequence | length |
+| test.kt:1:84:1:89 | length(...) | java.lang.CharSequence | length |
 | test.kt:1:97:1:100 | size(...) | java.util.Collection<String> | size |
 | test.kt:1:108:1:111 | size(...) | java.util.Map<String,String> | size |
 | test.kt:1:119:1:122 | keySet(...) | java.util.Map<String,String> | keySet |
