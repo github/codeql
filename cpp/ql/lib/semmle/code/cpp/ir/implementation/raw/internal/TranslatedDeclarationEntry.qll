@@ -13,8 +13,8 @@ private import TranslatedInitialization
  * Gets the `TranslatedDeclarationEntry` that represents the declaration
  * `entry`.
  */
-TranslatedDeclarationEntry getTranslatedDeclarationEntry(DeclarationEntry entry) {
-  result.getAst() = entry
+TranslatedDeclarationEntry getTranslatedDeclarationEntry(PseudoDeclarationEntry entry) {
+  result.getPseudoDeclarationEntry() = entry
 }
 
 /**
@@ -24,20 +24,22 @@ TranslatedDeclarationEntry getTranslatedDeclarationEntry(DeclarationEntry entry)
  * functions do not have a `TranslatedDeclarationEntry`.
  */
 abstract class TranslatedDeclarationEntry extends TranslatedElement, TTranslatedDeclarationEntry {
-  DeclarationEntry entry;
+  PseudoDeclarationEntry entry;
 
   TranslatedDeclarationEntry() { this = TTranslatedDeclarationEntry(entry) }
 
   final override Function getFunction() {
     exists(DeclStmt stmt |
-      stmt.getADeclarationEntry() = entry and
+      stmt = entry.getStmt() and
       result = stmt.getEnclosingFunction()
     )
   }
 
+  PseudoDeclarationEntry getPseudoDeclarationEntry() { result = entry }
+
   final override string toString() { result = entry.toString() }
 
-  final override Locatable getAst() { result = entry }
+  final override Locatable getAst() { result = entry.getAst() }
 
   /** DEPRECATED: Alias for getAst */
   deprecated override Locatable getAST() { result = getAst() }
@@ -216,7 +218,7 @@ class TranslatedStaticLocalVariableDeclarationEntry extends TranslatedDeclaratio
  */
 class TranslatedStaticLocalVariableInitialization extends TranslatedElement,
   TranslatedLocalVariableDeclaration, TTranslatedStaticLocalVariableInitialization {
-  VariableDeclarationEntry entry;
+  PseudoVariableDeclarationEntry entry;
   StaticLocalVariable var;
 
   TranslatedStaticLocalVariableInitialization() {
@@ -226,7 +228,7 @@ class TranslatedStaticLocalVariableInitialization extends TranslatedElement,
 
   final override string toString() { result = "init: " + entry.toString() }
 
-  final override Locatable getAst() { result = entry }
+  final override Locatable getAst() { result = entry.getAst() }
 
   /** DEPRECATED: Alias for getAst */
   deprecated override Locatable getAST() { result = getAst() }

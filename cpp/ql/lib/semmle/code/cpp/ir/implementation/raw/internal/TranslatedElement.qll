@@ -443,10 +443,10 @@ predicate hasTranslatedSyntheticTemporaryObject(Expr expr) {
  * necessary for automatic local variables, or for static local variables with dynamic
  * initialization.
  */
-private predicate translateDeclarationEntry(DeclarationEntry entry) {
+private predicate translateDeclarationEntry(PseudoDeclarationEntry entry) {
   exists(DeclStmt declStmt, LocalVariable var |
     translateStmt(declStmt) and
-    declStmt.getADeclarationEntry() = entry and
+    declStmt = entry.getStmt() and
     // Only declarations of local variables need to be translated to IR.
     var = entry.getDeclaration() and
     (
@@ -457,6 +457,100 @@ private predicate translateDeclarationEntry(DeclarationEntry entry) {
     )
   )
 }
+
+private module PseudoDeclarationEntries {
+  private newtype TPseudoDeclarationEntry =
+    TPresentDeclarationEntry(DeclarationEntry entry) or
+    TMissingDeclarationEntry(DeclStmt stmt, Declaration d, int index) {
+      not exists(stmt.getDeclarationEntry(index)) and
+      stmt.getDeclaration(index) = d
+    }
+
+  /**
+   * An entity that represents a declaration entry in the database.
+   *
+   * This class exists to work around the fact that `DeclStmt`s in
+   * template instantiations do not have `DeclarationEntry`s.
+   *
+   * So instead, the IR works with `PseudoDeclarationEntry`s that synthesize
+   * missing `DeclarationEntry`s when there is no result for `DeclStmt::getDeclarationEntry`.
+   */
+  abstract class PseudoDeclarationEntry extends TPseudoDeclarationEntry {
+    /** Gets a string representation of this `PseudoDeclarationEntry`. */
+    abstract string toString();
+
+    /** Gets the `DeclStmt` that this `PseudoDeclarationEntry` belongs to. */
+    abstract DeclStmt getStmt();
+
+    /** Gets the `Declaration` declared by this `PseudoDeclarationEntry`. */
+    abstract Declaration getDeclaration();
+
+    /** Gets the AST represented by this `PseudoDeclarationEntry`. */
+    abstract Locatable getAst();
+
+    /**
+     * Holds if this `PseudoDeclarationEntry` is the `index`'th entry
+     * declared by the enclosing `DeclStmt`.
+     */
+    abstract predicate hasIndex(int index);
+  }
+
+  /** A `PseudoDeclarationEntry` for an existing `DeclarationEntry`. */
+  private class PresentDeclarationEntry extends PseudoDeclarationEntry, TPresentDeclarationEntry {
+    DeclarationEntry entry;
+
+    PresentDeclarationEntry() { this = TPresentDeclarationEntry(entry) }
+
+    override string toString() { result = entry.toString() }
+
+    override DeclStmt getStmt() { result.getADeclarationEntry() = entry }
+
+    override Declaration getDeclaration() { result = entry.getDeclaration() }
+
+    override Locatable getAst() { result = entry }
+
+    override predicate hasIndex(int index) { this.getStmt().getDeclarationEntry(index) = entry }
+  }
+
+  /**
+   * A synthesized `DeclarationEntry` that is created when a `DeclStmt` is missing a
+   * result for `DeclStmt::getDeclarationEntry`
+   */
+  private class MissingDeclarationEntry extends PseudoDeclarationEntry, TMissingDeclarationEntry {
+    DeclStmt stmt;
+    Declaration d;
+    int index;
+
+    MissingDeclarationEntry() { this = TMissingDeclarationEntry(stmt, d, index) }
+
+    override string toString() { result = "pseudo declaration of " + d.getName() }
+
+    override DeclStmt getStmt() { result = stmt }
+
+    override Declaration getDeclaration() { result = d }
+
+    override Locatable getAst() { result = stmt }
+
+    override predicate hasIndex(int idx) { idx = index }
+  }
+
+  /** A `PseudoDeclarationEntry` that represents an entry for a `Variable`. */
+  class PseudoVariableDeclarationEntry instanceof PseudoDeclarationEntry {
+    Variable v;
+
+    PseudoVariableDeclarationEntry() { super.getDeclaration() = v }
+
+    Variable getDeclaration() { result = v }
+
+    string toString() { result = super.toString() }
+
+    Locatable getAst() { result = super.getAst() }
+
+    DeclStmt getStmt() { result = super.getStmt() }
+  }
+}
+
+import PseudoDeclarationEntries
 
 newtype TTranslatedElement =
   // An expression that is not being consumed as a condition
@@ -613,10 +707,10 @@ newtype TTranslatedElement =
     )
   } or
   // A local declaration
-  TTranslatedDeclarationEntry(DeclarationEntry entry) { translateDeclarationEntry(entry) } or
+  TTranslatedDeclarationEntry(PseudoDeclarationEntry entry) { translateDeclarationEntry(entry) } or
   // The dynamic initialization of a static local variable. This is a separate object from the
   // declaration entry.
-  TTranslatedStaticLocalVariableInitialization(DeclarationEntry entry) {
+  TTranslatedStaticLocalVariableInitialization(PseudoDeclarationEntry entry) {
     translateDeclarationEntry(entry) and
     entry.getDeclaration() instanceof StaticLocalVariable
   } or

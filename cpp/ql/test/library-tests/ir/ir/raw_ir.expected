@@ -9987,6 +9987,10 @@ ir.cpp:
 # 1875|     mu1875_5(glval<Bar2<int>>) = InitializeParameter[#this]   : &:r1875_4
 # 1875|     r1875_6(glval<Bar2<int>>)  = Load[#this]                  : &:r1875_4, ~m?
 # 1875|     mu1875_7(Bar2<int>)        = InitializeIndirection[#this] : &:r1875_6
+# 1876|     r1876_1(glval<int[10]>)    = VariableAddress[x]           : 
+# 1876|     mu1876_2(int[10])          = Uninitialized[x]             : &:r1876_1
+# 1876|     r1876_3(glval<int[10]>)    = VariableAddress[y]           : 
+# 1876|     mu1876_4(int[10])          = Uninitialized[y]             : &:r1876_3
 # 1877|     r1877_1(int)               = Constant[10]                 : 
 # 1877|     r1877_2(glval<int[10]>)    = VariableAddress[x]           : 
 # 1877|     r1877_3(int *)             = Convert                      : r1877_2

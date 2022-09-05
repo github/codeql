@@ -3,8 +3,6 @@ unexpectedOperand
 duplicateOperand
 missingPhiOperand
 missingOperandType
-| ir.cpp:1877:13:1877:19 | ChiTotal | Operand 'ChiTotal' of instruction 'Chi' is missing a type in function '$@'. | ir.cpp:1875:13:1875:13 | int missing_declaration_entries::Bar2<int>::two_missing_variable_declaration_entries() | int missing_declaration_entries::Bar2<int>::two_missing_variable_declaration_entries() |
-| ir.cpp:1878:13:1878:19 | ChiTotal | Operand 'ChiTotal' of instruction 'Chi' is missing a type in function '$@'. | ir.cpp:1875:13:1875:13 | int missing_declaration_entries::Bar2<int>::two_missing_variable_declaration_entries() | int missing_declaration_entries::Bar2<int>::two_missing_variable_declaration_entries() |
 duplicateChiOperand
 sideEffectWithoutPrimary
 instructionWithoutSuccessor
