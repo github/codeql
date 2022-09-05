@@ -1162,6 +1162,14 @@ open class KotlinUsesExtractor(
         return res
     }
 
+    fun getExistingLocallyVisibleFunctionLabel(f: IrFunction): Label<DbMethod>? {
+        if (!f.isLocalFunction()){
+            return null
+        }
+
+        return tw.lm.locallyVisibleFunctionLabelMapping[f]?.function
+    }
+
     // These are classes with Java equivalents, but whose methods don't all exist on those Java equivalents--
     // for example, the numeric classes define arithmetic functions (Int.plus, Long.or and so on) that lower to
     // primitive arithmetic on the JVM, but which we extract as calls to reflect the source syntax more closely.

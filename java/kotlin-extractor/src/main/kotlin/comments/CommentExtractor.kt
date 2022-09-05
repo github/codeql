@@ -107,7 +107,7 @@ class CommentExtractor(private val fileExtractor: KotlinFileExtractor, private v
                                 tw.getExistingVariableLabelFor(ownerIr)
                             } else if (ownerIr is IrFunction && ownerIr.isLocalFunction()) {
                                 label = "local function ${ownerIr.name.asString()}"
-                                fileExtractor.getLocallyVisibleFunctionLabels(ownerIr).function
+                                fileExtractor.getExistingLocallyVisibleFunctionLabel(ownerIr)
                             }
                             else {
                                 label = getLabel(ownerIr) ?: continue
