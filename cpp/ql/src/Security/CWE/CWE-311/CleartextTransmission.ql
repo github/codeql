@@ -217,7 +217,8 @@ class Encrypted extends Expr {
 }
 
 /**
- * Taint flow from a sensitive expression.
+ * A taint flow configuration for flow from a sensitive expression to a network
+ * operation or encryption operation.
  */
 class FromSensitiveConfiguration extends TaintTracking::Configuration {
   FromSensitiveConfiguration() { this = "FromSensitiveConfiguration" }

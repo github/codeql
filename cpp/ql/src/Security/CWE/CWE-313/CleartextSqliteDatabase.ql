@@ -29,7 +29,7 @@ predicate sqlite_encryption_used() {
 }
 
 /**
- * Taint flow from a sensitive expression to a `SqliteFunctionCall` sink.
+ * A taint flow configuration for flow from a sensitive expression to a `SqliteFunctionCall` sink.
  */
 class FromSensitiveConfiguration extends TaintTracking::Configuration {
   FromSensitiveConfiguration() { this = "FromSensitiveConfiguration" }
