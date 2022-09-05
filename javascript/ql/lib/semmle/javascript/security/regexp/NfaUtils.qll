@@ -968,7 +968,11 @@ module PrefixConstruction<isCandidateSig/1 isCandidate> {
       exists(State s | isCandidate(s) | getRoot(s.getRepr()) = getRoot(this.getRepr()))
     }
 
-    string toString() { result = "RelevantState" }
+    /** Gets a string representation for this state in a regular expression. */
+    string toString() { result = State.super.toString() }
+
+    /** Gets the term represented by this state. */
+    RegExpTerm getRepr() { result = State.super.getRepr() }
   }
 }
 
