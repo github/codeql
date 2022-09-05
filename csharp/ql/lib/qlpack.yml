@@ -6,4 +6,4 @@ extractor: csharp
 library: true
 upgrades: upgrades
 dependencies:
-  codeql/shared-ssa: 0.0.1-dev 
+  codeql/ssa: 0.0.1 

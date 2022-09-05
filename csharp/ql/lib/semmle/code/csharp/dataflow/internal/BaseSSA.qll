@@ -5,7 +5,7 @@ import csharp
  */
 module BaseSsa {
   private import AssignableDefinitions
-  private import codeql.shared.ssa.Ssa as SsaImplCommon
+  private import codeql.ssa.Ssa as SsaImplCommon
 
   /**
    * Holds if the `i`th node of basic block `bb` is assignable definition `def`,
