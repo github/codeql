@@ -33,9 +33,21 @@ test.kt:
 #    6|         3: [ExprStmt] <Expr>;
 #    6|           0: [ImplicitCoercionToUnitExpr] <implicit coercion to unit>
 #    6|             0: [TypeAccess] Unit
+#    6|             1: [MethodAccess] set(...)
+#    6|               -1: [TypeAccess] TestKt
+#    6|               0: [VarAccess] arr
+#    6|               1: [IntegerLiteral] 1
+#    6|               2: [IntegerLiteral] 2
+#    6|               3: [IntegerLiteral] 3
 #    7|         4: [ExprStmt] <Expr>;
 #    7|           0: [ImplicitCoercionToUnitExpr] <implicit coercion to unit>
 #    7|             0: [TypeAccess] Unit
+#    7|             1: [MethodAccess] set(...)
+#    7|               -1: [TypeAccess] TestKt
+#    7|               0: [VarAccess] arr
+#    7|               1: [IntegerLiteral] 1
+#    7|               2: [ClassInstanceExpr] new C(...)
+#    7|                 -3: [TypeAccess] C
 #   10|     2: [ExtensionMethod] get
 #   10|       3: [TypeAccess] String
 #-----|       4: (Parameters)
