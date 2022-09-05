@@ -1140,10 +1140,6 @@ open class KotlinUsesExtractor(
         // Note not using `parentsWithSelf` as that only works if `d` is an IrDeclarationParent
         d.parents.any { (it as? IrAnnotationContainer)?.hasAnnotation(jvmWildcardSuppressionAnnotaton) == true }
 
-    protected fun IrFunction.isLocalFunction(): Boolean {
-        return this.visibility == DescriptorVisibilities.LOCAL
-    }
-
     /**
      * Class to hold labels for generated classes around local functions, lambdas, function references, and property references.
      */
@@ -1183,6 +1179,14 @@ open class KotlinUsesExtractor(
         }
 
         return res
+    }
+
+    fun getExistingLocallyVisibleFunctionLabel(f: IrFunction): Label<DbMethod>? {
+        if (!f.isLocalFunction()){
+            return null
+        }
+
+        return tw.lm.locallyVisibleFunctionLabelMapping[f]?.function
     }
 
     // These are classes with Java equivalents, but whose methods don't all exist on those Java equivalents--
