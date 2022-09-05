@@ -108,7 +108,7 @@ jobs:
       ### Run the analysis ###
       - name: Hack codeql-action options
         run: |
-          JSON=$(jq -nc --arg pack "${PACK}" '.database."run-queries"=["--search-path", $pack] | .resolve.queries=["--search-path", $pack] | .resolve.extractor=["--search-path", $pack] | .database.init=["--search-path", $pack]')
+          JSON=$(jq -nc --arg pack "${PACK}" '.database."run-queries"=["--search-path", $pack] | .resolve.queries=["--search-path", $pack] | .resolve.extractor=["--search-path", $pack] | .resolve.languages=["--search-path", $pack] | .database.init=["--search-path", $pack]')
           echo "CODEQL_ACTION_EXTRA_OPTIONS=${JSON}" >> ${GITHUB_ENV}
         env:
           PACK: ${{ runner.temp }}/pack

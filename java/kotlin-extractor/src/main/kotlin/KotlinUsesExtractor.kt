@@ -709,7 +709,7 @@ open class KotlinUsesExtractor(
                 return useSimpleTypeClass(owner, args, s.hasQuestionMark)
             }
             owner is IrTypeParameter -> {
-                val javaResult = useTypeParameter(owner as IrTypeParameter)
+                val javaResult = useTypeParameter(owner)
                 val aClassId = makeClass("kotlin", "TypeParam") // TODO: Wrong
                 val kotlinResult = if (true) TypeResult(fakeKotlinType(), "TODO", "TODO") else
                     if (s.hasQuestionMark) {
@@ -921,10 +921,17 @@ open class KotlinUsesExtractor(
         }
 
     private fun extendsAdditionAllowed(t: IrType) =
-        if (t.isBoxedArray)
-            arrayExtendsAdditionAllowed(t as IrSimpleType)
-        else
+        if (t.isBoxedArray) {
+            if (t is IrSimpleType) {
+                arrayExtendsAdditionAllowed(t)
+            } else {
+                logger.warn("Boxed array of unexpected kind ${t.javaClass}")
+                // Return false, for no particular reason
+                false
+            }
+        } else {
             ((t as? IrSimpleType)?.classOrNull?.owner?.isFinalClass) != true
+        }
 
     private fun wildcardAdditionAllowed(v: Variance, t: IrType, addByDefault: Boolean) =
         when {
@@ -1133,10 +1140,6 @@ open class KotlinUsesExtractor(
         // Note not using `parentsWithSelf` as that only works if `d` is an IrDeclarationParent
         d.parents.any { (it as? IrAnnotationContainer)?.hasAnnotation(jvmWildcardSuppressionAnnotaton) == true }
 
-    protected fun IrFunction.isLocalFunction(): Boolean {
-        return this.visibility == DescriptorVisibilities.LOCAL
-    }
-
     /**
      * Class to hold labels for generated classes around local functions, lambdas, function references, and property references.
      */
@@ -1176,6 +1179,14 @@ open class KotlinUsesExtractor(
         }
 
         return res
+    }
+
+    fun getExistingLocallyVisibleFunctionLabel(f: IrFunction): Label<DbMethod>? {
+        if (!f.isLocalFunction()){
+            return null
+        }
+
+        return tw.lm.locallyVisibleFunctionLabelMapping[f]?.function
     }
 
     // These are classes with Java equivalents, but whose methods don't all exist on those Java equivalents--
