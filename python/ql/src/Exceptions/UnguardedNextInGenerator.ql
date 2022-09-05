@@ -69,9 +69,11 @@ where
   not stop_iteration_handled(call) and
   // PEP 479 removes this concern from 3.5 onwards
   // see: https://peps.python.org/pep-0479/
+  //
+  // However, testing it out, the problem is not removed until 3.7.
   (
     major_version() = 2
     or
-    major_version() = 3 and minor_version() < 5
+    major_version() = 3 and minor_version() < 7
   )
 select call, "Call to next() in a generator"
