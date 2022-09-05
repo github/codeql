@@ -30,30 +30,62 @@ test.kt:
 #    4|               -1: [VarAccess] mt
 #    4|               0: [IntegerLiteral] 1
 #    4|               1: [IntegerLiteral] 2
-#    7|     2: [ExtensionMethod] get
-#    7|       3: [TypeAccess] String
+#    6|         3: [ExprStmt] <Expr>;
+#    6|           0: [ImplicitCoercionToUnitExpr] <implicit coercion to unit>
+#    6|             0: [TypeAccess] Unit
+#    7|         4: [ExprStmt] <Expr>;
+#    7|           0: [ImplicitCoercionToUnitExpr] <implicit coercion to unit>
+#    7|             0: [TypeAccess] Unit
+#   10|     2: [ExtensionMethod] get
+#   10|       3: [TypeAccess] String
 #-----|       4: (Parameters)
-#    7|         0: [Parameter] <this>
-#    7|           0: [TypeAccess] byte[]
-#    7|         1: [Parameter] i
-#    7|           0: [TypeAccess] int
-#    7|         2: [Parameter] j
-#    7|           0: [TypeAccess] int
-#    7|       5: [BlockStmt] { ... }
-#    7|         0: [ReturnStmt] return ...
-#    7|           0: [StringLiteral] 
-#   10|   2: [Class] C
-#   10|     1: [Constructor] C
+#   10|         0: [Parameter] <this>
+#   10|           0: [TypeAccess] byte[]
+#   10|         1: [Parameter] i
+#   10|           0: [TypeAccess] int
+#   10|         2: [Parameter] j
+#   10|           0: [TypeAccess] int
 #   10|       5: [BlockStmt] { ... }
-#   10|         0: [SuperConstructorInvocationStmt] super(...)
-#   10|         1: [BlockStmt] { ... }
-#   11|     2: [Method] get
+#   10|         0: [ReturnStmt] return ...
+#   10|           0: [StringLiteral] 
+#   11|     3: [ExtensionMethod] set
 #   11|       3: [TypeAccess] String
 #-----|       4: (Parameters)
-#   11|         0: [Parameter] i
+#   11|         0: [Parameter] <this>
+#   11|           0: [TypeAccess] byte[]
+#   11|         1: [Parameter] i
 #   11|           0: [TypeAccess] int
-#   11|         1: [Parameter] j
+#   11|         2: [Parameter] j
+#   11|           0: [TypeAccess] int
+#   11|         3: [Parameter] k
 #   11|           0: [TypeAccess] int
 #   11|       5: [BlockStmt] { ... }
 #   11|         0: [ReturnStmt] return ...
 #   11|           0: [StringLiteral] 
+#   12|     4: [ExtensionMethod] set
+#   12|       3: [TypeAccess] String
+#-----|       4: (Parameters)
+#   12|         0: [Parameter] <this>
+#   12|           0: [TypeAccess] byte[]
+#   12|         1: [Parameter] i
+#   12|           0: [TypeAccess] int
+#   12|         2: [Parameter] c
+#   12|           0: [TypeAccess] C
+#   12|       5: [BlockStmt] { ... }
+#   12|         0: [ReturnStmt] return ...
+#   12|           0: [StringLiteral] 
+#   15|   2: [Class] C
+#   15|     1: [Constructor] C
+#   15|       5: [BlockStmt] { ... }
+#   15|         0: [SuperConstructorInvocationStmt] super(...)
+#   15|         1: [BlockStmt] { ... }
+#   16|     2: [Method] get
+#   16|       3: [TypeAccess] String
+#-----|       4: (Parameters)
+#   16|         0: [Parameter] i
+#   16|           0: [TypeAccess] int
+#   16|         1: [Parameter] j
+#   16|           0: [TypeAccess] int
+#   16|       5: [BlockStmt] { ... }
+#   16|         0: [ReturnStmt] return ...
+#   16|           0: [StringLiteral] 
