@@ -11,7 +11,6 @@ on:
       - "**.ql"
       - "**.dbscheme"
       - "**/qlpack.yml"
-      - "**/qlpack.yml"
       - ".github/workflows/ql-for-ql-build.yml"
 
 env:
