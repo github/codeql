@@ -18,5 +18,5 @@ import codeql.ruby.DataFlow::DataFlow::PathGraph
 
 from Configuration config, DataFlow::PathNode source, DataFlow::PathNode sink
 where config.hasFlowPath(source, sink)
-select sink.getNode(), source, sink, "Untrusted URL redirection due to $@.", source.getNode(),
+select sink.getNode(), source, sink, "Untrusted URL redirection depends on $@.", source.getNode(),
   "a user-provided value"

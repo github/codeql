@@ -24,6 +24,6 @@ subpaths
 | tst.rb:7:8:7:30 | totally_harmless_string :  | tst.rb:1:7:1:7 | r :  | tst.rb:2:3:2:15 | call to pack :  | tst.rb:7:6:7:31 | call to e |
 | tst.rb:10:11:10:24 | "666f6f626172" :  | tst.rb:1:7:1:7 | r :  | tst.rb:2:3:2:15 | call to pack :  | tst.rb:10:9:10:25 | call to e |
 #select
-| tst.rb:7:6:7:31 | call to e | tst.rb:5:27:5:72 | "707574732822636f646520696e6a6..." :  | tst.rb:7:6:7:31 | call to e | Hard-coded data from $@ is interpreted as code. | tst.rb:5:27:5:72 | "707574732822636f646520696e6a6..." | here |
-| tst.rb:10:9:10:25 | call to e | tst.rb:10:11:10:24 | "666f6f626172" :  | tst.rb:10:9:10:25 | call to e | Hard-coded data from $@ is interpreted as an import path. | tst.rb:10:11:10:24 | "666f6f626172" | here |
-| tst.rb:17:6:17:38 | call to strip | tst.rb:16:31:16:84 | "\\x70\\x75\\x74\\x73\\x28\\x27\\x68\\..." :  | tst.rb:17:6:17:38 | call to strip | Hard-coded data from $@ is interpreted as code. | tst.rb:16:31:16:84 | "\\x70\\x75\\x74\\x73\\x28\\x27\\x68\\..." | here |
+| tst.rb:7:6:7:31 | call to e | tst.rb:5:27:5:72 | "707574732822636f646520696e6a6..." :  | tst.rb:7:6:7:31 | call to e | $@ is interpreted as code. | tst.rb:5:27:5:72 | "707574732822636f646520696e6a6..." | Hard-coded data |
+| tst.rb:10:9:10:25 | call to e | tst.rb:10:11:10:24 | "666f6f626172" :  | tst.rb:10:9:10:25 | call to e | $@ is interpreted as an import path. | tst.rb:10:11:10:24 | "666f6f626172" | Hard-coded data |
+| tst.rb:17:6:17:38 | call to strip | tst.rb:16:31:16:84 | "\\x70\\x75\\x74\\x73\\x28\\x27\\x68\\..." :  | tst.rb:17:6:17:38 | call to strip | $@ is interpreted as code. | tst.rb:16:31:16:84 | "\\x70\\x75\\x74\\x73\\x28\\x27\\x68\\..." | Hard-coded data |
