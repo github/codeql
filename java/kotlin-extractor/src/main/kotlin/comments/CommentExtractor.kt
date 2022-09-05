@@ -93,33 +93,10 @@ class CommentExtractor(private val fileExtractor: KotlinFileExtractor, private v
                 file.accept(IrVisitorLookup(psi2Ir, ownerPsi, file), owners)
 
                 for (ownerIr in owners) {
-                    val ownerLabel =
-                        if (ownerIr == file)
-                            fileLabel
-                        else {
-                            if (ownerIr is IrValueParameter && ownerIr.index == -1) {
-                                // Don't attribute comments to the implicit `this` parameter of a function.
-                                continue
-                            }
-                            val label: String
-                            val existingLabel = if (ownerIr is IrVariable) {
-                                label = "variable ${ownerIr.name.asString()}"
-                                tw.getExistingVariableLabelFor(ownerIr)
-                            } else if (ownerIr is IrFunction && ownerIr.isLocalFunction()) {
-                                label = "local function ${ownerIr.name.asString()}"
-                                fileExtractor.getExistingLocallyVisibleFunctionLabel(ownerIr)
-                            }
-                            else {
-                                label = getLabel(ownerIr) ?: continue
-                                tw.getExistingLabelFor<DbTop>(label)
-                            }
-                            if (existingLabel == null) {
-                                logger.warn("Couldn't get existing label for $label")
-                                continue
-                            }
-                            existingLabel
-                        }
-                    tw.writeKtCommentOwners(commentLabel, ownerLabel)
+                    val ownerLabel = getLabel(ownerIr)
+                    if (ownerLabel != null) {
+                        tw.writeKtCommentOwners(commentLabel, ownerLabel)
+                    }
                 }
             }
 
@@ -131,7 +108,37 @@ class CommentExtractor(private val fileExtractor: KotlinFileExtractor, private v
                 return owner
             }
 
-            private fun getLabel(element: IrElement) : String? {
+            private fun getLabel(element: IrElement): Label<out DbTop>? {
+                if (element == file)
+                    return fileLabel
+
+                if (element is IrValueParameter && element.index == -1) {
+                    // Don't attribute comments to the implicit `this` parameter of a function.
+                    return null
+                }
+
+                val label: String
+                val existingLabel = if (element is IrVariable) {
+                    // local variables are not named globally, so we need to get them from the variable label cache
+                    label = "variable ${element.name.asString()}"
+                    tw.getExistingVariableLabelFor(element)
+                } else if (element is IrFunction && element.isLocalFunction()) {
+                    // local functions are not named globally, so we need to get them from the local function label cache
+                    label = "local function ${element.name.asString()}"
+                    fileExtractor.getExistingLocallyVisibleFunctionLabel(element)
+                }
+                else {
+                    label = getLabelForNamedElement(element) ?: return null
+                    tw.getExistingLabelFor<DbTop>(label)
+                }
+                if (existingLabel == null) {
+                    logger.warn("Couldn't get existing label for $label")
+                    return null
+                }
+                return existingLabel
+            }
+
+            private fun getLabelForNamedElement(element: IrElement) : String? {
                 when (element) {
                     is IrClass -> return fileExtractor.getClassLabel(element, listOf()).classLabel
                     is IrTypeParameter -> return fileExtractor.getTypeParameterLabel(element)
@@ -155,10 +162,10 @@ class CommentExtractor(private val fileExtractor: KotlinFileExtractor, private v
                             return null
                         }
                         // Assign the comment to the class. The content of the `init` blocks might be extracted in multiple constructors.
-                        return getLabel(parentClass)
+                        return getLabelForNamedElement(parentClass)
                     }
 
-                    // Fresh entities:
+                    // Fresh entities, not named elements:
                     is IrBody -> return null
                     is IrExpression -> return null
 
