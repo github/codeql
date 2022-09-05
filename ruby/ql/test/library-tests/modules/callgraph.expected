@@ -63,6 +63,7 @@ getTarget
 | calls.rb:167:1:167:15 | call to private_on_main | calls.rb:164:1:165:3 | private_on_main |
 | calls.rb:171:9:171:24 | call to singleton_b | calls.rb:174:5:176:7 | singleton_b |
 | calls.rb:175:9:175:24 | call to singleton_c | calls.rb:178:5:179:7 | singleton_c |
+| calls.rb:182:9:182:24 | call to singleton_a | calls.rb:170:5:172:7 | singleton_a |
 | calls.rb:186:1:186:22 | call to singleton_a | calls.rb:170:5:172:7 | singleton_a |
 | hello.rb:12:5:12:24 | call to include | calls.rb:92:5:92:20 | include |
 | hello.rb:14:16:14:20 | call to hello | hello.rb:2:5:4:7 | hello |
@@ -114,7 +115,6 @@ unresolvedCall
 | calls.rb:135:1:135:8 | call to [] |
 | calls.rb:135:4:135:5 | - ... |
 | calls.rb:135:32:135:36 | call to abs |
-| calls.rb:182:9:182:24 | call to singleton_a |
 | hello.rb:20:16:20:26 | ... + ... |
 | hello.rb:20:16:20:34 | ... + ... |
 | hello.rb:20:16:20:40 | ... + ... |
