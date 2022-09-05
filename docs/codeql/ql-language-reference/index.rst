@@ -15,7 +15,7 @@ Learn all about QL, the powerful query language that underlies the code scanning
 
 - :doc:`Modules <modules>`: Modules provide a way of organizing QL code by grouping together related types, predicates, and other modules. 
 
-- :doc:`Signatures <signatures>`: Signatures provide a typing mechanism to parameters of parameterised modules.
+- :doc:`Signatures <signatures>`: Signatures provide a typing mechanism to parameters of parameterized modules.
 
 - :doc:`Aliases <aliases>`: An alias is an alternative name for an existing QL entity. 
 
