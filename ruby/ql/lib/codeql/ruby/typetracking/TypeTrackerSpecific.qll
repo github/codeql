@@ -155,11 +155,12 @@ predicate returnStep(Node nodeFrom, Node nodeTo) {
 predicate basicStoreStep(Node nodeFrom, Node nodeTo, TypeTrackerContentSet contents) {
   postUpdateStoreStep(nodeFrom, nodeTo, contents)
   or
-  exists(DataFlowPublic::CallNode call, SummaryComponent input, SummaryComponent output |
-    summarizableCall(call.asExpr().getExpr(), //
-      SummaryComponentStack::singleton(input),
-      SummaryComponentStack::push(SummaryComponent::content(contents),
-        SummaryComponentStack::singleton(output))) and
+  exists(
+    SummarizedCallable callable, DataFlowPublic::CallNode call, SummaryComponent input,
+    SummaryComponent output
+  |
+    hasStoreSummary(callable, contents, input, output) and
+    call.asExpr().getExpr() = callable.getACallSimple() and
     nodeFrom = evaluateSummaryComponentLocal(call, input) and
     nodeTo = evaluateSummaryComponentLocal(call, output)
   )
@@ -194,11 +195,12 @@ predicate basicLoadStep(Node nodeFrom, Node nodeTo, TypeTrackerContentSet conten
     nodeTo.asExpr() = call
   )
   or
-  exists(DataFlowPublic::CallNode call, SummaryComponent input, SummaryComponent output |
-    summarizableCall(call.asExpr().getExpr(), //
-      SummaryComponentStack::push(SummaryComponent::content(contents),
-        SummaryComponentStack::singleton(input)), //
-      SummaryComponentStack::singleton(output)) and
+  exists(
+    SummarizedCallable callable, DataFlowPublic::CallNode call, SummaryComponent input,
+    SummaryComponent output
+  |
+    hasLoadSummary(callable, contents, input, output) and
+    call.asExpr().getExpr() = callable.getACallSimple() and
     nodeFrom = evaluateSummaryComponentLocal(call, input) and
     nodeTo = evaluateSummaryComponentLocal(call, output)
   )
@@ -211,14 +213,24 @@ class Boolean extends boolean {
   Boolean() { this = true or this = false }
 }
 
-/** Holds if `call` has a summary consisting of the given `input`/`output` pair. */
-private predicate summarizableCall(
-  MethodCall call, SummaryComponentStack input, SummaryComponentStack output
+private import SummaryComponentStack
+
+private predicate hasStoreSummary(
+  SummarizedCallable callable, TypeTrackerContentSet contents, SummaryComponent input,
+  SummaryComponent output
 ) {
-  exists(SummarizedCallable callable |
-    call = callable.getACallSimple() and
-    callable.propagatesFlow(input, output, true)
-  )
+  callable
+      .propagatesFlow(singleton(input),
+        push(SummaryComponent::content(contents), singleton(output)), true)
+}
+
+private predicate hasLoadSummary(
+  SummarizedCallable callable, TypeTrackerContentSet contents, SummaryComponent input,
+  SummaryComponent output
+) {
+  callable
+      .propagatesFlow(push(SummaryComponent::content(contents), singleton(input)),
+        singleton(output), true)
 }
 
 /**
