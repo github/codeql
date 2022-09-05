@@ -67,13 +67,10 @@ where
   call.getNode().getScope().(Function).isGenerator() and
   not exists(Comp comp | comp.contains(call.getNode())) and
   not stop_iteration_handled(call) and
-  // PEP 479 removes this concern from 3.5 onwards
+  // PEP 479 removes this concern from 3.7 onwards
   // see: https://peps.python.org/pep-0479/
   //
-  // However, testing it out, the problem is not removed until 3.7.
-  (
-    major_version() = 2
-    or
-    major_version() = 3 and minor_version() < 7
-  )
+  // However, we do not know the minor version of the analysed code (only of the extractor),
+  // so we only alert on Python 2.
+  major_version() = 2
 select call, "Call to next() in a generator"
