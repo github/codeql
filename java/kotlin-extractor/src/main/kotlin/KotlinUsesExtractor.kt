@@ -663,40 +663,42 @@ open class KotlinUsesExtractor(
 
             (s.isBoxedArray && s.arguments.isNotEmpty()) || s.isPrimitiveArray() -> {
 
-                fun replaceComponentTypeWithAny(t: IrSimpleType, dimensions: Int): IrType =
-                    if (dimensions == 0)
-                        pluginContext.irBuiltIns.anyType
-                    else
-                        t.toBuilder().also { it.arguments = (it.arguments[0] as IrTypeProjection)
-                            .let { oldArg ->
-                                listOf(makeTypeProjection(replaceComponentTypeWithAny(oldArg.type as IrSimpleType, dimensions - 1), oldArg.variance))
-                            }
-                        }.buildSimpleType()
+                data class ArrayInfo(val componentType: IrType?, val elementType: IrType, val dimensions: Int, val isPrimitiveArray: Boolean)
 
-                var componentType: IrType = s.getArrayElementType(pluginContext.irBuiltIns)
-                var isPrimitiveArray = false
-                var dimensions = 0
-                var elementType: IrType = s
-                while (elementType.isBoxedArray || elementType.isPrimitiveArray()) {
-                    dimensions++
-                    if (elementType.isPrimitiveArray())
-                        isPrimitiveArray = true
-                    if (elementType is IrSimpleType) {
-                        if ((elementType.arguments.singleOrNull() as? IrTypeProjection)?.variance == Variance.IN_VARIANCE) {
-                            // Because Java's arrays are covariant, Kotlin will render Array<in X> as Object[], Array<Array<in X>> as Object[][] etc.
-                            componentType = replaceComponentTypeWithAny(s, dimensions - 1)
-                            elementType = pluginContext.irBuiltIns.anyType
-                            break
+                fun f(t: IrType): ArrayInfo {
+                    if (t.isBoxedArray || t.isPrimitiveArray()) {
+                        if (t !is IrSimpleType) {
+                            logger.warn("Unexpected element type representation ${t.javaClass} for ${s.render()}")
+                            return ArrayInfo(null, t, 1, t.isPrimitiveArray())
+                        } else {
+                            val variance = (t.arguments.singleOrNull() as? IrTypeProjection)?.variance
+                            if (variance == Variance.IN_VARIANCE) {
+                                // Because Java's arrays are covariant, Kotlin will render Array<in X> as Object[], Array<Array<in X>> as Object[][] etc.
+                                return ArrayInfo(pluginContext.irBuiltIns.anyType, pluginContext.irBuiltIns.anyType, 1, t.isPrimitiveArray())
+                            }
+                            val (componentType, elementType, dimensions, isPrimitiveArray) = f(t.getArrayElementType(pluginContext.irBuiltIns))
+                            val componentType2 = componentType?.let {
+                                val builder = t.toBuilder()
+                                val variance2 = if (variance == null) {
+                                    logger.warn("No variance info for ${s.render()}")
+                                    Variance.INVARIANT
+                                } else {
+                                    variance
+                                }
+                                builder.arguments = listOf(makeTypeProjection(it, variance2))
+                                builder.buildSimpleType()
+                            }
+                            return ArrayInfo(componentType2, elementType, dimensions + 1, isPrimitiveArray || t.isPrimitiveArray())
                         }
-                    } else {
-                        logger.warn("Unexpected element type representation ${elementType.javaClass} for ${s.render()}")
                     }
-                    elementType = elementType.getArrayElementType(pluginContext.irBuiltIns)
+                    return ArrayInfo(null, t, 0, t.isPrimitiveArray())
                 }
+
+                val (componentType, elementType, dimensions, isPrimitiveArray) = f(s)
 
                 return useArrayType(
                     s,
-                    componentType,
+                    componentType ?: s.getArrayElementType(pluginContext.irBuiltIns),
                     elementType,
                     dimensions,
                     isPrimitiveArray
