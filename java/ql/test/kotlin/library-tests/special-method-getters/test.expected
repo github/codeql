@@ -1,9 +1,18 @@
-| test.kt:1:84:1:89 | length(...) | length |
-| test.kt:1:97:1:100 | size(...) | size |
-| test.kt:1:108:1:111 | size(...) | size |
-| test.kt:1:119:1:122 | keySet(...) | keySet |
-| test.kt:1:124:1:127 | size(...) | size |
-| test.kt:1:135:1:140 | values(...) | values |
-| test.kt:1:142:1:145 | size(...) | size |
-| test.kt:1:153:1:159 | entrySet(...) | entrySet |
-| test.kt:1:161:1:164 | size(...) | size |
+diag
+| file://:0:0:0:0 | Couldn't find a Java equivalent function to kotlin.CharSequence.<get-length> in java.lang.CharSequence |
+| file://:0:0:0:0 | Couldn't find a Java equivalent function to kotlin.collections.Collection.<get-size> in java.util.Collection |
+| file://:0:0:0:0 | Couldn't find a Java equivalent function to kotlin.collections.Collection.<get-size> in java.util.Collection |
+| file://:0:0:0:0 | Couldn't find a Java equivalent function to kotlin.collections.Map.<get-entries> in java.util.Map |
+| file://:0:0:0:0 | Couldn't find a Java equivalent function to kotlin.collections.Map.<get-keys> in java.util.Map |
+| file://:0:0:0:0 | Couldn't find a Java equivalent function to kotlin.collections.Map.<get-size> in java.util.Map |
+| file://:0:0:0:0 | Couldn't find a Java equivalent function to kotlin.collections.Map.<get-values> in java.util.Map |
+#select
+| test.kt:1:84:1:89 | length(...) | kotlin.CharSequence | length |
+| test.kt:1:97:1:100 | size(...) | java.util.Collection<String> | size |
+| test.kt:1:108:1:111 | size(...) | java.util.Map<String,String> | size |
+| test.kt:1:119:1:122 | keySet(...) | java.util.Map<String,String> | keySet |
+| test.kt:1:124:1:127 | size(...) | java.util.Set<String> | size |
+| test.kt:1:135:1:140 | values(...) | java.util.Map<String,String> | values |
+| test.kt:1:142:1:145 | size(...) | java.util.Collection<String> | size |
+| test.kt:1:153:1:159 | entrySet(...) | java.util.Map<String,String> | entrySet |
+| test.kt:1:161:1:164 | size(...) | java.util.Set<Entry<String,String>> | size |
