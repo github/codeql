@@ -16,7 +16,7 @@ function RegisterExtractorPack(id)
         -- For now, parse the command line as follows:
         -- Everything that starts with `-` (or `/`) will be ignored.
         -- The first non-option argument is treated as the command.
-        -- if that's `build`, we append `/p:UseSharedCompilation=false` to the command line,
+        -- if that's `build`, we append `-p:UseSharedCompilation=false` to the command line,
         -- otherwise we do nothing.
         local match = false
         local needsSeparator = false;
@@ -37,7 +37,7 @@ function RegisterExtractorPack(id)
                     break
                 end
                 if arg == 'run' then
-                    -- for `dotnet run`, we need to make sure that `/p:UseSharedCompilation=false` is
+                    -- for `dotnet run`, we need to make sure that `-p:UseSharedCompilation=false` is
                     -- not passed in as an argument to the program that is run
                     match = true
                     needsSeparator = true
@@ -49,7 +49,7 @@ function RegisterExtractorPack(id)
             end
         end
         if match then
-            local injections = { '/p:UseSharedCompilation=false' }
+            local injections = { '-p:UseSharedCompilation=false' }
             if needsSeparator then
                 table.insert(injections, '--')
             end
