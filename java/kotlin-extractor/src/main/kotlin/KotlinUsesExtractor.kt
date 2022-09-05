@@ -921,10 +921,17 @@ open class KotlinUsesExtractor(
         }
 
     private fun extendsAdditionAllowed(t: IrType) =
-        if (t.isBoxedArray)
-            arrayExtendsAdditionAllowed(t as IrSimpleType)
-        else
+        if (t.isBoxedArray) {
+            if (t is IrSimpleType) {
+                arrayExtendsAdditionAllowed(t)
+            } else {
+                logger.warn("Boxed array of unexpected kind ${t.javaClass}")
+                // Return false, for no particular reason
+                false
+            }
+        } else {
             ((t as? IrSimpleType)?.classOrNull?.owner?.isFinalClass) != true
+        }
 
     private fun wildcardAdditionAllowed(v: Variance, t: IrType, addByDefault: Boolean) =
         when {
