@@ -434,8 +434,7 @@ private API::Node getNodeFromType(string package, string type) {
   or
   result = any(TypeModelDefEntry e).getNodeForType(package, type)
   or
-  isRelevantFullPath(package, type, _) and
-  result = Specific::getExtraNodeFromPath(package, type, _, 0)
+  result = Specific::getExtraNodeFromType(package, type)
 }
 
 /**

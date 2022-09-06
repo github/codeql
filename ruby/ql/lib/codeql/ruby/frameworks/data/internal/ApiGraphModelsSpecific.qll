@@ -56,12 +56,6 @@ predicate isPackageUsed(string package) {
 /** Gets a Ruby-specific interpretation of the `(package, type, path)` tuple after resolving the first `n` access path tokens. */
 bindingset[package, type, path]
 API::Node getExtraNodeFromPath(string package, string type, AccessPath path, int n) {
-  isRelevantFullPath(package, type, path) and
-  exists(package) and // Allow any package name, see `isPackageUsed`.
-  type = "" and
-  n = 0 and
-  result = API::root()
-  or
   // A row of form `;any;Method[foo]` should match any method named `foo`.
   exists(package) and
   type = "any" and
@@ -70,6 +64,14 @@ API::Node getExtraNodeFromPath(string package, string type, AccessPath path, int
     methodMatchedByName(path, entry.getName()) and
     result = entry.getANode()
   )
+}
+
+/** Gets a Ruby-specific interpretation of the `(package, type)` tuple. */
+API::Node getExtraNodeFromType(string package, string type) {
+  isRelevantFullPath(package, type, _) and
+  exists(package) and // Allow any package name, see `isPackageUsed`.
+  type = "" and
+  result = API::root()
 }
 
 /**
