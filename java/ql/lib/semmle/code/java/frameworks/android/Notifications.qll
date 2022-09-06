@@ -19,6 +19,17 @@ private class NotificationBuildersSummaryModels extends SummaryModelCsv {
         "android.app;Notification$Action$Builder;true;build;;;Argument[-1];ReturnValue;taint;manual",
         "android.app;Notification$Action$Builder;true;build;;;Argument[-1].SyntheticField[android.content.Intent.extras];ReturnValue.SyntheticField[android.content.Intent.extras];value;manual",
         "android.app;Notification$Action$Builder;true;getExtras;;;Argument[-1].SyntheticField[android.content.Intent.extras];ReturnValue;value;manual",
+        "androidx.core.app;NotificationCompat$Action;true;Action;(int,CharSequence,PendingIntent);;Argument[2];Argument[-1];taint;manual",
+        "androidx.core.app;NotificationCompat$Action;true;Action;(IconCompat,CharSequence,PendingIntent);;Argument[2];Argument[-1];taint;manual",
+        "androidx.core.app;NotificationCompat$Action;true;getExtras;;;Argument[-1].SyntheticField[android.content.Intent.extras];ReturnValue;value;manual",
+        "androidx.core.app;NotificationCompat$Action$Builder;true;Builder;(int,CharSequence,PendingIntent);;Argument[2];Argument[-1];taint;manual",
+        "androidx.core.app;NotificationCompat$Action$Builder;true;Builder;(IconCompat,CharSequence,PendingIntent);;Argument[2];Argument[-1];taint;manual",
+        "androidx.core.app;NotificationCompat$Action$Builder;true;Builder;(Action);;Argument[0];Argument[-1];taint;manual",
+        "androidx.core.app;NotificationCompat$Action$Builder;true;addExtras;;;Argument[0].MapKey;Argument[-1].SyntheticField[android.content.Intent.extras].MapKey;value;manual",
+        "androidx.core.app;NotificationCompat$Action$Builder;true;addExtras;;;Argument[0].MapValue;Argument[-1].SyntheticField[android.content.Intent.extras].MapValue;value;manual",
+        "androidx.core.app;NotificationCompat$Action$Builder;true;build;;;Argument[-1];ReturnValue;taint;manual",
+        "androidx.core.app;NotificationCompat$Action$Builder;true;build;;;Argument[-1].SyntheticField[android.content.Intent.extras];ReturnValue.SyntheticField[android.content.Intent.extras];value;manual",
+        "androidx.core.app;NotificationCompat$Action$Builder;true;getExtras;;;Argument[-1].SyntheticField[android.content.Intent.extras];ReturnValue;value;manual",
         "android.app;Notification$Builder;true;addAction;(int,CharSequence,PendingIntent);;Argument[2];Argument[-1];taint;manual",
         "android.app;Notification$Builder;true;addAction;(Action);;Argument[0];Argument[-1];taint;manual",
         "android.app;Notification$Builder;true;addExtras;;;Argument[0].MapKey;Argument[-1].SyntheticField[android.content.Intent.extras].MapKey;value;manual",
@@ -32,18 +43,30 @@ private class NotificationBuildersSummaryModels extends SummaryModelCsv {
         "android.app;Notification$Builder;true;setExtras;;;Argument[0];Argument[-1].SyntheticField[android.content.Intent.extras];value;manual",
         "android.app;Notification$Builder;true;setDeleteIntent;;;Argument[0];Argument[-1];taint;manual",
         "android.app;Notification$Builder;true;setPublicVersion;;;Argument[0];Argument[-1];taint;manual",
+        "androidx.core.app;NotificationCompat$Builder;true;addAction;(int,CharSequence,PendingIntent);;Argument[2];Argument[-1];taint;manual",
+        "androidx.core.app;NotificationCompat$Builder;true;addAction;(Action);;Argument[0];Argument[-1];taint;manual",
+        "androidx.core.app;NotificationCompat$Builder;true;addExtras;;;Argument[0].MapKey;Argument[-1].SyntheticField[android.content.Intent.extras].MapKey;value;manual",
+        "androidx.core.app;NotificationCompat$Builder;true;addExtras;;;Argument[0].MapValue;Argument[-1].SyntheticField[android.content.Intent.extras].MapValue;value;manual",
+        "androidx.core.app;NotificationCompat$Builder;true;build;;;Argument[-1];ReturnValue;taint;manual",
+        "androidx.core.app;NotificationCompat$Builder;true;build;;;Argument[-1].SyntheticField[android.content.Intent.extras];ReturnValue.Field[android.app.Notification.extras];value;manual",
+        "androidx.core.app;NotificationCompat$Builder;true;setContentIntent;;;Argument[0];Argument[-1];taint;manual",
+        "androidx.core.app;NotificationCompat$Builder;true;getExtras;;;Argument[-1].SyntheticField[android.content.Intent.extras];ReturnValue;value;manual",
+        "androidx.core.app;NotificationCompat$Builder;true;setExtras;;;Argument[0];Argument[-1].SyntheticField[android.content.Intent.extras];value;manual",
+        "androidx.core.app;NotificationCompat$Builder;true;setDeleteIntent;;;Argument[0];Argument[-1];taint;manual",
+        "androidx.core.app;NotificationCompat$Builder;true;setPublicVersion;;;Argument[0];Argument[-1];taint;manual",
         "android.app;Notification$Style;true;build;;;Argument[-1];ReturnValue;taint;manual",
         "android.app;Notification$BigPictureStyle;true;BigPictureStyle;(Builder);;Argument[0];Argument[-1];taint;manual",
         "android.app;Notification$BigTextStyle;true;BigTextStyle;(Builder);;Argument[0];Argument[-1];taint;manual",
         "android.app;Notification$InboxStyle;true;InboxStyle;(Builder);;Argument[0];Argument[-1];taint;manual",
         "android.app;Notification$MediaStyle;true;MediaStyle;(Builder);;Argument[0];Argument[-1];taint;manual",
         // Fluent models
-        "android.app;Notification$Action$Builder;true;" +
+        ["android.app;Notification", "androidx.core.app;NotificationCompat"] +
+          "$Action$Builder;true;" +
           [
             "addExtras", "addRemoteInput", "extend", "setAllowGeneratedReplies",
             "setAuthenticationRequired", "setContextual", "setSemanticAction"
           ] + ";;;Argument[-1];ReturnValue;value;manual",
-        "android.app;Notification$Builder;true;" +
+        ["android.app;Notification", "androidx.core.app;NotificationCompat"] + "$Builder;true;" +
           [
             "addAction", "addExtras", "addPerson", "extend", "setActions", "setAutoCancel",
             "setBadgeIconType", "setBubbleMetadata", "setCategory", "setChannelId",
@@ -58,15 +81,16 @@ private class NotificationBuildersSummaryModels extends SummaryModelCsv {
             "setSubText", "setTicker", "setTimeoutAfter", "setUsesChronometer", "setVibrate",
             "setVisibility", "setWhen"
           ] + ";;;Argument[-1];ReturnValue;value;manual",
-        "android.app;Notification$BigPictureStyle;true;" +
+        ["android.app;Notification", "androidx.core.app;NotificationCompat"] +
+          "$BigPictureStyle;true;" +
           [
             "bigLargeIcon", "bigPicture", "setBigContentTitle", "setContentDescription",
             "setSummaryText", "showBigPictureWhenCollapsed"
           ] + ";;;Argument[-1];ReturnValue;value;manual",
-        "android.app;Notification$BigTextStyle;true;" +
-          ["bigText", "setBigContentTitle", "setSummaryText"] +
+        ["android.app;Notification", "androidx.core.app;NotificationCompat"] + "$BigTextStyle;true;"
+          + ["bigText", "setBigContentTitle", "setSummaryText"] +
           ";;;Argument[-1];ReturnValue;value;manual",
-        "android.app;Notification$InboxStyle;true;" +
+        ["android.app;Notification", "androidx.core.app;NotificationCompat"] + "$InboxStyle;true;" +
           ["addLine", "setBigContentTitle", "setSummaryText"] +
           ";;;Argument[-1];ReturnValue;value;manual",
         "android.app;Notification$MediaStyle;true;" +
