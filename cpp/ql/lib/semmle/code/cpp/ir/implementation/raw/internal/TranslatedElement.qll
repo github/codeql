@@ -523,7 +523,7 @@ private module PseudoDeclarationEntries {
 
     MissingDeclarationEntry() { this = TMissingDeclarationEntry(stmt, d, index) }
 
-    override string toString() { result = "pseudo declaration of " + d.getName() }
+    override string toString() { result = "missing declaration of " + d.getName() }
 
     override DeclStmt getStmt() { result = stmt }
 
