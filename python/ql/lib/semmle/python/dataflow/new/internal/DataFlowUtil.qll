@@ -15,7 +15,8 @@ predicate localFlowStep(Node nodeFrom, Node nodeTo) {
   simpleLocalFlowStep(nodeFrom, nodeTo)
   or
   // Simple flow through library code is included in the exposed local
-  // step relation, even though flow is technically inter-procedural
+  // step relation, even though flow is technically inter-procedural.
+  // This is a convention followed across languages.
   FlowSummaryImpl::Private::Steps::summaryThroughStepValue(nodeFrom, nodeTo, _)
 }
 
