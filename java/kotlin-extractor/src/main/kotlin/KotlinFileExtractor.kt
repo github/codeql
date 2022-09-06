@@ -389,11 +389,7 @@ open class KotlinFileExtractor(
         with("class source", c) {
             DeclarationStackAdjuster(c).use {
 
-                val id = if (c.isAnonymousObject) {
-                    useAnonymousClass(c).javaResult.id.cast<DbClass>()
-                } else {
-                    useClassSource(c)
-                }
+                val id = useClassSource(c)
                 val pkg = c.packageFqName?.asString() ?: ""
                 val cls = if (c.isAnonymousObject) "" else c.name.asString()
                 val pkgId = extractPackage(pkg)
