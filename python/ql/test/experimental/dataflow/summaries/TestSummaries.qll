@@ -67,8 +67,6 @@ private class SummarizedCallableMap extends SummarizedCallable {
   }
 }
 
-// Typetracking needs to use a local flow step not including summaries
-// Typetracking needs to use a call graph not including summaries
 private class SummarizedCallableJsonLoads extends SummarizedCallable {
   SummarizedCallableJsonLoads() { this = "json.loads" }
 
