@@ -12,6 +12,7 @@ private import semmle.python.dataflow.new.FlowSummary as FlowSummary
 
 class SummarizedCallableBase = string;
 
+/** View a `SummarizedCallable` as a `DataFlowCallable`. */
 DataFlowCallable inject(SummarizedCallable c) { result.asLibraryCallable() = c }
 
 /** Gets the parameter position of the instance parameter. */
