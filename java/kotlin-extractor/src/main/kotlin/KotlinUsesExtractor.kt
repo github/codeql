@@ -1192,7 +1192,7 @@ open class KotlinUsesExtractor(
             f.parentClassOrNull?.let { parentClass ->
                 getJavaEquivalentClass(parentClass)?.let { javaClass ->
                     if (javaClass != parentClass) {
-                        val jvmName = getSpecialJvmName(f) ?: f.name.asString()
+                        val jvmName = getJvmName(f) ?: f.name.asString()
                         // Look for an exact type match...
                         javaClass.declarations.findSubType<IrFunction> { decl ->
                             decl.name.asString() == jvmName &&
