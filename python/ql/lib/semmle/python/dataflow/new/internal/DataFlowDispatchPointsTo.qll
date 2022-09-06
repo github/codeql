@@ -328,6 +328,7 @@ class DataFlowCallable extends TDataFlowCallable {
   Location getLocation() { none() }
 }
 
+/** A callable that is not synthesised. Either a CallableValue, a lambda or a module (only used to provide scopes for module variables). */
 abstract class NonLibraryDataFlowCallable extends DataFlowCallable {
   /** Gets a callable value for this callable, if one exists. */
   abstract CallableValue getCallableValue();
