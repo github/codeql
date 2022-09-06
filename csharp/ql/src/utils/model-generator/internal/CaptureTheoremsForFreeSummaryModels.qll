@@ -1,9 +1,21 @@
 private import csharp
-private import semmle.code.csharp.commons.Collections as Collections
+private import semmle.code.csharp.frameworks.system.collections.Generic as GenericCollections
 private import semmle.code.csharp.dataflow.internal.DataFlowPrivate
 private import semmle.code.csharp.frameworks.system.linq.Expressions
 private import CaptureModelsSpecific as Specific
 private import CaptureModels
+
+/**
+ * Holds if `t` is a subtype (reflexive/transitive) of `IEnumerable<T>`, where `T` = `tp`.
+ */
+private predicate isGenericCollectionType(ValueOrRefType t, TypeParameter tp) {
+  exists(ConstructedGeneric t2 |
+    t2 = t.getABaseType*() and
+    t2.getUnboundDeclaration() instanceof
+      GenericCollections::SystemCollectionsGenericIEnumerableTInterface and
+    tp = t2.getATypeArgument()
+  )
+}
 
 /**
  * A class of callables that are relevant generating summaries for based
@@ -16,69 +28,78 @@ class TheoremTargetApi extends Specific::TargetApiSpecific {
     t = this.getDeclaringType().(UnboundGeneric).getATypeParameter()
   }
 
-  private predicate isMethodTypeParameter(TypeParameter t) {
-    t = this.(UnboundGeneric).getATypeParameter()
-  }
-
   bindingset[t]
   private string getAccess(TypeParameter t) {
     exists(string access |
-      if Collections::isCollectionType(this.getDeclaringType())
+      if isGenericCollectionType(this.getDeclaringType(), t)
       then access = ".Element"
-      else access = ""
+      else access = ".SyntheticField[Arg" + t.getName() + "]"
     |
-      result = Specific::qualifierString() + ".SyntheticField[Arg" + t.getName() + "]" + access
+      result = Specific::qualifierString() + access
     )
   }
 
-  private predicate returns(TypeParameter t) { this.getReturnType() = t }
+  bindingset[t]
+  private string getReturnAccess(TypeParameter t) {
+    exists(string access |
+      (
+        if isGenericCollectionType(this.getReturnType(), t)
+        then access = ".Element"
+        else access = ""
+      ) and
+      result = "ReturnValue" + access
+    )
+  }
 
+  /**
+   * Holds if `this` returns a value of type `t` or a collection of type `t`.
+   */
+  private predicate returns(TypeParameter t) {
+    this.getReturnType() = t or isGenericCollectionType(this.getReturnType(), t)
+  }
+
+  /**
+   * Holds if `this` has a parameter `p`, which is of type `t`
+   * or collection of type `t`.
+   */
   private predicate parameter(TypeParameter t, Parameter p) {
     p = this.getAParameter() and
-    p.getType() = t
+    (
+      // Parameter of type t
+      p.getType() = t
+      or
+      // Parameter is a collection of type t
+      isGenericCollectionType(p.getType(), t)
+    )
   }
 
   /**
    * Gets the string representation of a summary for `this`, where this has a signature like
-   * this : T -> unit
+   * this : T -> S
    * where T is type parameter for the class declaring `this`.
+   * Important cases are S = unit (setter) and S = T (both getter and setter).
    */
   private string getSetterSummary() {
     exists(TypeParameter t, Parameter p |
       this.isClassTypeParameter(t) and
-      this.getReturnType() instanceof VoidType and
       this.parameter(t, p)
     |
-      result = asTaintModel(this, Specific::parameterAccess(p), this.getAccess(t))
+      result = asValueModel(this, Specific::parameterAccess(p), this.getAccess(t))
     )
   }
 
   /**
    * Gets the string representation of a summary for `this`, where this has a signature like
-   * this : unit -> T
+   * this : S -> T
    * where T is type parameter for the class declaring `this`.
+   * Important cases are S = unit (getter) and S = T (both getter and setter).
    */
   private string getGetterSummary() {
     exists(TypeParameter t |
       this.isClassTypeParameter(t) and
-      this.returns(t) and
-      not this.parameter(t, _)
+      this.returns(t)
     |
-      result = asTaintModel(this, this.getAccess(t), "ReturnValue")
-    )
-  }
-
-  /**
-   * Gets the string representation of a summary for `this`, where this has a signature like
-   * this : T -> T
-   */
-  private string getTransformSummary() {
-    exists(TypeParameter t, Parameter p |
-      (this.isClassTypeParameter(t) or this.isMethodTypeParameter(t)) and
-      this.returns(t) and
-      this.parameter(t, p)
-    |
-      result = asTaintModel(this, Specific::parameterAccess(p), "ReturnValue")
+      result = asValueModel(this, this.getAccess(t), this.getReturnAccess(t))
     )
   }
 
@@ -95,7 +116,7 @@ class TheoremTargetApi extends Specific::TargetApiSpecific {
       p2.getType() = t
     |
       result =
-        asTaintModel(this, this.getAccess(t),
+        asValueModel(this, this.getAccess(t),
           Specific::parameterAccess(p1) + ".Parameter[" + p2.getPosition() + "]")
     )
   }
@@ -104,11 +125,7 @@ class TheoremTargetApi extends Specific::TargetApiSpecific {
    * Gets the string representation of all summaries based on the Theorems for Free approach.
    */
   string getSummaries() {
-    result =
-      [
-        this.getSetterSummary(), this.getGetterSummary(), this.getTransformSummary(),
-        this.getApplySummary()
-      ]
+    result = [this.getSetterSummary(), this.getGetterSummary(), this.getApplySummary()]
   }
 }
 

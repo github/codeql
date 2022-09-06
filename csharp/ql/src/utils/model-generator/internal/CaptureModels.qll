@@ -58,7 +58,7 @@ string asNegativeSummaryModel(TargetApiSpecific api) {
  * Gets the value summary model for `api` with `input` and `output`.
  */
 bindingset[input, output]
-private string asValueModel(TargetApiSpecific api, string input, string output) {
+string asValueModel(TargetApiSpecific api, string input, string output) {
   result = asSummaryModel(api, input, output, "value")
 }
 
@@ -66,7 +66,7 @@ private string asValueModel(TargetApiSpecific api, string input, string output) 
  * Gets the taint summary model for `api` with `input` and `output`.
  */
 bindingset[input, output]
-string asTaintModel(TargetApiSpecific api, string input, string output) {
+private string asTaintModel(TargetApiSpecific api, string input, string output) {
   result = asSummaryModel(api, input, output, "taint")
 }
 
