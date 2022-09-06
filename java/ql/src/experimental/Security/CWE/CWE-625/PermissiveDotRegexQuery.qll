@@ -19,7 +19,7 @@ private class PermissiveDotStr extends StringLiteral {
   }
 }
 
-/** Remote flow sources obtained from the URI of a serlvet request. */
+/** Remote flow sources obtained from the URI of a servlet request. */
 private class GetServletUriSource extends SourceModelCsv {
   override predicate row(string row) {
     row =

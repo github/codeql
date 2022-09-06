@@ -4,7 +4,7 @@
 <qhelp>
 
 <overview>
-<p>By default, a "dot" (<code>.</code>) in a regular expression matches all characters except the new line characters <code>\n</code> and
+<p>By default, a "dot" (<code>.</code>) in a regular expression matches all characters except the newline characters <code>\n</code> and
 <code>\r</code>. Regular expressions containing a dot can be bypassed with the characters <code>\r</code>(<code>%0a</code>) and 
 <code>\n</code>(<code>%0d</code>) when the default Java regular expression matching implementations are used. This becomes a security issue
 if these regular expressions are used to decide whether to grant access to protected application resources.</p>
