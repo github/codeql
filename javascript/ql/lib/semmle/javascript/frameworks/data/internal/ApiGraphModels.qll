@@ -427,15 +427,14 @@ pragma[nomagic]
 private API::Node getNodeFromType(string package, string type) {
   exists(string package2, string type2, AccessPath path2 |
     typeModel(package, type, package2, type2, path2) and
-    result = getNodeFromPath(package2, type2, path2, path2.getNumToken())
+    result = getNodeFromPath(package2, type2, path2)
   )
   or
   result = any(TypeModelUseEntry e).getNodeForType(package, type)
   or
   result = any(TypeModelDefEntry e).getNodeForType(package, type)
   or
-  isRelevantFullPath(package, type, _) and
-  result = Specific::getExtraNodeFromPath(package, type, _, 0)
+  result = Specific::getExtraNodeFromType(package, type)
 }
 
 /**
