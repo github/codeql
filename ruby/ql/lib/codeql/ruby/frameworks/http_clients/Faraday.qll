@@ -88,7 +88,9 @@ private class FaradayDisablesCertificateValidationConfiguration extends DataFlow
     this = "FaradayDisablesCertificateValidationConfiguration"
   }
 
-  override predicate isSource(DataFlow::Node source, DataFlowImplForHttpClientLibraries::FlowState state) {
+  override predicate isSource(
+    DataFlow::Node source, DataFlowImplForHttpClientLibraries::FlowState state
+  ) {
     source.asExpr().getExpr().(BooleanLiteral).isFalse() and
     state = "verify"
     or
