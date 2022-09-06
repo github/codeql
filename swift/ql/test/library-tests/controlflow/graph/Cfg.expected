@@ -683,22 +683,22 @@ cfg.swift:
 #-----| match -> ... as ...
 
 #   71| ... as ...
-#-----| match -> init
+#-----| match -> init(_:)
 
 #   71| Int.Type
-#-----|  -> call to init
+#-----|  -> call to init(_:)
 
-#   71| call to init
+#   71| call to init(_:)
 #-----|  -> s
 
-#   71| init
+#   71| init(_:)
 #-----|  -> Int.Type
 
-#   71| call to init
+#   71| call to init(_:)
 #-----|  -> var ... = ...
 
 #   71| s
-#-----|  -> call to init
+#-----|  -> call to init(_:)
 
 #   72| return ...
 #-----| return -> exit maybeParseInt(s:) (normal)
@@ -948,19 +948,22 @@ cfg.swift:
 #   95| ...!
 #-----|  -> ... .+(_:_:) ...
 
-#   98| deinit
+#   98| deinit()
+#-----|  -> self
+
+#   98| enter deinit()
+#-----|  -> deinit()
+
+#   98| exit deinit()
+
+#   98| exit deinit() (normal)
+#-----|  -> exit deinit()
+
+#   98| self
 #-----|  -> { ... }
 
-#   98| enter deinit
-#-----|  -> deinit
-
-#   98| exit deinit
-
-#   98| exit deinit (normal)
-#-----|  -> exit deinit
-
 #   98| { ... }
-#-----|  -> exit deinit (normal)
+#-----|  -> exit deinit() (normal)
 
 #   99| enter get
 #-----|  -> get
@@ -971,17 +974,23 @@ cfg.swift:
 #-----|  -> exit get
 
 #   99| get
+#-----|  -> self
 
-#  100| enter init
-#-----|  -> init
+#   99| self
 
-#  100| exit init
-
-#  100| exit init (normal)
-#-----|  -> exit init
-
-#  100| init
+#  100| self
 #-----|  -> n
+
+#  100| enter init(n:)
+#-----|  -> init(n:)
+
+#  100| exit init(n:)
+
+#  100| exit init(n:) (normal)
+#-----|  -> exit init(n:)
+
+#  100| init(n:)
+#-----|  -> self
 
 #  100| n
 #-----|  -> self
@@ -999,7 +1008,7 @@ cfg.swift:
 #-----|  ->  ... = ...
 
 #  102| return
-#-----| return -> exit init (normal)
+#-----| return -> exit init(n:) (normal)
 
 #  104| enter getMyInt()
 #-----|  -> getMyInt()
@@ -1010,6 +1019,9 @@ cfg.swift:
 #-----|  -> exit getMyInt()
 
 #  104| getMyInt()
+#-----|  -> self
+
+#  104| self
 #-----|  -> self
 
 #  105| return ...
@@ -1048,22 +1060,22 @@ cfg.swift:
 #-----|  -> n1
 
 #  110| c
-#-----| match -> init
+#-----| match -> init(n:)
 
 #  110| C.Type
-#-----|  -> call to init
+#-----|  -> call to init(n:)
 
-#  110| call to init
+#  110| call to init(n:)
 #-----|  -> 42
 
-#  110| init
+#  110| init(n:)
 #-----|  -> C.Type
 
-#  110| call to init
+#  110| call to init(n:)
 #-----|  -> var ... = ...
 
 #  110| 42
-#-----|  -> call to init
+#-----|  -> call to init(n:)
 
 #  111| var ... = ...
 #-----|  -> n1
@@ -4677,19 +4689,22 @@ cfg.swift:
 #  348| 1
 #-----|  -> ... .+=(_:_:) ...
 
-#  352| deinit
+#  352| deinit()
+#-----|  -> self
+
+#  352| enter deinit()
+#-----|  -> deinit()
+
+#  352| exit deinit()
+
+#  352| exit deinit() (normal)
+#-----|  -> exit deinit()
+
+#  352| self
 #-----|  -> { ... }
 
-#  352| enter deinit
-#-----|  -> deinit
-
-#  352| exit deinit
-
-#  352| exit deinit (normal)
-#-----|  -> exit deinit
-
 #  352| { ... }
-#-----|  -> exit deinit (normal)
+#-----|  -> exit deinit() (normal)
 
 #  353| enter get
 #-----|  -> get
@@ -4700,17 +4715,23 @@ cfg.swift:
 #-----|  -> exit get
 
 #  353| get
+#-----|  -> self
 
-#  354| enter init
-#-----|  -> init
+#  353| self
 
-#  354| exit init
-
-#  354| exit init (normal)
-#-----|  -> exit init
-
-#  354| init
+#  354| self
 #-----|  -> arg
+
+#  354| enter init(arg:)
+#-----|  -> init(arg:)
+
+#  354| exit init(arg:)
+
+#  354| exit init(arg:) (normal)
+#-----|  -> exit init(arg:)
+
+#  354| init(arg:)
+#-----|  -> self
 
 #  354| arg
 #-----|  -> self
@@ -4728,7 +4749,7 @@ cfg.swift:
 #-----|  ->  ... = ...
 
 #  356| return
-#-----| return -> exit init (normal)
+#-----| return -> exit init(arg:) (normal)
 
 #  358| enter getOptional()
 #-----|  -> getOptional()
@@ -4739,6 +4760,9 @@ cfg.swift:
 #-----|  -> exit getOptional()
 
 #  358| getOptional()
+#-----|  -> self
+
+#  358| self
 #-----|  -> self
 
 #  359| return ...
@@ -4964,40 +4988,49 @@ cfg.swift:
 #  377| cfg.Derived
 #-----|  -> #...
 
-#  377| deinit
+#  377| deinit()
+#-----|  -> self
+
+#  377| enter deinit()
+#-----|  -> deinit()
+
+#  377| exit deinit()
+
+#  377| exit deinit() (normal)
+#-----|  -> exit deinit()
+
+#  377| self
 #-----|  -> { ... }
 
-#  377| enter deinit
-#-----|  -> deinit
-
-#  377| exit deinit
-
-#  377| exit deinit (normal)
-#-----|  -> exit deinit
-
 #  377| { ... }
-#-----|  -> exit deinit (normal)
+#-----|  -> exit deinit() (normal)
 
-#  377| enter init
-#-----|  -> init
+#  377| enter init(n:)
+#-----|  -> init(n:)
 
-#  377| exit init
+#  377| exit init(n:)
 
-#  377| exit init (normal)
-#-----|  -> exit init
+#  377| exit init(n:) (normal)
+#-----|  -> exit init(n:)
 
-#  377| init
+#  377| init(n:)
+#-----|  -> self
 
-#  378| enter init
-#-----|  -> init
+#  377| self
 
-#  378| exit init
+#  378| self
+#-----|  -> init(n:)
 
-#  378| exit init (normal)
-#-----|  -> exit init
+#  378| enter init()
+#-----|  -> init()
 
-#  378| init
-#-----|  -> init
+#  378| exit init()
+
+#  378| exit init() (normal)
+#-----|  -> exit init()
+
+#  378| init()
+#-----|  -> self
 
 #  379| super
 #-----|  -> call to ...
@@ -5011,14 +5044,14 @@ cfg.swift:
 #  379| self = ...
 #-----|  -> return
 
-#  379| init
+#  379| init(n:)
 #-----|  -> super
 
 #  379| 0
 #-----|  -> call to ...
 
 #  380| return
-#-----| return -> exit init (normal)
+#-----| return -> exit init() (normal)
 
 #  383| doWithoutCatch(x:)
 #-----|  -> x
@@ -5118,6 +5151,7 @@ cfg.swift:
 #-----|  -> return ...
 
 #  394| (unnamed function decl)
+#-----|  -> self
 
 #  394| enter (unnamed function decl)
 #-----|  -> (unnamed function decl)
@@ -5144,24 +5178,35 @@ cfg.swift:
 #-----|  -> exit set
 
 #  394| get
+#-----|  -> self
+
+#  394| self
+
+#  394| self
+#-----|  -> value
+
+#  394| self
 
 #  394| set
-#-----|  -> value
+#-----|  -> self
 
 #  394| value
 
 #  394| yield ...
 #-----|  -> exit (unnamed function decl) (normal)
 
-#  395| enter init
-#-----|  -> init
+#  395| self
+#-----|  -> self
 
-#  395| exit init
+#  395| enter init()
+#-----|  -> init()
 
-#  395| exit init (normal)
-#-----|  -> exit init
+#  395| exit init()
 
-#  395| init
+#  395| exit init() (normal)
+#-----|  -> exit init()
+
+#  395| init()
 #-----|  -> self
 
 #  396| .field
@@ -5177,18 +5222,21 @@ cfg.swift:
 #-----|  ->  ... = ...
 
 #  397| return
-#-----| return -> exit init (normal)
+#-----| return -> exit init() (normal)
 
-#  399| deinit
+#  399| self
 #-----|  -> self
 
-#  399| enter deinit
-#-----|  -> deinit
+#  399| deinit()
+#-----|  -> self
 
-#  399| exit deinit
+#  399| enter deinit()
+#-----|  -> deinit()
 
-#  399| exit deinit (normal)
-#-----|  -> exit deinit
+#  399| exit deinit()
+
+#  399| exit deinit() (normal)
+#-----|  -> exit deinit()
 
 #  400| .field
 #-----|  -> 0
@@ -5197,7 +5245,7 @@ cfg.swift:
 #-----|  -> .field
 
 #  400|  ... = ...
-#-----|  -> exit deinit (normal)
+#-----|  -> exit deinit() (normal)
 
 #  400| 0
 #-----|  ->  ... = ...
@@ -5257,21 +5305,25 @@ cfg.swift:
 #  409| MyLocalClass
 #-----|  -> MyLocalStruct
 
-#  409| deinit
+#  409| deinit()
+#-----|  -> self
+
+#  409| enter deinit()
+#-----|  -> deinit()
+
+#  409| exit deinit()
+
+#  409| exit deinit() (normal)
+#-----|  -> exit deinit()
+
+#  409| self
 #-----|  -> { ... }
 
-#  409| enter deinit
-#-----|  -> deinit
-
-#  409| exit deinit
-
-#  409| exit deinit (normal)
-#-----|  -> exit deinit
-
 #  409| { ... }
-#-----|  -> exit deinit (normal)
+#-----|  -> exit deinit() (normal)
 
 #  410| (unnamed function decl)
+#-----|  -> self
 
 #  410| enter (unnamed function decl)
 #-----|  -> (unnamed function decl)
@@ -5298,24 +5350,35 @@ cfg.swift:
 #-----|  -> exit set
 
 #  410| get
+#-----|  -> self
+
+#  410| self
+
+#  410| self
+#-----|  -> value
+
+#  410| self
 
 #  410| set
-#-----|  -> value
+#-----|  -> self
 
 #  410| value
 
 #  410| yield ...
 #-----|  -> exit (unnamed function decl) (normal)
 
-#  411| enter init
-#-----|  -> init
+#  411| self
+#-----|  -> self
 
-#  411| exit init
+#  411| enter init()
+#-----|  -> init()
 
-#  411| exit init (normal)
-#-----|  -> exit init
+#  411| exit init()
 
-#  411| init
+#  411| exit init() (normal)
+#-----|  -> exit init()
+
+#  411| init()
 #-----|  -> self
 
 #  412| .x
@@ -5331,12 +5394,13 @@ cfg.swift:
 #-----|  ->  ... = ...
 
 #  413| return
-#-----| return -> exit init (normal)
+#-----| return -> exit init() (normal)
 
 #  416| MyLocalStruct
 #-----|  -> MyLocalEnum
 
 #  417| (unnamed function decl)
+#-----|  -> self
 
 #  417| enter (unnamed function decl)
 #-----|  -> (unnamed function decl)
@@ -5363,24 +5427,35 @@ cfg.swift:
 #-----|  -> exit set
 
 #  417| get
+#-----|  -> self
+
+#  417| self
+
+#  417| self
+#-----|  -> value
+
+#  417| self
 
 #  417| set
-#-----|  -> value
+#-----|  -> self
 
 #  417| value
 
 #  417| yield ...
 #-----|  -> exit (unnamed function decl) (normal)
 
-#  418| enter init
-#-----|  -> init
+#  418| self
+#-----|  -> self
 
-#  418| exit init
+#  418| enter init()
+#-----|  -> init()
 
-#  418| exit init (normal)
-#-----|  -> exit init
+#  418| exit init()
 
-#  418| init
+#  418| exit init() (normal)
+#-----|  -> exit init()
+
+#  418| init()
 #-----|  -> self
 
 #  419| .x
@@ -5396,7 +5471,7 @@ cfg.swift:
 #-----|  ->  ... = ...
 
 #  420| return
-#-----| return -> exit init (normal)
+#-----| return -> exit init() (normal)
 
 #  423| MyLocalEnum
 #-----|  -> myLocalVar
@@ -5420,6 +5495,7 @@ cfg.swift:
 #-----|  -> return ...
 
 #  446| (unnamed function decl)
+#-----|  -> self
 
 #  446| enter (unnamed function decl)
 #-----|  -> (unnamed function decl)
@@ -5446,9 +5522,17 @@ cfg.swift:
 #-----|  -> exit set
 
 #  446| get
+#-----|  -> self
+
+#  446| self
+
+#  446| self
+#-----|  -> value
+
+#  446| self
 
 #  446| set
-#-----|  -> value
+#-----|  -> self
 
 #  446| value
 
@@ -5456,6 +5540,7 @@ cfg.swift:
 #-----|  -> exit (unnamed function decl) (normal)
 
 #  450| (unnamed function decl)
+#-----|  -> self
 
 #  450| enter (unnamed function decl)
 #-----|  -> (unnamed function decl)
@@ -5482,9 +5567,17 @@ cfg.swift:
 #-----|  -> exit set
 
 #  450| get
+#-----|  -> self
+
+#  450| self
+
+#  450| self
+#-----|  -> value
+
+#  450| self
 
 #  450| set
-#-----|  -> value
+#-----|  -> self
 
 #  450| value
 
@@ -5492,6 +5585,7 @@ cfg.swift:
 #-----|  -> exit (unnamed function decl) (normal)
 
 #  451| (unnamed function decl)
+#-----|  -> self
 
 #  451| enter (unnamed function decl)
 #-----|  -> (unnamed function decl)
@@ -5518,9 +5612,17 @@ cfg.swift:
 #-----|  -> exit set
 
 #  451| get
+#-----|  -> self
+
+#  451| self
+
+#  451| self
+#-----|  -> value
+
+#  451| self
 
 #  451| set
-#-----|  -> value
+#-----|  -> self
 
 #  451| value
 
@@ -5528,6 +5630,7 @@ cfg.swift:
 #-----|  -> exit (unnamed function decl) (normal)
 
 #  452| (unnamed function decl)
+#-----|  -> self
 
 #  452| enter (unnamed function decl)
 #-----|  -> (unnamed function decl)
@@ -5554,9 +5657,17 @@ cfg.swift:
 #-----|  -> exit set
 
 #  452| get
+#-----|  -> self
+
+#  452| self
+
+#  452| self
+#-----|  -> value
+
+#  452| self
 
 #  452| set
-#-----|  -> value
+#-----|  -> self
 
 #  452| value
 

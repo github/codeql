@@ -177,7 +177,7 @@ module ClientSideUrlRedirect {
       )
       or
       // e.g. node.setAttribute("href", sink)
-      any(DomMethodCallExpr call).interpretsArgumentsAsURL(this.asExpr())
+      any(DomMethodCallExpr call).interpretsArgumentsAsUrl(this.asExpr())
     }
 
     override predicate isXssSink() { any() }

@@ -704,7 +704,7 @@ module PersistentWriteAccess {
  * Extend this class to refine existing API models. If you want to model new APIs,
  * extend `CSRFProtectionSetting::Range` instead.
  */
-class CSRFProtectionSetting extends DataFlow::Node instanceof CSRFProtectionSetting::Range {
+class CsrfProtectionSetting extends DataFlow::Node instanceof CsrfProtectionSetting::Range {
   /**
    * Gets the boolean value corresponding to if CSRF protection is enabled
    * (`true`) or disabled (`false`) by this node.
@@ -712,8 +712,11 @@ class CSRFProtectionSetting extends DataFlow::Node instanceof CSRFProtectionSett
   boolean getVerificationSetting() { result = super.getVerificationSetting() }
 }
 
+/** DEPRECATED: Alias for CsrfProtectionSetting */
+deprecated class CSRFProtectionSetting = CsrfProtectionSetting;
+
 /** Provides a class for modeling new CSRF protection setting APIs. */
-module CSRFProtectionSetting {
+module CsrfProtectionSetting {
   /**
    * A data-flow node that may set or unset Cross-site request forgery protection.
    *
@@ -728,6 +731,9 @@ module CSRFProtectionSetting {
     abstract boolean getVerificationSetting();
   }
 }
+
+/** DEPRECATED: Alias for CsrfProtectionSetting */
+deprecated module CSRFProtectionSetting = CsrfProtectionSetting;
 
 /** Provides classes for modeling path-related APIs. */
 module Path {

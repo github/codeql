@@ -21,4 +21,4 @@ where
   read(v) and
   not def.(AssignExpr).getSource() instanceof NullLiteral and
   (def instanceof Assignment or def.(UnaryAssignExpr).getParent() instanceof ExprStmt)
-select def, "This assignment to " + v.getName() + " is useless: the value is never read."
+select def, "This definition of " + v.getName() + " is never used."

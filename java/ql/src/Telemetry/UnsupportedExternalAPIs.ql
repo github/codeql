@@ -7,11 +7,14 @@
  */
 
 import java
+import semmle.code.java.dataflow.internal.FlowSummaryImpl as FlowSummaryImpl
+import semmle.code.java.dataflow.internal.NegativeSummary
 import ExternalApi
 
 private predicate getRelevantUsages(ExternalApi api, int usages) {
   not api.isUninteresting() and
   not api.isSupported() and
+  not api instanceof FlowSummaryImpl::Public::NegativeSummarizedCallable and
   usages =
     strictcount(Call c |
       c.getCallee().getSourceDeclaration() = api and

@@ -425,10 +425,6 @@ private DataFlow::LocalSourceNode trackSingletonMethod(MethodBase m, string name
   name = m.getName()
 }
 
-private SsaSelfDefinitionNode selfInModule(Module tp) {
-  tp = result.getSelfScope().(ModuleBase).getModule()
-}
-
 private DataFlow::LocalSourceNode trackModule(Module tp, TypeTracker t) {
   t.start() and
   (
@@ -436,7 +432,11 @@ private DataFlow::LocalSourceNode trackModule(Module tp, TypeTracker t) {
     resolveConstantReadAccess(result.asExpr().getExpr()) = tp
     or
     // `self` reference to Module
-    result = selfInModule(tp)
+    exists(Scope scope |
+      scope = result.(SsaSelfDefinitionNode).getSelfScope() and
+      tp = scope.(ModuleBase).getModule() and
+      not scope instanceof Toplevel // handled in `trackInstance`
+    )
   )
   or
   exists(TypeTracker t2, StepSummary summary |

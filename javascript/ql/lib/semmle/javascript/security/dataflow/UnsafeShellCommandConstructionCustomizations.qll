@@ -49,7 +49,7 @@ module UnsafeShellCommandConstruction {
   /**
    * A parameter of an exported function, seen as a source for shell command constructed from library input.
    */
-  class ExternalInputSource extends Source, DataFlow::SourceNode {
+  class ExternalInputSource extends Source {
     ExternalInputSource() {
       this = Exports::getALibraryInputParameter() and
       not (

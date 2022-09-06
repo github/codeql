@@ -6,22 +6,18 @@ import go
 
 /** Provides models of commonly used functions in the `fmt` package. */
 module Fmt {
-  /** The `Sprint` function or one of its variants. */
-  class Sprinter extends TaintTracking::FunctionModel {
-    Sprinter() {
-      // signature: func Sprint(a ...interface{}) string
-      this.hasQualifiedName("fmt", "Sprint")
-      or
-      // signature: func Sprintf(format string, a ...interface{}) string
-      this.hasQualifiedName("fmt", "Sprintf")
-      or
-      // signature: func Sprintln(a ...interface{}) string
-      this.hasQualifiedName("fmt", "Sprintln")
-    }
+  /** The `Sprint` or `Append` functions or one of their variants. */
+  class AppenderOrSprinter extends TaintTracking::FunctionModel {
+    AppenderOrSprinter() { this.hasQualifiedName("fmt", ["Append", "Sprint"] + ["", "f", "ln"]) }
 
     override predicate hasTaintFlow(FunctionInput inp, FunctionOutput outp) {
       inp.isParameter(_) and outp.isResult()
     }
+  }
+
+  /** The `Sprint` function or one of its variants. */
+  class Sprinter extends AppenderOrSprinter {
+    Sprinter() { this.getName().matches("Sprint%") }
   }
 
   /** The `Print` function or one of its variants. */

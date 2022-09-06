@@ -11,28 +11,28 @@ public class Test {
 
 		test(url, usr, pass); // flow through method
 
-		DriverManager.getConnection(url, "admin", "123456"); // hard-coded user/pass used directly in call
-		DriverManager.getConnection(url, usr, pass); // hard-coded user/pass flows into API call
+		DriverManager.getConnection(url, "admin", "123456"); // $ HardcodedCredentialsApiCall
+		DriverManager.getConnection(url, usr, pass); // $ HardcodedCredentialsApiCall
 
-		new java.net.PasswordAuthentication(usr, "123456".toCharArray()); // flow into char[] array
-		new java.net.PasswordAuthentication(usr, pass.toCharArray()); // flow through variable, then char[] array
+		new java.net.PasswordAuthentication(usr, "123456".toCharArray()); // $ HardcodedCredentialsApiCall
+		new java.net.PasswordAuthentication(usr, pass.toCharArray()); // $ HardcodedCredentialsApiCall
 
 		byte[] key = {1, 2, 3, 4, 5, 6, 7, 8}; // hard-coded cryptographic key, flowing into API call below
-		javax.crypto.spec.SecretKeySpec spec = new javax.crypto.spec.SecretKeySpec(key, "AES");
+		javax.crypto.spec.SecretKeySpec spec = new javax.crypto.spec.SecretKeySpec(key, "AES"); // $ HardcodedCredentialsApiCall
 
 		byte[] key2 = "abcdefgh".getBytes(); // hard-coded cryptographic key, flowing into API call below
-		javax.crypto.spec.SecretKeySpec spec2 = new javax.crypto.spec.SecretKeySpec(key2, "AES");
+		javax.crypto.spec.SecretKeySpec spec2 = new javax.crypto.spec.SecretKeySpec(key2, "AES"); // $ HardcodedCredentialsApiCall
 
-		passwordCheck(pass); // flow through
+		passwordCheck(pass); // $ HardcodedCredentialsSourceCall
 	}
 
 	public static void test(String url, String user, String password) throws SQLException {
-		DriverManager.getConnection(url, user, password); // sensitive API call (flow target)
+		DriverManager.getConnection(url, user, password); // $ HardcodedCredentialsApiCall
 	}
 
-	public static final String password = "myOtherPassword"; // hard-coded password
+	public static final String password = "myOtherPassword"; // $ HardcodedPasswordField
 
 	public static boolean passwordCheck(String password) {
-		return password.equals("admin"); // hard-coded password comparison
+		return password.equals("admin"); // $ HardcodedCredentialsComparison
 	}
 }

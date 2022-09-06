@@ -72,7 +72,7 @@ getADeclaration
 | calls.rb:97:1:100:3 | Object | calls.rb:97:1:100:3 | Object |
 | calls.rb:97:1:100:3 | Object | hello.rb:1:1:22:3 | hello.rb |
 | calls.rb:97:1:100:3 | Object | modules.rb:1:1:121:4 | modules.rb |
-| calls.rb:97:1:100:3 | Object | modules_rec.rb:1:1:11:10 | modules_rec.rb |
+| calls.rb:97:1:100:3 | Object | modules_rec.rb:1:1:11:26 | modules_rec.rb |
 | calls.rb:97:1:100:3 | Object | private.rb:1:1:60:3 | private.rb |
 | calls.rb:102:1:104:3 | Hash | calls.rb:102:1:104:3 | Hash |
 | calls.rb:106:1:117:3 | Array | calls.rb:106:1:117:3 | Array |

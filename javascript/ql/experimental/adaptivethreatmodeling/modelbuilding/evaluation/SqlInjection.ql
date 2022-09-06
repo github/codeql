@@ -5,7 +5,8 @@
  * evaluation pipeline.
  */
 
-import semmle.javascript.security.dataflow.SqlInjection
+import javascript
+import semmle.javascript.security.dataflow.SqlInjectionQuery as SqlInjection
 import EndToEndEvaluation as EndToEndEvaluation
 
 from

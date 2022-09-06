@@ -97,19 +97,19 @@ class Feature extends TFeature {
   abstract string getConstantName();
 }
 
-private class FeatureNOENT extends Feature, TNOENT {
+private class FeatureNoent extends Feature, TNOENT {
   override int getValue() { result = 2 }
 
   override string getConstantName() { result = "NOENT" }
 }
 
-private class FeatureNONET extends Feature, TNONET {
+private class FeatureNonet extends Feature, TNONET {
   override int getValue() { result = 2048 }
 
   override string getConstantName() { result = "NONET" }
 }
 
-private class FeatureDTDLOAD extends Feature, TDTDLOAD {
+private class FeatureDtdLoad extends Feature, TDTDLOAD {
   override int getValue() { result = 4 }
 
   override string getConstantName() { result = "DTDLOAD" }

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 namespace NoSummaries;
 
@@ -97,5 +98,37 @@ public class HigherOrderParameters
     public object M2(Func<object, object> map, object o)
     {
         return map(o);
+    }
+}
+
+public abstract class BaseClass
+{
+    // Negative summary.
+    public virtual string M1(string s)
+    {
+        return "";
+    }
+
+    // Negative summary.
+    public abstract string M2(string s);
+}
+
+// No methods in this class will have generated flow as
+// the simple types used in the collection are not bulk data types.
+public class CollectionFlow
+{
+    public int[] ReturnSimpleTypeArray(int[] a)
+    {
+        return a;
+    }
+
+    public List<int> ReturnSimpleTypeList(List<int> a)
+    {
+        return a;
+    }
+
+    public Dictionary<int, int> ReturnSimpleTypeDictionary(Dictionary<int, int> a)
+    {
+        return a;
     }
 }

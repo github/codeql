@@ -41,5 +41,5 @@ class SensitiveLoggerConfiguration extends TaintTracking::Configuration {
     sanitizer.getType() instanceof TypeType
   }
 
-  override predicate isSanitizerIn(Node node) { isSource(node) }
+  override predicate isSanitizerIn(Node node) { this.isSource(node) }
 }
