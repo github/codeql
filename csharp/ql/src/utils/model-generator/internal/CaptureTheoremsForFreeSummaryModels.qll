@@ -33,7 +33,7 @@ class TheoremTargetApi extends Specific::TargetApiSpecific {
     exists(string access |
       if isGenericCollectionType(this.getDeclaringType(), t)
       then access = ".Element"
-      else access = ".SyntheticField[Arg" + t.getName() + "]"
+      else access = ".SyntheticField[ArgType" + t.getIndex() + "]"
     |
       result = Specific::qualifierString() + access
     )
