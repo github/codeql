@@ -67,6 +67,9 @@ calls.rb:
 #  155| B
 #-----|  -> S
 
+#  169| Singletons
+#-----|  -> Object
+
 hello.rb:
 #    1| EnglishWords
 

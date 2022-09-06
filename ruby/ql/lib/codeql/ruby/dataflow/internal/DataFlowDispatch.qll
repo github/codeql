@@ -432,10 +432,12 @@ private DataFlow::LocalSourceNode trackModule(Module tp, TypeTracker t) {
     resolveConstantReadAccess(result.asExpr().getExpr()) = tp
     or
     // `self` reference to Module
-    exists(Scope scope |
-      scope = result.(SsaSelfDefinitionNode).getSelfScope() and
+    exists(Scope scope | scope = result.(SsaSelfDefinitionNode).getSelfScope() |
       tp = scope.(ModuleBase).getModule() and
       not scope instanceof Toplevel // handled in `trackInstance`
+      or
+      scope = result.(SsaSelfDefinitionNode).getSelfScope() and
+      tp = scope.(SingletonMethod).getEnclosingModule().getModule()
     )
   )
   or
