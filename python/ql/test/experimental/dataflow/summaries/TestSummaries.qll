@@ -5,7 +5,7 @@ private import semmle.python.ApiGraphs
 private class SummarizedCallableIdentity extends SummarizedCallable {
   SummarizedCallableIdentity() { this = "identity" }
 
-  override Call getACall() { result.getFunc().(Name).getId() = this }
+  override CallNode getACall() { result.getFunction().(NameNode).getId() = this }
 
   override DataFlow::ArgumentNode getACallback() { result.asExpr().(Name).getId() = this }
 
@@ -20,7 +20,7 @@ private class SummarizedCallableIdentity extends SummarizedCallable {
 private class SummarizedCallableApplyLambda extends SummarizedCallable {
   SummarizedCallableApplyLambda() { this = "apply_lambda" }
 
-  override Call getACall() { result.getFunc().(Name).getId() = this }
+  override CallNode getACall() { result.getFunction().(NameNode).getId() = this }
 
   override DataFlow::ArgumentNode getACallback() { result.asExpr().(Name).getId() = this }
 
@@ -38,7 +38,7 @@ private class SummarizedCallableApplyLambda extends SummarizedCallable {
 private class SummarizedCallableReversed extends SummarizedCallable {
   SummarizedCallableReversed() { this = "reversed" }
 
-  override Call getACall() { result.getFunc().(Name).getId() = this }
+  override CallNode getACall() { result.getFunction().(NameNode).getId() = this }
 
   override DataFlow::ArgumentNode getACallback() { result.asExpr().(Name).getId() = this }
 
@@ -52,7 +52,7 @@ private class SummarizedCallableReversed extends SummarizedCallable {
 private class SummarizedCallableMap extends SummarizedCallable {
   SummarizedCallableMap() { this = "map" }
 
-  override Call getACall() { result.getFunc().(Name).getId() = this }
+  override CallNode getACall() { result.getFunction().(NameNode).getId() = this }
 
   override DataFlow::ArgumentNode getACallback() { result.asExpr().(Name).getId() = this }
 
@@ -72,8 +72,8 @@ private class SummarizedCallableMap extends SummarizedCallable {
 private class SummarizedCallableJsonLoads extends SummarizedCallable {
   SummarizedCallableJsonLoads() { this = "json.loads" }
 
-  override Call getACall() {
-    result = API::moduleImport("json").getMember("loads").getACall().asExpr()
+  override CallNode getACall() {
+    result = API::moduleImport("json").getMember("loads").getACall().getNode()
   }
 
   override DataFlow::ArgumentNode getACallback() {

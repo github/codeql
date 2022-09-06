@@ -282,7 +282,7 @@ abstract class LibraryCallable extends string {
   LibraryCallable() { any() }
 
   /** Gets a call to this library callable. */
-  abstract Call getACall();
+  abstract CallNode getACall();
 
   /** Gets a data-flow node, where this library callable is used as a call-back. */
   abstract ArgumentNode getACallback();
@@ -405,7 +405,7 @@ class LibraryCallableValue extends DataFlowCallable, TLibraryCallable {
 
   override string toString() { result = callable.toString() }
 
-  override CallNode getACall() { result.getNode() = callable.getACall() }
+  override CallNode getACall() { result = callable.getACall() }
 
   /** Gets a data-flow node, where this library callable is used as a call-back. */
   ArgumentNode getACallback() { result = callable.getACallback() }
@@ -639,7 +639,7 @@ class SpecialCall extends DataFlowSourceCall, TSpecialCall {
 class LibraryCall extends NormalCall {
   LibraryCallable callable;
 
-  LibraryCall() { call.getNode() = callable.getACall() }
+  LibraryCall() { call = callable.getACall() }
 
   // TODO: Implement Python calling convention?
   override Node getArg(int n) { result = TCfgNode(call.getArg(n)) }
