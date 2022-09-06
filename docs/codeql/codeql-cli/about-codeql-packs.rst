@@ -15,15 +15,15 @@ There are two types of CodeQL packs: query packs and library packs.
 You can use the package management commands in the CodeQL CLI to create CodeQL packs, add dependencies to packs, and install or update dependencies. For more information, see ":ref:`Creating and working with CodeQL packs <creating-and-working-with-codeql-packs>`." You can also publish and download CodeQL packs using the CodeQL CLI. For more information, see ":doc:`Publishing and using CodeQL packs <publishing-and-using-codeql-packs>`."
 
 
-The standard CodeQL packages for all supported languages are published in the `GitHub Container registry <https://github.com/orgs/codeql/packages>`__.`
-The `CodeQL repository <https://github.com/github/codeql>`__ contains sources for the standard CodeQL packs for all supported languages.
+The standard CodeQL packages for all supported languages are published in the `GitHub Container registry <https://github.com/orgs/codeql/packages>`__.
+The `CodeQL repository <https://github.com/github/codeql>`__ contains source files for the standard CodeQL packs for all supported languages.
 
 .. _codeql-pack-structure:
 
 CodeQL pack structure
 ---------------------
 
-A CodeQL pack must contain a file called ``qlpack.yml`` in its root directory. In the ``qlpack.yml`` file, the ``name:`` field must have a value that follows the format of ``<scope>/<pack>``, where ``<scope>`` is the GitHub organization or user account that the pack will be published to and ``<pack>`` is the name of the pack. Additionally, query packs contain a ``codeql-pack.lock.yml`` file that contains the resolved dependencies of the pack. This file is generated during a call to the ``codeql pack install`` command, is not meant to be edited by hand, and should be added to your version control system.
+A CodeQL pack must contain a file called ``qlpack.yml`` in its root directory. In the ``qlpack.yml`` file, the ``name:`` field must have a value that follows the format of ``<scope>/<pack>``, where ``<scope>`` is the GitHub organization or user account that the pack will be published to and ``<pack>`` is the name of the pack. Additionally, query packs and library packs with CodeQL tests contain a ``codeql-pack.lock.yml`` file that contains the resolved dependencies of the pack. This file is generated during a call to the ``codeql pack install`` command, is not meant to be edited by hand, and should be added to your version control system.
 
 The other files and directories within the pack should be logically organized. For example, typically:
 
@@ -38,13 +38,13 @@ When executing query-related commands, CodeQL first looks in siblings of the ins
 Then it checks the package cache for CodeQL packs which have been downloaded. This means that when you are developing queries locally, the local packages
 in the installation directory override packages of the same name in the package cache, so that you can test your local changes.
 
-The metadata in each `qlpack.yml`` file tells
+The metadata in each ``qlpack.yml`` file tells
 CodeQL how to compile any queries in the pack, what libraries the pack depends on, and where to
 find query suite definitions.
 
 The contents of the CodeQL pack (queries or libraries used in CodeQL analysis) is included in the same directory as ``qlpack.yml``, or its subdirectories.
 
-The location of ``qlpack.yml`` defines the library path for the content of the CodeQL pack. That is, for all ``.ql`` and ``.qll`` files in the pack, CodeQL will resolve all import statements relative to the ``qlpack.yml`` at the pack's root.
+The directory containing the ``qlpack.yml`` file serves as the root directory for the content of the CodeQL pack. That is, for all ``.ql`` and ``.qll`` files in the pack, CodeQL will resolve all import statements relative to the directory containing the ``qlpack.yml`` file at the pack's root.
 
 .. _codeqlpack-yml-properties:
 
@@ -119,14 +119,14 @@ The following properties are supported in ``qlpack.yml`` files.
 
         extractor: javascript
 
-     - All test packs
-     - The CodeQL language extractor to use when the CLI creates a database in the pack. For more information about testing queries, see ":doc:`Testing custom queries <testing-custom-queries>`."
+     - All packs containing CodeQL tests
+     - The CodeQL language extractor to use when running the CodeQL tests in the pack. For more information about testing queries, see ":doc:`Testing custom queries <testing-custom-queries>`."
    * - ``tests``
      - .. code-block:: yaml
 
         tests: .
 
-     - Optional for test packs. Ignored for non-test packs.
+     - Optional for packs containing CodeQL tests. Ignored for packs without tests.
      - The path to a directory within the pack that contains tests, defined relative to the pack directory. Use ``.`` to specify the whole pack. Any queries in this directory are run as tests when ``test run`` is run with the ``--strict-test-discovery`` option. These queries are ignored by query suite definitions that use ``queries`` or ``qlpack`` instructions to ask for all queries in a particular pack. If this property is missing, then ``.`` is assumed.
    * - ``dbscheme``
      - .. code-block:: yaml
@@ -141,7 +141,7 @@ The following properties are supported in ``qlpack.yml`` files.
         upgrades: .
 
      - Core language packs only
-     - The path to a directory within the pack that contains database upgrade scripts, defined relative to the pack directory. Database upgrades are used internally to ensure a database created with a different version of the CodeQL CLI is compatible with the current version.
+     - The path to a directory within the pack that contains database upgrade scripts, defined relative to the pack directory. Database upgrades are used internally to ensure that a database created with a different version of the CodeQL CLI is compatible with the current version of the CLI.
    * - ``authors``
      - .. code-block:: yaml
 
@@ -176,7 +176,7 @@ The following properties are supported in ``qlpack.yml`` files.
 About ``codeql-pack.lock.yml`` files
 ------------------------------------
 
-``codeql-pack.lock.yml`` files store the versions of the resolved transitive dependencies of a CodeQL pack. This file is created by the ``codeql pack install`` if it does not already exist and should be added to your version control system. The ``dependencies`` section of the ``qlpack.yml`` file contains version ranges that are compatible with the pack. The ``codeql-pack.lock.yml`` file locks the versions to precise dependencies. This ensures that anyone running ``codeql pack install`` on this the pack will always retrieve the same versions of dependencies even if newer compatible versions exist. Only query packs can have ``codeql-pack.lock.yml`` files. This is because library packs are not compiled independently of query packs. Without being compiled, there is no need to specify precise versions of their dependencies.
+``codeql-pack.lock.yml`` files store the versions of the resolved transitive dependencies of a CodeQL pack. This file is created by the ``codeql pack install`` command if it does not already exist and should be added to your version control system. The ``dependencies`` section of the ``qlpack.yml`` file contains version ranges that are compatible with the pack. The ``codeql-pack.lock.yml`` file locks the versions to precise dependencies. This ensures that running ``codeql pack install`` on this the pack will always retrieve the same versions of dependencies even if newer compatible versions exist.
 
 For example, if a ``qlpack.yml`` file contains the following dependencies:
 
@@ -199,15 +199,16 @@ The ``codeql-pack.lock.yml`` file will contain something like the following:
      my-user/transitive-dependency:
        version: 1.2.4
 
-
 The ``codeql/cpp-all`` dependency is locked to version 0.1.4. The ``my-user/my-lib`` dependency is locked to version 0.2.4. The ``my-user/transitive-dependency``, which is a transitive dependency and is not specified in the ``qlpack.yml`` file, is locked to version 1.2.4. The ``other-dependency/from-source`` is absent from the lock file since it is resolved from source. This dependency must be available in the same CodeQL workspace as the pack. For more information about CodeQL workspaces and resolving dependencies from source, see ":doc:`About CodeQL Workspaces <about-codeql-workspaces>`."
+
+In most cases, the ``codeql-pack.lock.yml`` file is only relevant for query packs since library packs are non-executable and usually do not need their transitive dependencies to be fixed. The exception to this is for library packs that contain tests. In this case, the ``codeql-pack.lock.yml`` file is used to ensure that the tests are always run with the same versions of dependencies to avoid spurious failures when there are mismatched dependencies.
 
 .. _custom-codeql-packs:
 
 Examples of custom CodeQL packs
 -------------------------------
 
-When you write custom queries or tests, you should save them in custom CodeQL packs. For simplicity, try to organize each pack logically. For more information, see `CodeQL pack structure <#codeql-pack-structure>`__. Save files for queries and tests in separate packs and, where possible, organize custom packs into specific folders for each target language. This is particuarly useful if you intend to publish your CodeQL packs so they can be shared with others or used in GitHub `Code scanning <https://docs.github.com/en/code-security/secure-coding/automatically-scanning-your-code-for-vulnerabilities-and-errors/about-code-scanning>`__.
+When you write custom queries or tests, you should save them in custom CodeQL packs. For simplicity, try to organize each pack logically. For more information, see "`CodeQL pack structure <#codeql-pack-structure>`__." Save files for queries and tests in separate packs and, where possible, organize custom packs into specific folders for each target language. This is particuarly useful if you intend to publish your CodeQL packs so they can be shared with others or used in GitHub `Code scanning <https://docs.github.com/en/code-security/secure-coding/automatically-scanning-your-code-for-vulnerabilities-and-errors/about-code-scanning>`__.
 
 CodeQL packs for custom libraries
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

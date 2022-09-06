@@ -59,8 +59,8 @@ You can also specify:
   - a path to a directory containing query files
   - a path to a query suite file
   - the name of a CodeQL query pack
-    - with an optional version range
-    - with an optional path to a query, directory, or query suite inside the pack
+     - with an optional version range
+     - with an optional path to a query, directory, or query suite inside the pack
 
   If omitted, the default query suite for the language of the database being analyzed will be used. For more information, see the :ref:`examples <database-analyze-examples>` below.
 
@@ -170,12 +170,6 @@ recursively, so any queries contained in subfolders will also be executed.
 For example, to execute all Python queries contained in the ``Functions`` directory you would run::
 
    codeql database analyze <python-database> ../ql/python/ql/src/Functions/ --format=sarif-latest --output=python-analysis/python-results.sarif
-
-If you do not have the CodeQL repository checked out, you can execute the same queries by specifying the query pack name and the path to the queries::
-
-   codeql database analyze --download <python-database> codeql/python-queries:Functions/ --format=sarif-latest --output=python-analysis/python-results.sarif
-
-Use the ``--download`` flag to download the query pack if it isn't yet available locally.
 
 When the analysis has finished, a SARIF results file is generated. Specifying ``--format=sarif-latest`` ensures
 that the results are formatted according to the most recent SARIF specification
