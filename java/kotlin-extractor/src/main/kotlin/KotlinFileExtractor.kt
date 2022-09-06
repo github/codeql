@@ -3056,7 +3056,13 @@ open class KotlinFileExtractor(
                     extractTypeOperatorCall(e, callable, exprParent.parent, exprParent.idx, exprParent.enclosingStmt)
                 }
                 is IrVararg -> {
-                    logger.errorElement("Unexpected IrVararg", e)
+                    if (e.elements.size != 1 || e.elements[0] !is IrSpreadElement) {
+                        logger.errorElement("Unexpected IrVararg", e)
+                        return
+                    }
+                    // There are lowered IR cases when the vararg expression is not within a call, such as
+                    // val temp0 = [*expr]
+                    extractExpression((e.elements[0] as IrSpreadElement).expression, callable, parent)
                 }
                 is IrGetObjectValue -> {
                     // For `object MyObject { ... }`, the .class has an
