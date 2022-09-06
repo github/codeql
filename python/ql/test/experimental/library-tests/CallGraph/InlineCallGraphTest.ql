@@ -6,6 +6,10 @@ private import semmle.python.dataflow.new.internal.DataFlowDispatch as TT
 predicate pointsToCallEdge(CallNode call, Function callable) {
   exists(call.getLocation().getFile().getRelativePath()) and
   exists(callable.getLocation().getFile().getRelativePath()) and
+  // I did try using viableCallable from `DataFlowDispatchPointsTo` (from temporary copy
+  //  of `dataflow.new.internal` that still uses points-to) instead of direct
+  //  `getACall()` on a Value, but it only added results for `__init__` methods, not for
+  //  anything else.
   exists(PythonFunctionValue funcValue |
     funcValue.getScope() = callable and
     call = funcValue.getACall()
