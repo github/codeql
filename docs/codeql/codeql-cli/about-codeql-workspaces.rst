@@ -32,6 +32,17 @@ For example, the following ``codeql-workspace.yml`` file defines a workspace tha
 
 To verify that your ``codeql-workspace.yml`` file includes the CodeQL packs that you expect, run the ``codeql pack ls`` command in the same directory as your workspace. The result of the command is a list of all CodeQL packs in the workspace.
 
+.. _source-dependencies:
+
+Source dependencies
+-------------------
+
+Source dependencies are CodeQL packs that are resolved from the local file system outside of the CodeQL package cache. These dependencies can be in the same CodeQL workspace, or specified as a path option using the ``--additional-packs`` argument. When you compile and run queries locally, source dependencies override any dependencies found in the CodeQL package cache as well as version constraints defined in the ``qlpack.yml``. All references to CodeQL packs in the same workspace are resolved as source dependencies.
+
+This is particularly useful in the following situations:
+
+- One of the dependencies of the query pack you are running is not yet published. Resolving from source is the only way to reference that pack.
+- You are making changes to multiple packs at the same time and want to test them together. Resolving from source ensures that you are using the version of the pack with your changes in it.
 
 CodeQL workspaces and query resolution
 --------------------------------------
@@ -41,17 +52,6 @@ All CodeQL packs in a workspace are available as source dependencies for each ot
 Similarly, when you publish a CodeQL query pack to the GitHub container registry using  ``codeql pack publish`` the command will always use the dependencies from the workspace instead of using dependencies found in the local package cache.
 
 This ensures that any local changes you make to a query library in a dependency are automatically reflected in any query packs you publish from that workspace.
-
-.. pull-quote::
-
-  Note
-
-  Source dependencies are CodeQL packs that are resolved from the local file system. These dependencies can be in the same CodeQL workspace, or specified as a path option using the ``--additional-packs`` argument. When you compile and run queries locally, source dependencies override any dependencies found in the local package cache as well as version constraints defined in the ``qlpack.yml``.
-
-  This is particularly useful in the following situations:
-
-  - One of the dependencies of the query pack you are running is not yet published. Resolving from source is the only way to reference that pack.
-  - You are making changes to multiple packs at the same time and want to test them together. Resolving from source ensures that you are using the version of the pack with your changes in it.
 
 Example
 ~~~~~~~
