@@ -158,16 +158,16 @@ private predicate joinStep(TypeFlowNode n1, TypeFlowNode n2) {
 
 private predicate anyStep(TypeFlowNode n1, TypeFlowNode n2) { joinStep(n1, n2) or step(n1, n2) }
 
-private predicate sccEdge(TypeFlowNode n1, TypeFlowNode n2) { anyStep(n1, n2) and anyStep+(n2, n1) }
+private import SccReduction
 
-/*
+/**
  * SCC reduction.
  *
  * This ought to be as easy as `equivalenceRelation(sccEdge/2)(n, scc)`, but
  * this HOP is not currently supported for newtypes.
  *
  * A straightforward implementation would be:
- * ```
+ * ```ql
  * predicate sccRepr(TypeFlowNode n, TypeFlowNode scc) {
  *  scc =
  *    max(TypeFlowNode n2 |
@@ -182,60 +182,67 @@ private predicate sccEdge(TypeFlowNode n1, TypeFlowNode n2) { anyStep(n1, n2) an
  * ```
  * but this is quadratic in the size of the SCCs.
  *
- * Instead we find local maxima and determine the SCC representatives from those.
+ * Instead we find local maxima by following SCC edges and determine the SCC
+ * representatives from those.
  * (This is still worst-case quadratic in the size of the SCCs, but generally
  * performs better.)
  */
+private module SccReduction {
+  private predicate sccEdge(TypeFlowNode n1, TypeFlowNode n2) {
+    anyStep(n1, n2) and anyStep+(n2, n1)
+  }
 
-private predicate sccEdgeWithMax(TypeFlowNode n1, TypeFlowNode n2, TypeFlowNode m) {
-  sccEdge(n1, n2) and
-  m =
-    max(TypeFlowNode n |
-      n = [n1, n2]
-    |
-      n order by n.getLocation().getStartLine(), n.getLocation().getStartColumn(), getNodeKind(n)
-    )
-}
-
-private predicate hasLargerNeighbor(TypeFlowNode n) {
-  exists(TypeFlowNode n2 |
-    sccEdgeWithMax(n, n2, n2) and
-    not sccEdgeWithMax(n, n2, n)
-    or
-    sccEdgeWithMax(n2, n, n2) and
-    not sccEdgeWithMax(n2, n, n)
-  )
-}
-
-private predicate localMax(TypeFlowNode m) {
-  sccEdgeWithMax(_, _, m) and
-  not hasLargerNeighbor(m)
-}
-
-private predicate sccReprFromLocalMax(TypeFlowNode scc) {
-  exists(TypeFlowNode m |
-    localMax(m) and
-    scc =
-      max(TypeFlowNode n2 |
-        sccEdge+(m, n2) and localMax(n2)
+  private predicate sccEdgeWithMax(TypeFlowNode n1, TypeFlowNode n2, TypeFlowNode m) {
+    sccEdge(n1, n2) and
+    m =
+      max(TypeFlowNode n |
+        n = [n1, n2]
       |
-        n2
-        order by
-          n2.getLocation().getStartLine(), n2.getLocation().getStartColumn(), getNodeKind(n2)
+        n order by n.getLocation().getStartLine(), n.getLocation().getStartColumn(), getNodeKind(n)
       )
-  )
-}
+  }
 
-private predicate sccRepr(TypeFlowNode n, TypeFlowNode scc) {
-  sccEdge+(n, scc) and sccReprFromLocalMax(scc)
-}
+  private predicate hasLargerNeighbor(TypeFlowNode n) {
+    exists(TypeFlowNode n2 |
+      sccEdgeWithMax(n, n2, n2) and
+      not sccEdgeWithMax(n, n2, n)
+      or
+      sccEdgeWithMax(n2, n, n2) and
+      not sccEdgeWithMax(n2, n, n)
+    )
+  }
 
-private predicate sccJoinStep(TypeFlowNode n, TypeFlowNode scc) {
-  exists(TypeFlowNode mid |
-    joinStep(n, mid) and
-    sccRepr(mid, scc) and
-    not sccRepr(n, scc)
-  )
+  private predicate localMax(TypeFlowNode m) {
+    sccEdgeWithMax(_, _, m) and
+    not hasLargerNeighbor(m)
+  }
+
+  private predicate sccReprFromLocalMax(TypeFlowNode scc) {
+    exists(TypeFlowNode m |
+      localMax(m) and
+      scc =
+        max(TypeFlowNode n2 |
+          sccEdge+(m, n2) and localMax(n2)
+        |
+          n2
+          order by
+            n2.getLocation().getStartLine(), n2.getLocation().getStartColumn(), getNodeKind(n2)
+        )
+    )
+  }
+
+  /** Holds if `n` is part of an SCC of size 2 or more represented by `scc`. */
+  predicate sccRepr(TypeFlowNode n, TypeFlowNode scc) {
+    sccEdge+(n, scc) and sccReprFromLocalMax(scc)
+  }
+
+  predicate sccJoinStep(TypeFlowNode n, TypeFlowNode scc) {
+    exists(TypeFlowNode mid |
+      joinStep(n, mid) and
+      sccRepr(mid, scc) and
+      not sccRepr(n, scc)
+    )
+  }
 }
 
 private signature predicate edgeSig(TypeFlowNode n1, TypeFlowNode n2);
@@ -247,6 +254,10 @@ private signature module RankedEdge {
 }
 
 private module RankEdge<edgeSig/2 edge> implements RankedEdge {
+  /**
+   * Holds if `r` is a ranking of the incoming edges `(n1,n2)` to `n2`. The used
+   * ordering is not necessarily total, so the ranking may have gaps.
+   */
   private predicate edgeRank1(int r, TypeFlowNode n1, TypeFlowNode n2) {
     n1 =
       rank[r](TypeFlowNode n |
@@ -256,10 +267,15 @@ private module RankEdge<edgeSig/2 edge> implements RankedEdge {
       )
   }
 
+  /**
+   * Holds if `r2` is a ranking of the ranks from `edgeRank1`. This removes the
+   * gaps from the ranking.
+   */
   private predicate edgeRank2(int r2, int r1, TypeFlowNode n) {
     r1 = rank[r2](int r | edgeRank1(r, _, n) | r)
   }
 
+  /** Holds if `r` is a ranking of the incoming edges `(n1,n2)` to `n2`. */
   predicate edgeRank(int r, TypeFlowNode n1, TypeFlowNode n2) {
     exists(int r1 |
       edgeRank1(r1, n1, n2) and
