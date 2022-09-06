@@ -327,7 +327,7 @@ abstract class ArgumentNode extends Node {
   final DataFlowSourceCall getCall() { this.argumentOf(result, _) }
 }
 
-/** A data flow node that represents a call argument. */
+/** A data flow node that represents a call argument found in the source code. */
 class ArgumentSourceNode extends ArgumentNode {
   ArgumentSourceNode() { this = any(DataFlowSourceCall c).getArg(_) }
 
