@@ -68,8 +68,7 @@ API::Node getExtraNodeFromPath(string package, string type, AccessPath path, int
 
 /** Gets a Ruby-specific interpretation of the `(package, type)` tuple. */
 API::Node getExtraNodeFromType(string package, string type) {
-  isRelevantFullPath(package, type, _) and
-  exists(package) and // Allow any package name, see `isPackageUsed`.
+  isRelevantFullPath(package, type, _) and // Allow any package name, see `isPackageUsed`.
   type = "" and
   result = API::root()
 }
