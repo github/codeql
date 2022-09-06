@@ -607,7 +607,7 @@ class ActiveRecordAssociation extends DataFlow::CallNode {
  */
 bindingset[input]
 bindingset[result]
-string pluralize(string input) {
+private string pluralize(string input) {
   exists(string stem | stem + "y" = input | result = stem + "ies")
   or
   not exists(string stem | stem + "s" = input) and
