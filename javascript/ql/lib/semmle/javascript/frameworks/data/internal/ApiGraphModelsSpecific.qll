@@ -96,7 +96,7 @@ API::Node getExtraNodeFromType(string package, string type) {
   result = API::moduleImport(package)
   or
   // Access instance of a type based on type annotations
-  result = API::Node::ofType(getAPackageAlias(package), type)
+  result = API::Internal::getANodeOfTypeRaw(getAPackageAlias(package), type)
 }
 
 /**
