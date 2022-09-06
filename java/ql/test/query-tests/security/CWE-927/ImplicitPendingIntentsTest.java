@@ -2,6 +2,7 @@ package com.example.test;
 
 import java.io.FileNotFoundException;
 import android.app.Activity;
+import android.app.AlarmManager;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -215,6 +216,28 @@ public class ImplicitPendingIntentsTest {
             noMan.notify(0, notification); // Safe
         }
 
+    }
+
+    public static void testPendingIntentInAnAlarm(Context ctx) {
+        AlarmManager aManager = (AlarmManager) ctx.getSystemService(Context.ALARM_SERVICE);
+        {
+            Intent baseIntent = new Intent();
+            PendingIntent pi = PendingIntent.getActivity(ctx, 0, baseIntent, 0);
+            aManager.set(0, 0, pi); // $hasImplicitPendingIntent
+            aManager.setAlarmClock(null, pi); // $hasImplicitPendingIntent
+            aManager.setAndAllowWhileIdle(0, 0, pi); // $hasImplicitPendingIntent
+            aManager.setExact(0, 0, pi); // $hasImplicitPendingIntent
+            aManager.setExactAndAllowWhileIdle(0, 0, pi); // $hasImplicitPendingIntent
+            aManager.setInexactRepeating(0, 0, 0, pi); // $hasImplicitPendingIntent
+            aManager.setRepeating(0, 0, 0, pi); // $hasImplicitPendingIntent
+            aManager.setWindow(0, 0, 0, pi); // $hasImplicitPendingIntent
+        }
+        {
+            Intent baseIntent = new Intent();
+            PendingIntent pi =
+                    PendingIntent.getActivity(ctx, 0, baseIntent, PendingIntent.FLAG_IMMUTABLE); // Sanitizer
+            aManager.set(0, 0, pi); // Safe
+        }
     }
 
     static class TestActivity extends Activity {
