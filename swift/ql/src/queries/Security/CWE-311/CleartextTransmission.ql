@@ -75,6 +75,9 @@ class CleartextTransmissionConfig extends TaintTracking::Configuration {
   override predicate isSanitizerIn(DataFlow::Node node) {
     // make sources barriers so that we only report the closest instance
     isSource(node)
+    or
+    // encryption barrier
+    node.asExpr() instanceof EncryptedExpr
   }
 }
 

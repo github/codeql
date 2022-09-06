@@ -154,3 +154,16 @@ class SensitiveExpr extends Expr {
    */
   predicate isProbablySafe() { label.toLowerCase().regexpMatch(regexpProbablySafe()) }
 }
+
+/**
+ * An expression that may be protected with encryption, for example an
+ * argument to a function called "encrypt".
+ */
+class EncryptedExpr extends Expr {
+  EncryptedExpr() {
+    exists(CallExpr call |
+      call.getStaticTarget().getName().regexpMatch(".*(crypt|hash|encode|protect).*") and
+      call.getAnArgument().getExpr() = this
+    )
+  }
+}

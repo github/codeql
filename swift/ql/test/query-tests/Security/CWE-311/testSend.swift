@@ -54,5 +54,5 @@ func test2(password : String, connection : NWConnection) {
 	connection.send(content: str3, completion: .idempotent) // BAD
 	connection.send(content: str4, completion: .idempotent) // GOOD (encrypted) [FALSE POSITIVE]
 	connection.send(content: str5, completion: .idempotent) // GOOD (encrypted) [FALSE POSITIVE]
-	connection.send(content: str6, completion: .idempotent) // GOOD (encrypted) [FALSE POSITIVE]
+	connection.send(content: str6, completion: .idempotent) // GOOD (encrypted)
 }
