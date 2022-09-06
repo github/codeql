@@ -51,6 +51,9 @@ newtype TNode =
       node = call.getArg(_)
       or
       node = call.getArgByName(_)
+      or
+      // `self` argument when handling class instance calls (`__call__` special method))
+      node = call.getFunction()
     )
     or
     node = any(AttrNode a).getObject()
