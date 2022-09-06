@@ -1342,7 +1342,7 @@ open class KotlinFileExtractor(
         } else {
             var subbedType: IrSimpleType = receiverType
             ancestorTypes.forEach {
-                val thisClass = subbedType.classifier.owner as IrClass
+                val thisClass = subbedType.classifier.owner
                 if (thisClass !is IrClass) {
                     logger.errorElement("Found ancestor with unexpected type ${thisClass.javaClass}", callTarget)
                     return listOf()
