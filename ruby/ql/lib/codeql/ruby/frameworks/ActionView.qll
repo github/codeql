@@ -216,4 +216,116 @@ class FileSystemResolverAccess extends DataFlow::CallNode, FileSystemAccess::Ran
 
   override DataFlow::Node getAPathArgument() { result = this.getArgument(0) }
 }
+
 // TODO: model flow in/out of template files properly,
+//
+/**
+ * Action view helper methods which are XSS sinks.
+ */
+module ActionViewHelpers {
+  /**
+   * Calls to ActionView helpers which render their argument without escaping.
+   * These arguments should be treated as XSS sinks.
+   * In the documentation for classes in this module, the vulnerable argument is
+   * named `x`.
+   */
+  abstract class RawHelperCall extends MethodCall {
+    abstract Expr getRawArgument();
+  }
+
+  /**
+   * `ActionView::Helpers::TextHelper#simple_format`.
+   *
+   * `simple_format(x, y, sanitize: false)`.
+   */
+  private class SimpleFormat extends ActionViewContextCall, RawHelperCall {
+    SimpleFormat() {
+      this.getMethodName() = "simple_format" and
+      this.getKeywordArgument("sanitize").getConstantValue().isBoolean(false)
+    }
+
+    override Expr getRawArgument() { result = this.getArgument(0) }
+  }
+
+  /**
+   * `ActionView::Helpers::TextHelper#truncate`.
+   *
+   * `truncate(x, escape: false)`.
+   */
+  private class Truncate extends ActionViewContextCall, RawHelperCall {
+    Truncate() {
+      this.getMethodName() = "truncate" and
+      this.getKeywordArgument("escape").getConstantValue().isBoolean(false)
+    }
+
+    override Expr getRawArgument() { result = this.getArgument(0) }
+  }
+
+  /**
+   * `ActionView::Helpers::TextHelper#highlight`.
+   *
+   * `truncate(x, y, sanitize: false)`.
+   */
+  private class Highlight extends ActionViewContextCall, RawHelperCall {
+    Highlight() {
+      this.getMethodName() = "highlight" and
+      this.getKeywordArgument("sanitize").getConstantValue().isBoolean(false)
+    }
+
+    override Expr getRawArgument() { result = this.getArgument(0) }
+  }
+
+  /**
+   * `ActionView::Helpers::JavascriptHelper#javascript_tag`.
+   *
+   * `javascript_tag(x)`.
+   */
+  private class JavascriptTag extends ActionViewContextCall, RawHelperCall {
+    JavascriptTag() { this.getMethodName() = "javascript_tag" }
+
+    override Expr getRawArgument() { result = this.getArgument(0) }
+  }
+
+  /**
+   * `ActionView::Helpers::TagHelper#tag`.
+   *
+   * `tag(x, x, y, false)`.
+   */
+  private class ContentTag extends ActionViewContextCall, RawHelperCall {
+    ContentTag() {
+      this.getMethodName() = "content_tag" and
+      this.getArgument(3).getConstantValue().isBoolean(false)
+    }
+
+    override Expr getRawArgument() { result = this.getArgument(1) }
+  }
+
+  /**
+   * `ActionView::Helpers::TagHelper#tag`.
+   *
+   * `tag(x, x, y, false)`.
+   */
+  private class Tag extends ActionViewContextCall, RawHelperCall {
+    Tag() {
+      this.getMethodName() = "tag" and
+      this.getArgument(3).getConstantValue().isBoolean(false)
+    }
+
+    override Expr getRawArgument() { result = this.getArgument(0) }
+  }
+
+  /**
+   * `ActionView::Helpers::TagHelper#tag.<tag name>`.
+   *
+   * `tag.h1(x, escape: false)`.
+   */
+  private class TagMethod extends MethodCall, RawHelperCall {
+    TagMethod() {
+      inActionViewContext(this) and
+      this.getReceiver().(MethodCall).getMethodName() = "tag" and
+      this.getKeywordArgument("escape").getConstantValue().isBoolean(false)
+    }
+
+    override Expr getRawArgument() { result = this.getArgument(0) }
+  }
+}

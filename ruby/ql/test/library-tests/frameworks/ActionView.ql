@@ -1,3 +1,4 @@
+private import ruby
 private import codeql.ruby.frameworks.ActionController
 private import codeql.ruby.frameworks.ActionView
 private import codeql.ruby.Concepts
@@ -15,4 +16,8 @@ query predicate linkToCalls(LinkToCall c) { any() }
 
 query predicate httpResponses(Http::Server::HttpResponse r, DataFlow::Node body, string mimeType) {
   r.getBody() = body and r.getMimetype() = mimeType
+}
+
+query predicate rawHelperCalls(ActionViewHelpers::RawHelperCall c, Expr arg) {
+  arg = c.getRawArgument()
 }

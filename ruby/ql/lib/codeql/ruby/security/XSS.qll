@@ -76,6 +76,18 @@ private module Shared {
   }
 
   /**
+   * An argument to an ActionView helper method which is not escaped,
+   * considered as a flow sink.
+   */
+  class RawHelperCallArgumentAsSink extends Sink, ErbOutputMethodCallArgumentNode {
+    RawHelperCallArgumentAsSink() {
+      exists(ErbOutputDirective d, ActionViewHelpers::RawHelperCall c |
+        d.getTerminalStmt() = c and this.asExpr().getExpr() = c.getRawArgument()
+      )
+    }
+  }
+
+  /**
    * A argument to a call to the `link_to` method, which does not expect
    * unsanitized user-input, considered as a flow sink.
    */
