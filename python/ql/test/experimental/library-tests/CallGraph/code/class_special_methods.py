@@ -19,7 +19,7 @@ class Base(object):
 
     def wat(self):
         print("Base.wat")
-        self(43) # $ MISSING: tt=Base.__call__ tt=Sub.__call__
+        self(43) # $ tt=Base.__call__ tt=Sub.__call__
 
 
 b = Base(1) # $ tt=Base.__init__
@@ -30,7 +30,7 @@ print(b)
 
 print("\n! calls")
 
-b(42) # $ MISSING: tt=Base.__call__
+b(42) # $ tt=Base.__call__
 b.wat() # $ pt,tt=Base.wat
 
 b.__call__(44) # $ pt,tt=Base.__call__
@@ -56,7 +56,7 @@ class Sub(Base):
 sub = Sub(10) # $ tt=Base.__init__
 sub + 42
 
-sub(55) # $ MISSING: tt=Sub.__call__
+sub(55) # $ tt=Sub.__call__
 sub.wat() # $ pt,tt=Base.wat
 
 # not possible to indirectly access addition of subclass

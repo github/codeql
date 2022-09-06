@@ -621,7 +621,9 @@ newtype TCallType =
    */
   CallTypeMethodAsPlainFunction() or
   /** A call to a class. */
-  CallTypeClass()
+  CallTypeClass() or
+  /** A call on a class instance, that goes to the `__call__` method of the class */
+  CallTypeClassInstanceCall()
 
 /** A type of call. */
 class CallType extends TCallType {
@@ -643,6 +645,9 @@ class CallType extends TCallType {
     or
     this instanceof CallTypeClass and
     result = "CallTypeClass"
+    or
+    this instanceof CallTypeClassInstanceCall and
+    result = "CallTypeClassInstanceCall"
   }
 }
 
@@ -663,7 +668,7 @@ private module MethodCalls {
   private predicate directCall(
     CallNode call, Function target, string functionName, Class cls, AttrRead attr, Node self
   ) {
-    target = findFunctionAccordingToMroKnownStartingClass(cls, cls, functionName) and
+    target = findFunctionAccordingToMroKnownStartingClass(cls, functionName) and
     directCall_join(call, functionName, cls, attr, self)
   }
 
@@ -825,6 +830,24 @@ Function invokedFunctionFromClassConstruction(Class cls) {
   result = findFunctionAccordingToMroKnownStartingClass(cls, "__init__")
 }
 
+/**
+ * Holds when `call` is a call on a class instance, that goes to the `__call__` method
+ * of the class.
+ *
+ * See https://docs.python.org/3/reference/datamodel.html#object.__call__
+ */
+predicate resolveClassInstanceCall(CallNode call, Function target, Node self) {
+  exists(Class cls |
+    call.getFunction() = classInstanceTracker(cls).asCfgNode() and
+    target = findFunctionAccordingToMroKnownStartingClass(cls, "__call__")
+    or
+    call.getFunction() = selfTracker(cls).asCfgNode() and
+    target = findFunctionAccordingToMro(getADirectSubclass*(cls), "__call__")
+  |
+    self.asCfgNode() = call.getFunction()
+  )
+}
+
 // -------------------------------------
 // overall call resolution
 // -------------------------------------
@@ -843,6 +866,9 @@ predicate resolveCall(ControlFlowNode call, Function target, CallType type) {
     resolveClassCall(call, cls) and
     target = invokedFunctionFromClassConstruction(cls)
   )
+  or
+  type instanceof CallTypeClassInstanceCall and
+  resolveClassInstanceCall(call, target, _)
 }
 
 // =============================================================================
@@ -952,6 +978,15 @@ predicate getCallArg(
       or
       normalCallArg(call, arg, apos)
     )
+    or
+    // call on class instance, which goes to `__call__` method
+    type instanceof CallTypeClassInstanceCall and
+    (
+      apos.isSelf() and
+      resolveClassInstanceCall(call, target, arg)
+      or
+      normalCallArg(call, arg, apos)
+    )
   )
 }
 
@@ -1009,7 +1044,8 @@ abstract class ExtractedDataFlowCall extends DataFlowCall {
  * A resolved call in source code with an underlying `CallNode`.
  *
  * This is considered normal, compared with special calls such as `obj[0]` calling the
- * `__getitem__` method on the object.
+ * `__getitem__` method on the object. However, this also includes calls that go to the
+ * `__call__` special method.
  */
 class NormalCall extends ExtractedDataFlowCall, TNormalCall {
   CallNode call;
