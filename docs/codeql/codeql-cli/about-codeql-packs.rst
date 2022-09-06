@@ -23,7 +23,7 @@ The `CodeQL repository <https://github.com/github/codeql>`__ contains source fil
 CodeQL pack structure
 ---------------------
 
-A CodeQL pack must contain a file called ``qlpack.yml`` in its root directory. In the ``qlpack.yml`` file, the ``name:`` field must have a value that follows the format of ``<scope>/<pack>``, where ``<scope>`` is the GitHub organization or user account that the pack will be published to and ``<pack>`` is the name of the pack. Additionally, query packs contain a ``codeql-pack.lock.yml`` file that contains the resolved dependencies of the pack. This file is generated during a call to the ``codeql pack install`` command, is not meant to be edited by hand, and should be added to your version control system.
+A CodeQL pack must contain a file called ``qlpack.yml`` in its root directory. In the ``qlpack.yml`` file, the ``name:`` field must have a value that follows the format of ``<scope>/<pack>``, where ``<scope>`` is the GitHub organization or user account that the pack will be published to and ``<pack>`` is the name of the pack. Additionally, query packs and library packs with CodeQL tests contain a ``codeql-pack.lock.yml`` file that contains the resolved dependencies of the pack. This file is generated during a call to the ``codeql pack install`` command, is not meant to be edited by hand, and should be added to your version control system.
 
 The other files and directories within the pack should be logically organized. For example, typically:
 
