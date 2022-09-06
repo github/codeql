@@ -34,7 +34,7 @@ To verify that your ``codeql-workspace.yml`` file includes the CodeQL packs that
 
 .. _source-dependencies:
 
-Source dependencies
+Source Dependencies
 -------------------
 
 Source dependencies are CodeQL packs that are resolved from the local file system outside of the CodeQL package cache. These dependencies can be in the same CodeQL workspace, or specified as a path option using the ``--additional-packs`` argument. When you compile and run queries locally, source dependencies override any dependencies found in the CodeQL package cache as well as version constraints defined in the ``qlpack.yml``. All references to CodeQL packs in the same workspace are resolved as source dependencies.

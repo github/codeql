@@ -312,7 +312,7 @@ core query pack:
 
 Some extra notes on the following properties:
 
-- ``dependencies``: This query pack depends on ``codeql/cpp-all`` and ``codeql/suite-helpers``. Since these dependencies are resolved from source, it does not matter what version of the CodeQL pack they are compatible with.
+- ``dependencies``: This query pack depends on ``codeql/cpp-all`` and ``codeql/suite-helpers``. Since these dependencies are resolved from source, it does not matter what version of the CodeQL pack they are compatible with. For more information about resolving dependencies from source, see ":ref:`Source Dependencies <source-dependencies>`."
 - ``suites``: Indicates the directory containing "well-known" query suites.
 - ``defaultSuiteFile``: The name of the default query suite file that is used when no query suite is specified.
 
