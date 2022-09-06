@@ -12,31 +12,45 @@ private module Cached {
     LevelStep() or
     CallStep() or
     ReturnStep() or
-    StoreStep(TypeTrackerContent content) or
-    LoadStep(TypeTrackerContent content) or
+    StoreStep(TypeTrackerContentSet contents) or
+    LoadStep(TypeTrackerContentSet contents) or
     JumpStep()
+
+  pragma[nomagic]
+  private TypeTracker noContentTypeTracker(boolean hasCall) {
+    result = MkTypeTracker(hasCall, noContent())
+  }
 
   /** Gets the summary resulting from appending `step` to type-tracking summary `tt`. */
   cached
   TypeTracker append(TypeTracker tt, StepSummary step) {
-    exists(Boolean hasCall, OptionalTypeTrackerContent content |
-      tt = MkTypeTracker(hasCall, content)
+    exists(Boolean hasCall, OptionalTypeTrackerContent currentContent |
+      tt = MkTypeTracker(hasCall, currentContent)
     |
       step = LevelStep() and result = tt
       or
-      step = CallStep() and result = MkTypeTracker(true, content)
+      step = CallStep() and result = MkTypeTracker(true, currentContent)
       or
       step = ReturnStep() and hasCall = false and result = tt
       or
-      step = LoadStep(content) and result = MkTypeTracker(hasCall, noContent())
-      or
-      exists(TypeTrackerContent p |
-        step = StoreStep(p) and content = noContent() and result = MkTypeTracker(hasCall, p)
-      )
-      or
       step = JumpStep() and
-      result = MkTypeTracker(false, content)
+      result = MkTypeTracker(false, currentContent)
     )
+    or
+    exists(TypeTrackerContentSet contents, boolean hasCall |
+      step = LoadStep(pragma[only_bind_into](contents)) and
+      tt = MkTypeTracker(hasCall, contents.getAReadContent()) and
+      result = noContentTypeTracker(hasCall)
+      or
+      step = StoreStep(pragma[only_bind_into](contents)) and
+      tt = noContentTypeTracker(hasCall) and
+      result = MkTypeTracker(hasCall, contents.getAStoreContent())
+    )
+  }
+
+  pragma[nomagic]
+  private TypeBackTracker noContentTypeBackTracker(boolean hasReturn) {
+    result = MkTypeBackTracker(hasReturn, noContent())
   }
 
   /** Gets the summary resulting from prepending `step` to this type-tracking summary. */
@@ -51,14 +65,18 @@ private module Cached {
       or
       step = ReturnStep() and result = MkTypeBackTracker(true, content)
       or
-      exists(TypeTrackerContent p |
-        step = LoadStep(p) and content = noContent() and result = MkTypeBackTracker(hasReturn, p)
-      )
-      or
-      step = StoreStep(content) and result = MkTypeBackTracker(hasReturn, noContent())
-      or
       step = JumpStep() and
       result = MkTypeBackTracker(false, content)
+    )
+    or
+    exists(TypeTrackerContentSet contents, boolean hasReturn |
+      step = StoreStep(pragma[only_bind_into](contents)) and
+      tbt = MkTypeBackTracker(hasReturn, contents.getAReadContent()) and
+      result = noContentTypeBackTracker(hasReturn)
+      or
+      step = LoadStep(pragma[only_bind_into](contents)) and
+      tbt = noContentTypeBackTracker(hasReturn) and
+      result = MkTypeBackTracker(hasReturn, contents.getAStoreContent())
     )
   }
 
@@ -99,9 +117,11 @@ class StepSummary extends TStepSummary {
     or
     this instanceof ReturnStep and result = "return"
     or
-    exists(TypeTrackerContent content | this = StoreStep(content) | result = "store " + content)
+    exists(TypeTrackerContentSet contents | this = StoreStep(contents) |
+      result = "store " + contents
+    )
     or
-    exists(TypeTrackerContent content | this = LoadStep(content) | result = "load " + content)
+    exists(TypeTrackerContentSet contents | this = LoadStep(contents) | result = "load " + contents)
     or
     this instanceof JumpStep and result = "jump"
   }
@@ -115,11 +135,11 @@ private predicate smallstepNoCall(Node nodeFrom, TypeTrackingNode nodeTo, StepSu
   levelStep(nodeFrom, nodeTo) and
   summary = LevelStep()
   or
-  exists(TypeTrackerContent content |
-    StepSummary::localSourceStoreStep(nodeFrom, nodeTo, content) and
-    summary = StoreStep(content)
+  exists(TypeTrackerContentSet contents |
+    StepSummary::localSourceStoreStep(nodeFrom, nodeTo, contents) and
+    summary = StoreStep(contents)
     or
-    basicLoadStep(nodeFrom, nodeTo, content) and summary = LoadStep(content)
+    basicLoadStep(nodeFrom, nodeTo, contents) and summary = LoadStep(contents)
   )
 }
 
@@ -189,8 +209,10 @@ module StepSummary {
    * function. This means we will track the fact that `x.attr` can have the type of `y` into the
    * assignment to `z` inside `bar`, even though this attribute write happens _after_ `bar` is called.
    */
-  predicate localSourceStoreStep(Node nodeFrom, TypeTrackingNode nodeTo, TypeTrackerContent content) {
-    exists(Node obj | nodeTo.flowsTo(obj) and basicStoreStep(nodeFrom, obj, content))
+  predicate localSourceStoreStep(
+    Node nodeFrom, TypeTrackingNode nodeTo, TypeTrackerContentSet contents
+  ) {
+    exists(Node obj | nodeTo.flowsTo(obj) and basicStoreStep(nodeFrom, obj, contents))
   }
 }
 
