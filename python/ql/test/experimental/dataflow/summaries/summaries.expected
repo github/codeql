@@ -21,10 +21,13 @@ edges
 | summaries.py:60:40:60:47 | ControlFlowNode for List [List element] | summaries.py:60:26:60:48 | ControlFlowNode for map() [List element] |
 | summaries.py:60:41:60:46 | ControlFlowNode for SOURCE | summaries.py:60:40:60:47 | ControlFlowNode for List [List element] |
 | summaries.py:61:6:61:27 | ControlFlowNode for tainted_mapped_summary [List element] | summaries.py:61:6:61:30 | ControlFlowNode for Subscript |
-| summaries.py:64:22:64:39 | ControlFlowNode for json_loads() [List element] | summaries.py:65:6:65:23 | ControlFlowNode for tainted_resultlist [List element] |
-| summaries.py:64:33:64:38 | ControlFlowNode for SOURCE | summaries.py:64:22:64:39 | ControlFlowNode for json_loads() [List element] |
-| summaries.py:64:33:64:38 | ControlFlowNode for SOURCE | summaries.py:65:6:65:26 | ControlFlowNode for Subscript |
-| summaries.py:65:6:65:23 | ControlFlowNode for tainted_resultlist [List element] | summaries.py:65:6:65:26 | ControlFlowNode for Subscript |
+| summaries.py:63:16:63:41 | ControlFlowNode for append_to_list() [List element] | summaries.py:64:6:64:17 | ControlFlowNode for tainted_list [List element] |
+| summaries.py:63:35:63:40 | ControlFlowNode for SOURCE | summaries.py:63:16:63:41 | ControlFlowNode for append_to_list() [List element] |
+| summaries.py:64:6:64:17 | ControlFlowNode for tainted_list [List element] | summaries.py:64:6:64:20 | ControlFlowNode for Subscript |
+| summaries.py:67:22:67:39 | ControlFlowNode for json_loads() [List element] | summaries.py:68:6:68:23 | ControlFlowNode for tainted_resultlist [List element] |
+| summaries.py:67:33:67:38 | ControlFlowNode for SOURCE | summaries.py:67:22:67:39 | ControlFlowNode for json_loads() [List element] |
+| summaries.py:67:33:67:38 | ControlFlowNode for SOURCE | summaries.py:68:6:68:26 | ControlFlowNode for Subscript |
+| summaries.py:68:6:68:23 | ControlFlowNode for tainted_resultlist [List element] | summaries.py:68:6:68:26 | ControlFlowNode for Subscript |
 nodes
 | summaries.py:32:11:32:26 | ControlFlowNode for identity() | semmle.label | ControlFlowNode for identity() |
 | summaries.py:32:20:32:25 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
@@ -53,10 +56,14 @@ nodes
 | summaries.py:60:41:60:46 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
 | summaries.py:61:6:61:27 | ControlFlowNode for tainted_mapped_summary [List element] | semmle.label | ControlFlowNode for tainted_mapped_summary [List element] |
 | summaries.py:61:6:61:30 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
-| summaries.py:64:22:64:39 | ControlFlowNode for json_loads() [List element] | semmle.label | ControlFlowNode for json_loads() [List element] |
-| summaries.py:64:33:64:38 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
-| summaries.py:65:6:65:23 | ControlFlowNode for tainted_resultlist [List element] | semmle.label | ControlFlowNode for tainted_resultlist [List element] |
-| summaries.py:65:6:65:26 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
+| summaries.py:63:16:63:41 | ControlFlowNode for append_to_list() [List element] | semmle.label | ControlFlowNode for append_to_list() [List element] |
+| summaries.py:63:35:63:40 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
+| summaries.py:64:6:64:17 | ControlFlowNode for tainted_list [List element] | semmle.label | ControlFlowNode for tainted_list [List element] |
+| summaries.py:64:6:64:20 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
+| summaries.py:67:22:67:39 | ControlFlowNode for json_loads() [List element] | semmle.label | ControlFlowNode for json_loads() [List element] |
+| summaries.py:67:33:67:38 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
+| summaries.py:68:6:68:23 | ControlFlowNode for tainted_resultlist [List element] | semmle.label | ControlFlowNode for tainted_resultlist [List element] |
+| summaries.py:68:6:68:26 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
 subpaths
 invalidSpecComponent
 #select
@@ -66,4 +73,5 @@ invalidSpecComponent
 | summaries.py:52:6:52:22 | ControlFlowNode for Subscript | summaries.py:51:34:51:39 | ControlFlowNode for SOURCE | summaries.py:52:6:52:22 | ControlFlowNode for Subscript | $@ | summaries.py:51:34:51:39 | ControlFlowNode for SOURCE | ControlFlowNode for SOURCE |
 | summaries.py:58:6:58:31 | ControlFlowNode for Subscript | summaries.py:57:51:57:56 | ControlFlowNode for SOURCE | summaries.py:58:6:58:31 | ControlFlowNode for Subscript | $@ | summaries.py:57:51:57:56 | ControlFlowNode for SOURCE | ControlFlowNode for SOURCE |
 | summaries.py:61:6:61:30 | ControlFlowNode for Subscript | summaries.py:60:41:60:46 | ControlFlowNode for SOURCE | summaries.py:61:6:61:30 | ControlFlowNode for Subscript | $@ | summaries.py:60:41:60:46 | ControlFlowNode for SOURCE | ControlFlowNode for SOURCE |
-| summaries.py:65:6:65:26 | ControlFlowNode for Subscript | summaries.py:64:33:64:38 | ControlFlowNode for SOURCE | summaries.py:65:6:65:26 | ControlFlowNode for Subscript | $@ | summaries.py:64:33:64:38 | ControlFlowNode for SOURCE | ControlFlowNode for SOURCE |
+| summaries.py:64:6:64:20 | ControlFlowNode for Subscript | summaries.py:63:35:63:40 | ControlFlowNode for SOURCE | summaries.py:64:6:64:20 | ControlFlowNode for Subscript | $@ | summaries.py:63:35:63:40 | ControlFlowNode for SOURCE | ControlFlowNode for SOURCE |
+| summaries.py:68:6:68:26 | ControlFlowNode for Subscript | summaries.py:67:33:67:38 | ControlFlowNode for SOURCE | summaries.py:68:6:68:26 | ControlFlowNode for Subscript | $@ | summaries.py:67:33:67:38 | ControlFlowNode for SOURCE | ControlFlowNode for SOURCE |

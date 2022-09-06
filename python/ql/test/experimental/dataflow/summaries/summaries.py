@@ -60,6 +60,9 @@ SINK(tainted_mapped_explicit[0])  # $ flow="SOURCE, l:-1 -> tainted_mapped_expli
 tainted_mapped_summary = map(identity, [SOURCE])
 SINK(tainted_mapped_summary[0])  # $ flow="SOURCE, l:-1 -> tainted_mapped_summary[0]"
 
+tainted_list = append_to_list([], SOURCE)
+SINK(tainted_list[0])  # $ flow="SOURCE, l:-1 -> tainted_list[0]"
+
 from json import loads as json_loads
 tainted_resultlist = json_loads(SOURCE)
 SINK(tainted_resultlist[0])  # $ flow="SOURCE, l:-1 -> tainted_resultlist[0]"
