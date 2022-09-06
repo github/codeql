@@ -7,7 +7,7 @@ private import codeql.ruby.CFG
 private import codeql.ruby.Concepts
 private import codeql.ruby.ApiGraphs
 private import codeql.ruby.DataFlow
-private import codeql.ruby.dataflow.internal.DataFlowImplForLibraries as DataFlowImplForLibraries
+private import codeql.ruby.dataflow.internal.DataFlowImplForHttpClientLibraries as DataFlowImplForHttpClientLibraries
 
 /**
  * A call that makes an HTTP request using `Faraday`.
@@ -83,12 +83,12 @@ class FaradayHttpRequest extends HTTP::Client::Request::Range, DataFlow::CallNod
 }
 
 /** A configuration to track values that can disable certificate validation for Faraday. */
-private class FaradayDisablesCertificateValidationConfiguration extends DataFlowImplForLibraries::Configuration {
+private class FaradayDisablesCertificateValidationConfiguration extends DataFlowImplForHttpClientLibraries::Configuration {
   FaradayDisablesCertificateValidationConfiguration() {
     this = "FaradayDisablesCertificateValidationConfiguration"
   }
 
-  override predicate isSource(DataFlow::Node source, DataFlowImplForLibraries::FlowState state) {
+  override predicate isSource(DataFlow::Node source, DataFlowImplForHttpClientLibraries::FlowState state) {
     source.asExpr().getExpr().(BooleanLiteral).isFalse() and
     state = "verify"
     or
@@ -96,7 +96,7 @@ private class FaradayDisablesCertificateValidationConfiguration extends DataFlow
     state = "verify_mode"
   }
 
-  override predicate isSink(DataFlow::Node sink, DataFlowImplForLibraries::FlowState state) {
+  override predicate isSink(DataFlow::Node sink, DataFlowImplForHttpClientLibraries::FlowState state) {
     sink = any(FaradayHttpRequest req).getCertificateValidationControllingValue(state)
   }
 }

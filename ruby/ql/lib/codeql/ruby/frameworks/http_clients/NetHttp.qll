@@ -8,7 +8,7 @@ private import codeql.ruby.dataflow.RemoteFlowSources
 private import codeql.ruby.ApiGraphs
 private import codeql.ruby.dataflow.internal.DataFlowPublic
 private import codeql.ruby.DataFlow
-private import codeql.ruby.dataflow.internal.DataFlowImplForLibraries as DataFlowImplForLibraries
+private import codeql.ruby.dataflow.internal.DataFlowImplForHttpClientLibraries as DataFlowImplForHttpClientLibraries
 
 /**
  * A `Net::HTTP` call which initiates an HTTP request.
@@ -92,7 +92,7 @@ class NetHttpRequest extends HTTP::Client::Request::Range, DataFlow::CallNode {
 }
 
 /** A configuration to track values that can disable certificate validation for NetHttp. */
-private class NetHttpDisablesCertificateValidationConfiguration extends DataFlowImplForLibraries::Configuration {
+private class NetHttpDisablesCertificateValidationConfiguration extends DataFlowImplForHttpClientLibraries::Configuration {
   NetHttpDisablesCertificateValidationConfiguration() {
     this = "NetHttpDisablesCertificateValidationConfiguration"
   }

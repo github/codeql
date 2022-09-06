@@ -7,7 +7,7 @@ private import codeql.ruby.CFG
 private import codeql.ruby.Concepts
 private import codeql.ruby.ApiGraphs
 private import codeql.ruby.DataFlow
-private import codeql.ruby.dataflow.internal.DataFlowImplForLibraries as DataFlowImplForLibraries
+private import codeql.ruby.dataflow.internal.DataFlowImplForHttpClientLibraries as DataFlowImplForHttpClientLibraries
 
 /**
  * A call that makes an HTTP request using `HTTParty`.
@@ -65,7 +65,7 @@ class HttpartyRequest extends HTTP::Client::Request::Range, DataFlow::CallNode {
 }
 
 /** A configuration to track values that can disable certificate validation for Httparty. */
-private class HttpartyDisablesCertificateValidationConfiguration extends DataFlowImplForLibraries::Configuration {
+private class HttpartyDisablesCertificateValidationConfiguration extends DataFlowImplForHttpClientLibraries::Configuration {
   HttpartyDisablesCertificateValidationConfiguration() {
     this = "HttpartyDisablesCertificateValidationConfiguration"
   }

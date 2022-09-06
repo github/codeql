@@ -7,7 +7,7 @@ private import codeql.ruby.CFG
 private import codeql.ruby.Concepts
 private import codeql.ruby.ApiGraphs
 private import codeql.ruby.DataFlow
-private import codeql.ruby.dataflow.internal.DataFlowImplForLibraries as DataFlowImplForLibraries
+private import codeql.ruby.dataflow.internal.DataFlowImplForHttpClientLibraries as DataFlowImplForHttpClientLibraries
 
 /**
  * A call that makes an HTTP request using `RestClient`.
@@ -66,7 +66,7 @@ class RestClientHttpRequest extends HTTP::Client::Request::Range, DataFlow::Call
 }
 
 /** A configuration to track values that can disable certificate validation for RestClient. */
-private class RestClientDisablesCertificateValidationConfiguration extends DataFlowImplForLibraries::Configuration {
+private class RestClientDisablesCertificateValidationConfiguration extends DataFlowImplForHttpClientLibraries::Configuration {
   RestClientDisablesCertificateValidationConfiguration() {
     this = "RestClientDisablesCertificateValidationConfiguration"
   }
