@@ -786,7 +786,7 @@ private module OutNodes {
   class ExprOutNode extends OutNode, ExprNode {
     private DataFlowCall call;
 
-    ExprOutNode() { call.(DataFlowSourceCall).getNode().getNode() = this.asExpr() }
+    ExprOutNode() { call.(DataFlowSourceCall).getNode() = this.getNode() }
 
     override DataFlowCall getCall(ReturnKind kind) {
       result = call and
