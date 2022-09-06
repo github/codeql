@@ -13,8 +13,8 @@ private import TranslatedInitialization
  * Gets the `TranslatedDeclarationEntry` that represents the declaration
  * `entry`.
  */
-TranslatedDeclarationEntry getTranslatedDeclarationEntry(PseudoDeclarationEntry entry) {
-  result.getPseudoDeclarationEntry() = entry
+TranslatedDeclarationEntry getTranslatedDeclarationEntry(IRDeclarationEntry entry) {
+  result.getIRDeclarationEntry() = entry
 }
 
 /**
@@ -24,7 +24,7 @@ TranslatedDeclarationEntry getTranslatedDeclarationEntry(PseudoDeclarationEntry 
  * functions do not have a `TranslatedDeclarationEntry`.
  */
 abstract class TranslatedDeclarationEntry extends TranslatedElement, TTranslatedDeclarationEntry {
-  PseudoDeclarationEntry entry;
+  IRDeclarationEntry entry;
 
   TranslatedDeclarationEntry() { this = TTranslatedDeclarationEntry(entry) }
 
@@ -35,7 +35,7 @@ abstract class TranslatedDeclarationEntry extends TranslatedElement, TTranslated
     )
   }
 
-  PseudoDeclarationEntry getPseudoDeclarationEntry() { result = entry }
+  IRDeclarationEntry getIRDeclarationEntry() { result = entry }
 
   final override string toString() { result = entry.toString() }
 
@@ -218,7 +218,7 @@ class TranslatedStaticLocalVariableDeclarationEntry extends TranslatedDeclaratio
  */
 class TranslatedStaticLocalVariableInitialization extends TranslatedElement,
   TranslatedLocalVariableDeclaration, TTranslatedStaticLocalVariableInitialization {
-  PseudoVariableDeclarationEntry entry;
+  IRVariableDeclarationEntry entry;
   StaticLocalVariable var;
 
   TranslatedStaticLocalVariableInitialization() {

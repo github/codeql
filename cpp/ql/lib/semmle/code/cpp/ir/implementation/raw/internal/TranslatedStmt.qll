@@ -76,12 +76,12 @@ class TranslatedDeclStmt extends TranslatedStmt {
 
   private int getChildCount() { result = count(getDeclarationEntry(_)) }
 
-  PseudoDeclarationEntry getPseudoDeclarationEntry(int index) {
+  IRDeclarationEntry getIRDeclarationEntry(int index) {
     result.hasIndex(index) and
     result.getStmt() = stmt
   }
 
-  PseudoDeclarationEntry getAPseudoDeclarationEntry() { result = this.getPseudoDeclarationEntry(_) }
+  IRDeclarationEntry getAnIRDeclarationEntry() { result = this.getIRDeclarationEntry(_) }
 
   /**
    * Gets the `TranslatedDeclarationEntry` child at zero-based index `index`. Since not all
@@ -92,7 +92,7 @@ class TranslatedDeclStmt extends TranslatedStmt {
   private TranslatedDeclarationEntry getDeclarationEntry(int index) {
     result =
       rank[index + 1](TranslatedDeclarationEntry entry, int originalIndex |
-        entry = getTranslatedDeclarationEntry(this.getPseudoDeclarationEntry(originalIndex))
+        entry = getTranslatedDeclarationEntry(this.getIRDeclarationEntry(originalIndex))
       |
         entry order by originalIndex
       )
@@ -654,16 +654,16 @@ class TranslatedRangeBasedForStmt extends TranslatedStmt, ConditionContext {
   }
 
   private TranslatedDeclStmt getRangeVariableDeclStmt() {
-    exists(PseudoVariableDeclarationEntry entry |
+    exists(IRVariableDeclarationEntry entry |
       entry.getDeclaration() = stmt.getRangeVariable() and
-      result.getAPseudoDeclarationEntry() = entry
+      result.getAnIRDeclarationEntry() = entry
     )
   }
 
   private TranslatedDeclStmt getBeginEndVariableDeclStmt() {
-    exists(PseudoVariableDeclarationEntry entry |
+    exists(IRVariableDeclarationEntry entry |
       entry.getStmt() = stmt.getBeginEndDeclaration() and
-      result.getAPseudoDeclarationEntry() = entry
+      result.getAnIRDeclarationEntry() = entry
     )
   }
 
@@ -678,9 +678,9 @@ class TranslatedRangeBasedForStmt extends TranslatedStmt, ConditionContext {
   }
 
   private TranslatedDeclStmt getVariableDeclStmt() {
-    exists(PseudoVariableDeclarationEntry entry |
+    exists(IRVariableDeclarationEntry entry |
       entry.getDeclaration() = stmt.getVariable() and
-      result.getAPseudoDeclarationEntry() = entry
+      result.getAnIRDeclarationEntry() = entry
     )
   }
 
