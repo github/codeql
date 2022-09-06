@@ -20,7 +20,6 @@
  */
 
 private import python as PY
-private import semmle.python.dataflow.new.DataFlow
 private import ApiGraphModels
 import semmle.python.ApiGraphs::API as API
 
@@ -28,9 +27,7 @@ class Unit = PY::Unit;
 
 // Re-export libraries needed by ApiGraphModels.qll
 import semmle.python.frameworks.data.internal.AccessPathSyntax as AccessPathSyntax
-
-module DF = DataFlow;
-
+import semmle.python.dataflow.new.DataFlow::DataFlow as DataFlow
 private import AccessPathSyntax
 
 /**

@@ -20,7 +20,6 @@
  */
 
 private import javascript as JS
-private import JS::DataFlow as DataFlow
 private import ApiGraphModels
 
 class Unit = JS::Unit;
@@ -31,6 +30,7 @@ module API = JS::API;
 module DF = DataFlow;
 
 import semmle.javascript.frameworks.data.internal.AccessPathSyntax as AccessPathSyntax
+import JS::DataFlow as DataFlow
 private import AccessPathSyntax
 
 /**

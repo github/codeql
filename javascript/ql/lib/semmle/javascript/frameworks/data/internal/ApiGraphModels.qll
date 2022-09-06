@@ -72,7 +72,7 @@ private class Unit = Specific::Unit;
 
 private module API = Specific::API;
 
-private module DataFlow = Specific::DF;
+private module DataFlow = Specific::DataFlow;
 
 private import Specific::AccessPathSyntax
 
