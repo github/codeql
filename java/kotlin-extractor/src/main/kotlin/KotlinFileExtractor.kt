@@ -2208,7 +2208,7 @@ open class KotlinFileExtractor(
                     tw.writeExprsKotlinType(id, type.kotlinResult.id)
                     binopDisp(id)
                 }
-                isFunction(target, "kotlin", "(some array type)", { isArrayType(it) }, "set") && c.origin == IrStatementOrigin.EQ -> {
+                isFunction(target, "kotlin", "(some array type)", { isArrayType(it) }, "set") && c.origin == IrStatementOrigin.EQ && c.dispatchReceiver != null -> {
                     val array = c.dispatchReceiver
                     val arrayIdx = c.getValueArgument(0)
                     val assignedValue = c.getValueArgument(1)
