@@ -72,7 +72,7 @@ def argument_passing(
 
 @expects(7)
 def test_argument_passing1():
-    argument_passing(arg1, *(arg2, arg3, arg4), e=arg5, **{"f": arg6, "g": arg7})  #$ arg1 arg5  MISSING: arg2 arg3 arg4 arg6 arg7
+    argument_passing(arg1, *(arg2, arg3, arg4), e=arg5, **{"f": arg6, "g": arg7})  #$ arg1 arg5 arg7 func=argument_passing MISSING: arg2 arg3 arg4 arg6
 
 
 @expects(7)
@@ -178,7 +178,7 @@ def only_kwargs(**kwargs):
 
 @expects(3)
 def test_kwargs():
-    args = {"a": arg1, "b": arg2, "c": "safe"} # $ MISSING: arg1 arg2 func=only_kwargs
+    args = {"a": arg1, "b": arg2, "c": "safe"} # $ arg1 arg2 func=only_kwargs
     only_kwargs(**args)
 
 
@@ -195,8 +195,8 @@ def mixed(a, **kwargs):
 def test_mixed():
     mixed(a=arg1, b=arg2, c="safe") # $ arg1 MISSING: arg2
 
-    args = {"b": arg2, "c": "safe"} # $ MISSING: arg2 func=mixed
+    args = {"b": arg2, "c": "safe"} # $ arg2 func=mixed
     mixed(a=arg1, **args) # $ arg1
 
-    args = {"a": arg1, "b": arg2, "c": "safe"} # $ MISSING: arg2 func=mixed MISSING: arg1
+    args = {"a": arg1, "b": arg2, "c": "safe"} # $ bad1="arg1" arg2 func=mixed
     mixed(**args)

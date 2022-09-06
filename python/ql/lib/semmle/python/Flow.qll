@@ -411,6 +411,12 @@ class CallNode extends ControlFlowNode {
     result.getNode() = this.getNode().getStarArg() and
     result.getBasicBlock().dominates(this.getBasicBlock())
   }
+
+  /** Gets a dictionary (**) argument of this call, if any. */
+  ControlFlowNode getKwargs() {
+    result.getNode() = this.getNode().getKwargs() and
+    result.getBasicBlock().dominates(this.getBasicBlock())
+  }
 }
 
 /** A control flow corresponding to an attribute expression, such as `value.attr` */
