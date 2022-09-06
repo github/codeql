@@ -82,7 +82,9 @@ class CleartextStorageConfig extends TaintTracking::Configuration {
   override predicate isSanitizerIn(DataFlow::Node node) {
     // make sources barriers so that we only report the closest instance
     isSource(node)
-    or
+  }
+
+  override predicate isSanitizer(DataFlow::Node node) {
     // encryption barrier
     node.asExpr() instanceof EncryptedExpr
   }
