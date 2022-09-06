@@ -1,9 +1,12 @@
+diag
+| test.kt:55:15:55:35 | Unexpected IrVararg |
 varargsParams
 | test.kt:8:15:8:28 | xs | file://:0:0:0:0 | int[] |
 | test.kt:12:26:12:39 | xs | file://:0:0:0:0 | int[] |
 | test.kt:20:24:20:37 | xs | file://:0:0:0:0 | int[] |
 | test.kt:24:50:24:63 | xs | file://:0:0:0:0 | int[] |
 | test.kt:28:37:28:50 | xs | file://:0:0:0:0 | int[] |
+| test.kt:50:5:50:31 | s | file://:0:0:0:0 | String[] |
 explicitVarargsArguments
 | test.kt:12:50:12:51 | xs | test.kt:12:44:12:52 | this(...) |
 | test.kt:38:25:38:29 | array | test.kt:38:5:38:30 | funWithOnlyVarArgs(...) |
@@ -11,6 +14,7 @@ explicitVarargsArguments
 | test.kt:40:34:40:38 | array | test.kt:40:5:40:49 | funWithMiddleVarArgs(...) |
 | test.kt:44:27:44:31 | array | test.kt:44:5:44:32 | new HasVarargConstructor(...) |
 | test.kt:45:34:45:38 | array | test.kt:45:5:45:39 | new HasVarargConstructor(...) |
+| test.kt:55:15:55:35 | tmp0_s | test.kt:55:13:55:43 | new X(...) |
 implicitVarargsArguments
 | intList.kt:3:21:3:22 | 10 | intList.kt:3:14:3:31 | listOf(...) | 0 |
 | intList.kt:3:25:3:26 | 11 | intList.kt:3:14:3:31 | listOf(...) | 1 |
@@ -78,3 +82,5 @@ implicitVarargsArguments
 | test.kt:44:5:44:32 | new HasVarargConstructor(...) | 0 | test.kt:44:27:44:31 | array |
 | test.kt:45:5:45:39 | new HasVarargConstructor(...) | 0 | test.kt:45:27:45:29 | foo |
 | test.kt:45:5:45:39 | new HasVarargConstructor(...) | 1 | test.kt:45:34:45:38 | array |
+| test.kt:55:13:55:43 | new X(...) | 0 | test.kt:55:42:55:42 | 1 |
+| test.kt:55:13:55:43 | new X(...) | 1 | test.kt:55:15:55:35 | tmp0_s |
