@@ -81,7 +81,7 @@ class BazController < BarController
   end
 
   def create4
-
+    Admin.create
   end
 
   def update1

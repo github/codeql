@@ -135,6 +135,7 @@ activeRecordModelClassMethodCalls
 | ActiveRecord.rb:72:5:72:24 | call to create |
 | ActiveRecord.rb:76:5:76:66 | call to create |
 | ActiveRecord.rb:80:5:80:68 | call to create |
+| ActiveRecord.rb:84:5:84:16 | call to create |
 | ActiveRecord.rb:88:5:88:27 | call to update |
 | ActiveRecord.rb:92:5:92:69 | call to update |
 | ActiveRecord.rb:96:5:96:71 | call to update |
