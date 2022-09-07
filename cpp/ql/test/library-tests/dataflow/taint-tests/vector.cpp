@@ -188,7 +188,7 @@ void test_nested_vectors()
 		sink(dd[0].a);
 		sink(dd[0].b);
 		dd[0].a = source();
-		sink(dd[0].a); // $ ir MISSING: ast
+		sink(dd[0].a); // $ MISSING: ast,ir
 		sink(dd[0].b);
 	}
 
@@ -209,7 +209,7 @@ void test_nested_vectors()
 		ff.push_back(mvc);
 		sink(ff[0].vs[0]);
 		ff[0].vs[0] = source();
-		sink(ff[0].vs[0]); // $ ir MISSING: ast
+		sink(ff[0].vs[0]); // $ MISSING: ast,ir
 	}
 }
 

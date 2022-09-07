@@ -57,8 +57,16 @@ private DataFlow::Node getNodeForSource(Expr source) {
   result = getNodeForExpr(source)
 }
 
-private DataFlow::Node getNodeForExpr(Expr node) {
+private Node indirectExprNode(Expr e) {
+  result.(IndirectInstruction).getInstruction().getUnconvertedResultExpression() = e
+  or
+  result.(IndirectReturnOutNode).getCallInstruction().getUnconvertedResultExpression() = e
+}
+
+DataFlow::Node getNodeForExpr(Expr node) {
   result = DataFlow::exprNode(node)
+  or
+  result = indirectExprNode(node)
   or
   // Some of the sources in `isUserInput` are intended to match the value of
   // an expression, while others (those modeled below) are intended to match
@@ -163,11 +171,13 @@ private predicate hasUpperBoundsCheck(Variable var) {
   )
 }
 
-private predicate nodeIsBarrierEqualityCandidate(
-  DataFlow::Node node, Operand access, Variable checkedVar
-) {
-  readsVariable(node.asInstruction(), checkedVar) and
-  any(IRGuardCondition guard).ensuresEq(access, _, _, node.asInstruction().getBlock(), true)
+predicate nodeIsBarrierEqualityCandidate(DataFlow::Node node, Operand access, Variable checkedVar) {
+  exists(VariableAccess va |
+    va = node.asExpr() and
+    va.getTarget() = checkedVar and
+    access.getDef().getAst() = va and
+    any(IRGuardCondition guard).ensuresEq(access, _, _, access.getDef().getBlock(), true)
+  )
 }
 
 cached
@@ -175,7 +185,7 @@ private module Cached {
   cached
   predicate nodeIsBarrier(DataFlow::Node node) {
     exists(Variable checkedVar |
-      readsVariable(node.asInstruction(), checkedVar) and
+      checkedVar = node.asExpr().(VariableAccess).getTarget() and
       hasUpperBoundsCheck(checkedVar)
     )
     or
@@ -229,6 +239,10 @@ private module Cached {
     )
   }
 
+  private Element adjustedSinkInstr(Instruction instr) {
+    result = adjustedSink(instructionNode(instr))
+  }
+
   cached
   Element adjustedSink(DataFlow::Node sink) {
     // TODO: is it more appropriate to use asConvertedExpr here and avoid
@@ -266,13 +280,9 @@ private module Cached {
     // Taint `e1 += e2`, `e &= e2` and friends when `e1` or `e2` is tainted.
     result.(AssignOperation).getAnOperand() = sink.asExpr()
     or
-    result =
-      sink.asOperand()
-          .(SideEffectOperand)
-          .getUse()
-          .(ReadSideEffectInstruction)
-          .getArgumentDef()
-          .getUnconvertedResultExpression()
+    result = adjustedSinkInstr(sink.(IndirectOperand).getOperand().getDef())
+    or
+    result = adjustedSinkInstr(sink.(IndirectInstruction).getInstruction())
   }
 
   /**
@@ -282,7 +292,7 @@ private module Cached {
   cached
   predicate additionalTaintStep(DataFlow::Node n1, DataFlow::Node n2) {
     exists(CallInstruction call, Function func, FunctionInput modelIn, FunctionOutput modelOut |
-      n1.asOperand() = callInput(call, modelIn) and
+      n1 = callInput(call, modelIn) and
       (
         func.(TaintFunction).hasTaintFlow(modelIn, modelOut)
         or

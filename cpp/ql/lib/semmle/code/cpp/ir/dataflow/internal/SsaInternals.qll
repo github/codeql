@@ -1,61 +1,123 @@
-private import cpp as Cpp
+private import SsaImplCommon as SsaImplCommon
 private import semmle.code.cpp.ir.IR
 private import DataFlowUtil
 private import DataFlowImplCommon as DataFlowImplCommon
 private import semmle.code.cpp.models.interfaces.Allocation as Alloc
 private import semmle.code.cpp.models.interfaces.DataFlow as DataFlow
-private import SsaImplCommon as SsaImplCommon
+private import semmle.code.cpp.ir.internal.IRCppLanguage
+private import DataFlowPrivate
+private import ssa0.SsaInternals as SsaInternals0
+import semmle.code.cpp.ir.dataflow.internal.SsaInternalsCommon
 
 private module SourceVariables {
+  int getMaxIndirectionForIRVariable(IRVariable var) {
+    exists(Type type, boolean isGLValue |
+      var.getLanguageType().hasType(type, isGLValue) and
+      if isGLValue = true
+      then result = 1 + getMaxIndirectionsForType(type)
+      else result = getMaxIndirectionsForType(type)
+    )
+  }
+
+  class BaseSourceVariable = SsaInternals0::BaseSourceVariable;
+
+  class BaseIRVariable = SsaInternals0::BaseIRVariable;
+
+  class BaseCallVariable = SsaInternals0::BaseCallVariable;
+
+  cached
   private newtype TSourceVariable =
-    TSourceIRVariable(IRVariable var) or
-    TSourceIRVariableIndirection(InitializeIndirectionInstruction init)
+    TSourceIRVariable(BaseIRVariable baseVar, int ind) {
+      ind = [0 .. getMaxIndirectionForIRVariable(baseVar.getIRVariable())]
+    } or
+    TCallVariable(AllocationInstruction call, int ind) {
+      ind = [0 .. countIndirectionsForCppType(getResultLanguageType(call))]
+    }
 
   abstract class SourceVariable extends TSourceVariable {
-    IRVariable var;
+    int ind;
+
+    bindingset[ind]
+    SourceVariable() { any() }
 
     abstract string toString();
+
+    int getIndirection() { result = ind }
+
+    abstract BaseSourceVariable getBaseVariable();
   }
 
   class SourceIRVariable extends SourceVariable, TSourceIRVariable {
-    SourceIRVariable() { this = TSourceIRVariable(var) }
+    BaseIRVariable var;
 
-    IRVariable getIRVariable() { result = var }
+    SourceIRVariable() { this = TSourceIRVariable(var, ind) }
 
-    override string toString() { result = this.getIRVariable().toString() }
+    IRVariable getIRVariable() { result = var.getIRVariable() }
+
+    override BaseIRVariable getBaseVariable() { result.getIRVariable() = this.getIRVariable() }
+
+    override string toString() {
+      ind = 0 and
+      result = this.getIRVariable().toString()
+      or
+      ind > 0 and
+      result = this.getIRVariable().toString() + " indirection"
+    }
   }
 
-  class SourceIRVariableIndirection extends SourceVariable, TSourceIRVariableIndirection {
-    InitializeIndirectionInstruction init;
+  class CallVariable extends SourceVariable, TCallVariable {
+    AllocationInstruction call;
 
-    SourceIRVariableIndirection() {
-      this = TSourceIRVariableIndirection(init) and var = init.getIRVariable()
+    CallVariable() { this = TCallVariable(call, ind) }
+
+    AllocationInstruction getCall() { result = call }
+
+    override BaseCallVariable getBaseVariable() { result.getCallInstruction() = call }
+
+    override string toString() {
+      ind = 0 and
+      result = "Call"
+      or
+      ind > 0 and
+      result = "Call indirection"
     }
-
-    IRVariable getUnderlyingIRVariable() { result = var }
-
-    override string toString() { result = "*" + this.getUnderlyingIRVariable().toString() }
   }
 }
 
+import SourceVariables
+
+predicate hasIndirectOperand(Operand op, int indirectionIndex) {
+  exists(CppType type, int m |
+    not ignoreOperand(op) and
+    type = getLanguageType(op) and
+    m = countIndirectionsForCppType(type) and
+    indirectionIndex = [1 .. m]
+  )
+}
+
+predicate hasIndirectInstruction(Instruction instr, int indirectionIndex) {
+  exists(CppType type, int m |
+    not ignoreInstruction(instr) and
+    type = getResultLanguageType(instr) and
+    m = countIndirectionsForCppType(type) and
+    indirectionIndex = [1 .. m]
+  )
+}
+
 cached
-private newtype TDefOrUse =
-  TExplicitDef(Instruction store) { explicitWrite(_, store, _) } or
-  TInitializeParam(Instruction instr) {
-    instr instanceof InitializeParameterInstruction
-    or
-    instr instanceof InitializeIndirectionInstruction
+private newtype TDefOrUseImpl =
+  TDefImpl(Operand address, int indirectionIndex) {
+    isDef(_, _, address, _, _, indirectionIndex) and
+    // We only include the definition if the SSA pruning stage
+    // concluded that the definition is live after the write.
+    any(SsaInternals0::Def def).getAddressOperand() = address
   } or
-  TExplicitUse(Operand op) { isExplicitUse(op) } or
-  TReturnParamIndirection(Operand op) { returnParameterIndirection(op, _) }
+  TUseImpl(Operand operand, int indirectionIndex) {
+    isUse(_, operand, _, _, indirectionIndex) and
+    not isDef(_, _, operand, _, _, _)
+  }
 
-private class DefOrUse extends TDefOrUse {
-  /** Gets the instruction associated with this definition, if any. */
-  Instruction asDef() { none() }
-
-  /** Gets the operand associated with this use, if any. */
-  Operand asUse() { none() }
-
+abstract private class DefOrUseImpl extends TDefOrUseImpl {
   /** Gets a textual representation of this element. */
   abstract string toString();
 
@@ -63,579 +125,298 @@ private class DefOrUse extends TDefOrUse {
   abstract IRBlock getBlock();
 
   /** Holds if this definition or use has index `index` in block `block`. */
-  final predicate hasIndexInBlock(IRBlock block, int index) {
-    block.getInstruction(index) = toInstruction(this)
+  abstract predicate hasIndexInBlock(IRBlock block, int index);
+
+  final predicate hasIndexInBlock(IRBlock block, int index, SourceVariable sv) {
+    this.hasIndexInBlock(block, index) and
+    sv = this.getSourceVariable()
   }
 
   /** Gets the location of this element. */
   abstract Cpp::Location getLocation();
-}
 
-private Instruction toInstruction(DefOrUse defOrUse) {
-  result = defOrUse.asDef()
-  or
-  result = defOrUse.asUse().getUse()
-}
+  /**
+   * Gets the index (i.e., the number of loads required) of this
+   * definition or use.
+   *
+   * Note that this is _not_ the definition's (or use's) index in
+   * the enclosing basic block. To obtain this index, use
+   * `DefOrUseImpl::hasIndexInBlock/2` or `DefOrUseImpl::hasIndexInBlock/3`.
+   */
+  abstract int getIndirectionIndex();
 
-abstract class Def extends DefOrUse {
-  Instruction store;
+  /**
+   * Gets the instruction that computes the base of this definition or use.
+   * This is always a `VariableAddressInstruction` or an `AllocationInstruction`.
+   */
+  abstract Instruction getBase();
 
-  /** Gets the instruction of this definition. */
-  Instruction getInstruction() { result = store }
-
-  /** Gets the variable that is defined by this definition. */
-  abstract SourceVariables::SourceVariable getSourceVariable();
-
-  /** Holds if this definition is guaranteed to happen. */
-  abstract predicate isCertain();
-
-  override Instruction asDef() { result = this.getInstruction() }
-
-  override string toString() { result = "Def" }
-
-  override IRBlock getBlock() { result = this.getInstruction().getBlock() }
-
-  override Cpp::Location getLocation() { result = store.getLocation() }
-}
-
-private class ExplicitDef extends Def, TExplicitDef {
-  ExplicitDef() { this = TExplicitDef(store) }
-
-  override SourceVariables::SourceVariable getSourceVariable() {
-    exists(VariableInstruction var |
-      explicitWrite(_, this.getInstruction(), var) and
-      result.(SourceVariables::SourceIRVariable).getIRVariable() = var.getIRVariable()
+  final BaseSourceVariable getBaseSourceVariable() {
+    exists(IRVariable var |
+      result.(BaseIRVariable).getIRVariable() = var and
+      instructionHasIRVariable(this.getBase(), var)
     )
-  }
-
-  override predicate isCertain() { explicitWrite(true, this.getInstruction(), _) }
-}
-
-private class ParameterDef extends Def, TInitializeParam {
-  ParameterDef() { this = TInitializeParam(store) }
-
-  override SourceVariables::SourceVariable getSourceVariable() {
-    result.(SourceVariables::SourceIRVariable).getIRVariable() =
-      store.(InitializeParameterInstruction).getIRVariable()
     or
-    result.(SourceVariables::SourceIRVariableIndirection).getUnderlyingIRVariable() =
-      store.(InitializeIndirectionInstruction).getIRVariable()
+    result.(BaseCallVariable).getCallInstruction() = this.getBase()
   }
 
-  override predicate isCertain() { any() }
-}
-
-abstract class Use extends DefOrUse {
-  Operand use;
-
-  override Operand asUse() { result = use }
-
-  /** Gets the underlying operand of this use. */
-  Operand getOperand() { result = use }
-
-  override string toString() { result = "Use" }
-
-  /** Gets the variable that is used by this use. */
-  abstract SourceVariables::SourceVariable getSourceVariable();
-
-  override IRBlock getBlock() { result = use.getUse().getBlock() }
-
-  override Cpp::Location getLocation() { result = use.getLocation() }
-}
-
-private class ExplicitUse extends Use, TExplicitUse {
-  ExplicitUse() { this = TExplicitUse(use) }
-
-  override SourceVariables::SourceVariable getSourceVariable() {
-    exists(VariableInstruction var |
-      use.getDef() = var and
-      if use.getUse() instanceof ReadSideEffectInstruction
-      then
-        result.(SourceVariables::SourceIRVariableIndirection).getUnderlyingIRVariable() =
-          var.getIRVariable()
-      else result.(SourceVariables::SourceIRVariable).getIRVariable() = var.getIRVariable()
+  /** Gets the variable that is defined or used. */
+  final SourceVariable getSourceVariable() {
+    exists(BaseSourceVariable v, int ind |
+      sourceVariableHasBaseAndIndex(result, v, ind) and
+      defOrUseHasSourceVariable(this, v, ind)
     )
   }
 }
 
-private class ReturnParameterIndirection extends Use, TReturnParamIndirection {
-  ReturnParameterIndirection() { this = TReturnParamIndirection(use) }
+pragma[noinline]
+private predicate instructionHasIRVariable(VariableAddressInstruction vai, IRVariable var) {
+  vai.getIRVariable() = var
+}
 
-  override SourceVariables::SourceVariable getSourceVariable() {
-    exists(ReturnIndirectionInstruction ret |
-      returnParameterIndirection(use, ret) and
-      result.(SourceVariables::SourceIRVariableIndirection).getUnderlyingIRVariable() =
-        ret.getIRVariable()
-    )
+private predicate defOrUseHasSourceVariable(DefOrUseImpl defOrUse, BaseSourceVariable bv, int ind) {
+  defHasSourceVariable(defOrUse, bv, ind)
+  or
+  useHasSourceVariable(defOrUse, bv, ind)
+}
+
+pragma[noinline]
+private predicate defHasSourceVariable(DefImpl def, BaseSourceVariable bv, int ind) {
+  bv = def.getBaseSourceVariable() and
+  ind = def.getIndirection()
+}
+
+pragma[noinline]
+private predicate useHasSourceVariable(UseImpl use, BaseSourceVariable bv, int ind) {
+  bv = use.getBaseSourceVariable() and
+  ind = use.getIndirection()
+}
+
+pragma[noinline]
+private predicate sourceVariableHasBaseAndIndex(SourceVariable v, BaseSourceVariable bv, int ind) {
+  v.getBaseVariable() = bv and
+  v.getIndirection() = ind
+}
+
+class DefImpl extends DefOrUseImpl, TDefImpl {
+  Operand address;
+  int ind;
+
+  DefImpl() { this = TDefImpl(address, ind) }
+
+  override Instruction getBase() { isDef(_, _, address, result, _, _) }
+
+  Operand getAddressOperand() { result = address }
+
+  int getIndirection() { isDef(_, _, address, _, result, ind) }
+
+  override int getIndirectionIndex() { result = ind }
+
+  Instruction getDefiningInstruction() { isDef(_, result, address, _, _, _) }
+
+  override string toString() { result = "DefImpl" }
+
+  override IRBlock getBlock() { result = this.getDefiningInstruction().getBlock() }
+
+  override Cpp::Location getLocation() { result = this.getDefiningInstruction().getLocation() }
+
+  final override predicate hasIndexInBlock(IRBlock block, int index) {
+    this.getDefiningInstruction() = block.getInstruction(index)
   }
+
+  predicate isCertain() { isDef(true, _, address, _, _, ind) }
 }
 
-private predicate isExplicitUse(Operand op) {
-  exists(VariableAddressInstruction vai | vai = op.getDef() |
-    // Don't include this operand as a use if it only exists to initialize the
-    // indirection of a parameter.
-    not exists(LoadInstruction load |
-      load.getSourceAddressOperand() = op and
-      load.getAUse().getUse() instanceof InitializeIndirectionInstruction
-    ) and
-    // Don't include this operand as a use if the only use of the address is for a write
-    // that definitely overrides a variable.
-    not (explicitWrite(true, _, vai) and exists(unique( | | vai.getAUse())))
-  )
-}
+class UseImpl extends DefOrUseImpl, TUseImpl {
+  Operand operand;
+  int ind;
 
-private predicate returnParameterIndirection(Operand op, ReturnIndirectionInstruction ret) {
-  ret.getSourceAddressOperand() = op
-}
+  UseImpl() { this = TUseImpl(operand, ind) }
 
-/**
- * Holds if `iFrom` computes an address that is used by `iTo`.
- */
-predicate addressFlow(Instruction iFrom, Instruction iTo) {
-  iTo.(CopyValueInstruction).getSourceValue() = iFrom
-  or
-  iTo.(ConvertInstruction).getUnary() = iFrom
-  or
-  iTo.(CheckedConvertOrNullInstruction).getUnary() = iFrom
-  or
-  iTo.(InheritanceConversionInstruction).getUnary() = iFrom
-  or
-  iTo.(PointerArithmeticInstruction).getLeft() = iFrom
-  or
-  iTo.(FieldAddressInstruction).getObjectAddress() = iFrom
-  or
-  // We traverse `LoadInstruction`s since we want to conclude that the
-  // destination of the store operation `*x = source()` is derived from `x`.
-  iTo.(LoadInstruction).getSourceAddress() = iFrom
-  or
-  // We want to include `ReadSideEffectInstruction`s for the same reason that we include
-  // `LoadInstruction`s, but only when a `WriteSideEffectInstruction` for the same index exists as well
-  // (as otherwise we know that the callee won't override the data). However, given an index `i`, the
-  // destination of the `WriteSideEffectInstruction` for `i` is identical to the source address of the
-  // `ReadSideEffectInstruction` for `i`. So we don't have to talk about the `ReadSideEffectInstruction`
-  // at all.
-  exists(WriteSideEffectInstruction write |
-    write.getPrimaryInstruction() = iTo and
-    write.getDestinationAddress() = iFrom
-  )
+  Operand getOperand() { result = operand }
+
+  override string toString() { result = "UseImpl" }
+
+  final override predicate hasIndexInBlock(IRBlock block, int index) {
+    operand.getUse() = block.getInstruction(index)
+  }
+
+  final override IRBlock getBlock() { result = operand.getUse().getBlock() }
+
+  final override Cpp::Location getLocation() { result = operand.getLocation() }
+
+  final int getIndirection() { isUse(_, operand, _, result, ind) }
+
+  override int getIndirectionIndex() { result = ind }
+
+  override Instruction getBase() { isUse(_, operand, result, _, ind) }
+
+  predicate isCertain() { isUse(true, operand, _, _, ind) }
 }
 
 /**
- * The reflexive, transitive closure of `addressFlow` that ends as the address of a
- * store or read operation.
+ * Holds if `defOrUse1` is a definition which is first read by `use`,
+ * or if `defOrUse1` is a use and `use` is a next subsequent use.
+ *
+ * In both cases, `use` can either be an explicit use written in the
+ * source file, or it can be a phi node as computed by the SSA library.
  */
-cached
-predicate addressFlowTC(Instruction iFrom, Instruction iTo) {
-  iTo = [getDestinationAddress(_), getSourceAddress(_)] and
-  addressFlow*(iFrom, iTo)
-}
-
-/**
- * Gets the destination address of `instr` if it is a `StoreInstruction` or
- * a `WriteSideEffectInstruction`.
- */
-Instruction getDestinationAddress(Instruction instr) {
-  result =
-    [
-      instr.(StoreInstruction).getDestinationAddress(),
-      instr.(WriteSideEffectInstruction).getDestinationAddress()
-    ]
-}
-
-/** Gets the source address of `instr` if it is an instruction that behaves like a `LoadInstruction`. */
-Instruction getSourceAddress(Instruction instr) { result = getSourceAddressOperand(instr).getDef() }
-
-/**
- * Gets the operand that represents the source address of `instr` if it is an
- * instruction that behaves like a `LoadInstruction`.
- */
-Operand getSourceAddressOperand(Instruction instr) {
-  result =
-    [
-      instr.(LoadInstruction).getSourceAddressOperand(),
-      instr.(ReadSideEffectInstruction).getArgumentOperand()
-    ]
-}
-
-/**
- * Gets the source address of `node` if it's an instruction or operand that
- * behaves like a `LoadInstruction`.
- */
-Instruction getSourceAddressFromNode(Node node) {
-  result = getSourceAddress(node.asInstruction())
-  or
-  result = getSourceAddress(node.asOperand().(SideEffectOperand).getUse())
-}
-
-/** Gets the source value of `instr` if it's an instruction that behaves like a `LoadInstruction`. */
-Instruction getSourceValue(Instruction instr) { result = getSourceValueOperand(instr).getDef() }
-
-/**
- * Gets the operand that represents the source value of `instr` if it's an instruction
- * that behaves like a `LoadInstruction`.
- */
-Operand getSourceValueOperand(Instruction instr) {
-  result = instr.(LoadInstruction).getSourceValueOperand()
-  or
-  result = instr.(ReadSideEffectInstruction).getSideEffectOperand()
-}
-
-/**
- * Holds if `instr` is a `StoreInstruction` or a `WriteSideEffectInstruction` that writes to an address.
- * The addresses is computed using `address`, and `certain` is `true` if the write is guaranteed to overwrite
- * the entire variable.
- */
-cached
-predicate explicitWrite(boolean certain, Instruction instr, Instruction address) {
-  exists(StoreInstruction store |
-    store = instr and addressFlowTC(address, store.getDestinationAddress())
+predicate adjacentDefRead(DefOrUse defOrUse1, UseOrPhi use) {
+  exists(IRBlock bb1, int i1, SourceVariable v |
+    defOrUse1.asDefOrUse().hasIndexInBlock(bb1, i1, v)
   |
-    // Set `certain = false` if the address is derived from any instructions that prevents us from
-    // concluding that the entire variable is overridden.
-    if
-      addressFlowTC(any(Instruction i |
-          i instanceof FieldAddressInstruction or
-          i instanceof PointerArithmeticInstruction or
-          i instanceof LoadInstruction or
-          i instanceof InheritanceConversionInstruction
-        ), store.getDestinationAddress())
-    then certain = false
-    else certain = true
+    exists(IRBlock bb2, int i2 |
+      adjacentDefRead(_, pragma[only_bind_into](bb1), pragma[only_bind_into](i1),
+        pragma[only_bind_into](bb2), pragma[only_bind_into](i2))
+    |
+      use.asDefOrUse().(UseImpl).hasIndexInBlock(bb2, i2, v)
+    )
+    or
+    exists(PhiNode phi |
+      lastRefRedef(_, bb1, i1, phi) and
+      use.asPhi() = phi and
+      phi.getSourceVariable() = pragma[only_bind_into](v)
+    )
+  )
+}
+
+private predicate useToNode(UseOrPhi use, Node nodeTo) {
+  exists(UseImpl useImpl |
+    useImpl = use.asDefOrUse() and
+    nodeHasOperand(nodeTo, useImpl.getOperand(), useImpl.getIndirectionIndex())
   )
   or
-  addressFlowTC(address, instr.(WriteSideEffectInstruction).getDestinationAddress()) and
-  certain = false
+  nodeTo.(SsaPhiNode).getPhiNode() = use.asPhi()
 }
 
-cached
-private module Cached {
-  private predicate defUseFlow(Node nodeFrom, Node nodeTo) {
-    exists(IRBlock bb1, int i1, IRBlock bb2, int i2, DefOrUse defOrUse, Use use |
-      defOrUse.hasIndexInBlock(bb1, i1) and
-      use.hasIndexInBlock(bb2, i2) and
-      adjacentDefRead(_, bb1, i1, bb2, i2) and
-      nodeFrom.asInstruction() = toInstruction(defOrUse) and
-      flowOutOfAddressStep(use.getOperand(), nodeTo)
-    )
-  }
-
-  private predicate fromStoreNode(StoreNodeInstr nodeFrom, Node nodeTo) {
-    // Def-use flow from a `StoreNode`.
-    exists(IRBlock bb1, int i1, IRBlock bb2, int i2, Def def, Use use |
-      nodeFrom.isTerminal() and
-      def.getInstruction() = nodeFrom.getStoreInstruction() and
-      def.hasIndexInBlock(bb1, i1) and
-      adjacentDefRead(_, bb1, i1, bb2, i2) and
-      use.hasIndexInBlock(bb2, i2) and
-      flowOutOfAddressStep(use.getOperand(), nodeTo)
-    )
-    or
-    // This final case is a bit annoying. The write side effect on an expression like `a = new A;` writes
-    // to a fresh address returned by `operator new`, and there's no easy way to use the shared SSA
-    // library to hook that up to the assignment to `a`. So instead we flow to the _first_ use of the
-    // value computed by `operator new` that occurs after `nodeFrom` (to avoid a loop in the
-    // dataflow graph).
-    exists(WriteSideEffectInstruction write, IRBlock bb, int i1, int i2, Operand op |
-      nodeFrom.getInstruction().(CallInstruction).getStaticCallTarget() instanceof
-        Alloc::OperatorNewAllocationFunction and
-      write = nodeFrom.getStoreInstruction() and
-      bb.getInstruction(i1) = write and
-      bb.getInstruction(i2) = op.getUse() and
-      // Flow to an instruction that occurs later in the block.
-      conversionFlow*(nodeFrom.getInstruction(), op.getDef()) and
-      nodeTo.asOperand() = op and
-      i2 > i1 and
-      // There is no previous instruction that also occurs after `nodeFrom`.
-      not exists(Instruction instr, int i |
-        bb.getInstruction(i) = instr and
-        conversionFlow(instr, op.getDef()) and
-        i1 < i and
-        i < i2
-      )
-    )
-  }
-
-  private predicate fromReadNode(ReadNode nodeFrom, Node nodeTo) {
-    exists(IRBlock bb1, int i1, IRBlock bb2, int i2, Use use1, Use use2 |
-      use1.hasIndexInBlock(bb1, i1) and
-      use2.hasIndexInBlock(bb2, i2) and
-      use1.getOperand().getDef() = nodeFrom.getInstruction() and
-      adjacentDefRead(_, bb1, i1, bb2, i2) and
-      flowOutOfAddressStep(use2.getOperand(), nodeTo)
-    )
-  }
-
-  private predicate fromPhiNode(SsaPhiNode nodeFrom, Node nodeTo) {
-    exists(PhiNode phi, Use use, IRBlock block, int rnk |
-      phi = nodeFrom.getPhiNode() and
-      adjacentDefRead(phi, _, _, block, rnk) and
-      use.hasIndexInBlock(block, rnk) and
-      flowOutOfAddressStep(use.getOperand(), nodeTo)
-    )
-  }
-
-  private predicate toPhiNode(Node nodeFrom, SsaPhiNode nodeTo) {
-    // Flow to phi nodes
-    exists(Def def, IRBlock block, int rnk |
-      def.hasIndexInBlock(block, rnk) and
-      nodeTo.hasInputAtRankInBlock(block, rnk)
-    |
-      exists(StoreNodeInstr storeNode |
-        storeNode = nodeFrom and
-        storeNode.isTerminal() and
-        def.getInstruction() = storeNode.getStoreInstruction()
-      )
-      or
-      def.getInstruction() = nodeFrom.asInstruction()
-    )
-    or
-    // Phi -> phi flow
-    nodeTo.hasInputAtRankInBlock(_, _, nodeFrom.(SsaPhiNode).getPhiNode())
-  }
-
-  /**
-   * Holds if `nodeFrom` is a read or write, and `nTo` is the next subsequent read of the variable
-   * written (or read) by `storeOrRead`.
-   */
-  cached
-  predicate ssaFlow(Node nodeFrom, Node nodeTo) {
-    // Def-use/use-use flow from an `InstructionNode`.
-    defUseFlow(nodeFrom, nodeTo)
-    or
-    // Def-use flow from a `StoreNode`.
-    fromStoreNode(nodeFrom, nodeTo)
-    or
-    // Use-use flow from a `ReadNode`.
-    fromReadNode(nodeFrom, nodeTo)
-    or
-    fromPhiNode(nodeFrom, nodeTo)
-    or
-    toPhiNode(nodeFrom, nodeTo)
-    or
-    // When we want to transfer flow out of a `StoreNode` we perform two steps:
-    // 1. Find the next use of the address being stored to
-    // 2. Find the `LoadInstruction` that loads the address
-    // When the address being stored into doesn't have a `LoadInstruction` associated with it because it's
-    // passed into a `CallInstruction` we transfer flow to the `ReadSideEffect`, which will then flow into
-    // the callee. We then pickup the flow from the `InitializeIndirectionInstruction` and use the shared
-    // SSA library to determine where the next use of the address that received the flow is.
-    exists(Node init, Node mid |
-      nodeFrom.asInstruction().(InitializeIndirectionInstruction).getIRVariable() =
-        init.asInstruction().(InitializeParameterInstruction).getIRVariable() and
-      // No need for the flow if the next use is the instruction that returns the flow out of the callee.
-      not mid.asInstruction() instanceof ReturnIndirectionInstruction and
-      // Find the next use of the address
-      ssaFlow(init, mid) and
-      // And flow to the next load of that address
-      flowOutOfAddressStep([mid.asInstruction().getAUse(), mid.asOperand()], nodeTo)
-    )
-  }
-
-  /**
-   * Holds if `iTo` is a conversion-like instruction that copies
-   * the value computed by `iFrom`.
-   *
-   * This predicate is used by `fromStoreNode` to find the next use of a pointer that
-   * points to freshly allocated memory.
-   */
-  private predicate conversionFlow(Instruction iFrom, Instruction iTo) {
-    iTo.(CopyValueInstruction).getSourceValue() = iFrom
-    or
-    iTo.(ConvertInstruction).getUnary() = iFrom
-    or
-    iTo.(CheckedConvertOrNullInstruction).getUnary() = iFrom
-    or
-    iTo.(InheritanceConversionInstruction).getUnary() = iFrom
-  }
-
-  pragma[noinline]
-  private predicate callTargetHasInputOutput(
-    CallInstruction call, DataFlow::FunctionInput input, DataFlow::FunctionOutput output
-  ) {
-    exists(DataFlow::DataFlowFunction func |
-      call.getStaticCallTarget() = func and
-      func.hasDataFlow(input, output)
-    )
-  }
-
-  /**
-   * The role of `flowOutOfAddressStep` is to select the node for which we want dataflow to end up in
-   * after the shared SSA library's `adjacentDefRead` predicate has determined that `operand` is the
-   * next use of some variable.
-   *
-   * More precisely, this predicate holds if `operand` is an operand that represents an address, and:
-   * - `nodeTo` is the next load of that address, or
-   * - `nodeTo` is a `ReadNode` that uses the definition of `operand` to start a sequence of reads, or
-   * - `nodeTo` is the outer-most `StoreNode` that uses the address represented by `operand`. We obtain
-   *    use-use flow in this case since `StoreNodeFlow::flowOutOf` will then provide flow to the next of
-   *    of `operand`.
-   *
-   * There is one final (slightly annoying) case: When `operand` is a an argument to a modeled function
-   * without any `ReadSideEffect` (such as `std::move`). Here, the address flows from the argument to
-   * the return value, which might then be read later.
-   */
-  private predicate flowOutOfAddressStep(Operand operand, Node nodeTo) {
-    // Flow into a read node
-    exists(ReadNode readNode | readNode = nodeTo |
-      readNode.isInitial() and
-      operand.getDef() = readNode.getInstruction()
-    )
-    or
-    exists(StoreNodeInstr storeNode, Instruction def |
-      storeNode = nodeTo and
-      def = operand.getDef()
-    |
-      storeNode.isTerminal() and
-      not addressFlow(def, _) and
-      // Only transfer flow to a store node if it doesn't immediately overwrite the address
-      // we've just written to.
-      explicitWrite(false, storeNode.getStoreInstruction(), def)
-    )
-    or
-    // The destination of a store operation has undergone lvalue-to-rvalue conversion and is now a
-    // right-hand-side of a store operation.
-    // Find the next use of the variable in that store operation, and recursively find the load of that
-    // pointer. For example, consider this case:
-    //
-    // ```cpp
-    // int x = source();
-    // int* p = &x;
-    // sink(*p);
-    // ```
-    //
-    // if we want to find the load of the address of `x`, we see that the pointer is stored into `p`,
-    // and we then need to recursively look for the load of `p`.
-    exists(
-      Def def, StoreInstruction store, IRBlock block1, int rnk1, Use use, IRBlock block2, int rnk2
-    |
-      store = def.getInstruction() and
-      store.getSourceValueOperand() = operand and
-      def.hasIndexInBlock(block1, rnk1) and
-      use.hasIndexInBlock(block2, rnk2) and
-      adjacentDefRead(_, block1, rnk1, block2, rnk2)
-    |
-      // The shared SSA library has determined that `use` is the next use of the operand
-      // so we find the next load of that use (but only if there is no `PostUpdateNode`) we
-      // need to flow into first.
-      not StoreNodeFlow::flowInto(store, _) and
-      flowOutOfAddressStep(use.getOperand(), nodeTo)
-      or
-      // It may also be the case that `store` gives rise to another store step. So let's make sure that
-      // we also take those into account.
-      StoreNodeFlow::flowInto(store, nodeTo)
-    )
-    or
-    // As we find the next load of an address, we might come across another use of the same variable.
-    // In that case, we recursively find the next use of _that_ operand, and continue searching for
-    // the next load of that operand. For example, consider this case:
-    //
-    // ```cpp
-    // int x = source();
-    // use(&x);
-    // int* p = &x;
-    // sink(*p);
-    // ```
-    //
-    // The next use of `x` after its definition is `use(&x)`, but there is a later load of the address
-    // of `x` that we want to flow to. So we use the shared SSA library to find the next load.
-    not operand = getSourceAddressOperand(_) and
-    exists(Use use1, Use use2, IRBlock block1, int rnk1, IRBlock block2, int rnk2 |
-      use1.getOperand() = operand and
-      use1.hasIndexInBlock(block1, rnk1) and
-      // Don't flow to the next use if this use is part of a store operation that totally
-      // overrides a variable.
-      not explicitWrite(true, _, use1.getOperand().getDef()) and
-      adjacentDefRead(_, block1, rnk1, block2, rnk2) and
-      use2.hasIndexInBlock(block2, rnk2) and
-      flowOutOfAddressStep(use2.getOperand(), nodeTo)
-    )
-    or
-    operand = getSourceAddressOperand(nodeTo.asInstruction())
-    or
-    exists(ReturnIndirectionInstruction ret |
-      ret.getSourceAddressOperand() = operand and
-      ret = nodeTo.asInstruction()
-    )
-    or
-    exists(ReturnValueInstruction ret |
-      ret.getReturnAddressOperand() = operand and
-      nodeTo.asInstruction() = ret
-    )
-    or
-    exists(CallInstruction call, int index, ReadSideEffectInstruction read |
-      call.getArgumentOperand(index) = operand and
-      read = getSideEffectFor(call, index) and
-      nodeTo.asOperand() = read.getSideEffectOperand()
-    )
-    or
-    exists(CopyInstruction copy |
-      not exists(getSourceAddressOperand(copy)) and
-      copy.getSourceValueOperand() = operand and
-      flowOutOfAddressStep(copy.getAUse(), nodeTo)
-    )
-    or
-    exists(ConvertInstruction convert |
-      convert.getUnaryOperand() = operand and
-      flowOutOfAddressStep(convert.getAUse(), nodeTo)
-    )
-    or
-    exists(CheckedConvertOrNullInstruction convert |
-      convert.getUnaryOperand() = operand and
-      flowOutOfAddressStep(convert.getAUse(), nodeTo)
-    )
-    or
-    exists(InheritanceConversionInstruction convert |
-      convert.getUnaryOperand() = operand and
-      flowOutOfAddressStep(convert.getAUse(), nodeTo)
-    )
-    or
-    exists(PointerArithmeticInstruction arith |
-      arith.getLeftOperand() = operand and
-      flowOutOfAddressStep(arith.getAUse(), nodeTo)
-    )
-    or
-    // Flow through a modeled function that has parameter -> return value flow.
-    exists(
-      CallInstruction call, int index, DataFlow::FunctionInput input,
-      DataFlow::FunctionOutput output
-    |
-      callTargetHasInputOutput(call, input, output) and
-      call.getArgumentOperand(index) = operand and
-      not getSideEffectFor(call, index) instanceof ReadSideEffectInstruction and
-      input.isParameter(index) and
-      output.isReturnValue() and
-      flowOutOfAddressStep(call.getAUse(), nodeTo)
-    )
-  }
+pragma[noinline]
+predicate outNodeHasAddressAndIndex(
+  IndirectArgumentOutNode out, Operand address, int indirectionIndex
+) {
+  out.getAddressOperand() = address and
+  out.getIndirectionIndex() = indirectionIndex
 }
 
-import Cached
+private predicate defToNode(Node nodeFrom, Def def) {
+  nodeHasInstruction(nodeFrom, def.getDefiningInstruction(), def.getIndirectionIndex())
+}
+
+private predicate nodeToDefOrUse(Node nodeFrom, SsaDefOrUse defOrUse) {
+  // Node -> Def
+  defToNode(nodeFrom, defOrUse)
+  or
+  // Node -> Use
+  useToNode(defOrUse, nodeFrom)
+}
+
+/**
+ * Perform a single conversion-like step from `nFrom` to `nTo`. This relation
+ * only holds when there is no use-use relation out of `nTo`.
+ */
+private predicate indirectConversionFlowStep(Node nFrom, Node nTo) {
+  not exists(UseOrPhi defOrUse |
+    nodeToDefOrUse(nTo, defOrUse) and
+    adjacentDefRead(defOrUse, _)
+  ) and
+  exists(Operand op1, Operand op2, int indirectionIndex, Instruction instr |
+    hasOperandAndIndex(nFrom, op1, pragma[only_bind_into](indirectionIndex)) and
+    hasOperandAndIndex(nTo, op2, pragma[only_bind_into](indirectionIndex)) and
+    instr = op2.getDef() and
+    conversionFlow(op1, instr, _)
+  )
+}
+
+/**
+ * The reason for this predicate is a bit annoying:
+ * We cannot mark a `PointerArithmeticInstruction` that computes an offset based on some SSA
+ * variable `x` as a use of `x` since this creates taint-flow in the following example:
+ * ```c
+ * int x = array[source]
+ * sink(*array)
+ * ```
+ * This is because `source` would flow from the operand of `PointerArithmeticInstruction` to the
+ * result of the instruction, and into the `IndirectOperand` that represents the value of `*array`.
+ * Then, via use-use flow, flow will arrive at `*array` in `sink(*array)`.
+ *
+ * So this predicate recurses back along conversions and `PointerArithmeticInstruction`s to find the
+ * first use that has provides use-use flow, and uses that target as the target of the `nodeFrom`.
+ */
+private predicate adjustForPointerArith(Node nodeFrom, UseOrPhi use) {
+  nodeFrom = any(PostUpdateNode pun).getPreUpdateNode() and
+  exists(DefOrUse defOrUse, Node adjusted |
+    indirectConversionFlowStep*(adjusted, nodeFrom) and
+    nodeToDefOrUse(adjusted, defOrUse) and
+    adjacentDefRead(defOrUse, use)
+  )
+}
+
+/** Holds if there is def-use or use-use flow from `nodeFrom` to `nodeTo`. */
+predicate ssaFlow(Node nodeFrom, Node nodeTo) {
+  // `nodeFrom = any(PostUpdateNode pun).getPreUpdateNode()` is implied by adjustedForPointerArith.
+  exists(UseOrPhi use |
+    adjustForPointerArith(nodeFrom, use) and
+    useToNode(use, nodeTo)
+  )
+  or
+  not nodeFrom = any(PostUpdateNode pun).getPreUpdateNode() and
+  exists(DefOrUse defOrUse1, UseOrPhi use |
+    nodeToDefOrUse(nodeFrom, defOrUse1) and
+    adjacentDefRead(defOrUse1, use) and
+    useToNode(use, nodeTo)
+  )
+}
+
+/** Holds if `nodeTo` receives flow from the phi node `nodeFrom`. */
+predicate fromPhiNode(SsaPhiNode nodeFrom, Node nodeTo) {
+  exists(PhiNode phi, SourceVariable sv, IRBlock bb1, int i1, UseOrPhi use |
+    phi = nodeFrom.getPhiNode() and
+    phi.definesAt(sv, bb1, i1) and
+    useToNode(use, nodeTo)
+  |
+    exists(IRBlock bb2, int i2 |
+      use.asDefOrUse().hasIndexInBlock(bb2, i2, sv) and
+      adjacentDefRead(phi, bb1, i1, bb2, i2)
+    )
+    or
+    exists(PhiNode phiTo |
+      lastRefRedef(phi, _, _, phiTo) and
+      nodeTo.(SsaPhiNode).getPhiNode() = phiTo
+    )
+  )
+}
+
+private SsaInternals0::SourceVariable getOldSourceVariable(SourceVariable v) {
+  v.getBaseVariable().(BaseIRVariable).getIRVariable() =
+    result.getBaseVariable().(SsaInternals0::BaseIRVariable).getIRVariable()
+  or
+  v.getBaseVariable().(BaseCallVariable).getCallInstruction() =
+    result.getBaseVariable().(SsaInternals0::BaseCallVariable).getCallInstruction()
+}
+
+/**
+ * Holds if there is a write at index `i` in basic block `bb` to variable `v` that's
+ * subsequently read (as determined by the SSA pruning stage).
+ */
+private predicate variableWriteCand(IRBlock bb, int i, SourceVariable v) {
+  exists(SsaInternals0::Def def, SsaInternals0::SourceVariable v0 |
+    def.asDefOrUse().hasIndexInBlock(bb, i, v0) and
+    v0 = getOldSourceVariable(v)
+  )
+}
 
 private module SsaInput implements SsaImplCommon::InputSig {
-  private import semmle.code.cpp.ir.IR
-
-  class BasicBlock = IRBlock;
-
-  class SourceVariable = SourceVariables::SourceVariable;
-
-  BasicBlock getImmediateBasicBlockDominator(BasicBlock bb) { result.immediatelyDominates(bb) }
-
-  BasicBlock getABasicBlockSuccessor(BasicBlock bb) { result = bb.getASuccessor() }
-
-  class ExitBasicBlock extends IRBlock {
-    ExitBasicBlock() { this.getLastInstruction() instanceof ExitFunctionInstruction }
-  }
+  import InputSigCommon
+  import SourceVariables
 
   /**
    * Holds if the `i`'th write in block `bb` writes to the variable `v`.
    * `certain` is `true` if the write is guaranteed to overwrite the entire variable.
    */
-  predicate variableWrite(BasicBlock bb, int i, SourceVariable v, boolean certain) {
+  predicate variableWrite(IRBlock bb, int i, SourceVariable v, boolean certain) {
     DataFlowImplCommon::forceCachingInSameStage() and
-    exists(Def def |
-      def.hasIndexInBlock(bb, i) and
-      v = def.getSourceVariable() and
-      (if def.isCertain() then certain = true else certain = false)
+    variableWriteCand(bb, i, v) and
+    exists(DefImpl def | def.hasIndexInBlock(bb, i, v) |
+      if def.isCertain() then certain = true else certain = false
     )
   }
 
@@ -643,13 +424,124 @@ private module SsaInput implements SsaImplCommon::InputSig {
    * Holds if the `i`'th read in block `bb` reads to the variable `v`.
    * `certain` is `true` if the read is guaranteed. For C++, this is always the case.
    */
-  predicate variableRead(BasicBlock bb, int i, SourceVariable v, boolean certain) {
-    exists(Use use |
-      use.hasIndexInBlock(bb, i) and
-      v = use.getSourceVariable() and
-      certain = true
+  predicate variableRead(IRBlock bb, int i, SourceVariable v, boolean certain) {
+    exists(UseImpl use | use.hasIndexInBlock(bb, i, v) |
+      if use.isCertain() then certain = true else certain = false
     )
   }
 }
 
-import SsaImplCommon::Make<SsaInput>
+/**
+ * The final SSA predicates used for dataflow purposes.
+ */
+cached
+module SsaCached {
+  /**
+   * Holds if `def` is accessed at index `i1` in basic block `bb1` (either a read
+   * or a write), `def` is read at index `i2` in basic block `bb2`, and there is a
+   * path between them without any read of `def`.
+   */
+  cached
+  predicate adjacentDefRead(Definition def, IRBlock bb1, int i1, IRBlock bb2, int i2) {
+    SsaImpl::adjacentDefRead(def, bb1, i1, bb2, i2)
+  }
+
+  /**
+   * Holds if the node at index `i` in `bb` is a last reference to SSA definition
+   * `def`. The reference is last because it can reach another write `next`,
+   * without passing through another read or write.
+   */
+  cached
+  predicate lastRefRedef(Definition def, IRBlock bb, int i, Definition next) {
+    SsaImpl::lastRefRedef(def, bb, i, next)
+  }
+}
+
+cached
+private newtype TSsaDefOrUse =
+  TDefOrUse(DefOrUseImpl defOrUse) {
+    defOrUse instanceof UseImpl
+    or
+    // Like in the pruning stage, we only include definition that's live after the
+    // write as the final definitions computed by SSA.
+    exists(Definition def, SourceVariable sv, IRBlock bb, int i |
+      def.definesAt(sv, bb, i) and
+      defOrUse.(DefImpl).hasIndexInBlock(bb, i, sv)
+    )
+  } or
+  TPhi(PhiNode phi)
+
+abstract private class SsaDefOrUse extends TSsaDefOrUse {
+  string toString() { none() }
+
+  DefOrUseImpl asDefOrUse() { none() }
+
+  PhiNode asPhi() { none() }
+
+  abstract Location getLocation();
+}
+
+class DefOrUse extends TDefOrUse, SsaDefOrUse {
+  DefOrUseImpl defOrUse;
+
+  DefOrUse() { this = TDefOrUse(defOrUse) }
+
+  final override DefOrUseImpl asDefOrUse() { result = defOrUse }
+
+  final override Location getLocation() { result = defOrUse.getLocation() }
+
+  final SourceVariable getSourceVariable() { result = defOrUse.getSourceVariable() }
+
+  override string toString() { result = defOrUse.toString() }
+}
+
+class Phi extends TPhi, SsaDefOrUse {
+  PhiNode phi;
+
+  Phi() { this = TPhi(phi) }
+
+  final override PhiNode asPhi() { result = phi }
+
+  final override Location getLocation() { result = phi.getBasicBlock().getLocation() }
+
+  override string toString() { result = "Phi" }
+}
+
+class UseOrPhi extends SsaDefOrUse {
+  UseOrPhi() {
+    this.asDefOrUse() instanceof UseImpl
+    or
+    this instanceof Phi
+  }
+
+  final override Location getLocation() {
+    result = this.asDefOrUse().getLocation() or result = this.(Phi).getLocation()
+  }
+}
+
+class Def extends DefOrUse {
+  override DefImpl defOrUse;
+
+  Operand getAddressOperand() { result = defOrUse.getAddressOperand() }
+
+  Instruction getAddress() { result = this.getAddressOperand().getDef() }
+
+  /**
+   * This predicate ensures that joins go from `defOrUse` to the result
+   * instead of the other way around.
+   */
+  pragma[inline]
+  int getIndirectionIndex() {
+    pragma[only_bind_into](result) = pragma[only_bind_out](defOrUse).getIndirectionIndex()
+  }
+
+  Instruction getDefiningInstruction() { result = defOrUse.getDefiningInstruction() }
+}
+
+private module SsaImpl = SsaImplCommon::Make<SsaInput>;
+
+class PhiNode = SsaImpl::PhiNode;
+
+class Definition = SsaImpl::Definition;
+
+import SsaCached

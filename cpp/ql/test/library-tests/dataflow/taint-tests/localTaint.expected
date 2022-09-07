@@ -142,9 +142,14 @@
 | bsd.cpp:19:14:19:29 | sizeof(sockaddr) | bsd.cpp:20:29:20:32 | size |  |
 | bsd.cpp:20:11:20:16 | call to accept | bsd.cpp:22:8:22:8 | a |  |
 | bsd.cpp:20:18:20:18 | s | bsd.cpp:20:11:20:16 | call to accept | TAINT |
+| bsd.cpp:20:18:20:18 | s | bsd.cpp:20:21:20:25 | ref arg & ... | TAINT |
 | bsd.cpp:20:21:20:25 | & ... | bsd.cpp:20:11:20:16 | call to accept | TAINT |
+| bsd.cpp:20:21:20:25 | & ... | bsd.cpp:20:21:20:25 | ref arg & ... | TAINT |
+| bsd.cpp:20:21:20:25 | ref arg & ... | bsd.cpp:20:22:20:25 | addr [inner post update] |  |
+| bsd.cpp:20:21:20:25 | ref arg & ... | bsd.cpp:23:8:23:11 | addr |  |
 | bsd.cpp:20:22:20:25 | addr | bsd.cpp:20:11:20:16 | call to accept | TAINT |
 | bsd.cpp:20:22:20:25 | addr | bsd.cpp:20:21:20:25 | & ... |  |
+| bsd.cpp:20:22:20:25 | addr | bsd.cpp:20:21:20:25 | ref arg & ... | TAINT |
 | bsd.cpp:20:28:20:32 | ref arg & ... | bsd.cpp:20:29:20:32 | size [inner post update] |  |
 | bsd.cpp:20:29:20:32 | size | bsd.cpp:20:28:20:32 | & ... |  |
 | constructor_delegation.cpp:8:2:8:8 | this | constructor_delegation.cpp:8:20:8:24 | constructor init of field x [pre-this] |  |
@@ -3488,7 +3493,7 @@
 | standalone_iterators.cpp:41:19:41:19 | call to operator++ | standalone_iterators.cpp:41:10:41:10 | call to operator* | TAINT |
 | standalone_iterators.cpp:42:12:42:12 | call to operator++ | standalone_iterators.cpp:42:10:42:10 | call to operator* | TAINT |
 | standalone_iterators.cpp:42:14:42:20 | ref arg source1 | standalone_iterators.cpp:39:45:39:51 | source1 |  |
-| standalone_iterators.cpp:42:14:42:20 | source1 | standalone_iterators.cpp:42:12:42:12 | call to operator++ |  |
+| standalone_iterators.cpp:42:14:42:20 | source1 | standalone_iterators.cpp:42:12:42:12 | call to operator++ | TAINT |
 | standalone_iterators.cpp:45:39:45:45 | source1 | standalone_iterators.cpp:45:39:45:45 | source1 |  |
 | standalone_iterators.cpp:45:39:45:45 | source1 | standalone_iterators.cpp:46:11:46:17 | source1 |  |
 | standalone_iterators.cpp:45:39:45:45 | source1 | standalone_iterators.cpp:47:12:47:18 | source1 |  |
@@ -3500,7 +3505,7 @@
 | standalone_iterators.cpp:47:19:47:19 | call to operator++ | standalone_iterators.cpp:47:10:47:10 | call to operator* | TAINT |
 | standalone_iterators.cpp:48:12:48:12 | call to operator++ | standalone_iterators.cpp:48:10:48:10 | call to operator* | TAINT |
 | standalone_iterators.cpp:48:14:48:20 | ref arg source1 | standalone_iterators.cpp:45:39:45:45 | source1 |  |
-| standalone_iterators.cpp:48:14:48:20 | source1 | standalone_iterators.cpp:48:12:48:12 | call to operator++ |  |
+| standalone_iterators.cpp:48:14:48:20 | source1 | standalone_iterators.cpp:48:12:48:12 | call to operator++ | TAINT |
 | standalone_iterators.cpp:51:37:51:43 | source1 | standalone_iterators.cpp:52:11:52:17 | source1 |  |
 | standalone_iterators.cpp:51:37:51:43 | source1 | standalone_iterators.cpp:53:12:53:18 | source1 |  |
 | standalone_iterators.cpp:51:37:51:43 | source1 | standalone_iterators.cpp:54:14:54:20 | source1 |  |
@@ -3788,7 +3793,7 @@
 | string.cpp:120:16:120:24 | call to basic_string | string.cpp:125:50:125:50 | s |  |
 | string.cpp:120:16:120:24 | call to basic_string | string.cpp:129:16:129:16 | s |  |
 | string.cpp:121:15:121:15 | (__begin) | string.cpp:121:15:121:15 | call to operator* | TAINT |
-| string.cpp:121:15:121:15 | (__begin) | string.cpp:121:15:121:15 | call to operator++ |  |
+| string.cpp:121:15:121:15 | (__begin) | string.cpp:121:15:121:15 | call to operator++ | TAINT |
 | string.cpp:121:15:121:15 | (__end) | string.cpp:121:15:121:15 | call to iterator |  |
 | string.cpp:121:15:121:15 | (__range) | string.cpp:121:15:121:15 | call to begin | TAINT |
 | string.cpp:121:15:121:15 | (__range) | string.cpp:121:15:121:15 | call to end | TAINT |
@@ -3816,7 +3821,7 @@
 | string.cpp:125:50:125:50 | ref arg s | string.cpp:125:50:125:50 | s |  |
 | string.cpp:125:50:125:50 | ref arg s | string.cpp:129:16:129:16 | s |  |
 | string.cpp:125:50:125:50 | s | string.cpp:125:52:125:54 | call to end | TAINT |
-| string.cpp:125:61:125:62 | it | string.cpp:125:59:125:59 | call to operator++ |  |
+| string.cpp:125:61:125:62 | it | string.cpp:125:59:125:59 | call to operator++ | TAINT |
 | string.cpp:125:61:125:62 | ref arg it | string.cpp:125:44:125:45 | it |  |
 | string.cpp:125:61:125:62 | ref arg it | string.cpp:125:61:125:62 | it |  |
 | string.cpp:125:61:125:62 | ref arg it | string.cpp:126:9:126:10 | it |  |
@@ -3825,7 +3830,7 @@
 | string.cpp:126:9:126:10 | ref arg it | string.cpp:125:61:125:62 | it |  |
 | string.cpp:126:9:126:10 | ref arg it | string.cpp:126:9:126:10 | it |  |
 | string.cpp:129:16:129:16 | (__begin) | string.cpp:129:16:129:16 | call to operator* | TAINT |
-| string.cpp:129:16:129:16 | (__begin) | string.cpp:129:16:129:16 | call to operator++ |  |
+| string.cpp:129:16:129:16 | (__begin) | string.cpp:129:16:129:16 | call to operator++ | TAINT |
 | string.cpp:129:16:129:16 | (__end) | string.cpp:129:16:129:16 | call to iterator |  |
 | string.cpp:129:16:129:16 | (__range) | string.cpp:129:16:129:16 | call to begin | TAINT |
 | string.cpp:129:16:129:16 | (__range) | string.cpp:129:16:129:16 | call to end | TAINT |
@@ -3847,7 +3852,7 @@
 | string.cpp:133:28:133:33 | call to source | string.cpp:133:28:133:36 | call to basic_string | TAINT |
 | string.cpp:133:28:133:36 | call to basic_string | string.cpp:134:22:134:28 | const_s |  |
 | string.cpp:134:22:134:22 | (__begin) | string.cpp:134:22:134:22 | call to operator* | TAINT |
-| string.cpp:134:22:134:22 | (__begin) | string.cpp:134:22:134:22 | call to operator++ |  |
+| string.cpp:134:22:134:22 | (__begin) | string.cpp:134:22:134:22 | call to operator++ | TAINT |
 | string.cpp:134:22:134:22 | (__range) | string.cpp:134:22:134:22 | call to begin | TAINT |
 | string.cpp:134:22:134:22 | (__range) | string.cpp:134:22:134:22 | call to end | TAINT |
 | string.cpp:134:22:134:22 | call to begin | string.cpp:134:22:134:22 | (__begin) |  |
@@ -4259,12 +4264,12 @@
 | string.cpp:398:8:398:9 | i2 | string.cpp:399:12:399:13 | i3 |  |
 | string.cpp:399:10:399:10 | call to operator++ | string.cpp:399:8:399:8 | call to operator* | TAINT |
 | string.cpp:399:10:399:10 | ref arg call to operator++ | string.cpp:399:12:399:13 | ref arg i3 |  |
-| string.cpp:399:12:399:13 | i3 | string.cpp:399:10:399:10 | call to operator++ |  |
+| string.cpp:399:12:399:13 | i3 | string.cpp:399:10:399:10 | call to operator++ | TAINT |
 | string.cpp:400:8:400:9 | i2 | string.cpp:400:3:400:9 | ... = ... |  |
 | string.cpp:400:8:400:9 | i2 | string.cpp:401:12:401:13 | i4 |  |
 | string.cpp:401:10:401:10 | call to operator-- | string.cpp:401:8:401:8 | call to operator* | TAINT |
 | string.cpp:401:10:401:10 | ref arg call to operator-- | string.cpp:401:12:401:13 | ref arg i4 |  |
-| string.cpp:401:12:401:13 | i4 | string.cpp:401:10:401:10 | call to operator-- |  |
+| string.cpp:401:12:401:13 | i4 | string.cpp:401:10:401:10 | call to operator-- | TAINT |
 | string.cpp:402:8:402:9 | i2 | string.cpp:402:3:402:9 | ... = ... |  |
 | string.cpp:402:8:402:9 | i2 | string.cpp:403:3:403:4 | i5 |  |
 | string.cpp:402:8:402:9 | i2 | string.cpp:404:9:404:10 | i5 |  |
@@ -4293,7 +4298,7 @@
 | string.cpp:413:11:413:13 | call to end | string.cpp:413:3:413:15 | ... = ... |  |
 | string.cpp:413:11:413:13 | call to end | string.cpp:414:5:414:6 | i9 |  |
 | string.cpp:413:11:413:13 | call to end | string.cpp:415:9:415:10 | i9 |  |
-| string.cpp:414:5:414:6 | i9 | string.cpp:414:3:414:3 | call to operator-- |  |
+| string.cpp:414:5:414:6 | i9 | string.cpp:414:3:414:3 | call to operator-- | TAINT |
 | string.cpp:414:5:414:6 | ref arg i9 | string.cpp:415:9:415:10 | i9 |  |
 | string.cpp:415:9:415:10 | i9 | string.cpp:415:8:415:8 | call to operator* | TAINT |
 | string.cpp:417:9:417:10 | i2 | string.cpp:417:3:417:10 | ... = ... |  |
@@ -6579,7 +6584,7 @@
 | vector.cpp:17:21:17:33 | call to vector | vector.cpp:35:1:35:1 | v |  |
 | vector.cpp:17:26:17:32 | source1 | vector.cpp:17:21:17:33 | call to vector | TAINT |
 | vector.cpp:19:14:19:14 | (__begin) | vector.cpp:19:14:19:14 | call to operator* | TAINT |
-| vector.cpp:19:14:19:14 | (__begin) | vector.cpp:19:14:19:14 | call to operator++ |  |
+| vector.cpp:19:14:19:14 | (__begin) | vector.cpp:19:14:19:14 | call to operator++ | TAINT |
 | vector.cpp:19:14:19:14 | (__end) | vector.cpp:19:14:19:14 | call to iterator |  |
 | vector.cpp:19:14:19:14 | (__range) | vector.cpp:19:14:19:14 | call to begin | TAINT |
 | vector.cpp:19:14:19:14 | (__range) | vector.cpp:19:14:19:14 | call to end | TAINT |
@@ -6609,7 +6614,7 @@
 | vector.cpp:23:55:23:55 | ref arg v | vector.cpp:27:15:27:15 | v |  |
 | vector.cpp:23:55:23:55 | ref arg v | vector.cpp:35:1:35:1 | v |  |
 | vector.cpp:23:55:23:55 | v | vector.cpp:23:57:23:59 | call to end | TAINT |
-| vector.cpp:23:66:23:67 | it | vector.cpp:23:64:23:64 | call to operator++ |  |
+| vector.cpp:23:66:23:67 | it | vector.cpp:23:64:23:64 | call to operator++ | TAINT |
 | vector.cpp:23:66:23:67 | ref arg it | vector.cpp:23:49:23:50 | it |  |
 | vector.cpp:23:66:23:67 | ref arg it | vector.cpp:23:66:23:67 | it |  |
 | vector.cpp:23:66:23:67 | ref arg it | vector.cpp:24:9:24:10 | it |  |
@@ -6618,7 +6623,7 @@
 | vector.cpp:24:9:24:10 | ref arg it | vector.cpp:23:66:23:67 | it |  |
 | vector.cpp:24:9:24:10 | ref arg it | vector.cpp:24:9:24:10 | it |  |
 | vector.cpp:27:15:27:15 | (__begin) | vector.cpp:27:15:27:15 | call to operator* | TAINT |
-| vector.cpp:27:15:27:15 | (__begin) | vector.cpp:27:15:27:15 | call to operator++ |  |
+| vector.cpp:27:15:27:15 | (__begin) | vector.cpp:27:15:27:15 | call to operator++ | TAINT |
 | vector.cpp:27:15:27:15 | (__end) | vector.cpp:27:15:27:15 | call to iterator |  |
 | vector.cpp:27:15:27:15 | (__range) | vector.cpp:27:15:27:15 | call to begin | TAINT |
 | vector.cpp:27:15:27:15 | (__range) | vector.cpp:27:15:27:15 | call to end | TAINT |
@@ -6641,7 +6646,7 @@
 | vector.cpp:31:33:31:45 | call to vector | vector.cpp:35:1:35:1 | const_v |  |
 | vector.cpp:31:38:31:44 | source1 | vector.cpp:31:33:31:45 | call to vector | TAINT |
 | vector.cpp:32:21:32:21 | (__begin) | vector.cpp:32:21:32:21 | call to operator* | TAINT |
-| vector.cpp:32:21:32:21 | (__begin) | vector.cpp:32:21:32:21 | call to operator++ |  |
+| vector.cpp:32:21:32:21 | (__begin) | vector.cpp:32:21:32:21 | call to operator++ | TAINT |
 | vector.cpp:32:21:32:21 | (__range) | vector.cpp:32:21:32:21 | call to begin | TAINT |
 | vector.cpp:32:21:32:21 | (__range) | vector.cpp:32:21:32:21 | call to end | TAINT |
 | vector.cpp:32:21:32:21 | call to begin | vector.cpp:32:21:32:21 | (__begin) |  |
@@ -7652,7 +7657,7 @@
 | vector.cpp:344:56:344:57 | ref arg v2 | vector.cpp:347:7:347:8 | v2 |  |
 | vector.cpp:344:56:344:57 | ref arg v2 | vector.cpp:415:1:415:1 | v2 |  |
 | vector.cpp:344:56:344:57 | v2 | vector.cpp:344:59:344:61 | call to end | TAINT |
-| vector.cpp:344:68:344:69 | it | vector.cpp:344:66:344:66 | call to operator++ |  |
+| vector.cpp:344:68:344:69 | it | vector.cpp:344:66:344:66 | call to operator++ | TAINT |
 | vector.cpp:344:68:344:69 | ref arg it | vector.cpp:344:50:344:51 | it |  |
 | vector.cpp:344:68:344:69 | ref arg it | vector.cpp:344:68:344:69 | it |  |
 | vector.cpp:344:68:344:69 | ref arg it | vector.cpp:345:4:345:5 | it |  |
@@ -7669,7 +7674,7 @@
 | vector.cpp:345:9:345:14 | call to source | vector.cpp:345:3:345:16 | ... = ... |  |
 | vector.cpp:347:7:347:8 | ref arg v2 | vector.cpp:415:1:415:1 | v2 |  |
 | vector.cpp:349:15:349:15 | (__begin) | vector.cpp:349:15:349:15 | call to operator* | TAINT |
-| vector.cpp:349:15:349:15 | (__begin) | vector.cpp:349:15:349:15 | call to operator++ |  |
+| vector.cpp:349:15:349:15 | (__begin) | vector.cpp:349:15:349:15 | call to operator++ | TAINT |
 | vector.cpp:349:15:349:15 | (__end) | vector.cpp:349:15:349:15 | call to iterator |  |
 | vector.cpp:349:15:349:15 | (__range) | vector.cpp:349:15:349:15 | call to begin | TAINT |
 | vector.cpp:349:15:349:15 | (__range) | vector.cpp:349:15:349:15 | call to end | TAINT |
@@ -7701,7 +7706,7 @@
 | vector.cpp:354:56:354:57 | ref arg v4 | vector.cpp:357:7:357:8 | v4 |  |
 | vector.cpp:354:56:354:57 | ref arg v4 | vector.cpp:415:1:415:1 | v4 |  |
 | vector.cpp:354:56:354:57 | v4 | vector.cpp:354:59:354:61 | call to end | TAINT |
-| vector.cpp:354:68:354:69 | it | vector.cpp:354:66:354:66 | call to operator++ |  |
+| vector.cpp:354:68:354:69 | it | vector.cpp:354:66:354:66 | call to operator++ | TAINT |
 | vector.cpp:354:68:354:69 | ref arg it | vector.cpp:354:50:354:51 | it |  |
 | vector.cpp:354:68:354:69 | ref arg it | vector.cpp:354:68:354:69 | it |  |
 | vector.cpp:354:68:354:69 | ref arg it | vector.cpp:355:32:355:33 | it |  |
@@ -7961,7 +7966,7 @@
 | vector.cpp:442:3:442:3 | ref arg call to operator* | vector.cpp:444:2:444:2 | out |  |
 | vector.cpp:442:4:442:4 | call to operator++ | vector.cpp:442:3:442:3 | call to operator* | TAINT |
 | vector.cpp:442:4:442:4 | ref arg call to operator++ | vector.cpp:442:6:442:7 | ref arg it |  |
-| vector.cpp:442:6:442:7 | it | vector.cpp:442:4:442:4 | call to operator++ |  |
+| vector.cpp:442:6:442:7 | it | vector.cpp:442:4:442:4 | call to operator++ | TAINT |
 | vector.cpp:442:11:442:36 | call to basic_string | vector.cpp:442:3:442:3 | ref arg call to operator* | TAINT |
 | vector.cpp:442:23:442:35 | source_string | vector.cpp:442:11:442:36 | call to basic_string | TAINT |
 | vector.cpp:443:8:443:10 | ref arg out | vector.cpp:444:2:444:2 | out |  |
@@ -7976,7 +7981,7 @@
 | vector.cpp:449:3:449:3 | ref arg call to operator* | vector.cpp:451:2:451:2 | out |  |
 | vector.cpp:449:4:449:4 | call to operator++ | vector.cpp:449:3:449:3 | call to operator* | TAINT |
 | vector.cpp:449:4:449:4 | ref arg call to operator++ | vector.cpp:449:6:449:7 | ref arg it |  |
-| vector.cpp:449:6:449:7 | it | vector.cpp:449:4:449:4 | call to operator++ |  |
+| vector.cpp:449:6:449:7 | it | vector.cpp:449:4:449:4 | call to operator++ | TAINT |
 | vector.cpp:449:11:449:16 | call to source | vector.cpp:449:3:449:3 | ref arg call to operator* | TAINT |
 | vector.cpp:450:8:450:10 | ref arg out | vector.cpp:451:2:451:2 | out |  |
 | vector.cpp:467:22:467:25 | call to vector | vector.cpp:471:8:471:8 | v |  |
