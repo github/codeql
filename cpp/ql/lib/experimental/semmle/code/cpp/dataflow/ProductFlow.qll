@@ -61,7 +61,6 @@ module ProductFlow {
     }
   }
 
-
   private predicate reachableInterprocEntry(
     Configuration conf, DataFlow::PathNode source1, DataFlow2::PathNode source2,
     DataFlow::PathNode node1, DataFlow2::PathNode node2
@@ -83,12 +82,34 @@ module ProductFlow {
 
   private predicate localPathStep1(DataFlow::PathNode pred, DataFlow::PathNode succ) {
     DataFlow::PathGraph::edges(pred, succ) and
-    pred.getNode().getEnclosingCallable() = succ.getNode().getEnclosingCallable()
+    pragma[only_bind_out](pred.getNode().getEnclosingCallable()) =
+      pragma[only_bind_out](succ.getNode().getEnclosingCallable())
   }
 
   private predicate localPathStep2(DataFlow2::PathNode pred, DataFlow2::PathNode succ) {
     DataFlow2::PathGraph::edges(pred, succ) and
-    pred.getNode().getEnclosingCallable() = succ.getNode().getEnclosingCallable()
+    pragma[only_bind_out](pred.getNode().getEnclosingCallable()) =
+      pragma[only_bind_out](succ.getNode().getEnclosingCallable())
+  }
+
+  pragma[nomagic]
+  private predicate interprocEdge1(
+    Declaration predDecl, Declaration succDecl, DataFlow::PathNode pred1, DataFlow::PathNode succ1
+  ) {
+    DataFlow::PathGraph::edges(pred1, succ1) and
+    predDecl != succDecl and
+    pred1.getNode().getEnclosingCallable() = predDecl and
+    succ1.getNode().getEnclosingCallable() = succDecl
+  }
+
+  pragma[nomagic]
+  private predicate interprocEdge2(
+    Declaration predDecl, Declaration succDecl, DataFlow2::PathNode pred2, DataFlow2::PathNode succ2
+  ) {
+    DataFlow2::PathGraph::edges(pred2, succ2) and
+    predDecl != succDecl and
+    pred2.getNode().getEnclosingCallable() = predDecl and
+    succ2.getNode().getEnclosingCallable() = succDecl
   }
 
   private predicate interprocEdgePair(
@@ -96,18 +117,14 @@ module ProductFlow {
     DataFlow2::PathNode succ2
   ) {
     exists(Declaration predDecl, Declaration succDecl |
-      DataFlow::PathGraph::edges(pred1, succ1) and
-      DataFlow2::PathGraph::edges(pred2, succ2) and
-      predDecl != succDecl and
-      pred1.getNode().getEnclosingCallable() = predDecl and
-      pred2.getNode().getEnclosingCallable() = predDecl and
-      succ1.getNode().getEnclosingCallable() = succDecl and
-      succ2.getNode().getEnclosingCallable() = succDecl
+      interprocEdge1(predDecl, succDecl, pred1, succ1) and
+      interprocEdge2(predDecl, succDecl, pred2, succ2)
     )
   }
 
   private predicate reachable(
-    Configuration conf, DataFlow::PathNode source1, DataFlow2::PathNode source2, DataFlow::PathNode sink1, DataFlow2::PathNode sink2
+    Configuration conf, DataFlow::PathNode source1, DataFlow2::PathNode source2,
+    DataFlow::PathNode sink1, DataFlow2::PathNode sink2
   ) {
     exists(DataFlow::PathNode mid1, DataFlow2::PathNode mid2 |
       reachableInterprocEntry(conf, source1, source2, mid1, mid2) and
