@@ -70,7 +70,7 @@ where
   // PEP 479 removes this concern from 3.7 onwards
   // see: https://peps.python.org/pep-0479/
   //
-  // However, we do not know the minor version of the analysed code (only of the extractor),
+  // However, we do not know the minor version of the analyzed code (only of the extractor),
   // so we only alert on Python 2.
   major_version() = 2
 select call, "Call to next() in a generator"
