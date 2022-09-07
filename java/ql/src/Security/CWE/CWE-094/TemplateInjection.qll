@@ -3,11 +3,11 @@
 import java
 import semmle.code.java.dataflow.TaintTracking
 import semmle.code.java.dataflow.FlowSources
-import experimental.semmle.code.java.frameworks.FreeMarker
-import experimental.semmle.code.java.frameworks.Velocity
-import experimental.semmle.code.java.frameworks.JinJava
-import experimental.semmle.code.java.frameworks.Pebble
-import experimental.semmle.code.java.frameworks.Thymeleaf
+import semmle.code.java.frameworks.FreeMarker
+import semmle.code.java.frameworks.Velocity
+import semmle.code.java.frameworks.JinJava
+import semmle.code.java.frameworks.Pebble
+import semmle.code.java.frameworks.Thymeleaf
 
 /** A taint tracking configuration to reason about Server Side Template Injection (SSTI) vulnerabilities */
 class TemplateInjectionFlowConfig extends TaintTracking::Configuration {
