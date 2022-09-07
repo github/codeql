@@ -26,7 +26,11 @@ class Configuration extends DataFlow::Configuration {
     sink.analyze().getAType() = TTObject()
   }
 
-  override predicate isBarrier(DataFlow::Node node) { node instanceof Barrier }
+  override predicate isBarrier(DataFlow::Node node) {
+    super.isBarrier(node)
+    or
+    node instanceof Barrier
+  }
 
   override predicate isBarrierGuard(DataFlow::BarrierGuardNode guard) {
     guard instanceof TypeOfTestBarrier or
