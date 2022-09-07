@@ -4257,6 +4257,8 @@ open class KotlinFileExtractor(
      * Extracts a type access expression and its child type access expressions in case of a generic type. Nested generics are also handled.
      */
     private fun extractTypeAccessRecursive(t: IrType, location: Label<DbLocation>, parent: Label<out DbExprparent>, idx: Int, enclosingCallable: Label<out DbCallable>, enclosingStmt: Label<out DbStmt>, typeContext: TypeContext = TypeContext.OTHER): Label<out DbExpr> {
+        // TODO: `useType` substitutes types to their java equivalent, and sometimes that also means changing the number of type arguments. The below logic doesn't take this into account.
+        // For example `KFunction2<Int,Double,String>` becomes `KFunction<String>` with three child type access expressions: `Int`, `Double`, `String`.
         val typeAccessId = extractTypeAccess(useType(t, typeContext), location, parent, idx, enclosingCallable, enclosingStmt)
         if (t is IrSimpleType) {
             extractTypeArguments(t.arguments.filterIsInstance<IrType>(), location, typeAccessId, enclosingCallable, enclosingStmt)
