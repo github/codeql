@@ -25,6 +25,12 @@
 | testSend.swift:30:19:30:19 | passwordHash | isProbablySafe, label:passwordHash, type:credential |
 | testSend.swift:33:19:33:19 | passwordPlain | label:passwordPlain, type:credential |
 | testSend.swift:34:19:34:19 | passwordHash | isProbablySafe, label:passwordHash, type:credential |
+| testSend.swift:45:13:45:13 | password | label:password, type:credential |
+| testSend.swift:46:13:46:13 | password | label:password, type:credential |
+| testSend.swift:47:17:47:17 | password | label:password, type:credential |
+| testSend.swift:48:23:48:23 | password | label:password, type:credential |
+| testSend.swift:49:27:49:27 | password | label:password, type:credential |
+| testSend.swift:50:27:50:27 | password | label:password, type:credential |
 | testURL.swift:13:54:13:54 | passwd | label:passwd, type:credential |
 | testURL.swift:14:54:14:54 | encrypted_passwd | isProbablySafe, label:encrypted_passwd, type:credential |
 | testURL.swift:16:55:16:55 | credit_card_no | label:credit_card_no, type:private information |
