@@ -92,7 +92,6 @@ You can also specify:
    For databases that were created by CodeQL CLI v2.3.4 or later, the CLI will implicitly run any
    required upgrades. Explicitly running the upgrade command is not necessary.
 
-
 For full details of all the options you can use when analyzing databases, see
 the `database analyze reference documentation <../manual/database-analyze>`__.
 
