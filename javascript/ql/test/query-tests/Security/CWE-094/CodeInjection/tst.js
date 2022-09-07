@@ -34,5 +34,5 @@ $('<a>').attr("onclick", location.search.substring(1));
 
     new Function("a", "b", source); // NOT OK
 
-    new Function(...["a", "b"], source); // NOT OK - but not flagged [INCONSISTENCY]
+    new Function(...["a", "b"], source); // NOT OK
 })();

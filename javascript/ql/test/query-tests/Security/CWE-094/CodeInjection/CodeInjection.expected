@@ -167,6 +167,8 @@ nodes
 | tst.js:33:14:33:19 | source |
 | tst.js:35:28:35:33 | source |
 | tst.js:35:28:35:33 | source |
+| tst.js:37:33:37:38 | source |
+| tst.js:37:33:37:38 | source |
 edges
 | NoSQLCodeInjection.js:18:24:18:31 | req.body | NoSQLCodeInjection.js:18:24:18:37 | req.body.query |
 | NoSQLCodeInjection.js:18:24:18:31 | req.body | NoSQLCodeInjection.js:18:24:18:37 | req.body.query |
@@ -278,6 +280,8 @@ edges
 | tst.js:29:9:29:82 | source | tst.js:33:14:33:19 | source |
 | tst.js:29:9:29:82 | source | tst.js:35:28:35:33 | source |
 | tst.js:29:9:29:82 | source | tst.js:35:28:35:33 | source |
+| tst.js:29:9:29:82 | source | tst.js:37:33:37:38 | source |
+| tst.js:29:9:29:82 | source | tst.js:37:33:37:38 | source |
 | tst.js:29:18:29:41 | documen ... .search | tst.js:29:18:29:82 | documen ... , "$1") |
 | tst.js:29:18:29:41 | documen ... .search | tst.js:29:18:29:82 | documen ... , "$1") |
 | tst.js:29:18:29:82 | documen ... , "$1") | tst.js:29:9:29:82 | source |
@@ -336,3 +340,4 @@ edges
 | tst.js:31:18:31:23 | source | tst.js:29:18:29:41 | documen ... .search | tst.js:31:18:31:23 | source | $@ flows to here and is interpreted as code. | tst.js:29:18:29:41 | documen ... .search | User-provided value |
 | tst.js:33:14:33:19 | source | tst.js:29:18:29:41 | documen ... .search | tst.js:33:14:33:19 | source | $@ flows to here and is interpreted as code. | tst.js:29:18:29:41 | documen ... .search | User-provided value |
 | tst.js:35:28:35:33 | source | tst.js:29:18:29:41 | documen ... .search | tst.js:35:28:35:33 | source | $@ flows to here and is interpreted as code. | tst.js:29:18:29:41 | documen ... .search | User-provided value |
+| tst.js:37:33:37:38 | source | tst.js:29:18:29:41 | documen ... .search | tst.js:37:33:37:38 | source | $@ flows to here and is interpreted as code. | tst.js:29:18:29:41 | documen ... .search | User-provided value |
