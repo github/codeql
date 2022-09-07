@@ -3677,6 +3677,11 @@ open class KotlinFileExtractor(
                 logger.errorElement("Cannot find class for kPropertyType. ${kPropertyType.classFqName?.asString()}", propertyReferenceExpr)
                 return
             }
+            val parameterTypes = kPropertyType.arguments.map { it as? IrType }.requireNoNullsOrNull()
+            if (parameterTypes == null) {
+                logger.errorElement("Unexpected: Non-IrType parameter.", propertyReferenceExpr)
+                return
+            }
 
             val locId = tw.getLocation(propertyReferenceExpr)
 
@@ -3697,7 +3702,6 @@ open class KotlinFileExtractor(
             val classId = extractGeneratedClass(ids, listOf(baseClass, kPropertyType), locId, currentDeclaration)
 
             val helper = PropertyReferenceHelper(propertyReferenceExpr, locId, ids)
-            val parameterTypes = kPropertyType.arguments.map { it as IrType }
 
             helper.extractReceiverField()
 
