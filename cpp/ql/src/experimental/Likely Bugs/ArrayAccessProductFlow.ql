@@ -8,19 +8,6 @@ import semmle.code.cpp.valuenumbering.GlobalValueNumbering
 import semmle.code.cpp.models.interfaces.Allocation
 import semmle.code.cpp.ir.IRConfiguration
 
-class RangeAnalysisIRConfig extends IRConfiguration {
-  override predicate shouldCreateIRForFunction(Declaration decl) {
-    not exists(DeclStmt stmt |
-      stmt.getEnclosingFunction() = decl and
-      (
-        not exists(stmt.getADeclaration())
-        or
-        not exists(stmt.getADeclarationEntry())
-      )
-    )
-  }
-}
-
 predicate bounded(Instruction i, Bound b, int delta, boolean upper) {
   // TODO: reason
   semBounded(getSemanticExpr(i), b, delta, upper, _)
