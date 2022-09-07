@@ -4696,7 +4696,7 @@ open class KotlinFileExtractor(
         } else {
             val baseConstructor = baseClass.owner.declarations.findSubType<IrFunction> { it.symbol is IrConstructorSymbol }
             if (baseConstructor == null) {
-                logger.warnElement("Cannot find base constructor", currentDeclaration)
+                logger.warnElement("Cannot find base constructor", elementToReportOn)
             } else {
                 val superCallId = tw.getFreshIdLabel<DbSuperconstructorinvocationstmt>()
                 tw.writeStmts_superconstructorinvocationstmt(superCallId, constructorBlockId, 0, ids.constructor)
