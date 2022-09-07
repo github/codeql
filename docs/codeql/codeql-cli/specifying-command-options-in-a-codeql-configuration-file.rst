@@ -8,15 +8,15 @@ configuration file.
 
 You can specify CodeQL CLI command options in two ways:
 
-- Directly in the command line, using the appropriate flag. 
+- Directly in the command line, using the appropriate flag.
 - In a configuration (or ``config``) file that CodeQL scans for relevant
   options each time a command is executed.
 
 For options that are likely to change each time you execute a command,
 specifying the value on the command line is the most convenient way of passing
 the information to CodeQL. Saving options in a ``config`` file is a good way to
-specify options you use frequently. 
-It's also a good way to add custom QL packs that you use regularly to your search path.
+specify options you use frequently.
+It's also a good way to add custom CodeQL packs that you use regularly to your search path.
 
 Using a CodeQL configuration file
 ---------------------------------
@@ -39,7 +39,7 @@ To apply the same options to more than one command you can:
 .. pull-quote::
 
    Note
-  
+
    - ``config`` files only accept spaces between between option flags and
      values---CodeQL will throw an error if you use ``=`` to specify an option value.
    - If you specify an option in the command line, this overrides the ``config``
@@ -66,7 +66,7 @@ Examples
       --ram 4096
       --threads 4
 
-- To globally specify a directory for CodeQL to scan for QL packs (which is not a
+- To globally specify a directory for CodeQL to scan for CodeQL packs (which is not a
   sibling of the installation directory), use::
 
      --search-path <path-to-directory>
