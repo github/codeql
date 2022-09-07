@@ -50,7 +50,7 @@ private class TypeOfTestBarrier extends DataFlow::BarrierGuardNode, DataFlow::Va
 }
 
 private class IsArrayBarrier extends DataFlow::BarrierGuardNode, DataFlow::CallNode {
-  IsArrayBarrier() { this = DataFlow::globalVarRef("Array").getAMemberCall("isArray").getACall() }
+  IsArrayBarrier() { this = DataFlow::globalVarRef("Array").getAMemberCall("isArray") }
 
   override predicate blocks(boolean outcome, Expr e) {
     e = getArgument(0).asExpr() and
