@@ -616,6 +616,127 @@ private predicate bestTypeFlow(TypeFlowNode n, RefType t) {
   not irrelevantBound(n, t)
 }
 
+private predicate bestTypeFlow(TypeFlowNode n, RefType t, boolean exact) {
+  exactType(n, t) and exact = true
+  or
+  not exactType(n, _) and bestTypeFlow(n, t) and exact = false
+}
+
+private predicate bestTypeFlowOrTypeFlowBase(TypeFlowNode n, RefType t, boolean exact) {
+  bestTypeFlow(n, t, exact)
+  or
+  typeFlowBase(n, t) and
+  exact = false and
+  not bestTypeFlow(n, _, _)
+}
+
+/**
+ * Holds if `n` has type `t` and this information is not propagated as a
+ * universal bound to a subsequent node, such that `t` might form the basis for
+ * a union type bound for that node.
+ */
+private predicate unionTypeFlowBaseCand(TypeFlowNode n, RefType t, boolean exact) {
+  exists(TypeFlowNode next |
+    joinStep(n, next) and
+    bestTypeFlowOrTypeFlowBase(n, t, exact) and
+    not bestTypeFlowOrTypeFlowBase(next, t, exact) and
+    not exactType(next, _)
+  )
+}
+
+/**
+ * Holds if all incoming type flow can be traced back to a
+ * `unionTypeFlowBaseCand`, such that we can compute a union type bound for `n`.
+ * Disregards nodes for which we have an exact bound.
+ */
+private predicate hasUnionTypeFlow(TypeFlowNode n) {
+  not exactType(n, _) and
+  (
+    forex(TypeFlowNode mid | joinStep(mid, n) |
+      unionTypeFlowBaseCand(mid, _, _) or hasUnionTypeFlow(mid)
+    )
+    or
+    exists(TypeFlowNode scc |
+      sccRepr(n, scc) and
+      forex(TypeFlowNode mid | sccJoinStep(mid, scc) |
+        unionTypeFlowBaseCand(mid, _, _) or hasUnionTypeFlow(mid)
+      )
+    )
+    or
+    exists(TypeFlowNode mid | step(mid, n) and hasUnionTypeFlow(mid))
+  )
+}
+
+pragma[nomagic]
+private RefType getTypeBound(TypeFlowNode n) {
+  bestTypeFlow(n, result)
+  or
+  not bestTypeFlow(n, _) and result = n.getType()
+}
+
+pragma[nomagic]
+private predicate unionTypeFlow0(TypeFlowNode n, RefType t, boolean exact) {
+  hasUnionTypeFlow(n) and
+  exists(TypeFlowNode mid | anyStep(mid, n) |
+    unionTypeFlowBaseCand(mid, t, exact) or unionTypeFlow(mid, t, exact)
+  )
+}
+
+/** Holds if we have a union type bound for `n` and `t` is one of its parts. */
+private predicate unionTypeFlow(TypeFlowNode n, RefType t, boolean exact) {
+  unionTypeFlow0(n, t, exact) and
+  // filter impossible union parts:
+  if exact = true
+  then t.getErasure().(RefType).getASourceSupertype*() = getTypeBound(n).getErasure()
+  else haveIntersection(getTypeBound(n), t)
+}
+
+/**
+ * Holds if the inferred union type bound for `n` contains the best universal
+ * bound and thus is irrelevant.
+ */
+private predicate irrelevantUnionType(TypeFlowNode n) {
+  exists(RefType t, RefType nt, RefType te, RefType nte |
+    unionTypeFlow(n, t, false) and
+    nt = getTypeBound(n) and
+    te = t.getErasure() and
+    nte = nt.getErasure()
+  |
+    nt.getASupertype*() = t
+    or
+    nte.getASourceSupertype+() = te
+    or
+    nte = te and unbound(t)
+  )
+}
+
+/**
+ * Holds if `t` is an irrelevant part of the union type bound for `n` due to
+ * being contained in another part of the union type bound.
+ */
+private predicate irrelevantUnionTypePart(TypeFlowNode n, RefType t, boolean exact) {
+  unionTypeFlow(n, t, exact) and
+  not irrelevantUnionType(n) and
+  exists(RefType weaker |
+    unionTypeFlow(n, weaker, false) and
+    t.getASupertype*() = weaker
+  |
+    exact = true or not weaker.getASupertype*() = t
+  )
+}
+
+/**
+ * Holds if the runtime type of `n` is bounded by a union type and if this
+ * bound is likely to be better than the static type of `n`. The union type is
+ * made up of the types `t` related to `n` by this predicate, and the flag
+ * `exact` indicates whether `t` is an exact bound or merely an upper bound.
+ */
+private predicate bestUnionType(TypeFlowNode n, RefType t, boolean exact) {
+  unionTypeFlow(n, t, exact) and
+  not irrelevantUnionType(n) and
+  not irrelevantUnionTypePart(n, t, exact)
+}
+
 cached
 private module TypeFlowBounds {
   /**
@@ -627,11 +748,7 @@ private module TypeFlowBounds {
   predicate fieldTypeFlow(Field f, RefType t, boolean exact) {
     exists(TypeFlowNode n |
       n.asField() = f and
-      (
-        exactType(n, t) and exact = true
-        or
-        not exactType(n, _) and bestTypeFlow(n, t) and exact = false
-      )
+      bestTypeFlow(n, t, exact)
     )
   }
 
@@ -644,11 +761,21 @@ private module TypeFlowBounds {
   predicate exprTypeFlow(Expr e, RefType t, boolean exact) {
     exists(TypeFlowNode n |
       n.asExpr() = e and
-      (
-        exactType(n, t) and exact = true
-        or
-        not exactType(n, _) and bestTypeFlow(n, t) and exact = false
-      )
+      bestTypeFlow(n, t, exact)
+    )
+  }
+
+  /**
+   * Holds if the runtime type of `e` is bounded by a union type and if this
+   * bound is likely to be better than the static type of `e`. The union type is
+   * made up of the types `t` related to `e` by this predicate, and the flag
+   * `exact` indicates whether `t` is an exact bound or merely an upper bound.
+   */
+  cached
+  predicate exprUnionTypeFlow(Expr e, RefType t, boolean exact) {
+    exists(TypeFlowNode n |
+      n.asExpr() = e and
+      bestUnionType(n, t, exact)
     )
   }
 }
