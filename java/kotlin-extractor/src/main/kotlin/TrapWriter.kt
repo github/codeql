@@ -1,7 +1,6 @@
 package com.github.codeql
 
 import com.github.codeql.KotlinUsesExtractor.LocallyVisibleFunctionLabels
-import com.github.codeql.KotlinUsesExtractor.TypeResults
 import com.github.codeql.utils.versions.FileEntry
 import java.io.BufferedWriter
 import java.io.File
@@ -27,7 +26,7 @@ class TrapLabelManager {
     private var nextInt: Int = 100
 
     /** Returns a fresh label. */
-    fun <T> getFreshLabel(): Label<T> {
+    fun <T: AnyDbType> getFreshLabel(): Label<T> {
         return IntLabel(nextInt++)
     }
 
@@ -65,7 +64,7 @@ open class TrapWriter (protected val loggerBase: LoggerBase, val lm: TrapLabelMa
      * `getLabelFor` instead, which allows non-existent labels to be
      * initialised.
      */
-    fun <T> getExistingLabelFor(key: String): Label<T>? {
+    fun <T: AnyDbType> getExistingLabelFor(key: String): Label<T>? {
         return lm.labelMapping.get(key)?.cast<T>()
     }
     /**
@@ -74,7 +73,7 @@ open class TrapWriter (protected val loggerBase: LoggerBase, val lm: TrapLabelMa
      * is run on it, and it is returned.
      */
     @JvmOverloads // Needed so Java can call a method with an optional argument
-    fun <T> getLabelFor(key: String, initialise: (Label<T>) -> Unit = {}): Label<T> {
+    fun <T: AnyDbType> getLabelFor(key: String, initialise: (Label<T>) -> Unit = {}): Label<T> {
         val maybeLabel: Label<T>? = getExistingLabelFor(key)
         if(maybeLabel == null) {
             val label: Label<T> = lm.getFreshLabel()
@@ -90,7 +89,7 @@ open class TrapWriter (protected val loggerBase: LoggerBase, val lm: TrapLabelMa
     /**
      * Returns a label for a fresh ID (i.e. a new label bound to `*`).
      */
-    fun <T> getFreshIdLabel(): Label<T> {
+    fun <T: AnyDbType> getFreshIdLabel(): Label<T> {
         val label: Label<T> = lm.getFreshLabel()
         writeTrap("$label = *\n")
         return label

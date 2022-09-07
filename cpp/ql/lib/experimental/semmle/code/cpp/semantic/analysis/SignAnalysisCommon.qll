@@ -204,7 +204,7 @@ private class BinarySignExpr extends FlowSignExpr {
   }
 }
 
-pragma[noinline]
+pragma[nomagic]
 private predicate binaryExprOperands(SemBinaryExpr binary, SemExpr left, SemExpr right) {
   binary.getLeftOperand() = left and binary.getRightOperand() = right
 }

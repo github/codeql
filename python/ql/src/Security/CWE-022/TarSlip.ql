@@ -18,5 +18,5 @@ import DataFlow::PathGraph
 
 from Configuration config, DataFlow::PathNode source, DataFlow::PathNode sink
 where config.hasFlowPath(source, sink)
-select sink.getNode(), source, sink, "Extraction of tarfile from $@", source.getNode(),
+select sink.getNode(), source, sink, "This file extraction depends on $@", source.getNode(),
   "a potentially untrusted source"

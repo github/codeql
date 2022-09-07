@@ -398,7 +398,7 @@ class Structors {
 
   deinit {
     field = 0
-  }  
+  }
 }
 
 func dictionaryLiteral(x: Int, y: Int) -> [String: Int] {

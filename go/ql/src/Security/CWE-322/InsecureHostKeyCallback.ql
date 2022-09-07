@@ -3,9 +3,11 @@
  * @description Detects insecure SSL client configurations with an implementation of the `HostKeyCallback` that accepts all host keys.
  * @kind path-problem
  * @problem.severity warning
+ * @security-severity 8.2
  * @precision high
  * @id go/insecure-hostkeycallback
  * @tags security
+ *       external/cwe/cwe-322
  */
 
 import go

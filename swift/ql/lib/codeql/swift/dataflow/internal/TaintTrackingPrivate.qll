@@ -28,12 +28,11 @@ private module Cached {
     // appendInterpolation(&$interpolated, n)
     // appendLiteral(&$interpolated, " years old.")
     // ```
-    exists(ApplyExpr apply1, ApplyExpr apply2, ExprCfgNode e |
-      nodeFrom.asExpr() = [apply1, apply2].getAnArgument().getExpr() and
-      apply1.getFunction() = apply2 and
-      apply2.getStaticTarget().getName() = ["appendLiteral(_:)", "appendInterpolation(_:)"] and
-      e.getExpr() = apply2.getAnArgument().getExpr() and
-      nodeTo.asDefinition().(Ssa::WriteDefinition).isInoutDef(e)
+    exists(ApplyExpr apply, ExprCfgNode e |
+      nodeFrom.asExpr() = [apply.getAnArgument().getExpr(), apply.getQualifier()] and
+      apply.getStaticTarget().getName() = ["appendLiteral(_:)", "appendInterpolation(_:)"] and
+      e.getExpr() = [apply.getAnArgument().getExpr(), apply.getQualifier()] and
+      nodeTo.(PostUpdateNodeImpl).getPreUpdateNode().getCfgNode() = e
     )
     or
     // Flow from the computation of the interpolated string literal to the result of the interpolation.
@@ -54,7 +53,7 @@ private module Cached {
       c.getName() = "URL" and
       c.getAMember() = f and
       f.getName() = ["init(string:)", "init(string:relativeTo:)"] and
-      call.getFunction().(ApplyExpr).getStaticTarget() = f and
+      call.getStaticTarget() = f and
       nodeFrom.asExpr() = call.getAnArgument().getExpr() and
       nodeTo.asExpr() = call
     )

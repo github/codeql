@@ -168,17 +168,23 @@ class PackageJson extends JsonObject {
   JsonArray getCPUs() { result = this.getPropValue("cpu") }
 
   /** Gets a platform supported by this package. */
-  string getWhitelistedCPU() {
+  string getWhitelistedCpu() {
     result = this.getCPUs().getElementStringValue(_) and
     not result.matches("!%")
   }
 
+  /** DEPRECATED: Alias for getWhitelistedCpu */
+  deprecated string getWhitelistedCPU() { result = this.getWhitelistedCpu() }
+
   /** Gets a platform not supported by this package. */
-  string getBlacklistedCPU() {
+  string getBlacklistedCpu() {
     exists(string str | str = this.getCPUs().getElementStringValue(_) |
       result = str.regexpCapture("!(.*)", 1)
     )
   }
+
+  /** DEPRECATED: Alias for getBlacklistedCpu */
+  deprecated string getBlacklistedCPU() { result = this.getBlacklistedCpu() }
 
   /** Holds if this package prefers to be installed globally. */
   predicate isPreferGlobal() { this.getPropValue("preferGlobal").(JsonBoolean).getValue() = "true" }

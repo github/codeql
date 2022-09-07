@@ -24,7 +24,7 @@ where
     if e = DefinitionInSnapshot()
     then defined = ""
     else
-      if e = SuggestiveSALAnnotation()
+      if e = SuggestiveSalAnnotation()
       then defined = "externally defined (SAL) "
       else defined = "externally defined (CSV) "
   )

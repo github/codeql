@@ -44,11 +44,8 @@ predicate conversionDoneLate(MulExpr mexp) {
       mexp.getEnclosingElement().(ComparisonOperation).hasOperands(mexp, e0) and
       e0.getType().getSize() = mexp.getConversion().getConversion().getType().getSize()
       or
-      e0.(FunctionCall)
-          .getTarget()
-          .getParameter(argumentPosition(e0.(FunctionCall), mexp, _))
-          .getType()
-          .getSize() = mexp.getConversion().getConversion().getType().getSize()
+      e0.(FunctionCall).getTarget().getParameter(argumentPosition(e0, mexp, _)).getType().getSize() =
+        mexp.getConversion().getConversion().getType().getSize()
     )
   )
 }
@@ -75,7 +72,7 @@ predicate signSmallerWithEqualSizes(MulExpr mexp) {
       ae.getRValue().getUnderlyingType().(IntegralType).isUnsigned() and
       ae.getLValue().getUnderlyingType().(IntegralType).isSigned() and
       (
-        not exists(DivExpr de | mexp.getParent*() = de)
+        not mexp.getParent*() instanceof DivExpr
         or
         exists(DivExpr de, Expr ec |
           e2.isConstant() and

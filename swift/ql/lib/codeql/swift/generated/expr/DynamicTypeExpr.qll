@@ -6,12 +6,12 @@ import codeql.swift.elements.expr.Expr
 class DynamicTypeExprBase extends Synth::TDynamicTypeExpr, Expr {
   override string getAPrimaryQlClass() { result = "DynamicTypeExpr" }
 
-  Expr getImmediateBaseExpr() {
+  Expr getImmediateBase() {
     result =
       Synth::convertExprFromRaw(Synth::convertDynamicTypeExprToRaw(this)
             .(Raw::DynamicTypeExpr)
-            .getBaseExpr())
+            .getBase())
   }
 
-  final Expr getBaseExpr() { result = getImmediateBaseExpr().resolve() }
+  final Expr getBase() { result = getImmediateBase().resolve() }
 }

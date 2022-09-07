@@ -1,8 +1,8 @@
 import go
 import TestUtilities.InlineExpectationsTest
 
-class SQLTest extends InlineExpectationsTest {
-  SQLTest() { this = "SQLTest" }
+class SqlTest extends InlineExpectationsTest {
+  SqlTest() { this = "SQLTest" }
 
   override string getARelevantTag() { result = "query" }
 

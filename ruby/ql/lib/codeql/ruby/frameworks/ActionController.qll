@@ -149,26 +149,26 @@ class CookiesSource extends HTTP::Server::RequestInputAccess::Range {
   override string getSourceType() { result = "ActionController::Metal#cookies" }
 }
 
-// A call to `cookies` from within a controller.
+/** A call to `cookies` from within a controller. */
 private class ActionControllerCookiesCall extends ActionControllerContextCall, CookiesCall { }
 
-// A call to `params` from within a controller.
+/** A call to `params` from within a controller. */
 private class ActionControllerParamsCall extends ActionControllerContextCall, ParamsCall { }
 
-// A call to `render` from within a controller.
+/** A call to `render` from within a controller. */
 private class ActionControllerRenderCall extends ActionControllerContextCall, RenderCall { }
 
-// A call to `render_to` from within a controller.
+/** A call to `render_to` from within a controller. */
 private class ActionControllerRenderToCall extends ActionControllerContextCall, RenderToCall { }
 
-// A call to `html_safe` from within a controller.
+/** A call to `html_safe` from within a controller. */
 private class ActionControllerHtmlSafeCall extends HtmlSafeCall {
   ActionControllerHtmlSafeCall() {
     this.getEnclosingModule() instanceof ActionControllerControllerClass
   }
 }
 
-// A call to `html_escape` from within a controller.
+/** A call to `html_escape` from within a controller. */
 private class ActionControllerHtmlEscapeCall extends HtmlEscapeCall {
   ActionControllerHtmlEscapeCall() {
     this.getEnclosingModule() instanceof ActionControllerControllerClass
@@ -323,7 +323,7 @@ predicate controllerTemplateFile(ActionControllerControllerClass cls, ErbFile te
  * `skip_before_action :verify_authenticity_token` to disable CSRF authenticity
  * token protection.
  */
-class ActionControllerSkipForgeryProtectionCall extends CSRFProtectionSetting::Range {
+class ActionControllerSkipForgeryProtectionCall extends CsrfProtectionSetting::Range {
   ActionControllerSkipForgeryProtectionCall() {
     exists(MethodCall call | call = this.asExpr().getExpr() |
       call.getMethodName() = "skip_forgery_protection"
@@ -339,7 +339,7 @@ class ActionControllerSkipForgeryProtectionCall extends CSRFProtectionSetting::R
 /**
  * A call to `protect_from_forgery`.
  */
-private class ActionControllerProtectFromForgeryCall extends CSRFProtectionSetting::Range {
+private class ActionControllerProtectFromForgeryCall extends CsrfProtectionSetting::Range {
   private ActionControllerContextCall callExpr;
 
   ActionControllerProtectFromForgeryCall() {

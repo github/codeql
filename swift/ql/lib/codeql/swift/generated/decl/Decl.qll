@@ -2,5 +2,12 @@
 private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
 import codeql.swift.elements.AstNode
+import codeql.swift.elements.decl.ModuleDecl
 
-class DeclBase extends Synth::TDecl, AstNode { }
+class DeclBase extends Synth::TDecl, AstNode {
+  ModuleDecl getImmediateModule() {
+    result = Synth::convertModuleDeclFromRaw(Synth::convertDeclToRaw(this).(Raw::Decl).getModule())
+  }
+
+  final ModuleDecl getModule() { result = getImmediateModule().resolve() }
+}

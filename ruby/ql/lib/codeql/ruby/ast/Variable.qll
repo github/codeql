@@ -63,7 +63,7 @@ class GlobalVariable extends Variable instanceof GlobalVariableImpl {
 
 /** An instance variable. */
 class InstanceVariable extends Variable instanceof InstanceVariableImpl {
-  /** Holds is this variable is a class instance variable. */
+  /** Holds if this variable is a class instance variable. */
   final predicate isClassInstanceVariable() { super.isClassInstanceVariable() }
 
   final override InstanceVariableAccess getAnAccess() { result.getVariable() = this }
@@ -122,8 +122,6 @@ class VariableAccess extends Expr instanceof VariableAccessImpl {
     or
     synthChild(any(BlockParameter p), 0, this)
   }
-
-  final override string toString() { result = VariableAccessImpl.super.toString() }
 }
 
 /** An access to a variable where the value is updated. */

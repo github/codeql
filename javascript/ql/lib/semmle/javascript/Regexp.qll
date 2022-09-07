@@ -1005,7 +1005,10 @@ module RegExpPatterns {
    * Gets a pattern that matches common top-level domain names in lower case.
    * DEPRECATED: use `getACommonTld` instead
    */
-  deprecated predicate commonTLD = getACommonTld/0;
+  deprecated predicate commonTld = getACommonTld/0;
+
+  /** DEPRECATED: Alias for commonTld */
+  deprecated predicate commonTLD = commonTld/0;
 }
 
 /**

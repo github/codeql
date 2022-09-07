@@ -3,8 +3,8 @@ package com.github.codeql.utils
 import com.github.codeql.KotlinUsesExtractor
 import com.github.codeql.getJavaEquivalentClassId
 import com.github.codeql.utils.versions.codeQlWithHasQuestionMark
+import com.github.codeql.utils.versions.createImplicitParameterDeclarationWithWrappedDescriptor
 import org.jetbrains.kotlin.backend.common.extensions.IrPluginContext
-import org.jetbrains.kotlin.backend.common.ir.createImplicitParameterDeclarationWithWrappedDescriptor
 import org.jetbrains.kotlin.backend.common.lower.parents
 import org.jetbrains.kotlin.descriptors.ClassKind
 import org.jetbrains.kotlin.ir.builders.declarations.addConstructor
@@ -25,7 +25,6 @@ import org.jetbrains.kotlin.ir.types.impl.makeTypeProjection
 import org.jetbrains.kotlin.ir.util.classId
 import org.jetbrains.kotlin.ir.util.constructedClassType
 import org.jetbrains.kotlin.ir.util.constructors
-import org.jetbrains.kotlin.ir.util.parentAsClass
 import org.jetbrains.kotlin.name.FqName
 import org.jetbrains.kotlin.name.Name
 import org.jetbrains.kotlin.types.Variance
@@ -124,14 +123,17 @@ private fun IrTypeArgument.lowerBound(context: IrPluginContext) =
 
 fun IrType.substituteTypeAndArguments(substitutionMap: Map<IrTypeParameterSymbol, IrTypeArgument>?, useContext: KotlinUsesExtractor.TypeContext, pluginContext: IrPluginContext): IrType =
     substitutionMap?.let { substMap ->
-        this.classifierOrNull?.let { typeClassifier ->
+        if (this is IrSimpleType) {
+            val typeClassifier = this.classifier
             substMap[typeClassifier]?.let {
                 when(useContext) {
                     KotlinUsesExtractor.TypeContext.RETURN -> it.upperBound(pluginContext)
                     else -> it.lowerBound(pluginContext)
                 }
-            } ?: (this as IrSimpleType).substituteTypeArguments(substMap)
-        } ?: this
+            } ?: this.substituteTypeArguments(substMap)
+        } else {
+            this
+        }
     } ?: this
 
 object RawTypeAnnotation {

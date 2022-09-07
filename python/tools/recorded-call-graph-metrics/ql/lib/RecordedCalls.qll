@@ -4,14 +4,14 @@ import semmle.python.objects.Callables
 import lib.BytecodeExpr
 
 /** The XML data for a recorded call (includes all data). */
-class XmlRecordedCall extends XMLElement {
+class XmlRecordedCall extends XmlElement {
   XmlRecordedCall() { this.hasName("recorded_call") }
 
   /** Gets the XML data for the call. */
   XmlCall getXmlCall() { result.getParent() = this }
 
   /** DEPRECATED: Alias for getXmlCall */
-  deprecated XMLCall getXMLCall() { result = getXmlCall() }
+  deprecated XMLCall getXMLCall() { result = this.getXmlCall() }
 
   /** Gets a call matching the recorded information. */
   Call getACall() { result = this.getXmlCall().getACall() }
@@ -20,7 +20,7 @@ class XmlRecordedCall extends XMLElement {
   XmlCallee getXmlCallee() { result.getParent() = this }
 
   /** DEPRECATED: Alias for getXmlCallee */
-  deprecated XMLCallee getXMLCallee() { result = getXmlCallee() }
+  deprecated XMLCallee getXMLCallee() { result = this.getXmlCallee() }
 
   /** Gets a python function matching the recorded information of the callee. */
   Function getAPythonCallee() { result = this.getXmlCallee().(XmlPythonCallee).getACallee() }
@@ -61,7 +61,7 @@ class XmlRecordedCall extends XMLElement {
 deprecated class XMLRecordedCall = XmlRecordedCall;
 
 /** The XML data for the call part a recorded call. */
-class XmlCall extends XMLElement {
+class XmlCall extends XmlElement {
   XmlCall() { this.hasName("Call") }
 
   string get_filename_data() { result = this.getAChild("filename").getTextValue() }
@@ -90,10 +90,10 @@ class XmlCall extends XMLElement {
       expr.(Name).getId() = bytecode.(XmlBytecodeVariableName).get_name_data()
       or
       expr.(Attribute).getName() = bytecode.(XmlBytecodeAttribute).get_attr_name_data() and
-      matchBytecodeExpr(expr.(Attribute).getObject(),
+      this.matchBytecodeExpr(expr.(Attribute).getObject(),
         bytecode.(XmlBytecodeAttribute).get_object_data())
       or
-      matchBytecodeExpr(expr.(Call).getFunc(), bytecode.(XmlBytecodeCall).get_function_data())
+      this.matchBytecodeExpr(expr.(Call).getFunc(), bytecode.(XmlBytecodeCall).get_function_data())
       //
       // I considered allowing a partial match as well. That is, if the bytecode
       // expression information only tells us `<unknown>.foo()`, and we find an AST
@@ -114,7 +114,7 @@ class XmlCall extends XMLElement {
 deprecated class XMLCall = XmlCall;
 
 /** The XML data for the callee part a recorded call. */
-abstract class XmlCallee extends XMLElement { }
+abstract class XmlCallee extends XmlElement { }
 
 /** DEPRECATED: Alias for XmlCallee */
 deprecated class XMLCallee = XmlCallee;

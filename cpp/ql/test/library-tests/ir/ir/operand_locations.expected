@@ -8641,6 +8641,15 @@
 | ir.cpp:1845:13:1845:13 | SideEffect | ~m1845_9 |
 | ir.cpp:1845:13:1845:13 | SideEffect | ~m1845_12 |
 | ir.cpp:1845:13:1845:13 | Unary | r1845_3 |
+| ir.cpp:1849:6:1849:14 | ChiPartial | partial:m1849_3 |
+| ir.cpp:1849:6:1849:14 | ChiTotal | total:m1849_2 |
+| ir.cpp:1849:6:1849:14 | SideEffect | m1849_3 |
+| ir.cpp:1850:17:1850:18 | Address | &:r1850_1 |
+| ir.cpp:1850:22:1850:40 | StoreValue | r1850_3 |
+| ir.cpp:1850:22:1850:40 | Unary | r1850_2 |
+| ir.cpp:1851:17:1851:23 | Address | &:r1851_1 |
+| ir.cpp:1851:27:1851:34 | StoreValue | r1851_3 |
+| ir.cpp:1851:27:1851:34 | Unary | r1851_2 |
 | perf-regression.cpp:6:3:6:5 | Address | &:r6_5 |
 | perf-regression.cpp:6:3:6:5 | Address | &:r6_5 |
 | perf-regression.cpp:6:3:6:5 | Address | &:r6_7 |

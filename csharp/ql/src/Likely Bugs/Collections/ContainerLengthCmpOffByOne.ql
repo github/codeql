@@ -64,6 +64,5 @@ where
     validGuard.controls(array, index) and
     validGuard.guards(indexAccess, _)
   )
-select incorrectGuard,
-  "Off-by-one index comparison against length leads to possible out of bounds $@.", ea,
-  ea.toString()
+select incorrectGuard, "Off-by-one index comparison against length may lead to out-of-bounds $@.",
+  ea, ea.toString()

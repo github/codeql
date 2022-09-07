@@ -6,6 +6,17 @@ import codeql.swift.elements.Element
 import codeql.swift.elements.decl.ParamDecl
 
 class CallableBase extends Synth::TCallable, Element {
+  ParamDecl getImmediateSelfParam() {
+    result =
+      Synth::convertParamDeclFromRaw(Synth::convertCallableToRaw(this)
+            .(Raw::Callable)
+            .getSelfParam())
+  }
+
+  final ParamDecl getSelfParam() { result = getImmediateSelfParam().resolve() }
+
+  final predicate hasSelfParam() { exists(getSelfParam()) }
+
   ParamDecl getImmediateParam(int index) {
     result =
       Synth::convertParamDeclFromRaw(Synth::convertCallableToRaw(this)

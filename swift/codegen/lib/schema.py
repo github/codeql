@@ -65,7 +65,7 @@ class IpaInfo:
 @dataclass
 class Class:
     name: str
-    bases: Set[str] = field(default_factory=set)
+    bases: List[str] = field(default_factory=set)
     derived: Set[str] = field(default_factory=set)
     properties: List[Property] = field(default_factory=list)
     dir: pathlib.Path = pathlib.Path()
@@ -150,9 +150,8 @@ def load(path):
             if not k.startswith("_"):
                 cls.properties.append(_parse_property(k, v))
             elif k == "_extends":
-                v = _auto_list(v)
-                for base in v:
-                    cls.bases.add(base)
+                cls.bases = _auto_list(v)
+                for base in cls.bases:
                     classes[base].derived.add(name)
             elif k == "_dir":
                 cls.dir = pathlib.Path(v)
@@ -165,7 +164,7 @@ def load(path):
             else:
                 raise Error(f"unknown metadata {k} for class {name}")
         if not cls.bases and cls.name != root_class_name:
-            cls.bases.add(root_class_name)
+            cls.bases = [root_class_name]
             classes[root_class_name].derived.add(name)
 
     return Schema(classes=classes, includes=set(data.get("_includes", [])))

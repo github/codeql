@@ -1,6 +1,6 @@
 private import codeql.swift.generated.AstNode
 private import codeql.swift.elements.decl.AbstractFunctionDecl
-private import codeql.swift.generated.GetImmediateParent
+private import codeql.swift.generated.ParentChild
 
 private Element getEnclosingFunctionStep(Element e) {
   not e instanceof AbstractFunctionDecl and
