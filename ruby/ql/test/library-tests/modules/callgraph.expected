@@ -4,9 +4,7 @@ getTarget
 | calls.rb:5:1:5:3 | call to foo | calls.rb:77:1:81:3 | foo |
 | calls.rb:8:5:8:15 | call to puts | calls.rb:94:5:94:30 | puts |
 | calls.rb:11:1:11:8 | call to bar | calls.rb:7:1:9:3 | bar |
-| calls.rb:11:1:11:8 | call to bar | calls.rb:13:1:15:3 | bar |
 | calls.rb:14:5:14:15 | call to puts | calls.rb:94:5:94:30 | puts |
-| calls.rb:17:1:17:8 | call to bar | calls.rb:7:1:9:3 | bar |
 | calls.rb:17:1:17:8 | call to bar | calls.rb:13:1:15:3 | bar |
 | calls.rb:19:1:19:8 | call to foo | calls.rb:1:1:3:3 | foo |
 | calls.rb:19:1:19:8 | call to foo | calls.rb:77:1:81:3 | foo |
@@ -78,23 +76,19 @@ getTarget
 | calls.rb:213:9:213:24 | call to singleton_g | calls.rb:225:1:227:3 | singleton_g |
 | calls.rb:213:9:213:24 | call to singleton_g | calls.rb:232:1:234:3 | singleton_g |
 | calls.rb:213:9:213:24 | call to singleton_g | calls.rb:240:5:242:7 | singleton_g |
+| calls.rb:213:9:213:24 | call to singleton_g | calls.rb:256:1:258:3 | singleton_g |
 | calls.rb:217:1:217:22 | call to singleton_a | calls.rb:180:5:183:7 | singleton_a |
 | calls.rb:218:1:218:22 | call to singleton_f | calls.rb:207:9:209:11 | singleton_f |
 | calls.rb:220:6:220:19 | call to new | calls.rb:106:5:106:16 | new |
 | calls.rb:222:1:222:11 | call to instance | calls.rb:199:5:204:7 | instance |
+| calls.rb:223:1:223:14 | call to singleton_e | calls.rb:200:9:202:11 | singleton_e |
 | calls.rb:226:5:226:24 | call to puts | calls.rb:94:5:94:30 | puts |
 | calls.rb:229:1:229:14 | call to singleton_g | calls.rb:225:1:227:3 | singleton_g |
-| calls.rb:229:1:229:14 | call to singleton_g | calls.rb:232:1:234:3 | singleton_g |
-| calls.rb:229:1:229:14 | call to singleton_g | calls.rb:240:5:242:7 | singleton_g |
 | calls.rb:230:1:230:19 | call to call_singleton_g | calls.rb:212:5:214:7 | call_singleton_g |
 | calls.rb:233:5:233:24 | call to puts | calls.rb:94:5:94:30 | puts |
-| calls.rb:236:1:236:14 | call to singleton_g | calls.rb:225:1:227:3 | singleton_g |
 | calls.rb:236:1:236:14 | call to singleton_g | calls.rb:232:1:234:3 | singleton_g |
-| calls.rb:236:1:236:14 | call to singleton_g | calls.rb:240:5:242:7 | singleton_g |
 | calls.rb:237:1:237:19 | call to call_singleton_g | calls.rb:212:5:214:7 | call_singleton_g |
 | calls.rb:241:9:241:28 | call to puts | calls.rb:94:5:94:30 | puts |
-| calls.rb:245:1:245:14 | call to singleton_g | calls.rb:225:1:227:3 | singleton_g |
-| calls.rb:245:1:245:14 | call to singleton_g | calls.rb:232:1:234:3 | singleton_g |
 | calls.rb:245:1:245:14 | call to singleton_g | calls.rb:240:5:242:7 | singleton_g |
 | calls.rb:246:1:246:19 | call to call_singleton_g | calls.rb:212:5:214:7 | call_singleton_g |
 | calls.rb:248:6:248:19 | call to new | calls.rb:106:5:106:16 | new |
@@ -102,8 +96,6 @@ getTarget
 | calls.rb:254:1:254:16 | call to puts | calls.rb:94:5:94:30 | puts |
 | calls.rb:257:5:257:22 | call to puts | calls.rb:94:5:94:30 | puts |
 | calls.rb:260:1:260:22 | call to singleton_g | calls.rb:256:1:258:3 | singleton_g |
-| calls.rb:261:1:261:14 | call to singleton_g | calls.rb:225:1:227:3 | singleton_g |
-| calls.rb:261:1:261:14 | call to singleton_g | calls.rb:232:1:234:3 | singleton_g |
 | calls.rb:261:1:261:14 | call to singleton_g | calls.rb:240:5:242:7 | singleton_g |
 | calls.rb:262:1:262:19 | call to call_singleton_g | calls.rb:212:5:214:7 | call_singleton_g |
 | calls.rb:264:6:264:19 | call to new | calls.rb:106:5:106:16 | new |
@@ -127,18 +119,18 @@ getTarget
 | calls.rb:315:9:315:26 | call to puts | calls.rb:94:5:94:30 | puts |
 | calls.rb:321:9:321:26 | call to puts | calls.rb:94:5:94:30 | puts |
 | calls.rb:327:9:327:26 | call to puts | calls.rb:94:5:94:30 | puts |
-| calls.rb:334:9:334:18 | call to instance | calls.rb:314:5:316:7 | instance |
-| calls.rb:334:9:334:18 | call to instance | calls.rb:320:5:322:7 | instance |
 | calls.rb:334:9:334:18 | call to instance | calls.rb:326:5:328:7 | instance |
-| calls.rb:336:9:336:18 | call to instance | calls.rb:314:5:316:7 | instance |
 | calls.rb:336:9:336:18 | call to instance | calls.rb:320:5:322:7 | instance |
 | calls.rb:336:9:336:18 | call to instance | calls.rb:326:5:328:7 | instance |
 | calls.rb:338:9:338:18 | call to instance | calls.rb:314:5:316:7 | instance |
 | calls.rb:338:9:338:18 | call to instance | calls.rb:320:5:322:7 | instance |
 | calls.rb:338:9:338:18 | call to instance | calls.rb:326:5:328:7 | instance |
-| calls.rb:343:20:343:29 | call to instance | calls.rb:314:5:316:7 | instance |
-| calls.rb:343:20:343:29 | call to instance | calls.rb:320:5:322:7 | instance |
 | calls.rb:343:20:343:29 | call to instance | calls.rb:326:5:328:7 | instance |
+| calls.rb:344:26:344:36 | call to instance | calls.rb:320:5:322:7 | instance |
+| calls.rb:344:26:344:36 | call to instance | calls.rb:326:5:328:7 | instance |
+| calls.rb:345:26:345:36 | call to instance | calls.rb:314:5:316:7 | instance |
+| calls.rb:345:26:345:36 | call to instance | calls.rb:320:5:322:7 | instance |
+| calls.rb:345:26:345:36 | call to instance | calls.rb:326:5:328:7 | instance |
 | calls.rb:349:6:349:11 | call to new | calls.rb:106:5:106:16 | new |
 | calls.rb:350:1:350:11 | call to instance | calls.rb:314:5:316:7 | instance |
 | calls.rb:351:1:351:25 | call to pattern_dispatch | calls.rb:331:1:347:3 | pattern_dispatch |
@@ -151,6 +143,7 @@ getTarget
 | calls.rb:361:6:361:11 | call to new | calls.rb:106:5:106:16 | new |
 | calls.rb:362:1:362:16 | call to add_singleton | calls.rb:355:1:359:3 | add_singleton |
 | calls.rb:363:1:363:11 | call to instance | calls.rb:314:5:316:7 | instance |
+| calls.rb:363:1:363:11 | call to instance | calls.rb:356:5:358:7 | instance |
 | hello.rb:12:5:12:24 | call to include | calls.rb:99:5:99:20 | include |
 | hello.rb:14:16:14:20 | call to hello | hello.rb:2:5:4:7 | hello |
 | hello.rb:20:16:20:20 | call to super | hello.rb:13:5:15:7 | message |
@@ -205,13 +198,10 @@ unresolvedCall
 | calls.rb:145:1:145:8 | call to [] |
 | calls.rb:145:4:145:5 | - ... |
 | calls.rb:145:32:145:36 | call to abs |
-| calls.rb:223:1:223:14 | call to singleton_e |
 | calls.rb:249:1:249:14 | call to singleton_e |
 | calls.rb:250:1:250:14 | call to singleton_g |
 | calls.rb:263:1:263:14 | call to singleton_g |
 | calls.rb:265:1:265:14 | call to singleton_g |
-| calls.rb:344:26:344:36 | call to instance |
-| calls.rb:345:26:345:36 | call to instance |
 | hello.rb:20:16:20:26 | ... + ... |
 | hello.rb:20:16:20:34 | ... + ... |
 | hello.rb:20:16:20:40 | ... + ... |

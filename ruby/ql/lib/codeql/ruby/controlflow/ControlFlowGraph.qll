@@ -44,7 +44,7 @@ class CfgNode extends TCfgNode {
   final File getFile() { result = this.getLocation().getFile() }
 
   /** Holds if this control flow node has conditional successors. */
-  final predicate isCondition() { exists(this.getASuccessor(any(BooleanSuccessor bs))) }
+  final predicate isCondition() { exists(this.getASuccessor(any(ConditionalSuccessor bs))) }
 
   /** Gets the scope of this node. */
   final CfgScope getScope() { result = getNodeCfgScope(this) }

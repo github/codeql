@@ -203,6 +203,12 @@ private class Argument extends CfgNodes::ExprCfgNode {
   }
 }
 
+/** Holds if `n` is not a constant expression. */
+predicate isNonConstantExpr(CfgNodes::ExprCfgNode n) {
+  not exists(n.getConstantValue()) and
+  not n.getExpr() instanceof ConstantAccess
+}
+
 /** A collection of cached types and predicates to be evaluated in the same stage. */
 cached
 private module Cached {
@@ -232,8 +238,13 @@ private module Cached {
       isParameterNode(_, c, any(ParameterPosition p | p.isKeyword(_)))
     } or
     TExprPostUpdateNode(CfgNodes::ExprCfgNode n) {
-      n instanceof Argument or
-      n = any(CfgNodes::ExprNodes::InstanceVariableAccessCfgNode v).getReceiver()
+      // filter out nodes that clearly don't need post-update nodes
+      isNonConstantExpr(n) and
+      (
+        n instanceof Argument or
+        n = any(CfgNodes::ExprNodes::InstanceVariableAccessCfgNode v).getReceiver() or
+        singletonMethodOnInstance(_, _, n.getExpr())
+      )
     } or
     TSummaryNode(
       FlowSummaryImpl::Public::SummarizedCallable c,
@@ -304,7 +315,40 @@ private module Cached {
       nodeTo = LocalFlow::getParameterDefNode(p)
     )
     or
-    LocalFlow::localSsaFlowStepUseUse(_, nodeFrom, nodeTo)
+    exists(Ssa::Definition def |
+      LocalFlow::localSsaFlowStepUseUse(def, nodeFrom, nodeTo) and
+      // For nodes that are the target of a singleton method definition, such
+      // as `x` in `def x.foo; end`, we disallow use-use flow out of `x`, and
+      // instead add a type-tracker level-step from `x` to the post-update node
+      // of `x` (which does allow further use-use flow).
+      //
+      // This enables us to stregthen call resolution for singleton methods, since
+      // we can stop flow at redefinitions, which would otherwise not be possible,
+      // as type-tracking would step over such redefinitions.
+      //
+      // Example:
+      // ```rb
+      // def x.foo; end
+      // def x.foo; end
+      // x.foo # <- we want to resolve this call to the second definition only
+      // ```
+      not singletonMethodOnInstance(_, _, nodeFrom.asExpr().getExpr()) and
+      // We disallow adjacent use-use steps, where the target is type checked, and
+      // instead add a type-tracker level-step.
+      //
+      // This enables us to strengthen call resolution for instance methods, since
+      // we can use the extra type information on the target node.
+      //
+      // Example:
+      // ```rb
+      // case object
+      //   when C then object.foo # <- we want to resolve this call as if it was a call inside `C`
+      // end
+      // ```
+      //
+      // The second access to `object` is known to have type `C` (or a sub-type thereof).
+      not hasAdjacentTypeCheckedReads(def, nodeFrom.asExpr(), nodeTo.asExpr(), _)
+    )
   }
 
   private predicate entrySsaDefinition(SsaDefinitionNode n) {
@@ -349,6 +393,15 @@ private module Cached {
     or
     // Needed for stores in type tracking
     TypeTrackerSpecific::basicStoreStep(_, n, _)
+    or
+    // Needed to be able to track singleton methods defined on instances
+    singletonMethodOnInstancePostUpdate(_, _, n)
+    or
+    // Needed to be able to track instance methods on variables introduced via pattern matching
+    asModulePattern(n, _)
+    or
+    // Needed to be able to (better) track instance methods on variables that are type checked
+    hasAdjacentTypeCheckedReads(_, _, n.asExpr(), _)
   }
 
   cached
@@ -437,6 +490,9 @@ class SsaDefinitionNode extends NodeImpl, TSsaDefinitionNode {
 
   /** Gets the underlying SSA definition. */
   Ssa::Definition getDefinition() { result = def }
+
+  /** Gets the underlying variable. */
+  Variable getVariable() { result = def.getSourceVariable() }
 
   override CfgScope getCfgScope() { result = def.getBasicBlock().getScope() }
 
@@ -538,6 +594,9 @@ private module ParameterNodes {
     SelfParameterNode() { this = TSelfParameterNode(method) }
 
     final MethodBase getMethod() { result = method }
+
+    /** Gets the underlying `self` variable. */
+    final SelfVariable getSelfVariable() { result.getDeclaringScope() = method }
 
     override Parameter getParameter() { none() }
 
@@ -1036,7 +1095,8 @@ predicate readStep(Node node1, ContentSet c, Node node2) {
   // (instance variable assignment or setter method call).
   node2.asExpr() =
     any(CfgNodes::ExprNodes::MethodCallCfgNode call |
-      node1.asExpr() = call.getReceiver() and
+      node1.asExpr() =
+        any(CfgNodes::ExprCfgNode e | e = call.getReceiver() and isNonConstantExpr(e)) and
       call.getNumberOfArguments() = 0 and
       c.isSingleton(any(Content::FieldContent ct |
           ct.getName() = "@" + call.getExpr().getMethodName()
