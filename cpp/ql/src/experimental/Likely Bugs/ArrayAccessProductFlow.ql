@@ -8,6 +8,13 @@ import semmle.code.cpp.valuenumbering.GlobalValueNumbering
 import semmle.code.cpp.models.interfaces.Allocation
 import semmle.code.cpp.ir.IRConfiguration
 
+// temporary - custom allocator for ffmpeg
+class AvBufferAlloc extends AllocationFunction {
+  AvBufferAlloc() { this.hasGlobalName(["av_mallocz", "av_malloc"]) }
+
+  override int getSizeArg() { result = 0 }
+}
+
 predicate bounded(Instruction i, Bound b, int delta, boolean upper) {
   // TODO: reason
   semBounded(getSemanticExpr(i), b, delta, upper, _)
