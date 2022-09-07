@@ -199,11 +199,7 @@ The ``codeql-pack.lock.yml`` file will contain something like the following:
      my-user/transitive-dependency:
        version: 1.2.4
 
-
-..
-  TODO: Add a link to the CodeQL CLI documentation for query resolution, specifically in regards to resolving from source
-
-The ``codeql/cpp-all`` dependency is locked to version 0.1.4. The ``my-user/my-lib`` dependency is locked to version 0.2.4. The ``my-user/transitive-dependency``, which is a transitive dependency and is not specified in the ``qlpack.yml`` file, is locked to version 1.2.4. The ``other-dependency/from-source`` is absent from the lock file since it is resolved from source. This dependency must be available in the same CodeQL workspace as the pack.
+The ``codeql/cpp-all`` dependency is locked to version 0.1.4. The ``my-user/my-lib`` dependency is locked to version 0.2.4. The ``my-user/transitive-dependency``, which is a transitive dependency and is not specified in the ``qlpack.yml`` file, is locked to version 1.2.4. The ``other-dependency/from-source`` is absent from the lock file since it is resolved from source. This dependency must be available in the same CodeQL workspace as the pack. For more information about CodeQL workspaces and resolving dependencies from source, see ":doc:`About CodeQL Workspaces <about-codeql-workspaces>`."
 
 In most cases, the ``codeql-pack.lock.yml`` file is only relevant for query packs since library packs are non-executable and usually do not need their transitive dependencies to be fixed. The exception to this is for library packs that contain tests. In this case, the ``codeql-pack.lock.yml`` file is used to ensure that the tests are always run with the same versions of dependencies to avoid spurious failures when there are mismatched dependencies.
 
@@ -316,7 +312,7 @@ core query pack:
 
 Some extra notes on the following properties:
 
-- ``dependencies``: This query pack depends on ``codeql/cpp-all`` and ``codeql/suite-helpers``. Since these dependencies are resolved from source, it does not matter what version of the CodeQL pack they are compatible with.
+- ``dependencies``: This query pack depends on ``codeql/cpp-all`` and ``codeql/suite-helpers``. Since these dependencies are resolved from source, it does not matter what version of the CodeQL pack they are compatible with. For more information about resolving dependencies from source, see ":ref:`Source Dependencies <source-dependencies>`."
 - ``suites``: Indicates the directory containing "well-known" query suites.
 - ``defaultSuiteFile``: The name of the default query suite file that is used when no query suite is specified.
 

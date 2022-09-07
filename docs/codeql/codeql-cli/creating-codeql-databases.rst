@@ -7,8 +7,8 @@ Before you analyze your code using CodeQL, you need to create a CodeQL
 database containing all the data required to run queries on your code.
 
 CodeQL analysis relies on extracting relational data from your code, and
-using it to build a :ref:`CodeQL database <codeql-database>`. CodeQL 
-databases contain all of the important information about a codebase, which can 
+using it to build a :ref:`CodeQL database <codeql-database>`. CodeQL
+databases contain all of the important information about a codebase, which can
 be analyzed by executing CodeQL queries against it.
 Before you generate a CodeQL database, you need to:
 
@@ -18,9 +18,9 @@ Before you generate a CodeQL database, you need to:
   should be ready to build, with all dependencies already installed.
 
 For information about using the CodeQL CLI in a third-party CI system to create results
-to display in GitHub as code scanning alerts, see `Configuring CodeQL CLI in your CI system <https://docs.github.com/en/code-security/secure-coding/using-codeql-code-scanning-with-your-existing-ci-system/configuring-codeql-cli-in-your-ci-system>`__ 
+to display in GitHub as code scanning alerts, see `Configuring CodeQL CLI in your CI system <https://docs.github.com/en/code-security/secure-coding/using-codeql-code-scanning-with-your-existing-ci-system/configuring-codeql-cli-in-your-ci-system>`__
 in the GitHub documentation. For information about enabling CodeQL code scanning using GitHub Actions,
-see `Setting up code scanning for a repository <https://docs.github.com/en/code-security/secure-coding/automatically-scanning-your-code-for-vulnerabilities-and-errors/setting-up-code-scanning-for-a-repository>`__ 
+see `Setting up code scanning for a repository <https://docs.github.com/en/code-security/secure-coding/automatically-scanning-your-code-for-vulnerabilities-and-errors/setting-up-code-scanning-for-a-repository>`__
 in the GitHub documentation.
 
 Running ``codeql database create``
@@ -37,38 +37,38 @@ You must specify:
 
 - ``<database>``: a path to the new database to be created. This directory will
   be created when you execute the command---you cannot specify an existing
-  directory. 
+  directory.
 - ``--language``: the identifier for the language to create a database for.
-  When used with ``--db-cluster``, the option accepts a comma-separated list, 
+  When used with ``--db-cluster``, the option accepts a comma-separated list,
   or can be specified more than once.
   CodeQL supports creating databases for the following languages:
 
   .. include:: ../reusables/extractors.rst
 
-You can specify additional options depending on the location of your source file, 
-if the code needs to be compiled, and if you want to create CodeQL databases for 
+You can specify additional options depending on the location of your source file,
+if the code needs to be compiled, and if you want to create CodeQL databases for
 more than one language:
 
 - ``--source-root``: the root folder for the primary source files used in
   database creation. By default, the command assumes that the current
   directory is the source root---use this option to specify a different location.
 - ``--db-cluster``: use for multi-language codebases when you want to create
-  databases for more than one language. 
+  databases for more than one language.
 - ``--command``: used when you create a database for one or more compiled languages,
-  omit if the only languages requested are Python and JavaScript. 
-  This specifies the build commands needed to invoke the compiler. 
+  omit if the only languages requested are Python and JavaScript.
+  This specifies the build commands needed to invoke the compiler.
   Commands are run from the current folder, or ``--source-root``
   if specified. If you don't include a ``--command``, CodeQL will attempt to
-  detect the build system automatically, using a built-in autobuilder. 
-- ``--no-run-unnecessary-builds``: used with ``--db-cluster`` to suppress the build 
-  command for languages where the CodeQL CLI does not need to monitor the build 
+  detect the build system automatically, using a built-in autobuilder.
+- ``--no-run-unnecessary-builds``: used with ``--db-cluster`` to suppress the build
+  command for languages where the CodeQL CLI does not need to monitor the build
   (for example, Python and JavaScript/TypeScript).
 
 You can specify extractor options to customize the behavior of extractors that create CodeQL databases. For more information, see
 ":doc:`Extractor options <extractor-options>`."
 
 For full details of all the options you can use when creating databases,
-see the `database create reference documentation <../manual/database-create>`__.  
+see the `database create reference documentation <../manual/database-create>`__.
 
 Progress and results
 --------------------
@@ -117,7 +117,7 @@ extract both JavaScript and TypeScript files::
 
 Here, we have specified a ``--source-root`` path, which is the location where
 database creation is executed, but is not necessarily the checkout root of the
-codebase. 
+codebase.
 
 By default, files in ``node_modules`` and ``bower_components`` directories are not extracted.
 
@@ -127,7 +127,7 @@ Python
 When creating databases for Python you must ensure:
 
 - You have the all of the required versions of Python installed.
-- You have access to the `pip <https://pypi.org/project/pip/>`__ 
+- You have access to the `pip <https://pypi.org/project/pip/>`__
   packaging management system and can install any
   packages that the codebase depends on.
 - You have installed the `virtualenv <https://pypi.org/project/virtualenv/>`__ pip module.
@@ -143,14 +143,14 @@ generating a new Python database at ``<output-folder>/python-database``.
 Ruby
 ~~~~
 
-Creating databases for Ruby requires no additional dependencies. 
+Creating databases for Ruby requires no additional dependencies.
 In the command line you must specify ``--language=ruby``. For example::
 
    codeql database create --language=ruby --source-root <folder-to-extract> <output-folder>/ruby-database
 
 Here, we have specified a ``--source-root`` path, which is the location where
 database creation is executed, but is not necessarily the checkout root of the
-codebase. 
+codebase.
 
 Creating databases for compiled languages
 -----------------------------------------
@@ -179,11 +179,11 @@ build steps, you may need to explicitly define each step in the command line.
 
 
 .. pull-quote:: Creating databases for Go
-  
+
    For Go, install the Go toolchain (version 1.11 or later) and, if there
    are dependencies, the appropriate dependency manager (such as `dep
    <https://golang.github.io/dep/>`__).
-   
+
    The Go autobuilder attempts to automatically detect code written in Go in a repository,
    and only runs build scripts in an attempt to fetch dependencies. To force
    CodeQL to limit extraction to the files compiled by your build script, set the environment variable
@@ -194,7 +194,7 @@ Specifying build commands
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The following examples are designed to give you an idea of some of the build
-commands that you can specify for compiled languages. 
+commands that you can specify for compiled languages.
 
 .. pull-quote:: Important
 
@@ -259,7 +259,7 @@ commands that you can specify for compiled languages.
 - Project built using a custom build script::
 
      codeql database create new-database --language=<language> --command='./scripts/build.sh'
-   
+
   This command runs a custom script that contains all of the commands required
   to build the project.
 
@@ -278,7 +278,7 @@ You must specify:
 
 - ``<database>``: a path to the new database to be created. This directory will
   be created when you execute the command---you cannot specify an existing
-  directory. 
+  directory.
 - ``--begin-tracing``: creates scripts that can be used to set up an environment in which build commands will be traced.
 
 You may specify other options for the ``codeql database init`` command as normal.
@@ -386,14 +386,10 @@ Obtaining databases from LGTM.com
 CodeQL. For each project on LGTM.com, you can download an archived CodeQL
 database corresponding to the most recently analyzed revision of the code. These
 databases can also be analyzed using the CodeQL CLI or used with the CodeQL
-extension for Visual Studio Code. 
+extension for Visual Studio Code.
 
 .. include:: ../reusables/download-lgtm-database.rst
 
-Before running an analysis, unzip the databases and try :doc:`upgrading <upgrading-codeql-databases>` the
-unzipped databases to ensure they are compatible with your local copy of the
-CodeQL queries and libraries.
-   
 .. pull-quote::
 
    Note

@@ -45,6 +45,8 @@ If you already have a ``qlpack.yml`` file, you can edit it manually to convert i
 
 For more information about the properties, see ":ref:`About CodeQL packs <about-codeql-packs>`."
 
+.. _adding-and-installing-dependencies:
+
 Adding and installing dependencies to a CodeQL pack
 ---------------------------------------------------
 You can add dependencies on CodeQL packs using the command ``codeql pack add``. You must specify the scope, name, and (optionally) a compatible version range.
