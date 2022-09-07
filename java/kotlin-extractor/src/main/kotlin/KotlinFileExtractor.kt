@@ -2394,7 +2394,11 @@ open class KotlinFileExtractor(
             if (e.typeArgumentsCount > 0) {
                 logger.warnElement("Unexpected type arguments (${e.typeArgumentsCount}) for anonymous class constructor call", e)
             }
-            val c = eType.classifier.owner as IrClass
+            val c = eType.classifier.owner
+            if (c !is IrClass) {
+                logger.errorElement("Anonymous constructor call type not a class (${c.javaClass})", e)
+                return
+            }
             useAnonymousClass(c)
         } else {
             useType(eType)
