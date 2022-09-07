@@ -38,7 +38,7 @@ predicate dead(RefType dead) {
   // Exclude results that have a `main` method.
   not dead.getAMethod().hasName("main") and
   // Exclude results that are referenced in XML files.
-  not exists(XMLAttribute xla | xla.getValue() = dead.getQualifiedName()) and
+  not exists(XmlAttribute xla | xla.getValue() = dead.getQualifiedName()) and
   // Exclude type variables.
   not dead instanceof BoundedType and
   // Exclude JUnit tests.

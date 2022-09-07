@@ -146,7 +146,7 @@ class MicrosoftOwinRequestRemoteFlowSource extends RemoteFlowSource, DataFlow::E
       p = owinRequest.getQueryStringProperty() or
       p = owinRequest.getRemoteIpAddressProperty() or
       p = owinRequest.getSchemeProperty() or
-      p = owinRequest.getURIProperty()
+      p = owinRequest.getUriProperty()
     )
   }
 
@@ -170,6 +170,35 @@ class ActionMethodParameter extends RemoteFlowSource, DataFlow::ParameterNode {
 
 /** A data flow source of remote user input (ASP.NET Core). */
 abstract class AspNetCoreRemoteFlowSource extends RemoteFlowSource { }
+
+private predicate reachesMapGetArg(DataFlow::Node n) {
+  exists(MethodCall mc |
+    mc.getTarget() = any(MicrosoftAspNetCoreBuilderEndpointRouteBuilderExtensions c).getAMapMethod() and
+    n.asExpr() = mc.getArgument(2)
+  )
+  or
+  exists(DataFlow::Node mid | reachesMapGetArg(mid) |
+    DataFlow::localFlowStep(n, mid) or
+    n.asExpr() = mid.asExpr().(DelegateCreation).getArgument()
+  )
+}
+
+/** A parameter to a routing method delegate. */
+class AspNetCoreRoutingMethodParameter extends AspNetCoreRemoteFlowSource, DataFlow::ParameterNode {
+  AspNetCoreRoutingMethodParameter() {
+    exists(DataFlow::Node n, Callable c |
+      reachesMapGetArg(n) and
+      c.getAParameter() = this.asParameter() and
+      c.isSourceDeclaration()
+    |
+      n.asExpr() = c
+      or
+      n.asExpr().(CallableAccess).getTarget().getUnboundDeclaration() = c
+    )
+  }
+
+  override string getSourceType() { result = "ASP.NET Core routing endpoint." }
+}
 
 /**
  * Data flow for ASP.NET Core.

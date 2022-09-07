@@ -1,9 +1,3 @@
-| dot_syntax_call.swift:7:13:7:13 | call to ... | getFunction: | dot_syntax_call.swift:7:13:7:13 | { ... } | getBaseExpr: | dot_syntax_call.swift:7:13:7:13 | self |
-| dot_syntax_call.swift:7:13:7:13 | call to baz(_:) | getFunction: | dot_syntax_call.swift:7:13:7:13 | baz(_:) | getBaseExpr: | file://:0:0:0:0 | self |
-| dot_syntax_call.swift:11:1:11:3 | call to foo(_:_:) | getFunction: | dot_syntax_call.swift:11:3:11:3 | foo(_:_:) | getBaseExpr: | dot_syntax_call.swift:11:1:11:1 | X.Type |
-| dot_syntax_call.swift:12:1:12:3 | call to bar() | getFunction: | dot_syntax_call.swift:12:3:12:3 | bar() | getBaseExpr: | dot_syntax_call.swift:12:1:12:1 | X.Type |
-| dot_syntax_call.swift:13:1:13:5 | call to baz(_:) | getFunction: | dot_syntax_call.swift:13:5:13:5 | baz(_:) | getBaseExpr: | dot_syntax_call.swift:13:1:13:3 | call to ... |
-| dot_syntax_call.swift:15:9:15:11 | call to ... | getFunction: | dot_syntax_call.swift:15:11:15:11 | { ... } | getBaseExpr: | dot_syntax_call.swift:15:9:15:9 | X.Type |
-| dot_syntax_call.swift:15:11:15:11 | call to bar() | getFunction: | dot_syntax_call.swift:15:11:15:11 | bar() | getBaseExpr: | file://:0:0:0:0 | self |
-| dot_syntax_call.swift:16:9:16:13 | call to ... | getFunction: | dot_syntax_call.swift:16:13:16:13 | { ... } | getBaseExpr: | dot_syntax_call.swift:16:9:16:11 | call to ... |
-| dot_syntax_call.swift:16:13:16:13 | call to baz(_:) | getFunction: | dot_syntax_call.swift:16:13:16:13 | baz(_:) | getBaseExpr: | file://:0:0:0:0 | self |
+| dot_syntax_call.swift:7:13:7:13 | call to ... | getFunction: | dot_syntax_call.swift:7:13:7:13 | { ... } | getBase: | dot_syntax_call.swift:7:13:7:13 | self |
+| dot_syntax_call.swift:15:9:15:11 | call to ... | getFunction: | dot_syntax_call.swift:15:11:15:11 | { ... } | getBase: | dot_syntax_call.swift:15:9:15:9 | X.Type |
+| dot_syntax_call.swift:16:9:16:13 | call to ... | getFunction: | dot_syntax_call.swift:16:13:16:13 | { ... } | getBase: | dot_syntax_call.swift:16:9:16:11 | call to init() |

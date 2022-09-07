@@ -17,33 +17,33 @@ import semmle.code.cpp.controlflow.IRGuards
 /**
  * A call to `SSL_get_peer_certificate`.
  */
-class SSLGetPeerCertificateCall extends FunctionCall {
-  SSLGetPeerCertificateCall() {
+class SslGetPeerCertificateCall extends FunctionCall {
+  SslGetPeerCertificateCall() {
     getTarget().getName() = "SSL_get_peer_certificate" // SSL_get_peer_certificate(ssl)
   }
 
-  Expr getSSLArgument() { result = getArgument(0) }
+  Expr getSslArgument() { result = getArgument(0) }
 }
 
 /**
  * A call to `SSL_get_verify_result`.
  */
-class SSLGetVerifyResultCall extends FunctionCall {
-  SSLGetVerifyResultCall() {
+class SslGetVerifyResultCall extends FunctionCall {
+  SslGetVerifyResultCall() {
     getTarget().getName() = "SSL_get_verify_result" // SSL_get_peer_certificate(ssl)
   }
 
-  Expr getSSLArgument() { result = getArgument(0) }
+  Expr getSslArgument() { result = getArgument(0) }
 }
 
 /**
  * Holds if the SSL object passed into `SSL_get_peer_certificate` is checked with
  * `SSL_get_verify_result` entering `node`.
  */
-predicate resultIsChecked(SSLGetPeerCertificateCall getCertCall, ControlFlowNode node) {
-  exists(Expr ssl, SSLGetVerifyResultCall check |
-    ssl = globalValueNumber(getCertCall.getSSLArgument()).getAnExpr() and
-    ssl = check.getSSLArgument() and
+predicate resultIsChecked(SslGetPeerCertificateCall getCertCall, ControlFlowNode node) {
+  exists(Expr ssl, SslGetVerifyResultCall check |
+    ssl = globalValueNumber(getCertCall.getSslArgument()).getAnExpr() and
+    ssl = check.getSslArgument() and
     node = check
   )
 }
@@ -53,7 +53,7 @@ predicate resultIsChecked(SSLGetPeerCertificateCall getCertCall, ControlFlowNode
  * `0` on the edge `node1` to `node2`.
  */
 predicate certIsZero(
-  SSLGetPeerCertificateCall getCertCall, ControlFlowNode node1, ControlFlowNode node2
+  SslGetPeerCertificateCall getCertCall, ControlFlowNode node1, ControlFlowNode node2
 ) {
   exists(Expr cert | cert = globalValueNumber(getCertCall).getAnExpr() |
     exists(GuardCondition guard, Expr zero |
@@ -87,7 +87,7 @@ predicate certIsZero(
  * `SSL_get_verify_result` at `node`. Note that this is only computed at the call to
  * `SSL_get_peer_certificate` and at the start and end of `BasicBlock`s.
  */
-predicate certNotChecked(SSLGetPeerCertificateCall getCertCall, ControlFlowNode node) {
+predicate certNotChecked(SslGetPeerCertificateCall getCertCall, ControlFlowNode node) {
   // cert is not checked at the call to `SSL_get_peer_certificate`
   node = getCertCall
   or
@@ -112,7 +112,7 @@ predicate certNotChecked(SSLGetPeerCertificateCall getCertCall, ControlFlowNode 
   )
 }
 
-from SSLGetPeerCertificateCall getCertCall, ControlFlowNode node
+from SslGetPeerCertificateCall getCertCall, ControlFlowNode node
 where
   certNotChecked(getCertCall, node) and
   node instanceof Function // (function exit)

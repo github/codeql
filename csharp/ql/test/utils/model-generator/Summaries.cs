@@ -1,11 +1,15 @@
 using System;
 using System.Linq;
+using System.Collections;
 using System.Collections.Generic;
 
 namespace Summaries;
 
 public class BasicFlow
 {
+    // No flow summary and no negative summary either.
+    ~BasicFlow() { }
+
     private string tainted;
 
     public BasicFlow ReturnThis(object input)
@@ -81,6 +85,31 @@ public class CollectionFlow
     public List<string> ReturnFieldInAList()
     {
         return new List<string> { tainted };
+    }
+
+    public string[] ReturnComplexTypeArray(string[] a)
+    {
+        return a;
+    }
+
+    public List<byte> ReturnBulkTypeList(List<byte> a)
+    {
+        return a;
+    }
+
+    public Dictionary<int, string> ReturnComplexTypeDictionary(Dictionary<int, string> a)
+    {
+        return a;
+    }
+
+    public Array ReturnUntypedArray(Array a)
+    {
+        return a;
+    }
+
+    public IList ReturnUntypedList(IList a)
+    {
+        return a;
     }
 }
 

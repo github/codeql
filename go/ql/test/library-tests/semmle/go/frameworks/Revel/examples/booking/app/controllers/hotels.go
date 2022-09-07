@@ -74,28 +74,27 @@ func (c Hotels) Index() revel.Result {
 
 // swagger:operation GET /demo demo
 //
-// Enter Demo
+// # Enter Demo
 //
-//
-// ---
-// produces:
-// - text/html
-// parameters:
-// - name: user
-//   in: formData
-//   description: user
-//   required: true
-//   type: string
-// - name: demo
-//   in: formData
-//   description: demo
-//   required: true
-//   type: string
-// responses:
-//   '200':
-//     description: Success
-//   '401':
-//     description: Invalid User
+//	---
+//	produces:
+//	- text/html
+//	parameters:
+//	- name: user
+//	  in: formData
+//	  description: user
+//	  required: true
+//	  type: string
+//	- name: demo
+//	  in: formData
+//	  description: demo
+//	  required: true
+//	  type: string
+//	responses:
+//	  '200':
+//	    description: Success
+//	  '401':
+//	    description: Invalid User
 func (c Hotels) ListJson(search string, size, page uint64) revel.Result {
 	if page == 0 {
 		page = 1

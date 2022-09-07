@@ -42,4 +42,4 @@ where
   (loopStmtWithEmptyBlock(s) or conditionalWithEmptyBlock(s)) and
   not exists(CommentBlock c | c.getParent() = s) and
   not exists(ForStmt fs | fs.getBody() = s and exists(fs.getAnUpdate()))
-select s, "Empty block."
+select s, "Empty block without comment."

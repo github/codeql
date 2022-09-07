@@ -50,7 +50,7 @@ class Sink extends DataFlow::Node {
         ) and
         c.getName() = className and
         c.getAMember() = funcDecl and
-        call.getFunction().(ApplyExpr).getStaticTarget() = funcDecl
+        call.getStaticTarget() = funcDecl
       ) and
       // match up `funcName`, `paramName`, `arg`, `node`.
       funcDecl.getName() = funcName and

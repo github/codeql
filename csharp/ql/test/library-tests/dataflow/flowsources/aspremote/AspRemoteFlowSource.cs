@@ -1,4 +1,6 @@
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc;
+using System;
 
 namespace Testing
 {
@@ -18,6 +20,42 @@ namespace Testing
         public object MyAction(ViewModel viewModel)
         {
             throw null;
+        }
+    }
+
+    public class Item
+    {
+        public string Tainted { get; set; }
+    }
+
+    public class AspRoutingEndpoints
+    {
+        public delegate void MapGetHandler(string param);
+
+        public void HandlerMethod(string param) { }
+
+        public void M1(string[] args)
+        {
+            var builder = WebApplication.CreateBuilder(args);
+            var app = builder.Build();
+
+            // The delegate parameters are considered flow sources.
+            app.MapGet("/api/redirect/{newUrl}", (string newUrl) => { });
+            app.MapGet("/{myApi}/redirect/{myUrl}", (string myApi, string myUrl) => { });
+
+            Action<string> handler = (string lambdaParam) => { };
+            app.MapGet("/api/redirect/{lambdaParam}", handler);
+
+            MapGetHandler handler2 = HandlerMethod;
+            app.MapGet("/api/redirect/{mapGetParam}", handler2);
+
+            app.MapPost("/api/redirect/{mapPostParam}", (string mapPostParam) => { });
+            app.MapPut("/api/redirect/{mapPutParam}", (string mapPutParam) => { });
+            app.MapDelete("/api/redirect/{mapDeleteParam}", (string mapDeleteParam) => { });
+
+            app.MapPost("/items", (Item item) => { });
+
+            app.Run();
         }
     }
 }

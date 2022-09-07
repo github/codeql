@@ -176,6 +176,29 @@ class QLDoc extends TQLDoc, Comment {
   override AstNode getParent() { result.getQLDoc() = this }
 }
 
+/** The QLDoc for a query (i.e. the top comment in a .ql file). */
+class QueryDoc extends QLDoc {
+  QueryDoc() {
+    this.getLocation().getFile().getExtension() = "ql" and
+    this = any(TopLevel t).getQLDoc()
+  }
+
+  override string getAPrimaryQlClass() { result = "QueryDoc" }
+
+  /** Gets the @kind for the query */
+  string getQueryKind() { result = this.getContents().regexpCapture("(?s).*@kind (\\w+)\\s.*", 1) }
+
+  /** Gets the id part (without language) of the @id */
+  string getQueryId() {
+    result = this.getContents().regexpCapture("(?s).*@id (\\w+)/([\\w\\-]+)\\s.*", 2)
+  }
+
+  /** Gets the language of the @id */
+  string getQueryLanguage() {
+    result = this.getContents().regexpCapture("(?s).*@id (\\w+)/([\\w\\-]+)\\s.*", 1)
+  }
+}
+
 class BlockComment extends TBlockComment, Comment {
   QL::BlockComment comment;
 
@@ -237,6 +260,8 @@ class Select extends TSelect, AstNode {
   }
 
   override string getAPrimaryQlClass() { result = "Select" }
+
+  QueryDoc getQueryDoc() { result.getLocation().getFile() = this.getLocation().getFile() }
 }
 
 class PredicateOrBuiltin extends TPredOrBuiltin, AstNode {
@@ -496,6 +521,9 @@ class ClasslessPredicate extends TClasslessPredicate, Predicate, ModuleDeclarati
   }
 
   override predicate isPrivate() { Predicate.super.isPrivate() }
+
+  /** Holds if this classless predicate is a signature predicate with no body. */
+  predicate isSignature() { not exists(this.getBody()) }
 }
 
 /**
@@ -794,8 +822,6 @@ class Declaration extends TDeclaration, AstNode {
     or
     result = any(Class c).getQLDocFor(this)
   }
-
-  override AstNode getAChild(string pred) { result = super.getAChild(pred) }
 }
 
 /** An entity that can be declared in a module. */
@@ -1101,8 +1127,6 @@ class NoneCall extends TNoneCall, Call, Formula {
   NoneCall() { this = TNoneCall(call) }
 
   override string getAPrimaryQlClass() { result = "NoneCall" }
-
-  override AstNode getParent() { result = Call.super.getParent() }
 }
 
 /**
@@ -2456,15 +2480,18 @@ class BindingSet extends Annotation {
  */
 module YAML {
   /** A node in a YAML file */
-  class YAMLNode extends TYamlNode, AstNode {
+  class YamlNode extends TYamlNode, AstNode {
     /** Holds if the predicate is a root node (has no parent) */
     predicate isRoot() { not exists(this.getParent()) }
 
     override AstNode getParent() { toGenerateYaml(result) = toGenerateYaml(this).getParent() }
   }
 
+  /** DEPRECATED: Alias for YamlNode */
+  deprecated class YAMLNode = YamlNode;
+
   /** A YAML comment. */
-  class YamlComment extends TYamlCommemt, YAMLNode {
+  class YamlComment extends TYamlCommemt, YamlNode {
     Yaml::Comment yamlcomment;
 
     YamlComment() { this = TYamlCommemt(yamlcomment) }
@@ -2476,7 +2503,7 @@ module YAML {
   deprecated class YAMLComment = YamlComment;
 
   /** A YAML entry. */
-  class YamlEntry extends TYamlEntry, YAMLNode {
+  class YamlEntry extends TYamlEntry, YamlNode {
     Yaml::Entry yamle;
 
     YamlEntry() { this = TYamlEntry(yamle) }
@@ -2506,7 +2533,7 @@ module YAML {
   deprecated class YAMLEntry = YamlEntry;
 
   /** A YAML key. */
-  class YamlKey extends TYamlKey, YAMLNode {
+  class YamlKey extends TYamlKey, YamlNode {
     Yaml::Key yamlkey;
 
     YamlKey() { this = TYamlKey(yamlkey) }
@@ -2545,7 +2572,7 @@ module YAML {
   deprecated class YAMLKey = YamlKey;
 
   /** A YAML list item. */
-  class YamlListItem extends TYamlListitem, YAMLNode {
+  class YamlListItem extends TYamlListitem, YamlNode {
     Yaml::Listitem yamllistitem;
 
     YamlListItem() { this = TYamlListitem(yamllistitem) }
@@ -2562,7 +2589,7 @@ module YAML {
   deprecated class YAMLListItem = YamlListItem;
 
   /** A YAML value. */
-  class YamlValue extends TYamlValue, YAMLNode {
+  class YamlValue extends TYamlValue, YamlNode {
     Yaml::Value yamlvalue;
 
     YamlValue() { this = TYamlValue(yamlvalue) }
@@ -2670,7 +2697,7 @@ module YAML {
     Location getLocation() {
       // hacky, just pick the first node in the file.
       result =
-        min(YAMLNode entry, Location l, File f |
+        min(YamlNode entry, Location l, File f |
           entry.getLocation().getFile() = file and
           f = file and
           l = entry.getLocation()

@@ -4,7 +4,7 @@ import semmle.python.objects.Callables
 import lib.BytecodeExpr
 
 /** The XML data for a recorded call (includes all data). */
-class XmlRecordedCall extends XMLElement {
+class XmlRecordedCall extends XmlElement {
   XmlRecordedCall() { this.hasName("recorded_call") }
 
   /** Gets the XML data for the call. */
@@ -61,7 +61,7 @@ class XmlRecordedCall extends XMLElement {
 deprecated class XMLRecordedCall = XmlRecordedCall;
 
 /** The XML data for the call part a recorded call. */
-class XmlCall extends XMLElement {
+class XmlCall extends XmlElement {
   XmlCall() { this.hasName("Call") }
 
   string get_filename_data() { result = this.getAChild("filename").getTextValue() }
@@ -114,7 +114,7 @@ class XmlCall extends XMLElement {
 deprecated class XMLCall = XmlCall;
 
 /** The XML data for the callee part a recorded call. */
-abstract class XmlCallee extends XMLElement { }
+abstract class XmlCallee extends XmlElement { }
 
 /** DEPRECATED: Alias for XmlCallee */
 deprecated class XMLCallee = XmlCallee;

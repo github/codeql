@@ -2,10 +2,10 @@
 import codeql.swift.elements
 import TestUtils
 
-from ConstructorRefCallExpr x, Expr getFunction, Expr getBaseExpr
+from ConstructorRefCallExpr x, Expr getFunction, Expr getBase
 where
   toBeTested(x) and
   not x.isUnknown() and
   getFunction = x.getFunction() and
-  getBaseExpr = x.getBaseExpr()
-select x, "getFunction:", getFunction, "getBaseExpr:", getBaseExpr
+  getBase = x.getBase()
+select x, "getFunction:", getFunction, "getBase:", getBase

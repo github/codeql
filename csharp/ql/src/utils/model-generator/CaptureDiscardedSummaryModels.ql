@@ -6,7 +6,7 @@
 
 private import semmle.code.csharp.dataflow.ExternalFlow
 private import internal.CaptureModels
-private import internal.CaptureFlow
+private import internal.CaptureSummaryFlow
 
 from TargetApi api, string flow
 where flow = captureFlow(api) and hasSummary(api, false)
