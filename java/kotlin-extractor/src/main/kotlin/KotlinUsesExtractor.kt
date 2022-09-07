@@ -1202,10 +1202,11 @@ open class KotlinUsesExtractor(
         else
             f.parentClassOrNull?.let { parentClass ->
                 getJavaEquivalentClass(parentClass)?.let { javaClass ->
-                    if (javaClass != parentClass)
+                    if (javaClass != parentClass) {
+                        val jvmName = getJvmName(f) ?: f.name.asString()
                         // Look for an exact type match...
                         javaClass.declarations.findSubType<IrFunction> { decl ->
-                            decl.name == f.name &&
+                            decl.name.asString() == jvmName &&
                             decl.valueParameters.size == f.valueParameters.size &&
                             // Note matching by classifier not the whole type so that generic arguments are allowed to differ,
                             // as they always will for method type parameters occurring in parameter types (e.g. <T> toArray(T[] array)
@@ -1214,7 +1215,7 @@ open class KotlinUsesExtractor(
                         } ?:
                         // Or if there is none, look for the only viable overload
                         javaClass.declarations.singleOrNullSubType<IrFunction> { decl ->
-                            decl.name == f.name &&
+                            decl.name.asString() == jvmName &&
                             decl.valueParameters.size == f.valueParameters.size
                         } ?:
                         // Or check property accessors:
@@ -1234,6 +1235,7 @@ open class KotlinUsesExtractor(
                             }
                             null
                         }
+                    }
                     else
                         null
                 }
