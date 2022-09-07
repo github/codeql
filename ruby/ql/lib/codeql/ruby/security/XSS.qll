@@ -79,13 +79,20 @@ private module Shared {
    * An argument to an ActionView helper method which is not escaped,
    * considered as a flow sink.
    */
-  class RawHelperCallArgumentAsSink extends Sink, ErbOutputMethodCallArgumentNode {
+  class RawHelperCallArgumentAsSink extends Sink {
     RawHelperCallArgumentAsSink() {
-      exists(ErbOutputDirective d, ActionViewHelpers::RawHelperCall c |
+      exists(ErbOutputDirective d, ActionView::Helpers::RawHelperCall c |
         d.getTerminalStmt() = c and this.asExpr().getExpr() = c.getRawArgument()
       )
     }
   }
+
+  /**
+   * An argument that is used to construct the `src` attribute of a `<script>`
+   * tag.
+   */
+  class ArgumentInterpretedAsUrlAsSink extends Sink, ErbOutputMethodCallArgumentNode,
+    ActionView::ArgumentInterpretedAsUrl { }
 
   /**
    * A argument to a call to the `link_to` method, which does not expect

@@ -18,6 +18,6 @@ query predicate httpResponses(Http::Server::HttpResponse r, DataFlow::Node body,
   r.getBody() = body and r.getMimetype() = mimeType
 }
 
-query predicate rawHelperCalls(ActionViewHelpers::RawHelperCall c, Expr arg) {
+query predicate rawHelperCalls(ActionView::Helpers::RawHelperCall c, Expr arg) {
   arg = c.getRawArgument()
 }
