@@ -3709,7 +3709,7 @@ open class KotlinFileExtractor(
                 constructorBlock = tw.getFreshIdLabel()
             )
 
-            val declarationParent = declarationStack.peekAsDeclarationParent()
+            val declarationParent = declarationStack.peekAsDeclarationParent(propertyReferenceExpr) ?: return
             val prefix = if (kPropertyClass.owner.name.asString().startsWith("KMutableProperty")) "Mutable" else ""
             val baseClass = pluginContext.referenceClass(FqName("kotlin.jvm.internal.${prefix}PropertyReference${kPropertyType.arguments.size - 1}"))?.owner?.typeWith()
                 ?: pluginContext.irBuiltIns.anyType
@@ -3916,7 +3916,7 @@ open class KotlinFileExtractor(
             if (fnInterfaceType == null) {
                 logger.warnElement("Cannot find functional interface type for function reference", functionReferenceExpr)
             } else {
-                val declarationParent = declarationStack.peekAsDeclarationParent()
+                val declarationParent = declarationStack.peekAsDeclarationParent(functionReferenceExpr) ?: return
                 // `FunctionReference` base class is required, because that's implementing `KFunction`.
                 val baseClass = pluginContext.referenceClass(FqName("kotlin.jvm.internal.FunctionReference"))?.owner?.typeWith()
                     ?: pluginContext.irBuiltIns.anyType
@@ -4525,7 +4525,7 @@ open class KotlinFileExtractor(
                     val locId = tw.getLocation(e)
                     val helper = GeneratedClassHelper(locId, ids)
 
-                    val declarationParent = declarationStack.peekAsDeclarationParent()
+                    val declarationParent = declarationStack.peekAsDeclarationParent(e) ?: return
                     val classId = extractGeneratedClass(ids, listOf(pluginContext.irBuiltIns.anyType, e.typeOperand), locId, e, declarationParent)
 
                     // add field
@@ -4747,14 +4747,18 @@ open class KotlinFileExtractor(
 
         fun peek() = stack.peek()
 
-        fun peekAsDeclarationParent(): IrDeclarationParent {
+        fun peekAsDeclarationParent(elementToReportOn: IrElement): IrDeclarationParent? {
             val trapWriter = tw
             if (isEmpty() && trapWriter is SourceFileTrapWriter) {
                 // If the current declaration is used as a parent, we might end up with an empty stack. In this case, the source file is the parent.
                 return trapWriter.irFile
             }
 
-            return peek() as IrDeclarationParent
+            val dp = peek() as? IrDeclarationParent
+            if (dp == null) {
+                logger.errorElement("Couldn't find current declaration parent", elementToReportOn)
+            }
+            return dp
         }
     }
 
