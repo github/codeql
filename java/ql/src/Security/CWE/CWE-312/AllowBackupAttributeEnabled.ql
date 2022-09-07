@@ -4,7 +4,7 @@
  * @kind problem
  * @problem.severity recommendation
  * @security-severity 7.5
- * @id java/android/allowbackup-enabled
+ * @id java/android/backup-enabled
  * @tags security
  *       external/cwe/cwe-312
  * @precision very-high
