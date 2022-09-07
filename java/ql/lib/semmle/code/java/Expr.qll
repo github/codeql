@@ -1327,6 +1327,10 @@ class ClassInstanceExpr extends Expr, ConstructorCall, @classinstancexpr {
       arg.getType() = type and
       result = arg
     )
+    // ! e.g. use above in below code in `StartActivityIntentStep` in Intent.qll
+    // argType.getName().matches("Class<%>") and
+    // newIntent.getArgumentByType(argType).getType().(ParameterizedType).getATypeArgument() =
+    //   getIntent.getReceiverType() and
   }
 
   /**

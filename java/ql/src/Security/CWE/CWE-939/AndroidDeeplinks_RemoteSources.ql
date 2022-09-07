@@ -17,9 +17,43 @@
 // where startServiceIntStep.step(n1, n2)
 // select n2, "placeholder"
 // * experiment with taint-tracking
+// import java
+// import semmle.code.java.dataflow.TaintTracking
+// import semmle.code.java.frameworks.android.DeepLink
+// import semmle.code.java.frameworks.android.Intent
+// import semmle.code.java.frameworks.android.Android
+// import semmle.code.java.dataflow.DataFlow
+// import semmle.code.java.dataflow.FlowSteps
+// import semmle.code.java.dataflow.FlowSources
+// import semmle.code.java.dataflow.ExternalFlow
+// import semmle.code.xml.AndroidManifest
+// import semmle.code.java.dataflow.TaintTracking
+// class MyTaintTrackingConfiguration extends TaintTracking::Configuration {
+//   MyTaintTrackingConfiguration() { this = "MyTaintTrackingConfiguration" }
+//   override predicate isSource(DataFlow::Node source) {
+//     // exists(AndroidActivityXmlElement andActXmlElem |
+//     //   andActXmlElem.hasDeepLink() and
+//     //   source.asExpr() instanceof TypeActivity
+//     //   )
+//     source instanceof RemoteFlowSource and //AndroidIntentInput
+//     exists(AndroidComponent andComp |
+//       andComp.getAndroidComponentXmlElement().(AndroidActivityXmlElement).hasDeepLink() and
+//       source.asExpr().getFile() = andComp.getFile() // ! ugly, see if better way to do this
+//     )
+//   }
+//   override predicate isSink(DataFlow::Node sink) {
+//     exists(MethodAccess m |
+//       m.getMethod().hasName("getIntent") and
+//       sink.asExpr() = m
+//     )
+//   }
+// }
+// from DataFlow::Node src, DataFlow::Node sink, MyTaintTrackingConfiguration config
+// where config.hasFlow(src, sink)
+// select src, "This environment variable constructs a URL $@.", sink, "here"
+// * experiment with GLOBAL FLOW
 import java
 import semmle.code.java.dataflow.TaintTracking
-import semmle.code.java.frameworks.android.DeepLink
 import semmle.code.java.frameworks.android.Intent
 import semmle.code.java.frameworks.android.Android
 import semmle.code.java.dataflow.DataFlow
@@ -29,29 +63,30 @@ import semmle.code.java.dataflow.ExternalFlow
 import semmle.code.xml.AndroidManifest
 import semmle.code.java.dataflow.TaintTracking
 
-class MyTaintTrackingConfiguration extends TaintTracking::Configuration {
-  MyTaintTrackingConfiguration() { this = "MyTaintTrackingConfiguration" }
+class StartComponentConfiguration extends DataFlow::Configuration {
+  StartComponentConfiguration() { this = "StartComponentConfiguration" }
 
+  // TODO: Override `isSource` and `isSink`.
   override predicate isSource(DataFlow::Node source) {
-    // exists(AndroidActivityXmlElement andActXmlElem |
-    //   andActXmlElem.hasDeepLink() and
-    //   source.asExpr() instanceof TypeActivity
-    //   )
-    source instanceof RemoteFlowSource and //AndroidIntentInput
-    exists(AndroidComponent andComp |
-      andComp.getAndroidComponentXmlElement().(AndroidActivityXmlElement).hasDeepLink() and
-      source.asExpr().getFile() = andComp.getFile() // ! ugly, see if better way to do this
+    exists(ClassInstanceExpr classInstanceExpr |
+      classInstanceExpr.getConstructedType() instanceof TypeIntent and
+      source.asExpr() = classInstanceExpr
     )
   }
 
   override predicate isSink(DataFlow::Node sink) {
-    exists(MethodAccess m |
-      m.getMethod().hasName("getIntent") and
-      sink.asExpr() = m
+    exists(MethodAccess startActivity |
+      (
+        startActivity.getMethod().overrides*(any(ContextStartActivityMethod m)) or
+        startActivity.getMethod().overrides*(any(ActivityStartActivityMethod m))
+      ) and
+      sink.asExpr() = startActivity.getArgument(0)
     )
   }
 }
 
-from DataFlow::Node src, DataFlow::Node sink, MyTaintTrackingConfiguration config
-where config.hasFlow(src, sink)
-select src, "This environment variable constructs a URL $@.", sink, "here"
+from DataFlow::Node src, DataFlow::Node sink, StartComponentConfiguration config
+where
+  config.hasFlow(src, sink) and
+  sink.asExpr().getFile().getBaseName() = "MainActivity.java" // ! just for faster testing, remove when done
+select src, "This source flows to this $@.", sink, "sink"

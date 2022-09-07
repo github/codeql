@@ -1,9 +1,11 @@
 import java
 private import semmle.code.java.dataflow.DataFlow
+//private import semmle.code.java.dataflow.DataFlow2
 private import semmle.code.java.dataflow.ExternalFlow
 private import semmle.code.java.dataflow.FlowSteps
+private import semmle.code.java.frameworks.android.DeepLink
 
-// ! Remember to add 'private' annotation as needed to all new classes/predicates below.
+// ! Remember to add 'private' annotation as needed to new classes/predicates below.
 // ! and clean-up comments, etc. in below in general...
 /**
  * The class `android.content.Intent`.
@@ -119,24 +121,31 @@ class ContextStartActivityMethod extends Method {
   }
 }
 
-// ! finish QLDoc
+// ! maybe reword below QLDoc?
 /**
- * The method `Activity.startActivity` or ...
+ * The method `Activity.startActivity`,`startActivities`,
+ * `startActivityForResult`, `startActivityIfNeeded`,
+ * `startNextMatchingActivity`, `startActivityFromChild`,
+ * or `startActivityFromFragment`.
  */
 class ActivityStartActivityMethod extends Method {
   ActivityStartActivityMethod() {
-    // ! captures all `startAct` methods in the Activity class
-    this.getName().matches("start%Activit%") and // ! better to list all instead of using matches for any reason?
+    this.getName().matches("start%Activit%") and
     this.getDeclaringType() instanceof TypeActivity
   }
 }
 
+// ! maybe reword below QLDoc?
 /**
- * The method `Context.sendBroadcast`.
+ * The method `Context.sendBroadcast`, `sendBroadcastAsUser`,
+ * `sendOrderedBroadcast`, `sendOrderedBroadcastAsUser`,
+ * `sendStickyBroadcast`, `sendStickyBroadcastAsUser`,
+ * `sendStickyOrderedBroadcast`, `sendStickyOrderedBroadcastAsUser`,
+ * or `sendBroadcastWithMultiplePermissions`.
  */
 class ContextSendBroadcastMethod extends Method {
   ContextSendBroadcastMethod() {
-    this.getName().matches("send%Broadcast%") and // ! Note to self: matches the 9 sendBroadcast methods
+    this.getName().matches("send%Broadcast%") and
     this.getDeclaringType() instanceof TypeContext
   }
 }
@@ -322,7 +331,7 @@ class StartActivityIntentStep extends AdditionalValueStep {
   override predicate step(DataFlow::Node n1, DataFlow::Node n2) {
     exists(MethodAccess startActivity, MethodAccess getIntent, ClassInstanceExpr newIntent |
       (
-        // ! is there a better way to do this?
+        // ! look for better way to handle the below
         startActivity.getMethod().overrides*(any(ContextStartActivityMethod m)) or
         startActivity.getMethod().overrides*(any(ActivityStartActivityMethod m))
       ) and
@@ -331,10 +340,6 @@ class StartActivityIntentStep extends AdditionalValueStep {
       DataFlow::localExprFlow(newIntent, getStartActivityIntentArg(startActivity)) and
       getIntentConstructorClassArg(newIntent).getType().(ParameterizedType).getATypeArgument() =
         getIntent.getReceiverType() and
-      // ! below uses predicate `getArgumentByType` that I added to the Expr.qll lib, prbly should not add new predicate there.
-      // argType.getName().matches("Class<%>") and
-      // newIntent.getArgumentByType(argType).getType().(ParameterizedType).getATypeArgument() =
-      //   getIntent.getReceiverType() and
       n1.asExpr() = getStartActivityIntentArg(startActivity) and
       n2.asExpr() = getIntent
     )

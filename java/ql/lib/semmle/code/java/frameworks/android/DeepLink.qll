@@ -5,7 +5,9 @@ private import semmle.code.java.frameworks.android.Intent
 //private import semmle.code.java.frameworks.android.AsyncTask
 private import semmle.code.java.frameworks.android.Android
 private import semmle.code.java.dataflow.DataFlow
+//private import semmle.code.java.dataflow.DataFlow2
 private import semmle.code.java.dataflow.FlowSteps
+//private import semmle.code.java.dataflow.FlowSources
 //private import semmle.code.java.dataflow.ExternalFlow
 //private import semmle.code.java.dataflow.TaintTracking
 private import semmle.code.xml.AndroidManifest
@@ -37,31 +39,71 @@ private class DeepLinkIntentStep extends AdditionalValueStep {
     ) and
     exists(AndroidComponent andComp |
       andComp.getAndroidComponentXmlElement().(AndroidActivityXmlElement).hasDeepLink() and
-      n1.asExpr().getFile() = andComp.getFile() // ! ugly, see if better way to do this
+      n1.asExpr().getFile() = andComp.getFile() // ! see if better way to do this
     )
   }
 }
 
-// ! experimentation with global flow issue - REMOVE
-/**
- * A value-preserving step from the Intent variable
- * the `Intent` Parameter in the `startActivity`.
- */
-class IntentVariableToStartActivityStep extends AdditionalValueStep {
-  override predicate step(DataFlow::Node n1, DataFlow::Node n2) {
-    exists(MethodAccess startActivity, Variable intentTypeTest |
+// // ! experimentation with global flow issue - REMOVE
+// /**
+//  * A value-preserving step from the Intent variable
+//  * the `Intent` Parameter in the `startActivity`.
+//  */
+// class IntentVariableToStartActivityStep extends AdditionalValueStep {
+//   override predicate step(DataFlow::Node n1, DataFlow::Node n2) {
+//     exists(
+//       MethodAccess startActivity, Variable intentTypeTest, DataFlow2::Node source,
+//       DataFlow2::Node sink //ClassInstanceExpr intentTypeTest  |
+//     |
+//       (
+//         startActivity.getMethod().overrides*(any(ContextStartActivityMethod m)) or
+//         startActivity.getMethod().overrides*(any(ActivityStartActivityMethod m))
+//       ) and
+//       intentTypeTest.getType() instanceof TypeIntent and // Variable
+//       //intentTypeTest.getConstructedType() instanceof TypeIntent and // ClassInstanceExpr
+//       startActivity.getFile().getBaseName() = "MainActivity.java" and // ! REMOVE - for testing only
+//       //exists(StartComponentConfiguration cfg | cfg.hasFlow(source, sink)) and // GLOBAL FLOW ATTEMPT
+//       DataFlow::localExprFlow(intentTypeTest.getInitializer(), startActivity.getArgument(0)) and // Variable - gives 5 results - misses the 1st ProfileActivity result since no variable with that one
+//       //DataFlow::localExprFlow(intentTypeTest, startActivity.getArgument(0)) and // ClassInstanceExpr
+//       n1.asExpr() = intentTypeTest.getInitializer() and // Variable
+//       //n1.asExpr() = intentTypeTest and // ClassInstanceExpr
+//       n2.asExpr() = startActivity.getArgument(0) // ! switch to getStartActivityIntentArg(startActivity)
+//     )
+//   }
+// }
+// ! rename?
+// ! below works as intended when run by itself (see latest query in AndroidDeeplinks_RemoteSources.ql),
+// ! but not when combined with existing flow steps (non-monotonic recursion)
+// ! need to figure out how to combine, or wrap all in global flow?
+class StartComponentConfiguration extends DataFlow::Configuration {
+  StartComponentConfiguration() { this = "StartComponentConfiguration" }
+
+  // Override `isSource` and `isSink`.
+  override predicate isSource(DataFlow::Node source) {
+    exists(ClassInstanceExpr classInstanceExpr |
+      classInstanceExpr.getConstructedType() instanceof TypeIntent and
+      source.asExpr() = classInstanceExpr
+    )
+  }
+
+  override predicate isSink(DataFlow::Node sink) {
+    exists(MethodAccess startActivity |
+      // ! need to handle for all components, not just Activity
       (
-        // ! is there a better way to do this?
         startActivity.getMethod().overrides*(any(ContextStartActivityMethod m)) or
         startActivity.getMethod().overrides*(any(ActivityStartActivityMethod m))
       ) and
-      intentTypeTest.getType() instanceof TypeIntent and
-      //startActivity.getFile().getBaseName() = "MainActivity.java" and // ! REMOVE
-      DataFlow::localExprFlow(intentTypeTest.getInitializer(), startActivity.getArgument(0)) and
-      n1.asExpr() = intentTypeTest.getInitializer() and
-      n2.asExpr() = startActivity.getArgument(0) // ! switch to getStartActivityIntentArg(startActivity)
+      sink.asExpr() = startActivity.getArgument(0)
     )
   }
+  // Optionally override `isBarrier`.
+  // Optionally override `isAdditionalFlowStep`.
+  //   Then, to query whether there is flow between some `source` and `sink`,
+  //  write
+  //
+  //  ```ql
+  //  exists(MyAnalysisConfiguration cfg | cfg.hasFlow(source, sink))
+  //  ```
 }
 
 /* *********************  INTENT METHODS, E.G. parseUri, getData, getExtras, etc. ********************* */
@@ -95,61 +137,8 @@ class AndroidGetDataMethod extends Method {
  */
 class AndroidParseUriMethod extends Method {
   AndroidParseUriMethod() {
-    (this.hasName("parseUri") or this.hasName("getIntent")) and // ! Note to self: getIntent for older versions before deprecation to parseUri
+    // ! Note to self: getIntent for older versions before deprecation to parseUri
+    (this.hasName("parseUri") or this.hasName("getIntent")) and
     this.getDeclaringType() instanceof TypeIntent
   }
 }
-// /**
-//  * A taint step from the Intent argument of a `startActivity` call to
-//  * a `Intent.parseUri` call in the Activity the Intent pointed to in its constructor.
-//  */
-// private class StartActivityParseUriStep extends AdditionalTaintStep {
-//   override predicate step(DataFlow::Node n1, DataFlow::Node n2) {
-//     exists(MethodAccess startActivity, MethodAccess parseUri, ClassInstanceExpr newIntent |
-//       startActivity.getMethod().overrides*(any(ContextStartActivityMethod m)) and
-//       parseUri.getMethod().overrides*(any(AndroidParseUriMethod m)) and
-//       newIntent.getConstructedType() instanceof TypeIntent and
-//       DataFlow::localExprFlow(newIntent, startActivity.getArgument(0)) and
-//       newIntent.getArgument(1).getType().(ParameterizedType).getATypeArgument() =
-//         parseUri.getReceiverType() and
-//       n1.asExpr() = startActivity.getArgument(0) and
-//       n2.asExpr() = parseUri
-//     )
-//   }
-// }
-// /**
-//  * A taint step from the Intent argument of a `startActivity` call to
-//  * a `Intent.get%Extra%` call in the Activity the Intent pointed to in its constructor.
-//  */
-// private class StartActivityGetDataStep extends AdditionalTaintStep {
-//   override predicate step(DataFlow::Node n1, DataFlow::Node n2) {
-//     exists(MethodAccess startActivity, MethodAccess getData, ClassInstanceExpr newIntent |
-//       startActivity.getMethod().overrides*(any(ContextStartActivityMethod m)) and
-//       getData.getMethod().overrides*(any(AndroidGetDataMethod m)) and
-//       newIntent.getConstructedType() instanceof TypeIntent and
-//       DataFlow::localExprFlow(newIntent, startActivity.getArgument(0)) and
-//       newIntent.getArgument(1).getType().(ParameterizedType).getATypeArgument() =
-//         getData.getReceiverType() and
-//       n1.asExpr() = startActivity.getArgument(0) and
-//       n2.asExpr() = getData
-//     )
-//   }
-// }
-// /**
-//  * A taint step from the Intent argument of a `startActivity` call to
-//  * a `Intent.getData` call in the Activity the Intent pointed to in its constructor.
-//  */
-// private class StartActivityGetExtrasStep extends AdditionalTaintStep {
-//   override predicate step(DataFlow::Node n1, DataFlow::Node n2) {
-//     exists(MethodAccess startActivity, MethodAccess getExtras, ClassInstanceExpr newIntent |
-//       startActivity.getMethod().overrides*(any(ContextStartActivityMethod m)) and
-//       getExtras.getMethod().overrides*(any(AndroidGetExtrasMethod m)) and
-//       newIntent.getConstructedType() instanceof TypeIntent and
-//       DataFlow::localExprFlow(newIntent, startActivity.getArgument(0)) and
-//       newIntent.getArgument(1).getType().(ParameterizedType).getATypeArgument() =
-//         getExtras.getReceiverType() and
-//       n1.asExpr() = startActivity.getArgument(0) and
-//       n2.asExpr() = getExtras
-//     )
-//   }
-// }
