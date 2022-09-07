@@ -526,8 +526,14 @@ open class KotlinFileExtractor(
         }
     }
 
+    /**
+     * This function traverses the declaration-parent hierarchy upwards, and retrieves the enclosing class of a class to extract the `enclInReftype` relation.
+     * Additionally, it extracts a companion field for a companion object into its parent class.
+     *
+     * Note that the nested class can also be a local class declared inside a function, so the upwards traversal is skipping the non-class parents. Also, in some cases the file class is the enclosing one, which has no IR representation.
+     */
     private fun extractEnclosingClass(
-        declarationParent: IrDeclarationParent,             // The declaration parent if the element for which we are extracting the enclosing class
+        declarationParent: IrDeclarationParent,             // The declaration parent of the element for which we are extracting the enclosing class
         innerId: Label<out DbClassorinterface>,             // ID of the inner class
         innerClass: IrClass?,                               // The inner class, if available. It's not available if the enclosing class of a generated class is being extracted
         innerLocId: Label<DbLocation>,                      // Location of the inner class
@@ -544,7 +550,7 @@ open class KotlinFileExtractor(
                             useClassInstance(parent, parentClassTypeArguments).typeResult.id
                         }
                     tw.writeEnclInReftype(innerId, parentId)
-                    if (innerClass is IrClass && innerClass.isCompanion) {
+                    if (innerClass != null && innerClass.isCompanion) {
                         // If we are a companion then our parent has a
                         //     public static final ParentClass$CompanionObjectClass CompanionObjectName;
                         // that we need to fabricate here
@@ -561,7 +567,7 @@ open class KotlinFileExtractor(
 
                     break
                 } else if (parent is IrFile) {
-                    if (innerClass is IrClass) {
+                    if (innerClass != null) {
                         // We don't have to extract file class containers for classes
                         break
                     }
