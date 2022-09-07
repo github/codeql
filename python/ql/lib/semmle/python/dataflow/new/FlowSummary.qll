@@ -8,7 +8,7 @@ private import internal.DataFlowPrivate
 
 // import all instances below
 private module Summaries {
-  // private import TestSummaries
+  private import semmle.python.Frameworks
 }
 
 class SummaryComponent = Impl::Public::SummaryComponent;
