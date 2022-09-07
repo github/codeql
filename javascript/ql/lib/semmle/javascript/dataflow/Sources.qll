@@ -11,6 +11,11 @@ private import semmle.javascript.dataflow.TypeTracking
 private import semmle.javascript.internal.CachedStages
 
 /**
+ * An alias for `SourceNode`.
+ */
+class LocalSourceNode = SourceNode;
+
+/**
  * A source node for local data flow, that is, a node from which local data flow is tracked.
  *
  * This includes function invocations, parameters, object creation, and references to a property or global variable.
