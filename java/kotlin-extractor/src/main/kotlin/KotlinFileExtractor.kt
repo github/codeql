@@ -83,7 +83,7 @@ open class KotlinFileExtractor(
             }
 
             file.declarations.forEach { extractDeclaration(it, extractPrivateMembers = true, extractFunctionBodies = true) }
-            extractStaticInitializer(file, null)
+            extractStaticInitializer(file, { extractFileClass(file) })
             CommentExtractor(this, file, tw.fileId).extract()
         }
     }
@@ -423,7 +423,7 @@ open class KotlinFileExtractor(
                 if (extractDeclarations) {
                     c.declarations.forEach { extractDeclaration(it, extractPrivateMembers = extractPrivateMembers, extractFunctionBodies = extractFunctionBodies) }
                     if (extractStaticInitializer)
-                        extractStaticInitializer(c, id)
+                        extractStaticInitializer(c, { id })
                     extractJvmStaticProxyMethods(c, id, extractPrivateMembers, extractFunctionBodies)
                 }
                 if (c.isNonCompanionObject) {
@@ -638,13 +638,18 @@ open class KotlinFileExtractor(
         return type
     }
 
-    private fun extractStaticInitializer(container: IrDeclarationContainer, classLabel: Label<out DbClassorinterface>?) {
+    /**
+     * mkContainerLabel is a lambda so that we get laziness: If the
+     * container is a file, then we don't want to extract the file class
+     * unless something actually needs it.
+     */
+    private fun extractStaticInitializer(container: IrDeclarationContainer, mkContainerLabel: () -> Label<out DbClassorinterface>) {
         with("static initializer extraction", container) {
             extractDeclInitializers(container.declarations, true) {
-                val parentId = classLabel ?: extractFileClass(container as IrFile)
+                val containerId = mkContainerLabel()
                 val clinitLabel = getFunctionLabel(
                     container,
-                    parentId,
+                    containerId,
                     "<clinit>",
                     listOf(),
                     pluginContext.irBuiltIns.unitType,
@@ -657,7 +662,7 @@ open class KotlinFileExtractor(
                 )
                 val clinitId = tw.getLabelFor<DbMethod>(clinitLabel)
                 val returnType = useType(pluginContext.irBuiltIns.unitType, TypeContext.RETURN)
-                tw.writeMethods(clinitId, "<clinit>", "<clinit>()", returnType.javaResult.id, parentId, clinitId)
+                tw.writeMethods(clinitId, "<clinit>", "<clinit>()", returnType.javaResult.id, containerId, clinitId)
                 tw.writeMethodsKotlinType(clinitId, returnType.kotlinResult.id)
 
                 tw.writeCompiler_generated(clinitId, CompilerGeneratedKinds.CLASS_INITIALISATION_METHOD.kind)
