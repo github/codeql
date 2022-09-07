@@ -101,6 +101,7 @@ express().get('/foo', function (req, res) {
 
 express().get('/foo', function (req, res) {
     let data = req.query.data;
+    data.indexOf(); // NOT OK
     if (Array.isArray(data)) {
         data.indexOf(); // OK
     } else {
