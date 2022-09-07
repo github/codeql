@@ -226,10 +226,9 @@ module ActionView {
    */
   module Helpers {
     /**
-     * Calls to ActionView helpers which render their argument without escaping.
-     * These arguments should be treated as XSS sinks.
-     * In the documentation for classes in this module, the vulnerable argument is
-     * named `x`.
+     * A call to ActionView helpers which renders its argument without escaping.
+     * The argument should be treated as an XSS sink. In the documentation for
+     * classes in this module, the vulnerable argument is named `x`.
      */
     abstract class RawHelperCall extends MethodCall {
       abstract Expr getRawArgument();
