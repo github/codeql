@@ -1785,13 +1785,35 @@ open class KotlinFileExtractor(
                     return
                 }
 
-                val func = ((c.getTypeArgument(0) as? IrSimpleType)?.classifier?.owner as? IrClass)?.declarations?.findSubType<IrFunction> { it.name.asString() == fnName }
-                if (func == null) {
-                    logger.errorElement("Couldn't find function $fnName on enum type", c)
+                val enumType = (c.getTypeArgument(0) as? IrSimpleType)?.classifier?.owner
+                if (enumType == null) {
+                    logger.errorElement("Couldn't find type of enum type", c)
                     return
                 }
 
-                extractMethodAccess(func, false)
+                if (enumType is IrClass) {
+                    val func = enumType.declarations.findSubType<IrFunction> { it.name.asString() == fnName }
+                    if (func == null) {
+                        logger.errorElement("Couldn't find function $fnName on enum type", c)
+                        return
+                    }
+
+                    extractMethodAccess(func, false)
+                } else if (enumType is IrTypeParameter && enumType.isReified) {
+                    // A call to `enumValues<T>()` is being extracted, where `T` is a reified type parameter of an `inline` function.
+                    // We can't generate a valid expression here, because we would need to know the type of T on the call site.
+                    // TODO: replace error expression with something that better shows this expression is unrepresentable.
+                    val id = tw.getFreshIdLabel<DbErrorexpr>()
+                    val type = useType(c.type)
+
+                    tw.writeExprs_errorexpr(id, type.javaResult.id, parent, idx)
+                    tw.writeExprsKotlinType(id, type.kotlinResult.id)
+                    tw.writeHasLocation(id, tw.getLocation(c))
+                    tw.writeCallableEnclosingExpr(id, callable)
+                    tw.writeStatementEnclosingExpr(id, enclosingStmt)
+                } else {
+                    logger.errorElement("Unexpected enum type rep ${enumType.javaClass}", c)
+                }
             }
 
             fun binopReceiver(id: Label<out DbExpr>, receiver: IrExpression?, receiverDescription: String) {
