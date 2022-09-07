@@ -14,6 +14,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.CancellationSignal;
 import android.os.RemoteException;
+import androidx.core.app.AlarmManagerCompat;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.core.graphics.drawable.IconCompat;
 import androidx.slice.Slice;
 import androidx.slice.SliceProvider;
@@ -182,7 +184,7 @@ public class ImplicitPendingIntentsTest {
             Notification.Builder nBuilder =
                     new Notification.Builder(ctx).addAction(aBuilder.build());
             Notification notification = nBuilder.build();
-            NotificationManager nManager = new NotificationManager();
+            NotificationManager nManager = null;
             nManager.notifyAsPackage("targetPackage", "tag", 0, notification); // $hasImplicitPendingIntent
             nManager.notify(0, notification); // $hasImplicitPendingIntent
             nManager.notifyAsUser("", 0, notification, null); // $hasImplicitPendingIntent
@@ -195,7 +197,7 @@ public class ImplicitPendingIntentsTest {
             Notification.Builder nBuilder =
                     new Notification.Builder(ctx).addAction(aBuilder.build());
             Notification notification = nBuilder.build();
-            NotificationManager nManager = new NotificationManager();
+            NotificationManager nManager = null;
             nManager.notify(0, notification); // Safe
         }
         {
@@ -212,10 +214,21 @@ public class ImplicitPendingIntentsTest {
             Notification.Action action = new Notification.Action(0, "", pi2);
             Notification.Builder nBuilder = new Notification.Builder(ctx).addAction(action);
             Notification notification = nBuilder.build();
-            NotificationManager noMan = new NotificationManager();
+            NotificationManager noMan = null;
             noMan.notify(0, notification); // Safe
         }
-
+        // Compat sinks
+        {
+            Intent baseIntent = new Intent();
+            PendingIntent pi = PendingIntent.getActivity(ctx, 0, baseIntent, 0);
+            Notification.Action.Builder aBuilder = new Notification.Action.Builder(0, "", pi);
+            Notification.Builder nBuilder =
+                    new Notification.Builder(ctx).addAction(aBuilder.build());
+            Notification notification = nBuilder.build();
+            NotificationManagerCompat nManager = null;
+            nManager.notify(0, notification); // $hasImplicitPendingIntent
+            nManager.notify("", 0, notification); // $hasImplicitPendingIntent
+        }
     }
 
     public static void testPendingIntentInAnAlarm(Context ctx) {
@@ -237,6 +250,16 @@ public class ImplicitPendingIntentsTest {
             PendingIntent pi =
                     PendingIntent.getActivity(ctx, 0, baseIntent, PendingIntent.FLAG_IMMUTABLE); // Sanitizer
             aManager.set(0, 0, pi); // Safe
+        }
+        // Compat sinks
+        {
+            Intent baseIntent = new Intent();
+            PendingIntent pi = PendingIntent.getActivity(ctx, 0, baseIntent, 0);
+            AlarmManagerCompat.setAlarmClock(aManager, 0, pi, null); // $hasImplicitPendingIntent
+            AlarmManagerCompat.setAlarmClock(aManager, 0, null, pi); // $hasImplicitPendingIntent
+            AlarmManagerCompat.setAndAllowWhileIdle(aManager, 0, 0, pi); // $hasImplicitPendingIntent
+            AlarmManagerCompat.setExact(aManager, 0, 0, pi); // $hasImplicitPendingIntent
+            AlarmManagerCompat.setExactAndAllowWhileIdle(aManager, 0, 0, pi); // $hasImplicitPendingIntent
         }
     }
 
