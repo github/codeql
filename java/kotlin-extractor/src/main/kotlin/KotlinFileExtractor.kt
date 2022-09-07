@@ -2414,8 +2414,11 @@ open class KotlinFileExtractor(
         }
 
         val typeAccessType = if (isAnonymous) {
-            val c = eType.classifier.owner as IrClass
-            if (c.superTypes.size == 1) {
+            val c = eType.classifier.owner
+            if (c !is IrClass) {
+                logger.warnElement("Anonymous type not a class (${c.javaClass})", e)
+            }
+            if ((c as? IrClass)?.superTypes?.size == 1) {
                 useType(c.superTypes.first())
             } else {
                 useType(pluginContext.irBuiltIns.anyType)
