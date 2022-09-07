@@ -1795,6 +1795,7 @@ open class KotlinFileExtractor(
                 } else if (enumType is IrTypeParameter && enumType.isReified) {
                     // A call to `enumValues<T>()` is being extracted, where `T` is a reified type parameter of an `inline` function.
                     // We can't generate a valid expression here, because we would need to know the type of T on the call site.
+                    // TODO: replace error expression with something that better shows this expression is unrepresentable.
                     val id = tw.getFreshIdLabel<DbErrorexpr>()
                     val type = useType(c.type)
 
