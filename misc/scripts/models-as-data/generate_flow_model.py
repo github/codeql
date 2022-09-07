@@ -20,7 +20,7 @@ class Generator:
 
     def printHelp(self):
         print(f"""Usage:
-python3 GenerateFlowModel.py <library-database> <outputQll> [--with-sinks] [--with-sources] [--with-summaries] [--dry-run]
+python3 GenerateFlowModel.py <library-database> <outputQll> [<friendlyFrameworkName>] [--with-sinks] [--with-sources] [--with-summaries] [--dry-run]
 
 This generates summary, source and sink models for the code in the database.
 The files will be placed in `{self.language}/ql/lib/semmle/code/{self.language}/frameworks/<outputQll>` where
@@ -39,18 +39,23 @@ If none of these flags are specified, all models are generated.
 
 Example invocations:
 $ python3 GenerateFlowModel.py /tmp/dbs/my_library_db "mylibrary/Framework.qll"
+$ python3 GenerateFlowModel.py /tmp/dbs/my_library_db "mylibrary/Framework.qll" "Friendly Name of Framework"
 $ python3 GenerateFlowModel.py /tmp/dbs/my_library_db "mylibrary/FrameworkSinks.qll" --with-sinks
 
 Requirements: `codeql` should both appear on your path.
     """)
 
 
-    def setenvironment(self, target, database):
+    def setenvironment(self, target, database, friendlyName):
         self.codeQlRoot = subprocess.check_output(["git", "rev-parse", "--show-toplevel"]).decode("utf-8").strip()
         if not target.endswith(".qll"):
             target += ".qll"
         filename = os.path.basename(target)
         dirname = os.path.dirname(target)
+        if friendlyName is not None:
+            self.friendlyname = friendlyName
+        else:
+            self.friendlyname = filename[:-4]
         self.shortname = filename[:-4]
         self.database = database
         self.generatedFrameworks = os.path.join(
@@ -92,11 +97,15 @@ Requirements: `codeql` should both appear on your path.
         if not generator.generateSinks and not generator.generateSources and not generator.generateSummaries and not generator.generateNegativeSummaries:
             generator.generateSinks = generator.generateSources = generator.generateSummaries = generator.generateNegativeSummaries = True
 
-        if len(sys.argv) != 3:
+        if len(sys.argv) < 3 or len(sys.argv) > 4:
             generator.printHelp()
             sys.exit(1)
-        
-        generator.setenvironment(sys.argv[2], sys.argv[1])
+
+        friendlyName = None
+        if len(sys.argv) == 4:
+            friendlyName = sys.argv[3]
+
+        generator.setenvironment(sys.argv[2], sys.argv[1], friendlyName)
         return generator
 
 
@@ -178,7 +187,7 @@ private class {0}{1}Csv extends {2} {{
         return f"""
 /** 
  * THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
- * Definitions of taint steps in the {self.shortname} framework.
+ * Definitions of taint steps in the {self.friendlyname} framework.
  */
 
 import {self.language}
@@ -200,7 +209,7 @@ private import semmle.code.{self.language}.dataflow.ExternalFlow
         return f"""
 /** 
  * THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
- * Definitions of negative summaries in the {self.shortname} framework.
+ * Definitions of negative summaries in the {self.friendlyname} framework.
  */
 
 import {self.language}
