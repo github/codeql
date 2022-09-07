@@ -1,5 +1,25 @@
 /**
  * Provides Python specific classes and predicates for defining flow summaries.
+ *
+ * Flow summaries are defined for callables that are not extracted.
+ * Such callables go by different names in different parts of our codebase:
+ *
+ * - in `FlowSummary.qll`, which is user facing, they are called `SummarizedCallable`s.
+ *   These contain summaries, implemented by the user via the predicates `propagatesFlow` and `propagatesFlowExt`.
+ *
+ * - in the data flow layer, they are called `LibraryCallable`s (as in the Ruby codebase).
+ *   These are identified by strings and has predicates for finding calls to them.
+ *
+ * Having both extracted and non-extracted callables means that we now have three types of calls:
+ * - Extracted calls to extracted callables, either `NonLibraryNormalCall` or `SpecialCall`. These are handled by standard data flow.
+ * - Extracted calls to non-extracted callables, `LibraryCall`. These are handled by summaries.
+ * - Non-extracted calls, `SummaryCall`. These are synthesised by the flow summary framework.
+ *
+ * The first two can be referred to as `DataFlowSourceCall`. They have been split up for the benefit of call resolutiuon.
+ * Resolving a call to a non-extracted callable goes via `LibraryCallable::getACall`, which may involve type tracking.
+ * To avoid that type tracking becomes mutualy recursive with data flow, type tracking must use a call graph not including summaries.
+ *
+ * We do not support summaries of special methods.
  */
 
 private import python
