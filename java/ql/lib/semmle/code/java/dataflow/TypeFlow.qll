@@ -337,7 +337,7 @@ private predicate exactTypeBase(TypeFlowNode n, RefType t) {
     n.asExpr() = e and
     e.getType() = t and
     not e instanceof FunctionalExpr and
-    exists(RefType sub | sub.getASourceSupertype() = t.getSourceDeclaration())
+    exists(SrcRefType sub | sub.getASourceSupertype() = t.getSourceDeclaration())
   )
 }
 
@@ -384,17 +384,23 @@ private predicate upcastCand(TypeFlowNode n, RefType t1, RefType t1e, RefType t2
   )
 }
 
+private predicate unconstrained(BoundedType t) {
+  t.(Wildcard).isUnconstrained()
+  or
+  t.(BoundedType).getUpperBoundType() instanceof TypeObject and
+  not t.(Wildcard).hasLowerBound()
+  or
+  unconstrained(t.(BoundedType).getUpperBoundType())
+  or
+  unconstrained(t.(Wildcard).getLowerBoundType())
+}
+
 /** Holds if `t` is a raw type or parameterised type with unrestricted type arguments. */
 private predicate unbound(RefType t) {
   t instanceof RawType
   or
   exists(ParameterizedType pt | pt = t |
-    forex(RefType arg | arg = pt.getATypeArgument() |
-      arg.(Wildcard).isUnconstrained()
-      or
-      arg.(BoundedType).getUpperBoundType() instanceof TypeObject and
-      not arg.(Wildcard).hasLowerBound()
-    )
+    forex(RefType arg | arg = pt.getATypeArgument() | unconstrained(arg))
   )
 }
 
@@ -492,9 +498,10 @@ predicate arrayInstanceOfGuarded(ArrayAccess aa, RefType t) {
 
 /**
  * Holds if `n` has type `t` and this information is discarded, such that `t`
- * might be a better type bound for nodes where `n` flows to.
+ * might be a better type bound for nodes where `n` flows to. This might include
+ * multiple bounds for a single node.
  */
-private predicate typeFlowBase(TypeFlowNode n, RefType t) {
+private predicate typeFlowBaseCand(TypeFlowNode n, RefType t) {
   exists(RefType srctype |
     upcast(n, srctype) or
     upcastEnhancedForStmt(n.asSsa(), srctype) or
@@ -506,6 +513,26 @@ private predicate typeFlowBase(TypeFlowNode n, RefType t) {
     t = srctype.(BoundedType).getAnUltimateUpperBoundType()
     or
     t = srctype and not srctype instanceof BoundedType
+  )
+}
+
+/**
+ * Holds if `n` has type `t` and this information is discarded, such that `t`
+ * might be a better type bound for nodes where `n` flows to. This only includes
+ * the best such bound for each node.
+ */
+private predicate typeFlowBase(TypeFlowNode n, RefType t) {
+  exists(RefType te |
+    typeFlowBaseCand(n, t) and
+    te = t.getErasure() and
+    not exists(RefType better |
+      typeFlowBaseCand(n, better) and
+      better != t and
+      not t.getASupertype+() = better
+    |
+      better.getASupertype+() = t or
+      better.getErasure().(RefType).getASourceSupertype+() = te
+    )
   )
 }
 
