@@ -29,46 +29,58 @@
 #-----|  -> Object
 
 calls.rb:
-#   15| M
+#   21| M
 
-#   29| C
+#   35| C
 #-----|  -> Object
 
-#   51| D
+#   57| D
 #-----|  -> C
 
-#   77| Integer
+#   83| Integer
 #-----|  -> Numeric
 
-#   82| String
+#   88| String
 #-----|  -> Object
 
-#   86| Kernel
+#   92| Kernel
 
-#   90| Module
+#   97| Module
 #-----|  -> Object
 
-#   97| Object
+#  104| Object
 #-----|  -> BasicObject
 
-#  102| Hash
+#  109| Hash
 #-----|  -> Object
 
-#  106| Array
+#  114| Array
 #-----|  -> Object
 
-#  144| S
+#  154| S
 #-----|  -> Object
 
-#  150| A
+#  160| A
 #-----|  -> B
 #-----|  -> S
 
-#  155| B
+#  165| B
 #-----|  -> S
 
-#  169| Singletons
+#  179| Singletons
 #-----|  -> Object
+
+#  299| SelfNew
+#-----|  -> Object
+
+#  313| C1
+#-----|  -> Object
+
+#  319| C2
+#-----|  -> C1
+
+#  325| C3
+#-----|  -> C2
 
 hello.rb:
 #    1| EnglishWords
