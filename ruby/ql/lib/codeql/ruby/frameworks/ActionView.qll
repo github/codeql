@@ -38,7 +38,7 @@ private class ActionViewHtmlSafeCall extends HtmlSafeCall {
  */
 abstract class HtmlEscapeCall extends MethodCall {
   // "h" is aliased to "html_escape" in ActiveSupport
-  HtmlEscapeCall() { this.getMethodName() = ["html_escape", "html_escape_once", "h"] }
+  HtmlEscapeCall() { this.getMethodName() = ["html_escape", "html_escape_once", "h", "sanitize"] }
 }
 
 /**

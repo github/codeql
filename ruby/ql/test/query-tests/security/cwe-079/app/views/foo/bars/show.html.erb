@@ -75,3 +75,6 @@
 
 <%# BAD: javasript_include_tag called with remote input %>
 <%= javascript_include_tag params[:url] %>
+
+<%# GOOD: input is sanitized %>
+<%= sanitize(params[:comment]).html_safe %>
