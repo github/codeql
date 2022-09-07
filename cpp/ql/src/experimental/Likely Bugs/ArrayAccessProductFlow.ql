@@ -24,10 +24,7 @@ class ArraySizeConfiguration extends ProductFlow::Configuration {
   ArraySizeConfiguration() { this = "ArraySizeConfiguration" }
 
   override predicate isSourcePair(DataFlow::Node source1, DataFlow::Node source2) {
-    exists(GVN sizeGvn |
-      source1.asConvertedExpr().(AllocationExpr).getSizeExpr() = sizeGvn.getAnExpr() and
-      source2.asConvertedExpr() = sizeGvn.getAnExpr()
-    )
+    source1.asConvertedExpr().(AllocationExpr).getSizeExpr() = source2.asConvertedExpr()
   }
 
   override predicate isSinkPair(DataFlow::Node sink1, DataFlow::Node sink2) {
