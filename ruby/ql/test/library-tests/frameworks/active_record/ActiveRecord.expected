@@ -16,6 +16,10 @@ activeRecordInstances
 | ActiveRecord.rb:56:7:56:40 | call to find_by |
 | ActiveRecord.rb:60:5:60:33 | call to find_by |
 | ActiveRecord.rb:62:5:62:34 | call to find |
+| ActiveRecord.rb:72:5:72:24 | call to create |
+| ActiveRecord.rb:76:5:76:66 | call to create |
+| ActiveRecord.rb:80:5:80:68 | call to create |
+| ActiveRecord.rb:84:5:84:16 | call to create |
 | associations.rb:19:1:19:20 | ... = ... |
 | associations.rb:19:1:19:20 | ... = ... |
 | associations.rb:19:11:19:20 | call to new |
@@ -168,6 +172,10 @@ activeRecordModelInstantiations
 | ActiveRecord.rb:56:7:56:40 | call to find_by | ActiveRecord.rb:5:1:15:3 | User |
 | ActiveRecord.rb:60:5:60:33 | call to find_by | ActiveRecord.rb:5:1:15:3 | User |
 | ActiveRecord.rb:62:5:62:34 | call to find | ActiveRecord.rb:5:1:15:3 | User |
+| ActiveRecord.rb:72:5:72:24 | call to create | ActiveRecord.rb:17:1:21:3 | Admin |
+| ActiveRecord.rb:76:5:76:66 | call to create | ActiveRecord.rb:17:1:21:3 | Admin |
+| ActiveRecord.rb:80:5:80:68 | call to create | ActiveRecord.rb:17:1:21:3 | Admin |
+| ActiveRecord.rb:84:5:84:16 | call to create | ActiveRecord.rb:17:1:21:3 | Admin |
 | associations.rb:19:11:19:20 | call to new | associations.rb:1:1:3:3 | Author |
 | associations.rb:21:9:21:21 | call to posts | associations.rb:5:1:9:3 | Post |
 | associations.rb:21:9:21:28 | call to create | associations.rb:5:1:9:3 | Post |
