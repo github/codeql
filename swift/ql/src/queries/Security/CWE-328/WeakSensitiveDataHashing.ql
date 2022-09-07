@@ -5,7 +5,7 @@
  * @problem.severity warning
  * @security-severity 7.5
  * @precision high
- * @id py/weak-sensitive-data-hashing
+ * @id swift/weak-sensitive-data-hashing
  * @tags security
  *       external/cwe/cwe-327
  *       external/cwe/cwe-328
