@@ -24,11 +24,8 @@ class ArraySizeConfiguration extends ProductFlow::Configuration {
   }
 
   override predicate isSinkPair(DataFlow::Node sink1, DataFlow::Node sink2) {
-    exists(PointerAddInstruction pai, Instruction index, Bound b, int delta |
-      pai.getRight() = index and
-      pai.getLeft() = sink1.asInstruction() and
-      bounded(index, b, delta, true) and
-      sink2.asInstruction() = b.getInstruction() and
+    exists(PointerAddInstruction pai, int delta |
+      isSinkPair1(sink1, sink2, pai, delta) and
       (
         delta = 0 and
         exists(DataFlow::Node paiNode, DataFlow::Node derefNode |
@@ -41,6 +38,18 @@ class ArraySizeConfiguration extends ProductFlow::Configuration {
       )
     )
   }
+}
+
+pragma[nomagic]
+predicate isSinkPair1(
+  DataFlow::Node sink1, DataFlow::Node sink2, PointerAddInstruction pai, int delta
+) {
+  exists(Instruction index, ValueNumberBound b |
+    pai.getRight() = index and
+    pai.getLeft() = sink1.asInstruction() and
+    bounded(index, b, delta, true) and
+    sink2.asInstruction() = b.getInstruction()
+  )
 }
 
 from
