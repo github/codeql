@@ -231,6 +231,9 @@ module ActionView {
      * classes in this module, the vulnerable argument is named `x`.
      */
     abstract class RawHelperCall extends MethodCall {
+      /**
+       * Get an argument which is rendered without escaping.
+       */
       abstract Expr getRawArgument();
     }
 
