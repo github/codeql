@@ -14137,6 +14137,30 @@ ir.cpp:
 # 1845|           Type = [Struct] B
 # 1845|           ValueCategory = lvalue
 # 1846|     getStmt(2): [ReturnStmt] return ...
+# 1849| [TopLevelFunction] void magicvars()
+# 1849|   <params>: 
+# 1849|   getEntryPoint(): [BlockStmt] { ... }
+# 1850|     getStmt(0): [DeclStmt] declaration
+# 1850|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of pf
+# 1850|           Type = [PointerType] const char *
+# 1850|         getVariable().getInitializer(): [Initializer] initializer for pf
+# 1850|           getExpr(): [VariableAccess] __PRETTY_FUNCTION__
+# 1850|               Type = [ArrayType] const char[17]
+# 1850|               ValueCategory = lvalue
+# 1850|           getExpr().getFullyConverted(): [ArrayToPointerConversion] array to pointer conversion
+# 1850|               Type = [PointerType] const char *
+# 1850|               ValueCategory = prvalue
+# 1851|     getStmt(1): [DeclStmt] declaration
+# 1851|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of strfunc
+# 1851|           Type = [PointerType] const char *
+# 1851|         getVariable().getInitializer(): [Initializer] initializer for strfunc
+# 1851|           getExpr(): [VariableAccess] __func__
+# 1851|               Type = [ArrayType] const char[10]
+# 1851|               ValueCategory = lvalue
+# 1851|           getExpr().getFullyConverted(): [ArrayToPointerConversion] array to pointer conversion
+# 1851|               Type = [PointerType] const char *
+# 1851|               ValueCategory = prvalue
+# 1852|     getStmt(2): [ReturnStmt] return ...
 perf-regression.cpp:
 #    4| [CopyAssignmentOperator] Big& Big::operator=(Big const&)
 #    4|   <params>: 

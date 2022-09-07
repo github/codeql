@@ -21,10 +21,6 @@ abstract class TranslatedCompilerGeneratedDeclaration extends LocalVariableDecla
     result = "compiler generated declaration (" + generatedBy.toString() + ")"
   }
 
-  override TranslatedElement getChild(int id) {
-    result = LocalVariableDeclarationBase.super.getChild(id)
-  }
-
   override Instruction getChildSuccessor(TranslatedElement child) {
     child = getInitialization() and result = getInstruction(InitializerStoreTag())
   }

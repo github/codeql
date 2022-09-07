@@ -2129,18 +2129,37 @@ module Csv {
     if isBaseCallableOrPrototype(c) then result = "true" else result = "false"
   }
 
-  /** Computes the first 6 columns for CSV rows of `c`. */
+  private predicate partialModel(
+    DotNet::Callable c, string namespace, string type, string name, string parameters
+  ) {
+    c.getDeclaringType().hasQualifiedName(namespace, type) and
+    c.hasQualifiedName(_, name) and
+    parameters = "(" + parameterQualifiedTypeNamesToString(c) + ")"
+  }
+
+  /** Computes the first 6 columns for positive CSV rows of `c`. */
   string asPartialModel(DotNet::Callable c) {
-    exists(string namespace, string type, string name |
-      c.getDeclaringType().hasQualifiedName(namespace, type) and
-      c.hasQualifiedName(_, name) and
+    exists(string namespace, string type, string name, string parameters |
+      partialModel(c, namespace, type, name, parameters) and
       result =
         namespace + ";" //
           + type + ";" //
           + getCallableOverride(c) + ";" //
           + name + ";" //
-          + "(" + parameterQualifiedTypeNamesToString(c) + ")" + ";" //
+          + parameters + ";" //
           + /* ext + */ ";" //
+    )
+  }
+
+  /** Computes the first 4 columns for negative CSV rows of `c`. */
+  string asPartialNegativeModel(DotNet::Callable c) {
+    exists(string namespace, string type, string name, string parameters |
+      partialModel(c, namespace, type, name, parameters) and
+      result =
+        namespace + ";" //
+          + type + ";" //
+          + name + ";" //
+          + parameters + ";" //
     )
   }
 }

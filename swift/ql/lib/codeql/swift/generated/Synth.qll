@@ -145,6 +145,7 @@ module Synth {
     } or
     TMemberRefExpr(Raw::MemberRefExpr id) { constructMemberRefExpr(id) } or
     TMetatypeConversionExpr(Raw::MetatypeConversionExpr id) { constructMetatypeConversionExpr(id) } or
+    TMethodRefExpr(Raw::DotSyntaxCallExpr id) { constructMethodRefExpr(id) } or
     TNilLiteralExpr(Raw::NilLiteralExpr id) { constructNilLiteralExpr(id) } or
     TObjCSelectorExpr(Raw::ObjCSelectorExpr id) { constructObjCSelectorExpr(id) } or
     TObjectLiteralExpr(Raw::ObjectLiteralExpr id) { constructObjectLiteralExpr(id) } or
@@ -403,7 +404,7 @@ module Synth {
     TBuiltinLiteralExpr or TInterpolatedStringLiteralExpr or TNilLiteralExpr or
         TObjectLiteralExpr or TRegexLiteralExpr;
 
-  class TLookupExpr = TDynamicLookupExpr or TMemberRefExpr or TSubscriptExpr;
+  class TLookupExpr = TDynamicLookupExpr or TMemberRefExpr or TMethodRefExpr or TSubscriptExpr;
 
   class TNumberLiteralExpr = TFloatLiteralExpr or TIntegerLiteralExpr;
 
@@ -891,6 +892,9 @@ module Synth {
   TMetatypeConversionExpr convertMetatypeConversionExprFromRaw(Raw::Element e) {
     result = TMetatypeConversionExpr(e)
   }
+
+  cached
+  TMethodRefExpr convertMethodRefExprFromRaw(Raw::Element e) { result = TMethodRefExpr(e) }
 
   cached
   TNilLiteralExpr convertNilLiteralExprFromRaw(Raw::Element e) { result = TNilLiteralExpr(e) }
@@ -1846,6 +1850,8 @@ module Synth {
     or
     result = convertMemberRefExprFromRaw(e)
     or
+    result = convertMethodRefExprFromRaw(e)
+    or
     result = convertSubscriptExprFromRaw(e)
   }
 
@@ -2546,6 +2552,9 @@ module Synth {
   Raw::Element convertMetatypeConversionExprToRaw(TMetatypeConversionExpr e) {
     e = TMetatypeConversionExpr(result)
   }
+
+  cached
+  Raw::Element convertMethodRefExprToRaw(TMethodRefExpr e) { e = TMethodRefExpr(result) }
 
   cached
   Raw::Element convertNilLiteralExprToRaw(TNilLiteralExpr e) { e = TNilLiteralExpr(result) }
@@ -3500,6 +3509,8 @@ module Synth {
     result = convertDynamicLookupExprToRaw(e)
     or
     result = convertMemberRefExprToRaw(e)
+    or
+    result = convertMethodRefExprToRaw(e)
     or
     result = convertSubscriptExprToRaw(e)
   }

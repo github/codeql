@@ -64,7 +64,7 @@ library files, query suites, and important metadata. Their root directory must
 contain a file named ``qlpack.yml``. Your custom queries should be saved in the
 CodeQL pack root, or its subdirectories.
 
-For each CodeQL pack, the ``qlpack.yml`` file includes information that tells CodeQL
+For each CodeQL pack, the ``qlpack.yml`` file includes information that tells the CodeQL CLI
 how to compile the queries, which other CodeQL packs and libraries the pack
 depends on, and where to find query suite definitions. For more information
 about what to include in this file, see ":ref:`About CodeQL packs <codeqlpack-yml-properties>`."

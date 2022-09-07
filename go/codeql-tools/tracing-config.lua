@@ -10,7 +10,7 @@ function RegisterExtractorPack()
 
     }
     if OperatingSystem == 'windows' then
-        goExtractor = goExtractor .. 'go-extractor.exe'
+        goExtractor = goExtractor .. '.exe'
         patterns = {
             CreatePatternMatcher({'^go%-autobuilder%.exe$'}, MatchCompilerName,
                                  nil, {trace = false}),

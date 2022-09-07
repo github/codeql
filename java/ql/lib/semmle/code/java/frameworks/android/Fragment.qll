@@ -4,7 +4,9 @@ import java
 
 /** The class `android.app.Fragment`. */
 class AndroidFragment extends Class {
-  AndroidFragment() { this.getAnAncestor().hasQualifiedName("android.app", "Fragment") }
+  AndroidFragment() {
+    this.getAnAncestor().hasQualifiedName(["android.app", "androidx.fragment.app"], "Fragment")
+  }
 }
 
 /** The method `instantiate` of the class `android.app.Fragment`. */

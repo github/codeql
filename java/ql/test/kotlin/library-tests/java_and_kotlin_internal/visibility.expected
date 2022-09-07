@@ -1,0 +1,9 @@
+isPublic
+isInternal
+| Kotlin.kt:2:11:3:2 | kotlinFun$main |
+modifiers_methods
+| file://:0:0:0:0 | final | Kotlin.kt:2:11:3:2 | kotlinFun$main |
+| file://:0:0:0:0 | internal | Kotlin.kt:2:11:3:2 | kotlinFun$main |
+#select
+| Kotlin.kt:2:11:3:2 | kotlinFun$main | final |
+| Kotlin.kt:2:11:3:2 | kotlinFun$main | internal |

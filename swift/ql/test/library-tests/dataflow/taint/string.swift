@@ -3,7 +3,7 @@ func sink(arg: String) {}
 
 func taintThroughInterpolatedStrings() {
   var x = source()
-  
+
   sink(arg: "\(x)") // $ tainted=5
 
   sink(arg: "\(x) \(x)") // $ tainted=5
@@ -83,7 +83,7 @@ func taintThroughStringOperations() {
 
   sink(arg: clean.description)
   sink(arg: tainted.description) // $ MISSING: tainted=74
-  
+
   sink(arg: clean.debugDescription)
   sink(arg: tainted.debugDescription) // $ MISSING: tainted=74
 }

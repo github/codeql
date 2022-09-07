@@ -60,7 +60,8 @@ Type:
   canonical_type: Type
 
 IterableDeclContext:
-  members: Decl*
+  _children:
+    members: Decl*
 
 ExtensionDecl:
   extended_type_decl: NominalTypeDecl
@@ -71,8 +72,8 @@ ExtensionDecl:
 
 NominalTypeDecl:
   _extends:
-    - IterableDeclContext
     - GenericTypeDecl
+    - IterableDeclContext
   type: Type
 
 AstNode:
@@ -80,6 +81,7 @@ AstNode:
 
 Callable:
   _children:
+    self_param: ParamDecl?
     params: ParamDecl*
     body: BraceStmt?
 
@@ -193,6 +195,7 @@ StructDecl:
 
 Decl:
   _extends: AstNode
+  module: ModuleDecl
 
 Expr:
   _extends: AstNode
@@ -291,8 +294,7 @@ TypeAliasType:
 
 EnumCaseDecl:
   _extends: Decl
-  _children:
-    elements: EnumElementDecl*
+  elements: EnumElementDecl*
 
 IfConfigDecl:
   _extends: Decl
@@ -310,7 +312,7 @@ IfConfigClause:
 ImportDecl:
   _extends: Decl
   is_exported: predicate
-  module: ModuleDecl
+  imported_module: ModuleDecl?  # may be none in inactive #if clauses
   declarations: ValueDecl*
 
 MissingMemberDecl:
@@ -419,7 +421,7 @@ DotSyntaxBaseIgnoredExpr:
 DynamicTypeExpr:
   _extends: Expr
   _children:
-    base_expr: Expr
+    base: Expr
 
 EditorPlaceholderExpr:
   _extends: Expr
@@ -492,7 +494,7 @@ LiteralExpr:
 LookupExpr:
   _extends: Expr
   _children:
-    base_expr: Expr
+    base: Expr
   member: Decl?
 
 MakeTemporarilyEscapableExpr:
@@ -543,7 +545,7 @@ RebindSelfInConstructorExpr:
   _extends: Expr
   _children:
     sub_expr: Expr
-    self: VarDecl
+  self: VarDecl
 
 SequenceExpr:
   _extends: Expr
@@ -834,8 +836,7 @@ PrefixUnaryExpr:
 
 SelfApplyExpr:
   _extends: ApplyExpr
-  _children:
-    base_expr: Expr
+  base: Expr
 
 ArrayExpr:
   _extends: CollectionExpr
@@ -990,6 +991,11 @@ MemberRefExpr:
   has_direct_to_implementation_semantics: predicate
   has_ordinary_semantics: predicate
 
+MethodRefExpr:
+  _extends: LookupExpr
+  _synth:
+    from: DotSyntaxCallExpr
+
 SubscriptExpr:
   _extends:
     - LookupExpr
@@ -1103,7 +1109,8 @@ AbstractTypeParamDecl:
   _extends: TypeDecl
 
 GenericContext:
-  generic_type_params: GenericTypeParamDecl*
+  _children:
+    generic_type_params: GenericTypeParamDecl*
 
 GenericTypeDecl:
   _extends:
@@ -1114,6 +1121,8 @@ ModuleDecl:
   _extends: TypeDecl
   is_builtin_module: predicate
   is_system_module: predicate
+  imported_modules: ModuleDecl*
+  exported_modules: ModuleDecl*
 
 ConstructorRefCallExpr:
   _extends: SelfApplyExpr

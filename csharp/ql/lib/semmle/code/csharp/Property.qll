@@ -42,8 +42,6 @@ class DeclarationWithAccessors extends AssignableMember, Virtualizable, Attribut
   }
 
   override Type getType() { none() }
-
-  override string toString() { result = AssignableMember.super.toString() }
 }
 
 /**

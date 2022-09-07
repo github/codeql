@@ -6,6 +6,8 @@ module Raw {
   }
 
   class Callable extends @callable, Element {
+    ParamDecl getSelfParam() { callable_self_params(this, result) }
+
     ParamDecl getParam(int index) { callable_params(this, index, result) }
 
     BraceStmt getBody() { callable_bodies(this, result) }
@@ -263,7 +265,9 @@ module Raw {
     Expr getGuard() { case_label_item_guards(this, result) }
   }
 
-  class Decl extends @decl, AstNode { }
+  class Decl extends @decl, AstNode {
+    ModuleDecl getModule() { decls(this, result) }
+  }
 
   class ExistentialMetatypeType extends @existential_metatype_type, AnyMetatypeType {
     override string toString() { result = "ExistentialMetatypeType" }
@@ -342,7 +346,7 @@ module Raw {
     override string toString() { result = "WeakStorageType" }
   }
 
-  class AbstractClosureExpr extends @abstract_closure_expr, Callable, Expr { }
+  class AbstractClosureExpr extends @abstract_closure_expr, Expr, Callable { }
 
   class AnyPattern extends @any_pattern, Pattern {
     override string toString() { result = "AnyPattern" }
@@ -509,7 +513,7 @@ module Raw {
   class DynamicTypeExpr extends @dynamic_type_expr, Expr {
     override string toString() { result = "DynamicTypeExpr" }
 
-    Expr getBaseExpr() { dynamic_type_exprs(this, result) }
+    Expr getBase() { dynamic_type_exprs(this, result) }
   }
 
   class EditorPlaceholderExpr extends @editor_placeholder_expr, Expr {
@@ -552,7 +556,7 @@ module Raw {
     Expr getSubExpr() { expr_patterns(this, result) }
   }
 
-  class ExtensionDecl extends @extension_decl, Decl, GenericContext, IterableDeclContext {
+  class ExtensionDecl extends @extension_decl, GenericContext, IterableDeclContext, Decl {
     override string toString() { result = "ExtensionDecl" }
 
     NominalTypeDecl getExtendedTypeDecl() { extension_decls(this, result) }
@@ -605,7 +609,7 @@ module Raw {
 
     predicate isExported() { import_decl_is_exported(this) }
 
-    ModuleDecl getModule() { import_decls(this, result) }
+    ModuleDecl getImportedModule() { import_decl_imported_modules(this, result) }
 
     ValueDecl getDeclaration(int index) { import_decl_declarations(this, index, result) }
   }
@@ -657,7 +661,7 @@ module Raw {
   class LiteralExpr extends @literal_expr, Expr { }
 
   class LookupExpr extends @lookup_expr, Expr {
-    Expr getBaseExpr() { lookup_exprs(this, result) }
+    Expr getBase() { lookup_exprs(this, result) }
 
     Decl getMember() { lookup_expr_members(this, result) }
   }
@@ -922,7 +926,7 @@ module Raw {
     Expr getResult(int index) { yield_stmt_results(this, index, result) }
   }
 
-  class AbstractFunctionDecl extends @abstract_function_decl, Callable, GenericContext, ValueDecl {
+  class AbstractFunctionDecl extends @abstract_function_decl, GenericContext, ValueDecl, Callable {
     string getName() { abstract_function_decls(this, result) }
   }
 
@@ -1256,7 +1260,7 @@ module Raw {
   }
 
   class SelfApplyExpr extends @self_apply_expr, ApplyExpr {
-    Expr getBaseExpr() { self_apply_exprs(this, result) }
+    Expr getBase() { self_apply_exprs(this, result) }
   }
 
   class StringToPointerExpr extends @string_to_pointer_expr, ImplicitConversionExpr {
@@ -1394,6 +1398,10 @@ module Raw {
     predicate isBuiltinModule() { module_decl_is_builtin_module(this) }
 
     predicate isSystemModule() { module_decl_is_system_module(this) }
+
+    ModuleDecl getImportedModule(int index) { module_decl_imported_modules(this, index, result) }
+
+    ModuleDecl getExportedModule(int index) { module_decl_exported_modules(this, index, result) }
   }
 
   class NumberLiteralExpr extends @number_literal_expr, BuiltinLiteralExpr { }

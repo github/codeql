@@ -210,11 +210,10 @@ commands that you can specify for compiled languages.
 
 - C# project built using ``dotnet build``::
 
-     For C# projects using either `dotnet build` or `msbuild`, you should specify `/p:UseSharedCompilation=false`
-     in the build command. It is also a good idea to add `/t:rebuild` to ensure that all code will be built (code
-     that is not built will not be included in the CodeQL database):
+     It is a good idea to add `/t:rebuild` to ensure that all code will be built, or do a
+     prior `dotnet clean` (code that is not built will not be included in the CodeQL database):
 
-     codeql database create csharp-database --language=csharp --command='dotnet build /p:UseSharedCompilation=false /t:rebuild'
+     codeql database create csharp-database --language=csharp --command='dotnet build /t:rebuild' 
 
 - Go project built using the ``CODEQL_EXTRACTOR_GO_BUILD_TRACING=on`` environment variable::
 
@@ -349,8 +348,7 @@ The following example shows how you could use indirect build tracing in an Azure
        - task: VSBuild@1
            inputs:
              solution: '**/*.sln'
-             # Disable MSBuild shared compilation for C# builds.
-             msbuildArgs: /p:OutDir=$(Build.ArtifactStagingDirectory) /p:UseSharedCompilation=false
+             msbuildArgs: /p:OutDir=$(Build.ArtifactStagingDirectory)
              platform: Any CPU
              configuration: Release
              # Execute a clean build, in order to remove any existing build artifacts prior to the build.

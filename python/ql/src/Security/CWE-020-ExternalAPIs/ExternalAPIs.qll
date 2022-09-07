@@ -129,7 +129,9 @@ class UntrustedExternalApiDataNode extends ExternalApiDataNode {
 /** DEPRECATED: Alias for UntrustedExternalApiDataNode */
 deprecated class UntrustedExternalAPIDataNode = UntrustedExternalApiDataNode;
 
+/** An external API which is used with untrusted data. */
 private newtype TExternalApi =
+  /** An untrusted API method `m` where untrusted data is passed at `index`. */
   TExternalApiParameter(DataFlowPrivate::DataFlowCallable callable, int index) {
     exists(UntrustedExternalApiDataNode n |
       callable = n.getCallable() and

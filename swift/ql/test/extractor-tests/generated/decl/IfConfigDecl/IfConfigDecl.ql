@@ -2,6 +2,9 @@
 import codeql.swift.elements
 import TestUtils
 
-from IfConfigDecl x
-where toBeTested(x) and not x.isUnknown()
-select x
+from IfConfigDecl x, ModuleDecl getModule
+where
+  toBeTested(x) and
+  not x.isUnknown() and
+  getModule = x.getModule()
+select x, "getModule:", getModule

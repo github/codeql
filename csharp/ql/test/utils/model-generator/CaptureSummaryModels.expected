@@ -13,8 +13,13 @@
 | Summaries;CollectionFlow;false;AssignFieldToArray;(System.Object[]);;Argument[this];Argument[0].Element;taint;generated |
 | Summaries;CollectionFlow;false;AssignToArray;(System.Object,System.Object[]);;Argument[0];Argument[1].Element;taint;generated |
 | Summaries;CollectionFlow;false;ReturnArrayElement;(System.Object[]);;Argument[0].Element;ReturnValue;taint;generated |
+| Summaries;CollectionFlow;false;ReturnBulkTypeList;(System.Collections.Generic.List<System.Byte>);;Argument[0].Element;ReturnValue;taint;generated |
+| Summaries;CollectionFlow;false;ReturnComplexTypeArray;(System.String[]);;Argument[0].Element;ReturnValue;taint;generated |
+| Summaries;CollectionFlow;false;ReturnComplexTypeDictionary;(System.Collections.Generic.Dictionary<System.Int32,System.String>);;Argument[0].Element;ReturnValue;taint;generated |
 | Summaries;CollectionFlow;false;ReturnFieldInAList;();;Argument[this];ReturnValue;taint;generated |
 | Summaries;CollectionFlow;false;ReturnListElement;(System.Collections.Generic.List<System.Object>);;Argument[0].Element;ReturnValue;taint;generated |
+| Summaries;CollectionFlow;false;ReturnUntypedArray;(System.Array);;Argument[0].Element;ReturnValue;taint;generated |
+| Summaries;CollectionFlow;false;ReturnUntypedList;(System.Collections.IList);;Argument[0].Element;ReturnValue;taint;generated |
 | Summaries;DerivedClass1Flow;false;ReturnParam1;(System.String,System.String);;Argument[1];ReturnValue;taint;generated |
 | Summaries;DerivedClass2Flow;false;ReturnParam0;(System.String,System.Int32);;Argument[0];ReturnValue;taint;generated |
 | Summaries;DerivedClass2Flow;false;ReturnParam;(System.Object);;Argument[0];ReturnValue;taint;generated |

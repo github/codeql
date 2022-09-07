@@ -42,8 +42,8 @@ module SqlInjection {
     SqlQueryAsSink() { this instanceof SQL::QueryString }
   }
 
-  /** A NoSQL query, considered as a taint sink for SQL injection. */
+  /** A NoSql query, considered as a taint sink for SQL injection. */
   class NoSqlQueryAsSink extends Sink {
-    NoSqlQueryAsSink() { this instanceof NoSQL::Query }
+    NoSqlQueryAsSink() { this instanceof NoSql::Query }
   }
 }

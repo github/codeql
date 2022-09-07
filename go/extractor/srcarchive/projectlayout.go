@@ -11,10 +11,10 @@ import (
 // ProjectLayout describes a very simple project layout rewriting paths starting
 // with `from` to start with `to` instead.
 //
-// We currently only support project layouts of the form
+// We currently only support project layouts of the form:
 //
-// # to
-// from//
+//	# to
+//	from//
 type ProjectLayout struct {
 	from, to string
 }

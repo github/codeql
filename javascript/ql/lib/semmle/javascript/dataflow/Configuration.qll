@@ -1267,55 +1267,46 @@ private predicate loadStep(
  * If `onlyRelevantInCall` is true, the `base` object will not be propagated out of return edges, because
  * the flow that originally reached `base.startProp` used a call edge.
  */
-pragma[nomagic]
+pragma[noopt]
 private predicate reachableFromStoreBase(
   string startProp, string endProp, DataFlow::Node base, DataFlow::Node nd,
-  DataFlow::Configuration cfg, PathSummary summary, boolean onlyRelevantInCall
+  DataFlow::Configuration cfg, TPathSummary summary, boolean onlyRelevantInCall
 ) {
-  exists(PathSummary s1, PathSummary s2, DataFlow::Node rhs |
-    reachableFromSource(rhs, cfg, s1) and
-    onlyRelevantInCall = s1.hasCall()
-    or
-    reachableFromStoreBase(_, _, _, rhs, cfg, s1, onlyRelevantInCall)
-  |
+  exists(TPathSummary s1, TPathSummary s2, DataFlow::Node rhs |
     storeStep(rhs, nd, startProp, cfg, s2) and
     endProp = startProp and
     base = nd and
-    summary =
-      MkPathSummary(false, s2.hasCall(), DataFlow::FlowLabel::data(), DataFlow::FlowLabel::data())
+    exists(boolean hasCall, DataFlow::FlowLabel data |
+      hasCall = hasCall(s2) and
+      data = DataFlow::FlowLabel::data() and
+      summary = MkPathSummary(false, hasCall, data, data)
+    )
+  |
+    reachableFromSource(rhs, cfg, s1) and
+    onlyRelevantInCall = hasCall(s1)
+    or
+    reachableFromStoreBase(_, _, _, rhs, cfg, s1, onlyRelevantInCall)
   )
   or
-  exists(PathSummary newSummary, PathSummary oldSummary |
-    reachableFromStoreBaseStep(startProp, endProp, base, nd, cfg, oldSummary, newSummary,
-      onlyRelevantInCall) and
-    summary = oldSummary.appendValuePreserving(newSummary)
-  )
-}
-
-/**
- * Holds if `base` is the base of a write to property `endProp`, and `nd` is reachable
- * from `base` under configuration `cfg` (possibly through callees) along a path whose
- * last step is summarized by `newSummary`, and the previous steps are summarized
- * by `oldSummary`.
- */
-pragma[noinline]
-private predicate reachableFromStoreBaseStep(
-  string startProp, string endProp, DataFlow::Node base, DataFlow::Node nd,
-  DataFlow::Configuration cfg, PathSummary oldSummary, PathSummary newSummary,
-  boolean onlyRelevantInCall
-) {
-  exists(DataFlow::Node mid |
+  exists(DataFlow::Node mid, PathSummary oldSummary, PathSummary newSummary |
     reachableFromStoreBase(startProp, endProp, base, mid, cfg, oldSummary, onlyRelevantInCall) and
     flowStep(mid, cfg, nd, newSummary) and
-    onlyRelevantInCall.booleanAnd(newSummary.hasReturn()) = false
+    exists(boolean hasReturn |
+      hasReturn = newSummary.hasReturn() and
+      onlyRelevantInCall.booleanAnd(hasReturn) = false
+    )
     or
     exists(string midProp |
       reachableFromStoreBase(startProp, midProp, base, mid, cfg, oldSummary, onlyRelevantInCall) and
       isAdditionalLoadStoreStep(mid, nd, midProp, endProp, cfg) and
       newSummary = PathSummary::level()
     )
+  |
+    summary = oldSummary.appendValuePreserving(newSummary)
   )
 }
+
+private boolean hasCall(PathSummary summary) { result = summary.hasCall() }
 
 /**
  * Holds if the value of `pred` is written to a property of some base object, and that base
