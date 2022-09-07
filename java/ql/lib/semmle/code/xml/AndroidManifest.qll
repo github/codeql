@@ -79,10 +79,20 @@ class AndroidApplicationXmlElement extends XmlElement {
    * https://developer.android.com/guide/topics/data/autobackup
    */
   predicate allowsBackup() {
-    not exists(AndroidXmlAttribute attr |
-      this.getAnAttribute() = attr and
-      attr.getName() = "allowBackup" and
-      attr.getValue() = "false"
+    not this.getFile().(AndroidManifestXmlFile).isInBuildDirectory() and
+    (
+      // explicitly sets android:allowBackup="true"
+      this.allowsBackupExplicitly()
+      or
+      // Manifest providing the main intent for an application, and does not explicitly
+      // disallow the allowBackup attribute
+      this.providesMainIntent() and
+      // Check that android:allowBackup="false" is not present
+      not exists(AndroidXmlAttribute attr |
+        this.getAnAttribute() = attr and
+        attr.getName() = "allowBackup" and
+        attr.getValue() = "false"
+      )
     )
   }
 
@@ -91,7 +101,7 @@ class AndroidApplicationXmlElement extends XmlElement {
    *
    * https://developer.android.com/guide/topics/data/autobackup
    */
-  predicate allowsBackupExplicitly() {
+  private predicate allowsBackupExplicitly() {
     exists(AndroidXmlAttribute attr |
       this.getAnAttribute() = attr and
       attr.getName() = "allowBackup" and
@@ -103,7 +113,7 @@ class AndroidApplicationXmlElement extends XmlElement {
    * Holds if the application element contains a child element which provides the
    * `android.intent.action.MAIN` intent.
    */
-  predicate providesMainIntent() {
+  private predicate providesMainIntent() {
     exists(AndroidActivityXmlElement activity |
       activity = this.getAChild() and
       exists(AndroidIntentFilterXmlElement intentFilter |
