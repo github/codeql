@@ -16,7 +16,7 @@ def test():
 class A(object):
     def foo(self):
         print("A.foo")
-        foo() # $ pt=foo MISSING: tt=foo
+        foo() # $ pt,tt=foo
 
 a = A()
 a.foo() # $ pt,tt=A.foo
