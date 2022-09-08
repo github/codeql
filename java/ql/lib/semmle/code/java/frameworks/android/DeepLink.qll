@@ -22,7 +22,7 @@ private import semmle.code.xml.AndroidManifest
 // ! experimental - make a DeepLink step that combine Activity, Service, Receiver, etc.
 private class DeepLinkIntentStep extends AdditionalValueStep {
   // DeepLinkIntentStep() {
-  //   this instanceof StartActivityIntentStep_ContextAndActivity or
+  //   this instanceof StartActivityIntentStep or
   //   this instanceof SendBroadcastReceiverIntentStep or
   //   this instanceof StartServiceIntentStep
   // }
