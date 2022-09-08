@@ -1,6 +1,6 @@
 /**
  * @name Android Webview debugging enabled
- * @description Webview debugging should not be enabled in production builds.
+ * @description Enabling Webview debugging in production builds can expose entry points or leak sensitive information.
  * @kind path-problem
  * @problem.severity warning
  * @security-severity 7.2
