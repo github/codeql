@@ -26,18 +26,6 @@ class SystemTextStringBuilderClass extends SystemTextClass {
   Method getAppendFormatMethod() { result = this.getAMethod("AppendFormat") }
 }
 
-/** Clear content for `System.Text.StringBuilder.Clear`. */
-private class SystemTextStringBuilderClearFlow extends SummarizedCallable {
-  SystemTextStringBuilderClearFlow() {
-    this = any(SystemTextStringBuilderClass s).getAMethod("Clear")
-  }
-
-  override predicate clearsContent(ParameterPosition pos, DataFlow::ContentSet content) {
-    pos.isThisParameter() and
-    content instanceof DataFlow::ElementContent
-  }
-}
-
 /** Data flow for `System.Text.StringBuilder`. */
 private class SystemTextStringBuilderFlowModelCsv extends SummaryModelCsv {
   override predicate row(string row) {
@@ -120,6 +108,7 @@ private class SystemTextStringBuilderFlowModelCsv extends SummaryModelCsv {
         "System.Text;StringBuilder;false;AppendLine;();;Argument[this];ReturnValue;value;manual",
         "System.Text;StringBuilder;false;AppendLine;(System.String);;Argument[0];Argument[this].Element;value;manual",
         "System.Text;StringBuilder;false;AppendLine;(System.String);;Argument[this];ReturnValue;value;manual",
+        "System.Text;StringBuilder;false;Clear;();;Argument[this].WithoutElement;Argument[this];value;manual",
         "System.Text;StringBuilder;false;StringBuilder;(System.String);;Argument[0];Argument[this].Element;value;manual",
         "System.Text;StringBuilder;false;StringBuilder;(System.String,System.Int32);;Argument[0];Argument[this].Element;value;manual",
         "System.Text;StringBuilder;false;StringBuilder;(System.String,System.Int32,System.Int32,System.Int32);;Argument[0];Argument[this].Element;value;manual",
