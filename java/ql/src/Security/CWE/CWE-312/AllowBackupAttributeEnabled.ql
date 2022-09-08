@@ -1,6 +1,6 @@
 /**
  * @name Android allowBackup attribute enabled
- * @description Android manifests which do not disable the `android:allowBackup` attribute allow backups, which can store sensitive information.
+ * @description Enabling the `android:allowBackup` attribute may allow an attacker to extract sensitive data.
  * @kind problem
  * @problem.severity recommendation
  * @security-severity 7.5

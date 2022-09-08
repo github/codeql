@@ -3,35 +3,29 @@
   "qhelp.dtd">
 <qhelp>
 <overview>
-<p>The Android manifest file defines configuration settings for Android 
-applications. In this file, the <code>android:allowBackup</code> attribute of
-the <code>application</code> element can be used to define whether or not the
-application can have automatic backups.</p>
+<p>In the Android manifest file, you can use the <code>android:allowBackup</code> attribute of the <code>application</code> element to define whether the
+application will have automatic backups or not.</p>
 
-<p>Enabling backups may allow an attacker to extract sensitive data. Therefore,
-it is advised to set <code>android:allowBackup</code> to <code>false</code> if 
-your application uses any sensitive data.</p>
+<p>If your application uses any sensitive data, you should disable automatic backups to prevent attackers from extracting it.</p>
 </overview>
 
 <recommendation>
-<p>For Android applications which process sensitive data, set the 
-<code>android:allowBackup</code> setting to <code>false</code> in the manifest
+<p>For Android applications which process sensitive data, set <code>android:allowBackup</code> to <code>false</code> in the manifest
 file.</p>
 
-<p>Note: Since Android 6.0 (Marshmallow), applications default to participating
-in automatic backups. Therefore, it is necessary to explicitly disable backups.
+<p>Note: Since Android 6.0 (Marshmallow), automatic backups for applications are switched on by default. 
 </p>
 </recommendation>
 
 <example>
 
-<p>In the two examples below, the <code>android:allowBackup</code> setting is enabled:</p>
+<p>In the following two (bad) examples, the <code>android:allowBackup</code> setting is enabled:</p>
 
 <sample src="AllowBackupTrue.xml" />
 
 <sample src="AllowBackupEmpty.xml"/>
 
-<p>A corrected version explicity sets <code>android:allowBackup</code> to <code>false</code>:</p>
+<p>In the following (good) example, <code>android:allowBackup</code> is set to <code>false</code>:</p>
 
 <sample src="AllowBackupFalse.xml"/>
 
