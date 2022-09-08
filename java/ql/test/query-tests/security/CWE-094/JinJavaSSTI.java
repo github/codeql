@@ -21,8 +21,7 @@ public class JinJavaSSTI {
 		String template = request.getParameter("template");
 		Jinjava jinjava = new Jinjava();
 		Map<String, Object> context = new HashMap<>();
-		// String render(String template, Map<String, ?> bindings)
-		String renderedTemplate = jinjava.render(template, context);
+		String renderedTemplate = jinjava.render(template, context); // $hasTemplateInjection
 	}
 
 	@GetMapping(value = "bad2")
@@ -30,8 +29,7 @@ public class JinJavaSSTI {
 		String template = request.getParameter("template");
 		Jinjava jinjava = new Jinjava();
 		Map<String, Object> bindings = new HashMap<>();
-		// RenderResult renderForResult (String template, Map<String, ?> bindings)
-		RenderResult renderResult = jinjava.renderForResult(template, bindings);
+		RenderResult renderResult = jinjava.renderForResult(template, bindings); // $hasTemplateInjection
 	}
 
 	@GetMapping(value = "bad3")
@@ -41,8 +39,6 @@ public class JinJavaSSTI {
 		Map<String, Object> bindings = new HashMap<>();
 		JinjavaConfig renderConfig = new JinjavaConfig();
 
-		// RenderResult renderForResult (String template, Map<String, ?> bindings,
-		// JinjavaConfig renderConfig)
-		RenderResult renderResult = jinjava.renderForResult(template, bindings, renderConfig);
+		RenderResult renderResult = jinjava.renderForResult(template, bindings, renderConfig); // $hasTemplateInjection
 	}
 }

@@ -34,8 +34,7 @@ public class VelocitySSTI {
 
 		String s = "We are using $project $name to render this.";
 		StringWriter w = new StringWriter();
-		// evaluate( Context context, Writer out, String logTag, String instring )
-		Velocity.evaluate(context, w, "mystring", code);
+		Velocity.evaluate(context, w, "mystring", code); // $hasTemplateInjection
 	}
 
 	@GetMapping(value = "bad2")
@@ -49,8 +48,7 @@ public class VelocitySSTI {
 		StringWriter w = new StringWriter();
 		StringReader reader = new StringReader(code);
 
-		// evaluate(Context context, Writer writer, String logTag, Reader reader)
-		Velocity.evaluate(context, w, "mystring", reader);
+		Velocity.evaluate(context, w, "mystring", reader); // $hasTemplateInjection
 	}
 
 	@GetMapping(value = "bad3")
@@ -60,7 +58,7 @@ public class VelocitySSTI {
 
 		RuntimeServices runtimeServices = null;
 		StringReader reader = new StringReader(code);
-		runtimeServices.parse(reader, new Template());
+		runtimeServices.parse(reader, new Template()); // $hasTemplateInjection
 	}
 
 	@GetMapping(value = "bad4")
@@ -74,7 +72,7 @@ public class VelocitySSTI {
 		StringWriter w = new StringWriter();
 		StringReader reader = new StringReader("test");
 
-		Velocity.evaluate(context, w, "mystring", reader);
+		Velocity.evaluate(context, w, "mystring", reader); // $hasTemplateInjection
 	}
 
 	@GetMapping(value = "bad5")
@@ -87,7 +85,7 @@ public class VelocitySSTI {
 
 		StringWriter w = new StringWriter();
 		VelocityEngine engine = null;
-		engine.mergeTemplate("testtemplate.vm", "UTF-8", context, w);
+		engine.mergeTemplate("testtemplate.vm", "UTF-8", context, w); // $hasTemplateInjection
 	}
 
 	@GetMapping(value = "bad6")
@@ -100,7 +98,7 @@ public class VelocitySSTI {
 
 		StringWriter w = new StringWriter();
 		Template t = new Template();
-		t.merge(context, w);
+		t.merge(context, w); // $hasTemplateInjection
 	}
 
 	@GetMapping(value = "bad7")
@@ -113,7 +111,7 @@ public class VelocitySSTI {
 
 		StringWriter w = new StringWriter();
 		Template t = new Template();
-		t.merge(context, w, new LinkedList<String>());
+		t.merge(context, w, new LinkedList<String>()); // $hasTemplateInjection
 	}
 
 	@GetMapping(value = "bad8")
@@ -121,7 +119,7 @@ public class VelocitySSTI {
 		String code = request.getParameter("code");
 
 		StringResourceRepository repo = new StringResourceRepositoryImpl();
-		repo.putStringResource("woogie2", code);
+		repo.putStringResource("woogie2", code); // $hasTemplateInjection
 
 	}
 }

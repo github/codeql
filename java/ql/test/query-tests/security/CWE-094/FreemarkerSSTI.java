@@ -23,8 +23,7 @@ public class FreemarkerSSTI {
 		String code = request.getParameter("code");
 		Reader reader = new StringReader(code);
 
-		// Template(java.lang.String name, java.io.Reader reader)
-		Template t = new Template(name, reader);
+		Template t = new Template(name, reader); // $hasTemplateInjection
 	}
 
 	@GetMapping(value = "bad2")
@@ -33,9 +32,8 @@ public class FreemarkerSSTI {
 		String code = request.getParameter("code");
 		Reader reader = new StringReader(code);
 		Configuration cfg = new Configuration();
-		
-		// Template(java.lang.String name, java.io.Reader reader, Configuration cfg)
-		Template t = new Template(name, reader, cfg);
+
+		Template t = new Template(name, reader, cfg); // $hasTemplateInjection
 	}
 
 	@GetMapping(value = "bad3")
@@ -45,9 +43,7 @@ public class FreemarkerSSTI {
 		Reader reader = new StringReader(code);
 		Configuration cfg = new Configuration();
 
-		// Template(java.lang.String name, java.io.Reader reader, Configuration cfg,
-		// java.lang.String encoding)
-		Template t = new Template(name, reader, cfg, "UTF-8");
+		Template t = new Template(name, reader, cfg, "UTF-8"); // $hasTemplateInjection
 	}
 
 	@GetMapping(value = "bad4")
@@ -56,9 +52,7 @@ public class FreemarkerSSTI {
 		String sourceCode = request.getParameter("sourceCode");
 		Configuration cfg = new Configuration();
 
-		// Template(java.lang.String name, java.lang.String sourceCode, Configuration
-		// cfg)
-		Template t = new Template(name, sourceCode, cfg);
+		Template t = new Template(name, sourceCode, cfg); // $hasTemplateInjection
 	}
 
 	@GetMapping(value = "bad5")
@@ -68,9 +62,7 @@ public class FreemarkerSSTI {
 		Configuration cfg = new Configuration();
 		Reader reader = new StringReader(code);
 
-		// Template(java.lang.String name, java.lang.String sourceName, java.io.Reader
-		// reader, Configuration cfg)
-		Template t = new Template(name, sourceName, reader, cfg);
+		Template t = new Template(name, sourceName, reader, cfg); // $hasTemplateInjection
 	}
 
 	@GetMapping(value = "bad6")
@@ -81,10 +73,8 @@ public class FreemarkerSSTI {
 		ParserConfiguration customParserConfiguration = new Configuration();
 		Reader reader = new StringReader(code);
 
-		// Template(java.lang.String name, java.lang.String sourceName, java.io.Reader
-		// reader, Configuration cfg, ParserConfiguration customParserConfiguration,
-		// java.lang.String encoding)
-		Template t = new Template(name, sourceName, reader, cfg, customParserConfiguration, "UTF-8");
+		Template t =
+				new Template(name, sourceName, reader, cfg, customParserConfiguration, "UTF-8"); // $hasTemplateInjection
 	}
 
 	@GetMapping(value = "bad7")
@@ -95,9 +85,7 @@ public class FreemarkerSSTI {
 		ParserConfiguration customParserConfiguration = new Configuration();
 		Reader reader = new StringReader(code);
 
-		// Template(java.lang.String name, java.lang.String sourceName, java.io.Reader
-		// reader, Configuration cfg, java.lang.String encoding)
-		Template t = new Template(name, sourceName, reader, cfg, "UTF-8");
+		Template t = new Template(name, sourceName, reader, cfg, "UTF-8"); // $hasTemplateInjection
 	}
 
 	@GetMapping(value = "bad8")
@@ -105,28 +93,25 @@ public class FreemarkerSSTI {
 		String code = request.getParameter("code");
 		StringTemplateLoader stringLoader = new StringTemplateLoader();
 
-		// void putTemplate(java.lang.String name, java.lang.String templateContent)
-		stringLoader.putTemplate("myTemplate", code);
+		stringLoader.putTemplate("myTemplate", code); // $hasTemplateInjection
 	}
 
 	@GetMapping(value = "bad9")
 	public void bad9(HttpServletRequest request) {
 		String code = request.getParameter("code");
 		StringTemplateLoader stringLoader = new StringTemplateLoader();
-		
-		// void putTemplate(java.lang.String name, java.lang.String templateContent,
-		// long lastModified)
-		stringLoader.putTemplate("myTemplate", code, 0);
+
+		stringLoader.putTemplate("myTemplate", code, 0); // $hasTemplateInjection
 	}
 
 	@GetMapping(value = "bad10")
 	public void bad10(HttpServletRequest request) {
-		HashMap<Object,Object> root = new HashMap();
+		HashMap<Object, Object> root = new HashMap();
 		String code = request.getParameter("code");
-        root.put("code", code);
+		root.put("code", code);
 		Configuration cfg = new Configuration();
-        Template temp = cfg.getTemplate("test.ftlh");        
-        OutputStreamWriter out = new OutputStreamWriter(System.out);
-        temp.process(root, out);
+		Template temp = cfg.getTemplate("test.ftlh");
+		OutputStreamWriter out = new OutputStreamWriter(System.out);
+		temp.process(root, out); // $hasTemplateInjection
 	}
 }

@@ -24,7 +24,7 @@ public class ThymeleafSSTI {
 		try {
 			FileWriter fw = new FileWriter(new File("as"));
 			TemplateEngine templateEngine = new TemplateEngine();
-			templateEngine.process(code, ctx, fw);
+			templateEngine.process(code, ctx, fw); // $hasTemplateInjection
 		} catch (Exception e) {
 		}
 	}
