@@ -30,6 +30,7 @@
     "ruby/ql/lib/codeql/ruby/dataflow/internal/DataFlowImpl.qll",
     "ruby/ql/lib/codeql/ruby/dataflow/internal/DataFlowImpl2.qll",
     "ruby/ql/lib/codeql/ruby/dataflow/internal/DataFlowImplForLibraries.qll",
+    "ruby/ql/lib/codeql/ruby/dataflow/internal/DataFlowImplForHttpClientLibraries.qll",
     "swift/ql/lib/codeql/swift/dataflow/internal/DataFlowImpl.qll"
   ],
   "DataFlow Java/C++/C#/Python Common": [
