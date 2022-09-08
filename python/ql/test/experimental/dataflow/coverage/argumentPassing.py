@@ -38,6 +38,14 @@ SINK5 = functools.partial(SINK, expected=arg5)
 SINK6 = functools.partial(SINK, expected=arg6)
 SINK7 = functools.partial(SINK, expected=arg7)
 
+SINK1_F = functools.partial(SINK_F, unexpected=arg1)
+SINK2_F = functools.partial(SINK_F, unexpected=arg2)
+SINK3_F = functools.partial(SINK_F, unexpected=arg3)
+SINK4_F = functools.partial(SINK_F, unexpected=arg4)
+SINK5_F = functools.partial(SINK_F, unexpected=arg5)
+SINK6_F = functools.partial(SINK_F, unexpected=arg6)
+SINK7_F = functools.partial(SINK_F, unexpected=arg7)
+
 
 def argument_passing(
     a,
@@ -64,7 +72,7 @@ def argument_passing(
 
 @expects(7)
 def test_argument_passing1():
-    argument_passing(arg1, *(arg2, arg3, arg4), e=arg5, **{"f": arg6, "g": arg7})  #$ arg1 arg5 MISSING: arg2 arg3 arg4 arg6 arg7
+    argument_passing(arg1, *(arg2, arg3, arg4), e=arg5, **{"f": arg6, "g": arg7})  #$ arg1 arg5  MISSING: arg2 arg3 arg4 arg6 arg7
 
 
 @expects(7)
@@ -112,32 +120,6 @@ def test_default_arguments():
     with_default_arguments(**{"c": arg3})  #$ MISSING: arg3
 
 
-# Nested constructor pattern
-def grab_foo_bar_baz(foo, **kwargs):
-    SINK1(foo)
-    grab_bar_baz(**kwargs)
-
-
-# It is not possible to pass `bar` into `kwargs`,
-# since `bar` is a valid keyword argument.
-def grab_bar_baz(bar, **kwargs):
-    SINK2(bar)
-    try:
-        SINK2_F(kwargs["bar"])
-    except:
-        print("OK")
-    grab_baz(**kwargs)
-
-
-def grab_baz(baz):
-    SINK3(baz)
-
-
-@expects(4)
-def test_grab():
-    grab_foo_bar_baz(baz=arg3, bar=arg2, foo=arg1)  #$ arg1 MISSING: arg2 func=grab_bar_baz arg3 func=grab_baz
-
-
 # All combinations
 def test_pos_pos():
     def with_pos(a):
@@ -183,7 +165,38 @@ def test_kw_kw():
 
 
 def test_kw_doublestar():
-    def with_doublestar(**a):
-        SINK1(a["a"])
+    def with_doublestar(**kwargs):
+        SINK1(kwargs["a"])
 
     with_doublestar(a=arg1)  #$ MISSING: arg1 func=test_kw_doublestar.with_doublestar
+
+
+def only_kwargs(**kwargs):
+    SINK1(kwargs["a"])
+    SINK2(kwargs["b"])
+    SINK3_F(kwargs["c"])
+
+@expects(3)
+def test_kwargs():
+    args = {"a": arg1, "b": arg2, "c": "safe"} # $ MISSING: arg1 arg2 func=only_kwargs
+    only_kwargs(**args)
+
+
+def mixed(a, **kwargs):
+    SINK1(a)
+    try:
+        SINK1_F(kwargs["a"]) # since 'a' is a keyword argument, it cannot be part of **kwargs
+    except KeyError:
+        print("OK")
+    SINK2(kwargs["b"])
+    SINK3_F(kwargs["c"])
+
+@expects(4*3)
+def test_mixed():
+    mixed(a=arg1, b=arg2, c="safe") # $ arg1 MISSING: arg2
+
+    args = {"b": arg2, "c": "safe"} # $ MISSING: arg2 func=mixed
+    mixed(a=arg1, **args) # $ arg1
+
+    args = {"a": arg1, "b": arg2, "c": "safe"} # $ MISSING: arg2 func=mixed MISSING: arg1
+    mixed(**args)
