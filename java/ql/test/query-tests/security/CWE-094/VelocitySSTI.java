@@ -58,7 +58,7 @@ public class VelocitySSTI {
 		String name = "ttemplate";
 		String code = request.getParameter("code");
 
-		RuntimeServices runtimeServices = new RuntimeServices();
+		RuntimeServices runtimeServices = null;
 		StringReader reader = new StringReader(code);
 		runtimeServices.parse(reader, new Template());
 	}
@@ -86,7 +86,8 @@ public class VelocitySSTI {
 		context.put("code", code);
 
 		StringWriter w = new StringWriter();
-		VelocityEngine.mergeTemplate("testtemplate.vm", "UTF-8", context, w);
+		VelocityEngine engine = null;
+		engine.mergeTemplate("testtemplate.vm", "UTF-8", context, w);
 	}
 
 	@GetMapping(value = "bad6")

@@ -36,11 +36,19 @@ edges
 | VelocitySSTI.java:59:17:59:44 | getParameter(...) : String | VelocitySSTI.java:62:42:62:45 | code : String |
 | VelocitySSTI.java:62:25:62:46 | new StringReader(...) : StringReader | VelocitySSTI.java:63:25:63:30 | reader |
 | VelocitySSTI.java:62:42:62:45 | code : String | VelocitySSTI.java:62:25:62:46 | new StringReader(...) : StringReader |
-| VelocitySSTI.java:69:17:69:44 | getParameter(...) : String | VelocitySSTI.java:77:21:77:27 | context |
-| VelocitySSTI.java:83:17:83:44 | getParameter(...) : String | VelocitySSTI.java:89:60:89:66 | context |
-| VelocitySSTI.java:95:17:95:44 | getParameter(...) : String | VelocitySSTI.java:102:11:102:17 | context |
-| VelocitySSTI.java:108:17:108:44 | getParameter(...) : String | VelocitySSTI.java:115:11:115:17 | context |
-| VelocitySSTI.java:120:17:120:44 | getParameter(...) : String | VelocitySSTI.java:123:37:123:40 | code |
+| VelocitySSTI.java:69:17:69:44 | getParameter(...) : String | VelocitySSTI.java:72:23:72:26 | code : String |
+| VelocitySSTI.java:72:3:72:9 | context [post update] : AbstractContext | VelocitySSTI.java:77:21:77:27 | context |
+| VelocitySSTI.java:72:23:72:26 | code : String | VelocitySSTI.java:72:3:72:9 | context [post update] : AbstractContext |
+| VelocitySSTI.java:83:17:83:44 | getParameter(...) : String | VelocitySSTI.java:86:23:86:26 | code : String |
+| VelocitySSTI.java:86:3:86:9 | context [post update] : AbstractContext | VelocitySSTI.java:90:52:90:58 | context |
+| VelocitySSTI.java:86:23:86:26 | code : String | VelocitySSTI.java:86:3:86:9 | context [post update] : AbstractContext |
+| VelocitySSTI.java:96:17:96:44 | getParameter(...) : String | VelocitySSTI.java:99:23:99:26 | code : String |
+| VelocitySSTI.java:99:3:99:9 | context [post update] : AbstractContext | VelocitySSTI.java:103:11:103:17 | context |
+| VelocitySSTI.java:99:23:99:26 | code : String | VelocitySSTI.java:99:3:99:9 | context [post update] : AbstractContext |
+| VelocitySSTI.java:109:17:109:44 | getParameter(...) : String | VelocitySSTI.java:112:23:112:26 | code : String |
+| VelocitySSTI.java:112:3:112:9 | context [post update] : AbstractContext | VelocitySSTI.java:116:11:116:17 | context |
+| VelocitySSTI.java:112:23:112:26 | code : String | VelocitySSTI.java:112:3:112:9 | context [post update] : AbstractContext |
+| VelocitySSTI.java:121:17:121:44 | getParameter(...) : String | VelocitySSTI.java:124:37:124:40 | code |
 nodes
 | FreemarkerSSTI.java:23:17:23:44 | getParameter(...) : String | semmle.label | getParameter(...) : String |
 | FreemarkerSSTI.java:24:19:24:40 | new StringReader(...) : StringReader | semmle.label | new StringReader(...) : StringReader |
@@ -99,15 +107,23 @@ nodes
 | VelocitySSTI.java:62:42:62:45 | code : String | semmle.label | code : String |
 | VelocitySSTI.java:63:25:63:30 | reader | semmle.label | reader |
 | VelocitySSTI.java:69:17:69:44 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| VelocitySSTI.java:72:3:72:9 | context [post update] : AbstractContext | semmle.label | context [post update] : AbstractContext |
+| VelocitySSTI.java:72:23:72:26 | code : String | semmle.label | code : String |
 | VelocitySSTI.java:77:21:77:27 | context | semmle.label | context |
 | VelocitySSTI.java:83:17:83:44 | getParameter(...) : String | semmle.label | getParameter(...) : String |
-| VelocitySSTI.java:89:60:89:66 | context | semmle.label | context |
-| VelocitySSTI.java:95:17:95:44 | getParameter(...) : String | semmle.label | getParameter(...) : String |
-| VelocitySSTI.java:102:11:102:17 | context | semmle.label | context |
-| VelocitySSTI.java:108:17:108:44 | getParameter(...) : String | semmle.label | getParameter(...) : String |
-| VelocitySSTI.java:115:11:115:17 | context | semmle.label | context |
-| VelocitySSTI.java:120:17:120:44 | getParameter(...) : String | semmle.label | getParameter(...) : String |
-| VelocitySSTI.java:123:37:123:40 | code | semmle.label | code |
+| VelocitySSTI.java:86:3:86:9 | context [post update] : AbstractContext | semmle.label | context [post update] : AbstractContext |
+| VelocitySSTI.java:86:23:86:26 | code : String | semmle.label | code : String |
+| VelocitySSTI.java:90:52:90:58 | context | semmle.label | context |
+| VelocitySSTI.java:96:17:96:44 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| VelocitySSTI.java:99:3:99:9 | context [post update] : AbstractContext | semmle.label | context [post update] : AbstractContext |
+| VelocitySSTI.java:99:23:99:26 | code : String | semmle.label | code : String |
+| VelocitySSTI.java:103:11:103:17 | context | semmle.label | context |
+| VelocitySSTI.java:109:17:109:44 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| VelocitySSTI.java:112:3:112:9 | context [post update] : AbstractContext | semmle.label | context [post update] : AbstractContext |
+| VelocitySSTI.java:112:23:112:26 | code : String | semmle.label | code : String |
+| VelocitySSTI.java:116:11:116:17 | context | semmle.label | context |
+| VelocitySSTI.java:121:17:121:44 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| VelocitySSTI.java:124:37:124:40 | code | semmle.label | code |
 subpaths
 #select
 | FreemarkerSSTI.java:27:35:27:40 | reader | FreemarkerSSTI.java:23:17:23:44 | getParameter(...) : String | FreemarkerSSTI.java:27:35:27:40 | reader | Potential arbitrary code execution due to $@. | FreemarkerSSTI.java:23:17:23:44 | getParameter(...) | a template value loaded from a remote source. |
@@ -130,7 +146,7 @@ subpaths
 | VelocitySSTI.java:53:45:53:50 | reader | VelocitySSTI.java:44:17:44:44 | getParameter(...) : String | VelocitySSTI.java:53:45:53:50 | reader | Potential arbitrary code execution due to $@. | VelocitySSTI.java:44:17:44:44 | getParameter(...) | a template value loaded from a remote source. |
 | VelocitySSTI.java:63:25:63:30 | reader | VelocitySSTI.java:59:17:59:44 | getParameter(...) : String | VelocitySSTI.java:63:25:63:30 | reader | Potential arbitrary code execution due to $@. | VelocitySSTI.java:59:17:59:44 | getParameter(...) | a template value loaded from a remote source. |
 | VelocitySSTI.java:77:21:77:27 | context | VelocitySSTI.java:69:17:69:44 | getParameter(...) : String | VelocitySSTI.java:77:21:77:27 | context | Potential arbitrary code execution due to $@. | VelocitySSTI.java:69:17:69:44 | getParameter(...) | a template value loaded from a remote source. |
-| VelocitySSTI.java:89:60:89:66 | context | VelocitySSTI.java:83:17:83:44 | getParameter(...) : String | VelocitySSTI.java:89:60:89:66 | context | Potential arbitrary code execution due to $@. | VelocitySSTI.java:83:17:83:44 | getParameter(...) | a template value loaded from a remote source. |
-| VelocitySSTI.java:102:11:102:17 | context | VelocitySSTI.java:95:17:95:44 | getParameter(...) : String | VelocitySSTI.java:102:11:102:17 | context | Potential arbitrary code execution due to $@. | VelocitySSTI.java:95:17:95:44 | getParameter(...) | a template value loaded from a remote source. |
-| VelocitySSTI.java:115:11:115:17 | context | VelocitySSTI.java:108:17:108:44 | getParameter(...) : String | VelocitySSTI.java:115:11:115:17 | context | Potential arbitrary code execution due to $@. | VelocitySSTI.java:108:17:108:44 | getParameter(...) | a template value loaded from a remote source. |
-| VelocitySSTI.java:123:37:123:40 | code | VelocitySSTI.java:120:17:120:44 | getParameter(...) : String | VelocitySSTI.java:123:37:123:40 | code | Potential arbitrary code execution due to $@. | VelocitySSTI.java:120:17:120:44 | getParameter(...) | a template value loaded from a remote source. |
+| VelocitySSTI.java:90:52:90:58 | context | VelocitySSTI.java:83:17:83:44 | getParameter(...) : String | VelocitySSTI.java:90:52:90:58 | context | Potential arbitrary code execution due to $@. | VelocitySSTI.java:83:17:83:44 | getParameter(...) | a template value loaded from a remote source. |
+| VelocitySSTI.java:103:11:103:17 | context | VelocitySSTI.java:96:17:96:44 | getParameter(...) : String | VelocitySSTI.java:103:11:103:17 | context | Potential arbitrary code execution due to $@. | VelocitySSTI.java:96:17:96:44 | getParameter(...) | a template value loaded from a remote source. |
+| VelocitySSTI.java:116:11:116:17 | context | VelocitySSTI.java:109:17:109:44 | getParameter(...) : String | VelocitySSTI.java:116:11:116:17 | context | Potential arbitrary code execution due to $@. | VelocitySSTI.java:109:17:109:44 | getParameter(...) | a template value loaded from a remote source. |
+| VelocitySSTI.java:124:37:124:40 | code | VelocitySSTI.java:121:17:121:44 | getParameter(...) : String | VelocitySSTI.java:124:37:124:40 | code | Potential arbitrary code execution due to $@. | VelocitySSTI.java:121:17:121:44 | getParameter(...) | a template value loaded from a remote source. |

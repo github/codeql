@@ -11,7 +11,7 @@ import java.util.HashMap;
 import freemarker.template.Template;
 import freemarker.template.Configuration;
 import freemarker.cache.StringTemplateLoader;
-import freemarker.template.ParserConfiguration;
+import freemarker.core.ParserConfiguration;
 
 @Controller
 public class FreemarkerSSTI {
@@ -121,7 +121,7 @@ public class FreemarkerSSTI {
 
 	@GetMapping(value = "bad10")
 	public void bad10(HttpServletRequest request) {
-		HashMap root = new HashMap();
+		HashMap<Object,Object> root = new HashMap();
 		String code = request.getParameter("code");
         root.put("code", code);
 		Configuration cfg = new Configuration();
