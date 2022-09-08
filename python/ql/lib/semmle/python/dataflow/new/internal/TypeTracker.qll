@@ -185,7 +185,7 @@ module StepSummary {
   }
 
   /**
-   * Holds if `nodeFrom` is being written to the `content` content of the object in `nodeTo`.
+   * Holds if `nodeFrom` is being written to the `contents` of the object in `nodeTo`.
    *
    * Note that `nodeTo` will always be a local source node that flows to the place where the content
    * is written in `basicStoreStep`. This may lead to the flow of information going "back in time"
@@ -204,7 +204,7 @@ module StepSummary {
    * def bar(x):
    *    z = x.attr
    * ```
-   * for the attribute write `x.attr = y`, we will have `content` being the literal string `"attr"`,
+   * for the attribute write `x.attr = y`, we will have `contents` being the literal string `"attr"`,
    * `nodeFrom` will be `y`, and `nodeTo` will be the object `Foo()` created on the first line of the
    * function. This means we will track the fact that `x.attr` can have the type of `y` into the
    * assignment to `z` inside `bar`, even though this attribute write happens _after_ `bar` is called.

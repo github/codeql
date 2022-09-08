@@ -119,11 +119,11 @@ predicate returnStep(Node nodeFrom, Node nodeTo) {
 }
 
 /**
- * Holds if `nodeFrom` is being written to the `content` content of the object
+ * Holds if `nodeFrom` is being written to the `contents` of the object
  * in `nodeTo`.
  *
  * Note that the choice of `nodeTo` does not have to make sense
- * "chronologically". All we care about is whether the `content` content of
+ * "chronologically". All we care about is whether the `contents` of
  * `nodeTo` can have a specific type, and the assumption is that if a specific
  * type appears here, then any access of that particular content can yield
  * something of that particular type.
@@ -142,7 +142,7 @@ predicate returnStep(Node nodeFrom, Node nodeTo) {
  *    z = x.content
  * end
  * ```
- * for the content write `x.content = y`, we will have `content` being the
+ * for the content write `x.content = y`, we will have `contents` being the
  * literal string `"content"`, `nodeFrom` will be `y`, and `nodeTo` will be the
  * `Foo` object created on the first line of the function. This means we will
  * track the fact that `x.content` can have the type of `y` into the assignment
