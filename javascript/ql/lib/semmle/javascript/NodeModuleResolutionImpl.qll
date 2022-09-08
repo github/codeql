@@ -93,14 +93,28 @@ private string getStem(string name) { result = name.regexpCapture("(.+?)(?:\\.([
  * Gets the main module described by `pkg` with the given `priority`.
  */
 File resolveMainModule(PackageJson pkg, int priority) {
-  exists(PathExpr main | main = MainModulePath::of(pkg, ".") |
-    result = main.resolve() and priority = 0
+  exists(PathExpr main, int subPriority, string mainPath |
+    main = MainModulePath::of(pkg, mainPath) and
+    if mainPath = "." then subPriority = priority else priority = subPriority + 1000
+  |
+    result = main.resolve() and subPriority = 0
     or
-    result = tryExtensions(main.resolve(), "index", priority)
+    result = tryExtensions(main.resolve(), "index", subPriority)
     or
     not main.resolve() instanceof File and
     exists(int n | n = main.getNumComponent() |
-      result = tryExtensions(main.resolveUpTo(n - 1), getStem(main.getComponent(n - 1)), priority)
+      result =
+        tryExtensions(main.resolveUpTo(n - 1), getStem(main.getComponent(n - 1)), subPriority)
+    )
+    or
+    // assuming the files get moved from one dir to another during compilation:
+    not exists(main.resolve()) and // didn't resolve
+    count(int i, string comp | comp = main.getComponent(i) and not comp = "." | i) = 2 and // is down one folder
+    exists(Folder subFolder | subFolder = pkg.getFile().getParentContainer().getAFolder() |
+      // is in one folder below the package.json, and has the right basename
+      result =
+        tryExtensions(subFolder, getStem(main.getComponent(main.getNumComponent() - 1)),
+          subPriority - 999)
     )
   )
   or
