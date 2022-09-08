@@ -1,4 +1,4 @@
-/** Definitions related to the Apache Velocity Templating library. */
+/** Definitions related to the Apache Velocity templating library. */
 
 import java
 private import semmle.code.java.dataflow.ExternalFlow
