@@ -73,7 +73,7 @@ class ValueNumberBound extends Bound, TBoundValueNumber {
     this = TBoundValueNumber(valueNumber(result)) and delta = 0
   }
 
-  override string toString() { result = vn.getExampleInstruction().toString() }
+  override string toString() { result = "ValueNumberBound" }
 
   override Location getLocation() { result = vn.getLocation() }
 
