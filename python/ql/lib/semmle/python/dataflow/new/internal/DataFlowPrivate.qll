@@ -1,7 +1,6 @@
 private import python
 private import DataFlowPublic
 private import semmle.python.essa.SsaCompute
-private import semmle.python.dataflow.new.internal.ImportStar
 private import semmle.python.dataflow.new.internal.ImportResolution
 // Since we allow extra data-flow steps from modeled frameworks, we import these
 // up-front, to ensure these are included. This provides a more seamless experience from
