@@ -733,7 +733,7 @@ private predicate bounded(
     reason = TSemNoReason()
     or
     baseBound(e, delta, upper) and
-    b instanceof SemZeroBound and
+    b = zeroBound(e.getEnclosingCallable()) and
     fromBackEdge = false and
     origdelta = delta and
     reason = TSemNoReason()

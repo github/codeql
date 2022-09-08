@@ -13,6 +13,8 @@ module SemanticExprConfig {
 
   class Expr = IR::Instruction;
 
+  class Callable = IR::IRFunction;
+
   SemBasicBlock getExprBasicBlock(Expr e) { result = getSemanticBasicBlock(e.getBlock()) }
 
   private predicate anyConstantExpr(Expr expr, SemType type, string value) {
@@ -196,6 +198,8 @@ module SemanticExprConfig {
     Location getLocation() { none() }
 
     predicate hasRead(SsaVariable v) { none() }
+
+    IR::IRFunction getEnclosingIRFunction() { none() }
   }
 
   private class SsaReadPositionBlock extends SsaReadPosition, TReadPositionBlock {
@@ -214,6 +218,8 @@ module SemanticExprConfig {
         operand.getUse().getBlock() = block
       )
     }
+
+    override IR::IRFunction getEnclosingIRFunction() { result = block.getEnclosingIRFunction() }
   }
 
   private class SsaReadPositionPhiInputEdge extends SsaReadPosition, TReadPositionPhiInputEdge {
@@ -233,11 +239,17 @@ module SemanticExprConfig {
         operand.getUse().getBlock() = succ
       )
     }
+
+    override IR::IRFunction getEnclosingIRFunction() { result = pred.getEnclosingIRFunction() }
   }
 
   predicate hasReadOfSsaVariable(SsaReadPosition pos, SsaVariable v) { pos.hasRead(v) }
 
   predicate readBlock(SsaReadPosition pos, BasicBlock block) { pos = TReadPositionBlock(block) }
+
+  SemCallable getSsaReadPositionEnclosingCallable(SsaReadPosition pos) {
+    result = pos.getEnclosingIRFunction()
+  }
 
   predicate phiInputEdge(SsaReadPosition pos, BasicBlock origBlock, BasicBlock phiBlock) {
     pos = TReadPositionPhiInputEdge(origBlock, phiBlock)
@@ -260,6 +272,8 @@ module SemanticExprConfig {
     string toString() { result = super.toString() }
 
     final Location getLocation() { result = super.getLocation() }
+
+    final Callable getEnclosingCallable() { result = super.getEnclosingCallable() }
   }
 
   private class ValueNumberBound extends Bound {
@@ -280,7 +294,9 @@ module SemanticExprConfig {
     }
   }
 
-  predicate zeroBound(Bound bound) { bound instanceof IRBound::ZeroBound }
+  predicate zeroBound(IRBound::ZeroBound bound, Callable callable) {
+    bound.getEnclosingCallable() = callable
+  }
 
   predicate ssaBound(Bound bound, SsaVariable v) {
     v.asInstruction() = bound.(IRBound::ValueNumberBound).getValueNumber().getAnInstruction()
@@ -289,6 +305,10 @@ module SemanticExprConfig {
   Expr getBoundExpr(Bound bound, int delta) {
     result = bound.(IRBound::Bound).getInstruction(delta)
   }
+
+  SemCallable getExprEnclosingCallable(Expr e) { result = e.getEnclosingIRFunction() }
+
+  SemCallable getBoundEnclosingCallable(Bound bound) { result = bound.getEnclosingCallable() }
 
   class Guard = IRGuards::IRGuardCondition;
 

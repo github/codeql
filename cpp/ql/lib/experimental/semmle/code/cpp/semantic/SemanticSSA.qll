@@ -37,6 +37,10 @@ class SemSsaReadPosition instanceof Specific::SsaReadPosition {
   final Specific::Location getLocation() { result = super.getLocation() }
 
   final predicate hasReadOfVar(SemSsaVariable var) { Specific::hasReadOfSsaVariable(this, var) }
+
+  final SemCallable getEnclosingCallable() {
+    result = Specific::getSsaReadPositionEnclosingCallable(this)
+  }
 }
 
 class SemSsaReadPositionPhiInputEdge extends SemSsaReadPosition {

@@ -3,7 +3,7 @@ private import semmle.code.cpp.ir.IR
 private import semmle.code.cpp.ir.ValueNumbering
 
 private newtype TBound =
-  TBoundZero() or
+  TBoundZero(IRFunction func) or
   TBoundValueNumber(ValueNumber vn) {
     exists(Instruction i |
       vn.getAnInstruction() = i and
@@ -44,6 +44,8 @@ abstract class Bound extends TBound {
   Instruction getInstruction() { result = getInstruction(0) }
 
   abstract Location getLocation();
+
+  abstract IRFunction getEnclosingCallable();
 }
 
 /**
@@ -51,13 +53,20 @@ abstract class Bound extends TBound {
  * integer bounds as bounds are always accompanied by an added integer delta.
  */
 class ZeroBound extends Bound, TBoundZero {
+  IRFunction func;
+
+  ZeroBound() { this = TBoundZero(func) }
+
   override string toString() { result = "0" }
 
   override Instruction getInstruction(int delta) {
-    result.(ConstantValueInstruction).getValue().toInt() = delta
+    result.(ConstantValueInstruction).getValue().toInt() = delta and
+    result.getEnclosingIRFunction() = func
   }
 
   override Location getLocation() { result instanceof UnknownDefaultLocation }
+
+  override IRFunction getEnclosingCallable() { result = func }
 }
 
 /**
@@ -79,4 +88,8 @@ class ValueNumberBound extends Bound, TBoundValueNumber {
 
   /** Gets the value number that equals this bound. */
   ValueNumber getValueNumber() { result = vn }
+
+  override IRFunction getEnclosingCallable() {
+    result = vn.getAnInstruction().getEnclosingIRFunction()
+  }
 }
