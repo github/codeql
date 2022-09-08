@@ -1,6 +1,6 @@
 /**
  * @name Insecure TLS configuration
- * @description TLS v1.0 and v1.1 versions are known to be vulnerable.. TLS v1.2 or v1.3 should be used instead.
+ * @description TLS v1.0 and v1.1 versions are known to be vulnerable. TLS v1.2 or v1.3 should be used instead.
  * @kind path-problem
  * @problem.severity error
  * @security-severity TODO
@@ -52,4 +52,4 @@ class InsecureTlsConfig extends TaintTracking::Configuration {
 
 from InsecureTlsConfig config, DataFlow::PathNode sourceNode, DataFlow::PathNode sinkNode
 where config.hasFlowPath(sourceNode, sinkNode)
-select sinkNode.getNode(), sourceNode, sinkNode, "Insecure TLS configuration"
+select sinkNode.getNode(), sourceNode, sinkNode, "This TLS configuration is insecure."

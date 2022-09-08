@@ -12,7 +12,7 @@
 </recommendation>
 <example>
 
-<p>Consider specifying newer <code>tls_protocol_version_t</code> explicitly, or omitting it completely as the OS will use secure defaults.</p>
+<p>Specify newer <code>tls_protocol_version_t</code> explicitly, or omit it completely as the OS will use secure defaults.</p>
 
 <sample src="SecureTLS.swift" />
 
@@ -22,7 +22,6 @@
 <li>
   <a href="https://support.apple.com/en-gb/guide/security/sec100a75d12/web">Apple Platform Security - TLS security</a>
   <a href="https://developer.apple.com/documentation/security/preventing_insecure_network_connections">Preventing Insecure Network Connections</a>
-  <a href="https://cwe.mitre.org/data/definitions/757.html">CWE-757: Selection of Less-Secure Algorithm During Negotiation</a>
 </li>
 
 </references>
