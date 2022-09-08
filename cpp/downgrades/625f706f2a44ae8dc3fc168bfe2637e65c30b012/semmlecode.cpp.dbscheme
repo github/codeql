@@ -746,7 +746,7 @@ type_mentions(
     unique int id: @type_mention,
     int type_id: @type ref,
     int location: @location ref,
-    // a_symbol_reference_kind from the frontend.
+    // a_symbol_reference_kind from the EDG frontend.  See symbol_ref.h there.
     int kind: int ref
 );
 
@@ -1596,7 +1596,7 @@ case @expr.kind of
 | 117 = @ispolyexpr // __is_polymorphic ::= type
 | 118 = @isunionexpr // __is_union ::= type
 | 119 = @typescompexpr // GNU __builtin_types_compatible ::= type type
-| 120 = @intaddrexpr // frontend internal builtin, used to implement offsetof
+| 120 = @intaddrexpr // EDG internal builtin, used to implement offsetof
 // ...
 | 122 = @hastrivialdestructor // __has_trivial_destructor ::= type
 | 123 = @literal
@@ -1666,33 +1666,6 @@ case @expr.kind of
 | 333 = @builtinbitcast
 | 334 = @builtinshuffle
 | 335 = @blockassignexpr
-| 336 = @issame
-| 337 = @isfunction
-| 338 = @islayoutcompatible
-| 339 = @ispointerinterconvertiblebaseof
-| 340 = @isarray
-| 341 = @arrayrank
-| 342 = @arrayextent
-| 343 = @isarithmetic
-| 344 = @iscompletetype
-| 345 = @iscompound
-| 346 = @isconst
-| 347 = @isfloatingpoint
-| 348 = @isfundamental
-| 349 = @isintegral
-| 350 = @islvaluereference
-| 351 = @ismemberfunctionpointer
-| 352 = @ismemberobjectpointer
-| 353 = @ismemberpointer
-| 354 = @isobject
-| 355 = @ispointer
-| 356 = @isreference
-| 357 = @isrvaluereference
-| 358 = @isscalar
-| 359 = @issigned
-| 360 = @isunsigned
-| 361 = @isvoid
-| 362 = @isvolatile
 ;
 
 @var_args_expr = @vastartexpr
@@ -1759,33 +1732,6 @@ case @expr.kind of
             | @hasuniqueobjectrepresentations
             | @builtinbitcast
             | @builtinshuffle
-            | @issame
-            | @isfunction
-            | @islayoutcompatible
-            | @ispointerinterconvertiblebaseof
-            | @isarray
-            | @arrayrank
-            | @arrayextent
-            | @isarithmetic
-            | @iscompletetype
-            | @iscompound
-            | @isconst
-            | @isfloatingpoint
-            | @isfundamental
-            | @isintegral
-            | @islvaluereference
-            | @ismemberfunctionpointer
-            | @ismemberobjectpointer
-            | @ismemberpointer
-            | @isobject
-            | @ispointer
-            | @isreference
-            | @isrvaluereference
-            | @isscalar
-            | @issigned
-            | @isunsigned
-            | @isvoid
-            | @isvolatile
             ;
 
 new_allocated_type(
