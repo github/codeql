@@ -175,17 +175,17 @@ abstract class DataFlowFunction extends DataFlowCallable, TFunction {
   override Function getScope() { result = func }
 
   override Location getLocation() { result = func.getLocation() }
-}
-
-/** A plain (non-method) function. */
-class DataFlowPlainFunction extends DataFlowFunction {
-  DataFlowPlainFunction() { not exists(Class cls | cls.getAMethod() = func) }
 
   override ParameterNode getParameter(ParameterPosition ppos) {
     exists(int index | ppos.isPositional(index) | result.getParameter() = func.getArg(index))
     or
     exists(string name | ppos.isKeyword(name) | result.getParameter() = func.getArgByName(name))
   }
+}
+
+/** A plain (non-method) function. */
+class DataFlowPlainFunction extends DataFlowFunction {
+  DataFlowPlainFunction() { not exists(Class cls | cls.getAMethod() = func) }
 }
 
 /** A method, except staticmethods. */
@@ -203,9 +203,9 @@ class DataFlowMethod extends DataFlowFunction {
   override ParameterNode getParameter(ParameterPosition ppos) {
     ppos.isSelf() and result.getParameter() = func.getArg(0)
     or
-    exists(int index | ppos.isPositional(index) | result.getParameter() = func.getArg(index + 1))
+    not ppos.isPositional(_) and result = super.getParameter(ppos)
     or
-    exists(string name | ppos.isKeyword(name) | result.getParameter() = func.getArgByName(name))
+    exists(int index | ppos.isPositional(index) | result.getParameter() = func.getArg(index + 1))
   }
 }
 
@@ -220,12 +220,6 @@ class DataFlowStaticmethod extends DataFlowFunction {
 
   /** Gets the class this function is a staticmethod of. */
   Class getClass() { result = cls }
-
-  override ParameterNode getParameter(ParameterPosition ppos) {
-    exists(int index | ppos.isPositional(index) | result.getParameter() = func.getArg(index))
-    or
-    exists(string name | ppos.isKeyword(name) | result.getParameter() = func.getArgByName(name))
-  }
 }
 
 /**
