@@ -7,6 +7,12 @@ class Expr extends ExprBase {
 
   Expr getConversion() { result.convertsFrom(this) }
 
+  Expr getConversion(int n) {
+    n = 0 and result = this.getConversion()
+    or
+    result = this.getConversion(n - 1).getConversion()
+  }
+
   predicate isConversion() { this.convertsFrom(_) }
 
   predicate hasConversions() { exists(this.getConversion()) }

@@ -143,7 +143,7 @@ module InsecureDownload {
       hasUnsafeExtension(req.getAUrlPart().asExpr().getConstantValue().getString())
     }
 
-    override DataFlow::Node getDownloadCall() { result.asExpr().getExpr() = req }
+    override DataFlow::Node getDownloadCall() { result = req }
 
     override DataFlow::FlowState getALabel() {
       result instanceof Label::SensitiveInsecure
@@ -193,6 +193,6 @@ module InsecureDownload {
 
     override DataFlow::FlowState getALabel() { result instanceof Label::Insecure }
 
-    override DataFlow::Node getDownloadCall() { result.asExpr().getExpr() = request }
+    override DataFlow::Node getDownloadCall() { result = request }
   }
 }

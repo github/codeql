@@ -30,6 +30,7 @@ private class SystemCollectionsSpecializedNameValueCollectionFlowModelCsv extend
     row =
       [
         "System.Collections.Specialized;NameValueCollection;false;Add;(System.Collections.Specialized.NameValueCollection);;Argument[0];Argument[this].Element;value;manual",
+        "System.Collections.Specialized;NameValueCollection;true;Clear;();;Argument[this].WithoutElement;Argument[this];value;manual",
         "System.Collections.Specialized;NameValueCollection;false;CopyTo;(System.Array,System.Int32);;Argument[this].Element;Argument[0].Element;value;manual",
       ]
   }
@@ -68,5 +69,13 @@ private class SystemCollectionsSpecializedStringCollectionFlowModelCsv extends S
         "System.Collections.Specialized;StringCollection;false;get_Item;(System.Int32);;Argument[this].Element;ReturnValue;value;manual",
         "System.Collections.Specialized;StringCollection;false;set_Item;(System.Int32,System.String);;Argument[1];Argument[this].Element;value;manual",
       ]
+  }
+}
+
+/** Data flow for `System.Collections.Specialized.StringDictionary`. */
+private class SystemCollectionsSpecializedStringDictionaryFlowModelCsv extends SummaryModelCsv {
+  override predicate row(string row) {
+    row =
+      "System.Collections.Specialized;StringDictionary;true;Clear;();;Argument[this].WithoutElement;Argument[this];value;manual"
   }
 }

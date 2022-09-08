@@ -3,7 +3,7 @@
  * indirections into account.
  */
 
-private import semmle.code.cpp.ir.dataflow.internal.SsaImplCommon as SsaImplCommon
+private import codeql.ssa.Ssa as SsaImplCommon
 private import semmle.code.cpp.ir.IR
 private import semmle.code.cpp.ir.dataflow.internal.DataFlowImplCommon as DataFlowImplCommon
 private import semmle.code.cpp.models.interfaces.Allocation as Alloc

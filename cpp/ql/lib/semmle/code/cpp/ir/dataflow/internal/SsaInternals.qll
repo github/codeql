@@ -1,4 +1,4 @@
-private import SsaImplCommon as SsaImplCommon
+private import codeql.ssa.Ssa as SsaImplCommon
 private import semmle.code.cpp.ir.IR
 private import DataFlowUtil
 private import DataFlowImplCommon as DataFlowImplCommon
