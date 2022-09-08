@@ -287,10 +287,12 @@ private module RankEdge<edgeSig/2 edge> implements RankedEdge {
 }
 
 private signature module TypePropagation {
-  predicate candType(TypeFlowNode n, RefType t);
+  class Typ;
+
+  predicate candType(TypeFlowNode n, Typ t);
 
   bindingset[t]
-  predicate supportsType(TypeFlowNode n, RefType t);
+  predicate supportsType(TypeFlowNode n, Typ t);
 }
 
 /** Implements recursion through `forall` by way of edge ranking. */
@@ -300,7 +302,7 @@ private module ForAll<RankedEdge Edge, TypePropagation T> {
    * thus is a candidate bound for `n`.
    */
   pragma[nomagic]
-  private predicate candJoinType(TypeFlowNode n, RefType t) {
+  private predicate candJoinType(TypeFlowNode n, T::Typ t) {
     exists(TypeFlowNode mid |
       T::candType(mid, t) and
       Edge::edgeRank(_, mid, n)
@@ -311,7 +313,7 @@ private module ForAll<RankedEdge Edge, TypePropagation T> {
    * Holds if `t` is a candidate bound for `n` that is also valid for data coming
    * through the edges into `n` ranked from `1` to `r`.
    */
-  private predicate flowJoin(int r, TypeFlowNode n, RefType t) {
+  private predicate flowJoin(int r, TypeFlowNode n, T::Typ t) {
     (
       r = 1 and candJoinType(n, t)
       or
@@ -325,7 +327,7 @@ private module ForAll<RankedEdge Edge, TypePropagation T> {
    * coming through all the incoming edges, and therefore is a valid bound for
    * `n`.
    */
-  predicate flowJoin(TypeFlowNode n, RefType t) { flowJoin(Edge::lastRank(n), n, t) }
+  predicate flowJoin(TypeFlowNode n, T::Typ t) { flowJoin(Edge::lastRank(n), n, t) }
 }
 
 module RankedJoinStep = RankEdge<joinStep/2>;
@@ -342,6 +344,8 @@ private predicate exactTypeBase(TypeFlowNode n, RefType t) {
 }
 
 private module ExactTypePropagation implements TypePropagation {
+  class Typ = RefType;
+
   predicate candType = exactType/2;
 
   predicate supportsType = exactType/2;
@@ -387,10 +391,10 @@ private predicate upcastCand(TypeFlowNode n, RefType t1, RefType t1e, RefType t2
 private predicate unconstrained(BoundedType t) {
   t.(Wildcard).isUnconstrained()
   or
-  t.(BoundedType).getUpperBoundType() instanceof TypeObject and
+  t.getUpperBoundType() instanceof TypeObject and
   not t.(Wildcard).hasLowerBound()
   or
-  unconstrained(t.(BoundedType).getUpperBoundType())
+  unconstrained(t.getUpperBoundType())
   or
   unconstrained(t.(Wildcard).getLowerBoundType())
 }
@@ -537,6 +541,8 @@ private predicate typeFlowBase(TypeFlowNode n, RefType t) {
 }
 
 private module TypeFlowPropagation implements TypePropagation {
+  class Typ = RefType;
+
   predicate candType = typeFlow/2;
 
   bindingset[t]
@@ -644,6 +650,17 @@ private predicate unionTypeFlowBaseCand(TypeFlowNode n, RefType t, boolean exact
   )
 }
 
+private module HasUnionTypePropagation implements TypePropagation {
+  class Typ = Unit;
+
+  predicate candType(TypeFlowNode mid, Unit unit) {
+    exists(unit) and
+    (unionTypeFlowBaseCand(mid, _, _) or hasUnionTypeFlow(mid))
+  }
+
+  predicate supportsType = candType/2;
+}
+
 /**
  * Holds if all incoming type flow can be traced back to a
  * `unionTypeFlowBaseCand`, such that we can compute a union type bound for `n`.
@@ -652,15 +669,15 @@ private predicate unionTypeFlowBaseCand(TypeFlowNode n, RefType t, boolean exact
 private predicate hasUnionTypeFlow(TypeFlowNode n) {
   not exactType(n, _) and
   (
-    forex(TypeFlowNode mid | joinStep(mid, n) |
-      unionTypeFlowBaseCand(mid, _, _) or hasUnionTypeFlow(mid)
-    )
+    // Optimized version of
+    // `forex(TypeFlowNode mid | joinStep(mid, n) | unionTypeFlowBaseCand(mid, _, _) or hasUnionTypeFlow(mid))`
+    ForAll<RankedJoinStep, HasUnionTypePropagation>::flowJoin(n, _)
     or
     exists(TypeFlowNode scc |
       sccRepr(n, scc) and
-      forex(TypeFlowNode mid | sccJoinStep(mid, scc) |
-        unionTypeFlowBaseCand(mid, _, _) or hasUnionTypeFlow(mid)
-      )
+      // Optimized version of
+      // `forex(TypeFlowNode mid | sccJoinStep(mid, scc) | unionTypeFlowBaseCand(mid, _, _) or hasUnionTypeFlow(mid))`
+      ForAll<RankedSccJoinStep, HasUnionTypePropagation>::flowJoin(scc, _)
     )
     or
     exists(TypeFlowNode mid | step(mid, n) and hasUnionTypeFlow(mid))
