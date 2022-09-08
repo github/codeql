@@ -29,6 +29,14 @@ predicate sqlite_encryption_used() {
 }
 
 /**
+ *  Gets a field of the class `c`, or of another class contained in `c`.
+ */
+Field getRecField(Class c) {
+  result = c.getAField() or
+  result = getRecField(c.getAField().getUnspecifiedType().stripType())
+}
+
+/**
  * A taint flow configuration for flow from a sensitive expression to a `SqliteFunctionCall` sink.
  */
 class FromSensitiveConfiguration extends TaintTracking::Configuration {
@@ -43,6 +51,19 @@ class FromSensitiveConfiguration extends TaintTracking::Configuration {
 
   override predicate isSanitizer(DataFlow::Node node) {
     node.asExpr().getUnspecifiedType() instanceof IntegralType
+  }
+
+  override predicate allowImplicitRead(DataFlow::Node node, DataFlow::ContentSet content) {
+    // flow out from fields at the sink (only).
+    isSink(node) and
+    // constrain `content` to a field inside the node.
+    exists(Class c |
+      node.asExpr().getUnspecifiedType().stripType() = c and
+      content.(DataFlow::FieldContent).getField() = getRecField(c)
+    )
+    or
+    // any default implicit reads
+    super.allowImplicitRead(node, content)
   }
 }
 
