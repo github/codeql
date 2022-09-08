@@ -117,6 +117,7 @@ private module Frameworks {
   private import semmle.code.java.frameworks.Retrofit
   private import semmle.code.java.frameworks.Stream
   private import semmle.code.java.frameworks.Strings
+  private import semmle.code.java.frameworks.Velocity
   private import semmle.code.java.frameworks.ratpack.Ratpack
   private import semmle.code.java.frameworks.ratpack.RatpackExec
   private import semmle.code.java.frameworks.spring.SpringCache
@@ -141,6 +142,7 @@ private module Frameworks {
   private import semmle.code.java.security.LdapInjection
   private import semmle.code.java.security.MvelInjection
   private import semmle.code.java.security.OgnlInjection
+  private import semmle.code.java.security.TemplateInjection
   private import semmle.code.java.security.XPath
   private import semmle.code.java.security.XsltInjection
   private import semmle.code.java.frameworks.Jdbc

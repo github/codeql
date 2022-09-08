@@ -1,5 +1,5 @@
 /**
- * @name Server Side Template Injection
+ * @name Server-side template injection
  * @description Untrusted input used as a template parameter can lead to remote code execution.
  * @kind path-problem
  * @problem.severity error
@@ -10,7 +10,7 @@
  */
 
 import java
-import TemplateInjection
+import semmle.code.java.security.TemplateInjectionQuery
 import DataFlow::PathGraph
 
 from TemplateInjectionFlowConfig config, DataFlow::PathNode source, DataFlow::PathNode sink
