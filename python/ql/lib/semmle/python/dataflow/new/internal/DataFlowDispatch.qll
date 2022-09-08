@@ -585,7 +585,11 @@ Function findFunctionAccordingToMroKnownStartingClass(Class startingClass, strin
 /** Gets a reference to the attribute read `attr` */
 private TypeTrackingNode attrReadTracker(TypeTracker t, AttrRead attr) {
   t.start() and
-  result = attr
+  result = attr and
+  attr.getObject() in [
+      classTracker(_), classInstanceTracker(_), selfTracker(_), clsTracker(_),
+      superCallNoArgumentTracker(_), superCallTwoArgumentTracker(_, _)
+    ]
   or
   exists(TypeTracker t2 | result = attrReadTracker(t2, attr).track(t2, t))
 }
