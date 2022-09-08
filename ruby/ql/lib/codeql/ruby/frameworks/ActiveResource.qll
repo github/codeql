@@ -215,35 +215,37 @@ module ActiveResource {
     Collection getCollection() { result = this.getReceiver() }
   }
 
-  private class ModelClassMethodCallAsHttpRequest extends HTTP::Client::Request::Range {
-    ModelClassMethodCall call;
+  private class ModelClassMethodCallAsHttpRequest extends HTTP::Client::Request::Range,
+    ModelClassMethodCall {
     ModelClass cls;
 
     ModelClassMethodCallAsHttpRequest() {
-      this = call.asExpr().getExpr() and
-      call.getModelClass() = cls and
-      call.getMethodName() = ["all", "build", "create", "create!", "find", "first", "last"]
+      this.getModelClass() = cls and
+      this.getMethodName() = ["all", "build", "create", "create!", "find", "first", "last"]
     }
 
     override string getFramework() { result = "ActiveResource" }
 
-    override predicate disablesCertificateValidation(DataFlow::Node disablingNode) {
-      cls.disablesCertificateValidation(disablingNode)
+    override predicate disablesCertificateValidation(
+      DataFlow::Node disablingNode, DataFlow::Node argumentOrigin
+    ) {
+      cls.disablesCertificateValidation(disablingNode) and
+      // TODO: highlight real argument origin
+      argumentOrigin = disablingNode
     }
 
     override DataFlow::Node getAUrlPart() { result = cls.getASiteAssignment().getAUrlPart() }
 
-    override DataFlow::Node getResponseBody() { result = call }
+    override DataFlow::Node getResponseBody() { result = this }
   }
 
-  private class ModelInstanceMethodCallAsHttpRequest extends HTTP::Client::Request::Range {
-    ModelInstanceMethodCall call;
+  private class ModelInstanceMethodCallAsHttpRequest extends HTTP::Client::Request::Range,
+    ModelInstanceMethodCall {
     ModelClass cls;
 
     ModelInstanceMethodCallAsHttpRequest() {
-      this = call.asExpr().getExpr() and
-      call.getModelClass() = cls and
-      call.getMethodName() =
+      this.getModelClass() = cls and
+      this.getMethodName() =
         [
           "exists?", "reload", "save", "save!", "destroy", "delete", "get", "patch", "post", "put",
           "update_attribute", "update_attributes"
@@ -252,13 +254,17 @@ module ActiveResource {
 
     override string getFramework() { result = "ActiveResource" }
 
-    override predicate disablesCertificateValidation(DataFlow::Node disablingNode) {
-      cls.disablesCertificateValidation(disablingNode)
+    override predicate disablesCertificateValidation(
+      DataFlow::Node disablingNode, DataFlow::Node argumentOrigin
+    ) {
+      cls.disablesCertificateValidation(disablingNode) and
+      // TODO: highlight real argument origin
+      argumentOrigin = disablingNode
     }
 
     override DataFlow::Node getAUrlPart() { result = cls.getASiteAssignment().getAUrlPart() }
 
-    override DataFlow::Node getResponseBody() { result = call }
+    override DataFlow::Node getResponseBody() { result = this }
   }
 
   /**
