@@ -13,6 +13,11 @@ options = { verify_ssl: OpenSSL::SSL::VERIFY_NONE }
 resource = RestClient::Resource.new("https://example.com", options)
 response = resource.get
 
+# BAD
+value = OpenSSL::SSL::VERIFY_NONE
+resource = RestClient::Resource.new("https://example.com", verify_ssl: value)
+response = resource.get
+
 # GOOD
 RestClient.get("https://example.com")
 
@@ -23,7 +28,7 @@ response = resource.get
 # GOOD
 resource = RestClient::Resource.new("https://example.com", verify_ssl: OpenSSL::SSL::VERIFY_PEER)
 response = resource.get
-# BAD
+# GOOD
 resource = RestClient::Resource.new("https://example.com", { verify_ssl: OpenSSL::SSL::VERIFY_PEER })
 response = resource.get
 

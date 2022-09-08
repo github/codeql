@@ -8,6 +8,7 @@ private import codeql.ruby.dataflow.RemoteFlowSources
 private import codeql.ruby.ApiGraphs
 private import codeql.ruby.dataflow.internal.DataFlowPublic
 private import codeql.ruby.DataFlow
+private import codeql.ruby.dataflow.internal.DataFlowImplForHttpClientLibraries as DataFlowImplForHttpClientLibraries
 
 /**
  * A `Net::HTTP` call which initiates an HTTP request.
@@ -18,7 +19,7 @@ private import codeql.ruby.DataFlow
  * response = req.get("/")
  * ```
  */
-class NetHttpRequest extends HTTP::Client::Request::Range {
+class NetHttpRequest extends HTTP::Client::Request::Range, DataFlow::CallNode {
   private DataFlow::CallNode request;
   private DataFlow::Node responseBody;
   private API::Node requestNode;
@@ -26,7 +27,7 @@ class NetHttpRequest extends HTTP::Client::Request::Range {
   NetHttpRequest() {
     exists(string method |
       request = requestNode.asSource() and
-      this = request.asExpr().getExpr()
+      this = request
     |
       // Net::HTTP.get(...)
       method = "get" and
@@ -65,23 +66,42 @@ class NetHttpRequest extends HTTP::Client::Request::Range {
 
   override DataFlow::Node getResponseBody() { result = responseBody }
 
-  override predicate disablesCertificateValidation(DataFlow::Node disablingNode) {
+  /** Gets the value that controls certificate validation, if any. */
+  DataFlow::Node getCertificateValidationControllingValue() {
     // A Net::HTTP request bypasses certificate validation if we see a setter
     // call like this:
     //   foo.verify_mode = OpenSSL::SSL::VERIFY_NONE
     // and then the receiver of that call flows to the receiver in the request:
     //   foo.request(...)
     exists(DataFlow::CallNode setter |
-      disablingNode =
-        API::getTopLevelMember("OpenSSL")
-            .getMember("SSL")
-            .getMember("VERIFY_NONE")
-            .getAValueReachableFromSource() and
       setter.asExpr().getExpr().(SetterMethodCall).getMethodName() = "verify_mode=" and
-      disablingNode = setter.getArgument(0) and
+      result = setter.getArgument(0) and
       localFlow(setter.getReceiver(), request.getReceiver())
     )
   }
 
+  override predicate disablesCertificateValidation(
+    DataFlow::Node disablingNode, DataFlow::Node argumentOrigin
+  ) {
+    any(NetHttpDisablesCertificateValidationConfiguration config)
+        .hasFlow(argumentOrigin, disablingNode) and
+    disablingNode = this.getCertificateValidationControllingValue()
+  }
+
   override string getFramework() { result = "Net::HTTP" }
+}
+
+/** A configuration to track values that can disable certificate validation for NetHttp. */
+private class NetHttpDisablesCertificateValidationConfiguration extends DataFlowImplForHttpClientLibraries::Configuration {
+  NetHttpDisablesCertificateValidationConfiguration() {
+    this = "NetHttpDisablesCertificateValidationConfiguration"
+  }
+
+  override predicate isSource(DataFlow::Node source) {
+    source = API::getTopLevelMember("OpenSSL").getMember("SSL").getMember("VERIFY_NONE").asSource()
+  }
+
+  override predicate isSink(DataFlow::Node sink) {
+    sink = any(NetHttpRequest req).getCertificateValidationControllingValue()
+  }
 }

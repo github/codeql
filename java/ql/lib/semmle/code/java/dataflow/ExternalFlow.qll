@@ -153,7 +153,7 @@ private module Frameworks {
   private import semmle.code.java.frameworks.JMS
   private import semmle.code.java.frameworks.RabbitMQ
   private import semmle.code.java.regex.RegexFlowModels
-  private import semmle.code.java.frameworks.KotlinStdLib
+  private import semmle.code.java.frameworks.kotlin.StdLib
 }
 
 /**

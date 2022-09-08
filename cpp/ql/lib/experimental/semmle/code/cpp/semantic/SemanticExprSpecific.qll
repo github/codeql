@@ -162,7 +162,7 @@ module SemanticExprConfig {
   predicate phi(SsaVariable v) { v.asInstruction() instanceof IR::PhiInstruction }
 
   SsaVariable getAPhiInput(SsaVariable v) {
-    exists(IR::PhiInstruction instr |
+    exists(IR::PhiInstruction instr | v.asInstruction() = instr |
       result.asInstruction() = instr.getAnInput()
       or
       result.asOperand() = instr.getAnInputOperand()

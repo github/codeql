@@ -1,4 +1,4 @@
-
+// semmle-extractor-options: --microsoft --microsoft_version 1600
 class empty {
 };
 
@@ -264,4 +264,10 @@ void f(void) {
 
     bool b_has_unique_object_representations1 = __has_unique_object_representations(int);
     bool b_has_unique_object_representations2 = __has_unique_object_representations(float);
+
+    bool b_is_layout_compatible1 = __is_layout_compatible(int, long);
+    bool b_is_layout_compatible2 = __is_layout_compatible(int*, int* const);
+
+    bool b_is_pointer_interconvertible_base_of1 = __is_pointer_interconvertible_base_of(empty, empty);
+    bool b_is_pointer_interconvertible_base_of2 = __is_pointer_interconvertible_base_of(empty, abstract);
 }

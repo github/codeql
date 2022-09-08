@@ -454,6 +454,30 @@ module API {
   }
 
   /**
+   * An API entry point.
+   *
+   * By default, API graph nodes are only created for nodes that come from an external
+   * library or escape into an external library. The points where values are cross the boundary
+   * between codebases are called "entry points".
+   *
+   * Anything imported from an external package is considered to be an entry point, but
+   * additional entry points may be added by extending this class.
+   */
+  abstract class EntryPoint extends string {
+    bindingset[this]
+    EntryPoint() { any() }
+
+    /** Gets a data-flow node corresponding to a use-node for this entry point. */
+    DataFlow::LocalSourceNode getASource() { none() }
+
+    /** Gets a data-flow node corresponding to a def-node for this entry point. */
+    DataFlow::Node getASink() { none() }
+
+    /** Gets an API-node for this entry point. */
+    API::Node getANode() { result = root().getASuccessor(Label::entryPoint(this)) }
+  }
+
+  /**
    * Provides the actual implementation of API graphs, cached for performance.
    *
    * Ideally, we'd like nodes to correspond to (global) access paths, with edge labels
@@ -652,6 +676,12 @@ module API {
       |
         lbl = Label::memberFromRef(aw)
       )
+      or
+      exists(EntryPoint entry |
+        base = root() and
+        lbl = Label::entryPoint(entry) and
+        rhs = entry.getASink()
+      )
     }
 
     /**
@@ -734,6 +764,12 @@ module API {
           Label::member(any(string name |
               ImportStar::namePossiblyDefinedInImportStar(ref.asCfgNode(), name, s)
             ))
+      )
+      or
+      exists(EntryPoint entry |
+        base = root() and
+        lbl = Label::entryPoint(entry) and
+        ref = entry.getASource()
       )
     }
 
@@ -909,7 +945,8 @@ module API {
         MkLabelSelfParameter() or
         MkLabelReturn() or
         MkLabelSubclass() or
-        MkLabelAwait()
+        MkLabelAwait() or
+        MkLabelEntryPoint(EntryPoint ep)
 
       /** A label for a module. */
       class LabelModule extends ApiLabel, MkLabelModule {
@@ -983,6 +1020,15 @@ module API {
       class LabelAwait extends ApiLabel, MkLabelAwait {
         override string toString() { result = "getAwaited()" }
       }
+
+      /** A label for entry points. */
+      class LabelEntryPoint extends ApiLabel, MkLabelEntryPoint {
+        private EntryPoint entry;
+
+        LabelEntryPoint() { this = MkLabelEntryPoint(entry) }
+
+        override string toString() { result = "entryPoint(\"" + entry + "\")" }
+      }
     }
 
     /** Gets the edge label for the module `m`. */
@@ -1019,5 +1065,8 @@ module API {
 
     /** Gets the `await` edge label. */
     LabelAwait await() { any() }
+
+    /** Gets the label going from the root node to the nodes associated with the given entry point. */
+    LabelEntryPoint entryPoint(EntryPoint ep) { result = MkLabelEntryPoint(ep) }
   }
 }

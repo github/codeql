@@ -13,8 +13,8 @@ private import TranslatedInitialization
  * Gets the `TranslatedDeclarationEntry` that represents the declaration
  * `entry`.
  */
-TranslatedDeclarationEntry getTranslatedDeclarationEntry(DeclarationEntry entry) {
-  result.getAst() = entry
+TranslatedDeclarationEntry getTranslatedDeclarationEntry(IRDeclarationEntry entry) {
+  result.getIRDeclarationEntry() = entry
 }
 
 /**
@@ -24,20 +24,22 @@ TranslatedDeclarationEntry getTranslatedDeclarationEntry(DeclarationEntry entry)
  * functions do not have a `TranslatedDeclarationEntry`.
  */
 abstract class TranslatedDeclarationEntry extends TranslatedElement, TTranslatedDeclarationEntry {
-  DeclarationEntry entry;
+  IRDeclarationEntry entry;
 
   TranslatedDeclarationEntry() { this = TTranslatedDeclarationEntry(entry) }
 
   final override Function getFunction() {
     exists(DeclStmt stmt |
-      stmt.getADeclarationEntry() = entry and
+      stmt = entry.getStmt() and
       result = stmt.getEnclosingFunction()
     )
   }
 
+  IRDeclarationEntry getIRDeclarationEntry() { result = entry }
+
   final override string toString() { result = entry.toString() }
 
-  final override Locatable getAst() { result = entry }
+  final override Locatable getAst() { result = entry.getAst() }
 
   /** DEPRECATED: Alias for getAst */
   deprecated override Locatable getAST() { result = getAst() }
@@ -216,7 +218,7 @@ class TranslatedStaticLocalVariableDeclarationEntry extends TranslatedDeclaratio
  */
 class TranslatedStaticLocalVariableInitialization extends TranslatedElement,
   TranslatedLocalVariableDeclaration, TTranslatedStaticLocalVariableInitialization {
-  VariableDeclarationEntry entry;
+  IRVariableDeclarationEntry entry;
   StaticLocalVariable var;
 
   TranslatedStaticLocalVariableInitialization() {
@@ -226,7 +228,7 @@ class TranslatedStaticLocalVariableInitialization extends TranslatedElement,
 
   final override string toString() { result = "init: " + entry.toString() }
 
-  final override Locatable getAst() { result = entry }
+  final override Locatable getAst() { result = entry.getAst() }
 
   /** DEPRECATED: Alias for getAst */
   deprecated override Locatable getAST() { result = getAst() }
@@ -234,40 +236,6 @@ class TranslatedStaticLocalVariableInitialization extends TranslatedElement,
   final override LocalVariable getVariable() { result = var }
 
   final override Function getFunction() { result = var.getFunction() }
-}
-
-/**
- * Gets the `TranslatedRangeBasedForVariableDeclaration` that represents the declaration of
- * `var`.
- */
-TranslatedRangeBasedForVariableDeclaration getTranslatedRangeBasedForVariableDeclaration(
-  LocalVariable var
-) {
-  result.getVariable() = var
-}
-
-/**
- * Represents the IR translation of a compiler-generated variable in a range-based `for` loop.
- */
-class TranslatedRangeBasedForVariableDeclaration extends TranslatedLocalVariableDeclaration,
-  TTranslatedRangeBasedForVariableDeclaration {
-  RangeBasedForStmt forStmt;
-  LocalVariable var;
-
-  TranslatedRangeBasedForVariableDeclaration() {
-    this = TTranslatedRangeBasedForVariableDeclaration(forStmt, var)
-  }
-
-  override string toString() { result = var.toString() }
-
-  override Locatable getAst() { result = var }
-
-  /** DEPRECATED: Alias for getAst */
-  deprecated override Locatable getAST() { result = getAst() }
-
-  override Function getFunction() { result = forStmt.getEnclosingFunction() }
-
-  override LocalVariable getVariable() { result = var }
 }
 
 TranslatedConditionDecl getTranslatedConditionDecl(ConditionDeclExpr expr) {
