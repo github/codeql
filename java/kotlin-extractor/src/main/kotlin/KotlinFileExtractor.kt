@@ -97,8 +97,15 @@ open class KotlinFileExtractor(
         if (d.isFakeOverride) {
             return true
         }
-        if ((d as? IrFunction)?.descriptor?.isHiddenToOvercomeSignatureClash == true) {
-            return true
+        try {
+            if ((d as? IrFunction)?.descriptor?.isHiddenToOvercomeSignatureClash == true) {
+                return true
+            }
+        }
+        catch (e: NotImplementedError) {
+            // `org.jetbrains.kotlin.ir.descriptors.IrBasedClassConstructorDescriptor.isHiddenToOvercomeSignatureClash` throws the exception
+            logger.warnElement("Couldn't query if element is fake, deciding it's not.", d, e)
+            return false
         }
         return false
     }
