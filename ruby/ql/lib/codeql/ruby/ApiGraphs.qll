@@ -97,6 +97,7 @@ module API {
      * This is similar to `asSource()` but additionally includes nodes that are transitively reachable by data flow.
      * See `asSource()` for examples.
      */
+    pragma[inline]
     DataFlow::Node getAValueReachableFromSource() {
       exists(DataFlow::LocalSourceNode src | Impl::use(this, src) |
         Impl::trackUseNode(src).flowsTo(result)
