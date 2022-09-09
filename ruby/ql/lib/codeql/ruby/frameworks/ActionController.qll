@@ -67,6 +67,8 @@ class ActionControllerActionMethod extends Method, HTTP::Server::RequestHandler:
 
   override string getFramework() { result = "ActionController" }
 
+  override string getAnHttpMethod() { result = this.getARoute().getHttpMethod() }
+
   /** Gets a call to render from within this method. */
   RenderCall getARenderCall() { result.getParent+() = this }
 

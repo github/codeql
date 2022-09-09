@@ -1,0 +1,2 @@
+| app/controllers/users_controller.rb:4:16:4:21 | call to params | $@ for GET requests uses query parameter as sensitive data. | app/controllers/users_controller.rb:3:3:6:5 | login_get | Request handler |
+| app/controllers/users_controller.rb:5:23:5:28 | call to params | $@ for GET requests uses query parameter as sensitive data. | app/controllers/users_controller.rb:3:3:6:5 | login_get | Request handler |

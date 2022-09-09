@@ -250,6 +250,11 @@ module HTTP {
 
       /** Gets a string that identifies the framework used for this route setup. */
       string getFramework() { result = super.getFramework() }
+
+      /**
+       * Gets the HTTP method name, in lowercase, that this handler will respond to.
+       */
+      string getHttpMethod() { result = super.getHttpMethod() }
     }
 
     /** Provides a class for modeling new HTTP routing APIs. */
@@ -287,6 +292,11 @@ module HTTP {
 
         /** Gets a string that identifies the framework used for this route setup. */
         abstract string getFramework();
+
+        /**
+         * Gets the HTTP method name, in all caps, that this handler will respond to.
+         */
+        abstract string getHttpMethod();
       }
     }
 
@@ -343,6 +353,12 @@ module HTTP {
 
       /** Gets a string that identifies the framework used for this route setup. */
       string getFramework() { result = super.getFramework() }
+
+      /**
+       * Gets an HTTP method name, in all caps, that this handler will respond to.
+       * Handlers can potentially respond to multiple HTTP methods.
+       */
+      string getAnHttpMethod() { result = super.getAnHttpMethod() }
     }
 
     /** Provides a class for modeling new HTTP request handlers. */
@@ -364,6 +380,12 @@ module HTTP {
 
         /** Gets a string that identifies the framework used for this request handler. */
         abstract string getFramework();
+
+        /**
+         * Gets an HTTP method name, in all caps, that this handler will respond to.
+         * Handlers can potentially respond to multiple HTTP methods.
+         */
+        abstract string getAnHttpMethod();
       }
     }
 
@@ -378,6 +400,8 @@ module HTTP {
       }
 
       override string getFramework() { result = rs.getFramework() }
+
+      override string getAnHttpMethod() { result = rs.getHttpMethod() }
     }
 
     /** A parameter that will receive parts of the url when handling an incoming request. */

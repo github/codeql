@@ -85,6 +85,9 @@ private class GraphqlSchemaResolverClass extends ClassDeclaration {
   }
 }
 
+/** Gets an HTTP method that is supported for querying a GraphQL server. */
+private string getASupportedHTTPMethod() { result = ["get", "post"] }
+
 /**
  * A `ClassDeclaration` for a class that extends `GraphQL::Schema::Object`.
  * For example,
@@ -173,6 +176,8 @@ class GraphqlResolveMethod extends Method, HTTP::Server::RequestHandler::Range {
 
   override string getFramework() { result = "GraphQL" }
 
+  override string getAnHttpMethod() { result = getASupportedHTTPMethod() }
+
   /** Gets the mutation class containing this method. */
   GraphqlResolvableClass getMutationClass() { result = resolvableClass }
 }
@@ -219,6 +224,8 @@ class GraphqlLoadMethod extends Method, HTTP::Server::RequestHandler::Range {
   override Parameter getARoutedParameter() { result = this.getAParameter() }
 
   override string getFramework() { result = "GraphQL" }
+
+  override string getAnHttpMethod() { result = getASupportedHTTPMethod() }
 
   /** Gets the mutation class containing this method. */
   GraphqlResolvableClass getMutationClass() { result = resolvableClass }
@@ -388,6 +395,8 @@ class GraphqlFieldResolutionMethod extends Method, HTTP::Server::RequestHandler:
   }
 
   override string getFramework() { result = "GraphQL" }
+
+  override string getAnHttpMethod() { result = getASupportedHTTPMethod() }
 
   /** Gets the class containing this method. */
   GraphqlSchemaObjectClass getGraphqlClass() { result = schemaObjectClass }
