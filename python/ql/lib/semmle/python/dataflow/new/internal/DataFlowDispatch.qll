@@ -910,7 +910,12 @@ private predicate normalCallArg(CallNode call, Node arg, ArgumentPosition apos) 
     arg.asCfgNode() = call.getArgByName(name)
   )
   or
-  apos.isDictSplat() and arg.asCfgNode() = call.getKwargs()
+  apos.isDictSplat() and
+  (
+    arg.asCfgNode() = call.getKwargs()
+    or
+    arg = TSynthDictSplatArgumentNode(call)
+  )
 }
 
 /**

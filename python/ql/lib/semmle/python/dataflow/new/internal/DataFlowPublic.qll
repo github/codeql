@@ -112,7 +112,8 @@ newtype TNode =
   } or
   TSummaryParameterNode(FlowSummaryImpl::Public::SummarizedCallable c, ParameterPosition pos) {
     FlowSummaryImpl::Private::summaryParameterNodeRange(c, pos)
-  }
+  } or
+  TSynthDictSplatArgumentNode(CallNode call) { exists(call.getArgByName(_)) }
 
 class TParameterNode = TCfgNode or TSummaryParameterNode;
 
