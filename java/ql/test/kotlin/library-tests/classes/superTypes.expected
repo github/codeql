@@ -47,8 +47,6 @@
 | file://<external>/C1$<no name provided>$Local3.class:0:0:0:0 | Local3<Integer> | file://<external>/Object.class:0:0:0:0 | Object |
 | file://<external>/C1$Local1.class:0:0:0:0 | Local1<Integer> | file://<external>/Object.class:0:0:0:0 | Object |
 | file://<external>/C1$Local2.class:0:0:0:0 | Local2<Integer> | file://<external>/Object.class:0:0:0:0 | Object |
-| file://<external>/Cl0$Cl1.class:0:0:0:0 | Cl1<U3> | file://<external>/Object.class:0:0:0:0 | Object |
-| file://<external>/Cl0.class:0:0:0:0 | Cl0<U0> | file://<external>/Object.class:0:0:0:0 | Object |
 | file://<external>/Generic.class:0:0:0:0 | Generic<Integer> | file://<external>/Object.class:0:0:0:0 | Object |
 | file://<external>/Generic.class:0:0:0:0 | Generic<String> | file://<external>/Object.class:0:0:0:0 | Object |
 | file://<external>/SuperChain1.class:0:0:0:0 | SuperChain1<T3,String> | file://<external>/Object.class:0:0:0:0 | Object |

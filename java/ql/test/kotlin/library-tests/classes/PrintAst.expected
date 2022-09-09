@@ -533,8 +533,8 @@ classes.kt:
 #  142|                       5: [BlockStmt] { ... }
 #  143|                         0: [LocalVariableDeclStmt] var ...;
 #  143|                           1: [LocalVariableDeclExpr] x
-#  143|                             0: [ClassInstanceExpr] new Cl1<U3>(...)
-#  143|                               -3: [TypeAccess] Cl1<U3>
+#  143|                             0: [ClassInstanceExpr] new Cl1(...)
+#  143|                               -3: [TypeAccess] Cl1
 #  143|                                 0: [TypeAccess] U3
 #  150|   26: [Class,GenericType,ParameterizedType] Cl00
 #-----|     -2: (Generic Parameters)

@@ -8,8 +8,6 @@
 | file://<external>/C1$<no name provided>$Local3.class:0:0:0:0 | Local3<Integer> | 0 | file://<external>/Integer.class:0:0:0:0 | Integer |
 | file://<external>/C1$Local1.class:0:0:0:0 | Local1<Integer> | 0 | file://<external>/Integer.class:0:0:0:0 | Integer |
 | file://<external>/C1$Local2.class:0:0:0:0 | Local2<Integer> | 0 | file://<external>/Integer.class:0:0:0:0 | Integer |
-| file://<external>/Cl0$Cl1.class:0:0:0:0 | Cl1<U3> | 0 | classes.kt:141:23:141:24 | U3 |
-| file://<external>/Cl0.class:0:0:0:0 | Cl0<U0> | 0 | classes.kt:140:14:140:15 | U2 |
 | file://<external>/Generic.class:0:0:0:0 | Generic<Integer> | 0 | file://<external>/Integer.class:0:0:0:0 | Integer |
 | file://<external>/Generic.class:0:0:0:0 | Generic<String> | 0 | file://<external>/String.class:0:0:0:0 | String |
 | file://<external>/SuperChain1.class:0:0:0:0 | SuperChain1<T3,String> | 0 | superChain.kt:2:24:2:25 | T3 |
