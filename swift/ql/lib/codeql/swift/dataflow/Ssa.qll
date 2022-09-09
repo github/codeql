@@ -1,7 +1,7 @@
 cached
 module Ssa {
   private import swift
-  private import internal.SsaImplCommon as SsaImplCommon
+  private import codeql.ssa.Ssa as SsaImplCommon
   private import codeql.swift.controlflow.CfgNodes
   private import codeql.swift.controlflow.ControlFlowGraph
   private import codeql.swift.controlflow.BasicBlocks as BasicBlocks

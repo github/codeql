@@ -33,17 +33,17 @@ module ServerSideUrlRedirect {
   /**
    * An HTTP redirect, considered as a sink for `Configuration`.
    */
-  class RedirectSink extends Sink, DataFlow::ValueNode {
-    RedirectSink() { astNode = any(HTTP::RedirectInvocation redir).getUrlArgument() }
+  class RedirectSink extends Sink {
+    RedirectSink() { this = any(HTTP::RedirectInvocation redir).getUrlArgument() }
   }
 
   /**
    * A definition of the HTTP "Location" header, considered as a sink for
    * `Configuration`.
    */
-  class LocationHeaderSink extends Sink, DataFlow::ValueNode {
+  class LocationHeaderSink extends Sink {
     LocationHeaderSink() {
-      any(HTTP::ExplicitHeaderDefinition def).definesExplicitly("location", astNode)
+      any(HTTP::ExplicitHeaderDefinition def).definesHeaderValue("location", this)
     }
   }
 

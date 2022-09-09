@@ -6,6 +6,7 @@ private import ruby
 private import codeql.ruby.Concepts
 private import codeql.ruby.ApiGraphs
 private import codeql.ruby.DataFlow
+private import codeql.ruby.dataflow.internal.DataFlowImplForHttpClientLibraries as DataFlowImplForHttpClientLibraries
 
 /**
  * A call that makes an HTTP request using `HTTPClient`.
@@ -14,10 +15,9 @@ private import codeql.ruby.DataFlow
  * HTTPClient.get_content("http://example.com")
  * ```
  */
-class HttpClientRequest extends HTTP::Client::Request::Range {
+class HttpClientRequest extends HTTP::Client::Request::Range, DataFlow::CallNode {
   API::Node requestNode;
   API::Node connectionNode;
-  DataFlow::CallNode requestUse;
   string method;
 
   HttpClientRequest() {
@@ -29,36 +29,60 @@ class HttpClientRequest extends HTTP::Client::Request::Range {
         API::getTopLevelMember("HTTPClient").getInstance()
       ] and
     requestNode = connectionNode.getReturn(method) and
-    requestUse = requestNode.asSource() and
+    this = requestNode.asSource() and
     method in [
         "get", "head", "delete", "options", "post", "put", "trace", "get_content", "post_content"
-      ] and
-    this = requestUse.asExpr().getExpr()
+      ]
   }
 
-  override DataFlow::Node getAUrlPart() { result = requestUse.getArgument(0) }
+  override DataFlow::Node getAUrlPart() { result = this.getArgument(0) }
 
   override DataFlow::Node getResponseBody() {
     // The `get_content` and `post_content` methods return the response body as
     // a string. The other methods return a `HTTPClient::Message` object which
     // has various methods that return the response body.
-    method in ["get_content", "post_content"] and result = requestUse
+    method in ["get_content", "post_content"] and result = this
     or
     not method in ["get_content", "put_content"] and
     result = requestNode.getAMethodCall(["body", "http_body", "content", "dump"])
   }
 
-  override predicate disablesCertificateValidation(DataFlow::Node disablingNode) {
+  /** Gets the value that controls certificate validation, if any. */
+  DataFlow::Node getCertificateValidationControllingValue() {
     // Look for calls to set
     // `c.ssl_config.verify_mode = OpenSSL::SSL::VERIFY_NONE`
     // on an HTTPClient connection object `c`.
-    disablingNode = connectionNode.getReturn("ssl_config").getReturn("verify_mode=").asSource() and
-    disablingNode.(DataFlow::CallNode).getArgument(0) =
-      API::getTopLevelMember("OpenSSL")
-          .getMember("SSL")
-          .getMember("VERIFY_NONE")
-          .getAValueReachableFromSource()
+    result =
+      connectionNode
+          .getReturn("ssl_config")
+          .getReturn("verify_mode=")
+          .asSource()
+          .(DataFlow::CallNode)
+          .getArgument(0)
+  }
+
+  override predicate disablesCertificateValidation(
+    DataFlow::Node disablingNode, DataFlow::Node argumentOrigin
+  ) {
+    any(HttpClientDisablesCertificateValidationConfiguration config)
+        .hasFlow(argumentOrigin, disablingNode) and
+    disablingNode = this.getCertificateValidationControllingValue()
   }
 
   override string getFramework() { result = "HTTPClient" }
+}
+
+/** A configuration to track values that can disable certificate validation for HttpClient. */
+private class HttpClientDisablesCertificateValidationConfiguration extends DataFlowImplForHttpClientLibraries::Configuration {
+  HttpClientDisablesCertificateValidationConfiguration() {
+    this = "HttpClientDisablesCertificateValidationConfiguration"
+  }
+
+  override predicate isSource(DataFlow::Node source) {
+    source = API::getTopLevelMember("OpenSSL").getMember("SSL").getMember("VERIFY_NONE").asSource()
+  }
+
+  override predicate isSink(DataFlow::Node sink) {
+    sink = any(HttpClientRequest req).getCertificateValidationControllingValue()
+  }
 }

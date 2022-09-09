@@ -1,16 +1,35 @@
 edges
+| testSend.swift:41:10:41:18 | data :  | testSend.swift:41:45:41:45 | data :  |
+| testSend.swift:45:13:45:13 | password :  | testSend.swift:52:27:52:27 | str1 |
+| testSend.swift:46:13:46:13 | password :  | testSend.swift:53:27:53:27 | str2 |
+| testSend.swift:47:13:47:25 | call to pad(_:) :  | testSend.swift:54:27:54:27 | str3 |
+| testSend.swift:47:17:47:17 | password :  | testSend.swift:41:10:41:18 | data :  |
+| testSend.swift:47:17:47:17 | password :  | testSend.swift:47:13:47:25 | call to pad(_:) :  |
 | testURL.swift:13:54:13:54 | passwd :  | testURL.swift:13:22:13:54 | ... .+(_:_:) ... |
 | testURL.swift:16:55:16:55 | credit_card_no :  | testURL.swift:16:22:16:55 | ... .+(_:_:) ... |
 nodes
 | testSend.swift:29:19:29:19 | passwordPlain | semmle.label | passwordPlain |
+| testSend.swift:41:10:41:18 | data :  | semmle.label | data :  |
+| testSend.swift:41:45:41:45 | data :  | semmle.label | data :  |
+| testSend.swift:45:13:45:13 | password :  | semmle.label | password :  |
+| testSend.swift:46:13:46:13 | password :  | semmle.label | password :  |
+| testSend.swift:47:13:47:25 | call to pad(_:) :  | semmle.label | call to pad(_:) :  |
+| testSend.swift:47:17:47:17 | password :  | semmle.label | password :  |
+| testSend.swift:52:27:52:27 | str1 | semmle.label | str1 |
+| testSend.swift:53:27:53:27 | str2 | semmle.label | str2 |
+| testSend.swift:54:27:54:27 | str3 | semmle.label | str3 |
 | testURL.swift:13:22:13:54 | ... .+(_:_:) ... | semmle.label | ... .+(_:_:) ... |
 | testURL.swift:13:54:13:54 | passwd :  | semmle.label | passwd :  |
 | testURL.swift:16:22:16:55 | ... .+(_:_:) ... | semmle.label | ... .+(_:_:) ... |
 | testURL.swift:16:55:16:55 | credit_card_no :  | semmle.label | credit_card_no :  |
 | testURL.swift:20:22:20:22 | passwd | semmle.label | passwd |
 subpaths
+| testSend.swift:47:17:47:17 | password :  | testSend.swift:41:10:41:18 | data :  | testSend.swift:41:45:41:45 | data :  | testSend.swift:47:13:47:25 | call to pad(_:) :  |
 #select
 | testSend.swift:29:19:29:19 | passwordPlain | testSend.swift:29:19:29:19 | passwordPlain | testSend.swift:29:19:29:19 | passwordPlain | This operation transmits 'passwordPlain', which may contain unencrypted sensitive data from $@ | testSend.swift:29:19:29:19 | passwordPlain | passwordPlain |
+| testSend.swift:52:27:52:27 | str1 | testSend.swift:45:13:45:13 | password :  | testSend.swift:52:27:52:27 | str1 | This operation transmits 'str1', which may contain unencrypted sensitive data from $@ | testSend.swift:45:13:45:13 | password :  | password |
+| testSend.swift:53:27:53:27 | str2 | testSend.swift:46:13:46:13 | password :  | testSend.swift:53:27:53:27 | str2 | This operation transmits 'str2', which may contain unencrypted sensitive data from $@ | testSend.swift:46:13:46:13 | password :  | password |
+| testSend.swift:54:27:54:27 | str3 | testSend.swift:47:17:47:17 | password :  | testSend.swift:54:27:54:27 | str3 | This operation transmits 'str3', which may contain unencrypted sensitive data from $@ | testSend.swift:47:17:47:17 | password :  | password |
 | testURL.swift:13:22:13:54 | ... .+(_:_:) ... | testURL.swift:13:54:13:54 | passwd :  | testURL.swift:13:22:13:54 | ... .+(_:_:) ... | This operation transmits '... .+(_:_:) ...', which may contain unencrypted sensitive data from $@ | testURL.swift:13:54:13:54 | passwd :  | passwd |
 | testURL.swift:16:22:16:55 | ... .+(_:_:) ... | testURL.swift:16:55:16:55 | credit_card_no :  | testURL.swift:16:22:16:55 | ... .+(_:_:) ... | This operation transmits '... .+(_:_:) ...', which may contain unencrypted sensitive data from $@ | testURL.swift:16:55:16:55 | credit_card_no :  | credit_card_no |
 | testURL.swift:20:22:20:22 | passwd | testURL.swift:20:22:20:22 | passwd | testURL.swift:20:22:20:22 | passwd | This operation transmits 'passwd', which may contain unencrypted sensitive data from $@ | testURL.swift:20:22:20:22 | passwd | passwd |

@@ -30,6 +30,7 @@
     "ruby/ql/lib/codeql/ruby/dataflow/internal/DataFlowImpl.qll",
     "ruby/ql/lib/codeql/ruby/dataflow/internal/DataFlowImpl2.qll",
     "ruby/ql/lib/codeql/ruby/dataflow/internal/DataFlowImplForLibraries.qll",
+    "ruby/ql/lib/codeql/ruby/dataflow/internal/DataFlowImplForHttpClientLibraries.qll",
     "swift/ql/lib/codeql/swift/dataflow/internal/DataFlowImpl.qll"
   ],
   "DataFlow Java/C++/C#/Python Common": [
@@ -459,12 +460,6 @@
     "java/ql/lib/IDEContextual.qll",
     "javascript/ql/lib/IDEContextual.qll",
     "python/ql/lib/analysis/IDEContextual.qll"
-  ],
-  "SSA C#": [
-    "csharp/ql/lib/semmle/code/csharp/dataflow/internal/SsaImplCommon.qll",
-    "ruby/ql/lib/codeql/ruby/dataflow/internal/SsaImplCommon.qll",
-    "cpp/ql/lib/semmle/code/cpp/ir/dataflow/internal/SsaImplCommon.qll",
-    "swift/ql/lib/codeql/swift/dataflow/internal/SsaImplCommon.qll"
   ],
   "CryptoAlgorithms Python/JS/Ruby": [
     "javascript/ql/lib/semmle/javascript/security/CryptoAlgorithms.qll",

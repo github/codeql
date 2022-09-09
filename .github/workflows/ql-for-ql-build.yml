@@ -5,6 +5,13 @@ on:
     branches: [main]
   pull_request:
     branches: [main]
+    paths:
+      - "ql/**"
+      - "**.qll"
+      - "**.ql"
+      - "**.dbscheme"
+      - "**/qlpack.yml"
+      - ".github/workflows/ql-for-ql-build.yml"
 
 env:
   CARGO_TERM_COLOR: always
@@ -54,7 +61,7 @@ jobs:
           cp -r ${{ runner.temp }}/queries ${{ runner.temp }}/pack
         env:
           CODEQL: ${{ steps.find-codeql.outputs.codeql-path }}
-      
+
       ### Build the extractor ###
       - name: Cache entire extractor
         if: steps.cache-pack.outputs.cache-hit != 'true'
@@ -116,14 +123,14 @@ jobs:
       - name: Create CodeQL config file
         run: |
           echo "paths-ignore:" >> ${CONF}
-          echo "  - ql/ql/test" >> ${CONF} 
-          echo "  - \"*/ql/lib/upgrades/\"" >> ${CONF} 
+          echo "  - ql/ql/test" >> ${CONF}
+          echo "  - \"*/ql/lib/upgrades/\"" >> ${CONF}
           echo "disable-default-queries: true" >> ${CONF}
           echo "queries:" >> ${CONF}
           echo "  - uses: ./ql/ql/src/codeql-suites/ql-code-scanning.qls" >> ${CONF}
           echo "Config file: "
           cat ${CONF}
-        env: 
+        env:
           CONF: ./ql-for-ql-config.yml
       - name: Initialize CodeQL
         uses: github/codeql-action/init@71a8b35ff4c80fcfcd05bc1cd932fe3c08f943ca
@@ -139,13 +146,13 @@ jobs:
 
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@71a8b35ff4c80fcfcd05bc1cd932fe3c08f943ca
-        with: 
+        with:
           category: "ql-for-ql"
       - name: Copy sarif file to CWD
         run: cp ../results/ql.sarif ./ql-for-ql.sarif
       - name: Fixup the $scema in sarif  # Until https://github.com/microsoft/sarif-vscode-extension/pull/436/ is part in a stable release
         run: |
-          sed -i 's/\$schema.*/\$schema": "https:\/\/raw.githubusercontent.com\/oasis-tcs\/sarif-spec\/master\/Schemata\/sarif-schema-2.1.0",/' ql-for-ql.sarif 
+          sed -i 's/\$schema.*/\$schema": "https:\/\/raw.githubusercontent.com\/oasis-tcs\/sarif-spec\/master\/Schemata\/sarif-schema-2.1.0",/' ql-for-ql.sarif
       - name: Sarif as artifact
         uses: actions/upload-artifact@v3
         with:

@@ -97,6 +97,7 @@ module API {
      * This is similar to `asSource()` but additionally includes nodes that are transitively reachable by data flow.
      * See `asSource()` for examples.
      */
+    pragma[inline]
     DataFlow::Node getAValueReachableFromSource() {
       exists(DataFlow::LocalSourceNode src | Impl::use(this, src) |
         Impl::trackUseNode(src).flowsTo(result)
@@ -382,11 +383,17 @@ module API {
     bindingset[this]
     EntryPoint() { any() }
 
+    /** DEPRECATED. This predicate has been renamed to `getASource`. */
+    deprecated DataFlow::LocalSourceNode getAUse() { none() }
+
+    /** DEPRECATED. This predicate has been renamed to `getASink`. */
+    deprecated DataFlow::Node getARhs() { none() }
+
     /** Gets a data-flow node corresponding to a use-node for this entry point. */
-    DataFlow::LocalSourceNode getAUse() { none() }
+    DataFlow::LocalSourceNode getASource() { none() }
 
     /** Gets a data-flow node corresponding to a def-node for this entry point. */
-    DataFlow::Node getARhs() { none() }
+    DataFlow::Node getASink() { none() }
 
     /** Gets a call corresponding to a method access node for this entry point. */
     DataFlow::CallNode getACall() { none() }
@@ -504,7 +511,7 @@ module API {
       or
       parameterStep(_, defCand(), nd)
       or
-      nd = any(EntryPoint entry).getAUse()
+      nd = any(EntryPoint entry).getASource()
       or
       nd = any(EntryPoint entry).getACall()
     }
@@ -553,7 +560,7 @@ module API {
       // If a call node is relevant as a use-node, treat its arguments as def-nodes
       argumentStep(_, useCandFwd(), rhs)
       or
-      rhs = any(EntryPoint entry).getARhs()
+      rhs = any(EntryPoint entry).getASink()
     }
 
     /** Gets a data flow node that flows to the RHS of a def-node. */
@@ -712,9 +719,9 @@ module API {
         pred = root() and
         lbl = Label::entryPoint(entry)
       |
-        succ = MkDef(entry.getARhs())
+        succ = MkDef(entry.getASink())
         or
-        succ = MkUse(entry.getAUse())
+        succ = MkUse(entry.getASource())
         or
         succ = MkMethodAccessNode(entry.getACall())
       )
@@ -832,7 +839,7 @@ module API {
 
         LabelEntryPoint() { this = MkLabelEntryPoint(name) }
 
-        override string toString() { result = name }
+        override string toString() { result = "entryPoint(\"" + name + "\")" }
 
         /** Gets the name of the entry point. */
         API::EntryPoint getName() { result = name }

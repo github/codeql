@@ -18,9 +18,10 @@ function RegisterExtractorPack(id)
         -- For now, parse the command line as follows:
         -- Everything that starts with `-` (or `/`) will be ignored.
         -- The first non-option argument is treated as the command.
-        -- if that's `build`, we append `/p:UseSharedCompilation=false` to the command line,
+        -- if that's `build`, we append `-p:UseSharedCompilation=false` to the command line,
         -- otherwise we do nothing.
         local match = false
+        local needsSeparator = false;
         local argv = compilerArguments.argv
         if OperatingSystem == 'windows' then
             -- let's hope that this split matches the escaping rules `dotnet` applies to command line arguments
@@ -33,18 +34,30 @@ function RegisterExtractorPack(id)
             local firstCharacter = string.sub(arg, 1, 1)
             if not (firstCharacter == '-') and not (firstCharacter == '/') then
                 Log(1, 'Dotnet subcommand detected: %s', arg)
-                if arg == 'build' or arg == 'msbuild' then match = true end
+                if arg == 'build' or arg == 'msbuild' or arg == 'publish' or arg == 'pack' or arg == 'test' then
+                    match = true
+                    break
+                end
+                if arg == 'run' then
+                    -- for `dotnet run`, we need to make sure that `-p:UseSharedCompilation=false` is
+                    -- not passed in as an argument to the program that is run
+                    match = true
+                    needsSeparator = true
+                end
+            end
+            if arg == '--' then
+                needsSeparator = false
                 break
             end
         end
         if match then
+            local injections = { '-p:UseSharedCompilation=false' }
+            if needsSeparator then
+                table.insert(injections, '--')
+            end
             return {
                 order = ORDER_REPLACE,
-                invocation = BuildExtractorInvocation(id, compilerPath,
-                    compilerPath,
-                    compilerArguments, nil, {
-                    '/p:UseSharedCompilation=false'
-                })
+                invocation = BuildExtractorInvocation(id, compilerPath, compilerPath, compilerArguments, nil, injections)
             }
         end
         return nil

@@ -1,4 +1,4 @@
-private import SsaImplCommon as SsaImplCommon
+private import codeql.ssa.Ssa as SsaImplCommon
 private import codeql.ruby.AST
 private import codeql.ruby.CFG as CFG
 private import codeql.ruby.ast.Variable

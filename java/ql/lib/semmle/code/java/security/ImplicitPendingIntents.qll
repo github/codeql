@@ -106,7 +106,15 @@ private class PendingIntentSentSinkModels extends SinkModelCsv {
         "android.app;PendingIntent;false;send;(Context,int,Intent,OnFinished,Handler,String);;Argument[2];pending-intent-sent;manual",
         "android.app;PendingIntent;false;send;(Context,int,Intent,OnFinished,Handler);;Argument[2];pending-intent-sent;manual",
         "android.app;PendingIntent;false;send;(Context,int,Intent);;Argument[2];pending-intent-sent;manual",
-        "android.app;Activity;true;setResult;(int,Intent);;Argument[1];pending-intent-sent;manual"
+        "android.app;Activity;true;setResult;(int,Intent);;Argument[1];pending-intent-sent;manual",
+        "android.app;AlarmManager;true;set;(int,long,PendingIntent);;Argument[2];pending-intent-sent;manual",
+        "android.app;AlarmManager;true;setAlarmClock;;;Argument[1];pending-intent-sent;manual",
+        "android.app;AlarmManager;true;setAndAllowWhileIdle;;;Argument[2];pending-intent-sent;manual",
+        "android.app;AlarmManager;true;setExact;(int,long,PendingIntent);;Argument[2];pending-intent-sent;manual",
+        "android.app;AlarmManager;true;setExactAndAllowWhileIdle;;;Argument[2];pending-intent-sent;manual",
+        "android.app;AlarmManager;true;setInexactRepeating;;;Argument[3];pending-intent-sent;manual",
+        "android.app;AlarmManager;true;setRepeating;;;Argument[3];pending-intent-sent;manual",
+        "android.app;AlarmManager;true;setWindow;(int,long,long,PendingIntent);;Argument[3];pending-intent-sent;manual",
       ]
   }
 }
