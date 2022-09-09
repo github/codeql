@@ -39,9 +39,16 @@
 | classes.kt:119:13:121:13 | Local2 | file://<external>/Object.class:0:0:0:0 | Object |
 | classes.kt:127:16:134:9 | new Object(...) { ... } | file://<external>/Object.class:0:0:0:0 | Object |
 | classes.kt:129:17:131:17 | Local3 | file://<external>/Object.class:0:0:0:0 | Object |
+| classes.kt:138:1:148:1 | Cl0 | file://<external>/Object.class:0:0:0:0 | Object |
+| classes.kt:140:9:146:9 |  | file://<external>/Object.class:0:0:0:0 | Object |
+| classes.kt:141:13:145:13 | Cl1 | file://<external>/Object.class:0:0:0:0 | Object |
+| classes.kt:150:1:156:1 | Cl00 | file://<external>/Object.class:0:0:0:0 | Object |
+| classes.kt:151:5:155:5 | Cl01 | file://<external>/Object.class:0:0:0:0 | Object |
 | file://<external>/C1$<no name provided>$Local3.class:0:0:0:0 | Local3<Integer> | file://<external>/Object.class:0:0:0:0 | Object |
 | file://<external>/C1$Local1.class:0:0:0:0 | Local1<Integer> | file://<external>/Object.class:0:0:0:0 | Object |
 | file://<external>/C1$Local2.class:0:0:0:0 | Local2<Integer> | file://<external>/Object.class:0:0:0:0 | Object |
+| file://<external>/Cl0$Cl1.class:0:0:0:0 | Cl1<U3> | file://<external>/Object.class:0:0:0:0 | Object |
+| file://<external>/Cl0.class:0:0:0:0 | Cl0<U0> | file://<external>/Object.class:0:0:0:0 | Object |
 | file://<external>/Generic.class:0:0:0:0 | Generic<Integer> | file://<external>/Object.class:0:0:0:0 | Object |
 | file://<external>/Generic.class:0:0:0:0 | Generic<String> | file://<external>/Object.class:0:0:0:0 | Object |
 | file://<external>/SuperChain1.class:0:0:0:0 | SuperChain1<T3,String> | file://<external>/Object.class:0:0:0:0 | Object |
@@ -49,6 +56,16 @@
 | file://<external>/SuperChain2.class:0:0:0:0 | SuperChain2<T5,String> | file://<external>/SuperChain1.class:0:0:0:0 | SuperChain1<T5,String> |
 | generic_anonymous.kt:1:1:9:1 | Generic | file://<external>/Object.class:0:0:0:0 | Object |
 | generic_anonymous.kt:3:19:5:3 | new Object(...) { ... } | file://<external>/Object.class:0:0:0:0 | Object |
+| generic_anonymous.kt:15:1:33:1 | Outer | file://<external>/Object.class:0:0:0:0 | Object |
+| generic_anonymous.kt:25:9:31:9 |  | file://<external>/Object.class:0:0:0:0 | Object |
+| generic_anonymous.kt:26:13:26:37 | new Object(...) { ... } | file://<external>/Outer$C0.class:0:0:0:0 | C0<U2> |
+| generic_anonymous.kt:26:13:26:37 | new Object(...) { ... } | file://<external>/Outer$C1.class:0:0:0:0 | C1<U3> |
+| generic_anonymous.kt:27:13:27:37 | new Object(...) { ... } | file://<external>/Outer$C0.class:0:0:0:0 | C0<U2> |
+| generic_anonymous.kt:27:13:27:37 | new Object(...) { ... } | file://<external>/Outer$C1.class:0:0:0:0 | C1<U2> |
+| generic_anonymous.kt:28:13:28:41 | new Object(...) { ... } | file://<external>/Outer$C0.class:0:0:0:0 | C0<U2> |
+| generic_anonymous.kt:28:13:28:41 | new Object(...) { ... } | file://<external>/Outer$C1.class:0:0:0:0 | C1<String> |
+| generic_anonymous.kt:29:13:29:29 | new C0<U2>(...) { ... } | file://<external>/Outer$C0.class:0:0:0:0 | C0<U2> |
+| generic_anonymous.kt:30:13:30:33 | new C0<String>(...) { ... } | file://<external>/Outer$C0.class:0:0:0:0 | C0<String> |
 | localClassField.kt:1:1:11:1 | A | file://<external>/Object.class:0:0:0:0 | Object |
 | localClassField.kt:3:9:3:19 | L | file://<external>/Object.class:0:0:0:0 | Object |
 | localClassField.kt:8:9:8:19 | L | file://<external>/Object.class:0:0:0:0 | Object |
