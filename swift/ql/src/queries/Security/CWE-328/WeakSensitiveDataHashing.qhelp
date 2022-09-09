@@ -49,7 +49,8 @@
 
         <ul>
             <li>
-                such as Argon2, scrypt, bcrypt, or PBKDF2 for passwords and other data with limited input space.
+                such as Argon2, scrypt, bcrypt, or PBKDF2 for passwords and other data with limited input space where
+                a dictionary-like attack is feasible.
             </li>
             <li>
                 such as SHA-2, or SHA-3 in other cases.
