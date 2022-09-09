@@ -386,13 +386,6 @@ Obtaining databases from GitHub.com
    
 Before running an analysis with the CodeQL CLI, you must unzip the databases.
    
-.. pull-quote::
-
-   Note
-
-   .. include:: ../reusables/index-files-note.rst
-
-
 Further reading
 ---------------
 
