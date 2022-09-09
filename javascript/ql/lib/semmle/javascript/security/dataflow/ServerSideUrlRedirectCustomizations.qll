@@ -26,7 +26,7 @@ module ServerSideUrlRedirect {
   /** A source of third-party user input, considered as a flow source for URL redirects. */
   class ThirdPartyRequestInputAccessAsSource extends Source {
     ThirdPartyRequestInputAccessAsSource() {
-      this.(HTTP::RequestInputAccess).isThirdPartyControllable()
+      this.(Http::RequestInputAccess).isThirdPartyControllable()
     }
   }
 
@@ -34,7 +34,7 @@ module ServerSideUrlRedirect {
    * An HTTP redirect, considered as a sink for `Configuration`.
    */
   class RedirectSink extends Sink {
-    RedirectSink() { this = any(HTTP::RedirectInvocation redir).getUrlArgument() }
+    RedirectSink() { this = any(Http::RedirectInvocation redir).getUrlArgument() }
   }
 
   /**
@@ -43,7 +43,7 @@ module ServerSideUrlRedirect {
    */
   class LocationHeaderSink extends Sink {
     LocationHeaderSink() {
-      any(HTTP::ExplicitHeaderDefinition def).definesHeaderValue("location", this)
+      any(Http::ExplicitHeaderDefinition def).definesHeaderValue("location", this)
     }
   }
 

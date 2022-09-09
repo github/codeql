@@ -652,7 +652,7 @@ module API {
           exports(m, _, _)
           or
           exists(NodeModule nm | nm = mod |
-            exists(SSA::implicitInit([nm.getModuleVariable(), nm.getExportsVariable()]))
+            exists(Ssa::implicitInit([nm.getModuleVariable(), nm.getExportsVariable()]))
           )
         )
       } or

@@ -20,7 +20,7 @@ private module Urllib2 {
    * See
    * - https://docs.python.org/2/library/urllib2.html#urllib2.Request
    */
-  private class RequestCall extends HTTP::Client::Request::Range, DataFlow::CallCfgNode {
+  private class RequestCall extends Http::Client::Request::Range, DataFlow::CallCfgNode {
     RequestCall() { this = API::moduleImport("urllib2").getMember("Request").getACall() }
 
     override DataFlow::Node getAUrlPart() { result in [this.getArg(0), this.getArgByName("url")] }
@@ -40,7 +40,7 @@ private module Urllib2 {
    * See
    * - https://docs.python.org/2/library/urllib2.html#urllib2.urlopen
    */
-  private class UrlOpenCall extends HTTP::Client::Request::Range, DataFlow::CallCfgNode {
+  private class UrlOpenCall extends Http::Client::Request::Range, DataFlow::CallCfgNode {
     UrlOpenCall() { this = API::moduleImport("urllib2").getMember("urlopen").getACall() }
 
     override DataFlow::Node getAUrlPart() { result in [this.getArg(0), this.getArgByName("url")] }

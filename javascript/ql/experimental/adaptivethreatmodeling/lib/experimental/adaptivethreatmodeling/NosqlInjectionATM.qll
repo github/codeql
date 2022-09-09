@@ -42,10 +42,10 @@ module SinkEndpointFilter {
       result = "modeled database access"
       or
       // Remove calls to APIs that aren't relevant to NoSQL injection
-      call.getReceiver() instanceof HTTP::RequestNode and
+      call.getReceiver() instanceof Http::RequestNode and
       result = "receiver is a HTTP request expression"
       or
-      call.getReceiver() instanceof HTTP::ResponseNode and
+      call.getReceiver() instanceof Http::ResponseNode and
       result = "receiver is a HTTP response expression"
     )
     or

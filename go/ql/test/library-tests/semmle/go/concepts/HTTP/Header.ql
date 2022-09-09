@@ -1,6 +1,6 @@
 import go
 
-from HTTP::HeaderWrite headerWrite, string name, string value, string definedName, string definedVal
+from Http::HeaderWrite headerWrite, string name, string value, string definedName, string definedVal
 where
   (
     name = headerWrite.getName().toString()

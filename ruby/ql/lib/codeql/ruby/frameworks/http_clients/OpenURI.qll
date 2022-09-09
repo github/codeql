@@ -19,7 +19,7 @@ private import codeql.ruby.dataflow.internal.DataFlowImplForHttpClientLibraries 
  * URI.parse("http://example.com").open.read
  * ```
  */
-class OpenUriRequest extends HTTP::Client::Request::Range, DataFlow::CallNode {
+class OpenUriRequest extends Http::Client::Request::Range, DataFlow::CallNode {
   API::Node requestNode;
 
   OpenUriRequest() {
@@ -61,7 +61,7 @@ class OpenUriRequest extends HTTP::Client::Request::Range, DataFlow::CallNode {
  * Kernel.open("http://example.com").read
  * ```
  */
-class OpenUriKernelOpenRequest extends HTTP::Client::Request::Range, DataFlow::CallNode {
+class OpenUriKernelOpenRequest extends Http::Client::Request::Range, DataFlow::CallNode {
   OpenUriKernelOpenRequest() {
     this instanceof KernelMethodCall and
     this.getMethodName() = "open"

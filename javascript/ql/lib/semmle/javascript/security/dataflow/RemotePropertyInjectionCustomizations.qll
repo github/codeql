@@ -59,7 +59,7 @@ module RemotePropertyInjection {
    */
   class HeaderNameSink extends Sink {
     HeaderNameSink() {
-      exists(HTTP::ExplicitHeaderDefinition hd |
+      exists(Http::ExplicitHeaderDefinition hd |
         not hd instanceof Express::SetMultipleHeaders and
         this = hd.getNameNode()
       )

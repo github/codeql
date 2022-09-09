@@ -1135,7 +1135,7 @@ deprecated module SSAConsistency = SsaConsistency;
  * These predicates are all just aliases for predicates defined in the `Cached` module. This ensures
  * that all of SSA construction will be evaluated in the same stage.
  */
-module SSA {
+module Ssa {
   class MemoryLocation = Alias::MemoryLocation;
 
   predicate hasPhiInstruction = Cached::hasPhiInstructionCached/2;
@@ -1144,3 +1144,6 @@ module SSA {
 
   predicate hasUnreachedInstruction = Cached::hasUnreachedInstructionCached/1;
 }
+
+/** DEPRECATED: Alias for Ssa */
+deprecated module SSA = Ssa;

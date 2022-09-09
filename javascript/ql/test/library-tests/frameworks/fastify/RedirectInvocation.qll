@@ -1,5 +1,5 @@
 import javascript
 
-query predicate test_RedirectInvocation(HTTP::RedirectInvocation invk, Fastify::RouteHandler rh) {
+query predicate test_RedirectInvocation(Http::RedirectInvocation invk, Fastify::RouteHandler rh) {
   invk.getRouteHandler() = rh
 }

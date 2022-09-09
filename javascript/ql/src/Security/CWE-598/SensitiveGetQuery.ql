@@ -14,7 +14,7 @@
 import javascript
 
 from
-  Routing::RouteSetup setup, Routing::RouteHandler handler, HTTP::RequestInputAccess input,
+  Routing::RouteSetup setup, Routing::RouteHandler handler, Http::RequestInputAccess input,
   SensitiveNode sensitive
 where
   setup.getOwnHttpMethod() = "GET" and

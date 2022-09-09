@@ -29,7 +29,7 @@ private module Echo {
   /**
    * Data from a `Context` interface method that is not generally exploitable for open-redirect attacks.
    */
-  private class EchoContextRedirectUnexploitableSource extends HTTP::Redirect::UnexploitableSource {
+  private class EchoContextRedirectUnexploitableSource extends Http::Redirect::UnexploitableSource {
     EchoContextRedirectUnexploitableSource() {
       exists(DataFlow::MethodCallNode call, string methodName |
         methodName = ["FormValue", "FormParams", "FormFile", "MultipartForm", "Cookie", "Cookies"] and
@@ -77,14 +77,14 @@ private module Echo {
   /**
    * `echo.Context` methods which set the content-type to `text/html` and write a result in one operation.
    */
-  private class EchoHtmlOutputs extends HTTP::ResponseBody::Range {
+  private class EchoHtmlOutputs extends Http::ResponseBody::Range {
     EchoHtmlOutputs() {
       exists(Method m | m.hasQualifiedName(packagePath(), "Context", ["HTML", "HTMLBlob"]) |
         this = m.getACall().getArgument(1)
       )
     }
 
-    override HTTP::ResponseWriter getResponseWriter() { none() }
+    override Http::ResponseWriter getResponseWriter() { none() }
 
     override string getAContentType() { result = "text/html" }
   }
@@ -92,7 +92,7 @@ private module Echo {
   /**
    * `echo.Context` methods which take a content-type as a parameter.
    */
-  private class EchoParameterizedOutputs extends HTTP::ResponseBody::Range {
+  private class EchoParameterizedOutputs extends Http::ResponseBody::Range {
     DataFlow::CallNode callNode;
 
     EchoParameterizedOutputs() {
@@ -101,7 +101,7 @@ private module Echo {
       )
     }
 
-    override HTTP::ResponseWriter getResponseWriter() { none() }
+    override Http::ResponseWriter getResponseWriter() { none() }
 
     override DataFlow::Node getAContentTypeNode() { result = callNode.getArgument(1) }
   }
@@ -109,7 +109,7 @@ private module Echo {
   /**
    * The `echo.Context.Redirect` method.
    */
-  private class EchoRedirectMethod extends HTTP::Redirect::Range, DataFlow::CallNode {
+  private class EchoRedirectMethod extends Http::Redirect::Range, DataFlow::CallNode {
     EchoRedirectMethod() {
       exists(Method m | m.hasQualifiedName(packagePath(), "Context", "Redirect") |
         this = m.getACall()
@@ -118,6 +118,6 @@ private module Echo {
 
     override DataFlow::Node getUrl() { result = this.getArgument(1) }
 
-    override HTTP::ResponseWriter getResponseWriter() { none() }
+    override Http::ResponseWriter getResponseWriter() { none() }
   }
 }

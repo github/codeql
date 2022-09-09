@@ -5,7 +5,7 @@
 import go
 
 /** Provides classes for modeling HTTP-related APIs. */
-module HTTP {
+module Http {
   /** Provides a class for modeling new HTTP response-writer APIs. */
   module ResponseWriter {
     /**
@@ -191,7 +191,7 @@ module HTTP {
 
       /** Gets a content-type associated with this body. */
       string getAContentType() {
-        exists(HTTP::HeaderWrite hw | hw = this.getResponseWriter().getAHeaderWrite() |
+        exists(Http::HeaderWrite hw | hw = this.getResponseWriter().getAHeaderWrite() |
           hw.getHeaderName() = "content-type" and
           result = hw.getHeaderValue()
         )
@@ -201,7 +201,7 @@ module HTTP {
 
       /** Gets a dataflow node for a content-type associated with this body. */
       DataFlow::Node getAContentTypeNode() {
-        exists(HTTP::HeaderWrite hw | hw = this.getResponseWriter().getAHeaderWrite() |
+        exists(Http::HeaderWrite hw | hw = this.getResponseWriter().getAHeaderWrite() |
           hw.getHeaderName() = "content-type" and
           result = hw.getValue()
         )
@@ -378,3 +378,6 @@ module HTTP {
     predicate guardedBy(DataFlow::Node check) { self.guardedBy(check) }
   }
 }
+
+/** DEPRECATED: Alias for Http */
+deprecated module HTTP = Http;

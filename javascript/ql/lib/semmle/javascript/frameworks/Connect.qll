@@ -10,7 +10,7 @@ module Connect {
   /**
    * An expression that creates a new Connect server.
    */
-  class ServerDefinition extends HTTP::Servers::StandardServerDefinition, DataFlow::CallNode {
+  class ServerDefinition extends Http::Servers::StandardServerDefinition, DataFlow::CallNode {
     ServerDefinition() {
       // `app = connect()`
       this = DataFlow::moduleImport("connect").getAnInvocation()
@@ -61,7 +61,7 @@ module Connect {
   /**
    * A call to a Connect method that sets up a route.
    */
-  class RouteSetup extends DataFlow::MethodCallNode, HTTP::Servers::StandardRouteSetup {
+  class RouteSetup extends DataFlow::MethodCallNode, Http::Servers::StandardRouteSetup {
     ServerDefinition server;
 
     RouteSetup() {
@@ -125,7 +125,7 @@ module Connect {
   /**
    * An access to a user-controlled Connect request input.
    */
-  private class RequestInputAccess extends HTTP::RequestInputAccess instanceof DataFlow::MethodCallNode {
+  private class RequestInputAccess extends Http::RequestInputAccess instanceof DataFlow::MethodCallNode {
     RequestNode request;
     string kind;
 

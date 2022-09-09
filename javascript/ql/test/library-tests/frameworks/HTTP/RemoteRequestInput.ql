@@ -1,4 +1,4 @@
 import javascript
 
-from HTTP::RequestInputAccess input
+from Http::RequestInputAccess input
 select input, input.getKind()

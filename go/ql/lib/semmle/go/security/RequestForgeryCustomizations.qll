@@ -48,7 +48,7 @@ module RequestForgery {
    * The URL of an HTTP request, viewed as a sink for request forgery.
    */
   private class ClientRequestUrlAsSink extends Sink {
-    HTTP::ClientRequest request;
+    Http::ClientRequest request;
 
     ClientRequestUrlAsSink() { this = request.getUrl() }
 

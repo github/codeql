@@ -56,7 +56,7 @@ module OpenUrlRedirect {
     UntrustedFlowAsSource() {
       // exclude some fields and methods of URLs that are generally not attacker-controllable for
       // open redirect exploits
-      not this instanceof HTTP::Redirect::UnexploitableSource
+      not this instanceof Http::Redirect::UnexploitableSource
     }
   }
 
@@ -64,7 +64,7 @@ module OpenUrlRedirect {
    * An HTTP redirect, considered as a sink for `Configuration`.
    */
   class RedirectSink extends Sink, DataFlow::Node {
-    RedirectSink() { this = any(HTTP::Redirect redir).getUrl() }
+    RedirectSink() { this = any(Http::Redirect redir).getUrl() }
   }
 
   /**
@@ -73,7 +73,7 @@ module OpenUrlRedirect {
    */
   class LocationHeaderSink extends Sink, DataFlow::Node {
     LocationHeaderSink() {
-      exists(HTTP::HeaderWrite hw | hw.getHeaderName() = "location" | this = hw.getValue())
+      exists(Http::HeaderWrite hw | hw.getHeaderName() = "location" | this = hw.getValue())
     }
   }
 

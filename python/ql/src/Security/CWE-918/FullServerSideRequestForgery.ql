@@ -16,7 +16,7 @@ import DataFlow::PathGraph
 
 from
   FullServerSideRequestForgeryConfiguration fullConfig, DataFlow::PathNode source,
-  DataFlow::PathNode sink, HTTP::Client::Request request
+  DataFlow::PathNode sink, Http::Client::Request request
 where
   request = sink.getNode().(Sink).getRequest() and
   fullConfig.hasFlowPath(source, sink) and

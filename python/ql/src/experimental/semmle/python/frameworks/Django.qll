@@ -15,7 +15,7 @@ private module ExperimentalPrivateDjango {
   private module DjangoMod {
     API::Node http() { result = API::moduleImport("django").getMember("http") }
 
-    module Http {
+    module DjangoHttp {
       API::Node response() { result = http().getMember("response") }
 
       API::Node request() { result = http().getMember("request") }
@@ -54,7 +54,7 @@ private module ExperimentalPrivateDjango {
            *
            * Use the predicate `HttpResponse::instance()` to get references to instances of `django.http.response.HttpResponse`.
            */
-          abstract class InstanceSource extends HTTP::Server::HttpResponse::Range, DataFlow::Node {
+          abstract class InstanceSource extends Http::Server::HttpResponse::Range, DataFlow::Node {
           }
 
           /** A direct instantiation of `django.http.response.HttpResponse`. */
@@ -156,7 +156,7 @@ private module ExperimentalPrivateDjango {
            */
           class DjangoResponseSetCookieCall extends DataFlow::MethodCallNode, Cookie::Range {
             DjangoResponseSetCookieCall() {
-              this.calls(PrivateDjango::DjangoImpl::Http::Response::HttpResponse::instance(),
+              this.calls(PrivateDjango::DjangoImpl::DjangoHttp::Response::HttpResponse::instance(),
                 "set_cookie")
             }
 

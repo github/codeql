@@ -1,4 +1,4 @@
 import go
 
-from HTTP::ResponseBody rb
+from Http::ResponseBody rb
 select rb

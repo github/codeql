@@ -1,2 +1,2 @@
-private import SSAConstruction as SSA
-import SSA::SsaConsistency
+private import SSAConstruction as Ssa
+import Ssa::SsaConsistency

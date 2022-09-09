@@ -24,15 +24,15 @@ module ReflectedXss {
    * a content type that does not (case-insensitively) contain the string "html". This
    * is to prevent us from flagging plain-text or JSON responses as vulnerable.
    */
-  class HttpResponseSink extends Sink instanceof HTTP::ResponseSendArgument {
+  class HttpResponseSink extends Sink instanceof Http::ResponseSendArgument {
     HttpResponseSink() { not exists(getANonHtmlHeaderDefinition(this)) }
   }
 
   /**
    * Gets a HeaderDefinition that defines a non-html content-type for `send`.
    */
-  HTTP::HeaderDefinition getANonHtmlHeaderDefinition(HTTP::ResponseSendArgument send) {
-    exists(HTTP::RouteHandler h |
+  Http::HeaderDefinition getANonHtmlHeaderDefinition(Http::ResponseSendArgument send) {
+    exists(Http::RouteHandler h |
       send.getRouteHandler() = h and
       result = nonHtmlContentTypeHeader(h)
     |
@@ -44,7 +44,7 @@ module ReflectedXss {
   /**
    * Holds if `h` may send a response with a content type other than HTML.
    */
-  HTTP::HeaderDefinition nonHtmlContentTypeHeader(HTTP::RouteHandler h) {
+  Http::HeaderDefinition nonHtmlContentTypeHeader(Http::RouteHandler h) {
     result = h.getAResponseHeader("content-type") and
     not exists(string tp | result.defines("content-type", tp) | tp.regexpMatch("(?i).*html.*"))
   }
@@ -52,7 +52,7 @@ module ReflectedXss {
   /**
    * Holds if a header set in `header` is likely to affect a response sent at `sender`.
    */
-  predicate headerAffects(HTTP::HeaderDefinition header, HTTP::ResponseSendArgument sender) {
+  predicate headerAffects(Http::HeaderDefinition header, Http::ResponseSendArgument sender) {
     sender.getRouteHandler() = header.getRouteHandler() and
     (
       // `sender` is affected by a dominating `header`.
@@ -60,7 +60,7 @@ module ReflectedXss {
       or
       // There is no dominating header, and `header` is non-local.
       not isLocalHeaderDefinition(header) and
-      not exists(HTTP::HeaderDefinition dominatingHeader |
+      not exists(Http::HeaderDefinition dominatingHeader |
         dominatingHeader.getBasicBlock().(ReachableBasicBlock).dominates(sender.getBasicBlock())
       )
     )
@@ -77,10 +77,10 @@ module ReflectedXss {
    * return;
    * ```
    */
-  predicate isLocalHeaderDefinition(HTTP::HeaderDefinition header) {
+  predicate isLocalHeaderDefinition(Http::HeaderDefinition header) {
     exists(ReachableBasicBlock headerBlock | headerBlock = header.getBasicBlock() |
       1 =
-        strictcount(HTTP::ResponseSendArgument sender |
+        strictcount(Http::ResponseSendArgument sender |
           sender.getRouteHandler() = header.getRouteHandler() and
           header.getBasicBlock().(ReachableBasicBlock).dominates(sender.getBasicBlock())
         ) and
@@ -108,9 +108,9 @@ module ReflectedXss {
   /** A third-party controllable request input, considered as a flow source for reflected XSS. */
   class ThirdPartyRequestInputAccessAsSource extends Source {
     ThirdPartyRequestInputAccessAsSource() {
-      this.(HTTP::RequestInputAccess).isThirdPartyControllable()
+      this.(Http::RequestInputAccess).isThirdPartyControllable()
       or
-      this.(HTTP::RequestHeaderAccess).getAHeaderName() = "referer"
+      this.(Http::RequestHeaderAccess).getAHeaderName() = "referer"
     }
   }
 }

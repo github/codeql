@@ -114,7 +114,7 @@ module Beego {
     }
   }
 
-  private class BeegoOutputInstance extends HTTP::ResponseWriter::Range {
+  private class BeegoOutputInstance extends Http::ResponseWriter::Range {
     SsaWithFields v;
 
     BeegoOutputInstance() {
@@ -131,7 +131,7 @@ module Beego {
     }
   }
 
-  private class BeegoHeaderWrite extends HTTP::HeaderWrite::Range, DataFlow::MethodCallNode {
+  private class BeegoHeaderWrite extends Http::HeaderWrite::Range, DataFlow::MethodCallNode {
     string methodName;
 
     BeegoHeaderWrite() {
@@ -142,7 +142,7 @@ module Beego {
     override DataFlow::Node getName() { methodName = "Header" and result = this.getArgument(0) }
 
     override string getHeaderName() {
-      result = HTTP::HeaderWrite::Range.super.getHeaderName()
+      result = Http::HeaderWrite::Range.super.getHeaderName()
       or
       methodName = "ContentType" and result = "content-type"
     }
@@ -153,12 +153,12 @@ module Beego {
       else result = this.getArgument(1)
     }
 
-    override HTTP::ResponseWriter getResponseWriter() {
+    override Http::ResponseWriter getResponseWriter() {
       result.(BeegoOutputInstance).getAHeaderObject() = this
     }
   }
 
-  private class BeegoResponseBody extends HTTP::ResponseBody::Range {
+  private class BeegoResponseBody extends Http::ResponseBody::Range {
     DataFlow::MethodCallNode call;
     string methodName;
 
@@ -170,7 +170,7 @@ module Beego {
       methodName in ["Body", "JSON", "JSONP", "ServeFormatted", "XML", "YAML"]
     }
 
-    override HTTP::ResponseWriter getResponseWriter() { result.getANode() = call.getReceiver() }
+    override Http::ResponseWriter getResponseWriter() { result.getANode() = call.getReceiver() }
 
     override string getAContentType() {
       // Super-method provides content-types for `Body`, which requires us to search
@@ -192,7 +192,7 @@ module Beego {
     }
   }
 
-  private class ControllerResponseBody extends HTTP::ResponseBody::Range {
+  private class ControllerResponseBody extends Http::ResponseBody::Range {
     string name;
 
     ControllerResponseBody() {
@@ -203,7 +203,7 @@ module Beego {
       )
     }
 
-    override HTTP::ResponseWriter getResponseWriter() { none() }
+    override Http::ResponseWriter getResponseWriter() { none() }
 
     override string getAContentType() {
       // Actually SetData can serve JSON, XML or YAML depending on the incoming
@@ -213,7 +213,7 @@ module Beego {
     }
   }
 
-  private class ContextResponseBody extends HTTP::ResponseBody::Range {
+  private class ContextResponseBody extends Http::ResponseBody::Range {
     string name;
 
     ContextResponseBody() {
@@ -224,7 +224,7 @@ module Beego {
       )
     }
 
-    override HTTP::ResponseWriter getResponseWriter() { none() }
+    override Http::ResponseWriter getResponseWriter() { none() }
 
     // Neither method is likely to be used with well-typed data such as JSON output,
     // because there are better methods to do this. Assume the Content-Type could
@@ -314,7 +314,7 @@ module Beego {
     }
   }
 
-  private class RedirectMethods extends HTTP::Redirect::Range, DataFlow::CallNode {
+  private class RedirectMethods extends Http::Redirect::Range, DataFlow::CallNode {
     string package;
     string className;
 
@@ -333,7 +333,7 @@ module Beego {
       className = "Context" and result = this.getArgument(1)
     }
 
-    override HTTP::ResponseWriter getResponseWriter() { none() }
+    override Http::ResponseWriter getResponseWriter() { none() }
   }
 
   private class UtilsTaintPropagators extends TaintTracking::FunctionModel {

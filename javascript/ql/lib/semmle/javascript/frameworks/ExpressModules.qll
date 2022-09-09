@@ -18,25 +18,25 @@ module ExpressLibraries {
   /**
    * A header produced by a route handler of the "x-frame-options" module.
    */
-  class XFrameOptionsRouteHandlerHeader extends HTTP::ImplicitHeaderDefinition {
+  class XFrameOptionsRouteHandlerHeader extends Http::ImplicitHeaderDefinition {
     XFrameOptionsRouteHandlerHeader() { this instanceof XFrameOptionsRouteHandler }
 
     override predicate defines(string headerName, string headerValue) {
       xFrameOptionsDefaultImplicitHeaderDefinition(headerName, headerValue)
     }
 
-    override HTTP::RouteHandler getRouteHandler() { result = this }
+    override Http::RouteHandler getRouteHandler() { result = this }
   }
 
   /**
    * A route handler from the "x-frame-options" module.
    */
-  class XFrameOptionsRouteHandler extends HTTP::RouteHandler {
+  class XFrameOptionsRouteHandler extends Http::RouteHandler {
     XFrameOptionsRouteHandler() {
       this = DataFlow::moduleImport("x-frame-options").getAnInvocation()
     }
 
-    override HTTP::HeaderDefinition getAResponseHeader(string name) {
+    override Http::HeaderDefinition getAResponseHeader(string name) {
       name = this.(XFrameOptionsRouteHandlerHeader).getAHeaderName() and
       result = this
     }
@@ -45,23 +45,23 @@ module ExpressLibraries {
   /**
    * A header produced by a route handler of the "frameguard" module.
    */
-  class FrameGuardRouteHandlerHeader extends HTTP::ImplicitHeaderDefinition {
+  class FrameGuardRouteHandlerHeader extends Http::ImplicitHeaderDefinition {
     FrameGuardRouteHandlerHeader() { this instanceof FrameGuardRouteHandler }
 
     override predicate defines(string headerName, string headerValue) {
       xFrameOptionsDefaultImplicitHeaderDefinition(headerName, headerValue)
     }
 
-    override HTTP::RouteHandler getRouteHandler() { result = this }
+    override Http::RouteHandler getRouteHandler() { result = this }
   }
 
   /**
    * A route handler from the "frameguard" module.
    */
-  class FrameGuardRouteHandler extends HTTP::RouteHandler {
+  class FrameGuardRouteHandler extends Http::RouteHandler {
     FrameGuardRouteHandler() { this = DataFlow::moduleImport("frameguard").getAnInvocation() }
 
-    override HTTP::HeaderDefinition getAResponseHeader(string name) {
+    override Http::HeaderDefinition getAResponseHeader(string name) {
       name = this.(FrameGuardRouteHandlerHeader).getAHeaderName() and
       result = this
     }
@@ -70,20 +70,20 @@ module ExpressLibraries {
   /**
    * A header produced by a route handler of the "helmet" module.
    */
-  class HelmetRouteHandlerHeader extends HTTP::ImplicitHeaderDefinition {
+  class HelmetRouteHandlerHeader extends Http::ImplicitHeaderDefinition {
     HelmetRouteHandlerHeader() { this instanceof HelmetRouteHandler }
 
     override predicate defines(string headerName, string headerValue) {
       xFrameOptionsDefaultImplicitHeaderDefinition(headerName, headerValue)
     }
 
-    override HTTP::RouteHandler getRouteHandler() { result = this }
+    override Http::RouteHandler getRouteHandler() { result = this }
   }
 
   /**
    * A route handler from the "helmet" module.
    */
-  class HelmetRouteHandler extends HTTP::RouteHandler {
+  class HelmetRouteHandler extends Http::RouteHandler {
     HelmetRouteHandler() {
       exists(DataFlow::ModuleImportNode m | "helmet" = m.getPath() |
         this = m.getAnInvocation() or
@@ -91,7 +91,7 @@ module ExpressLibraries {
       )
     }
 
-    override HTTP::HeaderDefinition getAResponseHeader(string name) {
+    override Http::HeaderDefinition getAResponseHeader(string name) {
       name = this.(HelmetRouteHandlerHeader).getAHeaderName() and
       result = this
     }
@@ -108,7 +108,7 @@ module ExpressLibraries {
     /**
      * A call that creates an `express-session` middleware instance.
      */
-    class MiddlewareInstance extends DataFlow::InvokeNode, HTTP::CookieMiddlewareInstance {
+    class MiddlewareInstance extends DataFlow::InvokeNode, Http::CookieMiddlewareInstance {
       MiddlewareInstance() { this = expressSession().getACall() }
 
       /**
@@ -135,7 +135,7 @@ module ExpressLibraries {
     /**
      * A call that creates a `cookie-parser` middleware instance.
      */
-    class MiddlewareInstance extends DataFlow::InvokeNode, HTTP::CookieMiddlewareInstance {
+    class MiddlewareInstance extends DataFlow::InvokeNode, Http::CookieMiddlewareInstance {
       MiddlewareInstance() { this = cookieParser().getACall() }
 
       /**
@@ -164,7 +164,7 @@ module ExpressLibraries {
     /**
      * A call that creates a `cookie-session` middleware instance.
      */
-    class MiddlewareInstance extends DataFlow::InvokeNode, HTTP::CookieMiddlewareInstance {
+    class MiddlewareInstance extends DataFlow::InvokeNode, Http::CookieMiddlewareInstance {
       MiddlewareInstance() { this = cookieSession().getACall() }
 
       /**

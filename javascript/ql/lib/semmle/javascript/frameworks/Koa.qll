@@ -9,7 +9,7 @@ module Koa {
   /**
    * An expression that creates a new Koa application.
    */
-  class AppDefinition extends HTTP::Servers::StandardServerDefinition, DataFlow::InvokeNode {
+  class AppDefinition extends Http::Servers::StandardServerDefinition, DataFlow::InvokeNode {
     AppDefinition() {
       // `app = new Koa()` / `app = Koa()`
       this = DataFlow::moduleImport("koa").getAnInvocation()
@@ -19,7 +19,7 @@ module Koa {
   /**
    * An HTTP header defined in a Koa application.
    */
-  private class HeaderDefinition extends HTTP::Servers::StandardHeaderDefinition {
+  private class HeaderDefinition extends Http::Servers::StandardHeaderDefinition {
     RouteHandler rh;
 
     HeaderDefinition() {
@@ -36,7 +36,7 @@ module Koa {
   /**
    * A Koa route handler.
    */
-  abstract class RouteHandler extends HTTP::Servers::StandardRouteHandler, DataFlow::SourceNode {
+  abstract class RouteHandler extends Http::Servers::StandardRouteHandler, DataFlow::SourceNode {
     /**
      * Gets the parameter of the route handler that contains the context object.
      */
@@ -227,7 +227,7 @@ module Koa {
    * A Koa request source, that is, an access to the `request` property
    * of a context object.
    */
-  private class RequestSource extends HTTP::Servers::RequestSource instanceof DataFlow::PropRead {
+  private class RequestSource extends Http::Servers::RequestSource instanceof DataFlow::PropRead {
     ContextNode ctx;
 
     RequestSource() { super.accesses(ctx, "request") }
@@ -242,7 +242,7 @@ module Koa {
    * A Koa request source, accessed through the a request property of a
    * generator route handler (deprecated in Koa 3).
    */
-  private class GeneratorRequestSource extends HTTP::Servers::RequestSource {
+  private class GeneratorRequestSource extends Http::Servers::RequestSource {
     RouteHandler rh;
 
     GeneratorRequestSource() {
@@ -262,7 +262,7 @@ module Koa {
    * A Koa response source, that is, an access to the `response` property
    * of a context object.
    */
-  private class ResponseSource extends HTTP::Servers::ResponseSource instanceof DataFlow::PropRead {
+  private class ResponseSource extends Http::Servers::ResponseSource instanceof DataFlow::PropRead {
     ContextNode ctx;
 
     ResponseSource() { super.accesses(ctx, "response") }
@@ -311,7 +311,7 @@ module Koa {
   /**
    * An expression that may hold a Koa request object.
    */
-  class RequestNode extends HTTP::Servers::StandardRequestNode {
+  class RequestNode extends Http::Servers::StandardRequestNode {
     override RequestSource src;
   }
 
@@ -326,14 +326,14 @@ module Koa {
   /**
    * An expression that may hold a Koa response object.
    */
-  class ResponseNode extends HTTP::Servers::StandardResponseNode {
+  class ResponseNode extends Http::Servers::StandardResponseNode {
     override ResponseSource src;
   }
 
   /**
    * An access to a user-controlled Koa request input.
    */
-  private class RequestInputAccess extends HTTP::RequestInputAccess {
+  private class RequestInputAccess extends Http::RequestInputAccess {
     RouteHandler rh;
     string kind;
 
@@ -399,7 +399,7 @@ module Koa {
   /**
    * An access to an HTTP header on a Koa request.
    */
-  private class RequestHeaderAccess extends HTTP::RequestHeaderAccess {
+  private class RequestHeaderAccess extends Http::RequestHeaderAccess {
     RouteHandler rh;
 
     RequestHeaderAccess() {
@@ -435,7 +435,7 @@ module Koa {
   /**
    * A call to a Koa method that sets up a route.
    */
-  class RouteSetup extends HTTP::Servers::StandardRouteSetup, DataFlow::MethodCallNode {
+  class RouteSetup extends Http::Servers::StandardRouteSetup, DataFlow::MethodCallNode {
     AppDefinition server;
 
     RouteSetup() {
@@ -457,7 +457,7 @@ module Koa {
   /**
    * A value assigned to the body of an HTTP response object.
    */
-  private class ResponseSendArgument extends HTTP::ResponseSendArgument {
+  private class ResponseSendArgument extends Http::ResponseSendArgument {
     RouteHandler rh;
 
     ResponseSendArgument() {
@@ -470,7 +470,7 @@ module Koa {
   /**
    * An invocation of the `redirect` method of an HTTP response object.
    */
-  private class RedirectInvocation extends HTTP::RedirectInvocation instanceof DataFlow::MethodCallNode {
+  private class RedirectInvocation extends Http::RedirectInvocation instanceof DataFlow::MethodCallNode {
     RouteHandler rh;
 
     RedirectInvocation() { super.calls(rh.getAResponseOrContextNode(), "redirect") }

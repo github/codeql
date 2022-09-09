@@ -27,7 +27,7 @@ module SafeUrlFlow {
   /**
    * A method on a `net/url.URL` that is considered unsafe to use.
    */
-  private class UnsafeUrlMethod extends URL::UrlGetter {
+  private class UnsafeUrlMethod extends Url::UrlGetter {
     UnsafeUrlMethod() { this.getName() = "Query" }
   }
 

@@ -9,7 +9,7 @@ module Hapi {
   /**
    * An expression that creates a new Hapi server.
    */
-  class ServerDefinition extends HTTP::Servers::StandardServerDefinition, DataFlow::NewNode {
+  class ServerDefinition extends Http::Servers::StandardServerDefinition, DataFlow::NewNode {
     ServerDefinition() {
       // `server = new Hapi.Server()`
       this = DataFlow::moduleMember("hapi", "Server").getAnInstantiation()
@@ -19,7 +19,7 @@ module Hapi {
   /**
    * A Hapi route handler.
    */
-  class RouteHandler extends HTTP::Servers::StandardRouteHandler, DataFlow::FunctionNode {
+  class RouteHandler extends Http::Servers::StandardRouteHandler, DataFlow::FunctionNode {
     RouteHandler() { exists(RouteSetup setup | this = setup.getARouteHandler()) }
 
     /**
@@ -43,7 +43,7 @@ module Hapi {
    * A Hapi response source, that is, an access to the `response` property
    * of a request object.
    */
-  private class ResponseSource extends HTTP::Servers::ResponseSource {
+  private class ResponseSource extends Http::Servers::ResponseSource {
     RequestNode req;
 
     ResponseSource() { this.(DataFlow::PropRead).accesses(req, "response") }
@@ -58,7 +58,7 @@ module Hapi {
    * A Hapi request source, that is, the request parameter of a
    * route handler.
    */
-  private class RequestSource extends HTTP::Servers::RequestSource {
+  private class RequestSource extends Http::Servers::RequestSource {
     RouteHandler rh;
 
     RequestSource() { this = rh.getRequestParameter() }
@@ -80,7 +80,7 @@ module Hapi {
   /**
    * A Hapi response node.
    */
-  class ResponseNode extends HTTP::Servers::StandardResponseNode {
+  class ResponseNode extends Http::Servers::StandardResponseNode {
     override ResponseSource src;
   }
 
@@ -95,14 +95,14 @@ module Hapi {
   /**
    * A Hapi request node.
    */
-  class RequestNode extends HTTP::Servers::StandardRequestNode {
+  class RequestNode extends Http::Servers::StandardRequestNode {
     override RequestSource src;
   }
 
   /**
    * An access to a user-controlled Hapi request input.
    */
-  private class RequestInputAccess extends HTTP::RequestInputAccess {
+  private class RequestInputAccess extends Http::RequestInputAccess {
     RouteHandler rh;
     string kind;
 
@@ -156,7 +156,7 @@ module Hapi {
   /**
    * An access to an HTTP header on a Hapi request.
    */
-  private class RequestHeaderAccess extends HTTP::RequestHeaderAccess {
+  private class RequestHeaderAccess extends Http::RequestHeaderAccess {
     RouteHandler rh;
 
     RequestHeaderAccess() {
@@ -181,7 +181,7 @@ module Hapi {
   /**
    * An HTTP header defined in a Hapi server.
    */
-  private class HeaderDefinition extends HTTP::Servers::StandardHeaderDefinition {
+  private class HeaderDefinition extends Http::Servers::StandardHeaderDefinition {
     ResponseNode res;
 
     HeaderDefinition() {
@@ -195,7 +195,7 @@ module Hapi {
   /**
    * A call to a Hapi method that sets up a route.
    */
-  class RouteSetup extends DataFlow::MethodCallNode, HTTP::Servers::StandardRouteSetup {
+  class RouteSetup extends DataFlow::MethodCallNode, Http::Servers::StandardRouteSetup {
     ServerDefinition server;
     DataFlow::Node handler;
 
@@ -236,7 +236,7 @@ module Hapi {
    *
    * For example, this could be the function `function(request, h){...}`.
    */
-  class RouteHandlerCandidate extends HTTP::RouteHandlerCandidate {
+  class RouteHandlerCandidate extends Http::RouteHandlerCandidate {
     RouteHandlerCandidate() {
       exists(string request, string responseToolkit |
         (request = "request" or request = "req") and
@@ -256,7 +256,7 @@ module Hapi {
    * A function that looks like a Hapi route handler and flows to a route setup.
    */
   private class TrackedRouteHandlerCandidateWithSetup extends RouteHandler,
-    HTTP::Servers::StandardRouteHandler, DataFlow::FunctionNode {
+    Http::Servers::StandardRouteHandler, DataFlow::FunctionNode {
     TrackedRouteHandlerCandidateWithSetup() { this = any(RouteSetup s).getARouteHandler() }
   }
 
@@ -276,7 +276,7 @@ module Hapi {
   /**
    * A return from a route handler.
    */
-  private class HandlerReturn extends HTTP::ResponseSendArgument {
+  private class HandlerReturn extends Http::ResponseSendArgument {
     RouteHandler handler;
 
     HandlerReturn() { this = handler.(DataFlow::FunctionNode).getAReturn() }

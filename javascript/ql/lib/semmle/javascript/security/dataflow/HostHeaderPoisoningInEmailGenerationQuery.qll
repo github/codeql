@@ -12,7 +12,7 @@ class Configuration extends TaintTracking::Configuration {
   Configuration() { this = "TaintedHostHeader" }
 
   override predicate isSource(DataFlow::Node node) {
-    exists(HTTP::RequestHeaderAccess input | node = input |
+    exists(Http::RequestHeaderAccess input | node = input |
       input.getKind() = "header" and
       input.getAHeaderName() = "host"
     )

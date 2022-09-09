@@ -19,7 +19,7 @@ private import codeql.ruby.dataflow.internal.DataFlowImplForHttpClientLibraries 
  * response = req.get("/")
  * ```
  */
-class NetHttpRequest extends HTTP::Client::Request::Range, DataFlow::CallNode {
+class NetHttpRequest extends Http::Client::Request::Range, DataFlow::CallNode {
   private DataFlow::CallNode request;
   private DataFlow::Node responseBody;
   private API::Node requestNode;

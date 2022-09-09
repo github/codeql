@@ -8,7 +8,7 @@ private import semmle.javascript.dataflow.internal.StepSummary
 private import semmle.javascript.dataflow.internal.CallGraphs
 private import DataFlow::PseudoProperties as PseudoProperties
 
-module HTTP {
+module Http {
   /**
    * A function invocation that causes a redirect response to be sent.
    */
@@ -242,7 +242,7 @@ module HTTP {
     DataFlow::functionOneWayForwardingStep(pred.getALocalUse(), succ)
     or
     // a container containing route-handlers.
-    exists(HTTP::RouteHandlerCandidateContainer container | pred = container.getRouteHandler(succ))
+    exists(Http::RouteHandlerCandidateContainer container | pred = container.getRouteHandler(succ))
     or
     // (function (req, res) {}).bind(this);
     exists(DataFlow::PartialInvokeNode call |
@@ -677,7 +677,7 @@ module HTTP {
     /**
      * A collection that contains one or more route potential handlers.
      */
-    private class ContainerCollection extends HTTP::RouteHandlerCandidateContainer::Range,
+    private class ContainerCollection extends Http::RouteHandlerCandidateContainer::Range,
       DataFlow::NewNode {
       ContainerCollection() {
         this = DataFlow::globalVarRef("Map").getAnInstantiation() and // restrict to Map for now
@@ -699,3 +699,6 @@ module HTTP {
     }
   }
 }
+
+/** DEPRECATED: Alias for Http */
+deprecated module HTTP = Http;

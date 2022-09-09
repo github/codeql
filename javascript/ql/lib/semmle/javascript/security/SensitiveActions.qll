@@ -96,7 +96,7 @@ private predicate writesProperty(DataFlow::Node node, string name) {
   exists(VarDef v | v.getAVariable().getName() = name |
     if exists(v.getSource())
     then v.getSource() = node.asExpr()
-    else node = DataFlow::ssaDefinitionNode(SSA::definition(v))
+    else node = DataFlow::ssaDefinitionNode(Ssa::definition(v))
   )
 }
 

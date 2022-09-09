@@ -16,7 +16,7 @@ private import semmle.python.frameworks.internal.InstanceTaintStepsHelper
  * Provides models for the `multidict` PyPI package.
  * See https://multidict.readthedocs.io/en/stable/.
  */
-module Multidict {
+module MultiDict {
   /**
    * Provides models for a `MultiDictProxy` class:
    * - `multidict.MultiDictProxy`
@@ -88,3 +88,6 @@ module Multidict {
     }
   }
 }
+
+/** DEPRECATED: Alias for MultiDict */
+deprecated module Multidict = MultiDict;

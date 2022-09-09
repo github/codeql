@@ -129,7 +129,7 @@ private module Fiber {
   /**
    * Models HTTP redirects.
    */
-  private class Redirect extends HTTP::Redirect::Range, DataFlow::CallNode {
+  private class Redirect extends Http::Redirect::Range, DataFlow::CallNode {
     string package;
     DataFlow::Node urlNode;
 
@@ -146,14 +146,14 @@ private module Fiber {
 
     override DataFlow::Node getUrl() { result = urlNode }
 
-    override HTTP::ResponseWriter getResponseWriter() { result.getANode() = this.getReceiver() }
+    override Http::ResponseWriter getResponseWriter() { result.getANode() = this.getReceiver() }
   }
 
   /**
    * Models HTTP header writers.
    * The write is done with a call where you can set both the key and the value of the header.
    */
-  private class HeaderWrite extends HTTP::HeaderWrite::Range, DataFlow::CallNode {
+  private class HeaderWrite extends Http::HeaderWrite::Range, DataFlow::CallNode {
     DataFlow::Node receiverNode;
     DataFlow::Node headerNameNode;
     DataFlow::Node headerValueNode;
@@ -166,7 +166,7 @@ private module Fiber {
 
     override DataFlow::Node getValue() { result = headerValueNode }
 
-    override HTTP::ResponseWriter getResponseWriter() { result.getANode() = receiverNode }
+    override Http::ResponseWriter getResponseWriter() { result.getANode() = receiverNode }
   }
 
   // Holds for a call that sets a header with a key-value combination.
@@ -201,7 +201,7 @@ private module Fiber {
   /**
    * Models HTTP ResponseBody where the content-type is static and non-modifiable.
    */
-  private class ResponseBodyStaticContentType extends HTTP::ResponseBody::Range {
+  private class ResponseBodyStaticContentType extends Http::ResponseBody::Range {
     string contentTypeString;
     DataFlow::Node receiverNode;
 
@@ -213,7 +213,7 @@ private module Fiber {
 
     override string getAContentType() { result = contentTypeString }
 
-    override HTTP::ResponseWriter getResponseWriter() { result.getANode() = receiverNode }
+    override Http::ResponseWriter getResponseWriter() { result.getANode() = receiverNode }
   }
 
   // Holds for a call that sets the body; the content-type is implicitly set.
@@ -248,7 +248,7 @@ private module Fiber {
   /**
    * Models HTTP ResponseBody where only the body is set.
    */
-  private class ResponseBodyNoContentType extends HTTP::ResponseBody::Range {
+  private class ResponseBodyNoContentType extends Http::ResponseBody::Range {
     DataFlow::Node receiverNode;
 
     ResponseBodyNoContentType() {
@@ -257,7 +257,7 @@ private module Fiber {
       )
     }
 
-    override HTTP::ResponseWriter getResponseWriter() { result.getANode() = receiverNode }
+    override Http::ResponseWriter getResponseWriter() { result.getANode() = receiverNode }
   }
 
   // Holds for a call that sets the body. The content-type is not defined.
