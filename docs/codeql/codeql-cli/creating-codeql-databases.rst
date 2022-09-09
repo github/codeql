@@ -379,17 +379,15 @@ The following example shows how you could use indirect build tracing in an Azure
        # `codeql database analyze`
        # then `codeql github upload-results` ...
 
-Obtaining databases from LGTM.com
----------------------------------
+Obtaining databases from GitHub.com
+-----------------------------------
 
-`LGTM.com <https://lgtm.com>`__ analyzes thousands of open-source projects using
-CodeQL. For each project on LGTM.com, you can download an archived CodeQL
-database corresponding to the most recently analyzed revision of the code. These
-databases can also be analyzed using the CodeQL CLI or used with the CodeQL
-extension for Visual Studio Code.
-
-.. include:: ../reusables/download-lgtm-database.rst
-
+.. include:: ../reusables/download-github-database.rst
+   
+Before running an analysis, unzip the databases and try :doc:`upgrading <upgrading-codeql-databases>` the
+unzipped databases to ensure they are compatible with your local copy of the
+CodeQL queries and libraries.
+   
 .. pull-quote::
 
    Note
