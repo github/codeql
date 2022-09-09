@@ -37,7 +37,7 @@ jobs:
 
     # Initializes the CodeQL tools for scanning.
     - name: Initialize CodeQL
-      uses: github/codeql-action/init@main
+      uses: github/codeql-action/init@9ba4d500aa0261992135290a8c8eff47a4bb2ecb
       # Override language selection by uncommenting this and choosing your languages
       with:
         languages: csharp
@@ -59,4 +59,4 @@ jobs:
        dotnet build csharp
 
     - name: Perform CodeQL Analysis
-      uses: github/codeql-action/analyze@main
+      uses: github/codeql-action/analyze@9ba4d500aa0261992135290a8c8eff47a4bb2ecb
