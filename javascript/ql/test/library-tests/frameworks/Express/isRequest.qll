@@ -1,3 +1,3 @@
 import javascript
 
-query predicate test_isRequest(Expr nd) { Express::isRequest(nd) }
+query predicate test_isRequest(DataFlow::Node nd) { Express::isRequest(nd) }
