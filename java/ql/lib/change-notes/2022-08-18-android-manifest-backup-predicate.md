@@ -1,4 +1,4 @@
 ---
 category: feature
 ---
-* Added a new predicate, `allowsBackup`, in the `AndroidApplicationXmlElement` class. This predicate detects if the application element has its `android:allowBackup` attribute enabled.
+* Added a new predicate, `allowsBackup`, in the `AndroidApplicationXmlElement` class. This predicate detects if the application element does not disable the `android:allowBackup` attribute.
