@@ -5,3 +5,5 @@ dbscheme: semmlecode.csharp.dbscheme
 extractor: csharp
 library: true
 upgrades: upgrades
+dependencies:
+  codeql/ssa: 0.0.1 

@@ -49,7 +49,7 @@ module NodeJSLib {
   /**
    * Holds if `call` is an invocation of `http.createServer` or `https.createServer`.
    */
-  predicate isCreateServer(CallExpr call) {
+  predicate isCreateServer(DataFlow::CallNode call) {
     exists(string pkg, string fn |
       pkg = "http" and fn = "createServer"
       or
@@ -60,8 +60,19 @@ module NodeJSLib {
       or
       pkg = "http2" and fn = "createSecureServer"
     |
-      call = DataFlow::moduleMember(pkg, fn).getAnInvocation().asExpr()
+      call = DataFlow::moduleMember(pkg, fn).getAnInvocation()
     )
+  }
+
+  /**
+   * DEPRECATED: Use `ResponseNode` instead.
+   * A Node.js HTTP response.
+   *
+   * A server library that provides an (enhanced) NodesJS HTTP response
+   * object should implement a library specific subclass of this class.
+   */
+  deprecated class ResponseExpr extends HTTP::Servers::StandardResponseExpr {
+    ResponseExpr() { this.flow() instanceof ResponseNode }
   }
 
   /**
@@ -70,7 +81,18 @@ module NodeJSLib {
    * A server library that provides an (enhanced) NodesJS HTTP response
    * object should implement a library specific subclass of this class.
    */
-  abstract class ResponseExpr extends HTTP::Servers::StandardResponseExpr { }
+  abstract class ResponseNode extends HTTP::Servers::StandardResponseNode { }
+
+  /**
+   * DEPRECATED: Use `RequestNode` instead.
+   * A Node.js HTTP request.
+   *
+   * A server library that provides an (enhanced) NodesJS HTTP request
+   * object should implement a library specific subclass of this class.
+   */
+  deprecated class RequestExpr extends HTTP::Servers::StandardRequestExpr {
+    RequestExpr() { this.flow() instanceof RequestNode }
+  }
 
   /**
    * A Node.js HTTP request.
@@ -78,7 +100,7 @@ module NodeJSLib {
    * A server library that provides an (enhanced) NodesJS HTTP request
    * object should implement a library specific subclass of this class.
    */
-  abstract class RequestExpr extends HTTP::Servers::StandardRequestExpr { }
+  abstract class RequestNode extends HTTP::Servers::StandardRequestNode { }
 
   /**
    * A function used as an Node.js server route handler.
@@ -91,12 +113,12 @@ module NodeJSLib {
     /**
      * Gets the parameter of the route handler that contains the request object.
      */
-    Parameter getRequestParameter() { result = this.getFunction().getParameter(0) }
+    DataFlow::ParameterNode getRequestParameter() { result = this.getParameter(0) }
 
     /**
      * Gets the parameter of the route handler that contains the response object.
      */
-    Parameter getResponseParameter() { result = this.getFunction().getParameter(1) }
+    DataFlow::ParameterNode getResponseParameter() { result = this.getParameter(1) }
   }
 
   /**
@@ -118,7 +140,7 @@ module NodeJSLib {
   private class StandardResponseSource extends ResponseSource {
     RouteHandler rh;
 
-    StandardResponseSource() { this = DataFlow::parameterNode(rh.getResponseParameter()) }
+    StandardResponseSource() { this = rh.getResponseParameter() }
 
     /**
      * Gets the route handler that provides this response.
@@ -138,7 +160,7 @@ module NodeJSLib {
   private class StandardRequestSource extends RequestSource {
     RouteHandler rh;
 
-    StandardRequestSource() { this = DataFlow::parameterNode(rh.getRequestParameter()) }
+    StandardRequestSource() { this = rh.getRequestParameter() }
 
     /**
      * Gets the route handler that handles this request.
@@ -147,36 +169,52 @@ module NodeJSLib {
   }
 
   /**
+   * DEPRECATED: Use `BuiltinRouteHandlerResponseNode` instead.
    * A builtin Node.js HTTP response.
    */
-  private class BuiltinRouteHandlerResponseExpr extends ResponseExpr {
+  deprecated private class BuiltinRouteHandlerResponseExpr extends ResponseExpr {
     BuiltinRouteHandlerResponseExpr() { src instanceof ResponseSource }
+  }
+
+  /**
+   * A builtin Node.js HTTP response.
+   */
+  private class BuiltinRouteHandlerResponseNode extends ResponseNode {
+    BuiltinRouteHandlerResponseNode() { src instanceof ResponseSource }
+  }
+
+  /**
+   * DEPRECATED: Use `BuiltinRouteHandlerRequestNode` instead.
+   * A builtin Node.js HTTP request.
+   */
+  deprecated private class BuiltinRouteHandlerRequestExpr extends RequestExpr {
+    BuiltinRouteHandlerRequestExpr() { src instanceof RequestSource }
   }
 
   /**
    * A builtin Node.js HTTP request.
    */
-  private class BuiltinRouteHandlerRequestExpr extends RequestExpr {
-    BuiltinRouteHandlerRequestExpr() { src instanceof RequestSource }
+  private class BuiltinRouteHandlerRequestNode extends RequestNode {
+    BuiltinRouteHandlerRequestNode() { src instanceof RequestSource }
   }
 
   /**
    * An access to a user-controlled Node.js request input.
    */
   private class RequestInputAccess extends HTTP::RequestInputAccess {
-    RequestExpr request;
+    RequestNode request;
     string kind;
 
     RequestInputAccess() {
       // `req.url` / `req.body`
       kind = ["url", "body"] and
-      this.asExpr().(PropAccess).accesses(request, kind)
+      this.(DataFlow::PropRead).accesses(request, kind)
       or
-      exists(PropAccess headers |
+      exists(DataFlow::PropRead headers |
         // `req.headers.cookie`
         kind = "cookie" and
         headers.accesses(request, "headers") and
-        this.asExpr().(PropAccess).accesses(headers, "cookie")
+        this.(DataFlow::PropRead).accesses(headers, "cookie")
       )
       or
       exists(RequestHeaderAccess access | this = access |
@@ -194,14 +232,14 @@ module NodeJSLib {
    * An access to an HTTP header (other than "Cookie") on an incoming Node.js request object.
    */
   private class RequestHeaderAccess extends HTTP::RequestHeaderAccess {
-    RequestExpr request;
+    RequestNode request;
 
     RequestHeaderAccess() {
-      exists(PropAccess headers, string name |
+      exists(DataFlow::PropRead headers, string name |
         // `req.headers.<name>`
         name != "cookie" and
         headers.accesses(request, "headers") and
-        this.asExpr().(PropAccess).accesses(headers, name)
+        this.(DataFlow::PropRead).accesses(headers, name)
       )
     }
 
@@ -213,19 +251,19 @@ module NodeJSLib {
 
     override string getKind() { result = "header" }
 
-    RequestExpr getRequest() { result = request }
+    RequestNode getRequest() { result = request }
   }
 
-  class RouteSetup extends CallExpr, HTTP::Servers::StandardRouteSetup {
+  class RouteSetup extends DataFlow::CallNode, HTTP::Servers::StandardRouteSetup {
     ServerDefinition server;
-    Expr handler;
+    DataFlow::Node handler;
 
     RouteSetup() {
-      server.flowsTo(this) and
+      server.ref() = this and
       handler = this.getLastArgument()
       or
-      server.flowsTo(this.getReceiver()) and
-      this.(MethodCallExpr).getMethodName().regexpMatch("on(ce)?") and
+      server.ref().getAMethodCall() = this and
+      this.getCalleeName().regexpMatch("on(ce)?") and
       this.getArgument(0).getStringValue() = "request" and
       handler = this.getArgument(1)
     }
@@ -236,7 +274,7 @@ module NodeJSLib {
 
     private DataFlow::SourceNode getARouteHandler(DataFlow::TypeBackTracker t) {
       t.start() and
-      result = handler.flow().getALocalSource()
+      result = handler.getALocalSource()
       or
       exists(DataFlow::TypeBackTracker t2, DataFlow::SourceNode succ |
         succ = this.getARouteHandler(t2)
@@ -248,18 +286,24 @@ module NodeJSLib {
       )
     }
 
-    override Expr getServer() { result = server }
+    override DataFlow::Node getServer() { result = server }
+
+    /**
+     * DEPRECATED: Use `getRouteHandlerNode` instead.
+     * Gets the expression for the handler registered by this setup.
+     */
+    deprecated Expr getRouteHandlerExpr() { result = handler.asExpr() }
 
     /**
      * Gets the expression for the handler registered by this setup.
      */
-    Expr getRouteHandlerExpr() { result = handler }
+    DataFlow::Node getRouteHandlerNode() { result = handler }
   }
 
   abstract private class HeaderDefinition extends HTTP::Servers::StandardHeaderDefinition {
-    ResponseExpr r;
+    ResponseNode r;
 
-    HeaderDefinition() { astNode.getReceiver() = r }
+    HeaderDefinition() { this.getReceiver() = r }
 
     override HTTP::RouteHandler getRouteHandler() { result = r.getRouteHandler() }
   }
@@ -268,7 +312,7 @@ module NodeJSLib {
    * A call to the `setHeader` method of an HTTP response.
    */
   private class SetHeader extends HeaderDefinition {
-    SetHeader() { astNode.getMethodName() = "setHeader" }
+    SetHeader() { this.getMethodName() = "setHeader" }
   }
 
   /**
@@ -276,15 +320,15 @@ module NodeJSLib {
    */
   private class WriteHead extends HeaderDefinition {
     WriteHead() {
-      astNode.getMethodName() = "writeHead" and
-      astNode.getNumArgument() >= 1
+      this.getMethodName() = "writeHead" and
+      this.getNumArgument() >= 1
     }
 
-    override predicate definesExplicitly(string headerName, Expr headerValue) {
-      astNode.getNumArgument() > 1 and
+    override predicate definesHeaderValue(string headerName, DataFlow::Node headerValue) {
+      this.getNumArgument() > 1 and
       exists(DataFlow::SourceNode headers, string header |
-        headers.flowsToExpr(astNode.getLastArgument()) and
-        headers.hasPropertyWrite(header, DataFlow::valueNode(headerValue)) and
+        headers.flowsTo(this.getLastArgument()) and
+        headers.hasPropertyWrite(header, headerValue) and
         headerName = header.toLowerCase()
       )
     }
@@ -363,9 +407,9 @@ module NodeJSLib {
     HTTP::RouteHandler rh;
 
     ResponseSendArgument() {
-      exists(MethodCallExpr mce, string m | m = "write" or m = "end" |
-        mce.calls(any(ResponseExpr e | e.getRouteHandler() = rh), m) and
-        this = mce.getArgument(0) and
+      exists(DataFlow::MethodCallNode mcn, string m | m = "write" or m = "end" |
+        mcn.calls(any(ResponseNode e | e.getRouteHandler() = rh), m) and
+        this = mcn.getArgument(0) and
         // don't mistake callback functions as data
         not this.analyze().getAValue() instanceof AbstractFunction
       )
@@ -382,11 +426,10 @@ module NodeJSLib {
   }
 
   /** An expression that is passed as `http.request({ auth: <expr> }, ...)`. */
-  class Credentials extends CredentialsExpr {
+  class Credentials extends CredentialsNode {
     Credentials() {
       exists(string http | http = "http" or http = "https" |
-        this =
-          DataFlow::moduleMember(http, "request").getACall().getOptionArgument(0, "auth").asExpr()
+        this = DataFlow::moduleMember(http, "request").getACall().getOptionArgument(0, "auth")
       )
     }
 
@@ -994,11 +1037,9 @@ module NodeJSLib {
   /**
    * A data flow node that is the username passed to the login callback provided by an HTTP or HTTPS request made by a Node.js process, for example `username` in `http.request(url).on('login', (res, cb) => {cb(username, password)})`.
    */
-  private class ClientRequestLoginUsername extends CredentialsExpr {
+  private class ClientRequestLoginUsername extends CredentialsNode {
     ClientRequestLoginUsername() {
-      exists(ClientRequestLoginCallback callback |
-        this = callback.getACall().getArgument(0).asExpr()
-      )
+      exists(ClientRequestLoginCallback callback | this = callback.getACall().getArgument(0))
     }
 
     override string getCredentialsKind() { result = "Node.js http(s) client login username" }
@@ -1007,11 +1048,9 @@ module NodeJSLib {
   /**
    * A data flow node that is the password passed to the login callback provided by an HTTP or HTTPS request made by a Node.js process, for example `password` in `http.request(url).on('login', (res, cb) => {cb(username, password)})`.
    */
-  private class ClientRequestLoginPassword extends CredentialsExpr {
+  private class ClientRequestLoginPassword extends CredentialsNode {
     ClientRequestLoginPassword() {
-      exists(ClientRequestLoginCallback callback |
-        this = callback.getACall().getArgument(1).asExpr()
-      )
+      exists(ClientRequestLoginCallback callback | this = callback.getACall().getArgument(1))
     }
 
     override string getCredentialsKind() { result = "Node.js http(s) client login password" }

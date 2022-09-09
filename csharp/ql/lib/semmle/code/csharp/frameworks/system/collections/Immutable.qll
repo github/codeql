@@ -6,7 +6,10 @@ private import semmle.code.csharp.dataflow.ExternalFlow
 private class SystemCollectionsImmutableIImmutableDictionaryFlowModelCsv extends SummaryModelCsv {
   override predicate row(string row) {
     row =
-      "System.Collections.Immutable;IImmutableDictionary<,>;true;AddRange;(System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<TKey,TValue>>);;Argument[0].Element;Argument[this].Element;value;manual"
+      [
+        "System.Collections.Immutable;IImmutableDictionary<,>;true;AddRange;(System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<TKey,TValue>>);;Argument[0].Element;Argument[this].Element;value;manual",
+        "System.Collections.Immutable;IImmutableDictionary<,>;true;Clear;();;Argument[this].WithoutElement;ReturnValue;value;manual",
+      ]
   }
 }
 
@@ -65,6 +68,7 @@ private class SystemCollectionsImmutableIImmutableListFlowModelCsv extends Summa
       [
         "System.Collections.Immutable;IImmutableList<>;true;Add;(T);;Argument[0];Argument[this].Element;value;manual",
         "System.Collections.Immutable;IImmutableList<>;true;AddRange;(System.Collections.Generic.IEnumerable<T>);;Argument[0].Element;Argument[this].Element;value;manual",
+        "System.Collections.Immutable;IImmutableList<>;true;Clear;();;Argument[this].WithoutElement;ReturnValue;value;manual",
       ]
   }
 }
@@ -124,7 +128,10 @@ private class SystemCollectionsImmutableImmutableSortedSetFlowModelCsv extends S
 private class SystemCollectionsImmutableIImmutableSetFlowModelCsv extends SummaryModelCsv {
   override predicate row(string row) {
     row =
-      "System.Collections.Immutable;IImmutableSet<>;true;Add;(T);;Argument[0];Argument[this].Element;value;manual"
+      [
+        "System.Collections.Immutable;IImmutableSet<>;true;Add;(T);;Argument[0];Argument[this].Element;value;manual",
+        "System.Collections.Immutable;IImmutableSet<>;true;Clear;();;Argument[this].WithoutElement;ReturnValue;value;manual",
+      ]
   }
 }
 
@@ -153,6 +160,7 @@ private class SystemCollectionsImmutableImmutableHashSetFlowModelCsv extends Sum
       [
         "System.Collections.Immutable;ImmutableHashSet<>+Builder;false;GetEnumerator;();;Argument[this].Element;ReturnValue.Property[System.Collections.Immutable.ImmutableHashSet<>+Enumerator.Current];value;manual",
         "System.Collections.Immutable;ImmutableHashSet<>;false;Add;(T);;Argument[0];Argument[this].Element;value;manual",
+        "System.Collections.Immutable;ImmutableHashSet<>;false;Clear;();;Argument[this].WithoutElement;ReturnValue;value;manual",
         "System.Collections.Immutable;ImmutableHashSet<>;false;GetEnumerator;();;Argument[this].Element;ReturnValue.Property[System.Collections.Immutable.ImmutableHashSet<>+Enumerator.Current];value;manual",
       ]
   }
@@ -162,7 +170,10 @@ private class SystemCollectionsImmutableImmutableHashSetFlowModelCsv extends Sum
 private class SystemCollectionsImmutableImmutableQueueFlowModelCsv extends SummaryModelCsv {
   override predicate row(string row) {
     row =
-      "System.Collections.Immutable;ImmutableQueue<>;false;GetEnumerator;();;Argument[this].Element;ReturnValue.Property[System.Collections.Immutable.ImmutableQueue<>+Enumerator.Current];value;manual"
+      [
+        "System.Collections.Immutable;IImmutableQueue<>;true;Clear;();;Argument[this].WithoutElement;ReturnValue;value;manual",
+        "System.Collections.Immutable;ImmutableQueue<>;false;GetEnumerator;();;Argument[this].Element;ReturnValue.Property[System.Collections.Immutable.ImmutableQueue<>+Enumerator.Current];value;manual",
+      ]
   }
 }
 
@@ -170,6 +181,9 @@ private class SystemCollectionsImmutableImmutableQueueFlowModelCsv extends Summa
 private class SystemCollectionsImmutableImmutableStackFlowModelCsv extends SummaryModelCsv {
   override predicate row(string row) {
     row =
-      "System.Collections.Immutable;ImmutableStack<>;false;GetEnumerator;();;Argument[this].Element;ReturnValue.Property[System.Collections.Immutable.ImmutableStack<>+Enumerator.Current];value;manual"
+      [
+        "System.Collections.Immutable;IImmutableStack<>;true;Clear;();;Argument[this].WithoutElement;ReturnValue;value;manual",
+        "System.Collections.Immutable;ImmutableStack<>;false;GetEnumerator;();;Argument[this].Element;ReturnValue.Property[System.Collections.Immutable.ImmutableStack<>+Enumerator.Current];value;manual",
+      ]
   }
 }

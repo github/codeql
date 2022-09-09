@@ -13,7 +13,7 @@ import CandidateTracking
 
 from HTTP::RouteSetupCandidate setup
 where
-  not setup.asExpr() instanceof HTTP::RouteSetup and
+  not setup instanceof HTTP::RouteSetup and
   exists(HTTP::RouteHandlerCandidate rh |
     track(rh, DataFlow::TypeTracker::end()).flowsTo(setup.getARouteHandlerArg())
   )

@@ -9,39 +9,34 @@ module Hapi {
   /**
    * An expression that creates a new Hapi server.
    */
-  class ServerDefinition extends HTTP::Servers::StandardServerDefinition, NewExpr {
+  class ServerDefinition extends HTTP::Servers::StandardServerDefinition, DataFlow::NewNode {
     ServerDefinition() {
       // `server = new Hapi.Server()`
-      this = DataFlow::moduleMember("hapi", "Server").getAnInstantiation().asExpr()
+      this = DataFlow::moduleMember("hapi", "Server").getAnInstantiation()
     }
   }
 
   /**
    * A Hapi route handler.
    */
-  class RouteHandler extends HTTP::Servers::StandardRouteHandler, DataFlow::ValueNode {
-    Function function;
-
-    RouteHandler() {
-      function = astNode and
-      exists(RouteSetup setup | this = setup.getARouteHandler())
-    }
+  class RouteHandler extends HTTP::Servers::StandardRouteHandler, DataFlow::FunctionNode {
+    RouteHandler() { exists(RouteSetup setup | this = setup.getARouteHandler()) }
 
     /**
      * Gets the parameter of the route handler that contains the request object.
      */
-    Parameter getRequestParameter() { result = function.getParameter(0) }
+    DataFlow::ParameterNode getRequestParameter() { result = this.getParameter(0) }
 
     /**
      * Gets the parameter of the route handler that contains the "request toolkit",
      * usually named `h`.
      */
-    Parameter getRequestToolkitParameter() { result = function.getParameter(1) }
+    DataFlow::ParameterNode getRequestToolkitParameter() { result = this.getParameter(1) }
 
     /**
      * Gets a source node referring to the request toolkit parameter, usually named `h`.
      */
-    DataFlow::SourceNode getRequestToolkit() { result = getRequestToolkitParameter().flow() }
+    DataFlow::SourceNode getRequestToolkit() { result = this.getRequestToolkitParameter() }
   }
 
   /**
@@ -49,9 +44,9 @@ module Hapi {
    * of a request object.
    */
   private class ResponseSource extends HTTP::Servers::ResponseSource {
-    RequestExpr req;
+    RequestNode req;
 
-    ResponseSource() { asExpr().(PropAccess).accesses(req, "response") }
+    ResponseSource() { this.(DataFlow::PropRead).accesses(req, "response") }
 
     /**
      * Gets the route handler that provides this response.
@@ -66,7 +61,7 @@ module Hapi {
   private class RequestSource extends HTTP::Servers::RequestSource {
     RouteHandler rh;
 
-    RequestSource() { this = DataFlow::parameterNode(rh.getRequestParameter()) }
+    RequestSource() { this = rh.getRequestParameter() }
 
     /**
      * Gets the route handler that handles this request.
@@ -75,16 +70,32 @@ module Hapi {
   }
 
   /**
+   * DEPRECATED: Use `ResponseNode` instead.
    * A Hapi response expression.
    */
-  class ResponseExpr extends HTTP::Servers::StandardResponseExpr {
+  deprecated class ResponseExpr extends HTTP::Servers::StandardResponseExpr {
+    ResponseExpr() { this.flow() instanceof ResponseNode }
+  }
+
+  /**
+   * A Hapi response node.
+   */
+  class ResponseNode extends HTTP::Servers::StandardResponseNode {
     override ResponseSource src;
   }
 
   /**
+   * DEPRECATED: Use `RequestNode` instead.
    * An Hapi request expression.
    */
-  class RequestExpr extends HTTP::Servers::StandardRequestExpr {
+  deprecated class RequestExpr extends HTTP::Servers::StandardRequestExpr {
+    RequestExpr() { this.flow() instanceof RequestNode }
+  }
+
+  /**
+   * A Hapi request node.
+   */
+  class RequestNode extends HTTP::Servers::StandardRequestNode {
     override RequestSource src;
   }
 
@@ -96,38 +107,38 @@ module Hapi {
     string kind;
 
     RequestInputAccess() {
-      exists(Expr request | request = rh.getARequestExpr() |
+      exists(DataFlow::Node request | request = rh.getARequestNode() |
         kind = "body" and
         (
           // `request.rawPayload`
-          this.asExpr().(PropAccess).accesses(request, "rawPayload")
+          this.(DataFlow::PropRead).accesses(request, "rawPayload")
           or
-          exists(PropAccess payload |
+          exists(DataFlow::PropRead payload |
             // `request.payload.name`
             payload.accesses(request, "payload") and
-            this.asExpr().(PropAccess).accesses(payload, _)
+            this.(DataFlow::PropRead).accesses(payload, _)
           )
         )
         or
         kind = "parameter" and
-        exists(PropAccess query |
+        exists(DataFlow::PropRead query |
           // `request.query.name`
           query.accesses(request, "query") and
-          this.asExpr().(PropAccess).accesses(query, _)
+          this.(DataFlow::PropRead).accesses(query, _)
         )
         or
-        exists(PropAccess url |
+        exists(DataFlow::PropRead url |
           // `request.url.path`
           kind = "url" and
           url.accesses(request, "url") and
-          this.asExpr().(PropAccess).accesses(url, "path")
+          this.(DataFlow::PropRead).accesses(url, "path")
         )
         or
-        exists(PropAccess state |
+        exists(DataFlow::PropRead state |
           // `request.state.<name>`
           kind = "cookie" and
           state.accesses(request, "state") and
-          this.asExpr().(PropAccess).accesses(state, _)
+          this.(DataFlow::PropRead).accesses(state, _)
         )
       )
       or
@@ -149,11 +160,11 @@ module Hapi {
     RouteHandler rh;
 
     RequestHeaderAccess() {
-      exists(Expr request | request = rh.getARequestExpr() |
-        exists(PropAccess headers |
+      exists(DataFlow::Node request | request = rh.getARequestNode() |
+        exists(DataFlow::PropRead headers |
           // `request.headers.<name>`
           headers.accesses(request, "headers") and
-          this.asExpr().(PropAccess).accesses(headers, _)
+          this.(DataFlow::PropRead).accesses(headers, _)
         )
       )
     }
@@ -171,11 +182,11 @@ module Hapi {
    * An HTTP header defined in a Hapi server.
    */
   private class HeaderDefinition extends HTTP::Servers::StandardHeaderDefinition {
-    ResponseExpr res;
+    ResponseNode res;
 
     HeaderDefinition() {
       // request.response.header('Cache-Control', 'no-cache')
-      astNode.calls(res, "header")
+      this.calls(res, "header")
     }
 
     override RouteHandler getRouteHandler() { result = res.getRouteHandler() }
@@ -184,40 +195,40 @@ module Hapi {
   /**
    * A call to a Hapi method that sets up a route.
    */
-  class RouteSetup extends MethodCallExpr, HTTP::Servers::StandardRouteSetup {
+  class RouteSetup extends DataFlow::MethodCallNode, HTTP::Servers::StandardRouteSetup {
     ServerDefinition server;
-    Expr handler;
+    DataFlow::Node handler;
 
     RouteSetup() {
-      server.flowsTo(getReceiver()) and
+      server.ref().getAMethodCall() = this and
       (
         // server.route({ handler: fun })
-        getMethodName() = "route" and
-        hasOptionArgument(0, "handler", handler)
+        this.getMethodName() = "route" and
+        this.getOptionArgument(0, "handler") = handler
         or
         // server.ext('/', fun)
-        getMethodName() = "ext" and
-        handler = getArgument(1)
+        this.getMethodName() = "ext" and
+        handler = this.getArgument(1)
       )
     }
 
     override DataFlow::SourceNode getARouteHandler() {
-      result = getARouteHandler(DataFlow::TypeBackTracker::end())
+      result = this.getARouteHandler(DataFlow::TypeBackTracker::end())
     }
 
     private DataFlow::SourceNode getARouteHandler(DataFlow::TypeBackTracker t) {
       t.start() and
-      result = getRouteHandler().getALocalSource()
+      result = this.getRouteHandler().getALocalSource()
       or
-      exists(DataFlow::TypeBackTracker t2 | result = getARouteHandler(t2).backtrack(t2, t))
+      exists(DataFlow::TypeBackTracker t2 | result = this.getARouteHandler(t2).backtrack(t2, t))
     }
 
     pragma[noinline]
-    private DataFlow::Node getRouteHandler() { result = handler.flow() }
+    private DataFlow::Node getRouteHandler() { result = handler }
 
-    Expr getRouteHandlerExpr() { result = handler }
+    deprecated Expr getRouteHandlerExpr() { result = handler.asExpr() }
 
-    override Expr getServer() { result = server }
+    override DataFlow::Node getServer() { result = server }
   }
 
   /**
@@ -257,9 +268,9 @@ module Hapi {
 
     override DataFlow::SourceNode getOutput() { none() }
 
-    override DataFlow::Node getTemplateFileNode() { result = getArgument(0) }
+    override DataFlow::Node getTemplateFileNode() { result = this.getArgument(0) }
 
-    override DataFlow::Node getTemplateParamsNode() { result = getArgument(1) }
+    override DataFlow::Node getTemplateParamsNode() { result = this.getArgument(1) }
   }
 
   /**
@@ -268,7 +279,7 @@ module Hapi {
   private class HandlerReturn extends HTTP::ResponseSendArgument {
     RouteHandler handler;
 
-    HandlerReturn() { this = handler.(DataFlow::FunctionNode).getAReturn().asExpr() }
+    HandlerReturn() { this = handler.(DataFlow::FunctionNode).getAReturn() }
 
     override RouteHandler getRouteHandler() { result = handler }
   }

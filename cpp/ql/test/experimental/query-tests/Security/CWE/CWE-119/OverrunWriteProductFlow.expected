@@ -1,0 +1,2 @@
+| test.cpp:19:19:19:24 | call to malloc | test.cpp:18:17:18:20 | size | test.cpp:26:18:26:23 | string | test.cpp:26:31:26:39 | (size_t)... |
+| test.cpp:19:19:19:24 | call to malloc | test.cpp:18:17:18:20 | size | test.cpp:30:18:30:23 | string | test.cpp:30:31:30:39 | (size_t)... |

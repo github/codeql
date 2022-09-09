@@ -13,9 +13,9 @@ import javascript
 import Declarations.UnusedParameter
 import semmle.javascript.RestrictedLocations
 
-predicate isUnusedParameter(Function f, string msg, Parameter parameter) {
+predicate isUnusedParameter(DataFlow::FunctionNode f, string msg, Parameter parameter) {
   exists(Variable pv |
-    isUnused(f, parameter, pv, _) and
+    isUnused(f.getFunction(), parameter, pv, _) and
     not isAnAccidentallyUnusedParameter(parameter) and // avoid double alerts
     msg = "Unused dependency " + pv.getName() + "."
   )

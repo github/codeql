@@ -711,6 +711,19 @@ module ExprNodes {
     final CfgNode getReceiver() { e.hasCfgChild(e.getReceiver(), this, result) }
   }
 
+  private class SelfVariableAccessMapping extends ExprChildMapping, SelfVariableAccess {
+    override predicate relevantChild(AstNode n) { none() }
+  }
+
+  /** A control-flow node that wraps a `SelfVariableAccess` AST expression. */
+  class SelfVariableAccessCfgNode extends ExprCfgNode {
+    final override string getAPrimaryQlClass() { result = "SelfVariableAccessCfgNode" }
+
+    override SelfVariableAccessMapping e;
+
+    override SelfVariableAccess getExpr() { result = ExprCfgNode.super.getExpr() }
+  }
+
   /** A control-flow node that wraps a `VariableWriteAccess` AST expression. */
   class VariableWriteAccessCfgNode extends ExprCfgNode {
     override string getAPrimaryQlClass() { result = "VariableWriteAccessCfgNode" }

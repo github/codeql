@@ -7,6 +7,7 @@ private import codeql.ruby.CFG
 private import codeql.ruby.Concepts
 private import codeql.ruby.ApiGraphs
 private import codeql.ruby.DataFlow
+private import codeql.ruby.dataflow.internal.DataFlowImplForHttpClientLibraries as DataFlowImplForHttpClientLibraries
 
 /**
  * A call that makes an HTTP request using `Excon`.
@@ -23,14 +24,13 @@ private import codeql.ruby.DataFlow
  * TODO: pipelining, streaming responses
  * https://github.com/excon/excon/blob/master/README.md
  */
-class ExconHttpRequest extends HTTP::Client::Request::Range {
-  DataFlow::CallNode requestUse;
+class ExconHttpRequest extends HTTP::Client::Request::Range, DataFlow::CallNode {
   API::Node requestNode;
   API::Node connectionNode;
   DataFlow::Node connectionUse;
 
   ExconHttpRequest() {
-    requestUse = requestNode.asSource() and
+    this = requestNode.asSource() and
     connectionUse = connectionNode.asSource() and
     connectionNode =
       [
@@ -46,8 +46,7 @@ class ExconHttpRequest extends HTTP::Client::Request::Range {
               // Excon#request exists but Excon.request doesn't.
               // This shouldn't be a problem - in real code the latter would raise NoMethodError anyway.
               "get", "head", "delete", "options", "post", "put", "patch", "trace", "request"
-            ]) and
-    this = requestUse.asExpr().getExpr()
+            ])
   }
 
   override DataFlow::Node getResponseBody() { result = requestNode.getAMethodCall("body") }
@@ -56,96 +55,76 @@ class ExconHttpRequest extends HTTP::Client::Request::Range {
     // For one-off requests, the URL is in the first argument of the request method call.
     // For connection re-use, the URL is split between the first argument of the `new` call
     // and the `path` keyword argument of the request method call.
-    result = requestUse.getArgument(0) and not result.asExpr().getExpr() instanceof Pair
+    result = this.getArgument(0) and not result.asExpr().getExpr() instanceof Pair
     or
-    result = requestUse.getKeywordArgument("path")
+    result = this.getKeywordArgument("path")
     or
     result = connectionUse.(DataFlow::CallNode).getArgument(0)
   }
 
-  override predicate disablesCertificateValidation(DataFlow::Node disablingNode) {
-    // Check for `ssl_verify_peer: false` in the options hash.
-    exists(DataFlow::Node arg, int i |
-      i > 0 and
-      arg = connectionNode.getAValueReachableFromSource().(DataFlow::CallNode).getArgument(i)
-    |
-      argSetsVerifyPeer(arg, false, disablingNode)
+  /** Gets the value that controls certificate validation, if any. */
+  DataFlow::Node getCertificateValidationControllingValue() {
+    exists(DataFlow::CallNode newCall | newCall = connectionNode.getAValueReachableFromSource() |
+      // Check for `ssl_verify_peer: false`
+      result = newCall.getKeywordArgumentIncludeHashArgument("ssl_verify_peer")
     )
+  }
+
+  override predicate disablesCertificateValidation(
+    DataFlow::Node disablingNode, DataFlow::Node argumentOrigin
+  ) {
+    any(ExconDisablesCertificateValidationConfiguration config)
+        .hasFlow(argumentOrigin, disablingNode) and
+    disablingNode = this.getCertificateValidationControllingValue()
     or
-    // Or we see a call to `Excon.defaults[:ssl_verify_peer] = false` before the
-    // request, and no `ssl_verify_peer: true` in the explicit options hash for
-    // the request call.
-    exists(DataFlow::CallNode disableCall |
-      setsDefaultVerification(disableCall, false) and
-      disableCall.asExpr().getASuccessor+() = requestUse.asExpr() and
-      disablingNode = disableCall and
-      not exists(DataFlow::Node arg, int i |
-        i > 0 and
-        arg = connectionNode.getAValueReachableFromSource().(DataFlow::CallNode).getArgument(i)
-      |
-        argSetsVerifyPeer(arg, true, _)
-      )
+    // We set `Excon.defaults[:ssl_verify_peer]` or `Excon.ssl_verify_peer` = false`
+    // before the request, and no `ssl_verify_peer: true` in the explicit options hash
+    // for the request call.
+    exists(DataFlow::CallNode disableCall, BooleanLiteral value |
+      // Excon.defaults[:ssl_verify_peer]
+      disableCall = API::getTopLevelMember("Excon").getReturn("defaults").getAMethodCall("[]=") and
+      disableCall
+          .getArgument(0)
+          .getALocalSource()
+          .asExpr()
+          .getConstantValue()
+          .isStringlikeValue("ssl_verify_peer") and
+      disablingNode = disableCall.getArgument(1) and
+      argumentOrigin = disablingNode.getALocalSource() and
+      value = argumentOrigin.asExpr().getExpr()
+      or
+      // Excon.ssl_verify_peer
+      disableCall = API::getTopLevelMember("Excon").getAMethodCall("ssl_verify_peer=") and
+      disablingNode = disableCall.getArgument(0) and
+      argumentOrigin = disablingNode.getALocalSource() and
+      value = argumentOrigin.asExpr().getExpr()
+    |
+      value.getValue() = false and
+      disableCall.asExpr().getASuccessor+() = this.asExpr() and
+      // no `ssl_verify_peer: true` in the request call.
+      not this.getCertificateValidationControllingValue()
+          .getALocalSource()
+          .asExpr()
+          .getExpr()
+          .(BooleanLiteral)
+          .getValue() = true
     )
   }
 
   override string getFramework() { result = "Excon" }
 }
 
-/**
- * Holds if `arg` represents an options hash that contains the key
- * `:ssl_verify_peer` with `value`, where `kvNode` is the data-flow node for
- * this key-value pair.
- */
-predicate argSetsVerifyPeer(DataFlow::Node arg, boolean value, DataFlow::Node kvNode) {
-  // Either passed as an individual key:value argument, e.g.:
-  // Excon.get(..., ssl_verify_peer: false)
-  isSslVerifyPeerPair(arg.asExpr(), value) and
-  kvNode = arg
-  or
-  // Or as a single hash argument, e.g.:
-  // Excon.get(..., { ssl_verify_peer: false, ... })
-  exists(DataFlow::LocalSourceNode optionsNode, CfgNodes::ExprNodes::PairCfgNode p |
-    p = optionsNode.asExpr().(CfgNodes::ExprNodes::HashLiteralCfgNode).getAKeyValuePair() and
-    isSslVerifyPeerPair(p, value) and
-    optionsNode.flowsTo(arg) and
-    kvNode.asExpr() = p
-  )
-}
+/** A configuration to track values that can disable certificate validation for Excon. */
+private class ExconDisablesCertificateValidationConfiguration extends DataFlowImplForHttpClientLibraries::Configuration {
+  ExconDisablesCertificateValidationConfiguration() {
+    this = "ExconDisablesCertificateValidationConfiguration"
+  }
 
-/**
- * Holds if `callNode` sets `Excon.defaults[:ssl_verify_peer]` or
- * `Excon.ssl_verify_peer` to `value`.
- */
-private predicate setsDefaultVerification(DataFlow::CallNode callNode, boolean value) {
-  callNode = API::getTopLevelMember("Excon").getReturn("defaults").getAMethodCall("[]=") and
-  isSslVerifyPeerLiteral(callNode.getArgument(0)) and
-  hasBooleanValue(callNode.getArgument(1), value)
-  or
-  callNode = API::getTopLevelMember("Excon").getAMethodCall("ssl_verify_peer=") and
-  hasBooleanValue(callNode.getArgument(0), value)
-}
+  override predicate isSource(DataFlow::Node source) {
+    source.asExpr().getExpr().(BooleanLiteral).isFalse()
+  }
 
-private predicate isSslVerifyPeerLiteral(DataFlow::Node node) {
-  exists(DataFlow::LocalSourceNode literal |
-    literal.asExpr().getExpr().getConstantValue().isStringlikeValue("ssl_verify_peer") and
-    literal.flowsTo(node)
-  )
-}
-
-/** Holds if `node` can contain `value`. */
-private predicate hasBooleanValue(DataFlow::Node node, boolean value) {
-  exists(DataFlow::LocalSourceNode literal |
-    literal.asExpr().getExpr().(BooleanLiteral).getValue() = value and
-    literal.flowsTo(node)
-  )
-}
-
-/** Holds if `p` is the pair `ssl_verify_peer: <value>`. */
-private predicate isSslVerifyPeerPair(CfgNodes::ExprNodes::PairCfgNode p, boolean value) {
-  exists(DataFlow::Node key, DataFlow::Node valueNode |
-    key.asExpr() = p.getKey() and
-    valueNode.asExpr() = p.getValue() and
-    isSslVerifyPeerLiteral(key) and
-    hasBooleanValue(valueNode, value)
-  )
+  override predicate isSink(DataFlow::Node sink) {
+    sink = any(ExconHttpRequest req).getCertificateValidationControllingValue()
+  }
 }

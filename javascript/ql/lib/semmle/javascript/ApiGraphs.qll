@@ -1495,7 +1495,7 @@ module API {
         /** Gets the EntryPoint associated with this label. */
         API::EntryPoint getEntryPoint() { result = e }
 
-        override string toString() { result = "getASuccessor(Label::entryPoint(\"" + e + "\"))" }
+        override string toString() { result = "entryPoint(\"" + e + "\")" }
       }
 
       /** A label that gets a promised value. */

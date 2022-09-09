@@ -100,7 +100,7 @@ func test4(obj : NSManagedObject, passwd : String) {
 	hash(data: &y);
 	z = "";
 
-	obj.setValue(x, forKey: "myKey") // GOOD (not sensitive) [FALSE POSITIVE]
-	obj.setValue(y, forKey: "myKey") // GOOD (not sensitive) [FALSE POSITIVE]
+	obj.setValue(x, forKey: "myKey") // GOOD (not sensitive)
+	obj.setValue(y, forKey: "myKey") // GOOD (not sensitive)
 	obj.setValue(z, forKey: "myKey") // GOOD (not sensitive)
 }
