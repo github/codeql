@@ -103,7 +103,7 @@ For example, the following ``qlconfig.yml`` file associates all packs with the C
 The CodeQL CLI will determine which registry to use for a given package name by finding the first item in the ``registries`` list with a ``packages`` property that matches that package name.
 This means that you'll generally want to define the most specific package name patterns first. The ``packages`` property may be a single package name, a glob pattern, or a YAML list of package names and glob patterns.
 
-The ``registries`` list can also be placed inside of a ``codeql-workspace.yml`` file. Doing so will allow you to fix the registries list for a specific workspace, so that it can be shared amongst other CodeQL users of the workspace. The ``registries`` list in the ``codeql-workspace.yml`` will be merged with and take precedence over the list in the global ``qlconfig.yml``. For more information about ``codeql-workspace.yml``, see :ref:`About CodeQL workspaces <about-codeql-workspaces>`.
+The ``registries`` list can also be placed inside of a ``codeql-workspace.yml`` file. Doing so will allow you to define the registries to be used within a specific workspace, so that it can be shared amongst other CodeQL users of the workspace. The ``registries`` list in the ``codeql-workspace.yml`` will be merged with and take precedence over the list in the global ``qlconfig.yml``. For more information about ``codeql-workspace.yml``, see :ref:`About CodeQL workspaces <about-codeql-workspaces>`.
 
 You can now use ``codeql pack publish``, ``codeql pack download``, and ``codeql database analyze`` to manage packs on GitHub Enterprise Server.
 
