@@ -168,7 +168,7 @@ def test_kw_doublestar():
     def with_doublestar(**kwargs):
         SINK1(kwargs["a"])
 
-    with_doublestar(a=arg1)  #$ MISSING: arg1 func=test_kw_doublestar.with_doublestar
+    with_doublestar(a=arg1)  #$ arg1 func=test_kw_doublestar.with_doublestar
 
 
 def only_kwargs(**kwargs):
@@ -193,7 +193,7 @@ def mixed(a, **kwargs):
 
 @expects(4*3)
 def test_mixed():
-    mixed(a=arg1, b=arg2, c="safe") # $ arg1 MISSING: arg2
+    mixed(a=arg1, b=arg2, c="safe") # $ arg1 arg2
 
     args = {"b": arg2, "c": "safe"} # $ arg2 func=mixed
     mixed(a=arg1, **args) # $ arg1

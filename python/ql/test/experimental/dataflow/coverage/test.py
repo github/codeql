@@ -409,7 +409,7 @@ def f_extra_keyword(a, **b):
 
 
 def test_call_extra_keyword():
-    SINK(f_extra_keyword(NONSOURCE, b=SOURCE)) #$ MISSING: flow="SOURCE -> f_extra_keyword(..)"
+    SINK(f_extra_keyword(NONSOURCE, b=SOURCE)) #$ flow="SOURCE -> f_extra_keyword(..)"
 
 
 # return the name of the first extra keyword argument
@@ -519,7 +519,7 @@ def test_lambda_extra_pos():
 
 def test_lambda_extra_keyword():
     f_extra_keyword = lambda a, **b: b["b"]
-    SINK(f_extra_keyword(NONSOURCE, b=SOURCE)) #$ MISSING: flow="SOURCE -> f_extra_keyword(..)"
+    SINK(f_extra_keyword(NONSOURCE, b=SOURCE)) #$ flow="SOURCE -> f_extra_keyword(..)"
 
 
 # call the function with our source as the name of the keyword argument
