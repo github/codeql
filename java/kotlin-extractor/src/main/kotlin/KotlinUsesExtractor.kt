@@ -220,7 +220,7 @@ open class KotlinUsesExtractor(
         val extractedTypeArgs = when {
             extractClass.symbol.isKFunction() && typeArgs != null && typeArgs.isNotEmpty() -> listOf(typeArgs.last())
             extractClass.fqNameWhenAvailable == FqName("kotlin.jvm.functions.FunctionN") && typeArgs != null && typeArgs.isNotEmpty() -> listOf(typeArgs.last())
-            typeArgs != null && isUnspecialised(c, typeArgs) -> listOf()
+            typeArgs != null && isUnspecialised(c, typeArgs, logger) -> listOf()
             else -> typeArgs
         }
 
@@ -479,7 +479,7 @@ open class KotlinUsesExtractor(
     fun useSimpleTypeClass(c: IrClass, args: List<IrTypeArgument>?, hasQuestionMark: Boolean): TypeResults {
         if (c.isAnonymousObject) {
             args?.let {
-                if (it.isNotEmpty() && !isUnspecialised(c, it)) {
+                if (it.isNotEmpty() && !isUnspecialised(c, it, logger)) {
                     logger.error("Unexpected specialised instance of generic anonymous class")
                 }
             }
