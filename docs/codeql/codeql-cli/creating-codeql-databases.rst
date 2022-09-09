@@ -384,9 +384,7 @@ Obtaining databases from GitHub.com
 
 .. include:: ../reusables/download-github-database.rst
    
-Before running an analysis, unzip the databases and try :doc:`upgrading <upgrading-codeql-databases>` the
-unzipped databases to ensure they are compatible with your local copy of the
-CodeQL queries and libraries.
+Before running an analysis with the CodeQL CLI, you must unzip the databases.
    
 .. pull-quote::
 
