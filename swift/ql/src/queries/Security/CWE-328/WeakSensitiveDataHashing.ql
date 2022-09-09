@@ -20,21 +20,24 @@ import DataFlow::PathGraph
 class WeakHashingConfig extends TaintTracking::Configuration {
   WeakHashingConfig() { this = "WeakHashingConfig" }
 
-  override predicate isSource(DataFlow::Node node) {
-    exists(SensitiveExpr e |
-      node.asExpr() = e and
-      not e.isProbablySafe()
-    )
-  }
+  override predicate isSource(DataFlow::Node node) { node instanceof WeakHashingConfig::Source }
 
   override predicate isSink(DataFlow::Node node) { node instanceof WeakHashingConfig::Sink }
 }
 
 module WeakHashingConfig {
-  class Sink extends DataFlow::Node {
+  class Source extends DataFlow::Node {
+    Source() { this.asExpr() instanceof SensitiveExpr }
+  }
+
+  abstract class Sink extends DataFlow::Node {
+    abstract string getAlgorithm();
+  }
+
+  class CryptoHash extends Sink {
     string algorithm;
 
-    Sink() {
+    CryptoHash() {
       exists(ApplyExpr call, FuncDecl func |
         call.getAnArgument().getExpr() = this.asExpr() and
         call.getStaticTarget() = func and
@@ -44,14 +47,17 @@ module WeakHashingConfig {
       )
     }
 
-    string getAlgorithm() { result = algorithm }
+    override string getAlgorithm() { result = algorithm }
   }
 }
 
-from WeakHashingConfig config, DataFlow::PathNode source, DataFlow::PathNode sink, string algorithm
+from
+  WeakHashingConfig config, DataFlow::PathNode source, DataFlow::PathNode sink, string algorithm,
+  SensitiveExpr expr
 where
   config.hasFlowPath(source, sink) and
-  algorithm = sink.getNode().(WeakHashingConfig::Sink).getAlgorithm()
+  algorithm = sink.getNode().(WeakHashingConfig::Sink).getAlgorithm() and
+  expr = source.getNode().asExpr()
 select sink.getNode(), source, sink,
   "Insecure hashing algorithm (" + algorithm + ") depends on $@.", source.getNode(),
-  "sensitive data"
+  "sensitive data (" + expr.getSensitiveType() + " " + expr.getLabel() + ")"

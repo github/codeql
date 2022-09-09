@@ -63,12 +63,7 @@ class URL extends Transmitted {
 class CleartextTransmissionConfig extends TaintTracking::Configuration {
   CleartextTransmissionConfig() { this = "CleartextTransmissionConfig" }
 
-  override predicate isSource(DataFlow::Node node) {
-    exists(SensitiveExpr e |
-      node.asExpr() = e and
-      not e.isProbablySafe()
-    )
-  }
+  override predicate isSource(DataFlow::Node node) { node.asExpr() instanceof SensitiveExpr }
 
   override predicate isSink(DataFlow::Node node) { node.asExpr() instanceof Transmitted }
 
