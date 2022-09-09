@@ -11,5 +11,5 @@
  * See `semmle.code.cpp.ir.dataflow.TaintTracking` for the full documentation.
  */
 module TaintTracking3 {
-  import semmle.code.cpp.ir.dataflow.internal.tainttracking3.TaintTrackingImpl
+  import experimental.semmle.code.cpp.ir.dataflow.internal.tainttracking3.TaintTrackingImpl
 }
