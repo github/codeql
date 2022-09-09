@@ -55,7 +55,7 @@ class FromSensitiveConfiguration extends TaintTracking::Configuration {
 
   override predicate allowImplicitRead(DataFlow::Node node, DataFlow::ContentSet content) {
     // flow out from fields at the sink (only).
-    isSink(node) and
+    this.isSink(node) and
     // constrain `content` to a field inside the node.
     exists(Class c |
       node.asExpr().getUnspecifiedType().stripType() = c and
