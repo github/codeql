@@ -650,6 +650,37 @@ private predicate unionTypeFlowBaseCand(TypeFlowNode n, RefType t, boolean exact
   )
 }
 
+/**
+ * Holds if `ioe` checks `v`, its true-successor is `bb`, and `bb` has 2 or more
+ * predecessors.
+ */
+private predicate instanceofDisjunct(InstanceOfExpr ioe, BasicBlock bb, BaseSsaVariable v) {
+  ioe.getExpr() = v.getAUse() and
+  strictcount(bb.getABBPredecessor()) > 1 and
+  exists(ConditionBlock cb | cb.getCondition() = ioe and cb.getTestSuccessor(true) = bb)
+}
+
+/** Holds if `bb` is disjunctively guarded by two or more `instanceof` tests on `v`. */
+private predicate instanceofDisjunction(BasicBlock bb, BaseSsaVariable v) {
+  strictcount(InstanceOfExpr ioe | instanceofDisjunct(ioe, bb, v)) =
+    strictcount(bb.getABBPredecessor())
+}
+
+/**
+ * Holds if `n` is a value that is guarded by a disjunction of
+ * `instanceof t_i` where `t` is one of those `t_i`.
+ */
+private predicate instanceofDisjunctionGuarded(TypeFlowNode n, RefType t) {
+  exists(BasicBlock bb, InstanceOfExpr ioe, BaseSsaVariable v, VarAccess va |
+    instanceofDisjunction(bb, v) and
+    bb.bbDominates(va.getBasicBlock()) and
+    va = v.getAUse() and
+    instanceofDisjunct(ioe, bb, v) and
+    t = ioe.getCheckedType() and
+    n.asExpr() = va
+  )
+}
+
 private module HasUnionTypePropagation implements TypePropagation {
   class Typ = Unit;
 
@@ -681,6 +712,8 @@ private predicate hasUnionTypeFlow(TypeFlowNode n) {
     )
     or
     exists(TypeFlowNode mid | step(mid, n) and hasUnionTypeFlow(mid))
+    or
+    instanceofDisjunctionGuarded(n, _)
   )
 }
 
@@ -694,8 +727,12 @@ private RefType getTypeBound(TypeFlowNode n) {
 pragma[nomagic]
 private predicate unionTypeFlow0(TypeFlowNode n, RefType t, boolean exact) {
   hasUnionTypeFlow(n) and
-  exists(TypeFlowNode mid | anyStep(mid, n) |
-    unionTypeFlowBaseCand(mid, t, exact) or unionTypeFlow(mid, t, exact)
+  (
+    exists(TypeFlowNode mid | anyStep(mid, n) |
+      unionTypeFlowBaseCand(mid, t, exact) or unionTypeFlow(mid, t, exact)
+    )
+    or
+    instanceofDisjunctionGuarded(n, t) and exact = false
   )
 }
 
