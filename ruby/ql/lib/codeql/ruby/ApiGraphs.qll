@@ -633,12 +633,22 @@ module API {
      *
      * The flow from `src` to the returned node may be inter-procedural.
      */
+    pragma[noopt]
     private DataFlow::LocalSourceNode trackUseNode(DataFlow::LocalSourceNode src, TypeTracker t) {
-      result = src and
       isUse(src) and
-      t.start()
+      src instanceof DataFlow::LocalSourceNode and
+      t.start() and
+      result = src
       or
-      exists(TypeTracker t2 | result = trackUseNode(src, t2).track(t2, t))
+      exists(TypeTracker t2, DataFlow::LocalSourceNode mid, StepSummary step |
+        mid = trackUseNode(src, t2) and
+        (
+          StepSummary::Internal::stepNoCall(mid, result, step)
+          or
+          StepSummary::Internal::stepCall(mid, result, step)
+        ) and
+        t = StepSummary::Internal::append(t2, step)
+      )
     }
 
     /**

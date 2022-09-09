@@ -163,6 +163,9 @@ private predicate smallstepCall(Node nodeFrom, TypeTrackingNode nodeTo, StepSumm
 
 /** Provides predicates for updating step summaries (`StepSummary`s). */
 module StepSummary {
+  /** INTERNAL. Do not use. */
+  module Internal = Cached;
+
   /**
    * Gets the summary that corresponds to having taken a forwards
    * heap and/or inter-procedural step from `nodeFrom` to `nodeTo`.
