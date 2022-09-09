@@ -72,7 +72,7 @@ def argument_passing(
 
 @expects(7)
 def test_argument_passing1():
-    argument_passing(arg1, *(arg2, arg3, arg4), e=arg5, **{"f": arg6, "g": arg7})  #$ arg1 arg5 arg7 func=argument_passing MISSING: arg2 arg3 arg4 arg6
+    argument_passing(arg1, *(arg2, arg3, arg4), e=arg5, **{"f": arg6, "g": arg7})  #$ arg1 arg5 arg6 arg7 func=argument_passing MISSING: arg2 arg3 arg4
 
 
 @expects(7)
@@ -102,8 +102,8 @@ def with_multiple_kw_args(a, b, c):
 def test_multiple_kw_args():
     with_multiple_kw_args(b=arg2, c=arg3, a=arg1)  #$ arg1 arg2 arg3
     with_multiple_kw_args(arg1, *(arg2,), arg3)  #$ arg1 MISSING: arg2 arg3
-    with_multiple_kw_args(arg1, **{"c": arg3}, b=arg2)  #$ arg1 arg2 MISSING: arg3
-    with_multiple_kw_args(**{"b": arg2}, **{"c": arg3}, **{"a": arg1})  #$ MISSING: arg1 arg2 arg3
+    with_multiple_kw_args(arg1, **{"c": arg3}, b=arg2)  #$ arg1 arg2 arg3 func=with_multiple_kw_args
+    with_multiple_kw_args(**{"b": arg2}, **{"c": arg3}, **{"a": arg1})  #$ arg1 arg2 arg3 func=with_multiple_kw_args
 
 
 def with_default_arguments(a=arg1, b=arg2, c=arg3):  #$ arg1 arg2 arg3 func=with_default_arguments
@@ -117,7 +117,7 @@ def test_default_arguments():
     with_default_arguments()
     with_default_arguments(arg1)  #$ arg1
     with_default_arguments(b=arg2)  #$ arg2
-    with_default_arguments(**{"c": arg3})  #$ MISSING: arg3
+    with_default_arguments(**{"c": arg3})  #$ arg3 func=with_default_arguments
 
 
 # All combinations
@@ -198,5 +198,5 @@ def test_mixed():
     args = {"b": arg2, "c": "safe"} # $ arg2 func=mixed
     mixed(a=arg1, **args) # $ arg1
 
-    args = {"a": arg1, "b": arg2, "c": "safe"} # $ arg2 func=mixed MISSING: arg1
+    args = {"a": arg1, "b": arg2, "c": "safe"} # $ arg1 arg2 func=mixed
     mixed(**args)

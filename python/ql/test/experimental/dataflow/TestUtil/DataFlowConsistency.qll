@@ -8,4 +8,12 @@ private class MyConsistencyConfiguration extends ConsistencyConfiguration {
   override predicate argHasPostUpdateExclude(ArgumentNode n) {
     exists(ArgumentPosition apos | n.argumentOf(_, apos) and apos.isDictSplat())
   }
+
+  override predicate reverseReadExclude(Node n) {
+    // since `self`/`cls` parameters can be marked as implicit argument to `super()`,
+    // they will have PostUpdateNodes. We have a read-step from the synthetic `**kwargs`
+    // parameter, but dataflow-consistency queries should _not_ complain about there not
+    // being a post-update node for the synthetic `**kwargs` parameter.
+    n instanceof SynthDictSplatParameterNode
+  }
 }

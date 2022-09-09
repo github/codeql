@@ -5,6 +5,7 @@
 | test.py:1:1:1:21 | ControlFlowNode for FunctionExpr | test.py:1:1:1:21 | ControlFlowNode for FunctionExpr |
 | test.py:1:1:1:21 | ControlFlowNode for FunctionExpr | test.py:1:5:1:17 | GSSA Variable obfuscated_id |
 | test.py:1:1:1:21 | ControlFlowNode for FunctionExpr | test.py:7:5:7:17 | ControlFlowNode for obfuscated_id |
+| test.py:1:1:1:21 | SynthDictSplatParameterNode | test.py:1:1:1:21 | SynthDictSplatParameterNode |
 | test.py:1:5:1:17 | ControlFlowNode for obfuscated_id | test.py:1:5:1:17 | ControlFlowNode for obfuscated_id |
 | test.py:1:5:1:17 | GSSA Variable obfuscated_id | test.py:1:5:1:17 | GSSA Variable obfuscated_id |
 | test.py:1:5:1:17 | GSSA Variable obfuscated_id | test.py:7:5:7:17 | ControlFlowNode for obfuscated_id |
