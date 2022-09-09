@@ -96,7 +96,7 @@ For example, to make a custom CodeQL folder called ``my-custom-cpp-pack`` depend
     version: 0.0.0
     libraryPathDependencies: codeql/cpp-all
 
-For more information about why you need to add a ``qlpack.yml`` file, see ":ref:`About QL packs <about-ql-packs>`."
+For more information about why you need to add a ``qlpack.yml`` file, see ":ref:`About CodeQL packs <about-codeql-packs>`."
 
 Further reading
 ----------------

@@ -5,26 +5,26 @@
 import javascript
 
 module SQL {
-  /** A string-valued expression that is interpreted as a SQL command. */
-  abstract class SqlString extends Expr { }
+  /** A string-valued dataflow node that is interpreted as a SQL command. */
+  abstract class SqlString extends DataFlow::Node { }
 
   private class SqlStringFromModel extends SqlString {
-    SqlStringFromModel() { this = ModelOutput::getASinkNode("sql-injection").asSink().asExpr() }
+    SqlStringFromModel() { this = ModelOutput::getASinkNode("sql-injection").asSink() }
   }
 
   /**
-   * An expression that sanitizes a string to make it safe to embed into
+   * An dataflow node that sanitizes a string to make it safe to embed into
    * a SQL command.
    */
-  abstract class SqlSanitizer extends Expr {
-    Expr input;
-    Expr output;
+  abstract class SqlSanitizer extends DataFlow::Node {
+    DataFlow::Node input;
+    DataFlow::Node output;
 
     /** Gets the input expression being sanitized. */
-    Expr getInput() { result = input }
+    DataFlow::Node getInput() { result = input }
 
     /** Gets the output expression containing the sanitized value. */
-    Expr getOutput() { result = output }
+    DataFlow::Node getOutput() { result = output }
   }
 }
 
@@ -90,26 +90,26 @@ private module MySql {
 
   /** An expression that is passed to the `query` method and hence interpreted as SQL. */
   class QueryString extends SQL::SqlString {
-    QueryString() { this = any(QueryCall qc).getAQueryArgument().asExpr() }
+    QueryString() { this = any(QueryCall qc).getAQueryArgument() }
   }
 
   /** A call to the `escape` or `escapeId` method that performs SQL sanitization. */
-  class EscapingSanitizer extends SQL::SqlSanitizer, MethodCallExpr {
+  class EscapingSanitizer extends SQL::SqlSanitizer instanceof API::CallNode {
     EscapingSanitizer() {
-      this = [mysql(), pool(), connection()].getMember(["escape", "escapeId"]).getACall().asExpr() and
+      this = [mysql(), pool(), connection()].getMember(["escape", "escapeId"]).getACall() and
       input = this.getArgument(0) and
       output = this
     }
   }
 
   /** An expression that is passed as user name or password to `mysql.createConnection`. */
-  class Credentials extends CredentialsExpr {
+  class Credentials extends CredentialsNode {
     string kind;
 
     Credentials() {
       exists(API::Node callee, string prop |
         callee in [createConnection(), createPool()] and
-        this = callee.getParameter(0).getMember(prop).asSink().asExpr() and
+        this = callee.getParameter(0).getMember(prop).asSink() and
         (
           prop = "user" and kind = "user name"
           or
@@ -198,21 +198,21 @@ private module Postgres {
   /** An expression that is passed to the `query` method and hence interpreted as SQL. */
   class QueryString extends SQL::SqlString {
     QueryString() {
-      this = any(QueryCall qc).getAQueryArgument().asExpr()
+      this = any(QueryCall qc).getAQueryArgument()
       or
-      this = API::moduleImport("pg-cursor").getParameter(0).asSink().asExpr()
+      this = API::moduleImport("pg-cursor").getParameter(0).asSink()
     }
   }
 
   /** An expression that is passed as user name or password when creating a client or a pool. */
-  class Credentials extends CredentialsExpr {
+  class Credentials extends CredentialsNode {
     string kind;
 
     Credentials() {
       exists(string prop |
-        this = [newClient(), newPool()].getParameter(0).getMember(prop).asSink().asExpr()
+        this = [newClient(), newPool()].getParameter(0).getMember(prop).asSink()
         or
-        this = pgPromise().getParameter(0).getMember(prop).asSink().asExpr()
+        this = pgPromise().getParameter(0).getMember(prop).asSink()
       |
         prop = "user" and kind = "user name"
         or
@@ -349,7 +349,7 @@ private module Postgres {
 
   /** An expression that is interpreted as SQL by `pg-promise`. */
   class PgPromiseQueryString extends SQL::SqlString {
-    PgPromiseQueryString() { this = any(PgPromiseQueryCall qc).getAQueryArgument().asExpr() }
+    PgPromiseQueryString() { this = any(PgPromiseQueryCall qc).getAQueryArgument() }
   }
 }
 
@@ -398,7 +398,7 @@ private module Sqlite {
 
   /** An expression that is passed to the `query` method and hence interpreted as SQL. */
   class QueryString extends SQL::SqlString {
-    QueryString() { this = any(QueryCall qc).getAQueryArgument().asExpr() }
+    QueryString() { this = any(QueryCall qc).getAQueryArgument() }
   }
 }
 
@@ -470,7 +470,7 @@ private module MsSql {
   class QueryString extends SQL::SqlString {
     QueryString() {
       exists(DatabaseAccess dba | dba instanceof QueryTemplateExpr or dba instanceof QueryCall |
-        this = dba.getAQueryArgument().asExpr()
+        this = dba.getAQueryArgument()
       )
     }
   }
@@ -478,14 +478,14 @@ private module MsSql {
   /** An element of a query template, which is automatically sanitized. */
   class QueryTemplateSanitizer extends SQL::SqlSanitizer {
     QueryTemplateSanitizer() {
-      this = any(QueryTemplateExpr qte).getAQueryArgument().asExpr() and
+      this = any(QueryTemplateExpr qte).getAQueryArgument() and
       input = this and
       output = this
     }
   }
 
   /** An expression that is passed as user name or password when creating a client or a pool. */
-  class Credentials extends CredentialsExpr {
+  class Credentials extends CredentialsNode {
     string kind;
 
     Credentials() {
@@ -495,7 +495,7 @@ private module MsSql {
           or
           callee = mssql().getMember("ConnectionPool")
         ) and
-        this = callee.getParameter(0).getMember(prop).asSink().asExpr() and
+        this = callee.getParameter(0).getMember(prop).asSink() and
         (
           prop = "user" and kind = "user name"
           or

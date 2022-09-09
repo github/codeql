@@ -95,6 +95,7 @@ jobs:
         uses: ./.github/actions/fetch-codeql
       - name: Build Query Pack
         run: |
+          codeql pack create ../shared/ssa --output target/packs
           codeql pack create ql/lib --output target/packs
           codeql pack install ql/src
           codeql pack create ql/src --output target/packs

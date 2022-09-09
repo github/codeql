@@ -112,12 +112,11 @@ module SemanticExprConfig {
 
   predicate hasDominanceInformation(BasicBlock block) { any() }
 
-  int getBasicBlockUniqueId(BasicBlock block) {
-    // REVIEW: `getDisplayIndex()` is not intended for use in real queries, but for now it's the
-    // best we can do because `equivalentRelation` won't accept a predicate whose parameters are IPA
-    // types.
-    result = block.getDisplayIndex()
-  }
+  private predicate id(Cpp::Locatable x, Cpp::Locatable y) { x = y }
+
+  private predicate idOf(Cpp::Locatable x, int y) = equivalenceRelation(id/2)(x, y)
+
+  int getBasicBlockUniqueId(BasicBlock block) { idOf(block.getFirstInstruction().getAst(), result) }
 
   newtype TSsaVariable =
     TSsaInstruction(IR::Instruction instr) { instr.hasMemoryResult() } or
@@ -162,7 +161,7 @@ module SemanticExprConfig {
   predicate phi(SsaVariable v) { v.asInstruction() instanceof IR::PhiInstruction }
 
   SsaVariable getAPhiInput(SsaVariable v) {
-    exists(IR::PhiInstruction instr |
+    exists(IR::PhiInstruction instr | v.asInstruction() = instr |
       result.asInstruction() = instr.getAnInput()
       or
       result.asOperand() = instr.getAnInputOperand()
@@ -267,17 +266,7 @@ module SemanticExprConfig {
 
     ValueNumberBound() { bound = this }
 
-    override string toString() {
-      result =
-        min(SsaVariable v |
-          v.asInstruction() = bound.getValueNumber().getAnInstruction()
-        |
-          v
-          order by
-            v.asInstruction().getBlock().getDisplayIndex(),
-            v.asInstruction().getDisplayIndexInBlock()
-        ).toString()
-    }
+    override string toString() { result = bound.toString() }
   }
 
   predicate zeroBound(Bound bound) { bound instanceof IRBound::ZeroBound }

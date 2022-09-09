@@ -83,7 +83,7 @@ open class KotlinFileExtractor(
             }
 
             file.declarations.forEach { extractDeclaration(it, extractPrivateMembers = true, extractFunctionBodies = true) }
-            extractStaticInitializer(file, null)
+            extractStaticInitializer(file, { extractFileClass(file) })
             CommentExtractor(this, file, tw.fileId).extract()
         }
     }
@@ -389,11 +389,7 @@ open class KotlinFileExtractor(
         with("class source", c) {
             DeclarationStackAdjuster(c).use {
 
-                val id = if (c.isAnonymousObject) {
-                    useAnonymousClass(c).javaResult.id.cast<DbClass>()
-                } else {
-                    useClassSource(c)
-                }
+                val id = useClassSource(c)
                 val pkg = c.packageFqName?.asString() ?: ""
                 val cls = if (c.isAnonymousObject) "" else c.name.asString()
                 val pkgId = extractPackage(pkg)
@@ -427,7 +423,7 @@ open class KotlinFileExtractor(
                 if (extractDeclarations) {
                     c.declarations.forEach { extractDeclaration(it, extractPrivateMembers = extractPrivateMembers, extractFunctionBodies = extractFunctionBodies) }
                     if (extractStaticInitializer)
-                        extractStaticInitializer(c, id)
+                        extractStaticInitializer(c, { id })
                     extractJvmStaticProxyMethods(c, id, extractPrivateMembers, extractFunctionBodies)
                 }
                 if (c.isNonCompanionObject) {
@@ -642,13 +638,18 @@ open class KotlinFileExtractor(
         return type
     }
 
-    private fun extractStaticInitializer(container: IrDeclarationContainer, classLabel: Label<out DbClassorinterface>?) {
+    /**
+     * mkContainerLabel is a lambda so that we get laziness: If the
+     * container is a file, then we don't want to extract the file class
+     * unless something actually needs it.
+     */
+    private fun extractStaticInitializer(container: IrDeclarationContainer, mkContainerLabel: () -> Label<out DbClassorinterface>) {
         with("static initializer extraction", container) {
             extractDeclInitializers(container.declarations, true) {
-                val parentId = classLabel ?: extractFileClass(container as IrFile)
+                val containerId = mkContainerLabel()
                 val clinitLabel = getFunctionLabel(
                     container,
-                    parentId,
+                    containerId,
                     "<clinit>",
                     listOf(),
                     pluginContext.irBuiltIns.unitType,
@@ -661,7 +662,7 @@ open class KotlinFileExtractor(
                 )
                 val clinitId = tw.getLabelFor<DbMethod>(clinitLabel)
                 val returnType = useType(pluginContext.irBuiltIns.unitType, TypeContext.RETURN)
-                tw.writeMethods(clinitId, "<clinit>", "<clinit>()", returnType.javaResult.id, parentId, clinitId)
+                tw.writeMethods(clinitId, "<clinit>", "<clinit>()", returnType.javaResult.id, containerId, clinitId)
                 tw.writeMethodsKotlinType(clinitId, returnType.kotlinResult.id)
 
                 tw.writeCompiler_generated(clinitId, CompilerGeneratedKinds.CLASS_INITIALISATION_METHOD.kind)
@@ -1342,7 +1343,7 @@ open class KotlinFileExtractor(
         } else {
             var subbedType: IrSimpleType = receiverType
             ancestorTypes.forEach {
-                val thisClass = subbedType.classifier.owner as IrClass
+                val thisClass = subbedType.classifier.owner
                 if (thisClass !is IrClass) {
                     logger.errorElement("Found ancestor with unexpected type ${thisClass.javaClass}", callTarget)
                     return listOf()
@@ -1454,7 +1455,7 @@ open class KotlinFileExtractor(
             extractNewExprForLocalFunction(ids, id, locId, enclosingCallable, enclosingStmt)
         } else {
             val methodId =
-                if (extractClassTypeArguments && drType is IrSimpleType && !isUnspecialised(drType)) {
+                if (extractClassTypeArguments && drType is IrSimpleType && !isUnspecialised(drType, logger)) {
 
                     val extractionMethod = if (isFunctionInvoke) {
                         // For `kotlin.FunctionX` and `kotlin.reflect.KFunctionX` interfaces, we're making sure that we
@@ -1789,13 +1790,35 @@ open class KotlinFileExtractor(
                     return
                 }
 
-                val func = ((c.getTypeArgument(0) as? IrSimpleType)?.classifier?.owner as? IrClass)?.declarations?.findSubType<IrFunction> { it.name.asString() == fnName }
-                if (func == null) {
-                    logger.errorElement("Couldn't find function $fnName on enum type", c)
+                val enumType = (c.getTypeArgument(0) as? IrSimpleType)?.classifier?.owner
+                if (enumType == null) {
+                    logger.errorElement("Couldn't find type of enum type", c)
                     return
                 }
 
-                extractMethodAccess(func, false)
+                if (enumType is IrClass) {
+                    val func = enumType.declarations.findSubType<IrFunction> { it.name.asString() == fnName }
+                    if (func == null) {
+                        logger.errorElement("Couldn't find function $fnName on enum type", c)
+                        return
+                    }
+
+                    extractMethodAccess(func, false)
+                } else if (enumType is IrTypeParameter && enumType.isReified) {
+                    // A call to `enumValues<T>()` is being extracted, where `T` is a reified type parameter of an `inline` function.
+                    // We can't generate a valid expression here, because we would need to know the type of T on the call site.
+                    // TODO: replace error expression with something that better shows this expression is unrepresentable.
+                    val id = tw.getFreshIdLabel<DbErrorexpr>()
+                    val type = useType(c.type)
+
+                    tw.writeExprs_errorexpr(id, type.javaResult.id, parent, idx)
+                    tw.writeExprsKotlinType(id, type.kotlinResult.id)
+                    tw.writeHasLocation(id, tw.getLocation(c))
+                    tw.writeCallableEnclosingExpr(id, callable)
+                    tw.writeStatementEnclosingExpr(id, enclosingStmt)
+                } else {
+                    logger.errorElement("Unexpected enum type rep ${enumType.javaClass}", c)
+                }
             }
 
             fun binopReceiver(id: Label<out DbExpr>, receiver: IrExpression?, receiverDescription: String) {
@@ -2208,7 +2231,7 @@ open class KotlinFileExtractor(
                     tw.writeExprsKotlinType(id, type.kotlinResult.id)
                     binopDisp(id)
                 }
-                isFunction(target, "kotlin", "(some array type)", { isArrayType(it) }, "set") && c.origin == IrStatementOrigin.EQ -> {
+                isFunction(target, "kotlin", "(some array type)", { isArrayType(it) }, "set") && c.origin == IrStatementOrigin.EQ && c.dispatchReceiver != null -> {
                     val array = c.dispatchReceiver
                     val arrayIdx = c.getValueArgument(0)
                     val assignedValue = c.getValueArgument(1)
@@ -2398,7 +2421,11 @@ open class KotlinFileExtractor(
             if (e.typeArgumentsCount > 0) {
                 logger.warnElement("Unexpected type arguments (${e.typeArgumentsCount}) for anonymous class constructor call", e)
             }
-            val c = eType.classifier.owner as IrClass
+            val c = eType.classifier.owner
+            if (c !is IrClass) {
+                logger.errorElement("Anonymous constructor call type not a class (${c.javaClass})", e)
+                return
+            }
             useAnonymousClass(c)
         } else {
             useType(eType)
@@ -2418,8 +2445,11 @@ open class KotlinFileExtractor(
         }
 
         val typeAccessType = if (isAnonymous) {
-            val c = eType.classifier.owner as IrClass
-            if (c.superTypes.size == 1) {
+            val c = eType.classifier.owner
+            if (c !is IrClass) {
+                logger.warnElement("Anonymous type not a class (${c.javaClass})", e)
+            }
+            if ((c as? IrClass)?.superTypes?.size == 1) {
                 useType(c.superTypes.first())
             } else {
                 useType(pluginContext.irBuiltIns.anyType)
@@ -3678,6 +3708,11 @@ open class KotlinFileExtractor(
                 logger.errorElement("Cannot find class for kPropertyType. ${kPropertyType.classFqName?.asString()}", propertyReferenceExpr)
                 return
             }
+            val parameterTypes = kPropertyType.arguments.map { it as? IrType }.requireNoNullsOrNull()
+            if (parameterTypes == null) {
+                logger.errorElement("Unexpected: Non-IrType parameter.", propertyReferenceExpr)
+                return
+            }
 
             val locId = tw.getLocation(propertyReferenceExpr)
 
@@ -3698,7 +3733,6 @@ open class KotlinFileExtractor(
             val classId = extractGeneratedClass(ids, listOf(baseClass, kPropertyType), locId, currentDeclaration)
 
             val helper = PropertyReferenceHelper(propertyReferenceExpr, locId, ids)
-            val parameterTypes = kPropertyType.arguments.map { it as IrType }
 
             helper.extractReceiverField()
 
@@ -4257,6 +4291,8 @@ open class KotlinFileExtractor(
      * Extracts a type access expression and its child type access expressions in case of a generic type. Nested generics are also handled.
      */
     private fun extractTypeAccessRecursive(t: IrType, location: Label<DbLocation>, parent: Label<out DbExprparent>, idx: Int, enclosingCallable: Label<out DbCallable>, enclosingStmt: Label<out DbStmt>, typeContext: TypeContext = TypeContext.OTHER): Label<out DbExpr> {
+        // TODO: `useType` substitutes types to their java equivalent, and sometimes that also means changing the number of type arguments. The below logic doesn't take this into account.
+        // For example `KFunction2<Int,Double,String>` becomes `KFunction<String>` with three child type access expressions: `Int`, `Double`, `String`.
         val typeAccessId = extractTypeAccess(useType(t, typeContext), location, parent, idx, enclosingCallable, enclosingStmt)
         if (t is IrSimpleType) {
             extractTypeArguments(t.arguments.filterIsInstance<IrType>(), location, typeAccessId, enclosingCallable, enclosingStmt)

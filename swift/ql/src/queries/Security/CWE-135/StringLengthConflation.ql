@@ -56,44 +56,36 @@ class StringLengthConflationConfiguration extends DataFlow::Configuration {
   StringLengthConflationConfiguration() { this = "StringLengthConflationConfiguration" }
 
   override predicate isSource(DataFlow::Node node, string flowstate) {
-    // result of a call to `String.count`
-    exists(MemberRefExpr member |
-      member.getBase().getType().getName() = "String" and
-      member.getMember().(VarDecl).getName() = "count" and
-      node.asExpr() = member and
-      flowstate = "String"
-    )
-    or
-    // result of a call to `NSString.length`
-    exists(MemberRefExpr member |
-      member.getBase().getType().getName() = ["NSString", "NSMutableString"] and
-      member.getMember().(VarDecl).getName() = "length" and
-      node.asExpr() = member and
-      flowstate = "NSString"
-    )
-    or
-    // result of a call to `String.utf8.count`
-    exists(MemberRefExpr member |
-      member.getBase().getType().getName() = "String.UTF8View" and
-      member.getMember().(VarDecl).getName() = "count" and
-      node.asExpr() = member and
-      flowstate = "String.utf8"
-    )
-    or
-    // result of a call to `String.utf16.count`
-    exists(MemberRefExpr member |
-      member.getBase().getType().getName() = "String.UTF16View" and
-      member.getMember().(VarDecl).getName() = "count" and
-      node.asExpr() = member and
-      flowstate = "String.utf16"
-    )
-    or
-    // result of a call to `String.unicodeScalars.count`
-    exists(MemberRefExpr member |
-      member.getBase().getType().getName() = "String.UnicodeScalarView" and
-      member.getMember().(VarDecl).getName() = "count" and
-      node.asExpr() = member and
-      flowstate = "String.unicodeScalars"
+    exists(MemberRefExpr memberRef, string className, string varName |
+      memberRef.getBase().getType().(NominalType).getABaseType*().getName() = className and
+      memberRef.getMember().(VarDecl).getName() = varName and
+      node.asExpr() = memberRef and
+      (
+        // result of a call to `String.count`
+        className = "String" and
+        varName = "count" and
+        flowstate = "String"
+        or
+        // result of a call to `NSString.length`
+        className = ["NSString", "NSMutableString"] and
+        varName = "length" and
+        flowstate = "NSString"
+        or
+        // result of a call to `String.utf8.count`
+        className = "String.UTF8View" and
+        varName = "count" and
+        flowstate = "String.utf8"
+        or
+        // result of a call to `String.utf16.count`
+        className = "String.UTF16View" and
+        varName = "count" and
+        flowstate = "String.utf16"
+        or
+        // result of a call to `String.unicodeScalars.count`
+        className = "String.UnicodeScalarView" and
+        varName = "count" and
+        flowstate = "String.unicodeScalars"
+      )
     )
   }
 
@@ -135,7 +127,7 @@ class StringLengthConflationConfiguration extends DataFlow::Configuration {
             paramName = "at"
           ) and
           c.getName() = className and
-          c.getAMember() = funcDecl and
+          c.getABaseTypeDecl*().(ClassDecl).getAMember() = funcDecl and
           call.getStaticTarget() = funcDecl and
           flowstate = "NSString"
         )

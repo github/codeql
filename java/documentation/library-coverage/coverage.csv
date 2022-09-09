@@ -1,7 +1,7 @@
 package,sink,source,summary,sink:bean-validation,sink:create-file,sink:groovy,sink:header-splitting,sink:information-leak,sink:intent-start,sink:jdbc-url,sink:jexl,sink:jndi-injection,sink:ldap,sink:logging,sink:mvel,sink:ognl-injection,sink:open-url,sink:pending-intent-sent,sink:regex-use[-1],sink:regex-use[0],sink:regex-use[],sink:regex-use[f-1],sink:regex-use[f1],sink:regex-use[f],sink:set-hostname-verifier,sink:sql,sink:url-open-stream,sink:url-redirect,sink:write-file,sink:xpath,sink:xslt,sink:xss,source:android-external-storage-dir,source:android-widget,source:contentprovider,source:remote,summary:taint,summary:value
-android.app,16,,103,,,,,,7,,,,,,,,,9,,,,,,,,,,,,,,,,,,,18,85
-android.content,24,31,108,,,,,,16,,,,,,,,,,,,,,,,,8,,,,,,,4,,27,,31,77
-android.database,59,,30,,,,,,,,,,,,,,,,,,,,,,,59,,,,,,,,,,,30,
+android.app,24,,103,,,,,,7,,,,,,,,,17,,,,,,,,,,,,,,,,,,,18,85
+android.content,24,31,154,,,,,,16,,,,,,,,,,,,,,,,,8,,,,,,,4,,27,,63,91
+android.database,59,,39,,,,,,,,,,,,,,,,,,,,,,,59,,,,,,,,,,,39,
 android.net,,,60,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,45,15
 android.os,,2,122,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,2,,,,41,81
 android.util,6,16,,,,,,,,,,,,6,,,,,,,,,,,,,,,,,,,,,,16,,
@@ -52,7 +52,7 @@ javax.ws.rs.core,3,,149,,,,1,,,,,,,,,,,,,,,,,,,,,2,,,,,,,,,94,55
 javax.xml.transform,1,,6,,,,,,,,,,,,,,,,,,,,,,,,,,,,1,,,,,,6,
 javax.xml.xpath,3,,,,,,,,,,,,,,,,,,,,,,,,,,,,,3,,,,,,,,
 jodd.json,,,10,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,10
-kotlin.jvm.internal,,,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,1
+kotlin,12,,1835,,10,,,,,,,,,,,,2,,,,,,,,,,,,,,,,,,,,1828,7
 net.sf.saxon.s9api,5,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,5,,,,,,,
 ognl,6,,,,,,,,,,,,,,,6,,,,,,,,,,,,,,,,,,,,,,
 okhttp3,2,,47,,,,,,,,,,,,,,2,,,,,,,,,,,,,,,,,,,,22,25

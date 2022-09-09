@@ -157,6 +157,18 @@ nodes
 | tst.js:26:26:26:40 | location.search |
 | tst.js:26:26:26:53 | locatio ... ring(1) |
 | tst.js:26:26:26:53 | locatio ... ring(1) |
+| tst.js:29:9:29:82 | source |
+| tst.js:29:18:29:41 | documen ... .search |
+| tst.js:29:18:29:41 | documen ... .search |
+| tst.js:29:18:29:82 | documen ... , "$1") |
+| tst.js:31:18:31:23 | source |
+| tst.js:31:18:31:23 | source |
+| tst.js:33:14:33:19 | source |
+| tst.js:33:14:33:19 | source |
+| tst.js:35:28:35:33 | source |
+| tst.js:35:28:35:33 | source |
+| tst.js:37:33:37:38 | source |
+| tst.js:37:33:37:38 | source |
 edges
 | NoSQLCodeInjection.js:18:24:18:31 | req.body | NoSQLCodeInjection.js:18:24:18:37 | req.body.query |
 | NoSQLCodeInjection.js:18:24:18:31 | req.body | NoSQLCodeInjection.js:18:24:18:37 | req.body.query |
@@ -262,6 +274,17 @@ edges
 | tst.js:26:26:26:40 | location.search | tst.js:26:26:26:53 | locatio ... ring(1) |
 | tst.js:26:26:26:40 | location.search | tst.js:26:26:26:53 | locatio ... ring(1) |
 | tst.js:26:26:26:40 | location.search | tst.js:26:26:26:53 | locatio ... ring(1) |
+| tst.js:29:9:29:82 | source | tst.js:31:18:31:23 | source |
+| tst.js:29:9:29:82 | source | tst.js:31:18:31:23 | source |
+| tst.js:29:9:29:82 | source | tst.js:33:14:33:19 | source |
+| tst.js:29:9:29:82 | source | tst.js:33:14:33:19 | source |
+| tst.js:29:9:29:82 | source | tst.js:35:28:35:33 | source |
+| tst.js:29:9:29:82 | source | tst.js:35:28:35:33 | source |
+| tst.js:29:9:29:82 | source | tst.js:37:33:37:38 | source |
+| tst.js:29:9:29:82 | source | tst.js:37:33:37:38 | source |
+| tst.js:29:18:29:41 | documen ... .search | tst.js:29:18:29:82 | documen ... , "$1") |
+| tst.js:29:18:29:41 | documen ... .search | tst.js:29:18:29:82 | documen ... , "$1") |
+| tst.js:29:18:29:82 | documen ... , "$1") | tst.js:29:9:29:82 | source |
 #select
 | NoSQLCodeInjection.js:18:24:18:37 | req.body.query | NoSQLCodeInjection.js:18:24:18:31 | req.body | NoSQLCodeInjection.js:18:24:18:37 | req.body.query | $@ flows to here and is interpreted as code. | NoSQLCodeInjection.js:18:24:18:31 | req.body | User-provided value |
 | NoSQLCodeInjection.js:19:24:19:48 | "name = ... dy.name | NoSQLCodeInjection.js:19:36:19:43 | req.body | NoSQLCodeInjection.js:19:24:19:48 | "name = ... dy.name | $@ flows to here and is interpreted as code. | NoSQLCodeInjection.js:19:36:19:43 | req.body | User-provided value |
@@ -314,3 +337,7 @@ edges
 | tst.js:20:30:20:51 | documen ... on.hash | tst.js:20:30:20:51 | documen ... on.hash | tst.js:20:30:20:51 | documen ... on.hash | $@ flows to here and is interpreted as code. | tst.js:20:30:20:51 | documen ... on.hash | User-provided value |
 | tst.js:23:6:23:46 | atob(do ... ing(1)) | tst.js:23:11:23:32 | documen ... on.hash | tst.js:23:6:23:46 | atob(do ... ing(1)) | $@ flows to here and is interpreted as code. | tst.js:23:11:23:32 | documen ... on.hash | User-provided value |
 | tst.js:26:26:26:53 | locatio ... ring(1) | tst.js:26:26:26:40 | location.search | tst.js:26:26:26:53 | locatio ... ring(1) | $@ flows to here and is interpreted as code. | tst.js:26:26:26:40 | location.search | User-provided value |
+| tst.js:31:18:31:23 | source | tst.js:29:18:29:41 | documen ... .search | tst.js:31:18:31:23 | source | $@ flows to here and is interpreted as code. | tst.js:29:18:29:41 | documen ... .search | User-provided value |
+| tst.js:33:14:33:19 | source | tst.js:29:18:29:41 | documen ... .search | tst.js:33:14:33:19 | source | $@ flows to here and is interpreted as code. | tst.js:29:18:29:41 | documen ... .search | User-provided value |
+| tst.js:35:28:35:33 | source | tst.js:29:18:29:41 | documen ... .search | tst.js:35:28:35:33 | source | $@ flows to here and is interpreted as code. | tst.js:29:18:29:41 | documen ... .search | User-provided value |
+| tst.js:37:33:37:38 | source | tst.js:29:18:29:41 | documen ... .search | tst.js:37:33:37:38 | source | $@ flows to here and is interpreted as code. | tst.js:29:18:29:41 | documen ... .search | User-provided value |

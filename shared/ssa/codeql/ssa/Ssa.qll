@@ -573,7 +573,7 @@ module Make<InputSig Input> {
   private import SsaDefReaches
 
   pragma[nomagic]
-  predicate liveThrough(BasicBlock bb, SourceVariable v) {
+  private predicate liveThrough(BasicBlock bb, SourceVariable v) {
     liveAtExit(bb, v) and
     not ssaRef(bb, _, v, SsaDef())
   }
@@ -847,22 +847,27 @@ module Make<InputSig Input> {
   // TODO: Make these `query` predicates once class signatures are supported
   // (`SourceVariable` and `BasicBlock` must have `toString`)
   module Consistency {
+    /** A definition that is relevant for the consistency queries. */
     abstract class RelevantDefinition extends Definition {
+      /** Override this predicate to ensure locations in consistency results. */
       abstract predicate hasLocationInfo(
         string filepath, int startline, int startcolumn, int endline, int endcolumn
       );
     }
 
+    /** Holds if a read can be reached from multiple definitions. */
     predicate nonUniqueDef(RelevantDefinition def, SourceVariable v, BasicBlock bb, int i) {
       ssaDefReachesRead(v, def, bb, i) and
       not exists(unique(Definition def0 | ssaDefReachesRead(v, def0, bb, i)))
     }
 
+    /** Holds if a read cannot be reached from a definition. */
     predicate readWithoutDef(SourceVariable v, BasicBlock bb, int i) {
       variableRead(bb, i, v, _) and
       not ssaDefReachesRead(v, _, bb, i)
     }
 
+    /** Holds if a definition cannot reach a read. */
     predicate deadDef(RelevantDefinition def, SourceVariable v) {
       v = def.getSourceVariable() and
       not ssaDefReachesRead(_, def, _, _) and
@@ -870,6 +875,7 @@ module Make<InputSig Input> {
       not uncertainWriteDefinitionInput(_, def)
     }
 
+    /** Holds if a read is not dominated by a definition. */
     predicate notDominatedByDef(RelevantDefinition def, SourceVariable v, BasicBlock bb, int i) {
       exists(BasicBlock bbDef, int iDef | def.definesAt(v, bbDef, iDef) |
         ssaDefReachesReadWithinBlock(v, def, bb, i) and

@@ -4,6 +4,7 @@ provide:
   - "*/ql/test/qlpack.yml"
   - "*/ql/examples/qlpack.yml"
   - "*/ql/consistency-queries/qlpack.yml"
+  - "shared/*/qlpack.yml"
   - "cpp/ql/test/query-tests/Security/CWE/CWE-190/semmle/tainted/qlpack.yml"
   - "go/ql/config/legacy-support/qlpack.yml"
   - "go/build/codeql-extractor-go/codeql-extractor.yml"

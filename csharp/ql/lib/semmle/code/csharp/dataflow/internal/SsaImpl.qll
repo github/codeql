@@ -3,7 +3,7 @@
  */
 
 import csharp
-private import SsaImplCommon as SsaImplCommon
+private import codeql.ssa.Ssa as SsaImplCommon
 private import AssignableDefinitions
 
 private module SsaInput implements SsaImplCommon::InputSig {

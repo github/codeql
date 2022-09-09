@@ -42,10 +42,10 @@ module SinkEndpointFilter {
       result = "modeled database access"
       or
       // Remove calls to APIs that aren't relevant to NoSQL injection
-      call.getReceiver().asExpr() instanceof HTTP::RequestExpr and
+      call.getReceiver() instanceof HTTP::RequestNode and
       result = "receiver is a HTTP request expression"
       or
-      call.getReceiver().asExpr() instanceof HTTP::ResponseExpr and
+      call.getReceiver() instanceof HTTP::ResponseNode and
       result = "receiver is a HTTP response expression"
     )
     or
@@ -115,7 +115,7 @@ predicate isBaseAdditionalFlowStep(
   inlbl = TaintedObject::label() and
   outlbl = TaintedObject::label() and
   exists(NoSql::Query query, DataFlow::SourceNode queryObj |
-    queryObj.flowsToExpr(query) and
+    queryObj.flowsTo(query) and
     queryObj.flowsTo(trg) and
     src = queryObj.getAPropertyWrite().getRhs()
   )
