@@ -198,5 +198,5 @@ def test_mixed():
     args = {"b": arg2, "c": "safe"} # $ arg2 func=mixed
     mixed(a=arg1, **args) # $ arg1
 
-    args = {"a": arg1, "b": arg2, "c": "safe"} # $ bad1="arg1" arg2 func=mixed
+    args = {"a": arg1, "b": arg2, "c": "safe"} # $ arg2 func=mixed MISSING: arg1
     mixed(**args)
