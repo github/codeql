@@ -199,6 +199,8 @@ abstract class DataFlowFunction extends DataFlowCallable, TFunction {
     exists(string name | ppos.isKeyword(name) | result.getParameter() = func.getArgByName(name))
     or
     ppos.isDictSplat() and result.getParameter() = func.getKwarg()
+    or
+    ppos.isDictSplat() and result = TSynthDictSplatParameterNode(this)
   }
 }
 
@@ -1194,7 +1196,9 @@ abstract class ParameterNodeImpl extends Node {
    * Holds if this node is the parameter of callable `c` at the
    * position `ppos`.
    */
-  abstract predicate isParameterOf(DataFlowCallable c, ParameterPosition ppos);
+  predicate isParameterOf(DataFlowCallable c, ParameterPosition ppos) {
+    this = c.getParameter(ppos)
+  }
 }
 
 /** A parameter for a library callable with a flow summary. */

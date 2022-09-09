@@ -64,7 +64,7 @@ newtype TNode =
     exists(Class cls, Function func, ParameterDefinition def |
       func = cls.getAMethod() and
       not hasStaticmethodDecorator(func) and
-      // this matches what we do in ParameterNode
+      // this matches what we do in ExtractedParameterNode
       def.getDefiningNode() = node and
       def.getParameter() = func.getArg(0)
     )
@@ -113,9 +113,12 @@ newtype TNode =
   TSummaryParameterNode(FlowSummaryImpl::Public::SummarizedCallable c, ParameterPosition pos) {
     FlowSummaryImpl::Private::summaryParameterNodeRange(c, pos)
   } or
-  TSynthDictSplatArgumentNode(CallNode call) { exists(call.getArgByName(_)) }
-
-class TParameterNode = TCfgNode or TSummaryParameterNode;
+  /** A synthetic node to capture keyword arguments that are passed to a `**kwargs` parameter. */
+  TSynthDictSplatArgumentNode(CallNode call) { exists(call.getArgByName(_)) } or
+  /** A synthetic node to allow flow to keyword parameters from a `**kwargs` argument. */
+  TSynthDictSplatParameterNode(DataFlowCallable callable) {
+    exists(ParameterPosition ppos | ppos.isKeyword(_) | exists(callable.getParameter(ppos)))
+  }
 
 /** Helper for `Node::getEnclosingCallable`. */
 private DataFlowCallable getCallableScope(Scope s) {
@@ -292,7 +295,7 @@ ExprNode exprNode(DataFlowExpr e) { result.getNode().getNode() = e }
  * The value of a parameter at function entry, viewed as a node in a data
  * flow graph.
  */
-class ParameterNode extends Node, TParameterNode instanceof ParameterNodeImpl {
+class ParameterNode extends Node instanceof ParameterNodeImpl {
   /** Gets the parameter corresponding to this node, if any. */
   final Parameter getParameter() { result = super.getParameter() }
 }
@@ -303,10 +306,6 @@ class ExtractedParameterNode extends ParameterNodeImpl, CfgNode {
   ParameterDefinition def;
 
   ExtractedParameterNode() { node = def.getDefiningNode() }
-
-  override predicate isParameterOf(DataFlowCallable c, ParameterPosition ppos) {
-    this = c.getParameter(ppos)
-  }
 
   override Parameter getParameter() { result = def.getParameter() }
 }
