@@ -54,6 +54,28 @@ class SyntheticPreUpdateNode extends Node, TSyntheticPreUpdateNode {
   override Location getLocation() { result = node.getLocation() }
 }
 
+/**
+ * Ensures that the a `**kwargs` parameter will not contain elements with names of
+ * keyword parameters.
+ *
+ * For example, for the function below, it's not possible that the `kwargs` dictionary
+ * can contain an element with the name `a`, since that parameter can be given as a
+ * keyword argument.
+ *
+ * ```py
+ * def func(a, **kwargs):
+ *     ...
+ * ```
+ */
+private predicate dictSplatParameterNodeClearStep(ParameterNode n, DictionaryElementContent c) {
+  exists(DataFlowCallable callable, ParameterPosition dictSplatPos, ParameterPosition keywordPos |
+    dictSplatPos.isDictSplat() and
+    n = callable.getParameter(dictSplatPos) and
+    exists(callable.getParameter(keywordPos)) and
+    keywordPos.isKeyword(c.getKey())
+  )
+}
+
 abstract class PostUpdateNodeImpl extends Node {
   /** Gets the node before the state update. */
   abstract Node getPreUpdateNode();
@@ -673,6 +695,8 @@ predicate clearsContent(Node n, Content c) {
   attributeClearStep(n, c)
   or
   FlowSummaryImpl::Private::Steps::summaryClearsContent(n, c)
+  or
+  dictSplatParameterNodeClearStep(n, c)
 }
 
 /**
