@@ -86,6 +86,10 @@ public class VelocitySSTI {
 		StringWriter w = new StringWriter();
 		VelocityEngine engine = null;
 		engine.mergeTemplate("testtemplate.vm", "UTF-8", context, w); // $hasTemplateInjection
+		AbstractContext ctx = null;
+		ctx.put("key", code);
+		engine.evaluate(ctx, null, null, null); // $hasTemplateInjection
+		engine.evaluate(null, null, null, code); // $hasTemplateInjection
 	}
 
 	@GetMapping(value = "bad6")
