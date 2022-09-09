@@ -9,4 +9,4 @@ defaultSuiteFile: codeql-suites/javascript-code-scanning.qls
 dependencies:
   codeql/javascript-all: "*"
   codeql/suite-helpers: "*"
-  codeql/typos: 0.0.1
+  codeql/typos: 0.0.1-dev
