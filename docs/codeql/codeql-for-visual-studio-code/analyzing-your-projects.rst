@@ -37,6 +37,8 @@ If you have a CodeQL database saved locally, as an unarchived folder or as a ZIP
 
   For more information about running query tests, see ":ref:`Testing custom queries <testing-custom-queries>`" in the CodeQL CLI help.
 
+.. include:: ../reusables/download-github-database.rst
+
 Running a query
 ------------------------
 
