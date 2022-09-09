@@ -636,16 +636,22 @@ class SpecialCall extends DataFlowSourceCall, TSpecialCall {
   }
 }
 
-/** A call to a summarized callable. */
+/**
+ * A call to a summarized callable, a `LibraryCallable`.
+ *
+ * This is a potential call, really. It has an empty charpred, so any `CallNode` is allowed.
+ * It is here to stake out territory, as otherwise a call to `map` would be considered a `ClassCall`
+ * and not be available for a summary.
+ */
 class LibraryCall extends NormalCall {
-  LibraryCallable callable;
-
-  LibraryCall() { call = callable.getACall() }
-
   // TODO: Implement Python calling convention?
   override Node getArg(int n) { result = TCfgNode(call.getArg(n)) }
 
-  override DataFlowCallable getCallable() { result.asLibraryCallable() = callable }
+  // We cannot refer to a `LibraryCallable` here,
+  // as that could in turn refer to type tracking.
+  // This call will be tied to a `LibraryCallable` via
+  // `getViableCallabe` when the global data flow is assembled.
+  override DataFlowCallable getCallable() { none() }
 }
 
 /**
@@ -747,7 +753,18 @@ private class SummaryPostUpdateNode extends SummaryNode, PostUpdateNode {
 }
 
 /** Gets a viable run-time target for the call `call`. */
-DataFlowCallable viableCallable(DataFlowSourceCall call) { result = call.getCallable() }
+DataFlowCallable viableCallable(DataFlowSourceCall call) {
+  result = call.getCallable()
+  or
+  // A call to a library callable with a flow summary
+  // In this situation we can not resolve the callable from the call,
+  // as that would make data flow depend on type tracking.
+  // Instead we reolve the call from the summary.
+  exists(LibraryCallable callable |
+    result = TLibraryCallable(callable) and
+    call.getNode() = callable.getACall()
+  )
+}
 
 private newtype TReturnKind = TNormalReturnKind()
 

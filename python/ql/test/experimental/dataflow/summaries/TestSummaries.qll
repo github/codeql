@@ -2,6 +2,25 @@ private import python
 private import semmle.python.dataflow.new.FlowSummary
 private import semmle.python.ApiGraphs
 
+/** This module ensures that the `callStep` predicate in
+ * our type tracker implelemtation does not refer to the
+ * `getACall` predicate on `SummarizedCallable`.
+ */
+module RecursionGuard {
+  private import semmle.python.dataflow.new.internal.TypeTrackerSpecific as TT
+
+  private class RecursionGuard extends SummarizedCallable {
+    RecursionGuard() { this = "RecursionGuard" }
+
+    override CallNode getACall() {
+      result.getFunction().(NameNode).getId() = this and
+      (TT::callStep(_, _) implies any())
+    }
+
+    override DataFlow::ArgumentNode getACallback() { result.asExpr().(Name).getId() = this }
+  }
+}
+
 private class SummarizedCallableIdentity extends SummarizedCallable {
   SummarizedCallableIdentity() { this = "identity" }
 
