@@ -11,15 +11,20 @@
  *   These are identified by strings and has predicates for finding calls to them.
  *
  * Having both extracted and non-extracted callables means that we now have three types of calls:
- * - Extracted calls to extracted callables, either `NonLibraryNormalCall` or `SpecialCall`. These are handled by standard data flow.
- * - Extracted calls to non-extracted callables, `LibraryCall`. These are handled by summaries.
+ * - Extracted calls to extracted callables, either `NormalCall` or `SpecialCall`. These are handled by standard data flow.
+ * - Extracted calls to non-extracted callables, `LibraryCall`. These are handled by loking up the relevant summary when the
+ *   global data flwo graph is connected up via `getViableCallable`.
  * - Non-extracted calls, `SummaryCall`. These are synthesised by the flow summary framework.
  *
- * The first two can be referred to as `DataFlowSourceCall`. They have been split up for the benefit of call resolutiuon.
+ * The first two can be referred to as `DataFlowSourceCall`. In fact, `LibraryCall` is a subclass of `NormalCall`, where
+ * `getCallable` is set to `none()`. The member predicate `DataFlowSourceCall::getCallable` is _not_ the mechanism for
+ * call resolution in global data flow. That mechanism is `getViableCallable`.
  * Resolving a call to a non-extracted callable goes via `LibraryCallable::getACall`, which may involve type tracking.
  * To avoid that type tracking becomes mutualy recursive with data flow, type tracking must use a call graph not including summaries.
+ * Type tracking sees the callgraph given by `DataFlowSourceCall::getACallable`.
  *
- * We do not support summaries of special methods.
+ * We do not support summaries of special methods via the special methods framework,
+ * the summary would have to identify the call.
  */
 
 private import python

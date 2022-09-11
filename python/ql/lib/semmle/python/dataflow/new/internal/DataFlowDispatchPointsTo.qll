@@ -103,10 +103,10 @@ module ArgumentPassing {
    * Used to limit the size of predicates.
    */
   predicate connects(CallNode call, CallableValue callable) {
-    exists(NonLibraryNormalCall c, NonLibraryDataFlowCallable k |
+    exists(NormalCall c, NonLibraryDataFlowCallable k |
       call = c.getNode() and
       callable = k.getCallableValue() and
-      k = c.getNonLibraryCallable()
+      k = c.getCallable()
     )
   }
 
@@ -511,22 +511,11 @@ class NormalCall extends DataFlowSourceCall, TNormalCall {
 
   abstract override Node getArg(int n);
 
-  override ControlFlowNode getNode() { result = call }
+  override CallNode getNode() { result = call }
 
   abstract override DataFlowCallable getCallable();
 
   override DataFlowCallable getEnclosingCallable() { result.getScope() = call.getNode().getScope() }
-}
-
-/** A (non-special) call that does not go to a library callable. */
-abstract class NonLibraryNormalCall extends NormalCall {
-  abstract Node getNonLibraryArg(int n);
-
-  final override Node getArg(int n) { result = this.getNonLibraryArg(n) }
-
-  abstract DataFlowCallable getNonLibraryCallable();
-
-  final override DataFlowCallable getCallable() { result = this.getNonLibraryCallable() }
 }
 
 /**
@@ -535,7 +524,7 @@ abstract class NonLibraryNormalCall extends NormalCall {
  * Bound method calls and class calls insert an argument for the explicit
  * `self` parameter, and special method calls have special argument passing.
  */
-class FunctionCall extends NonLibraryNormalCall {
+class FunctionCall extends NormalCall {
   NonLibraryDataFlowCallable callable;
 
   FunctionCall() {
@@ -543,15 +532,13 @@ class FunctionCall extends NonLibraryNormalCall {
     call = callable.getACall()
   }
 
-  override Node getNonLibraryArg(int n) {
-    result = getArg(call, TNoShift(), callable.getCallableValue(), n)
-  }
+  override Node getArg(int n) { result = getArg(call, TNoShift(), callable.getCallableValue(), n) }
 
-  override DataFlowCallable getNonLibraryCallable() { result = callable }
+  override DataFlowCallable getCallable() { result = callable }
 }
 
 /** A call to a lambda. */
-class LambdaCall extends NonLibraryNormalCall {
+class LambdaCall extends NormalCall {
   NonLibraryDataFlowCallable callable;
 
   LambdaCall() {
@@ -559,33 +546,29 @@ class LambdaCall extends NonLibraryNormalCall {
     callable = TLambda(any(Function f))
   }
 
-  override Node getNonLibraryArg(int n) {
-    result = getArg(call, TNoShift(), callable.getCallableValue(), n)
-  }
+  override Node getArg(int n) { result = getArg(call, TNoShift(), callable.getCallableValue(), n) }
 
-  override DataFlowCallable getNonLibraryCallable() { result = callable }
+  override DataFlowCallable getCallable() { result = callable }
 }
 
 /**
  * Represents a call to a bound method call.
  * The node representing the instance is inserted as argument to the `self` parameter.
  */
-class MethodCall extends NonLibraryNormalCall {
+class MethodCall extends NormalCall {
   FunctionValue bm;
 
   MethodCall() { call = bm.getAMethodCall() }
 
   private CallableValue getCallableValue() { result = bm }
 
-  override Node getNonLibraryArg(int n) {
+  override Node getArg(int n) {
     n > 0 and result = getArg(call, TShiftOneUp(), this.getCallableValue(), n)
     or
     n = 0 and result = TCfgNode(call.getFunction().(AttrNode).getObject())
   }
 
-  override DataFlowCallable getNonLibraryCallable() {
-    result = TCallableValue(this.getCallableValue())
-  }
+  override DataFlowCallable getCallable() { result = TCallableValue(this.getCallableValue()) }
 }
 
 /**
@@ -594,7 +577,7 @@ class MethodCall extends NonLibraryNormalCall {
  * That makes the call node be the post-update node holding the value of the object
  * after the constructor has run.
  */
-class ClassCall extends NonLibraryNormalCall {
+class ClassCall extends NormalCall {
   ClassValue c;
 
   ClassCall() {
@@ -604,15 +587,13 @@ class ClassCall extends NonLibraryNormalCall {
 
   private CallableValue getCallableValue() { c.getScope().getInitMethod() = result.getScope() }
 
-  override Node getNonLibraryArg(int n) {
+  override Node getArg(int n) {
     n > 0 and result = getArg(call, TShiftOneUp(), this.getCallableValue(), n)
     or
     n = 0 and result = TSyntheticPreUpdateNode(TCfgNode(call))
   }
 
-  override DataFlowCallable getNonLibraryCallable() {
-    result = TCallableValue(this.getCallableValue())
-  }
+  override DataFlowCallable getCallable() { result = TCallableValue(this.getCallableValue()) }
 }
 
 /** A call to a special method. */
