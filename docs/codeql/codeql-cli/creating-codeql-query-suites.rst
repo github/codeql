@@ -119,7 +119,7 @@ typically a query metadata property. The value can be:
 To match a constraint, a metadata value must match one of the strings or
 regular expressions. When there is more than one metadata key, each key must be matched.
 The standard metadata keys available to match on are: ``description``, ``id``, ``kind``,
-``name``, ``tags``, ``precision``, ``problem.severity``, and ``security-severity``.
+``name``, ``tags``, ``precision``, and ``problem.severity``.
 For more information about query metadata properties, see
 ":ref:`Metadata for CodeQL queries <metadata-for-codeql-queries>`."
 
@@ -133,14 +133,16 @@ In addition to metadata tags, the keys in the constraint block can also be:
 - ``tags contain all``---each of the given match strings must match one of the
   components of the ``@tags`` metadata property.
 
-Filtering Examples
-~~~~~~~~~~~~~~~~~~
+Examples of filtering which queries are run
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 A common use case is to create a query suite that runs all queries in a CodeQL pack,
-except for a few that are known to be problematic. The following three query suite
-definitions are semantically identical:
+except for a few specific queries that the user does not want to run. In general, we
+recommend filtering on the query ``id``, which is a unique and stable identifier for
+each query. The following three query suite definitions are semantically identical and
+filter by the query ``id``:
 
-Matches all queries in ``codeql/cpp-queries``, except for the two queries with either given ``id``::
+Matches all queries in the default suite of ``codeql/cpp-queries``, except for the two queries with either given ``id``::
 
    - qlpack: codeql/cpp-queries
    - exclude:
@@ -180,8 +182,9 @@ and ``@precision high`` from the ``my-custom-queries`` directory, use::
        kind: problem
        precision: very-high
 
-Note that the following query suite definition is not equivalent. This definition will select
-queries that are ``@kind problem`` *or* are ``@precision very-high``::
+Note that the following query suite definition is not equivalent to the above
+definition. This definition will select queries that are ``@kind problem`` *or*
+are ``@precision very-high``::
 
    - queries: my-custom-queries
    - include:
@@ -216,7 +219,9 @@ use::
     Tip
 
     You can use the ``codeql resolve queries /path/to/suite.qls`` command to see
-    which queries are selected by a query suite definition.
+    which queries are selected by a query suite definition. For more information,
+    see the `resolve queries <../../codeql-cli/manual/resolve-queries>`__
+    reference documentation.
 
 Reusing existing query suite definitions
 -----------------------------------------
@@ -292,7 +297,7 @@ instruction::
     from: my-org/my-custom-instructions
     version: ^1.2.3 # optional
 
-A common use case an ``import`` instruction is to apply a further filter to queries from another
+A common use case for an ``import`` instruction is to apply a further filter to queries from another
 query suite. For example, this suite will further filter the ``cpp-security-and-quality`` suite
 and exclude ``low`` and ``medium`` precision queries::
 
