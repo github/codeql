@@ -118,8 +118,10 @@ typically a query metadata property. The value can be:
 
 To match a constraint, a metadata value must match one of the strings or
 regular expressions. When there is more than one metadata key, each key must be matched.
-For more information about query metadata properties, see ":ref:`Metadata for CodeQL queries
-<metadata-for-codeql-queries>`."
+The standard metadata keys available to match on are: ``description``, ``id``, ``kind``,
+``name``, ``tags``, ``precision``, ``problem.severity``, and ``security-severity``.
+For more information about query metadata properties, see
+":ref:`Metadata for CodeQL queries <metadata-for-codeql-queries>`."
 
 In addition to metadata tags, the keys in the constraint block can also be:
 
@@ -131,8 +133,36 @@ In addition to metadata tags, the keys in the constraint block can also be:
 - ``tags contain all``---each of the given match strings must match one of the
   components of the ``@tags`` metadata property.
 
-Examples
-~~~~~~~~
+Filtering Examples
+~~~~~~~~~~~~~~~~~~
+
+A common use case is to create a query suite that runs all queries in a CodeQL pack,
+except for a few that are known to be problematic. The following three query suite
+definitions are semantically identical:
+
+Matches all queries in ``codeql/cpp-queries``, except for the two queries with either given ``id``::
+
+   - qlpack: codeql/cpp-queries
+   - exclude:
+       id:
+         - cpp/cleartext-transmission
+         - cpp/cleartext-storage-file
+
+As above, but splits the matching into two ``exclude`` instructions::
+
+   - qlpack: codeql/cpp-queries
+   - exclude:
+       id: cpp/cleartext-transmission
+   - exclude:
+       id: cpp/cleartext-storage-file
+
+As above, but uses a regular expression to match the ``id`` (assuming
+that the regular expression matches exactly the previous queries)::
+
+   - qlpack: codeql/cpp-queries
+   - exclude:
+       id:
+         - /^cpp\/cleartext-.*/
 
 To define a suite that selects all queries in the default suite of the
 ``codeql/cpp-queries`` CodeQL pack, and then refines them to only include
@@ -148,6 +178,15 @@ and ``@precision high`` from the ``my-custom-queries`` directory, use::
    - queries: my-custom-queries
    - include:
        kind: problem
+       precision: very-high
+
+Note that the following query suite definition is not equivalent. This definition will select
+queries that are ``@kind problem`` *or* are ``@precision very-high``::
+
+   - queries: my-custom-queries
+   - include:
+       kind: problem
+   - include:
        precision: very-high
 
 To create a suite that selects all queries with ``@kind problem`` from the
@@ -171,6 +210,13 @@ use::
        problem.severity:
        - high
        - very-high
+
+.. pull-quote::
+
+    Tip
+
+    You can use the ``codeql resolve queries /path/to/suite.qls`` command to see
+    which queries are selected by a query suite definition.
 
 Reusing existing query suite definitions
 -----------------------------------------
@@ -208,14 +254,8 @@ Existing query suite definitions can be reused by specifying:
   conditions, saved in a ``.yml`` file, to multiple query definitions. For more
   information, see the `example <#example>`__ below.
 
-- An ``eval`` instruction---performs the same function as an ``import``
-  instruction, but takes a full suite definition as the argument, rather than the
-  path to a ``.qls`` file on disk.
-
-To see what queries are included in a query suite, you can run the ``codeql resolve queries my-suite.qls`` command.
-
-Example
-~~~~~~~
+Reusability Examples
+~~~~~~~~~~~~~~~~~~~~
 
 To use the same conditions in multiple query suite definitions, create a
 separate ``.yml`` file containing your instructions. For example, save the
@@ -251,6 +291,30 @@ instruction::
   - apply: reusable-instructions.yml
     from: my-org/my-custom-instructions
     version: ^1.2.3 # optional
+
+A common use case an ``import`` instruction is to apply a further filter to queries from another
+query suite. For example, this suite will further filter the ``cpp-security-and-quality`` suite
+and exclude ``low`` and ``medium`` precision queries::
+
+    - import: codeql-suites/cpp-security-and-quality.qls
+      from: codeql/cpp-queries
+    - exclude:
+        precision:
+          - low
+          - medium
+
+If you want to ``include`` queries imported from another suite, the syntax is a little different::
+
+    - import: codeql-suites/cpp-security-and-quality.qls
+      from: codeql/cpp-queries
+    - exclude: {}
+    - include:
+        precision:
+          - very-high
+          - high
+
+Notice the empty ``exclude`` instruction. This is required to ensure that the subsequent ``include``
+instruction is able to filter queries from the imported suite.
 
 Naming a query suite
 --------------------
