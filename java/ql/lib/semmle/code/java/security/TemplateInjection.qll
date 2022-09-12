@@ -74,7 +74,6 @@ private class TemplateInjectionSinkModels extends SinkModelCsv {
   override predicate row(string row) {
     row =
       [
-        "freemarker.template;Template;true;process;;;Argument[0];ssti;manual",
         "freemarker.template;Template;true;Template;(String,Reader);;Argument[1];ssti;manual",
         "freemarker.template;Template;true;Template;(String,Reader,Configuration);;Argument[1];ssti;manual",
         "freemarker.template;Template;true;Template;(String,Reader,Configuration,String);;Argument[1];ssti;manual",

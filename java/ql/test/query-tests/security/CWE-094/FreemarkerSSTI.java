@@ -104,14 +104,14 @@ public class FreemarkerSSTI {
 		stringLoader.putTemplate("myTemplate", code, 0); // $hasTemplateInjection
 	}
 
-	@GetMapping(value = "bad10")
-	public void bad10(HttpServletRequest request) {
+	@GetMapping(value = "good1")
+	public void good1(HttpServletRequest request) {
 		HashMap<Object, Object> root = new HashMap();
 		String code = request.getParameter("code");
 		root.put("code", code);
 		Configuration cfg = new Configuration();
 		Template temp = cfg.getTemplate("test.ftlh");
 		OutputStreamWriter out = new OutputStreamWriter(System.out);
-		temp.process(root, out); // $hasTemplateInjection
+		temp.process(root, out); // Safe
 	}
 }
