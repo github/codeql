@@ -176,7 +176,7 @@ private class StdStringAppend extends TaintFunction {
     ) and
     (
       output.isQualifierObject() or
-      output.isReturnValue()
+      output.isReturnValueDeref()
     )
     or
     // reverse flow from returned reference to the qualifier (for writes to

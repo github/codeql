@@ -223,7 +223,7 @@ private class IteratorCrementMemberOperator extends MemberFunction, DataFlowFunc
     output.isQualifierObject()
     or
     input.isQualifierObject() and
-    output.isReturnValue()
+    output.isReturnValueDeref()
   }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
