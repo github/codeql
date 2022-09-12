@@ -1,8 +1,8 @@
 /**
- * @name Dangerous use malloc with zero size.
+ * @name Some cases undefined behavior dangerous.
  * @description The behavior of the malloc function is not defined when the size value is zero.
  * @kind problem
- * @id cpp/dangerous-use-malloc-with-zero-size
+ * @id cpp/some-cases-undefined-behavior
  * @problem.severity warning
  * @precision medium
  * @tags correctness
