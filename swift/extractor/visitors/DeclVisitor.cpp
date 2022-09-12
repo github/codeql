@@ -380,13 +380,16 @@ void DeclVisitor::fillAbstractStorageDecl(const swift::AbstractStorageDecl& decl
 
 codeql::IfConfigDecl DeclVisitor::translateIfConfigDecl(const swift::IfConfigDecl& decl) {
   auto entry = createEntry(decl);
-  entry.clauses = dispatcher_.fetchRepeatedLabels(decl.getClauses());
+  //  entry.clauses = dispatcher_.fetchRepeatedLabels(decl.getClauses());
+  if (auto activeClause = decl.getActiveClause()) {
+    entry.clauses.push_back(dispatcher_.fetchLabel(activeClause));
+  }
   return entry;
 }
 
 codeql::IfConfigClause DeclVisitor::translateIfConfigClause(const swift::IfConfigClause& clause) {
   auto entry = dispatcher_.createEntry(clause);
-  entry.condition = dispatcher_.fetchOptionalLabel(clause.Cond);
+  //  entry.condition = dispatcher_.fetchOptionalLabel(clause.Cond);
   entry.elements = dispatcher_.fetchRepeatedLabels(clause.Elements);
   entry.is_active = clause.isActive;
   return entry;
