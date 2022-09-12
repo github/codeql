@@ -49,12 +49,6 @@ abstract class RoutingTest extends InlineExpectationsTest {
 
   pragma[inline]
   private string toFunc(DataFlow::Node toNode) {
-    result =
-      toNode
-          .getEnclosingCallable()
-          .(DataFlowPrivate::DataFlowCallable)
-          .getCallableValue()
-          .getScope()
-          .getQualifiedName() // TODO: More robust pretty printing?
+    result = toNode.getEnclosingCallable().getCallableValue().getScope().getQualifiedName() // TODO: More robust pretty printing?
   }
 }

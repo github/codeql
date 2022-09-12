@@ -78,7 +78,7 @@ module SyntheticPreUpdateNode {
    * that is mapped to the `self` parameter. That way, constructor calls represent the value of the
    * object after the constructor (currently only `__init__`) has run.
    */
-  CfgNode objectCreationNode() { result.getNode().(CallNode) = any(ClassCall c).getNode() }
+  CfgNode objectCreationNode() { result.getNode() = any(ClassCall c).getNode() }
 }
 
 import SyntheticPreUpdateNode

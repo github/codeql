@@ -255,7 +255,7 @@ predicate iterableUnpackingAssignmentFlowStep(Node nodeFrom, Node nodeTo) {
  */
 predicate iterableUnpackingForReadStep(CfgNode nodeFrom, Content c, Node nodeTo) {
   exists(ForTarget target |
-    nodeFrom.(CfgNode).getNode().getNode() = target.getSource() and
+    nodeFrom.getNode().getNode() = target.getSource() and
     target instanceof SequenceNode and
     nodeTo = TIterableSequenceNode(target)
   ) and
