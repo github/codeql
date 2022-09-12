@@ -200,3 +200,51 @@ def test_mixed():
 
     args = {"a": arg1, "b": arg2, "c": "safe"} # $ arg1 arg2 func=mixed
     mixed(**args)
+
+
+def starargs_only(*args):
+    SINK1(args[0])
+    SINK2(args[1])
+    SINK3_F(args[2])
+
+@expects(3*3)
+def test_only_starargs():
+    starargs_only(arg1, arg2, "safe") # $ MISSING: arg1 arg2
+
+    args = (arg2, "safe")
+    starargs_only(arg1, *args) # $ MISSING: arg1 arg2
+
+    args = (arg1, arg2, "safe")
+    starargs_only(*args) # $ MISSING: arg1 arg2
+
+
+def starargs_mixed(a, *args):
+    SINK1(a)
+    SINK2(args[0])
+    SINK3_F(args[1])
+
+@expects(3*8)
+def test_stararg_mixed():
+    starargs_mixed(arg1, arg2, "safe") # $ arg1 MISSING: arg2
+
+    args = (arg2, "safe")
+    starargs_mixed(arg1, *args) # $ arg1 MISSING: arg2
+
+    args = (arg1, arg2, "safe")
+    starargs_mixed(*args) # $ MISSING: arg1 arg2
+
+    args = (arg1, arg2, "safe")
+    more_args = ("foo", "bar")
+    starargs_mixed(*args, *more_args) # $ MISSING: arg1 arg2
+
+    empty_args = ()
+
+    # adding first/last
+    starargs_mixed(arg1, arg2, "safe", *empty_args) # $ arg1 MISSING: arg2
+    starargs_mixed(*empty_args, arg1, arg2, "safe") # $ MISSING: arg1 arg2
+
+    # adding before/after *args
+    args = (arg2, "safe")
+    starargs_mixed(arg1, *args, *empty_args) # $ arg1 MISSING: arg2
+    args = (arg2, "safe")
+    starargs_mixed(arg1, *empty_args, *args) # $ arg1 MISSING: arg2
