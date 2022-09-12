@@ -319,7 +319,7 @@ module AiohttpWebModel {
     }
 
     /** An attribute read on an `aiohttp.web.Request` that is a `MultiDictProxy` instance. */
-    class AiohttpRequestMultiDictProxyInstances extends MultiDict::MultiDictProxy::InstanceSource {
+    class AiohttpRequestMultiDictProxyInstances extends Multidict::MultiDictProxy::InstanceSource {
       AiohttpRequestMultiDictProxyInstances() {
         this.(DataFlow::AttrRead).getObject() = Request::instance() and
         this.(DataFlow::AttrRead).getAttributeName() in ["query", "headers"]

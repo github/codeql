@@ -1944,9 +1944,9 @@ private module StdlibPrivate {
           SimpleHttpServer::SimpleHttpRequestHandler::classRef(),
           CgiHttpServer::CgiHttpRequestHandler::classRef(),
           // Python 3
-          StdHttp::Server::BaseHttpRequestHandler::classRef(),
-          StdHttp::Server::SimpleHttpRequestHandler::classRef(),
-          StdHttp::Server::CgiHttpRequestHandler::classRef()
+          StdlibHttp::Server::BaseHttpRequestHandler::classRef(),
+          StdlibHttp::Server::SimpleHttpRequestHandler::classRef(),
+          StdlibHttp::Server::CgiHttpRequestHandler::classRef()
         ].getASubclass*()
     }
 
