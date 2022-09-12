@@ -1877,7 +1877,7 @@ private module StdlibPrivate {
   API::Node http() { result = API::moduleImport("http") }
 
   /** Provides models for the `http` module. */
-  module StdHttp {
+  module StdlibHttp {
     // -------------------------------------------------------------------------
     // http.server
     // -------------------------------------------------------------------------

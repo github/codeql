@@ -102,7 +102,7 @@ module Yarl {
     }
 
     /** An attribute read on a `yarl.URL` that is a `MultiDictProxy` instance. */
-    class YarlUrlMultiDictProxyInstance extends MultiDict::MultiDictProxy::InstanceSource {
+    class YarlUrlMultiDictProxyInstance extends Multidict::MultiDictProxy::InstanceSource {
       YarlUrlMultiDictProxyInstance() {
         this.(DataFlow::AttrRead).getObject() = Yarl::Url::instance() and
         this.(DataFlow::AttrRead).getAttributeName() = "query"
