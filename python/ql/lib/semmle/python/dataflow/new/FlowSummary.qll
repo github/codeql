@@ -2,6 +2,8 @@
 
 private import python
 private import semmle.python.dataflow.new.DataFlow
+private import semmle.python.frameworks.data.ModelsAsData
+private import semmle.python.ApiGraphs
 private import internal.FlowSummaryImpl as Impl
 private import internal.DataFlowUtil
 private import internal.DataFlowPrivate
@@ -67,32 +69,44 @@ abstract class SummarizedCallable extends LibraryCallable, Impl::Public::Summari
 }
 
 class RequiredSummaryComponentStack = Impl::Public::RequiredSummaryComponentStack;
-//
-// TODO: Implement this
-//
-// private class SummarizedCallableFromModel extends SummarizedCallable {
-//   string package;
-//   string type;
-//   string path;
-//   SummarizedCallableFromModel() {
-//     ModelOutput::relevantSummaryModel(package, type, path, _, _, _) and
-//     this = package + ";" + type + ";" + path
-//   }
-//   override Call getACall() {
-//     exists(API::MethodAccessNode base |
-//       ModelOutput::resolvedSummaryBase(package, type, path, base) and
-//       result = base.getCallNode().asExpr().getExpr()
-//     )
-//   }
-//   override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
-//     exists(string kind |
-//       ModelOutput::relevantSummaryModel(package, type, path, input, output, kind)
-//     |
-//       kind = "value" and
-//       preservesValue = true
-//       or
-//       kind = "taint" and
-//       preservesValue = false
-//     )
-//   }
-// }
+
+// This gives access to getNodeFromPath, which is not constrained to `CallNode`s
+// as `resolvedSummaryBase` is.
+private import semmle.python.frameworks.data.internal.ApiGraphModels as AGM
+
+private class SummarizedCallableFromModel extends SummarizedCallable {
+  string package;
+  string type;
+  string path;
+
+  SummarizedCallableFromModel() {
+    ModelOutput::relevantSummaryModel(package, type, path, _, _, _) and
+    this = package + ";" + type + ";" + path
+  }
+
+  override CallNode getACall() {
+    exists(API::CallNode base |
+      ModelOutput::resolvedSummaryBase(package, type, path, base) and
+      result = base.asCfgNode()
+    )
+  }
+
+  override ArgumentNode getACallback() {
+    exists(API::Node base |
+      base = AGM::getNodeFromPath(package, type, path) and
+      result = base.getAValueReachableFromSource()
+    )
+  }
+
+  override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+    exists(string kind |
+      ModelOutput::relevantSummaryModel(package, type, path, input, output, kind)
+    |
+      kind = "value" and
+      preservesValue = true
+      or
+      kind = "taint" and
+      preservesValue = false
+    )
+  }
+}
