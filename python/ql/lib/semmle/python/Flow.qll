@@ -376,7 +376,7 @@ class CallNode extends ControlFlowNode {
   ControlFlowNode getArgByName(string name) {
     exists(Call c, Keyword k |
       this.getNode() = c and
-      k = c.getAKeyword() and
+      k = c.getANamedArg() and
       k.getValue() = result.getNode() and
       k.getArg() = name and
       result.getBasicBlock().dominates(this.getBasicBlock())
