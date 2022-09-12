@@ -21,4 +21,4 @@ from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink, Sink
 where cfg.hasFlowPath(source, sink) and sinkNode = sink.getNode()
 select sinkNode.getAlertLocation(), source, sink, "$@ which depends on $@ is later used in $@.",
   sinkNode.getAlertLocation(), sinkNode.getSinkType(), source.getNode(), "library input",
-  sinkNode.getCommandExecution(), "shell command"
+  sinkNode.getCommandExecution(), "a shell command"
