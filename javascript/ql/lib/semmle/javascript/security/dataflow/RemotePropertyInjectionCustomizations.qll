@@ -57,11 +57,11 @@ module RemotePropertyInjection {
    * header names as properties. This case is already handled by
    * `PropertyWriteSink`.
    */
-  class HeaderNameSink extends Sink, DataFlow::ValueNode {
+  class HeaderNameSink extends Sink {
     HeaderNameSink() {
       exists(HTTP::ExplicitHeaderDefinition hd |
         not hd instanceof Express::SetMultipleHeaders and
-        astNode = hd.getNameExpr()
+        this = hd.getNameNode()
       )
     }
 

@@ -175,7 +175,7 @@ predicate isOtherModeledArgument(DataFlow::Node n, FilteringReason reason) {
   or
   n instanceof CryptographicKey and reason instanceof CryptographicKeyReason
   or
-  any(CryptographicOperation op).getInput().flow() = n and
+  any(CryptographicOperation op).getInput() = n and
   reason instanceof CryptographicOperationFlowReason
   or
   exists(DataFlow::CallNode call | n = call.getAnArgument() |

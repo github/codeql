@@ -13,9 +13,25 @@ import javascript
 import semmle.javascript.security.internal.SensitiveDataHeuristics
 private import HeuristicNames
 
+/**
+ * DEPRECATED: Use `SensitiveNode` instead.
+ * An expression that might contain sensitive data.
+ */
+deprecated class SensitiveExpr extends Expr {
+  SensitiveNode node;
+
+  SensitiveExpr() { node.asExpr() = this }
+
+  /** Gets a human-readable description of this expression for use in alert messages. */
+  deprecated string describe() { result = node.describe() }
+
+  /** Gets a classification of the kind of sensitive data this expression might contain. */
+  deprecated SensitiveDataClassification getClassification() { result = node.getClassification() }
+}
+
 /** An expression that might contain sensitive data. */
 cached
-abstract class SensitiveExpr extends Expr {
+abstract class SensitiveNode extends DataFlow::Node {
   /** Gets a human-readable description of this expression for use in alert messages. */
   cached
   abstract string describe();
@@ -26,33 +42,33 @@ abstract class SensitiveExpr extends Expr {
 }
 
 /** A function call that might produce sensitive data. */
-class SensitiveCall extends SensitiveExpr, InvokeExpr {
+class SensitiveCall extends SensitiveNode instanceof DataFlow::InvokeNode {
   SensitiveDataClassification classification;
 
   SensitiveCall() {
-    classification = this.getCalleeName().(SensitiveDataFunctionName).getClassification()
+    classification = super.getCalleeName().(SensitiveDataFunctionName).getClassification()
     or
     // This is particularly to pick up methods with an argument like "password", which
     // may indicate a lookup.
-    exists(string s | this.getAnArgument().mayHaveStringValue(s) |
+    exists(string s | super.getAnArgument().mayHaveStringValue(s) |
       nameIndicatesSensitiveData(s, classification)
     )
   }
 
-  override string describe() { result = "a call to " + this.getCalleeName() }
+  override string describe() { result = "a call to " + super.getCalleeName() }
 
   override SensitiveDataClassification getClassification() { result = classification }
 }
 
 /** An access to a variable or property that might contain sensitive data. */
-abstract class SensitiveVariableAccess extends SensitiveExpr {
+abstract class SensitiveVariableAccess extends SensitiveNode {
   string name;
 
   SensitiveVariableAccess() {
-    this.(VarAccess).getName() = name
+    this.asExpr().(VarAccess).getName() = name
     or
     exists(DataFlow::PropRead pr |
-      this = pr.asExpr() and
+      this = pr and
       pr.getPropertyName() = name
     )
   }
@@ -173,10 +189,8 @@ class ProtectCall extends DataFlow::CallNode {
 }
 
 /** An expression that might contain a clear-text password. */
-class CleartextPasswordExpr extends SensitiveExpr {
-  CleartextPasswordExpr() {
-    this.(SensitiveExpr).getClassification() = SensitiveDataClassification::password()
-  }
+class CleartextPasswordExpr extends SensitiveNode {
+  CleartextPasswordExpr() { this.getClassification() = SensitiveDataClassification::password() }
 
   override string describe() { none() }
 

@@ -92,6 +92,13 @@ nodes
 | tst.js:121:18:121:30 | Math.random() |
 | tst.js:121:18:121:30 | Math.random() |
 | tst.js:121:18:121:30 | Math.random() |
+| tst.js:136:9:136:67 | password |
+| tst.js:136:9:136:67 | password |
+| tst.js:136:21:136:67 | chars[M ... ength)] |
+| tst.js:136:27:136:66 | Math.fl ... length) |
+| tst.js:136:38:136:50 | Math.random() |
+| tst.js:136:38:136:50 | Math.random() |
+| tst.js:136:38:136:65 | Math.ra ... .length |
 edges
 | tst.js:2:20:2:32 | Math.random() | tst.js:2:20:2:32 | Math.random() |
 | tst.js:6:31:6:43 | Math.random() | tst.js:6:20:6:43 | "prefix ... andom() |
@@ -158,6 +165,12 @@ edges
 | tst.js:118:34:118:62 | Math.ra ... 000_000 | tst.js:118:23:118:63 | Math.fl ... 00_000) |
 | tst.js:120:16:120:28 | Math.random() | tst.js:120:16:120:28 | Math.random() |
 | tst.js:121:18:121:30 | Math.random() | tst.js:121:18:121:30 | Math.random() |
+| tst.js:136:21:136:67 | chars[M ... ength)] | tst.js:136:9:136:67 | password |
+| tst.js:136:21:136:67 | chars[M ... ength)] | tst.js:136:9:136:67 | password |
+| tst.js:136:27:136:66 | Math.fl ... length) | tst.js:136:21:136:67 | chars[M ... ength)] |
+| tst.js:136:38:136:50 | Math.random() | tst.js:136:38:136:65 | Math.ra ... .length |
+| tst.js:136:38:136:50 | Math.random() | tst.js:136:38:136:65 | Math.ra ... .length |
+| tst.js:136:38:136:65 | Math.ra ... .length | tst.js:136:27:136:66 | Math.fl ... length) |
 #select
 | tst.js:2:20:2:32 | Math.random() | tst.js:2:20:2:32 | Math.random() | tst.js:2:20:2:32 | Math.random() | This security context depends on a cryptographically insecure random number at $@. | tst.js:2:20:2:32 | Math.random() | Math.random() |
 | tst.js:6:20:6:43 | "prefix ... andom() | tst.js:6:31:6:43 | Math.random() | tst.js:6:20:6:43 | "prefix ... andom() | This security context depends on a cryptographically insecure random number at $@. | tst.js:6:31:6:43 | Math.random() | Math.random() |
@@ -181,3 +194,4 @@ edges
 | tst.js:118:23:118:63 | Math.fl ... 00_000) | tst.js:118:34:118:46 | Math.random() | tst.js:118:23:118:63 | Math.fl ... 00_000) | This security context depends on a cryptographically insecure random number at $@. | tst.js:118:34:118:46 | Math.random() | Math.random() |
 | tst.js:120:16:120:28 | Math.random() | tst.js:120:16:120:28 | Math.random() | tst.js:120:16:120:28 | Math.random() | This security context depends on a cryptographically insecure random number at $@. | tst.js:120:16:120:28 | Math.random() | Math.random() |
 | tst.js:121:18:121:30 | Math.random() | tst.js:121:18:121:30 | Math.random() | tst.js:121:18:121:30 | Math.random() | This security context depends on a cryptographically insecure random number at $@. | tst.js:121:18:121:30 | Math.random() | Math.random() |
+| tst.js:136:9:136:67 | password | tst.js:136:38:136:50 | Math.random() | tst.js:136:9:136:67 | password | This security context depends on a cryptographically insecure random number at $@. | tst.js:136:38:136:50 | Math.random() | Math.random() |

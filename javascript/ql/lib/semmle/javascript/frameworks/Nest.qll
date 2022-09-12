@@ -56,7 +56,7 @@ module NestJS {
      */
     predicate isReturnValueReflected() {
       getAFunctionDecorator(this) = nestjs().getMember(["Get", "Post"]).getACall() and
-      not hasRedirectDecorator() and
+      not this.hasRedirectDecorator() and
       not getAFunctionDecorator(this) = nestjs().getMember("Render").getACall()
     }
 
@@ -93,7 +93,7 @@ module NestJS {
     NestJSRequestInput() {
       decoratorName =
         ["Query", "Param", "Headers", "Body", "HostParam", "UploadedFile", "UploadedFiles"] and
-      decorator = getADecorator() and
+      decorator = this.getADecorator() and
       decorator = nestjs().getMember(decoratorName).getACall()
     }
 
@@ -105,7 +105,7 @@ module NestJS {
 
     /** Gets a pipe applied to this parameter, not including global pipes. */
     DataFlow::Node getAPipe() {
-      result = getNestRouteHandler().getAPipe()
+      result = this.getNestRouteHandler().getAPipe()
       or
       result = decorator.getArgument(1)
       or
@@ -132,7 +132,7 @@ module NestJS {
       hasSanitizingPipe(this, false)
       or
       hasSanitizingPipe(this, true) and
-      isSanitizingType(getParameter().getType().unfold())
+      isSanitizingType(this.getParameter().getType().unfold())
     }
   }
 
@@ -240,14 +240,14 @@ module NestJS {
       )
     }
 
-    DataFlow::FunctionNode getTransformFunction() { result = getInstanceMethod("transform") }
+    DataFlow::FunctionNode getTransformFunction() { result = this.getInstanceMethod("transform") }
 
-    DataFlow::ParameterNode getInputData() { result = getTransformFunction().getParameter(0) }
+    DataFlow::ParameterNode getInputData() { result = this.getTransformFunction().getParameter(0) }
 
-    DataFlow::Node getOutputData() { result = getTransformFunction().getReturnNode() }
+    DataFlow::Node getOutputData() { result = this.getTransformFunction().getReturnNode() }
 
     NestJSRequestInput getAnAffectedParameter() {
-      [getAnInstanceReference(), getAClassReference()].flowsTo(result.getAPipe())
+      [this.getAnInstanceReference(), this.getAClassReference()].flowsTo(result.getAPipe())
     }
   }
 
@@ -297,16 +297,16 @@ module NestJS {
   private class NestJSRequestInputAsRequestInputAccess extends NestJSRequestInput,
     HTTP::RequestInputAccess {
     NestJSRequestInputAsRequestInputAccess() {
-      not isSanitizedByPipe() and
+      not this.isSanitizedByPipe() and
       not this = any(CustomPipeClass cls).getAnAffectedParameter()
     }
 
-    override HTTP::RouteHandler getRouteHandler() { result = getNestRouteHandler() }
+    override HTTP::RouteHandler getRouteHandler() { result = this.getNestRouteHandler() }
 
-    override string getKind() { result = getInputKind() }
+    override string getKind() { result = this.getInputKind() }
 
     override predicate isUserControlledObject() {
-      not exists(getAPipe()) and // value is not transformed by a pipe
+      not exists(this.getAPipe()) and // value is not transformed by a pipe
       (
         decorator.getNumArgument() = 0
         or
@@ -349,10 +349,10 @@ module NestJS {
 
     ReturnValueAsResponseSend() {
       handler.isReturnValueReflected() and
-      this = handler.getAReturn().asExpr() and
+      this = handler.getAReturn() and
       // Only returned strings are sinks
       not exists(Type type |
-        type = getType() and
+        type = this.asExpr().getType() and
         not isStringType(type.unfold())
       )
     }
@@ -389,15 +389,15 @@ module NestJS {
     CustomParameterDecorator() { this = nestjs().getMember("createParamDecorator").getACall() }
 
     /** Gets the `context` parameter. */
-    API::Node getExecutionContext() { result = getParameter(0).getParameter(1) }
+    API::Node getExecutionContext() { result = this.getParameter(0).getParameter(1) }
 
     /** Gets a parameter with this decorator applied. */
     DataFlow::ParameterNode getADecoratedParameter() {
-      result.getADecorator() = getReturn().getReturn().getAValueReachableFromSource()
+      result.getADecorator() = this.getReturn().getReturn().getAValueReachableFromSource()
     }
 
     /** Gets a value returned by the decorator's callback, which becomes the value of the decorated parameter. */
-    DataFlow::Node getResult() { result = getParameter(0).getReturn().asSink() }
+    DataFlow::Node getResult() { result = this.getParameter(0).getReturn().asSink() }
   }
 
   /**

@@ -37,7 +37,7 @@ module CodeInjection {
    */
   class AngularJSExpressionSink extends Sink, DataFlow::ValueNode {
     AngularJSExpressionSink() {
-      any(AngularJS::AngularJSCall call).interpretsArgumentAsCode(this.asExpr())
+      any(AngularJS::AngularJSCallNode call).interpretsArgumentAsCode(this)
     }
   }
 
