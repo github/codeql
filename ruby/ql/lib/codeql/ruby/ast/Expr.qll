@@ -207,6 +207,7 @@ class BodyStmt extends StmtSequence, TBodyStmt {
     result = unique(Ensure s | toGenerated(s) = getBodyStmtChild(this, _))
   }
 
+  /** Holds if this block has an `ensure` block. */
   final predicate hasEnsure() { exists(this.getEnsure()) }
 
   override AstNode getAChild(string pred) {

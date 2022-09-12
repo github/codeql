@@ -37,6 +37,7 @@ class ErbTemplate extends TTemplate, ErbAstNode {
 
   final override string getAPrimaryQlClass() { result = "ErbTemplate" }
 
+  /** Gets a child node, if any. */
   ErbAstNode getAChildNode() { toGenerated(result) = g.getChild(_) }
 }
 
