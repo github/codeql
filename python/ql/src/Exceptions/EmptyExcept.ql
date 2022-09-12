@@ -12,6 +12,7 @@
  */
 
 import python
+import semmle.python.ApiGraphs
 
 predicate empty_except(ExceptStmt ex) {
   not exists(Stmt s | s = ex.getAStmt() and not s instanceof Pass)
@@ -28,7 +29,7 @@ predicate no_comment(ExceptStmt ex) {
 }
 
 predicate non_local_control_flow(ExceptStmt ex) {
-  ex.getType().pointsTo(ClassValue::stopIteration())
+  ex.getType() = API::builtin("StopIteration").getAValueReachableFromSource().asExpr()
 }
 
 predicate try_has_normal_exit(Try try) {
@@ -61,27 +62,32 @@ predicate subscript(Stmt s) {
   s.(Delete).getATarget() instanceof Subscript
 }
 
-predicate encode_decode(Call ex, ClassValue type) {
+predicate encode_decode(Call ex, Expr type) {
   exists(string name | ex.getFunc().(Attribute).getName() = name |
-    name = "encode" and type = ClassValue::unicodeEncodeError()
+    name = "encode" and
+    type = API::builtin("UnicodeEncodeError").getAValueReachableFromSource().asExpr()
     or
-    name = "decode" and type = ClassValue::unicodeDecodeError()
+    name = "decode" and
+    type = API::builtin("UnicodeDecodeError").getAValueReachableFromSource().asExpr()
   )
 }
 
-predicate small_handler(ExceptStmt ex, Stmt s, ClassValue type) {
+predicate small_handler(ExceptStmt ex, Stmt s, Expr type) {
   not exists(ex.getTry().getStmt(1)) and
   s = ex.getTry().getStmt(0) and
-  ex.getType().pointsTo(type)
+  ex.getType() = type
 }
 
 predicate focussed_handler(ExceptStmt ex) {
-  exists(Stmt s, ClassValue type | small_handler(ex, s, type) |
-    subscript(s) and type.getASuperType() = ClassValue::lookupError()
+  exists(Stmt s, Expr type | small_handler(ex, s, type) |
+    subscript(s) and
+    type = API::builtin("IndexError").getASubclass*().getAValueReachableFromSource().asExpr()
     or
-    attribute_access(s) and type = ClassValue::attributeError()
+    attribute_access(s) and
+    type = API::builtin("AttributeError").getAValueReachableFromSource().asExpr()
     or
-    s.(ExprStmt).getValue() instanceof Name and type = ClassValue::nameError()
+    s.(ExprStmt).getValue() instanceof Name and
+    type = API::builtin("NameError").getAValueReachableFromSource().asExpr()
     or
     encode_decode(s.(ExprStmt).getValue(), type)
   )

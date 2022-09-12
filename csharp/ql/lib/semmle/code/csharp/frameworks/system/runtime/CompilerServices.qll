@@ -103,3 +103,11 @@ private class SystemRuntimeCompilerServicesReadOnlyCollectionBuilderFlowModelCsv
       ]
   }
 }
+
+/** Data flow for `System.Runtime.CompilerServices.ConditionalWeakTable<,>`. */
+private class SystemRuntimeCompilerServicesConditionalWeakTableFlowModelCsv extends SummaryModelCsv {
+  override predicate row(string row) {
+    row =
+      "System.Runtime.CompilerServices;ConditionalWeakTable<,>;false;Clear;();;Argument[this].WithoutElement;Argument[this];value;manual"
+  }
+}

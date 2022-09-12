@@ -1,0 +1,2146 @@
+#-----| [ModuleDecl] __ObjC
+#-----| [ModuleDecl] declarations
+#-----| [ModuleDecl] expressions
+#-----| [ModuleDecl] patterns
+#-----| [ModuleDecl] statements
+declarations.swift:
+#    1| [StructDecl] Foo
+#    2|   getMember(0): [PatternBindingDecl] var ... = ...
+#    2|     getInit(0): [IntegerLiteralExpr] 11
+#    2|     getPattern(0): [NamedPattern] x
+#    2|   getMember(1): [ConcreteVarDecl] x
+#    2|       Type = Int
+#    2|     getAccessorDecl(0): [AccessorDecl] get
+#    2|         InterfaceType = (Foo) -> () -> Int
+#    2|       getSelfParam(): [ParamDecl] self
+#    2|           Type = Foo
+#    2|       getBody(): [BraceStmt] { ... }
+#    2|     getAccessorDecl(1): [AccessorDecl] set
+#    2|         InterfaceType = (inout Foo) -> (Int) -> ()
+#    2|       getSelfParam(): [ParamDecl] self
+#    2|           Type = Foo
+#    2|       getParam(0): [ParamDecl] value
+#    2|           Type = Int
+#    2|       getBody(): [BraceStmt] { ... }
+#    2|     getAccessorDecl(2): [AccessorDecl] (unnamed function decl)
+#    2|         InterfaceType = (inout Foo) -> () -> ()
+#    2|       getSelfParam(): [ParamDecl] self
+#    2|           Type = Foo
+#    2|       getBody(): [BraceStmt] { ... }
+#    2|         getElement(0): [YieldStmt] yield ...
+#    3|   getMember(2): [PatternBindingDecl] var ... = ...
+#    3|     getPattern(0): [TypedPattern] ... as ...
+#    3|       getSubPattern(): [NamedPattern] next
+#    3|       getTypeRepr(): [TypeRepr] Int
+#    3|   getMember(3): [ConcreteVarDecl] next
+#    3|       Type = Int
+#    4|     getAccessorDecl(0): [AccessorDecl] get
+#    4|         InterfaceType = (Foo) -> () -> Int
+#    4|       getSelfParam(): [ParamDecl] self
+#    4|           Type = Foo
+#    4|       getBody(): [BraceStmt] { ... }
+#    4|         getElement(0): [ReturnStmt] return ...
+#    4|           getResult(): [BinaryExpr] ... .+(_:_:) ...
+#    4|             getFunction(): [MethodRefExpr] .+(_:_:)
+#    4|               getBase(): [TypeExpr] Int.Type
+#    4|                 getTypeRepr(): [TypeRepr] Int
+#    4|             getArgument(0): [Argument] : .x
+#    4|               getExpr(): [MemberRefExpr] .x
+#    4|                 getBase(): [DeclRefExpr] self
+#    4|             getArgument(1): [Argument] : 1
+#    4|               getExpr(): [IntegerLiteralExpr] 1
+#    5|     getAccessorDecl(1): [AccessorDecl] set
+#    5|         InterfaceType = (inout Foo) -> (Int) -> ()
+#    5|       getSelfParam(): [ParamDecl] self
+#    5|           Type = Foo
+#    5|       getParam(0): [ParamDecl] newValue
+#    5|           Type = Int
+#    5|       getBody(): [BraceStmt] { ... }
+#    5|         getElement(0): [AssignExpr]  ... = ...
+#    5|           getDest(): [MemberRefExpr] .x
+#    5|             getBase(): [DeclRefExpr] self
+#    5|           getSource(): [BinaryExpr] ... .-(_:_:) ...
+#    5|             getFunction(): [MethodRefExpr] .-(_:_:)
+#    5|               getBase(): [TypeExpr] Int.Type
+#    5|                 getTypeRepr(): [TypeRepr] Int
+#    5|             getArgument(0): [Argument] : newValue
+#    5|               getExpr(): [DeclRefExpr] newValue
+#    5|             getArgument(1): [Argument] : 1
+#    5|               getExpr(): [IntegerLiteralExpr] 1
+#    3|     getAccessorDecl(2): [AccessorDecl] (unnamed function decl)
+#    3|         InterfaceType = (inout Foo) -> () -> ()
+#    3|       getSelfParam(): [ParamDecl] self
+#    3|           Type = Foo
+#    3|       getBody(): [BraceStmt] { ... }
+#    3|         getElement(0): [YieldStmt] yield ...
+#    1|   getMember(4): [ConstructorDecl] init()
+#    1|       InterfaceType = (Foo.Type) -> () -> Foo
+#    1|     getSelfParam(): [ParamDecl] self
+#    1|         Type = Foo
+#    1|     getBody(): [BraceStmt] { ... }
+#    1|       getElement(0): [ReturnStmt] return
+#    1|   getMember(5): [ConstructorDecl] init(x:)
+#    1|       InterfaceType = (Foo.Type) -> (Int) -> Foo
+#    1|     getSelfParam(): [ParamDecl] self
+#    1|         Type = Foo
+#    1|     getParam(0): [ParamDecl] x
+#    1|         Type = Int
+#    9| [ClassDecl] Bar
+#    9|   getMember(0): [PatternBindingDecl] var ... = ...
+#    9|     getInit(0): [FloatLiteralExpr] 1.3
+#    9|     getPattern(0): [TypedPattern] ... as ...
+#    9|       getSubPattern(): [NamedPattern] x
+#    9|       getTypeRepr(): [TypeRepr] Double
+#    9|   getMember(1): [ConcreteVarDecl] x
+#    9|       Type = Double
+#    9|     getAccessorDecl(0): [AccessorDecl] get
+#    9|         InterfaceType = (Bar) -> () -> Double
+#    9|       getSelfParam(): [ParamDecl] self
+#    9|           Type = Bar
+#    9|       getBody(): [BraceStmt] { ... }
+#    9|     getAccessorDecl(1): [AccessorDecl] set
+#    9|         InterfaceType = (Bar) -> (Double) -> ()
+#    9|       getSelfParam(): [ParamDecl] self
+#    9|           Type = Bar
+#    9|       getParam(0): [ParamDecl] value
+#    9|           Type = Double
+#    9|       getBody(): [BraceStmt] { ... }
+#    9|     getAccessorDecl(2): [AccessorDecl] (unnamed function decl)
+#    9|         InterfaceType = (Bar) -> () -> ()
+#    9|       getSelfParam(): [ParamDecl] self
+#    9|           Type = Bar
+#    9|       getBody(): [BraceStmt] { ... }
+#    9|         getElement(0): [YieldStmt] yield ...
+#    9|   getMember(2): [DestructorDecl] deinit()
+#    9|       InterfaceType = (Bar) -> () -> ()
+#    9|     getSelfParam(): [ParamDecl] self
+#    9|         Type = Bar
+#    9|     getBody(): [BraceStmt] { ... }
+#    9|   getMember(3): [ConstructorDecl] init()
+#    9|       InterfaceType = (Bar.Type) -> () -> Bar
+#    9|     getSelfParam(): [ParamDecl] self
+#    9|         Type = Bar
+#    9|     getBody(): [BraceStmt] { ... }
+#    9|       getElement(0): [ReturnStmt] return
+#   11| [EnumDecl] EnumValues
+#   12|   getMember(0): [EnumCaseDecl] case ...
+#   12|   getMember(1): [EnumElementDecl] value1
+#   12|   getMember(2): [EnumElementDecl] value2
+#   13|   getMember(3): [EnumCaseDecl] case ...
+#   13|   getMember(4): [EnumElementDecl] value3
+#   13|   getMember(5): [EnumElementDecl] value4
+#   13|   getMember(6): [EnumElementDecl] value5
+#   16| [EnumDecl] EnumWithParams
+#   17|   getMember(0): [EnumCaseDecl] case ...
+#   17|   getMember(1): [EnumElementDecl] nodata1
+#   17|     getParam(0): [ParamDecl] _
+#   17|         Type = Void
+#   18|   getMember(2): [EnumCaseDecl] case ...
+#   18|   getMember(3): [EnumElementDecl] intdata
+#   18|     getParam(0): [ParamDecl] _
+#   18|         Type = Int
+#   19|   getMember(4): [EnumCaseDecl] case ...
+#   19|   getMember(5): [EnumElementDecl] tuple
+#   19|     getParam(0): [ParamDecl] _
+#   19|         Type = Int
+#   19|     getParam(1): [ParamDecl] _
+#   19|         Type = String
+#   19|     getParam(2): [ParamDecl] _
+#   19|         Type = Double
+#   22| [ProtocolDecl] MyProtocol
+#   23|   getMember(0): [PatternBindingDecl] var ... = ...
+#   23|     getPattern(0): [TypedPattern] ... as ...
+#   23|       getSubPattern(): [NamedPattern] mustBeSettable
+#   23|       getTypeRepr(): [TypeRepr] Int
+#   23|   getMember(1): [ConcreteVarDecl] mustBeSettable
+#   23|       Type = Int
+#   23|     getAccessorDecl(0): [AccessorDecl] get
+#   23|         InterfaceType = <Self where Self : MyProtocol> (Self) -> () -> Int
+#   23|       getSelfParam(): [ParamDecl] self
+#   23|           Type = Self
+#   23|     getAccessorDecl(1): [AccessorDecl] set
+#   23|         InterfaceType = <Self where Self : MyProtocol> (inout Self) -> (Int) -> ()
+#   23|       getSelfParam(): [ParamDecl] self
+#   23|           Type = Self
+#   23|       getParam(0): [ParamDecl] newValue
+#   23|           Type = Int
+#   23|     getAccessorDecl(2): [AccessorDecl] (unnamed function decl)
+#   23|         InterfaceType = <Self where Self : MyProtocol> (inout Self) -> () -> ()
+#   23|       getSelfParam(): [ParamDecl] self
+#   23|           Type = Self
+#   24|   getMember(2): [PatternBindingDecl] var ... = ...
+#   24|     getPattern(0): [TypedPattern] ... as ...
+#   24|       getSubPattern(): [NamedPattern] doesNotNeedToBeSettable
+#   24|       getTypeRepr(): [TypeRepr] Int
+#   24|   getMember(3): [ConcreteVarDecl] doesNotNeedToBeSettable
+#   24|       Type = Int
+#   24|     getAccessorDecl(0): [AccessorDecl] get
+#   24|         InterfaceType = <Self where Self : MyProtocol> (Self) -> () -> Int
+#   24|       getSelfParam(): [ParamDecl] self
+#   24|           Type = Self
+#   25|   getMember(4): [ConcreteFuncDecl] random()
+#   25|       InterfaceType = <Self where Self : MyProtocol> (Self) -> () -> Double
+#   25|     getSelfParam(): [ParamDecl] self
+#   25|         Type = Self
+#   28| [ConcreteFuncDecl] a_function(a_parameter:)
+#   28|     InterfaceType = (Int) -> ()
+#   28|   getParam(0): [ParamDecl] a_parameter
+#   28|       Type = Int
+#   28|   getBody(): [BraceStmt] { ... }
+#   30| [TopLevelCodeDecl] { ... }
+#   30|   getBody(): [BraceStmt] { ... }
+#   30|     getElement(0): [PatternBindingDecl] var ... = ...
+#   30|       getInit(0): [IntegerLiteralExpr] 42
+#   30|       getPattern(0): [NamedPattern] a_variable
+#   30| [ConcreteVarDecl] a_variable
+#   30|     Type = Int
+#   31| [TopLevelCodeDecl] { ... }
+#   31|   getBody(): [BraceStmt] { ... }
+#   31|     getElement(0): [PatternBindingDecl] var ... = ...
+#   31|       getPattern(0): [TypedPattern] ... as ...
+#   31|         getSubPattern(): [NamedPattern] a_property
+#   31|         getTypeRepr(): [TypeRepr] String
+#   31| [ConcreteVarDecl] a_property
+#   31|     Type = String
+#   32|   getAccessorDecl(0): [AccessorDecl] get
+#   32|       InterfaceType = () -> String
+#   32|     getBody(): [BraceStmt] { ... }
+#   33|       getElement(0): [ReturnStmt] return ...
+#   33|         getResult(): [StringLiteralExpr] here
+#   35|   getAccessorDecl(1): [AccessorDecl] set
+#   35|       InterfaceType = (String) -> ()
+#   35|     getParam(0): [ParamDecl] newValue
+#   35|         Type = String
+#   35|     getBody(): [BraceStmt] { ... }
+#   38| [TopLevelCodeDecl] { ... }
+#   38|   getBody(): [BraceStmt] { ... }
+#   38|     getElement(0): [CallExpr] call to print(_:separator:terminator:)
+#   38|       getFunction(): [DeclRefExpr] print(_:separator:terminator:)
+#   38|       getArgument(0): [Argument] : [...]
+#   38|         getExpr(): [VarargExpansionExpr] [...]
+#   38|           getSubExpr(): [ArrayExpr] [...]
+#   38|             getElement(0): [StringLiteralExpr] some top level statement
+#   38|             getElement(0).getFullyConverted(): [ErasureExpr] (Any) ...
+#   38|       getArgument(1): [Argument] separator: default separator
+#   38|         getExpr(): [DefaultArgumentExpr] default separator
+#   38|       getArgument(2): [Argument] terminator: default terminator
+#   38|         getExpr(): [DefaultArgumentExpr] default terminator
+#   40| [ClassDecl] Baz
+#   41|   getMember(0): [PatternBindingDecl] var ... = ...
+#   41|     getPattern(0): [TypedPattern] ... as ...
+#   41|       getSubPattern(): [NamedPattern] field
+#   41|       getTypeRepr(): [TypeRepr] Int
+#   41|   getMember(1): [ConcreteVarDecl] field
+#   41|       Type = Int
+#   41|     getAccessorDecl(0): [AccessorDecl] get
+#   41|         InterfaceType = (Baz) -> () -> Int
+#   41|       getSelfParam(): [ParamDecl] self
+#   41|           Type = Baz
+#   41|       getBody(): [BraceStmt] { ... }
+#   41|     getAccessorDecl(1): [AccessorDecl] set
+#   41|         InterfaceType = (Baz) -> (Int) -> ()
+#   41|       getSelfParam(): [ParamDecl] self
+#   41|           Type = Baz
+#   41|       getParam(0): [ParamDecl] value
+#   41|           Type = Int
+#   41|       getBody(): [BraceStmt] { ... }
+#   41|     getAccessorDecl(2): [AccessorDecl] (unnamed function decl)
+#   41|         InterfaceType = (Baz) -> () -> ()
+#   41|       getSelfParam(): [ParamDecl] self
+#   41|           Type = Baz
+#   41|       getBody(): [BraceStmt] { ... }
+#   41|         getElement(0): [YieldStmt] yield ...
+#   42|   getMember(2): [ConstructorDecl] init()
+#   42|       InterfaceType = (Baz.Type) -> () -> Baz
+#   42|     getSelfParam(): [ParamDecl] self
+#   42|         Type = Baz
+#   42|     getBody(): [BraceStmt] { ... }
+#   43|       getElement(0): [AssignExpr]  ... = ...
+#   43|         getDest(): [MemberRefExpr] .field
+#   43|           getBase(): [DeclRefExpr] self
+#   43|         getSource(): [IntegerLiteralExpr] 10
+#   44|       getElement(1): [ReturnStmt] return
+#   46|   getMember(3): [DestructorDecl] deinit()
+#   46|       InterfaceType = (Baz) -> () -> ()
+#   46|     getSelfParam(): [ParamDecl] self
+#   46|         Type = Baz
+#   46|     getBody(): [BraceStmt] { ... }
+#   47|       getElement(0): [AssignExpr]  ... = ...
+#   47|         getDest(): [MemberRefExpr] .field
+#   47|           getBase(): [DeclRefExpr] self
+#   47|         getSource(): [IntegerLiteralExpr] 0
+#   50|   getMember(4): [ConcreteFuncDecl] +-(_:)
+#   50|       InterfaceType = (Baz.Type) -> (Baz) -> Baz
+#   50|     getSelfParam(): [ParamDecl] self
+#   50|         Type = Baz.Type
+#   50|     getParam(0): [ParamDecl] other
+#   50|         Type = Baz
+#   50|     getBody(): [BraceStmt] { ... }
+#   51|       getElement(0): [ReturnStmt] return ...
+#   51|         getResult(): [DeclRefExpr] other
+#   55| [PrefixOperatorDecl] +-
+#   57| [PrecedenceGroupDecl] precedencegroup ...
+#   64| [InfixOperatorDecl] +++
+#   66| [InfixOperatorDecl] ***
+#   68| [StructDecl] ZeroWrapper
+#   69|   getMember(0): [PatternBindingDecl] var ... = ...
+#   69|     getPattern(0): [TypedPattern] ... as ...
+#   69|       getSubPattern(): [NamedPattern] wrappedValue
+#   69|       getTypeRepr(): [TypeRepr] Int
+#   69|   getMember(1): [ConcreteVarDecl] wrappedValue
+#   69|       Type = Int
+#   70|     getAccessorDecl(0): [AccessorDecl] get
+#   70|         InterfaceType = (ZeroWrapper) -> () -> Int
+#   70|       getSelfParam(): [ParamDecl] self
+#   70|           Type = ZeroWrapper
+#   70|       getBody(): [BraceStmt] { ... }
+#   71|         getElement(0): [ReturnStmt] return ...
+#   71|           getResult(): [IntegerLiteralExpr] 0
+#   68|   getMember(2): [ConstructorDecl] init()
+#   68|       InterfaceType = (ZeroWrapper.Type) -> () -> ZeroWrapper
+#   68|     getSelfParam(): [ParamDecl] self
+#   68|         Type = ZeroWrapper
+#   68|     getBody(): [BraceStmt] { ... }
+#   68|       getElement(0): [ReturnStmt] return
+#   76| [ConcreteFuncDecl] foo()
+#   76|     InterfaceType = () -> Int
+#   76|   getBody(): [BraceStmt] { ... }
+#   77|     getElement(0): [PatternBindingDecl] var ... = ...
+#   77|       getPattern(0): [TypedPattern] ... as ...
+#   77|         getSubPattern(): [NamedPattern] x
+#   77|         getTypeRepr(): [TypeRepr] Int
+#   77|     getElement(1): [ConcreteVarDecl] x
+#   77|         Type = Int
+#   77|       getAccessorDecl(0): [AccessorDecl] get
+#   77|           InterfaceType = () -> Int
+#   77|         getBody(): [BraceStmt] { ... }
+#   78|     getElement(2): [ReturnStmt] return ...
+#   78|       getResult(): [DeclRefExpr] x
+#   77| [CallExpr] call to init()
+#   77|   getFunction(): [ConstructorRefCallExpr] call to init()
+#   77|     getFunction(): [DeclRefExpr] init()
+#   77|     getArgument(0): [Argument] : ZeroWrapper.Type
+#   77|       getExpr(): [TypeExpr] ZeroWrapper.Type
+#   77|         getTypeRepr(): [TypeRepr] ZeroWrapper
+#   77| [TypedPattern] ... as ...
+#   77|   getSubPattern(): [NamedPattern] _x
+#   77| [ConcreteVarDecl] _x
+#   77|     Type = ZeroWrapper
+#   81| [StructDecl] HasPropertyAndObserver
+#   82|   getMember(0): [PatternBindingDecl] var ... = ...
+#   82|     getPattern(0): [TypedPattern] ... as ...
+#   82|       getSubPattern(): [NamedPattern] settableField
+#   82|       getTypeRepr(): [TypeRepr] Int
+#   82|   getMember(1): [ConcreteVarDecl] settableField
+#   82|       Type = Int
+#   83|     getAccessorDecl(0): [AccessorDecl] set
+#   83|         InterfaceType = (inout HasPropertyAndObserver) -> (Int) -> ()
+#   83|       getSelfParam(): [ParamDecl] self
+#   83|           Type = HasPropertyAndObserver
+#   83|       getParam(0): [ParamDecl] newValue
+#   83|           Type = Int
+#   83|       getBody(): [BraceStmt] { ... }
+#   84|     getAccessorDecl(1): [AccessorDecl] get
+#   84|         InterfaceType = (HasPropertyAndObserver) -> () -> Int
+#   84|       getSelfParam(): [ParamDecl] self
+#   84|           Type = HasPropertyAndObserver
+#   84|       getBody(): [BraceStmt] { ... }
+#   85|         getElement(0): [ReturnStmt] return ...
+#   85|           getResult(): [IntegerLiteralExpr] 0
+#   82|     getAccessorDecl(2): [AccessorDecl] (unnamed function decl)
+#   82|         InterfaceType = (inout HasPropertyAndObserver) -> () -> ()
+#   82|       getSelfParam(): [ParamDecl] self
+#   82|           Type = HasPropertyAndObserver
+#   82|       getBody(): [BraceStmt] { ... }
+#   82|         getElement(0): [YieldStmt] yield ...
+#   91|   getMember(2): [PatternBindingDecl] var ... = ...
+#   91|     getPattern(0): [TypedPattern] ... as ...
+#   91|       getSubPattern(): [NamedPattern] readOnlyField1
+#   91|       getTypeRepr(): [TypeRepr] Int
+#   91|   getMember(3): [ConcreteVarDecl] readOnlyField1
+#   91|       Type = Int
+#   91|     getAccessorDecl(0): [AccessorDecl] get
+#   91|         InterfaceType = (HasPropertyAndObserver) -> () -> Int
+#   91|       getSelfParam(): [ParamDecl] self
+#   91|           Type = HasPropertyAndObserver
+#   91|       getBody(): [BraceStmt] { ... }
+#   92|         getElement(0): [ReturnStmt] return ...
+#   92|           getResult(): [IntegerLiteralExpr] 0
+#   96|   getMember(4): [PatternBindingDecl] var ... = ...
+#   96|     getPattern(0): [TypedPattern] ... as ...
+#   96|       getSubPattern(): [NamedPattern] readOnlyField2
+#   96|       getTypeRepr(): [TypeRepr] Int
+#   96|   getMember(5): [ConcreteVarDecl] readOnlyField2
+#   96|       Type = Int
+#   97|     getAccessorDecl(0): [AccessorDecl] get
+#   97|         InterfaceType = (HasPropertyAndObserver) -> () -> Int
+#   97|       getSelfParam(): [ParamDecl] self
+#   97|           Type = HasPropertyAndObserver
+#   97|       getBody(): [BraceStmt] { ... }
+#   98|         getElement(0): [ReturnStmt] return ...
+#   98|           getResult(): [IntegerLiteralExpr] 0
+#  102|   getMember(6): [PatternBindingDecl] var ... = ...
+#  102|     getPattern(0): [TypedPattern] ... as ...
+#  102|       getSubPattern(): [NamedPattern] normalField
+#  102|       getTypeRepr(): [TypeRepr] Int
+#  102|   getMember(7): [ConcreteVarDecl] normalField
+#  102|       Type = Int
+#  102|     getAccessorDecl(0): [AccessorDecl] get
+#  102|         InterfaceType = (HasPropertyAndObserver) -> () -> Int
+#  102|       getSelfParam(): [ParamDecl] self
+#  102|           Type = HasPropertyAndObserver
+#  102|       getBody(): [BraceStmt] { ... }
+#  102|     getAccessorDecl(1): [AccessorDecl] set
+#  102|         InterfaceType = (inout HasPropertyAndObserver) -> (Int) -> ()
+#  102|       getSelfParam(): [ParamDecl] self
+#  102|           Type = HasPropertyAndObserver
+#  102|       getParam(0): [ParamDecl] value
+#  102|           Type = Int
+#  102|       getBody(): [BraceStmt] { ... }
+#  102|     getAccessorDecl(2): [AccessorDecl] (unnamed function decl)
+#  102|         InterfaceType = (inout HasPropertyAndObserver) -> () -> ()
+#  102|       getSelfParam(): [ParamDecl] self
+#  102|           Type = HasPropertyAndObserver
+#  102|       getBody(): [BraceStmt] { ... }
+#  102|         getElement(0): [YieldStmt] yield ...
+#  104|   getMember(8): [SubscriptDecl] subscript ...
+#  105|     getAccessorDecl(0): [AccessorDecl] get
+#  105|         InterfaceType = (HasPropertyAndObserver) -> (Int) -> Int
+#  105|       getSelfParam(): [ParamDecl] self
+#  105|           Type = HasPropertyAndObserver
+#  104|       getParam(0): [ParamDecl] x
+#  104|           Type = Int
+#  105|       getBody(): [BraceStmt] { ... }
+#  106|         getElement(0): [ReturnStmt] return ...
+#  106|           getResult(): [IntegerLiteralExpr] 0
+#  108|     getAccessorDecl(1): [AccessorDecl] set
+#  108|         InterfaceType = (inout HasPropertyAndObserver) -> (Int, Int) -> ()
+#  108|       getSelfParam(): [ParamDecl] self
+#  108|           Type = HasPropertyAndObserver
+#  108|       getParam(0): [ParamDecl] newValue
+#  108|           Type = Int
+#  104|       getParam(1): [ParamDecl] x
+#  104|           Type = Int
+#  108|       getBody(): [BraceStmt] { ... }
+#  104|     getAccessorDecl(2): [AccessorDecl] (unnamed function decl)
+#  104|         InterfaceType = (inout HasPropertyAndObserver) -> (Int) -> ()
+#  104|       getSelfParam(): [ParamDecl] self
+#  104|           Type = HasPropertyAndObserver
+#  104|       getBody(): [BraceStmt] { ... }
+#  104|         getElement(0): [YieldStmt] yield ...
+#  104|     getParam(0): [ParamDecl] x
+#  104|         Type = Int
+#  111|   getMember(9): [SubscriptDecl] subscript ...
+#  111|     getAccessorDecl(0): [AccessorDecl] get
+#  111|         InterfaceType = (HasPropertyAndObserver) -> (Int, Int) -> Int
+#  111|       getSelfParam(): [ParamDecl] self
+#  111|           Type = HasPropertyAndObserver
+#  111|       getParam(0): [ParamDecl] x
+#  111|           Type = Int
+#  111|       getParam(1): [ParamDecl] y
+#  111|           Type = Int
+#  111|       getBody(): [BraceStmt] { ... }
+#  112|         getElement(0): [ReturnStmt] return ...
+#  112|           getResult(): [IntegerLiteralExpr] 0
+#  111|     getParam(0): [ParamDecl] x
+#  111|         Type = Int
+#  111|     getParam(1): [ParamDecl] y
+#  111|         Type = Int
+#  115|   getMember(10): [PatternBindingDecl] var ... = ...
+#  115|     getPattern(0): [TypedPattern] ... as ...
+#  115|       getSubPattern(): [NamedPattern] hasWillSet1
+#  115|       getTypeRepr(): [TypeRepr] Int
+#  115|   getMember(11): [ConcreteVarDecl] hasWillSet1
+#  115|       Type = Int
+#  116|     getAccessorDecl(0): [AccessorDecl] willSet
+#  116|         InterfaceType = (inout HasPropertyAndObserver) -> (Int) -> ()
+#  116|       getSelfParam(): [ParamDecl] self
+#  116|           Type = HasPropertyAndObserver
+#  116|       getParam(0): [ParamDecl] newValue
+#  116|           Type = Int
+#  116|       getBody(): [BraceStmt] { ... }
+#  115|     getAccessorDecl(1): [AccessorDecl] get
+#  115|         InterfaceType = (HasPropertyAndObserver) -> () -> Int
+#  115|       getSelfParam(): [ParamDecl] self
+#  115|           Type = HasPropertyAndObserver
+#  115|       getBody(): [BraceStmt] { ... }
+#  115|     getAccessorDecl(2): [AccessorDecl] set
+#  115|         InterfaceType = (inout HasPropertyAndObserver) -> (Int) -> ()
+#  115|       getSelfParam(): [ParamDecl] self
+#  115|           Type = HasPropertyAndObserver
+#  115|       getParam(0): [ParamDecl] value
+#  115|           Type = Int
+#  115|       getBody(): [BraceStmt] { ... }
+#  115|     getAccessorDecl(3): [AccessorDecl] (unnamed function decl)
+#  115|         InterfaceType = (inout HasPropertyAndObserver) -> () -> ()
+#  115|       getSelfParam(): [ParamDecl] self
+#  115|           Type = HasPropertyAndObserver
+#  115|       getBody(): [BraceStmt] { ... }
+#  115|         getElement(0): [YieldStmt] yield ...
+#  119|   getMember(12): [PatternBindingDecl] var ... = ...
+#  119|     getPattern(0): [TypedPattern] ... as ...
+#  119|       getSubPattern(): [NamedPattern] hasWillSet2
+#  119|       getTypeRepr(): [TypeRepr] Int
+#  119|   getMember(13): [ConcreteVarDecl] hasWillSet2
+#  119|       Type = Int
+#  120|     getAccessorDecl(0): [AccessorDecl] willSet
+#  120|         InterfaceType = (inout HasPropertyAndObserver) -> (Int) -> ()
+#  120|       getSelfParam(): [ParamDecl] self
+#  120|           Type = HasPropertyAndObserver
+#  120|       getParam(0): [ParamDecl] newValue
+#  120|           Type = Int
+#  120|       getBody(): [BraceStmt] { ... }
+#  119|     getAccessorDecl(1): [AccessorDecl] get
+#  119|         InterfaceType = (HasPropertyAndObserver) -> () -> Int
+#  119|       getSelfParam(): [ParamDecl] self
+#  119|           Type = HasPropertyAndObserver
+#  119|       getBody(): [BraceStmt] { ... }
+#  119|     getAccessorDecl(2): [AccessorDecl] set
+#  119|         InterfaceType = (inout HasPropertyAndObserver) -> (Int) -> ()
+#  119|       getSelfParam(): [ParamDecl] self
+#  119|           Type = HasPropertyAndObserver
+#  119|       getParam(0): [ParamDecl] value
+#  119|           Type = Int
+#  119|       getBody(): [BraceStmt] { ... }
+#  119|     getAccessorDecl(3): [AccessorDecl] (unnamed function decl)
+#  119|         InterfaceType = (inout HasPropertyAndObserver) -> () -> ()
+#  119|       getSelfParam(): [ParamDecl] self
+#  119|           Type = HasPropertyAndObserver
+#  119|       getBody(): [BraceStmt] { ... }
+#  119|         getElement(0): [YieldStmt] yield ...
+#  123|   getMember(14): [PatternBindingDecl] var ... = ...
+#  123|     getPattern(0): [TypedPattern] ... as ...
+#  123|       getSubPattern(): [NamedPattern] hasDidSet1
+#  123|       getTypeRepr(): [TypeRepr] Int
+#  123|   getMember(15): [ConcreteVarDecl] hasDidSet1
+#  123|       Type = Int
+#  124|     getAccessorDecl(0): [AccessorDecl] didSet
+#  124|         InterfaceType = (inout HasPropertyAndObserver) -> (Int) -> ()
+#  124|       getSelfParam(): [ParamDecl] self
+#  124|           Type = HasPropertyAndObserver
+#  124|       getParam(0): [ParamDecl] oldValue
+#  124|           Type = Int
+#  124|       getBody(): [BraceStmt] { ... }
+#  123|     getAccessorDecl(1): [AccessorDecl] get
+#  123|         InterfaceType = (HasPropertyAndObserver) -> () -> Int
+#  123|       getSelfParam(): [ParamDecl] self
+#  123|           Type = HasPropertyAndObserver
+#  123|       getBody(): [BraceStmt] { ... }
+#  123|     getAccessorDecl(2): [AccessorDecl] set
+#  123|         InterfaceType = (inout HasPropertyAndObserver) -> (Int) -> ()
+#  123|       getSelfParam(): [ParamDecl] self
+#  123|           Type = HasPropertyAndObserver
+#  123|       getParam(0): [ParamDecl] value
+#  123|           Type = Int
+#  123|       getBody(): [BraceStmt] { ... }
+#  123|     getAccessorDecl(3): [AccessorDecl] (unnamed function decl)
+#  123|         InterfaceType = (inout HasPropertyAndObserver) -> () -> ()
+#  123|       getSelfParam(): [ParamDecl] self
+#  123|           Type = HasPropertyAndObserver
+#  123|       getBody(): [BraceStmt] { ... }
+#  123|         getElement(0): [YieldStmt] yield ...
+#  127|   getMember(16): [PatternBindingDecl] var ... = ...
+#  127|     getPattern(0): [TypedPattern] ... as ...
+#  127|       getSubPattern(): [NamedPattern] hasDidSet2
+#  127|       getTypeRepr(): [TypeRepr] Int
+#  127|   getMember(17): [ConcreteVarDecl] hasDidSet2
+#  127|       Type = Int
+#  128|     getAccessorDecl(0): [AccessorDecl] didSet
+#  128|         InterfaceType = (inout HasPropertyAndObserver) -> () -> ()
+#  128|       getSelfParam(): [ParamDecl] self
+#  128|           Type = HasPropertyAndObserver
+#  128|       getBody(): [BraceStmt] { ... }
+#  127|     getAccessorDecl(1): [AccessorDecl] get
+#  127|         InterfaceType = (HasPropertyAndObserver) -> () -> Int
+#  127|       getSelfParam(): [ParamDecl] self
+#  127|           Type = HasPropertyAndObserver
+#  127|       getBody(): [BraceStmt] { ... }
+#  127|     getAccessorDecl(2): [AccessorDecl] set
+#  127|         InterfaceType = (inout HasPropertyAndObserver) -> (Int) -> ()
+#  127|       getSelfParam(): [ParamDecl] self
+#  127|           Type = HasPropertyAndObserver
+#  127|       getParam(0): [ParamDecl] value
+#  127|           Type = Int
+#  127|       getBody(): [BraceStmt] { ... }
+#  127|     getAccessorDecl(3): [AccessorDecl] (unnamed function decl)
+#  127|         InterfaceType = (inout HasPropertyAndObserver) -> () -> ()
+#  127|       getSelfParam(): [ParamDecl] self
+#  127|           Type = HasPropertyAndObserver
+#  127|       getBody(): [BraceStmt] { ... }
+#  127|         getElement(0): [YieldStmt] yield ...
+#  131|   getMember(18): [PatternBindingDecl] var ... = ...
+#  131|     getPattern(0): [TypedPattern] ... as ...
+#  131|       getSubPattern(): [NamedPattern] hasBoth
+#  131|       getTypeRepr(): [TypeRepr] Int
+#  131|   getMember(19): [ConcreteVarDecl] hasBoth
+#  131|       Type = Int
+#  132|     getAccessorDecl(0): [AccessorDecl] willSet
+#  132|         InterfaceType = (inout HasPropertyAndObserver) -> (Int) -> ()
+#  132|       getSelfParam(): [ParamDecl] self
+#  132|           Type = HasPropertyAndObserver
+#  132|       getParam(0): [ParamDecl] newValue
+#  132|           Type = Int
+#  132|       getBody(): [BraceStmt] { ... }
+#  134|     getAccessorDecl(1): [AccessorDecl] didSet
+#  134|         InterfaceType = (inout HasPropertyAndObserver) -> () -> ()
+#  134|       getSelfParam(): [ParamDecl] self
+#  134|           Type = HasPropertyAndObserver
+#  134|       getBody(): [BraceStmt] { ... }
+#  131|     getAccessorDecl(2): [AccessorDecl] get
+#  131|         InterfaceType = (HasPropertyAndObserver) -> () -> Int
+#  131|       getSelfParam(): [ParamDecl] self
+#  131|           Type = HasPropertyAndObserver
+#  131|       getBody(): [BraceStmt] { ... }
+#  131|     getAccessorDecl(3): [AccessorDecl] set
+#  131|         InterfaceType = (inout HasPropertyAndObserver) -> (Int) -> ()
+#  131|       getSelfParam(): [ParamDecl] self
+#  131|           Type = HasPropertyAndObserver
+#  131|       getParam(0): [ParamDecl] value
+#  131|           Type = Int
+#  131|       getBody(): [BraceStmt] { ... }
+#  131|     getAccessorDecl(4): [AccessorDecl] (unnamed function decl)
+#  131|         InterfaceType = (inout HasPropertyAndObserver) -> () -> ()
+#  131|       getSelfParam(): [ParamDecl] self
+#  131|           Type = HasPropertyAndObserver
+#  131|       getBody(): [BraceStmt] { ... }
+#  131|         getElement(0): [YieldStmt] yield ...
+#   81|   getMember(20): [ConstructorDecl] init(normalField:hasWillSet1:hasWillSet2:hasDidSet1:hasDidSet2:hasBoth:)
+#   81|       InterfaceType = (HasPropertyAndObserver.Type) -> (Int, Int, Int, Int, Int, Int) -> HasPropertyAndObserver
+#   81|     getSelfParam(): [ParamDecl] self
+#   81|         Type = HasPropertyAndObserver
+#   81|     getParam(0): [ParamDecl] normalField
+#   81|         Type = Int
+#   81|     getParam(1): [ParamDecl] hasWillSet1
+#   81|         Type = Int
+#   81|     getParam(2): [ParamDecl] hasWillSet2
+#   81|         Type = Int
+#   81|     getParam(3): [ParamDecl] hasDidSet1
+#   81|         Type = Int
+#   81|     getParam(4): [ParamDecl] hasDidSet2
+#   81|         Type = Int
+#   81|     getParam(5): [ParamDecl] hasBoth
+#   81|         Type = Int
+#   89| [Comment] // A field can be marked as read-only by dirctly implementing
+#   89| 
+#   90| [Comment] // the getter between the braces.
+#   90| 
+#   95| [Comment] // Or by adding an access declaration
+#   95| 
+#  138| [ExtensionDecl] extension
+#  139|   getMember(0): [ConcreteFuncDecl] id()
+#  139|       InterfaceType = (Int) -> () -> Int
+#  139|     getSelfParam(): [ParamDecl] self
+#  139|         Type = Int
+#  139|     getBody(): [BraceStmt] { ... }
+#  140|       getElement(0): [ReturnStmt] return ...
+#  140|         getResult(): [DeclRefExpr] self
+#  144| [TopLevelCodeDecl] { ... }
+#  144|   getBody(): [BraceStmt] { ... }
+#  144|     getElement(0): [CallExpr] call to id()
+#  144|       getFunction(): [MethodRefExpr] .id()
+#  144|         getBase(): [IntegerLiteralExpr] 42
+#  146| [ClassDecl] GenericClass
+#  146|   getGenericTypeParam(0): [GenericTypeParamDecl] A
+#  146|   getGenericTypeParam(1): [GenericTypeParamDecl] B
+#  146|   getGenericTypeParam(2): [GenericTypeParamDecl] C
+#  147|   getMember(0): [ConcreteFuncDecl] genericMethod(_:_:_:)
+#  147|       InterfaceType = <A, B, C where B : Baz, C : MyProtocol> (GenericClass<A, B, C>) -> (A, B, C) -> ()
+#  147|     getSelfParam(): [ParamDecl] self
+#  147|         Type = GenericClass<A, B, C>
+#  147|     getParam(0): [ParamDecl] _
+#  147|         Type = A
+#  147|     getParam(1): [ParamDecl] _
+#  147|         Type = B
+#  147|     getParam(2): [ParamDecl] _
+#  147|         Type = C
+#  147|     getBody(): [BraceStmt] { ... }
+#  146|   getMember(1): [DestructorDecl] deinit()
+#  146|       InterfaceType = <A, B, C where B : Baz, C : MyProtocol> (GenericClass<A, B, C>) -> () -> ()
+#  146|     getSelfParam(): [ParamDecl] self
+#  146|         Type = GenericClass<A, B, C>
+#  146|     getBody(): [BraceStmt] { ... }
+#  146|   getMember(2): [ConstructorDecl] init()
+#  146|       InterfaceType = <A, B, C where B : Baz, C : MyProtocol> (GenericClass<A, B, C>.Type) -> () -> GenericClass<A, B, C>
+#  146|     getSelfParam(): [ParamDecl] self
+#  146|         Type = GenericClass<A, B, C>
+#  146|     getBody(): [BraceStmt] { ... }
+#  146|       getElement(0): [ReturnStmt] return
+#  150| [ConcreteFuncDecl] genericFunc(_:_:_:)
+#  150|     InterfaceType = <A, B, C where B : Baz, C : MyProtocol> (A, B, C) -> ()
+#  150|   getGenericTypeParam(0): [GenericTypeParamDecl] A
+#  150|   getGenericTypeParam(1): [GenericTypeParamDecl] B
+#  150|   getGenericTypeParam(2): [GenericTypeParamDecl] C
+#  150|   getParam(0): [ParamDecl] _
+#  150|       Type = A
+#  150|   getParam(1): [ParamDecl] _
+#  150|       Type = B
+#  150|   getParam(2): [ParamDecl] _
+#  150|       Type = C
+#  150|   getBody(): [BraceStmt] { ... }
+#  152| [ClassDecl] Derived
+#  152|   getMember(0): [ConstructorDecl] init()
+#  152|       InterfaceType = (Derived.Type) -> () -> Derived
+#  152|     getSelfParam(): [ParamDecl] self
+#  152|         Type = Derived
+#  152|   getMember(1): [DestructorDecl] deinit()
+#  152|       InterfaceType = (Derived) -> () -> ()
+#  152|     getSelfParam(): [ParamDecl] self
+#  152|         Type = Derived
+#  152|     getBody(): [BraceStmt] { ... }
+#  154| [Comment] // multiple conversions
+#  154| 
+#  155| [TopLevelCodeDecl] { ... }
+#  155|   getBody(): [BraceStmt] { ... }
+#  155|     getElement(0): [PatternBindingDecl] var ... = ...
+#  155|       getInit(0): [CallExpr] call to init()
+#  155|         getFunction(): [ConstructorRefCallExpr] call to init()
+#  155|           getFunction(): [DeclRefExpr] init()
+#  155|           getArgument(0): [Argument] : Derived.Type
+#  155|             getExpr(): [TypeExpr] Derived.Type
+#  155|               getTypeRepr(): [TypeRepr] Derived
+#  155|       getInit(0).getFullyConverted(): [InjectIntoOptionalExpr] (Baz?) ...
+#  155|         getImmediateSubExpr(): [CoerceExpr] (Baz) ...
+#  155|           getImmediateSubExpr(): [DerivedToBaseExpr] (Baz) ...
+#  155|       getPattern(0): [TypedPattern] ... as ...
+#  155|         getSubPattern(): [NamedPattern] d
+#  155|         getTypeRepr(): [TypeRepr] Baz?
+#  155| [ConcreteVarDecl] d
+#  155|     Type = Baz?
+expressions.swift:
+#    1| [TopLevelCodeDecl] { ... }
+#    1|   getBody(): [BraceStmt] { ... }
+#    1|     getElement(0): [PatternBindingDecl] var ... = ...
+#    1|       getInit(0): [IntegerLiteralExpr] 15
+#    1|       getPattern(0): [NamedPattern] a
+#    1| [ConcreteVarDecl] a
+#    1|     Type = Int
+#    2| [TopLevelCodeDecl] { ... }
+#    2|   getBody(): [BraceStmt] { ... }
+#    2|     getElement(0): [PatternBindingDecl] var ... = ...
+#    2|       getInit(0): [FloatLiteralExpr] 15.15
+#    2|       getPattern(0): [NamedPattern] b
+#    2| [ConcreteVarDecl] b
+#    2|     Type = Double
+#    3| [TopLevelCodeDecl] { ... }
+#    3|   getBody(): [BraceStmt] { ... }
+#    3|     getElement(0): [PatternBindingDecl] var ... = ...
+#    3|       getInit(0): [BooleanLiteralExpr] true
+#    3|       getPattern(0): [NamedPattern] b1
+#    3| [ConcreteVarDecl] b1
+#    3|     Type = Bool
+#    4| [TopLevelCodeDecl] { ... }
+#    4|   getBody(): [BraceStmt] { ... }
+#    4|     getElement(0): [PatternBindingDecl] var ... = ...
+#    4|       getInit(0): [BooleanLiteralExpr] false
+#    4|       getPattern(0): [NamedPattern] b2
+#    4| [ConcreteVarDecl] b2
+#    4|     Type = Bool
+#    5| [TopLevelCodeDecl] { ... }
+#    5|   getBody(): [BraceStmt] { ... }
+#    5|     getElement(0): [PatternBindingDecl] var ... = ...
+#    5|       getInit(0): [MagicIdentifierLiteralExpr] #...
+#    5|       getPattern(0): [NamedPattern] m
+#    5| [ConcreteVarDecl] m
+#    5|     Type = String
+#    6| [TopLevelCodeDecl] { ... }
+#    6|   getBody(): [BraceStmt] { ... }
+#    6|     getElement(0): [PatternBindingDecl] var ... = ...
+#    6|       getInit(0): [StringLiteralExpr] hello world
+#    6|       getPattern(0): [NamedPattern] s
+#    6| [ConcreteVarDecl] s
+#    6|     Type = String
+#    7| [TopLevelCodeDecl] { ... }
+#    7|   getBody(): [BraceStmt] { ... }
+#    7|     getElement(0): [PatternBindingDecl] var ... = ...
+#    7|       getInit(0): [InterpolatedStringLiteralExpr] "..."
+#    7|         getAppendingExpr(): [TapExpr] TapExpr
+#    7|           getSubExpr(): [OpaqueValueExpr] OpaqueValueExpr
+#    7|           getBody(): [BraceStmt] { ... }
+#    7|             getElement(1): [CallExpr] call to appendLiteral(_:)
+#    7|               getFunction(): [MethodRefExpr] .appendLiteral(_:)
+#    7|                 getBase(): [InOutExpr] &...
+#    7|                   getSubExpr(): [DeclRefExpr] $interpolation
+#    7|               getArgument(0): [Argument] : hello 
+#    7|                 getExpr(): [StringLiteralExpr] hello 
+#    7|             getElement(2): [CallExpr] call to appendInterpolation(_:)
+#    7|               getFunction(): [MethodRefExpr] .appendInterpolation(_:)
+#    7|                 getBase(): [InOutExpr] &...
+#    7|                   getSubExpr(): [DeclRefExpr] $interpolation
+#    7|               getArgument(0): [Argument] : a
+#    7|                 getExpr(): [DeclRefExpr] a
+#    7|             getElement(3): [CallExpr] call to appendLiteral(_:)
+#    7|               getFunction(): [MethodRefExpr] .appendLiteral(_:)
+#    7|                 getBase(): [InOutExpr] &...
+#    7|                   getSubExpr(): [DeclRefExpr] $interpolation
+#    7|               getArgument(0): [Argument] : 
+#    7|                 getExpr(): [StringLiteralExpr] 
+#    7|       getPattern(0): [NamedPattern] s1
+#    7| [ConcreteVarDecl] s1
+#    7|     Type = String
+#    8| [TopLevelCodeDecl] { ... }
+#    8|   getBody(): [BraceStmt] { ... }
+#    8|     getElement(0): [PatternBindingDecl] var ... = ...
+#    8|       getInit(0): [NilLiteralExpr] nil
+#    8|       getPattern(0): [TypedPattern] ... as ...
+#    8|         getSubPattern(): [NamedPattern] n
+#    8|         getTypeRepr(): [TypeRepr] Int?
+#    8| [ConcreteVarDecl] n
+#    8|     Type = Int?
+#   10| [EnumDecl] AnError
+#   11|   getMember(0): [EnumCaseDecl] case ...
+#   11|   getMember(1): [EnumElementDecl] failed
+#   14| [ConcreteFuncDecl] failure(_:)
+#   14|     InterfaceType = (Int) throws -> ()
+#   14|   getParam(0): [ParamDecl] x
+#   14|       Type = Int
+#   14|   getBody(): [BraceStmt] { ... }
+#   15|     getElement(0): [GuardStmt] guard ... else { ... }
+#   15|       getCondition(): [StmtCondition] StmtCondition
+#   15|         getElement(0): [ConditionElement] ... .!=(_:_:) ...
+#   15|           getBoolean(): [BinaryExpr] ... .!=(_:_:) ...
+#   15|             getFunction(): [MethodRefExpr] .!=(_:_:)
+#   15|               getBase(): [TypeExpr] Int.Type
+#   15|                 getTypeRepr(): [TypeRepr] Int
+#   15|             getArgument(0): [Argument] : x
+#   15|               getExpr(): [DeclRefExpr] x
+#   15|             getArgument(1): [Argument] : 0
+#   15|               getExpr(): [IntegerLiteralExpr] 0
+#   15|       getBody(): [BraceStmt] { ... }
+#   16|         getElement(0): [ThrowStmt] throw ...
+#   16|           getSubExpr(): [MethodRefExpr] .failed
+#   16|             getBase(): [TypeExpr] AnError.Type
+#   16|               getTypeRepr(): [TypeRepr] AnError
+#   16|           getSubExpr().getFullyConverted(): [ErasureExpr] (Error) ...
+#   20| [TopLevelCodeDecl] { ... }
+#   20|   getBody(): [BraceStmt] { ... }
+#   20|     getElement(0): [ForceTryExpr] try! ...
+#   20|       getSubExpr(): [CallExpr] call to failure(_:)
+#   20|         getFunction(): [DeclRefExpr] failure(_:)
+#   20|         getArgument(0): [Argument] : 11
+#   20|           getExpr(): [IntegerLiteralExpr] 11
+#   21| [TopLevelCodeDecl] { ... }
+#   21|   getBody(): [BraceStmt] { ... }
+#   21|     getElement(0): [OptionalTryExpr] try? ...
+#   21|       getSubExpr(): [CallExpr] call to failure(_:)
+#   21|         getFunction(): [DeclRefExpr] failure(_:)
+#   21|         getArgument(0): [Argument] : 11
+#   21|           getExpr(): [IntegerLiteralExpr] 11
+#   21|       getSubExpr().getFullyConverted(): [InjectIntoOptionalExpr] (()?) ...
+#   23| [ClassDecl] Klass
+#   24|   getMember(0): [ConstructorDecl] init()
+#   24|       InterfaceType = (Klass.Type) -> () -> Klass
+#   24|     getSelfParam(): [ParamDecl] self
+#   24|         Type = Klass
+#   24|     getBody(): [BraceStmt] { ... }
+#   24|       getElement(0): [ReturnStmt] return
+#   23|   getMember(1): [DestructorDecl] deinit()
+#   23|       InterfaceType = (Klass) -> () -> ()
+#   23|     getSelfParam(): [ParamDecl] self
+#   23|         Type = Klass
+#   23|     getBody(): [BraceStmt] { ... }
+#   27| [TopLevelCodeDecl] { ... }
+#   27|   getBody(): [BraceStmt] { ... }
+#   27|     getElement(0): [PatternBindingDecl] var ... = ...
+#   27|       getInit(0): [CallExpr] call to init()
+#   27|         getFunction(): [ConstructorRefCallExpr] call to init()
+#   27|           getFunction(): [DeclRefExpr] init()
+#   27|           getArgument(0): [Argument] : Klass.Type
+#   27|             getExpr(): [TypeExpr] Klass.Type
+#   27|               getTypeRepr(): [TypeRepr] Klass
+#   27|       getPattern(0): [NamedPattern] klass
+#   27| [ConcreteVarDecl] klass
+#   27|     Type = Klass
+#   29| [TopLevelCodeDecl] { ... }
+#   29|   getBody(): [BraceStmt] { ... }
+#   29|     getElement(0): [PatternBindingDecl] var ... = ...
+#   29|       getInit(0): [DictionaryExpr] [...]
+#   29|         getElement(0): [TupleExpr] (...)
+#   29|           getElement(0): [StringLiteralExpr] 1
+#   29|           getElement(1): [StringLiteralExpr] 2
+#   29|       getPattern(0): [NamedPattern] d
+#   29| [ConcreteVarDecl] d
+#   29|     Type = [String : String]
+#   30| [TopLevelCodeDecl] { ... }
+#   30|   getBody(): [BraceStmt] { ... }
+#   30|     getElement(0): [AssignExpr]  ... = ...
+#   30|       getDest(): [DiscardAssignmentExpr] _
+#   30|       getSource(): [IntegerLiteralExpr] 15
+#   31| [TopLevelCodeDecl] { ... }
+#   31|   getBody(): [BraceStmt] { ... }
+#   31|     getElement(0): [AssignExpr]  ... = ...
+#   31|       getDest(): [DiscardAssignmentExpr] _
+#   31|       getSource(): [IntegerLiteralExpr] 15
+#   31|       getSource().getFullyConverted(): [IsExpr] ... is ...
+#   32| [TopLevelCodeDecl] { ... }
+#   32|   getBody(): [BraceStmt] { ... }
+#   32|     getElement(0): [AssignExpr]  ... = ...
+#   32|       getDest(): [DiscardAssignmentExpr] _
+#   32|       getSource(): [IntegerLiteralExpr] 15
+#   32|       getSource().getFullyConverted(): [CoerceExpr] (Double) ...
+#   33| [TopLevelCodeDecl] { ... }
+#   33|   getBody(): [BraceStmt] { ... }
+#   33|     getElement(0): [AssignExpr]  ... = ...
+#   33|       getDest(): [DiscardAssignmentExpr] _
+#   33|       getSource(): [IntegerLiteralExpr] 15
+#   33|       getSource().getFullyConverted(): [ConditionalCheckedCastExpr] (Double?) ...
+#   34| [TopLevelCodeDecl] { ... }
+#   34|   getBody(): [BraceStmt] { ... }
+#   34|     getElement(0): [AssignExpr]  ... = ...
+#   34|       getDest(): [DiscardAssignmentExpr] _
+#   34|       getSource(): [IntegerLiteralExpr] 15
+#   34|       getSource().getFullyConverted(): [ForcedCheckedCastExpr] (Double) ...
+#   35| [TopLevelCodeDecl] { ... }
+#   35|   getBody(): [BraceStmt] { ... }
+#   35|     getElement(0): [CallExpr] call to print(_:separator:terminator:)
+#   35|       getFunction(): [DeclRefExpr] print(_:separator:terminator:)
+#   35|       getArgument(0): [Argument] : [...]
+#   35|         getExpr(): [VarargExpansionExpr] [...]
+#   35|           getSubExpr(): [ArrayExpr] [...]
+#   35|             getElement(0): [SubscriptExpr] ...[...]
+#   35|               getBase(): [DeclRefExpr] d
+#   35|               getArgument(0): [Argument] : 1
+#   35|                 getExpr(): [StringLiteralExpr] 1
+#   35|             getElement(0).getFullyConverted(): [ErasureExpr] (Any) ...
+#   35|       getArgument(1): [Argument] separator: default separator
+#   35|         getExpr(): [DefaultArgumentExpr] default separator
+#   35|       getArgument(2): [Argument] terminator: default terminator
+#   35|         getExpr(): [DefaultArgumentExpr] default terminator
+#   37| [ConcreteFuncDecl] closured(closure:)
+#   37|     InterfaceType = ((Int, Int) -> Int) -> ()
+#   37|   getParam(0): [ParamDecl] closure
+#   37|       Type = (Int, Int) -> Int
+#   37|   getBody(): [BraceStmt] { ... }
+#   38|     getElement(0): [CallExpr] call to ...
+#   38|       getFunction(): [DeclRefExpr] closure
+#   38|       getArgument(0): [Argument] : 5
+#   38|         getExpr(): [IntegerLiteralExpr] 5
+#   38|       getArgument(1): [Argument] : 7
+#   38|         getExpr(): [IntegerLiteralExpr] 7
+#   41| [TopLevelCodeDecl] { ... }
+#   41|   getBody(): [BraceStmt] { ... }
+#   41|     getElement(0): [CallExpr] call to closured(closure:)
+#   41|       getFunction(): [DeclRefExpr] closured(closure:)
+#   41|       getArgument(0): [Argument] closure: { ... }
+#   41|         getExpr(): [ClosureExpr] { ... }
+#   41|           getParam(0): [ParamDecl] x
+#   41|               Type = Int
+#   41|           getParam(1): [ParamDecl] y
+#   41|               Type = Int
+#   41|           getBody(): [BraceStmt] { ... }
+#   42|             getElement(0): [ReturnStmt] return ...
+#   42|               getResult(): [BinaryExpr] ... .+(_:_:) ...
+#   42|                 getFunction(): [MethodRefExpr] .+(_:_:)
+#   42|                   getBase(): [TypeExpr] Int.Type
+#   42|                     getTypeRepr(): [TypeRepr] Int
+#   42|                 getArgument(0): [Argument] : x
+#   42|                   getExpr(): [DeclRefExpr] x
+#   42|                 getArgument(1): [Argument] : y
+#   42|                   getExpr(): [DeclRefExpr] y
+#   44| [TopLevelCodeDecl] { ... }
+#   44|   getBody(): [BraceStmt] { ... }
+#   44|     getElement(0): [CallExpr] call to closured(closure:)
+#   44|       getFunction(): [DeclRefExpr] closured(closure:)
+#   44|       getArgument(0): [Argument] closure: { ... }
+#   44|         getExpr(): [ClosureExpr] { ... }
+#   44|           getParam(0): [ParamDecl] x
+#   44|               Type = Int
+#   44|           getParam(1): [ParamDecl] y
+#   44|               Type = Int
+#   44|           getBody(): [BraceStmt] { ... }
+#   45|             getElement(0): [ReturnStmt] return ...
+#   45|               getResult(): [BinaryExpr] ... .+(_:_:) ...
+#   45|                 getFunction(): [MethodRefExpr] .+(_:_:)
+#   45|                   getBase(): [TypeExpr] Int.Type
+#   45|                     getTypeRepr(): [TypeRepr] Int
+#   45|                 getArgument(0): [Argument] : x
+#   45|                   getExpr(): [DeclRefExpr] x
+#   45|                 getArgument(1): [Argument] : y
+#   45|                   getExpr(): [DeclRefExpr] y
+#   47| [TopLevelCodeDecl] { ... }
+#   47|   getBody(): [BraceStmt] { ... }
+#   47|     getElement(0): [CallExpr] call to closured(closure:)
+#   47|       getFunction(): [DeclRefExpr] closured(closure:)
+#   47|       getArgument(0): [Argument] closure: { ... }
+#   47|         getExpr(): [ClosureExpr] { ... }
+#   47|           getParam(0): [ParamDecl] $0
+#   47|               Type = Int
+#   47|           getParam(1): [ParamDecl] $1
+#   47|               Type = Int
+#   47|           getBody(): [BraceStmt] { ... }
+#   47|             getElement(0): [ReturnStmt] return ...
+#   47|               getResult(): [BinaryExpr] ... .+(_:_:) ...
+#   47|                 getFunction(): [MethodRefExpr] .+(_:_:)
+#   47|                   getBase(): [TypeExpr] Int.Type
+#   47|                     getTypeRepr(): [TypeRepr] Int
+#   47|                 getArgument(0): [Argument] : $0
+#   47|                   getExpr(): [DeclRefExpr] $0
+#   47|                 getArgument(1): [Argument] : $1
+#   47|                   getExpr(): [DeclRefExpr] $1
+#   48| [TopLevelCodeDecl] { ... }
+#   48|   getBody(): [BraceStmt] { ... }
+#   48|     getElement(0): [CallExpr] call to closured(closure:)
+#   48|       getFunction(): [DeclRefExpr] closured(closure:)
+#   48|       getArgument(0): [Argument] closure: { ... }
+#   48|         getExpr(): [ClosureExpr] { ... }
+#   48|           getParam(0): [ParamDecl] $0
+#   48|               Type = Int
+#   48|           getParam(1): [ParamDecl] $1
+#   48|               Type = Int
+#   48|           getBody(): [BraceStmt] { ... }
+#   48|             getElement(0): [ReturnStmt] return ...
+#   48|               getResult(): [BinaryExpr] ... .+(_:_:) ...
+#   48|                 getFunction(): [MethodRefExpr] .+(_:_:)
+#   48|                   getBase(): [TypeExpr] Int.Type
+#   48|                     getTypeRepr(): [TypeRepr] Int
+#   48|                 getArgument(0): [Argument] : $0
+#   48|                   getExpr(): [DeclRefExpr] $0
+#   48|                 getArgument(1): [Argument] : $1
+#   48|                   getExpr(): [DeclRefExpr] $1
+#   50| [StructDecl] S
+#   51|   getMember(0): [PatternBindingDecl] var ... = ...
+#   51|     getPattern(0): [TypedPattern] ... as ...
+#   51|       getSubPattern(): [NamedPattern] x
+#   51|       getTypeRepr(): [TypeRepr] Int
+#   51|   getMember(1): [ConcreteVarDecl] x
+#   51|       Type = Int
+#   51|     getAccessorDecl(0): [AccessorDecl] get
+#   51|         InterfaceType = (S) -> () -> Int
+#   51|       getSelfParam(): [ParamDecl] self
+#   51|           Type = S
+#   51|       getBody(): [BraceStmt] { ... }
+#   50|   getMember(2): [ConstructorDecl] init(x:)
+#   50|       InterfaceType = (S.Type) -> (Int) -> S
+#   50|     getSelfParam(): [ParamDecl] self
+#   50|         Type = S
+#   50|     getParam(0): [ParamDecl] x
+#   50|         Type = Int
+#   54| [TopLevelCodeDecl] { ... }
+#   54|   getBody(): [BraceStmt] { ... }
+#   54|     getElement(0): [AssignExpr]  ... = ...
+#   54|       getDest(): [DiscardAssignmentExpr] _
+#   54|       getSource(): [KeyPathExpr] #keyPath(...)
+#   54|         getRoot(): [TypeRepr] S
+#   56| [ConcreteFuncDecl] unsafeFunction(pointer:)
+#   56|     InterfaceType = (UnsafePointer<Int>) -> ()
+#   56|   getParam(0): [ParamDecl] pointer
+#   56|       Type = UnsafePointer<Int>
+#   56|   getBody(): [BraceStmt] { ... }
+#   58| [TopLevelCodeDecl] { ... }
+#   58|   getBody(): [BraceStmt] { ... }
+#   58|     getElement(0): [PatternBindingDecl] var ... = ...
+#   58|       getInit(0): [IntegerLiteralExpr] 1234
+#   58|       getPattern(0): [NamedPattern] myNumber
+#   58| [ConcreteVarDecl] myNumber
+#   58|     Type = Int
+#   59| [TopLevelCodeDecl] { ... }
+#   59|   getBody(): [BraceStmt] { ... }
+#   59|     getElement(0): [CallExpr] call to unsafeFunction(pointer:)
+#   59|       getFunction(): [DeclRefExpr] unsafeFunction(pointer:)
+#   59|       getArgument(0): [Argument] pointer: &...
+#   59|         getExpr(): [InOutExpr] &...
+#   59|           getSubExpr(): [DeclRefExpr] myNumber
+#   59|         getExpr().getFullyConverted(): [InOutToPointerExpr] (UnsafePointer<Int>) ...
+#   60| [TopLevelCodeDecl] { ... }
+#   60|   getBody(): [BraceStmt] { ... }
+#   60|     getElement(0): [CallExpr] call to withUnsafePointer(to:_:)
+#   60|       getFunction(): [DeclRefExpr] withUnsafePointer(to:_:)
+#   60|       getArgument(0): [Argument] to: myNumber
+#   60|         getExpr(): [DeclRefExpr] myNumber
+#   60|         getExpr().getFullyConverted(): [LoadExpr] (Int) ...
+#   60|       getArgument(1): [Argument] : { ... }
+#   60|         getExpr(): [ClosureExpr] { ... }
+#   60|           getParam(0): [ParamDecl] $0
+#   60|               Type = UnsafePointer<Int>
+#   60|           getBody(): [BraceStmt] { ... }
+#   60|             getElement(0): [ReturnStmt] return ...
+#   60|               getResult(): [CallExpr] call to unsafeFunction(pointer:)
+#   60|                 getFunction(): [DeclRefExpr] unsafeFunction(pointer:)
+#   60|                 getArgument(0): [Argument] pointer: $0
+#   60|                   getExpr(): [DeclRefExpr] $0
+#   60|         getExpr().getFullyConverted(): [FunctionConversionExpr] ((UnsafePointer<Int>) throws -> ()) ...
+#   62| [ClassDecl] FailingToInit
+#   63|   getMember(0): [ConstructorDecl] init(x:)
+#   63|       InterfaceType = (FailingToInit.Type) -> (Int) -> FailingToInit?
+#   63|     getSelfParam(): [ParamDecl] self
+#   63|         Type = FailingToInit
+#   63|     getParam(0): [ParamDecl] x
+#   63|         Type = Int
+#   63|     getBody(): [BraceStmt] { ... }
+#   64|       getElement(0): [IfStmt] if ... then { ... }
+#   64|         getCondition(): [StmtCondition] StmtCondition
+#   64|           getElement(0): [ConditionElement] ... .<(_:_:) ...
+#   64|             getBoolean(): [BinaryExpr] ... .<(_:_:) ...
+#   64|               getFunction(): [MethodRefExpr] .<(_:_:)
+#   64|                 getBase(): [TypeExpr] Int.Type
+#   64|                   getTypeRepr(): [TypeRepr] Int
+#   64|               getArgument(0): [Argument] : x
+#   64|                 getExpr(): [DeclRefExpr] x
+#   64|               getArgument(1): [Argument] : 0
+#   64|                 getExpr(): [IntegerLiteralExpr] 0
+#   64|         getThen(): [BraceStmt] { ... }
+#   65|           getElement(0): [FailStmt] fail
+#   67|       getElement(1): [ReturnStmt] return
+#   62|   getMember(1): [DestructorDecl] deinit()
+#   62|       InterfaceType = (FailingToInit) -> () -> ()
+#   62|     getSelfParam(): [ParamDecl] self
+#   62|         Type = FailingToInit
+#   62|     getBody(): [BraceStmt] { ... }
+#   70| [ClassDecl] Base
+#   71|   getMember(0): [PatternBindingDecl] var ... = ...
+#   71|     getPattern(0): [TypedPattern] ... as ...
+#   71|       getSubPattern(): [NamedPattern] xx
+#   71|       getTypeRepr(): [TypeRepr] Int
+#   71|   getMember(1): [ConcreteVarDecl] xx
+#   71|       Type = Int
+#   71|     getAccessorDecl(0): [AccessorDecl] get
+#   71|         InterfaceType = (Base) -> () -> Int
+#   71|       getSelfParam(): [ParamDecl] self
+#   71|           Type = Base
+#   71|       getBody(): [BraceStmt] { ... }
+#   72|   getMember(2): [ConstructorDecl] init(x:)
+#   72|       InterfaceType = (Base.Type) -> (Int) -> Base
+#   72|     getSelfParam(): [ParamDecl] self
+#   72|         Type = Base
+#   72|     getParam(0): [ParamDecl] x
+#   72|         Type = Int
+#   72|     getBody(): [BraceStmt] { ... }
+#   73|       getElement(0): [AssignExpr]  ... = ...
+#   73|         getDest(): [MemberRefExpr] .xx
+#   73|           getBase(): [DeclRefExpr] self
+#   73|         getSource(): [DeclRefExpr] x
+#   74|       getElement(1): [ReturnStmt] return
+#   70|   getMember(3): [DestructorDecl] deinit()
+#   70|       InterfaceType = (Base) -> () -> ()
+#   70|     getSelfParam(): [ParamDecl] self
+#   70|         Type = Base
+#   70|     getBody(): [BraceStmt] { ... }
+#   77| [ClassDecl] Derived
+#   78|   getMember(0): [ConstructorDecl] init()
+#   78|       InterfaceType = (Derived.Type) -> () -> Derived
+#   78|     getSelfParam(): [ParamDecl] self
+#   78|         Type = Derived
+#   78|     getBody(): [BraceStmt] { ... }
+#   79|       getElement(0): [RebindSelfInConstructorExpr] self = ...
+#   79|         getSubExpr(): [CallExpr] call to ...
+#   79|           getFunction(): [DotSyntaxCallExpr] call to ...
+#   79|             getFunction(): [OtherConstructorDeclRefExpr] init(x:)
+#   79|             getArgument(0): [Argument] : super
+#   79|               getExpr(): [SuperRefExpr] super
+#   79|           getArgument(0): [Argument] x: 22
+#   79|             getExpr(): [IntegerLiteralExpr] 22
+#   80|       getElement(1): [ReturnStmt] return
+#   77|   getMember(1): [ConstructorDecl] init(x:)
+#   77|       InterfaceType = (Derived.Type) -> (Int) -> Derived
+#   77|     getSelfParam(): [ParamDecl] self
+#   77|         Type = Derived
+#   77|   getMember(2): [DestructorDecl] deinit()
+#   77|       InterfaceType = (Derived) -> () -> ()
+#   77|     getSelfParam(): [ParamDecl] self
+#   77|         Type = Derived
+#   77|     getBody(): [BraceStmt] { ... }
+#   77| [CallExpr] call to _unimplementedInitializer(className:initName:file:line:column:)
+#   77|   getFunction(): [DeclRefExpr] _unimplementedInitializer(className:initName:file:line:column:)
+#   77|   getArgument(0): [Argument] : expressions.Derived
+#   77|     getExpr(): [StringLiteralExpr] expressions.Derived
+#   77|   getArgument(1): [Argument] : #...
+#   77|     getExpr(): [MagicIdentifierLiteralExpr] #...
+#   77|   getArgument(2): [Argument] : #...
+#   77|     getExpr(): [MagicIdentifierLiteralExpr] #...
+#   77|   getArgument(3): [Argument] : #...
+#   77|     getExpr(): [MagicIdentifierLiteralExpr] #...
+#   77|   getArgument(4): [Argument] : #...
+#   77|     getExpr(): [MagicIdentifierLiteralExpr] #...
+#   83| [TopLevelCodeDecl] { ... }
+#   83|   getBody(): [BraceStmt] { ... }
+#   83|     getElement(0): [PatternBindingDecl] var ... = ...
+#   83|       getInit(0): [CallExpr] call to init()
+#   83|         getFunction(): [ConstructorRefCallExpr] call to init()
+#   83|           getFunction(): [DeclRefExpr] init()
+#   83|           getArgument(0): [Argument] : Derived.Type
+#   83|             getExpr(): [TypeExpr] Derived.Type
+#   83|               getTypeRepr(): [TypeRepr] Derived
+#   83|       getPattern(0): [NamedPattern] derived
+#   83| [ConcreteVarDecl] derived
+#   83|     Type = Derived
+#   84| [TopLevelCodeDecl] { ... }
+#   84|   getBody(): [BraceStmt] { ... }
+#   84|     getElement(0): [AssignExpr]  ... = ...
+#   84|       getDest(): [DiscardAssignmentExpr] _
+#   84|       getSource(): [MemberRefExpr] .xx
+#   84|         getBase(): [DeclRefExpr] derived
+#   84|         getBase().getFullyConverted(): [DerivedToBaseExpr] (Base) ...
+#   86| [TopLevelCodeDecl] { ... }
+#   86|   getBody(): [BraceStmt] { ... }
+#   86|     getElement(0): [PatternBindingDecl] var ... = ...
+#   86|       getPattern(0): [TypedPattern] ... as ...
+#   86|         getSubPattern(): [NamedPattern] opt
+#   86|         getTypeRepr(): [TypeRepr] Int?
+#   86| [ConcreteVarDecl] opt
+#   86|     Type = Int?
+#   87| [TopLevelCodeDecl] { ... }
+#   87|   getBody(): [BraceStmt] { ... }
+#   87|     getElement(0): [ForceValueExpr] ...!
+#   87|       getSubExpr(): [DeclRefExpr] opt
+#   88| [TopLevelCodeDecl] { ... }
+#   88|   getBody(): [BraceStmt] { ... }
+#   88|     getElement(0): [ForceValueExpr] ...!
+#   88|       getSubExpr(): [SubscriptExpr] ...[...]
+#   88|         getBase(): [DeclRefExpr] d
+#   88|         getArgument(0): [Argument] : a
+#   88|           getExpr(): [StringLiteralExpr] a
+#   90| [ClassDecl] ToPtr
+#   90|   getMember(0): [DestructorDecl] deinit()
+#   90|       InterfaceType = (ToPtr) -> () -> ()
+#   90|     getSelfParam(): [ParamDecl] self
+#   90|         Type = ToPtr
+#   90|     getBody(): [BraceStmt] { ... }
+#   90|   getMember(1): [ConstructorDecl] init()
+#   90|       InterfaceType = (ToPtr.Type) -> () -> ToPtr
+#   90|     getSelfParam(): [ParamDecl] self
+#   90|         Type = ToPtr
+#   90|     getBody(): [BraceStmt] { ... }
+#   90|       getElement(0): [ReturnStmt] return
+#   92| [TopLevelCodeDecl] { ... }
+#   92|   getBody(): [BraceStmt] { ... }
+#   92|     getElement(0): [PatternBindingDecl] var ... = ...
+#   92|       getInit(0): [CallExpr] call to toOpaque()
+#   92|         getFunction(): [MethodRefExpr] .toOpaque()
+#   92|           getBase(): [CallExpr] call to passRetained(_:)
+#   92|             getFunction(): [MethodRefExpr] .passRetained(_:)
+#   92|               getBase(): [TypeExpr] Unmanaged<ToPtr>.Type
+#   92|                 getTypeRepr(): [TypeRepr] Unmanaged<ToPtr>
+#   92|             getArgument(0): [Argument] : call to init()
+#   92|               getExpr(): [CallExpr] call to init()
+#   92|                 getFunction(): [ConstructorRefCallExpr] call to init()
+#   92|                   getFunction(): [DeclRefExpr] init()
+#   92|                   getArgument(0): [Argument] : ToPtr.Type
+#   92|                     getExpr(): [TypeExpr] ToPtr.Type
+#   92|                       getTypeRepr(): [TypeRepr] ToPtr
+#   92|       getPattern(0): [NamedPattern] opaque
+#   92| [ConcreteVarDecl] opaque
+#   92|     Type = UnsafeMutableRawPointer
+#   93| [TopLevelCodeDecl] { ... }
+#   93|   getBody(): [BraceStmt] { ... }
+#   93|     getElement(0): [CallExpr] call to fromOpaque(_:)
+#   93|       getFunction(): [MethodRefExpr] .fromOpaque(_:)
+#   93|         getBase(): [TypeExpr] Unmanaged<ToPtr>.Type
+#   93|           getTypeRepr(): [TypeRepr] Unmanaged<ToPtr>
+#   93|       getArgument(0): [Argument] : opaque
+#   93|         getExpr(): [DeclRefExpr] opaque
+#   93|         getExpr().getFullyConverted(): [PointerToPointerExpr] (UnsafeRawPointer) ...
+#   95| [StructDecl] HasProperty
+#   96|   getMember(0): [PatternBindingDecl] var ... = ...
+#   96|     getPattern(0): [TypedPattern] ... as ...
+#   96|       getSubPattern(): [NamedPattern] settableField
+#   96|       getTypeRepr(): [TypeRepr] Int
+#   96|   getMember(1): [ConcreteVarDecl] settableField
+#   96|       Type = Int
+#   97|     getAccessorDecl(0): [AccessorDecl] set
+#   97|         InterfaceType = (inout HasProperty) -> (Int) -> ()
+#   97|       getSelfParam(): [ParamDecl] self
+#   97|           Type = HasProperty
+#   97|       getParam(0): [ParamDecl] newValue
+#   97|           Type = Int
+#   97|       getBody(): [BraceStmt] { ... }
+#   98|     getAccessorDecl(1): [AccessorDecl] get
+#   98|         InterfaceType = (HasProperty) -> () -> Int
+#   98|       getSelfParam(): [ParamDecl] self
+#   98|           Type = HasProperty
+#   98|       getBody(): [BraceStmt] { ... }
+#   99|         getElement(0): [ReturnStmt] return ...
+#   99|           getResult(): [IntegerLiteralExpr] 0
+#   96|     getAccessorDecl(2): [AccessorDecl] (unnamed function decl)
+#   96|         InterfaceType = (inout HasProperty) -> () -> ()
+#   96|       getSelfParam(): [ParamDecl] self
+#   96|           Type = HasProperty
+#   96|       getBody(): [BraceStmt] { ... }
+#   96|         getElement(0): [YieldStmt] yield ...
+#  105|   getMember(2): [PatternBindingDecl] var ... = ...
+#  105|     getPattern(0): [TypedPattern] ... as ...
+#  105|       getSubPattern(): [NamedPattern] readOnlyField1
+#  105|       getTypeRepr(): [TypeRepr] Int
+#  105|   getMember(3): [ConcreteVarDecl] readOnlyField1
+#  105|       Type = Int
+#  105|     getAccessorDecl(0): [AccessorDecl] get
+#  105|         InterfaceType = (HasProperty) -> () -> Int
+#  105|       getSelfParam(): [ParamDecl] self
+#  105|           Type = HasProperty
+#  105|       getBody(): [BraceStmt] { ... }
+#  106|         getElement(0): [ReturnStmt] return ...
+#  106|           getResult(): [IntegerLiteralExpr] 0
+#  110|   getMember(4): [PatternBindingDecl] var ... = ...
+#  110|     getPattern(0): [TypedPattern] ... as ...
+#  110|       getSubPattern(): [NamedPattern] readOnlyField2
+#  110|       getTypeRepr(): [TypeRepr] Int
+#  110|   getMember(5): [ConcreteVarDecl] readOnlyField2
+#  110|       Type = Int
+#  111|     getAccessorDecl(0): [AccessorDecl] get
+#  111|         InterfaceType = (HasProperty) -> () -> Int
+#  111|       getSelfParam(): [ParamDecl] self
+#  111|           Type = HasProperty
+#  111|       getBody(): [BraceStmt] { ... }
+#  112|         getElement(0): [ReturnStmt] return ...
+#  112|           getResult(): [IntegerLiteralExpr] 0
+#  116|   getMember(6): [PatternBindingDecl] var ... = ...
+#  116|     getPattern(0): [TypedPattern] ... as ...
+#  116|       getSubPattern(): [NamedPattern] normalField
+#  116|       getTypeRepr(): [TypeRepr] Int
+#  116|   getMember(7): [ConcreteVarDecl] normalField
+#  116|       Type = Int
+#  116|     getAccessorDecl(0): [AccessorDecl] get
+#  116|         InterfaceType = (HasProperty) -> () -> Int
+#  116|       getSelfParam(): [ParamDecl] self
+#  116|           Type = HasProperty
+#  116|       getBody(): [BraceStmt] { ... }
+#  116|     getAccessorDecl(1): [AccessorDecl] set
+#  116|         InterfaceType = (inout HasProperty) -> (Int) -> ()
+#  116|       getSelfParam(): [ParamDecl] self
+#  116|           Type = HasProperty
+#  116|       getParam(0): [ParamDecl] value
+#  116|           Type = Int
+#  116|       getBody(): [BraceStmt] { ... }
+#  116|     getAccessorDecl(2): [AccessorDecl] (unnamed function decl)
+#  116|         InterfaceType = (inout HasProperty) -> () -> ()
+#  116|       getSelfParam(): [ParamDecl] self
+#  116|           Type = HasProperty
+#  116|       getBody(): [BraceStmt] { ... }
+#  116|         getElement(0): [YieldStmt] yield ...
+#  118|   getMember(8): [SubscriptDecl] subscript ...
+#  119|     getAccessorDecl(0): [AccessorDecl] get
+#  119|         InterfaceType = (HasProperty) -> (Int) -> Int
+#  119|       getSelfParam(): [ParamDecl] self
+#  119|           Type = HasProperty
+#  118|       getParam(0): [ParamDecl] x
+#  118|           Type = Int
+#  119|       getBody(): [BraceStmt] { ... }
+#  120|         getElement(0): [ReturnStmt] return ...
+#  120|           getResult(): [IntegerLiteralExpr] 0
+#  122|     getAccessorDecl(1): [AccessorDecl] set
+#  122|         InterfaceType = (inout HasProperty) -> (Int, Int) -> ()
+#  122|       getSelfParam(): [ParamDecl] self
+#  122|           Type = HasProperty
+#  122|       getParam(0): [ParamDecl] newValue
+#  122|           Type = Int
+#  118|       getParam(1): [ParamDecl] x
+#  118|           Type = Int
+#  122|       getBody(): [BraceStmt] { ... }
+#  118|     getAccessorDecl(2): [AccessorDecl] (unnamed function decl)
+#  118|         InterfaceType = (inout HasProperty) -> (Int) -> ()
+#  118|       getSelfParam(): [ParamDecl] self
+#  118|           Type = HasProperty
+#  118|       getBody(): [BraceStmt] { ... }
+#  118|         getElement(0): [YieldStmt] yield ...
+#  118|     getParam(0): [ParamDecl] x
+#  118|         Type = Int
+#  125|   getMember(9): [SubscriptDecl] subscript ...
+#  125|     getAccessorDecl(0): [AccessorDecl] get
+#  125|         InterfaceType = (HasProperty) -> (Int, Int) -> Int
+#  125|       getSelfParam(): [ParamDecl] self
+#  125|           Type = HasProperty
+#  125|       getParam(0): [ParamDecl] x
+#  125|           Type = Int
+#  125|       getParam(1): [ParamDecl] y
+#  125|           Type = Int
+#  125|       getBody(): [BraceStmt] { ... }
+#  126|         getElement(0): [ReturnStmt] return ...
+#  126|           getResult(): [IntegerLiteralExpr] 0
+#  125|     getParam(0): [ParamDecl] x
+#  125|         Type = Int
+#  125|     getParam(1): [ParamDecl] y
+#  125|         Type = Int
+#   95|   getMember(10): [ConstructorDecl] init(normalField:)
+#   95|       InterfaceType = (HasProperty.Type) -> (Int) -> HasProperty
+#   95|     getSelfParam(): [ParamDecl] self
+#   95|         Type = HasProperty
+#   95|     getParam(0): [ParamDecl] normalField
+#   95|         Type = Int
+#  103| [Comment] // A field can be marked as read-only by dirctly implementing
+#  103| 
+#  104| [Comment] // the getter between the braces.
+#  104| 
+#  109| [Comment] // Or by adding an access declaration
+#  109| 
+#  130| [ConcreteFuncDecl] testProperties(hp:)
+#  130|     InterfaceType = (inout HasProperty) -> Int
+#  130|   getParam(0): [ParamDecl] hp
+#  130|       Type = HasProperty
+#  130|   getBody(): [BraceStmt] { ... }
+#  131|     getElement(0): [AssignExpr]  ... = ...
+#  131|       getDest(): [MemberRefExpr] .settableField
+#  131|         getBase(): [DeclRefExpr] hp
+#  131|       getSource(): [IntegerLiteralExpr] 42
+#  132|     getElement(1): [PatternBindingDecl] var ... = ...
+#  132|       getInit(0): [MemberRefExpr] .settableField
+#  132|         getBase(): [DeclRefExpr] hp
+#  132|       getInit(0).getFullyConverted(): [LoadExpr] (Int) ...
+#  132|       getPattern(0): [NamedPattern] x
+#  132|     getElement(2): [ConcreteVarDecl] x
+#  132|         Type = Int
+#  133|     getElement(3): [PatternBindingDecl] var ... = ...
+#  133|       getInit(0): [MemberRefExpr] .readOnlyField1
+#  133|         getBase(): [DeclRefExpr] hp
+#  133|         getBase().getFullyConverted(): [LoadExpr] (HasProperty) ...
+#  133|       getPattern(0): [NamedPattern] y
+#  133|     getElement(4): [ConcreteVarDecl] y
+#  133|         Type = Int
+#  134|     getElement(5): [PatternBindingDecl] var ... = ...
+#  134|       getInit(0): [MemberRefExpr] .readOnlyField2
+#  134|         getBase(): [DeclRefExpr] hp
+#  134|         getBase().getFullyConverted(): [LoadExpr] (HasProperty) ...
+#  134|       getPattern(0): [NamedPattern] z
+#  134|     getElement(6): [ConcreteVarDecl] z
+#  134|         Type = Int
+#  135|     getElement(7): [AssignExpr]  ... = ...
+#  135|       getDest(): [MemberRefExpr] .normalField
+#  135|         getBase(): [DeclRefExpr] hp
+#  135|       getSource(): [IntegerLiteralExpr] 99
+#  136|     getElement(8): [PatternBindingDecl] var ... = ...
+#  136|       getInit(0): [MemberRefExpr] .normalField
+#  136|         getBase(): [DeclRefExpr] hp
+#  136|       getInit(0).getFullyConverted(): [LoadExpr] (Int) ...
+#  136|       getPattern(0): [NamedPattern] w
+#  136|     getElement(9): [ConcreteVarDecl] w
+#  136|         Type = Int
+#  137|     getElement(10): [AssignExpr]  ... = ...
+#  137|       getDest(): [SubscriptExpr] ...[...]
+#  137|         getBase(): [InOutExpr] &...
+#  137|           getSubExpr(): [DeclRefExpr] hp
+#  137|         getArgument(0): [Argument] : 1
+#  137|           getExpr(): [IntegerLiteralExpr] 1
+#  137|       getSource(): [IntegerLiteralExpr] 2
+#  138|     getElement(11): [ReturnStmt] return ...
+#  138|       getResult(): [SubscriptExpr] ...[...]
+#  138|         getBase(): [DeclRefExpr] hp
+#  138|         getBase().getFullyConverted(): [LoadExpr] (HasProperty) ...
+#  138|         getArgument(0): [Argument] : 3
+#  138|           getExpr(): [IntegerLiteralExpr] 3
+#  138|         getArgument(1): [Argument] : 4
+#  138|           getExpr(): [IntegerLiteralExpr] 4
+#  141| [StructDecl] B
+#  142|   getMember(0): [PatternBindingDecl] var ... = ...
+#  142|     getPattern(0): [TypedPattern] ... as ...
+#  142|       getSubPattern(): [NamedPattern] x
+#  142|       getTypeRepr(): [TypeRepr] Int
+#  142|   getMember(1): [ConcreteVarDecl] x
+#  142|       Type = Int
+#  142|     getAccessorDecl(0): [AccessorDecl] get
+#  142|         InterfaceType = (B) -> () -> Int
+#  142|       getSelfParam(): [ParamDecl] self
+#  142|           Type = B
+#  142|       getBody(): [BraceStmt] { ... }
+#  142|     getAccessorDecl(1): [AccessorDecl] set
+#  142|         InterfaceType = (inout B) -> (Int) -> ()
+#  142|       getSelfParam(): [ParamDecl] self
+#  142|           Type = B
+#  142|       getParam(0): [ParamDecl] value
+#  142|           Type = Int
+#  142|       getBody(): [BraceStmt] { ... }
+#  142|     getAccessorDecl(2): [AccessorDecl] (unnamed function decl)
+#  142|         InterfaceType = (inout B) -> () -> ()
+#  142|       getSelfParam(): [ParamDecl] self
+#  142|           Type = B
+#  142|       getBody(): [BraceStmt] { ... }
+#  142|         getElement(0): [YieldStmt] yield ...
+#  141|   getMember(2): [ConstructorDecl] init(x:)
+#  141|       InterfaceType = (B.Type) -> (Int) -> B
+#  141|     getSelfParam(): [ParamDecl] self
+#  141|         Type = B
+#  141|     getParam(0): [ParamDecl] x
+#  141|         Type = Int
+#  145| [StructDecl] A
+#  146|   getMember(0): [PatternBindingDecl] var ... = ...
+#  146|     getPattern(0): [TypedPattern] ... as ...
+#  146|       getSubPattern(): [NamedPattern] b
+#  146|       getTypeRepr(): [TypeRepr] B
+#  146|   getMember(1): [ConcreteVarDecl] b
+#  146|       Type = B
+#  146|     getAccessorDecl(0): [AccessorDecl] get
+#  146|         InterfaceType = (A) -> () -> B
+#  146|       getSelfParam(): [ParamDecl] self
+#  146|           Type = A
+#  146|       getBody(): [BraceStmt] { ... }
+#  146|     getAccessorDecl(1): [AccessorDecl] set
+#  146|         InterfaceType = (inout A) -> (B) -> ()
+#  146|       getSelfParam(): [ParamDecl] self
+#  146|           Type = A
+#  146|       getParam(0): [ParamDecl] value
+#  146|           Type = B
+#  146|       getBody(): [BraceStmt] { ... }
+#  146|     getAccessorDecl(2): [AccessorDecl] (unnamed function decl)
+#  146|         InterfaceType = (inout A) -> () -> ()
+#  146|       getSelfParam(): [ParamDecl] self
+#  146|           Type = A
+#  146|       getBody(): [BraceStmt] { ... }
+#  146|         getElement(0): [YieldStmt] yield ...
+#  147|   getMember(2): [PatternBindingDecl] var ... = ...
+#  147|     getPattern(0): [TypedPattern] ... as ...
+#  147|       getSubPattern(): [NamedPattern] bs
+#  147|       getTypeRepr(): [TypeRepr] [B]
+#  147|   getMember(3): [ConcreteVarDecl] bs
+#  147|       Type = [B]
+#  147|     getAccessorDecl(0): [AccessorDecl] get
+#  147|         InterfaceType = (A) -> () -> [B]
+#  147|       getSelfParam(): [ParamDecl] self
+#  147|           Type = A
+#  147|       getBody(): [BraceStmt] { ... }
+#  147|     getAccessorDecl(1): [AccessorDecl] set
+#  147|         InterfaceType = (inout A) -> ([B]) -> ()
+#  147|       getSelfParam(): [ParamDecl] self
+#  147|           Type = A
+#  147|       getParam(0): [ParamDecl] value
+#  147|           Type = [B]
+#  147|       getBody(): [BraceStmt] { ... }
+#  147|     getAccessorDecl(2): [AccessorDecl] (unnamed function decl)
+#  147|         InterfaceType = (inout A) -> () -> ()
+#  147|       getSelfParam(): [ParamDecl] self
+#  147|           Type = A
+#  147|       getBody(): [BraceStmt] { ... }
+#  147|         getElement(0): [YieldStmt] yield ...
+#  148|   getMember(4): [PatternBindingDecl] var ... = ...
+#  148|     getPattern(0): [TypedPattern] ... as ...
+#  148|       getSubPattern(): [NamedPattern] mayB
+#  148|       getTypeRepr(): [TypeRepr] B?
+#  148|   getMember(5): [ConcreteVarDecl] mayB
+#  148|       Type = B?
+#  148|     getAccessorDecl(0): [AccessorDecl] get
+#  148|         InterfaceType = (A) -> () -> B?
+#  148|       getSelfParam(): [ParamDecl] self
+#  148|           Type = A
+#  148|       getBody(): [BraceStmt] { ... }
+#  148|     getAccessorDecl(1): [AccessorDecl] set
+#  148|         InterfaceType = (inout A) -> (B?) -> ()
+#  148|       getSelfParam(): [ParamDecl] self
+#  148|           Type = A
+#  148|       getParam(0): [ParamDecl] value
+#  148|           Type = B?
+#  148|       getBody(): [BraceStmt] { ... }
+#  148|     getAccessorDecl(2): [AccessorDecl] (unnamed function decl)
+#  148|         InterfaceType = (inout A) -> () -> ()
+#  148|       getSelfParam(): [ParamDecl] self
+#  148|           Type = A
+#  148|       getBody(): [BraceStmt] { ... }
+#  148|         getElement(0): [YieldStmt] yield ...
+#  145|   getMember(6): [ConstructorDecl] init(b:bs:mayB:)
+#  145|       InterfaceType = (A.Type) -> (B, [B], B?) -> A
+#  145|     getSelfParam(): [ParamDecl] self
+#  145|         Type = A
+#  145|     getParam(0): [ParamDecl] b
+#  145|         Type = B
+#  145|     getParam(1): [ParamDecl] bs
+#  145|         Type = [B]
+#  145|     getParam(2): [ParamDecl] mayB
+#  145|         Type = B?
+#  151| [ConcreteFuncDecl] test(a:keyPathInt:keyPathB:)
+#  151|     InterfaceType = (A, WritableKeyPath<A, Int>, WritableKeyPath<A, B>) -> ()
+#  151|   getParam(0): [ParamDecl] a
+#  151|       Type = A
+#  151|   getParam(1): [ParamDecl] keyPathInt
+#  151|       Type = WritableKeyPath<A, Int>
+#  151|   getParam(2): [ParamDecl] keyPathB
+#  151|       Type = WritableKeyPath<A, B>
+#  151|   getBody(): [BraceStmt] { ... }
+#  152|     getElement(0): [PatternBindingDecl] var ... = ...
+#  152|       getInit(0): [KeyPathApplicationExpr] \...[...]
+#  152|         getBase(): [DeclRefExpr] a
+#  152|         getKeyPath(): [DeclRefExpr] keyPathInt
+#  152|       getPattern(0): [NamedPattern] apply_keyPathInt
+#  152|     getElement(1): [ConcreteVarDecl] apply_keyPathInt
+#  152|         Type = Int
+#  153|     getElement(2): [PatternBindingDecl] var ... = ...
+#  153|       getInit(0): [KeyPathApplicationExpr] \...[...]
+#  153|         getBase(): [DeclRefExpr] a
+#  153|         getKeyPath(): [DeclRefExpr] keyPathB
+#  153|       getPattern(0): [NamedPattern] apply_keyPathB
+#  153|     getElement(3): [ConcreteVarDecl] apply_keyPathB
+#  153|         Type = B
+#  154|     getElement(4): [PatternBindingDecl] var ... = ...
+#  154|       getInit(0): [KeyPathApplicationExpr] \...[...]
+#  154|         getBase(): [KeyPathApplicationExpr] \...[...]
+#  154|           getBase(): [DeclRefExpr] a
+#  154|           getKeyPath(): [DeclRefExpr] keyPathB
+#  154|         getKeyPath(): [KeyPathExpr] #keyPath(...)
+#  154|           getRoot(): [TypeRepr] B
+#  154|       getPattern(0): [NamedPattern] nested_apply
+#  154|     getElement(5): [ConcreteVarDecl] nested_apply
+#  154|         Type = Int
+patterns.swift:
+#    1| [ConcreteFuncDecl] basic_patterns()
+#    1|     InterfaceType = () -> ()
+#    1|   getBody(): [BraceStmt] { ... }
+#    2|     getElement(0): [PatternBindingDecl] var ... = ...
+#    2|       getInit(0): [IntegerLiteralExpr] 42
+#    2|       getPattern(0): [NamedPattern] an_int
+#    2|     getElement(1): [ConcreteVarDecl] an_int
+#    2|         Type = Int
+#    3|     getElement(2): [PatternBindingDecl] var ... = ...
+#    3|       getInit(0): [StringLiteralExpr] here
+#    3|       getPattern(0): [TypedPattern] ... as ...
+#    3|         getSubPattern(): [NamedPattern] a_string
+#    3|         getTypeRepr(): [TypeRepr] String
+#    3|     getElement(3): [ConcreteVarDecl] a_string
+#    3|         Type = String
+#    4|     getElement(4): [PatternBindingDecl] var ... = ...
+#    4|       getInit(0): [TupleExpr] (...)
+#    4|         getElement(0): [IntegerLiteralExpr] 1
+#    4|         getElement(1): [IntegerLiteralExpr] 2
+#    4|         getElement(2): [IntegerLiteralExpr] 3
+#    4|       getPattern(0): [TuplePattern] (...)
+#    4|         getElement(0): [NamedPattern] x
+#    4|         getElement(1): [NamedPattern] y
+#    4|         getElement(2): [NamedPattern] z
+#    4|     getElement(5): [ConcreteVarDecl] x
+#    4|         Type = Int
+#    4|     getElement(6): [ConcreteVarDecl] y
+#    4|         Type = Int
+#    4|     getElement(7): [ConcreteVarDecl] z
+#    4|         Type = Int
+#    5|     getElement(8): [PatternBindingDecl] var ... = ...
+#    5|       getInit(0): [StringLiteralExpr] any
+#    5|       getPattern(0): [AnyPattern] _
+#    6|     getElement(9): [PatternBindingDecl] var ... = ...
+#    6|       getInit(0): [StringLiteralExpr] paren
+#    6|       getPattern(0): [AnyPattern] _
+#    6|       getPattern(0).getFullyUnresolved(): [ParenPattern] (...)
+#    9| [ConcreteFuncDecl] switch_patterns()
+#    9|     InterfaceType = () -> ()
+#    9|   getBody(): [BraceStmt] { ... }
+#   10|     getElement(0): [PatternBindingDecl] var ... = ...
+#   10|       getInit(0): [TupleExpr] (...)
+#   10|         getElement(0): [IntegerLiteralExpr] 1
+#   10|         getElement(1): [IntegerLiteralExpr] 2
+#   10|       getPattern(0): [NamedPattern] point
+#   10|     getElement(1): [ConcreteVarDecl] point
+#   10|         Type = (Int, Int)
+#   11|     getElement(2): [SwitchStmt] switch point { ... }
+#   11|       getExpr(): [DeclRefExpr] point
+#   12|       getCase(0): [CaseStmt] case ...
+#   12|         getBody(): [BraceStmt] { ... }
+#   12|           getElement(0): [StringLiteralExpr] binding
+#   12|         getLabel(0): [CaseLabelItem] let ...
+#   12|           getPattern(): [BindingPattern] let ...
+#   12|             getSubPattern(): [TuplePattern] (...)
+#   12|               getElement(0): [NamedPattern] xx
+#   12|               getElement(1): [NamedPattern] yy
+#   15|     getElement(3): [SwitchStmt] switch 3 { ... }
+#   15|       getExpr(): [IntegerLiteralExpr] 3
+#   16|       getCase(0): [CaseStmt] case ...
+#   16|         getBody(): [BraceStmt] { ... }
+#   16|           getElement(0): [StringLiteralExpr] expr
+#   16|         getLabel(0): [CaseLabelItem] =~ ...
+#   16|           getPattern(): [ExprPattern] =~ ...
+#   16|             getSubExpr(): [SequenceExpr] SequenceExpr
+#   16|               getElement(0): [IntegerLiteralExpr] 1
+#   16|               getElement(1): [OverloadedDeclRefExpr] OverloadedDeclRefExpr
+#   16|               getElement(2): [IntegerLiteralExpr] 2
+#   17|       getCase(1): [CaseStmt] case ...
+#   17|         getBody(): [BraceStmt] { ... }
+#   17|           getElement(0): [StringLiteralExpr] 
+#   17|         getLabel(0): [CaseLabelItem] _
+#   17|           getPattern(): [AnyPattern] _
+#   20|     getElement(4): [EnumDecl] Foo
+#   21|       getMember(0): [EnumCaseDecl] case ...
+#   21|       getMember(1): [EnumElementDecl] bar
+#   21|       getMember(2): [EnumElementDecl] baz
+#   21|         getParam(0): [ParamDecl] _
+#   21|             Type = Int
+#   21|         getParam(1): [ParamDecl] _
+#   21|             Type = String
+#   24|     getElement(5): [PatternBindingDecl] var ... = ...
+#   24|       getInit(0): [MethodRefExpr] .bar
+#   24|         getBase(): [TypeExpr] Foo.Type
+#   24|           getTypeRepr(): [TypeRepr] Foo
+#   24|       getPattern(0): [TypedPattern] ... as ...
+#   24|         getSubPattern(): [NamedPattern] v
+#   24|         getTypeRepr(): [TypeRepr] Foo
+#   24|     getElement(6): [ConcreteVarDecl] v
+#   24|         Type = Foo
+#   26|     getElement(7): [SwitchStmt] switch v { ... }
+#   26|       getExpr(): [DeclRefExpr] v
+#   27|       getCase(0): [CaseStmt] case ...
+#   27|         getBody(): [BraceStmt] { ... }
+#   27|           getElement(0): [StringLiteralExpr] bar
+#   27|         getLabel(0): [CaseLabelItem] .bar
+#   27|           getPattern(): [EnumElementPattern] .bar
+#   28|       getCase(1): [CaseStmt] case ...
+#   28|         getBody(): [BraceStmt] { ... }
+#   28|           getElement(0): [DeclRefExpr] i
+#   28|         getLabel(0): [CaseLabelItem] let ...
+#   28|           getPattern(): [BindingPattern] let ...
+#   28|             getSubPattern(): [EnumElementPattern] .baz(...)
+#   28|               getSubPattern(): [TuplePattern] (...)
+#   28|                 getElement(0): [NamedPattern] i
+#   28|                 getElement(1): [NamedPattern] s
+#   31|     getElement(8): [PatternBindingDecl] var ... = ...
+#   31|       getInit(0): [NilLiteralExpr] nil
+#   31|       getPattern(0): [TypedPattern] ... as ...
+#   31|         getSubPattern(): [NamedPattern] w
+#   31|         getTypeRepr(): [TypeRepr] Int?
+#   31|     getElement(9): [ConcreteVarDecl] w
+#   31|         Type = Int?
+#   33|     getElement(10): [SwitchStmt] switch w { ... }
+#   33|       getExpr(): [DeclRefExpr] w
+#   34|       getCase(0): [CaseStmt] case ...
+#   34|         getBody(): [BraceStmt] { ... }
+#   34|           getElement(0): [DeclRefExpr] n
+#   34|         getLabel(0): [CaseLabelItem] let ...
+#   34|           getPattern(): [BindingPattern] let ...
+#   34|             getSubPattern(): [OptionalSomePattern] let ...?
+#   34|               getSubPattern(): [NamedPattern] n
+#   35|       getCase(1): [CaseStmt] case ...
+#   35|         getBody(): [BraceStmt] { ... }
+#   35|           getElement(0): [StringLiteralExpr] none
+#   35|         getLabel(0): [CaseLabelItem] _
+#   35|           getPattern(): [AnyPattern] _
+#   38|     getElement(11): [PatternBindingDecl] var ... = ...
+#   38|       getInit(0): [StringLiteralExpr] any
+#   38|       getInit(0).getFullyConverted(): [ErasureExpr] (Any) ...
+#   38|       getPattern(0): [TypedPattern] ... as ...
+#   38|         getSubPattern(): [NamedPattern] a
+#   38|         getTypeRepr(): [TypeRepr] Any
+#   38|     getElement(12): [ConcreteVarDecl] a
+#   38|         Type = Any
+#   40|     getElement(13): [SwitchStmt] switch a { ... }
+#   40|       getExpr(): [DeclRefExpr] a
+#   41|       getCase(0): [CaseStmt] case ...
+#   41|         getBody(): [BraceStmt] { ... }
+#   41|           getElement(0): [StringLiteralExpr] is pattern
+#   41|         getLabel(0): [CaseLabelItem] ... is ...
+#   41|           getPattern(): [IsPattern] ... is ...
+#   41|             getCastTypeRepr(): [TypeRepr] Int
+#   42|       getCase(1): [CaseStmt] case ...
+#   42|         getBody(): [BraceStmt] { ... }
+#   42|           getElement(0): [StringLiteralExpr] as pattern
+#   42|         getLabel(0): [CaseLabelItem] let ...
+#   42|           getPattern(): [BindingPattern] let ...
+#   42|             getSubPattern(): [IsPattern] ... is ...
+#   42|               getCastTypeRepr(): [TypeRepr] String
+#   42|               getSubPattern(): [NamedPattern] x
+#   43|       getCase(2): [CaseStmt] case ...
+#   43|         getBody(): [BraceStmt] { ... }
+#   43|           getElement(0): [StringLiteralExpr] other
+#   43|         getLabel(0): [CaseLabelItem] _
+#   43|           getPattern(): [AnyPattern] _
+#   46|     getElement(14): [PatternBindingDecl] var ... = ...
+#   46|       getInit(0): [BooleanLiteralExpr] true
+#   46|       getPattern(0): [NamedPattern] b
+#   46|     getElement(15): [ConcreteVarDecl] b
+#   46|         Type = Bool
+#   48|     getElement(16): [SwitchStmt] switch b { ... }
+#   48|       getExpr(): [DeclRefExpr] b
+#   49|       getCase(0): [CaseStmt] case ...
+#   49|         getBody(): [BraceStmt] { ... }
+#   49|           getElement(0): [StringLiteralExpr] true
+#   49|         getLabel(0): [CaseLabelItem] true
+#   49|           getPattern(): [BoolPattern] true
+#   50|       getCase(1): [CaseStmt] case ...
+#   50|         getBody(): [BraceStmt] { ... }
+#   50|           getElement(0): [StringLiteralExpr] false
+#   50|         getLabel(0): [CaseLabelItem] false
+#   50|           getPattern(): [BoolPattern] false
+#   12| [ConcreteVarDecl] xx
+#   12|     Type = Int
+#   12| [ConcreteVarDecl] yy
+#   12|     Type = Int
+#   28| [ConcreteVarDecl] i
+#   28|     Type = Int
+#   28| [ConcreteVarDecl] s
+#   28|     Type = String
+#   34| [ConcreteVarDecl] n
+#   34|     Type = Int
+#   42| [ConcreteVarDecl] x
+#   42|     Type = String
+statements.swift:
+#    1| [ConcreteFuncDecl] loop()
+#    1|     InterfaceType = () -> ()
+#    1|   getBody(): [BraceStmt] { ... }
+#    2|     getElement(0): [ForEachStmt] for ... in ... { ... }
+#    2|       getPattern(): [NamedPattern] i
+#    2|       getSequence(): [BinaryExpr] ... ....(_:_:) ...
+#    2|         getFunction(): [MethodRefExpr] ....(_:_:)
+#    2|           getBase(): [TypeExpr] Int.Type
+#    2|             getTypeRepr(): [TypeRepr] Int
+#    2|         getArgument(0): [Argument] : 1
+#    2|           getExpr(): [IntegerLiteralExpr] 1
+#    2|         getArgument(1): [Argument] : 5
+#    2|           getExpr(): [IntegerLiteralExpr] 5
+#    2|       getBody(): [BraceStmt] { ... }
+#    3|         getElement(0): [IfStmt] if ... then { ... } else { ... }
+#    3|           getCondition(): [StmtCondition] StmtCondition
+#    3|             getElement(0): [ConditionElement] ... .==(_:_:) ...
+#    3|               getBoolean(): [BinaryExpr] ... .==(_:_:) ...
+#    3|                 getFunction(): [MethodRefExpr] .==(_:_:)
+#    3|                   getBase(): [TypeExpr] Int.Type
+#    3|                     getTypeRepr(): [TypeRepr] Int
+#    3|                 getArgument(0): [Argument] : i
+#    3|                   getExpr(): [DeclRefExpr] i
+#    3|                 getArgument(1): [Argument] : 3
+#    3|                   getExpr(): [IntegerLiteralExpr] 3
+#    3|           getThen(): [BraceStmt] { ... }
+#    4|             getElement(0): [BreakStmt] break
+#    5|           getElse(): [BraceStmt] { ... }
+#    6|             getElement(0): [ContinueStmt] continue
+#    9|     getElement(1): [PatternBindingDecl] var ... = ...
+#    9|       getInit(0): [IntegerLiteralExpr] 0
+#    9|       getPattern(0): [NamedPattern] i
+#    9|     getElement(2): [ConcreteVarDecl] i
+#    9|         Type = Int
+#   10|     getElement(3): [WhileStmt] while ... { ... }
+#   10|       getCondition(): [StmtCondition] StmtCondition
+#   10|         getElement(0): [ConditionElement] ... .<(_:_:) ...
+#   10|           getBoolean(): [BinaryExpr] ... .<(_:_:) ...
+#   10|             getFunction(): [MethodRefExpr] .<(_:_:)
+#   10|               getBase(): [TypeExpr] Int.Type
+#   10|                 getTypeRepr(): [TypeRepr] Int
+#   10|             getArgument(0): [Argument] : i
+#   10|               getExpr(): [DeclRefExpr] i
+#   10|               getExpr().getFullyConverted(): [LoadExpr] (Int) ...
+#   10|             getArgument(1): [Argument] : 12
+#   10|               getExpr(): [IntegerLiteralExpr] 12
+#   10|           getBoolean().getFullyConverted(): [ParenExpr] (...)
+#   10|       getBody(): [BraceStmt] { ... }
+#   11|         getElement(0): [AssignExpr]  ... = ...
+#   11|           getDest(): [DeclRefExpr] i
+#   11|           getSource(): [BinaryExpr] ... .+(_:_:) ...
+#   11|             getFunction(): [MethodRefExpr] .+(_:_:)
+#   11|               getBase(): [TypeExpr] Int.Type
+#   11|                 getTypeRepr(): [TypeRepr] Int
+#   11|             getArgument(0): [Argument] : i
+#   11|               getExpr(): [DeclRefExpr] i
+#   11|               getExpr().getFullyConverted(): [LoadExpr] (Int) ...
+#   11|             getArgument(1): [Argument] : 1
+#   11|               getExpr(): [IntegerLiteralExpr] 1
+#   14|     getElement(4): [AssignExpr]  ... = ...
+#   14|       getDest(): [DeclRefExpr] i
+#   14|       getSource(): [IntegerLiteralExpr] 0
+#   15|     getElement(5): [RepeatWhileStmt] repeat { ... } while ... 
+#   17|       getCondition(): [BinaryExpr] ... .<(_:_:) ...
+#   17|         getFunction(): [MethodRefExpr] .<(_:_:)
+#   17|           getBase(): [TypeExpr] Int.Type
+#   17|             getTypeRepr(): [TypeRepr] Int
+#   17|         getArgument(0): [Argument] : i
+#   17|           getExpr(): [DeclRefExpr] i
+#   17|           getExpr().getFullyConverted(): [LoadExpr] (Int) ...
+#   17|         getArgument(1): [Argument] : 12
+#   17|           getExpr(): [IntegerLiteralExpr] 12
+#   17|       getCondition().getFullyConverted(): [ParenExpr] (...)
+#   15|       getBody(): [BraceStmt] { ... }
+#   16|         getElement(0): [AssignExpr]  ... = ...
+#   16|           getDest(): [DeclRefExpr] i
+#   16|           getSource(): [BinaryExpr] ... .+(_:_:) ...
+#   16|             getFunction(): [MethodRefExpr] .+(_:_:)
+#   16|               getBase(): [TypeExpr] Int.Type
+#   16|                 getTypeRepr(): [TypeRepr] Int
+#   16|             getArgument(0): [Argument] : i
+#   16|               getExpr(): [DeclRefExpr] i
+#   16|               getExpr().getFullyConverted(): [LoadExpr] (Int) ...
+#   16|             getArgument(1): [Argument] : 1
+#   16|               getExpr(): [IntegerLiteralExpr] 1
+#   19|     getElement(6): [DoCatchStmt] do { ... } catch { ... }
+#   19|       getBody(): [BraceStmt] { ... }
+#   20|         getElement(0): [TryExpr] try ...
+#   20|           getSubExpr(): [CallExpr] call to failure(_:)
+#   20|             getFunction(): [DeclRefExpr] failure(_:)
+#   20|             getArgument(0): [Argument] : 11
+#   20|               getExpr(): [IntegerLiteralExpr] 11
+#   21|       getCatch(0): [CaseStmt] case ...
+#   21|         getBody(): [BraceStmt] { ... }
+#   22|           getElement(0): [CallExpr] call to print(_:separator:terminator:)
+#   22|             getFunction(): [DeclRefExpr] print(_:separator:terminator:)
+#   22|             getArgument(0): [Argument] : [...]
+#   22|               getExpr(): [VarargExpansionExpr] [...]
+#   22|                 getSubExpr(): [ArrayExpr] [...]
+#   22|                   getElement(0): [StringLiteralExpr] error
+#   22|                   getElement(0).getFullyConverted(): [ErasureExpr] (Any) ...
+#   22|             getArgument(1): [Argument] separator: default separator
+#   22|               getExpr(): [DefaultArgumentExpr] default separator
+#   22|             getArgument(2): [Argument] terminator: default terminator
+#   22|               getExpr(): [DefaultArgumentExpr] default terminator
+#   21|         getLabel(0): [CaseLabelItem] let ...
+#   21|           getPattern(): [BindingPattern] let ...
+#   21|             getSubPattern(): [NamedPattern] error
+#   25|     getElement(7): [DoCatchStmt] do { ... } catch { ... }
+#   25|       getBody(): [BraceStmt] { ... }
+#   26|         getElement(0): [TryExpr] try ...
+#   26|           getSubExpr(): [CallExpr] call to failure(_:)
+#   26|             getFunction(): [DeclRefExpr] failure(_:)
+#   26|             getArgument(0): [Argument] : 11
+#   26|               getExpr(): [IntegerLiteralExpr] 11
+#   27|       getCatch(0): [CaseStmt] case ...
+#   27|         getBody(): [BraceStmt] { ... }
+#   28|           getElement(0): [CallExpr] call to print(_:separator:terminator:)
+#   28|             getFunction(): [DeclRefExpr] print(_:separator:terminator:)
+#   28|             getArgument(0): [Argument] : [...]
+#   28|               getExpr(): [VarargExpansionExpr] [...]
+#   28|                 getSubExpr(): [ArrayExpr] [...]
+#   28|                   getElement(0): [StringLiteralExpr] AnError.failed
+#   28|                   getElement(0).getFullyConverted(): [ErasureExpr] (Any) ...
+#   28|             getArgument(1): [Argument] separator: default separator
+#   28|               getExpr(): [DefaultArgumentExpr] default separator
+#   28|             getArgument(2): [Argument] terminator: default terminator
+#   28|               getExpr(): [DefaultArgumentExpr] default terminator
+#   27|         getLabel(0): [CaseLabelItem] ... is ...
+#   27|           getPattern(): [IsPattern] ... is ...
+#   27|             getSubPattern(): [EnumElementPattern] .failed
+#   29|       getCatch(1): [CaseStmt] case ...
+#   29|         getBody(): [BraceStmt] { ... }
+#   30|           getElement(0): [CallExpr] call to print(_:separator:terminator:)
+#   30|             getFunction(): [DeclRefExpr] print(_:separator:terminator:)
+#   30|             getArgument(0): [Argument] : [...]
+#   30|               getExpr(): [VarargExpansionExpr] [...]
+#   30|                 getSubExpr(): [ArrayExpr] [...]
+#   30|                   getElement(0): [StringLiteralExpr] error
+#   30|                   getElement(0).getFullyConverted(): [ErasureExpr] (Any) ...
+#   30|             getArgument(1): [Argument] separator: default separator
+#   30|               getExpr(): [DefaultArgumentExpr] default separator
+#   30|             getArgument(2): [Argument] terminator: default terminator
+#   30|               getExpr(): [DefaultArgumentExpr] default terminator
+#   29|         getLabel(0): [CaseLabelItem] let ...
+#   29|           getPattern(): [BindingPattern] let ...
+#   29|             getSubPattern(): [NamedPattern] error
+#    2| [ConcreteVarDecl] i
+#    2|     Type = Int
+#   21| [ConcreteVarDecl] error
+#   21|     Type = Error
+#   29| [ConcreteVarDecl] error
+#   29|     Type = Error
+#   34| [EnumDecl] AnError
+#   35|   getMember(0): [EnumCaseDecl] case ...
+#   35|   getMember(1): [EnumElementDecl] failed
+#   38| [ConcreteFuncDecl] failure(_:)
+#   38|     InterfaceType = (Int) throws -> ()
+#   38|   getParam(0): [ParamDecl] x
+#   38|       Type = Int
+#   38|   getBody(): [BraceStmt] { ... }
+#   39|     getElement(0): [GuardStmt] guard ... else { ... }
+#   39|       getCondition(): [StmtCondition] StmtCondition
+#   39|         getElement(0): [ConditionElement] ... .!=(_:_:) ...
+#   39|           getBoolean(): [BinaryExpr] ... .!=(_:_:) ...
+#   39|             getFunction(): [MethodRefExpr] .!=(_:_:)
+#   39|               getBase(): [TypeExpr] Int.Type
+#   39|                 getTypeRepr(): [TypeRepr] Int
+#   39|             getArgument(0): [Argument] : x
+#   39|               getExpr(): [DeclRefExpr] x
+#   39|             getArgument(1): [Argument] : 0
+#   39|               getExpr(): [IntegerLiteralExpr] 0
+#   39|       getBody(): [BraceStmt] { ... }
+#   40|         getElement(0): [ThrowStmt] throw ...
+#   40|           getSubExpr(): [MethodRefExpr] .failed
+#   40|             getBase(): [TypeExpr] AnError.Type
+#   40|               getTypeRepr(): [TypeRepr] AnError
+#   40|           getSubExpr().getFullyConverted(): [ErasureExpr] (Error) ...
+#   44| [TopLevelCodeDecl] { ... }
+#   44|   getBody(): [BraceStmt] { ... }
+#   44|     getElement(0): [DeferStmt] defer { ... }
+#   44|       getBody(): [BraceStmt] { ... }
+#   45|         getElement(0): [CallExpr] call to print(_:separator:terminator:)
+#   45|           getFunction(): [DeclRefExpr] print(_:separator:terminator:)
+#   45|           getArgument(0): [Argument] : [...]
+#   45|             getExpr(): [VarargExpansionExpr] [...]
+#   45|               getSubExpr(): [ArrayExpr] [...]
+#   45|                 getElement(0): [StringLiteralExpr] done
+#   45|                 getElement(0).getFullyConverted(): [ErasureExpr] (Any) ...
+#   45|           getArgument(1): [Argument] separator: default separator
+#   45|             getExpr(): [DefaultArgumentExpr] default separator
+#   45|           getArgument(2): [Argument] terminator: default terminator
+#   45|             getExpr(): [DefaultArgumentExpr] default terminator
+#   48| [TopLevelCodeDecl] { ... }
+#   48|   getBody(): [BraceStmt] { ... }
+#   48|     getElement(0): [DoStmt] do { ... }
+#   48|       getBody(): [BraceStmt] { ... }
+#   49|         getElement(0): [CallExpr] call to print(_:separator:terminator:)
+#   49|           getFunction(): [DeclRefExpr] print(_:separator:terminator:)
+#   49|           getArgument(0): [Argument] : [...]
+#   49|             getExpr(): [VarargExpansionExpr] [...]
+#   49|               getSubExpr(): [ArrayExpr] [...]
+#   49|                 getElement(0): [StringLiteralExpr] doing
+#   49|                 getElement(0).getFullyConverted(): [ErasureExpr] (Any) ...
+#   49|           getArgument(1): [Argument] separator: default separator
+#   49|             getExpr(): [DefaultArgumentExpr] default separator
+#   49|           getArgument(2): [Argument] terminator: default terminator
+#   49|             getExpr(): [DefaultArgumentExpr] default terminator
+#   52| [TopLevelCodeDecl] { ... }
+#   52|   getBody(): [BraceStmt] { ... }
+#   52|     getElement(0): [PatternBindingDecl] var ... = ...
+#   52|       getInit(0): [IntegerLiteralExpr] 42
+#   52|       getPattern(0): [NamedPattern] index
+#   52| [ConcreteVarDecl] index
+#   52|     Type = Int
+#   53| [TopLevelCodeDecl] { ... }
+#   53|   getBody(): [BraceStmt] { ... }
+#   53|     getElement(0): [SwitchStmt] switch index { ... }
+#   53|       getExpr(): [DeclRefExpr] index
+#   54|       getCase(0): [CaseStmt] case ...
+#   55|         getBody(): [BraceStmt] { ... }
+#   55|           getElement(0): [CallExpr] call to print(_:separator:terminator:)
+#   55|             getFunction(): [DeclRefExpr] print(_:separator:terminator:)
+#   55|             getArgument(0): [Argument] : [...]
+#   55|               getExpr(): [VarargExpansionExpr] [...]
+#   55|                 getSubExpr(): [ArrayExpr] [...]
+#   55|                   getElement(0): [StringLiteralExpr] 1
+#   55|                   getElement(0).getFullyConverted(): [ErasureExpr] (Any) ...
+#   55|             getArgument(1): [Argument] separator: default separator
+#   55|               getExpr(): [DefaultArgumentExpr] default separator
+#   55|             getArgument(2): [Argument] terminator: default terminator
+#   55|               getExpr(): [DefaultArgumentExpr] default terminator
+#   56|           getElement(1): [FallthroughStmt] fallthrough
+#   54|         getLabel(0): [CaseLabelItem] =~ ...
+#   54|           getPattern(): [ExprPattern] =~ ...
+#   54|             getSubExpr(): [IntegerLiteralExpr] 1
+#   57|       getCase(1): [CaseStmt] case ...
+#   58|         getBody(): [BraceStmt] { ... }
+#   58|           getElement(0): [CallExpr] call to print(_:separator:terminator:)
+#   58|             getFunction(): [DeclRefExpr] print(_:separator:terminator:)
+#   58|             getArgument(0): [Argument] : [...]
+#   58|               getExpr(): [VarargExpansionExpr] [...]
+#   58|                 getSubExpr(): [ArrayExpr] [...]
+#   58|                   getElement(0): [StringLiteralExpr] 5, 10
+#   58|                   getElement(0).getFullyConverted(): [ErasureExpr] (Any) ...
+#   58|             getArgument(1): [Argument] separator: default separator
+#   58|               getExpr(): [DefaultArgumentExpr] default separator
+#   58|             getArgument(2): [Argument] terminator: default terminator
+#   58|               getExpr(): [DefaultArgumentExpr] default terminator
+#   59|           getElement(1): [BreakStmt] break
+#   57|         getLabel(0): [CaseLabelItem] =~ ...
+#   57|           getPattern(): [ExprPattern] =~ ...
+#   57|             getSubExpr(): [IntegerLiteralExpr] 5
+#   57|         getLabel(1): [CaseLabelItem] =~ ...
+#   57|           getPattern(): [ExprPattern] =~ ...
+#   57|             getSubExpr(): [IntegerLiteralExpr] 10
+#   60|       getCase(2): [CaseStmt] case ...
+#   61|         getBody(): [BraceStmt] { ... }
+#   61|           getElement(0): [CallExpr] call to print(_:separator:terminator:)
+#   61|             getFunction(): [DeclRefExpr] print(_:separator:terminator:)
+#   61|             getArgument(0): [Argument] : [...]
+#   61|               getExpr(): [VarargExpansionExpr] [...]
+#   61|                 getSubExpr(): [ArrayExpr] [...]
+#   61|                   getElement(0): [StringLiteralExpr] default
+#   61|                   getElement(0).getFullyConverted(): [ErasureExpr] (Any) ...
+#   61|             getArgument(1): [Argument] separator: default separator
+#   61|               getExpr(): [DefaultArgumentExpr] default separator
+#   61|             getArgument(2): [Argument] terminator: default terminator
+#   61|               getExpr(): [DefaultArgumentExpr] default terminator
+#   60|         getLabel(0): [CaseLabelItem] _
+#   60|           getPattern(): [AnyPattern] _
+#   64| [TopLevelCodeDecl] { ... }
+#   64|   getBody(): [BraceStmt] { ... }
+#   64|     getElement(0): [PatternBindingDecl] var ... = ...
+#   64|       getInit(0): [IntegerLiteralExpr] 4
+#   64|       getInit(0).getFullyConverted(): [InjectIntoOptionalExpr] (Int?) ...
+#   64|       getPattern(0): [TypedPattern] ... as ...
+#   64|         getSubPattern(): [NamedPattern] x
+#   64|         getTypeRepr(): [TypeRepr] Int?
+#   64| [ConcreteVarDecl] x
+#   64|     Type = Int?
+#   65| [TopLevelCodeDecl] { ... }
+#   65|   getBody(): [BraceStmt] { ... }
+#   65|     getElement(0): [IfStmt] if ... then { ... }
+#   65|       getCondition(): [StmtCondition] StmtCondition
+#   65|         getElement(0): [ConditionElement] let ... = ... 
+#   65|           getPattern(): [BindingPattern] let ...
+#   65|             getSubPattern(): [OptionalSomePattern] let ...?
+#   65|               getSubPattern(): [NamedPattern] xx
+#   65|           getInitializer(): [DeclRefExpr] x
+#   65|       getThen(): [BraceStmt] { ... }
+#   67| [TopLevelCodeDecl] { ... }
+#   67|   getBody(): [BraceStmt] { ... }
+#   67|     getElement(0): [IfStmt] if ... then { ... }
+#   67|       getCondition(): [StmtCondition] StmtCondition
+#   67|         getElement(0): [ConditionElement] .some(...) = ... 
+#   67|           getPattern(): [EnumElementPattern] .some(...)
+#   67|             getSubPattern(): [AnyPattern] _
+#   67|             getSubPattern().getFullyUnresolved(): [ParenPattern] (...)
+#   67|           getInitializer(): [DeclRefExpr] x
+#   67|       getThen(): [BraceStmt] { ... }
+#   70| [TopLevelCodeDecl] { ... }
+#   70|   getBody(): [BraceStmt] { ... }
+#   70|     getElement(0): [PatternBindingDecl] var ... = ...
+#   70|       getInit(0): [ArrayExpr] [...]
+#   70|         getElement(0): [IntegerLiteralExpr] 1
+#   70|         getElement(1): [IntegerLiteralExpr] 2
+#   70|         getElement(2): [IntegerLiteralExpr] 3
+#   70|       getPattern(0): [NamedPattern] numbers
+#   70| [ConcreteVarDecl] numbers
+#   70|     Type = [Int]
+#   71| [TopLevelCodeDecl] { ... }
+#   71|   getBody(): [BraceStmt] { ... }
+#   71|     getElement(0): [ForEachStmt] for ... in ... where ... { ... }
+#   71|       getPattern(): [NamedPattern] number
+#   71|       getSequence(): [DeclRefExpr] numbers
+#   71|       getWhere(): [BinaryExpr] ... .==(_:_:) ...
+#   71|         getFunction(): [MethodRefExpr] .==(_:_:)
+#   71|           getBase(): [TypeExpr] Int.Type
+#   71|             getTypeRepr(): [TypeRepr] Int
+#   71|         getArgument(0): [Argument] : ... .%(_:_:) ...
+#   71|           getExpr(): [BinaryExpr] ... .%(_:_:) ...
+#   71|             getFunction(): [MethodRefExpr] .%(_:_:)
+#   71|               getBase(): [TypeExpr] Int.Type
+#   71|                 getTypeRepr(): [TypeRepr] Int
+#   71|             getArgument(0): [Argument] : number
+#   71|               getExpr(): [DeclRefExpr] number
+#   71|             getArgument(1): [Argument] : 2
+#   71|               getExpr(): [IntegerLiteralExpr] 2
+#   71|         getArgument(1): [Argument] : 0
+#   71|           getExpr(): [IntegerLiteralExpr] 0
+#   71|       getBody(): [BraceStmt] { ... }
+#   71| [ConcreteVarDecl] number
+#   71|     Type = Int
+#   74| [StructDecl] HasModifyAccessorDecl
+#   75|   getMember(0): [PatternBindingDecl] var ... = ...
+#   75|     getPattern(0): [TypedPattern] ... as ...
+#   75|       getSubPattern(): [NamedPattern] x
+#   75|       getTypeRepr(): [TypeRepr] Int
+#   75|   getMember(1): [ConcreteVarDecl] x
+#   75|       Type = Int
+#   75|     getAccessorDecl(0): [AccessorDecl] get
+#   75|         InterfaceType = (HasModifyAccessorDecl) -> () -> Int
+#   75|       getSelfParam(): [ParamDecl] self
+#   75|           Type = HasModifyAccessorDecl
+#   75|       getBody(): [BraceStmt] { ... }
+#   75|     getAccessorDecl(1): [AccessorDecl] set
+#   75|         InterfaceType = (inout HasModifyAccessorDecl) -> (Int) -> ()
+#   75|       getSelfParam(): [ParamDecl] self
+#   75|           Type = HasModifyAccessorDecl
+#   75|       getParam(0): [ParamDecl] value
+#   75|           Type = Int
+#   75|       getBody(): [BraceStmt] { ... }
+#   75|     getAccessorDecl(2): [AccessorDecl] (unnamed function decl)
+#   75|         InterfaceType = (inout HasModifyAccessorDecl) -> () -> ()
+#   75|       getSelfParam(): [ParamDecl] self
+#   75|           Type = HasModifyAccessorDecl
+#   75|       getBody(): [BraceStmt] { ... }
+#   75|         getElement(0): [YieldStmt] yield ...
+#   76|   getMember(2): [PatternBindingDecl] var ... = ...
+#   76|     getPattern(0): [TypedPattern] ... as ...
+#   76|       getSubPattern(): [NamedPattern] hasModify
+#   76|       getTypeRepr(): [TypeRepr] Int
+#   76|   getMember(3): [ConcreteVarDecl] hasModify
+#   76|       Type = Int
+#   77|     getAccessorDecl(0): [AccessorDecl] (unnamed function decl)
+#   77|         InterfaceType = (inout HasModifyAccessorDecl) -> () -> ()
+#   77|       getSelfParam(): [ParamDecl] self
+#   77|           Type = HasModifyAccessorDecl
+#   77|       getBody(): [BraceStmt] { ... }
+#   78|         getElement(0): [YieldStmt] yield ...
+#   78|           getResult(0): [InOutExpr] &...
+#   78|             getSubExpr(): [MemberRefExpr] .x
+#   78|               getBase(): [DeclRefExpr] self
+#   81|     getAccessorDecl(1): [AccessorDecl] get
+#   81|         InterfaceType = (HasModifyAccessorDecl) -> () -> Int
+#   81|       getSelfParam(): [ParamDecl] self
+#   81|           Type = HasModifyAccessorDecl
+#   81|       getBody(): [BraceStmt] { ... }
+#   82|         getElement(0): [ReturnStmt] return ...
+#   82|           getResult(): [IntegerLiteralExpr] 0
+#   76|     getAccessorDecl(2): [AccessorDecl] set
+#   76|         InterfaceType = (inout HasModifyAccessorDecl) -> (Int) -> ()
+#   76|       getSelfParam(): [ParamDecl] self
+#   76|           Type = HasModifyAccessorDecl
+#   76|       getParam(0): [ParamDecl] value
+#   76|           Type = Int
+#   76|       getBody(): [BraceStmt] { ... }
+#   74|   getMember(4): [ConstructorDecl] init(x:)
+#   74|       InterfaceType = (HasModifyAccessorDecl.Type) -> (Int) -> HasModifyAccessorDecl
+#   74|     getSelfParam(): [ParamDecl] self
+#   74|         Type = HasModifyAccessorDecl
+#   74|     getParam(0): [ParamDecl] x
+#   74|         Type = Int

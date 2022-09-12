@@ -1,5 +1,8 @@
 | NoSummaries;BaseClass;M1;(System.String);generated |
 | NoSummaries;BaseClass;M2;(System.String);generated |
+| NoSummaries;CollectionFlow;ReturnSimpleTypeArray;(System.Int32[]);generated |
+| NoSummaries;CollectionFlow;ReturnSimpleTypeDictionary;(System.Collections.Generic.Dictionary<System.Int32,System.Int32>);generated |
+| NoSummaries;CollectionFlow;ReturnSimpleTypeList;(System.Collections.Generic.List<System.Int32>);generated |
 | NoSummaries;EquatableBound;Equals;(System.Object);generated |
 | NoSummaries;EquatableUnBound<>;Equals;(T);generated |
 | NoSummaries;SimpleTypes;M1;(System.Boolean);generated |

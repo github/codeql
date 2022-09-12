@@ -28,3 +28,11 @@ private class SystemNetHttpMultipartFormDataContentFlowModelCsv extends SummaryM
       "System.Net.Http;MultipartFormDataContent;false;Add;(System.Net.Http.HttpContent);;Argument[0];Argument[this].Element;value;manual"
   }
 }
+
+/** Data flow for `System.Net.Http.Headers.HttpHeaders`. */
+private class SystemNetHttpHeadersHttpHeadersFlowModelCsv extends SummaryModelCsv {
+  override predicate row(string row) {
+    row =
+      "System.Net.Http.Headers;HttpHeaders;false;Clear;();;Argument[this].WithoutElement;Argument[this];value;manual"
+  }
+}

@@ -238,7 +238,7 @@ predicate dependsOnTransitive(DependsSource src, Element dest) {
 /**
  * A dependency that targets a TypeDeclarationEntry.
  */
-private predicate dependsOnTDE(Element src, Type t, TypeDeclarationEntry dest) {
+private predicate dependsOnTde(Element src, Type t, TypeDeclarationEntry dest) {
   dependsOnTransitive(src, t) and
   getDeclarationEntries(t, dest)
 }
@@ -247,8 +247,8 @@ private predicate dependsOnTDE(Element src, Type t, TypeDeclarationEntry dest) {
  * A dependency that targets a visible TypeDeclarationEntry.
  */
 pragma[noopt]
-private predicate dependsOnVisibleTDE(Element src, Type t, TypeDeclarationEntry dest) {
-  dependsOnTDE(src, t, dest) and
+private predicate dependsOnVisibleTde(Element src, Type t, TypeDeclarationEntry dest) {
+  dependsOnTde(src, t, dest) and
   exists(File g | g = dest.getFile() |
     exists(File f | f = src.getFile() | f.getAnIncludedFile*() = g)
   )
@@ -260,8 +260,8 @@ private predicate dependsOnVisibleTDE(Element src, Type t, TypeDeclarationEntry 
 private predicate dependsOnDeclarationEntry(Element src, DeclarationEntry dest) {
   exists(Type t |
     // dependency from a Type use -> unique visible TDE
-    dependsOnVisibleTDE(src, t, dest) and
-    strictcount(TypeDeclarationEntry alt | dependsOnVisibleTDE(src, t, alt)) = 1
+    dependsOnVisibleTde(src, t, dest) and
+    strictcount(TypeDeclarationEntry alt | dependsOnVisibleTde(src, t, alt)) = 1
   )
   or
   exists(TypedefType mid |

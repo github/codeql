@@ -311,15 +311,15 @@ module Ruby {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "Block" }
 
+    /** Gets the node corresponding to the field `body`. */
+    final BlockBody getBody() { ruby_block_body(this, result) }
+
     /** Gets the node corresponding to the field `parameters`. */
     final BlockParameters getParameters() { ruby_block_parameters(this, result) }
 
-    /** Gets the `i`th child of this node. */
-    final AstNode getChild(int i) { ruby_block_child(this, i, result) }
-
     /** Gets a field or child node of this node. */
     final override AstNode getAFieldOrChild() {
-      ruby_block_parameters(this, result) or ruby_block_child(this, _, result)
+      ruby_block_body(this, result) or ruby_block_parameters(this, result)
     }
   }
 
@@ -333,6 +333,18 @@ module Ruby {
 
     /** Gets a field or child node of this node. */
     final override AstNode getAFieldOrChild() { ruby_block_argument_child(this, result) }
+  }
+
+  /** A class representing `block_body` nodes. */
+  class BlockBody extends @ruby_block_body, AstNode {
+    /** Gets the name of the primary QL class for this element. */
+    final override string getAPrimaryQlClass() { result = "BlockBody" }
+
+    /** Gets the `i`th child of this node. */
+    final AstNode getChild(int i) { ruby_block_body_child(this, i, result) }
+
+    /** Gets a field or child node of this node. */
+    final override AstNode getAFieldOrChild() { ruby_block_body_child(this, _, result) }
   }
 
   /** A class representing `block_parameter` nodes. */
@@ -362,6 +374,18 @@ module Ruby {
     final override AstNode getAFieldOrChild() {
       ruby_block_parameters_locals(this, _, result) or ruby_block_parameters_child(this, _, result)
     }
+  }
+
+  /** A class representing `body_statement` nodes. */
+  class BodyStatement extends @ruby_body_statement, AstNode {
+    /** Gets the name of the primary QL class for this element. */
+    final override string getAPrimaryQlClass() { result = "BodyStatement" }
+
+    /** Gets the `i`th child of this node. */
+    final AstNode getChild(int i) { ruby_body_statement_child(this, i, result) }
+
+    /** Gets a field or child node of this node. */
+    final override AstNode getAFieldOrChild() { ruby_body_statement_child(this, _, result) }
   }
 
   /** A class representing `break` nodes. */
@@ -468,20 +492,20 @@ module Ruby {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "Class" }
 
+    /** Gets the node corresponding to the field `body`. */
+    final BodyStatement getBody() { ruby_class_body(this, result) }
+
     /** Gets the node corresponding to the field `name`. */
     final AstNode getName() { ruby_class_def(this, result) }
 
     /** Gets the node corresponding to the field `superclass`. */
     final Superclass getSuperclass() { ruby_class_superclass(this, result) }
 
-    /** Gets the `i`th child of this node. */
-    final AstNode getChild(int i) { ruby_class_child(this, i, result) }
-
     /** Gets a field or child node of this node. */
     final override AstNode getAFieldOrChild() {
+      ruby_class_body(this, result) or
       ruby_class_def(this, result) or
-      ruby_class_superclass(this, result) or
-      ruby_class_child(this, _, result)
+      ruby_class_superclass(this, result)
     }
   }
 
@@ -592,15 +616,15 @@ module Ruby {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "DoBlock" }
 
+    /** Gets the node corresponding to the field `body`. */
+    final BodyStatement getBody() { ruby_do_block_body(this, result) }
+
     /** Gets the node corresponding to the field `parameters`. */
     final BlockParameters getParameters() { ruby_do_block_parameters(this, result) }
 
-    /** Gets the `i`th child of this node. */
-    final AstNode getChild(int i) { ruby_do_block_child(this, i, result) }
-
     /** Gets a field or child node of this node. */
     final override AstNode getAFieldOrChild() {
-      ruby_do_block_parameters(this, result) or ruby_do_block_child(this, _, result)
+      ruby_do_block_body(this, result) or ruby_do_block_parameters(this, result)
     }
   }
 
@@ -1106,20 +1130,20 @@ module Ruby {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "Method" }
 
+    /** Gets the node corresponding to the field `body`. */
+    final AstNode getBody() { ruby_method_body(this, result) }
+
     /** Gets the node corresponding to the field `name`. */
     final UnderscoreMethodName getName() { ruby_method_def(this, result) }
 
     /** Gets the node corresponding to the field `parameters`. */
     final MethodParameters getParameters() { ruby_method_parameters(this, result) }
 
-    /** Gets the `i`th child of this node. */
-    final AstNode getChild(int i) { ruby_method_child(this, i, result) }
-
     /** Gets a field or child node of this node. */
     final override AstNode getAFieldOrChild() {
+      ruby_method_body(this, result) or
       ruby_method_def(this, result) or
-      ruby_method_parameters(this, result) or
-      ruby_method_child(this, _, result)
+      ruby_method_parameters(this, result)
     }
   }
 
@@ -1140,15 +1164,15 @@ module Ruby {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "Module" }
 
+    /** Gets the node corresponding to the field `body`. */
+    final BodyStatement getBody() { ruby_module_body(this, result) }
+
     /** Gets the node corresponding to the field `name`. */
     final AstNode getName() { ruby_module_def(this, result) }
 
-    /** Gets the `i`th child of this node. */
-    final AstNode getChild(int i) { ruby_module_child(this, i, result) }
-
     /** Gets a field or child node of this node. */
     final override AstNode getAFieldOrChild() {
-      ruby_module_def(this, result) or ruby_module_child(this, _, result)
+      ruby_module_body(this, result) or ruby_module_def(this, result)
     }
   }
 
@@ -1504,15 +1528,15 @@ module Ruby {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "SingletonClass" }
 
+    /** Gets the node corresponding to the field `body`. */
+    final BodyStatement getBody() { ruby_singleton_class_body(this, result) }
+
     /** Gets the node corresponding to the field `value`. */
     final UnderscoreArg getValue() { ruby_singleton_class_def(this, result) }
 
-    /** Gets the `i`th child of this node. */
-    final AstNode getChild(int i) { ruby_singleton_class_child(this, i, result) }
-
     /** Gets a field or child node of this node. */
     final override AstNode getAFieldOrChild() {
-      ruby_singleton_class_def(this, result) or ruby_singleton_class_child(this, _, result)
+      ruby_singleton_class_body(this, result) or ruby_singleton_class_def(this, result)
     }
   }
 
@@ -1520,6 +1544,9 @@ module Ruby {
   class SingletonMethod extends @ruby_singleton_method, AstNode {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "SingletonMethod" }
+
+    /** Gets the node corresponding to the field `body`. */
+    final AstNode getBody() { ruby_singleton_method_body(this, result) }
 
     /** Gets the node corresponding to the field `name`. */
     final UnderscoreMethodName getName() { ruby_singleton_method_def(this, result, _) }
@@ -1530,15 +1557,12 @@ module Ruby {
     /** Gets the node corresponding to the field `parameters`. */
     final MethodParameters getParameters() { ruby_singleton_method_parameters(this, result) }
 
-    /** Gets the `i`th child of this node. */
-    final AstNode getChild(int i) { ruby_singleton_method_child(this, i, result) }
-
     /** Gets a field or child node of this node. */
     final override AstNode getAFieldOrChild() {
+      ruby_singleton_method_body(this, result) or
       ruby_singleton_method_def(this, result, _) or
       ruby_singleton_method_def(this, _, result) or
-      ruby_singleton_method_parameters(this, result) or
-      ruby_singleton_method_child(this, _, result)
+      ruby_singleton_method_parameters(this, result)
     }
   }
 

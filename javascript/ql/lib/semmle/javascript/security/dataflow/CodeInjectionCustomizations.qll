@@ -37,7 +37,7 @@ module CodeInjection {
    */
   class AngularJSExpressionSink extends Sink, DataFlow::ValueNode {
     AngularJSExpressionSink() {
-      any(AngularJS::AngularJSCall call).interpretsArgumentAsCode(this.asExpr())
+      any(AngularJS::AngularJSCallNode call).interpretsArgumentAsCode(this)
     }
   }
 
@@ -170,7 +170,7 @@ module CodeInjection {
         exists(string callName | c = DataFlow::globalVarRef(callName).getAnInvocation() |
           callName = "eval" and index = 0
           or
-          callName = "Function"
+          callName = "Function" and index = -1
           or
           callName = "execScript" and index = 0
           or
@@ -185,14 +185,13 @@ module CodeInjection {
           callName = "setImmediate" and index = 0
         )
         or
-        exists(DataFlow::GlobalVarRefNode wasm, string methodName |
-          wasm.getName() = "WebAssembly" and c = wasm.getAMemberCall(methodName)
-        |
-          methodName = "compile" or
-          methodName = "compileStreaming"
-        )
+        c = DataFlow::globalVarRef("WebAssembly").getAMemberCall(["compile", "compileStreaming"]) and
+        index = -1
       |
         this = c.getArgument(index)
+        or
+        index = -1 and
+        this = c.getAnArgument()
       )
       or
       // node-serialize is not intended to be safe for untrusted inputs

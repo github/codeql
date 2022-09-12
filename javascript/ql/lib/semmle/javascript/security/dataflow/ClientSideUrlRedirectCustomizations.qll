@@ -57,23 +57,23 @@ module ClientSideUrlRedirect {
    * when `base` is the current URL.
    */
   predicate untrustedUrlSubstring(DataFlow::Node base, DataFlow::Node substring) {
-    exists(MethodCallExpr mce, string methodName |
-      mce = substring.asExpr() and mce.calls(base.asExpr(), methodName)
+    exists(DataFlow::MethodCallNode mcn, string methodName |
+      mcn = substring and mcn.calls(base, methodName)
     |
       methodName = "split" and
       // exclude all splits where only the prefix is accessed, which is safe for url-redirects.
-      not exists(PropAccess pacc | mce = pacc.getBase() | pacc.getPropertyName() = "0")
+      not exists(DataFlow::PropRead pacc | mcn = pacc.getBase() | pacc.getPropertyName() = "0")
       or
       methodName = StringOps::substringMethodName() and
       // exclude `location.href.substring(0, ...)` and similar, which can
       // never refer to the query string
-      not mce.getArgument(0).(NumberLiteral).getIntValue() = 0
+      not mcn.getArgument(0).getIntValue() = 0
     )
     or
-    exists(MethodCallExpr mce |
-      substring.asExpr() = mce and
-      mce = any(DataFlow::RegExpCreationNode re).getAMethodCall("exec").asExpr() and
-      base.asExpr() = mce.getArgument(0)
+    exists(DataFlow::MethodCallNode mcn |
+      substring = mcn and
+      mcn = any(DataFlow::RegExpCreationNode re).getAMethodCall("exec") and
+      base = mcn.getArgument(0)
     )
   }
 
@@ -104,7 +104,9 @@ module ClientSideUrlRedirect {
       xss = true
       or
       // An assignment to `location`
-      exists(Assignment assgn | isLocation(assgn.getTarget()) and astNode = assgn.getRhs()) and
+      exists(Assignment assgn |
+        isLocationNode(assgn.getTarget().flow()) and astNode = assgn.getRhs()
+      ) and
       xss = true
       or
       // An assignment to `location.href`, `location.protocol` or `location.hostname`
@@ -119,7 +121,7 @@ module ClientSideUrlRedirect {
       // A redirection using the AngularJS `$location` service
       exists(AngularJS::ServiceReference service |
         service.getName() = "$location" and
-        this.asExpr() = service.getAMethodCall("url").getArgument(0)
+        this = service.getAMethodCall("url").getArgument(0)
       ) and
       xss = false
     }
@@ -177,7 +179,7 @@ module ClientSideUrlRedirect {
       )
       or
       // e.g. node.setAttribute("href", sink)
-      any(DomMethodCallExpr call).interpretsArgumentsAsUrl(this.asExpr())
+      any(DomMethodCallNode call).interpretsArgumentsAsUrl(this)
     }
 
     override predicate isXssSink() { any() }
@@ -189,9 +191,9 @@ module ClientSideUrlRedirect {
    */
   class AttributeWriteUrlSink extends ScriptUrlSink, DataFlow::ValueNode {
     AttributeWriteUrlSink() {
-      exists(DomPropWriteNode pw |
+      exists(DomPropertyWrite pw |
         pw.interpretsValueAsJavaScriptUrl() and
-        this = DataFlow::valueNode(pw.getRhs())
+        this = pw.getRhs()
       )
     }
 

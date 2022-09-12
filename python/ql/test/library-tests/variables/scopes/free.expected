@@ -1,9 +1,9 @@
-| Local Variable local2 | Function func2 | Function inner1 |
-| Local Variable local4 | Function func3 | Function inner2 |
-| Local Variable local4 | Function func3 | Function inner_outer |
-| Local Variable local5 | Function inner_outer | Function inner2 |
-| Local Variable param4 | Function func3 | Function inner2 |
-| Local Variable param4 | Function func3 | Function inner_outer |
-| Local Variable param5 | Function func3 | Function inner_outer |
-| Local Variable param6 | Function func4 | Function meth_inner |
-| Local Variable z | Function func6 | Function listcomp |
+| Local Variable local2 | test.py:15:1:15:12 | Function func2 | test.py:17:5:17:23 | Function inner1 |
+| Local Variable local4 | test.py:22:1:22:26 | Function func3 | test.py:24:5:24:22 | Function inner_outer |
+| Local Variable local4 | test.py:22:1:22:26 | Function func3 | test.py:25:9:25:27 | Function inner2 |
+| Local Variable local5 | test.py:24:5:24:22 | Function inner_outer | test.py:25:9:25:27 | Function inner2 |
+| Local Variable param4 | test.py:22:1:22:26 | Function func3 | test.py:24:5:24:22 | Function inner_outer |
+| Local Variable param4 | test.py:22:1:22:26 | Function func3 | test.py:25:9:25:27 | Function inner2 |
+| Local Variable param5 | test.py:22:1:22:26 | Function func3 | test.py:24:5:24:22 | Function inner_outer |
+| Local Variable param6 | test.py:38:1:38:18 | Function func4 | test.py:40:9:40:29 | Function meth_inner |
+| Local Variable z | test.py:47:1:47:16 | Function func6 | test.py:48:12:48:29 | Function listcomp |

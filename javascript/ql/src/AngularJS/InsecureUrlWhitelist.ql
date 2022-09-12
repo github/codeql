@@ -23,7 +23,7 @@ predicate isResourceUrlWhitelist(
 ) {
   exists(AngularJS::ServiceReference service |
     service.getName() = "$sceDelegateProvider" and
-    setupCall.asExpr() = service.getAMethodCall("resourceUrlWhitelist") and
+    setupCall = service.getAMethodCall("resourceUrlWhitelist") and
     list.flowsTo(setupCall.getArgument(0))
   )
 }

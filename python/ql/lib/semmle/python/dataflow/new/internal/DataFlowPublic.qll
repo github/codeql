@@ -420,6 +420,15 @@ class ModuleVariableNode extends Node, TModuleVariableNode {
     result.getVar().getDefinition().(EssaNodeDefinition).definedBy(var, any(DefinitionNode defn))
   }
 
+  /** Gets the possible values of the variable at the end of import time */
+  CfgNode getADefiningWrite() {
+    exists(SsaVariable def |
+      def = any(SsaVariable ssa_var).getAnUltimateDefinition() and
+      def.getDefinition() = result.asCfgNode() and
+      def.getVariable() = var
+    )
+  }
+
   override DataFlowCallable getEnclosingCallable() { result.(DataFlowModuleScope).getScope() = mod }
 
   override Location getLocation() { result = mod.getLocation() }

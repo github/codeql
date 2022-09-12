@@ -166,17 +166,17 @@ nominal_type_decls(  //dir=decl
 | @abstract_function_decl
 ;
 
+#keyset[id]
+callable_self_params(
+  int id: @callable ref,
+  int self_param: @param_decl ref
+);
+
 #keyset[id, index]
 callable_params(
   int id: @callable ref,
   int index: int ref,
   int param: @param_decl ref
-);
-
-#keyset[id]
-callable_self_params(
-  int id: @callable ref,
-  int self_param: @param_decl ref
 );
 
 #keyset[id]
@@ -2114,6 +2114,20 @@ module_decl_is_builtin_module(  //dir=decl
 #keyset[id]
 module_decl_is_system_module(  //dir=decl
   int id: @module_decl ref
+);
+
+#keyset[id, index]
+module_decl_imported_modules(  //dir=decl
+  int id: @module_decl ref,
+  int index: int ref,
+  int imported_module: @module_decl ref
+);
+
+#keyset[id, index]
+module_decl_exported_modules(  //dir=decl
+  int id: @module_decl ref,
+  int index: int ref,
+  int exported_module: @module_decl ref
 );
 
 constructor_ref_call_exprs(  //dir=expr
