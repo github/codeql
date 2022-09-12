@@ -45,6 +45,10 @@ class WordexpTaintConfiguration extends TaintTracking::Configuration {
       not isCommandSubstitutionDisabled(fc)
     )
   }
+
+  override predicate isSanitizer(DataFlow::Node node) {
+    node.asExpr().getUnspecifiedType() instanceof IntegralType
+  }
 }
 
 from WordexpTaintConfiguration conf, DataFlow::PathNode sourceNode, DataFlow::PathNode sinkNode
