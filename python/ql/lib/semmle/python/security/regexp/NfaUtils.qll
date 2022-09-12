@@ -887,11 +887,10 @@ module PrefixConstruction<isCandidateSig/1 isCandidate> {
   /**
    * Holds if `state` is the textually last start state for the regular expression.
    */
-  private predicate lastStartState(State state) {
+  private predicate lastStartState(RelevantState state) {
     exists(RegExpRoot root |
       state =
-        max(State s, Location l |
-          s = stateInRelevantRegexp() and
+        max(RelevantState s, Location l |
           isStartState(s) and
           getRoot(s.getRepr()) = root and
           l = s.getRepr().getLocation()
@@ -963,10 +962,17 @@ module PrefixConstruction<isCandidateSig/1 isCandidate> {
       min(string c | delta(prev, any(InputSymbol symbol | c = intersect(Any(), symbol)), next))
   }
 
-  /** Gets a state within a regular expression that contains a candidate state. */
-  pragma[noinline]
-  State stateInRelevantRegexp() {
-    exists(State s | isCandidate(s) | getRoot(s.getRepr()) = getRoot(result.getRepr()))
+  /** A state within a regular expression that contains a candidate state. */
+  class RelevantState instanceof State {
+    RelevantState() {
+      exists(State s | isCandidate(s) | getRoot(s.getRepr()) = getRoot(this.getRepr()))
+    }
+
+    /** Gets a string representation for this state in a regular expression. */
+    string toString() { result = State.super.toString() }
+
+    /** Gets the term represented by this state. */
+    RegExpTerm getRepr() { result = State.super.getRepr() }
   }
 }
 
@@ -1007,6 +1013,8 @@ module ReDoSPruning<isCandidateSig/2 isCandidate> {
 
   import PrefixConstruction<isCandidateState/1> as Prefix
 
+  class RelevantState = Prefix::RelevantState;
+
   /**
    * Predicates for testing the presence of a rejecting suffix.
    *
@@ -1040,32 +1048,26 @@ module ReDoSPruning<isCandidateSig/2 isCandidate> {
      * This predicate might find impossible suffixes when searching for suffixes of length > 1, which can cause FPs.
      */
     pragma[noinline]
-    private predicate isLikelyRejectable(State s) {
-      s = Prefix::stateInRelevantRegexp() and
-      (
-        // exists a reject edge with some char.
-        hasRejectEdge(s)
-        or
-        hasEdgeToLikelyRejectable(s)
-        or
-        // stopping here is rejection
-        isRejectState(s)
-      )
+    private predicate isLikelyRejectable(RelevantState s) {
+      // exists a reject edge with some char.
+      hasRejectEdge(s)
+      or
+      hasEdgeToLikelyRejectable(s)
+      or
+      // stopping here is rejection
+      isRejectState(s)
     }
 
     /**
      * Holds if `s` is not an accept state, and there is no epsilon transition to an accept state.
      */
-    predicate isRejectState(State s) {
-      s = Prefix::stateInRelevantRegexp() and not epsilonSucc*(s) = Accept(_)
-    }
+    predicate isRejectState(RelevantState s) { not epsilonSucc*(s) = Accept(_) }
 
     /**
      * Holds if there is likely a non-empty suffix leading to rejection starting in `s`.
      */
     pragma[noopt]
-    predicate hasEdgeToLikelyRejectable(State s) {
-      s = Prefix::stateInRelevantRegexp() and
+    predicate hasEdgeToLikelyRejectable(RelevantState s) {
       // all edges (at least one) with some char leads to another state that is rejectable.
       // the `next` states might not share a common suffix, which can cause FPs.
       exists(string char | char = hasEdgeToLikelyRejectableHelper(s) |
@@ -1080,8 +1082,7 @@ module ReDoSPruning<isCandidateSig/2 isCandidate> {
      * and `s` has not been found to be rejectable by `hasRejectEdge` or `isRejectState`.
      */
     pragma[noinline]
-    private string hasEdgeToLikelyRejectableHelper(State s) {
-      s = Prefix::stateInRelevantRegexp() and
+    private string hasEdgeToLikelyRejectableHelper(RelevantState s) {
       not hasRejectEdge(s) and
       not isRejectState(s) and
       deltaClosedChar(s, result, _)
@@ -1092,9 +1093,7 @@ module ReDoSPruning<isCandidateSig/2 isCandidate> {
      * along epsilon edges, such that there is a transition from
      * `prev` to `next` that the character symbol `char`.
      */
-    predicate deltaClosedChar(State prev, string char, State next) {
-      prev = Prefix::stateInRelevantRegexp() and
-      next = Prefix::stateInRelevantRegexp() and
+    predicate deltaClosedChar(RelevantState prev, string char, RelevantState next) {
       deltaClosed(prev, getAnInputSymbolMatchingRelevant(char), next)
     }
 
