@@ -42,6 +42,13 @@ newtype TParameterPosition =
   TSelfParameterPosition() or
   TPositionalParameterPosition(int pos) { pos = any(Parameter p).getPosition() } or
   TKeywordParameterPosition(string name) { name = any(Parameter p).getName() } or
+  TStarArgsParameterPosition(int pos) {
+    // since `.getPosition` does not work for `*args`, we need *args parameter positions
+    // at index 1 larger than the largest positional parameter position (and 0 must be
+    // included as well). This is a bit of an over-approximation.
+    pos = 0 or
+    pos = any(Parameter p).getPosition() + 1
+  } or
   TDictSplatParameterPosition()
 
 /** A parameter position. */
@@ -55,6 +62,9 @@ class ParameterPosition extends TParameterPosition {
   /** Holds if this position represents a keyword parameter named `name`. */
   predicate isKeyword(string name) { this = TKeywordParameterPosition(name) }
 
+  /** Holds if this position represents a `*args` parameter at (0-based) `index`. */
+  predicate isStarArgs(int index) { this = TStarArgsParameterPosition(index) }
+
   /** Holds if this position represents a `**kwargs` parameter. */
   predicate isDictSplat() { this = TDictSplatParameterPosition() }
 
@@ -66,6 +76,8 @@ class ParameterPosition extends TParameterPosition {
     or
     exists(string name | this.isKeyword(name) and result = "keyword " + name)
     or
+    exists(int index | this.isStarArgs(index) and result = "*args at " + index)
+    or
     this.isDictSplat() and result = "**"
   }
 }
@@ -75,6 +87,7 @@ newtype TArgumentPosition =
   TSelfArgumentPosition() or
   TPositionalArgumentPosition(int pos) { exists(any(CallNode c).getArg(pos)) } or
   TKeywordArgumentPosition(string name) { exists(any(CallNode c).getArgByName(name)) } or
+  TStarArgsArgumentPosition(int pos) { exists(Call c | c.getPositionalArg(pos) instanceof Starred) } or
   TDictSplatArgumentPosition()
 
 /** An argument position. */
@@ -88,6 +101,9 @@ class ArgumentPosition extends TArgumentPosition {
   /** Holds if this position represents a keyword argument named `name`. */
   predicate isKeyword(string name) { this = TKeywordArgumentPosition(name) }
 
+  /** Holds if this position represents a `*args` argument at (0-based) `index`. */
+  predicate isStarArgs(int index) { this = TStarArgsArgumentPosition(index) }
+
   /** Holds if this position represents a `**kwargs` argument. */
   predicate isDictSplat() { this = TDictSplatArgumentPosition() }
 
@@ -98,6 +114,8 @@ class ArgumentPosition extends TArgumentPosition {
     exists(int pos | this.isPositional(pos) and result = "position " + pos)
     or
     exists(string name | this.isKeyword(name) and result = "keyword " + name)
+    or
+    exists(int index | this.isStarArgs(index) and result = "*args at " + index)
     or
     this.isDictSplat() and result = "**"
   }
@@ -111,6 +129,8 @@ predicate parameterMatch(ParameterPosition ppos, ArgumentPosition apos) {
   exists(int index | ppos.isPositional(index) and apos.isPositional(index))
   or
   exists(string name | ppos.isKeyword(name) and apos.isKeyword(name))
+  or
+  exists(int index | ppos.isStarArgs(index) and apos.isStarArgs(index))
   or
   ppos.isDictSplat() and apos.isDictSplat()
 }
@@ -197,6 +217,22 @@ abstract class DataFlowFunction extends DataFlowCallable, TFunction {
     )
     or
     exists(string name | ppos.isKeyword(name) | result.getParameter() = func.getArgByName(name))
+    or
+    exists(int index |
+      ppos.isStarArgs(index) and
+      result.getParameter() = func.getVararg()
+    |
+      // a `*args` parameter comes after the last positional parameter. We need to take
+      // self parameter into account, so for
+      // `def func(foo, bar, *args)` it should be index 2 (1 + max-index == 1 + 1)
+      // `class A: def func(self, foo, bar, *args)` it should be index 2 (1 + max-index - 1 == 1 + 2 - 1)
+      index =
+        1 + max(int positionalIndex | exists(func.getArg(positionalIndex)) | positionalIndex) -
+          this.positionalOffset()
+      or
+      // no positional argument
+      not exists(func.getArg(_)) and index = 0
+    )
     or
     ppos.isDictSplat() and result.getParameter() = func.getKwarg()
     or
@@ -910,6 +946,12 @@ private predicate normalCallArg(CallNode call, Node arg, ArgumentPosition apos) 
   exists(string name |
     apos.isKeyword(name) and
     arg.asCfgNode() = call.getArgByName(name)
+  )
+  or
+  exists(int index |
+    apos.isStarArgs(index) and
+    arg.asCfgNode() = call.getStarArg() and
+    call.getStarArg().getNode() = call.getNode().getPositionalArg(index).(Starred).getValue()
   )
   or
   apos.isDictSplat() and

@@ -6,6 +6,8 @@ import semmle.python.dataflow.new.internal.DataFlowImplConsistency::Consistency
 // `python/ql/consistency-queries`. For for now it resides here.
 private class MyConsistencyConfiguration extends ConsistencyConfiguration {
   override predicate argHasPostUpdateExclude(ArgumentNode n) {
+    exists(ArgumentPosition apos | n.argumentOf(_, apos) and apos.isStarArgs(_))
+    or
     exists(ArgumentPosition apos | n.argumentOf(_, apos) and apos.isDictSplat())
   }
 
