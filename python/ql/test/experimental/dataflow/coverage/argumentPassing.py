@@ -214,8 +214,8 @@ def test_only_starargs():
     args = (arg2, "safe")
     starargs_only(arg1, *args) # $ MISSING: arg1 arg2
 
-    args = (arg1, arg2, "safe")
-    starargs_only(*args) # $ MISSING: arg1 arg2
+    args = (arg1, arg2, "safe") # $ arg1 arg2 func=starargs_only
+    starargs_only(*args)
 
 
 def starargs_mixed(a, *args):
@@ -227,8 +227,8 @@ def starargs_mixed(a, *args):
 def test_stararg_mixed():
     starargs_mixed(arg1, arg2, "safe") # $ arg1 MISSING: arg2
 
-    args = (arg2, "safe")
-    starargs_mixed(arg1, *args) # $ arg1 MISSING: arg2
+    args = (arg2, "safe") # $ arg2 func=starargs_mixed
+    starargs_mixed(arg1, *args) # $ arg1
 
     args = (arg1, arg2, "safe")
     starargs_mixed(*args) # $ MISSING: arg1 arg2
