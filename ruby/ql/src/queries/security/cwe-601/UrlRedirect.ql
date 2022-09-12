@@ -12,7 +12,7 @@
  * @precision high
  */
 
-import ruby
+import codeql.ruby.AST
 import codeql.ruby.security.UrlRedirectQuery
 import codeql.ruby.DataFlow::DataFlow::PathGraph
 

@@ -6,7 +6,7 @@
  * @id rb/lines-per-file
  */
 
-import ruby
+import codeql.ruby.AST
 
 from RubyFile f, int n
 where n = f.getNumberOfLines()

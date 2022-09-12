@@ -1,4 +1,3 @@
-private import codeql.Locations
 private import codeql.ruby.AST
 
 // Names of built-in modules and classes

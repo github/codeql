@@ -10,7 +10,7 @@
  *       external/cwe/cwe-918
  */
 
-import ruby
+import codeql.ruby.AST
 import codeql.ruby.DataFlow
 import codeql.ruby.security.ServerSideRequestForgeryQuery
 import DataFlow::PathGraph

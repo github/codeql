@@ -13,7 +13,7 @@
  *       external/cwe/cwe-532
  */
 
-import ruby
+import codeql.ruby.AST
 import codeql.ruby.security.CleartextStorageQuery
 import codeql.ruby.security.CleartextStorageCustomizations::CleartextStorage
 import codeql.ruby.DataFlow

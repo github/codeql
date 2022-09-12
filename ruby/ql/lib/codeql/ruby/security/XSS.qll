@@ -2,7 +2,7 @@
  * Provides classes and predicates used by the XSS queries.
  */
 
-private import ruby
+private import codeql.ruby.AST
 private import codeql.ruby.DataFlow
 private import codeql.ruby.DataFlow2
 private import codeql.ruby.CFG

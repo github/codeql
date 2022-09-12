@@ -17,6 +17,7 @@ private import ast.internal.AST
 private import ast.internal.Scope
 private import ast.internal.Synthesis
 private import ast.internal.TreeSitter
+private import Customizations
 
 cached
 private module Cached {

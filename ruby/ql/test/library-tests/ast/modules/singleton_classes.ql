@@ -1,4 +1,4 @@
-import ruby
+import codeql.ruby.AST
 
 query predicate singletonClasses(SingletonClass sc, string pClass, Expr value) {
   pClass = sc.getAPrimaryQlClass() and value = sc.getValue()

@@ -10,7 +10,7 @@
  *    - should `Foo.new` point to `Foo#initialize`?
  */
 
-import ruby
+import codeql.ruby.AST
 import codeql.ruby.ast.internal.Module
 import codeql.ruby.dataflow.SSA
 

@@ -11,7 +11,7 @@
  *       external/cwe/cwe-290
  */
 
-import ruby
+import codeql.ruby.AST
 import codeql.ruby.DataFlow
 import codeql.ruby.dataflow.internal.DataFlowPublic
 import codeql.ruby.security.ConditionalBypassQuery

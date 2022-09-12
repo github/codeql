@@ -5,7 +5,7 @@
  * @id rb/diagnostics/extraction-errors
  */
 
-import ruby
+import codeql.ruby.AST
 import codeql.ruby.Diagnostics
 
 /** Gets the SARIF severity to associate an error. */

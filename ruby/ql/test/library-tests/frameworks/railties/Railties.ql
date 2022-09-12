@@ -1,4 +1,4 @@
-private import ruby
+private import codeql.ruby.AST
 private import codeql.ruby.Concepts
 private import codeql.ruby.frameworks.Railties
 private import codeql.ruby.DataFlow

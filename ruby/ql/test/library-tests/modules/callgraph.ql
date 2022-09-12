@@ -1,4 +1,4 @@
-import ruby
+import codeql.ruby.AST
 
 query Callable getTarget(Call call) { result = call.getATarget() }
 

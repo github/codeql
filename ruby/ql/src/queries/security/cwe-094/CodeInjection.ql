@@ -14,7 +14,7 @@
  *       external/cwe/cwe-116
  */
 
-import ruby
+import codeql.ruby.AST
 import codeql.ruby.security.CodeInjectionQuery
 import DataFlow::PathGraph
 

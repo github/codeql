@@ -13,7 +13,7 @@
  *       external/cwe/cwe-088
  */
 
-import ruby
+import codeql.ruby.AST
 import codeql.ruby.security.CommandInjectionQuery
 import DataFlow::PathGraph
 

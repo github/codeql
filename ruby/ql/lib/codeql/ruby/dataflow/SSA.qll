@@ -6,7 +6,6 @@
  * Provides classes for working with static single assignment (SSA) form.
  */
 module Ssa {
-  private import codeql.Locations
   private import codeql.ruby.CFG
   private import codeql.ruby.ast.Variable
   private import internal.SsaImpl as SsaImpl

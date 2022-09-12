@@ -1,4 +1,4 @@
-private import ruby as RB
+private import codeql.ruby.AST as RB
 private import ControlFlowGraphImpl as Impl
 private import Completion as Comp
 private import codeql.ruby.ast.internal.Synthesis

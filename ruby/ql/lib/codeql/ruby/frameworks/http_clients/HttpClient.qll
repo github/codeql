@@ -2,7 +2,7 @@
  * Provides modeling for the `HTTPClient` library.
  */
 
-private import ruby
+private import codeql.ruby.AST
 private import codeql.ruby.Concepts
 private import codeql.ruby.ApiGraphs
 private import codeql.ruby.DataFlow

@@ -1,4 +1,4 @@
-import ruby
+import codeql.ruby.AST
 
 query predicate unaryOperations(UnaryOperation o, string operator, Expr operand, string pClass) {
   operator = o.getOperator() and

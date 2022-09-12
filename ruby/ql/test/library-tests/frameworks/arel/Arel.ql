@@ -3,7 +3,7 @@
  */
 
 import codeql.ruby.frameworks.Arel
-import ruby
+import codeql.ruby.AST
 import TestUtilities.InlineFlowTest
 
 from DataFlow::PathNode source, DataFlow::PathNode sink, DefaultTaintFlowConf conf

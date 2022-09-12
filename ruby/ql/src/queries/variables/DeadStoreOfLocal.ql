@@ -10,7 +10,7 @@
  * @precision low
  */
 
-import ruby
+import codeql.ruby.AST
 import codeql.ruby.dataflow.SSA
 
 class RelevantLocalVariableWriteAccess extends LocalVariableWriteAccess {

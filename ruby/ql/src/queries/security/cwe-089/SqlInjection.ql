@@ -11,7 +11,7 @@
  *       external/cwe/cwe-089
  */
 
-import ruby
+import codeql.ruby.AST
 import codeql.ruby.Concepts
 import codeql.ruby.DataFlow
 import codeql.ruby.dataflow.BarrierGuards

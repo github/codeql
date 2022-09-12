@@ -11,7 +11,7 @@
  *       external/cwe/cwe-434
  */
 
-import ruby
+import codeql.ruby.AST
 import codeql.ruby.DataFlow
 import codeql.ruby.DataFlow::DataFlow::PathGraph
 import codeql.ruby.security.HttpToFileAccessQuery

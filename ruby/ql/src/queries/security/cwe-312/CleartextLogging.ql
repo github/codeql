@@ -13,7 +13,7 @@
  *       external/cwe/cwe-532
  */
 
-import ruby
+import codeql.ruby.AST
 import codeql.ruby.security.CleartextLoggingQuery
 import codeql.ruby.DataFlow
 import DataFlow::PathGraph

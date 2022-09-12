@@ -2,7 +2,7 @@
  * @kind problem
  */
 
-import ruby
+import codeql.ruby.AST
 import codeql.ruby.regexp.RegExpTreeView as RETV
 import codeql.ruby.DataFlow
 import codeql.ruby.security.IncompleteMultiCharacterSanitizationQuery as Query

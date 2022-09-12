@@ -2,7 +2,7 @@
  * Provides predicates for reasoning about insecure dependency configurations.
  */
 
-private import ruby
+private import codeql.ruby.AST
 
 /**
  * A method call in a Gemfile.

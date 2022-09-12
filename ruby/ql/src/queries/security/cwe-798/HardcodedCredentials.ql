@@ -12,7 +12,7 @@
  *       external/cwe/cwe-798
  */
 
-import ruby
+import codeql.ruby.AST
 import codeql.ruby.DataFlow
 import DataFlow::PathGraph
 import codeql.ruby.TaintTracking

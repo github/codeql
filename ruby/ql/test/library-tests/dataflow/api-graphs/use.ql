@@ -1,4 +1,4 @@
-import ruby
+import codeql.ruby.AST
 import codeql.ruby.DataFlow
 import TestUtilities.InlineExpectationsTest
 import codeql.ruby.ApiGraphs

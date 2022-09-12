@@ -1,4 +1,4 @@
-private import ruby
+private import codeql.ruby.AST
 private import codeql.ruby.ast.internal.Synthesis
 private import codeql.ruby.CFG
 private import codeql.ruby.dataflow.SSA

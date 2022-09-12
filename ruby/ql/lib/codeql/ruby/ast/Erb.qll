@@ -1,4 +1,3 @@
-private import codeql.Locations
 private import codeql.ruby.AST
 private import internal.Erb
 private import internal.TreeSitter

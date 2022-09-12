@@ -1,4 +1,4 @@
-import ruby
+import codeql.ruby.AST
 
 query predicate moduleBases(ModuleBase mb, string pClass) { pClass = mb.getAPrimaryQlClass() }
 

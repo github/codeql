@@ -6,7 +6,7 @@
  * @id rb/diagnostics/successfully-extracted-files
  */
 
-import ruby
+import codeql.ruby.AST
 import codeql.ruby.Diagnostics
 
 from File f

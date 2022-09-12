@@ -7,7 +7,7 @@
  * @tags summary
  */
 
-import ruby
+import codeql.ruby.AST
 import codeql.ruby.Diagnostics
 
 select count(File f |

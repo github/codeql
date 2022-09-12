@@ -10,7 +10,7 @@
  *       external/cwe/cwe-327
  */
 
-import ruby
+import codeql.ruby.AST
 import codeql.ruby.Concepts
 
 from Cryptography::CryptographicOperation operation, string msgPrefix

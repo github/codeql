@@ -3,7 +3,7 @@
  *
  * Example for a test.ql:
  * ```ql
- * import ruby
+ *  *import codeql.ruby.AST
  * import TestUtilities.InlineFlowTest
  * import PathGraph
  *
@@ -33,7 +33,7 @@
  * If you need more fine-grained tuning, consider implementing a test using `InlineExpectationsTest`.
  */
 
-import ruby
+import codeql.ruby.AST
 import codeql.ruby.DataFlow
 import codeql.ruby.TaintTracking
 import TestUtilities.InlineExpectationsTest

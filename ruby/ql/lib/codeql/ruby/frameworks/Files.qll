@@ -2,7 +2,7 @@
  * Provides classes for working with file system libraries.
  */
 
-private import ruby
+private import codeql.ruby.AST
 private import codeql.ruby.Concepts
 private import codeql.ruby.ApiGraphs
 private import codeql.ruby.DataFlow

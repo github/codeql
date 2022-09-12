@@ -14,7 +14,7 @@
  *   - the name of a type definition from `ModelInput::TypeModelCsv`
  */
 
-private import ruby
+private import codeql.ruby.AST
 private import internal.ApiGraphModels as Shared
 private import internal.ApiGraphModelsSpecific as Specific
 import Shared::ModelInput as ModelInput

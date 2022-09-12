@@ -9,7 +9,7 @@
  * @tags security
  */
 
-import ruby
+import codeql.ruby.AST
 import codeql.ruby.Concepts
 import codeql.ruby.DataFlow
 import codeql.ruby.TaintTracking

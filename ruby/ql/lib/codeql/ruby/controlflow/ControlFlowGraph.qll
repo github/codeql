@@ -1,6 +1,5 @@
 /** Provides classes representing the control flow graph. */
 
-private import codeql.Locations
 private import codeql.ruby.AST
 private import codeql.ruby.controlflow.BasicBlocks
 private import SuccessorTypes
