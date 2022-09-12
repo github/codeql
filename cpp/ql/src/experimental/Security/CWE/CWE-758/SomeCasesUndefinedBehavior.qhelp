@@ -3,13 +3,13 @@
   "qhelp.dtd">
 <qhelp>
 <overview>
-<p>The behavior of the malloc function is not defined when the size value is zero, so it is not possible to evaluate the correctness only by the result of the operation. Add an estimate for the lower bound of the size.</p>
+<p>The query considers some cases that can lead to undefined behavior. For example the behavior of the malloc function is not defined when the size value is zero, so it is not possible to evaluate the correctness only by the result of the operation. Add an estimate for the lower bound of the size.</p>
 
 </overview>
 
 <example>
 <p>The following example shows the erroneous and fixed ways to use the malloc function.</p>
-<sample src="DangerousUseMallocWithZeroSize.cpp" />
+<sample src="SomeCasesUndefinedBehavior.cpp" />
 
 </example>
 <references>
