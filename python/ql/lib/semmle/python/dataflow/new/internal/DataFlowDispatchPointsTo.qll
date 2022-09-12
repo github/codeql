@@ -103,10 +103,9 @@ module ArgumentPassing {
    * Used to limit the size of predicates.
    */
   predicate connects(CallNode call, CallableValue callable) {
-    exists(NormalCall c, NonLibraryDataFlowCallable k |
+    exists(NormalCall c |
       call = c.getNode() and
-      callable = k.getCallableValue() and
-      k = c.getCallable()
+      callable = c.getCallable().getCallableValue()
     )
   }
 
@@ -322,31 +321,24 @@ class DataFlowCallable extends TDataFlowCallable {
   /** Gets the name of this callable. */
   string getName() { none() }
 
+  /** Gets a callable value for this callable, if any. */
+  CallableValue getCallableValue() { none() }
+
   /** Gets the underlying library callable, if any. */
   LibraryCallable asLibraryCallable() { this = TLibraryCallable(result) }
 
   Location getLocation() { none() }
 }
 
-/** A callable that is not synthesised. Either a CallableValue, a lambda or a module (only used to provide scopes for module variables). */
-abstract class NonLibraryDataFlowCallable extends DataFlowCallable {
-  /** Gets a callable value for this callable, if one exists. */
-  abstract CallableValue getCallableValue();
-
-  abstract CallNode getANonLibraryCall();
-
-  final override CallNode getACall() { result = this.getANonLibraryCall() }
-}
-
 /** A class representing a callable value. */
-class DataFlowCallableValue extends NonLibraryDataFlowCallable, TCallableValue {
+class DataFlowCallableValue extends DataFlowCallable, TCallableValue {
   CallableValue callable;
 
   DataFlowCallableValue() { this = TCallableValue(callable) }
 
   override string toString() { result = callable.toString() }
 
-  override CallNode getANonLibraryCall() { result = callable.getACall() }
+  override CallNode getACall() { result = callable.getACall() }
 
   override Scope getScope() { result = callable.getScope() }
 
@@ -358,14 +350,14 @@ class DataFlowCallableValue extends NonLibraryDataFlowCallable, TCallableValue {
 }
 
 /** A class representing a callable lambda. */
-class DataFlowLambda extends NonLibraryDataFlowCallable, TLambda {
+class DataFlowLambda extends DataFlowCallable, TLambda {
   Function lambda;
 
   DataFlowLambda() { this = TLambda(lambda) }
 
   override string toString() { result = lambda.toString() }
 
-  override CallNode getANonLibraryCall() { result = this.getCallableValue().getACall() }
+  override CallNode getACall() { result = this.getCallableValue().getACall() }
 
   override Scope getScope() { result = lambda.getEvaluatingScope() }
 
@@ -381,14 +373,14 @@ class DataFlowLambda extends NonLibraryDataFlowCallable, TLambda {
 }
 
 /** A class representing the scope in which a `ModuleVariableNode` appears. */
-class DataFlowModuleScope extends NonLibraryDataFlowCallable, TModule {
+class DataFlowModuleScope extends DataFlowCallable, TModule {
   Module mod;
 
   DataFlowModuleScope() { this = TModule(mod) }
 
   override string toString() { result = mod.toString() }
 
-  override CallNode getANonLibraryCall() { none() }
+  override CallNode getACall() { none() }
 
   override Scope getScope() { result = mod }
 
@@ -525,7 +517,7 @@ class NormalCall extends DataFlowSourceCall, TNormalCall {
  * `self` parameter, and special method calls have special argument passing.
  */
 class FunctionCall extends NormalCall {
-  NonLibraryDataFlowCallable callable;
+  DataFlowCallableValue callable;
 
   FunctionCall() {
     call = any(FunctionValue f).getAFunctionCall() and
@@ -539,7 +531,7 @@ class FunctionCall extends NormalCall {
 
 /** A call to a lambda. */
 class LambdaCall extends NormalCall {
-  NonLibraryDataFlowCallable callable;
+  DataFlowLambda callable;
 
   LambdaCall() {
     call = callable.getACall() and
@@ -695,6 +687,19 @@ class SummaryParameterNode extends ParameterNodeImpl, TSummaryParameterNode {
   }
 
   override DataFlowCallable getEnclosingCallable() { result.asLibraryCallable() = sc }
+
+  override string toString() { result = "parameter " + pos + " of " + sc }
+
+  // Hack to return "empty location"
+  override predicate hasLocationInfo(
+    string file, int startline, int startcolumn, int endline, int endcolumn
+  ) {
+    file = "" and
+    startline = 0 and
+    startcolumn = 0 and
+    endline = 0 and
+    endcolumn = 0
+  }
 }
 
 /** A data-flow node used to model flow summaries. */
@@ -707,6 +712,17 @@ class SummaryNode extends Node, TSummaryNode {
   override DataFlowCallable getEnclosingCallable() { result.asLibraryCallable() = c }
 
   override string toString() { result = "[summary] " + state + " in " + c }
+
+  // Hack to return "empty location"
+  override predicate hasLocationInfo(
+    string file, int startline, int startcolumn, int endline, int endcolumn
+  ) {
+    file = "" and
+    startline = 0 and
+    startcolumn = 0 and
+    endline = 0 and
+    endcolumn = 0
+  }
 }
 
 private class SummaryReturnNode extends SummaryNode, ReturnNode {

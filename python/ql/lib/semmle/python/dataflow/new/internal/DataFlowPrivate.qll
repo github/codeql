@@ -139,6 +139,8 @@ module SyntheticPostUpdateNode {
   Node argumentPreUpdateNode() {
     result = any(FunctionCall c).getArg(_)
     or
+    result = any(LambdaCall c).getArg(_)
+    or
     // Avoid argument 0 of method calls as those have read post-update nodes.
     exists(MethodCall c, int n | n > 0 | result = c.getArg(n))
     or
@@ -153,14 +155,11 @@ module SyntheticPostUpdateNode {
     )
   }
 
-  predicate resolvedCall(CallNode call) {
-    call = any(FunctionValue f).getAFunctionCall()
+  /** Holds if `call` can be resolved as anormal call */
+  private predicate resolvedCall(CallNode call) {
+    call = any(DataFlowCallableValue cv).getACall()
     or
-    call = any(FunctionValue f).getAMethodCall()
-    or
-    call = any(ClassValue c | not c.isAbsent()).getACall()
-    or
-    call instanceof SpecialMethodCallNode
+    call = any(DataFlowLambda l).getACall()
   }
 
   /** Gets the pre-update node associated with a store. This is used for when an object might have its value changed after a store. */

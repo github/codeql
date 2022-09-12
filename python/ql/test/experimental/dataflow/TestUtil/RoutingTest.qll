@@ -52,7 +52,7 @@ abstract class RoutingTest extends InlineExpectationsTest {
     result =
       toNode
           .getEnclosingCallable()
-          .(DataFlowPrivate::NonLibraryDataFlowCallable)
+          .(DataFlowPrivate::DataFlowCallable)
           .getCallableValue()
           .getScope()
           .getQualifiedName() // TODO: More robust pretty printing?
