@@ -1,3 +1,8 @@
+| file://:0:0:0:0 | [summary] read: argument 0.List element in builtins.reversed | file://:0:0:0:0 | [summary] read: argument 0.List element in builtins.reversed |
+| file://:0:0:0:0 | [summary] read: argument 0.List element in builtins.reversed | file://:0:0:0:0 | [summary] to write: return (return).List element in builtins.reversed |
+| file://:0:0:0:0 | [summary] to write: return (return) in builtins.reversed | file://:0:0:0:0 | [summary] to write: return (return) in builtins.reversed |
+| file://:0:0:0:0 | [summary] to write: return (return).List element in builtins.reversed | file://:0:0:0:0 | [summary] to write: return (return).List element in builtins.reversed |
+| file://:0:0:0:0 | parameter 0 of builtins.reversed | file://:0:0:0:0 | parameter 0 of builtins.reversed |
 | test.py:0:0:0:0 | GSSA Variable __name__ | test.py:0:0:0:0 | GSSA Variable __name__ |
 | test.py:0:0:0:0 | GSSA Variable __package__ | test.py:0:0:0:0 | GSSA Variable __package__ |
 | test.py:0:0:0:0 | GSSA Variable b | test.py:0:0:0:0 | GSSA Variable b |
