@@ -41,4 +41,4 @@ where
   sensitive.asExpr().getExpr() instanceof SensitiveExpr and
   localFlowWithElementReference(input, sensitive)
 select input, "$@ for GET requests uses query parameter as sensitive data.", handler,
-  "Request handler"
+  "Route handler"
