@@ -379,8 +379,8 @@ The following example shows how you could use indirect build tracing in an Azure
        # `codeql database analyze`
        # then `codeql github upload-results` ...
 
-Obtaining databases from GitHub.com
------------------------------------
+Downloading databases from GitHub.com
+-------------------------------------
 
 .. include:: ../reusables/download-github-database.rst
    
