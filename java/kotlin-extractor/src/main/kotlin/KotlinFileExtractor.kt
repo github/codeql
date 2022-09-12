@@ -1333,6 +1333,14 @@ open class KotlinFileExtractor(
         val receiverClass = receiverType.classifier.owner as? IrClass ?: return listOf()
         val ancestorTypes = ArrayList<IrSimpleType>()
 
+        // KFunctionX doesn't implement FunctionX on versions before 1.7.0:
+        if ((callTarget.name.asString() == "invoke") &&
+            (receiverClass.fqNameWhenAvailable?.asString()?.startsWith("kotlin.reflect.KFunction") == true) &&
+            (callTarget.parentClassOrNull?.fqNameWhenAvailable?.asString()?.startsWith("kotlin.Function") == true)
+        ) {
+            return receiverType.arguments
+        }
+
         // Populate ancestorTypes with the path from receiverType's class to its ancestor, callTarget's declaring type.
         fun walkFrom(c: IrClass): Boolean {
             if(declaringType == c)
