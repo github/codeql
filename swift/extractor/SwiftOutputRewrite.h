@@ -32,4 +32,5 @@ std::vector<std::string> collectVFSFiles(const SwiftExtractorConfiguration& conf
 // Creates empty trap files for output swiftmodule files
 void lockOutputSwiftModuleTraps(const SwiftExtractorConfiguration& config,
                                 const std::unordered_map<std::string, std::string>& remapping);
+
 }  // namespace codeql

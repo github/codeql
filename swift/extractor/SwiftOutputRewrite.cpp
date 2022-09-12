@@ -1,4 +1,4 @@
-#include "SwiftOutputRewrite.h"
+#include "swift/extractor/SwiftOutputRewrite.h"
 #include "swift/extractor/SwiftExtractorConfiguration.h"
 #include "swift/extractor/TargetTrapFile.h"
 

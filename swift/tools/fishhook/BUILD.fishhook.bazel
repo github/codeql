@@ -1,0 +1,9 @@
+load("@//swift:rules.bzl", "swift_cc_library")
+
+swift_cc_library(
+    name = "fishhook",
+    srcs = glob(["*.c"]),
+    hdrs = glob(["*.h"]),
+    strip_include_prefix = ".",
+    visibility = ["@//swift:__subpackages__"],
+)

@@ -9,8 +9,9 @@
 #include <swift/Basic/LLVMInitialize.h>
 #include <swift/FrontendTool/FrontendTool.h>
 
-#include "SwiftExtractor.h"
-#include "SwiftOutputRewrite.h"
+#include "swift/extractor/SwiftExtractor.h"
+#include "swift/extractor/SwiftOutputRewrite.h"
+#include "swift/extractor/remapping/SwiftOpenInterception.h"
 
 using namespace std::string_literals;
 
@@ -20,14 +21,6 @@ using namespace std::string_literals;
 class Observer : public swift::FrontendObserver {
  public:
   explicit Observer(const codeql::SwiftExtractorConfiguration& config) : config{config} {}
-
-  void parsedArgs(swift::CompilerInvocation& invocation) override {
-    auto& overlays = invocation.getSearchPathOptions().VFSOverlayFiles;
-    auto vfsFiles = codeql::collectVFSFiles(config);
-    for (auto& vfsFile : vfsFiles) {
-      overlays.push_back(vfsFile);
-    }
-  }
 
   void performedSemanticAnalysis(swift::CompilerInstance& compiler) override {
     codeql::extractSwiftFiles(config, compiler);
@@ -49,6 +42,7 @@ int main(int argc, char** argv) {
     // TODO: print usage
     return 1;
   }
+
   // Required by Swift/LLVM
   PROGRAM_START(argc, argv);
   INITIALIZE_LLVM();
@@ -57,6 +51,8 @@ int main(int argc, char** argv) {
   configuration.trapDir = getenv_or("CODEQL_EXTRACTOR_SWIFT_TRAP_DIR", ".");
   configuration.sourceArchiveDir = getenv_or("CODEQL_EXTRACTOR_SWIFT_SOURCE_ARCHIVE_DIR", ".");
   configuration.scratchDir = getenv_or("CODEQL_EXTRACTOR_SWIFT_SCRATCH_DIR", ".");
+
+  codeql::initInterception(configuration.getTempArtifactDir());
 
   configuration.frontendOptions.reserve(argc - 1);
   for (int i = 1; i < argc; i++) {
@@ -67,7 +63,6 @@ int main(int argc, char** argv) {
   auto remapping =
       codeql::rewriteOutputsInPlace(configuration, configuration.patchedFrontendOptions);
   codeql::ensureDirectoriesForNewPathsExist(remapping);
-  codeql::storeRemappingForVFS(configuration, remapping);
   codeql::lockOutputSwiftModuleTraps(configuration, remapping);
 
   std::vector<const char*> args;
@@ -77,5 +72,8 @@ int main(int argc, char** argv) {
 
   Observer observer(configuration);
   int frontend_rc = swift::performFrontend(args, "swift-extractor", (void*)main, &observer);
+
+  codeql::remapArtifacts(remapping);
+
   return frontend_rc;
 }

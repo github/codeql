@@ -184,7 +184,6 @@ void codeql::extractSwiftFiles(const SwiftExtractorConfiguration& config,
   while (!todo.empty()) {
     auto module = todo.back();
     todo.pop_back();
-    llvm::errs() << "processing module " << module->getName() << '\n';
     bool isFromSourceFile = false;
     std::unordered_set<swift::ModuleDecl*> encounteredModules;
     for (auto file : module->getFiles()) {
