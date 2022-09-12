@@ -709,6 +709,7 @@ exprValue
 | literals/literals.rb:168:9:168:13 | <<SQL | \nselect * from table\n | string |
 | literals/literals.rb:175:11:175:16 | <<-BLA | \nsome text\nand some more\n   | string |
 | literals/literals.rb:180:9:180:19 | <<~SQUIGGLY | \n   indented stuff\n | string |
+| literals/literals.rb:189:9:189:15 | <<'DOC' | \n text without #{ interpolation } !\n | string |
 | literals/literals.rb:193:10:193:19 | <<`SCRIPT` | \n cat file.txt\n | string |
 | literals/literals.rb:197:5:197:6 | 42 | 42 | int |
 | literals/literals.rb:198:2:198:2 | :x | :x | symbol |
@@ -1585,6 +1586,7 @@ exprCfgNodeValue
 | literals/literals.rb:168:9:168:13 | <<SQL | \nselect * from table\n | string |
 | literals/literals.rb:175:11:175:16 | <<-BLA | \nsome text\nand some more\n   | string |
 | literals/literals.rb:180:9:180:19 | <<~SQUIGGLY | \n   indented stuff\n | string |
+| literals/literals.rb:189:9:189:15 | <<'DOC' | \n text without #{ interpolation } !\n | string |
 | literals/literals.rb:193:10:193:19 | <<`SCRIPT` | \n cat file.txt\n | string |
 | literals/literals.rb:197:5:197:6 | 42 | 42 | int |
 | literals/literals.rb:198:2:198:2 | :x | :x | symbol |

@@ -200,17 +200,17 @@ private module Cached {
     or
     i = any(Ruby::Binary x).getRight()
     or
-    i = any(Ruby::Block x).getChild(_)
-    or
     i = any(Ruby::BlockArgument x).getChild()
+    or
+    i = any(Ruby::BlockBody x).getChild(_)
+    or
+    i = any(Ruby::BodyStatement x).getChild(_)
     or
     i = any(Ruby::Call x).getReceiver()
     or
     i = any(Ruby::Case x).getValue()
     or
     i = any(Ruby::CaseMatch x).getValue()
-    or
-    i = any(Ruby::Class x).getChild(_)
     or
     i = any(Ruby::Conditional x).getCondition()
     or
@@ -219,8 +219,6 @@ private module Cached {
     i = any(Ruby::Conditional x).getAlternative()
     or
     i = any(Ruby::Do x).getChild(_)
-    or
-    i = any(Ruby::DoBlock x).getChild(_)
     or
     i = any(Ruby::ElementReference x).getChild(_)
     or
@@ -250,9 +248,7 @@ private module Cached {
     or
     i = any(Ruby::KeywordParameter x).getValue()
     or
-    i = any(Ruby::Method x).getChild(_)
-    or
-    i = any(Ruby::Module x).getChild(_)
+    i = any(Ruby::Method x).getBody()
     or
     i = any(Ruby::OperatorAssignment x).getRight()
     or
@@ -282,9 +278,7 @@ private module Cached {
     or
     i = any(Ruby::SingletonClass x).getValue()
     or
-    i = any(Ruby::SingletonClass x).getChild(_)
-    or
-    i = any(Ruby::SingletonMethod x).getChild(_)
+    i = any(Ruby::SingletonMethod x).getBody()
     or
     i = any(Ruby::SingletonMethod x).getObject()
     or
