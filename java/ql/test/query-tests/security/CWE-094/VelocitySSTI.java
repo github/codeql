@@ -61,8 +61,8 @@ public class VelocitySSTI {
 		runtimeServices.parse(reader, new Template()); // $hasTemplateInjection
 	}
 
-	@GetMapping(value = "bad4")
-	public void bad4(HttpServletRequest request) {
+	@GetMapping(value = "good1")
+	public void good1(HttpServletRequest request) {
 		String name = "ttemplate";
 		String code = request.getParameter("code");
 
@@ -72,7 +72,7 @@ public class VelocitySSTI {
 		StringWriter w = new StringWriter();
 		StringReader reader = new StringReader("test");
 
-		Velocity.evaluate(context, w, "mystring", reader); // $hasTemplateInjection
+		Velocity.evaluate(context, w, "mystring", reader); // Safe
 	}
 
 	@GetMapping(value = "bad5")
@@ -85,41 +85,32 @@ public class VelocitySSTI {
 
 		StringWriter w = new StringWriter();
 		VelocityEngine engine = null;
-		engine.mergeTemplate("testtemplate.vm", "UTF-8", context, w); // $hasTemplateInjection
+		engine.mergeTemplate("testtemplate.vm", "UTF-8", context, w); // Safe
 		AbstractContext ctx = null;
 		ctx.put("key", code);
-		engine.evaluate(ctx, null, null, null); // $hasTemplateInjection
+		engine.evaluate(ctx, null, null, (String) null); // Safe
+		engine.evaluate(ctx, null, null, (Reader) null); // Safe
 		engine.evaluate(null, null, null, code); // $hasTemplateInjection
+		engine.evaluate(null, null, null, new StringReader(code)); // $hasTemplateInjection
+	}
+
+	@GetMapping(value = "good2")
+	public void good2(HttpServletRequest request) {
+		String name = "ttemplate";
+		String code = request.getParameter("code");
+
+		VelocityContext context = new VelocityContext();
+		context.put("code", code);
+
+		StringWriter w = new StringWriter();
+		Template t = new Template();
+		t.merge(context, w); // Safe
+		t.merge(context, w, new LinkedList<String>()); // Safe
+
 	}
 
 	@GetMapping(value = "bad6")
 	public void bad6(HttpServletRequest request) {
-		String name = "ttemplate";
-		String code = request.getParameter("code");
-
-		VelocityContext context = new VelocityContext();
-		context.put("code", code);
-
-		StringWriter w = new StringWriter();
-		Template t = new Template();
-		t.merge(context, w); // $hasTemplateInjection
-	}
-
-	@GetMapping(value = "bad7")
-	public void bad7(HttpServletRequest request) {
-		String name = "ttemplate";
-		String code = request.getParameter("code");
-
-		VelocityContext context = new VelocityContext();
-		context.put("code", code);
-
-		StringWriter w = new StringWriter();
-		Template t = new Template();
-		t.merge(context, w, new LinkedList<String>()); // $hasTemplateInjection
-	}
-
-	@GetMapping(value = "bad8")
-	public void bad8(HttpServletRequest request) {
 		String code = request.getParameter("code");
 
 		StringResourceRepository repo = new StringResourceRepositoryImpl();

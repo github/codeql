@@ -89,18 +89,14 @@ private class TemplateInjectionSinkModels extends SinkModelCsv {
         "com.hubspot.jinjava;Jinjava;true;render;;;Argument[0];ssti;manual",
         "org.thymeleaf;ITemplateEngine;true;process;;;Argument[0];ssti;manual",
         "org.thymeleaf;ITemplateEngine;true;processThrottled;;;Argument[0];ssti;manual",
-        "org.apache.velocity.app;Velocity;true;evaluate;;;Argument[0];ssti;manual",
         "org.apache.velocity.app;Velocity;true;evaluate;;;Argument[3];ssti;manual",
         "org.apache.velocity.app;Velocity;true;mergeTemplate;;;Argument[2];ssti;manual",
-        "org.apache.velocity.app;VelocityEngine;true;evaluate;;;Argument[0];ssti;manual",
         "org.apache.velocity.app;VelocityEngine;true;evaluate;;;Argument[3];ssti;manual",
         "org.apache.velocity.app;VelocityEngine;true;mergeTemplate;;;Argument[2];ssti;manual",
         "org.apache.velocity.runtime.resource.util;StringResourceRepository;true;putStringResource;;;Argument[1];ssti;manual",
-        "org.apache.velocity.runtime;RuntimeServices;true;evaluate;;;Argument[0];ssti;manual",
         "org.apache.velocity.runtime;RuntimeServices;true;evaluate;;;Argument[3];ssti;manual",
         "org.apache.velocity.runtime;RuntimeServices;true;parse;;;Argument[0];ssti;manual",
-        "org.apache.velocity.runtime;RuntimeSingleton;true;parse;;;Argument[0];ssti;manual",
-        "org.apache.velocity;Template;true;merge;;;Argument[0];ssti;manual"
+        "org.apache.velocity.runtime;RuntimeSingleton;true;parse;;;Argument[0];ssti;manual"
       ]
   }
 }
