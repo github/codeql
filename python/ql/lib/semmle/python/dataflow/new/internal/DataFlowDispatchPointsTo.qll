@@ -450,9 +450,6 @@ abstract class DataFlowCall extends TDataFlowCall {
   /** Gets a textual representation of this element. */
   abstract string toString();
 
-  /** Gets the enclosing callable of this call. */
-  abstract DataFlowCallable getEnclosingCallable();
-
   /** Get the callable to which this call goes, if such exists. */
   abstract DataFlowCallable getCallable();
 
@@ -464,6 +461,9 @@ abstract class DataFlowCall extends TDataFlowCall {
 
   /** Get the control flow node representing this call, if any. */
   abstract ControlFlowNode getNode();
+
+  /** Gets the enclosing callable of this call. */
+  abstract DataFlowCallable getEnclosingCallable();
 
   /** Gets the location of this dataflow call. */
   abstract Location getLocation();

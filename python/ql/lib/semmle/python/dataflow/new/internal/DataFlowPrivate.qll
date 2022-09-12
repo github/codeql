@@ -155,7 +155,7 @@ module SyntheticPostUpdateNode {
     )
   }
 
-  /** Holds if `call` can be resolved as anormal call */
+  /** Holds if `call` can be resolved as a normal call */
   private predicate resolvedCall(CallNode call) {
     call = any(DataFlowCallableValue cv).getACall()
     or
