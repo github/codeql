@@ -21,7 +21,8 @@
  * equivalence classes are called "points-to sets".
  *
  * WARNING: This library may perform poorly on very large projects.
- * Consider using another library such as ??? instead.
+ * Consider using another library such as `semmle.code.cpp.dataflow.DataFlow`
+ * instead.
  */
 
 import semmle.code.cpp.commons.File
