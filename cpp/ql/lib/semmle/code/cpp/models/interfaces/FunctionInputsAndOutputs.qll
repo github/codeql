@@ -47,9 +47,9 @@ class FunctionInput extends TFunctionInput {
   deprecated final predicate isInParameter(ParameterIndex index) { this.isParameter(index) }
 
   /**
-   * Holds if this is the input value pointed to by a pointer parameter to a function, or the input
-   * value referred to by a reference parameter to a function, where the parameter has index
-   * `index`.
+   * Holds if this is the input value pointed to (through `ind` number of indirections) by a
+   * pointer parameter to a function, or the input value referred to by a reference parameter
+   * to a function, where the parameter has index `index`.
    *
    * Example:
    * ```
@@ -206,8 +206,8 @@ class FunctionInput extends TFunctionInput {
   predicate isReturnValueDeref(int ind) { ind = 1 and this.isReturnValueDeref() }
 
   /**
-   * Holds if `i >= 0` and `isParameterDeref(i)` holds for this value, or
-   * if `i = -1` and `isQualifierObject()` holds for this value.
+   * Holds if `i >= 0` and `isParameterDeref(i, ind)` holds for this value, or
+   * if `i = -1` and `isQualifierObject(ind)` holds for this value.
    */
   final predicate isParameterDerefOrQualifierObject(ParameterIndex i, int ind) {
     i >= 0 and this.isParameterDeref(i, ind)
@@ -378,6 +378,22 @@ class FunctionOutput extends TFunctionOutput {
    */
   predicate isParameterDeref(ParameterIndex i) { this.isParameterDeref(i, 1) }
 
+  /**
+   * Holds if this is the output value pointed to by a pointer parameter (through `ind` number
+   * of indirections) to a function, or the output value referred to by a reference parameter to
+   * a function, where the parameter has index `index`.
+   *
+   * Example:
+   * ```
+   * void func(int n, char* p, float& r);
+   * ```
+   * - `isParameterDeref(1, 1)` holds for the `FunctionOutput` that represents the value of `*p` (with
+   *   type `char`) on return from the function.
+   * - `isParameterDeref(2, 1)` holds for the `FunctionOutput` that represents the value of `r` (with
+   *   type `float`) on return from the function.
+   * - There is no `FunctionOutput` for which `isParameterDeref(0, _)` holds, because `n` is neither a
+   *   pointer nor a reference.
+   */
   predicate isParameterDeref(ParameterIndex i, int ind) { ind = 1 and this.isParameterDeref(i) }
 
   /**
@@ -501,8 +517,8 @@ class FunctionOutput extends TFunctionOutput {
   deprecated final predicate isOutReturnPointer() { this.isReturnValueDeref() }
 
   /**
-   * Holds if `i >= 0` and `isParameterDeref(i)` holds for this is the value, or
-   * if `i = -1` and `isQualifierObject()` holds for this value.
+   * Holds if `i >= 0` and `isParameterDeref(i, ind)` holds for this is the value, or
+   * if `i = -1` and `isQualifierObject(ind)` holds for this value.
    */
   final predicate isParameterDerefOrQualifierObject(ParameterIndex i, int ind) {
     i >= 0 and this.isParameterDeref(i, ind)
