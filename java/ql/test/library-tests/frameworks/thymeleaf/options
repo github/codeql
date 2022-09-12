@@ -1,0 +1,1 @@
+//semmle-extractor-options: --javac-args -cp ${testdir}/../../../stubs/thymeleaf-3.0.14
