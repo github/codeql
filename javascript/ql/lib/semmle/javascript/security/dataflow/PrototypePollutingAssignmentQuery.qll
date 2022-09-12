@@ -275,3 +275,21 @@ private class IncludesCheck extends TaintTracking::LabeledSanitizerGuardNode, In
     outcome = this.getPolarity().booleanNot()
   }
 }
+
+/**
+ * A sanitizer guard that checks tests whether `x` is included in a list of strings.
+ */
+private class StringListCheck extends TaintTracking::SanitizerGuardNode, InclusionTest {
+  StringListCheck() {
+    this.getContainerNode()
+        .getALocalSource()
+        .(DataFlow::ArrayCreationNode)
+        .getAnElement()
+        .mayHaveStringValue("__proto__")
+  }
+
+  override predicate sanitizes(boolean outcome, Expr e) {
+    e = this.getContainedNode().asExpr() and
+    outcome = super.getPolarity().booleanNot()
+  }
+}
