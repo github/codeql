@@ -2066,7 +2066,8 @@ module PrivateDjango {
 
         /** Gets a reference to the `django.http.response.HttpResponse.write` function. */
         private DataFlow::TypeTrackingNode write(
-          DjangoImpl::DjangoHttp::Response::HttpResponse::InstanceSource instance, DataFlow::TypeTracker t
+          DjangoImpl::DjangoHttp::Response::HttpResponse::InstanceSource instance,
+          DataFlow::TypeTracker t
         ) {
           t.startInAttr("write") and
           instance = DjangoImpl::DjangoHttp::Response::HttpResponse::instance() and
