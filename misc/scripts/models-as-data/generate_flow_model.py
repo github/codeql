@@ -15,12 +15,13 @@ class Generator:
         self.generateSources = False
         self.generateSummaries = False
         self.generateNegativeSummaries = False
+        self.generateTypeBasedSummaries = False
         self.dryRun = False
 
 
     def printHelp(self):
         print(f"""Usage:
-python3 GenerateFlowModel.py <library-database> <outputQll> [<friendlyFrameworkName>] [--with-sinks] [--with-sources] [--with-summaries] [--dry-run]
+python3 GenerateFlowModel.py <library-database> <outputQll> [<friendlyFrameworkName>] [--with-sinks] [--with-sources] [--with-summaries] [--with-typebased-summaries] [--dry-run]
 
 This generates summary, source and sink models for the code in the database.
 The files will be placed in `{self.language}/ql/lib/semmle/code/{self.language}/frameworks/<outputQll>` where
@@ -33,6 +34,7 @@ Which models are generated is controlled by the flags:
     --with-sources
     --with-summaries
     --with-negative-summaries
+    --with-typebased-summaries (Experimental - only for C#)
 If none of these flags are specified, all models are generated.
 
     --dry-run: Only run the queries, but don't write to file.
@@ -62,6 +64,7 @@ Requirements: `codeql` should both appear on your path.
             self.codeQlRoot, f"{self.language}/ql/lib/semmle/code/{self.language}/frameworks/")
         self.frameworkTarget = os.path.join(self.generatedFrameworks, dirname, filename)
         self.negativeFrameworkTarget = os.path.join(self.generatedFrameworks, dirname, "Negative" + filename)
+        self.typeBasedFrameworkTarget = os.path.join(self.generatedFrameworks, dirname, "TypeBased" + filename)
 
         self.workDir = tempfile.mkdtemp()
         os.makedirs(self.generatedFrameworks, exist_ok=True)
@@ -90,11 +93,15 @@ Requirements: `codeql` should both appear on your path.
             sys.argv.remove("--with-negative-summaries")
             generator.generateNegativeSummaries = True
 
+        if "--with-typebased-summaries" in sys.argv:
+            sys.argv.remove("--with-typebased-summaries")
+            generator.generateTypeBasedSummaries = True
+
         if "--dry-run" in sys.argv:
             sys.argv.remove("--dry-run")
             generator.dryRun = True
 
-        if not generator.generateSinks and not generator.generateSources and not generator.generateSummaries and not generator.generateNegativeSummaries:
+        if not generator.generateSinks and not generator.generateSources and not generator.generateSummaries and not generator.generateNegativeSummaries and not generator.generateTypeBasedSummaries:
             generator.generateSinks = generator.generateSources = generator.generateSummaries = generator.generateNegativeSummaries = True
 
         if len(sys.argv) < 3 or len(sys.argv) > 4:
@@ -207,7 +214,7 @@ private import semmle.code.{self.language}.dataflow.ExternalFlow
             negativeSummaryCsv = ""
 
         return f"""
-/** 
+/**
  * THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
  * Definitions of negative summaries in the {self.friendlyname} framework.
  */
@@ -219,6 +226,25 @@ private import semmle.code.{self.language}.dataflow.ExternalFlow
 
         """
 
+    def makeTypeBasedContent(self):
+        if self.generateTypeBasedSummaries:
+            typeBasedSummaryRows = self.runQuery("type based summary models", "CaptureTypeBasedSummaryModels.ql")
+            typeBasedSummaryCsv = self.asCsvModel("SummaryModelCsv", "TypeBasedSummary", typeBasedSummaryRows)
+        else:
+            typeBasedSummaryCsv = ""
+
+        return f"""
+/**
+ * THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+ * Definitions of type based summaries in the {self.friendlyname} framework.
+ */
+
+import {self.language}
+private import semmle.code.{self.language}.dataflow.ExternalFlow
+
+{typeBasedSummaryCsv}
+
+        """
 
     def save(self, content, target):
         with open(target, "w") as targetQll:
@@ -237,6 +263,7 @@ private import semmle.code.{self.language}.dataflow.ExternalFlow
     def run(self):
         content = self.makeContent()
         negativeContent = self.makeNegativeContent()
+        typeBasedContent = self.makeTypeBasedContent()
 
         if self.dryRun:
             print("CSV Models generated, but not written to file.")
@@ -247,3 +274,6 @@ private import semmle.code.{self.language}.dataflow.ExternalFlow
 
         if self.generateNegativeSummaries:
             self.save(negativeContent, self.negativeFrameworkTarget)
+
+        if self.generateTypeBasedSummaries:
+            self.save(typeBasedContent, self.typeBasedFrameworkTarget)
