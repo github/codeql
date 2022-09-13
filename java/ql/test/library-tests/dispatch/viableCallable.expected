@@ -11,13 +11,9 @@
 | ViableCallable4.java:16:5:16:9 | f(...) | f | 5 | A1 |
 | ViableCallable4.java:16:5:16:9 | f(...) | f | 8 | A2 |
 | ViableCallable4.java:16:5:16:9 | f(...) | f | 11 | A3 |
-| ViableCallable4.java:18:7:18:11 | f(...) | f | 2 | Sup |
 | ViableCallable4.java:18:7:18:11 | f(...) | f | 5 | A1 |
 | ViableCallable4.java:18:7:18:11 | f(...) | f | 8 | A2 |
-| ViableCallable4.java:18:7:18:11 | f(...) | f | 11 | A3 |
 | ViableCallable4.java:21:5:21:10 | f(...) | f | 2 | Sup |
-| ViableCallable4.java:21:5:21:10 | f(...) | f | 5 | A1 |
-| ViableCallable4.java:21:5:21:10 | f(...) | f | 8 | A2 |
 | ViableCallable4.java:21:5:21:10 | f(...) | f | 11 | A3 |
 | ViableCallable.java:5:3:5:13 | M(...) | M | 81 | C2 |
 | ViableCallable.java:5:3:5:13 | M(...) | M | 86 | C3 |
