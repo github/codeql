@@ -93,8 +93,7 @@ class ExternalApiDataNode extends DataFlow::Node {
 
   /** Gets the description of the method being called. */
   string getMethodDescription() {
-    result =
-      this.getMethod().getDeclaringType().getPackage() + "." + this.getMethod().getQualifiedName()
+    result = this.getMethod().getQualifiedName()
   }
 }
 
