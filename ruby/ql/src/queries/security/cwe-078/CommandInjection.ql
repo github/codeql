@@ -21,5 +21,5 @@ from Configuration config, DataFlow::PathNode source, DataFlow::PathNode sink, S
 where
   config.hasFlowPath(source, sink) and
   sourceNode = source.getNode()
-select sink.getNode(), source, sink, "This command depends on $@.", sourceNode,
+select sink.getNode(), source, sink, "This command depends on a $@.", sourceNode,
   sourceNode.getSourceType()
