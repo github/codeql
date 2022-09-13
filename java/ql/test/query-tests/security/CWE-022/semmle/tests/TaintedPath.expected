@@ -9,6 +9,42 @@ edges
 | Test.java:80:31:80:32 | br : BufferedReader | Test.java:80:31:80:43 | readLine(...) : String |
 | Test.java:80:31:80:43 | readLine(...) : String | Test.java:82:67:82:81 | ... + ... |
 | Test.java:88:17:88:37 | getHostName(...) : String | Test.java:90:26:90:29 | temp |
+| Test.java:95:14:95:34 | getHostName(...) : String | Test.java:96:20:96:20 | t : String |
+| Test.java:95:14:95:34 | getHostName(...) : String | Test.java:96:23:96:23 | t : String |
+| Test.java:95:14:95:34 | getHostName(...) : String | Test.java:96:26:96:26 | t : String |
+| Test.java:95:14:95:34 | getHostName(...) : String | Test.java:97:20:97:20 | t : String |
+| Test.java:95:14:95:34 | getHostName(...) : String | Test.java:97:23:97:23 | t : String |
+| Test.java:95:14:95:34 | getHostName(...) : String | Test.java:97:26:97:26 | t : String |
+| Test.java:95:14:95:34 | getHostName(...) : String | Test.java:97:29:97:29 | t : String |
+| Test.java:95:14:95:34 | getHostName(...) : String | Test.java:98:20:98:20 | t : String |
+| Test.java:95:14:95:34 | getHostName(...) : String | Test.java:98:23:98:23 | t : String |
+| Test.java:95:14:95:34 | getHostName(...) : String | Test.java:98:26:98:26 | t : String |
+| Test.java:95:14:95:34 | getHostName(...) : String | Test.java:98:29:98:29 | t : String |
+| Test.java:95:14:95:34 | getHostName(...) : String | Test.java:98:32:98:32 | t : String |
+| Test.java:95:14:95:34 | getHostName(...) : String | Test.java:99:20:99:20 | t : String |
+| Test.java:95:14:95:34 | getHostName(...) : String | Test.java:99:23:99:23 | t : String |
+| Test.java:95:14:95:34 | getHostName(...) : String | Test.java:99:26:99:26 | t : String |
+| Test.java:95:14:95:34 | getHostName(...) : String | Test.java:99:32:99:32 | t : String |
+| Test.java:95:14:95:34 | getHostName(...) : String | Test.java:99:35:99:35 | t : String |
+| Test.java:95:14:95:34 | getHostName(...) : String | Test.java:99:38:99:38 | t : String |
+| Test.java:96:20:96:20 | t : String | Test.java:96:12:96:27 | new URI(...) |
+| Test.java:96:23:96:23 | t : String | Test.java:96:12:96:27 | new URI(...) |
+| Test.java:96:26:96:26 | t : String | Test.java:96:12:96:27 | new URI(...) |
+| Test.java:97:20:97:20 | t : String | Test.java:97:12:97:30 | new URI(...) |
+| Test.java:97:23:97:23 | t : String | Test.java:97:12:97:30 | new URI(...) |
+| Test.java:97:26:97:26 | t : String | Test.java:97:12:97:30 | new URI(...) |
+| Test.java:97:29:97:29 | t : String | Test.java:97:12:97:30 | new URI(...) |
+| Test.java:98:20:98:20 | t : String | Test.java:98:12:98:33 | new URI(...) |
+| Test.java:98:23:98:23 | t : String | Test.java:98:12:98:33 | new URI(...) |
+| Test.java:98:26:98:26 | t : String | Test.java:98:12:98:33 | new URI(...) |
+| Test.java:98:29:98:29 | t : String | Test.java:98:12:98:33 | new URI(...) |
+| Test.java:98:32:98:32 | t : String | Test.java:98:12:98:33 | new URI(...) |
+| Test.java:99:20:99:20 | t : String | Test.java:99:12:99:39 | new URI(...) |
+| Test.java:99:23:99:23 | t : String | Test.java:99:12:99:39 | new URI(...) |
+| Test.java:99:26:99:26 | t : String | Test.java:99:12:99:39 | new URI(...) |
+| Test.java:99:32:99:32 | t : String | Test.java:99:12:99:39 | new URI(...) |
+| Test.java:99:35:99:35 | t : String | Test.java:99:12:99:39 | new URI(...) |
+| Test.java:99:38:99:38 | t : String | Test.java:99:12:99:39 | new URI(...) |
 nodes
 | Test.java:19:18:19:38 | getHostName(...) : String | semmle.label | getHostName(...) : String |
 | Test.java:24:20:24:23 | temp | semmle.label | temp |
@@ -23,6 +59,29 @@ nodes
 | Test.java:82:67:82:81 | ... + ... | semmle.label | ... + ... |
 | Test.java:88:17:88:37 | getHostName(...) : String | semmle.label | getHostName(...) : String |
 | Test.java:90:26:90:29 | temp | semmle.label | temp |
+| Test.java:95:14:95:34 | getHostName(...) : String | semmle.label | getHostName(...) : String |
+| Test.java:96:12:96:27 | new URI(...) | semmle.label | new URI(...) |
+| Test.java:96:20:96:20 | t : String | semmle.label | t : String |
+| Test.java:96:23:96:23 | t : String | semmle.label | t : String |
+| Test.java:96:26:96:26 | t : String | semmle.label | t : String |
+| Test.java:97:12:97:30 | new URI(...) | semmle.label | new URI(...) |
+| Test.java:97:20:97:20 | t : String | semmle.label | t : String |
+| Test.java:97:23:97:23 | t : String | semmle.label | t : String |
+| Test.java:97:26:97:26 | t : String | semmle.label | t : String |
+| Test.java:97:29:97:29 | t : String | semmle.label | t : String |
+| Test.java:98:12:98:33 | new URI(...) | semmle.label | new URI(...) |
+| Test.java:98:20:98:20 | t : String | semmle.label | t : String |
+| Test.java:98:23:98:23 | t : String | semmle.label | t : String |
+| Test.java:98:26:98:26 | t : String | semmle.label | t : String |
+| Test.java:98:29:98:29 | t : String | semmle.label | t : String |
+| Test.java:98:32:98:32 | t : String | semmle.label | t : String |
+| Test.java:99:12:99:39 | new URI(...) | semmle.label | new URI(...) |
+| Test.java:99:20:99:20 | t : String | semmle.label | t : String |
+| Test.java:99:23:99:23 | t : String | semmle.label | t : String |
+| Test.java:99:26:99:26 | t : String | semmle.label | t : String |
+| Test.java:99:32:99:32 | t : String | semmle.label | t : String |
+| Test.java:99:35:99:35 | t : String | semmle.label | t : String |
+| Test.java:99:38:99:38 | t : String | semmle.label | t : String |
 subpaths
 #select
 | Test.java:24:11:24:24 | new File(...) | Test.java:19:18:19:38 | getHostName(...) : String | Test.java:24:20:24:23 | temp | $@ flows to here and is used in a path. | Test.java:19:18:19:38 | getHostName(...) | User-provided value |
@@ -31,3 +90,7 @@ subpaths
 | Test.java:34:12:34:25 | new File(...) | Test.java:19:18:19:38 | getHostName(...) : String | Test.java:34:21:34:24 | temp | $@ flows to here and is used in a path. | Test.java:19:18:19:38 | getHostName(...) | User-provided value |
 | Test.java:82:52:82:88 | new FileWriter(...) | Test.java:79:74:79:97 | getInputStream(...) : ServletInputStream | Test.java:82:67:82:81 | ... + ... | $@ flows to here and is used in a path. | Test.java:79:74:79:97 | getInputStream(...) | User-provided value |
 | Test.java:90:26:90:29 | temp | Test.java:88:17:88:37 | getHostName(...) : String | Test.java:90:26:90:29 | temp | $@ flows to here and is used in a path. | Test.java:88:17:88:37 | getHostName(...) | User-provided value |
+| Test.java:96:3:96:28 | new File(...) | Test.java:95:14:95:34 | getHostName(...) : String | Test.java:96:12:96:27 | new URI(...) | $@ flows to here and is used in a path. | Test.java:95:14:95:34 | getHostName(...) | User-provided value |
+| Test.java:97:3:97:31 | new File(...) | Test.java:95:14:95:34 | getHostName(...) : String | Test.java:97:12:97:30 | new URI(...) | $@ flows to here and is used in a path. | Test.java:95:14:95:34 | getHostName(...) | User-provided value |
+| Test.java:98:3:98:34 | new File(...) | Test.java:95:14:95:34 | getHostName(...) : String | Test.java:98:12:98:33 | new URI(...) | $@ flows to here and is used in a path. | Test.java:95:14:95:34 | getHostName(...) | User-provided value |
+| Test.java:99:3:99:40 | new File(...) | Test.java:95:14:95:34 | getHostName(...) : String | Test.java:99:12:99:39 | new URI(...) | $@ flows to here and is used in a path. | Test.java:95:14:95:34 | getHostName(...) | User-provided value |

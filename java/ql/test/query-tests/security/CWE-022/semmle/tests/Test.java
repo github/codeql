@@ -6,7 +6,7 @@ import javax.servlet.http.*;
 import javax.servlet.ServletException;
 
 import java.io.*;
-import java.net.InetAddress;
+import java.net.*;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.FileSystems;
@@ -88,5 +88,14 @@ class Test {
 		String temp = address.getHostName();
 		// BAD: open a file based on user input, using a MaD-documented API
 		new LockableFileWriter(temp);
+	}
+
+	void doGet5(InetAddress address)
+	throws URISyntaxException {
+		String t = address.getHostName();
+		new File(new URI(t, t, t));
+		new File(new URI(t, t, t, t));
+		new File(new URI(t, t, t, t, t));
+		new File(new URI(t, t, t, 0, t, t, t));
 	}
 }
