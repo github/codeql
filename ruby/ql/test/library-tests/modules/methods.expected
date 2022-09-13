@@ -272,3 +272,107 @@ lookupMethod
 | private.rb:42:1:60:3 | F | private3 | private.rb:55:3:56:5 | private3 |
 | private.rb:42:1:60:3 | F | private4 | private.rb:58:3:59:5 | private4 |
 | private.rb:42:1:60:3 | F | public | private.rb:46:3:47:5 | public |
+enclosingMethod
+| calls.rb:2:5:2:14 | call to puts | calls.rb:1:1:3:3 | foo |
+| calls.rb:2:5:2:14 | self | calls.rb:1:1:3:3 | foo |
+| calls.rb:2:10:2:14 | "foo" | calls.rb:1:1:3:3 | foo |
+| calls.rb:2:11:2:13 | foo | calls.rb:1:1:3:3 | foo |
+| calls.rb:8:5:8:14 | call to puts | calls.rb:7:1:9:3 | bar |
+| calls.rb:8:5:8:14 | self | calls.rb:7:1:9:3 | bar |
+| calls.rb:8:10:8:14 | "bar" | calls.rb:7:1:9:3 | bar |
+| calls.rb:8:11:8:13 | bar | calls.rb:7:1:9:3 | bar |
+| calls.rb:38:9:38:18 | call to instance_m | calls.rb:37:5:43:7 | baz |
+| calls.rb:38:9:38:18 | self | calls.rb:37:5:43:7 | baz |
+| calls.rb:39:9:39:12 | self | calls.rb:37:5:43:7 | baz |
+| calls.rb:39:9:39:23 | call to instance_m | calls.rb:37:5:43:7 | baz |
+| calls.rb:41:9:41:19 | call to singleton_m | calls.rb:37:5:43:7 | baz |
+| calls.rb:41:9:41:19 | self | calls.rb:37:5:43:7 | baz |
+| calls.rb:42:9:42:12 | self | calls.rb:37:5:43:7 | baz |
+| calls.rb:42:9:42:24 | call to singleton_m | calls.rb:37:5:43:7 | baz |
+| calls.rb:53:9:53:13 | call to super | calls.rb:52:5:54:7 | baz |
+| calls.rb:62:18:62:18 | a | calls.rb:62:1:65:3 | optional_arg |
+| calls.rb:62:18:62:18 | a | calls.rb:62:1:65:3 | optional_arg |
+| calls.rb:62:22:62:22 | 4 | calls.rb:62:1:65:3 | optional_arg |
+| calls.rb:62:25:62:25 | b | calls.rb:62:1:65:3 | optional_arg |
+| calls.rb:62:25:62:25 | b | calls.rb:62:1:65:3 | optional_arg |
+| calls.rb:62:28:62:28 | 5 | calls.rb:62:1:65:3 | optional_arg |
+| calls.rb:63:5:63:5 | a | calls.rb:62:1:65:3 | optional_arg |
+| calls.rb:63:5:63:16 | call to bit_length | calls.rb:62:1:65:3 | optional_arg |
+| calls.rb:64:5:64:5 | b | calls.rb:62:1:65:3 | optional_arg |
+| calls.rb:64:5:64:16 | call to bit_length | calls.rb:62:1:65:3 | optional_arg |
+| calls.rb:68:5:68:11 | yield ... | calls.rb:67:1:69:3 | call_block |
+| calls.rb:68:11:68:11 | 1 | calls.rb:67:1:69:3 | call_block |
+| calls.rb:72:5:72:7 | var | calls.rb:71:1:75:3 | foo |
+| calls.rb:72:5:72:18 | ... = ... | calls.rb:71:1:75:3 | foo |
+| calls.rb:72:11:72:14 | Hash | calls.rb:71:1:75:3 | foo |
+| calls.rb:72:11:72:18 | call to new | calls.rb:71:1:75:3 | foo |
+| calls.rb:73:5:73:7 | var | calls.rb:71:1:75:3 | foo |
+| calls.rb:73:5:73:10 | ...[...] | calls.rb:71:1:75:3 | foo |
+| calls.rb:73:9:73:9 | 1 | calls.rb:71:1:75:3 | foo |
+| calls.rb:74:5:74:29 | call to call_block | calls.rb:71:1:75:3 | foo |
+| calls.rb:74:5:74:29 | self | calls.rb:71:1:75:3 | foo |
+| calls.rb:74:16:74:29 | { ... } | calls.rb:71:1:75:3 | foo |
+| calls.rb:74:19:74:19 | x | calls.rb:71:1:75:3 | foo |
+| calls.rb:74:19:74:19 | x | calls.rb:71:1:75:3 | foo |
+| calls.rb:74:22:74:24 | var | calls.rb:71:1:75:3 | foo |
+| calls.rb:74:22:74:27 | ...[...] | calls.rb:71:1:75:3 | foo |
+| calls.rb:74:26:74:26 | x | calls.rb:71:1:75:3 | foo |
+| calls.rb:110:15:110:19 | &body | calls.rb:110:3:116:5 | foreach |
+| calls.rb:110:16:110:19 | body | calls.rb:110:3:116:5 | foreach |
+| calls.rb:111:5:111:5 | x | calls.rb:110:3:116:5 | foreach |
+| calls.rb:111:5:111:9 | ... = ... | calls.rb:110:3:116:5 | foreach |
+| calls.rb:111:9:111:9 | 0 | calls.rb:110:3:116:5 | foreach |
+| calls.rb:112:5:115:7 | while ... | calls.rb:110:3:116:5 | foreach |
+| calls.rb:112:11:112:11 | x | calls.rb:110:3:116:5 | foreach |
+| calls.rb:112:11:112:25 | ... < ... | calls.rb:110:3:116:5 | foreach |
+| calls.rb:112:15:112:18 | self | calls.rb:110:3:116:5 | foreach |
+| calls.rb:112:15:112:25 | call to length | calls.rb:110:3:116:5 | foreach |
+| calls.rb:112:26:115:7 | do ... | calls.rb:110:3:116:5 | foreach |
+| calls.rb:113:9:113:24 | yield ... | calls.rb:110:3:116:5 | foreach |
+| calls.rb:113:15:113:15 | x | calls.rb:110:3:116:5 | foreach |
+| calls.rb:113:18:113:21 | self | calls.rb:110:3:116:5 | foreach |
+| calls.rb:113:18:113:24 | ...[...] | calls.rb:110:3:116:5 | foreach |
+| calls.rb:113:23:113:23 | x | calls.rb:110:3:116:5 | foreach |
+| calls.rb:114:9:114:9 | x | calls.rb:110:3:116:5 | foreach |
+| calls.rb:114:9:114:9 | x | calls.rb:110:3:116:5 | foreach |
+| calls.rb:114:9:114:14 | ... += ... | calls.rb:110:3:116:5 | foreach |
+| calls.rb:114:9:114:14 | ... = ... | calls.rb:110:3:116:5 | foreach |
+| calls.rb:114:11:114:12 | ... + ... | calls.rb:110:3:116:5 | foreach |
+| calls.rb:114:14:114:14 | 1 | calls.rb:110:3:116:5 | foreach |
+| calls.rb:120:5:120:20 | yield ... | calls.rb:119:1:121:3 | funny |
+| calls.rb:120:11:120:20 | "prefix: " | calls.rb:119:1:121:3 | funny |
+| calls.rb:120:12:120:19 | prefix:  | calls.rb:119:1:121:3 | funny |
+| calls.rb:137:14:137:15 | &b | calls.rb:137:1:139:3 | indirect |
+| calls.rb:137:15:137:15 | b | calls.rb:137:1:139:3 | indirect |
+| calls.rb:138:5:138:17 | call to call_block | calls.rb:137:1:139:3 | indirect |
+| calls.rb:138:5:138:17 | self | calls.rb:137:1:139:3 | indirect |
+| calls.rb:138:16:138:17 | &... | calls.rb:137:1:139:3 | indirect |
+| calls.rb:138:17:138:17 | b | calls.rb:137:1:139:3 | indirect |
+| calls.rb:146:9:146:12 | self | calls.rb:145:5:147:7 | s_method |
+| calls.rb:146:9:146:17 | call to to_s | calls.rb:145:5:147:7 | s_method |
+| calls.rb:171:9:171:12 | self | calls.rb:170:5:172:7 | singleton_a |
+| calls.rb:171:9:171:24 | call to singleton_b | calls.rb:170:5:172:7 | singleton_a |
+| calls.rb:175:9:175:12 | self | calls.rb:174:5:176:7 | singleton_b |
+| calls.rb:175:9:175:24 | call to singleton_c | calls.rb:174:5:176:7 | singleton_b |
+| calls.rb:182:9:182:12 | self | calls.rb:181:5:183:7 | singleton_d |
+| calls.rb:182:9:182:24 | call to singleton_a | calls.rb:181:5:183:7 | singleton_d |
+| hello.rb:3:9:3:22 | return | hello.rb:2:5:4:7 | hello |
+| hello.rb:3:16:3:22 | "hello" | hello.rb:2:5:4:7 | hello |
+| hello.rb:3:17:3:21 | hello | hello.rb:2:5:4:7 | hello |
+| hello.rb:6:9:6:22 | return | hello.rb:5:5:7:7 | world |
+| hello.rb:6:16:6:22 | "world" | hello.rb:5:5:7:7 | world |
+| hello.rb:6:17:6:21 | world | hello.rb:5:5:7:7 | world |
+| hello.rb:14:9:14:20 | return | hello.rb:13:5:15:7 | message |
+| hello.rb:14:16:14:20 | call to hello | hello.rb:13:5:15:7 | message |
+| hello.rb:14:16:14:20 | self | hello.rb:13:5:15:7 | message |
+| hello.rb:20:9:20:40 | return | hello.rb:19:5:21:7 | message |
+| hello.rb:20:16:20:20 | call to super | hello.rb:19:5:21:7 | message |
+| hello.rb:20:16:20:26 | ... + ... | hello.rb:19:5:21:7 | message |
+| hello.rb:20:16:20:34 | ... + ... | hello.rb:19:5:21:7 | message |
+| hello.rb:20:16:20:40 | ... + ... | hello.rb:19:5:21:7 | message |
+| hello.rb:20:24:20:26 | " " | hello.rb:19:5:21:7 | message |
+| hello.rb:20:25:20:25 |   | hello.rb:19:5:21:7 | message |
+| hello.rb:20:30:20:34 | call to world | hello.rb:19:5:21:7 | message |
+| hello.rb:20:30:20:34 | self | hello.rb:19:5:21:7 | message |
+| hello.rb:20:38:20:40 | "!" | hello.rb:19:5:21:7 | message |
+| hello.rb:20:39:20:39 | ! | hello.rb:19:5:21:7 | message |
