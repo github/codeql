@@ -50,8 +50,8 @@ public class TypeBasedComplex<T> {
     public TypeBasedComplex<S> MapComplex<S>(Func<T, S> f) { throw null; }
 
     public TypeBasedComplex<T> Return(Func<T, TypeBasedComplex<T>> f) { throw null; }
-    // Examples still not working:
-    // public void Set(int x, Func<int, T> f) { throw null;}
+    
+    public void Set(int x, Func<int, T> f) { throw null;}
 }
 
 // It is assumed that this is a collection with elements of type T.
