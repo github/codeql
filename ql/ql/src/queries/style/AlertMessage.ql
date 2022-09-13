@@ -39,6 +39,16 @@ private AstNode getSelectPart(Select sel, int index) {
     )
 }
 
+/**
+ * Gets a string element that is the last part of the message, that doesn't end with a full stop.
+ *
+ * E.g.
+ * ```CodeQL
+ * select foo(), "This is a description" // <- bad
+ *
+ * select foo(), "This is a description." // <- good
+ * ```
+ */
 String shouldHaveFullStop(Select sel) {
   result =
     max(AstNode str, int i |
@@ -50,6 +60,16 @@ String shouldHaveFullStop(Select sel) {
   not result.getValue().matches("%?")
 }
 
+/**
+ * Gets a string element that is the first part of the message, that starts with a lower case letter.
+ *
+ * E.g.
+ * ```CodeQL
+ * select foo(), "this is a description." // <- bad
+ *
+ * select foo(), "This is a description." // <- good
+ * ```
+ */
 String shouldStartCapital(Select sel) {
   result =
     min(AstNode str, int i |
@@ -60,31 +80,64 @@ String shouldStartCapital(Select sel) {
   result.getValue().regexpMatch("^[a-z].*")
 }
 
-// see https://www.w3.org/WAI/WCAG22/Understanding/link-purpose-in-context.html
+/**
+ * Gets a string element that is used in a message that contains "here" or "this location".
+ *
+ * E.g.
+ * ```CodeQL
+ * select foo(), "XSS happens here from using a unsafe value." // <- bad
+ *
+ * select foo(), "XSS from using a unsafe value." // <- good
+ * ```
+ */
 String avoidHere(string part) {
-  part = ["here", "this location"] and // TODO: prefer "this location" of the two.
+  part = ["here", "this location"] and
   (
     result.getValue().regexpMatch(".*\\b" + part + "\\b.*") and
     result = getSelectPart(_, _)
   )
 }
 
-// see https://www.w3.org/WAI/WCAG22/Understanding/link-purpose-in-context.html
+/**
+ * Avoid using an indefinite article ("a" or "an") in a link text.
+ *
+ * E.g.
+ * ```CodeQL
+ * select foo(), "XSS from $@", val, "an unsafe value." // <- bad
+ *
+ * select foo(), "XSS from a $@", val, "unsafe value." // <- good
+ * ```
+ *
+ * See https://www.w3.org/WAI/WCAG22/Understanding/link-purpose-in-context.html for the W3C guideline on link text. a
+ */
 String avoidArticleInLinkText(Select sel) {
   result = sel.getExpr((any(int i | i > 1))) and
   result = getSelectPart(sel, _) and
   result.getValue().regexpMatch("a|an .*")
 }
 
+/**
+ * Don't quote substitutions in a message.
+ *
+ * E.g.
+ * ```CodeQL
+ * select foo(), "XSS from '$@'", val, "an unsafe value." // <- bad
+ *
+ * select foo(), "XSS from $@", val, "an unsafe value." // <- good
+ * ```
+ */
 String dontQuoteSubstitutions(Select sel) {
   result = getSelectPart(sel, _) and
   result.getValue().matches(["%'$@'%", "%\"$@\"%"])
 }
 
-// "data" or "taint"
-string getQueryKind(Select s) {
+/**
+ * Gets the kind of the path-query represented by `sel`.
+ * Either "data" for a dataflow query or "taint" for a taint-tracking query.
+ */
+private string getQueryKind(Select sel) {
   exists(TypeExpr sup |
-    sup = s.getVarDecl(_).getType().(ClassType).getDeclaration().getASuperType() and
+    sup = sel.getVarDecl(_).getType().(ClassType).getDeclaration().getASuperType() and
     sup.getResolvedType().(ClassType).getName() = "Configuration"
   |
     result = "data" and
@@ -95,6 +148,10 @@ string getQueryKind(Select s) {
   )
 }
 
+/**
+ * Gets a string element from a message that uses the wrong phrase for a path query.
+ * A dataflow query should use "flows to" and a taint-tracking query should use "depends on".
+ */
 String wrongFlowsPhrase(Select sel, string kind) {
   result = getSelectPart(sel, _) and
   kind = getQueryKind(sel) and
