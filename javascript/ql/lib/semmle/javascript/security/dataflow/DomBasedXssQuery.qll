@@ -75,7 +75,7 @@ class Configuration extends TaintTracking::Configuration {
   }
 
   override predicate isSanitizerGuard(TaintTracking::SanitizerGuardNode guard) {
-    guard instanceof PrefixStringSanitizer or
+    guard instanceof PrefixStringSanitizerActivated or
     guard instanceof QuoteGuard or
     guard instanceof ContainsHtmlGuard
   }
