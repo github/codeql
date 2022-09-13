@@ -116,5 +116,5 @@ where
   // `deref` dereferences `ptr`
   deref.getOperand() = ptr.getAUse()
 select deref.getOperand(),
-  ptr.getSourceVariable() + " may be nil here, because $@ may not have been checked.", err,
-  err.getSourceVariable().toString()
+  ptr.getSourceVariable() + " may be nil at this location, because $@ may not have been checked.",
+  err, err.getSourceVariable().toString()

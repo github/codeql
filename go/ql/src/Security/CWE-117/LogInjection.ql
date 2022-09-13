@@ -17,5 +17,5 @@ import DataFlow::PathGraph
 
 from LogInjection::Configuration c, DataFlow::PathNode source, DataFlow::PathNode sink
 where c.hasFlowPath(source, sink)
-select sink, source, sink, "This log write receives unsanitized user input from $@.",
-  source.getNode(), "here"
+select sink.getNode(), source, sink, "Log entry depends on $@.", source.getNode(),
+  "a user-provided value"
