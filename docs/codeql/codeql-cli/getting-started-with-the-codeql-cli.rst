@@ -50,8 +50,7 @@ Conditions <https://securitylab.github.com/tools/codeql/license>`__.
    There are several different versions of the CLI available to download, depending
    on your use case:
 
-   * If you want to use the most up to date CodeQL tools and features, download the
-   version tagged ``latest``.
+   * If you want to use the most up to date CodeQL tools and features, download the version tagged ``latest``.
    * If you want to generate code scanning data to upload to GitHub Enterprise server, then download the version that is compatible with the CodeQL CLI used in your CI system. For more information, see "`Installing CodeQL CLI in your CI system <https://docs.github.com/en/enterprise-server@3.6/code-security/code-scanning/using-codeql-code-scanning-with-your-existing-ci-system/installing-codeql-cli-in-your-ci-system#downloading-the-codeql-cli>`__" in the GitHub documentation.
 
 If you use Linux, Windows, or macOS version 10.14 ("Mojave") or earlier, simply
