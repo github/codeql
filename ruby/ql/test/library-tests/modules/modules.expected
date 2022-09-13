@@ -712,7 +712,7 @@ enclosingModule
 | modules.rb:116:7:117:9 | YY | modules.rb:115:1:121:3 | XX |
 | modules.rb:116:18:116:19 | YY | modules.rb:115:1:121:3 | XX |
 | modules.rb:119:7:120:9 | class << ... | modules.rb:115:1:121:3 | XX |
-| modules.rb:119:16:119:19 | self | modules.rb:119:7:120:9 | class << ... |
+| modules.rb:119:16:119:19 | self | modules.rb:115:1:121:3 | XX |
 | modules.rb:123:1:124:3 | Baz | modules.rb:1:1:129:4 | modules.rb |
 | modules.rb:123:8:123:11 | Test | modules.rb:1:1:129:4 | modules.rb |
 | modules.rb:123:8:123:17 | Foo1 | modules.rb:1:1:129:4 | modules.rb |
@@ -722,7 +722,7 @@ enclosingModule
 | modules.rb:126:6:126:7 | XX | modules.rb:1:1:129:4 | modules.rb |
 | modules.rb:126:6:126:11 | call to new | modules.rb:1:1:129:4 | modules.rb |
 | modules.rb:128:1:129:3 | class << ... | modules.rb:1:1:129:4 | modules.rb |
-| modules.rb:128:10:128:11 | xx | modules.rb:128:1:129:3 | class << ... |
+| modules.rb:128:10:128:11 | xx | modules.rb:1:1:129:4 | modules.rb |
 | modules_rec.rb:1:1:2:3 | A | modules_rec.rb:1:1:11:26 | modules_rec.rb |
 | modules_rec.rb:1:7:1:7 | B | modules_rec.rb:1:1:11:26 | modules_rec.rb |
 | modules_rec.rb:4:1:5:3 | B | modules_rec.rb:1:1:11:26 | modules_rec.rb |
