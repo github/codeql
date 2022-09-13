@@ -23,7 +23,7 @@ class TokenValidationParametersPropertySensitiveValidation extends Property {
  */
 class FalseValueFlowsToTokenValidationParametersPropertyWriteToBypassValidation extends DataFlow::Configuration {
   FalseValueFlowsToTokenValidationParametersPropertyWriteToBypassValidation() {
-    this = "FlowsToTokenValidationResultIsValidCall"
+    this = "FalseValueFlowsToTokenValidationParametersPropertyWriteToBypassValidation"
   }
 
   override predicate isSource(DataFlow::Node source) {
@@ -75,7 +75,7 @@ class JsonWebTokenHandlerValidateTokenCall extends MethodCall {
  */
 private class TokenValidationResultIsValidCall extends PropertyRead {
   TokenValidationResultIsValidCall() {
-    exists(Property p | p.getAnAccess().(PropertyRead) = this |
+    exists(Property p | p.getAnAccess() = this |
       p.hasName("IsValid") or
       p.hasName("Exception")
     )
