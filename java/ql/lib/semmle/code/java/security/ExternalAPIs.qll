@@ -24,7 +24,7 @@ private class DefaultSafeExternalApiMethod extends SafeExternalApiMethod {
     or
     this.getDeclaringType().hasQualifiedName("org.apache.commons.lang3", "Validate")
     or
-    this.getQualifiedName() = "Objects.equals"
+    this.hasQualifiedName("java.util", "Objects", "equals")
     or
     this.getDeclaringType() instanceof TypeString and this.getName() = "equals"
     or
