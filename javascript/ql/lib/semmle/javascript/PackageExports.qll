@@ -59,7 +59,7 @@ private DataFlow::Node getAValueExportedByPackage() {
     func = getAValueExportedByPackage().getALocalSource() and inst = unique( | | func.getAReturn())
   |
     clz.getAnInstanceReference() = inst and
-    result = clz.getAnInstanceMethod()
+    result = clz.getAnInstanceMember(_)
   )
   or
   result = getAValueExportedByPackage().getALocalSource()
