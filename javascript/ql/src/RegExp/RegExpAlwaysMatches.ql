@@ -54,6 +54,8 @@ predicate isUniversalRegExp(RegExpTerm term) {
     or
     child.(RegExpCharacterClass).isUniversalClass()
   )
+  or
+  term.(RegExpSequence).getNumChild() = 0
 }
 
 /**
