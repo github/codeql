@@ -77,7 +77,7 @@ private module StandardPoIs {
     UnpromotedRouteSetupPoI() { this = "UnpromotedRouteSetupPoI" }
 
     override predicate is(Node l0) {
-      l0 instanceof HTTP::RouteSetupCandidate and not l0.asExpr() instanceof HTTP::RouteSetup
+      l0 instanceof HTTP::RouteSetupCandidate and not l0 instanceof HTTP::RouteSetup
     }
   }
 

@@ -270,16 +270,16 @@ module ClientRequest {
   }
 
   /** An expression that is used as a credential in a request. */
-  private class AuthorizationHeader extends CredentialsExpr {
+  private class AuthorizationHeader extends CredentialsNode {
     AuthorizationHeader() {
       exists(DataFlow::PropWrite write | write.getPropertyName().regexpMatch("(?i)authorization") |
-        this = write.getRhs().asExpr()
+        this = write.getRhs()
       )
       or
       exists(DataFlow::MethodCallNode call | call.getMethodName() = ["append", "set"] |
         call.getNumArgument() = 2 and
         call.getArgument(0).getStringValue().regexpMatch("(?i)authorization") and
-        this = call.getArgument(1).asExpr()
+        this = call.getArgument(1)
       )
     }
 

@@ -46,20 +46,6 @@ private class SystemCollectionIEnumerableFlowModelCsv extends SummaryModelCsv {
   }
 }
 
-/** Clear content for Clear methods in all subtypes of `System.Collections.IEnumerable`. */
-private class SystemCollectionsIEnumerableClearFlow extends SummarizedCallable {
-  SystemCollectionsIEnumerableClearFlow() {
-    this.getDeclaringType().(RefType).getABaseType*() instanceof
-      SystemCollectionsIEnumerableInterface and
-    this.hasName("Clear")
-  }
-
-  override predicate clearsContent(ParameterPosition pos, DataFlow::ContentSet content) {
-    (if this.(Modifiable).isStatic() then pos.getPosition() = 0 else pos.isThisParameter()) and
-    content instanceof DataFlow::ElementContent
-  }
-}
-
 /** The `System.Collections.IEnumerator` interface. */
 class SystemCollectionsIEnumeratorInterface extends SystemCollectionsInterface {
   SystemCollectionsIEnumeratorInterface() { this.hasName("IEnumerator") }
@@ -96,6 +82,7 @@ private class SystemCollectionsIListFlowModelCsv extends SummaryModelCsv {
     row =
       [
         "System.Collections;IList;true;Add;(System.Object);;Argument[0];Argument[this].Element;value;manual",
+        "System.Collections;IList;true;Clear;();;Argument[this].WithoutElement;Argument[this];value;manual",
         "System.Collections;IList;true;Insert;(System.Int32,System.Object);;Argument[1];Argument[this].Element;value;manual",
         "System.Collections;IList;true;get_Item;(System.Int32);;Argument[this].Element;ReturnValue;value;manual",
         "System.Collections;IList;true;set_Item;(System.Int32,System.Object);;Argument[1];Argument[this].Element;value;manual",
@@ -115,6 +102,7 @@ private class SystemCollectionsIDictionaryFlowModelCsv extends SummaryModelCsv {
       [
         "System.Collections;IDictionary;true;Add;(System.Object,System.Object);;Argument[0];Argument[this].Element.Property[System.Collections.Generic.KeyValuePair<,>.Key];value;manual",
         "System.Collections;IDictionary;true;Add;(System.Object,System.Object);;Argument[1];Argument[this].Element.Property[System.Collections.Generic.KeyValuePair<,>.Value];value;manual",
+        "System.Collections;IDictionary;true;Clear;();;Argument[this].WithoutElement;Argument[this];value;manual",
         "System.Collections;IDictionary;true;get_Item;(System.Object);;Argument[this].Element.Property[System.Collections.Generic.KeyValuePair<,>.Value];ReturnValue;value;manual",
         "System.Collections;IDictionary;true;get_Keys;();;Argument[this].Element.Property[System.Collections.Generic.KeyValuePair<,>.Key];ReturnValue.Element;value;manual",
         "System.Collections;IDictionary;true;get_Values;();;Argument[this].Element.Property[System.Collections.Generic.KeyValuePair<,>.Value];ReturnValue.Element;value;manual",
@@ -194,6 +182,7 @@ private class SystemCollectionsQueueFlowModelCsv extends SummaryModelCsv {
   override predicate row(string row) {
     row =
       [
+        "System.Collections;Queue;true;Clear;();;Argument[this].WithoutElement;Argument[this];value;manual",
         "System.Collections;Queue;false;Clone;();;Argument[0].Element;ReturnValue.Element;value;manual",
         "System.Collections;Queue;false;Peek;();;Argument[this].Element;ReturnValue;value;manual",
       ]
@@ -205,6 +194,7 @@ private class SystemCollectionsStackFlowModelCsv extends SummaryModelCsv {
   override predicate row(string row) {
     row =
       [
+        "System.Collections;Stack;false;Clear;();;Argument[this].WithoutElement;Argument[this];value;manual",
         "System.Collections;Stack;false;Clone;();;Argument[0].Element;ReturnValue.Element;value;manual",
         "System.Collections;Stack;false;Peek;();;Argument[this].Element;ReturnValue;value;manual",
         "System.Collections;Stack;false;Pop;();;Argument[this].Element;ReturnValue;value;manual",

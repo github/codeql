@@ -4,23 +4,9 @@
 
 import ruby
 import codeql.ruby.DataFlow
+import TestUtilities.InlineFlowTest
 import DataFlow::PathGraph
 
-class Conf extends DataFlow::Configuration {
-  Conf() { this = "Conf" }
-
-  override predicate isSource(DataFlow::Node src) {
-    src.asExpr().getExpr().(StringLiteral).getConstantValue().isString("taint")
-  }
-
-  override predicate isSink(DataFlow::Node sink) {
-    exists(MethodCall mc |
-      mc.getMethodName() = "sink" and
-      mc.getAnArgument() = sink.asExpr().getExpr()
-    )
-  }
-}
-
-from DataFlow::PathNode source, DataFlow::PathNode sink, Conf conf
+from DataFlow::PathNode source, DataFlow::PathNode sink, DefaultTaintFlowConf conf
 where conf.hasFlowPath(source, sink)
 select sink, source, sink, "$@", source, source.toString()

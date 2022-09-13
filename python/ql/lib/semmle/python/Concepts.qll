@@ -1046,71 +1046,9 @@ module HTTP {
     }
   }
 
-  /** Provides classes for modeling HTTP clients. */
-  module Client {
-    /**
-     * A data-flow node that makes an outgoing HTTP request.
-     *
-     * Extend this class to refine existing API models. If you want to model new APIs,
-     * extend `HTTP::Client::Request::Range` instead.
-     */
-    class Request extends DataFlow::Node instanceof Request::Range {
-      /**
-       * Gets a data-flow node that contributes to the URL of the request.
-       * Depending on the framework, a request may have multiple nodes which contribute to the URL.
-       */
-      DataFlow::Node getAUrlPart() { result = super.getAUrlPart() }
-
-      /** Gets a string that identifies the framework used for this request. */
-      string getFramework() { result = super.getFramework() }
-
-      /**
-       * Holds if this request is made using a mode that disables SSL/TLS
-       * certificate validation, where `disablingNode` represents the point at
-       * which the validation was disabled, and `argumentOrigin` represents the origin
-       * of the argument that disabled the validation (which could be the same node as
-       * `disablingNode`).
-       */
-      predicate disablesCertificateValidation(
-        DataFlow::Node disablingNode, DataFlow::Node argumentOrigin
-      ) {
-        super.disablesCertificateValidation(disablingNode, argumentOrigin)
-      }
-    }
-
-    /** Provides a class for modeling new HTTP requests. */
-    module Request {
-      /**
-       * A data-flow node that makes an outgoing HTTP request.
-       *
-       * Extend this class to model new APIs. If you want to refine existing API models,
-       * extend `HTTP::Client::Request` instead.
-       */
-      abstract class Range extends DataFlow::Node {
-        /**
-         * Gets a data-flow node that contributes to the URL of the request.
-         * Depending on the framework, a request may have multiple nodes which contribute to the URL.
-         */
-        abstract DataFlow::Node getAUrlPart();
-
-        /** Gets a string that identifies the framework used for this request. */
-        abstract string getFramework();
-
-        /**
-         * Holds if this request is made using a mode that disables SSL/TLS
-         * certificate validation, where `disablingNode` represents the point at
-         * which the validation was disabled, and `argumentOrigin` represents the origin
-         * of the argument that disabled the validation (which could be the same node as
-         * `disablingNode`).
-         */
-        abstract predicate disablesCertificateValidation(
-          DataFlow::Node disablingNode, DataFlow::Node argumentOrigin
-        );
-      }
-    }
-    // TODO: investigate whether we should treat responses to client requests as
-    // remote-flow-sources in general.
-  }
+  import semmle.python.internal.ConceptsShared::Http::Client as Client
+  // TODO: investigate whether we should treat responses to client requests as
+  // remote-flow-sources in general.
 }
 
 /**

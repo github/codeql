@@ -13,7 +13,6 @@
 import python
 private import semmle.python.dataflow.new.DataFlow
 private import semmle.python.Concepts
-private import semmle.python.ApiGraphs
 
 from
   HTTP::Client::Request request, DataFlow::Node disablingNode, DataFlow::Node origin, string ending

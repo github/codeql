@@ -1,7 +1,7 @@
 private import python
 private import DataFlowPublic
 private import semmle.python.essa.SsaCompute
-private import semmle.python.dataflow.new.internal.ImportStar
+private import semmle.python.dataflow.new.internal.ImportResolution
 // Since we allow extra data-flow steps from modeled frameworks, we import these
 // up-front, to ensure these are included. This provides a more seamless experience from
 // a user point of view, since they don't need to know they need to import a specific
@@ -335,11 +335,7 @@ predicate runtimeJumpStep(Node nodeFrom, Node nodeTo) {
   nodeFrom = nodeTo.(ModuleVariableNode).getAWrite()
   or
   // Setting the possible values of the variable at the end of import time
-  exists(SsaVariable def |
-    def = any(SsaVariable var).getAnUltimateDefinition() and
-    def.getDefinition() = nodeFrom.asCfgNode() and
-    def.getVariable() = nodeTo.(ModuleVariableNode).getVariable()
-  )
+  nodeFrom = nodeTo.(ModuleVariableNode).getADefiningWrite()
 }
 
 /**
@@ -423,9 +419,9 @@ predicate jumpStepSharedWithTypeTracker(Node nodeFrom, Node nodeTo) {
   runtimeJumpStep(nodeFrom, nodeTo)
   or
   // Read of module attribute:
-  exists(AttrRead r, ModuleValue mv |
-    r.getObject().asCfgNode().pointsTo(mv) and
-    module_export(mv.getScope(), r.getAttributeName(), nodeFrom) and
+  exists(AttrRead r |
+    ImportResolution::module_export(ImportResolution::getModule(r.getObject()),
+      r.getAttributeName(), nodeFrom) and
     nodeTo = r
   )
   or
@@ -447,22 +443,6 @@ predicate jumpStepSharedWithTypeTracker(Node nodeFrom, Node nodeTo) {
  */
 predicate jumpStepNotSharedWithTypeTracker(Node nodeFrom, Node nodeTo) {
   any(Orm::AdditionalOrmSteps es).jumpStep(nodeFrom, nodeTo)
-}
-
-/**
- * Holds if the module `m` defines a name `name` by assigning `defn` to it. This is an
- * overapproximation, as `name` may not in fact be exported (e.g. by defining an `__all__` that does
- * not include `name`).
- */
-private predicate module_export(Module m, string name, CfgNode defn) {
-  exists(EssaVariable v |
-    v.getName() = name and
-    v.getAUse() = ImportStar::getStarImported*(m).getANormalExit()
-  |
-    defn.getNode() = v.getDefinition().(AssignmentDefinition).getValue()
-    or
-    defn.getNode() = v.getDefinition().(ArgumentRefinement).getArgument()
-  )
 }
 
 //--------
