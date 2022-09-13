@@ -164,8 +164,8 @@ predicate basicStoreStep(Node nodeFrom, Node nodeTo, TypeTrackerContentSet conte
 }
 
 /**
- * A `content`-store step from `nodeFrom -> nodeTo` where the destination node is a post-update
- * node that should be treated as a local source node.
+ * Holds if a store step `nodeFrom -> nodeTo` with `contents` exists, where the destination node
+ * is a post-update node that should be treated as a local source node.
  */
 predicate postUpdateStoreStep(Node nodeFrom, Node nodeTo, TypeTrackerContentSet contents) {
   // TODO: support SetterMethodCall inside TuplePattern
