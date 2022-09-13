@@ -1,10 +1,10 @@
 /**
- * @name Alert messages style violation
- * @description Alert message that doesn't follow some aspect of the style guide.
+ * @name Alert message style violation
+ * @description An alert message that doesn't follow the style guide is harder for end users to digest.
  *              See the style guide here: https://github.com/github/codeql/blob/main/docs/query-metadata-style-guide.md#alert-messages
  * @kind problem
  * @problem.severity warning
- * @id ql/alert-messages-style-violation
+ * @id ql/alert-message-style-violation
  * @precision high
  */
 
@@ -132,9 +132,9 @@ where
     msg = "Don't quote substitutions in alert messages."
     or
     node = wrongFlowsPhrase(_, "data") and
-    msg = "Use \"flows to\" instead of \"depends on\" in taint tracking queries."
+    msg = "Use \"flows to\" instead of \"depends on\" in data flow queries."
     or
     node = wrongFlowsPhrase(_, "taint") and
-    msg = "Use \"depends on\" instead of \"flows to\" in data flow queries."
+    msg = "Use \"depends on\" instead of \"flows to\" in taint tracking queries."
   )
 select node, msg
