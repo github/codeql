@@ -5,11 +5,17 @@ Creating CodeQL databases
 
 Before you analyze your code using CodeQL, you need to create a CodeQL
 database containing all the data required to run queries on your code.
+You can create CodeQL databases yourself using the CodeQL CLI,
+or download them from GitHub.com.
 
 CodeQL analysis relies on extracting relational data from your code, and
 using it to build a :ref:`CodeQL database <codeql-database>`. CodeQL
 databases contain all of the important information about a codebase, which can
-be analyzed by executing CodeQL queries against it.
+be analyzed by executing CodeQL queries against it. GitHub creates and 
+stores CodeQL databases for a large number of open-source projects. For more information,
+see ":ref:`Downloading CodeQL databases from GitHub.com <downloading-codeql-databases-from-github-com>`."
+
+You can also create CodeQL databases yourself using the CodeQL CLI. 
 Before you generate a CodeQL database, you need to:
 
 - Install and set up the CodeQL CLI. For more information, see
@@ -378,6 +384,8 @@ The following example shows how you could use indirect build tracing in an Azure
        # Other tasks go here, for example:
        # `codeql database analyze`
        # then `codeql github upload-results` ...
+
+.. _downloading-databases-from-github-com:
 
 Downloading databases from GitHub.com
 -------------------------------------
