@@ -2,7 +2,8 @@ private import python
 private import semmle.python.dataflow.new.FlowSummary
 private import semmle.python.ApiGraphs
 
-/** This module ensures that the `callStep` predicate in
+/**
+ * This module ensures that the `callStep` predicate in
  * our type tracker implelemtation does not refer to the
  * `getACall` predicate on `SummarizedCallable`.
  */
