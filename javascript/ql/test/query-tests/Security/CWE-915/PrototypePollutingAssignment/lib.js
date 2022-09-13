@@ -120,3 +120,18 @@ module.exports.returnsObj = function () {
         }
     }
 }
+
+class MyClass {
+    constructor() {}
+
+    set(obj, path, value) {
+        obj[path[0]][path[1]] = value; // NOT OK
+    }
+
+    static staticSet(obj, path, value) {
+        obj[path[0]][path[1]] = value; // OK - not exported
+    }
+}
+module.exports.returnsMewMyClass = function () {
+    return new MyClass();
+}
