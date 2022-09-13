@@ -277,10 +277,10 @@ private class IncludesCheck extends TaintTracking::LabeledSanitizerGuardNode, In
 }
 
 /**
- * A sanitizer guard that checks tests whether `x` is included in a list of strings.
+ * A sanitizer guard that checks tests whether `x` is included in a list like `["__proto__"].includes(x)`.
  */
-private class StringListCheck extends TaintTracking::SanitizerGuardNode, InclusionTest {
-  StringListCheck() {
+private class DenyListInclusionGuard extends TaintTracking::SanitizerGuardNode, InclusionTest {
+  DenyListInclusionGuard() {
     this.getContainerNode()
         .getALocalSource()
         .(DataFlow::ArrayCreationNode)
