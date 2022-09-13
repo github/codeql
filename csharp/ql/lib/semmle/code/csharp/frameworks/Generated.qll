@@ -6,4 +6,5 @@ import csharp
 
 private module GeneratedFrameworks {
   private import generated.dotnet.Runtime
+  private import generated.dotnet.TypeBasedRuntime
 }
