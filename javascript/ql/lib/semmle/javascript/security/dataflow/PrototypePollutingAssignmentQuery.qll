@@ -124,7 +124,8 @@ class Configuration extends TaintTracking::Configuration {
     guard instanceof TypeofCheck or
     guard instanceof NumberGuard or
     guard instanceof EqualityCheck or
-    guard instanceof IncludesCheck
+    guard instanceof IncludesCheck or
+    guard instanceof DenyListInclusionGuard
   }
 }
 
