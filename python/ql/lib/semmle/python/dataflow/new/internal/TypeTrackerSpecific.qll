@@ -25,7 +25,7 @@ class TypeTrackerContent extends OptionalTypeTrackerContent {
   TypeTrackerContent() { this != "" }
 }
 
-/** The content string representing no value. */
+/** Gets the content string representing no value. */
 OptionalTypeTrackerContent noContent() { result = "" }
 
 /** A content set, which is currently just a singleton set for Python. */
