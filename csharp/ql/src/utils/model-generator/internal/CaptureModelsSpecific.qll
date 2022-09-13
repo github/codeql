@@ -42,14 +42,14 @@ private predicate isRelevantForModels(CS::Callable api) {
 /**
  * Holds if it is relevant to generate models for `api` based on data flow analysis.
  */
-predicate isRelevantForFlowModels(CS::Callable api) {
+predicate isRelevantForDataFlowModels(CS::Callable api) {
   isRelevantForModels(api) and not isHigherOrder(api)
 }
 
 /**
- * Holds if it is relevant to generate models for `api` based on Theorems for Free.
+ * Holds if it is relevant to generate models for `api` based on its type.
  */
-predicate isRelevantForTheoremModels = isRelevantForModels/1;
+predicate isRelevantForTypeBasedFlowModels = isRelevantForModels/1;
 
 /**
  * A class of callables that are relevant generating summary, source and sinks models for.

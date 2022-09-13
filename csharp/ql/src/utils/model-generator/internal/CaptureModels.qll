@@ -6,7 +6,7 @@
 private import CaptureModelsSpecific
 
 class DataFlowTargetApi extends TargetApiSpecific {
-  DataFlowTargetApi() { isRelevantForFlowModels(this) }
+  DataFlowTargetApi() { isRelevantForDataFlowModels(this) }
 }
 
 /**

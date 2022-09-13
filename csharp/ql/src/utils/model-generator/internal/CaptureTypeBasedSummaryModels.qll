@@ -84,7 +84,7 @@ private string implicit(DotNet::Callable callable, TypeParameter tp) {
 }
 
 /**
- * Holds if `callable` has a delegate type parameter `tp` at parameter position `position`.
+ * Holds if `callable` has a delegate parameter `dt` at parameter position `position`.
  */
 private predicate delegate(DotNet::Callable callable, DelegateType dt, int position) {
   exists(Parameter p |
@@ -192,8 +192,8 @@ private predicate output(DotNet::Callable callable, TypeParameter tp, string out
  * A class of callables that are relevant generating summaries for based
  * on the Theorems for Free approach.
  */
-class TheoremTargetApi extends Specific::TargetApiSpecific {
-  TheoremTargetApi() { Specific::isRelevantForTheoremModels(this) }
+class TypeBasedFlowTargetApi extends Specific::TargetApiSpecific {
+  TypeBasedFlowTargetApi() { Specific::isRelevantForTypeBasedFlowModels(this) }
 
   /**
    * Gets the string representation of all type based summaries inspired by
@@ -228,4 +228,4 @@ class TheoremTargetApi extends Specific::TargetApiSpecific {
 /**
  * Returns the Theorems for Free inspired typed based summaries for `api`.
  */
-string captureFlow(TheoremTargetApi api) { result = api.getSummaries() }
+string captureFlow(TypeBasedFlowTargetApi api) { result = api.getSummaries() }
