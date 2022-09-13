@@ -54,10 +54,6 @@ class JsonWebTokenHandlerValidateTokenMethod extends Method {
   JsonWebTokenHandlerValidateTokenMethod() {
     this.hasQualifiedName("Microsoft.IdentityModel.JsonWebTokens.JsonWebTokenHandler.ValidateToken") or
     this.hasQualifiedName("Microsoft.AzureAD.DeviceIdentification.Common.Tokens.JwtValidator.ValidateEncryptedToken")
-    //// TODO: ValidateEncryptedToken has the same behavior than ValidateToken, but it will be changed in a future release
-    ////       The line below would allow to check if the ValidateEncryptedToken version used meets the minimum requirement
-    ////       Once we have the fixed assembly version we can uncomment the line below
-    // and isAssemblyOlderVersion("Microsoft.AzureAD.DeviceIdentification", "0.0.0")
   }
 }
 
