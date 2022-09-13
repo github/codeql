@@ -611,16 +611,12 @@ module CodeExecution {
  * Extend this class to refine existing API models. If you want to model new APIs,
  * extend `XmlParserCall::Range` instead.
  */
-class XmlParserCall extends DataFlow::Node {
-  XmlParserCall::Range range;
-
-  XmlParserCall() { this = range }
-
+class XmlParserCall extends DataFlow::Node instanceof XmlParserCall::Range {
   /** Gets the argument that specifies the XML content to be parsed. */
-  DataFlow::Node getInput() { result = range.getInput() }
+  DataFlow::Node getInput() { result = super.getInput() }
 
   /** Holds if this XML parser call is configured to process external entities */
-  predicate externalEntitiesEnabled() { range.externalEntitiesEnabled() }
+  predicate externalEntitiesEnabled() { super.externalEntitiesEnabled() }
 }
 
 /** Provides a class for modeling new XML parsing APIs. */
@@ -790,13 +786,9 @@ module CookieSecurityConfigurationSetting {
  * Extend this class to refine existing API models. If you want to model new APIs,
  * extend `Logging::Range` instead.
  */
-class Logging extends DataFlow::Node {
-  Logging::Range range;
-
-  Logging() { this = range }
-
+class Logging extends DataFlow::Node instanceof Logging::Range {
   /** Gets an input that is logged. */
-  DataFlow::Node getAnInput() { result = range.getAnInput() }
+  DataFlow::Node getAnInput() { result = super.getAnInput() }
 }
 
 /** Provides a class for modeling new logging mechanisms. */
