@@ -118,6 +118,6 @@ where
     call instanceof RegExpSearchCall and
     not term.getAChild*() instanceof RegExpDollar and
     message =
-      "This regular expression always the matches at index 0 when used $@, as it matches the empty substring."
+      "This regular expression always matches at index 0 when used $@, as it matches the empty substring."
   )
 select term, message, call, "here"
