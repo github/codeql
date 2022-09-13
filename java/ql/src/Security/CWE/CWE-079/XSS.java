@@ -3,7 +3,7 @@ public class XSS extends HttpServlet {
 	throws ServletException, IOException {
 		// BAD: a request parameter is written directly to the Servlet response stream
 		response.getWriter().print(
-				"The page \"" + request.getParameter("page") + "\" was not found."); // $xss
+				"The page \"" + request.getParameter("page") + "\" was not found.");
 
 	}
 }
