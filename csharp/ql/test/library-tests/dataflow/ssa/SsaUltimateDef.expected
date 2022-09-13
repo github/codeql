@@ -468,6 +468,16 @@
 | Test.cs:56:13:56:17 | this.field | Test.cs:57:9:57:17 | SSA def(this.field) | Test.cs:57:9:57:17 | SSA def(this.field) |
 | Test.cs:62:16:62:16 | x | Test.cs:62:16:62:16 | SSA param(x) | Test.cs:62:16:62:16 | SSA param(x) |
 | Test.cs:68:45:68:45 | e | Test.cs:68:45:68:45 | [exception: DivideByZeroException] SSA def(e) | Test.cs:68:45:68:45 | [exception: DivideByZeroException] SSA def(e) |
+| Test.cs:76:24:76:25 | b1 | Test.cs:76:24:76:25 | SSA param(b1) | Test.cs:76:24:76:25 | SSA param(b1) |
+| Test.cs:76:33:76:34 | b2 | Test.cs:76:33:76:34 | SSA param(b2) | Test.cs:76:33:76:34 | SSA param(b2) |
+| Test.cs:76:42:76:43 | b3 | Test.cs:76:42:76:43 | SSA param(b3) | Test.cs:76:42:76:43 | SSA param(b3) |
+| Test.cs:76:51:76:52 | b4 | Test.cs:76:51:76:52 | SSA param(b4) | Test.cs:76:51:76:52 | SSA param(b4) |
+| Test.cs:76:60:76:61 | b5 | Test.cs:76:60:76:61 | SSA param(b5) | Test.cs:76:60:76:61 | SSA param(b5) |
+| Test.cs:76:69:76:70 | b6 | Test.cs:76:69:76:70 | SSA param(b6) | Test.cs:76:69:76:70 | SSA param(b6) |
+| Test.cs:78:13:78:13 | x | Test.cs:78:13:78:17 | SSA def(x) | Test.cs:78:13:78:17 | SSA def(x) |
+| Test.cs:78:13:78:13 | x | Test.cs:108:13:108:17 | SSA def(x) | Test.cs:108:13:108:17 | SSA def(x) |
+| Test.cs:78:13:78:13 | x | Test.cs:113:9:116:9 | SSA phi(x) | Test.cs:78:13:78:17 | SSA def(x) |
+| Test.cs:78:13:78:13 | x | Test.cs:113:9:116:9 | SSA phi(x) | Test.cs:108:13:108:17 | SSA def(x) |
 | Tuples.cs:10:14:10:14 | x | Tuples.cs:10:9:10:54 | SSA def(x) | Tuples.cs:10:9:10:54 | SSA def(x) |
 | Tuples.cs:10:14:10:14 | x | Tuples.cs:14:9:14:32 | SSA def(x) | Tuples.cs:14:9:14:32 | SSA def(x) |
 | Tuples.cs:10:14:10:14 | x | Tuples.cs:23:9:23:37 | SSA def(x) | Tuples.cs:23:9:23:37 | SSA def(x) |

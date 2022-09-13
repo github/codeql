@@ -58,15 +58,18 @@ class ServletFilterClass extends ReflectivelyConstructedClass {
 /**
  * An entry point into a GWT application.
  */
-class GWTEntryPointConstructedClass extends ReflectivelyConstructedClass {
-  GWTEntryPointConstructedClass() { this.(GwtEntryPointClass).isLive() }
+class GwtEntryPointConstructedClass extends ReflectivelyConstructedClass {
+  GwtEntryPointConstructedClass() { this.(GwtEntryPointClass).isLive() }
 }
+
+/** DEPRECATED: Alias for GwtEntryPointConstructedClass */
+deprecated class GWTEntryPointConstructedClass = GwtEntryPointConstructedClass;
 
 /**
  * Servlets referred to from a GWT module config file.
  */
-class GWTServletClass extends ReflectivelyConstructedClass {
-  GWTServletClass() {
+class GwtServletClass extends ReflectivelyConstructedClass {
+  GwtServletClass() {
     this instanceof ServletClass and
     // There must be evidence that GWT is being used, otherwise missing `*.gwt.xml` files could cause
     // all `Servlet`s to be live.
@@ -80,6 +83,9 @@ class GWTServletClass extends ReflectivelyConstructedClass {
     )
   }
 }
+
+/** DEPRECATED: Alias for GwtServletClass */
+deprecated class GWTServletClass = GwtServletClass;
 
 /**
  * Methods that may be called reflectively by the UiHandler framework.

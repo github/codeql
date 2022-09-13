@@ -543,11 +543,11 @@ private class StdOStreamOutNonMember extends DataFlowFunction, TaintFunction {
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
     // flow from second parameter to first parameter
-    input.isParameter(1) and
+    input.isParameterDeref(1) and
     output.isParameterDeref(0)
     or
     // flow from second parameter to return value
-    input.isParameter(1) and
+    input.isParameterDeref(1) and
     output.isReturnValueDeref()
     or
     // reverse flow from returned reference to the first parameter

@@ -98,15 +98,15 @@ generics.kt:
 #   13|           0: [ExprStmt] <Expr>;
 #   13|             0: [KtInitializerAssignExpr] ...=...
 #   13|               0: [VarAccess] t
-#   13|     2: [Method] getT
+#   13|     2: [FieldDeclaration] T t;
+#   13|       -1: [TypeAccess] T
+#   13|       0: [VarAccess] t
+#   13|     3: [Method] getT
 #   13|       3: [TypeAccess] T
 #   13|       5: [BlockStmt] { ... }
 #   13|         0: [ReturnStmt] return ...
 #   13|           0: [VarAccess] this.t
 #   13|             -1: [ThisAccess] this
-#   13|     2: [FieldDeclaration] T t;
-#   13|       -1: [TypeAccess] T
-#   13|       0: [VarAccess] t
 #   14|     4: [Method] f1
 #   14|       3: [TypeAccess] Unit
 #-----|       4: (Parameters)

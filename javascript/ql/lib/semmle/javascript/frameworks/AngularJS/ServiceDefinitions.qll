@@ -27,7 +27,7 @@ private newtype TServiceReference =
  */
 abstract class ServiceReference extends TServiceReference {
   /** Gets a textual representation of this element. */
-  string toString() { result = getName() }
+  string toString() { result = this.getName() }
 
   /**
    * Gets the name of this reference.
@@ -38,26 +38,26 @@ abstract class ServiceReference extends TServiceReference {
    * Gets a data flow node that may refer to this service.
    */
   DataFlow::SourceNode getAReference() {
-    result = DataFlow::parameterNode(any(ServiceRequest request).getDependencyParameter(this))
+    result = any(ServiceRequestNode request).getDependencyParameter(this)
   }
 
   /**
    * Gets an access to the referenced service.
    */
-  Expr getAnAccess() {
-    result.mayReferToParameter(any(ServiceRequest request).getDependencyParameter(this))
+  DataFlow::Node getAnAccess() {
+    any(ServiceRequestNode request).getDependencyParameter(this).flowsTo(result)
   }
 
   /**
    * Gets a call that invokes the referenced service.
    */
-  CallExpr getACall() { result.getCallee() = getAnAccess() }
+  DataFlow::CallNode getACall() { result.getCalleeNode() = this.getAnAccess() }
 
   /**
    * Gets a method call that invokes method `methodName` on the referenced service.
    */
-  MethodCallExpr getAMethodCall(string methodName) {
-    result.getReceiver() = getAnAccess() and
+  DataFlow::MethodCallNode getAMethodCall(string methodName) {
+    result.getReceiver() = this.getAnAccess() and
     result.getMethodName() = methodName
   }
 
@@ -65,7 +65,7 @@ abstract class ServiceReference extends TServiceReference {
    * Gets an access to property `propertyName` on the referenced service.
    */
   DataFlow::PropRef getAPropertyAccess(string propertyName) {
-    result.getBase().asExpr() = getAnAccess() and
+    result.getBase() = this.getAnAccess() and
     result.getPropertyName() = propertyName
   }
 
@@ -93,7 +93,7 @@ class BuiltinServiceReference extends ServiceReference, MkBuiltinServiceReferenc
 DataFlow::ParameterNode builtinServiceRef(string serviceName) {
   exists(InjectableFunction f, BuiltinServiceReference service |
     service.getName() = serviceName and
-    result = DataFlow::parameterNode(f.getDependencyParameter(serviceName))
+    result = f.getDependencyParameter(serviceName)
   )
 }
 
@@ -244,17 +244,17 @@ abstract class RecipeDefinition extends DataFlow::CallNode, CustomServiceDefinit
       this = moduleRef(_).getAMethodCall(methodName) or
       this = builtinServiceRef("$provide").getAMethodCall(methodName)
     ) and
-    getArgument(0).asExpr().mayHaveStringValue(name)
+    this.getArgument(0).mayHaveStringValue(name)
   }
 
   override string getName() { result = name }
 
-  override DataFlow::SourceNode getAFactoryFunction() { result.flowsTo(getArgument(1)) }
+  override DataFlow::SourceNode getAFactoryFunction() { result.flowsTo(this.getArgument(1)) }
 
   override DataFlow::Node getAnInjectableFunction() {
     methodName != "value" and
     methodName != "constant" and
-    result = getAFactoryFunction()
+    result = this.getAFactoryFunction()
   }
 }
 
@@ -269,7 +269,7 @@ abstract class RecipeDefinition extends DataFlow::CallNode, CustomServiceDefinit
  */
 abstract private class CustomSpecialServiceDefinition extends CustomServiceDefinition,
   DependencyInjection {
-  override DataFlow::Node getAnInjectableFunction() { result = getAFactoryFunction() }
+  override DataFlow::Node getAnInjectableFunction() { result = this.getAFactoryFunction() }
 }
 
 /**
@@ -278,11 +278,11 @@ abstract private class CustomSpecialServiceDefinition extends CustomServiceDefin
 bindingset[moduleMethodName]
 private predicate isCustomServiceDefinitionOnModule(
   DataFlow::CallNode mce, string moduleMethodName, string serviceName,
-  DataFlow::Node factoryArgument
+  DataFlow::Node factoryFunction
 ) {
   mce = moduleRef(_).getAMethodCall(moduleMethodName) and
-  mce.getArgument(0).asExpr().mayHaveStringValue(serviceName) and
-  factoryArgument = mce.getArgument(1)
+  mce.getArgument(0).mayHaveStringValue(serviceName) and
+  factoryFunction = mce.getArgument(1)
 }
 
 pragma[inline]
@@ -296,7 +296,7 @@ private predicate isCustomServiceDefinitionOnProvider(
     factoryArgument = mce.getOptionArgument(0, serviceName)
     or
     mce.getNumArgument() = 2 and
-    mce.getArgument(0).asExpr().mayHaveStringValue(serviceName) and
+    mce.getArgument(0).mayHaveStringValue(serviceName) and
     factoryArgument = mce.getArgument(1)
   )
 }
@@ -338,7 +338,7 @@ class FilterDefinition extends CustomSpecialServiceDefinition {
   override DataFlow::SourceNode getAService() {
     exists(InjectableFunction f |
       f = factoryFunction.getALocalSource() and
-      result.flowsToExpr(f.asFunction().getAReturnedExpr())
+      result.flowsTo(f.asFunction().getAReturn())
     )
   }
 
@@ -428,7 +428,7 @@ class AnimationDefinition extends CustomSpecialServiceDefinition {
   override DataFlow::SourceNode getAService() {
     exists(InjectableFunction f |
       f = factoryFunction.getALocalSource() and
-      result.flowsToExpr(f.asFunction().getAReturnedExpr())
+      result.flowsTo(f.asFunction().getAReturn())
     )
   }
 
@@ -446,22 +446,37 @@ BuiltinServiceReference getBuiltinServiceOfKind(string kind) {
 }
 
 /**
+ * DEPRECATED: Use `ServiceRequestNode` instead.
  * A request for one or more AngularJS services.
  */
-abstract class ServiceRequest extends Expr {
+deprecated class ServiceRequest extends Expr {
+  ServiceRequestNode node;
+
+  ServiceRequest() { this.flow() = node }
+
+  /** Gets the parameter of this request into which `service` is injected. */
+  deprecated Parameter getDependencyParameter(ServiceReference service) {
+    result.flow() = node.getDependencyParameter(service)
+  }
+}
+
+/**
+ * A request for one or more AngularJS services.
+ */
+abstract class ServiceRequestNode extends DataFlow::Node {
   /**
    * Gets the parameter of this request into which `service` is injected.
    */
-  abstract Parameter getDependencyParameter(ServiceReference service);
+  abstract DataFlow::ParameterNode getDependencyParameter(ServiceReference service);
 }
 
 /**
  * The request for a scope service in the form of the link-function of a directive.
  */
-private class LinkFunctionWithScopeInjection extends ServiceRequest {
+private class LinkFunctionWithScopeInjection extends ServiceRequestNode {
   LinkFunctionWithScopeInjection() { this instanceof LinkFunction }
 
-  override Parameter getDependencyParameter(ServiceReference service) {
+  override DataFlow::ParameterNode getDependencyParameter(ServiceReference service) {
     service instanceof ScopeServiceReference and
     result = this.(LinkFunction).getScopeParameter()
   }
@@ -470,10 +485,10 @@ private class LinkFunctionWithScopeInjection extends ServiceRequest {
 /**
  * A request for a service, in the form of a dependency-injected function.
  */
-class InjectableFunctionServiceRequest extends ServiceRequest {
+class InjectableFunctionServiceRequest extends ServiceRequestNode {
   InjectableFunction injectedFunction;
 
-  InjectableFunctionServiceRequest() { injectedFunction.getAstNode() = this }
+  InjectableFunctionServiceRequest() { injectedFunction = this }
 
   /**
    * Gets the function of this request.
@@ -483,7 +498,9 @@ class InjectableFunctionServiceRequest extends ServiceRequest {
   /**
    * Gets a name of a requested service.
    */
-  string getAServiceName() { exists(getAnInjectedFunction().getADependencyDeclaration(result)) }
+  string getAServiceName() {
+    exists(this.getAnInjectedFunction().getADependencyDeclaration(result))
+  }
 
   /**
    * Gets a service with the specified name, relative to this request.
@@ -494,16 +511,16 @@ class InjectableFunctionServiceRequest extends ServiceRequest {
     result.isInjectable()
   }
 
-  override Parameter getDependencyParameter(ServiceReference service) {
+  override DataFlow::ParameterNode getDependencyParameter(ServiceReference service) {
     service = injectedFunction.getAResolvedDependency(result)
   }
 }
 
 private DataFlow::SourceNode getFactoryFunctionResult(RecipeDefinition def) {
-  exists(Function factoryFunction, InjectableFunction f |
+  exists(DataFlow::FunctionNode factoryFunction, InjectableFunction f |
     f = def.getAFactoryFunction() and
     factoryFunction = f.asFunction() and
-    result.flowsToExpr(factoryFunction.getAReturnedExpr())
+    result.flowsTo(factoryFunction.getAReturn())
   )
 }
 
@@ -561,8 +578,8 @@ class ServiceRecipeDefinition extends RecipeDefinition {
      */
 
     exists(InjectableFunction f |
-      f = getAFactoryFunction() and
-      result.getAstNode() = f.asFunction()
+      f = this.getAFactoryFunction() and
+      result = f.asFunction()
     )
   }
 }
@@ -574,7 +591,7 @@ class ServiceRecipeDefinition extends RecipeDefinition {
 class ValueRecipeDefinition extends RecipeDefinition {
   ValueRecipeDefinition() { methodName = "value" }
 
-  override DataFlow::SourceNode getAService() { result = getAFactoryFunction() }
+  override DataFlow::SourceNode getAService() { result = this.getAFactoryFunction() }
 }
 
 /**
@@ -584,7 +601,7 @@ class ValueRecipeDefinition extends RecipeDefinition {
 class ConstantRecipeDefinition extends RecipeDefinition {
   ConstantRecipeDefinition() { methodName = "constant" }
 
-  override DataFlow::SourceNode getAService() { result = getAFactoryFunction() }
+  override DataFlow::SourceNode getAService() { result = this.getAFactoryFunction() }
 }
 
 /**
@@ -607,8 +624,8 @@ class ProviderRecipeDefinition extends RecipeDefinition {
      */
 
     exists(DataFlow::ThisNode thiz, InjectableFunction f |
-      f = getAFactoryFunction() and
-      thiz.getBinder().getFunction() = f.asFunction() and
+      f = this.getAFactoryFunction() and
+      thiz.getBinder() = f.asFunction() and
       result = thiz.getAPropertySource("$get")
     )
   }
@@ -632,7 +649,9 @@ class ConfigMethodDefinition extends ModuleApiCall {
   /**
    * Gets a provided configuration method.
    */
-  InjectableFunction getConfigMethod() { result.(DataFlow::SourceNode).flowsTo(getArgument(0)) }
+  InjectableFunction getConfigMethod() {
+    result.(DataFlow::SourceNode).flowsTo(this.getArgument(0))
+  }
 }
 
 /**
@@ -645,12 +664,12 @@ class RunMethodDefinition extends ModuleApiCall {
   /**
    * Gets a provided run method.
    */
-  InjectableFunction getRunMethod() { result.(DataFlow::SourceNode).flowsTo(getArgument(0)) }
+  InjectableFunction getRunMethod() { result.(DataFlow::SourceNode).flowsTo(this.getArgument(0)) }
 }
 
 /**
  * The `$scope` or `$rootScope` service.
  */
 class ScopeServiceReference extends BuiltinServiceReference {
-  ScopeServiceReference() { getName() = "$scope" or getName() = "$rootScope" }
+  ScopeServiceReference() { this.getName() = "$scope" or this.getName() = "$rootScope" }
 }

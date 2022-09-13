@@ -464,7 +464,15 @@ module Django {
 
     /** A file-like object instance that originates from a `UploadedFile`. */
     class UploadedFileFileLikeInstances extends Stdlib::FileLikeObject::InstanceSource {
-      UploadedFileFileLikeInstances() { this.(DataFlow::AttrRead).accesses(instance(), "file") }
+      UploadedFileFileLikeInstances() {
+        // in the bottom of
+        // https://docs.djangoproject.com/en/4.0/ref/files/file/#django.core.files.File
+        // it's mentioned that the File object itself has proxy methods for
+        // `read`/`write`/... that forwards to the underlying file object.
+        this = instance()
+        or
+        this.(DataFlow::AttrRead).accesses(instance(), "file")
+      }
     }
   }
 
@@ -554,7 +562,7 @@ module PrivateDjango {
 
       /** A `django.db.connection` is a PEP249 compliant DB connection. */
       class DjangoDbConnection extends PEP249::Connection::InstanceSource {
-        DjangoDbConnection() { this = connection().getAnImmediateUse() }
+        DjangoDbConnection() { this = connection().asSource() }
       }
 
       // -------------------------------------------------------------------------
@@ -861,7 +869,7 @@ module PrivateDjango {
 
           /** Gets the (AST) class of the Django model class `modelClass`. */
           Class getModelClassClass(API::Node modelClass) {
-            result.getParent() = modelClass.getAnImmediateUse().asExpr() and
+            result.getParent() = modelClass.asSource().asExpr() and
             modelClass = Model::subclassRef()
           }
 
@@ -2194,9 +2202,7 @@ module PrivateDjango {
    * thereby handling user input.
    */
   class DjangoFormClass extends Class, SelfRefMixin {
-    DjangoFormClass() {
-      this.getParent() = Django::Forms::Form::subclassRef().getAnImmediateUse().asExpr()
-    }
+    DjangoFormClass() { this.getParent() = Django::Forms::Form::subclassRef().asSource().asExpr() }
   }
 
   /**
@@ -2229,7 +2235,7 @@ module PrivateDjango {
    */
   class DjangoFormFieldClass extends Class {
     DjangoFormFieldClass() {
-      this.getParent() = Django::Forms::Field::subclassRef().getAnImmediateUse().asExpr()
+      this.getParent() = Django::Forms::Field::subclassRef().asSource().asExpr()
     }
   }
 
@@ -2332,7 +2338,7 @@ module PrivateDjango {
    */
   class DjangoViewClassFromSuperClass extends DjangoViewClass {
     DjangoViewClassFromSuperClass() {
-      this.getParent() = Django::Views::View::subclassRef().getAnImmediateUse().asExpr()
+      this.getParent() = Django::Views::View::subclassRef().asSource().asExpr()
     }
   }
 
@@ -2735,7 +2741,7 @@ module PrivateDjango {
             .getMember("utils")
             .getMember("log")
             .getMember("request_logger")
-            .getAnImmediateUse()
+            .asSource()
     }
   }
 
@@ -2793,7 +2799,7 @@ module PrivateDjango {
             .getMember("decorators")
             .getMember("csrf")
             .getMember(decoratorName)
-            .getAUse() and
+            .getAValueReachableFromSource() and
       this.asExpr() = function.getADecorator()
     }
 

@@ -7,8 +7,8 @@ private class SystemNetHttpHttpRequestOptionsFlowModelCsv extends SummaryModelCs
   override predicate row(string row) {
     row =
       [
-        "System.Net.Http;HttpRequestOptions;false;Add;(System.Collections.Generic.KeyValuePair<System.String,System.Object>);;Argument[0].Property[System.Collections.Generic.KeyValuePair<,>.Key];Argument[Qualifier].Element.Property[System.Collections.Generic.KeyValuePair<,>.Key];value",
-        "System.Net.Http;HttpRequestOptions;false;Add;(System.Collections.Generic.KeyValuePair<System.String,System.Object>);;Argument[0].Property[System.Collections.Generic.KeyValuePair<,>.Value];Argument[Qualifier].Element.Property[System.Collections.Generic.KeyValuePair<,>.Value];value",
+        "System.Net.Http;HttpRequestOptions;false;Add;(System.Collections.Generic.KeyValuePair<System.String,System.Object>);;Argument[0].Property[System.Collections.Generic.KeyValuePair<,>.Key];Argument[this].Element.Property[System.Collections.Generic.KeyValuePair<,>.Key];value;manual",
+        "System.Net.Http;HttpRequestOptions;false;Add;(System.Collections.Generic.KeyValuePair<System.String,System.Object>);;Argument[0].Property[System.Collections.Generic.KeyValuePair<,>.Value];Argument[this].Element.Property[System.Collections.Generic.KeyValuePair<,>.Value];value;manual",
       ]
   }
 }
@@ -17,7 +17,7 @@ private class SystemNetHttpHttpRequestOptionsFlowModelCsv extends SummaryModelCs
 private class SystemNetHttpMultipartContentFlowModelCsv extends SummaryModelCsv {
   override predicate row(string row) {
     row =
-      "System.Net.Http;MultipartContent;false;Add;(System.Net.Http.HttpContent);;Argument[0];Argument[Qualifier].Element;value"
+      "System.Net.Http;MultipartContent;false;Add;(System.Net.Http.HttpContent);;Argument[0];Argument[this].Element;value;manual"
   }
 }
 
@@ -25,6 +25,14 @@ private class SystemNetHttpMultipartContentFlowModelCsv extends SummaryModelCsv 
 private class SystemNetHttpMultipartFormDataContentFlowModelCsv extends SummaryModelCsv {
   override predicate row(string row) {
     row =
-      "System.Net.Http;MultipartFormDataContent;false;Add;(System.Net.Http.HttpContent);;Argument[0];Argument[Qualifier].Element;value"
+      "System.Net.Http;MultipartFormDataContent;false;Add;(System.Net.Http.HttpContent);;Argument[0];Argument[this].Element;value;manual"
+  }
+}
+
+/** Data flow for `System.Net.Http.Headers.HttpHeaders`. */
+private class SystemNetHttpHeadersHttpHeadersFlowModelCsv extends SummaryModelCsv {
+  override predicate row(string row) {
+    row =
+      "System.Net.Http.Headers;HttpHeaders;false;Clear;();;Argument[this].WithoutElement;Argument[this];value;manual"
   }
 }

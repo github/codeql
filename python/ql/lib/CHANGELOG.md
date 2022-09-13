@@ -1,3 +1,53 @@
+## 0.5.4
+
+### Deprecated APIs
+
+* Many classes/predicates/modules with upper-case acronyms in their name have been renamed to follow our style-guide. 
+  The old name still exists as a deprecated alias.
+* The utility files previously in the `semmle.python.security.performance` package have been moved to the `semmle.python.security.regexp` package.  
+  The previous files still exist as deprecated aliases.
+
+### Minor Analysis Improvements
+
+* Most deprecated predicates/classes/modules that have been deprecated for over a year have been deleted.
+
+## 0.5.3
+
+### Minor Analysis Improvements
+
+* Change `.getASubclass()` on `API::Node` so it allows to follow subclasses even if the class has a class decorator.
+
+## 0.5.2
+
+## 0.5.1
+
+### Deprecated APIs
+
+- The documentation of API graphs (the `API` module) has been expanded, and some of the members predicates of `API::Node`
+  have been renamed as follows:
+  - `getAnImmediateUse` -> `asSource`
+  - `getARhs` -> `asSink`
+  - `getAUse` -> `getAValueReachableFromSource`
+  - `getAValueReachingRhs` -> `getAValueReachingSink`
+
+### Minor Analysis Improvements
+
+* Improved modeling of sensitive data sources, so common words like `certain` and `secretary` are no longer considered a certificate and a secret (respectively).
+
+## 0.5.0
+
+### Deprecated APIs
+
+* The `BarrierGuard` class has been deprecated. Such barriers and sanitizers can now instead be created using the new `BarrierGuard` parameterized module.
+
+## 0.4.1
+
+## 0.4.0
+
+### Breaking Changes
+
+* `API::moduleImport` no longer has any results for dotted names, such as `API::moduleImport("foo.bar")`. Using `API::moduleImport("foo.bar").getMember("baz").getACall()` previously worked if the Python code was `from foo.bar import baz; baz()`, but not if the code was `import foo.bar; foo.bar.baz()` -- we are making this change to ensure the approach that can handle all cases is always used.
+
 ## 0.3.0
 
 ### Breaking Changes

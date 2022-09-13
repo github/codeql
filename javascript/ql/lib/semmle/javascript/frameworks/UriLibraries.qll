@@ -4,16 +4,6 @@
 
 import javascript
 
-/**
- * DEPRECATED. Use `TaintTracking::SharedTaintStep` or `TaintTracking::uriStep` instead.
- *
- * A taint propagating data flow edge arising from an operation in a URI library.
- */
-abstract deprecated class UriLibraryStep extends DataFlow::ValueNode {
-  /** Holds if `pred -> succ` is a step through a URI library function. */
-  predicate step(DataFlow::Node pred, DataFlow::Node succ) { none() }
-}
-
 /** DEPRECATED: Alias for `Urijs` */
 deprecated module urijs = Urijs;
 
@@ -190,7 +180,7 @@ module Querystringify {
    * Gets a data flow source node for member `name` of the querystringify library.
    */
   DataFlow::SourceNode querystringifyMember(string name) {
-    result = querystringify().getMember(name).getAnImmediateUse()
+    result = querystringify().getMember(name).asSource()
   }
 
   /** Gets an API node referring to the `querystringify` module. */

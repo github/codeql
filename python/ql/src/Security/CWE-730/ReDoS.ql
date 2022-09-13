@@ -5,6 +5,7 @@
  *              attacks.
  * @kind problem
  * @problem.severity error
+ * @security-severity 7.5
  * @precision high
  * @id py/redos
  * @tags security
@@ -14,7 +15,7 @@
  */
 
 import python
-import semmle.python.security.performance.ExponentialBackTracking
+import semmle.python.security.regexp.ExponentialBackTracking
 
 from RegExpTerm t, string pump, State s, string prefixMsg
 where

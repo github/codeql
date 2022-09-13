@@ -21,7 +21,7 @@ def test_property_has_first_table_param_marked():
 ])
 def test_property_is_a_class(type, expected):
     tableparams = ["a", "result", "b"]
-    expected_tableparams = ["a", "x" if expected else "result", "b"]
+    expected_tableparams = ["a", "result" if expected else "result", "b"]
     prop = ql.Property("Prop", type, tableparams=tableparams)
     assert prop.type_is_class is expected
     assert [p.param for p in prop.tableparams] == expected_tableparams
@@ -45,13 +45,26 @@ def test_property_indefinite_article(name, expected_getter):
     ("", False),
     ("X", True),
 ])
-def test_property_is_plural(plural, expected):
-    prop = ql.Property("foo", "Foo", "props", ["x"], plural=plural)
+def test_property_is_repeated(plural, expected):
+    prop = ql.Property("foo", "Foo", "props", ["result"], plural=plural)
     assert prop.is_repeated is expected
 
 
+@pytest.mark.parametrize("is_optional,is_predicate,plural,expected", [
+    (False, False, None, True),
+    (False, False, "", True),
+    (False, False, "X", False),
+    (True, False, None, False),
+    (False, True, None, False),
+])
+def test_property_is_single(is_optional, is_predicate, plural, expected):
+    prop = ql.Property("foo", "Foo", "props", ["result"], plural=plural,
+                       is_predicate=is_predicate, is_optional=is_optional)
+    assert prop.is_single is expected
+
+
 def test_property_no_plural_no_indefinite_getter():
-    prop = ql.Property("Prop", "Foo", "props", ["x"])
+    prop = ql.Property("Prop", "Foo", "props", ["result"])
     assert prop.indefinite_getter is None
 
 
@@ -65,9 +78,9 @@ def test_property_predicate_getter():
     assert prop.getter == "prop"
 
 
-def test_class_sorts_bases():
+def test_class_processes_bases():
     bases = ["B", "Ab", "C", "Aa"]
-    expected = ["Aa", "Ab", "B", "C"]
+    expected = [ql.Base("B"), ql.Base("Ab", prev="B"), ql.Base("C", prev="Ab"), ql.Base("Aa", prev="C")]
     cls = ql.Class("Foo", bases=bases)
     assert cls.bases == expected
 
@@ -82,11 +95,6 @@ def test_class_has_first_property_marked():
     assert cls.properties == expected
 
 
-def test_class_db_id():
-    cls = ql.Class("ThisIsMyClass")
-    assert cls.db_id == "@this_is_my_class"
-
-
 def test_root_class():
     cls = ql.Class("Class")
     assert cls.root
@@ -95,6 +103,28 @@ def test_root_class():
 def test_non_root_class():
     cls = ql.Class("Class", bases=["A"])
     assert not cls.root
+
+
+@pytest.mark.parametrize("prev_child,is_child", [(None, False), ("", True), ("x", True)])
+def test_is_child(prev_child, is_child):
+    p = ql.Property("Foo", "int", prev_child=prev_child)
+    assert p.is_child is is_child
+
+
+def test_empty_class_no_children():
+    cls = ql.Class("Class", properties=[])
+    assert cls.has_children is False
+
+
+def test_class_no_children():
+    cls = ql.Class("Class", properties=[ql.Property("Foo", "int"), ql.Property("Bar", "string")])
+    assert cls.has_children is False
+
+
+def test_class_with_children():
+    cls = ql.Class("Class", properties=[ql.Property("Foo", "int"), ql.Property("Child", "x", prev_child=""),
+                                        ql.Property("Bar", "string")])
+    assert cls.has_children is True
 
 
 if __name__ == '__main__':

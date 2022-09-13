@@ -18,7 +18,7 @@
 import ruby
 import DataFlow::PathGraph
 import codeql.ruby.DataFlow
-import codeql.ruby.security.performance.RegExpInjectionQuery
+import codeql.ruby.security.regexp.RegExpInjectionQuery
 
 from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink
 where cfg.hasFlowPath(source, sink)

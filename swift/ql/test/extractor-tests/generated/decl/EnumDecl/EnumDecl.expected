@@ -1,0 +1,4 @@
+| enums.swift:1:1:4:1 | EnumValues | getModule: | file://:0:0:0:0 | enums | getInterfaceType: | EnumValues.Type | getName: | EnumValues | getType: | EnumValues |
+| enums.swift:7:1:10:1 | EnumValuesWithBase | getModule: | file://:0:0:0:0 | enums | getInterfaceType: | EnumValuesWithBase.Type | getName: | EnumValuesWithBase | getType: | EnumValuesWithBase |
+| enums.swift:12:1:16:1 | EnumWithParams | getModule: | file://:0:0:0:0 | enums | getInterfaceType: | EnumWithParams.Type | getName: | EnumWithParams | getType: | EnumWithParams |
+| enums.swift:18:1:21:1 | GenericEnum | getModule: | file://:0:0:0:0 | enums | getInterfaceType: | GenericEnum<T>.Type | getName: | GenericEnum | getType: | GenericEnum |

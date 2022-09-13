@@ -11,14 +11,17 @@ CodeQL.
 Languages and compilers
 #######################
 
-CodeQL supports the following languages and compilers.
+The current versions of the CodeQL CLI (`changelog <https://github.com/github/codeql-cli-binaries/blob/main/CHANGELOG.md>`__, `releases <https://github.com/github/codeql-cli-binaries/releases>`__),
+CodeQL library packs (`source <https://github.com/github/codeql/tree/codeql-cli/latest>`__),
+and CodeQL bundle (`releases <https://github.com/github/codeql-action/releases>`__)
+support the following languages and compilers.
 
 .. include:: ../support/reusables/versions-compilers.rst
 
 Frameworks and libraries
 ########################
 
-The libraries and queries in the current version of CodeQL have been explicitly checked against the libraries and frameworks listed below.
+The current versions of the CodeQL library and query packs (`source <https://github.com/github/codeql/tree/codeql-cli/latest>`__) have been explicitly checked against the libraries and frameworks listed below.
 
 .. pull-quote::
 

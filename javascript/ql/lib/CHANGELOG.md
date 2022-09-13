@@ -1,3 +1,50 @@
+## 0.2.4
+
+### Deprecated APIs
+
+* Many classes/predicates/modules with upper-case acronyms in their name have been renamed to follow our style-guide. 
+  The old name still exists as a deprecated alias.
+* The utility files previously in the `semmle.javascript.security.performance` package have been moved to the `semmle.javascript.security.regexp` package.  
+  The previous files still exist as deprecated aliases.
+
+### Minor Analysis Improvements
+
+* Most deprecated predicates/classes/modules that have been deprecated for over a year have been deleted.
+
+### Bug Fixes
+
+* Fixed that top-level `for await` statements would produce a syntax error. These statements are now parsed correctly.
+
+## 0.2.3
+
+## 0.2.2
+
+## 0.2.1
+
+### Minor Analysis Improvements
+
+* The `chownr` library is now modeled as a sink for the `js/path-injection` query.
+* Improved modeling of sensitive data sources, so common words like `certain` and `secretary` are no longer considered a certificate and a secret (respectively).
+* The `gray-matter` library is now modeled as a sink for the `js/code-injection` query.
+
+## 0.2.0
+
+### Major Analysis Improvements
+
+* Added support for TypeScript 4.7.
+
+### Minor Analysis Improvements
+
+* All new ECMAScript 2022 features are now supported.
+
+## 0.1.4
+
+## 0.1.3
+
+### Minor Analysis Improvements
+
+* The `isLibaryFile` predicate from `ClassifyFiles.qll` has been renamed to `isLibraryFile` to fix a typo. 
+
 ## 0.1.2
 
 ### Deprecated APIs

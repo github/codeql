@@ -6,31 +6,17 @@ private import codeql.swift.elements.expr.DeclRefExpr
 private import codeql.swift.elements.decl.ConcreteFuncDecl
 
 private predicate unaryHasName(PrefixUnaryExpr e, string name) {
-  e.getFunction()
-      .(DotSyntaxCallExpr)
-      .getFunction()
-      .(DeclRefExpr)
-      .getDecl()
-      .(ConcreteFuncDecl)
-      .getName() = name
+  e.getStaticTarget().getName() = name
 }
 
-private predicate binaryHasName(BinaryExpr e, string name) {
-  e.getFunction()
-      .(DotSyntaxCallExpr)
-      .getFunction()
-      .(DeclRefExpr)
-      .getDecl()
-      .(ConcreteFuncDecl)
-      .getName() = name
-}
+private predicate binaryHasName(BinaryExpr e, string name) { e.getStaticTarget().getName() = name }
 
 class LogicalAndExpr extends BinaryExpr {
-  LogicalAndExpr() { binaryHasName(this, "&&") }
+  LogicalAndExpr() { binaryHasName(this, "&&(_:_:)") }
 }
 
 class LogicalOrExpr extends BinaryExpr {
-  LogicalOrExpr() { binaryHasName(this, "||") }
+  LogicalOrExpr() { binaryHasName(this, "||(_:_:)") }
 }
 
 class BinaryLogicalOperation extends BinaryExpr {
@@ -41,7 +27,7 @@ class BinaryLogicalOperation extends BinaryExpr {
 }
 
 class NotExpr extends PrefixUnaryExpr {
-  NotExpr() { unaryHasName(this, "!") }
+  NotExpr() { unaryHasName(this, "!(_:)") }
 }
 
 class UnaryLogicalOperation extends PrefixUnaryExpr {

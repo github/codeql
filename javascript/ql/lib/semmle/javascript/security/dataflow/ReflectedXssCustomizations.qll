@@ -24,10 +24,8 @@ module ReflectedXss {
    * a content type that does not (case-insensitively) contain the string "html". This
    * is to prevent us from flagging plain-text or JSON responses as vulnerable.
    */
-  class HttpResponseSink extends Sink, DataFlow::ValueNode {
-    override HTTP::ResponseSendArgument astNode;
-
-    HttpResponseSink() { not exists(getANonHtmlHeaderDefinition(astNode)) }
+  class HttpResponseSink extends Sink instanceof HTTP::ResponseSendArgument {
+    HttpResponseSink() { not exists(getANonHtmlHeaderDefinition(this)) }
   }
 
   /**

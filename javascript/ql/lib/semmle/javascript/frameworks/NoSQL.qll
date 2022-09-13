@@ -4,10 +4,10 @@
 
 import javascript
 
-/** Provides classes for modeling NoSQL query sinks. */
+/** Provides classes for modeling NoSql query sinks. */
 module NoSql {
   /** An expression that is interpreted as a NoSQL query. */
-  abstract class Query extends Expr {
+  abstract class Query extends DataFlow::Node {
     /** Gets an expression that is interpreted as a code operator in this query. */
     DataFlow::Node getACodeOperator() { none() }
   }
@@ -20,7 +20,7 @@ deprecated module NoSQL = NoSql;
  * Gets a value that has been assigned to the "$where" property of an object that flows to `queryArg`.
  */
 private DataFlow::Node getADollarWhereProperty(API::Node queryArg) {
-  result = queryArg.getMember("$where").getARhs()
+  result = queryArg.getMember("$where").asSink()
 }
 
 /**
@@ -84,7 +84,7 @@ private module MongoDB {
   class Query extends NoSql::Query {
     QueryCall qc;
 
-    Query() { this = qc.getAQueryArgument().asExpr() }
+    Query() { this = qc.getAQueryArgument() }
 
     override DataFlow::Node getACodeOperator() { result = qc.getACodeOperator() }
   }
@@ -418,7 +418,7 @@ private module Mongoose {
             param = f.getParameter(0).getParameter(1)
           |
             exists(DataFlow::MethodCallNode pred |
-              // limitation: look at the previous method call	
+              // limitation: look at the previous method call
               Query::MethodSignatures::returnsDocumentQuery(pred.getMethodName(), asArray) and
               pred.getAMethodCall() = f.getACall()
             )
@@ -496,13 +496,11 @@ private module Mongoose {
   /**
    * An expression passed to `mongoose.createConnection` to supply credentials.
    */
-  class Credentials extends CredentialsExpr {
+  class Credentials extends CredentialsNode {
     string kind;
 
     Credentials() {
-      exists(string prop |
-        this = createConnection().getParameter(3).getMember(prop).getARhs().asExpr()
-      |
+      exists(string prop | this = createConnection().getParameter(3).getMember(prop).asSink() |
         prop = "user" and kind = "user name"
         or
         prop = "pass" and kind = "password"
@@ -518,7 +516,7 @@ private module Mongoose {
   class MongoDBQueryPart extends NoSql::Query {
     MongooseFunction f;
 
-    MongoDBQueryPart() { this = f.getQueryArgument().getARhs().asExpr() }
+    MongoDBQueryPart() { this = f.getQueryArgument().asSink() }
 
     override DataFlow::Node getACodeOperator() {
       result = getADollarWhereProperty(f.getQueryArgument())
@@ -540,7 +538,7 @@ private module Mongoose {
 
     override DataFlow::Node getAQueryArgument() {
       // NB: the complete information is not easily accessible for deeply chained calls
-      f.getQueryArgument().getARhs() = result
+      f.getQueryArgument().asSink() = result
     }
 
     override DataFlow::Node getAResult() {
@@ -583,11 +581,11 @@ private module Minimongo {
    */
   module CollectionMethodSignatures {
     /**
-     * Holds if Collection method `name` interprets parameter `n` as a query.
+     * Holds if Collection method `name` interprets parameter `queryArgIdx` as a query.
      */
-    predicate interpretsArgumentAsQuery(string m, int queryArgIdx) {
+    predicate interpretsArgumentAsQuery(string name, int queryArgIdx) {
       // implements most of the MongoDB interface
-      MongoDB::CollectionMethodSignatures::interpretsArgumentAsQuery(m, queryArgIdx)
+      MongoDB::CollectionMethodSignatures::interpretsArgumentAsQuery(name, queryArgIdx)
     }
   }
 
@@ -625,7 +623,7 @@ private module Minimongo {
   class Query extends NoSql::Query {
     QueryCall qc;
 
-    Query() { this = qc.getAQueryArgument().asExpr() }
+    Query() { this = qc.getAQueryArgument() }
 
     override DataFlow::Node getACodeOperator() { result = qc.getACodeOperator() }
   }
@@ -685,7 +683,7 @@ private module MarsDB {
   class Query extends NoSql::Query {
     QueryCall qc;
 
-    Query() { this = qc.getAQueryArgument().asExpr() }
+    Query() { this = qc.getAQueryArgument() }
 
     override DataFlow::Node getACodeOperator() { result = qc.getACodeOperator() }
   }
@@ -770,7 +768,7 @@ private module Redis {
     RedisKeyArgument() {
       exists(string method, int argIndex |
         QuerySignatures::argumentIsAmbiguousKey(method, argIndex) and
-        this = redis().getMember(method).getParameter(argIndex).getARhs().asExpr()
+        this = redis().getMember(method).getParameter(argIndex).asSink()
       )
     }
   }

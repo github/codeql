@@ -57,6 +57,24 @@ module SummaryComponent {
    */
   SummaryComponent elementAny() { result = SC::content(TAnyElementContent()) }
 
+  /**
+   * Gets a summary component that represents an element in a collection at known
+   * integer index `lower` or above.
+   */
+  SummaryComponent elementLowerBound(int lower) {
+    result = SC::content(TElementLowerBoundContent(lower))
+  }
+
+  /** Gets a summary component that represents a value in a pair at an unknown key. */
+  SummaryComponent pairValueUnknown() {
+    result = SC::content(TSingletonContent(TUnknownPairValueContent()))
+  }
+
+  /** Gets a summary component that represents a value in a pair at a known key. */
+  SummaryComponent pairValueKnown(ConstantValue key) {
+    result = SC::content(TSingletonContent(TKnownPairValueContent(key)))
+  }
+
   /** Gets a summary component that represents the return value of a call. */
   SummaryComponent return() { result = SC::return(any(NormalReturnKind rk)) }
 }

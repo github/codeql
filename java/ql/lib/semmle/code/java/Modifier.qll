@@ -7,7 +7,13 @@ import Element
 /** A modifier such as `private`, `static` or `abstract`. */
 class Modifier extends Element, @modifier {
   /** Gets the element to which this modifier applies. */
-  Element getElement() { hasModifier(result, this) }
+  Element getElement() {
+    hasModifier(result, this) and
+    // Kotlin "internal" elements may also get "public" modifiers, so we want to filter those out
+    not exists(Modifier mod2 |
+      hasModifier(result, mod2) and modifiers(this, "public") and modifiers(mod2, "internal")
+    )
+  }
 
   override string getAPrimaryQlClass() { result = "Modifier" }
 }
@@ -20,7 +26,7 @@ abstract class Modifiable extends Element {
    * For most purposes, the more specialized predicates `isAbstract`, `isPublic`, etc.
    * should be used.
    *
-   * Both this method and those specialized predicates take implicit modifiers into account.
+   * Those specialized predicates also take implicit modifiers into account.
    * For instance, non-default instance methods in interfaces are implicitly
    * abstract, so `isAbstract()` will hold for them even if `hasModifier("abstract")`
    * does not.
@@ -57,6 +63,9 @@ abstract class Modifiable extends Element {
 
   /** Holds if this element has an `internal` modifier. */
   predicate isInternal() { this.hasModifier("internal") }
+
+  /** Holds if this element has an `inline` modifier. */
+  predicate isInline() { this.hasModifier("inline") }
 
   /** Holds if this element has a `volatile` modifier. */
   predicate isVolatile() { this.hasModifier("volatile") }

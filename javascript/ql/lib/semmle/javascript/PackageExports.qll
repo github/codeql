@@ -11,36 +11,14 @@ private import semmle.javascript.internal.CachedStages
  * Gets a parameter that is a library input to a top-level package.
  */
 cached
-DataFlow::SourceNode getALibraryInputParameter() {
+DataFlow::Node getALibraryInputParameter() {
   Stages::Taint::ref() and
   exists(int bound, DataFlow::FunctionNode func |
     func = getAValueExportedByPackage().getABoundFunctionValue(bound)
   |
     result = func.getParameter(any(int arg | arg >= bound))
     or
-    result = getAnArgumentsRead(func.getFunction())
-  )
-}
-
-private DataFlow::SourceNode getAnArgumentsRead(Function func) {
-  exists(DataFlow::PropRead read |
-    not read.getPropertyName() = "length" and
-    result = read
-  |
-    read.getBase() = func.getArgumentsVariable().getAnAccess().flow()
-    or
-    exists(DataFlow::MethodCallNode call |
-      call =
-        DataFlow::globalVarRef("Array")
-            .getAPropertyRead("prototype")
-            .getAPropertyRead("slice")
-            .getAMethodCall("call")
-      or
-      call = DataFlow::globalVarRef("Array").getAMethodCall("from")
-    |
-      call.getArgument(0) = func.getArgumentsVariable().getAnAccess().flow() and
-      call.flowsTo(read.getBase())
-    )
+    result = func.getFunction().getArgumentsVariable().getAnAccess().flow()
   )
 }
 
@@ -52,7 +30,7 @@ private import NodeModuleResolutionImpl as NodeModule
 private DataFlow::Node getAValueExportedByPackage() {
   // The base case, an export from a named `package.json` file.
   result =
-    getAnExportFromModule(any(PackageJson pack | exists(pack.getPackageName())).getMainModule())
+    getAnExportFromModule(any(PackageJson pack | exists(pack.getPackageName())).getExportedModule(_))
   or
   // module.exports.bar.baz = result;
   exists(DataFlow::PropWrite write |
@@ -72,6 +50,16 @@ private DataFlow::Node getAValueExportedByPackage() {
     or
     result = callee.(DataFlow::ClassNode).getInstanceMethod(publicPropertyName()) and
     not isPrivateMethodDeclaration(result)
+  )
+  or
+  // module.exports.foo = function () {
+  //   return new Foo(); // <- result
+  // };
+  exists(DataFlow::FunctionNode func, DataFlow::NewNode inst, DataFlow::ClassNode clz |
+    func = getAValueExportedByPackage().getALocalSource() and inst = unique( | | func.getAReturn())
+  |
+    clz.getAnInstanceReference() = inst and
+    result = clz.getAnInstanceMember(_)
   )
   or
   result = getAValueExportedByPackage().getALocalSource()

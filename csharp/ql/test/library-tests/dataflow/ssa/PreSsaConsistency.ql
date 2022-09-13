@@ -7,7 +7,9 @@ class CallableWithSplitting extends Callable {
   CallableWithSplitting() { this = any(SplitControlFlowElement e).getEnclosingCallable() }
 }
 
-query predicate defReadInconsistency(AssignableRead ar, Expr e, PreSsa::SourceVariable v, boolean b) {
+query predicate defReadInconsistency(
+  AssignableRead ar, Expr e, PreSsa::SsaInput::SourceVariable v, boolean b
+) {
   // Exclude definitions in callables with CFG splitting, as SSA definitions may be
   // very different from pre-SSA definitions
   not ar.getEnclosingCallable() instanceof CallableWithSplitting and
@@ -36,7 +38,8 @@ query predicate defReadInconsistency(AssignableRead ar, Expr e, PreSsa::SourceVa
 }
 
 query predicate readReadInconsistency(
-  LocalScopeVariableRead read1, LocalScopeVariableRead read2, PreSsa::SourceVariable v, boolean b
+  LocalScopeVariableRead read1, LocalScopeVariableRead read2, PreSsa::SsaInput::SourceVariable v,
+  boolean b
 ) {
   // Exclude definitions in callables with CFG splitting, as SSA definitions may be
   // very different from pre-SSA definitions
@@ -50,7 +53,7 @@ query predicate readReadInconsistency(
     b = false and
     v = read1.getTarget() and
     SsaImpl::adjacentReadPairSameVar(_, read1.getAControlFlowNode(), read2.getAControlFlowNode()) and
-    read1.getTarget() instanceof PreSsa::SourceVariable and
+    read1.getTarget() instanceof PreSsa::SsaInput::SourceVariable and
     not PreSsa::adjacentReadPairSameVar(read1, read2) and
     // Exclude split CFG elements because SSA may be more precise than pre-SSA
     // in those cases
@@ -59,7 +62,9 @@ query predicate readReadInconsistency(
   )
 }
 
-query predicate phiInconsistency(ControlFlowElement cfe, Expr e, PreSsa::SourceVariable v, boolean b) {
+query predicate phiInconsistency(
+  ControlFlowElement cfe, Expr e, PreSsa::SsaInput::SourceVariable v, boolean b
+) {
   // Exclude definitions in callables with CFG splitting, as SSA definitions may be
   // very different from pre-SSA definitions
   not cfe.getEnclosingCallable() instanceof CallableWithSplitting and

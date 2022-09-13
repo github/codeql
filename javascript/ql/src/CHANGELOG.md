@@ -1,3 +1,43 @@
+## 0.3.3
+
+### New Queries
+
+* Added a new query, `py/suspicious-regexp-range`, to detect character ranges in regular expressions that seem to match 
+  too many characters.
+
+## 0.3.2
+
+## 0.3.1
+
+### New Queries
+
+- A new query "Case-sensitive middleware path" (`js/case-sensitive-middleware-path`) has been added.
+  It highlights middleware routes that can be bypassed due to having a case-sensitive regular expression path.
+
+## 0.3.0
+
+### Breaking Changes
+
+* Contextual queries and the query libraries they depend on have been moved to the `codeql/javascript-all` package.
+
+## 0.2.0
+
+### Minor Analysis Improvements
+
+* The `js/resource-exhaustion` query no longer treats the 3-argument version of `Buffer.from` as a sink,
+  since it does not allocate a new buffer.
+
+## 0.1.4
+
+## 0.1.3
+
+### New Queries
+
+* The `js/actions/command-injection` query has been added. It highlights GitHub Actions workflows that may allow an 
+  attacker to execute arbitrary code in the workflow.
+  The query previously existed an experimental query.
+* A new query `js/insecure-temporary-file` has been added. The query detects the creation of temporary files that may be accessible by others users. The query is not run by default. 
+
 ## 0.1.2
 
 ### New Queries

@@ -50,9 +50,14 @@ end
 
 sink(Foo.namedArg(foo: tainted)) # $ hasTaintFlow=tainted
 sink(Foo.namedArg(tainted))
+args = { foo: source("tainted") }
+sink(Foo.namedArg(**args)) # $ hasTaintFlow=tainted
 
 sink(Foo.anyArg(foo: tainted)) # $ hasTaintFlow=tainted
 sink(Foo.anyArg(tainted)) # $ hasTaintFlow=tainted
+
+sink(Foo.anyNamedArg(foo: tainted)) # $ hasTaintFlow=tainted
+sink(Foo.anyNamedArg(tainted))
 
 sink(Foo.anyPositionFromOne(tainted))
 sink(Foo.anyPositionFromOne(0, tainted)) # $ hasTaintFlow=tainted
@@ -83,3 +88,33 @@ a.withoutElementOne()
 sink(a[0])
 sink(a[1])
 sink(a[2]) # $ hasValueFlow=elem2
+
+x = Foo.new
+x.set_value(source("attr"))
+sink(x.get_value) # $ hasValueFlow=attr
+
+x = Foo.new
+y = []
+z = []
+# This just highlights that none of x,y,z was tainted before
+sink(x)
+sink(y)
+sink(z)
+
+x.flowToAnyArg(tainted, y, key: z)
+sink(x)
+sink(y) # $ hasTaintFlow=tainted
+sink(z) # $ hasTaintFlow=tainted
+
+x = Foo.new
+x.flowToSelf(tainted)
+sink(x) # $ hasTaintFlow=tainted
+
+Foo.sinkAnyArg(tainted) # $ hasValueFlow=tainted
+Foo.sinkAnyArg(key: tainted) # $ hasValueFlow=tainted
+
+Foo.sinkAnyNamedArg(tainted)
+Foo.sinkAnyNamedArg(key: tainted) # $ hasValueFlow=tainted
+
+"magic_string".method(tainted) # $ hasValueFlow=tainted
+"magic_string2".method(tainted)

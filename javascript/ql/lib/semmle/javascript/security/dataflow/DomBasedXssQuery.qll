@@ -23,12 +23,15 @@ deprecated class JQueryHtmlOrSelectorInjectionConfiguration = Configuration;
  * A sink that is not a URL write or a JQuery selector,
  * assumed to be a value that is interpreted as HTML.
  */
-class HTMLSink extends DataFlow::Node instanceof Sink {
-  HTMLSink() {
+class HtmlSink extends DataFlow::Node instanceof Sink {
+  HtmlSink() {
     not this instanceof WriteUrlSink and
     not this instanceof JQueryHtmlOrSelectorSink
   }
 }
+
+/** DEPRECATED: Alias for HtmlSink */
+deprecated class HTMLSink = HtmlSink;
 
 /**
  * A taint-tracking configuration for reasoning about XSS.
@@ -55,7 +58,7 @@ class Configuration extends TaintTracking::Configuration {
   }
 
   override predicate isSink(DataFlow::Node sink, DataFlow::FlowLabel label) {
-    sink instanceof HTMLSink and
+    sink instanceof HtmlSink and
     label = [TaintedUrlSuffix::label(), prefixLabel(), DataFlow::FlowLabel::taint()]
     or
     sink instanceof JQueryHtmlOrSelectorSink and
@@ -72,7 +75,7 @@ class Configuration extends TaintTracking::Configuration {
   }
 
   override predicate isSanitizerGuard(TaintTracking::SanitizerGuardNode guard) {
-    guard instanceof PrefixStringSanitizer or
+    guard instanceof PrefixStringSanitizerActivated or
     guard instanceof QuoteGuard or
     guard instanceof ContainsHtmlGuard
   }

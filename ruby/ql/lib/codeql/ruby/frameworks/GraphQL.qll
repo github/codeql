@@ -41,7 +41,12 @@ private API::Node graphQlSchema() { result = API::getTopLevelMember("GraphQL").g
 private class GraphqlRelayClassicMutationClass extends ClassDeclaration {
   GraphqlRelayClassicMutationClass() {
     this.getSuperclassExpr() =
-      graphQlSchema().getMember("RelayClassicMutation").getASubclass*().getAUse().asExpr().getExpr()
+      graphQlSchema()
+          .getMember("RelayClassicMutation")
+          .getASubclass*()
+          .getAValueReachableFromSource()
+          .asExpr()
+          .getExpr()
   }
 }
 
@@ -71,7 +76,12 @@ private class GraphqlRelayClassicMutationClass extends ClassDeclaration {
 private class GraphqlSchemaResolverClass extends ClassDeclaration {
   GraphqlSchemaResolverClass() {
     this.getSuperclassExpr() =
-      graphQlSchema().getMember("Resolver").getASubclass().getAUse().asExpr().getExpr()
+      graphQlSchema()
+          .getMember("Resolver")
+          .getASubclass()
+          .getAValueReachableFromSource()
+          .asExpr()
+          .getExpr()
   }
 }
 
@@ -92,7 +102,12 @@ private class GraphqlSchemaResolverClass extends ClassDeclaration {
 class GraphqlSchemaObjectClass extends ClassDeclaration {
   GraphqlSchemaObjectClass() {
     this.getSuperclassExpr() =
-      graphQlSchema().getMember("Object").getASubclass().getAUse().asExpr().getExpr()
+      graphQlSchema()
+          .getMember("Object")
+          .getASubclass()
+          .getAValueReachableFromSource()
+          .asExpr()
+          .getExpr()
   }
 
   /** Gets a `GraphqlFieldDefinitionMethodCall` called in this class. */
@@ -364,7 +379,7 @@ class GraphqlFieldResolutionMethod extends Method, HTTP::Server::RequestHandler:
         result.(KeywordParameter).hasName(argDefn.getArgumentName())
         or
         // TODO this will cause false positives because now *anything* in the **args
-        // param will be flagged as as RoutedParameter/RemoteFlowSource, but really
+        // param will be flagged as RoutedParameter/RemoteFlowSource, but really
         // only the hash keys corresponding to the defined arguments are user input
         // others could be things defined in the `:extras` keyword argument to the `argument`
         result instanceof HashSplatParameter // often you see `def field(**args)`

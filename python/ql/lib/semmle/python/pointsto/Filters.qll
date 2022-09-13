@@ -13,7 +13,7 @@ predicate hasattr(CallNode c, ControlFlowNode obj, string attr) {
 }
 
 /** Holds if `c` is a call to `callable(obj)`. */
-predicate is_callable(CallNode c, ControlFlowNode obj) {
+deprecated predicate is_callable(CallNode c, ControlFlowNode obj) {
   c.getFunction().(NameNode).getId() = "callable" and
   obj = c.getArg(0)
 }
@@ -26,7 +26,7 @@ predicate isinstance(CallNode fc, ControlFlowNode cls, ControlFlowNode use) {
 }
 
 /** Holds if `c` is a call to `issubclass(use, cls)`. */
-predicate issubclass(CallNode fc, ControlFlowNode cls, ControlFlowNode use) {
+deprecated predicate issubclass(CallNode fc, ControlFlowNode cls, ControlFlowNode use) {
   fc.getFunction().(NameNode).getId() = "issubclass" and
   fc.getArg(0) = use and
   cls = fc.getArg(1)

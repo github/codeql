@@ -348,13 +348,21 @@ module ExprNodes {
     /** Gets an argument of this call. */
     final ExprCfgNode getAnArgument() { result = this.getArgument(_) }
 
-    /** Gets the the keyword argument whose key is `keyword` of this call. */
+    /** Gets the keyword argument whose key is `keyword` of this call. */
     final ExprCfgNode getKeywordArgument(string keyword) {
       exists(PairCfgNode n |
         e.hasCfgChild(e.getAnArgument(), this, n) and
         n.getKey().getExpr().getConstantValue().isSymbol(keyword) and
         result = n.getValue()
       )
+    }
+
+    /**
+     * Gets the `n`th positional argument of this call.
+     * Unlike `getArgument`, this excludes keyword arguments.
+     */
+    final ExprCfgNode getPositionalArgument(int n) {
+      result = this.getArgument(n) and not result instanceof PairCfgNode
     }
 
     /** Gets the number of arguments of this call. */
@@ -374,6 +382,9 @@ module ExprNodes {
     MethodCallCfgNode() { super.getExpr() instanceof MethodCall }
 
     override MethodCall getExpr() { result = super.getExpr() }
+
+    /** Gets the name of this method call. */
+    string getMethodName() { result = this.getExpr().getMethodName() }
   }
 
   private class CaseExprChildMapping extends ExprChildMapping, CaseExpr {
@@ -682,6 +693,37 @@ module ExprNodes {
     final override VariableReadAccess getExpr() { result = ExprCfgNode.super.getExpr() }
   }
 
+  private class InstanceVariableAccessMapping extends ExprChildMapping, InstanceVariableAccess {
+    override predicate relevantChild(AstNode n) { n = this.getReceiver() }
+  }
+
+  /** A control-flow node that wraps an `InstanceVariableAccess` AST expression. */
+  class InstanceVariableAccessCfgNode extends ExprCfgNode {
+    override string getAPrimaryQlClass() { result = "InstanceVariableAccessCfgNode" }
+
+    override InstanceVariableAccessMapping e;
+
+    override InstanceVariableAccess getExpr() { result = ExprCfgNode.super.getExpr() }
+
+    /**
+     * Gets the synthetic receiver (`self`) of this instance variable access.
+     */
+    final CfgNode getReceiver() { e.hasCfgChild(e.getReceiver(), this, result) }
+  }
+
+  private class SelfVariableAccessMapping extends ExprChildMapping, SelfVariableAccess {
+    override predicate relevantChild(AstNode n) { none() }
+  }
+
+  /** A control-flow node that wraps a `SelfVariableAccess` AST expression. */
+  class SelfVariableAccessCfgNode extends ExprCfgNode {
+    final override string getAPrimaryQlClass() { result = "SelfVariableAccessCfgNode" }
+
+    override SelfVariableAccessMapping e;
+
+    override SelfVariableAccess getExpr() { result = ExprCfgNode.super.getExpr() }
+  }
+
   /** A control-flow node that wraps a `VariableWriteAccess` AST expression. */
   class VariableWriteAccessCfgNode extends ExprCfgNode {
     override string getAPrimaryQlClass() { result = "VariableWriteAccessCfgNode" }
@@ -709,13 +751,26 @@ module ExprNodes {
     final override ConstantWriteAccess getExpr() { result = ExprCfgNode.super.getExpr() }
   }
 
-  /** A control-flow node that wraps a `InstanceVariableWriteAccess` AST expression. */
-  class InstanceVariableWriteAccessCfgNode extends ExprCfgNode {
+  /** A control-flow node that wraps an `InstanceVariableReadAccess` AST expression. */
+  class InstanceVariableReadAccessCfgNode extends InstanceVariableAccessCfgNode {
+    InstanceVariableReadAccessCfgNode() { this.getNode() instanceof InstanceVariableReadAccess }
+
+    override string getAPrimaryQlClass() { result = "InstanceVariableReadAccessCfgNode" }
+
+    final override InstanceVariableReadAccess getExpr() {
+      result = InstanceVariableAccessCfgNode.super.getExpr()
+    }
+  }
+
+  /** A control-flow node that wraps an `InstanceVariableWriteAccess` AST expression. */
+  class InstanceVariableWriteAccessCfgNode extends InstanceVariableAccessCfgNode {
+    InstanceVariableWriteAccessCfgNode() { this.getNode() instanceof InstanceVariableWriteAccess }
+
     override string getAPrimaryQlClass() { result = "InstanceVariableWriteAccessCfgNode" }
 
-    override InstanceVariableWriteAccess e;
-
-    final override InstanceVariableWriteAccess getExpr() { result = ExprCfgNode.super.getExpr() }
+    final override InstanceVariableWriteAccess getExpr() {
+      result = InstanceVariableAccessCfgNode.super.getExpr()
+    }
   }
 
   /** A control-flow node that wraps a `StringInterpolationComponent` AST expression. */

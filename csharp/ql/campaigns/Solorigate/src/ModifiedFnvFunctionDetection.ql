@@ -15,7 +15,7 @@ import experimental.code.csharp.Cryptography.NonCryptographicHashes
 
 from Variable v, Literal l, LoopStmt loop, Expr additional_xor
 where
-  maybeUsedInFNVFunction(v, _, _, loop) and
+  maybeUsedInFnvFunction(v, _, _, loop) and
   (
     exists(BitwiseXorExpr xor2 | xor2.getAnOperand() = l and additional_xor = xor2 |
       loop.getAControlFlowExitNode().getASuccessor*() = xor2.getAControlFlowNode() and

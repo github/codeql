@@ -65,6 +65,9 @@ def to_inner_scope():
     also_x = foo() # $ MISSING: tracked
     print(also_x) # $ MISSING: tracked
 
+# ------------------------------------------------------------------------------
+# Function decorator
+# ------------------------------------------------------------------------------
 
 def my_decorator(func):
     # This part doesn't make any sense in a normal decorator, but just shows how we
@@ -135,7 +138,7 @@ class Bar(Foo):
     def track_self(self): # $ tracked_self
         self.meth1() # $ tracked_self
         super().meth2()
-        super(Bar, self).foo3() # $ tracked_self
+        super(Bar, self).meth3() # $ tracked_self
 
 # ------------------------------------------------------------------------------
 # Tracking of attribute lookup after "long" import chain
@@ -155,3 +158,27 @@ def test_long_import_chain_full_path():
     from foo.bar import baz # $ tracked_foo_bar_baz
     x = baz # $ tracked_foo_bar_baz
     do_stuff(x) # $ tracked_foo_bar_baz
+
+# ------------------------------------------------------------------------------
+# Global variable to method body flow
+# ------------------------------------------------------------------------------
+
+some_value = get_tracked() # $ tracked
+other_value = get_tracked() # $ tracked
+print(some_value) # $ tracked
+print(other_value) # $ tracked
+
+class MyClass(object):
+    # Since we define some_value method on the class, flow for some_value gets blocked
+    # into the methods
+    def some_value(self):
+        print(some_value) # $ tracked
+        print(other_value) # $ tracked
+
+    def other_name(self):
+        print(some_value) # $ tracked
+        print(other_value) # $ tracked
+
+    def with_global_modifier(self):
+        global some_value
+        print(some_value) # $ tracked

@@ -57,7 +57,7 @@ where
     else recvtp = ma.getMethod().getDeclaringType()
   ) and
   argtp = ma.getArgumentType() and
-  not haveIntersection(recvtp, argtp)
+  notHaveIntersection(recvtp, argtp)
 select ma,
   "Call to equals() comparing incomparable types " + recvtp.getName() + " and " + argtp.getName() +
     "."

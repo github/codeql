@@ -241,7 +241,7 @@ const astProperties: string[] = [
     "constructor",
     "declarationList",
     "declarations",
-    "decorators",
+    "illegalDecorators",
     "default",
     "delete",
     "dotDotDotToken",
@@ -669,6 +669,12 @@ function handleOpenProjectCommand(command: OpenProjectCommand) {
     function getStem(file: string) {
         if (file.endsWith(".d.ts")) {
             return pathlib.basename(file, ".d.ts");
+        }
+        if (file.endsWith(".d.mts") || file.endsWith(".d.cts")) {
+            // We don't extract d.mts or d.cts files, but their symbol can coincide with that of a d.ts file,
+            // which means any module bindings we generate for it will ultimately be visible in QL.
+            let base = pathlib.basename(file);
+            return base.substring(0, base.length - '.d.mts'.length);
         }
         let base = pathlib.basename(file);
         let dot = base.lastIndexOf('.');

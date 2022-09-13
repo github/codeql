@@ -1,0 +1,2 @@
+| Foo.qll:5:11:5:15 | ClasslessPredicate test2 | The QLDoc has no documentation for param2, but the QLDoc mentions par2 |
+| Foo.qll:14:11:14:15 | ClasslessPredicate test5 | The QLDoc has no documentation for param2, but the QLDoc mentions par2 |

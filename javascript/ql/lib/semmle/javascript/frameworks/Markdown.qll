@@ -78,6 +78,32 @@ module Markdown {
     }
   }
 
+  /** A taint step for the `mermaid` library. */
+  private class MermaidStep extends MarkdownStep {
+    override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
+      exists(API::CallNode call |
+        call =
+          [API::moduleImport("mermaid"), API::moduleImport("mermaid").getMember("mermaidAPI")]
+              .getMember("render")
+              .getACall()
+      |
+        succ = [call, call.getParameter(2).getParameter(0).asSource()] and
+        pred = call.getArgument(1)
+      )
+      or
+      exists(DataFlow::CallNode call |
+        call =
+          [
+            DataFlow::globalVarRef("mermaid"),
+            DataFlow::globalVarRef("mermaid").getAPropertyRead("mermaidAPI")
+          ].getAMemberCall("render")
+      |
+        succ = [call.(DataFlow::Node), call.getABoundCallbackParameter(2, 0)] and
+        pred = call.getArgument(1)
+      )
+    }
+  }
+
   /**
    * Classes and predicates for modeling taint steps in `unified` and `remark`.
    */
@@ -163,14 +189,14 @@ module Markdown {
         or
         call = API::moduleImport("markdown-it").getMember("Markdown").getAnInvocation()
       |
-        call.getParameter(0).getMember("html").getARhs().mayHaveBooleanValue(true) and
+        call.getParameter(0).getMember("html").asSink().mayHaveBooleanValue(true) and
         result = call.getReturn()
       )
       or
       exists(API::CallNode call |
         call = markdownIt().getMember(["use", "set", "configure", "enable", "disable"]).getACall() and
         result = call.getReturn() and
-        not call.getParameter(0).getAValueReachingRhs() =
+        not call.getParameter(0).getAValueReachingSink() =
           DataFlow::moduleImport("markdown-it-sanitizer")
       )
     }

@@ -440,22 +440,15 @@ class PathNormalizationTest extends InlineExpectationsTest {
 class SafeAccessCheckTest extends InlineExpectationsTest {
   SafeAccessCheckTest() { this = "SafeAccessCheckTest" }
 
-  override string getARelevantTag() { result in ["checks", "branch"] }
+  override string getARelevantTag() { result = "SafeAccessCheck" }
 
   override predicate hasActualResult(Location location, string element, string tag, string value) {
     exists(location.getFile().getRelativePath()) and
-    exists(Path::SafeAccessCheck c, DataFlow::Node checks, boolean branch |
-      c.checks(checks.asCfgNode(), branch) and
+    exists(Path::SafeAccessCheck c |
       location = c.getLocation() and
-      (
-        element = checks.toString() and
-        value = prettyNodeForInlineTest(checks) and
-        tag = "checks"
-        or
-        element = branch.toString() and
-        value = branch.toString() and
-        tag = "branch"
-      )
+      element = c.toString() and
+      value = prettyNodeForInlineTest(c) and
+      tag = "SafeAccessCheck"
     )
   }
 }
@@ -487,7 +480,8 @@ class CryptographicOperationTest extends InlineExpectationsTest {
 
   override string getARelevantTag() {
     result in [
-        "CryptographicOperation", "CryptographicOperationInput", "CryptographicOperationAlgorithm"
+        "CryptographicOperation", "CryptographicOperationInput", "CryptographicOperationAlgorithm",
+        "CryptographicOperationBlockMode"
       ]
   }
 
@@ -507,6 +501,10 @@ class CryptographicOperationTest extends InlineExpectationsTest {
         element = cryptoOperation.toString() and
         value = cryptoOperation.getAlgorithm().getName() and
         tag = "CryptographicOperationAlgorithm"
+        or
+        element = cryptoOperation.toString() and
+        value = cryptoOperation.getBlockMode() and
+        tag = "CryptographicOperationBlockMode"
       )
     )
   }

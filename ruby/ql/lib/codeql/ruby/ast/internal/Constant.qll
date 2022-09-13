@@ -36,7 +36,7 @@ private import ExprNodes
  * constant value in some cases.
  */
 private module Propagation {
-  private ExprCfgNode getSource(VariableReadAccessCfgNode read) {
+  ExprCfgNode getSource(VariableReadAccessCfgNode read) {
     exists(Ssa::WriteDefinition def |
       def.assigns(result) and
       read = def.getARead()
@@ -509,3 +509,53 @@ private module Cached {
 }
 
 import Cached
+
+/**
+ * Holds if the control flow node `e` refers to an array constructed from the
+ * array literal `arr`.
+ * Example:
+ * ```rb
+ * [1, 2, 3]
+ * C = [1, 2, 3]; C
+ * x = [1, 2, 3]; x
+ * ```
+ */
+predicate isArrayConstant(ExprCfgNode e, ArrayLiteralCfgNode arr) {
+  // [...]
+  e = arr
+  or
+  // e = [...]; e
+  isArrayConstant(getSource(e), arr)
+  or
+  isArrayExpr(e.getExpr(), arr)
+}
+
+/**
+ * Holds if the expression `e` refers to an array constructed from the array literal `arr`.
+ */
+private predicate isArrayExpr(Expr e, ArrayLiteralCfgNode arr) {
+  // e = [...]
+  e = arr.getExpr()
+  or
+  // Like above, but handles the desugaring of array literals to Array.[] calls.
+  e.getDesugared() = arr.getExpr()
+  or
+  // A = [...]; A
+  // A = a; A
+  isArrayExpr(e.(ConstantReadAccess).getValue(), arr)
+  or
+  // Recurse via CFG nodes. Necessary for example in:
+  // a = [...]
+  // A = a
+  // A
+  //
+  // We map from A to a via ConstantReadAccess::getValue, yielding the Expr a.
+  // To get to [...] we need to go via getSource(ExprCfgNode e), so we find a
+  // CFG node for a and call `isArrayConstant`.
+  //
+  // The use of `forex` is intended to ensure that a is an array constant in all
+  // control flow paths.
+  // Note(hmac): I don't think this is necessary, as `getSource` will not return
+  // results if the source is a phi node.
+  forex(ExprCfgNode n | n = e.getAControlFlowNode() | isArrayConstant(n, arr))
+}

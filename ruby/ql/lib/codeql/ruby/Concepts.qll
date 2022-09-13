@@ -474,13 +474,15 @@ module HTTP {
 
   /** Provides classes for modeling HTTP clients. */
   module Client {
+    import codeql.ruby.internal.ConceptsShared::Http::Client as SC
+
     /**
      * A method call that makes an outgoing HTTP request.
      *
      * Extend this class to refine existing API models. If you want to model new APIs,
      * extend `Request::Range` instead.
      */
-    class Request extends MethodCall instanceof Request::Range {
+    class Request extends SC::Request instanceof Request::Range {
       /** Gets a node which returns the body of the response */
       DataFlow::Node getResponseBody() { result = super.getResponseBody() }
 
@@ -490,24 +492,19 @@ module HTTP {
        * Gets a node that contributes to the URL of the request.
        * Depending on the framework, a request may have multiple nodes which contribute to the URL.
        */
-      deprecated DataFlow::Node getURL() { result = super.getURL() or result = super.getAUrlPart() }
-
-      /**
-       * Gets a data-flow node that contributes to the URL of the request.
-       * Depending on the framework, a request may have multiple nodes which contribute to the URL.
-       */
-      DataFlow::Node getAUrlPart() { result = super.getAUrlPart() }
-
-      /** Gets a string that identifies the framework used for this request. */
-      string getFramework() { result = super.getFramework() }
+      deprecated DataFlow::Node getURL() {
+        result = super.getURL() or result = Request::Range.super.getAUrlPart()
+      }
 
       /**
        * Holds if this request is made using a mode that disables SSL/TLS
        * certificate validation, where `disablingNode` represents the point at
        * which the validation was disabled.
        */
-      predicate disablesCertificateValidation(DataFlow::Node disablingNode) {
-        super.disablesCertificateValidation(disablingNode)
+      deprecated predicate disablesCertificateValidation(DataFlow::Node disablingNode) {
+        Request::Range.super.disablesCertificateValidation(disablingNode, _)
+        or
+        Request::Range.super.disablesCertificateValidation(disablingNode)
       }
     }
 
@@ -519,7 +516,7 @@ module HTTP {
        * Extend this class to model new APIs. If you want to refine existing API models,
        * extend `Request` instead.
        */
-      abstract class Range extends MethodCall {
+      abstract class Range extends SC::Request::Range {
         /** Gets a node which returns the body of the response */
         abstract DataFlow::Node getResponseBody();
 
@@ -532,20 +529,13 @@ module HTTP {
         deprecated DataFlow::Node getURL() { none() }
 
         /**
-         * Gets a data-flow node that contributes to the URL of the request.
-         * Depending on the framework, a request may have multiple nodes which contribute to the URL.
-         */
-        abstract DataFlow::Node getAUrlPart();
-
-        /** Gets a string that identifies the framework used for this request. */
-        abstract string getFramework();
-
-        /**
+         * DEPRECATED: override `disablesCertificateValidation/2` instead.
+         *
          * Holds if this request is made using a mode that disables SSL/TLS
          * certificate validation, where `disablingNode` represents the point at
          * which the validation was disabled.
          */
-        abstract predicate disablesCertificateValidation(DataFlow::Node disablingNode);
+        deprecated predicate disablesCertificateValidation(DataFlow::Node disablingNode) { none() }
       }
     }
 
@@ -714,7 +704,7 @@ module PersistentWriteAccess {
  * Extend this class to refine existing API models. If you want to model new APIs,
  * extend `CSRFProtectionSetting::Range` instead.
  */
-class CSRFProtectionSetting extends DataFlow::Node instanceof CSRFProtectionSetting::Range {
+class CsrfProtectionSetting extends DataFlow::Node instanceof CsrfProtectionSetting::Range {
   /**
    * Gets the boolean value corresponding to if CSRF protection is enabled
    * (`true`) or disabled (`false`) by this node.
@@ -722,8 +712,11 @@ class CSRFProtectionSetting extends DataFlow::Node instanceof CSRFProtectionSett
   boolean getVerificationSetting() { result = super.getVerificationSetting() }
 }
 
+/** DEPRECATED: Alias for CsrfProtectionSetting */
+deprecated class CSRFProtectionSetting = CsrfProtectionSetting;
+
 /** Provides a class for modeling new CSRF protection setting APIs. */
-module CSRFProtectionSetting {
+module CsrfProtectionSetting {
   /**
    * A data-flow node that may set or unset Cross-site request forgery protection.
    *
@@ -738,6 +731,9 @@ module CSRFProtectionSetting {
     abstract boolean getVerificationSetting();
   }
 }
+
+/** DEPRECATED: Alias for CsrfProtectionSetting */
+deprecated module CSRFProtectionSetting = CsrfProtectionSetting;
 
 /** Provides classes for modeling path-related APIs. */
 module Path {
@@ -826,7 +822,19 @@ module Logging {
  * to improve our libraries in the future to more precisely capture this aspect.
  */
 module Cryptography {
-  import security.CryptoAlgorithms
+  // Since we still rely on `isWeak` predicate on `CryptographicOperation` in Ruby, we
+  // modify that part of the shared concept... which means we have to explicitly
+  // re-export everything else.
+  // Using SC shorthand for "Shared Cryptography"
+  import codeql.ruby.internal.ConceptsShared::Cryptography as SC
+
+  class CryptographicAlgorithm = SC::CryptographicAlgorithm;
+
+  class EncryptionAlgorithm = SC::EncryptionAlgorithm;
+
+  class HashingAlgorithm = SC::HashingAlgorithm;
+
+  class PasswordHashingAlgorithm = SC::PasswordHashingAlgorithm;
 
   /**
    * A data-flow node that is an application of a cryptographic algorithm. For example,
@@ -835,15 +843,9 @@ module Cryptography {
    * Extend this class to refine existing API models. If you want to model new APIs,
    * extend `CryptographicOperation::Range` instead.
    */
-  class CryptographicOperation extends DataFlow::Node instanceof CryptographicOperation::Range {
-    /** Gets the algorithm used, if it matches a known `CryptographicAlgorithm`. */
-    CryptographicAlgorithm getAlgorithm() { result = super.getAlgorithm() }
-
-    /** Gets an input the algorithm is used on, for example the plain text input to be encrypted. */
-    DataFlow::Node getAnInput() { result = super.getAnInput() }
-
-    /** Holds if this encryption operation is known to be weak. */
-    predicate isWeak() { super.isWeak() }
+  class CryptographicOperation extends SC::CryptographicOperation instanceof CryptographicOperation::Range {
+    /** DEPRECATED: Use `getAlgorithm().isWeak() or getBlockMode().isWeak()` instead */
+    deprecated predicate isWeak() { super.isWeak() }
   }
 
   /** Provides classes for modeling new applications of a cryptographic algorithms. */
@@ -855,15 +857,11 @@ module Cryptography {
      * Extend this class to model new APIs. If you want to refine existing API models,
      * extend `CryptographicOperation` instead.
      */
-    abstract class Range extends DataFlow::Node {
-      /** Gets the algorithm used, if it matches a known `CryptographicAlgorithm`. */
-      abstract CryptographicAlgorithm getAlgorithm();
-
-      /** Gets an input the algorithm is used on, for example the plain text input to be encrypted. */
-      abstract DataFlow::Node getAnInput();
-
-      /** Holds if this encryption operation is known to be weak. */
-      abstract predicate isWeak();
+    abstract class Range extends SC::CryptographicOperation::Range {
+      /** DEPRECATED: Use `getAlgorithm().isWeak() or getBlockMode().isWeak()` instead */
+      deprecated predicate isWeak() { this.getAlgorithm().isWeak() or this.getBlockMode().isWeak() }
     }
   }
+
+  class BlockMode = SC::BlockMode;
 }

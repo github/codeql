@@ -2,7 +2,7 @@
 
 namespace System
 {
-    // Generated from `System.UriTypeConverter` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+    // Generated from `System.UriTypeConverter` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public class UriTypeConverter : System.ComponentModel.TypeConverter
     {
         public override bool CanConvertFrom(System.ComponentModel.ITypeDescriptorContext context, System.Type sourceType) => throw null;
@@ -15,7 +15,7 @@ namespace System
 
     namespace ComponentModel
     {
-        // Generated from `System.ComponentModel.AddingNewEventArgs` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.ComponentModel.AddingNewEventArgs` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class AddingNewEventArgs : System.EventArgs
         {
             public AddingNewEventArgs() => throw null;
@@ -23,10 +23,10 @@ namespace System
             public object NewObject { get => throw null; set => throw null; }
         }
 
-        // Generated from `System.ComponentModel.AddingNewEventHandler` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.ComponentModel.AddingNewEventHandler` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public delegate void AddingNewEventHandler(object sender, System.ComponentModel.AddingNewEventArgs e);
 
-        // Generated from `System.ComponentModel.AmbientValueAttribute` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.ComponentModel.AmbientValueAttribute` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class AmbientValueAttribute : System.Attribute
         {
             public AmbientValueAttribute(System.Type type, string value) => throw null;
@@ -45,7 +45,7 @@ namespace System
             public object Value { get => throw null; }
         }
 
-        // Generated from `System.ComponentModel.ArrayConverter` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.ComponentModel.ArrayConverter` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class ArrayConverter : System.ComponentModel.CollectionConverter
         {
             public ArrayConverter() => throw null;
@@ -54,7 +54,7 @@ namespace System
             public override bool GetPropertiesSupported(System.ComponentModel.ITypeDescriptorContext context) => throw null;
         }
 
-        // Generated from `System.ComponentModel.AttributeCollection` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.ComponentModel.AttributeCollection` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class AttributeCollection : System.Collections.ICollection, System.Collections.IEnumerable
         {
             protected AttributeCollection() => throw null;
@@ -78,7 +78,7 @@ namespace System
             object System.Collections.ICollection.SyncRoot { get => throw null; }
         }
 
-        // Generated from `System.ComponentModel.AttributeProviderAttribute` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.ComponentModel.AttributeProviderAttribute` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class AttributeProviderAttribute : System.Attribute
         {
             public AttributeProviderAttribute(System.Type type) => throw null;
@@ -88,7 +88,7 @@ namespace System
             public string TypeName { get => throw null; }
         }
 
-        // Generated from `System.ComponentModel.BaseNumberConverter` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.ComponentModel.BaseNumberConverter` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public abstract class BaseNumberConverter : System.ComponentModel.TypeConverter
         {
             internal BaseNumberConverter() => throw null;
@@ -98,7 +98,7 @@ namespace System
             public override object ConvertTo(System.ComponentModel.ITypeDescriptorContext context, System.Globalization.CultureInfo culture, object value, System.Type destinationType) => throw null;
         }
 
-        // Generated from `System.ComponentModel.BindableAttribute` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.ComponentModel.BindableAttribute` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class BindableAttribute : System.Attribute
         {
             public bool Bindable { get => throw null; }
@@ -115,22 +115,22 @@ namespace System
             public static System.ComponentModel.BindableAttribute Yes;
         }
 
-        // Generated from `System.ComponentModel.BindableSupport` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum BindableSupport
+        // Generated from `System.ComponentModel.BindableSupport` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        public enum BindableSupport : int
         {
-            Default,
-            No,
-            Yes,
+            Default = 2,
+            No = 0,
+            Yes = 1,
         }
 
-        // Generated from `System.ComponentModel.BindingDirection` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum BindingDirection
+        // Generated from `System.ComponentModel.BindingDirection` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        public enum BindingDirection : int
         {
-            OneWay,
-            TwoWay,
+            OneWay = 0,
+            TwoWay = 1,
         }
 
-        // Generated from `System.ComponentModel.BindingList<>` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.ComponentModel.BindingList<>` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class BindingList<T> : System.Collections.ObjectModel.Collection<T>, System.Collections.ICollection, System.Collections.IEnumerable, System.Collections.IList, System.ComponentModel.IBindingList, System.ComponentModel.ICancelAddNew, System.ComponentModel.IRaiseItemChangedEvents
         {
             void System.ComponentModel.IBindingList.AddIndex(System.ComponentModel.PropertyDescriptor prop) => throw null;
@@ -180,7 +180,7 @@ namespace System
             protected virtual bool SupportsSortingCore { get => throw null; }
         }
 
-        // Generated from `System.ComponentModel.BooleanConverter` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.ComponentModel.BooleanConverter` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class BooleanConverter : System.ComponentModel.TypeConverter
         {
             public BooleanConverter() => throw null;
@@ -191,16 +191,16 @@ namespace System
             public override bool GetStandardValuesSupported(System.ComponentModel.ITypeDescriptorContext context) => throw null;
         }
 
-        // Generated from `System.ComponentModel.ByteConverter` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.ComponentModel.ByteConverter` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class ByteConverter : System.ComponentModel.BaseNumberConverter
         {
             public ByteConverter() => throw null;
         }
 
-        // Generated from `System.ComponentModel.CancelEventHandler` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.ComponentModel.CancelEventHandler` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public delegate void CancelEventHandler(object sender, System.ComponentModel.CancelEventArgs e);
 
-        // Generated from `System.ComponentModel.CharConverter` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.ComponentModel.CharConverter` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class CharConverter : System.ComponentModel.TypeConverter
         {
             public override bool CanConvertFrom(System.ComponentModel.ITypeDescriptorContext context, System.Type sourceType) => throw null;
@@ -209,15 +209,15 @@ namespace System
             public override object ConvertTo(System.ComponentModel.ITypeDescriptorContext context, System.Globalization.CultureInfo culture, object value, System.Type destinationType) => throw null;
         }
 
-        // Generated from `System.ComponentModel.CollectionChangeAction` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum CollectionChangeAction
+        // Generated from `System.ComponentModel.CollectionChangeAction` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        public enum CollectionChangeAction : int
         {
-            Add,
-            Refresh,
-            Remove,
+            Add = 1,
+            Refresh = 3,
+            Remove = 2,
         }
 
-        // Generated from `System.ComponentModel.CollectionChangeEventArgs` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.ComponentModel.CollectionChangeEventArgs` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class CollectionChangeEventArgs : System.EventArgs
         {
             public virtual System.ComponentModel.CollectionChangeAction Action { get => throw null; }
@@ -225,19 +225,18 @@ namespace System
             public virtual object Element { get => throw null; }
         }
 
-        // Generated from `System.ComponentModel.CollectionChangeEventHandler` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.ComponentModel.CollectionChangeEventHandler` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public delegate void CollectionChangeEventHandler(object sender, System.ComponentModel.CollectionChangeEventArgs e);
 
-        // Generated from `System.ComponentModel.CollectionConverter` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.ComponentModel.CollectionConverter` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class CollectionConverter : System.ComponentModel.TypeConverter
         {
             public CollectionConverter() => throw null;
             public override object ConvertTo(System.ComponentModel.ITypeDescriptorContext context, System.Globalization.CultureInfo culture, object value, System.Type destinationType) => throw null;
             public override System.ComponentModel.PropertyDescriptorCollection GetProperties(System.ComponentModel.ITypeDescriptorContext context, object value, System.Attribute[] attributes) => throw null;
-            public override bool GetPropertiesSupported(System.ComponentModel.ITypeDescriptorContext context) => throw null;
         }
 
-        // Generated from `System.ComponentModel.ComplexBindingPropertiesAttribute` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.ComponentModel.ComplexBindingPropertiesAttribute` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class ComplexBindingPropertiesAttribute : System.Attribute
         {
             public ComplexBindingPropertiesAttribute() => throw null;
@@ -250,7 +249,7 @@ namespace System
             public override int GetHashCode() => throw null;
         }
 
-        // Generated from `System.ComponentModel.ComponentConverter` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.ComponentModel.ComponentConverter` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class ComponentConverter : System.ComponentModel.ReferenceConverter
         {
             public ComponentConverter(System.Type type) : base(default(System.Type)) => throw null;
@@ -258,7 +257,7 @@ namespace System
             public override bool GetPropertiesSupported(System.ComponentModel.ITypeDescriptorContext context) => throw null;
         }
 
-        // Generated from `System.ComponentModel.ComponentEditor` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.ComponentModel.ComponentEditor` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public abstract class ComponentEditor
         {
             protected ComponentEditor() => throw null;
@@ -266,7 +265,7 @@ namespace System
             public bool EditComponent(object component) => throw null;
         }
 
-        // Generated from `System.ComponentModel.ComponentResourceManager` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.ComponentModel.ComponentResourceManager` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class ComponentResourceManager : System.Resources.ResourceManager
         {
             public void ApplyResources(object value, string objectName) => throw null;
@@ -275,7 +274,7 @@ namespace System
             public ComponentResourceManager(System.Type t) => throw null;
         }
 
-        // Generated from `System.ComponentModel.Container` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.ComponentModel.Container` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class Container : System.ComponentModel.IContainer, System.IDisposable
         {
             public virtual void Add(System.ComponentModel.IComponent component) => throw null;
@@ -292,14 +291,14 @@ namespace System
             // ERR: Stub generator didn't handle member: ~Container
         }
 
-        // Generated from `System.ComponentModel.ContainerFilterService` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.ComponentModel.ContainerFilterService` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public abstract class ContainerFilterService
         {
             protected ContainerFilterService() => throw null;
             public virtual System.ComponentModel.ComponentCollection FilterComponents(System.ComponentModel.ComponentCollection components) => throw null;
         }
 
-        // Generated from `System.ComponentModel.CultureInfoConverter` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.ComponentModel.CultureInfoConverter` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class CultureInfoConverter : System.ComponentModel.TypeConverter
         {
             public override bool CanConvertFrom(System.ComponentModel.ITypeDescriptorContext context, System.Type sourceType) => throw null;
@@ -313,7 +312,7 @@ namespace System
             public override bool GetStandardValuesSupported(System.ComponentModel.ITypeDescriptorContext context) => throw null;
         }
 
-        // Generated from `System.ComponentModel.CustomTypeDescriptor` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.ComponentModel.CustomTypeDescriptor` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public abstract class CustomTypeDescriptor : System.ComponentModel.ICustomTypeDescriptor
         {
             protected CustomTypeDescriptor() => throw null;
@@ -332,7 +331,7 @@ namespace System
             public virtual object GetPropertyOwner(System.ComponentModel.PropertyDescriptor pd) => throw null;
         }
 
-        // Generated from `System.ComponentModel.DataObjectAttribute` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.ComponentModel.DataObjectAttribute` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class DataObjectAttribute : System.Attribute
         {
             public static System.ComponentModel.DataObjectAttribute DataObject;
@@ -346,7 +345,7 @@ namespace System
             public static System.ComponentModel.DataObjectAttribute NonDataObject;
         }
 
-        // Generated from `System.ComponentModel.DataObjectFieldAttribute` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.ComponentModel.DataObjectFieldAttribute` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class DataObjectFieldAttribute : System.Attribute
         {
             public DataObjectFieldAttribute(bool primaryKey) => throw null;
@@ -361,7 +360,7 @@ namespace System
             public bool PrimaryKey { get => throw null; }
         }
 
-        // Generated from `System.ComponentModel.DataObjectMethodAttribute` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.ComponentModel.DataObjectMethodAttribute` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class DataObjectMethodAttribute : System.Attribute
         {
             public DataObjectMethodAttribute(System.ComponentModel.DataObjectMethodType methodType) => throw null;
@@ -373,17 +372,17 @@ namespace System
             public System.ComponentModel.DataObjectMethodType MethodType { get => throw null; }
         }
 
-        // Generated from `System.ComponentModel.DataObjectMethodType` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum DataObjectMethodType
+        // Generated from `System.ComponentModel.DataObjectMethodType` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        public enum DataObjectMethodType : int
         {
-            Delete,
-            Fill,
-            Insert,
-            Select,
-            Update,
+            Delete = 4,
+            Fill = 0,
+            Insert = 3,
+            Select = 1,
+            Update = 2,
         }
 
-        // Generated from `System.ComponentModel.DateTimeConverter` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.ComponentModel.DateTimeConverter` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class DateTimeConverter : System.ComponentModel.TypeConverter
         {
             public override bool CanConvertFrom(System.ComponentModel.ITypeDescriptorContext context, System.Type sourceType) => throw null;
@@ -393,7 +392,7 @@ namespace System
             public DateTimeConverter() => throw null;
         }
 
-        // Generated from `System.ComponentModel.DateTimeOffsetConverter` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.ComponentModel.DateTimeOffsetConverter` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class DateTimeOffsetConverter : System.ComponentModel.TypeConverter
         {
             public override bool CanConvertFrom(System.ComponentModel.ITypeDescriptorContext context, System.Type sourceType) => throw null;
@@ -403,7 +402,7 @@ namespace System
             public DateTimeOffsetConverter() => throw null;
         }
 
-        // Generated from `System.ComponentModel.DecimalConverter` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.ComponentModel.DecimalConverter` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class DecimalConverter : System.ComponentModel.BaseNumberConverter
         {
             public override bool CanConvertTo(System.ComponentModel.ITypeDescriptorContext context, System.Type destinationType) => throw null;
@@ -411,7 +410,7 @@ namespace System
             public DecimalConverter() => throw null;
         }
 
-        // Generated from `System.ComponentModel.DefaultBindingPropertyAttribute` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.ComponentModel.DefaultBindingPropertyAttribute` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class DefaultBindingPropertyAttribute : System.Attribute
         {
             public static System.ComponentModel.DefaultBindingPropertyAttribute Default;
@@ -422,7 +421,7 @@ namespace System
             public string Name { get => throw null; }
         }
 
-        // Generated from `System.ComponentModel.DefaultEventAttribute` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.ComponentModel.DefaultEventAttribute` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class DefaultEventAttribute : System.Attribute
         {
             public static System.ComponentModel.DefaultEventAttribute Default;
@@ -432,7 +431,7 @@ namespace System
             public string Name { get => throw null; }
         }
 
-        // Generated from `System.ComponentModel.DefaultPropertyAttribute` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.ComponentModel.DefaultPropertyAttribute` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class DefaultPropertyAttribute : System.Attribute
         {
             public static System.ComponentModel.DefaultPropertyAttribute Default;
@@ -442,7 +441,7 @@ namespace System
             public string Name { get => throw null; }
         }
 
-        // Generated from `System.ComponentModel.DesignTimeVisibleAttribute` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.ComponentModel.DesignTimeVisibleAttribute` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class DesignTimeVisibleAttribute : System.Attribute
         {
             public static System.ComponentModel.DesignTimeVisibleAttribute Default;
@@ -456,13 +455,13 @@ namespace System
             public static System.ComponentModel.DesignTimeVisibleAttribute Yes;
         }
 
-        // Generated from `System.ComponentModel.DoubleConverter` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.ComponentModel.DoubleConverter` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class DoubleConverter : System.ComponentModel.BaseNumberConverter
         {
             public DoubleConverter() => throw null;
         }
 
-        // Generated from `System.ComponentModel.EnumConverter` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.ComponentModel.EnumConverter` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class EnumConverter : System.ComponentModel.TypeConverter
         {
             public override bool CanConvertFrom(System.ComponentModel.ITypeDescriptorContext context, System.Type sourceType) => throw null;
@@ -479,7 +478,7 @@ namespace System
             protected System.ComponentModel.TypeConverter.StandardValuesCollection Values { get => throw null; set => throw null; }
         }
 
-        // Generated from `System.ComponentModel.EventDescriptor` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.ComponentModel.EventDescriptor` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public abstract class EventDescriptor : System.ComponentModel.MemberDescriptor
         {
             public abstract void AddEventHandler(object component, System.Delegate value);
@@ -492,7 +491,7 @@ namespace System
             public abstract void RemoveEventHandler(object component, System.Delegate value);
         }
 
-        // Generated from `System.ComponentModel.EventDescriptorCollection` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.ComponentModel.EventDescriptorCollection` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class EventDescriptorCollection : System.Collections.ICollection, System.Collections.IEnumerable, System.Collections.IList
         {
             public int Add(System.ComponentModel.EventDescriptor value) => throw null;
@@ -533,7 +532,7 @@ namespace System
             object System.Collections.ICollection.SyncRoot { get => throw null; }
         }
 
-        // Generated from `System.ComponentModel.ExpandableObjectConverter` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.ComponentModel.ExpandableObjectConverter` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class ExpandableObjectConverter : System.ComponentModel.TypeConverter
         {
             public ExpandableObjectConverter() => throw null;
@@ -541,7 +540,7 @@ namespace System
             public override bool GetPropertiesSupported(System.ComponentModel.ITypeDescriptorContext context) => throw null;
         }
 
-        // Generated from `System.ComponentModel.ExtenderProvidedPropertyAttribute` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.ComponentModel.ExtenderProvidedPropertyAttribute` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class ExtenderProvidedPropertyAttribute : System.Attribute
         {
             public override bool Equals(object obj) => throw null;
@@ -553,7 +552,7 @@ namespace System
             public System.Type ReceiverType { get => throw null; }
         }
 
-        // Generated from `System.ComponentModel.GuidConverter` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.ComponentModel.GuidConverter` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class GuidConverter : System.ComponentModel.TypeConverter
         {
             public override bool CanConvertFrom(System.ComponentModel.ITypeDescriptorContext context, System.Type sourceType) => throw null;
@@ -563,7 +562,7 @@ namespace System
             public GuidConverter() => throw null;
         }
 
-        // Generated from `System.ComponentModel.HandledEventArgs` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.ComponentModel.HandledEventArgs` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class HandledEventArgs : System.EventArgs
         {
             public bool Handled { get => throw null; set => throw null; }
@@ -571,10 +570,10 @@ namespace System
             public HandledEventArgs(bool defaultHandledValue) => throw null;
         }
 
-        // Generated from `System.ComponentModel.HandledEventHandler` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.ComponentModel.HandledEventHandler` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public delegate void HandledEventHandler(object sender, System.ComponentModel.HandledEventArgs e);
 
-        // Generated from `System.ComponentModel.IBindingList` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.ComponentModel.IBindingList` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public interface IBindingList : System.Collections.ICollection, System.Collections.IEnumerable, System.Collections.IList
         {
             void AddIndex(System.ComponentModel.PropertyDescriptor property);
@@ -595,7 +594,7 @@ namespace System
             bool SupportsSorting { get; }
         }
 
-        // Generated from `System.ComponentModel.IBindingListView` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.ComponentModel.IBindingListView` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public interface IBindingListView : System.Collections.ICollection, System.Collections.IEnumerable, System.Collections.IList, System.ComponentModel.IBindingList
         {
             void ApplySort(System.ComponentModel.ListSortDescriptionCollection sorts);
@@ -606,14 +605,14 @@ namespace System
             bool SupportsFiltering { get; }
         }
 
-        // Generated from `System.ComponentModel.ICancelAddNew` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.ComponentModel.ICancelAddNew` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public interface ICancelAddNew
         {
             void CancelNew(int itemIndex);
             void EndNew(int itemIndex);
         }
 
-        // Generated from `System.ComponentModel.IComNativeDescriptorHandler` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.ComponentModel.IComNativeDescriptorHandler` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public interface IComNativeDescriptorHandler
         {
             System.ComponentModel.AttributeCollection GetAttributes(object component);
@@ -630,7 +629,7 @@ namespace System
             object GetPropertyValue(object component, string propertyName, ref bool success);
         }
 
-        // Generated from `System.ComponentModel.ICustomTypeDescriptor` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.ComponentModel.ICustomTypeDescriptor` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public interface ICustomTypeDescriptor
         {
             System.ComponentModel.AttributeCollection GetAttributes();
@@ -647,59 +646,59 @@ namespace System
             object GetPropertyOwner(System.ComponentModel.PropertyDescriptor pd);
         }
 
-        // Generated from `System.ComponentModel.IDataErrorInfo` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.ComponentModel.IDataErrorInfo` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public interface IDataErrorInfo
         {
             string Error { get; }
             string this[string columnName] { get; }
         }
 
-        // Generated from `System.ComponentModel.IExtenderProvider` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.ComponentModel.IExtenderProvider` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public interface IExtenderProvider
         {
             bool CanExtend(object extendee);
         }
 
-        // Generated from `System.ComponentModel.IIntellisenseBuilder` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.ComponentModel.IIntellisenseBuilder` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public interface IIntellisenseBuilder
         {
             string Name { get; }
             bool Show(string language, string value, ref string newValue);
         }
 
-        // Generated from `System.ComponentModel.IListSource` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.ComponentModel.IListSource` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public interface IListSource
         {
             bool ContainsListCollection { get; }
             System.Collections.IList GetList();
         }
 
-        // Generated from `System.ComponentModel.INestedContainer` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.ComponentModel.INestedContainer` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public interface INestedContainer : System.ComponentModel.IContainer, System.IDisposable
         {
             System.ComponentModel.IComponent Owner { get; }
         }
 
-        // Generated from `System.ComponentModel.INestedSite` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.ComponentModel.INestedSite` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public interface INestedSite : System.ComponentModel.ISite, System.IServiceProvider
         {
             string FullName { get; }
         }
 
-        // Generated from `System.ComponentModel.IRaiseItemChangedEvents` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.ComponentModel.IRaiseItemChangedEvents` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public interface IRaiseItemChangedEvents
         {
             bool RaisesItemChangedEvents { get; }
         }
 
-        // Generated from `System.ComponentModel.ISupportInitializeNotification` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.ComponentModel.ISupportInitializeNotification` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public interface ISupportInitializeNotification : System.ComponentModel.ISupportInitialize
         {
             event System.EventHandler Initialized;
             bool IsInitialized { get; }
         }
 
-        // Generated from `System.ComponentModel.ITypeDescriptorContext` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.ComponentModel.ITypeDescriptorContext` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public interface ITypeDescriptorContext : System.IServiceProvider
         {
             System.ComponentModel.IContainer Container { get; }
@@ -709,14 +708,14 @@ namespace System
             System.ComponentModel.PropertyDescriptor PropertyDescriptor { get; }
         }
 
-        // Generated from `System.ComponentModel.ITypedList` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.ComponentModel.ITypedList` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public interface ITypedList
         {
             System.ComponentModel.PropertyDescriptorCollection GetItemProperties(System.ComponentModel.PropertyDescriptor[] listAccessors);
             string GetListName(System.ComponentModel.PropertyDescriptor[] listAccessors);
         }
 
-        // Generated from `System.ComponentModel.InheritanceAttribute` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.ComponentModel.InheritanceAttribute` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class InheritanceAttribute : System.Attribute
         {
             public static System.ComponentModel.InheritanceAttribute Default;
@@ -732,15 +731,15 @@ namespace System
             public override string ToString() => throw null;
         }
 
-        // Generated from `System.ComponentModel.InheritanceLevel` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum InheritanceLevel
+        // Generated from `System.ComponentModel.InheritanceLevel` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        public enum InheritanceLevel : int
         {
-            Inherited,
-            InheritedReadOnly,
-            NotInherited,
+            Inherited = 1,
+            InheritedReadOnly = 2,
+            NotInherited = 3,
         }
 
-        // Generated from `System.ComponentModel.InstallerTypeAttribute` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.ComponentModel.InstallerTypeAttribute` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class InstallerTypeAttribute : System.Attribute
         {
             public override bool Equals(object obj) => throw null;
@@ -750,7 +749,7 @@ namespace System
             public InstallerTypeAttribute(string typeName) => throw null;
         }
 
-        // Generated from `System.ComponentModel.InstanceCreationEditor` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.ComponentModel.InstanceCreationEditor` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public abstract class InstanceCreationEditor
         {
             public abstract object CreateInstance(System.ComponentModel.ITypeDescriptorContext context, System.Type instanceType);
@@ -758,25 +757,25 @@ namespace System
             public virtual string Text { get => throw null; }
         }
 
-        // Generated from `System.ComponentModel.Int16Converter` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.ComponentModel.Int16Converter` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class Int16Converter : System.ComponentModel.BaseNumberConverter
         {
             public Int16Converter() => throw null;
         }
 
-        // Generated from `System.ComponentModel.Int32Converter` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.ComponentModel.Int32Converter` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class Int32Converter : System.ComponentModel.BaseNumberConverter
         {
             public Int32Converter() => throw null;
         }
 
-        // Generated from `System.ComponentModel.Int64Converter` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.ComponentModel.Int64Converter` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class Int64Converter : System.ComponentModel.BaseNumberConverter
         {
             public Int64Converter() => throw null;
         }
 
-        // Generated from `System.ComponentModel.LicFileLicenseProvider` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.ComponentModel.LicFileLicenseProvider` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class LicFileLicenseProvider : System.ComponentModel.LicenseProvider
         {
             protected virtual string GetKey(System.Type type) => throw null;
@@ -785,7 +784,7 @@ namespace System
             public LicFileLicenseProvider() => throw null;
         }
 
-        // Generated from `System.ComponentModel.License` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.ComponentModel.License` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public abstract class License : System.IDisposable
         {
             public abstract void Dispose();
@@ -793,7 +792,7 @@ namespace System
             public abstract string LicenseKey { get; }
         }
 
-        // Generated from `System.ComponentModel.LicenseContext` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.ComponentModel.LicenseContext` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class LicenseContext : System.IServiceProvider
         {
             public virtual string GetSavedLicenseKey(System.Type type, System.Reflection.Assembly resourceAssembly) => throw null;
@@ -803,7 +802,7 @@ namespace System
             public virtual System.ComponentModel.LicenseUsageMode UsageMode { get => throw null; }
         }
 
-        // Generated from `System.ComponentModel.LicenseException` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.ComponentModel.LicenseException` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class LicenseException : System.SystemException
         {
             public override void GetObjectData(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
@@ -815,7 +814,7 @@ namespace System
             public System.Type LicensedType { get => throw null; }
         }
 
-        // Generated from `System.ComponentModel.LicenseManager` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.ComponentModel.LicenseManager` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class LicenseManager
         {
             public static object CreateWithContext(System.Type type, System.ComponentModel.LicenseContext creationContext) => throw null;
@@ -831,14 +830,14 @@ namespace System
             public static System.ComponentModel.License Validate(System.Type type, object instance) => throw null;
         }
 
-        // Generated from `System.ComponentModel.LicenseProvider` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.ComponentModel.LicenseProvider` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public abstract class LicenseProvider
         {
             public abstract System.ComponentModel.License GetLicense(System.ComponentModel.LicenseContext context, System.Type type, object instance, bool allowExceptions);
             protected LicenseProvider() => throw null;
         }
 
-        // Generated from `System.ComponentModel.LicenseProviderAttribute` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.ComponentModel.LicenseProviderAttribute` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class LicenseProviderAttribute : System.Attribute
         {
             public static System.ComponentModel.LicenseProviderAttribute Default;
@@ -851,14 +850,14 @@ namespace System
             public override object TypeId { get => throw null; }
         }
 
-        // Generated from `System.ComponentModel.LicenseUsageMode` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum LicenseUsageMode
+        // Generated from `System.ComponentModel.LicenseUsageMode` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        public enum LicenseUsageMode : int
         {
-            Designtime,
-            Runtime,
+            Designtime = 1,
+            Runtime = 0,
         }
 
-        // Generated from `System.ComponentModel.ListBindableAttribute` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.ComponentModel.ListBindableAttribute` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class ListBindableAttribute : System.Attribute
         {
             public static System.ComponentModel.ListBindableAttribute Default;
@@ -872,7 +871,7 @@ namespace System
             public static System.ComponentModel.ListBindableAttribute Yes;
         }
 
-        // Generated from `System.ComponentModel.ListChangedEventArgs` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.ComponentModel.ListChangedEventArgs` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class ListChangedEventArgs : System.EventArgs
         {
             public ListChangedEventArgs(System.ComponentModel.ListChangedType listChangedType, System.ComponentModel.PropertyDescriptor propDesc) => throw null;
@@ -885,23 +884,23 @@ namespace System
             public System.ComponentModel.PropertyDescriptor PropertyDescriptor { get => throw null; }
         }
 
-        // Generated from `System.ComponentModel.ListChangedEventHandler` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.ComponentModel.ListChangedEventHandler` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public delegate void ListChangedEventHandler(object sender, System.ComponentModel.ListChangedEventArgs e);
 
-        // Generated from `System.ComponentModel.ListChangedType` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum ListChangedType
+        // Generated from `System.ComponentModel.ListChangedType` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        public enum ListChangedType : int
         {
-            ItemAdded,
-            ItemChanged,
-            ItemDeleted,
-            ItemMoved,
-            PropertyDescriptorAdded,
-            PropertyDescriptorChanged,
-            PropertyDescriptorDeleted,
-            Reset,
+            ItemAdded = 1,
+            ItemChanged = 4,
+            ItemDeleted = 2,
+            ItemMoved = 3,
+            PropertyDescriptorAdded = 5,
+            PropertyDescriptorChanged = 7,
+            PropertyDescriptorDeleted = 6,
+            Reset = 0,
         }
 
-        // Generated from `System.ComponentModel.ListSortDescription` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.ComponentModel.ListSortDescription` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class ListSortDescription
         {
             public ListSortDescription(System.ComponentModel.PropertyDescriptor property, System.ComponentModel.ListSortDirection direction) => throw null;
@@ -909,7 +908,7 @@ namespace System
             public System.ComponentModel.ListSortDirection SortDirection { get => throw null; set => throw null; }
         }
 
-        // Generated from `System.ComponentModel.ListSortDescriptionCollection` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.ComponentModel.ListSortDescriptionCollection` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class ListSortDescriptionCollection : System.Collections.ICollection, System.Collections.IEnumerable, System.Collections.IList
         {
             int System.Collections.IList.Add(object value) => throw null;
@@ -932,14 +931,14 @@ namespace System
             object System.Collections.ICollection.SyncRoot { get => throw null; }
         }
 
-        // Generated from `System.ComponentModel.ListSortDirection` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum ListSortDirection
+        // Generated from `System.ComponentModel.ListSortDirection` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        public enum ListSortDirection : int
         {
-            Ascending,
-            Descending,
+            Ascending = 0,
+            Descending = 1,
         }
 
-        // Generated from `System.ComponentModel.LookupBindingPropertiesAttribute` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.ComponentModel.LookupBindingPropertiesAttribute` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class LookupBindingPropertiesAttribute : System.Attribute
         {
             public string DataSource { get => throw null; }
@@ -953,7 +952,7 @@ namespace System
             public string ValueMember { get => throw null; }
         }
 
-        // Generated from `System.ComponentModel.MarshalByValueComponent` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.ComponentModel.MarshalByValueComponent` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class MarshalByValueComponent : System.ComponentModel.IComponent, System.IDisposable, System.IServiceProvider
         {
             public virtual System.ComponentModel.IContainer Container { get => throw null; }
@@ -969,7 +968,7 @@ namespace System
             // ERR: Stub generator didn't handle member: ~MarshalByValueComponent
         }
 
-        // Generated from `System.ComponentModel.MaskedTextProvider` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.ComponentModel.MaskedTextProvider` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class MaskedTextProvider : System.ICloneable
         {
             public bool Add(System.Char input) => throw null;
@@ -1054,27 +1053,27 @@ namespace System
             public bool VerifyString(string input, out int testPosition, out System.ComponentModel.MaskedTextResultHint resultHint) => throw null;
         }
 
-        // Generated from `System.ComponentModel.MaskedTextResultHint` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum MaskedTextResultHint
+        // Generated from `System.ComponentModel.MaskedTextResultHint` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        public enum MaskedTextResultHint : int
         {
-            AlphanumericCharacterExpected,
-            AsciiCharacterExpected,
-            CharacterEscaped,
-            DigitExpected,
-            InvalidInput,
-            LetterExpected,
-            NoEffect,
-            NonEditPosition,
-            PositionOutOfRange,
-            PromptCharNotAllowed,
-            SideEffect,
-            SignedDigitExpected,
-            Success,
-            UnavailableEditPosition,
-            Unknown,
+            AlphanumericCharacterExpected = -2,
+            AsciiCharacterExpected = -1,
+            CharacterEscaped = 1,
+            DigitExpected = -3,
+            InvalidInput = -51,
+            LetterExpected = -4,
+            NoEffect = 2,
+            NonEditPosition = -54,
+            PositionOutOfRange = -55,
+            PromptCharNotAllowed = -52,
+            SideEffect = 3,
+            SignedDigitExpected = -5,
+            Success = 4,
+            UnavailableEditPosition = -53,
+            Unknown = 0,
         }
 
-        // Generated from `System.ComponentModel.MemberDescriptor` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.ComponentModel.MemberDescriptor` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public abstract class MemberDescriptor
         {
             protected virtual System.Attribute[] AttributeArray { get => throw null; set => throw null; }
@@ -1101,7 +1100,7 @@ namespace System
             protected virtual int NameHashCode { get => throw null; }
         }
 
-        // Generated from `System.ComponentModel.MultilineStringConverter` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.ComponentModel.MultilineStringConverter` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class MultilineStringConverter : System.ComponentModel.TypeConverter
         {
             public override object ConvertTo(System.ComponentModel.ITypeDescriptorContext context, System.Globalization.CultureInfo culture, object value, System.Type destinationType) => throw null;
@@ -1110,7 +1109,7 @@ namespace System
             public MultilineStringConverter() => throw null;
         }
 
-        // Generated from `System.ComponentModel.NestedContainer` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.ComponentModel.NestedContainer` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class NestedContainer : System.ComponentModel.Container, System.ComponentModel.IContainer, System.ComponentModel.INestedContainer, System.IDisposable
         {
             protected override System.ComponentModel.ISite CreateSite(System.ComponentModel.IComponent component, string name) => throw null;
@@ -1121,7 +1120,7 @@ namespace System
             protected virtual string OwnerName { get => throw null; }
         }
 
-        // Generated from `System.ComponentModel.NullableConverter` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.ComponentModel.NullableConverter` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class NullableConverter : System.ComponentModel.TypeConverter
         {
             public override bool CanConvertFrom(System.ComponentModel.ITypeDescriptorContext context, System.Type sourceType) => throw null;
@@ -1142,7 +1141,7 @@ namespace System
             public System.ComponentModel.TypeConverter UnderlyingTypeConverter { get => throw null; }
         }
 
-        // Generated from `System.ComponentModel.PasswordPropertyTextAttribute` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.ComponentModel.PasswordPropertyTextAttribute` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class PasswordPropertyTextAttribute : System.Attribute
         {
             public static System.ComponentModel.PasswordPropertyTextAttribute Default;
@@ -1156,7 +1155,7 @@ namespace System
             public static System.ComponentModel.PasswordPropertyTextAttribute Yes;
         }
 
-        // Generated from `System.ComponentModel.PropertyDescriptor` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.ComponentModel.PropertyDescriptor` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public abstract class PropertyDescriptor : System.ComponentModel.MemberDescriptor
         {
             public virtual void AddValueChanged(object component, System.EventHandler handler) => throw null;
@@ -1191,7 +1190,7 @@ namespace System
             public virtual bool SupportsChangeEvents { get => throw null; }
         }
 
-        // Generated from `System.ComponentModel.PropertyDescriptorCollection` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.ComponentModel.PropertyDescriptorCollection` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class PropertyDescriptorCollection : System.Collections.ICollection, System.Collections.IDictionary, System.Collections.IEnumerable, System.Collections.IList
         {
             public int Add(System.ComponentModel.PropertyDescriptor value) => throw null;
@@ -1242,7 +1241,7 @@ namespace System
             System.Collections.ICollection System.Collections.IDictionary.Values { get => throw null; }
         }
 
-        // Generated from `System.ComponentModel.PropertyTabAttribute` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.ComponentModel.PropertyTabAttribute` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class PropertyTabAttribute : System.Attribute
         {
             public bool Equals(System.ComponentModel.PropertyTabAttribute other) => throw null;
@@ -1260,16 +1259,16 @@ namespace System
             public System.ComponentModel.PropertyTabScope[] TabScopes { get => throw null; }
         }
 
-        // Generated from `System.ComponentModel.PropertyTabScope` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum PropertyTabScope
+        // Generated from `System.ComponentModel.PropertyTabScope` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        public enum PropertyTabScope : int
         {
-            Component,
-            Document,
-            Global,
-            Static,
+            Component = 3,
+            Document = 2,
+            Global = 1,
+            Static = 0,
         }
 
-        // Generated from `System.ComponentModel.ProvidePropertyAttribute` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.ComponentModel.ProvidePropertyAttribute` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class ProvidePropertyAttribute : System.Attribute
         {
             public override bool Equals(object obj) => throw null;
@@ -1281,7 +1280,7 @@ namespace System
             public override object TypeId { get => throw null; }
         }
 
-        // Generated from `System.ComponentModel.RecommendedAsConfigurableAttribute` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.ComponentModel.RecommendedAsConfigurableAttribute` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class RecommendedAsConfigurableAttribute : System.Attribute
         {
             public static System.ComponentModel.RecommendedAsConfigurableAttribute Default;
@@ -1294,7 +1293,7 @@ namespace System
             public static System.ComponentModel.RecommendedAsConfigurableAttribute Yes;
         }
 
-        // Generated from `System.ComponentModel.ReferenceConverter` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.ComponentModel.ReferenceConverter` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class ReferenceConverter : System.ComponentModel.TypeConverter
         {
             public override bool CanConvertFrom(System.ComponentModel.ITypeDescriptorContext context, System.Type sourceType) => throw null;
@@ -1307,7 +1306,7 @@ namespace System
             public ReferenceConverter(System.Type type) => throw null;
         }
 
-        // Generated from `System.ComponentModel.RefreshEventArgs` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.ComponentModel.RefreshEventArgs` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class RefreshEventArgs : System.EventArgs
         {
             public object ComponentChanged { get => throw null; }
@@ -1316,10 +1315,10 @@ namespace System
             public System.Type TypeChanged { get => throw null; }
         }
 
-        // Generated from `System.ComponentModel.RefreshEventHandler` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.ComponentModel.RefreshEventHandler` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public delegate void RefreshEventHandler(System.ComponentModel.RefreshEventArgs e);
 
-        // Generated from `System.ComponentModel.RunInstallerAttribute` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.ComponentModel.RunInstallerAttribute` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class RunInstallerAttribute : System.Attribute
         {
             public static System.ComponentModel.RunInstallerAttribute Default;
@@ -1332,13 +1331,13 @@ namespace System
             public static System.ComponentModel.RunInstallerAttribute Yes;
         }
 
-        // Generated from `System.ComponentModel.SByteConverter` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.ComponentModel.SByteConverter` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class SByteConverter : System.ComponentModel.BaseNumberConverter
         {
             public SByteConverter() => throw null;
         }
 
-        // Generated from `System.ComponentModel.SettingsBindableAttribute` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.ComponentModel.SettingsBindableAttribute` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class SettingsBindableAttribute : System.Attribute
         {
             public bool Bindable { get => throw null; }
@@ -1349,13 +1348,13 @@ namespace System
             public static System.ComponentModel.SettingsBindableAttribute Yes;
         }
 
-        // Generated from `System.ComponentModel.SingleConverter` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.ComponentModel.SingleConverter` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class SingleConverter : System.ComponentModel.BaseNumberConverter
         {
             public SingleConverter() => throw null;
         }
 
-        // Generated from `System.ComponentModel.StringConverter` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.ComponentModel.StringConverter` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class StringConverter : System.ComponentModel.TypeConverter
         {
             public override bool CanConvertFrom(System.ComponentModel.ITypeDescriptorContext context, System.Type sourceType) => throw null;
@@ -1363,7 +1362,7 @@ namespace System
             public StringConverter() => throw null;
         }
 
-        // Generated from `System.ComponentModel.SyntaxCheck` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.ComponentModel.SyntaxCheck` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public static class SyntaxCheck
         {
             public static bool CheckMachineName(string value) => throw null;
@@ -1371,7 +1370,7 @@ namespace System
             public static bool CheckRootedPath(string value) => throw null;
         }
 
-        // Generated from `System.ComponentModel.TimeSpanConverter` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.ComponentModel.TimeSpanConverter` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class TimeSpanConverter : System.ComponentModel.TypeConverter
         {
             public override bool CanConvertFrom(System.ComponentModel.ITypeDescriptorContext context, System.Type sourceType) => throw null;
@@ -1381,7 +1380,7 @@ namespace System
             public TimeSpanConverter() => throw null;
         }
 
-        // Generated from `System.ComponentModel.ToolboxItemAttribute` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.ComponentModel.ToolboxItemAttribute` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class ToolboxItemAttribute : System.Attribute
         {
             public static System.ComponentModel.ToolboxItemAttribute Default;
@@ -1396,7 +1395,7 @@ namespace System
             public string ToolboxItemTypeName { get => throw null; }
         }
 
-        // Generated from `System.ComponentModel.ToolboxItemFilterAttribute` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.ComponentModel.ToolboxItemFilterAttribute` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class ToolboxItemFilterAttribute : System.Attribute
         {
             public override bool Equals(object obj) => throw null;
@@ -1410,19 +1409,19 @@ namespace System
             public override object TypeId { get => throw null; }
         }
 
-        // Generated from `System.ComponentModel.ToolboxItemFilterType` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum ToolboxItemFilterType
+        // Generated from `System.ComponentModel.ToolboxItemFilterType` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        public enum ToolboxItemFilterType : int
         {
-            Allow,
-            Custom,
-            Prevent,
-            Require,
+            Allow = 0,
+            Custom = 1,
+            Prevent = 2,
+            Require = 3,
         }
 
-        // Generated from `System.ComponentModel.TypeConverter` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.ComponentModel.TypeConverter` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class TypeConverter
         {
-            // Generated from `System.ComponentModel.TypeConverter+SimplePropertyDescriptor` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.ComponentModel.TypeConverter+SimplePropertyDescriptor` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             protected abstract class SimplePropertyDescriptor : System.ComponentModel.PropertyDescriptor
             {
                 public override bool CanResetValue(object component) => throw null;
@@ -1436,7 +1435,7 @@ namespace System
             }
 
 
-            // Generated from `System.ComponentModel.TypeConverter+StandardValuesCollection` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.ComponentModel.TypeConverter+StandardValuesCollection` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class StandardValuesCollection : System.Collections.ICollection, System.Collections.IEnumerable
             {
                 public void CopyTo(System.Array array, int index) => throw null;
@@ -1490,7 +1489,7 @@ namespace System
             public TypeConverter() => throw null;
         }
 
-        // Generated from `System.ComponentModel.TypeDescriptionProvider` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.ComponentModel.TypeDescriptionProvider` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public abstract class TypeDescriptionProvider
         {
             public virtual object CreateInstance(System.IServiceProvider provider, System.Type objectType, System.Type[] argTypes, object[] args) => throw null;
@@ -1510,7 +1509,7 @@ namespace System
             protected TypeDescriptionProvider(System.ComponentModel.TypeDescriptionProvider parent) => throw null;
         }
 
-        // Generated from `System.ComponentModel.TypeDescriptor` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.ComponentModel.TypeDescriptor` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class TypeDescriptor
         {
             public static System.ComponentModel.TypeDescriptionProvider AddAttributes(System.Type type, params System.Attribute[] attributes) => throw null;
@@ -1582,7 +1581,7 @@ namespace System
             public static void SortDescriptorArray(System.Collections.IList infos) => throw null;
         }
 
-        // Generated from `System.ComponentModel.TypeListConverter` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.ComponentModel.TypeListConverter` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public abstract class TypeListConverter : System.ComponentModel.TypeConverter
         {
             public override bool CanConvertFrom(System.ComponentModel.ITypeDescriptorContext context, System.Type sourceType) => throw null;
@@ -1595,25 +1594,25 @@ namespace System
             protected TypeListConverter(System.Type[] types) => throw null;
         }
 
-        // Generated from `System.ComponentModel.UInt16Converter` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.ComponentModel.UInt16Converter` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class UInt16Converter : System.ComponentModel.BaseNumberConverter
         {
             public UInt16Converter() => throw null;
         }
 
-        // Generated from `System.ComponentModel.UInt32Converter` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.ComponentModel.UInt32Converter` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class UInt32Converter : System.ComponentModel.BaseNumberConverter
         {
             public UInt32Converter() => throw null;
         }
 
-        // Generated from `System.ComponentModel.UInt64Converter` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.ComponentModel.UInt64Converter` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class UInt64Converter : System.ComponentModel.BaseNumberConverter
         {
             public UInt64Converter() => throw null;
         }
 
-        // Generated from `System.ComponentModel.VersionConverter` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.ComponentModel.VersionConverter` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class VersionConverter : System.ComponentModel.TypeConverter
         {
             public override bool CanConvertFrom(System.ComponentModel.ITypeDescriptorContext context, System.Type sourceType) => throw null;
@@ -1624,7 +1623,7 @@ namespace System
             public VersionConverter() => throw null;
         }
 
-        // Generated from `System.ComponentModel.WarningException` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.ComponentModel.WarningException` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class WarningException : System.SystemException
         {
             public override void GetObjectData(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
@@ -1640,7 +1639,7 @@ namespace System
 
         namespace Design
         {
-            // Generated from `System.ComponentModel.Design.ActiveDesignerEventArgs` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.ComponentModel.Design.ActiveDesignerEventArgs` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class ActiveDesignerEventArgs : System.EventArgs
             {
                 public ActiveDesignerEventArgs(System.ComponentModel.Design.IDesignerHost oldDesigner, System.ComponentModel.Design.IDesignerHost newDesigner) => throw null;
@@ -1648,10 +1647,10 @@ namespace System
                 public System.ComponentModel.Design.IDesignerHost OldDesigner { get => throw null; }
             }
 
-            // Generated from `System.ComponentModel.Design.ActiveDesignerEventHandler` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.ComponentModel.Design.ActiveDesignerEventHandler` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public delegate void ActiveDesignerEventHandler(object sender, System.ComponentModel.Design.ActiveDesignerEventArgs e);
 
-            // Generated from `System.ComponentModel.Design.CheckoutException` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.ComponentModel.Design.CheckoutException` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class CheckoutException : System.Runtime.InteropServices.ExternalException
             {
                 public static System.ComponentModel.Design.CheckoutException Canceled;
@@ -1662,7 +1661,7 @@ namespace System
                 public CheckoutException(string message, int errorCode) => throw null;
             }
 
-            // Generated from `System.ComponentModel.Design.CommandID` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.ComponentModel.Design.CommandID` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class CommandID
             {
                 public CommandID(System.Guid menuGroup, int commandID) => throw null;
@@ -1673,7 +1672,7 @@ namespace System
                 public override string ToString() => throw null;
             }
 
-            // Generated from `System.ComponentModel.Design.ComponentChangedEventArgs` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.ComponentModel.Design.ComponentChangedEventArgs` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class ComponentChangedEventArgs : System.EventArgs
             {
                 public object Component { get => throw null; }
@@ -1683,10 +1682,10 @@ namespace System
                 public object OldValue { get => throw null; }
             }
 
-            // Generated from `System.ComponentModel.Design.ComponentChangedEventHandler` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.ComponentModel.Design.ComponentChangedEventHandler` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public delegate void ComponentChangedEventHandler(object sender, System.ComponentModel.Design.ComponentChangedEventArgs e);
 
-            // Generated from `System.ComponentModel.Design.ComponentChangingEventArgs` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.ComponentModel.Design.ComponentChangingEventArgs` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class ComponentChangingEventArgs : System.EventArgs
             {
                 public object Component { get => throw null; }
@@ -1694,20 +1693,20 @@ namespace System
                 public System.ComponentModel.MemberDescriptor Member { get => throw null; }
             }
 
-            // Generated from `System.ComponentModel.Design.ComponentChangingEventHandler` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.ComponentModel.Design.ComponentChangingEventHandler` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public delegate void ComponentChangingEventHandler(object sender, System.ComponentModel.Design.ComponentChangingEventArgs e);
 
-            // Generated from `System.ComponentModel.Design.ComponentEventArgs` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.ComponentModel.Design.ComponentEventArgs` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class ComponentEventArgs : System.EventArgs
             {
                 public virtual System.ComponentModel.IComponent Component { get => throw null; }
                 public ComponentEventArgs(System.ComponentModel.IComponent component) => throw null;
             }
 
-            // Generated from `System.ComponentModel.Design.ComponentEventHandler` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.ComponentModel.Design.ComponentEventHandler` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public delegate void ComponentEventHandler(object sender, System.ComponentModel.Design.ComponentEventArgs e);
 
-            // Generated from `System.ComponentModel.Design.ComponentRenameEventArgs` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.ComponentModel.Design.ComponentRenameEventArgs` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class ComponentRenameEventArgs : System.EventArgs
             {
                 public object Component { get => throw null; }
@@ -1716,10 +1715,10 @@ namespace System
                 public virtual string OldName { get => throw null; }
             }
 
-            // Generated from `System.ComponentModel.Design.ComponentRenameEventHandler` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.ComponentModel.Design.ComponentRenameEventHandler` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public delegate void ComponentRenameEventHandler(object sender, System.ComponentModel.Design.ComponentRenameEventArgs e);
 
-            // Generated from `System.ComponentModel.Design.DesignerCollection` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.ComponentModel.Design.DesignerCollection` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class DesignerCollection : System.Collections.ICollection, System.Collections.IEnumerable
             {
                 void System.Collections.ICollection.CopyTo(System.Array array, int index) => throw null;
@@ -1734,20 +1733,20 @@ namespace System
                 object System.Collections.ICollection.SyncRoot { get => throw null; }
             }
 
-            // Generated from `System.ComponentModel.Design.DesignerEventArgs` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.ComponentModel.Design.DesignerEventArgs` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class DesignerEventArgs : System.EventArgs
             {
                 public System.ComponentModel.Design.IDesignerHost Designer { get => throw null; }
                 public DesignerEventArgs(System.ComponentModel.Design.IDesignerHost host) => throw null;
             }
 
-            // Generated from `System.ComponentModel.Design.DesignerEventHandler` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.ComponentModel.Design.DesignerEventHandler` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public delegate void DesignerEventHandler(object sender, System.ComponentModel.Design.DesignerEventArgs e);
 
-            // Generated from `System.ComponentModel.Design.DesignerOptionService` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.ComponentModel.Design.DesignerOptionService` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public abstract class DesignerOptionService : System.ComponentModel.Design.IDesignerOptionService
             {
-                // Generated from `System.ComponentModel.Design.DesignerOptionService+DesignerOptionCollection` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+                // Generated from `System.ComponentModel.Design.DesignerOptionService+DesignerOptionCollection` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public class DesignerOptionCollection : System.Collections.ICollection, System.Collections.IEnumerable, System.Collections.IList
                 {
                     int System.Collections.IList.Add(object value) => throw null;
@@ -1784,7 +1783,7 @@ namespace System
                 protected virtual bool ShowDialog(System.ComponentModel.Design.DesignerOptionService.DesignerOptionCollection options, object optionObject) => throw null;
             }
 
-            // Generated from `System.ComponentModel.Design.DesignerTransaction` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.ComponentModel.Design.DesignerTransaction` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public abstract class DesignerTransaction : System.IDisposable
             {
                 public void Cancel() => throw null;
@@ -1801,7 +1800,7 @@ namespace System
                 // ERR: Stub generator didn't handle member: ~DesignerTransaction
             }
 
-            // Generated from `System.ComponentModel.Design.DesignerTransactionCloseEventArgs` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.ComponentModel.Design.DesignerTransactionCloseEventArgs` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class DesignerTransactionCloseEventArgs : System.EventArgs
             {
                 public DesignerTransactionCloseEventArgs(bool commit) => throw null;
@@ -1810,10 +1809,10 @@ namespace System
                 public bool TransactionCommitted { get => throw null; }
             }
 
-            // Generated from `System.ComponentModel.Design.DesignerTransactionCloseEventHandler` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.ComponentModel.Design.DesignerTransactionCloseEventHandler` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public delegate void DesignerTransactionCloseEventHandler(object sender, System.ComponentModel.Design.DesignerTransactionCloseEventArgs e);
 
-            // Generated from `System.ComponentModel.Design.DesignerVerb` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.ComponentModel.Design.DesignerVerb` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class DesignerVerb : System.ComponentModel.Design.MenuCommand
             {
                 public string Description { get => throw null; set => throw null; }
@@ -1823,7 +1822,7 @@ namespace System
                 public override string ToString() => throw null;
             }
 
-            // Generated from `System.ComponentModel.Design.DesignerVerbCollection` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.ComponentModel.Design.DesignerVerbCollection` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class DesignerVerbCollection : System.Collections.CollectionBase
             {
                 public int Add(System.ComponentModel.Design.DesignerVerb value) => throw null;
@@ -1836,15 +1835,11 @@ namespace System
                 public int IndexOf(System.ComponentModel.Design.DesignerVerb value) => throw null;
                 public void Insert(int index, System.ComponentModel.Design.DesignerVerb value) => throw null;
                 public System.ComponentModel.Design.DesignerVerb this[int index] { get => throw null; set => throw null; }
-                protected override void OnClear() => throw null;
-                protected override void OnInsert(int index, object value) => throw null;
-                protected override void OnRemove(int index, object value) => throw null;
-                protected override void OnSet(int index, object oldValue, object newValue) => throw null;
                 protected override void OnValidate(object value) => throw null;
                 public void Remove(System.ComponentModel.Design.DesignerVerb value) => throw null;
             }
 
-            // Generated from `System.ComponentModel.Design.DesigntimeLicenseContext` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.ComponentModel.Design.DesigntimeLicenseContext` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class DesigntimeLicenseContext : System.ComponentModel.LicenseContext
             {
                 public DesigntimeLicenseContext() => throw null;
@@ -1853,22 +1848,22 @@ namespace System
                 public override System.ComponentModel.LicenseUsageMode UsageMode { get => throw null; }
             }
 
-            // Generated from `System.ComponentModel.Design.DesigntimeLicenseContextSerializer` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.ComponentModel.Design.DesigntimeLicenseContextSerializer` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class DesigntimeLicenseContextSerializer
             {
                 public static void Serialize(System.IO.Stream o, string cryptoKey, System.ComponentModel.Design.DesigntimeLicenseContext context) => throw null;
             }
 
-            // Generated from `System.ComponentModel.Design.HelpContextType` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum HelpContextType
+            // Generated from `System.ComponentModel.Design.HelpContextType` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            public enum HelpContextType : int
             {
-                Ambient,
-                Selection,
-                ToolWindowSelection,
-                Window,
+                Ambient = 0,
+                Selection = 2,
+                ToolWindowSelection = 3,
+                Window = 1,
             }
 
-            // Generated from `System.ComponentModel.Design.HelpKeywordAttribute` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.ComponentModel.Design.HelpKeywordAttribute` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class HelpKeywordAttribute : System.Attribute
             {
                 public static System.ComponentModel.Design.HelpKeywordAttribute Default;
@@ -1881,15 +1876,15 @@ namespace System
                 public override bool IsDefaultAttribute() => throw null;
             }
 
-            // Generated from `System.ComponentModel.Design.HelpKeywordType` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum HelpKeywordType
+            // Generated from `System.ComponentModel.Design.HelpKeywordType` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            public enum HelpKeywordType : int
             {
-                F1Keyword,
-                FilterKeyword,
-                GeneralKeyword,
+                F1Keyword = 0,
+                FilterKeyword = 2,
+                GeneralKeyword = 1,
             }
 
-            // Generated from `System.ComponentModel.Design.IComponentChangeService` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.ComponentModel.Design.IComponentChangeService` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public interface IComponentChangeService
             {
                 event System.ComponentModel.Design.ComponentEventHandler ComponentAdded;
@@ -1903,20 +1898,20 @@ namespace System
                 void OnComponentChanging(object component, System.ComponentModel.MemberDescriptor member);
             }
 
-            // Generated from `System.ComponentModel.Design.IComponentDiscoveryService` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.ComponentModel.Design.IComponentDiscoveryService` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public interface IComponentDiscoveryService
             {
                 System.Collections.ICollection GetComponentTypes(System.ComponentModel.Design.IDesignerHost designerHost, System.Type baseType);
             }
 
-            // Generated from `System.ComponentModel.Design.IComponentInitializer` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.ComponentModel.Design.IComponentInitializer` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public interface IComponentInitializer
             {
                 void InitializeExistingComponent(System.Collections.IDictionary defaultValues);
                 void InitializeNewComponent(System.Collections.IDictionary defaultValues);
             }
 
-            // Generated from `System.ComponentModel.Design.IDesigner` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.ComponentModel.Design.IDesigner` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public interface IDesigner : System.IDisposable
             {
                 System.ComponentModel.IComponent Component { get; }
@@ -1925,7 +1920,7 @@ namespace System
                 System.ComponentModel.Design.DesignerVerbCollection Verbs { get; }
             }
 
-            // Generated from `System.ComponentModel.Design.IDesignerEventService` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.ComponentModel.Design.IDesignerEventService` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public interface IDesignerEventService
             {
                 System.ComponentModel.Design.IDesignerHost ActiveDesigner { get; }
@@ -1936,7 +1931,7 @@ namespace System
                 event System.EventHandler SelectionChanged;
             }
 
-            // Generated from `System.ComponentModel.Design.IDesignerFilter` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.ComponentModel.Design.IDesignerFilter` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public interface IDesignerFilter
             {
                 void PostFilterAttributes(System.Collections.IDictionary attributes);
@@ -1947,7 +1942,7 @@ namespace System
                 void PreFilterProperties(System.Collections.IDictionary properties);
             }
 
-            // Generated from `System.ComponentModel.Design.IDesignerHost` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.ComponentModel.Design.IDesignerHost` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public interface IDesignerHost : System.ComponentModel.Design.IServiceContainer, System.IServiceProvider
             {
                 void Activate();
@@ -1973,20 +1968,20 @@ namespace System
                 event System.EventHandler TransactionOpening;
             }
 
-            // Generated from `System.ComponentModel.Design.IDesignerHostTransactionState` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.ComponentModel.Design.IDesignerHostTransactionState` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public interface IDesignerHostTransactionState
             {
                 bool IsClosingTransaction { get; }
             }
 
-            // Generated from `System.ComponentModel.Design.IDesignerOptionService` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.ComponentModel.Design.IDesignerOptionService` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public interface IDesignerOptionService
             {
                 object GetOptionValue(string pageName, string valueName);
                 void SetOptionValue(string pageName, string valueName, object value);
             }
 
-            // Generated from `System.ComponentModel.Design.IDictionaryService` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.ComponentModel.Design.IDictionaryService` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public interface IDictionaryService
             {
                 object GetKey(object value);
@@ -1994,7 +1989,7 @@ namespace System
                 void SetValue(object key, object value);
             }
 
-            // Generated from `System.ComponentModel.Design.IEventBindingService` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.ComponentModel.Design.IEventBindingService` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public interface IEventBindingService
             {
                 string CreateUniqueMethodName(System.ComponentModel.IComponent component, System.ComponentModel.EventDescriptor e);
@@ -2007,20 +2002,20 @@ namespace System
                 bool ShowCode(int lineNumber);
             }
 
-            // Generated from `System.ComponentModel.Design.IExtenderListService` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.ComponentModel.Design.IExtenderListService` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public interface IExtenderListService
             {
                 System.ComponentModel.IExtenderProvider[] GetExtenderProviders();
             }
 
-            // Generated from `System.ComponentModel.Design.IExtenderProviderService` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.ComponentModel.Design.IExtenderProviderService` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public interface IExtenderProviderService
             {
                 void AddExtenderProvider(System.ComponentModel.IExtenderProvider provider);
                 void RemoveExtenderProvider(System.ComponentModel.IExtenderProvider provider);
             }
 
-            // Generated from `System.ComponentModel.Design.IHelpService` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.ComponentModel.Design.IHelpService` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public interface IHelpService
             {
                 void AddContextAttribute(string name, string value, System.ComponentModel.Design.HelpKeywordType keywordType);
@@ -2032,14 +2027,14 @@ namespace System
                 void ShowHelpFromUrl(string helpUrl);
             }
 
-            // Generated from `System.ComponentModel.Design.IInheritanceService` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.ComponentModel.Design.IInheritanceService` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public interface IInheritanceService
             {
                 void AddInheritedComponents(System.ComponentModel.IComponent component, System.ComponentModel.IContainer container);
                 System.ComponentModel.InheritanceAttribute GetInheritanceAttribute(System.ComponentModel.IComponent component);
             }
 
-            // Generated from `System.ComponentModel.Design.IMenuCommandService` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.ComponentModel.Design.IMenuCommandService` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public interface IMenuCommandService
             {
                 void AddCommand(System.ComponentModel.Design.MenuCommand command);
@@ -2052,7 +2047,7 @@ namespace System
                 System.ComponentModel.Design.DesignerVerbCollection Verbs { get; }
             }
 
-            // Generated from `System.ComponentModel.Design.IReferenceService` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.ComponentModel.Design.IReferenceService` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public interface IReferenceService
             {
                 System.ComponentModel.IComponent GetComponent(object reference);
@@ -2062,21 +2057,21 @@ namespace System
                 object[] GetReferences(System.Type baseType);
             }
 
-            // Generated from `System.ComponentModel.Design.IResourceService` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.ComponentModel.Design.IResourceService` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public interface IResourceService
             {
                 System.Resources.IResourceReader GetResourceReader(System.Globalization.CultureInfo info);
                 System.Resources.IResourceWriter GetResourceWriter(System.Globalization.CultureInfo info);
             }
 
-            // Generated from `System.ComponentModel.Design.IRootDesigner` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.ComponentModel.Design.IRootDesigner` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public interface IRootDesigner : System.ComponentModel.Design.IDesigner, System.IDisposable
             {
                 object GetView(System.ComponentModel.Design.ViewTechnology technology);
                 System.ComponentModel.Design.ViewTechnology[] SupportedTechnologies { get; }
             }
 
-            // Generated from `System.ComponentModel.Design.ISelectionService` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.ComponentModel.Design.ISelectionService` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public interface ISelectionService
             {
                 bool GetComponentSelected(object component);
@@ -2089,7 +2084,7 @@ namespace System
                 void SetSelectedComponents(System.Collections.ICollection components, System.ComponentModel.Design.SelectionTypes selectionType);
             }
 
-            // Generated from `System.ComponentModel.Design.IServiceContainer` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.ComponentModel.Design.IServiceContainer` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public interface IServiceContainer : System.IServiceProvider
             {
                 void AddService(System.Type serviceType, System.ComponentModel.Design.ServiceCreatorCallback callback);
@@ -2100,14 +2095,14 @@ namespace System
                 void RemoveService(System.Type serviceType, bool promote);
             }
 
-            // Generated from `System.ComponentModel.Design.ITreeDesigner` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.ComponentModel.Design.ITreeDesigner` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public interface ITreeDesigner : System.ComponentModel.Design.IDesigner, System.IDisposable
             {
                 System.Collections.ICollection Children { get; }
                 System.ComponentModel.Design.IDesigner Parent { get; }
             }
 
-            // Generated from `System.ComponentModel.Design.ITypeDescriptorFilterService` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.ComponentModel.Design.ITypeDescriptorFilterService` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public interface ITypeDescriptorFilterService
             {
                 bool FilterAttributes(System.ComponentModel.IComponent component, System.Collections.IDictionary attributes);
@@ -2115,13 +2110,13 @@ namespace System
                 bool FilterProperties(System.ComponentModel.IComponent component, System.Collections.IDictionary properties);
             }
 
-            // Generated from `System.ComponentModel.Design.ITypeDiscoveryService` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.ComponentModel.Design.ITypeDiscoveryService` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public interface ITypeDiscoveryService
             {
                 System.Collections.ICollection GetTypes(System.Type baseType, bool excludeGlobalTypes);
             }
 
-            // Generated from `System.ComponentModel.Design.ITypeResolutionService` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.ComponentModel.Design.ITypeResolutionService` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public interface ITypeResolutionService
             {
                 System.Reflection.Assembly GetAssembly(System.Reflection.AssemblyName name);
@@ -2133,7 +2128,7 @@ namespace System
                 void ReferenceAssembly(System.Reflection.AssemblyName name);
             }
 
-            // Generated from `System.ComponentModel.Design.MenuCommand` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.ComponentModel.Design.MenuCommand` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class MenuCommand
             {
                 public virtual bool Checked { get => throw null; set => throw null; }
@@ -2151,24 +2146,24 @@ namespace System
                 public virtual bool Visible { get => throw null; set => throw null; }
             }
 
-            // Generated from `System.ComponentModel.Design.SelectionTypes` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.ComponentModel.Design.SelectionTypes` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             [System.Flags]
-            public enum SelectionTypes
+            public enum SelectionTypes : int
             {
-                Add,
-                Auto,
-                Click,
-                MouseDown,
-                MouseUp,
-                Normal,
-                Primary,
-                Remove,
-                Replace,
-                Toggle,
-                Valid,
+                Add = 64,
+                Auto = 1,
+                Click = 16,
+                MouseDown = 4,
+                MouseUp = 8,
+                Normal = 1,
+                Primary = 16,
+                Remove = 128,
+                Replace = 2,
+                Toggle = 32,
+                Valid = 31,
             }
 
-            // Generated from `System.ComponentModel.Design.ServiceContainer` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.ComponentModel.Design.ServiceContainer` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class ServiceContainer : System.ComponentModel.Design.IServiceContainer, System.IDisposable, System.IServiceProvider
             {
                 public void AddService(System.Type serviceType, System.ComponentModel.Design.ServiceCreatorCallback callback) => throw null;
@@ -2185,10 +2180,10 @@ namespace System
                 public ServiceContainer(System.IServiceProvider parentProvider) => throw null;
             }
 
-            // Generated from `System.ComponentModel.Design.ServiceCreatorCallback` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.ComponentModel.Design.ServiceCreatorCallback` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public delegate object ServiceCreatorCallback(System.ComponentModel.Design.IServiceContainer container, System.Type serviceType);
 
-            // Generated from `System.ComponentModel.Design.StandardCommands` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.ComponentModel.Design.StandardCommands` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class StandardCommands
             {
                 public static System.ComponentModel.Design.CommandID AlignBottom;
@@ -2249,7 +2244,7 @@ namespace System
                 public static System.ComponentModel.Design.CommandID ViewGrid;
             }
 
-            // Generated from `System.ComponentModel.Design.StandardToolWindows` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.ComponentModel.Design.StandardToolWindows` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class StandardToolWindows
             {
                 public static System.Guid ObjectBrowser;
@@ -2263,7 +2258,7 @@ namespace System
                 public static System.Guid Toolbox;
             }
 
-            // Generated from `System.ComponentModel.Design.TypeDescriptionProviderService` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.ComponentModel.Design.TypeDescriptionProviderService` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public abstract class TypeDescriptionProviderService
             {
                 public abstract System.ComponentModel.TypeDescriptionProvider GetProvider(System.Type type);
@@ -2271,17 +2266,17 @@ namespace System
                 protected TypeDescriptionProviderService() => throw null;
             }
 
-            // Generated from `System.ComponentModel.Design.ViewTechnology` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum ViewTechnology
+            // Generated from `System.ComponentModel.Design.ViewTechnology` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            public enum ViewTechnology : int
             {
-                Default,
-                Passthrough,
-                WindowsForms,
+                Default = 2,
+                Passthrough = 0,
+                WindowsForms = 1,
             }
 
             namespace Serialization
             {
-                // Generated from `System.ComponentModel.Design.Serialization.ComponentSerializationService` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+                // Generated from `System.ComponentModel.Design.Serialization.ComponentSerializationService` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public abstract class ComponentSerializationService
                 {
                     protected ComponentSerializationService() => throw null;
@@ -2298,7 +2293,7 @@ namespace System
                     public abstract void SerializeMemberAbsolute(System.ComponentModel.Design.Serialization.SerializationStore store, object owningObject, System.ComponentModel.MemberDescriptor member);
                 }
 
-                // Generated from `System.ComponentModel.Design.Serialization.ContextStack` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+                // Generated from `System.ComponentModel.Design.Serialization.ContextStack` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public class ContextStack
                 {
                     public void Append(object context) => throw null;
@@ -2310,7 +2305,7 @@ namespace System
                     public void Push(object context) => throw null;
                 }
 
-                // Generated from `System.ComponentModel.Design.Serialization.DefaultSerializationProviderAttribute` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+                // Generated from `System.ComponentModel.Design.Serialization.DefaultSerializationProviderAttribute` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public class DefaultSerializationProviderAttribute : System.Attribute
                 {
                     public DefaultSerializationProviderAttribute(System.Type providerType) => throw null;
@@ -2318,7 +2313,7 @@ namespace System
                     public string ProviderTypeName { get => throw null; }
                 }
 
-                // Generated from `System.ComponentModel.Design.Serialization.DesignerLoader` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+                // Generated from `System.ComponentModel.Design.Serialization.DesignerLoader` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public abstract class DesignerLoader
                 {
                     public abstract void BeginLoad(System.ComponentModel.Design.Serialization.IDesignerLoaderHost host);
@@ -2328,21 +2323,21 @@ namespace System
                     public virtual bool Loading { get => throw null; }
                 }
 
-                // Generated from `System.ComponentModel.Design.Serialization.IDesignerLoaderHost` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+                // Generated from `System.ComponentModel.Design.Serialization.IDesignerLoaderHost` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public interface IDesignerLoaderHost : System.ComponentModel.Design.IDesignerHost, System.ComponentModel.Design.IServiceContainer, System.IServiceProvider
                 {
                     void EndLoad(string baseClassName, bool successful, System.Collections.ICollection errorCollection);
                     void Reload();
                 }
 
-                // Generated from `System.ComponentModel.Design.Serialization.IDesignerLoaderHost2` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+                // Generated from `System.ComponentModel.Design.Serialization.IDesignerLoaderHost2` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public interface IDesignerLoaderHost2 : System.ComponentModel.Design.IDesignerHost, System.ComponentModel.Design.IServiceContainer, System.ComponentModel.Design.Serialization.IDesignerLoaderHost, System.IServiceProvider
                 {
                     bool CanReloadWithErrors { get; set; }
                     bool IgnoreErrorsDuringReload { get; set; }
                 }
 
-                // Generated from `System.ComponentModel.Design.Serialization.IDesignerLoaderService` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+                // Generated from `System.ComponentModel.Design.Serialization.IDesignerLoaderService` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public interface IDesignerLoaderService
                 {
                     void AddLoadDependency();
@@ -2350,7 +2345,7 @@ namespace System
                     bool Reload();
                 }
 
-                // Generated from `System.ComponentModel.Design.Serialization.IDesignerSerializationManager` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+                // Generated from `System.ComponentModel.Design.Serialization.IDesignerSerializationManager` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public interface IDesignerSerializationManager : System.IServiceProvider
                 {
                     void AddSerializationProvider(System.ComponentModel.Design.Serialization.IDesignerSerializationProvider provider);
@@ -2368,20 +2363,20 @@ namespace System
                     void SetName(object instance, string name);
                 }
 
-                // Generated from `System.ComponentModel.Design.Serialization.IDesignerSerializationProvider` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+                // Generated from `System.ComponentModel.Design.Serialization.IDesignerSerializationProvider` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public interface IDesignerSerializationProvider
                 {
                     object GetSerializer(System.ComponentModel.Design.Serialization.IDesignerSerializationManager manager, object currentSerializer, System.Type objectType, System.Type serializerType);
                 }
 
-                // Generated from `System.ComponentModel.Design.Serialization.IDesignerSerializationService` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+                // Generated from `System.ComponentModel.Design.Serialization.IDesignerSerializationService` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public interface IDesignerSerializationService
                 {
                     System.Collections.ICollection Deserialize(object serializationData);
                     object Serialize(System.Collections.ICollection objects);
                 }
 
-                // Generated from `System.ComponentModel.Design.Serialization.INameCreationService` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+                // Generated from `System.ComponentModel.Design.Serialization.INameCreationService` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public interface INameCreationService
                 {
                     string CreateName(System.ComponentModel.IContainer container, System.Type dataType);
@@ -2389,7 +2384,7 @@ namespace System
                     void ValidateName(string name);
                 }
 
-                // Generated from `System.ComponentModel.Design.Serialization.InstanceDescriptor` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+                // Generated from `System.ComponentModel.Design.Serialization.InstanceDescriptor` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public class InstanceDescriptor
                 {
                     public System.Collections.ICollection Arguments { get => throw null; }
@@ -2400,7 +2395,7 @@ namespace System
                     public System.Reflection.MemberInfo MemberInfo { get => throw null; }
                 }
 
-                // Generated from `System.ComponentModel.Design.Serialization.MemberRelationship` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+                // Generated from `System.ComponentModel.Design.Serialization.MemberRelationship` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public struct MemberRelationship
                 {
                     public static bool operator !=(System.ComponentModel.Design.Serialization.MemberRelationship left, System.ComponentModel.Design.Serialization.MemberRelationship right) => throw null;
@@ -2415,7 +2410,7 @@ namespace System
                     public object Owner { get => throw null; }
                 }
 
-                // Generated from `System.ComponentModel.Design.Serialization.MemberRelationshipService` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+                // Generated from `System.ComponentModel.Design.Serialization.MemberRelationshipService` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public abstract class MemberRelationshipService
                 {
                     protected virtual System.ComponentModel.Design.Serialization.MemberRelationship GetRelationship(System.ComponentModel.Design.Serialization.MemberRelationship source) => throw null;
@@ -2426,7 +2421,7 @@ namespace System
                     public abstract bool SupportsRelationship(System.ComponentModel.Design.Serialization.MemberRelationship source, System.ComponentModel.Design.Serialization.MemberRelationship relationship);
                 }
 
-                // Generated from `System.ComponentModel.Design.Serialization.ResolveNameEventArgs` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+                // Generated from `System.ComponentModel.Design.Serialization.ResolveNameEventArgs` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public class ResolveNameEventArgs : System.EventArgs
                 {
                     public string Name { get => throw null; }
@@ -2434,10 +2429,10 @@ namespace System
                     public object Value { get => throw null; set => throw null; }
                 }
 
-                // Generated from `System.ComponentModel.Design.Serialization.ResolveNameEventHandler` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+                // Generated from `System.ComponentModel.Design.Serialization.ResolveNameEventHandler` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public delegate void ResolveNameEventHandler(object sender, System.ComponentModel.Design.Serialization.ResolveNameEventArgs e);
 
-                // Generated from `System.ComponentModel.Design.Serialization.RootDesignerSerializerAttribute` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+                // Generated from `System.ComponentModel.Design.Serialization.RootDesignerSerializerAttribute` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public class RootDesignerSerializerAttribute : System.Attribute
                 {
                     public bool Reloadable { get => throw null; }
@@ -2449,7 +2444,7 @@ namespace System
                     public override object TypeId { get => throw null; }
                 }
 
-                // Generated from `System.ComponentModel.Design.Serialization.SerializationStore` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+                // Generated from `System.ComponentModel.Design.Serialization.SerializationStore` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public abstract class SerializationStore : System.IDisposable
                 {
                     public abstract void Close();
@@ -2465,7 +2460,7 @@ namespace System
     }
     namespace Drawing
     {
-        // Generated from `System.Drawing.ColorConverter` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Drawing.ColorConverter` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class ColorConverter : System.ComponentModel.TypeConverter
         {
             public override bool CanConvertFrom(System.ComponentModel.ITypeDescriptorContext context, System.Type sourceType) => throw null;
@@ -2477,7 +2472,7 @@ namespace System
             public override bool GetStandardValuesSupported(System.ComponentModel.ITypeDescriptorContext context) => throw null;
         }
 
-        // Generated from `System.Drawing.PointConverter` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Drawing.PointConverter` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class PointConverter : System.ComponentModel.TypeConverter
         {
             public override bool CanConvertFrom(System.ComponentModel.ITypeDescriptorContext context, System.Type sourceType) => throw null;
@@ -2491,7 +2486,7 @@ namespace System
             public PointConverter() => throw null;
         }
 
-        // Generated from `System.Drawing.RectangleConverter` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Drawing.RectangleConverter` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class RectangleConverter : System.ComponentModel.TypeConverter
         {
             public override bool CanConvertFrom(System.ComponentModel.ITypeDescriptorContext context, System.Type sourceType) => throw null;
@@ -2505,7 +2500,7 @@ namespace System
             public RectangleConverter() => throw null;
         }
 
-        // Generated from `System.Drawing.SizeConverter` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Drawing.SizeConverter` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class SizeConverter : System.ComponentModel.TypeConverter
         {
             public override bool CanConvertFrom(System.ComponentModel.ITypeDescriptorContext context, System.Type sourceType) => throw null;
@@ -2519,7 +2514,7 @@ namespace System
             public SizeConverter() => throw null;
         }
 
-        // Generated from `System.Drawing.SizeFConverter` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Drawing.SizeFConverter` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class SizeFConverter : System.ComponentModel.TypeConverter
         {
             public override bool CanConvertFrom(System.ComponentModel.ITypeDescriptorContext context, System.Type sourceType) => throw null;
@@ -2540,7 +2535,7 @@ namespace System
         {
             namespace ExtendedProtection
             {
-                // Generated from `System.Security.Authentication.ExtendedProtection.ExtendedProtectionPolicyTypeConverter` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+                // Generated from `System.Security.Authentication.ExtendedProtection.ExtendedProtectionPolicyTypeConverter` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public class ExtendedProtectionPolicyTypeConverter : System.ComponentModel.TypeConverter
                 {
                     public override bool CanConvertTo(System.ComponentModel.ITypeDescriptorContext context, System.Type destinationType) => throw null;
@@ -2553,16 +2548,16 @@ namespace System
     }
     namespace Timers
     {
-        // Generated from `System.Timers.ElapsedEventArgs` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Timers.ElapsedEventArgs` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class ElapsedEventArgs : System.EventArgs
         {
             public System.DateTime SignalTime { get => throw null; }
         }
 
-        // Generated from `System.Timers.ElapsedEventHandler` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Timers.ElapsedEventHandler` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public delegate void ElapsedEventHandler(object sender, System.Timers.ElapsedEventArgs e);
 
-        // Generated from `System.Timers.Timer` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Timers.Timer` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class Timer : System.ComponentModel.Component, System.ComponentModel.ISupportInitialize
         {
             public bool AutoReset { get => throw null; set => throw null; }
@@ -2581,7 +2576,7 @@ namespace System
             public Timer(double interval) => throw null;
         }
 
-        // Generated from `System.Timers.TimersDescriptionAttribute` in `System.ComponentModel.TypeConverter, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Timers.TimersDescriptionAttribute` in `System.ComponentModel.TypeConverter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class TimersDescriptionAttribute : System.ComponentModel.DescriptionAttribute
         {
             public override string Description { get => throw null; }
