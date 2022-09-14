@@ -32,6 +32,6 @@ try:
     # ignored.
     import mypkg
     mypkg.foo(42) # $ call=mypkg.foo(..) qlclass=NormalCall
-    mypkg.subpkg.bar(43) # $ call=mypkg.subpkg.bar(..) qlclass=NormalCall
+    mypkg.subpkg.bar(43) # $ call=mypkg.subpkg.bar(..) qlclass=LibraryCall arg_0=43
 except:
     pass

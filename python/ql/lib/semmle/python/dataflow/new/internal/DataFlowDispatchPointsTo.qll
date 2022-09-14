@@ -617,6 +617,18 @@ class SpecialCall extends DataFlowSourceCall, TSpecialCall {
  * and not be available for a summary.
  */
 class LibraryCall extends NormalCall {
+  LibraryCall() {
+    // TODO: share this with `resolvedCall`
+    not (
+      call = any(DataFlowCallableValue cv).getACall()
+      or
+      call = any(DataFlowLambda l).getACall()
+      or
+      // TODO: this should be covered by `DataFlowCallableValue`, but a `ClassValue` is not a `CallableValue`.
+      call = any(ClassValue c).getACall()
+    )
+  }
+
   // TODO: Implement Python calling convention?
   override Node getArg(int n) { result = TCfgNode(call.getArg(n)) }
 
