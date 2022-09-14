@@ -176,10 +176,11 @@ where
     or
     exists(string part | node = avoidHere(part) |
       part = "here" and
-      msg = "Avoid using the phrase \"" + part + "\" in alert messages."
+      msg =
+        "Try to use a descriptive phrase instead of \"here\". Use \"this location\" if you can't get around mentioning the current location."
       or
-      part != "here" and
-      msg = "Try to avoid using the phrase \"" + part + "\" in alert messages if possible."
+      part = "this location" and
+      msg = "Try to more descriptive phrase instead of \"this location\" if possible."
     )
     or
     node = avoidArticleInLinkText(_) and
