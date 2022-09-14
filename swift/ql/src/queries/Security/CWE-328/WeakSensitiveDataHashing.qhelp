@@ -13,22 +13,16 @@
         </p>
         <ul>
             <li>
-                pre-image attacks: if you know a hash value <code>h(x)</code>,
+                <b>Pre-image attacks</b>. If you know a hash value <code>h(x)</code>,
                 you should not be able to easily find the input <code>x</code>.
             </li>
             <li>
-                collision attacks: if you know a hash value <code>h(x)</code>,
+                <b>Collision attacks</b>. If you know a hash value <code>h(x)</code>,
                 you should not be able to easily find a different input
                 <code>y</code>
                 with the same hash value <code>h(x) = h(y)</code>.
             </li>
         </ul>
-        <!--<p>
-             In cases with a limited input space, such as for passwords, the hash
-             function also needs to be computationally expensive to be resistant to
-             brute-force attacks. Passwords should also have an unique salt applied
-             before hashing, but that is not considered by this query.
-        </p>-->
 
         <p>
             As an example, both MD5 and SHA-1 are known to be vulnerable to collision attacks.
@@ -44,16 +38,16 @@
     <recommendation>
 
         <p>
-            Ensure that you use a strong, modern cryptographic hash function:
+            Ensure that you use a strong, modern cryptographic hash function, such as:
         </p>
 
         <ul>
             <li>
-                such as Argon2, scrypt, bcrypt, or PBKDF2 for passwords and other data with limited input space where
+                Argon2, scrypt, bcrypt, or PBKDF2 for passwords and other data with limited input space where
                 a dictionary-like attack is feasible.
             </li>
             <li>
-                such as SHA-2, or SHA-3 in other cases.
+                SHA-2, or SHA-3 in other cases.
             </li>
         </ul>
 
@@ -69,7 +63,7 @@
         <sample src="WeakSensitiveDataHashingBad.swift"/>
         <p>
 
-            Here is the same function using SHA-512 that is a strong cryptographic hashing function.
+            Here is the same function using SHA-512, which is a strong cryptographic hashing function.
         </p>
         <sample src="WeakSensitiveDataHashingGood.swift"/>
 
