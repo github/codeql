@@ -78,7 +78,7 @@ class CleartextStorageConfig extends TaintTracking::Configuration {
 
   override predicate allowImplicitRead(DataFlow::Node node, DataFlow::ContentSet c) {
     // flow out from fields of a `RealmSwiftObject` at the sink, for example in
-    // `obj.var = tainted; sink(obj)`.
+    // `realmObj.data = sensitive`.
     isSink(node) and
     exists(ClassDecl cd |
       c.getAReadContent().(DataFlow::Content::FieldContent).getField() = cd.getAMember() and
