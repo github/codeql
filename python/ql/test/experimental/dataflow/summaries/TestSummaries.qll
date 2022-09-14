@@ -70,7 +70,7 @@ private class SummarizedCallableReversed extends SummarizedCallable {
 }
 
 private class SummarizedCallableMap extends SummarizedCallable {
-  SummarizedCallableMap() { this = "map" }
+  SummarizedCallableMap() { this = "list_map" }
 
   override CallNode getACall() { result.getFunction().(NameNode).getId() = this }
 

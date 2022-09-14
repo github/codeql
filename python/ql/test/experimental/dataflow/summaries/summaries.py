@@ -48,16 +48,16 @@ SINK(tainted_list[0])  # $ flow="SOURCE, l:-1 -> tainted_list[0]"
 def add_colon(x):
     return x + ":"
 
-tainted_mapped = map(add_colon, [SOURCE])
+tainted_mapped = list_map(add_colon, [SOURCE])
 SINK(tainted_mapped[0])  # $ flow="SOURCE, l:-1 -> tainted_mapped[0]"
 
 def explicit_identity(x):
     return x
 
-tainted_mapped_explicit = map(explicit_identity, [SOURCE])
+tainted_mapped_explicit = list_map(explicit_identity, [SOURCE])
 SINK(tainted_mapped_explicit[0])  # $ flow="SOURCE, l:-1 -> tainted_mapped_explicit[0]"
 
-tainted_mapped_summary = map(identity, [SOURCE])
+tainted_mapped_summary = list_map(identity, [SOURCE])
 SINK(tainted_mapped_summary[0])  # $ flow="SOURCE, l:-1 -> tainted_mapped_summary[0]"
 
 tainted_list = append_to_list([], SOURCE)
