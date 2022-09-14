@@ -58,11 +58,11 @@ where
     ruby_ast_node_info(node, _, _, loc) and
     exists(Location first |
       body_statement(node, 0, first) and
-      locations_default(first, file, start_line, start_column, _, _)
+      locations_default(first, pragma[only_bind_into](file), start_line, start_column, _, _)
     ) and
     exists(Location last |
       last = max(Location l, int i | body_statement(node, i, l) | l order by i) and
-      locations_default(last, file, _, _, end_line, end_column)
+      locations_default(last, pragma[only_bind_into](file), _, _, end_line, end_column)
     )
   )
 select loc, file, start_line, start_column, end_line, end_column
