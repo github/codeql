@@ -13,10 +13,11 @@ private import codeql.ruby.AST
 private import codeql.ruby.DataFlow
 import codeql.ruby.security.internal.SensitiveDataHeuristics
 private import HeuristicNames
+private import codeql.ruby.CFG
 
 /** An expression that might contain sensitive data. */
 cached
-abstract class SensitiveExpr extends Expr {
+abstract class SensitiveNode extends DataFlow::Node {
   /** Gets a human-readable description of this expression for use in alert messages. */
   cached
   abstract string describe();
@@ -27,7 +28,7 @@ abstract class SensitiveExpr extends Expr {
 }
 
 /** A method call that might produce sensitive data. */
-class SensitiveCall extends SensitiveExpr, MethodCall {
+class SensitiveCall extends SensitiveNode instanceof DataFlow::CallNode {
   SensitiveDataClassification classification;
 
   SensitiveCall() {
@@ -35,24 +36,28 @@ class SensitiveCall extends SensitiveExpr, MethodCall {
     or
     // This is particularly to pick up methods with an argument like "password", which
     // may indicate a lookup.
-    exists(string s | this.getAnArgument().getConstantValue().isStringlikeValue(s) |
+    exists(string s | super.getArgument(_).asExpr().getConstantValue().isStringlikeValue(s) |
       nameIndicatesSensitiveData(s, classification)
     )
   }
 
-  override string describe() { result = "a call to " + this.getMethodName() }
+  override string describe() { result = "a call to " + super.getMethodName() }
 
   override SensitiveDataClassification getClassification() { result = classification }
 }
 
 /** An access to a variable or hash value that might contain sensitive data. */
-abstract class SensitiveVariableAccess extends SensitiveExpr {
+abstract class SensitiveVariableAccess extends SensitiveNode {
   string name;
 
   SensitiveVariableAccess() {
-    this.(VariableAccess).getVariable().hasName(name)
+    this.asExpr().(CfgNodes::ExprNodes::VariableAccessCfgNode).getExpr().getVariable().hasName(name)
     or
-    this.(ElementReference).getAnArgument().getConstantValue().isStringlikeValue(name)
+    this.asExpr()
+        .(CfgNodes::ExprNodes::ElementReferenceCfgNode)
+        .getAnArgument()
+        .getConstantValue()
+        .isStringlikeValue(name)
   }
 
   override string describe() { result = "an access to " + name }

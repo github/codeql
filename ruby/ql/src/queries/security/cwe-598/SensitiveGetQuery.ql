@@ -34,11 +34,10 @@ private predicate localFlowWithElementReference(DataFlow::LocalSourceNode src, D
 
 from
   HTTP::Server::RequestHandler handler, HTTP::Server::RequestInputAccess input,
-  DataFlow::Node sensitive
+  SensitiveNode sensitive
 where
   handler.getAnHttpMethod() = "get" and
   input.asExpr().getExpr().getEnclosingMethod() = handler and
-  sensitive.asExpr().getExpr() instanceof SensitiveExpr and
   localFlowWithElementReference(input, sensitive)
 select input, "$@ for GET requests uses query parameter as sensitive data.", handler,
   "Route handler"
