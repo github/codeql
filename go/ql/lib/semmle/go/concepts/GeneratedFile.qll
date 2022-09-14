@@ -43,8 +43,4 @@ module GeneratedFile {
  * Extend this class to refine existing API models. If you want to model new APIs,
  * extend `GeneratedFile::Range` instead.
  */
-class GeneratedFile extends File {
-  GeneratedFile::Range self;
-
-  GeneratedFile() { this = self }
-}
+class GeneratedFile extends File instanceof GeneratedFile::Range { }
