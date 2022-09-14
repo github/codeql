@@ -57,7 +57,7 @@ func test1(realm : Realm, myPassword : String, myHashedPassword : String) {
 	let g = MyRealmSwiftObject()
 	g.data = "" // GOOD (not sensitive)
 	g.data = myPassword // BAD
-	g.data = "" // GOOD (not sensitive) // [FALSE POSITIVE]
+	g.data = "" // GOOD (not sensitive)
 }
 
 // limitation: its possible to configure a Realm DB to be stored encrypted, if this is done correctly

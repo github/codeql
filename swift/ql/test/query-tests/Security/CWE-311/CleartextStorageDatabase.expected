@@ -1,7 +1,6 @@
 edges
-| file://:0:0:0:0 | [post] self :  | file://:0:0:0:0 | self |
+| file://:0:0:0:0 | [post] self [data] :  | file://:0:0:0:0 | [post] self |
 | file://:0:0:0:0 | [post] self [data] :  | file://:0:0:0:0 | [post] self :  |
-| file://:0:0:0:0 | [post] self [data] :  | file://:0:0:0:0 | self |
 | file://:0:0:0:0 | value :  | file://:0:0:0:0 | [post] self [data] :  |
 | testCoreData.swift:18:19:18:26 | value :  | testCoreData.swift:19:12:19:12 | value |
 | testCoreData.swift:31:3:31:3 | newValue :  | testCoreData.swift:32:13:32:13 | newValue |
@@ -12,51 +11,27 @@ edges
 | testCoreData.swift:91:10:91:10 | passwd :  | testCoreData.swift:95:15:95:15 | x |
 | testCoreData.swift:92:10:92:10 | passwd :  | testCoreData.swift:96:15:96:15 | y |
 | testCoreData.swift:93:10:93:10 | passwd :  | testCoreData.swift:97:15:97:15 | z |
-| testRealm.swift:16:6:16:6 | self :  | file://:0:0:0:0 | self |
 | testRealm.swift:16:6:16:6 | value :  | file://:0:0:0:0 | value :  |
-| testRealm.swift:34:2:34:2 | [post] a :  | testRealm.swift:34:2:34:2 | a |
-| testRealm.swift:34:2:34:2 | [post] a :  | testRealm.swift:34:2:34:2 | a :  |
-| testRealm.swift:34:2:34:2 | [post] a [data] :  | testRealm.swift:34:2:34:2 | a |
-| testRealm.swift:34:2:34:2 | [post] a [data] :  | testRealm.swift:34:2:34:2 | a :  |
-| testRealm.swift:34:2:34:2 | a :  | testRealm.swift:16:6:16:6 | self :  |
+| testRealm.swift:34:2:34:2 | [post] a [data] :  | testRealm.swift:34:2:34:2 | [post] a |
 | testRealm.swift:34:11:34:11 | myPassword :  | testRealm.swift:16:6:16:6 | value :  |
-| testRealm.swift:34:11:34:11 | myPassword :  | testRealm.swift:34:2:34:2 | [post] a :  |
+| testRealm.swift:34:11:34:11 | myPassword :  | testRealm.swift:34:2:34:2 | [post] a |
 | testRealm.swift:34:11:34:11 | myPassword :  | testRealm.swift:34:2:34:2 | [post] a [data] :  |
-| testRealm.swift:42:2:42:2 | [post] c :  | testRealm.swift:42:2:42:2 | c |
-| testRealm.swift:42:2:42:2 | [post] c :  | testRealm.swift:42:2:42:2 | c :  |
-| testRealm.swift:42:2:42:2 | [post] c [data] :  | testRealm.swift:42:2:42:2 | c |
-| testRealm.swift:42:2:42:2 | [post] c [data] :  | testRealm.swift:42:2:42:2 | c :  |
-| testRealm.swift:42:2:42:2 | c :  | testRealm.swift:16:6:16:6 | self :  |
+| testRealm.swift:42:2:42:2 | [post] c [data] :  | testRealm.swift:42:2:42:2 | [post] c |
 | testRealm.swift:42:11:42:11 | myPassword :  | testRealm.swift:16:6:16:6 | value :  |
-| testRealm.swift:42:11:42:11 | myPassword :  | testRealm.swift:42:2:42:2 | [post] c :  |
+| testRealm.swift:42:11:42:11 | myPassword :  | testRealm.swift:42:2:42:2 | [post] c |
 | testRealm.swift:42:11:42:11 | myPassword :  | testRealm.swift:42:2:42:2 | [post] c [data] :  |
-| testRealm.swift:52:2:52:3 | ...! :  | testRealm.swift:16:6:16:6 | self :  |
-| testRealm.swift:52:2:52:3 | [post] ...! :  | testRealm.swift:52:2:52:3 | ...! |
-| testRealm.swift:52:2:52:3 | [post] ...! :  | testRealm.swift:52:2:52:3 | ...! :  |
-| testRealm.swift:52:2:52:3 | [post] ...! [data] :  | testRealm.swift:52:2:52:3 | ...! |
-| testRealm.swift:52:2:52:3 | [post] ...! [data] :  | testRealm.swift:52:2:52:3 | ...! :  |
+| testRealm.swift:52:2:52:3 | [post] ...! [data] :  | testRealm.swift:52:2:52:3 | [post] ...! |
 | testRealm.swift:52:12:52:12 | myPassword :  | testRealm.swift:16:6:16:6 | value :  |
-| testRealm.swift:52:12:52:12 | myPassword :  | testRealm.swift:52:2:52:3 | [post] ...! :  |
+| testRealm.swift:52:12:52:12 | myPassword :  | testRealm.swift:52:2:52:3 | [post] ...! |
 | testRealm.swift:52:12:52:12 | myPassword :  | testRealm.swift:52:2:52:3 | [post] ...! [data] :  |
-| testRealm.swift:59:2:59:2 | [post] g :  | testRealm.swift:59:2:59:2 | g |
-| testRealm.swift:59:2:59:2 | [post] g :  | testRealm.swift:59:2:59:2 | g :  |
-| testRealm.swift:59:2:59:2 | [post] g :  | testRealm.swift:60:2:60:2 | g |
-| testRealm.swift:59:2:59:2 | [post] g :  | testRealm.swift:60:2:60:2 | g :  |
-| testRealm.swift:59:2:59:2 | [post] g [data] :  | testRealm.swift:59:2:59:2 | g |
-| testRealm.swift:59:2:59:2 | [post] g [data] :  | testRealm.swift:59:2:59:2 | g :  |
-| testRealm.swift:59:2:59:2 | [post] g [data] :  | testRealm.swift:60:2:60:2 | g |
-| testRealm.swift:59:2:59:2 | [post] g [data] :  | testRealm.swift:60:2:60:2 | g :  |
-| testRealm.swift:59:2:59:2 | g :  | testRealm.swift:16:6:16:6 | self :  |
-| testRealm.swift:59:2:59:2 | g :  | testRealm.swift:60:2:60:2 | g |
-| testRealm.swift:59:2:59:2 | g :  | testRealm.swift:60:2:60:2 | g :  |
+| testRealm.swift:59:2:59:2 | [post] g [data] :  | testRealm.swift:59:2:59:2 | [post] g |
 | testRealm.swift:59:11:59:11 | myPassword :  | testRealm.swift:16:6:16:6 | value :  |
-| testRealm.swift:59:11:59:11 | myPassword :  | testRealm.swift:59:2:59:2 | [post] g :  |
+| testRealm.swift:59:11:59:11 | myPassword :  | testRealm.swift:59:2:59:2 | [post] g |
 | testRealm.swift:59:11:59:11 | myPassword :  | testRealm.swift:59:2:59:2 | [post] g [data] :  |
-| testRealm.swift:60:2:60:2 | g :  | testRealm.swift:16:6:16:6 | self :  |
 nodes
+| file://:0:0:0:0 | [post] self | semmle.label | [post] self |
 | file://:0:0:0:0 | [post] self :  | semmle.label | [post] self :  |
 | file://:0:0:0:0 | [post] self [data] :  | semmle.label | [post] self [data] :  |
-| file://:0:0:0:0 | self | semmle.label | self |
 | file://:0:0:0:0 | value :  | semmle.label | value :  |
 | testCoreData.swift:18:19:18:26 | value :  | semmle.label | value :  |
 | testCoreData.swift:19:12:19:12 | value | semmle.label | value |
@@ -78,44 +53,33 @@ nodes
 | testCoreData.swift:95:15:95:15 | x | semmle.label | x |
 | testCoreData.swift:96:15:96:15 | y | semmle.label | y |
 | testCoreData.swift:97:15:97:15 | z | semmle.label | z |
-| testRealm.swift:16:6:16:6 | self :  | semmle.label | self :  |
 | testRealm.swift:16:6:16:6 | value :  | semmle.label | value :  |
-| testRealm.swift:34:2:34:2 | [post] a :  | semmle.label | [post] a :  |
+| testRealm.swift:34:2:34:2 | [post] a | semmle.label | [post] a |
 | testRealm.swift:34:2:34:2 | [post] a [data] :  | semmle.label | [post] a [data] :  |
-| testRealm.swift:34:2:34:2 | a | semmle.label | a |
-| testRealm.swift:34:2:34:2 | a :  | semmle.label | a :  |
 | testRealm.swift:34:11:34:11 | myPassword :  | semmle.label | myPassword :  |
-| testRealm.swift:42:2:42:2 | [post] c :  | semmle.label | [post] c :  |
+| testRealm.swift:42:2:42:2 | [post] c | semmle.label | [post] c |
 | testRealm.swift:42:2:42:2 | [post] c [data] :  | semmle.label | [post] c [data] :  |
-| testRealm.swift:42:2:42:2 | c | semmle.label | c |
-| testRealm.swift:42:2:42:2 | c :  | semmle.label | c :  |
 | testRealm.swift:42:11:42:11 | myPassword :  | semmle.label | myPassword :  |
-| testRealm.swift:52:2:52:3 | ...! | semmle.label | ...! |
-| testRealm.swift:52:2:52:3 | ...! :  | semmle.label | ...! :  |
-| testRealm.swift:52:2:52:3 | [post] ...! :  | semmle.label | [post] ...! :  |
+| testRealm.swift:52:2:52:3 | [post] ...! | semmle.label | [post] ...! |
 | testRealm.swift:52:2:52:3 | [post] ...! [data] :  | semmle.label | [post] ...! [data] :  |
 | testRealm.swift:52:12:52:12 | myPassword :  | semmle.label | myPassword :  |
-| testRealm.swift:59:2:59:2 | [post] g :  | semmle.label | [post] g :  |
+| testRealm.swift:59:2:59:2 | [post] g | semmle.label | [post] g |
 | testRealm.swift:59:2:59:2 | [post] g [data] :  | semmle.label | [post] g [data] :  |
-| testRealm.swift:59:2:59:2 | g | semmle.label | g |
-| testRealm.swift:59:2:59:2 | g :  | semmle.label | g :  |
 | testRealm.swift:59:11:59:11 | myPassword :  | semmle.label | myPassword :  |
-| testRealm.swift:60:2:60:2 | g | semmle.label | g |
-| testRealm.swift:60:2:60:2 | g :  | semmle.label | g :  |
 subpaths
-| testRealm.swift:34:11:34:11 | myPassword :  | testRealm.swift:16:6:16:6 | value :  | file://:0:0:0:0 | [post] self :  | testRealm.swift:34:2:34:2 | [post] a :  |
+| testRealm.swift:34:11:34:11 | myPassword :  | testRealm.swift:16:6:16:6 | value :  | file://:0:0:0:0 | [post] self :  | testRealm.swift:34:2:34:2 | [post] a |
 | testRealm.swift:34:11:34:11 | myPassword :  | testRealm.swift:16:6:16:6 | value :  | file://:0:0:0:0 | [post] self [data] :  | testRealm.swift:34:2:34:2 | [post] a [data] :  |
-| testRealm.swift:42:11:42:11 | myPassword :  | testRealm.swift:16:6:16:6 | value :  | file://:0:0:0:0 | [post] self :  | testRealm.swift:42:2:42:2 | [post] c :  |
+| testRealm.swift:42:11:42:11 | myPassword :  | testRealm.swift:16:6:16:6 | value :  | file://:0:0:0:0 | [post] self :  | testRealm.swift:42:2:42:2 | [post] c |
 | testRealm.swift:42:11:42:11 | myPassword :  | testRealm.swift:16:6:16:6 | value :  | file://:0:0:0:0 | [post] self [data] :  | testRealm.swift:42:2:42:2 | [post] c [data] :  |
-| testRealm.swift:52:12:52:12 | myPassword :  | testRealm.swift:16:6:16:6 | value :  | file://:0:0:0:0 | [post] self :  | testRealm.swift:52:2:52:3 | [post] ...! :  |
+| testRealm.swift:52:12:52:12 | myPassword :  | testRealm.swift:16:6:16:6 | value :  | file://:0:0:0:0 | [post] self :  | testRealm.swift:52:2:52:3 | [post] ...! |
 | testRealm.swift:52:12:52:12 | myPassword :  | testRealm.swift:16:6:16:6 | value :  | file://:0:0:0:0 | [post] self [data] :  | testRealm.swift:52:2:52:3 | [post] ...! [data] :  |
-| testRealm.swift:59:11:59:11 | myPassword :  | testRealm.swift:16:6:16:6 | value :  | file://:0:0:0:0 | [post] self :  | testRealm.swift:59:2:59:2 | [post] g :  |
+| testRealm.swift:59:11:59:11 | myPassword :  | testRealm.swift:16:6:16:6 | value :  | file://:0:0:0:0 | [post] self :  | testRealm.swift:59:2:59:2 | [post] g |
 | testRealm.swift:59:11:59:11 | myPassword :  | testRealm.swift:16:6:16:6 | value :  | file://:0:0:0:0 | [post] self [data] :  | testRealm.swift:59:2:59:2 | [post] g [data] :  |
 #select
-| file://:0:0:0:0 | self | testRealm.swift:34:11:34:11 | myPassword :  | file://:0:0:0:0 | self | This operation stores 'self' in a database. It may contain unencrypted sensitive data from $@ | testRealm.swift:34:11:34:11 | myPassword :  | myPassword |
-| file://:0:0:0:0 | self | testRealm.swift:42:11:42:11 | myPassword :  | file://:0:0:0:0 | self | This operation stores 'self' in a database. It may contain unencrypted sensitive data from $@ | testRealm.swift:42:11:42:11 | myPassword :  | myPassword |
-| file://:0:0:0:0 | self | testRealm.swift:52:12:52:12 | myPassword :  | file://:0:0:0:0 | self | This operation stores 'self' in a database. It may contain unencrypted sensitive data from $@ | testRealm.swift:52:12:52:12 | myPassword :  | myPassword |
-| file://:0:0:0:0 | self | testRealm.swift:59:11:59:11 | myPassword :  | file://:0:0:0:0 | self | This operation stores 'self' in a database. It may contain unencrypted sensitive data from $@ | testRealm.swift:59:11:59:11 | myPassword :  | myPassword |
+| file://:0:0:0:0 | self | testRealm.swift:34:11:34:11 | myPassword :  | file://:0:0:0:0 | [post] self | This operation stores '[post] self' in a database. It may contain unencrypted sensitive data from $@ | testRealm.swift:34:11:34:11 | myPassword :  | myPassword |
+| file://:0:0:0:0 | self | testRealm.swift:42:11:42:11 | myPassword :  | file://:0:0:0:0 | [post] self | This operation stores '[post] self' in a database. It may contain unencrypted sensitive data from $@ | testRealm.swift:42:11:42:11 | myPassword :  | myPassword |
+| file://:0:0:0:0 | self | testRealm.swift:52:12:52:12 | myPassword :  | file://:0:0:0:0 | [post] self | This operation stores '[post] self' in a database. It may contain unencrypted sensitive data from $@ | testRealm.swift:52:12:52:12 | myPassword :  | myPassword |
+| file://:0:0:0:0 | self | testRealm.swift:59:11:59:11 | myPassword :  | file://:0:0:0:0 | [post] self | This operation stores '[post] self' in a database. It may contain unencrypted sensitive data from $@ | testRealm.swift:59:11:59:11 | myPassword :  | myPassword |
 | testCoreData.swift:19:12:19:12 | value | testCoreData.swift:61:25:61:25 | password :  | testCoreData.swift:19:12:19:12 | value | This operation stores 'value' in a database. It may contain unencrypted sensitive data from $@ | testCoreData.swift:61:25:61:25 | password :  | password |
 | testCoreData.swift:32:13:32:13 | newValue | testCoreData.swift:64:16:64:16 | password :  | testCoreData.swift:32:13:32:13 | newValue | This operation stores 'newValue' in a database. It may contain unencrypted sensitive data from $@ | testCoreData.swift:64:16:64:16 | password :  | password |
 | testCoreData.swift:48:15:48:15 | password | testCoreData.swift:48:15:48:15 | password | testCoreData.swift:48:15:48:15 | password | This operation stores 'password' in a database. It may contain unencrypted sensitive data from $@ | testCoreData.swift:48:15:48:15 | password | password |
@@ -127,8 +91,7 @@ subpaths
 | testCoreData.swift:95:15:95:15 | x | testCoreData.swift:91:10:91:10 | passwd :  | testCoreData.swift:95:15:95:15 | x | This operation stores 'x' in a database. It may contain unencrypted sensitive data from $@ | testCoreData.swift:91:10:91:10 | passwd :  | passwd |
 | testCoreData.swift:96:15:96:15 | y | testCoreData.swift:92:10:92:10 | passwd :  | testCoreData.swift:96:15:96:15 | y | This operation stores 'y' in a database. It may contain unencrypted sensitive data from $@ | testCoreData.swift:92:10:92:10 | passwd :  | passwd |
 | testCoreData.swift:97:15:97:15 | z | testCoreData.swift:93:10:93:10 | passwd :  | testCoreData.swift:97:15:97:15 | z | This operation stores 'z' in a database. It may contain unencrypted sensitive data from $@ | testCoreData.swift:93:10:93:10 | passwd :  | passwd |
-| testRealm.swift:34:2:34:2 | a | testRealm.swift:34:11:34:11 | myPassword :  | testRealm.swift:34:2:34:2 | a | This operation stores 'a' in a database. It may contain unencrypted sensitive data from $@ | testRealm.swift:34:11:34:11 | myPassword :  | myPassword |
-| testRealm.swift:42:2:42:2 | c | testRealm.swift:42:11:42:11 | myPassword :  | testRealm.swift:42:2:42:2 | c | This operation stores 'c' in a database. It may contain unencrypted sensitive data from $@ | testRealm.swift:42:11:42:11 | myPassword :  | myPassword |
-| testRealm.swift:52:2:52:3 | ...! | testRealm.swift:52:12:52:12 | myPassword :  | testRealm.swift:52:2:52:3 | ...! | This operation stores '...!' in a database. It may contain unencrypted sensitive data from $@ | testRealm.swift:52:12:52:12 | myPassword :  | myPassword |
-| testRealm.swift:59:2:59:2 | g | testRealm.swift:59:11:59:11 | myPassword :  | testRealm.swift:59:2:59:2 | g | This operation stores 'g' in a database. It may contain unencrypted sensitive data from $@ | testRealm.swift:59:11:59:11 | myPassword :  | myPassword |
-| testRealm.swift:60:2:60:2 | g | testRealm.swift:59:11:59:11 | myPassword :  | testRealm.swift:60:2:60:2 | g | This operation stores 'g' in a database. It may contain unencrypted sensitive data from $@ | testRealm.swift:59:11:59:11 | myPassword :  | myPassword |
+| testRealm.swift:34:2:34:2 | a | testRealm.swift:34:11:34:11 | myPassword :  | testRealm.swift:34:2:34:2 | [post] a | This operation stores '[post] a' in a database. It may contain unencrypted sensitive data from $@ | testRealm.swift:34:11:34:11 | myPassword :  | myPassword |
+| testRealm.swift:42:2:42:2 | c | testRealm.swift:42:11:42:11 | myPassword :  | testRealm.swift:42:2:42:2 | [post] c | This operation stores '[post] c' in a database. It may contain unencrypted sensitive data from $@ | testRealm.swift:42:11:42:11 | myPassword :  | myPassword |
+| testRealm.swift:52:2:52:3 | ...! | testRealm.swift:52:12:52:12 | myPassword :  | testRealm.swift:52:2:52:3 | [post] ...! | This operation stores '[post] ...!' in a database. It may contain unencrypted sensitive data from $@ | testRealm.swift:52:12:52:12 | myPassword :  | myPassword |
+| testRealm.swift:59:2:59:2 | g | testRealm.swift:59:11:59:11 | myPassword :  | testRealm.swift:59:2:59:2 | [post] g | This operation stores '[post] g' in a database. It may contain unencrypted sensitive data from $@ | testRealm.swift:59:11:59:11 | myPassword :  | myPassword |

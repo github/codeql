@@ -20,7 +20,7 @@ import DataFlow::PathGraph
 /**
  * An `Expr` that is stored in a local database.
  */
-abstract class Stored extends Expr { }
+abstract class Stored extends DataFlow::Node { }
 
 /**
  * An `Expr` that is stored with the Core Data library.
@@ -33,7 +33,7 @@ class CoreDataStore extends Stored {
       c.getAMember() = f and
       f.getName() = ["setValue(_:forKey:)", "setPrimitiveValue(_:forKey:)"] and
       call.getStaticTarget() = f and
-      call.getArgument(0).getExpr() = this
+      call.getArgument(0).getExpr() = this.asExpr()
     )
   }
 }
@@ -43,10 +43,13 @@ class CoreDataStore extends Stored {
  */
 class RealmStore extends Stored {
   RealmStore() {
-    // any access into a class derived from `RealmSwiftObject` is a sink
+    // any write into a class derived from `RealmSwiftObject` is a sink. For
+    // example in `realmObj.data = sensitive` the post-update node corresponding
+    // with `realmObj.data` is a sink.
     exists(ClassDecl cd |
       cd.getABaseTypeDecl*().getName() = "RealmSwiftObject" and
-      this.getFullyConverted().getType() = cd.getType()
+      this.(DataFlow::PostUpdateNode).getPreUpdateNode().asExpr().getFullyConverted().getType() =
+        cd.getType()
     )
   }
 }
@@ -60,7 +63,7 @@ class CleartextStorageConfig extends TaintTracking::Configuration {
 
   override predicate isSource(DataFlow::Node node) { node.asExpr() instanceof SensitiveExpr }
 
-  override predicate isSink(DataFlow::Node node) { node.asExpr() instanceof Stored }
+  override predicate isSink(DataFlow::Node node) { node instanceof Stored }
 
   override predicate isSanitizerIn(DataFlow::Node node) {
     // make sources barriers so that we only report the closest instance
@@ -72,19 +75,10 @@ class CleartextStorageConfig extends TaintTracking::Configuration {
     node.asExpr() instanceof EncryptedExpr
   }
 
-  override predicate isAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
-    // allow flow from a post-update node at the sink to the sink. For example
-    // in `realmObj.data = sensitive` taint flows to the post-update node
-    // corresponding with the  sink `realmObj.data`, and we want to consider it
-    // as reaching that sink.
-    node1.(DataFlow::PostUpdateNode).getPreUpdateNode() = node2 and
-    isSink(node2)
-  }
-
   override predicate allowImplicitRead(DataFlow::Node node, DataFlow::ContentSet c) {
     // flow out from fields of a `RealmSwiftObject` at the sink, for example in
     // `obj.var = tainted; sink(obj)`.
-    (isSink(node) or isAdditionalTaintStep(node, _)) and
+    isSink(node) and
     exists(ClassDecl cd |
       c.getAReadContent().(DataFlow::Content::FieldContent).getField() = cd.getAMember() and
       cd.getABaseTypeDecl*().getName() = "RealmSwiftObject"
@@ -95,9 +89,19 @@ class CleartextStorageConfig extends TaintTracking::Configuration {
   }
 }
 
+/**
+ * Gets a prettier node to use in the results.
+ */
+DataFlow::Node cleanupNode(DataFlow::Node n) {
+  result = n.(DataFlow::PostUpdateNode).getPreUpdateNode()
+  or
+  not n instanceof DataFlow::PostUpdateNode and
+  result = n
+}
+
 from CleartextStorageConfig config, DataFlow::PathNode sourceNode, DataFlow::PathNode sinkNode
 where config.hasFlowPath(sourceNode, sinkNode)
-select sinkNode.getNode(), sourceNode, sinkNode,
+select cleanupNode(sinkNode.getNode()), sourceNode, sinkNode,
   "This operation stores '" + sinkNode.getNode().toString() +
     "' in a database. It may contain unencrypted sensitive data from $@", sourceNode,
   sourceNode.getNode().toString()
