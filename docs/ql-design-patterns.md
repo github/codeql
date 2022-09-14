@@ -58,7 +58,7 @@ Now, a concrete subclass can derive from `MySpecialExpr::Range` if it wants to e
 
 Let's use an example from the Python libraries: https://github.com/github/codeql/blob/46751e515c40c6b4c9b61758cc840eec1894a624/python/ql/lib/semmle/python/Concepts.qll#L601-L683
 
-`Escaping`, as the name suggests, models various APIs that escape meta-characters. It has a member-predicate `getKind()` that tells you what sort of escaping the modelled function does. For example, if the result of that predicate is `"html"`, then this means that the escaping function is meant to make things safe to embed inside HTML.
+`Escaping`, as the name suggests, models various APIs that escape meta-characters. It has a member-predicate `getKind()` that tells you what sort of escaping the modeled function does. For example, if the result of that predicate is `"html"`, then this means that the escaping function is meant to make things safe to embed inside HTML.
 `Escaping::Range` is subclassed to model various APIs, and `kind()` is implemented accordingly.
 But we can also subclass `Escaping` to, as in the above example, talk about all HTML-escaping functions.
 
