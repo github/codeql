@@ -104,3 +104,6 @@ html_favicon = 'images/site/favicon.ico'
 
 # Exclude these paths from being built by Sphinx
 exclude_patterns = ['vale*', '_static', '_templates', 'reusables', 'images', 'support', 'ql-training', 'query-help', '_build', '*.py*', 'README.rst']
+
+# Add extension for redirects
+extensions = ['sphinxcontrib.redirects']
