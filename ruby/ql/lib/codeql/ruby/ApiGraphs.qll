@@ -33,7 +33,7 @@ module API {
    * 3. Map the resulting API graph nodes to data-flow nodes, using `asSource` or `asSink`.
    *
    * For example, a simplified way to get arguments to `Foo.bar` would be
-   * ```codeql
+   * ```ql
    * API::getTopLevelMember("Foo").getMethod("bar").getParameter(0).asSink()
    * ```
    *

@@ -24,7 +24,7 @@ private class DefaultSafeExternalApiMethod extends SafeExternalApiMethod {
     or
     this.getDeclaringType().hasQualifiedName("org.apache.commons.lang3", "Validate")
     or
-    this.getQualifiedName() = "Objects.equals"
+    this.hasQualifiedName("java.util", "Objects", "equals")
     or
     this.getDeclaringType() instanceof TypeString and this.getName() = "equals"
     or
@@ -92,10 +92,7 @@ class ExternalApiDataNode extends DataFlow::Node {
   int getIndex() { result = i }
 
   /** Gets the description of the method being called. */
-  string getMethodDescription() {
-    result =
-      this.getMethod().getDeclaringType().getPackage() + "." + this.getMethod().getQualifiedName()
-  }
+  string getMethodDescription() { result = this.getMethod().getQualifiedName() }
 }
 
 /** DEPRECATED: Alias for ExternalApiDataNode */

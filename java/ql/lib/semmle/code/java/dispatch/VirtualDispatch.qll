@@ -62,10 +62,6 @@ private module Dispatch {
   cached
   Method viableImpl_v3(MethodAccess ma) { result = DispatchFlow::viableImpl_out(ma) }
 
-  private predicate qualType(VirtualMethodAccess ma, RefType t, boolean exact) {
-    exprTypeFlow(ma.getQualifier(), t, exact)
-  }
-
   /**
    * INTERNAL: Use `viableImpl` instead.
    *
@@ -73,6 +69,35 @@ private module Dispatch {
    */
   cached
   Method viableImpl_v2(MethodAccess ma) {
+    result = viableImpl_v2_cand(pragma[only_bind_into](ma)) and
+    exists(Method def, RefType t, boolean exact |
+      qualUnionType(pragma[only_bind_into](ma), pragma[only_bind_into](t),
+        pragma[only_bind_into](exact)) and
+      def = ma.getMethod().getSourceDeclaration()
+    |
+      exact = true and result = exactMethodImpl(def, t.getSourceDeclaration())
+      or
+      exact = false and
+      exists(RefType t2 |
+        result = viableMethodImpl(def, t.getSourceDeclaration(), t2) and
+        not Unification_v2::failsUnification(t, t2)
+      )
+    )
+    or
+    result = viableImpl_v2_cand(ma) and
+    not qualUnionType(ma, _, _)
+  }
+
+  private predicate qualUnionType(VirtualMethodAccess ma, RefType t, boolean exact) {
+    exprUnionTypeFlow(ma.getQualifier(), t, exact)
+  }
+
+  private predicate unificationTargetLeft_v2(ParameterizedType t1) { qualUnionType(_, t1, _) }
+
+  private module Unification_v2 =
+    MkUnification<unificationTargetLeft_v2/1, unificationTargetRight/1>;
+
+  private Method viableImpl_v2_cand(MethodAccess ma) {
     result = viableImpl_v1(ma) and
     (
       exists(Method def, RefType t, boolean exact |
@@ -84,7 +109,7 @@ private module Dispatch {
         exact = false and
         exists(RefType t2 |
           result = viableMethodImpl(def, t.getSourceDeclaration(), t2) and
-          not Unification_v2::failsUnification(t, t2)
+          not Unification_v2_cand::failsUnification(t, t2)
         )
       )
       or
@@ -92,10 +117,14 @@ private module Dispatch {
     )
   }
 
-  private predicate unificationTargetLeft_v2(ParameterizedType t1) { qualType(_, t1, _) }
+  private predicate qualType(VirtualMethodAccess ma, RefType t, boolean exact) {
+    exprTypeFlow(ma.getQualifier(), t, exact)
+  }
 
-  private module Unification_v2 =
-    MkUnification<unificationTargetLeft_v2/1, unificationTargetRight/1>;
+  private predicate unificationTargetLeft_v2_cand(ParameterizedType t1) { qualType(_, t1, _) }
+
+  private module Unification_v2_cand =
+    MkUnification<unificationTargetLeft_v2_cand/1, unificationTargetRight/1>;
 
   /**
    * INTERNAL: Use `viableImpl` instead.
@@ -161,9 +190,8 @@ private module Dispatch {
   }
 
   private predicate hasQualifierType(VirtualMethodAccess ma, RefType t, boolean exact) {
-    exists(Expr src | src = variableTrack(ma.getQualifier()) |
-      // If we have a qualifier, then we track it through variable assignments
-      // and take the type of the assigned value.
+    exists(Expr src | src = ma.getQualifier() |
+      // If we have a qualifier, then we take its type.
       exists(RefType srctype | srctype = getPreciseType(src) |
         exists(BoundedType bd | bd = srctype |
           t = bd.getAnUltimateUpperBoundType()
@@ -224,34 +252,7 @@ private module Dispatch {
 
 import Dispatch
 
-private Expr variableTrackStep(Expr use) {
-  exists(Variable v |
-    pragma[only_bind_out](use) = v.getAnAccess() and
-    use.getType() instanceof RefType and
-    not result instanceof NullLiteral and
-    not v.(LocalVariableDecl).getDeclExpr().hasImplicitInit()
-  |
-    not v instanceof Parameter and
-    result = v.getAnAssignedValue()
-    or
-    exists(Parameter p | p = v and p.getCallable().isPrivate() |
-      result = p.getAnAssignedValue() or
-      result = p.getAnArgument()
-    )
-  )
-}
-
-private Expr variableTrackPath(Expr use) {
-  result = variableTrackStep*(use) and
-  not exists(variableTrackStep(result))
-}
-
 /**
- * Gets an expression by tracking `use` backwards through variable assignments.
+ * DEPRECATED: Use `TypeFlow` instead.
  */
-pragma[inline]
-Expr variableTrack(Expr use) {
-  result = variableTrackPath(use)
-  or
-  not exists(variableTrackPath(use)) and result = use
-}
+deprecated Expr variableTrack(Expr use) { result = use }
