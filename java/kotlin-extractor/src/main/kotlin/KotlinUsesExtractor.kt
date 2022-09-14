@@ -650,7 +650,7 @@ open class KotlinUsesExtractor(
                           otherIsPrimitive: Boolean,
                           javaClass: IrClass,
                           kotlinPackageName: String, kotlinClassName: String): TypeResults {
-            val javaResult = if ((context == TypeContext.RETURN || (context == TypeContext.OTHER && otherIsPrimitive)) && !s.hasQuestionMark && primitiveName != null) {
+            val javaResult = if ((context == TypeContext.RETURN || (context == TypeContext.OTHER && otherIsPrimitive)) && !s.isNullable() && primitiveName != null) {
                     val label: Label<DbPrimitive> = tw.getLabelFor("@\"type;$primitiveName\"", {
                         tw.writePrimitives(it, primitiveName)
                     })
@@ -660,7 +660,7 @@ open class KotlinUsesExtractor(
                 }
             val kotlinClassId = useClassInstance(kotlinClass, listOf()).typeResult.id
             val kotlinResult = if (true) TypeResult(fakeKotlinType(), "TODO", "TODO") else
-                if (s.hasQuestionMark) {
+                if (s.isNullable()) {
                     val kotlinSignature = "$kotlinPackageName.$kotlinClassName?" // TODO: Is this right?
                     val kotlinLabel = "@\"kt_type;nullable;$kotlinPackageName.$kotlinClassName\""
                     val kotlinId: Label<DbKt_nullable_type> = tw.getLabelFor(kotlinLabel, {
@@ -704,13 +704,13 @@ open class KotlinUsesExtractor(
             owner is IrClass -> {
                 val args = if (s.isRawType()) null else s.arguments
 
-                return useSimpleTypeClass(owner, args, s.hasQuestionMark)
+                return useSimpleTypeClass(owner, args, s.isNullable())
             }
             owner is IrTypeParameter -> {
                 val javaResult = useTypeParameter(owner)
                 val aClassId = makeClass("kotlin", "TypeParam") // TODO: Wrong
                 val kotlinResult = if (true) TypeResult(fakeKotlinType(), "TODO", "TODO") else
-                    if (s.hasQuestionMark) {
+                    if (s.isNullable()) {
                         val kotlinSignature = "${javaResult.signature}?" // TODO: Wrong
                         val kotlinLabel = "@\"kt_type;nullable;type_param\"" // TODO: Wrong
                         val kotlinId: Label<DbKt_nullable_type> = tw.getLabelFor(kotlinLabel, {
@@ -1485,7 +1485,7 @@ open class KotlinUsesExtractor(
                 if (t.isArray() || t.isNullableArray()) {
                     val elementType = t.getArrayElementType(pluginContext.irBuiltIns)
                     val erasedElementType = erase(elementType)
-                    return owner.typeWith(erasedElementType).codeQlWithHasQuestionMark(t.hasQuestionMark)
+                    return owner.typeWith(erasedElementType).codeQlWithHasQuestionMark(t.isNullable())
                 }
 
                 return if (t.arguments.isNotEmpty())

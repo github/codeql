@@ -1694,7 +1694,7 @@ open class KotlinFileExtractor(
         result
     }
 
-    private fun isFunction(target: IrFunction, pkgName: String, classNameLogged: String, classNamePredicate: (String) -> Boolean, fName: String, hasQuestionMark: Boolean? = false): Boolean {
+    private fun isFunction(target: IrFunction, pkgName: String, classNameLogged: String, classNamePredicate: (String) -> Boolean, fName: String, isNullable: Boolean? = false): Boolean {
         val verbose = false
         fun verboseln(s: String) { if(verbose) println(s) }
         verboseln("Attempting match for $pkgName $classNameLogged $fName")
@@ -1704,14 +1704,14 @@ open class KotlinFileExtractor(
         }
         val extensionReceiverParameter = target.extensionReceiverParameter
         val targetClass = if (extensionReceiverParameter == null) {
-            if (hasQuestionMark == true) {
+            if (isNullable == true) {
                 verboseln("Nullablility of type didn't match (target is not an extension method)")
                 return false
             }
             target.parent
         } else {
             val st = extensionReceiverParameter.type as? IrSimpleType
-            if (hasQuestionMark != null && st?.hasQuestionMark != hasQuestionMark) {
+            if (isNullable != null && st?.isNullable() != isNullable) {
                 verboseln("Nullablility of type didn't match")
                 return false
             }
@@ -1738,8 +1738,8 @@ open class KotlinFileExtractor(
         return true
     }
 
-    private fun isFunction(target: IrFunction, pkgName: String, className: String, fName: String, hasQuestionMark: Boolean? = false) =
-        isFunction(target, pkgName, className, { it == className }, fName, hasQuestionMark)
+    private fun isFunction(target: IrFunction, pkgName: String, className: String, fName: String, isNullable: Boolean? = false) =
+        isFunction(target, pkgName, className, { it == className }, fName, isNullable)
 
     private fun isNumericFunction(target: IrFunction, fName: String): Boolean {
         return isFunction(target, "kotlin", "Int", fName) ||
