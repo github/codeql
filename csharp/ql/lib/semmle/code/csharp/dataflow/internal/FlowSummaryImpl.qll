@@ -923,6 +923,10 @@ module Private {
 
       private predicate relevantSummaryElement(AccessPath inSpec, AccessPath outSpec, string kind) {
         this.relevantSummaryElementGenerated(inSpec, outSpec, kind)
+        or
+        summaryElement(this, inSpec, outSpec, kind, false) and
+        not this.getQualifiedName().matches("System%") and
+        not this.getQualifiedName().matches("Microsoft%")
       }
 
       override predicate propagatesFlow(
