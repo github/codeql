@@ -16,5 +16,5 @@ predicate hasInheritanceDepth(Class c, int d) {
 
 from int depth
 where hasInheritanceDepth(_, depth)
-select depth as InheritanceDepth, count(Class c | hasInheritanceDepth(c, depth)) as NumberOfClasses
-  order by InheritanceDepth
+select depth as inheritanceDepth, count(Class c | hasInheritanceDepth(c, depth)) as numberOfClasses
+  order by inheritanceDepth

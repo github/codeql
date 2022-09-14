@@ -14,4 +14,4 @@ where
   n.fromSource() and
   c = n.getMetrics().getInstability() and
   c < 0.2
-select n as Namespace, c as Instability order by Instability desc
+select n as namespace, c as instability order by instability desc
