@@ -60,4 +60,40 @@ public class A {
     new C2().wrapFoo2(source("C2.2"));
     wrapFoo3(new C2(), source("C2.3"));
   }
+
+  static class Sup {
+    void wrap(Object x) {
+      tgt(x);
+    }
+
+    void tgt(Object x) {
+      sink(x); // $ hasValueFlow=s
+    }
+  }
+
+  static class A1 extends Sup {
+    void tgt(Object x) {
+      sink(x); // $ hasValueFlow=s hasValueFlow=s12
+    }
+  }
+
+  static class A2 extends Sup {
+    void tgt(Object x) {
+      sink(x); // $ hasValueFlow=s hasValueFlow=s12
+    }
+  }
+
+  static class A3 extends Sup {
+    void tgt(Object x) {
+      sink(x); // $ hasValueFlow=s
+    }
+  }
+
+  void test2(Sup s) {
+    s.wrap(source("s"));
+
+    if (s instanceof A1 || s instanceof A2) {
+      s.wrap(source("s12"));
+    }
+  }
 }
