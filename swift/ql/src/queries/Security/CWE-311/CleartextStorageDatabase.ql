@@ -60,6 +60,12 @@ class RealmStore extends Stored {
       call.getStaticTarget() = f and
       call.getArgument(1).getExpr() = this
     )
+    or
+    // any access into a class derived from `RealmSwiftObject` is a sink
+    exists(ClassDecl cd |
+      cd.getABaseTypeDecl*().getName() = "RealmSwiftObject" and
+      this.getFullyConverted().getType() = cd.getType()
+    )
   }
 }
 
@@ -84,9 +90,19 @@ class CleartextStorageConfig extends TaintTracking::Configuration {
     node.asExpr() instanceof EncryptedExpr
   }
 
+  override predicate isAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
+    // allow flow from a post-update node at the sink to the sink. For example
+    // in `realmObj.data = sensitive` taint flows to the post-update node
+    // corresponding with the  sink `realmObj.data`, and we want to consider it
+    // as reaching that sink.
+    node1.(DataFlow::PostUpdateNode).getPreUpdateNode() = node2 and
+    isSink(node2)
+  }
+
   override predicate allowImplicitRead(DataFlow::Node node, DataFlow::ContentSet c) {
-    // flow out from fields of a `RealmSwiftObject` at the sink, for example in `obj.var = tainted; sink(obj)`.
-    isSink(node) and
+    // flow out from fields of a `RealmSwiftObject` at the sink, for example in
+    // `obj.var = tainted; sink(obj)`.
+    (isSink(node) or isAdditionalTaintStep(node, _)) and
     exists(ClassDecl cd |
       c.getAReadContent().(DataFlow::Content::FieldContent).getField() = cd.getAMember() and
       cd.getABaseTypeDecl*().getName() = "RealmSwiftObject"

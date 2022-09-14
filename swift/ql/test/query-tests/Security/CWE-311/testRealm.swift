@@ -31,7 +31,7 @@ func test1(realm : Realm, myPassword : String, myHashedPassword : String) {
 	// add objects (within a transaction) ...
 
 	let a = MyRealmSwiftObject()
-	a.data = myPassword
+	a.data = myPassword // BAD [DUPLICATE]
 	realm.add(a) // BAD
 
 	let b = MyRealmSwiftObject()
@@ -39,7 +39,7 @@ func test1(realm : Realm, myPassword : String, myHashedPassword : String) {
 	realm.add(b) // GOOD (not sensitive)
 
 	let c = MyRealmSwiftObject()
-	c.data = myPassword
+	c.data = myPassword // BAD [DUPLICATE]
 	realm.create(MyRealmSwiftObject.self, value: c) // BAD
 
 	let d = MyRealmSwiftObject()
@@ -49,15 +49,15 @@ func test1(realm : Realm, myPassword : String, myHashedPassword : String) {
 	// retrieve objects ...
 
 	var e = realm.object(ofType: MyRealmSwiftObject.self, forPrimaryKey: "key")
-	e!.data = myPassword // BAD [NOT DETECTED]
+	e!.data = myPassword // BAD
 
 	var f = realm.object(ofType: MyRealmSwiftObject.self, forPrimaryKey: "key")
 	f!.data = myHashedPassword // GOOD (not sensitive)
 
 	let g = MyRealmSwiftObject()
 	g.data = "" // GOOD (not sensitive)
-	g.data = myPassword // BAD [NOT DETECTED]
-	g.data = "" // GOOD (not sensitive)
+	g.data = myPassword // BAD
+	g.data = "" // GOOD (not sensitive) // [FALSE POSITIVE]
 }
 
 // limitation: its possible to configure a Realm DB to be stored encrypted, if this is done correctly
