@@ -4,6 +4,7 @@
 
 import java
 private import semmle.code.java.frameworks.android.Compose
+private import semmle.code.java.Constants
 
 /** A common super-class that represents all kinds of expressions. */
 class Expr extends ExprParent, @expr {
@@ -208,71 +209,7 @@ class CompileTimeConstantExpr extends Expr {
     // Literal value.
     result = this.(BooleanLiteral).getBooleanValue()
     or
-    // No casts relevant to booleans.
-    // `!` is the only unary operator that evaluates to a boolean.
-    result = this.(LogNotExpr).getExpr().(CompileTimeConstantExpr).getBooleanValue().booleanNot()
-    or
-    // Handle binary expressions that have integer operands and a boolean result.
-    exists(BinaryExpr b, int left, int right |
-      b = this and
-      left = b.getLeftOperand().(CompileTimeConstantExpr).getIntValue() and
-      right = b.getRightOperand().(CompileTimeConstantExpr).getIntValue()
-    |
-      (
-        b instanceof LTExpr and
-        if left < right then result = true else result = false
-      )
-      or
-      (
-        b instanceof LEExpr and
-        if left <= right then result = true else result = false
-      )
-      or
-      (
-        b instanceof GTExpr and
-        if left > right then result = true else result = false
-      )
-      or
-      (
-        b instanceof GEExpr and
-        if left >= right then result = true else result = false
-      )
-      or
-      (
-        b instanceof ValueOrReferenceEqualsExpr and
-        if left = right then result = true else result = false
-      )
-      or
-      (
-        b instanceof ValueOrReferenceNotEqualsExpr and
-        if left != right then result = true else result = false
-      )
-    )
-    or
-    // Handle binary expressions that have boolean operands and a boolean result.
-    exists(BinaryExpr b, boolean left, boolean right |
-      b = this and
-      left = b.getLeftOperand().(CompileTimeConstantExpr).getBooleanValue() and
-      right = b.getRightOperand().(CompileTimeConstantExpr).getBooleanValue()
-    |
-      (
-        b instanceof ValueOrReferenceEqualsExpr and
-        if left = right then result = true else result = false
-      )
-      or
-      (
-        b instanceof ValueOrReferenceNotEqualsExpr and
-        if left != right then result = true else result = false
-      )
-      or
-      (b instanceof AndBitwiseExpr or b instanceof AndLogicalExpr) and
-      result = left.booleanAnd(right)
-      or
-      (b instanceof OrBitwiseExpr or b instanceof OrLogicalExpr) and
-      result = left.booleanOr(right)
-      or
-      b instanceof XorBitwiseExpr and result = left.booleanXor(right)
-    )
+    result = CalcCompileTimeConstants::calculateBooleanValue(this)
     or
     // Handle binary expressions that have `String` operands and a boolean result.
     exists(BinaryExpr b, string left, string right |
@@ -300,18 +237,6 @@ class CompileTimeConstantExpr extends Expr {
     )
     or
     // Note: no `getFloatValue()`, so we cannot support binary expressions with float or double operands.
-    // Ternary expressions, where the `true` and `false` expressions are boolean compile-time constants.
-    exists(ConditionalExpr ce, boolean condition |
-      ce = this and
-      condition = ce.getCondition().(CompileTimeConstantExpr).getBooleanValue() and
-      result = ce.getBranchExpr(condition).(CompileTimeConstantExpr).getBooleanValue()
-    )
-    or
-    // Simple or qualified names where the variable is final and the initializer is a constant.
-    exists(Variable v | this = v.getAnAccess() |
-      result = v.getInitializer().(CompileTimeConstantExpr).getBooleanValue()
-    )
-    or
     result = this.(LiveLiteral).getValue().getBooleanValue()
   }
 
@@ -329,74 +254,19 @@ class CompileTimeConstantExpr extends Expr {
       result = this.(IntegerLiteral).getIntValue()
       or
       result = this.(CharacterLiteral).getCodePointValue()
-      or
-      exists(CastingExpr cast, int val |
-        cast = this and val = cast.getExpr().(CompileTimeConstantExpr).getIntValue()
-      |
-        if cast.getType().hasName("byte")
-        then result = (val + 128).bitAnd(255) - 128
-        else
-          if cast.getType().hasName("short")
-          then result = (val + 32768).bitAnd(65535) - 32768
-          else
-            if cast.getType().hasName("char")
-            then result = val.bitAnd(65535)
-            else result = val
-      )
-      or
-      result = this.(PlusExpr).getExpr().(CompileTimeConstantExpr).getIntValue()
-      or
-      result = -this.(MinusExpr).getExpr().(CompileTimeConstantExpr).getIntValue()
-      or
-      result = this.(BitNotExpr).getExpr().(CompileTimeConstantExpr).getIntValue().bitNot()
-      or
-      // No `int` value for `LogNotExpr`.
-      exists(BinaryExpr b, int v1, int v2 |
-        b = this and
-        v1 = b.getLeftOperand().(CompileTimeConstantExpr).getIntValue() and
-        v2 = b.getRightOperand().(CompileTimeConstantExpr).getIntValue()
-      |
-        b instanceof MulExpr and result = v1 * v2
-        or
-        b instanceof DivExpr and result = v1 / v2
-        or
-        b instanceof RemExpr and result = v1 % v2
-        or
-        b instanceof AddExpr and result = v1 + v2
-        or
-        b instanceof SubExpr and result = v1 - v2
-        or
-        b instanceof LeftShiftExpr and result = v1.bitShiftLeft(v2)
-        or
-        b instanceof RightShiftExpr and result = v1.bitShiftRightSigned(v2)
-        or
-        b instanceof UnsignedRightShiftExpr and result = v1.bitShiftRight(v2)
-        or
-        b instanceof AndBitwiseExpr and result = v1.bitAnd(v2)
-        or
-        b instanceof OrBitwiseExpr and result = v1.bitOr(v2)
-        or
-        b instanceof XorBitwiseExpr and result = v1.bitXor(v2)
-        // No `int` value for `AndLogicalExpr` or `OrLogicalExpr`.
-        // No `int` value for `LTExpr`, `GTExpr`, `LEExpr`, `GEExpr`, `ValueOrReferenceEqualsExpr` or `ValueOrReferenceNotEqualsExpr`.
-      )
-      or
-      // Ternary conditional, with compile-time constant condition.
-      exists(ConditionalExpr ce, boolean condition |
-        ce = this and
-        condition = ce.getCondition().(CompileTimeConstantExpr).getBooleanValue() and
-        result = ce.getBranchExpr(condition).(CompileTimeConstantExpr).getIntValue()
-      )
-      or
-      // If a `Variable` is a `CompileTimeConstantExpr`, its value is its initializer.
-      exists(Variable v | this = v.getAnAccess() |
-        result = v.getInitializer().(CompileTimeConstantExpr).getIntValue()
-      )
     )
+    or
+    result = CalcCompileTimeConstants::calculateIntValue(this)
     or
     result = this.(LiveLiteral).getValue().getIntValue()
   }
 }
+
+private boolean getBoolValue(Expr e) { result = e.(CompileTimeConstantExpr).getBooleanValue() }
+
+private int getIntValue(Expr e) { result = e.(CompileTimeConstantExpr).getIntValue() }
+
+private module CalcCompileTimeConstants = CalculateConstants<getBoolValue/1, getIntValue/1>;
 
 /** An expression parent is an element that may have an expression as its child. */
 class ExprParent extends @exprparent, Top { }
