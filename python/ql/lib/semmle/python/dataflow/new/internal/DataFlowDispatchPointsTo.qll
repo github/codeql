@@ -612,9 +612,10 @@ class SpecialCall extends DataFlowSourceCall, TSpecialCall {
 /**
  * A call to a summarized callable, a `LibraryCallable`.
  *
- * This is a potential call, really. It has an empty charpred, so any `CallNode` is allowed.
- * It is here to stake out territory, as otherwise a call to `map` would be considered a `ClassCall`
- * and not be available for a summary.
+ * We currently exclude all resolved calls. This means that a call to, say, `map`, which
+ * is a `ClassCall`, cannot currently be given a summary.
+ * We hope to lift this restriction in the future and include all potential calls to summaries
+ * in this class.
  */
 class LibraryCall extends NormalCall {
   LibraryCall() {
