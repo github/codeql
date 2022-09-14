@@ -651,7 +651,7 @@ private predicate unionTypeFlowBaseCand(TypeFlowNode n, RefType t, boolean exact
 }
 
 /**
- * Holds if `ioe` checks `v`, its true-successor is `bb`, and `bb` has 2 or more
+ * Holds if `ioe` checks `v`, its true-successor is `bb`, and `bb` has multiple
  * predecessors.
  */
 private predicate instanceofDisjunct(InstanceOfExpr ioe, BasicBlock bb, BaseSsaVariable v) {
@@ -660,7 +660,7 @@ private predicate instanceofDisjunct(InstanceOfExpr ioe, BasicBlock bb, BaseSsaV
   exists(ConditionBlock cb | cb.getCondition() = ioe and cb.getTestSuccessor(true) = bb)
 }
 
-/** Holds if `bb` is disjunctively guarded by two or more `instanceof` tests on `v`. */
+/** Holds if `bb` is disjunctively guarded by multiple `instanceof` tests on `v`. */
 private predicate instanceofDisjunction(BasicBlock bb, BaseSsaVariable v) {
   strictcount(InstanceOfExpr ioe | instanceofDisjunct(ioe, bb, v)) =
     strictcount(bb.getABBPredecessor())
