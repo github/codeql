@@ -8,5 +8,5 @@ nodes
 | test.go:311:20:311:34 | call to URL | semmle.label | call to URL |
 subpaths
 #select
-| test.go:246:13:246:34 | call to GetString | test.go:246:13:246:34 | call to GetString | test.go:246:13:246:34 | call to GetString | Untrusted URL redirection due to $@. | test.go:246:13:246:34 | call to GetString | user-provided value |
-| test.go:247:20:247:41 | call to GetString | test.go:247:20:247:41 | call to GetString | test.go:247:20:247:41 | call to GetString | Untrusted URL redirection due to $@. | test.go:247:20:247:41 | call to GetString | user-provided value |
+| test.go:246:13:246:34 | call to GetString | test.go:246:13:246:34 | call to GetString | test.go:246:13:246:34 | call to GetString | Untrusted URL redirection depends on a $@. | test.go:246:13:246:34 | call to GetString | user-provided value |
+| test.go:247:20:247:41 | call to GetString | test.go:247:20:247:41 | call to GetString | test.go:247:20:247:41 | call to GetString | Untrusted URL redirection depends on a $@. | test.go:247:20:247:41 | call to GetString | user-provided value |
