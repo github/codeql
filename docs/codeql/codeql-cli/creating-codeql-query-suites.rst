@@ -142,7 +142,7 @@ recommend filtering on the query ``id``, which is a unique and stable identifier
 each query. The following three query suite definitions are semantically identical and
 filter by the query ``id``:
 
-Matches all queries in the default suite of ``codeql/cpp-queries``, except for the two queries with either given ``id``::
+This filter matches all the queries in the default suite of ``codeql/cpp-queries``, except for the two queries with the excluded identifiers::
 
    - qlpack: codeql/cpp-queries
    - exclude:
@@ -150,7 +150,7 @@ Matches all queries in the default suite of ``codeql/cpp-queries``, except for t
          - cpp/cleartext-transmission
          - cpp/cleartext-storage-file
 
-As above, but splits the matching into two ``exclude`` instructions::
+In this example, a separate ``exclude`` instruction is used for each query::
 
    - qlpack: codeql/cpp-queries
    - exclude:
@@ -158,8 +158,7 @@ As above, but splits the matching into two ``exclude`` instructions::
    - exclude:
        id: cpp/cleartext-storage-file
 
-As above, but uses a regular expression to match the ``id`` (assuming
-that the regular expression matches exactly the previous queries)::
+In this example, a regular expression excludes the same two queries. It would also exclude any future queries added to the suite with identifiers that begin: ``cpp/cleartext-``::
 
    - qlpack: codeql/cpp-queries
    - exclude:
@@ -182,8 +181,7 @@ and ``@precision high`` from the ``my-custom-queries`` directory, use::
        kind: problem
        precision: very-high
 
-Note that the following query suite definition is not equivalent to the above
-definition. This definition will select queries that are ``@kind problem`` *or*
+Note that the following query suite definition behaves differently from the definition above. This definition selects queries that are ``@kind problem`` *or*
 are ``@precision very-high``::
 
    - queries: my-custom-queries
