@@ -47,7 +47,7 @@ Conditions <https://securitylab.github.com/tools/codeql/license>`__.
 
 .. pull-quote:: Important
 
-   There are several different versions of the CLI available to download, depending
+   There are several versions of the CLI available to download, depending
    on your use case:
 
    * If you want to use the most up to date CodeQL tools and features, download the version tagged ``latest``.
