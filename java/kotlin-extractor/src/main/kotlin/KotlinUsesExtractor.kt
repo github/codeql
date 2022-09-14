@@ -327,7 +327,7 @@ open class KotlinUsesExtractor(
             return f
         return globalExtensionState.syntheticToRealFunctionMap.getOrPut(f) {
             val result = replacementClass.declarations.findSubType<IrSimpleFunction> { replacementDecl ->
-                replacementDecl is IrSimpleFunction && replacementDecl.name == f.name && replacementDecl.valueParameters.size == f.valueParameters.size && replacementDecl.valueParameters.zip(f.valueParameters).all {
+                replacementDecl.name == f.name && replacementDecl.valueParameters.size == f.valueParameters.size && replacementDecl.valueParameters.zip(f.valueParameters).all {
                     erase(it.first.type) == erase(it.second.type)
                 }
             }
