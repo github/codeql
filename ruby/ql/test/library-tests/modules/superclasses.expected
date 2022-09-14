@@ -147,7 +147,7 @@ modules.rb:
 #  116| XX::YY
 #-----|  -> YY
 
-#  120| Test::Foo1::Bar::Baz
+#  123| Test::Foo1::Bar::Baz
 
 modules_rec.rb:
 #    1| B::A

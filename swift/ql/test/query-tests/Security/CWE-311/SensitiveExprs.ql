@@ -5,8 +5,6 @@ string describe(SensitiveExpr e) {
   result = "label:" + e.getLabel()
   or
   result = "type:" + e.getSensitiveType().toString()
-  or
-  e.isProbablySafe() and result = "isProbablySafe"
 }
 
 from SensitiveExpr e

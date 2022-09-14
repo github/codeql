@@ -354,7 +354,12 @@ private fun getTrapFileWriter(compression: Compression, logger: FileLogger, trap
     return when (compression) {
         Compression.NONE -> NonCompressedTrapFileWriter(logger, trapFileName)
         Compression.GZIP -> GZipCompressedTrapFileWriter(logger, trapFileName)
-        Compression.BROTLI -> throw Exception("Brotli compression is not supported by the Kotlin extractor")
+        Compression.BROTLI -> {
+            // Brotli should have been replaced with gzip earlier, but
+            // if we somehow manage to get here then keep going
+            logger.error("Impossible Brotli compression requested. Using Gzip instead.")
+            getTrapFileWriter(Compression.GZIP, logger, trapFileName)
+        }
     }
 }
 

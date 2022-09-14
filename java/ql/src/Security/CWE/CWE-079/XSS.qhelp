@@ -18,7 +18,7 @@ reference.</p>
 </recommendation>
 <example>
 
-<p>The following example shows the page parameter being written directly to the server error page,
+<p>The following example shows the <code>page</code> parameter being written directly to the page,
 leaving the website vulnerable to cross-site scripting.</p>
 
 <sample src="XSS.java" />

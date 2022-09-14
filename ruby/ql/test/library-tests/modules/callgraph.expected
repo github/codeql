@@ -79,6 +79,7 @@ getTarget
 | modules.rb:90:24:90:36 | call to prepend | calls.rb:93:5:93:20 | prepend |
 | modules.rb:96:3:96:14 | call to include | calls.rb:92:5:92:20 | include |
 | modules.rb:102:3:102:16 | call to prepend | calls.rb:93:5:93:20 | prepend |
+| modules.rb:126:6:126:11 | call to new | calls.rb:99:5:99:16 | new |
 | modules_rec.rb:8:3:8:11 | call to prepend | calls.rb:93:5:93:20 | prepend |
 | private.rb:2:3:3:5 | call to private | calls.rb:94:5:94:20 | private |
 | private.rb:10:3:10:19 | call to private | calls.rb:94:5:94:20 | private |

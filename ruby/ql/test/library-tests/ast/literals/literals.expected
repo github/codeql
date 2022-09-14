@@ -227,7 +227,7 @@ allLiterals
 | literals.rb:175:11:175:16 | <<-BLA | HereDoc | \nsome text\nand some more\n   |
 | literals.rb:180:9:180:19 | <<~SQUIGGLY | HereDoc | \n   indented stuff\n |
 | literals.rb:184:9:184:15 | <<"DOC" | HereDoc | <none> |
-| literals.rb:189:9:189:15 | <<'DOC' | HereDoc | <none> |
+| literals.rb:189:9:189:15 | <<'DOC' | HereDoc | \n text without #{ interpolation } !\n |
 | literals.rb:193:10:193:19 | <<`SCRIPT` | HereDoc | \n cat file.txt\n |
 | literals.rb:197:5:197:6 | 42 | IntegerLiteral | 42 |
 | literals.rb:198:1:198:9 | {...} | HashLiteral | <none> |
@@ -237,6 +237,7 @@ allLiterals
 | literals.rb:199:1:199:9 | {...} | HashLiteral | <none> |
 | literals.rb:199:2:199:2 | :y | SymbolLiteral | :y |
 | literals.rb:199:7:199:7 | :Z | SymbolLiteral | :Z |
+| literals.rb:201:1:201:35 | "@foo: #{...} @@bar: #{...} $_..." | StringLiteral | <none> |
 stringlikeLiterals
 | literals.rb:59:1:59:2 | "" |  |
 | literals.rb:60:1:60:2 | "" |  |
@@ -345,12 +346,13 @@ stringlikeLiterals
 | literals.rb:175:11:175:16 | <<-BLA | \nsome text\nand some more\n   |
 | literals.rb:180:9:180:19 | <<~SQUIGGLY | \n   indented stuff\n |
 | literals.rb:184:9:184:15 | <<"DOC" | <none> |
-| literals.rb:189:9:189:15 | <<'DOC' | <none> |
+| literals.rb:189:9:189:15 | <<'DOC' | \n text without #{ interpolation } !\n |
 | literals.rb:193:10:193:19 | <<`SCRIPT` | \n cat file.txt\n |
 | literals.rb:198:2:198:2 | :x | :x |
 | literals.rb:198:6:198:6 | :y | :y |
 | literals.rb:199:2:199:2 | :y | :y |
 | literals.rb:199:7:199:7 | :Z | :Z |
+| literals.rb:201:1:201:35 | "@foo: #{...} @@bar: #{...} $_..." | <none> |
 stringLiterals
 | literals.rb:59:1:59:2 | "" |  |
 | literals.rb:60:1:60:2 | "" |  |
@@ -405,6 +407,7 @@ stringLiterals
 | literals.rb:163:1:163:34 | "abcdefghijklmnopqrstuvwxyzabcdef" | abcdefghijklmnopqrstuvwxyzabcdef |
 | literals.rb:164:1:164:35 | "foobarfoobarfoobarfoobarfooba..." | foobarfoobarfoobarfoobarfoobarfoo |
 | literals.rb:165:1:165:40 | "foobar\\\\foobar\\\\foobar\\\\fooba..." | foobar\\foobar\\foobar\\foobar\\foobar |
+| literals.rb:201:1:201:35 | "@foo: #{...} @@bar: #{...} $_..." | <none> |
 regExpLiterals
 | literals.rb:149:1:149:2 | // |  |  |
 | literals.rb:150:1:150:5 | /foo/ | foo |  |
@@ -626,14 +629,18 @@ stringComponents
 | literals.rb:184:9:184:15 | <<"DOC" | HereDoc | 0 | literals.rb:184:16:185:11 | \n text with  | StringTextComponent |
 | literals.rb:184:9:184:15 | <<"DOC" | HereDoc | 1 | literals.rb:185:12:185:29 | #{...} | StringInterpolationComponent |
 | literals.rb:184:9:184:15 | <<"DOC" | HereDoc | 2 | literals.rb:185:30:185:32 |  !\n | StringTextComponent |
-| literals.rb:189:9:189:15 | <<'DOC' | HereDoc | 0 | literals.rb:189:16:190:14 | \n text without  | StringTextComponent |
-| literals.rb:189:9:189:15 | <<'DOC' | HereDoc | 1 | literals.rb:190:15:190:32 | #{...} | StringInterpolationComponent |
-| literals.rb:189:9:189:15 | <<'DOC' | HereDoc | 2 | literals.rb:190:33:190:35 |  !\n | StringTextComponent |
+| literals.rb:189:9:189:15 | <<'DOC' | HereDoc | 0 | literals.rb:189:16:190:35 | \n text without #{ interpolation } !\n | StringTextComponent |
 | literals.rb:193:10:193:19 | <<`SCRIPT` | HereDoc | 0 | literals.rb:193:20:194:14 | \n cat file.txt\n | StringTextComponent |
 | literals.rb:198:2:198:2 | :x | SymbolLiteral | 0 | literals.rb:198:2:198:2 | x | StringTextComponent |
 | literals.rb:198:6:198:6 | :y | SymbolLiteral | 0 | literals.rb:198:6:198:6 | y | StringTextComponent |
 | literals.rb:199:2:199:2 | :y | SymbolLiteral | 0 | literals.rb:199:2:199:2 | y | StringTextComponent |
 | literals.rb:199:7:199:7 | :Z | SymbolLiteral | 0 | literals.rb:199:7:199:7 | Z | StringTextComponent |
+| literals.rb:201:1:201:35 | "@foo: #{...} @@bar: #{...} $_..." | StringLiteral | 0 | literals.rb:201:2:201:7 | @foo:  | StringTextComponent |
+| literals.rb:201:1:201:35 | "@foo: #{...} @@bar: #{...} $_..." | StringLiteral | 1 | literals.rb:201:8:201:12 | #{...} | StringInterpolationComponent |
+| literals.rb:201:1:201:35 | "@foo: #{...} @@bar: #{...} $_..." | StringLiteral | 2 | literals.rb:201:13:201:20 |  @@bar:  | StringTextComponent |
+| literals.rb:201:1:201:35 | "@foo: #{...} @@bar: #{...} $_..." | StringLiteral | 3 | literals.rb:201:21:201:26 | #{...} | StringInterpolationComponent |
+| literals.rb:201:1:201:35 | "@foo: #{...} @@bar: #{...} $_..." | StringLiteral | 4 | literals.rb:201:27:201:31 |  $_:  | StringTextComponent |
+| literals.rb:201:1:201:35 | "@foo: #{...} @@bar: #{...} $_..." | StringLiteral | 5 | literals.rb:201:32:201:34 | #{...} | StringInterpolationComponent |
 stringInterpolations
 | literals.rb:71:10:71:19 | #{...} | 0 | literals.rb:71:13:71:17 | ... + ... | AddExpr |
 | literals.rb:72:12:72:21 | #{...} | 0 | literals.rb:72:15:72:19 | ... + ... | AddExpr |
@@ -659,7 +666,9 @@ stringInterpolations
 | literals.rb:146:10:146:19 | #{...} | 0 | literals.rb:146:13:146:17 | ... - ... | SubExpr |
 | literals.rb:171:14:171:22 | #{...} | 0 | literals.rb:171:17:171:20 | call to name | MethodCall |
 | literals.rb:185:12:185:29 | #{...} | 0 | literals.rb:185:15:185:27 | call to interpolation | MethodCall |
-| literals.rb:190:15:190:32 | #{...} | 0 | literals.rb:190:18:190:30 | call to interpolation | MethodCall |
+| literals.rb:201:8:201:12 | #{...} | 0 | literals.rb:201:9:201:12 | @foo | InstanceVariableAccess |
+| literals.rb:201:21:201:26 | #{...} | 0 | literals.rb:201:22:201:26 | @@bar | ClassVariableAccess |
+| literals.rb:201:32:201:34 | #{...} | 0 | literals.rb:201:33:201:34 | $_ | GlobalVariableAccess |
 concatenatedStrings
 | literals.rb:75:1:75:17 | "..." "..." | foobarbaz | 0 | literals.rb:75:1:75:5 | "foo" |
 | literals.rb:75:1:75:17 | "..." "..." | foobarbaz | 1 | literals.rb:75:7:75:11 | "bar" |

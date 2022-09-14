@@ -1,0 +1,84 @@
+<!DOCTYPE qhelp PUBLIC
+        "-//Semmle//qhelp//EN"
+        "qhelp.dtd">
+<qhelp>
+    <overview>
+        <p>
+            Using a broken or weak cryptographic hash function can leave data
+            vulnerable, and should not be used in security related code.
+        </p>
+
+        <p>
+            A strong cryptographic hash function should be resistant to:
+        </p>
+        <ul>
+            <li>
+                <b>Pre-image attacks</b>. If you know a hash value <code>h(x)</code>,
+                you should not be able to easily find the input <code>x</code>.
+            </li>
+            <li>
+                <b>Collision attacks</b>. If you know a hash value <code>h(x)</code>,
+                you should not be able to easily find a different input
+                <code>y</code>
+                with the same hash value <code>h(x) = h(y)</code>.
+            </li>
+        </ul>
+
+        <p>
+            As an example, both MD5 and SHA-1 are known to be vulnerable to collision attacks.
+        </p>
+
+        <p>
+            Since it's OK to use a weak cryptographic hash function in a non-security
+            context, this query only alerts when these are used to hash sensitive
+            data (such as passwords, certificates, usernames).
+        </p>
+
+    </overview>
+    <recommendation>
+
+        <p>
+            Ensure that you use a strong, modern cryptographic hash function, such as:
+        </p>
+
+        <ul>
+            <li>
+                Argon2, scrypt, bcrypt, or PBKDF2 for passwords and other data with limited input space where
+                a dictionary-like attack is feasible.
+            </li>
+            <li>
+                SHA-2, or SHA-3 in other cases.
+            </li>
+        </ul>
+
+    </recommendation>
+    <example>
+
+        <p>
+            The following examples show a function for checking whether the hash
+            of a certificate matches a known value -- to prevent tampering.
+
+            In the first case the MD5 hashing algorithm is used that is known to be vulnerable to collision attacks.
+        </p>
+        <sample src="WeakSensitiveDataHashingBad.swift"/>
+        <p>
+
+            Here is the same function using SHA-512, which is a strong cryptographic hashing function.
+        </p>
+        <sample src="WeakSensitiveDataHashingGood.swift"/>
+
+    </example>
+    <references>
+        <li>
+            OWASP:
+            <a href="https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html">Password Storage
+                Cheat Sheet
+            </a>
+            and
+            <a href="https://cheatsheetseries.owasp.org/cheatsheets/Transport_Layer_Protection_Cheat_Sheet.html#use-strong-cryptographic-hashing-algorithms">
+                Transport Layer Protection Cheat Sheet
+            </a>
+        </li>
+    </references>
+
+</qhelp>
