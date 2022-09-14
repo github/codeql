@@ -20,8 +20,14 @@ class Member extends Element, Annotatable, Modifiable, @member {
   /** Gets the type in which this member is declared. */
   RefType getDeclaringType() { declaresMember(result, this) }
 
-  /** Gets the qualified name of this member. */
-  string getQualifiedName() { result = this.getDeclaringType().getName() + "." + this.getName() }
+  /**
+   * Gets the qualified name of this member.
+   * This is useful for debugging, but for normal use `hasQualifiedName`
+   * is recommended, as it is more efficient.
+   */
+  string getQualifiedName() {
+    result = this.getDeclaringType().getQualifiedName() + "." + this.getName()
+  }
 
   /**
    * Holds if this member has the specified name and is declared in the
