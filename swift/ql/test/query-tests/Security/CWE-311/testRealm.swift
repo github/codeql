@@ -31,16 +31,16 @@ func test1(realm : Realm, myPassword : String, myHashedPassword : String) {
 	// add objects (within a transaction) ...
 
 	let a = MyRealmSwiftObject()
-	a.data = myPassword // BAD [DUPLICATE]
-	realm.add(a) // BAD
+	a.data = myPassword // BAD
+	realm.add(a)
 
 	let b = MyRealmSwiftObject()
 	b.data = myHashedPassword
 	realm.add(b) // GOOD (not sensitive)
 
 	let c = MyRealmSwiftObject()
-	c.data = myPassword // BAD [DUPLICATE]
-	realm.create(MyRealmSwiftObject.self, value: c) // BAD
+	c.data = myPassword // BAD
+	realm.create(MyRealmSwiftObject.self, value: c)
 
 	let d = MyRealmSwiftObject()
 	d.data = myHashedPassword

@@ -43,24 +43,6 @@ class CoreDataStore extends Stored {
  */
 class RealmStore extends Stored {
   RealmStore() {
-    // `object` arg to `Realm.add` is a sink
-    exists(ClassDecl c, AbstractFunctionDecl f, CallExpr call |
-      c.getName() = "Realm" and
-      c.getAMember() = f and
-      f.getName() = "add(_:update:)" and
-      call.getStaticTarget() = f and
-      call.getArgument(0).getExpr() = this
-    )
-    or
-    // `value` arg to `Realm.create` is a sink
-    exists(ClassDecl c, AbstractFunctionDecl f, CallExpr call |
-      c.getName() = "Realm" and
-      c.getAMember() = f and
-      f.getName() = "create(_:value:update:)" and
-      call.getStaticTarget() = f and
-      call.getArgument(1).getExpr() = this
-    )
-    or
     // any access into a class derived from `RealmSwiftObject` is a sink
     exists(ClassDecl cd |
       cd.getABaseTypeDecl*().getName() = "RealmSwiftObject" and
