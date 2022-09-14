@@ -47,22 +47,11 @@ Conditions <https://securitylab.github.com/tools/codeql/license>`__.
 
 .. pull-quote:: Important
 
-   There are different versions of the CLI available to download, depending
+   There are several versions of the CLI available to download, depending
    on your use case:
 
-   - If you want to use the most up to date CodeQL tools and features, download the
-     version tagged ``latest``.
-
-   - If you want to create CodeQL databases to upload to LGTM Enterprise, download
-     the version that is compatible with the relevant LGTM Enterprise version
-     number. Compatibility information is included in the description for each
-     release on the `CodeQL CLI releases page
-     <https://github.com/github/codeql-cli-binaries/releases>`__ on GitHub. Using the
-     correct version of the CLI ensures that your CodeQL databases are
-     compatible with your version of LGTM Enterprise. For more information,
-     see `Preparing CodeQL databases to upload to LGTM
-     <https://help.semmle.com/lgtm-enterprise/admin/help/prepare-database-upload.html>`__
-     in the LGTM admin help.
+   * If you want to use the most up to date CodeQL tools and features, download the version tagged ``latest``.
+   * If you want to generate code scanning data to upload to GitHub Enterprise server, then download the version that is compatible with the CodeQL CLI used in your CI system. For more information, see "`Installing CodeQL CLI in your CI system <https://docs.github.com/en/enterprise-server/code-security/code-scanning/using-codeql-code-scanning-with-your-existing-ci-system/installing-codeql-cli-in-your-ci-system#downloading-the-codeql-cli>`__" in the GitHub documentation.
 
 If you use Linux, Windows, or macOS version 10.14 ("Mojave") or earlier, simply
 `download the zip archive
@@ -232,15 +221,7 @@ see ":doc:`About CodeQL packs <about-codeql-packs>`."
    - For the most up to date CodeQL queries, check out the ``main`` branch.
      This branch represents the very latest version of CodeQL's analysis.
 
-   - For the queries used in a particular LGTM Enterprise release, check out the
-     branch tagged with the relevant release number. For example, the branch
-     tagged ``v1.27.0`` corresponds to LGTM Enterprise 1.27. You must use this
-     version if you want to upload data to LGTM Enterprise. For further
-     information, see `Preparing CodeQL databases to upload to LGTM
-     <https://help.semmle.com/lgtm-enterprise/admin/help/prepare-database-upload.html>`__
-     in the LGTM admin help.
-
-1. Extract the zip archive
+4. Extract the zip archive
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 For Linux, Windows, and macOS users (version 10.14 "Mojave", and earlier)
