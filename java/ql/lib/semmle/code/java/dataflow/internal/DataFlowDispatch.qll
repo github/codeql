@@ -4,6 +4,7 @@ private import DataFlowUtil
 private import semmle.code.java.dataflow.InstanceAccess
 private import semmle.code.java.dataflow.FlowSummary
 private import semmle.code.java.dispatch.VirtualDispatch as VirtualDispatch
+private import semmle.code.java.dataflow.TypeFlow
 private import semmle.code.java.dispatch.internal.Unification
 
 private module DispatchImpl {
@@ -63,15 +64,21 @@ private module DispatchImpl {
   private predicate contextArgHasType(Call ctx, int i, RefType t, boolean exact) {
     relevantContext(ctx, i) and
     exists(RefType srctype |
-      exists(Expr arg, Expr src |
+      exists(Expr arg |
         i = -1 and
         ctx.getQualifier() = arg
         or
         ctx.getArgument(i) = arg
       |
-        src = VirtualDispatch::variableTrack(arg) and
-        srctype = getPreciseType(src) and
-        if src instanceof ClassInstanceExpr then exact = true else exact = false
+        exprTypeFlow(arg, srctype, exact)
+        or
+        not exprTypeFlow(arg, _, _) and
+        exprUnionTypeFlow(arg, srctype, exact)
+        or
+        not exprTypeFlow(arg, _, _) and
+        not exprUnionTypeFlow(arg, _, _) and
+        srctype = getPreciseType(arg) and
+        if arg instanceof ClassInstanceExpr then exact = true else exact = false
       )
       or
       exists(Node arg |
