@@ -46,10 +46,11 @@ class RealmStore extends Stored {
     // any write into a class derived from `RealmSwiftObject` is a sink. For
     // example in `realmObj.data = sensitive` the post-update node corresponding
     // with `realmObj.data` is a sink.
-    exists(ClassDecl cd |
+    exists(ClassDecl cd, Expr e |
       cd.getABaseTypeDecl*().getName() = "RealmSwiftObject" and
-      this.(DataFlow::PostUpdateNode).getPreUpdateNode().asExpr().getFullyConverted().getType() =
-        cd.getType()
+      this.(DataFlow::PostUpdateNode).getPreUpdateNode().asExpr() = e and
+      e.getFullyConverted().getType() = cd.getType() and
+      not e.(DeclRefExpr).getDecl() instanceof SelfParamDecl
     )
   }
 }
