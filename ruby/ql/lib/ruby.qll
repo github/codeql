@@ -1,9 +1,7 @@
 /**
- * Kept for backwards compatibility with e.g. quick-queries.
- *
- * Instead, import the relevant abstraction layer:
- * - `codeql.ruby.DataFlow` for data-flow queries.
- * - `codeql.ruby.CFG` for control-flow queries.
- * - `codeql.ruby.AST` for syntactic queries.
+ * Provides classes for working with Ruby programs.
  */
 
+import codeql.ruby.AST as Ast
+import codeql.ruby.CFG as Cfg
+import codeql.ruby.DataFlow // already defines its own wrapper module
