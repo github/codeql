@@ -92,9 +92,7 @@ class ExternalApiDataNode extends DataFlow::Node {
   int getIndex() { result = i }
 
   /** Gets the description of the method being called. */
-  string getMethodDescription() {
-    result = this.getMethod().getQualifiedName()
-  }
+  string getMethodDescription() { result = this.getMethod().getQualifiedName() }
 }
 
 /** DEPRECATED: Alias for ExternalApiDataNode */

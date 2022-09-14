@@ -25,7 +25,9 @@ class Member extends Element, Annotatable, Modifiable, @member {
    * This is useful for debugging, but for normal use `hasQualifiedName`
    * is recommended, as it is more efficient.
    */
-  string getQualifiedName() { result = this.getDeclaringType().getQualifiedName() + "." + this.getName() }
+  string getQualifiedName() {
+    result = this.getDeclaringType().getQualifiedName() + "." + this.getName()
+  }
 
   /**
    * Holds if this member has the specified name and is declared in the
