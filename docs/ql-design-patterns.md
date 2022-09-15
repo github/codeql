@@ -59,8 +59,8 @@ Now, a concrete subclass can derive from `MySpecialExpr::Range` if it wants to e
 Let's use an example from the Python libraries: https://github.com/github/codeql/blob/46751e515c40c6b4c9b61758cc840eec1894a624/python/ql/lib/semmle/python/Concepts.qll#L601-L683
 
 `Escaping`, as the name suggests, models various APIs that escape meta-characters. It has a member-predicate `getKind()` that tells you what sort of escaping the modeled function does. For example, if the result of that predicate is `"html"`, then this means that the escaping function is meant to make things safe to embed inside HTML.
-`Escaping::Range` is subclassed to model various APIs, and `kind()` is implemented accordingly.
-But we can also subclass `Escaping` to, as in the above example, talk about all HTML-escaping functions.
+`Escaping::Range` is subclassed to model various APIs, and `kind()` is implemented accordingly (this typically happens in library models).
+But we can also subclass `Escaping`, as in the above example, where `HtmlEscaping` represents all HTML-escaping functions.
 
 You can, of course, do the same without the `::Range` pattern, but it's a little cumbersome:
 If you only had an `abstract class Escaping { ... }`, then `HtmlEscaping` would need to be implemented in a slightly tricky way to prevent it from extending `Escaping` (instead of refining it). You would have to give it a charpred `this instanceof Escaping`, which looks useless but isn't. And additionally, you'd have to provide trivial `none()` overrides of all the abstract predicates defined in `Escaping`. This is all pretty awkward, and we can avoid it by distinguishing between `Escaping` and `Escaping::Range`.
