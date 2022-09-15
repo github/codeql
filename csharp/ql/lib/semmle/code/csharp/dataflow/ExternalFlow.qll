@@ -504,15 +504,26 @@ class UnboundCallable extends Callable {
   }
 }
 
+pragma[nomagic]
+private predicate callableSpecInfo(Callable c, string namespace, string type, string name) {
+  c.getDeclaringType().hasQualifiedName(namespace, type) and
+  c.getName() = name
+}
+
+pragma[nomagic]
+private predicate subtypeSpecCandidate(Callable c, UnboundValueOrRefType t) {
+  elementSpec(_, _, true, c.getName(), _, _, t)
+}
+
 private class InterpretedCallable extends Callable {
   InterpretedCallable() {
-    exists(UnboundValueOrRefType t, boolean subtypes, string name |
-      elementSpec(_, _, subtypes, name, _, _, t) and
-      this.hasName(name)
-    |
-      this.getDeclaringType() = t
-      or
-      subtypes = true and
+    exists(string namespace, string type, string name |
+      callableSpecInfo(this, namespace, type, name) and
+      elementSpec(namespace, type, _, name, _, _)
+    )
+    or
+    exists(UnboundValueOrRefType t |
+      subtypeSpecCandidate(this, t) and
       this.getDeclaringType() = t.getASubTypeUnbound+()
     )
   }
