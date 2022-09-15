@@ -41,7 +41,7 @@ private module Cached {
       exists(TypeTrackerContentSet loadContents |
         step = LoadStep(pragma[only_bind_into](loadContents)) and
         tt = MkTypeTracker(hasCall, storeContents) and
-        storeContents.getAStoreContent() = loadContents.getAReadContent() and
+        compatibleContents(storeContents, loadContents) and
         result = noContentTypeTracker(hasCall)
       )
       or
@@ -76,7 +76,7 @@ private module Cached {
       exists(TypeTrackerContentSet storeContents |
         step = StoreStep(pragma[only_bind_into](storeContents)) and
         tbt = MkTypeBackTracker(hasReturn, loadContents) and
-        storeContents.getAStoreContent() = loadContents.getAReadContent() and
+        compatibleContents(storeContents, loadContents) and
         result = noContentTypeBackTracker(hasReturn)
       )
       or
