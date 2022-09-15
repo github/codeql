@@ -106,6 +106,8 @@ private module Dispatch {
     t.hasQualifiedName("java.lang", "Cloneable")
     or
     t.getPackage().hasName("java.util") and t instanceof Interface
+    or
+    t.hasQualifiedName("java.util", "Hashtable")
   }
 
   /**
