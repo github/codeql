@@ -378,12 +378,16 @@ private module Cached {
   }
 
   cached
-  newtype TContentSet =
+  newtype TOptionalContentSet =
     TSingletonContent(Content c) or
     TAnyElementContent() or
     TElementLowerBoundContent(int lower) {
       FlowSummaryImplSpecific::ParsePositions::isParsedElementLowerBoundPosition(_, lower)
-    }
+    } or
+    TNoContentSet()
+
+  cached
+  class TContentSet = TSingletonContent or TAnyElementContent or TElementLowerBoundContent;
 
   cached
   newtype TOptionalContent =

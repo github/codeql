@@ -552,19 +552,4 @@ trackEnd
 | type_tracker.rb:44:5:44:13 | ...[...] | type_tracker.rb:34:1:45:3 | return return in throughArray |
 | type_tracker.rb:44:5:44:13 | ...[...] | type_tracker.rb:44:5:44:13 | ...[...] |
 forwardButNoBackwardFlow
-| type_tracker.rb:34:18:34:20 | obj | type_tracker.rb:34:1:45:3 | return return in throughArray |
-| type_tracker.rb:34:18:34:20 | obj | type_tracker.rb:44:5:44:13 | ...[...] |
-| type_tracker.rb:34:18:34:20 | obj | type_tracker.rb:44:5:44:13 | ...[...] |
-| type_tracker.rb:42:15:42:15 | 1 | type_tracker.rb:34:1:45:3 | return return in throughArray |
-| type_tracker.rb:42:15:42:15 | 1 | type_tracker.rb:44:5:44:13 | ...[...] |
-| type_tracker.rb:42:17:42:17 | 2 | type_tracker.rb:34:1:45:3 | return return in throughArray |
-| type_tracker.rb:42:17:42:17 | 2 | type_tracker.rb:44:5:44:13 | ...[...] |
-| type_tracker.rb:42:19:42:19 | 3 | type_tracker.rb:34:1:45:3 | return return in throughArray |
-| type_tracker.rb:42:19:42:19 | 3 | type_tracker.rb:44:5:44:13 | ...[...] |
-| type_tracker.rb:42:21:42:21 | 4 | type_tracker.rb:34:1:45:3 | return return in throughArray |
-| type_tracker.rb:42:21:42:21 | 4 | type_tracker.rb:44:5:44:13 | ...[...] |
-| type_tracker.rb:42:23:42:23 | 5 | type_tracker.rb:34:1:45:3 | return return in throughArray |
-| type_tracker.rb:42:23:42:23 | 5 | type_tracker.rb:44:5:44:13 | ...[...] |
-| type_tracker.rb:42:25:42:25 | 6 | type_tracker.rb:34:1:45:3 | return return in throughArray |
-| type_tracker.rb:42:25:42:25 | 6 | type_tracker.rb:44:5:44:13 | ...[...] |
 backwardButNoForwardFlow
