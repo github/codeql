@@ -390,8 +390,7 @@ private module Cached {
   class TContentSet = TSingletonContent or TAnyElementContent or TElementLowerBoundContent;
 
   cached
-  newtype TOptionalContent =
-    TNoContent() or
+  newtype TContent =
     TKnownElementContent(ConstantValue cv) {
       not cv.isInt(_) or
       cv.getInt() in [0 .. 10]
@@ -417,11 +416,6 @@ private module Cached {
     } or
     // Only used by type-tracking
     TAttributeName(string name) { name = any(AST::SetterMethodCall c).getTargetName() }
-
-  cached
-  class TContent =
-    TKnownElementContent or TUnknownElementContent or TKnownPairValueContent or
-        TUnknownPairValueContent or TFieldContent or TAttributeName;
 
   /**
    * Holds if `e` is an `ExprNode` that may be returned by a call to `c`.

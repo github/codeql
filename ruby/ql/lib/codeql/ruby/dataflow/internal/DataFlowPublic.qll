@@ -235,17 +235,14 @@ predicate localExprFlow(CfgNodes::ExprCfgNode e1, CfgNodes::ExprCfgNode e2) {
   localFlow(exprNode(e1), exprNode(e2))
 }
 
-/** A reference contained in an object, or the `noContent()` value. */
-class OptionalContent extends TOptionalContent {
+/** A reference contained in an object. */
+class Content extends TContent {
   /** Gets a textual representation of this content. */
   string toString() { none() }
 
   /** Gets the location of this content. */
   Location getLocation() { none() }
 }
-
-/** A reference contained in an object. */
-class Content extends OptionalContent, TContent { }
 
 /** Provides different sub classes of `Content`. */
 module Content {
@@ -337,14 +334,6 @@ module Content {
 
   /** Gets `AttributeNameContent` of the given name. */
   AttributeNameContent getAttributeName(string name) { result.getName() = name }
-
-  /** A value representing no content. */
-  class NoContent extends OptionalContent, TNoContent {
-    override string toString() { result = "noContent()" }
-  }
-
-  /** Gets the `noContent()` value. */
-  NoContent noContent() { any() }
 }
 
 class OptionalContentSet extends TOptionalContentSet {
