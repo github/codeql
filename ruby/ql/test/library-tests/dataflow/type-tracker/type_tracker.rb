@@ -31,7 +31,15 @@ keyword(p1: 3, p2: 4)
 keyword(p2: 5, p1: 6)
 keyword(:p2 => 7, :p1 => 8)
 
-def throughArray(obj)
+def throughArray(obj, y)
     tmp = [obj]
     tmp[0]
+
+    array = [1,2,3,4,5,6]
+    array[y] = obj
+    array[0]
+
+    array2 = [1,2,3,4,5,6]
+    array2[0] = obj
+    array2[y]
 end
