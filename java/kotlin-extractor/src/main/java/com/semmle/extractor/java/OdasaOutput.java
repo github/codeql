@@ -256,17 +256,6 @@ public class OdasaOutput {
 	 */
 
 	/**
-	 * A {@link TrapFileManager} to output facts for the given source file,
-	 * or <code>null</code> if the source file should not be populated.
-	 */
-	private TrapFileManager getTrapWriterForCurrentSourceFile() {
-		File trapFile = getTrapFileForCurrentSourceFile();
-		if (trapFile==null)
-			return null;
-		return trapWriter(trapFile, null, null);
-	}
-
-	/**
 	 * Get a {@link TrapFileManager} to write members
 	 * about a declaration, or <code>null</code> if the declaration shouldn't be populated.
 	 *
