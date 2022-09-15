@@ -28,13 +28,9 @@ class TypeTrackerContent extends OptionalTypeTrackerContent {
 /** Gets the content string representing no value. */
 OptionalTypeTrackerContent noContent() { result = "" }
 
-/** A content set, which is currently just a singleton set for Python. */
-class TypeTrackerContentSet extends TypeTrackerContent {
-  /** Gets a content to read from at a load step. */
-  TypeTrackerContent getAReadContent() { result = this }
-
-  /** Gets a content to write to at a store step. */
-  TypeTrackerContent getAStoreContent() { result = this }
+pragma[inline]
+predicate compatibleContents(TypeTrackerContent storeContent, TypeTrackerContent loadContent) {
+  storeContent = loadContent
 }
 
 predicate simpleLocalFlowStep = DataFlowPrivate::simpleLocalFlowStepForTypetracking/2;
