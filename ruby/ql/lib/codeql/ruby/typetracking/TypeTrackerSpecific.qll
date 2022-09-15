@@ -15,13 +15,17 @@ class Node = DataFlowPublic::Node;
 
 class TypeTrackingNode = DataFlowPublic::LocalSourceNode;
 
-class OptionalTypeTrackerContent = DataFlowPublic::OptionalContent;
-
-class TypeTrackerContent = DataFlowPublic::Content;
-
 class TypeTrackerContentSet = DataFlowPublic::ContentSet;
 
 class OptionalTypeTrackerContentSet = DataFlowPublic::OptionalContentSet;
+
+/**
+ * Holds if a value stored with `storeContents` can be read back with `loadContents`.
+ */
+pragma[inline]
+predicate compatibleContents(TypeTrackerContentSet storeContents, TypeTrackerContentSet loadContents) {
+  storeContents.getAStoreContent() = loadContents.getAReadContent()
+}
 
 /** Gets the "no content set" value to use for a type tracker not inside any content. */
 OptionalTypeTrackerContentSet noContentSet() { result.isNoContentSet() }
