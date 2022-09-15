@@ -20,7 +20,7 @@ string getName(AstNode node, string kind) {
   result = node.(NewType).getName() and
   kind = "newtype"
   or
-  result = node.(VarDecl).getName() and
+  result = node.(VarDef).getName() and
   kind = "variable" and
   not node = any(FieldDecl f).getVarDecl()
   or
