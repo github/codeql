@@ -93,9 +93,11 @@ class Test {
 	void doGet5(InetAddress address)
 	throws URISyntaxException {
 		String t = address.getHostName();
-		new File(new URI(t, t, t));
-		new File(new URI(t, t, t, t));
-		new File(new URI(t, t, t, t, t));
-		new File(new URI(t, t, t, 0, t, t, t));
+		// BAD: construct a file path with user input
+		new File(new URI(null, t, null));
+		new File(new URI(t, t, null, t));
+		new File(new URI(t, null, t, t));
+		new File(new URI(null, null, t, null, null));
+		new File(new URI(null, null, null, 0, t, null, null));
 	}
 }

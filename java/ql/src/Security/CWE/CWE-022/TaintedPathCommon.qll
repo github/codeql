@@ -5,6 +5,19 @@
 import java
 import semmle.code.java.controlflow.Guards
 import semmle.code.java.security.PathCreation
+import semmle.code.java.dataflow.ExternalFlow
+
+class TaintedPathInjectionSummaries extends SummaryModelCsv {
+  override predicate row(string row) {
+    row =
+      [
+        "java.net;URI;false;URI;(String,String,String);;Argument[1];Argument[-1];taint;manual",
+        "java.net;URI;false;URI;(String,String,String,String);;Argument[1..2];Argument[-1];taint;manual",
+        "java.net;URI;false;URI;(String,String,String,String,String);;Argument[2];Argument[-1];taint;manual",
+        "java.net;URI;false;URI;(String,String,String,int,String,String,String);;Argument[4];Argument[-1];taint;manual",
+      ]
+  }
+}
 
 private predicate inWeakCheck(Expr e) {
   // None of these are sufficient to guarantee that a string is safe.
