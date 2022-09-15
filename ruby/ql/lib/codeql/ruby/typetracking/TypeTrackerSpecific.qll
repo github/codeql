@@ -21,7 +21,10 @@ class TypeTrackerContent = DataFlowPublic::Content;
 
 class TypeTrackerContentSet = DataFlowPublic::ContentSet;
 
-predicate noContent = DataFlowPublic::Content::noContent/0;
+class OptionalTypeTrackerContentSet = DataFlowPublic::OptionalContentSet;
+
+/** Gets the "no content set" value to use for a type tracker not inside any content. */
+OptionalTypeTrackerContentSet noContentSet() { result.isNoContentSet() }
 
 /** Holds if there is a simple local flow step from `nodeFrom` to `nodeTo` */
 predicate simpleLocalFlowStep = DataFlowPrivate::localFlowStepTypeTracker/2;

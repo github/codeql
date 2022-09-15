@@ -18,65 +18,71 @@ private module Cached {
 
   pragma[nomagic]
   private TypeTracker noContentTypeTracker(boolean hasCall) {
-    result = MkTypeTracker(hasCall, noContent())
+    result = MkTypeTracker(hasCall, noContentSet())
   }
 
   /** Gets the summary resulting from appending `step` to type-tracking summary `tt`. */
   cached
   TypeTracker append(TypeTracker tt, StepSummary step) {
-    exists(Boolean hasCall, OptionalTypeTrackerContent currentContent |
-      tt = MkTypeTracker(hasCall, currentContent)
+    exists(Boolean hasCall, OptionalTypeTrackerContentSet currentContents |
+      tt = MkTypeTracker(hasCall, currentContents)
     |
       step = LevelStep() and result = tt
       or
-      step = CallStep() and result = MkTypeTracker(true, currentContent)
+      step = CallStep() and result = MkTypeTracker(true, currentContents)
       or
       step = ReturnStep() and hasCall = false and result = tt
       or
       step = JumpStep() and
-      result = MkTypeTracker(false, currentContent)
+      result = MkTypeTracker(false, currentContents)
     )
     or
-    exists(TypeTrackerContentSet contents, boolean hasCall |
-      step = LoadStep(pragma[only_bind_into](contents)) and
-      tt = MkTypeTracker(hasCall, contents.getAReadContent()) and
-      result = noContentTypeTracker(hasCall)
+    exists(TypeTrackerContentSet storeContents, boolean hasCall |
+      exists(TypeTrackerContentSet loadContents |
+        step = LoadStep(pragma[only_bind_into](loadContents)) and
+        tt = MkTypeTracker(hasCall, storeContents) and
+        storeContents.getAStoreContent() = loadContents.getAReadContent() and
+        result = noContentTypeTracker(hasCall)
+      )
       or
-      step = StoreStep(pragma[only_bind_into](contents)) and
+      step = StoreStep(pragma[only_bind_into](storeContents)) and
       tt = noContentTypeTracker(hasCall) and
-      result = MkTypeTracker(hasCall, contents.getAStoreContent())
+      result = MkTypeTracker(hasCall, storeContents)
     )
   }
 
   pragma[nomagic]
   private TypeBackTracker noContentTypeBackTracker(boolean hasReturn) {
-    result = MkTypeBackTracker(hasReturn, noContent())
+    result = MkTypeBackTracker(hasReturn, noContentSet())
   }
 
   /** Gets the summary resulting from prepending `step` to this type-tracking summary. */
   cached
   TypeBackTracker prepend(TypeBackTracker tbt, StepSummary step) {
-    exists(Boolean hasReturn, OptionalTypeTrackerContent content |
-      tbt = MkTypeBackTracker(hasReturn, content)
+    exists(Boolean hasReturn, OptionalTypeTrackerContentSet contents |
+      tbt = MkTypeBackTracker(hasReturn, contents)
     |
       step = LevelStep() and result = tbt
       or
       step = CallStep() and hasReturn = false and result = tbt
       or
-      step = ReturnStep() and result = MkTypeBackTracker(true, content)
+      step = ReturnStep() and result = MkTypeBackTracker(true, contents)
       or
       step = JumpStep() and
-      result = MkTypeBackTracker(false, content)
+      result = MkTypeBackTracker(false, contents)
     )
     or
-    exists(TypeTrackerContentSet contents, boolean hasReturn |
-      step = StoreStep(pragma[only_bind_into](contents)) and
-      tbt = MkTypeBackTracker(hasReturn, contents.getAReadContent()) and
-      result = noContentTypeBackTracker(hasReturn)
+    exists(TypeTrackerContentSet loadContents, boolean hasReturn |
+      exists(TypeTrackerContentSet storeContents |
+        step = StoreStep(pragma[only_bind_into](storeContents)) and
+        tbt = MkTypeBackTracker(hasReturn, loadContents) and
+        storeContents.getAStoreContent() = loadContents.getAReadContent() and
+        result = noContentTypeBackTracker(hasReturn)
+      )
       or
-      step = LoadStep(pragma[only_bind_into](contents)) and
+      step = LoadStep(pragma[only_bind_into](loadContents)) and
       tbt = noContentTypeBackTracker(hasReturn) and
-      result = MkTypeBackTracker(hasReturn, contents.getAStoreContent())
+      result = MkTypeBackTracker(hasReturn, loadContents)
     )
   }
 
@@ -216,7 +222,8 @@ module StepSummary {
   }
 }
 
-private newtype TTypeTracker = MkTypeTracker(Boolean hasCall, OptionalTypeTrackerContent content)
+private newtype TTypeTracker =
+  MkTypeTracker(Boolean hasCall, OptionalTypeTrackerContentSet contents)
 
 /**
  * A summary of the steps needed to track a value to a given dataflow node.
@@ -247,9 +254,9 @@ private newtype TTypeTracker = MkTypeTracker(Boolean hasCall, OptionalTypeTracke
  */
 class TypeTracker extends TTypeTracker {
   Boolean hasCall;
-  OptionalTypeTrackerContent content;
+  OptionalTypeTrackerContentSet contents;
 
-  TypeTracker() { this = MkTypeTracker(hasCall, content) }
+  TypeTracker() { this = MkTypeTracker(hasCall, contents) }
 
   /** Gets the summary resulting from appending `step` to this type-tracking summary. */
   TypeTracker append(StepSummary step) { result = append(this, step) }
@@ -259,8 +266,8 @@ class TypeTracker extends TTypeTracker {
     exists(string withCall, string withContent |
       (if hasCall = true then withCall = "with" else withCall = "without") and
       (
-        if content != noContent()
-        then withContent = " with content " + content
+        if contents != noContentSet()
+        then withContent = " with content " + contents
         else withContent = ""
       ) and
       result = "type tracker " + withCall + " call steps" + withContent
@@ -270,26 +277,26 @@ class TypeTracker extends TTypeTracker {
   /**
    * Holds if this is the starting point of type tracking.
    */
-  predicate start() { hasCall = false and content = noContent() }
+  predicate start() { hasCall = false and contents = noContentSet() }
 
   /**
    * Holds if this is the starting point of type tracking, and the value starts in the content named `contentName`.
    * The type tracking only ends after the content has been loaded.
    */
-  predicate startInContent(TypeTrackerContent contentName) {
-    hasCall = false and content = contentName
+  predicate startInContent(TypeTrackerContentSet contentName) {
+    hasCall = false and contents = contentName
   }
 
   /**
    * Holds if this is the starting point of type tracking
    * when tracking a parameter into a call, but not out of it.
    */
-  predicate call() { hasCall = true and content = noContent() }
+  predicate call() { hasCall = true and contents = noContentSet() }
 
   /**
    * Holds if this is the end point of type tracking.
    */
-  predicate end() { content = noContent() }
+  predicate end() { contents = noContentSet() }
 
   /**
    * INTERNAL. DO NOT USE.
@@ -303,7 +310,7 @@ class TypeTracker extends TTypeTracker {
    *
    * Gets the content associated with this type tracker.
    */
-  OptionalTypeTrackerContent getContent() { result = content }
+  OptionalTypeTrackerContentSet getContent() { result = contents }
 
   /**
    * Gets a type tracker that starts where this one has left off to allow continued
@@ -311,7 +318,7 @@ class TypeTracker extends TTypeTracker {
    *
    * This predicate is only defined if the type is not associated to a piece of content.
    */
-  TypeTracker continue() { content = noContent() and result = this }
+  TypeTracker continue() { contents = noContentSet() and result = this }
 
   /**
    * Gets the summary that corresponds to having taken a forwards
@@ -370,7 +377,7 @@ module TypeTracker {
 }
 
 private newtype TTypeBackTracker =
-  MkTypeBackTracker(Boolean hasReturn, OptionalTypeTrackerContent content)
+  MkTypeBackTracker(Boolean hasReturn, OptionalTypeTrackerContentSet contents)
 
 /**
  * A summary of the steps needed to back-track a use of a value to a given dataflow node.
@@ -404,9 +411,9 @@ private newtype TTypeBackTracker =
  */
 class TypeBackTracker extends TTypeBackTracker {
   Boolean hasReturn;
-  OptionalTypeTrackerContent content;
+  OptionalTypeTrackerContentSet contents;
 
-  TypeBackTracker() { this = MkTypeBackTracker(hasReturn, content) }
+  TypeBackTracker() { this = MkTypeBackTracker(hasReturn, contents) }
 
   /** Gets the summary resulting from prepending `step` to this type-tracking summary. */
   TypeBackTracker prepend(StepSummary step) { result = prepend(this, step) }
@@ -416,8 +423,8 @@ class TypeBackTracker extends TTypeBackTracker {
     exists(string withReturn, string withContent |
       (if hasReturn = true then withReturn = "with" else withReturn = "without") and
       (
-        if content != noContent()
-        then withContent = " with content " + content
+        if contents != noContentSet()
+        then withContent = " with content " + contents
         else withContent = ""
       ) and
       result = "type back-tracker " + withReturn + " return steps" + withContent
@@ -427,12 +434,12 @@ class TypeBackTracker extends TTypeBackTracker {
   /**
    * Holds if this is the starting point of type tracking.
    */
-  predicate start() { hasReturn = false and content = noContent() }
+  predicate start() { hasReturn = false and contents = noContentSet() }
 
   /**
    * Holds if this is the end point of type tracking.
    */
-  predicate end() { content = noContent() }
+  predicate end() { contents = noContentSet() }
 
   /**
    * INTERNAL. DO NOT USE.
@@ -447,7 +454,7 @@ class TypeBackTracker extends TTypeBackTracker {
    *
    * This predicate is only defined if the type has not been tracked into a piece of content.
    */
-  TypeBackTracker continue() { content = noContent() and result = this }
+  TypeBackTracker continue() { contents = noContentSet() and result = this }
 
   /**
    * Gets the summary that corresponds to having taken a backwards
@@ -504,7 +511,7 @@ class TypeBackTracker extends TTypeBackTracker {
    * also flow to `sink`.
    */
   TypeTracker getACompatibleTypeTracker() {
-    exists(boolean hasCall | result = MkTypeTracker(hasCall, content) |
+    exists(boolean hasCall | result = MkTypeTracker(hasCall, contents) |
       hasCall = false or this.hasReturn() = false
     )
   }

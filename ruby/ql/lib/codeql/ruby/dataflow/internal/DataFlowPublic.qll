@@ -347,13 +347,23 @@ module Content {
   NoContent noContent() { any() }
 }
 
+class OptionalContentSet extends TOptionalContentSet {
+  /** Gets a textual representation of this content set. */
+  string toString() {
+    result = "no content" // overridden in `ContentSet`
+  }
+
+  /** Holds if this is the special "no content set" value. */
+  predicate isNoContentSet() { this instanceof TNoContentSet }
+}
+
 /**
  * An entity that represents a set of `Content`s.
  *
  * The set may be interpreted differently depending on whether it is
  * stored into (`getAStoreContent`) or read from (`getAReadContent`).
  */
-class ContentSet extends TContentSet {
+class ContentSet extends OptionalContentSet, TContentSet {
   /** Holds if this content set is the singleton `{c}`. */
   predicate isSingleton(Content c) { this = TSingletonContent(c) }
 
@@ -366,8 +376,7 @@ class ContentSet extends TContentSet {
    */
   predicate isElementLowerBound(int lower) { this = TElementLowerBoundContent(lower) }
 
-  /** Gets a textual representation of this content set. */
-  string toString() {
+  override string toString() {
     exists(Content c |
       this.isSingleton(c) and
       result = c.toString()
