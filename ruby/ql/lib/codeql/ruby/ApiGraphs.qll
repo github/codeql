@@ -520,7 +520,7 @@ module API {
         read = c.getExpr()
       )
       or
-      exists(TypeTrackerSpecific::TypeTrackerContentSet c |
+      exists(TypeTrackerSpecific::TypeTrackerContent c |
         TypeTrackerSpecific::basicLoadStep(node, ref, c) and
         lbl = Label::content(c.getAStoreContent())
       )
@@ -532,7 +532,7 @@ module API {
      * from a def node that is reachable from `node`.
      */
     private predicate defStep(Label::ApiLabel lbl, DataFlow::Node node, DataFlow::Node rhs) {
-      exists(TypeTrackerSpecific::TypeTrackerContentSet c |
+      exists(TypeTrackerSpecific::TypeTrackerContent c |
         TypeTrackerSpecific::basicStoreStep(rhs, node, c) and
         lbl = Label::content(c.getAStoreContent())
       )

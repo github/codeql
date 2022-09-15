@@ -15,20 +15,20 @@ class Node = DataFlowPublic::Node;
 
 class TypeTrackingNode = DataFlowPublic::LocalSourceNode;
 
-class TypeTrackerContentSet = DataFlowPublic::ContentSet;
+class TypeTrackerContent = DataFlowPublic::ContentSet;
 
-class OptionalTypeTrackerContentSet = DataFlowPublic::OptionalContentSet;
+class OptionalTypeTrackerContent = DataFlowPublic::OptionalContentSet;
 
 /**
  * Holds if a value stored with `storeContents` can be read back with `loadContents`.
  */
 pragma[inline]
-predicate compatibleContents(TypeTrackerContentSet storeContents, TypeTrackerContentSet loadContents) {
+predicate compatibleContents(TypeTrackerContent storeContents, TypeTrackerContent loadContents) {
   storeContents.getAStoreContent() = loadContents.getAReadContent()
 }
 
 /** Gets the "no content set" value to use for a type tracker not inside any content. */
-OptionalTypeTrackerContentSet noContentSet() { result.isNoContentSet() }
+OptionalTypeTrackerContent noContent() { result.isNoContentSet() }
 
 /** Holds if there is a simple local flow step from `nodeFrom` to `nodeTo` */
 predicate simpleLocalFlowStep = DataFlowPrivate::localFlowStepTypeTracker/2;
@@ -156,7 +156,7 @@ predicate returnStep(Node nodeFrom, Node nodeTo) {
  * to `z` inside `bar`, even though this content write happens _after_ `bar` is
  * called.
  */
-predicate basicStoreStep(Node nodeFrom, Node nodeTo, TypeTrackerContentSet contents) {
+predicate basicStoreStep(Node nodeFrom, Node nodeTo, TypeTrackerContent contents) {
   postUpdateStoreStep(nodeFrom, nodeTo, contents)
   or
   exists(
@@ -174,7 +174,7 @@ predicate basicStoreStep(Node nodeFrom, Node nodeTo, TypeTrackerContentSet conte
  * Holds if a store step `nodeFrom -> nodeTo` with `contents` exists, where the destination node
  * is a post-update node that should be treated as a local source node.
  */
-predicate postUpdateStoreStep(Node nodeFrom, Node nodeTo, TypeTrackerContentSet contents) {
+predicate postUpdateStoreStep(Node nodeFrom, Node nodeTo, TypeTrackerContent contents) {
   // TODO: support SetterMethodCall inside TuplePattern
   exists(ExprNodes::MethodCallCfgNode call |
     contents
@@ -191,7 +191,7 @@ predicate postUpdateStoreStep(Node nodeFrom, Node nodeTo, TypeTrackerContentSet 
 /**
  * Holds if `nodeTo` is the result of accessing the `content` content of `nodeFrom`.
  */
-predicate basicLoadStep(Node nodeFrom, Node nodeTo, TypeTrackerContentSet contents) {
+predicate basicLoadStep(Node nodeFrom, Node nodeTo, TypeTrackerContent contents) {
   exists(ExprNodes::MethodCallCfgNode call |
     call.getExpr().getNumberOfArguments() = 0 and
     contents.isSingleton(DataFlowPublic::Content::getAttributeName(call.getExpr().getMethodName())) and
@@ -220,7 +220,7 @@ class Boolean extends boolean {
 private import SummaryComponentStack
 
 private predicate hasStoreSummary(
-  SummarizedCallable callable, TypeTrackerContentSet contents, SummaryComponent input,
+  SummarizedCallable callable, TypeTrackerContent contents, SummaryComponent input,
   SummaryComponent output
 ) {
   callable
@@ -229,7 +229,7 @@ private predicate hasStoreSummary(
 }
 
 private predicate hasLoadSummary(
-  SummarizedCallable callable, TypeTrackerContentSet contents, SummaryComponent input,
+  SummarizedCallable callable, TypeTrackerContent contents, SummaryComponent input,
   SummaryComponent output
 ) {
   callable
