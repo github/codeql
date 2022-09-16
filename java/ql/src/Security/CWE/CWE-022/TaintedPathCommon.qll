@@ -6,13 +6,19 @@ import java
 import semmle.code.java.controlflow.Guards
 import semmle.code.java.security.PathCreation
 import semmle.code.java.frameworks.Networking
-import semmle.code.java.dataflow.TaintTracking
+import semmle.code.java.dataflow.DataFlow
 
-abstract class TaintedPathCommonConfig extends TaintTracking::Configuration {
-  bindingset[this]
-  TaintedPathCommonConfig() { any() }
+/**
+ * A unit class for adding additional taint steps.
+ *
+ * Extend this class to add additional taint steps that should apply to tainted path flow configurations.
+ */
+class TaintedPathAdditionalTaintStep extends Unit {
+  abstract predicate step(DataFlow::Node n1, DataFlow::Node n2);
+}
 
-  final override predicate isAdditionalTaintStep(DataFlow::Node n1, DataFlow::Node n2) {
+private class DefaultTaintedPathAdditionalTaintStep extends TaintedPathAdditionalTaintStep {
+  override predicate step(DataFlow::Node n1, DataFlow::Node n2) {
     exists(Argument a |
       a = n1.asExpr() and
       a.getCall() = n2.asExpr() and
