@@ -29,7 +29,7 @@ predicate containsDotDotSanitizer(Guard g, Expr e, boolean branch) {
   )
 }
 
-class TaintedPathConfig extends TaintTracking::Configuration {
+class TaintedPathConfig extends TaintedPathCommonConfig {
   TaintedPathConfig() { this = "TaintedPathConfig" }
 
   override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }

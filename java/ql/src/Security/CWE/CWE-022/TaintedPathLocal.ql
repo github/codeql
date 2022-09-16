@@ -19,7 +19,7 @@ import semmle.code.java.security.PathCreation
 import DataFlow::PathGraph
 import TaintedPathCommon
 
-class TaintedPathLocalConfig extends TaintTracking::Configuration {
+class TaintedPathLocalConfig extends TaintedPathCommonConfig {
   TaintedPathLocalConfig() { this = "TaintedPathLocalConfig" }
 
   override predicate isSource(DataFlow::Node source) { source instanceof LocalUserInput }

@@ -5,17 +5,41 @@
 import java
 import semmle.code.java.controlflow.Guards
 import semmle.code.java.security.PathCreation
-import semmle.code.java.dataflow.ExternalFlow
+import semmle.code.java.frameworks.Networking
+import semmle.code.java.dataflow.TaintTracking
 
-class TaintedPathInjectionSummaries extends SummaryModelCsv {
-  override predicate row(string row) {
-    row =
-      [
-        "java.net;URI;false;URI;(String,String,String);;Argument[1];Argument[-1];taint;manual",
-        "java.net;URI;false;URI;(String,String,String,String);;Argument[1..2];Argument[-1];taint;manual",
-        "java.net;URI;false;URI;(String,String,String,String,String);;Argument[2];Argument[-1];taint;manual",
-        "java.net;URI;false;URI;(String,String,String,int,String,String,String);;Argument[4];Argument[-1];taint;manual",
-      ]
+abstract class TaintedPathCommonConfig extends TaintTracking::Configuration {
+  bindingset[this]
+  TaintedPathCommonConfig() { any() }
+
+  final override predicate isAdditionalTaintStep(DataFlow::Node n1, DataFlow::Node n2) {
+    exists(Argument a |
+      a = n1.asExpr() and
+      a.getCall() = n2.asExpr() and
+      a = any(TaintPreservingUriCtorParam tpp).getAnArgument()
+    )
+  }
+}
+
+private class TaintPreservingUriCtorParam extends Parameter {
+  TaintPreservingUriCtorParam() {
+    exists(Constructor ctor, int idx, int nParams |
+      ctor.getDeclaringType() instanceof TypeUri and
+      this = ctor.getParameter(idx) and
+      nParams = ctor.getNumberOfParameters()
+    |
+      // URI(String scheme, String ssp, String fragment)
+      idx = 1 and nParams = 3
+      or
+      // URI(String scheme, String host, String path, String fragment)
+      idx = [1, 2] and nParams = 4
+      or
+      // URI(String scheme, String authority, String path, String query, String fragment)
+      idx = 2 and nParams = 5
+      or
+      // URI(String scheme, String userInfo, String host, int port, String path, String query, String fragment)
+      idx = 4 and nParams = 7
+    )
   }
 }
 
