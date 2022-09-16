@@ -61,6 +61,6 @@ def codeql_workspace(repository_name = "codeql"):
         name = "fishhook",
         commit = "aadc161ac3b80db07a9908851839a17ba63a9eb1",
         shallow_since = "1634071885 -0400",
-        build_file = "//swift/tools/fishhook:BUILD.fishhook.bazel",
+        build_file = "@%s//swift/tools/fishhook:BUILD.fishhook.bazel" % repository_name,
         remote = "https://github.com/facebook/fishhook",
     )
