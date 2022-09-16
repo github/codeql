@@ -48,6 +48,10 @@ class TaintedPathConfig extends TaintTracking::Configuration {
     or
     node = DataFlow::BarrierGuard<containsDotDotSanitizer/3>::getABarrierNode()
   }
+
+  override predicate isAdditionalTaintStep(DataFlow::Node n1, DataFlow::Node n2) {
+    any(TaintedPathAdditionalTaintStep s).step(n1, n2)
+  }
 }
 
 /**
