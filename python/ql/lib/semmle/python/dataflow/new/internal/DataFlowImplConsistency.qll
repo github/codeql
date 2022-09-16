@@ -32,6 +32,12 @@ module Consistency {
 
     /** Holds if `n` should be excluded from the consistency test `reverseRead`. */
     predicate reverseReadExclude(Node n) { none() }
+
+    /** Holds if `n` should be excluded from the consistency test `postHasUniquePre`. */
+    predicate postHasUniquePreExclude(PostUpdateNode n) { none() }
+
+    /** Holds if `n` should be excluded from the consistency test `uniquePostUpdate`. */
+    predicate uniquePostUpdateExclude(Node n) { none() }
   }
 
   private class RelevantNode extends Node {
@@ -166,6 +172,7 @@ module Consistency {
   }
 
   query predicate postHasUniquePre(PostUpdateNode n, string msg) {
+    not any(ConsistencyConfiguration conf).postHasUniquePreExclude(n) and
     exists(int c |
       c = count(n.getPreUpdateNode()) and
       c != 1 and
@@ -174,6 +181,7 @@ module Consistency {
   }
 
   query predicate uniquePostUpdate(Node n, string msg) {
+    not any(ConsistencyConfiguration conf).uniquePostUpdateExclude(n) and
     1 < strictcount(PostUpdateNode post | post.getPreUpdateNode() = n) and
     msg = "Node has multiple PostUpdateNodes."
   }
