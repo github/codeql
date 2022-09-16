@@ -37,3 +37,19 @@ class A {
 		return l;
 	}
 }
+
+class Parent<T> {
+
+	public void removeFirst(List<T> l) {
+		l.iterator().remove();
+	}
+
+}
+
+class Child extends Parent<String> {
+
+	public void test(String... ss) {
+		removeFirst(Arrays.asList(ss));
+	}
+
+}
