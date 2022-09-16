@@ -186,9 +186,9 @@ private predicate superCall(CfgNodes::ExprNodes::CallCfgNode call, Module superC
 
 pragma[nomagic]
 private predicate instanceMethodCall(CfgNodes::ExprNodes::CallCfgNode call, Module tp, string method) {
-  exists(DataFlow::LocalSourceNode sourceNode, Module m, boolean exact |
-    flowsToMethodCall(call, sourceNode, method) and
-    sourceNode = trackInstance(m, exact)
+  exists(DataFlow::Node receiver, Module m, boolean exact |
+    methodCall(call, receiver, method) and
+    receiver = trackInstance(m, exact)
   |
     tp = m
     or
@@ -239,7 +239,7 @@ private predicate selfInToplevel(SelfVariable self, Module m) {
  *
  * the SSA definition for `c` is introduced by matching on `C`.
  */
-predicate asModulePattern(SsaDefinitionNode def, Module m) {
+private predicate asModulePattern(SsaDefinitionNode def, Module m) {
   exists(AsPattern ap |
     m = resolveConstantReadAccess(ap.getPattern()) and
     def.getDefinition().(Ssa::WriteDefinition).getWriteAccess() = ap.getVariableAccess()
@@ -258,7 +258,7 @@ predicate asModulePattern(SsaDefinitionNode def, Module m) {
  *
  * the two reads of `object` are adjacent, and the second is checked to have type `C`.
  */
-predicate hasAdjacentTypeCheckedReads(
+private predicate hasAdjacentTypeCheckedReads(
   Ssa::Definition def, CfgNodes::ExprCfgNode read1, CfgNodes::ExprCfgNode read2, Module m
 ) {
   exists(
@@ -322,11 +322,9 @@ private module Cached {
         // def c.singleton; end # <- result
         // c.singleton          # <- call
         // ```
-        exists(DataFlow::Node sourceNode |
-          methodCall(call, sourceNode, method) or
-          flowsToMethodCall(call, sourceNode, method)
-        |
-          sourceNode = trackSingletonMethodOnInstance(result, method)
+        exists(DataFlow::Node receiver |
+          methodCall(call, receiver, method) and
+          receiver = trackSingletonMethodOnInstance(result, method)
         )
         or
         // singleton method defined on a module
@@ -445,7 +443,7 @@ private DataFlow::LocalSourceNode trackModuleAccess(Module m) {
 }
 
 pragma[nomagic]
-private DataFlow::LocalSourceNode trackInstance(Module tp, boolean exact, TypeTracker t) {
+private DataFlow::Node trackInstance(Module tp, boolean exact, TypeTracker t) {
   t.start() and
   (
     result.asExpr().getExpr() instanceof NilLiteral and
@@ -554,6 +552,11 @@ private DataFlow::LocalSourceNode trackInstance(Module tp, boolean exact, TypeTr
   )
 }
 
+private predicate localFlowStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo, StepSummary summary) {
+  localFlowStepTypeTracker(nodeFrom, nodeTo) and
+  summary.toString() = "level"
+}
+
 /**
  * We exclude steps into `self` parameters and type checked variables. For those,
  * we instead rely on the type of the enclosing module resp. the type being checked
@@ -561,16 +564,18 @@ private DataFlow::LocalSourceNode trackInstance(Module tp, boolean exact, TypeTr
  * targets.
  */
 pragma[nomagic]
-private DataFlow::LocalSourceNode trackInstanceRec(
-  Module tp, TypeTracker t, boolean exact, StepSummary summary
-) {
-  StepSummary::step(trackInstance(tp, exact, t), result, summary) and
+private DataFlow::Node trackInstanceRec(Module tp, TypeTracker t, boolean exact, StepSummary summary) {
+  exists(DataFlow::Node mid | mid = trackInstance(tp, exact, t) |
+    StepSummary::smallstep(mid, result, summary)
+    or
+    localFlowStep(mid, result, summary)
+  ) and
   not result instanceof SelfParameterNode and
   not hasAdjacentTypeCheckedReads(_, _, result.asExpr(), _)
 }
 
 pragma[nomagic]
-private DataFlow::LocalSourceNode trackInstance(Module tp, boolean exact) {
+private DataFlow::Node trackInstance(Module tp, boolean exact) {
   result = trackInstance(tp, exact, TypeTracker::end())
 }
 
@@ -684,16 +689,6 @@ predicate singletonMethodOnInstance(MethodBase method, string name, Expr object)
 }
 
 /**
- * Same as `singletonMethodOnInstance`, but where `n` is the post-update node
- * of the object that is the target of the singleton method `method`.
- */
-predicate singletonMethodOnInstancePostUpdate(
-  MethodBase method, string name, DataFlow::PostUpdateNode n
-) {
-  singletonMethodOnInstance(method, name, n.getPreUpdateNode().asExpr().getExpr())
-}
-
-/**
  * Holds if there is reverse flow from `nodeFrom` to `nodeTo` via a parameter.
  *
  * This is only used for tracking singleton methods, where we want to be able
@@ -723,14 +718,22 @@ predicate singletonMethodOnInstancePostUpdate(
  * ```
  */
 pragma[nomagic]
-private predicate paramReturnFlow(DataFlow::PostUpdateNode nodeFrom, DataFlow::PostUpdateNode nodeTo) {
+private predicate paramReturnFlow(
+  DataFlow::Node nodeFrom, DataFlow::PostUpdateNode nodeTo, StepSummary summary
+) {
   exists(
     CfgNodes::ExprNodes::CallCfgNode call, DataFlow::Node arg, DataFlow::ParameterNode p,
     Expr nodeFromPreExpr
   |
     TypeTrackerSpecific::callStep(call, arg, p) and
     nodeTo.getPreUpdateNode() = arg and
-    nodeFromPreExpr = nodeFrom.getPreUpdateNode().asExpr().getExpr()
+    summary.toString() = "return" and
+    (
+      nodeFromPreExpr = nodeFrom.(DataFlow::PostUpdateNode).getPreUpdateNode().asExpr().getExpr()
+      or
+      nodeFromPreExpr = nodeFrom.asExpr().getExpr() and
+      singletonMethodOnInstance(_, _, nodeFromPreExpr)
+    )
   |
     nodeFromPreExpr = p.getParameter().(NamedParameter).getVariable().getAnAccess()
     or
@@ -738,29 +741,23 @@ private predicate paramReturnFlow(DataFlow::PostUpdateNode nodeFrom, DataFlow::P
   )
 }
 
-// Since post-update nodes are not (and should not be) `LocalSourceNode`s in general,
-// we need to do local flow manually
-pragma[nomagic]
-private predicate argPostUpdateFlowsTo(DataFlow::PostUpdateNode arg, DataFlow::Node n) {
-  paramReturnFlow(_, arg) and
-  n = arg
-  or
-  exists(DataFlow::Node mid |
-    argPostUpdateFlowsTo(arg, mid) and
-    localFlowStepTypeTracker(mid, n)
-  )
-}
-
 pragma[nomagic]
 private DataFlow::Node trackSingletonMethodOnInstance(MethodBase method, string name, TypeTracker t) {
   t.start() and
-  singletonMethodOnInstancePostUpdate(method, name, result)
+  singletonMethodOnInstance(method, name, result.asExpr().getExpr())
   or
   exists(TypeTracker t2, StepSummary summary |
     result = trackSingletonMethodOnInstanceRec(method, name, t2, summary) and
     t = t2.append(summary) and
-    // do not step over redefinitions
-    not singletonMethodOnInstancePostUpdate(_, name, result)
+    // Stop flow at redefinitions.
+    //
+    // Example:
+    // ```rb
+    // def x.foo; end
+    // def x.foo; end
+    // x.foo # <- we want to resolve this call to the second definition only
+    // ```
+    not singletonMethodOnInstance(_, name, result.asExpr().getExpr())
   )
 }
 
@@ -769,15 +766,11 @@ private DataFlow::Node trackSingletonMethodOnInstanceRec(
   MethodBase method, string name, TypeTracker t, StepSummary summary
 ) {
   exists(DataFlow::Node mid | mid = trackSingletonMethodOnInstance(method, name, t) |
-    StepSummary::step(mid, result, summary)
+    StepSummary::smallstep(mid, result, summary)
     or
-    // include flow out through parameters
-    paramReturnFlow(mid, result) and
-    summary.toString() = "return"
+    paramReturnFlow(mid, result, summary)
     or
-    // include flow starting from an output argument
-    argPostUpdateFlowsTo(mid, result) and
-    summary.toString() = "level"
+    localFlowStep(mid, result, summary)
   )
 }
 
