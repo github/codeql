@@ -11,4 +11,4 @@ When you have confirmed that a CodeQL database exists for the language you are i
 
    gh api /repos/<owner>/<repo>/code-scanning/codeql/databases/<language> -H 'Accept: application/zip' > path/to/local/database.zip
 
-For more information, see the documentation for the `Get CodeQL database <https://docs.github.com/en/rest/reference/code-scanning#get-codeql-database>`__ endpoint in the GitHub REST API documentation.
+For more information, see the documentation for the `Get CodeQL database <https://docs.github.com/en/rest/code-scanning#get-a-codeql-database-for-a-repository>`__ endpoint in the GitHub REST API documentation.
