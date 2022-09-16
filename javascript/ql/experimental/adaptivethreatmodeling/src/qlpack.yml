@@ -8,4 +8,4 @@ groups:
     - experimental
 dependencies:
     codeql/javascript-experimental-atm-lib: "*"
-    dsp-testing/javascript-experimental-atm-model: 0.0.100+2022-09-06-08h56m29s.cool-carpet-t3zpbvp2.81b155e19d22cffa6e1b887abc93a68706ba54274382ed645e872a0ca83e1683
+    dsp-testing/javascript-experimental-atm-model: 0.2.2+2022-09-06-08h55m31s.happy-skin-pf3w1vg9.77df0b174a1c3c2e9726687c8e64dbe0c28c3fd4a9516ee39025a22a4cfc526f
