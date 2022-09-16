@@ -86,14 +86,19 @@ predicate hasSize(AllocationExpr alloc, DataFlow::Node n, string state) {
  *
  * The goal of this query is to find patterns such as:
  * ```cpp
- * char* p = (char*)malloc(size);
- * char* end = p + size;
- * use(*end);
+ * 1. char* begin = (char*)malloc(size);
+ * 2. char* end = begin + size;
+ * 3. for(int *p = begin; p <= end; p++) {
+ * 4.   use(*p);
+ * 5. }
  * ```
  *
  * We do this by splitting the task up into two configurations:
- * 1. `AllocToInvalidPointerConf` find flow from `malloc(size)` to `p + size`, and
- * 2. `InvalidPointerToDerefConf` finds flow from `p + size` to `*end`.
+ * 1. `AllocToInvalidPointerConf` find flow from `malloc(size)` to `begin + size`, and
+ * 2. `InvalidPointerToDerefConf` finds flow from `begin + size` to an `end` (on line 3).
+ * 
+ * Finally, the range-analysis library will find a load from (or store to) an address that
+ * is non-strictly upper-bounded by `end` (which in this case is `*p`).
  */
 class AllocToInvalidPointerConf extends ProductFlow::Configuration {
   AllocToInvalidPointerConf() { this = "AllocToInvalidPointerConf" }

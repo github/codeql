@@ -13,6 +13,12 @@ module ProductFlow {
      */
     predicate isSourcePair(DataFlow::Node source1, DataFlow::Node source2) { none() }
 
+    /**
+     * Holds if `(source1, source2)` is a relevant data flow source with initial states `state1`
+     * and `state2`, respectively.
+     *
+     * `source1` and `source2` must belong to the same callable.
+     */
     predicate isSourcePair(
       DataFlow::Node source1, string state1, DataFlow::Node source2, string state2
     ) {
@@ -28,6 +34,12 @@ module ProductFlow {
      */
     predicate isSinkPair(DataFlow::Node sink1, DataFlow::Node sink2) { none() }
 
+    /**
+     * Holds if `(sink1, sink2)` is a relevant data flow sink with final states `state1`
+     * and `state2`, respectively.
+     *
+     * `sink1` and `sink2` must belong to the same callable.
+     */
     predicate isSinkPair(
       DataFlow::Node sink1, DataFlow::FlowState state1, DataFlow::Node sink2,
       DataFlow::FlowState state2
