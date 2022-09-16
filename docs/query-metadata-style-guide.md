@@ -182,9 +182,9 @@ The select clause of each alert query defines the alert message that is displaye
 * If a reference to the current location can't be avoided use "this location" instead of "here". For example, `Bad thing at this location.` is preferable to `Bad thing here.`. This avoids the "click here" anti-pattern.
 * Where you reference another program element, link to it if possible using a substitution (`$@`). Links should be used inline in the sentence, rather than as parenthesised lists or appositions.
 * When a message contains multiple links, construct a sentence that has the most variable link (that is, the link with most targets) last. For further information, see [Defining the results of a query](https://codeql.github.com/docs/writing-codeql-queries/defining-the-results-of-a-query/).
-* Make link texts as concise and precise as possible. E.g. avoid starting a link text with an indefinite article (a, an). For example `Path construction depends on a [user-provided value]` is preferable to `Path construction depends on [a user-provided value]`. (Where the square brackets indicate a link.) See [the W3C guide on link texts](https://www.w3.org/WAI/WCAG22/Understanding/link-purpose-in-context.html) for further information. 
+* Make link text as concise and precise as possible. For example, avoid starting a link text with an indefinite article (a, an). `Path construction depends on a [user-provided value]` is preferable to `Path construction depends on [a user-provided value]`. (Where the square brackets indicate a link.) See [the W3C guide on link texts](https://www.w3.org/WAI/WCAG22/Understanding/link-purpose-in-context.html) for further information. 
 * For path queries, if possible, try to follow the template: `This path depends on a [user-provided value].`, or alternatively (if the first option doesn't work) `[User-provided value] flows to this location and is used in a path.`. 
-* Taint tracking queries generally have that a sink "depends on" the source, and dataflow queries generally have a source that "flows to" the sink.
+* Taint tracking queries generally have a sink that "depends on" the source, and dataflow queries generally have a source that "flows to" the sink.
 
 
 For examples of select clauses and alert messages, see the query source files at the following pages:

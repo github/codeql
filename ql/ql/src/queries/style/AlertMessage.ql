@@ -40,9 +40,9 @@ private AstNode getSelectPart(Select sel, int index) {
 }
 
 /**
- * Gets a string element that is the last part of the message, that doesn't end with a full stop.
+ * Gets a string element that is the last part of the message, that doesn't end with a period.
  *
- * E.g.
+ * For example:
  * ```CodeQL
  * select foo(), "This is a description" // <- bad
  *
@@ -63,7 +63,7 @@ String shouldHaveFullStop(Select sel) {
 /**
  * Gets a string element that is the first part of the message, that starts with a lower case letter.
  *
- * E.g.
+ * For example:
  * ```CodeQL
  * select foo(), "this is a description." // <- bad
  *
@@ -83,7 +83,7 @@ String shouldStartCapital(Select sel) {
 /**
  * Gets a string element that is used in a message that contains "here" or "this location".
  *
- * E.g.
+ * For example:
  * ```CodeQL
  * select foo(), "XSS happens here from using a unsafe value." // <- bad
  *
@@ -101,7 +101,7 @@ String avoidHere(string part) {
 /**
  * Avoid using an indefinite article ("a" or "an") in a link text.
  *
- * E.g.
+ * For example:
  * ```CodeQL
  * select foo(), "XSS from $@", val, "an unsafe value." // <- bad
  *
@@ -119,7 +119,7 @@ String avoidArticleInLinkText(Select sel) {
 /**
  * Don't quote substitutions in a message.
  *
- * E.g.
+ * For example:
  * ```CodeQL
  * select foo(), "XSS from '$@'", val, "an unsafe value." // <- bad
  *
