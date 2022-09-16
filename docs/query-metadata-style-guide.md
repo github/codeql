@@ -179,6 +179,7 @@ The select clause of each alert query defines the alert message that is displaye
 * The message should factually describe the problem that is being highlighted–it should not contain recommendations about how to fix the problem or value judgements.
 * Program element references should be in 'single quotes' to distinguish them from ordinary words. Quotes are not needed around substitutions (`$@`).
 * Avoid constant alert message strings and include some context, if possible. For example, `The class 'Foo' is duplicated as 'Bar'.` is preferable to `This class is duplicated here.`
+* Avoid using link texts that don't describe what they link to. For example, rewrite `This sensitive data is written to a logfile unescaped /here/` to `This sensitive data is /written to a logfile unescaped/`. 
 * If a reference to the current location can't be avoided use "this location" instead of "here". For example, `Bad thing at this location.` is preferable to `Bad thing here.`. This avoids the "click here" anti-pattern.
 * Where you reference another program element, link to it if possible using a substitution (`$@`). Links should be used inline in the sentence, rather than as parenthesised lists or appositions.
 * When a message contains multiple links, construct a sentence that has the most variable link (that is, the link with most targets) last. For further information, see [Defining the results of a query](https://codeql.github.com/docs/writing-codeql-queries/defining-the-results-of-a-query/).
