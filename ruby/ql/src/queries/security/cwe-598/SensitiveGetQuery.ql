@@ -38,6 +38,7 @@ from
 where
   handler.getAnHttpMethod() = "get" and
   input.asExpr().getExpr().getEnclosingMethod() = handler and
-  localFlowWithElementReference(input, sensitive)
+  localFlowWithElementReference(input, sensitive) and
+  not sensitive.getClassification() = SensitiveDataClassification::id()
 select input, "$@ for GET requests uses query parameter as sensitive data.", handler,
   "Route handler"
