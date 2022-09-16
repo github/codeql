@@ -10,7 +10,8 @@
 #include <swift/FrontendTool/FrontendTool.h>
 
 #include "swift/extractor/SwiftExtractor.h"
-#include "swift/extractor/SwiftOutputRewrite.h"
+#include "swift/extractor/TargetTrapFile.h"
+#include "swift/extractor/remapping/SwiftOutputRewrite.h"
 #include "swift/extractor/remapping/SwiftOpenInterception.h"
 
 using namespace std::string_literals;
@@ -37,6 +38,20 @@ static std::string getenv_or(const char* envvar, const std::string& def) {
   return def;
 }
 
+static void lockOutputSwiftModuleTraps(
+    const codeql::SwiftExtractorConfiguration& config,
+    const std::unordered_map<std::string, std::string>& remapping) {
+  for (const auto& [oldPath, newPath] : remapping) {
+    if (llvm::StringRef(oldPath).endswith(".swiftmodule")) {
+      if (auto target = codeql::createTargetTrapFile(config, oldPath)) {
+        *target << "// trap file deliberately empty\n"
+                   "// this swiftmodule was created during the build, so its entities must have"
+                   " been extracted directly from source files";
+      }
+    }
+  }
+}
+
 int main(int argc, char** argv) {
   if (argc == 1) {
     // TODO: print usage
@@ -60,10 +75,10 @@ int main(int argc, char** argv) {
   }
   configuration.patchedFrontendOptions = configuration.frontendOptions;
 
-  auto remapping =
-      codeql::rewriteOutputsInPlace(configuration, configuration.patchedFrontendOptions);
+  auto remapping = codeql::rewriteOutputsInPlace(configuration.getTempArtifactDir(),
+                                                 configuration.patchedFrontendOptions);
   codeql::ensureDirectoriesForNewPathsExist(remapping);
-  codeql::lockOutputSwiftModuleTraps(configuration, remapping);
+  lockOutputSwiftModuleTraps(configuration, remapping);
 
   std::vector<const char*> args;
   for (auto& arg : configuration.patchedFrontendOptions) {
