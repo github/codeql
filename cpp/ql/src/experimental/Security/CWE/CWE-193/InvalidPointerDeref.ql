@@ -83,6 +83,17 @@ predicate hasSize(AllocationExpr alloc, DataFlow::Node n, string state) {
 /**
  * A product-flow configuration for flow from an (allocation, size) pair to a
  * pointer-arithmetic operation that is non-strictly upper-bounded by `allocation + size`.
+ *
+ * The goal of this query is to find patterns such as:
+ * ```cpp
+ * char* p = (char*)malloc(size);
+ * char* end = p + size;
+ * use(*end);
+ * ```
+ *
+ * We do this by splitting the task up into two configurations:
+ * 1. `AllocToInvalidPointerConf` find flow from `malloc(size)` to `p + size`, and
+ * 2. `InvalidPointerToDerefConf` finds flow from `p + size` to `*end`.
  */
 class AllocToInvalidPointerConf extends ProductFlow::Configuration {
   AllocToInvalidPointerConf() { this = "AllocToInvalidPointerConf" }
@@ -115,8 +126,18 @@ predicate pointerAddInstructionHasOperands(
 }
 
 /**
- * Holds if `pai` is non-strictly upper bounded by `b + delta` and `sink1` is the
- * non-constant operand of the pointer-arithmetic operation.
+ * Holds if `pai` is non-strictly upper bounded by `sink2 + delta` and `sink1` is the
+ * left operand of the pointer-arithmetic operation.
+ *
+ * For example in,
+ * ```cpp
+ * char* end = p + (size + 1);
+ * ```
+ * We will have:
+ * - `pai` is `p + (size + 1)`,
+ * - `sink1` is `p`
+ * - `sink2` is `size`
+ * - `delta` is `1`.
  */
 pragma[nomagic]
 predicate pointerAddInstructionHasBounds(
@@ -130,7 +151,9 @@ predicate pointerAddInstructionHasBounds(
 
 /**
  * Holds if `pai` is non-strictly upper bounded by `sink2 + delta` and `sink1` is the
- * non-constant operand of the pointer-arithmetic operation.
+ * left operand of the pointer-arithmetic operation.
+ *
+ * See `pointerAddInstructionHasBounds` for an example.
  */
 predicate isSinkImpl(
   PointerAddInstruction pai, DataFlow::Node sink1, DataFlow::Node sink2, int delta
@@ -169,6 +192,14 @@ class InvalidPointerToDerefConf extends DataFlow3::Configuration {
   override predicate isSink(DataFlow::Node sink) { isInvalidPointerDerefSink(sink, _, _) }
 }
 
+/**
+ * Holds if `pai` is a pointer-arithmetic operation and `source` is a dataflow node with a
+ * pointer-value that is non-strictly upper bounded by `pai + delta`.
+ *
+ * For example, if `pai` is a pointer-arithmetic operation `p + size` in an expression such
+ * as `(p + size) + 1` and `source` is the node representing `(p + size) + 1`. In this
+ * case `delta` is 1.
+ */
 predicate invalidPointerToDerefSource(
   PointerArithmeticInstruction pai, DataFlow::Node source, int delta
 ) {
