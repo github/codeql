@@ -50,9 +50,16 @@ class TemplateInjectionAdditionalTaintStep extends Unit {
 /**
  * A sanitizer for server-side template injection (SST) vulnerabilities.
  */
-abstract class TemplateInjectionSanitizer extends DataFlow::Node {
+abstract class TemplateInjectionSanitizer extends DataFlow::Node { }
+
+/**
+ * A sanitizer for server-side template injection (SST) vulnerabilities.
+ * This sanitizer is only applicable when `TemplateInjectionSanitizerWithState::hasState`
+ * holds for the flow state.
+ */
+abstract class TemplateInjectionSanitizerWithState extends DataFlow::Node {
   /** Holds if this sanitizer has the specified `state`. */
-  predicate hasState(DataFlow::FlowState state) { state instanceof DataFlow::FlowStateEmpty }
+  abstract predicate hasState(DataFlow::FlowState state);
 }
 
 private class DefaultTemplateInjectionSource extends TemplateInjectionSource instanceof RemoteFlowSource {

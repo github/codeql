@@ -9,22 +9,20 @@ import semmle.code.java.security.TemplateInjection
 class TemplateInjectionFlowConfig extends TaintTracking::Configuration {
   TemplateInjectionFlowConfig() { this = "TemplateInjectionFlowConfig" }
 
-  override predicate isSource(DataFlow::Node source) { this.isSource(source, _) }
-
   override predicate isSource(DataFlow::Node source, DataFlow::FlowState state) {
     source.(TemplateInjectionSource).hasState(state)
   }
-
-  override predicate isSink(DataFlow::Node sink) { this.isSink(sink, _) }
 
   override predicate isSink(DataFlow::Node sink, DataFlow::FlowState state) {
     sink.(TemplateInjectionSink).hasState(state)
   }
 
-  override predicate isSanitizer(DataFlow::Node sanitizer) { this.isSanitizer(sanitizer, _) }
+  override predicate isSanitizer(DataFlow::Node sanitizer) {
+    sanitizer instanceof TemplateInjectionSanitizer
+  }
 
   override predicate isSanitizer(DataFlow::Node sanitizer, DataFlow::FlowState state) {
-    sanitizer.(TemplateInjectionSanitizer).hasState(state)
+    sanitizer.(TemplateInjectionSanitizerWithState).hasState(state)
   }
 
   override predicate isAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
