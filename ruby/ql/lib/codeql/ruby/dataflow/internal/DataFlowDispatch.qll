@@ -208,12 +208,12 @@ private predicate selfInModule(SelfVariable self, Module m) {
   )
 }
 
-/** Holds if `self` belongs to a method inside module `m`. */
+/** Holds if `self` belongs to method `method` inside module `m`. */
 pragma[nomagic]
-private predicate selfInMethod(SelfVariable self, Module m) {
-  exists(Scope scope, ModuleBase encl |
-    scope = self.getDeclaringScope() and
-    encl = scope.(MethodBase).getEnclosingModule() and
+private predicate selfInMethod(SelfVariable self, MethodBase method, Module m) {
+  exists(ModuleBase encl |
+    method = self.getDeclaringScope() and
+    encl = method.getEnclosingModule() and
     if encl instanceof SingletonClass
     then m = encl.getEnclosingModule().getModule()
     else m = encl.getModule()
@@ -354,7 +354,7 @@ private module Cached {
           //   end
           // end
           // ```
-          selfInMethod(sourceNode.(SsaSelfDefinitionNode).getVariable(), m)
+          selfInMethod(sourceNode.(SsaSelfDefinitionNode).getVariable(), _, m)
         )
       )
       or
@@ -510,15 +510,17 @@ private DataFlow::Node trackInstance(Module tp, boolean exact, TypeTracker t) {
       selfInModule(sourceNode.(SsaSelfDefinitionNode).getVariable(), tp)
       or
       // `self.new` inside a (singleton) method
-      selfInMethod(sourceNode.(SsaSelfDefinitionNode).getVariable(), tp)
+      selfInMethod(sourceNode.(SsaSelfDefinitionNode).getVariable(), _, tp)
     )
     or
     // `self` reference in method or top-level (but not in module, where instance
     // methods cannot be called; only singleton methods)
     result =
       any(SsaSelfDefinitionNode self |
-        selfInMethod(self.getVariable(), tp) and
-        exact = false
+        exists(MethodBase m |
+          selfInMethod(self.getVariable(), m, tp) and
+          if m.getEnclosingModule() instanceof Toplevel then exact = true else exact = false
+        )
         or
         selfInToplevel(self.getVariable(), tp) and
         exact = true
@@ -535,7 +537,7 @@ private DataFlow::Node trackInstance(Module tp, boolean exact, TypeTracker t) {
       selfInModule(result.(SsaSelfDefinitionNode).getVariable(), m)
       or
       // needed for e.g. `self.puts`
-      selfInMethod(result.(SsaSelfDefinitionNode).getVariable(), m)
+      selfInMethod(result.(SsaSelfDefinitionNode).getVariable(), any(SingletonMethod sm), m)
     )
     or
     // `in C => c then c.foo`

@@ -11,7 +11,6 @@ getTarget
 | calls.rb:28:5:28:15 | call to singleton_m | calls.rb:23:5:23:29 | singleton_m |
 | calls.rb:29:5:29:20 | call to singleton_m | calls.rb:23:5:23:29 | singleton_m |
 | calls.rb:33:1:33:13 | call to singleton_m | calls.rb:23:5:23:29 | singleton_m |
-| calls.rb:36:5:36:14 | call to instance_m | calls.rb:22:5:22:23 | instance_m |
 | calls.rb:40:5:40:13 | call to include | calls.rb:103:5:103:20 | include |
 | calls.rb:48:9:48:18 | call to instance_m | calls.rb:22:5:22:23 | instance_m |
 | calls.rb:49:9:49:23 | call to instance_m | calls.rb:22:5:22:23 | instance_m |
@@ -178,6 +177,7 @@ unresolvedCall
 | calls.rb:25:5:25:14 | call to instance_m |
 | calls.rb:26:5:26:19 | call to instance_m |
 | calls.rb:32:1:32:12 | call to instance_m |
+| calls.rb:36:5:36:14 | call to instance_m |
 | calls.rb:41:5:41:14 | call to instance_m |
 | calls.rb:42:5:42:19 | call to instance_m |
 | calls.rb:44:5:44:15 | call to singleton_m |
