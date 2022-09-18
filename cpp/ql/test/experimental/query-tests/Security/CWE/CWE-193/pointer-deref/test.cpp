@@ -12,7 +12,7 @@ void test1(int size) {
     char g = *(q - size - 1); // GOOD
 }
 
-void test12(int size) {
+void test2(int size) {
     char* p = malloc(size);
     char* q = p + size - 1;
     char a = *q; // GOOD
@@ -24,7 +24,7 @@ void test12(int size) {
     char g = *(q - size - 1); // GOOD
 }
 
-void test9(int size) {
+void test3(int size) {
     char* p = malloc(size + 1);
     char* q = p + (size + 1);
     char a = *q; // BAD
@@ -36,7 +36,7 @@ void test9(int size) {
     char g = *(q - size - 1); // GOOD
 }
 
-void test10(int size) {
+void test4(int size) {
     char* p = malloc(size - 1);
     char* q = p + (size - 1);
     char a = *q; // BAD
@@ -55,7 +55,7 @@ char* mk_array(int size, char** end) {
     return begin;
 }
 
-void test11(int size) {
+void test5(int size) {
     char* end;
     char* begin = mk_array(size, &end);
 
@@ -85,7 +85,7 @@ array_t mk_array(int size) {
     return arr;
 }
 
-void test2(int size) {
+void test6(int size) {
     array_t arr = mk_array(size);
 
     for (char* p = arr.begin; p != arr.end; ++p) {
@@ -101,7 +101,7 @@ void test2(int size) {
     }
 }
 
-void test3_callee(array_t arr) {
+void test7_callee(array_t arr) {
     for (char* p = arr.begin; p != arr.end; ++p) {
         *p = 0; // GOOD
     }
@@ -115,11 +115,11 @@ void test3_callee(array_t arr) {
     }
 }
 
-void test3(int size) {
-    test3_callee(mk_array(size));
+void test7(int size) {
+    test7_callee(mk_array(size));
 }
 
-void test4(int size) {
+void test8(int size) {
     array_t arr;
     char* p = malloc(size);
     arr.begin = p;
@@ -146,7 +146,7 @@ array_t *mk_array_p(int size) {
     return arr;
 }
 
-void test5(int size) {
+void test9(int size) {
     array_t *arr = mk_array_p(size);
 
     for (char* p = arr->begin; p != arr->end; ++p) {
@@ -162,7 +162,7 @@ void test5(int size) {
     }
 }
 
-void test6_callee(array_t *arr) {
+void test10_callee(array_t *arr) {
     for (char* p = arr->begin; p != arr->end; ++p) {
         *p = 0; // GOOD
     }
@@ -176,6 +176,6 @@ void test6_callee(array_t *arr) {
     }
 }
 
-void test6(int size) {
-    test6_callee(mk_array_p(size));
+void test10(int size) {
+    test10_callee(mk_array_p(size));
 }

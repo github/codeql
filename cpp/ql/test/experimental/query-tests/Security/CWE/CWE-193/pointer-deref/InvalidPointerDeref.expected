@@ -546,9 +546,9 @@ edges
 | test.cpp:137:11:137:13 | arr indirection [begin] | test.cpp:137:15:137:19 | begin |
 | test.cpp:137:15:137:19 | begin | test.cpp:137:15:137:19 | Load |
 | test.cpp:141:10:141:19 | VariableAddress indirection [begin] | test.cpp:150:20:150:29 | Call indirection [begin] |
-| test.cpp:141:10:141:19 | VariableAddress indirection [begin] | test.cpp:180:18:180:27 | call to mk_array_p indirection [begin] |
+| test.cpp:141:10:141:19 | VariableAddress indirection [begin] | test.cpp:180:19:180:28 | call to mk_array_p indirection [begin] |
 | test.cpp:141:10:141:19 | VariableAddress indirection [end] | test.cpp:150:20:150:29 | Call indirection [end] |
-| test.cpp:141:10:141:19 | VariableAddress indirection [end] | test.cpp:180:18:180:27 | call to mk_array_p indirection [end] |
+| test.cpp:141:10:141:19 | VariableAddress indirection [end] | test.cpp:180:19:180:28 | call to mk_array_p indirection [end] |
 | test.cpp:143:5:143:29 | Store | test.cpp:143:10:143:14 | Load indirection [post update] [begin] |
 | test.cpp:143:10:143:14 | Load indirection [post update] [begin] | test.cpp:141:10:141:19 | VariableAddress indirection [begin] |
 | test.cpp:143:10:143:14 | Load indirection [post update] [begin] | test.cpp:144:16:144:18 | Load indirection [begin] |
@@ -579,12 +579,12 @@ edges
 | test.cpp:160:20:160:22 | Load indirection [begin] | test.cpp:160:25:160:29 | begin |
 | test.cpp:160:20:160:22 | Load indirection [begin] | test.cpp:160:48:160:48 | Load |
 | test.cpp:160:25:160:29 | begin | test.cpp:160:48:160:48 | Load |
-| test.cpp:165:28:165:30 | arr indirection [begin] | test.cpp:166:20:166:22 | Load indirection [begin] |
-| test.cpp:165:28:165:30 | arr indirection [begin] | test.cpp:170:20:170:22 | Load indirection [begin] |
-| test.cpp:165:28:165:30 | arr indirection [begin] | test.cpp:174:20:174:22 | Load indirection [begin] |
-| test.cpp:165:28:165:30 | arr indirection [end] | test.cpp:166:37:166:39 | Load indirection [end] |
-| test.cpp:165:28:165:30 | arr indirection [end] | test.cpp:170:37:170:39 | Load indirection [end] |
-| test.cpp:165:28:165:30 | arr indirection [end] | test.cpp:174:36:174:38 | Load indirection [end] |
+| test.cpp:165:29:165:31 | arr indirection [begin] | test.cpp:166:20:166:22 | Load indirection [begin] |
+| test.cpp:165:29:165:31 | arr indirection [begin] | test.cpp:170:20:170:22 | Load indirection [begin] |
+| test.cpp:165:29:165:31 | arr indirection [begin] | test.cpp:174:20:174:22 | Load indirection [begin] |
+| test.cpp:165:29:165:31 | arr indirection [end] | test.cpp:166:37:166:39 | Load indirection [end] |
+| test.cpp:165:29:165:31 | arr indirection [end] | test.cpp:170:37:170:39 | Load indirection [end] |
+| test.cpp:165:29:165:31 | arr indirection [end] | test.cpp:174:36:174:38 | Load indirection [end] |
 | test.cpp:166:20:166:22 | Load indirection [begin] | test.cpp:166:25:166:29 | begin |
 | test.cpp:166:20:166:22 | Load indirection [begin] | test.cpp:166:49:166:49 | Load |
 | test.cpp:166:25:166:29 | begin | test.cpp:166:49:166:49 | Load |
@@ -606,8 +606,9 @@ edges
 | test.cpp:174:41:174:43 | Load | test.cpp:171:9:171:14 | Store: ... = ... |
 | test.cpp:174:41:174:43 | Load | test.cpp:171:9:171:14 | Store: ... = ... |
 | test.cpp:174:41:174:43 | end | test.cpp:174:41:174:43 | Load |
-| test.cpp:180:18:180:27 | call to mk_array_p indirection [begin] | test.cpp:165:28:165:30 | arr indirection [begin] |
-| test.cpp:180:18:180:27 | call to mk_array_p indirection [end] | test.cpp:165:28:165:30 | arr indirection [end] |
+| test.cpp:180:19:180:28 | call to mk_array_p indirection [begin] | test.cpp:165:29:165:31 | arr indirection [begin] |
+| test.cpp:180:19:180:28 | call to mk_array_p indirection [end] | test.cpp:165:29:165:31 | arr indirection [end] |
+| test.cpp:188:15:188:20 | call to malloc | test.cpp:189:15:189:15 | Load |
 #select
 | test.cpp:6:14:6:15 | Load: * ... | test.cpp:4:15:4:20 | call to malloc | test.cpp:6:14:6:15 | Load: * ... | This read might be out of bounds, as the pointer might be equal to $@ + $@. | test.cpp:4:15:4:20 | call to malloc | call to malloc | test.cpp:5:19:5:22 | size | size |
 | test.cpp:8:14:8:21 | Load: * ... | test.cpp:4:15:4:20 | call to malloc | test.cpp:8:14:8:21 | Load: * ... | This read might be out of bounds, as the pointer might be equal to $@ + $@ + 1. | test.cpp:4:15:4:20 | call to malloc | call to malloc | test.cpp:5:19:5:22 | size | size |
