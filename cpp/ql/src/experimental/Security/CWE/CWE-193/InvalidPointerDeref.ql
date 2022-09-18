@@ -106,6 +106,12 @@ class AllocToInvalidPointerConf extends ProductFlow::Configuration {
   override predicate isSourcePair(
     DataFlow::Node source1, string state1, DataFlow::Node source2, string state2
   ) {
+    // In the case of an allocation like
+    // ```cpp
+    // malloc(size + 1);
+    // ```
+    // we use `state2` to remember that there was an offset (in this case an offset of `1`) added
+    // to the size of the allocation. This state is then checked in `isSinkPair`.
     state1 = "" and
     hasSize(source1.asConvertedExpr(), source2, state2)
   }
@@ -115,6 +121,8 @@ class AllocToInvalidPointerConf extends ProductFlow::Configuration {
     DataFlow::FlowState state2
   ) {
     state1 = "" and
+    // We check that the delta computed by the range analysis matches the
+    // state value that we set in `isSourcePair`.
     exists(int delta |
       isSinkImpl(_, sink1, sink2, delta) and
       state2 = delta.toString()
