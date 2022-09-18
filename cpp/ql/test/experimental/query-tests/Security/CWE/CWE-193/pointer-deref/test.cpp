@@ -179,3 +179,13 @@ void test10_callee(array_t *arr) {
 void test10(int size) {
     test10_callee(mk_array_p(size));
 }
+
+void deref_plus_one(char* q) {
+    char a = *(q + 1); // BAD [NOT DETECTED]
+}
+
+void test11(unsigned size) {
+    char *p = malloc(size);
+    char *q = p + size - 1;
+    deref_plus_one(q);
+}
