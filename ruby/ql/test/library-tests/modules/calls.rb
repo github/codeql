@@ -32,6 +32,10 @@ end
 M.instance_m # NoMethodError
 M.singleton_m
 
+def call_instance_m
+    instance_m # NoMethodError
+end
+
 class C
     include M
     instance_m # NoMethodError
