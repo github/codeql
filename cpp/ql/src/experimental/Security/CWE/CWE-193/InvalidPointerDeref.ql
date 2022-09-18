@@ -96,7 +96,7 @@ predicate hasSize(AllocationExpr alloc, DataFlow::Node n, string state) {
  * We do this by splitting the task up into two configurations:
  * 1. `AllocToInvalidPointerConf` find flow from `malloc(size)` to `begin + size`, and
  * 2. `InvalidPointerToDerefConf` finds flow from `begin + size` to an `end` (on line 3).
- * 
+ *
  * Finally, the range-analysis library will find a load from (or store to) an address that
  * is non-strictly upper-bounded by `end` (which in this case is `*p`).
  */
