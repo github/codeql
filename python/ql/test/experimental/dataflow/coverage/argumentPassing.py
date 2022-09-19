@@ -140,7 +140,7 @@ def test_pos_star():
         if len(a) > 0:
             SINK1(a[0])
 
-    with_star(arg1)  #$ MISSING: arg1 func=test_pos_star.with_star
+    with_star(arg1)  #$ arg1 func=test_pos_star.with_star
 
 
 def test_pos_kw():
@@ -209,10 +209,10 @@ def starargs_only(*args):
 
 @expects(3*3)
 def test_only_starargs():
-    starargs_only(arg1, arg2, "safe") # $ MISSING: arg1 arg2
+    starargs_only(arg1, arg2, "safe") # $ arg1 arg2 SPURIOUS: bad2,bad3="arg1" bad1,bad3="arg2"
 
     args = (arg2, "safe")
-    starargs_only(arg1, *args) # $ MISSING: arg1 arg2
+    starargs_only(arg1, *args) # $ arg1 SPURIOUS: bad2,bad3="arg1" MISSING: arg2
 
     args = (arg1, arg2, "safe") # $ arg1 arg2 func=starargs_only
     starargs_only(*args)
@@ -225,7 +225,7 @@ def starargs_mixed(a, *args):
 
 @expects(3*8)
 def test_stararg_mixed():
-    starargs_mixed(arg1, arg2, "safe") # $ arg1 MISSING: arg2
+    starargs_mixed(arg1, arg2, "safe") # $ arg1 arg2 SPURIOUS: bad3="arg2"
 
     args = (arg2, "safe") # $ arg2 func=starargs_mixed
     starargs_mixed(arg1, *args) # $ arg1
@@ -240,11 +240,11 @@ def test_stararg_mixed():
     empty_args = ()
 
     # adding first/last
-    starargs_mixed(arg1, arg2, "safe", *empty_args) # $ arg1 MISSING: arg2
+    starargs_mixed(arg1, arg2, "safe", *empty_args) # $ arg1 arg2 SPURIOUS: bad3="arg2"
     starargs_mixed(*empty_args, arg1, arg2, "safe") # $ MISSING: arg1 arg2
 
     # adding before/after *args
-    args = (arg2, "safe")
-    starargs_mixed(arg1, *args, *empty_args) # $ arg1 MISSING: arg2
+    args = (arg2, "safe") # $ arg2 func=starargs_mixed
+    starargs_mixed(arg1, *args, *empty_args) # $ arg1
     args = (arg2, "safe")
     starargs_mixed(arg1, *empty_args, *args) # $ arg1 MISSING: arg2

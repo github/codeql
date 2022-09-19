@@ -58,6 +58,78 @@ class SyntheticPreUpdateNode extends Node, TSyntheticPreUpdateNode {
 }
 
 // =============================================================================
+// *args (StarArgs) related
+// =============================================================================
+/**
+ * A (synthetic) data-flow parameter node to capture all positional arguments that
+ * should be passed to the `*args` parameter.
+ *
+ * To handle
+ * ```py
+ * def func(*args):
+ *     for arg in args:
+ *         sink(arg)
+ *
+ * func(source1, source2, ...)
+ * ```
+ *
+ * we add a synthetic parameter to `func` that accepts any positional argument at (or
+ * after) the index for the `*args` parameter. We add a store step (at any list index) to the real
+ * `*args` parameter. This means we can handle the code above, but if the code had done `sink(args[0])`
+ * we would (wrongly) add flow for `source2` as well.
+ *
+ * To solve this more precisely, we could add a synthetic argument with position `*args`
+ * that had store steps with the correct index (like we do for mapping keyword arguments to a
+ * `**kwargs` parameter). However, if a single call could go to 2 different
+ * targets with `*args` parameters at different positions, as in the example below, it's unclear what
+ * index to store `2` at. For the `foo` callable it should be 1, for the `bar` callable it should be 0.
+ * So this information would need to be encoded in the arguments of a `ArgumentPosition` branch, and
+ * one of the arguments would be which callable is the target. However, we cannot build `ArgumentPosition`
+ * branches based on the call-graph, so this strategy doesn't work.
+ *
+ * Another approach to solving it precisely is to add multiple synthetic parameters that have store steps
+ * to the real `*args` parameter. So for the example below, `foo` would need to have synthetic parameter
+ * nodes for indexes 1 and 2 (which would have store step for index 0 and 1 of the `*args` parameter),
+ * and `bar` would need it for indexes 1, 2, and 3. The question becomes how many synthetic parameters to
+ * create, which _must_ be `max(Call call, int i | exists(call.getArg(i)))`, since (again) we can't base
+ * this on the call-graph. And each function with a `*args` parameter would need this many extra synthetic
+ * nodes. My gut feeling at that this simple approach will be good enough, but if we need to get it more
+ * precise, it should be possible to do it like this.
+ *
+ * ```py
+ * def foo(one, *args): ...
+ * def bar(*args): ...
+ *
+ * func = foo if <cond> else bar
+ * func(1, 2, 3)
+ */
+class SynthStarArgsElementParameterNode extends ParameterNodeImpl,
+  TSynthStarArgsElementParameterNode {
+  DataFlowCallable callable;
+
+  SynthStarArgsElementParameterNode() { this = TSynthStarArgsElementParameterNode(callable) }
+
+  override string toString() { result = "SynthStarArgsElementParameterNode" }
+
+  override Scope getScope() { result = callable.getScope() }
+
+  override Location getLocation() { result = callable.getLocation() }
+
+  override Parameter getParameter() { none() }
+}
+
+predicate synthStarArgsElementParameterNodeStoreStep(
+  SynthStarArgsElementParameterNode nodeFrom, ListElementContent c, ParameterNode nodeTo
+) {
+  c = c and // suppress warning about unused parameter
+  exists(DataFlowCallable callable, ParameterPosition ppos |
+    nodeFrom = TSynthStarArgsElementParameterNode(callable) and
+    nodeTo = callable.getParameter(ppos) and
+    ppos.isStarArgs(_)
+  )
+}
+
+// =============================================================================
 // **kwargs (DictSplat) related
 // =============================================================================
 /**
@@ -519,6 +591,8 @@ predicate storeStep(Node nodeFrom, Content c, Node nodeTo) {
   or
   FlowSummaryImpl::Private::Steps::summaryStoreStep(nodeFrom, c, nodeTo)
   or
+  synthStarArgsElementParameterNodeStoreStep(nodeFrom, c, nodeTo)
+  or
   synthDictSplatArgumentNodeStoreStep(nodeFrom, c, nodeTo)
 }
 
@@ -848,6 +922,8 @@ predicate nodeIsHidden(Node n) {
   n instanceof SummaryNode
   or
   n instanceof SummaryParameterNode
+  or
+  n instanceof SynthStarArgsElementParameterNode
   or
   n instanceof SynthDictSplatArgumentNode
   or
