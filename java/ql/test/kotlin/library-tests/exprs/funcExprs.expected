@@ -15,6 +15,10 @@ lambdaExpr
 | funcExprs.kt:35:29:35:112 | ...->... | stmt body | funcExprs.kt:35:29:35:112 | invoke | invoke(int,int,int,int,int,int,int,int,int,int,int,int,int,int,int,int,int,int,int,int,int,int) | funcExprs.kt:35:29:35:112 | new Function22<Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Unit>(...) { ... } |
 | funcExprs.kt:36:29:36:117 | ...->... | stmt body | funcExprs.kt:36:29:36:117 | invoke | invoke(int,int,int,int,int,int,int,int,int,int,int,int,int,int,int,int,int,int,int,int,int,int,int) | funcExprs.kt:36:29:36:117 | new FunctionN<String>(...) { ... } |
 | funcExprs.kt:75:12:75:22 | ...->... | stmt body | funcExprs.kt:75:12:75:22 | invoke | invoke(Class3.Generic) | funcExprs.kt:75:12:75:22 | new Function1<Generic<Generic<Integer>>,String>(...) { ... } |
+| funcExprs.kt:83:31:83:51 | ...->... | stmt body | funcExprs.kt:83:31:83:51 | invoke | invoke(int) | funcExprs.kt:83:31:83:51 | new Function1<Integer,String>(...) { ... } |
+| funcExprs.kt:86:39:86:59 | ...->... | stmt body | funcExprs.kt:86:39:86:59 | invoke | invoke(int) | funcExprs.kt:86:39:86:59 | new Function1<Integer,String>(...) { ... } |
+| funcExprs.kt:90:15:90:69 | ...->... | stmt body | funcExprs.kt:90:15:90:69 | invoke | invoke(int,int,int,int,int,int,int,int,int,int,int,int,int,int,int,int,int,int,int,int,int,int,int) | funcExprs.kt:90:15:90:69 | new FunctionN<String>(...) { ... } |
+| funcExprs.kt:94:15:94:67 | ...->... | stmt body | funcExprs.kt:94:15:94:67 | invoke | invoke(int,int,int,int,int,int,int,int,int,int,int,int,int,int,int,int,int,int,int,int,int,int) | funcExprs.kt:94:15:94:67 | new Function22<Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,String>(...) { ... } |
 | samConversion.kt:2:31:2:45 | ...->... | stmt body | samConversion.kt:2:31:2:45 | invoke | invoke(int) | samConversion.kt:2:31:2:45 | new Function1<Integer,Boolean>(...) { ... } |
 | samConversion.kt:4:27:4:42 | ...->... | stmt body | samConversion.kt:4:27:4:42 | invoke | invoke(int,int) | samConversion.kt:4:27:4:42 | new Function2<Integer,Integer,Unit>(...) { ... } |
 | samConversion.kt:7:29:7:46 | ...->... | stmt body | samConversion.kt:7:29:7:46 | invoke | invoke(java.lang.String,int) | samConversion.kt:7:29:7:46 | new Function2<String,Integer,Boolean>(...) { ... } |
@@ -55,6 +59,11 @@ modifiers
 | funcExprs.kt:36:29:36:117 | ...->... | funcExprs.kt:36:29:36:117 | invoke | override, public |
 | funcExprs.kt:36:29:36:117 | ...->... | funcExprs.kt:36:29:36:117 | invoke | public |
 | funcExprs.kt:75:12:75:22 | ...->... | funcExprs.kt:75:12:75:22 | invoke | override, public |
+| funcExprs.kt:83:31:83:51 | ...->... | funcExprs.kt:83:31:83:51 | invoke | override, public |
+| funcExprs.kt:86:39:86:59 | ...->... | funcExprs.kt:86:39:86:59 | invoke | override, public |
+| funcExprs.kt:90:15:90:69 | ...->... | funcExprs.kt:90:15:90:69 | invoke | override, public |
+| funcExprs.kt:90:15:90:69 | ...->... | funcExprs.kt:90:15:90:69 | invoke | public |
+| funcExprs.kt:94:15:94:67 | ...->... | funcExprs.kt:94:15:94:67 | invoke | override, public |
 | samConversion.kt:2:31:2:45 | ...->... | samConversion.kt:2:31:2:45 | invoke | override, public |
 | samConversion.kt:4:27:4:42 | ...->... | samConversion.kt:4:27:4:42 | invoke | override, public |
 | samConversion.kt:7:29:7:46 | ...->... | samConversion.kt:7:29:7:46 | invoke | override, public |
@@ -65,4 +74,5 @@ modifiers
 | samConversion.kt:46:32:46:44 | ...->... | samConversion.kt:46:32:46:44 | invoke | override, public |
 nonOverrideInvoke
 | funcExprs.kt:36:29:36:117 | ...->... | funcExprs.kt:36:29:36:117 | invoke | 23 |
+| funcExprs.kt:90:15:90:69 | ...->... | funcExprs.kt:90:15:90:69 | invoke | 23 |
 | samConversion.kt:43:31:45:68 | ...->... | samConversion.kt:43:31:45:68 | invoke | 23 |
