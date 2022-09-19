@@ -10,7 +10,7 @@ private import semmle.python.ApiGraphs
 class ReversedSummary extends SummarizedCallable {
   ReversedSummary() { this = "builtins.reversed" }
 
-  override CallNode getACall() { result = API::builtin("reversed").getACall().getNode() }
+  override DataFlow::CallCfgNode getACall() { result = API::builtin("reversed").getACall() }
 
   override DataFlow::ArgumentNode getACallback() {
     result = API::builtin("reversed").getAValueReachableFromSource()

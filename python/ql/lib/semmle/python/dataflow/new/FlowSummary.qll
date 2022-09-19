@@ -84,10 +84,10 @@ private class SummarizedCallableFromModel extends SummarizedCallable {
     this = package + ";" + type + ";" + path
   }
 
-  override CallNode getACall() {
+  override CallCfgNode getACall() {
     exists(API::CallNode base |
       ModelOutput::resolvedSummaryBase(package, type, path, base) and
-      result = base.asCfgNode()
+      result = base.getACall()
     )
   }
 

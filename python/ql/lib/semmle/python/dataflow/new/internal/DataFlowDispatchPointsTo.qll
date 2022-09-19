@@ -281,7 +281,7 @@ abstract class LibraryCallable extends string {
   LibraryCallable() { any() }
 
   /** Gets a call to this library callable. */
-  abstract CallNode getACall();
+  abstract CallCfgNode getACall();
 
   /** Gets a data-flow node, where this library callable is used as a call-back. */
   abstract ArgumentNode getACallback();
@@ -398,7 +398,7 @@ class LibraryCallableValue extends DataFlowCallable, TLibraryCallable {
 
   override string toString() { result = callable.toString() }
 
-  override CallNode getACall() { result = callable.getACall() }
+  override CallNode getACall() { result = callable.getACall().getNode() }
 
   /** Gets a data-flow node, where this library callable is used as a call-back. */
   ArgumentNode getACallback() { result = callable.getACallback() }
@@ -772,7 +772,7 @@ DataFlowCallable viableCallable(DataFlowSourceCall call) {
   // Instead we reolve the call from the summary.
   exists(LibraryCallable callable |
     result = TLibraryCallable(callable) and
-    call.getNode() = callable.getACall()
+    call.getNode() = callable.getACall().getNode()
   )
 }
 

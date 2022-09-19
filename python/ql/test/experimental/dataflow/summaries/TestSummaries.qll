@@ -13,8 +13,8 @@ module RecursionGuard {
   private class RecursionGuard extends SummarizedCallable {
     RecursionGuard() { this = "RecursionGuard" }
 
-    override CallNode getACall() {
-      result.getFunction().(NameNode).getId() = this and
+    override DataFlow::CallCfgNode getACall() {
+      result.getFunction().asCfgNode().(NameNode).getId() = this and
       (TT::callStep(_, _) implies any())
     }
 
@@ -25,7 +25,9 @@ module RecursionGuard {
 private class SummarizedCallableIdentity extends SummarizedCallable {
   SummarizedCallableIdentity() { this = "identity" }
 
-  override CallNode getACall() { result.getFunction().(NameNode).getId() = this }
+  override DataFlow::CallCfgNode getACall() {
+    result.getFunction().asCfgNode().(NameNode).getId() = this
+  }
 
   override DataFlow::ArgumentNode getACallback() { result.asExpr().(Name).getId() = this }
 
@@ -40,7 +42,9 @@ private class SummarizedCallableIdentity extends SummarizedCallable {
 private class SummarizedCallableApplyLambda extends SummarizedCallable {
   SummarizedCallableApplyLambda() { this = "apply_lambda" }
 
-  override CallNode getACall() { result.getFunction().(NameNode).getId() = this }
+  override DataFlow::CallCfgNode getACall() {
+    result.getFunction().asCfgNode().(NameNode).getId() = this
+  }
 
   override DataFlow::ArgumentNode getACallback() { result.asExpr().(Name).getId() = this }
 
@@ -58,7 +62,9 @@ private class SummarizedCallableApplyLambda extends SummarizedCallable {
 private class SummarizedCallableReversed extends SummarizedCallable {
   SummarizedCallableReversed() { this = "reversed" }
 
-  override CallNode getACall() { result.getFunction().(NameNode).getId() = this }
+  override DataFlow::CallCfgNode getACall() {
+    result.getFunction().asCfgNode().(NameNode).getId() = this
+  }
 
   override DataFlow::ArgumentNode getACallback() { result.asExpr().(Name).getId() = this }
 
@@ -72,7 +78,9 @@ private class SummarizedCallableReversed extends SummarizedCallable {
 private class SummarizedCallableMap extends SummarizedCallable {
   SummarizedCallableMap() { this = "list_map" }
 
-  override CallNode getACall() { result.getFunction().(NameNode).getId() = this }
+  override DataFlow::CallCfgNode getACall() {
+    result.getFunction().asCfgNode().(NameNode).getId() = this
+  }
 
   override DataFlow::ArgumentNode getACallback() { result.asExpr().(Name).getId() = this }
 
@@ -90,7 +98,9 @@ private class SummarizedCallableMap extends SummarizedCallable {
 private class SummarizedCallableAppend extends SummarizedCallable {
   SummarizedCallableAppend() { this = "append_to_list" }
 
-  override CallNode getACall() { result.getFunction().(NameNode).getId() = this }
+  override DataFlow::CallCfgNode getACall() {
+    result.getFunction().asCfgNode().(NameNode).getId() = this
+  }
 
   override DataFlow::ArgumentNode getACallback() { result.asExpr().(Name).getId() = this }
 
@@ -108,8 +118,8 @@ private class SummarizedCallableAppend extends SummarizedCallable {
 private class SummarizedCallableJsonLoads extends SummarizedCallable {
   SummarizedCallableJsonLoads() { this = "json.loads" }
 
-  override CallNode getACall() {
-    result = API::moduleImport("json").getMember("loads").getACall().getNode()
+  override DataFlow::CallCfgNode getACall() {
+    result = API::moduleImport("json").getMember("loads").getACall()
   }
 
   override DataFlow::ArgumentNode getACallback() {
