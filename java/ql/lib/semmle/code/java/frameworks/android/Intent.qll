@@ -23,6 +23,13 @@ class TypeActivity extends Class {
 }
 
 /**
+ * The class `android.app.Service`.
+ */
+class TypeService extends Class {
+  TypeService() { this.hasQualifiedName("android.app", "Service") }
+}
+
+/**
  * The class `android.content.Context`.
  */
 class TypeContext extends RefType {
@@ -54,6 +61,22 @@ class AndroidGetIntentMethod extends Method {
 class AndroidReceiveIntentMethod extends Method {
   AndroidReceiveIntentMethod() {
     this.hasName("onReceive") and this.getDeclaringType() instanceof TypeBroadcastReceiver
+  }
+}
+
+/**
+ * A method of type Service that receives an Intent.
+ * Namely, `Service.onStart`, `onStartCommand`, `onBind`,
+ * `onRebind`, `onUnbind`, or `onTaskRemoved`
+ */
+class AndroidServiceIntentMethod extends Method {
+  AndroidServiceIntentMethod() {
+    (
+      this.getName().matches("onStart%") or
+      this.getName().matches("on%ind") or
+      this.hasName("onTaskRemoved")
+    ) and
+    this.getDeclaringType() instanceof TypeService
   }
 }
 

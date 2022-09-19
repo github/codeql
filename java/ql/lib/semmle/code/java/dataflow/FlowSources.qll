@@ -250,6 +250,12 @@ class AndroidIntentInput extends DataFlow::Node {
       this.asParameter() = m.getParameter(1) and
       receiverType = m.getDeclaringType()
     )
+    or
+    exists(Method m, AndroidServiceIntentMethod sI |
+      m.overrides*(sI) and
+      this.asParameter() = m.getParameter(0) and
+      receiverType = m.getDeclaringType()
+    )
   }
 }
 
