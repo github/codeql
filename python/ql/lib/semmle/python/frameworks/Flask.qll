@@ -116,7 +116,7 @@ module Flask {
      *
      * Use the predicate `Response::instance()` to get references to instances of `flask.Response`.
      */
-    abstract class InstanceSource extends HTTP::Server::HttpResponse::Range, DataFlow::Node { }
+    abstract class InstanceSource extends Http::Server::HttpResponse::Range, DataFlow::Node { }
 
     /** A direct instantiation of `flask.Response`. */
     private class ClassInstantiation extends InstanceSource, DataFlow::CallCfgNode {
@@ -229,7 +229,7 @@ module Flask {
       // TODO: This doesn't handle attribute assignment. Should be OK, but analysis is not as complete as with
       // points-to and `.lookup`, which would handle `post = my_post_handler` inside class def
       result = this.getAMethod() and
-      result.getName() = HTTP::httpVerbLower()
+      result.getName() = Http::httpVerbLower()
     }
   }
 
@@ -241,7 +241,7 @@ module Flask {
   }
 
   /** A route setup made by flask (sharing handling of URL patterns). */
-  abstract class FlaskRouteSetup extends HTTP::Server::RouteSetup::Range {
+  abstract class FlaskRouteSetup extends Http::Server::RouteSetup::Range {
     override Parameter getARoutedParameter() {
       // If we don't know the URL pattern, we simply mark all parameters as a routed
       // parameter. This should give us more RemoteFlowSources but could also lead to
@@ -312,7 +312,7 @@ module Flask {
   }
 
   /** A request handler defined in a django view class, that has no known route. */
-  private class FlaskViewClassHandlerWithoutKnownRoute extends HTTP::Server::RequestHandler::Range {
+  private class FlaskViewClassHandlerWithoutKnownRoute extends Http::Server::RequestHandler::Range {
     FlaskViewClassHandlerWithoutKnownRoute() {
       exists(FlaskViewClass vc | vc.getARequestHandler() = this) and
       not exists(FlaskRouteSetup setup | setup.getARequestHandler() = this)
@@ -439,7 +439,7 @@ module Flask {
   // ---------------------------------------------------------------------------
   // Implicit response from returns of flask request handlers
   // ---------------------------------------------------------------------------
-  private class FlaskRouteHandlerReturn extends HTTP::Server::HttpResponse::Range, DataFlow::CfgNode {
+  private class FlaskRouteHandlerReturn extends Http::Server::HttpResponse::Range, DataFlow::CfgNode {
     FlaskRouteHandlerReturn() {
       exists(Function routeHandler |
         routeHandler = any(FlaskRouteSetup rs).getARequestHandler() and
@@ -462,7 +462,7 @@ module Flask {
    *
    * See https://flask.palletsprojects.com/en/1.1.x/api/#flask.redirect
    */
-  private class FlaskRedirectCall extends HTTP::Server::HttpRedirectResponse::Range,
+  private class FlaskRedirectCall extends Http::Server::HttpRedirectResponse::Range,
     DataFlow::CallCfgNode {
     FlaskRedirectCall() { this = API::moduleImport("flask").getMember("redirect").getACall() }
 
@@ -490,7 +490,7 @@ module Flask {
    *
    * See https://flask.palletsprojects.com/en/2.0.x/api/#flask.Response.set_cookie
    */
-  class FlaskResponseSetCookieCall extends HTTP::Server::CookieWrite::Range,
+  class FlaskResponseSetCookieCall extends Http::Server::CookieWrite::Range,
     DataFlow::MethodCallNode {
     FlaskResponseSetCookieCall() { this.calls(Flask::Response::instance(), "set_cookie") }
 
@@ -506,7 +506,7 @@ module Flask {
    *
    * See https://flask.palletsprojects.com/en/2.0.x/api/#flask.Response.delete_cookie
    */
-  class FlaskResponseDeleteCookieCall extends HTTP::Server::CookieWrite::Range,
+  class FlaskResponseDeleteCookieCall extends Http::Server::CookieWrite::Range,
     DataFlow::MethodCallNode {
     FlaskResponseDeleteCookieCall() { this.calls(Flask::Response::instance(), "delete_cookie") }
 

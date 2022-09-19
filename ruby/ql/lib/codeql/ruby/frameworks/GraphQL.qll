@@ -164,7 +164,7 @@ private class GraphqlResolvableClass extends ClassDeclaration {
  * end
  * ```
  */
-class GraphqlResolveMethod extends Method, HTTP::Server::RequestHandler::Range {
+class GraphqlResolveMethod extends Method, Http::Server::RequestHandler::Range {
   private GraphqlResolvableClass resolvableClass;
 
   GraphqlResolveMethod() { this = resolvableClass.getMethod("resolve") }
@@ -208,7 +208,7 @@ class GraphqlResolveMethod extends Method, HTTP::Server::RequestHandler::Range {
  * end
  * ```
  */
-class GraphqlLoadMethod extends Method, HTTP::Server::RequestHandler::Range {
+class GraphqlLoadMethod extends Method, Http::Server::RequestHandler::Range {
   private GraphqlResolvableClass resolvableClass;
 
   GraphqlLoadMethod() {
@@ -340,7 +340,7 @@ private class GraphqlFieldArgumentDefinitionMethodCall extends GraphqlSchemaObje
  * end
  * ```
  */
-class GraphqlFieldResolutionMethod extends Method, HTTP::Server::RequestHandler::Range {
+class GraphqlFieldResolutionMethod extends Method, Http::Server::RequestHandler::Range {
   private GraphqlSchemaObjectClass schemaObjectClass;
 
   GraphqlFieldResolutionMethod() {

@@ -13,6 +13,6 @@ query predicate renderToCalls(RenderToCall c) { any() }
 
 query predicate linkToCalls(LinkToCall c) { any() }
 
-query predicate httpResponses(HTTP::Server::HttpResponse r, DataFlow::Node body, string mimeType) {
+query predicate httpResponses(Http::Server::HttpResponse r, DataFlow::Node body, string mimeType) {
   r.getBody() = body and r.getMimetype() = mimeType
 }

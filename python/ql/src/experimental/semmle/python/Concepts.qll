@@ -416,7 +416,7 @@ class CsvWriter extends DataFlow::Node {
  * Extend this class to refine existing API models. If you want to model new APIs,
  * extend `Cookie::Range` instead.
  */
-class Cookie extends HTTP::Server::CookieWrite instanceof Cookie::Range {
+class Cookie extends Http::Server::CookieWrite instanceof Cookie::Range {
   /**
    * Holds if this cookie is secure.
    */
@@ -441,7 +441,7 @@ module Cookie {
    * Extend this class to model new APIs. If you want to refine existing API models,
    * extend `Cookie` instead.
    */
-  abstract class Range extends HTTP::Server::CookieWrite::Range {
+  abstract class Range extends Http::Server::CookieWrite::Range {
     /**
      * Holds if this cookie is secure.
      */

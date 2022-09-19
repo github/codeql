@@ -34,7 +34,7 @@ module NestJS {
    * }
    * ```
    */
-  private class NestJSRouteHandler extends HTTP::RouteHandler, DataFlow::FunctionNode {
+  private class NestJSRouteHandler extends Http::RouteHandler, DataFlow::FunctionNode {
     NestJSRouteHandler() {
       getAFunctionDecorator(this) =
         nestjs()
@@ -42,7 +42,7 @@ module NestJS {
             .getACall()
     }
 
-    override HTTP::HeaderDefinition getAResponseHeader(string name) { none() }
+    override Http::HeaderDefinition getAResponseHeader(string name) { none() }
 
     /**
      * Holds if this has the `@Redirect()` decorator.
@@ -257,7 +257,7 @@ module NestJS {
    * The type of remote flow depends on which decorator is applied at the parameter, so
    * we just classify it as a `RemoteFlowSource`.
    */
-  private class NestJSCustomPipeInput extends HTTP::RequestInputAccess {
+  private class NestJSCustomPipeInput extends Http::RequestInputAccess {
     CustomPipeClass pipe;
 
     NestJSCustomPipeInput() {
@@ -273,7 +273,7 @@ module NestJS {
       result = pipe.getAnAffectedParameter().getInputKind()
     }
 
-    override HTTP::RouteHandler getRouteHandler() {
+    override Http::RouteHandler getRouteHandler() {
       result = pipe.getAnAffectedParameter().getNestRouteHandler()
     }
   }
@@ -295,13 +295,13 @@ module NestJS {
    * as a source of untrusted data.
    */
   private class NestJSRequestInputAsRequestInputAccess extends NestJSRequestInput,
-    HTTP::RequestInputAccess {
+    Http::RequestInputAccess {
     NestJSRequestInputAsRequestInputAccess() {
       not this.isSanitizedByPipe() and
       not this = any(CustomPipeClass cls).getAnAffectedParameter()
     }
 
-    override HTTP::RouteHandler getRouteHandler() { result = this.getNestRouteHandler() }
+    override Http::RouteHandler getRouteHandler() { result = this.getNestRouteHandler() }
 
     override string getKind() { result = this.getInputKind() }
 
@@ -316,7 +316,7 @@ module NestJS {
   }
 
   private class NestJSHeaderAccess extends NestJSRequestInputAsRequestInputAccess,
-    HTTP::RequestHeaderAccess {
+    Http::RequestHeaderAccess {
     NestJSHeaderAccess() { decoratorName = "Headers" and decorator.getNumArgument() > 0 }
 
     override string getAHeaderName() {
@@ -344,7 +344,7 @@ module NestJS {
    * ```
    * writes `<b>Hello</b>` to the response.
    */
-  private class ReturnValueAsResponseSend extends HTTP::ResponseSendArgument {
+  private class ReturnValueAsResponseSend extends Http::ResponseSendArgument {
     NestJSRouteHandler handler;
 
     ReturnValueAsResponseSend() {
@@ -357,7 +357,7 @@ module NestJS {
       )
     }
 
-    override HTTP::RouteHandler getRouteHandler() { result = handler }
+    override Http::RouteHandler getRouteHandler() { result = handler }
   }
 
   /**
@@ -439,7 +439,7 @@ module NestJS {
     /**
      * Gets the route handler that handles this request.
      */
-    override HTTP::RouteHandler getRouteHandler() {
+    override Http::RouteHandler getRouteHandler() {
       result.(DataFlow::FunctionNode).getAParameter() = this
     }
   }
@@ -456,7 +456,7 @@ module NestJS {
     /**
      * Gets the route handler that handles this request.
      */
-    override HTTP::RouteHandler getRouteHandler() {
+    override Http::RouteHandler getRouteHandler() {
       result.(DataFlow::FunctionNode).getAParameter() = this
     }
   }

@@ -56,7 +56,7 @@ module CleartextStorage {
   /** The data written to a cookie on a HTTP response, considered as a flow sink. */
   class CookieWriteAsSink extends Sink {
     CookieWriteAsSink() {
-      exists(HTTP::Server::CookieWrite write |
+      exists(Http::Server::CookieWrite write |
         this = write.getValueArg()
         or
         this = write.getHeaderArg()

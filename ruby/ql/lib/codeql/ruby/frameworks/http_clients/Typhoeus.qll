@@ -15,7 +15,7 @@ private import codeql.ruby.dataflow.internal.DataFlowImplForHttpClientLibraries 
  * Typhoeus.get("http://example.com").body
  * ```
  */
-class TyphoeusHttpRequest extends HTTP::Client::Request::Range, DataFlow::CallNode {
+class TyphoeusHttpRequest extends Http::Client::Request::Range, DataFlow::CallNode {
   API::Node requestNode;
 
   TyphoeusHttpRequest() {

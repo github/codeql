@@ -42,8 +42,8 @@ class NWConnectionSend extends Transmitted {
  * An `Expr` that is used to form a `URL`. Such expressions are very likely to
  * be transmitted over a network, because that's what URLs are for.
  */
-class URL extends Transmitted {
-  URL() {
+class Url extends Transmitted {
+  Url() {
     // `string` arg in `URL.init` is a sink
     // (we assume here that the URL goes on to be used in a network operation)
     exists(ClassDecl c, AbstractFunctionDecl f, CallExpr call |
