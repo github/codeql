@@ -354,7 +354,7 @@ private module Cached {
           //   end
           // end
           // ```
-          selfInMethod(sourceNode.(SsaSelfDefinitionNode).getVariable(), _, m)
+          selfInMethod(sourceNode.(SsaSelfDefinitionNode).getVariable(), _, m.getSuperClass*())
         )
       )
       or
@@ -509,16 +509,17 @@ private DataFlow::Node trackInstance(Module tp, boolean exact, TypeTracker t) {
       // `self.new` inside a module
       selfInModule(sourceNode.(SsaSelfDefinitionNode).getVariable(), tp)
       or
-      // `self.new` inside a (singleton) method
-      selfInMethod(sourceNode.(SsaSelfDefinitionNode).getVariable(), _, tp)
+      // `self.new` inside a singleton method
+      selfInMethod(sourceNode.(SsaSelfDefinitionNode).getVariable(), any(SingletonMethod sm), tp)
     )
     or
-    // `self` reference in method or top-level (but not in module, where instance
-    // methods cannot be called; only singleton methods)
+    // `self` reference in method or top-level (but not in module or singleton method,
+    // where instance methods cannot be called; only singleton methods)
     result =
       any(SsaSelfDefinitionNode self |
         exists(MethodBase m |
           selfInMethod(self.getVariable(), m, tp) and
+          not m instanceof SingletonMethod and
           if m.getEnclosingModule() instanceof Toplevel then exact = true else exact = false
         )
         or
