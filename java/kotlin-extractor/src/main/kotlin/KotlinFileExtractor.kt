@@ -1581,13 +1581,25 @@ open class KotlinFileExtractor(
     private fun extractCallValueArguments(callId: Label<out DbExprparent>, valueArguments: List<IrExpression?>, enclosingStmt: Label<out DbStmt>, enclosingCallable: Label<out DbCallable>, idxOffset: Int) {
         var i = 0
         valueArguments.forEach { arg ->
-            if(arg != null) {
+            if (arg != null) {
                 if (arg is IrVararg) {
                     arg.elements.forEachIndexed { varargNo, vararg -> extractVarargElement(vararg, enclosingCallable, callId, i + idxOffset + varargNo, enclosingStmt) }
                     i += arg.elements.size
                 } else {
                     extractExpressionExpr(arg, enclosingCallable, callId, (i++) + idxOffset, enclosingStmt)
                 }
+            } else {
+                // TODO: handle default argument values
+                val id = tw.getFreshIdLabel<DbErrorexpr>()
+                // TODO: type could be inferred from the parameter type
+                val type = extractErrorType()
+
+                tw.writeExprs_errorexpr(id, type.javaResult.id, callId, (i++) + idxOffset)
+                tw.writeExprsKotlinType(id, type.kotlinResult.id)
+                tw.writeCallableEnclosingExpr(id, enclosingCallable)
+                tw.writeStatementEnclosingExpr(id, enclosingStmt)
+
+                // TODO: extract location
             }
         }
     }

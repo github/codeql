@@ -1,0 +1,3 @@
+| test.kt:7:5:7:9 | <Expr>; | ExprStmt | unexpected dead end |
+| test.kt:9:5:9:15 | <Expr>; | ExprStmt | unexpected dead end |
+| test.kt:13:5:13:25 | <Expr>; | ExprStmt | unexpected dead end |

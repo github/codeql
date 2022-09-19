@@ -106,7 +106,7 @@ open class KotlinUsesExtractor(
         return TypeResult(typeId, "<CodeQL error type>", "<CodeQL error type>")
     }
 
-    private fun extractErrorType(): TypeResults {
+    fun extractErrorType(): TypeResults {
         val javaResult = extractJavaErrorType()
         val kotlinTypeId = tw.getLabelFor<DbKt_nullable_type>("@\"errorKotlinType\"") {
             tw.writeKt_nullable_types(it, javaResult.id)
