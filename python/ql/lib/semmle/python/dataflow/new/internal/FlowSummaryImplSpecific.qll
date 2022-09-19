@@ -26,9 +26,9 @@
  * We do not support summaries of special methods via the special methods framework,
  * the summary would have to identify the call.
  *
- * We might, while we still extract the standard libraries, want to support flow summaries of
- * extracted callables, so that we can model part of the standard libraries with flow summaries.
- * For this to work, we have be careful with the enclosiong callable predicate.
+ * We might, while we still extract the standard library, want to support flow summaries of
+ * extracted callables, so that we can model part of the standard library with flow summaries.
+ * For this to work, we have be careful with the enclosing callable predicate.
  */
 
 private import python
