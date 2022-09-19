@@ -113,6 +113,10 @@ newtype TNode =
   TSummaryParameterNode(FlowSummaryImpl::Public::SummarizedCallable c, ParameterPosition pos) {
     FlowSummaryImpl::Private::summaryParameterNodeRange(c, pos)
   } or
+  /** A synthetic node to capture positional arguments that are passed to a `*args` parameter. */
+  TSynthStarArgsElementParameterNode(DataFlowCallable callable) {
+    exists(ParameterPosition ppos | ppos.isStarArgs(_) | exists(callable.getParameter(ppos)))
+  } or
   /** A synthetic node to capture keyword arguments that are passed to a `**kwargs` parameter. */
   TSynthDictSplatArgumentNode(CallNode call) { exists(call.getArgByName(_)) } or
   /** A synthetic node to allow flow to keyword parameters from a `**kwargs` argument. */

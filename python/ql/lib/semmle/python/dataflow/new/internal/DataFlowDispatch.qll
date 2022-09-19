@@ -49,6 +49,7 @@ newtype TParameterPosition =
     pos = 0 or
     pos = any(Parameter p).getPosition() + 1
   } or
+  TSynthStarArgsElementParameterPosition(int pos) { exists(TStarArgsParameterPosition(pos)) } or
   TDictSplatParameterPosition()
 
 /** A parameter position. */
@@ -65,6 +66,15 @@ class ParameterPosition extends TParameterPosition {
   /** Holds if this position represents a `*args` parameter at (0-based) `index`. */
   predicate isStarArgs(int index) { this = TStarArgsParameterPosition(index) }
 
+  /**
+   * Holds if this position represents a synthetic parameter at or after (0-based)
+   * position `index`, from which there will be made a store step to the real
+   * `*args` parameter.
+   */
+  predicate isSynthStarArgsElement(int index) {
+    this = TSynthStarArgsElementParameterPosition(index)
+  }
+
   /** Holds if this position represents a `**kwargs` parameter. */
   predicate isDictSplat() { this = TDictSplatParameterPosition() }
 
@@ -77,6 +87,11 @@ class ParameterPosition extends TParameterPosition {
     exists(string name | this.isKeyword(name) and result = "keyword " + name)
     or
     exists(int index | this.isStarArgs(index) and result = "*args at " + index)
+    or
+    exists(int index |
+      this.isSynthStarArgsElement(index) and
+      result = "synthetic *args element at (or after) " + index
+    )
     or
     this.isDictSplat() and result = "**"
   }
@@ -131,6 +146,10 @@ predicate parameterMatch(ParameterPosition ppos, ArgumentPosition apos) {
   exists(string name | ppos.isKeyword(name) and apos.isKeyword(name))
   or
   exists(int index | ppos.isStarArgs(index) and apos.isStarArgs(index))
+  or
+  exists(int paramIndex, int argIndex | argIndex >= paramIndex |
+    ppos.isSynthStarArgsElement(paramIndex) and apos.isPositional(argIndex)
+  )
   or
   ppos.isDictSplat() and apos.isDictSplat()
 }
@@ -219,8 +238,13 @@ abstract class DataFlowFunction extends DataFlowCallable, TFunction {
     exists(string name | ppos.isKeyword(name) | result.getParameter() = func.getArgByName(name))
     or
     exists(int index |
-      ppos.isStarArgs(index) and
-      result.getParameter() = func.getVararg()
+      (
+        ppos.isStarArgs(index) and
+        result.getParameter() = func.getVararg()
+        or
+        ppos.isSynthStarArgsElement(index) and
+        result = TSynthStarArgsElementParameterNode(this)
+      )
     |
       // a `*args` parameter comes after the last positional parameter. We need to take
       // self parameter into account, so for
