@@ -26,6 +26,7 @@ lambdaExpr
 | samConversion.kt:11:12:13:5 | ...->... | stmt body | samConversion.kt:11:12:13:5 | invoke | invoke(int) | samConversion.kt:11:12:13:5 | new Function1<Integer,Boolean>(...) { ... } |
 | samConversion.kt:43:31:45:68 | ...->... | stmt body | samConversion.kt:43:31:45:68 | invoke | invoke(int,int,int,int,int,int,int,int,int,int,int,int,int,int,int,int,int,int,int,int,int,int,int) | samConversion.kt:43:31:45:68 | new FunctionN<Boolean>(...) { ... } |
 | samConversion.kt:46:32:46:44 | ...->... | stmt body | samConversion.kt:46:32:46:44 | invoke | invoke(int) | samConversion.kt:46:32:46:44 | new Function1<Integer,Boolean>(...) { ... } |
+| samConversion.kt:58:30:58:45 | ...->... | stmt body | samConversion.kt:58:30:58:45 | invoke | invoke(int,int) | samConversion.kt:58:30:58:45 | new Function2<Integer,Integer,Unit>(...) { ... } |
 memberRefExprs
 | funcExprs.kt:38:26:38:38 | ...::... | funcExprs.kt:38:26:38:38 | invoke | invoke() | funcExprs.kt:38:26:38:38 | new Function0<Integer>(...) { ... } |
 | funcExprs.kt:39:26:39:36 | ...::... | funcExprs.kt:39:26:39:36 | invoke | invoke() | funcExprs.kt:39:26:39:36 | new Function0<Integer>(...) { ... } |
@@ -60,10 +61,10 @@ modifiers
 | funcExprs.kt:36:29:36:117 | ...->... | funcExprs.kt:36:29:36:117 | invoke | public |
 | funcExprs.kt:75:12:75:22 | ...->... | funcExprs.kt:75:12:75:22 | invoke | override, public |
 | funcExprs.kt:83:31:83:51 | ...->... | funcExprs.kt:83:31:83:51 | invoke | override, public |
-| funcExprs.kt:86:39:86:59 | ...->... | funcExprs.kt:86:39:86:59 | invoke | override, public |
+| funcExprs.kt:86:39:86:59 | ...->... | funcExprs.kt:86:39:86:59 | invoke | override, public, suspend |
 | funcExprs.kt:90:15:90:69 | ...->... | funcExprs.kt:90:15:90:69 | invoke | override, public |
 | funcExprs.kt:90:15:90:69 | ...->... | funcExprs.kt:90:15:90:69 | invoke | public |
-| funcExprs.kt:94:15:94:67 | ...->... | funcExprs.kt:94:15:94:67 | invoke | override, public |
+| funcExprs.kt:94:15:94:67 | ...->... | funcExprs.kt:94:15:94:67 | invoke | override, public, suspend |
 | samConversion.kt:2:31:2:45 | ...->... | samConversion.kt:2:31:2:45 | invoke | override, public |
 | samConversion.kt:4:27:4:42 | ...->... | samConversion.kt:4:27:4:42 | invoke | override, public |
 | samConversion.kt:7:29:7:46 | ...->... | samConversion.kt:7:29:7:46 | invoke | override, public |
@@ -72,6 +73,7 @@ modifiers
 | samConversion.kt:43:31:45:68 | ...->... | samConversion.kt:43:31:45:68 | invoke | override, public |
 | samConversion.kt:43:31:45:68 | ...->... | samConversion.kt:43:31:45:68 | invoke | public |
 | samConversion.kt:46:32:46:44 | ...->... | samConversion.kt:46:32:46:44 | invoke | override, public |
+| samConversion.kt:58:30:58:45 | ...->... | samConversion.kt:58:30:58:45 | invoke | override, public, suspend |
 nonOverrideInvoke
 | funcExprs.kt:36:29:36:117 | ...->... | funcExprs.kt:36:29:36:117 | invoke | 23 |
 | funcExprs.kt:90:15:90:69 | ...->... | funcExprs.kt:90:15:90:69 | invoke | 23 |

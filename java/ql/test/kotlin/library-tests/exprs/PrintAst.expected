@@ -6265,6 +6265,58 @@ samConversion.kt:
 #   57|       5: [BlockStmt] { ... }
 #   58|         0: [LocalVariableDeclStmt] var ...;
 #   58|           1: [LocalVariableDeclExpr] i0
+#   58|             0: [CastExpr] (...)...
+#   58|               0: [TypeAccess] InterfaceFn1Sus
+#   58|               1: [ClassInstanceExpr] new (...)
+#   58|                 -4: [AnonymousClass] new InterfaceFn1Sus(...) { ... }
+#   58|                   1: [Constructor] 
+#-----|                     4: (Parameters)
+#   58|                       0: [Parameter] <fn>
+#   58|                     5: [BlockStmt] { ... }
+#   58|                       0: [SuperConstructorInvocationStmt] super(...)
+#   58|                       1: [ExprStmt] <Expr>;
+#   58|                         0: [AssignExpr] ...=...
+#   58|                           0: [VarAccess] this.<fn>
+#   58|                             -1: [ThisAccess] this
+#   58|                           1: [VarAccess] <fn>
+#   58|                   2: [FieldDeclaration] Function2<Integer,Integer,Unit> <fn>;
+#   58|                     -1: [TypeAccess] Function2<Integer,Integer,Unit>
+#   58|                       0: [TypeAccess] Integer
+#   58|                       1: [TypeAccess] Integer
+#   58|                       2: [TypeAccess] Unit
+#   58|                   3: [Method] fn1
+#   58|                     3: [TypeAccess] Unit
+#-----|                     4: (Parameters)
+#   58|                       0: [Parameter] i
+#   58|                         0: [TypeAccess] int
+#   58|                       1: [Parameter] j
+#   58|                         0: [TypeAccess] int
+#   58|                     5: [BlockStmt] { ... }
+#   58|                       0: [ReturnStmt] return ...
+#   58|                         0: [MethodAccess] invoke(...)
+#   58|                           -1: [VarAccess] <fn>
+#   58|                           0: [VarAccess] i
+#   58|                           1: [VarAccess] j
+#   58|                 -3: [TypeAccess] InterfaceFn1Sus
+#   58|                 0: [LambdaExpr] ...->...
+#   58|                   -4: [AnonymousClass] new Function2<Integer,Integer,Unit>(...) { ... }
+#   58|                     1: [Constructor] 
+#   58|                       5: [BlockStmt] { ... }
+#   58|                         0: [SuperConstructorInvocationStmt] super(...)
+#   58|                     2: [Method] invoke
+#   58|                       3: [TypeAccess] Unit
+#-----|                       4: (Parameters)
+#   58|                         0: [Parameter] a
+#   58|                           0: [TypeAccess] int
+#   58|                         1: [Parameter] b
+#   58|                           0: [TypeAccess] int
+#   58|                       5: [BlockStmt] { ... }
+#   58|                         0: [ExprStmt] <Expr>;
+#   58|                           0: [VarAccess] INSTANCE
+#   58|                   -3: [TypeAccess] Function2<Integer,Integer,Unit>
+#   58|                     0: [TypeAccess] Integer
+#   58|                     1: [TypeAccess] Integer
+#   58|                     2: [TypeAccess] Unit
 #   59|         1: [ExprStmt] <Expr>;
 #   59|           0: [MethodAccess] fn1(...)
 #   59|             -1: [VarAccess] i0

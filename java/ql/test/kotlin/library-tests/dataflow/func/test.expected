@@ -18,3 +18,5 @@
 | localFunction.kt:13:32:13:38 | taint(...) | localFunction.kt:13:21:13:39 | fn4(...) |
 | samConversion.kt:11:37:11:43 | taint(...) | samConversion.kt:14:24:14:29 | go(...) |
 | samConversion.kt:15:34:15:40 | taint(...) | samConversion.kt:15:24:15:41 | go(...) |
+| samConversion.kt:17:41:17:47 | taint(...) | samConversion.kt:20:24:20:29 | go(...) |
+| samConversion.kt:21:34:21:40 | taint(...) | samConversion.kt:21:24:21:41 | go(...) |
