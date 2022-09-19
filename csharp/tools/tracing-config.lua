@@ -22,6 +22,7 @@ function RegisterExtractorPack(id)
         -- otherwise we do nothing.
         local match = false
         local needsSeparator = false;
+        local injectionIndex = nil;
         local argv = compilerArguments.argv
         if OperatingSystem == 'windows' then
             -- let's hope that this split matches the escaping rules `dotnet` applies to command line arguments
@@ -38,13 +39,60 @@ function RegisterExtractorPack(id)
                     match = true
                     break
                 end
+                if arg == 'run' then
+                    -- for `dotnet run`, we need to make sure that `-p:UseSharedCompilation=false` is
+                    -- not passed in as an argument to the program that is run
+                    match = true
+                    needsSeparator = true
+                    injectionIndex = i + 1
+                end
+            end
+            if arg == '--' then
+                needsSeparator = false
+                injectionIndex = i
+                break
             end
         end
         if match then
-            return {
-                order = ORDER_REPLACE,
-                invocation = BuildExtractorInvocation(id, compilerPath, compilerPath, compilerArguments, nil, { '-p:UseSharedCompilation=false' })
-            }
+            local injections = { '-p:UseSharedCompilation=false' }
+            if needsSeparator then
+                table.insert(injections, '--')
+            end
+            if injectionIndex == nil then
+                -- Simple case; just append at the end
+                return {
+                    order = ORDER_REPLACE,
+                    invocation = BuildExtractorInvocation(id, compilerPath, compilerPath, compilerArguments, nil,
+                        injections)
+                }
+            end
+
+            -- Complex case; splice injections into the middle of the command line
+            for i, injectionArg in ipairs(injections) do
+                table.insert(argv, injectionIndex + i - 1, injectionArg)
+            end
+
+            if OperatingSystem == 'windows' then
+                return {
+                    order = ORDER_REPLACE,
+                    invocation = {
+                        path = AbsolutifyExtractorPath(id, compilerPath),
+                        arguments = {
+                            commandLineString = table.concat(argv, " ")
+                        }
+                    }
+                }
+            else
+                return {
+                    order = ORDER_REPLACE,
+                    invocation = {
+                        path = AbsolutifyExtractorPath(id, compilerPath),
+                        arguments = {
+                            argv = argv
+                        }
+                    }
+                }
+            end
         end
         return nil
     end
