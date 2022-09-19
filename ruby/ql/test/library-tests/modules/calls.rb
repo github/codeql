@@ -19,8 +19,12 @@ self.bar
 self.foo
 
 module M
-    def instance_m; end
-    def self.singleton_m; end
+    def instance_m
+        singleton_m # NoMethodError
+    end
+    def self.singleton_m
+        instance_m # NoMethodError
+    end
 
     instance_m # NoMethodError
     self.instance_m # NoMethodError
@@ -303,6 +307,7 @@ Singletons.singleton_j
 class SelfNew
     def instance
         puts "SelfNew#instance"
+        new.instance # NoMethodError
     end
 
     def self.singleton
@@ -365,3 +370,43 @@ end
 c3 = C1.new
 add_singleton c3
 c3.instance
+
+class SingletonOverride1
+    class << self
+        def singleton1
+            puts "SingletonOverride1#singleton1"
+        end
+
+        def call_singleton1
+            singleton1
+        end
+    end
+
+    def self.singleton2
+        puts "SingletonOverride1#singleton2"
+    end
+
+    def self.call_singleton2
+        singleton2
+    end
+
+    singleton2
+end
+
+SingletonOverride1.call_singleton1
+SingletonOverride1.call_singleton2
+
+class SingletonOverride2 < SingletonOverride1
+    class << self
+        def singleton1
+            puts "SingletonOverride2#singleton1"
+        end
+    end
+
+    def self.singleton2
+        puts "SingletonOverride2#singleton2"
+    end
+end
+
+SingletonOverride2.call_singleton1
+SingletonOverride2.call_singleton2

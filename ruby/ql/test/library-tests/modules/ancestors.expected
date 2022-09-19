@@ -31,60 +31,66 @@
 calls.rb:
 #   21| M
 
-#   39| C
+#   43| C
 #-----| include -> M
 #-----| super -> Object
 
-#   61| D
+#   65| D
 #-----| super -> C
 
-#   87| Integer
+#   91| Integer
 #-----| super -> Numeric
 
-#   92| String
+#   96| String
 #-----| super -> Object
 
-#   96| Kernel
+#  100| Kernel
 
-#  101| Module
+#  105| Module
 #-----| super -> Object
 
-#  108| Object
+#  112| Object
 #-----| super -> BasicObject
 #-----| include -> Kernel
 #-----| prepend -> A
 
-#  113| Hash
+#  117| Hash
 #-----| super -> Object
 
-#  118| Array
+#  122| Array
 #-----| super -> Object
 
-#  158| S
+#  162| S
 #-----| super -> Object
 
-#  164| A
+#  168| A
 #-----| super -> S
 #-----| super -> B
 #-----| prepend -> A::B
 
-#  169| B
+#  173| B
 #-----| super -> S
 
-#  183| Singletons
+#  187| Singletons
 #-----| super -> Object
 
-#  303| SelfNew
+#  307| SelfNew
 #-----| super -> Object
 
-#  317| C1
+#  322| C1
 #-----| super -> Object
 
-#  323| C2
+#  328| C2
 #-----| super -> C1
 
-#  329| C3
+#  334| C3
 #-----| super -> C2
+
+#  374| SingletonOverride1
+#-----| super -> Object
+
+#  399| SingletonOverride2
+#-----| super -> SingletonOverride1
 
 hello.rb:
 #    1| EnglishWords
