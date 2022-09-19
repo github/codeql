@@ -197,12 +197,14 @@ class TypeBasedFlowTargetApi extends Specific::TargetApiSpecific {
    *     a (synthetic) field and return the result.
    * (4) `Apply<S1,S2>` is assumed to apply the provided function to provided value
    *     and return the result.
+   * ```csharp
    * public class MyGeneric<T> {
    *    public void Set(T x) { ... }
    *    public T Get() { ... }
    *    public S Apply<S>(Func<T, S> f) { ... }
    *    public S2 Apply<S1, S2>(S1 x, Func<S1, S2> f) { ... }
    * }
+   * ```
    */
   string getSummaries() {
     exists(TypeParameter tp, string input, string output |
