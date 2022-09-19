@@ -38,54 +38,31 @@ memberRefExprs
 | samConversion.kt:5:27:5:31 | ...::... | samConversion.kt:5:27:5:31 | invoke | invoke(int,int) | samConversion.kt:5:27:5:31 | new Function2<Integer,Integer,Unit>(...) { ... } |
 | samConversion.kt:41:13:41:16 | ...::... | samConversion.kt:41:13:41:16 | invoke | invoke(java.lang.Object[]) | samConversion.kt:41:13:41:16 | new FunctionN<Boolean>(...) { ... } |
 modifiers
-| delegatedProperties.kt:6:32:9:9 | ...->... | delegatedProperties.kt:6:32:9:9 | invoke | override |
-| delegatedProperties.kt:6:32:9:9 | ...->... | delegatedProperties.kt:6:32:9:9 | invoke | public |
-| funcExprs.kt:22:26:22:33 | ...->... | funcExprs.kt:22:26:22:33 | invoke | override |
-| funcExprs.kt:22:26:22:33 | ...->... | funcExprs.kt:22:26:22:33 | invoke | public |
-| funcExprs.kt:23:26:23:33 | ...->... | funcExprs.kt:23:26:23:33 | invoke | override |
-| funcExprs.kt:23:26:23:33 | ...->... | funcExprs.kt:23:26:23:33 | invoke | public |
-| funcExprs.kt:24:26:24:33 | ...->... | funcExprs.kt:24:26:24:33 | invoke | override |
-| funcExprs.kt:24:26:24:33 | ...->... | funcExprs.kt:24:26:24:33 | invoke | public |
-| funcExprs.kt:25:29:25:38 | ...->... | funcExprs.kt:25:29:25:38 | invoke | override |
-| funcExprs.kt:25:29:25:38 | ...->... | funcExprs.kt:25:29:25:38 | invoke | public |
-| funcExprs.kt:26:29:26:34 | ...->... | funcExprs.kt:26:29:26:34 | invoke | override |
-| funcExprs.kt:26:29:26:34 | ...->... | funcExprs.kt:26:29:26:34 | invoke | public |
-| funcExprs.kt:27:29:27:42 | ...->... | funcExprs.kt:27:29:27:42 | invoke | override |
-| funcExprs.kt:27:29:27:42 | ...->... | funcExprs.kt:27:29:27:42 | invoke | public |
-| funcExprs.kt:29:29:29:37 | ...->... | funcExprs.kt:29:29:29:37 | invoke | override |
-| funcExprs.kt:29:29:29:37 | ...->... | funcExprs.kt:29:29:29:37 | invoke | public |
-| funcExprs.kt:30:28:30:50 | ...->... | funcExprs.kt:30:28:30:50 | invoke | override |
-| funcExprs.kt:30:28:30:50 | ...->... | funcExprs.kt:30:28:30:50 | invoke | public |
-| funcExprs.kt:31:28:31:40 | ...->... | funcExprs.kt:31:28:31:40 | invoke | override |
-| funcExprs.kt:31:28:31:40 | ...->... | funcExprs.kt:31:28:31:40 | invoke | public |
-| funcExprs.kt:32:28:32:44 | ...->... | funcExprs.kt:32:28:32:44 | invoke | override |
-| funcExprs.kt:32:28:32:44 | ...->... | funcExprs.kt:32:28:32:44 | invoke | public |
-| funcExprs.kt:33:28:33:51 | ...->... | funcExprs.kt:33:28:33:51 | invoke | override |
-| funcExprs.kt:33:28:33:51 | ...->... | funcExprs.kt:33:28:33:51 | invoke | public |
-| funcExprs.kt:33:37:33:47 | ...->... | funcExprs.kt:33:37:33:47 | invoke | override |
-| funcExprs.kt:33:37:33:47 | ...->... | funcExprs.kt:33:37:33:47 | invoke | public |
-| funcExprs.kt:35:29:35:112 | ...->... | funcExprs.kt:35:29:35:112 | invoke | override |
-| funcExprs.kt:35:29:35:112 | ...->... | funcExprs.kt:35:29:35:112 | invoke | public |
-| funcExprs.kt:36:29:36:117 | ...->... | funcExprs.kt:36:29:36:117 | invoke | override |
+| delegatedProperties.kt:6:32:9:9 | ...->... | delegatedProperties.kt:6:32:9:9 | invoke | override, public |
+| funcExprs.kt:22:26:22:33 | ...->... | funcExprs.kt:22:26:22:33 | invoke | override, public |
+| funcExprs.kt:23:26:23:33 | ...->... | funcExprs.kt:23:26:23:33 | invoke | override, public |
+| funcExprs.kt:24:26:24:33 | ...->... | funcExprs.kt:24:26:24:33 | invoke | override, public |
+| funcExprs.kt:25:29:25:38 | ...->... | funcExprs.kt:25:29:25:38 | invoke | override, public |
+| funcExprs.kt:26:29:26:34 | ...->... | funcExprs.kt:26:29:26:34 | invoke | override, public |
+| funcExprs.kt:27:29:27:42 | ...->... | funcExprs.kt:27:29:27:42 | invoke | override, public |
+| funcExprs.kt:29:29:29:37 | ...->... | funcExprs.kt:29:29:29:37 | invoke | override, public |
+| funcExprs.kt:30:28:30:50 | ...->... | funcExprs.kt:30:28:30:50 | invoke | override, public |
+| funcExprs.kt:31:28:31:40 | ...->... | funcExprs.kt:31:28:31:40 | invoke | override, public |
+| funcExprs.kt:32:28:32:44 | ...->... | funcExprs.kt:32:28:32:44 | invoke | override, public |
+| funcExprs.kt:33:28:33:51 | ...->... | funcExprs.kt:33:28:33:51 | invoke | override, public |
+| funcExprs.kt:33:37:33:47 | ...->... | funcExprs.kt:33:37:33:47 | invoke | override, public |
+| funcExprs.kt:35:29:35:112 | ...->... | funcExprs.kt:35:29:35:112 | invoke | override, public |
+| funcExprs.kt:36:29:36:117 | ...->... | funcExprs.kt:36:29:36:117 | invoke | override, public |
 | funcExprs.kt:36:29:36:117 | ...->... | funcExprs.kt:36:29:36:117 | invoke | public |
-| funcExprs.kt:36:29:36:117 | ...->... | funcExprs.kt:36:29:36:117 | invoke | public |
-| funcExprs.kt:75:12:75:22 | ...->... | funcExprs.kt:75:12:75:22 | invoke | override |
-| funcExprs.kt:75:12:75:22 | ...->... | funcExprs.kt:75:12:75:22 | invoke | public |
-| samConversion.kt:2:31:2:45 | ...->... | samConversion.kt:2:31:2:45 | invoke | override |
-| samConversion.kt:2:31:2:45 | ...->... | samConversion.kt:2:31:2:45 | invoke | public |
-| samConversion.kt:4:27:4:42 | ...->... | samConversion.kt:4:27:4:42 | invoke | override |
-| samConversion.kt:4:27:4:42 | ...->... | samConversion.kt:4:27:4:42 | invoke | public |
-| samConversion.kt:7:29:7:46 | ...->... | samConversion.kt:7:29:7:46 | invoke | override |
-| samConversion.kt:7:29:7:46 | ...->... | samConversion.kt:7:29:7:46 | invoke | public |
-| samConversion.kt:9:33:11:5 | ...->... | samConversion.kt:9:33:11:5 | invoke | override |
-| samConversion.kt:9:33:11:5 | ...->... | samConversion.kt:9:33:11:5 | invoke | public |
-| samConversion.kt:11:12:13:5 | ...->... | samConversion.kt:11:12:13:5 | invoke | override |
-| samConversion.kt:11:12:13:5 | ...->... | samConversion.kt:11:12:13:5 | invoke | public |
-| samConversion.kt:43:31:45:68 | ...->... | samConversion.kt:43:31:45:68 | invoke | override |
+| funcExprs.kt:75:12:75:22 | ...->... | funcExprs.kt:75:12:75:22 | invoke | override, public |
+| samConversion.kt:2:31:2:45 | ...->... | samConversion.kt:2:31:2:45 | invoke | override, public |
+| samConversion.kt:4:27:4:42 | ...->... | samConversion.kt:4:27:4:42 | invoke | override, public |
+| samConversion.kt:7:29:7:46 | ...->... | samConversion.kt:7:29:7:46 | invoke | override, public |
+| samConversion.kt:9:33:11:5 | ...->... | samConversion.kt:9:33:11:5 | invoke | override, public |
+| samConversion.kt:11:12:13:5 | ...->... | samConversion.kt:11:12:13:5 | invoke | override, public |
+| samConversion.kt:43:31:45:68 | ...->... | samConversion.kt:43:31:45:68 | invoke | override, public |
 | samConversion.kt:43:31:45:68 | ...->... | samConversion.kt:43:31:45:68 | invoke | public |
-| samConversion.kt:43:31:45:68 | ...->... | samConversion.kt:43:31:45:68 | invoke | public |
-| samConversion.kt:46:32:46:44 | ...->... | samConversion.kt:46:32:46:44 | invoke | override |
-| samConversion.kt:46:32:46:44 | ...->... | samConversion.kt:46:32:46:44 | invoke | public |
+| samConversion.kt:46:32:46:44 | ...->... | samConversion.kt:46:32:46:44 | invoke | override, public |
 nonOverrideInvoke
 | funcExprs.kt:36:29:36:117 | ...->... | funcExprs.kt:36:29:36:117 | invoke | 23 |
 | samConversion.kt:43:31:45:68 | ...->... | samConversion.kt:43:31:45:68 | invoke | 23 |
