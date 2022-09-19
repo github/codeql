@@ -41,7 +41,91 @@ newtype TValueNumber =
   ) {
     loadTotalOverlapValueNumber(_, irFunc, type, memOperand, operand)
   } or
+  TCallValueNumber(TCallPartialValueNumber vn) { callValueNumber(_, _, vn) } or
   TUniqueValueNumber(IRFunction irFunc, Instruction instr) { uniqueValueNumber(instr, irFunc) }
+
+private class NumberableCallInstruction extends CallInstruction {
+  NumberableCallInstruction() {
+    not this.getResultIRType() instanceof IRVoidType and
+    exists(SideEffect::SideEffectFunction sideEffectFunc |
+      sideEffectFunc = this.getStaticCallTarget()
+    |
+      sideEffectFunc.hasOnlySpecificReadSideEffects() and
+      sideEffectFunc.hasOnlySpecificWriteSideEffects()
+    )
+  }
+}
+
+private newtype TCallPartialValueNumber =
+  TNilArgument() or
+  TArgument(TCallPartialValueNumber head, TValueNumber arg) {
+    exists(NumberableCallInstruction call, int index |
+      callArgValueNumber(call, index, arg) and
+      callPartialValueNumber(call, index, head)
+    )
+  }
+
+private predicate callValueNumber(
+  NumberableCallInstruction call, int index, TCallPartialValueNumber vn
+) {
+  index = max(int n | callArgRank(call, n, _) | n) and
+  exists(TCallPartialValueNumber head, TValueNumber arg |
+    callPartialValueNumber(call, index, pragma[only_bind_out](head)) and
+    callArgValueNumber(call, index, pragma[only_bind_into](arg)) and
+    vn = TArgument(head, arg)
+  )
+  or
+  not exists(int n | callArgRank(call, n, _)) and
+  index = -1 and
+  vn = TNilArgument()
+}
+
+private predicate callPartialValueNumber(
+  NumberableCallInstruction call, int index, TCallPartialValueNumber head
+) {
+  exists(call) and
+  index = 1 and
+  head = TNilArgument()
+  or
+  exists(TCallPartialValueNumber prev, TValueNumber prevVN |
+    callPartialValueNumber(call, index - 1, pragma[only_bind_out](prev)) and
+    callArgValueNumber(call, index - 1, pragma[only_bind_into](prevVN)) and
+    head = TArgument(prev, prevVN)
+  )
+}
+
+/**
+ */
+private predicate callArgValueNumber(NumberableCallInstruction call, int index, TValueNumber arg) {
+  exists(Instruction instr |
+    callArgRank(call, index, instr) and
+    arg = tvalueNumber(instr)
+  )
+}
+
+/**
+ * Holds if `arg` is the `index`th element in `call`'s extended argument list, including the `this`
+ * argument and side-effect reads.
+ */
+private predicate callArgRank(NumberableCallInstruction call, int index, Instruction arg) {
+  arg =
+    rank[index](int argIndex, boolean isEffect, Instruction instr |
+      // There is no need to include the call's read and write side effects on
+      // all-aliased-memory as `NumberableCallInstruction`s do not read or write
+      // to all-aliased-memory.
+      instr = call.getArgument(argIndex) and
+      isEffect = false
+      or
+      exists(ReadSideEffectInstruction read |
+        read.getPrimaryInstruction() = call and
+        read.getSideEffectOperand().getAnyDef() = instr and
+        read.getIndex() = argIndex and
+        isEffect = true
+      )
+    |
+      instr order by argIndex, isEffect
+    )
+}
 
 /**
  * A `CopyInstruction` whose source operand's value is congruent to the definition of that source
@@ -93,6 +177,8 @@ private predicate numberableInstruction(Instruction instr) {
   instr instanceof CongruentCopyInstruction
   or
   instr instanceof LoadTotalOverlapInstruction
+  or
+  instr instanceof NumberableCallInstruction
 }
 
 private predicate filteredNumberableInstruction(Instruction instr) {
@@ -309,6 +395,11 @@ private TValueNumber nonUniqueValueNumber(Instruction instr) {
       or
       // The value number of a copy is just the value number of its source value.
       result = tvalueNumber(instr.(CongruentCopyInstruction).getSourceValue())
+      or
+      exists(TCallPartialValueNumber pvn |
+        callValueNumber(instr, _, pvn) and
+        result = TCallValueNumber(pvn)
+      )
     )
   )
 }

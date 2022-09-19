@@ -14,3 +14,9 @@ import experimental.ir.implementation.internal.TOperand::UnaliasedSsaOperands as
 
 /** DEPRECATED: Alias for SsaOperands */
 deprecated module SSAOperands = SsaOperands;
+
+predicate removedInstruction(Reachability::ReachableInstruction instr) { none() }
+
+class OldBlock = Reachability::ReachableBlock;
+
+class OldInstruction = Reachability::ReachableInstruction;

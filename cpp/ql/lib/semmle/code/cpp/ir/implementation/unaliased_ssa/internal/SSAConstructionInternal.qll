@@ -14,3 +14,9 @@ import semmle.code.cpp.ir.implementation.internal.TOperand::UnaliasedSsaOperands
 
 /** DEPRECATED: Alias for SsaOperands */
 deprecated module SSAOperands = SsaOperands;
+
+predicate removedInstruction(Reachability::ReachableInstruction instr) { none() }
+
+class OldBlock = Reachability::ReachableBlock;
+
+class OldInstruction = Reachability::ReachableInstruction;

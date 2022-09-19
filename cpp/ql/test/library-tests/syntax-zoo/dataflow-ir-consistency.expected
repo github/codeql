@@ -149,9 +149,6 @@ uniqueNodeLocation
 | conditional_destructors.cpp:29:6:29:7 | EnterFunction | Node should have one location but has 2. |
 | conditional_destructors.cpp:29:6:29:7 | ExitFunction | Node should have one location but has 2. |
 | conditional_destructors.cpp:29:6:29:7 | InitializeNonLocal | Node should have one location but has 2. |
-| conditional_destructors.cpp:29:6:29:7 | Phi | Node should have one location but has 2. |
-| conditional_destructors.cpp:29:6:29:7 | Phi | Node should have one location but has 2. |
-| conditional_destructors.cpp:29:6:29:7 | Phi | Node should have one location but has 2. |
 | conditional_destructors.cpp:29:6:29:7 | ReturnVoid | Node should have one location but has 2. |
 | conditional_destructors.cpp:29:6:29:7 | SideEffect | Node should have one location but has 2. |
 | conditional_destructors.cpp:38:6:38:7 | AliasedDefinition | Node should have one location but has 2. |
@@ -162,9 +159,6 @@ uniqueNodeLocation
 | conditional_destructors.cpp:38:6:38:7 | EnterFunction | Node should have one location but has 2. |
 | conditional_destructors.cpp:38:6:38:7 | ExitFunction | Node should have one location but has 2. |
 | conditional_destructors.cpp:38:6:38:7 | InitializeNonLocal | Node should have one location but has 2. |
-| conditional_destructors.cpp:38:6:38:7 | Phi | Node should have one location but has 2. |
-| conditional_destructors.cpp:38:6:38:7 | Phi | Node should have one location but has 2. |
-| conditional_destructors.cpp:38:6:38:7 | Phi | Node should have one location but has 2. |
 | conditional_destructors.cpp:38:6:38:7 | ReturnVoid | Node should have one location but has 2. |
 | conditional_destructors.cpp:38:6:38:7 | SideEffect | Node should have one location but has 2. |
 | conditional_destructors.cpp:38:6:38:7 | Unreached | Node should have one location but has 2. |
@@ -561,9 +555,6 @@ uniqueNodeLocation
 | forstmt.cpp:1:6:1:7 | EnterFunction | Node should have one location but has 2. |
 | forstmt.cpp:1:6:1:7 | ExitFunction | Node should have one location but has 2. |
 | forstmt.cpp:1:6:1:7 | InitializeNonLocal | Node should have one location but has 2. |
-| forstmt.cpp:1:6:1:7 | Phi | Node should have one location but has 2. |
-| forstmt.cpp:1:6:1:7 | Phi | Node should have one location but has 2. |
-| forstmt.cpp:1:6:1:7 | Phi | Node should have one location but has 2. |
 | forstmt.cpp:1:6:1:7 | ReturnVoid | Node should have one location but has 2. |
 | forstmt.cpp:1:6:1:7 | SideEffect | Node should have one location but has 2. |
 | forstmt.cpp:8:6:8:7 | AliasedDefinition | Node should have one location but has 2. |
@@ -574,9 +565,6 @@ uniqueNodeLocation
 | forstmt.cpp:8:6:8:7 | EnterFunction | Node should have one location but has 2. |
 | forstmt.cpp:8:6:8:7 | ExitFunction | Node should have one location but has 2. |
 | forstmt.cpp:8:6:8:7 | InitializeNonLocal | Node should have one location but has 2. |
-| forstmt.cpp:8:6:8:7 | Phi | Node should have one location but has 2. |
-| forstmt.cpp:8:6:8:7 | Phi | Node should have one location but has 2. |
-| forstmt.cpp:8:6:8:7 | Phi | Node should have one location but has 2. |
 | forstmt.cpp:8:6:8:7 | ReturnVoid | Node should have one location but has 2. |
 | forstmt.cpp:8:6:8:7 | SideEffect | Node should have one location but has 2. |
 | forstmt.cpp:8:6:8:7 | Unreached | Node should have one location but has 2. |

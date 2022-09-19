@@ -13,3 +13,15 @@ import semmle.code.cpp.ir.implementation.internal.TOperand::AliasedSsaOperands a
 
 /** DEPRECATED: Alias for SsaOperands */
 deprecated module SSAOperands = SsaOperands;
+
+private import SideEffectElimination as Elim
+
+predicate removedInstruction(Reachability::ReachableInstruction instr) {
+  Elim::removeableSideEffect(instr)
+}
+
+class OldBlock = Reachability::ReachableBlock;
+
+class OldInstruction extends Reachability::ReachableInstruction {
+  OldInstruction() { not Elim::removeableSideEffect(this) }
+}

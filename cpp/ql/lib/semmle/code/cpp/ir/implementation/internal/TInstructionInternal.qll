@@ -5,3 +5,5 @@ import semmle.code.cpp.ir.implementation.aliased_ssa.internal.SSAConstruction as
 
 /** DEPRECATED: Alias for AliasedSsa */
 deprecated module AliasedSSA = AliasedSsa;
+
+import semmle.code.cpp.ir.implementation.aliased_ssa.internal.SideEffectElimination as Elim
