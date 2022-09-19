@@ -1,6 +1,6 @@
 ---
 dependencies:
-  codeql/javascript-experimental-atm-model:
-    version: 0.2.0
+  dsp-testing/javascript-experimental-atm-model:
+    version: 0.2.5+2022-09-18-17h26m49s.quiet-roof-h7p1q5qf.213dd58ead6f8d73b9480c9b3639b09b991becc18f77de5e1da26c588df0e24c
 compiled: false
 lockVersion: 1.0.0
