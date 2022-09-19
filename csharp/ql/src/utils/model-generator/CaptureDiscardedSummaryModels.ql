@@ -6,8 +6,7 @@
 
 private import semmle.code.csharp.dataflow.ExternalFlow
 private import internal.CaptureModels
-private import internal.CaptureSummaryFlow
 
 from TargetApi api, string flow
-where flow = captureFlow(api) and hasSummary(api, false)
+where flow = captureThroughFlow(api) and hasSummary(api, false)
 select flow order by flow

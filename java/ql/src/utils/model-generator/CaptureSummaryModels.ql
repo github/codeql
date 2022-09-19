@@ -7,8 +7,7 @@
  */
 
 private import internal.CaptureModels
-private import internal.CaptureSummaryFlow
 
 from TargetApi api, string flow
-where flow = captureFlow(api)
+where flow = captureThroughFlow(api)
 select flow order by flow
