@@ -9,6 +9,7 @@
 namespace codeql {
 
 static std::string scratchDir;
+static bool interceptionEnabled = false;
 
 static int (*original_open)(const char*, int, ...) = nullptr;
 
@@ -37,7 +38,7 @@ static int codeql_open(const char* path, int oflag, ...) {
 
   std::string newPath(path);
 
-  if (llvm::sys::fs::exists(newPath)) {
+  if (interceptionEnabled && llvm::sys::fs::exists(newPath)) {
     // TODO: check file magic instead
     if (llvm::StringRef(newPath).endswith(".swiftmodule")) {
       auto hash = fileHash(newPath);
@@ -51,7 +52,7 @@ static int codeql_open(const char* path, int oflag, ...) {
   return original_open(newPath.c_str(), oflag, mode);
 }
 
-void remapArtifacts(const std::unordered_map<std::string, std::string>& mapping) {
+void finalizeRemapping(const std::unordered_map<std::string, std::string>& mapping) {
   for (auto& [original, patched] : mapping) {
     // TODO: Check file magic instead
     if (!llvm::StringRef(original).endswith(".swiftmodule")) {
@@ -66,14 +67,16 @@ void remapArtifacts(const std::unordered_map<std::string, std::string>& mapping)
       }
     }
   }
+  interceptionEnabled = false;
 }
 
-void initInterception(const std::string& dir) {
+void initRemapping(const std::string& dir) {
   scratchDir = dir;
 
   struct rebinding binding[] = {
       {"open", reinterpret_cast<void*>(codeql_open), reinterpret_cast<void**>(&original_open)}};
   rebind_symbols(binding, 1);
+  interceptionEnabled = true;
 }
 
 }  // namespace codeql

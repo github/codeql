@@ -52,7 +52,7 @@ int main(int argc, char** argv) {
   configuration.sourceArchiveDir = getenv_or("CODEQL_EXTRACTOR_SWIFT_SOURCE_ARCHIVE_DIR", ".");
   configuration.scratchDir = getenv_or("CODEQL_EXTRACTOR_SWIFT_SCRATCH_DIR", ".");
 
-  codeql::initInterception(configuration.getTempArtifactDir());
+  codeql::initRemapping(configuration.getTempArtifactDir());
 
   configuration.frontendOptions.reserve(argc - 1);
   for (int i = 1; i < argc; i++) {
@@ -73,7 +73,7 @@ int main(int argc, char** argv) {
   Observer observer(configuration);
   int frontend_rc = swift::performFrontend(args, "swift-extractor", (void*)main, &observer);
 
-  codeql::remapArtifacts(remapping);
+  codeql::finalizeRemapping(remapping);
 
   return frontend_rc;
 }

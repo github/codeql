@@ -2,7 +2,7 @@
 
 namespace codeql {
 // TBD
-void remapArtifacts(const std::unordered_map<std::string, std::string>& mapping) {}
-void initInterception(const std::string& dir) {}
+void initRemapping(const std::string& dir) {}
+void finalizeRemapping(const std::unordered_map<std::string, std::string>& mapping) {}
 
 }  // namespace codeql
