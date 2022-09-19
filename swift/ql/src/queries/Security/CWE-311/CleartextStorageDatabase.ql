@@ -70,12 +70,7 @@ class RealmStore extends Stored {
 class CleartextStorageConfig extends TaintTracking::Configuration {
   CleartextStorageConfig() { this = "CleartextStorageConfig" }
 
-  override predicate isSource(DataFlow::Node node) {
-    exists(SensitiveExpr e |
-      node.asExpr() = e and
-      not e.isProbablySafe()
-    )
-  }
+  override predicate isSource(DataFlow::Node node) { node.asExpr() instanceof SensitiveExpr }
 
   override predicate isSink(DataFlow::Node node) { node.asExpr() instanceof Stored }
 

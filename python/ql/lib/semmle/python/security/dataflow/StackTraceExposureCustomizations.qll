@@ -49,6 +49,6 @@ module StackTraceExposure {
    * The body of a HTTP response that will be returned from a server, considered as a flow sink.
    */
   class ServerHttpResponseBodyAsSink extends Sink {
-    ServerHttpResponseBodyAsSink() { this = any(HTTP::Server::HttpResponse response).getBody() }
+    ServerHttpResponseBodyAsSink() { this = any(Http::Server::HttpResponse response).getBody() }
   }
 }

@@ -613,7 +613,7 @@ private module ParameterNodes {
    * where direct keyword matching is possible, since we construct a synthesized hash
    * splat argument (`SynthHashSplatArgumentNode`) at the call site, which means that
    * `taint(1)` will flow into `p1` both via normal keyword matching and via the synthesized
-   * nodes (and similarly for `p2`). However, this redunancy is OK since
+   * nodes (and similarly for `p2`). However, this redundancy is OK since
    *  (a) it means that type-tracking through keyword arguments also works in most cases,
    *  (b) read/store steps can be avoided when direct keyword matching is possible, and
    *      hence access path limits are not a concern, and

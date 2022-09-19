@@ -1,6 +1,6 @@
 import ql
 private import NodeName
-private import TypoDatabase
+private import codeql.typos.TypoDatabase
 
 predicate misspelling(string wrong, string right, string mistake) {
   mistake = "common misspelling" and

@@ -17,7 +17,7 @@ private import codeql.ruby.dataflow.internal.DataFlowImplForHttpClientLibraries 
  * RestClient::Request.execute(url: "http://example.com").body
  * ```
  */
-class RestClientHttpRequest extends HTTP::Client::Request::Range, DataFlow::CallNode {
+class RestClientHttpRequest extends Http::Client::Request::Range, DataFlow::CallNode {
   API::Node requestNode;
   API::Node connectionNode;
 

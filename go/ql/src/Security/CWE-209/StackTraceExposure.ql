@@ -60,7 +60,7 @@ class StackTraceExposureConfig extends TaintTracking::Configuration {
     node = any(DebugStackFunction f).getACall().getResult()
   }
 
-  override predicate isSink(DataFlow::Node node) { node instanceof HTTP::ResponseBody }
+  override predicate isSink(DataFlow::Node node) { node instanceof Http::ResponseBody }
 
   override predicate isSanitizer(DataFlow::Node node) {
     // Sanitise everything controlled by an is-debug-mode check.

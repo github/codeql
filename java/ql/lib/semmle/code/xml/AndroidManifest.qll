@@ -72,6 +72,56 @@ class AndroidApplicationXmlElement extends XmlElement {
    * Holds if this application element has explicitly set a value for its `android:permission` attribute.
    */
   predicate requiresPermissions() { this.getAnAttribute().(AndroidPermissionXmlAttribute).isFull() }
+
+  /**
+   * Holds if this application element does not disable the `android:allowBackup` attribute.
+   *
+   * https://developer.android.com/guide/topics/data/autobackup
+   */
+  predicate allowsBackup() {
+    not this.getFile().(AndroidManifestXmlFile).isInBuildDirectory() and
+    (
+      // explicitly sets android:allowBackup="true"
+      this.allowsBackupExplicitly()
+      or
+      // Manifest providing the main intent for an application, and does not explicitly
+      // disallow the allowBackup attribute
+      this.providesMainIntent() and
+      // Check that android:allowBackup="false" is not present
+      not exists(AndroidXmlAttribute attr |
+        this.getAnAttribute() = attr and
+        attr.getName() = "allowBackup" and
+        attr.getValue() = "false"
+      )
+    )
+  }
+
+  /**
+   * Holds if this application element sets the `android:allowBackup` attribute to `true`.
+   *
+   * https://developer.android.com/guide/topics/data/autobackup
+   */
+  private predicate allowsBackupExplicitly() {
+    exists(AndroidXmlAttribute attr |
+      this.getAnAttribute() = attr and
+      attr.getName() = "allowBackup" and
+      attr.getValue() = "true"
+    )
+  }
+
+  /**
+   * Holds if the application element contains a child element which provides the
+   * `android.intent.action.MAIN` intent.
+   */
+  private predicate providesMainIntent() {
+    exists(AndroidActivityXmlElement activity |
+      activity = this.getAChild() and
+      exists(AndroidIntentFilterXmlElement intentFilter |
+        intentFilter = activity.getAChild() and
+        intentFilter.getAnActionElement().getActionName() = "android.intent.action.MAIN"
+      )
+    )
+  }
 }
 
 /**

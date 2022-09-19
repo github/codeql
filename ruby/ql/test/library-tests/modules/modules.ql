@@ -18,3 +18,5 @@ query predicate resolveConstantReadAccess(ConstantReadAccess a, string s) {
 query predicate resolveConstantWriteAccess(ConstantWriteAccess c, string s) {
   s = Internal::resolveConstantWriteAccess(c)
 }
+
+query predicate enclosingModule(AstNode n, ModuleBase m) { m = n.getEnclosingModule() }

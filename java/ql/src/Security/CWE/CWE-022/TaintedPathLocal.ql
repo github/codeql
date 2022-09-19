@@ -27,6 +27,10 @@ class TaintedPathLocalConfig extends TaintTracking::Configuration {
   override predicate isSink(DataFlow::Node sink) {
     sink.asExpr() = any(PathCreation p).getAnInput()
   }
+
+  override predicate isAdditionalTaintStep(DataFlow::Node n1, DataFlow::Node n2) {
+    any(TaintedPathAdditionalTaintStep s).step(n1, n2)
+  }
 }
 
 from

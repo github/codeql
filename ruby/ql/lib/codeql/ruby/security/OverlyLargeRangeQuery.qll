@@ -96,7 +96,10 @@ class OverlyWideRange extends RegExpCharacterRange {
       toCodePoint("A") <= high
       or
       // a non-alphanumeric char as part of the range boundaries
-      exists(int bound | bound = [low, high] | not isAlphanumeric(bound.toUnicode()))
+      exists(int bound | bound = [low, high] | not isAlphanumeric(bound.toUnicode())) and
+      // while still being ascii
+      low < 128 and
+      high < 128
     ) and
     // allowlist for known ranges
     not this = allowedWideRanges()

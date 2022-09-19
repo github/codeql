@@ -41,14 +41,14 @@ string headerAllowCredentials() { result = "Access-Control-Allow-Credentials".to
 /**
  * An `Access-Control-Allow-Origin` header write.
  */
-class AllowOriginHeaderWrite extends HTTP::HeaderWrite {
+class AllowOriginHeaderWrite extends Http::HeaderWrite {
   AllowOriginHeaderWrite() { this.getHeaderName() = headerAllowOrigin() }
 }
 
 /**
  * An `Access-Control-Allow-Credentials` header write.
  */
-class AllowCredentialsHeaderWrite extends HTTP::HeaderWrite {
+class AllowCredentialsHeaderWrite extends Http::HeaderWrite {
   AllowCredentialsHeaderWrite() { this.getHeaderName() = headerAllowCredentials() }
 }
 

@@ -28,7 +28,7 @@ Configuring access to the CodeQL CLI
 
 The extension uses the CodeQL CLI to compile and run queries.
 
-If you already have the CLI installed and added to your ``PATH``, the extension uses that version. This might be the case if you create your own CodeQL databases instead of downloading them from LGTM.com. For more information, see ":ref:`CodeQL CLI <codeql-cli>`."
+If you already have the CLI installed and added to your ``PATH``, the extension uses that version. This might be the case if you create your own CodeQL databases instead of downloading them from GitHub.com. For more information, see ":ref:`CodeQL CLI <codeql-cli>`."
 
 Otherwise, the extension automatically manages access to the executable of the CLI for you. This ensures that the CLI is compatible with the CodeQL extension. You can also check for updates with the **CodeQL: Check for CLI Updates** command.
 
@@ -56,20 +56,6 @@ There are two ways to do this:
 .. pull-quote:: Note
 
    For CLI users there is a third option: If you have followed the instructions in ":ref:`Getting started with the CodeQL CLI <getting-started-with-the-codeql-cli>`" to create a CodeQL directory (for example ``codeql-home``) containing the CodeQL libraries, you can open this directory in VS Code. This also gives the extension access to the CodeQL libraries.
-
-.. container:: toggle
-
-   .. container:: name
-
-      **Click to show information for LGTM Enterprise users**
-
-   Your local version of the CodeQL queries and libraries should match your version of LGTM Enterprise. For example, if you
-   use LGTM Enterprise 1.27, then you should clone the ``1.27.0`` branch of the `starter workspace <https://github.com/github/vscode-codeql-starter/>`__ (or the appropriate ``1.27.x`` branch, corresponding to each maintenance release).
-
-   This ensures that the queries and libraries you write in VS Code also work in the query console on LGTM Enterprise.
-
-   If you prefer to add the CodeQL queries and libraries to an :ref:`existing workspace <existing-workspace>` instead of the starter workspace, then you should
-   clone the appropriate branch of the `CodeQL repository <https://github.com/github/codeql>`__ and add it to your workspace.
 
 .. _starter-workspace:
 
