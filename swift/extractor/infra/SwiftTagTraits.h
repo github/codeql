@@ -49,7 +49,6 @@ MAP_TAG(Argument);
 #include <swift/AST/ExprNodes.def>
 
 MAP_TAG(Decl);
-MAP_TAG(IfConfigClause);
 #define ABSTRACT_DECL(CLASS, PARENT) MAP_SUBTAG(CLASS##Decl, PARENT)
 #define DECL(CLASS, PARENT) ABSTRACT_DECL(CLASS, PARENT)
 #include <swift/AST/DeclNodes.def>

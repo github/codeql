@@ -2,6 +2,7 @@ import python
 import semmle.python.dataflow.new.DataFlow
 import TestUtilities.InlineExpectationsTest
 private import semmle.python.dataflow.new.internal.PrintNode
+private import semmle.python.dataflow.new.internal.DataFlowPrivate as DataFlowPrivate
 
 /**
  * A routing test is designed to test that values are routed to the

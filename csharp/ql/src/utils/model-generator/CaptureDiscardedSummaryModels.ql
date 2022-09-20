@@ -4,10 +4,10 @@
  * @id csharp/utils/model-generator/discarded-summary-models
  */
 
-private import semmle.code.csharp.dataflow.ExternalFlow
-private import internal.CaptureModels
-private import internal.CaptureSummaryFlow
+import semmle.code.csharp.dataflow.ExternalFlow
+import internal.CaptureModels
+import internal.CaptureSummaryFlow
 
-from TargetApi api, string flow
+from DataFlowTargetApi api, string flow
 where flow = captureFlow(api) and hasSummary(api, false)
 select flow order by flow

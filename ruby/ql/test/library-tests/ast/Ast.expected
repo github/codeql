@@ -2260,12 +2260,8 @@ literals/literals.rb:
 #  189|     getAnOperand/getLeftOperand: [LocalVariableAccess] query
 #  189|     getAnOperand/getRightOperand: [HereDoc] <<'DOC'
 #  189|       getComponent: [StringTextComponent] 
-#  189|        text without 
-#  190|       getComponent: [StringInterpolationComponent] #{...}
-#  190|         getStmt: [MethodCall] call to interpolation
-#  190|           getReceiver: [SelfVariableAccess] self
-#  190|       getComponent: [StringTextComponent]  !
-#  190|       
+#  189|        text without #{ interpolation } !
+#  189|       
 #  193|   getStmt: [AssignExpr] ... = ...
 #  193|     getAnOperand/getLeftOperand: [LocalVariableAccess] output
 #  193|     getAnOperand/getRightOperand: [HereDoc] <<`SCRIPT`
@@ -2293,6 +2289,17 @@ literals/literals.rb:
 #  199|       getKey: [SymbolLiteral] :Z
 #  199|         getComponent: [StringTextComponent] Z
 #  199|       getValue: [ConstantReadAccess] Z
+#  201|   getStmt: [StringLiteral] "@foo: #{...} @@bar: #{...} $_..."
+#  201|     getComponent: [StringTextComponent] @foo: 
+#  201|     getComponent: [StringInterpolationComponent] #{...}
+#  201|       getStmt: [InstanceVariableAccess] @foo
+#  201|         getReceiver: [SelfVariableAccess] self
+#  201|     getComponent: [StringTextComponent]  @@bar: 
+#  201|     getComponent: [StringInterpolationComponent] #{...}
+#  201|       getStmt: [ClassVariableAccess] @@bar
+#  201|     getComponent: [StringTextComponent]  $_: 
+#  201|     getComponent: [StringInterpolationComponent] #{...}
+#  201|       getStmt: [GlobalVariableAccess] $_
 control/loops.rb:
 #    1| [Toplevel] loops.rb
 #    2|   getStmt: [AssignExpr] ... = ...

@@ -15,7 +15,7 @@ private import codeql.ruby.dataflow.internal.DataFlowImplForHttpClientLibraries 
  * HTTPClient.get_content("http://example.com")
  * ```
  */
-class HttpClientRequest extends HTTP::Client::Request::Range, DataFlow::CallNode {
+class HttpClientRequest extends Http::Client::Request::Range, DataFlow::CallNode {
   API::Node requestNode;
   API::Node connectionNode;
   string method;

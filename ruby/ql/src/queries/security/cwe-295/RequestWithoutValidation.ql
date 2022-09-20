@@ -16,7 +16,7 @@ import codeql.ruby.Concepts
 import codeql.ruby.DataFlow
 
 from
-  HTTP::Client::Request request, DataFlow::Node disablingNode, DataFlow::Node origin, string ending
+  Http::Client::Request request, DataFlow::Node disablingNode, DataFlow::Node origin, string ending
 where
   request.disablesCertificateValidation(disablingNode, origin) and
   // Showing the origin is only useful when it's a different node than the one disabling

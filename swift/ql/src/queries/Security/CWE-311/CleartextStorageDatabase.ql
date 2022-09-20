@@ -18,12 +18,12 @@ import codeql.swift.dataflow.TaintTracking
 import DataFlow::PathGraph
 
 /**
- * An `Expr` that is stored in a local database.
+ * A `DataFlow::Node` that is something stored in a local database.
  */
-abstract class Stored extends Expr { }
+abstract class Stored extends DataFlow::Node { }
 
 /**
- * An `Expr` that is stored with the Core Data library.
+ * A `DataFlow::Node` that is an expression stored with the Core Data library.
  */
 class CoreDataStore extends Stored {
   CoreDataStore() {
@@ -33,32 +33,25 @@ class CoreDataStore extends Stored {
       c.getAMember() = f and
       f.getName() = ["setValue(_:forKey:)", "setPrimitiveValue(_:forKey:)"] and
       call.getStaticTarget() = f and
-      call.getArgument(0).getExpr() = this
+      call.getArgument(0).getExpr() = this.asExpr()
     )
   }
 }
 
 /**
- * An `Expr` that is stored with the Realm database library.
+ * A `DataFlow::Node` that is an expression stored with the Realm database
+ * library.
  */
-class RealmStore extends Stored {
+class RealmStore extends Stored instanceof DataFlow::PostUpdateNode {
   RealmStore() {
-    // `object` arg to `Realm.add` is a sink
-    exists(ClassDecl c, AbstractFunctionDecl f, CallExpr call |
-      c.getName() = "Realm" and
-      c.getAMember() = f and
-      f.getName() = "add(_:update:)" and
-      call.getStaticTarget() = f and
-      call.getArgument(0).getExpr() = this
-    )
-    or
-    // `value` arg to `Realm.create` is a sink
-    exists(ClassDecl c, AbstractFunctionDecl f, CallExpr call |
-      c.getName() = "Realm" and
-      c.getAMember() = f and
-      f.getName() = "create(_:value:update:)" and
-      call.getStaticTarget() = f and
-      call.getArgument(1).getExpr() = this
+    // any write into a class derived from `RealmSwiftObject` is a sink. For
+    // example in `realmObj.data = sensitive` the post-update node corresponding
+    // with `realmObj.data` is a sink.
+    exists(ClassDecl cd, Expr e |
+      cd.getABaseTypeDecl*().getName() = "RealmSwiftObject" and
+      this.getPreUpdateNode().asExpr() = e and
+      e.getFullyConverted().getType() = cd.getType() and
+      not e.(DeclRefExpr).getDecl() instanceof SelfParamDecl
     )
   }
 }
@@ -70,14 +63,9 @@ class RealmStore extends Stored {
 class CleartextStorageConfig extends TaintTracking::Configuration {
   CleartextStorageConfig() { this = "CleartextStorageConfig" }
 
-  override predicate isSource(DataFlow::Node node) {
-    exists(SensitiveExpr e |
-      node.asExpr() = e and
-      not e.isProbablySafe()
-    )
-  }
+  override predicate isSource(DataFlow::Node node) { node.asExpr() instanceof SensitiveExpr }
 
-  override predicate isSink(DataFlow::Node node) { node.asExpr() instanceof Stored }
+  override predicate isSink(DataFlow::Node node) { node instanceof Stored }
 
   override predicate isSanitizerIn(DataFlow::Node node) {
     // make sources barriers so that we only report the closest instance
@@ -90,7 +78,8 @@ class CleartextStorageConfig extends TaintTracking::Configuration {
   }
 
   override predicate allowImplicitRead(DataFlow::Node node, DataFlow::ContentSet c) {
-    // flow out from fields of a `RealmSwiftObject` at the sink, for example in `obj.var = tainted; sink(obj)`.
+    // flow out from fields of a `RealmSwiftObject` at the sink, for example in
+    // `realmObj.data = sensitive`.
     isSink(node) and
     exists(ClassDecl cd |
       c.getAReadContent().(DataFlow::Content::FieldContent).getField() = cd.getAMember() and
@@ -102,9 +91,19 @@ class CleartextStorageConfig extends TaintTracking::Configuration {
   }
 }
 
+/**
+ * Gets a prettier node to use in the results.
+ */
+DataFlow::Node cleanupNode(DataFlow::Node n) {
+  result = n.(DataFlow::PostUpdateNode).getPreUpdateNode()
+  or
+  not n instanceof DataFlow::PostUpdateNode and
+  result = n
+}
+
 from CleartextStorageConfig config, DataFlow::PathNode sourceNode, DataFlow::PathNode sinkNode
 where config.hasFlowPath(sourceNode, sinkNode)
-select sinkNode.getNode(), sourceNode, sinkNode,
+select cleanupNode(sinkNode.getNode()), sourceNode, sinkNode,
   "This operation stores '" + sinkNode.getNode().toString() +
     "' in a database. It may contain unencrypted sensitive data from $@", sourceNode,
   sourceNode.getNode().toString()

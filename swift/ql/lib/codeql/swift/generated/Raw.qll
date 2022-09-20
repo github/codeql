@@ -49,6 +49,8 @@ module Raw {
     Type getCanonicalType() { types(this, _, result) }
   }
 
+  class UnresolvedElement extends @unresolved_element, Element { }
+
   class AnyFunctionType extends @any_function_type, Type {
     Type getResult() { any_function_types(this, result) }
 
@@ -129,16 +131,6 @@ module Raw {
     Type getConstraint() { existential_types(this, result) }
   }
 
-  class IfConfigClause extends @if_config_clause, Locatable {
-    override string toString() { result = "IfConfigClause" }
-
-    Expr getCondition() { if_config_clause_conditions(this, result) }
-
-    AstNode getElement(int index) { if_config_clause_elements(this, index, result) }
-
-    predicate isActive() { if_config_clause_is_active(this) }
-  }
-
   class InOutType extends @in_out_type, Type {
     override string toString() { result = "InOutType" }
 
@@ -203,7 +195,7 @@ module Raw {
     override string toString() { result = "TypeVariableType" }
   }
 
-  class UnresolvedType extends @unresolved_type, Type {
+  class UnresolvedType extends @unresolved_type, Type, UnresolvedElement {
     override string toString() { result = "UnresolvedType" }
   }
 
@@ -327,7 +319,7 @@ module Raw {
   class TypeRepr extends @type_repr, AstNode {
     override string toString() { result = "TypeRepr" }
 
-    Type getType() { type_repr_types(this, result) }
+    Type getType() { type_reprs(this, result) }
   }
 
   class UnboundGenericType extends @unbound_generic_type, AnyGenericType {
@@ -587,7 +579,7 @@ module Raw {
   class IfConfigDecl extends @if_config_decl, Decl {
     override string toString() { result = "IfConfigDecl" }
 
-    IfConfigClause getClause(int index) { if_config_decl_clauses(this, index, result) }
+    AstNode getActiveElement(int index) { if_config_decl_active_elements(this, index, result) }
   }
 
   class IfExpr extends @if_expr, Expr {
@@ -880,13 +872,13 @@ module Raw {
     Type getBaseType() { unary_syntax_sugar_types(this, result) }
   }
 
-  class UnresolvedDeclRefExpr extends @unresolved_decl_ref_expr, Expr {
+  class UnresolvedDeclRefExpr extends @unresolved_decl_ref_expr, Expr, UnresolvedElement {
     override string toString() { result = "UnresolvedDeclRefExpr" }
 
     string getName() { unresolved_decl_ref_expr_names(this, result) }
   }
 
-  class UnresolvedDotExpr extends @unresolved_dot_expr, Expr {
+  class UnresolvedDotExpr extends @unresolved_dot_expr, Expr, UnresolvedElement {
     override string toString() { result = "UnresolvedDotExpr" }
 
     Expr getBase() { unresolved_dot_exprs(this, result, _) }
@@ -894,19 +886,19 @@ module Raw {
     string getName() { unresolved_dot_exprs(this, _, result) }
   }
 
-  class UnresolvedMemberExpr extends @unresolved_member_expr, Expr {
+  class UnresolvedMemberExpr extends @unresolved_member_expr, Expr, UnresolvedElement {
     override string toString() { result = "UnresolvedMemberExpr" }
 
     string getName() { unresolved_member_exprs(this, result) }
   }
 
-  class UnresolvedPatternExpr extends @unresolved_pattern_expr, Expr {
+  class UnresolvedPatternExpr extends @unresolved_pattern_expr, Expr, UnresolvedElement {
     override string toString() { result = "UnresolvedPatternExpr" }
 
     Pattern getSubPattern() { unresolved_pattern_exprs(this, result) }
   }
 
-  class UnresolvedSpecializeExpr extends @unresolved_specialize_expr, Expr {
+  class UnresolvedSpecializeExpr extends @unresolved_specialize_expr, Expr, UnresolvedElement {
     override string toString() { result = "UnresolvedSpecializeExpr" }
   }
 
@@ -1311,12 +1303,13 @@ module Raw {
     override string toString() { result = "UnevaluatedInstanceExpr" }
   }
 
-  class UnresolvedMemberChainResultExpr extends @unresolved_member_chain_result_expr, IdentityExpr {
+  class UnresolvedMemberChainResultExpr extends @unresolved_member_chain_result_expr, IdentityExpr,
+    UnresolvedElement {
     override string toString() { result = "UnresolvedMemberChainResultExpr" }
   }
 
   class UnresolvedTypeConversionExpr extends @unresolved_type_conversion_expr,
-    ImplicitConversionExpr {
+    ImplicitConversionExpr, UnresolvedElement {
     override string toString() { result = "UnresolvedTypeConversionExpr" }
   }
 

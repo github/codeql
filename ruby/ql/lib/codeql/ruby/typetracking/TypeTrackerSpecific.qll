@@ -67,10 +67,12 @@ private predicate viableParam(
   )
 }
 
-private predicate callStep(ExprNodes::CallCfgNode call, Node nodeFrom, Node nodeTo) {
+/** Holds if there is flow from `arg` to `p` via the call `call`. */
+pragma[nomagic]
+predicate callStep(ExprNodes::CallCfgNode call, Node arg, DataFlowPrivate::ParameterNodeImpl p) {
   exists(DataFlowDispatch::ParameterPosition pos |
-    argumentPositionMatch(call, nodeFrom, pos) and
-    viableParam(call, nodeTo, pos)
+    argumentPositionMatch(call, arg, pos) and
+    viableParam(call, p, pos)
   )
 }
 
