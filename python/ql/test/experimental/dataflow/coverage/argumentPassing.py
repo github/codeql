@@ -211,8 +211,8 @@ def starargs_only(*args):
 def test_only_starargs():
     starargs_only(arg1, arg2, "safe") # $ arg1 arg2 SPURIOUS: bad2,bad3="arg1" bad1,bad3="arg2"
 
-    args = (arg2, "safe")
-    starargs_only(arg1, *args) # $ arg1 SPURIOUS: bad2,bad3="arg1" MISSING: arg2
+    args = (arg2, "safe") # $ arg2 func=starargs_only SPURIOUS: bad1,bad3="arg2"
+    starargs_only(arg1, *args) # $ arg1 SPURIOUS: bad2,bad3="arg1"
 
     args = (arg1, arg2, "safe") # $ arg1 arg2 func=starargs_only
     starargs_only(*args)

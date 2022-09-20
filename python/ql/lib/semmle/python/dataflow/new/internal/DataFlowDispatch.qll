@@ -50,6 +50,7 @@ newtype TParameterPosition =
     pos = any(Parameter p).getPosition() + 1
   } or
   TSynthStarArgsElementParameterPosition(int pos) { exists(TStarArgsParameterPosition(pos)) } or
+  TSynthLateStarArgsParameterPosition(int pos) { exists(TStarArgsParameterPosition(pos)) } or
   TDictSplatParameterPosition()
 
 /** A parameter position. */
@@ -75,6 +76,14 @@ class ParameterPosition extends TParameterPosition {
     this = TSynthStarArgsElementParameterPosition(index)
   }
 
+  /**
+   * Holds if this position represents a synthetic `*args` parameter after the real
+   * `*args` parameter. The real `*args` parameter is at the 0-based index `index`.
+   */
+  predicate isSynthLateStarArgsParameterPosition(int index) {
+    this = TSynthLateStarArgsParameterPosition(index)
+  }
+
   /** Holds if this position represents a `**kwargs` parameter. */
   predicate isDictSplat() { this = TDictSplatParameterPosition() }
 
@@ -91,6 +100,11 @@ class ParameterPosition extends TParameterPosition {
     exists(int index |
       this.isSynthStarArgsElement(index) and
       result = "synthetic *args element at (or after) " + index
+    )
+    or
+    exists(int index |
+      this.isSynthLateStarArgsParameterPosition(index) and
+      result = "synthetic late *args after " + index
     )
     or
     this.isDictSplat() and result = "**"
@@ -149,6 +163,10 @@ predicate parameterMatch(ParameterPosition ppos, ArgumentPosition apos) {
   or
   exists(int paramIndex, int argIndex | argIndex >= paramIndex |
     ppos.isSynthStarArgsElement(paramIndex) and apos.isPositional(argIndex)
+  )
+  or
+  exists(int realStarArgsIndex, int argIndex | argIndex > realStarArgsIndex |
+    ppos.isSynthLateStarArgsParameterPosition(realStarArgsIndex) and apos.isStarArgs(argIndex)
   )
   or
   ppos.isDictSplat() and apos.isDictSplat()
@@ -244,6 +262,9 @@ abstract class DataFlowFunction extends DataFlowCallable, TFunction {
         or
         ppos.isSynthStarArgsElement(index) and
         result = TSynthStarArgsElementParameterNode(this)
+        or
+        ppos.isSynthLateStarArgsParameterPosition(index) and
+        result = TSynthLateStarArgsParameterNode(this)
       )
     |
       // a `*args` parameter comes after the last positional parameter. We need to take
