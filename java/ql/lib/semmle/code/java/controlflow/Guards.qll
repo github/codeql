@@ -218,12 +218,12 @@ predicate guardControls_v1(Guard guard, BasicBlock controlled, boolean branch) {
 }
 
 /**
- * INTERNAL: Use `Guards.controls` instead.
+ * DEPRECATED: Use `Guards.controls` instead.
  *
  * Holds if `guard.controls(controlled, branch)`, except this doesn't rely on
  * RangeAnalysis.
  */
-predicate guardControls_v2(Guard guard, BasicBlock controlled, boolean branch) {
+deprecated predicate guardControls_v2(Guard guard, BasicBlock controlled, boolean branch) {
   guard.directlyControls(controlled, branch)
   or
   exists(Guard g, boolean b |
