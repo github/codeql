@@ -1,7 +1,0 @@
-| test.py:217:9:217:12 | ControlFlowNode for Ex() | Unexpected result: unresolved_call=Ex() |
-| test.py:218:9:218:12 | ControlFlowNode for Ex() | Unexpected result: unresolved_call=Ex() |
-| test.py:222:9:222:12 | ControlFlowNode for Ex() | Unexpected result: unresolved_call=Ex() |
-| test.py:223:9:223:12 | ControlFlowNode for Ex() | Unexpected result: unresolved_call=Ex() |
-| test.py:227:9:227:12 | ControlFlowNode for Ex() | Unexpected result: unresolved_call=Ex() |
-| test.py:228:9:228:12 | ControlFlowNode for Ex() | Unexpected result: unresolved_call=Ex() |
-| test.py:229:9:229:12 | ControlFlowNode for Ex() | Unexpected result: unresolved_call=Ex() |
