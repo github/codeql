@@ -30,6 +30,8 @@
 
 # Bazel (excluding BUILD.bazel files)
 WORKSPACE.bazel @github/codeql-ci-reviewers
+.bazelversion @github/codeql-ci-reviewers
+.bazelrc @github/codeql-ci-reviewers
 **/*.bzl @github/codeql-ci-reviewers
 
 # Documentation etc
