@@ -29,5 +29,7 @@ module InsecureRandomness {
 
     /** Holds if `sink` is a sink for this configuration with kind `kind`. */
     predicate isSink(Sink sink, string kind) { kind = sink.getKind() }
+
+    override predicate isSanitizer(DataFlow::Node node) { node instanceof Sanitizer }
   }
 }

@@ -47,7 +47,7 @@ module RemotePropertyInjection {
       exists(DeleteExpr expr | expr.getOperand().(PropAccess).getPropertyNameExpr() = astNode)
     }
 
-    override string getMessage() { result = " a property name to write to." }
+    override string getMessage() { result = "A property name to write to" }
   }
 
   /**
@@ -65,6 +65,6 @@ module RemotePropertyInjection {
       )
     }
 
-    override string getMessage() { result = " a header name." }
+    override string getMessage() { result = "A header name" }
   }
 }

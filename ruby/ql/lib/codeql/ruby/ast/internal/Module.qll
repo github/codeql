@@ -137,14 +137,7 @@ private module Cached {
   }
 
   cached
-  Method lookupMethod(Module m, string name) {
-    // The syntax_suggest library redefines Kernel.require/require_relative.
-    // Somehow this causes performance issues on ruby/ruby. As a workaround
-    // we exclude 'require' and 'require_relative'.
-    // TODO: find the actual cause of the slowdown and fix things properly.
-    not name = ["require", "require_relative"] and
-    TMethod(result) = lookupMethodOrConst(m, name)
-  }
+  Method lookupMethod(Module m, string name) { TMethod(result) = lookupMethodOrConst(m, name) }
 
   cached
   Expr lookupConst(Module m, string name) {

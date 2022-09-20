@@ -9,6 +9,7 @@ private import semmle.python.dataflow.new.TaintTracking
 private import semmle.python.dataflow.new.RemoteFlowSources
 private import semmle.python.Concepts
 private import semmle.python.ApiGraphs
+private import semmle.python.dataflow.new.FlowSummary
 private import semmle.python.frameworks.PEP249
 private import semmle.python.frameworks.internal.PoorMansFunctionResolution
 private import semmle.python.frameworks.internal.SelfRefMixin
@@ -3669,6 +3670,23 @@ private module StdlibPrivate {
     }
 
     override DataFlow::Node getAPathArgument() { result = this.getAnInput() }
+  }
+
+  /** A flow summary for `reversed`. */
+  class ReversedSummary extends SummarizedCallable {
+    ReversedSummary() { this = "builtins.reversed" }
+
+    override DataFlow::CallCfgNode getACall() { result = API::builtin("reversed").getACall() }
+
+    override DataFlow::ArgumentNode getACallback() {
+      result = API::builtin("reversed").getAValueReachableFromSource()
+    }
+
+    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+      input = "Argument[0].ListElement" and
+      output = "ReturnValue.ListElement" and
+      preservesValue = true
+    }
   }
 }
 

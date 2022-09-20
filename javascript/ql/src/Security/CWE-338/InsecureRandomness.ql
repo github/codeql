@@ -19,5 +19,5 @@ import DataFlow::PathGraph
 from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink
 where cfg.hasFlowPath(source, sink)
 select sink.getNode(), source, sink,
-  "Cryptographically insecure random number is generated at $@ and used here in a security context.",
+  "This security context depends on a cryptographically insecure random number at $@.",
   source.getNode(), source.getNode().toString()

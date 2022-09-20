@@ -20,5 +20,5 @@ from
 where
   cfg.hasFlowPath(source, sink) and
   sink.getNode().(Sink).hasReason(link, reason)
-select sink, source, sink, "Denial of service caused by processing user input from $@ with $@.",
-  source.getNode(), "here", link, reason
+select sink, source, sink, "Denial of service caused by processing $@ with $@.", source.getNode(),
+  "user input", link, reason

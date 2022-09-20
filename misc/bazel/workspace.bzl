@@ -26,6 +26,14 @@ def codeql_workspace(repository_name = "codeql"):
             sha256 = sha256,
         )
 
+    http_archive(
+        name = "fishhook",
+        url = "https://github.com/facebook/fishhook/archive/aadc161ac3b80db07a9908851839a17ba63a9eb1.zip",
+        build_file = "@%s//swift/tools/fishhook:BUILD.fishhook.bazel" % repository_name,
+        strip_prefix = "fishhook-aadc161ac3b80db07a9908851839a17ba63a9eb1",
+        sha256 = "9f2cdee6dcc2039d4c47d25ab5141fe0678ce6ed27ef482cab17fe9fa38a30ce",
+    )
+
     maybe(
         repo_rule = http_archive,
         name = "rules_pkg",
