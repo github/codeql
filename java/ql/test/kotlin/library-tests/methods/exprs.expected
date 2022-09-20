@@ -199,8 +199,8 @@
 | enumClass.kt:0:0:0:0 | EnumClass | TypeAccess |
 | enumClass.kt:0:0:0:0 | EnumClass[] | TypeAccess |
 | enumClass.kt:0:0:0:0 | String | TypeAccess |
+| enumClass.kt:1:1:4:1 | Enum<EnumClass> | TypeAccess |
 | enumClass.kt:1:1:4:1 | EnumClass | TypeAccess |
-| enumClass.kt:1:1:4:1 | Unit | TypeAccess |
 | enumClass.kt:1:1:4:1 | new Enum(...) | ClassInstanceExpr |
 | enumClass.kt:1:22:1:31 | ...=... | KtInitializerAssignExpr |
 | enumClass.kt:1:22:1:31 | int | TypeAccess |
