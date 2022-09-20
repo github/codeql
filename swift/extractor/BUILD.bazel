@@ -10,6 +10,7 @@ swift_cc_binary(
     deps = [
         "//swift/extractor/infra",
         "//swift/extractor/visitors",
+        "//swift/extractor/remapping",
         "//swift/tools/prebuilt:swift-llvm-support",
     ],
 )
