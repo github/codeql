@@ -203,6 +203,38 @@ def test_bound_method_passed_as_arg():
     call_with_source(foo.update_x)
     SINK(foo.x) # $ MISSING: flow="SOURCE, l:-5 -> foo.x"
 
+# ------------------------------------------------------------------------------
+# Field access on compound arguments
+# ------------------------------------------------------------------------------
+
+# TODO: Add support for this, see https://github.com/github/codeql/pull/10444
+
+@expects(5) # $ unresolved_call=expects(..) unresolved_call=expects(..)(..)
+def test_field_on_compound_arg(cond_true=True, cond_false=False):
+    class Ex:
+        def __init__(self):
+            self.attr = None
+
+    def set_attr(obj):
+        obj.attr = SOURCE
+
+    x = Ex()
+    y = Ex()
+    set_attr(x if cond_true else y)
+    SINK(x.attr) # $ MISSING: flow
+
+    x = Ex()
+    y = Ex()
+    set_attr(x if cond_false else y)
+    SINK(y.attr) # $ MISSING: flow
+
+    x = Ex()
+    y = Ex()
+    z = Ex()
+    set_attr(x if cond_false else (y if cond_true else z))
+    SINK_F(x.attr) # $ MISSING: flow
+    SINK(y.attr) # $ MISSING: flow
+    SINK_F(z.attr) # $ MISSING: flow
 
 # ------------------------------------------------------------------------------
 # Crosstalk test -- using different function based on conditional
