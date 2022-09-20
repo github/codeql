@@ -319,7 +319,7 @@ module Raw {
   class TypeRepr extends @type_repr, AstNode {
     override string toString() { result = "TypeRepr" }
 
-    Type getType() { type_repr_types(this, result) }
+    Type getType() { type_reprs(this, result) }
   }
 
   class UnboundGenericType extends @unbound_generic_type, AnyGenericType {
