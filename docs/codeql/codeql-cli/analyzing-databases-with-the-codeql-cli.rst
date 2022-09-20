@@ -214,6 +214,11 @@ To analyze your database using the `cpp-security-and-quality.qls` query suite fr
     codeql database analyze --format=sarif-latest --output=results <db> \
        'codeql/cpp-queries@~0.0.3:codeql-suites/cpp-security-and-quality.qls'
 
+If you need to reference a query file, directory, or suite whose path contains a literal `@` or `:`, you can prefix the query specification with `path:` like so::
+
+    codeql database analyze --format=sarif-latest --output=results <db> \
+        path:security/queries@experimental/query.ql
+
 For more information about CodeQL packs, see :doc:`About CodeQL Packs <about-codeql-packs>`.
 
 Running query suites
