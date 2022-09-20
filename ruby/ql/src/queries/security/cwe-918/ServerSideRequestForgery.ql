@@ -17,5 +17,5 @@ import DataFlow::PathGraph
 
 from Configuration config, DataFlow::PathNode source, DataFlow::PathNode sink
 where config.hasFlowPath(source, sink)
-select sink.getNode(), source, sink, "The URL of this request depends on $@.", source.getNode(),
-  "a user-provided value"
+select sink.getNode(), source, sink, "The URL of this request depends on a $@.", source.getNode(),
+  "user-provided value"

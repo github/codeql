@@ -21,5 +21,5 @@ import DataFlow::PathGraph
 
 from Configuration config, DataFlow::PathNode source, DataFlow::PathNode sink
 where config.hasFlowPath(source, sink)
-select source.getNode(), source, sink, "Sensitive data returned by $@ is stored $@.",
-  source.getNode(), source.getNode().(Source).describe(), sink.getNode(), "here"
+select sink.getNode(), source, sink, "Sensitive data returned by $@ is stored here.",
+  source.getNode(), source.getNode().(Source).describe()
