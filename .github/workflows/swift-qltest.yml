@@ -4,6 +4,8 @@ on:
   pull_request:
     paths:
       - "swift/**"
+      - "misc/bazel/**"
+      - "*.bazel*"
       - .github/workflows/swift-qltest.yml
       - .github/actions/fetch-codeql/action.yml
       - codeql-workspace.yml
