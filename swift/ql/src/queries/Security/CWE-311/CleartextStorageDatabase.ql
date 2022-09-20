@@ -18,12 +18,12 @@ import codeql.swift.dataflow.TaintTracking
 import DataFlow::PathGraph
 
 /**
- * An `Expr` that is stored in a local database.
+ * A `DataFlow::Node` that is something stored in a local database.
  */
 abstract class Stored extends DataFlow::Node { }
 
 /**
- * An `Expr` that is stored with the Core Data library.
+ * A `DataFlow::Node` that is an expression stored with the Core Data library.
  */
 class CoreDataStore extends Stored {
   CoreDataStore() {
@@ -39,16 +39,17 @@ class CoreDataStore extends Stored {
 }
 
 /**
- * An `Expr` that is stored with the Realm database library.
+ * A `DataFlow::Node` that is an expression stored with the Realm database
+ * library.
  */
-class RealmStore extends Stored {
+class RealmStore extends Stored instanceof DataFlow::PostUpdateNode {
   RealmStore() {
     // any write into a class derived from `RealmSwiftObject` is a sink. For
     // example in `realmObj.data = sensitive` the post-update node corresponding
     // with `realmObj.data` is a sink.
     exists(ClassDecl cd, Expr e |
       cd.getABaseTypeDecl*().getName() = "RealmSwiftObject" and
-      this.(DataFlow::PostUpdateNode).getPreUpdateNode().asExpr() = e and
+      this.getPreUpdateNode().asExpr() = e and
       e.getFullyConverted().getType() = cd.getType() and
       not e.(DeclRefExpr).getDecl() instanceof SelfParamDecl
     )
