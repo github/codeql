@@ -20,12 +20,24 @@ sourceLocationPrefix(
 | @locatable
 | @location
 | @type
+| @unresolved_element
 ;
 
 #keyset[id]
 element_is_unknown(
   int id: @element ref
 );
+
+@unresolved_element =
+  @unresolved_decl_ref_expr
+| @unresolved_dot_expr
+| @unresolved_member_chain_result_expr
+| @unresolved_member_expr
+| @unresolved_pattern_expr
+| @unresolved_specialize_expr
+| @unresolved_type
+| @unresolved_type_conversion_expr
+;
 
 @file =
   @db_file

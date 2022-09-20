@@ -318,6 +318,11 @@ module Synth {
 
   class TLocation = TDbLocation or TUnknownLocation;
 
+  class TUnresolvedElement =
+    TUnresolvedDeclRefExpr or TUnresolvedDotExpr or TUnresolvedMemberChainResultExpr or
+        TUnresolvedMemberExpr or TUnresolvedPatternExpr or TUnresolvedSpecializeExpr or
+        TUnresolvedType or TUnresolvedTypeConversionExpr;
+
   class TAbstractFunctionDecl = TConstructorDecl or TDestructorDecl or TFuncDecl;
 
   class TAbstractStorageDecl = TSubscriptDecl or TVarDecl;
@@ -1416,6 +1421,8 @@ module Synth {
     result = convertLocationFromRaw(e)
     or
     result = convertTypeFromRaw(e)
+    or
+    result = convertUnresolvedElementFromRaw(e)
   }
 
   cached
@@ -1441,6 +1448,25 @@ module Synth {
     result = convertDbLocationFromRaw(e)
     or
     result = convertUnknownLocationFromRaw(e)
+  }
+
+  cached
+  TUnresolvedElement convertUnresolvedElementFromRaw(Raw::Element e) {
+    result = convertUnresolvedDeclRefExprFromRaw(e)
+    or
+    result = convertUnresolvedDotExprFromRaw(e)
+    or
+    result = convertUnresolvedMemberChainResultExprFromRaw(e)
+    or
+    result = convertUnresolvedMemberExprFromRaw(e)
+    or
+    result = convertUnresolvedPatternExprFromRaw(e)
+    or
+    result = convertUnresolvedSpecializeExprFromRaw(e)
+    or
+    result = convertUnresolvedTypeFromRaw(e)
+    or
+    result = convertUnresolvedTypeConversionExprFromRaw(e)
   }
 
   cached
@@ -3071,6 +3097,8 @@ module Synth {
     result = convertLocationToRaw(e)
     or
     result = convertTypeToRaw(e)
+    or
+    result = convertUnresolvedElementToRaw(e)
   }
 
   cached
@@ -3096,6 +3124,25 @@ module Synth {
     result = convertDbLocationToRaw(e)
     or
     result = convertUnknownLocationToRaw(e)
+  }
+
+  cached
+  Raw::Element convertUnresolvedElementToRaw(TUnresolvedElement e) {
+    result = convertUnresolvedDeclRefExprToRaw(e)
+    or
+    result = convertUnresolvedDotExprToRaw(e)
+    or
+    result = convertUnresolvedMemberChainResultExprToRaw(e)
+    or
+    result = convertUnresolvedMemberExprToRaw(e)
+    or
+    result = convertUnresolvedPatternExprToRaw(e)
+    or
+    result = convertUnresolvedSpecializeExprToRaw(e)
+    or
+    result = convertUnresolvedTypeToRaw(e)
+    or
+    result = convertUnresolvedTypeConversionExprToRaw(e)
   }
 
   cached

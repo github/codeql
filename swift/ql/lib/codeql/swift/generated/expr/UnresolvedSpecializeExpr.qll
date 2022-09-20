@@ -2,7 +2,8 @@
 private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
 import codeql.swift.elements.expr.Expr
+import codeql.swift.elements.UnresolvedElement
 
-class UnresolvedSpecializeExprBase extends Synth::TUnresolvedSpecializeExpr, Expr {
+class UnresolvedSpecializeExprBase extends Synth::TUnresolvedSpecializeExpr, Expr, UnresolvedElement {
   override string getAPrimaryQlClass() { result = "UnresolvedSpecializeExpr" }
 }

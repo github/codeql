@@ -10,6 +10,7 @@ import codeql.swift.elements.Locatable
 import codeql.swift.elements.Location
 import codeql.swift.elements.UnknownFile
 import codeql.swift.elements.UnknownLocation
+import codeql.swift.elements.UnresolvedElement
 import codeql.swift.elements.decl.AbstractFunctionDecl
 import codeql.swift.elements.decl.AbstractStorageDecl
 import codeql.swift.elements.decl.AbstractTypeParamDecl

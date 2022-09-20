@@ -49,6 +49,8 @@ module Raw {
     Type getCanonicalType() { types(this, _, result) }
   }
 
+  class UnresolvedElement extends @unresolved_element, Element { }
+
   class AnyFunctionType extends @any_function_type, Type {
     Type getResult() { any_function_types(this, result) }
 
@@ -193,7 +195,7 @@ module Raw {
     override string toString() { result = "TypeVariableType" }
   }
 
-  class UnresolvedType extends @unresolved_type, Type {
+  class UnresolvedType extends @unresolved_type, Type, UnresolvedElement {
     override string toString() { result = "UnresolvedType" }
   }
 
@@ -870,13 +872,13 @@ module Raw {
     Type getBaseType() { unary_syntax_sugar_types(this, result) }
   }
 
-  class UnresolvedDeclRefExpr extends @unresolved_decl_ref_expr, Expr {
+  class UnresolvedDeclRefExpr extends @unresolved_decl_ref_expr, Expr, UnresolvedElement {
     override string toString() { result = "UnresolvedDeclRefExpr" }
 
     string getName() { unresolved_decl_ref_expr_names(this, result) }
   }
 
-  class UnresolvedDotExpr extends @unresolved_dot_expr, Expr {
+  class UnresolvedDotExpr extends @unresolved_dot_expr, Expr, UnresolvedElement {
     override string toString() { result = "UnresolvedDotExpr" }
 
     Expr getBase() { unresolved_dot_exprs(this, result, _) }
@@ -884,19 +886,19 @@ module Raw {
     string getName() { unresolved_dot_exprs(this, _, result) }
   }
 
-  class UnresolvedMemberExpr extends @unresolved_member_expr, Expr {
+  class UnresolvedMemberExpr extends @unresolved_member_expr, Expr, UnresolvedElement {
     override string toString() { result = "UnresolvedMemberExpr" }
 
     string getName() { unresolved_member_exprs(this, result) }
   }
 
-  class UnresolvedPatternExpr extends @unresolved_pattern_expr, Expr {
+  class UnresolvedPatternExpr extends @unresolved_pattern_expr, Expr, UnresolvedElement {
     override string toString() { result = "UnresolvedPatternExpr" }
 
     Pattern getSubPattern() { unresolved_pattern_exprs(this, result) }
   }
 
-  class UnresolvedSpecializeExpr extends @unresolved_specialize_expr, Expr {
+  class UnresolvedSpecializeExpr extends @unresolved_specialize_expr, Expr, UnresolvedElement {
     override string toString() { result = "UnresolvedSpecializeExpr" }
   }
 
@@ -1301,12 +1303,13 @@ module Raw {
     override string toString() { result = "UnevaluatedInstanceExpr" }
   }
 
-  class UnresolvedMemberChainResultExpr extends @unresolved_member_chain_result_expr, IdentityExpr {
+  class UnresolvedMemberChainResultExpr extends @unresolved_member_chain_result_expr, IdentityExpr,
+    UnresolvedElement {
     override string toString() { result = "UnresolvedMemberChainResultExpr" }
   }
 
   class UnresolvedTypeConversionExpr extends @unresolved_type_conversion_expr,
-    ImplicitConversionExpr {
+    ImplicitConversionExpr, UnresolvedElement {
     override string toString() { result = "UnresolvedTypeConversionExpr" }
   }
 
