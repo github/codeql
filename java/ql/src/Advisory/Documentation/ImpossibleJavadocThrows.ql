@@ -29,7 +29,7 @@ predicate canThrow(Callable callable, RefType exception) {
 from ThrowsTag throwsTag, RefType thrownType, Callable docMethod
 where
   getTaggedType(throwsTag) = thrownType and
-  docMethod.getDoc().getJavadoc().getAChild*() = throwsTag and
+  throwsTag.getJavadoc().getCommentedElement() = docMethod and
   not canThrow(docMethod, thrownType)
 select throwsTag,
   "Javadoc for " + docMethod + " claims to throw " + thrownType.getName() +

@@ -6,6 +6,12 @@ import semmle.code.Location
 
 /** A Javadoc parent is an element whose child can be some Javadoc documentation. */
 class JavadocParent extends @javadocParent, Top {
+  /**
+   * Gets the Javadoc comment that contains this element, or itself if this element
+   * is the Javadoc comment.
+   */
+  Javadoc getJavadoc() { result.getAChild*() = this }
+
   /** Gets a documentation element attached to this parent. */
   JavadocElement getAChild() { result.getParent() = this }
 
@@ -52,6 +58,8 @@ class Javadoc extends JavadocParent, @javadoc {
     )
   }
 
+  override Javadoc getJavadoc() { result = this }
+
   /** Gets the Java code element that is commented by this piece of Javadoc. */
   Documentable getCommentedElement() { result.getJavadoc() = this }
 
@@ -72,6 +80,9 @@ abstract class JavadocElement extends @javadocElement, Top {
   /** Gets the parent of this Javadoc element. */
   JavadocParent getParent() { javadocTag(this, _, result, _) or javadocText(this, _, result, _) }
 
+  /** Gets the Javadoc comment that contains this element. */
+  Javadoc getJavadoc() { result.getAChild+() = this }
+
   /** Gets the index of this child element relative to its parent. */
   int getIndex() { javadocTag(this, _, _, result) or javadocText(this, _, _, result) }
 
@@ -84,13 +95,15 @@ abstract class JavadocElement extends @javadocElement, Top {
 
 /** A Javadoc block tag. This does not include inline tags. */
 class JavadocTag extends JavadocElement, JavadocParent, @javadocTag {
+  override Javadoc getJavadoc() { result = JavadocElement.super.getJavadoc() }
+
   /** Gets the name of this Javadoc tag. */
   string getTagName() { javadocTag(this, result, _, _) }
 
   /** Gets a printable representation of this Javadoc tag. */
   override string toString() { result = this.getTagName() }
 
-  /** Gets the text associated with this Javadoc tag. */
+  /** Gets the text associated with this Javadoc tag. Has no result if this tag has no text. */
   override string getText() { result = this.getChild(0).toString() }
 
   override string getAPrimaryQlClass() { result = "JavadocTag" }
@@ -136,9 +149,6 @@ class AuthorTag extends JavadocTag {
 
 /** A piece of Javadoc text. */
 class JavadocText extends JavadocElement, @javadocText {
-  /** Gets the Javadoc comment that contains this piece of text. */
-  Javadoc getJavadoc() { result.getAChild+() = this }
-
   /** Gets the text itself. */
   override string getText() { javadocText(this, result, _, _) }
 

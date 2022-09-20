@@ -1,6 +1,10 @@
 package javadoc;
 
-/** A test class. */
+/**
+ * A test class.
+ * 
+ * @since 1.0
+ */
 public class Test {
 	/** A javadoc
 	 * comment */
