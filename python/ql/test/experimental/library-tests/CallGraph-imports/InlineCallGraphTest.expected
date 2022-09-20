@@ -2,4 +2,4 @@ failures
 debug_callableNotUnique
 pointsTo_found_typeTracker_notFound
 | pkg/use.py:10:5:10:10 | ControlFlowNode for func() | "pkg/func_def.py:func" |
-pointsTo_notFound_typeTracker_found
+typeTracker_found_pointsTo_notFound

@@ -111,7 +111,7 @@ query predicate pointsTo_found_typeTracker_notFound(CallNode call, string qualna
   )
 }
 
-query predicate pointsTo_notFound_typeTracker_found(CallNode call, string qualname) {
+query predicate typeTracker_found_pointsTo_notFound(CallNode call, string qualname) {
   exists(Function target |
     not pointsToCallEdge(call, target) and
     typeTrackerCallEdge(call, target) and
