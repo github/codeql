@@ -2,6 +2,6 @@
 import codeql.swift.elements
 import TestUtils
 
-from IfConfigClause x, int index
+from IfConfigDecl x, int index
 where toBeTested(x) and not x.isUnknown()
-select x, index, x.getElement(index)
+select x, index, x.getActiveElement(index)

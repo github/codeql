@@ -3,4 +3,3 @@
 | import.swift:3:12:3:32 | import ... | getModule: | file://:0:0:0:0 | import | isExported: | yes |
 | import.swift:4:1:4:19 | import ... | getModule: | file://:0:0:0:0 | import | isExported: | no |
 | import.swift:5:1:5:23 | import ... | getModule: | file://:0:0:0:0 | import | isExported: | no |
-| import.swift:7:1:7:8 | import ... | getModule: | file://:0:0:0:0 | import | isExported: | no |
