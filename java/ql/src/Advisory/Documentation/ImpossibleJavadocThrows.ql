@@ -11,22 +11,18 @@
 
 import java
 
-RefType getTaggedType(ThrowsTag tag) {
+Class getTaggedType(ThrowsTag tag) {
   result.hasName(tag.getExceptionName()) and
-  exists(ImportType i | i.getFile() = tag.getFile() | i.getImportedType() = result)
+  result = tag.getFile().(CompilationUnit).getATypeAvailableBySimpleName()
 }
 
-predicate canThrow(Callable callable, RefType exception) {
-  exists(string uncheckedException |
-    uncheckedException = "RuntimeException" or uncheckedException = "Error"
-  |
-    exception.getAnAncestor().hasQualifiedName("java.lang", uncheckedException)
-  )
+predicate canThrow(Callable callable, Class exception) {
+  exception instanceof UncheckedThrowableType
   or
   callable.getAnException().getType().getADescendant() = exception
 }
 
-from ThrowsTag throwsTag, RefType thrownType, Callable docMethod
+from ThrowsTag throwsTag, Class thrownType, Callable docMethod
 where
   getTaggedType(throwsTag) = thrownType and
   docMethod.getDoc().getJavadoc().getAChild*() = throwsTag and
