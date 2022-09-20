@@ -424,7 +424,6 @@ public class OdasaOutput {
 		private final IrDeclaration sym;
 		private final File trapFile;
 		private final String signature;
-		private final boolean isNonSourceTrapFile;
 		private TrapLocker(IrDeclaration decl, String signature) {
 			this.sym = decl;
 			this.signature = signature;
@@ -433,19 +432,16 @@ public class OdasaOutput {
 			} else {
 				trapFile = getTrapFileForDecl(sym, signature);
 			}
-			isNonSourceTrapFile = false;
 		}
 		private TrapLocker(File jarFile) {
 			sym = null;
 			signature = null;
 			trapFile = getTrapFileForJarFile(jarFile);
-			isNonSourceTrapFile = true;
 		}
 		private TrapLocker(String moduleName) {
 			sym = null;
 			signature = null;
 			trapFile = getTrapFileForModule(moduleName);
-			isNonSourceTrapFile = true;
 		}
 		public TrapFileManager getTrapFileManager() {
 			if (trapFile!=null) {
