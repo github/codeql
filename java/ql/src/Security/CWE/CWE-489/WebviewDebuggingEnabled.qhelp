@@ -6,11 +6,10 @@
 <overview>
 <p>The <code>WebView.setWebContentsDebuggingEnabled</code> method enables or disables the contents of any <code>WebView</code> in the application to be debugged.</p>
 
-<p>You should only enable debugging features during development. When you create a production build, you should disable it. If you enable debugging features, this can make your code vulnerable by adding entry points, or leaking sensitive information.
+<p>You should only enable debugging features during development. When you create a production build, you should disable it. If you enable debugging features, this can make your code vulnerable by adding entry points, or leaking sensitive information.</p>
 </overview>
 <recommendation>
-<p>Ensure that debugging features are not enabled in production builds. 
-If <code>WebView.setWebContentsDebuggingEnabled(true)</code> is used, ensure that it is guarded by a flag indicating that this is a debug build.</p>
+<p>Ensure that debugging features are not enabled in production builds, such as by guarding calls to <code>WebView.setWebContentsDebuggingEnabled(true)</code> by a flag that is only enabled in debug builds. 
 
 </recommendation>
 <example>
