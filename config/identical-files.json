@@ -55,7 +55,7 @@
     "cpp/ql/lib/semmle/code/cpp/ir/dataflow/internal/tainttracking3/TaintTrackingImpl.qll",
     "cpp/ql/lib/experimental/semmle/code/cpp/ir/dataflow/internal/tainttracking1/TaintTrackingImpl.qll",
     "cpp/ql/lib/experimental/semmle/code/cpp/ir/dataflow/internal/tainttracking2/TaintTrackingImpl.qll",
-    "cpp/ql/lib/experimental/semmle/code/cpp/ir/dataflow/internal/tainttracking2/TaintTrackingImpl.qll",
+    "cpp/ql/lib/experimental/semmle/code/cpp/ir/dataflow/internal/tainttracking3/TaintTrackingImpl.qll",
     "csharp/ql/lib/semmle/code/csharp/dataflow/internal/tainttracking1/TaintTrackingImpl.qll",
     "csharp/ql/lib/semmle/code/csharp/dataflow/internal/tainttracking2/TaintTrackingImpl.qll",
     "csharp/ql/lib/semmle/code/csharp/dataflow/internal/tainttracking3/TaintTrackingImpl.qll",
