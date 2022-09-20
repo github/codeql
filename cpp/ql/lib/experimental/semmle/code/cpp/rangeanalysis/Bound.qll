@@ -28,6 +28,10 @@ private newtype TBound =
       i.(LoadInstruction).getSourceAddress() instanceof FieldAddressInstruction
       or
       i.getAUse() instanceof ArgumentOperand
+      or
+      i instanceof PointerArithmeticInstruction
+      or
+      i.getAUse() instanceof AddressOperand
     )
   }
 
