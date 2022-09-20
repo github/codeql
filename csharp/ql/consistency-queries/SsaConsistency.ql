@@ -1,14 +1,22 @@
 import csharp
-import semmle.code.csharp.dataflow.internal.SsaImplCommon::Consistency
+import semmle.code.csharp.dataflow.internal.SsaImpl::Consistency as Consistency
 import Ssa
 
-class MyRelevantDefinition extends RelevantDefinition, Ssa::Definition {
+class MyRelevantDefinition extends Consistency::RelevantDefinition, Ssa::Definition {
   override predicate hasLocationInfo(
     string filepath, int startline, int startcolumn, int endline, int endcolumn
   ) {
     this.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
   }
 }
+
+query predicate nonUniqueDef = Consistency::nonUniqueDef/4;
+
+query predicate readWithoutDef = Consistency::readWithoutDef/3;
+
+query predicate deadDef = Consistency::deadDef/2;
+
+query predicate notDominatedByDef = Consistency::notDominatedByDef/4;
 
 query predicate localDeclWithSsaDef(LocalVariableDeclExpr d) {
   // Local variables in C# must be initialized before every use, so uninitialized

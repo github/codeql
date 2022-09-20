@@ -3,7 +3,53 @@
  */
 
 import csharp
-import SsaImplCommon
+private import codeql.ssa.Ssa as SsaImplCommon
+private import AssignableDefinitions
+
+private module SsaInput implements SsaImplCommon::InputSig {
+  class BasicBlock = ControlFlow::BasicBlock;
+
+  BasicBlock getImmediateBasicBlockDominator(BasicBlock bb) { result = bb.getImmediateDominator() }
+
+  BasicBlock getABasicBlockSuccessor(BasicBlock bb) { result = bb.getASuccessor() }
+
+  class ExitBasicBlock = ControlFlow::BasicBlocks::ExitBlock;
+
+  class SourceVariable = Ssa::SourceVariable;
+
+  /**
+   * Holds if the `i`th node of basic block `bb` is a (potential) write to source
+   * variable `v`. The Boolean `certain` indicates whether the write is certain.
+   *
+   * This includes implicit writes via calls.
+   */
+  predicate variableWrite(ControlFlow::BasicBlock bb, int i, Ssa::SourceVariable v, boolean certain) {
+    variableWriteDirect(bb, i, v, certain)
+    or
+    variableWriteQualifier(bb, i, v, certain)
+    or
+    updatesNamedFieldOrProp(bb, i, _, v, _) and
+    certain = false
+    or
+    updatesCapturedVariable(bb, i, _, v, _, _) and
+    certain = false
+  }
+
+  /**
+   * Holds if the `i`th of basic block `bb` reads source variable `v`.
+   *
+   * This includes implicit reads via calls.
+   */
+  predicate variableRead(ControlFlow::BasicBlock bb, int i, Ssa::SourceVariable v, boolean certain) {
+    variableReadActual(bb, i, v) and
+    certain = true
+    or
+    variableReadPseudo(bb, i, v) and
+    certain = false
+  }
+}
+
+import SsaImplCommon::Make<SsaInput>
 
 /**
  * Holds if the `i`th node of basic block `bb` reads source variable `v`.
@@ -806,24 +852,6 @@ private module CapturedVariableImpl {
 }
 
 /**
- * Holds if the `i`th node of basic block `bb` is a (potential) write to source
- * variable `v`. The Boolean `certain` indicates whether the write is certain.
- *
- * This includes implicit writes via calls.
- */
-predicate variableWrite(ControlFlow::BasicBlock bb, int i, Ssa::SourceVariable v, boolean certain) {
-  variableWriteDirect(bb, i, v, certain)
-  or
-  variableWriteQualifier(bb, i, v, certain)
-  or
-  updatesNamedFieldOrProp(bb, i, _, v, _) and
-  certain = false
-  or
-  updatesCapturedVariable(bb, i, _, v, _, _) and
-  certain = false
-}
-
-/**
  * Liveness analysis to restrict the size of the SSA representation for
  * captured variables.
  *
@@ -1039,19 +1067,6 @@ private predicate variableReadPseudo(ControlFlow::BasicBlock bb, int i, Ssa::Sou
   capturedReadIn(bb, i, v, _, _, _)
 }
 
-/**
- * Holds if the `i`th of basic block `bb` reads source variable `v`.
- *
- * This includes implicit reads via calls.
- */
-predicate variableRead(ControlFlow::BasicBlock bb, int i, Ssa::SourceVariable v, boolean certain) {
-  variableReadActual(bb, i, v) and
-  certain = true
-  or
-  variableReadPseudo(bb, i, v) and
-  certain = false
-}
-
 cached
 private module Cached {
   cached
@@ -1151,7 +1166,7 @@ private module Cached {
   predicate variableWriteQualifier(
     ControlFlow::BasicBlock bb, int i, QualifiedFieldOrPropSourceVariable v, boolean certain
   ) {
-    variableWrite(bb, i, v.getQualifier(), certain) and
+    SsaInput::variableWrite(bb, i, v.getQualifier(), certain) and
     // Eliminate corner case where a call definition can overlap with a
     // qualifier definition: if method `M` updates field `F`, then a call
     // to `M` is both an update of `x.M` and `x.M.M`, so the former call

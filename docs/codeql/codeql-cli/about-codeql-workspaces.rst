@@ -1,6 +1,6 @@
 .. _about-codeql-workspaces:
 
-About CodeQL Workspaces
+About CodeQL workspaces
 =======================
 
 .. include:: ../reusables/beta-note-package-management.rst
@@ -20,7 +20,7 @@ A CodeQL workspace is defined by a ``codeql-workspace.yml`` yaml file. This file
 * The ``ignore`` block contains a list of glob patterns that define CodeQL packs that are not available in the workspace.
 * The ``registries`` block contains a list of GHES URLs and package patterns that control which container registry is used for publishing CodeQL packs. For more information, see :ref:`Working with CodeQL packs on GitHub Enterprise Server <working-with-codeql-packs-on-ghes>`.
 
-Each entry in the ``provide`` or ``ignore`` section must map to the location of a ``qlpack.yml`` file. All glob patterns are defined relative to the directory that contains the workspace file. For a list of patterns accepted in this file, see" `@actions/glob <https://github.com/actions/toolkit/tree/main/packages/glob#patterns>`__ .
+Each entry in the ``provide`` or ``ignore`` section must map to the location of a ``qlpack.yml`` file. All glob patterns are defined relative to the directory that contains the workspace file. For a list of patterns accepted in this file, see "`@actions/glob <https://github.com/actions/toolkit/tree/main/packages/glob#patterns>`__ ."
 
 For example, the following ``codeql-workspace.yml`` file defines a workspace that contains all the CodeQL packs recursively found in the ``codeql-packs`` directory, except for the packs in the ``experimental`` directory. The ``registries`` block specifies that ``codeql/*`` packs should be downloaded from https://ghcr.io/v2/, which is GitHub's default container registry. All other packs should be downloaded from and published to the regsitry at ``GHE_HOSTNAME``.
 
@@ -55,7 +55,7 @@ This is particularly useful in the following situations:
 CodeQL workspaces and query resolution
 --------------------------------------
 
-All CodeQL packs in a workspace are available as source dependencies for each other when you run any CodeQL command that resolves queries or packs. For example, when you run ``codeql pack install`` in a pack directory in a workspace, any dependency that can be found in the workspace will be used instead of downloading that dependency to the package cache and adding it to the ``codeql-pack.lock.yml`` file. For more information, see ":ref:Adding and Installing Dependencies <adding-and-installing-dependencies>`."
+All CodeQL packs in a workspace are available as source dependencies for each other when you run any CodeQL command that resolves queries or packs. For example, when you run ``codeql pack install`` in a pack directory in a workspace, any dependency that can be found in the workspace will be used instead of downloading that dependency to the package cache and adding it to the ``codeql-pack.lock.yml`` file. For more information, see ":ref:`Adding and Installing Dependencies <adding-and-installing-dependencies>`."
 
 Similarly, when you publish a CodeQL query pack to the GitHub container registry using  ``codeql pack publish`` the command will always use the dependencies from the workspace instead of using dependencies found in the local package cache.
 

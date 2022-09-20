@@ -31,8 +31,8 @@ module SmtpLib {
    * argument. Used because of the impossibility to get local source nodes from `_subparts`'
    * `(List|Tuple)` elements.
    */
-  private class SMTPMessageConfig extends TaintTracking2::Configuration {
-    SMTPMessageConfig() { this = "SMTPMessageConfig" }
+  private class SmtpMessageConfig extends TaintTracking2::Configuration {
+    SmtpMessageConfig() { this = "SMTPMessageConfig" }
 
     override predicate isSource(DataFlow::Node source) { source = mimeText(_) }
 
@@ -87,7 +87,7 @@ module SmtpLib {
         sink =
           [sendCall.getArg(2), sendCall.getArg(2).(DataFlow::MethodCallNode).getObject()]
               .getALocalSource() and
-        any(SMTPMessageConfig a)
+        any(SmtpMessageConfig a)
             .hasFlow(source, sink.(DataFlow::CallCfgNode).getArgByName("_subparts"))
         or
         // via .attach()
@@ -117,7 +117,7 @@ module SmtpLib {
    * * `sub` would be `message["Subject"]` (`Subscript`)
    * * `result` would be `"multipart test"`
    */
-  private DataFlow::Node getSMTPSubscriptByIndex(DataFlow::CallCfgNode sendCall, string index) {
+  private DataFlow::Node getSmtpSubscriptByIndex(DataFlow::CallCfgNode sendCall, string index) {
     exists(DefinitionNode def, Subscript sub |
       sub = def.getNode() and
       DataFlow::exprNode(sub.getObject()).getALocalSource() =
@@ -163,15 +163,15 @@ module SmtpLib {
     override DataFlow::Node getHtmlBody() { result = getSmtpMessage(this, "html") }
 
     override DataFlow::Node getTo() {
-      result in [this.getArg(1), getSMTPSubscriptByIndex(this, "To")]
+      result in [this.getArg(1), getSmtpSubscriptByIndex(this, "To")]
     }
 
     override DataFlow::Node getFrom() {
-      result in [this.getArg(0), getSMTPSubscriptByIndex(this, "From")]
+      result in [this.getArg(0), getSmtpSubscriptByIndex(this, "From")]
     }
 
     override DataFlow::Node getSubject() {
-      result in [this.getArg(2), getSMTPSubscriptByIndex(this, "Subject")]
+      result in [this.getArg(2), getSmtpSubscriptByIndex(this, "Subject")]
     }
   }
 }

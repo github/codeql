@@ -2832,6 +2832,28 @@ exprs.kt:
 #  268|           0: [AssignRemExpr] ...%=...
 #  268|             0: [VarAccess] updated
 #  268|             1: [IntegerLiteral] 1
+#  272|     12: [Method] getEnumValues
+#-----|       2: (Generic Parameters)
+#  272|         0: [TypeVariable] T
+#  272|       3: [TypeAccess] T[]
+#  272|         0: [TypeAccess] T
+#  272|       5: [BlockStmt] { ... }
+#  272|         0: [ReturnStmt] return ...
+#  272|           0: [ErrorExpr] <error expr>
+#  274|     13: [Method] callToEnumValues
+#  274|       3: [TypeAccess] Unit
+#  274|       5: [BlockStmt] { ... }
+#  275|         0: [ExprStmt] <Expr>;
+#  275|           0: [ImplicitCoercionToUnitExpr] <implicit coercion to unit>
+#  275|             0: [TypeAccess] Unit
+#  275|             1: [MethodAccess] values(...)
+#  275|               -1: [TypeAccess] Color
+#  276|         1: [ExprStmt] <Expr>;
+#  276|           0: [ImplicitCoercionToUnitExpr] <implicit coercion to unit>
+#  276|             0: [TypeAccess] Unit
+#  276|             1: [MethodAccess] getEnumValues(...)
+#  276|               -2: [TypeAccess] Color
+#  276|               -1: [TypeAccess] ExprsKt
 #  142|   2: [Class] C
 #  142|     1: [Constructor] C
 #-----|       4: (Parameters)

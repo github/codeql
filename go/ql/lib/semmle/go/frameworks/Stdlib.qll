@@ -128,7 +128,7 @@ module IntegerParser {
 }
 
 /** Provides models of commonly used functions in the `net/url` package. */
-module URL {
+module Url {
   /** The `PathEscape` or `QueryEscape` function. */
   class Escaper extends TaintTracking::FunctionModel {
     Escaper() {
@@ -263,3 +263,6 @@ module URL {
     }
   }
 }
+
+/** DEPRECATED: Alias for Url */
+deprecated module URL = Url;

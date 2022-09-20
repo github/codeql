@@ -165,7 +165,7 @@ private ControlFlowNode mostRecentSideEffect(ControlFlowNode node) {
 
 /** Used to represent the "global value number" of an expression. */
 cached
-private newtype GVNBase =
+private newtype GvnBase =
   GVN_IntConst(int val, Type t) { mk_IntConst(val, t, _) } or
   GVN_FloatConst(float val, Type t) { mk_FloatConst(val, t, _) } or
   // If the local variable does not have a defining value, then
@@ -221,8 +221,8 @@ private newtype GVNBase =
  * expression with this `GVN` and using its `toString` and `getLocation`
  * methods.
  */
-class GVN extends GVNBase {
-  GVN() { this instanceof GVNBase }
+class GVN extends GvnBase {
+  GVN() { this instanceof GvnBase }
 
   /** Gets an expression that has this GVN. */
   Expr getAnExpr() { this = globalValueNumber(result) }

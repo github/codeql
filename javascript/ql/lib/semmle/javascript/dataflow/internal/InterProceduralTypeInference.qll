@@ -171,10 +171,10 @@ abstract class CallWithNonLocalAnalyzedReturnFlow extends DataFlow::AnalyzedValu
 /**
  * Flow analysis for the return value of IIFEs.
  */
-private class IIFEWithAnalyzedReturnFlow extends CallWithAnalyzedReturnFlow {
+private class IifeWithAnalyzedReturnFlow extends CallWithAnalyzedReturnFlow {
   ImmediatelyInvokedFunctionExpr iife;
 
-  IIFEWithAnalyzedReturnFlow() { astNode = iife.getInvocation() }
+  IifeWithAnalyzedReturnFlow() { astNode = iife.getInvocation() }
 
   override AnalyzedFunction getACallee() { result = iife.analyze() }
 }

@@ -22,5 +22,5 @@ from Configuration config, DataFlow::PathNode source, DataFlow::PathNode sink, S
 where
   config.hasFlowPath(source, sink) and
   sourceNode = source.getNode()
-select sink.getNode(), source, sink, "This code execution depends on $@.", sourceNode,
-  "a user-provided value"
+select sink.getNode(), source, sink, "$@ flows to here and is interpreted as code.",
+  source.getNode(), "User-provided value"

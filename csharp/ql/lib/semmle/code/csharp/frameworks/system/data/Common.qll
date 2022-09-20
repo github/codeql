@@ -95,3 +95,11 @@ private class SystemDataCommonDbParameterCollectionFlowModelCsv extends External
       ]
   }
 }
+
+/** Data flow for `System.Data.Common.DbBatchCommandCollection`. */
+private class SystemDataCommonDbBatchCommandCollectionFlowModelCsv extends ExternalFlow::SummaryModelCsv {
+  override predicate row(string row) {
+    row =
+      "System.Data.Common;DbBatchCommandCollection;true;Clear;();;Argument[this].WithoutElement;Argument[this];value;manual"
+  }
+}

@@ -1,0 +1,7 @@
+<manifest ... >
+    <!-- BAD: no 'android:allowBackup' set, defaults to 'true' -->
+    <application>
+        <activity ... >
+        </activity>
+    </application>
+</manifest>

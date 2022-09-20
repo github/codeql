@@ -20,4 +20,4 @@ import DataFlow::PathGraph
 from ReflectedXss::Configuration config, DataFlow::PathNode source, DataFlow::PathNode sink
 where config.hasFlowPath(source, sink)
 select sink.getNode(), source, sink, "Cross-site scripting vulnerability due to $@.",
-  source.getNode(), "a user-provided value"
+  source.getNode(), "user-provided value"

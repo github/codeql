@@ -1,5 +1,5 @@
 private import swift
-private import codeql.swift.generated.GetImmediateParent
+private import codeql.swift.generated.ParentChild
 private import codeql.swift.generated.Synth
 
 module CallableBase {

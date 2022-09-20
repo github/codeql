@@ -12,7 +12,7 @@ class CustomEntryPointCall extends API::EntryPoint {
 class CustomEntryPointUse extends API::EntryPoint {
   CustomEntryPointUse() { this = "CustomEntryPointUse" }
 
-  override DataFlow::LocalSourceNode getAUse() {
+  override DataFlow::LocalSourceNode getASource() {
     result.(DataFlow::CallNode).getMethodName() = "customEntryPointUse"
   }
 }

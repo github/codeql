@@ -15,21 +15,21 @@ private module ServerLess {
    * `codeURI` defaults to the empty string if no explicit value is set in the configuration.
    */
   private predicate hasServerlessHandler(File ymlFile, string handler, string codeUri) {
-    exists(YAMLMapping resource | ymlFile = resource.getFile() |
+    exists(YamlMapping resource | ymlFile = resource.getFile() |
       // There exists at least "AWS::Serverless::Function" and "Aliyun::Serverless::Function"
-      resource.lookup("Type").(YAMLScalar).getValue().regexpMatch(".*::Serverless::Function") and
-      exists(YAMLMapping properties | properties = resource.lookup("Properties") |
-        handler = properties.lookup("Handler").(YAMLScalar).getValue() and
+      resource.lookup("Type").(YamlScalar).getValue().regexpMatch(".*::Serverless::Function") and
+      exists(YamlMapping properties | properties = resource.lookup("Properties") |
+        handler = properties.lookup("Handler").(YamlScalar).getValue() and
         if exists(properties.lookup("CodeUri"))
-        then codeUri = properties.lookup("CodeUri").(YAMLScalar).getValue()
+        then codeUri = properties.lookup("CodeUri").(YamlScalar).getValue()
         else codeUri = ""
       )
       or
       // The `serverless` library, which specifies a top-level `functions` property
-      exists(YAMLMapping functions |
+      exists(YamlMapping functions |
         functions = resource.lookup("functions") and
         not exists(resource.getParentNode()) and
-        handler = functions.getValue(_).(YAMLMapping).lookup("handler").(YAMLScalar).getValue() and
+        handler = functions.getValue(_).(YamlMapping).lookup("handler").(YamlScalar).getValue() and
         codeUri = ""
       )
     )

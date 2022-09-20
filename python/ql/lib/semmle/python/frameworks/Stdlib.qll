@@ -9,6 +9,7 @@ private import semmle.python.dataflow.new.TaintTracking
 private import semmle.python.dataflow.new.RemoteFlowSources
 private import semmle.python.Concepts
 private import semmle.python.ApiGraphs
+private import semmle.python.dataflow.new.FlowSummary
 private import semmle.python.frameworks.PEP249
 private import semmle.python.frameworks.internal.PoorMansFunctionResolution
 private import semmle.python.frameworks.internal.SelfRefMixin
@@ -1877,7 +1878,7 @@ private module StdlibPrivate {
   API::Node http() { result = API::moduleImport("http") }
 
   /** Provides models for the `http` module. */
-  module Http {
+  module StdlibHttp {
     // -------------------------------------------------------------------------
     // http.server
     // -------------------------------------------------------------------------
@@ -1944,9 +1945,9 @@ private module StdlibPrivate {
           SimpleHttpServer::SimpleHttpRequestHandler::classRef(),
           CgiHttpServer::CgiHttpRequestHandler::classRef(),
           // Python 3
-          Http::Server::BaseHttpRequestHandler::classRef(),
-          Http::Server::SimpleHttpRequestHandler::classRef(),
-          Http::Server::CgiHttpRequestHandler::classRef()
+          StdlibHttp::Server::BaseHttpRequestHandler::classRef(),
+          StdlibHttp::Server::SimpleHttpRequestHandler::classRef(),
+          StdlibHttp::Server::CgiHttpRequestHandler::classRef()
         ].getASubclass*()
     }
 
@@ -2026,10 +2027,10 @@ private module StdlibPrivate {
      *
      * Not essential for any functionality, but provides a consistent modeling.
      */
-    private class RequestHandlerFunc extends HTTP::Server::RequestHandler::Range {
+    private class RequestHandlerFunc extends Http::Server::RequestHandler::Range {
       RequestHandlerFunc() {
         this = any(HttpRequestHandlerClassDef cls).getAMethod() and
-        this.getName() = "do_" + HTTP::httpVerb()
+        this.getName() = "do_" + Http::httpVerb()
       }
 
       override Parameter getARoutedParameter() { none() }
@@ -2064,7 +2065,7 @@ private module StdlibPrivate {
      * See https://github.com/python/cpython/blob/b567b9d74bd9e476a3027335873bb0508d6e450f/Lib/wsgiref/handlers.py#L137
      * for how a request is processed and given to an application.
      */
-    class WsgirefSimpleServerApplication extends HTTP::Server::RequestHandler::Range {
+    class WsgirefSimpleServerApplication extends Http::Server::RequestHandler::Range {
       WsgirefSimpleServerApplication() {
         exists(DataFlow::Node appArg, DataFlow::CallCfgNode setAppCall |
           (
@@ -2098,8 +2099,8 @@ private module StdlibPrivate {
      *
      * See https://docs.python.org/3.10/library/wsgiref.html#wsgiref.simple_server.WSGIRequestHandler.get_environ
      */
-    class WSGIEnvirontParameter extends RemoteFlowSource::Range, DataFlow::ParameterNode {
-      WSGIEnvirontParameter() {
+    class WsgiEnvirontParameter extends RemoteFlowSource::Range, DataFlow::ParameterNode {
+      WsgiEnvirontParameter() {
         exists(WsgirefSimpleServerApplication func |
           if func.isMethod()
           then this.getParameter() = func.getArg(1)
@@ -2111,6 +2112,9 @@ private module StdlibPrivate {
         result = "Stdlib: wsgiref.simple_server application: WSGI environment parameter"
       }
     }
+
+    /** DEPRECATED: Alias for WsgiEnvirontParameter */
+    deprecated class WSGIEnvirontParameter = WsgiEnvirontParameter;
 
     /**
      * Gets a reference to the parameter of a `WsgirefSimpleServerApplication` that
@@ -2163,7 +2167,7 @@ private module StdlibPrivate {
      *
      * See https://github.com/python/cpython/blob/b567b9d74bd9e476a3027335873bb0508d6e450f/Lib/wsgiref/handlers.py#L276
      */
-    class WsgirefSimpleServerApplicationWriteCall extends HTTP::Server::HttpResponse::Range,
+    class WsgirefSimpleServerApplicationWriteCall extends Http::Server::HttpResponse::Range,
       DataFlow::CallCfgNode {
       WsgirefSimpleServerApplicationWriteCall() { this.getFunction() = writeFunction() }
 
@@ -2177,7 +2181,7 @@ private module StdlibPrivate {
     /**
      * A return from a `WsgirefSimpleServerApplication`, which is included in the response body.
      */
-    class WsgirefSimpleServerApplicationReturn extends HTTP::Server::HttpResponse::Range,
+    class WsgirefSimpleServerApplicationReturn extends Http::Server::HttpResponse::Range,
       DataFlow::CfgNode {
       WsgirefSimpleServerApplicationReturn() {
         exists(WsgirefSimpleServerApplication requestHandler |
@@ -2264,7 +2268,7 @@ private module StdlibPrivate {
     }
 
     /** A method call on a HttpConnection that sends off a request */
-    private class RequestCall extends HTTP::Client::Request::Range, DataFlow::MethodCallNode {
+    private class RequestCall extends Http::Client::Request::Range, DataFlow::MethodCallNode {
       RequestCall() { this.calls(instance(_), ["request", "_send_request", "putrequest"]) }
 
       DataFlow::Node getUrlArg() { result in [this.getArg(1), this.getArgByName("url")] }
@@ -3666,6 +3670,23 @@ private module StdlibPrivate {
     }
 
     override DataFlow::Node getAPathArgument() { result = this.getAnInput() }
+  }
+
+  /** A flow summary for `reversed`. */
+  class ReversedSummary extends SummarizedCallable {
+    ReversedSummary() { this = "builtins.reversed" }
+
+    override DataFlow::CallCfgNode getACall() { result = API::builtin("reversed").getACall() }
+
+    override DataFlow::ArgumentNode getACallback() {
+      result = API::builtin("reversed").getAValueReachableFromSource()
+    }
+
+    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+      input = "Argument[0].ListElement" and
+      output = "ReturnValue.ListElement" and
+      preservesValue = true
+    }
   }
 }
 

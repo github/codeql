@@ -7,20 +7,20 @@
  */
 
 import javascript
-import experimental.adaptivethreatmodeling.NosqlInjectionATM as NosqlInjectionATM
-import experimental.adaptivethreatmodeling.SqlInjectionATM as SqlInjectionATM
-import experimental.adaptivethreatmodeling.TaintedPathATM as TaintedPathATM
-import experimental.adaptivethreatmodeling.XssATM as XssATM
+import experimental.adaptivethreatmodeling.NosqlInjectionATM as NosqlInjectionAtm
+import experimental.adaptivethreatmodeling.SqlInjectionATM as SqlInjectionAtm
+import experimental.adaptivethreatmodeling.TaintedPathATM as TaintedPathAtm
+import experimental.adaptivethreatmodeling.XssATM as XssAtm
 import experimental.adaptivethreatmodeling.EndpointFeatures as EndpointFeatures
 import experimental.adaptivethreatmodeling.StandardEndpointFilters as StandardEndpointFilters
 import extraction.NoFeaturizationRestrictionsConfig
 
 query predicate tokenFeatures(DataFlow::Node endpoint, string featureName, string featureValue) {
   (
-    not exists(NosqlInjectionATM::SinkEndpointFilter::getAReasonSinkExcluded(endpoint)) or
-    not exists(SqlInjectionATM::SinkEndpointFilter::getAReasonSinkExcluded(endpoint)) or
-    not exists(TaintedPathATM::SinkEndpointFilter::getAReasonSinkExcluded(endpoint)) or
-    not exists(XssATM::SinkEndpointFilter::getAReasonSinkExcluded(endpoint)) or
+    not exists(NosqlInjectionAtm::SinkEndpointFilter::getAReasonSinkExcluded(endpoint)) or
+    not exists(SqlInjectionAtm::SinkEndpointFilter::getAReasonSinkExcluded(endpoint)) or
+    not exists(TaintedPathAtm::SinkEndpointFilter::getAReasonSinkExcluded(endpoint)) or
+    not exists(XssAtm::SinkEndpointFilter::getAReasonSinkExcluded(endpoint)) or
     StandardEndpointFilters::isArgumentToModeledFunction(endpoint)
   ) and
   EndpointFeatures::tokenFeatures(endpoint, featureName, featureValue)

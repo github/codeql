@@ -1,3 +1,126 @@
+| clang.cpp:8:25:8:29 | f |  | <none> |
+| clang.cpp:9:25:9:29 | o |  | <none> |
+| clang.cpp:13:19:13:37 | __is_same | int,int | 1 |
+| clang.cpp:13:19:13:37 | int |  | <none> |
+| clang.cpp:13:19:13:37 | int |  | <none> |
+| clang.cpp:14:19:14:39 | __is_same | int,float | 0 |
+| clang.cpp:14:19:14:39 | float |  | <none> |
+| clang.cpp:14:19:14:39 | int |  | <none> |
+| clang.cpp:16:23:16:46 | ..()(..) |  | <none> |
+| clang.cpp:16:23:16:46 | __is_function | ..()(..) | 1 |
+| clang.cpp:17:23:17:40 | __is_function | int | 0 |
+| clang.cpp:17:23:17:40 | int |  | <none> |
+| clang.cpp:19:20:19:36 | __is_array | int[] | 1 |
+| clang.cpp:19:20:19:36 | int[] |  | <none> |
+| clang.cpp:20:20:20:34 | __is_array | int | 0 |
+| clang.cpp:20:20:20:34 | int |  | <none> |
+| clang.cpp:22:31:22:55 | __array_rank | int[42][42] | 2 |
+| clang.cpp:22:31:22:55 | int[42][42] |  | <none> |
+| clang.cpp:22:48:22:49 | 42 |  | 42 |
+| clang.cpp:22:48:22:49 | (unsigned long)... |  | 42 |
+| clang.cpp:22:52:22:53 | 42 |  | 42 |
+| clang.cpp:22:52:22:53 | (unsigned long)... |  | 42 |
+| clang.cpp:23:31:23:47 | __array_rank | int | 0 |
+| clang.cpp:23:31:23:47 | int |  | <none> |
+| clang.cpp:25:33:25:62 | __array_extent | int[42][42],1 | 42 |
+| clang.cpp:25:33:25:62 | int[42][42] |  | <none> |
+| clang.cpp:25:52:25:53 | 42 |  | 42 |
+| clang.cpp:25:52:25:53 | (unsigned long)... |  | 42 |
+| clang.cpp:25:56:25:57 | 42 |  | 42 |
+| clang.cpp:25:56:25:57 | (unsigned long)... |  | 42 |
+| clang.cpp:25:61:25:61 | 1 |  | 1 |
+| clang.cpp:26:33:26:62 | __array_extent | int[42][42],2 | 0 |
+| clang.cpp:26:33:26:62 | int[42][42] |  | <none> |
+| clang.cpp:26:52:26:53 | 42 |  | 42 |
+| clang.cpp:26:52:26:53 | (unsigned long)... |  | 42 |
+| clang.cpp:26:56:26:57 | 42 |  | 42 |
+| clang.cpp:26:56:26:57 | (unsigned long)... |  | 42 |
+| clang.cpp:26:61:26:61 | 2 |  | 2 |
+| clang.cpp:27:33:27:54 | __array_extent | int,0 | 0 |
+| clang.cpp:27:33:27:54 | int |  | <none> |
+| clang.cpp:27:53:27:53 | 0 |  | 0 |
+| clang.cpp:29:27:29:44 | S |  | <none> |
+| clang.cpp:29:27:29:44 | __is_arithmetic | S | 0 |
+| clang.cpp:30:27:30:46 | __is_arithmetic | int | 1 |
+| clang.cpp:30:27:30:46 | int |  | <none> |
+| clang.cpp:32:30:32:50 | S |  | <none> |
+| clang.cpp:32:30:32:50 | __is_complete_type | S | 1 |
+| clang.cpp:33:30:33:50 | T |  | <none> |
+| clang.cpp:33:30:33:50 | __is_complete_type | T | 0 |
+| clang.cpp:35:25:35:40 | S |  | <none> |
+| clang.cpp:35:25:35:40 | __is_compound | S | 1 |
+| clang.cpp:36:25:36:42 | __is_compound | int | 0 |
+| clang.cpp:36:25:36:42 | int |  | <none> |
+| clang.cpp:38:22:38:42 | __is_const | const int | 1 |
+| clang.cpp:38:22:38:42 | const int |  | <none> |
+| clang.cpp:39:22:39:36 | __is_const | int | 0 |
+| clang.cpp:39:22:39:36 | int |  | <none> |
+| clang.cpp:41:31:41:54 | __is_floating_point | int | 0 |
+| clang.cpp:41:31:41:54 | int |  | <none> |
+| clang.cpp:42:31:42:56 | __is_floating_point | float | 1 |
+| clang.cpp:42:31:42:56 | float |  | <none> |
+| clang.cpp:44:28:44:46 | S |  | <none> |
+| clang.cpp:44:28:44:46 | __is_fundamental | S | 0 |
+| clang.cpp:45:28:45:48 | __is_fundamental | int | 1 |
+| clang.cpp:45:28:45:48 | int |  | <none> |
+| clang.cpp:47:25:47:44 | __is_integral | float | 0 |
+| clang.cpp:47:25:47:44 | float |  | <none> |
+| clang.cpp:48:25:48:42 | __is_integral | int | 1 |
+| clang.cpp:48:25:48:42 | int |  | <none> |
+| clang.cpp:50:33:50:59 | __is_lvalue_reference | int & | 1 |
+| clang.cpp:50:33:50:59 | int & |  | <none> |
+| clang.cpp:51:33:51:58 | __is_lvalue_reference | int | 0 |
+| clang.cpp:51:33:51:58 | int |  | <none> |
+| clang.cpp:53:40:53:75 | __is_member_function_pointer | f_type | 1 |
+| clang.cpp:53:40:53:75 | f_type |  | <none> |
+| clang.cpp:54:40:54:75 | __is_member_function_pointer | o_type | 0 |
+| clang.cpp:54:40:54:75 | o_type |  | <none> |
+| clang.cpp:56:38:56:71 | __is_member_object_pointer | f_type | 0 |
+| clang.cpp:56:38:56:71 | f_type |  | <none> |
+| clang.cpp:57:38:57:71 | __is_member_object_pointer | o_type | 1 |
+| clang.cpp:57:38:57:71 | o_type |  | <none> |
+| clang.cpp:59:31:59:57 | __is_member_pointer | f_type | 1 |
+| clang.cpp:59:31:59:57 | f_type |  | <none> |
+| clang.cpp:60:31:60:57 | __is_member_pointer | o_type | 1 |
+| clang.cpp:60:31:60:57 | o_type |  | <none> |
+| clang.cpp:61:31:61:54 | __is_member_pointer | int | 0 |
+| clang.cpp:61:31:61:54 | int |  | <none> |
+| clang.cpp:63:23:63:38 | __is_object | int | 1 |
+| clang.cpp:63:23:63:38 | int |  | <none> |
+| clang.cpp:64:23:64:39 | __is_object | int & | 0 |
+| clang.cpp:64:23:64:39 | int & |  | <none> |
+| clang.cpp:66:24:66:40 | __is_pointer | int | 0 |
+| clang.cpp:66:24:66:40 | int |  | <none> |
+| clang.cpp:67:24:67:41 | __is_pointer | int * | 1 |
+| clang.cpp:67:24:67:41 | int * |  | <none> |
+| clang.cpp:69:26:69:44 | __is_reference | int | 0 |
+| clang.cpp:69:26:69:44 | int |  | <none> |
+| clang.cpp:70:26:70:45 | __is_reference | int & | 1 |
+| clang.cpp:70:26:70:45 | int & |  | <none> |
+| clang.cpp:72:33:72:60 | __is_rvalue_reference | int && | 1 |
+| clang.cpp:72:33:72:60 | int && |  | <none> |
+| clang.cpp:73:33:73:58 | __is_rvalue_reference | int | 0 |
+| clang.cpp:73:33:73:58 | int |  | <none> |
+| clang.cpp:75:23:75:38 | __is_scalar | int | 1 |
+| clang.cpp:75:23:75:38 | int |  | <none> |
+| clang.cpp:76:23:76:40 | __is_scalar | int[] | 0 |
+| clang.cpp:76:23:76:40 | int[] |  | <none> |
+| clang.cpp:78:23:78:38 | __is_signed | int | 1 |
+| clang.cpp:78:23:78:38 | int |  | <none> |
+| clang.cpp:79:23:79:47 | __is_signed | unsigned int | 0 |
+| clang.cpp:79:23:79:47 | unsigned int |  | <none> |
+| clang.cpp:81:25:81:42 | __is_unsigned | int | 0 |
+| clang.cpp:81:25:81:42 | int |  | <none> |
+| clang.cpp:82:25:82:51 | __is_unsigned | unsigned int | 1 |
+| clang.cpp:82:25:82:51 | unsigned int |  | <none> |
+| clang.cpp:84:21:84:35 | __is_void | void | 1 |
+| clang.cpp:84:21:84:35 | void |  | <none> |
+| clang.cpp:85:21:85:34 | __is_void | int | 0 |
+| clang.cpp:85:21:85:34 | int |  | <none> |
+| clang.cpp:87:25:87:51 | __is_volatile | volatile int | 1 |
+| clang.cpp:87:25:87:51 | volatile int |  | <none> |
+| clang.cpp:88:25:88:42 | __is_volatile | int | 0 |
+| clang.cpp:88:25:88:42 | int |  | <none> |
 | file://:0:0:0:0 | 0 |  | 0 |
 | file://:0:0:0:0 | 1 |  | 1 |
 | file://:0:0:0:0 | 2 |  | 2 |
@@ -313,3 +436,15 @@
 | ms.cpp:265:49:265:88 | int |  | <none> |
 | ms.cpp:266:49:266:90 | __has_unique_object_representations | float | 0 |
 | ms.cpp:266:49:266:90 | float |  | <none> |
+| ms.cpp:268:36:268:68 | __is_layout_compatible | int,long | 0 |
+| ms.cpp:268:36:268:68 | int |  | <none> |
+| ms.cpp:268:36:268:68 | long |  | <none> |
+| ms.cpp:269:36:269:75 | __is_layout_compatible | int *,int *const | 1 |
+| ms.cpp:269:36:269:75 | int * |  | <none> |
+| ms.cpp:269:36:269:75 | int *const |  | <none> |
+| ms.cpp:271:51:271:101 | __is_pointer_interconvertible_base_of | empty,empty | 1 |
+| ms.cpp:271:51:271:101 | empty |  | <none> |
+| ms.cpp:271:51:271:101 | empty |  | <none> |
+| ms.cpp:272:51:272:104 | __is_pointer_interconvertible_base_of | empty,abstract | 0 |
+| ms.cpp:272:51:272:104 | abstract |  | <none> |
+| ms.cpp:272:51:272:104 | empty |  | <none> |

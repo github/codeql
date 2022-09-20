@@ -96,7 +96,10 @@ class OverlyWideRange extends RegExpCharacterRange {
       toCodePoint("A") <= high
       or
       // a non-alphanumeric char as part of the range boundaries
-      exists(int bound | bound = [low, high] | not isAlphanumeric(bound.toUnicode()))
+      exists(int bound | bound = [low, high] | not isAlphanumeric(bound.toUnicode())) and
+      // while still being ascii
+      low < 128 and
+      high < 128
     ) and
     // allowlist for known ranges
     not this = allowedWideRanges()
@@ -173,7 +176,7 @@ module RangePrinter {
   }
 
   /** Gets the number of parts we should print for a given `range`. */
-  private int parts(OverlyWideRange range) { result = 1 + strictcount(cutoff(range, _)) }
+  private int parts(OverlyWideRange range) { result = 1 + count(cutoff(range, _)) }
 
   /** Holds if the given part of a range should span from `low` to `high`. */
   private predicate part(OverlyWideRange range, int part, string low, string high) {

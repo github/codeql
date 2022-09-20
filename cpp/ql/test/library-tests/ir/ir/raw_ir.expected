@@ -9932,6 +9932,108 @@ ir.cpp:
 # 1849|     v1849_5(void)            = AliasedUse                           : ~m?
 # 1849|     v1849_6(void)            = ExitFunction                         : 
 
+# 1862| void* missing_declaration_entries::Bar1<int>::missing_type_decl_entry(missing_declaration_entries::Bar1<int>::pointer)
+# 1862|   Block 0
+# 1862|     v1862_1(void)              = EnterFunction                : 
+# 1862|     mu1862_2(unknown)          = AliasedDefinition            : 
+# 1862|     mu1862_3(unknown)          = InitializeNonLocal           : 
+# 1862|     r1862_4(glval<unknown>)    = VariableAddress[#this]       : 
+# 1862|     mu1862_5(glval<Bar1<int>>) = InitializeParameter[#this]   : &:r1862_4
+# 1862|     r1862_6(glval<Bar1<int>>)  = Load[#this]                  : &:r1862_4, ~m?
+# 1862|     mu1862_7(Bar1<int>)        = InitializeIndirection[#this] : &:r1862_6
+# 1862|     r1862_8(glval<S *>)        = VariableAddress[p]           : 
+# 1862|     mu1862_9(S *)              = InitializeParameter[p]       : &:r1862_8
+# 1862|     r1862_10(S *)              = Load[p]                      : &:r1862_8, ~m?
+# 1862|     mu1862_11(unknown)         = InitializeIndirection[p]     : &:r1862_10
+# 1864|     r1864_1(glval<void *>)     = VariableAddress[#return]     : 
+# 1864|     r1864_2(glval<S *>)        = VariableAddress[p]           : 
+# 1864|     r1864_3(S *)               = Load[p]                      : &:r1864_2, ~m?
+# 1864|     r1864_4(void *)            = Convert                      : r1864_3
+# 1864|     mu1864_5(void *)           = Store[#return]               : &:r1864_1, r1864_4
+# 1862|     v1862_12(void)             = ReturnIndirection[#this]     : &:r1862_6, ~m?
+# 1862|     v1862_13(void)             = ReturnIndirection[p]         : &:r1862_10, ~m?
+# 1862|     r1862_14(glval<void *>)    = VariableAddress[#return]     : 
+# 1862|     v1862_15(void)             = ReturnValue                  : &:r1862_14, ~m?
+# 1862|     v1862_16(void)             = AliasedUse                   : ~m?
+# 1862|     v1862_17(void)             = ExitFunction                 : 
+
+# 1868| void missing_declaration_entries::test1()
+# 1868|   Block 0
+# 1868|     v1868_1(void)             = EnterFunction                            : 
+# 1868|     mu1868_2(unknown)         = AliasedDefinition                        : 
+# 1868|     mu1868_3(unknown)         = InitializeNonLocal                       : 
+# 1869|     r1869_1(glval<Bar1<int>>) = VariableAddress[b]                       : 
+# 1869|     mu1869_2(Bar1<int>)       = Uninitialized[b]                         : &:r1869_1
+# 1870|     r1870_1(glval<Bar1<int>>) = VariableAddress[b]                       : 
+# 1870|     r1870_2(glval<unknown>)   = FunctionAddress[missing_type_decl_entry] : 
+# 1870|     r1870_3(S *)              = Constant[0]                              : 
+# 1870|     r1870_4(void *)           = Call[missing_type_decl_entry]            : func:r1870_2, this:r1870_1, 0:r1870_3
+# 1870|     mu1870_5(unknown)         = ^CallSideEffect                          : ~m?
+# 1870|     v1870_6(void)             = ^IndirectReadSideEffect[-1]              : &:r1870_1, ~m?
+# 1870|     v1870_7(void)             = ^BufferReadSideEffect[0]                 : &:r1870_3, ~m?
+# 1870|     mu1870_8(Bar1<int>)       = ^IndirectMayWriteSideEffect[-1]          : &:r1870_1
+# 1870|     mu1870_9(unknown)         = ^BufferMayWriteSideEffect[0]             : &:r1870_3
+# 1871|     v1871_1(void)             = NoOp                                     : 
+# 1868|     v1868_4(void)             = ReturnVoid                               : 
+# 1868|     v1868_5(void)             = AliasedUse                               : ~m?
+# 1868|     v1868_6(void)             = ExitFunction                             : 
+
+# 1875| int missing_declaration_entries::Bar2<int>::two_missing_variable_declaration_entries()
+# 1875|   Block 0
+# 1875|     v1875_1(void)              = EnterFunction                : 
+# 1875|     mu1875_2(unknown)          = AliasedDefinition            : 
+# 1875|     mu1875_3(unknown)          = InitializeNonLocal           : 
+# 1875|     r1875_4(glval<unknown>)    = VariableAddress[#this]       : 
+# 1875|     mu1875_5(glval<Bar2<int>>) = InitializeParameter[#this]   : &:r1875_4
+# 1875|     r1875_6(glval<Bar2<int>>)  = Load[#this]                  : &:r1875_4, ~m?
+# 1875|     mu1875_7(Bar2<int>)        = InitializeIndirection[#this] : &:r1875_6
+# 1876|     r1876_1(glval<int[10]>)    = VariableAddress[x]           : 
+# 1876|     mu1876_2(int[10])          = Uninitialized[x]             : &:r1876_1
+# 1876|     r1876_3(glval<int[10]>)    = VariableAddress[y]           : 
+# 1876|     mu1876_4(int[10])          = Uninitialized[y]             : &:r1876_3
+# 1877|     r1877_1(int)               = Constant[10]                 : 
+# 1877|     r1877_2(glval<int[10]>)    = VariableAddress[x]           : 
+# 1877|     r1877_3(int *)             = Convert                      : r1877_2
+# 1877|     r1877_4(glval<int>)        = CopyValue                    : r1877_3
+# 1877|     mu1877_5(int)              = Store[?]                     : &:r1877_4, r1877_1
+# 1878|     r1878_1(int)               = Constant[10]                 : 
+# 1878|     r1878_2(glval<int[10]>)    = VariableAddress[y]           : 
+# 1878|     r1878_3(int *)             = Convert                      : r1878_2
+# 1878|     r1878_4(glval<int>)        = CopyValue                    : r1878_3
+# 1878|     mu1878_5(int)              = Store[?]                     : &:r1878_4, r1878_1
+# 1879|     r1879_1(glval<int>)        = VariableAddress[#return]     : 
+# 1879|     r1879_2(glval<int[10]>)    = VariableAddress[x]           : 
+# 1879|     r1879_3(int *)             = Convert                      : r1879_2
+# 1879|     r1879_4(int)               = Load[?]                      : &:r1879_3, ~m?
+# 1879|     r1879_5(glval<int[10]>)    = VariableAddress[y]           : 
+# 1879|     r1879_6(int *)             = Convert                      : r1879_5
+# 1879|     r1879_7(int)               = Load[?]                      : &:r1879_6, ~m?
+# 1879|     r1879_8(int)               = Add                          : r1879_4, r1879_7
+# 1879|     mu1879_9(int)              = Store[#return]               : &:r1879_1, r1879_8
+# 1875|     v1875_8(void)              = ReturnIndirection[#this]     : &:r1875_6, ~m?
+# 1875|     r1875_9(glval<int>)        = VariableAddress[#return]     : 
+# 1875|     v1875_10(void)             = ReturnValue                  : &:r1875_9, ~m?
+# 1875|     v1875_11(void)             = AliasedUse                   : ~m?
+# 1875|     v1875_12(void)             = ExitFunction                 : 
+
+# 1883| void missing_declaration_entries::test2()
+# 1883|   Block 0
+# 1883|     v1883_1(void)             = EnterFunction                                             : 
+# 1883|     mu1883_2(unknown)         = AliasedDefinition                                         : 
+# 1883|     mu1883_3(unknown)         = InitializeNonLocal                                        : 
+# 1884|     r1884_1(glval<Bar2<int>>) = VariableAddress[b]                                        : 
+# 1884|     mu1884_2(Bar2<int>)       = Uninitialized[b]                                          : &:r1884_1
+# 1885|     r1885_1(glval<Bar2<int>>) = VariableAddress[b]                                        : 
+# 1885|     r1885_2(glval<unknown>)   = FunctionAddress[two_missing_variable_declaration_entries] : 
+# 1885|     r1885_3(int)              = Call[two_missing_variable_declaration_entries]            : func:r1885_2, this:r1885_1
+# 1885|     mu1885_4(unknown)         = ^CallSideEffect                                           : ~m?
+# 1885|     v1885_5(void)             = ^IndirectReadSideEffect[-1]                               : &:r1885_1, ~m?
+# 1885|     mu1885_6(Bar2<int>)       = ^IndirectMayWriteSideEffect[-1]                           : &:r1885_1
+# 1886|     v1886_1(void)             = NoOp                                                      : 
+# 1883|     v1883_4(void)             = ReturnVoid                                                : 
+# 1883|     v1883_5(void)             = AliasedUse                                                : ~m?
+# 1883|     v1883_6(void)             = ExitFunction                                              : 
+
 perf-regression.cpp:
 #    6| void Big::Big()
 #    6|   Block 0

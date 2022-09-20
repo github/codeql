@@ -1,5 +1,5 @@
 import javascript
 
-query predicate test_RequestExpr(NodeJSLib::RequestExpr e, HTTP::RouteHandler res) {
+query predicate test_RequestExpr(NodeJSLib::RequestNode e, Http::RouteHandler res) {
   res = e.getRouteHandler()
 }

@@ -6,9 +6,9 @@ module Raw {
   }
 
   class Callable extends @callable, Element {
-    ParamDecl getParam(int index) { callable_params(this, index, result) }
-
     ParamDecl getSelfParam() { callable_self_params(this, result) }
+
+    ParamDecl getParam(int index) { callable_params(this, index, result) }
 
     BraceStmt getBody() { callable_bodies(this, result) }
   }
@@ -48,6 +48,8 @@ module Raw {
 
     Type getCanonicalType() { types(this, _, result) }
   }
+
+  class UnresolvedElement extends @unresolved_element, Element { }
 
   class AnyFunctionType extends @any_function_type, Type {
     Type getResult() { any_function_types(this, result) }
@@ -129,16 +131,6 @@ module Raw {
     Type getConstraint() { existential_types(this, result) }
   }
 
-  class IfConfigClause extends @if_config_clause, Locatable {
-    override string toString() { result = "IfConfigClause" }
-
-    Expr getCondition() { if_config_clause_conditions(this, result) }
-
-    AstNode getElement(int index) { if_config_clause_elements(this, index, result) }
-
-    predicate isActive() { if_config_clause_is_active(this) }
-  }
-
   class InOutType extends @in_out_type, Type {
     override string toString() { result = "InOutType" }
 
@@ -203,7 +195,7 @@ module Raw {
     override string toString() { result = "TypeVariableType" }
   }
 
-  class UnresolvedType extends @unresolved_type, Type {
+  class UnresolvedType extends @unresolved_type, Type, UnresolvedElement {
     override string toString() { result = "UnresolvedType" }
   }
 
@@ -327,7 +319,7 @@ module Raw {
   class TypeRepr extends @type_repr, AstNode {
     override string toString() { result = "TypeRepr" }
 
-    Type getType() { type_repr_types(this, result) }
+    Type getType() { type_reprs(this, result) }
   }
 
   class UnboundGenericType extends @unbound_generic_type, AnyGenericType {
@@ -346,7 +338,7 @@ module Raw {
     override string toString() { result = "WeakStorageType" }
   }
 
-  class AbstractClosureExpr extends @abstract_closure_expr, Callable, Expr { }
+  class AbstractClosureExpr extends @abstract_closure_expr, Expr, Callable { }
 
   class AnyPattern extends @any_pattern, Pattern {
     override string toString() { result = "AnyPattern" }
@@ -556,7 +548,7 @@ module Raw {
     Expr getSubExpr() { expr_patterns(this, result) }
   }
 
-  class ExtensionDecl extends @extension_decl, Decl, GenericContext, IterableDeclContext {
+  class ExtensionDecl extends @extension_decl, GenericContext, IterableDeclContext, Decl {
     override string toString() { result = "ExtensionDecl" }
 
     NominalTypeDecl getExtendedTypeDecl() { extension_decls(this, result) }
@@ -587,7 +579,7 @@ module Raw {
   class IfConfigDecl extends @if_config_decl, Decl {
     override string toString() { result = "IfConfigDecl" }
 
-    IfConfigClause getClause(int index) { if_config_decl_clauses(this, index, result) }
+    AstNode getActiveElement(int index) { if_config_decl_active_elements(this, index, result) }
   }
 
   class IfExpr extends @if_expr, Expr {
@@ -880,13 +872,13 @@ module Raw {
     Type getBaseType() { unary_syntax_sugar_types(this, result) }
   }
 
-  class UnresolvedDeclRefExpr extends @unresolved_decl_ref_expr, Expr {
+  class UnresolvedDeclRefExpr extends @unresolved_decl_ref_expr, Expr, UnresolvedElement {
     override string toString() { result = "UnresolvedDeclRefExpr" }
 
     string getName() { unresolved_decl_ref_expr_names(this, result) }
   }
 
-  class UnresolvedDotExpr extends @unresolved_dot_expr, Expr {
+  class UnresolvedDotExpr extends @unresolved_dot_expr, Expr, UnresolvedElement {
     override string toString() { result = "UnresolvedDotExpr" }
 
     Expr getBase() { unresolved_dot_exprs(this, result, _) }
@@ -894,19 +886,19 @@ module Raw {
     string getName() { unresolved_dot_exprs(this, _, result) }
   }
 
-  class UnresolvedMemberExpr extends @unresolved_member_expr, Expr {
+  class UnresolvedMemberExpr extends @unresolved_member_expr, Expr, UnresolvedElement {
     override string toString() { result = "UnresolvedMemberExpr" }
 
     string getName() { unresolved_member_exprs(this, result) }
   }
 
-  class UnresolvedPatternExpr extends @unresolved_pattern_expr, Expr {
+  class UnresolvedPatternExpr extends @unresolved_pattern_expr, Expr, UnresolvedElement {
     override string toString() { result = "UnresolvedPatternExpr" }
 
     Pattern getSubPattern() { unresolved_pattern_exprs(this, result) }
   }
 
-  class UnresolvedSpecializeExpr extends @unresolved_specialize_expr, Expr {
+  class UnresolvedSpecializeExpr extends @unresolved_specialize_expr, Expr, UnresolvedElement {
     override string toString() { result = "UnresolvedSpecializeExpr" }
   }
 
@@ -926,7 +918,7 @@ module Raw {
     Expr getResult(int index) { yield_stmt_results(this, index, result) }
   }
 
-  class AbstractFunctionDecl extends @abstract_function_decl, Callable, GenericContext, ValueDecl {
+  class AbstractFunctionDecl extends @abstract_function_decl, GenericContext, ValueDecl, Callable {
     string getName() { abstract_function_decls(this, result) }
   }
 
@@ -1311,12 +1303,13 @@ module Raw {
     override string toString() { result = "UnevaluatedInstanceExpr" }
   }
 
-  class UnresolvedMemberChainResultExpr extends @unresolved_member_chain_result_expr, IdentityExpr {
+  class UnresolvedMemberChainResultExpr extends @unresolved_member_chain_result_expr, IdentityExpr,
+    UnresolvedElement {
     override string toString() { result = "UnresolvedMemberChainResultExpr" }
   }
 
   class UnresolvedTypeConversionExpr extends @unresolved_type_conversion_expr,
-    ImplicitConversionExpr {
+    ImplicitConversionExpr, UnresolvedElement {
     override string toString() { result = "UnresolvedTypeConversionExpr" }
   }
 
@@ -1398,6 +1391,10 @@ module Raw {
     predicate isBuiltinModule() { module_decl_is_builtin_module(this) }
 
     predicate isSystemModule() { module_decl_is_system_module(this) }
+
+    ModuleDecl getImportedModule(int index) { module_decl_imported_modules(this, index, result) }
+
+    ModuleDecl getExportedModule(int index) { module_decl_exported_modules(this, index, result) }
   }
 
   class NumberLiteralExpr extends @number_literal_expr, BuiltinLiteralExpr { }

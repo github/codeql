@@ -203,6 +203,12 @@ private class Argument extends CfgNodes::ExprCfgNode {
   }
 }
 
+/** Holds if `n` is not a constant expression. */
+predicate isNonConstantExpr(CfgNodes::ExprCfgNode n) {
+  not exists(n.getConstantValue()) and
+  not n.getExpr() instanceof ConstantAccess
+}
+
 /** A collection of cached types and predicates to be evaluated in the same stage. */
 cached
 private module Cached {
@@ -232,8 +238,12 @@ private module Cached {
       isParameterNode(_, c, any(ParameterPosition p | p.isKeyword(_)))
     } or
     TExprPostUpdateNode(CfgNodes::ExprCfgNode n) {
-      n instanceof Argument or
-      n = any(CfgNodes::ExprNodes::InstanceVariableAccessCfgNode v).getReceiver()
+      // filter out nodes that clearly don't need post-update nodes
+      isNonConstantExpr(n) and
+      (
+        n instanceof Argument or
+        n = any(CfgNodes::ExprNodes::InstanceVariableAccessCfgNode v).getReceiver()
+      )
     } or
     TSummaryNode(
       FlowSummaryImpl::Public::SummarizedCallable c,
@@ -438,6 +448,9 @@ class SsaDefinitionNode extends NodeImpl, TSsaDefinitionNode {
   /** Gets the underlying SSA definition. */
   Ssa::Definition getDefinition() { result = def }
 
+  /** Gets the underlying variable. */
+  Variable getVariable() { result = def.getSourceVariable() }
+
   override CfgScope getCfgScope() { result = def.getBasicBlock().getScope() }
 
   override Location getLocationImpl() { result = def.getLocation() }
@@ -539,6 +552,9 @@ private module ParameterNodes {
 
     final MethodBase getMethod() { result = method }
 
+    /** Gets the underlying `self` variable. */
+    final SelfVariable getSelfVariable() { result.getDeclaringScope() = method }
+
     override Parameter getParameter() { none() }
 
     override predicate isParameterOf(DataFlowCallable c, ParameterPosition pos) {
@@ -613,7 +629,7 @@ private module ParameterNodes {
    * where direct keyword matching is possible, since we construct a synthesized hash
    * splat argument (`SynthHashSplatArgumentNode`) at the call site, which means that
    * `taint(1)` will flow into `p1` both via normal keyword matching and via the synthesized
-   * nodes (and similarly for `p2`). However, this redunancy is OK since
+   * nodes (and similarly for `p2`). However, this redundancy is OK since
    *  (a) it means that type-tracking through keyword arguments also works in most cases,
    *  (b) read/store steps can be avoided when direct keyword matching is possible, and
    *      hence access path limits are not a concern, and
@@ -1036,7 +1052,8 @@ predicate readStep(Node node1, ContentSet c, Node node2) {
   // (instance variable assignment or setter method call).
   node2.asExpr() =
     any(CfgNodes::ExprNodes::MethodCallCfgNode call |
-      node1.asExpr() = call.getReceiver() and
+      node1.asExpr() =
+        any(CfgNodes::ExprCfgNode e | e = call.getReceiver() and isNonConstantExpr(e)) and
       call.getNumberOfArguments() = 0 and
       c.isSingleton(any(Content::FieldContent ct |
           ct.getName() = "@" + call.getExpr().getMethodName()

@@ -268,3 +268,10 @@ fun inPlaceOperators() {
   updated %= 1
 
 }
+
+inline fun <reified T : Enum<T>> getEnumValues() = enumValues<T>()
+
+fun callToEnumValues() {
+    enumValues<Color>()
+    getEnumValues<Color>()
+}

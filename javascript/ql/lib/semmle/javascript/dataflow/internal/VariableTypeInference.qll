@@ -692,10 +692,10 @@ abstract private class CallWithAnalyzedParameters extends FunctionWithAnalyzedPa
 /**
  * Flow analysis for simple parameters of IIFEs.
  */
-private class IIFEWithAnalyzedParameters extends CallWithAnalyzedParameters {
+private class IifeWithAnalyzedParameters extends CallWithAnalyzedParameters {
   ImmediatelyInvokedFunctionExpr iife;
 
-  IIFEWithAnalyzedParameters() {
+  IifeWithAnalyzedParameters() {
     this = iife and
     iife.getInvocationKind() = "direct"
   }

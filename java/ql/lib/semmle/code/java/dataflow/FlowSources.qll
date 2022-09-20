@@ -88,7 +88,7 @@ private class ReverseDnsSource extends RemoteFlowSource {
   ReverseDnsSource() {
     // Try not to trigger on `localhost`.
     exists(MethodAccess m | m = this.asExpr() |
-      m.getMethod() instanceof ReverseDNSMethod and
+      m.getMethod() instanceof ReverseDnsMethod and
       not exists(MethodAccess l |
         (variableStep(l, m.getQualifier()) or l = m.getQualifier()) and
         l.getMethod().getName() = "getLocalHost"
@@ -221,8 +221,8 @@ class TypeInetAddr extends RefType {
 }
 
 /** A reverse DNS method. */
-class ReverseDNSMethod extends Method {
-  ReverseDNSMethod() {
+class ReverseDnsMethod extends Method {
+  ReverseDnsMethod() {
     this.getDeclaringType() instanceof TypeInetAddr and
     (
       this.getName() = "getHostName" or
@@ -230,6 +230,9 @@ class ReverseDNSMethod extends Method {
     )
   }
 }
+
+/** DEPRECATED: Alias for ReverseDnsMethod */
+deprecated class ReverseDNSMethod = ReverseDnsMethod;
 
 /** Android `Intent` that may have come from a hostile application. */
 class AndroidIntentInput extends DataFlow::Node {

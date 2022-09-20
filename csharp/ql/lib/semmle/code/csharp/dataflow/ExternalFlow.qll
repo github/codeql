@@ -12,6 +12,8 @@
  *   `namespace; type; subtypes; name; signature; ext; input; output; kind; provenance`
  * - Negative Summaries:
  *   `namespace; type; name; signature; provenance`
+ *   A negative summary is used to indicate that there is no flow via a callable.
+ *
  * The interpretation of a row is similar to API-graphs with a left-to-right
  * reading.
  * 1. The `namespace` column selects a namespace.
@@ -100,6 +102,7 @@ private module Frameworks {
   private import semmle.code.csharp.frameworks.ServiceStack
   private import semmle.code.csharp.frameworks.Sql
   private import semmle.code.csharp.frameworks.System
+  private import semmle.code.csharp.frameworks.system.CodeDom
   private import semmle.code.csharp.frameworks.system.Collections
   private import semmle.code.csharp.frameworks.system.collections.Concurrent
   private import semmle.code.csharp.frameworks.system.collections.Generic
@@ -108,6 +111,7 @@ private module Frameworks {
   private import semmle.code.csharp.frameworks.system.collections.Specialized
   private import semmle.code.csharp.frameworks.system.ComponentModel
   private import semmle.code.csharp.frameworks.system.componentmodel.Design
+  private import semmle.code.csharp.frameworks.system.Configuration
   private import semmle.code.csharp.frameworks.system.Data
   private import semmle.code.csharp.frameworks.system.data.Common
   private import semmle.code.csharp.frameworks.system.Diagnostics
@@ -119,6 +123,7 @@ private module Frameworks {
   private import semmle.code.csharp.frameworks.system.IO
   private import semmle.code.csharp.frameworks.system.io.Compression
   private import semmle.code.csharp.frameworks.system.runtime.CompilerServices
+  private import semmle.code.csharp.frameworks.system.Security
   private import semmle.code.csharp.frameworks.system.security.Cryptography
   private import semmle.code.csharp.frameworks.system.security.cryptography.X509Certificates
   private import semmle.code.csharp.frameworks.system.Text

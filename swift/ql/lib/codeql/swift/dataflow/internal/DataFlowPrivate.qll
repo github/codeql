@@ -63,17 +63,26 @@ private module Cached {
   newtype TNode =
     TExprNode(CfgNode n, Expr e) { hasExprNode(n, e) } or
     TSsaDefinitionNode(Ssa::Definition def) or
-    TInoutReturnNode(ParamDecl param) { param.isInout() } or
-    TInOutUpdateNode(Argument arg) { arg.getExpr() instanceof InOutExpr } or
-    TSummaryNode(FlowSummary::SummarizedCallable c, FlowSummaryImpl::Private::SummaryNodeState state)
-
-  private predicate hasExprNode(CfgNode n, Expr e) {
-    n.(ExprCfgNode).getExpr() = e
-    or
-    n.(PropertyGetterCfgNode).getRef() = e
-    or
-    n.(PropertySetterCfgNode).getAssignExpr() = e
-  }
+    TInoutReturnNode(ParamDecl param) { modifiableParam(param) } or
+    TSummaryNode(FlowSummary::SummarizedCallable c, FlowSummaryImpl::Private::SummaryNodeState state) or
+    TExprPostUpdateNode(CfgNode n) {
+      // Obviously, the base of setters needs a post-update node
+      n = any(PropertySetterCfgNode setter).getBase()
+      or
+      // The base of getters and observers needs a post-update node to support reverse reads.
+      n = any(PropertyGetterCfgNode getter).getBase()
+      or
+      n = any(PropertyObserverCfgNode getter).getBase()
+      or
+      // Arguments that are `inout` expressions needs a post-update node,
+      // as well as any class-like argument (since a field can be modified).
+      // Finally, qualifiers and bases of member reference need post-update nodes to support reverse reads.
+      hasExprNode(n,
+        [
+          any(Argument arg | modifiable(arg)).getExpr(), any(MemberRefExpr ref).getBase(),
+          any(ApplyExpr apply).getQualifier()
+        ])
+    }
 
   private predicate localSsaFlowStepUseUse(Ssa::Definition def, Node nodeFrom, Node nodeTo) {
     def.adjacentReadPair(nodeFrom.getCfgNode(), nodeTo.getCfgNode()) and
@@ -102,16 +111,10 @@ private module Cached {
       // use-use flow
       localSsaFlowStepUseUse(def, nodeFrom, nodeTo)
       or
-      //localSsaFlowStepUseUse(def, nodeFrom.(PostUpdateNode).getPreUpdateNode(), nodeTo)
-      //or
+      localSsaFlowStepUseUse(def, nodeFrom.(PostUpdateNode).getPreUpdateNode(), nodeTo)
+      or
       // step from previous read to Phi node
       localFlowSsaInput(nodeFrom, def, nodeTo.asDefinition())
-    )
-    or
-    // flow through writes to inout parameters
-    exists(ParamReturnKind kind, ExprCfgNode arg |
-      arg = nodeFrom.(InOutUpdateNode).getCall(kind).asCall().getArgument(kind.getIndex()) and
-      nodeTo.asDefinition().(Ssa::WriteDefinition).isInoutDef(arg)
     )
     or
     // flow through `&` (inout argument)
@@ -138,10 +141,36 @@ private module Cached {
   predicate localFlowStepImpl(Node nodeFrom, Node nodeTo) { localFlowStepCommon(nodeFrom, nodeTo) }
 
   cached
-  newtype TContentSet = TODO_TContentSet()
+  newtype TContentSet = TSingletonContent(Content c)
 
   cached
-  newtype TContent = TODO_Content()
+  newtype TContent = TFieldContent(FieldDecl f)
+}
+
+/**
+ * Holds if `arg` can be modified (by overwriting the content completely),
+ * or if any of its fields can be overwritten by a function call.
+ */
+private predicate modifiable(Argument arg) {
+  arg.getExpr() instanceof InOutExpr
+  or
+  arg.getExpr().getType() instanceof NominalType
+}
+
+predicate modifiableParam(ParamDecl param) {
+  param.isInout()
+  or
+  param instanceof SelfParamDecl
+}
+
+private predicate hasExprNode(CfgNode n, Expr e) {
+  n.(ExprCfgNode).getExpr() = e
+  or
+  n.(PropertyGetterCfgNode).getRef() = e
+  or
+  n.(PropertySetterCfgNode).getAssignExpr() = e
+  or
+  n.(PropertyObserverCfgNode).getAssignExpr() = e
 }
 
 import Cached
@@ -341,23 +370,57 @@ private module OutNodes {
     }
   }
 
-  class InOutUpdateNode extends OutNode, TInOutUpdateNode, NodeImpl {
+  class InOutUpdateArgNode extends OutNode, ExprPostUpdateNode {
     Argument arg;
 
-    InOutUpdateNode() { this = TInOutUpdateNode(arg) }
+    InOutUpdateArgNode() {
+      modifiable(arg) and
+      hasExprNode(n, arg.getExpr())
+    }
 
     override DataFlowCall getCall(ReturnKind kind) {
-      result.asCall().getExpr() = arg.getApplyExpr() and
+      result.getAnArgument() = n and
       kind.(ParamReturnKind).getIndex() = arg.getIndex()
     }
+  }
 
-    override DataFlowCallable getEnclosingCallable() {
-      result = this.getCall(_).getEnclosingCallable()
+  class InOutUpdateQualifierNode extends OutNode, ExprPostUpdateNode {
+    InOutUpdateQualifierNode() { hasExprNode(n, any(ApplyExpr apply).getQualifier()) }
+
+    override DataFlowCall getCall(ReturnKind kind) {
+      result.getAnArgument() = n and
+      kind.(ParamReturnKind).getIndex() = -1
     }
+  }
 
-    override Location getLocationImpl() { result = arg.getLocation() }
+  class PropertySetterOutNode extends OutNode, ExprNodeImpl {
+    PropertySetterCfgNode setter;
 
-    override string toStringImpl() { result = arg.toString() }
+    PropertySetterOutNode() { setter = this.getCfgNode() }
+
+    override DataFlowCall getCall(ReturnKind kind) {
+      result.(PropertySetterCall).getSetter() = setter and kind.(ParamReturnKind).getIndex() = -1
+    }
+  }
+
+  class PropertyGetterOutNode extends OutNode, ExprNodeImpl {
+    PropertyGetterCfgNode getter;
+
+    PropertyGetterOutNode() { getter = this.getCfgNode() }
+
+    override DataFlowCall getCall(ReturnKind kind) {
+      result.(PropertyGetterCall).getGetter() = getter and kind instanceof NormalReturnKind
+    }
+  }
+
+  class PropertyObserverOutNode extends OutNode, ExprNodeImpl {
+    PropertyObserverCfgNode observer;
+
+    PropertyObserverOutNode() { observer = this.getCfgNode() }
+
+    override DataFlowCall getCall(ReturnKind kind) {
+      result.(PropertyGetterCall).getGetter() = observer and kind.(ParamReturnKind).getIndex() = -1
+    }
   }
 }
 
@@ -365,16 +428,34 @@ import OutNodes
 
 predicate jumpStep(Node pred, Node succ) { none() }
 
-predicate storeStep(Node node1, ContentSet c, Node node2) { none() }
+predicate storeStep(Node node1, ContentSet c, Node node2) {
+  exists(MemberRefExpr ref, AssignExpr assign |
+    ref = assign.getDest() and
+    node1.asExpr() = assign.getSource() and
+    node2.(PostUpdateNode).getPreUpdateNode().asExpr() = ref.getBase() and
+    c.isSingleton(any(Content::FieldContent ct | ct.getField() = ref.getMember()))
+  )
+}
 
-predicate readStep(Node node1, ContentSet c, Node node2) { none() }
+predicate isLValue(Expr e) { any(AssignExpr assign).getDest() = e }
+
+predicate readStep(Node node1, ContentSet c, Node node2) {
+  exists(MemberRefExpr ref |
+    not isLValue(ref) and
+    node1.asExpr() = ref.getBase() and
+    node2.asExpr() = ref and
+    c.isSingleton(any(Content::FieldContent ct | ct.getField() = ref.getMember()))
+  )
+}
 
 /**
  * Holds if values stored inside content `c` are cleared at node `n`. For example,
  * any value stored inside `f` is cleared at the pre-update node associated with `x`
  * in `x.f = newValue`.
  */
-predicate clearsContent(Node n, ContentSet c) { none() }
+predicate clearsContent(Node n, ContentSet c) {
+  n = any(PostUpdateNode pun | storeStep(_, c, pun)).getPreUpdateNode()
+}
 
 /**
  * Holds if the value that is being tracked is expected to be stored inside content `c`
@@ -408,7 +489,21 @@ abstract class PostUpdateNodeImpl extends Node {
   abstract Node getPreUpdateNode();
 }
 
-private module PostUpdateNodes { }
+private module PostUpdateNodes {
+  class ExprPostUpdateNode extends PostUpdateNodeImpl, NodeImpl, TExprPostUpdateNode {
+    CfgNode n;
+
+    ExprPostUpdateNode() { this = TExprPostUpdateNode(n) }
+
+    override ExprNode getPreUpdateNode() { n = result.getCfgNode() }
+
+    override Location getLocationImpl() { result = n.getLocation() }
+
+    override string toStringImpl() { result = "[post] " + n.toString() }
+
+    override DataFlowCallable getEnclosingCallable() { result = TDataFlowFunc(n.getScope()) }
+  }
+}
 
 private import PostUpdateNodes
 

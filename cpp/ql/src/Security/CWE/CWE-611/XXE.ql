@@ -19,8 +19,8 @@ import DataFlow::PathGraph
 /**
  * A configuration for tracking XML objects and their states.
  */
-class XXEConfiguration extends DataFlow::Configuration {
-  XXEConfiguration() { this = "XXEConfiguration" }
+class XxeConfiguration extends DataFlow::Configuration {
+  XxeConfiguration() { this = "XXEConfiguration" }
 
   override predicate isSource(DataFlow::Node node, string flowstate) {
     any(XmlLibrary l).configurationSource(node, flowstate)
@@ -45,7 +45,7 @@ class XXEConfiguration extends DataFlow::Configuration {
   }
 }
 
-from XXEConfiguration conf, DataFlow::PathNode source, DataFlow::PathNode sink
+from XxeConfiguration conf, DataFlow::PathNode source, DataFlow::PathNode sink
 where conf.hasFlowPath(source, sink)
 select sink, source, sink,
   "This $@ is not configured to prevent an XML external entity (XXE) attack.", source, "XML parser"

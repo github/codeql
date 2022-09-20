@@ -57,7 +57,7 @@ module UrlRedirect {
    */
   class RedirectLocationAsSink extends Sink {
     RedirectLocationAsSink() {
-      exists(HTTP::Server::HttpRedirectResponse e, MethodBase method |
+      exists(Http::Server::HttpRedirectResponse e, MethodBase method |
         this = e.getRedirectLocation() and
         // We only want handlers for GET requests.
         // Handlers for other HTTP methods are not as vulnerable to URL

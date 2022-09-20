@@ -17,6 +17,9 @@ Element:
     _pragma: cpp_skip  # this is emitted using trap entries directly
   _pragma: qltest_skip
 
+UnresolvedElement:
+  _pragma: [ qltest_collapse_hierarchy, qltest_skip ]
+
 File:
   name: string
   _pragma: qltest_collapse_hierarchy
@@ -27,7 +30,7 @@ DbFile:
 UnknownFile:
   _extends: File
   _synth:
-    on: {}
+    on: { }
 
 Locatable:
   location:
@@ -41,7 +44,7 @@ Location:
   start_column: int
   end_line: int
   end_column: int
-  _pragma: [qltest_skip, qltest_collapse_hierarchy]
+  _pragma: [ qltest_skip, qltest_collapse_hierarchy ]
 
 DbLocation:
   _extends: Location
@@ -49,7 +52,7 @@ DbLocation:
 UnknownLocation:
   _extends: Location
   _synth:
-    on: {}
+    on: { }
 
 Comment:
   _extends: Locatable
@@ -60,7 +63,8 @@ Type:
   canonical_type: Type
 
 IterableDeclContext:
-  members: Decl*
+  _children:
+    members: Decl*
 
 ExtensionDecl:
   extended_type_decl: NominalTypeDecl
@@ -71,8 +75,8 @@ ExtensionDecl:
 
 NominalTypeDecl:
   _extends:
-    - IterableDeclContext
     - GenericTypeDecl
+    - IterableDeclContext
   type: Type
 
 AstNode:
@@ -80,8 +84,8 @@ AstNode:
 
 Callable:
   _children:
-    params: ParamDecl*
     self_param: ParamDecl?
+    params: ParamDecl*
     body: BraceStmt?
 
 ConditionElement:
@@ -178,7 +182,9 @@ TypeVariableType:
   _extends: Type
 
 UnresolvedType:
-  _extends: Type
+  _extends:
+    - Type
+    - UnresolvedElement
 
 ClassDecl:
   _extends: NominalTypeDecl
@@ -208,7 +214,7 @@ Stmt:
 
 TypeRepr:
   _extends: AstNode
-  type: Type?  # type can be absent on unresolved entities
+  type: Type
 
 FunctionType:
   _extends: AnyFunctionType
@@ -293,21 +299,12 @@ TypeAliasType:
 
 EnumCaseDecl:
   _extends: Decl
-  _children:
-    elements: EnumElementDecl*
+  elements: EnumElementDecl*
 
 IfConfigDecl:
   _extends: Decl
   _children:
-    clauses: IfConfigClause*
-
-IfConfigClause:
-  _extends: Locatable
-  _children:
-    condition: Expr?
-    elements: AstNode*
-  is_active: predicate
-  _dir: decl
+    active_elements: AstNode*
 
 ImportDecl:
   _extends: Decl
@@ -545,7 +542,7 @@ RebindSelfInConstructorExpr:
   _extends: Expr
   _children:
     sub_expr: Expr
-    self: VarDecl
+  self: VarDecl
 
 SequenceExpr:
   _extends: Expr
@@ -581,28 +578,36 @@ TypeExpr:
     type_repr: TypeRepr?
 
 UnresolvedDeclRefExpr:
-  _extends: Expr
+  _extends:
+    - Expr
+    - UnresolvedElement
   name: string?
 
 UnresolvedDotExpr:
-  _extends: Expr
+  _extends:
+    - Expr
+    - UnresolvedElement
   _children:
     base: Expr
   name: string
 
 UnresolvedMemberExpr:
-  _extends: Expr
+  _extends:
+    - Expr
+    - UnresolvedElement
   name: string
-  _pragma: qltest_skip  # we should really never extract these
 
 UnresolvedPatternExpr:
-  _extends: Expr
+  _extends:
+    - Expr
+    - UnresolvedElement
   _children:
     sub_pattern: Pattern
 
 UnresolvedSpecializeExpr:
-  _extends: Expr
-  _pragma: qltest_skip  # we should really never extract these
+  _extends:
+    - Expr
+    - UnresolvedElement
 
 VarargExpansionExpr:
   _extends: Expr
@@ -836,8 +841,7 @@ PrefixUnaryExpr:
 
 SelfApplyExpr:
   _extends: ApplyExpr
-  _children:
-    base: Expr
+  base: Expr
 
 ArrayExpr:
   _extends: CollectionExpr
@@ -865,7 +869,9 @@ ParenExpr:
   _extends: IdentityExpr
 
 UnresolvedMemberChainResultExpr:
-  _extends: IdentityExpr
+  _extends:
+    - IdentityExpr
+    - UnresolvedElement
 
 AnyHashableErasureExpr:
   _extends: ImplicitConversionExpr
@@ -961,7 +967,9 @@ UnevaluatedInstanceExpr:
   _extends: ImplicitConversionExpr
 
 UnresolvedTypeConversionExpr:
-  _extends: ImplicitConversionExpr
+  _extends:
+    - ImplicitConversionExpr
+    - UnresolvedElement
 
 BuiltinLiteralExpr:
   _extends: LiteralExpr
@@ -1110,7 +1118,8 @@ AbstractTypeParamDecl:
   _extends: TypeDecl
 
 GenericContext:
-  generic_type_params: GenericTypeParamDecl*
+  _children:
+    generic_type_params: GenericTypeParamDecl*
 
 GenericTypeDecl:
   _extends:
@@ -1121,6 +1130,8 @@ ModuleDecl:
   _extends: TypeDecl
   is_builtin_module: predicate
   is_system_module: predicate
+  imported_modules: ModuleDecl*
+  exported_modules: ModuleDecl*
 
 ConstructorRefCallExpr:
   _extends: SelfApplyExpr

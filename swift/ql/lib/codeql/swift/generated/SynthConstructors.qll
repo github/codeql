@@ -14,7 +14,6 @@ import codeql.swift.elements.decl.EnumDeclConstructor
 import codeql.swift.elements.decl.EnumElementDeclConstructor
 import codeql.swift.elements.decl.ExtensionDeclConstructor
 import codeql.swift.elements.decl.GenericTypeParamDeclConstructor
-import codeql.swift.elements.decl.IfConfigClauseConstructor
 import codeql.swift.elements.decl.IfConfigDeclConstructor
 import codeql.swift.elements.decl.ImportDeclConstructor
 import codeql.swift.elements.decl.InfixOperatorDeclConstructor

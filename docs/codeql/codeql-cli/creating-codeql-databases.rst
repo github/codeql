@@ -11,11 +11,11 @@ or download them from GitHub.com.
 CodeQL analysis relies on extracting relational data from your code, and
 using it to build a :ref:`CodeQL database <codeql-database>`. CodeQL
 databases contain all of the important information about a codebase, which can
-be analyzed by executing CodeQL queries against it. GitHub creates and 
+be analyzed by executing CodeQL queries against it. GitHub creates and
 stores CodeQL databases for a large number of open-source projects. For more information,
 see ":ref:`Downloading CodeQL databases from GitHub.com <downloading-codeql-databases-from-github-com>`."
 
-You can also create CodeQL databases yourself using the CodeQL CLI. 
+You can also create CodeQL databases yourself using the CodeQL CLI.
 Before you generate a CodeQL database, you need to:
 
 - Install and set up the CodeQL CLI. For more information, see
@@ -214,10 +214,10 @@ commands that you can specify for compiled languages.
 
      codeql database create cpp-database --language=cpp --command=make
 
-- C# project built using ``dotnet build``::
+- C# project built using ``dotnet build``:
 
-     It is a good idea to add `/t:rebuild` to ensure that all code will be built, or do a
-     prior `dotnet clean` (code that is not built will not be included in the CodeQL database):
+  It is a good idea to add `/t:rebuild` to ensure that all code will be built, or do a
+  prior `dotnet clean` (code that is not built will not be included in the CodeQL database)::
 
      codeql database create csharp-database --language=csharp --command='dotnet build /t:rebuild'
 
@@ -391,9 +391,9 @@ Downloading databases from GitHub.com
 -------------------------------------
 
 .. include:: ../reusables/download-github-database.rst
-   
+
 Before running an analysis with the CodeQL CLI, you must unzip the databases.
-   
+
 Further reading
 ---------------
 

@@ -48,10 +48,10 @@ private module FastApi {
    *
    * See https://fastapi.tiangolo.com/tutorial/first-steps/#define-a-path-operation-decorator
    */
-  private class FastApiRouteSetup extends HTTP::Server::RouteSetup::Range, DataFlow::CallCfgNode {
+  private class FastApiRouteSetup extends Http::Server::RouteSetup::Range, DataFlow::CallCfgNode {
     FastApiRouteSetup() {
       exists(string routeAddingMethod |
-        routeAddingMethod = HTTP::httpVerbLower()
+        routeAddingMethod = Http::httpVerbLower()
         or
         routeAddingMethod in ["api_route", "websocket"]
       |
@@ -195,7 +195,7 @@ private module FastApi {
     abstract class InstanceSource extends DataFlow::LocalSourceNode { }
 
     /** A direct instantiation of a response class. */
-    private class ResponseInstantiation extends InstanceSource, HTTP::Server::HttpResponse::Range,
+    private class ResponseInstantiation extends InstanceSource, Http::Server::HttpResponse::Range,
       DataFlow::CallCfgNode {
       API::Node baseApiNode;
       API::Node responseClass;
@@ -223,7 +223,7 @@ private module FastApi {
      * A direct instantiation of a redirect response.
      */
     private class RedirectResponseInstantiation extends ResponseInstantiation,
-      HTTP::Server::HttpRedirectResponse::Range {
+      Http::Server::HttpRedirectResponse::Range {
       RedirectResponseInstantiation() { baseApiNode = getModeledResponseClass("RedirectResponse") }
 
       override DataFlow::Node getRedirectLocation() {
@@ -245,7 +245,7 @@ private module FastApi {
     /**
      * An implicit response from a return of FastAPI request handler.
      */
-    private class FastApiRequestHandlerReturn extends HTTP::Server::HttpResponse::Range,
+    private class FastApiRequestHandlerReturn extends Http::Server::HttpResponse::Range,
       DataFlow::CfgNode {
       FastApiRouteSetup routeSetup;
 
@@ -291,7 +291,7 @@ private module FastApi {
      * `response_class` set to a `RedirectResponse`.
      */
     private class FastApiRequestHandlerRedirectReturn extends FastApiRequestHandlerReturn,
-      HTTP::Server::HttpRedirectResponse::Range {
+      Http::Server::HttpRedirectResponse::Range {
       FastApiRequestHandlerRedirectReturn() {
         exists(API::Node responseClass |
           responseClass.getAValueReachableFromSource() = routeSetup.getResponseClassArg() and
@@ -332,7 +332,7 @@ private module FastApi {
     /**
      * A call to `set_cookie` on a FastAPI Response.
      */
-    private class SetCookieCall extends HTTP::Server::CookieWrite::Range, DataFlow::MethodCallNode {
+    private class SetCookieCall extends Http::Server::CookieWrite::Range, DataFlow::MethodCallNode {
       SetCookieCall() { this.calls(instance(), "set_cookie") }
 
       override DataFlow::Node getHeaderArg() { none() }
@@ -348,7 +348,7 @@ private module FastApi {
      * A call to `append` on a `headers` of a FastAPI Response, with the `Set-Cookie`
      * header-key.
      */
-    private class HeadersAppendCookie extends HTTP::Server::CookieWrite::Range,
+    private class HeadersAppendCookie extends Http::Server::CookieWrite::Range,
       DataFlow::MethodCallNode {
       HeadersAppendCookie() {
         exists(DataFlow::AttrRead headers, DataFlow::Node keyArg |

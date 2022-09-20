@@ -1,6 +1,7 @@
 package com.github.codeql.utils
 
 import com.github.codeql.KotlinUsesExtractor
+import com.github.codeql.Logger
 import com.github.codeql.getJavaEquivalentClassId
 import com.github.codeql.utils.versions.codeQlWithHasQuestionMark
 import com.github.codeql.utils.versions.createImplicitParameterDeclarationWithWrappedDescriptor
@@ -25,6 +26,7 @@ import org.jetbrains.kotlin.ir.types.impl.makeTypeProjection
 import org.jetbrains.kotlin.ir.util.classId
 import org.jetbrains.kotlin.ir.util.constructedClassType
 import org.jetbrains.kotlin.ir.util.constructors
+import org.jetbrains.kotlin.ir.util.kotlinFqName
 import org.jetbrains.kotlin.name.FqName
 import org.jetbrains.kotlin.name.Name
 import org.jetbrains.kotlin.types.Variance
@@ -54,7 +56,7 @@ private fun IrSimpleType.substituteTypeArguments(substitutionMap: Map<IrTypePara
 
     return IrSimpleTypeImpl(
         classifier,
-        hasQuestionMark,
+        isNullable(),
         newArguments,
         annotations
     )
@@ -90,7 +92,7 @@ private fun subProjectedType(substitutionMap: Map<IrTypeParameterSymbol, IrTypeA
             if (conflictingVariance(outerVariance, substitutedTypeArg.variance))
                 IrStarProjectionImpl
             else {
-                val newProjectedType = substitutedTypeArg.type.let { if (t.hasQuestionMark) it.codeQlWithHasQuestionMark(true) else it }
+                val newProjectedType = substitutedTypeArg.type.let { if (t.isNullable()) it.codeQlWithHasQuestionMark(true) else it }
                 val newVariance = combineVariance(outerVariance, substitutedTypeArg.variance)
                 makeTypeProjection(newProjectedType, newVariance)
             }
@@ -123,14 +125,17 @@ private fun IrTypeArgument.lowerBound(context: IrPluginContext) =
 
 fun IrType.substituteTypeAndArguments(substitutionMap: Map<IrTypeParameterSymbol, IrTypeArgument>?, useContext: KotlinUsesExtractor.TypeContext, pluginContext: IrPluginContext): IrType =
     substitutionMap?.let { substMap ->
-        this.classifierOrNull?.let { typeClassifier ->
+        if (this is IrSimpleType) {
+            val typeClassifier = this.classifier
             substMap[typeClassifier]?.let {
                 when(useContext) {
                     KotlinUsesExtractor.TypeContext.RETURN -> it.upperBound(pluginContext)
                     else -> it.lowerBound(pluginContext)
                 }
-            } ?: (this as IrSimpleType).substituteTypeArguments(substMap)
-        } ?: this
+            } ?: this.substituteTypeArguments(substMap)
+        } else {
+            this
+        }
     } ?: this
 
 object RawTypeAnnotation {
@@ -191,7 +196,7 @@ fun IrTypeArgument.withQuestionMark(b: Boolean): IrTypeArgument =
         is IrStarProjection -> this
         is IrTypeProjection ->
             this.type.let { when(it) {
-                is IrSimpleType -> if (it.hasQuestionMark == b) this else makeTypeProjection(it.codeQlWithHasQuestionMark(b), this.variance)
+                is IrSimpleType -> if (it.isNullable() == b) this else makeTypeProjection(it.codeQlWithHasQuestionMark(b), this.variance)
                 else -> this
             }}
         else -> this
@@ -212,27 +217,34 @@ private fun matchingTypeParameters(l: IrTypeParameter?, r: IrTypeParameter): Boo
 }
 
 // Returns true if type is C<T1, T2, ...> where C is declared `class C<T1, T2, ...> { ... }`
-fun isUnspecialised(paramsContainer: IrTypeParametersContainer, args: List<IrTypeArgument>): Boolean {
+fun isUnspecialised(paramsContainer: IrTypeParametersContainer, args: List<IrTypeArgument>, logger: Logger): Boolean {
+    return isUnspecialised(paramsContainer, args, logger, paramsContainer)
+}
+
+private fun isUnspecialised(paramsContainer: IrTypeParametersContainer, args: List<IrTypeArgument>, logger: Logger, origParamsContainer: IrTypeParametersContainer): Boolean {
     val unspecialisedHere = paramsContainer.typeParameters.zip(args).all { paramAndArg ->
         (paramAndArg.second as? IrTypeProjection)?.let {
             // Type arg refers to the class' own type parameter?
             it.variance == Variance.INVARIANT &&
-            matchingTypeParameters(it.type.classifierOrNull?.owner as? IrTypeParameter, paramAndArg.first)
+                    matchingTypeParameters(it.type.classifierOrNull?.owner as? IrTypeParameter, paramAndArg.first)
         } ?: false
     }
     val remainingArgs = args.drop(paramsContainer.typeParameters.size)
 
-    val parentClass = paramsContainer.parents.firstIsInstanceOrNull<IrClass>()
+    val parentTypeContainer = paramsContainer.parents.firstIsInstanceOrNull<IrTypeParametersContainer>()
 
     val parentUnspecialised = when {
         remainingArgs.isEmpty() -> true
-        parentClass == null -> false
-        else -> isUnspecialised(parentClass, remainingArgs)
+        parentTypeContainer == null -> {
+            logger.error("Found more type arguments than parameters: ${origParamsContainer.kotlinFqName.asString()}")
+            false
+        }
+        else -> isUnspecialised(parentTypeContainer, remainingArgs, logger, origParamsContainer)
     }
     return unspecialisedHere && parentUnspecialised
 }
 
 // Returns true if type is C<T1, T2, ...> where C is declared `class C<T1, T2, ...> { ... }`
-fun isUnspecialised(type: IrSimpleType) = (type.classifier.owner as? IrClass)?.let {
-    isUnspecialised(it, type.arguments)
+fun isUnspecialised(type: IrSimpleType, logger: Logger) = (type.classifier.owner as? IrClass)?.let {
+    isUnspecialised(it, type.arguments, logger)
 } ?: false

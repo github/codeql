@@ -102,6 +102,14 @@ private class TypeFromModel extends ModelInput::TypeModelCsv {
   }
 }
 
+private class TypeFromCodeQL extends ModelInput::TypeModel {
+  override DataFlow::Node getASource(string package, string type) {
+    package = "test" and
+    type = "FooOrBar" and
+    result.asExpr().getExpr().getConstantValue().getString() = "magic_string"
+  }
+}
+
 private class InvalidTypeModel extends ModelInput::TypeModelCsv {
   override predicate row(string row) {
     row =

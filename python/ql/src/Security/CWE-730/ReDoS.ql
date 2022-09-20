@@ -5,6 +5,7 @@
  *              attacks.
  * @kind problem
  * @problem.severity error
+ * @security-severity 7.5
  * @precision high
  * @id py/redos
  * @tags security

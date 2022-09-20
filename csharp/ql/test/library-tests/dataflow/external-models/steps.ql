@@ -29,18 +29,6 @@ private class SummaryModelTest extends SummaryModelCsv {
   }
 }
 
-private class SummarizedCallableClear extends SummarizedCallable {
-  SummarizedCallableClear() {
-    this.getName() = ["StepPropertySetter", "StepFieldSetter"] and
-    this.getFile().getBaseName() = "Steps.cs"
-  }
-
-  override predicate clearsContent(ParameterPosition pos, DataFlow::ContentSet content) {
-    pos.isThisParameter() and
-    content instanceof DataFlow::ElementContent
-  }
-}
-
 query predicate summaryThroughStep(
   DataFlow::Node node1, DataFlow::Node node2, boolean preservesValue
 ) {
@@ -61,9 +49,4 @@ query predicate summaryGetterStep(DataFlow::Node arg, DataFlow::Node out, Conten
 query predicate summarySetterStep(DataFlow::Node arg, DataFlow::Node out, Content c) {
   FlowSummaryImpl::Private::Steps::summarySetterStep(arg, c, out,
     any(DataFlowDispatch::DataFlowSummarizedCallable sc))
-}
-
-query predicate clearsContent(SummarizedCallable c, DataFlow::Content k, ParameterPosition pos) {
-  c.clearsContent(pos, k) and
-  c.fromSource()
 }

@@ -20,7 +20,6 @@
  */
 
 private import ruby
-private import codeql.ruby.DataFlow
 private import codeql.ruby.dataflow.internal.DataFlowPrivate as DataFlowPrivate
 private import ApiGraphModels
 
@@ -29,6 +28,7 @@ class Unit = DataFlowPrivate::Unit;
 // Re-export libraries needed by ApiGraphModels.qll
 import codeql.ruby.ApiGraphs
 import codeql.ruby.dataflow.internal.AccessPathSyntax as AccessPathSyntax
+import codeql.ruby.DataFlow::DataFlow as DataFlow
 private import AccessPathSyntax
 private import codeql.ruby.dataflow.internal.FlowSummaryImplSpecific as FlowSummaryImplSpecific
 private import codeql.ruby.dataflow.internal.DataFlowDispatch as DataFlowDispatch
@@ -55,12 +55,6 @@ predicate isPackageUsed(string package) {
 /** Gets a Ruby-specific interpretation of the `(package, type, path)` tuple after resolving the first `n` access path tokens. */
 bindingset[package, type, path]
 API::Node getExtraNodeFromPath(string package, string type, AccessPath path, int n) {
-  isRelevantFullPath(package, type, path) and
-  exists(package) and // Allow any package name, see `isPackageUsed`.
-  type = "" and
-  n = 0 and
-  result = API::root()
-  or
   // A row of form `;any;Method[foo]` should match any method named `foo`.
   exists(package) and
   type = "any" and
@@ -69,6 +63,13 @@ API::Node getExtraNodeFromPath(string package, string type, AccessPath path, int
     methodMatchedByName(path, entry.getName()) and
     result = entry.getANode()
   )
+}
+
+/** Gets a Ruby-specific interpretation of the `(package, type)` tuple. */
+API::Node getExtraNodeFromType(string package, string type) {
+  isRelevantFullPath(package, type, _) and // Allow any package name, see `isPackageUsed`.
+  type = "" and
+  result = API::root()
 }
 
 /**

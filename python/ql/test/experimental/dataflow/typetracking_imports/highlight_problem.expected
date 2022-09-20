@@ -1,0 +1,9 @@
+| pkg/alias_only_direct.py:0:0:0:0 | Module pkg.alias_only_direct | pkg/alias_only_direct.py:1:22:1:24 | GSSA Variable foo | use to normal exit |
+| pkg/alias_problem.py:0:0:0:0 | Module pkg.alias_problem | pkg/alias_problem.py:1:22:1:24 | GSSA Variable foo | no use to normal exit |
+| pkg/alias_problem.py:0:0:0:0 | Module pkg.alias_problem | pkg/alias_problem.py:2:1:2:20 | GSSA Variable foo | use to normal exit |
+| pkg/alias_problem_fixed.py:0:0:0:0 | Module pkg.alias_problem_fixed | pkg/alias_problem_fixed.py:0:0:0:0 | GSSA Variable foo | no use to normal exit |
+| pkg/alias_problem_fixed.py:0:0:0:0 | Module pkg.alias_problem_fixed | pkg/alias_problem_fixed.py:3:22:3:24 | GSSA Variable foo | use to normal exit |
+| pkg/problem_absolute_import.py:0:0:0:0 | Module pkg.problem_absolute_import | pkg/problem_absolute_import.py:1:25:1:27 | GSSA Variable foo | no use to normal exit |
+| pkg/problem_absolute_import.py:0:0:0:0 | Module pkg.problem_absolute_import | pkg/problem_absolute_import.py:2:1:2:23 | GSSA Variable foo | use to normal exit |
+| pkg/works_absolute_import.py:0:0:0:0 | Module pkg.works_absolute_import | pkg/works_absolute_import.py:0:0:0:0 | GSSA Variable foo | no use to normal exit |
+| pkg/works_absolute_import.py:0:0:0:0 | Module pkg.works_absolute_import | pkg/works_absolute_import.py:2:25:2:27 | GSSA Variable foo | use to normal exit |

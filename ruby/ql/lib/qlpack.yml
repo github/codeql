@@ -5,3 +5,5 @@ extractor: ruby
 dbscheme: ruby.dbscheme
 upgrades: upgrades
 library: true
+dependencies:
+  codeql/ssa: 0.0.1

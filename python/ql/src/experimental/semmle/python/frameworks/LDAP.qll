@@ -126,9 +126,9 @@ private module Ldap {
           (
             // ldap_connection.start_tls_s()
             // see https://www.python-ldap.org/en/python-ldap-3.3.0/reference/ldap.html#ldap.LDAPObject.start_tls_s
-            exists(DataFlow::MethodCallNode startTLS |
-              startTLS.getObject().getALocalSource() = initialize and
-              startTLS.getMethodName() = "start_tls_s"
+            exists(DataFlow::MethodCallNode startTls |
+              startTls.getObject().getALocalSource() = initialize and
+              startTls.getMethodName() = "start_tls_s"
             )
             or
             // ldap_connection.set_option(ldap.OPT_X_TLS_%s, True)
@@ -234,9 +234,9 @@ private module Ldap {
         or
         // ldap_connection.start_tls_s()
         // see https://www.python-ldap.org/en/python-ldap-3.3.0/reference/ldap.html#ldap.LDAPObject.start_tls_s
-        exists(DataFlow::MethodCallNode startTLS |
-          startTLS.getMethodName() = "start_tls_s" and
-          startTLS.getObject().getALocalSource() = this
+        exists(DataFlow::MethodCallNode startTls |
+          startTls.getMethodName() = "start_tls_s" and
+          startTls.getObject().getALocalSource() = this
         )
       }
 

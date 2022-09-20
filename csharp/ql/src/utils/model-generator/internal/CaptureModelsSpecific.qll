@@ -36,9 +36,20 @@ private predicate isRelevantForModels(CS::Callable api) {
   api.getDeclaringType().getNamespace().getQualifiedName() != "" and
   not api instanceof CS::ConversionOperator and
   not api instanceof Util::MainMethod and
-  not isHigherOrder(api) and
   not api instanceof CS::Destructor
 }
+
+/**
+ * Holds if it is relevant to generate models for `api` based on data flow analysis.
+ */
+predicate isRelevantForDataFlowModels(CS::Callable api) {
+  isRelevantForModels(api) and not isHigherOrder(api)
+}
+
+/**
+ * Holds if it is relevant to generate models for `api` based on its type.
+ */
+predicate isRelevantForTypeBasedFlowModels = isRelevantForModels/1;
 
 /**
  * A class of callables that are relevant generating summary, source and sinks models for.
@@ -49,14 +60,38 @@ private predicate isRelevantForModels(CS::Callable api) {
 class TargetApiSpecific extends DotNet::Callable {
   TargetApiSpecific() {
     this.fromSource() and
-    this.isUnboundDeclaration() and
-    isRelevantForModels(this)
+    this.isUnboundDeclaration()
   }
 }
 
 predicate asPartialModel = DataFlowPrivate::Csv::asPartialModel/1;
 
 predicate asPartialNegativeModel = DataFlowPrivate::Csv::asPartialNegativeModel/1;
+
+/**
+ * Holds if `t` is a type that is generally used for bulk data in collection types.
+ * Eg. char[] is roughly equivalent to string and thus a highly
+ * relevant type for model generation.
+ */
+private predicate isPrimitiveTypeUsedForBulkData(CS::Type t) {
+  t instanceof CS::ByteType or
+  t instanceof CS::CharType
+}
+
+/**
+ * Holds if the collection type `ct` is irrelevant for model generation.
+ * Collection types where the type of the elements are
+ * (1) unknown - are considered relevant.
+ * (2) known - at least one the child types should be relevant (a non-simple type
+ * or a type used for bulk data)
+ */
+private predicate irrelevantCollectionType(CS::Type ct) {
+  Collections::isCollectionType(ct) and
+  forex(CS::Type child | child = ct.getAChild() |
+    child instanceof CS::SimpleType and
+    not isPrimitiveTypeUsedForBulkData(child)
+  )
+}
 
 /**
  * Holds for type `t` for fields that are relevant as an intermediate
@@ -66,7 +101,8 @@ predicate asPartialNegativeModel = DataFlowPrivate::Csv::asPartialNegativeModel/
  */
 predicate isRelevantType(CS::Type t) {
   not t instanceof CS::SimpleType and
-  not t instanceof CS::Enum
+  not t instanceof CS::Enum and
+  not irrelevantCollectionType(t)
 }
 
 /**
@@ -74,7 +110,7 @@ predicate isRelevantType(CS::Type t) {
  */
 string qualifierString() { result = "Argument[this]" }
 
-private string parameterAccess(CS::Parameter p) {
+string parameterAccess(CS::Parameter p) {
   if Collections::isCollectionType(p.getType())
   then result = "Argument[" + p.getPosition() + "].Element"
   else result = "Argument[" + p.getPosition() + "]"
@@ -167,3 +203,9 @@ string asInputArgument(DataFlow::Node source) {
  */
 bindingset[kind]
 predicate isRelevantSinkKind(string kind) { any() }
+
+/**
+ * Holds if `kind` is a relevant source kind for creating source models.
+ */
+bindingset[kind]
+predicate isRelevantSourceKind(string kind) { not kind = "file" }

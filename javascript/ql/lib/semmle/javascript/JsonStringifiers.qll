@@ -43,7 +43,7 @@ class JsonStringifyCall extends DataFlow::CallNode {
 /**
  * A taint step through the [`json2csv`](https://www.npmjs.com/package/json2csv) library.
  */
-class JSON2CSVTaintStep extends TaintTracking::SharedTaintStep {
+class Json2CsvTaintStep extends TaintTracking::SharedTaintStep {
   override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
     exists(API::CallNode call |
       call =
@@ -58,6 +58,9 @@ class JSON2CSVTaintStep extends TaintTracking::SharedTaintStep {
     )
   }
 }
+
+/** DEPRECATED: Alias for Json2CsvTaintStep */
+deprecated class JSON2CSVTaintStep = Json2CsvTaintStep;
 
 /**
  * A step through the [`prettyjson`](https://www.npmjs.com/package/prettyjson) library.

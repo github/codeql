@@ -176,7 +176,7 @@ private predicate nameAddStep(DataFlow::ExprNode n1, DataFlow::ExprNode n2) {
  * by calling `new JMXServiceURL(tainted)`.
  */
 private predicate jmxServiceUrlStep(DataFlow::ExprNode n1, DataFlow::ExprNode n2) {
-  exists(ConstructorCall cc | cc.getConstructedType() instanceof TypeJMXServiceURL |
+  exists(ConstructorCall cc | cc.getConstructedType() instanceof TypeJmxServiceUrl |
     n1.asExpr() = cc.getAnArgument() and
     n2.asExpr() = cc
   )
@@ -189,7 +189,7 @@ private predicate jmxServiceUrlStep(DataFlow::ExprNode n1, DataFlow::ExprNode n2
 private predicate jmxConnectorStep(DataFlow::ExprNode n1, DataFlow::ExprNode n2) {
   exists(MethodAccess ma, Method m | n1.asExpr() = ma.getArgument(0) and n2.asExpr() = ma |
     ma.getMethod() = m and
-    m.getDeclaringType() instanceof TypeJMXConnectorFactory and
+    m.getDeclaringType() instanceof TypeJmxConnectorFactory and
     m.hasName("newJMXConnector")
   )
 }
@@ -199,7 +199,7 @@ private predicate jmxConnectorStep(DataFlow::ExprNode n1, DataFlow::ExprNode n2)
  * `RMIConnector` by calling `new RMIConnector(tainted)`.
  */
 private predicate rmiConnectorStep(DataFlow::ExprNode n1, DataFlow::ExprNode n2) {
-  exists(ConstructorCall cc | cc.getConstructedType() instanceof TypeRMIConnector |
+  exists(ConstructorCall cc | cc.getConstructedType() instanceof TypeRmiConnector |
     n1.asExpr() = cc.getAnArgument() and
     n2.asExpr() = cc
   )

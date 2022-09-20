@@ -341,13 +341,9 @@ module Public {
   }
 
   /** A function, viewed as a node in a data flow graph. */
-  class FunctionNode extends Node {
-    FunctionNode::Range self;
-
-    FunctionNode() { this = self }
-
+  class FunctionNode extends Node instanceof FunctionNode::Range {
     /** Gets the `i`th parameter of this function. */
-    ParameterNode getParameter(int i) { result = self.getParameter(i) }
+    ParameterNode getParameter(int i) { result = super.getParameter(i) }
 
     /** Gets a parameter of this function. */
     ParameterNode getAParameter() { result = this.getParameter(_) }
@@ -356,18 +352,18 @@ module Public {
     int getNumParameter() { result = count(this.getAParameter()) }
 
     /** Gets the name of this function, if it has one. */
-    string getName() { result = self.getName() }
+    string getName() { result = super.getName() }
 
     /**
      * Gets the dataflow node holding the value of the receiver, if any.
      */
-    ReceiverNode getReceiver() { result = self.getReceiver() }
+    ReceiverNode getReceiver() { result = super.getReceiver() }
 
     /**
      * Gets a value returned by the given function via a return statement or an assignment to a
      * result variable.
      */
-    ResultNode getAResult() { result = self.getAResult() }
+    ResultNode getAResult() { result = super.getAResult() }
 
     /**
      * Gets the data-flow node corresponding to the `i`th result of this function.
@@ -379,7 +375,7 @@ module Public {
      *
      * Note that this predicate has no result for function literals.
      */
-    Function getFunction() { result = self.getFunction() }
+    Function getFunction() { result = super.getFunction() }
   }
 
   /** A representation of a function that is declared in the module scope. */

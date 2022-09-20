@@ -11,7 +11,7 @@ import SAL
 
 /** Holds if `e` has SAL annotation `name`. */
 predicate hasAnnotation(DeclarationEntry e, string name) {
-  exists(SALAnnotation a |
+  exists(SalAnnotation a |
     a.getMacro().getName() = name and
     a.getDeclarationEntry() = e
   )
@@ -21,7 +21,7 @@ predicate hasAnnotation(DeclarationEntry e, string name) {
 predicate inheritsDeclAnnotations(DeclarationEntry e) {
   // Is directly annotated
   e.isDefinition() and
-  exists(SALAnnotation a | a.getMacro().getName() = "_Use_decl_annotations_" |
+  exists(SalAnnotation a | a.getMacro().getName() = "_Use_decl_annotations_" |
     a.getDeclarationEntry() = e
   )
   or

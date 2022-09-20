@@ -14161,6 +14161,221 @@ ir.cpp:
 # 1851|               Type = [PointerType] const char *
 # 1851|               ValueCategory = prvalue
 # 1852|     getStmt(2): [ReturnStmt] return ...
+# 1855| [CopyAssignmentOperator] missing_declaration_entries::S& missing_declaration_entries::S::operator=(missing_declaration_entries::S const&)
+# 1855|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [LValueReferenceType] const S &
+# 1855| [MoveAssignmentOperator] missing_declaration_entries::S& missing_declaration_entries::S::operator=(missing_declaration_entries::S&&)
+# 1855|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [RValueReferenceType] S &&
+# 1859| [CopyAssignmentOperator] missing_declaration_entries::Bar1<int>& missing_declaration_entries::Bar1<int>::operator=(missing_declaration_entries::Bar1<int> const&)
+# 1859|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [LValueReferenceType] const Bar1<int> &
+# 1859| [MoveAssignmentOperator] missing_declaration_entries::Bar1<int>& missing_declaration_entries::Bar1<int>::operator=(missing_declaration_entries::Bar1<int>&&)
+# 1859|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [RValueReferenceType] Bar1<int> &&
+# 1862| [MemberFunction] void* missing_declaration_entries::Bar1<T>::missing_type_decl_entry(missing_declaration_entries::Bar1<T>::pointer)
+# 1862|   <params>: 
+# 1862|     getParameter(0): [Parameter] p
+# 1862|         Type = [CTypedefType,NestedTypedefType] pointer
+# 1862|   getEntryPoint(): [BlockStmt] { ... }
+# 1863|     getStmt(0): [DeclStmt] declaration
+# 1863|       getDeclarationEntry(0): [TypeDeclarationEntry] declaration of _Res
+# 1863|           Type = [CTypedefType,LocalTypedefType] _Res
+# 1864|     getStmt(1): [ReturnStmt] return ...
+# 1864|       getExpr(): [VariableAccess] p
+# 1864|           Type = [CTypedefType,NestedTypedefType] pointer
+# 1864|           ValueCategory = prvalue(load)
+# 1864|       getExpr().getFullyConverted(): [CStyleCast] (void *)...
+# 1864|           Conversion = [PointerConversion] pointer conversion
+# 1864|           Type = [VoidPointerType] void *
+# 1864|           ValueCategory = prvalue
+# 1862| [MemberFunction] void* missing_declaration_entries::Bar1<int>::missing_type_decl_entry(missing_declaration_entries::Bar1<int>::pointer)
+# 1862|   <params>: 
+# 1862|     getParameter(0): [Parameter] p
+# 1862|         Type = [CTypedefType,NestedTypedefType] pointer
+# 1862|   getEntryPoint(): [BlockStmt] { ... }
+# 1863|     getStmt(0): [DeclStmt] declaration
+# 1864|     getStmt(1): [ReturnStmt] return ...
+# 1864|       getExpr(): [VariableAccess] p
+# 1864|           Type = [CTypedefType,NestedTypedefType] pointer
+# 1864|           ValueCategory = prvalue(load)
+# 1864|       getExpr().getFullyConverted(): [CStyleCast] (void *)...
+# 1864|           Conversion = [PointerConversion] pointer conversion
+# 1864|           Type = [VoidPointerType] void *
+# 1864|           ValueCategory = prvalue
+# 1868| [TopLevelFunction] void missing_declaration_entries::test1()
+# 1868|   <params>: 
+# 1868|   getEntryPoint(): [BlockStmt] { ... }
+# 1869|     getStmt(0): [DeclStmt] declaration
+# 1869|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of b
+# 1869|           Type = [ClassTemplateInstantiation,Struct] Bar1<int>
+# 1870|     getStmt(1): [ExprStmt] ExprStmt
+# 1870|       getExpr(): [FunctionCall] call to missing_type_decl_entry
+# 1870|           Type = [VoidPointerType] void *
+# 1870|           ValueCategory = prvalue
+# 1870|         getQualifier(): [VariableAccess] b
+# 1870|             Type = [ClassTemplateInstantiation,Struct] Bar1<int>
+# 1870|             ValueCategory = lvalue
+# 1870|         getArgument(0): [Literal] 0
+# 1870|             Type = [NullPointerType] decltype(nullptr)
+# 1870|             Value = [Literal] 0
+# 1870|             ValueCategory = prvalue
+# 1870|         getArgument(0).getFullyConverted(): [CStyleCast] (pointer)...
+# 1870|             Conversion = [PointerConversion] pointer conversion
+# 1870|             Type = [CTypedefType,NestedTypedefType] pointer
+# 1870|             Value = [CStyleCast] 0
+# 1870|             ValueCategory = prvalue
+# 1871|     getStmt(2): [ReturnStmt] return ...
+# 1873| [CopyAssignmentOperator] missing_declaration_entries::Bar2<int>& missing_declaration_entries::Bar2<int>::operator=(missing_declaration_entries::Bar2<int> const&)
+# 1873|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [LValueReferenceType] const Bar2<int> &
+# 1873| [MoveAssignmentOperator] missing_declaration_entries::Bar2<int>& missing_declaration_entries::Bar2<int>::operator=(missing_declaration_entries::Bar2<int>&&)
+# 1873|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [RValueReferenceType] Bar2<int> &&
+# 1875| [MemberFunction] int missing_declaration_entries::Bar2<T>::two_missing_variable_declaration_entries()
+# 1875|   <params>: 
+# 1875|   getEntryPoint(): [BlockStmt] { ... }
+# 1876|     getStmt(0): [DeclStmt] declaration
+# 1876|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of x
+# 1876|           Type = [ArrayType] int[10]
+# 1876|       getDeclarationEntry(1): [VariableDeclarationEntry] definition of y
+# 1876|           Type = [ArrayType] int[10]
+# 1877|     getStmt(1): [ExprStmt] ExprStmt
+# 1877|       getExpr(): [AssignExpr] ... = ...
+# 1877|           Type = [IntType] int
+# 1877|           ValueCategory = lvalue
+# 1877|         getLValue(): [PointerDereferenceExpr] * ...
+# 1877|             Type = [IntType] int
+# 1877|             ValueCategory = lvalue
+# 1877|           getOperand(): [VariableAccess] x
+# 1877|               Type = [ArrayType] int[10]
+# 1877|               ValueCategory = lvalue
+# 1877|           getOperand().getFullyConverted(): [ArrayToPointerConversion] array to pointer conversion
+# 1877|               Type = [IntPointerType] int *
+# 1877|               ValueCategory = prvalue
+# 1877|         getRValue(): [Literal] 10
+# 1877|             Type = [IntType] int
+# 1877|             Value = [Literal] 10
+# 1877|             ValueCategory = prvalue
+# 1878|     getStmt(2): [ExprStmt] ExprStmt
+# 1878|       getExpr(): [AssignExpr] ... = ...
+# 1878|           Type = [IntType] int
+# 1878|           ValueCategory = lvalue
+# 1878|         getLValue(): [PointerDereferenceExpr] * ...
+# 1878|             Type = [IntType] int
+# 1878|             ValueCategory = lvalue
+# 1878|           getOperand(): [VariableAccess] y
+# 1878|               Type = [ArrayType] int[10]
+# 1878|               ValueCategory = lvalue
+# 1878|           getOperand().getFullyConverted(): [ArrayToPointerConversion] array to pointer conversion
+# 1878|               Type = [IntPointerType] int *
+# 1878|               ValueCategory = prvalue
+# 1878|         getRValue(): [Literal] 10
+# 1878|             Type = [IntType] int
+# 1878|             Value = [Literal] 10
+# 1878|             ValueCategory = prvalue
+# 1879|     getStmt(3): [ReturnStmt] return ...
+# 1879|       getExpr(): [AddExpr] ... + ...
+# 1879|           Type = [IntType] int
+# 1879|           ValueCategory = prvalue
+# 1879|         getLeftOperand(): [PointerDereferenceExpr] * ...
+# 1879|             Type = [IntType] int
+# 1879|             ValueCategory = prvalue(load)
+# 1879|           getOperand(): [VariableAccess] x
+# 1879|               Type = [ArrayType] int[10]
+# 1879|               ValueCategory = lvalue
+# 1879|           getOperand().getFullyConverted(): [ArrayToPointerConversion] array to pointer conversion
+# 1879|               Type = [IntPointerType] int *
+# 1879|               ValueCategory = prvalue
+# 1879|         getRightOperand(): [PointerDereferenceExpr] * ...
+# 1879|             Type = [IntType] int
+# 1879|             ValueCategory = prvalue(load)
+# 1879|           getOperand(): [VariableAccess] y
+# 1879|               Type = [ArrayType] int[10]
+# 1879|               ValueCategory = lvalue
+# 1879|           getOperand().getFullyConverted(): [ArrayToPointerConversion] array to pointer conversion
+# 1879|               Type = [IntPointerType] int *
+# 1879|               ValueCategory = prvalue
+# 1875| [MemberFunction] int missing_declaration_entries::Bar2<int>::two_missing_variable_declaration_entries()
+# 1875|   <params>: 
+# 1875|   getEntryPoint(): [BlockStmt] { ... }
+# 1876|     getStmt(0): [DeclStmt] declaration
+# 1877|     getStmt(1): [ExprStmt] ExprStmt
+# 1877|       getExpr(): [AssignExpr] ... = ...
+# 1877|           Type = [IntType] int
+# 1877|           ValueCategory = lvalue
+# 1877|         getLValue(): [PointerDereferenceExpr] * ...
+# 1877|             Type = [IntType] int
+# 1877|             ValueCategory = lvalue
+# 1877|           getOperand(): [VariableAccess] x
+# 1877|               Type = [ArrayType] int[10]
+# 1877|               ValueCategory = lvalue
+# 1877|           getOperand().getFullyConverted(): [ArrayToPointerConversion] array to pointer conversion
+# 1877|               Type = [IntPointerType] int *
+# 1877|               ValueCategory = prvalue
+# 1877|         getRValue(): [Literal] 10
+# 1877|             Type = [IntType] int
+# 1877|             Value = [Literal] 10
+# 1877|             ValueCategory = prvalue
+# 1878|     getStmt(2): [ExprStmt] ExprStmt
+# 1878|       getExpr(): [AssignExpr] ... = ...
+# 1878|           Type = [IntType] int
+# 1878|           ValueCategory = lvalue
+# 1878|         getLValue(): [PointerDereferenceExpr] * ...
+# 1878|             Type = [IntType] int
+# 1878|             ValueCategory = lvalue
+# 1878|           getOperand(): [VariableAccess] y
+# 1878|               Type = [ArrayType] int[10]
+# 1878|               ValueCategory = lvalue
+# 1878|           getOperand().getFullyConverted(): [ArrayToPointerConversion] array to pointer conversion
+# 1878|               Type = [IntPointerType] int *
+# 1878|               ValueCategory = prvalue
+# 1878|         getRValue(): [Literal] 10
+# 1878|             Type = [IntType] int
+# 1878|             Value = [Literal] 10
+# 1878|             ValueCategory = prvalue
+# 1879|     getStmt(3): [ReturnStmt] return ...
+# 1879|       getExpr(): [AddExpr] ... + ...
+# 1879|           Type = [IntType] int
+# 1879|           ValueCategory = prvalue
+# 1879|         getLeftOperand(): [PointerDereferenceExpr] * ...
+# 1879|             Type = [IntType] int
+# 1879|             ValueCategory = prvalue(load)
+# 1879|           getOperand(): [VariableAccess] x
+# 1879|               Type = [ArrayType] int[10]
+# 1879|               ValueCategory = lvalue
+# 1879|           getOperand().getFullyConverted(): [ArrayToPointerConversion] array to pointer conversion
+# 1879|               Type = [IntPointerType] int *
+# 1879|               ValueCategory = prvalue
+# 1879|         getRightOperand(): [PointerDereferenceExpr] * ...
+# 1879|             Type = [IntType] int
+# 1879|             ValueCategory = prvalue(load)
+# 1879|           getOperand(): [VariableAccess] y
+# 1879|               Type = [ArrayType] int[10]
+# 1879|               ValueCategory = lvalue
+# 1879|           getOperand().getFullyConverted(): [ArrayToPointerConversion] array to pointer conversion
+# 1879|               Type = [IntPointerType] int *
+# 1879|               ValueCategory = prvalue
+# 1883| [TopLevelFunction] void missing_declaration_entries::test2()
+# 1883|   <params>: 
+# 1883|   getEntryPoint(): [BlockStmt] { ... }
+# 1884|     getStmt(0): [DeclStmt] declaration
+# 1884|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of b
+# 1884|           Type = [ClassTemplateInstantiation,Struct] Bar2<int>
+# 1885|     getStmt(1): [ExprStmt] ExprStmt
+# 1885|       getExpr(): [FunctionCall] call to two_missing_variable_declaration_entries
+# 1885|           Type = [IntType] int
+# 1885|           ValueCategory = prvalue
+# 1885|         getQualifier(): [VariableAccess] b
+# 1885|             Type = [ClassTemplateInstantiation,Struct] Bar2<int>
+# 1885|             ValueCategory = lvalue
+# 1886|     getStmt(2): [ReturnStmt] return ...
 perf-regression.cpp:
 #    4| [CopyAssignmentOperator] Big& Big::operator=(Big const&)
 #    4|   <params>: 

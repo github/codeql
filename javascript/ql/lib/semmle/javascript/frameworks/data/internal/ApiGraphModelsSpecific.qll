@@ -20,7 +20,6 @@
  */
 
 private import javascript as JS
-private import JS::DataFlow as DataFlow
 private import ApiGraphModels
 
 class Unit = JS::Unit;
@@ -29,6 +28,7 @@ class Unit = JS::Unit;
 module API = JS::API;
 
 import semmle.javascript.frameworks.data.internal.AccessPathSyntax as AccessPathSyntax
+import JS::DataFlow as DataFlow
 private import AccessPathSyntax
 
 /**
@@ -77,10 +77,6 @@ private API::Node getGlobalNode(string globalName) {
 /** Gets a JavaScript-specific interpretation of the `(package, type, path)` tuple after resolving the first `n` access path tokens. */
 bindingset[package, type, path]
 API::Node getExtraNodeFromPath(string package, string type, AccessPath path, int n) {
-  type = "" and
-  n = 0 and
-  result = API::moduleImport(package)
-  or
   // Global variable accesses is via the 'global' package
   exists(AccessPathToken token |
     package = getAPackageAlias("global") and
@@ -90,10 +86,15 @@ API::Node getExtraNodeFromPath(string package, string type, AccessPath path, int
     result = getGlobalNode(token.getAnArgument()) and
     n = 1
   )
+}
+
+/** Gets a JavaScript-specific interpretation of the `(package, type)` tuple. */
+API::Node getExtraNodeFromType(string package, string type) {
+  type = "" and
+  result = API::moduleImport(package)
   or
   // Access instance of a type based on type annotations
-  n = 0 and
-  result = API::Node::ofType(getAPackageAlias(package), type)
+  result = API::Internal::getANodeOfTypeRaw(getAPackageAlias(package), type)
 }
 
 /**
@@ -103,6 +104,9 @@ bindingset[token]
 API::Node getExtraSuccessorFromNode(API::Node node, AccessPathToken token) {
   token.getName() = "Member" and
   result = node.getMember(token.getAnArgument())
+  or
+  token.getName() = "AnyMember" and
+  result = node.getAMember()
   or
   token.getName() = "Instance" and
   result = node.getInstance()
@@ -163,6 +167,16 @@ predicate invocationMatchesExtraCallSiteFilter(API::InvokeNode invoke, AccessPat
   token.getName() = "Call" and
   invoke instanceof API::CallNode and
   invoke instanceof DataFlow::CallNode // Workaround compiler bug
+  or
+  token.getName() = "WithStringArgument" and
+  exists(string operand, string argIndex, string stringValue |
+    operand = token.getAnArgument() and
+    argIndex = operand.splitAt("=", 0) and
+    stringValue = operand.splitAt("=", 1) and
+    invoke
+        .getArgument(AccessPath::parseIntWithArity(argIndex, invoke.getNumArgument()))
+        .getStringValue() = stringValue
+  )
 }
 
 /**
@@ -225,8 +239,9 @@ bindingset[name]
 predicate isExtraValidTokenNameInIdentifyingAccessPath(string name) {
   name =
     [
-      "Member", "Instance", "Awaited", "ArrayElement", "Element", "MapValue", "NewCall", "Call",
-      "DecoratedClass", "DecoratedMember", "DecoratedParameter"
+      "Member", "AnyMember", "Instance", "Awaited", "ArrayElement", "Element", "MapValue",
+      "NewCall", "Call", "DecoratedClass", "DecoratedMember", "DecoratedParameter",
+      "WithStringArgument"
     ]
 }
 
@@ -237,7 +252,7 @@ predicate isExtraValidTokenNameInIdentifyingAccessPath(string name) {
 predicate isExtraValidNoArgumentTokenInIdentifyingAccessPath(string name) {
   name =
     [
-      "Instance", "Awaited", "ArrayElement", "Element", "MapValue", "NewCall", "Call",
+      "AnyMember", "Instance", "Awaited", "ArrayElement", "Element", "MapValue", "NewCall", "Call",
       "DecoratedClass", "DecoratedMember", "DecoratedParameter"
     ]
 }
@@ -250,4 +265,8 @@ bindingset[name, argument]
 predicate isExtraValidTokenArgumentInIdentifyingAccessPath(string name, string argument) {
   name = ["Member"] and
   exists(argument)
+  or
+  name = "WithStringArgument" and
+  exists(argument.indexOf("=")) and
+  exists(AccessPath::parseIntWithArity(argument.splitAt("=", 0), 10))
 }

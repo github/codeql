@@ -15,6 +15,8 @@ Learn all about QL, the powerful query language that underlies the code scanning
 
 - :doc:`Modules <modules>`: Modules provide a way of organizing QL code by grouping together related types, predicates, and other modules. 
 
+- :doc:`Signatures <signatures>`: Signatures provide a typing mechanism to parameters of parameterized modules.
+
 - :doc:`Aliases <aliases>`: An alias is an alternative name for an existing QL entity. 
 
 - :doc:`Variables <variables>`: Variables in QL are used in a similar way to variables in algebra or logic. They represent sets of values, and those values are usually restricted by a formula.
@@ -44,6 +46,7 @@ Learn all about QL, the powerful query language that underlies the code scanning
    queries
    types
    modules
+   signatures
    aliases
    variables
    expressions

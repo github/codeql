@@ -25,3 +25,6 @@ var numberToLetter = /[7-F]/; // NOT OK
 var overlapsWithClass1 = /[0-9\d]/; // NOT OK
 
 var overlapsWithClass2 = /[\w,.-?:*+]/; // NOT OK
+
+var tst2 = /^([ァ-ヾ]|[ｧ-ﾝﾞﾟ])+$/; // OK
+var tst3 = /[0-9０-９]/; // OK

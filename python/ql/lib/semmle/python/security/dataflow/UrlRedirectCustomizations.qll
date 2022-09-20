@@ -48,7 +48,7 @@ module UrlRedirect {
    */
   class RedirectLocationAsSink extends Sink {
     RedirectLocationAsSink() {
-      this = any(HTTP::Server::HttpRedirectResponse e).getRedirectLocation()
+      this = any(Http::Server::HttpRedirectResponse e).getRedirectLocation()
     }
   }
 

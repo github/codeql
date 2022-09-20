@@ -5,3 +5,5 @@ dbscheme: semmlecode.cpp.dbscheme
 extractor: cpp
 library: true
 upgrades: upgrades
+dependencies:
+  codeql/ssa: 0.0.1

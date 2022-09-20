@@ -87,6 +87,41 @@ class CallNode extends LocalSourceNode, ExprNode {
 
   /** Gets the block of this call. */
   Node getBlock() { result.asExpr() = node.getBlock() }
+
+  /**
+   * Gets the data-flow node corresponding to the named argument of the call
+   * corresponding to this data-flow node, also including values passed with (pre Ruby
+   * 2.0) hash arguments.
+   *
+   * Such hash arguments are tracked back to their source location within functions, but
+   * no inter-procedural analysis occurs.
+   *
+   * This means all 3 variants below will be handled by this predicate:
+   *
+   * ```ruby
+   * foo(..., some_option: 42)
+   * foo(..., { some_option: 42 })
+   * options = { some_option: 42 }
+   * foo(..., options)
+   * ```
+   */
+  Node getKeywordArgumentIncludeHashArgument(string name) {
+    // to reduce number of computed tuples, I have put bindingset on both this and name,
+    // meaning we only do the local backwards tracking for known calls and known names.
+    // (not because a performance problem was seen, it just seemed right).
+    result = this.getKeywordArgument(name)
+    or
+    exists(CfgNodes::ExprNodes::PairCfgNode pair |
+      pair =
+        this.getArgument(_)
+            .getALocalSource()
+            .asExpr()
+            .(CfgNodes::ExprNodes::HashLiteralCfgNode)
+            .getAKeyValuePair() and
+      pair.getKey().getConstantValue().isStringlikeValue(name) and
+      result.asExpr() = pair.getValue()
+    )
+  }
 }
 
 /**
