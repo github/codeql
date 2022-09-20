@@ -129,30 +129,6 @@ class AndroidApplicationXmlElement extends XmlElement {
  */
 class AndroidActivityXmlElement extends AndroidComponentXmlElement {
   AndroidActivityXmlElement() { this.getName() = "activity" }
-
-  // ! Consider moving this to its own .qll file under `security` like for Implicit Export Query.
-  // ! Double-check that the below actions and categories are REQUIRED for it to
-  // !   count as a deep link versus just recommended (e.g. should I just look at the
-  // !   data element instead?).
-  // ! Reference: https://developer.android.com/training/app-links/deep-linking#adding-filters
-  // ! Note: not excluding App Links since those are a subset of deep links that can still cause issues.
-  /**
-   * Holds if this `<activity>` element has a deep link.
-   */
-  predicate hasDeepLink() {
-    //exists(this.getAnIntentFilterElement()) and // has an intent filter - below all show that it has an intent-filter, duplicates work
-    this.getAnIntentFilterElement().getAnActionElement().getActionName() =
-      "android.intent.action.VIEW" and
-    this.getAnIntentFilterElement().getACategoryElement().getCategoryName() =
-      "android.intent.category.BROWSABLE" and
-    this.getAnIntentFilterElement().getACategoryElement().getCategoryName() =
-      "android.intent.category.DEFAULT" and
-    //this.getAnIntentFilterElement().getAChild("data").hasAttribute("scheme") // use below instead for 'android' prefix
-    exists(AndroidXmlAttribute attr |
-      this.getAnIntentFilterElement().getAChild("data").getAnAttribute() = attr and
-      attr.getName() = "scheme"
-    )
-  }
 }
 
 /**
