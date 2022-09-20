@@ -1,5 +1,3 @@
-| extraction_error.c:4:13:4:43 | my_function2_called_after_error | Static function my_function2_called_after_error is unreachable | extraction_error.c:4:13:4:43 | my_function2_called_after_error | my_function2_called_after_error |
-| extraction_error.c:5:13:5:35 | my_function3_not_called | Static function my_function3_not_called is unreachable | extraction_error.c:5:13:5:35 | my_function3_not_called | my_function3_not_called |
 | unused_functions.c:16:13:16:27 | unused_function | Static function unused_function is unreachable | unused_functions.c:16:13:16:27 | unused_function | unused_function |
 | unused_functions.c:20:13:20:28 | unused_function2 | Static function unused_function2 is unreachable ($@ must be removed at the same time) | unused_functions.c:24:13:24:28 | unused_function3 | unused_function3 |
 | unused_functions.c:24:13:24:28 | unused_function3 | Static function unused_function3 is unreachable | unused_functions.c:24:13:24:28 | unused_function3 | unused_function3 |

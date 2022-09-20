@@ -1,8 +1,8 @@
 // semmle-extractor-options: --expect_errors
 
 static void my_function1_called() {} // GOOD
-static void my_function2_called_after_error() {} // GOOD [FALSE POSITIVE]
-static void my_function3_not_called() {} // BAD
+static void my_function2_called_after_error() {} // GOOD
+static void my_function3_not_called() {} // BAD [NOT DETECTED]
 
 int main(void) {
 	my_function1_called();
