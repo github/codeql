@@ -58,3 +58,28 @@ module F
   def private4
   end
 end
+
+class PrivateOverride1
+  private def m1
+      puts "PrivateOverride1#m1"
+  end
+
+  private def m2
+      puts "PrivateOverride1#m2"
+  end
+
+  def call_m1
+      m1
+  end
+end
+
+class PrivateOverride2 < PrivateOverride1
+  private def m1
+      puts "PrivateOverride2#m1"
+      m2
+      PrivateOverride1.new.m1 # NoMethodError
+  end
+end
+
+PrivateOverride2.new.call_m1
+PrivateOverride2.new.m1 # NoMethodError
