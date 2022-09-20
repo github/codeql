@@ -57,44 +57,27 @@ construction of the library path.
 First, determine the *query directory* of the ``.ql`` file being
 compiled. Starting with the directory containing the ``.ql`` file, and
 walking up the directory structure, each directory is checked for a
-file called ``queries.xml`` or ``qlpack.yml``. The first directory
+file called ``qlpack.yml`` or ``codeql-pack.yml``. The first directory
 where such a file is found is the query directory. If there is no such
 directory, the directory of the ``.ql`` file itself is the query
 directory.
 
-A ``queries.xml`` file that defines a query directory must always
-contain a single top-level tag named
-``queries``, which has a ``language`` attribute set to the identifier
-of the active database schema (for example, ``<queries
-language="java"/>``).
-
 A ``qlpack.yml`` file defines a :ref:`CodeQL pack <about-codeql-packs>`.
 The content of a ``qlpack.yml`` file is described in the CodeQL CLI documentation.
+``codeql-pack.yml`` is an alias for ``qlpack.yml``.
 
-If both a ``queries.xml`` and a ``qlpack.yml`` exist in the same
-directory, the latter takes precedence (and the former is assumed to
-exist for compatibility with older tooling).
-
-The CodeQL CLI and newer tools based on it (such as,
+The CodeQL CLI and tools based on it (such as,
 GitHub code scanning and the CodeQL extension for Visual Studio Code)
 construct a library path using CodeQL packs. For each CodeQL pack
 added to the library path, the CodeQL packs named in its
-``libraryPathDependencies`` will be subsequently added to the library
+``dependencies`` will be subsequently added to the library
 path, and the process continues until all packs have been
 resolved. The actual library path consists of the root directories of
 the selected CodeQL packs. This process depends on a mechanism for finding
-CodeQL packs by pack name, as described in the :ref:`CodeQL CLI documentation <codeql-cli>`.
+CodeQL packs by pack name and version, as described in the :ref:`CodeQL CLI documentation <codeql-cli>`.
 
-When the query directory contains a ``queries.xml`` file but no
-``qlpack.yml``, the CodeQL pack resolution behaves as if it defines a QL
-pack with no name and a single library path dependency named
-``legacy-libraries-LANGUAGE`` where ``LANGUAGE`` is taken from
-``queries.xml``. The ``github/codeql`` repository provides packs with
-names following this pattern, which themselves depend on the actual
-CodeQL libraries for each language.
-
-When the query directory contains neither a ``queries.xml`` nor
-``qlpack.yml`` file, it is considered to be a CodeQL pack with no name and
+When the query directory contains neither a ``qlpack.yml`` nor
+``codeql-pack.yml`` file, it is considered to be a CodeQL pack with no name and
 no library dependencies. This causes the library path to consist of
 *only* the query directory itself. This is not generally useful,
 but it suffices for running toy examples of QL code that don't

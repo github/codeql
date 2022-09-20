@@ -36,3 +36,8 @@ fs.access("myfile", (err) => {
     // ....
   });
 });
+
+const filePath3 = createFile();
+if (fs.existsSync(filePath3)) {
+  fs.readFileSync(filePath3); // OK - a read after an existence check is OK 
+}

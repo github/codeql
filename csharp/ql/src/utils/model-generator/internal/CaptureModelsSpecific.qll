@@ -36,9 +36,20 @@ private predicate isRelevantForModels(CS::Callable api) {
   api.getDeclaringType().getNamespace().getQualifiedName() != "" and
   not api instanceof CS::ConversionOperator and
   not api instanceof Util::MainMethod and
-  not isHigherOrder(api) and
   not api instanceof CS::Destructor
 }
+
+/**
+ * Holds if it is relevant to generate models for `api` based on data flow analysis.
+ */
+predicate isRelevantForDataFlowModels(CS::Callable api) {
+  isRelevantForModels(api) and not isHigherOrder(api)
+}
+
+/**
+ * Holds if it is relevant to generate models for `api` based on its type.
+ */
+predicate isRelevantForTypeBasedFlowModels = isRelevantForModels/1;
 
 /**
  * A class of callables that are relevant generating summary, source and sinks models for.
@@ -49,8 +60,7 @@ private predicate isRelevantForModels(CS::Callable api) {
 class TargetApiSpecific extends DotNet::Callable {
   TargetApiSpecific() {
     this.fromSource() and
-    this.isUnboundDeclaration() and
-    isRelevantForModels(this)
+    this.isUnboundDeclaration()
   }
 }
 
@@ -100,7 +110,7 @@ predicate isRelevantType(CS::Type t) {
  */
 string qualifierString() { result = "Argument[this]" }
 
-private string parameterAccess(CS::Parameter p) {
+string parameterAccess(CS::Parameter p) {
   if Collections::isCollectionType(p.getType())
   then result = "Argument[" + p.getPosition() + "].Element"
   else result = "Argument[" + p.getPosition() + "]"

@@ -122,7 +122,7 @@ private newtype TPointsToContext =
   } or
   TObjectContext(SelfInstanceInternal object)
 
-module Context {
+deprecated module Context {
   PointsToContext forObject(ObjectInternal object) { result = TObjectContext(object) }
 }
 

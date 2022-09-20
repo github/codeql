@@ -984,7 +984,7 @@ module TaintTracking {
    *
    * `<contains>` is one of: `contains`, `has`, `hasOwnProperty`
    *
-   * Note that the `includes` method is covered by `StringInclusionSanitizer`.
+   * Note that the `includes` method is covered by `MembershipTestSanitizer`.
    */
   class WhitelistContainmentCallSanitizer extends AdditionalSanitizerGuardNode,
     DataFlow::MethodCallNode {
@@ -1171,7 +1171,7 @@ module TaintTracking {
   /**
    * A check of form `x.indexOf(y) > 0` or similar, which sanitizes `y` in the "then" branch.
    *
-   * The more typical case of `x.indexOf(y) >= 0` is covered by `StringInclusionSanitizer`.
+   * The more typical case of `x.indexOf(y) >= 0` is covered by `MembershipTestSanitizer`.
    */
   class PositiveIndexOfSanitizer extends AdditionalSanitizerGuardNode, DataFlow::ValueNode {
     MethodCallExpr indexOf;

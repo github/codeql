@@ -296,11 +296,7 @@ class JaxRSProducesAnnotation extends JaxRSAnnotation {
   /**
    * Gets a declared content type that can be produced by this resource.
    */
-  Expr getADeclaredContentTypeExpr() {
-    result = this.getAValue() and not result instanceof ArrayInit
-    or
-    result = this.getAValue().(ArrayInit).getAnInit()
-  }
+  Expr getADeclaredContentTypeExpr() { result = this.getAnArrayValue("value") }
 }
 
 /** An `@Consumes` annotation that describes content types can be consumed by this resource. */

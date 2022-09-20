@@ -348,7 +348,7 @@ private class NodeModuleSourcesNodes extends SourceNode::Range {
 
   NodeModuleSourcesNodes() {
     exists(NodeModule m |
-      this = DataFlow::ssaDefinitionNode(SSA::implicitInit(v)) and
+      this = DataFlow::ssaDefinitionNode(Ssa::implicitInit(v)) and
       v = [m.getModuleVariable(), m.getExportsVariable()]
     )
   }

@@ -311,13 +311,13 @@ private module Cached {
   }
 
   cached
-  predicate immediatelyControls(ConditionBlock cb, BasicBlock succ, BooleanSuccessor s) {
+  predicate immediatelyControls(ConditionBlock cb, BasicBlock succ, ConditionalSuccessor s) {
     succ = cb.getASuccessor(s) and
     forall(BasicBlock pred | pred = succ.getAPredecessor() and pred != cb | succ.dominates(pred))
   }
 
   cached
-  predicate controls(ConditionBlock cb, BasicBlock controlled, BooleanSuccessor s) {
+  predicate controls(ConditionBlock cb, BasicBlock controlled, ConditionalSuccessor s) {
     exists(BasicBlock succ | cb.immediatelyControls(succ, s) | succ.dominates(controlled))
   }
 }
@@ -406,7 +406,7 @@ class ConditionBlock extends BasicBlock {
    * successor of this block, and `succ` can only be reached from
    * the callable entry point by going via the `s` edge out of this basic block.
    */
-  predicate immediatelyControls(BasicBlock succ, BooleanSuccessor s) {
+  predicate immediatelyControls(BasicBlock succ, ConditionalSuccessor s) {
     immediatelyControls(this, succ, s)
   }
 
@@ -415,5 +415,7 @@ class ConditionBlock extends BasicBlock {
    * conditional value `s`. That is, `controlled` can only be reached from
    * the callable entry point by going via the `s` edge out of this basic block.
    */
-  predicate controls(BasicBlock controlled, BooleanSuccessor s) { controls(this, controlled, s) }
+  predicate controls(BasicBlock controlled, ConditionalSuccessor s) {
+    controls(this, controlled, s)
+  }
 }

@@ -71,7 +71,8 @@ predicate depends(RefType t, RefType dep) {
       a.getAnnotatedElement().(Member).getDeclaringType() = t
     |
       usesType(a.getType(), dep) or
-      usesType(a.getAValue().getType(), dep)
+      usesType(a.getValue(_).getType(), dep) or
+      usesType(a.getAnArrayValue(_).getType(), dep)
     )
     or
     // the type accessed in an `instanceof` expression in `t`.

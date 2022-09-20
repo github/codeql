@@ -1,6 +1,6 @@
 .. _about-codeql-workspaces:
 
-About CodeQL Workspaces
+About CodeQL workspaces
 =======================
 
 .. include:: ../reusables/beta-note-package-management.rst

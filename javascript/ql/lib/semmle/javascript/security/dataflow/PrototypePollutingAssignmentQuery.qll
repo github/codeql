@@ -124,7 +124,8 @@ class Configuration extends TaintTracking::Configuration {
     guard instanceof TypeofCheck or
     guard instanceof NumberGuard or
     guard instanceof EqualityCheck or
-    guard instanceof IncludesCheck
+    guard instanceof IncludesCheck or
+    guard instanceof DenyListInclusionGuard
   }
 }
 
@@ -273,5 +274,23 @@ private class IncludesCheck extends TaintTracking::LabeledSanitizerGuardNode, In
   override predicate sanitizes(boolean outcome, Expr e) {
     e = this.getContainerNode().asExpr() and
     outcome = this.getPolarity().booleanNot()
+  }
+}
+
+/**
+ * A sanitizer guard that checks tests whether `x` is included in a list like `["__proto__"].includes(x)`.
+ */
+private class DenyListInclusionGuard extends TaintTracking::SanitizerGuardNode, InclusionTest {
+  DenyListInclusionGuard() {
+    this.getContainerNode()
+        .getALocalSource()
+        .(DataFlow::ArrayCreationNode)
+        .getAnElement()
+        .mayHaveStringValue("__proto__")
+  }
+
+  override predicate sanitizes(boolean outcome, Expr e) {
+    e = this.getContainedNode().asExpr() and
+    outcome = super.getPolarity().booleanNot()
   }
 }

@@ -36,11 +36,11 @@ predicate containsSpecialCollection(Expr e, SpecialCollectionCreation origin) {
   or
   exists(Call c, int i |
     containsSpecialCollection(c.getArgument(i), origin) and
-    e = c.getCallee().getParameter(i).getAnAccess()
+    e = c.getCallee().getSourceDeclaration().getParameter(i).getAnAccess()
   )
   or
   exists(Call c, ReturnStmt r | e = c |
-    r.getEnclosingCallable() = c.getCallee() and
+    r.getEnclosingCallable() = c.getCallee().getSourceDeclaration() and
     containsSpecialCollection(r.getResult(), origin)
   )
 }
@@ -58,11 +58,11 @@ predicate iterOfSpecialCollection(Expr e, SpecialCollectionCreation origin) {
   or
   exists(Call c, int i |
     iterOfSpecialCollection(c.getArgument(i), origin) and
-    e = c.getCallee().getParameter(i).getAnAccess()
+    e = c.getCallee().getSourceDeclaration().getParameter(i).getAnAccess()
   )
   or
   exists(Call c, ReturnStmt r | e = c |
-    r.getEnclosingCallable() = c.getCallee() and
+    r.getEnclosingCallable() = c.getCallee().getSourceDeclaration() and
     iterOfSpecialCollection(r.getResult(), origin)
   )
 }
