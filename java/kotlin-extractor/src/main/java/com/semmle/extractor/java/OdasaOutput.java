@@ -266,10 +266,7 @@ public class OdasaOutput {
 	 * 		Any unique suffix needed to distinguish `sym` from other declarations with the same name.
 	 * 		For functions for example, this means its parameter signature.
 	 */
-	private TrapFileManager getMembersWriterForDecl(IrDeclaration sym, String signature) {
-		File trap = getTrapFileForDecl(sym, signature);
-		if (trap==null)
-			return null;
+	private TrapFileManager getMembersWriterForDecl(File trap, IrDeclaration sym, String signature) {
 		TrapClassVersion currVersion = TrapClassVersion.fromSymbol(sym, log);
 		String shortName = sym instanceof IrDeclarationWithName ? ((IrDeclarationWithName)sym).getName().asString() : "(name unknown)";
 		if (trap.exists()) {
@@ -428,7 +425,8 @@ public class OdasaOutput {
 			this.sym = decl;
 			this.signature = signature;
 			if (sym==null) {
-				trapFile = getTrapFileForCurrentSourceFile();
+				log.error("Null symbol passed for Kotlin TRAP locker");
+				trapFile = null;
 			} else {
 				trapFile = getTrapFileForDecl(sym, signature);
 			}
@@ -446,7 +444,7 @@ public class OdasaOutput {
 		public TrapFileManager getTrapFileManager() {
 			if (trapFile!=null) {
 				lockTrapFile(trapFile);
-				return getMembersWriterForDecl(sym, signature);
+				return getMembersWriterForDecl(trapFile, sym, signature);
 			} else {
 				return null;
 			}
