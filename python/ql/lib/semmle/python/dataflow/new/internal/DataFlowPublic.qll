@@ -294,11 +294,11 @@ class ParameterNode extends Node, TParameterNode instanceof ParameterNodeImpl {
 }
 
 /** A parameter node found in the source code (not in a summary). */
-class SourceParameterNode extends ParameterNodeImpl, CfgNode {
+class ExtractedParameterNode extends ParameterNodeImpl, CfgNode {
   //, LocalSourceNode {
   ParameterDefinition def;
 
-  SourceParameterNode() {
+  ExtractedParameterNode() {
     node = def.getDefiningNode() and
     // Disregard parameters that we cannot resolve
     // TODO: Make this unnecessary
@@ -313,10 +313,10 @@ class SourceParameterNode extends ParameterNodeImpl, CfgNode {
   override Parameter getParameter() { result = def.getParameter() }
 }
 
-class LocalSourceParameterNode extends SourceParameterNode, LocalSourceNode { }
+class LocalSourceParameterNode extends ExtractedParameterNode, LocalSourceNode { }
 
 /** Gets a node corresponding to parameter `p`. */
-SourceParameterNode parameterNode(Parameter p) { result.getParameter() = p }
+ExtractedParameterNode parameterNode(Parameter p) { result.getParameter() = p }
 
 /** A data flow node that represents a call argument. */
 abstract class ArgumentNode extends Node {
@@ -324,18 +324,18 @@ abstract class ArgumentNode extends Node {
   abstract predicate argumentOf(DataFlowCall call, ArgumentPosition pos);
 
   /** Gets the call in which this node is an argument, if any. */
-  final DataFlowSourceCall getCall() { this.argumentOf(result, _) }
+  final ExtractedDataFlowCall getCall() { this.argumentOf(result, _) }
 }
 
 /** A data flow node that represents a call argument found in the source code. */
-class ArgumentSourceNode extends ArgumentNode {
-  ArgumentSourceNode() { this = any(DataFlowSourceCall c).getArg(_) }
+class ExtractedArgumentNode extends ArgumentNode {
+  ExtractedArgumentNode() { this = any(ExtractedDataFlowCall c).getArg(_) }
 
   final override predicate argumentOf(DataFlowCall call, ArgumentPosition pos) {
-    this.sourceArgumentOf(call, pos)
+    this.extractedArgumentOf(call, pos)
   }
 
-  predicate sourceArgumentOf(DataFlowSourceCall call, ArgumentPosition pos) {
+  predicate extractedArgumentOf(ExtractedDataFlowCall call, ArgumentPosition pos) {
     this = call.getArg(pos)
   }
 }

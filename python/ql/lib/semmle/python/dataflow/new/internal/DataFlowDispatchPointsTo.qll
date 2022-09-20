@@ -443,7 +443,7 @@ newtype TDataFlowCall =
   }
 
 /** A call found in the program source (as opposed to a synthesised summary call). */
-class TDataFlowSourceCall = TSpecialCall or TNormalCall;
+class TExtractedDataFlowCall = TSpecialCall or TNormalCall;
 
 /** A call that is taken into account by the global data flow computation. */
 abstract class DataFlowCall extends TDataFlowCall {
@@ -483,7 +483,7 @@ abstract class DataFlowCall extends TDataFlowCall {
 }
 
 /** A call found in the program source (as opposed to a synthesised call). */
-abstract class DataFlowSourceCall extends DataFlowCall, TDataFlowSourceCall {
+abstract class ExtractedDataFlowCall extends DataFlowCall, TExtractedDataFlowCall {
   final override Location getLocation() { result = this.getNode().getLocation() }
 
   abstract override DataFlowCallable getCallable();
@@ -494,7 +494,7 @@ abstract class DataFlowSourceCall extends DataFlowCall, TDataFlowSourceCall {
 }
 
 /** A call associated with a `CallNode`. */
-class NormalCall extends DataFlowSourceCall, TNormalCall {
+class NormalCall extends ExtractedDataFlowCall, TNormalCall {
   CallNode call;
 
   NormalCall() { this = TNormalCall(call) }
@@ -589,7 +589,7 @@ class ClassCall extends NormalCall {
 }
 
 /** A call to a special method. */
-class SpecialCall extends DataFlowSourceCall, TSpecialCall {
+class SpecialCall extends ExtractedDataFlowCall, TSpecialCall {
   SpecialMethodCallNode special;
 
   SpecialCall() { this = TSpecialCall(special) }
@@ -763,7 +763,7 @@ private class SummaryPostUpdateNode extends SummaryNode, PostUpdateNode {
 }
 
 /** Gets a viable run-time target for the call `call`. */
-DataFlowCallable viableCallable(DataFlowSourceCall call) {
+DataFlowCallable viableCallable(ExtractedDataFlowCall call) {
   result = call.getCallable()
   or
   // A call to a library callable with a flow summary
@@ -794,9 +794,9 @@ abstract class ReturnNode extends Node {
 }
 
 /** A data flow node that represents a value returned by a callable. */
-class ReturnSourceNode extends ReturnNode, CfgNode {
+class ExtractedReturnNode extends ReturnNode, CfgNode {
   // See `TaintTrackingImplementation::returnFlowStep`
-  ReturnSourceNode() { node = any(Return ret).getValue().getAFlowNode() }
+  ExtractedReturnNode() { node = any(Return ret).getValue().getAFlowNode() }
 
   override ReturnKind getKind() { any() }
 }
@@ -814,7 +814,7 @@ private module OutNodes {
   class ExprOutNode extends OutNode, ExprNode {
     private DataFlowCall call;
 
-    ExprOutNode() { call.(DataFlowSourceCall).getNode() = this.getNode() }
+    ExprOutNode() { call.(ExtractedDataFlowCall).getNode() = this.getNode() }
 
     override DataFlowCall getCall(ReturnKind kind) {
       result = call and

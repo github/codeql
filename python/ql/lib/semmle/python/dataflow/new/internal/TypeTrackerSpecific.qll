@@ -35,10 +35,10 @@ string getPossibleContentName() {
  */
 pragma[nomagic]
 private DataFlowPrivate::DataFlowCallable getCallableForArgument(
-  DataFlowPublic::ArgumentSourceNode nodeFrom, int i
+  DataFlowPublic::ExtractedArgumentNode nodeFrom, int i
 ) {
-  exists(DataFlowPrivate::DataFlowSourceCall call |
-    nodeFrom.sourceArgumentOf(call, i) and
+  exists(DataFlowPrivate::ExtractedDataFlowCall call |
+    nodeFrom.extractedArgumentOf(call, i) and
     result = call.getCallable()
   )
 }
@@ -60,7 +60,7 @@ predicate callStep(DataFlowPublic::ArgumentNode nodeFrom, DataFlowPrivate::Param
 
 /** Holds if `nodeFrom` steps to `nodeTo` by being returned from a call. */
 predicate returnStep(DataFlowPrivate::ReturnNode nodeFrom, Node nodeTo) {
-  exists(DataFlowPrivate::DataFlowSourceCall call |
+  exists(DataFlowPrivate::ExtractedDataFlowCall call |
     nodeFrom.getEnclosingCallable() = call.getCallable() and
     nodeTo.(DataFlowPublic::CfgNode).getNode() = call.getNode()
   )
