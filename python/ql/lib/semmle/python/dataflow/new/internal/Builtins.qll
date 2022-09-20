@@ -60,9 +60,9 @@ module Builtins {
    * Currently this is an over-approximation, and may not account for things like overwriting a
    * built-in with a different value.
    */
-  DataFlow::Node likelyBuiltin(string name) {
+  DataFlow::CfgNode likelyBuiltin(string name) {
     exists(Module m |
-      result.asCfgNode() =
+      result.getNode() =
         any(NameNode n |
           possible_builtin_accessed_in_module(n, name, m) and
           not possible_builtin_defined_in_module(name, m)
