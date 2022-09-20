@@ -53,22 +53,23 @@ class CallGraphTest extends InlineExpectationsTest {
     |
       location = call.getLocation() and
       element = call.toString() and
-      if call.getLocation().getFile() = target.getLocation().getFile()
-      then value = betterQualName(target)
-      else
-        exists(string fixedRelativePath |
-          fixedRelativePath =
-            target
-                .getLocation()
-                .getFile()
-                .getRelativePath()
-                .regexpCapture(".*/CallGraph[^/]*/(.*)", 1)
-        |
-          // the value needs to be enclosed in quotes to allow special characters
-          value = "\"" + fixedRelativePath + ":" + betterQualName(target) + "\""
-        )
+      value = getCallEdgeValue(call, target)
     )
   }
+}
+
+bindingset[call, target]
+string getCallEdgeValue(CallNode call, Function target) {
+  if call.getLocation().getFile() = target.getLocation().getFile()
+  then result = betterQualName(target)
+  else
+    exists(string fixedRelativePath |
+      fixedRelativePath =
+        target.getLocation().getFile().getRelativePath().regexpCapture(".*/CallGraph[^/]*/(.*)", 1)
+    |
+      // the value needs to be enclosed in quotes to allow special characters
+      result = "\"" + fixedRelativePath + ":" + betterQualName(target) + "\""
+    )
 }
 
 bindingset[func]
@@ -99,7 +100,14 @@ query predicate pointsTo_found_typeTracker_notFound(CallNode call, string qualna
   exists(Function target |
     pointsToCallEdge(call, target) and
     not typeTrackerCallEdge(call, target) and
-    qualname = betterQualName(target)
+    qualname = getCallEdgeValue(call, target) and
+    // ignore SPURIOUS call edges
+    not exists(FalsePositiveExpectation spuriousResult |
+      spuriousResult.getTag() = "pt" and
+      spuriousResult.getValue() = getCallEdgeValue(call, target) and
+      spuriousResult.getLocation().getFile() = call.getLocation().getFile() and
+      spuriousResult.getLocation().getStartLine() = call.getLocation().getStartLine()
+    )
   )
 }
 
@@ -107,10 +115,17 @@ query predicate typeTracker_found_pointsTo_notFound(CallNode call, string qualna
   exists(Function target |
     not pointsToCallEdge(call, target) and
     typeTrackerCallEdge(call, target) and
-    qualname = betterQualName(target) and
+    qualname = getCallEdgeValue(call, target) and
     // We filter out result differences for points-to and type-tracking for class calls,
     // since otherwise it gives too much noise (these are just handled differently
     // between the two).
-    not typeTrackerClassCall(call, target)
+    not typeTrackerClassCall(call, target) and
+    // ignore SPURIOUS call edges
+    not exists(FalsePositiveExpectation spuriousResult |
+      spuriousResult.getTag() = "tt" and
+      spuriousResult.getValue() = getCallEdgeValue(call, target) and
+      spuriousResult.getLocation().getFile() = call.getLocation().getFile() and
+      spuriousResult.getLocation().getStartLine() = call.getLocation().getStartLine()
+    )
   )
 }
