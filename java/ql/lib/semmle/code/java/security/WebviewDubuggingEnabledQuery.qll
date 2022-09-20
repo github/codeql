@@ -34,8 +34,6 @@ class WebviewDebugEnabledConfig extends DataFlow::Configuration {
   }
 
   override predicate isBarrier(DataFlow::Node node) {
-    not node.getType() instanceof BooleanType
-    or
     exists(Guard debug | isDebugCheck(debug) and debug.controls(node.asExpr().getBasicBlock(), _))
     or
     node.getEnclosingCallable().getDeclaringType() instanceof NonSecurityTestClass
