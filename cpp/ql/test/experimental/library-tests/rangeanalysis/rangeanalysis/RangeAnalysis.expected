@@ -20,10 +20,12 @@
 | test.cpp:62:10:62:13 | Load: iter | test.cpp:60:17:60:17 | ValueNumberBound | 0 | false | NoReason | file://:0:0:0:0 | file://:0:0:0:0 |
 | test.cpp:62:10:62:13 | Load: iter | test.cpp:60:17:60:17 | ValueNumberBound | 3 | true | CompareLT: ... < ... | test.cpp:61:32:61:51 | test.cpp:61:32:61:51 |
 | test.cpp:62:10:62:13 | Load: iter | test.cpp:61:39:61:51 | ValueNumberBound | -1 | true | CompareLT: ... < ... | test.cpp:61:32:61:51 | test.cpp:61:32:61:51 |
+| test.cpp:62:10:62:13 | Load: iter | test.cpp:61:48:61:50 | ValueNumberBound | -1 | true | CompareLT: ... < ... | test.cpp:61:32:61:51 | test.cpp:61:32:61:51 |
 | test.cpp:67:10:67:13 | Load: iter | test.cpp:60:17:60:17 | ValueNumberBound | 0 | false | NoReason | file://:0:0:0:0 | file://:0:0:0:0 |
 | test.cpp:67:10:67:13 | Load: iter | test.cpp:60:17:60:17 | ValueNumberBound | 3 | true | CompareLT: ... < ... | test.cpp:66:32:66:41 | test.cpp:66:32:66:41 |
 | test.cpp:67:10:67:13 | Load: iter | test.cpp:61:32:61:35 | ValueNumberBound | -1 | true | CompareLT: ... < ... | test.cpp:66:32:66:41 | test.cpp:66:32:66:41 |
 | test.cpp:67:10:67:13 | Load: iter | test.cpp:61:39:61:51 | ValueNumberBound | -1 | true | CompareLT: ... < ... | test.cpp:66:32:66:41 | test.cpp:66:32:66:41 |
+| test.cpp:67:10:67:13 | Load: iter | test.cpp:61:48:61:50 | ValueNumberBound | -1 | true | CompareLT: ... < ... | test.cpp:66:32:66:41 | test.cpp:66:32:66:41 |
 | test.cpp:77:12:77:12 | Load: i | file://:0:0:0:0 | 0 | 0 | false | NoReason | file://:0:0:0:0 | file://:0:0:0:0 |
 | test.cpp:77:12:77:12 | Load: i | test.cpp:72:15:72:15 | ValueNumberBound | -1 | true | CompareLT: ... < ... | test.cpp:76:20:76:24 | test.cpp:76:20:76:24 |
 | test.cpp:77:12:77:12 | Load: i | test.cpp:72:22:72:22 | ValueNumberBound | -1 | true | CompareLT: ... < ... | test.cpp:76:20:76:24 | test.cpp:76:20:76:24 |
