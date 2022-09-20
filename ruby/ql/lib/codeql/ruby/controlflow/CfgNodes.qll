@@ -433,7 +433,7 @@ module ExprNodes {
   }
 
   private class WhenClauseChildMapping extends NonExprChildMapping, WhenClause {
-    override predicate relevantChild(AstNode e) { e = this.getBody() }
+    override predicate relevantChild(AstNode e) { e = [this.getBody(), this.getAPattern()] }
   }
 
   /** A control-flow node that wraps a `WhenClause` AST expression. */
@@ -444,6 +444,9 @@ module ExprNodes {
 
     /** Gets the body of this `when`-clause. */
     final ExprCfgNode getBody() { e.hasCfgChild(e.getBody(), this, result) }
+
+    /** Gets the `i`th pattern this `when`-clause. */
+    final ExprCfgNode getPattern(int i) { e.hasCfgChild(e.getPattern(i), this, result) }
   }
 
   /** A control-flow node that wraps a `CasePattern`. */

@@ -1,3 +1,4 @@
+import codeql.ruby.AST
 import codeql.ruby.DataFlow::DataFlow
 import codeql.ruby.dataflow.internal.DataFlowPrivate
 import codeql.ruby.dataflow.internal.DataFlowImplConsistency::Consistency
@@ -11,5 +12,7 @@ private class MyConsistencyConfiguration extends ConsistencyConfiguration {
     n instanceof SummaryNode
     or
     n instanceof SynthHashSplatArgumentNode
+    or
+    not isNonConstantExpr(n.asExpr())
   }
 }
