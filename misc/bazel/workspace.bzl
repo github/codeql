@@ -1,6 +1,5 @@
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 load("@bazel_tools//tools/build_defs/repo:utils.bzl", "maybe")
-load("@bazel_tools//tools/build_defs/repo:git.bzl", "new_git_repository")
 
 _swift_prebuilt_version = "swift-5.6-RELEASE.42271.54"
 _swift_sha_map = {
@@ -26,6 +25,14 @@ def codeql_workspace(repository_name = "codeql"):
             build_file = "@%s//swift/tools/prebuilt:BUILD.swift-prebuilt.bazel" % repository_name,
             sha256 = sha256,
         )
+
+    http_archive(
+        name = "fishhook",
+        url = "https://github.com/facebook/fishhook/archive/aadc161ac3b80db07a9908851839a17ba63a9eb1.zip",
+        build_file = "@%s//swift/tools/fishhook:BUILD.fishhook.bazel" % repository_name,
+        strip_prefix = "fishhook-aadc161ac3b80db07a9908851839a17ba63a9eb1",
+        sha256 = "9f2cdee6dcc2039d4c47d25ab5141fe0678ce6ed27ef482cab17fe9fa38a30ce",
+    )
 
     maybe(
         repo_rule = http_archive,
@@ -55,12 +62,4 @@ def codeql_workspace(repository_name = "codeql"):
         urls = [
             "https://github.com/bazelbuild/rules_python/archive/refs/tags/0.8.1.tar.gz",
         ],
-    )
-
-    new_git_repository(
-        name = "fishhook",
-        commit = "aadc161ac3b80db07a9908851839a17ba63a9eb1",
-        shallow_since = "1634071885 -0400",
-        build_file = "@%s//swift/tools/fishhook:BUILD.fishhook.bazel" % repository_name,
-        remote = "https://github.com/facebook/fishhook",
     )
