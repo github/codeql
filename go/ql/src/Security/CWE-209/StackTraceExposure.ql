@@ -77,5 +77,5 @@ class StackTraceExposureConfig extends TaintTracking::Configuration {
 from StackTraceExposureConfig cfg, DataFlow::PathNode source, DataFlow::PathNode sink
 where cfg.hasFlowPath(source, sink)
 select sink.getNode(), source, sink,
-  "$@ flows to a HTTP response and may be exposed to an external user.", source.getNode(),
-  "Stack trace information"
+  "HTTP response depends on $@ and may be exposed to an external user.", source.getNode(),
+  "stack trace information"
