@@ -75,7 +75,7 @@ private import CaptureModels
  * Captured Model:
  * ```Summaries;BasicFlow;false;AssignToArray;(System.Int32,System.Int32[]);Argument[0];Argument[1].Element;taint```
  */
-string captureFlow(TargetApi api) {
+string captureFlow(DataFlowTargetApi api) {
   result = captureQualifierFlow(api) or
   result = captureThroughFlow(api)
 }
@@ -84,7 +84,7 @@ string captureFlow(TargetApi api) {
  * Gets the negative summary for `api`, if any.
  * A negative summary is generated, if there does not exist any positive flow.
  */
-string captureNoFlow(TargetApi api) {
+string captureNoFlow(DataFlowTargetApi api) {
   not exists(captureFlow(api)) and
   result = asNegativeSummaryModel(api)
 }
