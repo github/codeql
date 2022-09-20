@@ -19,5 +19,5 @@ import DataFlow::PathGraph
 
 from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink
 where cfg.hasFlowPath(source, sink)
-select sink.getNode(), source, sink, "$@ is logged at this location.", source.getNode(),
+select sink.getNode(), source, sink, "$@ flows to a logging call.", source.getNode(),
   "Sensitive data returned by " + source.getNode().(Source).describe()

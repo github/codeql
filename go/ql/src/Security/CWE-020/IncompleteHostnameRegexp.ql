@@ -110,4 +110,4 @@ from Config c, DataFlow::PathNode source, DataFlow::PathNode sink, string hostPa
 where c.hasFlowPath(source, sink) and c.isSource(source.getNode(), hostPart)
 select source, source, sink,
   "This regular expression has an unescaped dot before '" + hostPart + "', " +
-    "so it might match more hosts than expected when used $@.", sink, "here"
+    "so it might match more hosts than expected when $@.", sink, "the regular expression is used"
