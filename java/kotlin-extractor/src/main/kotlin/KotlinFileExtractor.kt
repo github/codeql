@@ -1417,7 +1417,7 @@ open class KotlinFileExtractor(
             childIdx,
             enclosingStmt,
             valueArguments.size,
-            { argParent, idxOffset -> extractCallValueArguments(argParent, valueArguments, enclosingStmt, enclosingCallable, idxOffset) },
+            { argParent, idxOffset -> extractCallValueArguments(argParent, callsite, valueArguments, syntacticCallTarget, enclosingStmt, enclosingCallable, idxOffset) },
             dispatchReceiver?.type,
             dispatchReceiver?.let { { callId -> extractExpressionExpr(dispatchReceiver, enclosingCallable, callId, -1, enclosingStmt) } },
             extensionReceiver?.let { { argParent -> extractExpressionExpr(extensionReceiver, enclosingCallable, argParent, 0, enclosingStmt) } },
@@ -1575,10 +1575,10 @@ open class KotlinFileExtractor(
                 this is IrEnumEntry
 
 
-    private fun extractCallValueArguments(callId: Label<out DbExprparent>, call: IrFunctionAccessExpression, enclosingStmt: Label<out DbStmt>, enclosingCallable: Label<out DbCallable>, idxOffset: Int) =
-        extractCallValueArguments(callId, (0 until call.valueArgumentsCount).map { call.getValueArgument(it) }, enclosingStmt, enclosingCallable, idxOffset)
+    private fun extractCallValueArguments(callId: Label<out DbExprparent>, call: IrFunctionAccessExpression, callTarget: IrFunction, enclosingStmt: Label<out DbStmt>, enclosingCallable: Label<out DbCallable>, idxOffset: Int) =
+        extractCallValueArguments(callId, call, (0 until call.valueArgumentsCount).map { call.getValueArgument(it) }, callTarget, enclosingStmt, enclosingCallable, idxOffset)
 
-    private fun extractCallValueArguments(callId: Label<out DbExprparent>, valueArguments: List<IrExpression?>, enclosingStmt: Label<out DbStmt>, enclosingCallable: Label<out DbCallable>, idxOffset: Int) {
+    private fun extractCallValueArguments(callId: Label<out DbExprparent>, call: IrFunctionAccessExpression, valueArguments: List<IrExpression?>, callTarget: IrFunction, enclosingStmt: Label<out DbStmt>, enclosingCallable: Label<out DbCallable>, idxOffset: Int) {
         var i = 0
         valueArguments.forEach { arg ->
             if (arg != null) {
@@ -1589,6 +1589,26 @@ open class KotlinFileExtractor(
                     extractExpressionExpr(arg, enclosingCallable, callId, (i++) + idxOffset, enclosingStmt)
                 }
             } else {
+                val realCallTarget = callTarget.target.realOverrideTarget
+
+                if (realCallTarget.fqNameWhenAvailable?.asString() == "kotlin.Enum.<init>" &&
+                    realCallTarget.valueParameters.size == 2 &&
+                    i < realCallTarget.valueParameters.size &&
+                    realCallTarget.valueParameters[i].defaultValue == null) {
+
+                    if (i == 0 && realCallTarget.valueParameters[i].type.classFqName?.asString() == "kotlin.String") {
+
+                        val id = extractNull(pluginContext.irBuiltIns.stringType, tw.getLocation(call), callId, (i++) + idxOffset, enclosingStmt, enclosingCallable)
+                        tw.writeCompiler_generated(id, CompilerGeneratedKinds.ENUM_CONSTRUCTOR_ARGUMENT.kind)
+                    } else if (i == 1 && realCallTarget.valueParameters[i].type.classFqName?.asString() == "kotlin.Int") {
+
+                        val id = extractInteger(pluginContext.irBuiltIns.intType, 0, tw.getLocation(call), callId, (i++) + idxOffset, enclosingStmt, enclosingCallable)
+                        tw.writeCompiler_generated(id, CompilerGeneratedKinds.ENUM_CONSTRUCTOR_ARGUMENT.kind)
+                    }
+
+                    return@forEach
+                }
+
                 // TODO: handle default argument values
                 val id = tw.getFreshIdLabel<DbErrorexpr>()
                 // TODO: type could be inferred from the parameter type
@@ -2192,15 +2212,7 @@ open class KotlinFileExtractor(
                             tw.writeStatementEnclosingExpr(initId, enclosingStmt)
                             it.elements.forEachIndexed { i, arg -> extractVarargElement(arg, callable, initId, i, enclosingStmt) }
 
-                            val dim = it.elements.size
-                            val dimId = tw.getFreshIdLabel<DbIntegerliteral>()
-                            val dimType = useType(pluginContext.irBuiltIns.intType)
-                            tw.writeExprs_integerliteral(dimId, dimType.javaResult.id, id, 0)
-                            tw.writeExprsKotlinType(dimId, dimType.kotlinResult.id)
-                            tw.writeHasLocation(dimId, locId)
-                            tw.writeCallableEnclosingExpr(dimId, callable)
-                            tw.writeStatementEnclosingExpr(dimId, enclosingStmt)
-                            tw.writeNamestrings(dim.toString(), dim.toString(), dimId)
+                            extractInteger(pluginContext.irBuiltIns.intType, it.elements.size, locId, id, 0, enclosingStmt, callable)
                         }
                     }
                 }
@@ -2471,7 +2483,7 @@ open class KotlinFileExtractor(
             tw.writeIsAnonymClass(type.javaResult.id.cast<DbClass>(), id)
         }
 
-        extractCallValueArguments(id, e, enclosingStmt, callable, 0)
+        extractCallValueArguments(id, e, e.symbol.owner, enclosingStmt, callable, 0)
 
         val dr = e.dispatchReceiver
         if (dr != null) {
@@ -2699,7 +2711,7 @@ open class KotlinFileExtractor(
 
                     tw.writeHasLocation(id, locId)
                     tw.writeCallableBinding(id.cast<DbCaller>(), methodId)
-                    extractCallValueArguments(id, e, id, callable, 0)
+                    extractCallValueArguments(id, e, e.symbol.owner, id, callable, 0)
                     val dr = e.dispatchReceiver
                     if (dr != null) {
                         extractExpressionExpr(dr, callable, id, -1, id)
@@ -2828,15 +2840,7 @@ open class KotlinFileExtractor(
                     val exprParent = parent.expr(e, callable)
                     when(val v = e.value) {
                         is Int, is Short, is Byte -> {
-                            val id = tw.getFreshIdLabel<DbIntegerliteral>()
-                            val type = useType(e.type)
-                            val locId = tw.getLocation(e)
-                            tw.writeExprs_integerliteral(id, type.javaResult.id, exprParent.parent, exprParent.idx)
-                            tw.writeExprsKotlinType(id, type.kotlinResult.id)
-                            tw.writeHasLocation(id, locId)
-                            tw.writeCallableEnclosingExpr(id, callable)
-                            tw.writeStatementEnclosingExpr(id, exprParent.enclosingStmt)
-                            tw.writeNamestrings(v.toString(), v.toString(), id)
+                            extractInteger(e.type, v, tw.getLocation(e), exprParent.parent, exprParent.idx, exprParent.enclosingStmt, callable)
                         } is Long -> {
                             val id = tw.getFreshIdLabel<DbLongliteral>()
                             val type = useType(e.type)
@@ -2899,14 +2903,7 @@ open class KotlinFileExtractor(
                             tw.writeNamestrings(v.toString(), v.toString(), id)
                         }
                         null -> {
-                            val id = tw.getFreshIdLabel<DbNullliteral>()
-                            val type = useType(e.type) // class;kotlin.Nothing
-                            val locId = tw.getLocation(e)
-                            tw.writeExprs_nullliteral(id, type.javaResult.id, exprParent.parent, exprParent.idx)
-                            tw.writeExprsKotlinType(id, type.kotlinResult.id)
-                            tw.writeHasLocation(id, locId)
-                            tw.writeCallableEnclosingExpr(id, callable)
-                            tw.writeStatementEnclosingExpr(id, exprParent.enclosingStmt)
+                            extractNull(e.type, tw.getLocation(e), exprParent.parent, exprParent.idx, exprParent.enclosingStmt, callable)
                         }
                         else -> {
                             logger.errorElement("Unrecognised IrConst: " + v.javaClass, e)
@@ -3250,6 +3247,44 @@ open class KotlinFileExtractor(
             }
             return
         }
+    }
+
+    private fun extractNull(
+        t: IrType,
+        locId: Label<out DbLocation>,
+        parent: Label<out DbExprparent>,
+        idx: Int,
+        enclosingStmt: Label<out DbStmt>,
+        enclosingCallable: Label<out DbCallable>
+    ): Label<DbNullliteral> {
+        val id = tw.getFreshIdLabel<DbNullliteral>()
+        val type = useType(t) // class;kotlin.Nothing
+        tw.writeExprs_nullliteral(id, type.javaResult.id, parent, idx)
+        tw.writeExprsKotlinType(id, type.kotlinResult.id)
+        tw.writeHasLocation(id, locId)
+        tw.writeCallableEnclosingExpr(id, enclosingCallable)
+        tw.writeStatementEnclosingExpr(id, enclosingStmt)
+        return id
+    }
+
+    private fun extractInteger(
+        t: IrType,
+        value: Any,
+        locId: Label<out DbLocation>,
+        parent: Label<out DbExprparent>,
+        idx: Int,
+        enclosingStmt: Label<out DbStmt>,
+        enclosingCallable: Label<out DbCallable>
+    ): Label<DbIntegerliteral> {
+        val id = tw.getFreshIdLabel<DbIntegerliteral>()
+        val type = useType(t)
+        tw.writeExprs_integerliteral(id, type.javaResult.id, parent, idx)
+        tw.writeExprsKotlinType(id, type.kotlinResult.id)
+        tw.writeHasLocation(id, locId)
+        tw.writeCallableEnclosingExpr(id, enclosingCallable)
+        tw.writeStatementEnclosingExpr(id, enclosingStmt)
+        tw.writeNamestrings(value.toString(), value.toString(), id)
+        return id
     }
 
     private fun extractSuperAccess(irType: IrType, callable: Label<out DbCallable>, parent: Label<out DbExprparent>, idx: Int, enclosingStmt: Label<out DbStmt>, locId: Label<out DbLocation>) =
@@ -4164,7 +4199,6 @@ open class KotlinFileExtractor(
         useFirstArgAsDispatch: Boolean = false,         // true if the first argument should be used as the dispatch receiver
         dispatchReceiverIdx: Int = -1                   // index of the dispatch receiver. -1 in case of functions, -2 in case of constructors
     ) {
-        val intType = useType(pluginContext.irBuiltIns.intType)
         val argsParamType = pluginContext.irBuiltIns.arrayClass.typeWith(pluginContext.irBuiltIns.anyNType)
         val argsType = useType(argsParamType)
         val anyNType = useType(pluginContext.irBuiltIns.anyNType)
@@ -4205,11 +4239,7 @@ open class KotlinFileExtractor(
             tw.writeVariableBinding(argsAccessId, funLabels.parameters.first().first)
 
             // index access: `i`
-            val indexId = tw.getFreshIdLabel<DbIntegerliteral>()
-            tw.writeExprs_integerliteral(indexId, intType.javaResult.id, arrayAccessId, 1)
-            tw.writeExprsKotlinType(indexId, intType.kotlinResult.id)
-            extractCommonExpr(indexId)
-            tw.writeNamestrings(pIdx.toString(), pIdx.toString(), indexId)
+            extractInteger(pluginContext.irBuiltIns.intType, pIdx, locId, arrayAccessId, 1, enclosingStmtId, funLabels.methodId)
         }
     }
 
@@ -4401,13 +4431,7 @@ open class KotlinFileExtractor(
         tw.writeExprsKotlinType(initId, at.kotlinResult.id)
         extractCommonExpr(initId)
 
-        val dim = arraySize.toString()
-        val dimId = tw.getFreshIdLabel<DbIntegerliteral>()
-        val dimType = useType(pluginContext.irBuiltIns.intType)
-        tw.writeExprs_integerliteral(dimId, dimType.javaResult.id, arrayCreationId, 0)
-        tw.writeExprsKotlinType(dimId, dimType.kotlinResult.id)
-        extractCommonExpr(dimId)
-        tw.writeNamestrings(dim, dim, dimId)
+        extractInteger(pluginContext.irBuiltIns.intType, arraySize, locId, arrayCreationId, 0, enclosingStmt, enclosingCallable)
 
         return initId
     }
@@ -4830,5 +4854,6 @@ open class KotlinFileExtractor(
         DELEGATED_PROPERTY_GETTER(6),
         DELEGATED_PROPERTY_SETTER(7),
         JVMSTATIC_PROXY_METHOD(8),
+        ENUM_CONSTRUCTOR_ARGUMENT(9),
     }
 }
