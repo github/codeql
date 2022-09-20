@@ -1,0 +1,41 @@
+getAMemberImport
+| Test.java:12:1:12:45 | import static Subclass.STATIC_FIELD | packageA/Superclass.java:9:29:9:40 | STATIC_FIELD |
+| Test.java:12:1:12:45 | import static Subclass.STATIC_FIELD | packageA/Superinterface.java:8:9:8:20 | STATIC_FIELD |
+| Test.java:13:1:13:45 | import static Subclass.staticMethod | packageA/Superclass.java:11:24:11:35 | staticMethod |
+| Test.java:14:1:14:42 | import static Subclass.nameClash | packageA/Subclass.java:6:29:6:37 | nameClash |
+| Test.java:14:1:14:42 | import static Subclass.nameClash | packageA/Subclass.java:7:24:7:32 | nameClash |
+| Test.java:14:1:14:42 | import static Subclass.nameClash | packageA/Subclass.java:8:24:8:32 | nameClash |
+| Test.java:14:1:14:42 | import static Subclass.nameClash | packageA/Subclass.java:10:25:10:33 | nameClash |
+| Test.java:17:1:17:49 | import static Subinterface.STATIC_FIELD | packageA/Superinterface2.java:8:9:8:20 | STATIC_FIELD |
+| Test.java:17:1:17:49 | import static Subinterface.STATIC_FIELD | packageA/Superinterface.java:8:9:8:20 | STATIC_FIELD |
+| Test.java:18:1:18:51 | import static Superinterface.staticMethod | packageA/Superinterface.java:10:24:10:35 | staticMethod |
+| Test.java:19:1:19:46 | import static Subinterface.nameClash | packageA/Subinterface.java:4:29:4:37 | nameClash |
+| Test.java:19:1:19:46 | import static Subinterface.nameClash | packageA/Subinterface.java:5:24:5:32 | nameClash |
+| Test.java:19:1:19:46 | import static Subinterface.nameClash | packageA/Subinterface.java:6:24:6:32 | nameClash |
+| Test.java:19:1:19:46 | import static Subinterface.nameClash | packageA/Subinterface.java:8:25:8:33 | nameClash |
+getATypeImport
+| Test.java:14:1:14:42 | import static Subclass.nameClash | packageA/Subclass.java:10:25:10:33 | nameClash |
+| Test.java:19:1:19:46 | import static Subinterface.nameClash | packageA/Subinterface.java:8:25:8:33 | nameClash |
+getAMethodImport
+| Test.java:13:1:13:45 | import static Subclass.staticMethod | packageA/Superclass.java:11:24:11:35 | staticMethod |
+| Test.java:14:1:14:42 | import static Subclass.nameClash | packageA/Subclass.java:7:24:7:32 | nameClash |
+| Test.java:14:1:14:42 | import static Subclass.nameClash | packageA/Subclass.java:8:24:8:32 | nameClash |
+| Test.java:18:1:18:51 | import static Superinterface.staticMethod | packageA/Superinterface.java:10:24:10:35 | staticMethod |
+| Test.java:19:1:19:46 | import static Subinterface.nameClash | packageA/Subinterface.java:5:24:5:32 | nameClash |
+| Test.java:19:1:19:46 | import static Subinterface.nameClash | packageA/Subinterface.java:6:24:6:32 | nameClash |
+getAFieldImport
+| Test.java:12:1:12:45 | import static Subclass.STATIC_FIELD | packageA/Superclass.java:9:29:9:40 | STATIC_FIELD |
+| Test.java:12:1:12:45 | import static Subclass.STATIC_FIELD | packageA/Superinterface.java:8:9:8:20 | STATIC_FIELD |
+| Test.java:14:1:14:42 | import static Subclass.nameClash | packageA/Subclass.java:6:29:6:37 | nameClash |
+| Test.java:17:1:17:49 | import static Subinterface.STATIC_FIELD | packageA/Superinterface2.java:8:9:8:20 | STATIC_FIELD |
+| Test.java:17:1:17:49 | import static Subinterface.STATIC_FIELD | packageA/Superinterface.java:8:9:8:20 | STATIC_FIELD |
+| Test.java:19:1:19:46 | import static Subinterface.nameClash | packageA/Subinterface.java:4:29:4:37 | nameClash |
+#select
+| Test.java:11:1:11:45 | import static Subclass.StaticNested | packageA/Subclass.java:3:14:3:21 | Subclass | StaticNested |
+| Test.java:12:1:12:45 | import static Subclass.STATIC_FIELD | packageA/Subclass.java:3:14:3:21 | Subclass | STATIC_FIELD |
+| Test.java:13:1:13:45 | import static Subclass.staticMethod | packageA/Subclass.java:3:14:3:21 | Subclass | staticMethod |
+| Test.java:14:1:14:42 | import static Subclass.nameClash | packageA/Subclass.java:3:14:3:21 | Subclass | nameClash |
+| Test.java:16:1:16:49 | import static Subinterface.StaticNested | packageA/Subinterface.java:3:18:3:29 | Subinterface | StaticNested |
+| Test.java:17:1:17:49 | import static Subinterface.STATIC_FIELD | packageA/Subinterface.java:3:18:3:29 | Subinterface | STATIC_FIELD |
+| Test.java:18:1:18:51 | import static Superinterface.staticMethod | packageA/Superinterface.java:3:18:3:31 | Superinterface | staticMethod |
+| Test.java:19:1:19:46 | import static Subinterface.nameClash | packageA/Subinterface.java:3:18:3:29 | Subinterface | nameClash |

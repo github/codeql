@@ -67,7 +67,7 @@ class ImportOnDemandFromPackage extends Import {
   Package getPackageHoldingImport() { imports(this, result, _, _) }
 
   /** Gets an imported type. */
-  RefType getAnImport() { result.getPackage() = this.getPackageHoldingImport() }
+  TopLevelType getAnImport() { result.getPackage() = this.getPackageHoldingImport() }
 
   /** Gets a printable representation of this import declaration. */
   override string toString() {
@@ -89,14 +89,26 @@ class ImportStaticOnDemand extends Import {
   /** Gets the type from which accessible static members are imported. */
   ClassOrInterface getTypeHoldingImport() { imports(this, result, _, _) }
 
+  /** Gets an imported member. */
+  Member getAMemberImport() {
+    (
+      this.getTypeHoldingImport().inherits(result)
+      or
+      // Workaround for member types, see https://github.com/github/codeql/issues/5596
+      this.getTypeHoldingImport().getAMember() = result
+    ) and
+    result.isStatic() and
+    not result instanceof StaticInitializer
+  }
+
   /** Gets an imported type. */
-  NestedType getATypeImport() { result.getEnclosingType() = this.getTypeHoldingImport() }
+  MemberType getATypeImport() { result = this.getAMemberImport() }
 
   /** Gets an imported method. */
-  Method getAMethodImport() { result.getDeclaringType() = this.getTypeHoldingImport() }
+  Method getAMethodImport() { result = this.getAMemberImport() }
 
   /** Gets an imported field. */
-  Field getAFieldImport() { result.getDeclaringType() = this.getTypeHoldingImport() }
+  Field getAFieldImport() { result = this.getAMemberImport() }
 
   /** Gets a printable representation of this import declaration. */
   override string toString() {
@@ -125,18 +137,23 @@ class ImportStaticTypeMember extends Import {
 
   /** Gets an imported member. */
   Member getAMemberImport() {
-    this.getTypeHoldingImport().getAMember() = result and
+    (
+      this.getTypeHoldingImport().inherits(result)
+      or
+      // Workaround for member types, see https://github.com/github/codeql/issues/5596
+      this.getTypeHoldingImport().getAMember() = result
+    ) and
     result.getName() = this.getName() and
     result.isStatic()
   }
 
-  /** Gets an imported type. */
-  NestedType getATypeImport() { result = this.getAMemberImport() }
+  /** Gets an imported type in case one or more member types with the name specified by this import exist. */
+  MemberType getATypeImport() { result = this.getAMemberImport() }
 
-  /** Gets an imported method. */
+  /** Gets an imported method in case one or more methods with the name specified by this import exist. */
   Method getAMethodImport() { result = this.getAMemberImport() }
 
-  /** Gets an imported field. */
+  /** Gets an imported field in case one or more fields with the name specified by this import exist. */
   Field getAFieldImport() { result = this.getAMemberImport() }
 
   /** Gets a printable representation of this import declaration. */

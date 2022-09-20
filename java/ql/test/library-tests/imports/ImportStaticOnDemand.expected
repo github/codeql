@@ -1,0 +1,48 @@
+getAMemberImport
+| Test.java:21:1:21:34 | import static Subclass.* | packageA/Subclass.java:6:29:6:37 | nameClash |
+| Test.java:21:1:21:34 | import static Subclass.* | packageA/Subclass.java:7:24:7:32 | nameClash |
+| Test.java:21:1:21:34 | import static Subclass.* | packageA/Subclass.java:8:24:8:32 | nameClash |
+| Test.java:21:1:21:34 | import static Subclass.* | packageA/Subclass.java:10:25:10:33 | nameClash |
+| Test.java:21:1:21:34 | import static Subclass.* | packageA/Subclass.java:13:25:13:40 | HiddenMemberType |
+| Test.java:21:1:21:34 | import static Subclass.* | packageA/Subclass.java:15:29:15:40 | HIDDEN_FIELD |
+| Test.java:21:1:21:34 | import static Subclass.* | packageA/Subclass.java:16:24:16:35 | hiddenMethod |
+| Test.java:21:1:21:34 | import static Subclass.* | packageA/Superclass.java:9:29:9:40 | STATIC_FIELD |
+| Test.java:21:1:21:34 | import static Subclass.* | packageA/Superclass.java:11:24:11:35 | staticMethod |
+| Test.java:21:1:21:34 | import static Subclass.* | packageA/Superinterface.java:8:9:8:20 | STATIC_FIELD |
+| Test.java:24:1:24:49 | import static StaticNested.* | packageA/Superclass.java:6:28:6:28 | m |
+| Test.java:25:1:25:38 | import static Subinterface.* | packageA/Subinterface.java:4:29:4:37 | nameClash |
+| Test.java:25:1:25:38 | import static Subinterface.* | packageA/Subinterface.java:5:24:5:32 | nameClash |
+| Test.java:25:1:25:38 | import static Subinterface.* | packageA/Subinterface.java:6:24:6:32 | nameClash |
+| Test.java:25:1:25:38 | import static Subinterface.* | packageA/Subinterface.java:8:25:8:33 | nameClash |
+| Test.java:25:1:25:38 | import static Subinterface.* | packageA/Subinterface.java:11:25:11:40 | HiddenMemberType |
+| Test.java:25:1:25:38 | import static Subinterface.* | packageA/Subinterface.java:13:29:13:40 | HIDDEN_FIELD |
+| Test.java:25:1:25:38 | import static Subinterface.* | packageA/Subinterface.java:14:24:14:35 | hiddenMethod |
+| Test.java:25:1:25:38 | import static Subinterface.* | packageA/Superinterface2.java:8:9:8:20 | STATIC_FIELD |
+| Test.java:25:1:25:38 | import static Subinterface.* | packageA/Superinterface.java:8:9:8:20 | STATIC_FIELD |
+getATypeImport
+| Test.java:21:1:21:34 | import static Subclass.* | packageA/Subclass.java:10:25:10:33 | nameClash |
+| Test.java:21:1:21:34 | import static Subclass.* | packageA/Subclass.java:13:25:13:40 | HiddenMemberType |
+| Test.java:25:1:25:38 | import static Subinterface.* | packageA/Subinterface.java:8:25:8:33 | nameClash |
+| Test.java:25:1:25:38 | import static Subinterface.* | packageA/Subinterface.java:11:25:11:40 | HiddenMemberType |
+getAMethodImport
+| Test.java:21:1:21:34 | import static Subclass.* | packageA/Subclass.java:7:24:7:32 | nameClash |
+| Test.java:21:1:21:34 | import static Subclass.* | packageA/Subclass.java:8:24:8:32 | nameClash |
+| Test.java:21:1:21:34 | import static Subclass.* | packageA/Subclass.java:16:24:16:35 | hiddenMethod |
+| Test.java:21:1:21:34 | import static Subclass.* | packageA/Superclass.java:11:24:11:35 | staticMethod |
+| Test.java:24:1:24:49 | import static StaticNested.* | packageA/Superclass.java:6:28:6:28 | m |
+| Test.java:25:1:25:38 | import static Subinterface.* | packageA/Subinterface.java:5:24:5:32 | nameClash |
+| Test.java:25:1:25:38 | import static Subinterface.* | packageA/Subinterface.java:6:24:6:32 | nameClash |
+| Test.java:25:1:25:38 | import static Subinterface.* | packageA/Subinterface.java:14:24:14:35 | hiddenMethod |
+getAFieldImport
+| Test.java:21:1:21:34 | import static Subclass.* | packageA/Subclass.java:6:29:6:37 | nameClash |
+| Test.java:21:1:21:34 | import static Subclass.* | packageA/Subclass.java:15:29:15:40 | HIDDEN_FIELD |
+| Test.java:21:1:21:34 | import static Subclass.* | packageA/Superclass.java:9:29:9:40 | STATIC_FIELD |
+| Test.java:21:1:21:34 | import static Subclass.* | packageA/Superinterface.java:8:9:8:20 | STATIC_FIELD |
+| Test.java:25:1:25:38 | import static Subinterface.* | packageA/Subinterface.java:4:29:4:37 | nameClash |
+| Test.java:25:1:25:38 | import static Subinterface.* | packageA/Subinterface.java:13:29:13:40 | HIDDEN_FIELD |
+| Test.java:25:1:25:38 | import static Subinterface.* | packageA/Superinterface2.java:8:9:8:20 | STATIC_FIELD |
+| Test.java:25:1:25:38 | import static Subinterface.* | packageA/Superinterface.java:8:9:8:20 | STATIC_FIELD |
+#select
+| Test.java:21:1:21:34 | import static Subclass.* | packageA/Subclass.java:3:14:3:21 | Subclass |
+| Test.java:24:1:24:49 | import static StaticNested.* | packageA/Superclass.java:5:25:5:36 | StaticNested |
+| Test.java:25:1:25:38 | import static Subinterface.* | packageA/Subinterface.java:3:18:3:29 | Subinterface |

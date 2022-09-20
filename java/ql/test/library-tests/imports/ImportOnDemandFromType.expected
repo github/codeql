@@ -1,0 +1,10 @@
+getAnImport
+| Test.java:7:1:7:27 | import Subclass.* | packageA/Subclass.java:4:18:4:22 | Inner |
+| Test.java:7:1:7:27 | import Subclass.* | packageA/Subclass.java:10:25:10:33 | nameClash |
+| Test.java:7:1:7:27 | import Subclass.* | packageA/Subclass.java:13:25:13:40 | HiddenMemberType |
+| Test.java:9:1:9:31 | import Subinterface.* | packageA/Subinterface.java:8:25:8:33 | nameClash |
+| Test.java:9:1:9:31 | import Subinterface.* | packageA/Subinterface.java:11:25:11:40 | HiddenMemberType |
+#select
+| Test.java:7:1:7:27 | import Subclass.* | packageA/Subclass.java:3:14:3:21 | Subclass |
+| Test.java:8:1:8:33 | import Inner.* | packageA/Subclass.java:4:18:4:22 | Inner |
+| Test.java:9:1:9:31 | import Subinterface.* | packageA/Subinterface.java:3:18:3:29 | Subinterface |
