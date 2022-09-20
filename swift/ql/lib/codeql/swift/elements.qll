@@ -29,7 +29,6 @@ import codeql.swift.elements.decl.FuncDecl
 import codeql.swift.elements.decl.GenericContext
 import codeql.swift.elements.decl.GenericTypeDecl
 import codeql.swift.elements.decl.GenericTypeParamDecl
-import codeql.swift.elements.decl.IfConfigClause
 import codeql.swift.elements.decl.IfConfigDecl
 import codeql.swift.elements.decl.ImportDecl
 import codeql.swift.elements.decl.InfixOperatorDecl

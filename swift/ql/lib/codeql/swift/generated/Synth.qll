@@ -22,7 +22,6 @@ module Synth {
     TEnumElementDecl(Raw::EnumElementDecl id) { constructEnumElementDecl(id) } or
     TExtensionDecl(Raw::ExtensionDecl id) { constructExtensionDecl(id) } or
     TGenericTypeParamDecl(Raw::GenericTypeParamDecl id) { constructGenericTypeParamDecl(id) } or
-    TIfConfigClause(Raw::IfConfigClause id) { constructIfConfigClause(id) } or
     TIfConfigDecl(Raw::IfConfigDecl id) { constructIfConfigDecl(id) } or
     TImportDecl(Raw::ImportDecl id) { constructImportDecl(id) } or
     TInfixOperatorDecl(Raw::InfixOperatorDecl id) { constructInfixOperatorDecl(id) } or
@@ -315,7 +314,7 @@ module Synth {
 
   class TFile = TDbFile or TUnknownFile;
 
-  class TLocatable = TArgument or TAstNode or TComment or TConditionElement or TIfConfigClause;
+  class TLocatable = TArgument or TAstNode or TComment or TConditionElement;
 
   class TLocation = TDbLocation or TUnknownLocation;
 
@@ -525,9 +524,6 @@ module Synth {
   TGenericTypeParamDecl convertGenericTypeParamDeclFromRaw(Raw::Element e) {
     result = TGenericTypeParamDecl(e)
   }
-
-  cached
-  TIfConfigClause convertIfConfigClauseFromRaw(Raw::Element e) { result = TIfConfigClause(e) }
 
   cached
   TIfConfigDecl convertIfConfigDeclFromRaw(Raw::Element e) { result = TIfConfigDecl(e) }
@@ -1438,8 +1434,6 @@ module Synth {
     result = convertCommentFromRaw(e)
     or
     result = convertConditionElementFromRaw(e)
-    or
-    result = convertIfConfigClauseFromRaw(e)
   }
 
   cached
@@ -2187,9 +2181,6 @@ module Synth {
   Raw::Element convertGenericTypeParamDeclToRaw(TGenericTypeParamDecl e) {
     e = TGenericTypeParamDecl(result)
   }
-
-  cached
-  Raw::Element convertIfConfigClauseToRaw(TIfConfigClause e) { e = TIfConfigClause(result) }
 
   cached
   Raw::Element convertIfConfigDeclToRaw(TIfConfigDecl e) { e = TIfConfigDecl(result) }
@@ -3098,8 +3089,6 @@ module Synth {
     result = convertCommentToRaw(e)
     or
     result = convertConditionElementToRaw(e)
-    or
-    result = convertIfConfigClauseToRaw(e)
   }
 
   cached

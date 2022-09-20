@@ -332,28 +332,6 @@ private module Impl {
     )
   }
 
-  private Element getImmediateChildOfIfConfigClause(
-    IfConfigClause e, int index, string partialPredicateCall
-  ) {
-    exists(int b, int bLocatable, int n, int nCondition, int nElement |
-      b = 0 and
-      bLocatable = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfLocatable(e, i, _)) | i) and
-      n = bLocatable and
-      nCondition = n + 1 and
-      nElement = nCondition + 1 + max(int i | i = -1 or exists(e.getImmediateElement(i)) | i) and
-      (
-        none()
-        or
-        result = getImmediateChildOfLocatable(e, index - b, partialPredicateCall)
-        or
-        index = n and result = e.getImmediateCondition() and partialPredicateCall = "Condition()"
-        or
-        result = e.getImmediateElement(index - nCondition) and
-        partialPredicateCall = "Element(" + (index - nCondition).toString() + ")"
-      )
-    )
-  }
-
   private Element getImmediateChildOfInOutType(InOutType e, int index, string partialPredicateCall) {
     exists(int b, int bType, int n |
       b = 0 and
@@ -1763,18 +1741,18 @@ private module Impl {
   private Element getImmediateChildOfIfConfigDecl(
     IfConfigDecl e, int index, string partialPredicateCall
   ) {
-    exists(int b, int bDecl, int n, int nClause |
+    exists(int b, int bDecl, int n, int nActiveElement |
       b = 0 and
       bDecl = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfDecl(e, i, _)) | i) and
       n = bDecl and
-      nClause = n + 1 + max(int i | i = -1 or exists(e.getImmediateClause(i)) | i) and
+      nActiveElement = n + 1 + max(int i | i = -1 or exists(e.getImmediateActiveElement(i)) | i) and
       (
         none()
         or
         result = getImmediateChildOfDecl(e, index - b, partialPredicateCall)
         or
-        result = e.getImmediateClause(index - n) and
-        partialPredicateCall = "Clause(" + (index - n).toString() + ")"
+        result = e.getImmediateActiveElement(index - n) and
+        partialPredicateCall = "ActiveElement(" + (index - n).toString() + ")"
       )
     )
   }
@@ -4795,8 +4773,6 @@ private module Impl {
     result = getImmediateChildOfErrorType(e, index, partialAccessor)
     or
     result = getImmediateChildOfExistentialType(e, index, partialAccessor)
-    or
-    result = getImmediateChildOfIfConfigClause(e, index, partialAccessor)
     or
     result = getImmediateChildOfInOutType(e, index, partialAccessor)
     or

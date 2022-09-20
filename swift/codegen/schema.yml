@@ -299,15 +299,7 @@ EnumCaseDecl:
 IfConfigDecl:
   _extends: Decl
   _children:
-    clauses: IfConfigClause*
-
-IfConfigClause:
-  _extends: Locatable
-  _children:
-    condition: Expr?
-    elements: AstNode*
-  is_active: predicate
-  _dir: decl
+    active_elements: AstNode*
 
 ImportDecl:
   _extends: Decl

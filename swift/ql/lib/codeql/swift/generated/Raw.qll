@@ -129,16 +129,6 @@ module Raw {
     Type getConstraint() { existential_types(this, result) }
   }
 
-  class IfConfigClause extends @if_config_clause, Locatable {
-    override string toString() { result = "IfConfigClause" }
-
-    Expr getCondition() { if_config_clause_conditions(this, result) }
-
-    AstNode getElement(int index) { if_config_clause_elements(this, index, result) }
-
-    predicate isActive() { if_config_clause_is_active(this) }
-  }
-
   class InOutType extends @in_out_type, Type {
     override string toString() { result = "InOutType" }
 
@@ -587,7 +577,7 @@ module Raw {
   class IfConfigDecl extends @if_config_decl, Decl {
     override string toString() { result = "IfConfigDecl" }
 
-    IfConfigClause getClause(int index) { if_config_decl_clauses(this, index, result) }
+    AstNode getActiveElement(int index) { if_config_decl_active_elements(this, index, result) }
   }
 
   class IfExpr extends @if_expr, Expr {
