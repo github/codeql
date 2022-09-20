@@ -37,7 +37,7 @@ private import semmle.code.xml.AndroidManifest
 //     )
 //   }
 // }
-// ! experimental modelling of `parseUri`
+// ! experimental modeling of `parseUri`
 /**
  * The method `Intent.parseUri`
  */

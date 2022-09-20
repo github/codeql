@@ -324,10 +324,10 @@ private class StartActivityIntentStep extends AdditionalValueStep {
       startActivity.getMethod().overrides*(any(StartActivityMethod m)) and
       getIntent.getMethod().overrides*(any(AndroidGetIntentMethod m)) and
       newIntent.getConstructedType() instanceof TypeIntent and
-      DataFlow::localExprFlow(newIntent, getIntentArgOfStartActMethod(startActivity)) and
+      DataFlow::localExprFlow(newIntent, this.getIntentArgOfStartActMethod(startActivity)) and
       getClassArgOfIntentConstructor(newIntent).getType().(ParameterizedType).getATypeArgument() =
         getIntent.getReceiverType() and
-      n1.asExpr() = getIntentArgOfStartActMethod(startActivity) and
+      n1.asExpr() = this.getIntentArgOfStartActMethod(startActivity) and
       n2.asExpr() = getIntent
     )
   }
