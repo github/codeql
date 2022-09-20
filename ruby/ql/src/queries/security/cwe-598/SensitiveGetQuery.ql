@@ -33,7 +33,7 @@ private predicate localFlowWithElementReference(DataFlow::LocalSourceNode src, D
 }
 
 from
-  HTTP::Server::RequestHandler handler, HTTP::Server::RequestInputAccess input,
+  Http::Server::RequestHandler handler, Http::Server::RequestInputAccess input,
   SensitiveNode sensitive
 where
   handler.getAnHttpMethod() = "get" and
