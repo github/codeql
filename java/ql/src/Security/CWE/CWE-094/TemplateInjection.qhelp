@@ -2,7 +2,7 @@
 <qhelp>
 <overview>
 <p>
-Template Injection occurs when user input is embedded in a template's code in an unsafe manner.
+Template injection occurs when user input is embedded in a template's code in an unsafe manner.
 An attacker can use native template syntax to inject a malicious payload into a template, which is then executed server-side.
 This permits the attacker to run arbitrary code in the server's context.
 </p>
