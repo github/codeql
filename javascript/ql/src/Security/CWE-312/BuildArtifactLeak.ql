@@ -20,5 +20,5 @@ import DataFlow::PathGraph
 from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink
 where cfg.hasFlowPath(source, sink)
 select sink.getNode(), source, sink,
-  "Sensitive data returned by $@ is stored in a build artifact here.", source.getNode(),
-  source.getNode().(CleartextLogging::Source).describe()
+  "Sensitive data returned by $@ flows to this location and is stored in a build artifact.",
+  source.getNode(), source.getNode().(CleartextLogging::Source).describe()

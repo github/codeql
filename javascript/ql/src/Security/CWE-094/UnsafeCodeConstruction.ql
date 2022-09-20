@@ -19,5 +19,5 @@ import semmle.javascript.security.dataflow.UnsafeCodeConstruction::UnsafeCodeCon
 
 from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink
 where cfg.hasFlowPath(source, sink)
-select sink.getNode(), source, sink, "$@ flows to here and is later $@.", source.getNode(),
+select sink.getNode(), source, sink, "$@ flows to this location and is later $@.", source.getNode(),
   "Library input", sink.getNode().(Sink).getCodeSink(), "interpreted as code"
