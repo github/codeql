@@ -9,7 +9,7 @@
 <p>You should only enable debugging features during development. When you create a production build, you should disable it. If you enable debugging features, this can make your code vulnerable by adding entry points, or leaking sensitive information.</p>
 </overview>
 <recommendation>
-<p>Ensure that debugging features are not enabled in production builds, such as by guarding calls to <code>WebView.setWebContentsDebuggingEnabled(true)</code> by a flag that is only enabled in debug builds. 
+<p>Ensure that debugging features are not enabled in production builds, such as by guarding calls to <code>WebView.setWebContentsDebuggingEnabled(true)</code> by a flag that is only enabled in debug builds. </p>
 
 </recommendation>
 <example>
