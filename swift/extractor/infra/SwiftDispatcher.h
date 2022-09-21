@@ -80,11 +80,10 @@ class SwiftDispatcher {
   void emitUnknown(E* entity) {
     auto label = assignNewLabel(entity);
     using Trap = BindingTrapOf<E>;
-    Trap entry{label};
-    // check that Trap only has the `id` field by using structured binding on it
-    auto [id] = entry;
-    std::ignore = id;
-    emit(entry);
+    static_assert(sizeof(Trap) == sizeof(label),
+                  "Binding traps of unknown entities must only have the `id` field (the class "
+                  "should be empty in schema.yml)");
+    emit(Trap{label});
     emit(ElementIsUnknownTrap{label});
   }
 
