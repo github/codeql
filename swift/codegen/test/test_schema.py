@@ -142,6 +142,8 @@ def test_no_mixed_groups_in_bases():
                 pass
 
 #
+
+
 def test_lowercase_rejected():
     with pytest.raises(schema.Error):
         @schema.load
@@ -304,6 +306,7 @@ def test_class_with_pragma(pragma, expected):
         'A': schema.Class('A', pragmas=[expected]),
     }
 
+
 def test_class_with_pragmas():
     def apply_pragmas(cls):
         for p, _ in _pragmas:
@@ -336,6 +339,7 @@ def test_ipa_from_class():
         'B': schema.Class('B', bases=['A'], ipa=schema.IpaInfo(from_class="A")),
     }
 
+
 def test_ipa_from_class_ref():
     @schema.load
     class data:
@@ -350,6 +354,7 @@ def test_ipa_from_class_ref():
         'A': schema.Class('A', derived={'B'}, ipa=schema.IpaInfo(from_class="B")),
         'B': schema.Class('B', bases=['A']),
     }
+
 
 def test_ipa_from_class_dangling():
     with pytest.raises(schema.Error):
@@ -375,6 +380,7 @@ def test_ipa_class_on():
         'B': schema.Class('B', bases=['A'], ipa=schema.IpaInfo(on_arguments={'a': 'A', 'i': 'int'})),
     }
 
+
 def test_ipa_class_on_ref():
     class A:
         pass
@@ -392,6 +398,7 @@ def test_ipa_class_on_ref():
         'A': schema.Class('A', derived={'B'}, ipa=schema.IpaInfo(on_arguments={'b': 'B', 'i': 'int'})),
         'B': schema.Class('B', bases=['A']),
     }
+
 
 def test_ipa_class_on_dangling():
     with pytest.raises(schema.Error):
