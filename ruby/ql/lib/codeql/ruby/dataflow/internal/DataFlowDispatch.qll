@@ -302,11 +302,7 @@ private module Cached {
           result = lookupMethod(tp, method) and
           if result.(Method).isPrivate()
           then
-            exists(SelfVariableAccess self |
-              self = call.getReceiver().getExpr() and
-              pragma[only_bind_out](self.getEnclosingModule().getModule().getSuperClass*()) =
-                pragma[only_bind_out](result.getEnclosingModule().getModule())
-            ) and
+            call.getReceiver().getExpr() instanceof SelfVariableAccess and
             // For now, we restrict the scope of top-level declarations to their file.
             // This may remove some plausible targets, but also removes a lot of
             // implausible targets
