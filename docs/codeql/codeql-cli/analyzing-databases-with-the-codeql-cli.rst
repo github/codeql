@@ -38,7 +38,7 @@ When you run ``database analyze``, it:
 
 You can analyze a database by running the following command::
 
-   codeql database analyze <database> --format=<format> --output=<output> ...<query-specifiers>
+   codeql database analyze <database> --format=<format> --output=<output> <query-specifiers>...
 
 
 You must specify:
@@ -56,8 +56,8 @@ You must specify:
 
 You can also specify:
 
-- ``...<query-specifiers>``: a list of queries to run over your database. This
-  is a list of arguments. Where each argument can be:
+- ``<query-specifiers>...``: a spece-separated list of queries to run over your database. This
+  is a list of arguments, where each argument can be:
 
   - a path to a query file
   - a path to a directory containing query files
@@ -99,14 +99,13 @@ You can also specify:
 For full details of all the options you can use when analyzing databases, see
 the `database analyze reference documentation <../manual/database-analyze>`__.
 
-.. _database-analyze-examples:
 
 .. _specifying-which-queries:
 
 Specifying which queries to run in a CodeQL pack
 ------------------------------------------------
 
-*Query specifiers* are used by ``codeql database analyze`` and other commands that operate on a set of queries.
+Query specifiers are used by ``codeql database analyze`` and other commands that operate on a set of queries.
 The complete way to specify a set of queries is in the form ``scope/name@range:path``, where:
 
 - ``scope/name`` is the qualified name of a CodeQL pack.
@@ -129,7 +128,7 @@ be absolute. It is considered relative to the root of the CodeQL
 pack.
 
 Example query specifiers
-------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~
 
 * ``codeql/python-queries`` - All the queries in the default query suite of the latest version of the ``codeql/python-queries`` pack.
 * ``codeql/python-queries@1.2.3`` - All the queries in the default query suite of version ``1.2.3`` of the ``codeql/python-queries`` pack.
@@ -243,10 +242,8 @@ Query suites in the core CodeQL query packs are all stored in the ``codeql-suite
 * ``cpp-code-scanning.qls`` - Standard Code Scanning queries for C++.
 * ``cpp-security-and-quality`` - Security-and-quality queries for C++.
 * ``cpp-security-extended`` - Security-extended queries for C++. This suite contains queries that are less precise than the standard security queries, and may find more false-positives.
-* ``cpp-lgtm.qls`` - Standard LGTM queries for C++.
-* ``cpp-lgtm-full.qls`` - Standard LGTM queries for C++, including less precise queries.
 
-You can see the sources for these query suites in the `CodeQL repository <https://github.com/github/codeql/tree/main/cpp/ql/src/codeql-suites>`. Query suites for other languages are similar.
+You can see the sources for these query suites in the `CodeQL repository <https://github.com/github/codeql/tree/main/cpp/ql/src/codeql-suites>`__. Query suites for other languages are similar.
 
 For information about creating custom query suites, see ":doc:`Creating
 CodeQL query suites <creating-codeql-query-suites>`."
