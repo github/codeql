@@ -88,6 +88,9 @@ calls.rb:
 #  399| SingletonOverride2
 #-----|  -> SingletonOverride1
 
+#  414| ConditionalInstanceMethods
+#-----|  -> Object
+
 hello.rb:
 #    1| EnglishWords
 

@@ -410,3 +410,26 @@ end
 
 SingletonOverride2.call_singleton1
 SingletonOverride2.call_singleton2
+
+class ConditionalInstanceMethods
+    if rand() > 0 then
+        def m1
+            puts "ConditionalInstanceMethods#m1"
+        end
+    end
+
+    def m2
+        puts "ConditionalInstanceMethods#m2"
+        
+        def m3
+            puts "ConditionalInstanceMethods#m3"
+        end
+
+        m3
+    end
+end
+
+ConditionalInstanceMethods.new.m1
+ConditionalInstanceMethods.new.m3 # NoMethodError
+ConditionalInstanceMethods.new.m2
+ConditionalInstanceMethods.new.m3

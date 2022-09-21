@@ -157,6 +157,15 @@ getTarget
 | calls.rb:397:1:397:34 | call to call_singleton2 | calls.rb:389:5:391:7 | call_singleton2 |
 | calls.rb:402:13:402:48 | call to puts | calls.rb:102:5:102:30 | puts |
 | calls.rb:407:9:407:44 | call to puts | calls.rb:102:5:102:30 | puts |
+| calls.rb:417:13:417:48 | call to puts | calls.rb:102:5:102:30 | puts |
+| calls.rb:422:9:422:44 | call to puts | calls.rb:102:5:102:30 | puts |
+| calls.rb:425:13:425:48 | call to puts | calls.rb:102:5:102:30 | puts |
+| calls.rb:432:1:432:30 | call to new | calls.rb:114:5:114:16 | new |
+| calls.rb:432:1:432:33 | call to m1 | calls.rb:416:9:418:11 | m1 |
+| calls.rb:433:1:433:30 | call to new | calls.rb:114:5:114:16 | new |
+| calls.rb:434:1:434:30 | call to new | calls.rb:114:5:114:16 | new |
+| calls.rb:434:1:434:33 | call to m2 | calls.rb:421:5:429:7 | m2 |
+| calls.rb:435:1:435:30 | call to new | calls.rb:114:5:114:16 | new |
 | hello.rb:12:5:12:24 | call to include | calls.rb:107:5:107:20 | include |
 | hello.rb:14:16:14:20 | call to hello | hello.rb:2:5:4:7 | hello |
 | hello.rb:20:16:20:20 | call to super | hello.rb:13:5:15:7 | message |
@@ -233,6 +242,11 @@ unresolvedCall
 | calls.rb:310:9:310:20 | call to instance |
 | calls.rb:411:1:411:34 | call to call_singleton1 |
 | calls.rb:412:1:412:34 | call to call_singleton2 |
+| calls.rb:415:8:415:13 | call to rand |
+| calls.rb:415:8:415:17 | ... > ... |
+| calls.rb:428:9:428:10 | call to m3 |
+| calls.rb:433:1:433:33 | call to m3 |
+| calls.rb:435:1:435:33 | call to m3 |
 | hello.rb:20:16:20:26 | ... + ... |
 | hello.rb:20:16:20:34 | ... + ... |
 | hello.rb:20:16:20:40 | ... + ... |
