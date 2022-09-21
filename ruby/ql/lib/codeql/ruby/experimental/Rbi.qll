@@ -311,9 +311,6 @@ module Rbi {
     MethodSignatureCall getMethodSignatureCall() { result = sigCall }
   }
 
-  bindingset[paramName]
-  private predicate isBlockParamName(string paramName) { paramName = ["blk", "block"] }
-
   /**
    * A call to `params`. This defines the types of parameters to a method or proc.
    */
@@ -328,7 +325,7 @@ module Rbi {
       // explicitly exclude keyword parameters
       not this.getAssociatedParameter(result.getName()) instanceof KeywordParameter and
       // and exclude block arguments
-      not isBlockParamName(result.getName())
+      not this.getAssociatedParameter(result.getName()) instanceof BlockParameter
     }
 
     /** Gets the type of the keyword parameter named `keyword`. */
@@ -342,7 +339,7 @@ module Rbi {
 
     /** Gets the type of the block parameter to the associated method. */
     ParameterType getBlockParameterType() {
-      isBlockParamName(result.getName()) and
+      this.getAssociatedParameter(result.getName()) instanceof BlockParameter and
       result = this.getArgument(_)
     }
 
