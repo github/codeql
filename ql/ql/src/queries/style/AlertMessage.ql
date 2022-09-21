@@ -184,6 +184,16 @@ String doubleWhitespace(Select sel) {
   result.getValue().regexpMatch(".*\\s\\s.*")
 }
 
+/**
+ * Gets an expression that repeats the alert-loc as a link.
+ */
+VarAccess getAlertLocLink(Select sel) {
+  result = sel.getExpr(0).(VarAccess).getDeclaration().getAnAccess() and
+  exists(int msgIndex | sel.getExpr(msgIndex) = sel.getMessage() |
+    result = sel.getExpr(any(int i | i > msgIndex))
+  )
+}
+
 from AstNode node, string msg, Select sel
 where
   not node.getLocation().getFile().getAbsolutePath().matches("%/test/%") and
@@ -218,5 +228,8 @@ where
     or
     node = doubleWhitespace(sel) and
     msg = "Avoid using double whitespace in alert messages."
+    or
+    node = getAlertLocLink(sel) and
+    msg = "Don't repeat the alert location as a link."
   )
 select node, msg
