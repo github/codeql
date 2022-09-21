@@ -104,8 +104,8 @@ You can translate this into QL as follows:
 .. code-block:: ql
 
    Person ancestorOf(Person p) {
-     result = parentOf(p) or
-     result = parentOf(ancestorOf(p))
+     result = childOf(p) or
+     result = childOf(ancestorOf(p))
    }
 
 As you can see, you have used the predicate ``ancestorOf()`` inside its own definition. This is an example of :ref:`recursion <recursion>`.
