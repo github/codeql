@@ -72,6 +72,9 @@ def generate(opts, renderer):
     tag_graph = {}
     out = opts.cpp_output
 
+    with open(opts.dbscheme) as input:
+        print(input.read())
+
     traps = {pathlib.Path(): []}
     for e in dbscheme.iterload(opts.dbscheme):
         if e.is_table:
