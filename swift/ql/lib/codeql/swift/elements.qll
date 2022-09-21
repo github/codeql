@@ -259,6 +259,9 @@ import codeql.swift.elements.type.NominalType
 import codeql.swift.elements.type.OpaqueTypeArchetypeType
 import codeql.swift.elements.type.OpenedArchetypeType
 import codeql.swift.elements.type.OptionalType
+import codeql.swift.elements.type.PackExpansionType
+import codeql.swift.elements.type.PackType
+import codeql.swift.elements.type.ParameterizedProtocolType
 import codeql.swift.elements.type.ParenType
 import codeql.swift.elements.type.PlaceholderType
 import codeql.swift.elements.type.PrimaryArchetypeType

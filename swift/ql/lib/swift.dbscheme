@@ -1789,6 +1789,9 @@ while_stmts(  //dir=stmt
 | @in_out_type
 | @l_value_type
 | @module_type
+| @pack_expansion_type
+| @pack_type
+| @parameterized_protocol_type
 | @placeholder_type
 | @protocol_composition_type
 | @reference_storage_type
@@ -1919,6 +1922,18 @@ l_value_types(  //dir=type
 module_types(  //dir=type
   unique int id: @module_type,
   int module: @module_decl ref
+);
+
+pack_expansion_types(  //dir=type
+  unique int id: @pack_expansion_type
+);
+
+pack_types(  //dir=type
+  unique int id: @pack_type
+);
+
+parameterized_protocol_types(  //dir=type
+  unique int id: @parameterized_protocol_type
 );
 
 placeholder_types(  //dir=type

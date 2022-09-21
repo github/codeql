@@ -1258,6 +1258,18 @@ module Raw {
     ModuleDecl getModule() { module_types(this, result) }
   }
 
+  class PackExpansionType extends @pack_expansion_type, Type {
+    override string toString() { result = "PackExpansionType" }
+  }
+
+  class PackType extends @pack_type, Type {
+    override string toString() { result = "PackType" }
+  }
+
+  class ParameterizedProtocolType extends @parameterized_protocol_type, Type {
+    override string toString() { result = "ParameterizedProtocolType" }
+  }
+
   class PlaceholderType extends @placeholder_type, Type {
     override string toString() { result = "PlaceholderType" }
   }

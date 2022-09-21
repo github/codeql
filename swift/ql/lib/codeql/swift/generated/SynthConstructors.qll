@@ -208,6 +208,9 @@ import codeql.swift.elements.type.ModuleTypeConstructor
 import codeql.swift.elements.type.OpaqueTypeArchetypeTypeConstructor
 import codeql.swift.elements.type.OpenedArchetypeTypeConstructor
 import codeql.swift.elements.type.OptionalTypeConstructor
+import codeql.swift.elements.type.PackExpansionTypeConstructor
+import codeql.swift.elements.type.PackTypeConstructor
+import codeql.swift.elements.type.ParameterizedProtocolTypeConstructor
 import codeql.swift.elements.type.ParenTypeConstructor
 import codeql.swift.elements.type.PlaceholderTypeConstructor
 import codeql.swift.elements.type.PrimaryArchetypeTypeConstructor

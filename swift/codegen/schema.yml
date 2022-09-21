@@ -140,6 +140,15 @@ ModuleType:
   _extends: Type
   module: ModuleDecl
 
+PackType:
+  _extends: Type
+
+PackExpansionType:
+  _extends: Type
+
+ParameterizedProtocolType:
+  _extends: Type
+
 PlaceholderType:
   _extends: Type
 

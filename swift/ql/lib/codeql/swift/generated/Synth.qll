@@ -282,6 +282,11 @@ module Synth {
     } or
     TOpenedArchetypeType(Raw::OpenedArchetypeType id) { constructOpenedArchetypeType(id) } or
     TOptionalType(Raw::OptionalType id) { constructOptionalType(id) } or
+    TPackExpansionType(Raw::PackExpansionType id) { constructPackExpansionType(id) } or
+    TPackType(Raw::PackType id) { constructPackType(id) } or
+    TParameterizedProtocolType(Raw::ParameterizedProtocolType id) {
+      constructParameterizedProtocolType(id)
+    } or
     TParenType(Raw::ParenType id) { constructParenType(id) } or
     TPlaceholderType(Raw::PlaceholderType id) { constructPlaceholderType(id) } or
     TPrimaryArchetypeType(Raw::PrimaryArchetypeType id) { constructPrimaryArchetypeType(id) } or
@@ -467,7 +472,8 @@ module Synth {
   class TType =
     TAnyFunctionType or TAnyGenericType or TAnyMetatypeType or TBuiltinType or
         TDependentMemberType or TDynamicSelfType or TErrorType or TExistentialType or TInOutType or
-        TLValueType or TModuleType or TPlaceholderType or TProtocolCompositionType or
+        TLValueType or TModuleType or TPackExpansionType or TPackType or
+        TParameterizedProtocolType or TPlaceholderType or TProtocolCompositionType or
         TReferenceStorageType or TSilBlockStorageType or TSilBoxType or TSilFunctionType or
         TSilTokenType or TSubstitutableType or TSugarType or TTupleType or TTypeVariableType or
         TUnresolvedType;
@@ -1298,6 +1304,19 @@ module Synth {
   TOptionalType convertOptionalTypeFromRaw(Raw::Element e) { result = TOptionalType(e) }
 
   cached
+  TPackExpansionType convertPackExpansionTypeFromRaw(Raw::Element e) {
+    result = TPackExpansionType(e)
+  }
+
+  cached
+  TPackType convertPackTypeFromRaw(Raw::Element e) { result = TPackType(e) }
+
+  cached
+  TParameterizedProtocolType convertParameterizedProtocolTypeFromRaw(Raw::Element e) {
+    result = TParameterizedProtocolType(e)
+  }
+
+  cached
   TParenType convertParenTypeFromRaw(Raw::Element e) { result = TParenType(e) }
 
   cached
@@ -2110,6 +2129,12 @@ module Synth {
     result = convertLValueTypeFromRaw(e)
     or
     result = convertModuleTypeFromRaw(e)
+    or
+    result = convertPackExpansionTypeFromRaw(e)
+    or
+    result = convertPackTypeFromRaw(e)
+    or
+    result = convertParameterizedProtocolTypeFromRaw(e)
     or
     result = convertPlaceholderTypeFromRaw(e)
     or
@@ -2967,6 +2992,19 @@ module Synth {
   Raw::Element convertOptionalTypeToRaw(TOptionalType e) { e = TOptionalType(result) }
 
   cached
+  Raw::Element convertPackExpansionTypeToRaw(TPackExpansionType e) {
+    e = TPackExpansionType(result)
+  }
+
+  cached
+  Raw::Element convertPackTypeToRaw(TPackType e) { e = TPackType(result) }
+
+  cached
+  Raw::Element convertParameterizedProtocolTypeToRaw(TParameterizedProtocolType e) {
+    e = TParameterizedProtocolType(result)
+  }
+
+  cached
   Raw::Element convertParenTypeToRaw(TParenType e) { e = TParenType(result) }
 
   cached
@@ -3779,6 +3817,12 @@ module Synth {
     result = convertLValueTypeToRaw(e)
     or
     result = convertModuleTypeToRaw(e)
+    or
+    result = convertPackExpansionTypeToRaw(e)
+    or
+    result = convertPackTypeToRaw(e)
+    or
+    result = convertParameterizedProtocolTypeToRaw(e)
     or
     result = convertPlaceholderTypeToRaw(e)
     or

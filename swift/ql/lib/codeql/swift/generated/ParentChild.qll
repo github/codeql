@@ -3883,6 +3883,49 @@ private module Impl {
     )
   }
 
+  private Element getImmediateChildOfPackExpansionType(
+    PackExpansionType e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bType, int n |
+      b = 0 and
+      bType = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfType(e, i, _)) | i) and
+      n = bType and
+      (
+        none()
+        or
+        result = getImmediateChildOfType(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  private Element getImmediateChildOfPackType(PackType e, int index, string partialPredicateCall) {
+    exists(int b, int bType, int n |
+      b = 0 and
+      bType = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfType(e, i, _)) | i) and
+      n = bType and
+      (
+        none()
+        or
+        result = getImmediateChildOfType(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  private Element getImmediateChildOfParameterizedProtocolType(
+    ParameterizedProtocolType e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bType, int n |
+      b = 0 and
+      bType = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfType(e, i, _)) | i) and
+      n = bType and
+      (
+        none()
+        or
+        result = getImmediateChildOfType(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
   private Element getImmediateChildOfPlaceholderType(
     PlaceholderType e, int index, string partialPredicateCall
   ) {
@@ -5157,6 +5200,12 @@ private module Impl {
     result = getImmediateChildOfLValueType(e, index, partialAccessor)
     or
     result = getImmediateChildOfModuleType(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfPackExpansionType(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfPackType(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfParameterizedProtocolType(e, index, partialAccessor)
     or
     result = getImmediateChildOfPlaceholderType(e, index, partialAccessor)
     or
