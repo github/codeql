@@ -217,7 +217,7 @@ To analyze your database using the `cpp-security-and-quality.qls` query suite fr
 If you need to reference a query file, directory, or suite whose path contains a literal `@` or `:`, you can prefix the query specification with `path:` like so::
 
     codeql database analyze --format=sarif-latest --output=results <db> \
-        path:security/queries@experimental/query.ql
+        path:C:/Users/ci/workspace@2/security/query.ql
 
 For more information about CodeQL packs, see :doc:`About CodeQL Packs <about-codeql-packs>`.
 
