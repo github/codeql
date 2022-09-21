@@ -56,7 +56,7 @@ You must specify:
 
 You can also specify:
 
-- ``<query-specifiers>...``: a spece-separated list of queries to run over your database. This
+- ``<query-specifiers>...``: a space-separated list of queries to run over your database. This
   is a list of arguments, where each argument can be:
 
   - a path to a query file
