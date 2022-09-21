@@ -277,7 +277,6 @@ module Synth {
     TLValueType(Raw::LValueType id) { constructLValueType(id) } or
     TMetatypeType(Raw::MetatypeType id) { constructMetatypeType(id) } or
     TModuleType(Raw::ModuleType id) { constructModuleType(id) } or
-    TNestedArchetypeType(Raw::NestedArchetypeType id) { constructNestedArchetypeType(id) } or
     TOpaqueTypeArchetypeType(Raw::OpaqueTypeArchetypeType id) {
       constructOpaqueTypeArchetypeType(id)
     } or
@@ -441,8 +440,8 @@ module Synth {
   class TAnyMetatypeType = TExistentialMetatypeType or TMetatypeType;
 
   class TArchetypeType =
-    TNestedArchetypeType or TOpaqueTypeArchetypeType or TOpenedArchetypeType or
-        TPrimaryArchetypeType or TSequenceArchetypeType;
+    TOpaqueTypeArchetypeType or TOpenedArchetypeType or TPrimaryArchetypeType or
+        TSequenceArchetypeType;
 
   class TBoundGenericType =
     TBoundGenericClassType or TBoundGenericEnumType or TBoundGenericStructType;
@@ -1286,11 +1285,6 @@ module Synth {
   TModuleType convertModuleTypeFromRaw(Raw::Element e) { result = TModuleType(e) }
 
   cached
-  TNestedArchetypeType convertNestedArchetypeTypeFromRaw(Raw::Element e) {
-    result = TNestedArchetypeType(e)
-  }
-
-  cached
   TOpaqueTypeArchetypeType convertOpaqueTypeArchetypeTypeFromRaw(Raw::Element e) {
     result = TOpaqueTypeArchetypeType(e)
   }
@@ -2000,8 +1994,6 @@ module Synth {
 
   cached
   TArchetypeType convertArchetypeTypeFromRaw(Raw::Element e) {
-    result = convertNestedArchetypeTypeFromRaw(e)
-    or
     result = convertOpaqueTypeArchetypeTypeFromRaw(e)
     or
     result = convertOpenedArchetypeTypeFromRaw(e)
@@ -2962,11 +2954,6 @@ module Synth {
   Raw::Element convertModuleTypeToRaw(TModuleType e) { e = TModuleType(result) }
 
   cached
-  Raw::Element convertNestedArchetypeTypeToRaw(TNestedArchetypeType e) {
-    e = TNestedArchetypeType(result)
-  }
-
-  cached
   Raw::Element convertOpaqueTypeArchetypeTypeToRaw(TOpaqueTypeArchetypeType e) {
     e = TOpaqueTypeArchetypeType(result)
   }
@@ -3676,8 +3663,6 @@ module Synth {
 
   cached
   Raw::Element convertArchetypeTypeToRaw(TArchetypeType e) {
-    result = convertNestedArchetypeTypeToRaw(e)
-    or
     result = convertOpaqueTypeArchetypeTypeToRaw(e)
     or
     result = convertOpenedArchetypeTypeToRaw(e)

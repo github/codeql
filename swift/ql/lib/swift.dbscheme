@@ -2007,8 +2007,7 @@ unresolved_types(  //dir=type
 ;
 
 @archetype_type =
-  @nested_archetype_type
-| @opaque_type_archetype_type
+  @opaque_type_archetype_type
 | @opened_archetype_type
 | @primary_archetype_type
 | @sequence_archetype_type
@@ -2167,12 +2166,6 @@ dictionary_types(  //dir=type
   unique int id: @dictionary_type,
   int key_type: @type ref,
   int value_type: @type ref
-);
-
-nested_archetype_types(  //dir=type
-  unique int id: @nested_archetype_type,
-  int parent: @archetype_type ref,
-  int associated_type_declaration: @associated_type_decl ref
 );
 
 @nominal_type =

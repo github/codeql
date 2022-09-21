@@ -205,7 +205,6 @@ import codeql.swift.elements.type.InOutTypeConstructor
 import codeql.swift.elements.type.LValueTypeConstructor
 import codeql.swift.elements.type.MetatypeTypeConstructor
 import codeql.swift.elements.type.ModuleTypeConstructor
-import codeql.swift.elements.type.NestedArchetypeTypeConstructor
 import codeql.swift.elements.type.OpaqueTypeArchetypeTypeConstructor
 import codeql.swift.elements.type.OpenedArchetypeTypeConstructor
 import codeql.swift.elements.type.OptionalTypeConstructor

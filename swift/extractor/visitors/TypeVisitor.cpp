@@ -234,15 +234,6 @@ void TypeVisitor::emitAnyGenericType(swift::AnyGenericType* type,
   }
 }
 
-codeql::NestedArchetypeType TypeVisitor::translateNestedArchetypeType(
-    const swift::NestedArchetypeType& type) {
-  auto entry = createTypeEntry(type);
-  entry.parent = dispatcher_.fetchLabel(type.getParent());
-  entry.associated_type_declaration = dispatcher_.fetchLabel(type.getAssocType());
-  fillArchetypeType(type, entry);
-  return entry;
-}
-
 void TypeVisitor::fillType(const swift::TypeBase& type, codeql::Type& entry) {
   entry.name = type.getString();
   entry.canonical_type = dispatcher_.fetchLabel(type.getCanonicalType());

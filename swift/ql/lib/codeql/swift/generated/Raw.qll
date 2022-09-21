@@ -1437,14 +1437,6 @@ module Raw {
     Type getValueType() { dictionary_types(this, _, result) }
   }
 
-  class NestedArchetypeType extends @nested_archetype_type, ArchetypeType {
-    override string toString() { result = "NestedArchetypeType" }
-
-    ArchetypeType getParent() { nested_archetype_types(this, result, _) }
-
-    AssociatedTypeDecl getAssociatedTypeDeclaration() { nested_archetype_types(this, _, result) }
-  }
-
   class NominalType extends @nominal_type, NominalOrBoundGenericNominalType { }
 
   class OpaqueTypeArchetypeType extends @opaque_type_archetype_type, ArchetypeType {

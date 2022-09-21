@@ -254,7 +254,6 @@ import codeql.swift.elements.type.InOutType
 import codeql.swift.elements.type.LValueType
 import codeql.swift.elements.type.MetatypeType
 import codeql.swift.elements.type.ModuleType
-import codeql.swift.elements.type.NestedArchetypeType
 import codeql.swift.elements.type.NominalOrBoundGenericNominalType
 import codeql.swift.elements.type.NominalType
 import codeql.swift.elements.type.OpaqueTypeArchetypeType
