@@ -13,6 +13,12 @@
 
 import cpp
 
+predicate possiblyIncompleteFile(File f) {
+  exists(Diagnostic d | d.getFile() = f and d.getSeverity() >= 3)
+  or
+  exists(ErrorExpr ee | ee.getFile() = f)
+}
+
 predicate immediatelyReachableFunction(Function f) {
   not f.isStatic()
   or
@@ -33,9 +39,7 @@ predicate immediatelyReachableFunction(Function f) {
   f.getAnAttribute().hasName("unused")
   or
   // a compiler error in the same file suggests we may be missing data
-  exists(Diagnostic d | d.getFile() = f.getFile() and d.getSeverity() >= 3)
-  or
-  exists(ErrorExpr ee | ee.getFile() = f.getFile())
+  possiblyIncompleteFile(f.getFile())
 }
 
 predicate immediatelyReachableVariable(Variable v) {
