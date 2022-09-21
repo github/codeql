@@ -24,4 +24,4 @@ where
     cmp.getAnOperand() = decl.getAReference() and
     cmp.getAnOperand() instanceof BasicLit
   )
-select cmp, "This expression compares $@ to itself.", cmp.getLeftOperand(), "an expression"
+select cmp, "This expression compares an $@ to itself.", cmp.getLeftOperand(), "expression"
