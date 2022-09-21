@@ -164,6 +164,14 @@ String wrongFlowsPhrase(Select sel, string kind) {
   )
 }
 
+/**
+ * Gets a string element that contains double whitespace.
+ */
+String doubleWhitespace(Select sel) {
+  result = getSelectPart(sel, _) and
+  result.getValue().regexpMatch(".*\\s\\s.*")
+}
+
 from AstNode node, string msg
 where
   not node.getLocation().getFile().getAbsolutePath().matches("%/test/%") and
@@ -194,5 +202,8 @@ where
     or
     node = wrongFlowsPhrase(_, "taint") and
     msg = "Use \"depends on\" instead of \"flows to\" in taint tracking queries."
+    or
+    node = doubleWhitespace(_) and
+    msg = "Avoid using double whitespace in alert messages."
   )
 select node, msg
