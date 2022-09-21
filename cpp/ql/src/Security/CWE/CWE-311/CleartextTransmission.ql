@@ -258,9 +258,9 @@ where
   then
     msg =
       "This operation transmits '" + sink.toString() +
-        "', which may contain unencrypted sensitive data from $@"
+        "', which may contain unencrypted sensitive data from $@."
   else
     msg =
       "This operation receives into '" + sink.toString() +
-        "', which may put unencrypted sensitive data into $@"
+        "', which may put unencrypted sensitive data into $@."
 select networkSendRecv, source, sink, msg, source, source.getNode().toString()

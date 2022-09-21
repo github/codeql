@@ -56,4 +56,4 @@ where
   source.getNode().asExpr().getFullyConverted().getUnspecifiedType() =
     sink.getNode().asExpr().getFullyConverted().getUnspecifiedType()
 select sink, source, sink,
-  "Pointer arithmetic here may be done with the wrong type because of the cast $@.", source, "here"
+  "This pointer arithmetic may be done with the wrong type because of $@.", source, "this cast"

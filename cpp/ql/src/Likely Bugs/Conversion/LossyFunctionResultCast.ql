@@ -50,4 +50,4 @@ where
   not whiteListWrapped(c)
 select c,
   "Return value of type " + t1.toString() + " is implicitly converted to " + t2.toString() +
-    " here."
+    "."
