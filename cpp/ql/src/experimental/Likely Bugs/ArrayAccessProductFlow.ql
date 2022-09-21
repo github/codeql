@@ -1,3 +1,8 @@
+/**
+ * @id cpp/off-by-one-array-access
+ * @kind path-problem
+ */
+
 import cpp
 import experimental.semmle.code.cpp.dataflow.ProductFlow
 import experimental.semmle.code.cpp.semantic.analysis.RangeAnalysis
@@ -8,9 +13,18 @@ import semmle.code.cpp.valuenumbering.GlobalValueNumbering
 import semmle.code.cpp.models.interfaces.Allocation
 import semmle.code.cpp.ir.IRConfiguration
 
+import DataFlow::PathGraph
+
 // temporary - custom allocator for ffmpeg
 class AvBufferAlloc extends AllocationFunction {
   AvBufferAlloc() { this.hasGlobalName(["av_mallocz", "av_malloc"]) }
+
+  override int getSizeArg() { result = 0 }
+}
+
+// temporary - custom allocator for php
+class PhpEmalloc extends AllocationFunction {
+  PhpEmalloc() { this.hasGlobalName(["_emalloc"]) }
 
   override int getSizeArg() { result = 0 }
 }
@@ -61,4 +75,5 @@ from
   DataFlow::PathNode sink1, DataFlow2::PathNode sink2
 where conf.hasFlowPath(source1, source2, sink1, sink2)
 // TODO: pull delta out and display it
-select source1, source2, sink1, sink2
+select sink1, source1, sink1, "off-by one error allocated at $@ bounded by $@", source1, source1,
+  sink2, sink2
