@@ -36,6 +36,9 @@ getMethod
 | calls.rb:322:1:326:3 | C1 | instance | calls.rb:323:5:325:7 | instance |
 | calls.rb:328:1:332:3 | C2 | instance | calls.rb:329:5:331:7 | instance |
 | calls.rb:334:1:338:3 | C3 | instance | calls.rb:335:5:337:7 | instance |
+| calls.rb:414:1:442:3 | ConditionalInstanceMethods | m1 | calls.rb:416:9:418:11 | m1 |
+| calls.rb:414:1:442:3 | ConditionalInstanceMethods | m2 | calls.rb:421:5:433:7 | m2 |
+| calls.rb:477:1:483:3 | ExtendSingletonMethod | singleton | calls.rb:478:5:480:7 | singleton |
 | hello.rb:1:1:8:3 | EnglishWords | hello | hello.rb:2:5:4:7 | hello |
 | hello.rb:1:1:8:3 | EnglishWords | world | hello.rb:5:5:7:7 | world |
 | hello.rb:11:1:16:3 | Greeting | message | hello.rb:13:5:15:7 | message |
@@ -329,6 +332,23 @@ lookupMethod
 | calls.rb:399:1:409:3 | SingletonOverride2 | private_on_main | calls.rb:182:1:183:3 | private_on_main |
 | calls.rb:399:1:409:3 | SingletonOverride2 | puts | calls.rb:102:5:102:30 | puts |
 | calls.rb:399:1:409:3 | SingletonOverride2 | to_s | calls.rb:169:5:170:7 | to_s |
+| calls.rb:414:1:442:3 | ConditionalInstanceMethods | add_singleton | calls.rb:364:1:368:3 | add_singleton |
+| calls.rb:414:1:442:3 | ConditionalInstanceMethods | call_block | calls.rb:81:1:83:3 | call_block |
+| calls.rb:414:1:442:3 | ConditionalInstanceMethods | call_instance_m | calls.rb:39:1:41:3 | call_instance_m |
+| calls.rb:414:1:442:3 | ConditionalInstanceMethods | create | calls.rb:275:1:283:3 | create |
+| calls.rb:414:1:442:3 | ConditionalInstanceMethods | foo | calls.rb:1:1:3:3 | foo |
+| calls.rb:414:1:442:3 | ConditionalInstanceMethods | foo | calls.rb:85:1:89:3 | foo |
+| calls.rb:414:1:442:3 | ConditionalInstanceMethods | funny | calls.rb:137:1:139:3 | funny |
+| calls.rb:414:1:442:3 | ConditionalInstanceMethods | indirect | calls.rb:155:1:157:3 | indirect |
+| calls.rb:414:1:442:3 | ConditionalInstanceMethods | m1 | calls.rb:416:9:418:11 | m1 |
+| calls.rb:414:1:442:3 | ConditionalInstanceMethods | m2 | calls.rb:421:5:433:7 | m2 |
+| calls.rb:414:1:442:3 | ConditionalInstanceMethods | new | calls.rb:114:5:114:16 | new |
+| calls.rb:414:1:442:3 | ConditionalInstanceMethods | optional_arg | calls.rb:76:1:79:3 | optional_arg |
+| calls.rb:414:1:442:3 | ConditionalInstanceMethods | pattern_dispatch | calls.rb:340:1:356:3 | pattern_dispatch |
+| calls.rb:414:1:442:3 | ConditionalInstanceMethods | private_on_main | calls.rb:182:1:183:3 | private_on_main |
+| calls.rb:414:1:442:3 | ConditionalInstanceMethods | puts | calls.rb:102:5:102:30 | puts |
+| calls.rb:414:1:442:3 | ConditionalInstanceMethods | to_s | calls.rb:169:5:170:7 | to_s |
+| calls.rb:477:1:483:3 | ExtendSingletonMethod | singleton | calls.rb:478:5:480:7 | singleton |
 | file://:0:0:0:0 | Class | include | calls.rb:107:5:107:20 | include |
 | file://:0:0:0:0 | Class | module_eval | calls.rb:106:5:106:24 | module_eval |
 | file://:0:0:0:0 | Class | new | calls.rb:114:5:114:16 | new |
@@ -705,6 +725,42 @@ enclosingMethod
 | calls.rb:407:9:407:44 | self | calls.rb:406:5:408:7 | singleton2 |
 | calls.rb:407:14:407:44 | "SingletonOverride2#singleton2" | calls.rb:406:5:408:7 | singleton2 |
 | calls.rb:407:15:407:43 | SingletonOverride2#singleton2 | calls.rb:406:5:408:7 | singleton2 |
+| calls.rb:417:13:417:48 | call to puts | calls.rb:416:9:418:11 | m1 |
+| calls.rb:417:13:417:48 | self | calls.rb:416:9:418:11 | m1 |
+| calls.rb:417:18:417:48 | "ConditionalInstanceMethods#m1" | calls.rb:416:9:418:11 | m1 |
+| calls.rb:417:19:417:47 | ConditionalInstanceMethods#m1 | calls.rb:416:9:418:11 | m1 |
+| calls.rb:422:9:422:44 | call to puts | calls.rb:421:5:433:7 | m2 |
+| calls.rb:422:9:422:44 | self | calls.rb:421:5:433:7 | m2 |
+| calls.rb:422:14:422:44 | "ConditionalInstanceMethods#m2" | calls.rb:421:5:433:7 | m2 |
+| calls.rb:422:15:422:43 | ConditionalInstanceMethods#m2 | calls.rb:421:5:433:7 | m2 |
+| calls.rb:424:9:430:11 | m3 | calls.rb:421:5:433:7 | m2 |
+| calls.rb:425:13:425:48 | call to puts | calls.rb:424:9:430:11 | m3 |
+| calls.rb:425:13:425:48 | self | calls.rb:424:9:430:11 | m3 |
+| calls.rb:425:18:425:48 | "ConditionalInstanceMethods#m3" | calls.rb:424:9:430:11 | m3 |
+| calls.rb:425:19:425:47 | ConditionalInstanceMethods#m3 | calls.rb:424:9:430:11 | m3 |
+| calls.rb:427:13:429:15 | m4 | calls.rb:424:9:430:11 | m3 |
+| calls.rb:428:17:428:52 | call to puts | calls.rb:427:13:429:15 | m4 |
+| calls.rb:428:17:428:52 | self | calls.rb:427:13:429:15 | m4 |
+| calls.rb:428:22:428:52 | "ConditionalInstanceMethods#m4" | calls.rb:427:13:429:15 | m4 |
+| calls.rb:428:23:428:51 | ConditionalInstanceMethods#m4 | calls.rb:427:13:429:15 | m4 |
+| calls.rb:432:9:432:10 | call to m3 | calls.rb:421:5:433:7 | m2 |
+| calls.rb:432:9:432:10 | self | calls.rb:421:5:433:7 | m2 |
+| calls.rb:438:17:438:40 | call to puts | calls.rb:437:13:439:15 | m5 |
+| calls.rb:438:17:438:40 | self | calls.rb:437:13:439:15 | m5 |
+| calls.rb:438:22:438:40 | "AnonymousClass#m5" | calls.rb:437:13:439:15 | m5 |
+| calls.rb:438:23:438:39 | AnonymousClass#m5 | calls.rb:437:13:439:15 | m5 |
+| calls.rb:454:13:454:22 | call to puts | calls.rb:453:9:455:11 | foo |
+| calls.rb:454:13:454:22 | self | calls.rb:453:9:455:11 | foo |
+| calls.rb:454:18:454:22 | "foo" | calls.rb:453:9:455:11 | foo |
+| calls.rb:454:19:454:21 | foo | calls.rb:453:9:455:11 | foo |
+| calls.rb:460:13:460:22 | call to puts | calls.rb:459:9:461:11 | bar |
+| calls.rb:460:13:460:22 | self | calls.rb:459:9:461:11 | bar |
+| calls.rb:460:18:460:22 | "bar" | calls.rb:459:9:461:11 | bar |
+| calls.rb:460:19:460:21 | bar | calls.rb:459:9:461:11 | bar |
+| calls.rb:479:9:479:46 | call to puts | calls.rb:478:5:480:7 | singleton |
+| calls.rb:479:9:479:46 | self | calls.rb:478:5:480:7 | singleton |
+| calls.rb:479:14:479:46 | "ExtendSingletonMethod#singleton" | calls.rb:478:5:480:7 | singleton |
+| calls.rb:479:15:479:45 | ExtendSingletonMethod#singleton | calls.rb:478:5:480:7 | singleton |
 | hello.rb:3:9:3:22 | return | hello.rb:2:5:4:7 | hello |
 | hello.rb:3:16:3:22 | "hello" | hello.rb:2:5:4:7 | hello |
 | hello.rb:3:17:3:21 | hello | hello.rb:2:5:4:7 | hello |

@@ -410,3 +410,76 @@ end
 
 SingletonOverride2.call_singleton1
 SingletonOverride2.call_singleton2
+
+class ConditionalInstanceMethods
+    if rand() > 0 then
+        def m1
+            puts "ConditionalInstanceMethods#m1"
+        end
+    end
+
+    def m2
+        puts "ConditionalInstanceMethods#m2"
+        
+        def m3
+            puts "ConditionalInstanceMethods#m3"
+
+            def m4
+                puts "ConditionalInstanceMethods#m4"
+            end
+        end
+
+        m3
+    end
+
+    if rand() > 0 then
+        Class.new do
+            def m5
+                puts "AnonymousClass#m5"
+            end
+        end.new.m5
+    end
+end
+
+ConditionalInstanceMethods.new.m1
+ConditionalInstanceMethods.new.m3 # NoMethodError
+ConditionalInstanceMethods.new.m2
+ConditionalInstanceMethods.new.m3 # currently unable to resolve
+ConditionalInstanceMethods.new.m4 # currently unable to resolve
+ConditionalInstanceMethods.new.m5 # NoMethodError
+exit
+EsotericInstanceMethods = Class.new do
+    [0,1,2].each do
+        def foo
+            puts "foo"
+        end
+    end
+
+    Class.new do
+        def bar
+            puts "bar"
+        end
+    end.new.bar
+
+    [0,1,2].each do |i|
+        define_method("baz_#{i}") do
+            puts "baz_#{i}"
+        end
+    end
+end
+
+EsotericInstanceMethods.new.foo # currently unable to resolve
+EsotericInstanceMethods.new.bar # NoMethodError
+EsotericInstanceMethods.new.baz_0 # currently unable to resolve
+EsotericInstanceMethods.new.baz_1 # currently unable to resolve
+EsotericInstanceMethods.new.baz_2 # currently unable to resolve
+
+module ExtendSingletonMethod
+    def singleton
+        puts "ExtendSingletonMethod#singleton"
+    end
+
+    extend self
+end
+
+ExtendSingletonMethod.singleton # currently unable to resolve
