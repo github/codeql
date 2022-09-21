@@ -3,7 +3,7 @@
  * Version: 6.0.0.
  */
 
-private import ruby
+private import codeql.ruby.AST
 private import codeql.ruby.Concepts
 private import codeql.ruby.controlflow.CfgNodes
 private import codeql.ruby.ast.internal.Module

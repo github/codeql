@@ -1,6 +1,6 @@
 /** Provides classes and predicates for defining flow summaries. */
 
-import ruby
+import codeql.ruby.AST
 import codeql.ruby.DataFlow
 private import codeql.ruby.frameworks.data.ModelsAsData
 private import codeql.ruby.ApiGraphs

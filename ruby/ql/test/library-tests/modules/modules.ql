@@ -1,4 +1,4 @@
-import ruby
+import codeql.ruby.AST
 private import codeql.ruby.ast.internal.Module as Internal
 
 query Module getModule() { any() }

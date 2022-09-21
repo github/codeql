@@ -2,7 +2,7 @@
  * Provides imports and classes needed for `HttpToFileAccessQuery` and `HttpToFileAccessCustomizations`.
  */
 
-import ruby
+import codeql.ruby.AST
 import codeql.ruby.DataFlow
 import codeql.ruby.dataflow.RemoteFlowSources
 import codeql.ruby.Concepts

@@ -1,4 +1,4 @@
-import ruby
+import codeql.ruby.AST
 
 query predicate assignments(Assignment a, string operator, Expr left, Expr right, string pClass) {
   operator = a.getOperator() and

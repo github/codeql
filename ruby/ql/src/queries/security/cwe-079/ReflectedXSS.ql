@@ -13,7 +13,7 @@
  *       external/cwe/cwe-116
  */
 
-import ruby
+import codeql.ruby.AST
 import codeql.ruby.security.ReflectedXSSQuery
 import DataFlow::PathGraph
 
