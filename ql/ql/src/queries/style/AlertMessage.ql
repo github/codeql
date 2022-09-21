@@ -10,17 +10,21 @@
 
 import ql
 
+AstNode getASubExpression(Select sel) {
+  result = sel.getExpr(_)
+  or
+  result = getASubExpression(sel).getAChild()
+}
+
 /** Gets the `index`th part of the select statement. */
 private AstNode getSelectPart(Select sel, int index) {
   result =
     rank[index](AstNode n, Location loc |
       (
-        n.getParent*() = sel.getExpr(_) and loc = n.getLocation()
+        n = getASubExpression(sel) and loc = n.getLocation()
         or
         // the strings are behind a predicate call.
-        exists(Call c, Predicate target |
-          c.getParent*() = sel.getExpr(_) and loc = c.getLocation()
-        |
+        exists(Call c, Predicate target | c = getASubExpression(sel) and loc = c.getLocation() |
           c.getTarget() = target and
           (
             target.getBody().(ComparisonFormula).getAnOperand() = n
@@ -29,6 +33,14 @@ private AstNode getSelectPart(Select sel, int index) {
               sub.getBody().(ComparisonFormula).getAnOperand() = n
             )
           )
+        )
+        or
+        // the string is a variable that is assigned in the `where` clause.
+        exists(VarAccess v, ComparisonFormula comp, String str |
+          v = getASubExpression(sel) and
+          loc = v.getLocation() and
+          comp.hasOperands(v.getDeclaration().getAnAccess(), str) and
+          n = str
         )
       )
     |

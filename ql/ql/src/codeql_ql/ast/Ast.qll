@@ -1403,6 +1403,14 @@ class ComparisonFormula extends TComparisonFormula, Formula {
     or
     pred = directMember("getRightOperand") and result = this.getRightOperand()
   }
+
+  /** Hplds if this comparison has the operands `a` and `b` (in any order). */
+  pragma[noinline]
+  predicate hasOperands(Expr a, Expr b) {
+    this.getLeftOperand() = a and this.getRightOperand() = b
+    or
+    this.getLeftOperand() = b and this.getRightOperand() = a
+  }
 }
 
 /** A quantifier formula, such as `exists` or `forall`. */
