@@ -64,7 +64,7 @@ private AstNode getSelectPart(Select sel, int index) {
 String shouldHaveFullStop(Select sel) {
   result =
     max(AstNode str, int i |
-      str.getParent*() = sel.getExpr(1) and str = getSelectPart(sel, i)
+      str.getParent*() = sel.getMessage() and str = getSelectPart(sel, i)
     |
       str order by i
     ) and
@@ -85,7 +85,7 @@ String shouldHaveFullStop(Select sel) {
 String shouldStartCapital(Select sel) {
   result =
     min(AstNode str, int i |
-      str.getParent*() = sel.getExpr(1) and str = getSelectPart(sel, i)
+      str.getParent*() = sel.getMessage() and str = getSelectPart(sel, i)
     |
       str order by i
     ) and
