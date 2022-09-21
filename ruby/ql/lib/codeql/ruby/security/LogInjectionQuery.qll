@@ -2,7 +2,7 @@
  * Provides a taint-tracking configuration for reasoning about untrusted user input used in log entries.
  */
 
-import ruby
+import codeql.ruby.AST
 import codeql.ruby.Concepts
 import codeql.ruby.DataFlow
 import codeql.ruby.TaintTracking

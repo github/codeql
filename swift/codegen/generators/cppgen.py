@@ -16,7 +16,6 @@ import pathlib
 from typing import Dict
 
 import inflection
-from toposort import toposort_flatten
 
 from swift.codegen.lib import cpp, schema
 
@@ -71,13 +70,9 @@ class Processor:
         )
 
     def get_classes(self):
-        grouped = {pathlib.Path(): {}}
+        ret = {pathlib.Path(): []}
         for k, cls in self._classmap.items():
-            grouped.setdefault(cls.dir, {}).update({k: cls})
-        ret = {}
-        for dir, map in grouped.items():
-            inheritance_graph = {k: {b for b in cls.bases if b in map} for k, cls in map.items()}
-            ret[dir] = [self._get_class(cls) for cls in toposort_flatten(inheritance_graph)]
+            ret.setdefault(cls.dir, []).append(self._get_class(cls.name))
         return ret
 
 

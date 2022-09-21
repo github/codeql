@@ -1,5 +1,4 @@
 private import TreeSitter
-private import codeql.Locations
 private import codeql.ruby.AST
 private import codeql.ruby.ast.internal.AST
 private import codeql.ruby.ast.internal.Parameter

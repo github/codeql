@@ -31,6 +31,7 @@ function RegisterExtractorPack(id)
       strip_unsupported_arg(args, '-stack-check', 0)
       strip_unsupported_arg(args, '-disable-clang-spi', 0)
       strip_unsupported_arg(args, '-empty-abi-descriptor', 0)
+      strip_unsupported_arg(args, '-enable-bare-slash-regex', 0)
     end
 
     -- xcodebuild does not always specify the -resource-dir in which case the compiler falls back

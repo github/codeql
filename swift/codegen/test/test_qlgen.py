@@ -177,10 +177,10 @@ def test_hierarchy_imports(generate_import_list):
 
 def test_hierarchy_children(generate_children_implementations):
     assert generate_children_implementations([
-        schema.Class("D", bases=["B", "C"]),
-        schema.Class("C", bases=["A"], derived={"D"}),
-        schema.Class("B", bases=["A"], derived={"D"}),
         schema.Class("A", derived={"B", "C"}),
+        schema.Class("B", bases=["A"], derived={"D"}),
+        schema.Class("C", bases=["A"], derived={"D"}),
+        schema.Class("D", bases=["B", "C"]),
     ]) == ql.GetParentImplementation(
         classes=[ql.Class(name="A"),
                  ql.Class(name="B", bases=["A"], imports=[

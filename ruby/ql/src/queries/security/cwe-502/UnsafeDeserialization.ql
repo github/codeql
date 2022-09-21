@@ -11,7 +11,7 @@
  *       external/cwe/cwe-502
  */
 
-import ruby
+import codeql.ruby.AST
 import DataFlow::PathGraph
 import codeql.ruby.DataFlow
 import codeql.ruby.security.UnsafeDeserializationQuery

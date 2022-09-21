@@ -10,7 +10,7 @@
  * @precision low
  */
 
-import ruby
+import codeql.ruby.AST
 import codeql.ruby.Concepts
 import codeql.ruby.DataFlow
 import DataFlow::PathGraph

@@ -13,7 +13,7 @@
  *       external/cwe/cwe-827
  */
 
-import ruby
+import codeql.ruby.AST
 import codeql.ruby.dataflow.RemoteFlowSources
 import codeql.ruby.TaintTracking
 import codeql.ruby.Concepts
