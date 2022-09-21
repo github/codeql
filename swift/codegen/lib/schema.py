@@ -4,6 +4,7 @@ import pathlib
 import re
 from dataclasses import dataclass, field
 from typing import List, Set, Union, Dict, ClassVar, Optional
+from toposort import toposort_flatten
 
 import yaml
 
@@ -167,4 +168,17 @@ def load(path):
             cls.bases = [root_class_name]
             classes[root_class_name].derived.add(name)
 
-    return Schema(classes=classes, includes=set(data.get("_includes", [])))
+    groups = {}
+
+    for name, cls in classes.items():
+        groups.setdefault(cls.dir, []).append(name)
+
+    sorted_classes = {}
+
+    for dir in sorted(groups):
+        group = groups[dir]
+        inheritance = {name: classes[name].bases for name in group}
+        for name in toposort_flatten(inheritance):
+            sorted_classes[name] = classes[name]
+
+    return Schema(classes=sorted_classes, includes=set(data.get("_includes", [])))
