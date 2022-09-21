@@ -23,6 +23,7 @@ private AstNode getSelectPart(Select sel, int index) {
       (
         n = getASubExpression(sel) and loc = n.getLocation()
         or
+        // TODO: Use dataflow instead.
         // the strings are behind a predicate call.
         exists(Call c, Predicate target | c = getASubExpression(sel) and loc = c.getLocation() |
           c.getTarget() = target and
@@ -188,6 +189,7 @@ String doubleWhitespace(Select sel) {
  * Gets an expression that repeats the alert-loc as a link.
  */
 VarAccess getAlertLocLink(Select sel) {
+  // TODO: Get this to work with GVN. I got an infinite loop when I tried.
   result = sel.getExpr(0).(VarAccess).getDeclaration().getAnAccess() and
   exists(int msgIndex | sel.getExpr(msgIndex) = sel.getMessage() |
     result = sel.getExpr(any(int i | i > msgIndex))
