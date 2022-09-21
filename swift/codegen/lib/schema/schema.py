@@ -9,6 +9,7 @@ import functools
 import importlib.util
 from toposort import toposort_flatten
 
+
 class Error(Exception):
 
     def __str__(self):
@@ -79,6 +80,7 @@ class Class:
     @property
     def final(self):
         return not self.derived
+
     def check_types(self, known: typing.Iterable[str]):
         for b in self.bases:
             _check_type(b, known)
