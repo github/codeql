@@ -10,17 +10,21 @@
 
 import ql
 
+AstNode getASubExpression(Select sel) {
+  result = sel.getExpr(_)
+  or
+  result = getASubExpression(sel).getAChild()
+}
+
 /** Gets the `index`th part of the select statement. */
 private AstNode getSelectPart(Select sel, int index) {
   result =
     rank[index](AstNode n, Location loc |
       (
-        n.getParent*() = sel.getExpr(_) and loc = n.getLocation()
+        n = getASubExpression(sel) and loc = n.getLocation()
         or
         // the strings are behind a predicate call.
-        exists(Call c, Predicate target |
-          c.getParent*() = sel.getExpr(_) and loc = c.getLocation()
-        |
+        exists(Call c, Predicate target | c = getASubExpression(sel) and loc = c.getLocation() |
           c.getTarget() = target and
           (
             target.getBody().(ComparisonFormula).getAnOperand() = n
@@ -29,6 +33,14 @@ private AstNode getSelectPart(Select sel, int index) {
               sub.getBody().(ComparisonFormula).getAnOperand() = n
             )
           )
+        )
+        or
+        // the string is a variable that is assigned in the `where` clause.
+        exists(VarAccess v, ComparisonFormula comp, String str |
+          v = getASubExpression(sel) and
+          loc = v.getLocation() and
+          comp.hasOperands(v.getDeclaration().getAnAccess(), str) and
+          n = str
         )
       )
     |
@@ -52,7 +64,7 @@ private AstNode getSelectPart(Select sel, int index) {
 String shouldHaveFullStop(Select sel) {
   result =
     max(AstNode str, int i |
-      str.getParent+() = sel.getExpr(1) and str = getSelectPart(sel, i)
+      str.getParent*() = sel.getMessage() and str = getSelectPart(sel, i)
     |
       str order by i
     ) and
@@ -73,7 +85,7 @@ String shouldHaveFullStop(Select sel) {
 String shouldStartCapital(Select sel) {
   result =
     min(AstNode str, int i |
-      str.getParent+() = sel.getExpr(1) and str = getSelectPart(sel, i)
+      str.getParent*() = sel.getMessage() and str = getSelectPart(sel, i)
     |
       str order by i
     ) and
@@ -164,6 +176,14 @@ String wrongFlowsPhrase(Select sel, string kind) {
   )
 }
 
+/**
+ * Gets a string element that contains double whitespace.
+ */
+String doubleWhitespace(Select sel) {
+  result = getSelectPart(sel, _) and
+  result.getValue().regexpMatch(".*\\s\\s.*")
+}
+
 from AstNode node, string msg
 where
   not node.getLocation().getFile().getAbsolutePath().matches("%/test/%") and
@@ -194,5 +214,8 @@ where
     or
     node = wrongFlowsPhrase(_, "taint") and
     msg = "Use \"depends on\" instead of \"flows to\" in taint tracking queries."
+    or
+    node = doubleWhitespace(_) and
+    msg = "Avoid using double whitespace in alert messages."
   )
 select node, msg
