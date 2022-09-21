@@ -3298,17 +3298,17 @@ private module Impl {
   private Element getImmediateChildOfConditionElement(
     ConditionElement e, int index, string partialPredicateCall
   ) {
-    exists(int b, int bLocatable, int n, int nBoolean, int nPattern, int nInitializer |
+    exists(int b, int bAstNode, int n, int nBoolean, int nPattern, int nInitializer |
       b = 0 and
-      bLocatable = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfLocatable(e, i, _)) | i) and
-      n = bLocatable and
+      bAstNode = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfAstNode(e, i, _)) | i) and
+      n = bAstNode and
       nBoolean = n + 1 and
       nPattern = nBoolean + 1 and
       nInitializer = nPattern + 1 and
       (
         none()
         or
-        result = getImmediateChildOfLocatable(e, index - b, partialPredicateCall)
+        result = getImmediateChildOfAstNode(e, index - b, partialPredicateCall)
         or
         index = n and result = e.getImmediateBoolean() and partialPredicateCall = "Boolean()"
         or

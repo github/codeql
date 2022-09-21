@@ -314,13 +314,14 @@ module Synth {
     TWeakStorageType(Raw::WeakStorageType id) { constructWeakStorageType(id) }
 
   class TAstNode =
-    TCaseLabelItem or TDecl or TExpr or TPattern or TStmt or TStmtCondition or TTypeRepr;
+    TCaseLabelItem or TConditionElement or TDecl or TExpr or TPattern or TStmt or TStmtCondition or
+        TTypeRepr;
 
   class TCallable = TAbstractClosureExpr or TAbstractFunctionDecl;
 
   class TFile = TDbFile or TUnknownFile;
 
-  class TLocatable = TArgument or TAstNode or TComment or TConditionElement;
+  class TLocatable = TArgument or TAstNode or TComment;
 
   class TLocation = TDbLocation or TUnknownLocation;
 
@@ -1408,6 +1409,8 @@ module Synth {
   TAstNode convertAstNodeFromRaw(Raw::Element e) {
     result = convertCaseLabelItemFromRaw(e)
     or
+    result = convertConditionElementFromRaw(e)
+    or
     result = convertDeclFromRaw(e)
     or
     result = convertExprFromRaw(e)
@@ -1461,8 +1464,6 @@ module Synth {
     result = convertAstNodeFromRaw(e)
     or
     result = convertCommentFromRaw(e)
-    or
-    result = convertConditionElementFromRaw(e)
   }
 
   cached
@@ -3106,6 +3107,8 @@ module Synth {
   Raw::Element convertAstNodeToRaw(TAstNode e) {
     result = convertCaseLabelItemToRaw(e)
     or
+    result = convertConditionElementToRaw(e)
+    or
     result = convertDeclToRaw(e)
     or
     result = convertExprToRaw(e)
@@ -3159,8 +3162,6 @@ module Synth {
     result = convertAstNodeToRaw(e)
     or
     result = convertCommentToRaw(e)
-    or
-    result = convertConditionElementToRaw(e)
   }
 
   cached

@@ -89,7 +89,7 @@ Callable:
     body: BraceStmt?
 
 ConditionElement:
-  _extends: Locatable
+  _extends: AstNode
   _children:
     boolean: Expr?
     pattern: Pattern?

@@ -1030,7 +1030,7 @@ module Raw {
     Expr getGuard() { case_label_item_guards(this, result) }
   }
 
-  class ConditionElement extends @condition_element, Locatable {
+  class ConditionElement extends @condition_element, AstNode {
     override string toString() { result = "ConditionElement" }
 
     Expr getBoolean() { condition_element_booleans(this, result) }
