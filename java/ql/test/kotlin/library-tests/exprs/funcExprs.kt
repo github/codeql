@@ -78,3 +78,19 @@ class Class3 {
 
     class Generic<T> { }
 }
+
+suspend fun fn() {
+    val l1: (Int) -> String = { i -> i.toString() }
+    l1.invoke(5)        // calls kotlin/jvm/functions/Function1.invoke
+
+    val l2: suspend (Int) -> String = { i -> i.toString() }
+    l2.invoke(5)        // calls kotlin/jvm/functions/Function2.invoke
+
+    val l3: (Int,Int,Int,Int,Int,Int,Int,Int,Int,Int,Int,Int,Int,Int,Int,Int,Int,Int,Int,Int,Int,Int,Int) -> String
+            = { _,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_ ->  ""}
+    l3.invoke(1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3)    // 23 args, calls kotlin/jvm/functions/FunctionN.invoke
+
+    val l4: suspend (Int,Int,Int,Int,Int,Int,Int,Int,Int,Int,Int,Int,Int,Int,Int,Int,Int,Int,Int,Int,Int,Int) -> String
+            = { _,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_ ->  ""}
+    l4.invoke(1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2)      // 22 args, calls kotlin/jvm/functions/FunctionN.invoke
+}

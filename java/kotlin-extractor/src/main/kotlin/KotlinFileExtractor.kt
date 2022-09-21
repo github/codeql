@@ -917,6 +917,9 @@ open class KotlinFileExtractor(
                 if (f is IrSimpleFunction && f.overriddenSymbols.isNotEmpty()) {
                     addModifiers(id, "override")
                 }
+                if (f.isSuspend) {
+                    addModifiers(id, "suspend")
+                }
 
                 return id
             }
@@ -1468,7 +1471,7 @@ open class KotlinFileExtractor(
 
         val (isFunctionInvoke, isBigArityFunctionInvoke) =
                 if (drType is IrSimpleType &&
-                    drType.isFunctionOrKFunction() &&
+                    (drType.isFunctionOrKFunction() || drType.isSuspendFunctionOrKFunction()) &&
                     callTarget.name.asString() == OperatorNameConventions.INVOKE.asString()) {
                     Pair(true, drType.arguments.size > BuiltInFunctionArity.BIG_ARITY)
                 } else {
@@ -4523,14 +4526,14 @@ open class KotlinFileExtractor(
                        ```
                      */
 
-                    if (!e.argument.type.isFunctionOrKFunction()) {
-                        logger.errorElement("Expected to find expression with function type in SAM conversion.", e)
-                        return
-                    }
-
                     val st = e.argument.type as? IrSimpleType
                     if (st == null) {
                         logger.errorElement("Expected to find a simple type in SAM conversion.", e)
+                        return
+                    }
+
+                    if (!st.isFunctionOrKFunction() && !st.isSuspendFunctionOrKFunction()) {
+                        logger.errorElement("Expected to find expression with function type in SAM conversion.", e)
                         return
                     }
 
@@ -4595,6 +4598,10 @@ open class KotlinFileExtractor(
                     // T UnaryOperator<T>.apply(T t) here, we would need to compose substitutions so we can implement
                     // the real underlying R Function<T, R>.apply(T t).
                     forceExtractFunction(samMember, classId, extractBody = false, extractMethodAndParameterTypeAccesses = true, typeSub, classTypeArgs, ids.function, tw.getLocation(e))
+
+                    if (st.isSuspendFunctionOrKFunction()) {
+                        addModifiers(ids.function, "suspend")
+                    }
 
                     //body
                     val blockId = tw.getFreshIdLabel<DbBlock>()
