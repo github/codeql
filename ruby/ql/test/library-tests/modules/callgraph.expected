@@ -190,8 +190,10 @@ getTarget
 | private.rb:64:7:64:32 | call to puts | calls.rb:102:5:102:30 | puts |
 | private.rb:67:3:69:5 | call to private | calls.rb:109:5:109:20 | private |
 | private.rb:68:7:68:32 | call to puts | calls.rb:102:5:102:30 | puts |
+| private.rb:72:7:72:8 | call to m1 | private.rb:63:11:65:5 | m1 |
 | private.rb:77:3:81:5 | call to private | calls.rb:109:5:109:20 | private |
 | private.rb:78:7:78:32 | call to puts | calls.rb:102:5:102:30 | puts |
+| private.rb:79:7:79:8 | call to m2 | private.rb:67:11:69:5 | m2 |
 | private.rb:80:7:80:26 | call to new | calls.rb:114:5:114:16 | new |
 | private.rb:84:1:84:20 | call to new | calls.rb:114:5:114:16 | new |
 | private.rb:84:1:84:28 | call to call_m1 | private.rb:71:3:73:5 | call_m1 |
@@ -240,8 +242,6 @@ unresolvedCall
 | private.rb:35:1:35:14 | call to private2 |
 | private.rb:36:1:36:14 | call to private3 |
 | private.rb:37:1:37:14 | call to private4 |
-| private.rb:72:7:72:8 | call to m1 |
-| private.rb:79:7:79:8 | call to m2 |
 | private.rb:80:7:80:29 | call to m1 |
 | private.rb:85:1:85:23 | call to m1 |
 privateMethod
