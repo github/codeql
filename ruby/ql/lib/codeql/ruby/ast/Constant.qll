@@ -208,11 +208,6 @@ class ConstantAccess extends Expr, TConstantAccess {
    */
   predicate hasGlobalScope() { none() }
 
-  /**
-   * Gets a fully qualified name for this constant.
-   */
-  string getAQualifiedName() { none() }
-
   override string toString() { result = this.getName() }
 
   override AstNode getAChild(string pred) {
@@ -299,8 +294,6 @@ class ConstantReadAccess extends ConstantAccess {
   Expr getValue() { result = getConstantReadAccessValue(this) }
 
   final override string getAPrimaryQlClass() { result = "ConstantReadAccess" }
-
-  override string getAQualifiedName() { TResolved(result) = resolveConstantReadAccess(this) }
 }
 
 /**
@@ -361,7 +354,7 @@ class ConstantWriteAccess extends ConstantAccess {
    * constants up the namespace chain, the fully qualified name of a nested
    * constant can be ambiguous from just statically looking at the AST.
    */
-  override string getAQualifiedName() { result = resolveConstantWriteAccess(this) }
+  string getAQualifiedName() { result = resolveConstantWriteAccess(this) }
 
   /**
    * Gets a qualified name for this constant. Deprecated in favor of
