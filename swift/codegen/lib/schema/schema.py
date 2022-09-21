@@ -174,13 +174,12 @@ def _get_class(cls: type) -> Class:
                  derived={d.__name__ for d in cls.__subclasses__()},
                  # getattr to inherit from bases
                  group=getattr(cls, "group", ""),
-                 # not getattr not to inherit from bases
+                 # in the following we don't use `getattr` to avoid inheriting
                  pragmas=cls.__dict__.get("pragmas", []),
-                 # not getattr not to inherit from bases
                  ipa=cls.__dict__.get("ipa", None),
                  properties=[
                      a | _PropertyNamer(n)
-                     for n, a in cls.__annotations__.items()
+                     for n, a in cls.__dict__.get("__annotations__", {}).items()
                  ],
                  )
 
