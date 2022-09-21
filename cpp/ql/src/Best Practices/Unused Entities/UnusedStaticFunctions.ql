@@ -13,6 +13,7 @@
 
 import cpp
 
+pragma[noinline]
 predicate possiblyIncompleteFile(File f) {
   exists(Diagnostic d | d.getFile() = f and d.getSeverity() >= 3)
   or
