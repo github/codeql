@@ -1760,18 +1760,14 @@ private module Impl {
   private Element getImmediateChildOfIfConfigDecl(
     IfConfigDecl e, int index, string partialPredicateCall
   ) {
-    exists(int b, int bDecl, int n, int nActiveElement |
+    exists(int b, int bDecl, int n |
       b = 0 and
       bDecl = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfDecl(e, i, _)) | i) and
       n = bDecl and
-      nActiveElement = n + 1 + max(int i | i = -1 or exists(e.getImmediateActiveElement(i)) | i) and
       (
         none()
         or
         result = getImmediateChildOfDecl(e, index - b, partialPredicateCall)
-        or
-        result = e.getImmediateActiveElement(index - n) and
-        partialPredicateCall = "ActiveElement(" + (index - n).toString() + ")"
       )
     )
   }

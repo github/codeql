@@ -153,3 +153,28 @@ class Derived : Baz {}
 
 // multiple conversions
 var d: Baz? = Derived() as Baz
+
+func ifConfig() {
+  #if FOO
+  1
+  2
+  3
+  #else
+  4
+  5
+  6
+  #endif
+
+  #if BAR
+  7
+  8
+  #endif
+
+  #if true
+  9
+  10
+  #else
+  11
+  12
+  #endif
+}

@@ -52,7 +52,7 @@ predicate last(ControlFlowTree cft, ControlFlowElement last, Completion c) {
  */
 pragma[nomagic]
 predicate succ(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
-  any(ControlFlowTree cft).succ(pred, succ, c)
+  exists(ControlFlowTree cft | cft.succ(pred, succ, c))
 }
 
 /** An element that is executed in pre-order. */
