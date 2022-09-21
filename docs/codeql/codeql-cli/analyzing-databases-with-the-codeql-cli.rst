@@ -219,6 +219,56 @@ When the analysis has finished, a SARIF results file is generated. Specifying ``
 that the results are formatted according to the most recent SARIF specification
 supported by CodeQL.
 
+.. _including-query-help-for-custom-codeql-queries-in-sarif-files:
+
+Running a subset of queries in a CodeQL pack
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+If you are using CodeQL CLI v2.8.1 or later, you can include a path at the end of a pack specification to run a subset of queries inside the pack. This applies to any command that locates or runs queries within a pack.
+
+The complete way to specify a set of queries is in the form ``scope/name@range:path``, where:
+
+- ``scope/name`` is the qualified name of a CodeQL pack.
+- ``range`` is a `semver range <https://docs.npmjs.com/cli/v6/using-npm/semver#ranges>`_.
+- ``path`` is a file system path to a single query, a directory containing queries, or a query suite file.
+
+When you specify a ``scope/name``, the ``range`` and ``path`` are
+optional. If you omit a ``range`` then the latest version of the
+specified pack is used. If you omit a ``path`` then the default query suite
+of the specified pack is used.
+
+The ``path`` can be one of a ``*.ql`` query file, a directory
+containing one or more queries, or a ``.qls`` query suite file. If
+you omit a pack name, then you must provide a ``path``,
+which will be interpreted relative to the working directory
+of the current process.
+
+If you specify a ``scope/name`` and ``path``, then the ``path`` cannot
+be absolute. It is considered relative to the root of the CodeQL
+pack.
+
+To analyze a database using all queries in the `experimental/Security` folder within the `codeql/cpp-queries` CodeQL pack you can use::
+
+    codeql database analyze --format=sarif-latest --output=results <db> \
+        codeql/cpp-queries:experimental/Security
+
+To run the `RedundantNullCheckParam.ql` query in the `codeql/cpp-queries` CodeQL pack use::
+
+    codeql database analyze --format=sarif-latest --output=results <db> \
+        'codeql/cpp-queries:experimental/Likely Bugs/RedundantNullCheckParam.ql'
+
+To analyze your database using the `cpp-security-and-quality.qls` query suite from a version of the `codeql/cpp-queries` CodeQL pack that is >= 0.0.3 and < 0.1.0 (the highest compatible version will be chosen) you can use::
+
+    codeql database analyze --format=sarif-latest --output=results <db> \
+       'codeql/cpp-queries@~0.0.3:codeql-suites/cpp-security-and-quality.qls'
+
+If you need to reference a query file, directory, or suite whose path contains a literal `@` or `:`, you can prefix the query specification with `path:` like so::
+
+    codeql database analyze --format=sarif-latest --output=results <db> \
+        path:C:/Users/ci/workspace@2/security/query.ql
+
+For more information about CodeQL packs, see :doc:`About CodeQL Packs <about-codeql-packs>`.
+
 Running query suites
 ~~~~~~~~~~~~~~~~~~~~
 

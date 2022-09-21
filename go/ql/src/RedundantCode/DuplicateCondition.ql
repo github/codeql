@@ -30,4 +30,4 @@ GVN conditionGvn(IfStmt is, int i, Expr e) {
 
 from IfStmt is, Expr e, Expr f, int i, int j
 where conditionGvn(is, i, e) = conditionGvn(is, j, f) and i < j
-select f, "This condition is a duplicate of $@.", e, "an earlier condition"
+select f, "This condition is a duplicate of an $@.", e, "earlier condition"

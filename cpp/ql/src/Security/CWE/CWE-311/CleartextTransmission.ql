@@ -217,7 +217,8 @@ class Encrypted extends Expr {
 }
 
 /**
- * Taint flow from a sensitive expression.
+ * A taint flow configuration for flow from a sensitive expression to a network
+ * operation or encryption operation.
  */
 class FromSensitiveConfiguration extends TaintTracking::Configuration {
   FromSensitiveConfiguration() { this = "FromSensitiveConfiguration" }
@@ -233,6 +234,10 @@ class FromSensitiveConfiguration extends TaintTracking::Configuration {
   override predicate isAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
     // flow through encryption functions to the return value (in case we can reach other sinks)
     node2.asExpr().(Encrypted).(FunctionCall).getAnArgument() = node1.asExpr()
+  }
+
+  override predicate isSanitizer(DataFlow::Node node) {
+    node.asExpr().getUnspecifiedType() instanceof IntegralType
   }
 }
 

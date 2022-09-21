@@ -2,7 +2,6 @@
  * Provides classes for working with Rails.
  */
 
-private import codeql.files.FileSystem
 private import codeql.ruby.AST
 private import codeql.ruby.Concepts
 private import codeql.ruby.DataFlow

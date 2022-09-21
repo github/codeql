@@ -33,7 +33,7 @@ predicate isIncompleteHostNameRegexpPattern(string pattern, string hostPart) {
 
 /** Holds if `b` sets the HTTP status code (represented by a pseudo-header named  `status`) */
 predicate writesHttpError(ReachableBasicBlock b) {
-  forex(HTTP::HeaderWrite hw |
+  forex(Http::HeaderWrite hw |
     hw.getHeaderName() = "status" and hw.asInstruction().getBasicBlock() = b
   |
     exists(string code | code.matches("4__") or code.matches("5__") |
@@ -65,7 +65,7 @@ DataFlow::Node getASafeHandler() {
 }
 
 /** Holds if `regexp` is used in a check before `handler` is called. */
-predicate regexpGuardsHandler(RegexpPattern regexp, HTTP::RequestHandler handler) {
+predicate regexpGuardsHandler(RegexpPattern regexp, Http::RequestHandler handler) {
   handler.guardedBy(DataFlow::exprNode(regexp.getAUse().asExpr().getParent*()))
 }
 
@@ -99,7 +99,7 @@ class Config extends DataFlow::Configuration {
 
   override predicate isSink(DataFlow::Node sink) {
     sink instanceof RegexpPattern and
-    forall(HTTP::RequestHandler handler | regexpGuardsHandler(sink, handler) |
+    forall(Http::RequestHandler handler | regexpGuardsHandler(sink, handler) |
       not handler = getASafeHandler()
     ) and
     not regexpGuardsError(sink)
@@ -110,4 +110,4 @@ from Config c, DataFlow::PathNode source, DataFlow::PathNode sink, string hostPa
 where c.hasFlowPath(source, sink) and c.isSource(source.getNode(), hostPart)
 select source, source, sink,
   "This regular expression has an unescaped dot before '" + hostPart + "', " +
-    "so it might match more hosts than expected when used $@.", sink, "here"
+    "so it might match more hosts than expected when $@.", sink, "the regular expression is used"

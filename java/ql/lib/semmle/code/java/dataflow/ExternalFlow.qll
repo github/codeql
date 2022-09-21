@@ -117,6 +117,7 @@ private module Frameworks {
   private import semmle.code.java.frameworks.Retrofit
   private import semmle.code.java.frameworks.Stream
   private import semmle.code.java.frameworks.Strings
+  private import semmle.code.java.frameworks.Thymeleaf
   private import semmle.code.java.frameworks.ratpack.Ratpack
   private import semmle.code.java.frameworks.ratpack.RatpackExec
   private import semmle.code.java.frameworks.spring.SpringCache
@@ -141,6 +142,7 @@ private module Frameworks {
   private import semmle.code.java.security.LdapInjection
   private import semmle.code.java.security.MvelInjection
   private import semmle.code.java.security.OgnlInjection
+  private import semmle.code.java.security.TemplateInjection
   private import semmle.code.java.security.XPath
   private import semmle.code.java.security.XsltInjection
   private import semmle.code.java.frameworks.Jdbc
@@ -625,7 +627,7 @@ module CsvValidation {
           "open-url", "jndi-injection", "ldap", "sql", "jdbc-url", "logging", "mvel", "xpath",
           "groovy", "xss", "ognl-injection", "intent-start", "pending-intent-sent",
           "url-open-stream", "url-redirect", "create-file", "write-file", "set-hostname-verifier",
-          "header-splitting", "information-leak", "xslt", "jexl", "bean-validation"
+          "header-splitting", "information-leak", "xslt", "jexl", "bean-validation", "ssti"
         ] and
       not kind.matches("regex-use%") and
       not kind.matches("qltest%") and

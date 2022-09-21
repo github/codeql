@@ -2,7 +2,7 @@
  * Provides modeling for the `HTTPClient` library.
  */
 
-private import ruby
+private import codeql.ruby.AST
 private import codeql.ruby.Concepts
 private import codeql.ruby.ApiGraphs
 private import codeql.ruby.DataFlow
@@ -15,7 +15,7 @@ private import codeql.ruby.dataflow.internal.DataFlowImplForHttpClientLibraries 
  * HTTPClient.get_content("http://example.com")
  * ```
  */
-class HttpClientRequest extends HTTP::Client::Request::Range, DataFlow::CallNode {
+class HttpClientRequest extends Http::Client::Request::Range, DataFlow::CallNode {
   API::Node requestNode;
   API::Node connectionNode;
   string method;

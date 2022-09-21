@@ -197,7 +197,7 @@ jobs:
       - name: Prepare test files
         shell: bash
         run: |
-          echo "import ruby select count(File f)" > "test.ql"
+          echo "import codeql.ruby.AST select count(File f)" > "test.ql"
           echo "| 4 |" > "test.expected"
           echo 'name: sample-tests
           version: 0.0.0

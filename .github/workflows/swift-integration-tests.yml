@@ -4,6 +4,8 @@ on:
   pull_request:
     paths:
       - "swift/**"
+      - "misc/bazel/**"
+      - "*.bazel*"
       - .github/workflows/swift-integration-tests.yml
       - .github/actions/fetch-codeql/action.yml
       - codeql-workspace.yml
@@ -30,6 +32,14 @@ jobs:
       - name: Build Swift extractor
         run: |
           bazel run //swift:create-extractor-pack
+      - name: Get Swift version
+        id: get_swift_version
+        run: |
+          VERSION=$(bazel run //swift/extractor -- --version | sed -ne 's/.*version \(\S*\).*/\1/p')
+          echo "::set-output name=version::$VERSION"
+      - uses: swift-actions/setup-swift@v1
+        with:
+          swift-version: "${{steps.get_swift_version.outputs.version}}"
       - name: Run integration tests
         run: |
           python integration-tests/runner.py

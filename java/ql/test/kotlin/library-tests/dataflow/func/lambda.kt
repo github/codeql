@@ -1,7 +1,8 @@
 class Lambda {
-    fun test() {
+    suspend fun test() {
         Helper.sink(Processor().process({ it: String -> Helper.notaint() }, ""))
         Helper.sink(Processor().process({ it: String -> Helper.taint() }, ""))
+        Helper.sink(Processor().processSusp({ it: String -> Helper.taint() }, ""))
         Helper.sink(Processor().process({ i -> i }, Helper.taint()))
         Helper.sink(Processor().process(fun (i: String) = i, Helper.taint()))
 

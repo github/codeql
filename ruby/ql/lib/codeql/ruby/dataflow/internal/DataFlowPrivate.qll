@@ -1,4 +1,4 @@
-private import ruby
+private import codeql.ruby.AST
 private import codeql.ruby.ast.internal.Synthesis
 private import codeql.ruby.CFG
 private import codeql.ruby.dataflow.SSA
@@ -203,6 +203,12 @@ private class Argument extends CfgNodes::ExprCfgNode {
   }
 }
 
+/** Holds if `n` is not a constant expression. */
+predicate isNonConstantExpr(CfgNodes::ExprCfgNode n) {
+  not exists(n.getConstantValue()) and
+  not n.getExpr() instanceof ConstantAccess
+}
+
 /** A collection of cached types and predicates to be evaluated in the same stage. */
 cached
 private module Cached {
@@ -232,8 +238,12 @@ private module Cached {
       isParameterNode(_, c, any(ParameterPosition p | p.isKeyword(_)))
     } or
     TExprPostUpdateNode(CfgNodes::ExprCfgNode n) {
-      n instanceof Argument or
-      n = any(CfgNodes::ExprNodes::InstanceVariableAccessCfgNode v).getReceiver()
+      // filter out nodes that clearly don't need post-update nodes
+      isNonConstantExpr(n) and
+      (
+        n instanceof Argument or
+        n = any(CfgNodes::ExprNodes::InstanceVariableAccessCfgNode v).getReceiver()
+      )
     } or
     TSummaryNode(
       FlowSummaryImpl::Public::SummarizedCallable c,
@@ -438,6 +448,9 @@ class SsaDefinitionNode extends NodeImpl, TSsaDefinitionNode {
   /** Gets the underlying SSA definition. */
   Ssa::Definition getDefinition() { result = def }
 
+  /** Gets the underlying variable. */
+  Variable getVariable() { result = def.getSourceVariable() }
+
   override CfgScope getCfgScope() { result = def.getBasicBlock().getScope() }
 
   override Location getLocationImpl() { result = def.getLocation() }
@@ -538,6 +551,9 @@ private module ParameterNodes {
     SelfParameterNode() { this = TSelfParameterNode(method) }
 
     final MethodBase getMethod() { result = method }
+
+    /** Gets the underlying `self` variable. */
+    final SelfVariable getSelfVariable() { result.getDeclaringScope() = method }
 
     override Parameter getParameter() { none() }
 
@@ -1036,7 +1052,8 @@ predicate readStep(Node node1, ContentSet c, Node node2) {
   // (instance variable assignment or setter method call).
   node2.asExpr() =
     any(CfgNodes::ExprNodes::MethodCallCfgNode call |
-      node1.asExpr() = call.getReceiver() and
+      node1.asExpr() =
+        any(CfgNodes::ExprCfgNode e | e = call.getReceiver() and isNonConstantExpr(e)) and
       call.getNumberOfArguments() = 0 and
       c.isSingleton(any(Content::FieldContent ct |
           ct.getName() = "@" + call.getExpr().getMethodName()

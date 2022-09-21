@@ -248,15 +248,15 @@ open class Logger(val loggerBase: LoggerBase, open val tw: TrapWriter) {
 }
 
 class FileLogger(loggerBase: LoggerBase, override val tw: FileTrapWriter): Logger(loggerBase, tw) {
-    fun warnElement(msg: String, element: IrElement) {
+    fun warnElement(msg: String, element: IrElement, exn: Throwable? = null) {
         val locationString = tw.getLocationString(element)
         val mkLocationId = { tw.getLocation(element) }
-        loggerBase.diagnostic(tw, Severity.Warn, msg, null, locationString, mkLocationId)
+        loggerBase.diagnostic(tw, Severity.Warn, msg, exn?.stackTraceToString(), locationString, mkLocationId)
     }
 
-    fun errorElement(msg: String, element: IrElement) {
+    fun errorElement(msg: String, element: IrElement, exn: Throwable? = null) {
         val locationString = tw.getLocationString(element)
         val mkLocationId = { tw.getLocation(element) }
-        loggerBase.diagnostic(tw, Severity.Error, msg, null, locationString, mkLocationId)
+        loggerBase.diagnostic(tw, Severity.Error, msg, exn?.stackTraceToString(), locationString, mkLocationId)
     }
 }

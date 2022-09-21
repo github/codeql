@@ -34,4 +34,4 @@ sink(foo3.field) # $ hasValueFlow=22
 
 foo4 = "hello"
 foo4.other = source(23)
-sink(foo4.other) # $ hasValueFlow=23
+sink(foo4.other) # no field flow for constants

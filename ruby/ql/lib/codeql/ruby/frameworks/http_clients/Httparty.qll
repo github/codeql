@@ -2,7 +2,7 @@
  * Provides modeling for the `HTTParty` library.
  */
 
-private import ruby
+private import codeql.ruby.AST
 private import codeql.ruby.CFG
 private import codeql.ruby.Concepts
 private import codeql.ruby.ApiGraphs
@@ -24,7 +24,7 @@ private import codeql.ruby.dataflow.internal.DataFlowImplForHttpClientLibraries 
  * MyClass.new("http://example.com")
  * ```
  */
-class HttpartyRequest extends HTTP::Client::Request::Range, DataFlow::CallNode {
+class HttpartyRequest extends Http::Client::Request::Range, DataFlow::CallNode {
   API::Node requestNode;
 
   HttpartyRequest() {

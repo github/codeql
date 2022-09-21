@@ -7,7 +7,7 @@ For example, to check for CodeQL databases using the `GitHub CLI <https://cli.gi
 
 This command returns information about any CodeQL databases that are available for a repository, including the language the database represents, and when the database was last updated. If no CodeQL databases are available, the response is empty.
 
-When you have confirmed that a CodeQL database exists for the language you are interested in, you can download it using the following command:: 
+When you have confirmed that a CodeQL database exists for the language you are interested in, you can download it using the following command::
 
    gh api /repos/<owner>/<repo>/code-scanning/codeql/databases/<language> -H 'Accept: application/zip' > path/to/local/database.zip
 

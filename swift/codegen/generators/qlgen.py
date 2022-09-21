@@ -28,7 +28,6 @@ import typing
 import itertools
 
 import inflection
-from toposort import toposort_flatten
 
 from swift.codegen.lib import schema, ql
 
@@ -263,9 +262,7 @@ def generate(opts, renderer):
 
     imports = {}
 
-    inheritance_graph = {name: cls.bases for name, cls in data.classes.items()}
-    toposorted_names = toposort_flatten(inheritance_graph)
-    db_classes = [classes[name] for name in toposorted_names if not classes[name].ipa]
+    db_classes = [cls for cls in classes.values() if not cls.ipa]
     renderer.render(ql.DbClasses(db_classes), out / "Raw.qll")
 
     classes_by_dir_and_name = sorted(classes.values(), key=lambda cls: (cls.dir, cls.name))
@@ -286,8 +283,7 @@ def generate(opts, renderer):
     include_file = stub_out.with_suffix(".qll")
     renderer.render(ql.ImportList(list(imports.values())), include_file)
 
-    toposorted_classes = [classes[name] for name in toposorted_names]
-    renderer.render(ql.GetParentImplementation(toposorted_classes), out / 'ParentChild.qll')
+    renderer.render(ql.GetParentImplementation(list(classes.values())), out / 'ParentChild.qll')
 
     for c in data.classes.values():
         if _should_skip_qltest(c, data.classes):

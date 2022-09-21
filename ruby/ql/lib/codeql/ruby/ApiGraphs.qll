@@ -6,7 +6,7 @@
  * directed and labeled; they specify how the components represented by nodes relate to each other.
  */
 
-private import ruby
+private import codeql.ruby.AST
 private import codeql.ruby.DataFlow
 private import codeql.ruby.typetracking.TypeTracker
 private import codeql.ruby.ast.internal.Module

@@ -223,7 +223,9 @@ private SemGuard boundFlowCond(
       else resultIsStrict = testIsTrue.booleanNot()
     ) and
     (
-      if getTrackedTypeForSsaVariable(v) instanceof SemIntegerType
+      if
+        getTrackedTypeForSsaVariable(v) instanceof SemIntegerType or
+        getTrackedTypeForSsaVariable(v) instanceof SemAddressType
       then
         upper = true and strengthen = -1
         or

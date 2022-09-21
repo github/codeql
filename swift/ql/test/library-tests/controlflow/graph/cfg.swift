@@ -88,7 +88,7 @@ func testInOut() -> Int {
   func addOptional(a: inout Int?) {
     a = nil
   }
-  
+
   add(a:&temp)
   var tempOptional : Int? = 10
   addOptional(a:&tempOptional)
@@ -462,4 +462,33 @@ func test(a : A) {
   var apply_kpGet_bs_0_x = a[keyPath: kpGet_bs_0_x]
   var apply_kpGet_mayB_force_x = a[keyPath: kpGet_mayB_force_x]
   var apply_kpGet_mayB_x = a[keyPath: kpGet_mayB_x]
+}
+
+func testIfConfig() {
+#if FOO
+  1
+  2
+#else
+  3
+  4
+#endif
+
+  5
+
+#if BAR
+  6
+  7
+#endif
+
+  8
+
+#if FOO
+  9
+  10
+#elseif true
+  11
+  12
+#endif
+
+  13
 }

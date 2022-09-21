@@ -7,7 +7,7 @@
  * @id rb/lines-of-code-in-files
  */
 
-import ruby
+import codeql.ruby.AST
 
 from RubyFile f, int n
 where n = f.getNumberOfLinesOfCode()

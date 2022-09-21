@@ -1002,6 +1002,15 @@ module Decls {
       i = ast.getNumberOfParams()
     }
   }
+
+  /**
+   * The control-flow of an #if block.
+   * The active elements are already listed in the containing scope, so we can just flow through
+   * this as a leaf.
+   */
+  class IfConfigDeclTree extends AstLeafTree {
+    override IfConfigDecl ast;
+  }
 }
 
 module Exprs {

@@ -2,7 +2,7 @@
  * @kind path-problem
  */
 
-import ruby
+import codeql.ruby.AST
 import codeql.ruby.DataFlow
 import TestUtilities.InlineFlowTest
 import DataFlow::PathGraph

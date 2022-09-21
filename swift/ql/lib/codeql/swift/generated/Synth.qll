@@ -22,7 +22,6 @@ module Synth {
     TEnumElementDecl(Raw::EnumElementDecl id) { constructEnumElementDecl(id) } or
     TExtensionDecl(Raw::ExtensionDecl id) { constructExtensionDecl(id) } or
     TGenericTypeParamDecl(Raw::GenericTypeParamDecl id) { constructGenericTypeParamDecl(id) } or
-    TIfConfigClause(Raw::IfConfigClause id) { constructIfConfigClause(id) } or
     TIfConfigDecl(Raw::IfConfigDecl id) { constructIfConfigDecl(id) } or
     TImportDecl(Raw::ImportDecl id) { constructImportDecl(id) } or
     TInfixOperatorDecl(Raw::InfixOperatorDecl id) { constructInfixOperatorDecl(id) } or
@@ -315,9 +314,14 @@ module Synth {
 
   class TFile = TDbFile or TUnknownFile;
 
-  class TLocatable = TArgument or TAstNode or TComment or TConditionElement or TIfConfigClause;
+  class TLocatable = TArgument or TAstNode or TComment or TConditionElement;
 
   class TLocation = TDbLocation or TUnknownLocation;
+
+  class TUnresolvedElement =
+    TUnresolvedDeclRefExpr or TUnresolvedDotExpr or TUnresolvedMemberChainResultExpr or
+        TUnresolvedMemberExpr or TUnresolvedPatternExpr or TUnresolvedSpecializeExpr or
+        TUnresolvedType or TUnresolvedTypeConversionExpr;
 
   class TAbstractFunctionDecl = TConstructorDecl or TDestructorDecl or TFuncDecl;
 
@@ -525,9 +529,6 @@ module Synth {
   TGenericTypeParamDecl convertGenericTypeParamDeclFromRaw(Raw::Element e) {
     result = TGenericTypeParamDecl(e)
   }
-
-  cached
-  TIfConfigClause convertIfConfigClauseFromRaw(Raw::Element e) { result = TIfConfigClause(e) }
 
   cached
   TIfConfigDecl convertIfConfigDeclFromRaw(Raw::Element e) { result = TIfConfigDecl(e) }
@@ -1420,6 +1421,8 @@ module Synth {
     result = convertLocationFromRaw(e)
     or
     result = convertTypeFromRaw(e)
+    or
+    result = convertUnresolvedElementFromRaw(e)
   }
 
   cached
@@ -1438,8 +1441,6 @@ module Synth {
     result = convertCommentFromRaw(e)
     or
     result = convertConditionElementFromRaw(e)
-    or
-    result = convertIfConfigClauseFromRaw(e)
   }
 
   cached
@@ -1447,6 +1448,25 @@ module Synth {
     result = convertDbLocationFromRaw(e)
     or
     result = convertUnknownLocationFromRaw(e)
+  }
+
+  cached
+  TUnresolvedElement convertUnresolvedElementFromRaw(Raw::Element e) {
+    result = convertUnresolvedDeclRefExprFromRaw(e)
+    or
+    result = convertUnresolvedDotExprFromRaw(e)
+    or
+    result = convertUnresolvedMemberChainResultExprFromRaw(e)
+    or
+    result = convertUnresolvedMemberExprFromRaw(e)
+    or
+    result = convertUnresolvedPatternExprFromRaw(e)
+    or
+    result = convertUnresolvedSpecializeExprFromRaw(e)
+    or
+    result = convertUnresolvedTypeFromRaw(e)
+    or
+    result = convertUnresolvedTypeConversionExprFromRaw(e)
   }
 
   cached
@@ -2187,9 +2207,6 @@ module Synth {
   Raw::Element convertGenericTypeParamDeclToRaw(TGenericTypeParamDecl e) {
     e = TGenericTypeParamDecl(result)
   }
-
-  cached
-  Raw::Element convertIfConfigClauseToRaw(TIfConfigClause e) { e = TIfConfigClause(result) }
 
   cached
   Raw::Element convertIfConfigDeclToRaw(TIfConfigDecl e) { e = TIfConfigDecl(result) }
@@ -3080,6 +3097,8 @@ module Synth {
     result = convertLocationToRaw(e)
     or
     result = convertTypeToRaw(e)
+    or
+    result = convertUnresolvedElementToRaw(e)
   }
 
   cached
@@ -3098,8 +3117,6 @@ module Synth {
     result = convertCommentToRaw(e)
     or
     result = convertConditionElementToRaw(e)
-    or
-    result = convertIfConfigClauseToRaw(e)
   }
 
   cached
@@ -3107,6 +3124,25 @@ module Synth {
     result = convertDbLocationToRaw(e)
     or
     result = convertUnknownLocationToRaw(e)
+  }
+
+  cached
+  Raw::Element convertUnresolvedElementToRaw(TUnresolvedElement e) {
+    result = convertUnresolvedDeclRefExprToRaw(e)
+    or
+    result = convertUnresolvedDotExprToRaw(e)
+    or
+    result = convertUnresolvedMemberChainResultExprToRaw(e)
+    or
+    result = convertUnresolvedMemberExprToRaw(e)
+    or
+    result = convertUnresolvedPatternExprToRaw(e)
+    or
+    result = convertUnresolvedSpecializeExprToRaw(e)
+    or
+    result = convertUnresolvedTypeToRaw(e)
+    or
+    result = convertUnresolvedTypeConversionExprToRaw(e)
   }
 
   cached

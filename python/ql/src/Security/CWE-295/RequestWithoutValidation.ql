@@ -15,7 +15,7 @@ private import semmle.python.dataflow.new.DataFlow
 private import semmle.python.Concepts
 
 from
-  HTTP::Client::Request request, DataFlow::Node disablingNode, DataFlow::Node origin, string ending
+  Http::Client::Request request, DataFlow::Node disablingNode, DataFlow::Node origin, string ending
 where
   request.disablesCertificateValidation(disablingNode, origin) and
   // Showing the origin is only useful when it's a different node than the one disabling

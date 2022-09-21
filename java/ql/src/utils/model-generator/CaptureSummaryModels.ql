@@ -6,9 +6,9 @@
  * @tags model-generator
  */
 
-private import internal.CaptureModels
-private import internal.CaptureSummaryFlow
+import internal.CaptureModels
+import internal.CaptureSummaryFlow
 
-from TargetApi api, string flow
+from DataFlowTargetApi api, string flow
 where flow = captureFlow(api)
 select flow order by flow

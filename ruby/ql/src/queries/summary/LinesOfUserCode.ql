@@ -8,7 +8,7 @@
  * @tags summary
  */
 
-import ruby
+import codeql.ruby.AST
 
 select sum(RubyFile f |
     f.fromSource() and
