@@ -586,6 +586,7 @@ arguments(  //dir=expr
 | @optional_evaluation_expr
 | @other_constructor_decl_ref_expr
 | @overload_set_ref_expr
+| @pack_expr
 | @property_wrapper_value_placeholder_expr
 | @rebind_self_in_constructor_expr
 | @sequence_expr
@@ -818,6 +819,7 @@ if_exprs(  //dir=expr
 | @metatype_conversion_expr
 | @pointer_to_pointer_expr
 | @protocol_metatype_to_object_expr
+| @reify_pack_expr
 | @string_to_pointer_expr
 | @underlying_to_opaque_expr
 | @unevaluated_instance_expr
@@ -935,6 +937,10 @@ other_constructor_decl_ref_exprs(  //dir=expr
 @overload_set_ref_expr =
   @overloaded_decl_ref_expr
 ;
+
+pack_exprs(  //dir=expr
+  unique int id: @pack_expr
+);
 
 property_wrapper_value_placeholder_exprs(  //dir=expr
   unique int id: @property_wrapper_value_placeholder_expr
@@ -1297,6 +1303,10 @@ protocol_metatype_to_object_exprs(  //dir=expr
 
 regex_literal_exprs(  //dir=expr
   unique int id: @regex_literal_expr
+);
+
+reify_pack_exprs(  //dir=expr
+  unique int id: @reify_pack_expr
 );
 
 @self_apply_expr =

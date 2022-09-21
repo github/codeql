@@ -1574,6 +1574,19 @@ private module Impl {
     )
   }
 
+  private Element getImmediateChildOfPackExpr(PackExpr e, int index, string partialPredicateCall) {
+    exists(int b, int bExpr, int n |
+      b = 0 and
+      bExpr = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfExpr(e, i, _)) | i) and
+      n = bExpr and
+      (
+        none()
+        or
+        result = getImmediateChildOfExpr(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
   private Element getImmediateChildOfPropertyWrapperValuePlaceholderExpr(
     PropertyWrapperValuePlaceholderExpr e, int index, string partialPredicateCall
   ) {
@@ -2677,6 +2690,23 @@ private module Impl {
         none()
         or
         result = getImmediateChildOfLiteralExpr(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  private Element getImmediateChildOfReifyPackExpr(
+    ReifyPackExpr e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bImplicitConversionExpr, int n |
+      b = 0 and
+      bImplicitConversionExpr =
+        b + 1 +
+          max(int i | i = -1 or exists(getImmediateChildOfImplicitConversionExpr(e, i, _)) | i) and
+      n = bImplicitConversionExpr and
+      (
+        none()
+        or
+        result = getImmediateChildOfImplicitConversionExpr(e, index - b, partialPredicateCall)
       )
     )
   }
@@ -4957,6 +4987,8 @@ private module Impl {
     or
     result = getImmediateChildOfOtherConstructorDeclRefExpr(e, index, partialAccessor)
     or
+    result = getImmediateChildOfPackExpr(e, index, partialAccessor)
+    or
     result = getImmediateChildOfPropertyWrapperValuePlaceholderExpr(e, index, partialAccessor)
     or
     result = getImmediateChildOfRebindSelfInConstructorExpr(e, index, partialAccessor)
@@ -5080,6 +5112,8 @@ private module Impl {
     result = getImmediateChildOfProtocolMetatypeToObjectExpr(e, index, partialAccessor)
     or
     result = getImmediateChildOfRegexLiteralExpr(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfReifyPackExpr(e, index, partialAccessor)
     or
     result = getImmediateChildOfStringToPointerExpr(e, index, partialAccessor)
     or

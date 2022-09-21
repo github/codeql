@@ -543,6 +543,9 @@ OtherConstructorDeclRefExpr:
 OverloadSetRefExpr:
   _extends: Expr
 
+PackExpr:
+  _extends: Expr
+
 PropertyWrapperValuePlaceholderExpr:
   _extends: Expr
 
@@ -551,6 +554,9 @@ RebindSelfInConstructorExpr:
   _children:
     sub_expr: Expr
   self: VarDecl
+
+ReifyPackExpr:
+  _extends: ImplicitConversionExpr
 
 SequenceExpr:
   _extends: Expr

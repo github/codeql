@@ -517,6 +517,10 @@ module Raw {
 
   class OverloadSetRefExpr extends @overload_set_ref_expr, Expr { }
 
+  class PackExpr extends @pack_expr, Expr {
+    override string toString() { result = "PackExpr" }
+  }
+
   class PropertyWrapperValuePlaceholderExpr extends @property_wrapper_value_placeholder_expr, Expr {
     override string toString() { result = "PropertyWrapperValuePlaceholderExpr" }
   }
@@ -836,6 +840,10 @@ module Raw {
 
   class RegexLiteralExpr extends @regex_literal_expr, LiteralExpr {
     override string toString() { result = "RegexLiteralExpr" }
+  }
+
+  class ReifyPackExpr extends @reify_pack_expr, ImplicitConversionExpr {
+    override string toString() { result = "ReifyPackExpr" }
   }
 
   class SelfApplyExpr extends @self_apply_expr, ApplyExpr {

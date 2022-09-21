@@ -150,6 +150,7 @@ import codeql.swift.elements.expr.OptionalTryExpr
 import codeql.swift.elements.expr.OtherConstructorDeclRefExpr
 import codeql.swift.elements.expr.OverloadSetRefExpr
 import codeql.swift.elements.expr.OverloadedDeclRefExpr
+import codeql.swift.elements.expr.PackExpr
 import codeql.swift.elements.expr.ParenExpr
 import codeql.swift.elements.expr.PointerToPointerExpr
 import codeql.swift.elements.expr.PostfixUnaryExpr
@@ -158,6 +159,7 @@ import codeql.swift.elements.expr.PropertyWrapperValuePlaceholderExpr
 import codeql.swift.elements.expr.ProtocolMetatypeToObjectExpr
 import codeql.swift.elements.expr.RebindSelfInConstructorExpr
 import codeql.swift.elements.expr.RegexLiteralExpr
+import codeql.swift.elements.expr.ReifyPackExpr
 import codeql.swift.elements.expr.SelfApplyExpr
 import codeql.swift.elements.expr.SequenceExpr
 import codeql.swift.elements.expr.StringLiteralExpr

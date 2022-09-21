@@ -157,6 +157,7 @@ module Synth {
       constructOtherConstructorDeclRefExpr(id)
     } or
     TOverloadedDeclRefExpr(Raw::OverloadedDeclRefExpr id) { constructOverloadedDeclRefExpr(id) } or
+    TPackExpr(Raw::PackExpr id) { constructPackExpr(id) } or
     TParenExpr(Raw::ParenExpr id) { constructParenExpr(id) } or
     TPointerToPointerExpr(Raw::PointerToPointerExpr id) { constructPointerToPointerExpr(id) } or
     TPostfixUnaryExpr(Raw::PostfixUnaryExpr id) { constructPostfixUnaryExpr(id) } or
@@ -171,6 +172,7 @@ module Synth {
       constructRebindSelfInConstructorExpr(id)
     } or
     TRegexLiteralExpr(Raw::RegexLiteralExpr id) { constructRegexLiteralExpr(id) } or
+    TReifyPackExpr(Raw::ReifyPackExpr id) { constructReifyPackExpr(id) } or
     TSequenceExpr(Raw::SequenceExpr id) { constructSequenceExpr(id) } or
     TStringLiteralExpr(Raw::StringLiteralExpr id) { constructStringLiteralExpr(id) } or
     TStringToPointerExpr(Raw::StringToPointerExpr id) { constructStringToPointerExpr(id) } or
@@ -385,7 +387,7 @@ module Synth {
         TKeyPathDotExpr or TKeyPathExpr or TLazyInitializerExpr or TLiteralExpr or TLookupExpr or
         TMakeTemporarilyEscapableExpr or TObjCSelectorExpr or TOneWayExpr or TOpaqueValueExpr or
         TOpenExistentialExpr or TOptionalEvaluationExpr or TOtherConstructorDeclRefExpr or
-        TOverloadSetRefExpr or TPropertyWrapperValuePlaceholderExpr or
+        TOverloadSetRefExpr or TPackExpr or TPropertyWrapperValuePlaceholderExpr or
         TRebindSelfInConstructorExpr or TSequenceExpr or TSuperRefExpr or TTapExpr or
         TTupleElementExpr or TTupleExpr or TTypeExpr or TUnresolvedDeclRefExpr or
         TUnresolvedDotExpr or TUnresolvedMemberExpr or TUnresolvedPatternExpr or
@@ -405,8 +407,9 @@ module Synth {
         TFunctionConversionExpr or TInOutToPointerExpr or TInjectIntoOptionalExpr or
         TLinearFunctionExpr or TLinearFunctionExtractOriginalExpr or
         TLinearToDifferentiableFunctionExpr or TLoadExpr or TMetatypeConversionExpr or
-        TPointerToPointerExpr or TProtocolMetatypeToObjectExpr or TStringToPointerExpr or
-        TUnderlyingToOpaqueExpr or TUnevaluatedInstanceExpr or TUnresolvedTypeConversionExpr;
+        TPointerToPointerExpr or TProtocolMetatypeToObjectExpr or TReifyPackExpr or
+        TStringToPointerExpr or TUnderlyingToOpaqueExpr or TUnevaluatedInstanceExpr or
+        TUnresolvedTypeConversionExpr;
 
   class TLiteralExpr =
     TBuiltinLiteralExpr or TInterpolatedStringLiteralExpr or TNilLiteralExpr or
@@ -943,6 +946,9 @@ module Synth {
   }
 
   cached
+  TPackExpr convertPackExprFromRaw(Raw::Element e) { result = TPackExpr(e) }
+
+  cached
   TParenExpr convertParenExprFromRaw(Raw::Element e) { result = TParenExpr(e) }
 
   cached
@@ -975,6 +981,9 @@ module Synth {
 
   cached
   TRegexLiteralExpr convertRegexLiteralExprFromRaw(Raw::Element e) { result = TRegexLiteralExpr(e) }
+
+  cached
+  TReifyPackExpr convertReifyPackExprFromRaw(Raw::Element e) { result = TReifyPackExpr(e) }
 
   cached
   TSequenceExpr convertSequenceExprFromRaw(Raw::Element e) { result = TSequenceExpr(e) }
@@ -1759,6 +1768,8 @@ module Synth {
     or
     result = convertOverloadSetRefExprFromRaw(e)
     or
+    result = convertPackExprFromRaw(e)
+    or
     result = convertPropertyWrapperValuePlaceholderExprFromRaw(e)
     or
     result = convertRebindSelfInConstructorExprFromRaw(e)
@@ -1854,6 +1865,8 @@ module Synth {
     result = convertPointerToPointerExprFromRaw(e)
     or
     result = convertProtocolMetatypeToObjectExprFromRaw(e)
+    or
+    result = convertReifyPackExprFromRaw(e)
     or
     result = convertStringToPointerExprFromRaw(e)
     or
@@ -2631,6 +2644,9 @@ module Synth {
   }
 
   cached
+  Raw::Element convertPackExprToRaw(TPackExpr e) { e = TPackExpr(result) }
+
+  cached
   Raw::Element convertParenExprToRaw(TParenExpr e) { e = TParenExpr(result) }
 
   cached
@@ -2663,6 +2679,9 @@ module Synth {
 
   cached
   Raw::Element convertRegexLiteralExprToRaw(TRegexLiteralExpr e) { e = TRegexLiteralExpr(result) }
+
+  cached
+  Raw::Element convertReifyPackExprToRaw(TReifyPackExpr e) { e = TReifyPackExpr(result) }
 
   cached
   Raw::Element convertSequenceExprToRaw(TSequenceExpr e) { e = TSequenceExpr(result) }
@@ -3447,6 +3466,8 @@ module Synth {
     or
     result = convertOverloadSetRefExprToRaw(e)
     or
+    result = convertPackExprToRaw(e)
+    or
     result = convertPropertyWrapperValuePlaceholderExprToRaw(e)
     or
     result = convertRebindSelfInConstructorExprToRaw(e)
@@ -3542,6 +3563,8 @@ module Synth {
     result = convertPointerToPointerExprToRaw(e)
     or
     result = convertProtocolMetatypeToObjectExprToRaw(e)
+    or
+    result = convertReifyPackExprToRaw(e)
     or
     result = convertStringToPointerExprToRaw(e)
     or
