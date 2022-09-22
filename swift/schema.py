@@ -643,6 +643,12 @@ class FloatLiteralExpr(NumberLiteralExpr):
 class IntegerLiteralExpr(NumberLiteralExpr):
     string_value: string
 
+class PackExpr(Expr):
+    pass
+
+class ReifyPackExpr(ImplicitConversionExpr):
+    pass
+
 class AnyPattern(Pattern):
     pass
 
@@ -685,7 +691,7 @@ class CaseLabelItem(AstNode):
     guard: optional[Expr] | child
 
 @group("stmt")
-class ConditionElement(Locatable):
+class ConditionElement(AstNode):
     boolean: optional[Expr] | child
     pattern: optional[Pattern] | child
     initializer: optional[Expr] | child
@@ -941,10 +947,6 @@ class DictionaryType(SyntaxSugarType):
     key_type: Type
     value_type: Type
 
-class NestedArchetypeType(ArchetypeType):
-    parent: ArchetypeType
-    associated_type_declaration: AssociatedTypeDecl
-
 class NominalType(NominalOrBoundGenericNominalType):
     pass
 
@@ -991,4 +993,13 @@ class StructType(NominalType):
     pass
 
 class VariadicSequenceType(UnarySyntaxSugarType):
+    pass
+
+class PackType(Type):
+    pass
+
+class PackExpansionType(Type):
+    pass
+
+class ParameterizedProtocolType(Type):
     pass

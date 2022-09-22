@@ -66,7 +66,6 @@ files(
   @argument
 | @ast_node
 | @comment
-| @condition_element
 ;
 
 #keyset[id]
@@ -103,6 +102,7 @@ locations(
 
 @ast_node =
   @case_label_item
+| @condition_element
 | @decl
 | @expr
 | @pattern
@@ -586,6 +586,7 @@ arguments(  //dir=expr
 | @optional_evaluation_expr
 | @other_constructor_decl_ref_expr
 | @overload_set_ref_expr
+| @pack_expr
 | @property_wrapper_value_placeholder_expr
 | @rebind_self_in_constructor_expr
 | @sequence_expr
@@ -818,6 +819,7 @@ if_exprs(  //dir=expr
 | @metatype_conversion_expr
 | @pointer_to_pointer_expr
 | @protocol_metatype_to_object_expr
+| @reify_pack_expr
 | @string_to_pointer_expr
 | @underlying_to_opaque_expr
 | @unevaluated_instance_expr
@@ -935,6 +937,10 @@ other_constructor_decl_ref_exprs(  //dir=expr
 @overload_set_ref_expr =
   @overloaded_decl_ref_expr
 ;
+
+pack_exprs(  //dir=expr
+  unique int id: @pack_expr
+);
 
 property_wrapper_value_placeholder_exprs(  //dir=expr
   unique int id: @property_wrapper_value_placeholder_expr
@@ -1297,6 +1303,10 @@ protocol_metatype_to_object_exprs(  //dir=expr
 
 regex_literal_exprs(  //dir=expr
   unique int id: @regex_literal_expr
+);
+
+reify_pack_exprs(  //dir=expr
+  unique int id: @reify_pack_expr
 );
 
 @self_apply_expr =
@@ -1789,6 +1799,9 @@ while_stmts(  //dir=stmt
 | @in_out_type
 | @l_value_type
 | @module_type
+| @pack_expansion_type
+| @pack_type
+| @parameterized_protocol_type
 | @placeholder_type
 | @protocol_composition_type
 | @reference_storage_type
@@ -1921,6 +1934,18 @@ module_types(  //dir=type
   int module: @module_decl ref
 );
 
+pack_expansion_types(  //dir=type
+  unique int id: @pack_expansion_type
+);
+
+pack_types(  //dir=type
+  unique int id: @pack_type
+);
+
+parameterized_protocol_types(  //dir=type
+  unique int id: @parameterized_protocol_type
+);
+
 placeholder_types(  //dir=type
   unique int id: @placeholder_type
 );
@@ -2007,8 +2032,7 @@ unresolved_types(  //dir=type
 ;
 
 @archetype_type =
-  @nested_archetype_type
-| @opaque_type_archetype_type
+  @opaque_type_archetype_type
 | @opened_archetype_type
 | @primary_archetype_type
 | @sequence_archetype_type
@@ -2167,12 +2191,6 @@ dictionary_types(  //dir=type
   unique int id: @dictionary_type,
   int key_type: @type ref,
   int value_type: @type ref
-);
-
-nested_archetype_types(  //dir=type
-  unique int id: @nested_archetype_type,
-  int parent: @archetype_type ref,
-  int associated_type_declaration: @associated_type_decl ref
 );
 
 @nominal_type =

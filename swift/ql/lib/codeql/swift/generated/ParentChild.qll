@@ -1574,6 +1574,19 @@ private module Impl {
     )
   }
 
+  private Element getImmediateChildOfPackExpr(PackExpr e, int index, string partialPredicateCall) {
+    exists(int b, int bExpr, int n |
+      b = 0 and
+      bExpr = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfExpr(e, i, _)) | i) and
+      n = bExpr and
+      (
+        none()
+        or
+        result = getImmediateChildOfExpr(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
   private Element getImmediateChildOfPropertyWrapperValuePlaceholderExpr(
     PropertyWrapperValuePlaceholderExpr e, int index, string partialPredicateCall
   ) {
@@ -2681,6 +2694,23 @@ private module Impl {
     )
   }
 
+  private Element getImmediateChildOfReifyPackExpr(
+    ReifyPackExpr e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bImplicitConversionExpr, int n |
+      b = 0 and
+      bImplicitConversionExpr =
+        b + 1 +
+          max(int i | i = -1 or exists(getImmediateChildOfImplicitConversionExpr(e, i, _)) | i) and
+      n = bImplicitConversionExpr and
+      (
+        none()
+        or
+        result = getImmediateChildOfImplicitConversionExpr(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
   private Element getImmediateChildOfSelfApplyExpr(
     SelfApplyExpr e, int index, string partialPredicateCall
   ) {
@@ -3268,17 +3298,17 @@ private module Impl {
   private Element getImmediateChildOfConditionElement(
     ConditionElement e, int index, string partialPredicateCall
   ) {
-    exists(int b, int bLocatable, int n, int nBoolean, int nPattern, int nInitializer |
+    exists(int b, int bAstNode, int n, int nBoolean, int nPattern, int nInitializer |
       b = 0 and
-      bLocatable = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfLocatable(e, i, _)) | i) and
-      n = bLocatable and
+      bAstNode = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfAstNode(e, i, _)) | i) and
+      n = bAstNode and
       nBoolean = n + 1 and
       nPattern = nBoolean + 1 and
       nInitializer = nPattern + 1 and
       (
         none()
         or
-        result = getImmediateChildOfLocatable(e, index - b, partialPredicateCall)
+        result = getImmediateChildOfAstNode(e, index - b, partialPredicateCall)
         or
         index = n and result = e.getImmediateBoolean() and partialPredicateCall = "Boolean()"
         or
@@ -3871,6 +3901,49 @@ private module Impl {
   }
 
   private Element getImmediateChildOfModuleType(ModuleType e, int index, string partialPredicateCall) {
+    exists(int b, int bType, int n |
+      b = 0 and
+      bType = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfType(e, i, _)) | i) and
+      n = bType and
+      (
+        none()
+        or
+        result = getImmediateChildOfType(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  private Element getImmediateChildOfPackExpansionType(
+    PackExpansionType e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bType, int n |
+      b = 0 and
+      bType = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfType(e, i, _)) | i) and
+      n = bType and
+      (
+        none()
+        or
+        result = getImmediateChildOfType(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  private Element getImmediateChildOfPackType(PackType e, int index, string partialPredicateCall) {
+    exists(int b, int bType, int n |
+      b = 0 and
+      bType = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfType(e, i, _)) | i) and
+      n = bType and
+      (
+        none()
+        or
+        result = getImmediateChildOfType(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  private Element getImmediateChildOfParameterizedProtocolType(
+    ParameterizedProtocolType e, int index, string partialPredicateCall
+  ) {
     exists(int b, int bType, int n |
       b = 0 and
       bType = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfType(e, i, _)) | i) and
@@ -4526,22 +4599,6 @@ private module Impl {
     )
   }
 
-  private Element getImmediateChildOfNestedArchetypeType(
-    NestedArchetypeType e, int index, string partialPredicateCall
-  ) {
-    exists(int b, int bArchetypeType, int n |
-      b = 0 and
-      bArchetypeType =
-        b + 1 + max(int i | i = -1 or exists(getImmediateChildOfArchetypeType(e, i, _)) | i) and
-      n = bArchetypeType and
-      (
-        none()
-        or
-        result = getImmediateChildOfArchetypeType(e, index - b, partialPredicateCall)
-      )
-    )
-  }
-
   private Element getImmediateChildOfNominalType(
     NominalType e, int index, string partialPredicateCall
   ) {
@@ -4930,6 +4987,8 @@ private module Impl {
     or
     result = getImmediateChildOfOtherConstructorDeclRefExpr(e, index, partialAccessor)
     or
+    result = getImmediateChildOfPackExpr(e, index, partialAccessor)
+    or
     result = getImmediateChildOfPropertyWrapperValuePlaceholderExpr(e, index, partialAccessor)
     or
     result = getImmediateChildOfRebindSelfInConstructorExpr(e, index, partialAccessor)
@@ -5054,6 +5113,8 @@ private module Impl {
     or
     result = getImmediateChildOfRegexLiteralExpr(e, index, partialAccessor)
     or
+    result = getImmediateChildOfReifyPackExpr(e, index, partialAccessor)
+    or
     result = getImmediateChildOfStringToPointerExpr(e, index, partialAccessor)
     or
     result = getImmediateChildOfSubscriptExpr(e, index, partialAccessor)
@@ -5174,6 +5235,12 @@ private module Impl {
     or
     result = getImmediateChildOfModuleType(e, index, partialAccessor)
     or
+    result = getImmediateChildOfPackExpansionType(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfPackType(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfParameterizedProtocolType(e, index, partialAccessor)
+    or
     result = getImmediateChildOfPlaceholderType(e, index, partialAccessor)
     or
     result = getImmediateChildOfProtocolCompositionType(e, index, partialAccessor)
@@ -5239,8 +5306,6 @@ private module Impl {
     result = getImmediateChildOfBuiltinIntegerType(e, index, partialAccessor)
     or
     result = getImmediateChildOfDictionaryType(e, index, partialAccessor)
-    or
-    result = getImmediateChildOfNestedArchetypeType(e, index, partialAccessor)
     or
     result = getImmediateChildOfOpaqueTypeArchetypeType(e, index, partialAccessor)
     or

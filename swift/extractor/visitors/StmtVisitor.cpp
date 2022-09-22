@@ -58,10 +58,10 @@ void StmtVisitor::visitReturnStmt(swift::ReturnStmt* stmt) {
 void StmtVisitor::visitForEachStmt(swift::ForEachStmt* stmt) {
   auto label = dispatcher_.assignNewLabel(stmt);
   assert(stmt->getBody() && "ForEachStmt has getBody()");
-  assert(stmt->getSequence() && "ForEachStmt has getSequence()");
+  assert(stmt->getParsedSequence() && "ForEachStmt has getParsedSequence()");
   assert(stmt->getPattern() && "ForEachStmt has getPattern()");
   auto bodyLabel = dispatcher_.fetchLabel(stmt->getBody());
-  auto sequenceLabel = dispatcher_.fetchLabel(stmt->getSequence());
+  auto sequenceLabel = dispatcher_.fetchLabel(stmt->getParsedSequence());
   auto patternLabel = dispatcher_.fetchLabel(stmt->getPattern());
   emitLabeledStmt(stmt, label);
   dispatcher_.emit(ForEachStmtsTrap{label, patternLabel, sequenceLabel, bodyLabel});
