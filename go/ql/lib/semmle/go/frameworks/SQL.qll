@@ -12,13 +12,9 @@ module SQL {
    * Extend this class to refine existing API models. If you want to model new APIs,
    * extend `SQL::Query::Range` instead.
    */
-  class Query extends DataFlow::Node {
-    Query::Range self;
-
-    Query() { this = self }
-
+  class Query extends DataFlow::Node instanceof Query::Range {
     /** Gets a result of this query execution. */
-    DataFlow::Node getAResult() { result = self.getAResult() }
+    DataFlow::Node getAResult() { result = super.getAResult() }
 
     /**
      * Gets a query string that is used as (part of) this SQL query.
@@ -26,7 +22,7 @@ module SQL {
      * Note that this may not resolve all `QueryString`s that should be associated with this
      * query due to data flow.
      */
-    QueryString getAQueryString() { result = self.getAQueryString() }
+    QueryString getAQueryString() { result = super.getAQueryString() }
   }
 
   /**
@@ -59,11 +55,7 @@ module SQL {
    * Extend this class to refine existing API models. If you want to model new APIs,
    * extend `SQL::QueryString::Range` instead.
    */
-  class QueryString extends DataFlow::Node {
-    QueryString::Range self;
-
-    QueryString() { this = self }
-  }
+  class QueryString extends DataFlow::Node instanceof QueryString::Range { }
 
   /** Provides classes for working with SQL query strings. */
   module QueryString {

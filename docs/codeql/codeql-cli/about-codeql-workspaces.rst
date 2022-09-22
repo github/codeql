@@ -1,6 +1,6 @@
 .. _about-codeql-workspaces:
 
-About CodeQL Workspaces
+About CodeQL workspaces
 =======================
 
 .. include:: ../reusables/beta-note-package-management.rst
@@ -12,16 +12,17 @@ The main benefit of a CodeQL workspace is that it makes it easier for you to dev
 In most cases, you should store the CodeQL workspace and the CodeQL packs contained in it in one git repository. This makes it easier to share your CodeQL development environment.
 
 The ``codeql-workspace.yml`` file
-----------------------------------
+---------------------------------
 
-A CodeQL workspace is defined by a ``codeql-workspace.yml`` yaml file. This file contains a ``provide`` block, and optionally an ``ignore`` block.
+A CodeQL workspace is defined by a ``codeql-workspace.yml`` yaml file. This file contains a ``provide`` block, and optionally ``ignore`` and ``registries`` blocks.
 
 * The ``provide`` block contains a list of glob patterns that define the CodeQL packs that are available in the workspace.
 * The ``ignore`` block contains a list of glob patterns that define CodeQL packs that are not available in the workspace.
+* The ``registries`` block contains a list of GHES URLs and package patterns that control which container registry is used for publishing CodeQL packs. For more information, see :ref:`Working with CodeQL packs on GitHub Enterprise Server <working-with-codeql-packs-on-ghes>`.
 
 Each entry in the ``provide`` or ``ignore`` section must map to the location of a ``qlpack.yml`` file. All glob patterns are defined relative to the directory that contains the workspace file. For a list of patterns accepted in this file, see "`@actions/glob <https://github.com/actions/toolkit/tree/main/packages/glob#patterns>`__ ."
 
-For example, the following ``codeql-workspace.yml`` file defines a workspace that contains all the CodeQL packs recursively found in the ``codeql-packs`` directory, except for the packs in the ``experimental`` directory:
+For example, the following ``codeql-workspace.yml`` file defines a workspace that contains all the CodeQL packs recursively found in the ``codeql-packs`` directory, except for the packs in the ``experimental`` directory. The ``registries`` block specifies that ``codeql/*`` packs should be downloaded from https://ghcr.io/v2/, which is GitHub's default container registry. All other packs should be downloaded from and published to the regsitry at ``GHE_HOSTNAME``.
 
 .. code-block:: yaml
 
@@ -29,6 +30,13 @@ For example, the following ``codeql-workspace.yml`` file defines a workspace tha
       - "*/codeql-packs/**/qlpack.yml"
     ignore:
       - "*/codeql-packs/**/experimental/**/qlpack.yml"
+
+    registries:
+     - packages: 'codeql/*'
+       url: https://ghcr.io/v2/
+
+     - packages: '*'
+       url: https://containers.GHE_HOSTNAME/v2/
 
 To verify that your ``codeql-workspace.yml`` file includes the CodeQL packs that you expect, run the ``codeql pack ls`` command in the same directory as your workspace. The result of the command is a list of all CodeQL packs in the workspace.
 

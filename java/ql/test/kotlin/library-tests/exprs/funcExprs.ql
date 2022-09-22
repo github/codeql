@@ -19,9 +19,9 @@ query predicate memberRefExprs(MemberRefExpr e, Method m, string signature, Anon
   e.getAnonymousClass() = an
 }
 
-query predicate modifiers(LambdaExpr le, Method m, string modifier) {
+query predicate modifiers(LambdaExpr le, Method m, string modifiers) {
   le.getAnonymousClass().getAMethod() = m and
-  m.hasModifier(modifier)
+  modifiers = concat(string s | m.hasModifier(s) | s, ", ")
 }
 
 query predicate nonOverrideInvoke(LambdaExpr le, Method m, int pCount) {

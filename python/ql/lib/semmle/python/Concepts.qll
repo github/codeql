@@ -565,7 +565,7 @@ module XML {
 }
 
 /** Provides classes for modeling LDAP-related APIs. */
-module LDAP {
+module Ldap {
   /**
    * A data-flow node that executes an LDAP query.
    *
@@ -597,6 +597,9 @@ module LDAP {
     }
   }
 }
+
+/** DEPRECATED: Alias for Ldap */
+deprecated module LDAP = Ldap;
 
 /**
  * A data-flow node that escapes meta-characters, which could be used to prevent
@@ -706,7 +709,7 @@ class LdapFilterEscaping extends Escaping {
 }
 
 /** Provides classes for modeling HTTP-related APIs. */
-module HTTP {
+module Http {
   /** Gets an HTTP verb, in upper case */
   string httpVerb() { result in ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS", "HEAD"] }
 
@@ -917,7 +920,7 @@ module HTTP {
        * Extend this class to model new APIs. If you want to refine existing API models,
        * extend `HttpResponse` instead.
        */
-      abstract class Range extends HTTP::Server::HttpResponse::Range {
+      abstract class Range extends Http::Server::HttpResponse::Range {
         /** Gets the data-flow node that specifies the location of this HTTP redirect response. */
         abstract DataFlow::Node getRedirectLocation();
       }
@@ -1050,6 +1053,9 @@ module HTTP {
   // TODO: investigate whether we should treat responses to client requests as
   // remote-flow-sources in general.
 }
+
+/** DEPRECATED: Alias for Http */
+deprecated module HTTP = Http;
 
 /**
  * Provides models for cryptographic things.

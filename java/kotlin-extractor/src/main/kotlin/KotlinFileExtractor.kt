@@ -101,8 +101,15 @@ open class KotlinFileExtractor(
         if (d.isFakeOverride) {
             return true
         }
-        if ((d as? IrFunction)?.descriptor?.isHiddenToOvercomeSignatureClash == true) {
-            return true
+        try {
+            if ((d as? IrFunction)?.descriptor?.isHiddenToOvercomeSignatureClash == true) {
+                return true
+            }
+        }
+        catch (e: NotImplementedError) {
+            // `org.jetbrains.kotlin.ir.descriptors.IrBasedClassConstructorDescriptor.isHiddenToOvercomeSignatureClash` throws the exception
+            logger.warnElement("Couldn't query if element is fake, deciding it's not.", d, e)
+            return false
         }
         return false
     }
@@ -910,6 +917,9 @@ open class KotlinFileExtractor(
                 if (f is IrSimpleFunction && f.overriddenSymbols.isNotEmpty()) {
                     addModifiers(id, "override")
                 }
+                if (f.isSuspend) {
+                    addModifiers(id, "suspend")
+                }
 
                 return id
             }
@@ -1461,7 +1471,7 @@ open class KotlinFileExtractor(
 
         val (isFunctionInvoke, isBigArityFunctionInvoke) =
                 if (drType is IrSimpleType &&
-                    drType.isFunctionOrKFunction() &&
+                    (drType.isFunctionOrKFunction() || drType.isSuspendFunctionOrKFunction()) &&
                     callTarget.name.asString() == OperatorNameConventions.INVOKE.asString()) {
                     Pair(true, drType.arguments.size > BuiltInFunctionArity.BIG_ARITY)
                 } else {
@@ -1694,7 +1704,7 @@ open class KotlinFileExtractor(
         result
     }
 
-    private fun isFunction(target: IrFunction, pkgName: String, classNameLogged: String, classNamePredicate: (String) -> Boolean, fName: String, hasQuestionMark: Boolean? = false): Boolean {
+    private fun isFunction(target: IrFunction, pkgName: String, classNameLogged: String, classNamePredicate: (String) -> Boolean, fName: String, isNullable: Boolean? = false): Boolean {
         val verbose = false
         fun verboseln(s: String) { if(verbose) println(s) }
         verboseln("Attempting match for $pkgName $classNameLogged $fName")
@@ -1704,14 +1714,14 @@ open class KotlinFileExtractor(
         }
         val extensionReceiverParameter = target.extensionReceiverParameter
         val targetClass = if (extensionReceiverParameter == null) {
-            if (hasQuestionMark == true) {
+            if (isNullable == true) {
                 verboseln("Nullablility of type didn't match (target is not an extension method)")
                 return false
             }
             target.parent
         } else {
             val st = extensionReceiverParameter.type as? IrSimpleType
-            if (hasQuestionMark != null && st?.hasQuestionMark != hasQuestionMark) {
+            if (isNullable != null && st?.isNullable() != isNullable) {
                 verboseln("Nullablility of type didn't match")
                 return false
             }
@@ -1738,8 +1748,8 @@ open class KotlinFileExtractor(
         return true
     }
 
-    private fun isFunction(target: IrFunction, pkgName: String, className: String, fName: String, hasQuestionMark: Boolean? = false) =
-        isFunction(target, pkgName, className, { it == className }, fName, hasQuestionMark)
+    private fun isFunction(target: IrFunction, pkgName: String, className: String, fName: String, isNullable: Boolean? = false) =
+        isFunction(target, pkgName, className, { it == className }, fName, isNullable)
 
     private fun isNumericFunction(target: IrFunction, fName: String): Boolean {
         return isFunction(target, "kotlin", "Int", fName) ||
@@ -2582,8 +2592,8 @@ open class KotlinFileExtractor(
                     indexVarDecl.initializer?.let { indexVarInitializer ->
                         (e.statements[2] as? IrCall)?.let { arraySetCall ->
                             if (isFunction(arraySetCall.symbol.owner, "kotlin", "(some array type)", { isArrayType(it) }, "set")) {
-                                val updateRhs = arraySetCall.getValueArgument(1)
-                                if (updateRhs == null) {
+                                val updateRhs0 = arraySetCall.getValueArgument(1)
+                                if (updateRhs0 == null) {
                                     logger.errorElement("Update RHS not found", e)
                                     return false
                                 }
@@ -2596,7 +2606,7 @@ open class KotlinFileExtractor(
                                             receiverVal -> receiverVal.symbol.owner == arrayVarDecl.symbol.owner
                                         } ?: false
                                     },
-                                    updateRhs
+                                    updateRhs0
                                 )?.let { updateRhs ->
                                     val origin = e.origin
                                     if (origin == null) {
@@ -3105,13 +3115,14 @@ open class KotlinFileExtractor(
                     extractTypeOperatorCall(e, callable, exprParent.parent, exprParent.idx, exprParent.enclosingStmt)
                 }
                 is IrVararg -> {
-                    if (e.elements.size != 1 || e.elements[0] !is IrSpreadElement) {
+                    var spread = e.elements.getOrNull(0) as? IrSpreadElement
+                    if (spread == null || e.elements.size != 1) {
                         logger.errorElement("Unexpected IrVararg", e)
                         return
                     }
                     // There are lowered IR cases when the vararg expression is not within a call, such as
                     // val temp0 = [*expr]
-                    extractExpression((e.elements[0] as IrSpreadElement).expression, callable, parent)
+                    extractExpression(spread.expression, callable, parent)
                 }
                 is IrGetObjectValue -> {
                     // For `object MyObject { ... }`, the .class has an
@@ -3420,15 +3431,11 @@ open class KotlinFileExtractor(
 
     data class ReceiverInfo(val receiver: IrExpression, val type: IrType, val field: Label<DbField>, val indexOffset: Int)
 
-    private fun makeReceiverInfo(callableReferenceExpr: IrCallableReference<out IrSymbol>, receiver: IrExpression?, indexOffset: Int): ReceiverInfo? {
+    private fun makeReceiverInfo(receiver: IrExpression?, indexOffset: Int): ReceiverInfo? {
         if (receiver == null) {
             return null
         }
         val type = receiver.type
-        if (type == null) {
-            logger.warnElement("Receiver has no type", callableReferenceExpr)
-            return null
-        }
         val field: Label<DbField> = tw.getFreshIdLabel()
         return ReceiverInfo(receiver, type, field, indexOffset)
     }
@@ -3441,8 +3448,8 @@ open class KotlinFileExtractor(
         : GeneratedClassHelper(locId, ids) {
 
         // Only one of the receivers can be non-null, but we defensively handle the case when both are null anyway
-        private val dispatchReceiverInfo = makeReceiverInfo(callableReferenceExpr, callableReferenceExpr.dispatchReceiver, 0)
-        private val extensionReceiverInfo = makeReceiverInfo(callableReferenceExpr, callableReferenceExpr.extensionReceiver, if (dispatchReceiverInfo == null) 0 else 1)
+        private val dispatchReceiverInfo = makeReceiverInfo(callableReferenceExpr.dispatchReceiver, 0)
+        private val extensionReceiverInfo = makeReceiverInfo(callableReferenceExpr.extensionReceiver, if (dispatchReceiverInfo == null) 0 else 1)
 
         fun extractReceiverField() {
             val firstAssignmentStmtIdx = 1
@@ -4519,14 +4526,14 @@ open class KotlinFileExtractor(
                        ```
                      */
 
-                    if (!e.argument.type.isFunctionOrKFunction()) {
-                        logger.errorElement("Expected to find expression with function type in SAM conversion.", e)
-                        return
-                    }
-
                     val st = e.argument.type as? IrSimpleType
                     if (st == null) {
                         logger.errorElement("Expected to find a simple type in SAM conversion.", e)
+                        return
+                    }
+
+                    if (!st.isFunctionOrKFunction() && !st.isSuspendFunctionOrKFunction()) {
+                        logger.errorElement("Expected to find expression with function type in SAM conversion.", e)
                         return
                     }
 
@@ -4591,6 +4598,10 @@ open class KotlinFileExtractor(
                     // T UnaryOperator<T>.apply(T t) here, we would need to compose substitutions so we can implement
                     // the real underlying R Function<T, R>.apply(T t).
                     forceExtractFunction(samMember, classId, extractBody = false, extractMethodAndParameterTypeAccesses = true, typeSub, classTypeArgs, ids.function, tw.getLocation(e))
+
+                    if (st.isSuspendFunctionOrKFunction()) {
+                        addModifiers(ids.function, "suspend")
+                    }
 
                     //body
                     val blockId = tw.getFreshIdLabel<DbBlock>()

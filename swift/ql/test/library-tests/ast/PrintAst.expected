@@ -706,6 +706,17 @@ declarations.swift:
 #  155|         getTypeRepr(): [TypeRepr] Baz?
 #  155| [ConcreteVarDecl] d
 #  155|     Type = Baz?
+#  157| [ConcreteFuncDecl] ifConfig()
+#  157|     InterfaceType = () -> ()
+#  157|   getBody(): [BraceStmt] { ... }
+#  158|     getElement(0): [IfConfigDecl] #if ...
+#  163|     getElement(1): [IntegerLiteralExpr] 4
+#  164|     getElement(2): [IntegerLiteralExpr] 5
+#  165|     getElement(3): [IntegerLiteralExpr] 6
+#  168|     getElement(4): [IfConfigDecl] #if ...
+#  173|     getElement(5): [IfConfigDecl] #if ...
+#  174|     getElement(6): [IntegerLiteralExpr] 9
+#  175|     getElement(7): [IntegerLiteralExpr] 10
 expressions.swift:
 #    1| [TopLevelCodeDecl] { ... }
 #    1|   getBody(): [BraceStmt] { ... }

@@ -11,11 +11,7 @@ private import semmle.go.dataflow.ExternalFlow as ExternalFlow
  * Extend this class to refine existing API models. If you want to model new APIs,
  * extend `UntrustedFlowSource::Range` instead.
  */
-class UntrustedFlowSource extends DataFlow::Node {
-  UntrustedFlowSource::Range self;
-
-  UntrustedFlowSource() { this = self }
-}
+class UntrustedFlowSource extends DataFlow::Node instanceof UntrustedFlowSource::Range { }
 
 /** Provides a class for modeling new sources of untrusted data. */
 module UntrustedFlowSource {

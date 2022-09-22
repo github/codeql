@@ -2,7 +2,7 @@
  * @kind path-problem
  */
 
-import ruby
+import codeql.ruby.AST
 import TestUtilities.InlineFlowTest
 import PathGraph
 

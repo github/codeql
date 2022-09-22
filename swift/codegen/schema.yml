@@ -17,6 +17,9 @@ Element:
     _pragma: cpp_skip  # this is emitted using trap entries directly
   _pragma: qltest_skip
 
+UnresolvedElement:
+  _pragma: [ qltest_collapse_hierarchy, qltest_skip ]
+
 File:
   name: string
   _pragma: qltest_collapse_hierarchy
@@ -27,7 +30,7 @@ DbFile:
 UnknownFile:
   _extends: File
   _synth:
-    on: {}
+    on: { }
 
 Locatable:
   location:
@@ -41,7 +44,7 @@ Location:
   start_column: int
   end_line: int
   end_column: int
-  _pragma: [qltest_skip, qltest_collapse_hierarchy]
+  _pragma: [ qltest_skip, qltest_collapse_hierarchy ]
 
 DbLocation:
   _extends: Location
@@ -49,7 +52,7 @@ DbLocation:
 UnknownLocation:
   _extends: Location
   _synth:
-    on: {}
+    on: { }
 
 Comment:
   _extends: Locatable
@@ -86,7 +89,7 @@ Callable:
     body: BraceStmt?
 
 ConditionElement:
-  _extends: Locatable
+  _extends: AstNode
   _children:
     boolean: Expr?
     pattern: Pattern?
@@ -137,6 +140,15 @@ ModuleType:
   _extends: Type
   module: ModuleDecl
 
+PackType:
+  _extends: Type
+
+PackExpansionType:
+  _extends: Type
+
+ParameterizedProtocolType:
+  _extends: Type
+
 PlaceholderType:
   _extends: Type
 
@@ -179,7 +191,9 @@ TypeVariableType:
   _extends: Type
 
 UnresolvedType:
-  _extends: Type
+  _extends:
+    - Type
+    - UnresolvedElement
 
 ClassDecl:
   _extends: NominalTypeDecl
@@ -209,7 +223,7 @@ Stmt:
 
 TypeRepr:
   _extends: AstNode
-  type: Type?  # type can be absent on unresolved entities
+  type: Type
 
 FunctionType:
   _extends: AnyFunctionType
@@ -298,16 +312,7 @@ EnumCaseDecl:
 
 IfConfigDecl:
   _extends: Decl
-  _children:
-    clauses: IfConfigClause*
-
-IfConfigClause:
-  _extends: Locatable
-  _children:
-    condition: Expr?
-    elements: AstNode*
-  is_active: predicate
-  _dir: decl
+  active_elements: AstNode*
 
 ImportDecl:
   _extends: Decl
@@ -538,6 +543,9 @@ OtherConstructorDeclRefExpr:
 OverloadSetRefExpr:
   _extends: Expr
 
+PackExpr:
+  _extends: Expr
+
 PropertyWrapperValuePlaceholderExpr:
   _extends: Expr
 
@@ -546,6 +554,9 @@ RebindSelfInConstructorExpr:
   _children:
     sub_expr: Expr
   self: VarDecl
+
+ReifyPackExpr:
+  _extends: ImplicitConversionExpr
 
 SequenceExpr:
   _extends: Expr
@@ -581,28 +592,36 @@ TypeExpr:
     type_repr: TypeRepr?
 
 UnresolvedDeclRefExpr:
-  _extends: Expr
+  _extends:
+    - Expr
+    - UnresolvedElement
   name: string?
 
 UnresolvedDotExpr:
-  _extends: Expr
+  _extends:
+    - Expr
+    - UnresolvedElement
   _children:
     base: Expr
   name: string
 
 UnresolvedMemberExpr:
-  _extends: Expr
+  _extends:
+    - Expr
+    - UnresolvedElement
   name: string
-  _pragma: qltest_skip  # we should really never extract these
 
 UnresolvedPatternExpr:
-  _extends: Expr
+  _extends:
+    - Expr
+    - UnresolvedElement
   _children:
     sub_pattern: Pattern
 
 UnresolvedSpecializeExpr:
-  _extends: Expr
-  _pragma: qltest_skip  # we should really never extract these
+  _extends:
+    - Expr
+    - UnresolvedElement
 
 VarargExpansionExpr:
   _extends: Expr
@@ -742,11 +761,6 @@ BuiltinIntegerType:
   _pragma: qltest_uncollapse_hierarchy
   width: int?
 
-NestedArchetypeType:
-  _extends: ArchetypeType
-  parent: ArchetypeType
-  associated_type_declaration: AssociatedTypeDecl
-
 SequenceArchetypeType:
   _extends: ArchetypeType
 
@@ -864,7 +878,9 @@ ParenExpr:
   _extends: IdentityExpr
 
 UnresolvedMemberChainResultExpr:
-  _extends: IdentityExpr
+  _extends:
+    - IdentityExpr
+    - UnresolvedElement
 
 AnyHashableErasureExpr:
   _extends: ImplicitConversionExpr
@@ -960,7 +976,9 @@ UnevaluatedInstanceExpr:
   _extends: ImplicitConversionExpr
 
 UnresolvedTypeConversionExpr:
-  _extends: ImplicitConversionExpr
+  _extends:
+    - ImplicitConversionExpr
+    - UnresolvedElement
 
 BuiltinLiteralExpr:
   _extends: LiteralExpr

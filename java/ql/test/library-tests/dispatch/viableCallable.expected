@@ -7,6 +7,14 @@
 | ViableCallable3.java:12:5:12:9 | h(...) | h | 1 | ViableCallable3 |
 | ViableCallable3.java:17:9:17:17 | get(...) | get | 9 | new Func(...) { ... } |
 | ViableCallable3.java:18:9:18:18 | get(...) | get | 10 | new Func(...) { ... } |
+| ViableCallable4.java:16:5:16:9 | f(...) | f | 2 | Sup |
+| ViableCallable4.java:16:5:16:9 | f(...) | f | 5 | A1 |
+| ViableCallable4.java:16:5:16:9 | f(...) | f | 8 | A2 |
+| ViableCallable4.java:16:5:16:9 | f(...) | f | 11 | A3 |
+| ViableCallable4.java:18:7:18:11 | f(...) | f | 5 | A1 |
+| ViableCallable4.java:18:7:18:11 | f(...) | f | 8 | A2 |
+| ViableCallable4.java:21:5:21:10 | f(...) | f | 2 | Sup |
+| ViableCallable4.java:21:5:21:10 | f(...) | f | 11 | A3 |
 | ViableCallable.java:5:3:5:13 | M(...) | M | 81 | C2 |
 | ViableCallable.java:5:3:5:13 | M(...) | M | 86 | C3 |
 | ViableCallable.java:5:3:5:13 | M(...) | M | 91 | C4 |

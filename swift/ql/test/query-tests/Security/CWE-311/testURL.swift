@@ -18,5 +18,5 @@ func test1(passwd : String, encrypted_passwd : String, account_no : String, cred
 	let base = URL(string: "http://example.com/"); // GOOD (not sensitive)
 	let e = URL(string: "abc", relativeTo: base); // GOOD (not sensitive)
 	let f = URL(string: passwd, relativeTo: base); // BAD
-	let g = URL(string: "abc", relativeTo: f); // BAD [NOT DETECTED]
+	let g = URL(string: "abc", relativeTo: f); // BAD (reported on line above)
 }

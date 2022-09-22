@@ -11,7 +11,7 @@
  *       external/cwe/cwe-089
  */
 
-import ruby
+import codeql.ruby.AST
 import codeql.ruby.Concepts
 import codeql.ruby.DataFlow
 import codeql.ruby.dataflow.BarrierGuards
@@ -34,5 +34,5 @@ class SqlInjectionConfiguration extends TaintTracking::Configuration {
 
 from SqlInjectionConfiguration config, DataFlow::PathNode source, DataFlow::PathNode sink
 where config.hasFlowPath(source, sink)
-select sink.getNode(), source, sink, "This SQL query depends on $@.", source.getNode(),
-  "a user-provided value"
+select sink.getNode(), source, sink, "This SQL query depends on a $@.", source.getNode(),
+  "user-provided value"

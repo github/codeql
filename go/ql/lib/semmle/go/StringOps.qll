@@ -12,20 +12,16 @@ module StringOps {
    * Extend this class to refine existing API models. If you want to model new APIs,
    * extend `StringOps::HasPrefix::Range` instead.
    */
-  class HasPrefix extends DataFlow::Node {
-    HasPrefix::Range range;
-
-    HasPrefix() { range = this }
-
+  class HasPrefix extends DataFlow::Node instanceof HasPrefix::Range {
     /**
      * Gets the `A` in `strings.HasPrefix(A, B)`.
      */
-    DataFlow::Node getBaseString() { result = range.getBaseString() }
+    DataFlow::Node getBaseString() { result = super.getBaseString() }
 
     /**
      * Gets the `B` in `strings.HasPrefix(A, B)`.
      */
-    DataFlow::Node getSubstring() { result = range.getSubstring() }
+    DataFlow::Node getSubstring() { result = super.getSubstring() }
 
     /**
      * Gets the polarity of the check.
@@ -33,7 +29,7 @@ module StringOps {
      * If the polarity is `false` the check returns `true` if the string does not start
      * with the given substring.
      */
-    boolean getPolarity() { result = range.getPolarity() }
+    boolean getPolarity() { result = super.getPolarity() }
   }
 
   class StartsWith = HasPrefix;
@@ -241,25 +237,21 @@ module StringOps {
    * Extend this class to refine existing API models. If you want to model new APIs,
    * extend `StringOps::Concatenation::Range` instead.
    */
-  class Concatenation extends DataFlow::Node {
-    Concatenation::Range self;
-
-    Concatenation() { this = self }
-
+  class Concatenation extends DataFlow::Node instanceof Concatenation::Range {
     /**
      * Gets the `n`th operand of this string concatenation, if there is a data-flow node for it.
      */
-    DataFlow::Node getOperand(int n) { result = self.getOperand(n) }
+    DataFlow::Node getOperand(int n) { result = super.getOperand(n) }
 
     /**
      * Gets the string value of the `n`th operand of this string concatenation, if it is a constant.
      */
-    string getOperandStringValue(int n) { result = self.getOperandStringValue(n) }
+    string getOperandStringValue(int n) { result = super.getOperandStringValue(n) }
 
     /**
      * Gets the number of operands of this string concatenation.
      */
-    int getNumOperand() { result = self.getNumOperand() }
+    int getNumOperand() { result = super.getNumOperand() }
   }
 
   /** Provides predicates and classes for working with string concatenations. */

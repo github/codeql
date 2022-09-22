@@ -4,7 +4,7 @@
  * your own sources and sanitizers.
  */
 
-private import ruby
+private import codeql.ruby.AST
 private import codeql.ruby.DataFlow
 private import codeql.ruby.TaintTracking::TaintTracking
 private import codeql.ruby.dataflow.RemoteFlowSources

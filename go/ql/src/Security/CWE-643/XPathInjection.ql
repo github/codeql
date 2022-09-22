@@ -24,5 +24,5 @@ predicate isStringOrByte(DataFlow::PathNode node) {
 
 from Configuration config, DataFlow::PathNode source, DataFlow::PathNode sink
 where config.hasFlowPath(source, sink) and isStringOrByte(sink)
-select sink.getNode(), source, sink, "$@ flows to here and is used in an XPath expression.",
-  source.getNode(), "User-provided value"
+select sink.getNode(), source, sink, "XPath expression depends on a $@.", source.getNode(),
+  "user-provided value"

@@ -6,7 +6,7 @@
  * directed and labeled; they specify how the components represented by nodes relate to each other.
  */
 
-private import ruby
+private import codeql.ruby.AST
 private import codeql.ruby.DataFlow
 private import codeql.ruby.typetracking.TypeTracker
 private import codeql.ruby.ast.internal.Module
@@ -33,7 +33,7 @@ module API {
    * 3. Map the resulting API graph nodes to data-flow nodes, using `asSource` or `asSink`.
    *
    * For example, a simplified way to get arguments to `Foo.bar` would be
-   * ```codeql
+   * ```ql
    * API::getTopLevelMember("Foo").getMethod("bar").getParameter(0).asSink()
    * ```
    *
