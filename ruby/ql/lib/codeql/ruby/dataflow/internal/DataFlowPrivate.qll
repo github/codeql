@@ -1,7 +1,6 @@
 private import codeql.ruby.AST
 private import codeql.ruby.ast.internal.Synthesis
 private import codeql.ruby.CFG
-private import codeql.ruby.AST as AST
 private import codeql.ruby.dataflow.SSA
 private import DataFlowPublic
 private import DataFlowDispatch
@@ -415,7 +414,7 @@ private module Cached {
       )
     } or
     // Only used by type-tracking
-    TAttributeName(string name) { name = any(AST::SetterMethodCall c).getTargetName() }
+    TAttributeName(string name) { name = any(SetterMethodCall c).getTargetName() }
 
   /**
    * Holds if `e` is an `ExprNode` that may be returned by a call to `c`.
