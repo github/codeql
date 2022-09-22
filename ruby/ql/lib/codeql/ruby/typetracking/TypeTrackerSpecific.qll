@@ -17,7 +17,15 @@ class TypeTrackingNode = DataFlowPublic::LocalSourceNode;
 
 class TypeTrackerContent = DataFlowPublic::ContentSet;
 
-class OptionalTypeTrackerContent = DataFlowPublic::OptionalContentSet;
+class OptionalTypeTrackerContent extends DataFlowPrivate::TOptionalContentSet {
+  /** Gets a textual representation of this content set. */
+  string toString() {
+    this instanceof DataFlowPrivate::TNoContentSet and
+    result = "no content"
+    or
+    result = this.(DataFlowPublic::ContentSet).toString()
+  }
+}
 
 /**
  * Holds if a value stored with `storeContents` can be read back with `loadContents`.
@@ -28,7 +36,7 @@ predicate compatibleContents(TypeTrackerContent storeContents, TypeTrackerConten
 }
 
 /** Gets the "no content set" value to use for a type tracker not inside any content. */
-OptionalTypeTrackerContent noContent() { result.isNoContentSet() }
+OptionalTypeTrackerContent noContent() { result = DataFlowPrivate::TNoContentSet() }
 
 /** Holds if there is a simple local flow step from `nodeFrom` to `nodeTo` */
 predicate simpleLocalFlowStep = DataFlowPrivate::localFlowStepTypeTracker/2;
