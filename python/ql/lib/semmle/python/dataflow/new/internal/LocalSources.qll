@@ -102,6 +102,11 @@ class LocalSourceNode extends Node {
   Node getAnAwaited() { Cached::await(this, result) }
 
   /**
+   * Gets a subscript of this node.
+   */
+  CfgNode getASubscript() { Cached::subscript(this, result) }
+
+  /**
    * Gets a call to the method `methodName` on this node.
    *
    * Includes both calls that have the syntactic shape of a method call (as in `obj.m(...)`), and
@@ -233,13 +238,24 @@ private module Cached {
   }
 
   /**
-   * Holds if `node` flows to the awaited value of `awaited`.
+   * Holds if `node` flows to a value that, when awaited, results in `awaited`.
    */
   cached
   predicate await(LocalSourceNode node, Node awaited) {
     exists(Node awaitedValue |
       node.flowsTo(awaitedValue) and
       awaited = awaited(awaitedValue)
+    )
+  }
+
+  /**
+   * Holds if `node` flows to a sequence of which `subscript` is a subscript.
+   */
+  cached
+  predicate subscript(LocalSourceNode node, CfgNode subscript) {
+    exists(CfgNode seq, SubscriptNode subscriptNode | subscriptNode = subscript.getNode() |
+      node.flowsTo(seq) and
+      seq.getNode() = subscriptNode.getObject()
     )
   }
 }
