@@ -746,6 +746,10 @@ module API {
         lbl = Label::return() and
         ref = pred.getACall()
         or
+        // Awaiting a node that is a use of `base`
+        lbl = Label::await() and
+        ref = pred.getAnAwaited()
+        or
         // Subclassing a node
         lbl = Label::subclass() and
         exists(PY::ClassExpr clsExpr, DataFlow::Node superclass | pred.flowsTo(superclass) |
@@ -759,10 +763,6 @@ module API {
             ref.(DataFlow::ExprNode).getNode().getNode() = clsExpr.getADecoratorCall()
           )
         )
-        or
-        // awaiting
-        lbl = Label::await() and
-        ref = pred.getAnAwaited()
       )
       or
       exists(DataFlow::Node def, PY::CallableExpr fn |
