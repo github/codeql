@@ -65,9 +65,8 @@ class AndroidReceiveIntentMethod extends Method {
 }
 
 /**
- * A method of type Service that receives an Intent.
- * Namely, `Service.onStart`, `onStartCommand`, `onBind`,
- * `onRebind`, `onUnbind`, or `onTaskRemoved`
+ * The method `Service.onStart`, `onStartCommand`,
+ * `onBind`, `onRebind`, `onUnbind`, or `onTaskRemoved`
  */
 class AndroidServiceIntentMethod extends Method {
   AndroidServiceIntentMethod() {

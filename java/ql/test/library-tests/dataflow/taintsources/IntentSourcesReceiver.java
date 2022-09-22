@@ -11,7 +11,13 @@ public class IntentSourcesReceiver extends BroadcastReceiver {
 
 	@Override
 	public void onReceive(Context context, Intent intent) {
-		String trouble = intent.getStringExtra("data");
-		sink(trouble); // $ hasRemoteTaintFlow
+		{
+			String trouble = intent.getStringExtra("data");
+			sink(trouble); // $ hasRemoteTaintFlow
+		}
+		{
+			String trouble = intent.getExtras().getString("data");
+			sink(trouble); // $ hasRemoteTaintFlow
+		}
 	}
 }

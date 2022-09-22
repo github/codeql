@@ -1,7 +1,6 @@
 package com.example.myapp;
 
 import android.app.Activity;
-import android.content.Intent;
 
 public class IntentSourcesActivity extends Activity {
 
