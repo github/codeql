@@ -268,7 +268,7 @@ module AccessPath {
     )
   }
 
-  /** A module for computing an access to a variable that happens after a write to that same variable */
+  /** A module for computing an access to a variable that happens after a property has been written onto it */
   private module GetLaterAccess {
     /**
      * Gets an access to a variable that is written to in `write`, where the access is after the write.
