@@ -275,11 +275,11 @@ module AccessPath {
      *
      * This allows `fromRhs` to compute an access path for e.g. the below example:
      * ```JavaScript
-     * function Template(text, opts) {
-     *   opts = opts || {};
-     *   var options = {};
-     *   options.varName = taint;
-     *   this.opts = options; // this.opts.varName is now available
+     * function foo(x) {
+     *  var obj = {
+     *    bar: x // `x` has the access path "foo.bar" starting from the root `this`.
+     *  };
+     *  this.foo = obj;
      * }
      * ```
      */
