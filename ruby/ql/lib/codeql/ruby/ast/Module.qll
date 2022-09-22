@@ -51,53 +51,40 @@ class Module extends TModule {
 }
 
 /**
- * Gets the enclosing module of `s`, but only if `s` and the module are in the
- * same CFG scope. For example, in
- *
- * ```rb
- * module M
- *   def pub; end
- *   private def priv; end
- * end
- * ```
- *
- * `M` is the enclosing module of `pub` and `priv`, in the same CFG scope, while
- * in
- *
- * ```rb
- * module M
- *   def m
- *     def nested; end
- *   end
- * end
- * ```
- *
- * `M` is the enclosing module of `m`, in the same CFG scope, while `nested` is not.
- */
-pragma[nomagic]
-private ModuleBase getEnclosingModuleInSameCfgScope(Stmt s) {
-  result = s.getEnclosingModule() and
-  s.getCfgScope() = [result.(CfgScope), result.getCfgScope()]
-}
-
-/**
  * The base class for classes, singleton classes, and modules.
  */
 class ModuleBase extends BodyStmt, Scope, TModuleBase {
-  /** Gets a method defined in this module/class. */
-  MethodBase getAMethod() { this = getEnclosingModuleInSameCfgScope(result) }
+  /**
+   * Gets a method defined in this module/class.
+   *
+   * This includes conditionally defined methods such as `m1` and
+   * `m2` in
+   *
+   * ```rb
+   * class C
+   *   if b then
+   *     def m1; end
+   *   end
+   *
+   *   def call_to_def_m2
+   *     def m2; end
+   *   end
+   * end
+   * ```
+   */
+  MethodBase getAMethod() { this = result.getEnclosingModule() }
 
   /** Gets the method named `name` in this module/class, if any. */
   MethodBase getMethod(string name) { result = this.getAMethod() and result.getName() = name }
 
   /** Gets a class defined in this module/class. */
-  ClassDeclaration getAClass() { this = getEnclosingModuleInSameCfgScope(result) }
+  ClassDeclaration getAClass() { this = result.getEnclosingModule() }
 
   /** Gets the class named `name` in this module/class, if any. */
   ClassDeclaration getClass(string name) { result = this.getAClass() and result.getName() = name }
 
   /** Gets a module defined in this module/class. */
-  ModuleDeclaration getAModule() { this = getEnclosingModuleInSameCfgScope(result) }
+  ModuleDeclaration getAModule() { this = result.getEnclosingModule() }
 
   /** Gets the module named `name` in this module/class, if any. */
   ModuleDeclaration getModule(string name) {

@@ -38,6 +38,7 @@ getMethod
 | calls.rb:334:1:338:3 | C3 | instance | calls.rb:335:5:337:7 | instance |
 | calls.rb:414:1:430:3 | ConditionalInstanceMethods | m1 | calls.rb:416:9:418:11 | m1 |
 | calls.rb:414:1:430:3 | ConditionalInstanceMethods | m2 | calls.rb:421:5:429:7 | m2 |
+| calls.rb:414:1:430:3 | ConditionalInstanceMethods | m3 | calls.rb:424:9:426:11 | m3 |
 | hello.rb:1:1:8:3 | EnglishWords | hello | hello.rb:2:5:4:7 | hello |
 | hello.rb:1:1:8:3 | EnglishWords | world | hello.rb:5:5:7:7 | world |
 | hello.rb:11:1:16:3 | Greeting | message | hello.rb:13:5:15:7 | message |
@@ -341,6 +342,7 @@ lookupMethod
 | calls.rb:414:1:430:3 | ConditionalInstanceMethods | indirect | calls.rb:155:1:157:3 | indirect |
 | calls.rb:414:1:430:3 | ConditionalInstanceMethods | m1 | calls.rb:416:9:418:11 | m1 |
 | calls.rb:414:1:430:3 | ConditionalInstanceMethods | m2 | calls.rb:421:5:429:7 | m2 |
+| calls.rb:414:1:430:3 | ConditionalInstanceMethods | m3 | calls.rb:424:9:426:11 | m3 |
 | calls.rb:414:1:430:3 | ConditionalInstanceMethods | new | calls.rb:114:5:114:16 | new |
 | calls.rb:414:1:430:3 | ConditionalInstanceMethods | optional_arg | calls.rb:76:1:79:3 | optional_arg |
 | calls.rb:414:1:430:3 | ConditionalInstanceMethods | pattern_dispatch | calls.rb:340:1:356:3 | pattern_dispatch |
