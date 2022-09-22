@@ -58,118 +58,161 @@ The following properties are supported in ``qlpack.yml`` files.
    :widths: auto
 
    * - Property
-     - Example
-     - Required by
-     - Purpose
+     - When to use
+     - Explanation
    * - ``name``
-     - .. code-block:: yaml
+     - Required by all packs
+     - The scope, where the CodeQL pack is published, and the name of the pack defined using alphanumeric characters and hyphens. It must be unique as CodeQL cannot differentiate between CodeQL packs with identical names. Use the pack name to specify queries to run using ``database analyze`` and to define dependencies between CodeQL packs (see examples below).
+
+       Example:
+
+       .. code-block:: yaml
 
         name: octo-org/security-queries
 
-     - All packs
-     - The scope, where the CodeQL pack is published, and the name of the pack defined using alphanumeric characters and hyphens. It must be unique as CodeQL cannot differentiate between CodeQL packs with identical names. Use the pack name to specify queries to run using ``database analyze`` and to define dependencies between CodeQL packs (see examples below).
    * - ``version``
-     - .. code-block:: yaml
+     - Required by all packs that are published
+     - A semantic version for this CodeQL pack that must adhere to the `SemVer v2.0.0 specification <https://semver.org/spec/v2.0.0.html>`__.
+
+       Example:
+
+       .. code-block:: yaml
 
         version: 0.0.0
 
-     - All packs
-     - A semantic version for this CodeQL pack that must adhere to the `SemVer v2.0.0 specification <https://semver.org/spec/v2.0.0.html>`__.
    * - ``dependencies``
-     - .. code-block:: yaml
+     - Required by packs that define CodeQL package dependencies on other packs.
+     - A map from pack references to the semantic version range that is compatible with this pack. Supported for CLI versions v2.6.0 and later.
+
+       Example:
+
+       .. code-block:: yaml
 
         dependencies:
           codeql/cpp-all: ^0.0.2
 
-     - Packs that define CodeQL package dependencies on other packs
-     - A map from pack references to the semantic version range that is compatible with this pack. Supported for CLI versions v2.6.0 and later.
    * - ``defaultSuiteFile``
-     - .. code-block:: yaml
+     - Required by packs that export a set of default queries to run
+     - The path to a query suite file relative to the package root, containing all of the queries that are run by default when this pack is passed to the ``codeql database analyze`` command. Supported from CLI version v2.6.0 and onwards. Only one of ``defaultSuiteFile`` or ``defaultSuite`` can be defined.
+
+       Example:
+
+       .. code-block:: yaml
 
         defaultSuiteFile: cpp-code-scanning.qls
 
-     - Packs that export a set of default queries to run
-     - The path to a query suite file relative to the package root, containing all of the queries that are run by default when this pack is passed to the ``codeql database analyze`` command. Supported from CLI version v2.6.0 and onwards. Only one of ``defaultSuiteFile`` or ``defaultSuite`` can be defined.
    * - ``defaultSuite``
-     - .. code-block:: yaml
+     - Required by packs that export a set of default queries to run.
+     - An inlined query suite containing all of the queries that are run by default when this pack is passed to the ``codeql database analyze`` command. Supported from CLI version v2.6.0 and onwards. Only one of ``defaultSuiteFile`` or ``defaultSuite`` can be defined.
+
+       Example:
+
+       .. code-block:: yaml
 
         defaultSuite:
           queries: .
           exclude:
             precision: medium
 
-     - Packs that export a set of default queries to run
-     - An inlined query suite containing all of the queries that are run by default when this pack is passed to the ``codeql database analyze`` command. Supported from CLI version v2.6.0 and onwards. Only one of ``defaultSuiteFile`` or ``defaultSuite`` can be defined.
    * - ``library``
-     - .. code-block:: yaml
+     - Required by library packs
+     - A boolean value that indicates whether this pack is a library pack. Library packs do not contain queries and are not compiled. Query packs can ignore this field or explicitly set it to ``false``.
+
+       Example:
+
+       .. code-block:: yaml
 
         library: true
 
-     - Library packs
-     - A boolean value that indicates whether this pack is a library pack. Library packs do not contain queries and are not compiled. Query packs can ignore this field or explicitly set it to ``false``.
    * - ``suites``
-     - .. code-block:: yaml
+     - Optional for packs that define query suites
+     - The path to a directory in the pack that contains the query suites you want to make known to the CLI, defined relative to the pack directory. CodeQL pack users can run "well-known" suites stored in this directory by specifying the pack name, without providing their full path. This is not supported for CodeQL packs downloaded from the Container registry. For more information about query suites, see ":doc:`Creating CodeQL query suites <creating-codeql-query-suites>`."
+
+       Example:
+
+       .. code-block:: yaml
 
         suites: octo-org-query-suites
 
-     - Optional
-     - The path to a directory in the pack that contains the query suites you want to make known to the CLI, defined relative to the pack directory. CodeQL pack users can run "well-known" suites stored in this directory by specifying the pack name, without providing their full path. This is not supported for CodeQL packs downloaded from the Container registry. For more information about query suites, see ":doc:`Creating CodeQL query suites <creating-codeql-query-suites>`."
-   * - ``extractor``
-     - .. code-block:: yaml
-
-        extractor: javascript
-
-     - All packs containing CodeQL tests
-     - The CodeQL language extractor to use when running the CodeQL tests in the pack. For more information about testing queries, see ":doc:`Testing custom queries <testing-custom-queries>`."
    * - ``tests``
-     - .. code-block:: yaml
+     - Optional for packs containing CodeQL tests. Ignored for packs without tests.
+     - The path to a directory within the pack that contains tests, defined relative to the pack directory. Use ``.`` to specify the whole pack. Any queries in this directory are run as tests when ``test run`` is run with the ``--strict-test-discovery`` option. These queries are ignored by query suite definitions that use ``queries`` or ``qlpack`` instructions to ask for all queries in a particular pack. If this property is missing, then ``.`` is assumed.
+
+       Example:
+
+       .. code-block:: yaml
 
         tests: .
 
-     - Optional for packs containing CodeQL tests. Ignored for packs without tests.
-     - The path to a directory within the pack that contains tests, defined relative to the pack directory. Use ``.`` to specify the whole pack. Any queries in this directory are run as tests when ``test run`` is run with the ``--strict-test-discovery`` option. These queries are ignored by query suite definitions that use ``queries`` or ``qlpack`` instructions to ask for all queries in a particular pack. If this property is missing, then ``.`` is assumed.
-   * - ``dbscheme``
-     - .. code-block:: yaml
+   * - ``extractor``
+     - All packs containing CodeQL tests
+     - The CodeQL language extractor to use when running the CodeQL tests in the pack. For more information about testing queries, see ":doc:`Testing custom queries <testing-custom-queries>`."
 
-        dbscheme: semmlecode.python.dbscheme
+       Example:
 
-     - Core language packs only
-     - The path to the :ref:`database schema <codeql-database-schema>` for all libraries and queries written for this CodeQL language (see example below).
-   * - ``upgrades``
-     - .. code-block:: yaml
+       .. code-block:: yaml
 
-        upgrades: .
+        extractor: javascript
 
-     - Core language packs only
-     - The path to a directory within the pack that contains database upgrade scripts, defined relative to the pack directory. Database upgrades are used internally to ensure that a database created with a different version of the CodeQL CLI is compatible with the current version of the CLI.
    * - ``authors``
-     - .. code-block:: yaml
+     - Optional
+     - Metadata that will be displayed on the packaging search page in the packages section of the account that the CodeQL pack is published to.
+
+       Example:
+
+       .. code-block:: yaml
 
         authors: author1@github.com,author2@github.com
 
-     - All packs
-     - Metadata that will be displayed on the packaging search page in the packages section of the account that the CodeQL pack is published to.
    * - ``license``
-     - .. code-block:: yaml
+     - Optional
+     - Metadata that will be displayed on the packaging search page in the packages section of the account that the CodeQL pack is published to. For a list of allowed licenses, see `SPDX License List <https://spdx.org/licenses/>`__ in the SPDX Specification.
+
+       Example:
+
+       .. code-block:: yaml
 
         license: MIT
 
-     - All packs
-     - Metadata that will be displayed on the packaging search page in the packages section of the account that the CodeQL pack is published to. For a list of allowed licenses, see `SPDX License List <https://spdx.org/licenses/>`__ in the SPDX Specification.
    * - ``description``
-     - .. code-block:: yaml
+     - Optional
+     - Metadata that will be displayed on the packaging search page in the packages section of the account that the CodeQL pack is published to.
+
+       Example:
+
+       .. code-block:: yaml
 
         description: Human-readable description of the contents of the CodeQL pack.
 
-     - All packs
-     - Metadata that will be displayed on the packaging search page in the packages section of the account that the CodeQL pack is published to.
    * - ``libraryPathDependencies``
-     - .. code-block:: yaml
+     - Optional, deprecated
+     - Use the ``dependencies`` property instead. The names of any CodeQL packs that this CodeQL pack depends on, as an array. This gives the pack access to any libraries, database schema, and query suites defined in the dependency.
+
+       Example:
+
+       .. code-block:: yaml
 
         libraryPathDependencies: codeql/javascript-all
 
-     - Optional, deprecated
-     - Use the ``dependencies`` property instead. The names of any CodeQL packs that this CodeQL pack depends on, as an array. This gives the pack access to any libraries, database schema, and query suites defined in the dependency.
+   * - ``dbscheme``
+     - Required by core language packs only
+     - The path to the :ref:`database schema <codeql-database-schema>` for all libraries and queries written for this CodeQL language (see example below).
+
+       Example:
+
+       .. code-block:: yaml
+
+        dbscheme: semmlecode.python.dbscheme
+
+   * - ``upgrades``
+     - Required by core language packs only
+     - The path to a directory within the pack that contains database upgrade scripts, defined relative to the pack directory. Database upgrades are used internally to ensure that a database created with a different version of the CodeQL CLI is compatible with the current version of the CLI.
+
+       Example:
+
+       .. code-block:: yaml
+
+        upgrades: .
 
 .. _about-codeql-pack-lock:
 
