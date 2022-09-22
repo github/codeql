@@ -8,6 +8,9 @@ on:
       - .github/actions/fetch-codeql/action.yml
     branches:
       - main
+defaults:
+  run:
+    working-directory: swift
 
 jobs:
   codegen:
@@ -17,6 +20,8 @@ jobs:
       - uses: ./.github/actions/fetch-codeql
       - uses: bazelbuild/setup-bazelisk@v2
       - uses: actions/setup-python@v4
+        with:
+          python-version-file: 'swift/.python-version'
       - uses: pre-commit/action@v3.0.0
         name: Check that python code is properly formatted
         with:
