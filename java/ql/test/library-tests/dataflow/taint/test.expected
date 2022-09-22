@@ -71,6 +71,12 @@
 | StringBuilderTests.java:70:15:70:21 | taint(...) | StringBuilderTests.java:73:10:73:26 | new String(...) |
 | StringBuilderTests.java:79:15:79:21 | taint(...) | StringBuilderTests.java:80:10:80:40 | toString(...) |
 | StringBuilderTests.java:86:15:86:21 | taint(...) | StringBuilderTests.java:87:10:87:27 | substring(...) |
+| StringJoinerTests.java:16:37:16:43 | taint(...) | StringJoinerTests.java:18:9:18:11 | out |
+| StringJoinerTests.java:23:37:23:43 | taint(...) | StringJoinerTests.java:25:9:25:11 | out |
+| StringJoinerTests.java:30:37:30:43 | taint(...) | StringJoinerTests.java:32:9:32:11 | out |
+| StringJoinerTests.java:37:37:37:43 | taint(...) | StringJoinerTests.java:39:9:39:11 | out |
+| StringJoinerTests.java:44:37:44:43 | taint(...) | StringJoinerTests.java:46:9:46:11 | out |
+| StringJoinerTests.java:51:37:51:43 | taint(...) | StringJoinerTests.java:53:9:53:11 | out |
 | Varargs.java:7:8:7:14 | taint(...) | Varargs.java:14:10:14:10 | s |
 | Varargs.java:8:8:8:14 | taint(...) | Varargs.java:19:10:19:10 | s |
 | Varargs.java:8:17:8:23 | taint(...) | Varargs.java:19:10:19:10 | s |

@@ -1,0 +1,58 @@
+import java.util.StringJoiner;
+
+public class StringJoinerTests {
+
+	Object taint() {
+		return null;
+	}
+
+	void sink(Object o) {}
+
+	public void test() throws Exception {
+
+		{
+			// "java.util;StringJoiner;true;add;;;Argument[-1];ReturnValue;value;manual"
+			StringJoiner out = null;
+			StringJoiner in = (StringJoiner) taint();
+			out = in.add(null);
+			sink(out);
+		}
+		{
+			// "java.util;StringJoiner;true;add;;;Argument[0];Argument[-1];taint;manual"
+			StringJoiner out = null;
+			CharSequence in = (CharSequence) taint();
+			out.add(in);
+			sink(out);
+		}
+		{
+			// "java.util;StringJoiner;true;merge;;;Argument[-1];ReturnValue;value;manual"
+			StringJoiner out = null;
+			StringJoiner in = (StringJoiner) taint();
+			out = in.merge(null);
+			sink(out);
+		}
+		{
+			// "java.util;StringJoiner;true;merge;;;Argument[0];Argument[-1];taint;manual"
+			StringJoiner out = null;
+			StringJoiner in = (StringJoiner) taint();
+			out.merge(in);
+			sink(out);
+		}
+		{
+			// "java.util;StringJoiner;true;setEmptyValue;;;Argument[-1];ReturnValue;taint;manual"
+			StringJoiner out = null;
+			StringJoiner in = (StringJoiner) taint();
+			out = in.setEmptyValue(null);
+			sink(out);
+		}
+		{
+			// "java.util;StringJoiner;true;toString;;;Argument[-1];ReturnValue;taint;manual"
+			String out = null;
+			StringJoiner in = (StringJoiner) taint();
+			out = in.toString();
+			sink(out);
+		}
+
+	}
+
+}
