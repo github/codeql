@@ -2,7 +2,7 @@
 
 private import internal.ParseRegExp
 private import codeql.NumberUtils
-private import codeql.ruby.ast.Literal as AST
+private import codeql.ruby.ast.Literal as Ast
 private import codeql.Locations
 
 /**
@@ -1146,6 +1146,6 @@ class RegExpNamedCharacterProperty extends RegExpTerm, TRegExpNamedCharacterProp
 }
 
 /** Gets the parse tree resulting from parsing `re`, if such has been constructed. */
-RegExpTerm getParsedRegExp(AST::RegExpLiteral re) {
+RegExpTerm getParsedRegExp(Ast::RegExpLiteral re) {
   result.getRegExp() = re and result.isRootTerm()
 }
