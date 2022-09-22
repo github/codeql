@@ -1,0 +1,21 @@
+edges
+| testAES.swift:32:12:32:16 | call to init() :  | testAES.swift:36:36:36:36 | ecb |
+| testAES.swift:32:12:32:16 | call to init() :  | testAES.swift:37:36:37:36 | ecb |
+| testBlowfish.swift:32:12:32:16 | call to init() :  | testBlowfish.swift:36:41:36:41 | ecb |
+nodes
+| testAES.swift:32:12:32:16 | call to init() :  | semmle.label | call to init() :  |
+| testAES.swift:36:36:36:36 | ecb | semmle.label | ecb |
+| testAES.swift:37:36:37:36 | ecb | semmle.label | ecb |
+| testAES.swift:38:36:38:40 | call to init() | semmle.label | call to init() |
+| testAES.swift:39:36:39:40 | call to init() | semmle.label | call to init() |
+| testBlowfish.swift:32:12:32:16 | call to init() :  | semmle.label | call to init() :  |
+| testBlowfish.swift:36:41:36:41 | ecb | semmle.label | ecb |
+| testBlowfish.swift:37:41:37:45 | call to init() | semmle.label | call to init() |
+subpaths
+#select
+| testAES.swift:36:36:36:36 | ecb | testAES.swift:32:12:32:16 | call to init() :  | testAES.swift:36:36:36:36 | ecb | The initialization of the cipher 'ecb' uses the insecure ECB block mode from $@ | testAES.swift:32:12:32:16 | call to init() :  | call to init() |
+| testAES.swift:37:36:37:36 | ecb | testAES.swift:32:12:32:16 | call to init() :  | testAES.swift:37:36:37:36 | ecb | The initialization of the cipher 'ecb' uses the insecure ECB block mode from $@ | testAES.swift:32:12:32:16 | call to init() :  | call to init() |
+| testAES.swift:38:36:38:40 | call to init() | testAES.swift:38:36:38:40 | call to init() | testAES.swift:38:36:38:40 | call to init() | The initialization of the cipher 'call to init()' uses the insecure ECB block mode from $@ | testAES.swift:38:36:38:40 | call to init() | call to init() |
+| testAES.swift:39:36:39:40 | call to init() | testAES.swift:39:36:39:40 | call to init() | testAES.swift:39:36:39:40 | call to init() | The initialization of the cipher 'call to init()' uses the insecure ECB block mode from $@ | testAES.swift:39:36:39:40 | call to init() | call to init() |
+| testBlowfish.swift:36:41:36:41 | ecb | testBlowfish.swift:32:12:32:16 | call to init() :  | testBlowfish.swift:36:41:36:41 | ecb | The initialization of the cipher 'ecb' uses the insecure ECB block mode from $@ | testBlowfish.swift:32:12:32:16 | call to init() :  | call to init() |
+| testBlowfish.swift:37:41:37:45 | call to init() | testBlowfish.swift:37:41:37:45 | call to init() | testBlowfish.swift:37:41:37:45 | call to init() | The initialization of the cipher 'call to init()' uses the insecure ECB block mode from $@ | testBlowfish.swift:37:41:37:45 | call to init() | call to init() |
