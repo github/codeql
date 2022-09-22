@@ -67,6 +67,16 @@ module UnsafeDeserialization {
     }
   }
 
+  /**
+   * The first argument in a call to `Hash.from_trusted_xml`, considered as a
+   * sink for unsafe deserialization.
+   */
+  class HashFromTrustedXmlArgument extends Sink {
+    HashFromTrustedXmlArgument() {
+      this = API::getTopLevelMember("Hash").getAMethodCall("from_trusted_xml").getArgument(0)
+    }
+  }
+
   private string getAKnownOjModeName(boolean isSafe) {
     result = ["compat", "custom", "json", "null", "rails", "strict", "wab"] and isSafe = true
     or
