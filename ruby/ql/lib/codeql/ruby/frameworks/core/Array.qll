@@ -3,6 +3,7 @@
 private import codeql.ruby.AST
 private import codeql.ruby.ApiGraphs
 private import codeql.ruby.DataFlow
+private import codeql.ruby.ast.internal.Module
 private import codeql.ruby.dataflow.FlowSummary
 private import codeql.ruby.dataflow.internal.DataFlowDispatch
 
@@ -15,6 +16,15 @@ private string lastBlockParam(MethodCall mc, string name, int lastBlockParam) {
   mc.getMethodName() = name and
   result = name + "(" + lastBlockParam + ")" and
   lastBlockParam = mc.getBlock().getNumberOfParameters() - 1
+}
+
+/**
+ * Gets a call to the method `name` invoked on the `Array` object
+ * (not on an array instance).
+ */
+private MethodCall getAStaticArrayCall(string name) {
+  result.getMethodName() = name and
+  resolveConstantReadAccess(result.getReceiver()) = TResolved("Array")
 }
 
 /**
@@ -34,9 +44,7 @@ module Array {
   private class ArrayLiteralSummary extends SummarizedCallable {
     ArrayLiteralSummary() { this = "Array.[]" }
 
-    override MethodCall getACall() {
-      result = API::getTopLevelMember("Array").getAMethodCall("[]").getExprNode().getExpr()
-    }
+    override MethodCall getACallSimple() { result = getAStaticArrayCall("[]") }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       exists(ArrayIndex i |
@@ -50,9 +58,7 @@ module Array {
   private class NewSummary extends SummarizedCallable {
     NewSummary() { this = "Array.new" }
 
-    override MethodCall getACall() {
-      result = API::getTopLevelMember("Array").getAnInstantiation().getExprNode().getExpr()
-    }
+    override MethodCall getACallSimple() { result = getAStaticArrayCall("new") }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       (
@@ -72,9 +78,7 @@ module Array {
   private class TryConvertSummary extends SummarizedCallable {
     TryConvertSummary() { this = "Array.try_convert" }
 
-    override MethodCall getACall() {
-      result = API::getTopLevelMember("Array").getAMethodCall("try_convert").getExprNode().getExpr()
-    }
+    override MethodCall getACallSimple() { result = getAStaticArrayCall("try_convert") }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       input = "Argument[0].WithElement[any]" and
@@ -86,7 +90,7 @@ module Array {
   private class SetIntersectionSummary extends SummarizedCallable {
     SetIntersectionSummary() { this = "&" }
 
-    override BitwiseAndExpr getACall() { any() }
+    override BitwiseAndExpr getACallSimple() { any() }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       input = ["Argument[self].Element[any]", "Argument[0].Element[any]"] and
@@ -98,7 +102,7 @@ module Array {
   private class SetUnionSummary extends SummarizedCallable {
     SetUnionSummary() { this = "|" }
 
-    override BitwiseOrExpr getACall() { any() }
+    override BitwiseOrExpr getACallSimple() { any() }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       input = ["Argument[self].Element[any]", "Argument[0].Element[any]"] and
@@ -110,7 +114,7 @@ module Array {
   private class RepetitionSummary extends SummarizedCallable {
     RepetitionSummary() { this = "*" }
 
-    override MulExpr getACall() { any() }
+    override MulExpr getACallSimple() { any() }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       input = "Argument[self].Element[any]" and
@@ -122,7 +126,7 @@ module Array {
   private class ConcatenationSummary extends SummarizedCallable {
     ConcatenationSummary() { this = "+" }
 
-    override AddExpr getACall() { any() }
+    override AddExpr getACallSimple() { any() }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       (
@@ -139,7 +143,7 @@ module Array {
   private class SetDifferenceSummary extends SummarizedCallable {
     SetDifferenceSummary() { this = "-" }
 
-    override SubExpr getACall() { any() }
+    override SubExpr getACallSimple() { any() }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       input = "Argument[self].Element[any]" and
@@ -152,7 +156,7 @@ module Array {
   private class AppendOperatorSummary extends SummarizedCallable {
     AppendOperatorSummary() { this = "<<" }
 
-    override LShiftExpr getACall() { any() }
+    override LShiftExpr getACallSimple() { any() }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       (
@@ -176,9 +180,11 @@ module Array {
     ElementReferenceReadMethodName methodName; // adding this as a field helps give a better join order
 
     bindingset[this]
-    ElementReferenceReadSummary() { mc.getMethodName() = methodName }
+    ElementReferenceReadSummary() {
+      mc.getMethodName() = methodName and not mc = getAStaticArrayCall(methodName)
+    }
 
-    override MethodCall getACall() { result = mc }
+    override MethodCall getACallSimple() { result = mc }
   }
 
   /** A call to `[]` with a known index. */
@@ -303,7 +309,7 @@ module Array {
     bindingset[this]
     ElementReferenceStoreSummary() { mc.getMethodName() = "[]=" }
 
-    final override MethodCall getACall() { result = mc }
+    final override MethodCall getACallSimple() { result = mc }
   }
 
   /** A call to `[]=` with a known index. */

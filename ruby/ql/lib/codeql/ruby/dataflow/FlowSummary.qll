@@ -131,7 +131,7 @@ abstract class SimpleSummarizedCallable extends SummarizedCallable {
   bindingset[this]
   SimpleSummarizedCallable() { mc.getMethodName() = this }
 
-  final override MethodCall getACall() { result = mc }
+  final override MethodCall getACallSimple() { result = mc }
 }
 
 class RequiredSummaryComponentStack = Impl::Public::RequiredSummaryComponentStack;

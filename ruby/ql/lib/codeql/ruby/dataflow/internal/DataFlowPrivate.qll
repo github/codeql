@@ -1,6 +1,7 @@
 private import codeql.ruby.AST
 private import codeql.ruby.ast.internal.Synthesis
 private import codeql.ruby.CFG
+private import codeql.ruby.AST as AST
 private import codeql.ruby.dataflow.SSA
 private import DataFlowPublic
 private import DataFlowDispatch
@@ -358,16 +359,20 @@ private module Cached {
     n instanceof SynthReturnNode
     or
     // Needed for stores in type tracking
-    TypeTrackerSpecific::basicStoreStep(_, n, _)
+    TypeTrackerSpecific::postUpdateStoreStep(_, n, _)
   }
 
   cached
-  newtype TContentSet =
+  newtype TOptionalContentSet =
     TSingletonContent(Content c) or
     TAnyElementContent() or
     TElementLowerBoundContent(int lower) {
       FlowSummaryImplSpecific::ParsePositions::isParsedElementLowerBoundPosition(_, lower)
-    }
+    } or
+    TNoContentSet()
+
+  cached
+  class TContentSet = TSingletonContent or TAnyElementContent or TElementLowerBoundContent;
 
   cached
   newtype TContent =
@@ -393,7 +398,9 @@ private module Cached {
       |
         name = [input, output].regexpFind("(?<=(^|\\.)Field\\[)[^\\]]+(?=\\])", _, _).trim()
       )
-    }
+    } or
+    // Only used by type-tracking
+    TAttributeName(string name) { name = any(AST::SetterMethodCall c).getTargetName() }
 
   /**
    * Holds if `e` is an `ExprNode` that may be returned by a call to `c`.

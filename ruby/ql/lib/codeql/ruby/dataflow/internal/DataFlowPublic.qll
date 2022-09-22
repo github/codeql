@@ -314,6 +314,36 @@ module Content {
   class UnknownPairValueContent extends PairValueContent, TUnknownPairValueContent {
     override string toString() { result = "pair" }
   }
+
+  /**
+   * A value stored behind a getter/setter pair.
+   *
+   * This is used (only) by type-tracking, as a heuristic since getter/setter pairs tend to operate
+   * on similar types of objects (i.e. the type flowing into a setter will likely flow out of the getter).
+   */
+  class AttributeNameContent extends Content, TAttributeName {
+    private string name;
+
+    AttributeNameContent() { this = TAttributeName(name) }
+
+    override string toString() { result = "attribute " + name }
+
+    /** Gets the attribute name. */
+    string getName() { result = name }
+  }
+
+  /** Gets `AttributeNameContent` of the given name. */
+  AttributeNameContent getAttributeName(string name) { result.getName() = name }
+}
+
+class OptionalContentSet extends TOptionalContentSet {
+  /** Gets a textual representation of this content set. */
+  string toString() {
+    result = "no content" // overridden in `ContentSet`
+  }
+
+  /** Holds if this is the special "no content set" value. */
+  predicate isNoContentSet() { this instanceof TNoContentSet }
 }
 
 /**
@@ -322,7 +352,7 @@ module Content {
  * The set may be interpreted differently depending on whether it is
  * stored into (`getAStoreContent`) or read from (`getAReadContent`).
  */
-class ContentSet extends TContentSet {
+class ContentSet extends OptionalContentSet, TContentSet {
   /** Holds if this content set is the singleton `{c}`. */
   predicate isSingleton(Content c) { this = TSingletonContent(c) }
 
@@ -335,8 +365,7 @@ class ContentSet extends TContentSet {
    */
   predicate isElementLowerBound(int lower) { this = TElementLowerBoundContent(lower) }
 
-  /** Gets a textual representation of this content set. */
-  string toString() {
+  override string toString() {
     exists(Content c |
       this.isSingleton(c) and
       result = c.toString()

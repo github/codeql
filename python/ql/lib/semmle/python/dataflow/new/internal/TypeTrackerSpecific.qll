@@ -11,6 +11,28 @@ class Node = DataFlowPublic::Node;
 
 class TypeTrackingNode = DataFlowPublic::TypeTrackingNode;
 
+/** A content name for use by type trackers, or the empty string. */
+class OptionalTypeTrackerContent extends string {
+  OptionalTypeTrackerContent() {
+    this = ""
+    or
+    this = getPossibleContentName()
+  }
+}
+
+/** A content name for use by type trackers. */
+class TypeTrackerContent extends OptionalTypeTrackerContent {
+  TypeTrackerContent() { this != "" }
+}
+
+/** Gets the content string representing no value. */
+OptionalTypeTrackerContent noContent() { result = "" }
+
+pragma[inline]
+predicate compatibleContents(TypeTrackerContent storeContent, TypeTrackerContent loadContent) {
+  storeContent = loadContent
+}
+
 predicate simpleLocalFlowStep = DataFlowPrivate::simpleLocalFlowStepForTypetracking/2;
 
 predicate jumpStep = DataFlowPrivate::jumpStepSharedWithTypeTracker/2;
