@@ -511,8 +511,17 @@ private predicate callableSpecInfo(Callable c, string namespace, string type, st
 }
 
 pragma[nomagic]
-private predicate subtypeSpecCandidate(Callable c, UnboundValueOrRefType t) {
-  elementSpec(_, _, true, c.getName(), _, _, t)
+private predicate subtypeSpecCandidate(string name, UnboundValueOrRefType t) {
+  exists(UnboundValueOrRefType t0 |
+    elementSpec(_, _, true, name, _, _, t0) and
+    t = t0.getASubTypeUnbound+()
+  )
+}
+
+pragma[nomagic]
+private predicate callableInfo(Callable c, string name, UnboundValueOrRefType decl) {
+  name = c.getName() and
+  decl = c.getDeclaringType()
 }
 
 private class InterpretedCallable extends Callable {
@@ -522,9 +531,9 @@ private class InterpretedCallable extends Callable {
       elementSpec(namespace, type, _, name, _, _)
     )
     or
-    exists(UnboundValueOrRefType t |
-      subtypeSpecCandidate(this, t) and
-      this.getDeclaringType() = t.getASubTypeUnbound+()
+    exists(string name, UnboundValueOrRefType t |
+      callableInfo(this, name, t) and
+      subtypeSpecCandidate(name, t)
     )
   }
 }
