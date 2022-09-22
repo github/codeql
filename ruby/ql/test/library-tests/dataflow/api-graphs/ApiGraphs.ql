@@ -3,7 +3,6 @@
  */
 
 import ruby
-import codeql.ruby.DataFlow
 import codeql.ruby.ApiGraphs
 
 query predicate classMethodCalls(API::Node node) {
