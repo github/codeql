@@ -62,7 +62,7 @@ def maybe_xss():
 def bad_jsonify():
     try:
         do_computation()
-    except Exception as e:
+    except Exception as e: # $ exceptionInfo
         return jsonify({"error": str(e)})
 
 
