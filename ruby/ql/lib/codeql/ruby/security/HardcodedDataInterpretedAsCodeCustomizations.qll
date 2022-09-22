@@ -6,7 +6,7 @@
 
 private import codeql.ruby.DataFlow
 private import codeql.ruby.security.CodeInjectionCustomizations
-private import codeql.ruby.AST as AST
+private import codeql.ruby.AST as Ast
 private import codeql.ruby.controlflow.CfgNodes
 
 /**
@@ -79,7 +79,7 @@ module HardcodedDataInterpretedAsCode {
       forex(StringComponentCfgNode c |
         c = this.asExpr().(ExprNodes::StringlikeLiteralCfgNode).getAComponent()
       |
-        c.getNode().(AST::StringEscapeSequenceComponent).getRawText().matches("\\x%")
+        c.getNode().(Ast::StringEscapeSequenceComponent).getRawText().matches("\\x%")
       )
     }
   }
@@ -99,7 +99,7 @@ module HardcodedDataInterpretedAsCode {
   private class RequireArgumentSink extends Sink {
     RequireArgumentSink() {
       exists(DataFlow::CallNode require |
-        require.getReceiver().getExprNode().getExpr() instanceof AST::SelfVariableAccess and
+        require.getReceiver().getExprNode().getExpr() instanceof Ast::SelfVariableAccess and
         require.getMethodName() = "require"
       |
         this = require.getArgument(0)
