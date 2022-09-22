@@ -1,1 +1,2 @@
-| 1 |
+| test.cpp:9:3:10:8 | ... , ... | Comma before misleading indentation. |
+| test.cpp:17:7:18:4 | ... , ... | Comma before misleading indentation. |
