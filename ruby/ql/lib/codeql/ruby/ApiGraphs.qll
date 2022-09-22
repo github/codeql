@@ -276,7 +276,7 @@ module API {
     /** Gets a node representing the instance field of the given `name`, which must include the `@` character. */
     Node getField(string name) { result = this.getContent(DataFlowPrivate::TFieldContent(name)) }
 
-    /** Gets a node representing an element of this collection. */
+    /** Gets a node representing an element of this collection (known or unknown). */
     Node getAnElement() {
       result = this.getContents(any(DataFlow::ContentSet set | set.isAnyElement()))
     }
