@@ -70,16 +70,16 @@ class Processor:
         )
 
     def get_classes(self):
-        ret = {pathlib.Path(): []}
+        ret = {'': []}
         for k, cls in self._classmap.items():
-            ret.setdefault(cls.dir, []).append(self._get_class(cls.name))
+            ret.setdefault(cls.group, []).append(self._get_class(cls.name))
         return ret
 
 
 def generate(opts, renderer):
     assert opts.cpp_output
-    processor = Processor(schema.load(opts.schema).classes)
+    processor = Processor(schema.load_file(opts.schema).classes)
     out = opts.cpp_output
     for dir, classes in processor.get_classes().items():
-        include_parent = (dir != pathlib.Path())
-        renderer.render(cpp.ClassList(classes, opts.schema, include_parent), out / dir / "TrapClasses")
+        renderer.render(cpp.ClassList(classes, opts.schema,
+                        include_parent=bool(dir)), out / dir / "TrapClasses")
