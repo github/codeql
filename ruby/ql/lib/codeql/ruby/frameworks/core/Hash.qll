@@ -38,7 +38,7 @@ module Hash {
 
   /**
    * Gets a call to the method `name` invoked on the `Hash` object
-   * (not on an hash instance).
+   * (not on a hash instance).
    */
   private MethodCall getAStaticHashCall(string name) {
     result.getMethodName() = name and
