@@ -1,0 +1,18 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>...</p>
+</overview>
+
+<recommendation>
+<p>...</p>
+</recommendation>
+
+<example>
+<sample src="CommaBeforeMisleadingIndentation.cpp" />
+</example>
+
+</qhelp>
