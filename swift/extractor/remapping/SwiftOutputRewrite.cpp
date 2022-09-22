@@ -67,6 +67,7 @@ std::unordered_map<std::string, std::string> rewriteOutputsInPlace(
 
   // TODO: handle filelists?
   const std::unordered_set<std::string> pathRewriteOptions({
+      "-emit-abi-descriptor-path",
       "-emit-dependencies-path",
       "-emit-module-path",
       "-emit-module-doc-path",
@@ -74,6 +75,7 @@ std::unordered_map<std::string, std::string> rewriteOutputsInPlace(
       "-emit-objc-header-path",
       "-emit-reference-dependencies-path",
       "-index-store-path",
+      "-index-unit-output-path",
       "-module-cache-path",
       "-o",
       "-pch-output-dir",
