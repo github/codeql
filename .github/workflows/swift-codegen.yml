@@ -4,6 +4,8 @@ on:
   pull_request:
     paths:
       - "swift/**"
+      - "misc/bazel/**"
+      - "*.bazel*"
       - .github/workflows/swift-codegen.yml
       - .github/actions/fetch-codeql/action.yml
     branches:

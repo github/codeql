@@ -163,6 +163,10 @@ bindingset[c]
 SummaryComponent interpretComponentSpecific(AccessPathToken c) {
   c = "Element" and result = SummaryComponent::content(any(ElementContent ec))
   or
+  c = "WithoutElement" and result = SummaryComponent::withoutContent(any(ElementContent ec))
+  or
+  c = "WithElement" and result = SummaryComponent::withContent(any(ElementContent ec))
+  or
   // Qualified names may contain commas,such as in `Tuple<,>`, so get the entire argument list
   // rather than an individual argument.
   exists(Field f |
@@ -198,6 +202,10 @@ private string getContentSpecificCsv(Content c) {
 /** Gets the textual representation of a summary component in the format used for flow summaries. */
 string getComponentSpecificCsv(SummaryComponent sc) {
   exists(Content c | sc = TContentSummaryComponent(c) and result = getContentSpecificCsv(c))
+  or
+  exists(Content c | sc = TWithoutContentSummaryComponent(c) and result = "WithoutElement")
+  or
+  exists(Content c | sc = TWithContentSummaryComponent(c) and result = "WithElement")
   or
   exists(ReturnKind rk |
     sc = TReturnSummaryComponent(rk) and

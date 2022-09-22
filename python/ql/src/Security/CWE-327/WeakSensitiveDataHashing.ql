@@ -36,14 +36,14 @@ where
       source.getNode().(ComputationallyExpensiveHashFunction::Source).getClassification() and
     (
       sink.getNode().(ComputationallyExpensiveHashFunction::Sink).isComputationallyExpensive() and
-      ending = ""
+      ending = "."
       or
       not sink.getNode().(ComputationallyExpensiveHashFunction::Sink).isComputationallyExpensive() and
       ending =
-        " The algorithm is insufficient for " + classification +
+        " for " + classification +
           " hashing, since it is not a computationally expensive hash function."
     )
   )
 select sink.getNode(), source, sink,
-  "Insecure hashing algorithm (" + algorithmName + ") depends on $@." + ending, source.getNode(),
-  "sensitive data (" + classification + ")"
+  "$@ is used in a hashing algorithm (" + algorithmName + ") that is insecure" + ending,
+  source.getNode(), "Sensitive data (" + classification + ")"

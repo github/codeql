@@ -9,7 +9,7 @@ module PreSsa {
   private import AssignableDefinitions
   private import semmle.code.csharp.controlflow.internal.ControlFlowGraphImpl
   private import semmle.code.csharp.controlflow.internal.PreBasicBlocks as PreBasicBlocks
-  private import semmle.code.csharp.dataflow.internal.SsaImplCommon as SsaImplCommon
+  private import codeql.ssa.Ssa as SsaImplCommon
 
   private predicate definitionAt(
     AssignableDefinition def, SsaInput::BasicBlock bb, int i, SsaInput::SourceVariable v

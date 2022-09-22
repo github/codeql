@@ -71,6 +71,8 @@ private class SystemArrayFlowModelCsv extends SummaryModelCsv {
     row =
       [
         "System;Array;false;AsReadOnly<>;(T[]);;Argument[0].Element;ReturnValue.Element;value;manual",
+        "System;Array;false;Clear;(System.Array,System.Int32,System.Int32);;Argument[0].WithoutElement;Argument[0];value;manual",
+        "System;Array;false;Clear;(System.Array);;Argument[0].WithoutElement;Argument[0];value;manual",
         "System;Array;false;Clone;();;Argument[0].Element;ReturnValue.Element;value;manual",
         "System;Array;false;CopyTo;(System.Array,System.Int64);;Argument[this].Element;Argument[0].Element;value;manual",
         "System;Array;false;Find<>;(T[],System.Predicate<T>);;Argument[0].Element;Argument[1].Parameter[0];value;manual",

@@ -64,14 +64,6 @@ module RegExpFlags {
   }
 
   /**
-   * Gets the flags for `root`, or the empty string if `root` has no flags.
-   */
-  string getFlags(RegExpTerm root) {
-    root.isRootTerm() and
-    result = root.getLiteral().getFlags()
-  }
-
-  /**
    * Holds if `root` has the `s` flag for multi-line matching.
    */
   predicate isDotAll(RegExpTerm root) {

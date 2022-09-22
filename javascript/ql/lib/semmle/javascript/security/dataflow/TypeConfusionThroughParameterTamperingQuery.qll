@@ -26,7 +26,11 @@ class Configuration extends DataFlow::Configuration {
     sink.analyze().getAType() = TTObject()
   }
 
-  override predicate isBarrier(DataFlow::Node node) { node instanceof Barrier }
+  override predicate isBarrier(DataFlow::Node node) {
+    super.isBarrier(node)
+    or
+    node instanceof Barrier
+  }
 
   override predicate isBarrierGuard(DataFlow::BarrierGuardNode guard) {
     guard instanceof TypeOfTestBarrier or
@@ -50,7 +54,7 @@ private class TypeOfTestBarrier extends DataFlow::BarrierGuardNode, DataFlow::Va
 }
 
 private class IsArrayBarrier extends DataFlow::BarrierGuardNode, DataFlow::CallNode {
-  IsArrayBarrier() { this = DataFlow::globalVarRef("Array").getAMemberCall("isArray").getACall() }
+  IsArrayBarrier() { this = DataFlow::globalVarRef("Array").getAMemberCall("isArray") }
 
   override predicate blocks(boolean outcome, Expr e) {
     e = getArgument(0).asExpr() and

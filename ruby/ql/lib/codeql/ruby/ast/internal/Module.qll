@@ -1,4 +1,3 @@
-private import codeql.Locations
 private import codeql.ruby.AST
 
 // Names of built-in modules and classes
@@ -137,14 +136,7 @@ private module Cached {
   }
 
   cached
-  Method lookupMethod(Module m, string name) {
-    // The syntax_suggest library redefines Kernel.require/require_relative.
-    // Somehow this causes performance issues on ruby/ruby. As a workaround
-    // we exclude 'require' and 'require_relative'.
-    // TODO: find the actual cause of the slowdown and fix things properly.
-    not name = ["require", "require_relative"] and
-    TMethod(result) = lookupMethodOrConst(m, name)
-  }
+  Method lookupMethod(Module m, string name) { TMethod(result) = lookupMethodOrConst(m, name) }
 
   cached
   Expr lookupConst(Module m, string name) {
@@ -526,9 +518,9 @@ module ExposedForTestingOnly {
 private TMethodOrExpr lookupMethodOrConst0(Module m, string name) {
   result = lookupMethodOrConst0(m.getAPrependedModule(), name)
   or
-  not exists(getMethodOrConst(getAncestors(m.getAPrependedModule()), name)) and
+  not exists(getMethodOrConst(getAncestors(m.getAPrependedModule()), pragma[only_bind_into](name))) and
   (
-    result = getMethodOrConst(m, name)
+    result = getMethodOrConst(m, pragma[only_bind_into](name))
     or
     not exists(getMethodOrConst(m, name)) and
     result = lookupMethodOrConst0(m.getAnIncludedModule(), name)

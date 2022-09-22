@@ -14,7 +14,7 @@
  *       external/cwe/cwe-073
  */
 
-import ruby
+import codeql.ruby.AST
 import codeql.ruby.ApiGraphs
 import codeql.ruby.frameworks.core.Kernel::Kernel
 import codeql.ruby.TaintTracking

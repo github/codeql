@@ -2,7 +2,7 @@
  * @kind path-problem
  */
 
-import ruby
+import codeql.ruby.AST
 import codeql.ruby.dataflow.FlowSummary
 import codeql.ruby.TaintTracking
 import codeql.ruby.dataflow.internal.FlowSummaryImpl

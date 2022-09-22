@@ -9,8 +9,10 @@
 #include <swift/Basic/LLVMInitialize.h>
 #include <swift/FrontendTool/FrontendTool.h>
 
-#include "SwiftExtractor.h"
-#include "SwiftOutputRewrite.h"
+#include "swift/extractor/SwiftExtractor.h"
+#include "swift/extractor/TargetTrapFile.h"
+#include "swift/extractor/remapping/SwiftOutputRewrite.h"
+#include "swift/extractor/remapping/SwiftOpenInterception.h"
 
 using namespace std::string_literals;
 
@@ -20,14 +22,6 @@ using namespace std::string_literals;
 class Observer : public swift::FrontendObserver {
  public:
   explicit Observer(const codeql::SwiftExtractorConfiguration& config) : config{config} {}
-
-  void parsedArgs(swift::CompilerInvocation& invocation) override {
-    auto& overlays = invocation.getSearchPathOptions().VFSOverlayFiles;
-    auto vfsFiles = codeql::collectVFSFiles(config);
-    for (auto& vfsFile : vfsFiles) {
-      overlays.push_back(vfsFile);
-    }
-  }
 
   void performedSemanticAnalysis(swift::CompilerInstance& compiler) override {
     codeql::extractSwiftFiles(config, compiler);
@@ -44,11 +38,26 @@ static std::string getenv_or(const char* envvar, const std::string& def) {
   return def;
 }
 
+static void lockOutputSwiftModuleTraps(
+    const codeql::SwiftExtractorConfiguration& config,
+    const std::unordered_map<std::string, std::string>& remapping) {
+  for (const auto& [oldPath, newPath] : remapping) {
+    if (llvm::StringRef(oldPath).endswith(".swiftmodule")) {
+      if (auto target = codeql::createTargetTrapFile(config, oldPath)) {
+        *target << "// trap file deliberately empty\n"
+                   "// this swiftmodule was created during the build, so its entities must have"
+                   " been extracted directly from source files";
+      }
+    }
+  }
+}
+
 int main(int argc, char** argv) {
   if (argc == 1) {
     // TODO: print usage
     return 1;
   }
+
   // Required by Swift/LLVM
   PROGRAM_START(argc, argv);
   INITIALIZE_LLVM();
@@ -58,17 +67,18 @@ int main(int argc, char** argv) {
   configuration.sourceArchiveDir = getenv_or("CODEQL_EXTRACTOR_SWIFT_SOURCE_ARCHIVE_DIR", ".");
   configuration.scratchDir = getenv_or("CODEQL_EXTRACTOR_SWIFT_SCRATCH_DIR", ".");
 
+  codeql::initRemapping(configuration.getTempArtifactDir());
+
   configuration.frontendOptions.reserve(argc - 1);
   for (int i = 1; i < argc; i++) {
     configuration.frontendOptions.push_back(argv[i]);
   }
   configuration.patchedFrontendOptions = configuration.frontendOptions;
 
-  auto remapping =
-      codeql::rewriteOutputsInPlace(configuration, configuration.patchedFrontendOptions);
+  auto remapping = codeql::rewriteOutputsInPlace(configuration.getTempArtifactDir(),
+                                                 configuration.patchedFrontendOptions);
   codeql::ensureDirectoriesForNewPathsExist(remapping);
-  codeql::storeRemappingForVFS(configuration, remapping);
-  codeql::lockOutputSwiftModuleTraps(configuration, remapping);
+  lockOutputSwiftModuleTraps(configuration, remapping);
 
   std::vector<const char*> args;
   for (auto& arg : configuration.patchedFrontendOptions) {
@@ -77,5 +87,8 @@ int main(int argc, char** argv) {
 
   Observer observer(configuration);
   int frontend_rc = swift::performFrontend(args, "swift-extractor", (void*)main, &observer);
+
+  codeql::finalizeRemapping(remapping);
+
   return frontend_rc;
 }

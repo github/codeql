@@ -44,3 +44,34 @@
 | generic_anonymous.kt:13:27:13:41 | new Generic<Integer>(...) | Generic<Integer> |
 | generic_anonymous.kt:13:40:13:40 | i | int |
 | generic_anonymous.kt:13:43:13:47 | get(...) | int |
+| generic_anonymous.kt:17:9:17:29 | T0 | T0 |
+| generic_anonymous.kt:17:26:17:29 | null | Void |
+| generic_anonymous.kt:21:9:21:29 | T1 | T1 |
+| generic_anonymous.kt:21:26:21:29 | null | Void |
+| generic_anonymous.kt:24:5:32:5 | Unit | Unit |
+| generic_anonymous.kt:25:9:31:9 | Unit | Unit |
+| generic_anonymous.kt:26:13:26:37 | <Stmt> | new Object(...) { ... } |
+| generic_anonymous.kt:26:13:26:37 | <implicit coercion to unit> | Unit |
+| generic_anonymous.kt:26:13:26:37 | Object | Object |
+| generic_anonymous.kt:26:13:26:37 | Unit | Unit |
+| generic_anonymous.kt:26:13:26:37 | new (...) | new Object(...) { ... } |
+| generic_anonymous.kt:27:13:27:37 | <Stmt> | new Object(...) { ... } |
+| generic_anonymous.kt:27:13:27:37 | <implicit coercion to unit> | Unit |
+| generic_anonymous.kt:27:13:27:37 | Object | Object |
+| generic_anonymous.kt:27:13:27:37 | Unit | Unit |
+| generic_anonymous.kt:27:13:27:37 | new (...) | new Object(...) { ... } |
+| generic_anonymous.kt:28:13:28:41 | <Stmt> | new Object(...) { ... } |
+| generic_anonymous.kt:28:13:28:41 | <implicit coercion to unit> | Unit |
+| generic_anonymous.kt:28:13:28:41 | Object | Object |
+| generic_anonymous.kt:28:13:28:41 | Unit | Unit |
+| generic_anonymous.kt:28:13:28:41 | new (...) | new Object(...) { ... } |
+| generic_anonymous.kt:29:13:29:29 | <Stmt> | new C0<U2>(...) { ... } |
+| generic_anonymous.kt:29:13:29:29 | <implicit coercion to unit> | Unit |
+| generic_anonymous.kt:29:13:29:29 | C0<U2> | C0<U2> |
+| generic_anonymous.kt:29:13:29:29 | Unit | Unit |
+| generic_anonymous.kt:29:13:29:29 | new (...) | new C0<U2>(...) { ... } |
+| generic_anonymous.kt:30:13:30:33 | <Stmt> | new C0<String>(...) { ... } |
+| generic_anonymous.kt:30:13:30:33 | <implicit coercion to unit> | Unit |
+| generic_anonymous.kt:30:13:30:33 | C0<String> | C0<String> |
+| generic_anonymous.kt:30:13:30:33 | Unit | Unit |
+| generic_anonymous.kt:30:13:30:33 | new (...) | new C0<String>(...) { ... } |

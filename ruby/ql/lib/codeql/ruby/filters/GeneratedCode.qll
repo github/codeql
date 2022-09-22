@@ -1,6 +1,6 @@
 /** Provides classes for detecting generated code. */
 
-private import ruby
+private import codeql.ruby.AST
 private import codeql.ruby.ast.internal.TreeSitter
 
 /** A source file that contains generated code. */

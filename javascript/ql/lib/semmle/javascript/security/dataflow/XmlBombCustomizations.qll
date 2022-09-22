@@ -31,8 +31,8 @@ module XmlBomb {
   /**
    * An access to `document.location`, considered as a flow source for XML bomb vulnerabilities.
    */
-  class LocationAsSource extends Source, DataFlow::ValueNode {
-    LocationAsSource() { isLocation(astNode) }
+  class LocationAsSource extends Source {
+    LocationAsSource() { isLocationNode(this) }
   }
 
   /**

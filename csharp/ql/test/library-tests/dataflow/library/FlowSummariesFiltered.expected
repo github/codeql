@@ -383,6 +383,7 @@ summary
 | Microsoft.Extensions.Primitives;StringValues;false;set_Item;(System.Int32,System.String);;Argument[0];ReturnValue;taint;manual |
 | Microsoft.Extensions.Primitives;StringValues;false;set_Item;(System.Int32,System.String);;Argument[1];ReturnValue;taint;manual |
 | Microsoft.Extensions.Primitives;StringValues;false;set_Item;(System.Int32,System.String);;Argument[this];ReturnValue;taint;manual |
+| Microsoft.VisualBasic;Collection;false;Clear;();;Argument[this].WithoutElement;Argument[this];value;manual |
 | Microsoft.VisualBasic;Collection;false;GetEnumerator;();;Argument[this].Element;ReturnValue.Property[System.Collections.IEnumerator.Current];value;manual |
 | Microsoft.VisualBasic;Collection;false;get_Item;(System.Int32);;Argument[this].Element;ReturnValue;value;manual |
 | Microsoft.VisualBasic;Collection;false;get_Item;(System.Object);;Argument[this].Element;ReturnValue;value;manual |
@@ -552,6 +553,7 @@ summary
 | System.Collections.Concurrent;BlockingCollection<>;false;TryAdd;(T,System.Int32,System.Threading.CancellationToken);;Argument[0];Argument[this];taint;generated |
 | System.Collections.Concurrent;BlockingCollection<>;false;TryAdd;(T,System.TimeSpan);;Argument[0];Argument[this];taint;generated |
 | System.Collections.Concurrent;ConcurrentBag<>;false;Add;(T);;Argument[0];Argument[this].Element;value;manual |
+| System.Collections.Concurrent;ConcurrentBag<>;false;Clear;();;Argument[this].WithoutElement;Argument[this];value;manual |
 | System.Collections.Concurrent;ConcurrentBag<>;false;ToArray;();;Argument[this];ReturnValue;taint;generated |
 | System.Collections.Concurrent;ConcurrentBag<>;false;TryAdd;(T);;Argument[0];Argument[this];taint;generated |
 | System.Collections.Concurrent;ConcurrentBag<>;false;TryPeek;(T);;Argument[this];ReturnValue;taint;generated |
@@ -569,6 +571,8 @@ summary
 | System.Collections.Concurrent;ConcurrentDictionary<,>;false;get_Comparer;();;Argument[this];ReturnValue;taint;generated |
 | System.Collections.Concurrent;ConcurrentDictionary<,>;false;get_Keys;();;Argument[this].Element.Property[System.Collections.Generic.KeyValuePair<,>.Key];ReturnValue.Element;value;manual |
 | System.Collections.Concurrent;ConcurrentDictionary<,>;false;get_Values;();;Argument[this].Element.Property[System.Collections.Generic.KeyValuePair<,>.Value];ReturnValue.Element;value;manual |
+| System.Collections.Concurrent;ConcurrentQueue<>;false;Clear;();;Argument[this].WithoutElement;Argument[this];value;manual |
+| System.Collections.Concurrent;ConcurrentStack<>;false;Clear;();;Argument[this].WithoutElement;Argument[this];value;manual |
 | System.Collections.Concurrent;ConcurrentStack<>;false;ConcurrentStack;(System.Collections.Generic.IEnumerable<T>);;Argument[0].Element;Argument[this];taint;generated |
 | System.Collections.Concurrent;ConcurrentStack<>;false;TryPeek;(T);;Argument[this];ReturnValue;taint;generated |
 | System.Collections.Concurrent;ConcurrentStack<>;false;TryPop;(T);;Argument[this];ReturnValue;taint;generated |
@@ -624,6 +628,7 @@ summary
 | System.Collections.Generic;HashSet<>;false;TryGetValue;(T,T);;Argument[this];ReturnValue;taint;generated |
 | System.Collections.Generic;HashSet<>;false;get_Comparer;();;Argument[this];ReturnValue;taint;generated |
 | System.Collections.Generic;ICollection<>;true;Add;(T);;Argument[0];Argument[this].Element;value;manual |
+| System.Collections.Generic;ICollection<>;true;Clear;();;Argument[this].WithoutElement;Argument[this];value;manual |
 | System.Collections.Generic;ICollection<>;true;CopyTo;(T[],System.Int32);;Argument[this].Element;Argument[0].Element;value;manual |
 | System.Collections.Generic;IDictionary<,>;true;Add;(TKey,TValue);;Argument[0];Argument[this].Element.Property[System.Collections.Generic.KeyValuePair<,>.Key];value;manual |
 | System.Collections.Generic;IDictionary<,>;true;Add;(TKey,TValue);;Argument[1];Argument[this].Element.Property[System.Collections.Generic.KeyValuePair<,>.Value];value;manual |
@@ -717,6 +722,7 @@ summary
 | System.Collections.Generic;PriorityQueue<,>;false;TryPeek;(TElement,TPriority);;Argument[this];ReturnValue;taint;generated |
 | System.Collections.Generic;PriorityQueue<,>;false;get_Comparer;();;Argument[this];ReturnValue;taint;generated |
 | System.Collections.Generic;Queue<>+Enumerator;false;get_Current;();;Argument[this];ReturnValue;taint;generated |
+| System.Collections.Generic;Queue<>;false;Clear;();;Argument[this].WithoutElement;Argument[this];value;manual |
 | System.Collections.Generic;Queue<>;false;CopyTo;(T[],System.Int32);;Argument[this].Element;Argument[0].Element;value;manual |
 | System.Collections.Generic;Queue<>;false;Dequeue;();;Argument[this];ReturnValue;taint;generated |
 | System.Collections.Generic;Queue<>;false;Enqueue;(T);;Argument[0];Argument[this];taint;generated |
@@ -769,6 +775,7 @@ summary
 | System.Collections.Generic;SortedSet<>;false;get_Comparer;();;Argument[this];ReturnValue;taint;generated |
 | System.Collections.Generic;SortedSet<>;false;get_SyncRoot;();;Argument[this];ReturnValue;value;generated |
 | System.Collections.Generic;Stack<>+Enumerator;false;get_Current;();;Argument[this];ReturnValue;taint;generated |
+| System.Collections.Generic;Stack<>;false;Clear;();;Argument[this].WithoutElement;Argument[this];value;manual |
 | System.Collections.Generic;Stack<>;false;CopyTo;(T[],System.Int32);;Argument[this].Element;Argument[0].Element;value;manual |
 | System.Collections.Generic;Stack<>;false;GetEnumerator;();;Argument[this].Element;ReturnValue.Property[System.Collections.Generic.Stack<>+Enumerator.Current];value;manual |
 | System.Collections.Generic;Stack<>;false;Peek;();;Argument[this].Element;ReturnValue;value;manual |
@@ -780,9 +787,14 @@ summary
 | System.Collections.Generic;Stack<>;false;TryPop;(T);;Argument[this];ReturnValue;taint;generated |
 | System.Collections.Generic;Stack<>;false;get_SyncRoot;();;Argument[this];ReturnValue;value;generated |
 | System.Collections.Immutable;IImmutableDictionary<,>;true;AddRange;(System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<TKey,TValue>>);;Argument[0].Element;Argument[this].Element;value;manual |
+| System.Collections.Immutable;IImmutableDictionary<,>;true;Clear;();;Argument[this].WithoutElement;ReturnValue;value;manual |
 | System.Collections.Immutable;IImmutableList<>;true;Add;(T);;Argument[0];Argument[this].Element;value;manual |
 | System.Collections.Immutable;IImmutableList<>;true;AddRange;(System.Collections.Generic.IEnumerable<T>);;Argument[0].Element;Argument[this].Element;value;manual |
+| System.Collections.Immutable;IImmutableList<>;true;Clear;();;Argument[this].WithoutElement;ReturnValue;value;manual |
+| System.Collections.Immutable;IImmutableQueue<>;true;Clear;();;Argument[this].WithoutElement;ReturnValue;value;manual |
 | System.Collections.Immutable;IImmutableSet<>;true;Add;(T);;Argument[0];Argument[this].Element;value;manual |
+| System.Collections.Immutable;IImmutableSet<>;true;Clear;();;Argument[this].WithoutElement;ReturnValue;value;manual |
+| System.Collections.Immutable;IImmutableStack<>;true;Clear;();;Argument[this].WithoutElement;ReturnValue;value;manual |
 | System.Collections.Immutable;ImmutableArray;false;Create<>;(System.Collections.Immutable.ImmutableArray<T>,System.Int32,System.Int32);;Argument[0].Element;ReturnValue;taint;generated |
 | System.Collections.Immutable;ImmutableArray;false;Create<>;(T);;Argument[0];ReturnValue;taint;generated |
 | System.Collections.Immutable;ImmutableArray;false;Create<>;(T,T);;Argument[0];ReturnValue;taint;generated |
@@ -876,6 +888,7 @@ summary
 | System.Collections.Immutable;ImmutableDictionary<,>;false;Add;(TKey,TValue);;Argument[0];Argument[this].Element.Property[System.Collections.Generic.KeyValuePair<,>.Key];value;manual |
 | System.Collections.Immutable;ImmutableDictionary<,>;false;Add;(TKey,TValue);;Argument[1];Argument[this].Element.Property[System.Collections.Generic.KeyValuePair<,>.Value];value;manual |
 | System.Collections.Immutable;ImmutableDictionary<,>;false;AddRange;(System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<TKey,TValue>>);;Argument[0].Element;Argument[this].Element;value;manual |
+| System.Collections.Immutable;ImmutableDictionary<,>;false;Clear;();;Argument[this];ReturnValue;taint;generated |
 | System.Collections.Immutable;ImmutableDictionary<,>;false;GetEnumerator;();;Argument[this].Element;ReturnValue.Property[System.Collections.Immutable.ImmutableDictionary<,>+Enumerator.Current];value;manual |
 | System.Collections.Immutable;ImmutableDictionary<,>;false;Remove;(TKey);;Argument[this];ReturnValue;taint;generated |
 | System.Collections.Immutable;ImmutableDictionary<,>;false;RemoveRange;(System.Collections.Generic.IEnumerable<TKey>);;Argument[this];ReturnValue;taint;generated |
@@ -903,6 +916,7 @@ summary
 | System.Collections.Immutable;ImmutableHashSet<>+Builder;false;get_KeyComparer;();;Argument[this];ReturnValue;taint;generated |
 | System.Collections.Immutable;ImmutableHashSet<>+Builder;false;set_KeyComparer;(System.Collections.Generic.IEqualityComparer<T>);;Argument[0];Argument[this];taint;generated |
 | System.Collections.Immutable;ImmutableHashSet<>;false;Add;(T);;Argument[0];Argument[this].Element;value;manual |
+| System.Collections.Immutable;ImmutableHashSet<>;false;Clear;();;Argument[this].WithoutElement;ReturnValue;value;manual |
 | System.Collections.Immutable;ImmutableHashSet<>;false;Except;(System.Collections.Generic.IEnumerable<T>);;Argument[this];ReturnValue;taint;generated |
 | System.Collections.Immutable;ImmutableHashSet<>;false;GetEnumerator;();;Argument[this].Element;ReturnValue.Property[System.Collections.Immutable.ImmutableHashSet<>+Enumerator.Current];value;manual |
 | System.Collections.Immutable;ImmutableHashSet<>;false;Intersect;(System.Collections.Generic.IEnumerable<T>);;Argument[this];ReturnValue;taint;generated |
@@ -1037,6 +1051,7 @@ summary
 | System.Collections.Immutable;ImmutableSortedDictionary<,>;false;Add;(TKey,TValue);;Argument[0];Argument[this].Element.Property[System.Collections.Generic.KeyValuePair<,>.Key];value;manual |
 | System.Collections.Immutable;ImmutableSortedDictionary<,>;false;Add;(TKey,TValue);;Argument[1];Argument[this].Element.Property[System.Collections.Generic.KeyValuePair<,>.Value];value;manual |
 | System.Collections.Immutable;ImmutableSortedDictionary<,>;false;AddRange;(System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<TKey,TValue>>);;Argument[0].Element;Argument[this].Element;value;manual |
+| System.Collections.Immutable;ImmutableSortedDictionary<,>;false;Clear;();;Argument[this];ReturnValue;taint;generated |
 | System.Collections.Immutable;ImmutableSortedDictionary<,>;false;GetEnumerator;();;Argument[this].Element;ReturnValue.Property[System.Collections.Immutable.ImmutableSortedDictionary<,>+Enumerator.Current];value;manual |
 | System.Collections.Immutable;ImmutableSortedDictionary<,>;false;Remove;(TKey);;Argument[this];ReturnValue;taint;generated |
 | System.Collections.Immutable;ImmutableSortedDictionary<,>;false;RemoveRange;(System.Collections.Generic.IEnumerable<TKey>);;Argument[this];ReturnValue;taint;generated |
@@ -1085,6 +1100,7 @@ summary
 | System.Collections.Immutable;ImmutableSortedSet<>+Builder;false;set_KeyComparer;(System.Collections.Generic.IComparer<T>);;Argument[0];Argument[this];taint;generated |
 | System.Collections.Immutable;ImmutableSortedSet<>+Enumerator;false;get_Current;();;Argument[this];ReturnValue;taint;generated |
 | System.Collections.Immutable;ImmutableSortedSet<>;false;Add;(T);;Argument[0];Argument[this].Element;value;manual |
+| System.Collections.Immutable;ImmutableSortedSet<>;false;Clear;();;Argument[this];ReturnValue;taint;generated |
 | System.Collections.Immutable;ImmutableSortedSet<>;false;Except;(System.Collections.Generic.IEnumerable<T>);;Argument[this];ReturnValue;taint;generated |
 | System.Collections.Immutable;ImmutableSortedSet<>;false;GetEnumerator;();;Argument[this].Element;ReturnValue.Property[System.Collections.Immutable.ImmutableSortedSet<>+Enumerator.Current];value;manual |
 | System.Collections.Immutable;ImmutableSortedSet<>;false;Intersect;(System.Collections.Generic.IEnumerable<T>);;Argument[this];ReturnValue;taint;generated |
@@ -1180,6 +1196,7 @@ summary
 | System.Collections.Specialized;NameObjectCollectionBase;true;get_Keys;();;Argument[this];ReturnValue;taint;generated |
 | System.Collections.Specialized;NameValueCollection;false;Add;(System.Collections.Specialized.NameValueCollection);;Argument[0];Argument[this].Element;value;manual |
 | System.Collections.Specialized;NameValueCollection;false;Add;(System.String,System.String);;Argument[0];Argument[this];taint;generated |
+| System.Collections.Specialized;NameValueCollection;false;Clear;();;Argument[this].WithoutElement;Argument[this];value;manual |
 | System.Collections.Specialized;NameValueCollection;false;CopyTo;(System.Array,System.Int32);;Argument[this].Element;Argument[0].Element;value;manual |
 | System.Collections.Specialized;NameValueCollection;false;Get;(System.Int32);;Argument[this];ReturnValue;taint;generated |
 | System.Collections.Specialized;NameValueCollection;false;Get;(System.String);;Argument[this];ReturnValue;taint;generated |
@@ -1214,6 +1231,7 @@ summary
 | System.Collections.Specialized;StringCollection;false;get_Item;(System.Int32);;Argument[this].Element;ReturnValue;value;manual |
 | System.Collections.Specialized;StringCollection;false;get_SyncRoot;();;Argument[this];ReturnValue;taint;generated |
 | System.Collections.Specialized;StringCollection;false;set_Item;(System.Int32,System.String);;Argument[1];Argument[this].Element;value;manual |
+| System.Collections.Specialized;StringDictionary;false;Clear;();;Argument[this].WithoutElement;Argument[this];value;manual |
 | System.Collections.Specialized;StringDictionary;false;CopyTo;(System.Array,System.Int32);;Argument[this];Argument[0].Element;taint;generated |
 | System.Collections.Specialized;StringDictionary;false;get_Item;(System.String);;Argument[this];ReturnValue;taint;generated |
 | System.Collections.Specialized;StringDictionary;false;get_SyncRoot;();;Argument[this];ReturnValue;taint;generated |
@@ -1291,6 +1309,7 @@ summary
 | System.Collections;ICollection;true;CopyTo;(System.Array,System.Int32);;Argument[this].Element;Argument[0].Element;value;manual |
 | System.Collections;IDictionary;true;Add;(System.Object,System.Object);;Argument[0];Argument[this].Element.Property[System.Collections.Generic.KeyValuePair<,>.Key];value;manual |
 | System.Collections;IDictionary;true;Add;(System.Object,System.Object);;Argument[1];Argument[this].Element.Property[System.Collections.Generic.KeyValuePair<,>.Value];value;manual |
+| System.Collections;IDictionary;true;Clear;();;Argument[this].WithoutElement;Argument[this];value;manual |
 | System.Collections;IDictionary;true;get_Item;(System.Object);;Argument[this].Element.Property[System.Collections.Generic.KeyValuePair<,>.Value];ReturnValue;value;manual |
 | System.Collections;IDictionary;true;get_Keys;();;Argument[this].Element.Property[System.Collections.Generic.KeyValuePair<,>.Key];ReturnValue.Element;value;manual |
 | System.Collections;IDictionary;true;get_Values;();;Argument[this].Element.Property[System.Collections.Generic.KeyValuePair<,>.Value];ReturnValue.Element;value;manual |
@@ -1298,9 +1317,11 @@ summary
 | System.Collections;IDictionary;true;set_Item;(System.Object,System.Object);;Argument[1];Argument[this].Element.Property[System.Collections.Generic.KeyValuePair<,>.Value];value;manual |
 | System.Collections;IEnumerable;true;GetEnumerator;();;Argument[this].Element;ReturnValue.Property[System.Collections.IEnumerator.Current];value;manual |
 | System.Collections;IList;true;Add;(System.Object);;Argument[0];Argument[this].Element;value;manual |
+| System.Collections;IList;true;Clear;();;Argument[this].WithoutElement;Argument[this];value;manual |
 | System.Collections;IList;true;Insert;(System.Int32,System.Object);;Argument[1];Argument[this].Element;value;manual |
 | System.Collections;IList;true;get_Item;(System.Int32);;Argument[this].Element;ReturnValue;value;manual |
 | System.Collections;IList;true;set_Item;(System.Int32,System.Object);;Argument[1];Argument[this].Element;value;manual |
+| System.Collections;Queue;false;Clear;();;Argument[this].WithoutElement;Argument[this];value;manual |
 | System.Collections;Queue;false;Clone;();;Argument[0].Element;ReturnValue.Element;value;manual |
 | System.Collections;Queue;false;Dequeue;();;Argument[this];ReturnValue;taint;generated |
 | System.Collections;Queue;false;Enqueue;(System.Object);;Argument[0];Argument[this];taint;generated |
@@ -1324,6 +1345,7 @@ summary
 | System.Collections;SortedList;false;SortedList;(System.Collections.IDictionary,System.Collections.IComparer);;Argument[0].Element.Property[System.Collections.Generic.KeyValuePair<,>.Value];Argument[this].Element.Property[System.Collections.Generic.KeyValuePair<,>.Value];value;manual |
 | System.Collections;SortedList;false;Synchronized;(System.Collections.SortedList);;Argument[0].Element;ReturnValue;taint;generated |
 | System.Collections;SortedList;false;get_SyncRoot;();;Argument[this];ReturnValue;value;generated |
+| System.Collections;Stack;false;Clear;();;Argument[this].WithoutElement;Argument[this];value;manual |
 | System.Collections;Stack;false;Clone;();;Argument[0].Element;ReturnValue.Element;value;manual |
 | System.Collections;Stack;false;Peek;();;Argument[this].Element;ReturnValue;value;manual |
 | System.Collections;Stack;false;Pop;();;Argument[this].Element;ReturnValue;value;manual |
@@ -1467,6 +1489,7 @@ summary
 | System.ComponentModel;EditorAttribute;false;get_TypeId;();;Argument[this];ReturnValue;taint;generated |
 | System.ComponentModel;EnumConverter;false;ConvertTo;(System.ComponentModel.ITypeDescriptorContext,System.Globalization.CultureInfo,System.Object,System.Type);;Argument[2];ReturnValue;taint;generated |
 | System.ComponentModel;EventDescriptorCollection;false;Add;(System.ComponentModel.EventDescriptor);;Argument[0];Argument[this].Element;value;manual |
+| System.ComponentModel;EventDescriptorCollection;false;Clear;();;Argument[this].WithoutElement;Argument[this];value;manual |
 | System.ComponentModel;EventDescriptorCollection;false;EventDescriptorCollection;(System.ComponentModel.EventDescriptor[]);;Argument[0].Element;Argument[this];taint;generated |
 | System.ComponentModel;EventDescriptorCollection;false;Find;(System.String,System.Boolean);;Argument[this].Element;ReturnValue;value;manual |
 | System.ComponentModel;EventDescriptorCollection;false;GetEnumerator;();;Argument[this].Element;ReturnValue.Property[System.Collections.IEnumerator.Current];value;manual |
@@ -1551,6 +1574,7 @@ summary
 | System.ComponentModel;PropertyDescriptorCollection;false;Add;(System.ComponentModel.PropertyDescriptor);;Argument[0];Argument[this].Element;value;manual |
 | System.ComponentModel;PropertyDescriptorCollection;false;Add;(System.Object);;Argument[0].Property[System.Collections.Generic.KeyValuePair<,>.Key];Argument[this].Element.Property[System.Collections.Generic.KeyValuePair<,>.Key];value;manual |
 | System.ComponentModel;PropertyDescriptorCollection;false;Add;(System.Object);;Argument[0].Property[System.Collections.Generic.KeyValuePair<,>.Value];Argument[this].Element.Property[System.Collections.Generic.KeyValuePair<,>.Value];value;manual |
+| System.ComponentModel;PropertyDescriptorCollection;false;Clear;();;Argument[this].WithoutElement;Argument[this];value;manual |
 | System.ComponentModel;PropertyDescriptorCollection;false;Find;(System.String,System.Boolean);;Argument[this].Element;ReturnValue;value;manual |
 | System.ComponentModel;PropertyDescriptorCollection;false;GetEnumerator;();;Argument[this].Element;ReturnValue.Property[System.Collections.IEnumerator.Current];value;manual |
 | System.ComponentModel;PropertyDescriptorCollection;false;Insert;(System.Int32,System.ComponentModel.PropertyDescriptor);;Argument[1];Argument[this].Element;value;manual |
@@ -1888,6 +1912,7 @@ summary
 | System.Data;ConstraintCollection;false;Add;(System.String,System.Data.DataColumn[],System.Data.DataColumn[]);;Argument[0];Argument[this];taint;generated |
 | System.Data;ConstraintCollection;false;Add;(System.String,System.Data.DataColumn[],System.Data.DataColumn[]);;Argument[0];ReturnValue;taint;generated |
 | System.Data;ConstraintCollection;false;AddRange;(System.Data.Constraint[]);;Argument[0].Element;Argument[this].Element;value;manual |
+| System.Data;ConstraintCollection;false;Clear;();;Argument[this].WithoutElement;Argument[this];value;manual |
 | System.Data;ConstraintCollection;false;CopyTo;(System.Data.Constraint[],System.Int32);;Argument[this].Element;Argument[0].Element;value;manual |
 | System.Data;ConstraintCollection;false;get_Item;(System.Int32);;Argument[this];ReturnValue;taint;generated |
 | System.Data;ConstraintCollection;false;get_Item;(System.String);;Argument[this];ReturnValue;taint;generated |
@@ -1926,6 +1951,7 @@ summary
 | System.Data;DataColumnCollection;false;Add;(System.String,System.Type);;Argument[this];ReturnValue;taint;generated |
 | System.Data;DataColumnCollection;false;Add;(System.String,System.Type,System.String);;Argument[this];ReturnValue;taint;generated |
 | System.Data;DataColumnCollection;false;AddRange;(System.Data.DataColumn[]);;Argument[0].Element;Argument[this].Element;value;manual |
+| System.Data;DataColumnCollection;false;Clear;();;Argument[this].WithoutElement;Argument[this];value;manual |
 | System.Data;DataColumnCollection;false;CopyTo;(System.Data.DataColumn[],System.Int32);;Argument[this].Element;Argument[0].Element;value;manual |
 | System.Data;DataColumnCollection;false;get_Item;(System.Int32);;Argument[this];ReturnValue;taint;generated |
 | System.Data;DataColumnCollection;false;get_Item;(System.String);;Argument[this];ReturnValue;taint;generated |
@@ -1975,6 +2001,7 @@ summary
 | System.Data;DataRelationCollection;true;Add;(System.String,System.Data.DataColumn[],System.Data.DataColumn[],System.Boolean);;Argument[0];ReturnValue;taint;generated |
 | System.Data;DataRelationCollection;true;Add;(System.String,System.Data.DataColumn[],System.Data.DataColumn[],System.Boolean);;Argument[this];ReturnValue;taint;generated |
 | System.Data;DataRelationCollection;true;AddRange;(System.Data.DataRelation[]);;Argument[0].Element;Argument[this].Element;value;manual |
+| System.Data;DataRelationCollection;true;Clear;();;Argument[this].WithoutElement;Argument[this];value;manual |
 | System.Data;DataRow;false;DataRow;(System.Data.DataRowBuilder);;Argument[0];Argument[this];taint;generated |
 | System.Data;DataRow;false;GetChildRows;(System.Data.DataRelation);;Argument[this];ReturnValue;taint;generated |
 | System.Data;DataRow;false;GetChildRows;(System.Data.DataRelation,System.Data.DataRowVersion);;Argument[this];ReturnValue;taint;generated |
@@ -1999,6 +2026,7 @@ summary
 | System.Data;DataRow;false;set_RowError;(System.String);;Argument[0];Argument[this];taint;generated |
 | System.Data;DataRowCollection;false;Add;(System.Data.DataRow);;Argument[0];Argument[this].Element;value;manual |
 | System.Data;DataRowCollection;false;Add;(System.Object[]);;Argument[0];Argument[this].Element;value;manual |
+| System.Data;DataRowCollection;false;Clear;();;Argument[this].WithoutElement;Argument[this];value;manual |
 | System.Data;DataRowCollection;false;CopyTo;(System.Data.DataRow[],System.Int32);;Argument[this].Element;Argument[0].Element;value;manual |
 | System.Data;DataRowCollection;false;Find;(System.Object);;Argument[this].Element;ReturnValue;value;manual |
 | System.Data;DataRowCollection;false;Find;(System.Object[]);;Argument[this].Element;ReturnValue;value;manual |
@@ -2084,6 +2112,7 @@ summary
 | System.Data;DataTableCollection;false;Add;(System.String,System.String);;Argument[1];ReturnValue;taint;generated |
 | System.Data;DataTableCollection;false;Add;(System.String,System.String);;Argument[this];ReturnValue;taint;generated |
 | System.Data;DataTableCollection;false;AddRange;(System.Data.DataTable[]);;Argument[0].Element;Argument[this].Element;value;manual |
+| System.Data;DataTableCollection;false;Clear;();;Argument[this].WithoutElement;Argument[this];value;manual |
 | System.Data;DataTableCollection;false;CopyTo;(System.Data.DataTable[],System.Int32);;Argument[this].Element;Argument[0].Element;value;manual |
 | System.Data;DataTableCollection;false;get_Item;(System.Int32);;Argument[this];ReturnValue;taint;generated |
 | System.Data;DataTableCollection;false;get_Item;(System.String);;Argument[this];ReturnValue;taint;generated |
@@ -4207,6 +4236,7 @@ summary
 | System.Net.Http.Headers;HeaderStringValues+Enumerator;false;get_Current;();;Argument[this];ReturnValue;taint;generated |
 | System.Net.Http.Headers;HeaderStringValues;false;GetEnumerator;();;Argument[this];ReturnValue;taint;generated |
 | System.Net.Http.Headers;HeaderStringValues;false;ToString;();;Argument[this];ReturnValue;taint;generated |
+| System.Net.Http.Headers;HttpHeaders;false;Clear;();;Argument[this].WithoutElement;Argument[this];value;manual |
 | System.Net.Http.Headers;HttpHeaders;false;get_NonValidated;();;Argument[this];ReturnValue;taint;generated |
 | System.Net.Http.Headers;HttpHeadersNonValidated+Enumerator;false;get_Current;();;Argument[this];ReturnValue;taint;generated |
 | System.Net.Http.Headers;HttpHeadersNonValidated;false;GetEnumerator;();;Argument[this];ReturnValue;taint;generated |
@@ -5125,6 +5155,7 @@ summary
 | System.Net;WebException;false;WebException;(System.String,System.Exception,System.Net.WebExceptionStatus,System.Net.WebResponse);;Argument[3];Argument[this];taint;generated |
 | System.Net;WebException;false;get_Response;();;Argument[this];ReturnValue;taint;generated |
 | System.Net;WebHeaderCollection;false;Add;(System.String);;Argument[0];Argument[this].Element;value;manual |
+| System.Net;WebHeaderCollection;false;Clear;();;Argument[this].WithoutElement;Argument[this];value;manual |
 | System.Net;WebHeaderCollection;false;ToByteArray;();;Argument[this];ReturnValue;taint;generated |
 | System.Net;WebHeaderCollection;false;ToString;();;Argument[this];ReturnValue;taint;generated |
 | System.Net;WebHeaderCollection;false;get_AllKeys;();;Argument[this];ReturnValue;taint;generated |
@@ -5895,6 +5926,7 @@ summary
 | System.Runtime.CompilerServices;AsyncValueTaskMethodBuilder<>;false;SetResult;(TResult);;Argument[0];Argument[this];taint;generated |
 | System.Runtime.CompilerServices;AsyncValueTaskMethodBuilder<>;false;get_Task;();;Argument[this];ReturnValue;taint;generated |
 | System.Runtime.CompilerServices;CallSite;false;get_Binder;();;Argument[this];ReturnValue;taint;generated |
+| System.Runtime.CompilerServices;ConditionalWeakTable<,>;false;Clear;();;Argument[this].WithoutElement;Argument[this];value;manual |
 | System.Runtime.CompilerServices;ConditionalWeakTable<,>;false;GetOrCreateValue;(TKey);;Argument[0];ReturnValue;taint;generated |
 | System.Runtime.CompilerServices;ConfiguredCancelableAsyncEnumerable<>;false;ConfigureAwait;(System.Boolean);;Argument[this];ReturnValue;taint;generated |
 | System.Runtime.CompilerServices;ConfiguredCancelableAsyncEnumerable<>;false;GetAsyncEnumerator;();;Argument[this];ReturnValue;taint;generated |
@@ -6633,6 +6665,7 @@ summary
 | System.Security.Cryptography;RSAPKCS1SignatureFormatter;false;SetHashAlgorithm;(System.String);;Argument[0];Argument[this];taint;generated |
 | System.Security.Cryptography;RSAPKCS1SignatureFormatter;false;SetKey;(System.Security.Cryptography.AsymmetricAlgorithm);;Argument[0];Argument[this];taint;generated |
 | System.Security.Cryptography;SafeEvpPKeyHandle;false;DuplicateHandle;();;Argument[this];ReturnValue;taint;generated |
+| System.Security.Policy;Evidence;false;Clear;();;Argument[this].WithoutElement;Argument[this];value;manual |
 | System.Security.Principal;GenericIdentity;false;Clone;();;Argument[this];ReturnValue;taint;generated |
 | System.Security.Principal;GenericIdentity;false;GenericIdentity;(System.Security.Principal.GenericIdentity);;Argument[0];Argument[this];taint;generated |
 | System.Security.Principal;GenericIdentity;false;GenericIdentity;(System.String);;Argument[0];Argument[this];taint;generated |
@@ -6965,6 +6998,7 @@ summary
 | System.Text;StringBuilder;false;AppendLine;(System.String);;Argument[0];Argument[this].Element;value;manual |
 | System.Text;StringBuilder;false;AppendLine;(System.String);;Argument[this];ReturnValue;value;manual |
 | System.Text;StringBuilder;false;AppendLine;(System.Text.StringBuilder+AppendInterpolatedStringHandler);;Argument[this];ReturnValue;taint;generated |
+| System.Text;StringBuilder;false;Clear;();;Argument[this].WithoutElement;Argument[this];value;manual |
 | System.Text;StringBuilder;false;GetChunks;();;Argument[this];ReturnValue;taint;generated |
 | System.Text;StringBuilder;false;GetObjectData;(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext);;Argument[this];Argument[0];taint;generated |
 | System.Text;StringBuilder;false;Insert;(System.Int32,System.Boolean);;Argument[this];ReturnValue;taint;generated |
@@ -8926,6 +8960,8 @@ summary
 | System;ArgumentOutOfRangeException;false;get_ActualValue;();;Argument[this];ReturnValue;taint;generated |
 | System;ArgumentOutOfRangeException;false;get_Message;();;Argument[this];ReturnValue;taint;generated |
 | System;Array;false;AsReadOnly<>;(T[]);;Argument[0].Element;ReturnValue.Element;value;manual |
+| System;Array;false;Clear;(System.Array);;Argument[0].WithoutElement;Argument[0];value;manual |
+| System;Array;false;Clear;(System.Array,System.Int32,System.Int32);;Argument[0].WithoutElement;Argument[0];value;manual |
 | System;Array;false;Clone;();;Argument[0].Element;ReturnValue.Element;value;manual |
 | System;Array;false;CopyTo;(System.Array,System.Int64);;Argument[this].Element;Argument[0].Element;value;manual |
 | System;Array;false;Fill<>;(T[],T);;Argument[1];Argument[0].Element;taint;generated |

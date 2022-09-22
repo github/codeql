@@ -55,12 +55,6 @@ edges
 | instance_variables.rb:32:16:32:25 | call to source :  | instance_variables.rb:32:1:32:4 | [post] foo3 [@field] :  |
 | instance_variables.rb:33:6:33:9 | foo3 [@field] :  | instance_variables.rb:33:6:33:15 | call to field |
 | instance_variables.rb:33:6:33:9 | foo3 [@field] :  | instance_variables.rb:33:6:33:15 | call to field |
-| instance_variables.rb:36:1:36:4 | [post] foo4 [@other] :  | instance_variables.rb:37:6:37:9 | foo4 [@other] :  |
-| instance_variables.rb:36:1:36:4 | [post] foo4 [@other] :  | instance_variables.rb:37:6:37:9 | foo4 [@other] :  |
-| instance_variables.rb:36:14:36:23 | call to source :  | instance_variables.rb:36:1:36:4 | [post] foo4 [@other] :  |
-| instance_variables.rb:36:14:36:23 | call to source :  | instance_variables.rb:36:1:36:4 | [post] foo4 [@other] :  |
-| instance_variables.rb:37:6:37:9 | foo4 [@other] :  | instance_variables.rb:37:6:37:15 | call to other |
-| instance_variables.rb:37:6:37:9 | foo4 [@other] :  | instance_variables.rb:37:6:37:15 | call to other |
 nodes
 | instance_variables.rb:2:19:2:19 | x :  | semmle.label | x :  |
 | instance_variables.rb:2:19:2:19 | x :  | semmle.label | x :  |
@@ -122,14 +116,6 @@ nodes
 | instance_variables.rb:33:6:33:9 | foo3 [@field] :  | semmle.label | foo3 [@field] :  |
 | instance_variables.rb:33:6:33:15 | call to field | semmle.label | call to field |
 | instance_variables.rb:33:6:33:15 | call to field | semmle.label | call to field |
-| instance_variables.rb:36:1:36:4 | [post] foo4 [@other] :  | semmle.label | [post] foo4 [@other] :  |
-| instance_variables.rb:36:1:36:4 | [post] foo4 [@other] :  | semmle.label | [post] foo4 [@other] :  |
-| instance_variables.rb:36:14:36:23 | call to source :  | semmle.label | call to source :  |
-| instance_variables.rb:36:14:36:23 | call to source :  | semmle.label | call to source :  |
-| instance_variables.rb:37:6:37:9 | foo4 [@other] :  | semmle.label | foo4 [@other] :  |
-| instance_variables.rb:37:6:37:9 | foo4 [@other] :  | semmle.label | foo4 [@other] :  |
-| instance_variables.rb:37:6:37:15 | call to other | semmle.label | call to other |
-| instance_variables.rb:37:6:37:15 | call to other | semmle.label | call to other |
 subpaths
 | instance_variables.rb:16:15:16:24 | call to source :  | instance_variables.rb:2:19:2:19 | x :  | instance_variables.rb:3:9:3:14 | [post] self [@field] :  | instance_variables.rb:16:1:16:3 | [post] foo [@field] :  |
 | instance_variables.rb:16:15:16:24 | call to source :  | instance_variables.rb:2:19:2:19 | x :  | instance_variables.rb:3:9:3:14 | [post] self [@field] :  | instance_variables.rb:16:1:16:3 | [post] foo [@field] :  |
@@ -149,4 +135,3 @@ subpaths
 | instance_variables.rb:25:6:25:15 | call to field | instance_variables.rb:24:14:24:23 | call to source :  | instance_variables.rb:25:6:25:15 | call to field | $@ | instance_variables.rb:24:14:24:23 | call to source :  | call to source :  |
 | instance_variables.rb:29:6:29:19 | call to get_field | instance_variables.rb:28:14:28:23 | call to source :  | instance_variables.rb:29:6:29:19 | call to get_field | $@ | instance_variables.rb:28:14:28:23 | call to source :  | call to source :  |
 | instance_variables.rb:33:6:33:15 | call to field | instance_variables.rb:32:16:32:25 | call to source :  | instance_variables.rb:33:6:33:15 | call to field | $@ | instance_variables.rb:32:16:32:25 | call to source :  | call to source :  |
-| instance_variables.rb:37:6:37:15 | call to other | instance_variables.rb:36:14:36:23 | call to source :  | instance_variables.rb:37:6:37:15 | call to other | $@ | instance_variables.rb:36:14:36:23 | call to source :  | call to source :  |

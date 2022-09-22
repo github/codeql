@@ -20,4 +20,4 @@ GVN switchCaseGvn(SwitchStmt switch, int i, Expr e) {
 
 from SwitchStmt switch, int i, Expr e, int j, Expr f
 where switchCaseGvn(switch, i, e) = switchCaseGvn(switch, j, f) and i < j
-select f, "This case is a duplicate of $@.", e, "an earlier case"
+select f, "This case is a duplicate of an $@.", e, "earlier case"

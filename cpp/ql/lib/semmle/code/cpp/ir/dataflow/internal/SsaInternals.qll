@@ -4,7 +4,7 @@ private import DataFlowUtil
 private import DataFlowImplCommon as DataFlowImplCommon
 private import semmle.code.cpp.models.interfaces.Allocation as Alloc
 private import semmle.code.cpp.models.interfaces.DataFlow as DataFlow
-private import SsaImplCommon as SsaImplCommon
+private import codeql.ssa.Ssa as SsaImplCommon
 
 private module SourceVariables {
   private newtype TSourceVariable =

@@ -19,7 +19,7 @@
  * ```
  */
 
-private import ruby
+private import codeql.ruby.AST
 private import codeql.ruby.dataflow.internal.DataFlowPrivate as DataFlowPrivate
 private import ApiGraphModels
 

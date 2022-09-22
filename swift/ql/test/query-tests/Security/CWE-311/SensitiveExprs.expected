@@ -1,13 +1,8 @@
 | testCoreData.swift:48:15:48:15 | password | label:password, type:credential |
-| testCoreData.swift:49:15:49:15 | password_hash | isProbablySafe, label:password_hash, type:credential |
 | testCoreData.swift:51:24:51:24 | password | label:password, type:credential |
-| testCoreData.swift:52:24:52:24 | password_hash | isProbablySafe, label:password_hash, type:credential |
 | testCoreData.swift:58:15:58:15 | password | label:password, type:credential |
-| testCoreData.swift:59:15:59:15 | password_file | isProbablySafe, label:password_file, type:credential |
 | testCoreData.swift:61:25:61:25 | password | label:password, type:credential |
-| testCoreData.swift:62:25:62:25 | password_file | isProbablySafe, label:password_file, type:credential |
 | testCoreData.swift:64:16:64:16 | password | label:password, type:credential |
-| testCoreData.swift:65:16:65:16 | password_file | isProbablySafe, label:password_file, type:credential |
 | testCoreData.swift:77:2:77:25 | call to doSomething(password:) | label:doSomething(password:), type:credential |
 | testCoreData.swift:77:24:77:24 | x | label:password, type:credential |
 | testCoreData.swift:80:10:80:22 | call to getPassword() | label:getPassword(), type:credential |
@@ -16,15 +11,11 @@
 | testCoreData.swift:92:10:92:10 | passwd | label:passwd, type:credential |
 | testCoreData.swift:93:10:93:10 | passwd | label:passwd, type:credential |
 | testRealm.swift:34:11:34:11 | myPassword | label:myPassword, type:credential |
-| testRealm.swift:38:11:38:11 | myHashedPassword | isProbablySafe, label:myHashedPassword, type:credential |
 | testRealm.swift:42:11:42:11 | myPassword | label:myPassword, type:credential |
-| testRealm.swift:46:11:46:11 | myHashedPassword | isProbablySafe, label:myHashedPassword, type:credential |
 | testRealm.swift:52:12:52:12 | myPassword | label:myPassword, type:credential |
-| testRealm.swift:55:12:55:12 | myHashedPassword | isProbablySafe, label:myHashedPassword, type:credential |
+| testRealm.swift:59:11:59:11 | myPassword | label:myPassword, type:credential |
 | testSend.swift:29:19:29:19 | passwordPlain | label:passwordPlain, type:credential |
-| testSend.swift:30:19:30:19 | passwordHash | isProbablySafe, label:passwordHash, type:credential |
 | testSend.swift:33:19:33:19 | passwordPlain | label:passwordPlain, type:credential |
-| testSend.swift:34:19:34:19 | passwordHash | isProbablySafe, label:passwordHash, type:credential |
 | testSend.swift:45:13:45:13 | password | label:password, type:credential |
 | testSend.swift:46:13:46:13 | password | label:password, type:credential |
 | testSend.swift:47:17:47:17 | password | label:password, type:credential |
@@ -32,6 +23,5 @@
 | testSend.swift:49:27:49:27 | password | label:password, type:credential |
 | testSend.swift:50:27:50:27 | password | label:password, type:credential |
 | testURL.swift:13:54:13:54 | passwd | label:passwd, type:credential |
-| testURL.swift:14:54:14:54 | encrypted_passwd | isProbablySafe, label:encrypted_passwd, type:credential |
 | testURL.swift:16:55:16:55 | credit_card_no | label:credit_card_no, type:private information |
 | testURL.swift:20:22:20:22 | passwd | label:passwd, type:credential |

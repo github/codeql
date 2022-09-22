@@ -32,7 +32,7 @@ void test2(int size) {
     }
 
     for (int i = 0; i <= arr.size; i++) {
-        arr.p[i] = i; // BAD [NOT DETECTED]
+        arr.p[i] = i; // BAD
     }
 }
 
@@ -42,7 +42,7 @@ void test3_callee(array_t arr) {
     }
 
     for (int i = 0; i <= arr.size; i++) {
-        arr.p[i] = i; // BAD [NOT DETECTED]
+        arr.p[i] = i; // BAD
     }
 }
 

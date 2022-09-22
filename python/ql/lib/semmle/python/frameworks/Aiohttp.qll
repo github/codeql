@@ -59,7 +59,7 @@ module AiohttpWebModel {
    * Extend this class to refine existing API models. If you want to model new APIs,
    * extend `AiohttpRouteSetup::Range` instead.
    */
-  class AiohttpRouteSetup extends HTTP::Server::RouteSetup::Range {
+  class AiohttpRouteSetup extends Http::Server::RouteSetup::Range {
     AiohttpRouteSetup::Range range;
 
     AiohttpRouteSetup() { this = range }
@@ -161,7 +161,7 @@ module AiohttpWebModel {
 
     AiohttpAddRouteCall() {
       exists(string funcName |
-        funcName = HTTP::httpVerbLower() and
+        funcName = Http::httpVerbLower() and
         routeArgsStart = 0
         or
         funcName = "view" and
@@ -192,7 +192,7 @@ module AiohttpWebModel {
 
     AiohttpDecoratorRouteSetup() {
       exists(string decoratorName |
-        decoratorName = HTTP::httpVerbLower() and
+        decoratorName = Http::httpVerbLower() and
         routeArgsStart = 0
         or
         decoratorName = "view" and
@@ -237,7 +237,7 @@ module AiohttpWebModel {
       // TODO: This doesn't handle attribute assignment. Should be OK, but analysis is not as complete as with
       // points-to and `.lookup`, which would handle `post = my_post_handler` inside class def
       result = this.getAMethod() and
-      result.getName() = HTTP::httpVerbLower()
+      result.getName() = Http::httpVerbLower()
     }
   }
 
@@ -252,7 +252,7 @@ module AiohttpWebModel {
   }
 
   /** A request handler defined in an `aiohttp.web` view class, that has no known route. */
-  private class AiohttpViewClassRequestHandlerWithoutKnownRoute extends HTTP::Server::RequestHandler::Range {
+  private class AiohttpViewClassRequestHandlerWithoutKnownRoute extends Http::Server::RequestHandler::Range {
     AiohttpViewClassRequestHandlerWithoutKnownRoute() {
       exists(AiohttpViewClass vc | vc.getARequestHandler() = this) and
       not exists(AiohttpRouteSetup setup | setup.getARequestHandler() = this)
@@ -493,7 +493,7 @@ module AiohttpWebModel {
    * - https://docs.aiohttp.org/en/stable/web_reference.html#aiohttp.web.Response
    * - https://docs.aiohttp.org/en/stable/web_quickstart.html#aiohttp-web-exceptions
    */
-  class AiohttpWebResponseInstantiation extends HTTP::Server::HttpResponse::Range,
+  class AiohttpWebResponseInstantiation extends Http::Server::HttpResponse::Range,
     Response::InstanceSource, DataFlow::CallCfgNode {
     API::Node apiNode;
 
@@ -562,7 +562,7 @@ module AiohttpWebModel {
    * See the part about redirects at https://docs.aiohttp.org/en/stable/web_quickstart.html#aiohttp-web-exceptions
    */
   class AiohttpRedirectExceptionInstantiation extends AiohttpWebResponseInstantiation,
-    HTTP::Server::HttpRedirectResponse::Range {
+    Http::Server::HttpRedirectResponse::Range {
     AiohttpRedirectExceptionInstantiation() {
       exists(string httpRedirectExceptionClassName |
         httpRedirectExceptionClassName in [
@@ -585,7 +585,7 @@ module AiohttpWebModel {
   /**
    * A call to `set_cookie` on a HTTP Response.
    */
-  class AiohttpResponseSetCookieCall extends HTTP::Server::CookieWrite::Range, DataFlow::CallCfgNode {
+  class AiohttpResponseSetCookieCall extends Http::Server::CookieWrite::Range, DataFlow::CallCfgNode {
     AiohttpResponseSetCookieCall() {
       this = aiohttpResponseInstance().getMember("set_cookie").getACall()
     }
@@ -600,7 +600,7 @@ module AiohttpWebModel {
   /**
    * A call to `del_cookie` on a HTTP Response.
    */
-  class AiohttpResponseDelCookieCall extends HTTP::Server::CookieWrite::Range, DataFlow::CallCfgNode {
+  class AiohttpResponseDelCookieCall extends Http::Server::CookieWrite::Range, DataFlow::CallCfgNode {
     AiohttpResponseDelCookieCall() {
       this = aiohttpResponseInstance().getMember("del_cookie").getACall()
     }
@@ -616,7 +616,7 @@ module AiohttpWebModel {
    * A dict-like write to an item of the `cookies` attribute on a HTTP response, such as
    * `response.cookies[name] = value`.
    */
-  class AiohttpResponseCookieSubscriptWrite extends HTTP::Server::CookieWrite::Range {
+  class AiohttpResponseCookieSubscriptWrite extends Http::Server::CookieWrite::Range {
     DataFlow::Node index;
     DataFlow::Node value;
 
@@ -661,11 +661,11 @@ private module AiohttpClientModel {
     private API::Node instance() { result = classRef().getReturn() }
 
     /** A method call on a ClientSession that sends off a request */
-    private class OutgoingRequestCall extends HTTP::Client::Request::Range, API::CallNode {
+    private class OutgoingRequestCall extends Http::Client::Request::Range, API::CallNode {
       string methodName;
 
       OutgoingRequestCall() {
-        methodName in [HTTP::httpVerbLower(), "request"] and
+        methodName in [Http::httpVerbLower(), "request"] and
         this = instance().getMember(methodName).getACall()
       }
 
