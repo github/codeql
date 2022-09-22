@@ -9,7 +9,34 @@ public class StringJoinerTests {
 	void sink(Object o) {}
 
 	public void test() throws Exception {
-
+		{
+			// "java.util;StringJoiner;true;StringJoiner;(CharSequence);;Argument[0];Argument[-1];taint;manual"
+			StringJoiner out = null;
+			CharSequence in = (CharSequence) taint();
+			out = new StringJoiner(in);
+			sink(out);
+		}
+		// "java.util;StringJoiner;true;StringJoiner;(CharSequence,CharSequence,CharSequence);;Argument[0];Argument[-1];taint;manual"
+		{
+			StringJoiner out = null;
+			CharSequence in = (CharSequence) taint();
+			out = new StringJoiner(in, null, null);
+			sink(out);
+		}
+		// "java.util;StringJoiner;true;StringJoiner;(CharSequence,CharSequence,CharSequence);;Argument[1];Argument[-1];taint;manual"
+		{
+			StringJoiner out = null;
+			CharSequence in = (CharSequence) taint();
+			out = new StringJoiner(null, in, null);
+			sink(out);
+		}
+		// "java.util;StringJoiner;true;StringJoiner;(CharSequence,CharSequence,CharSequence);;Argument[2];Argument[-1];taint;manual"
+		{
+			StringJoiner out = null;
+			CharSequence in = (CharSequence) taint();
+			out = new StringJoiner(null, null, in);
+			sink(out);
+		}
 		{
 			// "java.util;StringJoiner;true;add;;;Argument[-1];ReturnValue;value;manual"
 			StringJoiner out = null;
