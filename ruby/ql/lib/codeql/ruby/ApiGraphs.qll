@@ -269,7 +269,7 @@ module API {
      * Gets a node representing the `contents` stored on the base object.
      */
     Node getContents(DataFlow::ContentSet contents) {
-      // We already use getAStoreContent when generating the graph, and we always use getAReadContent when querying the graph.
+      // We always use getAStoreContent when generating the graph, and we always use getAReadContent when querying the graph.
       result = this.getContent(contents.getAReadContent())
     }
 
