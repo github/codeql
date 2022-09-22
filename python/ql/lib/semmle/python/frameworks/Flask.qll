@@ -178,11 +178,9 @@ module Flask {
      * - https://flask.palletsprojects.com/en/2.2.x/api/#flask.json.jsonify
      */
     private class FlaskJsonifyCall extends InstanceSource, DataFlow::CallCfgNode {
-      FlaskJsonifyCall() {
-        this = API::moduleImport("flask").getMember("jsonify").getACall()
-      }
+      FlaskJsonifyCall() { this = API::moduleImport("flask").getMember("jsonify").getACall() }
 
-      override DataFlow::Node getBody() { result = this.getArg(0) }
+      override DataFlow::Node getBody() { result in [this.getArg(_), this.getArgByName(_)] }
 
       override string getMimetypeDefault() { result = "application/json" }
 
