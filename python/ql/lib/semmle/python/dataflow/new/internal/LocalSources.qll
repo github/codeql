@@ -10,6 +10,7 @@ private import python
 import DataFlowPublic
 private import DataFlowPrivate
 private import semmle.python.internal.CachedStages
+private import semmle.python.internal.Awaited
 
 /**
  * A data flow node that is a source of local flow. This includes things like
@@ -94,6 +95,11 @@ class LocalSourceNode extends Node {
    * Gets a call to this node.
    */
   CallCfgNode getACall() { Cached::call(this, result) }
+
+  /**
+   * Gets an awaited value from this node.
+   */
+  Node getAnAwaited() { Cached::await(this, result) }
 
   /**
    * Gets a call to the method `methodName` on this node.
@@ -223,6 +229,17 @@ private module Cached {
     exists(CfgNode n |
       func.flowsTo(n) and
       n = call.getFunction()
+    )
+  }
+
+  /**
+   * Holds if `node` flows to the awaited value of `awaited`.
+   */
+  cached
+  predicate await(LocalSourceNode node, Node awaited) {
+    exists(Node awaitedValue |
+      node.flowsTo(awaitedValue) and
+      awaited = awaited(awaitedValue)
     )
   }
 }
