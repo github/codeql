@@ -219,8 +219,6 @@ When the analysis has finished, a SARIF results file is generated. Specifying ``
 that the results are formatted according to the most recent SARIF specification
 supported by CodeQL.
 
-.. _including-query-help-for-custom-codeql-queries-in-sarif-files:
-
 Running a subset of queries in a CodeQL pack
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
