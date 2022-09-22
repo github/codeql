@@ -185,12 +185,16 @@ String doubleWhitespace(Select sel) {
   result.getValue().regexpMatch(".*\\s\\s.*")
 }
 
+import codeql.GlobalValueNumbering as GVN
+
 /**
  * Gets an expression that repeats the alert-loc as a link.
  */
-VarAccess getAlertLocLink(Select sel) {
-  // TODO: Get this to work with GVN. I got an infinite loop when I tried.
-  result = sel.getExpr(0).(VarAccess).getDeclaration().getAnAccess() and
+AstNode getAlertLocLink(Select sel) {
+  exists(GVN::ValueNumber vn |
+    result = vn.getAnExpr() and
+    sel.getExpr(0) = vn.getAnExpr()
+  ) and
   exists(int msgIndex | sel.getExpr(msgIndex) = sel.getMessage() |
     result = sel.getExpr(any(int i | i > msgIndex))
   )
