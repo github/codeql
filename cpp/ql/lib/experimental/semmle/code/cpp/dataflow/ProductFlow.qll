@@ -1,5 +1,5 @@
-import semmle.code.cpp.ir.dataflow.DataFlow
-import semmle.code.cpp.ir.dataflow.DataFlow2
+import experimental.semmle.code.cpp.ir.dataflow.DataFlow
+import experimental.semmle.code.cpp.ir.dataflow.DataFlow2
 
 module ProductFlow {
   abstract class Configuration extends string {
@@ -11,14 +11,43 @@ module ProductFlow {
      *
      * `source1` and `source2` must belong to the same callable.
      */
-    abstract predicate isSourcePair(DataFlow::Node source1, DataFlow::Node source2);
+    predicate isSourcePair(DataFlow::Node source1, DataFlow::Node source2) { none() }
+
+    /**
+     * Holds if `(source1, source2)` is a relevant data flow source with initial states `state1`
+     * and `state2`, respectively.
+     *
+     * `source1` and `source2` must belong to the same callable.
+     */
+    predicate isSourcePair(
+      DataFlow::Node source1, string state1, DataFlow::Node source2, string state2
+    ) {
+      state1 = "" and
+      state2 = "" and
+      this.isSourcePair(source1, source2)
+    }
 
     /**
      * Holds if `(sink1, sink2)` is a relevant data flow sink.
      *
      * `sink1` and `sink2` must belong to the same callable.
      */
-    abstract predicate isSinkPair(DataFlow::Node sink1, DataFlow::Node sink2);
+    predicate isSinkPair(DataFlow::Node sink1, DataFlow::Node sink2) { none() }
+
+    /**
+     * Holds if `(sink1, sink2)` is a relevant data flow sink with final states `state1`
+     * and `state2`, respectively.
+     *
+     * `sink1` and `sink2` must belong to the same callable.
+     */
+    predicate isSinkPair(
+      DataFlow::Node sink1, DataFlow::FlowState state1, DataFlow::Node sink2,
+      DataFlow::FlowState state2
+    ) {
+      state1 = "" and
+      state2 = "" and
+      this.isSinkPair(sink1, sink2)
+    }
 
     predicate hasFlowPath(
       DataFlow::PathNode source1, DataFlow2::PathNode source2, DataFlow::PathNode sink1,
@@ -34,28 +63,28 @@ module ProductFlow {
     class Conf1 extends DataFlow::Configuration {
       Conf1() { this = "Conf1" }
 
-      override predicate isSource(DataFlow::Node source) {
-        exists(Configuration conf | conf.isSourcePair(source, _))
+      override predicate isSource(DataFlow::Node source, string state) {
+        exists(Configuration conf | conf.isSourcePair(source, state, _, _))
       }
 
-      override predicate isSink(DataFlow::Node sink) {
-        exists(Configuration conf | conf.isSinkPair(sink, _))
+      override predicate isSink(DataFlow::Node sink, string state) {
+        exists(Configuration conf | conf.isSinkPair(sink, state, _, _))
       }
     }
 
     class Conf2 extends DataFlow2::Configuration {
       Conf2() { this = "Conf2" }
 
-      override predicate isSource(DataFlow::Node source) {
+      override predicate isSource(DataFlow::Node source, string state) {
         exists(Configuration conf, DataFlow::Node source1 |
-          conf.isSourcePair(source1, source) and
+          conf.isSourcePair(source1, _, source, state) and
           any(Conf1 c).hasFlow(source1, _)
         )
       }
 
-      override predicate isSink(DataFlow::Node sink) {
+      override predicate isSink(DataFlow::Node sink, string state) {
         exists(Configuration conf, DataFlow::Node sink1 |
-          conf.isSinkPair(sink1, sink) and any(Conf1 c).hasFlow(_, sink1)
+          conf.isSinkPair(sink1, _, sink, state) and any(Conf1 c).hasFlow(_, sink1)
         )
       }
     }
@@ -65,7 +94,7 @@ module ProductFlow {
     Configuration conf, DataFlow::PathNode source1, DataFlow2::PathNode source2,
     DataFlow::PathNode node1, DataFlow2::PathNode node2
   ) {
-    conf.isSourcePair(node1.getNode(), node2.getNode()) and
+    conf.isSourcePair(node1.getNode(), _, node2.getNode(), _) and
     node1 = source1 and
     node2 = source2
     or
@@ -128,7 +157,7 @@ module ProductFlow {
   ) {
     exists(DataFlow::PathNode mid1, DataFlow2::PathNode mid2 |
       reachableInterprocEntry(conf, source1, source2, mid1, mid2) and
-      conf.isSinkPair(sink1.getNode(), sink2.getNode()) and
+      conf.isSinkPair(sink1.getNode(), _, sink2.getNode(), _) and
       localPathStep1*(mid1, sink1) and
       localPathStep2*(mid2, sink2)
     )

@@ -10,6 +10,7 @@ import codeql.swift.elements.Locatable
 import codeql.swift.elements.Location
 import codeql.swift.elements.UnknownFile
 import codeql.swift.elements.UnknownLocation
+import codeql.swift.elements.UnresolvedElement
 import codeql.swift.elements.decl.AbstractFunctionDecl
 import codeql.swift.elements.decl.AbstractStorageDecl
 import codeql.swift.elements.decl.AbstractTypeParamDecl
@@ -29,7 +30,6 @@ import codeql.swift.elements.decl.FuncDecl
 import codeql.swift.elements.decl.GenericContext
 import codeql.swift.elements.decl.GenericTypeDecl
 import codeql.swift.elements.decl.GenericTypeParamDecl
-import codeql.swift.elements.decl.IfConfigClause
 import codeql.swift.elements.decl.IfConfigDecl
 import codeql.swift.elements.decl.ImportDecl
 import codeql.swift.elements.decl.InfixOperatorDecl
@@ -150,6 +150,7 @@ import codeql.swift.elements.expr.OptionalTryExpr
 import codeql.swift.elements.expr.OtherConstructorDeclRefExpr
 import codeql.swift.elements.expr.OverloadSetRefExpr
 import codeql.swift.elements.expr.OverloadedDeclRefExpr
+import codeql.swift.elements.expr.PackExpr
 import codeql.swift.elements.expr.ParenExpr
 import codeql.swift.elements.expr.PointerToPointerExpr
 import codeql.swift.elements.expr.PostfixUnaryExpr
@@ -158,6 +159,7 @@ import codeql.swift.elements.expr.PropertyWrapperValuePlaceholderExpr
 import codeql.swift.elements.expr.ProtocolMetatypeToObjectExpr
 import codeql.swift.elements.expr.RebindSelfInConstructorExpr
 import codeql.swift.elements.expr.RegexLiteralExpr
+import codeql.swift.elements.expr.ReifyPackExpr
 import codeql.swift.elements.expr.SelfApplyExpr
 import codeql.swift.elements.expr.SequenceExpr
 import codeql.swift.elements.expr.StringLiteralExpr
@@ -254,12 +256,14 @@ import codeql.swift.elements.type.InOutType
 import codeql.swift.elements.type.LValueType
 import codeql.swift.elements.type.MetatypeType
 import codeql.swift.elements.type.ModuleType
-import codeql.swift.elements.type.NestedArchetypeType
 import codeql.swift.elements.type.NominalOrBoundGenericNominalType
 import codeql.swift.elements.type.NominalType
 import codeql.swift.elements.type.OpaqueTypeArchetypeType
 import codeql.swift.elements.type.OpenedArchetypeType
 import codeql.swift.elements.type.OptionalType
+import codeql.swift.elements.type.PackExpansionType
+import codeql.swift.elements.type.PackType
+import codeql.swift.elements.type.ParameterizedProtocolType
 import codeql.swift.elements.type.ParenType
 import codeql.swift.elements.type.PlaceholderType
 import codeql.swift.elements.type.PrimaryArchetypeType

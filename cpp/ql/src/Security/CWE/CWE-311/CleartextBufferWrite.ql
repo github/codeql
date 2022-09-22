@@ -19,7 +19,7 @@ import semmle.code.cpp.ir.dataflow.TaintTracking
 import DataFlow::PathGraph
 
 /**
- * Taint flow from user input to a buffer write.
+ * A taint flow configuration for flow from user input to a buffer write.
  */
 class ToBufferConfiguration extends TaintTracking::Configuration {
   ToBufferConfiguration() { this = "ToBufferConfiguration" }

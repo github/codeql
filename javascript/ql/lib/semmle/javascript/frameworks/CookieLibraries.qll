@@ -368,7 +368,7 @@ private class HttpCookieWrite extends CookieWrites::CookieWrite {
   string header;
 
   HttpCookieWrite() {
-    exists(HTTP::CookieDefinition setCookie |
+    exists(Http::CookieDefinition setCookie |
       this = setCookie.getHeaderArgument() and
       not this instanceof DataFlow::ArrayCreationNode
       or

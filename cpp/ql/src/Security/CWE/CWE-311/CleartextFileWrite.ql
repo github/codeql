@@ -21,7 +21,7 @@ import semmle.code.cpp.dataflow.TaintTracking
 import DataFlow::PathGraph
 
 /**
- * Taint flow from a sensitive expression to a `FileWrite` sink.
+ * A taint flow configuration for flow from a sensitive expression to a `FileWrite` sink.
  */
 class FromSensitiveConfiguration extends TaintTracking::Configuration {
   FromSensitiveConfiguration() { this = "FromSensitiveConfiguration" }
@@ -29,6 +29,10 @@ class FromSensitiveConfiguration extends TaintTracking::Configuration {
   override predicate isSource(DataFlow::Node source) { source.asExpr() instanceof SensitiveExpr }
 
   override predicate isSink(DataFlow::Node sink) { any(FileWrite w).getASource() = sink.asExpr() }
+
+  override predicate isSanitizer(DataFlow::Node node) {
+    node.asExpr().getUnspecifiedType() instanceof IntegralType
+  }
 }
 
 /**

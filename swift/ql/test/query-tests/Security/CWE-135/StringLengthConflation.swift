@@ -57,7 +57,7 @@ func test(s: String) {
     print("String.Index '\(ix1.encodedOffset)' / '\(ix2.encodedOffset)' '\(ix3.encodedOffset)' '\(ix4.encodedOffset)' '\(ix5.encodedOffset)'")
 
     let ix6 = s.index(s.startIndex, offsetBy: s.count / 2) // GOOD
-    let ix7 = s.index(s.startIndex, offsetBy: ns.length / 2) // BAD: NSString length used in String.Index
+    let ix7 = s.index(s.startIndex, offsetBy: ns.length / 2) // BAD: NSString length used in String.Index [NOT DETECTED]
     print("index '\(ix6.encodedOffset)' / '\(ix7.encodedOffset)'")
 
     var ix8 = s.startIndex

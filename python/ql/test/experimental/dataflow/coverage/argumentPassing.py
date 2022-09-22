@@ -94,7 +94,7 @@ def with_multiple_kw_args(a, b, c):
 def test_multiple_kw_args():
     with_multiple_kw_args(b=arg2, c=arg3, a=arg1)  #$ arg1 arg2 arg3
     with_multiple_kw_args(arg1, *(arg2,), arg3)  #$ arg1 MISSING: arg2 arg3
-    with_multiple_kw_args(arg1, **{"c": arg3}, b=arg2)  #$ arg1 arg3 func=with_multiple_kw_args MISSING: arg2
+    with_multiple_kw_args(arg1, **{"c": arg3}, b=arg2)  #$ arg1 arg2 arg3 func=with_multiple_kw_args MISSING:
     with_multiple_kw_args(**{"b": arg2}, **{"c": arg3}, **{"a": arg1})  #$ arg1 arg2 arg3 func=with_multiple_kw_args
 
 

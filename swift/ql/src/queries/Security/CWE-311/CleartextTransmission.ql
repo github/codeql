@@ -42,8 +42,8 @@ class NWConnectionSend extends Transmitted {
  * An `Expr` that is used to form a `URL`. Such expressions are very likely to
  * be transmitted over a network, because that's what URLs are for.
  */
-class URL extends Transmitted {
-  URL() {
+class Url extends Transmitted {
+  Url() {
     // `string` arg in `URL.init` is a sink
     // (we assume here that the URL goes on to be used in a network operation)
     exists(ClassDecl c, AbstractFunctionDecl f, CallExpr call |
@@ -63,12 +63,7 @@ class URL extends Transmitted {
 class CleartextTransmissionConfig extends TaintTracking::Configuration {
   CleartextTransmissionConfig() { this = "CleartextTransmissionConfig" }
 
-  override predicate isSource(DataFlow::Node node) {
-    exists(SensitiveExpr e |
-      node.asExpr() = e and
-      not e.isProbablySafe()
-    )
-  }
+  override predicate isSource(DataFlow::Node node) { node.asExpr() instanceof SensitiveExpr }
 
   override predicate isSink(DataFlow::Node node) { node.asExpr() instanceof Transmitted }
 

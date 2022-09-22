@@ -1,4 +1,4 @@
-import ruby
+import codeql.ruby.AST
 import TestUtilities.InlineExpectationsTest
 import codeql.ruby.security.ImproperMemoizationQuery
 

@@ -9,7 +9,7 @@ private module LiveServer {
   /**
    * An expression that imports the live-server package, seen as a server-definition.
    */
-  class ServerDefinition extends HTTP::Servers::StandardServerDefinition {
+  class ServerDefinition extends Http::Servers::StandardServerDefinition {
     ServerDefinition() { this = DataFlow::moduleImport("live-server") }
 
     API::Node getImportNode() { result.asSource() = this }
@@ -30,7 +30,7 @@ private module LiveServer {
   /**
    * The call to `require("live-server").start()`, seen as a route setup.
    */
-  class RouteSetup extends HTTP::Servers::StandardRouteSetup instanceof API::CallNode {
+  class RouteSetup extends Http::Servers::StandardRouteSetup instanceof API::CallNode {
     ServerDefinition server;
 
     RouteSetup() { this = server.getImportNode().getMember("start").getACall() }

@@ -2,7 +2,7 @@
  * Provides modeling for the `Typhoeus` library.
  */
 
-private import ruby
+private import codeql.ruby.AST
 private import codeql.ruby.CFG
 private import codeql.ruby.Concepts
 private import codeql.ruby.ApiGraphs
@@ -15,7 +15,7 @@ private import codeql.ruby.dataflow.internal.DataFlowImplForHttpClientLibraries 
  * Typhoeus.get("http://example.com").body
  * ```
  */
-class TyphoeusHttpRequest extends HTTP::Client::Request::Range, DataFlow::CallNode {
+class TyphoeusHttpRequest extends Http::Client::Request::Range, DataFlow::CallNode {
   API::Node requestNode;
 
   TyphoeusHttpRequest() {

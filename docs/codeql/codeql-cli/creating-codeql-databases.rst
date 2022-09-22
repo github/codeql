@@ -5,11 +5,17 @@ Creating CodeQL databases
 
 Before you analyze your code using CodeQL, you need to create a CodeQL
 database containing all the data required to run queries on your code.
+You can create CodeQL databases yourself using the CodeQL CLI,
+or download them from GitHub.com.
 
 CodeQL analysis relies on extracting relational data from your code, and
 using it to build a :ref:`CodeQL database <codeql-database>`. CodeQL
 databases contain all of the important information about a codebase, which can
-be analyzed by executing CodeQL queries against it.
+be analyzed by executing CodeQL queries against it. GitHub creates and
+stores CodeQL databases for a large number of open-source projects. For more information,
+see ":ref:`Downloading CodeQL databases from GitHub.com <downloading-codeql-databases-from-github-com>`."
+
+You can also create CodeQL databases yourself using the CodeQL CLI.
 Before you generate a CodeQL database, you need to:
 
 - Install and set up the CodeQL CLI. For more information, see
@@ -208,12 +214,12 @@ commands that you can specify for compiled languages.
 
      codeql database create cpp-database --language=cpp --command=make
 
-- C# project built using ``dotnet build``::
+- C# project built using ``dotnet build``:
 
-     It is a good idea to add `/t:rebuild` to ensure that all code will be built, or do a
-     prior `dotnet clean` (code that is not built will not be included in the CodeQL database):
+  It is a good idea to add `/t:rebuild` to ensure that all code will be built, or do a
+  prior `dotnet clean` (code that is not built will not be included in the CodeQL database)::
 
-     codeql database create csharp-database --language=csharp --command='dotnet build /t:rebuild' 
+     codeql database create csharp-database --language=csharp --command='dotnet build /t:rebuild'
 
 - Go project built using the ``CODEQL_EXTRACTOR_GO_BUILD_TRACING=on`` environment variable::
 
@@ -379,23 +385,14 @@ The following example shows how you could use indirect build tracing in an Azure
        # `codeql database analyze`
        # then `codeql github upload-results` ...
 
-Obtaining databases from LGTM.com
----------------------------------
+.. _downloading-codeql-databases-from-github-com:
 
-`LGTM.com <https://lgtm.com>`__ analyzes thousands of open-source projects using
-CodeQL. For each project on LGTM.com, you can download an archived CodeQL
-database corresponding to the most recently analyzed revision of the code. These
-databases can also be analyzed using the CodeQL CLI or used with the CodeQL
-extension for Visual Studio Code.
+Downloading databases from GitHub.com
+-------------------------------------
 
-.. include:: ../reusables/download-lgtm-database.rst
+.. include:: ../reusables/download-github-database.rst
 
-.. pull-quote::
-
-   Note
-
-   .. include:: ../reusables/index-files-note.rst
-
+Before running an analysis with the CodeQL CLI, you must unzip the databases.
 
 Further reading
 ---------------

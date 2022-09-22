@@ -3,7 +3,7 @@
  * https://rubygems.org/gems/actioncable
  */
 
-private import ruby
+private import codeql.ruby.AST
 private import codeql.ruby.Concepts
 private import codeql.ruby.ApiGraphs
 private import codeql.ruby.frameworks.stdlib.Logger::Logger as StdlibLogger

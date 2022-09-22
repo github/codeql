@@ -19,7 +19,7 @@ module CodeInjection {
     /**
      * Gets the substitute for `X` in the message `User-provided value flows to X`.
      */
-    string getMessageSuffix() { result = "here and is interpreted as code" }
+    string getMessageSuffix() { result = "this location and is interpreted as code" }
   }
 
   /**
@@ -126,7 +126,8 @@ module CodeInjection {
     }
 
     override string getMessageSuffix() {
-      result = "here and is interpreted by " + templateType + ", which may evaluate it as code"
+      result =
+        "this location and is interpreted by " + templateType + ", which may evaluate it as code"
     }
   }
 
@@ -288,7 +289,7 @@ module CodeInjection {
   /** A sink for code injection via template injection. */
   abstract private class TemplateSink extends Sink {
     override string getMessageSuffix() {
-      result = "here and is interpreted as a template, which may contain code"
+      result = "this location and is interpreted as a template, which may contain code"
     }
   }
 

@@ -126,18 +126,6 @@ def generate_tests(generate):
     return func
 
 
-def test_empty(generate):
-    assert generate([]) == {
-        import_file(): ql.ImportList(),
-        children_file(): ql.GetParentImplementation(),
-        ql_output_path() / "Synth.qll": ql.Synth.Types(schema.root_class_name),
-        ql_output_path() / "SynthConstructors.qll": ql.ImportList(),
-        ql_output_path() / "PureSynthConstructors.qll": ql.ImportList(),
-        ql_output_path() / "Raw.qll": ql.DbClasses(),
-        ql_output_path() / "Raw.qll": ql.DbClasses(),
-    }
-
-
 def test_one_empty_class(generate_classes):
     assert generate_classes([
         schema.Class("A")
@@ -177,10 +165,10 @@ def test_hierarchy_imports(generate_import_list):
 
 def test_hierarchy_children(generate_children_implementations):
     assert generate_children_implementations([
-        schema.Class("D", bases=["B", "C"]),
-        schema.Class("C", bases=["A"], derived={"D"}),
-        schema.Class("B", bases=["A"], derived={"D"}),
         schema.Class("A", derived={"B", "C"}),
+        schema.Class("B", bases=["A"], derived={"D"}),
+        schema.Class("C", bases=["A"], derived={"D"}),
+        schema.Class("D", bases=["B", "C"]),
     ]) == ql.GetParentImplementation(
         classes=[ql.Class(name="A"),
                  ql.Class(name="B", bases=["A"], imports=[
@@ -209,6 +197,7 @@ def test_single_property(generate_classes):
 
 def test_children(generate_classes):
     assert generate_classes([
+        schema.Class("FakeRoot"),
         schema.Class("MyObject", properties=[
             schema.SingleProperty("a", "int"),
             schema.SingleProperty("child1", "int", is_child=True),
@@ -220,6 +209,8 @@ def test_children(generate_classes):
             schema.RepeatedOptionalProperty("child4", "int", is_child=True),
         ]),
     ]) == {
+        "FakeRoot.qll": (ql.Stub(name="FakeRoot", base_import=gen_import_prefix + "FakeRoot"),
+                         ql.Class(name="FakeRoot", final=True)),
         "MyObject.qll": (ql.Stub(name="MyObject", base_import=gen_import_prefix + "MyObject"),
                          ql.Class(name="MyObject", final=True,
                                   properties=[
@@ -227,18 +218,24 @@ def test_children(generate_classes):
                                                   tableparams=["this", "result", "_"]),
                                       ql.Property(singular="Child1", type="int", tablename="my_objects",
                                                   tableparams=["this", "_", "result"], prev_child=""),
-                                      ql.Property(singular="B", plural="Bs", type="int", tablename="my_object_bs",
+                                      ql.Property(singular="B", plural="Bs", type="int",
+                                                  tablename="my_object_bs",
                                                   tableparams=["this", "index", "result"]),
-                                      ql.Property(singular="Child2", plural="Child2s", type="int", tablename="my_object_child2s",
+                                      ql.Property(singular="Child2", plural="Child2s", type="int",
+                                                  tablename="my_object_child2s",
                                                   tableparams=["this", "index", "result"], prev_child="Child1"),
                                       ql.Property(singular="C", type="int", tablename="my_object_cs",
                                                   tableparams=["this", "result"], is_optional=True),
                                       ql.Property(singular="Child3", type="int", tablename="my_object_child3s",
-                                                  tableparams=["this", "result"], is_optional=True, prev_child="Child2"),
-                                      ql.Property(singular="D", plural="Ds", type="int", tablename="my_object_ds",
+                                                  tableparams=["this", "result"], is_optional=True,
+                                                  prev_child="Child2"),
+                                      ql.Property(singular="D", plural="Ds", type="int",
+                                                  tablename="my_object_ds",
                                                   tableparams=["this", "index", "result"], is_optional=True),
-                                      ql.Property(singular="Child4", plural="Child4s", type="int", tablename="my_object_child4s",
-                                                  tableparams=["this", "index", "result"], is_optional=True, prev_child="Child3"),
+                                      ql.Property(singular="Child4", plural="Child4s", type="int",
+                                                  tablename="my_object_child4s",
+                                                  tableparams=["this", "index", "result"], is_optional=True,
+                                                  prev_child="Child3"),
                                   ])),
     }
 
@@ -267,9 +264,12 @@ def test_single_properties(generate_classes):
 @pytest.mark.parametrize("is_child,prev_child", [(False, None), (True, "")])
 def test_optional_property(generate_classes, is_child, prev_child):
     assert generate_classes([
+        schema.Class("FakeRoot"),
         schema.Class("MyObject", properties=[
             schema.OptionalProperty("foo", "bar", is_child=is_child)]),
     ]) == {
+        "FakeRoot.qll": (ql.Stub(name="FakeRoot", base_import=gen_import_prefix + "FakeRoot"),
+                         ql.Class(name="FakeRoot", final=True)),
         "MyObject.qll": (ql.Stub(name="MyObject", base_import=gen_import_prefix + "MyObject"),
                          ql.Class(name="MyObject", final=True, properties=[
                              ql.Property(singular="Foo", type="bar", tablename="my_object_foos",
@@ -282,9 +282,12 @@ def test_optional_property(generate_classes, is_child, prev_child):
 @pytest.mark.parametrize("is_child,prev_child", [(False, None), (True, "")])
 def test_repeated_property(generate_classes, is_child, prev_child):
     assert generate_classes([
+        schema.Class("FakeRoot"),
         schema.Class("MyObject", properties=[
             schema.RepeatedProperty("foo", "bar", is_child=is_child)]),
     ]) == {
+        "FakeRoot.qll": (ql.Stub(name="FakeRoot", base_import=gen_import_prefix + "FakeRoot"),
+                         ql.Class(name="FakeRoot", final=True)),
         "MyObject.qll": (ql.Stub(name="MyObject", base_import=gen_import_prefix + "MyObject"),
                          ql.Class(name="MyObject", final=True, properties=[
                              ql.Property(singular="Foo", plural="Foos", type="bar", tablename="my_object_foos",
@@ -296,9 +299,13 @@ def test_repeated_property(generate_classes, is_child, prev_child):
 @pytest.mark.parametrize("is_child,prev_child", [(False, None), (True, "")])
 def test_repeated_optional_property(generate_classes, is_child, prev_child):
     assert generate_classes([
+        schema.Class("FakeRoot"),
         schema.Class("MyObject", properties=[
             schema.RepeatedOptionalProperty("foo", "bar", is_child=is_child)]),
     ]) == {
+
+        "FakeRoot.qll": (ql.Stub(name="FakeRoot", base_import=gen_import_prefix + "FakeRoot"),
+                         ql.Class(name="FakeRoot", final=True)),
         "MyObject.qll": (ql.Stub(name="MyObject", base_import=gen_import_prefix + "MyObject"),
                          ql.Class(name="MyObject", final=True, properties=[
                              ql.Property(singular="Foo", plural="Foos", type="bar", tablename="my_object_foos",
@@ -325,9 +332,9 @@ def test_predicate_property(generate_classes):
 @pytest.mark.parametrize("is_child,prev_child", [(False, None), (True, "")])
 def test_single_class_property(generate_classes, is_child, prev_child):
     assert generate_classes([
+        schema.Class("Bar"),
         schema.Class("MyObject", properties=[
             schema.SingleProperty("foo", "Bar", is_child=is_child)]),
-        schema.Class("Bar"),
     ]) == {
         "MyObject.qll": (ql.Stub(name="MyObject", base_import=gen_import_prefix + "MyObject"),
                          ql.Class(
@@ -344,13 +351,13 @@ def test_single_class_property(generate_classes, is_child, prev_child):
 
 
 def test_class_dir(generate_classes):
-    dir = pathlib.Path("another/rel/path")
+    dir = "another/rel/path"
     assert generate_classes([
-        schema.Class("A", derived={"B"}, dir=dir),
+        schema.Class("A", derived={"B"}, group=dir),
         schema.Class("B", bases=["A"]),
     ]) == {
         f"{dir}/A.qll": (ql.Stub(name="A", base_import=gen_import_prefix + "another.rel.path.A"),
-                         ql.Class(name="A", dir=dir)),
+                         ql.Class(name="A", dir=pathlib.Path(dir))),
         "B.qll": (ql.Stub(name="B", base_import=gen_import_prefix + "B"),
                   ql.Class(name="B", final=True, bases=["A"],
                            imports=[stub_import_prefix + "another.rel.path.A"])),
@@ -360,14 +367,14 @@ def test_class_dir(generate_classes):
 def test_root_element_cannot_have_children(generate_classes):
     with pytest.raises(qlgen.RootElementHasChildren):
         generate_classes([
-            schema.Class(schema.root_class_name, properties=[schema.SingleProperty("x", is_child=True)])
+            schema.Class('A', properties=[schema.SingleProperty("x", is_child=True)])
         ])
 
 
 def test_class_dir_imports(generate_import_list):
-    dir = pathlib.Path("another/rel/path")
+    dir = "another/rel/path"
     assert generate_import_list([
-        schema.Class("A", derived={"B"}, dir=dir),
+        schema.Class("A", derived={"B"}, group=dir),
         schema.Class("B", bases=["A"]),
     ]) == ql.ImportList([
         stub_import_prefix + "B",
@@ -383,7 +390,7 @@ def test_format(opts, generate, renderer, run_mock):
         pathlib.Path("bar.qll"),
         pathlib.Path("y", "baz.txt"),
     ]
-    generate([])
+    generate([schema.Class('A')])
     assert run_mock.mock_calls == [
         mock.call(["my_fake_codeql", "query", "format", "--in-place", "--", "x/foo.ql", "bar.qll"],
                   stderr=subprocess.PIPE, text=True),
@@ -400,11 +407,11 @@ def test_format_error(opts, generate, renderer, run_mock):
         pathlib.Path("y", "baz.txt"),
     ]
     with pytest.raises(qlgen.FormatError):
-        generate([])
+        generate([schema.Class('A')])
 
 
 def test_empty_cleanup(generate, renderer):
-    generate([])
+    generate([schema.Class('A')])
     assert renderer.mock_calls[-1] == mock.call.cleanup(set())
 
 
@@ -423,7 +430,7 @@ def test_non_empty_cleanup(opts, generate, renderer):
     write(test_a)
     write(test_b)
     write(test_c)
-    generate([])
+    generate([schema.Class('A')])
     assert renderer.mock_calls[-1] == mock.call.cleanup(
         {ql_a, ql_b, stub_a, test_a, test_b})
 
@@ -463,7 +470,7 @@ def test_test_source_present(opts, generate_tests):
 def test_test_source_present_with_dir(opts, generate_tests):
     write(opts.ql_test_output / "foo" / "A" / "test.swift")
     assert generate_tests([
-        schema.Class("A", dir=pathlib.Path("foo")),
+        schema.Class("A", group="foo"),
     ]) == {
         "foo/A/A.ql": ql.ClassTester(class_name="A"),
     }

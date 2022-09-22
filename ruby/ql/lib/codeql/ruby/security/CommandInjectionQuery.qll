@@ -7,7 +7,7 @@
  * `CommandInjectionCustomizations` should be imported instead.
  */
 
-import ruby
+import codeql.ruby.AST
 import codeql.ruby.TaintTracking
 import CommandInjectionCustomizations::CommandInjection
 import codeql.ruby.DataFlow

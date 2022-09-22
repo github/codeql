@@ -216,7 +216,7 @@ private predicate fixedHasLocation(Top l, Location loc, File f) {
     min(Location candidateLoc |
       hasLocation(l, candidateLoc)
     |
-      candidateLoc order by candidateLoc.getFile().toString()
+      candidateLoc order by candidateLoc.getFile().getAbsolutePath()
     ) and
   not hasSourceLocation(l, _, _) and
   locations_default(loc, f, _, _, _, _)

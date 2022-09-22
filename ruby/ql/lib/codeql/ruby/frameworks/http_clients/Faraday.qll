@@ -2,7 +2,7 @@
  * Provides modeling for the `Faraday` library.
  */
 
-private import ruby
+private import codeql.ruby.AST
 private import codeql.ruby.CFG
 private import codeql.ruby.Concepts
 private import codeql.ruby.ApiGraphs
@@ -23,7 +23,7 @@ private import codeql.ruby.dataflow.internal.DataFlowImplForHttpClientLibraries 
  * connection.get("/").body
  * ```
  */
-class FaradayHttpRequest extends HTTP::Client::Request::Range, DataFlow::CallNode {
+class FaradayHttpRequest extends Http::Client::Request::Range, DataFlow::CallNode {
   API::Node requestNode;
   API::Node connectionNode;
   DataFlow::Node connectionUse;

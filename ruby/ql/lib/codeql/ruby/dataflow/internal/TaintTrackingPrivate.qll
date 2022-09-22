@@ -1,4 +1,4 @@
-private import ruby
+private import codeql.ruby.AST
 private import DataFlowPrivate
 private import TaintTrackingPublic
 private import codeql.ruby.CFG

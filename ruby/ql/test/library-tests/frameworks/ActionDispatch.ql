@@ -1,4 +1,4 @@
-private import ruby
+private import codeql.ruby.AST
 private import codeql.ruby.frameworks.ActionDispatch
 private import codeql.ruby.frameworks.ActionController
 private import codeql.ruby.ApiGraphs

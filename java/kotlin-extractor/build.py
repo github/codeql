@@ -86,7 +86,8 @@ def compile_to_dir(srcs, classpath, java_classpath, output):
     run_process([kotlinc,
                  # kotlinc can default to 256M, which isn't enough when we are extracting the build
                  '-J-Xmx2G',
-                 '-Xopt-in=kotlin.RequiresOptIn',
+                 '-Werror',
+                 '-opt-in=kotlin.RequiresOptIn',
                  '-d', output,
                  '-module-name', 'codeql-kotlin-extractor',
                  '-no-reflect', '-no-stdlib',

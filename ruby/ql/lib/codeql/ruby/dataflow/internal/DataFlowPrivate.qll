@@ -1,4 +1,4 @@
-private import ruby
+private import codeql.ruby.AST
 private import codeql.ruby.ast.internal.Synthesis
 private import codeql.ruby.CFG
 private import codeql.ruby.dataflow.SSA
@@ -41,6 +41,32 @@ private class ExprNodeImpl extends ExprNode, NodeImpl {
   override Location getLocationImpl() { result = this.getExprNode().getLocation() }
 
   override string toStringImpl() { result = this.getExprNode().toString() }
+}
+
+/**
+ * Gets a node that may execute last in `n`, and which, when it executes last,
+ * will be the value of `n`.
+ */
+private CfgNodes::ExprCfgNode getALastEvalNode(CfgNodes::ExprCfgNode n) {
+  result = n.(CfgNodes::ExprNodes::StmtSequenceCfgNode).getLastStmt()
+  or
+  result = n.(CfgNodes::ExprNodes::ConditionalExprCfgNode).getBranch(_)
+  or
+  exists(CfgNodes::AstCfgNode branch |
+    branch = n.(CfgNodes::ExprNodes::CaseExprCfgNode).getBranch(_)
+  |
+    result = branch.(CfgNodes::ExprNodes::InClauseCfgNode).getBody()
+    or
+    result = branch.(CfgNodes::ExprNodes::WhenClauseCfgNode).getBody()
+    or
+    result = branch
+  )
+}
+
+/** Gets a node for which to construct a post-update node for argument `arg`. */
+CfgNodes::ExprCfgNode getAPostUpdateNodeForArg(Argument arg) {
+  result = getALastEvalNode*(arg) and
+  not exists(getALastEvalNode(result))
 }
 
 /** Provides predicates related to local data flow. */
@@ -135,19 +161,7 @@ module LocalFlow {
     or
     nodeFrom.asExpr() = nodeTo.asExpr().(CfgNodes::ExprNodes::BlockArgumentCfgNode).getValue()
     or
-    nodeFrom.asExpr() = nodeTo.asExpr().(CfgNodes::ExprNodes::StmtSequenceCfgNode).getLastStmt()
-    or
-    nodeFrom.asExpr() = nodeTo.asExpr().(CfgNodes::ExprNodes::ConditionalExprCfgNode).getBranch(_)
-    or
-    exists(CfgNodes::AstCfgNode branch |
-      branch = nodeTo.asExpr().(CfgNodes::ExprNodes::CaseExprCfgNode).getBranch(_)
-    |
-      nodeFrom.asExpr() = branch.(CfgNodes::ExprNodes::InClauseCfgNode).getBody()
-      or
-      nodeFrom.asExpr() = branch.(CfgNodes::ExprNodes::WhenClauseCfgNode).getBody()
-      or
-      nodeFrom.asExpr() = branch
-    )
+    nodeFrom.asExpr() = getALastEvalNode(nodeTo.asExpr())
     or
     exists(CfgNodes::ExprCfgNode exprTo, ReturningStatementNode n |
       nodeFrom = n and
@@ -203,6 +217,12 @@ private class Argument extends CfgNodes::ExprCfgNode {
   }
 }
 
+/** Holds if `n` is not a constant expression. */
+predicate isNonConstantExpr(CfgNodes::ExprCfgNode n) {
+  not exists(n.getConstantValue()) and
+  not n.getExpr() instanceof ConstantAccess
+}
+
 /** A collection of cached types and predicates to be evaluated in the same stage. */
 cached
 private module Cached {
@@ -232,8 +252,13 @@ private module Cached {
       isParameterNode(_, c, any(ParameterPosition p | p.isKeyword(_)))
     } or
     TExprPostUpdateNode(CfgNodes::ExprCfgNode n) {
-      n instanceof Argument or
-      n = any(CfgNodes::ExprNodes::InstanceVariableAccessCfgNode v).getReceiver()
+      // filter out nodes that clearly don't need post-update nodes
+      isNonConstantExpr(n) and
+      (
+        n = getAPostUpdateNodeForArg(_)
+        or
+        n = any(CfgNodes::ExprNodes::InstanceVariableAccessCfgNode v).getReceiver()
+      )
     } or
     TSummaryNode(
       FlowSummaryImpl::Public::SummarizedCallable c,
@@ -438,6 +463,9 @@ class SsaDefinitionNode extends NodeImpl, TSsaDefinitionNode {
   /** Gets the underlying SSA definition. */
   Ssa::Definition getDefinition() { result = def }
 
+  /** Gets the underlying variable. */
+  Variable getVariable() { result = def.getSourceVariable() }
+
   override CfgScope getCfgScope() { result = def.getBasicBlock().getScope() }
 
   override Location getLocationImpl() { result = def.getLocation() }
@@ -538,6 +566,9 @@ private module ParameterNodes {
     SelfParameterNode() { this = TSelfParameterNode(method) }
 
     final MethodBase getMethod() { result = method }
+
+    /** Gets the underlying `self` variable. */
+    final SelfVariable getSelfVariable() { result.getDeclaringScope() = method }
 
     override Parameter getParameter() { none() }
 
@@ -1036,7 +1067,8 @@ predicate readStep(Node node1, ContentSet c, Node node2) {
   // (instance variable assignment or setter method call).
   node2.asExpr() =
     any(CfgNodes::ExprNodes::MethodCallCfgNode call |
-      node1.asExpr() = call.getReceiver() and
+      node1.asExpr() =
+        any(CfgNodes::ExprCfgNode e | e = call.getReceiver() and isNonConstantExpr(e)) and
       call.getNumberOfArguments() = 0 and
       c.isSingleton(any(Content::FieldContent ct |
           ct.getName() = "@" + call.getExpr().getMethodName()
@@ -1110,7 +1142,18 @@ private module PostUpdateNodes {
 
     ExprPostUpdateNode() { this = TExprPostUpdateNode(e) }
 
-    override ExprNode getPreUpdateNode() { e = result.getExprNode() }
+    override ExprNode getPreUpdateNode() {
+      // For compund arguments, such as `m(if b then x else y)`, we want the leaf nodes
+      // `[post] x` and `[post] y` to have two pre-update nodes: (1) the compund argument,
+      // `if b then x else y`; and the (2) the underlying expressions; `x` and `y`,
+      // respectively.
+      //
+      // This ensures that we get flow out of the call into both leafs (1), while still
+      // maintaining the invariant that the underlying expression is a pre-update node (2).
+      e = getAPostUpdateNodeForArg(result.getExprNode())
+      or
+      e = result.getExprNode()
+    }
 
     override CfgScope getCfgScope() { result = e.getExpr().getCfgScope() }
 

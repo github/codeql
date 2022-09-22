@@ -6295,3 +6295,44 @@ cfg.swift:
 
 #  464| kpGet_mayB_x
 #-----|  -> (KeyPath<A, Int?>) ...
+
+#  467| enter testIfConfig()
+#-----|  -> testIfConfig()
+
+#  467| exit testIfConfig()
+
+#  467| exit testIfConfig() (normal)
+#-----|  -> exit testIfConfig()
+
+#  467| testIfConfig()
+#-----|  -> #if ...
+
+#  468| #if ...
+#-----|  -> 3
+
+#  472| 3
+#-----|  -> 4
+
+#  473| 4
+#-----|  -> 5
+
+#  476| 5
+#-----|  -> #if ...
+
+#  478| #if ...
+#-----|  -> 8
+
+#  483| 8
+#-----|  -> #if ...
+
+#  485| #if ...
+#-----|  -> 11
+
+#  489| 11
+#-----|  -> 12
+
+#  490| 12
+#-----|  -> 13
+
+#  493| 13
+#-----|  -> exit testIfConfig() (normal)
