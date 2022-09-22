@@ -3,10 +3,20 @@ private import dotnet
 private import semmle.code.csharp.frameworks.system.collections.Generic as GenericCollections
 private import semmle.code.csharp.dataflow.internal.DataFlowPrivate
 private import semmle.code.csharp.frameworks.system.linq.Expressions
-private import CaptureModelsSpecific as Specific
-private import CaptureModels
+private import semmle.code.csharp.commons.Collections as Collections
 private import semmle.code.csharp.dataflow.FlowSummary
 private import semmle.code.csharp.dataflow.ExternalFlow
+
+/**
+ * Gets the CSV string representation of the qualifier.
+ */
+private string qualifierString() { result = "Argument[this]" }
+
+private string parameterAccess(Parameter p) {
+  if Collections::isCollectionType(p.getType())
+  then result = "Argument[" + p.getPosition() + "].Element"
+  else result = "Argument[" + p.getPosition() + "]"
+}
 
 /**
  * Holds if `t` is a subtype (reflexive/transitive) of `IEnumerable<T>`, where `T` = `tp`.
@@ -21,24 +31,17 @@ private predicate genericCollectionType(ValueOrRefType t, TypeParameter tp) {
 }
 
 /**
- * Holds if `tp` is a type parameter of `generic`.
- */
-private predicate unboundGeneric(UnboundGeneric generic, TypeParameter tp) {
-  tp = generic.getATypeParameter()
-}
-
-/**
  * Holds if `tp` is a type parameter of the immediate type declaring `callable`.
  */
 private predicate classTypeParameter(DotNet::Callable callable, TypeParameter tp) {
-  unboundGeneric(callable.getDeclaringType(), tp)
+  callable.getDeclaringType().(UnboundGeneric).getATypeParameter() = tp
 }
 
 /**
  * Holds if `tp` is type parameter of `callable` or the type declaring `callable`.
  */
 private predicate localTypeParameter(DotNet::Callable callable, TypeParameter tp) {
-  classTypeParameter(callable, tp) or unboundGeneric(callable, tp)
+  classTypeParameter(callable, tp) or callable.(UnboundGeneric).getATypeParameter() = tp
 }
 
 private predicate constructedGeneric(ConstructedType t, TypeParameter tp) {
@@ -51,7 +54,7 @@ private predicate constructedGeneric(ConstructedType t, TypeParameter tp) {
  */
 private predicate parameter(DotNet::Callable callable, string input, TypeParameter tp) {
   exists(Parameter p |
-    input = Specific::parameterAccess(p) and
+    input = parameterAccess(p) and
     p = callable.getAParameter() and
     (
       // Parameter of type tp
@@ -81,7 +84,7 @@ private string implicit(DotNet::Callable callable, TypeParameter tp) {
     then access = ".Element"
     else access = getSyntheticField(tp)
   |
-    result = Specific::qualifierString() + access
+    result = qualifierString() + access
   )
 }
 
@@ -113,7 +116,7 @@ private string getAccess(DotNet::Callable callable, Type return, TypeParameter t
   (
     constructedGeneric(return, tp)
     or
-    callable.getDeclaringType() = return and unboundGeneric(return, tp)
+    callable.getDeclaringType() = return and callable.(UnboundGeneric).getATypeParameter() = tp
   ) and
   result = getSyntheticField(tp)
 }
