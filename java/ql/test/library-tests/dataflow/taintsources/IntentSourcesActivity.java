@@ -1,10 +1,12 @@
 package com.example.myapp;
 
 import android.app.Activity;
+import android.content.Intent;
 
-public class IntentSources extends Activity {
+public class IntentSourcesActivity extends Activity {
 
-	private static void sink(Object o) {}
+	private static void sink(Object o) {
+	}
 
 	public void test() throws java.io.IOException {
 
@@ -26,14 +28,14 @@ public class IntentSources extends Activity {
 		sink(trouble); // $hasRemoteTaintFlow
 
 	}
-
 }
 
 class OtherClass {
 
-	private static void sink(Object o) {}
+	private static void sink(Object o) {
+	}
 
-	public void test(IntentSources is) throws java.io.IOException {
+	public void test(IntentSourcesActivity is) throws java.io.IOException {
 		String trouble = is.getIntent().getStringExtra("key");
 		sink(trouble); // $hasRemoteTaintFlow
 	}
