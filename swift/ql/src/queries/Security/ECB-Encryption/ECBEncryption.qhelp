@@ -2,19 +2,20 @@
   "-//Semmle//qhelp//EN"
   "qhelp.dtd">
 <qhelp>
-<overview>
-<p>ECB should not be used as a mode for encryption. It has dangerous weaknesses. Data is encrypted the same way every time 
-meaning the same plaintext input will always produce the same ciphertext. This behaviour makes encrypted messages vulnerable 
-to replay attacks.</p>
+  <overview>
+    <p>ECB should not be used as a mode for encryption. It has dangerous weaknesses. Data is encrypted the same way every time meaning the same plaintext input will always produce the same ciphertext. This behaviour makes encrypted messages vulnerable to replay attacks.</p>
+  </overview>
 
-</overview>
-<recommendation>
-<p>Use a different cipher mode such as CBC.</p>
+  <recommendation>
+    <p>Use a different cipher mode such as CBC.</p>
+  </recommendation>
 
-</recommendation>
-<references>
+  <example>
+    <p>The following example shows six cases of instantiating a cipher with various encryption keys and block modes. In the 'BAD' case, the mode of encrtyption is ECB, making the encryped data vulnerable to replay attacks.  In the 'GOOD' cases, the encryption mode is CBC, pretecting the encrypted data against replay attacks.</p>
+    <sample src="ECBEncryption.swift" />
+  </example>
 
-  <li>Wikipedia, block cipher modes of operation, <a href="https://en.wikipedia.org/wiki/Block_cipher_mode_of_operation#Electronic_codebook_.28ECB.29">Electronic codebook (ECB)</a>.</li>
-
-</references>
+  <references>
+    <li>Wikipedia, block cipher modes of operation, <a href="https://en.wikipedia.org/wiki/Block_cipher_mode_of_operation#Electronic_codebook_.28ECB.29">Electronic codebook (ECB)</a>.</li>
+  </references>
 </qhelp>
