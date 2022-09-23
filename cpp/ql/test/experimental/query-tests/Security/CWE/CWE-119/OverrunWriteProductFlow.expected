@@ -1,2 +1,33 @@
-| test.cpp:19:19:19:24 | call to malloc | test.cpp:18:17:18:20 | size | test.cpp:26:18:26:23 | Load | test.cpp:26:31:26:39 | Convert |
-| test.cpp:19:19:19:24 | call to malloc | test.cpp:18:17:18:20 | size | test.cpp:30:18:30:23 | Load | test.cpp:30:31:30:39 | Convert |
+edges
+| test.cpp:16:11:16:21 | VariableAddress indirection [string] | test.cpp:24:21:24:31 | Call indirection [string] |
+| test.cpp:16:11:16:21 | VariableAddress indirection [string] | test.cpp:34:21:34:31 | Call indirection [string] |
+| test.cpp:18:5:18:30 | Store | test.cpp:18:10:18:15 | Load indirection [post update] [string] |
+| test.cpp:18:10:18:15 | Load indirection [post update] [string] | test.cpp:16:11:16:21 | VariableAddress indirection [string] |
+| test.cpp:18:19:18:24 | call to malloc | test.cpp:18:5:18:30 | Store |
+| test.cpp:24:21:24:31 | Call indirection [string] | test.cpp:26:13:26:15 | Load indirection [string] |
+| test.cpp:26:13:26:15 | Load indirection [string] | test.cpp:26:18:26:23 | FieldAddress indirection |
+| test.cpp:26:18:26:23 | FieldAddress indirection | test.cpp:26:18:26:23 | Load |
+| test.cpp:29:32:29:34 | str indirection [string] | test.cpp:30:13:30:15 | Load indirection [string] |
+| test.cpp:30:13:30:15 | Load indirection [string] | test.cpp:30:18:30:23 | FieldAddress indirection |
+| test.cpp:30:18:30:23 | FieldAddress indirection | test.cpp:30:18:30:23 | Load |
+| test.cpp:34:21:34:31 | Call indirection [string] | test.cpp:35:21:35:23 | str indirection [string] |
+| test.cpp:35:21:35:23 | str indirection [string] | test.cpp:29:32:29:34 | str indirection [string] |
+nodes
+| test.cpp:16:11:16:21 | VariableAddress indirection [string] | semmle.label | VariableAddress indirection [string] |
+| test.cpp:18:5:18:30 | Store | semmle.label | Store |
+| test.cpp:18:10:18:15 | Load indirection [post update] [string] | semmle.label | Load indirection [post update] [string] |
+| test.cpp:18:19:18:24 | call to malloc | semmle.label | call to malloc |
+| test.cpp:24:21:24:31 | Call indirection [string] | semmle.label | Call indirection [string] |
+| test.cpp:26:13:26:15 | Load indirection [string] | semmle.label | Load indirection [string] |
+| test.cpp:26:18:26:23 | FieldAddress indirection | semmle.label | FieldAddress indirection |
+| test.cpp:26:18:26:23 | Load | semmle.label | Load |
+| test.cpp:29:32:29:34 | str indirection [string] | semmle.label | str indirection [string] |
+| test.cpp:30:13:30:15 | Load indirection [string] | semmle.label | Load indirection [string] |
+| test.cpp:30:18:30:23 | FieldAddress indirection | semmle.label | FieldAddress indirection |
+| test.cpp:30:18:30:23 | Load | semmle.label | Load |
+| test.cpp:34:21:34:31 | Call indirection [string] | semmle.label | Call indirection [string] |
+| test.cpp:35:21:35:23 | str indirection [string] | semmle.label | str indirection [string] |
+subpaths
+#select
+| test.cpp:26:18:26:23 | Load | test.cpp:18:19:18:24 | call to malloc | test.cpp:26:18:26:23 | Load | overrunning write allocated at $@ bounded by $@ | test.cpp:18:19:18:24 | call to malloc | call to malloc | test.cpp:26:31:26:39 | Convert | Convert |
+| test.cpp:30:18:30:23 | Load | test.cpp:18:19:18:24 | call to malloc | test.cpp:30:18:30:23 | Load | overrunning write allocated at $@ bounded by $@ | test.cpp:18:19:18:24 | call to malloc | call to malloc | test.cpp:30:31:30:39 | Convert | Convert |

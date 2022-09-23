@@ -1,20 +1,21 @@
+/**
+ * @id cpp/overrun-write
+ * @kind path-problem
+ */
+
 import cpp
 import experimental.semmle.code.cpp.dataflow.ProductFlow
 import semmle.code.cpp.ir.IR
 import semmle.code.cpp.valuenumbering.GlobalValueNumbering
 import semmle.code.cpp.models.interfaces.Allocation
 import semmle.code.cpp.models.interfaces.ArrayFunction
+import DataFlow::PathGraph
 
 class StringSizeConfiguration extends ProductFlow::Configuration {
   StringSizeConfiguration() { this = "StringSizeConfiguration" }
 
   override predicate isSourcePair(DataFlow::Node bufSource, DataFlow::Node sizeSource) {
-    exists(
-      GVN sizeGvn // TODO: use-use flow instead of GVN
-    |
-      bufSource.asConvertedExpr().(AllocationExpr).getSizeExpr() = sizeGvn.getAnExpr() and
-      sizeSource.asConvertedExpr() = sizeGvn.getAnExpr()
-    )
+    bufSource.asConvertedExpr().(AllocationExpr).getSizeExpr() = sizeSource.asConvertedExpr()
   }
 
   override predicate isSinkPair(DataFlow::Node bufSink, DataFlow::Node sizeSink) {
@@ -31,4 +32,6 @@ from
   StringSizeConfiguration conf, DataFlow::PathNode source1, DataFlow2::PathNode source2,
   DataFlow::PathNode sink1, DataFlow2::PathNode sink2
 where conf.hasFlowPath(source1, source2, sink1, sink2)
-select source1, source2, sink1, sink2
+// TODO: pull delta out and display it
+select sink1.getNode(), source1, sink1, "overrunning write allocated at $@ bounded by $@", source1,
+  source1.toString(), sink2, sink2.toString()

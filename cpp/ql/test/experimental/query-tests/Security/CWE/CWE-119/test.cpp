@@ -15,8 +15,8 @@ typedef struct
 
 string_t *mk_string_t(int size) {
     string_t *str = (string_t *) malloc(sizeof(string_t));
-    str->size = size;
     str->string = malloc(size);
+    str->size = size;
     return str;
 }
 
