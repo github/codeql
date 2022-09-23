@@ -14,7 +14,7 @@ class Module extends TModule {
   /** Gets the super class of this module, if any. */
   Module getSuperClass() { result = getSuperClass(this) }
 
-  /** Gets a sub class of this module, if any. */
+  /** Gets an immediate sub class of this module, if any. */
   Module getASubClass() { this = getSuperClass(result) }
 
   /** Gets a `prepend`ed module. */
