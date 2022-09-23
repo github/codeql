@@ -9,8 +9,7 @@ public class TestStartServiceToIntent {
         return null;
     }
 
-    static void sink(Object sink) {
-    }
+    static void sink(Object sink) {}
 
     public void test(Context ctx) {
         {
