@@ -7,6 +7,30 @@ classes.kt:
 #   32|         0: [Parameter] s
 #   32|           0: [TypeAccess] String
 #   32|       5: [BlockStmt] { ... }
+#  158|     2: [Method] fn1
+#  158|       3: [TypeAccess] Unit
+#  158|       5: [BlockStmt] { ... }
+#  159|         0: [LocalTypeDeclStmt] class ...
+#  159|           0: [LocalClass] X
+#  159|             1: [Constructor] X
+#  159|               5: [BlockStmt] { ... }
+#  159|                 0: [SuperConstructorInvocationStmt] super(...)
+#  159|                 1: [BlockStmt] { ... }
+#  162|     3: [Method] fn2
+#  162|       3: [TypeAccess] Object
+#  162|       5: [BlockStmt] { ... }
+#  162|         0: [ReturnStmt] return ...
+#  162|           0: [StmtExpr] <Stmt>
+#  162|             0: [BlockStmt] { ... }
+#  162|               0: [LocalTypeDeclStmt] class ...
+#  162|                 0: [AnonymousClass,LocalClass] new Object(...) { ... }
+#  162|                   1: [Constructor] 
+#  162|                     5: [BlockStmt] { ... }
+#  162|                       0: [SuperConstructorInvocationStmt] super(...)
+#  162|                       1: [BlockStmt] { ... }
+#  162|               1: [ExprStmt] <Expr>;
+#  162|                 0: [ClassInstanceExpr] new (...)
+#  162|                   -3: [TypeAccess] Object
 #    2|   2: [Class] ClassOne
 #    2|     1: [Constructor] ClassOne
 #    2|       5: [BlockStmt] { ... }
