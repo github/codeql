@@ -502,7 +502,12 @@ private API::Node getNodeFromSubPath(API::Node base, AccessPath subPath, int n) 
   result =
     getNodeFromSubPath(getNodeFromSubPath(base, subPath, n - 1), getSubPathAt(subPath, n - 1))
   or
-  typeStep(getNodeFromSubPath(base, subPath, n), result)
+  typeStep(getNodeFromSubPath(base, subPath, n), result) and
+  // Only apply type-steps strictly between the steps on the sub path, not before and after.
+  // Steps before/after lead to unnecessary transitive edges, which the user of the sub-path
+  // will themselves find by following type-steps.
+  n > 0 and
+  n < subPath.getNumToken()
 }
 
 /**
