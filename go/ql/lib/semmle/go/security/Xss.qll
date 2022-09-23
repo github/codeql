@@ -6,8 +6,11 @@ import go
 
 /** Provides classes and predicates shared between the XSS queries. */
 module SharedXss {
-  /** A data flow source for XSS vulnerabilities. */
-  abstract class Source extends DataFlow::Node { }
+  /**
+   * DEPRECATED: This class is not used.
+   * A data flow source for XSS vulnerabilities.
+   */
+  abstract deprecated class Source extends DataFlow::Node { }
 
   /** A data flow sink for XSS vulnerabilities. */
   abstract class Sink extends DataFlow::Node {
@@ -46,14 +49,14 @@ module SharedXss {
    * a content type that does not (case-insensitively) contain the string "html". This
    * is to prevent us from flagging plain-text or JSON responses as vulnerable.
    */
-  class HttpResponseBodySink extends Sink, HTTP::ResponseBody {
+  class HttpResponseBodySink extends Sink, Http::ResponseBody {
     HttpResponseBodySink() { not nonHtmlContentType(this) }
   }
 
   /**
    * An expression that is rendered as part of a template.
    */
-  class RawTemplateInstantiationSink extends HttpResponseBodySink, HTTP::TemplateResponseBody {
+  class RawTemplateInstantiationSink extends HttpResponseBodySink, Http::TemplateResponseBody {
     override string getSinkKind() { result = "rawtemplate" }
 
     override Locatable getAssociatedLoc() { result = this.getRead().getEnclosingTextNode() }
@@ -62,7 +65,7 @@ module SharedXss {
   /**
    * Holds if `body` may send a response with a content type other than HTML.
    */
-  private predicate nonHtmlContentType(HTTP::ResponseBody body) {
+  private predicate nonHtmlContentType(Http::ResponseBody body) {
     not htmlTypeSpecified(body) and
     (
       exists(body.getAContentType())
@@ -90,7 +93,7 @@ module SharedXss {
   /**
    * Holds if `body` specifies the response's content type to be HTML.
    */
-  private predicate htmlTypeSpecified(HTTP::ResponseBody body) {
+  private predicate htmlTypeSpecified(Http::ResponseBody body) {
     body.getAContentType().regexpMatch("(?i).*html.*")
   }
 

@@ -3,14 +3,14 @@
 import java
 
 /**
- * The class `Pattern` for pattern match.
+ * The class `java.util.regex.Pattern`.
  */
 class Pattern extends RefType {
   Pattern() { this.hasQualifiedName("java.util.regex", "Pattern") }
 }
 
 /**
- * The method `compile` for `Pattern`.
+ * The method `compile` of `java.util.regex.Pattern`.
  */
 class PatternCompileMethod extends Method {
   PatternCompileMethod() {
@@ -20,7 +20,7 @@ class PatternCompileMethod extends Method {
 }
 
 /**
- * The method `matches` for `Pattern`.
+ * The method `matches` of `java.util.regex.Pattern`.
  */
 class PatternMatchMethod extends Method {
   PatternMatchMethod() {
@@ -30,7 +30,7 @@ class PatternMatchMethod extends Method {
 }
 
 /**
- * The method `matcher` for `Pattern`.
+ * The method `matcher` of `java.util.regex.Pattern`.
  */
 class PatternMatcherMethod extends Method {
   PatternMatcherMethod() {
@@ -40,7 +40,7 @@ class PatternMatcherMethod extends Method {
 }
 
 /**
- * The method `matches` for `String`.
+ * The method `matches` of `java.lang.String`.
  */
 class StringMatchMethod extends Method {
   StringMatchMethod() {

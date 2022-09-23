@@ -12,6 +12,7 @@ private class SystemComponentModelPropertyDescriptorCollectionFlowModelCsv exten
         "System.ComponentModel;PropertyDescriptorCollection;false;Add;(System.ComponentModel.PropertyDescriptor);;Argument[0].Property[System.Collections.Generic.KeyValuePair<,>.Value];Argument[this].Element.Property[System.Collections.Generic.KeyValuePair<,>.Value];value;manual",
         "System.ComponentModel;PropertyDescriptorCollection;false;Add;(System.Object);;Argument[0].Property[System.Collections.Generic.KeyValuePair<,>.Key];Argument[this].Element.Property[System.Collections.Generic.KeyValuePair<,>.Key];value;manual",
         "System.ComponentModel;PropertyDescriptorCollection;false;Add;(System.Object);;Argument[0].Property[System.Collections.Generic.KeyValuePair<,>.Value];Argument[this].Element.Property[System.Collections.Generic.KeyValuePair<,>.Value];value;manual",
+        "System.ComponentModel;PropertyDescriptorCollection;false;Clear;();;Argument[this].WithoutElement;Argument[this];value;manual",
         "System.ComponentModel;PropertyDescriptorCollection;false;Find;(System.String,System.Boolean);;Argument[this].Element;ReturnValue;value;manual",
         "System.ComponentModel;PropertyDescriptorCollection;false;GetEnumerator;();;Argument[this].Element;ReturnValue.Property[System.Collections.IEnumerator.Current];value;manual",
         "System.ComponentModel;PropertyDescriptorCollection;false;Insert;(System.Int32,System.ComponentModel.PropertyDescriptor);;Argument[1];Argument[this].Element;value;manual",
@@ -37,6 +38,7 @@ private class SystemComponentModelEventDescriptorCollectionFlowModelCsv extends 
     row =
       [
         "System.ComponentModel;EventDescriptorCollection;false;Add;(System.ComponentModel.EventDescriptor);;Argument[0];Argument[this].Element;value;manual",
+        "System.ComponentModel;EventDescriptorCollection;false;Clear;();;Argument[this].WithoutElement;Argument[this];value;manual",
         "System.ComponentModel;EventDescriptorCollection;false;Find;(System.String,System.Boolean);;Argument[this].Element;ReturnValue;value;manual",
         "System.ComponentModel;EventDescriptorCollection;false;GetEnumerator;();;Argument[this].Element;ReturnValue.Property[System.Collections.IEnumerator.Current];value;manual",
         "System.ComponentModel;EventDescriptorCollection;false;Insert;(System.Int32,System.ComponentModel.EventDescriptor);;Argument[1];Argument[this].Element;value;manual",

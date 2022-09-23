@@ -56,23 +56,6 @@ def test_two_class_hierarchy(generate):
     ]
 
 
-def test_complex_hierarchy_topologically_ordered(generate):
-    a = cpp.Class(name="A")
-    b = cpp.Class(name="B")
-    c = cpp.Class(name="C", bases=[a])
-    d = cpp.Class(name="D", bases=[a])
-    e = cpp.Class(name="E", bases=[b, c, d], final=True, trap_name="Es")
-    f = cpp.Class(name="F", bases=[c], final=True, trap_name="Fs")
-    assert generate([
-        schema.Class(name="F", bases=["C"]),
-        schema.Class(name="B", derived={"E"}),
-        schema.Class(name="D", bases=["A"], derived={"E"}),
-        schema.Class(name="C", bases=["A"], derived={"E", "F"}),
-        schema.Class(name="E", bases=["B", "C", "D"]),
-        schema.Class(name="A", derived={"C", "D"}),
-    ]) == [a, b, c, d, e, f]
-
-
 @pytest.mark.parametrize("type,expected", [
     ("a", "a"),
     ("string", "std::string"),
@@ -153,10 +136,10 @@ def test_classes_with_dirs(generate_grouped):
     cbase = cpp.Class(name="CBase")
     assert generate_grouped([
         schema.Class(name="A"),
-        schema.Class(name="B", dir=pathlib.Path("foo")),
-        schema.Class(name="C", bases=["CBase"], dir=pathlib.Path("bar")),
-        schema.Class(name="CBase", derived={"C"}, dir=pathlib.Path("bar")),
-        schema.Class(name="D", dir=pathlib.Path("foo/bar/baz")),
+        schema.Class(name="B", group="foo"),
+        schema.Class(name="CBase", derived={"C"}, group="bar"),
+        schema.Class(name="C", bases=["CBase"], group="bar"),
+        schema.Class(name="D", group="foo/bar/baz"),
     ]) == {
         ".": [cpp.Class(name="A", trap_name="As", final=True)],
         "foo": [cpp.Class(name="B", trap_name="Bs", final=True)],

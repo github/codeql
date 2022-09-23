@@ -41,7 +41,7 @@ enum class Severity(val sev: Int) {
 fun fn1() {
     /**
      * A variable.
-    */
+     */
     val a = 1
 }
 
@@ -55,4 +55,30 @@ class InitBlock {
      * An init block comment
      */
     init { }
+}
+
+class X {
+    /**
+     * A prop comment
+     */
+    val prop: Int
+        /**
+         * An accessor comment
+         */
+        get() = 5
+
+    val l: Lazy<Int> = lazy(
+        /**
+         * An anonymous function comment
+         */
+        fun(): Int {
+            return 5
+        })
+
+    fun fn() {
+        /**
+         * A local function comment
+         */
+        fun localFn() {}
+    }
 }

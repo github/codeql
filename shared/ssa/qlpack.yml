@@ -1,0 +1,4 @@
+name: codeql/ssa
+version: 0.0.1-dev
+groups: shared
+library: true

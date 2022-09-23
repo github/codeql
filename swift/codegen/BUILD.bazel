@@ -1,26 +1,16 @@
 load("@swift_codegen_deps//:requirements.bzl", "requirement")
 
-filegroup(
-    name = "schema",
-    srcs = ["schema.yml"],
-    visibility = ["//swift:__subpackages__"],
-)
-
-filegroup(
-    name = "schema_includes",
-    srcs = glob(["*.dbscheme"]),
-    visibility = ["//swift:__subpackages__"],
-)
-
 py_binary(
     name = "codegen",
     srcs = ["codegen.py"],
     data = [
-        ":schema",
-        ":schema_includes",
+        "//swift:schema",
+        "//swift:schema_includes",
         "//swift/codegen/templates:cpp",
         "//swift/codegen/templates:trap",
     ],
     visibility = ["//swift:__subpackages__"],
-    deps = ["//swift/codegen/generators"],
+    deps = [
+        "//swift/codegen/generators",
+    ],
 )

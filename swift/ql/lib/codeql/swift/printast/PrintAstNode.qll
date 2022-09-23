@@ -28,11 +28,7 @@ private predicate shouldPrint(Locatable e) { any(PrintAstConfiguration config).s
 /**
  * An AST node that should be printed.
  */
-private newtype TPrintAstNode =
-  TLocatable(Locatable ast) {
-    // Only consider resolved nodes (that is not within the hidden conversion AST)
-    ast = ast.resolve()
-  }
+private newtype TPrintAstNode = TLocatable(Locatable ast)
 
 /**
  * A node in the output tree.
@@ -47,7 +43,7 @@ class PrintAstNode extends TPrintAstNode {
    * Gets the child node at index `index`. Child indices must be unique,
    * but need not be contiguous.
    */
-  abstract predicate hasChild(PrintAstNode child, int index, string accessor);
+  abstract predicate hasChild(PrintAstNode child, int index, string label);
 
   /**
    * Holds if this node should be printed in the output.
@@ -66,6 +62,14 @@ class PrintAstNode extends TPrintAstNode {
   string getProperty(string key) { none() }
 }
 
+private string prettyPrint(Locatable e) {
+  result = "[" + concat(e.getPrimaryQlClasses(), ", ") + "] " + e
+}
+
+private class Unresolved extends Locatable {
+  Unresolved() { this != this.resolve() }
+}
+
 /**
  * A graph node representing a real Locatable node.
  */
@@ -74,13 +78,60 @@ class PrintLocatable extends PrintAstNode, TLocatable {
 
   PrintLocatable() { this = TLocatable(ast) }
 
+  override string toString() { result = prettyPrint(ast) }
+
   final override predicate shouldBePrinted() { shouldPrint(ast) }
 
-  override predicate hasChild(PrintAstNode child, int index, string accessor) {
-    child = TLocatable(getChildAndAccessor(ast, index, accessor))
+  override predicate hasChild(PrintAstNode child, int index, string label) {
+    exists(Locatable c, int i, string accessor |
+      c = getChildAndAccessor(ast, i, accessor) and
+      (
+        // use even indexes for normal children, leaving odd slots for conversions if any
+        child = TLocatable(c) and index = 2 * i and label = accessor
+        or
+        child = TLocatable(c.getFullyUnresolved().(Unresolved)) and
+        index = 2 * i + 1 and
+        (
+          if c instanceof Expr
+          then label = accessor + ".getFullyConverted()"
+          else label = accessor + ".getFullyUnresolved()"
+        )
+      )
+    )
   }
 
-  override string toString() { result = "[" + concat(ast.getPrimaryQlClasses(), ", ") + "] " + ast }
-
   final override Location getLocation() { result = ast.getLocation() }
+}
+
+/**
+ * A specialization of graph node for "unresolved" children, that is nodes in
+ * the parallel conversion AST.
+ */
+class PrintUnresolved extends PrintLocatable {
+  override Unresolved ast;
+
+  override predicate hasChild(PrintAstNode child, int index, string label) {
+    // only print immediate unresolved children from the "parallel" AST
+    child = TLocatable(getImmediateChildAndAccessor(ast, index, label).(Unresolved))
+  }
+}
+
+/**
+ * A specialization of graph node for `VarDecl`, to add typing information.
+ */
+class PrintVarDecl extends PrintLocatable {
+  override VarDecl ast;
+
+  override string getProperty(string key) { key = "Type" and result = ast.getType().toString() }
+}
+
+/**
+ * A specialization of graph node for `AbstractFunctionDecl`, to add typing information.
+ */
+class PrintAbstractFunctionDecl extends PrintLocatable {
+  override AbstractFunctionDecl ast;
+
+  override string getProperty(string key) {
+    key = "InterfaceType" and result = ast.getInterfaceType().toString()
+  }
 }

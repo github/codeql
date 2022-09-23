@@ -186,7 +186,9 @@ class QueryDoc extends QLDoc {
   override string getAPrimaryQlClass() { result = "QueryDoc" }
 
   /** Gets the @kind for the query */
-  string getQueryKind() { result = this.getContents().regexpCapture("(?s).*@kind (\\w+)\\s.*", 1) }
+  string getQueryKind() {
+    result = this.getContents().regexpCapture("(?s).*@kind ([\\w-]+)\\s.*", 1)
+  }
 
   /** Gets the id part (without language) of the @id */
   string getQueryId() {
@@ -241,6 +243,12 @@ class Select extends TSelect, AstNode {
    * Gets the `i`th expression in the `select` clause.
    */
   Expr getExpr(int i) { toQL(result) = sel.getChild(_).(QL::AsExprs).getChild(i) }
+
+  Expr getMessage() {
+    if this.getQueryDoc().getQueryKind() = "path-problem"
+    then result = this.getExpr(3)
+    else result = this.getExpr(1)
+  }
 
   // TODO: This gets the `i`th order-by, but some expressions might not have an order-by.
   Expr getOrderBy(int i) { toQL(result) = sel.getChild(_).(QL::OrderBys).getChild(i).getChild(0) }
@@ -1402,6 +1410,14 @@ class ComparisonFormula extends TComparisonFormula, Formula {
     pred = directMember("getLeftOperand") and result = this.getLeftOperand()
     or
     pred = directMember("getRightOperand") and result = this.getRightOperand()
+  }
+
+  /** Holds if this comparison has the operands `a` and `b` (in any order). */
+  pragma[noinline]
+  predicate hasOperands(Expr a, Expr b) {
+    this.getLeftOperand() = a and this.getRightOperand() = b
+    or
+    this.getLeftOperand() = b and this.getRightOperand() = a
   }
 }
 

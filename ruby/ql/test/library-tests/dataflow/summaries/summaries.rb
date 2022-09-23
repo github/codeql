@@ -115,3 +115,6 @@ Foo.sinkAnyArg(key: tainted) # $ hasValueFlow=tainted
 
 Foo.sinkAnyNamedArg(tainted)
 Foo.sinkAnyNamedArg(key: tainted) # $ hasValueFlow=tainted
+
+"magic_string".method(tainted) # $ hasValueFlow=tainted
+"magic_string2".method(tainted)

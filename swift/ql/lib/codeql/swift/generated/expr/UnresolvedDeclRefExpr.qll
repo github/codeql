@@ -2,8 +2,9 @@
 private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
 import codeql.swift.elements.expr.Expr
+import codeql.swift.elements.UnresolvedElement
 
-class UnresolvedDeclRefExprBase extends Synth::TUnresolvedDeclRefExpr, Expr {
+class UnresolvedDeclRefExprBase extends Synth::TUnresolvedDeclRefExpr, Expr, UnresolvedElement {
   override string getAPrimaryQlClass() { result = "UnresolvedDeclRefExpr" }
 
   string getName() {

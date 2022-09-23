@@ -9,11 +9,7 @@ import go
  * Extend this class to refine existing API models. If you want to model new APIs,
  * extend `EmailData::Range` instead.
  */
-class EmailData extends DataFlow::Node {
-  EmailData::Range self;
-
-  EmailData() { this = self }
-}
+class EmailData extends DataFlow::Node instanceof EmailData::Range { }
 
 /** Provides classes for working with data that is incorporated into an email. */
 module EmailData {

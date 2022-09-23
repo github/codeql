@@ -1,6 +1,6 @@
 /**
- * @name URL matched by permissive `.` in the regular expression
- * @description URL validated with permissive `.` in regex  are possibly vulnerable
+ * @name URL matched by permissive `.` in a regular expression
+ * @description URLs validated with a permissive `.` in regular expressions may be vulnerable
  *              to an authorization bypass.
  * @kind path-problem
  * @problem.severity warning

@@ -116,6 +116,11 @@ nodes
 | classnames.js:15:47:15:63 | clsx(window.name) |
 | classnames.js:15:52:15:62 | window.name |
 | classnames.js:15:52:15:62 | window.name |
+| classnames.js:17:32:17:79 | `<span  ... <span>` |
+| classnames.js:17:32:17:79 | `<span  ... <span>` |
+| classnames.js:17:48:17:64 | clsx(window.name) |
+| classnames.js:17:53:17:63 | window.name |
+| classnames.js:17:53:17:63 | window.name |
 | clipboard.ts:8:11:8:51 | html |
 | clipboard.ts:8:11:8:51 | html |
 | clipboard.ts:8:18:8:51 | clipboa ... /html') |
@@ -1187,6 +1192,10 @@ edges
 | classnames.js:15:47:15:63 | clsx(window.name) | classnames.js:15:31:15:78 | `<span  ... <span>` |
 | classnames.js:15:52:15:62 | window.name | classnames.js:15:47:15:63 | clsx(window.name) |
 | classnames.js:15:52:15:62 | window.name | classnames.js:15:47:15:63 | clsx(window.name) |
+| classnames.js:17:48:17:64 | clsx(window.name) | classnames.js:17:32:17:79 | `<span  ... <span>` |
+| classnames.js:17:48:17:64 | clsx(window.name) | classnames.js:17:32:17:79 | `<span  ... <span>` |
+| classnames.js:17:53:17:63 | window.name | classnames.js:17:48:17:64 | clsx(window.name) |
+| classnames.js:17:53:17:63 | window.name | classnames.js:17:48:17:64 | clsx(window.name) |
 | clipboard.ts:8:11:8:51 | html | clipboard.ts:15:25:15:28 | html |
 | clipboard.ts:8:11:8:51 | html | clipboard.ts:15:25:15:28 | html |
 | clipboard.ts:8:11:8:51 | html | clipboard.ts:15:25:15:28 | html |
@@ -2182,6 +2191,7 @@ edges
 | classnames.js:11:31:11:79 | `<span  ... <span>` | classnames.js:10:45:10:55 | window.name | classnames.js:11:31:11:79 | `<span  ... <span>` | Cross-site scripting vulnerability due to $@. | classnames.js:10:45:10:55 | window.name | user-provided value |
 | classnames.js:13:31:13:83 | `<span  ... <span>` | classnames.js:13:57:13:67 | window.name | classnames.js:13:31:13:83 | `<span  ... <span>` | Cross-site scripting vulnerability due to $@. | classnames.js:13:57:13:67 | window.name | user-provided value |
 | classnames.js:15:31:15:78 | `<span  ... <span>` | classnames.js:15:52:15:62 | window.name | classnames.js:15:31:15:78 | `<span  ... <span>` | Cross-site scripting vulnerability due to $@. | classnames.js:15:52:15:62 | window.name | user-provided value |
+| classnames.js:17:32:17:79 | `<span  ... <span>` | classnames.js:17:53:17:63 | window.name | classnames.js:17:32:17:79 | `<span  ... <span>` | Cross-site scripting vulnerability due to $@. | classnames.js:17:53:17:63 | window.name | user-provided value |
 | clipboard.ts:15:25:15:28 | html | clipboard.ts:8:18:8:51 | clipboa ... /html') | clipboard.ts:15:25:15:28 | html | Cross-site scripting vulnerability due to $@. | clipboard.ts:8:18:8:51 | clipboa ... /html') | user-provided value |
 | clipboard.ts:24:23:24:58 | e.clipb ... /html') | clipboard.ts:24:23:24:58 | e.clipb ... /html') | clipboard.ts:24:23:24:58 | e.clipb ... /html') | Cross-site scripting vulnerability due to $@. | clipboard.ts:24:23:24:58 | e.clipb ... /html') | user-provided value |
 | clipboard.ts:29:19:29:54 | e.clipb ... /html') | clipboard.ts:29:19:29:54 | e.clipb ... /html') | clipboard.ts:29:19:29:54 | e.clipb ... /html') | Cross-site scripting vulnerability due to $@. | clipboard.ts:29:19:29:54 | e.clipb ... /html') | user-provided value |

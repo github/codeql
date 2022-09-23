@@ -83,16 +83,12 @@ private module HttpProxy {
       )
     }
 
-    override Parameter getRequestParameter() {
-      exists(int req | routeHandlingEventHandler(event, req, _) |
-        result = getFunction().getParameter(req)
-      )
+    override DataFlow::ParameterNode getRequestParameter() {
+      exists(int req | routeHandlingEventHandler(event, req, _) | result = getParameter(req))
     }
 
-    override Parameter getResponseParameter() {
-      exists(int res | routeHandlingEventHandler(event, _, res) |
-        result = getFunction().getParameter(res)
-      )
+    override DataFlow::ParameterNode getResponseParameter() {
+      exists(int res | routeHandlingEventHandler(event, _, res) | result = getParameter(res))
     }
   }
 }

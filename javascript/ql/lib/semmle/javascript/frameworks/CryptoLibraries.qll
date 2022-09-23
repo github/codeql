@@ -8,11 +8,11 @@ import semmle.javascript.security.CryptoAlgorithms
 /**
  * An application of a cryptographic algorithm.
  */
-abstract class CryptographicOperation extends Expr {
+abstract class CryptographicOperation extends DataFlow::Node {
   /**
    * Gets the input the algorithm is used on, e.g. the plain text input to be encrypted.
    */
-  abstract Expr getInput();
+  abstract DataFlow::Node getInput();
 
   /**
    * Gets the applied algorithm.
@@ -46,11 +46,9 @@ abstract class CryptographicKeyCreation extends DataFlow::Node {
 }
 
 /**
- * A key used in a cryptographic algorithm, viewed as a `CredentialsExpr`.
+ * A key used in a cryptographic algorithm, viewed as a `CredentialsNode`.
  */
-class CryptographicKeyCredentialsExpr extends CredentialsExpr {
-  CryptographicKeyCredentialsExpr() { this = any(CryptographicKey k).asExpr() }
-
+class CryptographicKeyCredentialsExpr extends CredentialsNode instanceof CryptographicKey {
   override string getCredentialsKind() { result = "key" }
 }
 
@@ -58,8 +56,8 @@ class CryptographicKeyCredentialsExpr extends CredentialsExpr {
  * A model of the asmCrypto library.
  */
 private module AsmCrypto {
-  private class Apply extends CryptographicOperation {
-    Expr input;
+  private class Apply extends CryptographicOperation instanceof DataFlow::CallNode {
+    DataFlow::Node input;
     CryptographicAlgorithm algorithm; // non-functional
 
     Apply() {
@@ -73,17 +71,15 @@ private module AsmCrypto {
        *      ```
        */
 
-      exists(DataFlow::CallNode mce | this = mce.asExpr() |
-        exists(DataFlow::SourceNode asmCrypto, string algorithmName |
-          asmCrypto = DataFlow::globalVarRef("asmCrypto") and
-          algorithm.matchesName(algorithmName) and
-          mce = asmCrypto.getAPropertyRead(algorithmName).getAMemberCall(_) and
-          input = mce.getAnArgument().asExpr()
-        )
+      exists(DataFlow::SourceNode asmCrypto, string algorithmName |
+        asmCrypto = DataFlow::globalVarRef("asmCrypto") and
+        algorithm.matchesName(algorithmName) and
+        this = asmCrypto.getAPropertyRead(algorithmName).getAMemberCall(_) and
+        input = this.getAnArgument()
       )
     }
 
-    override Expr getInput() { result = input }
+    override DataFlow::Node getInput() { result = input }
 
     override CryptographicAlgorithm getAlgorithm() { result = algorithm }
   }
@@ -97,9 +93,8 @@ private module BrowserIdCrypto {
     Key() { this = any(Apply apply).getKey() }
   }
 
-  private class Apply extends CryptographicOperation {
+  private class Apply extends CryptographicOperation instanceof DataFlow::MethodCallNode {
     CryptographicAlgorithm algorithm; // non-functional
-    MethodCallExpr mce;
 
     Apply() {
       /*
@@ -118,7 +113,6 @@ private module BrowserIdCrypto {
        *      ```
        */
 
-      this = mce and
       exists(
         DataFlow::SourceNode mod, DataFlow::Node algorithmNameNode, DataFlow::CallNode keygen,
         DataFlow::FunctionNode callback
@@ -128,15 +122,15 @@ private module BrowserIdCrypto {
         algorithmNameNode = keygen.getOptionArgument(0, "algorithm") and
         algorithm.matchesName(algorithmNameNode.getStringValue()) and
         callback = keygen.getCallback(1) and
-        this = mod.getAMemberCall("sign").asExpr()
+        this = mod.getAMemberCall("sign")
       )
     }
 
-    override Expr getInput() { result = mce.getArgument(0) }
+    override DataFlow::Node getInput() { result = super.getArgument(0) }
 
     override CryptographicAlgorithm getAlgorithm() { result = algorithm }
 
-    DataFlow::Node getKey() { result.asExpr() = mce.getArgument(1) }
+    DataFlow::Node getKey() { result = super.getArgument(1) }
   }
 }
 
@@ -217,14 +211,12 @@ private module NodeJSCrypto {
     override predicate isSymmetricKey() { none() }
   }
 
-  private class Apply extends CryptographicOperation, MethodCallExpr {
+  private class Apply extends CryptographicOperation instanceof DataFlow::MethodCallNode {
     InstantiatedAlgorithm instantiation;
 
-    Apply() {
-      this = instantiation.getAMethodCall(any(string m | m = "update" or m = "write")).asExpr()
-    }
+    Apply() { this = instantiation.getAMethodCall(any(string m | m = "update" or m = "write")) }
 
-    override Expr getInput() { result = this.getArgument(0) }
+    override DataFlow::Node getInput() { result = super.getArgument(0) }
 
     override CryptographicAlgorithm getAlgorithm() { result = instantiation.getAlgorithm() }
   }
@@ -260,7 +252,7 @@ private module CryptoJS {
   /**
    *  Matches `CryptoJS.<algorithmName>` and `require("crypto-js/<algorithmName>")`
    */
-  private DataFlow::SourceNode getAlgorithmExpr(CryptographicAlgorithm algorithm) {
+  private DataFlow::SourceNode getAlgorithmNode(CryptographicAlgorithm algorithm) {
     exists(string algorithmName | algorithm.matchesName(algorithmName) |
       exists(DataFlow::SourceNode mod | mod = DataFlow::moduleImport("crypto-js") |
         result = mod.getAPropertyRead(algorithmName) or
@@ -274,7 +266,9 @@ private module CryptoJS {
     )
   }
 
-  private DataFlow::CallNode getEncryptionApplication(Expr input, CryptographicAlgorithm algorithm) {
+  private DataFlow::CallNode getEncryptionApplication(
+    DataFlow::Node input, CryptographicAlgorithm algorithm
+  ) {
     /*
      *    ```
      *    var CryptoJS = require("crypto-js");
@@ -288,11 +282,13 @@ private module CryptoJS {
      *    Also matches where `CryptoJS.<algorithmName>` has been replaced by `require("crypto-js/<algorithmName>")`
      */
 
-    result = getAlgorithmExpr(algorithm).getAMemberCall("encrypt") and
-    input = result.getArgument(0).asExpr()
+    result = getAlgorithmNode(algorithm).getAMemberCall("encrypt") and
+    input = result.getArgument(0)
   }
 
-  private DataFlow::CallNode getDirectApplication(Expr input, CryptographicAlgorithm algorithm) {
+  private DataFlow::CallNode getDirectApplication(
+    DataFlow::Node input, CryptographicAlgorithm algorithm
+  ) {
     /*
      *    ```
      *    var CryptoJS = require("crypto-js");
@@ -307,20 +303,20 @@ private module CryptoJS {
      *    Also matches where `CryptoJS.<algorithmName>` has been replaced by `require("crypto-js/<algorithmName>")`
      */
 
-    result = getAlgorithmExpr(algorithm).getACall() and
-    input = result.getArgument(0).asExpr()
+    result = getAlgorithmNode(algorithm).getACall() and
+    input = result.getArgument(0)
   }
 
   private class Apply extends CryptographicOperation {
-    Expr input;
+    DataFlow::Node input;
     CryptographicAlgorithm algorithm; // non-functional
 
     Apply() {
-      this = getEncryptionApplication(input, algorithm).asExpr() or
-      this = getDirectApplication(input, algorithm).asExpr()
+      this = getEncryptionApplication(input, algorithm) or
+      this = getDirectApplication(input, algorithm)
     }
 
-    override Expr getInput() { result = input }
+    override DataFlow::Node getInput() { result = input }
 
     override CryptographicAlgorithm getAlgorithm() { result = algorithm }
   }
@@ -328,7 +324,7 @@ private module CryptoJS {
   private class Key extends CryptographicKey {
     Key() {
       exists(DataFlow::SourceNode e, CryptographicAlgorithm algorithm |
-        e = getAlgorithmExpr(algorithm)
+        e = getAlgorithmNode(algorithm)
       |
         exists(string name |
           name = "encrypt" or
@@ -351,7 +347,7 @@ private module CryptoJS {
     CreateKey() {
       // var key = CryptoJS.PBKDF2(password, salt, { keySize: 8 });
       this =
-        getAlgorithmExpr(any(CryptographicAlgorithm algo | algo.getName() = algorithm)).getACall() and
+        getAlgorithmNode(any(CryptographicAlgorithm algo | algo.getName() = algorithm)).getACall() and
       optionArg = 2
       or
       // var key = CryptoJS.algo.PBKDF2.create({ keySize: 8 });
@@ -378,8 +374,8 @@ private module CryptoJS {
  * A model of the TweetNaCl library.
  */
 private module TweetNaCl {
-  private class Apply extends CryptographicOperation instanceof MethodCallExpr {
-    Expr input;
+  private class Apply extends CryptographicOperation instanceof DataFlow::CallNode {
+    DataFlow::Node input;
     CryptographicAlgorithm algorithm;
 
     Apply() {
@@ -400,12 +396,12 @@ private module TweetNaCl {
         name = "sign" and algorithm.matchesName("ed25519")
       |
         (mod = DataFlow::moduleImport("nacl") or mod = DataFlow::moduleImport("nacl-fast")) and
-        this = mod.getAMemberCall(name).asExpr() and
+        this = mod.getAMemberCall(name) and
         super.getArgument(0) = input
       )
     }
 
-    override Expr getInput() { result = input }
+    override DataFlow::Node getInput() { result = input }
 
     override CryptographicAlgorithm getAlgorithm() { result = algorithm }
   }
@@ -421,7 +417,7 @@ private module HashJs {
    * - `require("hash.js/lib/hash/<algorithmName>")`()
    * - `require("hash.js/lib/hash/sha/<sha-algorithm-suffix>")`()
    */
-  private DataFlow::CallNode getAlgorithmExpr(CryptographicAlgorithm algorithm) {
+  private DataFlow::CallNode getAlgorithmNode(CryptographicAlgorithm algorithm) {
     exists(string algorithmName | algorithm.matchesName(algorithmName) |
       result = DataFlow::moduleMember("hash.js", algorithmName).getACall()
       or
@@ -438,8 +434,8 @@ private module HashJs {
     )
   }
 
-  private class Apply extends CryptographicOperation instanceof MethodCallExpr {
-    Expr input;
+  private class Apply extends CryptographicOperation instanceof DataFlow::CallNode {
+    DataFlow::Node input;
     CryptographicAlgorithm algorithm; // non-functional
 
     Apply() {
@@ -456,11 +452,11 @@ private module HashJs {
        *      Also matches where `hash.<algorithmName>()` has been replaced by a more specific require a la `require("hash.js/lib/hash/sha/512")`
        */
 
-      this = getAlgorithmExpr(algorithm).getAMemberCall("update").asExpr() and
+      this = getAlgorithmNode(algorithm).getAMemberCall("update") and
       input = super.getArgument(0)
     }
 
-    override Expr getInput() { result = input }
+    override DataFlow::Node getInput() { result = input }
 
     override CryptographicAlgorithm getAlgorithm() { result = algorithm }
   }
@@ -492,7 +488,7 @@ private module Forge {
           // `require('forge').cipher.createCipher("3DES-CBC").update("secret", "key");`
           (createName = "createCipher" or createName = "createDecipher") and
           this = mod.getAPropertyRead("cipher").getAMemberCall(createName) and
-          this.getArgument(0).asExpr().mayHaveStringValue(cipherName) and
+          this.getArgument(0).mayHaveStringValue(cipherName) and
           cipherName = cipherPrefix + "-" + cipherSuffix and
           cipherSuffix = ["CBC", "CFB", "CTR", "ECB", "GCM", "OFB"] and
           algorithmName = cipherPrefix and
@@ -531,19 +527,19 @@ private module Forge {
     override CryptographicAlgorithm getAlgorithm() { result = algorithm }
   }
 
-  private class Apply extends CryptographicOperation instanceof MethodCallExpr {
-    Expr input;
+  private class Apply extends CryptographicOperation instanceof DataFlow::CallNode {
+    DataFlow::Node input;
     CryptographicAlgorithm algorithm; // non-functional
 
     Apply() {
       exists(Cipher cipher |
-        this = cipher.getAMemberCall("update").asExpr() and
+        this = cipher.getAMemberCall("update") and
         super.getArgument(0) = input and
         algorithm = cipher.getAlgorithm()
       )
     }
 
-    override Expr getInput() { result = input }
+    override DataFlow::Node getInput() { result = input }
 
     override CryptographicAlgorithm getAlgorithm() { result = algorithm }
   }
@@ -590,8 +586,8 @@ private module Forge {
  * A model of the md5 library.
  */
 private module Md5 {
-  private class Apply extends CryptographicOperation instanceof CallExpr {
-    Expr input;
+  private class Apply extends CryptographicOperation instanceof DataFlow::CallNode {
+    DataFlow::Node input;
     CryptographicAlgorithm algorithm;
 
     Apply() {
@@ -599,12 +595,12 @@ private module Md5 {
       exists(DataFlow::SourceNode mod |
         mod = DataFlow::moduleImport("md5") and
         algorithm.matchesName("MD5") and
-        this = mod.getACall().asExpr() and
+        this = mod.getACall() and
         super.getArgument(0) = input
       )
     }
 
-    override Expr getInput() { result = input }
+    override DataFlow::Node getInput() { result = input }
 
     override CryptographicAlgorithm getAlgorithm() { result = algorithm }
   }
@@ -614,8 +610,8 @@ private module Md5 {
  * A model of the bcrypt, bcryptjs, bcrypt-nodejs libraries.
  */
 private module Bcrypt {
-  private class Apply extends CryptographicOperation instanceof MethodCallExpr {
-    Expr input;
+  private class Apply extends CryptographicOperation instanceof DataFlow::CallNode {
+    DataFlow::Node input;
     CryptographicAlgorithm algorithm;
 
     Apply() {
@@ -632,12 +628,12 @@ private module Bcrypt {
           methodName = "hashSync"
         ) and
         mod = DataFlow::moduleImport(moduleName) and
-        this = mod.getAMemberCall(methodName).asExpr() and
+        this = mod.getAMemberCall(methodName) and
         super.getArgument(0) = input
       )
     }
 
-    override Expr getInput() { result = input }
+    override DataFlow::Node getInput() { result = input }
 
     override CryptographicAlgorithm getAlgorithm() { result = algorithm }
   }
@@ -647,23 +643,23 @@ private module Bcrypt {
  * A model of the hasha library.
  */
 private module Hasha {
-  private class Apply extends CryptographicOperation instanceof CallExpr {
-    Expr input;
+  private class Apply extends CryptographicOperation instanceof DataFlow::CallNode {
+    DataFlow::Node input;
     CryptographicAlgorithm algorithm;
 
     Apply() {
       // `require('hasha')('unicorn', { algorithm: "md5" });`
-      exists(DataFlow::SourceNode mod, string algorithmName, Expr algorithmNameNode |
+      exists(DataFlow::SourceNode mod, string algorithmName, DataFlow::Node algorithmNameNode |
         mod = DataFlow::moduleImport("hasha") and
-        this = mod.getACall().asExpr() and
+        this = mod.getACall() and
         super.getArgument(0) = input and
         algorithm.matchesName(algorithmName) and
-        super.hasOptionArgument(1, "algorithm", algorithmNameNode) and
+        super.getOptionArgument(1, "algorithm") = algorithmNameNode and
         algorithmNameNode.mayHaveStringValue(algorithmName)
       )
     }
 
-    override Expr getInput() { result = input }
+    override DataFlow::Node getInput() { result = input }
 
     override CryptographicAlgorithm getAlgorithm() { result = algorithm }
   }

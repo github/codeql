@@ -2,8 +2,9 @@
 private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
 import codeql.swift.elements.expr.Expr
+import codeql.swift.elements.UnresolvedElement
 
-class UnresolvedDotExprBase extends Synth::TUnresolvedDotExpr, Expr {
+class UnresolvedDotExprBase extends Synth::TUnresolvedDotExpr, Expr, UnresolvedElement {
   override string getAPrimaryQlClass() { result = "UnresolvedDotExpr" }
 
   Expr getImmediateBase() {

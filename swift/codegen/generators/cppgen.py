@@ -16,7 +16,6 @@ import pathlib
 from typing import Dict
 
 import inflection
-from toposort import toposort_flatten
 
 from swift.codegen.lib import cpp, schema
 
@@ -71,20 +70,16 @@ class Processor:
         )
 
     def get_classes(self):
-        grouped = {pathlib.Path(): {}}
+        ret = {'': []}
         for k, cls in self._classmap.items():
-            grouped.setdefault(cls.dir, {}).update({k: cls})
-        ret = {}
-        for dir, map in grouped.items():
-            inheritance_graph = {k: {b for b in cls.bases if b in map} for k, cls in map.items()}
-            ret[dir] = [self._get_class(cls) for cls in toposort_flatten(inheritance_graph)]
+            ret.setdefault(cls.group, []).append(self._get_class(cls.name))
         return ret
 
 
 def generate(opts, renderer):
     assert opts.cpp_output
-    processor = Processor(schema.load(opts.schema).classes)
+    processor = Processor(schema.load_file(opts.schema).classes)
     out = opts.cpp_output
     for dir, classes in processor.get_classes().items():
-        include_parent = (dir != pathlib.Path())
-        renderer.render(cpp.ClassList(classes, opts.schema, include_parent), out / dir / "TrapClasses")
+        renderer.render(cpp.ClassList(classes, opts.schema,
+                        include_parent=bool(dir)), out / dir / "TrapClasses")

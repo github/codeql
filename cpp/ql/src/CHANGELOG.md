@@ -1,3 +1,11 @@
+## 0.3.4
+
+## 0.3.3
+
+### Minor Analysis Improvements
+
+* The "Cleartext storage of sensitive information in buffer" (`cpp/cleartext-storage-buffer`) query has been improved to produce fewer false positives.
+
 ## 0.3.2
 
 ### Minor Analysis Improvements

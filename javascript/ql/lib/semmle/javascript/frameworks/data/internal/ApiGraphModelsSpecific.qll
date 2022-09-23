@@ -20,7 +20,6 @@
  */
 
 private import javascript as JS
-private import JS::DataFlow as DataFlow
 private import ApiGraphModels
 
 class Unit = JS::Unit;
@@ -29,6 +28,7 @@ class Unit = JS::Unit;
 module API = JS::API;
 
 import semmle.javascript.frameworks.data.internal.AccessPathSyntax as AccessPathSyntax
+import JS::DataFlow as DataFlow
 private import AccessPathSyntax
 
 /**
@@ -77,10 +77,6 @@ private API::Node getGlobalNode(string globalName) {
 /** Gets a JavaScript-specific interpretation of the `(package, type, path)` tuple after resolving the first `n` access path tokens. */
 bindingset[package, type, path]
 API::Node getExtraNodeFromPath(string package, string type, AccessPath path, int n) {
-  type = "" and
-  n = 0 and
-  result = API::moduleImport(package)
-  or
   // Global variable accesses is via the 'global' package
   exists(AccessPathToken token |
     package = getAPackageAlias("global") and
@@ -90,10 +86,15 @@ API::Node getExtraNodeFromPath(string package, string type, AccessPath path, int
     result = getGlobalNode(token.getAnArgument()) and
     n = 1
   )
+}
+
+/** Gets a JavaScript-specific interpretation of the `(package, type)` tuple. */
+API::Node getExtraNodeFromType(string package, string type) {
+  type = "" and
+  result = API::moduleImport(package)
   or
   // Access instance of a type based on type annotations
-  n = 0 and
-  result = API::Node::ofType(getAPackageAlias(package), type)
+  result = API::Internal::getANodeOfTypeRaw(getAPackageAlias(package), type)
 }
 
 /**

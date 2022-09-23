@@ -294,7 +294,10 @@ through an additional step targeting a `PostUpdateNode`).
 
 It is recommended to introduce `PostUpdateNode`s for all `ArgumentNode`s (this
 can be skipped for immutable arguments), and all field qualifiers for both
-reads and stores. 
+reads and stores. Note also that in the case of compund arguments, such as
+`b ? x : y`, it is recommented to have post-update nodes for `x` and `y` (and
+not the compound argument itself), and let `[post update] x` have both `x`
+and `b ? x : y` as pre-update nodes (and similarly for `[post update] y`).
 
 Remember to define local flow for `PostUpdateNode`s as well in
 `simpleLocalFlowStep`.  In general out-going local flow from `PostUpdateNode`s

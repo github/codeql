@@ -121,20 +121,24 @@ class SensitiveExpr extends Expr {
   SensitiveDataType sensitiveType;
 
   SensitiveExpr() {
-    // variable reference
-    this.(DeclRefExpr).getDecl().(SensitiveVarDecl).hasInfo(label, sensitiveType)
-    or
-    // member variable reference
-    this.(MemberRefExpr).getMember().(SensitiveVarDecl).hasInfo(label, sensitiveType)
-    or
-    // function call
-    this.(ApplyExpr).getStaticTarget().(SensitiveFunctionDecl).hasInfo(label, sensitiveType)
-    or
-    // sensitive argument
-    exists(SensitiveArgument a |
-      a.hasInfo(label, sensitiveType) and
-      a.getExpr() = this
-    )
+    (
+      // variable reference
+      this.(DeclRefExpr).getDecl().(SensitiveVarDecl).hasInfo(label, sensitiveType)
+      or
+      // member variable reference
+      this.(MemberRefExpr).getMember().(SensitiveVarDecl).hasInfo(label, sensitiveType)
+      or
+      // function call
+      this.(ApplyExpr).getStaticTarget().(SensitiveFunctionDecl).hasInfo(label, sensitiveType)
+      or
+      // sensitive argument
+      exists(SensitiveArgument a |
+        a.hasInfo(label, sensitiveType) and
+        a.getExpr() = this
+      )
+    ) and
+    // do not mark as sensitive it if it is probably safe
+    not label.toLowerCase().regexpMatch(regexpProbablySafe())
   }
 
   /**
@@ -146,11 +150,24 @@ class SensitiveExpr extends Expr {
    * Gets the type of sensitive expression this is.
    */
   SensitiveDataType getSensitiveType() { result = sensitiveType }
+}
 
-  /**
-   * Holds if this sensitive expression might be safe because it contains
-   * hashed or encrypted data, or is only a reference to data that is stored
-   * elsewhere.
-   */
-  predicate isProbablySafe() { label.toLowerCase().regexpMatch(regexpProbablySafe()) }
+/**
+ * A function that is likely used to encrypt or hash data.
+ */
+private class EncryptionFunction extends AbstractFunctionDecl {
+  EncryptionFunction() { this.getName().regexpMatch(".*(crypt|hash|encode|protect).*") }
+}
+
+/**
+ * An expression that may be protected with encryption, for example an
+ * argument to a function called "encrypt".
+ */
+class EncryptedExpr extends Expr {
+  EncryptedExpr() {
+    exists(CallExpr call |
+      call.getStaticTarget() instanceof EncryptionFunction and
+      call.getAnArgument().getExpr() = this
+    )
+  }
 }

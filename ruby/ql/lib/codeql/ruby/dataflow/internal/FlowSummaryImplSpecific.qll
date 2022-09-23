@@ -2,7 +2,7 @@
  * Provides Ruby specific classes and predicates for defining flow summaries.
  */
 
-private import ruby
+private import codeql.ruby.AST
 private import DataFlowDispatch
 private import DataFlowPrivate
 private import DataFlowPublic

@@ -11,4 +11,4 @@ nodes
 | EndToEnd.go:94:20:94:49 | call to Get | semmle.label | call to Get |
 subpaths
 #select
-| EndToEnd.go:94:20:94:49 | call to Get | EndToEnd.go:94:20:94:27 | selection of Params : pointer type | EndToEnd.go:94:20:94:49 | call to Get | Untrusted URL redirection due to $@. | EndToEnd.go:94:20:94:27 | selection of Params | user-provided value |
+| EndToEnd.go:94:20:94:49 | call to Get | EndToEnd.go:94:20:94:27 | selection of Params : pointer type | EndToEnd.go:94:20:94:49 | call to Get | Untrusted URL redirection depends on a $@. | EndToEnd.go:94:20:94:27 | selection of Params | user-provided value |

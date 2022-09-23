@@ -2,7 +2,7 @@
  * @kind path-problem
  */
 
-import ruby
+import codeql.ruby.AST
 import codeql.ruby.dataflow.FlowSummary
 import codeql.ruby.TaintTracking
 import codeql.ruby.dataflow.internal.FlowSummaryImpl
@@ -99,6 +99,14 @@ private class TypeFromModel extends ModelInput::TypeModelCsv {
         "test;FooOrBar;;;Member[Bar].Instance", //
         "test;FooOrBar;test;FooOrBar;Method[next].ReturnValue",
       ]
+  }
+}
+
+private class TypeFromCodeQL extends ModelInput::TypeModel {
+  override DataFlow::Node getASource(string package, string type) {
+    package = "test" and
+    type = "FooOrBar" and
+    result.asExpr().getExpr().getConstantValue().getString() = "magic_string"
   }
 }
 

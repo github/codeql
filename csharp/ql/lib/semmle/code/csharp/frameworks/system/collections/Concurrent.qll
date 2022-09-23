@@ -44,6 +44,25 @@ private class SystemCollectionsConcurrentIProducerConsumerCollectionFlowModelCsv
 private class SystemCollectionsConcurrentConcurrentBagFlowModelCsv extends SummaryModelCsv {
   override predicate row(string row) {
     row =
-      "System.Collections.Concurrent;ConcurrentBag<>;false;Add;(T);;Argument[0];Argument[this].Element;value;manual"
+      [
+        "System.Collections.Concurrent;ConcurrentBag<>;false;Add;(T);;Argument[0];Argument[this].Element;value;manual",
+        "System.Collections.Concurrent;ConcurrentBag<>;false;Clear;();;Argument[this].WithoutElement;Argument[this];value;manual",
+      ]
+  }
+}
+
+/** Data flow for `System.Collections.Concurrent.ConcurrentQueue<>`. */
+private class SystemCollectionsConcurrentConcurrentQueueFlowModelCsv extends SummaryModelCsv {
+  override predicate row(string row) {
+    row =
+      "System.Collections.Concurrent;ConcurrentQueue<>;false;Clear;();;Argument[this].WithoutElement;Argument[this];value;manual"
+  }
+}
+
+/** Data flow for `System.Collections.Concurrent.ConcurrentStack<>`. */
+private class SystemCollectionsConcurrentConcurrentStackFlowModelCsv extends SummaryModelCsv {
+  override predicate row(string row) {
+    row =
+      "System.Collections.Concurrent;ConcurrentStack<>;false;Clear;();;Argument[this].WithoutElement;Argument[this];value;manual"
   }
 }

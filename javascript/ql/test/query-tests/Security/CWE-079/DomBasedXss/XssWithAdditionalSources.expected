@@ -116,6 +116,11 @@ nodes
 | classnames.js:15:47:15:63 | clsx(window.name) |
 | classnames.js:15:52:15:62 | window.name |
 | classnames.js:15:52:15:62 | window.name |
+| classnames.js:17:32:17:79 | `<span  ... <span>` |
+| classnames.js:17:32:17:79 | `<span  ... <span>` |
+| classnames.js:17:48:17:64 | clsx(window.name) |
+| classnames.js:17:53:17:63 | window.name |
+| classnames.js:17:53:17:63 | window.name |
 | clipboard.ts:8:11:8:51 | html |
 | clipboard.ts:8:11:8:51 | html |
 | clipboard.ts:8:18:8:51 | clipboa ... /html') |
@@ -1237,6 +1242,10 @@ edges
 | classnames.js:15:47:15:63 | clsx(window.name) | classnames.js:15:31:15:78 | `<span  ... <span>` |
 | classnames.js:15:52:15:62 | window.name | classnames.js:15:47:15:63 | clsx(window.name) |
 | classnames.js:15:52:15:62 | window.name | classnames.js:15:47:15:63 | clsx(window.name) |
+| classnames.js:17:48:17:64 | clsx(window.name) | classnames.js:17:32:17:79 | `<span  ... <span>` |
+| classnames.js:17:48:17:64 | clsx(window.name) | classnames.js:17:32:17:79 | `<span  ... <span>` |
+| classnames.js:17:53:17:63 | window.name | classnames.js:17:48:17:64 | clsx(window.name) |
+| classnames.js:17:53:17:63 | window.name | classnames.js:17:48:17:64 | clsx(window.name) |
 | clipboard.ts:8:11:8:51 | html | clipboard.ts:15:25:15:28 | html |
 | clipboard.ts:8:11:8:51 | html | clipboard.ts:15:25:15:28 | html |
 | clipboard.ts:8:11:8:51 | html | clipboard.ts:15:25:15:28 | html |

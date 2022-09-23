@@ -102,11 +102,25 @@ private class PendingIntentSentSinkModels extends SinkModelCsv {
         "android.app;NotificationManager;true;notify;(String,int,Notification);;Argument[2];pending-intent-sent;manual",
         "android.app;NotificationManager;true;notifyAsPackage;(String,String,int,Notification);;Argument[3];pending-intent-sent;manual",
         "android.app;NotificationManager;true;notifyAsUser;(String,int,Notification,UserHandle);;Argument[2];pending-intent-sent;manual",
+        "androidx.core.app;NotificationManagerCompat;true;notify;(int,Notification);;Argument[1];pending-intent-sent;manual",
+        "androidx.core.app;NotificationManagerCompat;true;notify;(String,int,Notification);;Argument[2];pending-intent-sent;manual",
         "android.app;PendingIntent;false;send;(Context,int,Intent,OnFinished,Handler,String,Bundle);;Argument[2];pending-intent-sent;manual",
         "android.app;PendingIntent;false;send;(Context,int,Intent,OnFinished,Handler,String);;Argument[2];pending-intent-sent;manual",
         "android.app;PendingIntent;false;send;(Context,int,Intent,OnFinished,Handler);;Argument[2];pending-intent-sent;manual",
         "android.app;PendingIntent;false;send;(Context,int,Intent);;Argument[2];pending-intent-sent;manual",
-        "android.app;Activity;true;setResult;(int,Intent);;Argument[1];pending-intent-sent;manual"
+        "android.app;Activity;true;setResult;(int,Intent);;Argument[1];pending-intent-sent;manual",
+        "android.app;AlarmManager;true;set;(int,long,PendingIntent);;Argument[2];pending-intent-sent;manual",
+        "android.app;AlarmManager;true;setAlarmClock;;;Argument[1];pending-intent-sent;manual",
+        "android.app;AlarmManager;true;setAndAllowWhileIdle;;;Argument[2];pending-intent-sent;manual",
+        "android.app;AlarmManager;true;setExact;(int,long,PendingIntent);;Argument[2];pending-intent-sent;manual",
+        "android.app;AlarmManager;true;setExactAndAllowWhileIdle;;;Argument[2];pending-intent-sent;manual",
+        "android.app;AlarmManager;true;setInexactRepeating;;;Argument[3];pending-intent-sent;manual",
+        "android.app;AlarmManager;true;setRepeating;;;Argument[3];pending-intent-sent;manual",
+        "android.app;AlarmManager;true;setWindow;(int,long,long,PendingIntent);;Argument[3];pending-intent-sent;manual",
+        "androidx.core.app;AlarmManagerCompat;true;setAlarmClock;;;Argument[2..3];pending-intent-sent;manual",
+        "androidx.core.app;AlarmManagerCompat;true;setAndAllowWhileIdle;;;Argument[3];pending-intent-sent;manual",
+        "androidx.core.app;AlarmManagerCompat;true;setExact;;;Argument[3];pending-intent-sent;manual",
+        "androidx.core.app;AlarmManagerCompat;true;setExactAndAllowWhileIdle;;;Argument[3];pending-intent-sent;manual",
       ]
   }
 }

@@ -52,6 +52,16 @@ private DataFlow::Node getAValueExportedByPackage() {
     not isPrivateMethodDeclaration(result)
   )
   or
+  // module.exports.foo = function () {
+  //   return new Foo(); // <- result
+  // };
+  exists(DataFlow::FunctionNode func, DataFlow::NewNode inst, DataFlow::ClassNode clz |
+    func = getAValueExportedByPackage().getALocalSource() and inst = unique( | | func.getAReturn())
+  |
+    clz.getAnInstanceReference() = inst and
+    result = clz.getAnInstanceMember(_)
+  )
+  or
   result = getAValueExportedByPackage().getALocalSource()
   or
   // Nested property reads.

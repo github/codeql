@@ -75,7 +75,7 @@ module TaintedObject {
 
   /** Request input accesses as a JSON source. */
   private class RequestInputAsSource extends Source {
-    RequestInputAsSource() { this.(HTTP::RequestInputAccess).isUserControlledObject() }
+    RequestInputAsSource() { this.(Http::RequestInputAccess).isUserControlledObject() }
   }
 
   /**

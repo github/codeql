@@ -135,7 +135,7 @@ DataFlow::CallNode servesAPrivateFolder(string description) {
  */
 Express::RouteSetup getAnExposingExpressSetup(string path) {
   result.isUseCall() and
-  result.getArgument([0 .. 1]) = servesAPrivateFolder(path).getEnclosingExpr()
+  result.getArgument([0 .. 1]) = servesAPrivateFolder(path)
 }
 
 /**
@@ -149,7 +149,7 @@ DataFlow::CallNode getAnExposingServeSetup(string path) {
 
 from DataFlow::Node node, string path
 where
-  node = getAnExposingExpressSetup(path).flow()
+  node = getAnExposingExpressSetup(path)
   or
   node = getAnExposingServeSetup(path)
 select node, "Serves " + path + ", which can contain private information."

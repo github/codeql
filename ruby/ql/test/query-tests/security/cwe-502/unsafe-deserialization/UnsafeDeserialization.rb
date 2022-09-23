@@ -73,4 +73,11 @@ class UsersController < ActionController::Base
     json_data = params[:key]
     object = Oj.safe_load json_data
   end
+
+  # BAD - `Hash.from_trusted_xml` will deserialize elements with the
+  # `type="yaml"` attribute as YAML.
+  def route10
+    xml = params[:key]
+    hash = Hash.from_trusted_xml(xml)
+  end
 end

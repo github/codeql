@@ -29,7 +29,6 @@ class SwiftDispatcher {
                                const swift::Pattern*,
                                const swift::TypeRepr*,
                                const swift::TypeBase*,
-                               const swift::IfConfigClause*,
                                FilePath>;
 
   template <typename E>
@@ -323,7 +322,6 @@ class SwiftDispatcher {
   // as we don't expect `nullptr` here. However `swift::ASTVisitor` and `swift::TypeVisitor` do not
   // accept const pointers
   virtual void visit(swift::Decl* decl) = 0;
-  virtual void visit(const swift::IfConfigClause* clause) = 0;
   virtual void visit(swift::Stmt* stmt) = 0;
   virtual void visit(const swift::StmtCondition* cond) = 0;
   virtual void visit(const swift::StmtConditionElement* cond) = 0;

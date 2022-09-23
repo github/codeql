@@ -12,6 +12,4 @@ class TypeReprBase extends Synth::TTypeRepr, AstNode {
   }
 
   final Type getType() { result = getImmediateType().resolve() }
-
-  final predicate hasType() { exists(getType()) }
 }

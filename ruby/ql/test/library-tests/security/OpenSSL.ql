@@ -1,4 +1,4 @@
-import ruby
+import codeql.ruby.AST
 import codeql.ruby.security.OpenSSL
 
 query predicate weakOpenSslCipherAlgorithms(OpenSslCipher c) { c.isWeak() }
