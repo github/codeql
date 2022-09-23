@@ -82,5 +82,5 @@ from CleartextTransmissionConfig config, DataFlow::PathNode sourceNode, DataFlow
 where config.hasFlowPath(sourceNode, sinkNode)
 select sinkNode.getNode(), sourceNode, sinkNode,
   "This operation transmits '" + sinkNode.getNode().toString() +
-    "', which may contain unencrypted sensitive data from $@", sourceNode,
+    "', which may contain unencrypted sensitive data from $@.", sourceNode,
   sourceNode.getNode().toString()
