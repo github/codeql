@@ -44,6 +44,8 @@
 | classes.kt:141:13:145:13 | Cl1 | file://<external>/Object.class:0:0:0:0 | Object |
 | classes.kt:150:1:156:1 | Cl00 | file://<external>/Object.class:0:0:0:0 | Object |
 | classes.kt:151:5:155:5 | Cl01 | file://<external>/Object.class:0:0:0:0 | Object |
+| classes.kt:159:5:159:14 | X | file://<external>/Object.class:0:0:0:0 | Object |
+| classes.kt:162:13:162:22 |  | file://<external>/Object.class:0:0:0:0 | Object |
 | file://<external>/C1$<no name provided>$Local3.class:0:0:0:0 | Local3<Integer> | file://<external>/Object.class:0:0:0:0 | Object |
 | file://<external>/C1$Local1.class:0:0:0:0 | Local1<Integer> | file://<external>/Object.class:0:0:0:0 | Object |
 | file://<external>/C1$Local2.class:0:0:0:0 | Local2<Integer> | file://<external>/Object.class:0:0:0:0 | Object |
