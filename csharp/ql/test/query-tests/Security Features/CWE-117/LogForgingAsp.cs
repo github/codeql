@@ -15,7 +15,7 @@ public class AspController : ControllerBase
     public void Action1(DateTime date)
     {
         var logger = new ILogger();
-        // GOOD: DateTime is a sanitizer. (FALSE POSITIVE)
+        // GOOD: DateTime is a sanitizer.
         logger.Warn($"Warning about the date: {date:yyyy-MM-dd}");
     }
 }
