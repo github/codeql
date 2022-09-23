@@ -4,11 +4,17 @@
 <qhelp>
 
 <overview>
-<p>...</p>
+<p>
+If the expression to the right of a comma operator starts at an earlier column than the expression to the left, then
+this suspicious indentation likely indicates a logic error caused by a typo that may escape visual inspection.
+</p>
 </overview>
 
 <recommendation>
-<p>...</p>
+<p>
+Use standard indentation around the comma operator: begin the right-hand-side operand at the same level of
+indentation as the left-hand-side operand.
+</p>
 </recommendation>
 
 <example>
