@@ -16,6 +16,12 @@ edges
 | UnsafeDeserialization.rb:58:17:58:28 | ...[...] :  | UnsafeDeserialization.rb:68:23:68:31 | json_data |
 | UnsafeDeserialization.rb:80:11:80:16 | call to params :  | UnsafeDeserialization.rb:80:11:80:22 | ...[...] :  |
 | UnsafeDeserialization.rb:80:11:80:22 | ...[...] :  | UnsafeDeserialization.rb:81:34:81:36 | xml |
+| UnsafeDeserialization.rb:86:17:86:22 | call to params :  | UnsafeDeserialization.rb:86:17:86:28 | ...[...] :  |
+| UnsafeDeserialization.rb:86:17:86:28 | ...[...] :  | UnsafeDeserialization.rb:87:29:87:37 | yaml_path |
+| UnsafeDeserialization.rb:92:17:92:22 | call to params :  | UnsafeDeserialization.rb:92:17:92:28 | ...[...] :  |
+| UnsafeDeserialization.rb:92:17:92:28 | ...[...] :  | UnsafeDeserialization.rb:93:25:93:33 | yaml_data |
+| UnsafeDeserialization.rb:98:17:98:22 | call to params :  | UnsafeDeserialization.rb:98:17:98:28 | ...[...] :  |
+| UnsafeDeserialization.rb:98:17:98:28 | ...[...] :  | UnsafeDeserialization.rb:99:30:99:38 | yaml_path |
 nodes
 | UnsafeDeserialization.rb:9:39:9:44 | call to params :  | semmle.label | call to params :  |
 | UnsafeDeserialization.rb:9:39:9:50 | ...[...] :  | semmle.label | ...[...] :  |
@@ -42,6 +48,15 @@ nodes
 | UnsafeDeserialization.rb:80:11:80:16 | call to params :  | semmle.label | call to params :  |
 | UnsafeDeserialization.rb:80:11:80:22 | ...[...] :  | semmle.label | ...[...] :  |
 | UnsafeDeserialization.rb:81:34:81:36 | xml | semmle.label | xml |
+| UnsafeDeserialization.rb:86:17:86:22 | call to params :  | semmle.label | call to params :  |
+| UnsafeDeserialization.rb:86:17:86:28 | ...[...] :  | semmle.label | ...[...] :  |
+| UnsafeDeserialization.rb:87:29:87:37 | yaml_path | semmle.label | yaml_path |
+| UnsafeDeserialization.rb:92:17:92:22 | call to params :  | semmle.label | call to params :  |
+| UnsafeDeserialization.rb:92:17:92:28 | ...[...] :  | semmle.label | ...[...] :  |
+| UnsafeDeserialization.rb:93:25:93:33 | yaml_data | semmle.label | yaml_data |
+| UnsafeDeserialization.rb:98:17:98:22 | call to params :  | semmle.label | call to params :  |
+| UnsafeDeserialization.rb:98:17:98:28 | ...[...] :  | semmle.label | ...[...] :  |
+| UnsafeDeserialization.rb:99:30:99:38 | yaml_path | semmle.label | yaml_path |
 subpaths
 #select
 | UnsafeDeserialization.rb:10:27:10:41 | serialized_data | UnsafeDeserialization.rb:9:39:9:44 | call to params :  | UnsafeDeserialization.rb:10:27:10:41 | serialized_data | Unsafe deserialization depends on a $@. | UnsafeDeserialization.rb:9:39:9:44 | call to params | user-provided value |
@@ -53,3 +68,6 @@ subpaths
 | UnsafeDeserialization.rb:53:22:53:30 | json_data | UnsafeDeserialization.rb:51:17:51:22 | call to params :  | UnsafeDeserialization.rb:53:22:53:30 | json_data | Unsafe deserialization depends on a $@. | UnsafeDeserialization.rb:51:17:51:22 | call to params | user-provided value |
 | UnsafeDeserialization.rb:68:23:68:31 | json_data | UnsafeDeserialization.rb:58:17:58:22 | call to params :  | UnsafeDeserialization.rb:68:23:68:31 | json_data | Unsafe deserialization depends on a $@. | UnsafeDeserialization.rb:58:17:58:22 | call to params | user-provided value |
 | UnsafeDeserialization.rb:81:34:81:36 | xml | UnsafeDeserialization.rb:80:11:80:16 | call to params :  | UnsafeDeserialization.rb:81:34:81:36 | xml | Unsafe deserialization depends on a $@. | UnsafeDeserialization.rb:80:11:80:16 | call to params | user-provided value |
+| UnsafeDeserialization.rb:87:29:87:37 | yaml_path | UnsafeDeserialization.rb:86:17:86:22 | call to params :  | UnsafeDeserialization.rb:87:29:87:37 | yaml_path | Unsafe deserialization depends on a $@. | UnsafeDeserialization.rb:86:17:86:22 | call to params | user-provided value |
+| UnsafeDeserialization.rb:93:25:93:33 | yaml_data | UnsafeDeserialization.rb:92:17:92:22 | call to params :  | UnsafeDeserialization.rb:93:25:93:33 | yaml_data | Unsafe deserialization depends on a $@. | UnsafeDeserialization.rb:92:17:92:22 | call to params | user-provided value |
+| UnsafeDeserialization.rb:99:30:99:38 | yaml_path | UnsafeDeserialization.rb:98:17:98:22 | call to params :  | UnsafeDeserialization.rb:99:30:99:38 | yaml_path | Unsafe deserialization depends on a $@. | UnsafeDeserialization.rb:98:17:98:22 | call to params | user-provided value |
