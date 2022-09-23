@@ -12,7 +12,6 @@ import semmle.code.cpp.ir.IR
 import semmle.code.cpp.valuenumbering.GlobalValueNumbering
 import semmle.code.cpp.models.interfaces.Allocation
 import semmle.code.cpp.ir.IRConfiguration
-
 import DataFlow::PathGraph
 
 // temporary - custom allocator for ffmpeg
