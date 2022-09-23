@@ -294,6 +294,26 @@ private DataFlowCallable viableLibraryCallable(DataFlowCall call) {
   )
 }
 
+/** Holds if there is a call like `receiver.extend(M)` */
+private predicate extendCall(DataFlow::LocalSourceNode receiver, Module m) {
+  exists(DataFlow::CallNode extendCall |
+    extendCall.getMethodName() = "extend" and
+    exists(DataFlow::LocalSourceNode sourceNode | sourceNode.flowsTo(extendCall.getArgument(0)) |
+      selfInModule(sourceNode.(SsaSelfDefinitionNode).getVariable(), m) or
+      sourceNode = trackModuleAccess(m)
+    ) and
+    receiver.flowsTo(extendCall.getReceiver())
+  )
+}
+
+/** Holds if there is a call like `M.extend(N)` */
+private predicate extendCallModule(Module m, Module n) {
+  exists(DataFlow::LocalSourceNode receiver | extendCall(receiver, n) |
+    selfInModule(receiver.(SsaSelfDefinitionNode).getVariable(), m) or
+    receiver = trackModuleAccess(m)
+  )
+}
+
 cached
 private module Cached {
   cached
@@ -340,15 +360,46 @@ private module Cached {
         // def c.singleton; end # <- result
         // c.singleton          # <- call
         // ```
+        // or an `extend`ed instance, e.g.
+        // ```rb
+        // c = C.new
+        // module M
+        //   def instance; end  # <- result
+        // end
+        // c.extend M
+        // c.instance # <- call
+        // ```
         exists(DataFlow::Node receiver |
           methodCall(call, receiver, method) and
-          receiver = trackSingletonMethodOnInstance(result, method)
+          (
+            receiver = trackSingletonMethodOnInstance(result, method)
+            or
+            exists(Module m |
+              extendCall(any(DataFlow::LocalSourceNode n | n.flowsTo(receiver)), m) and
+              result = lookupMethod(m, pragma[only_bind_into](method))
+            )
+          )
         )
         or
         // singleton method defined on a module
+        // or an `extend`ed module, e.g.
+        // ```rb
+        // module M
+        //   def instance; end  # <- result
+        // end
+        // M.extend(M)
+        // M.instance           # <- call
+        // ```
         exists(DataFlow::Node sourceNode, Module m |
           flowsToMethodCall(call, sourceNode, method) and
-          singletonMethodOnModule(result, method, m)
+          (
+            singletonMethodOnModule(result, method, m)
+            or
+            exists(Module other |
+              extendCallModule(m, other) and
+              result = lookupMethod(other, pragma[only_bind_into](method))
+            )
+          )
         |
           // ```rb
           // def C.singleton; end # <- result

@@ -485,7 +485,26 @@ module ExtendSingletonMethod
     extend self
 end
 
-ExtendSingletonMethod.singleton # currently unable to resolve
+ExtendSingletonMethod.singleton
+
+module ExtendSingletonMethod2
+    extend ExtendSingletonMethod
+end
+
+ExtendSingletonMethod2.singleton
+
+module ExtendSingletonMethod3
+end
+
+ExtendSingletonMethod3.extend ExtendSingletonMethod
+
+ExtendSingletonMethod3.singleton
+
+foo = "hello"
+
+foo.extend ExtendSingletonMethod
+
+foo.singleton
 
 module ProtectedMethodInModule
     protected def foo
