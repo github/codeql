@@ -709,7 +709,8 @@ private module Cached {
      */
     pragma[nomagic]
     private DataFlowCallable viableImplInCallContextExt(DataFlowCall call, DataFlowCall ctx) {
-      result = viableImplInCallContext(call, ctx)
+      result = viableImplInCallContext(call, ctx) and
+      result = viableCallable(call)
       or
       result = viableCallableLambda(call, TDataFlowCallSome(ctx))
       or
