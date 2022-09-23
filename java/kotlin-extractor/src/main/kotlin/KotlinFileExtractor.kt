@@ -574,8 +574,8 @@ open class KotlinFileExtractor(
 
                     break
                 } else if (parent is IrFile) {
-                    if (innerClass != null) {
-                        // We don't have to extract file class containers for classes
+                    if (innerClass != null && !innerClass.isLocal) {
+                        // We don't have to extract file class containers for classes except for local classes
                         break
                     }
                     if (this.filePath != parent.path) {
