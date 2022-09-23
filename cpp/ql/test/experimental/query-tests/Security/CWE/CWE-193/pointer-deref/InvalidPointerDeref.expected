@@ -612,6 +612,34 @@ edges
 | test.cpp:194:23:194:28 | call to malloc | test.cpp:195:17:195:17 | Load |
 | test.cpp:194:23:194:28 | call to malloc | test.cpp:197:8:197:8 | Load |
 | test.cpp:194:23:194:28 | call to malloc | test.cpp:201:5:201:5 | Load |
+| test.cpp:195:17:195:17 | Load | test.cpp:195:17:195:23 | ... + ... |
+| test.cpp:195:17:195:17 | Load | test.cpp:195:17:195:23 | ... + ... |
+| test.cpp:195:17:195:17 | Load | test.cpp:195:17:195:23 | ... + ... |
+| test.cpp:195:17:195:17 | Load | test.cpp:195:17:195:23 | ... + ... |
+| test.cpp:195:17:195:17 | Load | test.cpp:195:17:195:23 | Store |
+| test.cpp:195:17:195:17 | Load | test.cpp:195:17:195:23 | Store |
+| test.cpp:195:17:195:17 | Load | test.cpp:195:17:195:23 | Store |
+| test.cpp:195:17:195:17 | Load | test.cpp:195:17:195:23 | Store |
+| test.cpp:195:17:195:17 | Load | test.cpp:197:20:197:22 | Load |
+| test.cpp:195:17:195:17 | Load | test.cpp:197:20:197:22 | Load |
+| test.cpp:195:17:195:17 | Load | test.cpp:197:20:197:22 | Load |
+| test.cpp:195:17:195:17 | Load | test.cpp:197:20:197:22 | Load |
+| test.cpp:195:17:195:17 | Load | test.cpp:201:5:201:12 | access to array |
+| test.cpp:195:17:195:17 | Load | test.cpp:201:5:201:12 | access to array |
+| test.cpp:195:17:195:17 | Load | test.cpp:201:5:201:12 | access to array |
+| test.cpp:195:17:195:17 | Load | test.cpp:201:5:201:12 | access to array |
+| test.cpp:195:17:195:23 | ... + ... | test.cpp:195:17:195:23 | Store |
+| test.cpp:195:17:195:23 | ... + ... | test.cpp:195:17:195:23 | Store |
+| test.cpp:195:17:195:23 | ... + ... | test.cpp:197:20:197:22 | Load |
+| test.cpp:195:17:195:23 | ... + ... | test.cpp:201:5:201:19 | Store: ... = ... |
+| test.cpp:195:17:195:23 | ... + ... | test.cpp:201:5:201:19 | Store: ... = ... |
+| test.cpp:195:17:195:23 | Store | test.cpp:197:20:197:22 | Load |
+| test.cpp:195:17:195:23 | Store | test.cpp:201:5:201:19 | Store: ... = ... |
+| test.cpp:195:17:195:23 | Store | test.cpp:201:5:201:19 | Store: ... = ... |
+| test.cpp:197:20:197:22 | Load | test.cpp:201:5:201:19 | Store: ... = ... |
+| test.cpp:197:20:197:22 | Load | test.cpp:201:5:201:19 | Store: ... = ... |
+| test.cpp:201:5:201:12 | access to array | test.cpp:201:5:201:19 | Store: ... = ... |
+| test.cpp:201:5:201:12 | access to array | test.cpp:201:5:201:19 | Store: ... = ... |
 | test.cpp:205:23:205:28 | call to malloc | test.cpp:206:17:206:17 | Load |
 | test.cpp:205:23:205:28 | call to malloc | test.cpp:208:15:208:15 | Load |
 | test.cpp:206:17:206:17 | Load | test.cpp:206:17:206:23 | ... + ... |
@@ -665,4 +693,5 @@ edges
 | test.cpp:110:9:110:14 | Store: ... = ... | test.cpp:82:17:82:22 | call to malloc | test.cpp:110:9:110:14 | Store: ... = ... | This write might be out of bounds, as the pointer might be equal to $@ + $@. | test.cpp:82:17:82:22 | call to malloc | call to malloc | test.cpp:83:27:83:30 | size | size |
 | test.cpp:157:9:157:14 | Store: ... = ... | test.cpp:143:18:143:23 | call to malloc | test.cpp:157:9:157:14 | Store: ... = ... | This write might be out of bounds, as the pointer might be equal to $@ + $@. | test.cpp:143:18:143:23 | call to malloc | call to malloc | test.cpp:144:29:144:32 | size | size |
 | test.cpp:171:9:171:14 | Store: ... = ... | test.cpp:143:18:143:23 | call to malloc | test.cpp:171:9:171:14 | Store: ... = ... | This write might be out of bounds, as the pointer might be equal to $@ + $@. | test.cpp:143:18:143:23 | call to malloc | call to malloc | test.cpp:144:29:144:32 | size | size |
+| test.cpp:201:5:201:19 | Store: ... = ... | test.cpp:194:23:194:28 | call to malloc | test.cpp:201:5:201:19 | Store: ... = ... | This write might be out of bounds, as the pointer might be equal to $@ + $@. | test.cpp:194:23:194:28 | call to malloc | call to malloc | test.cpp:195:21:195:23 | len | len |
 | test.cpp:213:5:213:13 | Store: ... = ... | test.cpp:205:23:205:28 | call to malloc | test.cpp:213:5:213:13 | Store: ... = ... | This write might be out of bounds, as the pointer might be equal to $@ + $@. | test.cpp:205:23:205:28 | call to malloc | call to malloc | test.cpp:206:21:206:23 | len | len |

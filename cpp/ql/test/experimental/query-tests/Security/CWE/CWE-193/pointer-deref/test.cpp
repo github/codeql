@@ -198,7 +198,7 @@ void test12(unsigned len, unsigned index) {
         return;
     }
     
-    p[index] = '\0'; // BAD [NOT DETECTED]
+    p[index] = '\0'; // BAD
 }
 
 void test13(unsigned len, unsigned index) {
