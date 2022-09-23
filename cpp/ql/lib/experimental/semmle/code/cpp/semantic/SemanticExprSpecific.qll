@@ -120,16 +120,15 @@ module SemanticExprConfig {
   int getBasicBlockUniqueId(BasicBlock block) { idOf(block.getFirstInstruction().getAst(), result) }
 
   newtype TSsaVariable =
-    TSsaInstruction(IR::Instruction instr) {
-      instr.hasMemoryResult()
-    } or
+    TSsaInstruction(IR::Instruction instr) { instr.hasMemoryResult() } or
     TSsaOperand(IR::Operand op) { op.isDefinitionInexact() } or
     TSsaPointerArithmeticGuard(IR::PointerArithmeticInstruction instr) {
       exists(Guard g, IR::Operand use | use = instr.getAUse() |
         g.comparesLt(use, _, _, _, _) or
         g.comparesLt(_, use, _, _, _) or
         g.comparesEq(use, _, _, _, _) or
-        g.comparesEq(_, use, _, _, _))
+        g.comparesEq(_, use, _, _, _)
+      )
     }
 
   class SsaVariable extends TSsaVariable {
@@ -238,7 +237,7 @@ module SemanticExprConfig {
       exists(IR::Operand operand |
         operand.getDef() = v.asInstruction() or
         operand.getDef() = valueNumber(v.asPointerArithGuard()).getAnInstruction()
-        |
+      |
         not operand instanceof IR::PhiInputOperand and
         operand.getUse().getBlock() = block
       )
@@ -259,7 +258,7 @@ module SemanticExprConfig {
       exists(IR::PhiInputOperand operand |
         operand.getDef() = v.asInstruction() or
         operand.getDef() = valueNumber(v.asPointerArithGuard()).getAnInstruction()
-        |
+      |
         operand.getPredecessorBlock() = pred and
         operand.getUse().getBlock() = succ
       )
