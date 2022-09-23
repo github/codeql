@@ -16,22 +16,22 @@ public class StringJoinerTests {
 			out = new StringJoiner(in);
 			sink(out);
 		}
-		// "java.util;StringJoiner;true;StringJoiner;(CharSequence,CharSequence,CharSequence);;Argument[0];Argument[-1];taint;manual"
 		{
+			// "java.util;StringJoiner;true;StringJoiner;(CharSequence,CharSequence,CharSequence);;Argument[0];Argument[-1];taint;manual"
 			StringJoiner out = null;
 			CharSequence in = (CharSequence) taint();
 			out = new StringJoiner(in, null, null);
 			sink(out);
 		}
-		// "java.util;StringJoiner;true;StringJoiner;(CharSequence,CharSequence,CharSequence);;Argument[1];Argument[-1];taint;manual"
 		{
+			// "java.util;StringJoiner;true;StringJoiner;(CharSequence,CharSequence,CharSequence);;Argument[1];Argument[-1];taint;manual"
 			StringJoiner out = null;
 			CharSequence in = (CharSequence) taint();
 			out = new StringJoiner(null, in, null);
 			sink(out);
 		}
-		// "java.util;StringJoiner;true;StringJoiner;(CharSequence,CharSequence,CharSequence);;Argument[2];Argument[-1];taint;manual"
 		{
+			// "java.util;StringJoiner;true;StringJoiner;(CharSequence,CharSequence,CharSequence);;Argument[2];Argument[-1];taint;manual"
 			StringJoiner out = null;
 			CharSequence in = (CharSequence) taint();
 			out = new StringJoiner(null, null, in);
@@ -70,6 +70,13 @@ public class StringJoinerTests {
 			StringJoiner out = null;
 			StringJoiner in = (StringJoiner) taint();
 			out = in.setEmptyValue(null);
+			sink(out);
+		}
+		{
+			// "java.util;StringJoiner;true;setEmptyValue;;;Argument[0];Argument[-1];taint;manual"
+			StringJoiner out = null;
+			CharSequence in = (CharSequence) taint();
+			out.setEmptyValue(in);
 			sink(out);
 		}
 		{
