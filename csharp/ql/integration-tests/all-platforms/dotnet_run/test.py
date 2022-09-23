@@ -26,7 +26,7 @@ s = run_codeql_database_create_stdout(['dotnet clean', 'rm -rf test2-db', 'dotne
 check_build_out("Default reply", s)
 
 # one argument, but `--`
-s = run_codeql_database_create_stdout(['dotnet clean', 'rm -rf test3-db', 'dotnet run hello'], "test4-db")
+s = run_codeql_database_create_stdout(['dotnet clean', 'rm -rf test3-db', 'dotnet run -- hello'], "test4-db")
 check_build_out("Default reply", s)
 
 # two arguments, no `--`
