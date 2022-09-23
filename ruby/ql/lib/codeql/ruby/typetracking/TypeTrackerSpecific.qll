@@ -1,6 +1,6 @@
-private import codeql.ruby.AST as AST
-private import codeql.ruby.CFG as CFG
-private import CFG::CfgNodes
+private import codeql.ruby.AST as Ast
+private import codeql.ruby.CFG as Cfg
+private import Cfg::CfgNodes
 private import codeql.ruby.dataflow.internal.DataFlowImplCommon as DataFlowImplCommon
 private import codeql.ruby.dataflow.internal.DataFlowPublic as DataFlowPublic
 private import codeql.ruby.dataflow.internal.DataFlowPrivate as DataFlowPrivate
@@ -61,7 +61,7 @@ private predicate viableParam(
   ExprNodes::CallCfgNode call, DataFlowPrivate::ParameterNodeImpl p,
   DataFlowDispatch::ParameterPosition ppos
 ) {
-  exists(CFG::CfgScope callable |
+  exists(Cfg::CfgScope callable |
     DataFlowDispatch::getTarget(call) = callable and
     p.isSourceParameterOf(callable, ppos)
   )
@@ -150,7 +150,7 @@ predicate basicStoreStep(Node nodeFrom, Node nodeTo, string content) {
   exists(ExprNodes::MethodCallCfgNode call |
     content = getSetterCallAttributeName(call.getExpr()) and
     nodeTo.(DataFlowPublic::PostUpdateNode).getPreUpdateNode().asExpr() = call.getReceiver() and
-    call.getExpr() instanceof AST::SetterMethodCall and
+    call.getExpr() instanceof Ast::SetterMethodCall and
     call.getArgument(call.getNumberOfArguments() - 1) =
       nodeFrom.(DataFlowPublic::ExprNode).getExprNode()
   )
@@ -165,7 +165,7 @@ predicate basicStoreStep(Node nodeFrom, Node nodeTo, string content) {
  * foo.bar = 1
  * ```
  */
-private string getSetterCallAttributeName(AST::SetterMethodCall call) {
+private string getSetterCallAttributeName(Ast::SetterMethodCall call) {
   // TODO: this should be exposed in `SetterMethodCall`
   exists(string setterName |
     setterName = call.getMethodName() and result = setterName.prefix(setterName.length() - 1)

@@ -517,6 +517,10 @@ module Raw {
 
   class OverloadSetRefExpr extends @overload_set_ref_expr, Expr { }
 
+  class PackExpr extends @pack_expr, Expr {
+    override string toString() { result = "PackExpr" }
+  }
+
   class PropertyWrapperValuePlaceholderExpr extends @property_wrapper_value_placeholder_expr, Expr {
     override string toString() { result = "PropertyWrapperValuePlaceholderExpr" }
   }
@@ -838,6 +842,10 @@ module Raw {
     override string toString() { result = "RegexLiteralExpr" }
   }
 
+  class ReifyPackExpr extends @reify_pack_expr, ImplicitConversionExpr {
+    override string toString() { result = "ReifyPackExpr" }
+  }
+
   class SelfApplyExpr extends @self_apply_expr, ApplyExpr {
     Expr getBase() { self_apply_exprs(this, result) }
   }
@@ -1022,7 +1030,7 @@ module Raw {
     Expr getGuard() { case_label_item_guards(this, result) }
   }
 
-  class ConditionElement extends @condition_element, Locatable {
+  class ConditionElement extends @condition_element, AstNode {
     override string toString() { result = "ConditionElement" }
 
     Expr getBoolean() { condition_element_booleans(this, result) }
@@ -1258,6 +1266,18 @@ module Raw {
     ModuleDecl getModule() { module_types(this, result) }
   }
 
+  class PackExpansionType extends @pack_expansion_type, Type {
+    override string toString() { result = "PackExpansionType" }
+  }
+
+  class PackType extends @pack_type, Type {
+    override string toString() { result = "PackType" }
+  }
+
+  class ParameterizedProtocolType extends @parameterized_protocol_type, Type {
+    override string toString() { result = "ParameterizedProtocolType" }
+  }
+
   class PlaceholderType extends @placeholder_type, Type {
     override string toString() { result = "PlaceholderType" }
   }
@@ -1435,14 +1455,6 @@ module Raw {
     Type getKeyType() { dictionary_types(this, result, _) }
 
     Type getValueType() { dictionary_types(this, _, result) }
-  }
-
-  class NestedArchetypeType extends @nested_archetype_type, ArchetypeType {
-    override string toString() { result = "NestedArchetypeType" }
-
-    ArchetypeType getParent() { nested_archetype_types(this, result, _) }
-
-    AssociatedTypeDecl getAssociatedTypeDeclaration() { nested_archetype_types(this, _, result) }
   }
 
   class NominalType extends @nominal_type, NominalOrBoundGenericNominalType { }

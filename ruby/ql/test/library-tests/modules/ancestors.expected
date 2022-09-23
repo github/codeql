@@ -187,3 +187,9 @@ private.rb:
 #-----| super -> Object
 
 #   42| F
+
+#   62| PrivateOverride1
+#-----| super -> Object
+
+#   76| PrivateOverride2
+#-----| super -> PrivateOverride1
