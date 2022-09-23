@@ -1,6 +1,11 @@
 /**
- * @id cpp/overrun-write
+ * @name Overrunning write
+ * @description TODO
  * @kind path-problem
+ * @problem.severity error
+ * @id cpp/overrun-write
+ * @tags reliability
+ *       security
  */
 
 import cpp

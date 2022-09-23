@@ -1,6 +1,11 @@
 /**
- * @id cpp/off-by-one-array-access
+ * @name Off-by-one in array access
+ * @description TODO
  * @kind path-problem
+ * @problem.severity error
+ * @id cpp/off-by-one-array-access
+ * @tags reliability
+ *       security
  */
 
 import cpp
