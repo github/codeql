@@ -956,6 +956,7 @@ predicate resolveClassInstanceCall(CallNode call, Function target, Node self) {
 /**
  * Holds if `call` is a call to the `target`, with call-type `type`.
  */
+cached
 predicate resolveCall(ControlFlowNode call, Function target, CallType type) {
   type instanceof CallTypePlainFunction and
   call.(CallNode).getFunction() = functionTracker(target).asCfgNode() and
@@ -1030,6 +1031,7 @@ private predicate normalCallArg(CallNode call, Node arg, ArgumentPosition apos) 
  * Note: If `Bar.meth` and `Foo.meth` resolves to the same function, we will end up
  * sending both `self` arguments to that function, which is by definition the right thing to do.
  */
+cached
 predicate getCallArg(
   ControlFlowNode call, Function target, CallType type, Node arg, ArgumentPosition apos
 ) {
