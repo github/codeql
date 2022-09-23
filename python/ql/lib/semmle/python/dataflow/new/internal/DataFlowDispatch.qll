@@ -151,7 +151,6 @@ class ArgumentPosition extends TArgumentPosition {
 }
 
 /** Holds if arguments at position `apos` match parameters at position `ppos`. */
-pragma[inline]
 predicate parameterMatch(ParameterPosition ppos, ArgumentPosition apos) {
   ppos.isSelf() and apos.isSelf()
   or
