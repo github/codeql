@@ -214,23 +214,17 @@ public class OdasaOutput {
 				trapFilePathForDecl(sym, signature));
 	}
 
-	private final Map<String, String> memberTrapPaths = new LinkedHashMap<String, String>();
-	private static final Pattern dots = Pattern.compile(".", Pattern.LITERAL);
 	private String trapFilePathForDecl(IrDeclaration sym, String signature) {
 		String binaryName = getIrDeclBinaryName(sym);
 		String binaryNameWithSignature = binaryName + signature;
 		// TODO: Reinstate this?
 		//if (getTrackClassOrigins())
 		//  classId += "-" + StringDigestor.digest(sym.getSourceFileId());
-		String result = memberTrapPaths.get(binaryNameWithSignature);
-		if (result == null) {
-			result = CLASSES_DIR + "/" +
-					dots.matcher(binaryName).replaceAll("/") +
+		String result = CLASSES_DIR + "/" +
+					binaryName.replace('.', '/') +
 					signature +
 					".members" +
 					".trap.gz";
-			memberTrapPaths.put(binaryNameWithSignature, result);
-		}
 		return result;
 	}
 
