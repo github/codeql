@@ -102,7 +102,7 @@ private class GetResourceSink extends UnsafeUrlForwardSink {
   }
 }
 
-/** Sink of Spring resource loading. */
+/** A sink for methods that load Spring resources. */
 private class SpringResourceSink extends UnsafeUrlForwardSink {
   SpringResourceSink() {
     exists(MethodAccess ma |
@@ -189,7 +189,7 @@ private class FilePathFlowStep extends SummaryModelCsv {
   }
 }
 
-/** Taint model related to resource loading in Spring. */
+/** Taint models related to resource loading in Spring. */
 private class LoadSpringResourceFlowStep extends SummaryModelCsv {
   override predicate row(string row) {
     row =
@@ -201,7 +201,7 @@ private class LoadSpringResourceFlowStep extends SummaryModelCsv {
   }
 }
 
-/** Sink related to spring resource. */
+/** Sink models for methods that load Spring resources. */
 private class SpringResourceCsvSink extends SinkModelCsv {
   override predicate row(string row) {
     row =
@@ -209,12 +209,6 @@ private class SpringResourceCsvSink extends SinkModelCsv {
         // Get spring resource
         "org.springframework.core.io;ClassPathResource;true;" +
           ["getFilename", "getPath", "getURL", "resolveURL"] + ";;;Argument[-1];get-resource;manual",
-        // "org.springframework.core.io;Resource;true;" +
-        //   ["getFile", "getFilename", "getURI", "getURL"] +
-        //   ";;;Argument[-1];get-resource;manual",
-        // "org.springframework.core.io;InputStreamSource;true;" +
-        //   ["getInputStream"] +
-        //   ";;;Argument[-1];get-resource;manual"
       ]
   }
 }

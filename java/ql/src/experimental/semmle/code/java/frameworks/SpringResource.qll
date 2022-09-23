@@ -12,7 +12,7 @@ class ResourceUtils extends Class {
 }
 
 /**
- * Resource loading method declared in Spring `ResourceUtils`.
+ * A method declared in `org.springframework.util.ResourceUtils` that loads Spring resources.
  */
 class GetResourceUtilsMethod extends Method {
   GetResourceUtilsMethod() {
