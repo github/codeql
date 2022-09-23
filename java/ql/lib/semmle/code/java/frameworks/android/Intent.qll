@@ -70,11 +70,7 @@ class AndroidReceiveIntentMethod extends Method {
  */
 class AndroidServiceIntentMethod extends Method {
   AndroidServiceIntentMethod() {
-    (
-      this.getName().matches("onStart%") or
-      this.getName().matches("on%ind") or
-      this.hasName("onTaskRemoved")
-    ) and
+    this.getName().matches(["onStart%", "on%ind", "onTaskRemoved"]) and
     this.getDeclaringType() instanceof TypeService
   }
 }

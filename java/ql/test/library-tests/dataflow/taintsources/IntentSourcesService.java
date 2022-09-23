@@ -7,8 +7,7 @@ import android.os.IBinder;
 
 public class IntentSourcesService extends Service {
 
-	private static void sink(Object o) {
-	}
+	private static void sink(Object o) {}
 
 	@Override
 	public void onStart(Intent intent, int startId) {

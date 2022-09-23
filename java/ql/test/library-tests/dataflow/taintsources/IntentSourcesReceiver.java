@@ -6,8 +6,7 @@ import android.content.Intent;
 
 public class IntentSourcesReceiver extends BroadcastReceiver {
 
-	private static void sink(Object o) {
-	}
+	private static void sink(Object o) {}
 
 	@Override
 	public void onReceive(Context context, Intent intent) {
