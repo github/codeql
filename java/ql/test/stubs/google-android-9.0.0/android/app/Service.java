@@ -17,6 +17,7 @@ package android.app;
 
 import android.content.Intent;
 import android.content.ContextWrapper;
+import android.os.IBinder;
 
 /**
  * A Service is an application component representing either an application's desire
