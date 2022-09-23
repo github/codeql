@@ -105,5 +105,5 @@ from CleartextStorageConfig config, DataFlow::PathNode sourceNode, DataFlow::Pat
 where config.hasFlowPath(sourceNode, sinkNode)
 select cleanupNode(sinkNode.getNode()), sourceNode, sinkNode,
   "This operation stores '" + sinkNode.getNode().toString() +
-    "' in a database. It may contain unencrypted sensitive data from $@", sourceNode,
+    "' in a database. It may contain unencrypted sensitive data from $@.", sourceNode,
   sourceNode.getNode().toString()
