@@ -189,3 +189,26 @@ void test11(unsigned size) {
     char *q = p + size - 1;
     deref_plus_one(q);
 }
+
+void test12(unsigned len, unsigned index) {
+    char* p = (char *)malloc(len);
+    char* end = p + len;
+    
+    if(p + index > end) {
+        return;
+    }
+    
+    p[index] = '\0'; // BAD
+}
+
+void test13(unsigned len, unsigned index) {
+    char* p = (char *)malloc(len);
+    char* end = p + len;
+    
+    char* q = p + index;
+    if(q > end) {
+        return;
+    }
+    
+    *q = '\0'; // BAD
+}
