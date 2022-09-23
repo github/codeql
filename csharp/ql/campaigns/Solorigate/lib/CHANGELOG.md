@@ -1,3 +1,7 @@
+## 1.3.0
+
+No user-facing changes.
+
 ## 1.2.5
 
 ## 1.2.4
