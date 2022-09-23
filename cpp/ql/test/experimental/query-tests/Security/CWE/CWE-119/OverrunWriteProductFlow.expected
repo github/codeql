@@ -29,5 +29,5 @@ nodes
 | test.cpp:35:21:35:23 | str indirection [string] | semmle.label | str indirection [string] |
 subpaths
 #select
-| test.cpp:26:18:26:23 | Load | test.cpp:18:19:18:24 | call to malloc | test.cpp:26:18:26:23 | Load | overrunning write allocated at $@ bounded by $@ | test.cpp:18:19:18:24 | call to malloc | call to malloc | test.cpp:26:31:26:39 | Convert | Convert |
-| test.cpp:30:18:30:23 | Load | test.cpp:18:19:18:24 | call to malloc | test.cpp:30:18:30:23 | Load | overrunning write allocated at $@ bounded by $@ | test.cpp:18:19:18:24 | call to malloc | call to malloc | test.cpp:30:31:30:39 | Convert | Convert |
+| test.cpp:26:18:26:23 | Load | test.cpp:18:19:18:24 | call to malloc | test.cpp:26:18:26:23 | Load | Overrunning write allocated at $@ bounded by $@. | test.cpp:18:19:18:24 | call to malloc | call to malloc | test.cpp:26:31:26:39 | Convert | Convert |
+| test.cpp:30:18:30:23 | Load | test.cpp:18:19:18:24 | call to malloc | test.cpp:30:18:30:23 | Load | Overrunning write allocated at $@ bounded by $@. | test.cpp:18:19:18:24 | call to malloc | call to malloc | test.cpp:30:31:30:39 | Convert | Convert |

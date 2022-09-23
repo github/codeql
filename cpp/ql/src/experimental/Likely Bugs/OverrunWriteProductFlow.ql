@@ -33,5 +33,5 @@ from
   DataFlow::PathNode sink1, DataFlow2::PathNode sink2
 where conf.hasFlowPath(source1, source2, sink1, sink2)
 // TODO: pull delta out and display it
-select sink1.getNode(), source1, sink1, "overrunning write allocated at $@ bounded by $@", source1,
+select sink1.getNode(), source1, sink1, "Overrunning write allocated at $@ bounded by $@.", source1,
   source1.toString(), sink2, sink2.toString()
