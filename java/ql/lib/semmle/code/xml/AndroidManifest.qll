@@ -132,6 +132,35 @@ class AndroidActivityXmlElement extends AndroidComponentXmlElement {
 }
 
 /**
+ * An `<activity-alias>` element in an Android manifest file.
+ */
+class AndroidActivityAliasXmlElement extends AndroidComponentXmlElement {
+  AndroidActivityAliasXmlElement() { this.getName() = "activity-alias" }
+
+  /**
+   * Get and resolve the name of the target activity from the `android:targetActivity` attribute.
+   */
+  string getResolvedTargetActivityName() {
+    exists(AndroidXmlAttribute attr |
+      attr = this.getAnAttribute() and attr.getName() = "targetActivity"
+    |
+      result = getResolvedIdentifier(attr)
+    )
+  }
+
+  /**
+   * Gets the `<activity>` element referenced by the `android:targetActivity` attribute.
+   */
+  AndroidActivityXmlElement getTarget() {
+    exists(AndroidActivityXmlElement activity |
+      activity.getResolvedComponentName() = this.getResolvedTargetActivityName()
+    |
+      result = activity
+    )
+  }
+}
+
+/**
  * A `<service>` element in an Android manifest file.
  */
 class AndroidServiceXmlElement extends AndroidComponentXmlElement {
@@ -235,7 +264,7 @@ class AndroidPathPermissionXmlElement extends XmlElement {
 class AndroidComponentXmlElement extends XmlElement {
   AndroidComponentXmlElement() {
     this.getParent() instanceof AndroidApplicationXmlElement and
-    this.getName().regexpMatch("(activity|service|receiver|provider)")
+    this.getName().regexpMatch("(activity|activity-alias|service|receiver|provider)")
   }
 
   /**
