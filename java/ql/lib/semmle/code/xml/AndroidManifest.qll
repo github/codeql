@@ -213,6 +213,13 @@ class AndroidPermissionXmlAttribute extends XmlAttribute {
 }
 
 /**
+ * The attribute `android:name` or `android:targetActivity`.
+ */
+class AndroidIdentifierXmlAttribute extends AndroidXmlAttribute {
+  AndroidIdentifierXmlAttribute() { this.getName() = ["name", "targetActivity"] }
+}
+
+/**
  * The `<path-permission`> element of a `<provider>` in an Android manifest file.
  */
 class AndroidPathPermissionXmlElement extends XmlElement {
