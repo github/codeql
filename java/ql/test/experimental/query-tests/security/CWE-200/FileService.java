@@ -1,11 +1,10 @@
 import java.io.FileOutputStream;
-
+import android.os.IBinder;
 import android.app.Service;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.AsyncTask;
-import android.os.IBinder;
 
 public class FileService extends Service {
     public static String KEY_LOCAL_FILE = "local_file";
@@ -26,11 +25,6 @@ public class FileService extends Service {
             copyTask.makeParamsToExecute(localPath)
         );
         return 2;
-    }
-
-    @Override
-    public IBinder onBind(Intent intent) {
-        return null;
     }
 
     public class CopyAndUploadContentUrisTask extends AsyncTask<Object, Void, String> {
@@ -66,5 +60,10 @@ public class FileService extends Service {
         @Override
         protected void onProgressUpdate(Void... values) {
         }
+    }
+
+    @Override
+    public IBinder onBind(Intent intent) {
+        return null;
     }
 }
