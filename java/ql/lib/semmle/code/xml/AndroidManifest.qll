@@ -129,6 +129,13 @@ class AndroidApplicationXmlElement extends XmlElement {
  */
 class AndroidActivityXmlElement extends AndroidComponentXmlElement {
   AndroidActivityXmlElement() { this.getName() = "activity" }
+
+  /**
+   * Gets an `<activity-alias>` element aliasing the activity.
+   */
+  AndroidActivityAliasXmlElement getAnAlias() {
+    exists(AndroidActivityAliasXmlElement alias | this = alias.getTarget() | result = alias)
+  }
 }
 
 /**
