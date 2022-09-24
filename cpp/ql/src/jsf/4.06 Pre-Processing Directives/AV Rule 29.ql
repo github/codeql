@@ -12,4 +12,4 @@ import cpp
 
 from Macro m
 where m.getHead().matches("%(%") // Macro functions are simply macros with brackets in the head
-select m, "The #define pre-processor directive shall not be used to create inline macros"
+select m, "The #define pre-processor directive shall not be used to create inline macros."

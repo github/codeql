@@ -158,5 +158,5 @@ where
   concatResult = sinkNode.getState().(ExecState).getSndNode()
 select sinkAsArgumentIndirection(sinkNode.getNode()), sourceNode, sinkNode,
   "This argument to an OS command is derived from $@, dangerously concatenated into $@, and then passed to "
-    + callChain, sourceNode, "user input (" + taintCause + ")", concatResult,
+    + callChain + ".", sourceNode, "user input (" + taintCause + ")", concatResult,
   concatResult.toString()

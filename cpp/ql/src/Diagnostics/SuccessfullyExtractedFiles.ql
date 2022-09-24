@@ -12,4 +12,4 @@ from File f
 where
   not exists(ExtractionProblem e | e.getFile() = f) and
   exists(f.getRelativePath())
-select f, "File successfully extracted"
+select f, "File successfully extracted."

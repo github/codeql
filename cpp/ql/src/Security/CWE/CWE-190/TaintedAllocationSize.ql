@@ -99,5 +99,5 @@ where
   isFlowSource(source.getNode(), taintCause) and
   conf.hasFlowPath(source, sink) and
   allocSink(alloc, sink.getNode())
-select alloc, source, sink, "This allocation size is derived from $@ and might overflow",
+select alloc, source, sink, "This allocation size is derived from $@ and might overflow.",
   source.getNode(), "user input (" + taintCause + ")"
