@@ -262,18 +262,29 @@ class AndroidComponentXmlElement extends XmlElement {
   }
 
   /**
+   * Gets the value of an identifier attribute, and tries to resolve it into a fully qualified identifier.
+   */
+  string getResolvedIdentifier(AndroidIdentifierXmlAttribute identifier) {
+    exists(string name | name = identifier.getValue() |
+      if name.matches(".%")
+      then
+        result =
+          this.getParent()
+                .(XmlElement)
+                .getParent()
+                .(AndroidManifestXmlElement)
+                .getPackageAttributeValue() + name
+      else result = name
+    )
+  }
+
+  /**
    * Gets the resolved value of the `android:name` attribute of this component element.
    */
   string getResolvedComponentName() {
-    if this.getComponentName().matches(".%")
-    then
-      result =
-        this.getParent()
-              .(XmlElement)
-              .getParent()
-              .(AndroidManifestXmlElement)
-              .getPackageAttributeValue() + this.getComponentName()
-    else result = this.getComponentName()
+    exists(AndroidXmlAttribute attr | attr = this.getAnAttribute() and attr.getName() = "name" |
+      result = getResolvedIdentifier(attr)
+    )
   }
 
   /**
