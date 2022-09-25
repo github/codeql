@@ -17,5 +17,5 @@ import DataFlow::PathGraph
 
 from TemplateInjectionFlowConfig config, DataFlow::PathNode source, DataFlow::PathNode sink
 where config.hasFlowPath(source, sink)
-select sink.getNode(), source, sink, "Potential arbitrary code execution due to $@.",
-  source.getNode(), "a template value loaded from a remote source."
+select sink.getNode(), source, sink, "Template, which may contain code, depends on a $@.",
+  source.getNode(), "user-provided value"

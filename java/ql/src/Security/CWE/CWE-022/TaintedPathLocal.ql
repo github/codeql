@@ -41,5 +41,4 @@ where
   e = p.getAnInput() and
   conf.hasFlowPath(source, sink) and
   not guarded(e)
-select p, source, sink, "$@ flows to here and is used in a path.", source.getNode(),
-  "User-provided value"
+select p, source, sink, "This path depends on a $@.", source.getNode(), "user-provided value"

@@ -121,5 +121,5 @@ where
   // The synchronized methods on `Throwable` are not interesting.
   not call1.getCallee().getDeclaringType() instanceof TypeThrowable
 select call2,
-  "The state of $@ is checked $@, and then it is used here. But these are not jointly synchronized.",
-  r, r.getName(), call1, "here"
+  "This uses the state of $@ which is checked $@. But these are not jointly synchronized.", r,
+  r.getName(), call1, "here"
