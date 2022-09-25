@@ -1116,12 +1116,18 @@ open class KotlinUsesExtractor(
                     javaLangClass?.let { jlc ->
                         return jlc.symbol.typeWithArguments(t.arguments)
                     }
-                } else if (t.isArray() || t.isNullableArray()) {
-                    val elementType = t.getArrayElementType(pluginContext.irBuiltIns)
-                    val replacedElementType = kClassToJavaClass(elementType)
-                    if (replacedElementType !== elementType) {
-                        val newArg = makeTypeProjection(replacedElementType, (t.arguments[0] as IrTypeProjection).variance)
-                        return t.classOrNull!!.typeWithArguments(listOf(newArg)).codeQlWithHasQuestionMark(t.isNullableArray())
+                } else {
+                    t.classOrNull?.let { tCls ->
+                        if (t.isArray() || t.isNullableArray()) {
+                            (t.arguments.singleOrNull() as? IrTypeProjection)?.let { elementTypeArg ->
+                                val elementType = elementTypeArg.type
+                                val replacedElementType = kClassToJavaClass(elementType)
+                                if (replacedElementType !== elementType) {
+                                    val newArg = makeTypeProjection(replacedElementType, elementTypeArg.variance)
+                                    return tCls.typeWithArguments(listOf(newArg)).codeQlWithHasQuestionMark(t.isNullableArray())
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -1134,7 +1140,7 @@ open class KotlinUsesExtractor(
             isAnnotationClassProperty(it)
         } ?: false
 
-    fun isAnnotationClassProperty(p: IrPropertySymbol) =
+    private fun isAnnotationClassProperty(p: IrPropertySymbol) =
         p.owner.parentClassOrNull?.kind == ClassKind.ANNOTATION_CLASS
 
     fun getAdjustedReturnType(f: IrFunction) : IrType {
