@@ -6,7 +6,7 @@ import codeql.ruby.frameworks.ActiveStorage
 
 query predicate attachmentInstances(ActiveStorage::AttachmentInstance n) { any() }
 
-query predicate httpRequests(HTTP::Client::Request r, string framework, DataFlow::Node responseBody) {
+query predicate httpRequests(Http::Client::Request r, string framework, DataFlow::Node responseBody) {
   r.getFramework() = framework and r.getResponseBody() = responseBody
 }
 

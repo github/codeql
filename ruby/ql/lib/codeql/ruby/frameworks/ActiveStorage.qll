@@ -80,7 +80,7 @@ module ActiveStorage {
   /**
    * Method calls on `ActiveStorage::Blob` that send HTTP requests.
    */
-  private class BlobRequestCall extends HTTP::Client::Request::Range {
+  private class BlobRequestCall extends Http::Client::Request::Range {
     BlobRequestCall() {
       this =
         [
@@ -100,16 +100,20 @@ module ActiveStorage {
           |
             c
           )
-        ].asExpr().getExpr()
+        ]
     }
 
     override string getFramework() { result = "activestorage" }
 
-    override DataFlow::Node getResponseBody() { result.asExpr().getExpr() = this }
+    override DataFlow::Node getResponseBody() { result = this }
 
     override DataFlow::Node getAUrlPart() { none() }
 
-    override predicate disablesCertificateValidation(DataFlow::Node disablingNode) { none() }
+    override predicate disablesCertificateValidation(
+      DataFlow::Node disablingNode, DataFlow::Node argumentOrigin
+    ) {
+      none()
+    }
   }
 
   /**
