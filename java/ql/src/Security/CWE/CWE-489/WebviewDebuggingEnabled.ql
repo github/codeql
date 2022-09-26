@@ -16,4 +16,4 @@ import DataFlow::PathGraph
 
 from WebviewDebugEnabledConfig conf, DataFlow::PathNode source, DataFlow::PathNode sink
 where conf.hasFlowPath(source, sink)
-select sink, source, sink, "Webview debugging is enabled here."
+select sink, source, sink, "Webview debugging is enabled."
