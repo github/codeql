@@ -77,13 +77,24 @@ Foo.startInNamedParameter(->(foo:) {
 })
 
 a = ["elem0", source("elem1"), source("elem2")]
-sink(a[0])
-sink(a[1]) # $ hasValueFlow=elem1
-sink(a[2]) # $ hasValueFlow=elem2
+a[rand()] = source("elem3")
+sink(a.readElementOne(1)) # $ hasValueFlow=elem1 $ hasValueFlow=elem3
+sink(a.readExactlyElementOne(1)) # $ hasValueFlow=elem1
+sink(a[0]) # $ hasValueFlow=elem3
+sink(a[1]) # $ hasValueFlow=elem1 $ hasValueFlow=elem3
+sink(a[2]) # $ hasValueFlow=elem2 $ hasValueFlow=elem3
 b = a.withElementOne()
-sink(b[0])
-sink(b[1]) # $ hasValueFlow=elem1
-sink(b[2])
+sink(b[0]) # $ hasValueFlow=elem3
+sink(b[1]) # $ hasValueFlow=elem1 $ hasValueFlow=elem3
+sink(b[2]) # $ hasValueFlow=elem3
+c = a.withExactlyElementOne()
+sink(c[0])
+sink(c[1]) # $ hasValueFlow=elem1
+sink(c[2])
+a.withoutExactlyElementOne()
+sink(a[0]) # $ hasValueFlow=elem3
+sink(a[1]) # $ hasValueFlow=elem3
+sink(a[2]) # $ hasValueFlow=elem2 $ hasValueFlow=elem3
 a.withoutElementOne()
 sink(a[0])
 sink(a[1])
