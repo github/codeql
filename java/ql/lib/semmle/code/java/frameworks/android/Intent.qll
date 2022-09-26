@@ -277,9 +277,7 @@ private class StartActivityIntentStep extends AdditionalValueStep {
    */
   private Argument getIntentArgOfStartActMethod(MethodAccess methodAccess) {
     methodAccess.getMethod().overrides*(any(StartActivityMethod m)) and
-    if
-      methodAccess.getMethod().hasName("startActivityFromChild") or
-      methodAccess.getMethod().hasName("startActivityFromFragment")
+    if methodAccess.getMethod().hasName(["startActivityFromChild", "startActivityFromFragment"])
     then result = methodAccess.getArgument(1)
     else result = methodAccess.getArgument(0)
   }
