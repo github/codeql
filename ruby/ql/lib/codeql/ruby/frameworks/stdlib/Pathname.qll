@@ -3,11 +3,9 @@
 private import codeql.ruby.AST
 private import codeql.ruby.ApiGraphs
 private import codeql.ruby.Concepts
-private import codeql.ruby.DataFlow
 private import codeql.ruby.dataflow.FlowSummary
-private import codeql.ruby.dataflow.internal.DataFlowDispatch
 private import codeql.ruby.frameworks.data.ModelsAsData
-private import codeql.ruby.typetracking.TypeTracker
+private import codeql.ruby.dataflow.internal.DataFlowImplForLibraries
 
 /**
  * Modeling of the `Pathname` class from the Ruby standard library.
@@ -29,33 +27,33 @@ module Pathname {
    * Every `PathnameInstance` is considered to be a `FileNameSource`.
    */
   class PathnameInstance extends FileNameSource, DataFlow::Node {
-    PathnameInstance() { this = pathnameInstance() }
+    PathnameInstance() { any(PathnameConfiguration c).hasFlowTo(this) }
   }
 
-  private DataFlow::LocalSourceNode pathnameInstance(TypeTracker t) {
-    t.start() and
-    (
+  private class PathnameConfiguration extends Configuration {
+    PathnameConfiguration() { this = "PathnameConfiguration" }
+
+    override predicate isSource(DataFlow::Node source) {
       // A call to `Pathname.new`.
-      result = API::getTopLevelMember("Pathname").getAnInstantiation()
+      source = API::getTopLevelMember("Pathname").getAnInstantiation()
       or
       // Class methods on `Pathname` that return a new `Pathname`.
-      result = API::getTopLevelMember("Pathname").getAMethodCall(["getwd", "pwd",])
-      or
-      // Instance methods on `Pathname` that return a new `Pathname`.
-      exists(DataFlow::CallNode c | result = c |
-        c.getReceiver() = pathnameInstance() and
+      source = API::getTopLevelMember("Pathname").getAMethodCall(["getwd", "pwd",])
+    }
+
+    override predicate isSink(DataFlow::Node sink) { any() }
+
+    override predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
+      exists(DataFlow::CallNode c | node2 = c |
+        c.getReceiver() = node1 and
         c.getMethodName() =
           [
             "+", "/", "basename", "cleanpath", "expand_path", "join", "realpath",
             "relative_path_from", "sub", "sub_ext", "to_path"
           ]
       )
-    )
-    or
-    exists(TypeTracker t2 | result = pathnameInstance(t2).track(t2, t))
+    }
   }
-
-  private DataFlow::Node pathnameInstance() { pathnameInstance(TypeTracker::end()).flowsTo(result) }
 
   /** A call where the receiver is a `Pathname`. */
   class PathnameCall extends DataFlow::CallNode {
