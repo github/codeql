@@ -1103,7 +1103,56 @@ open class KotlinUsesExtractor(
         return "@\"$prefix;{$parentId}.$name($paramTypeIds){$returnTypeId}${typeArgSuffix}\""
     }
 
+    val javaLangClass by lazy {
+        val result = pluginContext.referenceClass(FqName("java.lang.Class"))?.owner
+        result?.let { extractExternalClassLater(it) }
+        result
+    }
+
+    fun kClassToJavaClass(t: IrType): IrType {
+        when(t) {
+            is IrSimpleType -> {
+                if (t.classifier == pluginContext.irBuiltIns.kClassClass) {
+                    javaLangClass?.let { jlc ->
+                        return jlc.symbol.typeWithArguments(t.arguments)
+                    }
+                } else {
+                    t.classOrNull?.let { tCls ->
+                        if (t.isArray() || t.isNullableArray()) {
+                            (t.arguments.singleOrNull() as? IrTypeProjection)?.let { elementTypeArg ->
+                                val elementType = elementTypeArg.type
+                                val replacedElementType = kClassToJavaClass(elementType)
+                                if (replacedElementType !== elementType) {
+                                    val newArg = makeTypeProjection(replacedElementType, elementTypeArg.variance)
+                                    return tCls.typeWithArguments(listOf(newArg)).codeQlWithHasQuestionMark(t.isNullableArray())
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return t
+    }
+
+    fun isAnnotationClassField(f: IrField) =
+        f.correspondingPropertySymbol?.let {
+            isAnnotationClassProperty(it)
+        } ?: false
+
+    private fun isAnnotationClassProperty(p: IrPropertySymbol) =
+        p.owner.parentClassOrNull?.kind == ClassKind.ANNOTATION_CLASS
+
     fun getAdjustedReturnType(f: IrFunction) : IrType {
+        // Replace annotation val accessor types as needed:
+        (f as? IrSimpleFunction)?.correspondingPropertySymbol?.let {
+            if (isAnnotationClassProperty(it) && f == it.owner.getter) {
+                val replaced = kClassToJavaClass(f.returnType)
+                if (replaced != f.returnType)
+                    return replaced
+            }
+        }
+
         // The return type of `java.util.concurrent.ConcurrentHashMap<K,V>.keySet/0` is defined as `Set<K>` in the stubs inside the Android SDK.
         // This does not match the Java SDK return type: `ConcurrentHashMap.KeySetView<K,V>`, so it's adjusted here.
         // This is a deliberate change in the Android SDK: https://github.com/AndroidSDKSources/android-sdk-sources-for-api-level-31/blob/2c56b25f619575bea12f9c5520ed2259620084ac/java/util/concurrent/ConcurrentHashMap.java#L1244-L1249
