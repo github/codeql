@@ -1,0 +1,2 @@
+| string.swift:27:21:27:21 | call to init(contentsOf:) | external |
+| string.swift:27:21:27:44 | call to init(contentsOf:) | external |
