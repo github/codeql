@@ -1,7 +1,7 @@
-#-----| BasicObject
-
 #-----| Class
 #-----| super -> Module
+
+#-----| BasicObject
 
 #-----| Complex
 #-----| super -> Numeric
@@ -91,6 +91,11 @@ calls.rb:
 
 #  399| SingletonOverride2
 #-----| super -> SingletonOverride1
+
+#  414| ConditionalInstanceMethods
+#-----| super -> Object
+
+#  477| ExtendSingletonMethod
 
 hello.rb:
 #    1| EnglishWords
