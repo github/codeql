@@ -1,8 +1,8 @@
 private import ruby
+private import codeql.ruby.AST
 private import codeql.ruby.frameworks.ActionController
 private import codeql.ruby.frameworks.ActionView
 private import codeql.ruby.Concepts
-private import codeql.ruby.DataFlow
 
 query predicate htmlSafeCalls(HtmlSafeCall c) { any() }
 
