@@ -143,16 +143,6 @@ private module Cached {
     )
   }
 
-  cached
-  Instruction getRegisterOperandDefinition(Instruction instruction, RegisterOperandTag tag) {
-    exists(OldInstruction oldInstruction, OldIR::RegisterOperand oldOperand |
-      oldInstruction = getOldInstruction(instruction) and
-      oldOperand = oldInstruction.getAnOperand() and
-      tag = oldOperand.getOperandTag() and
-      result = getNewInstruction(oldOperand.getAnyDef())
-    )
-  }
-
   pragma[noopt]
   private predicate hasMemoryOperandDefinition(
     OldInstruction oldInstruction, OldIR::NonPhiMemoryOperand oldOperand, Overlap overlap,
