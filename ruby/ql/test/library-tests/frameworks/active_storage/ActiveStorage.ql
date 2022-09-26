@@ -1,6 +1,5 @@
 import ruby
 import codeql.ruby.ApiGraphs
-import codeql.ruby.DataFlow
 import codeql.ruby.Concepts
 import codeql.ruby.frameworks.ActiveStorage
 
