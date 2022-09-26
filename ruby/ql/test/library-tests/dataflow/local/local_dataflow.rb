@@ -107,3 +107,18 @@ def and_or
   b &&= source(8)
   sink(b) # $ hasValueFlow=7 hasValueFlow=8
 end
+
+def object_dup
+  sink(source(1).dup) # $ hasValueFlow=1
+  sink(source(1).dup.dup) # $ hasValueFlow=1
+end
+
+def kernel_tap
+  sink(source(1).tap {}) # $ hasValueFlow=1
+  source(1).tap { |x| sink(x) } # $ hasValueFlow=1
+  sink(source(1).tap {}.tap {}) # $ hasValueFlow=1
+end
+
+def dup_tap
+  sink(source(1).dup.tap { |x| puts "hello" }.dup)  # $ hasValueFlow=1
+end

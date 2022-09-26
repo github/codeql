@@ -243,3 +243,39 @@
 | local_dataflow.rb:107:9:107:17 | [post] self | local_dataflow.rb:108:3:108:9 | self |
 | local_dataflow.rb:107:9:107:17 | call to source | local_dataflow.rb:107:5:107:7 | ... && ... |
 | local_dataflow.rb:107:9:107:17 | self | local_dataflow.rb:108:3:108:9 | self |
+| local_dataflow.rb:111:1:114:3 | self (object_dup) | local_dataflow.rb:112:3:112:21 | self |
+| local_dataflow.rb:111:1:114:3 | self in object_dup | local_dataflow.rb:111:1:114:3 | self (object_dup) |
+| local_dataflow.rb:112:3:112:21 | [post] self | local_dataflow.rb:112:8:112:16 | self |
+| local_dataflow.rb:112:3:112:21 | self | local_dataflow.rb:112:8:112:16 | self |
+| local_dataflow.rb:112:8:112:16 | [post] self | local_dataflow.rb:113:3:113:25 | self |
+| local_dataflow.rb:112:8:112:16 | call to source | local_dataflow.rb:112:8:112:20 | call to dup |
+| local_dataflow.rb:112:8:112:16 | self | local_dataflow.rb:113:3:113:25 | self |
+| local_dataflow.rb:113:3:113:25 | [post] self | local_dataflow.rb:113:8:113:16 | self |
+| local_dataflow.rb:113:3:113:25 | self | local_dataflow.rb:113:8:113:16 | self |
+| local_dataflow.rb:113:8:113:16 | call to source | local_dataflow.rb:113:8:113:20 | call to dup |
+| local_dataflow.rb:113:8:113:20 | call to dup | local_dataflow.rb:113:8:113:24 | call to dup |
+| local_dataflow.rb:116:1:120:3 | self (kernel_tap) | local_dataflow.rb:117:3:117:24 | self |
+| local_dataflow.rb:116:1:120:3 | self in kernel_tap | local_dataflow.rb:116:1:120:3 | self (kernel_tap) |
+| local_dataflow.rb:117:3:117:24 | [post] self | local_dataflow.rb:117:8:117:16 | self |
+| local_dataflow.rb:117:3:117:24 | self | local_dataflow.rb:117:8:117:16 | self |
+| local_dataflow.rb:117:8:117:16 | [post] self | local_dataflow.rb:118:3:118:11 | self |
+| local_dataflow.rb:117:8:117:16 | call to source | local_dataflow.rb:117:8:117:23 | call to tap |
+| local_dataflow.rb:117:8:117:16 | self | local_dataflow.rb:118:3:118:11 | self |
+| local_dataflow.rb:118:3:118:11 | [post] self | local_dataflow.rb:119:3:119:31 | self |
+| local_dataflow.rb:118:3:118:11 | call to source | local_dataflow.rb:118:3:118:31 | call to tap |
+| local_dataflow.rb:118:3:118:11 | self | local_dataflow.rb:119:3:119:31 | self |
+| local_dataflow.rb:118:17:118:31 | <captured> | local_dataflow.rb:118:23:118:29 | self |
+| local_dataflow.rb:118:20:118:20 | x | local_dataflow.rb:118:20:118:20 | x |
+| local_dataflow.rb:118:20:118:20 | x | local_dataflow.rb:118:28:118:28 | x |
+| local_dataflow.rb:119:3:119:31 | [post] self | local_dataflow.rb:119:8:119:16 | self |
+| local_dataflow.rb:119:3:119:31 | self | local_dataflow.rb:119:8:119:16 | self |
+| local_dataflow.rb:119:8:119:16 | call to source | local_dataflow.rb:119:8:119:23 | call to tap |
+| local_dataflow.rb:119:8:119:23 | call to tap | local_dataflow.rb:119:8:119:30 | call to tap |
+| local_dataflow.rb:122:1:124:3 | self (dup_tap) | local_dataflow.rb:123:3:123:50 | self |
+| local_dataflow.rb:122:1:124:3 | self in dup_tap | local_dataflow.rb:122:1:124:3 | self (dup_tap) |
+| local_dataflow.rb:123:3:123:50 | [post] self | local_dataflow.rb:123:8:123:16 | self |
+| local_dataflow.rb:123:3:123:50 | self | local_dataflow.rb:123:8:123:16 | self |
+| local_dataflow.rb:123:8:123:16 | call to source | local_dataflow.rb:123:8:123:20 | call to dup |
+| local_dataflow.rb:123:8:123:20 | call to dup | local_dataflow.rb:123:8:123:45 | call to tap |
+| local_dataflow.rb:123:8:123:45 | call to tap | local_dataflow.rb:123:8:123:49 | call to dup |
+| local_dataflow.rb:123:26:123:45 | <captured> | local_dataflow.rb:123:32:123:43 | self |
