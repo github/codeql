@@ -277,6 +277,20 @@ private predicate hasAdjacentTypeCheckedReads(
   )
 }
 
+/** Holds if `call` may resolve to the returned source-code method. */
+private DataFlowCallable viableSourceCallable(DataFlowCall call) {
+  result = TCfgScope(getTarget(call.asCall())) and
+  not call.asCall().getExpr() instanceof YieldCall // handled by `lambdaCreation`/`lambdaCall`
+}
+
+/** Holds if `call` may resolve to the returned summarized library method. */
+private DataFlowCallable viableLibraryCallable(DataFlowCall call) {
+  exists(LibraryCallable callable |
+    result = TLibraryCallable(callable) and
+    call.asCall().getExpr() = callable.getACall()
+  )
+}
+
 cached
 private module Cached {
   cached
@@ -366,13 +380,9 @@ private module Cached {
   /** Gets a viable run-time target for the call `call`. */
   cached
   DataFlowCallable viableCallable(DataFlowCall call) {
-    result = TCfgScope(getTarget(call.asCall())) and
-    not call.asCall().getExpr() instanceof YieldCall // handled by `lambdaCreation`/`lambdaCall`
+    result = viableSourceCallable(call)
     or
-    exists(LibraryCallable callable |
-      result = TLibraryCallable(callable) and
-      call.asCall().getExpr() = callable.getACall()
-    )
+    result = viableLibraryCallable(call)
   }
 
   cached
@@ -438,90 +448,103 @@ private DataFlow::LocalSourceNode trackModuleAccess(Module m) {
   result = trackModuleAccess(m, TypeTracker::end())
 }
 
+/** Holds if `n` is an instance of type `tp`. */
+private predicate isInstance(DataFlow::Node n, Module tp, boolean exact) {
+  n.asExpr().getExpr() instanceof NilLiteral and
+  tp = TResolved("NilClass") and
+  exact = true
+  or
+  n.asExpr().getExpr().(BooleanLiteral).isFalse() and
+  tp = TResolved("FalseClass") and
+  exact = true
+  or
+  n.asExpr().getExpr().(BooleanLiteral).isTrue() and
+  tp = TResolved("TrueClass") and
+  exact = true
+  or
+  n.asExpr().getExpr() instanceof IntegerLiteral and
+  tp = TResolved("Integer") and
+  exact = true
+  or
+  n.asExpr().getExpr() instanceof FloatLiteral and
+  tp = TResolved("Float") and
+  exact = true
+  or
+  n.asExpr().getExpr() instanceof RationalLiteral and
+  tp = TResolved("Rational") and
+  exact = true
+  or
+  n.asExpr().getExpr() instanceof ComplexLiteral and
+  tp = TResolved("Complex") and
+  exact = true
+  or
+  n.asExpr().getExpr() instanceof StringlikeLiteral and
+  tp = TResolved("String") and
+  exact = true
+  or
+  n.asExpr() instanceof CfgNodes::ExprNodes::ArrayLiteralCfgNode and
+  tp = TResolved("Array") and
+  exact = true
+  or
+  n.asExpr() instanceof CfgNodes::ExprNodes::HashLiteralCfgNode and
+  tp = TResolved("Hash") and
+  exact = true
+  or
+  n.asExpr().getExpr() instanceof MethodBase and
+  tp = TResolved("Symbol") and
+  exact = true
+  or
+  n.asParameter() instanceof BlockParameter and
+  tp = TResolved("Proc") and
+  exact = true
+  or
+  n.asExpr().getExpr() instanceof Lambda and
+  tp = TResolved("Proc") and
+  exact = true
+  or
+  exists(CfgNodes::ExprNodes::CallCfgNode call, DataFlow::LocalSourceNode sourceNode |
+    flowsToMethodCall(call, sourceNode, "new") and
+    exact = true and
+    n.asExpr() = call
+  |
+    // `C.new`
+    sourceNode = trackModuleAccess(tp)
+    or
+    // `self.new` inside a module
+    selfInModule(sourceNode.(SsaSelfDefinitionNode).getVariable(), tp)
+    or
+    // `self.new` inside a singleton method
+    selfInMethod(sourceNode.(SsaSelfDefinitionNode).getVariable(), any(SingletonMethod sm), tp)
+  )
+  or
+  // `self` reference in method or top-level (but not in module or singleton method,
+  // where instance methods cannot be called; only singleton methods)
+  n =
+    any(SsaSelfDefinitionNode self |
+      exists(MethodBase m |
+        selfInMethod(self.getVariable(), m, tp) and
+        not m instanceof SingletonMethod and
+        if m.getEnclosingModule() instanceof Toplevel then exact = true else exact = false
+      )
+      or
+      selfInToplevel(self.getVariable(), tp) and
+      exact = true
+    )
+  or
+  // `in C => c then c.foo`
+  asModulePattern(n, tp) and
+  exact = false
+  or
+  // `case object when C then object.foo`
+  hasAdjacentTypeCheckedReads(_, _, n.asExpr(), tp) and
+  exact = false
+}
+
 pragma[nomagic]
 private DataFlow::Node trackInstance(Module tp, boolean exact, TypeTracker t) {
   t.start() and
   (
-    result.asExpr().getExpr() instanceof NilLiteral and
-    tp = TResolved("NilClass") and
-    exact = true
-    or
-    result.asExpr().getExpr().(BooleanLiteral).isFalse() and
-    tp = TResolved("FalseClass") and
-    exact = true
-    or
-    result.asExpr().getExpr().(BooleanLiteral).isTrue() and
-    tp = TResolved("TrueClass") and
-    exact = true
-    or
-    result.asExpr().getExpr() instanceof IntegerLiteral and
-    tp = TResolved("Integer") and
-    exact = true
-    or
-    result.asExpr().getExpr() instanceof FloatLiteral and
-    tp = TResolved("Float") and
-    exact = true
-    or
-    result.asExpr().getExpr() instanceof RationalLiteral and
-    tp = TResolved("Rational") and
-    exact = true
-    or
-    result.asExpr().getExpr() instanceof ComplexLiteral and
-    tp = TResolved("Complex") and
-    exact = true
-    or
-    result.asExpr().getExpr() instanceof StringlikeLiteral and
-    tp = TResolved("String") and
-    exact = true
-    or
-    result.asExpr() instanceof CfgNodes::ExprNodes::ArrayLiteralCfgNode and
-    tp = TResolved("Array") and
-    exact = true
-    or
-    result.asExpr() instanceof CfgNodes::ExprNodes::HashLiteralCfgNode and
-    tp = TResolved("Hash") and
-    exact = true
-    or
-    result.asExpr().getExpr() instanceof MethodBase and
-    tp = TResolved("Symbol") and
-    exact = true
-    or
-    result.asParameter() instanceof BlockParameter and
-    tp = TResolved("Proc") and
-    exact = true
-    or
-    result.asExpr().getExpr() instanceof Lambda and
-    tp = TResolved("Proc") and
-    exact = true
-    or
-    exists(CfgNodes::ExprNodes::CallCfgNode call, DataFlow::LocalSourceNode sourceNode |
-      flowsToMethodCall(call, sourceNode, "new") and
-      exact = true and
-      result.asExpr() = call
-    |
-      // `C.new`
-      sourceNode = trackModuleAccess(tp)
-      or
-      // `self.new` inside a module
-      selfInModule(sourceNode.(SsaSelfDefinitionNode).getVariable(), tp)
-      or
-      // `self.new` inside a singleton method
-      selfInMethod(sourceNode.(SsaSelfDefinitionNode).getVariable(), any(SingletonMethod sm), tp)
-    )
-    or
-    // `self` reference in method or top-level (but not in module or singleton method,
-    // where instance methods cannot be called; only singleton methods)
-    result =
-      any(SsaSelfDefinitionNode self |
-        exists(MethodBase m |
-          selfInMethod(self.getVariable(), m, tp) and
-          not m instanceof SingletonMethod and
-          if m.getEnclosingModule() instanceof Toplevel then exact = true else exact = false
-        )
-        or
-        selfInToplevel(self.getVariable(), tp) and
-        exact = true
-      )
+    isInstance(result, tp, exact)
     or
     exists(Module m |
       (if m.isClass() then tp = TResolved("Class") else tp = TResolved("Module")) and
@@ -536,14 +559,6 @@ private DataFlow::Node trackInstance(Module tp, boolean exact, TypeTracker t) {
       // needed for e.g. `self.puts`
       selfInMethod(result.(SsaSelfDefinitionNode).getVariable(), any(SingletonMethod sm), m)
     )
-    or
-    // `in C => c then c.foo`
-    asModulePattern(result, tp) and
-    exact = false
-    or
-    // `case object when C then object.foo`
-    hasAdjacentTypeCheckedReads(_, _, result.asExpr(), tp) and
-    exact = false
   )
   or
   exists(TypeTracker t2, StepSummary summary |
@@ -778,19 +793,112 @@ private DataFlow::Node trackSingletonMethodOnInstance(MethodBase method, string 
   result = trackSingletonMethodOnInstance(method, name, TypeTracker::end())
 }
 
+/** Same as `isInstance`, but includes local must-flow through SSA definitions. */
+private predicate isInstanceLocalMustFlow(DataFlow::Node n, Module tp, boolean exact) {
+  isInstance(n, tp, exact)
+  or
+  exists(DataFlow::Node mid | isInstanceLocalMustFlow(mid, tp, exact) |
+    n.asExpr() = mid.(SsaDefinitionNode).getDefinition().getARead()
+    or
+    n.(SsaDefinitionNode).getDefinition().(Ssa::WriteDefinition).assigns(mid.asExpr())
+  )
+}
+
+/**
+ * Holds if `ctx` targets `encl`, which is the enclosing callable of `call`, the receiver
+ * of `call` is a parameter access, where the corresponding argument of `ctx` is `arg`.
+ *
+ * `name` is the name of the method being called by `call`.
+ */
+pragma[nomagic]
+private predicate mayBenefitFromCallContext0(
+  CfgNodes::ExprNodes::CallCfgNode ctx, ArgumentNode arg, CfgNodes::ExprNodes::CallCfgNode call,
+  Callable encl, string name
+) {
+  exists(
+    ParameterNodeImpl p, SsaDefinitionNode ssaNode, ParameterPosition ppos, ArgumentPosition apos
+  |
+    // the receiver of `call` references `p`
+    ssaNode = trackInstance(_, _) and
+    LocalFlow::localFlowSsaParamInput(p, ssaNode) and
+    flowsToMethodCall(pragma[only_bind_into](call), pragma[only_bind_into](ssaNode),
+      pragma[only_bind_into](name)) and
+    // `p` is a parameter of `encl`,
+    encl = call.getScope() and
+    p.isParameterOf(TCfgScope(encl), ppos) and
+    // `ctx` targets `encl`
+    getTarget(ctx) = encl and
+    // `arg` is the argument for `p` in the call `ctx`
+    arg.sourceArgumentOf(ctx, apos) and
+    parameterMatch(ppos, apos)
+  )
+}
+
+/**
+ * Holds if `ctx` targets `encl`, which is the enclosing callable of `call`, and
+ * the receiver of `call` is a parameter access, where the corresponding argument
+ * of `ctx` has type `tp`.
+ *
+ * `name` is the name of the method being called by `call`, and `exact` is pertaining
+ * to the type of the argument.
+ */
+pragma[nomagic]
+private predicate mayBenefitFromCallContext1(
+  CfgNodes::ExprNodes::CallCfgNode ctx, CfgNodes::ExprNodes::CallCfgNode call, Callable encl,
+  Module tp, boolean exact, string name
+) {
+  exists(ArgumentNode arg |
+    mayBenefitFromCallContext0(ctx, arg, call, encl, name) and
+    // `arg` has a relevant instance type
+    isInstanceLocalMustFlow(arg, pragma[only_bind_out](tp), exact) and
+    exists(lookupMethod(tp, pragma[only_bind_into](name)))
+  )
+}
+
 /**
  * Holds if the set of viable implementations that can be called by `call`
  * might be improved by knowing the call context. This is the case if the
- * qualifier accesses a parameter of the enclosing callable `c` (including
+ * receiver accesses a parameter of the enclosing callable `c` (including
  * the implicit `self` parameter).
  */
-predicate mayBenefitFromCallContext(DataFlowCall call, DataFlowCallable c) { none() }
+predicate mayBenefitFromCallContext(DataFlowCall call, DataFlowCallable c) {
+  mayBenefitFromCallContext1(_, call.asCall(), c.asCallable(), _, _, _)
+}
 
 /**
  * Gets a viable dispatch target of `call` in the context `ctx`. This is
  * restricted to those `call`s for which a context might make a difference.
  */
-DataFlowCallable viableImplInCallContext(DataFlowCall call, DataFlowCall ctx) { none() }
+pragma[nomagic]
+DataFlowCallable viableImplInCallContext(DataFlowCall call, DataFlowCall ctx) {
+  // `ctx` can provide a potentially better type bound
+  exists(CfgNodes::ExprNodes::CallCfgNode call0, Callable res |
+    call0 = call.asCall() and
+    res = result.asCallable() and
+    res = getTarget(call0) and // make sure to not include e.g. private methods
+    exists(Module tp, Module m, boolean exact, string name |
+      res = lookupMethod(tp, name) and
+      mayBenefitFromCallContext1(ctx.asCall(), pragma[only_bind_into](call0), _,
+        pragma[only_bind_into](m), exact, pragma[only_bind_into](name))
+    |
+      tp = m
+      or
+      exact = false and
+      tp.getSuperClass+() = m
+    )
+  )
+  or
+  // `ctx` cannot provide a type bound
+  exists(ArgumentNode arg |
+    mayBenefitFromCallContext0(ctx.asCall(), arg, call.asCall(), _, _) and
+    not isInstanceLocalMustFlow(arg, _, _) and
+    result = viableSourceCallable(call)
+  )
+  or
+  // library calls should always be able to resolve
+  mayBenefitFromCallContext0(ctx.asCall(), _, call.asCall(), _, _) and
+  result = viableLibraryCallable(call)
+}
 
 predicate exprNodeReturnedFrom = exprNodeReturnedFromCached/2;
 
