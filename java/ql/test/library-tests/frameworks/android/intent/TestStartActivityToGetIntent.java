@@ -12,29 +12,16 @@ public class TestStartActivityToGetIntent {
 
     public void test(Context ctx, Activity act) {
 
-        // test all methods that start an activity
+        // test methods that start an activity
         {
             Intent intent = new Intent(null, SomeActivity.class);
             intent.putExtra("data", (String) source("ctx-start"));
             ctx.startActivity(intent);
         }
         {
-            // Intent intent1 = new Intent(null, SomeActivity2.class);
-            // intent1.putExtra("data", (String) source("ctx-starts"));
-            // Intent intent2 = new Intent(null, SomeActivity3.class);
-            // intent2.putExtra("data", (String) source("ctx-starts"));
-            // Intent[] intents = {intent1, intent2};
-            // ctx.startActivities(intents);
-        }
-        {
             Intent intent = new Intent(null, SomeActivity.class);
             intent.putExtra("data", (String) source("act-start"));
             act.startActivity(intent);
-        }
-        {
-            // Intent[] intent = {new Intent(null, SomeActivity.class)};
-            // intent[0].putExtra("data", (String) source("act-starts"));
-            // act.startActivities(intent);
         }
         {
             Intent intent = new Intent(null, SomeActivity.class);
@@ -84,22 +71,6 @@ public class TestStartActivityToGetIntent {
         }
 
     }
-
-    // static class SomeActivity2 extends Activity {
-
-    //     public void test() {
-    //         sink(getIntent().getStringExtra("data")); // $ hasValueFlow=ctx-starts
-    //     }
-
-    // }
-
-    // static class SomeActivity3 extends Activity {
-
-    //     public void test() {
-    //         sink(getIntent().getStringExtra("data")); // $ hasValueFlow=ctx-starts
-    //     }
-
-    // }
 
     static class SafeActivity extends Activity {
 
