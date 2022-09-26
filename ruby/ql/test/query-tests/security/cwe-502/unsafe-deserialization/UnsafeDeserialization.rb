@@ -83,19 +83,7 @@ class UsersController < ActionController::Base
 
   # BAD
   def route11
-    yaml_path = params[:key]
-    object = YAML.load_file yaml_path
-  end
-
-  # BAD
-  def route12
     yaml_data = params[:key]
     object = Psych.load yaml_data
-  end
-
-  # BAD
-  def route13
-    yaml_path = params[:key]
-    object = Psych.load_file yaml_path
   end
 end
