@@ -29,8 +29,7 @@ from
 where
   c.hasFlowPath(source, sink) and
   if exists(sink.getNode().(Sink).explanation())
-  then explanation = ": " + sink.getNode().(Sink).explanation() + "."
-  else explanation = "."
-select sink.getNode(), source, sink,
-  "$@ flows to here and is written to HTML or JavaScript" + explanation, source.getNode(),
-  "Stored user-provided value"
+  then explanation = " (" + sink.getNode().(Sink).explanation() + ")"
+  else explanation = ""
+select sink.getNode(), source, sink, "HTML or JavaScript write" + explanation + " depends on a $@.",
+  source.getNode(), "stored user-provided value"
