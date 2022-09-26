@@ -48,16 +48,13 @@ module UnsafeDeserialization {
   }
 
   /**
-   * An argument in a call to `YAML.load` or `YAML.load_file`, considered a sink
+   * An argument in a call to `YAML.load`, considered a sink
    * for unsafe deserialization. The `YAML` module is an alias of `Psych` in
    * recent versions of Ruby.
    */
   class YamlLoadArgument extends Sink {
     YamlLoadArgument() {
-      this =
-        API::getTopLevelMember(["YAML", "Psych"])
-            .getAMethodCall(["load", "load_file"])
-            .getArgument(0)
+      this = API::getTopLevelMember(["YAML", "Psych"]).getAMethodCall("load").getArgument(0)
     }
   }
 
