@@ -176,7 +176,7 @@ module Hash {
       output = "Argument[self].Element[" + key.serialize() + "]" and
       preservesValue = true
       or
-      input = "Argument[self].WithoutElement[" + key.serialize() + "]" and
+      input = "Argument[self].WithoutElement[" + key.serialize() + "!]" and
       output = "Argument[self]" and
       preservesValue = true
     }
@@ -217,7 +217,7 @@ module Hash {
     }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
-      input = "Argument[self].Element[" + key.serialize() + ",?]" and
+      input = "Argument[self].Element[" + key.serialize() + "]" and
       output = "ReturnValue.Element[1]" and
       preservesValue = true
     }
@@ -290,7 +290,7 @@ module Hash {
           concat(int i, string s |
             s = getExceptComponent(mc, i)
           |
-            ".WithoutElement[" + s + "]" order by i
+            ".WithoutElement[" + s + "!]" order by i
           ) and
       output = "ReturnValue" and
       preservesValue = true
@@ -413,7 +413,7 @@ private class SliceKnownSummary extends SliceSummary {
   }
 
   override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
-    input = "Argument[self].WithElement[?," + key.serialize() + "]" and
+    input = "Argument[self].WithElement[" + key.serialize() + "]" and
     output = "ReturnValue" and
     preservesValue = true
   }
@@ -426,7 +426,7 @@ private class SliceUnknownSummary extends SliceSummary {
   }
 
   override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
-    input = "Argument[self].WithoutElement[0..].WithElement[any]" and
+    input = "Argument[self].WithoutElement[0..!].WithElement[any]" and
     output = "ReturnValue" and
     preservesValue = true
   }
@@ -436,7 +436,7 @@ private class ToASummary extends SimpleSummarizedCallable {
   ToASummary() { this = "to_a" }
 
   override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
-    input = "Argument[self].WithoutElement[0..].Element[any]" and
+    input = "Argument[self].WithoutElement[0..!].Element[any]" and
     output = "ReturnValue.Element[?].Element[1]" and
     preservesValue = true
   }
@@ -531,21 +531,6 @@ private class ValuesSummary extends SimpleSummarizedCallable {
   override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
     input = "Argument[self].Element[any]" and
     output = "ReturnValue.Element[?]" and
-    preservesValue = true
-  }
-}
-
-abstract private class ValuesAtSummary extends SummarizedCallable {
-  MethodCall mc;
-
-  bindingset[this]
-  ValuesAtSummary() { mc.getMethodName() = "values_at" }
-
-  final override MethodCall getACall() { result = mc }
-
-  override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
-    input = "Argument[self].WithElement[?]" and
-    output = "ReturnValue" and
     preservesValue = true
   }
 }

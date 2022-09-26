@@ -74,16 +74,30 @@ private SummaryComponent interpretElementArg(string arg) {
   arg = "any" and
   result = FlowSummary::SummaryComponent::elementAny()
   or
-  exists(int lower |
-    ParsePositions::isParsedElementLowerBoundPosition(arg, lower) and
+  exists(int lower, boolean includeUnknown |
+    ParsePositions::isParsedElementLowerBoundPosition(arg, includeUnknown, lower)
+  |
+    includeUnknown = false and
     result = FlowSummary::SummaryComponent::elementLowerBound(lower)
+    or
+    includeUnknown = true and
+    result = FlowSummary::SummaryComponent::elementLowerBoundOrUnknown(lower)
   )
   or
-  exists(ConstantValue cv | result = FlowSummary::SummaryComponent::elementKnown(cv) |
-    cv.isInt(AccessPath::parseInt(arg))
+  exists(ConstantValue cv, string argAdjusted, boolean includeUnknown |
+    argAdjusted = ParsePositions::adjustElementArgument(arg, includeUnknown) and
+    (
+      includeUnknown = false and
+      result = FlowSummary::SummaryComponent::elementKnown(cv)
+      or
+      includeUnknown = true and
+      result = FlowSummary::SummaryComponent::elementKnownOrUnknown(cv)
+    )
+  |
+    cv.isInt(AccessPath::parseInt(argAdjusted))
     or
-    not exists(AccessPath::parseInt(arg)) and
-    cv.serialize() = arg
+    not exists(AccessPath::parseInt(argAdjusted)) and
+    cv.serialize() = argAdjusted
   )
 }
 
@@ -277,9 +291,19 @@ module ParsePositions {
     c = paramName + ":"
   }
 
-  predicate isParsedElementLowerBoundPosition(string c, int lower) {
+  bindingset[arg]
+  string adjustElementArgument(string arg, boolean includeUnknown) {
+    result = arg.regexpCapture("(.*)!", 1) and
+    includeUnknown = false
+    or
+    result = arg and
+    not arg.matches("%!") and
+    includeUnknown = true
+  }
+
+  predicate isParsedElementLowerBoundPosition(string c, boolean includeUnknown, int lower) {
     isElementBody(c) and
-    lower = AccessPath::parseLowerBound(c)
+    lower = AccessPath::parseLowerBound(adjustElementArgument(c, includeUnknown))
   }
 }
 
