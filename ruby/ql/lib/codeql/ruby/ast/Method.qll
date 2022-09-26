@@ -87,6 +87,7 @@ private class VisibilityModifier extends MethodCall {
     this.getNumberOfArguments() = 0
   }
 
+  /** Gets the visibility set by this modifier. */
   string getVisibility() {
     this.getMethodName() = ["public", "public_class_method"] and result = "public"
     or
