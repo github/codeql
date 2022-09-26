@@ -17,6 +17,9 @@ class TypeTrackingNode = DataFlowPublic::LocalSourceNode;
 
 class TypeTrackerContent = DataFlowPublic::ContentSet;
 
+/**
+ * An optional content set, that is, a `ContentSet` or the special "no content set" value.
+ */
 class OptionalTypeTrackerContent extends DataFlowPrivate::TOptionalContentSet {
   /** Gets a textual representation of this content set. */
   string toString() {
