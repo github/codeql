@@ -489,6 +489,30 @@ public class DataFlow
 
         Inner(_ => { }, b, "taint source");
     }
+
+    private class SimpleClass
+    {
+        public string field = "";
+    }
+
+    private void TaintField(SimpleClass sc)
+    {
+        sc.field = "taint source";
+    }
+
+    public void M6(bool b1, bool b2, bool b3)
+    {
+        var x1 = new SimpleClass();
+        var x2 = new SimpleClass();
+        TaintField(b1 ? x1 : x2);
+        Check(x1.field);
+
+        var y1 = new SimpleClass();
+        var y2 = new SimpleClass();
+        var y3 = new SimpleClass();
+        TaintField(b2 ? (b3 ? y1 : y2) : y3);
+        Check(y2.field);
+    }
 }
 
 static class IEnumerableExtensions
