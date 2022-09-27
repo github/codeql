@@ -275,7 +275,10 @@ private module Propagation {
       isInt(last, any(int i | s = i.toString())) or
       isFloat(last, any(float f | s = f.toString())) or
       isString(last, s) or
-      isRegExp(last, s, _) // Note: we lose the flags for interpolated regexps here.
+      isRegExp(last, s, _) or // Note: we lose the flags for interpolated regexps here.
+      // Special case to handle `Regexp.escape` calls, which are common inside
+      // regexp interpolations.
+      isRegExpEscapeCall(last, s)
     )
   }
 
@@ -351,6 +354,36 @@ private module Propagation {
     isRegExpExpr(e.(ConstantReadAccess).getValue(), s, flags)
     or
     forex(ExprCfgNode n | n = e.getAControlFlowNode() | isRegExp(n, s, flags))
+  }
+
+  /**
+   * Holds if `e` is a call to `Regexp.escape` that evaluates to `s`.
+   */
+  predicate isRegExpEscapeCall(ExprCfgNode e, string s) {
+    exists(MethodCallCfgNode mc | mc = e |
+      mc.getMethodName() = "escape" and
+      mc.getReceiver().getExpr().(ConstantReadAccess).getName() = "Regexp" and
+      s = regExpEscape(mc.getArgument(0).getConstantValue().getString())
+    )
+  }
+
+  /** Escape a string according to Ruby's regex syntax. */
+  bindingset[input]
+  private string regExpEscape(string input) {
+    result = concat(string c, int i | c = input.charAt(i) | regExpEscapeChar(c) order by i)
+  }
+
+  /** Escape a single character according to Ruby's regex syntax. */
+  bindingset[char]
+  private string regExpEscapeChar(string char) {
+    if
+      char =
+        [
+          "[", "]", "{", "}", "(", ")", "|", "-", "*", ".", "\\", "?", "+", "^", "$", " ", "#",
+          "\t", "\n", "\r"
+        ]
+    then result = "\\" + char
+    else result = char
   }
 
   predicate isBoolean(ExprCfgNode e, boolean b) {
