@@ -226,7 +226,7 @@ module ActionView {
    */
   module Helpers {
     /**
-     * A call to ActionView helpers which renders its argument without escaping.
+     * A call to an ActionView helper which renders its argument without escaping.
      * The argument should be treated as an XSS sink. In the documentation for
      * classes in this module, the vulnerable argument is named `x`.
      */
@@ -268,7 +268,7 @@ module ActionView {
     /**
      * `ActionView::Helpers::TextHelper#highlight`.
      *
-     * `truncate(x, y, sanitize: false)`.
+     * `highlight(x, y, sanitize: false)`.
      */
     private class Highlight extends ActionViewContextCall, RawHelperCall {
       Highlight() {
