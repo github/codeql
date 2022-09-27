@@ -56,7 +56,7 @@ class Blowfish extends BlockMode {
  * A taint configuration from the constructor of ECB mode to expressions that use
  * it to initialize a cipher.
  */
-class ECBEncryptionConfig extends TaintTracking::Configuration {
+class ECBEncryptionConfig extends DataFlow::Configuration {
   ECBEncryptionConfig() { this = "ECBEncryptionConfig" }
 
   override predicate isSource(DataFlow::Node node) {
