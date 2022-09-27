@@ -33,4 +33,4 @@ where
   jarname = api.jarContainer() and
   getRelevantUsages(jarname, usages) and
   getOrder(jarname) <= resultLimit()
-select jarname, usages order by usages desc
+select jarname as info, usages order by usages desc

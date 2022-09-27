@@ -24,4 +24,4 @@ private predicate getRelevantUsages(ExternalApi api, int usages) {
 
 from ExternalApi api, int usages
 where Results<getRelevantUsages/2>::restrict(api, usages)
-select api.getApiName() as apiname, usages order by usages desc
+select api.getApiName() as info, usages order by usages desc
