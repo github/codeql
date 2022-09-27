@@ -7,6 +7,7 @@ actionControllerControllerClasses
 | app/controllers/foo/bars_controller.rb:3:1:46:3 | BarsController |
 | app/controllers/photos_controller.rb:1:1:4:3 | PhotosController |
 | app/controllers/posts_controller.rb:1:1:10:3 | PostsController |
+| app/controllers/tags_controller.rb:1:1:2:3 | TagsController |
 | app/controllers/users/notifications_controller.rb:2:3:5:5 | NotificationsController |
 actionControllerActionMethods
 | active_record/ActiveRecord.rb:27:3:38:5 | some_request_handler |
