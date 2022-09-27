@@ -205,10 +205,8 @@ private class LoadSpringResourceFlowStep extends SummaryModelCsv {
 private class SpringResourceCsvSink extends SinkModelCsv {
   override predicate row(string row) {
     row =
-      [
-        // Get spring resource
-        "org.springframework.core.io;ClassPathResource;true;" +
-          ["getFilename", "getPath", "getURL", "resolveURL"] + ";;;Argument[-1];get-resource;manual",
-      ]
+      // Get spring resource
+      "org.springframework.core.io;ClassPathResource;true;" +
+        ["getFilename", "getPath", "getURL", "resolveURL"] + ";;;Argument[-1];get-resource;manual"
   }
 }
