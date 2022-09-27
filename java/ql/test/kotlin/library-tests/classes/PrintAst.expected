@@ -158,7 +158,7 @@ classes.kt:
 #   49|       5: [BlockStmt] { ... }
 #   49|         0: [ExprStmt] <Expr>;
 #   49|           0: [ClassInstanceExpr] new Enum(...)
-#   49|             -3: [TypeAccess] Unit
+#   49|             -3: [TypeAccess] Enum<Direction>
 #   49|               0: [TypeAccess] Direction
 #   49|         1: [BlockStmt] { ... }
 #   50|     5: [FieldDeclaration] Direction NORTH;
@@ -193,7 +193,7 @@ classes.kt:
 #   53|       5: [BlockStmt] { ... }
 #   53|         0: [ExprStmt] <Expr>;
 #   53|           0: [ClassInstanceExpr] new Enum(...)
-#   53|             -3: [TypeAccess] Unit
+#   53|             -3: [TypeAccess] Enum<Color>
 #   53|               0: [TypeAccess] Color
 #   53|         1: [BlockStmt] { ... }
 #   53|           0: [ExprStmt] <Expr>;
