@@ -1788,7 +1788,8 @@ open class KotlinFileExtractor(
 
     private fun extractCall(c: IrCall, callable: Label<out DbCallable>, stmtExprParent: StmtExprParent) {
         with("call", c) {
-            val target = tryReplaceSyntheticFunction(c.symbol.owner)
+            val owner = tryGetPossiblyUnboundSymbolOwner(c.symbol, c) ?: return
+            val target = tryReplaceSyntheticFunction(owner)
 
             // The vast majority of types of call want an expr context, so make one available lazily:
             val exprParent by lazy {
@@ -2953,15 +2954,7 @@ open class KotlinFileExtractor(
                     tw.writeCallableEnclosingExpr(id, callable)
                     tw.writeStatementEnclosingExpr(id, exprParent.enclosingStmt)
 
-                    val owner = if (e.symbol.isBound) {
-                        e.symbol.owner
-                    }
-                    else {
-                        logger.warnElement("Unbound enum value, trying to use enum entry stub from descriptor", e)
-
-                        @OptIn(ObsoleteDescriptorBasedAPI::class)
-                        getIrStubFromDescriptor() { it.generateEnumEntryStub(e.symbol.descriptor) }
-                    } ?: return
+                    val owner = tryGetPossiblyUnboundSymbolOwner(e.symbol, e) ?: return
 
                     val vId = useEnumEntry(owner)
                     tw.writeVariableBinding(id, vId)
@@ -3138,15 +3131,7 @@ open class KotlinFileExtractor(
                     // automatically-generated `public static final MyObject INSTANCE`
                     // field that we are accessing here.
                     val exprParent = parent.expr(e, callable)
-                    val c = if (e.symbol.isBound) {
-                        e.symbol.owner
-                    }
-                    else {
-                        logger.warnElement("Unbound object value, trying to use class stub from descriptor", e)
-
-                        @OptIn(ObsoleteDescriptorBasedAPI::class)
-                        getIrStubFromDescriptor() { it.generateClassStub(e.symbol.descriptor) }
-                    } ?: return
+                    val c = tryGetPossiblyUnboundSymbolOwner(e.symbol, e) ?: return
 
                     val instance = if (c.isCompanion) useCompanionObjectClassInstance(c) else useObjectClassInstance(c)
 
@@ -3257,6 +3242,24 @@ open class KotlinFileExtractor(
             }
             return
         }
+    }
+
+    private inline fun <D: DeclarationDescriptor, reified B: IrSymbolOwner> tryGetPossiblyUnboundSymbolOwner(symbol: IrBindableSymbol<D, B>, e: IrElement): B? {
+        if (symbol.isBound) {
+            return symbol.owner
+        }
+
+        logger.warnElement("Unbound symbol, trying to use owner stub from descriptor", e)
+
+        @OptIn(ObsoleteDescriptorBasedAPI::class)
+        val owner = getIrStubFromDescriptor() { it.generateMemberStub(symbol.descriptor) }
+
+        if (owner is B) {
+            return owner
+        }
+
+        logger.errorElement("Couldn't get owner of unbound symbol from its descriptor", e)
+        return null
     }
 
     private fun extractSuperAccess(irType: IrType, callable: Label<out DbCallable>, parent: Label<out DbExprparent>, idx: Int, enclosingStmt: Label<out DbStmt>, locId: Label<out DbLocation>) =
