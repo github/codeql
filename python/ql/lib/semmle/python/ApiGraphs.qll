@@ -694,11 +694,11 @@ module API {
           rhs = aw.getValue()
         )
         or
-        // TODO: I had expected `DataFlow::AttrWrite` to contain the attribute writes from a dict, that's how JS works.
+        // for dictionary literals, from `x` to `{ "key": x }`
         exists(PY::Dict dict, PY::KeyValuePair item |
           dict = pred.(DataFlow::ExprNode).getNode().getNode() and
           dict.getItem(_) = item and
-          lbl = Label::member(item.getKey().(PY::StrConst).getS()) and
+          lbl = Label::subscript() and
           rhs.(DataFlow::ExprNode).getNode().getNode() = item.getValue()
         )
         or
@@ -718,6 +718,15 @@ module API {
         use(base, src) and aw = trackUseNode(src).getAnAttributeWrite() and rhs = aw.getValue()
       |
         lbl = Label::memberFromRef(aw)
+      )
+      or
+      // from `x` to a definition of `x[...]`
+      exists(DataFlow::LocalSourceNode src, DataFlow::CfgNode subscript |
+        use(base, src) and
+        subscript = trackUseNode(src).getASubscript() and
+        rhs.asCfgNode() = subscript.asCfgNode().(PY::DefinitionNode).getValue()
+      |
+        lbl = Label::subscript()
       )
       or
       exists(EntryPoint entry |
@@ -757,7 +766,8 @@ module API {
         or
         // Subscripting a node that is a use of `base`
         lbl = Label::subscript() and
-        ref = pred.getASubscript()
+        ref = pred.getASubscript() and
+        ref.asCfgNode().isLoad()
         or
         // Subclassing a node
         lbl = Label::subclass() and
