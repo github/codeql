@@ -1557,6 +1557,64 @@ open class KotlinFileExtractor(
 
     }
 
+    private fun getFunctionInvokeMethod(typeArgs: List<IrTypeArgument>): IrFunction? {
+        // For `kotlin.FunctionX` and `kotlin.reflect.KFunctionX` interfaces, we're making sure that we
+        // extract the call to the `invoke` method that does exist, `kotlin.jvm.functions.FunctionX::invoke`.
+        val functionalInterface = getFunctionalInterfaceTypeWithTypeArgs(typeArgs)
+        if (functionalInterface == null) {
+            logger.warn("Cannot find functional interface type for raw method access")
+            return null
+        }
+        val functionalInterfaceClass = functionalInterface.classOrNull
+        if (functionalInterfaceClass == null) {
+            logger.warn("Cannot find functional interface class for raw method access")
+            return null
+        }
+        val interfaceType = functionalInterfaceClass.owner
+        val substituted = getJavaEquivalentClass(interfaceType) ?: interfaceType
+        val function = findFunction(substituted, OperatorNameConventions.INVOKE.asString())
+        if (function == null) {
+            logger.warn("Cannot find invoke function for raw method access")
+            return null
+        }
+        return function
+    }
+
+    private fun isFunctionInvoke(callTarget: IrFunction, drType: IrSimpleType) =
+        (drType.isFunctionOrKFunction() || drType.isSuspendFunctionOrKFunction()) &&
+        callTarget.name.asString() == OperatorNameConventions.INVOKE.asString()
+
+    private fun getCalleeMethodId(callTarget: IrFunction, drType: IrType?, allowInstantiatedGenericMethod: Boolean): Label<out DbCallable>? {
+        if (callTarget.isLocalFunction())
+            return getLocallyVisibleFunctionLabels(callTarget).function
+
+        if (allowInstantiatedGenericMethod && drType is IrSimpleType && !isUnspecialised(drType, logger)) {
+            val calleeIsInvoke = isFunctionInvoke(callTarget, drType)
+
+            val extractionMethod =
+                if (calleeIsInvoke)
+                    getFunctionInvokeMethod(drType.arguments)
+                else
+                    callTarget
+
+            return extractionMethod?.let {
+                val typeArgs =
+                    if (calleeIsInvoke && drType.arguments.size > BuiltInFunctionArity.BIG_ARITY) {
+                        // Big arity `invoke` methods have a special implementation on JVM, they are transformed to a call to
+                        // `kotlin.jvm.functions.FunctionN<out R>::invoke(vararg args: Any?)`, so we only need to pass the type
+                        // argument for the return type. Additionally, the arguments are extracted inside an array literal below.
+                        listOf(drType.arguments.last())
+                    } else {
+                        getDeclaringTypeArguments(callTarget, drType)
+                    }
+                useFunction<DbCallable>(extractionMethod, typeArgs)
+            }
+        }
+        else {
+            return useFunction<DbCallable>(callTarget)
+        }
+    }
+
 
     fun extractRawMethodAccess(
         syntacticCallTarget: IrFunction,
@@ -1588,85 +1646,29 @@ open class KotlinFileExtractor(
         // type arguments at index -2, -3, ...
         extractTypeArguments(typeArguments, locId, id, enclosingCallable, enclosingStmt, -2, true)
 
-        val (isFunctionInvoke, isBigArityFunctionInvoke) =
-                if (drType is IrSimpleType &&
-                    (drType.isFunctionOrKFunction() || drType.isSuspendFunctionOrKFunction()) &&
-                    callTarget.name.asString() == OperatorNameConventions.INVOKE.asString()) {
-                    Pair(true, drType.arguments.size > BuiltInFunctionArity.BIG_ARITY)
-                } else {
-                    Pair(false, false)
-                }
+        val methodId = getCalleeMethodId(callTarget, drType, extractClassTypeArguments)
+
+        if (methodId == null) {
+            logger.warn("No method to bind call to for raw method access")
+        } else {
+            tw.writeCallableBinding(id, methodId)
+        }
 
         if (callTarget.isLocalFunction()) {
-            val ids = getLocallyVisibleFunctionLabels(callTarget)
-
-            val methodId = ids.function
-            tw.writeCallableBinding(id, methodId)
-
-            extractNewExprForLocalFunction(ids, id, locId, enclosingCallable, enclosingStmt)
-        } else {
-            val methodId =
-                if (extractClassTypeArguments && drType is IrSimpleType && !isUnspecialised(drType, logger)) {
-
-                    val extractionMethod = if (isFunctionInvoke) {
-                        // For `kotlin.FunctionX` and `kotlin.reflect.KFunctionX` interfaces, we're making sure that we
-                        // extract the call to the `invoke` method that does exist, `kotlin.jvm.functions.FunctionX::invoke`.
-                        val functionalInterface = getFunctionalInterfaceTypeWithTypeArgs(drType.arguments)
-                        if (functionalInterface == null) {
-                            logger.warn("Cannot find functional interface type for raw method access")
-                            null
-                        } else {
-                            val functionalInterfaceClass = functionalInterface.classOrNull
-                            if (functionalInterfaceClass == null) {
-                                logger.warn("Cannot find functional interface class for raw method access")
-                                null
-                            } else {
-                                val interfaceType = functionalInterfaceClass.owner
-                                val substituted = getJavaEquivalentClass(interfaceType) ?: interfaceType
-                                val function = findFunction(substituted, OperatorNameConventions.INVOKE.asString())
-                                if (function == null) {
-                                    logger.warn("Cannot find invoke function for raw method access")
-                                    null
-                                } else {
-                                    function
-                                }
-                            }
-                        }
-                    } else {
-                        callTarget
-                    }
-
-                    if (extractionMethod == null) {
-                        null
-                    } else if (isBigArityFunctionInvoke) {
-                        // Big arity `invoke` methods have a special implementation on JVM, they are transformed to a call to
-                        // `kotlin.jvm.functions.FunctionN<out R>::invoke(vararg args: Any?)`, so we only need to pass the type
-                        // argument for the return type. Additionally, the arguments are extracted inside an array literal below.
-                        useFunction<DbCallable>(extractionMethod, listOf(drType.arguments.last()))
-                    } else {
-                        useFunction<DbCallable>(extractionMethod, getDeclaringTypeArguments(callTarget, drType))
-                    }
-                }
-                else {
-                    useFunction<DbCallable>(callTarget)
-                }
-
-            if (methodId == null) {
-                logger.warn("No method to bind call to for raw method access")
-            } else {
-                tw.writeCallableBinding(id, methodId)
-            }
-
-            if (callTarget.shouldExtractAsStatic) {
-                extractStaticTypeAccessQualifier(callTarget, id, locId, enclosingCallable, enclosingStmt)
-            } else if (superQualifierSymbol != null) {
-                extractSuperAccess(superQualifierSymbol.typeWith(), enclosingCallable, id, -1, enclosingStmt, locId)
-            } else if (extractDispatchReceiver != null) {
-                extractDispatchReceiver(id)
-            }
+            extractNewExprForLocalFunction(getLocallyVisibleFunctionLabels(callTarget), id, locId, enclosingCallable, enclosingStmt)
+        } else if (callTarget.shouldExtractAsStatic) {
+            extractStaticTypeAccessQualifier(callTarget, id, locId, enclosingCallable, enclosingStmt)
+        } else if (superQualifierSymbol != null) {
+            extractSuperAccess(superQualifierSymbol.typeWith(), enclosingCallable, id, -1, enclosingStmt, locId)
+        } else if (extractDispatchReceiver != null) {
+            extractDispatchReceiver(id)
         }
 
         val idxOffset = if (extractExtensionReceiver != null) 1 else 0
+
+        val isBigArityFunctionInvoke = drType is IrSimpleType &&
+                isFunctionInvoke(callTarget, drType) &&
+                drType.arguments.size > BuiltInFunctionArity.BIG_ARITY
 
         val argParent = if (isBigArityFunctionInvoke) {
             extractArrayCreationWithInitializer(id, nValueArguments + idxOffset, locId, enclosingCallable, enclosingStmt)
