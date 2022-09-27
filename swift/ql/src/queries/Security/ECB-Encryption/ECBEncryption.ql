@@ -56,8 +56,8 @@ class Blowfish extends BlockMode {
  * A taint configuration from the constructor of ECB mode to expressions that use
  * it to initialize a cipher.
  */
-class ECBEncryptionConfig extends DataFlow::Configuration {
-  ECBEncryptionConfig() { this = "ECBEncryptionConfig" }
+class EcbEncryptionConfig extends DataFlow::Configuration {
+  EcbEncryptionConfig() { this = "EcbEncryptionConfig" }
 
   override predicate isSource(DataFlow::Node node) {
     exists(StructDecl s, AbstractFunctionDecl f, CallExpr call |
@@ -73,7 +73,7 @@ class ECBEncryptionConfig extends DataFlow::Configuration {
 }
 
 // The query itself
-from ECBEncryptionConfig config, DataFlow::PathNode sourceNode, DataFlow::PathNode sinkNode
+from EcbEncryptionConfig config, DataFlow::PathNode sourceNode, DataFlow::PathNode sinkNode
 where config.hasFlowPath(sourceNode, sinkNode)
 select sinkNode.getNode(), sourceNode, sinkNode,
   "The initialization of the cipher '" + sinkNode.getNode().toString() +
