@@ -128,6 +128,10 @@ class AllocToInvalidPointerConf extends ProductFlow::Configuration {
       state2 = delta.toString()
     )
   }
+
+  override predicate isBarrierOut2(DataFlow::Node node) {
+    node = any(DataFlow::SsaPhiNode phi).getAnInput(true)
+  }
 }
 
 pragma[nomagic]
@@ -154,11 +158,11 @@ predicate pointerAddInstructionHasOperands(
  */
 pragma[nomagic]
 predicate pointerAddInstructionHasBounds(
-  PointerAddInstruction pai, DataFlow::Node sink1, Instruction sink2, int delta
+  PointerAddInstruction pai, DataFlow::Node sink1, DataFlow::Node sink2, int delta
 ) {
   exists(Instruction right |
     pointerAddInstructionHasOperands(pai, sink1.asInstruction(), right) and
-    bounded(right, sink2, delta)
+    bounded(right, sink2.asInstruction(), delta)
   )
 }
 
@@ -171,7 +175,7 @@ predicate pointerAddInstructionHasBounds(
 predicate isSinkImpl(
   PointerAddInstruction pai, DataFlow::Node sink1, DataFlow::Node sink2, int delta
 ) {
-  pointerAddInstructionHasBounds(pai, sink1, sink2.asInstruction(), delta)
+  pointerAddInstructionHasBounds(pai, sink1, sink2, delta)
 }
 
 /**

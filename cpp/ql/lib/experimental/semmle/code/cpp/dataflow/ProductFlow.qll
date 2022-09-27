@@ -49,6 +49,46 @@ module ProductFlow {
       this.isSinkPair(sink1, sink2)
     }
 
+    /**
+     * Holds if data flow through `node` is prohibited through the first projection of the product
+     * dataflow graph when the flow state is `state`.
+     */
+    predicate isBarrier1(DataFlow::Node node, DataFlow::FlowState state) {
+      this.isBarrier1(node) and state = ""
+    }
+
+    /**
+     * Holds if data flow through `node` is prohibited through the second projection of the product
+     * dataflow graph when the flow state is `state`.
+     */
+    predicate isBarrier2(DataFlow::Node node, DataFlow::FlowState state) {
+      this.isBarrier2(node) and state = ""
+    }
+
+    /**
+     * Holds if data flow through `node` is prohibited through the first projection of the product
+     * dataflow graph.
+     */
+    predicate isBarrier1(DataFlow::Node node) { none() }
+
+    /**
+     * Holds if data flow through `node` is prohibited through the second projection of the product
+     * dataflow graph.
+     */
+    predicate isBarrier2(DataFlow::Node node) { none() }
+
+    /**
+     * Holds if data flow out of `node` is prohibited in the first projection of the product
+     * dataflow graph.
+     */
+    predicate isBarrierOut1(DataFlow::Node node) { none() }
+
+    /**
+     * Holds if data flow out of `node` is prohibited in the second projection of the product
+     * dataflow graph.
+     */
+    predicate isBarrierOut2(DataFlow::Node node) { none() }
+
     predicate hasFlowPath(
       DataFlow::PathNode source1, DataFlow2::PathNode source2, DataFlow::PathNode sink1,
       DataFlow2::PathNode sink2
@@ -70,6 +110,14 @@ module ProductFlow {
       override predicate isSink(DataFlow::Node sink, string state) {
         exists(Configuration conf | conf.isSinkPair(sink, state, _, _))
       }
+
+      override predicate isBarrier(DataFlow::Node node, string state) {
+        exists(Configuration conf | conf.isBarrier1(node, state))
+      }
+
+      override predicate isBarrierOut(DataFlow::Node node) {
+        exists(Configuration conf | conf.isBarrierOut1(node))
+      }
     }
 
     class Conf2 extends DataFlow2::Configuration {
@@ -86,6 +134,14 @@ module ProductFlow {
         exists(Configuration conf, DataFlow::Node sink1 |
           conf.isSinkPair(sink1, _, sink, state) and any(Conf1 c).hasFlow(_, sink1)
         )
+      }
+
+      override predicate isBarrier(DataFlow::Node node, string state) {
+        exists(Configuration conf | conf.isBarrier2(node, state))
+      }
+
+      override predicate isBarrierOut(DataFlow::Node node) {
+        exists(Configuration conf | conf.isBarrierOut2(node))
       }
     }
   }
