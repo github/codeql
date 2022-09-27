@@ -559,7 +559,7 @@ pragma[nomagic]
 private predicate notExpectsContent(NodeEx n) { not expectsContentCached(n.asNode(), _) }
 
 pragma[nomagic]
-private predicate readProj(Content c, Configuration config) { read(_, c, _, config) }
+private predicate hasReadStep(Content c, Configuration config) { read(_, c, _, config) }
 
 pragma[nomagic]
 private predicate store(
@@ -567,7 +567,7 @@ private predicate store(
 ) {
   store(pragma[only_bind_into](node1.asNode()), tc, pragma[only_bind_into](node2.asNode()),
     contentType) and
-  readProj(tc.getContent(), config) and
+  hasReadStep(tc.getContent(), config) and
   stepFilter(node1, node2, config)
 }
 
