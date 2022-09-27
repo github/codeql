@@ -1,6 +1,6 @@
 /**
  * @name Encryption using ECB
- * @description Highlights uses of the encryption mode 'ECB'. This mode should normally not be used because it is vulnerable to replay attacks.
+ * @description Using the ECB encryption mode makes code vulnerable to replay attacks.
  * @kind path-problem
  * @problem.severity warning
  * @security-severity 7.5
