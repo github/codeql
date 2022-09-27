@@ -3,7 +3,8 @@
   "qhelp.dtd">
 <qhelp>
   <overview>
-    <p>ECB should not be used as a mode for encryption. It has dangerous weaknesses. Data is encrypted the same way every time meaning the same plaintext input will always produce the same ciphertext. This behaviour makes encrypted messages vulnerable to replay attacks.</p>
+    <p>ECB should not be used as a mode for encryption as it has dangerous weaknesses. Data is encrypted the same way every time, which means that the same plaintext input will always produce the same ciphertext. This behavior makes messages encrypted with ECB 
+ more vulnerable to replay attacks.</p>
   </overview>
 
   <recommendation>
