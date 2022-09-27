@@ -219,6 +219,6 @@ void test14(unsigned long n, char *p) {
   while (unknown()) {
     n++;
     p = (char *)malloc(n);
-    p[n - 1] = 'a'; // GOOD [FALSE POSITIVE]
+    p[n - 1] = 'a'; // GOOD
   }
 }
