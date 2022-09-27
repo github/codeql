@@ -4,6 +4,7 @@ private import semmle.code.java.dataflow.ExternalFlow
 private import semmle.code.java.dataflow.FlowSources
 private import semmle.code.java.dataflow.StringPrefixes
 private import semmle.code.java.frameworks.javaee.ejb.EJBRestrictions
+private import experimental.semmle.code.java.frameworks.SpringResource
 
 /** A sink for unsafe URL forward vulnerabilities. */
 abstract class UnsafeUrlForwardSink extends DataFlow::Node { }
@@ -86,6 +87,8 @@ private class GetResourceSink extends UnsafeUrlForwardSink {
   GetResourceSink() {
     sinkNode(this, "open-url")
     or
+    sinkNode(this, "get-resource")
+    or
     exists(MethodAccess ma |
       (
         ma.getMethod() instanceof GetServletResourceAsStreamMethod or
@@ -94,6 +97,16 @@ private class GetResourceSink extends UnsafeUrlForwardSink {
         ma.getMethod() instanceof GetClassLoaderResourceAsStreamMethod or
         ma.getMethod() instanceof GetVirtualFileChildMethod
       ) and
+      ma.getArgument(0) = this.asExpr()
+    )
+  }
+}
+
+/** A sink for methods that load Spring resources. */
+private class SpringResourceSink extends UnsafeUrlForwardSink {
+  SpringResourceSink() {
+    exists(MethodAccess ma |
+      ma.getMethod() instanceof GetResourceUtilsMethod and
       ma.getArgument(0) = this.asExpr()
     )
   }
@@ -173,5 +186,27 @@ private class FilePathFlowStep extends SummaryModelCsv {
         "io.undertow.server.handlers.resource;Resource;true;getFilePath;;;Argument[-1];ReturnValue;taint;manual",
         "io.undertow.server.handlers.resource;Resource;true;getPath;;;Argument[-1];ReturnValue;taint;manual"
       ]
+  }
+}
+
+/** Taint models related to resource loading in Spring. */
+private class LoadSpringResourceFlowStep extends SummaryModelCsv {
+  override predicate row(string row) {
+    row =
+      [
+        "org.springframework.core.io;ClassPathResource;false;ClassPathResource;;;Argument[0];Argument[-1];taint;manual",
+        "org.springframework.core.io;ResourceLoader;true;getResource;;;Argument[0];ReturnValue;taint;manual",
+        "org.springframework.core.io;Resource;true;createRelative;;;Argument[0];ReturnValue;taint;manual"
+      ]
+  }
+}
+
+/** Sink models for methods that load Spring resources. */
+private class SpringResourceCsvSink extends SinkModelCsv {
+  override predicate row(string row) {
+    row =
+      // Get spring resource
+      "org.springframework.core.io;ClassPathResource;true;" +
+        ["getFilename", "getPath", "getURL", "resolveURL"] + ";;;Argument[-1];get-resource;manual"
   }
 }
