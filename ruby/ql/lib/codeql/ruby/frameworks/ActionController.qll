@@ -427,12 +427,11 @@ private module ParamsSummaries {
   }
 
   /**
-   * Methods on `ActionController::Parameters` which propagate taint from
-   * receiver to return value.
+   * A flow summary for methods on `ActionController::Parameters` which
+   * propagate taint from receiver to return value.
    */
-  private class TaintReturnFromSelf extends SummarizedCallable {
-    // TODO: better name?
-    TaintReturnFromSelf() { this = "ActionController::Parameters#<various>" }
+  private class MethodsReturningParamsInstanceSummary extends SummarizedCallable {
+    MethodsReturningParamsInstanceSummary() { this = "ActionController::Parameters#<various>" }
 
     override MethodCall getACall() {
       any(ParamsInstance i).asExpr().getExpr() = result.getReceiver() and
