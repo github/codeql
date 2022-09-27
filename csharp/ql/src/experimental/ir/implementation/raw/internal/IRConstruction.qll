@@ -268,6 +268,10 @@ private module Cached {
     none()
   }
 
+  string getPhiLocationString(PhiInstruction phi) {
+    none()
+  }
+  
   cached
   Instruction getPhiInstructionBlockStart(PhiInstruction instr) { none() }
 

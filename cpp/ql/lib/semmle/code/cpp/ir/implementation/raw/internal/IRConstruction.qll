@@ -262,6 +262,10 @@ Instruction getPhiOperandDefinition(
   none()
 }
 
+string getPhiLocationString(PhiInstruction phi) {
+  none()
+}
+
 Instruction getPhiInstructionBlockStart(PhiInstruction instr) { none() }
 
 Instruction getInstructionSuccessor(Instruction instruction, EdgeKind kind) {
