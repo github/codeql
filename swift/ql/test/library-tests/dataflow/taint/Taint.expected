@@ -12,10 +12,6 @@ edges
 | try.swift:9:17:9:24 | call to source() :  | try.swift:9:13:9:24 | try ... |
 | try.swift:15:17:15:24 | call to source() :  | try.swift:15:12:15:24 | try! ... |
 | try.swift:18:18:18:25 | call to source() :  | try.swift:18:12:18:27 | ...! |
-| url.swift:13:16:13:23 | call to source() :  | url.swift:18:12:18:12 | urlTainted |
-| url.swift:13:16:13:23 | call to source() :  | url.swift:21:12:21:49 | ...! |
-| url.swift:13:16:13:23 | call to source() :  | url.swift:23:12:23:54 | ...! |
-| url.swift:13:16:13:23 | call to source() :  | url.swift:39:12:39:12 | ...! |
 nodes
 | string.swift:5:11:5:18 | call to source() :  | semmle.label | call to source() :  |
 | string.swift:7:13:7:13 | "..." | semmle.label | "..." |
@@ -35,11 +31,6 @@ nodes
 | try.swift:15:17:15:24 | call to source() :  | semmle.label | call to source() :  |
 | try.swift:18:12:18:27 | ...! | semmle.label | ...! |
 | try.swift:18:18:18:25 | call to source() :  | semmle.label | call to source() :  |
-| url.swift:13:16:13:23 | call to source() :  | semmle.label | call to source() :  |
-| url.swift:18:12:18:12 | urlTainted | semmle.label | urlTainted |
-| url.swift:21:12:21:49 | ...! | semmle.label | ...! |
-| url.swift:23:12:23:54 | ...! | semmle.label | ...! |
-| url.swift:39:12:39:12 | ...! | semmle.label | ...! |
 subpaths
 #select
 | string.swift:7:13:7:13 | "..." | string.swift:5:11:5:18 | call to source() :  | string.swift:7:13:7:13 | "..." | result |
@@ -55,7 +46,3 @@ subpaths
 | try.swift:9:13:9:24 | try ... | try.swift:9:17:9:24 | call to source() :  | try.swift:9:13:9:24 | try ... | result |
 | try.swift:15:12:15:24 | try! ... | try.swift:15:17:15:24 | call to source() :  | try.swift:15:12:15:24 | try! ... | result |
 | try.swift:18:12:18:27 | ...! | try.swift:18:18:18:25 | call to source() :  | try.swift:18:12:18:27 | ...! | result |
-| url.swift:18:12:18:12 | urlTainted | url.swift:13:16:13:23 | call to source() :  | url.swift:18:12:18:12 | urlTainted | result |
-| url.swift:21:12:21:49 | ...! | url.swift:13:16:13:23 | call to source() :  | url.swift:21:12:21:49 | ...! | result |
-| url.swift:23:12:23:54 | ...! | url.swift:13:16:13:23 | call to source() :  | url.swift:23:12:23:54 | ...! | result |
-| url.swift:39:12:39:12 | ...! | url.swift:13:16:13:23 | call to source() :  | url.swift:39:12:39:12 | ...! | result |

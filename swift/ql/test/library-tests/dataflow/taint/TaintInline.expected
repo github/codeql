@@ -1,0 +1,4 @@
+| url.swift:18:24:19:1 | // $ tainted=13\n | Missing result:tainted=13 |
+| url.swift:21:52:22:1 | // $ tainted=13\n | Missing result:tainted=13 |
+| url.swift:23:57:24:1 | // $ tainted=13\n | Missing result:tainted=13 |
+| url.swift:39:25:40:1 | // $ tainted=13\n | Missing result:tainted=13 |
