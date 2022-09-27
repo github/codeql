@@ -11,7 +11,7 @@
   </recommendation>
 
   <example>
-    <p>The following example shows six cases of instantiating a cipher with various encryption keys and block modes. In the 'BAD' case, the mode of encrtyption is ECB, making the encryped data vulnerable to replay attacks.  In the 'GOOD' cases, the encryption mode is CBC, pretecting the encrypted data against replay attacks.</p>
+    <p>The following example shows six cases of instantiating a cipher with various encryption keys and block modes. In the 'BAD' cases, the mode of encrtyption is ECB, making the encryped data vulnerable to replay attacks.  In the 'GOOD' cases, the encryption mode is CBC, pretecting the encrypted data against replay attacks.</p>
     <sample src="ECBEncryption.swift" />
   </example>
 
