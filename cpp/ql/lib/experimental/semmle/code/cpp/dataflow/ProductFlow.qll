@@ -54,7 +54,7 @@ module ProductFlow {
      * dataflow graph when the flow state is `state`.
      */
     predicate isBarrier1(DataFlow::Node node, DataFlow::FlowState state) {
-      isBarrier1(node) and state = ""
+      this.isBarrier1(node) and state = ""
     }
 
     /**
@@ -62,7 +62,7 @@ module ProductFlow {
      * dataflow graph when the flow state is `state`.
      */
     predicate isBarrier2(DataFlow::Node node, DataFlow::FlowState state) {
-      isBarrier2(node) and state = ""
+      this.isBarrier2(node) and state = ""
     }
 
     /**
