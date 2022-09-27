@@ -15,9 +15,7 @@ For information about writing queries to run with ``database analyze``, see
 
 Before starting an analysis you must:
 
-- :doc:`Set up the CodeQL CLI <getting-started-with-the-codeql-cli>` to run commands locally and
-  optionally check out the CodeQL repository if you want direct access to the CodeQL core queries
-  and libraries.
+- :doc:`Set up the CodeQL CLI <getting-started-with-the-codeql-cli>` to run commands locally.
 - :doc:`Create a CodeQL database <creating-codeql-databases>` for the source
   code you want to analyze.
 
@@ -137,6 +135,18 @@ Example query specifiers
 * ``codeql/python-queries@1.2.3:Functions`` - All queries in the ``Functions`` directory in version 1.2.3 of the ``codeql/python-queries`` pack.
 * ``codeql/python-queries@1.2.3:codeql-suites/python-code-scanning.qls`` - All queries in the ``codeql-suites/python-code-scanning.qls`` directory in version 1.2.3 of the ``codeql/python-queries`` pack.
 * ``suites/my-suite.qls`` - All queries in the ``suites/my-suite.qls`` file relative to the current working directory.
+
+.. pull-quote::
+
+    Tip
+
+    The default query suite of the standard CodeQL query packs are ``codeql-suites/<lang>-code-scanning.qls``. Several other useful query suites can also be found in the ``codeql-suites`` directory of each pack. For example, the ``codeql/cpp-queries`` pack contains the following query suites:
+
+    * ``cpp-code-scanning.qls`` - Standard Code Scanning queries for C++. The default query suite for this pack.
+    * ``cpp-security-extended.qls`` - Security-extended queries for C++. This suite contains queries that are less precise than the standard security queries, and may find more false-positives. This query suite includes all queries from ``cpp-code-scanning.qls``.
+    * ``cpp-security-and-quality.qls`` - Security-and-quality queries for C++. This query suite includes all queries from ``cpp-security-extended.qls``.
+
+    You can see the sources for these query suites in the `CodeQL repository <https://github.com/github/codeql/tree/main/cpp/ql/src/codeql-suites>`__. Query suites for other languages are similar.
 
 Examples of using ``codeql database analyze``
 ---------------------------------------------
@@ -285,13 +295,6 @@ the location of the query suites used by code scanning, so the CodeQL CLI knows 
 suite files automatically, and you don't have to specify the full path on the command line.
 For more information, see ":ref:`Creating CodeQL query suites <creating-codeql-query-suites>`."
 
-Query suites in the core CodeQL query packs are all stored in the ``codeql-suites`` directory of the pack. For example, the ``codeql/cpp-queries`` pack contains the following query suites:
-
-* ``cpp-code-scanning.qls`` - Standard Code Scanning queries for C++.
-* ``cpp-security-and-quality`` - Security-and-quality queries for C++.
-* ``cpp-security-extended`` - Security-extended queries for C++. This suite contains queries that are less precise than the standard security queries, and may find more false-positives.
-
-You can see the sources for these query suites in the `CodeQL repository <https://github.com/github/codeql/tree/main/cpp/ql/src/codeql-suites>`__. Query suites for other languages are similar.
 
 For information about creating custom query suites, see ":doc:`Creating
 CodeQL query suites <creating-codeql-query-suites>`."
