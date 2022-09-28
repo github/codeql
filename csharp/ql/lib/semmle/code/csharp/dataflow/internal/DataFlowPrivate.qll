@@ -177,32 +177,6 @@ predicate hasNodePath(ControlFlowReachabilityConfiguration conf, ExprNode n1, No
   )
 }
 
-/**
- * Gets a node that may execute last in `n`, and which, when it executes last,
- * will be the value of `n`.
- */
-private ControlFlow::Nodes::ExprNode getALastEvalNode(ControlFlow::Nodes::ExprNode cfn) {
-  exists(ConditionalExpr e | cfn.getExpr() = e | result.getExpr() = [e.getThen(), e.getElse()])
-}
-
-private predicate relevantArgumentType(ControlFlow::Nodes::ExprNode cfn) {
-  exists(Expr e | cfn.getExpr() = e |
-    exists(Type t | t = e.stripCasts().getType() |
-      t instanceof RefType and
-      not t instanceof NullType
-      or
-      t = any(TypeParameter tp | not tp.isValueType())
-    )
-  )
-}
-
-/** Gets a node for which to construct a post-update node for argument `arg`. */
-ControlFlow::Nodes::ExprNode getAPostUpdateNodeForArg(Argument arg) {
-  result = getALastEvalNode*(arg.getAControlFlowNode()) and
-  relevantArgumentType(result) and
-  not exists(getALastEvalNode(result))
-}
-
 /** Provides predicates related to local data flow. */
 module LocalFlow {
   private class LocalExprStepConfiguration extends ControlFlowReachabilityConfiguration {
@@ -435,6 +409,28 @@ module LocalFlow {
   predicate excludeFromExposedRelations(Node n) {
     n instanceof SummaryNode or
     n instanceof ImplicitCapturedArgumentNode
+  }
+
+  /**
+   * Gets a node that may execute last in `n`, and which, when it executes last,
+   * will be the value of `n`.
+   */
+  private ControlFlow::Nodes::ExprNode getALastEvalNode(ControlFlow::Nodes::ExprNode cfn) {
+    any(LocalExprStepConfiguration x).hasExprPath(_, result, any(ConditionalExpr ce), cfn)
+  }
+
+  /** Gets a node for which to construct a post-update node for argument `arg`. */
+  ControlFlow::Nodes::ExprNode getAPostUpdateNodeForArg(Argument arg) {
+    result = getALastEvalNode*(arg.getAControlFlowNode()) and
+    exists(Expr e | result.getExpr() = e |
+      exists(Type t | t = e.stripCasts().getType() |
+        t instanceof RefType and
+        not t instanceof NullType
+        or
+        t = any(TypeParameter tp | not tp.isValueType())
+      )
+    ) and
+    not exists(getALastEvalNode(result))
   }
 }
 
@@ -745,7 +741,7 @@ private module Cached {
       cfn.getElement().(ObjectCreation).hasInitializer()
     } or
     TExprPostUpdateNode(ControlFlow::Nodes::ExprNode cfn) {
-      cfn = getAPostUpdateNodeForArg(_)
+      cfn = LocalFlow::getAPostUpdateNodeForArg(_)
       or
       exists(Expr e | e = cfn.getExpr() |
         fieldOrPropertyStore(_, _, _, e, true)
@@ -1943,14 +1939,14 @@ private module PostUpdateNodes {
     ExprPostUpdateNode() { this = TExprPostUpdateNode(cfn) }
 
     override ExprNode getPreUpdateNode() {
-      // For compund arguments, such as `m(if b then x else y)`, we want the leaf nodes
+      // For compund arguments, such as `m(b ? x : y)`, we want the leaf nodes
       // `[post] x` and `[post] y` to have two pre-update nodes: (1) the compund argument,
       // `if b then x else y`; and the (2) the underlying expressions; `x` and `y`,
       // respectively.
       //
       // This ensures that we get flow out of the call into both leafs (1), while still
       // maintaining the invariant that the underlying expression is a pre-update node (2).
-      cfn = getAPostUpdateNodeForArg(result.asExpr())
+      cfn = LocalFlow::getAPostUpdateNodeForArg(result.asExpr())
       or
       cfn = result.getControlFlowNode()
     }
