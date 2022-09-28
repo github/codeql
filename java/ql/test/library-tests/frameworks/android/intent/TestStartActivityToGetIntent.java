@@ -12,7 +12,7 @@ public class TestStartActivityToGetIntent {
 
     public void test(Context ctx, Activity act) {
 
-        // test methods that start an activity
+        // test all methods that start an activity
         {
             Intent intent = new Intent(null, SomeActivity.class);
             intent.putExtra("data", (String) source("ctx-start"));
@@ -20,8 +20,20 @@ public class TestStartActivityToGetIntent {
         }
         {
             Intent intent = new Intent(null, SomeActivity.class);
+            intent.putExtra("data", (String) source("ctx-start-acts"));
+            Intent[] intents = new Intent[] {intent};
+            ctx.startActivities(intents);
+        }
+        {
+            Intent intent = new Intent(null, SomeActivity.class);
             intent.putExtra("data", (String) source("act-start"));
             act.startActivity(intent);
+        }
+        {
+            Intent intent = new Intent(null, SomeActivity.class);
+            intent.putExtra("data", (String) source("act-start-acts"));
+            Intent[] intents = new Intent[] {intent};
+            act.startActivities(intents);
         }
         {
             Intent intent = new Intent(null, SomeActivity.class);
@@ -67,7 +79,7 @@ public class TestStartActivityToGetIntent {
     static class SomeActivity extends Activity {
 
         public void test() {
-            sink(getIntent().getStringExtra("data")); // $ hasValueFlow=ctx-start hasValueFlow=act-start hasValueFlow=start-for-result hasValueFlow=start-if-needed hasValueFlow=start-matching hasValueFlow=start-from-child hasValueFlow=start-from-frag hasValueFlow=4-arg
+            sink(getIntent().getStringExtra("data")); // $ hasValueFlow=ctx-start hasValueFlow=act-start hasValueFlow=start-for-result hasValueFlow=start-if-needed hasValueFlow=start-matching hasValueFlow=start-from-child hasValueFlow=start-from-frag hasValueFlow=4-arg MISSING: hasValueFlow=ctx-start-acts hasValueFlow=act-start-acts
         }
 
     }
