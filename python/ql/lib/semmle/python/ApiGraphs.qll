@@ -1069,7 +1069,7 @@ module API {
 
       /** A label that gets the subscript of a sequence/mapping. */
       class LabelSubscript extends ApiLabel, MkLabelSubscript {
-        override string toString() { result = "getSubscript()" }
+        override string toString() { result = "getASubscript()" }
       }
 
       /** A label for entry points. */
