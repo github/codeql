@@ -129,3 +129,8 @@ Foo.sinkAnyNamedArg(key: tainted) # $ hasValueFlow=tainted
 
 "magic_string".method(tainted) # $ hasValueFlow=tainted
 "magic_string2".method(tainted)
+
+Alias::Foo.method(tainted) # $ hasValueFlow=tainted
+Alias::Bar.method(tainted) # $ hasValueFlow=tainted
+Something::Foo.method(tainted)
+Alias::Something.method(tainted)
