@@ -385,7 +385,7 @@ private module Cached {
       FlowSummaryImplSpecific::ParsePositions::isParsedElementLowerBoundPosition(_, includeUnknown,
         lower)
     } or
-    TNoContentSet()
+    TNoContentSet() // Only used by type-tracking
 
   cached
   class TContentSet =
