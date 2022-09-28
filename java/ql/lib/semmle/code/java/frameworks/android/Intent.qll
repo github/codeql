@@ -249,88 +249,91 @@ class GrantWriteUriPermissionFlag extends GrantUriPermissionFlag {
   GrantWriteUriPermissionFlag() { this.hasName("FLAG_GRANT_WRITE_URI_PERMISSION") }
 }
 
-/**
- * Gets the `Class<?>` argument of an `android.content.Intent`constructor.
- *
- * The `android.content.Intent` class has two constructors with an argument of type
- * `Class<?>`. One has the argument at position 1 and the other at position 3.
- * https://developer.android.com/reference/android/content/Intent#public-constructors
- */
-private Argument getClassArgOfIntentConstructor(ClassInstanceExpr classInstanceExpr) {
-  classInstanceExpr.getConstructedType() instanceof TypeIntent and
-  if classInstanceExpr.getNumArgument() = 2
-  then result = classInstanceExpr.getArgument(1)
-  else result = classInstanceExpr.getArgument(3)
+/** The instantiation of an `android.content.Intent` instance. */
+private class NewIntent extends ClassInstanceExpr {
+  NewIntent() { this.getConstructedType() instanceof TypeIntent }
+
+  /** Gets the `Class<?>` argument of this call. */
+  Argument getClassArg() {
+    result.getType() instanceof TypeClass and
+    result = this.getAnArgument()
+  }
 }
 
-/**
- * A value-preserving step from the Intent argument of a `startActivity` call to
- * a `getIntent` call in the Activity the Intent pointed to in its constructor.
- */
-private class StartActivityIntentStep extends AdditionalValueStep {
-  /**
-   * Gets the `Intent` argument of an Android `StartActivityMethod`.
-   *
-   * The `startActivityFromChild` and `startActivityFromFragment` methods have
-   * an argument of type `Intent` at position 1, but the rest of the methods of
-   * type `StartActivityMethod` have an argument of type `Intent` at position 0.
-   */
-  private Argument getIntentArgOfStartActMethod(MethodAccess methodAccess) {
-    methodAccess.getMethod().overrides*(any(StartActivityMethod m)) and
-    if methodAccess.getMethod().hasName(["startActivityFromChild", "startActivityFromFragment"])
-    then result = methodAccess.getArgument(1)
-    else result = methodAccess.getArgument(0)
+/** A call to a method that starts an Android component */
+private class StartComponentMethodAccess extends MethodAccess {
+  StartComponentMethodAccess() {
+    this.getMethod().overrides*(any(StartActivityMethod m)) or
+    this.getMethod().overrides*(any(StartServiceMethod m)) or
+    this.getMethod().overrides*(any(SendBroadcastMethod m))
   }
 
-  override predicate step(DataFlow::Node n1, DataFlow::Node n2) {
-    exists(MethodAccess startActivity, MethodAccess getIntent, ClassInstanceExpr newIntent |
-      startActivity.getMethod().overrides*(any(StartActivityMethod m)) and
-      getIntent.getMethod().overrides*(any(AndroidGetIntentMethod m)) and
-      newIntent.getConstructedType() instanceof TypeIntent and
-      DataFlow::localExprFlow(newIntent, this.getIntentArgOfStartActMethod(startActivity)) and
-      getClassArgOfIntentConstructor(newIntent).getType().(ParameterizedType).getATypeArgument() =
-        getIntent.getReceiverType() and
-      n1.asExpr() = this.getIntentArgOfStartActMethod(startActivity) and
-      n2.asExpr() = getIntent
+  /** Gets the intent argument of this call. */
+  Argument getIntentArg() {
+    result.getType() instanceof TypeIntent and
+    result = this.getAnArgument()
+  }
+
+  /** Holds if this targets a component of type `targetType`. */
+  predicate targetsComponentType(RefType targetType) {
+    exists(NewIntent newIntent |
+      DataFlow::localExprFlow(newIntent, this.getIntentArg()) and
+      newIntent.getClassArg().getType().(ParameterizedType).getATypeArgument() = targetType
     )
   }
 }
 
 /**
- * A value-preserving step from the Intent argument of a `sendBroadcast` call to
- * the `Intent` parameter in the `onReceive` method of the BroadcastReceiver the
- * Intent pointed to in its constructor.
+ * Holds if there is a step from the intent argument `n1` of a `startActivity` call
+ * to a `getIntent` call `n2` in the activity `n1` targets.
+ */
+private predicate startActivityIntentStep(DataFlow::Node n1, DataFlow::Node n2) {
+  exists(StartComponentMethodAccess startActivity, MethodAccess getIntent |
+    startActivity.getMethod().overrides*(any(StartActivityMethod m)) and
+    getIntent.getMethod().overrides*(any(AndroidGetIntentMethod m)) and
+    startActivity.targetsComponentType(getIntent.getReceiverType()) and
+    n1.asExpr() = startActivity.getIntentArg() and
+    n2.asExpr() = getIntent
+  )
+}
+
+/**
+ * A value-preserving step from the intent argument of a `startActivity` call to
+ * a `getIntent` call in the activity the intent targeted in its constructor.
+ */
+private class StartActivityIntentStep extends AdditionalValueStep {
+  override predicate step(DataFlow::Node n1, DataFlow::Node n2) { startActivityIntentStep(n1, n2) }
+}
+
+/**
+ * A value-preserving step from the intent argument of a `sendBroadcast` call to
+ * the intent parameter in the `onReceive` method of the receiver the
+ * intent targeted in its constructor.
  */
 private class SendBroadcastReceiverIntentStep extends AdditionalValueStep {
   override predicate step(DataFlow::Node n1, DataFlow::Node n2) {
-    exists(MethodAccess sendBroadcast, Method onReceive, ClassInstanceExpr newIntent |
+    exists(StartComponentMethodAccess sendBroadcast, Method onReceive |
       sendBroadcast.getMethod().overrides*(any(SendBroadcastMethod m)) and
       onReceive.overrides*(any(AndroidReceiveIntentMethod m)) and
-      newIntent.getConstructedType() instanceof TypeIntent and
-      DataFlow::localExprFlow(newIntent, sendBroadcast.getArgument(0)) and
-      getClassArgOfIntentConstructor(newIntent).getType().(ParameterizedType).getATypeArgument() =
-        onReceive.getDeclaringType() and
-      n1.asExpr() = sendBroadcast.getArgument(0) and
+      sendBroadcast.targetsComponentType(onReceive.getDeclaringType()) and
+      n1.asExpr() = sendBroadcast.getIntentArg() and
       n2.asParameter() = onReceive.getParameter(1)
     )
   }
 }
 
 /**
- * A value-preserving step from the Intent argument of a `startService` call to
- * the `Intent` parameter in an `AndroidServiceIntentMethod` of the Service the
- * Intent pointed to in its constructor.
+ * A value-preserving step from the intent argument of a `startService` call to
+ * the intent parameter in an `AndroidServiceIntentMethod` of the service the
+ * intent targeted in its constructor.
  */
 private class StartServiceIntentStep extends AdditionalValueStep {
   override predicate step(DataFlow::Node n1, DataFlow::Node n2) {
-    exists(MethodAccess startService, Method serviceIntent, ClassInstanceExpr newIntent |
+    exists(StartComponentMethodAccess startService, Method serviceIntent |
       startService.getMethod().overrides*(any(StartServiceMethod m)) and
       serviceIntent.overrides*(any(AndroidServiceIntentMethod m)) and
-      newIntent.getConstructedType() instanceof TypeIntent and
-      DataFlow::localExprFlow(newIntent, startService.getArgument(0)) and
-      getClassArgOfIntentConstructor(newIntent).getType().(ParameterizedType).getATypeArgument() =
-        serviceIntent.getDeclaringType() and
-      n1.asExpr() = startService.getArgument(0) and
+      startService.targetsComponentType(serviceIntent.getDeclaringType()) and
+      n1.asExpr() = startService.getIntentArg() and
       n2.asParameter() = serviceIntent.getParameter(0)
     )
   }
