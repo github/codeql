@@ -95,3 +95,6 @@ subpaths
 | test.cpp:42:5:42:11 | call to strncpy | test.cpp:18:19:18:24 | call to malloc | test.cpp:42:18:42:23 | Load | This write may overflow $@ by 1 element. | test.cpp:42:18:42:23 | string | string |
 | test.cpp:72:9:72:15 | call to strncpy | test.cpp:18:19:18:24 | call to malloc | test.cpp:72:22:72:27 | Load | This write may overflow $@ by 1 element. | test.cpp:72:22:72:27 | string | string |
 | test.cpp:80:9:80:15 | call to strncpy | test.cpp:18:19:18:24 | call to malloc | test.cpp:80:22:80:27 | Load | This write may overflow $@ by 2 elements. | test.cpp:80:22:80:27 | string | string |
+| test.cpp:99:5:99:11 | call to strncpy | test.cpp:90:19:90:24 | call to malloc | test.cpp:99:18:99:23 | Load | This write may overflow $@ by 1 element. | test.cpp:99:18:99:23 | string | string |
+| test.cpp:129:9:129:15 | call to strncpy | test.cpp:90:19:90:24 | call to malloc | test.cpp:129:22:129:27 | Load | This write may overflow $@ by 1 element. | test.cpp:129:22:129:27 | string | string |
+| test.cpp:137:9:137:15 | call to strncpy | test.cpp:90:19:90:24 | call to malloc | test.cpp:137:22:137:27 | Load | This write may overflow $@ by 2 elements. | test.cpp:137:22:137:27 | string | string |

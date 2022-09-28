@@ -123,6 +123,21 @@ class StringSizeConfiguration extends ProductFlow::Configuration {
       delta > state2.toInt()
     )
   }
+
+  override predicate isAdditionalFlowStep2(
+    DataFlow::Node node1, DataFlow::FlowState state1, DataFlow::Node node2,
+    DataFlow::FlowState state2
+  ) {
+    exists(AddInstruction add, Operand op, int delta, int s1, int s2 |
+      s1 = [0 .. 32] and // An arbitrary bound because we need to bound `state`
+      state1 = s1.toString() and
+      state2 = s2.toString() and
+      add.hasOperands(node1.asOperand(), op) and
+      semBounded(op.getDef(), any(SemZeroBound zero), delta, true, _) and
+      node2.asInstruction() = add and
+      s1 = s2 + delta
+    )
+  }
 }
 
 from
