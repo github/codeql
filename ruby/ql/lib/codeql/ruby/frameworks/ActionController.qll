@@ -37,9 +37,9 @@ class ActionControllerControllerClass extends ClassDeclaration {
   }
 
   /**
-   * Gets a `ActionControllerActionMethod` defined in this class.
+   * Gets an `ActionControllerActionMethod` defined in this class.
    */
-  ActionControllerActionMethod getAnAction() { result = this.getAMethod() }
+  ActionControllerActionMethod getAnAction() { this = result.getControllerClass() }
 }
 
 /**
