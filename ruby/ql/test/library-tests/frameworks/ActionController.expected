@@ -5,7 +5,7 @@ actionControllerControllerClasses
 | active_record/ActiveRecord.rb:66:1:98:3 | BazController |
 | active_record/ActiveRecord.rb:100:1:108:3 | AnnotatedController |
 | active_storage/active_storage.rb:39:1:45:3 | PostsController |
-| app/controllers/comments_controller.rb:1:1:7:3 | CommentsController |
+| app/controllers/comments_controller.rb:1:1:14:3 | CommentsController |
 | app/controllers/foo/bars_controller.rb:3:1:46:3 | BarsController |
 | app/controllers/photos_controller.rb:1:1:4:3 | PhotosController |
 | app/controllers/posts_controller.rb:1:1:10:3 | PostsController |
@@ -59,8 +59,8 @@ actionControllerActionMethods
 | active_record/ActiveRecord.rb:101:3:103:5 | index |
 | active_record/ActiveRecord.rb:105:3:107:5 | unsafe_action |
 | active_storage/active_storage.rb:40:3:44:5 | create |
-| app/controllers/comments_controller.rb:2:3:3:5 | index |
-| app/controllers/comments_controller.rb:5:3:6:5 | show |
+| app/controllers/comments_controller.rb:2:3:10:5 | index |
+| app/controllers/comments_controller.rb:12:3:13:5 | show |
 | app/controllers/foo/bars_controller.rb:5:3:7:5 | index |
 | app/controllers/foo/bars_controller.rb:9:3:18:5 | show_debug |
 | app/controllers/foo/bars_controller.rb:20:3:24:5 | show |
@@ -222,6 +222,97 @@ paramsSources
 | app/controllers/foo/bars_controller.rb:21:21:21:26 | call to params |
 | app/controllers/foo/bars_controller.rb:22:10:22:15 | call to params |
 | app/views/foo/bars/show.html.erb:5:9:5:14 | call to params |
+httpInputAccesses
+| action_controller/params_flow.rb:3:10:3:15 | call to params | ActionController::Metal#params |
+| action_controller/params_flow.rb:7:10:7:15 | call to params | ActionController::Metal#params |
+| action_controller/params_flow.rb:11:10:11:15 | call to params | ActionController::Metal#params |
+| action_controller/params_flow.rb:15:10:15:15 | call to params | ActionController::Metal#params |
+| action_controller/params_flow.rb:19:10:19:15 | call to params | ActionController::Metal#params |
+| action_controller/params_flow.rb:23:10:23:15 | call to params | ActionController::Metal#params |
+| action_controller/params_flow.rb:27:10:27:15 | call to params | ActionController::Metal#params |
+| action_controller/params_flow.rb:31:10:31:15 | call to params | ActionController::Metal#params |
+| action_controller/params_flow.rb:35:10:35:15 | call to params | ActionController::Metal#params |
+| action_controller/params_flow.rb:39:10:39:15 | call to params | ActionController::Metal#params |
+| action_controller/params_flow.rb:43:10:43:15 | call to params | ActionController::Metal#params |
+| action_controller/params_flow.rb:47:10:47:15 | call to params | ActionController::Metal#params |
+| action_controller/params_flow.rb:51:10:51:15 | call to params | ActionController::Metal#params |
+| action_controller/params_flow.rb:55:10:55:15 | call to params | ActionController::Metal#params |
+| action_controller/params_flow.rb:59:10:59:15 | call to params | ActionController::Metal#params |
+| action_controller/params_flow.rb:63:10:63:15 | call to params | ActionController::Metal#params |
+| action_controller/params_flow.rb:67:10:67:15 | call to params | ActionController::Metal#params |
+| action_controller/params_flow.rb:71:10:71:15 | call to params | ActionController::Metal#params |
+| action_controller/params_flow.rb:75:10:75:15 | call to params | ActionController::Metal#params |
+| action_controller/params_flow.rb:79:10:79:15 | call to params | ActionController::Metal#params |
+| action_controller/params_flow.rb:83:10:83:15 | call to params | ActionController::Metal#params |
+| action_controller/params_flow.rb:87:10:87:15 | call to params | ActionController::Metal#params |
+| action_controller/params_flow.rb:91:10:91:15 | call to params | ActionController::Metal#params |
+| action_controller/params_flow.rb:95:10:95:15 | call to params | ActionController::Metal#params |
+| action_controller/params_flow.rb:99:10:99:15 | call to params | ActionController::Metal#params |
+| action_controller/params_flow.rb:103:10:103:15 | call to params | ActionController::Metal#params |
+| action_controller/params_flow.rb:107:10:107:15 | call to params | ActionController::Metal#params |
+| action_controller/params_flow.rb:111:10:111:15 | call to params | ActionController::Metal#params |
+| action_controller/params_flow.rb:112:23:112:28 | call to params | ActionController::Metal#params |
+| action_controller/params_flow.rb:116:10:116:15 | call to params | ActionController::Metal#params |
+| action_controller/params_flow.rb:117:31:117:36 | call to params | ActionController::Metal#params |
+| action_controller/params_flow.rb:121:10:121:15 | call to params | ActionController::Metal#params |
+| action_controller/params_flow.rb:122:31:122:36 | call to params | ActionController::Metal#params |
+| action_controller/params_flow.rb:126:10:126:15 | call to params | ActionController::Metal#params |
+| action_controller/params_flow.rb:127:24:127:29 | call to params | ActionController::Metal#params |
+| action_controller/params_flow.rb:130:14:130:19 | call to params | ActionController::Metal#params |
+| action_controller/params_flow.rb:135:10:135:15 | call to params | ActionController::Metal#params |
+| action_controller/params_flow.rb:136:32:136:37 | call to params | ActionController::Metal#params |
+| action_controller/params_flow.rb:139:22:139:27 | call to params | ActionController::Metal#params |
+| action_controller/params_flow.rb:144:10:144:15 | call to params | ActionController::Metal#params |
+| action_controller/params_flow.rb:145:32:145:37 | call to params | ActionController::Metal#params |
+| action_controller/params_flow.rb:148:22:148:27 | call to params | ActionController::Metal#params |
+| active_record/ActiveRecord.rb:28:30:28:35 | call to params | ActionController::Metal#params |
+| active_record/ActiveRecord.rb:29:29:29:34 | call to params | ActionController::Metal#params |
+| active_record/ActiveRecord.rb:30:31:30:36 | call to params | ActionController::Metal#params |
+| active_record/ActiveRecord.rb:32:21:32:26 | call to params | ActionController::Metal#params |
+| active_record/ActiveRecord.rb:34:34:34:39 | call to params | ActionController::Metal#params |
+| active_record/ActiveRecord.rb:35:23:35:28 | call to params | ActionController::Metal#params |
+| active_record/ActiveRecord.rb:35:38:35:43 | call to params | ActionController::Metal#params |
+| active_record/ActiveRecord.rb:43:10:43:15 | call to params | ActionController::Metal#params |
+| active_record/ActiveRecord.rb:50:11:50:16 | call to params | ActionController::Metal#params |
+| active_record/ActiveRecord.rb:54:12:54:17 | call to params | ActionController::Metal#params |
+| active_record/ActiveRecord.rb:59:12:59:17 | call to params | ActionController::Metal#params |
+| active_record/ActiveRecord.rb:62:15:62:20 | call to params | ActionController::Metal#params |
+| active_record/ActiveRecord.rb:68:21:68:26 | call to params | ActionController::Metal#params |
+| active_record/ActiveRecord.rb:72:18:72:23 | call to params | ActionController::Metal#params |
+| active_record/ActiveRecord.rb:76:24:76:29 | call to params | ActionController::Metal#params |
+| active_record/ActiveRecord.rb:76:49:76:54 | call to params | ActionController::Metal#params |
+| active_record/ActiveRecord.rb:80:25:80:30 | call to params | ActionController::Metal#params |
+| active_record/ActiveRecord.rb:80:50:80:55 | call to params | ActionController::Metal#params |
+| active_record/ActiveRecord.rb:88:21:88:26 | call to params | ActionController::Metal#params |
+| active_record/ActiveRecord.rb:92:27:92:32 | call to params | ActionController::Metal#params |
+| active_record/ActiveRecord.rb:92:52:92:57 | call to params | ActionController::Metal#params |
+| active_record/ActiveRecord.rb:96:28:96:33 | call to params | ActionController::Metal#params |
+| active_record/ActiveRecord.rb:96:53:96:58 | call to params | ActionController::Metal#params |
+| active_record/ActiveRecord.rb:106:59:106:64 | call to params | ActionController::Metal#params |
+| active_storage/active_storage.rb:41:21:41:26 | call to params | ActionController::Metal#params |
+| active_storage/active_storage.rb:42:24:42:29 | call to params | ActionController::Metal#params |
+| app/controllers/comments_controller.rb:3:5:3:18 | call to params | ActionDispatch::Request#params |
+| app/controllers/comments_controller.rb:4:5:4:22 | call to parameters | ActionDispatch::Request#parameters |
+| app/controllers/comments_controller.rb:5:5:5:15 | call to GET | ActionDispatch::Request#GET |
+| app/controllers/comments_controller.rb:6:5:6:16 | call to POST | ActionDispatch::Request#POST |
+| app/controllers/comments_controller.rb:7:5:7:28 | call to query_parameters | ActionDispatch::Request#query_parameters |
+| app/controllers/comments_controller.rb:8:5:8:30 | call to request_parameters | ActionDispatch::Request#request_parameters |
+| app/controllers/comments_controller.rb:9:5:9:31 | call to filtered_parameters | ActionDispatch::Request#filtered_parameters |
+| app/controllers/foo/bars_controller.rb:10:27:10:33 | call to cookies | ActionController::Metal#cookies |
+| app/controllers/foo/bars_controller.rb:13:21:13:26 | call to params | ActionController::Metal#params |
+| app/controllers/foo/bars_controller.rb:14:10:14:15 | call to params | ActionController::Metal#params |
+| app/controllers/foo/bars_controller.rb:21:21:21:26 | call to params | ActionController::Metal#params |
+| app/controllers/foo/bars_controller.rb:22:10:22:15 | call to params | ActionController::Metal#params |
+| app/graphql/mutations/dummy.rb:5:24:5:25 | id | GraphQL RoutedParameter |
+| app/graphql/mutations/dummy.rb:9:17:9:25 | something | GraphQL RoutedParameter |
+| app/graphql/resolvers/dummy_resolver.rb:6:24:6:25 | id | GraphQL RoutedParameter |
+| app/graphql/resolvers/dummy_resolver.rb:10:17:10:25 | something | GraphQL RoutedParameter |
+| app/graphql/types/query_type.rb:10:18:10:23 | number | GraphQL RoutedParameter |
+| app/graphql/types/query_type.rb:18:23:18:33 | blah_number | GraphQL RoutedParameter |
+| app/graphql/types/query_type.rb:27:20:27:25 | **args | GraphQL RoutedParameter |
+| app/graphql/types/query_type.rb:36:34:36:37 | arg1 | GraphQL RoutedParameter |
+| app/graphql/types/query_type.rb:36:41:36:46 | **rest | GraphQL RoutedParameter |
+| app/views/foo/bars/show.html.erb:5:9:5:14 | call to params | ActionController::Metal#params |
 cookiesCalls
 | app/controllers/foo/bars_controller.rb:10:27:10:33 | call to cookies |
 cookiesSources

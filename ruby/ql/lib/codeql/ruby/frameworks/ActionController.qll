@@ -161,6 +161,103 @@ private class ActionControllerParamsCall extends ActionControllerContextCall, Pa
   ActionControllerParamsCall() { this.getMethodName() = "params" }
 }
 
+/** Modeling for `ActionDispatch::Request`. */
+private module Request {
+  /**
+   * A call to `request` from within a controller. This is an instance of
+   * `ActionDispatch::Request`.
+   */
+  private class RequestNode extends DataFlow::CallNode {
+    RequestNode() {
+      this.asExpr().getExpr() instanceof ActionControllerContextCall and
+      this.getMethodName() = "request"
+    }
+  }
+
+  /**
+   * A method call on `request`.
+   */
+  private class RequestMethodCall extends DataFlow::CallNode {
+    RequestMethodCall() {
+      any(RequestNode r).(DataFlow::LocalSourceNode).flowsTo(this.getReceiver())
+    }
+  }
+
+  abstract private class RequestInputAccess extends RequestMethodCall,
+    Http::Server::RequestInputAccess::Range {
+    override string getSourceType() { result = "ActionDispatch::Request#" + this.getMethodName() }
+  }
+
+  /**
+   * A method call on `request` which returns request parameters.
+   */
+  private class ParametersCall extends RequestInputAccess {
+    ParametersCall() {
+      this.getMethodName() =
+        [
+          "parameters", "params", "GET", "POST", "query_parameters", "request_parameters",
+          "filtered_parameters"
+        ]
+    }
+  }
+
+  /** A method call on `request` which returns part or all of the request path. */
+  private class PathCall extends RequestInputAccess {
+    PathCall() {
+      this.getMethodName() =
+        ["fullpath", "original_fullpath", "original_url", "url", "path", "filtered_path"]
+    }
+  }
+
+  /** A method call on `request` which returns a specific request header. */
+  private class HeadersCall extends RequestInputAccess {
+    HeadersCall() {
+      this.getMethodName() =
+        [
+          "authorization", "script_name", "path_info", "user_agent", "referer", "referrer",
+          "host_authority", "content_type", "host", "hostname", "accept_encoding",
+          "accept_language", "if_none_match", "if_none_match_etags", "get_header", "fetch_header"
+        ]
+    }
+  }
+
+  // TODO: each_header
+  /**
+   * A method call on `request` which returns part or all of the host.
+   * This can be influenced by headers such as Host and X-Forwarded-Host.
+   */
+  private class HostCall extends RequestInputAccess {
+    HostCall() {
+      this.getMethodName() =
+        [
+          "authority", "host", "host_authority", "host_with_port", "hostname", "forwarded_for",
+          "forwarded_host", "port", "forwarded_port"
+        ]
+    }
+  }
+
+  /**
+   * A method call on `request` which is influenced by one or more request
+   * headers.
+   */
+  private class HeaderTaintedCall extends RequestInputAccess {
+    HeaderTaintedCall() {
+      this.getMethodName() =
+        ["media_type", "media_type", "media_type_params", "content_charset", "base_url"]
+    }
+  }
+
+  /** A method call on `request` which returns the request body. */
+  private class BodyCall extends RequestInputAccess {
+    BodyCall() { this.getMethodName() = ["body", "raw_post"] }
+  }
+
+  /** A method call on `request` which returns the rack env. */
+  private class EnvCall extends RequestInputAccess {
+    EnvCall() { this.getMethodName() = ["env", "filtered_env"] }
+  }
+}
+
 /** A call to `render` from within a controller. */
 private class ActionControllerRenderCall extends ActionControllerContextCall, RenderCallImpl {
   ActionControllerRenderCall() { this.getMethodName() = "render" }
