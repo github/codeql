@@ -3,9 +3,7 @@ private import semmle.code.java.dataflow.DataFlow
 private import semmle.code.java.dataflow.ExternalFlow
 private import semmle.code.java.dataflow.FlowSteps
 
-/**
- * The class `android.content.Intent`.
- */
+/** The class `android.content.Intent`. */
 class TypeIntent extends Class {
   TypeIntent() { this.hasQualifiedName("android.content", "Intent") }
 }
@@ -15,23 +13,17 @@ class TypeComponentName extends Class {
   TypeComponentName() { this.hasQualifiedName("android.content", "ComponentName") }
 }
 
-/**
- * The class `android.app.Activity`.
- */
+/** The class `android.app.Activity`. */
 class TypeActivity extends Class {
   TypeActivity() { this.hasQualifiedName("android.app", "Activity") }
 }
 
-/**
- * The class `android.app.Service`.
- */
+/** The class `android.app.Service`. */
 class TypeService extends Class {
   TypeService() { this.hasQualifiedName("android.app", "Service") }
 }
 
-/**
- * The class `android.content.Context`.
- */
+/** The class `android.content.Context`. */
 class TypeContext extends RefType {
   // Not inlining this makes it more likely to be used as a sentinel,
   // which is useful when running Android queries on non-Android projects.
@@ -39,39 +31,22 @@ class TypeContext extends RefType {
   TypeContext() { this.hasQualifiedName("android.content", "Context") }
 }
 
-/**
- * The class `android.content.BroadcastReceiver`.
- */
+/** The class `android.content.BroadcastReceiver`. */
 class TypeBroadcastReceiver extends Class {
   TypeBroadcastReceiver() { this.hasQualifiedName("android.content", "BroadcastReceiver") }
 }
 
-/**
- * The method `Activity.getIntent`
- */
+/** The method `Activity.getIntent` */
 class AndroidGetIntentMethod extends Method {
   AndroidGetIntentMethod() {
     this.hasName("getIntent") and this.getDeclaringType() instanceof TypeActivity
   }
 }
 
-/**
- * The method `BroadcastReceiver.onReceive`.
- */
+/** The method `BroadcastReceiver.onReceive`. */
 class AndroidReceiveIntentMethod extends Method {
   AndroidReceiveIntentMethod() {
     this.hasName("onReceive") and this.getDeclaringType() instanceof TypeBroadcastReceiver
-  }
-}
-
-/**
- * The method `Service.onStart`, `onStartCommand`,
- * `onBind`, `onRebind`, `onUnbind`, or `onTaskRemoved`.
- */
-class AndroidServiceIntentMethod extends Method {
-  AndroidServiceIntentMethod() {
-    this.getName().matches(["onStart%", "on%ind", "onTaskRemoved"]) and
-    this.getDeclaringType() instanceof TypeService
   }
 }
 
@@ -135,22 +110,21 @@ class SendBroadcastMethod extends Method {
  */
 class StartServiceMethod extends Method {
   StartServiceMethod() {
-    this.getName().matches(["start%Service", "bind%Service%"]) and
+    this.hasName([
+        "startService", "startForegroundService", "bindIsolatedService", "bindService",
+        "bindServiceAsUser"
+      ]) and
     this.getDeclaringType() instanceof TypeContext
   }
 }
 
-/**
- * Specifies that if an `Intent` is tainted, then so are its synthetic fields.
- */
+/** Specifies that if an `Intent` is tainted, then so are its synthetic fields. */
 private class IntentFieldsInheritTaint extends DataFlow::SyntheticFieldContent,
   TaintInheritingContent {
   IntentFieldsInheritTaint() { this.getField().matches("android.content.Intent.%") }
 }
 
-/**
- * The method `Intent.getParcelableExtra`.
- */
+/** The method `Intent.getParcelableExtra`. */
 class IntentGetParcelableExtraMethod extends Method {
   IntentGetParcelableExtraMethod() {
     this.hasName("getParcelableExtra") and
@@ -212,9 +186,7 @@ private class BundleExtrasSyntheticField extends SyntheticField {
   override RefType getType() { result instanceof AndroidBundle }
 }
 
-/**
- * Holds if extras may be implicitly read from the Intent `node`.
- */
+/** Holds if extras may be implicitly read from the Intent `node`. */
 predicate allowIntentExtrasImplicitRead(DataFlow::Node node, DataFlow::Content c) {
   node.getType() instanceof TypeIntent and
   (
@@ -284,25 +256,19 @@ private class StartComponentMethodAccess extends MethodAccess {
 }
 
 /**
- * Holds if there is a step from the intent argument `n1` of a `startActivity` call
- * to a `getIntent` call `n2` in the activity `n1` targets.
- */
-private predicate startActivityIntentStep(DataFlow::Node n1, DataFlow::Node n2) {
-  exists(StartComponentMethodAccess startActivity, MethodAccess getIntent |
-    startActivity.getMethod().overrides*(any(StartActivityMethod m)) and
-    getIntent.getMethod().overrides*(any(AndroidGetIntentMethod m)) and
-    startActivity.targetsComponentType(getIntent.getReceiverType()) and
-    n1.asExpr() = startActivity.getIntentArg() and
-    n2.asExpr() = getIntent
-  )
-}
-
-/**
  * A value-preserving step from the intent argument of a `startActivity` call to
  * a `getIntent` call in the activity the intent targeted in its constructor.
  */
 private class StartActivityIntentStep extends AdditionalValueStep {
-  override predicate step(DataFlow::Node n1, DataFlow::Node n2) { startActivityIntentStep(n1, n2) }
+  override predicate step(DataFlow::Node n1, DataFlow::Node n2) {
+    exists(StartComponentMethodAccess startActivity, MethodAccess getIntent |
+      startActivity.getMethod().overrides*(any(StartActivityMethod m)) and
+      getIntent.getMethod().overrides*(any(AndroidGetIntentMethod m)) and
+      startActivity.targetsComponentType(getIntent.getReceiverType()) and
+      n1.asExpr() = startActivity.getIntentArg() and
+      n2.asExpr() = getIntent
+    )
+  }
 }
 
 /**
