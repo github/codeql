@@ -77,12 +77,21 @@ int test(int i, int j, int (*foo)(int), int (*bar)(int, int))
 	                   j++);
 	(void)sizeof(x.foo(i++), // GOOD
 	             j++);
+	using U = decltype(x.foo(i++), // GOOD? Unlikely to be misread
+				j++);
+	(void)sizeof(x.foo(i++), // GOOD? Unlikely to be misread
+				j++);
 
 	// Comma in loops
 
     while (i = foo(j++), // GOOD
            i != j && i != 42 &&
                !foo(j)) {
+        i = j = i + j;
+    }
+
+    while (i = foo(j++), // GOOD??? Currently ignoring loop heads
+        i != j && i != 42 && !foo(j)) {
         i = j = i + j;
     }
 

@@ -11,6 +11,7 @@
 import cpp
 import semmle.code.cpp.commons.Exclusions
 
+/** Gets the sub-expression of 'e' with the earliest-starting Location */
 Expr normalizeExpr(Expr e) {
   if exists(e.(Call).getQualifier())
   then result = normalizeExpr(e.(Call).getQualifier())
@@ -26,6 +27,12 @@ predicate isInLoopHead(CommaExpr ce) {
   ce.getEnclosingStmt() = any(ForStmt f).getInitialization()
 }
 
+predicate isInDecltypeOrSizeof(CommaExpr ce) {
+  ce.getParent*() instanceof SizeofExprOperator
+  or
+  ce.getParent*() = any(Decltype d).getExpr()
+}
+
 from CommaExpr ce, Expr left, Expr right, Location leftLoc, Location rightLoc
 where
   ce.fromSource() and
@@ -34,7 +41,8 @@ where
   right = normalizeExpr(ce.getRightOperand()) and
   leftLoc = left.getLocation() and
   rightLoc = right.getLocation() and
-  not isInLoopHead(ce) and // HACK to reduce FPs in loop heads; assumption: unlikely to be misread due to '(', ')' delimiters
+  not isInLoopHead(ce) and // <- HACK to reduce FPs in loop heads; assumption: unlikely to be misread due to '(', ')' delimiters
+  not isInDecltypeOrSizeof(ce) and // <- Removes arguable FPs since, like function calls (and loop heads), these Exprs have clear delimiters.
   leftLoc.getEndLine() < rightLoc.getStartLine() and
   leftLoc.getStartColumn() > rightLoc.getStartColumn()
 select right, "The indentation after the comma may be misleading (for some tab sizes)."
