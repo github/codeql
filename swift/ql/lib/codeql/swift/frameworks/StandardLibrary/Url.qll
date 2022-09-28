@@ -2,7 +2,7 @@ import swift
 private import codeql.swift.dataflow.FlowSources
 
 /**
- * Model certain members of `URL` as sources of remote flow.
+ * A model for `URL` members that are sources of remote flow.
  */
 class UrlRemoteFlowSource extends RemoteFlowSource {
   UrlRemoteFlowSource() {
