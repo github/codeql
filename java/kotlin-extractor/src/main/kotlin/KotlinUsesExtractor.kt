@@ -366,9 +366,8 @@ open class KotlinUsesExtractor(
         if (replacementClass === parentClass)
             return f
         return globalExtensionState.syntheticToRealFieldMap.getOrPut(f) {
-            val result = replacementClass.declarations.findSubType<IrField> { replacementDecl ->
-                replacementDecl.name == f.name
-            }
+            val result = replacementClass.declarations.findSubType<IrField> { replacementDecl -> replacementDecl.name == f.name }
+                ?: replacementClass.declarations.findSubType<IrProperty> { it.backingField?.name == f.name}?.backingField
             if (result == null) {
                 logger.warn("Failed to replace synthetic class field ${f.name}")
             } else {
