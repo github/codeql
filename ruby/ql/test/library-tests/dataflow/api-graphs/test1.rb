@@ -72,4 +72,4 @@ end
 array = [A::B::C] #$ use=getMember("Array").getMethod("[]").getReturn()
 array[0].m #$ use=getMember("A").getMember("B").getMember("C").getMethod("m").getReturn()
 
-A::B::C[0] #$ use=getMember("A").getMember("B").getMember("C").getContent(element)
+A::B::C[0] #$ use=getMember("A").getMember("B").getMember("C").getContent(element_0)
