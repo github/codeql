@@ -149,7 +149,7 @@ module Rbi {
 
     /** A type instantiated with type arguments, such as `T::Array[String]`. */
     class RbiInstantiatedType extends RbiType, ElementReference {
-      RbiInstantiatedType() { getReceiver() instanceof RbiType }
+      RbiInstantiatedType() { this.getReceiver() instanceof RbiType }
     }
 
     /**
