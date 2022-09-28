@@ -13,11 +13,9 @@
 import java
 import semmle.code.xml.AndroidManifest
 
-// from AndroidActivityXmlElement actXmlElement
-// where
-//   actXmlElement.hasDeepLink() and
-//   not actXmlElement.getFile().(AndroidManifestXmlFile).isInBuildDirectory()
-// select actXmlElement, "A deeplink is used here."
-from MethodAccess ma
-where ma.getMethod().hasName("parseUri")
-select ma, "parseUri access"
+// simple query for testing and MRVA results
+from AndroidActivityXmlElement actXmlElement
+where
+  actXmlElement.hasDeepLink() and
+  not actXmlElement.getFile().(AndroidManifestXmlFile).isInBuildDirectory()
+select actXmlElement, "A deeplink is used here."

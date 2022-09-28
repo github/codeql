@@ -130,11 +130,12 @@ class AndroidApplicationXmlElement extends XmlElement {
 class AndroidActivityXmlElement extends AndroidComponentXmlElement {
   AndroidActivityXmlElement() { this.getName() = "activity" }
 
-  // ! Double-check that no other components can have deep links.
-  // ! Consider moving this to its own .qll file like for Implicit Export Query.
-  // ! Also double-check that the below actions and categories are REQUIRED for it to
-  // !   count as a deep link versus just recommended (e.g. should I just look for the
+  // ! Consider moving this to its own .qll file under `security` like for Implicit Export Query.
+  // ! Double-check that the below actions and categories are REQUIRED for it to
+  // !   count as a deep link versus just recommended (e.g. should I just look at the
   // !   data element instead?).
+  // ! Reference: https://developer.android.com/training/app-links/deep-linking#adding-filters
+  // ! Note: not excluding App Links since those are a subset of deep links that can still cause issues.
   /**
    * Holds if this `<activity>` element has a deep link.
    */
