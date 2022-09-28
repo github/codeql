@@ -86,7 +86,11 @@ private class StepsFromModel extends ModelInput::SummaryModelCsv {
         ";any;Method[matchedByName];Argument[0];ReturnValue;taint",
         ";any;Method[matchedByNameRcv];Argument[self];ReturnValue;taint",
         ";any;Method[withElementOne];Argument[self].WithElement[1];ReturnValue;value",
+        ";any;Method[withExactlyElementOne];Argument[self].WithElement[1!];ReturnValue;value",
         ";any;Method[withoutElementOne];Argument[self].WithoutElement[1];Argument[self];value",
+        ";any;Method[withoutExactlyElementOne];Argument[self].WithoutElement[1!];Argument[self];value",
+        ";any;Method[readElementOne];Argument[self].Element[1];ReturnValue;value",
+        ";any;Method[readExactlyElementOne];Argument[self].Element[1!];ReturnValue;value"
       ]
   }
 }

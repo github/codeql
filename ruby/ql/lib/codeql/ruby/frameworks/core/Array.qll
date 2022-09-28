@@ -199,7 +199,7 @@ module Array {
     }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
-      input = "Argument[self].Element[?," + index.serialize() + "]" and
+      input = "Argument[self].Element[" + index.serialize() + "]" and
       output = "ReturnValue" and
       preservesValue = true
     }
@@ -264,7 +264,7 @@ module Array {
         output = "ReturnValue"
         or
         exists(ArrayIndex i | i >= start and i <= end |
-          input = "Argument[self].Element[" + i + "]" and
+          input = "Argument[self].Element[" + i + "!]" and
           output = "ReturnValue.Element[" + (i - start) + "]"
         )
       )
@@ -296,7 +296,7 @@ module Array {
     }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
-      input = "Argument[self].Element[?,0..]" and
+      input = "Argument[self].Element[0..]" and
       output = "ReturnValue.Element[?]" and
       preservesValue = true
     }
@@ -327,7 +327,7 @@ module Array {
       output = "Argument[self].Element[" + index.serialize() + "]" and
       preservesValue = true
       or
-      input = "Argument[self].WithoutElement[" + index.serialize() + "]" and
+      input = "Argument[self].WithoutElement[" + index.serialize() + "!]" and
       output = "Argument[self]" and
       preservesValue = true
     }
@@ -407,7 +407,7 @@ module Array {
     }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
-      input = "Argument[self].Element[" + index.serialize() + ",?]" and
+      input = "Argument[self].Element[" + index.serialize() + "]" and
       output = "ReturnValue" and
       preservesValue = true
     }
@@ -490,7 +490,7 @@ module Array {
     CompactBangSummary() { this = "compact!" }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
-      input = "Argument[self].Element[?,0..]" and
+      input = "Argument[self].Element[0..]" and
       output = ["ReturnValue.Element[?]", "Argument[self].Element[?]"] and
       preservesValue = true
     }
@@ -558,18 +558,18 @@ module Array {
           if index.isInt(_)
           then
             // array indices may get shifted
-            input = "Argument[self].WithoutElement[" + index.serialize() + "].Element[0..]" and
+            input = "Argument[self].WithoutElement[" + index.serialize() + "!].Element[0..!]" and
             output = "Argument[self].Element[?]"
             or
-            input = "Argument[self].WithoutElement[0..]" and
+            input = "Argument[self].WithoutElement[0..!]" and
             output = "Argument[self]"
           else (
-            input = "Argument[self].WithoutElement[" + index.serialize() + "]" and
+            input = "Argument[self].WithoutElement[" + index.serialize() + "!]" and
             output = "Argument[self]"
           )
         )
         or
-        input = "Argument[self].Element[" + index.serialize() + ",?]" and
+        input = "Argument[self].Element[" + index.serialize() + "]" and
         output = "ReturnValue"
       ) and
       preservesValue = true
@@ -587,10 +587,10 @@ module Array {
       or
       (
         // array indices may get shifted
-        input = "Argument[self].Element[0..]" and
+        input = "Argument[self].Element[0..!]" and
         output = "Argument[self].Element[?]"
         or
-        input = "Argument[self].WithoutElement[0..].WithElement[any]" and
+        input = "Argument[self].WithoutElement[0..!].WithElement[any]" and
         output = "Argument[self]"
         or
         input = "Argument[self].Element[any]" and
@@ -631,19 +631,16 @@ module Array {
         input = "Argument[self].Element[?]" and
         output = ["ReturnValue", "Argument[self].Element[?]"]
         or
-        input = "Argument[self].Element[" + i + "]" and
-        output = "ReturnValue"
-        or
-        input = "Argument[self].Element[" + i + "]" and
+        input = "Argument[self].Element[" + i + "!]" and
         output = "ReturnValue"
         or
         exists(ArrayIndex j |
           j < i and
-          input = "Argument[self].WithElement[" + j + "]" and
+          input = "Argument[self].WithElement[" + j + "!]" and
           output = "Argument[self]"
           or
           j > i and
-          input = "Argument[self].Element[" + j + "]" and
+          input = "Argument[self].Element[" + j + "!]" and
           output = "Argument[self].Element[" + (j - 1) + "]"
         )
       ) and
@@ -680,10 +677,10 @@ module Array {
         output = "Argument[block].Parameter[" + lastBlockParam + "]"
         or
         // array indices may get shifted
-        input = "Argument[self].Element[0..]" and
+        input = "Argument[self].Element[0..!]" and
         output = ["ReturnValue.Element[?]", "Argument[self].Element[?]"]
         or
-        input = "Argument[self].WithoutElement[0..].WithElement[any]" and
+        input = "Argument[self].WithoutElement[0..!].WithElement[any]" and
         output = ["ReturnValue", "Argument[self]"]
       ) and
       preservesValue = true
@@ -719,7 +716,7 @@ module Array {
   private string buildDigInputSpecComponent(RelevantDigMethodCall dig, int i) {
     exists(string s |
       s = getDigArg(dig, i) and
-      if s = "?" then result = "any" else result = s + ",?"
+      if s = "?" then result = "any" else result = s
     )
   }
 
@@ -811,7 +808,7 @@ module Array {
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       (
-        input = "Argument[self].Element[?," + index.serialize() + "]" and
+        input = "Argument[self].Element[" + index.serialize() + "]" and
         output = "ReturnValue"
         or
         input = "Argument[0]" and
@@ -961,13 +958,13 @@ module Array {
         exists(ArrayIndex j |
           // Existing elements before the insertion point are unaffected.
           j < i and
-          input = "Argument[self].WithElement[" + j + "]" and
+          input = "Argument[self].WithElement[" + j + "!]" and
           output = r
           or
           // Existing elements after the insertion point are shifted by however
           // many values we're inserting.
           j >= i and
-          input = "Argument[self].Element[" + j + "]" and
+          input = "Argument[self].Element[" + j + "!]" and
           output = r + ".Element[" + (j + numValues) + "]"
         )
         or
@@ -1034,10 +1031,10 @@ module Array {
         output = "Argument[self]"
         or
         // array indices may get shifted
-        input = "Argument[self].Element[0..]" and
+        input = "Argument[self].Element[0..!]" and
         output = ["ReturnValue.Element[?]", "Argument[self].Element[?]"]
         or
-        input = "Argument[self].WithoutElement[0..].WithElement[any]" and
+        input = "Argument[self].WithoutElement[0..!].WithElement[any]" and
         output = ["ReturnValue", "Argument[self]"]
         or
         input = "Argument[self].Element[any]" and
@@ -1150,7 +1147,7 @@ module Array {
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       exists(int num | num = mc.getNumberOfArguments() and preservesValue = true |
         exists(ArrayIndex i |
-          input = "Argument[self].Element[" + i + "]" and
+          input = "Argument[self].Element[" + i + "!]" and
           output = "Argument[self].Element[" + (i + num) + "]"
         )
         or
@@ -1214,10 +1211,10 @@ module Array {
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       (
         // array indices may get shifted
-        input = "Argument[self].Element[0..]" and
+        input = "Argument[self].Element[0..!]" and
         output = ["ReturnValue.Element[?]", "Argument[self].Element[?]"]
         or
-        input = "Argument[self].WithoutElement[0..].WithElement[any]" and
+        input = "Argument[self].WithoutElement[0..!].WithElement[any]" and
         output = ["ReturnValue", "Argument[self]"]
         or
         input = "Argument[self].Element[any]" and
@@ -1287,7 +1284,7 @@ module Array {
         output = "ReturnValue.Element[?]"
         or
         exists(ArrayIndex i |
-          input = "Argument[self].Element[" + i + "]" and
+          input = "Argument[self].Element[" + i + "!]" and
           (
             i < c and output = "ReturnValue.Element[?]"
             or
@@ -1345,7 +1342,7 @@ module Array {
         output = r + ".Element[?]"
         or
         exists(ArrayIndex i |
-          input = "Argument[self].Element[" + i + "]" and
+          input = "Argument[self].Element[" + i + "!]" and
           (
             i < c and output = r + ".Element[?]"
             or
@@ -1391,10 +1388,10 @@ module Array {
         output = "Argument[block].Parameter[" + lastBlockParam + "]"
         or
         // array indices may get shifted
-        input = "Argument[self].Element[0..]" and
+        input = "Argument[self].Element[0..!]" and
         output = ["ReturnValue.Element[?]", "Argument[self].Element[?]"]
         or
-        input = "Argument[self].WithoutElement[0..].WithElement[any]" and
+        input = "Argument[self].WithoutElement[0..!].WithElement[any]" and
         output = ["ReturnValue", "Argument[self]"]
         or
         input = "Argument[self].WithoutElement[any]" and
@@ -1427,7 +1424,7 @@ module Array {
       or
       preservesValue = true and
       (
-        input = "Argument[self].WithoutElement[0..]" and
+        input = "Argument[self].WithoutElement[0..!]" and
         output = "Argument[self]"
         or
         input = "Argument[self].Element[?]" and
@@ -1437,10 +1434,10 @@ module Array {
             "ReturnValue.Element[1]" // hash
           ]
         or
-        input = "Argument[self].WithoutElement[0..].WithoutElement[?].Element[any]" and
+        input = "Argument[self].WithoutElement[0..!].WithoutElement[?].Element[any]" and
         output = "ReturnValue.Element[1]"
         or
-        exists(ArrayIndex i | input = "Argument[self].Element[" + i + "]" |
+        exists(ArrayIndex i | input = "Argument[self].Element[" + i + "!]" |
           i = 0 and output = "ReturnValue"
           or
           i > 0 and output = "Argument[self].Element[" + (i - 1) + "]"
@@ -1467,11 +1464,11 @@ module Array {
         or
         exists(ArrayIndex i |
           i < n and
-          input = "Argument[self].WithElement[" + i + "]" and
+          input = "Argument[self].WithElement[" + i + "!]" and
           output = "ReturnValue"
           or
           i >= n and
-          input = "Argument[self].Element[" + i + "]" and
+          input = "Argument[self].Element[" + i + "!]" and
           output = "Argument[self].Element[" + (i - n) + "]"
         )
       )
@@ -1545,15 +1542,15 @@ module Array {
         input = "Argument[self].Element[?]" and
         output = ["ReturnValue", "Argument[self].Element[?]"]
         or
-        input = "Argument[self].Element[" + n + "]" and output = "ReturnValue"
+        input = "Argument[self].Element[" + n + "!]" and output = "ReturnValue"
         or
         exists(ArrayIndex i |
           i < n and
-          input = "Argument[self].WithElement[" + i + "]" and
+          input = "Argument[self].WithElement[" + i + "!]" and
           output = "Argument[self]"
           or
           i > n and
-          input = "Argument[self].Element[" + i + "]" and
+          input = "Argument[self].Element[" + i + "!]" and
           output = "Argument[self].Element[" + (i - 1) + "]"
         )
       )
@@ -1625,16 +1622,16 @@ module Array {
         or
         exists(ArrayIndex i |
           i < start and
-          input = "Argument[self].WithElement[" + i + "]" and
+          input = "Argument[self].WithElement[" + i + "!]" and
           output = "Argument[self]"
           or
           i >= start and
           i <= end and
-          input = "Argument[self].Element[" + i + "]" and
+          input = "Argument[self].Element[" + i + "!]" and
           output = "ReturnValue.Element[" + (i - start) + "]"
           or
           i > end and
-          input = "Argument[self].Element[" + i + "]" and
+          input = "Argument[self].Element[" + i + "!]" and
           output = "Argument[self].Element[" + (i - (end - start + 1)) + "]"
         )
       )
@@ -1717,8 +1714,16 @@ module Array {
         output = "ReturnValue.Element[?].Element[?]"
         or
         exists(ArrayIndex i, ArrayIndex j |
-          input = "Argument[self].Element[" + j + "].Element[" + i + "]" and
+          input = "Argument[self].Element[" + j + "!].Element[" + i + "!]" and
           output = "ReturnValue.Element[" + i + "].Element[" + j + "]"
+        )
+        or
+        exists(ArrayIndex i |
+          input = "Argument[self].Element[" + i + "!].Element[?]" and
+          output = "ReturnValue.Element[?].Element[" + i + "]"
+          or
+          input = "Argument[self].Element[?].Element[" + i + "!]" and
+          output = "ReturnValue.Element[" + i + "].Element[?]"
         )
       )
     }
@@ -1869,13 +1874,13 @@ module Enumerable {
     CompactSummary() { this = "compact" }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
-      input = "Argument[self].Element[?,0..]" and
+      input = "Argument[self].Element[0..]" and
       output = "ReturnValue.Element[?]" and
       preservesValue = true
       or
       exists(ConstantValue index |
         not index.isInt(_) and
-        input = "Argument[self].WithElement[" + index.serialize() + "]" and
+        input = "Argument[self].WithElement[" + index.serialize() + "!]" and
         output = "ReturnValue" and
         preservesValue = true
       )
@@ -1941,7 +1946,7 @@ module Enumerable {
         output = "ReturnValue.Element[?]"
         or
         exists(ArrayIndex j |
-          input = "Argument[self].Element[" + j + "]" and
+          input = "Argument[self].Element[" + j + "!]" and
           output = "ReturnValue.Element[" + (j - i) + "]"
         )
       ) and
@@ -2075,7 +2080,7 @@ module Enumerable {
     FirstNoArgSummary() { this = "first(no_arg)" and mc.getNumberOfArguments() = 0 }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
-      input = ["Argument[self].Element[0]", "Argument[self].Element[?]"] and
+      input = "Argument[self].Element[0]" and
       output = "ReturnValue" and
       preservesValue = true
     }
@@ -2092,12 +2097,12 @@ module Enumerable {
       (
         exists(ArrayIndex i |
           i < n and
-          input = "Argument[self].WithElement[" + i + "]" and
+          input = "Argument[self].WithElement[" + i + "!]" and
           output = "ReturnValue"
         )
         or
-        input = "Argument[self].Element[?]" and
-        output = "ReturnValue.Element[?]"
+        input = "Argument[self].WithElement[?]" and
+        output = "ReturnValue"
       ) and
       preservesValue = true
     }
@@ -2419,10 +2424,10 @@ module Enumerable {
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       (
         // array indices may get shifted
-        input = "Argument[self].Element[0..]" and
+        input = "Argument[self].Element[0..!]" and
         output = "ReturnValue.Element[?]"
         or
-        input = "Argument[self].WithoutElement[0..].WithElement[any]" and
+        input = "Argument[self].WithoutElement[0..!].WithElement[any]" and
         output = "ReturnValue"
         or
         input = "Argument[self].Element[any]" and
@@ -2448,10 +2453,10 @@ module Enumerable {
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       (
         // array indices may get shifted
-        input = "Argument[self].Element[0..]" and
+        input = "Argument[self].Element[0..!]" and
         output = "ReturnValue.Element[?]"
         or
-        input = "Argument[self].WithoutElement[0..].WithElement[any]" and
+        input = "Argument[self].WithoutElement[0..!].WithElement[any]" and
         output = "ReturnValue"
         or
         input = "Argument[self].Element[any]" and
@@ -2531,11 +2536,11 @@ module Enumerable {
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       (
-        input = "Argument[self].Element[?]" and
-        output = "ReturnValue.Element[?]"
+        input = "Argument[self].WithElement[?]" and
+        output = "ReturnValue"
         or
         exists(ArrayIndex j | j < i |
-          input = "Argument[self].WithElement[" + j + "]" and
+          input = "Argument[self].WithElement[" + j + "!]" and
           output = "ReturnValue"
         )
       ) and
@@ -2582,7 +2587,7 @@ module Enumerable {
     ToASummary() { this = ["to_a", "entries", "to_ary"] }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
-      input = "Argument[self].WithElement[?,0..]" and
+      input = "Argument[self].WithElement[0..]" and
       output = "ReturnValue" and
       preservesValue = true
     }
@@ -2631,7 +2636,7 @@ module Enumerable {
       (
         // receiver[i] -> return_value[i][0]
         exists(ArrayIndex i |
-          input = "Argument[self].Element[" + i + "]" and
+          input = "Argument[self].Element[" + i + "!]" and
           output = "ReturnValue.Element[" + i + "].Element[0]"
         )
         or
@@ -2641,7 +2646,7 @@ module Enumerable {
         or
         // arg_j[i] -> return_value[i][j+1]
         exists(ArrayIndex i, int j | j in [0 .. (mc.getNumberOfArguments() - 1)] |
-          input = "Argument[" + j + "].Element[" + i + "]" and
+          input = "Argument[" + j + "].Element[" + i + "!]" and
           output = "ReturnValue.Element[" + i + "].Element[" + (j + 1) + "]"
         )
         or

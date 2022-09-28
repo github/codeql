@@ -1610,4 +1610,7 @@ def m136(i)
     a[i][0] = source(136.1)
     sink(a[0][0]) # $ hasValueFlow=136.1
     sink(a[0][1])
+    a[1][0] = source(136.2)
+    sink(a[1][0]) # $ hasValueFlow=136.2 $ SPURIOUS hasValueFlow=136.1
+    sink(a[2][0]) # $ hasValueFlow=136.1
 end
