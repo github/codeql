@@ -53,16 +53,68 @@ class MethodBase extends Callable, BodyStmt, Scope, TMethodBase {
    * This is either 'public', 'private' or 'protected'.
    */
   string getVisibility() {
-    result = this.getVisibilityModifier().getVisibility()
+    result = getVisibilityModifier(this).getVisibility()
     or
-    not exists(this.getVisibilityModifier()) and result = "public"
+    not exists(getVisibilityModifier(this)) and result = "public"
   }
+}
 
-  /**
-   * Gets the visibility modifier that defines the visibility of this method, if
-   * any.
-   */
-  VisibilityModifier getVisibilityModifier() { none() }
+/**
+ * Gets the visibility modifier that explicitly sets the visibility of method
+ * `m`.
+ *
+ * Examples:
+ * ```rb
+ * def f
+ * end
+ * private :f
+ *
+ * private def g
+ * end
+ * ```
+ */
+private VisibilityModifier getExplicitVisibilityModifier(Method m) {
+  result.getMethodArgument() = m
+  or
+  exists(ModuleBase n, string name |
+    methodIsDeclaredIn(m, n, name) and
+    modifiesIn(result, n, name)
+  )
+}
+
+/**
+ * Gets the visibility modifier that defines the visibility of method `m`, if
+ * any.
+ */
+private VisibilityModifier getVisibilityModifier(MethodBase mb) {
+  mb =
+    any(Method m |
+      result = getExplicitVisibilityModifier(m)
+      or
+      not exists(getExplicitVisibilityModifier(m)) and
+      exists(ModuleBase n, int methodPos | isDeclaredIn(m, n, methodPos) |
+        // The relevant visibility modifier is the closest call that occurs before
+        // the definition of `m` (typically this means higher up the file).
+        result =
+          max(int modifierPos, VisibilityModifier modifier |
+            modifier.modifiesAmbientVisibility() and
+            isDeclaredIn(modifier, n, modifierPos) and
+            modifierPos < methodPos
+          |
+            modifier order by modifierPos
+          )
+      )
+    )
+  or
+  mb =
+    any(SingletonMethod m |
+      result.getMethodArgument() = m
+      or
+      exists(ModuleBase n, string name |
+        methodIsDeclaredIn(m, n, name) and
+        modifiesIn(result, n, name)
+      )
+    )
 }
 
 /**
@@ -159,56 +211,15 @@ class Method extends MethodBase, TMethod {
   final override string toString() { result = this.getName() }
 
   override string getVisibility() {
-    result = this.getVisibilityModifier().getVisibility()
+    result = getVisibilityModifier(this).getVisibility()
     or
     this.getEnclosingModule() instanceof Toplevel and
-    not exists(this.getVisibilityModifier()) and
+    not exists(getVisibilityModifier(this)) and
     result = "private"
     or
     not this.getEnclosingModule() instanceof Toplevel and
-    not exists(this.getVisibilityModifier()) and
+    not exists(getVisibilityModifier(this)) and
     result = "public"
-  }
-
-  override VisibilityModifier getVisibilityModifier() {
-    result = this.getExplicitVisibilityModifier()
-    or
-    not exists(this.getExplicitVisibilityModifier()) and
-    exists(ModuleBase n, int methodPos | isDeclaredIn(this, n, methodPos) |
-      // The relevant visibility modifier is the closest call that occurs before
-      // the definition of `m` (typically this means higher up the file).
-      result =
-        max(int modifierPos, VisibilityModifier modifier |
-          modifier.modifiesAmbientVisibility() and
-          isDeclaredIn(modifier, n, modifierPos) and
-          modifierPos < methodPos
-        |
-          modifier order by modifierPos
-        )
-    )
-  }
-
-  /**
-   * Gets the visibility modifier that explicitly sets the visibility of this
-   * method.
-   *
-   * Examples:
-   * ```rb
-   * def f
-   * end
-   * private :f
-   *
-   * private def g
-   * end
-   * ```
-   */
-  VisibilityModifier getExplicitVisibilityModifier() {
-    result.getMethodArgument() = this
-    or
-    exists(ModuleBase n, string name |
-      methodIsDeclaredIn(this, n, name) and
-      modifiesIn(result, n, name)
-    )
   }
 }
 
@@ -289,15 +300,6 @@ class SingletonMethod extends MethodBase, TSingletonMethod {
    * ```
    */
   override predicate isPrivate() { super.isPrivate() }
-
-  override VisibilityModifier getVisibilityModifier() {
-    result.getMethodArgument() = this
-    or
-    exists(ModuleBase n, string name |
-      methodIsDeclaredIn(this, n, name) and
-      modifiesIn(result, n, name)
-    )
-  }
 }
 
 /**
