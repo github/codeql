@@ -10,7 +10,8 @@ public class TestStartComponentToIntent {
         return null;
     }
 
-    static void sink(Object sink) {}
+    static void sink(Object sink) {
+    }
 
     public void testActivity(Context ctx) {
         Intent intent = new Intent(null, SomeActivity.class);
@@ -26,19 +27,19 @@ public class TestStartComponentToIntent {
     }
 
     // ! WIP
-     public void testService(Context ctx) {
+    public void testService(Context ctx) {
         Intent intent = new Intent(null, SomeService.class);
         intent.putExtra("data", (String) source());
         ctx.startService(intent);
     }
 
-     public void testBroadcastReceiver(Context ctx) {
+    public void testBroadcastReceiver(Context ctx) {
         Intent intent = new Intent(null, SomeBroadcastReceiver.class);
         intent.putExtra("data", (String) source());
         ctx.sendBroadcast(intent);
     }
 
-     static class SomeService extends Service {
+    static class SomeService extends Service {
 
         public void test() {
             // ! WIP
@@ -46,7 +47,7 @@ public class TestStartComponentToIntent {
         }
     }
 
-     static class SomeBroadcastReceiver extends BroadcastReceiver {
+    static class SomeBroadcastReceiver extends BroadcastReceiver {
 
         public void test() {
             // ! WIP

@@ -1316,23 +1316,6 @@ class ClassInstanceExpr extends Expr, ConstructorCall, @classinstancexpr {
     result = this.getAnArgument()
   }
 
-  // ! remove below predicate after experimentation
-  /**
-   * Gets the argument provided to the constructor of this class instance creation expression
-   * of the specified Type.
-   */
-  Expr getArgumentByType(Type type) {
-    exists(Argument arg |
-      arg = this.getAnArgument() and
-      arg.getType() = type and
-      result = arg
-    )
-    // ! e.g. use above in below code in `StartActivityIntentStep` in Intent.qll
-    // argType.getName().matches("Class<%>") and
-    // newIntent.getArgumentByType(argType).getType().(ParameterizedType).getATypeArgument() =
-    //   getIntent.getReceiverType() and
-  }
-
   /**
    * Gets a type argument provided to the constructor of this class instance creation expression.
    *

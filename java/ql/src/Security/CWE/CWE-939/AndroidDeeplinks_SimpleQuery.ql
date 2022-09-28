@@ -14,6 +14,7 @@ import java
 import semmle.code.xml.AndroidManifest
 
 // simple query for testing and MRVA results
+// ! REMOVE this file
 from AndroidActivityXmlElement actXmlElement
 where
   actXmlElement.hasDeepLink() and
