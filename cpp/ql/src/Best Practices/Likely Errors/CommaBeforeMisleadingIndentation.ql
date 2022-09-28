@@ -16,9 +16,12 @@ Expr normalizeExpr(Expr e) {
   if exists(e.(Call).getQualifier())
   then result = normalizeExpr(e.(Call).getQualifier())
   else
-    if e.hasExplicitConversion()
-    then result = normalizeExpr(e.getFullyConverted())
-    else result = e
+    if exists(e.(FieldAccess).getQualifier())
+    then result = normalizeExpr(e.(FieldAccess).getQualifier())
+    else
+      if e.hasExplicitConversion()
+      then result = normalizeExpr(e.getFullyConverted())
+      else result = e
 }
 
 predicate isInLoopHead(CommaExpr ce) {
@@ -45,4 +48,4 @@ where
   not isInDecltypeOrSizeof(ce) and // <- Removes arguable FPs since, like function calls (and loop heads), these Exprs have clear delimiters.
   leftLoc.getEndLine() < rightLoc.getStartLine() and
   leftLoc.getStartColumn() > rightLoc.getStartColumn()
-select right, "The indentation after the comma may be misleading (for some tab sizes)."
+select right, "The indentation level may be misleading (for some tab sizes)."

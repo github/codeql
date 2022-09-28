@@ -122,7 +122,7 @@ int test(int i, int j, int (*foo)(int), int (*bar)(int, int))
 		i++
 	), j++); // GOOD?
 
-	// Weird case:
+	// Weird cases:
 
 	if (foo(j))
 		return i++
@@ -130,7 +130,18 @@ int test(int i, int j, int (*foo)(int), int (*bar)(int, int))
 			? 1
 			: 2;
 
-	return 0;
+	struct {
+		struct {
+			void tutu() {}
+			long toto() { return 42; }
+		} titi;
+	} *tata;
+
+    int quux =
+      (tata->titi.tutu(),
+       foo(tata->titi.toto())); // GOOD
+
+	return quux;
 }
 
 // Comma in variadic template splice:
