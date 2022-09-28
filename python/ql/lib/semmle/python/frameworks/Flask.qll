@@ -421,9 +421,7 @@ module Flask {
 
   /** An `FileStorage` instance that originates from a flask request. */
   private class FlaskRequestFileStorageInstances extends Werkzeug::FileStorage::InstanceSource {
-    FlaskRequestFileStorageInstances() {
-      this = requestFileStorage().getAValueReachableFromSource()
-    }
+    FlaskRequestFileStorageInstances() { this = requestFileStorage().asSource() }
   }
 
   /** An `Headers` instance that originates from a flask request. */
