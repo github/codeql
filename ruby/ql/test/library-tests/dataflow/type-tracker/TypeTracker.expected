@@ -147,35 +147,49 @@ track
 | type_tracker.rb:32:26:32:26 | 8 | type tracker with call steps | type_tracker.rb:25:13:25:14 | p1 |
 | type_tracker.rb:32:26:32:26 | 8 | type tracker with call steps | type_tracker.rb:25:13:25:14 | p1 |
 | type_tracker.rb:32:26:32:26 | 8 | type tracker without call steps | type_tracker.rb:32:26:32:26 | 8 |
-| type_tracker.rb:34:1:45:3 | &block | type tracker without call steps | type_tracker.rb:34:1:45:3 | &block |
-| type_tracker.rb:34:1:45:3 | return return in throughArray | type tracker without call steps | type_tracker.rb:34:1:45:3 | return return in throughArray |
-| type_tracker.rb:34:1:45:3 | self in throughArray | type tracker without call steps | type_tracker.rb:34:1:45:3 | self in throughArray |
-| type_tracker.rb:34:1:45:3 | throughArray | type tracker without call steps | type_tracker.rb:34:1:45:3 | throughArray |
+| type_tracker.rb:34:1:53:3 | &block | type tracker without call steps | type_tracker.rb:34:1:53:3 | &block |
+| type_tracker.rb:34:1:53:3 | return return in throughArray | type tracker without call steps | type_tracker.rb:34:1:53:3 | return return in throughArray |
+| type_tracker.rb:34:1:53:3 | self in throughArray | type tracker without call steps | type_tracker.rb:34:1:53:3 | self in throughArray |
+| type_tracker.rb:34:1:53:3 | throughArray | type tracker without call steps | type_tracker.rb:34:1:53:3 | throughArray |
 | type_tracker.rb:34:18:34:20 | obj | type tracker with call steps | type_tracker.rb:34:18:34:20 | obj |
 | type_tracker.rb:34:18:34:20 | obj | type tracker with call steps | type_tracker.rb:36:5:36:10 | ...[...] |
 | type_tracker.rb:34:18:34:20 | obj | type tracker with call steps | type_tracker.rb:40:5:40:12 | ...[...] |
 | type_tracker.rb:34:18:34:20 | obj | type tracker with call steps | type_tracker.rb:44:5:44:13 | ...[...] |
+| type_tracker.rb:34:18:34:20 | obj | type tracker with call steps | type_tracker.rb:52:5:52:13 | ...[...] |
 | type_tracker.rb:34:18:34:20 | obj | type tracker with call steps with content attribute [] | type_tracker.rb:39:5:39:9 | [post] array |
 | type_tracker.rb:34:18:34:20 | obj | type tracker with call steps with content attribute [] | type_tracker.rb:43:5:43:10 | [post] array2 |
+| type_tracker.rb:34:18:34:20 | obj | type tracker with call steps with content attribute [] | type_tracker.rb:47:5:47:10 | [post] array3 |
+| type_tracker.rb:34:18:34:20 | obj | type tracker with call steps with content attribute [] | type_tracker.rb:51:5:51:10 | [post] array4 |
 | type_tracker.rb:34:18:34:20 | obj | type tracker with call steps with content element | type_tracker.rb:38:13:38:25 | call to [] |
+| type_tracker.rb:34:18:34:20 | obj | type tracker with call steps with content element | type_tracker.rb:50:14:50:26 | call to [] |
 | type_tracker.rb:34:18:34:20 | obj | type tracker with call steps with content element 0 or unknown | type_tracker.rb:35:11:35:15 | call to [] |
 | type_tracker.rb:34:18:34:20 | obj | type tracker with call steps with content element 0 or unknown | type_tracker.rb:42:14:42:26 | call to [] |
-| type_tracker.rb:34:18:34:20 | obj | type tracker without call steps | type_tracker.rb:34:1:45:3 | return return in throughArray |
+| type_tracker.rb:34:18:34:20 | obj | type tracker with call steps with content element 0 or unknown | type_tracker.rb:46:14:46:26 | call to [] |
+| type_tracker.rb:34:18:34:20 | obj | type tracker without call steps | type_tracker.rb:34:1:53:3 | return return in throughArray |
 | type_tracker.rb:34:18:34:20 | obj | type tracker without call steps | type_tracker.rb:34:18:34:20 | obj |
 | type_tracker.rb:34:18:34:20 | obj | type tracker without call steps | type_tracker.rb:34:18:34:20 | obj |
 | type_tracker.rb:34:18:34:20 | obj | type tracker without call steps | type_tracker.rb:34:18:34:20 | obj |
 | type_tracker.rb:34:18:34:20 | obj | type tracker without call steps | type_tracker.rb:36:5:36:10 | ...[...] |
 | type_tracker.rb:34:18:34:20 | obj | type tracker without call steps | type_tracker.rb:40:5:40:12 | ...[...] |
 | type_tracker.rb:34:18:34:20 | obj | type tracker without call steps | type_tracker.rb:44:5:44:13 | ...[...] |
+| type_tracker.rb:34:18:34:20 | obj | type tracker without call steps | type_tracker.rb:52:5:52:13 | ...[...] |
 | type_tracker.rb:34:18:34:20 | obj | type tracker without call steps with content attribute [] | type_tracker.rb:39:5:39:9 | [post] array |
 | type_tracker.rb:34:18:34:20 | obj | type tracker without call steps with content attribute [] | type_tracker.rb:43:5:43:10 | [post] array2 |
+| type_tracker.rb:34:18:34:20 | obj | type tracker without call steps with content attribute [] | type_tracker.rb:47:5:47:10 | [post] array3 |
+| type_tracker.rb:34:18:34:20 | obj | type tracker without call steps with content attribute [] | type_tracker.rb:51:5:51:10 | [post] array4 |
 | type_tracker.rb:34:18:34:20 | obj | type tracker without call steps with content element | type_tracker.rb:38:13:38:25 | call to [] |
+| type_tracker.rb:34:18:34:20 | obj | type tracker without call steps with content element | type_tracker.rb:50:14:50:26 | call to [] |
 | type_tracker.rb:34:18:34:20 | obj | type tracker without call steps with content element 0 or unknown | type_tracker.rb:35:11:35:15 | call to [] |
 | type_tracker.rb:34:18:34:20 | obj | type tracker without call steps with content element 0 or unknown | type_tracker.rb:42:14:42:26 | call to [] |
+| type_tracker.rb:34:18:34:20 | obj | type tracker without call steps with content element 0 or unknown | type_tracker.rb:46:14:46:26 | call to [] |
 | type_tracker.rb:34:23:34:23 | y | type tracker with call steps | type_tracker.rb:34:23:34:23 | y |
 | type_tracker.rb:34:23:34:23 | y | type tracker without call steps | type_tracker.rb:34:23:34:23 | y |
 | type_tracker.rb:34:23:34:23 | y | type tracker without call steps | type_tracker.rb:34:23:34:23 | y |
 | type_tracker.rb:34:23:34:23 | y | type tracker without call steps | type_tracker.rb:34:23:34:23 | y |
+| type_tracker.rb:34:26:34:26 | z | type tracker with call steps | type_tracker.rb:34:26:34:26 | z |
+| type_tracker.rb:34:26:34:26 | z | type tracker without call steps | type_tracker.rb:34:26:34:26 | z |
+| type_tracker.rb:34:26:34:26 | z | type tracker without call steps | type_tracker.rb:34:26:34:26 | z |
+| type_tracker.rb:34:26:34:26 | z | type tracker without call steps | type_tracker.rb:34:26:34:26 | z |
 | type_tracker.rb:35:5:35:7 | tmp | type tracker without call steps | type_tracker.rb:35:5:35:7 | tmp |
 | type_tracker.rb:35:11:35:15 | Array | type tracker without call steps | type_tracker.rb:35:11:35:15 | Array |
 | type_tracker.rb:35:11:35:15 | call to [] | type tracker without call steps | type_tracker.rb:35:11:35:15 | call to [] |
@@ -205,27 +219,21 @@ track
 | type_tracker.rb:42:5:42:10 | array2 | type tracker without call steps | type_tracker.rb:42:5:42:10 | array2 |
 | type_tracker.rb:42:14:42:26 | Array | type tracker without call steps | type_tracker.rb:42:14:42:26 | Array |
 | type_tracker.rb:42:14:42:26 | call to [] | type tracker without call steps | type_tracker.rb:42:14:42:26 | call to [] |
-| type_tracker.rb:42:15:42:15 | 1 | type tracker without call steps | type_tracker.rb:34:1:45:3 | return return in throughArray |
 | type_tracker.rb:42:15:42:15 | 1 | type tracker without call steps | type_tracker.rb:42:15:42:15 | 1 |
 | type_tracker.rb:42:15:42:15 | 1 | type tracker without call steps | type_tracker.rb:44:5:44:13 | ...[...] |
 | type_tracker.rb:42:15:42:15 | 1 | type tracker without call steps with content element 0 or unknown | type_tracker.rb:42:14:42:26 | call to [] |
-| type_tracker.rb:42:17:42:17 | 2 | type tracker without call steps | type_tracker.rb:34:1:45:3 | return return in throughArray |
 | type_tracker.rb:42:17:42:17 | 2 | type tracker without call steps | type_tracker.rb:42:17:42:17 | 2 |
 | type_tracker.rb:42:17:42:17 | 2 | type tracker without call steps | type_tracker.rb:44:5:44:13 | ...[...] |
 | type_tracker.rb:42:17:42:17 | 2 | type tracker without call steps with content element 1 or unknown | type_tracker.rb:42:14:42:26 | call to [] |
-| type_tracker.rb:42:19:42:19 | 3 | type tracker without call steps | type_tracker.rb:34:1:45:3 | return return in throughArray |
 | type_tracker.rb:42:19:42:19 | 3 | type tracker without call steps | type_tracker.rb:42:19:42:19 | 3 |
 | type_tracker.rb:42:19:42:19 | 3 | type tracker without call steps | type_tracker.rb:44:5:44:13 | ...[...] |
 | type_tracker.rb:42:19:42:19 | 3 | type tracker without call steps with content element 2 or unknown | type_tracker.rb:42:14:42:26 | call to [] |
-| type_tracker.rb:42:21:42:21 | 4 | type tracker without call steps | type_tracker.rb:34:1:45:3 | return return in throughArray |
 | type_tracker.rb:42:21:42:21 | 4 | type tracker without call steps | type_tracker.rb:42:21:42:21 | 4 |
 | type_tracker.rb:42:21:42:21 | 4 | type tracker without call steps | type_tracker.rb:44:5:44:13 | ...[...] |
 | type_tracker.rb:42:21:42:21 | 4 | type tracker without call steps with content element 3 or unknown | type_tracker.rb:42:14:42:26 | call to [] |
-| type_tracker.rb:42:23:42:23 | 5 | type tracker without call steps | type_tracker.rb:34:1:45:3 | return return in throughArray |
 | type_tracker.rb:42:23:42:23 | 5 | type tracker without call steps | type_tracker.rb:42:23:42:23 | 5 |
 | type_tracker.rb:42:23:42:23 | 5 | type tracker without call steps | type_tracker.rb:44:5:44:13 | ...[...] |
 | type_tracker.rb:42:23:42:23 | 5 | type tracker without call steps with content element 4 or unknown | type_tracker.rb:42:14:42:26 | call to [] |
-| type_tracker.rb:42:25:42:25 | 6 | type tracker without call steps | type_tracker.rb:34:1:45:3 | return return in throughArray |
 | type_tracker.rb:42:25:42:25 | 6 | type tracker without call steps | type_tracker.rb:42:25:42:25 | 6 |
 | type_tracker.rb:42:25:42:25 | 6 | type tracker without call steps | type_tracker.rb:44:5:44:13 | ...[...] |
 | type_tracker.rb:42:25:42:25 | 6 | type tracker without call steps with content element 5 or unknown | type_tracker.rb:42:14:42:26 | call to [] |
@@ -233,8 +241,61 @@ track
 | type_tracker.rb:43:5:43:13 | call to []= | type tracker without call steps | type_tracker.rb:43:5:43:13 | call to []= |
 | type_tracker.rb:43:12:43:12 | 0 | type tracker without call steps | type_tracker.rb:43:12:43:12 | 0 |
 | type_tracker.rb:43:17:43:19 | __synth__0 | type tracker without call steps | type_tracker.rb:43:17:43:19 | __synth__0 |
-| type_tracker.rb:44:5:44:13 | ...[...] | type tracker without call steps | type_tracker.rb:34:1:45:3 | return return in throughArray |
 | type_tracker.rb:44:5:44:13 | ...[...] | type tracker without call steps | type_tracker.rb:44:5:44:13 | ...[...] |
+| type_tracker.rb:46:5:46:10 | array3 | type tracker without call steps | type_tracker.rb:46:5:46:10 | array3 |
+| type_tracker.rb:46:14:46:26 | Array | type tracker without call steps | type_tracker.rb:46:14:46:26 | Array |
+| type_tracker.rb:46:14:46:26 | call to [] | type tracker without call steps | type_tracker.rb:46:14:46:26 | call to [] |
+| type_tracker.rb:46:15:46:15 | 1 | type tracker without call steps | type_tracker.rb:46:15:46:15 | 1 |
+| type_tracker.rb:46:15:46:15 | 1 | type tracker without call steps with content element 0 or unknown | type_tracker.rb:46:14:46:26 | call to [] |
+| type_tracker.rb:46:17:46:17 | 2 | type tracker without call steps | type_tracker.rb:46:17:46:17 | 2 |
+| type_tracker.rb:46:17:46:17 | 2 | type tracker without call steps | type_tracker.rb:48:5:48:13 | ...[...] |
+| type_tracker.rb:46:17:46:17 | 2 | type tracker without call steps with content element 1 or unknown | type_tracker.rb:46:14:46:26 | call to [] |
+| type_tracker.rb:46:19:46:19 | 3 | type tracker without call steps | type_tracker.rb:46:19:46:19 | 3 |
+| type_tracker.rb:46:19:46:19 | 3 | type tracker without call steps with content element 2 or unknown | type_tracker.rb:46:14:46:26 | call to [] |
+| type_tracker.rb:46:21:46:21 | 4 | type tracker without call steps | type_tracker.rb:46:21:46:21 | 4 |
+| type_tracker.rb:46:21:46:21 | 4 | type tracker without call steps with content element 3 or unknown | type_tracker.rb:46:14:46:26 | call to [] |
+| type_tracker.rb:46:23:46:23 | 5 | type tracker without call steps | type_tracker.rb:46:23:46:23 | 5 |
+| type_tracker.rb:46:23:46:23 | 5 | type tracker without call steps with content element 4 or unknown | type_tracker.rb:46:14:46:26 | call to [] |
+| type_tracker.rb:46:25:46:25 | 6 | type tracker without call steps | type_tracker.rb:46:25:46:25 | 6 |
+| type_tracker.rb:46:25:46:25 | 6 | type tracker without call steps with content element 5 or unknown | type_tracker.rb:46:14:46:26 | call to [] |
+| type_tracker.rb:47:5:47:10 | [post] array3 | type tracker without call steps | type_tracker.rb:47:5:47:10 | [post] array3 |
+| type_tracker.rb:47:5:47:13 | call to []= | type tracker without call steps | type_tracker.rb:47:5:47:13 | call to []= |
+| type_tracker.rb:47:12:47:12 | 0 | type tracker without call steps | type_tracker.rb:47:12:47:12 | 0 |
+| type_tracker.rb:47:17:47:19 | __synth__0 | type tracker without call steps | type_tracker.rb:47:17:47:19 | __synth__0 |
+| type_tracker.rb:48:5:48:13 | ...[...] | type tracker without call steps | type_tracker.rb:48:5:48:13 | ...[...] |
+| type_tracker.rb:48:12:48:12 | 1 | type tracker without call steps | type_tracker.rb:48:12:48:12 | 1 |
+| type_tracker.rb:50:5:50:10 | array4 | type tracker without call steps | type_tracker.rb:50:5:50:10 | array4 |
+| type_tracker.rb:50:14:50:26 | Array | type tracker without call steps | type_tracker.rb:50:14:50:26 | Array |
+| type_tracker.rb:50:14:50:26 | call to [] | type tracker without call steps | type_tracker.rb:50:14:50:26 | call to [] |
+| type_tracker.rb:50:15:50:15 | 1 | type tracker without call steps | type_tracker.rb:34:1:53:3 | return return in throughArray |
+| type_tracker.rb:50:15:50:15 | 1 | type tracker without call steps | type_tracker.rb:50:15:50:15 | 1 |
+| type_tracker.rb:50:15:50:15 | 1 | type tracker without call steps | type_tracker.rb:52:5:52:13 | ...[...] |
+| type_tracker.rb:50:15:50:15 | 1 | type tracker without call steps with content element 0 or unknown | type_tracker.rb:50:14:50:26 | call to [] |
+| type_tracker.rb:50:17:50:17 | 2 | type tracker without call steps | type_tracker.rb:34:1:53:3 | return return in throughArray |
+| type_tracker.rb:50:17:50:17 | 2 | type tracker without call steps | type_tracker.rb:50:17:50:17 | 2 |
+| type_tracker.rb:50:17:50:17 | 2 | type tracker without call steps | type_tracker.rb:52:5:52:13 | ...[...] |
+| type_tracker.rb:50:17:50:17 | 2 | type tracker without call steps with content element 1 or unknown | type_tracker.rb:50:14:50:26 | call to [] |
+| type_tracker.rb:50:19:50:19 | 3 | type tracker without call steps | type_tracker.rb:34:1:53:3 | return return in throughArray |
+| type_tracker.rb:50:19:50:19 | 3 | type tracker without call steps | type_tracker.rb:50:19:50:19 | 3 |
+| type_tracker.rb:50:19:50:19 | 3 | type tracker without call steps | type_tracker.rb:52:5:52:13 | ...[...] |
+| type_tracker.rb:50:19:50:19 | 3 | type tracker without call steps with content element 2 or unknown | type_tracker.rb:50:14:50:26 | call to [] |
+| type_tracker.rb:50:21:50:21 | 4 | type tracker without call steps | type_tracker.rb:34:1:53:3 | return return in throughArray |
+| type_tracker.rb:50:21:50:21 | 4 | type tracker without call steps | type_tracker.rb:50:21:50:21 | 4 |
+| type_tracker.rb:50:21:50:21 | 4 | type tracker without call steps | type_tracker.rb:52:5:52:13 | ...[...] |
+| type_tracker.rb:50:21:50:21 | 4 | type tracker without call steps with content element 3 or unknown | type_tracker.rb:50:14:50:26 | call to [] |
+| type_tracker.rb:50:23:50:23 | 5 | type tracker without call steps | type_tracker.rb:34:1:53:3 | return return in throughArray |
+| type_tracker.rb:50:23:50:23 | 5 | type tracker without call steps | type_tracker.rb:50:23:50:23 | 5 |
+| type_tracker.rb:50:23:50:23 | 5 | type tracker without call steps | type_tracker.rb:52:5:52:13 | ...[...] |
+| type_tracker.rb:50:23:50:23 | 5 | type tracker without call steps with content element 4 or unknown | type_tracker.rb:50:14:50:26 | call to [] |
+| type_tracker.rb:50:25:50:25 | 6 | type tracker without call steps | type_tracker.rb:34:1:53:3 | return return in throughArray |
+| type_tracker.rb:50:25:50:25 | 6 | type tracker without call steps | type_tracker.rb:50:25:50:25 | 6 |
+| type_tracker.rb:50:25:50:25 | 6 | type tracker without call steps | type_tracker.rb:52:5:52:13 | ...[...] |
+| type_tracker.rb:50:25:50:25 | 6 | type tracker without call steps with content element 5 or unknown | type_tracker.rb:50:14:50:26 | call to [] |
+| type_tracker.rb:51:5:51:10 | [post] array4 | type tracker without call steps | type_tracker.rb:51:5:51:10 | [post] array4 |
+| type_tracker.rb:51:5:51:13 | call to []= | type tracker without call steps | type_tracker.rb:51:5:51:13 | call to []= |
+| type_tracker.rb:51:17:51:19 | __synth__0 | type tracker without call steps | type_tracker.rb:51:17:51:19 | __synth__0 |
+| type_tracker.rb:52:5:52:13 | ...[...] | type tracker without call steps | type_tracker.rb:34:1:53:3 | return return in throughArray |
+| type_tracker.rb:52:5:52:13 | ...[...] | type tracker without call steps | type_tracker.rb:52:5:52:13 | ...[...] |
 trackEnd
 | type_tracker.rb:1:1:10:3 | self (type_tracker.rb) | type_tracker.rb:1:1:10:3 | self (type_tracker.rb) |
 | type_tracker.rb:1:1:10:3 | self (type_tracker.rb) | type_tracker.rb:18:1:21:3 | self (positional) |
@@ -446,11 +507,11 @@ trackEnd
 | type_tracker.rb:32:26:32:26 | 8 | type_tracker.rb:25:13:25:14 | p1 |
 | type_tracker.rb:32:26:32:26 | 8 | type_tracker.rb:26:10:26:11 | p1 |
 | type_tracker.rb:32:26:32:26 | 8 | type_tracker.rb:32:26:32:26 | 8 |
-| type_tracker.rb:34:1:45:3 | &block | type_tracker.rb:34:1:45:3 | &block |
-| type_tracker.rb:34:1:45:3 | return return in throughArray | type_tracker.rb:34:1:45:3 | return return in throughArray |
-| type_tracker.rb:34:1:45:3 | self in throughArray | type_tracker.rb:34:1:45:3 | self in throughArray |
-| type_tracker.rb:34:1:45:3 | throughArray | type_tracker.rb:34:1:45:3 | throughArray |
-| type_tracker.rb:34:18:34:20 | obj | type_tracker.rb:34:1:45:3 | return return in throughArray |
+| type_tracker.rb:34:1:53:3 | &block | type_tracker.rb:34:1:53:3 | &block |
+| type_tracker.rb:34:1:53:3 | return return in throughArray | type_tracker.rb:34:1:53:3 | return return in throughArray |
+| type_tracker.rb:34:1:53:3 | self in throughArray | type_tracker.rb:34:1:53:3 | self in throughArray |
+| type_tracker.rb:34:1:53:3 | throughArray | type_tracker.rb:34:1:53:3 | throughArray |
+| type_tracker.rb:34:18:34:20 | obj | type_tracker.rb:34:1:53:3 | return return in throughArray |
 | type_tracker.rb:34:18:34:20 | obj | type_tracker.rb:34:18:34:20 | obj |
 | type_tracker.rb:34:18:34:20 | obj | type_tracker.rb:34:18:34:20 | obj |
 | type_tracker.rb:34:18:34:20 | obj | type_tracker.rb:34:18:34:20 | obj |
@@ -483,6 +544,28 @@ trackEnd
 | type_tracker.rb:34:18:34:20 | obj | type_tracker.rb:43:17:43:19 | obj |
 | type_tracker.rb:34:18:34:20 | obj | type_tracker.rb:44:5:44:13 | ...[...] |
 | type_tracker.rb:34:18:34:20 | obj | type_tracker.rb:44:5:44:13 | ...[...] |
+| type_tracker.rb:34:18:34:20 | obj | type_tracker.rb:47:5:47:13 | __synth__0 |
+| type_tracker.rb:34:18:34:20 | obj | type_tracker.rb:47:5:47:13 | __synth__0 |
+| type_tracker.rb:34:18:34:20 | obj | type_tracker.rb:47:5:47:19 | ... |
+| type_tracker.rb:34:18:34:20 | obj | type_tracker.rb:47:5:47:19 | ... |
+| type_tracker.rb:34:18:34:20 | obj | type_tracker.rb:47:17:47:19 | ... = ... |
+| type_tracker.rb:34:18:34:20 | obj | type_tracker.rb:47:17:47:19 | ... = ... |
+| type_tracker.rb:34:18:34:20 | obj | type_tracker.rb:47:17:47:19 | ... = ... |
+| type_tracker.rb:34:18:34:20 | obj | type_tracker.rb:47:17:47:19 | ... = ... |
+| type_tracker.rb:34:18:34:20 | obj | type_tracker.rb:47:17:47:19 | obj |
+| type_tracker.rb:34:18:34:20 | obj | type_tracker.rb:47:17:47:19 | obj |
+| type_tracker.rb:34:18:34:20 | obj | type_tracker.rb:51:5:51:13 | __synth__0 |
+| type_tracker.rb:34:18:34:20 | obj | type_tracker.rb:51:5:51:13 | __synth__0 |
+| type_tracker.rb:34:18:34:20 | obj | type_tracker.rb:51:5:51:19 | ... |
+| type_tracker.rb:34:18:34:20 | obj | type_tracker.rb:51:5:51:19 | ... |
+| type_tracker.rb:34:18:34:20 | obj | type_tracker.rb:51:17:51:19 | ... = ... |
+| type_tracker.rb:34:18:34:20 | obj | type_tracker.rb:51:17:51:19 | ... = ... |
+| type_tracker.rb:34:18:34:20 | obj | type_tracker.rb:51:17:51:19 | ... = ... |
+| type_tracker.rb:34:18:34:20 | obj | type_tracker.rb:51:17:51:19 | ... = ... |
+| type_tracker.rb:34:18:34:20 | obj | type_tracker.rb:51:17:51:19 | obj |
+| type_tracker.rb:34:18:34:20 | obj | type_tracker.rb:51:17:51:19 | obj |
+| type_tracker.rb:34:18:34:20 | obj | type_tracker.rb:52:5:52:13 | ...[...] |
+| type_tracker.rb:34:18:34:20 | obj | type_tracker.rb:52:5:52:13 | ...[...] |
 | type_tracker.rb:34:23:34:23 | y | type_tracker.rb:34:23:34:23 | y |
 | type_tracker.rb:34:23:34:23 | y | type_tracker.rb:34:23:34:23 | y |
 | type_tracker.rb:34:23:34:23 | y | type_tracker.rb:34:23:34:23 | y |
@@ -491,6 +574,14 @@ trackEnd
 | type_tracker.rb:34:23:34:23 | y | type_tracker.rb:39:11:39:11 | y |
 | type_tracker.rb:34:23:34:23 | y | type_tracker.rb:44:12:44:12 | y |
 | type_tracker.rb:34:23:34:23 | y | type_tracker.rb:44:12:44:12 | y |
+| type_tracker.rb:34:23:34:23 | y | type_tracker.rb:51:12:51:12 | y |
+| type_tracker.rb:34:23:34:23 | y | type_tracker.rb:51:12:51:12 | y |
+| type_tracker.rb:34:26:34:26 | z | type_tracker.rb:34:26:34:26 | z |
+| type_tracker.rb:34:26:34:26 | z | type_tracker.rb:34:26:34:26 | z |
+| type_tracker.rb:34:26:34:26 | z | type_tracker.rb:34:26:34:26 | z |
+| type_tracker.rb:34:26:34:26 | z | type_tracker.rb:34:26:34:26 | z |
+| type_tracker.rb:34:26:34:26 | z | type_tracker.rb:52:12:52:12 | z |
+| type_tracker.rb:34:26:34:26 | z | type_tracker.rb:52:12:52:12 | z |
 | type_tracker.rb:35:5:35:7 | tmp | type_tracker.rb:35:5:35:7 | tmp |
 | type_tracker.rb:35:11:35:15 | Array | type_tracker.rb:35:11:35:15 | Array |
 | type_tracker.rb:35:11:35:15 | call to [] | type_tracker.rb:35:5:35:15 | ... = ... |
@@ -526,22 +617,16 @@ trackEnd
 | type_tracker.rb:42:14:42:26 | call to [] | type_tracker.rb:42:14:42:26 | call to [] |
 | type_tracker.rb:42:14:42:26 | call to [] | type_tracker.rb:43:5:43:10 | array2 |
 | type_tracker.rb:42:14:42:26 | call to [] | type_tracker.rb:44:5:44:10 | array2 |
-| type_tracker.rb:42:15:42:15 | 1 | type_tracker.rb:34:1:45:3 | return return in throughArray |
 | type_tracker.rb:42:15:42:15 | 1 | type_tracker.rb:42:15:42:15 | 1 |
 | type_tracker.rb:42:15:42:15 | 1 | type_tracker.rb:44:5:44:13 | ...[...] |
-| type_tracker.rb:42:17:42:17 | 2 | type_tracker.rb:34:1:45:3 | return return in throughArray |
 | type_tracker.rb:42:17:42:17 | 2 | type_tracker.rb:42:17:42:17 | 2 |
 | type_tracker.rb:42:17:42:17 | 2 | type_tracker.rb:44:5:44:13 | ...[...] |
-| type_tracker.rb:42:19:42:19 | 3 | type_tracker.rb:34:1:45:3 | return return in throughArray |
 | type_tracker.rb:42:19:42:19 | 3 | type_tracker.rb:42:19:42:19 | 3 |
 | type_tracker.rb:42:19:42:19 | 3 | type_tracker.rb:44:5:44:13 | ...[...] |
-| type_tracker.rb:42:21:42:21 | 4 | type_tracker.rb:34:1:45:3 | return return in throughArray |
 | type_tracker.rb:42:21:42:21 | 4 | type_tracker.rb:42:21:42:21 | 4 |
 | type_tracker.rb:42:21:42:21 | 4 | type_tracker.rb:44:5:44:13 | ...[...] |
-| type_tracker.rb:42:23:42:23 | 5 | type_tracker.rb:34:1:45:3 | return return in throughArray |
 | type_tracker.rb:42:23:42:23 | 5 | type_tracker.rb:42:23:42:23 | 5 |
 | type_tracker.rb:42:23:42:23 | 5 | type_tracker.rb:44:5:44:13 | ...[...] |
-| type_tracker.rb:42:25:42:25 | 6 | type_tracker.rb:34:1:45:3 | return return in throughArray |
 | type_tracker.rb:42:25:42:25 | 6 | type_tracker.rb:42:25:42:25 | 6 |
 | type_tracker.rb:42:25:42:25 | 6 | type_tracker.rb:44:5:44:13 | ...[...] |
 | type_tracker.rb:43:5:43:10 | [post] array2 | type_tracker.rb:43:5:43:10 | [post] array2 |
@@ -549,7 +634,58 @@ trackEnd
 | type_tracker.rb:43:5:43:13 | call to []= | type_tracker.rb:43:5:43:13 | call to []= |
 | type_tracker.rb:43:12:43:12 | 0 | type_tracker.rb:43:12:43:12 | 0 |
 | type_tracker.rb:43:17:43:19 | __synth__0 | type_tracker.rb:43:17:43:19 | __synth__0 |
-| type_tracker.rb:44:5:44:13 | ...[...] | type_tracker.rb:34:1:45:3 | return return in throughArray |
 | type_tracker.rb:44:5:44:13 | ...[...] | type_tracker.rb:44:5:44:13 | ...[...] |
+| type_tracker.rb:46:5:46:10 | array3 | type_tracker.rb:46:5:46:10 | array3 |
+| type_tracker.rb:46:14:46:26 | Array | type_tracker.rb:46:14:46:26 | Array |
+| type_tracker.rb:46:14:46:26 | call to [] | type_tracker.rb:46:5:46:26 | ... = ... |
+| type_tracker.rb:46:14:46:26 | call to [] | type_tracker.rb:46:5:46:26 | ... = ... |
+| type_tracker.rb:46:14:46:26 | call to [] | type_tracker.rb:46:14:46:26 | call to [] |
+| type_tracker.rb:46:14:46:26 | call to [] | type_tracker.rb:47:5:47:10 | array3 |
+| type_tracker.rb:46:14:46:26 | call to [] | type_tracker.rb:48:5:48:10 | array3 |
+| type_tracker.rb:46:15:46:15 | 1 | type_tracker.rb:46:15:46:15 | 1 |
+| type_tracker.rb:46:17:46:17 | 2 | type_tracker.rb:46:17:46:17 | 2 |
+| type_tracker.rb:46:17:46:17 | 2 | type_tracker.rb:48:5:48:13 | ...[...] |
+| type_tracker.rb:46:19:46:19 | 3 | type_tracker.rb:46:19:46:19 | 3 |
+| type_tracker.rb:46:21:46:21 | 4 | type_tracker.rb:46:21:46:21 | 4 |
+| type_tracker.rb:46:23:46:23 | 5 | type_tracker.rb:46:23:46:23 | 5 |
+| type_tracker.rb:46:25:46:25 | 6 | type_tracker.rb:46:25:46:25 | 6 |
+| type_tracker.rb:47:5:47:10 | [post] array3 | type_tracker.rb:47:5:47:10 | [post] array3 |
+| type_tracker.rb:47:5:47:10 | [post] array3 | type_tracker.rb:48:5:48:10 | array3 |
+| type_tracker.rb:47:5:47:13 | call to []= | type_tracker.rb:47:5:47:13 | call to []= |
+| type_tracker.rb:47:12:47:12 | 0 | type_tracker.rb:47:12:47:12 | 0 |
+| type_tracker.rb:47:17:47:19 | __synth__0 | type_tracker.rb:47:17:47:19 | __synth__0 |
+| type_tracker.rb:48:5:48:13 | ...[...] | type_tracker.rb:48:5:48:13 | ...[...] |
+| type_tracker.rb:48:12:48:12 | 1 | type_tracker.rb:48:12:48:12 | 1 |
+| type_tracker.rb:50:5:50:10 | array4 | type_tracker.rb:50:5:50:10 | array4 |
+| type_tracker.rb:50:14:50:26 | Array | type_tracker.rb:50:14:50:26 | Array |
+| type_tracker.rb:50:14:50:26 | call to [] | type_tracker.rb:50:5:50:26 | ... = ... |
+| type_tracker.rb:50:14:50:26 | call to [] | type_tracker.rb:50:5:50:26 | ... = ... |
+| type_tracker.rb:50:14:50:26 | call to [] | type_tracker.rb:50:14:50:26 | call to [] |
+| type_tracker.rb:50:14:50:26 | call to [] | type_tracker.rb:51:5:51:10 | array4 |
+| type_tracker.rb:50:14:50:26 | call to [] | type_tracker.rb:52:5:52:10 | array4 |
+| type_tracker.rb:50:15:50:15 | 1 | type_tracker.rb:34:1:53:3 | return return in throughArray |
+| type_tracker.rb:50:15:50:15 | 1 | type_tracker.rb:50:15:50:15 | 1 |
+| type_tracker.rb:50:15:50:15 | 1 | type_tracker.rb:52:5:52:13 | ...[...] |
+| type_tracker.rb:50:17:50:17 | 2 | type_tracker.rb:34:1:53:3 | return return in throughArray |
+| type_tracker.rb:50:17:50:17 | 2 | type_tracker.rb:50:17:50:17 | 2 |
+| type_tracker.rb:50:17:50:17 | 2 | type_tracker.rb:52:5:52:13 | ...[...] |
+| type_tracker.rb:50:19:50:19 | 3 | type_tracker.rb:34:1:53:3 | return return in throughArray |
+| type_tracker.rb:50:19:50:19 | 3 | type_tracker.rb:50:19:50:19 | 3 |
+| type_tracker.rb:50:19:50:19 | 3 | type_tracker.rb:52:5:52:13 | ...[...] |
+| type_tracker.rb:50:21:50:21 | 4 | type_tracker.rb:34:1:53:3 | return return in throughArray |
+| type_tracker.rb:50:21:50:21 | 4 | type_tracker.rb:50:21:50:21 | 4 |
+| type_tracker.rb:50:21:50:21 | 4 | type_tracker.rb:52:5:52:13 | ...[...] |
+| type_tracker.rb:50:23:50:23 | 5 | type_tracker.rb:34:1:53:3 | return return in throughArray |
+| type_tracker.rb:50:23:50:23 | 5 | type_tracker.rb:50:23:50:23 | 5 |
+| type_tracker.rb:50:23:50:23 | 5 | type_tracker.rb:52:5:52:13 | ...[...] |
+| type_tracker.rb:50:25:50:25 | 6 | type_tracker.rb:34:1:53:3 | return return in throughArray |
+| type_tracker.rb:50:25:50:25 | 6 | type_tracker.rb:50:25:50:25 | 6 |
+| type_tracker.rb:50:25:50:25 | 6 | type_tracker.rb:52:5:52:13 | ...[...] |
+| type_tracker.rb:51:5:51:10 | [post] array4 | type_tracker.rb:51:5:51:10 | [post] array4 |
+| type_tracker.rb:51:5:51:10 | [post] array4 | type_tracker.rb:52:5:52:10 | array4 |
+| type_tracker.rb:51:5:51:13 | call to []= | type_tracker.rb:51:5:51:13 | call to []= |
+| type_tracker.rb:51:17:51:19 | __synth__0 | type_tracker.rb:51:17:51:19 | __synth__0 |
+| type_tracker.rb:52:5:52:13 | ...[...] | type_tracker.rb:34:1:53:3 | return return in throughArray |
+| type_tracker.rb:52:5:52:13 | ...[...] | type_tracker.rb:52:5:52:13 | ...[...] |
 forwardButNoBackwardFlow
 backwardButNoForwardFlow
