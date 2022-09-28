@@ -12,8 +12,8 @@ private module Cached {
     LevelStep() or
     CallStep() or
     ReturnStep() or
-    StoreStep(TypeTrackerContent content) or
-    LoadStep(TypeTrackerContent content) or
+    StoreStep(TypeTrackerContent content) { basicStoreStep(_, _, content) } or
+    LoadStep(TypeTrackerContent content) { basicLoadStep(_, _, content) } or
     JumpStep()
 
   pragma[nomagic]
@@ -218,7 +218,10 @@ module StepSummary {
   }
 }
 
-private newtype TTypeTracker = MkTypeTracker(Boolean hasCall, OptionalTypeTrackerContent content)
+private newtype TTypeTracker =
+  MkTypeTracker(Boolean hasCall, OptionalTypeTrackerContent content) {
+    content = noContent() or basicStoreStep(_, _, content)
+  }
 
 /**
  * A summary of the steps needed to track a value to a given dataflow node.
@@ -372,7 +375,9 @@ module TypeTracker {
 }
 
 private newtype TTypeBackTracker =
-  MkTypeBackTracker(Boolean hasReturn, OptionalTypeTrackerContent content)
+  MkTypeBackTracker(Boolean hasReturn, OptionalTypeTrackerContent content) {
+    content = noContent() or basicLoadStep(_, _, content)
+  }
 
 /**
  * A summary of the steps needed to back-track a use of a value to a given dataflow node.

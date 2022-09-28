@@ -167,7 +167,7 @@ predicate returnStep(Node nodeFrom, Node nodeTo) {
  * to `z` inside `bar`, even though this content write happens _after_ `bar` is
  * called.
  */
-predicate basicStoreStep(Node nodeFrom, Node nodeTo, TypeTrackerContent contents) {
+predicate basicStoreStep(Node nodeFrom, Node nodeTo, DataFlow::ContentSet contents) {
   postUpdateStoreStep(nodeFrom, nodeTo, contents)
   or
   exists(
@@ -185,7 +185,7 @@ predicate basicStoreStep(Node nodeFrom, Node nodeTo, TypeTrackerContent contents
  * Holds if a store step `nodeFrom -> nodeTo` with `contents` exists, where the destination node
  * is a post-update node that should be treated as a local source node.
  */
-predicate postUpdateStoreStep(Node nodeFrom, Node nodeTo, TypeTrackerContent contents) {
+predicate postUpdateStoreStep(Node nodeFrom, Node nodeTo, DataFlow::ContentSet contents) {
   // TODO: support SetterMethodCall inside TuplePattern
   exists(ExprNodes::MethodCallCfgNode call |
     contents
@@ -202,7 +202,7 @@ predicate postUpdateStoreStep(Node nodeFrom, Node nodeTo, TypeTrackerContent con
 /**
  * Holds if `nodeTo` is the result of accessing the `content` content of `nodeFrom`.
  */
-predicate basicLoadStep(Node nodeFrom, Node nodeTo, TypeTrackerContent contents) {
+predicate basicLoadStep(Node nodeFrom, Node nodeTo, DataFlow::ContentSet contents) {
   exists(ExprNodes::MethodCallCfgNode call |
     call.getExpr().getNumberOfArguments() = 0 and
     contents.isSingleton(DataFlowPublic::Content::getAttributeName(call.getExpr().getMethodName())) and
@@ -231,7 +231,7 @@ class Boolean extends boolean {
 private import SummaryComponentStack
 
 private predicate hasStoreSummary(
-  SummarizedCallable callable, TypeTrackerContent contents, SummaryComponent input,
+  SummarizedCallable callable, DataFlow::ContentSet contents, SummaryComponent input,
   SummaryComponent output
 ) {
   callable
@@ -240,7 +240,7 @@ private predicate hasStoreSummary(
 }
 
 private predicate hasLoadSummary(
-  SummarizedCallable callable, TypeTrackerContent contents, SummaryComponent input,
+  SummarizedCallable callable, DataFlow::ContentSet contents, SummaryComponent input,
   SummaryComponent output
 ) {
   callable
