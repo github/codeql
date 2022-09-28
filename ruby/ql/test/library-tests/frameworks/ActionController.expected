@@ -3,6 +3,7 @@ actionControllerControllerClasses
 | active_record/ActiveRecord.rb:41:1:64:3 | BarController |
 | active_record/ActiveRecord.rb:66:1:94:3 | BazController |
 | active_record/ActiveRecord.rb:96:1:104:3 | AnnotatedController |
+| active_storage/active_storage.rb:39:1:45:3 | PostsController |
 | app/controllers/comments_controller.rb:1:1:7:3 | CommentsController |
 | app/controllers/foo/bars_controller.rb:3:1:46:3 | BarsController |
 | app/controllers/photos_controller.rb:1:1:4:3 | PhotosController |
@@ -21,6 +22,7 @@ actionControllerActionMethods
 | active_record/ActiveRecord.rb:91:3:93:5 | update3 |
 | active_record/ActiveRecord.rb:97:3:99:5 | index |
 | active_record/ActiveRecord.rb:101:3:103:5 | unsafe_action |
+| active_storage/active_storage.rb:40:3:44:5 | create |
 | app/controllers/comments_controller.rb:2:3:3:5 | index |
 | app/controllers/comments_controller.rb:5:3:6:5 | show |
 | app/controllers/foo/bars_controller.rb:5:3:7:5 | index |
@@ -59,6 +61,8 @@ paramsCalls
 | active_record/ActiveRecord.rb:92:28:92:33 | call to params |
 | active_record/ActiveRecord.rb:92:53:92:58 | call to params |
 | active_record/ActiveRecord.rb:102:59:102:64 | call to params |
+| active_storage/active_storage.rb:41:21:41:26 | call to params |
+| active_storage/active_storage.rb:42:24:42:29 | call to params |
 | app/controllers/foo/bars_controller.rb:13:21:13:26 | call to params |
 | app/controllers/foo/bars_controller.rb:14:10:14:15 | call to params |
 | app/controllers/foo/bars_controller.rb:21:21:21:26 | call to params |
@@ -89,6 +93,8 @@ paramsSources
 | active_record/ActiveRecord.rb:92:28:92:33 | call to params |
 | active_record/ActiveRecord.rb:92:53:92:58 | call to params |
 | active_record/ActiveRecord.rb:102:59:102:64 | call to params |
+| active_storage/active_storage.rb:41:21:41:26 | call to params |
+| active_storage/active_storage.rb:42:24:42:29 | call to params |
 | app/controllers/foo/bars_controller.rb:13:21:13:26 | call to params |
 | app/controllers/foo/bars_controller.rb:14:10:14:15 | call to params |
 | app/controllers/foo/bars_controller.rb:21:21:21:26 | call to params |
