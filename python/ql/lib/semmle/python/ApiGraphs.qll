@@ -245,6 +245,7 @@ module API {
 
     /**
      * Gets a node representing a subscript of this node.
+     * For example `obj[x]` is a subscript of `obj`.
      */
     Node getASubscript() { result = this.getASuccessor(Label::subscript()) }
 
@@ -575,7 +576,6 @@ module API {
      * API graph node for the prefix `foo`), in accordance with the usual semantics of Python.
      */
 
-    // private import semmle.python.internal.Awaited
     cached
     newtype TApiNode =
       /** The root of the API graph. */
@@ -1067,7 +1067,7 @@ module API {
         override string toString() { result = "getAwaited()" }
       }
 
-      /** A label that gets the subscript of a sequence. */
+      /** A label that gets the subscript of a sequence/mapping. */
       class LabelSubscript extends ApiLabel, MkLabelSubscript {
         override string toString() { result = "getSubscript()" }
       }

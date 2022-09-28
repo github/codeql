@@ -249,7 +249,7 @@ private module Cached {
   }
 
   /**
-   * Holds if `node` flows to a sequence of which `subscript` is a subscript.
+   * Holds if `node` flows to a sequence/mapping of which `subscript` is a subscript.
    */
   cached
   predicate subscript(LocalSourceNode node, CfgNode subscript) {
