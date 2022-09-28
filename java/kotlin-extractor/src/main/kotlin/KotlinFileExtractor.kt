@@ -3,7 +3,6 @@ package com.github.codeql
 import com.github.codeql.comments.CommentExtractor
 import com.github.codeql.utils.*
 import com.github.codeql.utils.versions.functionN
-import com.github.codeql.utils.versions.getIrStubFromDescriptor
 import com.github.codeql.utils.versions.isUnderscoreParameter
 import com.semmle.extractor.java.OdasaOutput
 import org.jetbrains.kotlin.backend.common.extensions.IrPluginContext
@@ -1788,7 +1787,7 @@ open class KotlinFileExtractor(
 
     private fun extractCall(c: IrCall, callable: Label<out DbCallable>, stmtExprParent: StmtExprParent) {
         with("call", c) {
-            val owner = tryGetPossiblyUnboundSymbolOwner(c.symbol, c) ?: return
+            val owner = getBoundSymbolOwner(c.symbol, c) ?: return
             val target = tryReplaceSyntheticFunction(owner)
 
             // The vast majority of types of call want an expr context, so make one available lazily:
@@ -2954,7 +2953,7 @@ open class KotlinFileExtractor(
                     tw.writeCallableEnclosingExpr(id, callable)
                     tw.writeStatementEnclosingExpr(id, exprParent.enclosingStmt)
 
-                    val owner = tryGetPossiblyUnboundSymbolOwner(e.symbol, e) ?: return
+                    val owner = getBoundSymbolOwner(e.symbol, e) ?: return
 
                     val vId = useEnumEntry(owner)
                     tw.writeVariableBinding(id, vId)
@@ -3131,7 +3130,7 @@ open class KotlinFileExtractor(
                     // automatically-generated `public static final MyObject INSTANCE`
                     // field that we are accessing here.
                     val exprParent = parent.expr(e, callable)
-                    val c = tryGetPossiblyUnboundSymbolOwner(e.symbol, e) ?: return
+                    val c = getBoundSymbolOwner(e.symbol, e) ?: return
 
                     val instance = if (c.isCompanion) useCompanionObjectClassInstance(c) else useObjectClassInstance(c)
 
@@ -3244,21 +3243,12 @@ open class KotlinFileExtractor(
         }
     }
 
-    private inline fun <D: DeclarationDescriptor, reified B: IrSymbolOwner> tryGetPossiblyUnboundSymbolOwner(symbol: IrBindableSymbol<D, B>, e: IrElement): B? {
+    private inline fun <D: DeclarationDescriptor, reified B: IrSymbolOwner> getBoundSymbolOwner(symbol: IrBindableSymbol<D, B>, e: IrExpression): B? {
         if (symbol.isBound) {
             return symbol.owner
         }
 
-        logger.warnElement("Unbound symbol, trying to use owner stub from descriptor", e)
-
-        @OptIn(ObsoleteDescriptorBasedAPI::class)
-        val owner = getIrStubFromDescriptor() { it.generateMemberStub(symbol.descriptor) }
-
-        if (owner is B) {
-            return owner
-        }
-
-        logger.errorElement("Couldn't get owner of unbound symbol from its descriptor", e)
+        logger.errorElement("Unbound symbol found, skipping extraction of expression", e)
         return null
     }
 
