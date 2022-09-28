@@ -20,6 +20,12 @@ Expr normalizeExpr(Expr e) {
     else result = e
 }
 
+predicate isInLoopHead(CommaExpr ce) {
+  ce.getParent*() = [any(Loop l).getCondition(), any(ForStmt f).getUpdate()]
+  or
+  ce.getEnclosingStmt() = any(ForStmt f).getInitialization()
+}
+
 from CommaExpr ce, Expr left, Expr right, Location leftLoc, Location rightLoc
 where
   ce.fromSource() and
@@ -28,6 +34,7 @@ where
   right = normalizeExpr(ce.getRightOperand()) and
   leftLoc = left.getLocation() and
   rightLoc = right.getLocation() and
+  not isInLoopHead(ce) and // HACK to reduce FPs in loop heads; assumption: unlikely to be misread due to '(', ')' delimiters
   leftLoc.getEndLine() < rightLoc.getStartLine() and
   leftLoc.getStartColumn() > rightLoc.getStartColumn()
-select right, "The indentation level after the comma can be misleading (for some tab sizes)."
+select right, "The indentation after the comma may be misleading (for some tab sizes)."

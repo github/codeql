@@ -86,6 +86,15 @@ int test(int i, int j, int (*foo)(int), int (*bar)(int, int))
         i = j = i + j;
     }
 
+	for (i = 0,         // GOOD? Currently ignoring loop heads.
+	    j = 1;
+		i + j < 10;
+		i++, j++);
+
+	for (i = 0,
+         j = 1; i < 10; i += 2, // GOOD? Currently ignoring loop heads.
+        j++) {}
+
     // Mixed tabs and spaces (ugly case):
 
     for (i = 0,         // GOOD if tab >= 4 spaces else BAD -- can't exclude w/o source code text :/
@@ -97,17 +106,6 @@ int test(int i, int j, int (*foo)(int), int (*bar)(int, int))
 	if (i)
 	    (void)i,	    // GOOD if tab >= 4 spaces else BAD -- can't exclude w/o source code text :/
 		(void)j;
-
-	// One char difference (common but borderline):
-
-	for (i = 0,         // GOOD? [FALSE POSITIVE] -- can't exclude w/o source code text :/
-	    j = 1;
-		i + j < 10;
-		i++, j++);
-
-	for (i = 0,
-         j = 1; i < 10; i += 2, // GOOD? [FALSE POSITIVE] -- can't exclude w/o source code text :/
-        j++) {}
 
 	// LHS ends on same line RHS begins on:
 
