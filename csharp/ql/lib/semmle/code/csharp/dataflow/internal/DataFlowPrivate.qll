@@ -423,13 +423,11 @@ module LocalFlow {
   ControlFlow::Nodes::ExprNode getAPostUpdateNodeForArg(ControlFlow::Nodes::ExprNode arg) {
     arg.getExpr() instanceof Argument and
     result = getALastEvalNode*(arg) and
-    exists(Expr e | result.getExpr() = e |
-      exists(Type t | t = e.stripCasts().getType() |
-        t instanceof RefType and
-        not t instanceof NullType
-        or
-        t = any(TypeParameter tp | not tp.isValueType())
-      )
+    exists(Expr e, Type t | result.getExpr() = e and t = e.stripCasts().getType() |
+      t instanceof RefType and
+      not t instanceof NullType
+      or
+      t = any(TypeParameter tp | not tp.isValueType())
     ) and
     not exists(getALastEvalNode(result))
   }
