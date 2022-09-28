@@ -87,6 +87,18 @@ class AndroidServiceIntentMethod extends Method {
 }
 
 /**
+ * The method `Context.startActivity` or `startActivities`.
+ *
+ * DEPRECATED: Use `StartActivityMethod` instead.
+ */
+deprecated class ContextStartActivityMethod extends Method {
+  ContextStartActivityMethod() {
+    (this.hasName("startActivity") or this.hasName("startActivities")) and
+    this.getDeclaringType() instanceof TypeContext
+  }
+}
+
+/**
  * The method `Context.startActivity`, `Context.startActivities`,
  * `Activity.startActivity`,`Activity.startActivities`,
  * `Activity.startActivityForResult`, `Activity.startActivityIfNeeded`,
@@ -236,16 +248,6 @@ class GrantReadUriPermissionFlag extends GrantUriPermissionFlag {
 class GrantWriteUriPermissionFlag extends GrantUriPermissionFlag {
   GrantWriteUriPermissionFlag() { this.hasName("FLAG_GRANT_WRITE_URI_PERMISSION") }
 }
-
-/*
- * // ! TODO: create a parent class for the below three steps?
- * // ! e.g. something like the below?
- * // ! could put `getClassArgOfIntentConstructor` in parent class?
- *
- * // ! Also look into whether it's possible to reduce any code duplication
- * // ! across the three steps in general.
- * // class StartComponentIntentStep extends AdditionalValueStep { }
- */
 
 /**
  * Gets the `Class<?>` argument of an `android.content.Intent`constructor.
