@@ -380,8 +380,10 @@ private module Cached {
   newtype TContentSet =
     TSingletonContent(Content c) or
     TAnyElementContent() or
-    TElementLowerBoundContent(int lower) {
-      FlowSummaryImplSpecific::ParsePositions::isParsedElementLowerBoundPosition(_, lower)
+    TKnownOrUnknownElementContent(Content::KnownElementContent c) or
+    TElementLowerBoundContent(int lower, boolean includeUnknown) {
+      FlowSummaryImplSpecific::ParsePositions::isParsedElementLowerBoundPosition(_, includeUnknown,
+        lower)
     }
 
   cached
