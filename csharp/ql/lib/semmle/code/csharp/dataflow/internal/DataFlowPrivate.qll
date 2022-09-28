@@ -197,7 +197,7 @@ private predicate relevantArgumentType(ControlFlow::Nodes::ExprNode cfn) {
 }
 
 /** Gets a node for which to construct a post-update node for argument `arg`. */
-private ControlFlow::Nodes::ExprNode getAPostUpdateNodeForArg(Argument arg) {
+ControlFlow::Nodes::ExprNode getAPostUpdateNodeForArg(Argument arg) {
   result = getALastEvalNode*(arg.getAControlFlowNode()) and
   relevantArgumentType(result) and
   not exists(getALastEvalNode(result))
