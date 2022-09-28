@@ -102,21 +102,6 @@ private module NoSql {
   }
 
   /**
-   * Gets a reference to a `Mongo` collection method.
-   *
-   * ```py
-   * from flask_pymongo import PyMongo
-   * mongo = PyMongo(app)
-   * mongo.db.user.find({'name': safe_search})
-   * ```
-   *
-   * `mongo.db.user.find` would be a collection method.
-   */
-  private API::Node mongoCollectionMethod() {
-    result = mongoCollection().getMember(any(MongoCollectionMethodNames m))
-  }
-
-  /**
    * Gets a reference to a `Mongo` collection method call
    *
    * ```py
@@ -125,10 +110,12 @@ private module NoSql {
    * mongo.db.user.find({'name': safe_search})
    * ```
    *
-   * `mongo.db.user.find({'name': safe_search})` would be a collection method call, and so the result.
+   * `mongo.db.user.find({'name': safe_search})` would be a collection method call.
    */
   private class MongoCollectionCall extends DataFlow::CallCfgNode, NoSqlQuery::Range {
-    MongoCollectionCall() { this = mongoCollectionMethod().getACall() }
+    MongoCollectionCall() {
+      this = mongoCollection().getMember(any(MongoCollectionMethodNames m)).getACall()
+    }
 
     override DataFlow::Node getQuery() { result = this.getArg(0) }
   }
