@@ -35,7 +35,7 @@ private class MyConsistencyConfiguration extends ConsistencyConfiguration {
   override predicate argHasPostUpdateExclude(ArgumentNode n) {
     n instanceof SummaryNode
     or
-    not exists(LocalFlow::getAPostUpdateNodeForArg(n.asExpr()))
+    not exists(LocalFlow::getAPostUpdateNodeForArg(n.getControlFlowNode()))
     or
     n instanceof ImplicitCapturedArgumentNode
     or
@@ -46,7 +46,7 @@ private class MyConsistencyConfiguration extends ConsistencyConfiguration {
 
   override predicate postHasUniquePreExclude(PostUpdateNode n) {
     exists(ControlFlow::Nodes::ExprNode e, ControlFlow::Nodes::ExprNode arg |
-      e = LocalFlow::getAPostUpdateNodeForArg(arg.getExpr()) and
+      e = LocalFlow::getAPostUpdateNodeForArg(arg) and
       e != arg and
       n = TExprPostUpdateNode(e)
     )
@@ -54,7 +54,7 @@ private class MyConsistencyConfiguration extends ConsistencyConfiguration {
 
   override predicate uniquePostUpdateExclude(Node n) {
     exists(ControlFlow::Nodes::ExprNode e, ControlFlow::Nodes::ExprNode arg |
-      e = LocalFlow::getAPostUpdateNodeForArg(arg.getExpr()) and
+      e = LocalFlow::getAPostUpdateNodeForArg(arg) and
       e != arg and
       n.asExpr() = arg.getExpr()
     )

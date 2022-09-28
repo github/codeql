@@ -420,8 +420,9 @@ module LocalFlow {
   }
 
   /** Gets a node for which to construct a post-update node for argument `arg`. */
-  ControlFlow::Nodes::ExprNode getAPostUpdateNodeForArg(Argument arg) {
-    result = getALastEvalNode*(arg.getAControlFlowNode()) and
+  ControlFlow::Nodes::ExprNode getAPostUpdateNodeForArg(ControlFlow::Nodes::ExprNode arg) {
+    arg.getExpr() instanceof Argument and
+    result = getALastEvalNode*(arg) and
     exists(Expr e | result.getExpr() = e |
       exists(Type t | t = e.stripCasts().getType() |
         t instanceof RefType and
@@ -1946,7 +1947,7 @@ private module PostUpdateNodes {
       //
       // This ensures that we get flow out of the call into both leafs (1), while still
       // maintaining the invariant that the underlying expression is a pre-update node (2).
-      cfn = LocalFlow::getAPostUpdateNodeForArg(result.asExpr())
+      cfn = LocalFlow::getAPostUpdateNodeForArg(result.getControlFlowNode())
       or
       cfn = result.getControlFlowNode()
     }
