@@ -23,11 +23,11 @@ string_t *mk_string_t(int size) {
 void test1(int size, char *buf) {
     string_t *str = mk_string_t(size);
 
-    strncpy(str->string, buf, str->size); // GOOD [FALSE POSITIVE]
+    strncpy(str->string, buf, str->size); // GOOD
 }
 
 void strncpy_wrapper(string_t *str, char *buf) {
-    strncpy(str->string, buf, str->size); // GOOD [FALSE POSITIVE]
+    strncpy(str->string, buf, str->size); // GOOD
 }
 
 void test2(int size, char *buf) {
@@ -38,8 +38,8 @@ void test2(int size, char *buf) {
 void test3(unsigned size, char *buf, unsigned anotherSize) {
     string_t *str = mk_string_t(size);
 
-    strncpy(str->string, buf, str->size); // GOOD [FALSE POSITIVE]
-    strncpy(str->string, buf, str->size + 1); // BAD [NOT DETECTED]
+    strncpy(str->string, buf, str->size); // GOOD
+    strncpy(str->string, buf, str->size + 1); // BAD
 
     strncpy(str->string, buf, size); // GOOD
     strncpy(str->string, buf, size + 1); // BAD [NOT DETECTED]
@@ -69,7 +69,7 @@ void test3(unsigned size, char *buf, unsigned anotherSize) {
     }
 
     if(anotherSize <= str->size + 1) {
-        strncpy(str->string, buf, anotherSize); // BAD [NOT DETECTED]
+        strncpy(str->string, buf, anotherSize); // BAD
     }
 
     if(anotherSize <= size + 1) {
@@ -77,7 +77,7 @@ void test3(unsigned size, char *buf, unsigned anotherSize) {
     }
 
     if(anotherSize <= str->size + 2) {
-        strncpy(str->string, buf, anotherSize); // BAD [NOT DETECTED]
+        strncpy(str->string, buf, anotherSize); // BAD
     }
 
     if(anotherSize <= size + 2) {
