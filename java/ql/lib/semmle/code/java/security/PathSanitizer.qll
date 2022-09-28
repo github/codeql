@@ -85,6 +85,12 @@ private class AllowedPrefixGuard extends Guard instanceof MethodAccess {
  */
 private predicate allowedPrefixGuard(Guard g, Expr e, boolean branch) {
   branch = true and
+  // Local taint-flow is used here to handle cases where the validated expression comes from the
+  // expression reaching the sink, but it's not the same one, e.g.:
+  //  File file = source();
+  //  String strPath = file.getCanonicalPath();
+  //  if (strPath.startsWith("/safe/dir"))
+  //    sink(file);
   TaintTracking::localExprTaint(e, g.(AllowedPrefixGuard).getCheckedExpr()) and
   exists(Expr previousGuard |
     TaintTracking::localExprTaint(previousGuard.(PathNormalizeSanitizer),
@@ -92,7 +98,7 @@ private predicate allowedPrefixGuard(Guard g, Expr e, boolean branch) {
     or
     previousGuard
         .(PathTraversalGuard)
-        .controls(g.getBasicBlock().(ConditionBlock), previousGuard.(PathTraversalGuard).getBranch())
+        .controls(g.getBasicBlock(), previousGuard.(PathTraversalGuard).getBranch())
   )
 }
 
@@ -108,12 +114,18 @@ private class AllowedPrefixSanitizer extends PathInjectionSanitizer {
  * been checked for a trusted prefix.
  */
 private predicate dotDotCheckGuard(Guard g, Expr e, boolean branch) {
+  // Local taint-flow is used here to handle cases where the validated expression comes from the
+  // expression reaching the sink, but it's not the same one, e.g.:
+  //  Path path = source();
+  //  String strPath = path.toString();
+  //  if (!strPath.contains("..") && strPath.startsWith("/safe/dir"))
+  //    sink(path);
   branch = g.(PathTraversalGuard).getBranch() and
   TaintTracking::localExprTaint(e, g.(PathTraversalGuard).getCheckedExpr()) and
   exists(Guard previousGuard |
-    previousGuard.(AllowedPrefixGuard).controls(g.getBasicBlock().(ConditionBlock), true)
+    previousGuard.(AllowedPrefixGuard).controls(g.getBasicBlock(), true)
     or
-    previousGuard.(BlockListGuard).controls(g.getBasicBlock().(ConditionBlock), false)
+    previousGuard.(BlockListGuard).controls(g.getBasicBlock(), false)
   )
 }
 
@@ -140,6 +152,12 @@ private class BlockListGuard extends Guard instanceof MethodAccess {
  */
 private predicate blockListGuard(Guard g, Expr e, boolean branch) {
   branch = false and
+  // Local taint-flow is used here to handle cases where the validated expression comes from the
+  // expression reaching the sink, but it's not the same one, e.g.:
+  //  File file = source();
+  //  String strPath = file.getCanonicalPath();
+  //  if (!strPath.contains("..") && !strPath.startsWith("/dangerous/dir"))
+  //    sink(file);
   TaintTracking::localExprTaint(e, g.(BlockListGuard).getCheckedExpr()) and
   exists(Expr previousGuard |
     TaintTracking::localExprTaint(previousGuard.(PathNormalizeSanitizer),
@@ -147,7 +165,7 @@ private predicate blockListGuard(Guard g, Expr e, boolean branch) {
     or
     previousGuard
         .(PathTraversalGuard)
-        .controls(g.getBasicBlock().(ConditionBlock), previousGuard.(PathTraversalGuard).getBranch())
+        .controls(g.getBasicBlock(), previousGuard.(PathTraversalGuard).getBranch())
   )
 }
 
@@ -243,12 +261,5 @@ private class PathNormalizeSanitizer extends MethodAccess {
     or
     this.getMethod().getDeclaringType() instanceof TypeFile and
     this.getMethod().hasName(["getCanonicalPath", "getCanonicalFile"])
-  }
-}
-
-/** A node with path normalization. */
-class NormalizedPathNode extends DataFlow::Node {
-  NormalizedPathNode() {
-    TaintTracking::localExprTaint(this.asExpr(), any(PathNormalizeSanitizer ma))
   }
 }

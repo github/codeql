@@ -18,6 +18,29 @@ import JFinalController
 import semmle.code.java.security.PathSanitizer
 import DataFlow::PathGraph
 
+/** A complementary sanitizer that protects against path traversal using path normalization. */
+class PathNormalizeSanitizer extends MethodAccess {
+  PathNormalizeSanitizer() {
+    exists(RefType t |
+      t instanceof TypePath or
+      t.hasQualifiedName("kotlin.io", "FilesKt")
+    |
+      this.getMethod().getDeclaringType() = t and
+      this.getMethod().hasName("normalize")
+    )
+    or
+    this.getMethod().getDeclaringType() instanceof TypeFile and
+    this.getMethod().hasName(["getCanonicalPath", "getCanonicalFile"])
+  }
+}
+
+/** A node with path normalization. */
+class NormalizedPathNode extends DataFlow::Node {
+  NormalizedPathNode() {
+    TaintTracking::localExprTaint(this.asExpr(), any(PathNormalizeSanitizer ma))
+  }
+}
+
 class InjectFilePathConfig extends TaintTracking::Configuration {
   InjectFilePathConfig() { this = "InjectFilePathConfig" }
 
