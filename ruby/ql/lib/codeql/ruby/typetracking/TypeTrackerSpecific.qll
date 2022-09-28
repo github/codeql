@@ -256,22 +256,9 @@ bindingset[call, component]
 private DataFlowPublic::Node evaluateSummaryComponentLocal(
   DataFlowPublic::CallNode call, SummaryComponent component
 ) {
-  exists(DataFlowDispatch::ParameterPosition pos | component = SummaryComponent::argument(pos) |
-    exists(int i |
-      pos.isPositional(i) and
-      result = call.getPositionalArgument(i)
-    )
-    or
-    exists(string name |
-      pos.isKeyword(name) and
-      result = call.getKeywordArgument(name)
-    )
-    or
-    pos.isBlock() and
-    result = call.getBlock()
-    or
-    pos.isSelf() and
-    result = call.getReceiver()
+  exists(DataFlowDispatch::ParameterPosition pos |
+    component = SummaryComponent::argument(pos) and
+    argumentPositionMatch(call.asExpr(), result, pos)
   )
   or
   component = SummaryComponent::return() and
