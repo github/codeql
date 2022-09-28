@@ -20,13 +20,14 @@ Expr normalizeExpr(Expr e) {
     else result = e
 }
 
-from CommaExpr ce, Expr left, Expr right, int leftStartColumn, int rightStartColumn
+from CommaExpr ce, Expr left, Expr right, Location leftLoc, Location rightLoc
 where
   ce.fromSource() and
   not isFromMacroDefinition(ce) and
   left = normalizeExpr(ce.getLeftOperand()) and
   right = normalizeExpr(ce.getRightOperand()) and
-  leftStartColumn = left.getLocation().getStartColumn() and
-  rightStartColumn = right.getLocation().getStartColumn() and
-  leftStartColumn > rightStartColumn
+  leftLoc = left.getLocation() and
+  rightLoc = right.getLocation() and
+  leftLoc.getEndLine() < rightLoc.getStartLine() and
+  leftLoc.getStartColumn() > rightLoc.getStartColumn()
 select right, "The indentation level after the comma can be misleading (for some tab sizes)."

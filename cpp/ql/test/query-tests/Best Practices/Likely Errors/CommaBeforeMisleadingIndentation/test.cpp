@@ -113,7 +113,7 @@ int test(int i, int j, int (*foo)(int), int (*bar)(int, int))
 
 	int k = (foo(
 		i++
-	), j++); // GOOD? [FALSE POSITIVE]
+	), j++); // GOOD?
 
 	// Weird case:
 
