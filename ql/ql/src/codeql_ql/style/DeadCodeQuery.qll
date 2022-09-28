@@ -30,7 +30,9 @@ private AstNode publicApi() {
  */
 private AstNode queryPredicate() {
   // result = query relation that is "transitively" imported by a .ql file.
-  PathProblemQuery::importsQueryRelation(result).asFile().getExtension() = "ql"
+  // PathProblemQuery::importsQueryRelation(result).asFile().getExtension() = "ql"
+  // any query predicate. Query predicates are usually meant to be used.
+  result.(Predicate).hasAnnotation("query")
   or
   // the from-where-select
   result instanceof Select
@@ -208,8 +210,9 @@ private AstNode benign() {
   result instanceof Comment or
   not exists(result.toString()) or // <- invalid code
   // cached-stages pattern
-  result.(Module).getAMember().(ClasslessPredicate).getName() = "forceStage" or
-  result.(ClasslessPredicate).getName() = "forceStage" or
+  result.(Module).getAMember().(ClasslessPredicate).getName() =
+    ["forceStage", "forceCachingInSameStageforceCachingInSameStage"] or
+  result.(ClasslessPredicate).getName() = ["forceStage", "forceCachingInSameStage"] or
   result.getLocation().getFile().getBaseName() = "Caching.qll" or
   // sometimes contains dead code - ignore
   result.getLocation().getFile().getRelativePath().matches("%/tutorials/%") or
@@ -243,20 +246,74 @@ private AstNode queryable() {
   or
   result instanceof TopLevel // toplevel is always alive.
   or
+  result = hackyShouldBeTreatedAsAlive()
+  or
+  // The below prevents the query from being too loud. The files below contain a lot of unqueryable code.
+  // I think some of it is from some languages not using all features of a shared library, but I'm not sure (haven't look much into it).
+  result
+      .getLocation()
+      .getFile()
+      .getBaseName()
+      .matches(["DataFlowImpl", "SsaImplCommon", "FlowSummary"] + "%")
+  or
   // recursive cases
   result = aliveStep(queryable())
 }
+
+// The benign cases are mostly
+private AstNode benignUnqueryable() {
+  result = benign() or
+  // cached-stages pattern
+  // sometimes contains dead code - ignore
+  result.(Module).getName() = "Debugging" or
+  result.getLocation().getFile() = benignUnqueryableFile()
+}
+
+pragma[noinline]
+private File benignUnqueryableFile() {
+  result.getAbsolutePath().matches("%/explore/%") or
+  result.getRelativePath().matches("%/tutorials/%") or
+  result.getRelativePath().matches("%/experimental/%") or
+  result.getRelativePath().matches("%/frameworks/%") or // the frameworks have a lot of code that only exists for completeness.
+  result.getBaseName() =
+    [
+      "Expr.qll", "TypeScript.qll", "YAML.qll", "Tokens.qll", "Instruction.qll", "Persistence.qll",
+      "ES2015Modules.qll", "TaintTrackingPublic.qll", "TaintTrackingUtil.qll",
+    ] or // lots of classes that exist for completeness
+  result.getBaseName() = ["CachedStages.qll", "Caching.qll", "tutorial.qll"] or
+  result.getBaseName() = "PrettyPrintAst.qll" or // it's dead code, but seems intentional
+  result.getBaseName() = ["CryptoAlgorithmNames.qll", "SensitiveDataHeuristics.qll"] or // not all langs use all the things
+  // some more identical files
+  result.getBaseName() = "ReachableBlock.qll" or
+  // QL-for-QL tests contain plenty of unqueryable code on purpose
+  result.getAbsolutePath().matches("%/ql/ql/test%")
+}
+
+import NodeName
 
 /**
  * Gets an AstNode that does not affect any query result.
  * Is interesting as an quick-eval target to investigate dead code.
  * (It is intentional that this predicate is a result of this predicate).
  */
-AstNode unQueryable(string msg) {
+AstNode unQueryable() {
   not result = queryable() and
   not result = deprecated() and
-  not result = benign() and
+  not result = benignUnqueryable() and
   not result.getParent() = any(AstNode node | not node = queryable()) and
-  msg = result.getLocation().getFile().getBaseName() and
-  result.getLocation().getFile().getAbsolutePath().matches("%/javascript/%")
+  // remove where a queryable feature with the "same" name exists.
+  not exists(AstNode other, string name |
+    name = getName(result, _) and
+    name = oppositeFirstLetter(getName(other, _)) and
+    other.getParent() = result.getParent()
+  )
+}
+
+bindingset[name]
+string oppositeFirstLetter(string name) {
+  exists(string first | first = name.prefix(1) |
+    if first.toUpperCase() = first
+    then result = first.toLowerCase() + name.suffix(1)
+    else result = first.toUpperCase() + name.suffix(1)
+  )
 }
