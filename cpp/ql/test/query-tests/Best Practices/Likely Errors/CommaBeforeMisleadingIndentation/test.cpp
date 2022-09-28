@@ -13,6 +13,8 @@ struct X {
 
 #define BAR(x, y) ((x), (y))
 
+#define BAZ //printf
+
 int test(int i, int j, int (*foo)(int), int (*bar)(int, int))
 {
 	// Comma in simple if statement (prototypical example):
@@ -81,6 +83,9 @@ int test(int i, int j, int (*foo)(int), int (*bar)(int, int))
 				j++);
 	(void)sizeof(x.foo(i++), // GOOD? Unlikely to be misread
 				j++);
+
+	BAZ("%d %d\n", i,
+		j); // GOOD [FALSE POSITIVE] -- but can only be excluded by excluding all parenthesized commas (which sounds like a good idea actually)
 
 	// Comma in loops
 
