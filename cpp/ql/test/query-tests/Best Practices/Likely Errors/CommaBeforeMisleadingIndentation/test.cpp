@@ -36,7 +36,7 @@ int test(int i, int j, int (*foo)(int), int (*bar)(int, int))
 
 	x.foo(i++), j++;   // GOOD
 	(x.foo(i++), j++); // GOOD
-	(x.foo(i++),       // GOOD [FALSE POSITIVE]
+	(x.foo(i++),       // GOOD
 	 j++);
 	(x.foo(i++),
 	j++);              // BAD (?)
@@ -50,7 +50,7 @@ int test(int i, int j, int (*foo)(int), int (*bar)(int, int))
 
 	(void)(i++), j++;   // GOOD
 	((void)(i++), j++); // GOOD
-	((void)(i++),       // GOOD [FALSE POSITIVE]
+	((void)(i++),       // GOOD
 	 j++);
 	((void)(i++),
 	j++);               // BAD (?)
@@ -73,9 +73,9 @@ int test(int i, int j, int (*foo)(int), int (*bar)(int, int))
 	BAR(i++,
 	j++);          // GOOD: common pattern and unlikely to be misread.
 
-	using T = decltype(x.foo(i++), // GOOD [FALSE POSITIVE]
+	using T = decltype(x.foo(i++), // GOOD
 	                   j++);
-	(void)sizeof(x.foo(i++), // GOOD [FALSE POSITIVE]
+	(void)sizeof(x.foo(i++), // GOOD
 	             j++);
 
 	// Comma in loops
