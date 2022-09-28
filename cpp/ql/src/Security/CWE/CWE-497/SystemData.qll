@@ -47,13 +47,16 @@ class EnvData extends SystemData {
 /**
  * Data originating from a call to `mysql_get_client_info()`.
  */
-class SQLClientInfo extends SystemData {
-  SQLClientInfo() { this.(FunctionCall).getTarget().hasName("mysql_get_client_info") }
+class SqlClientInfo extends SystemData {
+  SqlClientInfo() { this.(FunctionCall).getTarget().hasName("mysql_get_client_info") }
 
   override DataFlow::Node getAnExpr() { result.asConvertedExpr() = this }
 
   override predicate isSensitive() { any() }
 }
+
+/** DEPRECATED: Alias for SqlClientInfo */
+deprecated class SQLClientInfo = SqlClientInfo;
 
 private predicate sqlConnectInfo(FunctionCall source, Expr use) {
   (
@@ -66,13 +69,16 @@ private predicate sqlConnectInfo(FunctionCall source, Expr use) {
 /**
  * Data passed into an SQL connect function.
  */
-class SQLConnectInfo extends SystemData {
-  SQLConnectInfo() { sqlConnectInfo(this, _) }
+class SqlConnectInfo extends SystemData {
+  SqlConnectInfo() { sqlConnectInfo(this, _) }
 
   override DataFlow::Node getAnExpr() { sqlConnectInfo(this, result.asConvertedExpr()) }
 
   override predicate isSensitive() { any() }
 }
+
+/** DEPRECATED: Alias for SqlConnectInfo */
+deprecated class SQLConnectInfo = SqlConnectInfo;
 
 private predicate posixSystemInfo(FunctionCall source, DataFlow::Node use) {
   // size_t confstr(int name, char *buf, size_t len)

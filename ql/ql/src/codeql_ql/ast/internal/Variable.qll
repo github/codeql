@@ -73,7 +73,12 @@ private module Cached {
 
   cached
   predicate resolveField(Identifier i, VarDef decl) {
-    scopeOf(i).containsField(decl, pragma[only_bind_into](getName(i)))
+    resolveFieldHelper(scopeOf(i), decl, getName(i))
+  }
+
+  pragma[noinline]
+  private predicate resolveFieldHelper(VariableScope scope, VarDef decl, string name) {
+    scope.containsField(decl, name)
   }
 }
 

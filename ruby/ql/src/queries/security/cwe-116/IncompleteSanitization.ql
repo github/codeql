@@ -14,7 +14,7 @@
  *       external/cwe/cwe-116
  */
 
-import ruby
+import codeql.ruby.AST
 import codeql.ruby.DataFlow
 import codeql.ruby.controlflow.CfgNodes
 import codeql.ruby.frameworks.core.String
@@ -104,11 +104,10 @@ predicate allBackslashesEscaped(DataFlow::Node node) {
   allBackslashesEscaped(node.getAPredecessor())
   or
   // general data flow from a (destructive) [g]sub!
-  exists(DataFlow::PostUpdateNode post, StringSubstitutionCall sub |
+  exists(StringSubstitutionCall sub |
     sub.isDestructive() and
     allBackslashesEscaped(sub) and
-    post.getPreUpdateNode() = sub.getReceiver() and
-    post.getASuccessor() = node
+    node.(DataFlow::PostUpdateNode).getPreUpdateNode() = sub.getReceiver()
   )
 }
 
@@ -116,7 +115,7 @@ predicate allBackslashesEscaped(DataFlow::Node node) {
  * Holds if `sub` looks like a string substitution call that deliberately
  * removes the first occurrence of `str`.
  */
-predicate removesFirstOccurence(StringSubstitutionCall sub, string str) {
+predicate removesFirstOccurrence(StringSubstitutionCall sub, string str) {
   not sub.isGlobal() and sub.replaces(str, "")
 }
 
@@ -125,19 +124,18 @@ predicate removesFirstOccurence(StringSubstitutionCall sub, string str) {
  * call.
  */
 DataFlow::CallNode getAMethodCall(StringSubstitutionCall call) {
-  exists(DataFlow::Node receiver |
-    receiver = result.getReceiver() and
-    (
-      // for a non-destructive string substitution, is there flow from it to the
-      // receiver of another method call?
-      not call.isDestructive() and call.(DataFlow::LocalSourceNode).flowsTo(receiver)
-      or
-      // for a destructive string substitution, is there flow from its
-      // post-update receiver to the receiver of another method call?
-      call.isDestructive() and
-      exists(DataFlow::PostUpdateNode post | post.getPreUpdateNode() = call.getReceiver() |
-        post.(DataFlow::LocalSourceNode).flowsTo(receiver)
-      )
+  exists(DataFlow::Node receiver | receiver = result.getReceiver() |
+    // for a non-destructive string substitution, is there flow from it to the
+    // receiver of another method call?
+    not call.isDestructive() and
+    DataFlow::localFlow(call, receiver)
+    or
+    // for a destructive string substitution, is there flow from its
+    // post-update receiver to the receiver of another method call?
+    call.isDestructive() and
+    exists(DataFlow::PostUpdateNode post |
+      post.getPreUpdateNode() = call.getReceiver() and
+      DataFlow::localFlowStep+(post, receiver)
     )
   )
 }
@@ -158,8 +156,8 @@ predicate isDelimiterUnwrapper(StringSubstitutionCall leftUnwrap, StringSubstitu
     or
     left = "'" and right = "'"
   |
-    removesFirstOccurence(leftUnwrap, left) and
-    removesFirstOccurence(rightUnwrap, right) and
+    removesFirstOccurrence(leftUnwrap, left) and
+    removesFirstOccurrence(rightUnwrap, right) and
     rightUnwrap = getAMethodCall(leftUnwrap)
   )
 }

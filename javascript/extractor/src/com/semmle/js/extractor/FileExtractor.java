@@ -203,7 +203,7 @@ public class FileExtractor {
       }
     },
 
-    TYPESCRIPT(".ts", ".tsx") {
+    TYPESCRIPT(".ts", ".tsx", ".mts", ".cts") {
       @Override
       protected boolean contains(File f, String lcExt, ExtractorConfig config) {
         if (config.getTypeScriptMode() == TypeScriptMode.NONE) return false;
@@ -217,9 +217,6 @@ public class FileExtractor {
       }
 
       private boolean hasBadFileHeader(File f, String lcExt, ExtractorConfig config) {
-        if (!".ts".equals(lcExt)) {
-          return false;
-        }
         try (FileInputStream fis = new FileInputStream(f)) {
           byte[] bytes = new byte[fileHeaderSize];
           int length = fis.read(bytes);

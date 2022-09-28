@@ -17,3 +17,15 @@ private class HeuristicStringManipulationTaintStep extends TaintTracking::Shared
     )
   }
 }
+
+/** Any call to a library component where we assume taint from any argument to the result */
+private class HeuristicLibraryCallTaintStep extends TaintTracking::SharedTaintStep {
+  override predicate heuristicStep(DataFlow::Node pred, DataFlow::Node succ) {
+    exists(API::CallNode call |
+      pred = call.getAnArgument() or // the plain argument
+      pred = call.getAnArgument().(DataFlow::SourceNode).getAPropertyWrite().getRhs() // one property down
+    |
+      succ = call
+    )
+  }
+}

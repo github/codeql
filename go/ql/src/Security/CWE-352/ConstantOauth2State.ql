@@ -18,8 +18,8 @@ import DataFlow::PathGraph
  * A method that creates a new URL that will send the user
  * to the OAuth 2.0 authorization dialog of the provider.
  */
-class AuthCodeURL extends Method {
-  AuthCodeURL() {
+class AuthCodeUrl extends Method {
+  AuthCodeUrl() {
     this.hasQualifiedName(package("golang.org/x/oauth2", ""), "Config", "AuthCodeURL")
   }
 }
@@ -32,7 +32,7 @@ class ConstantStateFlowConf extends DataFlow::Configuration {
   ConstantStateFlowConf() { this = "ConstantStateFlowConf" }
 
   predicate isSink(DataFlow::Node sink, DataFlow::CallNode call) {
-    exists(AuthCodeURL m | call = m.getACall() | sink = call.getArgument(0))
+    exists(AuthCodeUrl m | call = m.getACall() | sink = call.getArgument(0))
   }
 
   override predicate isSource(DataFlow::Node source) {
@@ -106,11 +106,11 @@ class PrivateUrlFlowsToAuthCodeUrlCall extends DataFlow::Configuration {
     TaintTracking::referenceStep(pred, succ)
     or
     // Propagate across Sprintf and similar calls
-    any(Fmt::Sprinter s).taintStep(pred, succ)
+    any(Fmt::AppenderOrSprinter s).taintStep(pred, succ)
   }
 
   predicate isSink(DataFlow::Node sink, DataFlow::CallNode call) {
-    exists(AuthCodeURL m | call = m.getACall() | sink = call.getReceiver())
+    exists(AuthCodeUrl m | call = m.getACall() | sink = call.getReceiver())
   }
 
   override predicate isSink(DataFlow::Node sink) { this.isSink(sink, _) }
@@ -130,7 +130,7 @@ predicate privateUrlFlowsToAuthCodeUrlCall(DataFlow::CallNode call) {
   )
 }
 
-/** A flow from `golang.org/x/oauth2.Config.AuthCodeURL`'s result to a logging function. */
+/** A flow from `golang.org/x/oauth2.Config.AuthCodeUrl`'s result to a logging function. */
 class FlowToPrint extends DataFlow::Configuration {
   FlowToPrint() { this = "FlowToPrint" }
 
@@ -139,17 +139,17 @@ class FlowToPrint extends DataFlow::Configuration {
   }
 
   override predicate isSource(DataFlow::Node source) {
-    source = any(AuthCodeURL m).getACall().getResult()
+    source = any(AuthCodeUrl m).getACall().getResult()
   }
 
   override predicate isSink(DataFlow::Node sink) { this.isSink(sink, _) }
 }
 
 /** Holds if the provided `CallNode`'s result flows to an argument of a printer call. */
-predicate resultFlowsToPrinter(DataFlow::CallNode authCodeURLCall) {
+predicate resultFlowsToPrinter(DataFlow::CallNode authCodeUrlCall) {
   exists(FlowToPrint cfg, DataFlow::PathNode source, DataFlow::PathNode sink |
     cfg.hasFlowPath(source, sink) and
-    authCodeURLCall.getResult() = source.getNode()
+    authCodeUrlCall.getResult() = source.getNode()
   )
 }
 
@@ -188,9 +188,9 @@ predicate containsCallToStdinScanner(FuncDef funcDef) { getAScannerCall().getRoo
  * and a call to a scanner (`fmt.Scan` and similar),
  * all of which are typically done within a terminal session.
  */
-predicate seemsLikeDoneWithinATerminal(DataFlow::CallNode authCodeURLCall) {
-  resultFlowsToPrinter(authCodeURLCall) and
-  containsCallToStdinScanner(authCodeURLCall.getRoot())
+predicate seemsLikeDoneWithinATerminal(DataFlow::CallNode authCodeUrlCall) {
+  resultFlowsToPrinter(authCodeUrlCall) and
+  containsCallToStdinScanner(authCodeUrlCall.getRoot())
 }
 
 from

@@ -50,9 +50,14 @@ end
 
 sink(Foo.namedArg(foo: tainted)) # $ hasTaintFlow=tainted
 sink(Foo.namedArg(tainted))
+args = { foo: source("tainted") }
+sink(Foo.namedArg(**args)) # $ hasTaintFlow=tainted
 
 sink(Foo.anyArg(foo: tainted)) # $ hasTaintFlow=tainted
 sink(Foo.anyArg(tainted)) # $ hasTaintFlow=tainted
+
+sink(Foo.anyNamedArg(foo: tainted)) # $ hasTaintFlow=tainted
+sink(Foo.anyNamedArg(tainted))
 
 sink(Foo.anyPositionFromOne(tainted))
 sink(Foo.anyPositionFromOne(0, tainted)) # $ hasTaintFlow=tainted
@@ -72,14 +77,55 @@ Foo.startInNamedParameter(->(foo:) {
 })
 
 a = ["elem0", source("elem1"), source("elem2")]
-sink(a[0])
-sink(a[1]) # $ hasValueFlow=elem1
-sink(a[2]) # $ hasValueFlow=elem2
+a[rand()] = source("elem3")
+sink(a.readElementOne(1)) # $ hasValueFlow=elem1 $ hasValueFlow=elem3
+sink(a.readExactlyElementOne(1)) # $ hasValueFlow=elem1
+sink(a[0]) # $ hasValueFlow=elem3
+sink(a[1]) # $ hasValueFlow=elem1 $ hasValueFlow=elem3
+sink(a[2]) # $ hasValueFlow=elem2 $ hasValueFlow=elem3
 b = a.withElementOne()
-sink(b[0])
-sink(b[1]) # $ hasValueFlow=elem1
-sink(b[2])
+sink(b[0]) # $ hasValueFlow=elem3
+sink(b[1]) # $ hasValueFlow=elem1 $ hasValueFlow=elem3
+sink(b[2]) # $ hasValueFlow=elem3
+c = a.withExactlyElementOne()
+sink(c[0])
+sink(c[1]) # $ hasValueFlow=elem1
+sink(c[2])
+a.withoutExactlyElementOne()
+sink(a[0]) # $ hasValueFlow=elem3
+sink(a[1]) # $ hasValueFlow=elem3
+sink(a[2]) # $ hasValueFlow=elem2 $ hasValueFlow=elem3
 a.withoutElementOne()
 sink(a[0])
 sink(a[1])
 sink(a[2]) # $ hasValueFlow=elem2
+
+x = Foo.new
+x.set_value(source("attr"))
+sink(x.get_value) # $ hasValueFlow=attr
+
+x = Foo.new
+y = []
+z = []
+# This just highlights that none of x,y,z was tainted before
+sink(x)
+sink(y)
+sink(z)
+
+x.flowToAnyArg(tainted, y, key: z)
+sink(x)
+sink(y) # $ hasTaintFlow=tainted
+sink(z) # $ hasTaintFlow=tainted
+
+x = Foo.new
+x.flowToSelf(tainted)
+sink(x) # $ hasTaintFlow=tainted
+
+Foo.sinkAnyArg(tainted) # $ hasValueFlow=tainted
+Foo.sinkAnyArg(key: tainted) # $ hasValueFlow=tainted
+
+Foo.sinkAnyNamedArg(tainted)
+Foo.sinkAnyNamedArg(key: tainted) # $ hasValueFlow=tainted
+
+"magic_string".method(tainted) # $ hasValueFlow=tainted
+"magic_string2".method(tainted)

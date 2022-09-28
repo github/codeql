@@ -12,7 +12,7 @@ private import semmle.code.cpp.internal.ResolveClass
 class Specifier extends Element, @specifier {
   /** Gets a dummy location for the specifier. */
   override Location getLocation() {
-    suppressUnusedThis(this) and
+    exists(this) and
     result instanceof UnknownDefaultLocation
   }
 
@@ -256,9 +256,13 @@ class AttributeArgument extends Element, @attribute_arg {
 
   /**
    * Gets the text for the value of this argument, if its value is
-   * a string or a number.
+   * a constant or a token.
    */
-  string getValueText() { attribute_arg_value(underlyingElement(this), result) }
+  string getValueText() {
+    if underlyingElement(this) instanceof @attribute_arg_constant_expr
+    then result = this.getValueConstant().getValue()
+    else attribute_arg_value(underlyingElement(this), result)
+  }
 
   /**
    * Gets the value of this argument, if its value is integral.
@@ -269,6 +273,13 @@ class AttributeArgument extends Element, @attribute_arg {
    * Gets the value of this argument, if its value is a type.
    */
   Type getValueType() { attribute_arg_type(underlyingElement(this), unresolveElement(result)) }
+
+  /**
+   * Gets the value of this argument, if its value is a constant.
+   */
+  Expr getValueConstant() {
+    attribute_arg_constant(underlyingElement(this), unresolveElement(result))
+  }
 
   /**
    * Gets the attribute to which this is an argument.
@@ -294,11 +305,12 @@ class AttributeArgument extends Element, @attribute_arg {
         (
           if underlyingElement(this) instanceof @attribute_arg_type
           then tail = this.getValueType().getName()
-          else tail = this.getValueText()
+          else
+            if underlyingElement(this) instanceof @attribute_arg_constant_expr
+            then tail = this.getValueConstant().toString()
+            else tail = this.getValueText()
         ) and
         result = prefix + tail
       )
   }
 }
-
-private predicate suppressUnusedThis(Specifier s) { any() }

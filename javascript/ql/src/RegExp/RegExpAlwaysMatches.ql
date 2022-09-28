@@ -39,10 +39,10 @@ RegExpTerm getEffectiveRoot(RegExpTerm actualRoot) {
 /**
  * Holds if `term` contains an anchor on both ends.
  */
-predicate isPossiblyAnchoredOnBothEnds(RegExpSequence node) {
-  node.getAChild*() instanceof RegExpCaret and
-  node.getAChild*() instanceof RegExpDollar and
-  node.getNumChild() >= 2
+predicate isPossiblyAnchoredOnBothEnds(RegExpSequence term) {
+  term.getAChild*() instanceof RegExpCaret and
+  term.getAChild*() instanceof RegExpDollar and
+  term.getNumChild() >= 2
 }
 
 /**
@@ -54,6 +54,8 @@ predicate isUniversalRegExp(RegExpTerm term) {
     or
     child.(RegExpCharacterClass).isUniversalClass()
   )
+  or
+  term.(RegExpSequence).getNumChild() = 0
 }
 
 /**
@@ -116,6 +118,6 @@ where
     call instanceof RegExpSearchCall and
     not term.getAChild*() instanceof RegExpDollar and
     message =
-      "This regular expression always the matches at index 0 when used $@, as it matches the empty substring."
+      "This regular expression always matches at index 0 when used $@, as it matches the empty substring."
   )
 select term, message, call, "here"

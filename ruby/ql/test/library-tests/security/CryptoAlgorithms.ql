@@ -1,4 +1,4 @@
-import ruby
+import codeql.ruby.AST
 import codeql.ruby.security.CryptoAlgorithms
 
 query predicate weakHashingAlgorithms(HashingAlgorithm ha) { ha.isWeak() }

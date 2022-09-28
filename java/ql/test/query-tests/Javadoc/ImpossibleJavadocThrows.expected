@@ -1,2 +1,3 @@
 | ImpossibleJavadocThrows.java:9:5:9:12 | @throws | Javadoc for bad1 claims to throw InterruptedException but this is impossible. |
 | ImpossibleJavadocThrows.java:16:5:16:15 | @exception | Javadoc for bad2 claims to throw Exception but this is impossible. |
+| ImpossibleJavadocThrows.java:23:5:23:12 | @throws | Javadoc for bad3 claims to throw Runnable but this is impossible. |

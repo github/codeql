@@ -1271,12 +1271,21 @@ module InterProceduralPointsTo {
       )
     )
     or
+    non_escaping_global_transfer(pred_var, pred_context, succ_def, succ_context)
+  }
+
+  pragma[nomagic]
+  private predicate non_escaping_global_transfer(
+    EssaVariable pred_var, PointsToContext pred_context, ScopeEntryDefinition succ_def,
+    PointsToContext succ_context
+  ) {
     exists(NonEscapingGlobalVariable var |
       var = pred_var.getSourceVariable() and
       var = succ_def.getSourceVariable() and
       pred_var.getAUse() = succ_context.getRootCall() and
       pred_context.isImport() and
-      succ_context.appliesToScope(succ_def.getScope())
+      pragma[only_bind_into](succ_context)
+          .appliesToScope(pragma[only_bind_into](succ_def).getScope())
     )
   }
 

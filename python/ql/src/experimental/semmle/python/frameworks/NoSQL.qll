@@ -50,11 +50,11 @@ private module NoSql {
     t.start() and
     (
       exists(SubscriptNode subscript |
-        subscript.getObject() = mongoClientInstance().getAUse().asCfgNode() and
+        subscript.getObject() = mongoClientInstance().getAValueReachableFromSource().asCfgNode() and
         result.asCfgNode() = subscript
       )
       or
-      result.(DataFlow::AttrRead).getObject() = mongoClientInstance().getAUse()
+      result.(DataFlow::AttrRead).getObject() = mongoClientInstance().getAValueReachableFromSource()
       or
       result = mongoEngine().getMember(["get_db", "connect"]).getACall()
       or

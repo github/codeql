@@ -46,3 +46,5 @@ str_1 = "hello"
 int_1 = 123
 # File/IO write
 io_file.printf("%s: %d\n", str_1, int_1)
+File.write("foo.txt", "hello")
+File.atomic_write("foo.txt", "hello")

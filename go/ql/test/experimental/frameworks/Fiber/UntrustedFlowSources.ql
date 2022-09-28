@@ -7,7 +7,7 @@ class UntrustedFlowSourceTest extends InlineExpectationsTest {
 
   override string getARelevantTag() { result = "untrustedFlowSource" }
 
-  override predicate hasActualResult(string file, int line, string element, string tag, string value) {
+  override predicate hasActualResult(Location location, string element, string tag, string value) {
     tag = "untrustedFlowSource" and
     exists(DataFlow::CallNode sinkCall, DataFlow::ArgumentNode arg |
       sinkCall.getCalleeName() = "sink" and
@@ -16,7 +16,8 @@ class UntrustedFlowSourceTest extends InlineExpectationsTest {
     |
       element = arg.toString() and
       value = "" and
-      arg.hasLocationInfo(file, line, _, _, _)
+      arg.hasLocationInfo(location.getFile().getAbsolutePath(), location.getStartLine(),
+        location.getStartColumn(), location.getEndLine(), location.getEndColumn())
     )
   }
 }

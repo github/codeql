@@ -6,19 +6,42 @@ namespace System
     {
         namespace Metadata
         {
-            // Generated from `System.Reflection.Metadata.AssemblyExtensions` in `System.Runtime.Loader, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Reflection.Metadata.AssemblyExtensions` in `System.Runtime.Loader, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public static class AssemblyExtensions
             {
                 unsafe public static bool TryGetRawMetadata(this System.Reflection.Assembly assembly, out System.Byte* blob, out int length) => throw null;
+            }
+
+            // Generated from `System.Reflection.Metadata.MetadataUpdateHandlerAttribute` in `System.Runtime.Loader, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            public class MetadataUpdateHandlerAttribute : System.Attribute
+            {
+                public System.Type HandlerType { get => throw null; }
+                public MetadataUpdateHandlerAttribute(System.Type handlerType) => throw null;
+            }
+
+            // Generated from `System.Reflection.Metadata.MetadataUpdater` in `System.Runtime.Loader, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            public static class MetadataUpdater
+            {
+                public static void ApplyUpdate(System.Reflection.Assembly assembly, System.ReadOnlySpan<System.Byte> metadataDelta, System.ReadOnlySpan<System.Byte> ilDelta, System.ReadOnlySpan<System.Byte> pdbDelta) => throw null;
+                public static bool IsSupported { get => throw null; }
             }
 
         }
     }
     namespace Runtime
     {
+        namespace CompilerServices
+        {
+            // Generated from `System.Runtime.CompilerServices.CreateNewOnMetadataUpdateAttribute` in `System.Runtime.Loader, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            public class CreateNewOnMetadataUpdateAttribute : System.Attribute
+            {
+                public CreateNewOnMetadataUpdateAttribute() => throw null;
+            }
+
+        }
         namespace Loader
         {
-            // Generated from `System.Runtime.Loader.AssemblyDependencyResolver` in `System.Runtime.Loader, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Runtime.Loader.AssemblyDependencyResolver` in `System.Runtime.Loader, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class AssemblyDependencyResolver
             {
                 public AssemblyDependencyResolver(string componentAssemblyPath) => throw null;
@@ -26,10 +49,10 @@ namespace System
                 public string ResolveUnmanagedDllToPath(string unmanagedDllName) => throw null;
             }
 
-            // Generated from `System.Runtime.Loader.AssemblyLoadContext` in `System.Runtime.Loader, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Runtime.Loader.AssemblyLoadContext` in `System.Runtime.Loader, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class AssemblyLoadContext
             {
-                // Generated from `System.Runtime.Loader.AssemblyLoadContext+ContextualReflectionScope` in `System.Runtime.Loader, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+                // Generated from `System.Runtime.Loader.AssemblyLoadContext+ContextualReflectionScope` in `System.Runtime.Loader, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public struct ContextualReflectionScope : System.IDisposable
                 {
                     // Stub generator skipped constructor 

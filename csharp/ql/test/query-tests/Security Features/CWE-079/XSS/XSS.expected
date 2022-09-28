@@ -1,6 +1,10 @@
 edges
+| Index.cshtml:5:19:5:31 | access to property Query : IQueryCollection | Index.cshtml:14:16:14:22 | call to operator implicit conversion |
+| XSSAspNet.cs:19:25:19:43 | access to property QueryString : NameValueCollection | XSSAspNet.cs:19:25:19:52 | access to indexer : String |
 | XSSAspNet.cs:19:25:19:43 | access to property QueryString : NameValueCollection | XSSAspNet.cs:26:30:26:34 | access to local variable sayHi |
 | XSSAspNet.cs:19:25:19:43 | access to property QueryString : NameValueCollection | XSSAspNet.cs:36:40:36:44 | access to local variable sayHi |
+| XSSAspNet.cs:19:25:19:52 | access to indexer : String | XSSAspNet.cs:26:30:26:34 | access to local variable sayHi |
+| XSSAspNet.cs:19:25:19:52 | access to indexer : String | XSSAspNet.cs:36:40:36:44 | access to local variable sayHi |
 | XSSAspNet.cs:43:28:43:46 | access to property QueryString : NameValueCollection | XSSAspNet.cs:43:28:43:55 | access to indexer |
 | XSSAspNetCore.cs:21:52:21:64 | access to property Query : IQueryCollection | XSSAspNetCore.cs:21:52:21:76 | call to operator implicit conversion |
 | XSSAspNetCore.cs:40:56:40:58 | foo : String | XSSAspNetCore.cs:44:51:44:53 | access to parameter foo |
@@ -11,7 +15,10 @@ edges
 | XSSAspNetCore.cs:61:44:61:63 | access to indexer : StringValues | XSSAspNetCore.cs:61:44:61:66 | access to indexer |
 | XSSAspNetCore.cs:72:51:72:65 | access to property Headers : IHeaderDictionary | XSSAspNetCore.cs:72:51:72:72 | call to operator implicit conversion |
 nodes
+| Index.cshtml:5:19:5:31 | access to property Query : IQueryCollection | semmle.label | access to property Query : IQueryCollection |
+| Index.cshtml:14:16:14:22 | call to operator implicit conversion | semmle.label | call to operator implicit conversion |
 | XSSAspNet.cs:19:25:19:43 | access to property QueryString : NameValueCollection | semmle.label | access to property QueryString : NameValueCollection |
+| XSSAspNet.cs:19:25:19:52 | access to indexer : String | semmle.label | access to indexer : String |
 | XSSAspNet.cs:26:30:26:34 | access to local variable sayHi | semmle.label | access to local variable sayHi |
 | XSSAspNet.cs:36:40:36:44 | access to local variable sayHi | semmle.label | access to local variable sayHi |
 | XSSAspNet.cs:43:28:43:46 | access to property QueryString : NameValueCollection | semmle.label | access to property QueryString : NameValueCollection |
@@ -32,6 +39,7 @@ nodes
 | XSSAspNetCore.cs:72:51:72:72 | call to operator implicit conversion | semmle.label | call to operator implicit conversion |
 subpaths
 #select
+| Index.cshtml:14:16:14:22 | call to operator implicit conversion | Index.cshtml:5:19:5:31 | access to property Query : IQueryCollection | Index.cshtml:14:16:14:22 | call to operator implicit conversion | $@ flows to here and is written to HTML or JavaScript: Microsoft.AspNetCore.Mvc.ViewFeatures.HtmlHelper.Raw() method. | Index.cshtml:5:19:5:31 | access to property Query : IQueryCollection | User-provided value |
 | XSSAspNet.cs:26:30:26:34 | access to local variable sayHi | XSSAspNet.cs:19:25:19:43 | access to property QueryString : NameValueCollection | XSSAspNet.cs:26:30:26:34 | access to local variable sayHi | $@ flows to here and is written to HTML or JavaScript: System.Web.WebPages.WebPage.WriteLiteral() method. | XSSAspNet.cs:19:25:19:43 | access to property QueryString : NameValueCollection | User-provided value |
 | XSSAspNet.cs:36:40:36:44 | access to local variable sayHi | XSSAspNet.cs:19:25:19:43 | access to property QueryString : NameValueCollection | XSSAspNet.cs:36:40:36:44 | access to local variable sayHi | $@ flows to here and is written to HTML or JavaScript: System.Web.WebPages.WebPage.WriteLiteralTo() method. | XSSAspNet.cs:19:25:19:43 | access to property QueryString : NameValueCollection | User-provided value |
 | XSSAspNet.cs:43:28:43:55 | access to indexer | XSSAspNet.cs:43:28:43:46 | access to property QueryString : NameValueCollection | XSSAspNet.cs:43:28:43:55 | access to indexer | $@ flows to here and is written to HTML or JavaScript. | XSSAspNet.cs:43:28:43:46 | access to property QueryString : NameValueCollection | User-provided value |

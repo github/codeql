@@ -53,7 +53,7 @@ private module Aiomysql {
   class CursorExecuteCall extends SqlConstruction::Range, API::CallNode {
     CursorExecuteCall() { this = cursor().getMember("execute").getACall() }
 
-    override DataFlow::Node getSql() { result = this.getParameter(0, "operation").getARhs() }
+    override DataFlow::Node getSql() { result = this.getParameter(0, "operation").asSink() }
   }
 
   /**
@@ -63,7 +63,7 @@ private module Aiomysql {
   class AwaitedCursorExecuteCall extends SqlExecution::Range {
     CursorExecuteCall executeCall;
 
-    AwaitedCursorExecuteCall() { this = executeCall.getReturn().getAwaited().getAnImmediateUse() }
+    AwaitedCursorExecuteCall() { this = executeCall.getReturn().getAwaited().asSource() }
 
     override DataFlow::Node getSql() { result = executeCall.getSql() }
   }
@@ -94,7 +94,7 @@ private module Aiomysql {
   class SAConnectionExecuteCall extends SqlConstruction::Range, API::CallNode {
     SAConnectionExecuteCall() { this = saConnection().getMember("execute").getACall() }
 
-    override DataFlow::Node getSql() { result = this.getParameter(0, "query").getARhs() }
+    override DataFlow::Node getSql() { result = this.getParameter(0, "query").asSink() }
   }
 
   /**
@@ -104,7 +104,7 @@ private module Aiomysql {
   class AwaitedSAConnectionExecuteCall extends SqlExecution::Range {
     SAConnectionExecuteCall execute;
 
-    AwaitedSAConnectionExecuteCall() { this = execute.getReturn().getAwaited().getAnImmediateUse() }
+    AwaitedSAConnectionExecuteCall() { this = execute.getReturn().getAwaited().asSource() }
 
     override DataFlow::Node getSql() { result = execute.getSql() }
   }

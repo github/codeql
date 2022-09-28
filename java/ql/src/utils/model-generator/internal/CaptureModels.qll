@@ -5,7 +5,9 @@
 
 private import CaptureModelsSpecific
 
-class TargetApi = TargetApiSpecific;
+class DataFlowTargetApi extends TargetApiSpecific {
+  DataFlowTargetApi() { isRelevantForDataFlowModels(this) }
+}
 
 /**
  * Holds if data can flow from `node1` to `node2` either via a read or a write of an intermediate field `f`.
@@ -40,18 +42,23 @@ private predicate isRelevantContent(DataFlow::Content c) {
  * Gets the summary model for `api` with `input`, `output` and `kind`.
  */
 bindingset[input, output, kind]
-private string asSummaryModel(TargetApi api, string input, string output, string kind) {
+private string asSummaryModel(TargetApiSpecific api, string input, string output, string kind) {
   result =
     asPartialModel(api) + input + ";" //
       + output + ";" //
-      + "generated:" + kind
+      + kind + ";" //
+      + "generated"
+}
+
+string asNegativeSummaryModel(TargetApiSpecific api) {
+  result = asPartialNegativeModel(api) + "generated"
 }
 
 /**
  * Gets the value summary model for `api` with `input` and `output`.
  */
 bindingset[input, output]
-private string asValueModel(TargetApi api, string input, string output) {
+string asValueModel(TargetApiSpecific api, string input, string output) {
   result = asSummaryModel(api, input, output, "value")
 }
 
@@ -59,7 +66,7 @@ private string asValueModel(TargetApi api, string input, string output) {
  * Gets the taint summary model for `api` with `input` and `output`.
  */
 bindingset[input, output]
-private string asTaintModel(TargetApi api, string input, string output) {
+private string asTaintModel(TargetApiSpecific api, string input, string output) {
   result = asSummaryModel(api, input, output, "taint")
 }
 
@@ -67,22 +74,28 @@ private string asTaintModel(TargetApi api, string input, string output) {
  * Gets the sink model for `api` with `input` and `kind`.
  */
 bindingset[input, kind]
-private string asSinkModel(TargetApi api, string input, string kind) {
-  result = asPartialModel(api) + input + ";" + "generated:" + kind
+private string asSinkModel(TargetApiSpecific api, string input, string kind) {
+  result =
+    asPartialModel(api) + input + ";" //
+      + kind + ";" //
+      + "generated"
 }
 
 /**
  * Gets the source model for `api` with `output` and `kind`.
  */
 bindingset[output, kind]
-private string asSourceModel(TargetApi api, string output, string kind) {
-  result = asPartialModel(api) + output + ";" + "generated:" + kind
+private string asSourceModel(TargetApiSpecific api, string output, string kind) {
+  result =
+    asPartialModel(api) + output + ";" //
+      + kind + ";" //
+      + "generated"
 }
 
 /**
  * Gets the summary model of `api`, if it follows the `fluent` programming pattern (returns `this`).
  */
-string captureQualifierFlow(TargetApi api) {
+string captureQualifierFlow(TargetApiSpecific api) {
   exists(DataFlowImplCommon::ReturnNodeExt ret |
     api = returnNodeEnclosingCallable(ret) and
     isOwnInstanceAccessNode(ret)
@@ -131,7 +144,7 @@ private class ThroughFlowConfig extends TaintTracking::Configuration {
 
   override predicate isSource(DataFlow::Node source, DataFlow::FlowState state) {
     source instanceof DataFlow::ParameterNode and
-    source.getEnclosingCallable() instanceof TargetApi and
+    source.getEnclosingCallable() instanceof DataFlowTargetApi and
     state.(TaintRead).getStep() = 0
   }
 
@@ -175,7 +188,7 @@ private class ThroughFlowConfig extends TaintTracking::Configuration {
 /**
  * Gets the summary model(s) of `api`, if there is flow from parameters to return value or parameter.
  */
-string captureThroughFlow(TargetApi api) {
+string captureThroughFlow(DataFlowTargetApi api) {
   exists(
     ThroughFlowConfig config, DataFlow::ParameterNode p,
     DataFlowImplCommon::ReturnNodeExt returnNodeExt, string input, string output
@@ -202,7 +215,7 @@ private class FromSourceConfiguration extends TaintTracking::Configuration {
   override predicate isSource(DataFlow::Node source) { ExternalFlow::sourceNode(source, _) }
 
   override predicate isSink(DataFlow::Node sink) {
-    exists(TargetApi c |
+    exists(DataFlowTargetApi c |
       sink instanceof DataFlowImplCommon::ReturnNodeExt and
       sink.getEnclosingCallable() = c
     )
@@ -220,11 +233,12 @@ private class FromSourceConfiguration extends TaintTracking::Configuration {
 /**
  * Gets the source model(s) of `api`, if there is flow from an existing known source to the return of `api`.
  */
-string captureSource(TargetApi api) {
+string captureSource(DataFlowTargetApi api) {
   exists(DataFlow::Node source, DataFlow::Node sink, FromSourceConfiguration config, string kind |
     config.hasFlow(source, sink) and
     ExternalFlow::sourceNode(source, kind) and
     api = sink.getEnclosingCallable() and
+    isRelevantSourceKind(kind) and
     result = asSourceModel(api, returnNodeAsOutput(sink), kind)
   )
 }
@@ -249,7 +263,7 @@ private class PropagateToSinkConfiguration extends PropagateToSinkConfigurationS
 /**
  * Gets the sink model(s) of `api`, if there is flow from a parameter to an existing known sink.
  */
-string captureSink(TargetApi api) {
+string captureSink(DataFlowTargetApi api) {
   exists(DataFlow::Node src, DataFlow::Node sink, PropagateToSinkConfiguration config, string kind |
     config.hasFlow(src, sink) and
     ExternalFlow::sinkNode(sink, kind) and

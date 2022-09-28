@@ -240,7 +240,7 @@ module EntityFramework {
   private class SystemDataEntityDbSetSqlQuerySinkModelCsv extends SinkModelCsv {
     override predicate row(string row) {
       row =
-        "System.Data.Entity;DbSet;false;SqlQuery;(System.String,System.Object[]);;Argument[0];sql"
+        "System.Data.Entity;DbSet;false;SqlQuery;(System.String,System.Object[]);;Argument[0];sql;manual"
     }
   }
 
@@ -249,14 +249,14 @@ module EntityFramework {
     override predicate row(string row) {
       row =
         [
-          "System.Data.Entity;Database;false;SqlQuery;(System.Type,System.String,System.Object[]);;Argument[1];sql",
-          "System.Data.Entity;Database;false;SqlQuery<>;(System.String,System.Object[]);;Argument[0];sql",
-          "System.Data.Entity;Database;false;ExecuteSqlCommand;(System.String,System.Object[]);;Argument[0];sql",
-          "System.Data.Entity;Database;false;ExecuteSqlCommand;(System.Data.Entity.TransactionalBehavior,System.String,System.Object[]);;Argument[1];sql",
-          "System.Data.Entity;Database;false;ExecuteSqlCommandAsync;(System.Data.Entity.TransactionalBehavior,System.String,System.Threading.CancellationToken,System.Object[]);;Argument[1];sql",
-          "System.Data.Entity;Database;false;ExecuteSqlCommandAsync;(System.String,System.Threading.CancellationToken,System.Object[]);;Argument[0];sql",
-          "System.Data.Entity;Database;false;ExecuteSqlCommandAsync;(System.String,System.Object[]);;Argument[0];sql",
-          "System.Data.Entity;Database;false;ExecuteSqlCommandAsync;(System.Data.Entity.TransactionalBehavior,System.String,System.Object[]);;Argument[1];sql"
+          "System.Data.Entity;Database;false;SqlQuery;(System.Type,System.String,System.Object[]);;Argument[1];sql;manual",
+          "System.Data.Entity;Database;false;SqlQuery<>;(System.String,System.Object[]);;Argument[0];sql;manual",
+          "System.Data.Entity;Database;false;ExecuteSqlCommand;(System.String,System.Object[]);;Argument[0];sql;manual",
+          "System.Data.Entity;Database;false;ExecuteSqlCommand;(System.Data.Entity.TransactionalBehavior,System.String,System.Object[]);;Argument[1];sql;manual",
+          "System.Data.Entity;Database;false;ExecuteSqlCommandAsync;(System.Data.Entity.TransactionalBehavior,System.String,System.Threading.CancellationToken,System.Object[]);;Argument[1];sql;manual",
+          "System.Data.Entity;Database;false;ExecuteSqlCommandAsync;(System.String,System.Threading.CancellationToken,System.Object[]);;Argument[0];sql;manual",
+          "System.Data.Entity;Database;false;ExecuteSqlCommandAsync;(System.String,System.Object[]);;Argument[0];sql;manual",
+          "System.Data.Entity;Database;false;ExecuteSqlCommandAsync;(System.Data.Entity.TransactionalBehavior,System.String,System.Object[]);;Argument[1];sql;manual"
         ]
     }
   }
@@ -266,7 +266,7 @@ module EntityFramework {
     override predicate row(string row) {
       row =
         [
-          "Microsoft.EntityFrameworkCore;RelationalQueryableExtensions;false;FromSqlRaw<>;(Microsoft.EntityFrameworkCore.DbSet<TEntity>,System.String,System.Object[]);;Argument[1];sql",
+          "Microsoft.EntityFrameworkCore;RelationalQueryableExtensions;false;FromSqlRaw<>;(Microsoft.EntityFrameworkCore.DbSet<TEntity>,System.String,System.Object[]);;Argument[1];sql;manual",
         ]
     }
   }
@@ -276,11 +276,11 @@ module EntityFramework {
     override predicate row(string row) {
       row =
         [
-          "Microsoft.EntityFrameworkCore;RelationalDatabaseFacadeExtensions;false;ExecuteSqlRaw;(Microsoft.EntityFrameworkCore.Infrastructure.DatabaseFacade,System.String,System.Collections.Generic.IEnumerable<System.Object>);;Argument[1];sql",
-          "Microsoft.EntityFrameworkCore;RelationalDatabaseFacadeExtensions;false;ExecuteSqlRaw;(Microsoft.EntityFrameworkCore.Infrastructure.DatabaseFacade,System.String,System.Object[]);;Argument[1];sql",
-          "Microsoft.EntityFrameworkCore;RelationalDatabaseFacadeExtensions;false;ExecuteSqlRawAsync;(Microsoft.EntityFrameworkCore.Infrastructure.DatabaseFacade,System.String,System.Threading.CancellationToken);;Argument[1];sql",
-          "Microsoft.EntityFrameworkCore;RelationalDatabaseFacadeExtensions;false;ExecuteSqlRawAsync;(Microsoft.EntityFrameworkCore.Infrastructure.DatabaseFacade,System.String,System.Object[]);;Argument[1];sql",
-          "Microsoft.EntityFrameworkCore;RelationalDatabaseFacadeExtensions;false;ExecuteSqlRawAsync;(Microsoft.EntityFrameworkCore.Infrastructure.DatabaseFacade,System.String,System.Collections.Generic.IEnumerable<System.Object>,System.Threading.CancellationToken);;Argument[1];sql",
+          "Microsoft.EntityFrameworkCore;RelationalDatabaseFacadeExtensions;false;ExecuteSqlRaw;(Microsoft.EntityFrameworkCore.Infrastructure.DatabaseFacade,System.String,System.Collections.Generic.IEnumerable<System.Object>);;Argument[1];sql;manual",
+          "Microsoft.EntityFrameworkCore;RelationalDatabaseFacadeExtensions;false;ExecuteSqlRaw;(Microsoft.EntityFrameworkCore.Infrastructure.DatabaseFacade,System.String,System.Object[]);;Argument[1];sql;manual",
+          "Microsoft.EntityFrameworkCore;RelationalDatabaseFacadeExtensions;false;ExecuteSqlRawAsync;(Microsoft.EntityFrameworkCore.Infrastructure.DatabaseFacade,System.String,System.Threading.CancellationToken);;Argument[1];sql;manual",
+          "Microsoft.EntityFrameworkCore;RelationalDatabaseFacadeExtensions;false;ExecuteSqlRawAsync;(Microsoft.EntityFrameworkCore.Infrastructure.DatabaseFacade,System.String,System.Object[]);;Argument[1];sql;manual",
+          "Microsoft.EntityFrameworkCore;RelationalDatabaseFacadeExtensions;false;ExecuteSqlRawAsync;(Microsoft.EntityFrameworkCore.Infrastructure.DatabaseFacade,System.String,System.Collections.Generic.IEnumerable<System.Object>,System.Threading.CancellationToken);;Argument[1];sql;manual",
         ]
     }
   }

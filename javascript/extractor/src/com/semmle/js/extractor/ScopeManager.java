@@ -97,20 +97,31 @@ public class ScopeManager {
     }
   }
 
+  public static enum FileKind {
+    /** Any file not specific to one of the other file kinds. */
+    PLAIN,
+
+    /** A file potentially containing template tags. */
+    TEMPLATE,
+
+    /** A d.ts file, containing TypeScript ambient declarations. */
+    TYPESCRIPT_DECLARATION,
+  }
+
   private final TrapWriter trapWriter;
   private Scope curScope;
   private final Scope toplevelScope;
   private final ECMAVersion ecmaVersion;
   private final Set<String> implicitGlobals = new LinkedHashSet<String>();
   private Scope implicitVariableScope;
-  private final boolean isInTemplateScope;
+  private final FileKind fileKind;
 
-  public ScopeManager(TrapWriter trapWriter, ECMAVersion ecmaVersion, boolean isInTemplateScope) {
+  public ScopeManager(TrapWriter trapWriter, ECMAVersion ecmaVersion, FileKind fileKind) {
     this.trapWriter = trapWriter;
     this.toplevelScope = enterScope(ScopeKind.GLOBAL, trapWriter.globalID("global_scope"), null);
     this.ecmaVersion = ecmaVersion;
-    this.implicitVariableScope = toplevelScope; 
-    this.isInTemplateScope = isInTemplateScope;
+    this.implicitVariableScope = toplevelScope;
+    this.fileKind = fileKind;
   }
 
   /**
@@ -118,7 +129,11 @@ public class ScopeManager {
    * relevant template tags.
    */
   public boolean isInTemplateFile() {
-    return isInTemplateScope;
+    return this.fileKind == FileKind.TEMPLATE;
+  }
+
+  public boolean isInTypeScriptDeclarationFile() {
+    return this.fileKind == FileKind.TYPESCRIPT_DECLARATION;
   }
 
   /**
@@ -221,7 +236,7 @@ public class ScopeManager {
 
   /**
    * Get the label for a given variable in the current scope; if it cannot be found, add it to the
-   * implicit variable scope (usually the global scope). 
+   * implicit variable scope (usually the global scope).
    */
   public Label getVarKey(String name) {
     Label lbl = curScope.lookupVariable(name);
@@ -411,7 +426,7 @@ public class ScopeManager {
       // cases where we turn on the 'declKind' flags
       @Override
       public Void visit(FunctionDeclaration nd, Void v) {
-        if (nd.hasDeclareKeyword()) return null;
+        if (nd.hasDeclareKeyword() && !isInTypeScriptDeclarationFile()) return null;
         // strict mode functions are block-scoped, non-strict mode ones aren't
         if (blockscope == isStrict) visit(nd.getId(), DeclKind.var);
         return null;
@@ -419,7 +434,7 @@ public class ScopeManager {
 
       @Override
       public Void visit(ClassDeclaration nd, Void c) {
-        if (nd.hasDeclareKeyword()) return null;
+        if (nd.hasDeclareKeyword() && !isInTypeScriptDeclarationFile()) return null;
         if (blockscope) visit(nd.getClassDef().getId(), DeclKind.varAndType);
         return null;
       }
@@ -468,7 +483,7 @@ public class ScopeManager {
 
       @Override
       public Void visit(VariableDeclaration nd, Void v) {
-        if (nd.hasDeclareKeyword()) return null;
+        if (nd.hasDeclareKeyword() && !isInTypeScriptDeclarationFile()) return null;
         // in block scoping mode, only process 'let'; in non-block scoping
         // mode, only process non-'let'
         if (blockscope == nd.isBlockScoped(ecmaVersion)) visit(nd.getDeclarations());
@@ -503,7 +518,8 @@ public class ScopeManager {
       @Override
       public Void visit(NamespaceDeclaration nd, Void c) {
         if (blockscope) return null;
-        boolean hasVariable = nd.isInstantiated() && !nd.hasDeclareKeyword();
+        boolean isAmbientOutsideDtsFile = nd.hasDeclareKeyword() && !isInTypeScriptDeclarationFile();
+        boolean hasVariable = nd.isInstantiated() && !isAmbientOutsideDtsFile;
         visit(nd.getName(), hasVariable ? DeclKind.varAndNamespace : DeclKind.namespace);
         return null;
       }

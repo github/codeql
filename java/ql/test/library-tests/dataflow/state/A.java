@@ -1,15 +1,20 @@
+import java.util.Map;
 import java.util.function.*;
 
 public class A {
-  Object source(String state) { return null; }
+  Object source(String state) {
+    return null;
+  }
 
-  void sink(Object x, String state) { }
+  void sink(Object x, String state) {}
 
-  void stateBarrier(Object x, String state) { }
+  void stateBarrier(Object x, String state) {}
 
-  Object step(Object x, String s1, String s2) { return null; }
+  Object step(Object x, String s1, String s2) {
+    return null;
+  }
 
-  void check(Object x) { }
+  void check(Object x) {}
 
   void test1() {
     Object x = source("A");
@@ -30,5 +35,14 @@ public class A {
     sink(x, "A");
     sink(x, "B"); // $ flow=B
     sink(x, "C"); // $ flow=B
+  }
+
+  void test3(Map m) {
+    // Test implicit reads
+    Object x = source("A");
+    m.put("k", x);
+    sink(m, "A"); // $ flow=A
+    Object y = step(m, "A", "B");
+    sink(y, "B"); // $ flow=A
   }
 }

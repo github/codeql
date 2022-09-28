@@ -46,7 +46,7 @@ end
 module M2
     class C3 < M1::C1 #$ use=getMember("M1").getMember("C1")
     end
-    
+
     class C4 < C2 #$ use=getMember("C2")
     end
 end
@@ -65,6 +65,6 @@ Foo.foo(a,b:c) #$ use=getMember("Foo").getMethod("foo").getReturn() def=getMembe
 
 def userDefinedFunction(x, y)
     x.noApiGraph(y)
-    x.customEntryPointCall(y) #$ call=CustomEntryPointCall use=CustomEntryPointCall.getReturn() rhs=CustomEntryPointCall.getParameter(0)
-    x.customEntryPointUse(y) #$ use=CustomEntryPointUse
+    x.customEntryPointCall(y) #$ call=entryPoint("CustomEntryPointCall") use=entryPoint("CustomEntryPointCall").getReturn() rhs=entryPoint("CustomEntryPointCall").getParameter(0)
+    x.customEntryPointUse(y) #$ use=entryPoint("CustomEntryPointUse")
 end

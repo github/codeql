@@ -13,25 +13,18 @@ import DataFlow::PathGraph
 import semmle.go.dataflow.internal.TaintTrackingUtil
 
 /**
- * A barrier-guard, which represents comparison and equality with zero.
+ * Holds if `g` is a barrier-guard which checks `e` is nonzero on `branch`.
  */
-class DivideByZeroSanitizerGuard extends DataFlow::BarrierGuard {
-  DivideByZeroSanitizerGuard() {
-    this.(DataFlow::EqualityTestNode).getAnOperand().getNumericValue() = 0 or
-    this.(DataFlow::RelationalComparisonNode).getAnOperand().getNumericValue() = 0
-  }
-
-  override predicate checks(Expr e, boolean branch) {
-    exists(DataFlow::Node zero, DataFlow::Node checked |
-      zero.getNumericValue() = 0 and
-      e = checked.asExpr() and
-      checked.getType().getUnderlyingType() instanceof IntegerType and
-      (
-        this.(DataFlow::EqualityTestNode).eq(branch.booleanNot(), checked, zero) or
-        this.(DataFlow::RelationalComparisonNode).leq(branch.booleanNot(), checked, zero, 0)
-      )
+predicate divideByZeroSanitizerGuard(DataFlow::Node g, Expr e, boolean branch) {
+  exists(DataFlow::Node zero, DataFlow::Node checked |
+    zero.getNumericValue() = 0 and
+    e = checked.asExpr() and
+    checked.getType().getUnderlyingType() instanceof IntegerType and
+    (
+      g.(DataFlow::EqualityTestNode).eq(branch.booleanNot(), checked, zero) or
+      g.(DataFlow::RelationalComparisonNode).leq(branch.booleanNot(), checked, zero, 0)
     )
-  }
+  )
 }
 
 /**
@@ -50,8 +43,8 @@ class DivideByZeroCheckConfig extends TaintTracking::Configuration {
     )
   }
 
-  override predicate isSanitizerGuard(DataFlow::BarrierGuard guard) {
-    guard instanceof DivideByZeroSanitizerGuard
+  override predicate isSanitizer(DataFlow::Node node) {
+    node = DataFlow::BarrierGuard<divideByZeroSanitizerGuard/3>::getABarrierNode()
   }
 
   override predicate isSink(DataFlow::Node sink) {

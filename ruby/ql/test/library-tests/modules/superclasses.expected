@@ -1,7 +1,7 @@
-#-----| BasicObject
-
 #-----| Class
 #-----|  -> Module
+
+#-----| BasicObject
 
 #-----| Complex
 #-----|  -> Numeric
@@ -29,43 +29,69 @@
 #-----|  -> Object
 
 calls.rb:
-#   15| M
+#   21| M
 
-#   29| C
+#   43| C
 #-----|  -> Object
 
-#   51| D
+#   65| D
 #-----|  -> C
 
-#   77| Integer
+#   91| Integer
 #-----|  -> Numeric
 
-#   82| String
+#   96| String
 #-----|  -> Object
 
-#   86| Kernel
+#  100| Kernel
 
-#   90| Module
+#  105| Module
 #-----|  -> Object
 
-#   97| Object
+#  112| Object
 #-----|  -> BasicObject
 
-#  102| Hash
+#  117| Hash
 #-----|  -> Object
 
-#  106| Array
+#  122| Array
 #-----|  -> Object
 
-#  144| S
+#  162| S
 #-----|  -> Object
 
-#  150| A
+#  168| A
 #-----|  -> B
 #-----|  -> S
 
-#  155| B
+#  173| B
 #-----|  -> S
+
+#  187| Singletons
+#-----|  -> Object
+
+#  307| SelfNew
+#-----|  -> Object
+
+#  322| C1
+#-----|  -> Object
+
+#  328| C2
+#-----|  -> C1
+
+#  334| C3
+#-----|  -> C2
+
+#  374| SingletonOverride1
+#-----|  -> Object
+
+#  399| SingletonOverride2
+#-----|  -> SingletonOverride1
+
+#  414| ConditionalInstanceMethods
+#-----|  -> Object
+
+#  477| ExtendSingletonMethod
 
 hello.rb:
 #    1| EnglishWords
@@ -144,7 +170,7 @@ modules.rb:
 #  116| XX::YY
 #-----|  -> YY
 
-#  120| Test::Foo1::Bar::Baz
+#  123| Test::Foo1::Bar::Baz
 
 modules_rec.rb:
 #    1| B::A
@@ -158,3 +184,9 @@ private.rb:
 #-----|  -> Object
 
 #   42| F
+
+#   62| PrivateOverride1
+#-----|  -> Object
+
+#   76| PrivateOverride2
+#-----|  -> PrivateOverride1

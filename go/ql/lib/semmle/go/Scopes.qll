@@ -130,7 +130,7 @@ class Entity extends @object {
    * The location spans column `startcolumn` of line `startline` to
    * column `endcolumn` of line `endline` in file `filepath`.
    * For more information, see
-   * [LGTM locations](https://lgtm.com/help/ql/locations).
+   * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
    */
   predicate hasLocationInfo(
     string filepath, int startline, int startcolumn, int endline, int endcolumn
@@ -632,7 +632,7 @@ class Callable extends TCallable {
    * The location spans column `sc` of line `sl` to
    * column `ec` of line `el` in file `fp`.
    * For more information, see
-   * [Locations](https://help.semmle.com/QL/learn-ql/ql/locations.html).
+   * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
    */
   predicate hasLocationInfo(string fp, int sl, int sc, int el, int ec) {
     this.asFunction().hasLocationInfo(fp, sl, sc, el, ec) or

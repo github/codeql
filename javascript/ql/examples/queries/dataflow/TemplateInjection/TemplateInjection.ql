@@ -14,7 +14,7 @@ import DataFlow::PathGraph
 /**
  * Gets the name of an unescaped placeholder in a lodash template.
  *
- * For example, the string `<h1><%= title %></h1>` contains the placeholder `title`.
+ * For example, the string `"<h1><%= title %></h1>"` contains the placeholder "title".
  */
 bindingset[s]
 string getAPlaceholderInString(string s) {

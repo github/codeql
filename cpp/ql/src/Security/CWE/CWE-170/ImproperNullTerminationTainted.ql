@@ -86,4 +86,5 @@ class TaintSource extends VariableAccess {
 
 from TaintSource source, VariableAccess sink
 where source.reaches(sink)
-select sink, "$@ flows to here and may not be null terminated.", source, "User-provided value"
+select sink, "String operation depends on a $@ that may not be null terminated.", source,
+  "user-provided value"

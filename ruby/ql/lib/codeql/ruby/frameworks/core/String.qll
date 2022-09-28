@@ -20,6 +20,8 @@ class StringSubstitutionCall extends DataFlow::CallNode {
     this.getMethodName() = ["sub", "sub!", "gsub", "gsub!"] and
     exists(this.getReceiver()) and
     this.getNumberOfArguments() = 2
+    or
+    this.getNumberOfArguments() = 1 and exists(this.getBlock())
   }
 
   /**
@@ -45,9 +47,10 @@ class StringSubstitutionCall extends DataFlow::CallNode {
    * call, if any.
    */
   RE::RegExpPatternSource getPatternRegExp() {
-    // TODO: using local flow means we miss regexps defined as constants outside
-    // of the function scope.
     result.(DataFlow::LocalSourceNode).flowsTo(this.getPatternArgument())
+    or
+    result.asExpr().getExpr() =
+      this.getPatternArgument().asExpr().getExpr().(ConstantReadAccess).getValue()
   }
 
   /**
@@ -59,11 +62,19 @@ class StringSubstitutionCall extends DataFlow::CallNode {
   }
 
   /**
-   * Gets the string value passed as the second (replacement) argument in this
-   * call, if any.
+   * Gets the string value used to replace instances of the pattern, if any.
+   * This includes values passed explicitly as the second argument and values
+   * returned from the block, if one is given.
    */
   string getReplacementString() {
     result = this.getReplacementArgument().asExpr().getConstantValue().getString()
+    or
+    exists(DataFlow::Node blockReturnNode, DataFlow::LocalSourceNode stringNode |
+      exprNodeReturnedFrom(blockReturnNode, this.getBlock().asExpr().getExpr())
+    |
+      stringNode.flowsTo(blockReturnNode) and
+      result = stringNode.asExpr().getConstantValue().getString()
+    )
   }
 
   /** Gets a string that is being replaced by this call. */
@@ -77,7 +88,6 @@ class StringSubstitutionCall extends DataFlow::CallNode {
   predicate replaces(string old, string new) {
     old = this.getAReplacedString() and
     new = this.getReplacementString()
-    // TODO: handle block-variant of the call
   }
 }
 

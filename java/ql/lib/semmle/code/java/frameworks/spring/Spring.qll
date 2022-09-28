@@ -13,6 +13,7 @@ import semmle.code.java.frameworks.spring.SpringContext
 import semmle.code.java.frameworks.spring.SpringComponentScan
 import semmle.code.java.frameworks.spring.SpringConstructorArg
 import semmle.code.java.frameworks.spring.SpringController
+import semmle.code.java.frameworks.spring.SpringData
 import semmle.code.java.frameworks.spring.SpringDescription
 import semmle.code.java.frameworks.spring.SpringEntry
 import semmle.code.java.frameworks.spring.SpringFlex

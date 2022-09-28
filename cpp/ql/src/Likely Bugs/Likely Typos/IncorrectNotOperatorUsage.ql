@@ -10,7 +10,6 @@
  * @precision medium
  * @tags security
  *       external/cwe/cwe-480
- *       external/microsoft/c6317
  */
 
 import cpp

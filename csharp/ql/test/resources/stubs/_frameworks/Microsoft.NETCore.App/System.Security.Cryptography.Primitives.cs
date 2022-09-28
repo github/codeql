@@ -6,7 +6,7 @@ namespace System
     {
         namespace Cryptography
         {
-            // Generated from `System.Security.Cryptography.AsymmetricAlgorithm` in `System.Security.Cryptography.Primitives, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Security.Cryptography.AsymmetricAlgorithm` in `System.Security.Cryptography.Primitives, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public abstract class AsymmetricAlgorithm : System.IDisposable
             {
                 protected AsymmetricAlgorithm() => throw null;
@@ -40,17 +40,17 @@ namespace System
                 public virtual bool TryExportSubjectPublicKeyInfo(System.Span<System.Byte> destination, out int bytesWritten) => throw null;
             }
 
-            // Generated from `System.Security.Cryptography.CipherMode` in `System.Security.Cryptography.Primitives, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum CipherMode
+            // Generated from `System.Security.Cryptography.CipherMode` in `System.Security.Cryptography.Primitives, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            public enum CipherMode : int
             {
-                CBC,
-                CFB,
-                CTS,
-                ECB,
-                OFB,
+                CBC = 1,
+                CFB = 4,
+                CTS = 5,
+                ECB = 2,
+                OFB = 3,
             }
 
-            // Generated from `System.Security.Cryptography.CryptoStream` in `System.Security.Cryptography.Primitives, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Security.Cryptography.CryptoStream` in `System.Security.Cryptography.Primitives, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class CryptoStream : System.IO.Stream, System.IDisposable
             {
                 public override System.IAsyncResult BeginRead(System.Byte[] buffer, int offset, int count, System.AsyncCallback callback, object state) => throw null;
@@ -59,6 +59,8 @@ namespace System
                 public override bool CanSeek { get => throw null; }
                 public override bool CanWrite { get => throw null; }
                 public void Clear() => throw null;
+                public override void CopyTo(System.IO.Stream destination, int bufferSize) => throw null;
+                public override System.Threading.Tasks.Task CopyToAsync(System.IO.Stream destination, int bufferSize, System.Threading.CancellationToken cancellationToken) => throw null;
                 public CryptoStream(System.IO.Stream stream, System.Security.Cryptography.ICryptoTransform transform, System.Security.Cryptography.CryptoStreamMode mode) => throw null;
                 public CryptoStream(System.IO.Stream stream, System.Security.Cryptography.ICryptoTransform transform, System.Security.Cryptography.CryptoStreamMode mode, bool leaveOpen) => throw null;
                 protected override void Dispose(bool disposing) => throw null;
@@ -74,29 +76,31 @@ namespace System
                 public override System.Int64 Position { get => throw null; set => throw null; }
                 public override int Read(System.Byte[] buffer, int offset, int count) => throw null;
                 public override System.Threading.Tasks.Task<int> ReadAsync(System.Byte[] buffer, int offset, int count, System.Threading.CancellationToken cancellationToken) => throw null;
+                public override System.Threading.Tasks.ValueTask<int> ReadAsync(System.Memory<System.Byte> buffer, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
                 public override int ReadByte() => throw null;
                 public override System.Int64 Seek(System.Int64 offset, System.IO.SeekOrigin origin) => throw null;
                 public override void SetLength(System.Int64 value) => throw null;
                 public override void Write(System.Byte[] buffer, int offset, int count) => throw null;
                 public override System.Threading.Tasks.Task WriteAsync(System.Byte[] buffer, int offset, int count, System.Threading.CancellationToken cancellationToken) => throw null;
+                public override System.Threading.Tasks.ValueTask WriteAsync(System.ReadOnlyMemory<System.Byte> buffer, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
                 public override void WriteByte(System.Byte value) => throw null;
             }
 
-            // Generated from `System.Security.Cryptography.CryptoStreamMode` in `System.Security.Cryptography.Primitives, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum CryptoStreamMode
+            // Generated from `System.Security.Cryptography.CryptoStreamMode` in `System.Security.Cryptography.Primitives, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            public enum CryptoStreamMode : int
             {
-                Read,
-                Write,
+                Read = 0,
+                Write = 1,
             }
 
-            // Generated from `System.Security.Cryptography.CryptographicOperations` in `System.Security.Cryptography.Primitives, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Security.Cryptography.CryptographicOperations` in `System.Security.Cryptography.Primitives, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public static class CryptographicOperations
             {
                 public static bool FixedTimeEquals(System.ReadOnlySpan<System.Byte> left, System.ReadOnlySpan<System.Byte> right) => throw null;
                 public static void ZeroMemory(System.Span<System.Byte> buffer) => throw null;
             }
 
-            // Generated from `System.Security.Cryptography.CryptographicUnexpectedOperationException` in `System.Security.Cryptography.Primitives, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Security.Cryptography.CryptographicUnexpectedOperationException` in `System.Security.Cryptography.Primitives, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class CryptographicUnexpectedOperationException : System.Security.Cryptography.CryptographicException
             {
                 public CryptographicUnexpectedOperationException() => throw null;
@@ -106,7 +110,7 @@ namespace System
                 public CryptographicUnexpectedOperationException(string format, string insert) => throw null;
             }
 
-            // Generated from `System.Security.Cryptography.HMAC` in `System.Security.Cryptography.Primitives, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Security.Cryptography.HMAC` in `System.Security.Cryptography.Primitives, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public abstract class HMAC : System.Security.Cryptography.KeyedHashAlgorithm
             {
                 protected int BlockSizeValue { get => throw null; set => throw null; }
@@ -123,7 +127,7 @@ namespace System
                 protected override bool TryHashFinal(System.Span<System.Byte> destination, out int bytesWritten) => throw null;
             }
 
-            // Generated from `System.Security.Cryptography.HashAlgorithm` in `System.Security.Cryptography.Primitives, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Security.Cryptography.HashAlgorithm` in `System.Security.Cryptography.Primitives, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public abstract class HashAlgorithm : System.IDisposable, System.Security.Cryptography.ICryptoTransform
             {
                 public virtual bool CanReuseTransform { get => throw null; }
@@ -155,7 +159,7 @@ namespace System
                 protected virtual bool TryHashFinal(System.Span<System.Byte> destination, out int bytesWritten) => throw null;
             }
 
-            // Generated from `System.Security.Cryptography.HashAlgorithmName` in `System.Security.Cryptography.Primitives, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Security.Cryptography.HashAlgorithmName` in `System.Security.Cryptography.Primitives, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct HashAlgorithmName : System.IEquatable<System.Security.Cryptography.HashAlgorithmName>
             {
                 public static bool operator !=(System.Security.Cryptography.HashAlgorithmName left, System.Security.Cryptography.HashAlgorithmName right) => throw null;
@@ -176,7 +180,7 @@ namespace System
                 public static bool TryFromOid(string oidValue, out System.Security.Cryptography.HashAlgorithmName value) => throw null;
             }
 
-            // Generated from `System.Security.Cryptography.ICryptoTransform` in `System.Security.Cryptography.Primitives, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Security.Cryptography.ICryptoTransform` in `System.Security.Cryptography.Primitives, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public interface ICryptoTransform : System.IDisposable
             {
                 bool CanReuseTransform { get; }
@@ -187,7 +191,7 @@ namespace System
                 System.Byte[] TransformFinalBlock(System.Byte[] inputBuffer, int inputOffset, int inputCount);
             }
 
-            // Generated from `System.Security.Cryptography.KeySizes` in `System.Security.Cryptography.Primitives, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Security.Cryptography.KeySizes` in `System.Security.Cryptography.Primitives, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class KeySizes
             {
                 public KeySizes(int minSize, int maxSize, int skipSize) => throw null;
@@ -196,7 +200,7 @@ namespace System
                 public int SkipSize { get => throw null; }
             }
 
-            // Generated from `System.Security.Cryptography.KeyedHashAlgorithm` in `System.Security.Cryptography.Primitives, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Security.Cryptography.KeyedHashAlgorithm` in `System.Security.Cryptography.Primitives, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public abstract class KeyedHashAlgorithm : System.Security.Cryptography.HashAlgorithm
             {
                 public static System.Security.Cryptography.KeyedHashAlgorithm Create() => throw null;
@@ -207,27 +211,27 @@ namespace System
                 protected KeyedHashAlgorithm() => throw null;
             }
 
-            // Generated from `System.Security.Cryptography.PaddingMode` in `System.Security.Cryptography.Primitives, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum PaddingMode
+            // Generated from `System.Security.Cryptography.PaddingMode` in `System.Security.Cryptography.Primitives, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            public enum PaddingMode : int
             {
-                ANSIX923,
-                ISO10126,
-                None,
-                PKCS7,
-                Zeros,
+                ANSIX923 = 4,
+                ISO10126 = 5,
+                None = 1,
+                PKCS7 = 2,
+                Zeros = 3,
             }
 
-            // Generated from `System.Security.Cryptography.PbeEncryptionAlgorithm` in `System.Security.Cryptography.Primitives, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum PbeEncryptionAlgorithm
+            // Generated from `System.Security.Cryptography.PbeEncryptionAlgorithm` in `System.Security.Cryptography.Primitives, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            public enum PbeEncryptionAlgorithm : int
             {
-                Aes128Cbc,
-                Aes192Cbc,
-                Aes256Cbc,
-                TripleDes3KeyPkcs12,
-                Unknown,
+                Aes128Cbc = 1,
+                Aes192Cbc = 2,
+                Aes256Cbc = 3,
+                TripleDes3KeyPkcs12 = 4,
+                Unknown = 0,
             }
 
-            // Generated from `System.Security.Cryptography.PbeParameters` in `System.Security.Cryptography.Primitives, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Security.Cryptography.PbeParameters` in `System.Security.Cryptography.Primitives, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class PbeParameters
             {
                 public System.Security.Cryptography.PbeEncryptionAlgorithm EncryptionAlgorithm { get => throw null; }
@@ -236,7 +240,7 @@ namespace System
                 public PbeParameters(System.Security.Cryptography.PbeEncryptionAlgorithm encryptionAlgorithm, System.Security.Cryptography.HashAlgorithmName hashAlgorithm, int iterationCount) => throw null;
             }
 
-            // Generated from `System.Security.Cryptography.SymmetricAlgorithm` in `System.Security.Cryptography.Primitives, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Security.Cryptography.SymmetricAlgorithm` in `System.Security.Cryptography.Primitives, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public abstract class SymmetricAlgorithm : System.IDisposable
             {
                 public virtual int BlockSize { get => throw null; set => throw null; }
@@ -248,12 +252,33 @@ namespace System
                 public abstract System.Security.Cryptography.ICryptoTransform CreateDecryptor(System.Byte[] rgbKey, System.Byte[] rgbIV);
                 public virtual System.Security.Cryptography.ICryptoTransform CreateEncryptor() => throw null;
                 public abstract System.Security.Cryptography.ICryptoTransform CreateEncryptor(System.Byte[] rgbKey, System.Byte[] rgbIV);
+                public System.Byte[] DecryptCbc(System.Byte[] ciphertext, System.Byte[] iv, System.Security.Cryptography.PaddingMode paddingMode = default(System.Security.Cryptography.PaddingMode)) => throw null;
+                public System.Byte[] DecryptCbc(System.ReadOnlySpan<System.Byte> ciphertext, System.ReadOnlySpan<System.Byte> iv, System.Security.Cryptography.PaddingMode paddingMode = default(System.Security.Cryptography.PaddingMode)) => throw null;
+                public int DecryptCbc(System.ReadOnlySpan<System.Byte> ciphertext, System.ReadOnlySpan<System.Byte> iv, System.Span<System.Byte> destination, System.Security.Cryptography.PaddingMode paddingMode = default(System.Security.Cryptography.PaddingMode)) => throw null;
+                public System.Byte[] DecryptCfb(System.Byte[] ciphertext, System.Byte[] iv, System.Security.Cryptography.PaddingMode paddingMode = default(System.Security.Cryptography.PaddingMode), int feedbackSizeInBits = default(int)) => throw null;
+                public System.Byte[] DecryptCfb(System.ReadOnlySpan<System.Byte> ciphertext, System.ReadOnlySpan<System.Byte> iv, System.Security.Cryptography.PaddingMode paddingMode = default(System.Security.Cryptography.PaddingMode), int feedbackSizeInBits = default(int)) => throw null;
+                public int DecryptCfb(System.ReadOnlySpan<System.Byte> ciphertext, System.ReadOnlySpan<System.Byte> iv, System.Span<System.Byte> destination, System.Security.Cryptography.PaddingMode paddingMode = default(System.Security.Cryptography.PaddingMode), int feedbackSizeInBits = default(int)) => throw null;
+                public System.Byte[] DecryptEcb(System.Byte[] ciphertext, System.Security.Cryptography.PaddingMode paddingMode) => throw null;
+                public System.Byte[] DecryptEcb(System.ReadOnlySpan<System.Byte> ciphertext, System.Security.Cryptography.PaddingMode paddingMode) => throw null;
+                public int DecryptEcb(System.ReadOnlySpan<System.Byte> ciphertext, System.Span<System.Byte> destination, System.Security.Cryptography.PaddingMode paddingMode) => throw null;
                 public void Dispose() => throw null;
                 protected virtual void Dispose(bool disposing) => throw null;
+                public System.Byte[] EncryptCbc(System.Byte[] plaintext, System.Byte[] iv, System.Security.Cryptography.PaddingMode paddingMode = default(System.Security.Cryptography.PaddingMode)) => throw null;
+                public System.Byte[] EncryptCbc(System.ReadOnlySpan<System.Byte> plaintext, System.ReadOnlySpan<System.Byte> iv, System.Security.Cryptography.PaddingMode paddingMode = default(System.Security.Cryptography.PaddingMode)) => throw null;
+                public int EncryptCbc(System.ReadOnlySpan<System.Byte> plaintext, System.ReadOnlySpan<System.Byte> iv, System.Span<System.Byte> destination, System.Security.Cryptography.PaddingMode paddingMode = default(System.Security.Cryptography.PaddingMode)) => throw null;
+                public System.Byte[] EncryptCfb(System.Byte[] plaintext, System.Byte[] iv, System.Security.Cryptography.PaddingMode paddingMode = default(System.Security.Cryptography.PaddingMode), int feedbackSizeInBits = default(int)) => throw null;
+                public System.Byte[] EncryptCfb(System.ReadOnlySpan<System.Byte> plaintext, System.ReadOnlySpan<System.Byte> iv, System.Security.Cryptography.PaddingMode paddingMode = default(System.Security.Cryptography.PaddingMode), int feedbackSizeInBits = default(int)) => throw null;
+                public int EncryptCfb(System.ReadOnlySpan<System.Byte> plaintext, System.ReadOnlySpan<System.Byte> iv, System.Span<System.Byte> destination, System.Security.Cryptography.PaddingMode paddingMode = default(System.Security.Cryptography.PaddingMode), int feedbackSizeInBits = default(int)) => throw null;
+                public System.Byte[] EncryptEcb(System.Byte[] plaintext, System.Security.Cryptography.PaddingMode paddingMode) => throw null;
+                public System.Byte[] EncryptEcb(System.ReadOnlySpan<System.Byte> plaintext, System.Security.Cryptography.PaddingMode paddingMode) => throw null;
+                public int EncryptEcb(System.ReadOnlySpan<System.Byte> plaintext, System.Span<System.Byte> destination, System.Security.Cryptography.PaddingMode paddingMode) => throw null;
                 public virtual int FeedbackSize { get => throw null; set => throw null; }
                 protected int FeedbackSizeValue;
                 public abstract void GenerateIV();
                 public abstract void GenerateKey();
+                public int GetCiphertextLengthCbc(int plaintextLength, System.Security.Cryptography.PaddingMode paddingMode = default(System.Security.Cryptography.PaddingMode)) => throw null;
+                public int GetCiphertextLengthCfb(int plaintextLength, System.Security.Cryptography.PaddingMode paddingMode = default(System.Security.Cryptography.PaddingMode), int feedbackSizeInBits = default(int)) => throw null;
+                public int GetCiphertextLengthEcb(int plaintextLength, System.Security.Cryptography.PaddingMode paddingMode) => throw null;
                 public virtual System.Byte[] IV { get => throw null; set => throw null; }
                 protected System.Byte[] IVValue;
                 public virtual System.Byte[] Key { get => throw null; set => throw null; }
@@ -269,6 +294,18 @@ namespace System
                 public virtual System.Security.Cryptography.PaddingMode Padding { get => throw null; set => throw null; }
                 protected System.Security.Cryptography.PaddingMode PaddingValue;
                 protected SymmetricAlgorithm() => throw null;
+                public bool TryDecryptCbc(System.ReadOnlySpan<System.Byte> ciphertext, System.ReadOnlySpan<System.Byte> iv, System.Span<System.Byte> destination, out int bytesWritten, System.Security.Cryptography.PaddingMode paddingMode = default(System.Security.Cryptography.PaddingMode)) => throw null;
+                protected virtual bool TryDecryptCbcCore(System.ReadOnlySpan<System.Byte> ciphertext, System.ReadOnlySpan<System.Byte> iv, System.Span<System.Byte> destination, System.Security.Cryptography.PaddingMode paddingMode, out int bytesWritten) => throw null;
+                public bool TryDecryptCfb(System.ReadOnlySpan<System.Byte> ciphertext, System.ReadOnlySpan<System.Byte> iv, System.Span<System.Byte> destination, out int bytesWritten, System.Security.Cryptography.PaddingMode paddingMode = default(System.Security.Cryptography.PaddingMode), int feedbackSizeInBits = default(int)) => throw null;
+                protected virtual bool TryDecryptCfbCore(System.ReadOnlySpan<System.Byte> ciphertext, System.ReadOnlySpan<System.Byte> iv, System.Span<System.Byte> destination, System.Security.Cryptography.PaddingMode paddingMode, int feedbackSizeInBits, out int bytesWritten) => throw null;
+                public bool TryDecryptEcb(System.ReadOnlySpan<System.Byte> ciphertext, System.Span<System.Byte> destination, System.Security.Cryptography.PaddingMode paddingMode, out int bytesWritten) => throw null;
+                protected virtual bool TryDecryptEcbCore(System.ReadOnlySpan<System.Byte> ciphertext, System.Span<System.Byte> destination, System.Security.Cryptography.PaddingMode paddingMode, out int bytesWritten) => throw null;
+                public bool TryEncryptCbc(System.ReadOnlySpan<System.Byte> plaintext, System.ReadOnlySpan<System.Byte> iv, System.Span<System.Byte> destination, out int bytesWritten, System.Security.Cryptography.PaddingMode paddingMode = default(System.Security.Cryptography.PaddingMode)) => throw null;
+                protected virtual bool TryEncryptCbcCore(System.ReadOnlySpan<System.Byte> plaintext, System.ReadOnlySpan<System.Byte> iv, System.Span<System.Byte> destination, System.Security.Cryptography.PaddingMode paddingMode, out int bytesWritten) => throw null;
+                public bool TryEncryptCfb(System.ReadOnlySpan<System.Byte> plaintext, System.ReadOnlySpan<System.Byte> iv, System.Span<System.Byte> destination, out int bytesWritten, System.Security.Cryptography.PaddingMode paddingMode = default(System.Security.Cryptography.PaddingMode), int feedbackSizeInBits = default(int)) => throw null;
+                protected virtual bool TryEncryptCfbCore(System.ReadOnlySpan<System.Byte> plaintext, System.ReadOnlySpan<System.Byte> iv, System.Span<System.Byte> destination, System.Security.Cryptography.PaddingMode paddingMode, int feedbackSizeInBits, out int bytesWritten) => throw null;
+                public bool TryEncryptEcb(System.ReadOnlySpan<System.Byte> plaintext, System.Span<System.Byte> destination, System.Security.Cryptography.PaddingMode paddingMode, out int bytesWritten) => throw null;
+                protected virtual bool TryEncryptEcbCore(System.ReadOnlySpan<System.Byte> plaintext, System.Span<System.Byte> destination, System.Security.Cryptography.PaddingMode paddingMode, out int bytesWritten) => throw null;
                 public bool ValidKeySize(int bitLength) => throw null;
             }
 

@@ -53,7 +53,7 @@ private class FileSetRedableMethodAccess extends MethodAccess {
   private predicate isCallToSecondArgumentWithValue(boolean value) {
     this.getMethod().getNumberOfParameters() = 1 and value = true
     or
-    isCallWithArgument(1, value)
+    this.isCallWithArgument(1, value)
   }
 
   private predicate isCallWithArgument(int index, boolean arg) {

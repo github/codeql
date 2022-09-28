@@ -1,4 +1,4 @@
-import ruby
+import codeql.ruby.AST
 
 query predicate classes(ClassDeclaration c, string pClass, string name) {
   pClass = c.getAPrimaryQlClass() and name = c.getName()

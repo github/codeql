@@ -218,8 +218,6 @@ class Folder extends Container, @folder {
 class File extends Container, @file {
   override string getAbsolutePath() { files(underlyingElement(this), result) }
 
-  override string toString() { result = Container.super.toString() }
-
   override string getAPrimaryQlClass() { result = "File" }
 
   override Location getLocation() {

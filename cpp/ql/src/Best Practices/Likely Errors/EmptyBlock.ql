@@ -110,4 +110,4 @@ where
   emptyBlock(s, eb) and
   not emptyBlockContainsNonchild(eb) and
   not lineComment(eb)
-select eb, "Empty block without comment"
+select eb, "Empty block without comment."

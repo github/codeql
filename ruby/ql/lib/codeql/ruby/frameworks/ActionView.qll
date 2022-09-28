@@ -3,6 +3,7 @@
  */
 
 private import codeql.ruby.AST
+private import codeql.ruby.ApiGraphs
 private import codeql.ruby.Concepts
 private import codeql.ruby.controlflow.CfgNodes
 private import codeql.ruby.DataFlow
@@ -123,7 +124,55 @@ abstract class RenderCall extends MethodCall {
   // TODO: implicit renders in controller actions
 }
 
-// A call to the `render` method within the context of a template.
+/**
+ * A call to `render`, `render_to_body` or `render_to_string`, seen as an
+ * `HttpResponse`.
+ */
+private class RenderCallAsHttpResponse extends DataFlow::CallNode, Http::Server::HttpResponse::Range {
+  RenderCallAsHttpResponse() {
+    this.asExpr().getExpr() instanceof RenderCall or
+    this.asExpr().getExpr() instanceof RenderToCall
+  }
+
+  // `render` is a very polymorphic method - all of these are valid calls:
+  // render @user
+  // render "path/to/template"
+  // render html: "<html></html>"
+  // render json: { "some" => "hash" }
+  // render body: "some text"
+  override DataFlow::Node getBody() {
+    // A positional argument, e.g.
+    // render @user
+    // render "path/to/template"
+    result = this.getArgument(_) and
+    not result.asExpr() instanceof ExprNodes::PairCfgNode
+    or
+    result = this.getKeywordArgument(["html", "json", "body", "inline", "plain", "js", "file"])
+  }
+
+  override DataFlow::Node getMimetypeOrContentTypeArg() {
+    result = this.getKeywordArgument("content_type")
+  }
+
+  override string getMimetype() {
+    exists(this.getKeywordArgument("json")) and result = "application/json"
+    or
+    exists(this.getKeywordArgument("plain")) and result = "text/plain"
+    or
+    exists(this.getKeywordArgument("html")) and result = "text/html"
+    or
+    exists(this.getKeywordArgument("xml")) and result = "application/xml"
+    or
+    exists(this.getKeywordArgument("js")) and result = "text/javascript"
+    or
+    not exists(this.getKeywordArgument(["json", "plain", "html", "xml", "js"])) and
+    result = super.getMimetype()
+  }
+
+  override string getMimetypeDefault() { result = "text/html" }
+}
+
+/** A call to the `render` method within the context of a template. */
 private class ActionViewRenderCall extends RenderCall, ActionViewContextCall { }
 
 /**
@@ -155,5 +204,16 @@ class LinkToCall extends ActionViewContextCall {
     or
     not exists(this.getBlock()) and result = this.getArgument(1)
   }
+}
+
+/**
+ * An instantiation of `ActionView::FileSystemResolver`, considered as a `FileSystemAccess`.
+ */
+class FileSystemResolverAccess extends DataFlow::CallNode, FileSystemAccess::Range {
+  FileSystemResolverAccess() {
+    this = API::getTopLevelMember("ActionView").getMember("FileSystemResolver").getAnInstantiation()
+  }
+
+  override DataFlow::Node getAPathArgument() { result = this.getArgument(0) }
 }
 // TODO: model flow in/out of template files properly,

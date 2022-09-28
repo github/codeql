@@ -1,7 +1,6 @@
 /** Provides models of commonly used functions in the `github.com/sirupsen/logrus` package. */
 
 import go
-private import semmle.go.StringOps
 
 /** Provides models of commonly used functions in the `github.com/sirupsen/logrus` package. */
 module Logrus {

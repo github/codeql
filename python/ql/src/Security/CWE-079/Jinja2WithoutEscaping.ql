@@ -42,7 +42,7 @@ where
     not exists(call.getArgByName("autoescape"))
     or
     call.getKeywordParameter("autoescape")
-        .getAValueReachingRhs()
+        .getAValueReachingSink()
         .asExpr()
         .(ImmutableLiteral)
         .booleanValue() = false

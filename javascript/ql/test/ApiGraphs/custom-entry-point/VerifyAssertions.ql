@@ -1,9 +1,7 @@
 class CustomEntryPoint extends API::EntryPoint {
   CustomEntryPoint() { this = "CustomEntryPoint" }
 
-  override DataFlow::SourceNode getAUse() { result = DataFlow::globalVarRef("CustomEntryPoint") }
-
-  override DataFlow::Node getARhs() { none() }
+  override DataFlow::SourceNode getASource() { result = DataFlow::globalVarRef("CustomEntryPoint") }
 }
 
 import ApiGraphs.VerifyAssertions

@@ -11,3 +11,10 @@
 | Test.java:49:20:49:26 | tainted | Test.java:60:12:60:14 | x14 |
 | Test.java:73:11:73:17 | tainted | Test.java:75:10:75:12 | x17 |
 | Test.java:73:11:73:17 | tainted | Test.java:78:12:78:14 | x18 |
+| Test.java:84:18:84:24 | tainted | Test.java:85:10:85:29 | getProperty(...) |
+| Test.java:84:18:84:24 | tainted | Test.java:86:10:86:45 | getProperty(...) |
+| Test.java:89:35:89:41 | tainted | Test.java:89:10:89:42 | getProperty(...) |
+| Test.java:94:26:94:32 | tainted | Test.java:95:10:95:29 | getProperty(...) |
+| Test.java:94:26:94:32 | tainted | Test.java:96:10:96:45 | getProperty(...) |
+| Test.java:101:23:101:29 | tainted | Test.java:102:10:102:35 | put(...) |
+| Test.java:107:31:107:37 | tainted | Test.java:108:10:108:43 | setProperty(...) |

@@ -99,12 +99,6 @@ namespace Semmle.Extraction.CSharp
 
             using var logger = MakeLogger(options.Verbosity, options.Console);
 
-            if (Environment.GetEnvironmentVariable("SEMMLE_CLRTRACER") == "1" && !options.ClrTracer)
-            {
-                logger.Log(Severity.Info, "Skipping extraction since already extracted from the CLR tracer");
-                return ExitCode.Ok;
-            }
-
             var canonicalPathCache = CanonicalPathCache.Create(logger, 1000);
             var pathTransformer = new PathTransformer(canonicalPathCache);
 

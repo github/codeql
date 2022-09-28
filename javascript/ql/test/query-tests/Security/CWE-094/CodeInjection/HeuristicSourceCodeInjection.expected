@@ -161,6 +161,18 @@ nodes
 | tst.js:26:26:26:40 | location.search |
 | tst.js:26:26:26:53 | locatio ... ring(1) |
 | tst.js:26:26:26:53 | locatio ... ring(1) |
+| tst.js:29:9:29:82 | source |
+| tst.js:29:18:29:41 | documen ... .search |
+| tst.js:29:18:29:41 | documen ... .search |
+| tst.js:29:18:29:82 | documen ... , "$1") |
+| tst.js:31:18:31:23 | source |
+| tst.js:31:18:31:23 | source |
+| tst.js:33:14:33:19 | source |
+| tst.js:33:14:33:19 | source |
+| tst.js:35:28:35:33 | source |
+| tst.js:35:28:35:33 | source |
+| tst.js:37:33:37:38 | source |
+| tst.js:37:33:37:38 | source |
 edges
 | NoSQLCodeInjection.js:18:24:18:31 | req.body | NoSQLCodeInjection.js:18:24:18:37 | req.body.query |
 | NoSQLCodeInjection.js:18:24:18:31 | req.body | NoSQLCodeInjection.js:18:24:18:37 | req.body.query |
@@ -270,5 +282,16 @@ edges
 | tst.js:26:26:26:40 | location.search | tst.js:26:26:26:53 | locatio ... ring(1) |
 | tst.js:26:26:26:40 | location.search | tst.js:26:26:26:53 | locatio ... ring(1) |
 | tst.js:26:26:26:40 | location.search | tst.js:26:26:26:53 | locatio ... ring(1) |
+| tst.js:29:9:29:82 | source | tst.js:31:18:31:23 | source |
+| tst.js:29:9:29:82 | source | tst.js:31:18:31:23 | source |
+| tst.js:29:9:29:82 | source | tst.js:33:14:33:19 | source |
+| tst.js:29:9:29:82 | source | tst.js:33:14:33:19 | source |
+| tst.js:29:9:29:82 | source | tst.js:35:28:35:33 | source |
+| tst.js:29:9:29:82 | source | tst.js:35:28:35:33 | source |
+| tst.js:29:9:29:82 | source | tst.js:37:33:37:38 | source |
+| tst.js:29:9:29:82 | source | tst.js:37:33:37:38 | source |
+| tst.js:29:18:29:41 | documen ... .search | tst.js:29:18:29:82 | documen ... , "$1") |
+| tst.js:29:18:29:41 | documen ... .search | tst.js:29:18:29:82 | documen ... , "$1") |
+| tst.js:29:18:29:82 | documen ... , "$1") | tst.js:29:9:29:82 | source |
 #select
 | eslint-escope-build.js:21:16:21:16 | c | eslint-escope-build.js:20:22:20:22 | c | eslint-escope-build.js:21:16:21:16 | c | $@ flows to here and is interpreted as code. | eslint-escope-build.js:20:22:20:22 | c | User-provided value |

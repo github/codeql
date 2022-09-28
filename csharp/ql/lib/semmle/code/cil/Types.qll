@@ -309,8 +309,6 @@ class FunctionPointerType extends Type, CustomModifierReceiver, Parameterizable,
   /** Gets the calling convention. */
   int getCallingConvention() { cil_function_pointer_calling_conventions(this, result) }
 
-  override string toString() { result = Type.super.toString() }
-
   /** Holds if the return type is `void`. */
   predicate returnsVoid() { this.getReturnType() instanceof VoidType }
 

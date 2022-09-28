@@ -44,7 +44,7 @@ private class SafeSslParametersFlowConfig extends DataFlow2::Configuration {
   }
 
   override predicate isSink(DataFlow::Node sink) {
-    exists(MethodAccess ma, RefType t | t instanceof SSLSocket or t instanceof SSLEngine |
+    exists(MethodAccess ma, RefType t | t instanceof SslSocket or t instanceof SslEngine |
       ma.getMethod().hasName("setSSLParameters") and
       ma.getMethod().getDeclaringType().getAnAncestor() = t and
       ma.getArgument(0) = sink.asExpr()
@@ -58,7 +58,7 @@ private class SafeSslParametersFlowConfig extends DataFlow2::Configuration {
 private class SafeSetEndpointIdentificationAlgorithm extends MethodAccess {
   SafeSetEndpointIdentificationAlgorithm() {
     this.getMethod().hasName("setEndpointIdentificationAlgorithm") and
-    this.getMethod().getDeclaringType() instanceof SSLParameters and
+    this.getMethod().getDeclaringType() instanceof SslParameters and
     not this.getArgument(0) instanceof NullLiteral and
     not this.getArgument(0).(CompileTimeConstantExpr).getStringValue() = ""
   }

@@ -4,10 +4,14 @@ import java.lang.reflect.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.regex.Pattern;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
 
 import com.github.codeql.Logger;
 import static com.github.codeql.ClassNamesKt.getIrDeclBinaryName;
@@ -210,23 +214,17 @@ public class OdasaOutput {
 				trapFilePathForDecl(sym, signature));
 	}
 
-	private final Map<String, String> memberTrapPaths = new LinkedHashMap<String, String>();
-	private static final Pattern dots = Pattern.compile(".", Pattern.LITERAL);
 	private String trapFilePathForDecl(IrDeclaration sym, String signature) {
 		String binaryName = getIrDeclBinaryName(sym);
 		String binaryNameWithSignature = binaryName + signature;
 		// TODO: Reinstate this?
 		//if (getTrackClassOrigins())
 		//  classId += "-" + StringDigestor.digest(sym.getSourceFileId());
-		String result = memberTrapPaths.get(binaryNameWithSignature);
-		if (result == null) {
-			result = CLASSES_DIR + "/" +
-					dots.matcher(binaryName).replaceAll("/") +
+		String result = CLASSES_DIR + "/" +
+					binaryName.replace('.', '/') +
 					signature +
 					".members" +
 					".trap.gz";
-			memberTrapPaths.put(binaryNameWithSignature, result);
-		}
 		return result;
 	}
 
@@ -252,17 +250,6 @@ public class OdasaOutput {
 	 */
 
 	/**
-	 * A {@link TrapFileManager} to output facts for the given source file,
-	 * or <code>null</code> if the source file should not be populated.
-	 */
-	private TrapFileManager getTrapWriterForCurrentSourceFile() {
-		File trapFile = getTrapFileForCurrentSourceFile();
-		if (trapFile==null)
-			return null;
-		return trapWriter(trapFile, null, null);
-	}
-
-	/**
 	 * Get a {@link TrapFileManager} to write members
 	 * about a declaration, or <code>null</code> if the declaration shouldn't be populated.
 	 *
@@ -273,10 +260,7 @@ public class OdasaOutput {
 	 * 		Any unique suffix needed to distinguish `sym` from other declarations with the same name.
 	 * 		For functions for example, this means its parameter signature.
 	 */
-	private TrapFileManager getMembersWriterForDecl(IrDeclaration sym, String signature) {
-		File trap = getTrapFileForDecl(sym, signature);
-		if (trap==null)
-			return null;
+	private TrapFileManager getMembersWriterForDecl(File trap, IrDeclaration sym, String signature) {
 		TrapClassVersion currVersion = TrapClassVersion.fromSymbol(sym, log);
 		String shortName = sym instanceof IrDeclarationWithName ? ((IrDeclarationWithName)sym).getName().asString() : "(name unknown)";
 		if (trap.exists()) {
@@ -431,33 +415,30 @@ public class OdasaOutput {
 		private final IrDeclaration sym;
 		private final File trapFile;
 		private final String signature;
-		private final boolean isNonSourceTrapFile;
 		private TrapLocker(IrDeclaration decl, String signature) {
 			this.sym = decl;
 			this.signature = signature;
 			if (sym==null) {
-				trapFile = getTrapFileForCurrentSourceFile();
+				log.error("Null symbol passed for Kotlin TRAP locker");
+				trapFile = null;
 			} else {
 				trapFile = getTrapFileForDecl(sym, signature);
 			}
-			isNonSourceTrapFile = false;
 		}
 		private TrapLocker(File jarFile) {
 			sym = null;
 			signature = null;
 			trapFile = getTrapFileForJarFile(jarFile);
-			isNonSourceTrapFile = true;
 		}
 		private TrapLocker(String moduleName) {
 			sym = null;
 			signature = null;
 			trapFile = getTrapFileForModule(moduleName);
-			isNonSourceTrapFile = true;
 		}
 		public TrapFileManager getTrapFileManager() {
 			if (trapFile!=null) {
 				lockTrapFile(trapFile);
-				return getMembersWriterForDecl(sym, signature);
+				return getMembersWriterForDecl(trapFile, sym, signature);
 			} else {
 				return null;
 			}
@@ -547,6 +528,51 @@ public class OdasaOutput {
 					(tcv.majorVersion == majorVersion && tcv.minorVersion == minorVersion &&
 					tcv.lastModified < lastModified);
 		}
+
+        private static Map<String, Map<String, Long>> jarFileEntryTimeStamps = new HashMap<>();
+
+        private static Map<String, Long> getZipFileEntryTimeStamps(String path, Logger log) {
+            try {
+                Map<String, Long> result = new HashMap<>();
+                ZipFile zf = new ZipFile(path);
+                Enumeration<? extends ZipEntry> entries = zf.entries();
+                while (entries.hasMoreElements()) {
+                    ZipEntry ze = entries.nextElement();
+                    result.put(ze.getName(), ze.getLastModifiedTime().toMillis());
+                }
+                return result;
+            } catch(IOException e) {
+                log.warn("Failed to get entry timestamps from " + path, e);
+                return null;
+            }
+        }
+
+        private static long getVirtualFileTimeStamp(VirtualFile vf, Logger log) {
+            if (vf.getFileSystem().getProtocol().equals("jar")) {
+                String[] parts = vf.getPath().split("!/");
+                if (parts.length == 2) {
+                    String jarFilePath = parts[0];
+                    String entryPath = parts[1];
+                    if (!jarFileEntryTimeStamps.containsKey(jarFilePath)) {
+                        jarFileEntryTimeStamps.put(jarFilePath, getZipFileEntryTimeStamps(jarFilePath, log));
+                    }
+                    Map<String, Long> entryTimeStamps = jarFileEntryTimeStamps.get(jarFilePath);
+                    if (entryTimeStamps != null) {
+                        Long entryTimeStamp = entryTimeStamps.get(entryPath);
+                        if (entryTimeStamp != null)
+                            return entryTimeStamp;
+                        else
+                            log.warn("Couldn't find timestamp for jar file " + jarFilePath + " entry " + entryPath);
+                    }
+                } else {
+                    log.warn("Expected JAR-file path " + vf.getPath() + " to have exactly one '!/' separator");
+                }
+            }
+
+            // For all files except for jar files, and a fallback in case of I/O problems reading a jar file:
+            return vf.getTimeStamp();
+        }
+
 		private static TrapClassVersion fromSymbol(IrDeclaration sym, Logger log) {
 			VirtualFile vf = sym instanceof IrClass ? getIrClassVirtualFile((IrClass)sym) :
 					sym.getParent() instanceof IrClass ? getIrClassVirtualFile((IrClass)sym.getParent()) :
@@ -583,7 +609,7 @@ public class OdasaOutput {
 				};
 				(new ClassReader(vf.contentsToByteArray())).accept(versionGetter, ClassReader.SKIP_CODE | ClassReader.SKIP_DEBUG | ClassReader.SKIP_FRAMES);
 
-				return new TrapClassVersion(versionStore[0] & 0xffff, versionStore[0] >> 16, vf.getTimeStamp(), "kotlin");
+				return new TrapClassVersion(versionStore[0] & 0xffff, versionStore[0] >> 16, getVirtualFileTimeStamp(vf, log), "kotlin");
 			}
 			catch(IllegalAccessException e) {
 				log.warn("Failed to read class file version information", e);

@@ -8,12 +8,13 @@
  * @precision high
  * @id java/polynomial-redos
  * @tags security
+ *       external/cwe/cwe-1333
  *       external/cwe/cwe-730
  *       external/cwe/cwe-400
  */
 
 import java
-import semmle.code.java.security.performance.PolynomialReDoSQuery
+import semmle.code.java.security.regexp.PolynomialReDoSQuery
 import DataFlow::PathGraph
 
 from DataFlow::PathNode source, DataFlow::PathNode sink, PolynomialBackTrackingTerm regexp

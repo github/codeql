@@ -1,3 +1,56 @@
+## 0.4.0
+
+### New Queries
+
+* Added a new query, `rb/hardcoded-data-interpreted-as-code`, to detect cases where hardcoded data is executed as code, a technique associated with backdoors.
+
+### Minor Analysis Improvements
+
+* The `rb/unsafe-deserialization` query now includes alerts for user-controlled data passed to `Hash.from_trusted_xml`, since that method can deserialize YAML embedded in the XML, which in turn can result in deserialization of arbitrary objects.
+* The alert message of many queries have been changed to make the message consistent with other languages.
+
+## 0.3.4
+
+## 0.3.3
+
+### New Queries
+
+* Added a new query, `rb/log-inection`, to detect cases where a malicious user may be able to forge log entries.
+* Added a new query, `rb/incomplete-multi-character-sanitization`. The query
+  finds string transformations that do not replace all occurrences of a
+  multi-character substring.
+* Added a new query, `rb/suspicious-regexp-range`, to detect character ranges in regular expressions that seem to match 
+  too many characters.
+
+## 0.3.2
+
+## 0.3.1
+
+### New Queries
+
+* Added a new experimental query, `rb/manually-checking-http-verb`, to detect cases when the HTTP verb for an incoming request is checked and then used as part of control flow.
+* Added a new experimental query, `rb/weak-params`, to detect cases when the rails strong parameters pattern isn't followed and values flow into persistent store writes.
+
+## 0.3.0
+
+### Breaking Changes
+
+* Contextual queries and the query libraries they depend on have been moved to the `codeql/ruby-all` package.
+
+## 0.2.0
+
+### New Queries
+
+* Added a new query, `rb/improper-memoization`. The query finds cases where the parameter of a memoization method is not used in the memoization key.
+
+### Minor Analysis Improvements
+
+* The query "Use of a broken or weak cryptographic algorithm" (`rb/weak-cryptographic-algorithm`) now reports if a cryptographic operation is potentially insecure due to use of a weak block mode.
+
+## 0.1.4
+
+## 0.1.3
+
 ## 0.1.2
 
 ## 0.1.1

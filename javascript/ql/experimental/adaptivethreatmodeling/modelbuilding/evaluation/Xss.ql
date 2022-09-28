@@ -5,7 +5,8 @@
  * pipeline.
  */
 
-import semmle.javascript.security.dataflow.DomBasedXss
+import javascript
+import semmle.javascript.security.dataflow.DomBasedXssQuery as DomBasedXss
 import EndToEndEvaluation as EndToEndEvaluation
 
 from

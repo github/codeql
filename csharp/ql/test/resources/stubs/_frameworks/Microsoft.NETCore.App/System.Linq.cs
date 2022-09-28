@@ -4,7 +4,7 @@ namespace System
 {
     namespace Linq
     {
-        // Generated from `System.Linq.Enumerable` in `System.Linq, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Linq.Enumerable` in `System.Linq, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public static class Enumerable
         {
             public static TResult Aggregate<TSource, TAccumulate, TResult>(this System.Collections.Generic.IEnumerable<TSource> source, TAccumulate seed, System.Func<TAccumulate, TSource, TAccumulate> func, System.Func<TAccumulate, TResult> resultSelector) => throw null;
@@ -36,6 +36,7 @@ namespace System
             public static double Average<TSource>(this System.Collections.Generic.IEnumerable<TSource> source, System.Func<TSource, System.Int64> selector) => throw null;
             public static double? Average<TSource>(this System.Collections.Generic.IEnumerable<TSource> source, System.Func<TSource, System.Int64?> selector) => throw null;
             public static System.Collections.Generic.IEnumerable<TResult> Cast<TResult>(this System.Collections.IEnumerable source) => throw null;
+            public static System.Collections.Generic.IEnumerable<TSource[]> Chunk<TSource>(this System.Collections.Generic.IEnumerable<TSource> source, int size) => throw null;
             public static System.Collections.Generic.IEnumerable<TSource> Concat<TSource>(this System.Collections.Generic.IEnumerable<TSource> first, System.Collections.Generic.IEnumerable<TSource> second) => throw null;
             public static bool Contains<TSource>(this System.Collections.Generic.IEnumerable<TSource> source, TSource value) => throw null;
             public static bool Contains<TSource>(this System.Collections.Generic.IEnumerable<TSource> source, TSource value, System.Collections.Generic.IEqualityComparer<TSource> comparer) => throw null;
@@ -45,15 +46,23 @@ namespace System
             public static System.Collections.Generic.IEnumerable<TSource> DefaultIfEmpty<TSource>(this System.Collections.Generic.IEnumerable<TSource> source, TSource defaultValue) => throw null;
             public static System.Collections.Generic.IEnumerable<TSource> Distinct<TSource>(this System.Collections.Generic.IEnumerable<TSource> source) => throw null;
             public static System.Collections.Generic.IEnumerable<TSource> Distinct<TSource>(this System.Collections.Generic.IEnumerable<TSource> source, System.Collections.Generic.IEqualityComparer<TSource> comparer) => throw null;
+            public static System.Collections.Generic.IEnumerable<TSource> DistinctBy<TSource, TKey>(this System.Collections.Generic.IEnumerable<TSource> source, System.Func<TSource, TKey> keySelector) => throw null;
+            public static System.Collections.Generic.IEnumerable<TSource> DistinctBy<TSource, TKey>(this System.Collections.Generic.IEnumerable<TSource> source, System.Func<TSource, TKey> keySelector, System.Collections.Generic.IEqualityComparer<TKey> comparer) => throw null;
+            public static TSource ElementAt<TSource>(this System.Collections.Generic.IEnumerable<TSource> source, System.Index index) => throw null;
             public static TSource ElementAt<TSource>(this System.Collections.Generic.IEnumerable<TSource> source, int index) => throw null;
+            public static TSource ElementAtOrDefault<TSource>(this System.Collections.Generic.IEnumerable<TSource> source, System.Index index) => throw null;
             public static TSource ElementAtOrDefault<TSource>(this System.Collections.Generic.IEnumerable<TSource> source, int index) => throw null;
             public static System.Collections.Generic.IEnumerable<TResult> Empty<TResult>() => throw null;
             public static System.Collections.Generic.IEnumerable<TSource> Except<TSource>(this System.Collections.Generic.IEnumerable<TSource> first, System.Collections.Generic.IEnumerable<TSource> second) => throw null;
             public static System.Collections.Generic.IEnumerable<TSource> Except<TSource>(this System.Collections.Generic.IEnumerable<TSource> first, System.Collections.Generic.IEnumerable<TSource> second, System.Collections.Generic.IEqualityComparer<TSource> comparer) => throw null;
+            public static System.Collections.Generic.IEnumerable<TSource> ExceptBy<TSource, TKey>(this System.Collections.Generic.IEnumerable<TSource> first, System.Collections.Generic.IEnumerable<TKey> second, System.Func<TSource, TKey> keySelector) => throw null;
+            public static System.Collections.Generic.IEnumerable<TSource> ExceptBy<TSource, TKey>(this System.Collections.Generic.IEnumerable<TSource> first, System.Collections.Generic.IEnumerable<TKey> second, System.Func<TSource, TKey> keySelector, System.Collections.Generic.IEqualityComparer<TKey> comparer) => throw null;
             public static TSource First<TSource>(this System.Collections.Generic.IEnumerable<TSource> source) => throw null;
             public static TSource First<TSource>(this System.Collections.Generic.IEnumerable<TSource> source, System.Func<TSource, bool> predicate) => throw null;
             public static TSource FirstOrDefault<TSource>(this System.Collections.Generic.IEnumerable<TSource> source) => throw null;
             public static TSource FirstOrDefault<TSource>(this System.Collections.Generic.IEnumerable<TSource> source, System.Func<TSource, bool> predicate) => throw null;
+            public static TSource FirstOrDefault<TSource>(this System.Collections.Generic.IEnumerable<TSource> source, System.Func<TSource, bool> predicate, TSource defaultValue) => throw null;
+            public static TSource FirstOrDefault<TSource>(this System.Collections.Generic.IEnumerable<TSource> source, TSource defaultValue) => throw null;
             public static System.Collections.Generic.IEnumerable<TResult> GroupBy<TSource, TKey, TElement, TResult>(this System.Collections.Generic.IEnumerable<TSource> source, System.Func<TSource, TKey> keySelector, System.Func<TSource, TElement> elementSelector, System.Func<TKey, System.Collections.Generic.IEnumerable<TElement>, TResult> resultSelector) => throw null;
             public static System.Collections.Generic.IEnumerable<TResult> GroupBy<TSource, TKey, TElement, TResult>(this System.Collections.Generic.IEnumerable<TSource> source, System.Func<TSource, TKey> keySelector, System.Func<TSource, TElement> elementSelector, System.Func<TKey, System.Collections.Generic.IEnumerable<TElement>, TResult> resultSelector, System.Collections.Generic.IEqualityComparer<TKey> comparer) => throw null;
             public static System.Collections.Generic.IEnumerable<System.Linq.IGrouping<TKey, TElement>> GroupBy<TSource, TKey, TElement>(this System.Collections.Generic.IEnumerable<TSource> source, System.Func<TSource, TKey> keySelector, System.Func<TSource, TElement> elementSelector) => throw null;
@@ -66,12 +75,16 @@ namespace System
             public static System.Collections.Generic.IEnumerable<TResult> GroupJoin<TOuter, TInner, TKey, TResult>(this System.Collections.Generic.IEnumerable<TOuter> outer, System.Collections.Generic.IEnumerable<TInner> inner, System.Func<TOuter, TKey> outerKeySelector, System.Func<TInner, TKey> innerKeySelector, System.Func<TOuter, System.Collections.Generic.IEnumerable<TInner>, TResult> resultSelector, System.Collections.Generic.IEqualityComparer<TKey> comparer) => throw null;
             public static System.Collections.Generic.IEnumerable<TSource> Intersect<TSource>(this System.Collections.Generic.IEnumerable<TSource> first, System.Collections.Generic.IEnumerable<TSource> second) => throw null;
             public static System.Collections.Generic.IEnumerable<TSource> Intersect<TSource>(this System.Collections.Generic.IEnumerable<TSource> first, System.Collections.Generic.IEnumerable<TSource> second, System.Collections.Generic.IEqualityComparer<TSource> comparer) => throw null;
+            public static System.Collections.Generic.IEnumerable<TSource> IntersectBy<TSource, TKey>(this System.Collections.Generic.IEnumerable<TSource> first, System.Collections.Generic.IEnumerable<TKey> second, System.Func<TSource, TKey> keySelector) => throw null;
+            public static System.Collections.Generic.IEnumerable<TSource> IntersectBy<TSource, TKey>(this System.Collections.Generic.IEnumerable<TSource> first, System.Collections.Generic.IEnumerable<TKey> second, System.Func<TSource, TKey> keySelector, System.Collections.Generic.IEqualityComparer<TKey> comparer) => throw null;
             public static System.Collections.Generic.IEnumerable<TResult> Join<TOuter, TInner, TKey, TResult>(this System.Collections.Generic.IEnumerable<TOuter> outer, System.Collections.Generic.IEnumerable<TInner> inner, System.Func<TOuter, TKey> outerKeySelector, System.Func<TInner, TKey> innerKeySelector, System.Func<TOuter, TInner, TResult> resultSelector) => throw null;
             public static System.Collections.Generic.IEnumerable<TResult> Join<TOuter, TInner, TKey, TResult>(this System.Collections.Generic.IEnumerable<TOuter> outer, System.Collections.Generic.IEnumerable<TInner> inner, System.Func<TOuter, TKey> outerKeySelector, System.Func<TInner, TKey> innerKeySelector, System.Func<TOuter, TInner, TResult> resultSelector, System.Collections.Generic.IEqualityComparer<TKey> comparer) => throw null;
             public static TSource Last<TSource>(this System.Collections.Generic.IEnumerable<TSource> source) => throw null;
             public static TSource Last<TSource>(this System.Collections.Generic.IEnumerable<TSource> source, System.Func<TSource, bool> predicate) => throw null;
             public static TSource LastOrDefault<TSource>(this System.Collections.Generic.IEnumerable<TSource> source) => throw null;
             public static TSource LastOrDefault<TSource>(this System.Collections.Generic.IEnumerable<TSource> source, System.Func<TSource, bool> predicate) => throw null;
+            public static TSource LastOrDefault<TSource>(this System.Collections.Generic.IEnumerable<TSource> source, System.Func<TSource, bool> predicate, TSource defaultValue) => throw null;
+            public static TSource LastOrDefault<TSource>(this System.Collections.Generic.IEnumerable<TSource> source, TSource defaultValue) => throw null;
             public static System.Int64 LongCount<TSource>(this System.Collections.Generic.IEnumerable<TSource> source) => throw null;
             public static System.Int64 LongCount<TSource>(this System.Collections.Generic.IEnumerable<TSource> source, System.Func<TSource, bool> predicate) => throw null;
             public static System.Decimal Max(this System.Collections.Generic.IEnumerable<System.Decimal> source) => throw null;
@@ -96,6 +109,9 @@ namespace System
             public static int? Max<TSource>(this System.Collections.Generic.IEnumerable<TSource> source, System.Func<TSource, int?> selector) => throw null;
             public static System.Int64 Max<TSource>(this System.Collections.Generic.IEnumerable<TSource> source, System.Func<TSource, System.Int64> selector) => throw null;
             public static System.Int64? Max<TSource>(this System.Collections.Generic.IEnumerable<TSource> source, System.Func<TSource, System.Int64?> selector) => throw null;
+            public static TSource Max<TSource>(this System.Collections.Generic.IEnumerable<TSource> source, System.Collections.Generic.IComparer<TSource> comparer) => throw null;
+            public static TSource MaxBy<TSource, TKey>(this System.Collections.Generic.IEnumerable<TSource> source, System.Func<TSource, TKey> keySelector) => throw null;
+            public static TSource MaxBy<TSource, TKey>(this System.Collections.Generic.IEnumerable<TSource> source, System.Func<TSource, TKey> keySelector, System.Collections.Generic.IComparer<TKey> comparer) => throw null;
             public static System.Decimal Min(this System.Collections.Generic.IEnumerable<System.Decimal> source) => throw null;
             public static System.Decimal? Min(this System.Collections.Generic.IEnumerable<System.Decimal?> source) => throw null;
             public static double Min(this System.Collections.Generic.IEnumerable<double> source) => throw null;
@@ -118,6 +134,9 @@ namespace System
             public static int? Min<TSource>(this System.Collections.Generic.IEnumerable<TSource> source, System.Func<TSource, int?> selector) => throw null;
             public static System.Int64 Min<TSource>(this System.Collections.Generic.IEnumerable<TSource> source, System.Func<TSource, System.Int64> selector) => throw null;
             public static System.Int64? Min<TSource>(this System.Collections.Generic.IEnumerable<TSource> source, System.Func<TSource, System.Int64?> selector) => throw null;
+            public static TSource Min<TSource>(this System.Collections.Generic.IEnumerable<TSource> source, System.Collections.Generic.IComparer<TSource> comparer) => throw null;
+            public static TSource MinBy<TSource, TKey>(this System.Collections.Generic.IEnumerable<TSource> source, System.Func<TSource, TKey> keySelector) => throw null;
+            public static TSource MinBy<TSource, TKey>(this System.Collections.Generic.IEnumerable<TSource> source, System.Func<TSource, TKey> keySelector, System.Collections.Generic.IComparer<TKey> comparer) => throw null;
             public static System.Collections.Generic.IEnumerable<TResult> OfType<TResult>(this System.Collections.IEnumerable source) => throw null;
             public static System.Linq.IOrderedEnumerable<TSource> OrderBy<TSource, TKey>(this System.Collections.Generic.IEnumerable<TSource> source, System.Func<TSource, TKey> keySelector) => throw null;
             public static System.Linq.IOrderedEnumerable<TSource> OrderBy<TSource, TKey>(this System.Collections.Generic.IEnumerable<TSource> source, System.Func<TSource, TKey> keySelector, System.Collections.Generic.IComparer<TKey> comparer) => throw null;
@@ -139,6 +158,8 @@ namespace System
             public static TSource Single<TSource>(this System.Collections.Generic.IEnumerable<TSource> source, System.Func<TSource, bool> predicate) => throw null;
             public static TSource SingleOrDefault<TSource>(this System.Collections.Generic.IEnumerable<TSource> source) => throw null;
             public static TSource SingleOrDefault<TSource>(this System.Collections.Generic.IEnumerable<TSource> source, System.Func<TSource, bool> predicate) => throw null;
+            public static TSource SingleOrDefault<TSource>(this System.Collections.Generic.IEnumerable<TSource> source, System.Func<TSource, bool> predicate, TSource defaultValue) => throw null;
+            public static TSource SingleOrDefault<TSource>(this System.Collections.Generic.IEnumerable<TSource> source, TSource defaultValue) => throw null;
             public static System.Collections.Generic.IEnumerable<TSource> Skip<TSource>(this System.Collections.Generic.IEnumerable<TSource> source, int count) => throw null;
             public static System.Collections.Generic.IEnumerable<TSource> SkipLast<TSource>(this System.Collections.Generic.IEnumerable<TSource> source, int count) => throw null;
             public static System.Collections.Generic.IEnumerable<TSource> SkipWhile<TSource>(this System.Collections.Generic.IEnumerable<TSource> source, System.Func<TSource, bool> predicate) => throw null;
@@ -163,6 +184,7 @@ namespace System
             public static int? Sum<TSource>(this System.Collections.Generic.IEnumerable<TSource> source, System.Func<TSource, int?> selector) => throw null;
             public static System.Int64 Sum<TSource>(this System.Collections.Generic.IEnumerable<TSource> source, System.Func<TSource, System.Int64> selector) => throw null;
             public static System.Int64? Sum<TSource>(this System.Collections.Generic.IEnumerable<TSource> source, System.Func<TSource, System.Int64?> selector) => throw null;
+            public static System.Collections.Generic.IEnumerable<TSource> Take<TSource>(this System.Collections.Generic.IEnumerable<TSource> source, System.Range range) => throw null;
             public static System.Collections.Generic.IEnumerable<TSource> Take<TSource>(this System.Collections.Generic.IEnumerable<TSource> source, int count) => throw null;
             public static System.Collections.Generic.IEnumerable<TSource> TakeLast<TSource>(this System.Collections.Generic.IEnumerable<TSource> source, int count) => throw null;
             public static System.Collections.Generic.IEnumerable<TSource> TakeWhile<TSource>(this System.Collections.Generic.IEnumerable<TSource> source, System.Func<TSource, bool> predicate) => throw null;
@@ -183,21 +205,25 @@ namespace System
             public static System.Linq.ILookup<TKey, TElement> ToLookup<TSource, TKey, TElement>(this System.Collections.Generic.IEnumerable<TSource> source, System.Func<TSource, TKey> keySelector, System.Func<TSource, TElement> elementSelector, System.Collections.Generic.IEqualityComparer<TKey> comparer) => throw null;
             public static System.Linq.ILookup<TKey, TSource> ToLookup<TSource, TKey>(this System.Collections.Generic.IEnumerable<TSource> source, System.Func<TSource, TKey> keySelector) => throw null;
             public static System.Linq.ILookup<TKey, TSource> ToLookup<TSource, TKey>(this System.Collections.Generic.IEnumerable<TSource> source, System.Func<TSource, TKey> keySelector, System.Collections.Generic.IEqualityComparer<TKey> comparer) => throw null;
+            public static bool TryGetNonEnumeratedCount<TSource>(this System.Collections.Generic.IEnumerable<TSource> source, out int count) => throw null;
             public static System.Collections.Generic.IEnumerable<TSource> Union<TSource>(this System.Collections.Generic.IEnumerable<TSource> first, System.Collections.Generic.IEnumerable<TSource> second) => throw null;
             public static System.Collections.Generic.IEnumerable<TSource> Union<TSource>(this System.Collections.Generic.IEnumerable<TSource> first, System.Collections.Generic.IEnumerable<TSource> second, System.Collections.Generic.IEqualityComparer<TSource> comparer) => throw null;
+            public static System.Collections.Generic.IEnumerable<TSource> UnionBy<TSource, TKey>(this System.Collections.Generic.IEnumerable<TSource> first, System.Collections.Generic.IEnumerable<TSource> second, System.Func<TSource, TKey> keySelector) => throw null;
+            public static System.Collections.Generic.IEnumerable<TSource> UnionBy<TSource, TKey>(this System.Collections.Generic.IEnumerable<TSource> first, System.Collections.Generic.IEnumerable<TSource> second, System.Func<TSource, TKey> keySelector, System.Collections.Generic.IEqualityComparer<TKey> comparer) => throw null;
             public static System.Collections.Generic.IEnumerable<TSource> Where<TSource>(this System.Collections.Generic.IEnumerable<TSource> source, System.Func<TSource, bool> predicate) => throw null;
             public static System.Collections.Generic.IEnumerable<TSource> Where<TSource>(this System.Collections.Generic.IEnumerable<TSource> source, System.Func<TSource, int, bool> predicate) => throw null;
             public static System.Collections.Generic.IEnumerable<TResult> Zip<TFirst, TSecond, TResult>(this System.Collections.Generic.IEnumerable<TFirst> first, System.Collections.Generic.IEnumerable<TSecond> second, System.Func<TFirst, TSecond, TResult> resultSelector) => throw null;
+            public static System.Collections.Generic.IEnumerable<(TFirst, TSecond, TThird)> Zip<TFirst, TSecond, TThird>(this System.Collections.Generic.IEnumerable<TFirst> first, System.Collections.Generic.IEnumerable<TSecond> second, System.Collections.Generic.IEnumerable<TThird> third) => throw null;
             public static System.Collections.Generic.IEnumerable<(TFirst, TSecond)> Zip<TFirst, TSecond>(this System.Collections.Generic.IEnumerable<TFirst> first, System.Collections.Generic.IEnumerable<TSecond> second) => throw null;
         }
 
-        // Generated from `System.Linq.IGrouping<,>` in `System.Linq, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Linq.IGrouping<,>` in `System.Linq, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public interface IGrouping<TKey, TElement> : System.Collections.Generic.IEnumerable<TElement>, System.Collections.IEnumerable
         {
             TKey Key { get; }
         }
 
-        // Generated from `System.Linq.ILookup<,>` in `System.Linq, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Linq.ILookup<,>` in `System.Linq, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public interface ILookup<TKey, TElement> : System.Collections.Generic.IEnumerable<System.Linq.IGrouping<TKey, TElement>>, System.Collections.IEnumerable
         {
             bool Contains(TKey key);
@@ -205,13 +231,13 @@ namespace System
             System.Collections.Generic.IEnumerable<TElement> this[TKey key] { get; }
         }
 
-        // Generated from `System.Linq.IOrderedEnumerable<>` in `System.Linq, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Linq.IOrderedEnumerable<>` in `System.Linq, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public interface IOrderedEnumerable<TElement> : System.Collections.Generic.IEnumerable<TElement>, System.Collections.IEnumerable
         {
             System.Linq.IOrderedEnumerable<TElement> CreateOrderedEnumerable<TKey>(System.Func<TElement, TKey> keySelector, System.Collections.Generic.IComparer<TKey> comparer, bool descending);
         }
 
-        // Generated from `System.Linq.Lookup<,>` in `System.Linq, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Linq.Lookup<,>` in `System.Linq, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class Lookup<TKey, TElement> : System.Collections.Generic.IEnumerable<System.Linq.IGrouping<TKey, TElement>>, System.Collections.IEnumerable, System.Linq.ILookup<TKey, TElement>
         {
             public System.Collections.Generic.IEnumerable<TResult> ApplyResultSelector<TResult>(System.Func<TKey, System.Collections.Generic.IEnumerable<TElement>, TResult> resultSelector) => throw null;

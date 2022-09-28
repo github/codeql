@@ -7,9 +7,9 @@ import java
 /**
  * MyBatis Mapper XML file.
  */
-class MyBatisMapperXmlFile extends XMLFile {
+class MyBatisMapperXmlFile extends XmlFile {
   MyBatisMapperXmlFile() {
-    count(XMLElement e | e = this.getAChild()) = 1 and
+    count(XmlElement e | e = this.getAChild()) = 1 and
     this.getAChild().getName() = "mapper"
   }
 }
@@ -20,7 +20,7 @@ deprecated class MyBatisMapperXMLFile = MyBatisMapperXmlFile;
 /**
  * An XML element in a `MyBatisMapperXMLFile`.
  */
-class MyBatisMapperXmlElement extends XMLElement {
+class MyBatisMapperXmlElement extends XmlElement {
   MyBatisMapperXmlElement() { this.getFile() instanceof MyBatisMapperXmlFile }
 
   /**

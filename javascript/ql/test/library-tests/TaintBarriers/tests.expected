@@ -43,6 +43,10 @@ isLabeledBarrier
 | ExampleConfiguration | tst.js:361:14:361:14 | v | taint |
 | ExampleConfiguration | tst.js:371:14:371:16 | o.p | taint |
 | ExampleConfiguration | tst.js:378:14:378:17 | o[p] | taint |
+| ExampleConfiguration | tst.js:392:14:392:14 | v | taint |
+| ExampleConfiguration | tst.js:394:14:394:16 | v.p | taint |
+| ExampleConfiguration | tst.js:396:14:396:18 | v.p.q | taint |
+| ExampleConfiguration | tst.js:402:14:402:14 | v | taint |
 isSanitizer
 | ExampleConfiguration | tst.js:176:18:176:18 | v |
 sanitizingGuard
@@ -122,6 +126,12 @@ sanitizingGuard
 | tst.js:370:9:370:29 | o.p ==  ... listed" | tst.js:370:16:370:29 | "white-listed" | true |
 | tst.js:377:11:377:32 | o[p] == ... listed" | tst.js:377:11:377:14 | o[p] | true |
 | tst.js:377:11:377:32 | o[p] == ... listed" | tst.js:377:19:377:32 | "white-listed" | true |
+| tst.js:391:9:391:27 | o.hasOwnProperty(v) | tst.js:391:26:391:26 | v | true |
+| tst.js:393:16:393:36 | o.hasOw ... ty(v.p) | tst.js:393:33:393:35 | v.p | true |
+| tst.js:395:16:395:38 | o.hasOw ... (v.p.q) | tst.js:395:33:395:37 | v.p.q | true |
+| tst.js:397:16:397:36 | o.hasOw ... ty(v.p) | tst.js:397:33:397:35 | v.p | true |
+| tst.js:399:16:399:41 | o.hasOw ... "p.q"]) | tst.js:399:33:399:40 | v["p.q"] | true |
+| tst.js:401:16:401:34 | Object.hasOwn(o, v) | tst.js:401:33:401:33 | v | true |
 taintedSink
 | tst.js:2:13:2:20 | SOURCE() | tst.js:3:10:3:10 | v |
 | tst.js:2:13:2:20 | SOURCE() | tst.js:8:14:8:14 | v |
@@ -186,3 +196,6 @@ taintedSink
 | tst.js:367:13:367:20 | SOURCE() | tst.js:373:14:373:16 | o.p |
 | tst.js:367:13:367:20 | SOURCE() | tst.js:380:14:380:17 | o[p] |
 | tst.js:367:13:367:20 | SOURCE() | tst.js:382:14:382:17 | o[p] |
+| tst.js:388:13:388:20 | SOURCE() | tst.js:389:10:389:14 | v.p.q |
+| tst.js:388:13:388:20 | SOURCE() | tst.js:398:14:398:14 | v |
+| tst.js:388:13:388:20 | SOURCE() | tst.js:400:14:400:18 | v.p.q |

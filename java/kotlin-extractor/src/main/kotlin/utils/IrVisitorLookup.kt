@@ -8,7 +8,7 @@ import org.jetbrains.kotlin.ir.declarations.IrFile
 import org.jetbrains.kotlin.ir.util.isFakeOverride
 import org.jetbrains.kotlin.ir.visitors.IrElementVisitor
 
-class IrVisitorLookup(private val psi: PsiElement, private val file: IrFile) :
+class IrVisitorLookup(private val psi2Ir: Psi2Ir, private val psi: PsiElement, private val file: IrFile) :
     IrElementVisitor<Unit, MutableCollection<IrElement>> {
     private val location = psi.getLocation()
 
@@ -27,7 +27,7 @@ class IrVisitorLookup(private val psi: PsiElement, private val file: IrFile) :
         }
 
         if (location.contains(elementLocation)) {
-            val psiElement = Psi2Ir().findPsiElement(element, file)
+            val psiElement = psi2Ir.findPsiElement(element, file)
             if (psiElement == psi) {
                 // There can be multiple IrElements that match the same PSI element.
                 data.add(element)

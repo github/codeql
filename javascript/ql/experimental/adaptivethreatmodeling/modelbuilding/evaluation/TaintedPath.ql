@@ -5,7 +5,8 @@
  * evaluation pipeline.
  */
 
-import semmle.javascript.security.dataflow.TaintedPath
+import javascript
+import semmle.javascript.security.dataflow.TaintedPathQuery as TaintedPath
 import EndToEndEvaluation as EndToEndEvaluation
 
 from

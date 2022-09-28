@@ -28,6 +28,9 @@ public class AccessibilityEvent extends AccessibilityRecord implements Parcelabl
     public static Parcelable.Creator<AccessibilityEvent> CREATOR = null;
     public static String eventTypeToString(int p0){ return null; }
     public static int CONTENT_CHANGE_TYPE_CONTENT_DESCRIPTION = 0;
+    public static int CONTENT_CHANGE_TYPE_DRAG_CANCELLED = 0;
+    public static int CONTENT_CHANGE_TYPE_DRAG_DROPPED = 0;
+    public static int CONTENT_CHANGE_TYPE_DRAG_STARTED = 0;
     public static int CONTENT_CHANGE_TYPE_PANE_APPEARED = 0;
     public static int CONTENT_CHANGE_TYPE_PANE_DISAPPEARED = 0;
     public static int CONTENT_CHANGE_TYPE_PANE_TITLE = 0;

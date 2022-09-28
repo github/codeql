@@ -23,6 +23,7 @@ invalidOverlap
 nonUniqueEnclosingIRFunction
 fieldAddressOnNonPointer
 thisArgumentIsNonPointer
+nonUniqueIRVariable
 missingCanonicalLanguageType
 multipleCanonicalLanguageTypes
 missingIRType

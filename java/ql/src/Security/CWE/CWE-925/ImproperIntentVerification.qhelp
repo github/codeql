@@ -1,0 +1,40 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+
+<qhelp>
+
+<overview>
+<p>
+When an Android application uses a <code>BroadcastReceiver</code> to receive intents, 
+it is also able to receive explicit intents that are sent directly to it, regardless of its filter.
+
+Certain intent actions are only able to be sent by the operating system, not third-party applications. 
+However, a <code>BroadcastReceiver</code> that is registered to receive system intents is still able to receive 
+intents from a third-party application, so it should check that the intent received has the expected action.
+Otherwise, a third-party application could impersonate the system this way to cause unintended behavior, such as a denial of service.
+</p>
+</overview>
+
+<example>
+  <p>In the following code, the <code>ShutdownReceiver</code> initiates a shutdown procedure upon receiving an intent, 
+  without checking that the received action is indeed <code>ACTION_SHUTDOWN</code>. This allows third-party applications to 
+  send explicit intents to this receiver to cause a denial of service.</p>
+<sample src="Bad.java" />
+<sample src="AndroidManifest.xml" />
+</example>
+
+<recommendation>
+<p>
+In the <code>onReceive</code> method of a <code>BroadcastReciever</code>, the action of the received Intent should be checked. The following code demonstrates this.
+</p>
+<sample src="Good.java" />
+</recommendation>
+
+
+
+<references>
+
+</references>
+
+</qhelp>

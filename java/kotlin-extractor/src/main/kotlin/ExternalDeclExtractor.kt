@@ -6,9 +6,11 @@ import com.semmle.extractor.java.OdasaOutput
 import com.semmle.util.data.StringDigestor
 import org.jetbrains.kotlin.backend.common.extensions.IrPluginContext
 import org.jetbrains.kotlin.ir.declarations.*
+import org.jetbrains.kotlin.ir.util.fqNameWhenAvailable
 import org.jetbrains.kotlin.ir.util.isFileClass
 import org.jetbrains.kotlin.ir.util.packageFqName
 import org.jetbrains.kotlin.ir.util.parentClassOrNull
+import org.jetbrains.kotlin.name.FqName
 import java.io.File
 import java.util.ArrayList
 import java.util.HashSet
@@ -16,25 +18,25 @@ import java.util.zip.GZIPOutputStream
 
 class ExternalDeclExtractor(val logger: FileLogger, val invocationTrapFile: String, val sourceFilePath: String, val primitiveTypeMapping: PrimitiveTypeMapping, val pluginContext: IrPluginContext, val globalExtensionState: KotlinExtractorGlobalState, val diagnosticTrapWriter: TrapWriter) {
 
-    val externalDeclsDone = HashSet<IrDeclaration>()
+    val declBinaryNames = HashMap<IrDeclaration, String>()
+    val externalDeclsDone = HashSet<Pair<String, String>>()
     val externalDeclWorkList = ArrayList<Pair<IrDeclaration, String>>()
-
-    fun extractLater(d: IrDeclaration, signature: String): Boolean {
-        if (d !is IrClass && !isExternalFileClassMember(d)) {
-            logger.errorElement("External declaration is neither a class, nor a top-level declaration", d)
-            return false
-        }
-        val ret = externalDeclsDone.add(d)
-        if (ret) externalDeclWorkList.add(Pair(d, signature))
-        return ret
-    }
 
     val propertySignature = ";property"
     val fieldSignature = ";field"
 
+    fun extractLater(d: IrDeclarationWithName, signature: String): Boolean {
+        if (d !is IrClass && !isExternalFileClassMember(d)) {
+            logger.errorElement("External declaration is neither a class, nor a top-level declaration", d)
+            return false
+        }
+        val declBinaryName = declBinaryNames.getOrPut(d) { getIrDeclBinaryName(d) }
+        val ret = externalDeclsDone.add(Pair(declBinaryName, signature))
+        if (ret) externalDeclWorkList.add(Pair(d, signature))
+        return ret
+    }
     fun extractLater(p: IrProperty) = extractLater(p, propertySignature)
     fun extractLater(f: IrField) = extractLater(f, fieldSignature)
-
     fun extractLater(c: IrClass) = extractLater(c, "")
 
     fun extractExternalClasses() {

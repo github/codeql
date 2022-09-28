@@ -1,5 +1,7 @@
 edges
+| ConditionalBypass.cs:12:26:12:48 | access to property QueryString : NameValueCollection | ConditionalBypass.cs:12:26:12:59 | access to indexer : String |
 | ConditionalBypass.cs:12:26:12:48 | access to property QueryString : NameValueCollection | ConditionalBypass.cs:16:13:16:30 | ... == ... |
+| ConditionalBypass.cs:12:26:12:59 | access to indexer : String | ConditionalBypass.cs:16:13:16:30 | ... == ... |
 | ConditionalBypass.cs:19:34:19:52 | access to property Cookies : HttpCookieCollection | ConditionalBypass.cs:22:13:22:23 | access to local variable adminCookie : HttpCookie |
 | ConditionalBypass.cs:19:34:19:52 | access to property Cookies : HttpCookieCollection | ConditionalBypass.cs:27:13:27:23 | access to local variable adminCookie : HttpCookie |
 | ConditionalBypass.cs:22:13:22:23 | access to local variable adminCookie : HttpCookie | ConditionalBypass.cs:22:13:22:29 | access to property Value : String |
@@ -19,6 +21,7 @@ edges
 | ConditionalBypass.cs:84:13:84:29 | access to property Value : String | ConditionalBypass.cs:84:13:84:40 | ... == ... |
 nodes
 | ConditionalBypass.cs:12:26:12:48 | access to property QueryString : NameValueCollection | semmle.label | access to property QueryString : NameValueCollection |
+| ConditionalBypass.cs:12:26:12:59 | access to indexer : String | semmle.label | access to indexer : String |
 | ConditionalBypass.cs:16:13:16:30 | ... == ... | semmle.label | ... == ... |
 | ConditionalBypass.cs:19:34:19:52 | access to property Cookies : HttpCookieCollection | semmle.label | access to property Cookies : HttpCookieCollection |
 | ConditionalBypass.cs:22:13:22:23 | access to local variable adminCookie : HttpCookie | semmle.label | access to local variable adminCookie : HttpCookie |

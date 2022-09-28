@@ -1,7 +1,7 @@
 import javascript
 
 /** A RAML specification. */
-class RamlSpec extends YAMLDocument, YAMLMapping {
+class RamlSpec extends YamlDocument, YamlMapping {
   RamlSpec() { getLocation().getFile().getExtension() = "raml" }
 }
 

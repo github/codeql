@@ -25,9 +25,5 @@ module TaintedPath {
       super.isSanitizer(node) or
       node instanceof Sanitizer
     }
-
-    override predicate isSanitizerGuard(DataFlow::BarrierGuard guard) {
-      guard instanceof SanitizerGuardAsBarrierGuard
-    }
   }
 }

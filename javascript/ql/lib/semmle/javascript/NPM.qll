@@ -50,8 +50,23 @@ class PackageJson extends JsonObject {
   /** Gets a file for this package. */
   string getAFile() { result = this.getFiles().getElementStringValue(_) }
 
-  /** Gets the main module of this package. */
-  string getMain() { result = MainModulePath::of(this).getValue() }
+  /**
+   * Gets the main module of this package.
+   *
+   * This can be given by the `main` or `module` property, or via the
+   * `exports` property with the relative path `"."`.
+   */
+  string getMain() { result = this.getExportedPath(".") }
+
+  /**
+   * Gets the path to the file exported with the given relative path.
+   *
+   * This can be given by the `exports` property, but also considers `main` and
+   * `module` paths to be exported under the relative path `"."`.
+   */
+  string getExportedPath(string relativePath) {
+    result = MainModulePath::of(this, relativePath).getValue()
+  }
 
   /** Gets the path of a command defined for this package. */
   string getBin(string cmd) {
@@ -153,17 +168,23 @@ class PackageJson extends JsonObject {
   JsonArray getCPUs() { result = this.getPropValue("cpu") }
 
   /** Gets a platform supported by this package. */
-  string getWhitelistedCPU() {
+  string getWhitelistedCpu() {
     result = this.getCPUs().getElementStringValue(_) and
     not result.matches("!%")
   }
 
+  /** DEPRECATED: Alias for getWhitelistedCpu */
+  deprecated string getWhitelistedCPU() { result = this.getWhitelistedCpu() }
+
   /** Gets a platform not supported by this package. */
-  string getBlacklistedCPU() {
+  string getBlacklistedCpu() {
     exists(string str | str = this.getCPUs().getElementStringValue(_) |
       result = str.regexpCapture("!(.*)", 1)
     )
   }
+
+  /** DEPRECATED: Alias for getBlacklistedCpu */
+  deprecated string getBlacklistedCPU() { result = this.getBlacklistedCpu() }
 
   /** Holds if this package prefers to be installed globally. */
   predicate isPreferGlobal() { this.getPropValue("preferGlobal").(JsonBoolean).getValue() = "true" }
@@ -180,6 +201,47 @@ class PackageJson extends JsonObject {
   Module getMainModule() {
     result = min(Module m, int prio | m.getFile() = resolveMainModule(this, prio) | m order by prio)
   }
+
+  /**
+   * Gets the module exported under the given relative path.
+   *
+   * The main module is considered exported under the path `"."`.
+   */
+  Module getExportedModule(string relativePath) {
+    relativePath = "." and
+    result = this.getMainModule()
+    or
+    result.getFile() = MainModulePath::of(this, relativePath).resolve()
+  }
+
+  /**
+   * Gets the `types` or `typings` field of this package.
+   */
+  string getTypings() { result = this.getPropStringValue(["types", "typings"]) }
+
+  /**
+   * Gets the file containing the typings of this package, which can either be from the `types` or
+   * `typings` field, or derived from the `main` or `module` fields.
+   */
+  File getTypingsFile() {
+    result =
+      TypingsModulePathString::of(this).resolve(this.getFile().getParentContainer()).getContainer()
+    or
+    not exists(TypingsModulePathString::of(this)) and
+    exists(File mainFile |
+      mainFile = this.getMainModule().getFile() and
+      result =
+        mainFile
+            .getParentContainer()
+            .getFile(mainFile.getStem().regexpReplaceAll("\\.d$", "") + ".d.ts")
+    )
+  }
+
+  /**
+   * Gets the module containing the typings of this package, which can either be from the `types` or
+   * `typings` field, or derived from the `main` or `module` fields.
+   */
+  Module getTypingsModule() { result.getFile() = this.getTypingsFile() }
 }
 
 /** DEPRECATED: Alias for PackageJson */

@@ -58,7 +58,7 @@ class RemoteServerResponse extends HeuristicSource, RemoteFlowSource {
  */
 private class RemoteFlowSourceFromDBAccess extends RemoteFlowSource, HeuristicSource {
   RemoteFlowSourceFromDBAccess() {
-    this = ModelOutput::getASourceNode("database-access-result").getAUse() or
+    this = ModelOutput::getASourceNode("database-access-result").getAValueReachableFromSource() or
     exists(DatabaseAccess dba | this = dba.getAResult())
   }
 

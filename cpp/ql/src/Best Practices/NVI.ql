@@ -18,4 +18,4 @@ where
   f.hasSpecifier("virtual") and
   f.getFile().fromSource() and
   not f instanceof Destructor
-select f, "Avoid having public virtual methods (NVI idiom)"
+select f, "Avoid having public virtual methods (NVI idiom)."

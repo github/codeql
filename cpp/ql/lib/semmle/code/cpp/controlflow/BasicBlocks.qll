@@ -231,7 +231,7 @@ class BasicBlock extends ControlFlowNodeBase {
     exists(Function f | f.getBlock() = this)
     or
     exists(TryStmt t, BasicBlock tryblock |
-      // a `Handler` preceeds the `CatchBlock`, and is always the beginning
+      // a `Handler` precedes the `CatchBlock`, and is always the beginning
       // of a new `BasicBlock` (see `primitive_basic_block_entry_node`).
       this.(Handler).getTryStmt() = t and
       tryblock.isReachable() and

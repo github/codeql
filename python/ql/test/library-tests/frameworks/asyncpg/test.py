@@ -7,17 +7,17 @@ async def test_connection():
     try:
         # The file-like object is passed in as a keyword-only argument.
         # See https://magicstack.github.io/asyncpg/current/api/index.html#asyncpg.connection.Connection.copy_from_query
-        await conn.copy_from_query("sql", output="filepath")  # $ getSql="sql" getAPathArgument="filepath"
-        await conn.copy_from_query("sql", "arg1", "arg2", output="filepath")  # $ getSql="sql" getAPathArgument="filepath"
+        await conn.copy_from_query("sql", output="filepath")  # $ mad-sink[sql-injection]="sql" mad-sink[path-injection]="filepath"
+        await conn.copy_from_query("sql", "arg1", "arg2", output="filepath")  # $ mad-sink[sql-injection]="sql" mad-sink[path-injection]="filepath"
 
-        await conn.copy_from_table("table", output="filepath")  # $ getAPathArgument="filepath"
-        await conn.copy_to_table("table", source="filepath")  # $ getAPathArgument="filepath"
+        await conn.copy_from_table("table", output="filepath")  # $ mad-sink[path-injection]="filepath"
+        await conn.copy_to_table("table", source="filepath")  # $ mad-sink[path-injection]="filepath"
 
-        await conn.execute("sql")  # $ getSql="sql"
-        await conn.executemany("sql")  # $ getSql="sql"
-        await conn.fetch("sql")  # $ getSql="sql"
-        await conn.fetchrow("sql")  # $ getSql="sql"
-        await conn.fetchval("sql")  # $ getSql="sql"
+        await conn.execute("sql")  # $ mad-sink[sql-injection]="sql"
+        await conn.executemany("sql")  # $ mad-sink[sql-injection]="sql"
+        await conn.fetch("sql")  # $ mad-sink[sql-injection]="sql"
+        await conn.fetchrow("sql")  # $ mad-sink[sql-injection]="sql"
+        await conn.fetchval("sql")  # $ mad-sink[sql-injection]="sql"
 
     finally:
         await conn.close()
@@ -27,11 +27,11 @@ async def test_prepared_statement():
     conn = await asyncpg.connect()
 
     try:
-        pstmt = await conn.prepare("psql")  # $ constructedSql="psql"
-        pstmt.executemany()  # $ getSql="psql"
-        pstmt.fetch()  # $ getSql="psql"
-        pstmt.fetchrow()  # $ getSql="psql"
-        pstmt.fetchval()  # $ getSql="psql"
+        pstmt = await conn.prepare("psql")  # $ mad-sink[sql-injection]="psql"
+        pstmt.executemany()
+        pstmt.fetch()
+        pstmt.fetchrow()
+        pstmt.fetchval()
 
     finally:
         await conn.close()
@@ -46,7 +46,7 @@ async def test_cursor():
             cursor = await conn.cursor("sql")  # $ getSql="sql" constructedSql="sql"
             await cursor.fetch()
 
-            pstmt = await conn.prepare("psql")  # $ constructedSql="psql"
+            pstmt = await conn.prepare("psql")  # $ mad-sink[sql-injection]="psql"
             pcursor = await pstmt.cursor()  # $ getSql="psql"
             await pcursor.fetch()
 
@@ -69,23 +69,23 @@ async def test_connection_pool():
     pool = await asyncpg.create_pool()
 
     try:
-        await pool.copy_from_query("sql", output="filepath")  # $ getSql="sql" getAPathArgument="filepath"
-        await pool.copy_from_query("sql", "arg1", "arg2", output="filepath")  # $ getSql="sql" getAPathArgument="filepath"
-        await pool.copy_from_table("table", output="filepath")  # $ getAPathArgument="filepath"
-        await pool.copy_to_table("table", source="filepath")  # $ getAPathArgument="filepath"
+        await pool.copy_from_query("sql", output="filepath")  # $ mad-sink[sql-injection]="sql" mad-sink[path-injection]="filepath"
+        await pool.copy_from_query("sql", "arg1", "arg2", output="filepath")  # $ mad-sink[sql-injection]="sql" mad-sink[path-injection]="filepath"
+        await pool.copy_from_table("table", output="filepath")  # $ mad-sink[path-injection]="filepath"
+        await pool.copy_to_table("table", source="filepath")  # $ mad-sink[path-injection]="filepath"
 
-        await pool.execute("sql")  # $ getSql="sql"
-        await pool.executemany("sql")  # $ getSql="sql"
-        await pool.fetch("sql")  # $ getSql="sql"
-        await pool.fetchrow("sql")  # $ getSql="sql"
-        await pool.fetchval("sql")  # $ getSql="sql"
+        await pool.execute("sql")  # $ mad-sink[sql-injection]="sql"
+        await pool.executemany("sql")  # $ mad-sink[sql-injection]="sql"
+        await pool.fetch("sql")  # $ mad-sink[sql-injection]="sql"
+        await pool.fetchrow("sql")  # $ mad-sink[sql-injection]="sql"
+        await pool.fetchval("sql")  # $ mad-sink[sql-injection]="sql"
 
         async with pool.acquire() as conn:
-            await conn.execute("sql")  # $ getSql="sql"
+            await conn.execute("sql")  # $ mad-sink[sql-injection]="sql"
 
         conn = await pool.acquire()
         try:
-            await conn.fetch("sql")  # $ getSql="sql"
+            await conn.fetch("sql")  # $ mad-sink[sql-injection]="sql"
         finally:
             await pool.release(conn)
 
@@ -93,13 +93,13 @@ async def test_connection_pool():
         await pool.close()
 
     async with asyncpg.create_pool() as pool:
-        await pool.execute("sql")  # $ getSql="sql"
+        await pool.execute("sql")  # $ mad-sink[sql-injection]="sql"
 
         async with pool.acquire() as conn:
-            await conn.execute("sql")  # $ getSql="sql"
+            await conn.execute("sql")  # $ mad-sink[sql-injection]="sql"
 
         conn = await pool.acquire()
         try:
-            await conn.fetch("sql")  # $ getSql="sql"
+            await conn.fetch("sql")  # $ mad-sink[sql-injection]="sql"
         finally:
             await pool.release(conn)

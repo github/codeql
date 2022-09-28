@@ -33,7 +33,7 @@ module CommandInjection {
   class RemoteFlowSourceAsSource extends Source {
     RemoteFlowSourceAsSource() { this instanceof RemoteFlowSource }
 
-    override string getSourceType() { result = "a user-provided value" }
+    override string getSourceType() { result = "user-provided value" }
   }
 
   /**

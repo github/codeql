@@ -8,13 +8,9 @@ import go
  * Extend this class to refine existing API models. If you want to model new APIs,
  * extend `WebSocketRequestCall::Range` instead.
  */
-class WebSocketRequestCall extends DataFlow::CallNode {
-  WebSocketRequestCall::Range self;
-
-  WebSocketRequestCall() { this = self }
-
+class WebSocketRequestCall extends DataFlow::CallNode instanceof WebSocketRequestCall::Range {
   /** Gets the URL of the request. */
-  DataFlow::Node getRequestUrl() { result = self.getRequestUrl() }
+  DataFlow::Node getRequestUrl() { result = super.getRequestUrl() }
 }
 
 /** Provides classes for working with WebSocket request functions. */
@@ -143,13 +139,9 @@ class WebSocketReaderAsSource extends UntrustedFlowSource::Range {
  * Extend this class to refine existing API models. If you want to model new APIs,
  * extend `WebSocketReader::Range` instead.
  */
-class WebSocketReader extends Function {
-  WebSocketReader::Range self;
-
-  WebSocketReader() { this = self }
-
+class WebSocketReader extends Function instanceof WebSocketReader::Range {
   /** Gets an output of this function containing data that is read from a WebSocket connection. */
-  FunctionOutput getAnOutput() { result = self.getAnOutput() }
+  FunctionOutput getAnOutput() { result = super.getAnOutput() }
 }
 
 /** Provides classes for working with messages read from a WebSocket. */
@@ -288,8 +280,8 @@ module WebSocketReader {
   /**
    * The `ServerWebSocket.MessageReceiveJSON` method of the `github.com/revel/revel` package.
    */
-  private class RevelServerWebSocketMessageReceiveJSON extends Range, Method {
-    RevelServerWebSocketMessageReceiveJSON() {
+  private class RevelServerWebSocketMessageReceiveJson extends Range, Method {
+    RevelServerWebSocketMessageReceiveJson() {
       // func MessageReceiveJSON(v interface{}) error
       this.hasQualifiedName(Revel::packagePath(), "ServerWebSocket", "MessageReceiveJSON")
     }

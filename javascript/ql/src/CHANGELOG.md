@@ -1,3 +1,59 @@
+## 0.4.0
+
+### Minor Analysis Improvements
+
+* Improved how the JavaScript parser handles ambiguities between plain JavaScript and dialects such as Flow and E4X that use the same file extension. The parser now prefers plain JavaScript if possible, falling back to dialects only if the source code can not be parsed as plain JavaScript. Previously, there were rare cases where parsing would fail because the parser would erroneously attempt to parse dialect-specific syntax in a regular JavaScript file.
+- The `js/regexp/always-matches` query will no longer report an empty regular expression as always
+  matching, as this is often the intended behavior.
+* The alert message of many queries have been changed to make the message consistent with other languages.
+
+### Bug Fixes
+
+- Fixed a bug in the `js/type-confusion-through-parameter-tampering` query that would cause it to ignore
+  sanitizers in branching conditions. The query should now report fewer false positives.
+
+## 0.3.4
+
+## 0.3.3
+
+### New Queries
+
+* Added a new query, `py/suspicious-regexp-range`, to detect character ranges in regular expressions that seem to match 
+  too many characters.
+
+## 0.3.2
+
+## 0.3.1
+
+### New Queries
+
+- A new query "Case-sensitive middleware path" (`js/case-sensitive-middleware-path`) has been added.
+  It highlights middleware routes that can be bypassed due to having a case-sensitive regular expression path.
+
+## 0.3.0
+
+### Breaking Changes
+
+* Contextual queries and the query libraries they depend on have been moved to the `codeql/javascript-all` package.
+
+## 0.2.0
+
+### Minor Analysis Improvements
+
+* The `js/resource-exhaustion` query no longer treats the 3-argument version of `Buffer.from` as a sink,
+  since it does not allocate a new buffer.
+
+## 0.1.4
+
+## 0.1.3
+
+### New Queries
+
+* The `js/actions/command-injection` query has been added. It highlights GitHub Actions workflows that may allow an 
+  attacker to execute arbitrary code in the workflow.
+  The query previously existed an experimental query.
+* A new query `js/insecure-temporary-file` has been added. The query detects the creation of temporary files that may be accessible by others users. The query is not run by default. 
+
 ## 0.1.2
 
 ### New Queries

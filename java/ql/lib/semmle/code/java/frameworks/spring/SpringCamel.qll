@@ -10,7 +10,7 @@ import semmle.code.java.frameworks.spring.SpringBean
  * An Apache Camel element in a Spring Beans file.
  */
 class SpringCamelXmlElement extends SpringXmlElement {
-  SpringCamelXmlElement() { getNamespace().getURI() = "http://camel.apache.org/schema/spring" }
+  SpringCamelXmlElement() { getNamespace().getUri() = "http://camel.apache.org/schema/spring" }
 }
 
 /** DEPRECATED: Alias for SpringCamelXmlElement */
@@ -114,7 +114,10 @@ class SpringCamelXmlToElement extends SpringCamelXmlRouteElement {
   /**
    * Gets the URI attribute for this `<to>` element.
    */
-  string getURI() { result = getAttribute("uri").getValue() }
+  string getUri() { result = getAttribute("uri").getValue() }
+
+  /** DEPRECATED: Alias for getUri */
+  deprecated string getURI() { result = getUri() }
 }
 
 /** DEPRECATED: Alias for SpringCamelXmlToElement */

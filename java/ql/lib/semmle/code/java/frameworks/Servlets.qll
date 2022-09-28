@@ -134,13 +134,16 @@ deprecated class HttpServletRequestGetRequestURLMethod = HttpServletRequestGetRe
 /**
  * The method `getRequestURI()` declared in `javax.servlet.http.HttpServletRequest`.
  */
-class HttpServletRequestGetRequestURIMethod extends Method {
-  HttpServletRequestGetRequestURIMethod() {
+class HttpServletRequestGetRequestUriMethod extends Method {
+  HttpServletRequestGetRequestUriMethod() {
     this.getDeclaringType() instanceof HttpServletRequest and
     this.hasName("getRequestURI") and
     this.getNumberOfParameters() = 0
   }
 }
+
+/** DEPRECATED: Alias for HttpServletRequestGetRequestUriMethod */
+deprecated class HttpServletRequestGetRequestURIMethod = HttpServletRequestGetRequestUriMethod;
 
 /**
  * The method `getRemoteUser()` declared in `javax.servlet.http.HttpServletRequest`.

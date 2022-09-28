@@ -57,7 +57,7 @@ class CandidatePredicate extends Predicate {
         this.getName()
             .regexpCapture("(.+)" + ["0", "helper", "aux", "cand", "Helper", "Aux", "Cand"], 1)
       or
-      // Or this this predicate is named "foo02" and `pred` is named "foo01".
+      // Or this predicate is named "foo02" and `pred` is named "foo01".
       exists(int n, string name |
         hasNameWithNumberSuffix(pred, name, n) and
         hasNameWithNumberSuffix(this, name, n - 1)

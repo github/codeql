@@ -120,7 +120,7 @@ private newtype TPrintAstNode =
     shouldPrint(lvde, _) and lvde.getParent() instanceof SingleLocalVarDeclParent
   } or
   TAnnotationsNode(Annotatable ann) {
-    shouldPrint(ann, _) and ann.hasAnnotation() and not partOfAnnotation(ann)
+    shouldPrint(ann, _) and ann.hasDeclaredAnnotation() and not partOfAnnotation(ann)
   } or
   TParametersNode(Callable c) { shouldPrint(c, _) and not c.hasNoParameters() } or
   TBaseTypesNode(ClassOrInterface ty) { shouldPrint(ty, _) } or
@@ -534,10 +534,12 @@ final class ClassInterfaceNode extends ElementNode {
     or
     childIndex >= 0 and
     result.(ElementNode).getElement() =
-      rank[childIndex](Element e, string file, int line, int column |
-        e = this.getADeclaration() and locationSortKeys(e, file, line, column)
+      rank[childIndex](Element e, string file, int line, int column, string childStr |
+        e = this.getADeclaration() and
+        locationSortKeys(e, file, line, column) and
+        childStr = e.toString()
       |
-        e order by file, line, column
+        e order by file, line, column, childStr
       )
   }
 }

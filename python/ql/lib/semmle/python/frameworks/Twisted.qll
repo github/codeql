@@ -33,7 +33,7 @@ private module Twisted {
             .getMember("resource")
             .getMember("Resource")
             .getASubclass*()
-            .getAnImmediateUse()
+            .asSource()
             .asExpr()
     }
 
@@ -60,7 +60,7 @@ private module Twisted {
   }
 
   /** A method that handles incoming requests, on a `twisted.web.resource.Resource` subclass. */
-  class TwistedResourceRequestHandler extends HTTP::Server::RequestHandler::Range {
+  class TwistedResourceRequestHandler extends Http::Server::RequestHandler::Range {
     TwistedResourceRequestHandler() { this = any(TwistedResourceSubclass cls).getARequestHandler() }
 
     Parameter getRequestParameter() { result = this.getArg(getRequestParamIndex(this.getName())) }
@@ -176,7 +176,7 @@ private module Twisted {
   /**
    * Implicit response from returns of render methods.
    */
-  private class TwistedResourceRenderMethodReturn extends HTTP::Server::HttpResponse::Range,
+  private class TwistedResourceRenderMethodReturn extends Http::Server::HttpResponse::Range,
     DataFlow::CfgNode {
     TwistedResourceRenderMethodReturn() {
       this.asCfgNode() = any(TwistedResourceRenderMethod meth).getAReturnValueFlowNode()
@@ -194,7 +194,7 @@ private module Twisted {
    *
    * See https://twistedmatrix.com/documents/21.2.0/api/twisted.web.server.Request.html#write
    */
-  class TwistedRequestWriteCall extends HTTP::Server::HttpResponse::Range, DataFlow::MethodCallNode {
+  class TwistedRequestWriteCall extends Http::Server::HttpResponse::Range, DataFlow::MethodCallNode {
     TwistedRequestWriteCall() { this.calls(Request::instance(), "write") }
 
     override DataFlow::Node getBody() {
@@ -211,7 +211,7 @@ private module Twisted {
    *
    * See https://twistedmatrix.com/documents/21.2.0/api/twisted.web.http.Request.html#redirect
    */
-  class TwistedRequestRedirectCall extends HTTP::Server::HttpRedirectResponse::Range,
+  class TwistedRequestRedirectCall extends Http::Server::HttpRedirectResponse::Range,
     DataFlow::MethodCallNode {
     TwistedRequestRedirectCall() { this.calls(Request::instance(), "redirect") }
 
@@ -231,7 +231,7 @@ private module Twisted {
    *
    * See https://twistedmatrix.com/documents/21.2.0/api/twisted.web.http.Request.html#addCookie
    */
-  class TwistedRequestAddCookieCall extends HTTP::Server::CookieWrite::Range,
+  class TwistedRequestAddCookieCall extends Http::Server::CookieWrite::Range,
     DataFlow::MethodCallNode {
     TwistedRequestAddCookieCall() { this.calls(Twisted::Request::instance(), "addCookie") }
 
@@ -247,7 +247,7 @@ private module Twisted {
    *
    * See https://twistedmatrix.com/documents/21.2.0/api/twisted.web.http.Request.html#cookies
    */
-  class TwistedRequestCookiesAppendCall extends HTTP::Server::CookieWrite::Range,
+  class TwistedRequestCookiesAppendCall extends Http::Server::CookieWrite::Range,
     DataFlow::MethodCallNode {
     TwistedRequestCookiesAppendCall() {
       exists(DataFlow::AttrRead cookiesLookup |

@@ -11,7 +11,7 @@
  *       external/cwe/cwe-829
  */
 
-import ruby
+import codeql.ruby.AST
 import codeql.ruby.DataFlow
 import codeql.ruby.security.InsecureDownloadQuery
 import DataFlow::PathGraph

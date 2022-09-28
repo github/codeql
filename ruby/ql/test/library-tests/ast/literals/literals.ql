@@ -1,4 +1,4 @@
-import ruby
+import codeql.ruby.AST
 
 query predicate allLiterals(Literal l, string pClass, string valueText) {
   pClass = l.getAPrimaryQlClass() and

@@ -14,6 +14,12 @@
 | app/controllers/users_controller.rb:20:7:20:57 | call to update_attributes | app/controllers/users_controller.rb:20:49:20:55 | call to get_uid |
 | app/controllers/users_controller.rb:23:7:23:42 | call to update_attribute | app/controllers/users_controller.rb:23:37:23:41 | "U13" |
 | app/controllers/users_controller.rb:26:19:26:23 | ... = ... | app/controllers/users_controller.rb:26:19:26:23 | "U14" |
+| app/controllers/users_controller.rb:31:7:31:32 | call to touch_all | app/controllers/users_controller.rb:31:28:31:31 | call to time |
+| app/controllers/users_controller.rb:35:7:35:27 | call to update | app/controllers/users_controller.rb:35:22:35:26 | attrs |
+| app/controllers/users_controller.rb:36:7:36:28 | call to update! | app/controllers/users_controller.rb:36:23:36:27 | attrs |
+| app/controllers/users_controller.rb:39:7:39:24 | call to create | app/controllers/users_controller.rb:39:19:39:23 | attrs |
+| app/controllers/users_controller.rb:40:7:40:25 | call to create! | app/controllers/users_controller.rb:40:20:40:24 | attrs |
+| app/controllers/users_controller.rb:41:7:41:24 | call to insert | app/controllers/users_controller.rb:41:19:41:23 | attrs |
 | app/models/user.rb:4:5:4:28 | call to update | app/models/user.rb:4:23:4:27 | "U15" |
 | app/models/user.rb:5:5:5:23 | call to update | app/models/user.rb:5:18:5:22 | "U16" |
 | app/models/user.rb:6:5:6:56 | call to update_attributes | app/models/user.rb:6:35:6:39 | "U17" |

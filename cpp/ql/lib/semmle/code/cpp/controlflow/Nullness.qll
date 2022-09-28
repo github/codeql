@@ -46,7 +46,7 @@ predicate nullCheckExpr(Expr checkExpr, Variable var) {
     or
     exists(LogicalAndExpr op, AnalysedExpr child |
       expr = op and
-      op.getRightOperand() = child and
+      op.getAnOperand() = child and
       nullCheckExpr(child, v)
     )
     or
@@ -99,7 +99,7 @@ predicate validCheckExpr(Expr checkExpr, Variable var) {
     or
     exists(LogicalAndExpr op, AnalysedExpr child |
       expr = op and
-      op.getRightOperand() = child and
+      op.getAnOperand() = child and
       validCheckExpr(child, v)
     )
     or
@@ -169,7 +169,10 @@ class AnalysedExpr extends Expr {
    */
   predicate isDef(LocalScopeVariable v) {
     this.inCondition() and
-    this.(Assignment).getLValue() = v.getAnAccess()
+    (
+      this.(Assignment).getLValue() = v.getAnAccess() or
+      this.(ConditionDeclExpr).getVariableAccess() = v.getAnAccess()
+    )
   }
 
   /**

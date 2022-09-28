@@ -8,5 +8,5 @@ private string getDirectionString(boolean d) {
 }
 
 from Expr e, Bound b, int delta, boolean upper, Reason reason
-where bounded(e, b, delta, upper, reason)
+where bounded(e, b, delta, upper, reason) and e.getCompilationUnit().fromSource()
 select e, b.toString(), delta, getDirectionString(upper), reason

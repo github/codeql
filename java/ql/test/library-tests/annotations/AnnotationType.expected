@@ -1,0 +1,13 @@
+annotationType
+| AnnotationType.java:11:16:11:34 | InheritedAnnotation | inherited | <any-target> | CLASS |
+| AnnotationType.java:14:16:14:35 | DocumentedAnnotation | documented | <any-target> | CLASS |
+| AnnotationType.java:16:16:16:34 | ContainerAnnotation |  | <any-target> | CLASS |
+| AnnotationType.java:21:16:21:35 | RepeatableAnnotation | repeatable | <any-target> | CLASS |
+| AnnotationType.java:25:16:25:26 | EmptyTarget |  |  | CLASS |
+| AnnotationType.java:28:16:28:27 | SingleTarget |  | ANNOTATION_TYPE | CLASS |
+| AnnotationType.java:43:16:43:25 | AllTargets |  | ANNOTATION_TYPE,CONSTRUCTOR,FIELD,LOCAL_VARIABLE,METHOD,MODULE,PACKAGE,PARAMETER,RECORD_COMPONENT,TYPE_PARAMETER,TYPE_USE | CLASS |
+| AnnotationType.java:47:16:47:29 | ClassRetention |  | <any-target> | CLASS |
+| AnnotationType.java:50:16:50:31 | RuntimeRetention |  | <any-target> | RUNTIME |
+| AnnotationType.java:53:16:53:30 | SourceRetention |  | <any-target> | SOURCE |
+containingAnnotationType
+| AnnotationType.java:21:16:21:35 | RepeatableAnnotation | AnnotationType.java:16:16:16:34 | ContainerAnnotation |

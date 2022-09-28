@@ -72,3 +72,16 @@ module Mod4
   end
   @@fourty_six = Mod3::FOURTY_SIX
 end
+
+# Array constants
+
+a = [1, 2, 3]
+A = [1, 2, 3]
+B = a
+C = A
+b = B
+
+if condition
+  c = b
+end
+c # not recognised

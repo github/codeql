@@ -28,24 +28,31 @@ module TaintedPath {
 
   /**
    * A sanitizer guard for path-traversal vulnerabilities.
-   *
-   * Note this class should be extended to define more taint-path sanitizer guards, but isn't itself a
-   * `DataFlow::BarrierGuard` so that other queries can use this to define `BarrierGuard`s without
-   * introducing recursion. The class `SanitizerGuardAsBarrierGuard` plugs all instances of this class
-   * into the `DataFlow::BarrierGuard` type hierarchy.
    */
   abstract class SanitizerGuard extends DataFlow::Node {
     abstract predicate checks(Expr e, boolean branch);
   }
 
+  private predicate sanitizerGuard(DataFlow::Node g, Expr e, boolean branch) {
+    g.(SanitizerGuard).checks(e, branch)
+  }
+
+  private class SanitizerGuardAsSanitizer extends Sanitizer {
+    SanitizerGuardAsSanitizer() {
+      this = DataFlow::BarrierGuard<sanitizerGuard/3>::getABarrierNode()
+    }
+  }
+
   /**
+   * DEPRECATED: Use `Sanitizer` instead.
+   *
    * A sanitizer guard for path-traversal vulnerabilities, as a `DataFlow::BarrierGuard`.
    *
    * Use this class if you want all `TaintedPath::SanitizerGuard`s as a `DataFlow::BarrierGuard`,
    * e.g. to use directly in a `DataFlow::Configuration::isSanitizerGuard` method. If you want to
    * provide a new instance of a tainted path sanitizer, extend `TaintedPath::SanitizerGuard` instead.
    */
-  class SanitizerGuardAsBarrierGuard extends DataFlow::BarrierGuard {
+  deprecated class SanitizerGuardAsBarrierGuard extends DataFlow::BarrierGuard {
     SanitizerGuard guardImpl;
 
     SanitizerGuardAsBarrierGuard() { this = guardImpl }
@@ -61,6 +68,15 @@ module TaintedPath {
   /** A path expression, considered as a taint sink for path traversal. */
   class PathAsSink extends Sink {
     PathAsSink() { this = any(FileSystemAccess fsa).getAPathArgument() }
+  }
+
+  /**
+   * A numeric- or boolean-typed node, considered a sanitizer for path traversal.
+   */
+  class NumericOrBooleanSanitizer extends Sanitizer {
+    NumericOrBooleanSanitizer() {
+      this.getType() instanceof NumericType or this.getType() instanceof BoolType
+    }
   }
 
   /**

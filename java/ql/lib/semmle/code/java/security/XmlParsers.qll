@@ -324,7 +324,7 @@ Expr configOptionIsSupportingExternalEntities() {
 /**
  * An `XmlInputFactory` specific expression that indicates whether DTD is supported.
  */
-Expr configOptionSupportDTD() {
+Expr configOptionSupportDtd() {
   result.(ConstantStringExpr).getStringValue() = "javax.xml.stream.supportDTD"
   or
   exists(Field f |
@@ -333,6 +333,9 @@ Expr configOptionSupportDTD() {
     f.getDeclaringType() instanceof XmlInputFactory
   )
 }
+
+/** DEPRECATED: Alias for configOptionSupportDtd */
+deprecated Expr configOptionSupportDTD() { result = configOptionSupportDtd() }
 
 /**
  * A safely configured `XmlInputFactory`.
@@ -345,7 +348,7 @@ class SafeXmlInputFactory extends VarAccess {
         config.disables(configOptionIsSupportingExternalEntities())
       ) and
       exists(XmlInputFactoryConfig config | config.getQualifier() = v.getAnAccess() |
-        config.disables(configOptionSupportDTD())
+        config.disables(configOptionSupportDtd())
       )
     )
   }
@@ -907,7 +910,7 @@ class XmlConstants extends RefType {
 }
 
 /** A configuration specific for transformers and schema. */
-Expr configAccessExternalDTD() {
+Expr configAccessExternalDtd() {
   result.(ConstantStringExpr).getStringValue() =
     "http://javax.xml.XMLConstants/property/accessExternalDTD"
   or
@@ -917,6 +920,9 @@ Expr configAccessExternalDTD() {
     f.getDeclaringType() instanceof XmlConstants
   )
 }
+
+/** DEPRECATED: Alias for configAccessExternalDtd */
+deprecated Expr configAccessExternalDTD() { result = configAccessExternalDtd() }
 
 /** A configuration specific for transformers. */
 Expr configAccessExternalStyleSheet() {
@@ -1040,7 +1046,7 @@ class SafeTransformerFactory extends VarAccess {
   SafeTransformerFactory() {
     exists(Variable v | v = this.getVariable() |
       exists(TransformerFactoryConfig config | config.getQualifier() = v.getAnAccess() |
-        config.disables(configAccessExternalDTD())
+        config.disables(configAccessExternalDtd())
       ) and
       exists(TransformerFactoryConfig config | config.getQualifier() = v.getAnAccess() |
         config.disables(configAccessExternalStyleSheet())
@@ -1141,7 +1147,7 @@ class SafeSchemaFactory extends VarAccess {
   SafeSchemaFactory() {
     exists(Variable v | v = this.getVariable() |
       exists(SchemaFactoryConfig config | config.getQualifier() = v.getAnAccess() |
-        config.disables(configAccessExternalDTD())
+        config.disables(configAccessExternalDtd())
       ) and
       exists(SchemaFactoryConfig config | config.getQualifier() = v.getAnAccess() |
         config.disables(configAccessExternalSchema())

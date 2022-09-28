@@ -4,55 +4,55 @@ namespace System
 {
     namespace Data
     {
-        // Generated from `System.Data.AcceptRejectRule` in `System.Data.Common, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum AcceptRejectRule
+        // Generated from `System.Data.AcceptRejectRule` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        public enum AcceptRejectRule : int
         {
-            Cascade,
-            None,
+            Cascade = 1,
+            None = 0,
         }
 
-        // Generated from `System.Data.CommandBehavior` in `System.Data.Common, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Data.CommandBehavior` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         [System.Flags]
-        public enum CommandBehavior
+        public enum CommandBehavior : int
         {
-            CloseConnection,
-            Default,
-            KeyInfo,
-            SchemaOnly,
-            SequentialAccess,
-            SingleResult,
-            SingleRow,
+            CloseConnection = 32,
+            Default = 0,
+            KeyInfo = 4,
+            SchemaOnly = 2,
+            SequentialAccess = 16,
+            SingleResult = 1,
+            SingleRow = 8,
         }
 
-        // Generated from `System.Data.CommandType` in `System.Data.Common, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum CommandType
+        // Generated from `System.Data.CommandType` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        public enum CommandType : int
         {
-            StoredProcedure,
-            TableDirect,
-            Text,
+            StoredProcedure = 4,
+            TableDirect = 512,
+            Text = 1,
         }
 
-        // Generated from `System.Data.ConflictOption` in `System.Data.Common, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum ConflictOption
+        // Generated from `System.Data.ConflictOption` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        public enum ConflictOption : int
         {
-            CompareAllSearchableValues,
-            CompareRowVersion,
-            OverwriteChanges,
+            CompareAllSearchableValues = 1,
+            CompareRowVersion = 2,
+            OverwriteChanges = 3,
         }
 
-        // Generated from `System.Data.ConnectionState` in `System.Data.Common, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Data.ConnectionState` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         [System.Flags]
-        public enum ConnectionState
+        public enum ConnectionState : int
         {
-            Broken,
-            Closed,
-            Connecting,
-            Executing,
-            Fetching,
-            Open,
+            Broken = 16,
+            Closed = 0,
+            Connecting = 2,
+            Executing = 4,
+            Fetching = 8,
+            Open = 1,
         }
 
-        // Generated from `System.Data.Constraint` in `System.Data.Common, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Data.Constraint` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public abstract class Constraint
         {
             protected void CheckStateForProperty() => throw null;
@@ -65,7 +65,7 @@ namespace System
             protected virtual System.Data.DataSet _DataSet { get => throw null; }
         }
 
-        // Generated from `System.Data.ConstraintCollection` in `System.Data.Common, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Data.ConstraintCollection` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class ConstraintCollection : System.Data.InternalDataCollectionBase
         {
             public void Add(System.Data.Constraint constraint) => throw null;
@@ -89,7 +89,7 @@ namespace System
             public void RemoveAt(int index) => throw null;
         }
 
-        // Generated from `System.Data.ConstraintException` in `System.Data.Common, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Data.ConstraintException` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class ConstraintException : System.Data.DataException
         {
             public ConstraintException() => throw null;
@@ -98,7 +98,7 @@ namespace System
             public ConstraintException(string message, System.Exception innerException) => throw null;
         }
 
-        // Generated from `System.Data.DBConcurrencyException` in `System.Data.Common, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Data.DBConcurrencyException` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class DBConcurrencyException : System.SystemException
         {
             public void CopyToRows(System.Data.DataRow[] array) => throw null;
@@ -112,7 +112,7 @@ namespace System
             public int RowCount { get => throw null; }
         }
 
-        // Generated from `System.Data.DataColumn` in `System.Data.Common, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Data.DataColumn` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class DataColumn : System.ComponentModel.MarshalByValueComponent
         {
             public bool AllowDBNull { get => throw null; set => throw null; }
@@ -147,7 +147,7 @@ namespace System
             public bool Unique { get => throw null; set => throw null; }
         }
 
-        // Generated from `System.Data.DataColumnChangeEventArgs` in `System.Data.Common, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Data.DataColumnChangeEventArgs` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class DataColumnChangeEventArgs : System.EventArgs
         {
             public System.Data.DataColumn Column { get => throw null; }
@@ -156,10 +156,10 @@ namespace System
             public System.Data.DataRow Row { get => throw null; }
         }
 
-        // Generated from `System.Data.DataColumnChangeEventHandler` in `System.Data.Common, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Data.DataColumnChangeEventHandler` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public delegate void DataColumnChangeEventHandler(object sender, System.Data.DataColumnChangeEventArgs e);
 
-        // Generated from `System.Data.DataColumnCollection` in `System.Data.Common, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Data.DataColumnCollection` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class DataColumnCollection : System.Data.InternalDataCollectionBase
         {
             public System.Data.DataColumn Add() => throw null;
@@ -183,7 +183,7 @@ namespace System
             public void RemoveAt(int index) => throw null;
         }
 
-        // Generated from `System.Data.DataException` in `System.Data.Common, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Data.DataException` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class DataException : System.SystemException
         {
             public DataException() => throw null;
@@ -192,7 +192,7 @@ namespace System
             public DataException(string s, System.Exception innerException) => throw null;
         }
 
-        // Generated from `System.Data.DataReaderExtensions` in `System.Data.Common, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Data.DataReaderExtensions` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public static class DataReaderExtensions
         {
             public static bool GetBoolean(this System.Data.Common.DbDataReader reader, string name) => throw null;
@@ -223,7 +223,7 @@ namespace System
             public static System.Threading.Tasks.Task<bool> IsDBNullAsync(this System.Data.Common.DbDataReader reader, string name, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
         }
 
-        // Generated from `System.Data.DataRelation` in `System.Data.Common, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Data.DataRelation` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class DataRelation
         {
             protected void CheckStateForProperty() => throw null;
@@ -248,7 +248,7 @@ namespace System
             public override string ToString() => throw null;
         }
 
-        // Generated from `System.Data.DataRelationCollection` in `System.Data.Common, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Data.DataRelationCollection` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public abstract class DataRelationCollection : System.Data.InternalDataCollectionBase
         {
             public virtual System.Data.DataRelation Add(System.Data.DataColumn parentColumn, System.Data.DataColumn childColumn) => throw null;
@@ -279,7 +279,7 @@ namespace System
             protected virtual void RemoveCore(System.Data.DataRelation relation) => throw null;
         }
 
-        // Generated from `System.Data.DataRow` in `System.Data.Common, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Data.DataRow` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class DataRow
         {
             public void AcceptChanges() => throw null;
@@ -332,26 +332,26 @@ namespace System
             public System.Data.DataTable Table { get => throw null; }
         }
 
-        // Generated from `System.Data.DataRowAction` in `System.Data.Common, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Data.DataRowAction` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         [System.Flags]
-        public enum DataRowAction
+        public enum DataRowAction : int
         {
-            Add,
-            Change,
-            ChangeCurrentAndOriginal,
-            ChangeOriginal,
-            Commit,
-            Delete,
-            Nothing,
-            Rollback,
+            Add = 16,
+            Change = 2,
+            ChangeCurrentAndOriginal = 64,
+            ChangeOriginal = 32,
+            Commit = 8,
+            Delete = 1,
+            Nothing = 0,
+            Rollback = 4,
         }
 
-        // Generated from `System.Data.DataRowBuilder` in `System.Data.Common, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Data.DataRowBuilder` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class DataRowBuilder
         {
         }
 
-        // Generated from `System.Data.DataRowChangeEventArgs` in `System.Data.Common, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Data.DataRowChangeEventArgs` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class DataRowChangeEventArgs : System.EventArgs
         {
             public System.Data.DataRowAction Action { get => throw null; }
@@ -359,10 +359,10 @@ namespace System
             public System.Data.DataRow Row { get => throw null; }
         }
 
-        // Generated from `System.Data.DataRowChangeEventHandler` in `System.Data.Common, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Data.DataRowChangeEventHandler` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public delegate void DataRowChangeEventHandler(object sender, System.Data.DataRowChangeEventArgs e);
 
-        // Generated from `System.Data.DataRowCollection` in `System.Data.Common, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Data.DataRowCollection` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class DataRowCollection : System.Data.InternalDataCollectionBase
         {
             public void Add(System.Data.DataRow row) => throw null;
@@ -383,13 +383,13 @@ namespace System
             public void RemoveAt(int index) => throw null;
         }
 
-        // Generated from `System.Data.DataRowComparer` in `System.Data.Common, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Data.DataRowComparer` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public static class DataRowComparer
         {
             public static System.Data.DataRowComparer<System.Data.DataRow> Default { get => throw null; }
         }
 
-        // Generated from `System.Data.DataRowComparer<>` in `System.Data.Common, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Data.DataRowComparer<>` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class DataRowComparer<TRow> : System.Collections.Generic.IEqualityComparer<TRow> where TRow : System.Data.DataRow
         {
             public static System.Data.DataRowComparer<TRow> Default { get => throw null; }
@@ -397,7 +397,7 @@ namespace System
             public int GetHashCode(TRow row) => throw null;
         }
 
-        // Generated from `System.Data.DataRowExtensions` in `System.Data.Common, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Data.DataRowExtensions` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public static class DataRowExtensions
         {
             public static T Field<T>(this System.Data.DataRow row, System.Data.DataColumn column) => throw null;
@@ -411,27 +411,27 @@ namespace System
             public static void SetField<T>(this System.Data.DataRow row, string columnName, T value) => throw null;
         }
 
-        // Generated from `System.Data.DataRowState` in `System.Data.Common, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Data.DataRowState` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         [System.Flags]
-        public enum DataRowState
+        public enum DataRowState : int
         {
-            Added,
-            Deleted,
-            Detached,
-            Modified,
-            Unchanged,
+            Added = 4,
+            Deleted = 8,
+            Detached = 1,
+            Modified = 16,
+            Unchanged = 2,
         }
 
-        // Generated from `System.Data.DataRowVersion` in `System.Data.Common, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum DataRowVersion
+        // Generated from `System.Data.DataRowVersion` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        public enum DataRowVersion : int
         {
-            Current,
-            Default,
-            Original,
-            Proposed,
+            Current = 512,
+            Default = 1536,
+            Original = 256,
+            Proposed = 1024,
         }
 
-        // Generated from `System.Data.DataRowView` in `System.Data.Common, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Data.DataRowView` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class DataRowView : System.ComponentModel.ICustomTypeDescriptor, System.ComponentModel.IDataErrorInfo, System.ComponentModel.IEditableObject, System.ComponentModel.INotifyPropertyChanged
         {
             public void BeginEdit() => throw null;
@@ -468,7 +468,7 @@ namespace System
             public System.Data.DataRowVersion RowVersion { get => throw null; }
         }
 
-        // Generated from `System.Data.DataSet` in `System.Data.Common, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Data.DataSet` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class DataSet : System.ComponentModel.MarshalByValueComponent, System.ComponentModel.IListSource, System.ComponentModel.ISupportInitialize, System.ComponentModel.ISupportInitializeNotification, System.Runtime.Serialization.ISerializable, System.Xml.Serialization.IXmlSerializable
         {
             public void AcceptChanges() => throw null;
@@ -572,23 +572,23 @@ namespace System
             public void WriteXmlSchema(string fileName, System.Converter<System.Type, string> multipleTargetConverter) => throw null;
         }
 
-        // Generated from `System.Data.DataSetDateTime` in `System.Data.Common, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum DataSetDateTime
+        // Generated from `System.Data.DataSetDateTime` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        public enum DataSetDateTime : int
         {
-            Local,
-            Unspecified,
-            UnspecifiedLocal,
-            Utc,
+            Local = 1,
+            Unspecified = 2,
+            UnspecifiedLocal = 3,
+            Utc = 4,
         }
 
-        // Generated from `System.Data.DataSysDescriptionAttribute` in `System.Data.Common, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Data.DataSysDescriptionAttribute` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class DataSysDescriptionAttribute : System.ComponentModel.DescriptionAttribute
         {
             public DataSysDescriptionAttribute(string description) => throw null;
             public override string Description { get => throw null; }
         }
 
-        // Generated from `System.Data.DataTable` in `System.Data.Common, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Data.DataTable` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class DataTable : System.ComponentModel.MarshalByValueComponent, System.ComponentModel.IListSource, System.ComponentModel.ISupportInitialize, System.ComponentModel.ISupportInitializeNotification, System.Runtime.Serialization.ISerializable, System.Xml.Serialization.IXmlSerializable
         {
             public void AcceptChanges() => throw null;
@@ -714,7 +714,7 @@ namespace System
             protected internal bool fInitInProgress;
         }
 
-        // Generated from `System.Data.DataTableClearEventArgs` in `System.Data.Common, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Data.DataTableClearEventArgs` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class DataTableClearEventArgs : System.EventArgs
         {
             public DataTableClearEventArgs(System.Data.DataTable dataTable) => throw null;
@@ -723,10 +723,10 @@ namespace System
             public string TableNamespace { get => throw null; }
         }
 
-        // Generated from `System.Data.DataTableClearEventHandler` in `System.Data.Common, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Data.DataTableClearEventHandler` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public delegate void DataTableClearEventHandler(object sender, System.Data.DataTableClearEventArgs e);
 
-        // Generated from `System.Data.DataTableCollection` in `System.Data.Common, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Data.DataTableCollection` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class DataTableCollection : System.Data.InternalDataCollectionBase
         {
             public System.Data.DataTable Add() => throw null;
@@ -754,7 +754,7 @@ namespace System
             public void RemoveAt(int index) => throw null;
         }
 
-        // Generated from `System.Data.DataTableExtensions` in `System.Data.Common, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Data.DataTableExtensions` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public static class DataTableExtensions
         {
             public static System.Data.DataView AsDataView(this System.Data.DataTable table) => throw null;
@@ -765,17 +765,17 @@ namespace System
             public static void CopyToDataTable<T>(this System.Collections.Generic.IEnumerable<T> source, System.Data.DataTable table, System.Data.LoadOption options, System.Data.FillErrorEventHandler errorHandler) where T : System.Data.DataRow => throw null;
         }
 
-        // Generated from `System.Data.DataTableNewRowEventArgs` in `System.Data.Common, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Data.DataTableNewRowEventArgs` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class DataTableNewRowEventArgs : System.EventArgs
         {
             public DataTableNewRowEventArgs(System.Data.DataRow dataRow) => throw null;
             public System.Data.DataRow Row { get => throw null; }
         }
 
-        // Generated from `System.Data.DataTableNewRowEventHandler` in `System.Data.Common, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Data.DataTableNewRowEventHandler` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public delegate void DataTableNewRowEventHandler(object sender, System.Data.DataTableNewRowEventArgs e);
 
-        // Generated from `System.Data.DataTableReader` in `System.Data.Common, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Data.DataTableReader` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class DataTableReader : System.Data.Common.DbDataReader
         {
             public override void Close() => throw null;
@@ -818,7 +818,7 @@ namespace System
             public override int RecordsAffected { get => throw null; }
         }
 
-        // Generated from `System.Data.DataView` in `System.Data.Common, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Data.DataView` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class DataView : System.ComponentModel.MarshalByValueComponent, System.Collections.ICollection, System.Collections.IEnumerable, System.Collections.IList, System.ComponentModel.IBindingList, System.ComponentModel.IBindingListView, System.ComponentModel.ISupportInitialize, System.ComponentModel.ISupportInitializeNotification, System.ComponentModel.ITypedList
         {
             int System.Collections.IList.Add(object value) => throw null;
@@ -900,7 +900,7 @@ namespace System
             protected virtual void UpdateIndex(bool force) => throw null;
         }
 
-        // Generated from `System.Data.DataViewManager` in `System.Data.Common, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Data.DataViewManager` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class DataViewManager : System.ComponentModel.MarshalByValueComponent, System.Collections.ICollection, System.Collections.IEnumerable, System.Collections.IList, System.ComponentModel.IBindingList, System.ComponentModel.ITypedList
         {
             int System.Collections.IList.Add(object value) => throw null;
@@ -947,21 +947,21 @@ namespace System
             protected virtual void TableCollectionChanged(object sender, System.ComponentModel.CollectionChangeEventArgs e) => throw null;
         }
 
-        // Generated from `System.Data.DataViewRowState` in `System.Data.Common, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Data.DataViewRowState` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         [System.Flags]
-        public enum DataViewRowState
+        public enum DataViewRowState : int
         {
-            Added,
-            CurrentRows,
-            Deleted,
-            ModifiedCurrent,
-            ModifiedOriginal,
-            None,
-            OriginalRows,
-            Unchanged,
+            Added = 4,
+            CurrentRows = 22,
+            Deleted = 8,
+            ModifiedCurrent = 16,
+            ModifiedOriginal = 32,
+            None = 0,
+            OriginalRows = 42,
+            Unchanged = 2,
         }
 
-        // Generated from `System.Data.DataViewSetting` in `System.Data.Common, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Data.DataViewSetting` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class DataViewSetting
         {
             public bool ApplyDefaultSort { get => throw null; set => throw null; }
@@ -972,7 +972,7 @@ namespace System
             public System.Data.DataTable Table { get => throw null; }
         }
 
-        // Generated from `System.Data.DataViewSettingCollection` in `System.Data.Common, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Data.DataViewSettingCollection` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class DataViewSettingCollection : System.Collections.ICollection, System.Collections.IEnumerable
         {
             public void CopyTo(System.Array ar, int index) => throw null;
@@ -987,39 +987,39 @@ namespace System
             public object SyncRoot { get => throw null; }
         }
 
-        // Generated from `System.Data.DbType` in `System.Data.Common, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum DbType
+        // Generated from `System.Data.DbType` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        public enum DbType : int
         {
-            AnsiString,
-            AnsiStringFixedLength,
-            Binary,
-            Boolean,
-            Byte,
-            Currency,
-            Date,
-            DateTime,
-            DateTime2,
-            DateTimeOffset,
-            Decimal,
-            Double,
-            Guid,
-            Int16,
-            Int32,
-            Int64,
-            Object,
-            SByte,
-            Single,
-            String,
-            StringFixedLength,
-            Time,
-            UInt16,
-            UInt32,
-            UInt64,
-            VarNumeric,
-            Xml,
+            AnsiString = 0,
+            AnsiStringFixedLength = 22,
+            Binary = 1,
+            Boolean = 3,
+            Byte = 2,
+            Currency = 4,
+            Date = 5,
+            DateTime = 6,
+            DateTime2 = 26,
+            DateTimeOffset = 27,
+            Decimal = 7,
+            Double = 8,
+            Guid = 9,
+            Int16 = 10,
+            Int32 = 11,
+            Int64 = 12,
+            Object = 13,
+            SByte = 14,
+            Single = 15,
+            String = 16,
+            StringFixedLength = 23,
+            Time = 17,
+            UInt16 = 18,
+            UInt32 = 19,
+            UInt64 = 20,
+            VarNumeric = 21,
+            Xml = 25,
         }
 
-        // Generated from `System.Data.DeletedRowInaccessibleException` in `System.Data.Common, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Data.DeletedRowInaccessibleException` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class DeletedRowInaccessibleException : System.Data.DataException
         {
             public DeletedRowInaccessibleException() => throw null;
@@ -1028,7 +1028,7 @@ namespace System
             public DeletedRowInaccessibleException(string message, System.Exception innerException) => throw null;
         }
 
-        // Generated from `System.Data.DuplicateNameException` in `System.Data.Common, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Data.DuplicateNameException` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class DuplicateNameException : System.Data.DataException
         {
             public DuplicateNameException() => throw null;
@@ -1037,14 +1037,14 @@ namespace System
             public DuplicateNameException(string message, System.Exception innerException) => throw null;
         }
 
-        // Generated from `System.Data.EnumerableRowCollection` in `System.Data.Common, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Data.EnumerableRowCollection` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public abstract class EnumerableRowCollection : System.Collections.IEnumerable
         {
             internal EnumerableRowCollection() => throw null;
             System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => throw null;
         }
 
-        // Generated from `System.Data.EnumerableRowCollection<>` in `System.Data.Common, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Data.EnumerableRowCollection<>` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class EnumerableRowCollection<TRow> : System.Data.EnumerableRowCollection, System.Collections.Generic.IEnumerable<TRow>, System.Collections.IEnumerable
         {
             internal EnumerableRowCollection() => throw null;
@@ -1052,7 +1052,7 @@ namespace System
             System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => throw null;
         }
 
-        // Generated from `System.Data.EnumerableRowCollectionExtensions` in `System.Data.Common, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Data.EnumerableRowCollectionExtensions` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public static class EnumerableRowCollectionExtensions
         {
             public static System.Data.EnumerableRowCollection<TResult> Cast<TResult>(this System.Data.EnumerableRowCollection source) => throw null;
@@ -1068,7 +1068,7 @@ namespace System
             public static System.Data.EnumerableRowCollection<TRow> Where<TRow>(this System.Data.EnumerableRowCollection<TRow> source, System.Func<TRow, bool> predicate) => throw null;
         }
 
-        // Generated from `System.Data.EvaluateException` in `System.Data.Common, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Data.EvaluateException` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class EvaluateException : System.Data.InvalidExpressionException
         {
             public EvaluateException() => throw null;
@@ -1077,7 +1077,7 @@ namespace System
             public EvaluateException(string message, System.Exception innerException) => throw null;
         }
 
-        // Generated from `System.Data.FillErrorEventArgs` in `System.Data.Common, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Data.FillErrorEventArgs` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class FillErrorEventArgs : System.EventArgs
         {
             public bool Continue { get => throw null; set => throw null; }
@@ -1087,10 +1087,10 @@ namespace System
             public object[] Values { get => throw null; }
         }
 
-        // Generated from `System.Data.FillErrorEventHandler` in `System.Data.Common, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Data.FillErrorEventHandler` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public delegate void FillErrorEventHandler(object sender, System.Data.FillErrorEventArgs e);
 
-        // Generated from `System.Data.ForeignKeyConstraint` in `System.Data.Common, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Data.ForeignKeyConstraint` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class ForeignKeyConstraint : System.Data.Constraint
         {
             public virtual System.Data.AcceptRejectRule AcceptRejectRule { get => throw null; set => throw null; }
@@ -1110,14 +1110,14 @@ namespace System
             public virtual System.Data.Rule UpdateRule { get => throw null; set => throw null; }
         }
 
-        // Generated from `System.Data.IColumnMapping` in `System.Data.Common, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Data.IColumnMapping` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public interface IColumnMapping
         {
             string DataSetColumn { get; set; }
             string SourceColumn { get; set; }
         }
 
-        // Generated from `System.Data.IColumnMappingCollection` in `System.Data.Common, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Data.IColumnMappingCollection` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public interface IColumnMappingCollection : System.Collections.ICollection, System.Collections.IEnumerable, System.Collections.IList
         {
             System.Data.IColumnMapping Add(string sourceColumnName, string dataSetColumnName);
@@ -1128,7 +1128,7 @@ namespace System
             void RemoveAt(string sourceColumnName);
         }
 
-        // Generated from `System.Data.IDataAdapter` in `System.Data.Common, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Data.IDataAdapter` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public interface IDataAdapter
         {
             int Fill(System.Data.DataSet dataSet);
@@ -1140,7 +1140,7 @@ namespace System
             int Update(System.Data.DataSet dataSet);
         }
 
-        // Generated from `System.Data.IDataParameter` in `System.Data.Common, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Data.IDataParameter` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public interface IDataParameter
         {
             System.Data.DbType DbType { get; set; }
@@ -1152,7 +1152,7 @@ namespace System
             object Value { get; set; }
         }
 
-        // Generated from `System.Data.IDataParameterCollection` in `System.Data.Common, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Data.IDataParameterCollection` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public interface IDataParameterCollection : System.Collections.ICollection, System.Collections.IEnumerable, System.Collections.IList
         {
             bool Contains(string parameterName);
@@ -1161,7 +1161,7 @@ namespace System
             void RemoveAt(string parameterName);
         }
 
-        // Generated from `System.Data.IDataReader` in `System.Data.Common, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Data.IDataReader` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public interface IDataReader : System.Data.IDataRecord, System.IDisposable
         {
             void Close();
@@ -1173,7 +1173,7 @@ namespace System
             int RecordsAffected { get; }
         }
 
-        // Generated from `System.Data.IDataRecord` in `System.Data.Common, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Data.IDataRecord` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public interface IDataRecord
         {
             int FieldCount { get; }
@@ -1203,7 +1203,7 @@ namespace System
             object this[string name] { get; }
         }
 
-        // Generated from `System.Data.IDbCommand` in `System.Data.Common, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Data.IDbCommand` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public interface IDbCommand : System.IDisposable
         {
             void Cancel();
@@ -1222,7 +1222,7 @@ namespace System
             System.Data.UpdateRowSource UpdatedRowSource { get; set; }
         }
 
-        // Generated from `System.Data.IDbConnection` in `System.Data.Common, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Data.IDbConnection` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public interface IDbConnection : System.IDisposable
         {
             System.Data.IDbTransaction BeginTransaction();
@@ -1237,7 +1237,7 @@ namespace System
             System.Data.ConnectionState State { get; }
         }
 
-        // Generated from `System.Data.IDbDataAdapter` in `System.Data.Common, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Data.IDbDataAdapter` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public interface IDbDataAdapter : System.Data.IDataAdapter
         {
             System.Data.IDbCommand DeleteCommand { get; set; }
@@ -1246,7 +1246,7 @@ namespace System
             System.Data.IDbCommand UpdateCommand { get; set; }
         }
 
-        // Generated from `System.Data.IDbDataParameter` in `System.Data.Common, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Data.IDbDataParameter` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public interface IDbDataParameter : System.Data.IDataParameter
         {
             System.Byte Precision { get; set; }
@@ -1254,7 +1254,7 @@ namespace System
             int Size { get; set; }
         }
 
-        // Generated from `System.Data.IDbTransaction` in `System.Data.Common, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Data.IDbTransaction` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public interface IDbTransaction : System.IDisposable
         {
             void Commit();
@@ -1263,7 +1263,7 @@ namespace System
             void Rollback();
         }
 
-        // Generated from `System.Data.ITableMapping` in `System.Data.Common, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Data.ITableMapping` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public interface ITableMapping
         {
             System.Data.IColumnMappingCollection ColumnMappings { get; }
@@ -1271,7 +1271,7 @@ namespace System
             string SourceTable { get; set; }
         }
 
-        // Generated from `System.Data.ITableMappingCollection` in `System.Data.Common, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Data.ITableMappingCollection` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public interface ITableMappingCollection : System.Collections.ICollection, System.Collections.IEnumerable, System.Collections.IList
         {
             System.Data.ITableMapping Add(string sourceTableName, string dataSetTableName);
@@ -1282,7 +1282,7 @@ namespace System
             void RemoveAt(string sourceTableName);
         }
 
-        // Generated from `System.Data.InRowChangingEventException` in `System.Data.Common, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Data.InRowChangingEventException` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class InRowChangingEventException : System.Data.DataException
         {
             public InRowChangingEventException() => throw null;
@@ -1291,7 +1291,7 @@ namespace System
             public InRowChangingEventException(string message, System.Exception innerException) => throw null;
         }
 
-        // Generated from `System.Data.InternalDataCollectionBase` in `System.Data.Common, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Data.InternalDataCollectionBase` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class InternalDataCollectionBase : System.Collections.ICollection, System.Collections.IEnumerable
         {
             public virtual void CopyTo(System.Array ar, int index) => throw null;
@@ -1304,7 +1304,7 @@ namespace System
             public object SyncRoot { get => throw null; }
         }
 
-        // Generated from `System.Data.InvalidConstraintException` in `System.Data.Common, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Data.InvalidConstraintException` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class InvalidConstraintException : System.Data.DataException
         {
             public InvalidConstraintException() => throw null;
@@ -1313,7 +1313,7 @@ namespace System
             public InvalidConstraintException(string message, System.Exception innerException) => throw null;
         }
 
-        // Generated from `System.Data.InvalidExpressionException` in `System.Data.Common, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Data.InvalidExpressionException` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class InvalidExpressionException : System.Data.DataException
         {
             public InvalidExpressionException() => throw null;
@@ -1322,43 +1322,43 @@ namespace System
             public InvalidExpressionException(string message, System.Exception innerException) => throw null;
         }
 
-        // Generated from `System.Data.IsolationLevel` in `System.Data.Common, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum IsolationLevel
+        // Generated from `System.Data.IsolationLevel` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        public enum IsolationLevel : int
         {
-            Chaos,
-            ReadCommitted,
-            ReadUncommitted,
-            RepeatableRead,
-            Serializable,
-            Snapshot,
-            Unspecified,
+            Chaos = 16,
+            ReadCommitted = 4096,
+            ReadUncommitted = 256,
+            RepeatableRead = 65536,
+            Serializable = 1048576,
+            Snapshot = 16777216,
+            Unspecified = -1,
         }
 
-        // Generated from `System.Data.KeyRestrictionBehavior` in `System.Data.Common, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum KeyRestrictionBehavior
+        // Generated from `System.Data.KeyRestrictionBehavior` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        public enum KeyRestrictionBehavior : int
         {
-            AllowOnly,
-            PreventUsage,
+            AllowOnly = 0,
+            PreventUsage = 1,
         }
 
-        // Generated from `System.Data.LoadOption` in `System.Data.Common, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum LoadOption
+        // Generated from `System.Data.LoadOption` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        public enum LoadOption : int
         {
-            OverwriteChanges,
-            PreserveChanges,
-            Upsert,
+            OverwriteChanges = 1,
+            PreserveChanges = 2,
+            Upsert = 3,
         }
 
-        // Generated from `System.Data.MappingType` in `System.Data.Common, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum MappingType
+        // Generated from `System.Data.MappingType` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        public enum MappingType : int
         {
-            Attribute,
-            Element,
-            Hidden,
-            SimpleContent,
+            Attribute = 2,
+            Element = 1,
+            Hidden = 4,
+            SimpleContent = 3,
         }
 
-        // Generated from `System.Data.MergeFailedEventArgs` in `System.Data.Common, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Data.MergeFailedEventArgs` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class MergeFailedEventArgs : System.EventArgs
         {
             public string Conflict { get => throw null; }
@@ -1366,18 +1366,18 @@ namespace System
             public System.Data.DataTable Table { get => throw null; }
         }
 
-        // Generated from `System.Data.MergeFailedEventHandler` in `System.Data.Common, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Data.MergeFailedEventHandler` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public delegate void MergeFailedEventHandler(object sender, System.Data.MergeFailedEventArgs e);
 
-        // Generated from `System.Data.MissingMappingAction` in `System.Data.Common, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum MissingMappingAction
+        // Generated from `System.Data.MissingMappingAction` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        public enum MissingMappingAction : int
         {
-            Error,
-            Ignore,
-            Passthrough,
+            Error = 3,
+            Ignore = 2,
+            Passthrough = 1,
         }
 
-        // Generated from `System.Data.MissingPrimaryKeyException` in `System.Data.Common, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Data.MissingPrimaryKeyException` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class MissingPrimaryKeyException : System.Data.DataException
         {
             public MissingPrimaryKeyException() => throw null;
@@ -1386,16 +1386,16 @@ namespace System
             public MissingPrimaryKeyException(string message, System.Exception innerException) => throw null;
         }
 
-        // Generated from `System.Data.MissingSchemaAction` in `System.Data.Common, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum MissingSchemaAction
+        // Generated from `System.Data.MissingSchemaAction` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        public enum MissingSchemaAction : int
         {
-            Add,
-            AddWithKey,
-            Error,
-            Ignore,
+            Add = 1,
+            AddWithKey = 4,
+            Error = 3,
+            Ignore = 2,
         }
 
-        // Generated from `System.Data.NoNullAllowedException` in `System.Data.Common, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Data.NoNullAllowedException` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class NoNullAllowedException : System.Data.DataException
         {
             public NoNullAllowedException() => throw null;
@@ -1404,21 +1404,21 @@ namespace System
             public NoNullAllowedException(string message, System.Exception innerException) => throw null;
         }
 
-        // Generated from `System.Data.OrderedEnumerableRowCollection<>` in `System.Data.Common, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Data.OrderedEnumerableRowCollection<>` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class OrderedEnumerableRowCollection<TRow> : System.Data.EnumerableRowCollection<TRow>
         {
         }
 
-        // Generated from `System.Data.ParameterDirection` in `System.Data.Common, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum ParameterDirection
+        // Generated from `System.Data.ParameterDirection` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        public enum ParameterDirection : int
         {
-            Input,
-            InputOutput,
-            Output,
-            ReturnValue,
+            Input = 1,
+            InputOutput = 3,
+            Output = 2,
+            ReturnValue = 6,
         }
 
-        // Generated from `System.Data.PropertyCollection` in `System.Data.Common, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Data.PropertyCollection` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class PropertyCollection : System.Collections.Hashtable, System.ICloneable
         {
             public override object Clone() => throw null;
@@ -1426,7 +1426,7 @@ namespace System
             protected PropertyCollection(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
         }
 
-        // Generated from `System.Data.ReadOnlyException` in `System.Data.Common, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Data.ReadOnlyException` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class ReadOnlyException : System.Data.DataException
         {
             public ReadOnlyException() => throw null;
@@ -1435,7 +1435,7 @@ namespace System
             public ReadOnlyException(string message, System.Exception innerException) => throw null;
         }
 
-        // Generated from `System.Data.RowNotInTableException` in `System.Data.Common, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Data.RowNotInTableException` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class RowNotInTableException : System.Data.DataException
         {
             public RowNotInTableException() => throw null;
@@ -1444,73 +1444,73 @@ namespace System
             public RowNotInTableException(string message, System.Exception innerException) => throw null;
         }
 
-        // Generated from `System.Data.Rule` in `System.Data.Common, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum Rule
+        // Generated from `System.Data.Rule` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        public enum Rule : int
         {
-            Cascade,
-            None,
-            SetDefault,
-            SetNull,
+            Cascade = 1,
+            None = 0,
+            SetDefault = 3,
+            SetNull = 2,
         }
 
-        // Generated from `System.Data.SchemaSerializationMode` in `System.Data.Common, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum SchemaSerializationMode
+        // Generated from `System.Data.SchemaSerializationMode` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        public enum SchemaSerializationMode : int
         {
-            ExcludeSchema,
-            IncludeSchema,
+            ExcludeSchema = 2,
+            IncludeSchema = 1,
         }
 
-        // Generated from `System.Data.SchemaType` in `System.Data.Common, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum SchemaType
+        // Generated from `System.Data.SchemaType` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        public enum SchemaType : int
         {
-            Mapped,
-            Source,
+            Mapped = 2,
+            Source = 1,
         }
 
-        // Generated from `System.Data.SerializationFormat` in `System.Data.Common, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum SerializationFormat
+        // Generated from `System.Data.SerializationFormat` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        public enum SerializationFormat : int
         {
-            Binary,
-            Xml,
+            Binary = 1,
+            Xml = 0,
         }
 
-        // Generated from `System.Data.SqlDbType` in `System.Data.Common, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum SqlDbType
+        // Generated from `System.Data.SqlDbType` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        public enum SqlDbType : int
         {
-            BigInt,
-            Binary,
-            Bit,
-            Char,
-            Date,
-            DateTime,
-            DateTime2,
-            DateTimeOffset,
-            Decimal,
-            Float,
-            Image,
-            Int,
-            Money,
-            NChar,
-            NText,
-            NVarChar,
-            Real,
-            SmallDateTime,
-            SmallInt,
-            SmallMoney,
-            Structured,
-            Text,
-            Time,
-            Timestamp,
-            TinyInt,
-            Udt,
-            UniqueIdentifier,
-            VarBinary,
-            VarChar,
-            Variant,
-            Xml,
+            BigInt = 0,
+            Binary = 1,
+            Bit = 2,
+            Char = 3,
+            Date = 31,
+            DateTime = 4,
+            DateTime2 = 33,
+            DateTimeOffset = 34,
+            Decimal = 5,
+            Float = 6,
+            Image = 7,
+            Int = 8,
+            Money = 9,
+            NChar = 10,
+            NText = 11,
+            NVarChar = 12,
+            Real = 13,
+            SmallDateTime = 15,
+            SmallInt = 16,
+            SmallMoney = 17,
+            Structured = 30,
+            Text = 18,
+            Time = 32,
+            Timestamp = 19,
+            TinyInt = 20,
+            Udt = 29,
+            UniqueIdentifier = 14,
+            VarBinary = 21,
+            VarChar = 22,
+            Variant = 23,
+            Xml = 25,
         }
 
-        // Generated from `System.Data.StateChangeEventArgs` in `System.Data.Common, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Data.StateChangeEventArgs` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class StateChangeEventArgs : System.EventArgs
         {
             public System.Data.ConnectionState CurrentState { get => throw null; }
@@ -1518,30 +1518,30 @@ namespace System
             public StateChangeEventArgs(System.Data.ConnectionState originalState, System.Data.ConnectionState currentState) => throw null;
         }
 
-        // Generated from `System.Data.StateChangeEventHandler` in `System.Data.Common, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Data.StateChangeEventHandler` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public delegate void StateChangeEventHandler(object sender, System.Data.StateChangeEventArgs e);
 
-        // Generated from `System.Data.StatementCompletedEventArgs` in `System.Data.Common, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Data.StatementCompletedEventArgs` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class StatementCompletedEventArgs : System.EventArgs
         {
             public int RecordCount { get => throw null; }
             public StatementCompletedEventArgs(int recordCount) => throw null;
         }
 
-        // Generated from `System.Data.StatementCompletedEventHandler` in `System.Data.Common, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Data.StatementCompletedEventHandler` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public delegate void StatementCompletedEventHandler(object sender, System.Data.StatementCompletedEventArgs e);
 
-        // Generated from `System.Data.StatementType` in `System.Data.Common, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum StatementType
+        // Generated from `System.Data.StatementType` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        public enum StatementType : int
         {
-            Batch,
-            Delete,
-            Insert,
-            Select,
-            Update,
+            Batch = 4,
+            Delete = 3,
+            Insert = 1,
+            Select = 0,
+            Update = 2,
         }
 
-        // Generated from `System.Data.StrongTypingException` in `System.Data.Common, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Data.StrongTypingException` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class StrongTypingException : System.Data.DataException
         {
             public StrongTypingException() => throw null;
@@ -1550,7 +1550,7 @@ namespace System
             public StrongTypingException(string s, System.Exception innerException) => throw null;
         }
 
-        // Generated from `System.Data.SyntaxErrorException` in `System.Data.Common, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Data.SyntaxErrorException` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class SyntaxErrorException : System.Data.InvalidExpressionException
         {
             public SyntaxErrorException() => throw null;
@@ -1559,7 +1559,7 @@ namespace System
             public SyntaxErrorException(string message, System.Exception innerException) => throw null;
         }
 
-        // Generated from `System.Data.TypedTableBase<>` in `System.Data.Common, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Data.TypedTableBase<>` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public abstract class TypedTableBase<T> : System.Data.DataTable, System.Collections.Generic.IEnumerable<T>, System.Collections.IEnumerable where T : System.Data.DataRow
         {
             public System.Data.EnumerableRowCollection<TResult> Cast<TResult>() => throw null;
@@ -1569,7 +1569,7 @@ namespace System
             protected TypedTableBase(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
         }
 
-        // Generated from `System.Data.TypedTableBaseExtensions` in `System.Data.Common, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Data.TypedTableBaseExtensions` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public static class TypedTableBaseExtensions
         {
             public static System.Data.EnumerableRowCollection<TRow> AsEnumerable<TRow>(this System.Data.TypedTableBase<TRow> source) where TRow : System.Data.DataRow => throw null;
@@ -1582,7 +1582,7 @@ namespace System
             public static System.Data.EnumerableRowCollection<TRow> Where<TRow>(this System.Data.TypedTableBase<TRow> source, System.Func<TRow, bool> predicate) where TRow : System.Data.DataRow => throw null;
         }
 
-        // Generated from `System.Data.UniqueConstraint` in `System.Data.Common, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Data.UniqueConstraint` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class UniqueConstraint : System.Data.Constraint
         {
             public virtual System.Data.DataColumn[] Columns { get => throw null; }
@@ -1601,25 +1601,25 @@ namespace System
             public UniqueConstraint(string name, string[] columnNames, bool isPrimaryKey) => throw null;
         }
 
-        // Generated from `System.Data.UpdateRowSource` in `System.Data.Common, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum UpdateRowSource
+        // Generated from `System.Data.UpdateRowSource` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        public enum UpdateRowSource : int
         {
-            Both,
-            FirstReturnedRecord,
-            None,
-            OutputParameters,
+            Both = 3,
+            FirstReturnedRecord = 2,
+            None = 0,
+            OutputParameters = 1,
         }
 
-        // Generated from `System.Data.UpdateStatus` in `System.Data.Common, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum UpdateStatus
+        // Generated from `System.Data.UpdateStatus` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        public enum UpdateStatus : int
         {
-            Continue,
-            ErrorsOccurred,
-            SkipAllRemainingRows,
-            SkipCurrentRow,
+            Continue = 0,
+            ErrorsOccurred = 1,
+            SkipAllRemainingRows = 3,
+            SkipCurrentRow = 2,
         }
 
-        // Generated from `System.Data.VersionNotFoundException` in `System.Data.Common, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Data.VersionNotFoundException` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class VersionNotFoundException : System.Data.DataException
         {
             public VersionNotFoundException() => throw null;
@@ -1628,36 +1628,36 @@ namespace System
             public VersionNotFoundException(string message, System.Exception innerException) => throw null;
         }
 
-        // Generated from `System.Data.XmlReadMode` in `System.Data.Common, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum XmlReadMode
+        // Generated from `System.Data.XmlReadMode` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        public enum XmlReadMode : int
         {
-            Auto,
-            DiffGram,
-            Fragment,
-            IgnoreSchema,
-            InferSchema,
-            InferTypedSchema,
-            ReadSchema,
+            Auto = 0,
+            DiffGram = 4,
+            Fragment = 5,
+            IgnoreSchema = 2,
+            InferSchema = 3,
+            InferTypedSchema = 6,
+            ReadSchema = 1,
         }
 
-        // Generated from `System.Data.XmlWriteMode` in `System.Data.Common, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum XmlWriteMode
+        // Generated from `System.Data.XmlWriteMode` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        public enum XmlWriteMode : int
         {
-            DiffGram,
-            IgnoreSchema,
-            WriteSchema,
+            DiffGram = 2,
+            IgnoreSchema = 1,
+            WriteSchema = 0,
         }
 
         namespace Common
         {
-            // Generated from `System.Data.Common.CatalogLocation` in `System.Data.Common, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum CatalogLocation
+            // Generated from `System.Data.Common.CatalogLocation` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            public enum CatalogLocation : int
             {
-                End,
-                Start,
+                End = 2,
+                Start = 1,
             }
 
-            // Generated from `System.Data.Common.DataAdapter` in `System.Data.Common, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Data.Common.DataAdapter` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class DataAdapter : System.ComponentModel.Component, System.Data.IDataAdapter
             {
                 public bool AcceptChangesDuringFill { get => throw null; set => throw null; }
@@ -1692,7 +1692,7 @@ namespace System
                 public virtual int Update(System.Data.DataSet dataSet) => throw null;
             }
 
-            // Generated from `System.Data.Common.DataColumnMapping` in `System.Data.Common, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Data.Common.DataColumnMapping` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class DataColumnMapping : System.MarshalByRefObject, System.Data.IColumnMapping, System.ICloneable
             {
                 object System.ICloneable.Clone() => throw null;
@@ -1705,7 +1705,7 @@ namespace System
                 public override string ToString() => throw null;
             }
 
-            // Generated from `System.Data.Common.DataColumnMappingCollection` in `System.Data.Common, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Data.Common.DataColumnMappingCollection` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class DataColumnMappingCollection : System.MarshalByRefObject, System.Collections.ICollection, System.Collections.IEnumerable, System.Collections.IList, System.Data.IColumnMappingCollection
             {
                 public int Add(object value) => throw null;
@@ -1744,7 +1744,7 @@ namespace System
                 object System.Collections.ICollection.SyncRoot { get => throw null; }
             }
 
-            // Generated from `System.Data.Common.DataTableMapping` in `System.Data.Common, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Data.Common.DataTableMapping` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class DataTableMapping : System.MarshalByRefObject, System.Data.ITableMapping, System.ICloneable
             {
                 object System.ICloneable.Clone() => throw null;
@@ -1761,7 +1761,7 @@ namespace System
                 public override string ToString() => throw null;
             }
 
-            // Generated from `System.Data.Common.DataTableMappingCollection` in `System.Data.Common, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Data.Common.DataTableMappingCollection` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class DataTableMappingCollection : System.MarshalByRefObject, System.Collections.ICollection, System.Collections.IEnumerable, System.Collections.IList, System.Data.ITableMappingCollection
             {
                 public int Add(object value) => throw null;
@@ -1799,7 +1799,68 @@ namespace System
                 object System.Collections.ICollection.SyncRoot { get => throw null; }
             }
 
-            // Generated from `System.Data.Common.DbColumn` in `System.Data.Common, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Data.Common.DbBatch` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            public abstract class DbBatch : System.IAsyncDisposable, System.IDisposable
+            {
+                public System.Data.Common.DbBatchCommandCollection BatchCommands { get => throw null; }
+                public abstract void Cancel();
+                public System.Data.Common.DbConnection Connection { get => throw null; set => throw null; }
+                public System.Data.Common.DbBatchCommand CreateBatchCommand() => throw null;
+                protected abstract System.Data.Common.DbBatchCommand CreateDbBatchCommand();
+                protected DbBatch() => throw null;
+                protected abstract System.Data.Common.DbBatchCommandCollection DbBatchCommands { get; }
+                protected abstract System.Data.Common.DbConnection DbConnection { get; set; }
+                protected abstract System.Data.Common.DbTransaction DbTransaction { get; set; }
+                public virtual void Dispose() => throw null;
+                public virtual System.Threading.Tasks.ValueTask DisposeAsync() => throw null;
+                protected abstract System.Data.Common.DbDataReader ExecuteDbDataReader(System.Data.CommandBehavior behavior);
+                protected abstract System.Threading.Tasks.Task<System.Data.Common.DbDataReader> ExecuteDbDataReaderAsync(System.Data.CommandBehavior behavior, System.Threading.CancellationToken cancellationToken);
+                public abstract int ExecuteNonQuery();
+                public abstract System.Threading.Tasks.Task<int> ExecuteNonQueryAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+                public System.Data.Common.DbDataReader ExecuteReader(System.Data.CommandBehavior behavior = default(System.Data.CommandBehavior)) => throw null;
+                public System.Threading.Tasks.Task<System.Data.Common.DbDataReader> ExecuteReaderAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
+                public System.Threading.Tasks.Task<System.Data.Common.DbDataReader> ExecuteReaderAsync(System.Data.CommandBehavior behavior, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
+                public abstract object ExecuteScalar();
+                public abstract System.Threading.Tasks.Task<object> ExecuteScalarAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+                public abstract void Prepare();
+                public abstract System.Threading.Tasks.Task PrepareAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+                public abstract int Timeout { get; set; }
+                public System.Data.Common.DbTransaction Transaction { get => throw null; set => throw null; }
+            }
+
+            // Generated from `System.Data.Common.DbBatchCommand` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            public abstract class DbBatchCommand
+            {
+                public abstract string CommandText { get; set; }
+                public abstract System.Data.CommandType CommandType { get; set; }
+                protected DbBatchCommand() => throw null;
+                protected abstract System.Data.Common.DbParameterCollection DbParameterCollection { get; }
+                public System.Data.Common.DbParameterCollection Parameters { get => throw null; }
+                public abstract int RecordsAffected { get; }
+            }
+
+            // Generated from `System.Data.Common.DbBatchCommandCollection` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            public abstract class DbBatchCommandCollection : System.Collections.Generic.ICollection<System.Data.Common.DbBatchCommand>, System.Collections.Generic.IEnumerable<System.Data.Common.DbBatchCommand>, System.Collections.Generic.IList<System.Data.Common.DbBatchCommand>, System.Collections.IEnumerable
+            {
+                public abstract void Add(System.Data.Common.DbBatchCommand item);
+                public abstract void Clear();
+                public abstract bool Contains(System.Data.Common.DbBatchCommand item);
+                public abstract void CopyTo(System.Data.Common.DbBatchCommand[] array, int arrayIndex);
+                public abstract int Count { get; }
+                protected DbBatchCommandCollection() => throw null;
+                protected abstract System.Data.Common.DbBatchCommand GetBatchCommand(int index);
+                public abstract System.Collections.Generic.IEnumerator<System.Data.Common.DbBatchCommand> GetEnumerator();
+                System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => throw null;
+                public abstract int IndexOf(System.Data.Common.DbBatchCommand item);
+                public abstract void Insert(int index, System.Data.Common.DbBatchCommand item);
+                public abstract bool IsReadOnly { get; }
+                public System.Data.Common.DbBatchCommand this[int index] { get => throw null; set => throw null; }
+                public abstract bool Remove(System.Data.Common.DbBatchCommand item);
+                public abstract void RemoveAt(int index);
+                protected abstract void SetBatchCommand(int index, System.Data.Common.DbBatchCommand batchCommand);
+            }
+
+            // Generated from `System.Data.Common.DbColumn` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public abstract class DbColumn
             {
                 public bool? AllowDBNull { get => throw null; set => throw null; }
@@ -1829,7 +1890,7 @@ namespace System
                 public string UdtAssemblyQualifiedName { get => throw null; set => throw null; }
             }
 
-            // Generated from `System.Data.Common.DbCommand` in `System.Data.Common, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Data.Common.DbCommand` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public abstract class DbCommand : System.ComponentModel.Component, System.Data.IDbCommand, System.IAsyncDisposable, System.IDisposable
             {
                 public abstract void Cancel();
@@ -1872,7 +1933,7 @@ namespace System
                 public abstract System.Data.UpdateRowSource UpdatedRowSource { get; set; }
             }
 
-            // Generated from `System.Data.Common.DbCommandBuilder` in `System.Data.Common, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Data.Common.DbCommandBuilder` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public abstract class DbCommandBuilder : System.ComponentModel.Component
             {
                 protected abstract void ApplyParameterInfo(System.Data.Common.DbParameter parameter, System.Data.DataRow row, System.Data.StatementType statementType, bool whereClause);
@@ -1904,7 +1965,7 @@ namespace System
                 public virtual string UnquoteIdentifier(string quotedIdentifier) => throw null;
             }
 
-            // Generated from `System.Data.Common.DbConnection` in `System.Data.Common, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Data.Common.DbConnection` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public abstract class DbConnection : System.ComponentModel.Component, System.Data.IDbConnection, System.IAsyncDisposable, System.IDisposable
             {
                 protected abstract System.Data.Common.DbTransaction BeginDbTransaction(System.Data.IsolationLevel isolationLevel);
@@ -1915,14 +1976,17 @@ namespace System
                 System.Data.IDbTransaction System.Data.IDbConnection.BeginTransaction(System.Data.IsolationLevel isolationLevel) => throw null;
                 public System.Threading.Tasks.ValueTask<System.Data.Common.DbTransaction> BeginTransactionAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
                 public System.Threading.Tasks.ValueTask<System.Data.Common.DbTransaction> BeginTransactionAsync(System.Data.IsolationLevel isolationLevel, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
+                public virtual bool CanCreateBatch { get => throw null; }
                 public abstract void ChangeDatabase(string databaseName);
                 public virtual System.Threading.Tasks.Task ChangeDatabaseAsync(string databaseName, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
                 public abstract void Close();
                 public virtual System.Threading.Tasks.Task CloseAsync() => throw null;
                 public abstract string ConnectionString { get; set; }
                 public virtual int ConnectionTimeout { get => throw null; }
+                public System.Data.Common.DbBatch CreateBatch() => throw null;
                 public System.Data.Common.DbCommand CreateCommand() => throw null;
                 System.Data.IDbCommand System.Data.IDbConnection.CreateCommand() => throw null;
+                protected virtual System.Data.Common.DbBatch CreateDbBatch() => throw null;
                 protected abstract System.Data.Common.DbCommand CreateDbCommand();
                 public abstract string DataSource { get; }
                 public abstract string Database { get; }
@@ -1945,7 +2009,7 @@ namespace System
                 public virtual event System.Data.StateChangeEventHandler StateChange;
             }
 
-            // Generated from `System.Data.Common.DbConnectionStringBuilder` in `System.Data.Common, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Data.Common.DbConnectionStringBuilder` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class DbConnectionStringBuilder : System.Collections.ICollection, System.Collections.IDictionary, System.Collections.IEnumerable, System.ComponentModel.ICustomTypeDescriptor
             {
                 void System.Collections.IDictionary.Add(object keyword, object value) => throw null;
@@ -1993,7 +2057,7 @@ namespace System
                 public virtual System.Collections.ICollection Values { get => throw null; }
             }
 
-            // Generated from `System.Data.Common.DbDataAdapter` in `System.Data.Common, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Data.Common.DbDataAdapter` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public abstract class DbDataAdapter : System.Data.Common.DataAdapter, System.Data.IDataAdapter, System.Data.IDbDataAdapter, System.ICloneable
             {
                 protected virtual int AddToBatch(System.Data.IDbCommand command) => throw null;
@@ -2043,7 +2107,7 @@ namespace System
                 System.Data.IDbCommand System.Data.IDbDataAdapter.UpdateCommand { get => throw null; set => throw null; }
             }
 
-            // Generated from `System.Data.Common.DbDataReader` in `System.Data.Common, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Data.Common.DbDataReader` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public abstract class DbDataReader : System.MarshalByRefObject, System.Collections.IEnumerable, System.Data.IDataReader, System.Data.IDataRecord, System.IAsyncDisposable, System.IDisposable
             {
                 public virtual void Close() => throw null;
@@ -2106,14 +2170,14 @@ namespace System
                 public virtual int VisibleFieldCount { get => throw null; }
             }
 
-            // Generated from `System.Data.Common.DbDataReaderExtensions` in `System.Data.Common, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Data.Common.DbDataReaderExtensions` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public static class DbDataReaderExtensions
             {
                 public static bool CanGetColumnSchema(this System.Data.Common.DbDataReader reader) => throw null;
                 public static System.Collections.ObjectModel.ReadOnlyCollection<System.Data.Common.DbColumn> GetColumnSchema(this System.Data.Common.DbDataReader reader) => throw null;
             }
 
-            // Generated from `System.Data.Common.DbDataRecord` in `System.Data.Common, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Data.Common.DbDataRecord` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public abstract class DbDataRecord : System.ComponentModel.ICustomTypeDescriptor, System.Data.IDataRecord
             {
                 protected DbDataRecord() => throw null;
@@ -2157,14 +2221,14 @@ namespace System
                 public abstract object this[string name] { get; }
             }
 
-            // Generated from `System.Data.Common.DbDataSourceEnumerator` in `System.Data.Common, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Data.Common.DbDataSourceEnumerator` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public abstract class DbDataSourceEnumerator
             {
                 protected DbDataSourceEnumerator() => throw null;
                 public abstract System.Data.DataTable GetDataSources();
             }
 
-            // Generated from `System.Data.Common.DbEnumerator` in `System.Data.Common, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Data.Common.DbEnumerator` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class DbEnumerator : System.Collections.IEnumerator
             {
                 public object Current { get => throw null; }
@@ -2176,9 +2240,11 @@ namespace System
                 public void Reset() => throw null;
             }
 
-            // Generated from `System.Data.Common.DbException` in `System.Data.Common, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Data.Common.DbException` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public abstract class DbException : System.Runtime.InteropServices.ExternalException
             {
+                public System.Data.Common.DbBatchCommand BatchCommand { get => throw null; }
+                protected virtual System.Data.Common.DbBatchCommand DbBatchCommand { get => throw null; }
                 protected DbException() => throw null;
                 protected DbException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) => throw null;
                 protected DbException(string message) => throw null;
@@ -2188,7 +2254,7 @@ namespace System
                 public virtual string SqlState { get => throw null; }
             }
 
-            // Generated from `System.Data.Common.DbMetaDataCollectionNames` in `System.Data.Common, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Data.Common.DbMetaDataCollectionNames` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public static class DbMetaDataCollectionNames
             {
                 public static string DataSourceInformation;
@@ -2198,7 +2264,7 @@ namespace System
                 public static string Restrictions;
             }
 
-            // Generated from `System.Data.Common.DbMetaDataColumnNames` in `System.Data.Common, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Data.Common.DbMetaDataColumnNames` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public static class DbMetaDataColumnNames
             {
                 public static string CollectionName;
@@ -2246,7 +2312,7 @@ namespace System
                 public static string TypeName;
             }
 
-            // Generated from `System.Data.Common.DbParameter` in `System.Data.Common, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Data.Common.DbParameter` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public abstract class DbParameter : System.MarshalByRefObject, System.Data.IDataParameter, System.Data.IDbDataParameter
             {
                 protected DbParameter() => throw null;
@@ -2266,7 +2332,7 @@ namespace System
                 public abstract object Value { get; set; }
             }
 
-            // Generated from `System.Data.Common.DbParameterCollection` in `System.Data.Common, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Data.Common.DbParameterCollection` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public abstract class DbParameterCollection : System.MarshalByRefObject, System.Collections.ICollection, System.Collections.IEnumerable, System.Collections.IList, System.Data.IDataParameterCollection
             {
                 public abstract int Add(object value);
@@ -2303,7 +2369,7 @@ namespace System
                 public abstract object SyncRoot { get; }
             }
 
-            // Generated from `System.Data.Common.DbProviderFactories` in `System.Data.Common, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Data.Common.DbProviderFactories` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public static class DbProviderFactories
             {
                 public static System.Data.Common.DbProviderFactory GetFactory(System.Data.DataRow providerRow) => throw null;
@@ -2318,12 +2384,15 @@ namespace System
                 public static bool UnregisterFactory(string providerInvariantName) => throw null;
             }
 
-            // Generated from `System.Data.Common.DbProviderFactory` in `System.Data.Common, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Data.Common.DbProviderFactory` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public abstract class DbProviderFactory
             {
+                public virtual bool CanCreateBatch { get => throw null; }
                 public virtual bool CanCreateCommandBuilder { get => throw null; }
                 public virtual bool CanCreateDataAdapter { get => throw null; }
                 public virtual bool CanCreateDataSourceEnumerator { get => throw null; }
+                public virtual System.Data.Common.DbBatch CreateBatch() => throw null;
+                public virtual System.Data.Common.DbBatchCommand CreateBatchCommand() => throw null;
                 public virtual System.Data.Common.DbCommand CreateCommand() => throw null;
                 public virtual System.Data.Common.DbCommandBuilder CreateCommandBuilder() => throw null;
                 public virtual System.Data.Common.DbConnection CreateConnection() => throw null;
@@ -2334,14 +2403,14 @@ namespace System
                 protected DbProviderFactory() => throw null;
             }
 
-            // Generated from `System.Data.Common.DbProviderSpecificTypePropertyAttribute` in `System.Data.Common, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Data.Common.DbProviderSpecificTypePropertyAttribute` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class DbProviderSpecificTypePropertyAttribute : System.Attribute
             {
                 public DbProviderSpecificTypePropertyAttribute(bool isProviderSpecificTypeProperty) => throw null;
                 public bool IsProviderSpecificTypeProperty { get => throw null; }
             }
 
-            // Generated from `System.Data.Common.DbTransaction` in `System.Data.Common, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Data.Common.DbTransaction` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public abstract class DbTransaction : System.MarshalByRefObject, System.Data.IDbTransaction, System.IAsyncDisposable, System.IDisposable
             {
                 public abstract void Commit();
@@ -2365,31 +2434,31 @@ namespace System
                 public virtual bool SupportsSavepoints { get => throw null; }
             }
 
-            // Generated from `System.Data.Common.GroupByBehavior` in `System.Data.Common, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum GroupByBehavior
+            // Generated from `System.Data.Common.GroupByBehavior` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            public enum GroupByBehavior : int
             {
-                ExactMatch,
-                MustContainAll,
-                NotSupported,
-                Unknown,
-                Unrelated,
+                ExactMatch = 4,
+                MustContainAll = 3,
+                NotSupported = 1,
+                Unknown = 0,
+                Unrelated = 2,
             }
 
-            // Generated from `System.Data.Common.IDbColumnSchemaGenerator` in `System.Data.Common, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Data.Common.IDbColumnSchemaGenerator` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public interface IDbColumnSchemaGenerator
             {
                 System.Collections.ObjectModel.ReadOnlyCollection<System.Data.Common.DbColumn> GetColumnSchema();
             }
 
-            // Generated from `System.Data.Common.IdentifierCase` in `System.Data.Common, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum IdentifierCase
+            // Generated from `System.Data.Common.IdentifierCase` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            public enum IdentifierCase : int
             {
-                Insensitive,
-                Sensitive,
-                Unknown,
+                Insensitive = 1,
+                Sensitive = 2,
+                Unknown = 0,
             }
 
-            // Generated from `System.Data.Common.RowUpdatedEventArgs` in `System.Data.Common, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Data.Common.RowUpdatedEventArgs` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class RowUpdatedEventArgs : System.EventArgs
             {
                 public System.Data.IDbCommand Command { get => throw null; }
@@ -2405,7 +2474,7 @@ namespace System
                 public System.Data.Common.DataTableMapping TableMapping { get => throw null; }
             }
 
-            // Generated from `System.Data.Common.RowUpdatingEventArgs` in `System.Data.Common, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Data.Common.RowUpdatingEventArgs` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class RowUpdatingEventArgs : System.EventArgs
             {
                 protected virtual System.Data.IDbCommand BaseCommand { get => throw null; set => throw null; }
@@ -2418,7 +2487,7 @@ namespace System
                 public System.Data.Common.DataTableMapping TableMapping { get => throw null; }
             }
 
-            // Generated from `System.Data.Common.SchemaTableColumn` in `System.Data.Common, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Data.Common.SchemaTableColumn` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public static class SchemaTableColumn
             {
                 public static string AllowDBNull;
@@ -2440,7 +2509,7 @@ namespace System
                 public static string ProviderType;
             }
 
-            // Generated from `System.Data.Common.SchemaTableOptionalColumn` in `System.Data.Common, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Data.Common.SchemaTableOptionalColumn` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public static class SchemaTableOptionalColumn
             {
                 public static string AutoIncrementSeed;
@@ -2459,27 +2528,27 @@ namespace System
                 public static string ProviderSpecificDataType;
             }
 
-            // Generated from `System.Data.Common.SupportedJoinOperators` in `System.Data.Common, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Data.Common.SupportedJoinOperators` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             [System.Flags]
-            public enum SupportedJoinOperators
+            public enum SupportedJoinOperators : int
             {
-                FullOuter,
-                Inner,
-                LeftOuter,
-                None,
-                RightOuter,
+                FullOuter = 8,
+                Inner = 1,
+                LeftOuter = 2,
+                None = 0,
+                RightOuter = 4,
             }
 
         }
         namespace SqlTypes
         {
-            // Generated from `System.Data.SqlTypes.INullable` in `System.Data.Common, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Data.SqlTypes.INullable` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public interface INullable
             {
                 bool IsNull { get; }
             }
 
-            // Generated from `System.Data.SqlTypes.SqlAlreadyFilledException` in `System.Data.Common, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Data.SqlTypes.SqlAlreadyFilledException` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class SqlAlreadyFilledException : System.Data.SqlTypes.SqlTypeException
             {
                 public SqlAlreadyFilledException() => throw null;
@@ -2487,7 +2556,7 @@ namespace System
                 public SqlAlreadyFilledException(string message, System.Exception e) => throw null;
             }
 
-            // Generated from `System.Data.SqlTypes.SqlBinary` in `System.Data.Common, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Data.SqlTypes.SqlBinary` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct SqlBinary : System.Data.SqlTypes.INullable, System.IComparable, System.Xml.Serialization.IXmlSerializable
             {
                 public static System.Data.SqlTypes.SqlBoolean operator !=(System.Data.SqlTypes.SqlBinary x, System.Data.SqlTypes.SqlBinary y) => throw null;
@@ -2527,7 +2596,7 @@ namespace System
                 public static implicit operator System.Data.SqlTypes.SqlBinary(System.Byte[] x) => throw null;
             }
 
-            // Generated from `System.Data.SqlTypes.SqlBoolean` in `System.Data.Common, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Data.SqlTypes.SqlBoolean` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct SqlBoolean : System.Data.SqlTypes.INullable, System.IComparable, System.Xml.Serialization.IXmlSerializable
             {
                 public static System.Data.SqlTypes.SqlBoolean operator !(System.Data.SqlTypes.SqlBoolean x) => throw null;
@@ -2598,7 +2667,7 @@ namespace System
                 public static System.Data.SqlTypes.SqlBoolean operator ~(System.Data.SqlTypes.SqlBoolean x) => throw null;
             }
 
-            // Generated from `System.Data.SqlTypes.SqlByte` in `System.Data.Common, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Data.SqlTypes.SqlByte` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct SqlByte : System.Data.SqlTypes.INullable, System.IComparable, System.Xml.Serialization.IXmlSerializable
             {
                 public static System.Data.SqlTypes.SqlBoolean operator !=(System.Data.SqlTypes.SqlByte x, System.Data.SqlTypes.SqlByte y) => throw null;
@@ -2672,7 +2741,7 @@ namespace System
                 public static System.Data.SqlTypes.SqlByte operator ~(System.Data.SqlTypes.SqlByte x) => throw null;
             }
 
-            // Generated from `System.Data.SqlTypes.SqlBytes` in `System.Data.Common, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Data.SqlTypes.SqlBytes` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class SqlBytes : System.Data.SqlTypes.INullable, System.Runtime.Serialization.ISerializable, System.Xml.Serialization.IXmlSerializable
             {
                 public System.Byte[] Buffer { get => throw null; }
@@ -2702,7 +2771,7 @@ namespace System
                 public static explicit operator System.Data.SqlTypes.SqlBinary(System.Data.SqlTypes.SqlBytes value) => throw null;
             }
 
-            // Generated from `System.Data.SqlTypes.SqlChars` in `System.Data.Common, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Data.SqlTypes.SqlChars` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class SqlChars : System.Data.SqlTypes.INullable, System.Runtime.Serialization.ISerializable, System.Xml.Serialization.IXmlSerializable
             {
                 public System.Char[] Buffer { get => throw null; }
@@ -2730,20 +2799,20 @@ namespace System
                 public static explicit operator System.Data.SqlTypes.SqlChars(System.Data.SqlTypes.SqlString value) => throw null;
             }
 
-            // Generated from `System.Data.SqlTypes.SqlCompareOptions` in `System.Data.Common, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Data.SqlTypes.SqlCompareOptions` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             [System.Flags]
-            public enum SqlCompareOptions
+            public enum SqlCompareOptions : int
             {
-                BinarySort,
-                BinarySort2,
-                IgnoreCase,
-                IgnoreKanaType,
-                IgnoreNonSpace,
-                IgnoreWidth,
-                None,
+                BinarySort = 32768,
+                BinarySort2 = 16384,
+                IgnoreCase = 1,
+                IgnoreKanaType = 8,
+                IgnoreNonSpace = 2,
+                IgnoreWidth = 16,
+                None = 0,
             }
 
-            // Generated from `System.Data.SqlTypes.SqlDateTime` in `System.Data.Common, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Data.SqlTypes.SqlDateTime` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct SqlDateTime : System.Data.SqlTypes.INullable, System.IComparable, System.Xml.Serialization.IXmlSerializable
             {
                 public static System.Data.SqlTypes.SqlBoolean operator !=(System.Data.SqlTypes.SqlDateTime x, System.Data.SqlTypes.SqlDateTime y) => throw null;
@@ -2795,7 +2864,7 @@ namespace System
                 public static implicit operator System.Data.SqlTypes.SqlDateTime(System.DateTime value) => throw null;
             }
 
-            // Generated from `System.Data.SqlTypes.SqlDecimal` in `System.Data.Common, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Data.SqlTypes.SqlDecimal` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct SqlDecimal : System.Data.SqlTypes.INullable, System.IComparable, System.Xml.Serialization.IXmlSerializable
             {
                 public static System.Data.SqlTypes.SqlBoolean operator !=(System.Data.SqlTypes.SqlDecimal x, System.Data.SqlTypes.SqlDecimal y) => throw null;
@@ -2882,7 +2951,7 @@ namespace System
                 public static implicit operator System.Data.SqlTypes.SqlDecimal(System.Int64 x) => throw null;
             }
 
-            // Generated from `System.Data.SqlTypes.SqlDouble` in `System.Data.Common, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Data.SqlTypes.SqlDouble` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct SqlDouble : System.Data.SqlTypes.INullable, System.IComparable, System.Xml.Serialization.IXmlSerializable
             {
                 public static System.Data.SqlTypes.SqlBoolean operator !=(System.Data.SqlTypes.SqlDouble x, System.Data.SqlTypes.SqlDouble y) => throw null;
@@ -2946,7 +3015,7 @@ namespace System
                 public static implicit operator System.Data.SqlTypes.SqlDouble(double x) => throw null;
             }
 
-            // Generated from `System.Data.SqlTypes.SqlGuid` in `System.Data.Common, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Data.SqlTypes.SqlGuid` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct SqlGuid : System.Data.SqlTypes.INullable, System.IComparable, System.Xml.Serialization.IXmlSerializable
             {
                 public static System.Data.SqlTypes.SqlBoolean operator !=(System.Data.SqlTypes.SqlGuid x, System.Data.SqlTypes.SqlGuid y) => throw null;
@@ -2988,7 +3057,7 @@ namespace System
                 public static implicit operator System.Data.SqlTypes.SqlGuid(System.Guid x) => throw null;
             }
 
-            // Generated from `System.Data.SqlTypes.SqlInt16` in `System.Data.Common, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Data.SqlTypes.SqlInt16` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct SqlInt16 : System.Data.SqlTypes.INullable, System.IComparable, System.Xml.Serialization.IXmlSerializable
             {
                 public static System.Data.SqlTypes.SqlBoolean operator !=(System.Data.SqlTypes.SqlInt16 x, System.Data.SqlTypes.SqlInt16 y) => throw null;
@@ -3063,7 +3132,7 @@ namespace System
                 public static System.Data.SqlTypes.SqlInt16 operator ~(System.Data.SqlTypes.SqlInt16 x) => throw null;
             }
 
-            // Generated from `System.Data.SqlTypes.SqlInt32` in `System.Data.Common, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Data.SqlTypes.SqlInt32` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct SqlInt32 : System.Data.SqlTypes.INullable, System.IComparable, System.Xml.Serialization.IXmlSerializable
             {
                 public static System.Data.SqlTypes.SqlBoolean operator !=(System.Data.SqlTypes.SqlInt32 x, System.Data.SqlTypes.SqlInt32 y) => throw null;
@@ -3138,7 +3207,7 @@ namespace System
                 public static System.Data.SqlTypes.SqlInt32 operator ~(System.Data.SqlTypes.SqlInt32 x) => throw null;
             }
 
-            // Generated from `System.Data.SqlTypes.SqlInt64` in `System.Data.Common, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Data.SqlTypes.SqlInt64` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct SqlInt64 : System.Data.SqlTypes.INullable, System.IComparable, System.Xml.Serialization.IXmlSerializable
             {
                 public static System.Data.SqlTypes.SqlBoolean operator !=(System.Data.SqlTypes.SqlInt64 x, System.Data.SqlTypes.SqlInt64 y) => throw null;
@@ -3213,7 +3282,7 @@ namespace System
                 public static System.Data.SqlTypes.SqlInt64 operator ~(System.Data.SqlTypes.SqlInt64 x) => throw null;
             }
 
-            // Generated from `System.Data.SqlTypes.SqlMoney` in `System.Data.Common, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Data.SqlTypes.SqlMoney` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct SqlMoney : System.Data.SqlTypes.INullable, System.IComparable, System.Xml.Serialization.IXmlSerializable
             {
                 public static System.Data.SqlTypes.SqlBoolean operator !=(System.Data.SqlTypes.SqlMoney x, System.Data.SqlTypes.SqlMoney y) => throw null;
@@ -3286,7 +3355,7 @@ namespace System
                 public static implicit operator System.Data.SqlTypes.SqlMoney(System.Int64 x) => throw null;
             }
 
-            // Generated from `System.Data.SqlTypes.SqlNotFilledException` in `System.Data.Common, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Data.SqlTypes.SqlNotFilledException` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class SqlNotFilledException : System.Data.SqlTypes.SqlTypeException
             {
                 public SqlNotFilledException() => throw null;
@@ -3294,7 +3363,7 @@ namespace System
                 public SqlNotFilledException(string message, System.Exception e) => throw null;
             }
 
-            // Generated from `System.Data.SqlTypes.SqlNullValueException` in `System.Data.Common, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Data.SqlTypes.SqlNullValueException` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class SqlNullValueException : System.Data.SqlTypes.SqlTypeException
             {
                 public SqlNullValueException() => throw null;
@@ -3302,7 +3371,7 @@ namespace System
                 public SqlNullValueException(string message, System.Exception e) => throw null;
             }
 
-            // Generated from `System.Data.SqlTypes.SqlSingle` in `System.Data.Common, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Data.SqlTypes.SqlSingle` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct SqlSingle : System.Data.SqlTypes.INullable, System.IComparable, System.Xml.Serialization.IXmlSerializable
             {
                 public static System.Data.SqlTypes.SqlBoolean operator !=(System.Data.SqlTypes.SqlSingle x, System.Data.SqlTypes.SqlSingle y) => throw null;
@@ -3367,7 +3436,7 @@ namespace System
                 public static implicit operator System.Data.SqlTypes.SqlSingle(float x) => throw null;
             }
 
-            // Generated from `System.Data.SqlTypes.SqlString` in `System.Data.Common, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Data.SqlTypes.SqlString` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct SqlString : System.Data.SqlTypes.INullable, System.IComparable, System.Xml.Serialization.IXmlSerializable
             {
                 public static System.Data.SqlTypes.SqlBoolean operator !=(System.Data.SqlTypes.SqlString x, System.Data.SqlTypes.SqlString y) => throw null;
@@ -3445,7 +3514,7 @@ namespace System
                 public static implicit operator System.Data.SqlTypes.SqlString(string x) => throw null;
             }
 
-            // Generated from `System.Data.SqlTypes.SqlTruncateException` in `System.Data.Common, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Data.SqlTypes.SqlTruncateException` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class SqlTruncateException : System.Data.SqlTypes.SqlTypeException
             {
                 public SqlTruncateException() => throw null;
@@ -3453,7 +3522,7 @@ namespace System
                 public SqlTruncateException(string message, System.Exception e) => throw null;
             }
 
-            // Generated from `System.Data.SqlTypes.SqlTypeException` in `System.Data.Common, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Data.SqlTypes.SqlTypeException` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class SqlTypeException : System.SystemException
             {
                 public SqlTypeException() => throw null;
@@ -3462,7 +3531,7 @@ namespace System
                 public SqlTypeException(string message, System.Exception e) => throw null;
             }
 
-            // Generated from `System.Data.SqlTypes.SqlXml` in `System.Data.Common, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Data.SqlTypes.SqlXml` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class SqlXml : System.Data.SqlTypes.INullable, System.Xml.Serialization.IXmlSerializable
             {
                 public System.Xml.XmlReader CreateReader() => throw null;
@@ -3478,19 +3547,19 @@ namespace System
                 void System.Xml.Serialization.IXmlSerializable.WriteXml(System.Xml.XmlWriter writer) => throw null;
             }
 
-            // Generated from `System.Data.SqlTypes.StorageState` in `System.Data.Common, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum StorageState
+            // Generated from `System.Data.SqlTypes.StorageState` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            public enum StorageState : int
             {
-                Buffer,
-                Stream,
-                UnmanagedBuffer,
+                Buffer = 0,
+                Stream = 1,
+                UnmanagedBuffer = 2,
             }
 
         }
     }
     namespace Xml
     {
-        // Generated from `System.Xml.XmlDataDocument` in `System.Data.Common, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Xml.XmlDataDocument` in `System.Data.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class XmlDataDocument : System.Xml.XmlDocument
         {
             public override System.Xml.XmlNode CloneNode(bool deep) => throw null;

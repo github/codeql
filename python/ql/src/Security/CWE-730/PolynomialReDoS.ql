@@ -4,6 +4,7 @@
  *              to match may be vulnerable to denial-of-service attacks.
  * @kind path-problem
  * @problem.severity warning
+ * @security-severity 7.5
  * @precision high
  * @id py/polynomial-redos
  * @tags security
@@ -13,7 +14,7 @@
  */
 
 import python
-import semmle.python.security.performance.SuperlinearBackTracking
+import semmle.python.security.regexp.SuperlinearBackTracking
 import semmle.python.security.dataflow.PolynomialReDoSQuery
 import DataFlow::PathGraph
 

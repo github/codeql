@@ -33,7 +33,9 @@ module PEP249 {
   }
 
   /** Gets a reference to the `connect` function of a module that implements PEP 249. */
-  DataFlow::Node connect() { result = any(PEP249ModuleApiNode a).getMember("connect").getAUse() }
+  DataFlow::Node connect() {
+    result = any(PEP249ModuleApiNode a).getMember("connect").getAValueReachableFromSource()
+  }
 
   /**
    * Provides models for database connections (following PEP 249).

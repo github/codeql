@@ -9,7 +9,6 @@
  */
 
 import go
-import semmle.go.frameworks.SQL
 
 from DataFlow::MethodCallNode call
 where

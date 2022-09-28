@@ -3,21 +3,32 @@ private import semmle.code.java.controlflow.Guards
 private import semmle.code.java.dataflow.FlowSources
 private import semmle.code.java.dataflow.ExternalFlow
 
-/** A barrier guard that protects against path traversal vulnerabilities. */
-abstract class PathTraversalBarrierGuard extends DataFlow::BarrierGuard { }
+/**
+ * DEPRECATED: Use `PathTraversalSanitizer` instead.
+ *
+ * A barrier guard that protects against path traversal vulnerabilities.
+ */
+abstract deprecated class PathTraversalBarrierGuard extends DataFlow::BarrierGuard { }
+
+/** A sanitizer that protects against path traversal vulnerabilities. */
+abstract class PathTraversalSanitizer extends DataFlow::Node { }
 
 /**
- * A guard that considers safe a string being exactly compared to a trusted value.
+ * Holds if `g` is guard that compares a string to a trusted value.
  */
-private class ExactStringPathMatchGuard extends PathTraversalBarrierGuard instanceof MethodAccess {
-  ExactStringPathMatchGuard() {
-    super.getMethod().getDeclaringType() instanceof TypeString and
-    super.getMethod().getName() = ["equals", "equalsIgnoreCase"]
-  }
-
-  override predicate checks(Expr e, boolean branch) {
-    e = super.getQualifier() and
+private predicate exactStringPathMatchGuard(Guard g, Expr e, boolean branch) {
+  exists(MethodAccess ma |
+    ma = g and
+    ma.getMethod().getDeclaringType() instanceof TypeString and
+    ma.getMethod().getName() = ["equals", "equalsIgnoreCase"] and
+    e = ma.getQualifier() and
     branch = true
+  )
+}
+
+private class ExactStringPathMatchSanitizer extends PathTraversalSanitizer {
+  ExactStringPathMatchSanitizer() {
+    this = DataFlow::BarrierGuard<exactStringPathMatchGuard/3>::getABarrierNode()
   }
 }
 
@@ -42,41 +53,45 @@ private class AllowListGuard extends Guard instanceof MethodAccess {
 }
 
 /**
- * A guard that considers a path safe because it is checked against an allowlist of partial trusted values.
+ * Holds if `g` is a guard that considers a path safe because it is checked against an allowlist of partial trusted values.
  * This requires additional protection against path traversal, either another guard (`PathTraversalGuard`)
  * or a sanitizer (`PathNormalizeSanitizer`), to ensure any internal `..` components are removed from the path.
  */
-private class AllowListBarrierGuard extends PathTraversalBarrierGuard instanceof AllowListGuard {
-  override predicate checks(Expr e, boolean branch) {
-    e = super.getCheckedExpr() and
-    branch = true and
-    (
-      // Either a path normalization sanitizer comes before the guard,
-      exists(PathNormalizeSanitizer sanitizer | DataFlow::localExprFlow(sanitizer, e))
-      or
-      // or a check like `!path.contains("..")` comes before the guard
-      exists(PathTraversalGuard previousGuard |
-        DataFlow::localExprFlow(previousGuard.getCheckedExpr(), e) and
-        previousGuard.controls(this.getBasicBlock().(ConditionBlock), false)
-      )
+private predicate allowListGuard(Guard g, Expr e, boolean branch) {
+  e = g.(AllowListGuard).getCheckedExpr() and
+  branch = true and
+  (
+    // Either a path normalization sanitizer comes before the guard,
+    exists(PathNormalizeSanitizer sanitizer | DataFlow::localExprFlow(sanitizer, e))
+    or
+    // or a check like `!path.contains("..")` comes before the guard
+    exists(PathTraversalGuard previousGuard |
+      DataFlow::localExprFlow(previousGuard.getCheckedExpr(), e) and
+      previousGuard.controls(g.getBasicBlock().(ConditionBlock), false)
     )
-  }
+  )
+}
+
+private class AllowListSanitizer extends PathTraversalSanitizer {
+  AllowListSanitizer() { this = DataFlow::BarrierGuard<allowListGuard/3>::getABarrierNode() }
 }
 
 /**
- * A guard that considers a path safe because it is checked for `..` components, having previously
+ * Holds if `g` is a guard that considers a path safe because it is checked for `..` components, having previously
  * been checked for a trusted prefix.
  */
-private class DotDotCheckBarrierGuard extends PathTraversalBarrierGuard instanceof PathTraversalGuard {
-  override predicate checks(Expr e, boolean branch) {
-    e = super.getCheckedExpr() and
-    branch = false and
-    // The same value has previously been checked against a list of allowed prefixes:
-    exists(AllowListGuard previousGuard |
-      DataFlow::localExprFlow(previousGuard.getCheckedExpr(), e) and
-      previousGuard.controls(this.getBasicBlock().(ConditionBlock), true)
-    )
-  }
+private predicate dotDotCheckGuard(Guard g, Expr e, boolean branch) {
+  e = g.(PathTraversalGuard).getCheckedExpr() and
+  branch = false and
+  // The same value has previously been checked against a list of allowed prefixes:
+  exists(AllowListGuard previousGuard |
+    DataFlow::localExprFlow(previousGuard.getCheckedExpr(), e) and
+    previousGuard.controls(g.getBasicBlock().(ConditionBlock), true)
+  )
+}
+
+private class DotDotCheckSanitizer extends PathTraversalSanitizer {
+  DotDotCheckSanitizer() { this = DataFlow::BarrierGuard<dotDotCheckGuard/3>::getABarrierNode() }
 }
 
 private class BlockListGuard extends Guard instanceof MethodAccess {
@@ -89,40 +104,44 @@ private class BlockListGuard extends Guard instanceof MethodAccess {
 }
 
 /**
- * A guard that considers a string safe because it is checked against a blocklist of known dangerous values.
+ * Holds if `g` is a guard that considers a string safe because it is checked against a blocklist of known dangerous values.
  * This requires a prior check for URL encoding concealing a forbidden value, either a guard (`UrlEncodingGuard`)
  * or a sanitizer (`UrlDecodeSanitizer`).
  */
-private class BlockListBarrierGuard extends PathTraversalBarrierGuard instanceof BlockListGuard {
-  override predicate checks(Expr e, boolean branch) {
-    e = super.getCheckedExpr() and
-    branch = false and
-    (
-      // Either `e` has been URL decoded:
-      exists(UrlDecodeSanitizer sanitizer | DataFlow::localExprFlow(sanitizer, e))
-      or
-      // or `e` has previously been checked for URL encoding sequences:
-      exists(UrlEncodingGuard previousGuard |
-        DataFlow::localExprFlow(previousGuard.getCheckedExpr(), e) and
-        previousGuard.controls(this.getBasicBlock(), false)
-      )
+private predicate blockListGuard(Guard g, Expr e, boolean branch) {
+  e = g.(BlockListGuard).getCheckedExpr() and
+  branch = false and
+  (
+    // Either `e` has been URL decoded:
+    exists(UrlDecodeSanitizer sanitizer | DataFlow::localExprFlow(sanitizer, e))
+    or
+    // or `e` has previously been checked for URL encoding sequences:
+    exists(UrlEncodingGuard previousGuard |
+      DataFlow::localExprFlow(previousGuard.getCheckedExpr(), e) and
+      previousGuard.controls(g.getBasicBlock(), false)
     )
-  }
+  )
+}
+
+private class BlockListSanitizer extends PathTraversalSanitizer {
+  BlockListSanitizer() { this = DataFlow::BarrierGuard<blockListGuard/3>::getABarrierNode() }
 }
 
 /**
- * A guard that considers a string safe because it is checked for URL encoding sequences,
+ * Holds if `g` is a guard that considers a string safe because it is checked for URL encoding sequences,
  * having previously been checked against a block-list of forbidden values.
  */
-private class UrlEncodingBarrierGuard extends PathTraversalBarrierGuard instanceof UrlEncodingGuard {
-  override predicate checks(Expr e, boolean branch) {
-    e = super.getCheckedExpr() and
-    branch = false and
-    exists(BlockListGuard previousGuard |
-      DataFlow::localExprFlow(previousGuard.getCheckedExpr(), e) and
-      previousGuard.controls(this.getBasicBlock(), false)
-    )
-  }
+private predicate urlEncodingGuard(Guard g, Expr e, boolean branch) {
+  e = g.(UrlEncodingGuard).getCheckedExpr() and
+  branch = false and
+  exists(BlockListGuard previousGuard |
+    DataFlow::localExprFlow(previousGuard.getCheckedExpr(), e) and
+    previousGuard.controls(g.getBasicBlock(), false)
+  )
+}
+
+private class UrlEncodingSanitizer extends PathTraversalSanitizer {
+  UrlEncodingSanitizer() { this = DataFlow::BarrierGuard<urlEncodingGuard/3>::getABarrierNode() }
 }
 
 /**
@@ -196,8 +215,8 @@ private class PathDataModel extends SummaryModelCsv {
   override predicate row(string row) {
     row =
       [
-        "java.nio.file;Paths;true;get;;;Argument[0];ReturnValue;taint",
-        "java.nio.file;Path;true;normalize;;;Argument[-1];ReturnValue;taint"
+        "java.nio.file;Paths;true;get;;;Argument[0];ReturnValue;taint;manual",
+        "java.nio.file;Path;true;normalize;;;Argument[-1];ReturnValue;taint;manual"
       ]
   }
 }

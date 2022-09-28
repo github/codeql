@@ -131,8 +131,8 @@ private class RelevantNode extends Node {
  */
 pragma[nomagic]
 private predicate viableParamCand(Call call, int i, ParameterNode p) {
-  exists(Callable callable |
-    callable = dispatchCand(call) and
+  exists(DataFlowCallable callable |
+    callable.asCallable() = dispatchCand(call) and
     p.isParameterOf(callable, i) and
     p instanceof RelevantNode
   )

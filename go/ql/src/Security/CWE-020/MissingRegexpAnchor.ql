@@ -52,7 +52,7 @@ predicate isInterestingSemiAnchoredRegexpString(string re, string msg) {
 bindingset[re]
 predicate isInterestingUnanchoredRegexpString(string re, string msg) {
   // a substring sequence of a protocol and subdomains, perhaps with some regex characters mixed in, followed by a known TLD
-  re.regexpMatch("(?i)[():|?a-z0-9-\\\\./]+[.]" + commonTLD() + "([/#?():]\\S*)?") and
+  re.regexpMatch("(?i)[():|?a-z0-9-\\\\./]+[.]" + commonTld() + "([/#?():]\\S*)?") and
   // without any anchors
   not re.regexpMatch(".*(\\$|\\^|\\\\A|\\\\z).*") and
   msg =

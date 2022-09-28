@@ -1036,9 +1036,6 @@ class TupleExpr extends Expr, @tuple_expr {
   /** Gets an argument of this tuple. */
   Expr getAnArgument() { result = this.getArgument(_) }
 
-  /** Holds if this tuple is a read access. */
-  deprecated predicate isReadAccess() { not this = getAnAssignOrForeachChild() }
-
   /** Holds if this expression is a tuple construction. */
   predicate isConstruction() {
     not this = getAnAssignOrForeachChild() and

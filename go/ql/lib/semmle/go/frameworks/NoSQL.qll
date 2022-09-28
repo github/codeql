@@ -4,21 +4,17 @@
 
 import go
 
-/** Provides classes for working with NoSQL-related APIs. */
-module NoSQL {
+/** Provides classes for working with NoSql-related APIs. */
+module NoSql {
   /**
    * A data-flow node whose value is interpreted as (part of) a NoSQL query.
    *
    * Extend this class to refine existing API models. If you want to model new APIs,
    * extend `NoSQL::Query::Range` instead.
    */
-  class Query extends DataFlow::Node {
-    Query::Range self;
+  class Query extends DataFlow::Node instanceof Query::Range { }
 
-    Query() { this = self }
-  }
-
-  /** Provides classes for working with NoSQL queries. */
+  /** Provides classes for working with NoSql queries. */
   module Query {
     /**
      * A data-flow node whose value is interpreted as (part of) a NoSQL query.
@@ -119,3 +115,6 @@ module NoSQL {
     )
   }
 }
+
+/** DEPRECATED: Alias for NoSql */
+deprecated module NoSQL = NoSql;

@@ -45,10 +45,10 @@ private class SystemXmlXmlDocumentFlowModelCsv extends SummaryModelCsv {
   override predicate row(string row) {
     row =
       [
-        "System.Xml;XmlDocument;false;Load;(System.IO.Stream);;Argument[0];Argument[Qualifier];taint",
-        "System.Xml;XmlDocument;false;Load;(System.IO.TextReader);;Argument[0];Argument[Qualifier];taint",
-        "System.Xml;XmlDocument;false;Load;(System.String);;Argument[0];Argument[Qualifier];taint",
-        "System.Xml;XmlDocument;false;Load;(System.Xml.XmlReader);;Argument[0];Argument[Qualifier];taint"
+        "System.Xml;XmlDocument;false;Load;(System.IO.Stream);;Argument[0];Argument[this];taint;manual",
+        "System.Xml;XmlDocument;false;Load;(System.IO.TextReader);;Argument[0];Argument[this];taint;manual",
+        "System.Xml;XmlDocument;false;Load;(System.String);;Argument[0];Argument[this];taint;manual",
+        "System.Xml;XmlDocument;false;Load;(System.Xml.XmlReader);;Argument[0];Argument[this];taint;manual"
       ]
   }
 }
@@ -73,18 +73,18 @@ private class SystemXmlXmlReaderFlowModelCsv extends SummaryModelCsv {
   override predicate row(string row) {
     row =
       [
-        "System.Xml;XmlReader;false;Create;(System.IO.Stream);;Argument[0];ReturnValue;taint",
-        "System.Xml;XmlReader;false;Create;(System.IO.Stream,System.Xml.XmlReaderSettings);;Argument[0];ReturnValue;taint",
-        "System.Xml;XmlReader;false;Create;(System.IO.Stream,System.Xml.XmlReaderSettings,System.String);;Argument[0];ReturnValue;taint",
-        "System.Xml;XmlReader;false;Create;(System.IO.Stream,System.Xml.XmlReaderSettings,System.Xml.XmlParserContext);;Argument[0];ReturnValue;taint",
-        "System.Xml;XmlReader;false;Create;(System.IO.TextReader);;Argument[0];ReturnValue;taint",
-        "System.Xml;XmlReader;false;Create;(System.IO.TextReader,System.Xml.XmlReaderSettings);;Argument[0];ReturnValue;taint",
-        "System.Xml;XmlReader;false;Create;(System.IO.TextReader,System.Xml.XmlReaderSettings,System.String);;Argument[0];ReturnValue;taint",
-        "System.Xml;XmlReader;false;Create;(System.IO.TextReader,System.Xml.XmlReaderSettings,System.Xml.XmlParserContext);;Argument[0];ReturnValue;taint",
-        "System.Xml;XmlReader;false;Create;(System.String);;Argument[0];ReturnValue;taint",
-        "System.Xml;XmlReader;false;Create;(System.String,System.Xml.XmlReaderSettings);;Argument[0];ReturnValue;taint",
-        "System.Xml;XmlReader;false;Create;(System.String,System.Xml.XmlReaderSettings,System.Xml.XmlParserContext);;Argument[0];ReturnValue;taint",
-        "System.Xml;XmlReader;false;Create;(System.Xml.XmlReader,System.Xml.XmlReaderSettings);;Argument[0];ReturnValue;taint"
+        "System.Xml;XmlReader;false;Create;(System.IO.Stream);;Argument[0];ReturnValue;taint;manual",
+        "System.Xml;XmlReader;false;Create;(System.IO.Stream,System.Xml.XmlReaderSettings);;Argument[0];ReturnValue;taint;manual",
+        "System.Xml;XmlReader;false;Create;(System.IO.Stream,System.Xml.XmlReaderSettings,System.String);;Argument[0];ReturnValue;taint;manual",
+        "System.Xml;XmlReader;false;Create;(System.IO.Stream,System.Xml.XmlReaderSettings,System.Xml.XmlParserContext);;Argument[0];ReturnValue;taint;manual",
+        "System.Xml;XmlReader;false;Create;(System.IO.TextReader);;Argument[0];ReturnValue;taint;manual",
+        "System.Xml;XmlReader;false;Create;(System.IO.TextReader,System.Xml.XmlReaderSettings);;Argument[0];ReturnValue;taint;manual",
+        "System.Xml;XmlReader;false;Create;(System.IO.TextReader,System.Xml.XmlReaderSettings,System.String);;Argument[0];ReturnValue;taint;manual",
+        "System.Xml;XmlReader;false;Create;(System.IO.TextReader,System.Xml.XmlReaderSettings,System.Xml.XmlParserContext);;Argument[0];ReturnValue;taint;manual",
+        "System.Xml;XmlReader;false;Create;(System.String);;Argument[0];ReturnValue;taint;manual",
+        "System.Xml;XmlReader;false;Create;(System.String,System.Xml.XmlReaderSettings);;Argument[0];ReturnValue;taint;manual",
+        "System.Xml;XmlReader;false;Create;(System.String,System.Xml.XmlReaderSettings,System.Xml.XmlParserContext);;Argument[0];ReturnValue;taint;manual",
+        "System.Xml;XmlReader;false;Create;(System.Xml.XmlReader,System.Xml.XmlReaderSettings);;Argument[0];ReturnValue;taint;manual"
       ]
   }
 }
@@ -140,33 +140,33 @@ private class SystemXmlXmlNodeFlowModelCsv extends SummaryModelCsv {
   override predicate row(string row) {
     row =
       [
-        "System.Xml;XmlNode;false;GetEnumerator;();;Argument[Qualifier].Element;ReturnValue.Property[System.Collections.IEnumerator.Current];value",
-        "System.Xml;XmlNode;false;SelectNodes;(System.String);;Argument[Qualifier];ReturnValue;taint",
-        "System.Xml;XmlNode;false;SelectNodes;(System.String,System.Xml.XmlNamespaceManager);;Argument[Qualifier];ReturnValue;taint",
-        "System.Xml;XmlNode;false;SelectSingleNode;(System.String);;Argument[Qualifier];ReturnValue;taint",
-        "System.Xml;XmlNode;false;SelectSingleNode;(System.String,System.Xml.XmlNamespaceManager);;Argument[Qualifier];ReturnValue;taint",
-        "System.Xml;XmlNode;true;get_Attributes;();;Argument[Qualifier];ReturnValue;taint",
-        "System.Xml;XmlNode;true;get_BaseURI;();;Argument[Qualifier];ReturnValue;taint",
-        "System.Xml;XmlNode;true;get_ChildNodes;();;Argument[Qualifier];ReturnValue;taint",
-        "System.Xml;XmlNode;true;get_FirstChild;();;Argument[Qualifier];ReturnValue;taint",
-        "System.Xml;XmlNode;true;get_HasChildNodes;();;Argument[Qualifier];ReturnValue;taint",
-        "System.Xml;XmlNode;true;get_InnerText;();;Argument[Qualifier];ReturnValue;taint",
-        "System.Xml;XmlNode;true;get_InnerXml;();;Argument[Qualifier];ReturnValue;taint",
-        "System.Xml;XmlNode;true;get_IsReadOnly;();;Argument[Qualifier];ReturnValue;taint",
-        "System.Xml;XmlNode;true;get_LastChild;();;Argument[Qualifier];ReturnValue;taint",
-        "System.Xml;XmlNode;true;get_LocalName;();;Argument[Qualifier];ReturnValue;taint",
-        "System.Xml;XmlNode;true;get_Name;();;Argument[Qualifier];ReturnValue;taint",
-        "System.Xml;XmlNode;true;get_NamespaceURI;();;Argument[Qualifier];ReturnValue;taint",
-        "System.Xml;XmlNode;true;get_NextSibling;();;Argument[Qualifier];ReturnValue;taint",
-        "System.Xml;XmlNode;true;get_NodeType;();;Argument[Qualifier];ReturnValue;taint",
-        "System.Xml;XmlNode;true;get_OuterXml;();;Argument[Qualifier];ReturnValue;taint",
-        "System.Xml;XmlNode;true;get_OwnerDocument;();;Argument[Qualifier];ReturnValue;taint",
-        "System.Xml;XmlNode;true;get_ParentNode;();;Argument[Qualifier];ReturnValue;taint",
-        "System.Xml;XmlNode;true;get_Prefix;();;Argument[Qualifier];ReturnValue;taint",
-        "System.Xml;XmlNode;true;get_PreviousSibling;();;Argument[Qualifier];ReturnValue;taint",
-        "System.Xml;XmlNode;true;get_PreviousText;();;Argument[Qualifier];ReturnValue;taint",
-        "System.Xml;XmlNode;true;get_SchemaInfo;();;Argument[Qualifier];ReturnValue;taint",
-        "System.Xml;XmlNode;true;get_Value;();;Argument[Qualifier];ReturnValue;taint"
+        "System.Xml;XmlNode;false;GetEnumerator;();;Argument[this].Element;ReturnValue.Property[System.Collections.IEnumerator.Current];value;manual",
+        "System.Xml;XmlNode;false;SelectNodes;(System.String);;Argument[this];ReturnValue;taint;manual",
+        "System.Xml;XmlNode;false;SelectNodes;(System.String,System.Xml.XmlNamespaceManager);;Argument[this];ReturnValue;taint;manual",
+        "System.Xml;XmlNode;false;SelectSingleNode;(System.String);;Argument[this];ReturnValue;taint;manual",
+        "System.Xml;XmlNode;false;SelectSingleNode;(System.String,System.Xml.XmlNamespaceManager);;Argument[this];ReturnValue;taint;manual",
+        "System.Xml;XmlNode;true;get_Attributes;();;Argument[this];ReturnValue;taint;manual",
+        "System.Xml;XmlNode;true;get_BaseURI;();;Argument[this];ReturnValue;taint;manual",
+        "System.Xml;XmlNode;true;get_ChildNodes;();;Argument[this];ReturnValue;taint;manual",
+        "System.Xml;XmlNode;true;get_FirstChild;();;Argument[this];ReturnValue;taint;manual",
+        "System.Xml;XmlNode;true;get_HasChildNodes;();;Argument[this];ReturnValue;taint;manual",
+        "System.Xml;XmlNode;true;get_InnerText;();;Argument[this];ReturnValue;taint;manual",
+        "System.Xml;XmlNode;true;get_InnerXml;();;Argument[this];ReturnValue;taint;manual",
+        "System.Xml;XmlNode;true;get_IsReadOnly;();;Argument[this];ReturnValue;taint;manual",
+        "System.Xml;XmlNode;true;get_LastChild;();;Argument[this];ReturnValue;taint;manual",
+        "System.Xml;XmlNode;true;get_LocalName;();;Argument[this];ReturnValue;taint;manual",
+        "System.Xml;XmlNode;true;get_Name;();;Argument[this];ReturnValue;taint;manual",
+        "System.Xml;XmlNode;true;get_NamespaceURI;();;Argument[this];ReturnValue;taint;manual",
+        "System.Xml;XmlNode;true;get_NextSibling;();;Argument[this];ReturnValue;taint;manual",
+        "System.Xml;XmlNode;true;get_NodeType;();;Argument[this];ReturnValue;taint;manual",
+        "System.Xml;XmlNode;true;get_OuterXml;();;Argument[this];ReturnValue;taint;manual",
+        "System.Xml;XmlNode;true;get_OwnerDocument;();;Argument[this];ReturnValue;taint;manual",
+        "System.Xml;XmlNode;true;get_ParentNode;();;Argument[this];ReturnValue;taint;manual",
+        "System.Xml;XmlNode;true;get_Prefix;();;Argument[this];ReturnValue;taint;manual",
+        "System.Xml;XmlNode;true;get_PreviousSibling;();;Argument[this];ReturnValue;taint;manual",
+        "System.Xml;XmlNode;true;get_PreviousText;();;Argument[this];ReturnValue;taint;manual",
+        "System.Xml;XmlNode;true;get_SchemaInfo;();;Argument[this];ReturnValue;taint;manual",
+        "System.Xml;XmlNode;true;get_Value;();;Argument[this];ReturnValue;taint;manual"
       ]
   }
 }
@@ -190,8 +190,8 @@ private class SystemXmlXmlNamedNodeMapClassFlowModelCsv extends SummaryModelCsv 
   override predicate row(string row) {
     row =
       [
-        "System.Xml;XmlNamedNodeMap;false;GetNamedItem;(System.String);;Argument[Qualifier];ReturnValue;value",
-        "System.Xml;XmlNamedNodeMap;false;GetNamedItem;(System.String,System.String);;Argument[Qualifier];ReturnValue;value"
+        "System.Xml;XmlNamedNodeMap;false;GetNamedItem;(System.String);;Argument[this];ReturnValue;value;manual",
+        "System.Xml;XmlNamedNodeMap;false;GetNamedItem;(System.String,System.String);;Argument[this];ReturnValue;value;manual"
       ]
   }
 }
@@ -282,6 +282,6 @@ class XmlReaderSettingsInstance extends Expr {
 private class SystemXmlXmlAttributeCollectionFlowModelCsv extends SummaryModelCsv {
   override predicate row(string row) {
     row =
-      "System.Xml;XmlAttributeCollection;false;CopyTo;(System.Xml.XmlAttribute[],System.Int32);;Argument[Qualifier].Element;Argument[0].Element;value"
+      "System.Xml;XmlAttributeCollection;false;CopyTo;(System.Xml.XmlAttribute[],System.Int32);;Argument[this].Element;Argument[0].Element;value;manual"
   }
 }

@@ -6,21 +6,21 @@ namespace System
     {
         namespace Emit
         {
-            // Generated from `System.Reflection.Emit.FlowControl` in `System.Reflection.Primitives, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum FlowControl
+            // Generated from `System.Reflection.Emit.FlowControl` in `System.Reflection.Primitives, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            public enum FlowControl : int
             {
-                Branch,
-                Break,
-                Call,
-                Cond_Branch,
-                Meta,
-                Next,
-                Phi,
-                Return,
-                Throw,
+                Branch = 0,
+                Break = 1,
+                Call = 2,
+                Cond_Branch = 3,
+                Meta = 4,
+                Next = 5,
+                Phi = 6,
+                Return = 7,
+                Throw = 8,
             }
 
-            // Generated from `System.Reflection.Emit.OpCode` in `System.Reflection.Primitives, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Reflection.Emit.OpCode` in `System.Reflection.Primitives, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct OpCode : System.IEquatable<System.Reflection.Emit.OpCode>
             {
                 public static bool operator !=(System.Reflection.Emit.OpCode a, System.Reflection.Emit.OpCode b) => throw null;
@@ -40,18 +40,18 @@ namespace System
                 public System.Int16 Value { get => throw null; }
             }
 
-            // Generated from `System.Reflection.Emit.OpCodeType` in `System.Reflection.Primitives, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum OpCodeType
+            // Generated from `System.Reflection.Emit.OpCodeType` in `System.Reflection.Primitives, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            public enum OpCodeType : int
             {
-                Annotation,
-                Macro,
-                Nternal,
-                Objmodel,
-                Prefix,
-                Primitive,
+                Annotation = 0,
+                Macro = 1,
+                Nternal = 2,
+                Objmodel = 3,
+                Prefix = 4,
+                Primitive = 5,
             }
 
-            // Generated from `System.Reflection.Emit.OpCodes` in `System.Reflection.Primitives, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Reflection.Emit.OpCodes` in `System.Reflection.Primitives, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class OpCodes
             {
                 public static System.Reflection.Emit.OpCode Add;
@@ -283,75 +283,75 @@ namespace System
                 public static System.Reflection.Emit.OpCode Xor;
             }
 
-            // Generated from `System.Reflection.Emit.OperandType` in `System.Reflection.Primitives, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum OperandType
+            // Generated from `System.Reflection.Emit.OperandType` in `System.Reflection.Primitives, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            public enum OperandType : int
             {
-                InlineBrTarget,
-                InlineField,
-                InlineI,
-                InlineI8,
-                InlineMethod,
-                InlineNone,
-                InlinePhi,
-                InlineR,
-                InlineSig,
-                InlineString,
-                InlineSwitch,
-                InlineTok,
-                InlineType,
-                InlineVar,
-                ShortInlineBrTarget,
-                ShortInlineI,
-                ShortInlineR,
-                ShortInlineVar,
+                InlineBrTarget = 0,
+                InlineField = 1,
+                InlineI = 2,
+                InlineI8 = 3,
+                InlineMethod = 4,
+                InlineNone = 5,
+                InlinePhi = 6,
+                InlineR = 7,
+                InlineSig = 9,
+                InlineString = 10,
+                InlineSwitch = 11,
+                InlineTok = 12,
+                InlineType = 13,
+                InlineVar = 14,
+                ShortInlineBrTarget = 15,
+                ShortInlineI = 16,
+                ShortInlineR = 17,
+                ShortInlineVar = 18,
             }
 
-            // Generated from `System.Reflection.Emit.PackingSize` in `System.Reflection.Primitives, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum PackingSize
+            // Generated from `System.Reflection.Emit.PackingSize` in `System.Reflection.Primitives, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            public enum PackingSize : int
             {
-                Size1,
-                Size128,
-                Size16,
-                Size2,
-                Size32,
-                Size4,
-                Size64,
-                Size8,
-                Unspecified,
+                Size1 = 1,
+                Size128 = 128,
+                Size16 = 16,
+                Size2 = 2,
+                Size32 = 32,
+                Size4 = 4,
+                Size64 = 64,
+                Size8 = 8,
+                Unspecified = 0,
             }
 
-            // Generated from `System.Reflection.Emit.StackBehaviour` in `System.Reflection.Primitives, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum StackBehaviour
+            // Generated from `System.Reflection.Emit.StackBehaviour` in `System.Reflection.Primitives, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            public enum StackBehaviour : int
             {
-                Pop0,
-                Pop1,
-                Pop1_pop1,
-                Popi,
-                Popi_pop1,
-                Popi_popi,
-                Popi_popi8,
-                Popi_popi_popi,
-                Popi_popr4,
-                Popi_popr8,
-                Popref,
-                Popref_pop1,
-                Popref_popi,
-                Popref_popi_pop1,
-                Popref_popi_popi,
-                Popref_popi_popi8,
-                Popref_popi_popr4,
-                Popref_popi_popr8,
-                Popref_popi_popref,
-                Push0,
-                Push1,
-                Push1_push1,
-                Pushi,
-                Pushi8,
-                Pushr4,
-                Pushr8,
-                Pushref,
-                Varpop,
-                Varpush,
+                Pop0 = 0,
+                Pop1 = 1,
+                Pop1_pop1 = 2,
+                Popi = 3,
+                Popi_pop1 = 4,
+                Popi_popi = 5,
+                Popi_popi8 = 6,
+                Popi_popi_popi = 7,
+                Popi_popr4 = 8,
+                Popi_popr8 = 9,
+                Popref = 10,
+                Popref_pop1 = 11,
+                Popref_popi = 12,
+                Popref_popi_pop1 = 28,
+                Popref_popi_popi = 13,
+                Popref_popi_popi8 = 14,
+                Popref_popi_popr4 = 15,
+                Popref_popi_popr8 = 16,
+                Popref_popi_popref = 17,
+                Push0 = 18,
+                Push1 = 19,
+                Push1_push1 = 20,
+                Pushi = 21,
+                Pushi8 = 22,
+                Pushr4 = 23,
+                Pushr8 = 24,
+                Pushref = 25,
+                Varpop = 26,
+                Varpush = 27,
             }
 
         }
