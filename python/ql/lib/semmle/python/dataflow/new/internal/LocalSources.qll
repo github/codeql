@@ -104,7 +104,7 @@ class LocalSourceNode extends Node {
   /**
    * Gets a subscript of this node.
    */
-  CfgNode getASubscript() { Cached::subscript(this, result) }
+  Node getASubscript() { Cached::subscript(this, result) }
 
   /**
    * Gets a call to the method `methodName` on this node.
