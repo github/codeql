@@ -291,9 +291,9 @@ module ActionView {
     }
 
     /**
-     * `ActionView::Helpers::TagHelper#tag`.
+     * `ActionView::Helpers::TagHelper#content_tag`.
      *
-     * `tag(x, x, y, false)`.
+     * `content_tag(x, x, y, false)`.
      */
     private class ContentTag extends ActionViewContextCall, RawHelperCall {
       ContentTag() {
