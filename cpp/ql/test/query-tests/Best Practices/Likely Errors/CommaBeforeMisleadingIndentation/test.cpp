@@ -15,7 +15,24 @@ struct X {
 
 #define BAZ //printf
 
-int test(int i, int j, int (*foo)(int), int (*bar)(int, int))
+struct Foo {
+	int i;
+	int j;
+	virtual int foo(int) = 0;
+	virtual int bar(int, int) = 0;
+	int test(int (*baz)(int));
+
+	struct Tata {
+		struct Titi {
+			void tutu() {}
+			long toto() { return 42; }
+		} titi;
+	} *tata;
+
+	Tata::Titi **titi_ptr_ptr;
+};
+
+int Foo::test(int (*baz)(int))
 {
 	// Comma in simple if statement (prototypical example):
 
@@ -123,9 +140,13 @@ int test(int i, int j, int (*foo)(int), int (*bar)(int, int))
 
 	// LHS ends on same line RHS begins on:
 
-	int k = (foo(
+	int k1 = (foo(
 		i++
-	), j++); // GOOD?
+	), j++); // GOOD? [FALSE POSITIVE]
+
+	int k2 = (baz(
+		i++
+	), j++); // GOOD when it's a function-pointer call!?
 
 	// Weird cases:
 
@@ -135,16 +156,12 @@ int test(int i, int j, int (*foo)(int), int (*bar)(int, int))
 			? 1
 			: 2;
 
-	struct {
-		struct {
-			void tutu() {}
-			long toto() { return 42; }
-		} titi;
-	} *tata;
-
     int quux =
       (tata->titi.tutu(),
        foo(tata->titi.toto())); // GOOD
+
+	(*titi_ptr_ptr)->tutu(), // GOOD
+	(&i)[0] += (int)(*titi_ptr_ptr)->toto();
 
 	return quux;
 }

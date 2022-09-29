@@ -13,10 +13,10 @@ import semmle.code.cpp.commons.Exclusions
 
 /** Gets the sub-expression of 'e' with the earliest-starting Location */
 Expr normalizeExpr(Expr e) {
-  if exists(e.(Call).getQualifier())
+  if forex(Expr q | q = e.(Call).getQualifier() | not q instanceof ThisExpr)
   then result = normalizeExpr(e.(Call).getQualifier())
   else
-    if exists(e.(FieldAccess).getQualifier())
+    if forex(Expr q | q = e.(FieldAccess).getQualifier() | not q instanceof ThisExpr)
     then result = normalizeExpr(e.(FieldAccess).getQualifier())
     else
       if e.hasExplicitConversion()
