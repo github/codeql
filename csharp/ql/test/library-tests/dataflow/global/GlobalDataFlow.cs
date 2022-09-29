@@ -552,6 +552,14 @@ public class DataFlow
         TaintField(sc!);
         Check(sc.field);
     }
+
+    public void M11()
+    {
+        SimpleClass y = null;
+        var x = new SimpleClass();
+        TaintField(y = x);
+        Check(x.field);
+    }
 }
 
 static class IEnumerableExtensions
