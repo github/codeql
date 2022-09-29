@@ -2842,25 +2842,14 @@ private module StdlibPrivate {
     override string getName() { result = "re." + method }
   }
 
-  /** Helper module for tracking compiled regexes. */
-  private module CompiledRegexes {
-    private DataFlow::TypeTrackingNode compiledRegex(DataFlow::TypeTracker t, DataFlow::Node regex) {
-      t.start() and
-      result = API::moduleImport("re").getMember("compile").getACall() and
-      regex in [
-          result.(DataFlow::CallCfgNode).getArg(0),
-          result.(DataFlow::CallCfgNode).getArgByName("pattern")
-        ]
-      or
-      exists(DataFlow::TypeTracker t2 | result = compiledRegex(t2, regex).track(t2, t))
-    }
-
-    DataFlow::Node compiledRegex(DataFlow::Node regex) {
-      compiledRegex(DataFlow::TypeTracker::end(), regex).flowsTo(result)
-    }
+  API::Node compiledRegex(API::Node regex) {
+    exists(API::CallNode compilation |
+      compilation = API::moduleImport("re").getMember("compile").getACall()
+    |
+      result = compilation.getReturn() and
+      regex = compilation.getParameter(0, "pattern")
+    )
   }
-
-  private import CompiledRegexes
 
   /**
    * A call on compiled regular expression (obtained via `re.compile`) executing a
@@ -2886,7 +2875,11 @@ private module StdlibPrivate {
     DataFlow::Node regexNode;
     RegexExecutionMethod method;
 
-    CompiledRegexExecution() { this.calls(compiledRegex(regexNode), method) }
+    CompiledRegexExecution() {
+      exists(API::Node regex | regexNode = regex.asSink() |
+        this.calls(compiledRegex(regex).getAValueReachableFromSource(), method)
+      )
+    }
 
     override DataFlow::Node getRegex() { result = regexNode }
 
