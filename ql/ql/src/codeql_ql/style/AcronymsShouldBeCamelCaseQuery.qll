@@ -37,6 +37,7 @@ predicate shouldBePascalCased(string name, AstNode node, string kind) {
   not node.hasAnnotation("deprecated") and
   // allowed upper-case acronyms.
   not name.regexpMatch(".*(PEP|AES|DES|EOF).*") and
+  not name = "getURL" and // getURL is a language feature
   not (name.regexpMatch("T[A-Z]{3}[^A-Z].*") and node instanceof NewTypeBranch) and
   not (name.regexpMatch("T[A-Z]{3}[^A-Z].*") and node instanceof NewType) and
   not name.toUpperCase() = name // We are OK with fully-uppercase names.

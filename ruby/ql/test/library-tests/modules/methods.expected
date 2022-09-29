@@ -22,7 +22,7 @@ getMethod
 | calls.rb:112:1:115:3 | Object | optional_arg | calls.rb:76:1:79:3 | optional_arg |
 | calls.rb:112:1:115:3 | Object | pattern_dispatch | calls.rb:340:1:356:3 | pattern_dispatch |
 | calls.rb:112:1:115:3 | Object | private_on_main | calls.rb:182:1:183:3 | private_on_main |
-| calls.rb:112:1:115:3 | Object | private_on_main | private.rb:31:1:32:3 | private_on_main |
+| calls.rb:112:1:115:3 | Object | private_on_main | private.rb:51:1:52:3 | private_on_main |
 | calls.rb:117:1:120:3 | Hash | [] | calls.rb:119:5:119:31 | [] |
 | calls.rb:122:1:135:3 | Array | [] | calls.rb:124:3:124:29 | [] |
 | calls.rb:122:1:135:3 | Array | foreach | calls.rb:128:3:134:5 | foreach |
@@ -49,20 +49,24 @@ getMethod
 | modules.rb:5:3:14:5 | Foo::Bar | method_in_foo_bar | modules.rb:9:5:10:7 | method_in_foo_bar |
 | modules.rb:37:1:46:3 | Bar | method_a | modules.rb:38:3:39:5 | method_a |
 | modules.rb:37:1:46:3 | Bar | method_b | modules.rb:41:3:42:5 | method_b |
-| private.rb:1:1:29:3 | E | private1 | private.rb:2:11:3:5 | private1 |
-| private.rb:1:1:29:3 | E | private2 | private.rb:8:3:9:5 | private2 |
-| private.rb:1:1:29:3 | E | private3 | private.rb:14:3:15:5 | private3 |
-| private.rb:1:1:29:3 | E | private4 | private.rb:17:3:18:5 | private4 |
-| private.rb:1:1:29:3 | E | public | private.rb:5:3:6:5 | public |
-| private.rb:42:1:60:3 | F | private1 | private.rb:43:11:44:5 | private1 |
-| private.rb:42:1:60:3 | F | private2 | private.rb:49:3:50:5 | private2 |
-| private.rb:42:1:60:3 | F | private3 | private.rb:55:3:56:5 | private3 |
-| private.rb:42:1:60:3 | F | private4 | private.rb:58:3:59:5 | private4 |
-| private.rb:42:1:60:3 | F | public | private.rb:46:3:47:5 | public |
-| private.rb:62:1:74:3 | PrivateOverride1 | call_m1 | private.rb:71:3:73:5 | call_m1 |
-| private.rb:62:1:74:3 | PrivateOverride1 | m1 | private.rb:63:11:65:5 | m1 |
-| private.rb:62:1:74:3 | PrivateOverride1 | m2 | private.rb:67:11:69:5 | m2 |
-| private.rb:76:1:82:3 | PrivateOverride2 | m1 | private.rb:77:11:81:5 | m1 |
+| private.rb:1:1:49:3 | E | private1 | private.rb:2:11:3:5 | private1 |
+| private.rb:1:1:49:3 | E | private2 | private.rb:8:3:9:5 | private2 |
+| private.rb:1:1:49:3 | E | private3 | private.rb:14:3:15:5 | private3 |
+| private.rb:1:1:49:3 | E | private4 | private.rb:17:3:18:5 | private4 |
+| private.rb:1:1:49:3 | E | private7 | private.rb:41:3:42:5 | private7 |
+| private.rb:1:1:49:3 | E | private8 | private.rb:47:3:48:5 | private8 |
+| private.rb:1:1:49:3 | E | protected1 | private.rb:32:3:33:5 | protected1 |
+| private.rb:1:1:49:3 | E | protected2 | private.rb:35:3:36:5 | protected2 |
+| private.rb:1:1:49:3 | E | public | private.rb:5:3:6:5 | public |
+| private.rb:62:1:80:3 | F | private1 | private.rb:63:11:64:5 | private1 |
+| private.rb:62:1:80:3 | F | private2 | private.rb:69:3:70:5 | private2 |
+| private.rb:62:1:80:3 | F | private3 | private.rb:75:3:76:5 | private3 |
+| private.rb:62:1:80:3 | F | private4 | private.rb:78:3:79:5 | private4 |
+| private.rb:62:1:80:3 | F | public | private.rb:66:3:67:5 | public |
+| private.rb:82:1:94:3 | PrivateOverride1 | call_m1 | private.rb:91:3:93:5 | call_m1 |
+| private.rb:82:1:94:3 | PrivateOverride1 | m1 | private.rb:83:11:85:5 | m1 |
+| private.rb:82:1:94:3 | PrivateOverride1 | m2 | private.rb:87:11:89:5 | m2 |
+| private.rb:96:1:102:3 | PrivateOverride2 | m1 | private.rb:97:11:101:5 | m1 |
 lookupMethod
 | calls.rb:21:1:34:3 | M | instance_m | calls.rb:22:5:24:7 | instance_m |
 | calls.rb:43:1:58:3 | C | add_singleton | calls.rb:364:1:368:3 | add_singleton |
@@ -148,7 +152,7 @@ lookupMethod
 | calls.rb:112:1:115:3 | Object | optional_arg | calls.rb:76:1:79:3 | optional_arg |
 | calls.rb:112:1:115:3 | Object | pattern_dispatch | calls.rb:340:1:356:3 | pattern_dispatch |
 | calls.rb:112:1:115:3 | Object | private_on_main | calls.rb:182:1:183:3 | private_on_main |
-| calls.rb:112:1:115:3 | Object | private_on_main | private.rb:31:1:32:3 | private_on_main |
+| calls.rb:112:1:115:3 | Object | private_on_main | private.rb:51:1:52:3 | private_on_main |
 | calls.rb:112:1:115:3 | Object | puts | calls.rb:102:5:102:30 | puts |
 | calls.rb:112:1:115:3 | Object | to_s | calls.rb:169:5:170:7 | to_s |
 | calls.rb:117:1:120:3 | Hash | [] | calls.rb:119:5:119:31 | [] |
@@ -430,34 +434,38 @@ lookupMethod
 | modules_rec.rb:4:1:5:3 | A::B | new | calls.rb:114:5:114:16 | new |
 | modules_rec.rb:4:1:5:3 | A::B | puts | calls.rb:102:5:102:30 | puts |
 | modules_rec.rb:4:1:5:3 | A::B | to_s | calls.rb:169:5:170:7 | to_s |
-| private.rb:1:1:29:3 | E | new | calls.rb:114:5:114:16 | new |
-| private.rb:1:1:29:3 | E | private1 | private.rb:2:11:3:5 | private1 |
-| private.rb:1:1:29:3 | E | private2 | private.rb:8:3:9:5 | private2 |
-| private.rb:1:1:29:3 | E | private3 | private.rb:14:3:15:5 | private3 |
-| private.rb:1:1:29:3 | E | private4 | private.rb:17:3:18:5 | private4 |
-| private.rb:1:1:29:3 | E | private_on_main | private.rb:31:1:32:3 | private_on_main |
-| private.rb:1:1:29:3 | E | public | private.rb:5:3:6:5 | public |
-| private.rb:1:1:29:3 | E | puts | calls.rb:102:5:102:30 | puts |
-| private.rb:1:1:29:3 | E | to_s | calls.rb:169:5:170:7 | to_s |
-| private.rb:42:1:60:3 | F | private1 | private.rb:43:11:44:5 | private1 |
-| private.rb:42:1:60:3 | F | private2 | private.rb:49:3:50:5 | private2 |
-| private.rb:42:1:60:3 | F | private3 | private.rb:55:3:56:5 | private3 |
-| private.rb:42:1:60:3 | F | private4 | private.rb:58:3:59:5 | private4 |
-| private.rb:42:1:60:3 | F | public | private.rb:46:3:47:5 | public |
-| private.rb:62:1:74:3 | PrivateOverride1 | call_m1 | private.rb:71:3:73:5 | call_m1 |
-| private.rb:62:1:74:3 | PrivateOverride1 | m1 | private.rb:63:11:65:5 | m1 |
-| private.rb:62:1:74:3 | PrivateOverride1 | m2 | private.rb:67:11:69:5 | m2 |
-| private.rb:62:1:74:3 | PrivateOverride1 | new | calls.rb:114:5:114:16 | new |
-| private.rb:62:1:74:3 | PrivateOverride1 | private_on_main | private.rb:31:1:32:3 | private_on_main |
-| private.rb:62:1:74:3 | PrivateOverride1 | puts | calls.rb:102:5:102:30 | puts |
-| private.rb:62:1:74:3 | PrivateOverride1 | to_s | calls.rb:169:5:170:7 | to_s |
-| private.rb:76:1:82:3 | PrivateOverride2 | call_m1 | private.rb:71:3:73:5 | call_m1 |
-| private.rb:76:1:82:3 | PrivateOverride2 | m1 | private.rb:77:11:81:5 | m1 |
-| private.rb:76:1:82:3 | PrivateOverride2 | m2 | private.rb:67:11:69:5 | m2 |
-| private.rb:76:1:82:3 | PrivateOverride2 | new | calls.rb:114:5:114:16 | new |
-| private.rb:76:1:82:3 | PrivateOverride2 | private_on_main | private.rb:31:1:32:3 | private_on_main |
-| private.rb:76:1:82:3 | PrivateOverride2 | puts | calls.rb:102:5:102:30 | puts |
-| private.rb:76:1:82:3 | PrivateOverride2 | to_s | calls.rb:169:5:170:7 | to_s |
+| private.rb:1:1:49:3 | E | new | calls.rb:114:5:114:16 | new |
+| private.rb:1:1:49:3 | E | private1 | private.rb:2:11:3:5 | private1 |
+| private.rb:1:1:49:3 | E | private2 | private.rb:8:3:9:5 | private2 |
+| private.rb:1:1:49:3 | E | private3 | private.rb:14:3:15:5 | private3 |
+| private.rb:1:1:49:3 | E | private4 | private.rb:17:3:18:5 | private4 |
+| private.rb:1:1:49:3 | E | private7 | private.rb:41:3:42:5 | private7 |
+| private.rb:1:1:49:3 | E | private8 | private.rb:47:3:48:5 | private8 |
+| private.rb:1:1:49:3 | E | private_on_main | private.rb:51:1:52:3 | private_on_main |
+| private.rb:1:1:49:3 | E | protected1 | private.rb:32:3:33:5 | protected1 |
+| private.rb:1:1:49:3 | E | protected2 | private.rb:35:3:36:5 | protected2 |
+| private.rb:1:1:49:3 | E | public | private.rb:5:3:6:5 | public |
+| private.rb:1:1:49:3 | E | puts | calls.rb:102:5:102:30 | puts |
+| private.rb:1:1:49:3 | E | to_s | calls.rb:169:5:170:7 | to_s |
+| private.rb:62:1:80:3 | F | private1 | private.rb:63:11:64:5 | private1 |
+| private.rb:62:1:80:3 | F | private2 | private.rb:69:3:70:5 | private2 |
+| private.rb:62:1:80:3 | F | private3 | private.rb:75:3:76:5 | private3 |
+| private.rb:62:1:80:3 | F | private4 | private.rb:78:3:79:5 | private4 |
+| private.rb:62:1:80:3 | F | public | private.rb:66:3:67:5 | public |
+| private.rb:82:1:94:3 | PrivateOverride1 | call_m1 | private.rb:91:3:93:5 | call_m1 |
+| private.rb:82:1:94:3 | PrivateOverride1 | m1 | private.rb:83:11:85:5 | m1 |
+| private.rb:82:1:94:3 | PrivateOverride1 | m2 | private.rb:87:11:89:5 | m2 |
+| private.rb:82:1:94:3 | PrivateOverride1 | new | calls.rb:114:5:114:16 | new |
+| private.rb:82:1:94:3 | PrivateOverride1 | private_on_main | private.rb:51:1:52:3 | private_on_main |
+| private.rb:82:1:94:3 | PrivateOverride1 | puts | calls.rb:102:5:102:30 | puts |
+| private.rb:82:1:94:3 | PrivateOverride1 | to_s | calls.rb:169:5:170:7 | to_s |
+| private.rb:96:1:102:3 | PrivateOverride2 | call_m1 | private.rb:91:3:93:5 | call_m1 |
+| private.rb:96:1:102:3 | PrivateOverride2 | m1 | private.rb:97:11:101:5 | m1 |
+| private.rb:96:1:102:3 | PrivateOverride2 | m2 | private.rb:87:11:89:5 | m2 |
+| private.rb:96:1:102:3 | PrivateOverride2 | new | calls.rb:114:5:114:16 | new |
+| private.rb:96:1:102:3 | PrivateOverride2 | private_on_main | private.rb:51:1:52:3 | private_on_main |
+| private.rb:96:1:102:3 | PrivateOverride2 | puts | calls.rb:102:5:102:30 | puts |
+| private.rb:96:1:102:3 | PrivateOverride2 | to_s | calls.rb:169:5:170:7 | to_s |
 enclosingMethod
 | calls.rb:2:5:2:14 | call to puts | calls.rb:1:1:3:3 | foo |
 | calls.rb:2:5:2:14 | self | calls.rb:1:1:3:3 | foo |
@@ -781,22 +789,22 @@ enclosingMethod
 | hello.rb:20:30:20:34 | self | hello.rb:19:5:21:7 | message |
 | hello.rb:20:38:20:40 | "!" | hello.rb:19:5:21:7 | message |
 | hello.rb:20:39:20:39 | ! | hello.rb:19:5:21:7 | message |
-| private.rb:64:7:64:32 | call to puts | private.rb:63:11:65:5 | m1 |
-| private.rb:64:7:64:32 | self | private.rb:63:11:65:5 | m1 |
-| private.rb:64:12:64:32 | "PrivateOverride1#m1" | private.rb:63:11:65:5 | m1 |
-| private.rb:64:13:64:31 | PrivateOverride1#m1 | private.rb:63:11:65:5 | m1 |
-| private.rb:68:7:68:32 | call to puts | private.rb:67:11:69:5 | m2 |
-| private.rb:68:7:68:32 | self | private.rb:67:11:69:5 | m2 |
-| private.rb:68:12:68:32 | "PrivateOverride1#m2" | private.rb:67:11:69:5 | m2 |
-| private.rb:68:13:68:31 | PrivateOverride1#m2 | private.rb:67:11:69:5 | m2 |
-| private.rb:72:7:72:8 | call to m1 | private.rb:71:3:73:5 | call_m1 |
-| private.rb:72:7:72:8 | self | private.rb:71:3:73:5 | call_m1 |
-| private.rb:78:7:78:32 | call to puts | private.rb:77:11:81:5 | m1 |
-| private.rb:78:7:78:32 | self | private.rb:77:11:81:5 | m1 |
-| private.rb:78:12:78:32 | "PrivateOverride2#m1" | private.rb:77:11:81:5 | m1 |
-| private.rb:78:13:78:31 | PrivateOverride2#m1 | private.rb:77:11:81:5 | m1 |
-| private.rb:79:7:79:8 | call to m2 | private.rb:77:11:81:5 | m1 |
-| private.rb:79:7:79:8 | self | private.rb:77:11:81:5 | m1 |
-| private.rb:80:7:80:22 | PrivateOverride1 | private.rb:77:11:81:5 | m1 |
-| private.rb:80:7:80:26 | call to new | private.rb:77:11:81:5 | m1 |
-| private.rb:80:7:80:29 | call to m1 | private.rb:77:11:81:5 | m1 |
+| private.rb:84:7:84:32 | call to puts | private.rb:83:11:85:5 | m1 |
+| private.rb:84:7:84:32 | self | private.rb:83:11:85:5 | m1 |
+| private.rb:84:12:84:32 | "PrivateOverride1#m1" | private.rb:83:11:85:5 | m1 |
+| private.rb:84:13:84:31 | PrivateOverride1#m1 | private.rb:83:11:85:5 | m1 |
+| private.rb:88:7:88:32 | call to puts | private.rb:87:11:89:5 | m2 |
+| private.rb:88:7:88:32 | self | private.rb:87:11:89:5 | m2 |
+| private.rb:88:12:88:32 | "PrivateOverride1#m2" | private.rb:87:11:89:5 | m2 |
+| private.rb:88:13:88:31 | PrivateOverride1#m2 | private.rb:87:11:89:5 | m2 |
+| private.rb:92:7:92:8 | call to m1 | private.rb:91:3:93:5 | call_m1 |
+| private.rb:92:7:92:8 | self | private.rb:91:3:93:5 | call_m1 |
+| private.rb:98:7:98:32 | call to puts | private.rb:97:11:101:5 | m1 |
+| private.rb:98:7:98:32 | self | private.rb:97:11:101:5 | m1 |
+| private.rb:98:12:98:32 | "PrivateOverride2#m1" | private.rb:97:11:101:5 | m1 |
+| private.rb:98:13:98:31 | PrivateOverride2#m1 | private.rb:97:11:101:5 | m1 |
+| private.rb:99:7:99:8 | call to m2 | private.rb:97:11:101:5 | m1 |
+| private.rb:99:7:99:8 | self | private.rb:97:11:101:5 | m1 |
+| private.rb:100:7:100:22 | PrivateOverride1 | private.rb:97:11:101:5 | m1 |
+| private.rb:100:7:100:26 | call to new | private.rb:97:11:101:5 | m1 |
+| private.rb:100:7:100:29 | call to m1 | private.rb:97:11:101:5 | m1 |

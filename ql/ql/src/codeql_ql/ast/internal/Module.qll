@@ -389,6 +389,7 @@ module ModConsistency {
     ) >= 2 and
     // paramerized modules are not treated nicely, so we ignore them here.
     not i.getResolvedModule().getEnclosing*().asModule().hasParameter(_, _, _) and
+    not i.getResolvedModule().asModule().hasAnnotation("signature") and
     not i.getLocation()
         .getFile()
         .getAbsolutePath()

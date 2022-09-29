@@ -3,6 +3,7 @@
  */
 
 import codeql.ruby.AST
+import codeql.ruby.ApiGraphs
 import codeql.ruby.dataflow.FlowSummary
 import codeql.ruby.TaintTracking
 import codeql.ruby.dataflow.internal.FlowSummaryImpl
@@ -111,6 +112,12 @@ private class TypeFromCodeQL extends ModelInput::TypeModel {
     package = "test" and
     type = "FooOrBar" and
     result.asExpr().getExpr().getConstantValue().getString() = "magic_string"
+  }
+
+  override API::Node getAnApiNode(string package, string type) {
+    package = "test" and
+    type = "FooOrBar" and
+    result = API::getTopLevelMember("Alias").getMember(["Foo", "Bar"])
   }
 }
 

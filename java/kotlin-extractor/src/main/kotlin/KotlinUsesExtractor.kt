@@ -308,15 +308,30 @@ open class KotlinUsesExtractor(
             c.hasEqualFqName(FqName("java.lang.Object")))
             return c
         return globalExtensionState.syntheticToRealClassMap.getOrPut(c) {
-            val result = c.fqNameWhenAvailable?.let {
-                pluginContext.referenceClass(it)?.owner
+            val qualifiedName = c.fqNameWhenAvailable
+            if (qualifiedName == null) {
+                logger.warn("Failed to replace synthetic class ${c.name} because it has no fully qualified name")
+                return@getOrPut null
             }
-            if (result == null) {
-                logger.warn("Failed to replace synthetic class ${c.name}")
-            } else {
+
+            val result = pluginContext.referenceClass(qualifiedName)?.owner
+            if (result != null) {
                 logger.info("Replaced synthetic class ${c.name} with its real equivalent")
+                return@getOrPut result
             }
-            result
+
+            // The above doesn't work for (some) generated nested classes, such as R$id, which should be R.id
+            val fqn = qualifiedName.asString()
+            if (fqn.indexOf('$') >= 0) {
+                val nested = pluginContext.referenceClass(FqName(fqn.replace('$', '.')))?.owner
+                if (nested != null) {
+                    logger.info("Replaced synthetic nested class ${c.name} with its real equivalent")
+                    return@getOrPut nested
+                }
+            }
+
+            logger.warn("Failed to replace synthetic class ${c.name}")
+            return@getOrPut null
         } ?: c
     }
 
@@ -351,9 +366,8 @@ open class KotlinUsesExtractor(
         if (replacementClass === parentClass)
             return f
         return globalExtensionState.syntheticToRealFieldMap.getOrPut(f) {
-            val result = replacementClass.declarations.findSubType<IrField> { replacementDecl ->
-                replacementDecl.name == f.name
-            }
+            val result = replacementClass.declarations.findSubType<IrField> { replacementDecl -> replacementDecl.name == f.name }
+                ?: replacementClass.declarations.findSubType<IrProperty> { it.backingField?.name == f.name}?.backingField
             if (result == null) {
                 logger.warn("Failed to replace synthetic class field ${f.name}")
             } else {

@@ -183,10 +183,10 @@ private.rb:
 #    1| E
 #-----|  -> Object
 
-#   42| F
+#   62| F
 
-#   62| PrivateOverride1
+#   82| PrivateOverride1
 #-----|  -> Object
 
-#   76| PrivateOverride2
+#   96| PrivateOverride2
 #-----|  -> PrivateOverride1
