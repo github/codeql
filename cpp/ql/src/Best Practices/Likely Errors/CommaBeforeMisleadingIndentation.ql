@@ -36,6 +36,14 @@ predicate isInDecltypeOrSizeof(CommaExpr ce) {
   ce.getParent*() = any(Decltype d).getExpr()
 }
 
+predicate isParenthesized(CommaExpr ce) {
+  isInLoopHead(ce)
+  or
+  isInDecltypeOrSizeof(ce)
+  or
+  ce.getParent*().(Expr).isParenthesised()
+}
+
 from CommaExpr ce, Expr left, Expr right, Location leftLoc, Location rightLoc
 where
   ce.fromSource() and
@@ -44,8 +52,7 @@ where
   right = normalizeExpr(ce.getRightOperand()) and
   leftLoc = left.getLocation() and
   rightLoc = right.getLocation() and
-  not isInLoopHead(ce) and // <- HACK to reduce FPs in loop heads; assumption: unlikely to be misread due to '(', ')' delimiters
-  not isInDecltypeOrSizeof(ce) and // <- Removes arguable FPs since, like function calls (and loop heads), these Exprs have clear delimiters.
+  not isParenthesized(ce) and
   leftLoc.getEndLine() < rightLoc.getStartLine() and
   leftLoc.getStartColumn() > rightLoc.getStartColumn()
 select right, "The indentation level may be misleading (for some tab sizes)."

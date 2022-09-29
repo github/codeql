@@ -44,6 +44,9 @@ int Foo::test(int (*baz)(int))
 		(void)i,	// BAD
 	(void)j;
 
+	if (1) FOO(i),
+	(void)x.foo(j); // BAD
+
 	// Parenthesized comma (borderline example):
 
 	foo(i++), j++;   // GOOD
@@ -51,28 +54,36 @@ int Foo::test(int (*baz)(int))
 	(foo(i++),       // GOOD
 	 j++);
 	(foo(i++),
-	j++);            // BAD (?)
+	 foo(i++),
+	j++,             // GOOD (?) -- Currently explicitly excluded
+	j++);
 
 	x.foo(i++), j++;   // GOOD
 	(x.foo(i++), j++); // GOOD
 	(x.foo(i++),       // GOOD
 	 j++);
 	(x.foo(i++),
-	j++);              // BAD (?)
+	 x.foo(i++),
+	j++,               // GOOD (?) -- Currently explicitly excluded
+	j++);
 
 	FOO(i++), j++;   // GOOD
 	(FOO(i++), j++); // GOOD
 	(FOO(i++),       // GOOD
 	 j++);
 	(FOO(i++),
-	j++);            // BAD (?)
+	 FOO(i++),
+	j++,             // GOOD (?) -- Currently explicitly excluded
+	j++);
 
 	(void)(i++), j++;   // GOOD
 	((void)(i++), j++); // GOOD
 	((void)(i++),       // GOOD
 	 j++);
 	((void)(i++),
-	j++);               // BAD (?)
+	 (void)(i++),
+	j++,                // GOOD (?) -- Currently explicitly excluded
+	j++);
 
 	// Comma in argument list doesn't count:
 
@@ -102,7 +113,7 @@ int Foo::test(int (*baz)(int))
 				j++);
 
 	BAZ("%d %d\n", i,
-		j); // GOOD [FALSE POSITIVE] -- but can only be excluded by excluding all parenthesized commas (which sounds like a good idea actually)
+		j); // GOOD -- Currently explicitly excluded
 
 	// Comma in loops
 
@@ -128,10 +139,10 @@ int Foo::test(int (*baz)(int))
 
     // Mixed tabs and spaces (ugly case):
 
-    for (i = 0,         // GOOD if tab >= 4 spaces else BAD -- can't exclude w/o source code text :/
+    for (i = 0,         // GOOD if tab >= 4 spaces else BAD -- Currently ignoring loop heads.
 		 j = 0;
 		 i + j < 10;
-         i++,           // GOOD if tab >= 4 spaces else BAD -- can't exclude w/o source code text :/
+         i++,           // GOOD if tab >= 4 spaces else BAD -- Currently ignoring loop heads.
 		 j++);
 
 	if (i)
@@ -140,13 +151,13 @@ int Foo::test(int (*baz)(int))
 
 	// LHS ends on same line RHS begins on:
 
-	int k1 = (foo(
+	if (1) foo(
 		i++
-	), j++); // GOOD? [FALSE POSITIVE]
+	), j++; // GOOD? [FALSE POSITIVE]
 
-	int k2 = (baz(
+	if (1) baz(
 		i++
-	), j++); // GOOD when it's a function-pointer call!?
+	), j++; // GOOD... when calling a function pointer..!?
 
 	// Weird cases:
 
