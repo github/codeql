@@ -314,15 +314,20 @@ private module Cached {
         exists(Module tp |
           instanceMethodCall(call, tp, method) and
           result = lookupMethod(tp, method) and
-          if result.(Method).isPrivate()
-          then
-            call.getReceiver().getExpr() instanceof SelfVariableAccess and
-            // For now, we restrict the scope of top-level declarations to their file.
-            // This may remove some plausible targets, but also removes a lot of
-            // implausible targets
-            if result.getEnclosingModule() instanceof Toplevel
-            then result.getFile() = call.getFile()
+          (
+            if result.(Method).isPrivate()
+            then
+              call.getReceiver().getExpr() instanceof SelfVariableAccess and
+              // For now, we restrict the scope of top-level declarations to their file.
+              // This may remove some plausible targets, but also removes a lot of
+              // implausible targets
+              if result.getEnclosingModule() instanceof Toplevel
+              then result.getFile() = call.getFile()
+              else any()
             else any()
+          ) and
+          if result.(Method).isProtected()
+          then result = lookupMethod(call.getExpr().getEnclosingModule().getModule(), method)
           else any()
         )
         or

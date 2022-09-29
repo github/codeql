@@ -188,7 +188,6 @@ getTarget
 | calls.rb:494:9:494:28 | call to new | calls.rb:114:5:114:16 | new |
 | calls.rb:494:9:494:32 | call to foo | calls.rb:488:15:490:7 | foo |
 | calls.rb:498:1:498:20 | call to new | calls.rb:114:5:114:16 | new |
-| calls.rb:498:1:498:24 | call to foo | calls.rb:488:15:490:7 | foo |
 | calls.rb:499:1:499:20 | call to new | calls.rb:114:5:114:16 | new |
 | calls.rb:499:1:499:24 | call to bar | calls.rb:492:5:495:7 | bar |
 | hello.rb:12:5:12:24 | call to include | calls.rb:107:5:107:20 | include |
@@ -294,6 +293,7 @@ unresolvedCall
 | calls.rb:482:5:482:15 | call to extend |
 | calls.rb:485:1:485:31 | call to singleton |
 | calls.rb:488:5:490:7 | call to protected |
+| calls.rb:498:1:498:24 | call to foo |
 | hello.rb:20:16:20:26 | ... + ... |
 | hello.rb:20:16:20:34 | ... + ... |
 | hello.rb:20:16:20:40 | ... + ... |
