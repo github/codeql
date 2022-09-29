@@ -513,6 +513,15 @@ public class DataFlow
         TaintField(b2 ? (b3 ? y1 : y2) : y3);
         Check(y2.field);
     }
+
+    private class SubSimpleClass : SimpleClass { }
+
+    public void M7()
+    {
+        var x = new SubSimpleClass();
+        TaintField((SimpleClass)x);
+        Check(x.field);
+    }
 }
 
 static class IEnumerableExtensions
