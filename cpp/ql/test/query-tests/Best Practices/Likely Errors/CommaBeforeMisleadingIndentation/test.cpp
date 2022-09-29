@@ -41,6 +41,10 @@ int Foo::test(int (*baz)(int))
 		(void)j;
 
 	if (i)
+		this->foo(i),	// GOOD
+		foo(i);
+
+	if (i)
 		(void)i,	// BAD
 	(void)j;
 
