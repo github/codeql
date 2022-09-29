@@ -18,10 +18,11 @@ attributes, or define the general <code>android:permission</code> attribute.</p>
 </overview>
 
 <recommendation>
-  To prevent permission bypass, <code>provider</code> elements should either
+  <p>To prevent permission bypass, <code>provider</code> elements should either
   specify both the <code>android:readPermission</code>
   and <code>android:writePermission</code> attributes, or specify
   the <code>android:permission</code> attribute.
+  </p>
 </recommendation>
 
 <example>
