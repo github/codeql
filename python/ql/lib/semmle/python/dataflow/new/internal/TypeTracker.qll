@@ -12,8 +12,8 @@ private module Cached {
     LevelStep() or
     CallStep() or
     ReturnStep() or
-    StoreStep(TypeTrackerContent content) or
-    LoadStep(TypeTrackerContent content) or
+    StoreStep(TypeTrackerContent content) { basicStoreStep(_, _, content) } or
+    LoadStep(TypeTrackerContent content) { basicLoadStep(_, _, content) } or
     JumpStep()
 
   pragma[nomagic]
@@ -218,7 +218,18 @@ module StepSummary {
   }
 }
 
-private newtype TTypeTracker = MkTypeTracker(Boolean hasCall, OptionalTypeTrackerContent content)
+private newtype TTypeTracker =
+  MkTypeTracker(Boolean hasCall, OptionalTypeTrackerContent content) {
+    content = noContent()
+    or
+    // Restrict `content` to those that might eventually match a load.
+    // We can't rely on `basicStoreStep` since `startInContent` might be used with
+    // a content that has no corresponding store.
+    exists(TypeTrackerContent loadContents |
+      basicLoadStep(_, _, loadContents) and
+      compatibleContents(content, loadContents)
+    )
+  }
 
 /**
  * A summary of the steps needed to track a value to a given dataflow node.
@@ -372,7 +383,15 @@ module TypeTracker {
 }
 
 private newtype TTypeBackTracker =
-  MkTypeBackTracker(Boolean hasReturn, OptionalTypeTrackerContent content)
+  MkTypeBackTracker(Boolean hasReturn, OptionalTypeTrackerContent content) {
+    content = noContent()
+    or
+    // As in MkTypeTracker, restrict `content` to those that might eventually match a store.
+    exists(TypeTrackerContent storeContent |
+      basicStoreStep(_, _, storeContent) and
+      compatibleContents(storeContent, content)
+    )
+  }
 
 /**
  * A summary of the steps needed to back-track a use of a value to a given dataflow node.
