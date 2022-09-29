@@ -354,13 +354,7 @@ module Flask {
    * See https://flask.palletsprojects.com/en/1.1.x/api/#flask.Request
    */
   private class FlaskRequestSource extends RemoteFlowSource::Range {
-    FlaskRequestSource() {
-      this = request().getAValueReachableFromSource() and
-      not any(Import imp).contains(this.asExpr()) and
-      not exists(ControlFlowNode def | this.asVar().getSourceVariable().hasDefiningNode(def) |
-        any(Import imp).contains(def.getNode())
-      )
-    }
+    FlaskRequestSource() { this = request().asSource() }
 
     override string getSourceType() { result = "flask.request" }
   }
