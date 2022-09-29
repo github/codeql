@@ -1258,13 +1258,6 @@ open class KotlinUsesExtractor(
         return tw.lm.locallyVisibleFunctionLabelMapping[f]?.function
     }
 
-    // These are classes with Java equivalents, but whose methods don't all exist on those Java equivalents--
-    // for example, the numeric classes define arithmetic functions (Int.plus, Long.or and so on) that lower to
-    // primitive arithmetic on the JVM, but which we extract as calls to reflect the source syntax more closely.
-    private val expectedMissingEquivalents = setOf(
-        "kotlin.Boolean", "kotlin.Byte", "kotlin.Char", "kotlin.Double", "kotlin.Float", "kotlin.Int", "kotlin.Long", "kotlin.Number", "kotlin.Short"
-    )
-
     private fun kotlinFunctionToJavaEquivalent(f: IrFunction, noReplace: Boolean): IrFunction =
         if (noReplace)
             f
@@ -1272,17 +1265,12 @@ open class KotlinUsesExtractor(
             f.parentClassOrNull?.let { parentClass ->
                 getJavaEquivalentClass(parentClass)?.let { javaClass ->
                     if (javaClass != parentClass) {
-                        val jvmName = getJvmName(f) ?: f.name.asString()
+                        val jvmName = getFunctionShortName(f).nameInDB
                         // Look for an exact type match...
                         javaClass.declarations.findSubType<IrFunction> { decl ->
                             decl.name.asString() == jvmName &&
                             decl.valueParameters.size == f.valueParameters.size &&
                             decl.valueParameters.zip(f.valueParameters).all { p -> erase(p.first.type) == erase(p.second.type) }
-                        } ?:
-                        // Or if there is none, look for the only viable overload
-                        javaClass.declarations.singleOrNullSubType<IrFunction> { decl ->
-                            decl.name.asString() == jvmName &&
-                            decl.valueParameters.size == f.valueParameters.size
                         } ?:
                         // Or check property accessors:
                         (f.propertyIfAccessor as? IrProperty)?.let { kotlinProp ->
@@ -1296,9 +1284,7 @@ open class KotlinUsesExtractor(
                             else null
                         } ?: run {
                             val parentFqName = parentClass.fqNameWhenAvailable?.asString()
-                            if (!expectedMissingEquivalents.contains(parentFqName)) {
-                                logger.warn("Couldn't find a Java equivalent function to $parentFqName.${f.name} in ${javaClass.fqNameWhenAvailable}")
-                            }
+                            logger.warn("Couldn't find a Java equivalent function to $parentFqName.${f.name} in ${javaClass.fqNameWhenAvailable}")
                             null
                         }
                     }

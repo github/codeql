@@ -5,3 +5,20 @@ fun test2(s: String) = s.length
 fun remove(l: MutableList<Int>) {
     l.remove(5)
 }
+
+fun special(n: Number, m: Map<String, String>, s: String, l: MutableList<Int>) {
+    s[1]
+    s.get(1)
+    n.toDouble()
+    n.toByte()
+    n.toChar()
+    n.toFloat()
+    n.toInt()
+    n.toShort()
+    m.keys
+    m.values
+    m.entries
+    l.removeAt(1)
+    m.entries.first().key
+    m.entries.first().value
+}
