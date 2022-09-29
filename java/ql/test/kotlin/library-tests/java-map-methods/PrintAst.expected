@@ -63,3 +63,21 @@ test.kt:
 #    9|           0: [SubExpr] ... - ...
 #    9|             0: [VarAccess] i
 #    9|             1: [IntegerLiteral] 10
+#   11|     7: [Method] index
+#   11|       3: [TypeAccess] Unit
+#-----|       4: (Parameters)
+#   11|         0: [Parameter] s
+#   11|           0: [TypeAccess] String
+#   11|       5: [BlockStmt] { ... }
+#   12|         0: [ExprStmt] <Expr>;
+#   12|           0: [ImplicitCoercionToUnitExpr] <implicit coercion to unit>
+#   12|             0: [TypeAccess] Unit
+#   12|             1: [MethodAccess] charAt(...)
+#   12|               -1: [VarAccess] s
+#   12|               0: [IntegerLiteral] 1
+#   13|         1: [ExprStmt] <Expr>;
+#   13|           0: [ImplicitCoercionToUnitExpr] <implicit coercion to unit>
+#   13|             0: [TypeAccess] Unit
+#   13|             1: [MethodAccess] charAt(...)
+#   13|               -1: [VarAccess] s
+#   13|               0: [IntegerLiteral] 1
