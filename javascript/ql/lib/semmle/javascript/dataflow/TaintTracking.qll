@@ -716,9 +716,38 @@ module TaintTracking {
    */
   private class JsonStringifyTaintStep extends SharedTaintStep {
     override predicate serializeStep(DataFlow::Node pred, DataFlow::Node succ) {
-      exists(JsonStringifyCall call |
-        pred = call.getArgument(0) and
+      exists(JsonStringifyCall call, DataFlow::Node arg |
+        arg = call.getArgument(0) and
+        (
+          pred = arg or
+          findInObject(arg.asExpr(), pred.asExpr())
+        ) and
         succ = call
+      )
+    }
+
+    // find target in root object recursively
+    private predicate findInObject(Expr root, Expr target) {
+      // when root is Object
+      exists(ObjectExpr object, Property property, Expr propertyVal |
+        object = root and
+        property = object.getAProperty() and
+        propertyVal = property.getInit() and
+        (
+          target = property.getNameExpr() or
+          target = propertyVal or
+          findInObject(propertyVal, target)
+        )
+      )
+      or
+      // when root is Array
+      exists(ArrayExpr array, Expr child |
+        array = root and
+        child = array.getAChildExpr() and
+        (
+          target = child or
+          findInObject(child, target)
+        )
       )
     }
   }
