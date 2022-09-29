@@ -199,6 +199,7 @@ class TypeBasedFlowTargetApi extends Specific::TargetApiSpecific {
   TypeBasedFlowTargetApi() { Specific::isRelevantForTypeBasedFlowModels(this) }
 
   /**
+   * TODO: Update with Java examples instead.
    * Gets the string representation of all type based summaries for `this`
    * inspired by the Theorems for Free approach.
    *
