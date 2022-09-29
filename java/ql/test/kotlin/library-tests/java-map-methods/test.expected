@@ -1,4 +1,6 @@
 diagnostics
+| file://:0:0:0:0 | Couldn't find a Java equivalent function to kotlin.String.plus in java.lang.String |
 #select
 | Integer |
 | Object |
+| int |
