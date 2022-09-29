@@ -221,7 +221,7 @@ class GrantWriteUriPermissionFlag extends GrantUriPermissionFlag {
   GrantWriteUriPermissionFlag() { this.hasName("FLAG_GRANT_WRITE_URI_PERMISSION") }
 }
 
-/** The instantiation of an `android.content.Intent` instance. */
+/** An instantiation of `android.content.Intent`. */
 private class NewIntent extends ClassInstanceExpr {
   NewIntent() { this.getConstructedType() instanceof TypeIntent }
 
@@ -232,7 +232,7 @@ private class NewIntent extends ClassInstanceExpr {
   }
 }
 
-/** A call to a method that starts an Android component */
+/** A call to a method that starts an Android component. */
 private class StartComponentMethodAccess extends MethodAccess {
   StartComponentMethodAccess() {
     this.getMethod().overrides*(any(StartActivityMethod m)) or
