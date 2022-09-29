@@ -3,7 +3,8 @@
  * @description The expressions before and after the comma operator can be misread because of an unusual difference in start columns.
  * @kind problem
  * @id cpp/comma-before-misleading-indentation
- * @problem.severity recommendation
+ * @problem.severity warning
+ * @precision medium
  * @tags maintainability
  *       readability
  */
