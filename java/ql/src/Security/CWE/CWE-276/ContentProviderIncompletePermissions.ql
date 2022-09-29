@@ -18,5 +18,4 @@ where
   not provider.getFile().(AndroidManifestXmlFile).isInBuildDirectory() and
   provider.isExported() and
   provider.hasIncompletePermissions()
-select provider, "Exported provider $@ has incomplete permissions.", provider,
-  provider.getResolvedComponentName()
+select provider, "Exported provider has incomplete permissions."
