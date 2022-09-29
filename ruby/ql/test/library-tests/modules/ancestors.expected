@@ -97,6 +97,9 @@ calls.rb:
 
 #  477| ExtendSingletonMethod
 
+#  487| ProtectedMethods
+#-----| super -> Object
+
 hello.rb:
 #    1| EnglishWords
 

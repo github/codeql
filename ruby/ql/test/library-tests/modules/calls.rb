@@ -447,7 +447,7 @@ ConditionalInstanceMethods.new.m2
 ConditionalInstanceMethods.new.m3 # currently unable to resolve
 ConditionalInstanceMethods.new.m4 # currently unable to resolve
 ConditionalInstanceMethods.new.m5 # NoMethodError
-exit
+
 EsotericInstanceMethods = Class.new do
     [0,1,2].each do
         def foo
@@ -483,3 +483,17 @@ module ExtendSingletonMethod
 end
 
 ExtendSingletonMethod.singleton # currently unable to resolve
+
+class ProtectedMethods
+    protected def foo
+        puts "ProtectedMethods#foo"
+    end
+
+    def bar
+        foo
+        ProtectedMethods.new.foo
+    end
+end
+
+ProtectedMethods.new.foo # NoMethodError
+ProtectedMethods.new.bar

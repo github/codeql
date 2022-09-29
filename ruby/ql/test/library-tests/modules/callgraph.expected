@@ -172,11 +172,25 @@ getTarget
 | calls.rb:447:1:447:30 | call to new | calls.rb:114:5:114:16 | new |
 | calls.rb:448:1:448:30 | call to new | calls.rb:114:5:114:16 | new |
 | calls.rb:449:1:449:30 | call to new | calls.rb:114:5:114:16 | new |
+| calls.rb:451:27:469:3 | call to new | calls.rb:114:5:114:16 | new |
 | calls.rb:454:13:454:22 | call to puts | calls.rb:102:5:102:30 | puts |
 | calls.rb:458:5:462:7 | call to new | calls.rb:114:5:114:16 | new |
 | calls.rb:458:5:462:11 | call to new | calls.rb:114:5:114:16 | new |
 | calls.rb:460:13:460:22 | call to puts | calls.rb:102:5:102:30 | puts |
 | calls.rb:466:13:466:27 | call to puts | calls.rb:102:5:102:30 | puts |
+| calls.rb:471:1:471:27 | call to new | calls.rb:114:5:114:16 | new |
+| calls.rb:472:1:472:27 | call to new | calls.rb:114:5:114:16 | new |
+| calls.rb:473:1:473:27 | call to new | calls.rb:114:5:114:16 | new |
+| calls.rb:474:1:474:27 | call to new | calls.rb:114:5:114:16 | new |
+| calls.rb:475:1:475:27 | call to new | calls.rb:114:5:114:16 | new |
+| calls.rb:489:9:489:35 | call to puts | calls.rb:102:5:102:30 | puts |
+| calls.rb:493:9:493:11 | call to foo | calls.rb:488:15:490:7 | foo |
+| calls.rb:494:9:494:28 | call to new | calls.rb:114:5:114:16 | new |
+| calls.rb:494:9:494:32 | call to foo | calls.rb:488:15:490:7 | foo |
+| calls.rb:498:1:498:20 | call to new | calls.rb:114:5:114:16 | new |
+| calls.rb:498:1:498:24 | call to foo | calls.rb:488:15:490:7 | foo |
+| calls.rb:499:1:499:20 | call to new | calls.rb:114:5:114:16 | new |
+| calls.rb:499:1:499:24 | call to bar | calls.rb:492:5:495:7 | bar |
 | hello.rb:12:5:12:24 | call to include | calls.rb:107:5:107:20 | include |
 | hello.rb:14:16:14:20 | call to hello | hello.rb:2:5:4:7 | hello |
 | hello.rb:20:16:20:20 | call to super | hello.rb:13:5:15:7 | message |
@@ -265,27 +279,21 @@ unresolvedCall
 | calls.rb:447:1:447:33 | call to m3 |
 | calls.rb:448:1:448:33 | call to m4 |
 | calls.rb:449:1:449:33 | call to m5 |
-| calls.rb:450:1:450:4 | call to exit |
-| calls.rb:451:27:469:3 | call to new |
 | calls.rb:452:5:452:11 | call to [] |
 | calls.rb:452:5:456:7 | call to each |
 | calls.rb:458:5:462:15 | call to bar |
 | calls.rb:464:5:464:11 | call to [] |
 | calls.rb:464:5:468:7 | call to each |
 | calls.rb:465:9:467:11 | call to define_method |
-| calls.rb:471:1:471:27 | call to new |
 | calls.rb:471:1:471:31 | call to foo |
-| calls.rb:472:1:472:27 | call to new |
 | calls.rb:472:1:472:31 | call to bar |
-| calls.rb:473:1:473:27 | call to new |
 | calls.rb:473:1:473:33 | call to baz_0 |
-| calls.rb:474:1:474:27 | call to new |
 | calls.rb:474:1:474:33 | call to baz_1 |
-| calls.rb:475:1:475:27 | call to new |
 | calls.rb:475:1:475:33 | call to baz_2 |
 | calls.rb:479:9:479:46 | call to puts |
 | calls.rb:482:5:482:15 | call to extend |
 | calls.rb:485:1:485:31 | call to singleton |
+| calls.rb:488:5:490:7 | call to protected |
 | hello.rb:20:16:20:26 | ... + ... |
 | hello.rb:20:16:20:34 | ... + ... |
 | hello.rb:20:16:20:40 | ... + ... |
@@ -385,6 +393,7 @@ publicMethod
 | calls.rb:427:13:429:15 | m4 |
 | calls.rb:437:13:439:15 | m5 |
 | calls.rb:478:5:480:7 | singleton |
+| calls.rb:492:5:495:7 | bar |
 | hello.rb:2:5:4:7 | hello |
 | hello.rb:5:5:7:7 | world |
 | hello.rb:13:5:15:7 | message |
@@ -401,5 +410,6 @@ publicMethod
 | private.rb:66:3:67:5 | public |
 | private.rb:91:3:93:5 | call_m1 |
 protectedMethod
+| calls.rb:488:15:490:7 | foo |
 | private.rb:32:3:33:5 | protected1 |
 | private.rb:35:3:36:5 | protected2 |
