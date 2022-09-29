@@ -77,3 +77,8 @@ sink(foo11.get_field) # $ hasValueFlow=28
 foo12 = Foo.new
 set_field_on (foo12) # space after `set_field_on` is important for this test
 sink(foo12.get_field) # $ hasValueFlow=28
+
+foo13 = Foo.new
+foo14 = Foo.new
+set_field_on(foo14 = foo13)
+sink(foo13.get_field) # $ hasValueFlow=28
