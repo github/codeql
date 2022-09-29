@@ -490,7 +490,7 @@ public class DataFlow
         Inner(_ => { }, b, "taint source");
     }
 
-    private class SimpleClass
+    public class SimpleClass
     {
         public string field = "";
     }
@@ -521,6 +521,14 @@ public class DataFlow
         var x = new SubSimpleClass();
         TaintField((SimpleClass)x);
         Check(x.field);
+    }
+
+    public void M8(SimpleClass x)
+    {
+        var y = new SimpleClass();
+        TaintField(x ?? y);
+        Check(x.field);
+        Check(y.field);
     }
 }
 
