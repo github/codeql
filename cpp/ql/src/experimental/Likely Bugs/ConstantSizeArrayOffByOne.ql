@@ -1,6 +1,6 @@
 /**
  * @id cpp/constant-size-array-off-by-one
- * @kind path-problem
+ * @kind problem
  */
 
 import experimental.semmle.code.cpp.semantic.analysis.RangeAnalysis
@@ -20,5 +20,5 @@ where
   delta >= size and
   size != 0 and // sometimes 0 or 1 is used for a variable-size array
   size != 1
-select pai, "This pointer may have an off-by-" + (delta - size) + "error allowing it to overrun $@",
+select pai, "This pointer may have an off-by-" + (delta - size + 1) + " error allowing it to overrun $@",
   fai.getField(), fai.getField().toString()
