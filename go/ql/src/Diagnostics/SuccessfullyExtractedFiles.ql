@@ -1,5 +1,5 @@
 /**
- * @id go/summary/successfully-extracted-files
+ * @id go/diagnostics/successfully-extracted-files
  * @name Successfully analyzed files
  * @description List all files that were successfully extracted.
  * @kind diagnostic

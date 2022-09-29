@@ -38,6 +38,13 @@ module Consistency {
 
     /** Holds if `n` should be excluded from the consistency test `uniquePostUpdate`. */
     predicate uniquePostUpdateExclude(Node n) { none() }
+
+    /** Holds if `(call, ctx)` should be excluded from the consistency test `viableImplInCallContextTooLargeExclude`. */
+    predicate viableImplInCallContextTooLargeExclude(
+      DataFlowCall call, DataFlowCall ctx, DataFlowCallable callable
+    ) {
+      none()
+    }
   }
 
   private class RelevantNode extends Node {
@@ -216,5 +223,13 @@ module Consistency {
     simpleLocalFlowStep(_, n) and
     not any(ConsistencyConfiguration c).postWithInFlowExclude(n) and
     msg = "PostUpdateNode should not be the target of local flow."
+  }
+
+  query predicate viableImplInCallContextTooLarge(
+    DataFlowCall call, DataFlowCall ctx, DataFlowCallable callable
+  ) {
+    callable = viableImplInCallContext(call, ctx) and
+    not callable = viableCallable(call) and
+    not any(ConsistencyConfiguration c).viableImplInCallContextTooLargeExclude(call, ctx, callable)
   }
 }

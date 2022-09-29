@@ -1446,7 +1446,7 @@
 | exprs.kt:164:9:164:21 | ...=... | exprs.kt:159:1:166:1 | foo | AssignExpr |
 | exprs.kt:164:21:164:21 | 3 | exprs.kt:159:1:166:1 | foo | IntegerLiteral |
 | exprs.kt:168:1:170:1 | Direction | exprs.kt:168:6:170:1 | Direction | TypeAccess |
-| exprs.kt:168:1:170:1 | Unit | exprs.kt:168:6:170:1 | Direction | TypeAccess |
+| exprs.kt:168:1:170:1 | Enum<Direction> | exprs.kt:168:6:170:1 | Direction | TypeAccess |
 | exprs.kt:168:1:170:1 | new Enum(...) | exprs.kt:168:6:170:1 | Direction | ClassInstanceExpr |
 | exprs.kt:169:5:169:10 | ...=... | exprs.kt:0:0:0:0 | <clinit> | KtInitializerAssignExpr |
 | exprs.kt:169:5:169:10 | Direction | exprs.kt:0:0:0:0 | <clinit> | TypeAccess |
@@ -1473,7 +1473,7 @@
 | exprs.kt:169:25:169:28 | Direction.EAST | exprs.kt:0:0:0:0 | <clinit> | VarAccess |
 | exprs.kt:169:25:169:28 | new Direction(...) | exprs.kt:0:0:0:0 | <clinit> | ClassInstanceExpr |
 | exprs.kt:172:1:176:1 | Color | exprs.kt:172:6:176:1 | Color | TypeAccess |
-| exprs.kt:172:1:176:1 | Unit | exprs.kt:172:6:176:1 | Color | TypeAccess |
+| exprs.kt:172:1:176:1 | Enum<Color> | exprs.kt:172:6:176:1 | Color | TypeAccess |
 | exprs.kt:172:1:176:1 | new Enum(...) | exprs.kt:172:6:176:1 | Color | ClassInstanceExpr |
 | exprs.kt:172:18:172:29 | ...=... | exprs.kt:172:6:176:1 | Color | KtInitializerAssignExpr |
 | exprs.kt:172:18:172:29 | int | file://:0:0:0:0 | <none> | TypeAccess |

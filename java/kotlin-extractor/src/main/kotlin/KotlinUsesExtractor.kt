@@ -308,15 +308,30 @@ open class KotlinUsesExtractor(
             c.hasEqualFqName(FqName("java.lang.Object")))
             return c
         return globalExtensionState.syntheticToRealClassMap.getOrPut(c) {
-            val result = c.fqNameWhenAvailable?.let {
-                pluginContext.referenceClass(it)?.owner
+            val qualifiedName = c.fqNameWhenAvailable
+            if (qualifiedName == null) {
+                logger.warn("Failed to replace synthetic class ${c.name} because it has no fully qualified name")
+                return@getOrPut null
             }
-            if (result == null) {
-                logger.warn("Failed to replace synthetic class ${c.name}")
-            } else {
+
+            val result = pluginContext.referenceClass(qualifiedName)?.owner
+            if (result != null) {
                 logger.info("Replaced synthetic class ${c.name} with its real equivalent")
+                return@getOrPut result
             }
-            result
+
+            // The above doesn't work for (some) generated nested classes, such as R$id, which should be R.id
+            val fqn = qualifiedName.asString()
+            if (fqn.indexOf('$') >= 0) {
+                val nested = pluginContext.referenceClass(FqName(fqn.replace('$', '.')))?.owner
+                if (nested != null) {
+                    logger.info("Replaced synthetic nested class ${c.name} with its real equivalent")
+                    return@getOrPut nested
+                }
+            }
+
+            logger.warn("Failed to replace synthetic class ${c.name}")
+            return@getOrPut null
         } ?: c
     }
 
@@ -351,9 +366,8 @@ open class KotlinUsesExtractor(
         if (replacementClass === parentClass)
             return f
         return globalExtensionState.syntheticToRealFieldMap.getOrPut(f) {
-            val result = replacementClass.declarations.findSubType<IrField> { replacementDecl ->
-                replacementDecl.name == f.name
-            }
+            val result = replacementClass.declarations.findSubType<IrField> { replacementDecl -> replacementDecl.name == f.name }
+                ?: replacementClass.declarations.findSubType<IrProperty> { it.backingField?.name == f.name}?.backingField
             if (result == null) {
                 logger.warn("Failed to replace synthetic class field ${f.name}")
             } else {
@@ -460,6 +474,14 @@ open class KotlinUsesExtractor(
                 TypeResult(fakeKotlinType(), "TODO", "TODO")
             )
         }
+
+    fun getExistingAnonymousClassLabel(c: IrClass): Label<out DbType>? {
+        if (!c.isAnonymousObject){
+            return null
+        }
+
+        return tw.lm.anonymousTypeMapping[c]?.javaResult?.id
+    }
 
     fun fakeKotlinType(): Label<out DbKt_type> {
         val fakeKotlinPackageId: Label<DbPackage> = tw.getLabelFor("@\"FakeKotlinPackage\"", {
@@ -1103,7 +1125,56 @@ open class KotlinUsesExtractor(
         return "@\"$prefix;{$parentId}.$name($paramTypeIds){$returnTypeId}${typeArgSuffix}\""
     }
 
+    val javaLangClass by lazy {
+        val result = pluginContext.referenceClass(FqName("java.lang.Class"))?.owner
+        result?.let { extractExternalClassLater(it) }
+        result
+    }
+
+    fun kClassToJavaClass(t: IrType): IrType {
+        when(t) {
+            is IrSimpleType -> {
+                if (t.classifier == pluginContext.irBuiltIns.kClassClass) {
+                    javaLangClass?.let { jlc ->
+                        return jlc.symbol.typeWithArguments(t.arguments)
+                    }
+                } else {
+                    t.classOrNull?.let { tCls ->
+                        if (t.isArray() || t.isNullableArray()) {
+                            (t.arguments.singleOrNull() as? IrTypeProjection)?.let { elementTypeArg ->
+                                val elementType = elementTypeArg.type
+                                val replacedElementType = kClassToJavaClass(elementType)
+                                if (replacedElementType !== elementType) {
+                                    val newArg = makeTypeProjection(replacedElementType, elementTypeArg.variance)
+                                    return tCls.typeWithArguments(listOf(newArg)).codeQlWithHasQuestionMark(t.isNullableArray())
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return t
+    }
+
+    fun isAnnotationClassField(f: IrField) =
+        f.correspondingPropertySymbol?.let {
+            isAnnotationClassProperty(it)
+        } ?: false
+
+    private fun isAnnotationClassProperty(p: IrPropertySymbol) =
+        p.owner.parentClassOrNull?.kind == ClassKind.ANNOTATION_CLASS
+
     fun getAdjustedReturnType(f: IrFunction) : IrType {
+        // Replace annotation val accessor types as needed:
+        (f as? IrSimpleFunction)?.correspondingPropertySymbol?.let {
+            if (isAnnotationClassProperty(it) && f == it.owner.getter) {
+                val replaced = kClassToJavaClass(f.returnType)
+                if (replaced != f.returnType)
+                    return replaced
+            }
+        }
+
         // The return type of `java.util.concurrent.ConcurrentHashMap<K,V>.keySet/0` is defined as `Set<K>` in the stubs inside the Android SDK.
         // This does not match the Java SDK return type: `ConcurrentHashMap.KeySetView<K,V>`, so it's adjusted here.
         // This is a deliberate change in the Android SDK: https://github.com/AndroidSDKSources/android-sdk-sources-for-api-level-31/blob/2c56b25f619575bea12f9c5520ed2259620084ac/java/util/concurrent/ConcurrentHashMap.java#L1244-L1249

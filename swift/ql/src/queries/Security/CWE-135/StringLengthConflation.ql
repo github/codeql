@@ -155,7 +155,7 @@ class StringLengthConflationConfiguration extends DataFlow::Configuration {
           or
           // `String.index`
           funcName = ["index(_:offsetBy:)", "index(_:offsetBy:limitBy:)"] and
-          paramName = "n"
+          paramName = ["n", "distance"]
           or
           // `String.formIndex`
           funcName = ["formIndex(_:offsetBy:)", "formIndex(_:offsetBy:limitBy:)"] and

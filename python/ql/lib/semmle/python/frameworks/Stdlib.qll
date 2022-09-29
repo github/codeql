@@ -1725,39 +1725,21 @@ private module StdlibPrivate {
       API::Node getlistResult() { result = getlistRef().getReturn() }
 
       /** Gets a reference to a list of fields. */
-      private DataFlow::TypeTrackingNode fieldList(DataFlow::TypeTracker t) {
-        t.start() and
-        // TODO: Should have better handling of subscripting
-        result.asCfgNode().(SubscriptNode).getObject() =
-          instance().getAValueReachableFromSource().asCfgNode()
+      API::Node fieldList() {
+        result = getlistResult()
         or
-        exists(DataFlow::TypeTracker t2 | result = fieldList(t2).track(t2, t))
-      }
-
-      /** Gets a reference to a list of fields. */
-      DataFlow::Node fieldList() {
-        result = getlistResult().getAValueReachableFromSource() or
-        result = getvalueResult().getAValueReachableFromSource() or
-        fieldList(DataFlow::TypeTracker::end()).flowsTo(result)
+        result = getvalueResult()
+        or
+        result = instance().getASubscript()
       }
 
       /** Gets a reference to a field. */
-      private DataFlow::TypeTrackingNode field(DataFlow::TypeTracker t) {
-        t.start() and
-        // TODO: Should have better handling of subscripting
-        result.asCfgNode().(SubscriptNode).getObject() =
-          [instance().getAValueReachableFromSource(), fieldList()].asCfgNode()
+      API::Node field() {
+        result = getfirstResult()
         or
-        exists(DataFlow::TypeTracker t2 | result = field(t2).track(t2, t))
-      }
-
-      /** Gets a reference to a field. */
-      DataFlow::Node field() {
-        result = getfirstResult().getAValueReachableFromSource()
+        result = getvalueResult()
         or
-        result = getvalueResult().getAValueReachableFromSource()
-        or
-        field(DataFlow::TypeTracker::end()).flowsTo(result)
+        result = [instance(), fieldList()].getASubscript()
       }
 
       private class AdditionalTaintStep extends TaintTracking::AdditionalTaintStep {
@@ -1780,11 +1762,13 @@ private module StdlibPrivate {
           )
           or
           // Indexing
-          nodeFrom in [instance().getAValueReachableFromSource(), fieldList()] and
+          nodeFrom in [
+              instance().getAValueReachableFromSource(), fieldList().getAValueReachableFromSource()
+            ] and
           nodeTo.asCfgNode().(SubscriptNode).getObject() = nodeFrom.asCfgNode()
           or
           // Attributes on Field
-          nodeFrom = field() and
+          nodeFrom = field().getAValueReachableFromSource() and
           exists(DataFlow::AttrRead read | nodeTo = read and read.getObject() = nodeFrom |
             read.getAttributeName() in ["value", "file", "filename"]
           )

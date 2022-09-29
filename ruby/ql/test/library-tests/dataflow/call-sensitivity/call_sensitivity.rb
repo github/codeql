@@ -45,3 +45,31 @@ apply_lambda(MY_LAMBDA1, taint(8))
 
 MY_LAMBDA2 = lambda { |x| puts x }
 apply_lambda(MY_LAMBDA2, taint(9))
+
+class A
+  def method1 x
+    sink x # $ hasValueFlow=10 $ hasValueFlow=11
+  end
+
+  def method2 x
+    method1 x
+  end
+
+  def method3(x, y)
+    x.method1(y)
+  end
+end
+
+a = A.new
+a.method2(taint 10)
+a.method3(a, taint(11))
+
+class B < A
+  def method1 x
+    puts x
+  end
+end
+
+b = B.new
+b.method2(taint 12)
+b.method3(b, taint(13))

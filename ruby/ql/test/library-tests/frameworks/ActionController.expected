@@ -1,8 +1,9 @@
 actionControllerControllerClasses
 | active_record/ActiveRecord.rb:23:1:39:3 | FooController |
 | active_record/ActiveRecord.rb:41:1:64:3 | BarController |
-| active_record/ActiveRecord.rb:66:1:94:3 | BazController |
-| active_record/ActiveRecord.rb:96:1:104:3 | AnnotatedController |
+| active_record/ActiveRecord.rb:66:1:98:3 | BazController |
+| active_record/ActiveRecord.rb:100:1:108:3 | AnnotatedController |
+| active_storage/active_storage.rb:39:1:45:3 | PostsController |
 | app/controllers/comments_controller.rb:1:1:7:3 | CommentsController |
 | app/controllers/foo/bars_controller.rb:3:1:46:3 | BarsController |
 | app/controllers/photos_controller.rb:1:1:4:3 | PhotosController |
@@ -16,11 +17,13 @@ actionControllerActionMethods
 | active_record/ActiveRecord.rb:71:3:73:5 | create1 |
 | active_record/ActiveRecord.rb:75:3:77:5 | create2 |
 | active_record/ActiveRecord.rb:79:3:81:5 | create3 |
-| active_record/ActiveRecord.rb:83:3:85:5 | update1 |
-| active_record/ActiveRecord.rb:87:3:89:5 | update2 |
-| active_record/ActiveRecord.rb:91:3:93:5 | update3 |
-| active_record/ActiveRecord.rb:97:3:99:5 | index |
-| active_record/ActiveRecord.rb:101:3:103:5 | unsafe_action |
+| active_record/ActiveRecord.rb:83:3:85:5 | create4 |
+| active_record/ActiveRecord.rb:87:3:89:5 | update1 |
+| active_record/ActiveRecord.rb:91:3:93:5 | update2 |
+| active_record/ActiveRecord.rb:95:3:97:5 | update3 |
+| active_record/ActiveRecord.rb:101:3:103:5 | index |
+| active_record/ActiveRecord.rb:105:3:107:5 | unsafe_action |
+| active_storage/active_storage.rb:40:3:44:5 | create |
 | app/controllers/comments_controller.rb:2:3:3:5 | index |
 | app/controllers/comments_controller.rb:5:3:6:5 | show |
 | app/controllers/foo/bars_controller.rb:5:3:7:5 | index |
@@ -53,12 +56,14 @@ paramsCalls
 | active_record/ActiveRecord.rb:76:49:76:54 | call to params |
 | active_record/ActiveRecord.rb:80:25:80:30 | call to params |
 | active_record/ActiveRecord.rb:80:50:80:55 | call to params |
-| active_record/ActiveRecord.rb:84:21:84:26 | call to params |
-| active_record/ActiveRecord.rb:88:27:88:32 | call to params |
-| active_record/ActiveRecord.rb:88:52:88:57 | call to params |
-| active_record/ActiveRecord.rb:92:28:92:33 | call to params |
-| active_record/ActiveRecord.rb:92:53:92:58 | call to params |
-| active_record/ActiveRecord.rb:102:59:102:64 | call to params |
+| active_record/ActiveRecord.rb:88:21:88:26 | call to params |
+| active_record/ActiveRecord.rb:92:27:92:32 | call to params |
+| active_record/ActiveRecord.rb:92:52:92:57 | call to params |
+| active_record/ActiveRecord.rb:96:28:96:33 | call to params |
+| active_record/ActiveRecord.rb:96:53:96:58 | call to params |
+| active_record/ActiveRecord.rb:106:59:106:64 | call to params |
+| active_storage/active_storage.rb:41:21:41:26 | call to params |
+| active_storage/active_storage.rb:42:24:42:29 | call to params |
 | app/controllers/foo/bars_controller.rb:13:21:13:26 | call to params |
 | app/controllers/foo/bars_controller.rb:14:10:14:15 | call to params |
 | app/controllers/foo/bars_controller.rb:21:21:21:26 | call to params |
@@ -83,12 +88,14 @@ paramsSources
 | active_record/ActiveRecord.rb:76:49:76:54 | call to params |
 | active_record/ActiveRecord.rb:80:25:80:30 | call to params |
 | active_record/ActiveRecord.rb:80:50:80:55 | call to params |
-| active_record/ActiveRecord.rb:84:21:84:26 | call to params |
-| active_record/ActiveRecord.rb:88:27:88:32 | call to params |
-| active_record/ActiveRecord.rb:88:52:88:57 | call to params |
-| active_record/ActiveRecord.rb:92:28:92:33 | call to params |
-| active_record/ActiveRecord.rb:92:53:92:58 | call to params |
-| active_record/ActiveRecord.rb:102:59:102:64 | call to params |
+| active_record/ActiveRecord.rb:88:21:88:26 | call to params |
+| active_record/ActiveRecord.rb:92:27:92:32 | call to params |
+| active_record/ActiveRecord.rb:92:52:92:57 | call to params |
+| active_record/ActiveRecord.rb:96:28:96:33 | call to params |
+| active_record/ActiveRecord.rb:96:53:96:58 | call to params |
+| active_record/ActiveRecord.rb:106:59:106:64 | call to params |
+| active_storage/active_storage.rb:41:21:41:26 | call to params |
+| active_storage/active_storage.rb:42:24:42:29 | call to params |
 | app/controllers/foo/bars_controller.rb:13:21:13:26 | call to params |
 | app/controllers/foo/bars_controller.rb:14:10:14:15 | call to params |
 | app/controllers/foo/bars_controller.rb:21:21:21:26 | call to params |

@@ -14,6 +14,7 @@ comments
 | comments.kt:65:9:67:11 | /**\n         * An accessor comment\n         */ | /**\n         * An accessor comment\n         */ |
 | comments.kt:71:9:73:11 | /**\n         * An anonymous function comment\n         */ | /**\n         * An anonymous function comment\n         */ |
 | comments.kt:79:9:81:11 | /**\n         * A local function comment\n         */ | /**\n         * A local function comment\n         */ |
+| comments.kt:88:10:90:11 | /**\n         * An anonymous object comment\n         */ | /**\n         * An anonymous object comment\n         */ |
 commentOwners
 | comments.kt:4:1:11:3 | /**\n * A group of *members*.\n *\n * This class has no useful logic; it's just a documentation example.\n *\n * @property name the name of this group.\n * @constructor Creates an empty group.\n */ | comments.kt:12:1:31:1 | Group |
 | comments.kt:4:1:11:3 | /**\n * A group of *members*.\n *\n * This class has no useful logic; it's just a documentation example.\n *\n * @property name the name of this group.\n * @constructor Creates an empty group.\n */ | comments.kt:12:1:31:1 | Group |
@@ -32,6 +33,8 @@ commentOwners
 | comments.kt:71:9:73:11 | /**\n         * An anonymous function comment\n         */ | comments.kt:70:5:76:10 | l |
 | comments.kt:71:9:73:11 | /**\n         * An anonymous function comment\n         */ | comments.kt:70:5:76:10 | l |
 | comments.kt:79:9:81:11 | /**\n         * A local function comment\n         */ | comments.kt:82:9:82:24 | localFn |
+| comments.kt:88:10:90:11 | /**\n         * An anonymous object comment\n         */ | comments.kt:87:15:92:5 |  |
+| comments.kt:88:10:90:11 | /**\n         * An anonymous object comment\n         */ | comments.kt:87:15:92:5 | new X(...) { ... } |
 commentNoOwners
 | comments.kt:1:1:1:25 | /** Kdoc with no owner */ |
 | comments.kt:24:9:24:25 | // A line comment |
@@ -52,6 +55,7 @@ commentSections
 | comments.kt:65:9:67:11 | /**\n         * An accessor comment\n         */ | An accessor comment |
 | comments.kt:71:9:73:11 | /**\n         * An anonymous function comment\n         */ | An anonymous function comment |
 | comments.kt:79:9:81:11 | /**\n         * A local function comment\n         */ | A local function comment |
+| comments.kt:88:10:90:11 | /**\n         * An anonymous object comment\n         */ | An anonymous object comment |
 commentSectionContents
 | A group of *members*.\n\nThis class has no useful logic; it's just a documentation example.\n\n | A group of *members*.\n\nThis class has no useful logic; it's just a documentation example.\n\n |
 | A local function comment | A local function comment |
@@ -61,6 +65,7 @@ commentSectionContents
 | Adds a [member] to this group.\n | Adds a [member] to this group.\n |
 | An accessor comment | An accessor comment |
 | An anonymous function comment | An anonymous function comment |
+| An anonymous object comment | An anonymous object comment |
 | An init block comment | An init block comment |
 | Creates an empty group. | Creates an empty group. |
 | Kdoc with no owner | Kdoc with no owner |

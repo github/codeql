@@ -4,8 +4,7 @@ This open source repository contains the standard CodeQL libraries and queries t
 
 ## How do I learn CodeQL and run queries?
 
-There is [extensive documentation](https://codeql.github.com/docs/) on getting started with writing CodeQL.
-You can use the [CodeQL for Visual Studio Code](https://codeql.github.com/docs/codeql-for-visual-studio-code/) extension or the [interactive query console](https://lgtm.com/help/lgtm/using-query-console) on LGTM.com (Semmle Legacy product) to try out your queries on any open source project that's currently being analyzed.
+There is [extensive documentation](https://codeql.github.com/docs/) on getting started with writing CodeQL using the [CodeQL extension for Visual Studio Code](https://codeql.github.com/docs/codeql-for-visual-studio-code/) and the [CodeQL CLI](https://codeql.github.com/docs/codeql-cli/).
 
 ## Contributing
 

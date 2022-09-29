@@ -330,10 +330,27 @@ class ContentSet extends TContentSet {
   predicate isAnyElement() { this = TAnyElementContent() }
 
   /**
+   * Holds if this content set represents a specific known element index, or an
+   * unknown element index.
+   */
+  predicate isKnownOrUnknownElement(Content::KnownElementContent c) {
+    this = TKnownOrUnknownElementContent(c)
+  }
+
+  /**
    * Holds if this content set represents all `KnownElementContent`s where
    * the index is an integer greater than or equal to `lower`.
    */
-  predicate isElementLowerBound(int lower) { this = TElementLowerBoundContent(lower) }
+  predicate isElementLowerBound(int lower) { this = TElementLowerBoundContent(lower, false) }
+
+  /**
+   * Holds if this content set represents `UnknownElementContent` unioned with
+   * all `KnownElementContent`s where the index is an integer greater than or
+   * equal to `lower`.
+   */
+  predicate isElementLowerBoundOrUnknown(int lower) {
+    this = TElementLowerBoundContent(lower, true)
+  }
 
   /** Gets a textual representation of this content set. */
   string toString() {
@@ -345,8 +362,18 @@ class ContentSet extends TContentSet {
     this.isAnyElement() and
     result = "any element"
     or
-    exists(int lower |
-      this.isElementLowerBound(lower) and
+    exists(Content::KnownElementContent c |
+      this.isKnownOrUnknownElement(c) and
+      result = c + " or unknown"
+    )
+    or
+    exists(int lower, boolean includeUnknown |
+      this = TElementLowerBoundContent(lower, includeUnknown)
+    |
+      includeUnknown = false and
+      result = lower + "..!"
+      or
+      includeUnknown = true and
       result = lower + ".."
     )
   }
@@ -355,8 +382,17 @@ class ContentSet extends TContentSet {
   Content getAStoreContent() {
     this.isSingleton(result)
     or
+    // For reverse stores, `a[unknown][0] = x`, it is important that the read-step
+    // from `a` to `a[unknown]` (which can read any element), gets translated into
+    // a reverse store step that store only into `?`
     this.isAnyElement() and
     result = TUnknownElementContent()
+    or
+    // For reverse stores, `a[1][0] = x`, it is important that the read-step
+    // from `a` to `a[1]` (which can read both elements stored at exactly index `1`
+    // and elements stored at unknown index), gets translated into a reverse store
+    // step that store only into `1`
+    this.isKnownOrUnknownElement(result)
     or
     this.isElementLowerBound(_) and
     result = TUnknownElementContent()
@@ -369,10 +405,21 @@ class ContentSet extends TContentSet {
     this.isAnyElement() and
     result instanceof Content::ElementContent
     or
-    exists(int lower, int i |
-      this.isElementLowerBound(lower) and
-      result.(Content::KnownElementContent).getIndex().isInt(i) and
-      i >= lower
+    exists(Content::KnownElementContent c | this.isKnownOrUnknownElement(c) |
+      result = c or
+      result = TUnknownElementContent()
+    )
+    or
+    exists(int lower, boolean includeUnknown |
+      this = TElementLowerBoundContent(lower, includeUnknown)
+    |
+      exists(int i |
+        result.(Content::KnownElementContent).getIndex().isInt(i) and
+        i >= lower
+      )
+      or
+      includeUnknown = true and
+      result = TUnknownElementContent()
     )
   }
 }

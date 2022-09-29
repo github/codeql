@@ -416,6 +416,21 @@ class SsaPhiNode extends Node, TSsaPhiNode {
   final override Location getLocationImpl() { result = phi.getBasicBlock().getLocation() }
 
   override string toStringImpl() { result = "Phi" }
+
+  /**
+   * Gets a node that is used as input to this phi node.
+   * `fromBackEdge` is true if data flows along a back-edge,
+   * and `false` otherwise.
+   */
+  final Node getAnInput(boolean fromBackEdge) {
+    localFlowStep(result, this) and
+    if phi.getBasicBlock().dominates(getBasicBlock(result))
+    then fromBackEdge = true
+    else fromBackEdge = false
+  }
+
+  /** Gets a node that is used as input to this phi node. */
+  final Node getAnInput() { result = this.getAnInput(_) }
 }
 
 /**

@@ -100,4 +100,4 @@ where
         fc.getArgument(i1).(AddressOfExpr).getOperand().(VariableAccess).getTarget()
     )
   )
-select fc, "Unchecked return value for call to '" + fc.getTarget().getName() + "'."
+select fc, "Unchecked return value for call to $@.", fc.getTarget() as target, target.getName()

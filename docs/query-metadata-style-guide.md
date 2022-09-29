@@ -43,10 +43,7 @@ Query file metadata contains important information that defines the identifier a
  */
  ```
 
-To help others use your query, and to ensure that the query works correctly on LGTM, you should include all of the required information outlined below in the metadata, and as much of the optional information as possible. For further information on query metadata see [Metadata for CodeQL queries](https://codeql.github.com/docs/writing-codeql-queries/metadata-for-codeql-queries/) on codeql.github.com.
-
-
-
+To help others use your query, you should include all of the required information outlined below in the metadata, and as much of the optional information as possible. For further information on query metadata see [Metadata for CodeQL queries](https://codeql.github.com/docs/writing-codeql-queries/metadata-for-codeql-queries/) on codeql.github.com.
 
 ### Query name `@name`
 
@@ -107,7 +104,7 @@ Note, `@id` properties should be consistent for queries that highlight the same 
 * alerts containing path information (`@kind path-problem`)
 * metrics (`@kind metric`)
 
-Alert queries (`@kind problem` or `path-problem`) support two further properties. These are added by GitHub staff after the query has been tested, prior to deployment to LGTM. The following information is for reference:
+Alert queries (`@kind problem` or `path-problem`) support two further properties. These are added by GitHub staff after the query has been tested. The following information is for reference:
 
 
 
@@ -121,8 +118,6 @@ Alert queries (`@kind problem` or `path-problem`) support two further properties
   * `warning`–an issue that indicates a potential problem in the code, or makes the code fragile if another (unrelated) part of code is changed.
   * `recommendation`–an issue where the code behaves correctly, but it could be improved.
 * `@security-severity`-defines the level of severity, between 0.0 and 10.0, for queries with `@tags security`. For more information about calculating `@security-severity`, see the [GitHub changelog](https://github.blog/changelog/2021-07-19-codeql-code-scanning-new-severity-levels-for-security-alerts/).  
-
-The values of `@precision` and `@problem.severity` assigned to a query that is part of the standard set determine how the results are displayed by LGTM. See [About alerts](https://help.semmle.com/lgtm-enterprise/user/help/about-alerts.html) and [Alert interest](https://lgtm.com/help/lgtm/alert-interest) for further information. For information about using custom queries in LGTM on a 'per-project' basis, see [Writing custom queries to include in LGTM analysis](https://lgtm.com/help/lgtm/writing-custom-queries) and [About adding custom queries](https://help.semmle.com/lgtm-enterprise/admin/help/about-adding-custom-queries.html).
 
 ## Query tags `@tags`
 

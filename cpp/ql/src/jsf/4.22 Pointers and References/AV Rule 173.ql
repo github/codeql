@@ -35,4 +35,4 @@ where
     global.hasSpecifier("static")
   )
 select a,
-  "AV Rule 173: The address of an object with automatic storage shall not be assigned to another object that may persist after the first object has ceased to exist"
+  "AV Rule 173: The address of an object with automatic storage shall not be assigned to another object that may persist after the first object has ceased to exist."

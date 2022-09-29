@@ -60,5 +60,5 @@ where
   taintedWithPath(taintSource, taintedArg, sourceNode, sinkNode) and
   isUserInput(taintSource, taintCause)
 select taintedArg, sourceNode, sinkNode,
-  "This argument to a file access function is derived from $@ and then passed to " + callChain,
+  "This argument to a file access function is derived from $@ and then passed to " + callChain + ".",
   taintSource, "user input (" + taintCause + ")"

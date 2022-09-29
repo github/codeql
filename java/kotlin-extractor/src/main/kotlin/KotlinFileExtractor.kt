@@ -3,7 +3,6 @@ package com.github.codeql
 import com.github.codeql.comments.CommentExtractor
 import com.github.codeql.utils.*
 import com.github.codeql.utils.versions.functionN
-import com.github.codeql.utils.versions.getIrStubFromDescriptor
 import com.github.codeql.utils.versions.isUnderscoreParameter
 import com.semmle.extractor.java.OdasaOutput
 import org.jetbrains.kotlin.backend.common.extensions.IrPluginContext
@@ -574,8 +573,8 @@ open class KotlinFileExtractor(
 
                     break
                 } else if (parent is IrFile) {
-                    if (innerClass != null) {
-                        // We don't have to extract file class containers for classes
+                    if (innerClass != null && !innerClass.isLocal) {
+                        // We don't have to extract file class containers for classes except for local classes
                         break
                     }
                     if (this.filePath != parent.path) {
@@ -628,14 +627,16 @@ open class KotlinFileExtractor(
     private fun extractValueParameter(vp: IrValueParameter, parent: Label<out DbCallable>, idx: Int, typeSubstitution: TypeSubstitution?, parentSourceDeclaration: Label<out DbCallable>, classTypeArgsIncludingOuterClasses: List<IrTypeArgument>?, extractTypeAccess: Boolean, locOverride: Label<DbLocation>? = null): TypeResults {
         with("value parameter", vp) {
             val location = locOverride ?: getLocation(vp, classTypeArgsIncludingOuterClasses)
-            val maybeErasedType = (vp.parent as? IrFunction)?.let {
+            val maybeAlteredType = (vp.parent as? IrFunction)?.let {
                 if (overridesCollectionsMethodWithAlteredParameterTypes(it))
                     eraseCollectionsMethodParameterType(vp.type, it.name.asString(), idx)
+                else if ((vp.parent as? IrConstructor)?.parentClassOrNull?.kind == ClassKind.ANNOTATION_CLASS)
+                    kClassToJavaClass(vp.type)
                 else
                     null
             } ?: vp.type
             val javaType = (vp.parent as? IrFunction)?.let { getJavaCallable(it)?.let { jCallable -> getJavaValueParameterType(jCallable, idx) } }
-            val typeWithWildcards = addJavaLoweringWildcards(maybeErasedType, !hasWildcardSuppressionAnnotation(vp), javaType)
+            val typeWithWildcards = addJavaLoweringWildcards(maybeAlteredType, !hasWildcardSuppressionAnnotation(vp), javaType)
             val substitutedType = typeSubstitution?.let { it(typeWithWildcards, TypeContext.OTHER, pluginContext) } ?: typeWithWildcards
             val id = useValueParameter(vp, parent)
             if (extractTypeAccess) {
@@ -734,14 +735,17 @@ open class KotlinFileExtractor(
             val initializer: IrExpressionBody?
             val lhsType: TypeResults?
             val vId: Label<out DbVariable>?
+            val isAnnotationClassField: Boolean
             if (f is IrField) {
                 static = f.isStatic
                 initializer = f.initializer
-                lhsType = useType(f.type)
+                isAnnotationClassField = isAnnotationClassField(f)
+                lhsType = useType(if (isAnnotationClassField) kClassToJavaClass(f.type) else f.type)
                 vId = useField(f)
             } else if (f is IrEnumEntry) {
                 static = true
                 initializer = f.initializerExpression
+                isAnnotationClassField = false
                 lhsType = getEnumEntryType(f)
                 if (lhsType == null) {
                     return
@@ -762,7 +766,7 @@ open class KotlinFileExtractor(
             tw.writeStmts_exprstmt(stmtId, blockAndFunctionId.first, idx++, blockAndFunctionId.second)
             tw.writeHasLocation(stmtId, declLocId)
             val assignmentId = tw.getFreshIdLabel<DbAssignexpr>()
-            val type = useType(expr.type)
+            val type = useType(if (isAnnotationClassField) kClassToJavaClass(expr.type) else expr.type)
             tw.writeExprs_assignexpr(assignmentId, type.javaResult.id, stmtId, 0)
             tw.writeExprsKotlinType(assignmentId, type.kotlinResult.id)
             tw.writeHasLocation(assignmentId, declLocId)
@@ -936,7 +940,8 @@ open class KotlinFileExtractor(
         with("field", f) {
            DeclarationStackAdjuster(f).use {
                val fNameSuffix = getExtensionReceiverType(f)?.let { it.classFqName?.asString()?.replace(".", "$$") } ?: ""
-               return extractField(useField(f), "${f.name.asString()}$fNameSuffix", f.type, parentId, tw.getLocation(f), f.visibility, f, isExternalDeclaration(f), f.isFinal)
+               val extractType = if (isAnnotationClassField(f)) kClassToJavaClass(f.type) else f.type
+               return extractField(useField(f), "${f.name.asString()}$fNameSuffix", extractType, parentId, tw.getLocation(f), f.visibility, f, isExternalDeclaration(f), f.isFinal)
            }
         }
     }
@@ -1782,7 +1787,8 @@ open class KotlinFileExtractor(
 
     private fun extractCall(c: IrCall, callable: Label<out DbCallable>, stmtExprParent: StmtExprParent) {
         with("call", c) {
-            val target = tryReplaceSyntheticFunction(c.symbol.owner)
+            val owner = getBoundSymbolOwner(c.symbol, c) ?: return
+            val target = tryReplaceSyntheticFunction(owner)
 
             // The vast majority of types of call want an expr context, so make one available lazily:
             val exprParent by lazy {
@@ -2492,11 +2498,23 @@ open class KotlinFileExtractor(
 
         if (e is IrConstructorCall) {
             extractConstructorTypeAccess(eType, typeAccessType, e.symbol, locId, id, -3, callable, enclosingStmt)
-        } else {
-            val typeAccessId =
-                extractTypeAccess(typeAccessType, locId, id, -3, callable, enclosingStmt)
+        } else if (e is IrEnumConstructorCall) {
+            val enumClass = e.symbol.owner.parent as? IrClass
+            if (enumClass == null) {
+                logger.warnElement("Couldn't find declaring class of enum constructor call", e)
+                return
+            }
 
-            extractTypeArguments(e, typeAccessId, callable, enclosingStmt)
+            val args = (0 until e.typeArgumentsCount).map { e.getTypeArgument(it) }.requireNoNullsOrNull()
+            if (args == null) {
+                logger.warnElement("Found null type argument in enum constructor call", e)
+                return
+            }
+
+            val enumType = enumClass.typeWith(args)
+            extractConstructorTypeAccess(enumType, useType(enumType), e.symbol, locId, id, -3, callable, enclosingStmt)
+        } else {
+            logger.errorElement("Unexpected constructor call type: ${e.javaClass}", e)
         }
     }
 
@@ -2917,14 +2935,17 @@ open class KotlinFileExtractor(
                     if (owner is IrValueParameter && owner.index == -1 && !owner.isExtensionReceiver()) {
                         extractThisAccess(e, exprParent, callable)
                     } else {
-                        extractVariableAccess(useValueDeclaration(owner), e.type, tw.getLocation(e), exprParent.parent, exprParent.idx, callable, exprParent.enclosingStmt)
+                        val isAnnotationClassParameter = ((owner as? IrValueParameter)?.parent as? IrConstructor)?.parentClassOrNull?.kind == ClassKind.ANNOTATION_CLASS
+                        val extractType = if (isAnnotationClassParameter) kClassToJavaClass(e.type) else e.type
+                        extractVariableAccess(useValueDeclaration(owner), extractType, tw.getLocation(e), exprParent.parent, exprParent.idx, callable, exprParent.enclosingStmt)
                     }
                 }
                 is IrGetField -> {
                     val exprParent = parent.expr(e, callable)
                     val owner = tryReplaceAndroidSyntheticField(e.symbol.owner)
                     val locId = tw.getLocation(e)
-                    extractVariableAccess(useField(owner), e.type, locId, exprParent.parent, exprParent.idx, callable, exprParent.enclosingStmt).also { id ->
+                    val fieldType = if (isAnnotationClassField(owner)) kClassToJavaClass(e.type) else e.type
+                    extractVariableAccess(useField(owner), fieldType, locId, exprParent.parent, exprParent.idx, callable, exprParent.enclosingStmt).also { id ->
                         val receiver = e.receiver
                         if (receiver != null) {
                             extractExpressionExpr(receiver, callable, id, -1, exprParent.enclosingStmt)
@@ -2944,15 +2965,7 @@ open class KotlinFileExtractor(
                     tw.writeCallableEnclosingExpr(id, callable)
                     tw.writeStatementEnclosingExpr(id, exprParent.enclosingStmt)
 
-                    val owner = if (e.symbol.isBound) {
-                        e.symbol.owner
-                    }
-                    else {
-                        logger.warnElement("Unbound enum value, trying to use enum entry stub from descriptor", e)
-
-                        @OptIn(ObsoleteDescriptorBasedAPI::class)
-                        getIrStubFromDescriptor() { it.generateEnumEntryStub(e.symbol.descriptor) }
-                    } ?: return
+                    val owner = getBoundSymbolOwner(e.symbol, e) ?: return
 
                     val vId = useEnumEntry(owner)
                     tw.writeVariableBinding(id, vId)
@@ -3129,15 +3142,7 @@ open class KotlinFileExtractor(
                     // automatically-generated `public static final MyObject INSTANCE`
                     // field that we are accessing here.
                     val exprParent = parent.expr(e, callable)
-                    val c = if (e.symbol.isBound) {
-                        e.symbol.owner
-                    }
-                    else {
-                        logger.warnElement("Unbound object value, trying to use class stub from descriptor", e)
-
-                        @OptIn(ObsoleteDescriptorBasedAPI::class)
-                        getIrStubFromDescriptor() { it.generateClassStub(e.symbol.descriptor) }
-                    } ?: return
+                    val c = getBoundSymbolOwner(e.symbol, e) ?: return
 
                     val instance = if (c.isCompanion) useCompanionObjectClassInstance(c) else useObjectClassInstance(c)
 
@@ -3248,6 +3253,15 @@ open class KotlinFileExtractor(
             }
             return
         }
+    }
+
+    private inline fun <D: DeclarationDescriptor, reified B: IrSymbolOwner> getBoundSymbolOwner(symbol: IrBindableSymbol<D, B>, e: IrExpression): B? {
+        if (symbol.isBound) {
+            return symbol.owner
+        }
+
+        logger.errorElement("Unbound symbol found, skipping extraction of expression", e)
+        return null
     }
 
     private fun extractSuperAccess(irType: IrType, callable: Label<out DbCallable>, parent: Label<out DbExprparent>, idx: Int, enclosingStmt: Label<out DbStmt>, locId: Label<out DbLocation>) =

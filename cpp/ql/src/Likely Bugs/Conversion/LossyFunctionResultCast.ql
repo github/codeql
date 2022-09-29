@@ -49,5 +49,4 @@ where
   c.hasImplicitConversion() and
   not whiteListWrapped(c)
 select c,
-  "Return value of type " + t1.toString() + " is implicitly converted to " + t2.toString() +
-    " here."
+  "Return value of type " + t1.toString() + " is implicitly converted to " + t2.toString() + "."

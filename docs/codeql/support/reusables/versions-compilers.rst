@@ -21,9 +21,9 @@
 
    Eclipse compiler for Java (ECJ) [5]_",``.java``
    JavaScript,ECMAScript 2022 or lower,Not applicable,"``.js``, ``.jsx``, ``.mjs``, ``.es``, ``.es6``, ``.htm``, ``.html``, ``.xhtm``, ``.xhtml``, ``.vue``, ``.hbs``, ``.ejs``, ``.njk``, ``.json``, ``.yaml``, ``.yml``, ``.raml``, ``.xml`` [6]_"
-   Python,"2.7, 3.5, 3.6, 3.7, 3.8, 3.9, 3.10",Not applicable,``.py``
-   Ruby [7]_,"up to 3.0.2",Not applicable,"``.rb``, ``.erb``, ``.gemspec``, ``Gemfile``"
-   TypeScript [8]_,"2.6-4.8",Standard TypeScript compiler,"``.ts``, ``.tsx``, ``.mts``, ``.cts``"
+   Python [7]_,"2.7, 3.5, 3.6, 3.7, 3.8, 3.9, 3.10",Not applicable,``.py``
+   Ruby [8]_,"up to 3.0.2",Not applicable,"``.rb``, ``.erb``, ``.gemspec``, ``Gemfile``"
+   TypeScript [9]_,"2.6-4.8",Standard TypeScript compiler,"``.ts``, ``.tsx``, ``.mts``, ``.cts``"
 
 .. container:: footnote-group
 
@@ -33,5 +33,6 @@
     .. [4] Builds that execute on Java 7 to 19 can be analyzed. The analysis understands Java 19 standard language features.
     .. [5] ECJ is supported when the build invokes it via the Maven Compiler plugin or the Takari Lifecycle plugin.
     .. [6] JSX and Flow code, YAML, JSON, HTML, and XML files may also be analyzed with JavaScript files.
-    .. [7] Requires glibc 2.17.
-    .. [8] TypeScript analysis is performed by running the JavaScript extractor with TypeScript enabled. This is the default for LGTM.
+    .. [7] The extractor requires Python 3 to run. To analyze Python 2.7 you should install both versions of Python.
+    .. [8] Requires glibc 2.17.
+    .. [9] TypeScript analysis is performed by running the JavaScript extractor with TypeScript enabled. This is the default for LGTM.
