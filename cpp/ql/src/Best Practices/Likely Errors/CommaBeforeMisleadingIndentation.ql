@@ -42,6 +42,8 @@ predicate isParenthesized(CommaExpr ce) {
   isInDecltypeOrSizeof(ce)
   or
   ce.getParent*().(Expr).isParenthesised()
+  or
+  ce.getParent*() = any(IfStmt i).getCondition()
 }
 
 from CommaExpr ce, Expr left, Expr right, Location leftLoc, Location rightLoc

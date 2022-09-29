@@ -137,6 +137,12 @@ int Foo::test(int (*baz)(int))
          j = 1; i < 10; i += 2, // GOOD? Currently ignoring loop heads.
         j++) {}
 
+	// Comma in if-conditions:
+
+	if (i = foo(j++),
+		i == j)	// GOOD(?) -- Currently ignoring if-conditions for the same reason as other parenthesized commas.
+		i = 0;
+
     // Mixed tabs and spaces (ugly case):
 
     for (i = 0,         // GOOD if tab >= 4 spaces else BAD -- Currently ignoring loop heads.
