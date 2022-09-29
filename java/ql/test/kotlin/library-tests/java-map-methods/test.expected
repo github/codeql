@@ -1,6 +1,4 @@
 diagnostics
-| file://:0:0:0:0 | Couldn't find a Java equivalent function to kotlin.String.get in java.lang.String |
-| file://:0:0:0:0 | Couldn't find a Java equivalent function to kotlin.String.get in java.lang.String |
 #select
 | Integer |
 | Object |

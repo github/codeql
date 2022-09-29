@@ -70,6 +70,8 @@ private fun getSpecialJvmName(f: IrFunction): String? {
     return null
 }
 
+fun isSpecialJvmFunction(f: IrFunction) = getSpecialJvmName(f) != null
+
 fun getJvmName(container: IrAnnotationContainer): String? {
     for(a: IrConstructorCall in container.annotations) {
         val t = a.type
