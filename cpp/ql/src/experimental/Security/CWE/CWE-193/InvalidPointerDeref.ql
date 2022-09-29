@@ -132,6 +132,8 @@ class AllocToInvalidPointerConf extends ProductFlow::Configuration {
   override predicate isBarrierOut2(DataFlow::Node node) {
     node = any(DataFlow::SsaPhiNode phi).getAnInput(true)
   }
+
+  override predicate isBarrierIn1(DataFlow::Node node) { isSourcePair(node, _, _, _) }
 }
 
 pragma[nomagic]

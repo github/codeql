@@ -133,6 +133,18 @@ module ProductFlow {
       this.isAdditionalFlowStep2(node1, node2)
     }
 
+    /**
+     * Holds if data flow into `node` is prohibited in the first projection of the product
+     * dataflow graph.
+     */
+    predicate isBarrierIn1(DataFlow::Node node) { none() }
+
+    /**
+     * Holds if data flow into `node` is prohibited in the second projection of the product
+     * dataflow graph.
+     */
+    predicate isBarrierIn2(DataFlow::Node node) { none() }
+
     predicate hasFlowPath(
       DataFlow::PathNode source1, DataFlow2::PathNode source2, DataFlow::PathNode sink1,
       DataFlow2::PathNode sink2
@@ -169,6 +181,10 @@ module ProductFlow {
       ) {
         exists(Configuration conf | conf.isAdditionalFlowStep1(node1, state1, node2, state2))
       }
+
+      override predicate isBarrierIn(DataFlow::Node node) {
+        exists(Configuration conf | conf.isBarrierIn1(node))
+      }
     }
 
     class Conf2 extends DataFlow2::Configuration {
@@ -202,9 +218,14 @@ module ProductFlow {
       ) {
         exists(Configuration conf | conf.isAdditionalFlowStep2(node1, state1, node2, state2))
       }
+
+      override predicate isBarrierIn(DataFlow::Node node) {
+        exists(Configuration conf | conf.isBarrierIn2(node))
+      }
     }
   }
 
+  pragma[nomagic]
   private predicate reachableInterprocEntry(
     Configuration conf, DataFlow::PathNode source1, DataFlow2::PathNode source2,
     DataFlow::PathNode node1, DataFlow2::PathNode node2
