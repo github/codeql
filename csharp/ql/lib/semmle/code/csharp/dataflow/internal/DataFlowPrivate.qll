@@ -419,7 +419,8 @@ module LocalFlow {
     exists(Expr e | any(LocalExprStepConfiguration x).hasExprPath(_, result, e, cfn) |
       e instanceof ConditionalExpr or
       e instanceof Cast or
-      e instanceof NullCoalescingExpr
+      e instanceof NullCoalescingExpr or
+      e instanceof SwitchExpr
     )
   }
 
