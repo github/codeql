@@ -420,7 +420,8 @@ module LocalFlow {
       e instanceof ConditionalExpr or
       e instanceof Cast or
       e instanceof NullCoalescingExpr or
-      e instanceof SwitchExpr
+      e instanceof SwitchExpr or
+      e instanceof SuppressNullableWarningExpr
     )
   }
 
