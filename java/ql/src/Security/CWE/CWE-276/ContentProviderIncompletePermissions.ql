@@ -15,9 +15,8 @@ import semmle.code.xml.AndroidManifest
 
 from AndroidProviderXmlElement provider
 where
-  (
-    provider.getAnAttribute().(AndroidPermissionXmlAttribute).isWrite() or
-    provider.getAnAttribute().(AndroidPermissionXmlAttribute).isRead()
-  ) and
-  not provider.requiresPermissions()
-select provider, "Incomplete permissions"
+  not provider.getFile().(AndroidManifestXmlFile).isInBuildDirectory() and
+  provider.isExported() and
+  provider.hasIncompletePermissions()
+select provider, "Exported provider $@ has incomplete permissions.", provider,
+  provider.getResolvedComponentName()

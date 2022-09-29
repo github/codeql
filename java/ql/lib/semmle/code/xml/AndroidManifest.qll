@@ -180,6 +180,17 @@ class AndroidProviderXmlElement extends AndroidComponentXmlElement {
       attr.getValue() = "true"
     )
   }
+
+  /**
+   * Holds if the provider element provides only `android:readPermission` or `android:writePermission`.
+   */
+  predicate hasIncompletePermissions() {
+    (
+      this.getAnAttribute().(AndroidPermissionXmlAttribute).isWrite() or
+      this.getAnAttribute().(AndroidPermissionXmlAttribute).isRead()
+    ) and
+    not this.requiresPermissions()
+  }
 }
 
 /**
