@@ -1,0 +1,8 @@
+| test.cpp:35:5:35:22 | PointerAdd: access to array | This pointer may have an off-by-1 error allowing it to overrun $@ | test.cpp:15:9:15:11 | buf | buf |
+| test.cpp:36:5:36:24 | PointerAdd: access to array | This pointer may have an off-by-2 error allowing it to overrun $@ | test.cpp:15:9:15:11 | buf | buf |
+| test.cpp:43:9:43:19 | PointerAdd: access to array | This pointer may have an off-by-1 error allowing it to overrun $@ | test.cpp:15:9:15:11 | buf | buf |
+| test.cpp:49:5:49:22 | PointerAdd: access to array | This pointer may have an off-by-1 error allowing it to overrun $@ | test.cpp:19:9:19:11 | buf | buf |
+| test.cpp:50:5:50:24 | PointerAdd: access to array | This pointer may have an off-by-2 error allowing it to overrun $@ | test.cpp:19:9:19:11 | buf | buf |
+| test.cpp:57:9:57:19 | PointerAdd: access to array | This pointer may have an off-by-1 error allowing it to overrun $@ | test.cpp:19:9:19:11 | buf | buf |
+| test.cpp:61:9:61:19 | PointerAdd: access to array | This pointer may have an off-by-2 error allowing it to overrun $@ | test.cpp:19:9:19:11 | buf | buf |
+| test.cpp:77:27:77:44 | PointerAdd: access to array | This pointer may have an off-by-1 error allowing it to overrun $@ | test.cpp:15:9:15:11 | buf | buf |
