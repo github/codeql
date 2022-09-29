@@ -81,3 +81,22 @@ test.kt:
 #   13|             1: [MethodAccess] charAt(...)
 #   13|               -1: [VarAccess] s
 #   13|               0: [IntegerLiteral] 1
+#   16|     8: [Method] remove
+#   16|       3: [TypeAccess] Unit
+#-----|       4: (Parameters)
+#   16|         0: [Parameter] l
+#   16|           0: [TypeAccess] List<Integer>
+#   16|             0: [TypeAccess] Integer
+#   16|       5: [BlockStmt] { ... }
+#   17|         0: [ExprStmt] <Expr>;
+#   17|           0: [ImplicitCoercionToUnitExpr] <implicit coercion to unit>
+#   17|             0: [TypeAccess] Unit
+#   17|             1: [MethodAccess] remove(...)
+#   17|               -1: [VarAccess] l
+#   17|               0: [IntegerLiteral] 5
+#   18|         1: [ExprStmt] <Expr>;
+#   18|           0: [ImplicitCoercionToUnitExpr] <implicit coercion to unit>
+#   18|             0: [TypeAccess] Unit
+#   18|             1: [MethodAccess] remove(...)
+#   18|               -1: [VarAccess] l
+#   18|               0: [IntegerLiteral] 1

@@ -13,3 +13,7 @@ fun index(s: String) {
     s.get(1)
 }
 
+fun remove(l: MutableList<Int>) {
+    l.remove(5)
+    l.removeAt(1)
+}
