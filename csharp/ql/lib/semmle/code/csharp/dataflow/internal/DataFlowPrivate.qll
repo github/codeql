@@ -418,7 +418,8 @@ module LocalFlow {
   private ControlFlow::Nodes::ExprNode getALastEvalNode(ControlFlow::Nodes::ExprNode cfn) {
     exists(Expr e | any(LocalExprStepConfiguration x).hasExprPath(_, result, e, cfn) |
       e instanceof ConditionalExpr or
-      e instanceof Cast
+      e instanceof Cast or
+      e instanceof NullCoalescingExpr
     )
   }
 
