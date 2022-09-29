@@ -1,0 +1,65 @@
+test.kt:
+#    0| [CompilationUnit] test
+#    0|   1: [Class] TestKt
+#    1|     1: [Method] test
+#    1|       3: [TypeAccess] int
+#-----|       4: (Parameters)
+#    1|         0: [Parameter] m
+#    1|           0: [TypeAccess] Map<Integer,Integer>
+#    1|             0: [TypeAccess] Integer
+#    1|             1: [TypeAccess] Integer
+#    1|       5: [BlockStmt] { ... }
+#    1|         0: [ReturnStmt] return ...
+#    1|           0: [MethodAccess] getOrDefault(...)
+#    1|             -1: [VarAccess] m
+#    1|             0: [IntegerLiteral] 1
+#    1|             1: [IntegerLiteral] 2
+#    3|     2: [Method] test2
+#    3|       3: [TypeAccess] int
+#-----|       4: (Parameters)
+#    3|         0: [Parameter] s
+#    3|           0: [TypeAccess] String
+#    3|       5: [BlockStmt] { ... }
+#    3|         0: [ReturnStmt] return ...
+#    3|           0: [MethodAccess] length(...)
+#    3|             -1: [VarAccess] s
+#    5|     3: [Method] fn1
+#    5|       3: [TypeAccess] String
+#-----|       4: (Parameters)
+#    5|         0: [Parameter] s
+#    5|           0: [TypeAccess] String
+#    5|       5: [BlockStmt] { ... }
+#    5|         0: [ReturnStmt] return ...
+#    5|           0: [MethodAccess] plus(...)
+#    5|             -1: [VarAccess] s
+#    5|             0: [StringLiteral] 
+#    6|     4: [Method] fn2
+#    6|       3: [TypeAccess] String
+#-----|       4: (Parameters)
+#    6|         0: [Parameter] s
+#    6|           0: [TypeAccess] String
+#    6|       5: [BlockStmt] { ... }
+#    6|         0: [ReturnStmt] return ...
+#    6|           0: [AddExpr] ... + ...
+#    6|             0: [VarAccess] s
+#    6|             1: [StringLiteral] 
+#    8|     5: [Method] fn1
+#    8|       3: [TypeAccess] int
+#-----|       4: (Parameters)
+#    8|         0: [Parameter] i
+#    8|           0: [TypeAccess] int
+#    8|       5: [BlockStmt] { ... }
+#    8|         0: [ReturnStmt] return ...
+#    8|           0: [MethodAccess] minus(...)
+#    8|             -1: [VarAccess] i
+#    8|             0: [IntegerLiteral] 10
+#    9|     6: [Method] fn2
+#    9|       3: [TypeAccess] int
+#-----|       4: (Parameters)
+#    9|         0: [Parameter] i
+#    9|           0: [TypeAccess] int
+#    9|       5: [BlockStmt] { ... }
+#    9|         0: [ReturnStmt] return ...
+#    9|           0: [SubExpr] ... - ...
+#    9|             0: [VarAccess] i
+#    9|             1: [IntegerLiteral] 10
