@@ -416,7 +416,10 @@ module LocalFlow {
    * will be the value of `n`.
    */
   private ControlFlow::Nodes::ExprNode getALastEvalNode(ControlFlow::Nodes::ExprNode cfn) {
-    any(LocalExprStepConfiguration x).hasExprPath(_, result, any(ConditionalExpr ce), cfn)
+    exists(Expr e | any(LocalExprStepConfiguration x).hasExprPath(_, result, e, cfn) |
+      e instanceof ConditionalExpr or
+      e instanceof Cast
+    )
   }
 
   /** Gets a node for which to construct a post-update node for argument `arg`. */
