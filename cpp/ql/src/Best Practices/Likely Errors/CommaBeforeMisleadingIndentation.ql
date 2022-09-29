@@ -28,10 +28,10 @@ predicate isCompilerGenerated(ThisExpr te) {
 
 /** Gets the sub-expression of 'e' with the earliest-starting Location */
 Expr normalizeExpr(Expr e) {
-  if forex(Expr q | q = e.(Call).getQualifier() | not isCompilerGenerated(q.(ThisExpr)))
+  if forex(Expr q | q = e.(Call).getQualifier() | not isCompilerGenerated(q))
   then result = normalizeExpr(e.(Call).getQualifier())
   else
-    if forex(Expr q | q = e.(FieldAccess).getQualifier() | not isCompilerGenerated(q.(ThisExpr)))
+    if forex(Expr q | q = e.(FieldAccess).getQualifier() | not isCompilerGenerated(q))
     then result = normalizeExpr(e.(FieldAccess).getQualifier())
     else
       if e.hasExplicitConversion()
