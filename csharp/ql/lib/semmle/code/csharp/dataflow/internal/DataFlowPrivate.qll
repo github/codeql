@@ -421,7 +421,8 @@ module LocalFlow {
       e instanceof Cast or
       e instanceof NullCoalescingExpr or
       e instanceof SwitchExpr or
-      e instanceof SuppressNullableWarningExpr
+      e instanceof SuppressNullableWarningExpr or
+      e instanceof AssignExpr
     )
   }
 
