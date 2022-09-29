@@ -1,2 +1,5 @@
-| test.cpp:9:3:10:8 | ... , ... | Comma before misleading indentation. |
-| test.cpp:17:7:18:4 | ... , ... | Comma before misleading indentation. |
+| test.cpp:49:2:49:8 | (void)... | The indentation level may be misleading (for some tab sizes). |
+| test.cpp:52:8:52:8 | x | The indentation level may be misleading (for some tab sizes). |
+| test.cpp:160:3:160:9 | (void)... | The indentation level may be misleading (for some tab sizes). |
+| test.cpp:166:5:166:7 | ... ++ | The indentation level may be misleading (for some tab sizes). |
+| test.cpp:176:6:178:6 | ... ? ... : ... | The indentation level may be misleading (for some tab sizes). |
