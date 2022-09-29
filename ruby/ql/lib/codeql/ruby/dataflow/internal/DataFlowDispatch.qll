@@ -848,9 +848,10 @@ private predicate mayBenefitFromCallContext1(
   Module tp, boolean exact, string name
 ) {
   exists(ArgumentNode arg |
-    mayBenefitFromCallContext0(ctx, arg, call, encl, name) and
+    mayBenefitFromCallContext0(ctx, pragma[only_bind_into](arg), call, encl,
+      pragma[only_bind_into](name)) and
     // `arg` has a relevant instance type
-    isInstanceLocalMustFlow(arg, pragma[only_bind_out](tp), exact) and
+    isInstanceLocalMustFlow(arg, tp, exact) and
     exists(lookupMethod(tp, pragma[only_bind_into](name)))
   )
 }
