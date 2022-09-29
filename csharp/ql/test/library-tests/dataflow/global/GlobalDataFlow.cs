@@ -506,12 +506,15 @@ public class DataFlow
         var x2 = new SimpleClass();
         TaintField(b1 ? x1 : x2);
         Check(x1.field);
+        Check(x2.field);
 
         var y1 = new SimpleClass();
         var y2 = new SimpleClass();
         var y3 = new SimpleClass();
         TaintField(b2 ? (b3 ? y1 : y2) : y3);
+        Check(y1.field);
         Check(y2.field);
+        Check(y3.field);
     }
 
     private class SubSimpleClass : SimpleClass { }
