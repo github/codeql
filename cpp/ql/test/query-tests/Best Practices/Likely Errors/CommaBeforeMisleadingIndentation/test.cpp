@@ -16,7 +16,7 @@ struct X {
 #define BAZ //printf
 
 struct Foo {
-	int i;
+	int i, i_array[3];
 	int j;
 	virtual int foo(int) = 0;
 	virtual int bar(int, int) = 0;
@@ -27,9 +27,9 @@ struct Foo {
 			void tutu() {}
 			long toto() { return 42; }
 		} titi;
-	} *tata;
 
-	Tata::Titi **titi_ptr_ptr;
+		Titi *operator->() { return &titi; }
+	} *tata;
 };
 
 int Foo::test(int (*baz)(int))
@@ -38,7 +38,7 @@ int Foo::test(int (*baz)(int))
 
 	if (i)
 		(void)i,	// GOOD
-		(void)j;
+		j++;
 
 	if (i)
 		this->foo(i),	// GOOD
@@ -181,8 +181,8 @@ int Foo::test(int (*baz)(int))
       (tata->titi.tutu(),
        foo(tata->titi.toto())); // GOOD
 
-	(*titi_ptr_ptr)->tutu(), // GOOD
-	(&i)[0] += (int)(*titi_ptr_ptr)->toto();
+	(*tata)->toto(), // GOOD
+	i_array[i] += (int)(*tata)->toto();
 
 	return quux;
 }

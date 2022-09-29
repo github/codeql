@@ -11,12 +11,35 @@
 import cpp
 import semmle.code.cpp.commons.Exclusions
 
+/**
+ * Holds if this is an implicit `this`.
+ *
+ * ThisExpr.isCompilerGenerated() is currently not being extracted, so use a heuristic.
+ */
+predicate isCompilerGenerated(ThisExpr te) {
+  exists(
+    string filepath, int line, int colStart, int colEnd, boolean zeroDiff, boolean sameLocAsCall
+  |
+    te.getLocation().hasLocationInfo(filepath, line, colStart, line, colEnd) and
+    (if colStart = colEnd then zeroDiff = true else zeroDiff = false) and
+    (
+      if exists(Call c | c.getQualifier() = te | c.getLocation() = te.getLocation())
+      then sameLocAsCall = true
+      else sameLocAsCall = false
+    )
+  |
+    zeroDiff = true
+    or
+    zeroDiff = false and sameLocAsCall = true
+  )
+}
+
 /** Gets the sub-expression of 'e' with the earliest-starting Location */
 Expr normalizeExpr(Expr e) {
-  if forex(Expr q | q = e.(Call).getQualifier() | not q.(ThisExpr).isCompilerGenerated())
+  if forex(Expr q | q = e.(Call).getQualifier() | not isCompilerGenerated(q.(ThisExpr)))
   then result = normalizeExpr(e.(Call).getQualifier())
   else
-    if forex(Expr q | q = e.(FieldAccess).getQualifier() | not q.(ThisExpr).isCompilerGenerated())
+    if forex(Expr q | q = e.(FieldAccess).getQualifier() | not isCompilerGenerated(q.(ThisExpr)))
     then result = normalizeExpr(e.(FieldAccess).getQualifier())
     else
       if e.hasExplicitConversion()
