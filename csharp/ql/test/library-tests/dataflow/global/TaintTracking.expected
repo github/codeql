@@ -68,6 +68,7 @@
 | GlobalDataFlow.cs:545:15:545:21 | access to field field |
 | GlobalDataFlow.cs:546:15:546:21 | access to field field |
 | GlobalDataFlow.cs:547:15:547:21 | access to field field |
+| GlobalDataFlow.cs:553:15:553:22 | access to field field |
 | Splitting.cs:9:15:9:15 | [b (line 3): false] access to local variable x |
 | Splitting.cs:9:15:9:15 | [b (line 3): true] access to local variable x |
 | Splitting.cs:11:19:11:19 | access to local variable x |
