@@ -62,6 +62,16 @@ private predicate summarizedLocalStep(Node nodeFrom, Node nodeTo) {
         .flowsTo(returnNode) and
     callStep(nodeTo.asExpr(), nodeFrom, param)
   )
+  or
+  exists(
+    SummarizedCallable callable, DataFlowPublic::CallNode call, SummaryComponent input,
+    SummaryComponent output
+  |
+    hasLevelSummary(callable, input, output) and
+    call.asExpr().getExpr() = callable.getACallSimple() and
+    nodeFrom = evaluateSummaryComponentLocal(call, input) and
+    nodeTo = evaluateSummaryComponentLocal(call, output)
+  )
 }
 
 /** Holds if there is a level step from `nodeFrom` to `nodeTo`. */
@@ -229,6 +239,12 @@ class Boolean extends boolean {
 }
 
 private import SummaryComponentStack
+
+private predicate hasLevelSummary(
+  SummarizedCallable callable, SummaryComponent input, SummaryComponent output
+) {
+  callable.propagatesFlow(singleton(input), singleton(output), true)
+}
 
 private predicate hasStoreSummary(
   SummarizedCallable callable, DataFlow::ContentSet contents, SummaryComponent input,
