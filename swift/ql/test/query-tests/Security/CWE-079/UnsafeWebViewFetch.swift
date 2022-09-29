@@ -5,7 +5,7 @@ class NSObject
 {
 }
 
-class URL
+struct URL
 {
 	init?(string: String) {}
 	init?(string: String, relativeTo: URL?) {}
@@ -14,9 +14,9 @@ class URL
 extension String {
 	init(contentsOf: URL) throws {
         var data = ""
-        
+
         // ...
-        
+
         self.init(data)
     }
 }

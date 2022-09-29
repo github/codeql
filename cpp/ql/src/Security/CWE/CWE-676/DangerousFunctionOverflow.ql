@@ -18,4 +18,4 @@ from FunctionCall call, Function target
 where
   call.getTarget() = target and
   target.hasGlobalOrStdName("gets")
-select call, "gets does not guard against buffer overflow"
+select call, "'gets' does not guard against buffer overflow."

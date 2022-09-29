@@ -67,5 +67,5 @@ where
   // the pointer was null. To follow this idea to its full generality, we
   // should also give an alert when `check` post-dominates `deref`.
   deref.getBlock() = dominator
-select checked, "This null check is redundant because the value is $@ in any case", deref,
-  "dereferenced here"
+select checked, "This null check is redundant because $@ in any case.", deref,
+  "the value is dereferenced"

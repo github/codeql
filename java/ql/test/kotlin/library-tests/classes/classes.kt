@@ -154,3 +154,9 @@ class Cl00<U0> {
         }
     }
 }
+
+fun fn1() {
+    class X {}
+}
+
+fun fn2() = object { }

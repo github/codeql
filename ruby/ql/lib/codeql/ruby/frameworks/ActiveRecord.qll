@@ -255,7 +255,7 @@ private string staticFinderMethodName() {
     result = baseName + ["", "!"]
   )
   or
-  result = "new"
+  result = ["new", "create"]
 }
 
 // Gets the "final" receiver in a chain of method calls.
@@ -528,13 +528,17 @@ private module Persistence {
  * end
  * ```
  */
-private class ActiveRecordAssociation extends DataFlow::CallNode {
+class ActiveRecordAssociation extends DataFlow::CallNode {
   private ActiveRecordModelClass modelClass;
 
   ActiveRecordAssociation() {
     not exists(this.asExpr().getExpr().getEnclosingMethod()) and
     this.asExpr().getExpr().getEnclosingModule() = modelClass and
-    this.getMethodName() = ["has_one", "has_many", "belongs_to", "has_and_belongs_to_many"]
+    this.getMethodName() =
+      [
+        "has_one", "has_many", "belongs_to", "has_and_belongs_to_many", "has_one_attached",
+        "has_many_attached"
+      ]
   }
 
   /**
@@ -584,21 +588,32 @@ private class ActiveRecordAssociation extends DataFlow::CallNode {
   }
 
   /** Holds if this association is one-to-one */
-  predicate isSingular() { this.getMethodName() = ["has_one", "belongs_to"] }
+  predicate isSingular() { this.getMethodName() = ["has_one", "belongs_to", "has_one_attached"] }
 
   /** Holds if this association is one-to-many or many-to-many */
-  predicate isCollection() { this.getMethodName() = ["has_many", "has_and_belongs_to_many"] }
+  predicate isCollection() {
+    this.getMethodName() = ["has_many", "has_and_belongs_to_many", "has_many_attached"]
+  }
 }
 
 /**
  * Converts `input` to plural form.
+ *
+ * Examples:
+ *
+ * - photo -> photos
+ * - story -> stories
+ * - photos -> photos
  */
 bindingset[input]
 bindingset[result]
 private string pluralize(string input) {
   exists(string stem | stem + "y" = input | result = stem + "ies")
   or
+  not exists(string stem | stem + "s" = input) and
   result = input + "s"
+  or
+  exists(string stem | stem + "s" = input) and result = input
 }
 
 /**

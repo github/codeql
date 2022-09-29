@@ -171,6 +171,22 @@ module Flask {
       override DataFlow::Node getMimetypeOrContentTypeArg() { none() }
     }
 
+    /**
+     * A call to `flask.jsonify` function. This creates a JSON response.
+     *
+     * See
+     * - https://flask.palletsprojects.com/en/2.2.x/api/#flask.json.jsonify
+     */
+    private class FlaskJsonifyCall extends InstanceSource, DataFlow::CallCfgNode {
+      FlaskJsonifyCall() { this = API::moduleImport("flask").getMember("jsonify").getACall() }
+
+      override DataFlow::Node getBody() { result in [this.getArg(_), this.getArgByName(_)] }
+
+      override string getMimetypeDefault() { result = "application/json" }
+
+      override DataFlow::Node getMimetypeOrContentTypeArg() { none() }
+    }
+
     /** Gets a reference to an instance of `flask.Response`. */
     private DataFlow::TypeTrackingNode instance(DataFlow::TypeTracker t) {
       t.start() and

@@ -31,4 +31,4 @@ where
   isSignedOperand(op.getAnOperand()) and
   isUnsignedOperand(op.getAnOperand())
 select op,
-  "AV Rule 162: signed and unsigned values shall not be mixed in arithmetic or comparison operations"
+  "AV Rule 162: signed and unsigned values shall not be mixed in arithmetic or comparison operations."

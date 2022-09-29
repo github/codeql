@@ -399,5 +399,5 @@ where
   ) and
   source.asStore() = store and
   sink.asSink(_) = load
-select sink, source, sink, "Stack variable $@ escapes $@ and is used after it has expired.", var,
-  var.toString(), store, "here"
+select sink, source, sink, "Stack variable $@ escapes at $@ and is used after it has expired.", var,
+  var.toString(), store, "this store"

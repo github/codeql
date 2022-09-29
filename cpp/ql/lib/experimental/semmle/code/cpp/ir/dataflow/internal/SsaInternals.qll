@@ -301,7 +301,12 @@ private predicate defToNode(Node nodeFrom, Def def) {
   nodeHasInstruction(nodeFrom, def.getDefiningInstruction(), def.getIndirectionIndex())
 }
 
-private predicate nodeToDefOrUse(Node nodeFrom, SsaDefOrUse defOrUse) {
+/**
+ * INTERNAL: Do not use.
+ *
+ * Holds if `nodeFrom` is the node that correspond to the definition or use `defOrUse`.
+ */
+predicate nodeToDefOrUse(Node nodeFrom, SsaDefOrUse defOrUse) {
   // Node -> Def
   defToNode(nodeFrom, defOrUse)
   or

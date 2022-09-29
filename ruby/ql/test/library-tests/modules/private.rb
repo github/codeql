@@ -26,6 +26,26 @@ class E
   def self.private6
   end
   private_class_method :private6
+
+  protected
+
+  def protected1
+  end
+
+  def protected2
+  end
+
+  def self.public3
+  end
+
+  def private7
+  end
+  private :private7
+
+  private
+
+  def private8
+  end
 end
 
 def private_on_main

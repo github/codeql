@@ -164,14 +164,27 @@ module ModelInput {
   class TypeModel extends Unit {
     /**
      * Gets a data-flow node that is a source of the type `package;type`.
+     *
+     * This must not depend on API graphs, but ensures that an API node is generated for
+     * the source.
      */
     DataFlow::Node getASource(string package, string type) { none() }
 
     /**
-     * Gets a data flow node that is a sink of the type `package;type`,
+     * Gets a data-flow node that is a sink of the type `package;type`,
      * usually because it is an argument passed to a parameter of that type.
+     *
+     * This must not depend on API graphs, but ensures that an API node is generated for
+     * the sink.
      */
     DataFlow::Node getASink(string package, string type) { none() }
+
+    /**
+     * Gets an API node that is a source or sink of the type `package;type`.
+     *
+     * Unlike `getASource` and `getASink`, this may depend on API graphs.
+     */
+    API::Node getAnApiNode(string package, string type) { none() }
   }
 
   /**
@@ -434,6 +447,8 @@ private API::Node getNodeFromType(string package, string type) {
   or
   result = any(TypeModelDefEntry e).getNodeForType(package, type)
   or
+  result = any(TypeModel t).getAnApiNode(package, type)
+  or
   result = Specific::getExtraNodeFromType(package, type)
 }
 
@@ -502,7 +517,12 @@ private API::Node getNodeFromSubPath(API::Node base, AccessPath subPath, int n) 
   result =
     getNodeFromSubPath(getNodeFromSubPath(base, subPath, n - 1), getSubPathAt(subPath, n - 1))
   or
-  typeStep(getNodeFromSubPath(base, subPath, n), result)
+  typeStep(getNodeFromSubPath(base, subPath, n), result) and
+  // Only apply type-steps strictly between the steps on the sub path, not before and after.
+  // Steps before/after lead to unnecessary transitive edges, which the user of the sub-path
+  // will themselves find by following type-steps.
+  n > 0 and
+  n < subPath.getNumToken()
 }
 
 /**

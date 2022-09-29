@@ -57,7 +57,7 @@ class InitBlock {
     init { }
 }
 
-class X {
+open class X {
     /**
      * A prop comment
      */
@@ -80,5 +80,14 @@ class X {
          * A local function comment
          */
         fun localFn() {}
+    }
+}
+
+class XX {
+    fun f() = object :
+         /**
+         * An anonymous object comment
+         */
+         X() {
     }
 }

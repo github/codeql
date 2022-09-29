@@ -117,6 +117,6 @@ where
   output.getCall() = call and
   output.hasGuardedAccess(access, false)
 select access,
-  "$@ is read here, but may not have been written. " +
+  "This variable is read, but may not have been written. " +
     "It should be guarded by a check that the $@ returns at least " +
-    output.getMinimumGuardConstant() + ".", access, access.toString(), call, call.toString()
+    output.getMinimumGuardConstant() + ".", call, call.toString()

@@ -73,5 +73,5 @@ where
   not isFileName(globalValueNumber(source)) and // file names are not passwords
   not exists(string convChar | convChar = w.getSourceConvChar(mid) | not convChar = ["s", "S"]) // ignore things written with other conversion characters
 select w, sourceNode, midNode,
-  "This write into file '" + dest.toString() + "' may contain unencrypted data from $@", source,
+  "This write into file '" + dest.toString() + "' may contain unencrypted data from $@.", source,
   "this source."

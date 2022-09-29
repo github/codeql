@@ -20,6 +20,13 @@ class ImpossibleJavadocThrows {
 	
 	/**
 	 * 
+	 * @throws Runnable
+	 */
+	public void bad3() {
+	}
+	
+	/**
+	 * 
 	 * @throws InterruptedException
 	 */
 	public void goodDeclared() throws Exception{

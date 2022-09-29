@@ -183,8 +183,6 @@ app/src/main/kotlin/testProject/App.kt:
 #    7|           0: [ReturnStmt] return ...
 #    7|             0: [ArrayCreationExpr] new KSerializer<?>[]
 #    7|               -2: [ArrayInit] {...}
-#    7|                 0: [VarAccess] INSTANCE
-#    7|                 1: [VarAccess] INSTANCE
 #    7|               -1: [TypeAccess] KSerializer<?>
 #    7|               0: [IntegerLiteral] 2
 #    0|       3: [Method] deserialize

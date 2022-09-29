@@ -16,6 +16,10 @@ activeRecordInstances
 | ActiveRecord.rb:56:7:56:40 | call to find_by |
 | ActiveRecord.rb:60:5:60:33 | call to find_by |
 | ActiveRecord.rb:62:5:62:34 | call to find |
+| ActiveRecord.rb:72:5:72:24 | call to create |
+| ActiveRecord.rb:76:5:76:66 | call to create |
+| ActiveRecord.rb:80:5:80:68 | call to create |
+| ActiveRecord.rb:84:5:84:16 | call to create |
 | associations.rb:19:1:19:20 | ... = ... |
 | associations.rb:19:1:19:20 | ... = ... |
 | associations.rb:19:11:19:20 | call to new |
@@ -109,7 +113,7 @@ activeRecordSqlExecutionRanges
 | ActiveRecord.rb:46:20:46:32 | ... + ... |
 | ActiveRecord.rb:52:16:52:28 | "name #{...}" |
 | ActiveRecord.rb:56:20:56:39 | "username = #{...}" |
-| ActiveRecord.rb:102:27:102:76 | "this is an unsafe annotation:..." |
+| ActiveRecord.rb:106:27:106:76 | "this is an unsafe annotation:..." |
 activeRecordModelClassMethodCalls
 | ActiveRecord.rb:2:3:2:17 | call to has_many |
 | ActiveRecord.rb:6:3:6:24 | call to belongs_to |
@@ -135,11 +139,12 @@ activeRecordModelClassMethodCalls
 | ActiveRecord.rb:72:5:72:24 | call to create |
 | ActiveRecord.rb:76:5:76:66 | call to create |
 | ActiveRecord.rb:80:5:80:68 | call to create |
-| ActiveRecord.rb:84:5:84:27 | call to update |
-| ActiveRecord.rb:88:5:88:69 | call to update |
-| ActiveRecord.rb:92:5:92:71 | call to update |
-| ActiveRecord.rb:98:13:98:54 | call to annotate |
-| ActiveRecord.rb:102:13:102:77 | call to annotate |
+| ActiveRecord.rb:84:5:84:16 | call to create |
+| ActiveRecord.rb:88:5:88:27 | call to update |
+| ActiveRecord.rb:92:5:92:69 | call to update |
+| ActiveRecord.rb:96:5:96:71 | call to update |
+| ActiveRecord.rb:102:13:102:54 | call to annotate |
+| ActiveRecord.rb:106:13:106:77 | call to annotate |
 | associations.rb:2:3:2:17 | call to has_many |
 | associations.rb:6:3:6:20 | call to belongs_to |
 | associations.rb:7:3:7:20 | call to has_many |
@@ -158,7 +163,7 @@ potentiallyUnsafeSqlExecutingMethodCall
 | ActiveRecord.rb:46:5:46:33 | call to delete_by |
 | ActiveRecord.rb:52:5:52:29 | call to order |
 | ActiveRecord.rb:56:7:56:40 | call to find_by |
-| ActiveRecord.rb:102:13:102:77 | call to annotate |
+| ActiveRecord.rb:106:13:106:77 | call to annotate |
 activeRecordModelInstantiations
 | ActiveRecord.rb:9:5:9:68 | call to find | ActiveRecord.rb:5:1:15:3 | User |
 | ActiveRecord.rb:13:5:13:40 | call to find_by | ActiveRecord.rb:1:1:3:3 | UserGroup |
@@ -167,6 +172,10 @@ activeRecordModelInstantiations
 | ActiveRecord.rb:56:7:56:40 | call to find_by | ActiveRecord.rb:5:1:15:3 | User |
 | ActiveRecord.rb:60:5:60:33 | call to find_by | ActiveRecord.rb:5:1:15:3 | User |
 | ActiveRecord.rb:62:5:62:34 | call to find | ActiveRecord.rb:5:1:15:3 | User |
+| ActiveRecord.rb:72:5:72:24 | call to create | ActiveRecord.rb:17:1:21:3 | Admin |
+| ActiveRecord.rb:76:5:76:66 | call to create | ActiveRecord.rb:17:1:21:3 | Admin |
+| ActiveRecord.rb:80:5:80:68 | call to create | ActiveRecord.rb:17:1:21:3 | Admin |
+| ActiveRecord.rb:84:5:84:16 | call to create | ActiveRecord.rb:17:1:21:3 | Admin |
 | associations.rb:19:11:19:20 | call to new | associations.rb:1:1:3:3 | Author |
 | associations.rb:21:9:21:21 | call to posts | associations.rb:5:1:9:3 | Post |
 | associations.rb:21:9:21:28 | call to create | associations.rb:5:1:9:3 | Post |
@@ -213,8 +222,8 @@ persistentWriteAccesses
 | ActiveRecord.rb:76:5:76:66 | call to create | ActiveRecord.rb:76:49:76:65 | ...[...] |
 | ActiveRecord.rb:80:5:80:68 | call to create | ActiveRecord.rb:80:25:80:37 | ...[...] |
 | ActiveRecord.rb:80:5:80:68 | call to create | ActiveRecord.rb:80:50:80:66 | ...[...] |
-| ActiveRecord.rb:84:5:84:27 | call to update | ActiveRecord.rb:84:21:84:26 | call to params |
-| ActiveRecord.rb:88:5:88:69 | call to update | ActiveRecord.rb:88:27:88:39 | ...[...] |
-| ActiveRecord.rb:88:5:88:69 | call to update | ActiveRecord.rb:88:52:88:68 | ...[...] |
-| ActiveRecord.rb:92:5:92:71 | call to update | ActiveRecord.rb:92:21:92:70 | call to [] |
+| ActiveRecord.rb:88:5:88:27 | call to update | ActiveRecord.rb:88:21:88:26 | call to params |
+| ActiveRecord.rb:92:5:92:69 | call to update | ActiveRecord.rb:92:27:92:39 | ...[...] |
+| ActiveRecord.rb:92:5:92:69 | call to update | ActiveRecord.rb:92:52:92:68 | ...[...] |
+| ActiveRecord.rb:96:5:96:71 | call to update | ActiveRecord.rb:96:21:96:70 | call to [] |
 | associations.rb:31:16:31:22 | ... = ... | associations.rb:31:16:31:22 | author2 |

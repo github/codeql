@@ -18,8 +18,8 @@ typedef struct {
 
 array_t mk_array(int size) {
     array_t arr;
-    arr.size = size;
     arr.p = malloc(size);
+    arr.size = size;
 
     return arr;
 }
@@ -52,8 +52,8 @@ void test3(int size) {
 
 void test4(int size) {
     array_t arr;
-    arr.size = size;
     arr.p = malloc(size);
+    arr.size = size;
 
     for (int i = 0; i < arr.size; i++) {
         arr.p[i] = 0; // GOOD
@@ -66,8 +66,8 @@ void test4(int size) {
 
 array_t *mk_array_p(int size) {
     array_t *arr = (array_t*) malloc(sizeof(array_t));
-    arr->size = size;
     arr->p = malloc(size);
+    arr->size = size;
 
     return arr;
 }

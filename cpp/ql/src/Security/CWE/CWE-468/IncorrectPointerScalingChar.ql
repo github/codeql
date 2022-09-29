@@ -51,5 +51,5 @@ where
   destBase instanceof CharType
 select dest,
   "This pointer might have type $@ (size " + sourceBase.getSize() +
-    "), but the pointer arithmetic here is done with type " + destType + " (size " +
-    destBase.getSize() + ").", sourceLoc, sourceBase.toString()
+    "), but this pointer arithmetic is done with type " + destType + " (size " + destBase.getSize() +
+    ").", sourceLoc, sourceBase.toString()
