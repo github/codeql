@@ -210,8 +210,6 @@ private AstNode benign() {
   result instanceof Comment or
   not exists(result.toString()) or // <- invalid code
   // cached-stages pattern
-  result.(Module).getAMember().(ClasslessPredicate).getName() =
-    ["forceStage", "forceCachingInSameStageforceCachingInSameStage"] or
   result.(ClasslessPredicate).getName() = ["forceStage", "forceCachingInSameStage"] or
   result.getLocation().getFile().getBaseName() = "Caching.qll" or
   // sometimes contains dead code - ignore
