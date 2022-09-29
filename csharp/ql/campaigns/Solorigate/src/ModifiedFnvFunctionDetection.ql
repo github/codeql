@@ -27,5 +27,5 @@ where
       xor2.getAnOperand() = v.getAnAccess()
     )
   )
-select l, "This literal is used in an $@ after a FNV-like hash calculation with variable $@.",
+select l, "This literal is used in an $@ after an FNV-like hash calculation with variable $@.",
   additional_xor, "additional xor", v, v.toString()

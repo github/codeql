@@ -28,5 +28,5 @@ where
   isSolorigateSuspiciousMethodName(m) and
   total > threshold
 select m,
-  "This method " + m.getName() + " may be related to Solorigate. Total count = " + total +
-    " is above the threshold " + threshold + "."
+  "This method may be related to Solorigate. Total count = " + total + " is above the threshold " +
+    threshold + "."

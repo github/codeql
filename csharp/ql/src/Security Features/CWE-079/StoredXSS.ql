@@ -32,4 +32,4 @@ where
   then explanation = " (" + sink.getNode().(Sink).explanation() + ")"
   else explanation = ""
 select sink.getNode(), source, sink, "HTML or JavaScript write" + explanation + " depends on a $@.",
-  source.getNode(), "stored user-provided value"
+  source.getNode(), "stored (potentially user-provided) value"

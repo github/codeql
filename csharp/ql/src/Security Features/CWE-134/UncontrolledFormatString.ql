@@ -39,5 +39,5 @@ string getSourceType(DataFlow::Node node) {
 
 from FormatStringConfiguration config, DataFlow::PathNode source, DataFlow::PathNode sink
 where config.hasFlowPath(source, sink)
-select sink.getNode(), source, sink, "Format string depends on a $@.", source.getNode(),
+select sink.getNode(), source, sink, "Format string depends on $@.", source.getNode(),
   ("this" + getSourceType(source.getNode()))
