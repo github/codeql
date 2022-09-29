@@ -285,3 +285,12 @@
     require("http").request({auth: "user:dcba"}) // OK
     require("http").request({auth: "user:custom string"}) // OK
 });
+
+(function () {
+    // browser API
+    var headers = new Headers();
+    headers.append("Authorization", `Basic sdsdag:sdsdag`); // NOT OK
+    headers.append("Authorization", `Basic sdsdag:xxxxxxxxxxxxxx`); // OK
+    headers.append("Authorization", `Basic sdsdag:aaaiuogrweuibgbbbbb`); // NOT OK
+    headers.append("Authorization", `Basic sdsdag:000000000000001`); // OK
+});
