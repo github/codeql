@@ -14,7 +14,7 @@ abstract class ContentUriResolutionSanitizer extends DataFlow::Node { }
  * A unit class for adding additional taint steps to configurations related to
  * content URI resolution vulnerabilities.
  */
-abstract class ContentUriResolutionAdditionalTaintStep extends Unit {
+class ContentUriResolutionAdditionalTaintStep extends Unit {
   /** Holds if the step from `node1` to `node2` should be considered an additional taint step. */
   abstract predicate step(DataFlow::Node node1, DataFlow::Node node2);
 }
