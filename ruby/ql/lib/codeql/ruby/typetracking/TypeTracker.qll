@@ -220,7 +220,15 @@ module StepSummary {
 
 private newtype TTypeTracker =
   MkTypeTracker(Boolean hasCall, OptionalTypeTrackerContent content) {
-    content = noContent() or basicStoreStep(_, _, content)
+    content = noContent()
+    or
+    // Restrict `content` to those that might eventually match a load.
+    // We can't rely on `basicStoreStep` since `startInContent` might be used with
+    // a content that has no corresponding store.
+    exists(TypeTrackerContent loadContents |
+      basicLoadStep(_, _, loadContents) and
+      compatibleContents(content, loadContents)
+    )
   }
 
 /**
@@ -376,7 +384,13 @@ module TypeTracker {
 
 private newtype TTypeBackTracker =
   MkTypeBackTracker(Boolean hasReturn, OptionalTypeTrackerContent content) {
-    content = noContent() or basicLoadStep(_, _, content)
+    content = noContent()
+    or
+    // As in MkTypeTracker, restrict `content` to those that might eventually match a store.
+    exists(TypeTrackerContent storeContent |
+      basicStoreStep(_, _, storeContent) and
+      compatibleContents(storeContent, content)
+    )
   }
 
 /**
