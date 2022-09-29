@@ -546,6 +546,12 @@ public class DataFlow
         Check(y.field);
         Check(z.field);
     }
+
+    public void M10(SimpleClass? sc)
+    {
+        TaintField(sc!);
+        Check(sc.field);
+    }
 }
 
 static class IEnumerableExtensions
