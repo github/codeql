@@ -6,14 +6,21 @@
 <overview>
 <p>
 If the expression to the right of a comma operator starts at an earlier column than the expression to the left, then
-this suspicious indentation likely indicates a logic error caused by a typo that may escape visual inspection.
+this suspicious indentation possibly indicates a logic error, caused by a typo that may escape visual inspection.
 </p>
+<warning>
+This query has medium precision because CodeQL currently does not distinguish between tabs and spaces in whitespace.
+Alerts may therefore flag code that appears readable for one value of tab size but not another.
+</warning>
 </overview>
 
 <recommendation>
 <p>
 Use standard indentation around the comma operator: begin the right-hand-side operand at the same level of
-indentation as the left-hand-side operand.
+indentation (column number) as the left-hand-side operand.
+</p>
+<p>
+When it comes to whitespace, either do not mix tabs and spaces, or mix them consistently.
 </p>
 </recommendation>
 
