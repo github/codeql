@@ -8,12 +8,20 @@ fun fn2(s: String) = s + ""
 fun fn1(i: Int) = i.minus(10)
 fun fn2(i: Int) = i - 10
 
-fun index(s: String) {
+fun special(n: Number, m: Map<String, String>, s: String, l: MutableList<Int>) {
     s[1]
     s.get(1)
-}
-
-fun remove(l: MutableList<Int>) {
+    n.toDouble()
+    n.toByte()
+    n.toChar()
+    n.toFloat()
+    n.toInt()
+    n.toShort()
+    m.keys
+    m.values
+    m.entries
+    m.entries.first().key
+    m.entries.first().value
     l.remove(5)
     l.removeAt(1)
 }

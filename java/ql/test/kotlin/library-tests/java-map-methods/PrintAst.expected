@@ -63,11 +63,20 @@ test.kt:
 #    9|           0: [SubExpr] ... - ...
 #    9|             0: [VarAccess] i
 #    9|             1: [IntegerLiteral] 10
-#   11|     7: [Method] index
+#   11|     7: [Method] special
 #   11|       3: [TypeAccess] Unit
 #-----|       4: (Parameters)
-#   11|         0: [Parameter] s
+#   11|         0: [Parameter] n
+#   11|           0: [TypeAccess] Number
+#   11|         1: [Parameter] m
+#   11|           0: [TypeAccess] Map<String,String>
+#   11|             0: [TypeAccess] String
+#   11|             1: [TypeAccess] String
+#   11|         2: [Parameter] s
 #   11|           0: [TypeAccess] String
+#   11|         3: [Parameter] l
+#   11|           0: [TypeAccess] List<Integer>
+#   11|             0: [TypeAccess] Integer
 #   11|       5: [BlockStmt] { ... }
 #   12|         0: [ExprStmt] <Expr>;
 #   12|           0: [ImplicitCoercionToUnitExpr] <implicit coercion to unit>
@@ -81,22 +90,82 @@ test.kt:
 #   13|             1: [MethodAccess] charAt(...)
 #   13|               -1: [VarAccess] s
 #   13|               0: [IntegerLiteral] 1
-#   16|     8: [Method] remove
-#   16|       3: [TypeAccess] Unit
-#-----|       4: (Parameters)
-#   16|         0: [Parameter] l
-#   16|           0: [TypeAccess] List<Integer>
-#   16|             0: [TypeAccess] Integer
-#   16|       5: [BlockStmt] { ... }
-#   17|         0: [ExprStmt] <Expr>;
+#   14|         2: [ExprStmt] <Expr>;
+#   14|           0: [ImplicitCoercionToUnitExpr] <implicit coercion to unit>
+#   14|             0: [TypeAccess] Unit
+#   14|             1: [MethodAccess] doubleValue(...)
+#   14|               -1: [VarAccess] n
+#   15|         3: [ExprStmt] <Expr>;
+#   15|           0: [ImplicitCoercionToUnitExpr] <implicit coercion to unit>
+#   15|             0: [TypeAccess] Unit
+#   15|             1: [MethodAccess] byteValue(...)
+#   15|               -1: [VarAccess] n
+#   16|         4: [ExprStmt] <Expr>;
+#   16|           0: [ImplicitCoercionToUnitExpr] <implicit coercion to unit>
+#   16|             0: [TypeAccess] Unit
+#   16|             1: [MethodAccess] toChar(...)
+#   16|               -1: [VarAccess] n
+#   17|         5: [ExprStmt] <Expr>;
 #   17|           0: [ImplicitCoercionToUnitExpr] <implicit coercion to unit>
 #   17|             0: [TypeAccess] Unit
-#   17|             1: [MethodAccess] remove(...)
-#   17|               -1: [VarAccess] l
-#   17|               0: [IntegerLiteral] 5
-#   18|         1: [ExprStmt] <Expr>;
+#   17|             1: [MethodAccess] floatValue(...)
+#   17|               -1: [VarAccess] n
+#   18|         6: [ExprStmt] <Expr>;
 #   18|           0: [ImplicitCoercionToUnitExpr] <implicit coercion to unit>
 #   18|             0: [TypeAccess] Unit
-#   18|             1: [MethodAccess] remove(...)
-#   18|               -1: [VarAccess] l
-#   18|               0: [IntegerLiteral] 1
+#   18|             1: [MethodAccess] intValue(...)
+#   18|               -1: [VarAccess] n
+#   19|         7: [ExprStmt] <Expr>;
+#   19|           0: [ImplicitCoercionToUnitExpr] <implicit coercion to unit>
+#   19|             0: [TypeAccess] Unit
+#   19|             1: [MethodAccess] shortValue(...)
+#   19|               -1: [VarAccess] n
+#   20|         8: [ExprStmt] <Expr>;
+#   20|           0: [ImplicitCoercionToUnitExpr] <implicit coercion to unit>
+#   20|             0: [TypeAccess] Unit
+#   20|             1: [MethodAccess] keySet(...)
+#   20|               -1: [VarAccess] m
+#   21|         9: [ExprStmt] <Expr>;
+#   21|           0: [ImplicitCoercionToUnitExpr] <implicit coercion to unit>
+#   21|             0: [TypeAccess] Unit
+#   21|             1: [MethodAccess] values(...)
+#   21|               -1: [VarAccess] m
+#   22|         10: [ExprStmt] <Expr>;
+#   22|           0: [ImplicitCoercionToUnitExpr] <implicit coercion to unit>
+#   22|             0: [TypeAccess] Unit
+#   22|             1: [MethodAccess] entrySet(...)
+#   22|               -1: [VarAccess] m
+#   23|         11: [ExprStmt] <Expr>;
+#   23|           0: [ImplicitCoercionToUnitExpr] <implicit coercion to unit>
+#   23|             0: [TypeAccess] Unit
+#   23|             1: [MethodAccess] getKey(...)
+#   23|               -1: [MethodAccess] first(...)
+#   23|                 -2: [TypeAccess] Entry<String,String>
+#   23|                   0: [TypeAccess] String
+#   23|                   1: [TypeAccess] String
+#   23|                 -1: [TypeAccess] CollectionsKt
+#   23|                 0: [MethodAccess] entrySet(...)
+#   23|                   -1: [VarAccess] m
+#   24|         12: [ExprStmt] <Expr>;
+#   24|           0: [ImplicitCoercionToUnitExpr] <implicit coercion to unit>
+#   24|             0: [TypeAccess] Unit
+#   24|             1: [MethodAccess] getValue(...)
+#   24|               -1: [MethodAccess] first(...)
+#   24|                 -2: [TypeAccess] Entry<String,String>
+#   24|                   0: [TypeAccess] String
+#   24|                   1: [TypeAccess] String
+#   24|                 -1: [TypeAccess] CollectionsKt
+#   24|                 0: [MethodAccess] entrySet(...)
+#   24|                   -1: [VarAccess] m
+#   25|         13: [ExprStmt] <Expr>;
+#   25|           0: [ImplicitCoercionToUnitExpr] <implicit coercion to unit>
+#   25|             0: [TypeAccess] Unit
+#   25|             1: [MethodAccess] remove(...)
+#   25|               -1: [VarAccess] l
+#   25|               0: [IntegerLiteral] 5
+#   26|         14: [ExprStmt] <Expr>;
+#   26|           0: [ImplicitCoercionToUnitExpr] <implicit coercion to unit>
+#   26|             0: [TypeAccess] Unit
+#   26|             1: [MethodAccess] remove(...)
+#   26|               -1: [VarAccess] l
+#   26|               0: [IntegerLiteral] 1

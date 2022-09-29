@@ -1,6 +1,14 @@
 diagnostics
+| file://:0:0:0:0 | Couldn't find a Java equivalent function to kotlin.collections.Map.<get-entries> in java.util.Map |
+| file://:0:0:0:0 | Couldn't find a Java equivalent function to kotlin.collections.Map.<get-entries> in java.util.Map |
+| file://:0:0:0:0 | Couldn't find a Java equivalent function to kotlin.collections.Map.<get-entries> in java.util.Map |
+| file://:0:0:0:0 | Couldn't find a Java equivalent function to kotlin.collections.Map.<get-keys> in java.util.Map |
+| file://:0:0:0:0 | Couldn't find a Java equivalent function to kotlin.collections.Map.<get-values> in java.util.Map |
+| file://:0:0:0:0 | Couldn't find a Java equivalent function to kotlin.collections.Map.Entry.<get-key> in java.util.Map.Entry |
+| file://:0:0:0:0 | Couldn't find a Java equivalent function to kotlin.collections.Map.Entry.<get-value> in java.util.Map.Entry |
 | file://:0:0:0:0 | Couldn't find a Java equivalent function to kotlin.collections.MutableList.removeAt in java.util.List |
 #select
 | Integer |
+| Iterable<? extends T> |
 | Object |
 | int |
