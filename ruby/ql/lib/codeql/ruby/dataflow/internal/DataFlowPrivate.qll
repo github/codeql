@@ -52,6 +52,8 @@ private CfgNodes::ExprCfgNode getALastEvalNode(CfgNodes::ExprCfgNode n) {
   or
   result = n.(CfgNodes::ExprNodes::ConditionalExprCfgNode).getBranch(_)
   or
+  result = n.(CfgNodes::ExprNodes::AssignExprCfgNode).getRhs()
+  or
   exists(CfgNodes::AstCfgNode branch |
     branch = n.(CfgNodes::ExprNodes::CaseExprCfgNode).getBranch(_)
   |
@@ -156,8 +158,6 @@ module LocalFlow {
 
   predicate localFlowStepCommon(Node nodeFrom, Node nodeTo) {
     localSsaFlowStep(nodeFrom, nodeTo)
-    or
-    nodeFrom.asExpr() = nodeTo.asExpr().(CfgNodes::ExprNodes::AssignExprCfgNode).getRhs()
     or
     nodeFrom.asExpr() = nodeTo.asExpr().(CfgNodes::ExprNodes::BlockArgumentCfgNode).getValue()
     or
