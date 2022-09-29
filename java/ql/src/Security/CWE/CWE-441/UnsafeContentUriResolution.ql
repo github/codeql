@@ -18,5 +18,5 @@ import DataFlow::PathGraph
 
 from DataFlow::PathNode src, DataFlow::PathNode sink
 where any(UnsafeContentResolutionConf c).hasFlowPath(src, sink)
-select sink.getNode(), src, sink, "This $@ flows to a ContentResolver method that resolves a URI.",
-  src.getNode(), "user input"
+select sink.getNode(), src, sink, "This ContentResolver method that resolves a URI depends on $@.",
+  src.getNode(), "a user-provided value"
