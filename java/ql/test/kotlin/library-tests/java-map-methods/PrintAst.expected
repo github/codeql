@@ -30,9 +30,9 @@ test.kt:
 #    5|           0: [TypeAccess] String
 #    5|       5: [BlockStmt] { ... }
 #    5|         0: [ReturnStmt] return ...
-#    5|           0: [MethodAccess] plus(...)
-#    5|             -1: [VarAccess] s
-#    5|             0: [StringLiteral] 
+#    5|           0: [AddExpr] ... + ...
+#    5|             0: [VarAccess] s
+#    5|             1: [StringLiteral] 
 #    6|     4: [Method] fn2
 #    6|       3: [TypeAccess] String
 #-----|       4: (Parameters)
@@ -50,9 +50,9 @@ test.kt:
 #    8|           0: [TypeAccess] int
 #    8|       5: [BlockStmt] { ... }
 #    8|         0: [ReturnStmt] return ...
-#    8|           0: [MethodAccess] minus(...)
-#    8|             -1: [VarAccess] i
-#    8|             0: [IntegerLiteral] 10
+#    8|           0: [SubExpr] ... - ...
+#    8|             0: [VarAccess] i
+#    8|             1: [IntegerLiteral] 10
 #    9|     6: [Method] fn2
 #    9|       3: [TypeAccess] int
 #-----|       4: (Parameters)
