@@ -43,6 +43,26 @@ edges
 | test.cpp:137:22:137:27 | FieldAddress indirection | test.cpp:137:22:137:27 | Load |
 | test.cpp:141:17:141:19 | Load indirection [string] | test.cpp:141:22:141:27 | FieldAddress indirection |
 | test.cpp:141:22:141:27 | FieldAddress indirection | test.cpp:141:22:141:27 | Load |
+| test.cpp:147:5:147:34 | Store | test.cpp:147:10:147:15 | Load indirection [post update] [string] |
+| test.cpp:147:10:147:15 | Load indirection [post update] [string] | test.cpp:152:13:152:15 | Load indirection [string] |
+| test.cpp:147:10:147:15 | Load indirection [post update] [string] | test.cpp:156:13:156:15 | Load indirection [string] |
+| test.cpp:147:10:147:15 | Load indirection [post update] [string] | test.cpp:195:17:195:19 | Load indirection [string] |
+| test.cpp:147:10:147:15 | Load indirection [post update] [string] | test.cpp:199:17:199:19 | Load indirection [string] |
+| test.cpp:147:10:147:15 | Load indirection [post update] [string] | test.cpp:203:17:203:19 | Load indirection [string] |
+| test.cpp:147:10:147:15 | Load indirection [post update] [string] | test.cpp:207:17:207:19 | Load indirection [string] |
+| test.cpp:147:19:147:24 | call to malloc | test.cpp:147:5:147:34 | Store |
+| test.cpp:152:13:152:15 | Load indirection [string] | test.cpp:152:18:152:23 | FieldAddress indirection |
+| test.cpp:152:18:152:23 | FieldAddress indirection | test.cpp:152:18:152:23 | Load |
+| test.cpp:156:13:156:15 | Load indirection [string] | test.cpp:156:18:156:23 | FieldAddress indirection |
+| test.cpp:156:18:156:23 | FieldAddress indirection | test.cpp:156:18:156:23 | Load |
+| test.cpp:195:17:195:19 | Load indirection [string] | test.cpp:195:22:195:27 | FieldAddress indirection |
+| test.cpp:195:22:195:27 | FieldAddress indirection | test.cpp:195:22:195:27 | Load |
+| test.cpp:199:17:199:19 | Load indirection [string] | test.cpp:199:22:199:27 | FieldAddress indirection |
+| test.cpp:199:22:199:27 | FieldAddress indirection | test.cpp:199:22:199:27 | Load |
+| test.cpp:203:17:203:19 | Load indirection [string] | test.cpp:203:22:203:27 | FieldAddress indirection |
+| test.cpp:203:22:203:27 | FieldAddress indirection | test.cpp:203:22:203:27 | Load |
+| test.cpp:207:17:207:19 | Load indirection [string] | test.cpp:207:22:207:27 | FieldAddress indirection |
+| test.cpp:207:22:207:27 | FieldAddress indirection | test.cpp:207:22:207:27 | Load |
 nodes
 | test.cpp:16:11:16:21 | VariableAddress indirection [string] | semmle.label | VariableAddress indirection [string] |
 | test.cpp:18:5:18:30 | Store | semmle.label | Store |
@@ -90,6 +110,27 @@ nodes
 | test.cpp:141:17:141:19 | Load indirection [string] | semmle.label | Load indirection [string] |
 | test.cpp:141:22:141:27 | FieldAddress indirection | semmle.label | FieldAddress indirection |
 | test.cpp:141:22:141:27 | Load | semmle.label | Load |
+| test.cpp:147:5:147:34 | Store | semmle.label | Store |
+| test.cpp:147:10:147:15 | Load indirection [post update] [string] | semmle.label | Load indirection [post update] [string] |
+| test.cpp:147:19:147:24 | call to malloc | semmle.label | call to malloc |
+| test.cpp:152:13:152:15 | Load indirection [string] | semmle.label | Load indirection [string] |
+| test.cpp:152:18:152:23 | FieldAddress indirection | semmle.label | FieldAddress indirection |
+| test.cpp:152:18:152:23 | Load | semmle.label | Load |
+| test.cpp:156:13:156:15 | Load indirection [string] | semmle.label | Load indirection [string] |
+| test.cpp:156:18:156:23 | FieldAddress indirection | semmle.label | FieldAddress indirection |
+| test.cpp:156:18:156:23 | Load | semmle.label | Load |
+| test.cpp:195:17:195:19 | Load indirection [string] | semmle.label | Load indirection [string] |
+| test.cpp:195:22:195:27 | FieldAddress indirection | semmle.label | FieldAddress indirection |
+| test.cpp:195:22:195:27 | Load | semmle.label | Load |
+| test.cpp:199:17:199:19 | Load indirection [string] | semmle.label | Load indirection [string] |
+| test.cpp:199:22:199:27 | FieldAddress indirection | semmle.label | FieldAddress indirection |
+| test.cpp:199:22:199:27 | Load | semmle.label | Load |
+| test.cpp:203:17:203:19 | Load indirection [string] | semmle.label | Load indirection [string] |
+| test.cpp:203:22:203:27 | FieldAddress indirection | semmle.label | FieldAddress indirection |
+| test.cpp:203:22:203:27 | Load | semmle.label | Load |
+| test.cpp:207:17:207:19 | Load indirection [string] | semmle.label | Load indirection [string] |
+| test.cpp:207:22:207:27 | FieldAddress indirection | semmle.label | FieldAddress indirection |
+| test.cpp:207:22:207:27 | Load | semmle.label | Load |
 subpaths
 #select
 | test.cpp:42:5:42:11 | call to strncpy | test.cpp:18:19:18:24 | call to malloc | test.cpp:42:18:42:23 | Load | This write may overflow $@ by 1 element. | test.cpp:42:18:42:23 | string | string |
