@@ -67,6 +67,8 @@ private predicate isRelevantForModels(J::Callable api) {
  */
 predicate isRelevantForDataFlowModels = isRelevantForModels/1;
 
+predicate isRelevantForTypeBasedFlowModels = isRelevantForModels/1;
+
 /**
  * A class of Callables that are relevant for generating summary, source and sinks models for.
  *
@@ -175,7 +177,7 @@ predicate isRelevantType(J::Type t) {
  */
 string qualifierString() { result = "Argument[-1]" }
 
-private string parameterAccess(J::Parameter p) {
+string parameterAccess(J::Parameter p) {
   if
     p.getType() instanceof J::Array and
     not isPrimitiveTypeUsedForBulkData(p.getType().(J::Array).getElementType())
