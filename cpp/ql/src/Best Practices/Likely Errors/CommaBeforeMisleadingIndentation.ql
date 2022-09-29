@@ -17,20 +17,12 @@ import semmle.code.cpp.commons.Exclusions
  * ThisExpr.isCompilerGenerated() is currently not being extracted, so use a heuristic.
  */
 predicate isCompilerGenerated(ThisExpr te) {
-  exists(
-    string filepath, int line, int colStart, int colEnd, boolean zeroDiff, boolean sameLocAsCall
+  exists(int line, int colStart, int colEnd |
+    te.getLocation().hasLocationInfo(_, line, colStart, line, colEnd)
   |
-    te.getLocation().hasLocationInfo(filepath, line, colStart, line, colEnd) and
-    (if colStart = colEnd then zeroDiff = true else zeroDiff = false) and
-    (
-      if exists(Call c | c.getQualifier() = te | c.getLocation() = te.getLocation())
-      then sameLocAsCall = true
-      else sameLocAsCall = false
-    )
-  |
-    zeroDiff = true
+    colStart = colEnd
     or
-    zeroDiff = false and sameLocAsCall = true
+    exists(Call c | c.getQualifier() = te | c.getLocation() = te.getLocation())
   )
 }
 
@@ -47,26 +39,16 @@ Expr normalizeExpr(Expr e) {
       else result = e
 }
 
-predicate isInLoopHead(CommaExpr ce) {
+predicate isParenthesized(CommaExpr ce) {
+  ce.getParent*().(Expr).isParenthesised()
+  or
+  ce.isUnevaluated() // sizeof(), decltype(), alignof(), noexcept(), typeid()
+  or
+  ce.getParent*() = any(IfStmt i).getCondition()
+  or
   ce.getParent*() = [any(Loop l).getCondition(), any(ForStmt f).getUpdate()]
   or
   ce.getEnclosingStmt() = any(ForStmt f).getInitialization()
-}
-
-predicate isInDecltypeOrSizeof(CommaExpr ce) {
-  ce.getParent*() instanceof SizeofExprOperator
-  or
-  ce.getParent*() = any(Decltype d).getExpr()
-}
-
-predicate isParenthesized(CommaExpr ce) {
-  isInLoopHead(ce)
-  or
-  isInDecltypeOrSizeof(ce)
-  or
-  ce.getParent*().(Expr).isParenthesised()
-  or
-  ce.getParent*() = any(IfStmt i).getCondition()
 }
 
 from CommaExpr ce, Expr left, Expr right, Location leftLoc, Location rightLoc
