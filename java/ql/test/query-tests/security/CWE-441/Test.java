@@ -53,13 +53,13 @@ public class Test extends Activity {
             Uri uri = (Uri) getIntent().getParcelableExtra("URI_EXTRA");
             if (!uri.equals(Uri.parse("content://safe/uri")))
                 throw new SecurityException();
-            contentResolver.openInputStream(uri); // Safe
+            contentResolver.openInputStream(uri); // $ SPURIOUS: hasTaintFlow
         }
         {
             ContentResolver contentResolver = getContentResolver();
             Uri uri = (Uri) getIntent().getParcelableExtra("URI_EXTRA");
             validateWithEquals(uri);
-            contentResolver.openInputStream(uri); // Safe
+            contentResolver.openInputStream(uri); // $ SPURIOUS: hasTaintFlow
         }
         // Allow list checks
         {
@@ -78,13 +78,13 @@ public class Test extends Activity {
                     java.nio.file.FileSystems.getDefault().getPath(path).normalize();
             if (!normalized.startsWith("/safe/path"))
                 throw new SecurityException();
-            contentResolver.openInputStream(uri); // Safe
+            contentResolver.openInputStream(uri); // $ SPURIOUS: hasTaintFlow
         }
         {
             ContentResolver contentResolver = getContentResolver();
             Uri uri = (Uri) getIntent().getParcelableExtra("URI_EXTRA");
             validateWithAllowList(uri);
-            contentResolver.openInputStream(uri); // Safe
+            contentResolver.openInputStream(uri);// $ SPURIOUS: hasTaintFlow
         }
         // Block list checks
         {
@@ -103,13 +103,13 @@ public class Test extends Activity {
                     java.nio.file.FileSystems.getDefault().getPath(path).normalize();
             if (normalized.startsWith("/data"))
                 throw new SecurityException();
-            contentResolver.openInputStream(uri); // Safe
+            contentResolver.openInputStream(uri); // $ SPURIOUS: hasTaintFlow
         }
         {
             ContentResolver contentResolver = getContentResolver();
             Uri uri = (Uri) getIntent().getParcelableExtra("URI_EXTRA");
             validateWithBlockList(uri);
-            contentResolver.openInputStream(uri); // Safe
+            contentResolver.openInputStream(uri); // $ SPURIOUS: hasTaintFlow
         }
     }
 }
