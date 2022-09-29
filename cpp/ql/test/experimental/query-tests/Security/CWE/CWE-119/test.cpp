@@ -149,11 +149,11 @@ void test5(unsigned size, char *buf, unsigned anotherSize) {
 
     strncpy(str->string, buf, str->size); // GOOD
     strncpy(str->string, buf, str->size - 1); // GOOD
-    strncpy(str->string, buf, str->size + 1); // BAD [NOT DETECTED]
+    strncpy(str->string, buf, str->size + 1); // BAD
 
-    strncpy(str->string, buf, size); // BAD [NOT DETECTED]
+    strncpy(str->string, buf, size); // BAD
     strncpy(str->string, buf, size - 1); // GOOD
-    strncpy(str->string, buf, size + 1); // BAD [NOT DETECTED]
+    strncpy(str->string, buf, size + 1); // BAD
 
     if(anotherSize < str->size) {
         strncpy(str->string, buf, anotherSize); // GOOD
@@ -172,7 +172,7 @@ void test5(unsigned size, char *buf, unsigned anotherSize) {
     }
 
     if(anotherSize <= size) {
-        strncpy(str->string, buf, anotherSize); // BAD [NOT DETECTED]
+        strncpy(str->string, buf, anotherSize); // BAD
     }
 
     if(anotherSize <= size - 1) {
@@ -184,7 +184,7 @@ void test5(unsigned size, char *buf, unsigned anotherSize) {
     }
 
     if(anotherSize < size + 1) {
-        strncpy(str->string, buf, anotherSize); // BAD [NOT DETECTED]
+        strncpy(str->string, buf, anotherSize); // BAD
     }
 
     if(anotherSize < size - 1) {
@@ -192,19 +192,19 @@ void test5(unsigned size, char *buf, unsigned anotherSize) {
     }
 
     if(anotherSize <= str->size + 1) {
-        strncpy(str->string, buf, anotherSize); // BAD [NOT DETECTED]
+        strncpy(str->string, buf, anotherSize); // BAD
     }
 
     if(anotherSize <= size + 1) {
-        strncpy(str->string, buf, anotherSize); // BAD [NOT DETECTED]
+        strncpy(str->string, buf, anotherSize); // BAD
     }
 
     if(anotherSize <= str->size + 2) {
-        strncpy(str->string, buf, anotherSize); // BAD [NOT DETECTED]
+        strncpy(str->string, buf, anotherSize); // BAD
     }
 
     if(anotherSize <= size + 2) {
-        strncpy(str->string, buf, anotherSize); // BAD [NOT DETECTED]
+        strncpy(str->string, buf, anotherSize); // BAD
     }
 }
 
