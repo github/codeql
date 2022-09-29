@@ -530,6 +530,22 @@ public class DataFlow
         Check(x.field);
         Check(y.field);
     }
+
+    public void M9(string choice)
+    {
+        var x = new SimpleClass();
+        var y = new SimpleClass();
+        var z = new SimpleClass();
+        TaintField(choice switch
+        {
+            "x" => x,
+            "y" => y,
+            _ => z
+        });
+        Check(x.field);
+        Check(y.field);
+        Check(z.field);
+    }
 }
 
 static class IEnumerableExtensions
