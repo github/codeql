@@ -163,7 +163,8 @@
 | GlobalDataFlow.cs:510:18:510:34 | object creation of type SimpleClass | normal | GlobalDataFlow.cs:510:18:510:34 | object creation of type SimpleClass |
 | GlobalDataFlow.cs:511:18:511:34 | object creation of type SimpleClass | normal | GlobalDataFlow.cs:511:18:511:34 | object creation of type SimpleClass |
 | GlobalDataFlow.cs:512:18:512:34 | object creation of type SimpleClass | normal | GlobalDataFlow.cs:512:18:512:34 | object creation of type SimpleClass |
-| GlobalDataFlow.cs:525:44:525:47 | delegate call | normal | GlobalDataFlow.cs:525:44:525:47 | delegate call |
+| GlobalDataFlow.cs:521:17:521:36 | object creation of type SubSimpleClass | normal | GlobalDataFlow.cs:521:17:521:36 | object creation of type SubSimpleClass |
+| GlobalDataFlow.cs:534:44:534:47 | delegate call | normal | GlobalDataFlow.cs:534:44:534:47 | delegate call |
 | Splitting.cs:8:17:8:31 | [b (line 3): false] call to method Return<String> | normal | Splitting.cs:8:17:8:31 | [b (line 3): false] call to method Return<String> |
 | Splitting.cs:8:17:8:31 | [b (line 3): true] call to method Return<String> | normal | Splitting.cs:8:17:8:31 | [b (line 3): true] call to method Return<String> |
 | Splitting.cs:20:22:20:30 | call to method Return<String> | normal | Splitting.cs:20:22:20:30 | call to method Return<String> |
