@@ -31,9 +31,12 @@ SummaryCall summaryDataFlowCall(Node receiver) { result.getReceiver() = receiver
 DataFlowType getContentType(Content c) { result = c.getType() }
 
 /** Gets the return type of kind `rk` for callable `c`. */
+bindingset[c]
 DataFlowType getReturnType(SummarizedCallable c, ReturnKind rk) {
-  result = getErasedRepr(c.getReturnType()) and
-  exists(rk)
+  rk instanceof NormalReturnKind and
+  result = getErasedRepr(c.getReturnType())
+  or
+  rk = any(JumpReturnKind jrk | result = getErasedRepr(exprNode(jrk.getTarget()).getTypeBound()))
 }
 
 /**
@@ -51,8 +54,8 @@ DataFlowType getCallbackParameterType(DataFlowType t, int i) {
  * callback of type `t`.
  */
 DataFlowType getCallbackReturnType(DataFlowType t, ReturnKind rk) {
-  result = getErasedRepr(t.(FunctionalInterface).getRunMethod().getReturnType()) and
-  exists(rk)
+  rk instanceof NormalReturnKind and
+  result = getErasedRepr(t.(FunctionalInterface).getRunMethod().getReturnType())
 }
 
 bindingset[provenance]
@@ -169,7 +172,7 @@ predicate sinkElement(SourceOrSinkElement e, string input, string kind, boolean 
 }
 
 /** Gets the return kind corresponding to specification `"ReturnValue"`. */
-ReturnKind getReturnValueKind() { any() }
+NormalReturnKind getReturnValueKind() { any() }
 
 private newtype TInterpretNode =
   TElement(SourceOrSinkElement n) or

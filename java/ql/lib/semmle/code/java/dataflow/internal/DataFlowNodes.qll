@@ -401,7 +401,7 @@ module Private {
     }
 
     /** Gets the kind of this returned value. */
-    ReturnKind getKind() { any() }
+    NormalReturnKind getKind() { any() }
   }
 
   /** A data flow node that represents the output of a call. */
@@ -439,7 +439,9 @@ module Private {
     }
 
     /** Holds if this summary node is a return node. */
-    predicate isReturn() { FlowSummaryImpl::Private::summaryReturnNode(this, _) }
+    predicate isReturn() {
+      exists(NormalReturnKind rk | FlowSummaryImpl::Private::summaryReturnNode(this, rk))
+    }
 
     /** Holds if this summary node is an out node for `call`. */
     predicate isOut(DataFlowCall call) { FlowSummaryImpl::Private::summaryOutNode(call, this, _) }

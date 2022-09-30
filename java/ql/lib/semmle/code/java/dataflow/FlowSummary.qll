@@ -5,6 +5,7 @@
 import java
 private import internal.FlowSummaryImpl as Impl
 private import internal.DataFlowDispatch
+private import internal.DataFlowPrivate
 private import internal.DataFlowUtil
 
 // import all instances of SummarizedCallable below
@@ -26,6 +27,9 @@ module SummaryComponent {
 
   /** Gets a summary component that represents the return value of a call. */
   SummaryComponent return() { result = return(_) }
+
+  /** Gets a summary component that represents a jump to `c`. */
+  SummaryComponent jump(Call c) { result = return(any(JumpReturnKind jrk | jrk.getTarget() = c)) }
 }
 
 class SummaryComponentStack = Impl::Public::SummaryComponentStack;
@@ -44,6 +48,9 @@ module SummaryComponentStack {
 
   /** Gets a singleton stack representing a (normal) return. */
   SummaryComponentStack return() { result = singleton(SummaryComponent::return()) }
+
+  /** Gets a singleton stack representing a jump to `c`. */
+  SummaryComponentStack jump(Call c) { result = singleton(SummaryComponent::jump(c)) }
 }
 
 class SummarizedCallable = Impl::Public::SummarizedCallable;
