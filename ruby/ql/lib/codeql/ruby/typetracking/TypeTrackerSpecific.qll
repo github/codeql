@@ -34,6 +34,32 @@ class OptionalTypeTrackerContent extends DataFlowPrivate::TOptionalContentSet {
   }
 }
 
+private newtype TContentFilter =
+  MkElementFilter() or
+  MkPairValueFilter()
+
+/**
+ * A label to use for `WithContent` and `WithoutContent` steps, restricting
+ * which `ContentSet` may pass through.
+ */
+class ContentFilter extends TContentFilter {
+  /** Gets a string representation of this content filter. */
+  string toString() {
+    this = MkElementFilter() and result = "elements"
+    or
+    this = MkPairValueFilter() and result = "pair value"
+  }
+
+  /** Gets the content of a type-tracker that matches this filter. */
+  TypeTrackerContent getAMatchingContent() {
+    this = MkElementFilter() and
+    result.getAReadContent() instanceof DataFlow::Content::ElementContent
+    or
+    this = MkPairValueFilter() and
+    result.getAReadContent() instanceof DataFlow::Content::PairValueContent
+  }
+}
+
 /**
  * Holds if a value stored with `storeContents` can be read back with `loadContents`.
  */
@@ -255,6 +281,38 @@ predicate basicLoadStoreStep(
 }
 
 /**
+ * Holds if type-tracking should step from `nodeFrom` to `nodeTo` but block flow of contents matched by `filter` through here.
+ */
+predicate basicWithoutContentStep(Node nodeFrom, Node nodeTo, ContentFilter filter) {
+  exists(
+    SummarizedCallable callable, DataFlowPublic::CallNode call, SummaryComponentStack input,
+    SummaryComponentStack output
+  |
+    hasWithoutContentSummary(callable, filter, pragma[only_bind_into](input),
+      pragma[only_bind_into](output)) and
+    call.asExpr().getExpr() = callable.getACallSimple() and
+    nodeFrom = evaluateSummaryComponentStackLocal(callable, call, input) and
+    nodeTo = evaluateSummaryComponentStackLocal(callable, call, output)
+  )
+}
+
+/**
+ * Holds if type-tracking should step from `nodeFrom` to `nodeTo` if inside a content matched by `filter`.
+ */
+predicate basicWithContentStep(Node nodeFrom, Node nodeTo, ContentFilter filter) {
+  exists(
+    SummarizedCallable callable, DataFlowPublic::CallNode call, SummaryComponentStack input,
+    SummaryComponentStack output
+  |
+    hasWithContentSummary(callable, filter, pragma[only_bind_into](input),
+      pragma[only_bind_into](output)) and
+    call.asExpr().getExpr() = callable.getACallSimple() and
+    nodeFrom = evaluateSummaryComponentStackLocal(callable, call, input) and
+    nodeTo = evaluateSummaryComponentStackLocal(callable, call, output)
+  )
+}
+
+/**
  * A utility class that is equivalent to `boolean` but does not require type joining.
  */
 class Boolean extends boolean {
@@ -287,6 +345,78 @@ private predicate hasLoadStoreSummary(
   callable
       .propagatesFlow(push(SummaryComponent::content(loadContents), input),
         push(SummaryComponent::content(storeContents), output), true)
+}
+
+/**
+ * Gets a content filter to use for a `WithoutContent[content]` step, or has no result if
+ * the step should be treated as ordinary flow.
+ *
+ * `WithoutContent` is often used to perform strong updates on individual collection elements, but for
+ * type-tracking this is rarely beneficial and quite expensive. However, `WithoutContent` can be quite useful
+ * for restricting the type of an object, and in these cases we translate it to a filter.
+ */
+private ContentFilter getFilterFromWithoutContentStep(DataFlow::ContentSet content) {
+  (
+    content.isAnyElement()
+    or
+    content.isElementLowerBound(_)
+    or
+    content.isElementLowerBoundOrUnknown(_)
+    or
+    content.isSingleton(any(DataFlow::Content::UnknownElementContent c))
+  ) and
+  result = MkElementFilter()
+  or
+  content.isSingleton(any(DataFlow::Content::UnknownPairValueContent c)) and
+  result = MkPairValueFilter()
+}
+
+pragma[nomagic]
+private predicate hasWithoutContentSummary(
+  SummarizedCallable callable, ContentFilter filter, SummaryComponentStack input,
+  SummaryComponentStack output
+) {
+  exists(DataFlow::ContentSet content |
+    callable.propagatesFlow(push(SummaryComponent::withoutContent(content), input), output, true) and
+    filter = getFilterFromWithoutContentStep(content) and
+    input != output
+  )
+}
+
+/**
+ * Gets a content filter to use for a `WithoutContent[content]` step, or has no result if
+ * the step should be treated as ordinary flow.
+ *
+ * `WithoutContent` is often used to perform strong updates on individual collection elements, but for
+ * type-tracking this is rarely beneficial and quite expensive. However, `WithoutContent` can be quite useful
+ * for restricting the type of an object, and in these cases we translate it to a filter.
+ */
+private ContentFilter getFilterFromWithContentStep(DataFlow::ContentSet content) {
+  (
+    content.isAnyElement()
+    or
+    content.isElementLowerBound(_)
+    or
+    content.isElementLowerBoundOrUnknown(_)
+    or
+    content.isSingleton(any(DataFlow::Content::ElementContent c))
+  ) and
+  result = MkElementFilter()
+  or
+  content.isSingleton(any(DataFlow::Content::PairValueContent c)) and
+  result = MkPairValueFilter()
+}
+
+pragma[nomagic]
+private predicate hasWithContentSummary(
+  SummarizedCallable callable, ContentFilter filter, SummaryComponentStack input,
+  SummaryComponentStack output
+) {
+  exists(DataFlow::ContentSet content |
+    callable.propagatesFlow(push(SummaryComponent::withContent(content), input), output, true) and
+    filter = getFilterFromWithContentStep(content) and
+    input != output
+  )
 }
 
 /**
@@ -367,5 +497,11 @@ private DataFlow::Node evaluateSummaryComponentStackLocal(
     or
     head = SummaryComponent::return() and
     result.(DataFlowPrivate::SynthReturnNode).getCfgScope() = prev.asExpr().getExpr()
+    or
+    exists(DataFlow::ContentSet content |
+      head = SummaryComponent::withoutContent(content) and
+      not exists(getFilterFromWithoutContentStep(content)) and
+      result = prev
+    )
   )
 }
