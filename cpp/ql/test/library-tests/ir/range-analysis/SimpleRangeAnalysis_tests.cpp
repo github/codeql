@@ -1,4 +1,4 @@
-template<typename T> void range(T);
+#include "test_util.h"
 
 struct List {
   struct List* next;
