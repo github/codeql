@@ -1265,7 +1265,14 @@ open class KotlinUsesExtractor(
             f.parentClassOrNull?.let { parentClass ->
                 getJavaEquivalentClass(parentClass)?.let { javaClass ->
                     if (javaClass != parentClass) {
-                        val jvmName = getFunctionShortName(f).nameInDB
+                        var jvmName = getFunctionShortName(f).nameInDB
+                        if (f.name.asString() == "get" && parentClass.fqNameWhenAvailable?.asString() == "kotlin.String") {
+                            // `kotlin.String.get` has an equivalent `java.lang.String.get`, which in turn will be stored in the DB as `java.lang.String.charAt`.
+                            // Maybe all operators should be handled the same way, but so far I only found this case that needed to be special cased. This is the
+                            // only operator in `JvmNames.specialFunctions`
+                            jvmName = "get"
+                        }
+
                         // Look for an exact type match...
                         javaClass.declarations.findSubType<IrFunction> { decl ->
                             decl.name.asString() == jvmName &&
