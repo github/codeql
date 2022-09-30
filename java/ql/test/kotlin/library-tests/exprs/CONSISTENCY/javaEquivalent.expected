@@ -12,8 +12,6 @@
 | file://:0:0:0:0 | Couldn't find a Java equivalent function to kotlin.Byte.toInt in java.lang.Byte |
 | file://:0:0:0:0 | Couldn't find a Java equivalent function to kotlin.Byte.toInt in java.lang.Byte |
 | file://:0:0:0:0 | Couldn't find a Java equivalent function to kotlin.Byte.toInt in java.lang.Byte |
-| file://:0:0:0:0 | Couldn't find a Java equivalent function to kotlin.Enum.<init> in java.lang.Enum |
-| file://:0:0:0:0 | Couldn't find a Java equivalent function to kotlin.Enum.<init> in java.lang.Enum |
 | file://:0:0:0:0 | Couldn't find a Java equivalent function to kotlin.Int.and in java.lang.Integer |
 | file://:0:0:0:0 | Couldn't find a Java equivalent function to kotlin.Int.dec in java.lang.Integer |
 | file://:0:0:0:0 | Couldn't find a Java equivalent function to kotlin.Int.inv in java.lang.Integer |

@@ -1276,7 +1276,7 @@ open class KotlinUsesExtractor(
                         javaClass.declarations.findSubType<IrFunction> { decl ->
                             decl.name.asString() == jvmName &&
                             decl.valueParameters.size == f.valueParameters.size &&
-                            decl.valueParameters.zip(f.valueParameters).all { p -> erase(p.first.type) == erase(p.second.type) }
+                            decl.valueParameters.zip(f.valueParameters).all { p -> erase(p.first.type).classifierOrNull == erase(p.second.type).classifierOrNull }
                         } ?:
                         // Or check property accessors:
                         (f.propertyIfAccessor as? IrProperty)?.let { kotlinProp ->
