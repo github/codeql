@@ -252,7 +252,7 @@ private module CallAllocationExprBase<CallAllocationExprTarget Target> {
 
   /**
    * A module that abstracts over a collection of predicates in
-   * the `Param` module). This should really be memeber-predicates
+   * the `Param` module). This should really be member-predicates
    * on `CallAllocationExprTarget`, but we cannot yet write this in QL.
    */
   module With<Param P> {
