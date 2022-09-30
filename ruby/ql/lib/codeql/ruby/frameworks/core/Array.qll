@@ -394,7 +394,7 @@ module Array {
     bindingset[this]
     AtSummary() { mc.getMethodName() = "at" }
 
-    override MethodCall getACall() { result = mc }
+    override MethodCall getACallSimple() { result = mc }
   }
 
   private class AtKnownSummary extends AtSummary {
@@ -525,7 +525,7 @@ module Array {
     bindingset[this]
     DeleteSummary() { mc.getMethodName() = "delete" }
 
-    final override MethodCall getACall() { result = mc }
+    final override MethodCall getACallSimple() { result = mc }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       (
@@ -612,7 +612,7 @@ module Array {
       preservesValue = true
     }
 
-    override MethodCall getACall() { result = mc }
+    override MethodCall getACallSimple() { result = mc }
   }
 
   private class DeleteAtKnownSummary extends DeleteAtSummary {
@@ -669,7 +669,7 @@ module Array {
 
     DeleteIfSummary() { this = lastBlockParam(mc, "delete_if", lastBlockParam) }
 
-    final override MethodCall getACall() { result = mc }
+    final override MethodCall getACallSimple() { result = mc }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       (
@@ -743,7 +743,7 @@ module Array {
           ) + ")"
     }
 
-    override MethodCall getACall() { result = dig }
+    override MethodCall getACallSimple() { result = dig }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       input = "Argument[self]" + buildDigInputSpec(dig) and
@@ -794,7 +794,7 @@ module Array {
     bindingset[this]
     FetchSummary() { mc.getMethodName() = "fetch" }
 
-    override MethodCall getACall() { result = mc }
+    override MethodCall getACallSimple() { result = mc }
   }
 
   private class FetchKnownSummary extends FetchSummary {
@@ -847,7 +847,7 @@ module Array {
     bindingset[this]
     FillSummary() { mc.getMethodName() = "fill" }
 
-    override MethodCall getACall() { result = mc }
+    override MethodCall getACallSimple() { result = mc }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       input = ["Argument[0]", "Argument[block].ReturnValue"] and
@@ -935,7 +935,7 @@ module Array {
     bindingset[this]
     InsertSummary() { mc.getMethodName() = "insert" }
 
-    override MethodCall getACall() { result = mc }
+    override MethodCall getACallSimple() { result = mc }
   }
 
   private class InsertKnownSummary extends InsertSummary {
@@ -1014,7 +1014,7 @@ module Array {
       preservesValue = true
     }
 
-    override MethodCall getACall() { result = mc }
+    override MethodCall getACallSimple() { result = mc }
   }
 
   private class KeepIfSummary extends SummarizedCallable {
@@ -1023,7 +1023,7 @@ module Array {
 
     KeepIfSummary() { this = lastBlockParam(mc, "keep_if", lastBlockParam) }
 
-    final override MethodCall getACall() { result = mc }
+    final override MethodCall getACallSimple() { result = mc }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       (
@@ -1050,7 +1050,7 @@ module Array {
     bindingset[this]
     LastSummary() { mc.getMethodName() = "last" }
 
-    override MethodCall getACall() { result = mc }
+    override MethodCall getACallSimple() { result = mc }
   }
 
   private class LastNoArgSummary extends LastSummary {
@@ -1104,7 +1104,7 @@ module Array {
     bindingset[this]
     PopSummary() { mc.getMethodName() = "pop" }
 
-    override MethodCall getACall() { result = mc }
+    override MethodCall getACallSimple() { result = mc }
   }
 
   private class PopNoArgSummary extends PopSummary {
@@ -1142,7 +1142,7 @@ module Array {
       this = mc.getMethodName() + "(" + mc.getNumberOfArguments() + ")"
     }
 
-    override MethodCall getACall() { result = mc }
+    override MethodCall getACallSimple() { result = mc }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       exists(int num | num = mc.getNumberOfArguments() and preservesValue = true |
@@ -1206,7 +1206,7 @@ module Array {
 
     RejectBangSummary() { this = lastBlockParam(mc, "reject!", lastBlockParam) }
 
-    final override MethodCall getACall() { result = mc }
+    final override MethodCall getACallSimple() { result = mc }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       (
@@ -1264,7 +1264,7 @@ module Array {
     bindingset[this]
     RotateSummary() { mc.getMethodName() = "rotate" }
 
-    override MethodCall getACall() { result = mc }
+    override MethodCall getACallSimple() { result = mc }
   }
 
   private class RotateKnownSummary extends RotateSummary {
@@ -1315,7 +1315,7 @@ module Array {
     bindingset[this]
     RotateBangSummary() { mc.getMethodName() = "rotate!" }
 
-    override MethodCall getACall() { result = mc }
+    override MethodCall getACallSimple() { result = mc }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       input = "Argument[self].WithoutElement[any]" and
@@ -1380,7 +1380,7 @@ module Array {
       )
     }
 
-    final override MethodCall getACall() { result = mc }
+    final override MethodCall getACallSimple() { result = mc }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       (
@@ -1407,7 +1407,7 @@ module Array {
     bindingset[this]
     ShiftSummary() { mc.getMethodName() = "shift" }
 
-    override MethodCall getACall() { result = mc }
+    override MethodCall getACallSimple() { result = mc }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       input = "Argument[self].WithoutElement[any]" and
@@ -1521,7 +1521,7 @@ module Array {
       preservesValue = true
     }
 
-    override Call getACall() { result = mc }
+    override Call getACallSimple() { result = mc }
   }
 
   /** A call to `slice!` with a known integer index. */
@@ -1766,7 +1766,7 @@ module Array {
     bindingset[this]
     ValuesAtSummary() { mc.getMethodName() = "values_at" }
 
-    override Call getACall() { result = mc }
+    override Call getACallSimple() { result = mc }
   }
 
   private string getValuesAtComponent(MethodCall mc, int i) {
@@ -1929,7 +1929,7 @@ module Enumerable {
     bindingset[this]
     DropSummary() { mc.getMethodName() = "drop" }
 
-    override MethodCall getACall() { result = mc }
+    override MethodCall getACallSimple() { result = mc }
   }
 
   private class DropKnownSummary extends DropSummary {
@@ -2073,7 +2073,7 @@ module Enumerable {
     bindingset[this]
     FirstSummary() { mc.getMethodName() = "first" }
 
-    override MethodCall getACall() { result = mc }
+    override MethodCall getACallSimple() { result = mc }
   }
 
   private class FirstNoArgSummary extends FirstSummary {
@@ -2133,7 +2133,7 @@ module Enumerable {
     bindingset[this]
     GrepSummary() { mc.getMethodName() = methodName }
 
-    override MethodCall getACall() { result = mc }
+    override MethodCall getACallSimple() { result = mc }
   }
 
   private class GrepBlockSummary extends GrepSummary {
@@ -2184,7 +2184,7 @@ module Enumerable {
     bindingset[this]
     InjectSummary() { mc.getMethodName() = methodName }
 
-    override MethodCall getACall() { result = mc }
+    override MethodCall getACallSimple() { result = mc }
   }
 
   private class InjectNoArgSummary extends InjectSummary {
@@ -2237,7 +2237,7 @@ module Enumerable {
     bindingset[this]
     MinOrMaxBySummary() { mc.getMethodName() = methodName }
 
-    override MethodCall getACall() { result = mc }
+    override MethodCall getACallSimple() { result = mc }
   }
 
   private class MinOrMaxByNoArgSummary extends MinOrMaxBySummary {
@@ -2277,7 +2277,7 @@ module Enumerable {
     bindingset[this]
     MinOrMaxSummary() { mc.getMethodName() = methodName }
 
-    override MethodCall getACall() { result = mc }
+    override MethodCall getACallSimple() { result = mc }
   }
 
   private class MinOrMaxNoArgNoBlockSummary extends MinOrMaxSummary {
@@ -2343,7 +2343,7 @@ module Enumerable {
     bindingset[this]
     MinmaxSummary() { mc.getMethodName() = "minmax" }
 
-    override MethodCall getACall() { result = mc }
+    override MethodCall getACallSimple() { result = mc }
   }
 
   private class MinmaxNoArgNoBlockSummary extends MinmaxSummary {
@@ -2404,7 +2404,7 @@ module Enumerable {
       )
     }
 
-    final override MethodCall getACall() { result = mc }
+    final override MethodCall getACallSimple() { result = mc }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       input = "Argument[self].Element[any]" and
@@ -2419,7 +2419,7 @@ module Enumerable {
 
     RejectSummary() { this = lastBlockParam(mc, "reject", lastBlockParam) }
 
-    final override MethodCall getACall() { result = mc }
+    final override MethodCall getACallSimple() { result = mc }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       (
@@ -2448,7 +2448,7 @@ module Enumerable {
       )
     }
 
-    final override MethodCall getACall() { result = mc }
+    final override MethodCall getACallSimple() { result = mc }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       (
@@ -2523,7 +2523,7 @@ module Enumerable {
     bindingset[this]
     TakeSummary() { mc.getMethodName() = "take" }
 
-    override MethodCall getACall() { result = mc }
+    override MethodCall getACallSimple() { result = mc }
   }
 
   private class TakeKnownSummary extends TakeSummary {
@@ -2609,7 +2609,7 @@ module Enumerable {
     bindingset[this]
     ZipSummary() { mc.getMethodName() = "zip" }
 
-    override MethodCall getACall() { result = mc }
+    override MethodCall getACallSimple() { result = mc }
   }
 
   private class ZipBlockSummary extends ZipSummary {
