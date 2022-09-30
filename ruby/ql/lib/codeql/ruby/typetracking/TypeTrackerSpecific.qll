@@ -17,6 +17,10 @@ class TypeTrackingNode = DataFlowPublic::LocalSourceNode;
 
 class TypeTrackerContent = DataFlowPublic::ContentSet;
 
+private module SCS = SummaryComponentStack;
+
+private module SC = SummaryComponent;
+
 /**
  * An optional content set, that is, a `ContentSet` or the special "no content set" value.
  */
@@ -64,13 +68,13 @@ private predicate summarizedLocalStep(Node nodeFrom, Node nodeTo) {
   )
   or
   exists(
-    SummarizedCallable callable, DataFlowPublic::CallNode call, SummaryComponent input,
-    SummaryComponent output
+    SummarizedCallable callable, DataFlowPublic::CallNode call, SummaryComponentStack input,
+    SummaryComponentStack output
   |
-    hasLevelSummary(callable, input, output) and
+    callable.propagatesFlow(input, output, true) and
     call.asExpr().getExpr() = callable.getACallSimple() and
-    nodeFrom = evaluateSummaryComponentLocal(call, input) and
-    nodeTo = evaluateSummaryComponentLocal(call, output)
+    nodeFrom = evaluateSummaryComponentStackLocal(call, input) and
+    nodeTo = evaluateSummaryComponentStackLocal(call, output)
   )
 }
 
@@ -181,13 +185,13 @@ predicate basicStoreStep(Node nodeFrom, Node nodeTo, DataFlow::ContentSet conten
   postUpdateStoreStep(nodeFrom, nodeTo, contents)
   or
   exists(
-    SummarizedCallable callable, DataFlowPublic::CallNode call, SummaryComponent input,
-    SummaryComponent output
+    SummarizedCallable callable, DataFlowPublic::CallNode call, SummaryComponentStack input,
+    SummaryComponentStack output
   |
     hasStoreSummary(callable, contents, input, output) and
     call.asExpr().getExpr() = callable.getACallSimple() and
-    nodeFrom = evaluateSummaryComponentLocal(call, input) and
-    nodeTo = evaluateSummaryComponentLocal(call, output)
+    nodeFrom = evaluateSummaryComponentStackLocal(call, input) and
+    nodeTo = evaluateSummaryComponentStackLocal(call, output)
   )
 }
 
@@ -221,13 +225,13 @@ predicate basicLoadStep(Node nodeFrom, Node nodeTo, DataFlow::ContentSet content
   )
   or
   exists(
-    SummarizedCallable callable, DataFlowPublic::CallNode call, SummaryComponent input,
-    SummaryComponent output
+    SummarizedCallable callable, DataFlowPublic::CallNode call, SummaryComponentStack input,
+    SummaryComponentStack output
   |
     hasLoadSummary(callable, contents, input, output) and
     call.asExpr().getExpr() = callable.getACallSimple() and
-    nodeFrom = evaluateSummaryComponentLocal(call, input) and
-    nodeTo = evaluateSummaryComponentLocal(call, output)
+    nodeFrom = evaluateSummaryComponentStackLocal(call, input) and
+    nodeTo = evaluateSummaryComponentStackLocal(call, output)
   )
 }
 
@@ -238,13 +242,13 @@ predicate basicLoadStoreStep(
   Node nodeFrom, Node nodeTo, DataFlow::ContentSet loadContent, DataFlow::ContentSet storeContent
 ) {
   exists(
-    SummarizedCallable callable, DataFlowPublic::CallNode call, SummaryComponent input,
-    SummaryComponent output
+    SummarizedCallable callable, DataFlowPublic::CallNode call, SummaryComponentStack input,
+    SummaryComponentStack output
   |
     hasLoadStoreSummary(callable, loadContent, storeContent, input, output) and
     call.asExpr().getExpr() = callable.getACallSimple() and
-    nodeFrom = evaluateSummaryComponentLocal(call, input) and
-    nodeTo = evaluateSummaryComponentLocal(call, output)
+    nodeFrom = evaluateSummaryComponentStackLocal(call, input) and
+    nodeTo = evaluateSummaryComponentStackLocal(call, output)
   )
 }
 
@@ -257,37 +261,30 @@ class Boolean extends boolean {
 
 private import SummaryComponentStack
 
-private predicate hasLevelSummary(
-  SummarizedCallable callable, SummaryComponent input, SummaryComponent output
-) {
-  callable.propagatesFlow(singleton(input), singleton(output), true)
-}
-
+pragma[nomagic]
 private predicate hasStoreSummary(
-  SummarizedCallable callable, DataFlow::ContentSet contents, SummaryComponent input,
-  SummaryComponent output
+  SummarizedCallable callable, DataFlow::ContentSet contents, SummaryComponentStack input,
+  SummaryComponentStack output
 ) {
-  callable
-      .propagatesFlow(singleton(input),
-        push(SummaryComponent::content(contents), singleton(output)), true)
+  callable.propagatesFlow(input, push(SummaryComponent::content(contents), output), true)
 }
 
+pragma[nomagic]
 private predicate hasLoadSummary(
-  SummarizedCallable callable, DataFlow::ContentSet contents, SummaryComponent input,
-  SummaryComponent output
+  SummarizedCallable callable, DataFlow::ContentSet contents, SummaryComponentStack input,
+  SummaryComponentStack output
 ) {
-  callable
-      .propagatesFlow(push(SummaryComponent::content(contents), singleton(input)),
-        singleton(output), true)
+  callable.propagatesFlow(push(SummaryComponent::content(contents), input), output, true)
 }
 
+pragma[nomagic]
 private predicate hasLoadStoreSummary(
   SummarizedCallable callable, DataFlow::ContentSet loadContents,
-  DataFlow::ContentSet storeContents, SummaryComponent input, SummaryComponent output
+  DataFlow::ContentSet storeContents, SummaryComponentStack input, SummaryComponentStack output
 ) {
   callable
-      .propagatesFlow(push(SummaryComponent::content(loadContents), singleton(input)),
-        push(SummaryComponent::content(storeContents), singleton(output)), true)
+      .propagatesFlow(push(SummaryComponent::content(loadContents), input),
+        push(SummaryComponent::content(storeContents), output), true)
 }
 
 /**
@@ -295,8 +292,8 @@ private predicate hasLoadStoreSummary(
  * as specified by `component`.
  */
 bindingset[call, component]
-private DataFlowPublic::Node evaluateSummaryComponentLocal(
-  DataFlowPublic::CallNode call, SummaryComponent component
+private DataFlow::Node evaluateSummaryComponentLocal(
+  DataFlow::CallNode call, SummaryComponent component
 ) {
   exists(DataFlowDispatch::ParameterPosition pos |
     component = SummaryComponent::argument(pos) and
@@ -305,4 +302,50 @@ private DataFlowPublic::Node evaluateSummaryComponentLocal(
   or
   component = SummaryComponent::return() and
   result = call
+}
+
+/**
+ * Holds if `callable` is relevant for type-tracking and we therefore want `stack` to
+ * be evaluated locally at its call sites.
+ */
+private predicate dependsOnSummaryComponentStack(
+  SummarizedCallable callable, SummaryComponentStack stack
+) {
+  exists(callable.getACallSimple()) and
+  (
+    callable.propagatesFlow(stack, _, true)
+    or
+    callable.propagatesFlow(_, stack, true)
+  )
+  or
+  dependsOnSummaryComponentStack(callable, SCS::push(_, stack))
+}
+
+/**
+ * Gets a data flow node corresponding to the local input or output of `call`
+ * identified by `stack`, if possible.
+ */
+private DataFlow::Node evaluateSummaryComponentStackLocal(
+  DataFlow::CallNode call, SummaryComponentStack stack
+) {
+  exists(SummarizedCallable callable, SummaryComponent component |
+    dependsOnSummaryComponentStack(callable, stack) and
+    stack = SCS::singleton(component) and
+    call.asExpr().getExpr() = callable.getACallSimple() and
+    result = evaluateSummaryComponentLocal(call, component)
+  )
+  or
+  exists(DataFlow::Node prev, SummaryComponent head, SummaryComponentStack tail |
+    stack = SCS::push(head, tail) and
+    prev = evaluateSummaryComponentStackLocal(call, tail)
+  |
+    exists(DataFlowDispatch::ArgumentPosition apos, DataFlowDispatch::ParameterPosition ppos |
+      head = SummaryComponent::parameter(apos) and
+      DataFlowDispatch::parameterMatch(ppos, apos) and
+      result.(DataFlowPrivate::ParameterNodeImpl).isSourceParameterOf(prev.asExpr().getExpr(), ppos)
+    )
+    or
+    head = SummaryComponent::return() and
+    result.(DataFlowPrivate::SynthReturnNode).getCfgScope() = prev.asExpr().getExpr()
+  )
 }
