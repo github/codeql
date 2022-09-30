@@ -1,1 +1,5 @@
+| CodeQL Kotlin extractor | 2 |  | Couldn't find a Java equivalent function to kotlin.Int.and in java.lang.Integer | file://:0:0:0:0 | file://:0:0:0:0 |
+| CodeQL Kotlin extractor | 2 |  | Couldn't find a Java equivalent function to kotlin.Int.or in java.lang.Integer | file://:0:0:0:0 | file://:0:0:0:0 |
+| CodeQL Kotlin extractor | 2 |  | Couldn't find a Java equivalent function to kotlin.Int.plus in java.lang.Integer | file://:0:0:0:0 | file://:0:0:0:0 |
+| CodeQL Kotlin extractor | 2 |  | Couldn't find a Java equivalent function to kotlin.Int.times in java.lang.Integer | file://:0:0:0:0 | file://:0:0:0:0 |
 | CodeQL Kotlin extractor | 5 |  | Unbound symbol found, skipping extraction of expression | app/src/main/kotlin/testProject/App.kt:7:1:8:55 | app/src/main/kotlin/testProject/App.kt:7:1:8:55 |
