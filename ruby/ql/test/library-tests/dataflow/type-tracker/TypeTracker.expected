@@ -157,7 +157,9 @@ track
 | type_tracker.rb:34:18:34:20 | obj | type tracker with call steps | type_tracker.rb:44:5:44:13 | ...[...] |
 | type_tracker.rb:34:18:34:20 | obj | type tracker with call steps | type_tracker.rb:52:5:52:13 | ...[...] |
 | type_tracker.rb:34:18:34:20 | obj | type tracker with call steps with content element | type_tracker.rb:38:13:38:25 | call to [] |
+| type_tracker.rb:34:18:34:20 | obj | type tracker with call steps with content element | type_tracker.rb:44:5:44:13 | ...[...] |
 | type_tracker.rb:34:18:34:20 | obj | type tracker with call steps with content element | type_tracker.rb:50:14:50:26 | call to [] |
+| type_tracker.rb:34:18:34:20 | obj | type tracker with call steps with content element | type_tracker.rb:52:5:52:13 | ...[...] |
 | type_tracker.rb:34:18:34:20 | obj | type tracker with call steps with content element 0 or unknown | type_tracker.rb:35:11:35:15 | call to [] |
 | type_tracker.rb:34:18:34:20 | obj | type tracker with call steps with content element 0 or unknown | type_tracker.rb:42:14:42:26 | call to [] |
 | type_tracker.rb:34:18:34:20 | obj | type tracker with call steps with content element 0 or unknown | type_tracker.rb:46:14:46:26 | call to [] |
@@ -169,8 +171,11 @@ track
 | type_tracker.rb:34:18:34:20 | obj | type tracker without call steps | type_tracker.rb:40:5:40:12 | ...[...] |
 | type_tracker.rb:34:18:34:20 | obj | type tracker without call steps | type_tracker.rb:44:5:44:13 | ...[...] |
 | type_tracker.rb:34:18:34:20 | obj | type tracker without call steps | type_tracker.rb:52:5:52:13 | ...[...] |
+| type_tracker.rb:34:18:34:20 | obj | type tracker without call steps with content element | type_tracker.rb:34:1:53:3 | return return in throughArray |
 | type_tracker.rb:34:18:34:20 | obj | type tracker without call steps with content element | type_tracker.rb:38:13:38:25 | call to [] |
+| type_tracker.rb:34:18:34:20 | obj | type tracker without call steps with content element | type_tracker.rb:44:5:44:13 | ...[...] |
 | type_tracker.rb:34:18:34:20 | obj | type tracker without call steps with content element | type_tracker.rb:50:14:50:26 | call to [] |
+| type_tracker.rb:34:18:34:20 | obj | type tracker without call steps with content element | type_tracker.rb:52:5:52:13 | ...[...] |
 | type_tracker.rb:34:18:34:20 | obj | type tracker without call steps with content element 0 or unknown | type_tracker.rb:35:11:35:15 | call to [] |
 | type_tracker.rb:34:18:34:20 | obj | type tracker without call steps with content element 0 or unknown | type_tracker.rb:42:14:42:26 | call to [] |
 | type_tracker.rb:34:18:34:20 | obj | type tracker without call steps with content element 0 or unknown | type_tracker.rb:46:14:46:26 | call to [] |
@@ -213,21 +218,27 @@ track
 | type_tracker.rb:42:14:42:26 | call to [] | type tracker without call steps | type_tracker.rb:42:14:42:26 | call to [] |
 | type_tracker.rb:42:15:42:15 | 1 | type tracker without call steps | type_tracker.rb:42:15:42:15 | 1 |
 | type_tracker.rb:42:15:42:15 | 1 | type tracker without call steps | type_tracker.rb:44:5:44:13 | ...[...] |
+| type_tracker.rb:42:15:42:15 | 1 | type tracker without call steps with content element | type_tracker.rb:44:5:44:13 | ...[...] |
 | type_tracker.rb:42:15:42:15 | 1 | type tracker without call steps with content element 0 or unknown | type_tracker.rb:42:14:42:26 | call to [] |
 | type_tracker.rb:42:17:42:17 | 2 | type tracker without call steps | type_tracker.rb:42:17:42:17 | 2 |
 | type_tracker.rb:42:17:42:17 | 2 | type tracker without call steps | type_tracker.rb:44:5:44:13 | ...[...] |
+| type_tracker.rb:42:17:42:17 | 2 | type tracker without call steps with content element | type_tracker.rb:44:5:44:13 | ...[...] |
 | type_tracker.rb:42:17:42:17 | 2 | type tracker without call steps with content element 1 or unknown | type_tracker.rb:42:14:42:26 | call to [] |
 | type_tracker.rb:42:19:42:19 | 3 | type tracker without call steps | type_tracker.rb:42:19:42:19 | 3 |
 | type_tracker.rb:42:19:42:19 | 3 | type tracker without call steps | type_tracker.rb:44:5:44:13 | ...[...] |
+| type_tracker.rb:42:19:42:19 | 3 | type tracker without call steps with content element | type_tracker.rb:44:5:44:13 | ...[...] |
 | type_tracker.rb:42:19:42:19 | 3 | type tracker without call steps with content element 2 or unknown | type_tracker.rb:42:14:42:26 | call to [] |
 | type_tracker.rb:42:21:42:21 | 4 | type tracker without call steps | type_tracker.rb:42:21:42:21 | 4 |
 | type_tracker.rb:42:21:42:21 | 4 | type tracker without call steps | type_tracker.rb:44:5:44:13 | ...[...] |
+| type_tracker.rb:42:21:42:21 | 4 | type tracker without call steps with content element | type_tracker.rb:44:5:44:13 | ...[...] |
 | type_tracker.rb:42:21:42:21 | 4 | type tracker without call steps with content element 3 or unknown | type_tracker.rb:42:14:42:26 | call to [] |
 | type_tracker.rb:42:23:42:23 | 5 | type tracker without call steps | type_tracker.rb:42:23:42:23 | 5 |
 | type_tracker.rb:42:23:42:23 | 5 | type tracker without call steps | type_tracker.rb:44:5:44:13 | ...[...] |
+| type_tracker.rb:42:23:42:23 | 5 | type tracker without call steps with content element | type_tracker.rb:44:5:44:13 | ...[...] |
 | type_tracker.rb:42:23:42:23 | 5 | type tracker without call steps with content element 4 or unknown | type_tracker.rb:42:14:42:26 | call to [] |
 | type_tracker.rb:42:25:42:25 | 6 | type tracker without call steps | type_tracker.rb:42:25:42:25 | 6 |
 | type_tracker.rb:42:25:42:25 | 6 | type tracker without call steps | type_tracker.rb:44:5:44:13 | ...[...] |
+| type_tracker.rb:42:25:42:25 | 6 | type tracker without call steps with content element | type_tracker.rb:44:5:44:13 | ...[...] |
 | type_tracker.rb:42:25:42:25 | 6 | type tracker without call steps with content element 5 or unknown | type_tracker.rb:42:14:42:26 | call to [] |
 | type_tracker.rb:43:5:43:10 | [post] array2 | type tracker without call steps | type_tracker.rb:43:5:43:10 | [post] array2 |
 | type_tracker.rb:43:5:43:13 | call to []= | type tracker without call steps | type_tracker.rb:43:5:43:13 | call to []= |
@@ -262,26 +273,38 @@ track
 | type_tracker.rb:50:15:50:15 | 1 | type tracker without call steps | type_tracker.rb:34:1:53:3 | return return in throughArray |
 | type_tracker.rb:50:15:50:15 | 1 | type tracker without call steps | type_tracker.rb:50:15:50:15 | 1 |
 | type_tracker.rb:50:15:50:15 | 1 | type tracker without call steps | type_tracker.rb:52:5:52:13 | ...[...] |
+| type_tracker.rb:50:15:50:15 | 1 | type tracker without call steps with content element | type_tracker.rb:34:1:53:3 | return return in throughArray |
+| type_tracker.rb:50:15:50:15 | 1 | type tracker without call steps with content element | type_tracker.rb:52:5:52:13 | ...[...] |
 | type_tracker.rb:50:15:50:15 | 1 | type tracker without call steps with content element 0 or unknown | type_tracker.rb:50:14:50:26 | call to [] |
 | type_tracker.rb:50:17:50:17 | 2 | type tracker without call steps | type_tracker.rb:34:1:53:3 | return return in throughArray |
 | type_tracker.rb:50:17:50:17 | 2 | type tracker without call steps | type_tracker.rb:50:17:50:17 | 2 |
 | type_tracker.rb:50:17:50:17 | 2 | type tracker without call steps | type_tracker.rb:52:5:52:13 | ...[...] |
+| type_tracker.rb:50:17:50:17 | 2 | type tracker without call steps with content element | type_tracker.rb:34:1:53:3 | return return in throughArray |
+| type_tracker.rb:50:17:50:17 | 2 | type tracker without call steps with content element | type_tracker.rb:52:5:52:13 | ...[...] |
 | type_tracker.rb:50:17:50:17 | 2 | type tracker without call steps with content element 1 or unknown | type_tracker.rb:50:14:50:26 | call to [] |
 | type_tracker.rb:50:19:50:19 | 3 | type tracker without call steps | type_tracker.rb:34:1:53:3 | return return in throughArray |
 | type_tracker.rb:50:19:50:19 | 3 | type tracker without call steps | type_tracker.rb:50:19:50:19 | 3 |
 | type_tracker.rb:50:19:50:19 | 3 | type tracker without call steps | type_tracker.rb:52:5:52:13 | ...[...] |
+| type_tracker.rb:50:19:50:19 | 3 | type tracker without call steps with content element | type_tracker.rb:34:1:53:3 | return return in throughArray |
+| type_tracker.rb:50:19:50:19 | 3 | type tracker without call steps with content element | type_tracker.rb:52:5:52:13 | ...[...] |
 | type_tracker.rb:50:19:50:19 | 3 | type tracker without call steps with content element 2 or unknown | type_tracker.rb:50:14:50:26 | call to [] |
 | type_tracker.rb:50:21:50:21 | 4 | type tracker without call steps | type_tracker.rb:34:1:53:3 | return return in throughArray |
 | type_tracker.rb:50:21:50:21 | 4 | type tracker without call steps | type_tracker.rb:50:21:50:21 | 4 |
 | type_tracker.rb:50:21:50:21 | 4 | type tracker without call steps | type_tracker.rb:52:5:52:13 | ...[...] |
+| type_tracker.rb:50:21:50:21 | 4 | type tracker without call steps with content element | type_tracker.rb:34:1:53:3 | return return in throughArray |
+| type_tracker.rb:50:21:50:21 | 4 | type tracker without call steps with content element | type_tracker.rb:52:5:52:13 | ...[...] |
 | type_tracker.rb:50:21:50:21 | 4 | type tracker without call steps with content element 3 or unknown | type_tracker.rb:50:14:50:26 | call to [] |
 | type_tracker.rb:50:23:50:23 | 5 | type tracker without call steps | type_tracker.rb:34:1:53:3 | return return in throughArray |
 | type_tracker.rb:50:23:50:23 | 5 | type tracker without call steps | type_tracker.rb:50:23:50:23 | 5 |
 | type_tracker.rb:50:23:50:23 | 5 | type tracker without call steps | type_tracker.rb:52:5:52:13 | ...[...] |
+| type_tracker.rb:50:23:50:23 | 5 | type tracker without call steps with content element | type_tracker.rb:34:1:53:3 | return return in throughArray |
+| type_tracker.rb:50:23:50:23 | 5 | type tracker without call steps with content element | type_tracker.rb:52:5:52:13 | ...[...] |
 | type_tracker.rb:50:23:50:23 | 5 | type tracker without call steps with content element 4 or unknown | type_tracker.rb:50:14:50:26 | call to [] |
 | type_tracker.rb:50:25:50:25 | 6 | type tracker without call steps | type_tracker.rb:34:1:53:3 | return return in throughArray |
 | type_tracker.rb:50:25:50:25 | 6 | type tracker without call steps | type_tracker.rb:50:25:50:25 | 6 |
 | type_tracker.rb:50:25:50:25 | 6 | type tracker without call steps | type_tracker.rb:52:5:52:13 | ...[...] |
+| type_tracker.rb:50:25:50:25 | 6 | type tracker without call steps with content element | type_tracker.rb:34:1:53:3 | return return in throughArray |
+| type_tracker.rb:50:25:50:25 | 6 | type tracker without call steps with content element | type_tracker.rb:52:5:52:13 | ...[...] |
 | type_tracker.rb:50:25:50:25 | 6 | type tracker without call steps with content element 5 or unknown | type_tracker.rb:50:14:50:26 | call to [] |
 | type_tracker.rb:51:5:51:10 | [post] array4 | type tracker without call steps | type_tracker.rb:51:5:51:10 | [post] array4 |
 | type_tracker.rb:51:5:51:13 | call to []= | type tracker without call steps | type_tracker.rb:51:5:51:13 | call to []= |
