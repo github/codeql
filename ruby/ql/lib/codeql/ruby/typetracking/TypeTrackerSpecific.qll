@@ -73,8 +73,8 @@ private predicate summarizedLocalStep(Node nodeFrom, Node nodeTo) {
   |
     callable.propagatesFlow(input, output, true) and
     call.asExpr().getExpr() = callable.getACallSimple() and
-    nodeFrom = evaluateSummaryComponentStackLocal(call, input) and
-    nodeTo = evaluateSummaryComponentStackLocal(call, output)
+    nodeFrom = evaluateSummaryComponentStackLocal(callable, call, input) and
+    nodeTo = evaluateSummaryComponentStackLocal(callable, call, output)
   )
 }
 
@@ -191,8 +191,8 @@ predicate basicStoreStep(Node nodeFrom, Node nodeTo, DataFlow::ContentSet conten
     hasStoreSummary(callable, contents, pragma[only_bind_into](input),
       pragma[only_bind_into](output)) and
     call.asExpr().getExpr() = callable.getACallSimple() and
-    nodeFrom = evaluateSummaryComponentStackLocal(call, input) and
-    nodeTo = evaluateSummaryComponentStackLocal(call, output)
+    nodeFrom = evaluateSummaryComponentStackLocal(callable, call, input) and
+    nodeTo = evaluateSummaryComponentStackLocal(callable, call, output)
   )
 }
 
@@ -231,8 +231,8 @@ predicate basicLoadStep(Node nodeFrom, Node nodeTo, DataFlow::ContentSet content
   |
     hasLoadSummary(callable, contents, pragma[only_bind_into](input), pragma[only_bind_into](output)) and
     call.asExpr().getExpr() = callable.getACallSimple() and
-    nodeFrom = evaluateSummaryComponentStackLocal(call, input) and
-    nodeTo = evaluateSummaryComponentStackLocal(call, output)
+    nodeFrom = evaluateSummaryComponentStackLocal(callable, call, input) and
+    nodeTo = evaluateSummaryComponentStackLocal(callable, call, output)
   )
 }
 
@@ -249,8 +249,8 @@ predicate basicLoadStoreStep(
     hasLoadStoreSummary(callable, loadContent, storeContent, pragma[only_bind_into](input),
       pragma[only_bind_into](output)) and
     call.asExpr().getExpr() = callable.getACallSimple() and
-    nodeFrom = evaluateSummaryComponentStackLocal(call, input) and
-    nodeTo = evaluateSummaryComponentStackLocal(call, output)
+    nodeFrom = evaluateSummaryComponentStackLocal(callable, call, input) and
+    nodeTo = evaluateSummaryComponentStackLocal(callable, call, output)
   )
 }
 
@@ -310,6 +310,7 @@ private DataFlow::Node evaluateSummaryComponentLocal(
  * Holds if `callable` is relevant for type-tracking and we therefore want `stack` to
  * be evaluated locally at its call sites.
  */
+pragma[nomagic]
 private predicate dependsOnSummaryComponentStack(
   SummarizedCallable callable, SummaryComponentStack stack
 ) {
@@ -320,26 +321,43 @@ private predicate dependsOnSummaryComponentStack(
     callable.propagatesFlow(_, stack, true)
   )
   or
-  dependsOnSummaryComponentStack(callable, SCS::push(_, stack))
+  dependsOnSummaryComponentStackCons(callable, _, stack)
+}
+
+pragma[nomagic]
+private predicate dependsOnSummaryComponentStackCons(
+  SummarizedCallable callable, SummaryComponent head, SummaryComponentStack tail
+) {
+  dependsOnSummaryComponentStack(callable, SCS::push(head, tail))
+}
+
+pragma[nomagic]
+private predicate dependsOnSummaryComponentStackLeaf(
+  SummarizedCallable callable, SummaryComponent leaf
+) {
+  dependsOnSummaryComponentStack(callable, SCS::singleton(leaf))
 }
 
 /**
  * Gets a data flow node corresponding to the local input or output of `call`
  * identified by `stack`, if possible.
  */
+pragma[nomagic]
 private DataFlow::Node evaluateSummaryComponentStackLocal(
-  DataFlow::CallNode call, SummaryComponentStack stack
+  SummarizedCallable callable, DataFlow::CallNode call, SummaryComponentStack stack
 ) {
-  exists(SummarizedCallable callable, SummaryComponent component |
-    dependsOnSummaryComponentStack(callable, stack) and
+  exists(SummaryComponent component |
+    dependsOnSummaryComponentStackLeaf(callable, component) and
     stack = SCS::singleton(component) and
     call.asExpr().getExpr() = callable.getACallSimple() and
     result = evaluateSummaryComponentLocal(call, component)
   )
   or
   exists(DataFlow::Node prev, SummaryComponent head, SummaryComponentStack tail |
-    stack = SCS::push(head, tail) and
-    prev = evaluateSummaryComponentStackLocal(call, tail)
+    prev = evaluateSummaryComponentStackLocal(callable, call, tail) and
+    dependsOnSummaryComponentStackCons(callable, pragma[only_bind_into](head),
+      pragma[only_bind_out](tail)) and
+    stack = SCS::push(pragma[only_bind_out](head), pragma[only_bind_out](tail))
   |
     exists(DataFlowDispatch::ArgumentPosition apos, DataFlowDispatch::ParameterPosition ppos |
       head = SummaryComponent::parameter(apos) and
