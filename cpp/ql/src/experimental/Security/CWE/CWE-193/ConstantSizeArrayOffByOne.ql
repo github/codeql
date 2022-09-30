@@ -1,6 +1,12 @@
 /**
- * @id cpp/constant-size-array-off-by-one
+ * @name Constant array overflow
+ * @description Dereferencing a pointer that points past a statically-sized array is undefined behavior
+ *              and may lead to security vulnerabilities
  * @kind path-problem
+ * @problem.severity error
+ * @id cpp/constant-array-overflow
+ * @tags reliability
+ *       security
  */
 
 import experimental.semmle.code.cpp.semantic.analysis.RangeAnalysis
