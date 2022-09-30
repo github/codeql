@@ -45,7 +45,7 @@ predicate isParenthesized(CommaExpr ce) {
   or
   ce.isUnevaluated() // sizeof(), decltype(), alignof(), noexcept(), typeid()
   or
-  ce.getParent*() = any(IfStmt i).getCondition()
+  ce.getParent*() = [any(IfStmt i).getCondition(), any(SwitchStmt s).getExpr()]
   or
   ce.getParent*() = [any(Loop l).getCondition(), any(ForStmt f).getUpdate()]
   or
