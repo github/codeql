@@ -205,17 +205,53 @@ private predicate deconstructSizeExpr(Expr sizeExpr, Expr lengthExpr, int sizeof
   sizeof = 1
 }
 
+/** A `Function` that is a call target of an allocation. */
 private signature class CallAllocationExprTarget extends Function;
 
+/**
+ * This module abstracts over the type of allocation call-targets and provides a
+ * class `CallAllocationExprImpl` which contains the implementation of the various
+ * predicates required by the `Allocation` class.
+ *
+ * This module is then instantiated for two types of allocation call-targets:
+ * - `AllocationFunction`: Functions that we've explicitly modeled as functions that
+ * perform allocations (i.e., `malloc`).
+ * - `HeuristicAllocationFunction`: Functions that we deduce as behaving like an allocation
+ * function using various heuristics.
+ */
 private module CallAllocationExprBase<CallAllocationExprTarget Target> {
+  /**
+   * A signature for a predicate that gets the index of the input pointer argument to
+   * be reallocated, if this is a `realloc` function.
+   */
   signature int getReallocPtrArgSig(Target target);
 
+  /**
+   * A signature for a predicate that gets the index of the argument for the allocation
+   * size, if any. The actual allocation size is the value of this argument multiplied
+   * by the result of `getSizeMult()`, in bytes.
+   */
   signature int getSizeArgSig(Target target);
 
+  /**
+   * A signature for a predicate that gets the index of an argument that multiplies the
+   * allocation size given by `getSizeArg`, if any.
+   */
   signature int getSizeMultSig(Target target);
 
+  /**
+   * A signature for a predicate that determines whether or not this allocation requires a
+   * corresponding deallocation of some sort (most do, but `alloca` for example does not).
+   * If it is unclear, we default to no (for example a placement `new` allocation may or
+   * may not require a corresponding `delete`).
+   */
   signature predicate requiresDeallocSig(Target target);
 
+  /**
+   * A module that abstracts over the various predicates in a that should really be
+   * member-predicates of `CallAllocationExprTarget` (which which we cannot yet write in
+   * QL).
+   */
   module With<
   getReallocPtrArgSig/1 getReallocPtrArg, getSizeArgSig/1 getSizeArg, getSizeMultSig/1 getSizeMult,
   requiresDeallocSig/1 requiresDealloc> {
@@ -285,6 +321,10 @@ private module CallAllocationExpr {
 
   private predicate requiresDealloc(AllocationFunction f) { f.requiresDealloc() }
 
+  /**
+   * A class that provides the implementation of `AllocationExpr` for an allocation
+   * that calls an `AllocationFunction`.
+   */
   private class Base =
     CallAllocationExprBase<AllocationFunction>::With<getReallocPtrArg/1, getSizeArg/1, getSizeMult/1, requiresDealloc/1>::CallAllocationExprImpl;
 
@@ -343,6 +383,7 @@ private class NewArrayAllocationExpr extends AllocationExpr, NewArrayExpr {
 }
 
 private module HeuristicAllocation {
+  /** A class that maps an `AllocationExpr` to an `HeuristicAllocationExpr`. */
   private class HeuristicAllocationModeled extends HeuristicAllocationExpr instanceof AllocationExpr {
     override Expr getSizeExpr() { result = AllocationExpr.super.getSizeExpr() }
 
@@ -359,6 +400,7 @@ private module HeuristicAllocation {
     override predicate requiresDealloc() { AllocationExpr.super.requiresDealloc() }
   }
 
+  /** A class that maps an `AllocationFunction` to an `HeuristicAllocationFunction`. */
   private class HeuristicAllocationFunctionModeled extends HeuristicAllocationFunction instanceof AllocationFunction {
     override int getSizeArg() { result = AllocationFunction.super.getSizeArg() }
 
@@ -377,6 +419,12 @@ private module HeuristicAllocation {
     f.getParameter(result).getUnspecifiedType() instanceof PointerType
   }
 
+  /**
+   * A class that uses heuristics to find additional allocation functions. The required are as follows:
+   * 1. The word `alloc` must appear in the function name
+   * 2. The function must return a pointer type
+   * 3. There must be a unique parameter of unsigned integral type.
+   */
   private class HeuristicAllocationFunctionByName extends HeuristicAllocationFunction instanceof Function {
     int sizeArg;
 
@@ -404,6 +452,10 @@ private module HeuristicAllocation {
 
   private predicate requiresDealloc(HeuristicAllocationFunction f) { f.requiresDealloc() }
 
+  /**
+   * A class that provides the implementation of `AllocationExpr` for an allocation
+   * that calls an `HeuristicAllocationFunction`.
+   */
   private class Base =
     CallAllocationExprBase<HeuristicAllocationFunction>::With<getReallocPtrArg/1, getSizeArg/1, getSizeMult/1, requiresDealloc/1>::CallAllocationExprImpl;
 
