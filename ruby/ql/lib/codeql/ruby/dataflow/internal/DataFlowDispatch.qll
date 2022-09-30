@@ -49,7 +49,10 @@ abstract class LibraryCallable extends string {
   LibraryCallable() { any() }
 
   /** Gets a call to this library callable. */
-  abstract Call getACall();
+  Call getACall() { none() }
+
+  /** Same as `getACall()` except this does not depend on the call graph or API graph. */
+  Call getACallSimple() { none() }
 }
 
 /**
@@ -287,7 +290,7 @@ private DataFlowCallable viableSourceCallable(DataFlowCall call) {
 private DataFlowCallable viableLibraryCallable(DataFlowCall call) {
   exists(LibraryCallable callable |
     result = TLibraryCallable(callable) and
-    call.asCall().getExpr() = callable.getACall()
+    call.asCall().getExpr() = [callable.getACall(), callable.getACallSimple()]
   )
 }
 

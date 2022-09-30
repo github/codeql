@@ -246,24 +246,15 @@ module ParsePositions {
   private import FlowSummaryImpl
 
   private predicate isParamBody(string body) {
-    exists(AccessPathToken tok |
-      tok.getName() = "Parameter" and
-      body = tok.getAnArgument()
-    )
+    body = any(AccessPathToken tok).getAnArgument("Parameter")
   }
 
   private predicate isArgBody(string body) {
-    exists(AccessPathToken tok |
-      tok.getName() = "Argument" and
-      body = tok.getAnArgument()
-    )
+    body = any(AccessPathToken tok).getAnArgument("Argument")
   }
 
   private predicate isElementBody(string body) {
-    exists(AccessPathToken tok |
-      tok.getName() = "Element" and
-      body = tok.getAnArgument()
-    )
+    body = any(AccessPathToken tok).getAnArgument(["Element", "WithElement", "WithoutElement"])
   }
 
   predicate isParsedParameterPosition(string c, int i) {

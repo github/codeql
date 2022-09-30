@@ -9,6 +9,7 @@
 private import codeql.ruby.AST
 private import codeql.ruby.DataFlow
 private import codeql.ruby.typetracking.TypeTracker
+private import codeql.ruby.typetracking.TypeTrackerSpecific as TypeTrackerSpecific
 private import codeql.ruby.ast.internal.Module
 private import codeql.ruby.controlflow.CfgNodes
 private import codeql.ruby.dataflow.internal.DataFlowPrivate as DataFlowPrivate
@@ -258,6 +259,30 @@ module API {
     Node getAnImmediateSubclass() { result = this.getASuccessor(Label::subclass()) }
 
     /**
+     * Gets a node representing the `content` stored on the base object.
+     */
+    Node getContent(DataFlow::Content content) {
+      result = this.getASuccessor(Label::content(content))
+    }
+
+    /**
+     * Gets a node representing the `contents` stored on the base object.
+     */
+    pragma[inline]
+    Node getContents(DataFlow::ContentSet contents) {
+      // We always use getAStoreContent when generating the graph, and we always use getAReadContent when querying the graph.
+      result = this.getContent(contents.getAReadContent())
+    }
+
+    /** Gets a node representing the instance field of the given `name`, which must include the `@` character. */
+    Node getField(string name) { result = this.getContent(DataFlowPrivate::TFieldContent(name)) }
+
+    /** Gets a node representing an element of this collection (known or unknown). */
+    Node getAnElement() {
+      result = this.getContents(any(DataFlow::ContentSet set | set.isAnyElement()))
+    }
+
+    /**
      * Gets a string representation of the lexicographically least among all shortest access paths
      * from the root to this node.
      */
@@ -495,7 +520,23 @@ module API {
         ref.asExpr() = c and
         read = c.getExpr()
       )
+      or
+      exists(TypeTrackerSpecific::TypeTrackerContent c |
+        TypeTrackerSpecific::basicLoadStep(node, ref, c) and
+        lbl = Label::content(c.getAStoreContent())
+      )
       // note: method calls are not handled here as there is no DataFlow::Node for the intermediate MkMethodAccessNode API node
+    }
+
+    /**
+     * Holds if `rhs` is a definition of a node that should have an incoming edge labeled `lbl`,
+     * from a def node that is reachable from `node`.
+     */
+    private predicate defStep(Label::ApiLabel lbl, DataFlow::Node node, DataFlow::Node rhs) {
+      exists(TypeTrackerSpecific::TypeTrackerContent c |
+        TypeTrackerSpecific::basicStoreStep(rhs, node, c) and
+        lbl = Label::content(c.getAStoreContent())
+      )
     }
 
     pragma[nomagic]
@@ -539,26 +580,11 @@ module API {
     /** Gets a node reachable from a use-node. */
     private DataFlow::LocalSourceNode useCandFwd() { result = useCandFwd(TypeTracker::end()) }
 
-    private DataFlow::Node useCandRev(TypeBackTracker tb) {
-      result = useCandFwd() and
-      tb.start()
-      or
-      exists(TypeBackTracker tb2, DataFlow::LocalSourceNode mid, TypeTracker t |
-        mid = useCandRev(tb2) and
-        result = mid.backtrack(tb2, tb) and
-        pragma[only_bind_out](result) = useCandFwd(t) and
-        pragma[only_bind_out](t) = pragma[only_bind_out](tb).getACompatibleTypeTracker()
-      )
-    }
-
-    private DataFlow::LocalSourceNode useCandRev() {
-      result = useCandRev(TypeBackTracker::end()) and
-      isUse(result)
-    }
-
     private predicate isDef(DataFlow::Node rhs) {
       // If a call node is relevant as a use-node, treat its arguments as def-nodes
       argumentStep(_, useCandFwd(), rhs)
+      or
+      defStep(_, trackDefNode(_), rhs)
       or
       rhs = any(EntryPoint entry).getASink()
     }
@@ -608,26 +634,12 @@ module API {
      *
      * The flow from `src` to the returned node may be inter-procedural.
      */
-    private DataFlow::Node trackUseNode(DataFlow::LocalSourceNode src, TypeTracker t) {
+    private DataFlow::LocalSourceNode trackUseNode(DataFlow::LocalSourceNode src, TypeTracker t) {
       result = src and
-      result = useCandRev() and
+      isUse(src) and
       t.start()
       or
-      exists(TypeTracker t2, DataFlow::LocalSourceNode mid |
-        mid = trackUseNode(src, t2) and
-        result = useNodeStep(mid, t2, t)
-      )
-    }
-
-    pragma[nomagic]
-    private DataFlow::Node useNodeStep(
-      DataFlow::LocalSourceNode mid, TypeTracker tmid, TypeTracker t
-    ) {
-      exists(TypeBackTracker tb |
-        result = mid.track(tmid, t) and
-        pragma[only_bind_into](result) = useCandRev(pragma[only_bind_into](tb)) and
-        pragma[only_bind_out](t) = pragma[only_bind_into](tb).getACompatibleTypeTracker()
-      )
+      exists(TypeTracker t2 | result = trackUseNode(src, t2).track(t2, t))
     }
 
     /**
@@ -680,6 +692,12 @@ module API {
           pred = MkDef(callback) and
           parameterStep(lbl, trackDefNode(callback), ref)
         )
+      )
+      or
+      exists(DataFlow::Node predNode, DataFlow::Node succNode |
+        def(pred, predNode) and
+        def(succ, succNode) and
+        defStep(lbl, trackDefNode(predNode), succNode)
       )
       or
       // `pred` is a use of class A
@@ -754,7 +772,8 @@ module API {
         any(DataFlowDispatch::ParameterPosition c).isPositional(n)
       } or
       MkLabelBlockParameter() or
-      MkLabelEntryPoint(EntryPoint name)
+      MkLabelEntryPoint(EntryPoint name) or
+      MkLabelContent(DataFlow::Content content)
   }
 
   /** Provides classes modeling the various edges (labels) in the API graph. */
@@ -844,6 +863,20 @@ module API {
         /** Gets the name of the entry point. */
         API::EntryPoint getName() { result = name }
       }
+
+      /** A label representing contents of an object. */
+      class LabelContent extends ApiLabel, MkLabelContent {
+        private DataFlow::Content content;
+
+        LabelContent() { this = MkLabelContent(content) }
+
+        override string toString() {
+          result = "getContent(" + content.toString().replaceAll(" ", "_") + ")"
+        }
+
+        /** Gets the content represented by this label. */
+        DataFlow::Content getContent() { result = content }
+      }
     }
 
     /** Gets the `member` edge label for member `m`. */
@@ -869,6 +902,9 @@ module API {
 
     /** Gets the label for the edge from the root node to a custom entry point of the given name. */
     LabelEntryPoint entryPoint(API::EntryPoint name) { result.getName() = name }
+
+    /** Gets a label representing the given content. */
+    LabelContent content(DataFlow::Content content) { result.getContent() = content }
 
     /** Gets the API graph label corresponding to the given argument position. */
     Label::ApiLabel getLabelFromArgumentPosition(DataFlowDispatch::ArgumentPosition pos) {
