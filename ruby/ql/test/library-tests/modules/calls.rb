@@ -28,7 +28,7 @@ module M
 
     instance_m # NoMethodError
     self.instance_m # NoMethodError
-    
+
     singleton_m
     self.singleton_m
 end
@@ -44,18 +44,18 @@ class C
     include M
     instance_m # NoMethodError
     self.instance_m # NoMethodError
-    
+
     singleton_m # NoMethodError
     self.singleton_m # NoMethodError
 
     def baz
-        instance_m 
-        self.instance_m 
-        
+        instance_m
+        self.instance_m
+
         singleton_m # NoMethodError
         self.singleton_m # NoMethodError
     end
-end 
+end
 
 c = C.new
 c.baz
@@ -192,16 +192,16 @@ class Singletons
         puts "singleton_a"
         self.singleton_b
     end
-    
+
     def self.singleton_b
         puts "singleton_b"
         self.singleton_c
     end
-    
+
     def self.singleton_c
         puts "singleton_c"
     end
-    
+
     def self.singleton_d
         puts "singleton_d"
         self.singleton_a
@@ -224,7 +224,7 @@ class Singletons
         self.singleton_g
     end
 end
-  
+
 Singletons.singleton_a
 Singletons.singleton_f
 
@@ -423,7 +423,7 @@ class ConditionalInstanceMethods
 
     def m2
         puts "ConditionalInstanceMethods#m2"
-        
+
         def m3
             puts "ConditionalInstanceMethods#m3"
 
