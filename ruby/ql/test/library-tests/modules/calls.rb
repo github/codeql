@@ -522,3 +522,6 @@ end
 ProtectedMethodsSub.new.foo # NoMethodError
 ProtectedMethodsSub.new.bar # NoMethodError
 ProtectedMethodsSub.new.baz
+
+[C.new].each { |c| c.baz }
+["a","b","c"].each { |s| s.capitalize }
