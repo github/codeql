@@ -9,7 +9,6 @@ import experimental.semmle.code.cpp.semantic.SemanticExprSpecific
 import semmle.code.cpp.ir.IR
 import experimental.semmle.code.cpp.ir.dataflow.DataFlow
 import experimental.semmle.code.cpp.ir.dataflow.DataFlow2
-
 import DataFlow2::PathGraph
 
 pragma[nomagic]
