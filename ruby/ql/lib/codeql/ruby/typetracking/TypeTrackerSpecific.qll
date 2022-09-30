@@ -188,7 +188,8 @@ predicate basicStoreStep(Node nodeFrom, Node nodeTo, DataFlow::ContentSet conten
     SummarizedCallable callable, DataFlowPublic::CallNode call, SummaryComponentStack input,
     SummaryComponentStack output
   |
-    hasStoreSummary(callable, contents, input, output) and
+    hasStoreSummary(callable, contents, pragma[only_bind_into](input),
+      pragma[only_bind_into](output)) and
     call.asExpr().getExpr() = callable.getACallSimple() and
     nodeFrom = evaluateSummaryComponentStackLocal(call, input) and
     nodeTo = evaluateSummaryComponentStackLocal(call, output)
@@ -228,7 +229,7 @@ predicate basicLoadStep(Node nodeFrom, Node nodeTo, DataFlow::ContentSet content
     SummarizedCallable callable, DataFlowPublic::CallNode call, SummaryComponentStack input,
     SummaryComponentStack output
   |
-    hasLoadSummary(callable, contents, input, output) and
+    hasLoadSummary(callable, contents, pragma[only_bind_into](input), pragma[only_bind_into](output)) and
     call.asExpr().getExpr() = callable.getACallSimple() and
     nodeFrom = evaluateSummaryComponentStackLocal(call, input) and
     nodeTo = evaluateSummaryComponentStackLocal(call, output)
@@ -245,7 +246,8 @@ predicate basicLoadStoreStep(
     SummarizedCallable callable, DataFlowPublic::CallNode call, SummaryComponentStack input,
     SummaryComponentStack output
   |
-    hasLoadStoreSummary(callable, loadContent, storeContent, input, output) and
+    hasLoadStoreSummary(callable, loadContent, storeContent, pragma[only_bind_into](input),
+      pragma[only_bind_into](output)) and
     call.asExpr().getExpr() = callable.getACallSimple() and
     nodeFrom = evaluateSummaryComponentStackLocal(call, input) and
     nodeTo = evaluateSummaryComponentStackLocal(call, output)
