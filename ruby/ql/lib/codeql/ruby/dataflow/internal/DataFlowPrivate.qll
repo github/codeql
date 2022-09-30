@@ -392,14 +392,20 @@ private module Cached {
     TSingletonContent or TAnyElementContent or TKnownOrUnknownElementContent or
         TElementLowerBoundContent;
 
-  cached
-  newtype TContent =
-    TKnownElementContent(ConstantValue cv) {
+  private predicate trackKnownValue(ConstantValue cv) {
+    not cv.isFloat(_) and
+    not cv.isComplex(_, _) and
+    (
       not cv.isInt(_) or
       cv.getInt() in [0 .. 10]
-    } or
+    )
+  }
+
+  cached
+  newtype TContent =
+    TKnownElementContent(ConstantValue cv) { trackKnownValue(cv) } or
     TUnknownElementContent() or
-    TKnownPairValueContent(ConstantValue cv) or
+    TKnownPairValueContent(ConstantValue cv) { trackKnownValue(cv) } or
     TUnknownPairValueContent() or
     TFieldContent(string name) {
       name = any(InstanceVariable v).getName()
@@ -1034,18 +1040,12 @@ predicate storeStep(Node node1, ContentSet c, Node node2) {
   // that is, where it is not a keyword argument.
   node2.asExpr() =
     any(CfgNodes::ExprNodes::PairCfgNode pair |
-      exists(CfgNodes::ExprCfgNode key |
+      exists(CfgNodes::ExprCfgNode key, ConstantValue cv |
         key = pair.getKey() and
-        pair.getValue() = node1.asExpr()
-      |
-        exists(ConstantValue cv |
-          cv = key.getConstantValue() and
-          not cv.isSymbol(_) and // handled as a keyword argument
-          c.isSingleton(TKnownPairValueContent(cv))
-        )
-        or
-        not exists(key.getConstantValue()) and
-        c.isSingleton(TUnknownPairValueContent())
+        pair.getValue() = node1.asExpr() and
+        cv = key.getConstantValue() and
+        not cv.isSymbol(_) and // handled as a keyword argument
+        c.isSingleton(Content::getPairValueContent(cv))
       )
     )
   or

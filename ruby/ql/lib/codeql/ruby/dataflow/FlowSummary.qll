@@ -91,7 +91,7 @@ module SummaryComponent {
 
   /** Gets a summary component that represents a value in a pair at a known key. */
   SummaryComponent pairValueKnown(ConstantValue key) {
-    result = SC::content(TSingletonContent(TKnownPairValueContent(key)))
+    result = SC::content(TSingletonContent(DataFlow::Content::getPairValueContent(key)))
   }
 
   /** Gets a summary component that represents the return value of a call. */

@@ -315,6 +315,14 @@ module Content {
     override string toString() { result = "pair" }
   }
 
+  /** Gets the content representing a value in a pair corresponding to constant value `cv`. */
+  PairValueContent getPairValueContent(ConstantValue cv) {
+    result = TKnownPairValueContent(cv)
+    or
+    not exists(TKnownPairValueContent(cv)) and
+    result = TUnknownPairValueContent()
+  }
+
   /**
    * A value stored behind a getter/setter pair.
    *
