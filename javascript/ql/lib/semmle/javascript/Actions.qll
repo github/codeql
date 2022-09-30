@@ -93,7 +93,7 @@ module Actions {
 
     /** Gets the value of the `if` field in this job, if any. */
     JobIf getIf() { result.getJob() = this }
-    
+
     /** Gets the value of the `runs-on` field in this job. */
     JobRunson getRunsOn() { result.getJob() = this }
   }
@@ -123,7 +123,6 @@ module Actions {
     /** Gets the step this field belongs to. */
     Job getJob() { result = job }
   }
-
 
   /**
    * A step within an Actions job.
