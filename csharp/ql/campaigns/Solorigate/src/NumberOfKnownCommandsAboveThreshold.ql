@@ -34,5 +34,5 @@ where
   total = countSolorigateCommandInEnum(e) and
   total > 10
 select e,
-  "The enum may be related to Solorigate. It matches " + total +
+  "This enum may be related to Solorigate. It matches " + total +
     " of the values used for commands in the enum."

@@ -19,5 +19,5 @@ import semmle.code.csharp.dataflow.DataFlow::DataFlow::PathGraph
 from TaintTrackingConfiguration c, DataFlow::PathNode source, DataFlow::PathNode sink
 where c.hasFlowPath(source, sink)
 select sink.getNode(), source, sink,
-  "Insecure XML processing depends on a $@ (" + sink.getNode().(Sink).getReason() + ").",
+  "This insecure XML processing depends on a $@ (" + sink.getNode().(Sink).getReason() + ").",
   source.getNode(), "user-provided value"

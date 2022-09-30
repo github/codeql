@@ -18,5 +18,5 @@ import semmle.code.csharp.dataflow.DataFlow::DataFlow::PathGraph
 from TaintTrackingConfiguration c, DataFlow::PathNode source, DataFlow::PathNode sink
 where c.hasFlowPath(source, sink)
 select sink.getNode(), source, sink,
-  "XML processing depends on a $@ without validation because " + sink.getNode().(Sink).getReason(),
+  "This XML processing depends on a $@ without validation because " + sink.getNode().(Sink).getReason(),
   source.getNode(), "user-provided value"

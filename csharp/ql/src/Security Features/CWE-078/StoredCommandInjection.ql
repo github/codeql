@@ -24,5 +24,5 @@ class StoredTaintTrackingConfiguration extends TaintTrackingConfiguration {
 
 from StoredTaintTrackingConfiguration c, DataFlow::PathNode source, DataFlow::PathNode sink
 where c.hasFlowPath(source, sink)
-select sink.getNode(), source, sink, "Command line depends on a $@.", source.getNode(),
+select sink.getNode(), source, sink, "This command line depends on a $@.", source.getNode(),
   "stored (potentially user-provided) value"

@@ -17,5 +17,5 @@ import semmle.code.csharp.dataflow.DataFlow::DataFlow::PathGraph
 
 from TaintTrackingConfiguration c, DataFlow::PathNode source, DataFlow::PathNode sink
 where c.hasFlowPath(source, sink)
-select sink.getNode(), source, sink, "XPath expression depends on a $@.", source.getNode(),
+select sink.getNode(), source, sink, "This XPath expression depends on a $@.", source.getNode(),
   "user-provided value"
