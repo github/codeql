@@ -9,7 +9,6 @@ private import codeql.ruby.frameworks.ActionController
 private import codeql.ruby.frameworks.ActionView
 private import codeql.ruby.frameworks.ActiveRecord
 private import codeql.ruby.frameworks.ActiveStorage
-private import codeql.ruby.ast.internal.Module
 private import codeql.ruby.ApiGraphs
 private import codeql.ruby.security.OpenSSL
 
@@ -29,7 +28,7 @@ private class RailtieClass extends ClassDeclaration {
   RailtieClass() {
     this.getSuperclassExpr() instanceof RailtieClassAccess or
     exists(RailtieClass other |
-      other.getModule() = resolveConstantReadAccess(this.getSuperclassExpr())
+      other.getModule() = this.getSuperclassExpr().(ConstantReadAccess).getModule()
     )
   }
 }
@@ -41,7 +40,7 @@ private DataFlow::CallNode getAConfigureCallNode() {
   // `Rails::Application.configure`
   exists(ConstantReadAccess read, RailtieClass cls |
     read = result.getReceiver().asExpr().getExpr() and
-    resolveConstantReadAccess(read) = cls.getModule() and
+    read.getModule() = cls.getModule() and
     result.asExpr().getExpr().(MethodCall).getMethodName() = "configure"
   )
 }
