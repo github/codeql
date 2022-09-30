@@ -764,7 +764,7 @@ module Array {
       )
     }
 
-    final override MethodCall getACall() { result = mc }
+    final override MethodCall getACallSimple() { result = mc }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       (
