@@ -63,14 +63,14 @@ predicate isInvalidPointerDerefSink(DataFlow::Node sink, Instruction i, string o
 
 predicate isConstantSizeOverflowSource(Field f, PointerAddInstruction pai, int delta) {
   exists(
-    int size, int bound, SemZeroBound b, FieldAddressToPointerArithmeticConf conf,
-    DataFlow::Node source, DataFlow::InstructionNode sink
+    int size, int bound, FieldAddressToPointerArithmeticConf conf, DataFlow::Node source,
+    DataFlow::InstructionNode sink
   |
     conf.hasFlow(source, sink) and
     isFieldAddressSource(f, source) and
     pai.getLeft() = sink.asInstruction() and
     f.getUnspecifiedType().(ArrayType).getArraySize() = size and
-    semBounded(getSemanticExpr(pai.getRight()), b, bound, true, _) and
+    semBounded(getSemanticExpr(pai.getRight()), any(SemZeroBound b), bound, true, _) and
     delta = bound - size and
     delta >= 0 and
     size != 0 and
@@ -89,13 +89,12 @@ class PointerArithmeticToDerefConf extends DataFlow2::Configuration {
 }
 
 from
-  Field f, DataFlow::Node source, DataFlow::Node sink,
-  Instruction deref,
+  Field f, DataFlow::Node source, DataFlow::Node sink, Instruction deref,
   PointerArithmeticToDerefConf conf, string operation, int delta
 where
   conf.hasFlow(source, sink) and
   isInvalidPointerDerefSink(sink, deref, operation) and
   isConstantSizeOverflowSource(f, source.asInstruction(), delta)
 select source,
-  "This pointer arithmetic may have an off-by-" + (delta + 1) + " error allowing it to overrun $@ at this $@",
-  f, f.getName(), deref, operation
+  "This pointer arithmetic may have an off-by-" + (delta + 1) +
+    " error allowing it to overrun $@ at this $@.", f, f.getName(), deref, operation
