@@ -27,7 +27,7 @@ on:
       - main
       - "rc/*"
     paths:
-      - "ruby/**/*.qhelp"
+      - "**/*.qhelp"
 
 jobs:
   qhelp:
