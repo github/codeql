@@ -1349,7 +1349,8 @@
 | exprs.kt:127:38:127:41 | str2 | exprs.kt:4:1:136:1 | topLevelMethod | VarAccess |
 | exprs.kt:127:43:127:47 |  bar  | exprs.kt:4:1:136:1 | topLevelMethod | StringLiteral |
 | exprs.kt:127:50:127:53 | str2 | exprs.kt:4:1:136:1 | topLevelMethod | VarAccess |
-| exprs.kt:127:50:127:60 | ... + ... | exprs.kt:4:1:136:1 | topLevelMethod | AddExpr |
+| exprs.kt:127:50:127:60 | Intrinsics | exprs.kt:4:1:136:1 | topLevelMethod | TypeAccess |
+| exprs.kt:127:50:127:60 | stringPlus(...) | exprs.kt:4:1:136:1 | topLevelMethod | MethodAccess |
 | exprs.kt:127:57:127:60 | str1 | exprs.kt:4:1:136:1 | topLevelMethod | VarAccess |
 | exprs.kt:127:62:127:65 |  baz | exprs.kt:4:1:136:1 | topLevelMethod | StringLiteral |
 | exprs.kt:128:5:128:26 | str6 | exprs.kt:4:1:136:1 | topLevelMethod | LocalVariableDeclExpr |
@@ -1554,12 +1555,13 @@
 | exprs.kt:203:26:203:26 | 5 | exprs.kt:200:5:211:5 | x | IntegerLiteral |
 | exprs.kt:204:9:204:23 | b1 | exprs.kt:200:5:211:5 | x | LocalVariableDeclExpr |
 | exprs.kt:204:19:204:19 | s | exprs.kt:200:5:211:5 | x | VarAccess |
-| exprs.kt:204:19:204:23 | ... + ... | exprs.kt:200:5:211:5 | x | AddExpr |
+| exprs.kt:204:19:204:23 | Intrinsics | exprs.kt:200:5:211:5 | x | TypeAccess |
+| exprs.kt:204:19:204:23 | stringPlus(...) | exprs.kt:200:5:211:5 | x | MethodAccess |
 | exprs.kt:204:23:204:23 | 5 | exprs.kt:200:5:211:5 | x | IntegerLiteral |
 | exprs.kt:205:9:205:29 | b2 | exprs.kt:200:5:211:5 | x | LocalVariableDeclExpr |
 | exprs.kt:205:19:205:19 | s | exprs.kt:200:5:211:5 | x | VarAccess |
 | exprs.kt:205:20:205:21 | ...!! | exprs.kt:200:5:211:5 | x | NotNullExpr |
-| exprs.kt:205:23:205:29 | plus(...) | exprs.kt:200:5:211:5 | x | MethodAccess |
+| exprs.kt:205:23:205:29 | ... + ... | exprs.kt:200:5:211:5 | x | AddExpr |
 | exprs.kt:205:28:205:28 | 5 | exprs.kt:200:5:211:5 | x | IntegerLiteral |
 | exprs.kt:206:9:206:25 | b3 | exprs.kt:200:5:211:5 | x | LocalVariableDeclExpr |
 | exprs.kt:206:19:206:19 | s | exprs.kt:200:5:211:5 | x | VarAccess |
