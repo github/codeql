@@ -171,7 +171,7 @@ private module Cached {
     )
     or
     exists(TypeTrackerContent loadContent, TypeTrackerContent storeContent |
-      basicLoadStoreStep(nodeFrom, nodeTo, loadContent, storeContent) and
+      flowsToLoadStoreStep(nodeFrom, nodeTo, loadContent, storeContent) and
       summary = LoadStoreStep(loadContent, storeContent)
     )
   }
@@ -216,6 +216,18 @@ private predicate flowsToStoreStep(
   Node nodeFrom, TypeTrackingNode nodeTo, TypeTrackerContent content
 ) {
   exists(Node obj | nodeTo.flowsTo(obj) and basicStoreStep(nodeFrom, obj, content))
+}
+
+/**
+ * Holds if `loadContent` is loaded from `nodeFrom` and written to `storeContent` of `nodeTo`.
+ */
+predicate flowsToLoadStoreStep(
+  Node nodeFrom, TypeTrackingNode nodeTo, TypeTrackerContent loadContent,
+  TypeTrackerContent storeContent
+) {
+  exists(Node obj |
+    nodeTo.flowsTo(obj) and basicLoadStoreStep(nodeFrom, obj, loadContent, storeContent)
+  )
 }
 
 /**
