@@ -13,7 +13,7 @@ import cpp
 import semmle.code.cpp.commons.Exclusions
 
 /**
- * Holds if this is an implicit `this`.
+ * Holds if `te` is an implicit `this`.
  *
  * ThisExpr.isCompilerGenerated() is currently not being extracted, so use a heuristic.
  */
