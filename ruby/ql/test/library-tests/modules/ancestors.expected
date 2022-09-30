@@ -49,56 +49,62 @@ calls.rb:
 #  105| Module
 #-----| super -> Object
 
-#  112| Object
+#  115| Object
 #-----| super -> BasicObject
 #-----| include -> Kernel
 #-----| prepend -> A
 
-#  117| Hash
+#  120| Hash
 #-----| super -> Object
 
-#  122| Array
+#  125| Array
 #-----| super -> Object
 
-#  162| S
+#  165| S
 #-----| super -> Object
 
-#  168| A
+#  171| A
 #-----| super -> S
 #-----| super -> B
 #-----| prepend -> A::B
 
-#  173| B
+#  176| B
 #-----| super -> S
 
-#  187| Singletons
+#  190| Singletons
 #-----| super -> Object
 
-#  307| SelfNew
+#  310| SelfNew
 #-----| super -> Object
 
-#  322| C1
+#  325| C1
 #-----| super -> Object
 
-#  328| C2
+#  331| C2
 #-----| super -> C1
 
-#  334| C3
+#  337| C3
 #-----| super -> C2
 
-#  374| SingletonOverride1
+#  377| SingletonOverride1
 #-----| super -> Object
 
-#  399| SingletonOverride2
+#  402| SingletonOverride2
 #-----| super -> SingletonOverride1
 
-#  414| ConditionalInstanceMethods
+#  417| ConditionalInstanceMethods
 #-----| super -> Object
 
-#  477| ExtendSingletonMethod
+#  480| ExtendSingletonMethod
 
-#  487| ProtectedMethods
+#  490| ProtectedMethodInModule
+
+#  496| ProtectedMethods
 #-----| super -> Object
+#-----| include -> ProtectedMethodInModule
+
+#  515| ProtectedMethodsSub
+#-----| super -> ProtectedMethods
 
 hello.rb:
 #    1| EnglishWords
