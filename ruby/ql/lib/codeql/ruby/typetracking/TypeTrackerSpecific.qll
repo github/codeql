@@ -232,6 +232,23 @@ predicate basicLoadStep(Node nodeFrom, Node nodeTo, DataFlow::ContentSet content
 }
 
 /**
+ * Holds if the `loadContent` of `nodeFrom` is stored in the `storeContent` of `nodeTo`.
+ */
+predicate basicLoadStoreStep(
+  Node nodeFrom, Node nodeTo, DataFlow::ContentSet loadContent, DataFlow::ContentSet storeContent
+) {
+  exists(
+    SummarizedCallable callable, DataFlowPublic::CallNode call, SummaryComponent input,
+    SummaryComponent output
+  |
+    hasLoadStoreSummary(callable, loadContent, storeContent, input, output) and
+    call.asExpr().getExpr() = callable.getACallSimple() and
+    nodeFrom = evaluateSummaryComponentLocal(call, input) and
+    nodeTo = evaluateSummaryComponentLocal(call, output)
+  )
+}
+
+/**
  * A utility class that is equivalent to `boolean` but does not require type joining.
  */
 class Boolean extends boolean {
@@ -262,6 +279,15 @@ private predicate hasLoadSummary(
   callable
       .propagatesFlow(push(SummaryComponent::content(contents), singleton(input)),
         singleton(output), true)
+}
+
+private predicate hasLoadStoreSummary(
+  SummarizedCallable callable, DataFlow::ContentSet loadContents,
+  DataFlow::ContentSet storeContents, SummaryComponent input, SummaryComponent output
+) {
+  callable
+      .propagatesFlow(push(SummaryComponent::content(loadContents), singleton(input)),
+        push(SummaryComponent::content(storeContents), singleton(output)), true)
 }
 
 /**

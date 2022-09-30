@@ -14,6 +14,9 @@ private module Cached {
     ReturnStep() or
     StoreStep(TypeTrackerContent content) { basicStoreStep(_, _, content) } or
     LoadStep(TypeTrackerContent content) { basicLoadStep(_, _, content) } or
+    LoadStoreStep(TypeTrackerContent load, TypeTrackerContent store) {
+      basicLoadStoreStep(_, _, load, store)
+    } or
     JumpStep()
 
   cached
@@ -75,6 +78,16 @@ private module Cached {
       tt = noContentTypeTracker(hasCall) and
       result = MkTypeTracker(hasCall, storeContents)
     )
+    or
+    exists(
+      TypeTrackerContent currentContent, TypeTrackerContent store, TypeTrackerContent load,
+      boolean hasCall
+    |
+      step = LoadStoreStep(pragma[only_bind_into](load), pragma[only_bind_into](store)) and
+      compatibleContents(pragma[only_bind_into](currentContent), load) and
+      tt = MkTypeTracker(pragma[only_bind_into](hasCall), currentContent) and
+      result = MkTypeTracker(pragma[only_bind_out](hasCall), store)
+    )
   }
 
   pragma[nomagic]
@@ -109,6 +122,16 @@ private module Cached {
       step = LoadStep(pragma[only_bind_into](loadContents)) and
       tbt = noContentTypeBackTracker(hasReturn) and
       result = MkTypeBackTracker(hasReturn, loadContents)
+    )
+    or
+    exists(
+      TypeTrackerContent currentContent, TypeTrackerContent store, TypeTrackerContent load,
+      boolean hasCall
+    |
+      step = LoadStoreStep(pragma[only_bind_into](load), pragma[only_bind_into](store)) and
+      compatibleContents(store, pragma[only_bind_into](currentContent)) and
+      tbt = MkTypeBackTracker(pragma[only_bind_into](hasCall), currentContent) and
+      result = MkTypeBackTracker(pragma[only_bind_out](hasCall), load)
     )
   }
 
@@ -145,6 +168,11 @@ private module Cached {
       summary = StoreStep(content)
       or
       basicLoadStep(nodeFrom, nodeTo, content) and summary = LoadStep(content)
+    )
+    or
+    exists(TypeTrackerContent loadContent, TypeTrackerContent storeContent |
+      basicLoadStoreStep(nodeFrom, nodeTo, loadContent, storeContent) and
+      summary = LoadStoreStep(loadContent, storeContent)
     )
   }
 
@@ -207,6 +235,11 @@ class StepSummary extends TStepSummary {
     exists(TypeTrackerContent content | this = StoreStep(content) | result = "store " + content)
     or
     exists(TypeTrackerContent content | this = LoadStep(content) | result = "load " + content)
+    or
+    exists(TypeTrackerContent load, TypeTrackerContent store |
+      this = LoadStoreStep(load, store) and
+      result = "load-store " + load + " -> " + store
+    )
     or
     this instanceof JumpStep and result = "jump"
   }
