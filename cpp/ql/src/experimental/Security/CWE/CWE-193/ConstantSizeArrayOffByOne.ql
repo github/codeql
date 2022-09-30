@@ -1,6 +1,6 @@
 /**
  * @id cpp/constant-size-array-off-by-one
- * @kind problem
+ * @kind path-problem
  */
 
 import experimental.semmle.code.cpp.semantic.analysis.RangeAnalysis
@@ -9,6 +9,8 @@ import experimental.semmle.code.cpp.semantic.SemanticExprSpecific
 import semmle.code.cpp.ir.IR
 import experimental.semmle.code.cpp.ir.dataflow.DataFlow
 import experimental.semmle.code.cpp.ir.dataflow.DataFlow2
+
+import DataFlow2::PathGraph
 
 pragma[nomagic]
 Instruction getABoundIn(SemBound b, IRFunction func) {
@@ -89,12 +91,12 @@ class PointerArithmeticToDerefConf extends DataFlow2::Configuration {
 }
 
 from
-  Field f, DataFlow::Node source, DataFlow::Node sink, Instruction deref,
+  Field f, DataFlow2::PathNode source, DataFlow2::PathNode sink, Instruction deref,
   PointerArithmeticToDerefConf conf, string operation, int delta
 where
-  conf.hasFlow(source, sink) and
-  isInvalidPointerDerefSink(sink, deref, operation) and
-  isConstantSizeOverflowSource(f, source.asInstruction(), delta)
-select source,
+  conf.hasFlowPath(source, sink) and
+  isInvalidPointerDerefSink(sink.getNode(), deref, operation) and
+  isConstantSizeOverflowSource(f, source.getNode().asInstruction(), delta)
+select source, source, sink,
   "This pointer arithmetic may have an off-by-" + (delta + 1) +
     " error allowing it to overrun $@ at this $@.", f, f.getName(), deref, operation
