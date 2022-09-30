@@ -12,32 +12,15 @@
 import cpp
 import semmle.code.cpp.commons.Exclusions
 
-/**
- * Holds if `te` is an implicit `this`.
- *
- * ThisExpr.isCompilerGenerated() is currently not being extracted, so use a heuristic.
- */
-predicate isCompilerGenerated(ThisExpr te) {
-  exists(int line, int colStart, int colEnd |
-    te.getLocation().hasLocationInfo(_, line, colStart, line, colEnd)
-  |
-    colStart = colEnd
-    or
-    exists(Call c | c.getQualifier() = te | c.getLocation() = te.getLocation())
-  )
-}
-
 /** Gets the sub-expression of 'e' with the earliest-starting Location */
 Expr normalizeExpr(Expr e) {
-  if forex(Expr q | q = e.(Call).getQualifier() | not isCompilerGenerated(q))
-  then result = normalizeExpr(e.(Call).getQualifier())
-  else
-    if forex(Expr q | q = e.(FieldAccess).getQualifier() | not isCompilerGenerated(q))
-    then result = normalizeExpr(e.(FieldAccess).getQualifier())
-    else
-      if e.hasExplicitConversion()
-      then result = normalizeExpr(e.getFullyConverted())
-      else result = e
+  result =
+    min(Expr child |
+      child.getParentWithConversions*() = e.getFullyConverted() and
+      not child.getParentWithConversions*() = any(Call c).getAnArgument()
+    |
+      child order by child.getLocation().getStartColumn(), count(child.getParentWithConversions*())
+    )
 }
 
 predicate isParenthesized(CommaExpr ce) {
