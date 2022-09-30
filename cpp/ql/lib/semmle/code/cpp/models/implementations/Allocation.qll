@@ -220,41 +220,44 @@ private signature class CallAllocationExprTarget extends Function;
  * function using various heuristics.
  */
 private module CallAllocationExprBase<CallAllocationExprTarget Target> {
-  /**
-   * A signature for a predicate that gets the index of the input pointer argument to
-   * be reallocated, if this is a `realloc` function.
-   */
-  signature int getReallocPtrArgSig(Target target);
+  /** A module that contains the collection of member-predicates required on `Target`. */
+  signature module Param {
+    /**
+     * Gets the index of the input pointer argument to be reallocated, if
+     * this is a `realloc` function.
+     */
+    int getReallocPtrArg(Target target);
+
+    /**
+     * Gets the index of the argument for the allocation size, if any. The actual
+     * allocation size is the value of this argument multiplied by the result of
+     * `getSizeMult()`, in bytes.
+     */
+    int getSizeArg(Target target);
+
+    /**
+     * Gets the index of an argument that multiplies the allocation size given
+     * by `getSizeArg`, if any.
+     */
+    int getSizeMult(Target target);
+
+    /**
+     * Holds if this allocation requires a
+     * corresponding deallocation of some sort (most do, but `alloca` for example
+     * does not). If it is unclear, we default to no (for example a placement `new`
+     * allocation may or may not require a corresponding `delete`).
+     */
+    predicate requiresDealloc(Target target);
+  }
 
   /**
-   * A signature for a predicate that gets the index of the argument for the allocation
-   * size, if any. The actual allocation size is the value of this argument multiplied
-   * by the result of `getSizeMult()`, in bytes.
+   * A module that abstracts over a collection of predicates in
+   * the `Param` module). This should really be memeber-predicates
+   * on `CallAllocationExprTarget`, but we cannot yet write this in QL.
    */
-  signature int getSizeArgSig(Target target);
+  module With<Param P> {
+    private import P
 
-  /**
-   * A signature for a predicate that gets the index of an argument that multiplies the
-   * allocation size given by `getSizeArg`, if any.
-   */
-  signature int getSizeMultSig(Target target);
-
-  /**
-   * A signature for a predicate that determines whether or not this allocation requires a
-   * corresponding deallocation of some sort (most do, but `alloca` for example does not).
-   * If it is unclear, we default to no (for example a placement `new` allocation may or
-   * may not require a corresponding `delete`).
-   */
-  signature predicate requiresDeallocSig(Target target);
-
-  /**
-   * A module that abstracts over the various predicates in a that should really be
-   * member-predicates of `CallAllocationExprTarget` (which which we cannot yet write in
-   * QL).
-   */
-  module With<
-  getReallocPtrArgSig/1 getReallocPtrArg, getSizeArgSig/1 getSizeArg, getSizeMultSig/1 getSizeMult,
-  requiresDeallocSig/1 requiresDealloc> {
     /**
      * An allocation expression that is a function call, such as call to `malloc`.
      */
@@ -313,20 +316,22 @@ private module CallAllocationExprBase<CallAllocationExprTarget Target> {
 }
 
 private module CallAllocationExpr {
-  private int getReallocPtrArg(AllocationFunction f) { result = f.getReallocPtrArg() }
+  private module Param implements CallAllocationExprBase<AllocationFunction>::Param {
+    int getReallocPtrArg(AllocationFunction f) { result = f.getReallocPtrArg() }
 
-  private int getSizeArg(AllocationFunction f) { result = f.getSizeArg() }
+    int getSizeArg(AllocationFunction f) { result = f.getSizeArg() }
 
-  private int getSizeMult(AllocationFunction f) { result = f.getSizeMult() }
+    int getSizeMult(AllocationFunction f) { result = f.getSizeMult() }
 
-  private predicate requiresDealloc(AllocationFunction f) { f.requiresDealloc() }
+    predicate requiresDealloc(AllocationFunction f) { f.requiresDealloc() }
+  }
 
   /**
    * A class that provides the implementation of `AllocationExpr` for an allocation
    * that calls an `AllocationFunction`.
    */
   private class Base =
-    CallAllocationExprBase<AllocationFunction>::With<getReallocPtrArg/1, getSizeArg/1, getSizeMult/1, requiresDealloc/1>::CallAllocationExprImpl;
+    CallAllocationExprBase<AllocationFunction>::With<Param>::CallAllocationExprImpl;
 
   class CallAllocationExpr extends AllocationExpr, Base {
     override Expr getSizeExpr() { result = super.getSizeExprImpl() }
@@ -444,20 +449,22 @@ private module HeuristicAllocation {
     override predicate requiresDealloc() { none() }
   }
 
-  private int getReallocPtrArg(HeuristicAllocationFunction f) { result = f.getReallocPtrArg() }
+  private module Param implements CallAllocationExprBase<HeuristicAllocationFunction>::Param {
+    int getReallocPtrArg(HeuristicAllocationFunction f) { result = f.getReallocPtrArg() }
 
-  private int getSizeArg(HeuristicAllocationFunction f) { result = f.getSizeArg() }
+    int getSizeArg(HeuristicAllocationFunction f) { result = f.getSizeArg() }
 
-  private int getSizeMult(HeuristicAllocationFunction f) { result = f.getSizeMult() }
+    int getSizeMult(HeuristicAllocationFunction f) { result = f.getSizeMult() }
 
-  private predicate requiresDealloc(HeuristicAllocationFunction f) { f.requiresDealloc() }
+    predicate requiresDealloc(HeuristicAllocationFunction f) { f.requiresDealloc() }
+  }
 
   /**
    * A class that provides the implementation of `AllocationExpr` for an allocation
    * that calls an `HeuristicAllocationFunction`.
    */
   private class Base =
-    CallAllocationExprBase<HeuristicAllocationFunction>::With<getReallocPtrArg/1, getSizeArg/1, getSizeMult/1, requiresDealloc/1>::CallAllocationExprImpl;
+    CallAllocationExprBase<HeuristicAllocationFunction>::With<Param>::CallAllocationExprImpl;
 
   private class CallAllocationExpr extends HeuristicAllocationExpr, Base {
     override Expr getSizeExpr() { result = super.getSizeExprImpl() }
