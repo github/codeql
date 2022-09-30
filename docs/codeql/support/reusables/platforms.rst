@@ -20,7 +20,7 @@
 
    macOS 12 Monterey","x86-64
 
-   x86-64, arm64 (Apple Silicon) [1]_
+   x86-64, arm64 (Apple Silicon)
 
    x86-64, arm64 (Apple Silicon) [1]_"
 
