@@ -207,7 +207,7 @@ module Hash {
     bindingset[this]
     AssocSummary() { mc.getMethodName() = "assoc" }
 
-    override MethodCall getACall() { result = mc }
+    override MethodCall getACallSimple() { result = mc }
   }
 
   private class AssocKnownSummary extends AssocSummary {
@@ -286,7 +286,7 @@ module Hash {
           ")"
     }
 
-    final override MethodCall getACall() { result = mc }
+    final override MethodCall getACallSimple() { result = mc }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       input =
@@ -308,7 +308,7 @@ abstract private class FetchValuesSummary extends SummarizedCallable {
   bindingset[this]
   FetchValuesSummary() { mc.getMethodName() = "fetch_values" }
 
-  final override MethodCall getACall() { result = mc }
+  final override MethodCall getACallSimple() { result = mc }
 
   override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
     (
@@ -404,7 +404,7 @@ abstract private class SliceSummary extends SummarizedCallable {
   bindingset[this]
   SliceSummary() { mc.getMethodName() = "slice" }
 
-  final override MethodCall getACall() { result = mc }
+  final override MethodCall getACallSimple() { result = mc }
 }
 
 private class SliceKnownSummary extends SliceSummary {
