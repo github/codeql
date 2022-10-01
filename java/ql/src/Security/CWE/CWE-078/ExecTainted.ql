@@ -20,5 +20,5 @@ import DataFlow::PathGraph
 
 from DataFlow::PathNode source, DataFlow::PathNode sink, ArgumentToExec execArg
 where execTainted(source, sink, execArg)
-select execArg, source, sink, "Command line depends on a $@.", source.getNode(),
+select execArg, source, sink, "This command line depends on a $@.", source.getNode(),
   "user-provided value"
