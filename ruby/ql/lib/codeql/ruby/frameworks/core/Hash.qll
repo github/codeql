@@ -40,7 +40,7 @@ module Hash {
    * Gets a call to the method `name` invoked on the `Hash` object
    * (not on a hash instance).
    */
-  private MethodCall getAStaticHashCall(string name) {
+  MethodCall getAStaticHashCall(string name) {
     result.getMethodName() = name and
     resolveConstantReadAccess(result.getReceiver()) = TResolved("Hash")
   }

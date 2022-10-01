@@ -10,6 +10,7 @@ private import codeql.ruby.dataflow.internal.SsaImpl as SsaImpl
 private import codeql.ruby.dataflow.internal.FlowSummaryImpl as FlowSummaryImpl
 private import codeql.ruby.dataflow.internal.FlowSummaryImplSpecific as FlowSummaryImplSpecific
 private import codeql.ruby.dataflow.internal.AccessPathSyntax
+private import codeql.ruby.frameworks.core.Hash
 
 class Node = DataFlowPublic::Node;
 
@@ -220,6 +221,25 @@ predicate basicStoreStep(Node nodeFrom, Node nodeTo, DataFlow::ContentSet conten
     nodeFrom = evaluateSummaryComponentStackLocal(callable, call, input) and
     nodeTo = evaluateSummaryComponentStackLocal(callable, call, output)
   )
+  or
+  // Hash literals
+  exists(Cfg::CfgNodes::ExprNodes::PairCfgNode pair |
+    hashLiteralStore(nodeTo, any(DataFlow::Node n | n.asExpr() = pair)) and
+    nodeFrom.asExpr() = pair.getValue()
+  |
+    exists(ConstantValue constant |
+      constant = pair.getKey().getConstantValue() and
+      contents.isSingleton(DataFlow::Content::getElementContent(constant))
+    )
+    or
+    not exists(pair.getKey().getConstantValue()) and
+    contents.isAnyElement()
+  )
+}
+
+private predicate hashLiteralStore(DataFlow::CallNode hashCreation, DataFlow::Node argument) {
+  hashCreation.getExprNode().getExpr() = Hash::getAStaticHashCall("[]") and
+  argument = hashCreation.getArgument(_)
 }
 
 /**
@@ -310,6 +330,14 @@ predicate basicWithContentStep(Node nodeFrom, Node nodeTo, ContentFilter filter)
     nodeFrom = evaluateSummaryComponentStackLocal(callable, call, input) and
     nodeTo = evaluateSummaryComponentStackLocal(callable, call, output)
   )
+  or
+  // Hash-splat in a hash literal
+  exists(DataFlow::Node node |
+    hashLiteralStore(nodeTo, node) and
+    node.asExpr().getExpr() instanceof HashSplatExpr and
+    nodeFrom.asExpr() = node.asExpr().(Cfg::CfgNodes::ExprNodes::UnaryOperationCfgNode).getOperand() and
+    filter = MkElementFilter()
+  )
 }
 
 /**
@@ -344,7 +372,8 @@ private predicate hasLoadStoreSummary(
 ) {
   callable
       .propagatesFlow(push(SummaryComponent::content(loadContents), input),
-        push(SummaryComponent::content(storeContents), output), true)
+        push(SummaryComponent::content(storeContents), output), true) and
+  callable != "Hash.[]" // Special-cased due to having a huge number of summaries
 }
 
 /**
