@@ -19,5 +19,5 @@ import semmle.code.csharp.dataflow.DataFlow::DataFlow::PathGraph
 
 from TaintTrackingConfiguration c, DataFlow::PathNode source, DataFlow::PathNode sink
 where c.hasFlowPath(source, sink)
-select sink.getNode(), source, sink, "$@ flows to here and is compiled as code.", source.getNode(),
-  "User-provided value"
+select sink.getNode(), source, sink, "This code compilation depends on a $@.", source.getNode(),
+  "user-provided value"

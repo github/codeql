@@ -23,9 +23,9 @@ where
     exists(MethodCall callToEquals |
       callToEquals.getTarget() instanceof EqualsMethod and
       callToEquals.getQualifier().getType() = c and
-      message = "but it is called $@" and
+      message = "but $@" and
       item = callToEquals and
-      itemText = "here"
+      itemText = "'Equals' is called on an instance of this class"
     )
     or
     item = c.getAnOperator().(EQOperator) and

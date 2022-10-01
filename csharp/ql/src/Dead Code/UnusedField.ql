@@ -19,4 +19,4 @@ where
   f.fromSource() and
   isDeadField(f) and
   not f.getDeclaringType().isPartial()
-select f, "Unused field (or field used from dead method only)"
+select f, "Unused field (or field used from dead method only)."
