@@ -20,6 +20,8 @@
 | dataClass.kt:0:0:0:0 | ... !is ... | NotInstanceOfExpr |
 | dataClass.kt:0:0:0:0 | ... (value not-equals) ... | ValueNEExpr |
 | dataClass.kt:0:0:0:0 | ... (value not-equals) ... | ValueNEExpr |
+| dataClass.kt:0:0:0:0 | ... * ... | MulExpr |
+| dataClass.kt:0:0:0:0 | ... + ... | AddExpr |
 | dataClass.kt:0:0:0:0 | ... == ... | EQExpr |
 | dataClass.kt:0:0:0:0 | ...=... | AssignExpr |
 | dataClass.kt:0:0:0:0 | DataClass | TypeAccess |
@@ -42,7 +44,6 @@
 | dataClass.kt:0:0:0:0 | other | VarAccess |
 | dataClass.kt:0:0:0:0 | other | VarAccess |
 | dataClass.kt:0:0:0:0 | other | VarAccess |
-| dataClass.kt:0:0:0:0 | plus(...) | MethodAccess |
 | dataClass.kt:0:0:0:0 | result | LocalVariableDeclExpr |
 | dataClass.kt:0:0:0:0 | result | VarAccess |
 | dataClass.kt:0:0:0:0 | result | VarAccess |
@@ -64,7 +65,6 @@
 | dataClass.kt:0:0:0:0 | this.y | VarAccess |
 | dataClass.kt:0:0:0:0 | this.y | VarAccess |
 | dataClass.kt:0:0:0:0 | this.y | VarAccess |
-| dataClass.kt:0:0:0:0 | times(...) | MethodAccess |
 | dataClass.kt:0:0:0:0 | tmp0_other_with_cast | LocalVariableDeclExpr |
 | dataClass.kt:0:0:0:0 | tmp0_other_with_cast | VarAccess |
 | dataClass.kt:0:0:0:0 | tmp0_other_with_cast | VarAccess |
@@ -199,8 +199,8 @@
 | enumClass.kt:0:0:0:0 | EnumClass | TypeAccess |
 | enumClass.kt:0:0:0:0 | EnumClass[] | TypeAccess |
 | enumClass.kt:0:0:0:0 | String | TypeAccess |
+| enumClass.kt:1:1:4:1 | Enum<EnumClass> | TypeAccess |
 | enumClass.kt:1:1:4:1 | EnumClass | TypeAccess |
-| enumClass.kt:1:1:4:1 | Unit | TypeAccess |
 | enumClass.kt:1:1:4:1 | new Enum(...) | ClassInstanceExpr |
 | enumClass.kt:1:22:1:31 | ...=... | KtInitializerAssignExpr |
 | enumClass.kt:1:22:1:31 | int | TypeAccess |

@@ -509,9 +509,9 @@ public class OdasaOutput {
 			// Classes being compiled from source have major version 0 but should take precedence
 			// over any classes with the same qualified name loaded from the classpath
 			// in previous or subsequent extractor invocations.
-			if (tcv.majorVersion==0)
+			if (tcv.majorVersion == 0 && majorVersion != 0)
 				return false;
-			else if (majorVersion==0)
+			else if (majorVersion == 0 && tcv.majorVersion != 0)
 				return true;
 			// Always consider the Kotlin extractor superior to the Java extractor, because we may decode and extract
 			// Kotlin metadata that the Java extractor can't understand:

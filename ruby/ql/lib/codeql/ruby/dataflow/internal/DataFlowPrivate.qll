@@ -52,6 +52,8 @@ private CfgNodes::ExprCfgNode getALastEvalNode(CfgNodes::ExprCfgNode n) {
   or
   result = n.(CfgNodes::ExprNodes::ConditionalExprCfgNode).getBranch(_)
   or
+  result = n.(CfgNodes::ExprNodes::AssignExprCfgNode).getRhs()
+  or
   exists(CfgNodes::AstCfgNode branch |
     branch = n.(CfgNodes::ExprNodes::CaseExprCfgNode).getBranch(_)
   |
@@ -156,8 +158,6 @@ module LocalFlow {
 
   predicate localFlowStepCommon(Node nodeFrom, Node nodeTo) {
     localSsaFlowStep(nodeFrom, nodeTo)
-    or
-    nodeFrom.asExpr() = nodeTo.asExpr().(CfgNodes::ExprNodes::AssignExprCfgNode).getRhs()
     or
     nodeFrom.asExpr() = nodeTo.asExpr().(CfgNodes::ExprNodes::BlockArgumentCfgNode).getValue()
     or
@@ -373,16 +373,24 @@ private module Cached {
     n instanceof SynthReturnNode
     or
     // Needed for stores in type tracking
-    TypeTrackerSpecific::basicStoreStep(_, n, _)
+    TypeTrackerSpecific::postUpdateStoreStep(_, n, _)
   }
 
   cached
-  newtype TContentSet =
+  newtype TOptionalContentSet =
     TSingletonContent(Content c) or
     TAnyElementContent() or
-    TElementLowerBoundContent(int lower) {
-      FlowSummaryImplSpecific::ParsePositions::isParsedElementLowerBoundPosition(_, lower)
-    }
+    TKnownOrUnknownElementContent(Content::KnownElementContent c) or
+    TElementLowerBoundContent(int lower, boolean includeUnknown) {
+      FlowSummaryImplSpecific::ParsePositions::isParsedElementLowerBoundPosition(_, includeUnknown,
+        lower)
+    } or
+    TNoContentSet() // Only used by type-tracking
+
+  cached
+  class TContentSet =
+    TSingletonContent or TAnyElementContent or TKnownOrUnknownElementContent or
+        TElementLowerBoundContent;
 
   cached
   newtype TContent =
@@ -408,7 +416,9 @@ private module Cached {
       |
         name = [input, output].regexpFind("(?<=(^|\\.)Field\\[)[^\\]]+(?=\\])", _, _).trim()
       )
-    }
+    } or
+    // Only used by type-tracking
+    TAttributeName(string name) { name = any(SetterMethodCall c).getTargetName() }
 
   /**
    * Holds if `e` is an `ExprNode` that may be returned by a call to `c`.

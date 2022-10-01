@@ -132,6 +132,9 @@ module Rbi {
       }
     }
 
+    /**
+     * A use of `T::Hash`.
+     */
     class RbiHashType extends RbiType, ConstantReadAccessFromT {
       RbiHashType() { this.getName() = "Hash" }
 
@@ -142,6 +145,11 @@ module Rbi {
 
       /** Gets the type of values of this hash type. */
       Expr getValueType() { result = this.getRefNode().getArgument(1) }
+    }
+
+    /** A type instantiated with type arguments, such as `T::Array[String]`. */
+    class RbiInstantiatedType extends RbiType, ElementReference {
+      RbiInstantiatedType() { this.getReceiver() instanceof RbiType }
     }
 
     /**

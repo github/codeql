@@ -49,7 +49,7 @@ private module Cached {
     )
     or
     // allow flow through `URL.init`.
-    exists(CallExpr call, ClassDecl c, AbstractFunctionDecl f |
+    exists(CallExpr call, StructDecl c, AbstractFunctionDecl f |
       c.getName() = "URL" and
       c.getAMember() = f and
       f.getName() = ["init(string:)", "init(string:relativeTo:)"] and

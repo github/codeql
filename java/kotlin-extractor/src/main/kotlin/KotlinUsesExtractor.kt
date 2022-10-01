@@ -308,15 +308,30 @@ open class KotlinUsesExtractor(
             c.hasEqualFqName(FqName("java.lang.Object")))
             return c
         return globalExtensionState.syntheticToRealClassMap.getOrPut(c) {
-            val result = c.fqNameWhenAvailable?.let {
-                pluginContext.referenceClass(it)?.owner
+            val qualifiedName = c.fqNameWhenAvailable
+            if (qualifiedName == null) {
+                logger.warn("Failed to replace synthetic class ${c.name} because it has no fully qualified name")
+                return@getOrPut null
             }
-            if (result == null) {
-                logger.warn("Failed to replace synthetic class ${c.name}")
-            } else {
+
+            val result = pluginContext.referenceClass(qualifiedName)?.owner
+            if (result != null) {
                 logger.info("Replaced synthetic class ${c.name} with its real equivalent")
+                return@getOrPut result
             }
-            result
+
+            // The above doesn't work for (some) generated nested classes, such as R$id, which should be R.id
+            val fqn = qualifiedName.asString()
+            if (fqn.indexOf('$') >= 0) {
+                val nested = pluginContext.referenceClass(FqName(fqn.replace('$', '.')))?.owner
+                if (nested != null) {
+                    logger.info("Replaced synthetic nested class ${c.name} with its real equivalent")
+                    return@getOrPut nested
+                }
+            }
+
+            logger.warn("Failed to replace synthetic class ${c.name}")
+            return@getOrPut null
         } ?: c
     }
 
@@ -351,9 +366,8 @@ open class KotlinUsesExtractor(
         if (replacementClass === parentClass)
             return f
         return globalExtensionState.syntheticToRealFieldMap.getOrPut(f) {
-            val result = replacementClass.declarations.findSubType<IrField> { replacementDecl ->
-                replacementDecl.name == f.name
-            }
+            val result = replacementClass.declarations.findSubType<IrField> { replacementDecl -> replacementDecl.name == f.name }
+                ?: replacementClass.declarations.findSubType<IrProperty> { it.backingField?.name == f.name}?.backingField
             if (result == null) {
                 logger.warn("Failed to replace synthetic class field ${f.name}")
             } else {
@@ -460,6 +474,14 @@ open class KotlinUsesExtractor(
                 TypeResult(fakeKotlinType(), "TODO", "TODO")
             )
         }
+
+    fun getExistingAnonymousClassLabel(c: IrClass): Label<out DbType>? {
+        if (!c.isAnonymousObject){
+            return null
+        }
+
+        return tw.lm.anonymousTypeMapping[c]?.javaResult?.id
+    }
 
     fun fakeKotlinType(): Label<out DbKt_type> {
         val fakeKotlinPackageId: Label<DbPackage> = tw.getLabelFor("@\"FakeKotlinPackage\"", {
@@ -1255,10 +1277,7 @@ open class KotlinUsesExtractor(
                         javaClass.declarations.findSubType<IrFunction> { decl ->
                             decl.name.asString() == jvmName &&
                             decl.valueParameters.size == f.valueParameters.size &&
-                            // Note matching by classifier not the whole type so that generic arguments are allowed to differ,
-                            // as they always will for method type parameters occurring in parameter types (e.g. <T> toArray(T[] array)
-                            // Differing only by nullability would also be insignificant if it came up.
-                            decl.valueParameters.zip(f.valueParameters).all { p -> p.first.type.classifierOrNull == p.second.type.classifierOrNull }
+                            decl.valueParameters.zip(f.valueParameters).all { p -> erase(p.first.type) == erase(p.second.type) }
                         } ?:
                         // Or if there is none, look for the only viable overload
                         javaClass.declarations.singleOrNullSubType<IrFunction> { decl ->

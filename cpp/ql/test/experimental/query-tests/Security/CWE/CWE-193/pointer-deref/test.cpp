@@ -212,3 +212,13 @@ void test13(unsigned len, unsigned index) {
     
     *q = '\0'; // BAD
 }
+
+bool unknown();
+
+void test14(unsigned long n, char *p) {
+  while (unknown()) {
+    n++;
+    p = (char *)malloc(n);
+    p[n - 1] = 'a'; // GOOD
+  }
+}

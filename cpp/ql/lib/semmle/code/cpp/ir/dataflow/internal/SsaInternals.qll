@@ -267,9 +267,6 @@ Instruction getSourceAddressFromNode(Node node) {
   result = getSourceAddress(node.asOperand().(SideEffectOperand).getUse())
 }
 
-/** Gets the source value of `instr` if it's an instruction that behaves like a `LoadInstruction`. */
-Instruction getSourceValue(Instruction instr) { result = getSourceValueOperand(instr).getDef() }
-
 /**
  * Gets the operand that represents the source value of `instr` if it's an instruction
  * that behaves like a `LoadInstruction`.

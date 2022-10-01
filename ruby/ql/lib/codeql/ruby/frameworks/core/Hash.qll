@@ -5,6 +5,7 @@ private import codeql.ruby.ApiGraphs
 private import codeql.ruby.DataFlow
 private import codeql.ruby.dataflow.FlowSummary
 private import codeql.ruby.dataflow.internal.DataFlowDispatch
+private import codeql.ruby.ast.internal.Module
 
 /**
  * Provides flow summaries for the `Hash` class.
@@ -35,12 +36,19 @@ module Hash {
     )
   }
 
+  /**
+   * Gets a call to the method `name` invoked on the `Hash` object
+   * (not on a hash instance).
+   */
+  private MethodCall getAStaticHashCall(string name) {
+    result.getMethodName() = name and
+    resolveConstantReadAccess(result.getReceiver()) = TResolved("Hash")
+  }
+
   private class HashLiteralSummary extends SummarizedCallable {
     HashLiteralSummary() { this = "Hash.[]" }
 
-    final override MethodCall getACall() {
-      result = API::getTopLevelMember("Hash").getAMethodCall("[]").getExprNode().getExpr()
-    }
+    final override MethodCall getACallSimple() { result = getAStaticHashCall("[]") }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       // { 'nonsymbol' => x }
@@ -77,9 +85,8 @@ module Hash {
   private class HashNewSummary extends SummarizedCallable {
     HashNewSummary() { this = "Hash[]" }
 
-    final override ElementReference getACall() {
-      result.getReceiver() =
-        API::getTopLevelMember("Hash").getAValueReachableFromSource().asExpr().getExpr() and
+    final override MethodCall getACallSimple() {
+      result = getAStaticHashCall("[]") and
       result.getNumberOfArguments() = 1
     }
 
@@ -117,9 +124,8 @@ module Hash {
       )
     }
 
-    final override ElementReference getACall() {
-      result.getReceiver() =
-        API::getTopLevelMember("Hash").getAValueReachableFromSource().asExpr().getExpr() and
+    final override MethodCall getACallSimple() {
+      result = getAStaticHashCall("[]") and
       key = result.getArgument(i - 1).getConstantValue() and
       exists(result.getArgument(i))
     }
@@ -135,9 +141,7 @@ module Hash {
   private class TryConvertSummary extends SummarizedCallable {
     TryConvertSummary() { this = "Hash.try_convert" }
 
-    override MethodCall getACall() {
-      result = API::getTopLevelMember("Hash").getAMethodCall("try_convert").getExprNode().getExpr()
-    }
+    override MethodCall getACallSimple() { result = getAStaticHashCall("try_convert") }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       input = "Argument[0].WithElement[any]" and
@@ -152,7 +156,7 @@ module Hash {
     bindingset[this]
     StoreSummary() { mc.getMethodName() = "store" and mc.getNumberOfArguments() = 2 }
 
-    final override MethodCall getACall() { result = mc }
+    final override MethodCall getACallSimple() { result = mc }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       input = "Argument[1]" and
@@ -176,7 +180,7 @@ module Hash {
       output = "Argument[self].Element[" + key.serialize() + "]" and
       preservesValue = true
       or
-      input = "Argument[self].WithoutElement[" + key.serialize() + "]" and
+      input = "Argument[self].WithoutElement[" + key.serialize() + "!]" and
       output = "Argument[self]" and
       preservesValue = true
     }
@@ -217,7 +221,7 @@ module Hash {
     }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
-      input = "Argument[self].Element[" + key.serialize() + ",?]" and
+      input = "Argument[self].Element[" + key.serialize() + "]" and
       output = "ReturnValue.Element[1]" and
       preservesValue = true
     }
@@ -290,7 +294,7 @@ module Hash {
           concat(int i, string s |
             s = getExceptComponent(mc, i)
           |
-            ".WithoutElement[" + s + "]" order by i
+            ".WithoutElement[" + s + "!]" order by i
           ) and
       output = "ReturnValue" and
       preservesValue = true
@@ -413,7 +417,7 @@ private class SliceKnownSummary extends SliceSummary {
   }
 
   override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
-    input = "Argument[self].WithElement[?," + key.serialize() + "]" and
+    input = "Argument[self].WithElement[" + key.serialize() + "]" and
     output = "ReturnValue" and
     preservesValue = true
   }
@@ -426,7 +430,7 @@ private class SliceUnknownSummary extends SliceSummary {
   }
 
   override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
-    input = "Argument[self].WithoutElement[0..].WithElement[any]" and
+    input = "Argument[self].WithoutElement[0..!].WithElement[any]" and
     output = "ReturnValue" and
     preservesValue = true
   }
@@ -436,7 +440,7 @@ private class ToASummary extends SimpleSummarizedCallable {
   ToASummary() { this = "to_a" }
 
   override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
-    input = "Argument[self].WithoutElement[0..].Element[any]" and
+    input = "Argument[self].WithoutElement[0..!].Element[any]" and
     output = "ReturnValue.Element[?].Element[1]" and
     preservesValue = true
   }
@@ -531,21 +535,6 @@ private class ValuesSummary extends SimpleSummarizedCallable {
   override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
     input = "Argument[self].Element[any]" and
     output = "ReturnValue.Element[?]" and
-    preservesValue = true
-  }
-}
-
-abstract private class ValuesAtSummary extends SummarizedCallable {
-  MethodCall mc;
-
-  bindingset[this]
-  ValuesAtSummary() { mc.getMethodName() = "values_at" }
-
-  final override MethodCall getACall() { result = mc }
-
-  override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
-    input = "Argument[self].WithElement[?]" and
-    output = "ReturnValue" and
     preservesValue = true
   }
 }

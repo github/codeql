@@ -87,7 +87,7 @@ predicate isBadRegexpFilter(HtmlMatchingRegExp regexp, string msg) {
     not regexp.fillsCaptureGroup("<script>", group) and
     msg =
       "This regular expression only parses --> (capture group " + group +
-        ") and not --!> as a HTML comment end tag."
+        ") and not --!> as an HTML comment end tag."
   )
   or
   regexp.matches("<!-- foo -->") and

@@ -424,22 +424,20 @@ module Flask {
     }
   }
 
+  private API::Node requestFileStorage() {
+    // TODO: This approach for identifying member-access is very adhoc, and we should
+    // be able to do something more structured for providing modeling of the members
+    // of a container-object.
+    result = request().getMember("files").getASubscript()
+    or
+    result = request().getMember("files").getMember("get").getReturn()
+    or
+    result = request().getMember("files").getMember("getlist").getReturn().getASubscript()
+  }
+
   /** An `FileStorage` instance that originates from a flask request. */
   private class FlaskRequestFileStorageInstances extends Werkzeug::FileStorage::InstanceSource {
-    FlaskRequestFileStorageInstances() {
-      // TODO: This approach for identifying member-access is very adhoc, and we should
-      // be able to do something more structured for providing modeling of the members
-      // of a container-object.
-      exists(API::Node files | files = request().getMember("files") |
-        this.asCfgNode().(SubscriptNode).getObject() =
-          files.getAValueReachableFromSource().asCfgNode()
-        or
-        this = files.getMember("get").getACall()
-        or
-        this.asCfgNode().(SubscriptNode).getObject() =
-          files.getMember("getlist").getReturn().getAValueReachableFromSource().asCfgNode()
-      )
-    }
+    FlaskRequestFileStorageInstances() { this = requestFileStorage().asSource() }
   }
 
   /** An `Headers` instance that originates from a flask request. */

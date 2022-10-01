@@ -164,14 +164,27 @@ module ModelInput {
   class TypeModel extends Unit {
     /**
      * Gets a data-flow node that is a source of the type `package;type`.
+     *
+     * This must not depend on API graphs, but ensures that an API node is generated for
+     * the source.
      */
     DataFlow::Node getASource(string package, string type) { none() }
 
     /**
-     * Gets a data flow node that is a sink of the type `package;type`,
+     * Gets a data-flow node that is a sink of the type `package;type`,
      * usually because it is an argument passed to a parameter of that type.
+     *
+     * This must not depend on API graphs, but ensures that an API node is generated for
+     * the sink.
      */
     DataFlow::Node getASink(string package, string type) { none() }
+
+    /**
+     * Gets an API node that is a source or sink of the type `package;type`.
+     *
+     * Unlike `getASource` and `getASink`, this may depend on API graphs.
+     */
+    API::Node getAnApiNode(string package, string type) { none() }
   }
 
   /**
@@ -433,6 +446,8 @@ private API::Node getNodeFromType(string package, string type) {
   result = any(TypeModelUseEntry e).getNodeForType(package, type)
   or
   result = any(TypeModelDefEntry e).getNodeForType(package, type)
+  or
+  result = any(TypeModel t).getAnApiNode(package, type)
   or
   result = Specific::getExtraNodeFromType(package, type)
 }

@@ -2473,7 +2473,8 @@ exprs.kt:
 #  127|                 0: [VarAccess] str1
 #  127|                 1: [VarAccess] str2
 #  127|               2: [StringLiteral]  bar 
-#  127|               3: [AddExpr] ... + ...
+#  127|               3: [MethodAccess] stringPlus(...)
+#  127|                 -1: [TypeAccess] Intrinsics
 #  127|                 0: [VarAccess] str2
 #  127|                 1: [VarAccess] str1
 #  127|               4: [StringLiteral]  baz
@@ -2909,7 +2910,7 @@ exprs.kt:
 #  168|       5: [BlockStmt] { ... }
 #  168|         0: [ExprStmt] <Expr>;
 #  168|           0: [ClassInstanceExpr] new Enum(...)
-#  168|             -3: [TypeAccess] Unit
+#  168|             -3: [TypeAccess] Enum<Direction>
 #  168|               0: [TypeAccess] Direction
 #  168|         1: [BlockStmt] { ... }
 #  169|     5: [FieldDeclaration] Direction NORTH;
@@ -2944,7 +2945,7 @@ exprs.kt:
 #  172|       5: [BlockStmt] { ... }
 #  172|         0: [ExprStmt] <Expr>;
 #  172|           0: [ClassInstanceExpr] new Enum(...)
-#  172|             -3: [TypeAccess] Unit
+#  172|             -3: [TypeAccess] Enum<Color>
 #  172|               0: [TypeAccess] Color
 #  172|         1: [BlockStmt] { ... }
 #  172|           0: [ExprStmt] <Expr>;
@@ -3052,15 +3053,16 @@ exprs.kt:
 #  203|               1: [IntegerLiteral] 5
 #  204|         2: [LocalVariableDeclStmt] var ...;
 #  204|           1: [LocalVariableDeclExpr] b1
-#  204|             0: [AddExpr] ... + ...
+#  204|             0: [MethodAccess] stringPlus(...)
+#  204|               -1: [TypeAccess] Intrinsics
 #  204|               0: [VarAccess] s
 #  204|               1: [IntegerLiteral] 5
 #  205|         3: [LocalVariableDeclStmt] var ...;
 #  205|           1: [LocalVariableDeclExpr] b2
-#  205|             0: [MethodAccess] plus(...)
-#  205|               -1: [NotNullExpr] ...!!
+#  205|             0: [AddExpr] ... + ...
+#  205|               0: [NotNullExpr] ...!!
 #  205|                 0: [VarAccess] s
-#  205|               0: [IntegerLiteral] 5
+#  205|               1: [IntegerLiteral] 5
 #  206|         4: [LocalVariableDeclStmt] var ...;
 #  206|           1: [LocalVariableDeclExpr] b3
 #  206|             0: [AddExpr] ... + ...

@@ -3,6 +3,7 @@
  */
 
 import codeql.ruby.AST
+import codeql.ruby.ApiGraphs
 import codeql.ruby.dataflow.FlowSummary
 import codeql.ruby.TaintTracking
 import codeql.ruby.dataflow.internal.FlowSummaryImpl
@@ -86,7 +87,11 @@ private class StepsFromModel extends ModelInput::SummaryModelCsv {
         ";any;Method[matchedByName];Argument[0];ReturnValue;taint",
         ";any;Method[matchedByNameRcv];Argument[self];ReturnValue;taint",
         ";any;Method[withElementOne];Argument[self].WithElement[1];ReturnValue;value",
+        ";any;Method[withExactlyElementOne];Argument[self].WithElement[1!];ReturnValue;value",
         ";any;Method[withoutElementOne];Argument[self].WithoutElement[1];Argument[self];value",
+        ";any;Method[withoutExactlyElementOne];Argument[self].WithoutElement[1!];Argument[self];value",
+        ";any;Method[readElementOne];Argument[self].Element[1];ReturnValue;value",
+        ";any;Method[readExactlyElementOne];Argument[self].Element[1!];ReturnValue;value"
       ]
   }
 }
@@ -107,6 +112,12 @@ private class TypeFromCodeQL extends ModelInput::TypeModel {
     package = "test" and
     type = "FooOrBar" and
     result.asExpr().getExpr().getConstantValue().getString() = "magic_string"
+  }
+
+  override API::Node getAnApiNode(string package, string type) {
+    package = "test" and
+    type = "FooOrBar" and
+    result = API::getTopLevelMember("Alias").getMember(["Foo", "Bar"])
   }
 }
 
@@ -132,6 +143,9 @@ private class SinkFromModel extends ModelInput::SinkModelCsv {
         "test;FooOrBar;Method[method].Argument[0];test-sink", //
         ";;Member[Foo].Method[sinkAnyArg].Argument[any];test-sink", //
         ";;Member[Foo].Method[sinkAnyNamedArg].Argument[any-named];test-sink", //
+        ";;Member[Foo].Method[getSinks].ReturnValue.Element[any].Method[mySink].Argument[0];test-sink", //
+        ";;Member[Foo].Method[arraySink].Argument[0].Element[any];test-sink", //
+        ";;Member[Foo].Method[secondArrayElementIsSink].Argument[0].Element[1];test-sink", //
       ]
   }
 }

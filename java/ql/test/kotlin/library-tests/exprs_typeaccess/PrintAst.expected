@@ -86,7 +86,7 @@ A.kt:
 #   23|         5: [BlockStmt] { ... }
 #   23|           0: [ExprStmt] <Expr>;
 #   23|             0: [ClassInstanceExpr] new Enum(...)
-#   23|               -3: [TypeAccess] Unit
+#   23|               -3: [TypeAccess] Enum<Enu>
 #   23|                 0: [TypeAccess] Enu
 #   23|           1: [BlockStmt] { ... }
 #   24|       5: [FieldDeclaration] Enu A;

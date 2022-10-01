@@ -125,11 +125,11 @@ app/src/main/kotlin/testProject/App.kt:
 #    0|         1: [ExprStmt] <Expr>;
 #    0|           0: [AssignExpr] ...=...
 #    0|             0: [VarAccess] result
-#    0|             1: [MethodAccess] plus(...)
-#    0|               -1: [MethodAccess] times(...)
-#    0|                 -1: [VarAccess] result
-#    0|                 0: [IntegerLiteral] 31
-#    0|               0: [MethodAccess] hashCode(...)
+#    0|             1: [AddExpr] ... + ...
+#    0|               0: [MulExpr] ... * ...
+#    0|                 0: [VarAccess] result
+#    0|                 1: [IntegerLiteral] 31
+#    0|               1: [MethodAccess] hashCode(...)
 #    0|                 -1: [VarAccess] this.language
 #    0|                   -1: [ThisAccess] this
 #    0|         2: [ReturnStmt] return ...
@@ -183,8 +183,6 @@ app/src/main/kotlin/testProject/App.kt:
 #    7|           0: [ReturnStmt] return ...
 #    7|             0: [ArrayCreationExpr] new KSerializer<?>[]
 #    7|               -2: [ArrayInit] {...}
-#    7|                 0: [VarAccess] INSTANCE
-#    7|                 1: [VarAccess] INSTANCE
 #    7|               -1: [TypeAccess] KSerializer<?>
 #    7|               0: [IntegerLiteral] 2
 #    0|       3: [Method] deserialize

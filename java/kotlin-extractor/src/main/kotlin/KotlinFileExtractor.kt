@@ -3,7 +3,6 @@ package com.github.codeql
 import com.github.codeql.comments.CommentExtractor
 import com.github.codeql.utils.*
 import com.github.codeql.utils.versions.functionN
-import com.github.codeql.utils.versions.getIrStubFromDescriptor
 import com.github.codeql.utils.versions.isUnderscoreParameter
 import com.semmle.extractor.java.OdasaOutput
 import org.jetbrains.kotlin.backend.common.extensions.IrPluginContext
@@ -1788,7 +1787,8 @@ open class KotlinFileExtractor(
 
     private fun extractCall(c: IrCall, callable: Label<out DbCallable>, stmtExprParent: StmtExprParent) {
         with("call", c) {
-            val target = tryReplaceSyntheticFunction(c.symbol.owner)
+            val owner = getBoundSymbolOwner(c.symbol, c) ?: return
+            val target = tryReplaceSyntheticFunction(owner)
 
             // The vast majority of types of call want an expr context, so make one available lazily:
             val exprParent by lazy {
@@ -1901,9 +1901,8 @@ open class KotlinFileExtractor(
 
             val dr = c.dispatchReceiver
             when {
-                c.origin == IrStatementOrigin.PLUS &&
-                (isNumericFunction(target, "plus")
-                        || isFunction(target, "kotlin", "String", "plus", null)) -> {
+                isNumericFunction(target, "plus")
+                        || isFunction(target, "kotlin", "String", "plus", false) -> {
                     val id = tw.getFreshIdLabel<DbAddexpr>()
                     val type = useType(c.type)
                     tw.writeExprs_addexpr(id, type.javaResult.id, parent, idx)
@@ -1918,28 +1917,28 @@ open class KotlinFileExtractor(
                         extractRawMethodAccess(stringPlusFn, c, callable, parent, idx, enclosingStmt, listOf(c.extensionReceiver, c.getValueArgument(0)), null, null)
                     }
                 }
-                c.origin == IrStatementOrigin.MINUS && isNumericFunction(target, "minus") -> {
+                isNumericFunction(target, "minus") -> {
                     val id = tw.getFreshIdLabel<DbSubexpr>()
                     val type = useType(c.type)
                     tw.writeExprs_subexpr(id, type.javaResult.id, parent, idx)
                     tw.writeExprsKotlinType(id, type.kotlinResult.id)
                     binopDisp(id)
                 }
-                c.origin == IrStatementOrigin.MUL && isNumericFunction(target, "times") -> {
+                isNumericFunction(target, "times") -> {
                     val id = tw.getFreshIdLabel<DbMulexpr>()
                     val type = useType(c.type)
                     tw.writeExprs_mulexpr(id, type.javaResult.id, parent, idx)
                     tw.writeExprsKotlinType(id, type.kotlinResult.id)
                     binopDisp(id)
                 }
-                c.origin == IrStatementOrigin.DIV && isNumericFunction(target, "div") -> {
+                isNumericFunction(target, "div") -> {
                     val id = tw.getFreshIdLabel<DbDivexpr>()
                     val type = useType(c.type)
                     tw.writeExprs_divexpr(id, type.javaResult.id, parent, idx)
                     tw.writeExprsKotlinType(id, type.kotlinResult.id)
                     binopDisp(id)
                 }
-                c.origin == IrStatementOrigin.PERC && isNumericFunction(target, "rem") -> {
+                isNumericFunction(target, "rem") -> {
                     val id = tw.getFreshIdLabel<DbRemexpr>()
                     val type = useType(c.type)
                     tw.writeExprs_remexpr(id, type.javaResult.id, parent, idx)
@@ -2498,11 +2497,23 @@ open class KotlinFileExtractor(
 
         if (e is IrConstructorCall) {
             extractConstructorTypeAccess(eType, typeAccessType, e.symbol, locId, id, -3, callable, enclosingStmt)
-        } else {
-            val typeAccessId =
-                extractTypeAccess(typeAccessType, locId, id, -3, callable, enclosingStmt)
+        } else if (e is IrEnumConstructorCall) {
+            val enumClass = e.symbol.owner.parent as? IrClass
+            if (enumClass == null) {
+                logger.warnElement("Couldn't find declaring class of enum constructor call", e)
+                return
+            }
 
-            extractTypeArguments(e, typeAccessId, callable, enclosingStmt)
+            val args = (0 until e.typeArgumentsCount).map { e.getTypeArgument(it) }.requireNoNullsOrNull()
+            if (args == null) {
+                logger.warnElement("Found null type argument in enum constructor call", e)
+                return
+            }
+
+            val enumType = enumClass.typeWith(args)
+            extractConstructorTypeAccess(enumType, useType(enumType), e.symbol, locId, id, -3, callable, enclosingStmt)
+        } else {
+            logger.errorElement("Unexpected constructor call type: ${e.javaClass}", e)
         }
     }
 
@@ -2953,15 +2964,7 @@ open class KotlinFileExtractor(
                     tw.writeCallableEnclosingExpr(id, callable)
                     tw.writeStatementEnclosingExpr(id, exprParent.enclosingStmt)
 
-                    val owner = if (e.symbol.isBound) {
-                        e.symbol.owner
-                    }
-                    else {
-                        logger.warnElement("Unbound enum value, trying to use enum entry stub from descriptor", e)
-
-                        @OptIn(ObsoleteDescriptorBasedAPI::class)
-                        getIrStubFromDescriptor() { it.generateEnumEntryStub(e.symbol.descriptor) }
-                    } ?: return
+                    val owner = getBoundSymbolOwner(e.symbol, e) ?: return
 
                     val vId = useEnumEntry(owner)
                     tw.writeVariableBinding(id, vId)
@@ -3138,15 +3141,7 @@ open class KotlinFileExtractor(
                     // automatically-generated `public static final MyObject INSTANCE`
                     // field that we are accessing here.
                     val exprParent = parent.expr(e, callable)
-                    val c = if (e.symbol.isBound) {
-                        e.symbol.owner
-                    }
-                    else {
-                        logger.warnElement("Unbound object value, trying to use class stub from descriptor", e)
-
-                        @OptIn(ObsoleteDescriptorBasedAPI::class)
-                        getIrStubFromDescriptor() { it.generateClassStub(e.symbol.descriptor) }
-                    } ?: return
+                    val c = getBoundSymbolOwner(e.symbol, e) ?: return
 
                     val instance = if (c.isCompanion) useCompanionObjectClassInstance(c) else useObjectClassInstance(c)
 
@@ -3257,6 +3252,15 @@ open class KotlinFileExtractor(
             }
             return
         }
+    }
+
+    private inline fun <D: DeclarationDescriptor, reified B: IrSymbolOwner> getBoundSymbolOwner(symbol: IrBindableSymbol<D, B>, e: IrExpression): B? {
+        if (symbol.isBound) {
+            return symbol.owner
+        }
+
+        logger.errorElement("Unbound symbol found, skipping extraction of expression", e)
+        return null
     }
 
     private fun extractSuperAccess(irType: IrType, callable: Label<out DbCallable>, parent: Label<out DbExprparent>, idx: Int, enclosingStmt: Label<out DbStmt>, locId: Label<out DbLocation>) =
