@@ -579,6 +579,10 @@ private predicate localFlowStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo, 
   summary.toString() = "level"
 }
 
+private predicate hasAdjacentTypeCheckedReads(DataFlow::Node node) {
+  hasAdjacentTypeCheckedReads(_, _, node.asExpr(), _)
+}
+
 /**
  * We exclude steps into `self` parameters and type checked variables. For those,
  * we instead rely on the type of the enclosing module resp. the type being checked
@@ -588,12 +592,12 @@ private predicate localFlowStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo, 
 pragma[nomagic]
 private DataFlow::Node trackInstanceRec(Module tp, TypeTracker t, boolean exact, StepSummary summary) {
   exists(DataFlow::Node mid | mid = trackInstance(tp, exact, t) |
-    StepSummary::smallstep(mid, result, summary)
+    StepSummary::smallstep(mid, result, summary) and
+    not result instanceof SelfParameterNode
     or
-    localFlowStep(mid, result, summary)
-  ) and
-  not result instanceof SelfParameterNode and
-  not hasAdjacentTypeCheckedReads(_, _, result.asExpr(), _)
+    localFlowStep(mid, result, summary) and
+    not hasAdjacentTypeCheckedReads(result)
+  )
 }
 
 pragma[nomagic]
