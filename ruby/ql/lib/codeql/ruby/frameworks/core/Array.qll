@@ -2203,7 +2203,7 @@ module Enumerable {
         input = "Argument[self].Element[0]" and
         output = "Argument[block].Parameter[0]"
         or
-        exists(ArrayIndex i | i > 0 | input = "Argument[self].Element[" + i + "]") and
+        input = "Argument[self].Element[1..]" and
         output = "Argument[block].Parameter[1]"
         or
         input = "Argument[block].ReturnValue" and output = "ReturnValue"
@@ -2222,7 +2222,7 @@ module Enumerable {
         output = "Argument[block].Parameter[0]"
         or
         // Each element in the receiver is passed to the second block parameter.
-        exists(ArrayIndex i | input = "Argument[self].Element[" + i + "]") and
+        input = "Argument[self].Element[0..]" and
         output = "Argument[block].Parameter[1]"
         or
         input = "Argument[block].ReturnValue" and output = "ReturnValue"
