@@ -1142,7 +1142,12 @@ module Array {
       this = mc.getMethodName() + "(" + mc.getNumberOfArguments() + ")"
     }
 
-    override MethodCall getACallSimple() { result = mc }
+    override MethodCall getACallSimple() {
+      result = mc and
+      // Filter out obvious 'prepend' calls in a module scope
+      // Including such calls is mostly harmless but also easy to filter out
+      not result.getReceiver().(SelfVariableAccess).getCfgScope() instanceof ModuleBase
+    }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       exists(int num | num = mc.getNumberOfArguments() and preservesValue = true |
