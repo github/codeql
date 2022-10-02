@@ -354,7 +354,9 @@ private predicate hasStoreSummary(
   SummarizedCallable callable, DataFlow::ContentSet contents, SummaryComponentStack input,
   SummaryComponentStack output
 ) {
-  callable.propagatesFlow(input, push(SummaryComponent::content(contents), output), true)
+  callable.propagatesFlow(input, push(SummaryComponent::content(contents), output), true) and
+  not isNonLocal(input.head()) and
+  not isNonLocal(output.head())
 }
 
 pragma[nomagic]
@@ -362,7 +364,9 @@ private predicate hasLoadSummary(
   SummarizedCallable callable, DataFlow::ContentSet contents, SummaryComponentStack input,
   SummaryComponentStack output
 ) {
-  callable.propagatesFlow(push(SummaryComponent::content(contents), input), output, true)
+  callable.propagatesFlow(push(SummaryComponent::content(contents), input), output, true) and
+  not isNonLocal(input.head()) and
+  not isNonLocal(output.head())
 }
 
 pragma[nomagic]
@@ -373,6 +377,8 @@ private predicate hasLoadStoreSummary(
   callable
       .propagatesFlow(push(SummaryComponent::content(loadContents), input),
         push(SummaryComponent::content(storeContents), output), true) and
+  not isNonLocal(input.head()) and
+  not isNonLocal(output.head()) and
   callable != "Hash.[]" // Special-cased due to having a huge number of summaries
 }
 
@@ -408,6 +414,8 @@ private predicate hasWithoutContentSummary(
   exists(DataFlow::ContentSet content |
     callable.propagatesFlow(push(SummaryComponent::withoutContent(content), input), output, true) and
     filter = getFilterFromWithoutContentStep(content) and
+    not isNonLocal(input.head()) and
+    not isNonLocal(output.head()) and
     input != output
   )
 }
@@ -444,8 +452,20 @@ private predicate hasWithContentSummary(
   exists(DataFlow::ContentSet content |
     callable.propagatesFlow(push(SummaryComponent::withContent(content), input), output, true) and
     filter = getFilterFromWithContentStep(content) and
+    not isNonLocal(input.head()) and
+    not isNonLocal(output.head()) and
     input != output
   )
+}
+
+/**
+ * Holds if the given component can't be evaluated by `evaluateSummaryComponentStackLocal`.
+ */
+pragma[nomagic]
+predicate isNonLocal(SummaryComponent component) {
+  component = SC::content(_)
+  or
+  component = SC::withContent(_)
 }
 
 /**
@@ -491,6 +511,14 @@ private predicate dependsOnSummaryComponentStackCons(
 }
 
 pragma[nomagic]
+private predicate dependsOnSummaryComponentStackConsLocal(
+  SummarizedCallable callable, SummaryComponent head, SummaryComponentStack tail
+) {
+  dependsOnSummaryComponentStackCons(callable, head, tail) and
+  not isNonLocal(head)
+}
+
+pragma[nomagic]
 private predicate dependsOnSummaryComponentStackLeaf(
   SummarizedCallable callable, SummaryComponent leaf
 ) {
@@ -514,7 +542,7 @@ private DataFlow::Node evaluateSummaryComponentStackLocal(
   or
   exists(DataFlow::Node prev, SummaryComponent head, SummaryComponentStack tail |
     prev = evaluateSummaryComponentStackLocal(callable, call, tail) and
-    dependsOnSummaryComponentStackCons(callable, pragma[only_bind_into](head),
+    dependsOnSummaryComponentStackConsLocal(callable, pragma[only_bind_into](head),
       pragma[only_bind_out](tail)) and
     stack = SCS::push(pragma[only_bind_out](head), pragma[only_bind_out](tail))
   |
