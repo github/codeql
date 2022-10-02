@@ -65,4 +65,10 @@ class FooController < ActionController::Base
     path = ActiveStorage::Filename.new(params[:path]).sanitized
     @content = File.read path
   end
+
+  # BAD
+  def route11
+    path = ActiveStorage::Filename.new(params[:path])
+    send_file path
+  end
 end

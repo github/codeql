@@ -362,3 +362,15 @@ private class ActionControllerProtectFromForgeryCall extends CsrfProtectionSetti
     if this.getWithValueText() = "exception" then result = true else result = false
   }
 }
+
+/**
+ * A call to `send_file`, which sends the file at the given path to the client.
+ */
+private class SendFile extends FileSystemAccess::Range, DataFlow::CallNode {
+  SendFile() {
+    this.asExpr().getExpr() instanceof ActionControllerContextCall and
+    this.getMethodName() = "send_file"
+  }
+
+  override DataFlow::Node getAPathArgument() { result = this.getArgument(0) }
+}
