@@ -79,5 +79,5 @@ where
   connectionCreation = protocolConfiguration and
   specific = true
 select connectionCreation,
-  "Insecure SSL/TLS protocol version " + insecure_version + " " + verb(specific) + " by $@ ",
+  "Insecure SSL/TLS protocol version " + insecure_version + " " + verb(specific) + " by $@.",
   protocolConfiguration, configName(protocolConfiguration)
