@@ -55,5 +55,5 @@ where
   underflowSink(exp, sink.getNode().asExpr()) and
   effect = "underflow"
 select exp, source, sink,
-  "This arithmetic expression depends on a $@, potentially causing an " + effect + ".",
+  "This arithmetic expression depends on an $@, potentially causing an " + effect + ".",
   source.getNode(), "uncontrolled value"
