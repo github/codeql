@@ -1,1 +1,10 @@
-| pam_test.py:48:18:48:44 | ControlFlowNode for pam_authenticate() | This PAM authentication call may lead to an authorization bypass, since 'pam_acct_mgmt' is not called afterwards. |
+edges
+| pam_test.py:70:16:70:22 | ControlFlowNode for request | pam_test.py:70:16:70:27 | ControlFlowNode for Attribute |
+| pam_test.py:70:16:70:27 | ControlFlowNode for Attribute | pam_test.py:75:14:75:40 | ControlFlowNode for pam_authenticate() |
+nodes
+| pam_test.py:70:16:70:22 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| pam_test.py:70:16:70:27 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| pam_test.py:75:14:75:40 | ControlFlowNode for pam_authenticate() | semmle.label | ControlFlowNode for pam_authenticate() |
+subpaths
+#select
+| pam_test.py:75:14:75:40 | ControlFlowNode for pam_authenticate() | pam_test.py:70:16:70:22 | ControlFlowNode for request | pam_test.py:75:14:75:40 | ControlFlowNode for pam_authenticate() | This PAM authentication call may lead to an authorization bypass, since `pam_acct_mgmt` is not called afterwards. |

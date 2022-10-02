@@ -1,6 +1,7 @@
 from ctypes import CDLL, POINTER, Structure, byref
 from ctypes import c_char_p, c_int
 from ctypes.util import find_library
+from flask import Flask, request, redirect
 
 
 class PamHandle(Structure):
@@ -40,11 +41,11 @@ pam_acct_mgmt.argtypes = [PamHandle, c_int]
 
 class pam():
 
-    def authenticate_bad(self, username, service='login'):
+    def authenticate_bad_but_good(self, username, service='login'):
         handle = PamHandle()
         conv = PamConv(None, 0)
         retval = pam_start(service, username, byref(conv), byref(handle))
-
+        # This is not fine but we don't alert here as there is a possibility that the function is not actually used
         retval = pam_authenticate(handle, 0)
         auth_success = retval == 0
 
@@ -61,3 +62,31 @@ class pam():
         auth_success = retval == 0
 
         return auth_success
+
+
+app = Flask(__name__)
+@app.route('/bad')
+def bad():
+    username = request.args.get('username', '')
+    handle = PamHandle()
+    conv = PamConv(None, 0)
+    retval = pam_start(service, username, byref(conv), byref(handle))
+
+    retval = pam_authenticate(handle, 0)
+    auth_success = retval == 0
+
+    return auth_success
+
+@app.route('/good')
+def good():
+    username = request.args.get('username', '')
+    handle = PamHandle()
+    conv = PamConv(None, 0)
+    retval = pam_start(service, username, byref(conv), byref(handle))
+
+    retval = pam_authenticate(handle, 0)
+    if retval == 0:
+        retval = pam_acct_mgmt(handle, 0)
+    auth_success = retval == 0
+
+    return auth_success
