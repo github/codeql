@@ -201,6 +201,8 @@ class KotlinExtractorGlobalState {
     val syntheticToRealClassMap = HashMap<IrClass, IrClass?>()
     val syntheticToRealFunctionMap = HashMap<IrFunction, IrFunction?>()
     val syntheticToRealFieldMap = HashMap<IrField, IrField?>()
+
+    val deduplicatedWarnings = mutableSetOf<String>()
 }
 
 /*
