@@ -1914,13 +1914,6 @@ open class KotlinFileExtractor(
                 unaryopReceiver(id, c.dispatchReceiver, "Dispatch receiver")
             }
 
-            /**
-             * Populate the lhs of a binary op from this call's extension receiver, and the rhs from its sole argument.
-             */
-            fun binopExtensionMethod(id: Label<out DbExpr>) {
-                binopReceiver(id, c.extensionReceiver, "Extension receiver")
-            }
-
             val dr = c.dispatchReceiver
             when {
                 isFunction(target, "kotlin", "String", "plus", false) -> {

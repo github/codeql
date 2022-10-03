@@ -1290,7 +1290,7 @@ open class KotlinUsesExtractor(
                             else null
                         } ?: run {
                             val parentFqName = parentClass.fqNameWhenAvailable?.asString()
-                            val msg = "Couldn't find a Java equivalent function to $parentFqName.${f.name} in ${javaClass.fqNameWhenAvailable}"
+                            val msg = "Couldn't find a Java equivalent function to $parentFqName.${f.name.asString()} in ${javaClass.fqNameWhenAvailable?.asString()}"
                             if (!globalExtensionState.deduplicatedWarnings.contains(msg)) {
                                 logger.warn(msg)
                                 globalExtensionState.deduplicatedWarnings.add(msg)
