@@ -106,7 +106,11 @@ private predicate summarizedLocalStep(Node nodeFrom, Node nodeTo) {
 }
 
 /** Holds if there is a level step from `nodeFrom` to `nodeTo`. */
-predicate levelStep(Node nodeFrom, Node nodeTo) { summarizedLocalStep(nodeFrom, nodeTo) }
+predicate levelStep(Node nodeFrom, Node nodeTo) {
+  summarizedLocalStep(nodeFrom, nodeTo)
+  or
+  TypeTrackingStep::step(nodeFrom, nodeTo)
+}
 
 pragma[noinline]
 private predicate argumentPositionMatch(
@@ -235,6 +239,8 @@ predicate basicStoreStep(Node nodeFrom, Node nodeTo, DataFlow::ContentSet conten
     not exists(pair.getKey().getConstantValue()) and
     contents.isAnyElement()
   )
+  or
+  TypeTrackingStep::storeStep(nodeFrom, nodeTo, contents)
 }
 
 private predicate hashLiteralStore(DataFlow::CallNode hashCreation, DataFlow::Node argument) {
@@ -280,6 +286,8 @@ predicate basicLoadStep(Node nodeFrom, Node nodeTo, DataFlow::ContentSet content
     nodeFrom = evaluateSummaryComponentStackLocal(callable, call, input) and
     nodeTo = evaluateSummaryComponentStackLocal(callable, call, output)
   )
+  or
+  TypeTrackingStep::loadStep(nodeFrom, nodeTo, contents)
 }
 
 /**
@@ -298,6 +306,8 @@ predicate basicLoadStoreStep(
     nodeFrom = evaluateSummaryComponentStackLocal(callable, call, input) and
     nodeTo = evaluateSummaryComponentStackLocal(callable, call, output)
   )
+  or
+  TypeTrackingStep::loadStoreStep(nodeFrom, nodeTo, loadContent, storeContent)
 }
 
 /**
@@ -314,6 +324,8 @@ predicate basicWithoutContentStep(Node nodeFrom, Node nodeTo, ContentFilter filt
     nodeFrom = evaluateSummaryComponentStackLocal(callable, call, input) and
     nodeTo = evaluateSummaryComponentStackLocal(callable, call, output)
   )
+  or
+  TypeTrackingStep::withoutContentStep(nodeFrom, nodeTo, filter)
 }
 
 /**
@@ -338,6 +350,8 @@ predicate basicWithContentStep(Node nodeFrom, Node nodeTo, ContentFilter filter)
     nodeFrom.asExpr() = node.asExpr().(Cfg::CfgNodes::ExprNodes::UnaryOperationCfgNode).getOperand() and
     filter = MkElementFilter()
   )
+  or
+  TypeTrackingStep::withContentStep(nodeFrom, nodeTo, filter)
 }
 
 /**
@@ -561,4 +575,101 @@ private DataFlow::Node evaluateSummaryComponentStackLocal(
       result = prev
     )
   )
+}
+
+private newtype TUnit = MkUnit()
+
+/**
+ * A data flow edge that should be followed by type tracking.
+ *
+ * This type of edge does not affect the local data flow graph, and is not used by data-flow configurations.
+ *
+ * Note: For performance reasons, all subclasses of this class should be part
+ * of the standard library, and their implementations may not depend on API graphs.
+ * For query-specific steps, consider including the custom steps in the type-tracking predicate itself.
+ */
+class TypeTrackingStep extends TUnit {
+  /** Gets the string `"unit"`. */
+  string toString() { result = "unit" }
+
+  /**
+   * Holds if type-tracking should step from `pred` to `succ`.
+   */
+  predicate step(Node pred, Node succ) { none() }
+
+  /**
+   * Holds if type-tracking should step from `pred` into the `content` of `succ`.
+   */
+  predicate storeStep(Node pred, TypeTrackingNode succ, TypeTrackerContent content) { none() }
+
+  /**
+   * Holds if type-tracking should step from the `content` of `pred` to `succ`.
+   */
+  predicate loadStep(Node pred, Node succ, TypeTrackerContent content) { none() }
+
+  /**
+   * Holds if type-tracking should step from the `loadContent` of `pred` to the `storeContent` in `succ`.
+   */
+  predicate loadStoreStep(
+    Node pred, TypeTrackingNode succ, TypeTrackerContent loadContent,
+    TypeTrackerContent storeContent
+  ) {
+    none()
+  }
+
+  /**
+   * Holds if type-tracking should step from `pred` to `succ` but block flow of contents matched by `filter` through here.
+   */
+  predicate withoutContentStep(Node pred, Node succ, ContentFilter filter) { none() }
+
+  /**
+   * Holds if type-tracking should step from `pred` to `succ` if inside a content matched by `filter`.
+   */
+  predicate withContentStep(Node pred, Node succ, ContentFilter filter) { none() }
+}
+
+/** Provides access to the steps contributed by subclasses of `SharedTypeTrackingStep`. */
+module TypeTrackingStep {
+  /**
+   * Holds if type-tracking should step from `pred` to `succ`.
+   */
+  predicate step(Node pred, Node succ) { any(TypeTrackingStep st).step(pred, succ) }
+
+  /**
+   * Holds if type-tracking should step from `pred` into the `content` of `succ`.
+   */
+  predicate storeStep(Node pred, TypeTrackingNode succ, TypeTrackerContent content) {
+    any(TypeTrackingStep st).storeStep(pred, succ, content)
+  }
+
+  /**
+   * Holds if type-tracking should step from the `content` of `pred` to `succ`.
+   */
+  predicate loadStep(Node pred, Node succ, TypeTrackerContent content) {
+    any(TypeTrackingStep st).loadStep(pred, succ, content)
+  }
+
+  /**
+   * Holds if type-tracking should step from the `loadContent` of `pred` to the `storeContent` in `succ`.
+   */
+  predicate loadStoreStep(
+    Node pred, TypeTrackingNode succ, TypeTrackerContent loadContent,
+    TypeTrackerContent storeContent
+  ) {
+    any(TypeTrackingStep st).loadStoreStep(pred, succ, loadContent, storeContent)
+  }
+
+  /**
+   * Holds if type-tracking should step from `pred` to `succ` but block flow of contents matched by `filter` through here.
+   */
+  predicate withoutContentStep(Node pred, Node succ, ContentFilter filter) {
+    any(TypeTrackingStep st).withoutContentStep(pred, succ, filter)
+  }
+
+  /**
+   * Holds if type-tracking should step from `pred` to `succ` if inside a content matched by `filter`.
+   */
+  predicate withContentStep(Node pred, Node succ, ContentFilter filter) {
+    any(TypeTrackingStep st).withContentStep(pred, succ, filter)
+  }
 }
