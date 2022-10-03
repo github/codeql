@@ -249,6 +249,10 @@ module API {
      */
     Node getASubscript() { result = this.getASuccessor(Label::subscript()) }
 
+    /**
+     * Gets a node representing a subscript of this node at index `key`.
+     * This requires that the index can be statically determined.
+     */
     Node getSubscript(string key) {
       (
         exists(SubscriptReadNode subscript | subscript = result.getInducingNode() |
