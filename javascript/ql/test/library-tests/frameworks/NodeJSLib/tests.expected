@@ -299,11 +299,13 @@ test_RemoteFlowSources
 | src/http.js:30:28:30:32 | chunk |
 | src/http.js:40:23:40:30 | authInfo |
 | src/http.js:45:23:45:27 | error |
+| src/http.js:63:17:63:33 | req.query.myParam |
 | src/http.js:73:18:73:22 | chunk |
 | src/http.js:82:18:82:22 | chunk |
 | src/https.js:6:26:6:32 | req.url |
 | src/https.js:8:3:8:20 | req.headers.cookie |
 | src/https.js:9:3:9:17 | req.headers.foo |
+| src/indirect2.js:10:12:10:25 | req.params.key |
 | src/indirect.js:17:28:17:34 | req.url |
 test_RouteHandler
 | createServer.js:2:20:2:41 | functio ... res) {} | createServer.js:2:1:2:42 | https.c ... es) {}) |
