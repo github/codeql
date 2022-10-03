@@ -1,0 +1,7 @@
+| javadoc/Test.java:4:4:4:16 | A test class. | javadoc/Test.java:3:1:7:3 | /** A test class. ... */ | javadoc/Test.java:3:1:7:3 | /** A test class. ... */ | A test class. |
+| javadoc/Test.java:6:11:6:13 | 1.0 | javadoc/Test.java:3:1:7:3 | /** A test class. ... */ | javadoc/Test.java:6:4:6:10 | @since | 1.0 |
+| javadoc/Test.java:9:6:9:14 | A javadoc | javadoc/Test.java:9:2:10:14 | /** A javadoc ... */ | javadoc/Test.java:9:2:10:14 | /** A javadoc ... */ | A javadoc |
+| javadoc/Test.java:10:5:10:11 | comment | javadoc/Test.java:9:2:10:14 | /** A javadoc ... */ | javadoc/Test.java:9:2:10:14 | /** A javadoc ... */ | comment |
+| javadoc/Test.java:13:6:13:28 | Another javadoc comment | javadoc/Test.java:13:2:13:33 | /** Another javadoc comment */ | javadoc/Test.java:13:2:13:33 | /** Another javadoc comment */ | Another javadoc comment |
+| javadoc/Test.java:14:4:14:24 |  and a normal comment | javadoc/Test.java:14:2:14:24 | // and a normal comment | javadoc/Test.java:14:2:14:24 | // and a normal comment |  and a normal comment |
+| javadoc/Test.java:17:5:17:26 | another normal comment | javadoc/Test.java:17:2:17:29 | /* another normal comment */ | javadoc/Test.java:17:2:17:29 | /* another normal comment */ | another normal comment |

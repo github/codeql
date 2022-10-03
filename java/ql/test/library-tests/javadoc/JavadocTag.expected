@@ -1,0 +1,2 @@
+| javadoc/Test.java:6:4:6:10 | @since | javadoc/Test.java:3:1:7:3 | /** A test class. ... */ | javadoc/Test.java:3:1:7:3 | /** A test class. ... */ | @since | 1.0 |
+| javadoc/Test.java:21:6:21:17 | @deprecated | javadoc/Test.java:21:2:21:19 | /** @deprecated */ | javadoc/Test.java:21:2:21:19 | /** @deprecated */ | @deprecated | <none> |

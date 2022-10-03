@@ -1,29 +1,31 @@
 javadoc/Test.java:
 #    0| [CompilationUnit] Test
-#    4|   1: [Class] Test
+#    8|   1: [Class] Test
 #-----|     -4: (Javadoc)
-#    3|       1: [Javadoc] /** A test class. */
-#    3|         0: [JavadocText] A test class.
-#    7|     2: [Method] f
+#    3|       1: [Javadoc] /** A test class. ... */
+#    4|         0: [JavadocText] A test class.
+#    6|         1: [JavadocTag] @since
+#    6|           0: [JavadocText] 1.0
+#   11|     2: [Method] f
 #-----|       0: (Javadoc)
-#    5|         1: [Javadoc] /** A javadoc ... */
-#    5|           0: [JavadocText] A javadoc
-#    6|           1: [JavadocText] comment
-#    7|       3: [TypeAccess] void
-#    7|       5: [BlockStmt] { ... }
-#   11|     3: [Method] g
-#-----|       0: (Javadoc)
-#    9|         1: [Javadoc] /** Another javadoc comment */
-#    9|           0: [JavadocText] Another javadoc comment
+#    9|         1: [Javadoc] /** A javadoc ... */
+#    9|           0: [JavadocText] A javadoc
+#   10|           1: [JavadocText] comment
 #   11|       3: [TypeAccess] void
 #   11|       5: [BlockStmt] { ... }
-#   14|     4: [FieldDeclaration] int x;
-#   14|       -1: [TypeAccess] int
-#   15|     5: [FieldDeclaration] int y;
-#   15|       -1: [TypeAccess] int
-#   18|     6: [Method] h
+#   15|     3: [Method] g
 #-----|       0: (Javadoc)
-#   17|         1: [Javadoc] /** @deprecated */
-#   17|           0: [JavadocTag] @deprecated
-#   18|       3: [TypeAccess] void
-#   18|       5: [BlockStmt] { ... }
+#   13|         1: [Javadoc] /** Another javadoc comment */
+#   13|           0: [JavadocText] Another javadoc comment
+#   15|       3: [TypeAccess] void
+#   15|       5: [BlockStmt] { ... }
+#   18|     4: [FieldDeclaration] int x;
+#   18|       -1: [TypeAccess] int
+#   19|     5: [FieldDeclaration] int y;
+#   19|       -1: [TypeAccess] int
+#   22|     6: [Method] h
+#-----|       0: (Javadoc)
+#   21|         1: [Javadoc] /** @deprecated */
+#   21|           0: [JavadocTag] @deprecated
+#   22|       3: [TypeAccess] void
+#   22|       5: [BlockStmt] { ... }
