@@ -15,7 +15,8 @@ class ContentProviderIncompletePermissionsTest extends InlineExpectationsTest {
       value = ""
     |
       not provider.getFile().(AndroidManifestXmlFile).isInBuildDirectory() and
-      provider.hasIncompletePermissions()
+      provider.hasIncompletePermissions() and
+      provider.isExported()
     )
   }
 }
