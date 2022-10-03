@@ -444,6 +444,37 @@ module Http {
     }
 
     /**
+     * A data flow node that writes data to a header in a HTTP response.
+     *
+     * Extend this class to refine existing API models. If you want to model new APIs,
+     * extend `HeaderWriteAccess::Range` instead.
+     */
+    class HeaderWriteAccess extends DataFlow::Node instanceof HeaderWriteAccess::Range {
+      /** Gets the name of the header that is written to. */
+      string getName() { result = super.getName() }
+
+      /** Gets the value that is written to the header. */
+      DataFlow::Node getValue() { result = super.getValue() }
+    }
+
+    /** Provides a class for modeling new HTTP header writes. */
+    module HeaderWriteAccess {
+      /**
+       * A data flow node that writes data to the a header in a HTTP response.
+       *
+       * Extend this class to model new APIs. If you want to refine existing API models,
+       * extend `HeaderWriteAccess` instead.
+       */
+      abstract class Range extends DataFlow::Node {
+        /** Gets the name of the header that is written to. */
+        abstract string getName();
+
+        /** Gets the value that is written to the header. */
+        abstract DataFlow::Node getValue();
+      }
+    }
+
+    /**
      * A data-flow node that creates a HTTP response on a server.
      *
      * Note: we don't require that this response must be sent to a client (a kind of
