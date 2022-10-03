@@ -325,9 +325,18 @@ private predicate hasStoreSummary(
   SummarizedCallable callable, DataFlow::ContentSet contents, SummaryComponentStack input,
   SummaryComponentStack output
 ) {
-  callable.propagatesFlow(input, push(SummaryComponent::content(contents), output), true) and
   not isNonLocal(input.head()) and
-  not isNonLocal(output.head())
+  not isNonLocal(output.head()) and
+  (
+    callable.propagatesFlow(input, push(SummaryComponent::content(contents), output), true)
+    or
+    // Allow the input to start with an arbitrary WithoutContent[X].
+    // Since type-tracking only tracks one content deep, and we're about to store into another content,
+    // we're already preventing the input from being in a content.
+    callable
+        .propagatesFlow(push(SummaryComponent::withoutContent(_), input),
+          push(SummaryComponent::content(contents), output), true)
+  )
 }
 
 pragma[nomagic]
@@ -460,6 +469,9 @@ private predicate dependsOnSummaryComponentStack(
     callable.propagatesFlow(stack, _, true)
     or
     callable.propagatesFlow(_, stack, true)
+    or
+    // include store summaries as they may skip an initial step at the input
+    hasStoreSummary(callable, _, stack, _)
   )
   or
   dependsOnSummaryComponentStackCons(callable, _, stack)
