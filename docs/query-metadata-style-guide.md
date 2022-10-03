@@ -73,6 +73,8 @@ You must specify an `@id` property for your query. It must be unique and should 
 * Java: `java`
 * JavaScript and TypeScript: `js`
 * Python: `py`
+* Ruby: `rb`
+* Swift: `swift`
 
 The `@id` should consist of a short noun phrase that identifies the issue that the query highlights. For example:
 
