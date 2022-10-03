@@ -136,6 +136,9 @@ private module Cached {
   }
 
   cached
+  string resolveConstantWrite(ConstantWriteAccess c) { result = resolveConstantWriteAccess(c) }
+
+  cached
   Method lookupMethod(Module m, string name) { TMethod(result) = lookupMethodOrConst(m, name) }
 
   cached
@@ -472,7 +475,7 @@ private module ResolveImpl {
   }
 }
 
-import ResolveImpl
+private import ResolveImpl
 
 /**
  * A variant of AstNode::getEnclosingModule that excludes

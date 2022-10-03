@@ -7,7 +7,6 @@ private import codeql.ruby.Concepts
 private import codeql.ruby.controlflow.CfgNodes
 private import codeql.ruby.DataFlow
 private import codeql.ruby.dataflow.RemoteFlowSources
-private import codeql.ruby.ast.internal.Module
 private import codeql.ruby.ApiGraphs
 private import ActionView
 private import codeql.ruby.frameworks.ActionDispatch
@@ -101,7 +100,7 @@ private predicate isRoute(
   ActionDispatch::Routing::Route route, string name, ActionControllerControllerClass controllerClass
 ) {
   route.getController() + "_controller" =
-    ActionDispatch::Routing::underscore(namespaceDeclaration(controllerClass)) and
+    ActionDispatch::Routing::underscore(controllerClass.getAQualifiedName()) and
   name = route.getAction()
 }
 

@@ -8,7 +8,6 @@ private import codeql.ruby.controlflow.CfgNodes
 private import codeql.ruby.DataFlow
 private import codeql.ruby.dataflow.internal.DataFlowDispatch
 private import codeql.ruby.dataflow.internal.DataFlowPrivate
-private import codeql.ruby.ast.internal.Module
 private import codeql.ruby.ApiGraphs
 private import codeql.ruby.frameworks.Stdlib
 private import codeql.ruby.frameworks.Core
@@ -95,7 +94,7 @@ class ActiveRecordModelClassMethodCall extends MethodCall {
 
   ActiveRecordModelClassMethodCall() {
     // e.g. Foo.where(...)
-    recvCls.getModule() = resolveConstantReadAccess(this.getReceiver())
+    recvCls.getModule() = this.getReceiver().(ConstantReadAccess).getModule()
     or
     // e.g. Foo.joins(:bars).where(...)
     recvCls = this.getReceiver().(ActiveRecordModelClassMethodCall).getReceiverClass()
@@ -282,7 +281,7 @@ private class ActiveRecordModelFinderCall extends ActiveRecordModelInstantiation
       recv = getUltimateReceiver(call) and
       (
         // The receiver refers to an `ActiveRecordModelClass` by name
-        resolveConstant(recv) = cls.getAQualifiedName()
+        recv.(ConstantReadAccess).getAQualifiedName() = cls.getAQualifiedName()
         or
         // The receiver is self, and the call is within a singleton method of
         // the `ActiveRecordModelClass`

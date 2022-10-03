@@ -10,7 +10,6 @@ private import codeql.ruby.AST
 private import codeql.ruby.DataFlow
 private import codeql.ruby.typetracking.TypeTracker
 private import codeql.ruby.typetracking.TypeTrackerSpecific as TypeTrackerSpecific
-private import codeql.ruby.ast.internal.Module
 private import codeql.ruby.controlflow.CfgNodes
 private import codeql.ruby.dataflow.internal.DataFlowPrivate as DataFlowPrivate
 private import codeql.ruby.dataflow.internal.DataFlowDispatch as DataFlowDispatch
@@ -482,7 +481,7 @@ module API {
       MkDef(DataFlow::Node nd) { isDef(nd) }
 
     private string resolveTopLevel(ConstantReadAccess read) {
-      TResolved(result) = resolveConstantReadAccess(read) and
+      result = read.getModule().getQualifiedName() and
       not result.matches("%::%")
     }
 
@@ -706,7 +705,7 @@ module API {
       exists(ClassDeclaration c, DataFlow::Node a, DataFlow::Node b |
         use(pred, a) and
         use(succ, b) and
-        resolveConstant(b.asExpr().getExpr()) = resolveConstantWriteAccess(c) and
+        b.asExpr().getExpr().(ConstantReadAccess).getAQualifiedName() = c.getAQualifiedName() and
         pragma[only_bind_into](c).getSuperclassExpr() = a.asExpr().getExpr() and
         lbl = Label::subclass()
       )
