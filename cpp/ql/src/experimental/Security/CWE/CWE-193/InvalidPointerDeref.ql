@@ -76,7 +76,7 @@ private predicate hasSizeImpl(Expr e, DataFlow::Node n, string state) {
  * Holds if `(n, state)` pair represents the source of flow for the size
  * expression associated with `alloc`.
  */
-predicate hasSize(AllocationExpr alloc, DataFlow::Node n, string state) {
+predicate hasSize(HeuristicAllocationExpr alloc, DataFlow::Node n, string state) {
   hasSizeImpl(alloc.getSizeExpr(), n, state)
 }
 
@@ -132,6 +132,8 @@ class AllocToInvalidPointerConf extends ProductFlow::Configuration {
   override predicate isBarrierOut2(DataFlow::Node node) {
     node = any(DataFlow::SsaPhiNode phi).getAnInput(true)
   }
+
+  override predicate isBarrierIn1(DataFlow::Node node) { this.isSourcePair(node, _, _, _) }
 }
 
 pragma[nomagic]
