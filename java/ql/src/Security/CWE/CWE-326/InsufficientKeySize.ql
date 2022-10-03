@@ -1,6 +1,6 @@
 /**
- * @name Use of a cryptographic algorithm with insufficient key size
- * @description Using cryptographic algorithms with too small a key size can
+ * @name Insufficient key size used with a cryptographic algorithm
+ * @description Using cryptographic algorithms with too small of a key size can
  *              allow an attacker to compromise security.
  * @kind problem
  * @problem.severity error
@@ -14,9 +14,5 @@ import java
 import semmle.code.java.security.InsufficientKeySizeQuery
 
 from Expr e, string msg
-where
-  hasShortAESKey(e, msg) or
-  hasShortDsaKeyPair(e, msg) or
-  hasShortRsaKeyPair(e, msg) or
-  hasShortECKeyPair(e, msg)
+where hasInsufficientKeySize(e, msg)
 select e, msg
