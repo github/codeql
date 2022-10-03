@@ -1,29 +1,78 @@
-<!DOCTYPE qhelp PUBLIC "-//Semmle//qhelp//EN" "qhelp.dtd">
+<!DOCTYPE qhelp PUBLIC
+    "-//Semmle//qhelp//EN"
+    "qhelp.dtd">
 <qhelp>
+
     <overview>
-        <p>This rule finds uses of encryption algorithms with too small a key size. Encryption algorithms
-are vulnerable to brute force attack when too small a key size is used.</p>
+        <p>Modern encryption relies on the computational infeasibility of breaking a cipher and decoding its
+        message without the key. As computational power increases, the ability to break ciphers grows, and key
+        sizes need to become larger as a result. Encryption algorithms that use too small of a key size are
+        vulnerable to brute force attacks, which can reveal sensitive data.</p>
     </overview>
 
     <recommendation>
-        <p>The key should be at least 2048 bits long when using RSA and DSA encryption, 256 bits long when using EC encryption, and 128 bits long when using
-symmetric encryption.</p>
+        <p>Use a key of the recommended size or larger. The key size should be at least 2048 bits for RSA or
+        DSA encryption, 256 bits for elliptic curve (EC) encryption, and 128 bits for symmetric encryption,
+        such as AES.</p>
     </recommendation>
 
+    <example>
+
+          <p>
+               The following code uses encryption with insufficient key sizes.
+          </p>
+
+          <sample src="InsufficientKeySizeBad.java" />
+
+           <p>
+               To fix the code, change the key sizes to be the recommended size or
+               larger for each algorithm.
+          </p>
+
+          <!-- <p>
+               In the example below, the key sizes are set correctly.
+          </p>
+
+          <sample src="InsufficientKeySizeGood.java" /> -->
+
+     </example>
+
     <references>
-
         <li>
-            Wikipedia.
-            <a href="http://en.wikipedia.org/wiki/Key_size">Key size</a>
+            Wikipedia:
+            <a href="http://en.wikipedia.org/wiki/Key_size">Key size</a>.
         </li>
         <li>
-            SonarSource.
-            <a href="https://rules.sonarsource.com/java/type/Vulnerability/RSPEC-4426">Cryptographic keys should be robust</a>
+            Wikipedia: <a href="https://en.wikipedia.org/wiki/Strong_cryptography">Strong cryptography</a>.
+        </li>
+        <!-- <li>
+            Wikipedia:
+            <a href="https://en.wikipedia.org/wiki/RSA_(cryptosystem)">RSA (cryptosystem)</a>.
         </li>
         <li>
-            CWE.
-            <a href="https://cwe.mitre.org/data/definitions/326.html">CWE-326: Inadequate Encryption Strength</a>
+            Wikipedia:
+            <a href="https://en.wikipedia.org/wiki/Digital_Signature_Algorithm">Digital Signature Algorithm</a>.
         </li>
-
+        <li>
+            Wikipedia:
+            <a href="https://en.wikipedia.org/wiki/Elliptic-curve_cryptography">Elliptic-curve cryptography</a>.
+        </li>
+        <li>
+            Wikipedia:
+            <a href="https://en.wikipedia.org/wiki/Advanced_Encryption_Standard">Advanced Encryption Standard</a>.
+        </li> -->
+        <li>
+            OWASP: <a href="https://cheatsheetseries.owasp.org/cheatsheets/Cryptographic_Storage_Cheat_Sheet.html#algorithms">
+            Cryptographic Storage Cheat Sheet</a>.
+        </li>
+        <li>
+            OWASP: <a href="https://owasp.org/www-project-web-security-testing-guide/stable/4-Web_Application_Security_Testing/09-Testing_for_Weak_Cryptography/04-Testing_for_Weak_Encryption">
+            Testing for Weak Encryption</a>.
+        </li>
+        <li>
+            NIST:
+            <a href="https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-131Ar2.pdf">
+            Transitioning the Use of Cryptographic Algorithms and Key Lengths</a>.
+        </li>
     </references>
 </qhelp>
