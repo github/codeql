@@ -1,11 +1,13 @@
 /** Provides flow summaries for the `Hash` class. */
 
 private import codeql.ruby.AST
+private import codeql.ruby.CFG as Cfg
 private import codeql.ruby.ApiGraphs
 private import codeql.ruby.DataFlow
 private import codeql.ruby.dataflow.FlowSummary
 private import codeql.ruby.dataflow.internal.DataFlowDispatch
 private import codeql.ruby.ast.internal.Module
+private import codeql.ruby.typetracking.TypeTrackerSpecific
 
 /**
  * Provides flow summaries for the `Hash` class.
@@ -65,6 +67,50 @@ module Hash {
       input = "Argument[hash-splat].WithElement[any]" and
       output = "ReturnValue" and
       preservesValue = true
+    }
+  }
+
+  /** Holds if `literal` is a call to `Hash.[]` and `argument` is one of its arguments. */
+  private predicate hashLiteralStore(DataFlow::CallNode literal, DataFlow::Node argument) {
+    literal.getExprNode().getExpr() = Hash::getAStaticHashCall("[]") and
+    argument = literal.getArgument(_)
+  }
+
+  /**
+   * A set of type-tracking steps to replace the `Hash.[]` summary.
+   *
+   * The `Hash.[]` method tends to have a large number of summaries, which would result
+   * in too many unnecessary type-tracking edges, so we specialize it here.
+   */
+  private class HashLiteralTypeTracker extends TypeTrackingStep {
+    override predicate suppressSummary(SummarizedCallable callable) {
+      callable instanceof HashLiteralSummary
+    }
+
+    override predicate storeStep(Node pred, TypeTrackingNode succ, TypeTrackerContent content) {
+      // Store edge: `value -> { key: value }` with content derived from `key`
+      exists(Cfg::CfgNodes::ExprNodes::PairCfgNode pair |
+        hashLiteralStore(succ, any(DataFlow::Node n | n.asExpr() = pair)) and
+        pred.asExpr() = pair.getValue()
+      |
+        exists(ConstantValue constant |
+          constant = pair.getKey().getConstantValue() and
+          content.isSingleton(DataFlow::Content::getElementContent(constant))
+        )
+        or
+        not exists(pair.getKey().getConstantValue()) and
+        content.isAnyElement()
+      )
+    }
+
+    override predicate withContentStep(Node pred, Node succ, ContentFilter filter) {
+      // `WithContent[element]` edge: `args --> { **args }`.
+      exists(DataFlow::Node node |
+        hashLiteralStore(succ, node) and
+        node.asExpr().getExpr() instanceof HashSplatExpr and
+        pred.asExpr() = node.asExpr().(Cfg::CfgNodes::ExprNodes::UnaryOperationCfgNode).getOperand() and
+        filter = ContentFilter::hasElements()
+      )
     }
   }
 

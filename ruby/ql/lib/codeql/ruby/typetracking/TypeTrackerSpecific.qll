@@ -10,7 +10,6 @@ private import codeql.ruby.dataflow.internal.SsaImpl as SsaImpl
 private import codeql.ruby.dataflow.internal.FlowSummaryImpl as FlowSummaryImpl
 private import codeql.ruby.dataflow.internal.FlowSummaryImplSpecific as FlowSummaryImplSpecific
 private import codeql.ruby.dataflow.internal.AccessPathSyntax
-private import codeql.ruby.frameworks.core.Hash
 
 class Node = DataFlowPublic::Node;
 
@@ -59,6 +58,15 @@ class ContentFilter extends TContentFilter {
     this = MkPairValueFilter() and
     result.getAReadContent() instanceof DataFlow::Content::PairValueContent
   }
+}
+
+/** Module for getting `ContentFilter` values. */
+module ContentFilter {
+  /** Gets the filter that only allow element contents. */
+  ContentFilter hasElements() { result = MkElementFilter() }
+
+  /** Gets the filter that only allow pair-value contents. */
+  ContentFilter hasPairValue() { result = MkPairValueFilter() }
 }
 
 /**
@@ -226,26 +234,7 @@ predicate basicStoreStep(Node nodeFrom, Node nodeTo, DataFlow::ContentSet conten
     nodeTo = evaluateSummaryComponentStackLocal(callable, call, output)
   )
   or
-  // Hash literals
-  exists(Cfg::CfgNodes::ExprNodes::PairCfgNode pair |
-    hashLiteralStore(nodeTo, any(DataFlow::Node n | n.asExpr() = pair)) and
-    nodeFrom.asExpr() = pair.getValue()
-  |
-    exists(ConstantValue constant |
-      constant = pair.getKey().getConstantValue() and
-      contents.isSingleton(DataFlow::Content::getElementContent(constant))
-    )
-    or
-    not exists(pair.getKey().getConstantValue()) and
-    contents.isAnyElement()
-  )
-  or
   TypeTrackingStep::storeStep(nodeFrom, nodeTo, contents)
-}
-
-private predicate hashLiteralStore(DataFlow::CallNode hashCreation, DataFlow::Node argument) {
-  hashCreation.getExprNode().getExpr() = Hash::getAStaticHashCall("[]") and
-  argument = hashCreation.getArgument(_)
 }
 
 /**
@@ -343,14 +332,6 @@ predicate basicWithContentStep(Node nodeFrom, Node nodeTo, ContentFilter filter)
     nodeTo = evaluateSummaryComponentStackLocal(callable, call, output)
   )
   or
-  // Hash-splat in a hash literal
-  exists(DataFlow::Node node |
-    hashLiteralStore(nodeTo, node) and
-    node.asExpr().getExpr() instanceof HashSplatExpr and
-    nodeFrom.asExpr() = node.asExpr().(Cfg::CfgNodes::ExprNodes::UnaryOperationCfgNode).getOperand() and
-    filter = MkElementFilter()
-  )
-  or
   TypeTrackingStep::withContentStep(nodeFrom, nodeTo, filter)
 }
 
@@ -368,6 +349,7 @@ private predicate hasStoreSummary(
   SummarizedCallable callable, DataFlow::ContentSet contents, SummaryComponentStack input,
   SummaryComponentStack output
 ) {
+  not TypeTrackingStep::suppressSummary(callable) and
   callable.propagatesFlow(input, push(SummaryComponent::content(contents), output), true) and
   not isNonLocal(input.head()) and
   not isNonLocal(output.head())
@@ -378,6 +360,7 @@ private predicate hasLoadSummary(
   SummarizedCallable callable, DataFlow::ContentSet contents, SummaryComponentStack input,
   SummaryComponentStack output
 ) {
+  not TypeTrackingStep::suppressSummary(callable) and
   callable.propagatesFlow(push(SummaryComponent::content(contents), input), output, true) and
   not isNonLocal(input.head()) and
   not isNonLocal(output.head())
@@ -388,12 +371,12 @@ private predicate hasLoadStoreSummary(
   SummarizedCallable callable, DataFlow::ContentSet loadContents,
   DataFlow::ContentSet storeContents, SummaryComponentStack input, SummaryComponentStack output
 ) {
+  not TypeTrackingStep::suppressSummary(callable) and
   callable
       .propagatesFlow(push(SummaryComponent::content(loadContents), input),
         push(SummaryComponent::content(storeContents), output), true) and
   not isNonLocal(input.head()) and
-  not isNonLocal(output.head()) and
-  callable != "Hash.[]" // Special-cased due to having a huge number of summaries
+  not isNonLocal(output.head())
 }
 
 /**
@@ -426,6 +409,7 @@ private predicate hasWithoutContentSummary(
   SummaryComponentStack output
 ) {
   exists(DataFlow::ContentSet content |
+    not TypeTrackingStep::suppressSummary(callable) and
     callable.propagatesFlow(push(SummaryComponent::withoutContent(content), input), output, true) and
     filter = getFilterFromWithoutContentStep(content) and
     not isNonLocal(input.head()) and
@@ -464,6 +448,7 @@ private predicate hasWithContentSummary(
   SummaryComponentStack output
 ) {
   exists(DataFlow::ContentSet content |
+    not TypeTrackingStep::suppressSummary(callable) and
     callable.propagatesFlow(push(SummaryComponent::withContent(content), input), output, true) and
     filter = getFilterFromWithContentStep(content) and
     not isNonLocal(input.head()) and
@@ -508,6 +493,7 @@ private predicate dependsOnSummaryComponentStack(
   SummarizedCallable callable, SummaryComponentStack stack
 ) {
   exists(callable.getACallSimple()) and
+  not TypeTrackingStep::suppressSummary(callable) and
   (
     callable.propagatesFlow(stack, _, true)
     or
@@ -593,6 +579,13 @@ class TypeTrackingStep extends TUnit {
   string toString() { result = "unit" }
 
   /**
+   * Holds if type-tracking should not attempt to derive steps from (simple) calls to `callable`.
+   *
+   * This can be done to manually control how steps are generated from such calls.
+   */
+  predicate suppressSummary(SummarizedCallable callable) { none() }
+
+  /**
    * Holds if type-tracking should step from `pred` to `succ`.
    */
   predicate step(Node pred, Node succ) { none() }
@@ -630,6 +623,15 @@ class TypeTrackingStep extends TUnit {
 
 /** Provides access to the steps contributed by subclasses of `SharedTypeTrackingStep`. */
 module TypeTrackingStep {
+  /**
+   * Holds if type-tracking should not attempt to derive steps from (simple) calls to `callable`.
+   *
+   * This can be done to manually control how steps are generated from such calls.
+   */
+  predicate suppressSummary(SummarizedCallable callable) {
+    any(TypeTrackingStep st).suppressSummary(callable)
+  }
+
   /**
    * Holds if type-tracking should step from `pred` to `succ`.
    */
