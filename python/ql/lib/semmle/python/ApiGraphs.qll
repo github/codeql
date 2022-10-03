@@ -249,6 +249,20 @@ module API {
      */
     Node getASubscript() { result = this.getASuccessor(Label::subscript()) }
 
+    Node getSubscript(string key) {
+      (
+        exists(SubscriptReadNode subscript | subscript = result.getInducingNode() |
+          this = subscript.getObject() and
+          key = subscript.getIndex().getALocalSource().asExpr().(PY::StrConst).getText()
+        )
+        or
+        exists(SubscriptWriteNode subscript | subscript = result.getInducingNode() |
+          this = subscript.getObject() and
+          key = subscript.getIndex().getALocalSource().asExpr().(PY::StrConst).getText()
+        )
+      )
+    }
+
     /**
      * Gets a string representation of the lexicographically least among all shortest access paths
      * from the root to this node.
