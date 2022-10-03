@@ -36,7 +36,12 @@ abstract private class GeneratedType extends ClassOrInterface {
   }
 
   private string stubAnnotations() {
-    result = concat(stubAnnotation(this.(AnnotationType).getAnAnnotation()) + "\n")
+    result =
+      concat(Annotation an |
+        this.(AnnotationType).getAnAnnotation() = an
+      |
+        stubAnnotation(an), "\n" order by an.getType().getQualifiedName()
+      )
   }
 
   /** Gets the entire Java stub code for this type. */
@@ -110,8 +115,8 @@ abstract private class GeneratedType extends ClassOrInterface {
     result = this.getAGeneratedMember().(Field).getType() or
     result = this.getAGeneratedMember().(NestedType) or
     result = this.(AnnotationType).getAnAnnotation().getType() or
-    result = this.(AnnotationType).getAnAnnotation().getAValue().getType() or
-    result = this.(AnnotationType).getAnAnnotation().getAValue().(ArrayInit).getAnInit().getType()
+    result = this.(AnnotationType).getAnAnnotation().getValue(_).getType() or
+    result = this.(AnnotationType).getAnAnnotation().getAnArrayValue(_).getType()
   }
 }
 
@@ -400,7 +405,7 @@ private string stubMember(Member m) {
 
 language[monotonicAggregates]
 private string stubAnnotation(Annotation a) {
-  if exists(a.getAValue())
+  if exists(a.getValue(_))
   then
     result =
       "@" + a.getType().getName() + "(" +
