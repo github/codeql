@@ -15,10 +15,20 @@ import semmle.code.java.dataflow.FlowSources
 private string suspicious() {
   result =
     [
-      "%password%", "%passwd%", "%pwd%", "%refresh%token%", "%secret%token", "%secret%key",
-      "%passcode%", "%passphrase%", "%token%", "%secret%", "%credential%", "%userpass%", 
-      "%digest%", "%signature%", "%mac%"
+      "%password", "%passwd", "%pwd%", "%refresh%token%", "%secret%token", "%secret%key",
+      "%passcode", "%passphrase", "%secret%", "%userpass%", "%digest%", "%signature%"
     ]
+}
+
+/**
+ * A string for `match` that identifies strings that look like they represent secret data that is
+ * hashed or encrypted.
+ */
+private string nonSuspicious() {
+  result = "%hashed%" or
+  result = "%encrypted%" or
+  result = "%crypt%" or
+  result in ["%md5%, "%md2%, "%sha%"]
 }
 
 /** A variable that may hold sensitive information, judging by its name. * */
@@ -26,7 +36,8 @@ class CredentialExpr extends Expr {
   CredentialExpr() {
     exists(Variable v | this = v.getAnAccess() |
       v.getName().toLowerCase().matches(suspicious()) and
-      not v.isFinal()
+      not v.getName().getName().toLowerCase().matches(nonSuspicious())
+      not v.isFinal()      
     )
   }
 }
