@@ -36,12 +36,15 @@ abstract private class GeneratedType extends ClassOrInterface {
   }
 
   private string stubAnnotations() {
-    result =
-      concat(Annotation an |
-        this.(AnnotationType).getAnAnnotation() = an
-      |
-        stubAnnotation(an), "\n" order by an.getType().getQualifiedName()
-      )
+    if exists(this.(AnnotationType).getAnAnnotation())
+    then
+      result =
+        concat(Annotation an |
+            this.(AnnotationType).getAnAnnotation() = an
+          |
+            stubAnnotation(an), "\n" order by an.getType().getQualifiedName()
+          ) + "\n"
+    else result = ""
   }
 
   /** Gets the entire Java stub code for this type. */
