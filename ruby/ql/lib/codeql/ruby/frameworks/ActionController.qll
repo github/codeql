@@ -203,10 +203,7 @@ private module Request {
 
   /** A method call on `request` which returns part or all of the request path. */
   private class PathCall extends RequestInputAccess {
-    PathCall() {
-      this.getMethodName() =
-        ["fullpath", "original_fullpath", "original_url", "url", "path", "filtered_path"]
-    }
+    PathCall() { this.getMethodName() = ["path", "filtered_path"] }
   }
 
   /** A method call on `request` which returns a specific request header. */
@@ -216,8 +213,13 @@ private module Request {
         [
           "authorization", "script_name", "path_info", "user_agent", "referer", "referrer",
           "host_authority", "content_type", "host", "hostname", "accept_encoding",
-          "accept_language", "if_none_match", "if_none_match_etags", "get_header", "fetch_header"
+          "accept_language", "if_none_match", "if_none_match_etags"
         ]
+      or
+      // Request headers are prefixed with `HTTP_` to distinguish them from
+      // "headers" supplied by Rack middleware.
+      this.getMethodName() = ["get_header", "fetch_header"] and
+      this.getArgument(0).asExpr().getExpr().getConstantValue().getString().regexpMatch("^HTTP_.+")
     }
   }
 
@@ -254,7 +256,10 @@ private module Request {
 
   /** A method call on `request` which returns the rack env. */
   private class EnvCall extends RequestInputAccess {
-    EnvCall() { this.getMethodName() = ["env", "filtered_env"] }
+    EnvCall() {
+      this.getMethodName() = ["env", "filtered_env"] and
+      this.getArgument(0).asExpr().getExpr().getConstantValue().getString().regexpMatch("^HTTP_.+")
+    }
   }
 }
 
