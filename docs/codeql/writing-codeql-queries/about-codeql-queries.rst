@@ -77,7 +77,7 @@ When writing your own alert queries, you would typically import the standard lib
 - Java: ``java``
 - JavaScript/TypeScript: ``javascript``
 - Python: ``python``
-- Rubvy: ``ruby``
+- Ruby: ``ruby``
 
 There are also libraries containing commonly used predicates, types, and other modules associated with different analyses, including data flow, control flow, and taint-tracking. In order to calculate path graphs, path queries require you to import a data flow library into the query file. For more information, see ":doc:`Creating path queries <creating-path-queries>`."
 
