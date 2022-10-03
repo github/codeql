@@ -8,8 +8,10 @@ private import codeql.ruby.controlflow.CfgNodes
 private import codeql.ruby.DataFlow
 private import codeql.ruby.dataflow.RemoteFlowSources
 private import codeql.ruby.ApiGraphs
-private import codeql.ruby.frameworks.ActionView
 private import codeql.ruby.frameworks.ActionDispatch
+private import codeql.ruby.frameworks.ActionView
+private import codeql.ruby.frameworks.Rails
+private import codeql.ruby.frameworks.internal.Rails
 
 /**
  * A `ClassDeclaration` for a class that extends `ActionController::Base`.
@@ -120,13 +122,6 @@ private class ActionControllerContextCall extends MethodCall {
 }
 
 /**
- * A call to the `params` method to fetch the request parameters.
- */
-abstract class ParamsCall extends MethodCall {
-  ParamsCall() { this.getMethodName() = "params" }
-}
-
-/**
  * A `RemoteFlowSource::Range` to represent accessing the
  * ActionController parameters available via the `params` method.
  */
@@ -134,13 +129,6 @@ class ParamsSource extends Http::Server::RequestInputAccess::Range {
   ParamsSource() { this.asExpr().getExpr() instanceof ParamsCall }
 
   override string getSourceType() { result = "ActionController::Metal#params" }
-}
-
-/**
- * A call to the `cookies` method to fetch the request parameters.
- */
-abstract class CookiesCall extends MethodCall {
-  CookiesCall() { this.getMethodName() = "cookies" }
 }
 
 /**
@@ -154,27 +142,38 @@ class CookiesSource extends Http::Server::RequestInputAccess::Range {
 }
 
 /** A call to `cookies` from within a controller. */
-private class ActionControllerCookiesCall extends ActionControllerContextCall, CookiesCall { }
+private class ActionControllerCookiesCall extends ActionControllerContextCall, CookiesCallImpl {
+  ActionControllerCookiesCall() { this.getMethodName() = "cookies" }
+}
 
 /** A call to `params` from within a controller. */
-private class ActionControllerParamsCall extends ActionControllerContextCall, ParamsCall { }
+private class ActionControllerParamsCall extends ActionControllerContextCall, ParamsCallImpl {
+  ActionControllerParamsCall() { this.getMethodName() = "params" }
+}
 
 /** A call to `render` from within a controller. */
-private class ActionControllerRenderCall extends ActionControllerContextCall, RenderCall { }
+private class ActionControllerRenderCall extends ActionControllerContextCall, RenderCallImpl {
+  ActionControllerRenderCall() { this.getMethodName() = "render" }
+}
 
 /** A call to `render_to` from within a controller. */
-private class ActionControllerRenderToCall extends ActionControllerContextCall, RenderToCall { }
+private class ActionControllerRenderToCall extends ActionControllerContextCall, RenderToCallImpl {
+  ActionControllerRenderToCall() { this.getMethodName() = ["render_to_body", "render_to_string"] }
+}
 
 /** A call to `html_safe` from within a controller. */
-private class ActionControllerHtmlSafeCall extends HtmlSafeCall {
+private class ActionControllerHtmlSafeCall extends HtmlSafeCallImpl {
   ActionControllerHtmlSafeCall() {
+    this.getMethodName() = "html_safe" and
     this.getEnclosingModule() instanceof ActionControllerControllerClass
   }
 }
 
 /** A call to `html_escape` from within a controller. */
-private class ActionControllerHtmlEscapeCall extends HtmlEscapeCall {
+private class ActionControllerHtmlEscapeCall extends HtmlEscapeCallImpl {
   ActionControllerHtmlEscapeCall() {
+    // "h" is aliased to "html_escape" in ActiveSupport
+    this.getMethodName() = ["html_escape", "html_escape_once", "h", "sanitize"] and
     this.getEnclosingModule() instanceof ActionControllerControllerClass
   }
 }
