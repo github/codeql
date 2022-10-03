@@ -26,7 +26,7 @@ module Pathname {
    *
    * Every `PathnameInstance` is considered to be a `FileNameSource`.
    */
-  class PathnameInstance extends FileNameSource, DataFlow::Node {
+  class PathnameInstance extends FileNameSource {
     PathnameInstance() { any(PathnameConfiguration c).hasFlowTo(this) }
   }
 
@@ -44,14 +44,15 @@ module Pathname {
     override predicate isSink(DataFlow::Node sink) { any() }
 
     override predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
-      exists(DataFlow::CallNode c | node2 = c |
-        c.getReceiver() = node1 and
-        c.getMethodName() =
-          [
-            "+", "/", "basename", "cleanpath", "expand_path", "join", "realpath",
-            "relative_path_from", "sub", "sub_ext", "to_path"
-          ]
-      )
+      node2 =
+        any(DataFlow::CallNode c |
+          c.getReceiver() = node1 and
+          c.getMethodName() =
+            [
+              "+", "/", "basename", "cleanpath", "expand_path", "join", "realpath",
+              "relative_path_from", "sub", "sub_ext", "to_path"
+            ]
+        )
     }
   }
 
