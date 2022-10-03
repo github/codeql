@@ -405,7 +405,7 @@ module API {
   Node builtin(string n) { result = moduleImport("builtins").getMember(n) }
 
   /**
-   * An `CallCfgNode` that is connected to the API graph.
+   * A `CallCfgNode` that is connected to the API graph.
    *
    * Can be used to reason about calls to an external API in which the correlation between
    * parameters and/or return values must be retained.
@@ -472,6 +472,49 @@ module API {
      * including keyword arguments didn't make much sense.
      */
     int getNumArgument() { result = count(this.getArg(_)) }
+  }
+
+  /**
+   * A read of a subscript that is connected to the API graph.
+   */
+  class SubscriptReadNode extends DataFlow::Node {
+    API::Node subscripted;
+
+    SubscriptReadNode() { this = subscripted.getASubscript().asSource() }
+
+    /** Gets ans API node for the object being subscripted */
+    API::Node getObject() { result = subscripted }
+
+    /** Gets the data flow node representing the index of this read, if any. */
+    DataFlow::Node getIndex() {
+      result.asCfgNode() = this.asCfgNode().(PY::SubscriptNode).getIndex()
+    }
+  }
+
+  /**
+   * A write to a subscript that is connected to the API graph.
+   *
+   * The member predicate `getValue` is guaranteed to exist and be unique to this write.
+   */
+  class SubscriptWriteNode extends DataFlow::Node {
+    API::Node subscripted;
+
+    SubscriptWriteNode() { this = subscripted.getASubscript().asSink() }
+
+    /** Gets ans API node for the object being subscripted */
+    API::Node getObject() { result = subscripted }
+
+    /** Gets the data flow node representing the index of this write, if any. */
+    DataFlow::Node getIndex() {
+      exists(PY::SubscriptNode subscriptNode |
+        subscriptNode.(PY::DefinitionNode).getValue() = this.asCfgNode() and
+        result.asCfgNode() = subscriptNode.getIndex() and
+        subscriptNode.getObject() = subscripted.getAValueReachableFromSource().asCfgNode()
+      )
+    }
+
+    /** Gets the API node for the value being written. */
+    Node getValue() { result.asSink() = this }
   }
 
   /**
