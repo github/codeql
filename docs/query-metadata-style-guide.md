@@ -69,7 +69,7 @@ The following language codes are currently in use for CodeQL query development:
 * C and C++: `cpp`
 * C#: `cs`
 * Go: `go`
-* Java: `java`
+* Java and Kotlin: `java`
 * JavaScript and TypeScript: `js`
 * Python: `py`
 * Ruby: `rb`
