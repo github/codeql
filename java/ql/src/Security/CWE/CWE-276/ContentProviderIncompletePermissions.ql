@@ -1,5 +1,5 @@
 /**
- * @name Missing read or write permission configuration
+ * @name Missing read or write permission in a content provider
  * @description Defining an incomplete set of permissions
  * @kind problem
  * @problem.severity warning
