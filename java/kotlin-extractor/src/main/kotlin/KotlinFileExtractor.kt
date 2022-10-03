@@ -1765,6 +1765,8 @@ open class KotlinFileExtractor(
                 isFunction(target, "kotlin", "Double", fName)
     }
 
+    private fun isNumericFunction(target: IrFunction, fNames: List<String>) = fNames.any { isNumericFunction(target, it) }
+
     private fun isArrayType(typeName: String) =
         when(typeName) {
             "Array" -> true
@@ -1901,47 +1903,81 @@ open class KotlinFileExtractor(
 
             val dr = c.dispatchReceiver
             when {
-                isNumericFunction(target, "plus")
-                        || isFunction(target, "kotlin", "String", "plus", false) -> {
+                isFunction(target, "kotlin", "String", "plus", false) -> {
                     val id = tw.getFreshIdLabel<DbAddexpr>()
                     val type = useType(c.type)
                     tw.writeExprs_addexpr(id, type.javaResult.id, parent, idx)
                     tw.writeExprsKotlinType(id, type.kotlinResult.id)
-                    if (c.extensionReceiver != null)
-                        binopExtensionMethod(id)
-                    else
-                        binopDisp(id)
+                    binopDisp(id)
                 }
                 isFunction(target, "kotlin", "String", "plus", true) -> {
                     findJdkIntrinsicOrWarn("stringPlus", c)?.let { stringPlusFn ->
                         extractRawMethodAccess(stringPlusFn, c, callable, parent, idx, enclosingStmt, listOf(c.extensionReceiver, c.getValueArgument(0)), null, null)
                     }
                 }
-                isNumericFunction(target, "minus") -> {
-                    val id = tw.getFreshIdLabel<DbSubexpr>()
+                isNumericFunction(target, listOf("plus", "minus", "times", "div", "rem", "and", "or", "xor", "shl", "shr", "ushr")) -> {
                     val type = useType(c.type)
-                    tw.writeExprs_subexpr(id, type.javaResult.id, parent, idx)
-                    tw.writeExprsKotlinType(id, type.kotlinResult.id)
-                    binopDisp(id)
-                }
-                isNumericFunction(target, "times") -> {
-                    val id = tw.getFreshIdLabel<DbMulexpr>()
-                    val type = useType(c.type)
-                    tw.writeExprs_mulexpr(id, type.javaResult.id, parent, idx)
-                    tw.writeExprsKotlinType(id, type.kotlinResult.id)
-                    binopDisp(id)
-                }
-                isNumericFunction(target, "div") -> {
-                    val id = tw.getFreshIdLabel<DbDivexpr>()
-                    val type = useType(c.type)
-                    tw.writeExprs_divexpr(id, type.javaResult.id, parent, idx)
-                    tw.writeExprsKotlinType(id, type.kotlinResult.id)
-                    binopDisp(id)
-                }
-                isNumericFunction(target, "rem") -> {
-                    val id = tw.getFreshIdLabel<DbRemexpr>()
-                    val type = useType(c.type)
-                    tw.writeExprs_remexpr(id, type.javaResult.id, parent, idx)
+                    val id: Label<out DbExpr> = when (val targetName = target.name.asString()) {
+                        "plus" -> {
+                            val id = tw.getFreshIdLabel<DbAddexpr>()
+                            tw.writeExprs_addexpr(id, type.javaResult.id, parent, idx)
+                            id
+                        }
+                        "minus" -> {
+                            val id = tw.getFreshIdLabel<DbSubexpr>()
+                            tw.writeExprs_subexpr(id, type.javaResult.id, parent, idx)
+                            id
+                        }
+                        "times" -> {
+                            val id = tw.getFreshIdLabel<DbMulexpr>()
+                            tw.writeExprs_mulexpr(id, type.javaResult.id, parent, idx)
+                            id
+                        }
+                        "div" -> {
+                            val id = tw.getFreshIdLabel<DbDivexpr>()
+                            tw.writeExprs_divexpr(id, type.javaResult.id, parent, idx)
+                            id
+                        }
+                        "rem" -> {
+                            val id = tw.getFreshIdLabel<DbRemexpr>()
+                            tw.writeExprs_remexpr(id, type.javaResult.id, parent, idx)
+                            id
+                        }
+                        "and" -> {
+                            val id = tw.getFreshIdLabel<DbAndbitexpr>()
+                            tw.writeExprs_andbitexpr(id, type.javaResult.id, parent, idx)
+                            id
+                        }
+                        "or" -> {
+                            val id = tw.getFreshIdLabel<DbOrbitexpr>()
+                            tw.writeExprs_orbitexpr(id, type.javaResult.id, parent, idx)
+                            id
+                        }
+                        "xor" -> {
+                            val id = tw.getFreshIdLabel<DbXorbitexpr>()
+                            tw.writeExprs_xorbitexpr(id, type.javaResult.id, parent, idx)
+                            id
+                        }
+                        "shl" -> {
+                            val id = tw.getFreshIdLabel<DbLshiftexpr>()
+                            tw.writeExprs_lshiftexpr(id, type.javaResult.id, parent, idx)
+                            id
+                        }
+                        "shr" -> {
+                            val id = tw.getFreshIdLabel<DbRshiftexpr>()
+                            tw.writeExprs_rshiftexpr(id, type.javaResult.id, parent, idx)
+                            id
+                        }
+                        "ushr" -> {
+                            val id = tw.getFreshIdLabel<DbUrshiftexpr>()
+                            tw.writeExprs_urshiftexpr(id, type.javaResult.id, parent, idx)
+                            id
+                        }
+                        else -> {
+                            logger.errorElement("Unhandled target name: $targetName", c)
+                            return
+                        }
+                    }
                     tw.writeExprsKotlinType(id, type.kotlinResult.id)
                     binopDisp(id)
                 }
