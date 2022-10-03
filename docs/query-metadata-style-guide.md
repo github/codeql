@@ -45,9 +45,6 @@ Query file metadata contains important information that defines the identifier a
 
 To help others use your query, and to ensure that the query works correctly on LGTM, you should include all of the required information outlined below in the metadata, and as much of the optional information as possible. For further information on query metadata see [Metadata for CodeQL queries](https://codeql.github.com/docs/writing-codeql-queries/metadata-for-codeql-queries/) on codeql.github.com.
 
-
-
-
 ### Query name `@name`
 
 You must specify an `@name` property for your query. This property defines the display name for the query. Query names should use sentence capitalization, but not include a full stop. For example:
@@ -57,18 +54,17 @@ You must specify an `@name` property for your query. This property defines the d
 * `@name Reference equality test on strings`
 * `@name Return statement outside function`
 
-
 ### Query descriptions `@description`
 
 You must define an `@description` property for your query. This property defines a short help message. Query descriptions should be written as a sentence or short-paragraph of plain prose, with sentence capitalization and full stop. The preferred pattern for alert queries is  "Syntax X causes behavior Y." Any code elements included in the description should be enclosed in single quotes. For example:
-
 
 * `@description Using a format string with an incorrect format causes a 'System.FormatException'.`
 * `@description Commented-out code makes the remaining code more difficult to read.`
 
 ### Query ID `@id`
 
-You must specify an `@id` property for your query. It must be unique and should follow the standard CodeQL convention. That is, it should begin with the 'language code' for the language that the query analyzes followed by a forward slash. The following language codes are supported:
+You must specify an `@id` property for your query. It must be unique and should follow the standard CodeQL convention. That is, it should begin with the 'language code' for the language that the query analyzes followed by a forward slash.
+The following language codes are currently in use for CodeQL query development:
 
 * C and C++: `cpp`
 * C#: `cs`
@@ -79,9 +75,10 @@ You must specify an `@id` property for your query. It must be unique and should 
 * Ruby: `rb`
 * Swift: `swift`
 
+For a full list of currently supported CodeQL languages (and the level of coverage), 
+please see [the CodeQL documentation](https://codeql.github.com/docs/).
+
 The `@id` should consist of a short noun phrase that identifies the issue that the query highlights. For example:
-
-
 
 * `@id cs/command-line-injection`
 * `@id java/string-concatenation-in-loop`
@@ -93,8 +90,6 @@ Further terms can be added to the `@id` to group queries that, for example, high
 
 Note, `@id` properties should be consistent for queries that highlight the same issue for different languages. For example, the following queries identify format strings that contain unsanitized input in Java and C++ code respectively:
 
-
-
 * `@id java/tainted-format-string`
 * `@id cpp/tainted-format-string`
 
@@ -103,15 +98,11 @@ Note, `@id` properties should be consistent for queries that highlight the same 
 
 `@kind` is a required property that defines the type of query. The main query types are:
 
-
-
 * alerts (`@kind problem`)
 * alerts containing path information (`@kind path-problem`)
 * metrics (`@kind metric`)
 
 Alert queries (`@kind problem` or `path-problem`) support two further properties. These are added by GitHub staff after the query has been tested, prior to deployment to LGTM. The following information is for reference:
-
-
 
 * `@precision`–broadly indicates the proportion of query results that are true positives, while also considering their context and relevance:
   * `low`
