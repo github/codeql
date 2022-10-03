@@ -5,7 +5,7 @@ private import codeql.ruby.ApiGraphs
 private import codeql.ruby.Concepts
 private import codeql.ruby.dataflow.FlowSummary
 private import codeql.ruby.frameworks.data.ModelsAsData
-private import codeql.ruby.dataflow.internal.DataFlowImplForLibraries
+private import codeql.ruby.dataflow.internal.DataFlowImplForPathname
 
 /**
  * Modeling of the `Pathname` class from the Ruby standard library.

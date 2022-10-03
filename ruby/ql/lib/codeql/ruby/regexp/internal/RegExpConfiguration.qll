@@ -2,7 +2,7 @@ private import codeql.ruby.Regexp
 private import codeql.ruby.ast.Literal as Ast
 private import codeql.ruby.DataFlow
 private import codeql.ruby.controlflow.CfgNodes
-private import codeql.ruby.dataflow.internal.tainttrackingforlibraries.TaintTrackingImpl
+private import codeql.ruby.dataflow.internal.tainttrackingforregexp.TaintTrackingImpl
 private import codeql.ruby.typetracking.TypeTracker
 private import codeql.ruby.ApiGraphs
 
