@@ -28,6 +28,14 @@ class TypeTrackerContent extends OptionalTypeTrackerContent {
 /** Gets the content string representing no value. */
 OptionalTypeTrackerContent noContent() { result = "" }
 
+/**
+ * A label to use for `WithContent` and `WithoutContent` steps, restricting
+ * which `ContentSet` may pass through. Not currently used in Python.
+ */
+class ContentFilter extends Unit {
+  TypeTrackerContent getAMatchingContent() { none() }
+}
+
 pragma[inline]
 predicate compatibleContents(TypeTrackerContent storeContent, TypeTrackerContent loadContent) {
   storeContent = loadContent
@@ -109,6 +117,23 @@ predicate basicLoadStep(Node nodeFrom, Node nodeTo, string content) {
     nodeTo = a
   )
 }
+
+/**
+ * Holds if the `loadContent` of `nodeFrom` is stored in the `storeContent` of `nodeTo`.
+ */
+predicate basicLoadStoreStep(Node nodeFrom, Node nodeTo, string loadContent, string storeContent) {
+  none()
+}
+
+/**
+ * Holds if type-tracking should step from `nodeFrom` to `nodeTo` but block flow of contents matched by `filter` through here.
+ */
+predicate basicWithoutContentStep(Node nodeFrom, Node nodeTo, ContentFilter filter) { none() }
+
+/**
+ * Holds if type-tracking should step from `nodeFrom` to `nodeTo` if inside a content matched by `filter`.
+ */
+predicate basicWithContentStep(Node nodeFrom, Node nodeTo, ContentFilter filter) { none() }
 
 /**
  * A utility class that is equivalent to `boolean` but does not require type joining.

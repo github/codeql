@@ -14,6 +14,11 @@ private module Cached {
     ReturnStep() or
     StoreStep(TypeTrackerContent content) { basicStoreStep(_, _, content) } or
     LoadStep(TypeTrackerContent content) { basicLoadStep(_, _, content) } or
+    LoadStoreStep(TypeTrackerContent load, TypeTrackerContent store) {
+      basicLoadStoreStep(_, _, load, store)
+    } or
+    WithContent(ContentFilter filter) { basicWithContentStep(_, _, filter) } or
+    WithoutContent(ContentFilter filter) { basicWithoutContentStep(_, _, filter) } or
     JumpStep()
 
   cached
@@ -61,6 +66,14 @@ private module Cached {
       or
       step = JumpStep() and
       result = MkTypeTracker(false, currentContents)
+      or
+      exists(ContentFilter filter | result = tt |
+        step = WithContent(filter) and
+        currentContents = filter.getAMatchingContent()
+        or
+        step = WithoutContent(filter) and
+        not currentContents = filter.getAMatchingContent()
+      )
     )
     or
     exists(TypeTrackerContent storeContents, boolean hasCall |
@@ -74,6 +87,16 @@ private module Cached {
       step = StoreStep(pragma[only_bind_into](storeContents)) and
       tt = noContentTypeTracker(hasCall) and
       result = MkTypeTracker(hasCall, storeContents)
+    )
+    or
+    exists(
+      TypeTrackerContent currentContent, TypeTrackerContent store, TypeTrackerContent load,
+      boolean hasCall
+    |
+      step = LoadStoreStep(pragma[only_bind_into](load), pragma[only_bind_into](store)) and
+      compatibleContents(pragma[only_bind_into](currentContent), load) and
+      tt = MkTypeTracker(pragma[only_bind_into](hasCall), currentContent) and
+      result = MkTypeTracker(pragma[only_bind_out](hasCall), store)
     )
   }
 
@@ -96,6 +119,14 @@ private module Cached {
       or
       step = JumpStep() and
       result = MkTypeBackTracker(false, content)
+      or
+      exists(ContentFilter filter | result = tbt |
+        step = WithContent(filter) and
+        content = filter.getAMatchingContent()
+        or
+        step = WithoutContent(filter) and
+        not content = filter.getAMatchingContent()
+      )
     )
     or
     exists(TypeTrackerContent loadContents, boolean hasReturn |
@@ -109,6 +140,16 @@ private module Cached {
       step = LoadStep(pragma[only_bind_into](loadContents)) and
       tbt = noContentTypeBackTracker(hasReturn) and
       result = MkTypeBackTracker(hasReturn, loadContents)
+    )
+    or
+    exists(
+      TypeTrackerContent currentContent, TypeTrackerContent store, TypeTrackerContent load,
+      boolean hasCall
+    |
+      step = LoadStoreStep(pragma[only_bind_into](load), pragma[only_bind_into](store)) and
+      compatibleContents(store, pragma[only_bind_into](currentContent)) and
+      tbt = MkTypeBackTracker(pragma[only_bind_into](hasCall), currentContent) and
+      result = MkTypeBackTracker(pragma[only_bind_out](hasCall), load)
     )
   }
 
@@ -145,6 +186,19 @@ private module Cached {
       summary = StoreStep(content)
       or
       basicLoadStep(nodeFrom, nodeTo, content) and summary = LoadStep(content)
+    )
+    or
+    exists(TypeTrackerContent loadContent, TypeTrackerContent storeContent |
+      flowsToLoadStoreStep(nodeFrom, nodeTo, loadContent, storeContent) and
+      summary = LoadStoreStep(loadContent, storeContent)
+    )
+    or
+    exists(ContentFilter filter |
+      basicWithContentStep(nodeFrom, nodeTo, filter) and
+      summary = WithContent(filter)
+      or
+      basicWithoutContentStep(nodeFrom, nodeTo, filter) and
+      summary = WithoutContent(filter)
     )
   }
 
@@ -191,6 +245,18 @@ private predicate flowsToStoreStep(
 }
 
 /**
+ * Holds if `loadContent` is loaded from `nodeFrom` and written to `storeContent` of `nodeTo`.
+ */
+predicate flowsToLoadStoreStep(
+  Node nodeFrom, TypeTrackingNode nodeTo, TypeTrackerContent loadContent,
+  TypeTrackerContent storeContent
+) {
+  exists(Node obj |
+    nodeTo.flowsTo(obj) and basicLoadStoreStep(nodeFrom, obj, loadContent, storeContent)
+  )
+}
+
+/**
  * INTERNAL: Use `TypeTracker` or `TypeBackTracker` instead.
  *
  * A description of a step on an inter-procedural data flow path.
@@ -207,6 +273,11 @@ class StepSummary extends TStepSummary {
     exists(TypeTrackerContent content | this = StoreStep(content) | result = "store " + content)
     or
     exists(TypeTrackerContent content | this = LoadStep(content) | result = "load " + content)
+    or
+    exists(TypeTrackerContent load, TypeTrackerContent store |
+      this = LoadStoreStep(load, store) and
+      result = "load-store " + load + " -> " + store
+    )
     or
     this instanceof JumpStep and result = "jump"
   }
