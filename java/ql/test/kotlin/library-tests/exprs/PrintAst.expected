@@ -2025,8 +2025,8 @@ exprs.kt:
 #   31|               0: [VarAccess] x
 #   32|         21: [LocalVariableDeclStmt] var ...;
 #   32|           1: [LocalVariableDeclExpr] i22
-#   32|             0: [MethodAccess] not(...)
-#   32|               -1: [MethodAccess] contains(...)
+#   32|             0: [LogNotExpr] !...
+#   32|               0: [MethodAccess] contains(...)
 #   32|                 -1: [MethodAccess] rangeTo(...)
 #   32|                   -1: [VarAccess] x
 #   32|                   0: [VarAccess] y
@@ -2422,8 +2422,8 @@ exprs.kt:
 #  114|               1: [VarAccess] b2
 #  115|         98: [LocalVariableDeclStmt] var ...;
 #  115|           1: [LocalVariableDeclExpr] b5
-#  115|             0: [MethodAccess] not(...)
-#  115|               -1: [VarAccess] b1
+#  115|             0: [LogNotExpr] !...
+#  115|               0: [VarAccess] b1
 #  117|         99: [LocalVariableDeclStmt] var ...;
 #  117|           1: [LocalVariableDeclExpr] c
 #  117|             0: [CharacterLiteral] x

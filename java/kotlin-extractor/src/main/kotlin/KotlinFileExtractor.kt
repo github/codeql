@@ -1887,11 +1887,31 @@ open class KotlinFileExtractor(
                 }
             }
 
+            fun unaryopReceiver(id: Label<out DbExpr>, receiver: IrExpression?, receiverDescription: String) {
+                val locId = tw.getLocation(c)
+                tw.writeHasLocation(id, locId)
+                tw.writeCallableEnclosingExpr(id, callable)
+                tw.writeStatementEnclosingExpr(id, enclosingStmt)
+
+                if(receiver == null) {
+                    logger.errorElement("$receiverDescription not found", c)
+                } else {
+                    extractExpressionExpr(receiver, callable, id, 0, enclosingStmt)
+                }
+                if(c.valueArgumentsCount > 0) {
+                    logger.errorElement("Extra arguments found", c)
+                }
+            }
+
             /**
              * Populate the lhs of a binary op from this call's dispatch receiver, and the rhs from its sole argument.
              */
             fun binopDisp(id: Label<out DbExpr>) {
                 binopReceiver(id, c.dispatchReceiver, "Dispatch receiver")
+            }
+
+            fun unaryopDisp(id: Label<out DbExpr>) {
+                unaryopReceiver(id, c.dispatchReceiver, "Dispatch receiver")
             }
 
             /**
@@ -2002,6 +2022,13 @@ open class KotlinFileExtractor(
                     tw.writeExprs_neexpr(id, type.javaResult.id, parent, idx)
                     tw.writeExprsKotlinType(id, type.kotlinResult.id)
                     binOp(id, dr, callable, enclosingStmt)
+                }
+                isFunction(target, "kotlin", "Boolean", "not") -> {
+                    val id = tw.getFreshIdLabel<DbLognotexpr>()
+                    val type = useType(c.type)
+                    tw.writeExprs_lognotexpr(id, type.javaResult.id, parent, idx)
+                    tw.writeExprsKotlinType(id, type.kotlinResult.id)
+                    unaryopDisp(id)
                 }
                 // We need to handle all the builtin operators defines in BuiltInOperatorNames in
                 //     compiler/ir/ir.tree/src/org/jetbrains/kotlin/ir/IrBuiltIns.kt
