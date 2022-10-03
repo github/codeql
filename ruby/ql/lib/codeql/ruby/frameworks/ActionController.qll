@@ -386,12 +386,13 @@ private module ParamsSummaries {
     ParamsInstance() {
       this.asExpr().getExpr() instanceof ParamsCall
       or
-      exists(DataFlow::CallNode call | call = this |
-        call.getReceiver() instanceof ParamsInstance and
-        call.getMethodName() = paramsMethodReturningParamsInstance()
-      )
+      this =
+        any(DataFlow::CallNode call |
+          call.getReceiver() instanceof ParamsInstance and
+          call.getMethodName() = paramsMethodReturningParamsInstance()
+        )
       or
-      exists(DataFlow::LocalSourceNode prev | prev.flowsTo(this))
+      exists(ParamsInstance prev | prev.(DataFlow::LocalSourceNode).flowsTo(this))
     }
   }
 
