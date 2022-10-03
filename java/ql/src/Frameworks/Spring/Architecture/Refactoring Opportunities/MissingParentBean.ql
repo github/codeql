@@ -34,6 +34,6 @@ where
   bean1.getBeanIdentifier() < bean2.getBeanIdentifier() and
   bean1 != bean2
 select bean1,
-  "Bean $@ has " + similarProps.toString() +
+  "This bean has " + similarProps.toString() +
     " properties similar to $@. Consider introducing a common parent bean for these two beans.",
-  bean1, bean1.getBeanIdentifier(), bean2, bean2.getBeanIdentifier()
+  bean2, bean2.getBeanIdentifier()

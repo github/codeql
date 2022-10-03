@@ -38,5 +38,5 @@ where
   boundedsource = source.getNode() and
   any(BoundedFlowSourceConf conf).hasFlowPath(source, sink)
 select arrayAccess.getIndexExpr(), source, sink,
-  "The $@ is accessed here, but the array is initialized using $@ which may be zero.",
-  arrayCreation, "array", boundedsource, boundedsource.getDescription().toLowerCase()
+  "This accesses the $@, but the array is initialized using $@ which may be zero.", arrayCreation,
+  "array", boundedsource, boundedsource.getDescription().toLowerCase()
