@@ -1974,8 +1974,8 @@ exprs.kt:
 #   21|               1: [VarAccess] y
 #   22|         11: [LocalVariableDeclStmt] var ...;
 #   22|           1: [LocalVariableDeclExpr] i12
-#   22|             0: [MethodAccess] inv(...)
-#   22|               -1: [VarAccess] x
+#   22|             0: [BitNotExpr] ~...
+#   22|               0: [VarAccess] x
 #   23|         12: [LocalVariableDeclStmt] var ...;
 #   23|           1: [LocalVariableDeclExpr] i13
 #   23|             0: [ValueEQExpr] ... (value equals) ...
@@ -2236,8 +2236,8 @@ exprs.kt:
 #   72|               1: [VarAccess] ly
 #   73|         59: [LocalVariableDeclStmt] var ...;
 #   73|           1: [LocalVariableDeclExpr] l12
-#   73|             0: [MethodAccess] inv(...)
-#   73|               -1: [VarAccess] lx
+#   73|             0: [BitNotExpr] ~...
+#   73|               0: [VarAccess] lx
 #   74|         60: [LocalVariableDeclStmt] var ...;
 #   74|           1: [LocalVariableDeclExpr] l13
 #   74|             0: [ValueEQExpr] ... (value equals) ...

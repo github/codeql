@@ -2030,6 +2030,13 @@ open class KotlinFileExtractor(
                     tw.writeExprsKotlinType(id, type.kotlinResult.id)
                     unaryopDisp(id)
                 }
+                isNumericFunction(target, "inv") -> {
+                    val id = tw.getFreshIdLabel<DbBitnotexpr>()
+                    val type = useType(c.type)
+                    tw.writeExprs_bitnotexpr(id, type.javaResult.id, parent, idx)
+                    tw.writeExprsKotlinType(id, type.kotlinResult.id)
+                    unaryopDisp(id)
+                }
                 // We need to handle all the builtin operators defines in BuiltInOperatorNames in
                 //     compiler/ir/ir.tree/src/org/jetbrains/kotlin/ir/IrBuiltIns.kt
                 // as they can't be extracted as external dependencies.
