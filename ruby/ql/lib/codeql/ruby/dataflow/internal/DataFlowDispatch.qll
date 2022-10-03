@@ -295,22 +295,24 @@ private DataFlowCallable viableLibraryCallable(DataFlowCall call) {
 }
 
 /** Holds if there is a call like `receiver.extend(M)` */
-private predicate extendCall(DataFlow::LocalSourceNode receiver, Module m) {
+pragma[nomagic]
+private predicate flowsToExtendCall(DataFlow::LocalSourceNode receiver, Module m) {
   exists(DataFlow::CallNode extendCall |
     extendCall.getMethodName() = "extend" and
     exists(DataFlow::LocalSourceNode sourceNode | sourceNode.flowsTo(extendCall.getArgument(0)) |
       selfInModule(sourceNode.(SsaSelfDefinitionNode).getVariable(), m) or
-      sourceNode = trackModuleAccess(m)
+      m = resolveConstantReadAccess(sourceNode.asExpr().getExpr())
     ) and
     receiver.flowsTo(extendCall.getReceiver())
   )
 }
 
 /** Holds if there is a call like `M.extend(N)` */
+pragma[nomagic]
 private predicate extendCallModule(Module m, Module n) {
-  exists(DataFlow::LocalSourceNode receiver | extendCall(receiver, n) |
+  exists(DataFlow::LocalSourceNode receiver | flowsToExtendCall(receiver, n) |
     selfInModule(receiver.(SsaSelfDefinitionNode).getVariable(), m) or
-    receiver = trackModuleAccess(m)
+    m = resolveConstantReadAccess(receiver.asExpr().getExpr())
   )
 }
 
@@ -375,7 +377,7 @@ private module Cached {
             receiver = trackSingletonMethodOnInstance(result, method)
             or
             exists(Module m |
-              extendCall(any(DataFlow::LocalSourceNode n | n.flowsTo(receiver)), m) and
+              flowsToExtendCall(any(DataFlow::LocalSourceNode n | n.flowsTo(receiver)), m) and
               result = lookupMethod(m, pragma[only_bind_into](method))
             )
           )
