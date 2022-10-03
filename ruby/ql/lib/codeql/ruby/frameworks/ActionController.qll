@@ -8,7 +8,7 @@ private import codeql.ruby.controlflow.CfgNodes
 private import codeql.ruby.DataFlow
 private import codeql.ruby.dataflow.RemoteFlowSources
 private import codeql.ruby.ApiGraphs
-private import ActionView
+private import codeql.ruby.frameworks.ActionView
 private import codeql.ruby.frameworks.ActionDispatch
 
 /**
