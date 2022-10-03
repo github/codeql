@@ -77,5 +77,4 @@ from EcbEncryptionConfig config, DataFlow::PathNode sourceNode, DataFlow::PathNo
 where config.hasFlowPath(sourceNode, sinkNode)
 select sinkNode.getNode(), sourceNode, sinkNode,
   "The initialization of the cipher '" + sinkNode.getNode().toString() +
-    "' uses the insecure ECB block mode from $@.", sourceNode,
-  sourceNode.getNode().toString()
+    "' uses the insecure ECB block mode from $@.", sourceNode, sourceNode.getNode().toString()
