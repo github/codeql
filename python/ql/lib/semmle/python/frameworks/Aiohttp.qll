@@ -616,24 +616,17 @@ module AiohttpWebModel {
    * A dict-like write to an item of the `cookies` attribute on a HTTP response, such as
    * `response.cookies[name] = value`.
    */
-  class AiohttpResponseCookieSubscriptWrite extends Http::Server::CookieWrite::Range {
-    DataFlow::Node index;
-    DataFlow::Node value;
-
+  class AiohttpResponseCookieSubscriptWrite extends API::SubscriptWriteNode,
+    Http::Server::CookieWrite::Range {
     AiohttpResponseCookieSubscriptWrite() {
-      exists(API::SubscriptWriteNode subscriptWrite |
-        subscriptWrite.getObject() = aiohttpResponseInstance().getMember("cookies") and
-        this = subscriptWrite and
-        index = subscriptWrite.getIndex() and
-        value = subscriptWrite.getValue().asSink()
-      )
+      this.getObject() = aiohttpResponseInstance().getMember("cookies")
     }
 
     override DataFlow::Node getHeaderArg() { none() }
 
-    override DataFlow::Node getNameArg() { result = index }
+    override DataFlow::Node getNameArg() { result = this.getIndex() }
 
-    override DataFlow::Node getValueArg() { result = value }
+    override DataFlow::Node getValueArg() { result = this.getValue().asSink() }
   }
 }
 
