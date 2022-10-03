@@ -391,8 +391,6 @@ private ContentFilter getFilterFromWithoutContentStep(DataFlow::ContentSet conte
   (
     content.isAnyElement()
     or
-    content.isElementLowerBound(_)
-    or
     content.isElementLowerBoundOrUnknown(_)
     or
     content.isSingleton(any(DataFlow::Content::UnknownElementContent c))
