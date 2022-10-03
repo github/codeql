@@ -186,6 +186,7 @@ getTarget
 | calls.rb:488:1:488:31 | call to singleton | calls.rb:481:5:483:7 | singleton |
 | calls.rb:494:1:494:32 | call to singleton | calls.rb:481:5:483:7 | singleton |
 | calls.rb:501:1:501:32 | call to singleton | calls.rb:481:5:483:7 | singleton |
+| calls.rb:504:1:504:13 | call to singleton | calls.rb:481:5:483:7 | singleton |
 | calls.rb:507:1:507:13 | call to singleton | calls.rb:481:5:483:7 | singleton |
 | calls.rb:516:5:516:35 | call to include | calls.rb:108:5:110:7 | include |
 | calls.rb:519:9:519:35 | call to puts | calls.rb:102:5:102:30 | puts |

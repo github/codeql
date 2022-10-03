@@ -501,7 +501,7 @@ ExtendSingletonMethod3.extend ExtendSingletonMethod
 ExtendSingletonMethod3.singleton
 
 foo = "hello"
-
+foo.singleton # NoMethodError
 foo.extend ExtendSingletonMethod
 
 foo.singleton

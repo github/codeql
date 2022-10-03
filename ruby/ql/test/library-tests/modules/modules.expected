@@ -1231,6 +1231,8 @@ enclosingModule
 | calls.rb:503:1:503:13 | ... = ... | calls.rb:1:1:543:28 | calls.rb |
 | calls.rb:503:7:503:13 | "hello" | calls.rb:1:1:543:28 | calls.rb |
 | calls.rb:503:8:503:12 | hello | calls.rb:1:1:543:28 | calls.rb |
+| calls.rb:504:1:504:3 | foo | calls.rb:1:1:543:28 | calls.rb |
+| calls.rb:504:1:504:13 | call to singleton | calls.rb:1:1:543:28 | calls.rb |
 | calls.rb:505:1:505:3 | foo | calls.rb:1:1:543:28 | calls.rb |
 | calls.rb:505:1:505:32 | call to extend | calls.rb:1:1:543:28 | calls.rb |
 | calls.rb:505:12:505:32 | ExtendSingletonMethod | calls.rb:1:1:543:28 | calls.rb |
