@@ -13,8 +13,6 @@
   required to do other operations.
 </p>
 
-<p>Content providers should either define both the read and write permissions
-attributes, or define the general <code>android:permission</code> attribute.</p>
 </overview>
 
 <recommendation>
