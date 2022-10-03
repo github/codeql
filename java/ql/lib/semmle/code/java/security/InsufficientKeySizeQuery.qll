@@ -2,12 +2,12 @@ import semmle.code.java.security.Encryption
 import semmle.code.java.dataflow.TaintTracking
 
 /** The Java class `java.security.spec.ECGenParameterSpec`. */
-class ECGenParameterSpec extends RefType {
+private class ECGenParameterSpec extends RefType {
   ECGenParameterSpec() { this.hasQualifiedName("java.security.spec", "ECGenParameterSpec") }
 }
 
 /** The `init` method declared in `javax.crypto.KeyGenerator`. */
-class KeyGeneratorInitMethod extends Method {
+private class KeyGeneratorInitMethod extends Method {
   KeyGeneratorInitMethod() {
     this.getDeclaringType() instanceof KeyGenerator and
     this.hasName("init")
@@ -15,7 +15,7 @@ class KeyGeneratorInitMethod extends Method {
 }
 
 /** The `initialize` method declared in `java.security.KeyPairGenerator`. */
-class KeyPairGeneratorInitMethod extends Method {
+private class KeyPairGeneratorInitMethod extends Method {
   KeyPairGeneratorInitMethod() {
     this.getDeclaringType() instanceof KeyPairGenerator and
     this.hasName("initialize")
@@ -24,7 +24,7 @@ class KeyPairGeneratorInitMethod extends Method {
 
 /** Returns the key size in the EC algorithm string */
 bindingset[algorithm]
-int getECKeySize(string algorithm) {
+private int getECKeySize(string algorithm) {
   algorithm.matches("sec%") and // specification such as "secp256r1"
   result = algorithm.regexpCapture("sec[p|t](\\d+)[a-zA-Z].*", 1).toInt()
   or
@@ -36,7 +36,7 @@ int getECKeySize(string algorithm) {
 }
 
 /** Taint configuration tracking flow from a key generator to a `init` method call. */
-class KeyGeneratorInitConfiguration extends TaintTracking::Configuration {
+private class KeyGeneratorInitConfiguration extends TaintTracking::Configuration {
   KeyGeneratorInitConfiguration() { this = "KeyGeneratorInitConfiguration" }
 
   override predicate isSource(DataFlow::Node source) {
@@ -51,8 +51,11 @@ class KeyGeneratorInitConfiguration extends TaintTracking::Configuration {
   }
 }
 
-/** Taint configuration tracking flow from a keypair generator to a `initialize` method call. */
-class KeyPairGeneratorInitConfiguration extends TaintTracking::Configuration {
+/**
+ * Taint configuration tracking flow from a keypair generator to
+ * an `initialize` method call.
+ */
+private class KeyPairGeneratorInitConfiguration extends TaintTracking::Configuration {
   KeyPairGeneratorInitConfiguration() { this = "KeyPairGeneratorInitConfiguration" }
 
   override predicate isSource(DataFlow::Node source) {
@@ -67,9 +70,14 @@ class KeyPairGeneratorInitConfiguration extends TaintTracking::Configuration {
   }
 }
 
-/** Holds if a symmetric `KeyGenerator` implementing encryption algorithm `type` and initialized by `ma` uses an insufficient key size. `msg` provides a human-readable description of the problem. */
+/**
+ * Holds if a symmetric `KeyGenerator` implementing encryption algorithm
+ * `type` and initialized by `ma` uses an insufficient key size.
+ *
+ * `msg` provides a human-readable description of the problem.
+ */
 bindingset[type]
-predicate hasShortSymmetricKey(MethodAccess ma, string msg, string type) {
+private predicate hasShortSymmetricKey(MethodAccess ma, string msg, string type) {
   ma.getMethod() instanceof KeyGeneratorInitMethod and
   exists(
     JavaxCryptoKeyGenerator jcg, KeyGeneratorInitConfiguration cc, DataFlow::PathNode source,
@@ -84,12 +92,22 @@ predicate hasShortSymmetricKey(MethodAccess ma, string msg, string type) {
   msg = "Key size should be at least 128 bits for " + type + " encryption."
 }
 
-/** Holds if an AES `KeyGenerator` initialized by `ma` uses an insufficient key size. `msg` provides a human-readable description of the problem. */
-predicate hasShortAESKey(MethodAccess ma, string msg) { hasShortSymmetricKey(ma, msg, "AES") }
+/**
+ * Holds if an AES `KeyGenerator` initialized by `ma` uses an insufficient key size.
+ * `msg` provides a human-readable description of the problem.
+ */
+private predicate hasShortAESKey(MethodAccess ma, string msg) {
+  hasShortSymmetricKey(ma, msg, "AES")
+}
 
-/** Holds if an asymmetric `KeyPairGenerator` implementing encryption algorithm `type` and initialized by `ma` uses an insufficient key size. `msg` provides a human-readable description of the problem. */
+/**
+ * Holds if an asymmetric `KeyPairGenerator` implementing encryption algorithm
+ * `type` and initialized by `ma` uses an insufficient key size.
+ *
+ * `msg` provides a human-readable description of the problem.
+ */
 bindingset[type]
-predicate hasShortAsymmetricKeyPair(MethodAccess ma, string msg, string type) {
+private predicate hasShortAsymmetricKeyPair(MethodAccess ma, string msg, string type) {
   ma.getMethod() instanceof KeyPairGeneratorInitMethod and
   exists(
     JavaSecurityKeyPairGenerator jpg, KeyPairGeneratorInitConfiguration kc,
@@ -104,18 +122,31 @@ predicate hasShortAsymmetricKeyPair(MethodAccess ma, string msg, string type) {
   msg = "Key size should be at least 2048 bits for " + type + " encryption."
 }
 
-/** Holds if a DSA `KeyPairGenerator` initialized by `ma` uses an insufficient key size. `msg` provides a human-readable description of the problem. */
-predicate hasShortDsaKeyPair(MethodAccess ma, string msg) {
-  hasShortAsymmetricKeyPair(ma, msg, "DSA") or hasShortAsymmetricKeyPair(ma, msg, "DH")
+/**
+ * Holds if a DSA `KeyPairGenerator` initialized by `ma` uses an insufficient key size.
+ *
+ * `msg` provides a human-readable description of the problem.
+ */
+private predicate hasShortDsaKeyPair(MethodAccess ma, string msg) {
+  hasShortAsymmetricKeyPair(ma, msg, "DSA") or
+  hasShortAsymmetricKeyPair(ma, msg, "DH")
 }
 
-/** Holds if a RSA `KeyPairGenerator` initialized by `ma` uses an insufficient key size. `msg` provides a human-readable description of the problem. */
-predicate hasShortRsaKeyPair(MethodAccess ma, string msg) {
+/**
+ * Holds if a RSA `KeyPairGenerator` initialized by `ma` uses an insufficient key size.
+ *
+ * `msg` provides a human-readable description of the problem.
+ */
+private predicate hasShortRsaKeyPair(MethodAccess ma, string msg) {
   hasShortAsymmetricKeyPair(ma, msg, "RSA")
 }
 
-/** Holds if an EC `KeyPairGenerator` initialized by `ma` uses an insufficient key size. `msg` provides a human-readable description of the problem. */
-predicate hasShortECKeyPair(MethodAccess ma, string msg) {
+/**
+ * Holds if an EC `KeyPairGenerator` initialized by `ma` uses an insufficient key size.
+ *
+ * `msg` provides a human-readable description of the problem.
+ */
+private predicate hasShortECKeyPair(MethodAccess ma, string msg) {
   ma.getMethod() instanceof KeyPairGeneratorInitMethod and
   exists(
     JavaSecurityKeyPairGenerator jpg, KeyPairGeneratorInitConfiguration kc,
@@ -131,15 +162,11 @@ predicate hasShortECKeyPair(MethodAccess ma, string msg) {
   ) and
   msg = "Key size should be at least 256 bits for EC encryption."
 }
-// ! refactor to something like the below,
-// ! need to adjust select clause then...
-// ! see C# and C++ queries for ideas
-// class EncryptionAlgorithm extends
-// predicate hasInsufficientKeySize() {
-//   exists(Expr e, string msg |
-//     hasShortAESKey(e, msg) or
-//     hasShortDsaKeyPair(e, msg) or
-//     hasShortRsaKeyPair(e, msg) or
-//     hasShortECKeyPair(e, msg)
-//   )
-// }
+
+// ! refactor this so can use 'path-problem' select clause instead?
+predicate hasInsufficientKeySize(Expr e, string msg) {
+  hasShortAESKey(e, msg) or
+  hasShortDsaKeyPair(e, msg) or
+  hasShortRsaKeyPair(e, msg) or
+  hasShortECKeyPair(e, msg)
+}
