@@ -1,4 +1,18 @@
 nodes
+| JsonStringify.jsx:5:9:5:36 | locale |
+| JsonStringify.jsx:5:9:5:36 | locale |
+| JsonStringify.jsx:5:18:5:36 | req.param("locale") |
+| JsonStringify.jsx:5:18:5:36 | req.param("locale") |
+| JsonStringify.jsx:5:18:5:36 | req.param("locale") |
+| JsonStringify.jsx:14:18:14:60 | `https: ... ocale}` |
+| JsonStringify.jsx:14:53:14:58 | locale |
+| JsonStringify.jsx:22:18:22:65 | `https: ... ocale}` |
+| JsonStringify.jsx:22:58:22:63 | locale |
+| JsonStringify.jsx:30:40:30:45 | locale |
+| JsonStringify.jsx:30:40:30:45 | locale |
+| JsonStringify.jsx:30:40:30:45 | locale |
+| JsonStringify.jsx:34:40:34:61 | JSON.st ... jsonLD) |
+| JsonStringify.jsx:34:40:34:61 | JSON.st ... jsonLD) |
 | addEventListener.js:1:43:1:47 | event |
 | addEventListener.js:1:43:1:47 | event |
 | addEventListener.js:1:43:1:47 | event |
@@ -1154,6 +1168,22 @@ nodes
 | xmlRequest.js:22:24:22:35 | json.message |
 | xmlRequest.js:22:24:22:35 | json.message |
 edges
+| JsonStringify.jsx:5:9:5:36 | locale | JsonStringify.jsx:14:53:14:58 | locale |
+| JsonStringify.jsx:5:9:5:36 | locale | JsonStringify.jsx:22:58:22:63 | locale |
+| JsonStringify.jsx:5:9:5:36 | locale | JsonStringify.jsx:30:40:30:45 | locale |
+| JsonStringify.jsx:5:9:5:36 | locale | JsonStringify.jsx:30:40:30:45 | locale |
+| JsonStringify.jsx:5:9:5:36 | locale | JsonStringify.jsx:30:40:30:45 | locale |
+| JsonStringify.jsx:5:9:5:36 | locale | JsonStringify.jsx:30:40:30:45 | locale |
+| JsonStringify.jsx:5:18:5:36 | req.param("locale") | JsonStringify.jsx:5:9:5:36 | locale |
+| JsonStringify.jsx:5:18:5:36 | req.param("locale") | JsonStringify.jsx:5:9:5:36 | locale |
+| JsonStringify.jsx:5:18:5:36 | req.param("locale") | JsonStringify.jsx:5:9:5:36 | locale |
+| JsonStringify.jsx:5:18:5:36 | req.param("locale") | JsonStringify.jsx:5:9:5:36 | locale |
+| JsonStringify.jsx:14:18:14:60 | `https: ... ocale}` | JsonStringify.jsx:34:40:34:61 | JSON.st ... jsonLD) |
+| JsonStringify.jsx:14:18:14:60 | `https: ... ocale}` | JsonStringify.jsx:34:40:34:61 | JSON.st ... jsonLD) |
+| JsonStringify.jsx:14:53:14:58 | locale | JsonStringify.jsx:14:18:14:60 | `https: ... ocale}` |
+| JsonStringify.jsx:22:18:22:65 | `https: ... ocale}` | JsonStringify.jsx:34:40:34:61 | JSON.st ... jsonLD) |
+| JsonStringify.jsx:22:18:22:65 | `https: ... ocale}` | JsonStringify.jsx:34:40:34:61 | JSON.st ... jsonLD) |
+| JsonStringify.jsx:22:58:22:63 | locale | JsonStringify.jsx:22:18:22:65 | `https: ... ocale}` |
 | addEventListener.js:1:43:1:47 | event | addEventListener.js:2:20:2:24 | event |
 | addEventListener.js:1:43:1:47 | event | addEventListener.js:2:20:2:24 | event |
 | addEventListener.js:1:43:1:47 | event | addEventListener.js:2:20:2:24 | event |
