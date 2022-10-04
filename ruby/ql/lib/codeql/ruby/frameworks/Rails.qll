@@ -11,6 +11,9 @@ private import codeql.ruby.frameworks.internal.Rails
 private import codeql.ruby.ApiGraphs
 private import codeql.ruby.security.OpenSSL
 
+/**
+ * Provides classes for working with Rails.
+ */
 module Rails {
   /**
    * A method call on a string to mark it as HTML safe for Rails. Strings marked
