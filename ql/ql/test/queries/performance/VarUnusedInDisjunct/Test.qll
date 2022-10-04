@@ -165,4 +165,20 @@ class HasField extends Big {
     or
     this.toString().matches("%foo") // <- field only defined here.
   }
+
+  predicate isInScope(Big big) {
+    big.toString().matches("%foo") // <- `this` is not bound here
+    or
+    this.toString().matches("%foo") and this.toString() = big.toString()
+  }
+
+  string getThing() { result = "foo" and result = this.toString() }
+
+  string getPart(int i) {
+    i = 0 and result = "?"
+    or
+    i = 1 and result = " extends " and exists(this.getThing())
+    or
+    i = 1 and result = " super " and exists(this.getThing())
+  }
 }

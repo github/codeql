@@ -11,29 +11,105 @@
 
 import ql
 
+newtype TVar =
+  TVarDef(VarDef var) or
+  TThis(Predicate pred) { exists(ThisAccess t | t.getEnclosingPredicate() = pred) } or
+  TResult(Predicate pred) { exists(ResultAccess t | t.getEnclosingPredicate() = pred) }
+
+class Var extends TVar {
+  string getName() {
+    exists(VarDef def | this = TVarDef(def) | result = def.getName())
+    or
+    result = "this" and this instanceof TThis
+    or
+    result = "result" and this instanceof TResult
+  }
+
+  string toString() { result = this.getName() }
+
+  Expr getAnAccess() {
+    exists(VarDef var | this = TVarDef(var) |
+      // base case
+      result.(VarAccess).getDeclaration() = var
+      or
+      exists(Class clz |
+        result.(FieldAccess).getDeclaration().getVarDecl() = var and
+        result.(FieldAccess).getDeclaration() = clz.getAField() and // <- ensuring that the field is not inherited from a super class
+        result.getEnclosingPredicate() = clz.getCharPred() // <- in non-charpred, the fields are implicitly bound by their relation to `this`.
+      )
+    )
+    or
+    exists(Predicate pred |
+      this = TThis(pred) and
+      (
+        result instanceof ThisAccess
+        or
+        result instanceof Super // super binds `this`
+      )
+      or
+      this = TResult(pred) and result instanceof ResultAccess
+    |
+      result.getEnclosingPredicate() = pred
+    )
+    or
+    exists(Predicate pred | this = TThis(pred) |
+      // a field access implicitly binds `this` to the enclosing predicate
+      result.(FieldAccess).getEnclosingPredicate() = pred
+      or
+      // a call to a class method implicitly binds `this` to the enclosing predicate
+      pred.getParent() instanceof Class and // class-predicate or charpred
+      // a call of the form `foo()`, not a member-call.
+      exists(PredicateCall call |
+        result = call and
+        call.getEnclosingPredicate() = pred and
+        call.getTarget() instanceof ClassPredicate
+      )
+    )
+  }
+
+  Location getLocation() {
+    exists(VarDef def | this = TVarDef(def) | result = def.getLocation())
+    or
+    exists(Predicate pred | this = TThis(pred) | result = pred.getLocation())
+    or
+    exists(Predicate pred | this = TResult(pred) | result = pred.getLocation())
+  }
+
+  pragma[noinline]
+  Type getType() {
+    result = this.getAnAccess().getType() // the easy implementation.
+  }
+
+  VarDef asVarDef() { this = TVarDef(result) }
+
+  string describe() {
+    exists(VarDef var | this = TVarDef(var) |
+      if var.getParent() instanceof FieldDecl
+      then result = "field " + this.getName()
+      else result = "variable " + this.getName()
+    )
+    or
+    result = "this variable" and this instanceof TThis
+    or
+    result = "result variable" and this instanceof TResult
+  }
+}
+
 /**
  * Holds if `node` bind `var` in a (transitive) child node.
  * Is a practical approximation that ignores `not` and many other features.
  */
 pragma[noinline]
-predicate alwaysBindsVar(VarDef var, AstNode node) {
-  (
-    // base case
-    node.(VarAccess).getDeclaration() = var
-    or
-    exists(Class clz |
-      node.(FieldAccess).getDeclaration().getVarDecl() = var and
-      node.(FieldAccess).getDeclaration() = clz.getAField() and // <- ensuring that the field is not inherited from a super class
-      node.getEnclosingPredicate() = clz.getCharPred() // <- in non-charpred, the fields are implicitly bound by their relation to `this`.
-    )
-  ) and
+predicate alwaysBindsVar(Var var, AstNode node) {
+  node = var.getAnAccess() and
   not isSmallType(var.getType()) // <- early pruning
   or
   // recursive cases
   alwaysBindsVar(var, node.getAChild(_)) and // the recursive step, go one step up to the parent.
-  not node.(FullAggregate).getAnArgument() = var and // except if the parent defines the variable, then we stop.
-  not node.(Quantifier).getAnArgument() = var and
-  not node instanceof EffectiveDisjunction // for disjunctions, we need to check both sides.
+  not node.(FullAggregate).getAnArgument() = var.asVarDef() and // except if the parent defines the variable, then we stop.
+  not node.(Quantifier).getAnArgument() = var.asVarDef() and
+  not node instanceof EffectiveDisjunction and // for disjunctions, we need to check both sides.
+  not node instanceof Predicate // stop.
   or
   exists(EffectiveDisjunction disj | disj = node |
     alwaysBindsVar(var, disj.getLeft()) and
@@ -119,7 +195,7 @@ class EffectiveDisjunction extends AstNode {
  * Holds if `disj` only uses `var` in one of its branches.
  */
 pragma[noinline]
-predicate onlyUseInOneBranch(EffectiveDisjunction disj, VarDef var, AstNode notBoundIn) {
+predicate onlyUseInOneBranch(EffectiveDisjunction disj, Var var, AstNode notBoundIn) {
   alwaysBindsVar(var, disj.getLeft()) and
   not alwaysBindsVar(var, disj.getRight()) and
   notBoundIn = disj.getRight()
@@ -169,7 +245,7 @@ class EffectiveConjunction extends AstNode {
 /**
  * Holds if `node` is a sub-node of a node that always binds `var`.
  */
-predicate varIsAlwaysBound(VarDef var, AstNode node) {
+predicate varIsAlwaysBound(Var var, AstNode node) {
   // base case
   alwaysBindsVar(var, node) and
   onlyUseInOneBranch(_, var, _) // <- manual magic
@@ -196,7 +272,7 @@ predicate varIsAlwaysBound(VarDef var, AstNode node) {
  * Holds if `disj` only uses `var` in one of its branches.
  * And we should report it as being a bad thing.
  */
-predicate badDisjunction(EffectiveDisjunction disj, VarDef var, AstNode notBoundIn) {
+predicate badDisjunction(EffectiveDisjunction disj, Var var, AstNode notBoundIn) {
   onlyUseInOneBranch(disj, var, notBoundIn) and
   // it's fine if it's always bound further up
   not varIsAlwaysBound(var, disj) and
@@ -205,7 +281,7 @@ predicate badDisjunction(EffectiveDisjunction disj, VarDef var, AstNode notBound
   // inlined predicates might bind unused variables in the context they are used in.
   not (
     isInlined(disj.getEnclosingPredicate()) and
-    var = disj.getEnclosingPredicate().getParameter(_)
+    var.asVarDef() = disj.getEnclosingPredicate().getParameter(_)
   ) and
   // recursion prevention never runs, it's a compile-time check, so we remove those results here
   not disj.getEnclosingPredicate().getParent().(Class).getName().matches("%RecursionPrevention") and // these are by design
@@ -215,9 +291,8 @@ predicate badDisjunction(EffectiveDisjunction disj, VarDef var, AstNode notBound
   not isTinyAssignment(disj.getAnOperand())
 }
 
-from EffectiveDisjunction disj, VarDef var, AstNode notBoundIn, string type
+from EffectiveDisjunction disj, Var var, AstNode notBoundIn
 where
   badDisjunction(disj, var, notBoundIn) and
-  not badDisjunction(disj.getParent(), var, _) and // avoid duplicate reporting of the same error
-  if var.getParent() instanceof FieldDecl then type = "field" else type = "variable"
-select disj, "The $@ is only used in one side of disjunct.", var, type + " " + var.getName()
+  not badDisjunction(disj.getParent(), var, _) // avoid duplicate reporting of the same error
+select disj, "The $@ is only used in one side of disjunct.", var, var.describe()
