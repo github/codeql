@@ -73,5 +73,5 @@ where
   sourceNode = source.getNode() and
   call.getArgument(0) = sink.getNode()
 select sink.getNode(), source, sink,
-  "This call to " + call.(Replacement).getFrom() + " depends on a . Replace it with " +
+  "This call to " + call.(Replacement).getFrom() + " depends on a $@. Replace it with " +
     call.(Replacement).getTo() + ".", source.getNode(), "user-provided value"
