@@ -33,7 +33,11 @@ class AndroidEditableXmlElement extends XmlElement {
 
 /** Gets a regex inidcating that an input field may contain sensitive data. */
 private string getInputSensitiveInfoRegex() {
-  result = [getCommonSensitiveInfoRegex(), "(?i).*(bank|credit|debit|security).*"]
+  result =
+    [
+      getCommonSensitiveInfoRegex(),
+      "(?i).*(bank|credit|debit|(pass(wd|word|code|phrase))|security).*"
+    ]
 }
 
 /** Holds if input using the given input type may be stored in the keyboard cache. */
