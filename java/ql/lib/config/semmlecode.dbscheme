@@ -1033,7 +1033,7 @@ javadocText(
                     @boundedtype | @array | @localvar | @expr | @stmt | @import | @fielddecl | @kt_type | @kt_type_alias |
                     @kt_property;
 
-@modifiable = @member_modifiable| @param | @localvar ;
+@modifiable = @member_modifiable| @param | @localvar | @typevariable;
 
 @member_modifiable = @class | @interface | @method | @constructor | @field | @kt_property;
 
