@@ -68,6 +68,22 @@ module ActiveSupport {
     }
 
     /**
+     * Extensions to the `Object` class.
+     */
+    module Object {
+      /** Flow summary for methods which can return the receiver. */
+      private class IdentitySummary extends SimpleSummarizedCallable {
+        IdentitySummary() { this = ["presence", "deep_dup"] }
+
+        override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+          input = "Argument[self]" and
+          output = "ReturnValue" and
+          preservesValue = true
+        }
+      }
+    }
+
+    /**
      * Extensions to the `Enumerable` module.
      */
     module Enumerable {

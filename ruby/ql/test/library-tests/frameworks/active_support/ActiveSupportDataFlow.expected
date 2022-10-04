@@ -1,4 +1,6 @@
 failures
+| active_support.rb:276:10:276:26 | # $hasTaintFlow=a | Missing result:hasTaintFlow=a |
+| active_support.rb:278:10:278:26 | # $hasTaintFlow=a | Missing result:hasTaintFlow=a |
 edges
 | active_support.rb:10:9:10:18 | call to source :  | active_support.rb:11:10:11:10 | x :  |
 | active_support.rb:11:10:11:10 | x :  | active_support.rb:11:10:11:19 | call to at |
@@ -166,14 +168,18 @@ edges
 | active_support.rb:267:34:267:34 | a :  | active_support.rb:267:7:267:35 | call to new :  |
 | active_support.rb:268:7:268:7 | x :  | active_support.rb:268:7:268:16 | call to to_param :  |
 | active_support.rb:268:7:268:16 | call to to_param :  | active_support.rb:269:8:269:8 | y |
-| active_support.rb:273:7:273:16 | call to source :  | active_support.rb:274:20:274:20 | a :  |
-| active_support.rb:274:7:274:21 | call to new :  | active_support.rb:275:7:275:7 | x :  |
-| active_support.rb:274:20:274:20 | a :  | active_support.rb:274:7:274:21 | call to new :  |
-| active_support.rb:275:7:275:7 | x :  | active_support.rb:275:7:275:17 | call to existence :  |
-| active_support.rb:275:7:275:17 | call to existence :  | active_support.rb:276:8:276:8 | y |
-| active_support.rb:275:7:275:17 | call to existence :  | active_support.rb:277:7:277:7 | y :  |
-| active_support.rb:277:7:277:7 | y :  | active_support.rb:277:7:277:17 | call to existence :  |
-| active_support.rb:277:7:277:17 | call to existence :  | active_support.rb:278:8:278:8 | z |
+| active_support.rb:281:7:281:16 | call to source :  | active_support.rb:282:8:282:8 | x :  |
+| active_support.rb:281:7:281:16 | call to source :  | active_support.rb:282:8:282:8 | x :  |
+| active_support.rb:282:8:282:8 | x :  | active_support.rb:282:8:282:17 | call to presence |
+| active_support.rb:282:8:282:8 | x :  | active_support.rb:282:8:282:17 | call to presence |
+| active_support.rb:284:7:284:16 | call to source :  | active_support.rb:285:8:285:8 | y :  |
+| active_support.rb:284:7:284:16 | call to source :  | active_support.rb:285:8:285:8 | y :  |
+| active_support.rb:285:8:285:8 | y :  | active_support.rb:285:8:285:17 | call to presence |
+| active_support.rb:285:8:285:8 | y :  | active_support.rb:285:8:285:17 | call to presence |
+| active_support.rb:289:7:289:16 | call to source :  | active_support.rb:290:8:290:8 | x :  |
+| active_support.rb:289:7:289:16 | call to source :  | active_support.rb:290:8:290:8 | x :  |
+| active_support.rb:290:8:290:8 | x :  | active_support.rb:290:8:290:17 | call to deep_dup |
+| active_support.rb:290:8:290:8 | x :  | active_support.rb:290:8:290:17 | call to deep_dup |
 nodes
 | active_support.rb:10:9:10:18 | call to source :  | semmle.label | call to source :  |
 | active_support.rb:11:10:11:10 | x :  | semmle.label | x :  |
@@ -393,15 +399,24 @@ nodes
 | active_support.rb:268:7:268:7 | x :  | semmle.label | x :  |
 | active_support.rb:268:7:268:16 | call to to_param :  | semmle.label | call to to_param :  |
 | active_support.rb:269:8:269:8 | y | semmle.label | y |
-| active_support.rb:273:7:273:16 | call to source :  | semmle.label | call to source :  |
-| active_support.rb:274:7:274:21 | call to new :  | semmle.label | call to new :  |
-| active_support.rb:274:20:274:20 | a :  | semmle.label | a :  |
-| active_support.rb:275:7:275:7 | x :  | semmle.label | x :  |
-| active_support.rb:275:7:275:17 | call to existence :  | semmle.label | call to existence :  |
-| active_support.rb:276:8:276:8 | y | semmle.label | y |
-| active_support.rb:277:7:277:7 | y :  | semmle.label | y :  |
-| active_support.rb:277:7:277:17 | call to existence :  | semmle.label | call to existence :  |
-| active_support.rb:278:8:278:8 | z | semmle.label | z |
+| active_support.rb:281:7:281:16 | call to source :  | semmle.label | call to source :  |
+| active_support.rb:281:7:281:16 | call to source :  | semmle.label | call to source :  |
+| active_support.rb:282:8:282:8 | x :  | semmle.label | x :  |
+| active_support.rb:282:8:282:8 | x :  | semmle.label | x :  |
+| active_support.rb:282:8:282:17 | call to presence | semmle.label | call to presence |
+| active_support.rb:282:8:282:17 | call to presence | semmle.label | call to presence |
+| active_support.rb:284:7:284:16 | call to source :  | semmle.label | call to source :  |
+| active_support.rb:284:7:284:16 | call to source :  | semmle.label | call to source :  |
+| active_support.rb:285:8:285:8 | y :  | semmle.label | y :  |
+| active_support.rb:285:8:285:8 | y :  | semmle.label | y :  |
+| active_support.rb:285:8:285:17 | call to presence | semmle.label | call to presence |
+| active_support.rb:285:8:285:17 | call to presence | semmle.label | call to presence |
+| active_support.rb:289:7:289:16 | call to source :  | semmle.label | call to source :  |
+| active_support.rb:289:7:289:16 | call to source :  | semmle.label | call to source :  |
+| active_support.rb:290:8:290:8 | x :  | semmle.label | x :  |
+| active_support.rb:290:8:290:8 | x :  | semmle.label | x :  |
+| active_support.rb:290:8:290:17 | call to deep_dup | semmle.label | call to deep_dup |
+| active_support.rb:290:8:290:17 | call to deep_dup | semmle.label | call to deep_dup |
 subpaths
 #select
 | active_support.rb:182:10:182:13 | ...[...] | active_support.rb:180:10:180:17 | call to source :  | active_support.rb:182:10:182:13 | ...[...] | $@ | active_support.rb:180:10:180:17 | call to source :  | call to source :  |
@@ -418,3 +433,6 @@ subpaths
 | active_support.rb:210:10:210:13 | ...[...] | active_support.rb:205:32:205:40 | call to source :  | active_support.rb:210:10:210:13 | ...[...] | $@ | active_support.rb:205:32:205:40 | call to source :  | call to source :  |
 | active_support.rb:211:10:211:13 | ...[...] | active_support.rb:205:21:205:29 | call to source :  | active_support.rb:211:10:211:13 | ...[...] | $@ | active_support.rb:205:21:205:29 | call to source :  | call to source :  |
 | active_support.rb:211:10:211:13 | ...[...] | active_support.rb:205:32:205:40 | call to source :  | active_support.rb:211:10:211:13 | ...[...] | $@ | active_support.rb:205:32:205:40 | call to source :  | call to source :  |
+| active_support.rb:282:8:282:17 | call to presence | active_support.rb:281:7:281:16 | call to source :  | active_support.rb:282:8:282:17 | call to presence | $@ | active_support.rb:281:7:281:16 | call to source :  | call to source :  |
+| active_support.rb:285:8:285:17 | call to presence | active_support.rb:284:7:284:16 | call to source :  | active_support.rb:285:8:285:17 | call to presence | $@ | active_support.rb:284:7:284:16 | call to source :  | call to source :  |
+| active_support.rb:290:8:290:17 | call to deep_dup | active_support.rb:289:7:289:16 | call to source :  | active_support.rb:290:8:290:17 | call to deep_dup | $@ | active_support.rb:289:7:289:16 | call to source :  | call to source :  |

@@ -276,4 +276,16 @@ def m_pathname_existence
   sink y # $hasTaintFlow=a
   z = y.existence
   sink z # $hasTaintFlow=a
+
+def m_presence
+  x = source "a"
+  sink x.presence # $hasValueFlow=a
+
+  y = source 123
+  sink y.presence # $hasValueFlow=123
+end
+
+def m_deep_dup
+  x = source "a"
+  sink x.deep_dup # $hasValueFlow=a
 end
