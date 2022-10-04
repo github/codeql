@@ -17,8 +17,10 @@ private import semmle.code.csharp.security.dataflow.flowsources.Remote
 class TestLibrary extends RefType {
   TestLibrary() {
     this.getNamespace()
-        .getName()
-        .matches(["NUnit.Framework%", "Xunit%", "Microsoft.VisualStudio.TestTools.UnitTesting%"])
+        .getQualifiedName()
+        .matches([
+            "NUnit.Framework%", "Xunit%", "Microsoft.VisualStudio.TestTools.UnitTesting%", "Moq%"
+          ])
   }
 }
 
