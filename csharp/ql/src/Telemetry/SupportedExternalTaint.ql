@@ -10,12 +10,16 @@ private import csharp
 private import semmle.code.csharp.dispatch.Dispatch
 private import ExternalApi
 
-private predicate getRelevantUsages(ExternalApi api, int usages) {
-  not api.isUninteresting() and
-  api.hasSummary() and
-  usages = strictcount(DispatchCall c | c = api.getACall())
+private predicate getRelevantUsages(string apiInfo, int usages) {
+  usages =
+    strictcount(DispatchCall c, ExternalApi api |
+      apiInfo = api.getInfo() and
+      c = api.getACall() and
+      not api.isUninteresting() and
+      api.hasSummary()
+    )
 }
 
-from ExternalApi api, int usages
-where Results<getRelevantUsages/2>::restrict(api, usages)
-select api.getInfo() as info, usages order by usages desc
+from string info, int usages
+where Results<getRelevantUsages/2>::restrict(info, usages)
+select info, usages order by usages desc

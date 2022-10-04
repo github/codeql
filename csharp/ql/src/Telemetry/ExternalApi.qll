@@ -114,29 +114,29 @@ class ExternalApi extends DotNet::Callable {
 int resultLimit() { result = 1000 }
 
 /**
- * Holds if the relevant usage count of `api` is `usages`.
+ * Holds if the relevant usage count of api with `apiInfo` is `usages`.
  */
-signature predicate relevantUsagesSig(ExternalApi api, int usages);
+signature predicate relevantUsagesSig(string apiInfo, int usages);
 
 /**
  * Given a predicate to count relevant API usages, this module provides a predicate
  * for restricting the number or returned results based on a certain limit.
  */
 module Results<relevantUsagesSig/2 getRelevantUsages> {
-  private int getOrder(ExternalApi api) {
-    api =
-      rank[result](ExternalApi a, int usages |
-        getRelevantUsages(a, usages)
+  private int getOrder(string apiInfo) {
+    apiInfo =
+      rank[result](string info, int usages |
+        getRelevantUsages(info, usages)
       |
-        a order by usages desc, a.getInfo()
+        info order by usages desc, info
       )
   }
 
   /**
-   * Holds if `api` is being used `usages` times and if it is
-   * in the top results (guarded by resultLimit).
+   * Holds if there exists an API with `apiInfo` that is being used `usages` times
+   * and if it is in the top results (guarded by resultLimit).
    */
-  predicate restrict(ExternalApi api, int usages) {
-    getRelevantUsages(api, usages) and getOrder(api) <= resultLimit()
+  predicate restrict(string apiInfo, int usages) {
+    getRelevantUsages(apiInfo, usages) and getOrder(apiInfo) <= resultLimit()
   }
 }
