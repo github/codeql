@@ -1,4 +1,6 @@
 ---
-dependencies: {}
+dependencies:
+  codeql/ssa:
+    version: 0.0.1
 compiled: false
 lockVersion: 1.0.0
