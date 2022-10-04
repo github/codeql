@@ -835,12 +835,12 @@ open class KotlinFileExtractor(
             forceExtractFunction(f, parentId, extractBody, extractMethodAndParameterTypeAccesses, typeSubstitution, classTypeArgsIncludingOuterClasses).also {
                 // The defaults-forwarder function is a static utility, not a member, so we only need to extract this for the unspecialised instance of this class.
                 if (classTypeArgsIncludingOuterClasses.isNullOrEmpty())
-                    extractDefaultsFunction(f, parentId, extractBody)
+                    extractDefaultsFunction(f, parentId, extractBody, extractMethodAndParameterTypeAccesses)
                 extractGeneratedOverloads(f, parentId, null, extractBody, extractMethodAndParameterTypeAccesses, typeSubstitution, classTypeArgsIncludingOuterClasses)
             }
         }
 
-    private fun extractDefaultsFunction(f: IrFunction, parentId: Label<out DbReftype>, extractBody: Boolean) {
+    private fun extractDefaultsFunction(f: IrFunction, parentId: Label<out DbReftype>, extractBody: Boolean, extractMethodAndParameterTypeAccesses: Boolean) {
         if (f.valueParameters.none { it.defaultValue != null })
             return
 
@@ -852,7 +852,8 @@ open class KotlinFileExtractor(
         val allParamTypeResults = parameterTypes.mapIndexed { i, paramType ->
             val paramId = tw.getLabelFor<DbParam>(getValueParameterLabel(id, i))
             extractValueParameter(paramId, paramType, "p$i", locId, id, i, paramId, isVararg = false, syntheticParameterNames = true, isCrossinline = false, isNoinline = false).also {
-                extractTypeAccess(useType(paramType), locId, paramId, -1)
+                if (extractMethodAndParameterTypeAccesses)
+                    extractTypeAccess(useType(paramType), locId, paramId, -1)
             }
         }
         val paramsSignature = allParamTypeResults.joinToString(separator = ",", prefix = "(", postfix = ")") { it.javaResult.signature }
@@ -863,7 +864,7 @@ open class KotlinFileExtractor(
             extractConstructor(constrId, shortName, paramsSignature, parentId, constrId)
         } else {
             val methodId = id.cast<DbMethod>()
-            extractMethod(methodId, locId, shortName, erase(f.returnType), paramsSignature, parentId, methodId, origin = null, extractTypeAccess = true)
+            extractMethod(methodId, locId, shortName, erase(f.returnType), paramsSignature, parentId, methodId, origin = null, extractTypeAccess = extractMethodAndParameterTypeAccesses)
             addModifiers(id, "static")
         }
         tw.writeHasLocation(id, locId)
