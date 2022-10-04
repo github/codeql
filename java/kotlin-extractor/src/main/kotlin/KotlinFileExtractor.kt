@@ -264,10 +264,9 @@ open class KotlinFileExtractor(
             val pkg = c.packageFqName?.asString() ?: ""
             val cls = classLabelResults.shortName
             val pkgId = extractPackage(pkg)
-            val kind = c.kind
             // TODO: There's lots of duplication between this and extractClassSource.
             // Can we share it?
-            if(kind == ClassKind.INTERFACE || kind == ClassKind.ANNOTATION_CLASS) {
+            if (c.isInterfaceLike) {
                 val interfaceId = id.cast<DbInterface>()
                 val sourceInterfaceId = useClassSource(c).cast<DbInterface>()
                 tw.writeInterfaces(interfaceId, cls, pkgId, sourceInterfaceId)
@@ -276,6 +275,7 @@ open class KotlinFileExtractor(
                 val sourceClassId = useClassSource(c).cast<DbClass>()
                 tw.writeClasses(classId, cls, pkgId, sourceClassId)
 
+                val kind = c.kind
                 if (kind == ClassKind.ENUM_CLASS) {
                     tw.writeIsEnumType(classId)
                 } else if (kind != ClassKind.CLASS && kind != ClassKind.OBJECT) {
@@ -403,14 +403,14 @@ open class KotlinFileExtractor(
                 val pkg = c.packageFqName?.asString() ?: ""
                 val cls = if (c.isAnonymousObject) "" else c.name.asString()
                 val pkgId = extractPackage(pkg)
-                val kind = c.kind
-                if (kind == ClassKind.INTERFACE || kind == ClassKind.ANNOTATION_CLASS) {
+                if (c.isInterfaceLike) {
                     val interfaceId = id.cast<DbInterface>()
                     tw.writeInterfaces(interfaceId, cls, pkgId, interfaceId)
                 } else {
                     val classId = id.cast<DbClass>()
                     tw.writeClasses(classId, cls, pkgId, classId)
 
+                    val kind = c.kind
                     if (kind == ClassKind.ENUM_CLASS) {
                         tw.writeIsEnumType(classId)
                     } else if (kind != ClassKind.CLASS && kind != ClassKind.OBJECT) {
@@ -4775,7 +4775,7 @@ open class KotlinFileExtractor(
 
         addModifiers(id, "final")
         addVisibilityModifierToLocalOrAnonymousClass(id)
-        extractClassSupertypes(superTypes, listOf(), id, inReceiverContext = true)
+        extractClassSupertypes(superTypes, listOf(), id, isInterface = false, inReceiverContext = true)
 
         extractEnclosingClass(declarationParent, id, null, locId, listOf())
 
