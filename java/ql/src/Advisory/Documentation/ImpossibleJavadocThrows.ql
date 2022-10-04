@@ -11,9 +11,9 @@
 
 import java
 
-ClassOrInterface getTaggedType(ThrowsTag tag) {
+RefType getTaggedType(ThrowsTag tag) {
   result.hasName(tag.getExceptionName()) and
-  result = tag.getFile().(CompilationUnit).getATypeInScope()
+  exists(ImportType i | i.getFile() = tag.getFile() | i.getImportedType() = result)
 }
 
 // Uses ClassOrInterface as type for thrownType to also cover case where erroneously an interface
