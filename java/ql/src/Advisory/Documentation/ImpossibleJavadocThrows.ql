@@ -11,7 +11,7 @@
 
 import java
 
-ClassOrInterface getTaggedType(ThrowsTag tag) {
+Class getTaggedType(ThrowsTag tag) {
   result.hasName(tag.getExceptionName()) and
   result = tag.getFile().(CompilationUnit).getATypeInScope()
 }
@@ -22,9 +22,7 @@ predicate canThrow(Callable callable, Class exception) {
   callable.getAnException().getType().getADescendant() = exception
 }
 
-// Uses ClassOrInterface as type for thrownType to also cover case where erroneously an interface
-// type is declared as thrown exception
-from ThrowsTag throwsTag, ClassOrInterface thrownType, Callable docMethod
+from ThrowsTag throwsTag, Class thrownType, Callable docMethod
 where
   getTaggedType(throwsTag) = thrownType and
   docMethod.getDoc().getJavadoc().getAChild*() = throwsTag and
