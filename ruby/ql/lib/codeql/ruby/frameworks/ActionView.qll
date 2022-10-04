@@ -12,6 +12,26 @@ private import codeql.ruby.frameworks.internal.Rails
 private import codeql.ruby.frameworks.Rails
 
 /**
+ * DEPRECATED: Import `codeql.ruby.frameworks.Rails` and use `Rails::HtmlSafeCall` instead.
+ */
+deprecated class HtmlSafeCall = Rails::HtmlSafeCall;
+
+/**
+ * DEPRECATED: Import `codeql.ruby.frameworks.Rails` and use `Rails::HtmlEscapeCall` instead.
+ */
+deprecated class HtmlEscapeCall = Rails::HtmlEscapeCall;
+
+/**
+ * DEPRECATED: Import `codeql.ruby.frameworks.Rails` and use `Rails::RenderCall` instead.
+ */
+deprecated class RenderCall = Rails::RenderCall;
+
+/**
+ * DEPRECATED: Import `codeql.ruby.frameworks.Rails` and use `Rails::RenderToCall` instead.
+ */
+deprecated class RenderToCall = Rails::RenderToCall;
+
+/**
  * Holds if this AST node is in a context where `ActionView` methods are available.
  */
 predicate inActionViewContext(AstNode n) {
@@ -28,7 +48,7 @@ private class ActionViewHtmlSafeCall extends HtmlSafeCallImpl {
  * A call to a Rails method that escapes HTML.
  */
 class RailsHtmlEscaping extends Escaping::Range, DataFlow::CallNode {
-  RailsHtmlEscaping() { this.asExpr().getExpr() instanceof HtmlEscapeCall }
+  RailsHtmlEscaping() { this.asExpr().getExpr() instanceof Rails::HtmlEscapeCall }
 
   override DataFlow::Node getAnInput() { result = this.getArgument(0) }
 
@@ -80,8 +100,8 @@ private class ActionViewCookiesCall extends ActionViewContextCall, CookiesCallIm
  */
 private class RenderCallAsHttpResponse extends DataFlow::CallNode, Http::Server::HttpResponse::Range {
   RenderCallAsHttpResponse() {
-    this.asExpr().getExpr() instanceof RenderCall or
-    this.asExpr().getExpr() instanceof RenderToCall
+    this.asExpr().getExpr() instanceof Rails::RenderCall or
+    this.asExpr().getExpr() instanceof Rails::RenderToCall
   }
 
   // `render` is a very polymorphic method - all of these are valid calls:

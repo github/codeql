@@ -14,6 +14,16 @@ private import codeql.ruby.frameworks.Rails
 private import codeql.ruby.frameworks.internal.Rails
 
 /**
+ * DEPRECATED: Import `codeql.ruby.frameworks.Rails` and use `Rails::ParamsCall` instead.
+ */
+deprecated class ParamsCall = Rails::ParamsCall;
+
+/**
+ * DEPRECATED: Import `codeql.ruby.frameworks.Rails` and use `Rails::CookiesCall` instead.
+ */
+deprecated class CookiesCall = Rails::CookiesCall;
+
+/**
  * A `ClassDeclaration` for a class that extends `ActionController::Base`.
  * For example,
  *
@@ -74,7 +84,7 @@ class ActionControllerActionMethod extends Method, Http::Server::RequestHandler:
   override string getFramework() { result = "ActionController" }
 
   /** Gets a call to render from within this method. */
-  RenderCall getARenderCall() { result.getParent+() = this }
+  Rails::RenderCall getARenderCall() { result.getParent+() = this }
 
   /**
    * Gets the controller class containing this method.
@@ -126,7 +136,7 @@ private class ActionControllerContextCall extends MethodCall {
  * ActionController parameters available via the `params` method.
  */
 class ParamsSource extends Http::Server::RequestInputAccess::Range {
-  ParamsSource() { this.asExpr().getExpr() instanceof ParamsCall }
+  ParamsSource() { this.asExpr().getExpr() instanceof Rails::ParamsCall }
 
   override string getSourceType() { result = "ActionController::Metal#params" }
 }
@@ -136,7 +146,7 @@ class ParamsSource extends Http::Server::RequestInputAccess::Range {
  * ActionController parameters available via the `cookies` method.
  */
 class CookiesSource extends Http::Server::RequestInputAccess::Range {
-  CookiesSource() { this.asExpr().getExpr() instanceof CookiesCall }
+  CookiesSource() { this.asExpr().getExpr() instanceof Rails::CookiesCall }
 
   override string getSourceType() { result = "ActionController::Metal#cookies" }
 }
@@ -290,7 +300,7 @@ ActionControllerControllerClass getAssociatedControllerClass(ErbFile f) {
   // template file, `fp`. In this case, `f` inherits the associated
   // controller classes from `fp`.
   f.isPartial() and
-  exists(RenderCall r, ErbFile fp |
+  exists(Rails::RenderCall r, ErbFile fp |
     r.getLocation().getFile() = fp and
     r.getTemplateFile() = f and
     result = getAssociatedControllerClass(fp)
