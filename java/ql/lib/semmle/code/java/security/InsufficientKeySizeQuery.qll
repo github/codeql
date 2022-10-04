@@ -1,5 +1,6 @@
 import semmle.code.java.security.Encryption
 import semmle.code.java.dataflow.TaintTracking
+import semmle.code.java.dataflow.DataFlow3
 
 /** The Java class `java.security.spec.ECGenParameterSpec`. */
 private class ECGenParameterSpec extends RefType {
@@ -86,9 +87,18 @@ private predicate hasShortSymmetricKey(MethodAccess ma, string msg, string type)
     jcg.getAlgoSpec().(StringLiteral).getValue() = type and
     source.getNode().asExpr() = jcg and
     dest.getNode().asExpr() = ma.getQualifier() and
-    cc.hasFlowPath(source, dest)
+    //ma.getArgument(0) = var and // ! me
+    //var.getVariable().getInitializer().getUnderlyingExpr() instanceof IntegerLiteral and // ! me
+    cc.hasFlowPath(source, dest) //and
+    //var.getVariable().getInitializer().getUnderlyingExpr().toString().toInt() < 128 // ! me
   ) and
-  ma.getArgument(0).(IntegerLiteral).getIntValue() < 128 and
+  exists(VarAccess var |
+    var.getVariable().getInitializer().getUnderlyingExpr() instanceof IntegerLiteral and
+    var.getVariable().getInitializer().getUnderlyingExpr().toString().toInt() < 128 and
+    //DataFlow3::localExprFlow(var, ma.getArgument(0)) and
+    ma.getArgument(0) = var
+    //ma.getArgument(0).(IntegerLiteral).getIntValue() < 128
+  ) and
   msg = "Key size should be at least 128 bits for " + type + " encryption."
 }
 

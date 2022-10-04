@@ -3,7 +3,7 @@ import java.security.spec.ECGenParameterSpec;
 import javax.crypto.KeyGenerator;
 
 public class InsufficientKeySizeTest {
-    public void CryptoMethod() throws java.security.NoSuchAlgorithmException, java.security.InvalidAlgorithmParameterException {
+    public void cryptoMethod() throws java.security.NoSuchAlgorithmException, java.security.InvalidAlgorithmParameterException {
         KeyGenerator keyGen1 = KeyGenerator.getInstance("AES");
         // BAD: Key size is less than 128
         keyGen1.init(64); // $ hasInsufficientKeySize
@@ -89,5 +89,26 @@ public class InsufficientKeySizeTest {
         KeyPairGenerator keyPairGen17 = KeyPairGenerator.getInstance("DH");
         // GOOD: Key size is no less than 2048
         keyPairGen17.initialize(2048); // Safe
+
+
+        // FN: Test with variables as numbers
+        final int size1 = 64;
+        KeyGenerator keyGen3 = KeyGenerator.getInstance("AES");
+        // BAD: Key size is less than 128
+        keyGen3.init(size1); // $ hasInsufficientKeySize
+
+        int size2 = 1024;
+        KeyPairGenerator keyPairGen18 = KeyPairGenerator.getInstance("RSA");
+        // BAD: Key size is less than 2048
+        keyPairGen18.initialize(size2); // $ hasInsufficientKeySize
+
+        int keysize = 64;
+        test(keysize);
+    }
+
+    public void test(int keySize) throws java.security.NoSuchAlgorithmException, java.security.InvalidAlgorithmParameterException {
+        KeyGenerator keyGen4 = KeyGenerator.getInstance("AES");
+        // BAD: Key size is less than 128
+        keyGen4.init(keySize); // $ hasInsufficientKeySize
     }
 }
