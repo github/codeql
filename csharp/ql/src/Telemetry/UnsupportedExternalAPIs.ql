@@ -12,17 +12,12 @@ private import semmle.code.csharp.dataflow.internal.FlowSummaryImpl as FlowSumma
 private import semmle.code.csharp.dataflow.internal.NegativeSummary
 private import ExternalApi
 
-private predicate getRelevantUsages(string apiInfo, int usages) {
-  usages =
-    strictcount(DispatchCall c, ExternalApi api |
-      apiInfo = api.getInfo() and
-      c = api.getACall() and
-      not api.isUninteresting() and
-      not api.isSupported() and
-      not api instanceof FlowSummaryImpl::Public::NegativeSummarizedCallable
-    )
+private predicate relevant(ExternalApi api) {
+  not api.isUninteresting() and
+  not api.isSupported() and
+  not api instanceof FlowSummaryImpl::Public::NegativeSummarizedCallable
 }
 
 from string info, int usages
-where Results<getRelevantUsages/2>::restrict(info, usages)
+where Results<relevant/1>::restrict(info, usages)
 select info, usages order by usages desc
