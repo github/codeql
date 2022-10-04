@@ -1,3 +1,5 @@
+enumConstants
+#select
 | addAll |
 | addRange |
 | allOf |
