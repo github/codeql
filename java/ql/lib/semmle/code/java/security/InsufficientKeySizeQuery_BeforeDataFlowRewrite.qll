@@ -36,19 +36,22 @@ private int getECKeySize(string algorithm) {
   result = algorithm.regexpCapture(".*[a-zA-Z](\\d+)[a-zA-Z].*", 1).toInt()
 }
 
-// /** Taint configuration tracking flow from a key generator to a `init` method call. */
-// private class KeyGeneratorInitConfiguration extends TaintTracking::Configuration {
-//   KeyGeneratorInitConfiguration() { this = "KeyGeneratorInitConfiguration" }
-//   override predicate isSource(DataFlow::Node source) {
-//     source.asExpr() instanceof JavaxCryptoKeyGenerator
-//   }
-//   override predicate isSink(DataFlow::Node sink) {
-//     exists(MethodAccess ma |
-//       ma.getMethod() instanceof KeyGeneratorInitMethod and
-//       sink.asExpr() = ma.getQualifier()
-//     )
-//   }
-// }
+/** Taint configuration tracking flow from a key generator to a `init` method call. */
+private class KeyGeneratorInitConfiguration extends TaintTracking::Configuration {
+  KeyGeneratorInitConfiguration() { this = "KeyGeneratorInitConfiguration" }
+
+  override predicate isSource(DataFlow::Node source) {
+    source.asExpr() instanceof JavaxCryptoKeyGenerator
+  }
+
+  override predicate isSink(DataFlow::Node sink) {
+    exists(MethodAccess ma |
+      ma.getMethod() instanceof KeyGeneratorInitMethod and
+      sink.asExpr() = ma.getQualifier()
+    )
+  }
+}
+
 /**
  * Taint configuration tracking flow from a keypair generator to
  * an `initialize` method call.
@@ -77,27 +80,24 @@ private class KeyPairGeneratorInitConfiguration extends TaintTracking::Configura
 bindingset[type]
 private predicate hasShortSymmetricKey(MethodAccess ma, string msg, string type) {
   ma.getMethod() instanceof KeyGeneratorInitMethod and
-  // exists(JavaxCryptoKeyGenerator jcg, DataFlow::PathNode source, DataFlow::PathNode dest |
-  //   jcg.getAlgoSpec().(StringLiteral).getValue() = type //and
-  //   //source.getNode().asExpr() = jcg and
-  //   //dest.getNode().asExpr() = ma.getQualifier() //and
-  //   //cc.hasFlowPath(source, dest)
-  // ) and
-  (
-    // exists(VarAccess var |
-    //   var.getVariable().getInitializer().getUnderlyingExpr() instanceof IntegerLiteral and
-    //   var.getVariable().getInitializer().getUnderlyingExpr().toString().toInt() < 128 and
-    //   ma.getArgument(0) = var
-    // )
-    // or
-    // below is better than above?
-    exists(CompileTimeConstantExpr var |
-      //var.getUnderlyingExpr() instanceof IntegerLiteral and // can't include this...
-      var.getIntValue() < 128 and
-      ma.getArgument(0) = var
-    )
-    or
-    ma.getArgument(0).(IntegerLiteral).getIntValue() < 128
+  exists(
+    JavaxCryptoKeyGenerator jcg, KeyGeneratorInitConfiguration cc, DataFlow::PathNode source,
+    DataFlow::PathNode dest
+  |
+    jcg.getAlgoSpec().(StringLiteral).getValue() = type and
+    source.getNode().asExpr() = jcg and
+    dest.getNode().asExpr() = ma.getQualifier() and
+    //ma.getArgument(0) = var and // ! me
+    //var.getVariable().getInitializer().getUnderlyingExpr() instanceof IntegerLiteral and // ! me
+    cc.hasFlowPath(source, dest) //and
+    //var.getVariable().getInitializer().getUnderlyingExpr().toString().toInt() < 128 // ! me
+  ) and
+  exists(VarAccess var |
+    var.getVariable().getInitializer().getUnderlyingExpr() instanceof IntegerLiteral and
+    var.getVariable().getInitializer().getUnderlyingExpr().toString().toInt() < 128 and
+    //DataFlow3::localExprFlow(var, ma.getArgument(0)) and
+    ma.getArgument(0) = var
+    //ma.getArgument(0).(IntegerLiteral).getIntValue() < 128
   ) and
   msg = "Key size should be at least 128 bits for " + type + " encryption."
 }
