@@ -729,9 +729,9 @@ module TaintTracking {
     // find target in root object recursively
     private predicate findInObject(Expr root, Expr target) {
       // when root is Object
-      exists(ObjectExpr object, Property property, Expr propertyVal |
-        object = root and
-        property = object.getAProperty() and
+      exists(Property property, Expr propertyVal |
+        root instanceof ObjectExpr and
+        property = root.(ObjectExpr).getAProperty() and
         propertyVal = property.getInit() and
         (
           target = property.getNameExpr() or
@@ -741,12 +741,22 @@ module TaintTracking {
       )
       or
       // when root is Array
-      exists(ArrayExpr array, Expr child |
-        array = root and
-        child = array.getAChildExpr() and
+      exists(Expr child |
+        root instanceof ArrayExpr and
+        child = root.(ArrayExpr).getAChildExpr() and
         (
           target = child or
           findInObject(child, target)
+        )
+      )
+      or
+      // when root is VarRef
+      exists(Expr var |
+        root instanceof VarRef and
+        var = root.(VarRef).getAVariable().getAnAssignedExpr() and
+        (
+          target = var or
+          findInObject(var, target)
         )
       )
     }
