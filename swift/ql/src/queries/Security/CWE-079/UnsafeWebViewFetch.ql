@@ -31,7 +31,7 @@ class Sink extends DataFlow::Node {
       int baseUrlArg
     |
       // arguments to method calls...
-      exists(string className, ClassDecl c |
+      exists(string className, ClassOrStructDecl c |
         (
           // `loadHTMLString`
           className = ["UIWebView", "WKWebView"] and
