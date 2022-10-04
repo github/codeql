@@ -14,7 +14,7 @@ private import codeql.ruby.frameworks.Rails
 /**
  * Holds if this AST node is in a context where `ActionView` methods are available.
  */
-private predicate inActionViewContext(AstNode n) {
+predicate inActionViewContext(AstNode n) {
   // Within a template
   n.getLocation().getFile() instanceof ErbFile
 }
