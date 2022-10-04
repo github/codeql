@@ -1,7 +1,7 @@
 
 // --- stubs ---
 
-class Data {
+struct Data {
     init<S>(_ elements: S) {}
 }
 
@@ -13,7 +13,7 @@ class NWConnection {
 	class ContentContext {
         static let defaultMessage = ContentContext()
     }
-	
+
 	func send(content: Data?, contentContext: NWConnection.ContentContext = .defaultMessage, isComplete: Bool = true, completion: NWConnection.SendCompletion) { }
 	func send<Content>(content: Content?, contentContext: NWConnection.ContentContext = .defaultMessage, isComplete: Bool = true, completion: NWConnection.SendCompletion) { }
 }

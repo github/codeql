@@ -26,7 +26,7 @@ abstract class BlockMode extends Expr { }
 class AES extends BlockMode {
   AES() {
     // `blockMode` arg in `AES.init` is a sink
-    exists(ClassDecl c, AbstractFunctionDecl f, CallExpr call |
+    exists(ClassOrStructDecl c, AbstractFunctionDecl f, CallExpr call |
       c.getName() = "AES" and
       c.getAMember() = f and
       f.getName() = ["init(key:blockMode:)", "init(key:blockMode:padding:)"] and
@@ -42,7 +42,7 @@ class AES extends BlockMode {
 class Blowfish extends BlockMode {
   Blowfish() {
     // `blockMode` arg in `Blowfish.init` is a sink
-    exists(ClassDecl c, AbstractFunctionDecl f, CallExpr call |
+    exists(ClassOrStructDecl c, AbstractFunctionDecl f, CallExpr call |
       c.getName() = "Blowfish" and
       c.getAMember() = f and
       f.getName() = "init(key:blockMode:padding:)" and
@@ -60,7 +60,7 @@ class EcbEncryptionConfig extends DataFlow::Configuration {
   EcbEncryptionConfig() { this = "EcbEncryptionConfig" }
 
   override predicate isSource(DataFlow::Node node) {
-    exists(StructDecl s, AbstractFunctionDecl f, CallExpr call |
+    exists(ClassOrStructDecl s, AbstractFunctionDecl f, CallExpr call |
       s.getName() = "ECB" and
       s.getAMember() = f and
       f.getName() = "init()" and
