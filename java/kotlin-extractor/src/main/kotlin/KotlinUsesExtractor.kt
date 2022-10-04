@@ -1590,7 +1590,9 @@ open class KotlinUsesExtractor(
     fun getValueParameterLabel(vp: IrValueParameter, parent: Label<out DbCallable>?): String {
         val declarationParent = vp.parent
         val overriddenParentAttributes = (declarationParent as? IrFunction)?.let {
-            if (this is KotlinFileExtractor)
+            // Note the check 'vp.fileOrNull?.path == this.filePath' should never actually do anything, since references
+            // to a value parameter should always come from within the same .kt file.
+            if (this is KotlinFileExtractor && vp.fileOrNull?.path == this.filePath)
                 this.declarationStack.findOverriddenAttributes(it)
             else
                 null
