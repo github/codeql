@@ -1054,6 +1054,7 @@ open class KotlinFileExtractor(
                 tw.writeFieldsKotlinType(id, type.kotlinResult.id)
                 val locId = tw.getLocation(ee)
                 tw.writeHasLocation(id, locId)
+                tw.writeIsEnumConst(id)
 
                 if (extractTypeAccess) {
                     val fieldDeclarationId = tw.getFreshIdLabel<DbFielddecl>()
