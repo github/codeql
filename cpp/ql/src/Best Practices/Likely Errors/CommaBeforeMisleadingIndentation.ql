@@ -4,9 +4,13 @@
  * @kind problem
  * @id cpp/comma-before-misleading-indentation
  * @problem.severity warning
+ * @security-severity 7.8
  * @precision medium
  * @tags maintainability
  *       readability
+ *       security
+ *       external/cwe/cwe-1078
+ *       external/cwe/cwe-670
  */
 
 import cpp
