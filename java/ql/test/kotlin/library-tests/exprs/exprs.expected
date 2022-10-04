@@ -1741,14 +1741,22 @@
 | exprs.kt:279:1:294:1 | Unit | file://:0:0:0:0 | <none> | TypeAccess |
 | exprs.kt:279:16:279:21 | int | file://:0:0:0:0 | <none> | TypeAccess |
 | exprs.kt:279:24:279:32 | double | file://:0:0:0:0 | <none> | TypeAccess |
+| exprs.kt:280:5:280:6 | -... | exprs.kt:279:1:294:1 | unaryExprs | MinusExpr |
 | exprs.kt:280:5:280:6 | <implicit coercion to unit> | exprs.kt:279:1:294:1 | unaryExprs | ImplicitCoercionToUnitExpr |
 | exprs.kt:280:5:280:6 | Unit | exprs.kt:279:1:294:1 | unaryExprs | TypeAccess |
+| exprs.kt:280:6:280:6 | i | exprs.kt:279:1:294:1 | unaryExprs | VarAccess |
+| exprs.kt:281:5:281:6 | +... | exprs.kt:279:1:294:1 | unaryExprs | PlusExpr |
 | exprs.kt:281:5:281:6 | <implicit coercion to unit> | exprs.kt:279:1:294:1 | unaryExprs | ImplicitCoercionToUnitExpr |
 | exprs.kt:281:5:281:6 | Unit | exprs.kt:279:1:294:1 | unaryExprs | TypeAccess |
+| exprs.kt:281:6:281:6 | i | exprs.kt:279:1:294:1 | unaryExprs | VarAccess |
+| exprs.kt:282:5:282:6 | -... | exprs.kt:279:1:294:1 | unaryExprs | MinusExpr |
 | exprs.kt:282:5:282:6 | <implicit coercion to unit> | exprs.kt:279:1:294:1 | unaryExprs | ImplicitCoercionToUnitExpr |
 | exprs.kt:282:5:282:6 | Unit | exprs.kt:279:1:294:1 | unaryExprs | TypeAccess |
+| exprs.kt:282:6:282:6 | d | exprs.kt:279:1:294:1 | unaryExprs | VarAccess |
+| exprs.kt:283:5:283:6 | +... | exprs.kt:279:1:294:1 | unaryExprs | PlusExpr |
 | exprs.kt:283:5:283:6 | <implicit coercion to unit> | exprs.kt:279:1:294:1 | unaryExprs | ImplicitCoercionToUnitExpr |
 | exprs.kt:283:5:283:6 | Unit | exprs.kt:279:1:294:1 | unaryExprs | TypeAccess |
+| exprs.kt:283:6:283:6 | d | exprs.kt:279:1:294:1 | unaryExprs | VarAccess |
 | exprs.kt:284:5:284:14 | i0 | exprs.kt:279:1:294:1 | unaryExprs | LocalVariableDeclExpr |
 | exprs.kt:284:14:284:14 | 1 | exprs.kt:279:1:294:1 | unaryExprs | IntegerLiteral |
 | exprs.kt:285:5:285:14 | i1 | exprs.kt:279:1:294:1 | unaryExprs | LocalVariableDeclExpr |

@@ -2866,15 +2866,23 @@ exprs.kt:
 #  280|         0: [ExprStmt] <Expr>;
 #  280|           0: [ImplicitCoercionToUnitExpr] <implicit coercion to unit>
 #  280|             0: [TypeAccess] Unit
+#  280|             1: [MinusExpr] -...
+#  280|               0: [VarAccess] i
 #  281|         1: [ExprStmt] <Expr>;
 #  281|           0: [ImplicitCoercionToUnitExpr] <implicit coercion to unit>
 #  281|             0: [TypeAccess] Unit
+#  281|             1: [PlusExpr] +...
+#  281|               0: [VarAccess] i
 #  282|         2: [ExprStmt] <Expr>;
 #  282|           0: [ImplicitCoercionToUnitExpr] <implicit coercion to unit>
 #  282|             0: [TypeAccess] Unit
+#  282|             1: [MinusExpr] -...
+#  282|               0: [VarAccess] d
 #  283|         3: [ExprStmt] <Expr>;
 #  283|           0: [ImplicitCoercionToUnitExpr] <implicit coercion to unit>
 #  283|             0: [TypeAccess] Unit
+#  283|             1: [PlusExpr] +...
+#  283|               0: [VarAccess] d
 #  284|         4: [LocalVariableDeclStmt] var ...;
 #  284|           1: [LocalVariableDeclExpr] i0
 #  284|             0: [IntegerLiteral] 1
