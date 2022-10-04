@@ -28,7 +28,7 @@ app.get("/some/path", function (req, res) {
   };
   <script
     type="application/ld+json"
-    dangerouslySetInnerHTML={{ __html: locale }} // NOT OK
+    dangerouslySetInnerHTML={{ __html: JSON.stringify(locale) }} // NOT OK
   />;
   <script
     type="application/ld+json"
