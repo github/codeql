@@ -1944,38 +1944,38 @@ exprs.kt:
 #   15|               1: [VarAccess] y
 #   16|         5: [LocalVariableDeclStmt] var ...;
 #   16|           1: [LocalVariableDeclExpr] i6
-#   16|             0: [MethodAccess] shl(...)
-#   16|               -1: [VarAccess] x
-#   16|               0: [VarAccess] y
+#   16|             0: [LShiftExpr] ... << ...
+#   16|               0: [VarAccess] x
+#   16|               1: [VarAccess] y
 #   17|         6: [LocalVariableDeclStmt] var ...;
 #   17|           1: [LocalVariableDeclExpr] i7
-#   17|             0: [MethodAccess] shr(...)
-#   17|               -1: [VarAccess] x
-#   17|               0: [VarAccess] y
+#   17|             0: [RShiftExpr] ... >> ...
+#   17|               0: [VarAccess] x
+#   17|               1: [VarAccess] y
 #   18|         7: [LocalVariableDeclStmt] var ...;
 #   18|           1: [LocalVariableDeclExpr] i8
-#   18|             0: [MethodAccess] ushr(...)
-#   18|               -1: [VarAccess] x
-#   18|               0: [VarAccess] y
+#   18|             0: [URShiftExpr] ... >>> ...
+#   18|               0: [VarAccess] x
+#   18|               1: [VarAccess] y
 #   19|         8: [LocalVariableDeclStmt] var ...;
 #   19|           1: [LocalVariableDeclExpr] i9
-#   19|             0: [MethodAccess] and(...)
-#   19|               -1: [VarAccess] x
-#   19|               0: [VarAccess] y
+#   19|             0: [AndBitwiseExpr] ... & ...
+#   19|               0: [VarAccess] x
+#   19|               1: [VarAccess] y
 #   20|         9: [LocalVariableDeclStmt] var ...;
 #   20|           1: [LocalVariableDeclExpr] i10
-#   20|             0: [MethodAccess] or(...)
-#   20|               -1: [VarAccess] x
-#   20|               0: [VarAccess] y
+#   20|             0: [OrBitwiseExpr] ... | ...
+#   20|               0: [VarAccess] x
+#   20|               1: [VarAccess] y
 #   21|         10: [LocalVariableDeclStmt] var ...;
 #   21|           1: [LocalVariableDeclExpr] i11
-#   21|             0: [MethodAccess] xor(...)
-#   21|               -1: [VarAccess] x
-#   21|               0: [VarAccess] y
+#   21|             0: [XorBitwiseExpr] ... ^ ...
+#   21|               0: [VarAccess] x
+#   21|               1: [VarAccess] y
 #   22|         11: [LocalVariableDeclStmt] var ...;
 #   22|           1: [LocalVariableDeclExpr] i12
-#   22|             0: [MethodAccess] inv(...)
-#   22|               -1: [VarAccess] x
+#   22|             0: [BitNotExpr] ~...
+#   22|               0: [VarAccess] x
 #   23|         12: [LocalVariableDeclStmt] var ...;
 #   23|           1: [LocalVariableDeclExpr] i13
 #   23|             0: [ValueEQExpr] ... (value equals) ...
@@ -2025,8 +2025,8 @@ exprs.kt:
 #   31|               0: [VarAccess] x
 #   32|         21: [LocalVariableDeclStmt] var ...;
 #   32|           1: [LocalVariableDeclExpr] i22
-#   32|             0: [MethodAccess] not(...)
-#   32|               -1: [MethodAccess] contains(...)
+#   32|             0: [LogNotExpr] !...
+#   32|               0: [MethodAccess] contains(...)
 #   32|                 -1: [MethodAccess] rangeTo(...)
 #   32|                   -1: [VarAccess] x
 #   32|                   0: [VarAccess] y
@@ -2206,38 +2206,38 @@ exprs.kt:
 #   66|               1: [VarAccess] ly
 #   67|         53: [LocalVariableDeclStmt] var ...;
 #   67|           1: [LocalVariableDeclExpr] l6
-#   67|             0: [MethodAccess] shl(...)
-#   67|               -1: [VarAccess] lx
-#   67|               0: [VarAccess] y
+#   67|             0: [LShiftExpr] ... << ...
+#   67|               0: [VarAccess] lx
+#   67|               1: [VarAccess] y
 #   68|         54: [LocalVariableDeclStmt] var ...;
 #   68|           1: [LocalVariableDeclExpr] l7
-#   68|             0: [MethodAccess] shr(...)
-#   68|               -1: [VarAccess] lx
-#   68|               0: [VarAccess] y
+#   68|             0: [RShiftExpr] ... >> ...
+#   68|               0: [VarAccess] lx
+#   68|               1: [VarAccess] y
 #   69|         55: [LocalVariableDeclStmt] var ...;
 #   69|           1: [LocalVariableDeclExpr] l8
-#   69|             0: [MethodAccess] ushr(...)
-#   69|               -1: [VarAccess] lx
-#   69|               0: [VarAccess] y
+#   69|             0: [URShiftExpr] ... >>> ...
+#   69|               0: [VarAccess] lx
+#   69|               1: [VarAccess] y
 #   70|         56: [LocalVariableDeclStmt] var ...;
 #   70|           1: [LocalVariableDeclExpr] l9
-#   70|             0: [MethodAccess] and(...)
-#   70|               -1: [VarAccess] lx
-#   70|               0: [VarAccess] ly
+#   70|             0: [AndBitwiseExpr] ... & ...
+#   70|               0: [VarAccess] lx
+#   70|               1: [VarAccess] ly
 #   71|         57: [LocalVariableDeclStmt] var ...;
 #   71|           1: [LocalVariableDeclExpr] l10
-#   71|             0: [MethodAccess] or(...)
-#   71|               -1: [VarAccess] lx
-#   71|               0: [VarAccess] ly
+#   71|             0: [OrBitwiseExpr] ... | ...
+#   71|               0: [VarAccess] lx
+#   71|               1: [VarAccess] ly
 #   72|         58: [LocalVariableDeclStmt] var ...;
 #   72|           1: [LocalVariableDeclExpr] l11
-#   72|             0: [MethodAccess] xor(...)
-#   72|               -1: [VarAccess] lx
-#   72|               0: [VarAccess] ly
+#   72|             0: [XorBitwiseExpr] ... ^ ...
+#   72|               0: [VarAccess] lx
+#   72|               1: [VarAccess] ly
 #   73|         59: [LocalVariableDeclStmt] var ...;
 #   73|           1: [LocalVariableDeclExpr] l12
-#   73|             0: [MethodAccess] inv(...)
-#   73|               -1: [VarAccess] lx
+#   73|             0: [BitNotExpr] ~...
+#   73|               0: [VarAccess] lx
 #   74|         60: [LocalVariableDeclStmt] var ...;
 #   74|           1: [LocalVariableDeclExpr] l13
 #   74|             0: [ValueEQExpr] ... (value equals) ...
@@ -2422,8 +2422,8 @@ exprs.kt:
 #  114|               1: [VarAccess] b2
 #  115|         98: [LocalVariableDeclStmt] var ...;
 #  115|           1: [LocalVariableDeclExpr] b5
-#  115|             0: [MethodAccess] not(...)
-#  115|               -1: [VarAccess] b1
+#  115|             0: [LogNotExpr] !...
+#  115|               0: [VarAccess] b1
 #  117|         99: [LocalVariableDeclStmt] var ...;
 #  117|           1: [LocalVariableDeclExpr] c
 #  117|             0: [CharacterLiteral] x
