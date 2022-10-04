@@ -658,6 +658,19 @@ open class KotlinUsesExtractor(
         RETURN, GENERIC_ARGUMENT, OTHER
     }
 
+    private fun isOnDeclarationStackWithoutTypeParameters(f: IrFunction) =
+        this is KotlinFileExtractor && this.declarationStack.findOverriddenAttributes(f)?.typeParameters?.isEmpty() == true
+
+    private fun isUnavailableTypeParameter(t: IrType) =
+        t is IrSimpleType && t.classifier.owner.let { owner ->
+            owner is IrTypeParameter && owner.parent.let { parent ->
+                parent is IrFunction && isOnDeclarationStackWithoutTypeParameters(parent)
+            }
+        }
+
+    private fun argIsUnavailableTypeParameter(t: IrTypeArgument) =
+        t is IrTypeProjection && isUnavailableTypeParameter(t.type)
+
     private fun useSimpleType(s: IrSimpleType, context: TypeContext): TypeResults {
         if (s.abbreviation != null) {
             // TODO: Extract this information
@@ -729,11 +742,13 @@ open class KotlinUsesExtractor(
             }
 
             owner is IrClass -> {
-                val args = if (s.isRawType()) null else s.arguments
+                val args = if (s.isRawType() || s.arguments.any { argIsUnavailableTypeParameter(it) }) null else s.arguments
 
                 return useSimpleTypeClass(owner, args, s.isNullable())
             }
             owner is IrTypeParameter -> {
+                if (isUnavailableTypeParameter(s))
+                    return useType(erase(s), context)
                 val javaResult = useTypeParameter(owner)
                 val aClassId = makeClass("kotlin", "TypeParam") // TODO: Wrong
                 val kotlinResult = if (true) TypeResult(fakeKotlinType(), "TODO", "TODO") else

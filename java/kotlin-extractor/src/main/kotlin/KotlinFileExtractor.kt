@@ -878,7 +878,7 @@ open class KotlinFileExtractor(
             // n + o'th parameter, where `o` is the parameter offset caused by adding any dispatch receiver to the parameter list.
             // Note we don't need to add the extension receiver here because `useValueParameter` always assumes an extension receiver
             // will be prepended if one exists.
-            DeclarationStackAdjuster(f, OverriddenFunctionAttributes(id, id, locId, nonSyntheticParams)).use {
+            DeclarationStackAdjuster(f, OverriddenFunctionAttributes(id, id, locId, nonSyntheticParams, typeParameters = listOf())).use {
                 val realParamsVarId = getValueParameterLabel(id, parameterTypes.size - 2)
                 val intType = pluginContext.irBuiltIns.intType
                 val paramIdxOffset = listOf(dispatchReceiver, f.extensionReceiverParameter).count { it != null }
@@ -5363,7 +5363,7 @@ open class KotlinFileExtractor(
             stack.firstOrNull { it.first == f } ?.second
     }
 
-    data class OverriddenFunctionAttributes(val id: Label<out DbCallable>? = null, val sourceDeclarationId: Label<out DbCallable>? = null, val sourceLoc: Label<DbLocation>? = null, val valueParameters: List<IrValueParameter>? = null)
+    data class OverriddenFunctionAttributes(val id: Label<out DbCallable>? = null, val sourceDeclarationId: Label<out DbCallable>? = null, val sourceLoc: Label<DbLocation>? = null, val valueParameters: List<IrValueParameter>? = null, val typeParameters: List<IrTypeParameter>? = null)
 
     private fun peekDeclStackAsDeclarationParent(elementToReportOn: IrElement): IrDeclarationParent? {
         val trapWriter = tw
