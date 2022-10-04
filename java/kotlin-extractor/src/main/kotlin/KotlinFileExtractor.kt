@@ -389,9 +389,7 @@ open class KotlinFileExtractor(
         addModifiers(obinitId, "private")
 
         // add body:
-        val blockId = tw.getFreshIdLabel<DbBlock>()
-        tw.writeStmts_block(blockId, obinitId, 0, obinitId)
-        tw.writeHasLocation(blockId, locId)
+        val blockId = extractBlockBody(obinitId, locId)
 
         extractDeclInitializers(c.declarations, false) { Pair(blockId, obinitId) }
     }
@@ -707,10 +705,7 @@ open class KotlinFileExtractor(
                 tw.writeHasLocation(clinitId, locId)
 
                 // add and return body block:
-                Pair(tw.getFreshIdLabel<DbBlock>().also({
-                    tw.writeStmts_block(it, clinitId, 0, clinitId)
-                    tw.writeHasLocation(it, locId)
-                }), clinitId)
+                Pair(extractBlockBody(clinitId, locId), clinitId)
             }
         }
     }
@@ -775,32 +770,18 @@ open class KotlinFileExtractor(
             val expr = initializer.expression
 
             val declLocId = tw.getLocation(f)
-            val stmtId = tw.getFreshIdLabel<DbExprstmt>()
-            tw.writeStmts_exprstmt(stmtId, blockAndFunctionId.first, idx++, blockAndFunctionId.second)
-            tw.writeHasLocation(stmtId, declLocId)
-            val assignmentId = tw.getFreshIdLabel<DbAssignexpr>()
-            val type = useType(if (isAnnotationClassField) kClassToJavaClass(expr.type) else expr.type)
-            tw.writeExprs_assignexpr(assignmentId, type.javaResult.id, stmtId, 0)
-            tw.writeExprsKotlinType(assignmentId, type.kotlinResult.id)
-            tw.writeHasLocation(assignmentId, declLocId)
-            tw.writeCallableEnclosingExpr(assignmentId, blockAndFunctionId.second)
-            tw.writeStatementEnclosingExpr(assignmentId, stmtId)
-            tw.writeKtInitializerAssignment(assignmentId)
-
-            val lhsId = tw.getFreshIdLabel<DbVaraccess>()
-            tw.writeExprs_varaccess(lhsId, lhsType.javaResult.id, assignmentId, 0)
-            tw.writeExprsKotlinType(lhsId, lhsType.kotlinResult.id)
-            tw.writeHasLocation(lhsId, declLocId)
-            tw.writeCallableEnclosingExpr(lhsId, blockAndFunctionId.second)
-            tw.writeStatementEnclosingExpr(lhsId, stmtId)
-
-            tw.writeVariableBinding(lhsId, vId)
-
-            if (static) {
-                extractStaticTypeAccessQualifier(f, lhsId, declLocId, blockAndFunctionId.second, stmtId)
+            extractExpressionStmt(declLocId, blockAndFunctionId.first, idx++, blockAndFunctionId.second).also { stmtId ->
+                val type = if (isAnnotationClassField) kClassToJavaClass(expr.type) else expr.type
+                extractAssignExpr(type, declLocId, stmtId, 0, blockAndFunctionId.second, stmtId).also { assignmentId ->
+                    tw.writeKtInitializerAssignment(assignmentId)
+                    extractVariableAccess(vId, lhsType, declLocId, assignmentId, 0, blockAndFunctionId.second, stmtId).also { lhsId ->
+                        if (static) {
+                            extractStaticTypeAccessQualifier(f, lhsId, declLocId, blockAndFunctionId.second, stmtId)
+                        }
+                    }
+                    extractExpressionExpr(expr, blockAndFunctionId.second, assignmentId, 1, stmtId)
+                }
             }
-
-            extractExpressionExpr(expr, blockAndFunctionId.second, assignmentId, 1, stmtId)
         }
 
         for (decl in declarations) {
@@ -993,10 +974,7 @@ open class KotlinFileExtractor(
 
                     // Create a synthetic function body that calls the real function supplying default arguments where required:
                     if (f is IrConstructor) {
-                        val blockId = tw.getFreshIdLabel<DbBlock>()
-                        tw.writeStmts_block(blockId, overloadId, 0, overloadId)
-                        tw.writeHasLocation(blockId, realFunctionLocId)
-
+                        val blockId = extractBlockBody(overloadId, realFunctionLocId)
                         val constructorCallId = tw.getFreshIdLabel<DbConstructorinvocationstmt>()
                         tw.writeStmts_constructorinvocationstmt(constructorCallId, blockId, 0, overloadId)
                         tw.writeHasLocation(constructorCallId, realFunctionLocId)
@@ -1356,11 +1334,8 @@ open class KotlinFileExtractor(
         }
     }
 
-    fun extractExpressionBody(callable: Label<out DbCallable>, locId: Label<out DbLocation>): Label<out DbStmt> {
-        val blockId = tw.getFreshIdLabel<DbBlock>()
-        tw.writeStmts_block(blockId, callable, 0, callable)
-        tw.writeHasLocation(blockId, locId)
-
+    fun extractExpressionBody(callable: Label<out DbCallable>, locId: Label<DbLocation>): Label<out DbStmt> {
+        val blockId = extractBlockBody(callable, locId)
         return tw.getFreshIdLabel<DbReturnstmt>().also { returnId ->
             tw.writeStmts_returnstmt(returnId, blockId, 0, callable)
             tw.writeHasLocation(returnId, locId)
@@ -2664,15 +2639,7 @@ open class KotlinFileExtractor(
                             tw.writeStatementEnclosingExpr(initId, enclosingStmt)
                             it.elements.forEachIndexed { i, arg -> extractVarargElement(arg, callable, initId, i, enclosingStmt) }
 
-                            val dim = it.elements.size
-                            val dimId = tw.getFreshIdLabel<DbIntegerliteral>()
-                            val dimType = useType(pluginContext.irBuiltIns.intType)
-                            tw.writeExprs_integerliteral(dimId, dimType.javaResult.id, id, 0)
-                            tw.writeExprsKotlinType(dimId, dimType.kotlinResult.id)
-                            tw.writeHasLocation(dimId, locId)
-                            tw.writeCallableEnclosingExpr(dimId, callable)
-                            tw.writeStatementEnclosingExpr(dimId, enclosingStmt)
-                            tw.writeNamestrings(dim.toString(), dim.toString(), dimId)
+                            extractConstantInteger(it.elements.size, locId, id, 0, callable, enclosingStmt)
                         }
                     }
                 }
@@ -2744,27 +2711,21 @@ open class KotlinFileExtractor(
 
                     if (array != null && arrayIdx != null && assignedValue != null) {
 
-                        val assignId = tw.getFreshIdLabel<DbAssignexpr>()
-                        val type = useType(c.type)
                         val locId = tw.getLocation(c)
-                        tw.writeExprs_assignexpr(assignId, type.javaResult.id, parent, idx)
-                        tw.writeExprsKotlinType(assignId, type.kotlinResult.id)
-                        tw.writeHasLocation(assignId, locId)
-                        tw.writeCallableEnclosingExpr(assignId, callable)
-                        tw.writeStatementEnclosingExpr(assignId, enclosingStmt)
+                        extractAssignExpr(c.type, locId, parent, idx, callable, enclosingStmt).also { assignId ->
+                            tw.getFreshIdLabel<DbArrayaccess>().also { arrayAccessId ->
+                                val arrayType = useType(array.type)
+                                tw.writeExprs_arrayaccess(arrayAccessId, arrayType.javaResult.id, assignId, 0)
+                                tw.writeExprsKotlinType(arrayAccessId, arrayType.kotlinResult.id)
+                                tw.writeHasLocation(arrayAccessId, locId)
+                                tw.writeCallableEnclosingExpr(arrayAccessId, callable)
+                                tw.writeStatementEnclosingExpr(arrayAccessId, enclosingStmt)
 
-                        val arrayAccessId = tw.getFreshIdLabel<DbArrayaccess>()
-                        val arrayType = useType(array.type)
-                        tw.writeExprs_arrayaccess(arrayAccessId, arrayType.javaResult.id, assignId, 0)
-                        tw.writeExprsKotlinType(arrayAccessId, arrayType.kotlinResult.id)
-                        tw.writeHasLocation(arrayAccessId, locId)
-                        tw.writeCallableEnclosingExpr(arrayAccessId, callable)
-                        tw.writeStatementEnclosingExpr(arrayAccessId, enclosingStmt)
-
-                        extractExpressionExpr(array, callable, arrayAccessId, 0, enclosingStmt)
-                        extractExpressionExpr(arrayIdx, callable, arrayAccessId, 1, enclosingStmt)
-
-                        extractExpressionExpr(assignedValue, callable, assignId, 1, enclosingStmt)
+                                extractExpressionExpr(array, callable, arrayAccessId, 0, enclosingStmt)
+                                extractExpressionExpr(arrayIdx, callable, arrayAccessId, 1, enclosingStmt)
+                            }
+                            extractExpressionExpr(assignedValue, callable, assignId, 1, enclosingStmt)
+                        }
 
                     } else {
                         logger.errorElement("Unexpected Array.set function signature", c)
@@ -3002,16 +2963,12 @@ open class KotlinFileExtractor(
     }
 
     inner class StmtParent(val parent: Label<out DbStmtparent>, val idx: Int): StmtExprParent() {
-        override fun stmt(e: IrExpression, callable: Label<out DbCallable>): StmtParent {
-            return this
-        }
-        override fun expr(e: IrExpression, callable: Label<out DbCallable>): ExprParent {
-            val id = tw.getFreshIdLabel<DbExprstmt>()
-            val locId = tw.getLocation(e)
-            tw.writeStmts_exprstmt(id, parent, idx, callable)
-            tw.writeHasLocation(id, locId)
-            return ExprParent(id, 0, id)
-        }
+        override fun stmt(e: IrExpression, callable: Label<out DbCallable>) = this
+
+        override fun expr(e: IrExpression, callable: Label<out DbCallable>) =
+            extractExpressionStmt(tw.getLocation(e), parent, idx, callable).let { id ->
+                ExprParent(id, 0, id)
+            }
     }
     inner class ExprParent(val parent: Label<out DbExprparent>, val idx: Int, val enclosingStmt: Label<out DbStmt>): StmtExprParent() {
         override fun stmt(e: IrExpression, callable: Label<out DbCallable>): StmtParent {
@@ -3798,15 +3755,17 @@ open class KotlinFileExtractor(
             extractTypeAccessRecursive(irType, locId, it, 0)
         }
 
-    private fun extractThisAccess(irType: IrType, callable: Label<out DbCallable>, parent: Label<out DbExprparent>, idx: Int, enclosingStmt: Label<out DbStmt>, locId: Label<out DbLocation>) =
+    private fun extractThisAccess(type: TypeResults, callable: Label<out DbCallable>, parent: Label<out DbExprparent>, idx: Int, enclosingStmt: Label<out DbStmt>, locId: Label<out DbLocation>) =
         tw.getFreshIdLabel<DbThisaccess>().also {
-            val type = useType(irType)
             tw.writeExprs_thisaccess(it, type.javaResult.id, parent, idx)
             tw.writeExprsKotlinType(it, type.kotlinResult.id)
             tw.writeHasLocation(it, locId)
             tw.writeCallableEnclosingExpr(it, callable)
             tw.writeStatementEnclosingExpr(it, enclosingStmt)
         }
+
+    private fun extractThisAccess(irType: IrType, callable: Label<out DbCallable>, parent: Label<out DbExprparent>, idx: Int, enclosingStmt: Label<out DbStmt>, locId: Label<out DbLocation>) =
+        extractThisAccess(useType(irType), callable, parent, idx, enclosingStmt, locId)
 
     private fun extractThisAccess(e: IrGetValue, thisParamParent: IrDeclarationParent, exprParent: ExprParent, callable: Label<out DbCallable>) {
         val containingDeclaration = declarationStack.peek().first
@@ -3866,9 +3825,8 @@ open class KotlinFileExtractor(
         }
     }
 
-    private fun extractVariableAccess(variable: Label<out DbVariable>?, irType: IrType, locId: Label<out DbLocation>, parent: Label<out DbExprparent>, idx: Int, callable: Label<out DbCallable>, enclosingStmt: Label<out DbStmt>) =
+    private fun extractVariableAccess(variable: Label<out DbVariable>?, type: TypeResults, locId: Label<out DbLocation>, parent: Label<out DbExprparent>, idx: Int, callable: Label<out DbCallable>, enclosingStmt: Label<out DbStmt>) =
         tw.getFreshIdLabel<DbVaraccess>().also {
-            val type = useType(irType)
             tw.writeExprs_varaccess(it, type.javaResult.id, parent, idx)
             tw.writeExprsKotlinType(it, type.kotlinResult.id)
             tw.writeHasLocation(it, locId)
@@ -3879,6 +3837,9 @@ open class KotlinFileExtractor(
                 tw.writeVariableBinding(it, variable)
             }
         }
+
+    private fun extractVariableAccess(variable: Label<out DbVariable>?, irType: IrType, locId: Label<out DbLocation>, parent: Label<out DbExprparent>, idx: Int, callable: Label<out DbCallable>, enclosingStmt: Label<out DbStmt>) =
+        extractVariableAccess(variable, useType(irType), locId, parent, idx, callable, enclosingStmt)
 
     private fun extractLoop(
         loop: IrLoop,
@@ -3953,33 +3914,16 @@ open class KotlinFileExtractor(
             stmtIdx: Int
         ) {
             val paramId = tw.getFreshIdLabel<DbParam>()
-            val paramTypeRes = extractValueParameter(paramId, paramType, paramName, locId, ids.constructor, paramIdx, paramId, syntheticParameterNames = false, isVararg = false, isNoinline = false, isCrossinline = false)
+            extractValueParameter(paramId, paramType, paramName, locId, ids.constructor, paramIdx, paramId, syntheticParameterNames = false, isVararg = false, isNoinline = false, isCrossinline = false)
 
-            val assignmentStmtId = tw.getFreshIdLabel<DbExprstmt>()
-            tw.writeStmts_exprstmt(assignmentStmtId, ids.constructorBlock, stmtIdx, ids.constructor)
-            tw.writeHasLocation(assignmentStmtId, locId)
-
-            val assignmentId = tw.getFreshIdLabel<DbAssignexpr>()
-            tw.writeExprs_assignexpr(assignmentId, paramTypeRes.javaResult.id, assignmentStmtId, 0)
-            tw.writeExprsKotlinType(assignmentId, paramTypeRes.kotlinResult.id)
-            writeExpressionMetadataToTrapFile(assignmentId, ids.constructor, assignmentStmtId)
-
-            val lhsId = tw.getFreshIdLabel<DbVaraccess>()
-            tw.writeExprs_varaccess(lhsId, paramTypeRes.javaResult.id, assignmentId, 0)
-            tw.writeExprsKotlinType(lhsId, paramTypeRes.kotlinResult.id)
-            tw.writeVariableBinding(lhsId, fieldId)
-            writeExpressionMetadataToTrapFile(lhsId, ids.constructor, assignmentStmtId)
-
-            val thisId = tw.getFreshIdLabel<DbThisaccess>()
-            tw.writeExprs_thisaccess(thisId, ids.type.javaResult.id, lhsId, -1)
-            tw.writeExprsKotlinType(thisId, ids.type.kotlinResult.id)
-            writeExpressionMetadataToTrapFile(thisId, ids.constructor, assignmentStmtId)
-
-            val rhsId = tw.getFreshIdLabel<DbVaraccess>()
-            tw.writeExprs_varaccess(rhsId, paramTypeRes.javaResult.id, assignmentId, 1)
-            tw.writeExprsKotlinType(rhsId, paramTypeRes.kotlinResult.id)
-            tw.writeVariableBinding(rhsId, paramId)
-            writeExpressionMetadataToTrapFile(rhsId, ids.constructor, assignmentStmtId)
+            extractExpressionStmt(locId, ids.constructorBlock, stmtIdx, ids.constructor).also { assignmentStmtId ->
+                extractAssignExpr(paramType, locId, assignmentStmtId, 0, ids.constructor, assignmentStmtId).also { assignmentId ->
+                    extractVariableAccess(fieldId, paramType, locId, assignmentId, 0, ids.constructor, assignmentStmtId).also { lhsId ->
+                        extractThisAccess(ids.type, ids.constructor, lhsId, -1, assignmentStmtId, locId)
+                    }
+                    extractVariableAccess(paramId, paramType, locId, assignmentId, 1, ids.constructor, assignmentStmtId)
+                }
+            }
         }
     }
 
@@ -4037,35 +3981,22 @@ open class KotlinFileExtractor(
         }
 
         protected fun writeThisAccess(parent: Label<out DbExprparent>, callable: Label<out DbCallable>, stmt: Label<out DbStmt>) {
-            val thisId = tw.getFreshIdLabel<DbThisaccess>()
-            tw.writeExprs_thisaccess(thisId, ids.type.javaResult.id, parent, -1)
-            tw.writeExprsKotlinType(thisId, ids.type.kotlinResult.id)
-            writeExpressionMetadataToTrapFile(thisId, callable, stmt)
+            extractThisAccess(ids.type, callable, parent, -1, stmt, locId)
         }
 
         fun extractFieldWriteOfReflectionTarget(
             labels: FunctionLabels,         // labels of the containing function
             target: IrFieldSymbol,          // the target field being accessed)
         ) {
-            // ...;
-            val exprStmtId = tw.getFreshIdLabel<DbExprstmt>()
-            tw.writeStmts_exprstmt(exprStmtId, labels.blockId, 0, labels.methodId)
-            tw.writeHasLocation(exprStmtId, locId)
-
             val fieldType = useType(target.owner.type)
 
-            // ... = ...
-            val assignExprId = tw.getFreshIdLabel<DbAssignexpr>()
-            tw.writeExprs_assignexpr(assignExprId, fieldType.javaResult.id, exprStmtId, 0)
-            tw.writeExprsKotlinType(assignExprId, fieldType.kotlinResult.id)
-            writeExpressionMetadataToTrapFile(assignExprId, labels.methodId, exprStmtId)
-
-            // LHS
-            extractFieldAccess(fieldType, assignExprId, exprStmtId, labels, target)
-
-            // RHS
-            val p = labels.parameters.first()
-            writeVariableAccessInFunctionBody(p.second, 1, p.first, assignExprId, labels.methodId, exprStmtId)
+            extractExpressionStmt(locId, labels.blockId, 0, labels.methodId).also { exprStmtId ->
+                extractAssignExpr(target.owner.type, locId, exprStmtId, 0, labels.methodId, exprStmtId).also { assignExprId ->
+                    extractFieldAccess(fieldType, assignExprId, exprStmtId, labels, target)
+                    val p = labels.parameters.first()
+                    writeVariableAccessInFunctionBody(p.second, 1, p.first, assignExprId, labels.methodId, exprStmtId)
+                }
+            }
         }
 
         fun extractFieldReturnOfReflectionTarget(
@@ -4641,12 +4572,7 @@ open class KotlinFileExtractor(
         addModifiers(methodId, "public")
         addModifiers(methodId, "override")
 
-        // Block
-        val blockId = tw.getFreshIdLabel<DbBlock>()
-        tw.writeStmts_block(blockId, methodId, 0, methodId)
-        tw.writeHasLocation(blockId, locId)
-
-        return FunctionLabels(methodId, blockId, parameters)
+        return FunctionLabels(methodId, extractBlockBody(methodId, locId), parameters)
     }
 
     /*
@@ -4688,10 +4614,7 @@ open class KotlinFileExtractor(
         tw.writeCallableBinding(callId, calledMethodId)
 
         // this access
-        val thisId = tw.getFreshIdLabel<DbThisaccess>()
-        tw.writeExprs_thisaccess(thisId, ids.type.javaResult.id, callId, -1)
-        tw.writeExprsKotlinType(thisId, ids.type.kotlinResult.id)
-        extractCommonExpr(thisId)
+        extractThisAccess(ids.type, funLabels.methodId, callId, -1, retId, locId)
 
         addArgumentsToInvocationInInvokeNBody(parameters.map { it.type }, funLabels, retId, callId, locId, ::extractCommonExpr)
     }
@@ -4953,13 +4876,7 @@ open class KotlinFileExtractor(
         tw.writeExprsKotlinType(initId, at.kotlinResult.id)
         extractCommonExpr(initId)
 
-        val dim = arraySize.toString()
-        val dimId = tw.getFreshIdLabel<DbIntegerliteral>()
-        val dimType = useType(pluginContext.irBuiltIns.intType)
-        tw.writeExprs_integerliteral(dimId, dimType.javaResult.id, arrayCreationId, 0)
-        tw.writeExprsKotlinType(dimId, dimType.kotlinResult.id)
-        extractCommonExpr(dimId)
-        tw.writeNamestrings(dim, dim, dimId)
+        extractConstantInteger(arraySize, locId, arrayCreationId, 0, enclosingCallable, enclosingStmt)
 
         return initId
     }
@@ -5158,9 +5075,7 @@ open class KotlinFileExtractor(
                     }
 
                     //body
-                    val blockId = tw.getFreshIdLabel<DbBlock>()
-                    tw.writeStmts_block(blockId, ids.function, 0, ids.function)
-                    tw.writeHasLocation(blockId, locId)
+                    val blockId = extractBlockBody(ids.function, locId)
 
                     //return stmt
                     val returnId = tw.getFreshIdLabel<DbReturnstmt>()
