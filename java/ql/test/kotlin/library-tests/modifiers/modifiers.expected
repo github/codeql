@@ -1,5 +1,5 @@
-| modifiers.kt:1:1:25:1 | X | Class | public |
-| modifiers.kt:1:6:25:1 | X | Constructor | public |
+| modifiers.kt:1:1:28:1 | X | Class | public |
+| modifiers.kt:1:6:28:1 | X | Constructor | public |
 | modifiers.kt:2:5:2:21 | a | Field | final |
 | modifiers.kt:2:5:2:21 | a | Field | private |
 | modifiers.kt:2:5:2:21 | a | Property | private |
@@ -39,3 +39,9 @@
 | modifiers.kt:23:9:23:27 | localClass | Constructor | public |
 | modifiers.kt:23:9:23:27 | localClass | LocalClass | final |
 | modifiers.kt:23:9:23:27 | localClass | LocalClass | private |
+| modifiers.kt:26:12:26:46 | fn4 | Method | inline |
+| modifiers.kt:26:12:26:46 | fn4 | Method | public |
+| modifiers.kt:26:20:26:41 | f | Parameter | noinline |
+| modifiers.kt:27:12:27:49 | fn5 | Method | inline |
+| modifiers.kt:27:12:27:49 | fn5 | Method | public |
+| modifiers.kt:27:20:27:44 | f | Parameter | crossinline |
