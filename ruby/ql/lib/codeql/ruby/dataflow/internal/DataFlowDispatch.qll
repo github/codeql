@@ -299,7 +299,7 @@ pragma[nomagic]
 private predicate extendCall(DataFlow::ExprNode receiver, Module m) {
   exists(DataFlow::CallNode extendCall |
     extendCall.getMethodName() = "extend" and
-    exists(DataFlow::LocalSourceNode sourceNode | sourceNode.flowsTo(extendCall.getArgument(0)) |
+    exists(DataFlow::LocalSourceNode sourceNode | sourceNode.flowsTo(extendCall.getArgument(_)) |
       selfInModule(sourceNode.(SsaSelfDefinitionNode).getVariable(), m) or
       m = resolveConstantReadAccess(sourceNode.asExpr().getExpr())
     ) and
