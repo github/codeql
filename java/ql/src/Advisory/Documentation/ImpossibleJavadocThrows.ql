@@ -13,7 +13,7 @@ import java
 
 Class getTaggedType(ThrowsTag tag) {
   result.hasName(tag.getExceptionName()) and
-  result = tag.getFile().(CompilationUnit).getATypeInScope()
+  result = tag.getFile().(CompilationUnit).getATypeAvailableBySimpleName()
 }
 
 predicate canThrow(Callable callable, Class exception) {
