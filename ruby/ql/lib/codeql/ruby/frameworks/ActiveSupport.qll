@@ -24,14 +24,17 @@ module ActiveSupport {
      */
     module String {
       /**
-       * A call to `String#constantize`, which tries to find a declared constant with the given name.
-       * Passing user input to this method may result in instantiation of arbitrary Ruby classes.
+       * A call to `String#constantize` or `String#safe_constantize`, which
+       * tries to find a declared constant with the given name.
+       * Passing user input to this method may result in instantiation of
+       * arbitrary Ruby classes.
        */
       class Constantize extends CodeExecution::Range, DataFlow::CallNode {
         // We treat this an `UnknownMethodCall` in order to match every call to `constantize` that isn't overridden.
         // We can't (yet) rely on API Graphs or dataflow to tell us that the receiver is a String.
         Constantize() {
-          this.asExpr().getExpr().(UnknownMethodCall).getMethodName() = "constantize"
+          this.asExpr().getExpr().(UnknownMethodCall).getMethodName() =
+            ["constantize", "safe_constantize"]
         }
 
         override DataFlow::Node getCode() { result = this.getReceiver() }

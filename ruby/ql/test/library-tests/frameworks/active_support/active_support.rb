@@ -1,6 +1,7 @@
 "Foo::Bar".constantize
 
 a.constantize
+a.safe_constantize
 
 ActiveSupport::Logger.new(STDOUT)
 ActiveSupport::TaggedLogging.new(STDOUT)
