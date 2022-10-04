@@ -2,7 +2,7 @@
  * @name Sensitive data read from GET request
  * @description Placing sensitive data in a GET request increases the risk of
  *              the data being exposed to an attacker.
- * @kind problem
+ * @kind path-problem
  * @problem.severity warning
  * @security-severity 6.5
  * @precision high
@@ -13,32 +13,36 @@
 
 import ruby
 private import codeql.ruby.DataFlow
+private import codeql.ruby.TaintTracking
 private import codeql.ruby.security.SensitiveActions
 private import codeql.ruby.Concepts
 private import codeql.ruby.frameworks.ActionDispatch
 private import codeql.ruby.frameworks.ActionController
 private import codeql.ruby.frameworks.core.Array
 
-// Local flow augmented with flow through element references
-private predicate localFlowWithElementReference(DataFlow::LocalSourceNode src, DataFlow::Node to) {
-  src.flowsTo(to)
-  or
-  exists(DataFlow::Node midRecv, DataFlow::LocalSourceNode mid, ElementReference ref |
-    src.flowsTo(midRecv) and
-    midRecv.asExpr().getExpr() = ref.getReceiver() and
-    mid.asExpr().getExpr() = ref
-  |
-    localFlowWithElementReference(mid, to)
-  )
+class Source extends Http::Server::RequestInputAccess {
+  private Http::Server::RequestHandler handler;
+
+  Source() {
+    handler = this.asExpr().getExpr().getEnclosingMethod() and
+    handler.getAnHttpMethod() = "get"
+  }
+
+  Http::Server::RequestHandler getHandler() { result = handler }
 }
 
-from
-  Http::Server::RequestHandler handler, Http::Server::RequestInputAccess input,
-  SensitiveNode sensitive
+class Configuration extends TaintTracking::Configuration {
+  Configuration() { this = "SensitiveGetQuery" }
+
+  override predicate isSource(DataFlow::Node source) { source instanceof Source }
+
+  override predicate isSink(DataFlow::Node sink) { sink instanceof SensitiveNode }
+}
+
+from DataFlow::PathNode source, DataFlow::PathNode sink, Configuration config
 where
-  handler.getAnHttpMethod() = "get" and
-  input.asExpr().getExpr().getEnclosingMethod() = handler and
-  localFlowWithElementReference(input, sensitive) and
-  not sensitive.getClassification() = SensitiveDataClassification::id()
-select input, "$@ for GET requests uses query parameter as sensitive data.", handler,
-  "Route handler"
+  config.hasFlowPath(source, sink) and
+  not sink.getNode().(SensitiveNode).getClassification() = SensitiveDataClassification::id()
+select source.getNode(), source, sink,
+  "$@ for GET requests uses query parameter as sensitive data.",
+  source.getNode().(Source).getHandler(), "Route handler"
