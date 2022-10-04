@@ -39,7 +39,7 @@ class CastToPointerArithFlow extends DataFlow::Configuration {
 }
 
 /**
- * Gets the base type of `e` if the type of `e` is a `DerivedType`.
+ * Holds if the type of `e` is a `DerivedType` with `base` as its base type.
  *
  * This predicate ensures that joins go from `e` to `base` instead
  * of the other way around.
