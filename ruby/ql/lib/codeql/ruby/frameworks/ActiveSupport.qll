@@ -52,9 +52,11 @@ module ActiveSupport {
         override MethodCall getACall() {
           result.getMethodName() =
             [
-              "camelize", "camelcase", "classify", "dasherize", "deconstantize", "demodulize",
-              "foreign_key", "humanize", "indent", "parameterize", "pluralize", "singularize",
-              "squish", "strip_heredoc", "tableize", "titlecase", "titleize", "underscore",
+              "at", "camelize", "camelcase", "classify", "dasherize", "deconstantize", "demodulize",
+              "first", "foreign_key", "from", "html_safe", "humanize", "indent", "indent!",
+              "inquiry", "last", "mb_chars", "parameterize", "pluralize", "remove", "remove!",
+              "singularize", "squish", "squish!", "strip_heredoc", "tableize", "titlecase",
+              "titleize", "to", "truncate", "truncate_bytes", "truncate_words", "underscore",
               "upcase_first"
             ]
         }
