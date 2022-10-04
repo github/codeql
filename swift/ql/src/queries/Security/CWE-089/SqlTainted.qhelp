@@ -1,0 +1,33 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+
+<p>TODO</p>
+
+</overview>
+<recommendation>
+
+<p>TODO</p>
+
+</recommendation>
+<example>
+
+<p>TODO</p>
+
+<sample src="SqlTaintedBad.swift" />
+
+<p>TODO</p>
+
+<sample src="SqlTaintedGood.swift" />
+
+</example>
+<references>
+
+<li>
+  TODO
+</li>
+
+</references>
+</qhelp>
