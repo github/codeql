@@ -1614,3 +1614,19 @@ def m136(i)
     sink(a[1][0]) # $ hasValueFlow=136.2 $ SPURIOUS hasValueFlow=136.1
     sink(a[2][0]) # $ hasValueFlow=136.1
 end
+
+def m137
+    a = Array.new
+    a[0] = source(137.1)
+    # unknown store (we only track indices 0..10)
+    a[10000] = source(137.2)
+    # unknown store (we don't track floats)
+    a[1.0] = source(137.3)
+    # unknown store (we don't track complex numbers)
+    a[1.0+i] = source(137.4)
+    sink(a[2]) # $ hasValueFlow=137.2 $ hasValueFlow=137.3 $ hasValueFlow=137.4
+    # unknown read
+    sink(a[10001]) # $ hasValueFlow=137.1 $ hasValueFlow=137.2 $ hasValueFlow=137.3 $ hasValueFlow=137.4
+    # unknown read
+    sink(a[1.0]) # $ hasValueFlow=137.1 $ hasValueFlow=137.2 $ hasValueFlow=137.3 $ hasValueFlow=137.4
+end

@@ -38,5 +38,5 @@ from
   DataFlow::PathNode source, DataFlow::PathNode sink, ArgumentToExec execArg,
   LocalUserInputToArgumentToExecFlowConfig conf
 where conf.hasFlowPath(source, sink) and sink.getNode().asExpr() = execArg
-select execArg, source, sink, "$@ flows to here and is used in a command.", source.getNode(),
-  "User-provided value"
+select execArg, source, sink, "This command line depends on a $@.", source.getNode(),
+  "user-provided value"

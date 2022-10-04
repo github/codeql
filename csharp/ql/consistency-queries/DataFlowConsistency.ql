@@ -35,19 +35,29 @@ private class MyConsistencyConfiguration extends ConsistencyConfiguration {
   override predicate argHasPostUpdateExclude(ArgumentNode n) {
     n instanceof SummaryNode
     or
-    n.asExpr().(Expr).stripCasts().getType() =
-      any(Type t |
-        not t instanceof RefType and
-        not t = any(TypeParameter tp | not tp.isValueType())
-        or
-        t instanceof NullType
-      )
+    not exists(LocalFlow::getAPostUpdateNodeForArg(n.getControlFlowNode()))
     or
     n instanceof ImplicitCapturedArgumentNode
     or
     n instanceof ParamsArgumentNode
     or
     n.asExpr() instanceof CIL::Expr
+  }
+
+  override predicate postHasUniquePreExclude(PostUpdateNode n) {
+    exists(ControlFlow::Nodes::ExprNode e, ControlFlow::Nodes::ExprNode arg |
+      e = LocalFlow::getAPostUpdateNodeForArg(arg) and
+      e != arg and
+      n = TExprPostUpdateNode(e)
+    )
+  }
+
+  override predicate uniquePostUpdateExclude(Node n) {
+    exists(ControlFlow::Nodes::ExprNode e, ControlFlow::Nodes::ExprNode arg |
+      e = LocalFlow::getAPostUpdateNodeForArg(arg) and
+      e != arg and
+      n.asExpr() = arg.getExpr()
+    )
   }
 
   override predicate reverseReadExclude(Node n) { n.asExpr() = any(AwaitExpr ae).getExpr() }

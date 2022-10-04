@@ -129,7 +129,7 @@ edges
 | GlobalDataFlow.cs:81:22:81:93 | call to method First<String> : String | GlobalDataFlow.cs:82:15:82:20 | access to local variable sink13 |
 | GlobalDataFlow.cs:81:22:81:93 | call to method First<String> : String | GlobalDataFlow.cs:83:59:83:64 | access to local variable sink13 : String |
 | GlobalDataFlow.cs:81:23:81:65 | (...) ... [element] : String | GlobalDataFlow.cs:81:22:81:85 | call to method SelectEven<String,String> [element] : String |
-| GlobalDataFlow.cs:81:23:81:65 | (...) ... [element] : String | GlobalDataFlow.cs:496:71:496:71 | e [element] : String |
+| GlobalDataFlow.cs:81:23:81:65 | (...) ... [element] : String | GlobalDataFlow.cs:570:71:570:71 | e [element] : String |
 | GlobalDataFlow.cs:81:57:81:65 | { ..., ... } [element] : String | GlobalDataFlow.cs:81:23:81:65 | (...) ... [element] : String |
 | GlobalDataFlow.cs:81:59:81:63 | access to local variable sink3 : String | GlobalDataFlow.cs:81:57:81:65 | { ..., ... } [element] : String |
 | GlobalDataFlow.cs:81:79:81:79 | x : String | GlobalDataFlow.cs:81:84:81:84 | access to parameter x : String |
@@ -288,11 +288,51 @@ edges
 | GlobalDataFlow.cs:486:21:486:21 | s : String | GlobalDataFlow.cs:486:32:486:32 | access to parameter s |
 | GlobalDataFlow.cs:487:15:487:17 | access to parameter arg : String | GlobalDataFlow.cs:486:21:486:21 | s : String |
 | GlobalDataFlow.cs:490:28:490:41 | "taint source" : String | GlobalDataFlow.cs:483:53:483:55 | arg : String |
-| GlobalDataFlow.cs:496:71:496:71 | e [element] : String | GlobalDataFlow.cs:499:27:499:27 | access to parameter e [element] : String |
-| GlobalDataFlow.cs:499:22:499:22 | SSA def(x) : String | GlobalDataFlow.cs:501:46:501:46 | access to local variable x : String |
-| GlobalDataFlow.cs:499:27:499:27 | access to parameter e [element] : String | GlobalDataFlow.cs:499:22:499:22 | SSA def(x) : String |
-| GlobalDataFlow.cs:501:46:501:46 | access to local variable x : String | GlobalDataFlow.cs:81:79:81:79 | x : String |
-| GlobalDataFlow.cs:501:46:501:46 | access to local variable x : String | GlobalDataFlow.cs:501:44:501:47 | delegate call : String |
+| GlobalDataFlow.cs:500:9:500:10 | [post] access to parameter sc [field field] : String | GlobalDataFlow.cs:507:25:507:26 | [post] access to local variable x1 [field field] : String |
+| GlobalDataFlow.cs:500:9:500:10 | [post] access to parameter sc [field field] : String | GlobalDataFlow.cs:507:30:507:31 | [post] access to local variable x2 [field field] : String |
+| GlobalDataFlow.cs:500:9:500:10 | [post] access to parameter sc [field field] : String | GlobalDataFlow.cs:514:31:514:32 | [post] access to local variable y1 [field field] : String |
+| GlobalDataFlow.cs:500:9:500:10 | [post] access to parameter sc [field field] : String | GlobalDataFlow.cs:514:36:514:37 | [post] access to local variable y2 [field field] : String |
+| GlobalDataFlow.cs:500:9:500:10 | [post] access to parameter sc [field field] : String | GlobalDataFlow.cs:514:42:514:43 | [post] access to local variable y3 [field field] : String |
+| GlobalDataFlow.cs:500:9:500:10 | [post] access to parameter sc [field field] : String | GlobalDataFlow.cs:525:33:525:33 | [post] access to local variable x [field field] : String |
+| GlobalDataFlow.cs:500:9:500:10 | [post] access to parameter sc [field field] : String | GlobalDataFlow.cs:532:20:532:20 | [post] access to parameter x [field field] : String |
+| GlobalDataFlow.cs:500:9:500:10 | [post] access to parameter sc [field field] : String | GlobalDataFlow.cs:532:25:532:25 | [post] access to local variable y [field field] : String |
+| GlobalDataFlow.cs:500:9:500:10 | [post] access to parameter sc [field field] : String | GlobalDataFlow.cs:544:20:544:20 | [post] access to local variable x [field field] : String |
+| GlobalDataFlow.cs:500:9:500:10 | [post] access to parameter sc [field field] : String | GlobalDataFlow.cs:545:20:545:20 | [post] access to local variable y [field field] : String |
+| GlobalDataFlow.cs:500:9:500:10 | [post] access to parameter sc [field field] : String | GlobalDataFlow.cs:546:18:546:18 | [post] access to local variable z [field field] : String |
+| GlobalDataFlow.cs:500:9:500:10 | [post] access to parameter sc [field field] : String | GlobalDataFlow.cs:555:20:555:21 | [post] access to parameter sc [field field] : String |
+| GlobalDataFlow.cs:500:9:500:10 | [post] access to parameter sc [field field] : String | GlobalDataFlow.cs:563:24:563:24 | [post] access to local variable x [field field] : String |
+| GlobalDataFlow.cs:500:20:500:33 | "taint source" : String | GlobalDataFlow.cs:500:9:500:10 | [post] access to parameter sc [field field] : String |
+| GlobalDataFlow.cs:507:25:507:26 | [post] access to local variable x1 [field field] : String | GlobalDataFlow.cs:508:15:508:16 | access to local variable x1 [field field] : String |
+| GlobalDataFlow.cs:507:30:507:31 | [post] access to local variable x2 [field field] : String | GlobalDataFlow.cs:509:15:509:16 | access to local variable x2 [field field] : String |
+| GlobalDataFlow.cs:508:15:508:16 | access to local variable x1 [field field] : String | GlobalDataFlow.cs:508:15:508:22 | access to field field |
+| GlobalDataFlow.cs:509:15:509:16 | access to local variable x2 [field field] : String | GlobalDataFlow.cs:509:15:509:22 | access to field field |
+| GlobalDataFlow.cs:514:31:514:32 | [post] access to local variable y1 [field field] : String | GlobalDataFlow.cs:515:15:515:16 | access to local variable y1 [field field] : String |
+| GlobalDataFlow.cs:514:36:514:37 | [post] access to local variable y2 [field field] : String | GlobalDataFlow.cs:516:15:516:16 | access to local variable y2 [field field] : String |
+| GlobalDataFlow.cs:514:42:514:43 | [post] access to local variable y3 [field field] : String | GlobalDataFlow.cs:517:15:517:16 | access to local variable y3 [field field] : String |
+| GlobalDataFlow.cs:515:15:515:16 | access to local variable y1 [field field] : String | GlobalDataFlow.cs:515:15:515:22 | access to field field |
+| GlobalDataFlow.cs:516:15:516:16 | access to local variable y2 [field field] : String | GlobalDataFlow.cs:516:15:516:22 | access to field field |
+| GlobalDataFlow.cs:517:15:517:16 | access to local variable y3 [field field] : String | GlobalDataFlow.cs:517:15:517:22 | access to field field |
+| GlobalDataFlow.cs:525:33:525:33 | [post] access to local variable x [field field] : String | GlobalDataFlow.cs:526:15:526:15 | access to local variable x [field field] : String |
+| GlobalDataFlow.cs:526:15:526:15 | access to local variable x [field field] : String | GlobalDataFlow.cs:526:15:526:21 | access to field field |
+| GlobalDataFlow.cs:532:20:532:20 | [post] access to parameter x [field field] : String | GlobalDataFlow.cs:533:15:533:15 | access to parameter x [field field] : String |
+| GlobalDataFlow.cs:532:25:532:25 | [post] access to local variable y [field field] : String | GlobalDataFlow.cs:534:15:534:15 | access to local variable y [field field] : String |
+| GlobalDataFlow.cs:533:15:533:15 | access to parameter x [field field] : String | GlobalDataFlow.cs:533:15:533:21 | access to field field |
+| GlobalDataFlow.cs:534:15:534:15 | access to local variable y [field field] : String | GlobalDataFlow.cs:534:15:534:21 | access to field field |
+| GlobalDataFlow.cs:544:20:544:20 | [post] access to local variable x [field field] : String | GlobalDataFlow.cs:548:15:548:15 | access to local variable x [field field] : String |
+| GlobalDataFlow.cs:545:20:545:20 | [post] access to local variable y [field field] : String | GlobalDataFlow.cs:549:15:549:15 | access to local variable y [field field] : String |
+| GlobalDataFlow.cs:546:18:546:18 | [post] access to local variable z [field field] : String | GlobalDataFlow.cs:550:15:550:15 | access to local variable z [field field] : String |
+| GlobalDataFlow.cs:548:15:548:15 | access to local variable x [field field] : String | GlobalDataFlow.cs:548:15:548:21 | access to field field |
+| GlobalDataFlow.cs:549:15:549:15 | access to local variable y [field field] : String | GlobalDataFlow.cs:549:15:549:21 | access to field field |
+| GlobalDataFlow.cs:550:15:550:15 | access to local variable z [field field] : String | GlobalDataFlow.cs:550:15:550:21 | access to field field |
+| GlobalDataFlow.cs:555:20:555:21 | [post] access to parameter sc [field field] : String | GlobalDataFlow.cs:556:15:556:16 | access to parameter sc [field field] : String |
+| GlobalDataFlow.cs:556:15:556:16 | access to parameter sc [field field] : String | GlobalDataFlow.cs:556:15:556:22 | access to field field |
+| GlobalDataFlow.cs:563:24:563:24 | [post] access to local variable x [field field] : String | GlobalDataFlow.cs:564:15:564:15 | access to local variable x [field field] : String |
+| GlobalDataFlow.cs:564:15:564:15 | access to local variable x [field field] : String | GlobalDataFlow.cs:564:15:564:21 | access to field field |
+| GlobalDataFlow.cs:570:71:570:71 | e [element] : String | GlobalDataFlow.cs:573:27:573:27 | access to parameter e [element] : String |
+| GlobalDataFlow.cs:573:22:573:22 | SSA def(x) : String | GlobalDataFlow.cs:575:46:575:46 | access to local variable x : String |
+| GlobalDataFlow.cs:573:27:573:27 | access to parameter e [element] : String | GlobalDataFlow.cs:573:22:573:22 | SSA def(x) : String |
+| GlobalDataFlow.cs:575:46:575:46 | access to local variable x : String | GlobalDataFlow.cs:81:79:81:79 | x : String |
+| GlobalDataFlow.cs:575:46:575:46 | access to local variable x : String | GlobalDataFlow.cs:575:44:575:47 | delegate call : String |
 | Splitting.cs:3:28:3:34 | tainted : String | Splitting.cs:8:24:8:30 | [b (line 3): false] access to parameter tainted : String |
 | Splitting.cs:3:28:3:34 | tainted : String | Splitting.cs:8:24:8:30 | [b (line 3): true] access to parameter tainted : String |
 | Splitting.cs:8:17:8:31 | [b (line 3): false] call to method Return<String> : String | Splitting.cs:9:15:9:15 | [b (line 3): false] access to local variable x |
@@ -576,11 +616,52 @@ nodes
 | GlobalDataFlow.cs:486:32:486:32 | access to parameter s | semmle.label | access to parameter s |
 | GlobalDataFlow.cs:487:15:487:17 | access to parameter arg : String | semmle.label | access to parameter arg : String |
 | GlobalDataFlow.cs:490:28:490:41 | "taint source" : String | semmle.label | "taint source" : String |
-| GlobalDataFlow.cs:496:71:496:71 | e [element] : String | semmle.label | e [element] : String |
-| GlobalDataFlow.cs:499:22:499:22 | SSA def(x) : String | semmle.label | SSA def(x) : String |
-| GlobalDataFlow.cs:499:27:499:27 | access to parameter e [element] : String | semmle.label | access to parameter e [element] : String |
-| GlobalDataFlow.cs:501:44:501:47 | delegate call : String | semmle.label | delegate call : String |
-| GlobalDataFlow.cs:501:46:501:46 | access to local variable x : String | semmle.label | access to local variable x : String |
+| GlobalDataFlow.cs:500:9:500:10 | [post] access to parameter sc [field field] : String | semmle.label | [post] access to parameter sc [field field] : String |
+| GlobalDataFlow.cs:500:20:500:33 | "taint source" : String | semmle.label | "taint source" : String |
+| GlobalDataFlow.cs:507:25:507:26 | [post] access to local variable x1 [field field] : String | semmle.label | [post] access to local variable x1 [field field] : String |
+| GlobalDataFlow.cs:507:30:507:31 | [post] access to local variable x2 [field field] : String | semmle.label | [post] access to local variable x2 [field field] : String |
+| GlobalDataFlow.cs:508:15:508:16 | access to local variable x1 [field field] : String | semmle.label | access to local variable x1 [field field] : String |
+| GlobalDataFlow.cs:508:15:508:22 | access to field field | semmle.label | access to field field |
+| GlobalDataFlow.cs:509:15:509:16 | access to local variable x2 [field field] : String | semmle.label | access to local variable x2 [field field] : String |
+| GlobalDataFlow.cs:509:15:509:22 | access to field field | semmle.label | access to field field |
+| GlobalDataFlow.cs:514:31:514:32 | [post] access to local variable y1 [field field] : String | semmle.label | [post] access to local variable y1 [field field] : String |
+| GlobalDataFlow.cs:514:36:514:37 | [post] access to local variable y2 [field field] : String | semmle.label | [post] access to local variable y2 [field field] : String |
+| GlobalDataFlow.cs:514:42:514:43 | [post] access to local variable y3 [field field] : String | semmle.label | [post] access to local variable y3 [field field] : String |
+| GlobalDataFlow.cs:515:15:515:16 | access to local variable y1 [field field] : String | semmle.label | access to local variable y1 [field field] : String |
+| GlobalDataFlow.cs:515:15:515:22 | access to field field | semmle.label | access to field field |
+| GlobalDataFlow.cs:516:15:516:16 | access to local variable y2 [field field] : String | semmle.label | access to local variable y2 [field field] : String |
+| GlobalDataFlow.cs:516:15:516:22 | access to field field | semmle.label | access to field field |
+| GlobalDataFlow.cs:517:15:517:16 | access to local variable y3 [field field] : String | semmle.label | access to local variable y3 [field field] : String |
+| GlobalDataFlow.cs:517:15:517:22 | access to field field | semmle.label | access to field field |
+| GlobalDataFlow.cs:525:33:525:33 | [post] access to local variable x [field field] : String | semmle.label | [post] access to local variable x [field field] : String |
+| GlobalDataFlow.cs:526:15:526:15 | access to local variable x [field field] : String | semmle.label | access to local variable x [field field] : String |
+| GlobalDataFlow.cs:526:15:526:21 | access to field field | semmle.label | access to field field |
+| GlobalDataFlow.cs:532:20:532:20 | [post] access to parameter x [field field] : String | semmle.label | [post] access to parameter x [field field] : String |
+| GlobalDataFlow.cs:532:25:532:25 | [post] access to local variable y [field field] : String | semmle.label | [post] access to local variable y [field field] : String |
+| GlobalDataFlow.cs:533:15:533:15 | access to parameter x [field field] : String | semmle.label | access to parameter x [field field] : String |
+| GlobalDataFlow.cs:533:15:533:21 | access to field field | semmle.label | access to field field |
+| GlobalDataFlow.cs:534:15:534:15 | access to local variable y [field field] : String | semmle.label | access to local variable y [field field] : String |
+| GlobalDataFlow.cs:534:15:534:21 | access to field field | semmle.label | access to field field |
+| GlobalDataFlow.cs:544:20:544:20 | [post] access to local variable x [field field] : String | semmle.label | [post] access to local variable x [field field] : String |
+| GlobalDataFlow.cs:545:20:545:20 | [post] access to local variable y [field field] : String | semmle.label | [post] access to local variable y [field field] : String |
+| GlobalDataFlow.cs:546:18:546:18 | [post] access to local variable z [field field] : String | semmle.label | [post] access to local variable z [field field] : String |
+| GlobalDataFlow.cs:548:15:548:15 | access to local variable x [field field] : String | semmle.label | access to local variable x [field field] : String |
+| GlobalDataFlow.cs:548:15:548:21 | access to field field | semmle.label | access to field field |
+| GlobalDataFlow.cs:549:15:549:15 | access to local variable y [field field] : String | semmle.label | access to local variable y [field field] : String |
+| GlobalDataFlow.cs:549:15:549:21 | access to field field | semmle.label | access to field field |
+| GlobalDataFlow.cs:550:15:550:15 | access to local variable z [field field] : String | semmle.label | access to local variable z [field field] : String |
+| GlobalDataFlow.cs:550:15:550:21 | access to field field | semmle.label | access to field field |
+| GlobalDataFlow.cs:555:20:555:21 | [post] access to parameter sc [field field] : String | semmle.label | [post] access to parameter sc [field field] : String |
+| GlobalDataFlow.cs:556:15:556:16 | access to parameter sc [field field] : String | semmle.label | access to parameter sc [field field] : String |
+| GlobalDataFlow.cs:556:15:556:22 | access to field field | semmle.label | access to field field |
+| GlobalDataFlow.cs:563:24:563:24 | [post] access to local variable x [field field] : String | semmle.label | [post] access to local variable x [field field] : String |
+| GlobalDataFlow.cs:564:15:564:15 | access to local variable x [field field] : String | semmle.label | access to local variable x [field field] : String |
+| GlobalDataFlow.cs:564:15:564:21 | access to field field | semmle.label | access to field field |
+| GlobalDataFlow.cs:570:71:570:71 | e [element] : String | semmle.label | e [element] : String |
+| GlobalDataFlow.cs:573:22:573:22 | SSA def(x) : String | semmle.label | SSA def(x) : String |
+| GlobalDataFlow.cs:573:27:573:27 | access to parameter e [element] : String | semmle.label | access to parameter e [element] : String |
+| GlobalDataFlow.cs:575:44:575:47 | delegate call : String | semmle.label | delegate call : String |
+| GlobalDataFlow.cs:575:46:575:46 | access to local variable x : String | semmle.label | access to local variable x : String |
 | Splitting.cs:3:28:3:34 | tainted : String | semmle.label | tainted : String |
 | Splitting.cs:8:17:8:31 | [b (line 3): false] call to method Return<String> : String | semmle.label | [b (line 3): false] call to method Return<String> : String |
 | Splitting.cs:8:17:8:31 | [b (line 3): true] call to method Return<String> : String | semmle.label | [b (line 3): true] call to method Return<String> : String |
@@ -618,7 +699,7 @@ subpaths
 | GlobalDataFlow.cs:73:94:73:98 | access to local variable sink0 : String | GlobalDataFlow.cs:298:26:298:26 | x : String | GlobalDataFlow.cs:301:16:301:41 | ... ? ... : ... : String | GlobalDataFlow.cs:73:29:73:101 | call to method Invoke : String |
 | GlobalDataFlow.cs:76:19:76:23 | access to local variable sink1 : String | GlobalDataFlow.cs:304:32:304:32 | x : String | GlobalDataFlow.cs:306:9:306:13 | SSA def(y) : String | GlobalDataFlow.cs:76:30:76:34 | SSA def(sink2) : String |
 | GlobalDataFlow.cs:79:19:79:23 | access to local variable sink2 : String | GlobalDataFlow.cs:310:32:310:32 | x : String | GlobalDataFlow.cs:312:9:312:13 | SSA def(y) : String | GlobalDataFlow.cs:79:30:79:34 | SSA def(sink3) : String |
-| GlobalDataFlow.cs:81:23:81:65 | (...) ... [element] : String | GlobalDataFlow.cs:496:71:496:71 | e [element] : String | GlobalDataFlow.cs:501:44:501:47 | delegate call : String | GlobalDataFlow.cs:81:22:81:85 | call to method SelectEven<String,String> [element] : String |
+| GlobalDataFlow.cs:81:23:81:65 | (...) ... [element] : String | GlobalDataFlow.cs:570:71:570:71 | e [element] : String | GlobalDataFlow.cs:575:44:575:47 | delegate call : String | GlobalDataFlow.cs:81:22:81:85 | call to method SelectEven<String,String> [element] : String |
 | GlobalDataFlow.cs:138:63:138:63 | access to parameter x : String | GlobalDataFlow.cs:387:46:387:46 | x : String | GlobalDataFlow.cs:389:16:389:19 | delegate call : String | GlobalDataFlow.cs:138:45:138:64 | call to method ApplyFunc<String,String> : String |
 | GlobalDataFlow.cs:139:29:139:33 | access to local variable sink3 : String | GlobalDataFlow.cs:138:40:138:40 | x : String | GlobalDataFlow.cs:138:45:138:64 | call to method ApplyFunc<String,String> : String | GlobalDataFlow.cs:139:21:139:34 | delegate call : String |
 | GlobalDataFlow.cs:147:39:147:43 | access to local variable sink4 : String | GlobalDataFlow.cs:387:46:387:46 | x : String | GlobalDataFlow.cs:389:16:389:19 | delegate call : String | GlobalDataFlow.cs:147:21:147:44 | call to method ApplyFunc<String,String> : String |
@@ -627,7 +708,7 @@ subpaths
 | GlobalDataFlow.cs:389:18:389:18 | access to parameter x : String | GlobalDataFlow.cs:298:26:298:26 | x : String | GlobalDataFlow.cs:301:16:301:41 | ... ? ... : ... : String | GlobalDataFlow.cs:389:16:389:19 | delegate call : String |
 | GlobalDataFlow.cs:389:18:389:18 | access to parameter x : String | GlobalDataFlow.cs:300:27:300:28 | x0 : String | GlobalDataFlow.cs:300:33:300:34 | access to parameter x0 : String | GlobalDataFlow.cs:389:16:389:19 | delegate call : String |
 | GlobalDataFlow.cs:454:35:454:48 | "taint source" : String | GlobalDataFlow.cs:446:64:446:64 | s : String | GlobalDataFlow.cs:448:9:448:10 | [post] access to parameter sb [element] : String | GlobalDataFlow.cs:454:31:454:32 | [post] access to local variable sb [element] : String |
-| GlobalDataFlow.cs:501:46:501:46 | access to local variable x : String | GlobalDataFlow.cs:81:79:81:79 | x : String | GlobalDataFlow.cs:81:84:81:84 | access to parameter x : String | GlobalDataFlow.cs:501:44:501:47 | delegate call : String |
+| GlobalDataFlow.cs:575:46:575:46 | access to local variable x : String | GlobalDataFlow.cs:81:79:81:79 | x : String | GlobalDataFlow.cs:81:84:81:84 | access to parameter x : String | GlobalDataFlow.cs:575:44:575:47 | delegate call : String |
 | Splitting.cs:8:24:8:30 | [b (line 3): false] access to parameter tainted : String | Splitting.cs:16:26:16:26 | x : String | Splitting.cs:16:32:16:32 | access to parameter x : String | Splitting.cs:8:17:8:31 | [b (line 3): false] call to method Return<String> : String |
 | Splitting.cs:8:24:8:30 | [b (line 3): true] access to parameter tainted : String | Splitting.cs:16:26:16:26 | x : String | Splitting.cs:16:32:16:32 | access to parameter x : String | Splitting.cs:8:17:8:31 | [b (line 3): true] call to method Return<String> : String |
 | Splitting.cs:20:29:20:29 | access to parameter s : String | Splitting.cs:16:26:16:26 | x : String | Splitting.cs:16:32:16:32 | access to parameter x : String | Splitting.cs:20:22:20:30 | call to method Return<String> : String |
@@ -697,6 +778,19 @@ subpaths
 | GlobalDataFlow.cs:466:15:466:20 | access to local variable sink44 | GlobalDataFlow.cs:465:51:465:64 | "taint source" : String | GlobalDataFlow.cs:466:15:466:20 | access to local variable sink44 | access to local variable sink44 |
 | GlobalDataFlow.cs:478:15:478:20 | access to local variable sink45 | GlobalDataFlow.cs:474:35:474:48 | "taint source" : String | GlobalDataFlow.cs:478:15:478:20 | access to local variable sink45 | access to local variable sink45 |
 | GlobalDataFlow.cs:486:32:486:32 | access to parameter s | GlobalDataFlow.cs:490:28:490:41 | "taint source" : String | GlobalDataFlow.cs:486:32:486:32 | access to parameter s | access to parameter s |
+| GlobalDataFlow.cs:508:15:508:22 | access to field field | GlobalDataFlow.cs:500:20:500:33 | "taint source" : String | GlobalDataFlow.cs:508:15:508:22 | access to field field | access to field field |
+| GlobalDataFlow.cs:509:15:509:22 | access to field field | GlobalDataFlow.cs:500:20:500:33 | "taint source" : String | GlobalDataFlow.cs:509:15:509:22 | access to field field | access to field field |
+| GlobalDataFlow.cs:515:15:515:22 | access to field field | GlobalDataFlow.cs:500:20:500:33 | "taint source" : String | GlobalDataFlow.cs:515:15:515:22 | access to field field | access to field field |
+| GlobalDataFlow.cs:516:15:516:22 | access to field field | GlobalDataFlow.cs:500:20:500:33 | "taint source" : String | GlobalDataFlow.cs:516:15:516:22 | access to field field | access to field field |
+| GlobalDataFlow.cs:517:15:517:22 | access to field field | GlobalDataFlow.cs:500:20:500:33 | "taint source" : String | GlobalDataFlow.cs:517:15:517:22 | access to field field | access to field field |
+| GlobalDataFlow.cs:526:15:526:21 | access to field field | GlobalDataFlow.cs:500:20:500:33 | "taint source" : String | GlobalDataFlow.cs:526:15:526:21 | access to field field | access to field field |
+| GlobalDataFlow.cs:533:15:533:21 | access to field field | GlobalDataFlow.cs:500:20:500:33 | "taint source" : String | GlobalDataFlow.cs:533:15:533:21 | access to field field | access to field field |
+| GlobalDataFlow.cs:534:15:534:21 | access to field field | GlobalDataFlow.cs:500:20:500:33 | "taint source" : String | GlobalDataFlow.cs:534:15:534:21 | access to field field | access to field field |
+| GlobalDataFlow.cs:548:15:548:21 | access to field field | GlobalDataFlow.cs:500:20:500:33 | "taint source" : String | GlobalDataFlow.cs:548:15:548:21 | access to field field | access to field field |
+| GlobalDataFlow.cs:549:15:549:21 | access to field field | GlobalDataFlow.cs:500:20:500:33 | "taint source" : String | GlobalDataFlow.cs:549:15:549:21 | access to field field | access to field field |
+| GlobalDataFlow.cs:550:15:550:21 | access to field field | GlobalDataFlow.cs:500:20:500:33 | "taint source" : String | GlobalDataFlow.cs:550:15:550:21 | access to field field | access to field field |
+| GlobalDataFlow.cs:556:15:556:22 | access to field field | GlobalDataFlow.cs:500:20:500:33 | "taint source" : String | GlobalDataFlow.cs:556:15:556:22 | access to field field | access to field field |
+| GlobalDataFlow.cs:564:15:564:21 | access to field field | GlobalDataFlow.cs:500:20:500:33 | "taint source" : String | GlobalDataFlow.cs:564:15:564:21 | access to field field | access to field field |
 | Splitting.cs:9:15:9:15 | [b (line 3): false] access to local variable x | Splitting.cs:3:28:3:34 | tainted : String | Splitting.cs:9:15:9:15 | [b (line 3): false] access to local variable x | [b (line 3): false] access to local variable x |
 | Splitting.cs:9:15:9:15 | [b (line 3): true] access to local variable x | Splitting.cs:3:28:3:34 | tainted : String | Splitting.cs:9:15:9:15 | [b (line 3): true] access to local variable x | [b (line 3): true] access to local variable x |
 | Splitting.cs:11:19:11:19 | access to local variable x | Splitting.cs:3:28:3:34 | tainted : String | Splitting.cs:11:19:11:19 | access to local variable x | access to local variable x |

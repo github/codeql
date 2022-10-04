@@ -93,6 +93,9 @@ module Actions {
 
     /** Gets the value of the `if` field in this job, if any. */
     JobIf getIf() { result.getJob() = this }
+
+    /** Gets the value of the `runs-on` field in this job. */
+    JobRunson getRunsOn() { result.getJob() = this }
   }
 
   /**
@@ -103,6 +106,19 @@ module Actions {
     Job job;
 
     JobIf() { job.lookup("if") = this }
+
+    /** Gets the step this field belongs to. */
+    Job getJob() { result = job }
+  }
+
+  /**
+   * A `runs-on` within a job.
+   * See https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_idruns-on.
+   */
+  class JobRunson extends YamlNode, YamlScalar {
+    Job job;
+
+    JobRunson() { job.lookup("runs-on") = this }
 
     /** Gets the step this field belongs to. */
     Job getJob() { result = job }

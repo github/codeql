@@ -91,7 +91,7 @@ module SummaryComponent {
 
   /** Gets a summary component that represents a value in a pair at a known key. */
   SummaryComponent pairValueKnown(ConstantValue key) {
-    result = SC::content(TSingletonContent(TKnownPairValueContent(key)))
+    result = SC::content(TSingletonContent(DataFlow::Content::getPairValueContent(key)))
   }
 
   /** Gets a summary component that represents the return value of a call. */
@@ -150,7 +150,7 @@ abstract class SimpleSummarizedCallable extends SummarizedCallable {
   bindingset[this]
   SimpleSummarizedCallable() { mc.getMethodName() = this }
 
-  final override MethodCall getACall() { result = mc }
+  final override MethodCall getACallSimple() { result = mc }
 }
 
 class RequiredSummaryComponentStack = Impl::Public::RequiredSummaryComponentStack;

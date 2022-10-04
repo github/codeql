@@ -8,7 +8,6 @@ private import codeql.ruby.Concepts
 private import codeql.ruby.controlflow.CfgNodes
 private import codeql.ruby.DataFlow
 private import codeql.ruby.dataflow.RemoteFlowSources
-private import codeql.ruby.ast.internal.Module
 private import ActionController
 
 /**
@@ -38,7 +37,7 @@ private class ActionViewHtmlSafeCall extends HtmlSafeCall {
  */
 abstract class HtmlEscapeCall extends MethodCall {
   // "h" is aliased to "html_escape" in ActiveSupport
-  HtmlEscapeCall() { this.getMethodName() = ["html_escape", "html_escape_once", "h"] }
+  HtmlEscapeCall() { this.getMethodName() = ["html_escape", "html_escape_once", "h", "sanitize"] }
 }
 
 /**
@@ -216,4 +215,138 @@ class FileSystemResolverAccess extends DataFlow::CallNode, FileSystemAccess::Ran
 
   override DataFlow::Node getAPathArgument() { result = this.getArgument(0) }
 }
+
 // TODO: model flow in/out of template files properly,
+// TODO: Move the classes and predicates above inside this module.
+/** Modeling for `ActionView`. */
+module ActionView {
+  /**
+   * Action view helper methods which are XSS sinks.
+   */
+  module Helpers {
+    /**
+     * A call to an ActionView helper which renders its argument without escaping.
+     * The argument should be treated as an XSS sink. In the documentation for
+     * classes in this module, the vulnerable argument is named `x`.
+     */
+    abstract class RawHelperCall extends MethodCall {
+      /**
+       * Get an argument which is rendered without escaping.
+       */
+      abstract Expr getRawArgument();
+    }
+
+    /**
+     * `ActionView::Helpers::TextHelper#simple_format`.
+     *
+     * `simple_format(x, y, sanitize: false)`.
+     */
+    private class SimpleFormat extends ActionViewContextCall, RawHelperCall {
+      SimpleFormat() {
+        this.getMethodName() = "simple_format" and
+        this.getKeywordArgument("sanitize").getConstantValue().isBoolean(false)
+      }
+
+      override Expr getRawArgument() { result = this.getArgument(0) }
+    }
+
+    /**
+     * `ActionView::Helpers::TextHelper#truncate`.
+     *
+     * `truncate(x, escape: false)`.
+     */
+    private class Truncate extends ActionViewContextCall, RawHelperCall {
+      Truncate() {
+        this.getMethodName() = "truncate" and
+        this.getKeywordArgument("escape").getConstantValue().isBoolean(false)
+      }
+
+      override Expr getRawArgument() { result = this.getArgument(0) }
+    }
+
+    /**
+     * `ActionView::Helpers::TextHelper#highlight`.
+     *
+     * `highlight(x, y, sanitize: false)`.
+     */
+    private class Highlight extends ActionViewContextCall, RawHelperCall {
+      Highlight() {
+        this.getMethodName() = "highlight" and
+        this.getKeywordArgument("sanitize").getConstantValue().isBoolean(false)
+      }
+
+      override Expr getRawArgument() { result = this.getArgument(0) }
+    }
+
+    /**
+     * `ActionView::Helpers::JavascriptHelper#javascript_tag`.
+     *
+     * `javascript_tag(x)`.
+     */
+    private class JavascriptTag extends ActionViewContextCall, RawHelperCall {
+      JavascriptTag() { this.getMethodName() = "javascript_tag" }
+
+      override Expr getRawArgument() { result = this.getArgument(0) }
+    }
+
+    /**
+     * `ActionView::Helpers::TagHelper#content_tag`.
+     *
+     * `content_tag(x, x, y, false)`.
+     */
+    private class ContentTag extends ActionViewContextCall, RawHelperCall {
+      ContentTag() {
+        this.getMethodName() = "content_tag" and
+        this.getArgument(3).getConstantValue().isBoolean(false)
+      }
+
+      override Expr getRawArgument() { result = this.getArgument(1) }
+    }
+
+    /**
+     * `ActionView::Helpers::TagHelper#tag`.
+     *
+     * `tag(x, x, y, false)`.
+     */
+    private class Tag extends ActionViewContextCall, RawHelperCall {
+      Tag() {
+        this.getMethodName() = "tag" and
+        this.getArgument(3).getConstantValue().isBoolean(false)
+      }
+
+      override Expr getRawArgument() { result = this.getArgument(0) }
+    }
+
+    /**
+     * `ActionView::Helpers::TagHelper#tag.<tag name>`.
+     *
+     * `tag.h1(x, escape: false)`.
+     */
+    private class TagMethod extends MethodCall, RawHelperCall {
+      TagMethod() {
+        inActionViewContext(this) and
+        this.getReceiver().(MethodCall).getMethodName() = "tag" and
+        this.getKeywordArgument("escape").getConstantValue().isBoolean(false)
+      }
+
+      override Expr getRawArgument() { result = this.getArgument(0) }
+    }
+  }
+
+  /**
+   * An argument to a method call which constructs a script tag, interpreting the
+   * argument as a URL. Remote input flowing to this argument may allow loading of
+   * arbitrary javascript.
+   */
+  class ArgumentInterpretedAsUrl extends DataFlow::Node {
+    ArgumentInterpretedAsUrl() {
+      exists(DataFlow::CallNode call |
+        call.getMethodName() = ["javascript_include_tag", "javascript_path", "path_to_javascript"] and
+        this = call.getArgument(0)
+        or
+        call.getMethodName() = "javascript_url" and
+        this = call.getKeywordArgument("host")
+      )
+    }
+  }
+}

@@ -244,6 +244,12 @@ module API {
     Node getAwaited() { result = this.getASuccessor(Label::await()) }
 
     /**
+     * Gets a node representing a subscript of this node.
+     * For example `obj[x]` is a subscript of `obj`.
+     */
+    Node getASubscript() { result = this.getASuccessor(Label::subscript()) }
+
+    /**
      * Gets a string representation of the lexicographically least among all shortest access paths
      * from the root to this node.
      */
@@ -570,8 +576,6 @@ module API {
      * API graph node for the prefix `foo`), in accordance with the usual semantics of Python.
      */
 
-    private import semmle.python.internal.Awaited
-
     cached
     newtype TApiNode =
       /** The root of the API graph. */
@@ -747,6 +751,14 @@ module API {
         lbl = Label::return() and
         ref = pred.getACall()
         or
+        // Awaiting a node that is a use of `base`
+        lbl = Label::await() and
+        ref = pred.getAnAwaited()
+        or
+        // Subscripting a node that is a use of `base`
+        lbl = Label::subscript() and
+        ref = pred.getASubscript()
+        or
         // Subclassing a node
         lbl = Label::subclass() and
         exists(PY::ClassExpr clsExpr, DataFlow::Node superclass | pred.flowsTo(superclass) |
@@ -759,13 +771,6 @@ module API {
             or
             ref.(DataFlow::ExprNode).getNode().getNode() = clsExpr.getADecoratorCall()
           )
-        )
-        or
-        // awaiting
-        exists(DataFlow::Node awaitedValue |
-          lbl = Label::await() and
-          ref = awaited(awaitedValue) and
-          pred.flowsTo(awaitedValue)
         )
       )
       or
@@ -986,6 +991,7 @@ module API {
         MkLabelReturn() or
         MkLabelSubclass() or
         MkLabelAwait() or
+        MkLabelSubscript() or
         MkLabelEntryPoint(EntryPoint ep)
 
       /** A label for a module. */
@@ -1061,6 +1067,11 @@ module API {
         override string toString() { result = "getAwaited()" }
       }
 
+      /** A label that gets the subscript of a sequence/mapping. */
+      class LabelSubscript extends ApiLabel, MkLabelSubscript {
+        override string toString() { result = "getASubscript()" }
+      }
+
       /** A label for entry points. */
       class LabelEntryPoint extends ApiLabel, MkLabelEntryPoint {
         private EntryPoint entry;
@@ -1105,6 +1116,9 @@ module API {
 
     /** Gets the `await` edge label. */
     LabelAwait await() { any() }
+
+    /** Gets the `subscript` edge label. */
+    LabelSubscript subscript() { any() }
 
     /** Gets the label going from the root node to the nodes associated with the given entry point. */
     LabelEntryPoint entryPoint(EntryPoint ep) { result = MkLabelEntryPoint(ep) }

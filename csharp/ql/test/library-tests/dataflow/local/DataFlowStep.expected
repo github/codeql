@@ -760,6 +760,7 @@
 | Splitting.cs:39:15:39:15 | [b (line 32): true] access to parameter b | Splitting.cs:42:13:42:13 | [b (line 32): true] access to parameter b |
 | Splitting.cs:39:19:39:19 | [b (line 32): true] access to local variable x | Splitting.cs:39:15:39:25 | [b (line 32): true] ... ? ... : ... |
 | Splitting.cs:39:19:39:19 | [b (line 32): true] access to local variable x | Splitting.cs:40:23:40:23 | [b (line 32): true] access to local variable x |
+| Splitting.cs:39:19:39:19 | [post] [b (line 32): true] access to local variable x | Splitting.cs:40:23:40:23 | [b (line 32): true] access to local variable x |
 | Splitting.cs:39:23:39:25 | [b (line 32): false] "c" | Splitting.cs:39:15:39:25 | [b (line 32): false] ... ? ... : ... |
 | Splitting.cs:40:23:40:23 | [b (line 32): false] access to local variable x | Splitting.cs:40:15:40:23 | [b (line 32): false] (...) ... |
 | Splitting.cs:40:23:40:23 | [b (line 32): true] access to local variable x | Splitting.cs:40:15:40:23 | [b (line 32): true] (...) ... |

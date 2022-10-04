@@ -17,7 +17,7 @@ class RangeAnalysisTest extends InlineExpectationsTest {
       tag = "range" and
       element = e.toString() and
       location = e.getLocation() and
-      value = getARangeString(e)
+      value = quote(getARangeString(e))
     )
   }
 }
@@ -32,6 +32,9 @@ bindingset[value]
 private string getOffsetString(int value) {
   if value >= 0 then result = "+" + value.toString() else result = value.toString()
 }
+
+bindingset[s]
+string quote(string s) { if s.matches("% %") then result = "\"" + s + "\"" else result = s }
 
 bindingset[delta]
 private string getBoundString(SemBound b, int delta) {

@@ -1901,9 +1901,8 @@ open class KotlinFileExtractor(
 
             val dr = c.dispatchReceiver
             when {
-                c.origin == IrStatementOrigin.PLUS &&
-                (isNumericFunction(target, "plus")
-                        || isFunction(target, "kotlin", "String", "plus", null)) -> {
+                isNumericFunction(target, "plus")
+                        || isFunction(target, "kotlin", "String", "plus", false) -> {
                     val id = tw.getFreshIdLabel<DbAddexpr>()
                     val type = useType(c.type)
                     tw.writeExprs_addexpr(id, type.javaResult.id, parent, idx)
@@ -1918,28 +1917,28 @@ open class KotlinFileExtractor(
                         extractRawMethodAccess(stringPlusFn, c, callable, parent, idx, enclosingStmt, listOf(c.extensionReceiver, c.getValueArgument(0)), null, null)
                     }
                 }
-                c.origin == IrStatementOrigin.MINUS && isNumericFunction(target, "minus") -> {
+                isNumericFunction(target, "minus") -> {
                     val id = tw.getFreshIdLabel<DbSubexpr>()
                     val type = useType(c.type)
                     tw.writeExprs_subexpr(id, type.javaResult.id, parent, idx)
                     tw.writeExprsKotlinType(id, type.kotlinResult.id)
                     binopDisp(id)
                 }
-                c.origin == IrStatementOrigin.MUL && isNumericFunction(target, "times") -> {
+                isNumericFunction(target, "times") -> {
                     val id = tw.getFreshIdLabel<DbMulexpr>()
                     val type = useType(c.type)
                     tw.writeExprs_mulexpr(id, type.javaResult.id, parent, idx)
                     tw.writeExprsKotlinType(id, type.kotlinResult.id)
                     binopDisp(id)
                 }
-                c.origin == IrStatementOrigin.DIV && isNumericFunction(target, "div") -> {
+                isNumericFunction(target, "div") -> {
                     val id = tw.getFreshIdLabel<DbDivexpr>()
                     val type = useType(c.type)
                     tw.writeExprs_divexpr(id, type.javaResult.id, parent, idx)
                     tw.writeExprsKotlinType(id, type.kotlinResult.id)
                     binopDisp(id)
                 }
-                c.origin == IrStatementOrigin.PERC && isNumericFunction(target, "rem") -> {
+                isNumericFunction(target, "rem") -> {
                     val id = tw.getFreshIdLabel<DbRemexpr>()
                     val type = useType(c.type)
                     tw.writeExprs_remexpr(id, type.javaResult.id, parent, idx)

@@ -107,4 +107,4 @@ from MethodAccess ma
 where
   isInsecureSslEndpoint(ma) and
   not isTestMethod(ma)
-select ma, "LDAPS configuration allows insecure endpoint identification"
+select ma, "LDAPS configuration allows insecure endpoint identification."

@@ -49,7 +49,10 @@ abstract class LibraryCallable extends string {
   LibraryCallable() { any() }
 
   /** Gets a call to this library callable. */
-  abstract Call getACall();
+  Call getACall() { none() }
+
+  /** Same as `getACall()` except this does not depend on the call graph or API graph. */
+  Call getACallSimple() { none() }
 }
 
 /**
@@ -287,7 +290,7 @@ private DataFlowCallable viableSourceCallable(DataFlowCall call) {
 private DataFlowCallable viableLibraryCallable(DataFlowCall call) {
   exists(LibraryCallable callable |
     result = TLibraryCallable(callable) and
-    call.asCall().getExpr() = callable.getACall()
+    call.asCall().getExpr() = [callable.getACall(), callable.getACallSimple()]
   )
 }
 
@@ -314,15 +317,20 @@ private module Cached {
         exists(Module tp |
           instanceMethodCall(call, tp, method) and
           result = lookupMethod(tp, method) and
-          if result.(Method).isPrivate()
-          then
-            call.getReceiver().getExpr() instanceof SelfVariableAccess and
-            // For now, we restrict the scope of top-level declarations to their file.
-            // This may remove some plausible targets, but also removes a lot of
-            // implausible targets
-            if result.getEnclosingModule() instanceof Toplevel
-            then result.getFile() = call.getFile()
+          (
+            if result.(Method).isPrivate()
+            then
+              call.getReceiver().getExpr() instanceof SelfVariableAccess and
+              // For now, we restrict the scope of top-level declarations to their file.
+              // This may remove some plausible targets, but also removes a lot of
+              // implausible targets
+              if result.getEnclosingModule() instanceof Toplevel
+              then result.getFile() = call.getFile()
+              else any()
             else any()
+          ) and
+          if result.(Method).isProtected()
+          then result = lookupMethod(call.getExpr().getEnclosingModule().getModule(), method)
           else any()
         )
         or
@@ -848,9 +856,10 @@ private predicate mayBenefitFromCallContext1(
   Module tp, boolean exact, string name
 ) {
   exists(ArgumentNode arg |
-    mayBenefitFromCallContext0(ctx, arg, call, encl, name) and
+    mayBenefitFromCallContext0(ctx, pragma[only_bind_into](arg), call, encl,
+      pragma[only_bind_into](name)) and
     // `arg` has a relevant instance type
-    isInstanceLocalMustFlow(arg, pragma[only_bind_out](tp), exact) and
+    isInstanceLocalMustFlow(arg, tp, exact) and
     exists(lookupMethod(tp, pragma[only_bind_into](name)))
   )
 }

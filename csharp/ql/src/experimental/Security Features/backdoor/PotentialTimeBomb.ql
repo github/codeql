@@ -175,6 +175,6 @@ where
   isPotentialTimeBomb(source, sink, getLastWriteTimeMethodCall, timeArithmeticCall,
     timeComparisonCall, selStatement)
 select selStatement, source, sink,
-  "Possible TimeBomb logic triggered by $@ that takes into account $@ from the $@ as part of the potential trigger.",
-  timeComparisonCall, timeComparisonCall.toString(), timeArithmeticCall, "an offset",
+  "Possible TimeBomb logic triggered by an $@ that takes into account $@ from the $@ as part of the potential trigger.",
+  timeComparisonCall, timeComparisonCall.toString(), timeArithmeticCall, "offset",
   getLastWriteTimeMethodCall, "last modification time of a file"
