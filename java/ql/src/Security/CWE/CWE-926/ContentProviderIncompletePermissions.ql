@@ -3,10 +3,10 @@
  * @description Android content providers which do not configure both read and write permissions can allow permission bypass
  * @kind problem
  * @problem.severity warning
- * @security-severity 7.8
+ * @security-severity 8.2
  * @id java/android/incomplete-provider-permissions
  * @tags security
- *       external/cwe/cwe-276
+ *       external/cwe/cwe-926
  * @precision medium
  */
 
