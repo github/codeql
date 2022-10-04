@@ -2938,7 +2938,9 @@ open class KotlinFileExtractor(
         }
         val locId = tw.getLocation(e)
         val valueArgs = (0 until e.valueArgumentsCount).map { e.getValueArgument(it) }
-        val anyDefaultArgs = valueArgs.any { it == null }
+        // For now, don't try to use default methods for enum constructor calls,
+        // which have null arguments even though the parameters don't give default values.
+        val anyDefaultArgs = e !is IrEnumConstructorCall && valueArgs.any { it == null }
         val id = if (anyDefaultArgs) {
             extractNewExpr(getDefaultsMethodLabel(e.symbol.owner).cast(), type, locId, parent, idx, callable, enclosingStmt).also {
                 extractDefaultsCallArguments(it, e.symbol.owner, callable, enclosingStmt, valueArgs, null, null)
