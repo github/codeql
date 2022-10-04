@@ -718,7 +718,7 @@ module TaintTracking {
     override predicate serializeStep(DataFlow::Node pred, DataFlow::Node succ) {
       exists(JsonStringifyCall call, DataFlow::Node arg |
         arg = call.getArgument(0) and
-        findInObject(arg.asExpr(), pred.asExpr()) and
+        this.findInObject(arg.asExpr(), pred.asExpr()) and
         succ = call
       )
     }
@@ -733,18 +733,18 @@ module TaintTracking {
         root instanceof ObjectExpr and
         property = root.(ObjectExpr).getAProperty() and
         (
-          findInObject(property.getNameExpr(), target) or
-          findInObject(property.getInit(), target)
+          this.findInObject(property.getNameExpr(), target) or
+          this.findInObject(property.getInit(), target)
         )
       )
       or
       // when root is Array
       root instanceof ArrayExpr and
-      findInObject(root.(ArrayExpr).getAChildExpr(), target)
+      this.findInObject(root.(ArrayExpr).getAChildExpr(), target)
       or
       // when root is VarRef
       root instanceof VarRef and
-      findInObject(root.(VarRef).getAVariable().getAnAssignedExpr(), target)
+      this.findInObject(root.(VarRef).getAVariable().getAnAssignedExpr(), target)
     }
   }
 
