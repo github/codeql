@@ -250,8 +250,16 @@ module API {
     Node getASubscript() { result = this.getASuccessor(Label::subscript()) }
 
     /**
-     * Gets a node representing a subscript of this node at index `key`.
+     * Gets a node representing a subscript of this node at (string) index `key`.
      * This requires that the index can be statically determined.
+     * 
+     * For example, the subscripts of `a` and `b` below would be found using
+     * the index `foo`:
+     * ```py
+     * a["foo"]
+     * x = "foo" if cond else "bar"
+     * b[x]
+     * ```
      */
     Node getSubscript(string key) {
       (
@@ -500,7 +508,7 @@ module API {
 
     SubscriptReadNode() { this = subscripted.getASubscript().asSource() }
 
-    /** Gets ans API node for the object being subscripted */
+    /** Gets an API node for the object being subscripted. */
     API::Node getObject() { result = subscripted }
 
     /** Gets the data flow node representing the index of this read, if any. */
@@ -519,7 +527,7 @@ module API {
 
     SubscriptWriteNode() { this = subscripted.getASubscript().asSink() }
 
-    /** Gets ans API node for the object being subscripted */
+    /** Gets an API node for the object being subscripted. */
     API::Node getObject() { result = subscripted }
 
     /** Gets the data flow node representing the index of this write, if any. */
