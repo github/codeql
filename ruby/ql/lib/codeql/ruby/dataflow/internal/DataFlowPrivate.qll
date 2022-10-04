@@ -185,7 +185,7 @@ module LocalFlow {
     nodeTo.asExpr() =
       any(CfgNodes::ExprNodes::BinaryOperationCfgNode op |
         op.getExpr() instanceof BinaryLogicalOperation and
-        nodeFrom.asExpr() = op.getAPredecessor()
+        nodeFrom.asExpr() = op.getAnOperand()
       )
   }
 }
