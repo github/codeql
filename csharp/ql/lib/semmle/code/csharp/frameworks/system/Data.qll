@@ -150,6 +150,7 @@ private class SystemDataConstraintCollectionFlowModelCsv extends SummaryModelCsv
       [
         "System.Data;ConstraintCollection;false;Add;(System.Data.Constraint);;Argument[0];Argument[this].Element;value;manual",
         "System.Data;ConstraintCollection;false;AddRange;(System.Data.Constraint[]);;Argument[0].Element;Argument[this].Element;value;manual",
+        "System.Data;ConstraintCollection;false;Clear;();;Argument[this].WithoutElement;Argument[this];value;manual",
         "System.Data;ConstraintCollection;false;CopyTo;(System.Data.Constraint[],System.Int32);;Argument[this].Element;Argument[0].Element;value;manual",
       ]
   }
@@ -163,6 +164,7 @@ private class SystemDataDataColumnCollectionFlowModelCsv extends SummaryModelCsv
         "System.Data;DataColumnCollection;false;Add;(System.Data.DataColumn);;Argument[0];Argument[this].Element;value;manual",
         "System.Data;DataColumnCollection;false;Add;(System.String);;Argument[0];Argument[this].Element;value;manual",
         "System.Data;DataColumnCollection;false;AddRange;(System.Data.DataColumn[]);;Argument[0].Element;Argument[this].Element;value;manual",
+        "System.Data;DataColumnCollection;false;Clear;();;Argument[this].WithoutElement;Argument[this];value;manual",
         "System.Data;DataColumnCollection;false;CopyTo;(System.Data.DataColumn[],System.Int32);;Argument[this].Element;Argument[0].Element;value;manual",
       ]
   }
@@ -174,6 +176,7 @@ private class SystemDataDataRelationCollectionFlowModelCsv extends SummaryModelC
     row =
       [
         "System.Data;DataRelationCollection;false;Add;(System.Data.DataRelation);;Argument[0];Argument[this].Element;value;manual",
+        "System.Data;DataRelationCollection;true;Clear;();;Argument[this].WithoutElement;Argument[this];value;manual",
         "System.Data;DataRelationCollection;false;CopyTo;(System.Data.DataRelation[],System.Int32);;Argument[this].Element;Argument[0].Element;value;manual",
         "System.Data;DataRelationCollection;true;AddRange;(System.Data.DataRelation[]);;Argument[0].Element;Argument[this].Element;value;manual",
       ]
@@ -187,6 +190,7 @@ private class SystemDataDataRawCollectionFlowModelCsv extends SummaryModelCsv {
       [
         "System.Data;DataRowCollection;false;Add;(System.Data.DataRow);;Argument[0];Argument[this].Element;value;manual",
         "System.Data;DataRowCollection;false;Add;(System.Object[]);;Argument[0];Argument[this].Element;value;manual",
+        "System.Data;DataRowCollection;false;Clear;();;Argument[this].WithoutElement;Argument[this];value;manual",
         "System.Data;DataRowCollection;false;CopyTo;(System.Data.DataRow[],System.Int32);;Argument[this].Element;Argument[0].Element;value;manual",
         "System.Data;DataRowCollection;false;Find;(System.Object);;Argument[this].Element;ReturnValue;value;manual",
         "System.Data;DataRowCollection;false;Find;(System.Object[]);;Argument[this].Element;ReturnValue;value;manual",
@@ -202,6 +206,7 @@ private class SystemDataDataTableCollectionFlowModelCsv extends SummaryModelCsv 
         "System.Data;DataTableCollection;false;Add;(System.Data.DataTable);;Argument[0];Argument[this].Element;value;manual",
         "System.Data;DataTableCollection;false;Add;(System.String);;Argument[0];Argument[this].Element;value;manual",
         "System.Data;DataTableCollection;false;AddRange;(System.Data.DataTable[]);;Argument[0].Element;Argument[this].Element;value;manual",
+        "System.Data;DataTableCollection;false;Clear;();;Argument[this].WithoutElement;Argument[this];value;manual",
         "System.Data;DataTableCollection;false;CopyTo;(System.Data.DataTable[],System.Int32);;Argument[this].Element;Argument[0].Element;value;manual",
       ]
   }

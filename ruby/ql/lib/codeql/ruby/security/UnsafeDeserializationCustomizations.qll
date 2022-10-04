@@ -3,7 +3,7 @@
  * deserialization, as well as extension points for adding your own.
  */
 
-private import ruby
+private import codeql.ruby.AST
 private import codeql.ruby.ApiGraphs
 private import codeql.ruby.CFG
 private import codeql.ruby.DataFlow
@@ -48,12 +48,13 @@ module UnsafeDeserialization {
   }
 
   /**
-   * An argument in a call to `YAML.load`, considered a sink for unsafe
-   * deserialization.
+   * An argument in a call to `YAML.load`, considered a sink
+   * for unsafe deserialization. The `YAML` module is an alias of `Psych` in
+   * recent versions of Ruby.
    */
   class YamlLoadArgument extends Sink {
     YamlLoadArgument() {
-      this = API::getTopLevelMember("YAML").getAMethodCall("load").getArgument(0)
+      this = API::getTopLevelMember(["YAML", "Psych"]).getAMethodCall("load").getArgument(0)
     }
   }
 
@@ -64,6 +65,16 @@ module UnsafeDeserialization {
   class JsonLoadArgument extends Sink {
     JsonLoadArgument() {
       this = API::getTopLevelMember("JSON").getAMethodCall(["load", "restore"]).getArgument(0)
+    }
+  }
+
+  /**
+   * The first argument in a call to `Hash.from_trusted_xml`, considered as a
+   * sink for unsafe deserialization.
+   */
+  class HashFromTrustedXmlArgument extends Sink {
+    HashFromTrustedXmlArgument() {
+      this = API::getTopLevelMember("Hash").getAMethodCall("from_trusted_xml").getArgument(0)
     }
   }
 

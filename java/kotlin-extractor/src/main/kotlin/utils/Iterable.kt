@@ -12,4 +12,3 @@ inline fun <reified S: IrDeclaration> Iterable<IrDeclaration>.findSubType(
 ): S? {
     return this.find { it is S && predicate(it) } as S?
 }
-

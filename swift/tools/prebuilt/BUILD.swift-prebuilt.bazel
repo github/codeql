@@ -12,7 +12,7 @@ cc_library(
             "libCodeQLSwiftFrontendTool.dylib",
         ],
     }),
-    hdrs = glob(["include/**/*"]),
+    hdrs = glob(["include/**/*", "stdlib/**/*" ]),
     linkopts = [
         "-lm",
         "-lz",
@@ -25,7 +25,7 @@ cc_library(
         ],
         "//conditions:default": [],
     }),
-    strip_include_prefix = "include",
+    includes = [ "include" ],
     visibility = ["//visibility:public"],
 )
 

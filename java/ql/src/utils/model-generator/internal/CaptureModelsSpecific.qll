@@ -55,8 +55,14 @@ private predicate isJdkInternal(J::CompilationUnit cu) {
 private predicate isRelevantForModels(J::Callable api) {
   not isInTestFile(api.getCompilationUnit().getFile()) and
   not isJdkInternal(api.getCompilationUnit()) and
-  not api instanceof J::MainMethod
+  not api instanceof J::MainMethod and
+  not api instanceof J::StaticInitializer
 }
+
+/**
+ * Holds if it is relevant to generate models for `api` based on data flow analysis.
+ */
+predicate isRelevantForDataFlowModels = isRelevantForModels/1;
 
 /**
  * A class of Callables that are relevant for generating summary, source and sinks models for.
@@ -259,3 +265,9 @@ predicate isRelevantSinkKind(string kind) {
   not kind.matches("regex-use%") and
   not kind = "write-file"
 }
+
+/**
+ * Holds if `kind` is a relevant source kind for creating source models.
+ */
+bindingset[kind]
+predicate isRelevantSourceKind(string kind) { any() }

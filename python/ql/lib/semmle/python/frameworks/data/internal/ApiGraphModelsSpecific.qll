@@ -20,28 +20,29 @@
  */
 
 private import python as PY
-private import semmle.python.dataflow.new.DataFlow
 private import ApiGraphModels
 import semmle.python.ApiGraphs::API as API
 
 class Unit = PY::Unit;
 
 // Re-export libraries needed by ApiGraphModels.qll
-import semmle.python.frameworks.data.internal.AccessPathSyntax as AccessPathSyntax
+import semmle.python.dataflow.new.internal.AccessPathSyntax as AccessPathSyntax
+import semmle.python.dataflow.new.DataFlow::DataFlow as DataFlow
 private import AccessPathSyntax
 
 /**
  * Holds if models describing `package` may be relevant for the analysis of this database.
  */
-predicate isPackageUsed(string package) { exists(API::moduleImport(package)) }
+predicate isPackageUsed(string package) { API::moduleImportExists(package) }
 
 /** Gets a Python-specific interpretation of the `(package, type, path)` tuple after resolving the first `n` access path tokens. */
 bindingset[package, type, path]
-API::Node getExtraNodeFromPath(string package, string type, AccessPath path, int n) {
+API::Node getExtraNodeFromPath(string package, string type, AccessPath path, int n) { none() }
+
+/** Gets a Python-specific interpretation of the `(package, type)` tuple. */
+API::Node getExtraNodeFromType(string package, string type) {
   type = "" and
-  n = 0 and
-  result = API::moduleImport(package) and
-  exists(path)
+  result = API::moduleImport(package)
 }
 
 /**

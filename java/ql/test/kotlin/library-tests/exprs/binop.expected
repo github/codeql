@@ -2,6 +2,12 @@
 | exprs.kt:13:14:13:18 | ... - ... | exprs.kt:13:14:13:14 | x | exprs.kt:13:18:13:18 | y |
 | exprs.kt:14:14:14:18 | ... / ... | exprs.kt:14:14:14:14 | x | exprs.kt:14:18:14:18 | y |
 | exprs.kt:15:14:15:18 | ... % ... | exprs.kt:15:14:15:14 | x | exprs.kt:15:18:15:18 | y |
+| exprs.kt:16:14:16:20 | ... << ... | exprs.kt:16:14:16:14 | x | exprs.kt:16:20:16:20 | y |
+| exprs.kt:17:14:17:20 | ... >> ... | exprs.kt:17:14:17:14 | x | exprs.kt:17:20:17:20 | y |
+| exprs.kt:18:14:18:21 | ... >>> ... | exprs.kt:18:14:18:14 | x | exprs.kt:18:21:18:21 | y |
+| exprs.kt:19:14:19:20 | ... & ... | exprs.kt:19:14:19:14 | x | exprs.kt:19:20:19:20 | y |
+| exprs.kt:20:15:20:20 | ... \| ... | exprs.kt:20:15:20:15 | x | exprs.kt:20:20:20:20 | y |
+| exprs.kt:21:15:21:21 | ... ^ ... | exprs.kt:21:15:21:15 | x | exprs.kt:21:21:21:21 | y |
 | exprs.kt:23:15:23:20 | ... (value equals) ... | exprs.kt:23:15:23:15 | x | exprs.kt:23:20:23:20 | y |
 | exprs.kt:24:15:24:20 | ... (value not-equals) ... | exprs.kt:24:15:24:15 | x | exprs.kt:24:20:24:20 | y |
 | exprs.kt:25:15:25:19 | ... < ... | exprs.kt:25:15:25:15 | x | exprs.kt:25:19:25:19 | y |
@@ -38,6 +44,12 @@
 | exprs.kt:64:14:64:20 | ... - ... | exprs.kt:64:14:64:15 | lx | exprs.kt:64:19:64:20 | ly |
 | exprs.kt:65:14:65:20 | ... / ... | exprs.kt:65:14:65:15 | lx | exprs.kt:65:19:65:20 | ly |
 | exprs.kt:66:14:66:20 | ... % ... | exprs.kt:66:14:66:15 | lx | exprs.kt:66:19:66:20 | ly |
+| exprs.kt:67:14:67:21 | ... << ... | exprs.kt:67:14:67:15 | lx | exprs.kt:67:21:67:21 | y |
+| exprs.kt:68:14:68:21 | ... >> ... | exprs.kt:68:14:68:15 | lx | exprs.kt:68:21:68:21 | y |
+| exprs.kt:69:14:69:22 | ... >>> ... | exprs.kt:69:14:69:15 | lx | exprs.kt:69:22:69:22 | y |
+| exprs.kt:70:14:70:22 | ... & ... | exprs.kt:70:14:70:15 | lx | exprs.kt:70:21:70:22 | ly |
+| exprs.kt:71:15:71:22 | ... \| ... | exprs.kt:71:15:71:16 | lx | exprs.kt:71:21:71:22 | ly |
+| exprs.kt:72:15:72:23 | ... ^ ... | exprs.kt:72:15:72:16 | lx | exprs.kt:72:22:72:23 | ly |
 | exprs.kt:74:15:74:22 | ... (value equals) ... | exprs.kt:74:15:74:16 | lx | exprs.kt:74:21:74:22 | ly |
 | exprs.kt:75:15:75:22 | ... (value not-equals) ... | exprs.kt:75:15:75:16 | lx | exprs.kt:75:21:75:22 | ly |
 | exprs.kt:76:15:76:21 | ... < ... | exprs.kt:76:15:76:16 | lx | exprs.kt:76:20:76:21 | ly |
@@ -73,13 +85,12 @@
 | exprs.kt:113:14:113:21 | ... && ... | exprs.kt:113:14:113:15 | b1 | exprs.kt:113:20:113:21 | b2 |
 | exprs.kt:114:14:114:21 | ... \|\| ... | exprs.kt:114:14:114:15 | b1 | exprs.kt:114:20:114:21 | b2 |
 | exprs.kt:127:31:127:41 | ... + ... | exprs.kt:127:31:127:34 | str1 | exprs.kt:127:38:127:41 | str2 |
-| exprs.kt:127:50:127:60 | ... + ... | exprs.kt:127:50:127:53 | str2 | exprs.kt:127:57:127:60 | str1 |
 | exprs.kt:128:16:128:26 | ... + ... | exprs.kt:128:16:128:19 | str1 | exprs.kt:128:23:128:26 | str2 |
 | exprs.kt:131:12:131:23 | ... > ... | exprs.kt:131:12:131:19 | variable | exprs.kt:131:23:131:23 | 0 |
 | exprs.kt:135:12:135:20 | ... + ... | exprs.kt:135:12:135:14 | 123 | exprs.kt:135:18:135:20 | 456 |
 | exprs.kt:161:8:161:16 | ... (value not-equals) ... | exprs.kt:161:8:161:8 | r | exprs.kt:161:13:161:16 | null |
 | exprs.kt:190:31:190:37 | ... + ... | exprs.kt:190:31:190:32 | getA1(...) | exprs.kt:190:36:190:37 | a2 |
-| exprs.kt:204:19:204:23 | ... + ... | exprs.kt:204:19:204:19 | s | exprs.kt:204:23:204:23 | 5 |
+| exprs.kt:205:23:205:29 | ... + ... | exprs.kt:205:20:205:21 | ...!! | exprs.kt:205:28:205:28 | 5 |
 | exprs.kt:206:19:206:25 | ... + ... | exprs.kt:206:20:206:21 | ...!! | exprs.kt:206:25:206:25 | 5 |
 | exprs.kt:224:12:224:47 | ... (value equals) ... | exprs.kt:224:12:224:27 | notNullPrimitive | exprs.kt:224:32:224:47 | notNullPrimitive |
 | exprs.kt:225:12:225:48 | ... (value equals) ... | exprs.kt:225:12:225:27 | notNullPrimitive | exprs.kt:225:32:225:48 | nullablePrimitive |

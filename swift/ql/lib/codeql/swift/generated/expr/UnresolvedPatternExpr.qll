@@ -3,8 +3,9 @@ private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
 import codeql.swift.elements.expr.Expr
 import codeql.swift.elements.pattern.Pattern
+import codeql.swift.elements.UnresolvedElement
 
-class UnresolvedPatternExprBase extends Synth::TUnresolvedPatternExpr, Expr {
+class UnresolvedPatternExprBase extends Synth::TUnresolvedPatternExpr, Expr, UnresolvedElement {
   override string getAPrimaryQlClass() { result = "UnresolvedPatternExpr" }
 
   Pattern getImmediateSubPattern() {

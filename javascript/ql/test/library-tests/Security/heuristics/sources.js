@@ -1,14 +1,14 @@
 (function() {
     const password = '1234';
     sink(password); // NOT OK
-    
+
     const s = JSON.stringify();
     sink(s); // NOT OK
 })();
 
 (async function() {
     const knex = require('knex');
-    
+
     const users = knex().select('*').from('users');
     users.then(function (users) {
         sink(users); // NOT OK
@@ -23,13 +23,13 @@
 
 (function() {
     const pg = require('pg');
-    
+
     const pool = new pg.Pool({});
     pool.connect(async function (err, client, done) {
         client.query('SELECT * FROM users', function (err, users) {
             sink(users);
         });
-        
+
         const thenable = client.query('SELECT * FROM users')
         thenable.then(function(users) {
             sink(users); // NOT OK
@@ -79,7 +79,7 @@
     db.all('SELECT * FROM users', function (err, users) {
         sink(users); // NOT OK
     });
-    
+
     const sqlitepromise = db.all('SELECT * FROM users');
 
     sink(await sqlitepromise); // NOT OK
@@ -100,13 +100,13 @@
 (async function () {
     const sql = require('mssql');
     await sql.connect('...');
-    
+
     sql.query('SELECT * FROM users', function (err, users) {
         sink(users); // NOT OK
     });
 
     const mssqlthenable = sql.query('SELECT * FROM users');
-    
+
     mssqlthenable.then(function (users) {
         sink(users); // NOT OK
     });
@@ -120,7 +120,7 @@
 })();
 
 (async function () {
-    const {Spanner} = require('@google-cloud/spanner');
+    const {Spanner, v1} = require('@google-cloud/spanner');
     const db = new Spanner({projectId: 'test'})
         .instance('instanceid')
         .database('databaseid');
@@ -131,7 +131,7 @@
 
     const [users] = (await db.executeSql('SELECT * FROM users', {}));
     sink(users); // NOT OK
-    
+
     const spannerpromise = db.run({
         sql: 'SELECT * FROM users'
     });
@@ -144,7 +144,7 @@
         sink(rows); // NOT OK
     });
 
-    const client = new Spanner.v1.SpannerClient({});
+    const client = new v1.SpannerClient({});
     client.executeSql('SELECT * FROM users', {}, function (err, users) {
         sink(users); // NOT OK
     });
@@ -166,7 +166,7 @@
 
 (function () {
     const { MongoClient } = require('mongodb');
-    
+
     MongoClient.connect('mongodb://localhost:1234', async function (err, db) {
         const collection = db.collection('users');
         const users = await collection.find({});
@@ -209,11 +209,11 @@
 
 (async function () {
     const { Collection } = require('marsdb');
-    
+
     const doc = new Collection('users');
 
     const users = await doc.find({});
-    
+
     sink(users); // NOT OK
 })();
 

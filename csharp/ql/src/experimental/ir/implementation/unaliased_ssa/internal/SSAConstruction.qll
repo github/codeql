@@ -143,16 +143,6 @@ private module Cached {
     )
   }
 
-  cached
-  Instruction getRegisterOperandDefinition(Instruction instruction, RegisterOperandTag tag) {
-    exists(OldInstruction oldInstruction, OldIR::RegisterOperand oldOperand |
-      oldInstruction = getOldInstruction(instruction) and
-      oldOperand = oldInstruction.getAnOperand() and
-      tag = oldOperand.getOperandTag() and
-      result = getNewInstruction(oldOperand.getAnyDef())
-    )
-  }
-
   pragma[noopt]
   private predicate hasMemoryOperandDefinition(
     OldInstruction oldInstruction, OldIR::NonPhiMemoryOperand oldOperand, Overlap overlap,
@@ -1135,7 +1125,7 @@ deprecated module SSAConsistency = SsaConsistency;
  * These predicates are all just aliases for predicates defined in the `Cached` module. This ensures
  * that all of SSA construction will be evaluated in the same stage.
  */
-module SSA {
+module Ssa {
   class MemoryLocation = Alias::MemoryLocation;
 
   predicate hasPhiInstruction = Cached::hasPhiInstructionCached/2;
@@ -1144,3 +1134,6 @@ module SSA {
 
   predicate hasUnreachedInstruction = Cached::hasUnreachedInstructionCached/1;
 }
+
+/** DEPRECATED: Alias for Ssa */
+deprecated module SSA = Ssa;

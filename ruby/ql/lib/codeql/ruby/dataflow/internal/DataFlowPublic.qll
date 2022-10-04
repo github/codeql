@@ -1,4 +1,4 @@
-private import ruby
+private import codeql.ruby.AST
 private import DataFlowDispatch
 private import DataFlowPrivate
 private import codeql.ruby.CFG
@@ -87,6 +87,41 @@ class CallNode extends LocalSourceNode, ExprNode {
 
   /** Gets the block of this call. */
   Node getBlock() { result.asExpr() = node.getBlock() }
+
+  /**
+   * Gets the data-flow node corresponding to the named argument of the call
+   * corresponding to this data-flow node, also including values passed with (pre Ruby
+   * 2.0) hash arguments.
+   *
+   * Such hash arguments are tracked back to their source location within functions, but
+   * no inter-procedural analysis occurs.
+   *
+   * This means all 3 variants below will be handled by this predicate:
+   *
+   * ```ruby
+   * foo(..., some_option: 42)
+   * foo(..., { some_option: 42 })
+   * options = { some_option: 42 }
+   * foo(..., options)
+   * ```
+   */
+  Node getKeywordArgumentIncludeHashArgument(string name) {
+    // to reduce number of computed tuples, I have put bindingset on both this and name,
+    // meaning we only do the local backwards tracking for known calls and known names.
+    // (not because a performance problem was seen, it just seemed right).
+    result = this.getKeywordArgument(name)
+    or
+    exists(CfgNodes::ExprNodes::PairCfgNode pair |
+      pair =
+        this.getArgument(_)
+            .getALocalSource()
+            .asExpr()
+            .(CfgNodes::ExprNodes::HashLiteralCfgNode)
+            .getAKeyValuePair() and
+      pair.getKey().getConstantValue().isStringlikeValue(name) and
+      result.asExpr() = pair.getValue()
+    )
+  }
 }
 
 /**
@@ -279,6 +314,34 @@ module Content {
   class UnknownPairValueContent extends PairValueContent, TUnknownPairValueContent {
     override string toString() { result = "pair" }
   }
+
+  /** Gets the content representing a value in a pair corresponding to constant value `cv`. */
+  PairValueContent getPairValueContent(ConstantValue cv) {
+    result = TKnownPairValueContent(cv)
+    or
+    not exists(TKnownPairValueContent(cv)) and
+    result = TUnknownPairValueContent()
+  }
+
+  /**
+   * A value stored behind a getter/setter pair.
+   *
+   * This is used (only) by type-tracking, as a heuristic since getter/setter pairs tend to operate
+   * on similar types of objects (i.e. the type flowing into a setter will likely flow out of the getter).
+   */
+  class AttributeNameContent extends Content, TAttributeName {
+    private string name;
+
+    AttributeNameContent() { this = TAttributeName(name) }
+
+    override string toString() { result = "attribute " + name }
+
+    /** Gets the attribute name. */
+    string getName() { result = name }
+  }
+
+  /** Gets `AttributeNameContent` of the given name. */
+  AttributeNameContent getAttributeName(string name) { result.getName() = name }
 }
 
 /**
@@ -295,10 +358,27 @@ class ContentSet extends TContentSet {
   predicate isAnyElement() { this = TAnyElementContent() }
 
   /**
+   * Holds if this content set represents a specific known element index, or an
+   * unknown element index.
+   */
+  predicate isKnownOrUnknownElement(Content::KnownElementContent c) {
+    this = TKnownOrUnknownElementContent(c)
+  }
+
+  /**
    * Holds if this content set represents all `KnownElementContent`s where
    * the index is an integer greater than or equal to `lower`.
    */
-  predicate isElementLowerBound(int lower) { this = TElementLowerBoundContent(lower) }
+  predicate isElementLowerBound(int lower) { this = TElementLowerBoundContent(lower, false) }
+
+  /**
+   * Holds if this content set represents `UnknownElementContent` unioned with
+   * all `KnownElementContent`s where the index is an integer greater than or
+   * equal to `lower`.
+   */
+  predicate isElementLowerBoundOrUnknown(int lower) {
+    this = TElementLowerBoundContent(lower, true)
+  }
 
   /** Gets a textual representation of this content set. */
   string toString() {
@@ -310,8 +390,18 @@ class ContentSet extends TContentSet {
     this.isAnyElement() and
     result = "any element"
     or
-    exists(int lower |
-      this.isElementLowerBound(lower) and
+    exists(Content::KnownElementContent c |
+      this.isKnownOrUnknownElement(c) and
+      result = c + " or unknown"
+    )
+    or
+    exists(int lower, boolean includeUnknown |
+      this = TElementLowerBoundContent(lower, includeUnknown)
+    |
+      includeUnknown = false and
+      result = lower + "..!"
+      or
+      includeUnknown = true and
       result = lower + ".."
     )
   }
@@ -320,8 +410,17 @@ class ContentSet extends TContentSet {
   Content getAStoreContent() {
     this.isSingleton(result)
     or
+    // For reverse stores, `a[unknown][0] = x`, it is important that the read-step
+    // from `a` to `a[unknown]` (which can read any element), gets translated into
+    // a reverse store step that store only into `?`
     this.isAnyElement() and
     result = TUnknownElementContent()
+    or
+    // For reverse stores, `a[1][0] = x`, it is important that the read-step
+    // from `a` to `a[1]` (which can read both elements stored at exactly index `1`
+    // and elements stored at unknown index), gets translated into a reverse store
+    // step that store only into `1`
+    this.isKnownOrUnknownElement(result)
     or
     this.isElementLowerBound(_) and
     result = TUnknownElementContent()
@@ -334,10 +433,21 @@ class ContentSet extends TContentSet {
     this.isAnyElement() and
     result instanceof Content::ElementContent
     or
-    exists(int lower, int i |
-      this.isElementLowerBound(lower) and
-      result.(Content::KnownElementContent).getIndex().isInt(i) and
-      i >= lower
+    exists(Content::KnownElementContent c | this.isKnownOrUnknownElement(c) |
+      result = c or
+      result = TUnknownElementContent()
+    )
+    or
+    exists(int lower, boolean includeUnknown |
+      this = TElementLowerBoundContent(lower, includeUnknown)
+    |
+      exists(int i |
+        result.(Content::KnownElementContent).getIndex().isInt(i) and
+        i >= lower
+      )
+      or
+      includeUnknown = true and
+      result = TUnknownElementContent()
     )
   }
 }

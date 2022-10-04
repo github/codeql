@@ -222,7 +222,7 @@ class HtmlEscaping extends Escaping {
 }
 
 /** Provides classes for modeling HTTP-related APIs. */
-module HTTP {
+module Http {
   /** Provides classes for modeling HTTP servers. */
   module Server {
     /**
@@ -465,7 +465,7 @@ module HTTP {
        * Extend this class to model new APIs. If you want to refine existing API models,
        * extend `HttpResponse` instead.
        */
-      abstract class Range extends HTTP::Server::HttpResponse::Range {
+      abstract class Range extends Http::Server::HttpResponse::Range {
         /** Gets the data-flow node that specifies the location of this HTTP redirect response. */
         abstract DataFlow::Node getRedirectLocation();
       }
@@ -474,13 +474,15 @@ module HTTP {
 
   /** Provides classes for modeling HTTP clients. */
   module Client {
+    import codeql.ruby.internal.ConceptsShared::Http::Client as SC
+
     /**
      * A method call that makes an outgoing HTTP request.
      *
      * Extend this class to refine existing API models. If you want to model new APIs,
      * extend `Request::Range` instead.
      */
-    class Request extends MethodCall instanceof Request::Range {
+    class Request extends SC::Request instanceof Request::Range {
       /** Gets a node which returns the body of the response */
       DataFlow::Node getResponseBody() { result = super.getResponseBody() }
 
@@ -490,24 +492,19 @@ module HTTP {
        * Gets a node that contributes to the URL of the request.
        * Depending on the framework, a request may have multiple nodes which contribute to the URL.
        */
-      deprecated DataFlow::Node getURL() { result = super.getURL() or result = super.getAUrlPart() }
-
-      /**
-       * Gets a data-flow node that contributes to the URL of the request.
-       * Depending on the framework, a request may have multiple nodes which contribute to the URL.
-       */
-      DataFlow::Node getAUrlPart() { result = super.getAUrlPart() }
-
-      /** Gets a string that identifies the framework used for this request. */
-      string getFramework() { result = super.getFramework() }
+      deprecated DataFlow::Node getURL() {
+        result = super.getURL() or result = Request::Range.super.getAUrlPart()
+      }
 
       /**
        * Holds if this request is made using a mode that disables SSL/TLS
        * certificate validation, where `disablingNode` represents the point at
        * which the validation was disabled.
        */
-      predicate disablesCertificateValidation(DataFlow::Node disablingNode) {
-        super.disablesCertificateValidation(disablingNode)
+      deprecated predicate disablesCertificateValidation(DataFlow::Node disablingNode) {
+        Request::Range.super.disablesCertificateValidation(disablingNode, _)
+        or
+        Request::Range.super.disablesCertificateValidation(disablingNode)
       }
     }
 
@@ -519,7 +516,7 @@ module HTTP {
        * Extend this class to model new APIs. If you want to refine existing API models,
        * extend `Request` instead.
        */
-      abstract class Range extends MethodCall {
+      abstract class Range extends SC::Request::Range {
         /** Gets a node which returns the body of the response */
         abstract DataFlow::Node getResponseBody();
 
@@ -532,20 +529,13 @@ module HTTP {
         deprecated DataFlow::Node getURL() { none() }
 
         /**
-         * Gets a data-flow node that contributes to the URL of the request.
-         * Depending on the framework, a request may have multiple nodes which contribute to the URL.
-         */
-        abstract DataFlow::Node getAUrlPart();
-
-        /** Gets a string that identifies the framework used for this request. */
-        abstract string getFramework();
-
-        /**
+         * DEPRECATED: override `disablesCertificateValidation/2` instead.
+         *
          * Holds if this request is made using a mode that disables SSL/TLS
          * certificate validation, where `disablingNode` represents the point at
          * which the validation was disabled.
          */
-        abstract predicate disablesCertificateValidation(DataFlow::Node disablingNode);
+        deprecated predicate disablesCertificateValidation(DataFlow::Node disablingNode) { none() }
       }
     }
 
@@ -559,6 +549,9 @@ module HTTP {
     }
   }
 }
+
+/** DEPRECATED: Alias for Http */
+deprecated module HTTP = Http;
 
 /**
  * A data flow node that executes an operating system command,
@@ -621,16 +614,12 @@ module CodeExecution {
  * Extend this class to refine existing API models. If you want to model new APIs,
  * extend `XmlParserCall::Range` instead.
  */
-class XmlParserCall extends DataFlow::Node {
-  XmlParserCall::Range range;
-
-  XmlParserCall() { this = range }
-
+class XmlParserCall extends DataFlow::Node instanceof XmlParserCall::Range {
   /** Gets the argument that specifies the XML content to be parsed. */
-  DataFlow::Node getInput() { result = range.getInput() }
+  DataFlow::Node getInput() { result = super.getInput() }
 
   /** Holds if this XML parser call is configured to process external entities */
-  predicate externalEntitiesEnabled() { range.externalEntitiesEnabled() }
+  predicate externalEntitiesEnabled() { super.externalEntitiesEnabled() }
 }
 
 /** Provides a class for modeling new XML parsing APIs. */
@@ -800,13 +789,9 @@ module CookieSecurityConfigurationSetting {
  * Extend this class to refine existing API models. If you want to model new APIs,
  * extend `Logging::Range` instead.
  */
-class Logging extends DataFlow::Node {
-  Logging::Range range;
-
-  Logging() { this = range }
-
+class Logging extends DataFlow::Node instanceof Logging::Range {
   /** Gets an input that is logged. */
-  DataFlow::Node getAnInput() { result = range.getAnInput() }
+  DataFlow::Node getAnInput() { result = super.getAnInput() }
 }
 
 /** Provides a class for modeling new logging mechanisms. */

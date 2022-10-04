@@ -10,8 +10,7 @@
  *    - should `Foo.new` point to `Foo#initialize`?
  */
 
-import ruby
-import codeql.ruby.ast.internal.Module
+import codeql.ruby.AST
 import codeql.ruby.dataflow.SSA
 
 from DefLoc loc, Expr src, Expr target, string kind
@@ -36,7 +35,7 @@ select src, target, kind
 newtype DefLoc =
   /** A constant, module or class. */
   ConstantDefLoc(ConstantReadAccess read, ConstantWriteAccess write) {
-    write = definitionOf(resolveConstant(read))
+    write = definitionOf(read.getAQualifiedName())
   } or
   /** A method call. */
   MethodLoc(MethodCall call, Method meth) { meth = call.getATarget() } or
@@ -75,7 +74,7 @@ newtype DefLoc =
  */
 pragma[noinline]
 ConstantWriteAccess definitionOf(string fqn) {
-  fqn = resolveConstant(_) and
+  fqn = any(ConstantReadAccess read).getAQualifiedName() and
   result =
     min(ConstantWriteAccess w, Location l |
       w.getAQualifiedName() = fqn and l = w.getLocation()

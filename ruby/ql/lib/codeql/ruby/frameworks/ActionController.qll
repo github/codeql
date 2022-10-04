@@ -7,9 +7,8 @@ private import codeql.ruby.Concepts
 private import codeql.ruby.controlflow.CfgNodes
 private import codeql.ruby.DataFlow
 private import codeql.ruby.dataflow.RemoteFlowSources
-private import codeql.ruby.ast.internal.Module
 private import codeql.ruby.ApiGraphs
-private import ActionView
+private import codeql.ruby.frameworks.ActionView
 private import codeql.ruby.frameworks.ActionDispatch
 
 /**
@@ -32,7 +31,12 @@ class ActionControllerControllerClass extends ClassDeclaration {
         API::getTopLevelMember("ActionController").getMember("Base"),
         // In Rails applications `ApplicationController` typically extends `ActionController::Base`, but we
         // treat it separately in case the `ApplicationController` definition is not in the database.
-        API::getTopLevelMember("ApplicationController")
+        API::getTopLevelMember("ApplicationController"),
+        // ActionController::Metal technically doesn't contain all of the
+        // methods available in Base, such as those for rendering views.
+        // However we prefer to be over-sensitive in this case in order to find
+        // more results.
+        API::getTopLevelMember("ActionController").getMember("Metal")
       ].getASubclass().getAValueReachableFromSource().asExpr().getExpr()
   }
 
@@ -46,7 +50,7 @@ class ActionControllerControllerClass extends ClassDeclaration {
  * A public instance method defined within an `ActionController` controller class.
  * This may be the target of a route handler, if such a route is defined.
  */
-class ActionControllerActionMethod extends Method, HTTP::Server::RequestHandler::Range {
+class ActionControllerActionMethod extends Method, Http::Server::RequestHandler::Range {
   private ActionControllerControllerClass controllerClass;
 
   ActionControllerActionMethod() { this = controllerClass.getAMethod() and not this.isPrivate() }
@@ -96,7 +100,7 @@ private predicate isRoute(
   ActionDispatch::Routing::Route route, string name, ActionControllerControllerClass controllerClass
 ) {
   route.getController() + "_controller" =
-    ActionDispatch::Routing::underscore(namespaceDeclaration(controllerClass)) and
+    ActionDispatch::Routing::underscore(controllerClass.getAQualifiedName()) and
   name = route.getAction()
 }
 
@@ -126,7 +130,7 @@ abstract class ParamsCall extends MethodCall {
  * A `RemoteFlowSource::Range` to represent accessing the
  * ActionController parameters available via the `params` method.
  */
-class ParamsSource extends HTTP::Server::RequestInputAccess::Range {
+class ParamsSource extends Http::Server::RequestInputAccess::Range {
   ParamsSource() { this.asExpr().getExpr() instanceof ParamsCall }
 
   override string getSourceType() { result = "ActionController::Metal#params" }
@@ -143,7 +147,7 @@ abstract class CookiesCall extends MethodCall {
  * A `RemoteFlowSource::Range` to represent accessing the
  * ActionController parameters available via the `cookies` method.
  */
-class CookiesSource extends HTTP::Server::RequestInputAccess::Range {
+class CookiesSource extends Http::Server::RequestInputAccess::Range {
   CookiesSource() { this.asExpr().getExpr() instanceof CookiesCall }
 
   override string getSourceType() { result = "ActionController::Metal#cookies" }
@@ -211,7 +215,7 @@ class RedirectToCall extends ActionControllerContextCall {
 /**
  * A call to the `redirect_to` method, as an `HttpRedirectResponse`.
  */
-class ActionControllerRedirectResponse extends HTTP::Server::HttpRedirectResponse::Range {
+class ActionControllerRedirectResponse extends Http::Server::HttpRedirectResponse::Range {
   RedirectToCall redirectToCall;
 
   ActionControllerRedirectResponse() { this.asExpr().getExpr() = redirectToCall }
@@ -356,4 +360,16 @@ private class ActionControllerProtectFromForgeryCall extends CsrfProtectionSetti
   override boolean getVerificationSetting() {
     if this.getWithValueText() = "exception" then result = true else result = false
   }
+}
+
+/**
+ * A call to `send_file`, which sends the file at the given path to the client.
+ */
+private class SendFile extends FileSystemAccess::Range, DataFlow::CallNode {
+  SendFile() {
+    this.asExpr().getExpr() instanceof ActionControllerContextCall and
+    this.getMethodName() = "send_file"
+  }
+
+  override DataFlow::Node getAPathArgument() { result = this.getArgument(0) }
 }

@@ -5,6 +5,7 @@
  *              exponential time on certain inputs.
  * @kind path-problem
  * @problem.severity error
+ * @security-severity 7.5
  * @precision high
  * @id py/regex-injection
  * @tags security
@@ -23,6 +24,6 @@ from
 where
   config.hasFlowPath(source, sink) and
   regexExecution = sink.getNode().(Sink).getRegexExecution()
-select sink.getNode(), source, sink,
-  "$@ regular expression is constructed from a $@ and executed by $@.", sink.getNode(), "This",
-  source.getNode(), "user-provided value", regexExecution, regexExecution.getName()
+select sink.getNode(), source, sink, "$@ depends on $@ and executed by $@.", sink.getNode(),
+  "This regular expression", source.getNode(), "a user-provided value", regexExecution,
+  regexExecution.getName()

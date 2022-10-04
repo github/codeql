@@ -11,7 +11,7 @@
  *       external/cwe/cwe-352
  */
 
-import ruby
+import codeql.ruby.AST
 import codeql.ruby.Concepts
 
 from CsrfProtectionSetting s

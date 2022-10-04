@@ -15,7 +15,7 @@ private module ExperimentalPrivateDjango {
   private module DjangoMod {
     API::Node http() { result = API::moduleImport("django").getMember("http") }
 
-    module Http {
+    module DjangoHttp {
       API::Node response() { result = http().getMember("response") }
 
       API::Node request() { result = http().getMember("request") }
@@ -54,7 +54,7 @@ private module ExperimentalPrivateDjango {
            *
            * Use the predicate `HttpResponse::instance()` to get references to instances of `django.http.response.HttpResponse`.
            */
-          abstract class InstanceSource extends HTTP::Server::HttpResponse::Range, DataFlow::Node {
+          abstract class InstanceSource extends Http::Server::HttpResponse::Range, DataFlow::Node {
           }
 
           /** A direct instantiation of `django.http.response.HttpResponse`. */
@@ -85,35 +85,20 @@ private module ExperimentalPrivateDjango {
           DataFlow::Node instance() { instance(DataFlow::TypeTracker::end()).flowsTo(result) }
 
           /** Gets a reference to a header instance. */
-          private DataFlow::LocalSourceNode headerInstance(DataFlow::TypeTracker t) {
-            t.start() and
-            (
-              exists(SubscriptNode subscript |
-                subscript.getObject() =
-                  baseClassRef().getReturn().getAValueReachableFromSource().asCfgNode() and
-                result.asCfgNode() = subscript
-              )
-              or
-              result.(DataFlow::AttrRead).getObject() =
-                baseClassRef().getReturn().getAValueReachableFromSource()
-            )
+          API::Node headerInstance() {
+            result = baseClassRef().getReturn().getASubscript()
             or
-            exists(DataFlow::TypeTracker t2 | result = headerInstance(t2).track(t2, t))
-          }
-
-          /** Gets a reference to a header instance use. */
-          private DataFlow::Node headerInstance() {
-            headerInstance(DataFlow::TypeTracker::end()).flowsTo(result)
+            result = baseClassRef().getReturn().getAMember()
           }
 
           /** Gets a reference to a header instance call with `__setitem__`. */
-          private DataFlow::Node headerSetItemCall() {
+          API::Node headerSetItem() {
             result = headerInstance() and
-            result.(DataFlow::AttrRead).getAttributeName() = "__setitem__"
+            result.asSource().(DataFlow::AttrRead).getAttributeName() = "__setitem__"
           }
 
           class DjangoResponseSetItemCall extends DataFlow::CallCfgNode, HeaderDeclaration::Range {
-            DjangoResponseSetItemCall() { this.getFunction() = headerSetItemCall() }
+            DjangoResponseSetItemCall() { this = headerSetItem().getACall() }
 
             override DataFlow::Node getNameArg() { result = this.getArg(0) }
 
@@ -124,7 +109,8 @@ private module ExperimentalPrivateDjango {
             DataFlow::Node headerInput;
 
             DjangoResponseDefinition() {
-              this.asCfgNode().(DefinitionNode) = headerInstance().asCfgNode() and
+              this.asCfgNode().(DefinitionNode) =
+                headerInstance().getAValueReachableFromSource().asCfgNode() and
               headerInput.asCfgNode() = this.asCfgNode().(DefinitionNode).getValue()
             }
 
@@ -156,7 +142,7 @@ private module ExperimentalPrivateDjango {
            */
           class DjangoResponseSetCookieCall extends DataFlow::MethodCallNode, Cookie::Range {
             DjangoResponseSetCookieCall() {
-              this.calls(PrivateDjango::DjangoImpl::Http::Response::HttpResponse::instance(),
+              this.calls(PrivateDjango::DjangoImpl::DjangoHttp::Response::HttpResponse::instance(),
                 "set_cookie")
             }
 

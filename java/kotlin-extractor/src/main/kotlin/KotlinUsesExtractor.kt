@@ -38,7 +38,6 @@ open class KotlinUsesExtractor(
     val pluginContext: IrPluginContext,
     val globalExtensionState: KotlinExtractorGlobalState
 ) {
-
     val javaLangObject by lazy {
         val result = pluginContext.referenceClass(FqName("java.lang.Object"))?.owner
         result?.let { extractExternalClassLater(it) }
@@ -128,18 +127,24 @@ open class KotlinUsesExtractor(
             return this
         }
 
+        val newDeclarationStack =
+            if (this is KotlinFileExtractor)
+                this.declarationStack
+            else
+                KotlinFileExtractor.DeclarationStack()
+
         if (clsFile == null || isExternalDeclaration(cls)) {
             val filePath = getIrClassBinaryPath(cls)
             val newTrapWriter = tw.makeFileTrapWriter(filePath, true)
             val newLoggerTrapWriter = logger.tw.makeFileTrapWriter(filePath, false)
             val newLogger = FileLogger(logger.loggerBase, newLoggerTrapWriter)
-            return KotlinFileExtractor(newLogger, newTrapWriter, filePath, dependencyCollector, externalClassExtractor, primitiveTypeMapping, pluginContext, globalExtensionState)
+            return KotlinFileExtractor(newLogger, newTrapWriter, filePath, dependencyCollector, externalClassExtractor, primitiveTypeMapping, pluginContext, newDeclarationStack, globalExtensionState)
         }
 
         val newTrapWriter = tw.makeSourceFileTrapWriter(clsFile, true)
         val newLoggerTrapWriter = logger.tw.makeSourceFileTrapWriter(clsFile, false)
         val newLogger = FileLogger(logger.loggerBase, newLoggerTrapWriter)
-        return KotlinFileExtractor(newLogger, newTrapWriter, clsFile.path, dependencyCollector, externalClassExtractor, primitiveTypeMapping, pluginContext, globalExtensionState)
+        return KotlinFileExtractor(newLogger, newTrapWriter, clsFile.path, dependencyCollector, externalClassExtractor, primitiveTypeMapping, pluginContext, newDeclarationStack, globalExtensionState)
     }
 
     // The Kotlin compiler internal representation of Outer<T>.Inner<S>.InnerInner<R> is InnerInner<R, S, T>. This function returns just `R`.
@@ -220,7 +225,7 @@ open class KotlinUsesExtractor(
         val extractedTypeArgs = when {
             extractClass.symbol.isKFunction() && typeArgs != null && typeArgs.isNotEmpty() -> listOf(typeArgs.last())
             extractClass.fqNameWhenAvailable == FqName("kotlin.jvm.functions.FunctionN") && typeArgs != null && typeArgs.isNotEmpty() -> listOf(typeArgs.last())
-            typeArgs != null && isUnspecialised(c, typeArgs) -> listOf()
+            typeArgs != null && isUnspecialised(c, typeArgs, logger) -> listOf()
             else -> typeArgs
         }
 
@@ -308,15 +313,30 @@ open class KotlinUsesExtractor(
             c.hasEqualFqName(FqName("java.lang.Object")))
             return c
         return globalExtensionState.syntheticToRealClassMap.getOrPut(c) {
-            val result = c.fqNameWhenAvailable?.let {
-                pluginContext.referenceClass(it)?.owner
+            val qualifiedName = c.fqNameWhenAvailable
+            if (qualifiedName == null) {
+                logger.warn("Failed to replace synthetic class ${c.name} because it has no fully qualified name")
+                return@getOrPut null
             }
-            if (result == null) {
-                logger.warn("Failed to replace synthetic class ${c.name}")
-            } else {
+
+            val result = pluginContext.referenceClass(qualifiedName)?.owner
+            if (result != null) {
                 logger.info("Replaced synthetic class ${c.name} with its real equivalent")
+                return@getOrPut result
             }
-            result
+
+            // The above doesn't work for (some) generated nested classes, such as R$id, which should be R.id
+            val fqn = qualifiedName.asString()
+            if (fqn.indexOf('$') >= 0) {
+                val nested = pluginContext.referenceClass(FqName(fqn.replace('$', '.')))?.owner
+                if (nested != null) {
+                    logger.info("Replaced synthetic nested class ${c.name} with its real equivalent")
+                    return@getOrPut nested
+                }
+            }
+
+            logger.warn("Failed to replace synthetic class ${c.name}")
+            return@getOrPut null
         } ?: c
     }
 
@@ -327,7 +347,7 @@ open class KotlinUsesExtractor(
             return f
         return globalExtensionState.syntheticToRealFunctionMap.getOrPut(f) {
             val result = replacementClass.declarations.findSubType<IrSimpleFunction> { replacementDecl ->
-                replacementDecl is IrSimpleFunction && replacementDecl.name == f.name && replacementDecl.valueParameters.size == f.valueParameters.size && replacementDecl.valueParameters.zip(f.valueParameters).all {
+                replacementDecl.name == f.name && replacementDecl.valueParameters.size == f.valueParameters.size && replacementDecl.valueParameters.zip(f.valueParameters).all {
                     erase(it.first.type) == erase(it.second.type)
                 }
             }
@@ -351,9 +371,8 @@ open class KotlinUsesExtractor(
         if (replacementClass === parentClass)
             return f
         return globalExtensionState.syntheticToRealFieldMap.getOrPut(f) {
-            val result = replacementClass.declarations.findSubType<IrField> { replacementDecl ->
-                replacementDecl.name == f.name
-            }
+            val result = replacementClass.declarations.findSubType<IrField> { replacementDecl -> replacementDecl.name == f.name }
+                ?: replacementClass.declarations.findSubType<IrProperty> { it.backingField?.name == f.name}?.backingField
             if (result == null) {
                 logger.warn("Failed to replace synthetic class field ${f.name}")
             } else {
@@ -461,6 +480,14 @@ open class KotlinUsesExtractor(
             )
         }
 
+    fun getExistingAnonymousClassLabel(c: IrClass): Label<out DbType>? {
+        if (!c.isAnonymousObject){
+            return null
+        }
+
+        return tw.lm.anonymousTypeMapping[c]?.javaResult?.id
+    }
+
     fun fakeKotlinType(): Label<out DbKt_type> {
         val fakeKotlinPackageId: Label<DbPackage> = tw.getLabelFor("@\"FakeKotlinPackage\"", {
             tw.writePackages(it, "fake.kotlin")
@@ -479,7 +506,7 @@ open class KotlinUsesExtractor(
     fun useSimpleTypeClass(c: IrClass, args: List<IrTypeArgument>?, hasQuestionMark: Boolean): TypeResults {
         if (c.isAnonymousObject) {
             args?.let {
-                if (it.isNotEmpty() && !isUnspecialised(c, it)) {
+                if (it.isNotEmpty() && !isUnspecialised(c, it, logger)) {
                     logger.error("Unexpected specialised instance of generic anonymous class")
                 }
             }
@@ -539,15 +566,52 @@ open class KotlinUsesExtractor(
                 )
         }
 
-    private fun useArrayType(arrayType: IrSimpleType, componentType: IrType, elementType: IrType, dimensions: Int, isPrimitiveArray: Boolean): TypeResults {
+    data class ArrayInfo(val elementTypeResults: TypeResults,
+                         val componentTypeResults: TypeResults,
+                         val dimensions: Int)
 
-        // Ensure we extract Array<Int> as Integer[], not int[], for example:
-        fun nullableIfNotPrimitive(type: IrType) = if (type.isPrimitiveType() && !isPrimitiveArray) type.makeNullable() else type
+    /**
+     * `t` is somewhere in a stack of array types, or possibly the
+     * element type of the innermost array. For example, in
+     * `Array<Array<Int>>`, we will be called with `t` being
+     * `Array<Array<Int>>`, then `Array<Int>`, then `Int`.
+     * `isPrimitiveArray` is true if we are immediately nested
+     * inside a primitive array.
+     */
+    private fun useArrayType(t: IrType, isPrimitiveArray: Boolean): ArrayInfo {
 
-        val componentTypeResults = useType(nullableIfNotPrimitive(componentType))
-        val elementTypeLabel = useType(nullableIfNotPrimitive(elementType)).javaResult.id
+        if (!t.isBoxedArray && !t.isPrimitiveArray()) {
+            val nullableT = if (t.isPrimitiveType() && !isPrimitiveArray) t.makeNullable() else t
+            val typeResults = useType(nullableT)
+            return ArrayInfo(typeResults, typeResults, 0)
+        }
 
-        val javaShortName = componentTypeResults.javaResult.shortName + "[]"
+        if (t !is IrSimpleType) {
+            logger.error("Unexpected non-simple array type: ${t.javaClass}")
+            return ArrayInfo(extractErrorType(), extractErrorType(), 0)
+        }
+
+        val arrayClass = t.classifier.owner
+        if (arrayClass !is IrClass) {
+            logger.error("Unexpected owner type for array type: ${arrayClass.javaClass}")
+            return ArrayInfo(extractErrorType(), extractErrorType(), 0)
+        }
+
+        // Because Java's arrays are covariant, Kotlin will render
+        // Array<in X> as Object[], Array<Array<in X>> as Object[][] etc.
+        val elementType = if ((t.arguments.singleOrNull() as? IrTypeProjection)?.variance == Variance.IN_VARIANCE) {
+            pluginContext.irBuiltIns.anyType
+        } else {
+            t.getArrayElementType(pluginContext.irBuiltIns)
+        }
+
+        val recInfo = useArrayType(elementType, t.isPrimitiveArray())
+
+        val javaShortName = recInfo.componentTypeResults.javaResult.shortName + "[]"
+        val kotlinShortName = recInfo.componentTypeResults.kotlinResult.shortName + "[]"
+        val elementTypeLabel = recInfo.elementTypeResults.javaResult.id
+        val componentTypeLabel = recInfo.componentTypeResults.javaResult.id
+        val dimensions = recInfo.dimensions + 1
 
         val id = tw.getLabelFor<DbArray>("@\"array;$dimensions;{${elementTypeLabel}}\"") {
             tw.writeArrays(
@@ -555,9 +619,9 @@ open class KotlinUsesExtractor(
                 javaShortName,
                 elementTypeLabel,
                 dimensions,
-                componentTypeResults.javaResult.id)
+                componentTypeLabel)
 
-            extractClassSupertypes(arrayType.classifier.owner as IrClass, it, ExtractSupertypesMode.Specialised(arrayType.arguments))
+            extractClassSupertypes(arrayClass, it, ExtractSupertypesMode.Specialised(t.arguments))
 
             // array.length
             val length = tw.getLabelFor<DbField>("@\"field;{$it};length\"")
@@ -568,7 +632,7 @@ open class KotlinUsesExtractor(
 
             // Note we will only emit one `clone()` method per Java array type, so we choose `Array<C?>` as its Kotlin
             // return type, where C is the component type with any nested arrays themselves invariant and nullable.
-            val kotlinCloneReturnType = getInvariantNullableArrayType(arrayType).makeNullable()
+            val kotlinCloneReturnType = getInvariantNullableArrayType(t).makeNullable()
             val kotlinCloneReturnTypeLabel = useType(kotlinCloneReturnType).kotlinResult.id
 
             val clone = tw.getLabelFor<DbMethod>("@\"callable;{$it}.clone(){$it}\"")
@@ -579,11 +643,15 @@ open class KotlinUsesExtractor(
 
         val javaResult = TypeResult(
             id,
-            componentTypeResults.javaResult.signature + "[]",
+            recInfo.componentTypeResults.javaResult.signature + "[]",
             javaShortName)
+        val kotlinResult = TypeResult(
+            fakeKotlinType(),
+            recInfo.componentTypeResults.kotlinResult.signature + "[]",
+            kotlinShortName)
+        val typeResults = TypeResults(javaResult, kotlinResult)
 
-        val arrayClassResult = useSimpleTypeClass(arrayType.classifier.owner as IrClass, arrayType.arguments, arrayType.hasQuestionMark)
-        return TypeResults(javaResult, arrayClassResult.kotlinResult)
+        return ArrayInfo(recInfo.elementTypeResults, typeResults, dimensions)
     }
 
     enum class TypeContext {
@@ -609,7 +677,7 @@ open class KotlinUsesExtractor(
                           otherIsPrimitive: Boolean,
                           javaClass: IrClass,
                           kotlinPackageName: String, kotlinClassName: String): TypeResults {
-            val javaResult = if ((context == TypeContext.RETURN || (context == TypeContext.OTHER && otherIsPrimitive)) && !s.hasQuestionMark && primitiveName != null) {
+            val javaResult = if ((context == TypeContext.RETURN || (context == TypeContext.OTHER && otherIsPrimitive)) && !s.isNullable() && primitiveName != null) {
                     val label: Label<DbPrimitive> = tw.getLabelFor("@\"type;$primitiveName\"", {
                         tw.writePrimitives(it, primitiveName)
                     })
@@ -619,7 +687,7 @@ open class KotlinUsesExtractor(
                 }
             val kotlinClassId = useClassInstance(kotlinClass, listOf()).typeResult.id
             val kotlinResult = if (true) TypeResult(fakeKotlinType(), "TODO", "TODO") else
-                if (s.hasQuestionMark) {
+                if (s.isNullable()) {
                     val kotlinSignature = "$kotlinPackageName.$kotlinClassName?" // TODO: Is this right?
                     val kotlinLabel = "@\"kt_type;nullable;$kotlinPackageName.$kotlinClassName\""
                     val kotlinId: Label<DbKt_nullable_type> = tw.getLabelFor(kotlinLabel, {
@@ -637,66 +705,39 @@ open class KotlinUsesExtractor(
             return TypeResults(javaResult, kotlinResult)
         }
 
+        val owner = s.classifier.owner
         val primitiveInfo = primitiveTypeMapping.getPrimitiveInfo(s)
 
         when {
-            primitiveInfo != null -> return primitiveType(
-                s.classifier.owner as IrClass,
-                primitiveInfo.primitiveName, primitiveInfo.otherIsPrimitive,
-                primitiveInfo.javaClass,
-                primitiveInfo.kotlinPackageName, primitiveInfo.kotlinClassName
-            )
+            primitiveInfo != null -> {
+                if (owner is IrClass) {
+                    return primitiveType(
+                        owner,
+                        primitiveInfo.primitiveName, primitiveInfo.otherIsPrimitive,
+                        primitiveInfo.javaClass,
+                        primitiveInfo.kotlinPackageName, primitiveInfo.kotlinClassName
+                    )
+                } else {
+                    logger.error("Got primitive info for non-class (${owner.javaClass}) for ${s.render()}")
+                    return extractErrorType()
+                }
+            }
 
             (s.isBoxedArray && s.arguments.isNotEmpty()) || s.isPrimitiveArray() -> {
-
-                fun replaceComponentTypeWithAny(t: IrSimpleType, dimensions: Int): IrSimpleType =
-                    if (dimensions == 0)
-                        pluginContext.irBuiltIns.anyType as IrSimpleType
-                    else
-                        t.toBuilder().also { it.arguments = (it.arguments[0] as IrTypeProjection)
-                            .let { oldArg ->
-                                listOf(makeTypeProjection(replaceComponentTypeWithAny(oldArg.type as IrSimpleType, dimensions - 1), oldArg.variance))
-                            }
-                        }.buildSimpleType()
-
-                var componentType = s.getArrayElementType(pluginContext.irBuiltIns)
-                var isPrimitiveArray = false
-                var dimensions = 0
-                var elementType: IrType = s
-                while (elementType.isBoxedArray || elementType.isPrimitiveArray()) {
-                    dimensions++
-                    if (elementType.isPrimitiveArray())
-                        isPrimitiveArray = true
-                    if (((elementType as IrSimpleType).arguments.singleOrNull() as? IrTypeProjection)?.variance == Variance.IN_VARIANCE) {
-                        // Because Java's arrays are covariant, Kotlin will render Array<in X> as Object[], Array<Array<in X>> as Object[][] etc.
-                        componentType = replaceComponentTypeWithAny(s, dimensions - 1)
-                        elementType = pluginContext.irBuiltIns.anyType as IrSimpleType
-                        break
-                    }
-                    elementType = elementType.getArrayElementType(pluginContext.irBuiltIns)
-                }
-
-                return useArrayType(
-                    s,
-                    componentType,
-                    elementType,
-                    dimensions,
-                    isPrimitiveArray
-                )
+                val arrayInfo = useArrayType(s, false)
+                return arrayInfo.componentTypeResults
             }
 
-            s.classifier.owner is IrClass -> {
-                val classifier: IrClassifierSymbol = s.classifier
-                val cls: IrClass = classifier.owner as IrClass
+            owner is IrClass -> {
                 val args = if (s.isRawType()) null else s.arguments
 
-                return useSimpleTypeClass(cls, args, s.hasQuestionMark)
+                return useSimpleTypeClass(owner, args, s.isNullable())
             }
-            s.classifier.owner is IrTypeParameter -> {
-                val javaResult = useTypeParameter(s.classifier.owner as IrTypeParameter)
+            owner is IrTypeParameter -> {
+                val javaResult = useTypeParameter(owner)
                 val aClassId = makeClass("kotlin", "TypeParam") // TODO: Wrong
                 val kotlinResult = if (true) TypeResult(fakeKotlinType(), "TODO", "TODO") else
-                    if (s.hasQuestionMark) {
+                    if (s.isNullable()) {
                         val kotlinSignature = "${javaResult.signature}?" // TODO: Wrong
                         val kotlinLabel = "@\"kt_type;nullable;type_param\"" // TODO: Wrong
                         val kotlinId: Label<DbKt_nullable_type> = tw.getLabelFor(kotlinLabel, {
@@ -905,10 +946,17 @@ open class KotlinUsesExtractor(
         }
 
     private fun extendsAdditionAllowed(t: IrType) =
-        if (t.isBoxedArray)
-            arrayExtendsAdditionAllowed(t as IrSimpleType)
-        else
+        if (t.isBoxedArray) {
+            if (t is IrSimpleType) {
+                arrayExtendsAdditionAllowed(t)
+            } else {
+                logger.warn("Boxed array of unexpected kind ${t.javaClass}")
+                // Return false, for no particular reason
+                false
+            }
+        } else {
             ((t as? IrSimpleType)?.classOrNull?.owner?.isFinalClass) != true
+        }
 
     private fun wildcardAdditionAllowed(v: Variance, t: IrType, addByDefault: Boolean) =
         when {
@@ -984,14 +1032,18 @@ open class KotlinUsesExtractor(
      * looked up the parent ID ourselves, we would get as ID for
      * `java.lang.Throwable`, which isn't what we want. So we have to
      * allow it to be passed in.
-    */
+     *
+     * `maybeParameterList` can be supplied to override the function's
+     * value parameters; this is used for generating labels of overloads
+     * that omit one or more parameters that has a default value specified.
+     */
     @OptIn(ObsoleteDescriptorBasedAPI::class)
-    fun getFunctionLabel(f: IrFunction, maybeParentId: Label<out DbElement>?, classTypeArgsIncludingOuterClasses: List<IrTypeArgument>?) =
+    fun getFunctionLabel(f: IrFunction, maybeParentId: Label<out DbElement>?, classTypeArgsIncludingOuterClasses: List<IrTypeArgument>?, maybeParameterList: List<IrValueParameter>? = null) =
         getFunctionLabel(
             f.parent,
             maybeParentId,
             getFunctionShortName(f).nameInDB,
-            f.valueParameters,
+            maybeParameterList ?: f.valueParameters,
             getAdjustedReturnType(f),
             f.extensionReceiverParameter,
             getFunctionTypeParameters(f),
@@ -1082,7 +1134,56 @@ open class KotlinUsesExtractor(
         return "@\"$prefix;{$parentId}.$name($paramTypeIds){$returnTypeId}${typeArgSuffix}\""
     }
 
+    val javaLangClass by lazy {
+        val result = pluginContext.referenceClass(FqName("java.lang.Class"))?.owner
+        result?.let { extractExternalClassLater(it) }
+        result
+    }
+
+    fun kClassToJavaClass(t: IrType): IrType {
+        when(t) {
+            is IrSimpleType -> {
+                if (t.classifier == pluginContext.irBuiltIns.kClassClass) {
+                    javaLangClass?.let { jlc ->
+                        return jlc.symbol.typeWithArguments(t.arguments)
+                    }
+                } else {
+                    t.classOrNull?.let { tCls ->
+                        if (t.isArray() || t.isNullableArray()) {
+                            (t.arguments.singleOrNull() as? IrTypeProjection)?.let { elementTypeArg ->
+                                val elementType = elementTypeArg.type
+                                val replacedElementType = kClassToJavaClass(elementType)
+                                if (replacedElementType !== elementType) {
+                                    val newArg = makeTypeProjection(replacedElementType, elementTypeArg.variance)
+                                    return tCls.typeWithArguments(listOf(newArg)).codeQlWithHasQuestionMark(t.isNullableArray())
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return t
+    }
+
+    fun isAnnotationClassField(f: IrField) =
+        f.correspondingPropertySymbol?.let {
+            isAnnotationClassProperty(it)
+        } ?: false
+
+    private fun isAnnotationClassProperty(p: IrPropertySymbol) =
+        p.owner.parentClassOrNull?.kind == ClassKind.ANNOTATION_CLASS
+
     fun getAdjustedReturnType(f: IrFunction) : IrType {
+        // Replace annotation val accessor types as needed:
+        (f as? IrSimpleFunction)?.correspondingPropertySymbol?.let {
+            if (isAnnotationClassProperty(it) && f == it.owner.getter) {
+                val replaced = kClassToJavaClass(f.returnType)
+                if (replaced != f.returnType)
+                    return replaced
+            }
+        }
+
         // The return type of `java.util.concurrent.ConcurrentHashMap<K,V>.keySet/0` is defined as `Set<K>` in the stubs inside the Android SDK.
         // This does not match the Java SDK return type: `ConcurrentHashMap.KeySetView<K,V>`, so it's adjusted here.
         // This is a deliberate change in the Android SDK: https://github.com/AndroidSDKSources/android-sdk-sources-for-api-level-31/blob/2c56b25f619575bea12f9c5520ed2259620084ac/java/util/concurrent/ConcurrentHashMap.java#L1244-L1249
@@ -1116,10 +1217,6 @@ open class KotlinUsesExtractor(
         d.hasAnnotation(jvmWildcardSuppressionAnnotaton) ||
         // Note not using `parentsWithSelf` as that only works if `d` is an IrDeclarationParent
         d.parents.any { (it as? IrAnnotationContainer)?.hasAnnotation(jvmWildcardSuppressionAnnotaton) == true }
-
-    protected fun IrFunction.isLocalFunction(): Boolean {
-        return this.visibility == DescriptorVisibilities.LOCAL
-    }
 
     /**
      * Class to hold labels for generated classes around local functions, lambdas, function references, and property references.
@@ -1162,58 +1259,54 @@ open class KotlinUsesExtractor(
         return res
     }
 
-    // These are classes with Java equivalents, but whose methods don't all exist on those Java equivalents--
-    // for example, the numeric classes define arithmetic functions (Int.plus, Long.or and so on) that lower to
-    // primitive arithmetic on the JVM, but which we extract as calls to reflect the source syntax more closely.
-    private val expectedMissingEquivalents = setOf(
-        "kotlin.Boolean", "kotlin.Byte", "kotlin.Char", "kotlin.Double", "kotlin.Float", "kotlin.Int", "kotlin.Long", "kotlin.Number", "kotlin.Short"
-    )
+    fun getExistingLocallyVisibleFunctionLabel(f: IrFunction): Label<DbMethod>? {
+        if (!f.isLocalFunction()){
+            return null
+        }
 
-    private fun kotlinFunctionToJavaEquivalent(f: IrFunction, noReplace: Boolean) =
+        return tw.lm.locallyVisibleFunctionLabelMapping[f]?.function
+    }
+
+    private fun kotlinFunctionToJavaEquivalent(f: IrFunction, noReplace: Boolean): IrFunction =
         if (noReplace)
             f
         else
             f.parentClassOrNull?.let { parentClass ->
                 getJavaEquivalentClass(parentClass)?.let { javaClass ->
-                    if (javaClass != parentClass)
+                    if (javaClass != parentClass) {
+                        var jvmName = getFunctionShortName(f).nameInDB
+                        if (f.name.asString() == "get" && parentClass.fqNameWhenAvailable?.asString() == "kotlin.String") {
+                            // `kotlin.String.get` has an equivalent `java.lang.String.get`, which in turn will be stored in the DB as `java.lang.String.charAt`.
+                            // Maybe all operators should be handled the same way, but so far I only found this case that needed to be special cased. This is the
+                            // only operator in `JvmNames.specialFunctions`
+                            jvmName = "get"
+                        }
                         // Look for an exact type match...
                         javaClass.declarations.findSubType<IrFunction> { decl ->
-                            decl.name == f.name &&
+                            decl.name.asString() == jvmName &&
                             decl.valueParameters.size == f.valueParameters.size &&
-                            // Note matching by classifier not the whole type so that generic arguments are allowed to differ,
-                            // as they always will for method type parameters occurring in parameter types (e.g. <T> toArray(T[] array)
-                            // Differing only by nullability would also be insignificant if it came up.
-                            decl.valueParameters.zip(f.valueParameters).all { p -> p.first.type.classifierOrNull == p.second.type.classifierOrNull }
-                        } ?:
-                        // Or if there is none, look for the only viable overload
-                        javaClass.declarations.singleOrNull { decl ->
-                            decl is IrFunction &&
-                            decl.name == f.name &&
-                            decl.valueParameters.size == f.valueParameters.size
+                            decl.valueParameters.zip(f.valueParameters).all { p -> erase(p.first.type).classifierOrNull == erase(p.second.type).classifierOrNull }
                         } ?:
                         // Or check property accessors:
-                        if (f.isAccessor) {
-                            val prop = javaClass.declarations.findSubType<IrProperty> { decl ->
-                                decl.name == (f.propertyIfAccessor as IrProperty).name
+                        (f.propertyIfAccessor as? IrProperty)?.let { kotlinProp ->
+                            val javaProp = javaClass.declarations.findSubType<IrProperty> { decl ->
+                                decl.name == kotlinProp.name
                             }
-                            if (prop?.getter?.name == f.name)
-                                prop.getter
-                            else if (prop?.setter?.name == f.name)
-                                prop.setter
+                            if (javaProp?.getter?.name == f.name)
+                                javaProp.getter
+                            else if (javaProp?.setter?.name == f.name)
+                                javaProp.setter
                             else null
-                        } else {
-                            null
                         } ?: run {
                             val parentFqName = parentClass.fqNameWhenAvailable?.asString()
-                            if (!expectedMissingEquivalents.contains(parentFqName)) {
-                                logger.warn("Couldn't find a Java equivalent function to $parentFqName.${f.name} in ${javaClass.fqNameWhenAvailable}")
-                            }
+                            logger.warn("Couldn't find a Java equivalent function to $parentFqName.${f.name.asString()} in ${javaClass.fqNameWhenAvailable?.asString()}")
                             null
                         }
+                    }
                     else
                         null
                 }
-            } as IrFunction? ?: f
+            } ?: f
 
     fun <T: DbCallable> useFunction(f: IrFunction, classTypeArgsIncludingOuterClasses: List<IrTypeArgument>? = null, noReplace: Boolean = false): Label<out T> {
         return useFunction(f, null, classTypeArgsIncludingOuterClasses, noReplace)
@@ -1345,6 +1438,12 @@ open class KotlinUsesExtractor(
 
     fun getTypeParameterParentLabel(param: IrTypeParameter) =
         param.parent.let {
+            (it as? IrFunction)?.let { fn ->
+                if (this is KotlinFileExtractor)
+                    this.declarationStack.findOverriddenAttributes(fn)?.id
+                else
+                    null
+            } ?:
             when (it) {
                 is IrClass -> useClassSource(it)
                 is IrFunction -> useFunction(it, noReplace = true)
@@ -1415,12 +1514,11 @@ open class KotlinUsesExtractor(
         for(t in subbedSupertypes) {
             when(t) {
                 is IrSimpleType -> {
-                    when (t.classifier.owner) {
+                    val owner = t.classifier.owner
+                    when (owner) {
                         is IrClass -> {
-                            val classifier: IrClassifierSymbol = t.classifier
-                            val tcls: IrClass = classifier.owner as IrClass
                             val typeArgs = if (t.arguments.isNotEmpty() && mode is ExtractSupertypesMode.Raw) null else t.arguments
-                            val l = useClassInstance(tcls, typeArgs, inReceiverContext).typeResult.id
+                            val l = useClassInstance(owner, typeArgs, inReceiverContext).typeResult.id
                             tw.writeExtendsReftype(id, l)
                         }
                         else -> {
@@ -1458,13 +1556,13 @@ open class KotlinUsesExtractor(
                 return eraseTypeParameter(owner)
             }
 
-            if (t.isArray() || t.isNullableArray()) {
-                val elementType = t.getArrayElementType(pluginContext.irBuiltIns)
-                val erasedElementType = erase(elementType)
-                return (classifier as IrClassSymbol).typeWith(erasedElementType).codeQlWithHasQuestionMark(t.hasQuestionMark)
-            }
-
             if (owner is IrClass) {
+                if (t.isArray() || t.isNullableArray()) {
+                    val elementType = t.getArrayElementType(pluginContext.irBuiltIns)
+                    val erasedElementType = erase(elementType)
+                    return owner.typeWith(erasedElementType).codeQlWithHasQuestionMark(t.isNullable())
+                }
+
                 return if (t.arguments.isNotEmpty())
                     t.addAnnotations(listOf(RawTypeAnnotation.annotationConstructor))
                 else
@@ -1483,13 +1581,23 @@ open class KotlinUsesExtractor(
      */
     fun getValueParameterLabel(vp: IrValueParameter, parent: Label<out DbCallable>?): String {
         val declarationParent = vp.parent
-        val parentId = parent ?: useDeclarationParent(declarationParent, false)
+        val overriddenParentAttributes = (declarationParent as? IrFunction)?.let {
+            // Note the check 'vp.fileOrNull?.path == this.filePath' should never actually do anything, since references
+            // to a value parameter should always come from within the same .kt file.
+            if (this is KotlinFileExtractor && vp.fileOrNull?.path == this.filePath)
+                this.declarationStack.findOverriddenAttributes(it)
+            else
+                null
+        }
+        val parentId = parent ?: overriddenParentAttributes?.id ?: useDeclarationParent(declarationParent, false)
 
-        val idx = if (declarationParent is IrFunction && declarationParent.extensionReceiverParameter != null)
+        val idxBase = overriddenParentAttributes?.valueParameters?.indexOf(vp) ?: vp.index
+        val idxOffset = if (declarationParent is IrFunction && declarationParent.extensionReceiverParameter != null)
             // For extension functions increase the index to match what the java extractor sees:
-            vp.index + 1
+            1
         else
-            vp.index
+            0
+        val idx = idxBase + idxOffset
 
         if (idx < 0) {
             // We're not extracting this and this@TYPE parameters of functions:

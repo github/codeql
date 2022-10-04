@@ -559,12 +559,15 @@ pragma[nomagic]
 private predicate notExpectsContent(NodeEx n) { not expectsContentCached(n.asNode(), _) }
 
 pragma[nomagic]
+private predicate hasReadStep(Content c, Configuration config) { read(_, c, _, config) }
+
+pragma[nomagic]
 private predicate store(
   NodeEx node1, TypedContent tc, NodeEx node2, DataFlowType contentType, Configuration config
 ) {
   store(pragma[only_bind_into](node1.asNode()), tc, pragma[only_bind_into](node2.asNode()),
     contentType) and
-  read(_, tc.getContent(), _, config) and
+  hasReadStep(tc.getContent(), config) and
   stepFilter(node1, node2, config)
 }
 
@@ -598,13 +601,9 @@ private predicate hasSinkCallCtx(Configuration config) {
 }
 
 private module Stage1 implements StageSig {
-  class ApApprox = Unit;
-
   class Ap = Unit;
 
-  class ApOption = Unit;
-
-  class Cc = boolean;
+  private class Cc = boolean;
 
   /* Begin: Stage 1 logic. */
   /**
@@ -613,7 +612,7 @@ private module Stage1 implements StageSig {
    * The Boolean `cc` records whether the node is reached through an
    * argument in a call.
    */
-  predicate fwdFlow(NodeEx node, Cc cc, Configuration config) {
+  private predicate fwdFlow(NodeEx node, Cc cc, Configuration config) {
     sourceNode(node, _, config) and
     if hasSourceCallCtx(config) then cc = true else cc = false
     or
@@ -753,7 +752,7 @@ private module Stage1 implements StageSig {
    * the enclosing callable in order to reach a sink.
    */
   pragma[nomagic]
-  predicate revFlow(NodeEx node, boolean toReturn, Configuration config) {
+  private predicate revFlow(NodeEx node, boolean toReturn, Configuration config) {
     revFlow0(node, toReturn, config) and
     fwdFlow(node, config)
   }

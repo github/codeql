@@ -18,5 +18,5 @@ where
   input = s.getAnInput() and
   store = s.getAStore() and
   data.flowsTo(input)
-select store, "Cookie $@ containing $@ is stored here. Data was added $@.", s, s.toString(), data,
-  "sensitive data", input, "here"
+select store, "This stores cookie $@ containing $@ which was $@.", s, s.toString(), data,
+  "sensitive data", input, "added to the cookie"

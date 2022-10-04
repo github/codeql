@@ -1,6 +1,6 @@
 /** Provides classes and predicates for defining flow summaries. */
 
-import ruby
+import codeql.ruby.AST
 import codeql.ruby.DataFlow
 private import codeql.ruby.frameworks.data.ModelsAsData
 private import codeql.ruby.ApiGraphs
@@ -46,6 +46,17 @@ module SummaryComponent {
   }
 
   /**
+   * Gets a summary component that represents an element in a collection at a specific
+   * known index `cv`, or an uknown index.
+   */
+  SummaryComponent elementKnownOrUnknown(ConstantValue cv) {
+    result = SC::content(TKnownOrUnknownElementContent(TKnownElementContent(cv)))
+    or
+    not exists(TKnownElementContent(cv)) and
+    result = elementUnknown()
+  }
+
+  /**
    * Gets a summary component that represents an element in a collection at either an unknown
    * index or known index. This has the same semantics as
    *
@@ -62,7 +73,15 @@ module SummaryComponent {
    * integer index `lower` or above.
    */
   SummaryComponent elementLowerBound(int lower) {
-    result = SC::content(TElementLowerBoundContent(lower))
+    result = SC::content(TElementLowerBoundContent(lower, false))
+  }
+
+  /**
+   * Gets a summary component that represents an element in a collection at known
+   * integer index `lower` or above, or possibly at an unknown index.
+   */
+  SummaryComponent elementLowerBoundOrUnknown(int lower) {
+    result = SC::content(TElementLowerBoundContent(lower, true))
   }
 
   /** Gets a summary component that represents a value in a pair at an unknown key. */
@@ -72,7 +91,7 @@ module SummaryComponent {
 
   /** Gets a summary component that represents a value in a pair at a known key. */
   SummaryComponent pairValueKnown(ConstantValue key) {
-    result = SC::content(TSingletonContent(TKnownPairValueContent(key)))
+    result = SC::content(TSingletonContent(DataFlow::Content::getPairValueContent(key)))
   }
 
   /** Gets a summary component that represents the return value of a call. */
@@ -131,7 +150,7 @@ abstract class SimpleSummarizedCallable extends SummarizedCallable {
   bindingset[this]
   SimpleSummarizedCallable() { mc.getMethodName() = this }
 
-  final override MethodCall getACall() { result = mc }
+  final override MethodCall getACallSimple() { result = mc }
 }
 
 class RequiredSummaryComponentStack = Impl::Public::RequiredSummaryComponentStack;

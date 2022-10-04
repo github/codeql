@@ -2,7 +2,7 @@
  * Provides classes and predicates used by the XSS queries.
  */
 
-private import ruby
+private import codeql.ruby.AST
 private import codeql.ruby.DataFlow
 private import codeql.ruby.DataFlow2
 private import codeql.ruby.CFG
@@ -74,6 +74,25 @@ private module Shared {
   class RawCallArgumentAsSink extends Sink, ErbOutputMethodCallArgumentNode {
     RawCallArgumentAsSink() { this.getCall() instanceof RawCall }
   }
+
+  /**
+   * An argument to an ActionView helper method which is not escaped,
+   * considered as a flow sink.
+   */
+  class RawHelperCallArgumentAsSink extends Sink {
+    RawHelperCallArgumentAsSink() {
+      exists(ErbOutputDirective d, ActionView::Helpers::RawHelperCall c |
+        d.getTerminalStmt() = c and this.asExpr().getExpr() = c.getRawArgument()
+      )
+    }
+  }
+
+  /**
+   * An argument that is used to construct the `src` attribute of a `<script>`
+   * tag.
+   */
+  class ArgumentInterpretedAsUrlAsSink extends Sink, ErbOutputMethodCallArgumentNode,
+    ActionView::ArgumentInterpretedAsUrl { }
 
   /**
    * A argument to a call to the `link_to` method, which does not expect

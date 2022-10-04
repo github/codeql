@@ -1,3 +1,22 @@
+## 0.5.0
+
+### Query Metadata Changes
+
+* Added the `security-severity` tag the `py/redos`, `py/polynomial-redos`, and `py/regex-injection` queries.
+
+### Minor Analysis Improvements
+
+* The alert message of many queries have been changed to make the message consistent with other languages.
+
+## 0.4.3
+
+## 0.4.2
+
+### New Queries
+
+* Added a new query, `py/suspicious-regexp-range`, to detect character ranges in regular expressions that seem to match 
+  too many characters.
+
 ## 0.4.1
 
 ## 0.4.0

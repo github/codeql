@@ -49,5 +49,4 @@ class TaintTrackingConfiguration extends TaintTracking::Configuration {
 
 from TaintTrackingConfiguration c, DataFlow::Node source, DataFlow::Node sink
 where c.hasFlow(source, sink)
-select sink, "$@ flows to here and is used as the path to dynamically load an assembly.", source,
-  "User-provided value"
+select sink, "This assembly path depends on a $@.", source, "user-provided value"

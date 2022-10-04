@@ -14,7 +14,7 @@
  *       external/cwe/cwe-116
  */
 
-import ruby
+import codeql.ruby.AST
 import codeql.ruby.security.CodeInjectionQuery
 import DataFlow::PathGraph
 
@@ -22,5 +22,5 @@ from Configuration config, DataFlow::PathNode source, DataFlow::PathNode sink, S
 where
   config.hasFlowPath(source, sink) and
   sourceNode = source.getNode()
-select sink.getNode(), source, sink, "$@ flows to here and is interpreted as code.",
-  source.getNode(), "User-provided value"
+select sink.getNode(), source, sink, "This code execution depends on a $@.", source.getNode(),
+  "user-provided value"

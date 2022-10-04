@@ -35,3 +35,10 @@ options:
       the code (for example if it uses inaccessible dependencies).
     type: string
     pattern: "^(false|true)$"
+  cil:
+    title: Whether to enable CIL extraction.
+    description: >
+      A value indicating, whether CIL extraction should be enabled.
+      The default is 'true'.
+    type: string
+    pattern: "^(false|true)$"

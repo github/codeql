@@ -45,7 +45,7 @@ class Configuration extends TaintTracking::Configuration {
     inlbl = TaintedObject::label() and
     outlbl = TaintedObject::label() and
     exists(NoSql::Query query, DataFlow::SourceNode queryObj |
-      queryObj.flowsToExpr(query) and
+      queryObj.flowsTo(query) and
       queryObj.flowsTo(trg) and
       src = queryObj.getAPropertyWrite().getRhs()
     )

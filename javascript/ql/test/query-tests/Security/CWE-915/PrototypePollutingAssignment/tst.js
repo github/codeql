@@ -97,3 +97,17 @@ app.get('/foo', (req, res) => {
     obj[req.query.x.replace(/__proto__/g, '')].x = 'foo'; // NOT OK - "__pr__proto__oto__"
     obj[req.query.x.replace('o', '0')].x = 'foo'; // OK
 });
+
+app.get('/bar', (req, res) => {
+    let taint = String(req.query.data);
+
+    let object = {};
+    object[taint][taint] = taint; // NOT OK
+    
+    const bad = ["__proto__", "constructor"];
+    if (bad.includes(taint)) {
+        return;
+    }
+
+    object[taint][taint] = taint; // OK
+});

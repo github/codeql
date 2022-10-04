@@ -11,7 +11,7 @@ void TypeVisitor::visit(swift::TypeBase* type) {
 
 codeql::TypeRepr TypeVisitor::translateTypeRepr(const swift::TypeRepr& typeRepr, swift::Type type) {
   auto entry = dispatcher_.createEntry(typeRepr);
-  entry.type = dispatcher_.fetchOptionalLabel(type);
+  entry.type = dispatcher_.fetchLabel(type);
   return entry;
 }
 
@@ -232,15 +232,6 @@ void TypeVisitor::emitAnyGenericType(swift::AnyGenericType* type,
   if (auto parent = type->getParent()) {
     dispatcher_.emit(AnyGenericTypeParentsTrap{label, dispatcher_.fetchLabel(parent)});
   }
-}
-
-codeql::NestedArchetypeType TypeVisitor::translateNestedArchetypeType(
-    const swift::NestedArchetypeType& type) {
-  auto entry = createTypeEntry(type);
-  entry.parent = dispatcher_.fetchLabel(type.getParent());
-  entry.associated_type_declaration = dispatcher_.fetchLabel(type.getAssocType());
-  fillArchetypeType(type, entry);
-  return entry;
 }
 
 void TypeVisitor::fillType(const swift::TypeBase& type, codeql::Type& entry) {

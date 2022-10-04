@@ -3,12 +3,13 @@
  * https://rubygems.org/gems/activesupport
  */
 
-private import ruby
+private import codeql.ruby.AST
 private import codeql.ruby.Concepts
 private import codeql.ruby.DataFlow
 private import codeql.ruby.dataflow.FlowSummary
 private import codeql.ruby.ApiGraphs
 private import codeql.ruby.frameworks.stdlib.Logger::Logger as StdlibLogger
+private import codeql.ruby.frameworks.data.ModelsAsData
 
 /**
  * Modeling for `ActiveSupport`.
@@ -136,6 +137,30 @@ module ActiveSupport {
               .getMember(["Logger", "TaggedLogging"])
               .getAnInstantiation()
       }
+    }
+  }
+
+  /**
+   * `ActiveSupport::SafeBuffer` wraps a string, providing HTML-safe methods
+   * for concatenation.
+   * It is possible to insert tainted data into `SafeBuffer` that won't get
+   * sanitized, and this taint is then propagated via most of the methods.
+   */
+  private class SafeBufferSummary extends ModelInput::SummaryModelCsv {
+    // TODO: SafeBuffer also reponds to all String methods.
+    // Can we model this without repeating all the existing summaries we have
+    // for String?
+    override predicate row(string row) {
+      row =
+        [
+          // SafeBuffer.new(x) does not sanitize x
+          "activesupport;;Member[ActionView].Member[SafeBuffer].Method[new];Argument[0];ReturnValue;taint",
+          // SafeBuffer#safe_concat(x) does not sanitize x
+          "activesupport;;Member[ActionView].Member[SafeBuffer].Instance.Method[safe_concat];Argument[0];ReturnValue;taint",
+          "activesupport;;Member[ActionView].Member[SafeBuffer].Instance.Method[safe_concat];Argument[0];Argument[self];taint",
+          // These methods preserve taint in self
+          "activesupport;;Member[ActionView].Member[SafeBuffer].Instance.Method[concat,insert,prepend,to_s,to_param];Argument[self];ReturnValue;taint",
+        ]
     }
   }
 }

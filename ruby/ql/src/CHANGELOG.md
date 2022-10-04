@@ -1,3 +1,27 @@
+## 0.4.0
+
+### New Queries
+
+* Added a new query, `rb/hardcoded-data-interpreted-as-code`, to detect cases where hardcoded data is executed as code, a technique associated with backdoors.
+
+### Minor Analysis Improvements
+
+* The `rb/unsafe-deserialization` query now includes alerts for user-controlled data passed to `Hash.from_trusted_xml`, since that method can deserialize YAML embedded in the XML, which in turn can result in deserialization of arbitrary objects.
+* The alert message of many queries have been changed to make the message consistent with other languages.
+
+## 0.3.4
+
+## 0.3.3
+
+### New Queries
+
+* Added a new query, `rb/log-inection`, to detect cases where a malicious user may be able to forge log entries.
+* Added a new query, `rb/incomplete-multi-character-sanitization`. The query
+  finds string transformations that do not replace all occurrences of a
+  multi-character substring.
+* Added a new query, `rb/suspicious-regexp-range`, to detect character ranges in regular expressions that seem to match 
+  too many characters.
+
 ## 0.3.2
 
 ## 0.3.1

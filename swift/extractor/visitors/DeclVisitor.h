@@ -16,10 +16,6 @@ class DeclVisitor : public AstVisitorBase<DeclVisitor> {
   using AstVisitorBase<DeclVisitor>::AstVisitorBase;
   using AstVisitorBase<DeclVisitor>::visit;
 
-  void visit(const swift::IfConfigClause* clause) {
-    dispatcher_.emit(translateIfConfigClause(*clause));
-  }
-
   std::optional<codeql::ConcreteFuncDecl> translateFuncDecl(const swift::FuncDecl& decl);
   std::optional<codeql::ConstructorDecl> translateConstructorDecl(
       const swift::ConstructorDecl& decl);
@@ -50,7 +46,6 @@ class DeclVisitor : public AstVisitorBase<DeclVisitor> {
   codeql::ImportDecl translateImportDecl(const swift::ImportDecl& decl);
   std::optional<codeql::ModuleDecl> translateModuleDecl(const swift::ModuleDecl& decl);
   codeql::IfConfigDecl translateIfConfigDecl(const swift::IfConfigDecl& decl);
-  codeql::IfConfigClause translateIfConfigClause(const swift::IfConfigClause& clause);
 
  private:
   std::string mangledName(const swift::ValueDecl& decl);

@@ -1,5 +1,5 @@
 import python
-import semmle.python.frameworks.data.internal.AccessPathSyntax as AccessPathSyntax
+import semmle.python.dataflow.new.internal.AccessPathSyntax as AccessPathSyntax
 import semmle.python.frameworks.data.ModelsAsData
 import semmle.python.dataflow.new.TaintTracking
 import semmle.python.dataflow.new.DataFlow

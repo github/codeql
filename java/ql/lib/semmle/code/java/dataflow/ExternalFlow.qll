@@ -12,6 +12,7 @@
  *   `namespace; type; subtypes; name; signature; ext; input; output; kind; provenance`
  * - Negative Summaries:
  *   `namespace; type; name; signature; provenance`
+ *   A negative summary is used to indicate that there is no flow via a callable.
  *
  * The interpretation of a row is similar to API-graphs with a left-to-right
  * reading.
@@ -116,6 +117,7 @@ private module Frameworks {
   private import semmle.code.java.frameworks.Retrofit
   private import semmle.code.java.frameworks.Stream
   private import semmle.code.java.frameworks.Strings
+  private import semmle.code.java.frameworks.Thymeleaf
   private import semmle.code.java.frameworks.ratpack.Ratpack
   private import semmle.code.java.frameworks.ratpack.RatpackExec
   private import semmle.code.java.frameworks.spring.SpringCache
@@ -140,6 +142,7 @@ private module Frameworks {
   private import semmle.code.java.security.LdapInjection
   private import semmle.code.java.security.MvelInjection
   private import semmle.code.java.security.OgnlInjection
+  private import semmle.code.java.security.TemplateInjection
   private import semmle.code.java.security.XPath
   private import semmle.code.java.security.XsltInjection
   private import semmle.code.java.frameworks.Jdbc
@@ -152,7 +155,7 @@ private module Frameworks {
   private import semmle.code.java.frameworks.JMS
   private import semmle.code.java.frameworks.RabbitMQ
   private import semmle.code.java.regex.RegexFlowModels
-  private import semmle.code.java.frameworks.KotlinStdLib
+  private import semmle.code.java.frameworks.kotlin.StdLib
 }
 
 /**
@@ -624,7 +627,7 @@ module CsvValidation {
           "open-url", "jndi-injection", "ldap", "sql", "jdbc-url", "logging", "mvel", "xpath",
           "groovy", "xss", "ognl-injection", "intent-start", "pending-intent-sent",
           "url-open-stream", "url-redirect", "create-file", "write-file", "set-hostname-verifier",
-          "header-splitting", "information-leak", "xslt", "jexl", "bean-validation"
+          "header-splitting", "information-leak", "xslt", "jexl", "bean-validation", "ssti"
         ] and
       not kind.matches("regex-use%") and
       not kind.matches("qltest%") and

@@ -251,7 +251,7 @@ private predicate qualifierToArgumentStep(Expr tracked, Expr sink) {
 
 /** Access to a method that passes taint from the qualifier. */
 private predicate qualifierToMethodStep(Expr tracked, MethodAccess sink) {
-  (taintPreservingQualifierToMethod(sink.getMethod()) or unsafeEscape(sink)) and
+  taintPreservingQualifierToMethod(sink.getMethod()) and
   tracked = sink.getQualifier()
 }
 
@@ -279,28 +279,6 @@ private predicate taintPreservingQualifierToMethod(Method m) {
   or
   exists(JaxRsResourceMethod resourceMethod |
     m.(GetterMethod).getDeclaringType() = resourceMethod.getAParameter().getType()
-  )
-}
-
-private class StringReplaceMethod extends TaintPreservingCallable {
-  StringReplaceMethod() {
-    this.getDeclaringType() instanceof TypeString and
-    (
-      this.hasName("replace") or
-      this.hasName("replaceAll") or
-      this.hasName("replaceFirst")
-    )
-  }
-
-  override predicate returnsTaintFrom(int arg) { arg = 1 }
-}
-
-private predicate unsafeEscape(MethodAccess ma) {
-  // Removing `<script>` tags using a string-replace method is
-  // unsafe if such a tag is embedded inside another one (e.g. `<scr<script>ipt>`).
-  exists(StringReplaceMethod m | ma.getMethod() = m |
-    ma.getArgument(0).(StringLiteral).getValue() = "(<script>)" and
-    ma.getArgument(1).(StringLiteral).getValue() = ""
   )
 }
 

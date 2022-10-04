@@ -4,7 +4,7 @@
  * as extension points for adding your own.
  */
 
-private import codeql.ruby.AST as AST
+private import codeql.ruby.AST as Ast
 private import codeql.ruby.CFG
 private import codeql.ruby.DataFlow
 private import codeql.ruby.dataflow.RemoteFlowSources
@@ -77,8 +77,8 @@ module PolynomialReDoS {
           exists(CfgNodes::ExprNodes::BinaryOperationCfgNode op |
             matchNode.asExpr() = op and
             (
-              op.getExpr() instanceof AST::RegExpMatchExpr or
-              op.getExpr() instanceof AST::NoRegExpMatchExpr
+              op.getExpr() instanceof Ast::RegExpMatchExpr or
+              op.getExpr() instanceof Ast::NoRegExpMatchExpr
             ) and
             (
               this.asExpr() = op.getLeftOperand() and regexp.asExpr() = op.getRightOperand()
@@ -117,7 +117,7 @@ module PolynomialReDoS {
 
   private predicate lengthGuard(CfgNodes::ExprCfgNode g, CfgNode node, boolean branch) {
     exists(DataFlow::Node input, DataFlow::CallNode length, DataFlow::ExprNode operand |
-      length.asExpr().getExpr().(AST::MethodCall).getMethodName() = "length" and
+      length.asExpr().getExpr().(Ast::MethodCall).getMethodName() = "length" and
       length.getReceiver() = input and
       length.flowsTo(operand) and
       operand.getExprNode() = g.(CfgNodes::ExprNodes::RelationalOperationCfgNode).getAnOperand() and

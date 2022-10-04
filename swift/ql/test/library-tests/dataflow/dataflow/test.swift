@@ -73,7 +73,7 @@ func swapUser() {
     var x: Int = source()
     var y: Int = 0
     inoutSwap(arg1: &x, arg2: &y)
-    sink(arg: x) // clean
+    sink(arg: x) // $ SPURIOUS: flow=73
     sink(arg: y) // $ flow=73
 }
 
@@ -178,7 +178,7 @@ class A {
 func simple_field_flow() {
   var a = A()
   a.x = source()
-  sink(arg: a.x) // $ MISSING: flow=180
+  sink(arg: a.x) // $ flow=180
 }
 
 class B {
@@ -192,31 +192,31 @@ class B {
 func reverse_read() {
   var b = B()
   b.a.x = source()
-  sink(arg: b.a.x) // $ MISSING: flow=194
+  sink(arg: b.a.x) // $ flow=194
 }
 
 func test_setter() {
   var a = A()
   a.set(source())
-  sink(arg: a.x) // $ MISSING: flow=200
+  sink(arg: a.x) // $ flow=200
 }
 
 func test_getter() {
   var a = A()
   a.x = source()
-  sink(arg: a.get()) // $ MISSING: flow=206
+  sink(arg: a.get()) // $ flow=206
 }
 
 func test_setter_getter() {
   var a = A()
   a.set(source())
-  sink(arg: a.get()) // $ MISSING: flow=212
+  sink(arg: a.get()) // $ flow=212
 }
 
 func flow_through(b : B) {
   var b = B()
   b.a.set(source())
-  sink(arg: b.a.x) // $ MISSING: flow=218
+  sink(arg: b.a.x) // $ flow=218
 }
 
 class HasComputedProperty {
@@ -232,10 +232,10 @@ class HasComputedProperty {
 
 func test_computed_property() {
   var a = HasComputedProperty()
-  sink(arg: a.source_value) // $ MISSING: flow=225
+  sink(arg: a.source_value) // $ flow=225
 
   a.source_value = 0
-  sink(arg: a.source_value) // $ MISSING: flow=225
+  sink(arg: a.source_value) // $ flow=225
 }
 
 @propertyWrapper struct DidSetSource {

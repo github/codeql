@@ -35,4 +35,4 @@ where
     localShadowsParameter(v, shadowed) or
     shadowing(v, shadowed)
   )
-select v, "Identifiers in an inner scope should not hide identifiers in an outer scope"
+select v, "Identifiers in an inner scope should not hide identifiers in an outer scope."

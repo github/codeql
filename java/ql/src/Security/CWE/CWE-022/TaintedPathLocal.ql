@@ -27,6 +27,10 @@ class TaintedPathLocalConfig extends TaintTracking::Configuration {
   override predicate isSink(DataFlow::Node sink) {
     sink.asExpr() = any(PathCreation p).getAnInput()
   }
+
+  override predicate isAdditionalTaintStep(DataFlow::Node n1, DataFlow::Node n2) {
+    any(TaintedPathAdditionalTaintStep s).step(n1, n2)
+  }
 }
 
 from
@@ -37,5 +41,4 @@ where
   e = p.getAnInput() and
   conf.hasFlowPath(source, sink) and
   not guarded(e)
-select p, source, sink, "$@ flows to here and is used in a path.", source.getNode(),
-  "User-provided value"
+select p, source, sink, "This path depends on a $@.", source.getNode(), "user-provided value"

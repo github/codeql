@@ -139,18 +139,43 @@ class Content extends TContent {
   Location getLocation() { none() }
 }
 
+module Content {
+  /** A field of an object, for example an instance variable. */
+  class FieldContent extends Content, TFieldContent {
+    private FieldDecl f;
+
+    FieldContent() { this = TFieldContent(f) }
+
+    /** Gets the name of the field. */
+    FieldDecl getField() { result = f }
+
+    override string toString() { result = f.toString() }
+  }
+}
+
 /**
  * An entity that represents a set of `Content`s.
  *
  * The set may be interpreted differently depending on whether it is
  * stored into (`getAStoreContent`) or read from (`getAReadContent`).
  */
-class ContentSet extends Content {
+class ContentSet extends TContentSet {
+  /** Holds if this content set is the singleton `{c}`. */
+  predicate isSingleton(Content c) { this = TSingletonContent(c) }
+
+  /** Gets a textual representation of this content set. */
+  string toString() {
+    exists(Content c |
+      this.isSingleton(c) and
+      result = c.toString()
+    )
+  }
+
   /** Gets a content that may be stored into when storing into this set. */
-  Content getAStoreContent() { result = this }
+  Content getAStoreContent() { this.isSingleton(result) }
 
   /** Gets a content that may be read from when reading from this set. */
-  Content getAReadContent() { result = this }
+  Content getAReadContent() { this.isSingleton(result) }
 }
 
 /**

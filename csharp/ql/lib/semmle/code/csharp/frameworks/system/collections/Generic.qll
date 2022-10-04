@@ -197,6 +197,7 @@ private class SystemCollectionsGenericICollectionFlowModelCsv extends SummaryMod
     row =
       [
         "System.Collections.Generic;ICollection<>;true;Add;(T);;Argument[0];Argument[this].Element;value;manual",
+        "System.Collections.Generic;ICollection<>;true;Clear;();;Argument[this].WithoutElement;Argument[this];value;manual",
         "System.Collections.Generic;ICollection<>;true;CopyTo;(T[],System.Int32);;Argument[this].Element;Argument[0].Element;value;manual",
       ]
   }
@@ -289,6 +290,8 @@ private class SystemCollectionsGenericSortedListFlowModelCsv extends SummaryMode
         "System.Collections.Generic;SortedList<,>;false;SortedList;(System.Collections.Generic.IDictionary<TKey,TValue>,System.Collections.Generic.IComparer<TKey>);;Argument[0].Element.Property[System.Collections.Generic.KeyValuePair<,>.Value];Argument[this].Element.Property[System.Collections.Generic.KeyValuePair<,>.Value];value;manual",
         "System.Collections.Generic;SortedList<,>;false;get_Keys;();;Argument[this].Element.Property[System.Collections.Generic.KeyValuePair<,>.Key];ReturnValue.Element;value;manual",
         "System.Collections.Generic;SortedList<,>;false;get_Values;();;Argument[this].Element.Property[System.Collections.Generic.KeyValuePair<,>.Value];ReturnValue.Element;value;manual",
+        "System.Collections.Generic;SortedList<,>+KeyList;false;Clear;();;Argument[this].WithoutElement;Argument[this];value;manual",
+        "System.Collections.Generic;SortedList<,>+ValueList;false;Clear;();;Argument[this].WithoutElement;Argument[this];value;manual",
       ]
   }
 }
@@ -298,6 +301,7 @@ private class SystemCollectionsGenericQueueFlowModelCsv extends SummaryModelCsv 
   override predicate row(string row) {
     row =
       [
+        "System.Collections.Generic;Queue<>;false;Clear;();;Argument[this].WithoutElement;Argument[this];value;manual",
         "System.Collections.Generic;Queue<>;false;CopyTo;(T[],System.Int32);;Argument[this].Element;Argument[0].Element;value;manual",
         "System.Collections.Generic;Queue<>;false;GetEnumerator;();;Argument[this].Element;ReturnValue.Property[System.Collections.Generic.Queue<>+Enumerator.Current];value;manual",
         "System.Collections.Generic;Queue<>;false;Peek;();;Argument[this].Element;ReturnValue;value;manual",
@@ -310,6 +314,7 @@ private class SystemCollectionsGenericStackFlowModelCsv extends SummaryModelCsv 
   override predicate row(string row) {
     row =
       [
+        "System.Collections.Generic;Stack<>;false;Clear;();;Argument[this].WithoutElement;Argument[this];value;manual",
         "System.Collections.Generic;Stack<>;false;CopyTo;(T[],System.Int32);;Argument[this].Element;Argument[0].Element;value;manual",
         "System.Collections.Generic;Stack<>;false;GetEnumerator;();;Argument[this].Element;ReturnValue.Property[System.Collections.Generic.Stack<>+Enumerator.Current];value;manual",
         "System.Collections.Generic;Stack<>;false;Peek;();;Argument[this].Element;ReturnValue;value;manual",

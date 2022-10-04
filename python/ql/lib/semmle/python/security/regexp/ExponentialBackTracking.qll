@@ -115,6 +115,7 @@ private newtype TStatePair =
 private int rankState(State state) {
   state =
     rank[result](State s, Location l |
+      stateInsideBacktracking(s) and
       l = s.getRepr().getLocation()
     |
       s order by l.getStartLine(), l.getStartColumn(), s.toString()

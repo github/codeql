@@ -2,7 +2,7 @@
 
 import java
 import semmle.code.java.dataflow.TaintTracking
-import semmle.code.java.dataflow.TaintTracking2
+import semmle.code.java.dataflow.DataFlow2
 
 /**
  * Holds if `array` is initialized only with constants.
@@ -83,7 +83,7 @@ private class ArrayUpdate extends Expr {
 /**
  * A config that tracks dataflow from creating an array to an operation that updates it.
  */
-private class ArrayUpdateConfig extends TaintTracking2::Configuration {
+private class ArrayUpdateConfig extends DataFlow2::Configuration {
   ArrayUpdateConfig() { this = "ArrayUpdateConfig" }
 
   override predicate isSource(DataFlow::Node source) {
@@ -91,6 +91,8 @@ private class ArrayUpdateConfig extends TaintTracking2::Configuration {
   }
 
   override predicate isSink(DataFlow::Node sink) { sink.asExpr() = any(ArrayUpdate upd).getArray() }
+
+  override predicate isBarrierOut(DataFlow::Node node) { this.isSink(node) }
 }
 
 /**

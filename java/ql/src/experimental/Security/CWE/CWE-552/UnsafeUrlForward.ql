@@ -1,11 +1,11 @@
 /**
- * @name Unsafe URL forward or dispatch from remote source
- * @description URL forward or dispatch based on unvalidated user-input
+ * @name Unsafe URL forward, dispatch, or load from remote source
+ * @description URL forward, dispatch, or load based on unvalidated user-input
  *              may cause file information disclosure.
  * @kind path-problem
  * @problem.severity error
  * @precision high
- * @id java/unsafe-url-forward-dispatch
+ * @id java/unsafe-url-forward-dispatch-load
  * @tags security
  *       external/cwe-552
  */

@@ -1,4 +1,3 @@
-private import codeql.Locations
 private import codeql.ruby.AST
 
 // Names of built-in modules and classes
@@ -135,6 +134,9 @@ private module Cached {
       )
     )
   }
+
+  cached
+  string resolveConstantWrite(ConstantWriteAccess c) { result = resolveConstantWriteAccess(c) }
 
   cached
   Method lookupMethod(Module m, string name) { TMethod(result) = lookupMethodOrConst(m, name) }
@@ -473,7 +475,7 @@ private module ResolveImpl {
   }
 }
 
-import ResolveImpl
+private import ResolveImpl
 
 /**
  * A variant of AstNode::getEnclosingModule that excludes
@@ -519,9 +521,9 @@ module ExposedForTestingOnly {
 private TMethodOrExpr lookupMethodOrConst0(Module m, string name) {
   result = lookupMethodOrConst0(m.getAPrependedModule(), name)
   or
-  not exists(getMethodOrConst(getAncestors(m.getAPrependedModule()), name)) and
+  not exists(getMethodOrConst(getAncestors(m.getAPrependedModule()), pragma[only_bind_into](name))) and
   (
-    result = getMethodOrConst(m, name)
+    result = getMethodOrConst(m, pragma[only_bind_into](name))
     or
     not exists(getMethodOrConst(m, name)) and
     result = lookupMethodOrConst0(m.getAnIncludedModule(), name)

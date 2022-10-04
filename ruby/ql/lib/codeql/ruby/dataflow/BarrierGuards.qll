@@ -1,6 +1,6 @@
 /** Provides commonly used barriers to dataflow. */
 
-private import ruby
+private import codeql.ruby.AST
 private import codeql.ruby.DataFlow
 private import codeql.ruby.CFG
 private import codeql.ruby.controlflow.CfgNodes

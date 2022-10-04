@@ -1,4 +1,5 @@
 private import codeql.ruby.AST
+private import codeql.ruby.CFG
 private import internal.AST
 private import internal.Module
 private import internal.TreeSitter
@@ -12,6 +13,9 @@ class Module extends TModule {
 
   /** Gets the super class of this module, if any. */
   Module getSuperClass() { result = getSuperClass(this) }
+
+  /** Gets an immediate sub class of this module, if any. */
+  Module getASubClass() { this = getSuperClass(result) }
 
   /** Gets a `prepend`ed module. */
   Module getAPrependedModule() { result = getAPrependedModule(this) }
@@ -29,6 +33,13 @@ class Module extends TModule {
     or
     exists(Namespace n | this = TUnresolved(n) and result = "...::" + n.toString())
   }
+
+  /**
+   * Gets the qualified name of this module, if any.
+   *
+   * Only modules that can be resolved will have a qualified name.
+   */
+  final string getQualifiedName() { this = TResolved(result) }
 
   /** Gets the location of this module. */
   Location getLocation() {
@@ -50,23 +61,53 @@ class Module extends TModule {
 }
 
 /**
+ * Gets the enclosing module of `s`, but only if `s` and the module are in the
+ * same CFG scope. For example, in
+ *
+ * ```rb
+ * module M
+ *   def pub; end
+ *   private def priv; end
+ * end
+ * ```
+ *
+ * `M` is the enclosing module of `pub` and `priv`, in the same CFG scope, while
+ * in
+ *
+ * ```rb
+ * module M
+ *   def m
+ *     def nested; end
+ *   end
+ * end
+ * ```
+ *
+ * `M` is the enclosing module of `m`, in the same CFG scope, while `nested` is not.
+ */
+pragma[nomagic]
+private ModuleBase getEnclosingModuleInSameCfgScope(Stmt s) {
+  result = s.getEnclosingModule() and
+  s.getCfgScope() = [result.(CfgScope), result.getCfgScope()]
+}
+
+/**
  * The base class for classes, singleton classes, and modules.
  */
 class ModuleBase extends BodyStmt, Scope, TModuleBase {
   /** Gets a method defined in this module/class. */
-  MethodBase getAMethod() { result = this.getAStmt() }
+  MethodBase getAMethod() { this = getEnclosingModuleInSameCfgScope(result) }
 
   /** Gets the method named `name` in this module/class, if any. */
   MethodBase getMethod(string name) { result = this.getAMethod() and result.getName() = name }
 
   /** Gets a class defined in this module/class. */
-  ClassDeclaration getAClass() { result = this.getAStmt() }
+  ClassDeclaration getAClass() { this = getEnclosingModuleInSameCfgScope(result) }
 
   /** Gets the class named `name` in this module/class, if any. */
   ClassDeclaration getClass(string name) { result = this.getAClass() and result.getName() = name }
 
   /** Gets a module defined in this module/class. */
-  ModuleDeclaration getAModule() { result = this.getAStmt() }
+  ModuleDeclaration getAModule() { this = getEnclosingModuleInSameCfgScope(result) }
 
   /** Gets the module named `name` in this module/class, if any. */
   ModuleDeclaration getModule(string name) {

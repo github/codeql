@@ -214,23 +214,17 @@ public class OdasaOutput {
 				trapFilePathForDecl(sym, signature));
 	}
 
-	private final Map<String, String> memberTrapPaths = new LinkedHashMap<String, String>();
-	private static final Pattern dots = Pattern.compile(".", Pattern.LITERAL);
 	private String trapFilePathForDecl(IrDeclaration sym, String signature) {
 		String binaryName = getIrDeclBinaryName(sym);
 		String binaryNameWithSignature = binaryName + signature;
 		// TODO: Reinstate this?
 		//if (getTrackClassOrigins())
 		//  classId += "-" + StringDigestor.digest(sym.getSourceFileId());
-		String result = memberTrapPaths.get(binaryNameWithSignature);
-		if (result == null) {
-			result = CLASSES_DIR + "/" +
-					dots.matcher(binaryName).replaceAll("/") +
+		String result = CLASSES_DIR + "/" +
+					binaryName.replace('.', '/') +
 					signature +
 					".members" +
 					".trap.gz";
-			memberTrapPaths.put(binaryNameWithSignature, result);
-		}
 		return result;
 	}
 
@@ -256,17 +250,6 @@ public class OdasaOutput {
 	 */
 
 	/**
-	 * A {@link TrapFileManager} to output facts for the given source file,
-	 * or <code>null</code> if the source file should not be populated.
-	 */
-	private TrapFileManager getTrapWriterForCurrentSourceFile() {
-		File trapFile = getTrapFileForCurrentSourceFile();
-		if (trapFile==null)
-			return null;
-		return trapWriter(trapFile, null, null);
-	}
-
-	/**
 	 * Get a {@link TrapFileManager} to write members
 	 * about a declaration, or <code>null</code> if the declaration shouldn't be populated.
 	 *
@@ -277,10 +260,7 @@ public class OdasaOutput {
 	 * 		Any unique suffix needed to distinguish `sym` from other declarations with the same name.
 	 * 		For functions for example, this means its parameter signature.
 	 */
-	private TrapFileManager getMembersWriterForDecl(IrDeclaration sym, String signature) {
-		File trap = getTrapFileForDecl(sym, signature);
-		if (trap==null)
-			return null;
+	private TrapFileManager getMembersWriterForDecl(File trap, IrDeclaration sym, String signature) {
 		TrapClassVersion currVersion = TrapClassVersion.fromSymbol(sym, log);
 		String shortName = sym instanceof IrDeclarationWithName ? ((IrDeclarationWithName)sym).getName().asString() : "(name unknown)";
 		if (trap.exists()) {
@@ -435,33 +415,30 @@ public class OdasaOutput {
 		private final IrDeclaration sym;
 		private final File trapFile;
 		private final String signature;
-		private final boolean isNonSourceTrapFile;
 		private TrapLocker(IrDeclaration decl, String signature) {
 			this.sym = decl;
 			this.signature = signature;
 			if (sym==null) {
-				trapFile = getTrapFileForCurrentSourceFile();
+				log.error("Null symbol passed for Kotlin TRAP locker");
+				trapFile = null;
 			} else {
 				trapFile = getTrapFileForDecl(sym, signature);
 			}
-			isNonSourceTrapFile = false;
 		}
 		private TrapLocker(File jarFile) {
 			sym = null;
 			signature = null;
 			trapFile = getTrapFileForJarFile(jarFile);
-			isNonSourceTrapFile = true;
 		}
 		private TrapLocker(String moduleName) {
 			sym = null;
 			signature = null;
 			trapFile = getTrapFileForModule(moduleName);
-			isNonSourceTrapFile = true;
 		}
 		public TrapFileManager getTrapFileManager() {
 			if (trapFile!=null) {
 				lockTrapFile(trapFile);
-				return getMembersWriterForDecl(sym, signature);
+				return getMembersWriterForDecl(trapFile, sym, signature);
 			} else {
 				return null;
 			}
@@ -532,9 +509,9 @@ public class OdasaOutput {
 			// Classes being compiled from source have major version 0 but should take precedence
 			// over any classes with the same qualified name loaded from the classpath
 			// in previous or subsequent extractor invocations.
-			if (tcv.majorVersion==0)
+			if (tcv.majorVersion == 0 && majorVersion != 0)
 				return false;
-			else if (majorVersion==0)
+			else if (majorVersion == 0 && tcv.majorVersion != 0)
 				return true;
 			// Always consider the Kotlin extractor superior to the Java extractor, because we may decode and extract
 			// Kotlin metadata that the Java extractor can't understand:

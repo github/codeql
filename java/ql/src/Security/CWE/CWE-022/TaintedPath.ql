@@ -48,6 +48,10 @@ class TaintedPathConfig extends TaintTracking::Configuration {
     or
     node = DataFlow::BarrierGuard<containsDotDotSanitizer/3>::getABarrierNode()
   }
+
+  override predicate isAdditionalTaintStep(DataFlow::Node n1, DataFlow::Node n2) {
+    any(TaintedPathAdditionalTaintStep s).step(n1, n2)
+  }
 }
 
 /**
@@ -66,5 +70,5 @@ DataFlow::Node getReportingNode(DataFlow::Node sink) {
 
 from DataFlow::PathNode source, DataFlow::PathNode sink, TaintedPathConfig conf
 where conf.hasFlowPath(source, sink)
-select getReportingNode(sink.getNode()), source, sink, "$@ flows to here and is used in a path.",
-  source.getNode(), "User-provided value"
+select getReportingNode(sink.getNode()), source, sink, "This path depends on a $@.",
+  source.getNode(), "user-provided value"

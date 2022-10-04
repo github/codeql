@@ -72,18 +72,6 @@ predicate floatTrivial(Literal lit) {
 
 predicate charLiteral(Literal lit) { lit instanceof CharLiteral }
 
-Type literalType(Literal literal) { result = literal.getType() }
-
-predicate stringType(DerivedType t) {
-  t.getBaseType() instanceof CharType
-  or
-  exists(SpecifiedType constCharType |
-    t.getBaseType() = constCharType and
-    constCharType.isConst() and
-    constCharType.getBaseType() instanceof CharType
-  )
-}
-
 predicate numberType(Type t) { t instanceof FloatingPointType or t instanceof IntegralType }
 
 predicate stringLiteral(Literal literal) { literal instanceof StringLiteral }

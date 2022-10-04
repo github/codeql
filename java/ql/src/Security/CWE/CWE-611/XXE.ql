@@ -52,5 +52,5 @@ class XxeConfig extends TaintTracking::Configuration {
 from DataFlow::PathNode source, DataFlow::PathNode sink, XxeConfig conf
 where conf.hasFlowPath(source, sink)
 select sink.getNode(), source, sink,
-  "A $@ is parsed as XML without guarding against external entity expansion.", source.getNode(),
-  "user-provided value"
+  "XML parsing depends on a $@ without guarding against external entity expansion.",
+  source.getNode(), "user-provided value"
