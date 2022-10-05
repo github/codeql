@@ -155,6 +155,26 @@ private predicate hasShortAESKey(MethodAccess ma, string msg) {
 bindingset[type]
 private predicate hasShortAsymmetricKeyPair(MethodAccess ma, string msg, string type) {
   ma.getMethod() instanceof KeyPairGeneratorInitMethod and
+  ma.getQualifier() instanceof JavaSecurityKeyPairGenerator and
+  ma.getQualifier().getBasicBlock() instanceof JavaSecurityKeyPairGenerator and
+  //ma.getQualifier().getBasicBlock().getNode(2) instanceof JavaSecurityKeyPairGenerator and
+  // ma.getQualifier()
+  //     .getBasicBlock()
+  //     .getANode()
+  //     .(JavaSecurityKeyPairGenerator)
+  //     .getAlgoSpec()
+  //     .(StringLiteral)
+  //     .getValue()
+  //     .toUpperCase() = type and
+  //ma.getQualifier().getBasicBlock().getAPredecessor() instanceof JavaSecurityKeyPairGenerator and
+  ma.getQualifier()
+      .getBasicBlock()
+      .getAPredecessor()
+      .(JavaSecurityKeyPairGenerator)
+      .getAlgoSpec()
+      .(StringLiteral)
+      .getValue()
+      .toUpperCase() = type and
   // flow needed to correctly determine algorithm type and
   // not match to ANY asymmetric algorithm
   exists(
