@@ -11,7 +11,7 @@ class UsersController < ApplicationController
   end
 
   def login_get_cookies
-    password = cookies[:password]
+    password = cookies[:password] # GOOD: data sourced from cookies rather than (plaintext) query params
     authenticate_user(params[:username], password)
   end
 
