@@ -1,6 +1,4 @@
 failures
-| summaries.rb:106:6:106:9 | ...[...] | Unexpected result: hasValueFlow=elem1 |
-| summaries.rb:107:6:107:9 | ...[...] | Unexpected result: hasValueFlow=elem2 |
 edges
 | summaries.rb:1:11:1:36 | call to identity :  | summaries.rb:2:6:2:12 | tainted |
 | summaries.rb:1:11:1:36 | call to identity :  | summaries.rb:2:6:2:12 | tainted |
@@ -99,14 +97,10 @@ edges
 | summaries.rb:79:15:79:29 | call to source :  | summaries.rb:87:5:87:5 | a [element 1] :  |
 | summaries.rb:79:15:79:29 | call to source :  | summaries.rb:91:5:91:5 | a [element 1] :  |
 | summaries.rb:79:15:79:29 | call to source :  | summaries.rb:91:5:91:5 | a [element 1] :  |
-| summaries.rb:79:15:79:29 | call to source :  | summaries.rb:103:1:103:1 | d [element 1] :  |
-| summaries.rb:79:15:79:29 | call to source :  | summaries.rb:103:1:103:1 | d [element 1] :  |
 | summaries.rb:79:32:79:46 | call to source :  | summaries.rb:86:6:86:6 | a [element 2] :  |
 | summaries.rb:79:32:79:46 | call to source :  | summaries.rb:86:6:86:6 | a [element 2] :  |
 | summaries.rb:79:32:79:46 | call to source :  | summaries.rb:95:1:95:1 | a [element 2] :  |
 | summaries.rb:79:32:79:46 | call to source :  | summaries.rb:95:1:95:1 | a [element 2] :  |
-| summaries.rb:79:32:79:46 | call to source :  | summaries.rb:103:1:103:1 | d [element 2] :  |
-| summaries.rb:79:32:79:46 | call to source :  | summaries.rb:103:1:103:1 | d [element 2] :  |
 | summaries.rb:81:1:81:1 | [post] a [element] :  | summaries.rb:82:6:82:6 | a [element] :  |
 | summaries.rb:81:1:81:1 | [post] a [element] :  | summaries.rb:82:6:82:6 | a [element] :  |
 | summaries.rb:81:1:81:1 | [post] a [element] :  | summaries.rb:84:6:84:6 | a [element] :  |
@@ -191,28 +185,14 @@ edges
 | summaries.rb:99:1:99:1 | a [element 2] :  | summaries.rb:99:1:99:1 | [post] a [element 2] :  |
 | summaries.rb:102:6:102:6 | a [element 2] :  | summaries.rb:102:6:102:9 | ...[...] |
 | summaries.rb:102:6:102:6 | a [element 2] :  | summaries.rb:102:6:102:9 | ...[...] |
-| summaries.rb:103:1:103:1 | [post] d [element 1] :  | summaries.rb:106:6:106:6 | d [element 1] :  |
-| summaries.rb:103:1:103:1 | [post] d [element 1] :  | summaries.rb:106:6:106:6 | d [element 1] :  |
-| summaries.rb:103:1:103:1 | [post] d [element 2] :  | summaries.rb:107:6:107:6 | d [element 2] :  |
-| summaries.rb:103:1:103:1 | [post] d [element 2] :  | summaries.rb:107:6:107:6 | d [element 2] :  |
 | summaries.rb:103:1:103:1 | [post] d [element 3] :  | summaries.rb:104:1:104:1 | d [element 3] :  |
 | summaries.rb:103:1:103:1 | [post] d [element 3] :  | summaries.rb:104:1:104:1 | d [element 3] :  |
-| summaries.rb:103:1:103:1 | [post] d [element 3] :  | summaries.rb:108:6:108:6 | d [element 3] :  |
-| summaries.rb:103:1:103:1 | [post] d [element 3] :  | summaries.rb:108:6:108:6 | d [element 3] :  |
-| summaries.rb:103:1:103:1 | d [element 1] :  | summaries.rb:103:1:103:1 | [post] d [element 1] :  |
-| summaries.rb:103:1:103:1 | d [element 1] :  | summaries.rb:103:1:103:1 | [post] d [element 1] :  |
-| summaries.rb:103:1:103:1 | d [element 2] :  | summaries.rb:103:1:103:1 | [post] d [element 2] :  |
-| summaries.rb:103:1:103:1 | d [element 2] :  | summaries.rb:103:1:103:1 | [post] d [element 2] :  |
 | summaries.rb:103:8:103:22 | call to source :  | summaries.rb:103:1:103:1 | [post] d [element 3] :  |
 | summaries.rb:103:8:103:22 | call to source :  | summaries.rb:103:1:103:1 | [post] d [element 3] :  |
 | summaries.rb:104:1:104:1 | [post] d [element 3] :  | summaries.rb:108:6:108:6 | d [element 3] :  |
 | summaries.rb:104:1:104:1 | [post] d [element 3] :  | summaries.rb:108:6:108:6 | d [element 3] :  |
 | summaries.rb:104:1:104:1 | d [element 3] :  | summaries.rb:104:1:104:1 | [post] d [element 3] :  |
 | summaries.rb:104:1:104:1 | d [element 3] :  | summaries.rb:104:1:104:1 | [post] d [element 3] :  |
-| summaries.rb:106:6:106:6 | d [element 1] :  | summaries.rb:106:6:106:9 | ...[...] |
-| summaries.rb:106:6:106:6 | d [element 1] :  | summaries.rb:106:6:106:9 | ...[...] |
-| summaries.rb:107:6:107:6 | d [element 2] :  | summaries.rb:107:6:107:9 | ...[...] |
-| summaries.rb:107:6:107:6 | d [element 2] :  | summaries.rb:107:6:107:9 | ...[...] |
 | summaries.rb:108:6:108:6 | d [element 3] :  | summaries.rb:108:6:108:9 | ...[...] |
 | summaries.rb:108:6:108:6 | d [element 3] :  | summaries.rb:108:6:108:9 | ...[...] |
 | summaries.rb:111:1:111:1 | [post] x [@value] :  | summaries.rb:112:6:112:6 | x [@value] :  |
@@ -407,30 +387,14 @@ nodes
 | summaries.rb:102:6:102:6 | a [element 2] :  | semmle.label | a [element 2] :  |
 | summaries.rb:102:6:102:9 | ...[...] | semmle.label | ...[...] |
 | summaries.rb:102:6:102:9 | ...[...] | semmle.label | ...[...] |
-| summaries.rb:103:1:103:1 | [post] d [element 1] :  | semmle.label | [post] d [element 1] :  |
-| summaries.rb:103:1:103:1 | [post] d [element 1] :  | semmle.label | [post] d [element 1] :  |
-| summaries.rb:103:1:103:1 | [post] d [element 2] :  | semmle.label | [post] d [element 2] :  |
-| summaries.rb:103:1:103:1 | [post] d [element 2] :  | semmle.label | [post] d [element 2] :  |
 | summaries.rb:103:1:103:1 | [post] d [element 3] :  | semmle.label | [post] d [element 3] :  |
 | summaries.rb:103:1:103:1 | [post] d [element 3] :  | semmle.label | [post] d [element 3] :  |
-| summaries.rb:103:1:103:1 | d [element 1] :  | semmle.label | d [element 1] :  |
-| summaries.rb:103:1:103:1 | d [element 1] :  | semmle.label | d [element 1] :  |
-| summaries.rb:103:1:103:1 | d [element 2] :  | semmle.label | d [element 2] :  |
-| summaries.rb:103:1:103:1 | d [element 2] :  | semmle.label | d [element 2] :  |
 | summaries.rb:103:8:103:22 | call to source :  | semmle.label | call to source :  |
 | summaries.rb:103:8:103:22 | call to source :  | semmle.label | call to source :  |
 | summaries.rb:104:1:104:1 | [post] d [element 3] :  | semmle.label | [post] d [element 3] :  |
 | summaries.rb:104:1:104:1 | [post] d [element 3] :  | semmle.label | [post] d [element 3] :  |
 | summaries.rb:104:1:104:1 | d [element 3] :  | semmle.label | d [element 3] :  |
 | summaries.rb:104:1:104:1 | d [element 3] :  | semmle.label | d [element 3] :  |
-| summaries.rb:106:6:106:6 | d [element 1] :  | semmle.label | d [element 1] :  |
-| summaries.rb:106:6:106:6 | d [element 1] :  | semmle.label | d [element 1] :  |
-| summaries.rb:106:6:106:9 | ...[...] | semmle.label | ...[...] |
-| summaries.rb:106:6:106:9 | ...[...] | semmle.label | ...[...] |
-| summaries.rb:107:6:107:6 | d [element 2] :  | semmle.label | d [element 2] :  |
-| summaries.rb:107:6:107:6 | d [element 2] :  | semmle.label | d [element 2] :  |
-| summaries.rb:107:6:107:9 | ...[...] | semmle.label | ...[...] |
-| summaries.rb:107:6:107:9 | ...[...] | semmle.label | ...[...] |
 | summaries.rb:108:6:108:6 | d [element 3] :  | semmle.label | d [element 3] :  |
 | summaries.rb:108:6:108:6 | d [element 3] :  | semmle.label | d [element 3] :  |
 | summaries.rb:108:6:108:9 | ...[...] | semmle.label | ...[...] |
@@ -544,10 +508,6 @@ invalidSpecComponent
 | summaries.rb:98:6:98:9 | ...[...] | summaries.rb:81:13:81:27 | call to source :  | summaries.rb:98:6:98:9 | ...[...] | $@ | summaries.rb:81:13:81:27 | call to source :  | call to source :  |
 | summaries.rb:102:6:102:9 | ...[...] | summaries.rb:79:32:79:46 | call to source :  | summaries.rb:102:6:102:9 | ...[...] | $@ | summaries.rb:79:32:79:46 | call to source :  | call to source :  |
 | summaries.rb:102:6:102:9 | ...[...] | summaries.rb:79:32:79:46 | call to source :  | summaries.rb:102:6:102:9 | ...[...] | $@ | summaries.rb:79:32:79:46 | call to source :  | call to source :  |
-| summaries.rb:106:6:106:9 | ...[...] | summaries.rb:79:15:79:29 | call to source :  | summaries.rb:106:6:106:9 | ...[...] | $@ | summaries.rb:79:15:79:29 | call to source :  | call to source :  |
-| summaries.rb:106:6:106:9 | ...[...] | summaries.rb:79:15:79:29 | call to source :  | summaries.rb:106:6:106:9 | ...[...] | $@ | summaries.rb:79:15:79:29 | call to source :  | call to source :  |
-| summaries.rb:107:6:107:9 | ...[...] | summaries.rb:79:32:79:46 | call to source :  | summaries.rb:107:6:107:9 | ...[...] | $@ | summaries.rb:79:32:79:46 | call to source :  | call to source :  |
-| summaries.rb:107:6:107:9 | ...[...] | summaries.rb:79:32:79:46 | call to source :  | summaries.rb:107:6:107:9 | ...[...] | $@ | summaries.rb:79:32:79:46 | call to source :  | call to source :  |
 | summaries.rb:108:6:108:9 | ...[...] | summaries.rb:103:8:103:22 | call to source :  | summaries.rb:108:6:108:9 | ...[...] | $@ | summaries.rb:103:8:103:22 | call to source :  | call to source :  |
 | summaries.rb:108:6:108:9 | ...[...] | summaries.rb:103:8:103:22 | call to source :  | summaries.rb:108:6:108:9 | ...[...] | $@ | summaries.rb:103:8:103:22 | call to source :  | call to source :  |
 | summaries.rb:112:6:112:16 | call to get_value | summaries.rb:111:13:111:26 | call to source :  | summaries.rb:112:6:112:16 | call to get_value | $@ | summaries.rb:111:13:111:26 | call to source :  | call to source :  |
