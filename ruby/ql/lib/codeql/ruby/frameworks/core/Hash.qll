@@ -42,7 +42,7 @@ module Hash {
    * Gets a call to the method `name` invoked on the `Hash` object
    * (not on a hash instance).
    */
-  MethodCall getAStaticHashCall(string name) {
+  private MethodCall getAStaticHashCall(string name) {
     result.getMethodName() = name and
     resolveConstantReadAccess(result.getReceiver()) = TResolved("Hash")
   }
@@ -72,7 +72,7 @@ module Hash {
 
   /** Holds if `literal` is a call to `Hash.[]` and `argument` is one of its arguments. */
   private predicate hashLiteralStore(DataFlow::CallNode literal, DataFlow::Node argument) {
-    literal.getExprNode().getExpr() = Hash::getAStaticHashCall("[]") and
+    literal.getExprNode().getExpr() = getAStaticHashCall("[]") and
     argument = literal.getArgument(_)
   }
 
