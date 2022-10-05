@@ -1,6 +1,6 @@
 ---
 dependencies:
-  codeql/javascript-experimental-atm-model:
-    version: 0.2.0
+  dsp-testing/javascript-experimental-atm-model:
+    version: 0.2.1-2022-09-28-21h37m16s.icy-pot-h9k0rj2l.9957138ffa947f6702f1e1408eaa9b621e73e85fb83e9ecfe2d02a1dc0b82bf9
 compiled: false
 lockVersion: 1.0.0
