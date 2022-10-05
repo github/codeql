@@ -10,6 +10,11 @@ class UsersController < ApplicationController
     authenticate_user(params[:username], password)
   end
 
+  def login_get_cookies
+    password = cookies[:password]
+    authenticate_user(params[:username], password)
+  end
+
   private
   def authenticate_user(username, password)
     # ... authenticate the user here
