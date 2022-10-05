@@ -314,6 +314,14 @@ module Http {
        * This is typically the name of the method that gives rise to this input.
        */
       string getSourceType() { result = super.getSourceType() }
+
+      /**
+       * Gets the kind of the accessed input,
+       * Can be one of "parameter", "header", "body", "url", "cookie".
+       *
+       * Note that this predicate is functional.
+       */
+      string getKind() { result = super.getKind() }
     }
 
     /** Provides a class for modeling new HTTP request inputs. */
@@ -331,6 +339,14 @@ module Http {
          * This is typically the name of the method that gives rise to this input.
          */
         abstract string getSourceType();
+
+        /**
+         * Gets the kind of the accessed input,
+         * Can be one of "parameter", "header", "body", "url", "cookie".
+         *
+         * Note that this predicate is functional.
+         */
+        abstract string getKind();
       }
     }
 
@@ -411,6 +427,8 @@ module Http {
       RoutedParameter() { this.getParameter() = handler.getARoutedParameter() }
 
       override string getSourceType() { result = handler.getFramework() + " RoutedParameter" }
+
+      override string getKind() { result = "url" }
     }
 
     /**

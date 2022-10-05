@@ -141,6 +141,8 @@ class ParamsSource extends Http::Server::RequestInputAccess::Range {
   ParamsSource() { this.asExpr().getExpr() instanceof Rails::ParamsCall }
 
   override string getSourceType() { result = "ActionController::Metal#params" }
+
+  override string getKind() { result = "parameter" }
 }
 
 /**
@@ -151,6 +153,8 @@ class CookiesSource extends Http::Server::RequestInputAccess::Range {
   CookiesSource() { this.asExpr().getExpr() instanceof Rails::CookiesCall }
 
   override string getSourceType() { result = "ActionController::Metal#cookies" }
+
+  override string getKind() { result = "cookie" }
 }
 
 /** A call to `cookies` from within a controller. */

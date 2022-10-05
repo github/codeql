@@ -33,7 +33,7 @@ module SensitiveGetQuery {
     RequestInputAccessSource() {
       handler = this.asExpr().getExpr().getEnclosingMethod() and
       handler.getAnHttpMethod() = "get" and
-      this.getSourceType().matches(["%params%", "%parameters%"])
+      this.getKind() = "parameter"
     }
 
     override Http::Server::RequestHandler getHandler() { result = handler }
