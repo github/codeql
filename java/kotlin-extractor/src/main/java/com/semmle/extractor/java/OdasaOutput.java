@@ -269,7 +269,7 @@ public class OdasaOutput {
 	 * 		Any unique suffix needed to distinguish `sym` from other declarations with the same name.
 	 * 		For functions for example, this means its parameter signature.
 	 */
-	private TrapFileManager getMembersWriterForDecl(File trap, IrDeclaration sym, String signature) {
+	private TrapFileManager getMembersWriterForDecl(File trap, File trapFileBase, TrapClassVersion trapFileVersion, IrDeclaration sym, String signature) {
 		if (use_trap_locking) {
 			TrapClassVersion currVersion = TrapClassVersion.fromSymbol(sym, log);
 			String shortName = sym instanceof IrDeclarationWithName ? ((IrDeclarationWithName)sym).getName().asString() : "(name unknown)";
@@ -298,10 +298,29 @@ public class OdasaOutput {
 			// then renamed to its trap-old name, then we
 			// don't need to rewrite it only to rename it
 			// again.
-			File trapOld = new File(trap.getParentFile(), trap.getName().replace(".trap.gz", ".trap-old.gz"));
+			File trapFileDir = trap.getParentFile();
+			File trapOld = new File(trapFileDir, trap.getName().replace(".trap.gz", ".trap-old.gz"));
 			if (trapOld.exists()) {
 				log.warn("Not rewriting trap file for " + trap.toString() + " as the trap-old exists");
 				return null;
+			}
+			// Otherwise, if any newer TRAP file has already
+			// been written then we don't need to write
+			// anything.
+			if (trapFileBase != null && trapFileVersion != null && trapFileDir.exists()) {
+				String trapFileBaseName = trapFileBase.getName();
+
+				for (File f: FileUtil.list(trapFileDir)) {
+					String name = f.getName();
+					Matcher m = selectClassVersionComponents.matcher(name);
+					if (m.matches() && m.group(1).equals(trapFileBaseName)) {
+						TrapClassVersion v = new TrapClassVersion(Integer.valueOf(m.group(2)), Integer.valueOf(m.group(3)), Long.valueOf(m.group(4)), m.group(5));
+						if (v.newerThan(trapFileVersion)) {
+							log.warn("Not rewriting trap file for " + trap.toString() + " as " + f.toString() + " exists");
+							return null;
+						}
+					}
+				}
 			}
 		}
 		return trapWriter(trap, sym, signature);
@@ -389,6 +408,8 @@ public class OdasaOutput {
 	/*
 	 * Trap file locking.
 	 */
+
+	private final Pattern selectClassVersionComponents = Pattern.compile("(.*)#(-?[0-9]+)\\.(-?[0-9]+)-(-?[0-9]+)-(.*)\\.trap\\.gz");
 
 	/**
 	 * <b>CAUTION</b>: to avoid the potential for deadlock between multiple concurrent extractor processes,
@@ -485,13 +506,11 @@ public class OdasaOutput {
 				if (use_trap_locking) {
 					lockTrapFile(trapFile);
 				}
-				return getMembersWriterForDecl(trapFile, sym, signature);
+				return getMembersWriterForDecl(trapFile, trapFileBase, trapFileVersion, sym, signature);
 			} else {
 				return null;
 			}
 		}
-
-		private final Pattern selectClassVersionComponents = Pattern.compile("(.*)#(-?[0-9]+)\\.(-?[0-9]+)-(-?[0-9]+)-(.*)\\.trap\\.gz");
 
 		@Override
 		public void close() {
