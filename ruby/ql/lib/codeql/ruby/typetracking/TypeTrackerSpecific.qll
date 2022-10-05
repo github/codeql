@@ -209,7 +209,7 @@ predicate returnStep(Node nodeFrom, Node nodeTo) {
  * called.
  */
 predicate basicStoreStep(Node nodeFrom, Node nodeTo, DataFlow::ContentSet contents) {
-  postUpdateStoreStep(nodeFrom, nodeTo, contents)
+  storeStepIntoSourceNode(nodeFrom, nodeTo, contents)
   or
   exists(
     SummarizedCallable callable, DataFlowPublic::CallNode call, SummaryComponentStack input,
@@ -229,7 +229,7 @@ predicate basicStoreStep(Node nodeFrom, Node nodeTo, DataFlow::ContentSet conten
  * Holds if a store step `nodeFrom -> nodeTo` with `contents` exists, where the destination node
  * is a post-update node that should be treated as a local source node.
  */
-predicate postUpdateStoreStep(Node nodeFrom, Node nodeTo, DataFlow::ContentSet contents) {
+predicate storeStepIntoSourceNode(Node nodeFrom, Node nodeTo, DataFlow::ContentSet contents) {
   // TODO: support SetterMethodCall inside TuplePattern
   exists(ExprNodes::MethodCallCfgNode call |
     contents
@@ -241,6 +241,8 @@ predicate postUpdateStoreStep(Node nodeFrom, Node nodeTo, DataFlow::ContentSet c
     call.getArgument(call.getNumberOfArguments() - 1) =
       nodeFrom.(DataFlowPublic::ExprNode).getExprNode()
   )
+  or
+  DataFlowPrivate::storeStepCommon(nodeFrom, contents, nodeTo)
 }
 
 /**
