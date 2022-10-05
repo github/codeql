@@ -4,6 +4,7 @@ private import TaintTrackingPublic
 private import codeql.swift.dataflow.DataFlow
 private import codeql.swift.dataflow.Ssa
 private import codeql.swift.controlflow.CfgNodes
+private import FlowSummaryImpl as FlowSummaryImpl
 
 /**
  * Holds if `node` should be a sanitizer in all global taint flow configurations
@@ -57,6 +58,8 @@ private module Cached {
       nodeFrom.asExpr() = call.getAnArgument().getExpr() and
       nodeTo.asExpr() = call
     )
+    or
+    FlowSummaryImpl::Private::Steps::summaryLocalStep(nodeFrom, nodeTo, false)
   }
 
   /**

@@ -147,6 +147,8 @@ private module Cached {
     or
     // flow through `!`
     nodeFrom.asExpr() = nodeTo.asExpr().(ForceValueExpr).getSubExpr()
+    or
+    FlowSummaryImpl::Private::Steps::summaryLocalStep(nodeFrom, nodeTo, true)
   }
 
   /**
@@ -160,7 +162,10 @@ private module Cached {
 
   /** This is the local flow predicate that is exposed. */
   cached
-  predicate localFlowStepImpl(Node nodeFrom, Node nodeTo) { localFlowStepCommon(nodeFrom, nodeTo) }
+  predicate localFlowStepImpl(Node nodeFrom, Node nodeTo) {
+    localFlowStepCommon(nodeFrom, nodeTo) or
+    FlowSummaryImpl::Private::Steps::summaryThroughStepValue(nodeFrom, nodeTo, _)
+  }
 
   cached
   newtype TContentSet = TSingletonContent(Content c)
@@ -489,6 +494,8 @@ predicate storeStep(Node node1, ContentSet c, Node node2) {
     node2.(PostUpdateNode).getPreUpdateNode().asExpr() = ref.getBase() and
     c.isSingleton(any(Content::FieldContent ct | ct.getField() = ref.getMember()))
   )
+  or
+  FlowSummaryImpl::Private::Steps::summaryStoreStep(node1, c, node2)
 }
 
 predicate isLValue(Expr e) { any(AssignExpr assign).getDest() = e }
