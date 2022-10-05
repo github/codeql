@@ -30,7 +30,11 @@ private module Cached {
       // We can't rely on `basicStoreStep` since `startInContent` might be used with
       // a content that has no corresponding store.
       exists(TypeTrackerContent loadContents |
-        basicLoadStep(_, _, loadContents) and
+        (
+          basicLoadStep(_, _, loadContents)
+          or
+          basicLoadStoreStep(_, _, loadContents, _)
+        ) and
         compatibleContents(content, loadContents)
       )
     }
@@ -42,7 +46,11 @@ private module Cached {
       or
       // As in MkTypeTracker, restrict `content` to those that might eventually match a store.
       exists(TypeTrackerContent storeContent |
-        basicStoreStep(_, _, storeContent) and
+        (
+          basicStoreStep(_, _, storeContent)
+          or
+          basicLoadStoreStep(_, _, _, storeContent)
+        ) and
         compatibleContents(storeContent, content)
       )
     }
