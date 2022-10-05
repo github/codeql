@@ -252,7 +252,7 @@ module API {
     /**
      * Gets a node representing a subscript of this node at (string) index `key`.
      * This requires that the index can be statically determined.
-     * 
+     *
      * For example, the subscripts of `a` and `b` below would be found using
      * the index `foo`:
      * ```py
@@ -511,7 +511,7 @@ module API {
     /** Gets an API node for the object being subscripted. */
     API::Node getObject() { result = subscripted }
 
-    /** Gets the data flow node representing the index of this read, if any. */
+    /** Gets the data flow node representing the index of this read. */
     DataFlow::Node getIndex() {
       result.asCfgNode() = this.asCfgNode().(PY::SubscriptNode).getIndex()
     }
@@ -530,7 +530,7 @@ module API {
     /** Gets an API node for the object being subscripted. */
     API::Node getObject() { result = subscripted }
 
-    /** Gets the data flow node representing the index of this write, if any. */
+    /** Gets the data flow node representing the index of this write. */
     DataFlow::Node getIndex() {
       exists(PY::SubscriptNode subscriptNode |
         subscriptNode.(PY::DefinitionNode).getValue() = this.asCfgNode() and
