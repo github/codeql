@@ -1,7 +1,6 @@
 /** Definitions for the keyboard cache query */
 
 import java
-import semmle.code.xml.XML
 import semmle.code.java.security.SensitiveActions
 
 /** An Android Layout XML file. */
