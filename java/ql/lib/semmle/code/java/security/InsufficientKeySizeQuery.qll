@@ -155,8 +155,11 @@ private predicate hasShortAESKey(MethodAccess ma, string msg) {
 bindingset[type]
 private predicate hasShortAsymmetricKeyPair(MethodAccess ma, string msg, string type) {
   ma.getMethod() instanceof KeyPairGeneratorInitMethod and
-  ma.getQualifier() instanceof JavaSecurityKeyPairGenerator and
-  ma.getQualifier().getBasicBlock() instanceof JavaSecurityKeyPairGenerator and
+  //ma.getQualifier() instanceof JavaSecurityKeyPairGenerator and
+  //ma.getQualifier().getBasicBlock() instanceof JavaSecurityKeyPairGenerator and
+  // * USE BELOW
+  ma.getQualifier().getBasicBlock().getAPredecessor() instanceof JavaSecurityKeyPairGenerator and
+  // * USE ABOVE
   //ma.getQualifier().getBasicBlock().getNode(2) instanceof JavaSecurityKeyPairGenerator and
   // ma.getQualifier()
   //     .getBasicBlock()
@@ -167,6 +170,7 @@ private predicate hasShortAsymmetricKeyPair(MethodAccess ma, string msg, string 
   //     .getValue()
   //     .toUpperCase() = type and
   //ma.getQualifier().getBasicBlock().getAPredecessor() instanceof JavaSecurityKeyPairGenerator and
+  // * USE BELOW
   ma.getQualifier()
       .getBasicBlock()
       .getAPredecessor()
@@ -175,17 +179,20 @@ private predicate hasShortAsymmetricKeyPair(MethodAccess ma, string msg, string 
       .(StringLiteral)
       .getValue()
       .toUpperCase() = type and
+  // * USE ABOVE
   // flow needed to correctly determine algorithm type and
   // not match to ANY asymmetric algorithm
-  exists(
-    JavaSecurityKeyPairGenerator jpg, KeyPairGeneratorInitConfiguration kc,
-    DataFlow::PathNode source, DataFlow::PathNode dest
-  |
-    jpg.getAlgoSpec().(StringLiteral).getValue().toUpperCase() = type and
-    source.getNode().asExpr() = jpg and
-    dest.getNode().asExpr() = ma.getQualifier() and
-    kc.hasFlowPath(source, dest)
-  ) and
+  // * REMOVE BELOW
+  // exists(
+  //   JavaSecurityKeyPairGenerator jpg, KeyPairGeneratorInitConfiguration kc,
+  //   DataFlow::PathNode source, DataFlow::PathNode dest
+  // |
+  //   jpg.getAlgoSpec().(StringLiteral).getValue().toUpperCase() = type and
+  //   source.getNode().asExpr() = jpg and
+  //   dest.getNode().asExpr() = ma.getQualifier() and
+  //   kc.hasFlowPath(source, dest)
+  // ) and
+  // * REMOVE ABOVE
   // VarAccess case needed to handle FN of key-size stored in a variable
   // Note: cannot use CompileTimeConstantExpr since will miss cases when variable is not a compile-time constant
   // (e.g. not declared `final` in Java)
@@ -197,12 +204,12 @@ private predicate hasShortAsymmetricKeyPair(MethodAccess ma, string msg, string 
     )
     or
     ma.getArgument(0).(IntegerLiteral).getIntValue() < 2048
-    or
-    exists(
-      AsymmetricKeyTrackingConfiguration cfg, DataFlow::PathNode source, DataFlow::PathNode sink
-    |
-      cfg.hasFlowPath(source, sink)
-    )
+    // or
+    // exists(
+    //   AsymmetricKeyTrackingConfiguration cfg, DataFlow::PathNode source, DataFlow::PathNode sink
+    // |
+    //   cfg.hasFlowPath(source, sink)
+    // )
   ) and
   msg = "Key size should be at least 2048 bits for " + type + " encryption."
 }
