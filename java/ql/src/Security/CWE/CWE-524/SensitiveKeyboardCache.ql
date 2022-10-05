@@ -3,9 +3,9 @@
  * @description Sensitive information should not be saved to the keyboard cache.
  * @kind problem
  * @problem.severity warning
- * @id java/android/debuggable-attribute-enabled
+ * @id java/android/sensetive-keyboard-cache
  * @tags security
- *       external/cwe/cwe-489
+ *       external/cwe/cwe-524
  * @precision high
  */
 

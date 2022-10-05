@@ -1,1 +1,36 @@
-todo
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>When a user enters information to a text input field on an Android application, then by default their input is saved to a keyboard cache, 
+which provides autocomplete suggestions and predictions. If the input field is expected to contain sensitive information, such as a password or banking details, 
+this sensitive data may be leaked to other applications via the keyboard cache.</p>
+
+</overview>
+<recommendation>
+
+<p>For input fields expected to accept sensitive information, an input type such as <code>"textNoSuggestions"</code> (or <code>"textPassword"</code> for a password) 
+should be used to ensure that the input does not get stored in the keyboard cache.</p>
+
+</recommendation>
+<example>
+
+<p>In the following example, the field labeled BAD could allow the password to be saved to the keyboard cache;
+ whereas the field labeled GOOD uses the <code>"textPassword"</code> input type, which ensures that it is not.</p>
+
+<sample src="Example.xml" />
+
+</example>
+<references>
+
+<li>
+  OWASP Mobile Application Security Testing Guie: <a href="https://github.com/OWASP/owasp-mastg/blob/b7a93a2e5e0557cc9a12e55fc3f6675f6986bb86/Document/0x05d-Testing-Data-Storage.md#determining-whether-the-keyboard-cache-is-disabled-for-text-input-fields-mstg-storage-5">Determining Whether the Keyboard Cache Is Disabled for Text Input Fields</a>.
+</li>
+<li>
+  Android Developers: <a href="https://developer.android.com/reference/android/widget/TextView#attr_android:inputType"> <code>android:inputType</code> attribute documentation.
+<li>
+
+</references>
+</qhelp>
