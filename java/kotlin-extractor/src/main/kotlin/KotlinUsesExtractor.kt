@@ -661,10 +661,17 @@ open class KotlinUsesExtractor(
     private fun isOnDeclarationStackWithoutTypeParameters(f: IrFunction) =
         this is KotlinFileExtractor && this.declarationStack.findOverriddenAttributes(f)?.typeParameters?.isEmpty() == true
 
+    private fun isStaticFunctionOnStackBeforeClass(c: IrClass) =
+        this is KotlinFileExtractor && (this.declarationStack.findFirst { it.first == c || it.second?.isStatic == true })?.second?.isStatic == true
+
     private fun isUnavailableTypeParameter(t: IrType) =
         t is IrSimpleType && t.classifier.owner.let { owner ->
             owner is IrTypeParameter && owner.parent.let { parent ->
-                parent is IrFunction && isOnDeclarationStackWithoutTypeParameters(parent)
+                when (parent) {
+                    is IrFunction -> isOnDeclarationStackWithoutTypeParameters(parent)
+                    is IrClass -> isStaticFunctionOnStackBeforeClass(parent)
+                    else -> false
+                }
             }
         }
 

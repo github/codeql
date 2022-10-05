@@ -139,3 +139,16 @@ class TestGeneric<T> {
   }
 
 }
+
+class TestGenericFunction<T> {
+
+  fun <S : T> f(x: S, y: T = x, def1: T? = null, def2: List<T> = listOf(y), def3: S? = null, def4: List<S>? = listOf(x)) {
+    sink(y)
+  }
+
+  fun user(inst: TestGenericFunction<String>) {
+    inst.f<String>("generic function sunk")
+    inst.f("generic function sunk fp", "generic function sunk 2")
+  }
+
+}

@@ -859,7 +859,10 @@ open class KotlinFileExtractor(
             // n + o'th parameter, where `o` is the parameter offset caused by adding any dispatch receiver to the parameter list.
             // Note we don't need to add the extension receiver here because `useValueParameter` always assumes an extension receiver
             // will be prepended if one exists.
-            DeclarationStackAdjuster(f, OverriddenFunctionAttributes(id, id, locId, nonSyntheticParams, typeParameters = listOf())).use {
+            // Note we have to get the real function ID here before entering this block, because otherwise we'll misrepresent the signature of a generic
+            // function without its type variables -- for example, trying to address `f(T, List<T>)` as `f(Object, List)`.
+            val realFunctionId = useFunction<DbCallable>(f)
+            DeclarationStackAdjuster(f, OverriddenFunctionAttributes(id, id, locId, nonSyntheticParams, typeParameters = listOf(), isStatic = true)).use {
                 val realParamsVarId = getValueParameterLabel(id, parameterTypes.size - 2)
                 val intType = pluginContext.irBuiltIns.intType
                 val paramIdxOffset = listOf(dispatchReceiver, f.extensionReceiverParameter).count { it != null }
@@ -889,7 +892,6 @@ open class KotlinFileExtractor(
                         }
                     }
                     // Now call the real function:
-                    val realFunctionId = useFunction<DbCallable>(f)
                     if (f is IrConstructor) {
                        tw.getFreshIdLabel<DbConstructorinvocationstmt>().also { thisCallId ->
                            tw.writeStmts_constructorinvocationstmt(thisCallId, blockId, nextStmt++, id)
@@ -5275,10 +5277,19 @@ open class KotlinFileExtractor(
         fun peek() = stack.peek()
 
         fun findOverriddenAttributes(f: IrFunction) =
-            stack.firstOrNull { it.first == f } ?.second
+            stack.lastOrNull { it.first == f } ?.second
+
+        fun findFirst(f: (Pair<IrDeclaration, OverriddenFunctionAttributes?>) -> Boolean) =
+            stack.findLast(f)
     }
 
-    data class OverriddenFunctionAttributes(val id: Label<out DbCallable>? = null, val sourceDeclarationId: Label<out DbCallable>? = null, val sourceLoc: Label<DbLocation>? = null, val valueParameters: List<IrValueParameter>? = null, val typeParameters: List<IrTypeParameter>? = null)
+    data class OverriddenFunctionAttributes(
+        val id: Label<out DbCallable>? = null,
+        val sourceDeclarationId: Label<out DbCallable>? = null,
+        val sourceLoc: Label<DbLocation>? = null,
+        val valueParameters: List<IrValueParameter>? = null,
+        val typeParameters: List<IrTypeParameter>? = null,
+        val isStatic: Boolean? = null)
 
     private fun peekDeclStackAsDeclarationParent(elementToReportOn: IrElement): IrDeclarationParent? {
         val trapWriter = tw

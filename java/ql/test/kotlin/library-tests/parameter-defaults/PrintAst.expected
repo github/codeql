@@ -847,3 +847,154 @@ test.kt:
 #    1|               2: [NullLiteral] null
 #    1|               3: [IntegerLiteral] 1
 #    1|               4: [NullLiteral] null
+#  143|   12: [Class,GenericType,ParameterizedType] TestGenericFunction
+#-----|     -2: (Generic Parameters)
+#  143|       0: [TypeVariable] T
+#  143|     1: [Constructor] TestGenericFunction
+#  143|       5: [BlockStmt] { ... }
+#  143|         0: [SuperConstructorInvocationStmt] super(...)
+#  143|         1: [BlockStmt] { ... }
+#  145|     2: [Method] f
+#-----|       2: (Generic Parameters)
+#  145|         0: [TypeVariable] S
+#  145|       3: [TypeAccess] Unit
+#-----|       4: (Parameters)
+#  145|         0: [Parameter] x
+#  145|           0: [TypeAccess] S
+#  145|         1: [Parameter] y
+#  145|           0: [TypeAccess] T
+#  145|         2: [Parameter] def1
+#  145|           0: [TypeAccess] T
+#  145|         3: [Parameter] def2
+#  145|           0: [TypeAccess] List<? extends T>
+#  145|             0: [WildcardTypeAccess] ? ...
+#  145|               0: [TypeAccess] T
+#  145|         4: [Parameter] def3
+#  145|           0: [TypeAccess] S
+#  145|         5: [Parameter] def4
+#  145|           0: [TypeAccess] List<? extends S>
+#  145|             0: [WildcardTypeAccess] ? ...
+#  145|               0: [TypeAccess] S
+#  145|       5: [BlockStmt] { ... }
+#  146|         0: [ExprStmt] <Expr>;
+#  146|           0: [MethodAccess] sink(...)
+#  146|             -1: [TypeAccess] TestKt
+#  146|             0: [VarAccess] y
+#  145|     3: [Method] f$default
+#  145|       3: [TypeAccess] Unit
+#-----|       4: (Parameters)
+#  145|         0: [Parameter] p0
+#  145|           0: [TypeAccess] TestGenericFunction<>
+#  145|         1: [Parameter] p1
+#  145|           0: [TypeAccess] Object
+#  145|         2: [Parameter] p2
+#  145|           0: [TypeAccess] Object
+#  145|         3: [Parameter] p3
+#  145|           0: [TypeAccess] Object
+#  145|         4: [Parameter] p4
+#  145|           0: [TypeAccess] List<>
+#  145|         5: [Parameter] p5
+#  145|           0: [TypeAccess] Object
+#  145|         6: [Parameter] p6
+#  145|           0: [TypeAccess] List<>
+#  145|         7: [Parameter] p7
+#  145|           0: [TypeAccess] int
+#  145|         8: [Parameter] p8
+#  145|           0: [TypeAccess] Object
+#  145|       5: [BlockStmt] { ... }
+#  145|         0: [IfStmt] if (...)
+#  145|           0: [EQExpr] ... == ...
+#  145|             0: [AndBitwiseExpr] ... & ...
+#  145|               0: [IntegerLiteral] 2
+#  145|               1: [VarAccess] p7
+#  145|             1: [IntegerLiteral] 0
+#  145|           1: [ExprStmt] <Expr>;
+#  145|             0: [AssignExpr] ...=...
+#  145|               0: [VarAccess] p2
+#  145|               1: [VarAccess] p1
+#  145|         1: [IfStmt] if (...)
+#  145|           0: [EQExpr] ... == ...
+#  145|             0: [AndBitwiseExpr] ... & ...
+#  145|               0: [IntegerLiteral] 4
+#  145|               1: [VarAccess] p7
+#  145|             1: [IntegerLiteral] 0
+#  145|           1: [ExprStmt] <Expr>;
+#  145|             0: [AssignExpr] ...=...
+#  145|               0: [VarAccess] p3
+#  145|               1: [NullLiteral] null
+#  145|         2: [IfStmt] if (...)
+#  145|           0: [EQExpr] ... == ...
+#  145|             0: [AndBitwiseExpr] ... & ...
+#  145|               0: [IntegerLiteral] 8
+#  145|               1: [VarAccess] p7
+#  145|             1: [IntegerLiteral] 0
+#  145|           1: [ExprStmt] <Expr>;
+#  145|             0: [AssignExpr] ...=...
+#  145|               0: [VarAccess] p4
+#  145|               1: [MethodAccess] listOf(...)
+#  145|                 -2: [TypeAccess] Object
+#  145|                 -1: [TypeAccess] CollectionsKt
+#  145|                 0: [VarAccess] p2
+#  145|         3: [IfStmt] if (...)
+#  145|           0: [EQExpr] ... == ...
+#  145|             0: [AndBitwiseExpr] ... & ...
+#  145|               0: [IntegerLiteral] 16
+#  145|               1: [VarAccess] p7
+#  145|             1: [IntegerLiteral] 0
+#  145|           1: [ExprStmt] <Expr>;
+#  145|             0: [AssignExpr] ...=...
+#  145|               0: [VarAccess] p5
+#  145|               1: [NullLiteral] null
+#  145|         4: [IfStmt] if (...)
+#  145|           0: [EQExpr] ... == ...
+#  145|             0: [AndBitwiseExpr] ... & ...
+#  145|               0: [IntegerLiteral] 32
+#  145|               1: [VarAccess] p7
+#  145|             1: [IntegerLiteral] 0
+#  145|           1: [ExprStmt] <Expr>;
+#  145|             0: [AssignExpr] ...=...
+#  145|               0: [VarAccess] p6
+#  145|               1: [MethodAccess] listOf(...)
+#  145|                 -2: [TypeAccess] Object
+#  145|                 -1: [TypeAccess] CollectionsKt
+#  145|                 0: [VarAccess] p1
+#  145|         5: [ReturnStmt] return ...
+#  145|           0: [MethodAccess] f(...)
+#  145|             -1: [VarAccess] p0
+#  145|             0: [VarAccess] p1
+#  145|             1: [VarAccess] p2
+#  145|             2: [VarAccess] p3
+#  145|             3: [VarAccess] p4
+#  145|             4: [VarAccess] p5
+#  145|             5: [VarAccess] p6
+#  149|     4: [Method] user
+#  149|       3: [TypeAccess] Unit
+#-----|       4: (Parameters)
+#  149|         0: [Parameter] inst
+#  149|           0: [TypeAccess] TestGenericFunction<String>
+#  149|             0: [TypeAccess] String
+#  149|       5: [BlockStmt] { ... }
+#  150|         0: [ExprStmt] <Expr>;
+#  150|           0: [MethodAccess] f$default(...)
+#  150|             -1: [TypeAccess] TestGenericFunction<>
+#  150|             0: [VarAccess] inst
+#  150|             1: [StringLiteral] generic function sunk
+#    1|             2: [NullLiteral] null
+#    1|             3: [NullLiteral] null
+#    1|             4: [NullLiteral] null
+#    1|             5: [NullLiteral] null
+#    1|             6: [NullLiteral] null
+#    1|             7: [IntegerLiteral] 1
+#    1|             8: [NullLiteral] null
+#  151|         1: [ExprStmt] <Expr>;
+#  151|           0: [MethodAccess] f$default(...)
+#  151|             -1: [TypeAccess] TestGenericFunction<>
+#  151|             0: [VarAccess] inst
+#  151|             1: [StringLiteral] generic function sunk fp
+#  151|             2: [StringLiteral] generic function sunk 2
+#    1|             3: [NullLiteral] null
+#    1|             4: [NullLiteral] null
+#    1|             5: [NullLiteral] null
+#    1|             6: [NullLiteral] null
+#    1|             7: [IntegerLiteral] 3
+#    1|             8: [NullLiteral] null
