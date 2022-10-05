@@ -1726,7 +1726,7 @@ open class KotlinFileExtractor(
         val id = extractMethodAccessWithoutArgs(callsite.type, locId, enclosingCallable, callsiteParent, childIdx, enclosingStmt, defaultMethodLabel)
 
         if (callTarget.isLocalFunction()) {
-            extractNewExprForLocalFunction(getLocallyVisibleFunctionLabels(callTarget), id, locId, enclosingCallable, enclosingStmt)
+            extractTypeAccess(getLocallyVisibleFunctionLabels(callTarget).type, locId, id, -1, enclosingCallable, enclosingStmt)
         } else {
             extractStaticTypeAccessQualifierUnchecked(callTarget.parent, id, locId, enclosingCallable, enclosingStmt)
         }

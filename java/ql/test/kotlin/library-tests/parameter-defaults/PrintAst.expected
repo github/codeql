@@ -568,8 +568,7 @@ test.kt:
 #   90|               5: [BlockStmt] { ... }
 #   91|                 0: [ExprStmt] <Expr>;
 #   91|                   0: [MethodAccess] f$default(...)
-#   91|                     -1: [ClassInstanceExpr] new (...)
-#   91|                       -3: [TypeAccess] Object
+#   91|                     -1: [TypeAccess] 
 #   91|                     0: [StringLiteral] local sunk
 #    1|                     1: [NullLiteral] null
 #    1|                     2: [NullLiteral] null
@@ -577,8 +576,7 @@ test.kt:
 #    1|                     4: [NullLiteral] null
 #   92|                 1: [ExprStmt] <Expr>;
 #   92|                   0: [MethodAccess] f$default(...)
-#   92|                     -1: [ClassInstanceExpr] new (...)
-#   92|                       -3: [TypeAccess] Object
+#   92|                     -1: [TypeAccess] 
 #   92|                     0: [StringLiteral] local sunk fp
 #   92|                     1: [StringLiteral] local sunk 2
 #    1|                     2: [NullLiteral] null
