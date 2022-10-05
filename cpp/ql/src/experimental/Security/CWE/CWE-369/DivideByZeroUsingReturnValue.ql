@@ -30,7 +30,7 @@ predicate mayBeReturnValue(Function fn, Expr val) {
       or
       exists(Initializer it |
         globalValueNumber(it.getExpr()) = globalValueNumber(tmpExp) and
-        it.getDeclaration().(Variable).getAnAccess().(VariableAccess).getTarget() =
+        it.getDeclaration().(Variable).getAnAccess().getTarget() =
           globalValueNumber(rs.getExpr()).getAnExpr().(VariableAccess).getTarget()
       )
     )
@@ -61,7 +61,7 @@ predicate mayBeReturnZero(Function fn) {
   fn.hasName(["getc", "atoi"])
 }
 
-/** The function returns Guard which compares the expression `bound` */
+/** Gets the Guard which compares the expression `bound` */
 pragma[inline]
 GuardCondition checkByValue(Expr bound, Expr val) {
   exists(GuardCondition gc |
@@ -178,7 +178,7 @@ predicate checkConditions2(Expr div, Expr divVal, float changeInt2) {
   )
 }
 
-/** The function returns the value of the difference or summand from the expression `src`. */
+/** Gets the value of the difference or summand from the expression `src`. */
 float getValueOperand(Expr src, Expr e1, Expr e2) {
   src.(SubExpr).hasOperands(e1, e2) and
   result = e2.getValue().toFloat()
@@ -194,7 +194,7 @@ Expr getMulDivOperand(Expr e1) {
   result = e1.(DivExpr).getLeftOperand()
 }
 
-/** Class that defines possible variants of the division expression or the search for the remainder. */
+/** The class that defines possible variants of the division expression or the search for the remainder. */
 class MyDiv extends Expr {
   MyDiv() {
     this instanceof DivExpr or
