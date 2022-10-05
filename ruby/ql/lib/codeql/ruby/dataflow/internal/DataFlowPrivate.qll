@@ -366,8 +366,7 @@ private module Cached {
 
   cached
   predicate isLocalSourceNode(Node n) {
-    n instanceof ParameterNode and
-    not n instanceof SynthHashSplatParameterNode
+    n instanceof ParameterNode
     or
     // Expressions that can't be reached from another entry definition or expression
     n instanceof ExprNode and
@@ -381,7 +380,7 @@ private module Cached {
     n instanceof SynthReturnNode
     or
     // Needed for stores in type tracking
-    TypeTrackerSpecific::postUpdateStoreStep(_, n, _)
+    TypeTrackerSpecific::storeStepIntoSourceNode(_, n, _)
   }
 
   cached
@@ -1011,6 +1010,31 @@ private ContentSet getKeywordContent(string name) {
 }
 
 /**
+ * Subset of `storeStep` that should be shared with type-tracking.
+ */
+predicate storeStepCommon(Node node1, ContentSet c, Node node2) {
+  // Wrap all key-value arguments in a synthesized hash-splat argument node
+  exists(CfgNodes::ExprNodes::CallCfgNode call | node2 = TSynthHashSplatArgumentNode(call) |
+    // symbol key
+    exists(ArgumentPosition keywordPos, string name |
+      node1.asExpr().(Argument).isArgumentOf(call, keywordPos) and
+      keywordPos.isKeyword(name) and
+      c = getKeywordContent(name)
+    )
+    or
+    // non-symbol key
+    exists(CfgNodes::ExprNodes::PairCfgNode pair, CfgNodes::ExprCfgNode key, ConstantValue cv |
+      node1.asExpr() = pair.getValue() and
+      pair = call.getAnArgument() and
+      key = pair.getKey() and
+      cv = key.getConstantValue() and
+      not cv.isSymbol(_) and
+      c.isSingleton(TKnownElementContent(cv))
+    )
+  )
+}
+
+/**
  * Holds if data can flow from `node1` to `node2` via an assignment to
  * content `c`.
  */
@@ -1040,25 +1064,7 @@ predicate storeStep(Node node1, ContentSet c, Node node2) {
   or
   FlowSummaryImpl::Private::Steps::summaryStoreStep(node1, c, node2)
   or
-  // Wrap all key-value arguments in a synthesized hash-splat argument node
-  exists(CfgNodes::ExprNodes::CallCfgNode call | node2 = TSynthHashSplatArgumentNode(call) |
-    // symbol key
-    exists(ArgumentPosition keywordPos, string name |
-      node1.asExpr().(Argument).isArgumentOf(call, keywordPos) and
-      keywordPos.isKeyword(name) and
-      c = getKeywordContent(name)
-    )
-    or
-    // non-symbol key
-    exists(CfgNodes::ExprNodes::PairCfgNode pair, CfgNodes::ExprCfgNode key, ConstantValue cv |
-      node1.asExpr() = pair.getValue() and
-      pair = call.getAnArgument() and
-      key = pair.getKey() and
-      cv = key.getConstantValue() and
-      not cv.isSymbol(_) and
-      c.isSingleton(TKnownElementContent(cv))
-    )
-  )
+  storeStepCommon(node1, c, node2)
 }
 
 /**

@@ -206,6 +206,9 @@ getTarget
 | calls.rb:542:1:542:23 | call to new | calls.rb:117:5:117:16 | new |
 | calls.rb:543:1:543:23 | call to new | calls.rb:117:5:117:16 | new |
 | calls.rb:543:1:543:27 | call to baz | calls.rb:535:5:538:7 | baz |
+| calls.rb:545:2:545:6 | call to new | calls.rb:117:5:117:16 | new |
+| calls.rb:545:20:545:24 | call to baz | calls.rb:51:5:57:7 | baz |
+| calls.rb:546:26:546:37 | call to capitalize | calls.rb:97:5:97:23 | capitalize |
 | hello.rb:12:5:12:24 | call to include | calls.rb:108:5:110:7 | include |
 | hello.rb:14:16:14:20 | call to hello | hello.rb:2:5:4:7 | hello |
 | hello.rb:20:16:20:20 | call to super | hello.rb:13:5:15:7 | message |
@@ -319,6 +322,10 @@ unresolvedCall
 | calls.rb:531:1:531:24 | call to bar |
 | calls.rb:541:1:541:27 | call to foo |
 | calls.rb:542:1:542:27 | call to bar |
+| calls.rb:545:1:545:7 | call to [] |
+| calls.rb:545:1:545:26 | call to each |
+| calls.rb:546:1:546:13 | call to [] |
+| calls.rb:546:1:546:39 | call to each |
 | hello.rb:20:16:20:26 | ... + ... |
 | hello.rb:20:16:20:34 | ... + ... |
 | hello.rb:20:16:20:40 | ... + ... |

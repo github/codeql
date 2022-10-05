@@ -17,6 +17,10 @@ class TypeTrackingNode = DataFlowPublic::LocalSourceNode;
 
 class TypeTrackerContent = DataFlowPublic::ContentSet;
 
+private module SCS = SummaryComponentStack;
+
+private module SC = SummaryComponent;
+
 /**
  * An optional content set, that is, a `ContentSet` or the special "no content set" value.
  */
@@ -28,6 +32,29 @@ class OptionalTypeTrackerContent extends DataFlowPrivate::TOptionalContentSet {
     or
     result = this.(DataFlowPublic::ContentSet).toString()
   }
+}
+
+private newtype TContentFilter = MkElementFilter()
+
+/**
+ * A label to use for `WithContent` and `WithoutContent` steps, restricting
+ * which `ContentSet` may pass through.
+ */
+class ContentFilter extends TContentFilter {
+  /** Gets a string representation of this content filter. */
+  string toString() { this = MkElementFilter() and result = "elements" }
+
+  /** Gets the content of a type-tracker that matches this filter. */
+  TypeTrackerContent getAMatchingContent() {
+    this = MkElementFilter() and
+    result.getAReadContent() instanceof DataFlow::Content::ElementContent
+  }
+}
+
+/** Module for getting `ContentFilter` values. */
+module ContentFilter {
+  /** Gets the filter that only allow element contents. */
+  ContentFilter hasElements() { result = MkElementFilter() }
 }
 
 /**
@@ -61,6 +88,16 @@ private predicate summarizedLocalStep(Node nodeFrom, Node nodeTo) {
         .(TypeTrackingNode)
         .flowsTo(returnNode) and
     callStep(nodeTo.asExpr(), nodeFrom, param)
+  )
+  or
+  exists(
+    SummarizedCallable callable, DataFlowPublic::CallNode call, SummaryComponentStack input,
+    SummaryComponentStack output
+  |
+    callable.propagatesFlow(input, output, true) and
+    call.asExpr().getExpr() = callable.getACallSimple() and
+    nodeFrom = evaluateSummaryComponentStackLocal(callable, call, input) and
+    nodeTo = evaluateSummaryComponentStackLocal(callable, call, output)
   )
 }
 
@@ -168,16 +205,17 @@ predicate returnStep(Node nodeFrom, Node nodeTo) {
  * called.
  */
 predicate basicStoreStep(Node nodeFrom, Node nodeTo, DataFlow::ContentSet contents) {
-  postUpdateStoreStep(nodeFrom, nodeTo, contents)
+  storeStepIntoSourceNode(nodeFrom, nodeTo, contents)
   or
   exists(
-    SummarizedCallable callable, DataFlowPublic::CallNode call, SummaryComponent input,
-    SummaryComponent output
+    SummarizedCallable callable, DataFlowPublic::CallNode call, SummaryComponentStack input,
+    SummaryComponentStack output
   |
-    hasStoreSummary(callable, contents, input, output) and
+    hasStoreSummary(callable, contents, pragma[only_bind_into](input),
+      pragma[only_bind_into](output)) and
     call.asExpr().getExpr() = callable.getACallSimple() and
-    nodeFrom = evaluateSummaryComponentLocal(call, input) and
-    nodeTo = evaluateSummaryComponentLocal(call, output)
+    nodeFrom = evaluateSummaryComponentStackLocal(callable, call, input) and
+    nodeTo = evaluateSummaryComponentStackLocal(callable, call, output)
   )
 }
 
@@ -185,7 +223,7 @@ predicate basicStoreStep(Node nodeFrom, Node nodeTo, DataFlow::ContentSet conten
  * Holds if a store step `nodeFrom -> nodeTo` with `contents` exists, where the destination node
  * is a post-update node that should be treated as a local source node.
  */
-predicate postUpdateStoreStep(Node nodeFrom, Node nodeTo, DataFlow::ContentSet contents) {
+predicate storeStepIntoSourceNode(Node nodeFrom, Node nodeTo, DataFlow::ContentSet contents) {
   // TODO: support SetterMethodCall inside TuplePattern
   exists(ExprNodes::MethodCallCfgNode call |
     contents
@@ -197,6 +235,8 @@ predicate postUpdateStoreStep(Node nodeFrom, Node nodeTo, DataFlow::ContentSet c
     call.getArgument(call.getNumberOfArguments() - 1) =
       nodeFrom.(DataFlowPublic::ExprNode).getExprNode()
   )
+  or
+  DataFlowPrivate::storeStepCommon(nodeFrom, contents, nodeTo)
 }
 
 /**
@@ -211,13 +251,63 @@ predicate basicLoadStep(Node nodeFrom, Node nodeTo, DataFlow::ContentSet content
   )
   or
   exists(
-    SummarizedCallable callable, DataFlowPublic::CallNode call, SummaryComponent input,
-    SummaryComponent output
+    SummarizedCallable callable, DataFlowPublic::CallNode call, SummaryComponentStack input,
+    SummaryComponentStack output
   |
-    hasLoadSummary(callable, contents, input, output) and
+    hasLoadSummary(callable, contents, pragma[only_bind_into](input), pragma[only_bind_into](output)) and
     call.asExpr().getExpr() = callable.getACallSimple() and
-    nodeFrom = evaluateSummaryComponentLocal(call, input) and
-    nodeTo = evaluateSummaryComponentLocal(call, output)
+    nodeFrom = evaluateSummaryComponentStackLocal(callable, call, input) and
+    nodeTo = evaluateSummaryComponentStackLocal(callable, call, output)
+  )
+}
+
+/**
+ * Holds if the `loadContent` of `nodeFrom` is stored in the `storeContent` of `nodeTo`.
+ */
+predicate basicLoadStoreStep(
+  Node nodeFrom, Node nodeTo, DataFlow::ContentSet loadContent, DataFlow::ContentSet storeContent
+) {
+  exists(
+    SummarizedCallable callable, DataFlowPublic::CallNode call, SummaryComponentStack input,
+    SummaryComponentStack output
+  |
+    hasLoadStoreSummary(callable, loadContent, storeContent, pragma[only_bind_into](input),
+      pragma[only_bind_into](output)) and
+    call.asExpr().getExpr() = callable.getACallSimple() and
+    nodeFrom = evaluateSummaryComponentStackLocal(callable, call, input) and
+    nodeTo = evaluateSummaryComponentStackLocal(callable, call, output)
+  )
+}
+
+/**
+ * Holds if type-tracking should step from `nodeFrom` to `nodeTo` but block flow of contents matched by `filter` through here.
+ */
+predicate basicWithoutContentStep(Node nodeFrom, Node nodeTo, ContentFilter filter) {
+  exists(
+    SummarizedCallable callable, DataFlowPublic::CallNode call, SummaryComponentStack input,
+    SummaryComponentStack output
+  |
+    hasWithoutContentSummary(callable, filter, pragma[only_bind_into](input),
+      pragma[only_bind_into](output)) and
+    call.asExpr().getExpr() = callable.getACallSimple() and
+    nodeFrom = evaluateSummaryComponentStackLocal(callable, call, input) and
+    nodeTo = evaluateSummaryComponentStackLocal(callable, call, output)
+  )
+}
+
+/**
+ * Holds if type-tracking should step from `nodeFrom` to `nodeTo` if inside a content matched by `filter`.
+ */
+predicate basicWithContentStep(Node nodeFrom, Node nodeTo, ContentFilter filter) {
+  exists(
+    SummarizedCallable callable, DataFlowPublic::CallNode call, SummaryComponentStack input,
+    SummaryComponentStack output
+  |
+    hasWithContentSummary(callable, filter, pragma[only_bind_into](input),
+      pragma[only_bind_into](output)) and
+    call.asExpr().getExpr() = callable.getACallSimple() and
+    nodeFrom = evaluateSummaryComponentStackLocal(callable, call, input) and
+    nodeTo = evaluateSummaryComponentStackLocal(callable, call, output)
   )
 }
 
@@ -230,22 +320,114 @@ class Boolean extends boolean {
 
 private import SummaryComponentStack
 
+pragma[nomagic]
 private predicate hasStoreSummary(
-  SummarizedCallable callable, DataFlow::ContentSet contents, SummaryComponent input,
-  SummaryComponent output
+  SummarizedCallable callable, DataFlow::ContentSet contents, SummaryComponentStack input,
+  SummaryComponentStack output
 ) {
-  callable
-      .propagatesFlow(singleton(input),
-        push(SummaryComponent::content(contents), singleton(output)), true)
+  callable.propagatesFlow(input, push(SummaryComponent::content(contents), output), true) and
+  not isNonLocal(input.head()) and
+  not isNonLocal(output.head())
 }
 
+pragma[nomagic]
 private predicate hasLoadSummary(
-  SummarizedCallable callable, DataFlow::ContentSet contents, SummaryComponent input,
-  SummaryComponent output
+  SummarizedCallable callable, DataFlow::ContentSet contents, SummaryComponentStack input,
+  SummaryComponentStack output
+) {
+  callable.propagatesFlow(push(SummaryComponent::content(contents), input), output, true) and
+  not isNonLocal(input.head()) and
+  not isNonLocal(output.head())
+}
+
+pragma[nomagic]
+private predicate hasLoadStoreSummary(
+  SummarizedCallable callable, DataFlow::ContentSet loadContents,
+  DataFlow::ContentSet storeContents, SummaryComponentStack input, SummaryComponentStack output
 ) {
   callable
-      .propagatesFlow(push(SummaryComponent::content(contents), singleton(input)),
-        singleton(output), true)
+      .propagatesFlow(push(SummaryComponent::content(loadContents), input),
+        push(SummaryComponent::content(storeContents), output), true) and
+  not isNonLocal(input.head()) and
+  not isNonLocal(output.head())
+}
+
+/**
+ * Gets a content filter to use for a `WithoutContent[content]` step, or has no result if
+ * the step should be treated as ordinary flow.
+ *
+ * `WithoutContent` is often used to perform strong updates on individual collection elements, but for
+ * type-tracking this is rarely beneficial and quite expensive. However, `WithoutContent` can be quite useful
+ * for restricting the type of an object, and in these cases we translate it to a filter.
+ */
+private ContentFilter getFilterFromWithoutContentStep(DataFlow::ContentSet content) {
+  (
+    content.isAnyElement()
+    or
+    content.isElementLowerBoundOrUnknown(_)
+    or
+    content.isSingleton(any(DataFlow::Content::UnknownElementContent c))
+  ) and
+  result = MkElementFilter()
+}
+
+pragma[nomagic]
+private predicate hasWithoutContentSummary(
+  SummarizedCallable callable, ContentFilter filter, SummaryComponentStack input,
+  SummaryComponentStack output
+) {
+  exists(DataFlow::ContentSet content |
+    callable.propagatesFlow(push(SummaryComponent::withoutContent(content), input), output, true) and
+    filter = getFilterFromWithoutContentStep(content) and
+    not isNonLocal(input.head()) and
+    not isNonLocal(output.head()) and
+    input != output
+  )
+}
+
+/**
+ * Gets a content filter to use for a `WithContent[content]` step, or has no result if
+ * the step cannot be handled by type-tracking.
+ *
+ * `WithContent` is often used to perform strong updates on individual collection elements (or rather
+ * to preserve those that didn't get updated). But for type-tracking this is rarely beneficial and quite expensive.
+ * However, `WithContent` can be quite useful for restricting the type of an object, and in these cases we translate it to a filter.
+ */
+private ContentFilter getFilterFromWithContentStep(DataFlow::ContentSet content) {
+  (
+    content.isAnyElement()
+    or
+    content.isElementLowerBound(_)
+    or
+    content.isElementLowerBoundOrUnknown(_)
+    or
+    content.isSingleton(any(DataFlow::Content::ElementContent c))
+  ) and
+  result = MkElementFilter()
+}
+
+pragma[nomagic]
+private predicate hasWithContentSummary(
+  SummarizedCallable callable, ContentFilter filter, SummaryComponentStack input,
+  SummaryComponentStack output
+) {
+  exists(DataFlow::ContentSet content |
+    callable.propagatesFlow(push(SummaryComponent::withContent(content), input), output, true) and
+    filter = getFilterFromWithContentStep(content) and
+    not isNonLocal(input.head()) and
+    not isNonLocal(output.head()) and
+    input != output
+  )
+}
+
+/**
+ * Holds if the given component can't be evaluated by `evaluateSummaryComponentStackLocal`.
+ */
+pragma[nomagic]
+predicate isNonLocal(SummaryComponent component) {
+  component = SC::content(_)
+  or
+  component = SC::withContent(_)
 }
 
 /**
@@ -253,8 +435,8 @@ private predicate hasLoadSummary(
  * as specified by `component`.
  */
 bindingset[call, component]
-private DataFlowPublic::Node evaluateSummaryComponentLocal(
-  DataFlowPublic::CallNode call, SummaryComponent component
+private DataFlow::Node evaluateSummaryComponentLocal(
+  DataFlow::CallNode call, SummaryComponent component
 ) {
   exists(DataFlowDispatch::ParameterPosition pos |
     component = SummaryComponent::argument(pos) and
@@ -263,4 +445,82 @@ private DataFlowPublic::Node evaluateSummaryComponentLocal(
   or
   component = SummaryComponent::return() and
   result = call
+}
+
+/**
+ * Holds if `callable` is relevant for type-tracking and we therefore want `stack` to
+ * be evaluated locally at its call sites.
+ */
+pragma[nomagic]
+private predicate dependsOnSummaryComponentStack(
+  SummarizedCallable callable, SummaryComponentStack stack
+) {
+  exists(callable.getACallSimple()) and
+  (
+    callable.propagatesFlow(stack, _, true)
+    or
+    callable.propagatesFlow(_, stack, true)
+  )
+  or
+  dependsOnSummaryComponentStackCons(callable, _, stack)
+}
+
+pragma[nomagic]
+private predicate dependsOnSummaryComponentStackCons(
+  SummarizedCallable callable, SummaryComponent head, SummaryComponentStack tail
+) {
+  dependsOnSummaryComponentStack(callable, SCS::push(head, tail))
+}
+
+pragma[nomagic]
+private predicate dependsOnSummaryComponentStackConsLocal(
+  SummarizedCallable callable, SummaryComponent head, SummaryComponentStack tail
+) {
+  dependsOnSummaryComponentStackCons(callable, head, tail) and
+  not isNonLocal(head)
+}
+
+pragma[nomagic]
+private predicate dependsOnSummaryComponentStackLeaf(
+  SummarizedCallable callable, SummaryComponent leaf
+) {
+  dependsOnSummaryComponentStack(callable, SCS::singleton(leaf))
+}
+
+/**
+ * Gets a data flow node corresponding to the local input or output of `call`
+ * identified by `stack`, if possible.
+ */
+pragma[nomagic]
+private DataFlow::Node evaluateSummaryComponentStackLocal(
+  SummarizedCallable callable, DataFlow::CallNode call, SummaryComponentStack stack
+) {
+  exists(SummaryComponent component |
+    dependsOnSummaryComponentStackLeaf(callable, component) and
+    stack = SCS::singleton(component) and
+    call.asExpr().getExpr() = callable.getACallSimple() and
+    result = evaluateSummaryComponentLocal(call, component)
+  )
+  or
+  exists(DataFlow::Node prev, SummaryComponent head, SummaryComponentStack tail |
+    prev = evaluateSummaryComponentStackLocal(callable, call, tail) and
+    dependsOnSummaryComponentStackConsLocal(callable, pragma[only_bind_into](head),
+      pragma[only_bind_out](tail)) and
+    stack = SCS::push(pragma[only_bind_out](head), pragma[only_bind_out](tail))
+  |
+    exists(DataFlowDispatch::ArgumentPosition apos, DataFlowDispatch::ParameterPosition ppos |
+      head = SummaryComponent::parameter(apos) and
+      DataFlowDispatch::parameterMatch(ppos, apos) and
+      result.(DataFlowPrivate::ParameterNodeImpl).isSourceParameterOf(prev.asExpr().getExpr(), ppos)
+    )
+    or
+    head = SummaryComponent::return() and
+    result.(DataFlowPrivate::SynthReturnNode).getCfgScope() = prev.asExpr().getExpr()
+    or
+    exists(DataFlow::ContentSet content |
+      head = SummaryComponent::withoutContent(content) and
+      not exists(getFilterFromWithoutContentStep(content)) and
+      result = prev
+    )
+  )
 }
