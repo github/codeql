@@ -937,17 +937,17 @@ predicate resolveClassCall(CallNode call, Class cls) {
 }
 
 /**
- * Gets a function (`__init__`/`__new__`) that will be invoked when `cls` is
- * constructed -- where the function lookup is based on our MRO calculation.
+ * Gets a function, either `__init__` or `__new__` as specified by `funcName`, that will
+ * be invoked when `cls` is constructed -- where the function lookup is based on our MRO
+ * calculation.
  */
-Function invokedFunctionFromClassConstruction(Class cls) {
-  result = findFunctionAccordingToMroKnownStartingClass(cls, "__new__")
-  or
+Function invokedFunctionFromClassConstruction(Class cls, string funcName) {
   // as described in https://docs.python.org/3/reference/datamodel.html#object.__new__
   // __init__ will only be called when __new__ returns an instance of the class (which
   // is not a requirement). However, for simplicity, we assume that __init__ will always
   // be called.
-  result = findFunctionAccordingToMroKnownStartingClass(cls, "__init__")
+  funcName in ["__init__", "__new__"] and
+  result = findFunctionAccordingToMroKnownStartingClass(cls, funcName)
 }
 
 /**
@@ -984,7 +984,7 @@ predicate resolveCall(ControlFlowNode call, Function target, CallType type) {
   type instanceof CallTypeClass and
   exists(Class cls |
     resolveClassCall(call, cls) and
-    target = invokedFunctionFromClassConstruction(cls)
+    target = invokedFunctionFromClassConstruction(cls, _)
   )
   or
   type instanceof CallTypeClassInstanceCall and
@@ -1106,6 +1106,9 @@ predicate getCallArg(
     // class call
     type instanceof CallTypeClass and
     (
+      // only pass synthetic node for created object to __init__, and not __new__ since
+      // __new__ is a classmethod.
+      target = invokedFunctionFromClassConstruction(_, "__init__") and
       apos.isSelf() and
       arg = TSyntheticPreUpdateNode(call)
       or
