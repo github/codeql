@@ -86,5 +86,15 @@ module Types
     def foo(arg)
       system("echo #{arg}") # OK, this is just a random method, not a resolver method
     end
+
+    field :with_method, String, null: false, description: "A field with a custom resolver method", resolver_method: :custom_method_2 do
+      argument :my_arr, [String], "An array of strings", required: true
+    end
+    def custom_method_2(my_arr:, number: nil)
+      system("echo #{my_arr}") # NOT OK
+      my_arr.reject do |n, *|
+        system("echo #{n}") # NOT OK - but not flagged
+      end
+    end
   end
 end
