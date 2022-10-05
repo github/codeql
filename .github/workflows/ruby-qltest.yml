@@ -65,7 +65,7 @@ jobs:
            xargs codeql execute upgrades testdb
           diff -q testdb/ruby.dbscheme downgrades/initial/ruby.dbscheme
   qltest:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest-xl
     strategy:
       fail-fast: false
       matrix:
