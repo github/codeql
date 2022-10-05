@@ -12,15 +12,3 @@ inline fun <reified S: IrDeclaration> Iterable<IrDeclaration>.findSubType(
 ): S? {
     return this.find { it is S && predicate(it) } as S?
 }
-
-/**
- * This behaves the same as Iterable<IrDeclaration>.singleOrNull, but
- * requires that the value found is of the subtype S, and it casts
- * the result for you appropriately.
- */
-inline fun <reified S: IrDeclaration> Iterable<IrDeclaration>.singleOrNullSubType(
-    predicate: (S) -> Boolean
-): S? {
-    return this.singleOrNull { it is S && predicate(it) } as S?
-}
-

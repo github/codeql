@@ -93,12 +93,16 @@ calls.rb:
 
 #  480| ExtendSingletonMethod
 
-#  490| ProtectedMethodInModule
+#  490| ExtendSingletonMethod2
 
-#  496| ProtectedMethods
+#  496| ExtendSingletonMethod3
+
+#  509| ProtectedMethodInModule
+
+#  515| ProtectedMethods
 #-----|  -> Object
 
-#  515| ProtectedMethodsSub
+#  534| ProtectedMethodsSub
 #-----|  -> ProtectedMethods
 
 hello.rb:

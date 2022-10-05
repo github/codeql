@@ -41,3 +41,7 @@ check_build_out("hello, world", s)
 # to `dotnet run -p:UseSharedCompilation=true -p:UseSharedCompilation=false -- hello world`
 s = run_codeql_database_create_stdout(['dotnet clean', 'rm -rf test6-db', 'dotnet run -p:UseSharedCompilation=true -- hello world'], "test7-db")
 check_build_out("hello, world", s)
+
+# option passed into `dotnet run`
+s = run_codeql_database_create_stdout(['dotnet clean', 'rm -rf test7-db', 'dotnet build', 'dotnet run --no-build hello world'], "test8-db")
+check_build_out("hello, world", s)

@@ -294,6 +294,30 @@ private DataFlowCallable viableLibraryCallable(DataFlowCall call) {
   )
 }
 
+/** Holds if there is a call like `receiver.extend(M)`. */
+pragma[nomagic]
+private predicate extendCall(DataFlow::ExprNode receiver, Module m) {
+  exists(DataFlow::CallNode extendCall |
+    extendCall.getMethodName() = "extend" and
+    exists(DataFlow::LocalSourceNode sourceNode | sourceNode.flowsTo(extendCall.getArgument(_)) |
+      selfInModule(sourceNode.(SsaSelfDefinitionNode).getVariable(), m) or
+      m = resolveConstantReadAccess(sourceNode.asExpr().getExpr())
+    ) and
+    receiver = extendCall.getReceiver()
+  )
+}
+
+/** Holds if there is a call like `M.extend(N)` */
+pragma[nomagic]
+private predicate extendCallModule(Module m, Module n) {
+  exists(DataFlow::LocalSourceNode receiver, DataFlow::ExprNode e |
+    receiver.flowsTo(e) and extendCall(e, n)
+  |
+    selfInModule(receiver.(SsaSelfDefinitionNode).getVariable(), m) or
+    m = resolveConstantReadAccess(receiver.asExpr().getExpr())
+  )
+}
+
 cached
 private module Cached {
   cached
@@ -340,12 +364,29 @@ private module Cached {
         // def c.singleton; end # <- result
         // c.singleton          # <- call
         // ```
+        // or an `extend`ed instance, e.g.
+        // ```rb
+        // c = C.new
+        // module M
+        //   def instance; end  # <- result
+        // end
+        // c.extend M
+        // c.instance # <- call
+        // ```
         exists(DataFlow::Node receiver |
           methodCall(call, receiver, method) and
           receiver = trackSingletonMethodOnInstance(result, method)
         )
         or
         // singleton method defined on a module
+        // or an `extend`ed module, e.g.
+        // ```rb
+        // module M
+        //   def instance; end  # <- result
+        // end
+        // M.extend(M)
+        // M.instance           # <- call
+        // ```
         exists(DataFlow::Node sourceNode, Module m |
           flowsToMethodCall(call, sourceNode, method) and
           singletonMethodOnModule(result, method, m)
@@ -669,6 +710,12 @@ private predicate flowsToSingletonMethodObject(
  * class << c
  *   def m6; end # not included
  * end
+ *
+ * module M
+ *   def instance; end # included in `N` via `extend` call below
+ * end
+ * N.extend(M)
+ * N.instance
  * ```
  */
 pragma[nomagic]
@@ -679,6 +726,11 @@ private predicate singletonMethodOnModule(MethodBase method, string name, Module
   )
   or
   flowsToSingletonMethodObject(trackModuleAccess(m), method, name)
+  or
+  exists(Module other |
+    extendCallModule(m, other) and
+    method = lookupMethod(other, name)
+  )
 }
 
 /**
@@ -705,6 +757,11 @@ private predicate singletonMethodOnModule(MethodBase method, string name, Module
  * class << c
  *   def m6; end # included
  * end
+ *
+ * module M
+ *   def instance; end # included in `c` via `extend` call below
+ * end
+ * c.extend(M)
  * ```
  */
 pragma[nomagic]
@@ -713,6 +770,12 @@ predicate singletonMethodOnInstance(MethodBase method, string name, Expr object)
   not selfInModule(object.(SelfVariableReadAccess).getVariable(), _) and
   // cannot use `trackModuleAccess` because of negative recursion
   not exists(resolveConstantReadAccess(object))
+  or
+  exists(DataFlow::ExprNode receiver, Module other |
+    extendCall(receiver, other) and
+    object = receiver.getExprNode().getExpr() and
+    method = lookupMethod(other, name)
+  )
 }
 
 /**

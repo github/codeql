@@ -39,10 +39,10 @@ getMethod
 | calls.rb:417:1:445:3 | ConditionalInstanceMethods | m1 | calls.rb:419:9:421:11 | m1 |
 | calls.rb:417:1:445:3 | ConditionalInstanceMethods | m2 | calls.rb:424:5:436:7 | m2 |
 | calls.rb:480:1:486:3 | ExtendSingletonMethod | singleton | calls.rb:481:5:483:7 | singleton |
-| calls.rb:490:1:494:3 | ProtectedMethodInModule | foo | calls.rb:491:15:493:7 | foo |
-| calls.rb:496:1:509:3 | ProtectedMethods | bar | calls.rb:499:15:501:7 | bar |
-| calls.rb:496:1:509:3 | ProtectedMethods | baz | calls.rb:503:5:508:7 | baz |
-| calls.rb:515:1:520:3 | ProtectedMethodsSub | baz | calls.rb:516:5:519:7 | baz |
+| calls.rb:509:1:513:3 | ProtectedMethodInModule | foo | calls.rb:510:15:512:7 | foo |
+| calls.rb:515:1:528:3 | ProtectedMethods | bar | calls.rb:518:15:520:7 | bar |
+| calls.rb:515:1:528:3 | ProtectedMethods | baz | calls.rb:522:5:527:7 | baz |
+| calls.rb:534:1:539:3 | ProtectedMethodsSub | baz | calls.rb:535:5:538:7 | baz |
 | hello.rb:1:1:8:3 | EnglishWords | hello | hello.rb:2:5:4:7 | hello |
 | hello.rb:1:1:8:3 | EnglishWords | world | hello.rb:5:5:7:7 | world |
 | hello.rb:11:1:16:3 | Greeting | message | hello.rb:13:5:15:7 | message |
@@ -357,37 +357,37 @@ lookupMethod
 | calls.rb:417:1:445:3 | ConditionalInstanceMethods | puts | calls.rb:102:5:102:30 | puts |
 | calls.rb:417:1:445:3 | ConditionalInstanceMethods | to_s | calls.rb:172:5:173:7 | to_s |
 | calls.rb:480:1:486:3 | ExtendSingletonMethod | singleton | calls.rb:481:5:483:7 | singleton |
-| calls.rb:490:1:494:3 | ProtectedMethodInModule | foo | calls.rb:491:15:493:7 | foo |
-| calls.rb:496:1:509:3 | ProtectedMethods | add_singleton | calls.rb:367:1:371:3 | add_singleton |
-| calls.rb:496:1:509:3 | ProtectedMethods | bar | calls.rb:499:15:501:7 | bar |
-| calls.rb:496:1:509:3 | ProtectedMethods | baz | calls.rb:503:5:508:7 | baz |
-| calls.rb:496:1:509:3 | ProtectedMethods | call_block | calls.rb:81:1:83:3 | call_block |
-| calls.rb:496:1:509:3 | ProtectedMethods | call_instance_m | calls.rb:39:1:41:3 | call_instance_m |
-| calls.rb:496:1:509:3 | ProtectedMethods | create | calls.rb:278:1:286:3 | create |
-| calls.rb:496:1:509:3 | ProtectedMethods | foo | calls.rb:491:15:493:7 | foo |
-| calls.rb:496:1:509:3 | ProtectedMethods | funny | calls.rb:140:1:142:3 | funny |
-| calls.rb:496:1:509:3 | ProtectedMethods | indirect | calls.rb:158:1:160:3 | indirect |
-| calls.rb:496:1:509:3 | ProtectedMethods | new | calls.rb:117:5:117:16 | new |
-| calls.rb:496:1:509:3 | ProtectedMethods | optional_arg | calls.rb:76:1:79:3 | optional_arg |
-| calls.rb:496:1:509:3 | ProtectedMethods | pattern_dispatch | calls.rb:343:1:359:3 | pattern_dispatch |
-| calls.rb:496:1:509:3 | ProtectedMethods | private_on_main | calls.rb:185:1:186:3 | private_on_main |
-| calls.rb:496:1:509:3 | ProtectedMethods | puts | calls.rb:102:5:102:30 | puts |
-| calls.rb:496:1:509:3 | ProtectedMethods | to_s | calls.rb:172:5:173:7 | to_s |
-| calls.rb:515:1:520:3 | ProtectedMethodsSub | add_singleton | calls.rb:367:1:371:3 | add_singleton |
-| calls.rb:515:1:520:3 | ProtectedMethodsSub | bar | calls.rb:499:15:501:7 | bar |
-| calls.rb:515:1:520:3 | ProtectedMethodsSub | baz | calls.rb:516:5:519:7 | baz |
-| calls.rb:515:1:520:3 | ProtectedMethodsSub | call_block | calls.rb:81:1:83:3 | call_block |
-| calls.rb:515:1:520:3 | ProtectedMethodsSub | call_instance_m | calls.rb:39:1:41:3 | call_instance_m |
-| calls.rb:515:1:520:3 | ProtectedMethodsSub | create | calls.rb:278:1:286:3 | create |
-| calls.rb:515:1:520:3 | ProtectedMethodsSub | foo | calls.rb:491:15:493:7 | foo |
-| calls.rb:515:1:520:3 | ProtectedMethodsSub | funny | calls.rb:140:1:142:3 | funny |
-| calls.rb:515:1:520:3 | ProtectedMethodsSub | indirect | calls.rb:158:1:160:3 | indirect |
-| calls.rb:515:1:520:3 | ProtectedMethodsSub | new | calls.rb:117:5:117:16 | new |
-| calls.rb:515:1:520:3 | ProtectedMethodsSub | optional_arg | calls.rb:76:1:79:3 | optional_arg |
-| calls.rb:515:1:520:3 | ProtectedMethodsSub | pattern_dispatch | calls.rb:343:1:359:3 | pattern_dispatch |
-| calls.rb:515:1:520:3 | ProtectedMethodsSub | private_on_main | calls.rb:185:1:186:3 | private_on_main |
-| calls.rb:515:1:520:3 | ProtectedMethodsSub | puts | calls.rb:102:5:102:30 | puts |
-| calls.rb:515:1:520:3 | ProtectedMethodsSub | to_s | calls.rb:172:5:173:7 | to_s |
+| calls.rb:509:1:513:3 | ProtectedMethodInModule | foo | calls.rb:510:15:512:7 | foo |
+| calls.rb:515:1:528:3 | ProtectedMethods | add_singleton | calls.rb:367:1:371:3 | add_singleton |
+| calls.rb:515:1:528:3 | ProtectedMethods | bar | calls.rb:518:15:520:7 | bar |
+| calls.rb:515:1:528:3 | ProtectedMethods | baz | calls.rb:522:5:527:7 | baz |
+| calls.rb:515:1:528:3 | ProtectedMethods | call_block | calls.rb:81:1:83:3 | call_block |
+| calls.rb:515:1:528:3 | ProtectedMethods | call_instance_m | calls.rb:39:1:41:3 | call_instance_m |
+| calls.rb:515:1:528:3 | ProtectedMethods | create | calls.rb:278:1:286:3 | create |
+| calls.rb:515:1:528:3 | ProtectedMethods | foo | calls.rb:510:15:512:7 | foo |
+| calls.rb:515:1:528:3 | ProtectedMethods | funny | calls.rb:140:1:142:3 | funny |
+| calls.rb:515:1:528:3 | ProtectedMethods | indirect | calls.rb:158:1:160:3 | indirect |
+| calls.rb:515:1:528:3 | ProtectedMethods | new | calls.rb:117:5:117:16 | new |
+| calls.rb:515:1:528:3 | ProtectedMethods | optional_arg | calls.rb:76:1:79:3 | optional_arg |
+| calls.rb:515:1:528:3 | ProtectedMethods | pattern_dispatch | calls.rb:343:1:359:3 | pattern_dispatch |
+| calls.rb:515:1:528:3 | ProtectedMethods | private_on_main | calls.rb:185:1:186:3 | private_on_main |
+| calls.rb:515:1:528:3 | ProtectedMethods | puts | calls.rb:102:5:102:30 | puts |
+| calls.rb:515:1:528:3 | ProtectedMethods | to_s | calls.rb:172:5:173:7 | to_s |
+| calls.rb:534:1:539:3 | ProtectedMethodsSub | add_singleton | calls.rb:367:1:371:3 | add_singleton |
+| calls.rb:534:1:539:3 | ProtectedMethodsSub | bar | calls.rb:518:15:520:7 | bar |
+| calls.rb:534:1:539:3 | ProtectedMethodsSub | baz | calls.rb:535:5:538:7 | baz |
+| calls.rb:534:1:539:3 | ProtectedMethodsSub | call_block | calls.rb:81:1:83:3 | call_block |
+| calls.rb:534:1:539:3 | ProtectedMethodsSub | call_instance_m | calls.rb:39:1:41:3 | call_instance_m |
+| calls.rb:534:1:539:3 | ProtectedMethodsSub | create | calls.rb:278:1:286:3 | create |
+| calls.rb:534:1:539:3 | ProtectedMethodsSub | foo | calls.rb:510:15:512:7 | foo |
+| calls.rb:534:1:539:3 | ProtectedMethodsSub | funny | calls.rb:140:1:142:3 | funny |
+| calls.rb:534:1:539:3 | ProtectedMethodsSub | indirect | calls.rb:158:1:160:3 | indirect |
+| calls.rb:534:1:539:3 | ProtectedMethodsSub | new | calls.rb:117:5:117:16 | new |
+| calls.rb:534:1:539:3 | ProtectedMethodsSub | optional_arg | calls.rb:76:1:79:3 | optional_arg |
+| calls.rb:534:1:539:3 | ProtectedMethodsSub | pattern_dispatch | calls.rb:343:1:359:3 | pattern_dispatch |
+| calls.rb:534:1:539:3 | ProtectedMethodsSub | private_on_main | calls.rb:185:1:186:3 | private_on_main |
+| calls.rb:534:1:539:3 | ProtectedMethodsSub | puts | calls.rb:102:5:102:30 | puts |
+| calls.rb:534:1:539:3 | ProtectedMethodsSub | to_s | calls.rb:172:5:173:7 | to_s |
 | file://:0:0:0:0 | Class | include | calls.rb:108:5:110:7 | include |
 | file://:0:0:0:0 | Class | module_eval | calls.rb:107:5:107:24 | module_eval |
 | file://:0:0:0:0 | Class | new | calls.rb:117:5:117:16 | new |
@@ -809,29 +809,29 @@ enclosingMethod
 | calls.rb:482:9:482:46 | self | calls.rb:481:5:483:7 | singleton |
 | calls.rb:482:14:482:46 | "ExtendSingletonMethod#singleton" | calls.rb:481:5:483:7 | singleton |
 | calls.rb:482:15:482:45 | ExtendSingletonMethod#singleton | calls.rb:481:5:483:7 | singleton |
-| calls.rb:492:9:492:42 | call to puts | calls.rb:491:15:493:7 | foo |
-| calls.rb:492:9:492:42 | self | calls.rb:491:15:493:7 | foo |
-| calls.rb:492:14:492:42 | "ProtectedMethodInModule#foo" | calls.rb:491:15:493:7 | foo |
-| calls.rb:492:15:492:41 | ProtectedMethodInModule#foo | calls.rb:491:15:493:7 | foo |
-| calls.rb:500:9:500:35 | call to puts | calls.rb:499:15:501:7 | bar |
-| calls.rb:500:9:500:35 | self | calls.rb:499:15:501:7 | bar |
-| calls.rb:500:14:500:35 | "ProtectedMethods#bar" | calls.rb:499:15:501:7 | bar |
-| calls.rb:500:15:500:34 | ProtectedMethods#bar | calls.rb:499:15:501:7 | bar |
-| calls.rb:504:9:504:11 | call to foo | calls.rb:503:5:508:7 | baz |
-| calls.rb:504:9:504:11 | self | calls.rb:503:5:508:7 | baz |
-| calls.rb:505:9:505:11 | call to bar | calls.rb:503:5:508:7 | baz |
-| calls.rb:505:9:505:11 | self | calls.rb:503:5:508:7 | baz |
-| calls.rb:506:9:506:24 | ProtectedMethods | calls.rb:503:5:508:7 | baz |
-| calls.rb:506:9:506:28 | call to new | calls.rb:503:5:508:7 | baz |
-| calls.rb:506:9:506:32 | call to foo | calls.rb:503:5:508:7 | baz |
-| calls.rb:507:9:507:24 | ProtectedMethods | calls.rb:503:5:508:7 | baz |
-| calls.rb:507:9:507:28 | call to new | calls.rb:503:5:508:7 | baz |
-| calls.rb:507:9:507:32 | call to bar | calls.rb:503:5:508:7 | baz |
-| calls.rb:517:9:517:11 | call to foo | calls.rb:516:5:519:7 | baz |
-| calls.rb:517:9:517:11 | self | calls.rb:516:5:519:7 | baz |
-| calls.rb:518:9:518:27 | ProtectedMethodsSub | calls.rb:516:5:519:7 | baz |
-| calls.rb:518:9:518:31 | call to new | calls.rb:516:5:519:7 | baz |
-| calls.rb:518:9:518:35 | call to foo | calls.rb:516:5:519:7 | baz |
+| calls.rb:511:9:511:42 | call to puts | calls.rb:510:15:512:7 | foo |
+| calls.rb:511:9:511:42 | self | calls.rb:510:15:512:7 | foo |
+| calls.rb:511:14:511:42 | "ProtectedMethodInModule#foo" | calls.rb:510:15:512:7 | foo |
+| calls.rb:511:15:511:41 | ProtectedMethodInModule#foo | calls.rb:510:15:512:7 | foo |
+| calls.rb:519:9:519:35 | call to puts | calls.rb:518:15:520:7 | bar |
+| calls.rb:519:9:519:35 | self | calls.rb:518:15:520:7 | bar |
+| calls.rb:519:14:519:35 | "ProtectedMethods#bar" | calls.rb:518:15:520:7 | bar |
+| calls.rb:519:15:519:34 | ProtectedMethods#bar | calls.rb:518:15:520:7 | bar |
+| calls.rb:523:9:523:11 | call to foo | calls.rb:522:5:527:7 | baz |
+| calls.rb:523:9:523:11 | self | calls.rb:522:5:527:7 | baz |
+| calls.rb:524:9:524:11 | call to bar | calls.rb:522:5:527:7 | baz |
+| calls.rb:524:9:524:11 | self | calls.rb:522:5:527:7 | baz |
+| calls.rb:525:9:525:24 | ProtectedMethods | calls.rb:522:5:527:7 | baz |
+| calls.rb:525:9:525:28 | call to new | calls.rb:522:5:527:7 | baz |
+| calls.rb:525:9:525:32 | call to foo | calls.rb:522:5:527:7 | baz |
+| calls.rb:526:9:526:24 | ProtectedMethods | calls.rb:522:5:527:7 | baz |
+| calls.rb:526:9:526:28 | call to new | calls.rb:522:5:527:7 | baz |
+| calls.rb:526:9:526:32 | call to bar | calls.rb:522:5:527:7 | baz |
+| calls.rb:536:9:536:11 | call to foo | calls.rb:535:5:538:7 | baz |
+| calls.rb:536:9:536:11 | self | calls.rb:535:5:538:7 | baz |
+| calls.rb:537:9:537:27 | ProtectedMethodsSub | calls.rb:535:5:538:7 | baz |
+| calls.rb:537:9:537:31 | call to new | calls.rb:535:5:538:7 | baz |
+| calls.rb:537:9:537:35 | call to foo | calls.rb:535:5:538:7 | baz |
 | hello.rb:3:9:3:22 | return | hello.rb:2:5:4:7 | hello |
 | hello.rb:3:16:3:22 | "hello" | hello.rb:2:5:4:7 | hello |
 | hello.rb:3:17:3:21 | hello | hello.rb:2:5:4:7 | hello |
