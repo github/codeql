@@ -1630,3 +1630,23 @@ def m137
     # unknown read
     sink(a[1.0]) # $ hasValueFlow=137.1 $ hasValueFlow=137.2 $ hasValueFlow=137.3 $ hasValueFlow=137.4
 end
+
+def m138
+    a = [0, 1, source(95)]
+    a.reject do |x, *|
+        sink x
+        x > 10
+    end
+    b = [0, 1, source(96)]
+    b.reject do |x, y, *|
+        sink x
+        sink y
+        x > 10
+    end
+    c = [0, 1, source(97)]
+    c.reject! do |x, y, *|
+        sink x
+        sink y
+        x > 10
+    end
+end
