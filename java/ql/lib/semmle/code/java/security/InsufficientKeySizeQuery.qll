@@ -1,6 +1,32 @@
 import semmle.code.java.security.Encryption
 import semmle.code.java.dataflow.TaintTracking
-import semmle.code.java.dataflow.DataFlow3
+import semmle.code.java.dataflow.DataFlow
+
+//import DataFlow::PathGraph
+/**
+ * Asymmetric (RSA, DSA, DH) key length data flow tracking configuration.
+ */
+class AsymmetricKeyTrackingConfiguration extends DataFlow::Configuration {
+  AsymmetricKeyTrackingConfiguration() { this = "AsymmetricKeyTrackingConfiguration" }
+
+  override predicate isSource(DataFlow::Node source) {
+    exists(IntegerLiteral integer, VarAccess var |
+      integer.getIntValue() < 2048 and
+      source.asExpr() = integer
+      or
+      var.getVariable().getInitializer().getUnderlyingExpr() instanceof IntegerLiteral and
+      var.getVariable().getInitializer().getUnderlyingExpr().toString().toInt() < 2048 and
+      source.asExpr() = var.getVariable().getInitializer()
+    )
+  }
+
+  override predicate isSink(DataFlow::Node sink) {
+    exists(MethodAccess ma |
+      ma.getMethod() instanceof KeyPairGeneratorInitMethod and
+      sink.asExpr() = ma.getArgument(0)
+    )
+  }
+}
 
 /** The Java class `java.security.spec.ECGenParameterSpec`. */
 private class ECGenParameterSpec extends RefType {
@@ -36,19 +62,22 @@ private int getECKeySize(string algorithm) {
   result = algorithm.regexpCapture(".*[a-zA-Z](\\d+)[a-zA-Z].*", 1).toInt()
 }
 
-// /** Taint configuration tracking flow from a key generator to a `init` method call. */
-// private class KeyGeneratorInitConfiguration extends TaintTracking::Configuration {
-//   KeyGeneratorInitConfiguration() { this = "KeyGeneratorInitConfiguration" }
-//   override predicate isSource(DataFlow::Node source) {
-//     source.asExpr() instanceof JavaxCryptoKeyGenerator
-//   }
-//   override predicate isSink(DataFlow::Node sink) {
-//     exists(MethodAccess ma |
-//       ma.getMethod() instanceof KeyGeneratorInitMethod and
-//       sink.asExpr() = ma.getQualifier()
-//     )
-//   }
-// }
+/** Taint configuration tracking flow from a key generator to a `init` method call. */
+private class KeyGeneratorInitConfiguration extends TaintTracking::Configuration {
+  KeyGeneratorInitConfiguration() { this = "KeyGeneratorInitConfiguration" }
+
+  override predicate isSource(DataFlow::Node source) {
+    source.asExpr() instanceof JavaxCryptoKeyGenerator
+  }
+
+  override predicate isSink(DataFlow::Node sink) {
+    exists(MethodAccess ma |
+      ma.getMethod() instanceof KeyGeneratorInitMethod and
+      sink.asExpr() = ma.getQualifier()
+    )
+  }
+}
+
 /**
  * Taint configuration tracking flow from a keypair generator to
  * an `initialize` method call.
@@ -77,26 +106,33 @@ private class KeyPairGeneratorInitConfiguration extends TaintTracking::Configura
 bindingset[type]
 private predicate hasShortSymmetricKey(MethodAccess ma, string msg, string type) {
   ma.getMethod() instanceof KeyGeneratorInitMethod and
-  // exists(JavaxCryptoKeyGenerator jcg, DataFlow::PathNode source, DataFlow::PathNode dest |
-  //   jcg.getAlgoSpec().(StringLiteral).getValue() = type //and
-  //   //source.getNode().asExpr() = jcg and
-  //   //dest.getNode().asExpr() = ma.getQualifier() //and
-  //   //cc.hasFlowPath(source, dest)
-  // ) and
+  // flow needed to correctly determine algorithm type and
+  // not match to ANY symmetric algorithm (although doesn't really matter since only have AES currently...)
+  exists(
+    JavaxCryptoKeyGenerator jcg, KeyGeneratorInitConfiguration cc, DataFlow::PathNode source,
+    DataFlow::PathNode dest
+  |
+    jcg.getAlgoSpec().(StringLiteral).getValue() = type and
+    source.getNode().asExpr() = jcg and
+    dest.getNode().asExpr() = ma.getQualifier() and
+    cc.hasFlowPath(source, dest)
+  ) and
   (
-    // exists(VarAccess var |
-    //   var.getVariable().getInitializer().getUnderlyingExpr() instanceof IntegerLiteral and
-    //   var.getVariable().getInitializer().getUnderlyingExpr().toString().toInt() < 128 and
-    //   ma.getArgument(0) = var
-    // )
-    // or
-    // below is better than above?
-    exists(CompileTimeConstantExpr var |
-      //var.getUnderlyingExpr() instanceof IntegerLiteral and // can't include this...
-      var.getIntValue() < 128 and
+    // VarAccess case needed to handle FN of key-size stored in a variable
+    // Note: cannot use CompileTimeConstantExpr since will miss cases when variable is not a compile-time constant
+    // (e.g. not declared `final` in Java)
+    exists(VarAccess var |
+      var.getVariable().getInitializer().getUnderlyingExpr() instanceof IntegerLiteral and
+      var.getVariable().getInitializer().getUnderlyingExpr().toString().toInt() < 128 and
       ma.getArgument(0) = var
     )
     or
+    // exists(CompileTimeConstantExpr var |
+    //   //var.getUnderlyingExpr() instanceof IntegerLiteral and // can't include this...
+    //   var.getIntValue() < 128 and
+    //   ma.getArgument(0) = var
+    // )
+    // or
     ma.getArgument(0).(IntegerLiteral).getIntValue() < 128
   ) and
   msg = "Key size should be at least 128 bits for " + type + " encryption."
@@ -119,6 +155,8 @@ private predicate hasShortAESKey(MethodAccess ma, string msg) {
 bindingset[type]
 private predicate hasShortAsymmetricKeyPair(MethodAccess ma, string msg, string type) {
   ma.getMethod() instanceof KeyPairGeneratorInitMethod and
+  // flow needed to correctly determine algorithm type and
+  // not match to ANY asymmetric algorithm
   exists(
     JavaSecurityKeyPairGenerator jpg, KeyPairGeneratorInitConfiguration kc,
     DataFlow::PathNode source, DataFlow::PathNode dest
@@ -128,7 +166,24 @@ private predicate hasShortAsymmetricKeyPair(MethodAccess ma, string msg, string 
     dest.getNode().asExpr() = ma.getQualifier() and
     kc.hasFlowPath(source, dest)
   ) and
-  ma.getArgument(0).(IntegerLiteral).getIntValue() < 2048 and
+  // VarAccess case needed to handle FN of key-size stored in a variable
+  // Note: cannot use CompileTimeConstantExpr since will miss cases when variable is not a compile-time constant
+  // (e.g. not declared `final` in Java)
+  (
+    exists(VarAccess var |
+      var.getVariable().getInitializer().getUnderlyingExpr() instanceof IntegerLiteral and
+      var.getVariable().getInitializer().getUnderlyingExpr().toString().toInt() < 2048 and
+      ma.getArgument(0) = var
+    )
+    or
+    ma.getArgument(0).(IntegerLiteral).getIntValue() < 2048
+    or
+    exists(
+      AsymmetricKeyTrackingConfiguration cfg, DataFlow::PathNode source, DataFlow::PathNode sink
+    |
+      cfg.hasFlowPath(source, sink)
+    )
+  ) and
   msg = "Key size should be at least 2048 bits for " + type + " encryption."
 }
 

@@ -97,18 +97,18 @@ public class InsufficientKeySizeTest {
         // BAD: Key size is less than 128
         keyGen3.init(size1); // $ hasInsufficientKeySize
 
-        // int size2 = 1024;
-        // KeyPairGenerator keyPairGen18 = KeyPairGenerator.getInstance("RSA");
-        // // BAD: Key size is less than 2048
-        // keyPairGen18.initialize(size2); // $ hasInsufficientKeySize
+        int size2 = 1024;
+        KeyPairGenerator keyPairGen18 = KeyPairGenerator.getInstance("RSA");
+        // BAD: Key size is less than 2048
+        keyPairGen18.initialize(size2); // $ hasInsufficientKeySize
 
-        // int keysize = 64;
-        // test(keysize);
+        int keysize = 1024;
+        test(keysize);
     }
 
-    // public void test(int keySize) throws java.security.NoSuchAlgorithmException, java.security.InvalidAlgorithmParameterException {
-    //     KeyGenerator keyGen4 = KeyGenerator.getInstance("AES");
-    //     // BAD: Key size is less than 128
-    //     keyGen4.init(keySize); // $ hasInsufficientKeySize
-    // }
+    public void test(int keySize) throws java.security.NoSuchAlgorithmException, java.security.InvalidAlgorithmParameterException {
+        KeyPairGenerator keyPairGen19 = KeyPairGenerator.getInstance("RSA");
+        // BAD: Key size is less than 128
+        keyPairGen19.initialize(keySize); // $ hasInsufficientKeySize
+    }
 }
