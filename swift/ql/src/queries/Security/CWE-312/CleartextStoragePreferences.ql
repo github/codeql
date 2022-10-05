@@ -1,6 +1,6 @@
 /**
- * @name Cleartext storage of sensitive information in application preferences
- * @description Storing sensitive information in a non-encrypted database can expose it to an attacker.
+ * @name Cleartext storage of sensitive information in an application preference store
+ * @description Storing sensitive information in a non-encrypted store can expose it to an attacker.
  * @kind path-problem
  * @problem.severity warning
  * @security-severity 7.5
@@ -17,13 +17,13 @@ import codeql.swift.dataflow.TaintTracking
 import DataFlow::PathGraph
 
 /**
- * A `DataFlow::Node` of something that gets stored in a preferences store.
+ * A `DataFlow::Node` of something that gets stored in an application preference store.
  */
 abstract class Stored extends DataFlow::Node {
   abstract string getStoreName();
 }
 
-/** The `DataFlow::Node` of an expression that gets written to the defaults database */
+/** The `DataFlow::Node` of an expression that gets written to the user defaults database */
 class UserDefaultsStore extends Stored {
   UserDefaultsStore() {
     exists(ClassDecl c, AbstractFunctionDecl f, CallExpr call |
@@ -38,7 +38,7 @@ class UserDefaultsStore extends Stored {
   override string getStoreName() { result = "the user defaults database" }
 }
 
-/** The `DataFlow::Node` of an expression that gets written to iCloud */
+/** The `DataFlow::Node` of an expression that gets written to the iCloud-backed NSUbiquitousKeyValueStore */
 class NSUbiquitousKeyValueStore extends Stored {
   NSUbiquitousKeyValueStore() {
     exists(ClassDecl c, AbstractFunctionDecl f, CallExpr call |
