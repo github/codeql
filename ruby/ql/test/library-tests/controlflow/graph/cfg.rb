@@ -205,7 +205,7 @@ end
 foo&.bar(1,2) { |x| x }
 
 def filter_nil list
-  list.reject do |elem, *rest|
+  list.reject do |elem, *, **|
     elem.nil?
   end
 end
