@@ -135,16 +135,6 @@ SummaryComponent interpretComponentSpecific(AccessPathToken c) {
       interpretElementArg(c.getAnArgument("WithoutElement")) and
     result = FlowSummary::SummaryComponent::withoutContent(cs)
   )
-  or
-  exists(string arg | arg = c.getAnArgument("PairValue") |
-    arg = "?" and
-    result = FlowSummary::SummaryComponent::pairValueUnknown()
-    or
-    exists(ConstantValue cv |
-      result = FlowSummary::SummaryComponent::pairValueKnown(cv) and
-      cv.serialize() = arg
-    )
-  )
 }
 
 /** Gets the textual representation of a summary component in the format used for flow summaries. */
@@ -246,24 +236,15 @@ module ParsePositions {
   private import FlowSummaryImpl
 
   private predicate isParamBody(string body) {
-    exists(AccessPathToken tok |
-      tok.getName() = "Parameter" and
-      body = tok.getAnArgument()
-    )
+    body = any(AccessPathToken tok).getAnArgument("Parameter")
   }
 
   private predicate isArgBody(string body) {
-    exists(AccessPathToken tok |
-      tok.getName() = "Argument" and
-      body = tok.getAnArgument()
-    )
+    body = any(AccessPathToken tok).getAnArgument("Argument")
   }
 
   private predicate isElementBody(string body) {
-    exists(AccessPathToken tok |
-      tok.getName() = "Element" and
-      body = tok.getAnArgument()
-    )
+    body = any(AccessPathToken tok).getAnArgument(["Element", "WithElement", "WithoutElement"])
   }
 
   predicate isParsedParameterPosition(string c, int i) {

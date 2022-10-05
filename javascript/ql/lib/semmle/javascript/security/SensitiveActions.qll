@@ -213,6 +213,9 @@ module PasswordHeuristics {
       normalized
           .regexpMatch(".*(pass|test|sample|example|secret|root|admin|user|change|auth|fake|(my(token|password))|string|foo|bar|baz|qux|1234|3141|abcd).*")
     )
+    or
+    // repeats the same char more than 10 times
+    password.regexpMatch(".*([a-zA-Z0-9])\\1{10,}.*")
   }
 
   /**

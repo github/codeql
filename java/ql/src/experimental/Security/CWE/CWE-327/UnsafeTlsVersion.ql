@@ -16,5 +16,5 @@ import DataFlow::PathGraph
 
 from DataFlow::PathNode source, DataFlow::PathNode sink, UnsafeTlsVersionConfig conf
 where conf.hasFlowPath(source, sink)
-select sink.getNode(), source, sink, "$@ is unsafe", source.getNode(),
+select sink.getNode(), source, sink, "$@ is unsafe.", source.getNode(),
   source.getNode().asExpr().(StringLiteral).getValue()

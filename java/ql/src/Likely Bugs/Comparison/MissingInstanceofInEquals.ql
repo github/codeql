@@ -77,4 +77,4 @@ where
   // Exclude `equals` methods that implement reference-equality.
   not m instanceof ReferenceEquals and
   not m instanceof UnimplementedEquals
-select m, "equals() method does not check argument type."
+select m, "This 'equals()' method does not check argument type."

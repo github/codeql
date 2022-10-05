@@ -71,7 +71,7 @@ from
 where
   config.hasFlowPath(source, sink) and
   sourceNode = source.getNode() and
-  call.asExpr().getExpr().(MethodCall).getArgument(0) = sink.getNode().asExpr().getExpr()
+  call.getArgument(0) = sink.getNode()
 select sink.getNode(), source, sink,
-  "This call to " + call.(Replacement).getFrom() +
-    " depends on a user-provided value. Replace it with " + call.(Replacement).getTo() + "."
+  "This call to " + call.(Replacement).getFrom() + " depends on a $@. Replace it with " +
+    call.(Replacement).getTo() + ".", source.getNode(), "user-provided value"

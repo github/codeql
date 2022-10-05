@@ -103,8 +103,11 @@ module Kernel
 end
 
 class Module
+    alias :old_include :include
     def module_eval; end
-    def include; end
+    def include x
+        old_include x
+    end
     def prepend; end
     def private; end
 end
@@ -447,7 +450,7 @@ ConditionalInstanceMethods.new.m2
 ConditionalInstanceMethods.new.m3 # currently unable to resolve
 ConditionalInstanceMethods.new.m4 # currently unable to resolve
 ConditionalInstanceMethods.new.m5 # NoMethodError
-exit
+
 EsotericInstanceMethods = Class.new do
     [0,1,2].each do
         def foo
@@ -482,4 +485,59 @@ module ExtendSingletonMethod
     extend self
 end
 
-ExtendSingletonMethod.singleton # currently unable to resolve
+ExtendSingletonMethod.singleton
+
+module ExtendSingletonMethod2
+    extend ExtendSingletonMethod
+end
+
+ExtendSingletonMethod2.singleton
+
+module ExtendSingletonMethod3
+end
+
+ExtendSingletonMethod3.extend ExtendSingletonMethod
+
+ExtendSingletonMethod3.singleton
+
+foo = "hello"
+foo.singleton # NoMethodError
+foo.extend ExtendSingletonMethod
+
+foo.singleton
+
+module ProtectedMethodInModule
+    protected def foo
+        puts "ProtectedMethodInModule#foo"
+    end
+end
+
+class ProtectedMethods
+    include ProtectedMethodInModule
+
+    protected def bar
+        puts "ProtectedMethods#bar"
+    end
+
+    def baz
+        foo
+        bar
+        ProtectedMethods.new.foo
+        ProtectedMethods.new.bar
+    end
+end
+
+ProtectedMethods.new.foo # NoMethodError
+ProtectedMethods.new.bar # NoMethodError
+ProtectedMethods.new.baz
+
+class ProtectedMethodsSub < ProtectedMethods
+    def baz
+        foo
+        ProtectedMethodsSub.new.foo
+    end
+end
+
+ProtectedMethodsSub.new.foo # NoMethodError
+ProtectedMethodsSub.new.bar # NoMethodError
+ProtectedMethodsSub.new.baz

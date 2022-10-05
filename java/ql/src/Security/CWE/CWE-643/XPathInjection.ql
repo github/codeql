@@ -27,5 +27,5 @@ class XPathInjectionConfiguration extends TaintTracking::Configuration {
 
 from DataFlow::PathNode source, DataFlow::PathNode sink, XPathInjectionConfiguration c
 where c.hasFlowPath(source, sink)
-select sink.getNode(), source, sink, "$@ flows to here and is used in an XPath expression.",
-  source.getNode(), "User-provided value"
+select sink.getNode(), source, sink, "XPath expression depends on a $@.", source.getNode(),
+  "user-provided value"

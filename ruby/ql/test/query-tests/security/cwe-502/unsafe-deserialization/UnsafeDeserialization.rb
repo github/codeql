@@ -80,4 +80,10 @@ class UsersController < ActionController::Base
     xml = params[:key]
     hash = Hash.from_trusted_xml(xml)
   end
+
+  # BAD
+  def route11
+    yaml_data = params[:key]
+    object = Psych.load yaml_data
+  end
 end

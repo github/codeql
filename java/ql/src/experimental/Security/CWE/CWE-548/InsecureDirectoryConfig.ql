@@ -47,4 +47,4 @@ class DirectoryListingInitParam extends WebXmlElement {
 
 from DirectoryListingInitParam initp
 where initp.isListingEnabled()
-select initp, "Directory listing should be disabled to mitigate filename and path disclosure"
+select initp, "Directory listing should be disabled to mitigate filename and path disclosure."

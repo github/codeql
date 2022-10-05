@@ -16,5 +16,5 @@ import Linq.Helpers
 from ForeachStmt fes, LocalVariableDeclStmt s
 where missedCastOpportunity(fes, s)
 select fes,
-  "This foreach loop immediately casts its iteration variable to another type $@ - consider casting the sequence explicitly using '.Cast(...)'.",
-  s, "here"
+  "This foreach loop immediately $@ - consider casting the sequence explicitly using '.Cast(...)'.",
+  s, "casts its iteration variable to another type"

@@ -35,7 +35,7 @@ private DangerousPrefixSubstring getADangerousMatchedChar(EmptyReplaceRegExpTerm
   or
   result = t.getAMatchedString()
   or
-  // A substring matched by some character class. This is only used to match the "word" part of a HTML tag (e.g. "iframe" in "<iframe").
+  // A substring matched by some character class. This is only used to match the "word" part of an HTML tag (e.g. "iframe" in "<iframe").
   exists(NfaUtils::CharacterClass cc |
     cc = NfaUtils::getCanonicalCharClass(t) and
     cc.matches(result) and
@@ -101,12 +101,12 @@ private class RepetitionMatcher extends EmptyReplaceRegExpTerm {
 predicate matchesDangerousPrefix(EmptyReplaceRegExpTerm t, string prefix, string kind) {
   prefix = getADangerousMatchedPrefix(t) and
   (
-    kind = "path injection" and
+    kind = "a path injection vulnerability" and
     prefix = ["/..", "../"] and
     // If the regex is matching explicit path components, it is unlikely that it's being used as a sanitizer.
     not t.getSuccessor*().getAMatchedString().regexpMatch("(?is).*[a-z0-9_-].*")
     or
-    kind = "HTML element injection" and
+    kind = "an HTML element injection vulnerability" and
     (
       // comments
       prefix = "<!--" and
@@ -119,7 +119,7 @@ predicate matchesDangerousPrefix(EmptyReplaceRegExpTerm t, string prefix, string
     )
   )
   or
-  kind = "HTML attribute injection" and
+  kind = "an HTML attribute injection vulnerability" and
   prefix =
     [
       // ordinary event handler prefix
@@ -197,6 +197,6 @@ query predicate problems(
 ) {
   exists(string kind |
     isResult(replace, dangerous, prefix, kind) and
-    msg = "This string may still contain $@, which may cause a " + kind + " vulnerability."
+    msg = "This string may still contain $@, which may cause " + kind + "."
   )
 }
