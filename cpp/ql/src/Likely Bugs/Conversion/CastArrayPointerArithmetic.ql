@@ -46,7 +46,7 @@ class CastToPointerArithFlow extends DataFlow::Configuration {
  */
 pragma[inline]
 predicate hasBaseType(Expr e, Type base) {
-  pragma[only_bind_into](base) = pragma[only_bind_out](e.getType().(DerivedType).getBaseType())
+  pragma[only_bind_into](base) = e.getType().(DerivedType).getBaseType()
 }
 
 /**
