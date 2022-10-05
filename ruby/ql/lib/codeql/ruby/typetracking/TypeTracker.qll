@@ -247,7 +247,7 @@ private predicate flowsToStoreStep(
 /**
  * Holds if `loadContent` is loaded from `nodeFrom` and written to `storeContent` of `nodeTo`.
  */
-predicate flowsToLoadStoreStep(
+private predicate flowsToLoadStoreStep(
   Node nodeFrom, TypeTrackingNode nodeTo, TypeTrackerContent loadContent,
   TypeTrackerContent storeContent
 ) {
