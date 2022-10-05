@@ -1718,6 +1718,10 @@ open class KotlinFileExtractor(
         extensionReceiver: IrExpression?
     ) {
         val callTarget = syntacticCallTarget.target.realOverrideTarget
+        if (isExternalDeclaration(callTarget)) {
+            // Ensure the real target gets extracted, as we might not every directly touch it thanks to this call being redirected to a $default method.
+            useFunction<DbCallable>(callTarget)
+        }
         val defaultMethodLabel = getDefaultsMethodLabel(callTarget)
         val id = extractMethodAccessWithoutArgs(callsite.type, locId, enclosingCallable, callsiteParent, childIdx, enclosingStmt, defaultMethodLabel)
 
