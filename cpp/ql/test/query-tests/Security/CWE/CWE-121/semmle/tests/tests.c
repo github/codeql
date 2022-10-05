@@ -64,13 +64,13 @@ int main(int argc, char *argv[])
 	f6("fsdf", 3, 8, -1);
 	f6("a", 7, 9, 10, -1);
 	f6("a", 1, 22, 6, 17, 2, -1);
-	f6("fgasfgas", 5, 6, argc); // BAD: not (necessarily) terminated with -1
-	f6("sadfsaf"); // BAD: not terminated with -1
+	f6("fgasfgas", 5, 6, argc); // BAD: not (necessarily) terminated with -1 [NOT DETECTED]
+	f6("sadfsaf"); // BAD: not terminated with -1 [NOT DETECTED]
 
 	f7("", 0);
 	f7("", 0);
 	f7("", 0);
-	f7(""); // BAD: not terminated with 0
+	f7(""); // BAD: not terminated with 0 [NOT DETECTED]
 
 	return 0;
 }

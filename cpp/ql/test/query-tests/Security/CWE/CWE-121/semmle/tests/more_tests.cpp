@@ -13,27 +13,27 @@ int main()
 {
 	int x;
 
-	myFunction1("%i", 0); // not common enough to be assumed a terminator
+	myFunction1("%i", 0); // GOOD: not common enough to be assumed a terminator
 	myFunction1("%i", x);
 
 	myFunction2(-1);
 	myFunction2(0, -1);
 	myFunction2(0, 1, -1);
 	myFunction2(0, 1, 2, -1);
-	myFunction2(0, 1, 2, 3); // missing terminator
+	myFunction2(0, 1, 2, 3); // BAD: missing terminator [NOT DETECTED]
 
 	myFunction3(-1);
 	myFunction3(0, -1);
-	myFunction3(-1, 1, -1); // -1 isn't a terminator because it's used in a non-terminal position
+	myFunction3(-1, 1, -1); // GOOD: -1 isn't a terminator because it's used in a non-terminal position
 	myFunction3(0, 1, 2, -1);
 	myFunction3(0, 1, 2, 3);
 
 	myFunction4(x, x, 0);
 	myFunction4(0, x, 1, 0);
 	myFunction4(0, 0, 1, 1, 0);
-	myFunction4(x, 0, 1, 1, 1); // missing terminator
+	myFunction4(x, 0, 1, 1, 1); // BAD: missing terminator [NOT DETECTED]
 
-	myFunction5('a', 'b', 'c', 0); // ambiguous terminator
+	myFunction5('a', 'b', 'c', 0); // GOOD: ambiguous terminator
 	myFunction5('a', 'b', 'c', 0);
 	myFunction5('a', 'b', 'c', 0);
 	myFunction5('a', 'b', 'c', -1);
@@ -41,7 +41,7 @@ int main()
 	myFunction5('a', 'b', 'c', -1);
 
 	myFunction6(0.0);
-	myFunction6(1.0); // missing terminator
+	myFunction6(1.0); // BAD: missing terminator [NOT DETECTED]
 	myFunction6(1.0, 2.0, 0.0);
 	myFunction6(1.0, 2.0, 3.0, 0.0);
 
@@ -52,8 +52,8 @@ int main()
 	myFunction7("one", "two", "three", 0);
 	myFunction7("alpha", "beta", "gamma", 0);
 	myFunction7("", 0);
-	myFunction7("yes", "no"); // missing terminator
-	myFunction7(); // missing terminator
+	myFunction7("yes", "no"); // BAD: missing terminator [NOT DETECTED]
+	myFunction7(); // BAD: missing terminator [NOT DETECTED]
 
 	return 0;
 }
