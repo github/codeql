@@ -70,7 +70,15 @@ class ExprNode extends Node, TExprNode {
  * The value of a parameter at function entry, viewed as a node in a data
  * flow graph.
  */
-class ParameterNode extends Node, SsaDefinitionNode instanceof ParameterNodeImpl { }
+class ParameterNode extends Node instanceof ParameterNodeImpl {
+  override ControlFlowNode getCfgNode() { result = this.(ParameterNodeImpl).getCfgNode() }
+
+  DataFlowCallable getDeclaringFunction() {
+    result = this.(ParameterNodeImpl).getEnclosingCallable()
+  }
+
+  ParamDecl getParameter() { result = this.(ParameterNodeImpl).getParameter() }
+}
 
 /**
  */
