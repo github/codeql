@@ -69,13 +69,25 @@ private class ExactPathMatchSanitizer extends PathInjectionSanitizer {
   }
 }
 
-private class AllowedPrefixGuard extends Guard instanceof MethodAccess {
+abstract private class PathGuard extends Guard {
+  abstract Expr getCheckedExpr();
+}
+
+private predicate anyNode(DataFlow::Node n) { any() }
+
+private predicate pathGuardNode(DataFlow::Node n) { n.asExpr() = any(PathGuard g).getCheckedExpr() }
+
+private predicate localTaintFlowToPathGuard(Expr e, PathGuard g) {
+  TaintTracking::LocalTaintFlow<anyNode/1, pathGuardNode/1>::hasExprFlow(e, g.getCheckedExpr())
+}
+
+private class AllowedPrefixGuard extends PathGuard instanceof MethodAccess {
   AllowedPrefixGuard() {
     (isStringPrefixMatch(this) or isPathPrefixMatch(this)) and
     not isDisallowedWord(super.getAnArgument())
   }
 
-  Expr getCheckedExpr() { result = super.getQualifier() }
+  override Expr getCheckedExpr() { result = super.getQualifier() }
 }
 
 /**
@@ -91,10 +103,10 @@ private predicate allowedPrefixGuard(Guard g, Expr e, boolean branch) {
   //  String strPath = file.getCanonicalPath();
   //  if (strPath.startsWith("/safe/dir"))
   //    sink(file);
-  TaintTracking::localExprTaint(e, g.(AllowedPrefixGuard).getCheckedExpr()) and
+  g instanceof AllowedPrefixGuard and
+  localTaintFlowToPathGuard(e, g) and
   exists(Expr previousGuard |
-    TaintTracking::localExprTaint(previousGuard.(PathNormalizeSanitizer),
-      g.(AllowedPrefixGuard).getCheckedExpr())
+    localTaintFlowToPathGuard(previousGuard.(PathNormalizeSanitizer), g)
     or
     previousGuard
         .(PathTraversalGuard)
@@ -121,7 +133,7 @@ private predicate dotDotCheckGuard(Guard g, Expr e, boolean branch) {
   //  if (!strPath.contains("..") && strPath.startsWith("/safe/dir"))
   //    sink(path);
   branch = g.(PathTraversalGuard).getBranch() and
-  TaintTracking::localExprTaint(e, g.(PathTraversalGuard).getCheckedExpr()) and
+  localTaintFlowToPathGuard(e, g) and
   exists(Guard previousGuard |
     previousGuard.(AllowedPrefixGuard).controls(g.getBasicBlock(), true)
     or
@@ -136,13 +148,13 @@ private class DotDotCheckSanitizer extends PathInjectionSanitizer {
   }
 }
 
-private class BlockListGuard extends Guard instanceof MethodAccess {
+private class BlockListGuard extends PathGuard instanceof MethodAccess {
   BlockListGuard() {
     (isStringPartialMatch(this) or isPathPrefixMatch(this)) and
     isDisallowedWord(super.getAnArgument())
   }
 
-  Expr getCheckedExpr() { result = super.getQualifier() }
+  override Expr getCheckedExpr() { result = super.getQualifier() }
 }
 
 /**
@@ -158,10 +170,10 @@ private predicate blockListGuard(Guard g, Expr e, boolean branch) {
   //  String strPath = file.getCanonicalPath();
   //  if (!strPath.contains("..") && !strPath.startsWith("/dangerous/dir"))
   //    sink(file);
-  TaintTracking::localExprTaint(e, g.(BlockListGuard).getCheckedExpr()) and
+  g instanceof BlockListGuard and
+  localTaintFlowToPathGuard(e, g) and
   exists(Expr previousGuard |
-    TaintTracking::localExprTaint(previousGuard.(PathNormalizeSanitizer),
-      g.(BlockListGuard).getCheckedExpr())
+    localTaintFlowToPathGuard(previousGuard.(PathNormalizeSanitizer), g)
     or
     previousGuard
         .(PathTraversalGuard)
@@ -217,7 +229,7 @@ private predicate isDisallowedWord(CompileTimeConstantExpr word) {
 }
 
 /** A complementary guard that protects against path traversal, by looking for the literal `..`. */
-private class PathTraversalGuard extends Guard {
+private class PathTraversalGuard extends PathGuard {
   PathTraversalGuard() {
     exists(MethodAccess ma |
       ma.getMethod().getDeclaringType() instanceof TypeString and
@@ -235,7 +247,7 @@ private class PathTraversalGuard extends Guard {
     )
   }
 
-  Expr getCheckedExpr() {
+  override Expr getCheckedExpr() {
     exists(MethodAccess ma | ma = this.(EqualityTest).getAnOperand() or ma = this |
       result = ma.getQualifier()
     )
