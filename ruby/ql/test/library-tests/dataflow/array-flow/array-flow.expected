@@ -3435,6 +3435,24 @@ edges
 | array_flow.rb:1631:10:1631:10 | a [element 0] :  | array_flow.rb:1631:10:1631:15 | ...[...] |
 | array_flow.rb:1631:10:1631:10 | a [element] :  | array_flow.rb:1631:10:1631:15 | ...[...] |
 | array_flow.rb:1631:10:1631:10 | a [element] :  | array_flow.rb:1631:10:1631:15 | ...[...] |
+| array_flow.rb:1635:16:1635:25 | call to source :  | array_flow.rb:1636:5:1636:5 | a [element 2] :  |
+| array_flow.rb:1635:16:1635:25 | call to source :  | array_flow.rb:1636:5:1636:5 | a [element 2] :  |
+| array_flow.rb:1636:5:1636:5 | a [element 2] :  | array_flow.rb:1636:18:1636:18 | x :  |
+| array_flow.rb:1636:5:1636:5 | a [element 2] :  | array_flow.rb:1636:18:1636:18 | x :  |
+| array_flow.rb:1636:18:1636:18 | x :  | array_flow.rb:1637:14:1637:14 | x |
+| array_flow.rb:1636:18:1636:18 | x :  | array_flow.rb:1637:14:1637:14 | x |
+| array_flow.rb:1640:16:1640:25 | call to source :  | array_flow.rb:1641:5:1641:5 | b [element 2] :  |
+| array_flow.rb:1640:16:1640:25 | call to source :  | array_flow.rb:1641:5:1641:5 | b [element 2] :  |
+| array_flow.rb:1641:5:1641:5 | b [element 2] :  | array_flow.rb:1641:18:1641:18 | x :  |
+| array_flow.rb:1641:5:1641:5 | b [element 2] :  | array_flow.rb:1641:18:1641:18 | x :  |
+| array_flow.rb:1641:18:1641:18 | x :  | array_flow.rb:1642:14:1642:14 | x |
+| array_flow.rb:1641:18:1641:18 | x :  | array_flow.rb:1642:14:1642:14 | x |
+| array_flow.rb:1646:16:1646:25 | call to source :  | array_flow.rb:1647:5:1647:5 | c [element 2] :  |
+| array_flow.rb:1646:16:1646:25 | call to source :  | array_flow.rb:1647:5:1647:5 | c [element 2] :  |
+| array_flow.rb:1647:5:1647:5 | c [element 2] :  | array_flow.rb:1647:19:1647:19 | x :  |
+| array_flow.rb:1647:5:1647:5 | c [element 2] :  | array_flow.rb:1647:19:1647:19 | x :  |
+| array_flow.rb:1647:19:1647:19 | x :  | array_flow.rb:1648:14:1648:14 | x |
+| array_flow.rb:1647:19:1647:19 | x :  | array_flow.rb:1648:14:1648:14 | x |
 nodes
 | array_flow.rb:2:9:2:20 | * ... [element 0] :  | semmle.label | * ... [element 0] :  |
 | array_flow.rb:2:9:2:20 | * ... [element 0] :  | semmle.label | * ... [element 0] :  |
@@ -7122,6 +7140,30 @@ nodes
 | array_flow.rb:1631:10:1631:10 | a [element] :  | semmle.label | a [element] :  |
 | array_flow.rb:1631:10:1631:15 | ...[...] | semmle.label | ...[...] |
 | array_flow.rb:1631:10:1631:15 | ...[...] | semmle.label | ...[...] |
+| array_flow.rb:1635:16:1635:25 | call to source :  | semmle.label | call to source :  |
+| array_flow.rb:1635:16:1635:25 | call to source :  | semmle.label | call to source :  |
+| array_flow.rb:1636:5:1636:5 | a [element 2] :  | semmle.label | a [element 2] :  |
+| array_flow.rb:1636:5:1636:5 | a [element 2] :  | semmle.label | a [element 2] :  |
+| array_flow.rb:1636:18:1636:18 | x :  | semmle.label | x :  |
+| array_flow.rb:1636:18:1636:18 | x :  | semmle.label | x :  |
+| array_flow.rb:1637:14:1637:14 | x | semmle.label | x |
+| array_flow.rb:1637:14:1637:14 | x | semmle.label | x |
+| array_flow.rb:1640:16:1640:25 | call to source :  | semmle.label | call to source :  |
+| array_flow.rb:1640:16:1640:25 | call to source :  | semmle.label | call to source :  |
+| array_flow.rb:1641:5:1641:5 | b [element 2] :  | semmle.label | b [element 2] :  |
+| array_flow.rb:1641:5:1641:5 | b [element 2] :  | semmle.label | b [element 2] :  |
+| array_flow.rb:1641:18:1641:18 | x :  | semmle.label | x :  |
+| array_flow.rb:1641:18:1641:18 | x :  | semmle.label | x :  |
+| array_flow.rb:1642:14:1642:14 | x | semmle.label | x |
+| array_flow.rb:1642:14:1642:14 | x | semmle.label | x |
+| array_flow.rb:1646:16:1646:25 | call to source :  | semmle.label | call to source :  |
+| array_flow.rb:1646:16:1646:25 | call to source :  | semmle.label | call to source :  |
+| array_flow.rb:1647:5:1647:5 | c [element 2] :  | semmle.label | c [element 2] :  |
+| array_flow.rb:1647:5:1647:5 | c [element 2] :  | semmle.label | c [element 2] :  |
+| array_flow.rb:1647:19:1647:19 | x :  | semmle.label | x :  |
+| array_flow.rb:1647:19:1647:19 | x :  | semmle.label | x :  |
+| array_flow.rb:1648:14:1648:14 | x | semmle.label | x |
+| array_flow.rb:1648:14:1648:14 | x | semmle.label | x |
 subpaths
 #select
 | array_flow.rb:3:10:3:13 | ...[...] | array_flow.rb:2:10:2:20 | call to source :  | array_flow.rb:3:10:3:13 | ...[...] | $@ | array_flow.rb:2:10:2:20 | call to source :  | call to source :  |
@@ -7820,3 +7862,6 @@ subpaths
 | array_flow.rb:1631:10:1631:15 | ...[...] | array_flow.rb:1622:16:1622:28 | call to source :  | array_flow.rb:1631:10:1631:15 | ...[...] | $@ | array_flow.rb:1622:16:1622:28 | call to source :  | call to source :  |
 | array_flow.rb:1631:10:1631:15 | ...[...] | array_flow.rb:1624:14:1624:26 | call to source :  | array_flow.rb:1631:10:1631:15 | ...[...] | $@ | array_flow.rb:1624:14:1624:26 | call to source :  | call to source :  |
 | array_flow.rb:1631:10:1631:15 | ...[...] | array_flow.rb:1626:16:1626:28 | call to source :  | array_flow.rb:1631:10:1631:15 | ...[...] | $@ | array_flow.rb:1626:16:1626:28 | call to source :  | call to source :  |
+| array_flow.rb:1637:14:1637:14 | x | array_flow.rb:1635:16:1635:25 | call to source :  | array_flow.rb:1637:14:1637:14 | x | $@ | array_flow.rb:1635:16:1635:25 | call to source :  | call to source :  |
+| array_flow.rb:1642:14:1642:14 | x | array_flow.rb:1640:16:1640:25 | call to source :  | array_flow.rb:1642:14:1642:14 | x | $@ | array_flow.rb:1640:16:1640:25 | call to source :  | call to source :  |
+| array_flow.rb:1648:14:1648:14 | x | array_flow.rb:1646:16:1646:25 | call to source :  | array_flow.rb:1648:14:1648:14 | x | $@ | array_flow.rb:1646:16:1646:25 | call to source :  | call to source :  |

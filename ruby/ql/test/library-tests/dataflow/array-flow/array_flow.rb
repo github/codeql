@@ -1634,18 +1634,18 @@ end
 def m138
     a = [0, 1, source(95)]
     a.reject do |x, *|
-        sink x
+        sink x # $ hasValueFlow=95
         x > 10
     end
     b = [0, 1, source(96)]
     b.reject do |x, y, *|
-        sink x
+        sink x # $ hasValueFlow=96
         sink y
         x > 10
     end
     c = [0, 1, source(97)]
     c.reject! do |x, y, *|
-        sink x
+        sink x # $ hasValueFlow=97
         sink y
         x > 10
     end

@@ -1222,6 +1222,9 @@ module Array {
         input = "Argument[self].WithoutElement[0..!].WithElement[any]" and
         output = ["ReturnValue", "Argument[self]"]
         or
+        input = "Argument[self].Element[0..!]" and
+        output = "Argument[block].Parameter[0]"
+        or
         input = "Argument[self].Element[any]" and
         output = "Argument[block].Parameter[" + lastBlockParam + "]"
       ) and
@@ -2437,6 +2440,9 @@ module Enumerable {
         or
         input = "Argument[self].Element[any]" and
         output = "Argument[block].Parameter[" + lastBlockParam + "]"
+        or
+        input = "Argument[self].Element[0..!]" and
+        output = "Argument[block].Parameter[0]"
       ) and
       preservesValue = true
     }
