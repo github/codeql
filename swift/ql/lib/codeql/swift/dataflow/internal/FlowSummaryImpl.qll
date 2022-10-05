@@ -752,22 +752,22 @@ module Private {
 
     /**
      * Holds if `p` can reach `n` in a summarized callable, using only value-preserving
-     * local steps. `clearsOrExcepts` records whether any node on the path from `p` to
+     * local steps. `clearsOrExpects` records whether any node on the path from `p` to
      * `n` either clears or expects contents.
      */
-    private predicate paramReachesLocal(ParamNode p, Node n, boolean clearsOrExcepts) {
+    private predicate paramReachesLocal(ParamNode p, Node n, boolean clearsOrExpects) {
       viableParam(_, _, _, p) and
       n = p and
-      clearsOrExcepts = false
+      clearsOrExpects = false
       or
-      exists(Node mid, boolean clearsOrExceptsMid |
-        paramReachesLocal(p, mid, clearsOrExceptsMid) and
+      exists(Node mid, boolean clearsOrExpectsMid |
+        paramReachesLocal(p, mid, clearsOrExpectsMid) and
         summaryLocalStep(mid, n, true) and
         if
           summaryClearsContent(n, _) or
           summaryExpectsContent(n, _)
-        then clearsOrExcepts = true
-        else clearsOrExcepts = clearsOrExceptsMid
+        then clearsOrExpects = true
+        else clearsOrExpects = clearsOrExpectsMid
       )
     }
 
