@@ -849,7 +849,10 @@ open class KotlinFileExtractor(
             addModifiers(id, "static")
         }
         tw.writeHasLocation(id, locId)
-        addModifiers(id, "public")
+        if (f.visibility != DescriptorVisibilities.PRIVATE && f.visibility != DescriptorVisibilities.PRIVATE_TO_THIS) {
+            // Private methods have package-private (default) visibility $default methods; all other visibilities seem to produce a public $default method.
+            addModifiers(id, "public")
+        }
         tw.writeCompiler_generated(id, CompilerGeneratedKinds.DEFAULT_ARGUMENTS_METHOD.kind)
 
         if (extractBody) {
