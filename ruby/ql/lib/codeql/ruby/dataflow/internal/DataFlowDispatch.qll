@@ -579,6 +579,7 @@ private predicate localFlowStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo, 
   summary.toString() = "level"
 }
 
+pragma[nomagic]
 private predicate hasAdjacentTypeCheckedReads(DataFlow::Node node) {
   hasAdjacentTypeCheckedReads(_, _, node.asExpr(), _)
 }
