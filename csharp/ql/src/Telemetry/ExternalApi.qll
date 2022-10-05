@@ -5,9 +5,11 @@ private import dotnet
 private import semmle.code.csharp.dispatch.Dispatch
 private import semmle.code.csharp.dataflow.ExternalFlow
 private import semmle.code.csharp.dataflow.FlowSummary
+private import semmle.code.csharp.dataflow.internal.FlowSummaryImpl as FlowSummaryImpl
 private import semmle.code.csharp.dataflow.internal.DataFlowImplCommon as DataFlowImplCommon
 private import semmle.code.csharp.dataflow.internal.DataFlowPrivate
 private import semmle.code.csharp.dataflow.internal.DataFlowDispatch as DataFlowDispatch
+private import semmle.code.csharp.dataflow.internal.NegativeSummary
 private import semmle.code.csharp.dataflow.internal.TaintTrackingPrivate
 private import semmle.code.csharp.security.dataflow.flowsources.Remote
 
@@ -106,6 +108,16 @@ class ExternalApi extends DotNet::Callable {
 
   /** Holds if this API is supported by existing CodeQL libraries, that is, it is either a recognized source or sink or has a flow summary. */
   predicate isSupported() { this.hasSummary() or this.isSource() or this.isSink() }
+
+  /**
+   * Holds if this API is relevant to report as unsupported. That is, if it is of interest
+   * and if it doesn't have a model already (either positive or negative model).
+   */
+  predicate isRelevantUnsupported() {
+    not this.isSupported() and
+    not this.isUninteresting() and
+    not this instanceof FlowSummaryImpl::Public::NegativeSummarizedCallable
+  }
 }
 
 /**

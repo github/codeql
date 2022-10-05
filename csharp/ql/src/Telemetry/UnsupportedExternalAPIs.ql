@@ -8,14 +8,10 @@
 
 private import csharp
 private import semmle.code.csharp.dispatch.Dispatch
-private import semmle.code.csharp.dataflow.internal.FlowSummaryImpl as FlowSummaryImpl
-private import semmle.code.csharp.dataflow.internal.NegativeSummary
 private import ExternalApi
 
 private predicate getRelevantUsages(ExternalApi api, int usages) {
-  not api.isUninteresting() and
-  not api.isSupported() and
-  not api instanceof FlowSummaryImpl::Public::NegativeSummarizedCallable and
+  api.isRelevantUnsupported() and
   usages = strictcount(DispatchCall c | c = api.getACall())
 }
 
