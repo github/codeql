@@ -102,11 +102,7 @@ private predicate summarizedLocalStep(Node nodeFrom, Node nodeTo) {
 }
 
 /** Holds if there is a level step from `nodeFrom` to `nodeTo`. */
-predicate levelStep(Node nodeFrom, Node nodeTo) {
-  summarizedLocalStep(nodeFrom, nodeTo)
-  or
-  TypeTrackingStep::step(nodeFrom, nodeTo)
-}
+predicate levelStep(Node nodeFrom, Node nodeTo) { summarizedLocalStep(nodeFrom, nodeTo) }
 
 pragma[noinline]
 private predicate argumentPositionMatch(
@@ -221,8 +217,6 @@ predicate basicStoreStep(Node nodeFrom, Node nodeTo, DataFlow::ContentSet conten
     nodeFrom = evaluateSummaryComponentStackLocal(callable, call, input) and
     nodeTo = evaluateSummaryComponentStackLocal(callable, call, output)
   )
-  or
-  TypeTrackingStep::storeStep(nodeFrom, nodeTo, contents)
 }
 
 /**
@@ -265,8 +259,6 @@ predicate basicLoadStep(Node nodeFrom, Node nodeTo, DataFlow::ContentSet content
     nodeFrom = evaluateSummaryComponentStackLocal(callable, call, input) and
     nodeTo = evaluateSummaryComponentStackLocal(callable, call, output)
   )
-  or
-  TypeTrackingStep::loadStep(nodeFrom, nodeTo, contents)
 }
 
 /**
@@ -285,8 +277,6 @@ predicate basicLoadStoreStep(
     nodeFrom = evaluateSummaryComponentStackLocal(callable, call, input) and
     nodeTo = evaluateSummaryComponentStackLocal(callable, call, output)
   )
-  or
-  TypeTrackingStep::loadStoreStep(nodeFrom, nodeTo, loadContent, storeContent)
 }
 
 /**
@@ -303,8 +293,6 @@ predicate basicWithoutContentStep(Node nodeFrom, Node nodeTo, ContentFilter filt
     nodeFrom = evaluateSummaryComponentStackLocal(callable, call, input) and
     nodeTo = evaluateSummaryComponentStackLocal(callable, call, output)
   )
-  or
-  TypeTrackingStep::withoutContentStep(nodeFrom, nodeTo, filter)
 }
 
 /**
@@ -321,8 +309,6 @@ predicate basicWithContentStep(Node nodeFrom, Node nodeTo, ContentFilter filter)
     nodeFrom = evaluateSummaryComponentStackLocal(callable, call, input) and
     nodeTo = evaluateSummaryComponentStackLocal(callable, call, output)
   )
-  or
-  TypeTrackingStep::withContentStep(nodeFrom, nodeTo, filter)
 }
 
 /**
@@ -339,7 +325,6 @@ private predicate hasStoreSummary(
   SummarizedCallable callable, DataFlow::ContentSet contents, SummaryComponentStack input,
   SummaryComponentStack output
 ) {
-  not TypeTrackingStep::suppressSummary(callable) and
   callable.propagatesFlow(input, push(SummaryComponent::content(contents), output), true) and
   not isNonLocal(input.head()) and
   not isNonLocal(output.head())
@@ -350,7 +335,6 @@ private predicate hasLoadSummary(
   SummarizedCallable callable, DataFlow::ContentSet contents, SummaryComponentStack input,
   SummaryComponentStack output
 ) {
-  not TypeTrackingStep::suppressSummary(callable) and
   callable.propagatesFlow(push(SummaryComponent::content(contents), input), output, true) and
   not isNonLocal(input.head()) and
   not isNonLocal(output.head())
@@ -361,7 +345,6 @@ private predicate hasLoadStoreSummary(
   SummarizedCallable callable, DataFlow::ContentSet loadContents,
   DataFlow::ContentSet storeContents, SummaryComponentStack input, SummaryComponentStack output
 ) {
-  not TypeTrackingStep::suppressSummary(callable) and
   callable
       .propagatesFlow(push(SummaryComponent::content(loadContents), input),
         push(SummaryComponent::content(storeContents), output), true) and
@@ -394,7 +377,6 @@ private predicate hasWithoutContentSummary(
   SummaryComponentStack output
 ) {
   exists(DataFlow::ContentSet content |
-    not TypeTrackingStep::suppressSummary(callable) and
     callable.propagatesFlow(push(SummaryComponent::withoutContent(content), input), output, true) and
     filter = getFilterFromWithoutContentStep(content) and
     not isNonLocal(input.head()) and
@@ -404,12 +386,12 @@ private predicate hasWithoutContentSummary(
 }
 
 /**
- * Gets a content filter to use for a `WithoutContent[content]` step, or has no result if
- * the step should be treated as ordinary flow.
+ * Gets a content filter to use for a `WithContent[content]` step, or has no result if
+ * the step cannot be handled by type-tracking.
  *
- * `WithoutContent` is often used to perform strong updates on individual collection elements, but for
- * type-tracking this is rarely beneficial and quite expensive. However, `WithoutContent` can be quite useful
- * for restricting the type of an object, and in these cases we translate it to a filter.
+ * `WithContent` is often used to perform strong updates on individual collection elements (or rather
+ * to preserve those that didn't get updated). But for type-tracking this is rarely beneficial and quite expensive.
+ * However, `WithContent` can be quite useful for restricting the type of an object, and in these cases we translate it to a filter.
  */
 private ContentFilter getFilterFromWithContentStep(DataFlow::ContentSet content) {
   (
@@ -430,7 +412,6 @@ private predicate hasWithContentSummary(
   SummaryComponentStack output
 ) {
   exists(DataFlow::ContentSet content |
-    not TypeTrackingStep::suppressSummary(callable) and
     callable.propagatesFlow(push(SummaryComponent::withContent(content), input), output, true) and
     filter = getFilterFromWithContentStep(content) and
     not isNonLocal(input.head()) and
@@ -475,7 +456,6 @@ private predicate dependsOnSummaryComponentStack(
   SummarizedCallable callable, SummaryComponentStack stack
 ) {
   exists(callable.getACallSimple()) and
-  not TypeTrackingStep::suppressSummary(callable) and
   (
     callable.propagatesFlow(stack, _, true)
     or
@@ -543,117 +523,4 @@ private DataFlow::Node evaluateSummaryComponentStackLocal(
       result = prev
     )
   )
-}
-
-private newtype TUnit = MkUnit()
-
-/**
- * A data flow edge that should be followed by type tracking.
- *
- * This type of edge does not affect the local data flow graph, and is not used by data-flow configurations.
- *
- * Note: For performance reasons, all subclasses of this class should be part
- * of the standard library, and their implementations may not depend on API graphs.
- * For query-specific steps, consider including the custom steps in the type-tracking predicate itself.
- */
-class TypeTrackingStep extends TUnit {
-  /** Gets the string `"unit"`. */
-  string toString() { result = "unit" }
-
-  /**
-   * Holds if type-tracking should not attempt to derive steps from (simple) calls to `callable`.
-   *
-   * This can be done to manually control how steps are generated from such calls.
-   */
-  predicate suppressSummary(SummarizedCallable callable) { none() }
-
-  /**
-   * Holds if type-tracking should step from `pred` to `succ`.
-   */
-  predicate step(Node pred, Node succ) { none() }
-
-  /**
-   * Holds if type-tracking should step from `pred` into the `content` of `succ`.
-   */
-  predicate storeStep(Node pred, TypeTrackingNode succ, TypeTrackerContent content) { none() }
-
-  /**
-   * Holds if type-tracking should step from the `content` of `pred` to `succ`.
-   */
-  predicate loadStep(Node pred, Node succ, TypeTrackerContent content) { none() }
-
-  /**
-   * Holds if type-tracking should step from the `loadContent` of `pred` to the `storeContent` in `succ`.
-   */
-  predicate loadStoreStep(
-    Node pred, TypeTrackingNode succ, TypeTrackerContent loadContent,
-    TypeTrackerContent storeContent
-  ) {
-    none()
-  }
-
-  /**
-   * Holds if type-tracking should step from `pred` to `succ` but block flow of contents matched by `filter` through here.
-   */
-  predicate withoutContentStep(Node pred, Node succ, ContentFilter filter) { none() }
-
-  /**
-   * Holds if type-tracking should step from `pred` to `succ` if inside a content matched by `filter`.
-   */
-  predicate withContentStep(Node pred, Node succ, ContentFilter filter) { none() }
-}
-
-/** Provides access to the steps contributed by subclasses of `SharedTypeTrackingStep`. */
-module TypeTrackingStep {
-  /**
-   * Holds if type-tracking should not attempt to derive steps from (simple) calls to `callable`.
-   *
-   * This can be done to manually control how steps are generated from such calls.
-   */
-  predicate suppressSummary(SummarizedCallable callable) {
-    any(TypeTrackingStep st).suppressSummary(callable)
-  }
-
-  /**
-   * Holds if type-tracking should step from `pred` to `succ`.
-   */
-  predicate step(Node pred, Node succ) { any(TypeTrackingStep st).step(pred, succ) }
-
-  /**
-   * Holds if type-tracking should step from `pred` into the `content` of `succ`.
-   */
-  predicate storeStep(Node pred, TypeTrackingNode succ, TypeTrackerContent content) {
-    any(TypeTrackingStep st).storeStep(pred, succ, content)
-  }
-
-  /**
-   * Holds if type-tracking should step from the `content` of `pred` to `succ`.
-   */
-  predicate loadStep(Node pred, Node succ, TypeTrackerContent content) {
-    any(TypeTrackingStep st).loadStep(pred, succ, content)
-  }
-
-  /**
-   * Holds if type-tracking should step from the `loadContent` of `pred` to the `storeContent` in `succ`.
-   */
-  predicate loadStoreStep(
-    Node pred, TypeTrackingNode succ, TypeTrackerContent loadContent,
-    TypeTrackerContent storeContent
-  ) {
-    any(TypeTrackingStep st).loadStoreStep(pred, succ, loadContent, storeContent)
-  }
-
-  /**
-   * Holds if type-tracking should step from `pred` to `succ` but block flow of contents matched by `filter` through here.
-   */
-  predicate withoutContentStep(Node pred, Node succ, ContentFilter filter) {
-    any(TypeTrackingStep st).withoutContentStep(pred, succ, filter)
-  }
-
-  /**
-   * Holds if type-tracking should step from `pred` to `succ` if inside a content matched by `filter`.
-   */
-  predicate withContentStep(Node pred, Node succ, ContentFilter filter) {
-    any(TypeTrackingStep st).withContentStep(pred, succ, filter)
-  }
 }

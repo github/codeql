@@ -1,7 +1,6 @@
 /** Provides flow summaries for the `Hash` class. */
 
 private import codeql.ruby.AST
-private import codeql.ruby.CFG as Cfg
 private import codeql.ruby.ApiGraphs
 private import codeql.ruby.DataFlow
 private import codeql.ruby.dataflow.FlowSummary

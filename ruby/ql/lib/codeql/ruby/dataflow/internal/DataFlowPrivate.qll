@@ -366,8 +366,7 @@ private module Cached {
 
   cached
   predicate isLocalSourceNode(Node n) {
-    n instanceof ParameterNode and
-    not n instanceof SynthHashSplatParameterNode
+    n instanceof ParameterNode
     or
     // Expressions that can't be reached from another entry definition or expression
     n instanceof ExprNode and
