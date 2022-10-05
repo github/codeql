@@ -18,25 +18,6 @@ private import codeql.ruby.ast.internal.Module
  */
 module Hash {
   /**
-   * Holds if `key` is used as the non-symbol key in a hash literal. For example
-   *
-   * ```rb
-   * {
-   *   :a => 1, # symbol
-   *   "b" => 2 # non-symbol, "b" is the key
-   * }
-   * ```
-   */
-  private predicate isHashLiteralNonSymbolKey(ConstantValue key) {
-    exists(Pair pair |
-      key = DataFlow::Content::getKnownElementIndex(pair.getKey()) and
-      // cannot use API graphs due to negative recursion
-      pair = any(MethodCall mc | mc.getMethodName() = "[]").getAnArgument() and
-      not key.isSymbol(_)
-    )
-  }
-
-  /**
    * Gets a call to the method `name` invoked on the `Hash` object
    * (not on a hash instance).
    */
@@ -51,15 +32,6 @@ module Hash {
     final override MethodCall getACallSimple() { result = getAStaticHashCall("[]") }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
-      // { 'nonsymbol' => x }
-      exists(ConstantValue key |
-        isHashLiteralNonSymbolKey(key) and
-        input = "Argument[0..].PairValue[" + key.serialize() + "]" and
-        output = "ReturnValue.Element[" + key.serialize() + "]" and
-        preservesValue = true
-      )
-      or
-      // { symbol: x }
       // we make use of the special `hash-splat` argument kind, which contains all keyword
       // arguments wrapped in an implicit hash, as well as explicit hash splat arguments
       input = "Argument[hash-splat].WithElement[any]" and
