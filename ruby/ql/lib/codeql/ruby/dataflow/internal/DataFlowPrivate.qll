@@ -277,6 +277,8 @@ private module Cached {
     } or
     TSynthHashSplatArgumentNode(CfgNodes::ExprNodes::CallCfgNode c) {
       exists(Argument arg | arg.isArgumentOf(c, any(ArgumentPosition pos | pos.isKeyword(_))))
+      or
+      c.getAnArgument() instanceof CfgNodes::ExprNodes::PairCfgNode
     }
 
   class TParameterNode =
@@ -411,8 +413,6 @@ private module Cached {
   newtype TContent =
     TKnownElementContent(ConstantValue cv) { trackKnownValue(cv) } or
     TUnknownElementContent() or
-    TKnownPairValueContent(ConstantValue cv) { trackKnownValue(cv) } or
-    TUnknownPairValueContent() or
     TFieldContent(string name) {
       name = any(InstanceVariable v).getName()
       or
@@ -448,8 +448,6 @@ private module Cached {
 }
 
 class TElementContent = TKnownElementContent or TUnknownElementContent;
-
-class TPairValueContent = TKnownPairValueContent or TUnknownPairValueContent;
 
 import Cached
 
@@ -1042,25 +1040,24 @@ predicate storeStep(Node node1, ContentSet c, Node node2) {
   or
   FlowSummaryImpl::Private::Steps::summaryStoreStep(node1, c, node2)
   or
-  // Needed for pairs passed into method calls where the key is not a symbol,
-  // that is, where it is not a keyword argument.
-  node2.asExpr() =
-    any(CfgNodes::ExprNodes::PairCfgNode pair |
-      exists(CfgNodes::ExprCfgNode key, ConstantValue cv |
-        key = pair.getKey() and
-        pair.getValue() = node1.asExpr() and
-        cv = key.getConstantValue() and
-        not cv.isSymbol(_) and // handled as a keyword argument
-        c.isSingleton(Content::getPairValueContent(cv))
-      )
+  // Wrap all key-value arguments in a synthesized hash-splat argument node
+  exists(CfgNodes::ExprNodes::CallCfgNode call | node2 = TSynthHashSplatArgumentNode(call) |
+    // symbol key
+    exists(ArgumentPosition keywordPos, string name |
+      node1.asExpr().(Argument).isArgumentOf(call, keywordPos) and
+      keywordPos.isKeyword(name) and
+      c = getKeywordContent(name)
     )
-  or
-  // Wrap all keyword arguments in a synthesized hash-splat argument node
-  exists(CfgNodes::ExprNodes::CallCfgNode call, ArgumentPosition keywordPos, string name |
-    node2 = TSynthHashSplatArgumentNode(call) and
-    node1.asExpr().(Argument).isArgumentOf(call, keywordPos) and
-    keywordPos.isKeyword(name) and
-    c = getKeywordContent(name)
+    or
+    // non-symbol key
+    exists(CfgNodes::ExprNodes::PairCfgNode pair, CfgNodes::ExprCfgNode key, ConstantValue cv |
+      node1.asExpr() = pair.getValue() and
+      pair = call.getAnArgument() and
+      key = pair.getKey() and
+      cv = key.getConstantValue() and
+      not cv.isSymbol(_) and
+      c.isSingleton(TKnownElementContent(cv))
+    )
   )
 }
 
