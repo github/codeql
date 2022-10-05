@@ -190,4 +190,4 @@ where
     allocatedVariableReaches(v, def, ret) and
     ret.getAChild*() = v.getAnAccess()
   )
-select def, "The memory allocated here may not be released at $@.", ret, "this exit point"
+select def, "This memory allocation may not be released at $@.", ret, "this exit point"

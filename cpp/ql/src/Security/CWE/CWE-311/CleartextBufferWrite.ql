@@ -19,7 +19,7 @@ import semmle.code.cpp.ir.dataflow.TaintTracking
 import DataFlow::PathGraph
 
 /**
- * Taint flow from user input to a buffer write.
+ * A taint flow configuration for flow from user input to a buffer write.
  */
 class ToBufferConfiguration extends TaintTracking::Configuration {
   ToBufferConfiguration() { this = "ToBufferConfiguration" }
@@ -44,5 +44,5 @@ where
   w.getASource() = sinkNode.getNode().asExpr() and
   dest = w.getDest()
 select w, sourceNode, sinkNode,
-  "This write into buffer '" + dest.toString() + "' may contain unencrypted data from $@", source,
+  "This write into buffer '" + dest.toString() + "' may contain unencrypted data from $@.", source,
   "user input (" + source.getSourceType() + ")"

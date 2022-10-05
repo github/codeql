@@ -4,3 +4,5 @@ classMethodCalls
 instanceMethodCalls
 | test1.rb:61:1:61:12 | Use getMember("M1").getMember("C1").getMethod("new").getReturn().getMethod("m").getReturn() |
 | test1.rb:62:1:62:12 | Use getMember("M2").getMember("C3").getMethod("new").getReturn().getMethod("m").getReturn() |
+flowThroughArray
+| test1.rb:73:1:73:10 | call to m |

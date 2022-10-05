@@ -129,6 +129,7 @@ private predicate classPredicateCallValueNumber(
 
 private predicate literalValueNumber(Literal lit, string value, Type t) {
   lit.(String).getValue() = value and
+  value.length() <= 50 and
   t instanceof StringClass
   or
   lit.(Integer).getValue().toString() = value and

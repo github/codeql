@@ -90,7 +90,7 @@ predicate numDepends(RefType t, RefType dep, int value) {
       |
         elem = a and usesType(a.getType(), dep)
         or
-        elem = a.getAValue() and
+        elem = [a.getValue(_), a.getAnArrayValue(_)] and
         elem.getFile().getExtension() = "java" and
         usesType(elem.(Expr).getType(), dep)
       )

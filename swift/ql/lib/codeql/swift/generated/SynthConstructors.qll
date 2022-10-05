@@ -14,7 +14,6 @@ import codeql.swift.elements.decl.EnumDeclConstructor
 import codeql.swift.elements.decl.EnumElementDeclConstructor
 import codeql.swift.elements.decl.ExtensionDeclConstructor
 import codeql.swift.elements.decl.GenericTypeParamDeclConstructor
-import codeql.swift.elements.decl.IfConfigClauseConstructor
 import codeql.swift.elements.decl.IfConfigDeclConstructor
 import codeql.swift.elements.decl.ImportDeclConstructor
 import codeql.swift.elements.decl.InfixOperatorDeclConstructor
@@ -114,6 +113,7 @@ import codeql.swift.elements.expr.OptionalEvaluationExprConstructor
 import codeql.swift.elements.expr.OptionalTryExprConstructor
 import codeql.swift.elements.expr.OtherConstructorDeclRefExprConstructor
 import codeql.swift.elements.expr.OverloadedDeclRefExprConstructor
+import codeql.swift.elements.expr.PackExprConstructor
 import codeql.swift.elements.expr.ParenExprConstructor
 import codeql.swift.elements.expr.PointerToPointerExprConstructor
 import codeql.swift.elements.expr.PostfixUnaryExprConstructor
@@ -122,6 +122,7 @@ import codeql.swift.elements.expr.PropertyWrapperValuePlaceholderExprConstructor
 import codeql.swift.elements.expr.ProtocolMetatypeToObjectExprConstructor
 import codeql.swift.elements.expr.RebindSelfInConstructorExprConstructor
 import codeql.swift.elements.expr.RegexLiteralExprConstructor
+import codeql.swift.elements.expr.ReifyPackExprConstructor
 import codeql.swift.elements.expr.SequenceExprConstructor
 import codeql.swift.elements.expr.StringLiteralExprConstructor
 import codeql.swift.elements.expr.StringToPointerExprConstructor
@@ -206,10 +207,12 @@ import codeql.swift.elements.type.InOutTypeConstructor
 import codeql.swift.elements.type.LValueTypeConstructor
 import codeql.swift.elements.type.MetatypeTypeConstructor
 import codeql.swift.elements.type.ModuleTypeConstructor
-import codeql.swift.elements.type.NestedArchetypeTypeConstructor
 import codeql.swift.elements.type.OpaqueTypeArchetypeTypeConstructor
 import codeql.swift.elements.type.OpenedArchetypeTypeConstructor
 import codeql.swift.elements.type.OptionalTypeConstructor
+import codeql.swift.elements.type.PackExpansionTypeConstructor
+import codeql.swift.elements.type.PackTypeConstructor
+import codeql.swift.elements.type.ParameterizedProtocolTypeConstructor
 import codeql.swift.elements.type.ParenTypeConstructor
 import codeql.swift.elements.type.PlaceholderTypeConstructor
 import codeql.swift.elements.type.PrimaryArchetypeTypeConstructor

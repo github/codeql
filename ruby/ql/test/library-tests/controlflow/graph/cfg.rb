@@ -204,6 +204,12 @@ end
 # A call with a safe navigation operator
 foo&.bar(1,2) { |x| x }
 
+def filter_nil list
+  list.reject do |elem, *, **|
+    elem.nil?
+  end
+end
+
 __END__
 
 Some ignored nonsense

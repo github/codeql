@@ -924,31 +924,31 @@
 | exprs.kt:15:18:15:18 | y | exprs.kt:4:1:136:1 | topLevelMethod | VarAccess |
 | exprs.kt:16:5:16:20 | i6 | exprs.kt:4:1:136:1 | topLevelMethod | LocalVariableDeclExpr |
 | exprs.kt:16:14:16:14 | x | exprs.kt:4:1:136:1 | topLevelMethod | VarAccess |
-| exprs.kt:16:14:16:20 | shl(...) | exprs.kt:4:1:136:1 | topLevelMethod | MethodAccess |
+| exprs.kt:16:14:16:20 | ... << ... | exprs.kt:4:1:136:1 | topLevelMethod | LShiftExpr |
 | exprs.kt:16:20:16:20 | y | exprs.kt:4:1:136:1 | topLevelMethod | VarAccess |
 | exprs.kt:17:5:17:20 | i7 | exprs.kt:4:1:136:1 | topLevelMethod | LocalVariableDeclExpr |
 | exprs.kt:17:14:17:14 | x | exprs.kt:4:1:136:1 | topLevelMethod | VarAccess |
-| exprs.kt:17:14:17:20 | shr(...) | exprs.kt:4:1:136:1 | topLevelMethod | MethodAccess |
+| exprs.kt:17:14:17:20 | ... >> ... | exprs.kt:4:1:136:1 | topLevelMethod | RShiftExpr |
 | exprs.kt:17:20:17:20 | y | exprs.kt:4:1:136:1 | topLevelMethod | VarAccess |
 | exprs.kt:18:5:18:21 | i8 | exprs.kt:4:1:136:1 | topLevelMethod | LocalVariableDeclExpr |
 | exprs.kt:18:14:18:14 | x | exprs.kt:4:1:136:1 | topLevelMethod | VarAccess |
-| exprs.kt:18:14:18:21 | ushr(...) | exprs.kt:4:1:136:1 | topLevelMethod | MethodAccess |
+| exprs.kt:18:14:18:21 | ... >>> ... | exprs.kt:4:1:136:1 | topLevelMethod | URShiftExpr |
 | exprs.kt:18:21:18:21 | y | exprs.kt:4:1:136:1 | topLevelMethod | VarAccess |
 | exprs.kt:19:5:19:20 | i9 | exprs.kt:4:1:136:1 | topLevelMethod | LocalVariableDeclExpr |
 | exprs.kt:19:14:19:14 | x | exprs.kt:4:1:136:1 | topLevelMethod | VarAccess |
-| exprs.kt:19:14:19:20 | and(...) | exprs.kt:4:1:136:1 | topLevelMethod | MethodAccess |
+| exprs.kt:19:14:19:20 | ... & ... | exprs.kt:4:1:136:1 | topLevelMethod | AndBitwiseExpr |
 | exprs.kt:19:20:19:20 | y | exprs.kt:4:1:136:1 | topLevelMethod | VarAccess |
 | exprs.kt:20:5:20:20 | i10 | exprs.kt:4:1:136:1 | topLevelMethod | LocalVariableDeclExpr |
 | exprs.kt:20:15:20:15 | x | exprs.kt:4:1:136:1 | topLevelMethod | VarAccess |
-| exprs.kt:20:15:20:20 | or(...) | exprs.kt:4:1:136:1 | topLevelMethod | MethodAccess |
+| exprs.kt:20:15:20:20 | ... \| ... | exprs.kt:4:1:136:1 | topLevelMethod | OrBitwiseExpr |
 | exprs.kt:20:20:20:20 | y | exprs.kt:4:1:136:1 | topLevelMethod | VarAccess |
 | exprs.kt:21:5:21:21 | i11 | exprs.kt:4:1:136:1 | topLevelMethod | LocalVariableDeclExpr |
 | exprs.kt:21:15:21:15 | x | exprs.kt:4:1:136:1 | topLevelMethod | VarAccess |
-| exprs.kt:21:15:21:21 | xor(...) | exprs.kt:4:1:136:1 | topLevelMethod | MethodAccess |
+| exprs.kt:21:15:21:21 | ... ^ ... | exprs.kt:4:1:136:1 | topLevelMethod | XorBitwiseExpr |
 | exprs.kt:21:21:21:21 | y | exprs.kt:4:1:136:1 | topLevelMethod | VarAccess |
 | exprs.kt:22:5:22:21 | i12 | exprs.kt:4:1:136:1 | topLevelMethod | LocalVariableDeclExpr |
 | exprs.kt:22:15:22:15 | x | exprs.kt:4:1:136:1 | topLevelMethod | VarAccess |
-| exprs.kt:22:17:22:21 | inv(...) | exprs.kt:4:1:136:1 | topLevelMethod | MethodAccess |
+| exprs.kt:22:17:22:21 | ~... | exprs.kt:4:1:136:1 | topLevelMethod | BitNotExpr |
 | exprs.kt:23:5:23:20 | i13 | exprs.kt:4:1:136:1 | topLevelMethod | LocalVariableDeclExpr |
 | exprs.kt:23:15:23:15 | x | exprs.kt:4:1:136:1 | topLevelMethod | VarAccess |
 | exprs.kt:23:15:23:20 | ... (value equals) ... | exprs.kt:4:1:136:1 | topLevelMethod | ValueEQExpr |
@@ -989,8 +989,8 @@
 | exprs.kt:31:25:31:25 | y | exprs.kt:4:1:136:1 | topLevelMethod | VarAccess |
 | exprs.kt:32:5:32:26 | i22 | exprs.kt:4:1:136:1 | topLevelMethod | LocalVariableDeclExpr |
 | exprs.kt:32:15:32:15 | x | exprs.kt:4:1:136:1 | topLevelMethod | VarAccess |
+| exprs.kt:32:15:32:26 | !... | exprs.kt:4:1:136:1 | topLevelMethod | LogNotExpr |
 | exprs.kt:32:15:32:26 | contains(...) | exprs.kt:4:1:136:1 | topLevelMethod | MethodAccess |
-| exprs.kt:32:15:32:26 | not(...) | exprs.kt:4:1:136:1 | topLevelMethod | MethodAccess |
 | exprs.kt:32:21:32:21 | x | exprs.kt:4:1:136:1 | topLevelMethod | VarAccess |
 | exprs.kt:32:21:32:26 | rangeTo(...) | exprs.kt:4:1:136:1 | topLevelMethod | MethodAccess |
 | exprs.kt:32:26:32:26 | y | exprs.kt:4:1:136:1 | topLevelMethod | VarAccess |
@@ -1138,31 +1138,31 @@
 | exprs.kt:66:19:66:20 | ly | exprs.kt:4:1:136:1 | topLevelMethod | VarAccess |
 | exprs.kt:67:5:67:21 | l6 | exprs.kt:4:1:136:1 | topLevelMethod | LocalVariableDeclExpr |
 | exprs.kt:67:14:67:15 | lx | exprs.kt:4:1:136:1 | topLevelMethod | VarAccess |
-| exprs.kt:67:14:67:21 | shl(...) | exprs.kt:4:1:136:1 | topLevelMethod | MethodAccess |
+| exprs.kt:67:14:67:21 | ... << ... | exprs.kt:4:1:136:1 | topLevelMethod | LShiftExpr |
 | exprs.kt:67:21:67:21 | y | exprs.kt:4:1:136:1 | topLevelMethod | VarAccess |
 | exprs.kt:68:5:68:21 | l7 | exprs.kt:4:1:136:1 | topLevelMethod | LocalVariableDeclExpr |
 | exprs.kt:68:14:68:15 | lx | exprs.kt:4:1:136:1 | topLevelMethod | VarAccess |
-| exprs.kt:68:14:68:21 | shr(...) | exprs.kt:4:1:136:1 | topLevelMethod | MethodAccess |
+| exprs.kt:68:14:68:21 | ... >> ... | exprs.kt:4:1:136:1 | topLevelMethod | RShiftExpr |
 | exprs.kt:68:21:68:21 | y | exprs.kt:4:1:136:1 | topLevelMethod | VarAccess |
 | exprs.kt:69:5:69:22 | l8 | exprs.kt:4:1:136:1 | topLevelMethod | LocalVariableDeclExpr |
 | exprs.kt:69:14:69:15 | lx | exprs.kt:4:1:136:1 | topLevelMethod | VarAccess |
-| exprs.kt:69:14:69:22 | ushr(...) | exprs.kt:4:1:136:1 | topLevelMethod | MethodAccess |
+| exprs.kt:69:14:69:22 | ... >>> ... | exprs.kt:4:1:136:1 | topLevelMethod | URShiftExpr |
 | exprs.kt:69:22:69:22 | y | exprs.kt:4:1:136:1 | topLevelMethod | VarAccess |
 | exprs.kt:70:5:70:22 | l9 | exprs.kt:4:1:136:1 | topLevelMethod | LocalVariableDeclExpr |
 | exprs.kt:70:14:70:15 | lx | exprs.kt:4:1:136:1 | topLevelMethod | VarAccess |
-| exprs.kt:70:14:70:22 | and(...) | exprs.kt:4:1:136:1 | topLevelMethod | MethodAccess |
+| exprs.kt:70:14:70:22 | ... & ... | exprs.kt:4:1:136:1 | topLevelMethod | AndBitwiseExpr |
 | exprs.kt:70:21:70:22 | ly | exprs.kt:4:1:136:1 | topLevelMethod | VarAccess |
 | exprs.kt:71:5:71:22 | l10 | exprs.kt:4:1:136:1 | topLevelMethod | LocalVariableDeclExpr |
 | exprs.kt:71:15:71:16 | lx | exprs.kt:4:1:136:1 | topLevelMethod | VarAccess |
-| exprs.kt:71:15:71:22 | or(...) | exprs.kt:4:1:136:1 | topLevelMethod | MethodAccess |
+| exprs.kt:71:15:71:22 | ... \| ... | exprs.kt:4:1:136:1 | topLevelMethod | OrBitwiseExpr |
 | exprs.kt:71:21:71:22 | ly | exprs.kt:4:1:136:1 | topLevelMethod | VarAccess |
 | exprs.kt:72:5:72:23 | l11 | exprs.kt:4:1:136:1 | topLevelMethod | LocalVariableDeclExpr |
 | exprs.kt:72:15:72:16 | lx | exprs.kt:4:1:136:1 | topLevelMethod | VarAccess |
-| exprs.kt:72:15:72:23 | xor(...) | exprs.kt:4:1:136:1 | topLevelMethod | MethodAccess |
+| exprs.kt:72:15:72:23 | ... ^ ... | exprs.kt:4:1:136:1 | topLevelMethod | XorBitwiseExpr |
 | exprs.kt:72:22:72:23 | ly | exprs.kt:4:1:136:1 | topLevelMethod | VarAccess |
 | exprs.kt:73:5:73:22 | l12 | exprs.kt:4:1:136:1 | topLevelMethod | LocalVariableDeclExpr |
 | exprs.kt:73:15:73:16 | lx | exprs.kt:4:1:136:1 | topLevelMethod | VarAccess |
-| exprs.kt:73:18:73:22 | inv(...) | exprs.kt:4:1:136:1 | topLevelMethod | MethodAccess |
+| exprs.kt:73:18:73:22 | ~... | exprs.kt:4:1:136:1 | topLevelMethod | BitNotExpr |
 | exprs.kt:74:5:74:22 | l13 | exprs.kt:4:1:136:1 | topLevelMethod | LocalVariableDeclExpr |
 | exprs.kt:74:15:74:16 | lx | exprs.kt:4:1:136:1 | topLevelMethod | VarAccess |
 | exprs.kt:74:15:74:22 | ... (value equals) ... | exprs.kt:4:1:136:1 | topLevelMethod | ValueEQExpr |
@@ -1308,7 +1308,7 @@
 | exprs.kt:114:14:114:21 | ... \|\| ... | exprs.kt:4:1:136:1 | topLevelMethod | OrLogicalExpr |
 | exprs.kt:114:20:114:21 | b2 | exprs.kt:4:1:136:1 | topLevelMethod | VarAccess |
 | exprs.kt:115:5:115:16 | b5 | exprs.kt:4:1:136:1 | topLevelMethod | LocalVariableDeclExpr |
-| exprs.kt:115:14:115:16 | not(...) | exprs.kt:4:1:136:1 | topLevelMethod | MethodAccess |
+| exprs.kt:115:14:115:16 | !... | exprs.kt:4:1:136:1 | topLevelMethod | LogNotExpr |
 | exprs.kt:115:15:115:16 | b1 | exprs.kt:4:1:136:1 | topLevelMethod | VarAccess |
 | exprs.kt:117:5:117:15 | c | exprs.kt:4:1:136:1 | topLevelMethod | LocalVariableDeclExpr |
 | exprs.kt:117:13:117:15 | x | exprs.kt:4:1:136:1 | topLevelMethod | CharacterLiteral |
@@ -1349,7 +1349,8 @@
 | exprs.kt:127:38:127:41 | str2 | exprs.kt:4:1:136:1 | topLevelMethod | VarAccess |
 | exprs.kt:127:43:127:47 |  bar  | exprs.kt:4:1:136:1 | topLevelMethod | StringLiteral |
 | exprs.kt:127:50:127:53 | str2 | exprs.kt:4:1:136:1 | topLevelMethod | VarAccess |
-| exprs.kt:127:50:127:60 | ... + ... | exprs.kt:4:1:136:1 | topLevelMethod | AddExpr |
+| exprs.kt:127:50:127:60 | Intrinsics | exprs.kt:4:1:136:1 | topLevelMethod | TypeAccess |
+| exprs.kt:127:50:127:60 | stringPlus(...) | exprs.kt:4:1:136:1 | topLevelMethod | MethodAccess |
 | exprs.kt:127:57:127:60 | str1 | exprs.kt:4:1:136:1 | topLevelMethod | VarAccess |
 | exprs.kt:127:62:127:65 |  baz | exprs.kt:4:1:136:1 | topLevelMethod | StringLiteral |
 | exprs.kt:128:5:128:26 | str6 | exprs.kt:4:1:136:1 | topLevelMethod | LocalVariableDeclExpr |
@@ -1446,7 +1447,7 @@
 | exprs.kt:164:9:164:21 | ...=... | exprs.kt:159:1:166:1 | foo | AssignExpr |
 | exprs.kt:164:21:164:21 | 3 | exprs.kt:159:1:166:1 | foo | IntegerLiteral |
 | exprs.kt:168:1:170:1 | Direction | exprs.kt:168:6:170:1 | Direction | TypeAccess |
-| exprs.kt:168:1:170:1 | Unit | exprs.kt:168:6:170:1 | Direction | TypeAccess |
+| exprs.kt:168:1:170:1 | Enum<Direction> | exprs.kt:168:6:170:1 | Direction | TypeAccess |
 | exprs.kt:168:1:170:1 | new Enum(...) | exprs.kt:168:6:170:1 | Direction | ClassInstanceExpr |
 | exprs.kt:169:5:169:10 | ...=... | exprs.kt:0:0:0:0 | <clinit> | KtInitializerAssignExpr |
 | exprs.kt:169:5:169:10 | Direction | exprs.kt:0:0:0:0 | <clinit> | TypeAccess |
@@ -1473,7 +1474,7 @@
 | exprs.kt:169:25:169:28 | Direction.EAST | exprs.kt:0:0:0:0 | <clinit> | VarAccess |
 | exprs.kt:169:25:169:28 | new Direction(...) | exprs.kt:0:0:0:0 | <clinit> | ClassInstanceExpr |
 | exprs.kt:172:1:176:1 | Color | exprs.kt:172:6:176:1 | Color | TypeAccess |
-| exprs.kt:172:1:176:1 | Unit | exprs.kt:172:6:176:1 | Color | TypeAccess |
+| exprs.kt:172:1:176:1 | Enum<Color> | exprs.kt:172:6:176:1 | Color | TypeAccess |
 | exprs.kt:172:1:176:1 | new Enum(...) | exprs.kt:172:6:176:1 | Color | ClassInstanceExpr |
 | exprs.kt:172:18:172:29 | ...=... | exprs.kt:172:6:176:1 | Color | KtInitializerAssignExpr |
 | exprs.kt:172:18:172:29 | int | file://:0:0:0:0 | <none> | TypeAccess |
@@ -1554,12 +1555,13 @@
 | exprs.kt:203:26:203:26 | 5 | exprs.kt:200:5:211:5 | x | IntegerLiteral |
 | exprs.kt:204:9:204:23 | b1 | exprs.kt:200:5:211:5 | x | LocalVariableDeclExpr |
 | exprs.kt:204:19:204:19 | s | exprs.kt:200:5:211:5 | x | VarAccess |
-| exprs.kt:204:19:204:23 | ... + ... | exprs.kt:200:5:211:5 | x | AddExpr |
+| exprs.kt:204:19:204:23 | Intrinsics | exprs.kt:200:5:211:5 | x | TypeAccess |
+| exprs.kt:204:19:204:23 | stringPlus(...) | exprs.kt:200:5:211:5 | x | MethodAccess |
 | exprs.kt:204:23:204:23 | 5 | exprs.kt:200:5:211:5 | x | IntegerLiteral |
 | exprs.kt:205:9:205:29 | b2 | exprs.kt:200:5:211:5 | x | LocalVariableDeclExpr |
 | exprs.kt:205:19:205:19 | s | exprs.kt:200:5:211:5 | x | VarAccess |
 | exprs.kt:205:20:205:21 | ...!! | exprs.kt:200:5:211:5 | x | NotNullExpr |
-| exprs.kt:205:23:205:29 | plus(...) | exprs.kt:200:5:211:5 | x | MethodAccess |
+| exprs.kt:205:23:205:29 | ... + ... | exprs.kt:200:5:211:5 | x | AddExpr |
 | exprs.kt:205:28:205:28 | 5 | exprs.kt:200:5:211:5 | x | IntegerLiteral |
 | exprs.kt:206:9:206:25 | b3 | exprs.kt:200:5:211:5 | x | LocalVariableDeclExpr |
 | exprs.kt:206:19:206:19 | s | exprs.kt:200:5:211:5 | x | VarAccess |
@@ -1736,6 +1738,81 @@
 | exprs.kt:276:5:276:26 | ExprsKt | exprs.kt:274:1:277:1 | callToEnumValues | TypeAccess |
 | exprs.kt:276:5:276:26 | Unit | exprs.kt:274:1:277:1 | callToEnumValues | TypeAccess |
 | exprs.kt:276:5:276:26 | getEnumValues(...) | exprs.kt:274:1:277:1 | callToEnumValues | MethodAccess |
+| exprs.kt:279:1:294:1 | Unit | file://:0:0:0:0 | <none> | TypeAccess |
+| exprs.kt:279:16:279:21 | int | file://:0:0:0:0 | <none> | TypeAccess |
+| exprs.kt:279:24:279:32 | double | file://:0:0:0:0 | <none> | TypeAccess |
+| exprs.kt:280:5:280:6 | -... | exprs.kt:279:1:294:1 | unaryExprs | MinusExpr |
+| exprs.kt:280:5:280:6 | <implicit coercion to unit> | exprs.kt:279:1:294:1 | unaryExprs | ImplicitCoercionToUnitExpr |
+| exprs.kt:280:5:280:6 | Unit | exprs.kt:279:1:294:1 | unaryExprs | TypeAccess |
+| exprs.kt:280:6:280:6 | i | exprs.kt:279:1:294:1 | unaryExprs | VarAccess |
+| exprs.kt:281:5:281:6 | +... | exprs.kt:279:1:294:1 | unaryExprs | PlusExpr |
+| exprs.kt:281:5:281:6 | <implicit coercion to unit> | exprs.kt:279:1:294:1 | unaryExprs | ImplicitCoercionToUnitExpr |
+| exprs.kt:281:5:281:6 | Unit | exprs.kt:279:1:294:1 | unaryExprs | TypeAccess |
+| exprs.kt:281:6:281:6 | i | exprs.kt:279:1:294:1 | unaryExprs | VarAccess |
+| exprs.kt:282:5:282:6 | -... | exprs.kt:279:1:294:1 | unaryExprs | MinusExpr |
+| exprs.kt:282:5:282:6 | <implicit coercion to unit> | exprs.kt:279:1:294:1 | unaryExprs | ImplicitCoercionToUnitExpr |
+| exprs.kt:282:5:282:6 | Unit | exprs.kt:279:1:294:1 | unaryExprs | TypeAccess |
+| exprs.kt:282:6:282:6 | d | exprs.kt:279:1:294:1 | unaryExprs | VarAccess |
+| exprs.kt:283:5:283:6 | +... | exprs.kt:279:1:294:1 | unaryExprs | PlusExpr |
+| exprs.kt:283:5:283:6 | <implicit coercion to unit> | exprs.kt:279:1:294:1 | unaryExprs | ImplicitCoercionToUnitExpr |
+| exprs.kt:283:5:283:6 | Unit | exprs.kt:279:1:294:1 | unaryExprs | TypeAccess |
+| exprs.kt:283:6:283:6 | d | exprs.kt:279:1:294:1 | unaryExprs | VarAccess |
+| exprs.kt:284:5:284:14 | i0 | exprs.kt:279:1:294:1 | unaryExprs | LocalVariableDeclExpr |
+| exprs.kt:284:14:284:14 | 1 | exprs.kt:279:1:294:1 | unaryExprs | IntegerLiteral |
+| exprs.kt:285:5:285:14 | i1 | exprs.kt:279:1:294:1 | unaryExprs | LocalVariableDeclExpr |
+| exprs.kt:285:14:285:14 | 1 | exprs.kt:279:1:294:1 | unaryExprs | IntegerLiteral |
+| exprs.kt:286:5:286:6 | i0 | exprs.kt:279:1:294:1 | unaryExprs | VarAccess |
+| exprs.kt:286:5:286:6 | i0 | exprs.kt:279:1:294:1 | unaryExprs | VarAccess |
+| exprs.kt:286:5:286:8 | ...=... | exprs.kt:279:1:294:1 | unaryExprs | AssignExpr |
+| exprs.kt:286:5:286:8 | <Stmt> | exprs.kt:279:1:294:1 | unaryExprs | StmtExpr |
+| exprs.kt:286:5:286:8 | <implicit coercion to unit> | exprs.kt:279:1:294:1 | unaryExprs | ImplicitCoercionToUnitExpr |
+| exprs.kt:286:5:286:8 | Unit | exprs.kt:279:1:294:1 | unaryExprs | TypeAccess |
+| exprs.kt:286:5:286:8 | inc(...) | exprs.kt:279:1:294:1 | unaryExprs | MethodAccess |
+| exprs.kt:286:5:286:8 | tmp0 | exprs.kt:279:1:294:1 | unaryExprs | LocalVariableDeclExpr |
+| exprs.kt:286:5:286:8 | tmp0 | exprs.kt:279:1:294:1 | unaryExprs | VarAccess |
+| exprs.kt:286:5:286:8 | tmp0 | exprs.kt:279:1:294:1 | unaryExprs | VarAccess |
+| exprs.kt:287:5:287:8 | <Stmt> | exprs.kt:279:1:294:1 | unaryExprs | StmtExpr |
+| exprs.kt:287:5:287:8 | <implicit coercion to unit> | exprs.kt:279:1:294:1 | unaryExprs | ImplicitCoercionToUnitExpr |
+| exprs.kt:287:5:287:8 | Unit | exprs.kt:279:1:294:1 | unaryExprs | TypeAccess |
+| exprs.kt:287:5:287:8 | inc(...) | exprs.kt:279:1:294:1 | unaryExprs | MethodAccess |
+| exprs.kt:287:7:287:8 | ...=... | exprs.kt:279:1:294:1 | unaryExprs | AssignExpr |
+| exprs.kt:287:7:287:8 | i0 | exprs.kt:279:1:294:1 | unaryExprs | VarAccess |
+| exprs.kt:287:7:287:8 | i0 | exprs.kt:279:1:294:1 | unaryExprs | VarAccess |
+| exprs.kt:287:7:287:8 | i0 | exprs.kt:279:1:294:1 | unaryExprs | VarAccess |
+| exprs.kt:288:5:288:6 | i0 | exprs.kt:279:1:294:1 | unaryExprs | VarAccess |
+| exprs.kt:288:5:288:6 | i0 | exprs.kt:279:1:294:1 | unaryExprs | VarAccess |
+| exprs.kt:288:5:288:8 | ...=... | exprs.kt:279:1:294:1 | unaryExprs | AssignExpr |
+| exprs.kt:288:5:288:8 | <Stmt> | exprs.kt:279:1:294:1 | unaryExprs | StmtExpr |
+| exprs.kt:288:5:288:8 | <implicit coercion to unit> | exprs.kt:279:1:294:1 | unaryExprs | ImplicitCoercionToUnitExpr |
+| exprs.kt:288:5:288:8 | Unit | exprs.kt:279:1:294:1 | unaryExprs | TypeAccess |
+| exprs.kt:288:5:288:8 | dec(...) | exprs.kt:279:1:294:1 | unaryExprs | MethodAccess |
+| exprs.kt:288:5:288:8 | tmp1 | exprs.kt:279:1:294:1 | unaryExprs | LocalVariableDeclExpr |
+| exprs.kt:288:5:288:8 | tmp1 | exprs.kt:279:1:294:1 | unaryExprs | VarAccess |
+| exprs.kt:288:5:288:8 | tmp1 | exprs.kt:279:1:294:1 | unaryExprs | VarAccess |
+| exprs.kt:289:5:289:8 | <Stmt> | exprs.kt:279:1:294:1 | unaryExprs | StmtExpr |
+| exprs.kt:289:5:289:8 | <implicit coercion to unit> | exprs.kt:279:1:294:1 | unaryExprs | ImplicitCoercionToUnitExpr |
+| exprs.kt:289:5:289:8 | Unit | exprs.kt:279:1:294:1 | unaryExprs | TypeAccess |
+| exprs.kt:289:5:289:8 | dec(...) | exprs.kt:279:1:294:1 | unaryExprs | MethodAccess |
+| exprs.kt:289:7:289:8 | ...=... | exprs.kt:279:1:294:1 | unaryExprs | AssignExpr |
+| exprs.kt:289:7:289:8 | i0 | exprs.kt:279:1:294:1 | unaryExprs | VarAccess |
+| exprs.kt:289:7:289:8 | i0 | exprs.kt:279:1:294:1 | unaryExprs | VarAccess |
+| exprs.kt:289:7:289:8 | i0 | exprs.kt:279:1:294:1 | unaryExprs | VarAccess |
+| exprs.kt:290:5:290:6 | i0 | exprs.kt:279:1:294:1 | unaryExprs | VarAccess |
+| exprs.kt:290:8:290:12 | <implicit coercion to unit> | exprs.kt:279:1:294:1 | unaryExprs | ImplicitCoercionToUnitExpr |
+| exprs.kt:290:8:290:12 | Unit | exprs.kt:279:1:294:1 | unaryExprs | TypeAccess |
+| exprs.kt:290:8:290:12 | inc(...) | exprs.kt:279:1:294:1 | unaryExprs | MethodAccess |
+| exprs.kt:291:5:291:6 | i0 | exprs.kt:279:1:294:1 | unaryExprs | VarAccess |
+| exprs.kt:291:8:291:12 | <implicit coercion to unit> | exprs.kt:279:1:294:1 | unaryExprs | ImplicitCoercionToUnitExpr |
+| exprs.kt:291:8:291:12 | Unit | exprs.kt:279:1:294:1 | unaryExprs | TypeAccess |
+| exprs.kt:291:8:291:12 | dec(...) | exprs.kt:279:1:294:1 | unaryExprs | MethodAccess |
+| exprs.kt:292:5:292:6 | i1 | exprs.kt:279:1:294:1 | unaryExprs | VarAccess |
+| exprs.kt:292:8:292:12 | <implicit coercion to unit> | exprs.kt:279:1:294:1 | unaryExprs | ImplicitCoercionToUnitExpr |
+| exprs.kt:292:8:292:12 | Unit | exprs.kt:279:1:294:1 | unaryExprs | TypeAccess |
+| exprs.kt:292:8:292:12 | inc(...) | exprs.kt:279:1:294:1 | unaryExprs | MethodAccess |
+| exprs.kt:293:5:293:6 | i1 | exprs.kt:279:1:294:1 | unaryExprs | VarAccess |
+| exprs.kt:293:8:293:12 | <implicit coercion to unit> | exprs.kt:279:1:294:1 | unaryExprs | ImplicitCoercionToUnitExpr |
+| exprs.kt:293:8:293:12 | Unit | exprs.kt:279:1:294:1 | unaryExprs | TypeAccess |
+| exprs.kt:293:8:293:12 | dec(...) | exprs.kt:279:1:294:1 | unaryExprs | MethodAccess |
 | funcExprs.kt:1:1:1:46 | Unit | file://:0:0:0:0 | <none> | TypeAccess |
 | funcExprs.kt:1:26:1:37 | Function0<Integer> | file://:0:0:0:0 | <none> | TypeAccess |
 | funcExprs.kt:1:26:1:37 | Integer | file://:0:0:0:0 | <none> | TypeAccess |
@@ -2917,6 +2994,288 @@
 | funcExprs.kt:77:20:77:55 | Generic<Integer> | file://:0:0:0:0 | <none> | TypeAccess |
 | funcExprs.kt:77:20:77:55 | Integer | file://:0:0:0:0 | <none> | TypeAccess |
 | funcExprs.kt:77:20:77:55 | String | file://:0:0:0:0 | <none> | TypeAccess |
+| funcExprs.kt:82:9:96:1 | Unit | file://:0:0:0:0 | <none> | TypeAccess |
+| funcExprs.kt:83:5:83:51 | l1 | funcExprs.kt:82:9:96:1 | fn | LocalVariableDeclExpr |
+| funcExprs.kt:83:31:83:51 | ...->... | funcExprs.kt:82:9:96:1 | fn | LambdaExpr |
+| funcExprs.kt:83:31:83:51 | Function1<Integer,String> | funcExprs.kt:82:9:96:1 | fn | TypeAccess |
+| funcExprs.kt:83:31:83:51 | Integer | funcExprs.kt:82:9:96:1 | fn | TypeAccess |
+| funcExprs.kt:83:31:83:51 | String | file://:0:0:0:0 | <none> | TypeAccess |
+| funcExprs.kt:83:31:83:51 | String | funcExprs.kt:82:9:96:1 | fn | TypeAccess |
+| funcExprs.kt:83:33:83:33 | int | file://:0:0:0:0 | <none> | TypeAccess |
+| funcExprs.kt:83:38:83:38 | i | funcExprs.kt:83:31:83:51 | invoke | VarAccess |
+| funcExprs.kt:83:40:83:49 | toString(...) | funcExprs.kt:83:31:83:51 | invoke | MethodAccess |
+| funcExprs.kt:84:5:84:6 | l1 | funcExprs.kt:82:9:96:1 | fn | VarAccess |
+| funcExprs.kt:84:8:84:16 | <implicit coercion to unit> | funcExprs.kt:82:9:96:1 | fn | ImplicitCoercionToUnitExpr |
+| funcExprs.kt:84:8:84:16 | Unit | funcExprs.kt:82:9:96:1 | fn | TypeAccess |
+| funcExprs.kt:84:8:84:16 | invoke(...) | funcExprs.kt:82:9:96:1 | fn | MethodAccess |
+| funcExprs.kt:84:15:84:15 | 5 | funcExprs.kt:82:9:96:1 | fn | IntegerLiteral |
+| funcExprs.kt:86:5:86:59 | l2 | funcExprs.kt:82:9:96:1 | fn | LocalVariableDeclExpr |
+| funcExprs.kt:86:39:86:59 | ...->... | funcExprs.kt:82:9:96:1 | fn | LambdaExpr |
+| funcExprs.kt:86:39:86:59 | Function1<Integer,String> | funcExprs.kt:82:9:96:1 | fn | TypeAccess |
+| funcExprs.kt:86:39:86:59 | Integer | funcExprs.kt:82:9:96:1 | fn | TypeAccess |
+| funcExprs.kt:86:39:86:59 | String | file://:0:0:0:0 | <none> | TypeAccess |
+| funcExprs.kt:86:39:86:59 | String | funcExprs.kt:82:9:96:1 | fn | TypeAccess |
+| funcExprs.kt:86:41:86:41 | int | file://:0:0:0:0 | <none> | TypeAccess |
+| funcExprs.kt:86:46:86:46 | i | funcExprs.kt:86:39:86:59 | invoke | VarAccess |
+| funcExprs.kt:86:48:86:57 | toString(...) | funcExprs.kt:86:39:86:59 | invoke | MethodAccess |
+| funcExprs.kt:87:5:87:6 | l2 | funcExprs.kt:82:9:96:1 | fn | VarAccess |
+| funcExprs.kt:87:8:87:16 | <implicit coercion to unit> | funcExprs.kt:82:9:96:1 | fn | ImplicitCoercionToUnitExpr |
+| funcExprs.kt:87:8:87:16 | Unit | funcExprs.kt:82:9:96:1 | fn | TypeAccess |
+| funcExprs.kt:87:8:87:16 | invoke(...) | funcExprs.kt:82:9:96:1 | fn | MethodAccess |
+| funcExprs.kt:87:15:87:15 | 5 | funcExprs.kt:82:9:96:1 | fn | IntegerLiteral |
+| funcExprs.kt:89:5:90:69 | l3 | funcExprs.kt:82:9:96:1 | fn | LocalVariableDeclExpr |
+| funcExprs.kt:90:15:90:69 | 0 | funcExprs.kt:90:15:90:69 | invoke | IntegerLiteral |
+| funcExprs.kt:90:15:90:69 | 1 | funcExprs.kt:90:15:90:69 | invoke | IntegerLiteral |
+| funcExprs.kt:90:15:90:69 | 2 | funcExprs.kt:90:15:90:69 | invoke | IntegerLiteral |
+| funcExprs.kt:90:15:90:69 | 3 | funcExprs.kt:90:15:90:69 | invoke | IntegerLiteral |
+| funcExprs.kt:90:15:90:69 | 4 | funcExprs.kt:90:15:90:69 | invoke | IntegerLiteral |
+| funcExprs.kt:90:15:90:69 | 5 | funcExprs.kt:90:15:90:69 | invoke | IntegerLiteral |
+| funcExprs.kt:90:15:90:69 | 6 | funcExprs.kt:90:15:90:69 | invoke | IntegerLiteral |
+| funcExprs.kt:90:15:90:69 | 7 | funcExprs.kt:90:15:90:69 | invoke | IntegerLiteral |
+| funcExprs.kt:90:15:90:69 | 8 | funcExprs.kt:90:15:90:69 | invoke | IntegerLiteral |
+| funcExprs.kt:90:15:90:69 | 9 | funcExprs.kt:90:15:90:69 | invoke | IntegerLiteral |
+| funcExprs.kt:90:15:90:69 | 10 | funcExprs.kt:90:15:90:69 | invoke | IntegerLiteral |
+| funcExprs.kt:90:15:90:69 | 11 | funcExprs.kt:90:15:90:69 | invoke | IntegerLiteral |
+| funcExprs.kt:90:15:90:69 | 12 | funcExprs.kt:90:15:90:69 | invoke | IntegerLiteral |
+| funcExprs.kt:90:15:90:69 | 13 | funcExprs.kt:90:15:90:69 | invoke | IntegerLiteral |
+| funcExprs.kt:90:15:90:69 | 14 | funcExprs.kt:90:15:90:69 | invoke | IntegerLiteral |
+| funcExprs.kt:90:15:90:69 | 15 | funcExprs.kt:90:15:90:69 | invoke | IntegerLiteral |
+| funcExprs.kt:90:15:90:69 | 16 | funcExprs.kt:90:15:90:69 | invoke | IntegerLiteral |
+| funcExprs.kt:90:15:90:69 | 17 | funcExprs.kt:90:15:90:69 | invoke | IntegerLiteral |
+| funcExprs.kt:90:15:90:69 | 18 | funcExprs.kt:90:15:90:69 | invoke | IntegerLiteral |
+| funcExprs.kt:90:15:90:69 | 19 | funcExprs.kt:90:15:90:69 | invoke | IntegerLiteral |
+| funcExprs.kt:90:15:90:69 | 20 | funcExprs.kt:90:15:90:69 | invoke | IntegerLiteral |
+| funcExprs.kt:90:15:90:69 | 21 | funcExprs.kt:90:15:90:69 | invoke | IntegerLiteral |
+| funcExprs.kt:90:15:90:69 | 22 | funcExprs.kt:90:15:90:69 | invoke | IntegerLiteral |
+| funcExprs.kt:90:15:90:69 | (...)... | funcExprs.kt:90:15:90:69 | invoke | CastExpr |
+| funcExprs.kt:90:15:90:69 | (...)... | funcExprs.kt:90:15:90:69 | invoke | CastExpr |
+| funcExprs.kt:90:15:90:69 | (...)... | funcExprs.kt:90:15:90:69 | invoke | CastExpr |
+| funcExprs.kt:90:15:90:69 | (...)... | funcExprs.kt:90:15:90:69 | invoke | CastExpr |
+| funcExprs.kt:90:15:90:69 | (...)... | funcExprs.kt:90:15:90:69 | invoke | CastExpr |
+| funcExprs.kt:90:15:90:69 | (...)... | funcExprs.kt:90:15:90:69 | invoke | CastExpr |
+| funcExprs.kt:90:15:90:69 | (...)... | funcExprs.kt:90:15:90:69 | invoke | CastExpr |
+| funcExprs.kt:90:15:90:69 | (...)... | funcExprs.kt:90:15:90:69 | invoke | CastExpr |
+| funcExprs.kt:90:15:90:69 | (...)... | funcExprs.kt:90:15:90:69 | invoke | CastExpr |
+| funcExprs.kt:90:15:90:69 | (...)... | funcExprs.kt:90:15:90:69 | invoke | CastExpr |
+| funcExprs.kt:90:15:90:69 | (...)... | funcExprs.kt:90:15:90:69 | invoke | CastExpr |
+| funcExprs.kt:90:15:90:69 | (...)... | funcExprs.kt:90:15:90:69 | invoke | CastExpr |
+| funcExprs.kt:90:15:90:69 | (...)... | funcExprs.kt:90:15:90:69 | invoke | CastExpr |
+| funcExprs.kt:90:15:90:69 | (...)... | funcExprs.kt:90:15:90:69 | invoke | CastExpr |
+| funcExprs.kt:90:15:90:69 | (...)... | funcExprs.kt:90:15:90:69 | invoke | CastExpr |
+| funcExprs.kt:90:15:90:69 | (...)... | funcExprs.kt:90:15:90:69 | invoke | CastExpr |
+| funcExprs.kt:90:15:90:69 | (...)... | funcExprs.kt:90:15:90:69 | invoke | CastExpr |
+| funcExprs.kt:90:15:90:69 | (...)... | funcExprs.kt:90:15:90:69 | invoke | CastExpr |
+| funcExprs.kt:90:15:90:69 | (...)... | funcExprs.kt:90:15:90:69 | invoke | CastExpr |
+| funcExprs.kt:90:15:90:69 | (...)... | funcExprs.kt:90:15:90:69 | invoke | CastExpr |
+| funcExprs.kt:90:15:90:69 | (...)... | funcExprs.kt:90:15:90:69 | invoke | CastExpr |
+| funcExprs.kt:90:15:90:69 | (...)... | funcExprs.kt:90:15:90:69 | invoke | CastExpr |
+| funcExprs.kt:90:15:90:69 | (...)... | funcExprs.kt:90:15:90:69 | invoke | CastExpr |
+| funcExprs.kt:90:15:90:69 | ...->... | funcExprs.kt:82:9:96:1 | fn | LambdaExpr |
+| funcExprs.kt:90:15:90:69 | ...[...] | funcExprs.kt:90:15:90:69 | invoke | ArrayAccess |
+| funcExprs.kt:90:15:90:69 | ...[...] | funcExprs.kt:90:15:90:69 | invoke | ArrayAccess |
+| funcExprs.kt:90:15:90:69 | ...[...] | funcExprs.kt:90:15:90:69 | invoke | ArrayAccess |
+| funcExprs.kt:90:15:90:69 | ...[...] | funcExprs.kt:90:15:90:69 | invoke | ArrayAccess |
+| funcExprs.kt:90:15:90:69 | ...[...] | funcExprs.kt:90:15:90:69 | invoke | ArrayAccess |
+| funcExprs.kt:90:15:90:69 | ...[...] | funcExprs.kt:90:15:90:69 | invoke | ArrayAccess |
+| funcExprs.kt:90:15:90:69 | ...[...] | funcExprs.kt:90:15:90:69 | invoke | ArrayAccess |
+| funcExprs.kt:90:15:90:69 | ...[...] | funcExprs.kt:90:15:90:69 | invoke | ArrayAccess |
+| funcExprs.kt:90:15:90:69 | ...[...] | funcExprs.kt:90:15:90:69 | invoke | ArrayAccess |
+| funcExprs.kt:90:15:90:69 | ...[...] | funcExprs.kt:90:15:90:69 | invoke | ArrayAccess |
+| funcExprs.kt:90:15:90:69 | ...[...] | funcExprs.kt:90:15:90:69 | invoke | ArrayAccess |
+| funcExprs.kt:90:15:90:69 | ...[...] | funcExprs.kt:90:15:90:69 | invoke | ArrayAccess |
+| funcExprs.kt:90:15:90:69 | ...[...] | funcExprs.kt:90:15:90:69 | invoke | ArrayAccess |
+| funcExprs.kt:90:15:90:69 | ...[...] | funcExprs.kt:90:15:90:69 | invoke | ArrayAccess |
+| funcExprs.kt:90:15:90:69 | ...[...] | funcExprs.kt:90:15:90:69 | invoke | ArrayAccess |
+| funcExprs.kt:90:15:90:69 | ...[...] | funcExprs.kt:90:15:90:69 | invoke | ArrayAccess |
+| funcExprs.kt:90:15:90:69 | ...[...] | funcExprs.kt:90:15:90:69 | invoke | ArrayAccess |
+| funcExprs.kt:90:15:90:69 | ...[...] | funcExprs.kt:90:15:90:69 | invoke | ArrayAccess |
+| funcExprs.kt:90:15:90:69 | ...[...] | funcExprs.kt:90:15:90:69 | invoke | ArrayAccess |
+| funcExprs.kt:90:15:90:69 | ...[...] | funcExprs.kt:90:15:90:69 | invoke | ArrayAccess |
+| funcExprs.kt:90:15:90:69 | ...[...] | funcExprs.kt:90:15:90:69 | invoke | ArrayAccess |
+| funcExprs.kt:90:15:90:69 | ...[...] | funcExprs.kt:90:15:90:69 | invoke | ArrayAccess |
+| funcExprs.kt:90:15:90:69 | ...[...] | funcExprs.kt:90:15:90:69 | invoke | ArrayAccess |
+| funcExprs.kt:90:15:90:69 | FunctionN<String> | funcExprs.kt:82:9:96:1 | fn | TypeAccess |
+| funcExprs.kt:90:15:90:69 | String | file://:0:0:0:0 | <none> | TypeAccess |
+| funcExprs.kt:90:15:90:69 | String | funcExprs.kt:82:9:96:1 | fn | TypeAccess |
+| funcExprs.kt:90:15:90:69 | a0 | funcExprs.kt:90:15:90:69 | invoke | VarAccess |
+| funcExprs.kt:90:15:90:69 | a0 | funcExprs.kt:90:15:90:69 | invoke | VarAccess |
+| funcExprs.kt:90:15:90:69 | a0 | funcExprs.kt:90:15:90:69 | invoke | VarAccess |
+| funcExprs.kt:90:15:90:69 | a0 | funcExprs.kt:90:15:90:69 | invoke | VarAccess |
+| funcExprs.kt:90:15:90:69 | a0 | funcExprs.kt:90:15:90:69 | invoke | VarAccess |
+| funcExprs.kt:90:15:90:69 | a0 | funcExprs.kt:90:15:90:69 | invoke | VarAccess |
+| funcExprs.kt:90:15:90:69 | a0 | funcExprs.kt:90:15:90:69 | invoke | VarAccess |
+| funcExprs.kt:90:15:90:69 | a0 | funcExprs.kt:90:15:90:69 | invoke | VarAccess |
+| funcExprs.kt:90:15:90:69 | a0 | funcExprs.kt:90:15:90:69 | invoke | VarAccess |
+| funcExprs.kt:90:15:90:69 | a0 | funcExprs.kt:90:15:90:69 | invoke | VarAccess |
+| funcExprs.kt:90:15:90:69 | a0 | funcExprs.kt:90:15:90:69 | invoke | VarAccess |
+| funcExprs.kt:90:15:90:69 | a0 | funcExprs.kt:90:15:90:69 | invoke | VarAccess |
+| funcExprs.kt:90:15:90:69 | a0 | funcExprs.kt:90:15:90:69 | invoke | VarAccess |
+| funcExprs.kt:90:15:90:69 | a0 | funcExprs.kt:90:15:90:69 | invoke | VarAccess |
+| funcExprs.kt:90:15:90:69 | a0 | funcExprs.kt:90:15:90:69 | invoke | VarAccess |
+| funcExprs.kt:90:15:90:69 | a0 | funcExprs.kt:90:15:90:69 | invoke | VarAccess |
+| funcExprs.kt:90:15:90:69 | a0 | funcExprs.kt:90:15:90:69 | invoke | VarAccess |
+| funcExprs.kt:90:15:90:69 | a0 | funcExprs.kt:90:15:90:69 | invoke | VarAccess |
+| funcExprs.kt:90:15:90:69 | a0 | funcExprs.kt:90:15:90:69 | invoke | VarAccess |
+| funcExprs.kt:90:15:90:69 | a0 | funcExprs.kt:90:15:90:69 | invoke | VarAccess |
+| funcExprs.kt:90:15:90:69 | a0 | funcExprs.kt:90:15:90:69 | invoke | VarAccess |
+| funcExprs.kt:90:15:90:69 | a0 | funcExprs.kt:90:15:90:69 | invoke | VarAccess |
+| funcExprs.kt:90:15:90:69 | a0 | funcExprs.kt:90:15:90:69 | invoke | VarAccess |
+| funcExprs.kt:90:15:90:69 | int | funcExprs.kt:90:15:90:69 | invoke | TypeAccess |
+| funcExprs.kt:90:15:90:69 | int | funcExprs.kt:90:15:90:69 | invoke | TypeAccess |
+| funcExprs.kt:90:15:90:69 | int | funcExprs.kt:90:15:90:69 | invoke | TypeAccess |
+| funcExprs.kt:90:15:90:69 | int | funcExprs.kt:90:15:90:69 | invoke | TypeAccess |
+| funcExprs.kt:90:15:90:69 | int | funcExprs.kt:90:15:90:69 | invoke | TypeAccess |
+| funcExprs.kt:90:15:90:69 | int | funcExprs.kt:90:15:90:69 | invoke | TypeAccess |
+| funcExprs.kt:90:15:90:69 | int | funcExprs.kt:90:15:90:69 | invoke | TypeAccess |
+| funcExprs.kt:90:15:90:69 | int | funcExprs.kt:90:15:90:69 | invoke | TypeAccess |
+| funcExprs.kt:90:15:90:69 | int | funcExprs.kt:90:15:90:69 | invoke | TypeAccess |
+| funcExprs.kt:90:15:90:69 | int | funcExprs.kt:90:15:90:69 | invoke | TypeAccess |
+| funcExprs.kt:90:15:90:69 | int | funcExprs.kt:90:15:90:69 | invoke | TypeAccess |
+| funcExprs.kt:90:15:90:69 | int | funcExprs.kt:90:15:90:69 | invoke | TypeAccess |
+| funcExprs.kt:90:15:90:69 | int | funcExprs.kt:90:15:90:69 | invoke | TypeAccess |
+| funcExprs.kt:90:15:90:69 | int | funcExprs.kt:90:15:90:69 | invoke | TypeAccess |
+| funcExprs.kt:90:15:90:69 | int | funcExprs.kt:90:15:90:69 | invoke | TypeAccess |
+| funcExprs.kt:90:15:90:69 | int | funcExprs.kt:90:15:90:69 | invoke | TypeAccess |
+| funcExprs.kt:90:15:90:69 | int | funcExprs.kt:90:15:90:69 | invoke | TypeAccess |
+| funcExprs.kt:90:15:90:69 | int | funcExprs.kt:90:15:90:69 | invoke | TypeAccess |
+| funcExprs.kt:90:15:90:69 | int | funcExprs.kt:90:15:90:69 | invoke | TypeAccess |
+| funcExprs.kt:90:15:90:69 | int | funcExprs.kt:90:15:90:69 | invoke | TypeAccess |
+| funcExprs.kt:90:15:90:69 | int | funcExprs.kt:90:15:90:69 | invoke | TypeAccess |
+| funcExprs.kt:90:15:90:69 | int | funcExprs.kt:90:15:90:69 | invoke | TypeAccess |
+| funcExprs.kt:90:15:90:69 | int | funcExprs.kt:90:15:90:69 | invoke | TypeAccess |
+| funcExprs.kt:90:15:90:69 | invoke(...) | funcExprs.kt:90:15:90:69 | invoke | MethodAccess |
+| funcExprs.kt:90:15:90:69 | this | funcExprs.kt:90:15:90:69 | invoke | ThisAccess |
+| funcExprs.kt:90:17:90:17 | int | file://:0:0:0:0 | <none> | TypeAccess |
+| funcExprs.kt:90:19:90:19 | int | file://:0:0:0:0 | <none> | TypeAccess |
+| funcExprs.kt:90:21:90:21 | int | file://:0:0:0:0 | <none> | TypeAccess |
+| funcExprs.kt:90:23:90:23 | int | file://:0:0:0:0 | <none> | TypeAccess |
+| funcExprs.kt:90:25:90:25 | int | file://:0:0:0:0 | <none> | TypeAccess |
+| funcExprs.kt:90:27:90:27 | int | file://:0:0:0:0 | <none> | TypeAccess |
+| funcExprs.kt:90:29:90:29 | int | file://:0:0:0:0 | <none> | TypeAccess |
+| funcExprs.kt:90:31:90:31 | int | file://:0:0:0:0 | <none> | TypeAccess |
+| funcExprs.kt:90:33:90:33 | int | file://:0:0:0:0 | <none> | TypeAccess |
+| funcExprs.kt:90:35:90:35 | int | file://:0:0:0:0 | <none> | TypeAccess |
+| funcExprs.kt:90:37:90:37 | int | file://:0:0:0:0 | <none> | TypeAccess |
+| funcExprs.kt:90:39:90:39 | int | file://:0:0:0:0 | <none> | TypeAccess |
+| funcExprs.kt:90:41:90:41 | int | file://:0:0:0:0 | <none> | TypeAccess |
+| funcExprs.kt:90:43:90:43 | int | file://:0:0:0:0 | <none> | TypeAccess |
+| funcExprs.kt:90:45:90:45 | int | file://:0:0:0:0 | <none> | TypeAccess |
+| funcExprs.kt:90:47:90:47 | int | file://:0:0:0:0 | <none> | TypeAccess |
+| funcExprs.kt:90:49:90:49 | int | file://:0:0:0:0 | <none> | TypeAccess |
+| funcExprs.kt:90:51:90:51 | int | file://:0:0:0:0 | <none> | TypeAccess |
+| funcExprs.kt:90:53:90:53 | int | file://:0:0:0:0 | <none> | TypeAccess |
+| funcExprs.kt:90:55:90:55 | int | file://:0:0:0:0 | <none> | TypeAccess |
+| funcExprs.kt:90:57:90:57 | int | file://:0:0:0:0 | <none> | TypeAccess |
+| funcExprs.kt:90:59:90:59 | int | file://:0:0:0:0 | <none> | TypeAccess |
+| funcExprs.kt:90:61:90:61 | int | file://:0:0:0:0 | <none> | TypeAccess |
+| funcExprs.kt:90:67:90:68 |  | funcExprs.kt:90:15:90:69 | invoke | StringLiteral |
+| funcExprs.kt:91:5:91:6 | l3 | funcExprs.kt:82:9:96:1 | fn | VarAccess |
+| funcExprs.kt:91:8:91:60 | 23 | funcExprs.kt:82:9:96:1 | fn | IntegerLiteral |
+| funcExprs.kt:91:8:91:60 | <implicit coercion to unit> | funcExprs.kt:82:9:96:1 | fn | ImplicitCoercionToUnitExpr |
+| funcExprs.kt:91:8:91:60 | Object | funcExprs.kt:82:9:96:1 | fn | TypeAccess |
+| funcExprs.kt:91:8:91:60 | Unit | funcExprs.kt:82:9:96:1 | fn | TypeAccess |
+| funcExprs.kt:91:8:91:60 | invoke(...) | funcExprs.kt:82:9:96:1 | fn | MethodAccess |
+| funcExprs.kt:91:8:91:60 | new Object[] | funcExprs.kt:82:9:96:1 | fn | ArrayCreationExpr |
+| funcExprs.kt:91:8:91:60 | {...} | funcExprs.kt:82:9:96:1 | fn | ArrayInit |
+| funcExprs.kt:91:15:91:15 | 1 | funcExprs.kt:82:9:96:1 | fn | IntegerLiteral |
+| funcExprs.kt:91:17:91:17 | 2 | funcExprs.kt:82:9:96:1 | fn | IntegerLiteral |
+| funcExprs.kt:91:19:91:19 | 3 | funcExprs.kt:82:9:96:1 | fn | IntegerLiteral |
+| funcExprs.kt:91:21:91:21 | 4 | funcExprs.kt:82:9:96:1 | fn | IntegerLiteral |
+| funcExprs.kt:91:23:91:23 | 5 | funcExprs.kt:82:9:96:1 | fn | IntegerLiteral |
+| funcExprs.kt:91:25:91:25 | 6 | funcExprs.kt:82:9:96:1 | fn | IntegerLiteral |
+| funcExprs.kt:91:27:91:27 | 7 | funcExprs.kt:82:9:96:1 | fn | IntegerLiteral |
+| funcExprs.kt:91:29:91:29 | 8 | funcExprs.kt:82:9:96:1 | fn | IntegerLiteral |
+| funcExprs.kt:91:31:91:31 | 9 | funcExprs.kt:82:9:96:1 | fn | IntegerLiteral |
+| funcExprs.kt:91:33:91:33 | 0 | funcExprs.kt:82:9:96:1 | fn | IntegerLiteral |
+| funcExprs.kt:91:35:91:35 | 1 | funcExprs.kt:82:9:96:1 | fn | IntegerLiteral |
+| funcExprs.kt:91:37:91:37 | 2 | funcExprs.kt:82:9:96:1 | fn | IntegerLiteral |
+| funcExprs.kt:91:39:91:39 | 3 | funcExprs.kt:82:9:96:1 | fn | IntegerLiteral |
+| funcExprs.kt:91:41:91:41 | 4 | funcExprs.kt:82:9:96:1 | fn | IntegerLiteral |
+| funcExprs.kt:91:43:91:43 | 5 | funcExprs.kt:82:9:96:1 | fn | IntegerLiteral |
+| funcExprs.kt:91:45:91:45 | 6 | funcExprs.kt:82:9:96:1 | fn | IntegerLiteral |
+| funcExprs.kt:91:47:91:47 | 7 | funcExprs.kt:82:9:96:1 | fn | IntegerLiteral |
+| funcExprs.kt:91:49:91:49 | 8 | funcExprs.kt:82:9:96:1 | fn | IntegerLiteral |
+| funcExprs.kt:91:51:91:51 | 9 | funcExprs.kt:82:9:96:1 | fn | IntegerLiteral |
+| funcExprs.kt:91:53:91:53 | 0 | funcExprs.kt:82:9:96:1 | fn | IntegerLiteral |
+| funcExprs.kt:91:55:91:55 | 1 | funcExprs.kt:82:9:96:1 | fn | IntegerLiteral |
+| funcExprs.kt:91:57:91:57 | 2 | funcExprs.kt:82:9:96:1 | fn | IntegerLiteral |
+| funcExprs.kt:91:59:91:59 | 3 | funcExprs.kt:82:9:96:1 | fn | IntegerLiteral |
+| funcExprs.kt:93:5:94:67 | l4 | funcExprs.kt:82:9:96:1 | fn | LocalVariableDeclExpr |
+| funcExprs.kt:94:15:94:67 | ...->... | funcExprs.kt:82:9:96:1 | fn | LambdaExpr |
+| funcExprs.kt:94:15:94:67 | Function22<Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,String> | funcExprs.kt:82:9:96:1 | fn | TypeAccess |
+| funcExprs.kt:94:15:94:67 | Integer | funcExprs.kt:82:9:96:1 | fn | TypeAccess |
+| funcExprs.kt:94:15:94:67 | Integer | funcExprs.kt:82:9:96:1 | fn | TypeAccess |
+| funcExprs.kt:94:15:94:67 | Integer | funcExprs.kt:82:9:96:1 | fn | TypeAccess |
+| funcExprs.kt:94:15:94:67 | Integer | funcExprs.kt:82:9:96:1 | fn | TypeAccess |
+| funcExprs.kt:94:15:94:67 | Integer | funcExprs.kt:82:9:96:1 | fn | TypeAccess |
+| funcExprs.kt:94:15:94:67 | Integer | funcExprs.kt:82:9:96:1 | fn | TypeAccess |
+| funcExprs.kt:94:15:94:67 | Integer | funcExprs.kt:82:9:96:1 | fn | TypeAccess |
+| funcExprs.kt:94:15:94:67 | Integer | funcExprs.kt:82:9:96:1 | fn | TypeAccess |
+| funcExprs.kt:94:15:94:67 | Integer | funcExprs.kt:82:9:96:1 | fn | TypeAccess |
+| funcExprs.kt:94:15:94:67 | Integer | funcExprs.kt:82:9:96:1 | fn | TypeAccess |
+| funcExprs.kt:94:15:94:67 | Integer | funcExprs.kt:82:9:96:1 | fn | TypeAccess |
+| funcExprs.kt:94:15:94:67 | Integer | funcExprs.kt:82:9:96:1 | fn | TypeAccess |
+| funcExprs.kt:94:15:94:67 | Integer | funcExprs.kt:82:9:96:1 | fn | TypeAccess |
+| funcExprs.kt:94:15:94:67 | Integer | funcExprs.kt:82:9:96:1 | fn | TypeAccess |
+| funcExprs.kt:94:15:94:67 | Integer | funcExprs.kt:82:9:96:1 | fn | TypeAccess |
+| funcExprs.kt:94:15:94:67 | Integer | funcExprs.kt:82:9:96:1 | fn | TypeAccess |
+| funcExprs.kt:94:15:94:67 | Integer | funcExprs.kt:82:9:96:1 | fn | TypeAccess |
+| funcExprs.kt:94:15:94:67 | Integer | funcExprs.kt:82:9:96:1 | fn | TypeAccess |
+| funcExprs.kt:94:15:94:67 | Integer | funcExprs.kt:82:9:96:1 | fn | TypeAccess |
+| funcExprs.kt:94:15:94:67 | Integer | funcExprs.kt:82:9:96:1 | fn | TypeAccess |
+| funcExprs.kt:94:15:94:67 | Integer | funcExprs.kt:82:9:96:1 | fn | TypeAccess |
+| funcExprs.kt:94:15:94:67 | Integer | funcExprs.kt:82:9:96:1 | fn | TypeAccess |
+| funcExprs.kt:94:15:94:67 | String | file://:0:0:0:0 | <none> | TypeAccess |
+| funcExprs.kt:94:15:94:67 | String | funcExprs.kt:82:9:96:1 | fn | TypeAccess |
+| funcExprs.kt:94:17:94:17 | int | file://:0:0:0:0 | <none> | TypeAccess |
+| funcExprs.kt:94:19:94:19 | int | file://:0:0:0:0 | <none> | TypeAccess |
+| funcExprs.kt:94:21:94:21 | int | file://:0:0:0:0 | <none> | TypeAccess |
+| funcExprs.kt:94:23:94:23 | int | file://:0:0:0:0 | <none> | TypeAccess |
+| funcExprs.kt:94:25:94:25 | int | file://:0:0:0:0 | <none> | TypeAccess |
+| funcExprs.kt:94:27:94:27 | int | file://:0:0:0:0 | <none> | TypeAccess |
+| funcExprs.kt:94:29:94:29 | int | file://:0:0:0:0 | <none> | TypeAccess |
+| funcExprs.kt:94:31:94:31 | int | file://:0:0:0:0 | <none> | TypeAccess |
+| funcExprs.kt:94:33:94:33 | int | file://:0:0:0:0 | <none> | TypeAccess |
+| funcExprs.kt:94:35:94:35 | int | file://:0:0:0:0 | <none> | TypeAccess |
+| funcExprs.kt:94:37:94:37 | int | file://:0:0:0:0 | <none> | TypeAccess |
+| funcExprs.kt:94:39:94:39 | int | file://:0:0:0:0 | <none> | TypeAccess |
+| funcExprs.kt:94:41:94:41 | int | file://:0:0:0:0 | <none> | TypeAccess |
+| funcExprs.kt:94:43:94:43 | int | file://:0:0:0:0 | <none> | TypeAccess |
+| funcExprs.kt:94:45:94:45 | int | file://:0:0:0:0 | <none> | TypeAccess |
+| funcExprs.kt:94:47:94:47 | int | file://:0:0:0:0 | <none> | TypeAccess |
+| funcExprs.kt:94:49:94:49 | int | file://:0:0:0:0 | <none> | TypeAccess |
+| funcExprs.kt:94:51:94:51 | int | file://:0:0:0:0 | <none> | TypeAccess |
+| funcExprs.kt:94:53:94:53 | int | file://:0:0:0:0 | <none> | TypeAccess |
+| funcExprs.kt:94:55:94:55 | int | file://:0:0:0:0 | <none> | TypeAccess |
+| funcExprs.kt:94:57:94:57 | int | file://:0:0:0:0 | <none> | TypeAccess |
+| funcExprs.kt:94:59:94:59 | int | file://:0:0:0:0 | <none> | TypeAccess |
+| funcExprs.kt:94:65:94:66 |  | funcExprs.kt:94:15:94:67 | invoke | StringLiteral |
+| funcExprs.kt:95:5:95:6 | l4 | funcExprs.kt:82:9:96:1 | fn | VarAccess |
+| funcExprs.kt:95:8:95:58 | <implicit coercion to unit> | funcExprs.kt:82:9:96:1 | fn | ImplicitCoercionToUnitExpr |
+| funcExprs.kt:95:8:95:58 | Unit | funcExprs.kt:82:9:96:1 | fn | TypeAccess |
+| funcExprs.kt:95:8:95:58 | invoke(...) | funcExprs.kt:82:9:96:1 | fn | MethodAccess |
+| funcExprs.kt:95:15:95:15 | 1 | funcExprs.kt:82:9:96:1 | fn | IntegerLiteral |
+| funcExprs.kt:95:17:95:17 | 2 | funcExprs.kt:82:9:96:1 | fn | IntegerLiteral |
+| funcExprs.kt:95:19:95:19 | 3 | funcExprs.kt:82:9:96:1 | fn | IntegerLiteral |
+| funcExprs.kt:95:21:95:21 | 4 | funcExprs.kt:82:9:96:1 | fn | IntegerLiteral |
+| funcExprs.kt:95:23:95:23 | 5 | funcExprs.kt:82:9:96:1 | fn | IntegerLiteral |
+| funcExprs.kt:95:25:95:25 | 6 | funcExprs.kt:82:9:96:1 | fn | IntegerLiteral |
+| funcExprs.kt:95:27:95:27 | 7 | funcExprs.kt:82:9:96:1 | fn | IntegerLiteral |
+| funcExprs.kt:95:29:95:29 | 8 | funcExprs.kt:82:9:96:1 | fn | IntegerLiteral |
+| funcExprs.kt:95:31:95:31 | 9 | funcExprs.kt:82:9:96:1 | fn | IntegerLiteral |
+| funcExprs.kt:95:33:95:33 | 0 | funcExprs.kt:82:9:96:1 | fn | IntegerLiteral |
+| funcExprs.kt:95:35:95:35 | 1 | funcExprs.kt:82:9:96:1 | fn | IntegerLiteral |
+| funcExprs.kt:95:37:95:37 | 2 | funcExprs.kt:82:9:96:1 | fn | IntegerLiteral |
+| funcExprs.kt:95:39:95:39 | 3 | funcExprs.kt:82:9:96:1 | fn | IntegerLiteral |
+| funcExprs.kt:95:41:95:41 | 4 | funcExprs.kt:82:9:96:1 | fn | IntegerLiteral |
+| funcExprs.kt:95:43:95:43 | 5 | funcExprs.kt:82:9:96:1 | fn | IntegerLiteral |
+| funcExprs.kt:95:45:95:45 | 6 | funcExprs.kt:82:9:96:1 | fn | IntegerLiteral |
+| funcExprs.kt:95:47:95:47 | 7 | funcExprs.kt:82:9:96:1 | fn | IntegerLiteral |
+| funcExprs.kt:95:49:95:49 | 8 | funcExprs.kt:82:9:96:1 | fn | IntegerLiteral |
+| funcExprs.kt:95:51:95:51 | 9 | funcExprs.kt:82:9:96:1 | fn | IntegerLiteral |
+| funcExprs.kt:95:53:95:53 | 0 | funcExprs.kt:82:9:96:1 | fn | IntegerLiteral |
+| funcExprs.kt:95:55:95:55 | 1 | funcExprs.kt:82:9:96:1 | fn | IntegerLiteral |
+| funcExprs.kt:95:57:95:57 | 2 | funcExprs.kt:82:9:96:1 | fn | IntegerLiteral |
 | kFunctionInvoke.kt:4:5:4:24 | Unit | file://:0:0:0:0 | <none> | TypeAccess |
 | kFunctionInvoke.kt:4:11:4:19 | String | file://:0:0:0:0 | <none> | TypeAccess |
 | kFunctionInvoke.kt:7:1:10:1 | Unit | file://:0:0:0:0 | <none> | TypeAccess |
@@ -3632,6 +3991,43 @@
 | samConversion.kt:46:39:46:42 | true | samConversion.kt:46:32:46:44 | invoke | BooleanLiteral |
 | samConversion.kt:50:5:50:25 | boolean | file://:0:0:0:0 | <none> | TypeAccess |
 | samConversion.kt:50:12:50:15 | T | file://:0:0:0:0 | <none> | TypeAccess |
+| samConversion.kt:54:13:54:35 | Unit | file://:0:0:0:0 | <none> | TypeAccess |
+| samConversion.kt:54:21:54:26 | int | file://:0:0:0:0 | <none> | TypeAccess |
+| samConversion.kt:54:29:54:34 | int | file://:0:0:0:0 | <none> | TypeAccess |
+| samConversion.kt:57:9:60:1 | Unit | file://:0:0:0:0 | <none> | TypeAccess |
+| samConversion.kt:58:5:58:45 | i0 | samConversion.kt:57:9:60:1 | test | LocalVariableDeclExpr |
+| samConversion.kt:58:14:58:45 | (...)... | samConversion.kt:57:9:60:1 | test | CastExpr |
+| samConversion.kt:58:14:58:45 | ...=... | samConversion.kt:58:14:58:45 |  | AssignExpr |
+| samConversion.kt:58:14:58:45 | <fn> | samConversion.kt:58:14:58:45 |  | VarAccess |
+| samConversion.kt:58:14:58:45 | <fn> | samConversion.kt:58:14:58:45 | fn1 | VarAccess |
+| samConversion.kt:58:14:58:45 | Function2<Integer,Integer,Unit> | file://:0:0:0:0 | <none> | TypeAccess |
+| samConversion.kt:58:14:58:45 | Integer | file://:0:0:0:0 | <none> | TypeAccess |
+| samConversion.kt:58:14:58:45 | Integer | file://:0:0:0:0 | <none> | TypeAccess |
+| samConversion.kt:58:14:58:45 | InterfaceFn1Sus | samConversion.kt:57:9:60:1 | test | TypeAccess |
+| samConversion.kt:58:14:58:45 | InterfaceFn1Sus | samConversion.kt:57:9:60:1 | test | TypeAccess |
+| samConversion.kt:58:14:58:45 | Unit | file://:0:0:0:0 | <none> | TypeAccess |
+| samConversion.kt:58:14:58:45 | Unit | file://:0:0:0:0 | <none> | TypeAccess |
+| samConversion.kt:58:14:58:45 | i | samConversion.kt:58:14:58:45 | fn1 | VarAccess |
+| samConversion.kt:58:14:58:45 | int | file://:0:0:0:0 | <none> | TypeAccess |
+| samConversion.kt:58:14:58:45 | int | file://:0:0:0:0 | <none> | TypeAccess |
+| samConversion.kt:58:14:58:45 | invoke(...) | samConversion.kt:58:14:58:45 | fn1 | MethodAccess |
+| samConversion.kt:58:14:58:45 | j | samConversion.kt:58:14:58:45 | fn1 | VarAccess |
+| samConversion.kt:58:14:58:45 | new (...) | samConversion.kt:57:9:60:1 | test | ClassInstanceExpr |
+| samConversion.kt:58:14:58:45 | this | samConversion.kt:58:14:58:45 |  | ThisAccess |
+| samConversion.kt:58:14:58:45 | this.<fn> | samConversion.kt:58:14:58:45 |  | VarAccess |
+| samConversion.kt:58:30:58:45 | ...->... | samConversion.kt:57:9:60:1 | test | LambdaExpr |
+| samConversion.kt:58:30:58:45 | Function2<Integer,Integer,Unit> | samConversion.kt:57:9:60:1 | test | TypeAccess |
+| samConversion.kt:58:30:58:45 | Integer | samConversion.kt:57:9:60:1 | test | TypeAccess |
+| samConversion.kt:58:30:58:45 | Integer | samConversion.kt:57:9:60:1 | test | TypeAccess |
+| samConversion.kt:58:30:58:45 | Unit | file://:0:0:0:0 | <none> | TypeAccess |
+| samConversion.kt:58:30:58:45 | Unit | samConversion.kt:57:9:60:1 | test | TypeAccess |
+| samConversion.kt:58:32:58:32 | int | file://:0:0:0:0 | <none> | TypeAccess |
+| samConversion.kt:58:35:58:35 | int | file://:0:0:0:0 | <none> | TypeAccess |
+| samConversion.kt:58:40:58:43 | INSTANCE | samConversion.kt:58:30:58:45 | invoke | VarAccess |
+| samConversion.kt:59:5:59:6 | i0 | samConversion.kt:57:9:60:1 | test | VarAccess |
+| samConversion.kt:59:8:59:15 | fn1(...) | samConversion.kt:57:9:60:1 | test | MethodAccess |
+| samConversion.kt:59:12:59:12 | 1 | samConversion.kt:57:9:60:1 | test | IntegerLiteral |
+| samConversion.kt:59:14:59:14 | 2 | samConversion.kt:57:9:60:1 | test | IntegerLiteral |
 | whenExpr.kt:1:1:9:1 | int | file://:0:0:0:0 | <none> | TypeAccess |
 | whenExpr.kt:1:14:1:19 | int | file://:0:0:0:0 | <none> | TypeAccess |
 | whenExpr.kt:2:10:8:3 | <Stmt> | whenExpr.kt:1:1:9:1 | testWhen | StmtExpr |

@@ -39,7 +39,6 @@ class TypeVisitor : public TypeVisitorBase<TypeVisitor> {
   void visitBoundGenericType(swift::BoundGenericType* type);
   codeql::PrimaryArchetypeType translatePrimaryArchetypeType(
       const swift::PrimaryArchetypeType& type);
-  codeql::NestedArchetypeType translateNestedArchetypeType(const swift::NestedArchetypeType& type);
   codeql::ExistentialType translateExistentialType(const swift::ExistentialType& type);
   codeql::DynamicSelfType translateDynamicSelfType(const swift::DynamicSelfType& type);
   codeql::VariadicSequenceType translateVariadicSequenceType(

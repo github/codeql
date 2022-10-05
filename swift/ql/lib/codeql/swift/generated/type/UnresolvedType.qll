@@ -2,7 +2,8 @@
 private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
 import codeql.swift.elements.type.Type
+import codeql.swift.elements.UnresolvedElement
 
-class UnresolvedTypeBase extends Synth::TUnresolvedType, Type {
+class UnresolvedTypeBase extends Synth::TUnresolvedType, Type, UnresolvedElement {
   override string getAPrimaryQlClass() { result = "UnresolvedType" }
 }

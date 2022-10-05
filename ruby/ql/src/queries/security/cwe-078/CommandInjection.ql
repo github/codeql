@@ -13,7 +13,7 @@
  *       external/cwe/cwe-088
  */
 
-import ruby
+import codeql.ruby.AST
 import codeql.ruby.security.CommandInjectionQuery
 import DataFlow::PathGraph
 
@@ -21,5 +21,5 @@ from Configuration config, DataFlow::PathNode source, DataFlow::PathNode sink, S
 where
   config.hasFlowPath(source, sink) and
   sourceNode = source.getNode()
-select sink.getNode(), source, sink, "This command depends on $@.", sourceNode,
+select sink.getNode(), source, sink, "This command depends on a $@.", sourceNode,
   sourceNode.getSourceType()

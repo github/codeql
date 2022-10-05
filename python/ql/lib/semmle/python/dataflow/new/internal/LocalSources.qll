@@ -10,6 +10,7 @@ private import python
 import DataFlowPublic
 private import DataFlowPrivate
 private import semmle.python.internal.CachedStages
+private import semmle.python.internal.Awaited
 
 /**
  * A data flow node that is a source of local flow. This includes things like
@@ -36,7 +37,7 @@ class LocalSourceNode extends Node {
   LocalSourceNode() {
     Stages::DataFlow::ref() and
     this instanceof ExprNode and
-    not simpleLocalFlowStep(_, this)
+    not simpleLocalFlowStepForTypetracking(_, this)
     or
     // We include all module variable nodes, as these act as stepping stones between writes and
     // reads of global variables. Without them, type tracking based on `LocalSourceNode`s would be
@@ -94,6 +95,16 @@ class LocalSourceNode extends Node {
    * Gets a call to this node.
    */
   CallCfgNode getACall() { Cached::call(this, result) }
+
+  /**
+   * Gets an awaited value from this node.
+   */
+  Node getAnAwaited() { Cached::await(this, result) }
+
+  /**
+   * Gets a subscript of this node.
+   */
+  Node getASubscript() { Cached::subscript(this, result) }
 
   /**
    * Gets a call to the method `methodName` on this node.
@@ -223,6 +234,28 @@ private module Cached {
     exists(CfgNode n |
       func.flowsTo(n) and
       n = call.getFunction()
+    )
+  }
+
+  /**
+   * Holds if `node` flows to a value that, when awaited, results in `awaited`.
+   */
+  cached
+  predicate await(LocalSourceNode node, Node awaited) {
+    exists(Node awaitedValue |
+      node.flowsTo(awaitedValue) and
+      awaited = awaited(awaitedValue)
+    )
+  }
+
+  /**
+   * Holds if `node` flows to a sequence/mapping of which `subscript` is a subscript.
+   */
+  cached
+  predicate subscript(LocalSourceNode node, CfgNode subscript) {
+    exists(CfgNode seq, SubscriptNode subscriptNode | subscriptNode = subscript.getNode() |
+      node.flowsTo(seq) and
+      seq.getNode() = subscriptNode.getObject()
     )
   }
 }

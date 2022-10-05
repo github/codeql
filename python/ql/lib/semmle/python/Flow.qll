@@ -406,7 +406,7 @@ class CallNode extends ControlFlowNode {
     exists(FunctionExpr func | this.getNode() = func.getADecoratorCall())
   }
 
-  /** Gets the tuple (*) argument of this call, provided there is exactly one. */
+  /** Gets the first tuple (*) argument of this call, if any. */
   ControlFlowNode getStarArg() {
     result.getNode() = this.getNode().getStarArg() and
     result.getBasicBlock().dominates(this.getBasicBlock())

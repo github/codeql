@@ -1,8 +1,6 @@
 | dc.kt:0:0:0:0 | hashCode(...) | java.util.Arrays.hashCode |
 | dc.kt:0:0:0:0 | hashCode(...) | java.util.Arrays.hashCode |
 | dc.kt:0:0:0:0 | new ProtoMapValue(...) | ProtoMapValue.ProtoMapValue |
-| dc.kt:0:0:0:0 | plus(...) | kotlin.Int.plus |
-| dc.kt:0:0:0:0 | times(...) | kotlin.Int.times |
 | dc.kt:0:0:0:0 | toString(...) | java.util.Arrays.toString |
 | dc.kt:0:0:0:0 | toString(...) | java.util.Arrays.toString |
 | dc.kt:1:1:1:71 | super(...) | java.lang.Object.Object |

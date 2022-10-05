@@ -21,7 +21,8 @@ function RegisterExtractorPack(id)
         -- if that's `build`, we append `-p:UseSharedCompilation=false` to the command line,
         -- otherwise we do nothing.
         local match = false
-        local needsSeparator = false;
+        local dotnetRunNeedsSeparator = false;
+        local dotnetRunInjectionIndex = nil;
         local argv = compilerArguments.argv
         if OperatingSystem == 'windows' then
             -- let's hope that this split matches the escaping rules `dotnet` applies to command line arguments
@@ -33,7 +34,9 @@ function RegisterExtractorPack(id)
             -- dotnet options start with either - or / (both are legal)
             local firstCharacter = string.sub(arg, 1, 1)
             if not (firstCharacter == '-') and not (firstCharacter == '/') then
-                Log(1, 'Dotnet subcommand detected: %s', arg)
+                if (not match) then
+                    Log(1, 'Dotnet subcommand detected: %s', arg)
+                end
                 if arg == 'build' or arg == 'msbuild' or arg == 'publish' or arg == 'pack' or arg == 'test' then
                     match = true
                     break
@@ -42,23 +45,63 @@ function RegisterExtractorPack(id)
                     -- for `dotnet run`, we need to make sure that `-p:UseSharedCompilation=false` is
                     -- not passed in as an argument to the program that is run
                     match = true
-                    needsSeparator = true
+                    dotnetRunNeedsSeparator = true
+                    dotnetRunInjectionIndex = i + 1
                 end
             end
+            -- if we see a separator to `dotnet run`, inject just prior to the existing separator
             if arg == '--' then
-                needsSeparator = false
+                dotnetRunNeedsSeparator = false
+                dotnetRunInjectionIndex = i
                 break
+            end
+            -- if we see an option to `dotnet run` (e.g., `--project`), inject just prior
+            -- to the last option
+            if firstCharacter == '-' then
+                dotnetRunNeedsSeparator = false
+                dotnetRunInjectionIndex = i
             end
         end
         if match then
             local injections = { '-p:UseSharedCompilation=false' }
-            if needsSeparator then
+            if dotnetRunNeedsSeparator then
                 table.insert(injections, '--')
             end
-            return {
-                order = ORDER_REPLACE,
-                invocation = BuildExtractorInvocation(id, compilerPath, compilerPath, compilerArguments, nil, injections)
-            }
+            if dotnetRunInjectionIndex == nil then
+                -- Simple case; just append at the end
+                return {
+                    order = ORDER_REPLACE,
+                    invocation = BuildExtractorInvocation(id, compilerPath, compilerPath, compilerArguments, nil,
+                        injections)
+                }
+            end
+
+            -- Complex case; splice injections into the middle of the command line
+            for i, injectionArg in ipairs(injections) do
+                table.insert(argv, dotnetRunInjectionIndex + i - 1, injectionArg)
+            end
+
+            if OperatingSystem == 'windows' then
+                return {
+                    order = ORDER_REPLACE,
+                    invocation = {
+                        path = AbsolutifyExtractorPath(id, compilerPath),
+                        arguments = {
+                            commandLineString = table.concat(argv, " ")
+                        }
+                    }
+                }
+            else
+                return {
+                    order = ORDER_REPLACE,
+                    invocation = {
+                        path = AbsolutifyExtractorPath(id, compilerPath),
+                        arguments = {
+                            argv = argv
+                        }
+                    }
+                }
+            end
         end
         return nil
     end

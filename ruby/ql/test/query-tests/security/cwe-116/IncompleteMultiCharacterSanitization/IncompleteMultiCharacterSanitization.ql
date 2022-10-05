@@ -2,7 +2,7 @@
  * @kind problem
  */
 
-import ruby
+import codeql.ruby.AST
 import codeql.ruby.regexp.RegExpTreeView as RETV
 import codeql.ruby.DataFlow
 import codeql.ruby.security.IncompleteMultiCharacterSanitizationQuery as Query
@@ -31,9 +31,9 @@ predicate hasResult(Location location, string element, string value) {
 
 bindingset[kind]
 string shortKind(string kind) {
-  kind = "HTML element injection" and result = "html"
+  kind = "an HTML element injection vulnerability" and result = "html"
   or
-  kind = "path injection" and result = "path"
+  kind = "a path injection vulnerability" and result = "path"
   or
-  kind = "HTML attribute injection" and result = "attr"
+  kind = "an HTML attribute injection vulnerability" and result = "attr"
 }

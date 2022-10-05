@@ -4,7 +4,7 @@
 
 import codeql.ruby.Regexp
 import codeql.Locations
-private import codeql.ruby.ast.Literal as AST
+private import codeql.ruby.ast.Literal as Ast
 
 /**
  * Holds if `term` is an ecape class representing e.g. `\d`.
@@ -30,7 +30,7 @@ predicate isEscapeClass(RegExpTerm term, string clazz) {
  * Holds if the regular expression should not be considered.
  */
 predicate isExcluded(RegExpParent parent) {
-  parent.(RegExpTerm).getRegExp().(AST::RegExpLiteral).hasFreeSpacingFlag() // exclude free-spacing mode regexes
+  parent.(RegExpTerm).getRegExp().(Ast::RegExpLiteral).hasFreeSpacingFlag() // exclude free-spacing mode regexes
 }
 
 /**
@@ -61,14 +61,6 @@ module RegExpFlags {
   predicate isIgnoreCase(RegExpTerm root) {
     root.isRootTerm() and
     root.getLiteral().isIgnoreCase()
-  }
-
-  /**
-   * Gets the flags for `root`, or the empty string if `root` has no flags.
-   */
-  string getFlags(RegExpTerm root) {
-    root.isRootTerm() and
-    result = root.getLiteral().getFlags()
   }
 
   /**

@@ -7,7 +7,6 @@ private import codeql.ruby.Concepts
 private import codeql.ruby.controlflow.CfgNodes
 private import codeql.ruby.DataFlow
 private import codeql.ruby.dataflow.RemoteFlowSources
-private import codeql.ruby.ast.internal.Module
 private import codeql.ruby.ApiGraphs
 
 private API::Node graphQlSchema() { result = API::getTopLevelMember("GraphQL").getMember("Schema") }
@@ -240,7 +239,7 @@ private class GraphqlSchemaObjectClassMethodCall extends MethodCall {
 
   GraphqlSchemaObjectClassMethodCall() {
     // e.g. Foo.some_method(...)
-    recvCls.getModule() = resolveConstantReadAccess(this.getReceiver())
+    recvCls.getModule() = this.getReceiver().(ConstantReadAccess).getModule()
     or
     // e.g. self.some_method(...) within a graphql Object or Interface
     this.getReceiver() instanceof SelfVariableAccess and

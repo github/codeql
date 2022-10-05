@@ -244,6 +244,12 @@ module API {
     Node getAwaited() { result = this.getASuccessor(Label::await()) }
 
     /**
+     * Gets a node representing a subscript of this node.
+     * For example `obj[x]` is a subscript of `obj`.
+     */
+    Node getASubscript() { result = this.getASuccessor(Label::subscript()) }
+
+    /**
      * Gets a string representation of the lexicographically least among all shortest access paths
      * from the root to this node.
      */
@@ -374,6 +380,21 @@ module API {
    */
   Node moduleImport(string m) {
     result = Impl::MkModuleImport(m) and
+    // restrict `moduleImport` so it will never give results for a dotted name. Note
+    // that we cannot move this logic to the `MkModuleImport` construction, since we
+    // need the intermediate API graph nodes for the prefixes in `import foo.bar.baz`.
+    not m.matches("%.%")
+  }
+
+  /**
+   * Holds if an import of module `m` exists.
+   *
+   * This is determined without referring to `Node`,
+   * allowing this predicate to be used in a negative
+   * context when constructing new nodes.
+   */
+  predicate moduleImportExists(string m) {
+    Impl::isImported(m) and
     // restrict `moduleImport` so it will never give results for a dotted name. Note
     // that we cannot move this logic to the `MkModuleImport` construction, since we
     // need the intermediate API graph nodes for the prefixes in `import foo.bar.baz`.
@@ -555,8 +576,6 @@ module API {
      * API graph node for the prefix `foo`), in accordance with the usual semantics of Python.
      */
 
-    private import semmle.python.internal.Awaited
-
     cached
     newtype TApiNode =
       /** The root of the API graph. */
@@ -605,12 +624,36 @@ module API {
      *
      * Ignores relative imports, such as `from ..foo.bar import baz`.
      */
-    private predicate imports(DataFlow::Node imp, string name) {
+    private predicate imports(DataFlow::CfgNode imp, string name) {
       exists(PY::ImportExprNode iexpr |
-        imp.asCfgNode() = iexpr and
+        imp.getNode() = iexpr and
         not iexpr.getNode().isRelative() and
         name = iexpr.getNode().getImportedModuleName()
       )
+    }
+
+    /**
+     * Holds if the module `name` is imported.
+     *
+     * This is determined syntactically.
+     */
+    cached
+    predicate isImported(string name) {
+      // Ignore the following module name for Python 2, as we alias `__builtin__` to `builtins` elsewhere
+      (name != "__builtin__" or PY::major_version() = 3) and
+      (
+        exists(PY::ImportExpr iexpr |
+          not iexpr.isRelative() and
+          name = iexpr.getImportedModuleName()
+        )
+        or
+        // When we `import foo.bar.baz` we want to create API graph nodes also for the prefixes
+        // `foo` and `foo.bar`:
+        name = any(PY::ImportExpr e | not e.isRelative()).getAnImportedModuleName()
+      )
+      or
+      // The `builtins` module should always be implicitly available
+      name = "builtins"
     }
 
     private import semmle.python.dataflow.new.internal.Builtins
@@ -631,7 +674,7 @@ module API {
      */
     private TApiNode potential_import_star_base(PY::Scope s) {
       exists(DataFlow::Node n |
-        n.asCfgNode() = ImportStar::potentialImportStarBase(s) and
+        n.(DataFlow::CfgNode).getNode() = ImportStar::potentialImportStarBase(s) and
         use(result, n)
       )
     }
@@ -653,17 +696,17 @@ module API {
         or
         // TODO: I had expected `DataFlow::AttrWrite` to contain the attribute writes from a dict, that's how JS works.
         exists(PY::Dict dict, PY::KeyValuePair item |
-          dict = pred.asExpr() and
+          dict = pred.(DataFlow::ExprNode).getNode().getNode() and
           dict.getItem(_) = item and
           lbl = Label::member(item.getKey().(PY::StrConst).getS()) and
-          rhs.asExpr() = item.getValue()
+          rhs.(DataFlow::ExprNode).getNode().getNode() = item.getValue()
         )
         or
-        exists(PY::CallableExpr fn | fn = pred.asExpr() |
+        exists(PY::CallableExpr fn | fn = pred.(DataFlow::ExprNode).getNode().getNode() |
           not fn.getInnerScope().isAsync() and
           lbl = Label::return() and
           exists(PY::Return ret |
-            rhs.asExpr() = ret.getValue() and
+            rhs.(DataFlow::ExprNode).getNode().getNode() = ret.getValue() and
             ret.getScope() = fn.getInnerScope()
           )
         )
@@ -708,6 +751,14 @@ module API {
         lbl = Label::return() and
         ref = pred.getACall()
         or
+        // Awaiting a node that is a use of `base`
+        lbl = Label::await() and
+        ref = pred.getAnAwaited()
+        or
+        // Subscripting a node that is a use of `base`
+        lbl = Label::subscript() and
+        ref = pred.getASubscript()
+        or
         // Subclassing a node
         lbl = Label::subclass() and
         exists(PY::ClassExpr clsExpr, DataFlow::Node superclass | pred.flowsTo(superclass) |
@@ -716,22 +767,15 @@ module API {
           // "benign" and let subclasses edges flow through anyway.
           // see example in https://github.com/django/django/blob/c2250cfb80e27cdf8d098428824da2800a18cadf/tests/auth_tests/test_views.py#L40-L46
           (
-            ref.asExpr() = clsExpr
+            ref.(DataFlow::ExprNode).getNode().getNode() = clsExpr
             or
-            ref.asExpr() = clsExpr.getADecoratorCall()
+            ref.(DataFlow::ExprNode).getNode().getNode() = clsExpr.getADecoratorCall()
           )
-        )
-        or
-        // awaiting
-        exists(DataFlow::Node awaitedValue |
-          lbl = Label::await() and
-          ref = awaited(awaitedValue) and
-          pred.flowsTo(awaitedValue)
         )
       )
       or
       exists(DataFlow::Node def, PY::CallableExpr fn |
-        rhs(base, def) and fn = trackDefNode(def).asExpr()
+        rhs(base, def) and fn = trackDefNode(def).(DataFlow::ExprNode).getNode().getNode()
       |
         exists(int i, int offset |
           if exists(PY::Parameter p | p = fn.getInnerScope().getAnArg() and p.isSelf())
@@ -739,18 +783,19 @@ module API {
           else offset = 0
         |
           lbl = Label::parameter(i - offset) and
-          ref.asExpr() = fn.getInnerScope().getArg(i)
+          ref.(DataFlow::ExprNode).getNode().getNode() = fn.getInnerScope().getArg(i)
         )
         or
         exists(string name, PY::Parameter param |
           lbl = Label::keywordParameter(name) and
           param = fn.getInnerScope().getArgByName(name) and
           not param.isSelf() and
-          ref.asExpr() = param
+          ref.(DataFlow::ExprNode).getNode().getNode() = param
         )
         or
         lbl = Label::selfParameter() and
-        ref.asExpr() = any(PY::Parameter p | p = fn.getInnerScope().getAnArg() and p.isSelf())
+        ref.(DataFlow::ExprNode).getNode().getNode() =
+          any(PY::Parameter p | p = fn.getInnerScope().getAnArg() and p.isSelf())
       )
       or
       // Built-ins, treated as members of the module `builtins`
@@ -762,7 +807,7 @@ module API {
         base = potential_import_star_base(s) and
         lbl =
           Label::member(any(string name |
-              ImportStar::namePossiblyDefinedInImportStar(ref.asCfgNode(), name, s)
+              ImportStar::namePossiblyDefinedInImportStar(ref.(DataFlow::CfgNode).getNode(), name, s)
             ))
       )
       or
@@ -854,7 +899,7 @@ module API {
     DataFlow::LocalSourceNode trackUseNode(DataFlow::LocalSourceNode src) {
       Stages::TypeTracking::ref() and
       result = trackUseNode(src, DataFlow::TypeTracker::end()) and
-      not result instanceof DataFlow::ModuleVariableNode
+      result instanceof DataFlow::ExprNode
     }
 
     /**
@@ -946,6 +991,7 @@ module API {
         MkLabelReturn() or
         MkLabelSubclass() or
         MkLabelAwait() or
+        MkLabelSubscript() or
         MkLabelEntryPoint(EntryPoint ep)
 
       /** A label for a module. */
@@ -1021,6 +1067,11 @@ module API {
         override string toString() { result = "getAwaited()" }
       }
 
+      /** A label that gets the subscript of a sequence/mapping. */
+      class LabelSubscript extends ApiLabel, MkLabelSubscript {
+        override string toString() { result = "getASubscript()" }
+      }
+
       /** A label for entry points. */
       class LabelEntryPoint extends ApiLabel, MkLabelEntryPoint {
         private EntryPoint entry;
@@ -1044,7 +1095,7 @@ module API {
     ApiLabel memberFromRef(DataFlow::AttrRef ref) {
       result = member(ref.getAttributeName())
       or
-      not exists(ref.getAttributeName()) and
+      ref.unknownAttribute() and
       result = unknownMember()
     }
 
@@ -1065,6 +1116,9 @@ module API {
 
     /** Gets the `await` edge label. */
     LabelAwait await() { any() }
+
+    /** Gets the `subscript` edge label. */
+    LabelSubscript subscript() { any() }
 
     /** Gets the label going from the root node to the nodes associated with the given entry point. */
     LabelEntryPoint entryPoint(EntryPoint ep) { result = MkLabelEntryPoint(ep) }

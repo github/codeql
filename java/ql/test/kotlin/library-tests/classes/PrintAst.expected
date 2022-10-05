@@ -7,6 +7,30 @@ classes.kt:
 #   32|         0: [Parameter] s
 #   32|           0: [TypeAccess] String
 #   32|       5: [BlockStmt] { ... }
+#  158|     2: [Method] fn1
+#  158|       3: [TypeAccess] Unit
+#  158|       5: [BlockStmt] { ... }
+#  159|         0: [LocalTypeDeclStmt] class ...
+#  159|           0: [LocalClass] X
+#  159|             1: [Constructor] X
+#  159|               5: [BlockStmt] { ... }
+#  159|                 0: [SuperConstructorInvocationStmt] super(...)
+#  159|                 1: [BlockStmt] { ... }
+#  162|     3: [Method] fn2
+#  162|       3: [TypeAccess] Object
+#  162|       5: [BlockStmt] { ... }
+#  162|         0: [ReturnStmt] return ...
+#  162|           0: [StmtExpr] <Stmt>
+#  162|             0: [BlockStmt] { ... }
+#  162|               0: [LocalTypeDeclStmt] class ...
+#  162|                 0: [AnonymousClass,LocalClass] new Object(...) { ... }
+#  162|                   1: [Constructor] 
+#  162|                     5: [BlockStmt] { ... }
+#  162|                       0: [SuperConstructorInvocationStmt] super(...)
+#  162|                       1: [BlockStmt] { ... }
+#  162|               1: [ExprStmt] <Expr>;
+#  162|                 0: [ClassInstanceExpr] new (...)
+#  162|                   -3: [TypeAccess] Object
 #    2|   2: [Class] ClassOne
 #    2|     1: [Constructor] ClassOne
 #    2|       5: [BlockStmt] { ... }
@@ -134,7 +158,7 @@ classes.kt:
 #   49|       5: [BlockStmt] { ... }
 #   49|         0: [ExprStmt] <Expr>;
 #   49|           0: [ClassInstanceExpr] new Enum(...)
-#   49|             -3: [TypeAccess] Unit
+#   49|             -3: [TypeAccess] Enum<Direction>
 #   49|               0: [TypeAccess] Direction
 #   49|         1: [BlockStmt] { ... }
 #   50|     5: [FieldDeclaration] Direction NORTH;
@@ -169,7 +193,7 @@ classes.kt:
 #   53|       5: [BlockStmt] { ... }
 #   53|         0: [ExprStmt] <Expr>;
 #   53|           0: [ClassInstanceExpr] new Enum(...)
-#   53|             -3: [TypeAccess] Unit
+#   53|             -3: [TypeAccess] Enum<Color>
 #   53|               0: [TypeAccess] Color
 #   53|         1: [BlockStmt] { ... }
 #   53|           0: [ExprStmt] <Expr>;

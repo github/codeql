@@ -1,3 +1,12 @@
+## 0.3.0
+
+### Deprecated APIs
+
+* Some classes/modules with upper-case acronyms in their name have been renamed to follow our style-guide. 
+  The old name still exists as a deprecated alias.
+
+## 0.2.5
+
 ## 0.2.4
 
 ### Minor Analysis Improvements

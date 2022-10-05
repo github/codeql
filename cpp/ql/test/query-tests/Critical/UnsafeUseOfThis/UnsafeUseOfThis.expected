@@ -96,8 +96,8 @@ nodes
 | test.cpp:48:10:48:13 | Unary | semmle.label | Unary |
 | test.cpp:48:10:48:13 | this | semmle.label | this |
 #select
-| test.cpp:12:7:12:7 | call to f | test.cpp:31:3:31:3 | this | test.cpp:12:5:12:5 | (A)... | Call to pure virtual function during construction |
-| test.cpp:16:5:16:5 | call to f | test.cpp:15:3:15:4 | this | file://:0:0:0:0 | (A *)... | Call to pure virtual function during destruction |
-| test.cpp:25:13:25:13 | call to f | test.cpp:21:3:21:3 | this | test.cpp:25:7:25:10 | (A *)... | Call to pure virtual function during construction |
-| test.cpp:35:6:35:6 | call to f | test.cpp:7:3:7:3 | this | test.cpp:35:3:35:3 | (A *)... | Call to pure virtual function during construction |
-| test.cpp:35:6:35:6 | call to f | test.cpp:21:3:21:3 | this | test.cpp:35:3:35:3 | (A *)... | Call to pure virtual function during construction |
+| test.cpp:12:7:12:7 | call to f | test.cpp:31:3:31:3 | this | test.cpp:12:5:12:5 | (A)... | Call to pure virtual function during construction. |
+| test.cpp:16:5:16:5 | call to f | test.cpp:15:3:15:4 | this | file://:0:0:0:0 | (A *)... | Call to pure virtual function during destruction. |
+| test.cpp:25:13:25:13 | call to f | test.cpp:21:3:21:3 | this | test.cpp:25:7:25:10 | (A *)... | Call to pure virtual function during construction. |
+| test.cpp:35:6:35:6 | call to f | test.cpp:7:3:7:3 | this | test.cpp:35:3:35:3 | (A *)... | Call to pure virtual function during construction. |
+| test.cpp:35:6:35:6 | call to f | test.cpp:21:3:21:3 | this | test.cpp:35:3:35:3 | (A *)... | Call to pure virtual function during construction. |

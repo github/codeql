@@ -42,7 +42,7 @@ func NSMakeRange(_ loc: Int, _ len: Int) -> NSRange { return NSRange(location: l
 func test(s: String) {
     let ns = NSString(string: s)
     let nms = NSMutableString(string: s)
- 
+
     print("'\(s)'")
     print("count \(s.count) length \(ns.length)")
     print("utf8.count \(s.utf8.count) utf16.count \(s.utf16.count) unicodeScalars.count \(s.unicodeScalars.count)")

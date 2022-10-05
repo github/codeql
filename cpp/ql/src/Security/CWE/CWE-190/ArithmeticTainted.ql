@@ -50,5 +50,5 @@ where
   op.getAnOperand() = e and
   missingGuard(op, e, effect)
 select e, sourceNode, sinkNode,
-  "$@ flows to here and is used in arithmetic, potentially causing an " + effect + ".", origin,
-  "User-provided value"
+  "$@ flows to an operand of an arithmetic expression, potentially causing an " + effect + ".",
+  origin, "User-provided value"

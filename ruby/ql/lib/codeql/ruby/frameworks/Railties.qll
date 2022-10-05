@@ -3,16 +3,19 @@
  * https://rubygems.org/gems/railties
  */
 
-private import ruby
+private import codeql.ruby.AST
 private import codeql.ruby.Concepts
 private import codeql.ruby.ApiGraphs
 private import codeql.ruby.DataFlow
-private import codeql.ruby.ast.internal.Module
 
 /**
  * Modeling for `railties`.
  */
 module Railties {
+  private class IncludeOrPrependCall extends MethodCall {
+    IncludeOrPrependCall() { this.getMethodName() = ["include", "prepend"] }
+  }
+
   /**
    * A class which `include`s `Rails::Generators::Actions`.
    */

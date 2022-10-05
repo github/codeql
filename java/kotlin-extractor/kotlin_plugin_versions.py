@@ -38,7 +38,7 @@ def get_single_version(fakeVersionOutput = None):
     if kotlinc is None:
         raise KotlincNotFoundException()
     versionOutput = subprocess.run([kotlinc, '-version'], stdout=subprocess.PIPE, stderr=subprocess.PIPE, universal_newlines=True).stderr if fakeVersionOutput is None else fakeVersionOutput
-    m = re.match(r'.* kotlinc-jvm ([0-9]+\.[0-9]+\.[0-9]+) .*', versionOutput)
+    m = re.match(r'.* kotlinc-jvm ([0-9]+\.[0-9]+\.[0-9]+-?[a-zA-Z]*) .*', versionOutput)
     if m is None:
         raise Exception('Cannot detect version of kotlinc (got ' + str(versionOutput) + ')')
     current_version = version_string_to_tuple(m.group(1))
@@ -46,10 +46,10 @@ def get_single_version(fakeVersionOutput = None):
     if len(matching_minor_versions) == 0:
         raise Exception(f'Cannot find a matching minor version for kotlinc version {current_version} (got {versionOutput}; know about {str(many_versions)})')
 
-    matching_minor_versions.sort()
+    matching_minor_versions.sort(reverse = True)
 
     for version in matching_minor_versions:
-        if version >= current_version:
+        if version <= current_version:
             return version_tuple_to_string(version)
 
     return version_tuple_to_string(matching_minor_versions[-1])

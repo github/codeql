@@ -293,6 +293,15 @@ class ConstantReadAccess extends ConstantAccess {
    */
   Expr getValue() { result = getConstantReadAccessValue(this) }
 
+  /**
+   * Gets a fully qualified name for this constant read, based on the context in
+   * which it occurs.
+   */
+  string getAQualifiedName() { result = resolveConstant(this) }
+
+  /** Gets the module that this read access resolves to, if any. */
+  Module getModule() { result = resolveConstantReadAccess(this) }
+
   final override string getAPrimaryQlClass() { result = "ConstantReadAccess" }
 }
 
@@ -354,7 +363,7 @@ class ConstantWriteAccess extends ConstantAccess {
    * constants up the namespace chain, the fully qualified name of a nested
    * constant can be ambiguous from just statically looking at the AST.
    */
-  string getAQualifiedName() { result = resolveConstantWriteAccess(this) }
+  string getAQualifiedName() { result = resolveConstantWrite(this) }
 
   /**
    * Gets a qualified name for this constant. Deprecated in favor of

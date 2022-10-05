@@ -2,7 +2,7 @@
 
 private import internal.ParseRegExp
 private import codeql.NumberUtils
-private import codeql.ruby.ast.Literal as AST
+private import codeql.ruby.ast.Literal as Ast
 private import codeql.Locations
 
 /**
@@ -545,7 +545,9 @@ class RegExpEscape extends RegExpNormalChar {
    * TODO: Handle named escapes.
    */
   override string getValue() {
-    this.isIdentityEscape() and result = this.getUnescaped()
+    not this.isUnicode() and
+    this.isIdentityEscape() and
+    result = this.getUnescaped()
     or
     this.getUnescaped() = "n" and result = "\n"
     or
@@ -1146,6 +1148,6 @@ class RegExpNamedCharacterProperty extends RegExpTerm, TRegExpNamedCharacterProp
 }
 
 /** Gets the parse tree resulting from parsing `re`, if such has been constructed. */
-RegExpTerm getParsedRegExp(AST::RegExpLiteral re) {
+RegExpTerm getParsedRegExp(Ast::RegExpLiteral re) {
   result.getRegExp() = re and result.isRootTerm()
 }

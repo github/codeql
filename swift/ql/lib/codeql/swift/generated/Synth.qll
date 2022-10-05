@@ -22,7 +22,6 @@ module Synth {
     TEnumElementDecl(Raw::EnumElementDecl id) { constructEnumElementDecl(id) } or
     TExtensionDecl(Raw::ExtensionDecl id) { constructExtensionDecl(id) } or
     TGenericTypeParamDecl(Raw::GenericTypeParamDecl id) { constructGenericTypeParamDecl(id) } or
-    TIfConfigClause(Raw::IfConfigClause id) { constructIfConfigClause(id) } or
     TIfConfigDecl(Raw::IfConfigDecl id) { constructIfConfigDecl(id) } or
     TImportDecl(Raw::ImportDecl id) { constructImportDecl(id) } or
     TInfixOperatorDecl(Raw::InfixOperatorDecl id) { constructInfixOperatorDecl(id) } or
@@ -158,6 +157,7 @@ module Synth {
       constructOtherConstructorDeclRefExpr(id)
     } or
     TOverloadedDeclRefExpr(Raw::OverloadedDeclRefExpr id) { constructOverloadedDeclRefExpr(id) } or
+    TPackExpr(Raw::PackExpr id) { constructPackExpr(id) } or
     TParenExpr(Raw::ParenExpr id) { constructParenExpr(id) } or
     TPointerToPointerExpr(Raw::PointerToPointerExpr id) { constructPointerToPointerExpr(id) } or
     TPostfixUnaryExpr(Raw::PostfixUnaryExpr id) { constructPostfixUnaryExpr(id) } or
@@ -172,6 +172,7 @@ module Synth {
       constructRebindSelfInConstructorExpr(id)
     } or
     TRegexLiteralExpr(Raw::RegexLiteralExpr id) { constructRegexLiteralExpr(id) } or
+    TReifyPackExpr(Raw::ReifyPackExpr id) { constructReifyPackExpr(id) } or
     TSequenceExpr(Raw::SequenceExpr id) { constructSequenceExpr(id) } or
     TStringLiteralExpr(Raw::StringLiteralExpr id) { constructStringLiteralExpr(id) } or
     TStringToPointerExpr(Raw::StringToPointerExpr id) { constructStringToPointerExpr(id) } or
@@ -278,12 +279,16 @@ module Synth {
     TLValueType(Raw::LValueType id) { constructLValueType(id) } or
     TMetatypeType(Raw::MetatypeType id) { constructMetatypeType(id) } or
     TModuleType(Raw::ModuleType id) { constructModuleType(id) } or
-    TNestedArchetypeType(Raw::NestedArchetypeType id) { constructNestedArchetypeType(id) } or
     TOpaqueTypeArchetypeType(Raw::OpaqueTypeArchetypeType id) {
       constructOpaqueTypeArchetypeType(id)
     } or
     TOpenedArchetypeType(Raw::OpenedArchetypeType id) { constructOpenedArchetypeType(id) } or
     TOptionalType(Raw::OptionalType id) { constructOptionalType(id) } or
+    TPackExpansionType(Raw::PackExpansionType id) { constructPackExpansionType(id) } or
+    TPackType(Raw::PackType id) { constructPackType(id) } or
+    TParameterizedProtocolType(Raw::ParameterizedProtocolType id) {
+      constructParameterizedProtocolType(id)
+    } or
     TParenType(Raw::ParenType id) { constructParenType(id) } or
     TPlaceholderType(Raw::PlaceholderType id) { constructPlaceholderType(id) } or
     TPrimaryArchetypeType(Raw::PrimaryArchetypeType id) { constructPrimaryArchetypeType(id) } or
@@ -309,15 +314,21 @@ module Synth {
     TWeakStorageType(Raw::WeakStorageType id) { constructWeakStorageType(id) }
 
   class TAstNode =
-    TCaseLabelItem or TDecl or TExpr or TPattern or TStmt or TStmtCondition or TTypeRepr;
+    TCaseLabelItem or TConditionElement or TDecl or TExpr or TPattern or TStmt or TStmtCondition or
+        TTypeRepr;
 
   class TCallable = TAbstractClosureExpr or TAbstractFunctionDecl;
 
   class TFile = TDbFile or TUnknownFile;
 
-  class TLocatable = TArgument or TAstNode or TComment or TConditionElement or TIfConfigClause;
+  class TLocatable = TArgument or TAstNode or TComment;
 
   class TLocation = TDbLocation or TUnknownLocation;
+
+  class TUnresolvedElement =
+    TUnresolvedDeclRefExpr or TUnresolvedDotExpr or TUnresolvedMemberChainResultExpr or
+        TUnresolvedMemberExpr or TUnresolvedPatternExpr or TUnresolvedSpecializeExpr or
+        TUnresolvedType or TUnresolvedTypeConversionExpr;
 
   class TAbstractFunctionDecl = TConstructorDecl or TDestructorDecl or TFuncDecl;
 
@@ -377,7 +388,7 @@ module Synth {
         TKeyPathDotExpr or TKeyPathExpr or TLazyInitializerExpr or TLiteralExpr or TLookupExpr or
         TMakeTemporarilyEscapableExpr or TObjCSelectorExpr or TOneWayExpr or TOpaqueValueExpr or
         TOpenExistentialExpr or TOptionalEvaluationExpr or TOtherConstructorDeclRefExpr or
-        TOverloadSetRefExpr or TPropertyWrapperValuePlaceholderExpr or
+        TOverloadSetRefExpr or TPackExpr or TPropertyWrapperValuePlaceholderExpr or
         TRebindSelfInConstructorExpr or TSequenceExpr or TSuperRefExpr or TTapExpr or
         TTupleElementExpr or TTupleExpr or TTypeExpr or TUnresolvedDeclRefExpr or
         TUnresolvedDotExpr or TUnresolvedMemberExpr or TUnresolvedPatternExpr or
@@ -397,8 +408,9 @@ module Synth {
         TFunctionConversionExpr or TInOutToPointerExpr or TInjectIntoOptionalExpr or
         TLinearFunctionExpr or TLinearFunctionExtractOriginalExpr or
         TLinearToDifferentiableFunctionExpr or TLoadExpr or TMetatypeConversionExpr or
-        TPointerToPointerExpr or TProtocolMetatypeToObjectExpr or TStringToPointerExpr or
-        TUnderlyingToOpaqueExpr or TUnevaluatedInstanceExpr or TUnresolvedTypeConversionExpr;
+        TPointerToPointerExpr or TProtocolMetatypeToObjectExpr or TReifyPackExpr or
+        TStringToPointerExpr or TUnderlyingToOpaqueExpr or TUnevaluatedInstanceExpr or
+        TUnresolvedTypeConversionExpr;
 
   class TLiteralExpr =
     TBuiltinLiteralExpr or TInterpolatedStringLiteralExpr or TNilLiteralExpr or
@@ -437,8 +449,8 @@ module Synth {
   class TAnyMetatypeType = TExistentialMetatypeType or TMetatypeType;
 
   class TArchetypeType =
-    TNestedArchetypeType or TOpaqueTypeArchetypeType or TOpenedArchetypeType or
-        TPrimaryArchetypeType or TSequenceArchetypeType;
+    TOpaqueTypeArchetypeType or TOpenedArchetypeType or TPrimaryArchetypeType or
+        TSequenceArchetypeType;
 
   class TBoundGenericType =
     TBoundGenericClassType or TBoundGenericEnumType or TBoundGenericStructType;
@@ -464,7 +476,8 @@ module Synth {
   class TType =
     TAnyFunctionType or TAnyGenericType or TAnyMetatypeType or TBuiltinType or
         TDependentMemberType or TDynamicSelfType or TErrorType or TExistentialType or TInOutType or
-        TLValueType or TModuleType or TPlaceholderType or TProtocolCompositionType or
+        TLValueType or TModuleType or TPackExpansionType or TPackType or
+        TParameterizedProtocolType or TPlaceholderType or TProtocolCompositionType or
         TReferenceStorageType or TSilBlockStorageType or TSilBoxType or TSilFunctionType or
         TSilTokenType or TSubstitutableType or TSugarType or TTupleType or TTypeVariableType or
         TUnresolvedType;
@@ -525,9 +538,6 @@ module Synth {
   TGenericTypeParamDecl convertGenericTypeParamDeclFromRaw(Raw::Element e) {
     result = TGenericTypeParamDecl(e)
   }
-
-  cached
-  TIfConfigClause convertIfConfigClauseFromRaw(Raw::Element e) { result = TIfConfigClause(e) }
 
   cached
   TIfConfigDecl convertIfConfigDeclFromRaw(Raw::Element e) { result = TIfConfigDecl(e) }
@@ -937,6 +947,9 @@ module Synth {
   }
 
   cached
+  TPackExpr convertPackExprFromRaw(Raw::Element e) { result = TPackExpr(e) }
+
+  cached
   TParenExpr convertParenExprFromRaw(Raw::Element e) { result = TParenExpr(e) }
 
   cached
@@ -969,6 +982,9 @@ module Synth {
 
   cached
   TRegexLiteralExpr convertRegexLiteralExprFromRaw(Raw::Element e) { result = TRegexLiteralExpr(e) }
+
+  cached
+  TReifyPackExpr convertReifyPackExprFromRaw(Raw::Element e) { result = TReifyPackExpr(e) }
 
   cached
   TSequenceExpr convertSequenceExprFromRaw(Raw::Element e) { result = TSequenceExpr(e) }
@@ -1285,11 +1301,6 @@ module Synth {
   TModuleType convertModuleTypeFromRaw(Raw::Element e) { result = TModuleType(e) }
 
   cached
-  TNestedArchetypeType convertNestedArchetypeTypeFromRaw(Raw::Element e) {
-    result = TNestedArchetypeType(e)
-  }
-
-  cached
   TOpaqueTypeArchetypeType convertOpaqueTypeArchetypeTypeFromRaw(Raw::Element e) {
     result = TOpaqueTypeArchetypeType(e)
   }
@@ -1301,6 +1312,19 @@ module Synth {
 
   cached
   TOptionalType convertOptionalTypeFromRaw(Raw::Element e) { result = TOptionalType(e) }
+
+  cached
+  TPackExpansionType convertPackExpansionTypeFromRaw(Raw::Element e) {
+    result = TPackExpansionType(e)
+  }
+
+  cached
+  TPackType convertPackTypeFromRaw(Raw::Element e) { result = TPackType(e) }
+
+  cached
+  TParameterizedProtocolType convertParameterizedProtocolTypeFromRaw(Raw::Element e) {
+    result = TParameterizedProtocolType(e)
+  }
 
   cached
   TParenType convertParenTypeFromRaw(Raw::Element e) { result = TParenType(e) }
@@ -1385,6 +1409,8 @@ module Synth {
   TAstNode convertAstNodeFromRaw(Raw::Element e) {
     result = convertCaseLabelItemFromRaw(e)
     or
+    result = convertConditionElementFromRaw(e)
+    or
     result = convertDeclFromRaw(e)
     or
     result = convertExprFromRaw(e)
@@ -1420,6 +1446,8 @@ module Synth {
     result = convertLocationFromRaw(e)
     or
     result = convertTypeFromRaw(e)
+    or
+    result = convertUnresolvedElementFromRaw(e)
   }
 
   cached
@@ -1436,10 +1464,6 @@ module Synth {
     result = convertAstNodeFromRaw(e)
     or
     result = convertCommentFromRaw(e)
-    or
-    result = convertConditionElementFromRaw(e)
-    or
-    result = convertIfConfigClauseFromRaw(e)
   }
 
   cached
@@ -1447,6 +1471,25 @@ module Synth {
     result = convertDbLocationFromRaw(e)
     or
     result = convertUnknownLocationFromRaw(e)
+  }
+
+  cached
+  TUnresolvedElement convertUnresolvedElementFromRaw(Raw::Element e) {
+    result = convertUnresolvedDeclRefExprFromRaw(e)
+    or
+    result = convertUnresolvedDotExprFromRaw(e)
+    or
+    result = convertUnresolvedMemberChainResultExprFromRaw(e)
+    or
+    result = convertUnresolvedMemberExprFromRaw(e)
+    or
+    result = convertUnresolvedPatternExprFromRaw(e)
+    or
+    result = convertUnresolvedSpecializeExprFromRaw(e)
+    or
+    result = convertUnresolvedTypeFromRaw(e)
+    or
+    result = convertUnresolvedTypeConversionExprFromRaw(e)
   }
 
   cached
@@ -1726,6 +1769,8 @@ module Synth {
     or
     result = convertOverloadSetRefExprFromRaw(e)
     or
+    result = convertPackExprFromRaw(e)
+    or
     result = convertPropertyWrapperValuePlaceholderExprFromRaw(e)
     or
     result = convertRebindSelfInConstructorExprFromRaw(e)
@@ -1821,6 +1866,8 @@ module Synth {
     result = convertPointerToPointerExprFromRaw(e)
     or
     result = convertProtocolMetatypeToObjectExprFromRaw(e)
+    or
+    result = convertReifyPackExprFromRaw(e)
     or
     result = convertStringToPointerExprFromRaw(e)
     or
@@ -1980,8 +2027,6 @@ module Synth {
 
   cached
   TArchetypeType convertArchetypeTypeFromRaw(Raw::Element e) {
-    result = convertNestedArchetypeTypeFromRaw(e)
-    or
     result = convertOpaqueTypeArchetypeTypeFromRaw(e)
     or
     result = convertOpenedArchetypeTypeFromRaw(e)
@@ -2099,6 +2144,12 @@ module Synth {
     or
     result = convertModuleTypeFromRaw(e)
     or
+    result = convertPackExpansionTypeFromRaw(e)
+    or
+    result = convertPackTypeFromRaw(e)
+    or
+    result = convertParameterizedProtocolTypeFromRaw(e)
+    or
     result = convertPlaceholderTypeFromRaw(e)
     or
     result = convertProtocolCompositionTypeFromRaw(e)
@@ -2187,9 +2238,6 @@ module Synth {
   Raw::Element convertGenericTypeParamDeclToRaw(TGenericTypeParamDecl e) {
     e = TGenericTypeParamDecl(result)
   }
-
-  cached
-  Raw::Element convertIfConfigClauseToRaw(TIfConfigClause e) { e = TIfConfigClause(result) }
 
   cached
   Raw::Element convertIfConfigDeclToRaw(TIfConfigDecl e) { e = TIfConfigDecl(result) }
@@ -2597,6 +2645,9 @@ module Synth {
   }
 
   cached
+  Raw::Element convertPackExprToRaw(TPackExpr e) { e = TPackExpr(result) }
+
+  cached
   Raw::Element convertParenExprToRaw(TParenExpr e) { e = TParenExpr(result) }
 
   cached
@@ -2629,6 +2680,9 @@ module Synth {
 
   cached
   Raw::Element convertRegexLiteralExprToRaw(TRegexLiteralExpr e) { e = TRegexLiteralExpr(result) }
+
+  cached
+  Raw::Element convertReifyPackExprToRaw(TReifyPackExpr e) { e = TReifyPackExpr(result) }
 
   cached
   Raw::Element convertSequenceExprToRaw(TSequenceExpr e) { e = TSequenceExpr(result) }
@@ -2945,11 +2999,6 @@ module Synth {
   Raw::Element convertModuleTypeToRaw(TModuleType e) { e = TModuleType(result) }
 
   cached
-  Raw::Element convertNestedArchetypeTypeToRaw(TNestedArchetypeType e) {
-    e = TNestedArchetypeType(result)
-  }
-
-  cached
   Raw::Element convertOpaqueTypeArchetypeTypeToRaw(TOpaqueTypeArchetypeType e) {
     e = TOpaqueTypeArchetypeType(result)
   }
@@ -2961,6 +3010,19 @@ module Synth {
 
   cached
   Raw::Element convertOptionalTypeToRaw(TOptionalType e) { e = TOptionalType(result) }
+
+  cached
+  Raw::Element convertPackExpansionTypeToRaw(TPackExpansionType e) {
+    e = TPackExpansionType(result)
+  }
+
+  cached
+  Raw::Element convertPackTypeToRaw(TPackType e) { e = TPackType(result) }
+
+  cached
+  Raw::Element convertParameterizedProtocolTypeToRaw(TParameterizedProtocolType e) {
+    e = TParameterizedProtocolType(result)
+  }
 
   cached
   Raw::Element convertParenTypeToRaw(TParenType e) { e = TParenType(result) }
@@ -3045,6 +3107,8 @@ module Synth {
   Raw::Element convertAstNodeToRaw(TAstNode e) {
     result = convertCaseLabelItemToRaw(e)
     or
+    result = convertConditionElementToRaw(e)
+    or
     result = convertDeclToRaw(e)
     or
     result = convertExprToRaw(e)
@@ -3080,6 +3144,8 @@ module Synth {
     result = convertLocationToRaw(e)
     or
     result = convertTypeToRaw(e)
+    or
+    result = convertUnresolvedElementToRaw(e)
   }
 
   cached
@@ -3096,10 +3162,6 @@ module Synth {
     result = convertAstNodeToRaw(e)
     or
     result = convertCommentToRaw(e)
-    or
-    result = convertConditionElementToRaw(e)
-    or
-    result = convertIfConfigClauseToRaw(e)
   }
 
   cached
@@ -3107,6 +3169,25 @@ module Synth {
     result = convertDbLocationToRaw(e)
     or
     result = convertUnknownLocationToRaw(e)
+  }
+
+  cached
+  Raw::Element convertUnresolvedElementToRaw(TUnresolvedElement e) {
+    result = convertUnresolvedDeclRefExprToRaw(e)
+    or
+    result = convertUnresolvedDotExprToRaw(e)
+    or
+    result = convertUnresolvedMemberChainResultExprToRaw(e)
+    or
+    result = convertUnresolvedMemberExprToRaw(e)
+    or
+    result = convertUnresolvedPatternExprToRaw(e)
+    or
+    result = convertUnresolvedSpecializeExprToRaw(e)
+    or
+    result = convertUnresolvedTypeToRaw(e)
+    or
+    result = convertUnresolvedTypeConversionExprToRaw(e)
   }
 
   cached
@@ -3386,6 +3467,8 @@ module Synth {
     or
     result = convertOverloadSetRefExprToRaw(e)
     or
+    result = convertPackExprToRaw(e)
+    or
     result = convertPropertyWrapperValuePlaceholderExprToRaw(e)
     or
     result = convertRebindSelfInConstructorExprToRaw(e)
@@ -3481,6 +3564,8 @@ module Synth {
     result = convertPointerToPointerExprToRaw(e)
     or
     result = convertProtocolMetatypeToObjectExprToRaw(e)
+    or
+    result = convertReifyPackExprToRaw(e)
     or
     result = convertStringToPointerExprToRaw(e)
     or
@@ -3640,8 +3725,6 @@ module Synth {
 
   cached
   Raw::Element convertArchetypeTypeToRaw(TArchetypeType e) {
-    result = convertNestedArchetypeTypeToRaw(e)
-    or
     result = convertOpaqueTypeArchetypeTypeToRaw(e)
     or
     result = convertOpenedArchetypeTypeToRaw(e)
@@ -3758,6 +3841,12 @@ module Synth {
     result = convertLValueTypeToRaw(e)
     or
     result = convertModuleTypeToRaw(e)
+    or
+    result = convertPackExpansionTypeToRaw(e)
+    or
+    result = convertPackTypeToRaw(e)
+    or
+    result = convertParameterizedProtocolTypeToRaw(e)
     or
     result = convertPlaceholderTypeToRaw(e)
     or

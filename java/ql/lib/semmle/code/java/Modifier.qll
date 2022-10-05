@@ -67,6 +67,15 @@ abstract class Modifiable extends Element {
   /** Holds if this element has an `inline` modifier. */
   predicate isInline() { this.hasModifier("inline") }
 
+  /** Holds if this element has an `noinline` modifier. */
+  predicate isNoinline() { this.hasModifier("noinline") }
+
+  /** Holds if this element has an `crossinline` modifier. */
+  predicate isCrossinline() { this.hasModifier("crossinline") }
+
+  /** Holds if this element has a `suspend` modifier. */
+  predicate isSuspend() { this.hasModifier("suspend") }
+
   /** Holds if this element has a `volatile` modifier. */
   predicate isVolatile() { this.hasModifier("volatile") }
 

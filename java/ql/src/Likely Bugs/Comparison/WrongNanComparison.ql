@@ -21,4 +21,4 @@ where
   eq.getAnOperand() = f.getAnAccess() and nanField(f) and f.getDeclaringType().hasName(classname)
 select eq,
   "This comparison will always yield the same result since 'NaN != NaN'. Consider using " +
-    classname + ".isNaN instead"
+    classname + ".isNaN instead."

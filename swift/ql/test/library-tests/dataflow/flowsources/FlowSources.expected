@@ -1,0 +1,5 @@
+| string.swift:27:21:27:21 | call to init(contentsOf:) | external |
+| string.swift:27:21:27:44 | call to init(contentsOf:) | external |
+| url.swift:53:15:53:19 | .resourceBytes | external |
+| url.swift:60:15:60:19 | .lines | external |
+| url.swift:67:16:67:22 | .lines | external |

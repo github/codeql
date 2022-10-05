@@ -60,6 +60,11 @@ private predicate isRelevantForModels(J::Callable api) {
 }
 
 /**
+ * Holds if it is relevant to generate models for `api` based on data flow analysis.
+ */
+predicate isRelevantForDataFlowModels = isRelevantForModels/1;
+
+/**
  * A class of Callables that are relevant for generating summary, source and sinks models for.
  *
  * In the Standard library and 3rd party libraries it the Callables that can be called

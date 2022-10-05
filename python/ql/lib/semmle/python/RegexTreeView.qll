@@ -466,7 +466,9 @@ class RegExpEscape extends RegExpNormalChar {
    * TODO: Handle named escapes.
    */
   override string getValue() {
-    this.isIdentityEscape() and result = this.getUnescaped()
+    not this.isUnicode() and
+    this.isIdentityEscape() and
+    result = this.getUnescaped()
     or
     this.getUnescaped() = "n" and result = "\n"
     or

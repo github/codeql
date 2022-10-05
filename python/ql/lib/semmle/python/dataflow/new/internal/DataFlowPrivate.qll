@@ -2,6 +2,7 @@ private import python
 private import DataFlowPublic
 private import semmle.python.essa.SsaCompute
 private import semmle.python.dataflow.new.internal.ImportResolution
+private import FlowSummaryImpl as FlowSummaryImpl
 // Since we allow extra data-flow steps from modeled frameworks, we import these
 // up-front, to ensure these are included. This provides a more seamless experience from
 // a user point of view, since they don't need to know they need to import a specific
@@ -21,7 +22,7 @@ import DataFlowDispatchPointsTo
 DataFlowCallable nodeGetEnclosingCallable(Node n) { result = n.getEnclosingCallable() }
 
 /** Holds if `p` is a `ParameterNode` of `c` with position `pos`. */
-predicate isParameterNode(ParameterNode p, DataFlowCallable c, ParameterPosition pos) {
+predicate isParameterNode(ParameterNodeImpl p, DataFlowCallable c, ParameterPosition pos) {
   p.isParameterOf(c, pos)
 }
 
@@ -77,7 +78,7 @@ module SyntheticPreUpdateNode {
    * that is mapped to the `self` parameter. That way, constructor calls represent the value of the
    * object after the constructor (currently only `__init__`) has run.
    */
-  CfgNode objectCreationNode() { result.getNode().(CallNode) = any(ClassCall c).getNode() }
+  CfgNode objectCreationNode() { result.getNode() = any(ClassCall c).getNode() }
 }
 
 import SyntheticPreUpdateNode
@@ -87,6 +88,8 @@ deprecated module syntheticPostUpdateNode = SyntheticPostUpdateNode;
 
 /** A module collecting the different reasons for synthesising a post-update node. */
 module SyntheticPostUpdateNode {
+  private import semmle.python.SpecialMethods
+
   /** A post-update node is synthesized for all nodes which satisfy `NeedsSyntheticPostUpdateNode`. */
   class SyntheticPostUpdateNode extends PostUpdateNode, TSyntheticPostUpdateNode {
     NeedsSyntheticPostUpdateNode pre;
@@ -136,6 +139,8 @@ module SyntheticPostUpdateNode {
   Node argumentPreUpdateNode() {
     result = any(FunctionCall c).getArg(_)
     or
+    result = any(LambdaCall c).getArg(_)
+    or
     // Avoid argument 0 of method calls as those have read post-update nodes.
     exists(MethodCall c, int n | n > 0 | result = c.getArg(n))
     or
@@ -145,9 +150,16 @@ module SyntheticPostUpdateNode {
     exists(ClassCall c, int n | n > 0 | result = c.getArg(n))
     or
     // any argument of any call that we have not been able to resolve
-    exists(CallNode call | not call = any(DataFlowCall c).getNode() |
+    exists(CallNode call | not resolvedCall(call) |
       result.(CfgNode).getNode() in [call.getArg(_), call.getArgByName(_)]
     )
+  }
+
+  /** Holds if `call` can be resolved as a normal call */
+  private predicate resolvedCall(CallNode call) {
+    call = any(DataFlowCallableValue cv).getACall()
+    or
+    call = any(DataFlowLambda l).getACall()
   }
 
   /** Gets the pre-update node associated with a store. This is used for when an object might have its value changed after a store. */
@@ -287,10 +299,22 @@ module EssaFlow {
  * This is the local flow predicate that is used as a building block in global
  * data flow.
  *
+ * It includes flow steps from flow summaries.
+ */
+predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo) {
+  simpleLocalFlowStepForTypetracking(nodeFrom, nodeTo)
+  or
+  summaryFlowSteps(nodeFrom, nodeTo)
+}
+
+/**
+ * This is the local flow predicate that is used as a building block in
+ * type tracking, it does _not_ include steps from flow summaries.
+ *
  * Local flow can happen either at import time, when the module is initialised
  * or at runtime when callables in the module are called.
  */
-predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo) {
+predicate simpleLocalFlowStepForTypetracking(Node nodeFrom, Node nodeTo) {
   // If there is local flow out of a node `node`, we want flow
   // both out of `node` and any post-update node of `node`.
   exists(Node node |
@@ -324,6 +348,34 @@ predicate runtimeLocalFlowStep(Node nodeFrom, Node nodeTo) {
   not isTopLevel(nodeFrom) and
   not isTopLevel(nodeTo) and
   EssaFlow::essaFlowStep(nodeFrom, nodeTo)
+}
+
+predicate summaryFlowSteps(Node nodeFrom, Node nodeTo) {
+  // If there is local flow out of a node `node`, we want flow
+  // both out of `node` and any post-update node of `node`.
+  exists(Node node |
+    nodeFrom = update(node) and
+    (
+      importTimeSummaryFlowStep(node, nodeTo) or
+      runtimeSummaryFlowStep(node, nodeTo)
+    )
+  )
+}
+
+predicate importTimeSummaryFlowStep(Node nodeFrom, Node nodeTo) {
+  // As a proxy for whether statements can be executed at import time,
+  // we check if they appear at the top level.
+  // This will miss statements inside functions called from the top level.
+  isTopLevel(nodeFrom) and
+  isTopLevel(nodeTo) and
+  FlowSummaryImpl::Private::Steps::summaryLocalStep(nodeFrom, nodeTo, true)
+}
+
+predicate runtimeSummaryFlowStep(Node nodeFrom, Node nodeTo) {
+  // Anything not at the top level can be executed at runtime.
+  not isTopLevel(nodeFrom) and
+  not isTopLevel(nodeTo) and
+  FlowSummaryImpl::Private::Steps::summaryLocalStep(nodeFrom, nodeTo, true)
 }
 
 /** `ModuleVariable`s are accessed via jump steps at runtime. */
@@ -474,6 +526,8 @@ predicate storeStep(Node nodeFrom, Content c, Node nodeTo) {
   matchStoreStep(nodeFrom, c, nodeTo)
   or
   any(Orm::AdditionalOrmSteps es).storeStep(nodeFrom, c, nodeTo)
+  or
+  FlowSummaryImpl::Private::Steps::summaryStoreStep(nodeFrom, c, nodeTo)
 }
 
 /**
@@ -667,6 +721,8 @@ predicate readStep(Node nodeFrom, Content c, Node nodeTo) {
   attributeReadStep(nodeFrom, c, nodeTo)
   or
   kwUnpackReadStep(nodeFrom, c, nodeTo)
+  or
+  FlowSummaryImpl::Private::Steps::summaryReadStep(nodeFrom, c, nodeTo)
 }
 
 /** Data flows from a sequence to a subscript of the sequence. */
@@ -791,6 +847,8 @@ predicate clearsContent(Node n, Content c) {
   matchClearStep(n, c)
   or
   attributeClearStep(n, c)
+  or
+  FlowSummaryImpl::Private::Steps::summaryClearsContent(n, c)
 }
 
 /**
@@ -842,15 +900,38 @@ int accessPathLimit() { result = 5 }
 predicate forceHighPrecision(Content c) { none() }
 
 /** Holds if `n` should be hidden from path explanations. */
-predicate nodeIsHidden(Node n) { none() }
+predicate nodeIsHidden(Node n) {
+  n instanceof SummaryNode
+  or
+  n instanceof SummaryParameterNode
+}
 
 class LambdaCallKind = Unit;
 
 /** Holds if `creation` is an expression that creates a lambda of kind `kind` for `c`. */
-predicate lambdaCreation(Node creation, LambdaCallKind kind, DataFlowCallable c) { none() }
+predicate lambdaCreation(Node creation, LambdaCallKind kind, DataFlowCallable c) {
+  // lambda
+  kind = kind and
+  creation.asExpr() = c.(DataFlowLambda).getDefinition()
+  or
+  // normal function
+  exists(FunctionDef def |
+    def.defines(creation.asVar().getSourceVariable()) and
+    def.getDefinedFunction() = c.(DataFlowCallableValue).getCallableValue().getScope()
+  )
+  or
+  // summarized function
+  exists(Call call |
+    creation.asExpr() = call.getAnArg() and
+    creation = c.(LibraryCallableValue).getACallback()
+  )
+}
 
 /** Holds if `call` is a lambda call of kind `kind` where `receiver` is the lambda expression. */
-predicate lambdaCall(DataFlowCall call, LambdaCallKind kind, Node receiver) { none() }
+predicate lambdaCall(DataFlowCall call, LambdaCallKind kind, Node receiver) {
+  receiver = call.(SummaryCall).getReceiver() and
+  exists(kind)
+}
 
 /** Extra data-flow steps needed for lambda flow analysis. */
 predicate additionalLambdaFlowStep(Node nodeFrom, Node nodeTo, boolean preservesValue) { none() }
@@ -862,4 +943,6 @@ predicate additionalLambdaFlowStep(Node nodeFrom, Node nodeTo, boolean preserves
  * One example would be to allow flow like `p.foo = p.bar;`, which is disallowed
  * by default as a heuristic.
  */
-predicate allowParameterReturnInSelf(ParameterNode p) { none() }
+predicate allowParameterReturnInSelf(ParameterNode p) {
+  FlowSummaryImpl::Private::summaryAllowParameterReturnInSelf(p)
+}

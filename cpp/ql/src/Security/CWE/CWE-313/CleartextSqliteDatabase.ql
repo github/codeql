@@ -13,14 +13,8 @@
 
 import cpp
 import semmle.code.cpp.security.SensitiveExprs
-import semmle.code.cpp.security.TaintTracking
-import TaintedWithPath
-
-class UserInputIsSensitiveExpr extends SecurityOptions {
-  override predicate isUserInput(Expr expr, string cause) {
-    expr instanceof SensitiveExpr and cause = "sensitive information"
-  }
-}
+import semmle.code.cpp.dataflow.TaintTracking
+import DataFlow::PathGraph
 
 class SqliteFunctionCall extends FunctionCall {
   SqliteFunctionCall() { this.getTarget().getName().matches("sqlite%") }
@@ -34,25 +28,52 @@ predicate sqlite_encryption_used() {
   any(FunctionCall fc).getTarget().getName().matches("sqlite%\\_key\\_%")
 }
 
-class Configuration extends TaintTrackingConfiguration {
-  override predicate isSource(Expr source) {
-    super.isSource(source) and source instanceof SensitiveExpr
+/**
+ *  Gets a field of the class `c`, or of another class contained in `c`.
+ */
+Field getRecField(Class c) {
+  result = c.getAField() or
+  result = getRecField(c.getAField().getUnspecifiedType().stripType())
+}
+
+/**
+ * A taint flow configuration for flow from a sensitive expression to a `SqliteFunctionCall` sink.
+ */
+class FromSensitiveConfiguration extends TaintTracking::Configuration {
+  FromSensitiveConfiguration() { this = "FromSensitiveConfiguration" }
+
+  override predicate isSource(DataFlow::Node source) { source.asExpr() instanceof SensitiveExpr }
+
+  override predicate isSink(DataFlow::Node sink) {
+    any(SqliteFunctionCall c).getASource() = sink.asExpr() and
+    not sqlite_encryption_used()
   }
 
-  override predicate isSink(Element taintedArg) {
-    exists(SqliteFunctionCall sqliteCall |
-      taintedArg = sqliteCall.getASource() and
-      not sqlite_encryption_used()
+  override predicate isSanitizer(DataFlow::Node node) {
+    node.asExpr().getUnspecifiedType() instanceof IntegralType
+  }
+
+  override predicate allowImplicitRead(DataFlow::Node node, DataFlow::ContentSet content) {
+    // flow out from fields at the sink (only).
+    this.isSink(node) and
+    // constrain `content` to a field inside the node.
+    exists(Class c |
+      node.asExpr().getUnspecifiedType().stripType() = c and
+      content.(DataFlow::FieldContent).getField() = getRecField(c)
     )
+    or
+    // any default implicit reads
+    super.allowImplicitRead(node, content)
   }
 }
 
 from
-  SensitiveExpr taintSource, Expr taintedArg, SqliteFunctionCall sqliteCall, PathNode sourceNode,
-  PathNode sinkNode
+  FromSensitiveConfiguration config, SensitiveExpr sensitive, DataFlow::PathNode source,
+  DataFlow::PathNode sink, SqliteFunctionCall sqliteCall
 where
-  taintedWithPath(taintSource, taintedArg, sourceNode, sinkNode) and
-  taintedArg = sqliteCall.getASource()
-select sqliteCall, sourceNode, sinkNode,
-  "This SQLite call may store $@ in a non-encrypted SQLite database", taintSource,
+  config.hasFlowPath(source, sink) and
+  source.getNode().asExpr() = sensitive and
+  sqliteCall.getASource() = sink.getNode().asExpr()
+select sqliteCall, source, sink,
+  "This SQLite call may store $@ in a non-encrypted SQLite database.", sensitive,
   "sensitive information"

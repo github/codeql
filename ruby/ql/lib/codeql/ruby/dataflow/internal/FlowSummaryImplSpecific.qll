@@ -2,7 +2,7 @@
  * Provides Ruby specific classes and predicates for defining flow summaries.
  */
 
-private import ruby
+private import codeql.ruby.AST
 private import DataFlowDispatch
 private import DataFlowPrivate
 private import DataFlowPublic
@@ -74,16 +74,30 @@ private SummaryComponent interpretElementArg(string arg) {
   arg = "any" and
   result = FlowSummary::SummaryComponent::elementAny()
   or
-  exists(int lower |
-    ParsePositions::isParsedElementLowerBoundPosition(arg, lower) and
+  exists(int lower, boolean includeUnknown |
+    ParsePositions::isParsedElementLowerBoundPosition(arg, includeUnknown, lower)
+  |
+    includeUnknown = false and
     result = FlowSummary::SummaryComponent::elementLowerBound(lower)
+    or
+    includeUnknown = true and
+    result = FlowSummary::SummaryComponent::elementLowerBoundOrUnknown(lower)
   )
   or
-  exists(ConstantValue cv | result = FlowSummary::SummaryComponent::elementKnown(cv) |
-    cv.isInt(AccessPath::parseInt(arg))
+  exists(ConstantValue cv, string argAdjusted, boolean includeUnknown |
+    argAdjusted = ParsePositions::adjustElementArgument(arg, includeUnknown) and
+    (
+      includeUnknown = false and
+      result = FlowSummary::SummaryComponent::elementKnown(cv)
+      or
+      includeUnknown = true and
+      result = FlowSummary::SummaryComponent::elementKnownOrUnknown(cv)
+    )
+  |
+    cv.isInt(AccessPath::parseInt(argAdjusted))
     or
-    not exists(AccessPath::parseInt(arg)) and
-    cv.serialize() = arg
+    not exists(AccessPath::parseInt(argAdjusted)) and
+    cv.serialize() = argAdjusted
   )
 }
 
@@ -120,16 +134,6 @@ SummaryComponent interpretComponentSpecific(AccessPathToken c) {
     FlowSummary::SummaryComponent::content(cs) =
       interpretElementArg(c.getAnArgument("WithoutElement")) and
     result = FlowSummary::SummaryComponent::withoutContent(cs)
-  )
-  or
-  exists(string arg | arg = c.getAnArgument("PairValue") |
-    arg = "?" and
-    result = FlowSummary::SummaryComponent::pairValueUnknown()
-    or
-    exists(ConstantValue cv |
-      result = FlowSummary::SummaryComponent::pairValueKnown(cv) and
-      cv.serialize() = arg
-    )
   )
 }
 
@@ -232,24 +236,15 @@ module ParsePositions {
   private import FlowSummaryImpl
 
   private predicate isParamBody(string body) {
-    exists(AccessPathToken tok |
-      tok.getName() = "Parameter" and
-      body = tok.getAnArgument()
-    )
+    body = any(AccessPathToken tok).getAnArgument("Parameter")
   }
 
   private predicate isArgBody(string body) {
-    exists(AccessPathToken tok |
-      tok.getName() = "Argument" and
-      body = tok.getAnArgument()
-    )
+    body = any(AccessPathToken tok).getAnArgument("Argument")
   }
 
   private predicate isElementBody(string body) {
-    exists(AccessPathToken tok |
-      tok.getName() = "Element" and
-      body = tok.getAnArgument()
-    )
+    body = any(AccessPathToken tok).getAnArgument(["Element", "WithElement", "WithoutElement"])
   }
 
   predicate isParsedParameterPosition(string c, int i) {
@@ -277,9 +272,19 @@ module ParsePositions {
     c = paramName + ":"
   }
 
-  predicate isParsedElementLowerBoundPosition(string c, int lower) {
+  bindingset[arg]
+  string adjustElementArgument(string arg, boolean includeUnknown) {
+    result = arg.regexpCapture("(.*)!", 1) and
+    includeUnknown = false
+    or
+    result = arg and
+    not arg.matches("%!") and
+    includeUnknown = true
+  }
+
+  predicate isParsedElementLowerBoundPosition(string c, boolean includeUnknown, int lower) {
     isElementBody(c) and
-    lower = AccessPath::parseLowerBound(c)
+    lower = AccessPath::parseLowerBound(adjustElementArgument(c, includeUnknown))
   }
 }
 

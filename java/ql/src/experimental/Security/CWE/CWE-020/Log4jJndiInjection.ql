@@ -203,5 +203,5 @@ class Log4jInjectionConfiguration extends TaintTracking::Configuration {
 
 from Log4jInjectionConfiguration cfg, DataFlow::PathNode source, DataFlow::PathNode sink
 where cfg.hasFlowPath(source, sink)
-select sink.getNode(), source, sink, "This $@ flows to a Log4j log entry.", source.getNode(),
+select sink.getNode(), source, sink, "Log4j log entry depends on a $@.", source.getNode(),
   "user-provided value"

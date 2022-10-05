@@ -19,5 +19,5 @@ from
   CommandInjection::Configuration cfg, CommandInjection::DoubleDashSanitizingConfiguration cfg2,
   DataFlow::PathNode source, DataFlow::PathNode sink
 where cfg.hasFlowPath(source, sink) or cfg2.hasFlowPath(source, sink)
-select sink.getNode(), source, sink, "This command depends on $@.", source.getNode(),
-  "a user-provided value"
+select sink.getNode(), source, sink, "This command depends on a $@.", source.getNode(),
+  "user-provided value"

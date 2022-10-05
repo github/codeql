@@ -19,7 +19,7 @@
  * ```
  */
 
-private import ruby
+private import codeql.ruby.AST
 private import codeql.ruby.dataflow.internal.DataFlowPrivate as DataFlowPrivate
 private import ApiGraphModels
 
@@ -31,6 +31,7 @@ import codeql.ruby.dataflow.internal.AccessPathSyntax as AccessPathSyntax
 import codeql.ruby.DataFlow::DataFlow as DataFlow
 private import AccessPathSyntax
 private import codeql.ruby.dataflow.internal.FlowSummaryImplSpecific as FlowSummaryImplSpecific
+private import codeql.ruby.dataflow.internal.FlowSummaryImpl::Public
 private import codeql.ruby.dataflow.internal.DataFlowDispatch as DataFlowDispatch
 
 /**
@@ -118,9 +119,11 @@ API::Node getExtraSuccessorFromNode(API::Node node, AccessPathToken token) {
   result =
     node.getASuccessor(API::Label::getLabelFromParameterPosition(FlowSummaryImplSpecific::parseArgBody(token
               .getAnArgument())))
-  // Note: The "Element" token is not implemented yet, as it ultimately requires type-tracking and
-  // API graphs to be aware of the steps involving Element contributed by the standard library model.
-  // Type-tracking cannot summarize function calls on its own, so it doesn't benefit from synthesized callables.
+  or
+  exists(DataFlow::ContentSet contents |
+    SummaryComponent::content(contents) = FlowSummaryImplSpecific::interpretComponentSpecific(token) and
+    result = node.getContents(contents)
+  )
 }
 
 /**
@@ -160,7 +163,7 @@ InvokeNode getAnInvocationOf(API::Node node) { result = node }
  */
 bindingset[name]
 predicate isExtraValidTokenNameInIdentifyingAccessPath(string name) {
-  name = ["Member", "Method", "Instance", "WithBlock", "WithoutBlock"]
+  name = ["Member", "Method", "Instance", "WithBlock", "WithoutBlock", "Element", "Field"]
 }
 
 /**
@@ -177,7 +180,7 @@ predicate isExtraValidNoArgumentTokenInIdentifyingAccessPath(string name) {
  */
 bindingset[name, argument]
 predicate isExtraValidTokenArgumentInIdentifyingAccessPath(string name, string argument) {
-  name = ["Member", "Method"] and
+  name = ["Member", "Method", "Element", "Field"] and
   exists(argument)
   or
   name = ["Argument", "Parameter"] and
