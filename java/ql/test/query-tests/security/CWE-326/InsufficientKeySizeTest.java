@@ -106,7 +106,7 @@ public class InsufficientKeySizeTest {
         test(keysize);
     }
 
-    public void test(int keySize) throws java.security.NoSuchAlgorithmException, java.security.InvalidAlgorithmParameterException {
+    public static void test(int keySize) throws java.security.NoSuchAlgorithmException, java.security.InvalidAlgorithmParameterException {
         KeyPairGenerator keyPairGen19 = KeyPairGenerator.getInstance("RSA");
         // BAD: Key size is less than 128
         keyPairGen19.initialize(keySize); // $ hasInsufficientKeySize

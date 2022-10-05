@@ -252,6 +252,7 @@ string getASecureAlgorithmName() {
       "Blowfish", "ECIES" // ! Blowfish not actually secure based on https://rules.sonarsource.com/java/type/Vulnerability/RSPEC-4426 ??
       // ! hmm, other sources imply that it is secure...
       // ! also no DH here, etc.?
+      // ! also is ECB matched with AES?
     ]
 }
 
