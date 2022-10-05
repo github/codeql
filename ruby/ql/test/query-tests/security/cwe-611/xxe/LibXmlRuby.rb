@@ -13,4 +13,8 @@ class LibXmlRubyXXE < ApplicationController
 
     LibXML::XML::Parser.file(content, { options: 2048 }) # OK
 
+    Hash.from_xml(content) # OK - entity substitution is disabled by default
+    Hash.from_trusted_xml(content) # OK - entity substitution is disabled by default
+    ActiveSupport::XmlMini.parse(content) # OK - entity substitution is disabled by default
+
 end
