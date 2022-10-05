@@ -340,6 +340,14 @@ private module ArgumentNodes {
       )
     }
   }
+
+  class SummaryArgumentNode extends SummaryNode, ArgumentNode {
+    SummaryArgumentNode() { FlowSummaryImpl::Private::summaryArgumentNode(_, this, _) }
+
+    override predicate argumentOf(DataFlowCall call, ArgumentPosition pos) {
+      FlowSummaryImpl::Private::summaryArgumentNode(call, this, pos)
+    }
+  }
 }
 
 import ArgumentNodes
@@ -407,6 +415,12 @@ private module OutNodes {
 
     override DataFlowCall getCall(ReturnKind kind) {
       result.asCall() = apply and kind instanceof NormalReturnKind
+    }
+  }
+
+  class SummaryOutNode extends OutNode, SummaryNode {
+    override DataFlowCall getCall(ReturnKind kind) {
+      FlowSummaryImpl::Private::summaryOutNode(result, this, kind)
     }
   }
 
@@ -596,6 +610,9 @@ predicate lambdaCreation(Node creation, LambdaCallKind kind, DataFlowCallable c)
 predicate lambdaCall(DataFlowCall call, LambdaCallKind kind, Node receiver) {
   kind = TLambdaCallKind() and
   receiver.asExpr() = call.asCall().getExpr().(ApplyExpr).getFunction()
+  or
+  kind = TLambdaCallKind() and
+  receiver = call.(SummaryCall).getReceiver()
 }
 
 /** Extra data-flow steps needed for lambda flow analysis. */
