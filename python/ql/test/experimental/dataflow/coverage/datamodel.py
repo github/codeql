@@ -232,7 +232,7 @@ class Customized:
 customized = Customized()
 SINK(Customized.a)  #$ MISSING:flow="SOURCE, l:-8 -> customized.a"
 SINK_F(Customized.b)
-SINK(customized.a)  #$ flow="SOURCE, l:-10 -> customized.a"
+SINK(customized.a)  #$ MISSING: flow="SOURCE, l:-10 -> customized.a"
 SINK(customized.b)  #$ flow="SOURCE, l:-7 -> customized.b"
 
 

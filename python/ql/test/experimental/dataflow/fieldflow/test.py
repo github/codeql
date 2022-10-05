@@ -401,11 +401,11 @@ def test__new__():
     # well.
 
     SINK(NewTest.foo) # $ MISSING: flow="SOURCE, l:-10 -> NewTest.foo"
-    SINK(nt.foo) # $ flow="SOURCE, l:-11 -> nt.foo"
+    SINK(nt.foo) # $ MISSING: flow="SOURCE, l:-11 -> nt.foo"
 
     NewTest.foo = NONSOURCE
     SINK_F(NewTest.foo)
-    SINK_F(nt.foo) # $ SPURIOUS: flow="SOURCE, l:-15 -> nt.foo"
+    SINK_F(nt.foo)
 
 # ------------------------------------------------------------------------------
 # Global scope
