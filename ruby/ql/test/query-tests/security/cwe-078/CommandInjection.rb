@@ -93,7 +93,7 @@ module Types
     def custom_method_2(my_arr:, number: nil)
       system("echo #{my_arr}") # NOT OK
       my_arr.reject do |n, *|
-        system("echo #{n}") # NOT OK - but not flagged
+        system("echo #{n}") # NOT OK
       end
     end
   end
