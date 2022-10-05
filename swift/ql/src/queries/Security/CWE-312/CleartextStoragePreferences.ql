@@ -27,9 +27,9 @@ abstract class Stored extends DataFlow::Node {
 class UserDefaultsStore extends Stored {
   UserDefaultsStore() {
     exists(ClassDecl c, AbstractFunctionDecl f, CallExpr call |
-      c.getName() = ["UserDefaults"] and
+      c.getName() = "UserDefaults" and
       c.getAMember() = f and
-      f.getName() = ["set(_:forKey:)"] and
+      f.getName() = "set(_:forKey:)" and
       call.getStaticTarget() = f and
       call.getArgument(0).getExpr() = this.asExpr()
     )
@@ -42,9 +42,9 @@ class UserDefaultsStore extends Stored {
 class NSUbiquitousKeyValueStore extends Stored {
   NSUbiquitousKeyValueStore() {
     exists(ClassDecl c, AbstractFunctionDecl f, CallExpr call |
-      c.getName() = ["NSUbiquitousKeyValueStore"] and
+      c.getName() = "NSUbiquitousKeyValueStore" and
       c.getAMember() = f and
-      f.getName() = ["set(_:forKey:)"] and
+      f.getName() = "set(_:forKey:)" and
       call.getStaticTarget() = f and
       call.getArgument(0).getExpr() = this.asExpr()
     )
@@ -54,9 +54,10 @@ class NSUbiquitousKeyValueStore extends Stored {
 }
 
 /**
- * TODO: A more complicated case, this is a macOS-only way of writing to
+ * A more complicated case, this is a macOS-only way of writing to
  * NSUserDefaults by modifying the `NSUserDefaultsController.values: Any`
- * object via reflection (`perform(Selector)`) or the `NSKeyValueCoding`, `NSKeyValueBindingCreation` APIs.
+ * object via reflection (`perform(Selector)`) or the `NSKeyValueCoding`,
+ * `NSKeyValueBindingCreation` APIs. (TODO)
  */
 class NSUserDefaultsControllerStore extends Stored {
   NSUserDefaultsControllerStore() { none() }
@@ -77,7 +78,7 @@ class CleartextStorageConfig extends TaintTracking::Configuration {
 
   override predicate isSanitizerIn(DataFlow::Node node) {
     // make sources barriers so that we only report the closest instance
-    isSource(node)
+    this.isSource(node)
   }
 
   override predicate isSanitizer(DataFlow::Node node) {
@@ -101,5 +102,5 @@ where config.hasFlowPath(sourceNode, sinkNode)
 select cleanupNode(sinkNode.getNode()), sourceNode, sinkNode,
   "This operation stores '" + sinkNode.getNode().toString() + "' in " +
     sinkNode.getNode().(Stored).getStoreName() +
-    ". It may contain unencrypted sensitive data from $@", sourceNode,
+    ". It may contain unencrypted sensitive data from $@.", sourceNode,
   sourceNode.getNode().toString()
