@@ -34,9 +34,7 @@ class OptionalTypeTrackerContent extends DataFlowPrivate::TOptionalContentSet {
   }
 }
 
-private newtype TContentFilter =
-  MkElementFilter() or
-  MkPairValueFilter()
+private newtype TContentFilter = MkElementFilter()
 
 /**
  * A label to use for `WithContent` and `WithoutContent` steps, restricting
@@ -44,19 +42,12 @@ private newtype TContentFilter =
  */
 class ContentFilter extends TContentFilter {
   /** Gets a string representation of this content filter. */
-  string toString() {
-    this = MkElementFilter() and result = "elements"
-    or
-    this = MkPairValueFilter() and result = "pair value"
-  }
+  string toString() { this = MkElementFilter() and result = "elements" }
 
   /** Gets the content of a type-tracker that matches this filter. */
   TypeTrackerContent getAMatchingContent() {
     this = MkElementFilter() and
     result.getAReadContent() instanceof DataFlow::Content::ElementContent
-    or
-    this = MkPairValueFilter() and
-    result.getAReadContent() instanceof DataFlow::Content::PairValueContent
   }
 }
 
@@ -64,9 +55,6 @@ class ContentFilter extends TContentFilter {
 module ContentFilter {
   /** Gets the filter that only allow element contents. */
   ContentFilter hasElements() { result = MkElementFilter() }
-
-  /** Gets the filter that only allow pair-value contents. */
-  ContentFilter hasPairValue() { result = MkPairValueFilter() }
 }
 
 /**
@@ -396,9 +384,6 @@ private ContentFilter getFilterFromWithoutContentStep(DataFlow::ContentSet conte
     content.isSingleton(any(DataFlow::Content::UnknownElementContent c))
   ) and
   result = MkElementFilter()
-  or
-  content.isSingleton(any(DataFlow::Content::UnknownPairValueContent c)) and
-  result = MkPairValueFilter()
 }
 
 pragma[nomagic]
@@ -435,9 +420,6 @@ private ContentFilter getFilterFromWithContentStep(DataFlow::ContentSet content)
     content.isSingleton(any(DataFlow::Content::ElementContent c))
   ) and
   result = MkElementFilter()
-  or
-  content.isSingleton(any(DataFlow::Content::PairValueContent c)) and
-  result = MkPairValueFilter()
 }
 
 pragma[nomagic]
