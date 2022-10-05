@@ -1683,7 +1683,7 @@ open class KotlinFileExtractor(
                 }
             }
         } else {
-            f.name.asString() + "\$default"
+            getFunctionShortName(f).nameInDB + "\$default"
         }
 
     private fun getDefaultsMethodLabel(f: IrFunction): Label<out DbCallable> {
