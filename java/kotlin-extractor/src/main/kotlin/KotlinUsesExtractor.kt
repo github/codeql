@@ -1496,10 +1496,10 @@ open class KotlinUsesExtractor(
      * Argument `inReceiverContext` will be passed onto the `useClassInstance` invocation for each supertype.
      */
     fun extractClassSupertypes(c: IrClass, id: Label<out DbReftype>, mode: ExtractSupertypesMode = ExtractSupertypesMode.Unbound, inReceiverContext: Boolean = false) {
-        extractClassSupertypes(c.superTypes, c.typeParameters, id, mode, inReceiverContext)
+        extractClassSupertypes(c.superTypes, c.typeParameters, id, c.isInterfaceLike, mode, inReceiverContext)
     }
 
-    fun extractClassSupertypes(superTypes: List<IrType>, typeParameters: List<IrTypeParameter>, id: Label<out DbReftype>, mode: ExtractSupertypesMode = ExtractSupertypesMode.Unbound, inReceiverContext: Boolean = false) {
+    fun extractClassSupertypes(superTypes: List<IrType>, typeParameters: List<IrTypeParameter>, id: Label<out DbReftype>, isInterface: Boolean, mode: ExtractSupertypesMode = ExtractSupertypesMode.Unbound, inReceiverContext: Boolean = false) {
         // Note we only need to substitute type args here because it is illegal to directly extend a type variable.
         // (For example, we can't have `class A<E> : E`, but can have `class A<E> : Comparable<E>`)
         val subbedSupertypes = when(mode) {
@@ -1514,12 +1514,15 @@ open class KotlinUsesExtractor(
         for(t in subbedSupertypes) {
             when(t) {
                 is IrSimpleType -> {
-                    val owner = t.classifier.owner
-                    when (owner) {
+                    when (val owner = t.classifier.owner) {
                         is IrClass -> {
                             val typeArgs = if (t.arguments.isNotEmpty() && mode is ExtractSupertypesMode.Raw) null else t.arguments
                             val l = useClassInstance(owner, typeArgs, inReceiverContext).typeResult.id
-                            tw.writeExtendsReftype(id, l)
+                            if (isInterface || !owner.isInterfaceLike) {
+                                tw.writeExtendsReftype(id, l)
+                            } else {
+                                tw.writeImplInterface(id.cast(), l.cast())
+                            }
                         }
                         else -> {
                             logger.error("Unexpected simple type supertype: " + t.javaClass + ": " + t.render())
