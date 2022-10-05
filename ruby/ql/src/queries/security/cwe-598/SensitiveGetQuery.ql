@@ -13,7 +13,6 @@
 
 import ruby
 import DataFlow::PathGraph
-import codeql.ruby.DataFlow
 import codeql.ruby.security.SensitiveGetQueryQuery
 import codeql.ruby.security.SensitiveActions
 
