@@ -2101,7 +2101,7 @@ open class KotlinFileExtractor(
                             id
                         }
                         else -> {
-                            logger.errorElement("Unhandled target name: $targetName", c)
+                            logger.errorElement("Unhandled binary target name: $targetName", c)
                             return
                         }
                     }
@@ -2137,10 +2137,29 @@ open class KotlinFileExtractor(
                     tw.writeExprsKotlinType(id, type.kotlinResult.id)
                     unaryopDisp(id)
                 }
-                isNumericFunction(target, "inv") -> {
-                    val id = tw.getFreshIdLabel<DbBitnotexpr>()
+                isNumericFunction(target, listOf("inv", "unaryMinus", "unaryPlus")) -> {
                     val type = useType(c.type)
-                    tw.writeExprs_bitnotexpr(id, type.javaResult.id, parent, idx)
+                    val id: Label<out DbExpr> = when (val targetName = target.name.asString()) {
+                        "inv" -> {
+                            val id = tw.getFreshIdLabel<DbBitnotexpr>()
+                            tw.writeExprs_bitnotexpr(id, type.javaResult.id, parent, idx)
+                            id
+                        }
+                        "unaryMinus" -> {
+                            val id = tw.getFreshIdLabel<DbMinusexpr>()
+                            tw.writeExprs_minusexpr(id, type.javaResult.id, parent, idx)
+                            id
+                        }
+                        "unaryPlus" -> {
+                            val id = tw.getFreshIdLabel<DbPlusexpr>()
+                            tw.writeExprs_plusexpr(id, type.javaResult.id, parent, idx)
+                            id
+                        }
+                        else -> {
+                            logger.errorElement("Unhandled unary target name: $targetName", c)
+                            return
+                        }
+                    }
                     tw.writeExprsKotlinType(id, type.kotlinResult.id)
                     unaryopDisp(id)
                 }
