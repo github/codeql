@@ -1624,7 +1624,7 @@ open class KotlinFileExtractor(
         extractTypeAccessRecursive(pluginContext.irBuiltIns.anyType, locId, idNewexpr, -3, enclosingCallable, enclosingStmt)
     }
 
-    fun extractMethodAccessWithoutArgs(
+    private fun extractMethodAccessWithoutArgs(
         returnType: IrType,
         locId: Label<DbLocation>,
         enclosingCallable: Label<out DbCallable>,
