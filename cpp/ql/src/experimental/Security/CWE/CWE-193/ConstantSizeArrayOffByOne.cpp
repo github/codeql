@@ -8,10 +8,10 @@ int main(){
   FixedArray arr;
 
   for(int i = 0; i <= MAX_SIZE; i++) {
-    arr[i] = 0
+    arr.buf[i] = 0; // BAD
   }
 
   for(int i = 0; i < MAX_SIZE; i++) {
-    arr[i = 0]
+    arr.buf[i] = 0; // GOOD
   }
 }
