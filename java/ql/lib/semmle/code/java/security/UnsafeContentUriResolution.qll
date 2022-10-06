@@ -3,6 +3,7 @@
 import java
 private import semmle.code.java.dataflow.TaintTracking
 private import semmle.code.java.frameworks.android.Android
+private import semmle.code.java.security.PathSanitizer
 
 /** A URI that gets resolved by a `ContentResolver`. */
 abstract class ContentUriResolutionSink extends DataFlow::Node { }
@@ -47,6 +48,9 @@ private class UninterestingTypeSanitizer extends ContentUriResolutionSanitizer {
     this.getType() instanceof PrimitiveType or
     this.getType() instanceof NumberType
   }
+}
+
+private class PathSanitizer extends ContentUriResolutionSanitizer instanceof PathInjectionSanitizer {
 }
 
 private class FilenameOnlySanitizer extends ContentUriResolutionSanitizer {
