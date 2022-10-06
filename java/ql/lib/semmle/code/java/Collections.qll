@@ -7,7 +7,7 @@ import java
 
 /**
  * The type `t` is a parameterization of `g`, where the `i`-th type parameter of
- * `g` is instantiated to `a`?
+ * `g` is instantiated to `arg`.
  *
  * For example, `List<Integer>` parameterizes `List<T>`, instantiating its `0`-th
  * type parameter to `Integer`, while the raw type `List` also parameterizes

@@ -89,26 +89,36 @@ private string implicit(Callable callable, TypeVariable tv) {
   )
 }
 
+private class GenericFunctionalInterface extends FunctionalInterface, GenericType {
+  override string getAPrimaryQlClass() { result = "GenericFunctionalInterface" }
+}
+
 /**
  * A class of types that represents functions.
  */
 private class Function extends ParameterizedType {
-  Function() {
-    exists(FunctionalInterface fi |
-      fi = this.getGenericType() and
-      fi.hasName("Function")
+  private GenericFunctionalInterface fi;
+
+  Function() { fi = this.getGenericType() }
+
+  private TypeVariable getTypeReplacement(Type t) {
+    exists(int position |
+      instantiates(this, fi, position, t) and
+      result = fi.getTypeParameter(position)
     )
   }
 
   /**
-   * Gets the parameter type of `this` function.
+   * Gets the parameter type of `this` function at position `position`.
    */
-  Type getParameterType() { result = this.getTypeArgument(0) }
+  Type getParameterType(int position) {
+    fi.getRunMethod().getParameterType(position) = getTypeReplacement(result)
+  }
 
   /**
    * Gets the return type of `this` function.
    */
-  Type getReturnType() { result = this.getTypeArgument(1) }
+  Type getReturnType() { fi.getRunMethod().getReturnType() = getTypeReplacement(result) }
 }
 
 /**
@@ -191,10 +201,10 @@ private predicate returns(Callable callable, TypeVariable tv, string output) {
  * the function parameter.
  */
 private predicate functionalSink(Callable callable, TypeVariable tv, string output) {
-  exists(Function f, int position |
-    functional(callable, f, position) and
-    tv = f.getParameterType() and
-    output = "Argument[" + position + "]" + ".Parameter[0]"
+  exists(Function f, int p1, int p2 |
+    functional(callable, f, p1) and
+    tv = f.getParameterType(p2) and
+    output = "Argument[" + p1 + "]" + ".Parameter[" + p2 + "]"
   )
 }
 
