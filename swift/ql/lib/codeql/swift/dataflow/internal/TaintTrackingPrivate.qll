@@ -49,16 +49,6 @@ private module Cached {
       ae.getType().getName() = "String"
     )
     or
-    // allow flow through `URL.init`.
-    exists(CallExpr call, StructDecl c, AbstractFunctionDecl f |
-      c.getName() = "URL" and
-      c.getAMember() = f and
-      f.getName() = ["init(string:)", "init(string:relativeTo:)"] and
-      call.getStaticTarget() = f and
-      nodeFrom.asExpr() = call.getAnArgument().getExpr() and
-      nodeTo.asExpr() = call
-    )
-    or
     FlowSummaryImpl::Private::Steps::summaryLocalStep(nodeFrom, nodeTo, false)
   }
 
