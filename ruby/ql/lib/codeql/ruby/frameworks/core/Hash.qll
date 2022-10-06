@@ -244,7 +244,7 @@ module Hash {
   }
 
   private string getExceptComponent(MethodCall mc, int i) {
-    mc.getMethodName() = "except" and
+    mc.getMethodName() = ["except", "except!"] and
     result = DataFlow::Content::getKnownElementIndex(mc.getArgument(i)).serialize()
   }
 
@@ -252,10 +252,12 @@ module Hash {
     MethodCall mc;
 
     ExceptSummary() {
-      mc.getMethodName() = "except" and
+      // except! is an ActiveSupport extension
+      // https://api.rubyonrails.org/classes/Hash.html#method-i-except-21
+      mc.getMethodName() = ["except", "except!"] and
       this =
-        "except(" + concat(int i, string s | s = getExceptComponent(mc, i) | s, "," order by i) +
-          ")"
+        mc.getMethodName() + "(" +
+          concat(int i, string s | s = getExceptComponent(mc, i) | s, "," order by i) + ")"
     }
 
     final override MethodCall getACallSimple() { result = mc }
@@ -268,7 +270,11 @@ module Hash {
           |
             ".WithoutElement[" + s + "!]" order by i
           ) + ".WithElement[any]" and
-      output = "ReturnValue" and
+      (
+        if mc.getMethodName() = "except!"
+        then output = ["ReturnValue", "Argument[self]"]
+        else output = "ReturnValue"
+      ) and
       preservesValue = true
     }
   }

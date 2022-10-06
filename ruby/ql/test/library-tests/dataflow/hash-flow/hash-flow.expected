@@ -523,6 +523,19 @@ edges
 | hash_flow.rb:750:10:750:13 | hash [element :d] :  | hash_flow.rb:750:10:750:17 | ...[...] |
 | hash_flow.rb:752:10:752:13 | hash [element :f] :  | hash_flow.rb:752:10:752:17 | ...[...] |
 | hash_flow.rb:753:10:753:13 | hash [element :g] :  | hash_flow.rb:753:10:753:17 | ...[...] |
+| hash_flow.rb:761:15:761:25 | call to taint :  | hash_flow.rb:767:10:767:13 | hash [element :a] :  |
+| hash_flow.rb:763:15:763:25 | call to taint :  | hash_flow.rb:769:10:769:13 | hash [element :c] :  |
+| hash_flow.rb:763:15:763:25 | call to taint :  | hash_flow.rb:772:9:772:12 | hash [element :c] :  |
+| hash_flow.rb:764:15:764:25 | call to taint :  | hash_flow.rb:770:10:770:13 | hash [element :d] :  |
+| hash_flow.rb:767:10:767:13 | hash [element :a] :  | hash_flow.rb:767:10:767:17 | ...[...] |
+| hash_flow.rb:769:10:769:13 | hash [element :c] :  | hash_flow.rb:769:10:769:17 | ...[...] |
+| hash_flow.rb:770:10:770:13 | hash [element :d] :  | hash_flow.rb:770:10:770:17 | ...[...] |
+| hash_flow.rb:772:9:772:12 | [post] hash [element :c] :  | hash_flow.rb:781:10:781:13 | hash [element :c] :  |
+| hash_flow.rb:772:9:772:12 | hash [element :c] :  | hash_flow.rb:772:9:772:12 | [post] hash [element :c] :  |
+| hash_flow.rb:772:9:772:12 | hash [element :c] :  | hash_flow.rb:772:9:772:31 | call to except! [element :c] :  |
+| hash_flow.rb:772:9:772:31 | call to except! [element :c] :  | hash_flow.rb:776:10:776:10 | x [element :c] :  |
+| hash_flow.rb:776:10:776:10 | x [element :c] :  | hash_flow.rb:776:10:776:14 | ...[...] |
+| hash_flow.rb:781:10:781:13 | hash [element :c] :  | hash_flow.rb:781:10:781:17 | ...[...] |
 nodes
 | hash_flow.rb:11:15:11:24 | call to taint :  | semmle.label | call to taint :  |
 | hash_flow.rb:13:12:13:21 | call to taint :  | semmle.label | call to taint :  |
@@ -1105,6 +1118,22 @@ nodes
 | hash_flow.rb:752:10:752:17 | ...[...] | semmle.label | ...[...] |
 | hash_flow.rb:753:10:753:13 | hash [element :g] :  | semmle.label | hash [element :g] :  |
 | hash_flow.rb:753:10:753:17 | ...[...] | semmle.label | ...[...] |
+| hash_flow.rb:761:15:761:25 | call to taint :  | semmle.label | call to taint :  |
+| hash_flow.rb:763:15:763:25 | call to taint :  | semmle.label | call to taint :  |
+| hash_flow.rb:764:15:764:25 | call to taint :  | semmle.label | call to taint :  |
+| hash_flow.rb:767:10:767:13 | hash [element :a] :  | semmle.label | hash [element :a] :  |
+| hash_flow.rb:767:10:767:17 | ...[...] | semmle.label | ...[...] |
+| hash_flow.rb:769:10:769:13 | hash [element :c] :  | semmle.label | hash [element :c] :  |
+| hash_flow.rb:769:10:769:17 | ...[...] | semmle.label | ...[...] |
+| hash_flow.rb:770:10:770:13 | hash [element :d] :  | semmle.label | hash [element :d] :  |
+| hash_flow.rb:770:10:770:17 | ...[...] | semmle.label | ...[...] |
+| hash_flow.rb:772:9:772:12 | [post] hash [element :c] :  | semmle.label | [post] hash [element :c] :  |
+| hash_flow.rb:772:9:772:12 | hash [element :c] :  | semmle.label | hash [element :c] :  |
+| hash_flow.rb:772:9:772:31 | call to except! [element :c] :  | semmle.label | call to except! [element :c] :  |
+| hash_flow.rb:776:10:776:10 | x [element :c] :  | semmle.label | x [element :c] :  |
+| hash_flow.rb:776:10:776:14 | ...[...] | semmle.label | ...[...] |
+| hash_flow.rb:781:10:781:13 | hash [element :c] :  | semmle.label | hash [element :c] :  |
+| hash_flow.rb:781:10:781:17 | ...[...] | semmle.label | ...[...] |
 subpaths
 #select
 | hash_flow.rb:22:10:22:17 | ...[...] | hash_flow.rb:11:15:11:24 | call to taint :  | hash_flow.rb:22:10:22:17 | ...[...] | $@ | hash_flow.rb:11:15:11:24 | call to taint :  | call to taint :  |
@@ -1279,3 +1308,8 @@ subpaths
 | hash_flow.rb:750:10:750:17 | ...[...] | hash_flow.rb:742:15:742:25 | call to taint :  | hash_flow.rb:750:10:750:17 | ...[...] | $@ | hash_flow.rb:742:15:742:25 | call to taint :  | call to taint :  |
 | hash_flow.rb:752:10:752:17 | ...[...] | hash_flow.rb:744:15:744:25 | call to taint :  | hash_flow.rb:752:10:752:17 | ...[...] | $@ | hash_flow.rb:744:15:744:25 | call to taint :  | call to taint :  |
 | hash_flow.rb:753:10:753:17 | ...[...] | hash_flow.rb:746:29:746:39 | call to taint :  | hash_flow.rb:753:10:753:17 | ...[...] | $@ | hash_flow.rb:746:29:746:39 | call to taint :  | call to taint :  |
+| hash_flow.rb:767:10:767:17 | ...[...] | hash_flow.rb:761:15:761:25 | call to taint :  | hash_flow.rb:767:10:767:17 | ...[...] | $@ | hash_flow.rb:761:15:761:25 | call to taint :  | call to taint :  |
+| hash_flow.rb:769:10:769:17 | ...[...] | hash_flow.rb:763:15:763:25 | call to taint :  | hash_flow.rb:769:10:769:17 | ...[...] | $@ | hash_flow.rb:763:15:763:25 | call to taint :  | call to taint :  |
+| hash_flow.rb:770:10:770:17 | ...[...] | hash_flow.rb:764:15:764:25 | call to taint :  | hash_flow.rb:770:10:770:17 | ...[...] | $@ | hash_flow.rb:764:15:764:25 | call to taint :  | call to taint :  |
+| hash_flow.rb:776:10:776:14 | ...[...] | hash_flow.rb:763:15:763:25 | call to taint :  | hash_flow.rb:776:10:776:14 | ...[...] | $@ | hash_flow.rb:763:15:763:25 | call to taint :  | call to taint :  |
+| hash_flow.rb:781:10:781:17 | ...[...] | hash_flow.rb:763:15:763:25 | call to taint :  | hash_flow.rb:781:10:781:17 | ...[...] | $@ | hash_flow.rb:763:15:763:25 | call to taint :  | call to taint :  |

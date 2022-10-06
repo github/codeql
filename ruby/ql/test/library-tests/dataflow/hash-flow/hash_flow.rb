@@ -755,3 +755,31 @@ def m45()
 end
 
 m45()
+
+def m46(x)
+    hash = {
+        :a => taint(46.1),
+        :b => 1,
+        :c => taint(46.2),
+        :d => taint(46.3)
+    }
+
+    sink(hash[:a]) # $ hasValueFlow=46.1
+    sink(hash[:b])
+    sink(hash[:c]) # $ hasValueFlow=46.2
+    sink(hash[:d]) # $ hasValueFlow=46.3
+
+    x = hash.except!(:a, x, :d)
+
+    sink(x[:a])
+    sink(x[:b])
+    sink(x[:c]) # $ hasValueFlow=46.2
+    sink(x[:d])
+
+    sink(hash[:a])
+    sink(hash[:b])
+    sink(hash[:c]) # $ hasValueFlow=46.2
+    sink(hash[:d])
+end
+
+m46(:c)
