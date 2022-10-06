@@ -267,7 +267,7 @@ module Hash {
             s = getExceptComponent(mc, i)
           |
             ".WithoutElement[" + s + "!]" order by i
-          ) and
+          ) + ".WithElement[any]" and
       output = "ReturnValue" and
       preservesValue = true
     }
