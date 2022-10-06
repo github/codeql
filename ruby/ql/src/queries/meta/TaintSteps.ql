@@ -14,8 +14,10 @@ import codeql.ruby.dataflow.internal.TaintTrackingPublic
 
 predicate relevantStep(DataFlow::Node pred, DataFlow::Node succ) { localTaintStep(pred, succ) }
 
-from DataFlow::Node pred, int numOfSuccessors
+from File file, int numSteps
 where
-  relevantStep(pred, _) and
-  numOfSuccessors = count(DataFlow::Node succ | relevantStep(pred, succ))
-select pred, "Step to " + numOfSuccessors + " other nodes."
+  numSteps =
+    strictcount(DataFlow::Node pred, DataFlow::Node succ |
+      relevantStep(pred, succ) and pred.getLocation().getFile() = file
+    )
+select file, "File has " + numSteps + " taint steps."
