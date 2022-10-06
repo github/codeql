@@ -1,5 +1,5 @@
 name: codeql/javascript-experimental-atm-model
-version: 0.2.1
+version: 0.2.1-2022-10-02-17h29m14s.bold-stone-xj7y766z.f3b1d0457f0954a14f195ed267d0058e495811eeffe7b7480cae75778ec263f2
 groups:
     - javascript
     - experimental
