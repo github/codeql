@@ -1,5 +1,5 @@
 /**
- * @name Use of `Kernel.open` or `IO.read`
+ * @name Use of `Kernel.open` or `IO.read` with user-controlled input
  * @description Using `Kernel.open` or `IO.read` may allow a malicious
  *              user to execute arbitrary system commands.
  * @kind path-problem
@@ -14,39 +14,12 @@
  *       external/cwe/cwe-073
  */
 
-import codeql.ruby.AST
-import codeql.ruby.ApiGraphs
-import codeql.ruby.frameworks.core.Kernel::Kernel
-import codeql.ruby.TaintTracking
-import codeql.ruby.dataflow.BarrierGuards
-import codeql.ruby.dataflow.RemoteFlowSources
 import codeql.ruby.DataFlow
+import codeql.ruby.TaintTracking
+import codeql.ruby.dataflow.RemoteFlowSources
+import codeql.ruby.dataflow.BarrierGuards
 import DataFlow::PathGraph
-
-/**
- * A method call that has a suggested replacement.
- */
-abstract class Replacement extends DataFlow::CallNode {
-  abstract string getFrom();
-
-  abstract string getTo();
-}
-
-class KernelOpenCall extends KernelMethodCall, Replacement {
-  KernelOpenCall() { this.getMethodName() = "open" }
-
-  override string getFrom() { result = "Kernel.open" }
-
-  override string getTo() { result = "File.open" }
-}
-
-class IOReadCall extends DataFlow::CallNode, Replacement {
-  IOReadCall() { this = API::getTopLevelMember("IO").getAMethodCall("read") }
-
-  override string getFrom() { result = "IO.read" }
-
-  override string getTo() { result = "File.read" }
-}
+import codeql.ruby.security.KernelOpenQuery
 
 class Configuration extends TaintTracking::Configuration {
   Configuration() { this = "KernelOpen" }
@@ -54,9 +27,7 @@ class Configuration extends TaintTracking::Configuration {
   override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
 
   override predicate isSink(DataFlow::Node sink) {
-    exists(KernelOpenCall c | c.getArgument(0) = sink)
-    or
-    exists(IOReadCall c | c.getArgument(0) = sink)
+    sink = any(AmbiguousPathCall r).getPathArgument()
   }
 
   override predicate isSanitizer(DataFlow::Node node) {
@@ -73,5 +44,6 @@ where
   sourceNode = source.getNode() and
   call.getArgument(0) = sink.getNode()
 select sink.getNode(), source, sink,
-  "This call to " + call.(Replacement).getFrom() + " depends on a $@. Replace it with " +
-    call.(Replacement).getTo() + ".", source.getNode(), "user-provided value"
+  "This call to " + call.(AmbiguousPathCall).getName() +
+    " depends on a $@. Consider replacing it with " + call.(AmbiguousPathCall).getReplacement() +
+    ".", source.getNode(), "user-provided value"
