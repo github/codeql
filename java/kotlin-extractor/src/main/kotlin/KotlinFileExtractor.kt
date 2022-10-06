@@ -1665,7 +1665,7 @@ open class KotlinFileExtractor(
         ) ?: pluginContext.irBuiltIns.anyType
 
     private fun getDefaultsMethodArgTypes(f: IrFunction) =
-        // The $default method has type ([extensionReceiver], [dispatchReciever], paramTypes..., int, Object)
+        // The $default method has type ([extensionReceiver], [dispatchReceiver], paramTypes..., int, Object)
         // All parameter types are erased. The trailing int is a mask indicating which parameter values are real
         // and which should be replaced by defaults. The final Object parameter is apparently always null.
         (
