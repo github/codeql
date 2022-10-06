@@ -110,15 +110,29 @@ private class Function extends ParameterizedType {
 
   /**
    * Gets the parameter type of `this` function at position `position`.
+   * Note that functions are contravariant in their parameter types.
    */
   Type getParameterType(int position) {
-    fi.getRunMethod().getParameterType(position) = getTypeReplacement(result)
+    exists(Type t | fi.getRunMethod().getParameterType(position) = getTypeReplacement(t) |
+      (
+        result = t or
+        result = t.(Wildcard).getLowerBound().getType()
+      )
+    )
   }
 
   /**
    * Gets the return type of `this` function.
+   * Note that functions are covariant in their return type.
    */
-  Type getReturnType() { fi.getRunMethod().getReturnType() = getTypeReplacement(result) }
+  Type getReturnType() {
+    exists(Type t | fi.getRunMethod().getReturnType() = getTypeReplacement(t) |
+      (
+        result = t or
+        result = t.(Wildcard).getUpperBound().getType()
+      )
+    )
+  }
 }
 
 /**
