@@ -85,24 +85,24 @@ calls.rb:
 #  377| SingletonOverride1
 #-----|  -> Object
 
-#  402| SingletonOverride2
+#  404| SingletonOverride2
 #-----|  -> SingletonOverride1
 
-#  417| ConditionalInstanceMethods
+#  421| ConditionalInstanceMethods
 #-----|  -> Object
 
-#  480| ExtendSingletonMethod
+#  484| ExtendSingletonMethod
 
-#  490| ExtendSingletonMethod2
+#  494| ExtendSingletonMethod2
 
-#  496| ExtendSingletonMethod3
+#  500| ExtendSingletonMethod3
 
-#  509| ProtectedMethodInModule
+#  513| ProtectedMethodInModule
 
-#  515| ProtectedMethods
+#  519| ProtectedMethods
 #-----|  -> Object
 
-#  534| ProtectedMethodsSub
+#  538| ProtectedMethodsSub
 #-----|  -> ProtectedMethods
 
 hello.rb:
