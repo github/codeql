@@ -9,6 +9,7 @@ import (
 	"mime/multipart"
 	"net/http"
 	"os"
+	"encoding/json"
 )
 
 type subBindMe struct {
@@ -309,4 +310,12 @@ func testBeeMap(c *beego.Controller) {
 func testSafeRedirects(c *beego.Controller, ctx *context.Context) {
 	c.Redirect(ctx.Input.URI(), 304)
 	ctx.Redirect(304, ctx.Input.URL())
+}
+
+// BAD: using RequestBody data as path in a file-system operation
+func requestBodySourceTest(ctx *context.Context, c *beego.Controller) {
+	var dat map[string]interface{}
+	json.Unmarshal(ctx.Input.RequestBody, &dat)
+	untrusted := dat["filepath"].(string)
+	c.SaveToFile("someReceviedFile", untrusted)
 }
