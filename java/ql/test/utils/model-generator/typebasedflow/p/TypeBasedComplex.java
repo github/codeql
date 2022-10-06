@@ -44,4 +44,16 @@ public class TypeBasedComplex<T> {
     public void set(Integer x, Function<Integer, T> f) {
         throw null;
     }
+
+    public Integer applyMyFunction(MyFunction<T, Integer, T> f, Integer x) {
+        throw null;
+    }
+
+    public <S1, S2> S2 applyMyFunctionGeneric(MyFunction<T, S1, S2> f, S1 x) {
+        throw null;
+    }
+
+    public <S1, S2, S3> S3 applyMyFunctionGeneric(MyFunction<S1, S2, S3> f, S1 x, S2 y) {
+        throw null;
+    }
 }
