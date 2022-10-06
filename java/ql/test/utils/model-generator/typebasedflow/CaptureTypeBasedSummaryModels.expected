@@ -1,3 +1,5 @@
+| p;Stream;true;distinct;();;Argument[-1].Element;ReturnValue.Element;value;generated |
+| p;Stream;true;iterator;();;Argument[-1].Element;ReturnValue.Element;value;generated |
 | p;TypeBasedCollection;true;addManyT;(List);;Argument[0].Element;Argument[-1].Element;value;generated |
 | p;TypeBasedCollection;true;addT;(Object);;Argument[0];Argument[-1].Element;value;generated |
 | p;TypeBasedCollection;true;firstT;();;Argument[-1].Element;ReturnValue;value;generated |
