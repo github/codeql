@@ -337,7 +337,11 @@ private class FetchValuesUnknownSummary extends FetchValuesSummary {
 }
 
 private class MergeSummary extends SimpleSummarizedCallable {
-  MergeSummary() { this = "merge" }
+  MergeSummary() {
+    // deep_merge is an ActiveSupport extension
+    // https://api.rubyonrails.org/classes/Hash.html#method-i-deep_merge
+    this = ["merge", "deep_merge"]
+  }
 
   override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
     (
@@ -352,7 +356,11 @@ private class MergeSummary extends SimpleSummarizedCallable {
 }
 
 private class MergeBangSummary extends SimpleSummarizedCallable {
-  MergeBangSummary() { this = ["merge!", "update"] }
+  MergeBangSummary() {
+    // deep_merge! is an ActiveSupport extension
+    // https://api.rubyonrails.org/classes/Hash.html#method-i-deep_merge-21
+    this = ["merge!", "deep_merge!", "update"]
+  }
 
   override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
     (
