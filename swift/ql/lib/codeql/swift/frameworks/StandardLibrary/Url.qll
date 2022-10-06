@@ -14,6 +14,9 @@ private class UrlRemoteFlowSource extends SourceModelCsv {
   }
 }
 
+/**
+ * A model for `URL` members that permit taint flow.
+ */
 private class UrlSummaries extends SummaryModelCsv {
   override predicate row(string row) {
     row =
