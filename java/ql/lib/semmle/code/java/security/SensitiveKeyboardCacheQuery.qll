@@ -30,7 +30,7 @@ class AndroidEditableXmlElement extends XmlElement {
   string getId() { result = id.getValue() }
 }
 
-/** Gets a regex inidcating that an input field may contain sensitive data. */
+/** Gets a regex indicating that an input field may contain sensitive data. */
 private string getInputSensitiveInfoRegex() {
   result =
     [

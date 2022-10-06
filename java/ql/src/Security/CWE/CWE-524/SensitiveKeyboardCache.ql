@@ -1,9 +1,9 @@
 /**
- * @name Android sensetive keyboard cache
+ * @name Android sensitive keyboard cache
  * @description Sensitive information should not be saved to the keyboard cache.
  * @kind problem
  * @problem.severity warning
- * @id java/android/sensetive-keyboard-cache
+ * @id java/android/sensitive-keyboard-cache
  * @tags security
  *       external/cwe/cwe-524
  * @precision high
