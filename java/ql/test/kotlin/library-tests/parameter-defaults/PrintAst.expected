@@ -996,3 +996,172 @@ test.kt:
 #    1|             6: [NullLiteral] null
 #    1|             7: [IntegerLiteral] 3
 #    1|             8: [NullLiteral] null
+#  156|   14: [Class] VisibilityTests
+#  156|     1: [Constructor] VisibilityTests
+#  156|       5: [BlockStmt] { ... }
+#  156|         0: [SuperConstructorInvocationStmt] super(...)
+#  156|         1: [BlockStmt] { ... }
+#  158|     2: [Method] f
+#  158|       3: [TypeAccess] int
+#-----|       4: (Parameters)
+#  158|         0: [Parameter] x
+#  158|           0: [TypeAccess] int
+#  158|         1: [Parameter] y
+#  158|           0: [TypeAccess] int
+#  158|       5: [BlockStmt] { ... }
+#  158|         0: [ReturnStmt] return ...
+#  158|           0: [AddExpr] ... + ...
+#  158|             0: [VarAccess] x
+#  158|             1: [VarAccess] y
+#  158|     3: [Method] f$default
+#  158|       3: [TypeAccess] int
+#-----|       4: (Parameters)
+#  158|         0: [Parameter] p0
+#  158|           0: [TypeAccess] VisibilityTests
+#  158|         1: [Parameter] p1
+#  158|           0: [TypeAccess] int
+#  158|         2: [Parameter] p2
+#  158|           0: [TypeAccess] int
+#  158|         3: [Parameter] p3
+#  158|           0: [TypeAccess] int
+#  158|         4: [Parameter] p4
+#  158|           0: [TypeAccess] Object
+#  158|       5: [BlockStmt] { ... }
+#  158|         0: [IfStmt] if (...)
+#  158|           0: [EQExpr] ... == ...
+#  158|             0: [AndBitwiseExpr] ... & ...
+#  158|               0: [IntegerLiteral] 2
+#  158|               1: [VarAccess] p3
+#  158|             1: [IntegerLiteral] 0
+#  158|           1: [ExprStmt] <Expr>;
+#  158|             0: [AssignExpr] ...=...
+#  158|               0: [VarAccess] p2
+#  158|               1: [IntegerLiteral] 0
+#  158|         1: [ReturnStmt] return ...
+#  158|           0: [MethodAccess] f(...)
+#  158|             -1: [VarAccess] p0
+#  158|             0: [VarAccess] p1
+#  158|             1: [VarAccess] p2
+#  159|     4: [Method] g$main
+#  159|       3: [TypeAccess] int
+#-----|       4: (Parameters)
+#  159|         0: [Parameter] x
+#  159|           0: [TypeAccess] int
+#  159|         1: [Parameter] y
+#  159|           0: [TypeAccess] int
+#  159|       5: [BlockStmt] { ... }
+#  159|         0: [ReturnStmt] return ...
+#  159|           0: [AddExpr] ... + ...
+#  159|             0: [VarAccess] x
+#  159|             1: [VarAccess] y
+#  159|     5: [Method] g$main$default
+#  159|       3: [TypeAccess] int
+#-----|       4: (Parameters)
+#  159|         0: [Parameter] p0
+#  159|           0: [TypeAccess] VisibilityTests
+#  159|         1: [Parameter] p1
+#  159|           0: [TypeAccess] int
+#  159|         2: [Parameter] p2
+#  159|           0: [TypeAccess] int
+#  159|         3: [Parameter] p3
+#  159|           0: [TypeAccess] int
+#  159|         4: [Parameter] p4
+#  159|           0: [TypeAccess] Object
+#  159|       5: [BlockStmt] { ... }
+#  159|         0: [IfStmt] if (...)
+#  159|           0: [EQExpr] ... == ...
+#  159|             0: [AndBitwiseExpr] ... & ...
+#  159|               0: [IntegerLiteral] 2
+#  159|               1: [VarAccess] p3
+#  159|             1: [IntegerLiteral] 0
+#  159|           1: [ExprStmt] <Expr>;
+#  159|             0: [AssignExpr] ...=...
+#  159|               0: [VarAccess] p2
+#  159|               1: [IntegerLiteral] 0
+#  159|         1: [ReturnStmt] return ...
+#  159|           0: [MethodAccess] g$main(...)
+#  159|             -1: [VarAccess] p0
+#  159|             0: [VarAccess] p1
+#  159|             1: [VarAccess] p2
+#  160|     6: [Method] h
+#  160|       3: [TypeAccess] int
+#-----|       4: (Parameters)
+#  160|         0: [Parameter] x
+#  160|           0: [TypeAccess] int
+#  160|         1: [Parameter] y
+#  160|           0: [TypeAccess] int
+#  160|       5: [BlockStmt] { ... }
+#  160|         0: [ReturnStmt] return ...
+#  160|           0: [AddExpr] ... + ...
+#  160|             0: [VarAccess] x
+#  160|             1: [VarAccess] y
+#  160|     7: [Method] h$default
+#  160|       3: [TypeAccess] int
+#-----|       4: (Parameters)
+#  160|         0: [Parameter] p0
+#  160|           0: [TypeAccess] VisibilityTests
+#  160|         1: [Parameter] p1
+#  160|           0: [TypeAccess] int
+#  160|         2: [Parameter] p2
+#  160|           0: [TypeAccess] int
+#  160|         3: [Parameter] p3
+#  160|           0: [TypeAccess] int
+#  160|         4: [Parameter] p4
+#  160|           0: [TypeAccess] Object
+#  160|       5: [BlockStmt] { ... }
+#  160|         0: [IfStmt] if (...)
+#  160|           0: [EQExpr] ... == ...
+#  160|             0: [AndBitwiseExpr] ... & ...
+#  160|               0: [IntegerLiteral] 2
+#  160|               1: [VarAccess] p3
+#  160|             1: [IntegerLiteral] 0
+#  160|           1: [ExprStmt] <Expr>;
+#  160|             0: [AssignExpr] ...=...
+#  160|               0: [VarAccess] p2
+#  160|               1: [IntegerLiteral] 0
+#  160|         1: [ReturnStmt] return ...
+#  160|           0: [MethodAccess] h(...)
+#  160|             -1: [VarAccess] p0
+#  160|             0: [VarAccess] p1
+#  160|             1: [VarAccess] p2
+#  161|     8: [Method] i
+#  161|       3: [TypeAccess] int
+#-----|       4: (Parameters)
+#  161|         0: [Parameter] x
+#  161|           0: [TypeAccess] int
+#  161|         1: [Parameter] y
+#  161|           0: [TypeAccess] int
+#  161|       5: [BlockStmt] { ... }
+#  161|         0: [ReturnStmt] return ...
+#  161|           0: [AddExpr] ... + ...
+#  161|             0: [VarAccess] x
+#  161|             1: [VarAccess] y
+#  161|     9: [Method] i$default
+#  161|       3: [TypeAccess] int
+#-----|       4: (Parameters)
+#  161|         0: [Parameter] p0
+#  161|           0: [TypeAccess] VisibilityTests
+#  161|         1: [Parameter] p1
+#  161|           0: [TypeAccess] int
+#  161|         2: [Parameter] p2
+#  161|           0: [TypeAccess] int
+#  161|         3: [Parameter] p3
+#  161|           0: [TypeAccess] int
+#  161|         4: [Parameter] p4
+#  161|           0: [TypeAccess] Object
+#  161|       5: [BlockStmt] { ... }
+#  161|         0: [IfStmt] if (...)
+#  161|           0: [EQExpr] ... == ...
+#  161|             0: [AndBitwiseExpr] ... & ...
+#  161|               0: [IntegerLiteral] 2
+#  161|               1: [VarAccess] p3
+#  161|             1: [IntegerLiteral] 0
+#  161|           1: [ExprStmt] <Expr>;
+#  161|             0: [AssignExpr] ...=...
+#  161|               0: [VarAccess] p2
+#  161|               1: [IntegerLiteral] 0
+#  161|         1: [ReturnStmt] return ...
+#  161|           0: [MethodAccess] i(...)
+#  161|             -1: [VarAccess] p0
+#  161|             0: [VarAccess] p1
+#  161|             1: [VarAccess] p2

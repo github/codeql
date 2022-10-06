@@ -152,3 +152,12 @@ class TestGenericFunction<T> {
   }
 
 }
+
+class VisibilityTests {
+
+  fun f(x: Int, y: Int = 0) = x + y
+  internal fun g(x: Int, y: Int = 0) = x + y
+  protected fun h(x: Int, y: Int = 0) = x + y
+  private fun i(x: Int, y: Int = 0) = x + y
+
+}
