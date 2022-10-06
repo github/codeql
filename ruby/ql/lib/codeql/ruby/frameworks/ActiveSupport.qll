@@ -84,6 +84,74 @@ module ActiveSupport {
     }
 
     /**
+     *    Extensions to the `Hash` class.
+     */
+    module Hash {
+      private class WithIndifferentAccessSummary extends SimpleSummarizedCallable {
+        WithIndifferentAccessSummary() { this = "with_indifferent_access" }
+
+        override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+          input = "Argument[self].Element[any]" and
+          output = "ReturnValue.Element[any]" and
+          preservesValue = true
+        }
+      }
+
+      private class TransformSummary extends SimpleSummarizedCallable {
+        TransformSummary() {
+          this =
+            [
+              "stringify_keys", "to_options", "symbolize_keys", "deep_stringify_keys",
+              "deep_symbolize_keys", "with_indifferent_access"
+            ]
+        }
+
+        override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+          input = "Argument[self].Element[any]" and
+          output = "ReturnValue.Element[?]" and
+          preservesValue = true
+        }
+      }
+
+      private string getExtractComponent(MethodCall mc, int i) {
+        mc.getMethodName() = ["extract!"] and
+        result = DataFlow::Content::getKnownElementIndex(mc.getArgument(i)).serialize()
+      }
+
+      private class ExtractSummary extends SummarizedCallable {
+        MethodCall mc;
+
+        ExtractSummary() {
+          mc.getMethodName() = "extract!" and
+          this =
+            "extract!(" +
+              concat(int i, string s | s = getExtractComponent(mc, i) | s, "," order by i) + ")"
+        }
+
+        final override MethodCall getACall() { result = mc }
+
+        override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+          (
+            exists(string s | s = getExtractComponent(mc, _) |
+              input = "Argument[self].Element[" + s + "!]" and
+              output = "ReturnValue.Element[" + s + "!]"
+            )
+            or
+            input =
+              "Argument[self]" +
+                concat(int i, string s |
+                  s = getExtractComponent(mc, i)
+                |
+                  ".WithoutElement[" + s + "!]" order by i
+                ) + ".WithElement[any]" and
+            output = "Argument[self]"
+          ) and
+          preservesValue = true
+        }
+      }
+    }
+
+    /**
      * Extensions to the `Enumerable` module.
      */
     module Enumerable {
