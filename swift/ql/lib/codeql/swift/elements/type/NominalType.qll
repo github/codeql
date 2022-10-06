@@ -7,7 +7,7 @@ class NominalType extends NominalTypeBase {
   NominalType getADerivedType() { result.getABaseType() = this }
 
   /**
-   * Gets the full name of this `TypeDecl`. For example in:
+   * Gets the full name of this `NominalType`. For example in:
    * ```swift
    * struct A {
    *   struct B {
