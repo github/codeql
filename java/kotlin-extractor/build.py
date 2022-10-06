@@ -25,6 +25,8 @@ def parse_args():
                         dest='many', help='Build for a single version/kind')
     parser.add_argument('--single-version',
                         help='Build for a specific version/kind')
+    parser.add_argument('--single-version-embeddable', action='store_true',
+                        help='When building a single version, build an embeddable extractor (default is standalone)')
     return parser.parse_args()
 
 
@@ -233,12 +235,13 @@ def compile_standalone(version):
             'build_standalone_' + version,
             version)
 
+compile_single_version = compile_embeddable if args.single_version_embeddable == True else compile_standalone
 
 if args.single_version:
-    compile_standalone(args.single_version)
+    compile_single_version(args.single_version)
 elif args.many:
     for version in kotlin_plugin_versions.many_versions:
         compile_standalone(version)
         compile_embeddable(version)
 else:
-    compile_standalone(kotlin_plugin_versions.get_single_version())
+    compile_single_version(kotlin_plugin_versions.get_single_version())
