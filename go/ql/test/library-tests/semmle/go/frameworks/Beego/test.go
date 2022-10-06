@@ -1,6 +1,7 @@
 package test
 
 import (
+	"encoding/json"
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/context"
 	"github.com/astaxie/beego/logs"
@@ -9,7 +10,6 @@ import (
 	"mime/multipart"
 	"net/http"
 	"os"
-	"encoding/json"
 )
 
 type subBindMe struct {
