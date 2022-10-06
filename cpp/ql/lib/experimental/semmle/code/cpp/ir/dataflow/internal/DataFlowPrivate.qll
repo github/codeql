@@ -465,20 +465,20 @@ predicate clearsContent(Node n, Content c) {
 predicate expectsContent(Node n, ContentSet c) { none() }
 
 /** Gets the type of `n` used for type pruning. */
-IRType getNodeType(Node n) {
+DataFlowType getNodeType(Node n) {
   suppressUnusedNode(n) and
-  result instanceof IRVoidType // stub implementation
+  result instanceof VoidType // stub implementation
 }
 
 /** Gets a string representation of a type returned by `getNodeType`. */
-string ppReprType(IRType t) { none() } // stub implementation
+string ppReprType(DataFlowType t) { none() } // stub implementation
 
 /**
  * Holds if `t1` and `t2` are compatible, that is, whether data can flow from
  * a node of type `t1` to a node of type `t2`.
  */
 pragma[inline]
-predicate compatibleTypes(IRType t1, IRType t2) {
+predicate compatibleTypes(DataFlowType t1, DataFlowType t2) {
   any() // stub implementation
 }
 
@@ -502,7 +502,7 @@ class DataFlowCallable = Cpp::Declaration;
 
 class DataFlowExpr = Expr;
 
-class DataFlowType = IRType;
+class DataFlowType = Type;
 
 /** A function call relevant for data flow. */
 class DataFlowCall extends CallInstruction {

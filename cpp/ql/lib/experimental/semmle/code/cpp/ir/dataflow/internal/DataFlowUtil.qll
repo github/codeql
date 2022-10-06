@@ -112,7 +112,7 @@ class Node extends TIRDataFlowNode {
   Declaration getFunction() { none() } // overridden in subclasses
 
   /** Gets the type of this node. */
-  IRType getType() { none() } // overridden in subclasses
+  DataFlowType getType() { none() } // overridden in subclasses
 
   /** Gets the instruction corresponding to this node, if any. */
   Instruction asInstruction() { result = this.(InstructionNode).getInstruction() }
@@ -272,7 +272,7 @@ class Node extends TIRDataFlowNode {
   /**
    * Gets an upper bound on the type of this node.
    */
-  IRType getTypeBound() { result = this.getType() }
+  DataFlowType getTypeBound() { result = this.getType() }
 
   /** Gets the location of this element. */
   cached
@@ -321,7 +321,7 @@ class InstructionNode extends Node, TInstructionNode {
 
   override Declaration getFunction() { result = instr.getEnclosingFunction() }
 
-  override IRType getType() { result = instr.getResultIRType() }
+  override DataFlowType getType() { result = instr.getResultType() }
 
   final override Location getLocationImpl() { result = instr.getLocation() }
 
@@ -347,11 +347,30 @@ class OperandNode extends Node, TOperandNode {
 
   override Declaration getFunction() { result = op.getUse().getEnclosingFunction() }
 
-  override IRType getType() { result = op.getIRType() }
+  override DataFlowType getType() { result = op.getType() }
 
   final override Location getLocationImpl() { result = op.getLocation() }
 
   override string toStringImpl() { result = this.getOperand().toString() }
+}
+
+/**
+ * Returns `t`, but stripped of the `n` outermost pointers, references, etc.
+ *
+ * For example, `stripPointers(int*&, 2)` is `int` and `stripPointers(int*, 0)` is `int*`.
+ */
+private Type stripPointers(Type t, int n) {
+  result = t and n = 0
+  or
+  result = stripPointers(t.(PointerType).getBaseType(), n - 1)
+  or
+  result = stripPointers(t.(ArrayType).getBaseType(), n - 1)
+  or
+  result = stripPointers(t.(ReferenceType).getBaseType(), n - 1)
+  or
+  result = stripPointers(t.(PointerToMemberType).getBaseType(), n - 1)
+  or
+  result = stripPointers(t.(FunctionPointerIshType).getBaseType(), n - 1)
 }
 
 /**
@@ -406,7 +425,7 @@ class SsaPhiNode extends Node, TSsaPhiNode {
 
   override Declaration getFunction() { result = phi.getBasicBlock().getEnclosingFunction() }
 
-  override IRType getType() { result instanceof IRVoidType }
+  override DataFlowType getType() { result = this.getAnInput().getType() }
 
   final override Location getLocationImpl() { result = phi.getBasicBlock().getLocation() }
 
@@ -449,8 +468,6 @@ class SideEffectOperandNode extends Node, IndirectOperand {
 
   override Function getFunction() { result = call.getEnclosingFunction() }
 
-  override IRType getType() { result instanceof IRVoidType }
-
   Expr getArgument() { result = call.getArgument(argumentIndex).getUnconvertedResultExpression() }
 }
 
@@ -472,8 +489,6 @@ class IndirectParameterNode extends Node, IndirectInstruction {
   override Declaration getEnclosingCallable() { result = this.getFunction() }
 
   override Function getFunction() { result = this.getInstruction().getEnclosingFunction() }
-
-  override IRType getType() { result instanceof IRVoidType }
 
   override string toStringImpl() {
     result = this.getParameter().toString() + " indirection"
@@ -499,8 +514,6 @@ class IndirectReturnNode extends IndirectOperand {
   Operand getAddressOperand() { result = operand }
 
   override Declaration getEnclosingCallable() { result = this.getFunction() }
-
-  override IRType getType() { result instanceof IRVoidType }
 }
 
 /**
@@ -587,6 +600,23 @@ class IndirectReturnOutNode extends Node {
   int getIndirectionIndex() { result = indirectionIndex }
 }
 
+private PointerType getGLValueType(Type t, int indirectionIndex) {
+  result.getBaseType() = stripPointers(t, indirectionIndex - 1)
+}
+
+bindingset[isGLValue]
+private DataFlowType getType0(Type t, int indirectionIndex, boolean isGLValue) {
+  if isGLValue = true
+  then
+    result = getGLValueType(t, indirectionIndex)
+    or
+    // If the `PointerType` with the correct base type isn't in the database we cannot
+    // return a correct type. So instead we'll return a value that has "one indirection too little".
+    not exists(getGLValueType(t, indirectionIndex)) and
+    result = stripPointers(t, indirectionIndex - 1)
+  else result = stripPointers(t, indirectionIndex)
+}
+
 /**
  * INTERNAL: Do not use.
  *
@@ -608,7 +638,11 @@ class IndirectOperand extends Node, TIndirectOperand {
 
   override Declaration getEnclosingCallable() { result = this.getFunction() }
 
-  override IRType getType() { result = this.getOperand().getIRType() }
+  override DataFlowType getType() {
+    exists(boolean isGLValue | if operand.isGLValue() then isGLValue = true else isGLValue = false |
+      result = getType0(operand.getType().getUnspecifiedType(), indirectionIndex, isGLValue)
+    )
+  }
 
   final override Location getLocationImpl() { result = this.getOperand().getLocation() }
 
@@ -638,7 +672,11 @@ class IndirectInstruction extends Node, TIndirectInstruction {
 
   override Declaration getEnclosingCallable() { result = this.getFunction() }
 
-  override IRType getType() { result = this.getInstruction().getResultIRType() }
+  override DataFlowType getType() {
+    exists(boolean isGLValue | if instr.isGLValue() then isGLValue = true else isGLValue = false |
+      result = getType0(instr.getResultType().getUnspecifiedType(), indirectionIndex, isGLValue)
+    )
+  }
 
   final override Location getLocationImpl() { result = this.getInstruction().getLocation() }
 
@@ -852,6 +890,8 @@ abstract class PostUpdateNode extends Node {
    * Gets the node before the state update.
    */
   abstract Node getPreUpdateNode();
+
+  final override Type getType() { result = this.getPreUpdateNode().getType() }
 }
 
 /**
@@ -915,7 +955,7 @@ class VariableNode extends Node, TVariableNode {
     result = v
   }
 
-  override IRType getType() { result.getCanonicalLanguageType().hasUnspecifiedType(v.getType(), _) }
+  override DataFlowType getType() { result = v.getType() }
 
   final override Location getLocationImpl() { result = v.getLocation() }
 
