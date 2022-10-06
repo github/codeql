@@ -2,7 +2,7 @@ import semmle.code.java.security.Encryption
 import semmle.code.java.dataflow.TaintTracking
 import semmle.code.java.dataflow.DataFlow
 
-// ******* DATAFLOW *******************************************************************************
+//import DataFlow::PathGraph
 /**
  * Asymmetric (RSA, DSA, DH) key length data flow tracking configuration.
  */
@@ -14,8 +14,6 @@ class AsymmetricKeyTrackingConfiguration extends DataFlow::Configuration {
       integer.getIntValue() < 2048 and
       source.asExpr() = integer
       or
-      // The below only handles cases when variables are used (both locally in a method and between methods)
-      // The above adds handling for direct use of integers as well
       var.getVariable().getInitializer().getUnderlyingExpr() instanceof IntegerLiteral and
       var.getVariable().getInitializer().getUnderlyingExpr().toString().toInt() < 2048 and
       source.asExpr() = var.getVariable().getInitializer()
@@ -30,101 +28,11 @@ class AsymmetricKeyTrackingConfiguration extends DataFlow::Configuration {
   }
 }
 
-/**
- * Symmetric (AES) key length data flow tracking configuration.
- */
-class SymmetricKeyTrackingConfiguration extends DataFlow::Configuration {
-  SymmetricKeyTrackingConfiguration() { this = "SymmetricKeyTrackingConfiguration" }
-
-  override predicate isSource(DataFlow::Node source) {
-    exists(IntegerLiteral integer, VarAccess var |
-      integer.getIntValue() < 128 and
-      source.asExpr() = integer
-      or
-      // The below only handles cases when variables are used (both locally in a method and between methods)
-      // The above adds handling for direct use of integers as well
-      var.getVariable().getInitializer().getUnderlyingExpr() instanceof IntegerLiteral and
-      var.getVariable().getInitializer().getUnderlyingExpr().toString().toInt() < 128 and
-      source.asExpr() = var.getVariable().getInitializer()
-    )
-  }
-
-  override predicate isSink(DataFlow::Node sink) {
-    exists(MethodAccess ma |
-      ma.getMethod() instanceof KeyGeneratorInitMethod and
-      sink.asExpr() = ma.getArgument(0)
-    )
-  }
-}
-
-/**
- * Symmetric (AES) key length data flow tracking configuration.
- */
-class SymmetricKeyTrackingConfiguration2 extends DataFlow::Configuration {
-  SymmetricKeyTrackingConfiguration2() { this = "SymmetricKeyTrackingConfiguration2" }
-
-  override predicate isSource(DataFlow::Node source) {
-    source.asExpr() instanceof IntegerLiteral and
-    source.toString().toInt() < 128
-  }
-
-  override predicate isSink(DataFlow::Node sink) {
-    exists(MethodAccess ma |
-      ma.getMethod() instanceof KeyGeneratorInitMethod and
-      sink.asExpr() = ma.getArgument(0)
-    )
-  }
-}
-
-class UnsafeSymmetricKeySize extends IntegerLiteral {
-  UnsafeSymmetricKeySize() { this.getIntValue() < 128 }
-}
-
-class UnsafeAsymmetricKeySize extends IntegerLiteral {
-  UnsafeAsymmetricKeySize() { this.getIntValue() < 2048 }
-}
-
-class UnsafeKeySize extends IntegerLiteral {
-  UnsafeKeySize() {
-    this instanceof UnsafeAsymmetricKeySize and
-    exists(MethodAccess ma | ma.getMethod() instanceof KeyPairGeneratorInitMethod)
-    or
-    this instanceof UnsafeSymmetricKeySize and
-    exists(MethodAccess ma | ma.getMethod() instanceof KeyGeneratorInitMethod)
-  }
-}
-
-class KeyInitMethod extends Method {
-  KeyInitMethod() {
-    this instanceof KeyGeneratorInitMethod or
-    this instanceof KeyPairGeneratorInitMethod
-  }
-}
-
-/**
- * key length data flow tracking configuration.
- */
-class KeyTrackingConfiguration extends DataFlow::Configuration {
-  KeyTrackingConfiguration() { this = "KeyTrackingConfiguration" }
-
-  override predicate isSource(DataFlow::Node source) { source.asExpr() instanceof UnsafeKeySize }
-
-  override predicate isSink(DataFlow::Node sink) {
-    exists(MethodAccess ma |
-      ma.getMethod() instanceof KeyInitMethod and
-      sink.asExpr() = ma.getArgument(0)
-    )
-  }
-}
-
-// ******* DATAFLOW *******************************************************************************
-// ! move to Encryption.qll?
 /** The Java class `java.security.spec.ECGenParameterSpec`. */
 private class ECGenParameterSpec extends RefType {
   ECGenParameterSpec() { this.hasQualifiedName("java.security.spec", "ECGenParameterSpec") }
 }
 
-// ! move to Encryption.qll?
 /** The `init` method declared in `javax.crypto.KeyGenerator`. */
 private class KeyGeneratorInitMethod extends Method {
   KeyGeneratorInitMethod() {
@@ -133,7 +41,6 @@ private class KeyGeneratorInitMethod extends Method {
   }
 }
 
-// ! move to Encryption.qll?
 /** The `initialize` method declared in `java.security.KeyPairGenerator`. */
 private class KeyPairGeneratorInitMethod extends Method {
   KeyPairGeneratorInitMethod() {
@@ -188,46 +95,6 @@ private class KeyPairGeneratorInitConfiguration extends TaintTracking::Configura
       sink.asExpr() = ma.getQualifier()
     )
   }
-}
-
-/**
- * Holds if a symmetric `KeyGenerator` implementing encryption algorithm
- * `type` and initialized by `ma` uses an insufficient key size.
- *
- * `msg` provides a human-readable description of the problem.
- */
-//bindingset[type]
-private predicate hasShortSymmetricKey_TEST() {
-  exists(
-    SymmetricKeyTrackingConfiguration2 cfg, DataFlow::PathNode source, DataFlow::PathNode sink
-  |
-    cfg.hasFlowPath(source, sink)
-  )
-  // ma.getMethod() instanceof KeyGeneratorInitMethod and
-  // // flow needed to correctly determine algorithm type and
-  // // not match to ANY symmetric algorithm (although doesn't really matter since only have AES currently...)
-  // exists(
-  //   JavaxCryptoKeyGenerator jcg, KeyGeneratorInitConfiguration cc, DataFlow::PathNode source,
-  //   DataFlow::PathNode dest
-  // |
-  //   jcg.getAlgoSpec().(StringLiteral).getValue() = type and
-  //   source.getNode().asExpr() = jcg and
-  //   dest.getNode().asExpr() = ma.getQualifier() and
-  //   cc.hasFlowPath(source, dest)
-  // ) and
-  // (
-  //   // VarAccess case needed to handle FN of key-size stored in a variable
-  //   // Note: cannot use CompileTimeConstantExpr since will miss cases when variable is not a compile-time constant
-  //   // (e.g. not declared `final` in Java)
-  //   exists(VarAccess var |
-  //     var.getVariable().getInitializer().getUnderlyingExpr() instanceof IntegerLiteral and
-  //     var.getVariable().getInitializer().getUnderlyingExpr().toString().toInt() < 128 and
-  //     ma.getArgument(0) = var
-  //   )
-  //   or
-  //   ma.getArgument(0).(IntegerLiteral).getIntValue() < 128
-  // ) and
-  // msg = "Key size should be at least 128 bits for " + type + " encryption."
 }
 
 /**
@@ -394,10 +261,4 @@ predicate hasInsufficientKeySize(Expr e, string msg) {
   hasShortDsaKeyPair(e, msg) or
   hasShortRsaKeyPair(e, msg) or
   hasShortECKeyPair(e, msg)
-}
-
-predicate hasInsufficientKeySize2(DataFlow::PathNode source, DataFlow::PathNode sink) {
-  exists(AsymmetricKeyTrackingConfiguration config1 | config1.hasFlowPath(source, sink))
-  or
-  exists(SymmetricKeyTrackingConfiguration2 config2 | config2.hasFlowPath(source, sink))
 }
