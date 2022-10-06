@@ -161,6 +161,8 @@ getTarget
 | calls.rb:412:9:412:44 | call to puts | calls.rb:102:5:102:30 | puts |
 | calls.rb:416:1:416:29 | call to singleton1 | calls.rb:406:9:408:11 | singleton1 |
 | calls.rb:417:1:417:29 | call to singleton2 | calls.rb:411:5:413:7 | singleton2 |
+| calls.rb:418:1:418:34 | call to call_singleton1 | calls.rb:383:9:385:11 | call_singleton1 |
+| calls.rb:419:1:419:34 | call to call_singleton2 | calls.rb:392:5:394:7 | call_singleton2 |
 | calls.rb:424:13:424:48 | call to puts | calls.rb:102:5:102:30 | puts |
 | calls.rb:429:9:429:44 | call to puts | calls.rb:102:5:102:30 | puts |
 | calls.rb:432:13:432:48 | call to puts | calls.rb:102:5:102:30 | puts |
@@ -290,8 +292,6 @@ unresolvedCall
 | calls.rb:274:1:274:14 | call to singleton_g |
 | calls.rb:276:1:276:14 | call to singleton_g |
 | calls.rb:313:9:313:20 | call to instance |
-| calls.rb:418:1:418:34 | call to call_singleton1 |
-| calls.rb:419:1:419:34 | call to call_singleton2 |
 | calls.rb:422:8:422:13 | call to rand |
 | calls.rb:422:8:422:17 | ... > ... |
 | calls.rb:439:9:439:10 | call to m3 |
