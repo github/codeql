@@ -38,4 +38,5 @@ app.get("/some/path", function (req, res) {
     type="application/ld+json"
     dangerouslySetInnerHTML={{ __html: JSON.stringify({}) }} // OK
   />;
+  <script type="application/ld+json">{ JSON.stringify(jsonLD) }</script> // OK
 });
