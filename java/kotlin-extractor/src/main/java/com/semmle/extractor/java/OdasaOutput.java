@@ -486,7 +486,11 @@ public class OdasaOutput {
 					// We encode the metadata into the filename, so that the
 					// TRAP filenames for different metadatas don't overlap.
 					trapFileVersion = TrapClassVersion.fromSymbol(sym, log);
-					trapFileBase = new File(normalTrapFile.getParentFile(), normalTrapFile.getName().replace(".trap.gz", ""));
+					String baseName = normalTrapFile.getName().replace(".trap.gz", "");
+					// If a class has lots of inner classes, then we get lots of files
+					// in a single directory. This makes our directory listings later slow.
+					// To avoid this, rather than using files named .../Foo*, we use .../Foo/Foo*.
+					trapFileBase = new File(new File(normalTrapFile.getParentFile(), baseName), baseName);
 					trapFile = new File(trapFileBase.getPath() + '#' + trapFileVersion.toString() + ".trap.gz");
 				}
 			}
@@ -539,9 +543,14 @@ public class OdasaOutput {
 					for (File f: FileUtil.list(trapFileDir)) {
 						String name = f.getName();
 						Matcher m = selectClassVersionComponents.matcher(name);
-						if (m.matches() && m.group(1).equals(trapFileBaseName)) {
-							TrapClassVersion v = new TrapClassVersion(Integer.valueOf(m.group(2)), Integer.valueOf(m.group(3)), Long.valueOf(m.group(4)), m.group(5));
-							pairs.add(new Pair<File, TrapClassVersion>(f, v));
+						if (m.matches()) {
+							if (m.group(1).equals(trapFileBaseName)) {
+								TrapClassVersion v = new TrapClassVersion(Integer.valueOf(m.group(2)), Integer.valueOf(m.group(3)), Long.valueOf(m.group(4)), m.group(5));
+								pairs.add(new Pair<File, TrapClassVersion>(f, v));
+							} else {
+								// Everything in this directory should be for the same TRAP file base
+								log.error("Unexpected sibling " + m.group(1) + " when extracting " + trapFileBaseName);
+							}
 						}
 					}
 					if (pairs.isEmpty()) {
