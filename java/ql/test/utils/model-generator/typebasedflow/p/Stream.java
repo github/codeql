@@ -10,15 +10,15 @@ public class Stream<T> {
         return null;
     }
 
-    // public boolean allMatch(Predicate<? super T> predicate) {
-    // throw null;
-    // }
+    public boolean allMatch(Predicate<? super T> predicate) {
+        throw null;
+    }
 
-    // public <R> R collect(Supplier<R> supplier, BiConsumer<R, ? super T>
-    // accumulator, BiConsumer<R, R> combiner) {
-    // throw null;
-    // }
+    public <R> R collect(Supplier<R> supplier, BiConsumer<R, ? super T> accumulator, BiConsumer<R, R> combiner) {
+        throw null;
+    }
 
+    // Collector is not a functional interface, so this is not supported
     // public <R, A> R collect(Collector<? super T, A, R> collector) {
     // throw null;
     // }
