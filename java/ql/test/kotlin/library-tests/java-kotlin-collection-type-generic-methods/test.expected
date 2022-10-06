@@ -4,31 +4,38 @@ methodWithDuplicate
 | AbstractCollection | addAll | Collection<? extends E> |
 | AbstractCollection | contains | Object |
 | AbstractCollection | containsAll | Collection<?> |
+| AbstractCollection | forEach | Consumer<? super E> |
 | AbstractCollection | remove | Object |
 | AbstractCollection | removeAll | Collection<?> |
 | AbstractCollection | retainAll | Collection<?> |
+| AbstractCollection | toArray | IntFunction<T[]> |
 | AbstractCollection | toArray | T[] |
 | AbstractCollection<E> | add | E |
 | AbstractCollection<E> | addAll | Collection<? extends E> |
 | AbstractCollection<E> | contains | Object |
 | AbstractCollection<E> | containsAll | Collection<?> |
+| AbstractCollection<E> | forEach | Consumer<? super E> |
 | AbstractCollection<E> | remove | Object |
 | AbstractCollection<E> | removeAll | Collection<?> |
 | AbstractCollection<E> | retainAll | Collection<?> |
+| AbstractCollection<E> | toArray | IntFunction<T[]> |
 | AbstractCollection<E> | toArray | T[] |
 | AbstractCollection<String> | add | String |
 | AbstractCollection<String> | addAll | Collection<? extends String> |
 | AbstractCollection<String> | contains | Object |
 | AbstractCollection<String> | containsAll | Collection<?> |
+| AbstractCollection<String> | forEach | Consumer<? super String> |
 | AbstractCollection<String> | remove | Object |
 | AbstractCollection<String> | removeAll | Collection<?> |
 | AbstractCollection<String> | retainAll | Collection<?> |
+| AbstractCollection<String> | toArray | IntFunction<T[]> |
 | AbstractCollection<String> | toArray | T[] |
 | AbstractList | add | E |
 | AbstractList | add | int |
 | AbstractList | addAll | Collection<? extends E> |
 | AbstractList | addAll | int |
 | AbstractList | equals | Object |
+| AbstractList | forEach | Consumer<? super E> |
 | AbstractList | get | int |
 | AbstractList | indexOf | Object |
 | AbstractList | lastIndexOf | Object |
@@ -39,6 +46,7 @@ methodWithDuplicate
 | AbstractList | set | int |
 | AbstractList | subList | int |
 | AbstractList | subListRangeCheck | int |
+| AbstractList | toArray | IntFunction<T[]> |
 | AbstractList<E> | add | E |
 | AbstractList<E> | add | int |
 | AbstractList<E> | addAll | Collection<? extends E> |
@@ -58,7 +66,10 @@ methodWithDuplicate
 | AbstractMap | containsKey | Object |
 | AbstractMap | containsValue | Object |
 | AbstractMap | equals | Object |
+| AbstractMap | forEach | BiConsumer<? super K,? super V> |
 | AbstractMap | get | Object |
+| AbstractMap | getOrDefault | Object |
+| AbstractMap | getOrDefault | V |
 | AbstractMap | put | K |
 | AbstractMap | put | V |
 | AbstractMap | putAll | Map<? extends K,? extends V> |
@@ -83,23 +94,53 @@ methodWithDuplicate
 | AbstractMap<String,String> | containsKey | Object |
 | AbstractMap<String,String> | containsValue | Object |
 | AbstractMap<String,String> | equals | Object |
+| AbstractMap<String,String> | forEach | BiConsumer<? super String,? super String> |
 | AbstractMap<String,String> | get | Object |
+| AbstractMap<String,String> | getOrDefault | Object |
+| AbstractMap<String,String> | getOrDefault | String |
 | AbstractMap<String,String> | put | String |
 | AbstractMap<String,String> | putAll | Map<? extends String,? extends String> |
 | AbstractMap<String,String> | remove | Object |
 | AbstractMutableCollection | add | E |
+| AbstractMutableCollection | forEach | Consumer<? super E> |
+| AbstractMutableCollection | removeIf | Predicate<? super E> |
+| AbstractMutableCollection | toArray | IntFunction<T[]> |
 | AbstractMutableList | add | E |
 | AbstractMutableList | add | int |
+| AbstractMutableList | forEach | Consumer<? super E> |
 | AbstractMutableList | remove | int |
+| AbstractMutableList | removeIf | Predicate<? super E> |
+| AbstractMutableList | replaceAll | UnaryOperator<E> |
 | AbstractMutableList | set | E |
 | AbstractMutableList | set | int |
+| AbstractMutableList | sort | Comparator<? super E> |
+| AbstractMutableList | toArray | IntFunction<T[]> |
+| AbstractMutableMap | compute | BiFunction<? super K,? super V,? extends V> |
+| AbstractMutableMap | compute | K |
+| AbstractMutableMap | computeIfAbsent | Function<? super K,? extends V> |
+| AbstractMutableMap | computeIfAbsent | K |
+| AbstractMutableMap | computeIfPresent | BiFunction<? super K,? super V,? extends V> |
+| AbstractMutableMap | computeIfPresent | K |
+| AbstractMutableMap | forEach | BiConsumer<? super K,? super V> |
+| AbstractMutableMap | getOrDefault | Object |
+| AbstractMutableMap | getOrDefault | V |
+| AbstractMutableMap | merge | BiFunction<? super V,? super V,? extends V> |
+| AbstractMutableMap | merge | K |
+| AbstractMutableMap | merge | V |
 | AbstractMutableMap | put | K |
 | AbstractMutableMap | put | V |
+| AbstractMutableMap | putIfAbsent | K |
+| AbstractMutableMap | putIfAbsent | V |
+| AbstractMutableMap | remove | Object |
+| AbstractMutableMap | replace | K |
+| AbstractMutableMap | replace | V |
+| AbstractMutableMap | replaceAll | BiFunction<? super K,? super V,? extends V> |
 | Collection | add | E |
 | Collection | addAll | Collection<? extends E> |
 | Collection | contains | Object |
 | Collection | containsAll | Collection<?> |
 | Collection | equals | Object |
+| Collection | forEach | Consumer<? super E> |
 | Collection | remove | Object |
 | Collection | removeAll | Collection<?> |
 | Collection | removeIf | Predicate<? super E> |
@@ -165,6 +206,7 @@ methodWithDuplicate
 | List | containsAll | Collection<?> |
 | List | copyOf | Collection<? extends E> |
 | List | equals | Object |
+| List | forEach | Consumer<? super E> |
 | List | get | int |
 | List | indexOf | Object |
 | List | lastIndexOf | Object |
@@ -180,6 +222,7 @@ methodWithDuplicate
 | List | set | int |
 | List | sort | Comparator<? super E> |
 | List | subList | int |
+| List | toArray | IntFunction<T[]> |
 | List | toArray | T[] |
 | List<E> | add | E |
 | List<E> | add | int |
@@ -373,30 +416,48 @@ methodWithDuplicate
 | Map<String,String> | replaceAll | BiFunction<? super String,? super String,? extends String> |
 | MutableCollection | add | E |
 | MutableCollection | addAll | Collection<? extends E> |
+| MutableCollection | contains | Object |
+| MutableCollection | containsAll | Collection<?> |
+| MutableCollection | forEach | Consumer<? super E> |
 | MutableCollection | remove | Object |
 | MutableCollection | removeAll | Collection<?> |
 | MutableCollection | removeIf | Predicate<? super E> |
 | MutableCollection | retainAll | Collection<?> |
+| MutableCollection | toArray | IntFunction<T[]> |
 | MutableList | add | E |
 | MutableList | add | int |
 | MutableList | addAll | Collection<? extends E> |
 | MutableList | addAll | int |
+| MutableList | contains | Object |
+| MutableList | containsAll | Collection<?> |
+| MutableList | forEach | Consumer<? super E> |
+| MutableList | get | int |
+| MutableList | indexOf | Object |
+| MutableList | lastIndexOf | Object |
 | MutableList | listIterator | int |
 | MutableList | remove | Object |
 | MutableList | remove | int |
 | MutableList | removeAll | Collection<?> |
+| MutableList | removeIf | Predicate<? super E> |
 | MutableList | replaceAll | UnaryOperator<E> |
 | MutableList | retainAll | Collection<?> |
 | MutableList | set | E |
 | MutableList | set | int |
 | MutableList | sort | Comparator<? super E> |
 | MutableList | subList | int |
+| MutableList | toArray | IntFunction<T[]> |
 | MutableMap | compute | BiFunction<? super K,? super V,? extends V> |
 | MutableMap | compute | K |
 | MutableMap | computeIfAbsent | Function<? super K,? extends V> |
 | MutableMap | computeIfAbsent | K |
 | MutableMap | computeIfPresent | BiFunction<? super K,? super V,? extends V> |
 | MutableMap | computeIfPresent | K |
+| MutableMap | containsKey | Object |
+| MutableMap | containsValue | Object |
+| MutableMap | forEach | BiConsumer<? super K,? super V> |
+| MutableMap | get | Object |
+| MutableMap | getOrDefault | Object |
+| MutableMap | getOrDefault | V |
 | MutableMap | merge | BiFunction<? super V,? super V,? extends V> |
 | MutableMap | merge | K |
 | MutableMap | merge | V |

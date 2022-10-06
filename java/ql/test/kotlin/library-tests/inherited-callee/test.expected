@@ -3,6 +3,7 @@
 | Test.java:25:5:25:16 | hashCode(...) | hashCode | Object |
 | Test.java:26:5:26:17 | inheritMe(...) | inheritMe | Test |
 | Test.java:28:5:28:34 | inheritedInterfaceMethodJ(...) | inheritedInterfaceMethodJ | ParentIf |
+| Test.kt:13:1:16:1 | inheritedInterfaceMethodK(...) | inheritedInterfaceMethodK | ParentIf |
 | Test.kt:23:7:23:16 | toString(...) | toString | Object |
 | Test.kt:24:7:24:15 | equals(...) | equals | Object |
 | Test.kt:25:7:25:16 | hashCode(...) | hashCode | Object |
