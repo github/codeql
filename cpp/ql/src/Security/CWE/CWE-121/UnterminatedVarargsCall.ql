@@ -60,11 +60,11 @@ class VarargsFunction extends Function {
     // the terminator is 0 or -1
     result = ["0", "-1"] and
     // at least 80% of calls have the terminator
-    cnt = trailingArgValueCount(result) and
-    totalCount = totalCount() and
+    cnt = this.trailingArgValueCount(result) and
+    totalCount = this.totalCount() and
     100 * cnt / totalCount >= 80 and
     // terminator value is not used in a non-terminating position
-    not exists(FunctionCall fc, int index | nonTrailingVarArgValue(fc, index) = result)
+    not exists(FunctionCall fc, int index | this.nonTrailingVarArgValue(fc, index) = result)
   }
 
   predicate isWhitelisted() {
