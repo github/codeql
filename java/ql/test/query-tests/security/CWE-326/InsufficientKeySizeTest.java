@@ -144,7 +144,8 @@ public class InsufficientKeySizeTest {
          {
             int size = 64; // test integer variable
             KeyGenerator keyGen = KeyGenerator.getInstance("AES"); // test KeyGenerator variable
-            testSymmetric(size, keyGen);
+            testSymmetric(size, keyGen); // test with variable as key size
+            testSymmetric2(64); // test with int constant as key size
          }
 
 
@@ -159,7 +160,8 @@ public class InsufficientKeySizeTest {
          {
             ECGenParameterSpec ecSpec = new ECGenParameterSpec("secp112r1"); // test ECGenParameterSpec variable
             KeyPairGenerator keyPairGen22 = KeyPairGenerator.getInstance("EC"); // test KeyPairGenerator variable
-            testAsymmetricEC(ecSpec, keyPairGen22);
+            testAsymmetricEC(ecSpec, keyPairGen22); // test with variable as key size
+            testAsymmetricNonEC2(1024); // test with int constant as key size
          }
 
     }
@@ -173,6 +175,13 @@ public class InsufficientKeySizeTest {
         kg.init(64); // $ hasInsufficientKeySize
     }
 
+    //! refactor this to use expected-value tag and combine with above method
+    public static void testSymmetric2(int keySize) throws java.security.NoSuchAlgorithmException, java.security.InvalidAlgorithmParameterException {
+        // BAD: Key size is less than 2048
+        KeyGenerator keyGen = KeyGenerator.getInstance("AES");
+        keyGen.init(keySize); // $ hasInsufficientKeySize
+    }
+
     public static void testAsymmetricNonEC(int keySize, KeyPairGenerator kpg) throws java.security.NoSuchAlgorithmException, java.security.InvalidAlgorithmParameterException {
         // BAD: Key size is less than 2048
         KeyPairGenerator keyPairGen = KeyPairGenerator.getInstance("RSA");
@@ -180,6 +189,13 @@ public class InsufficientKeySizeTest {
 
         // BAD: Key size is less than 2048
         kpg.initialize(1024); // $ hasInsufficientKeySize
+    }
+
+    //! refactor this to use expected-value tag and combine with above method
+    public static void testAsymmetricNonEC2(int keySize) throws java.security.NoSuchAlgorithmException, java.security.InvalidAlgorithmParameterException {
+        // BAD: Key size is less than 2048
+        KeyPairGenerator keyPairGen = KeyPairGenerator.getInstance("RSA");
+        keyPairGen.initialize(keySize); // $ hasInsufficientKeySize
     }
 
     public static void testAsymmetricEC(ECGenParameterSpec spec, KeyPairGenerator kpg) throws java.security.NoSuchAlgorithmException, java.security.InvalidAlgorithmParameterException {

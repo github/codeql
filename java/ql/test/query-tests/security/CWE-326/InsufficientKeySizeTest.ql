@@ -9,9 +9,13 @@ class InsufficientKeySizeTest extends InlineExpectationsTest {
 
   override predicate hasActualResult(Location location, string element, string tag, string value) {
     tag = "hasInsufficientKeySize" and
-    exists(Expr e, string msg | hasInsufficientKeySize(e, msg) |
-      e.getLocation() = location and
-      element = e.toString() and
+    exists(DataFlow::PathNode source, DataFlow::PathNode sink |
+      exists(AsymmetricKeyTrackingConfiguration config1 | config1.hasFlowPath(source, sink)) or
+      exists(AsymmetricECCKeyTrackingConfiguration config2 | config2.hasFlowPath(source, sink)) or
+      exists(SymmetricKeyTrackingConfiguration config2 | config2.hasFlowPath(source, sink))
+    |
+      sink.getNode().getLocation() = location and
+      element = sink.getNode().toString() and
       value = ""
     )
   }

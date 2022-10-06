@@ -30,5 +30,6 @@ from DataFlow::PathNode source, DataFlow::PathNode sink
 where
   //hasInsufficientKeySize2(source, sink)
   exists(AsymmetricKeyTrackingConfiguration config1 | config1.hasFlowPath(source, sink)) or
-  exists(SymmetricKeyTrackingConfiguration2 config2 | config2.hasFlowPath(source, sink))
+  exists(AsymmetricECCKeyTrackingConfiguration config2 | config2.hasFlowPath(source, sink)) or
+  exists(SymmetricKeyTrackingConfiguration config3 | config3.hasFlowPath(source, sink))
 select sink.getNode(), source, sink, "This $@ is too small.", sink.getNode(), "key size"
