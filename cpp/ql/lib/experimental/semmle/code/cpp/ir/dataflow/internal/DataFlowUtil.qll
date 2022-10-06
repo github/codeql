@@ -38,13 +38,12 @@ private module Cached {
     TVariableNode(Variable var) or
     TPostFieldUpdateNode(FieldAddress operand, int indirectionIndex) {
       indirectionIndex =
-        [0 .. Ssa::countIndirectionsForCppType(operand.getObjectAddress().getResultLanguageType()) -
-            1]
+        [1 .. Ssa::countIndirectionsForCppType(operand.getObjectAddress().getResultLanguageType())]
     } or
     TSsaPhiNode(Ssa::PhiNode phi) or
     TIndirectArgumentOutNode(ArgumentOperand operand, int indirectionIndex) {
       Ssa::isModifiableByCall(operand) and
-      indirectionIndex = [0 .. Ssa::countIndirectionsForCppType(operand.getLanguageType()) - 1]
+      indirectionIndex = [1 .. Ssa::countIndirectionsForCppType(operand.getLanguageType())]
     } or
     TIndirectOperand(Operand op, int indirectionIndex) {
       Ssa::hasIndirectOperand(op, indirectionIndex)
@@ -370,8 +369,6 @@ class PostFieldUpdateNode extends TPostFieldUpdateNode, PartialDefinitionNode {
 
   override Declaration getEnclosingCallable() { result = this.getFunction() }
 
-  override IRType getType() { result = fieldAddress.getIRType() }
-
   FieldAddress getFieldAddress() { result = fieldAddress }
 
   Field getUpdatedField() { result = fieldAddress.getField() }
@@ -379,10 +376,8 @@ class PostFieldUpdateNode extends TPostFieldUpdateNode, PartialDefinitionNode {
   int getIndirectionIndex() { result = indirectionIndex }
 
   override Node getPreUpdateNode() {
-    // + 1 because we're storing into an lvalue, and the original node should be the rvalue of
-    // the same address.
     hasOperandAndIndex(result, pragma[only_bind_into](fieldAddress).getObjectAddressOperand(),
-      indirectionIndex + 1)
+      indirectionIndex)
   }
 
   override Expr getDefinedExpr() {
@@ -536,9 +531,7 @@ class IndirectArgumentOutNode extends Node, TIndirectArgumentOutNode, PostUpdate
 
   override Function getFunction() { result = this.getCallInstruction().getEnclosingFunction() }
 
-  override IRType getType() { result instanceof IRVoidType }
-
-  override Node getPreUpdateNode() { hasOperandAndIndex(result, operand, indirectionIndex + 1) }
+  override Node getPreUpdateNode() { hasOperandAndIndex(result, operand, indirectionIndex) }
 
   override string toStringImpl() {
     // This string should be unique enough to be helpful but common enough to
@@ -1075,7 +1068,7 @@ predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo) {
       store.getDestinationAddressOperand() = address
     )
     or
-    Ssa::outNodeHasAddressAndIndex(nodeFrom, address, indirectionIndex - 1)
+    Ssa::outNodeHasAddressAndIndex(nodeFrom, address, indirectionIndex)
   )
 }
 

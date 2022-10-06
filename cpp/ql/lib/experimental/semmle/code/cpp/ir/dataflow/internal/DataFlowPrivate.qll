@@ -137,7 +137,7 @@ private newtype TReturnKind =
     exists(IndirectReturnNode return, ReturnIndirectionInstruction returnInd |
       returnInd.hasIndex(argumentIndex) and
       return.getAddressOperand() = returnInd.getSourceAddressOperand() and
-      indirectionIndex = return.getIndirectionIndex() - 1 // We subtract one because the return loads the value.
+      indirectionIndex = return.getIndirectionIndex()
     )
   }
 
@@ -197,7 +197,7 @@ class ReturnIndirectionNode extends IndirectReturnNode, ReturnNode {
     exists(int argumentIndex, ReturnIndirectionInstruction returnInd |
       returnInd.hasIndex(argumentIndex) and
       this.getAddressOperand() = returnInd.getSourceAddressOperand() and
-      result = TIndirectReturnKind(argumentIndex, this.getIndirectionIndex() - 1) and
+      result = TIndirectReturnKind(argumentIndex, this.getIndirectionIndex()) and
       hasNonInitializeParameterDef(returnInd.getIRVariable())
     )
     or
@@ -365,7 +365,7 @@ predicate jumpStep(Node n1, Node n2) {
 predicate storeStep(Node node1, Content c, PostFieldUpdateNode node2) {
   exists(int indirectionIndex1, int numberOfLoads, StoreInstruction store |
     nodeHasInstruction(node1, store, pragma[only_bind_into](indirectionIndex1)) and
-    node2.getIndirectionIndex() = 0 and
+    node2.getIndirectionIndex() = 1 and
     numberOfLoadsFromOperand(node2.getFieldAddress(), store.getDestinationAddressOperand(),
       numberOfLoads)
   |
