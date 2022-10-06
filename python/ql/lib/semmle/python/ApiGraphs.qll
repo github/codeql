@@ -250,6 +250,12 @@ module API {
     Node getASubscript() { result = this.getASuccessor(Label::subscript()) }
 
     /**
+     * Gets a node representing an index of a subscript of this node.
+     * For example, in `obj[x]`, `x` is an index of `obj`.
+     */
+    Node getIndex() { result = this.getASuccessor(Label::index()) }
+
+    /**
      * Gets a node representing a subscript of this node at (string) index `key`.
      * This requires that the index can be statically determined.
      *
@@ -262,16 +268,14 @@ module API {
      * ```
      */
     Node getSubscript(string key) {
-      (
-        exists(SubscriptReadNode subscript | subscript = result.getInducingNode() |
-          this = subscript.getObject() and
-          key = subscript.getIndex().getALocalSource().asExpr().(PY::StrConst).getText()
-        )
-        or
-        exists(SubscriptWriteNode subscript | subscript = result.getInducingNode() |
-          this = subscript.getObject() and
-          key = subscript.getIndex().getALocalSource().asExpr().(PY::StrConst).getText()
-        )
+      exists(SubscriptReadNode subscript | subscript = result.getInducingNode() |
+        this = subscript.getObject() and
+        key = subscript.getIndex().getAValueReachingSink().asExpr().(PY::StrConst).getText()
+      )
+      or
+      exists(SubscriptWriteNode subscript | subscript = result.getInducingNode() |
+        this = subscript.getObject() and
+        key = subscript.getIndex().getAValueReachingSink().asExpr().(PY::StrConst).getText()
       )
     }
 
@@ -511,9 +515,10 @@ module API {
     /** Gets an API node for the object being subscripted. */
     API::Node getObject() { result = subscripted }
 
-    /** Gets the data flow node representing the index of this read. */
-    DataFlow::Node getIndex() {
-      result.asCfgNode() = this.asCfgNode().(PY::SubscriptNode).getIndex()
+    /** Gets an API node representing the index of this read. */
+    API::Node getIndex() {
+      result = subscripted.getIndex() and
+      result.asSink().asCfgNode() = this.asCfgNode().(PY::SubscriptNode).getIndex()
     }
   }
 
@@ -530,11 +535,12 @@ module API {
     /** Gets an API node for the object being subscripted. */
     API::Node getObject() { result = subscripted }
 
-    /** Gets the data flow node representing the index of this write. */
-    DataFlow::Node getIndex() {
+    /** Gets an API node representing the index of this write. */
+    API::Node getIndex() {
+      result = subscripted.getIndex() and
       exists(PY::SubscriptNode subscriptNode |
         subscriptNode.(PY::DefinitionNode).getValue() = this.asCfgNode() and
-        result.asCfgNode() = subscriptNode.getIndex() and
+        result.asSink().asCfgNode() = subscriptNode.getIndex() and
         subscriptNode.getObject() = subscripted.getAValueReachableFromSource().asCfgNode()
       )
     }
@@ -763,12 +769,18 @@ module API {
           rhs = aw.getValue()
         )
         or
-        // for dictionary literals, from `x` to `{ "key": x }`
+        // dictionary literals
         exists(PY::Dict dict, PY::KeyValuePair item |
           dict = pred.(DataFlow::ExprNode).getNode().getNode() and
-          dict.getItem(_) = item and
-          lbl = Label::subscript() and
-          rhs.(DataFlow::ExprNode).getNode().getNode() = item.getValue()
+          dict.getItem(_) = item
+        |
+          // from `x` to `{ "key": x }`
+          rhs.(DataFlow::ExprNode).getNode().getNode() = item.getValue() and
+          lbl = Label::subscript()
+          or
+          // from `"key"` to `{ "key": x }`
+          rhs.(DataFlow::ExprNode).getNode().getNode() = item.getKey() and
+          lbl = Label::index()
         )
         or
         exists(PY::CallableExpr fn | fn = pred.(DataFlow::ExprNode).getNode().getNode() |
@@ -789,13 +801,18 @@ module API {
         lbl = Label::memberFromRef(aw)
       )
       or
-      // from `x` to a definition of `x[...]`
-      exists(DataFlow::LocalSourceNode src, DataFlow::CfgNode subscript |
+      // subscripting
+      exists(DataFlow::LocalSourceNode src, DataFlow::Node subscript, DataFlow::Node index |
         use(base, src) and
-        subscript = trackUseNode(src).getASubscript() and
-        rhs.asCfgNode() = subscript.asCfgNode().(PY::DefinitionNode).getValue()
+        subscript = trackUseNode(src).getSubscript(index)
       |
+        // from `x` to a definition of `x[...]`
+        rhs.asCfgNode() = subscript.asCfgNode().(PY::DefinitionNode).getValue() and
         lbl = Label::subscript()
+        or
+        // from `x` to `"key"` in `x["key"]`
+        rhs = index and
+        lbl = Label::index()
       )
       or
       exists(EntryPoint entry |
@@ -835,7 +852,7 @@ module API {
         or
         // Subscripting a node that is a use of `base`
         lbl = Label::subscript() and
-        ref = pred.getASubscript() and
+        ref = pred.getSubscript(_) and
         ref.asCfgNode().isLoad()
         or
         // Subclassing a node
@@ -1071,6 +1088,7 @@ module API {
         MkLabelSubclass() or
         MkLabelAwait() or
         MkLabelSubscript() or
+        MkLabelIndex() or
         MkLabelEntryPoint(EntryPoint ep)
 
       /** A label for a module. */
@@ -1151,6 +1169,11 @@ module API {
         override string toString() { result = "getASubscript()" }
       }
 
+      /** A label that gets the index of a subscript. */
+      class LabelIndex extends ApiLabel, MkLabelIndex {
+        override string toString() { result = "getIndex()" }
+      }
+
       /** A label for entry points. */
       class LabelEntryPoint extends ApiLabel, MkLabelEntryPoint {
         private EntryPoint entry;
@@ -1198,6 +1221,9 @@ module API {
 
     /** Gets the `subscript` edge label. */
     LabelSubscript subscript() { any() }
+
+    /** Gets the `subscript` edge label. */
+    LabelIndex index() { any() }
 
     /** Gets the label going from the root node to the nodes associated with the given entry point. */
     LabelEntryPoint entryPoint(EntryPoint ep) { result = MkLabelEntryPoint(ep) }

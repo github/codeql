@@ -624,7 +624,7 @@ module AiohttpWebModel {
 
     override DataFlow::Node getHeaderArg() { none() }
 
-    override DataFlow::Node getNameArg() { result = this.getIndex() }
+    override DataFlow::Node getNameArg() { result = this.getIndex().asSink() }
 
     override DataFlow::Node getValueArg() { result = this.getValue().asSink() }
   }
