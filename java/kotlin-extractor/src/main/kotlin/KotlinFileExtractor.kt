@@ -155,7 +155,7 @@ open class KotlinFileExtractor(
                 is IrEnumEntry -> {
                     val parentId = useDeclarationParent(declaration.parent, false)?.cast<DbReftype>()
                     if (parentId != null) {
-                        extractEnumEntry(declaration, parentId, extractFunctionBodies)
+                        extractEnumEntry(declaration, parentId, extractPrivateMembers, extractFunctionBodies)
                     }
                     Unit
                 }
@@ -1254,7 +1254,7 @@ open class KotlinFileExtractor(
         }
     }
 
-    private fun extractEnumEntry(ee: IrEnumEntry, parentId: Label<out DbReftype>, extractTypeAccess: Boolean) {
+    private fun extractEnumEntry(ee: IrEnumEntry, parentId: Label<out DbReftype>, extractPrivateMembers: Boolean, extractFunctionBodies: Boolean) {
         with("enum entry", ee) {
             DeclarationStackAdjuster(ee).use {
                 val id = useEnumEntry(ee)
@@ -1265,13 +1265,17 @@ open class KotlinFileExtractor(
                 tw.writeHasLocation(id, locId)
                 tw.writeIsEnumConst(id)
 
-                if (extractTypeAccess) {
+                if (extractFunctionBodies) {
                     val fieldDeclarationId = tw.getFreshIdLabel<DbFielddecl>()
                     tw.writeFielddecls(fieldDeclarationId, parentId)
                     tw.writeFieldDeclaredIn(id, fieldDeclarationId, 0)
                     tw.writeHasLocation(fieldDeclarationId, locId)
 
                     extractTypeAccess(type, locId, fieldDeclarationId, 0)
+                }
+
+                ee.correspondingClass?.let {
+                    extractDeclaration(it, extractPrivateMembers, extractFunctionBodies)
                 }
             }
         }
