@@ -1,3 +1,9 @@
+## 0.3.1
+
+### Minor Analysis Improvements
+
+* Added support for `BeegoInput.RequestBody` as a source of untrusted data.
+
 ## 0.3.0
 
 ### Deprecated APIs
