@@ -48,5 +48,5 @@ class Config extends DataFlow::Configuration {
 
 from Config c, DataFlow::PathNode source, DataFlow::PathNode sink, string report
 where c.hasFlowPath(source, sink) and c.isSource(source.getNode(), report)
-select source, source, sink, "$@ that is $@ contains " + report, source, "A string literal", sink,
+select source, source, sink, "This string literal that is $@ contains " + report, sink,
   "used as a regular expression"
