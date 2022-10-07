@@ -23,10 +23,9 @@ public class Stream<T> {
     // throw null;
     // }
 
-    // public static <T> Stream<T> concat(Stream<? extends T> a, Stream<? extends T>
-    // b) {
-    // throw null;
-    // }
+    public static <T> Stream<T> concat(Stream<? extends T> a, Stream<? extends T> b) {
+        throw null;
+    }
 
     public Stream<T> distinct() {
         throw null;
