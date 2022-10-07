@@ -236,7 +236,6 @@ def compile_standalone(version):
             version)
 
 
-
 if args.single_version:
     if args.single_version_embeddable == True:
         compile_embeddable(args.single_version)
