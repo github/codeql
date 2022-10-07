@@ -1769,56 +1769,6 @@ open class KotlinFileExtractor(
         extractCallValueArguments(id, valueArgsWithDummies + extraArgs, enclosingStmt, enclosingCallable, nextIdx)
     }
 
-    fun extractRawMethodAccess(
-        syntacticCallTarget: IrFunction,
-        callsite: IrCall,
-        enclosingCallable: Label<out DbCallable>,
-        callsiteParent: Label<out DbExprparent>,
-        childIdx: Int,
-        enclosingStmt: Label<out DbStmt>,
-        valueArguments: List<IrExpression?>,
-        dispatchReceiver: IrExpression?,
-        extensionReceiver: IrExpression?,
-        typeArguments: List<IrType> = listOf(),
-        extractClassTypeArguments: Boolean = false,
-        superQualifierSymbol: IrClassSymbol? = null) {
-
-        val locId = tw.getLocation(callsite)
-
-        if (valueArguments.any { it == null }) {
-            extractsDefaultsCall(
-                syntacticCallTarget,
-                locId,
-                callsite,
-                enclosingCallable,
-                callsiteParent,
-                childIdx,
-                enclosingStmt,
-                valueArguments,
-                dispatchReceiver,
-                extensionReceiver
-            )
-        } else {
-            extractRawMethodAccess(
-                syntacticCallTarget,
-                locId,
-                callsite.type,
-                enclosingCallable,
-                callsiteParent,
-                childIdx,
-                enclosingStmt,
-                valueArguments.size,
-                { argParent, idxOffset -> extractCallValueArguments(argParent, valueArguments, enclosingStmt, enclosingCallable, idxOffset) },
-                dispatchReceiver?.type,
-                dispatchReceiver?.let { { callId -> extractExpressionExpr(dispatchReceiver, enclosingCallable, callId, -1, enclosingStmt) } },
-                extensionReceiver?.let { { argParent -> extractExpressionExpr(extensionReceiver, enclosingCallable, argParent, 0, enclosingStmt) } },
-                typeArguments,
-                extractClassTypeArguments,
-                superQualifierSymbol
-            )
-        }
-    }
-
     private fun getFunctionInvokeMethod(typeArgs: List<IrTypeArgument>): IrFunction? {
         // For `kotlin.FunctionX` and `kotlin.reflect.KFunctionX` interfaces, we're making sure that we
         // extract the call to the `invoke` method that does exist, `kotlin.jvm.functions.FunctionX::invoke`.
@@ -1877,6 +1827,55 @@ open class KotlinFileExtractor(
         }
     }
 
+    fun extractRawMethodAccess(
+        syntacticCallTarget: IrFunction,
+        callsite: IrCall,
+        enclosingCallable: Label<out DbCallable>,
+        callsiteParent: Label<out DbExprparent>,
+        childIdx: Int,
+        enclosingStmt: Label<out DbStmt>,
+        valueArguments: List<IrExpression?>,
+        dispatchReceiver: IrExpression?,
+        extensionReceiver: IrExpression?,
+        typeArguments: List<IrType> = listOf(),
+        extractClassTypeArguments: Boolean = false,
+        superQualifierSymbol: IrClassSymbol? = null) {
+
+        val locId = tw.getLocation(callsite)
+
+        if (valueArguments.any { it == null }) {
+            extractsDefaultsCall(
+                syntacticCallTarget,
+                locId,
+                callsite,
+                enclosingCallable,
+                callsiteParent,
+                childIdx,
+                enclosingStmt,
+                valueArguments,
+                dispatchReceiver,
+                extensionReceiver
+            )
+        } else {
+            extractRawMethodAccess(
+                syntacticCallTarget,
+                locId,
+                callsite.type,
+                enclosingCallable,
+                callsiteParent,
+                childIdx,
+                enclosingStmt,
+                valueArguments.size,
+                { argParent, idxOffset -> extractCallValueArguments(argParent, valueArguments, enclosingStmt, enclosingCallable, idxOffset) },
+                dispatchReceiver?.type,
+                dispatchReceiver?.let { { callId -> extractExpressionExpr(dispatchReceiver, enclosingCallable, callId, -1, enclosingStmt) } },
+                extensionReceiver?.let { { argParent -> extractExpressionExpr(extensionReceiver, enclosingCallable, argParent, 0, enclosingStmt) } },
+                typeArguments,
+                extractClassTypeArguments,
+                superQualifierSymbol
+            )
+        }
+    }
 
     fun extractRawMethodAccess(
         syntacticCallTarget: IrFunction,
