@@ -12,17 +12,17 @@ private class IterableType extends Class {
   private Type elementType;
 
   IterableType() {
-    exists(Method m, Type return, Type t | m.getDeclaringType() = t |
+    exists(Method m, Type return, GenericType t, Type et, int position | m.getDeclaringType() = t |
       return = m.getReturnType() and
       return.getName().matches("Iterator%") and
-      elementType = return.(ParameterizedType).getTypeArgument(0) and
-      (this = t or instantiates(this, t, _, _))
+      et = return.(ParameterizedType).getTypeArgument(0) and
+      t.getTypeParameter(position) = et and
+      instantiates(this, t, position, elementType)
     )
   }
 
   /**
    * Returns the iterator element type of `this`.
-   * TODO: Improve this as it doesn't return the correct type instantiations.
    */
   Type getElementType() { result = elementType }
 }
