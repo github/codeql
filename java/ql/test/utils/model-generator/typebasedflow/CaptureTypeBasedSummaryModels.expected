@@ -19,8 +19,15 @@
 | p;Stream;true;flatMapToLong;(Function);;Argument[-1].Element;Argument[0].Parameter[0];value;generated |
 | p;Stream;true;forEach;(Consumer);;Argument[-1].Element;Argument[0].Parameter[0];value;generated |
 | p;Stream;true;forEachOrdered;(Consumer);;Argument[-1].Element;Argument[0].Parameter[0];value;generated |
+| p;Stream;true;generate;(Supplier);;Argument[0].ReturnValue;ReturnValue.Element;value;generated |
+| p;Stream;true;iterate;(Object,UnaryOperator);;Argument[0];Argument[1].Parameter[0];value;generated |
+| p;Stream;true;iterate;(Object,UnaryOperator);;Argument[0];ReturnValue.Element;value;generated |
+| p;Stream;true;iterate;(Object,UnaryOperator);;Argument[1].ReturnValue;Argument[1].Parameter[0];value;generated |
+| p;Stream;true;iterate;(Object,UnaryOperator);;Argument[1].ReturnValue;ReturnValue.Element;value;generated |
 | p;Stream;true;iterator;();;Argument[-1].Element;ReturnValue.Element;value;generated |
 | p;Stream;true;limit;(long);;Argument[-1].Element;ReturnValue.Element;value;generated |
+| p;Stream;true;map;(Function);;Argument[-1].Element;Argument[0].Parameter[0];value;generated |
+| p;Stream;true;map;(Function);;Argument[0].ReturnValue;ReturnValue.Element;value;generated |
 | p;Stream;true;mapToDouble;(ToDoubleFunction);;Argument[-1].Element;Argument[0].Parameter[0];value;generated |
 | p;Stream;true;mapToInt;(ToIntFunction);;Argument[-1].Element;Argument[0].Parameter[0];value;generated |
 | p;Stream;true;mapToLong;(ToLongFunction);;Argument[-1].Element;Argument[0].Parameter[0];value;generated |
@@ -31,6 +38,7 @@
 | p;Stream;true;min;(Comparator);;Argument[-1].Element;Argument[0].Parameter[1];value;generated |
 | p;Stream;true;min;(Comparator);;Argument[-1].Element;ReturnValue.SyntheticField[ArgType0];value;generated |
 | p;Stream;true;noneMatch;(Predicate);;Argument[-1].Element;Argument[0].Parameter[0];value;generated |
+| p;Stream;true;of;(Object);;Argument[0];ReturnValue.Element;value;generated |
 | p;Stream;true;peek;(Consumer);;Argument[-1].Element;Argument[0].Parameter[0];value;generated |
 | p;Stream;true;peek;(Consumer);;Argument[-1].Element;ReturnValue.Element;value;generated |
 | p;Stream;true;reduce;(BinaryOperator);;Argument[-1].Element;Argument[0].Parameter[0];value;generated |
