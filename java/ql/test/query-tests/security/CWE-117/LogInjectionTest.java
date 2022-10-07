@@ -43,11 +43,21 @@ public class LogInjectionTest {
         logger.debug(source.replaceAll("\r", "")); // Safe
         logger.debug(source.replaceAll("\r", "\n")); // $ hasTaintFlow
         logger.debug(source.replaceAll("\r", "\r")); // $ hasTaintFlow
+        logger.debug(source.replaceAll("\\n", "")); // Safe
+        logger.debug(source.replaceAll("\\n", "\n")); // $ hasTaintFlow
+        logger.debug(source.replaceAll("\\n", "\r")); // $ hasTaintFlow
+        logger.debug(source.replaceAll("\\r", "")); // Safe
+        logger.debug(source.replaceAll("\\r", "\n")); // $ hasTaintFlow
+        logger.debug(source.replaceAll("\\r", "\r")); // $ hasTaintFlow
+        logger.debug(source.replaceAll("\\R", "")); // Safe
+        logger.debug(source.replaceAll("\\R", "\n")); // $ hasTaintFlow
+        logger.debug(source.replaceAll("\\R", "\r")); // $ hasTaintFlow
         logger.debug(source.replaceAll("[^a-zA-Z]", "")); // Safe
         logger.debug(source.replaceAll("[^a-zA-Z]", "\n")); // $ hasTaintFlow
         logger.debug(source.replaceAll("[^a-zA-Z]", "\r")); // $ hasTaintFlow
         logger.debug(source.replaceAll("[^a-zA-Z\n]", "")); // $ hasTaintFlow
         logger.debug(source.replaceAll("[^a-zA-Z\r]", "")); // $ hasTaintFlow
+        logger.debug(source.replaceAll("[^a-zA-Z\\R]", "")); // $ hasTaintFlow
     }
 
     public void testGuards() {
@@ -66,6 +76,18 @@ public class LogInjectionTest {
             logger.debug(source); // Safe
         }
 
+        if (source.matches(".*\\n.*")) {
+            logger.debug(source); // $ hasTaintFlow
+        } else {
+            logger.debug(source); // Safe
+        }
+
+        if (Pattern.matches(".*\\n.*", source)) {
+            logger.debug(source); // $ hasTaintFlow
+        } else {
+            logger.debug(source); // Safe
+        }
+
         if (source.matches(".*\r.*")) {
             logger.debug(source); // $ hasTaintFlow
         } else {
@@ -73,6 +95,30 @@ public class LogInjectionTest {
         }
 
         if (Pattern.matches(".*\r.*", source)) {
+            logger.debug(source); // $ hasTaintFlow
+        } else {
+            logger.debug(source); // Safe
+        }
+
+        if (source.matches(".*\\r.*")) {
+            logger.debug(source); // $ hasTaintFlow
+        } else {
+            logger.debug(source); // Safe
+        }
+
+        if (Pattern.matches(".*\\r.*", source)) {
+            logger.debug(source); // $ hasTaintFlow
+        } else {
+            logger.debug(source); // Safe
+        }
+
+        if (source.matches(".*\\R.*")) {
+            logger.debug(source); // $ hasTaintFlow
+        } else {
+            logger.debug(source); // Safe
+        }
+
+        if (Pattern.matches(".*\\R.*", source)) {
             logger.debug(source); // $ hasTaintFlow
         } else {
             logger.debug(source); // Safe
@@ -97,6 +143,18 @@ public class LogInjectionTest {
         }
 
         if (Pattern.matches("[^\n\r]*", source)) {
+            logger.debug(source); // Safe
+        } else {
+            logger.debug(source); // $ hasTaintFlow
+        }
+
+        if (source.matches("[^\\R]*")) {
+            logger.debug(source); // Safe
+        } else {
+            logger.debug(source); // $ hasTaintFlow
+        }
+
+        if (Pattern.matches("[^\\R]*", source)) {
             logger.debug(source); // Safe
         } else {
             logger.debug(source); // $ hasTaintFlow

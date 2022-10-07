@@ -68,10 +68,10 @@ private predicate logInjectionSanitizer(MethodAccess ma) {
     (
       // Replace anything not in an allow list
       target.getStringValue().matches("[^%]") and
-      not target.getStringValue().matches(["%\n%", "%\r%"])
+      not target.getStringValue().matches("%" + ["\n", "\r", "\\n", "\\r", "\\R"] + "%")
       or
       // Replace line breaks
-      target.getStringValue() = ["\n", "\r"]
+      target.getStringValue() = ["\n", "\r", "\\n", "\\r", "\\R"]
     )
   )
 }
@@ -103,17 +103,17 @@ private predicate logInjectionGuard(Guard g, Expr e, boolean branch) {
       // Allow anything except line breaks
       (
         not target.getStringValue().matches("%[^%]%") and
-        not target.getStringValue().matches(["%\n%", "%\r%"])
+        not target.getStringValue().matches("%" + ["\n", "\r", "\\n", "\\r", "\\R"] + "%")
         or
-        target.getStringValue().matches(["%[^%\n%]%", "%[^%\r%]%"])
+        target.getStringValue().matches("%[^%" + ["\n", "\r", "\\n", "\\r", "\\R"] + "%]%")
       ) and
       branch = true
       or
       // Disallow line breaks
       (
-        not target.getStringValue().matches(["%[^%\n%]%", "%[^%\r%]%"]) and
+        not target.getStringValue().matches("%[^%" + ["\n", "\r", "\\n", "\\r", "\\R"] + "%]%") and
         // Assuming a regex containing line breaks is correctly matching line breaks in a string
-        target.getStringValue().matches(["%\n%", "%\r%"])
+        target.getStringValue().matches("%" + ["\n", "\r", "\\n", "\\r", "\\R"] + "%")
       ) and
       branch = false
     )
