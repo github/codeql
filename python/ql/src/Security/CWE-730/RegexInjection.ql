@@ -24,6 +24,5 @@ from
 where
   config.hasFlowPath(source, sink) and
   regexExecution = sink.getNode().(Sink).getRegexExecution()
-select sink.getNode(), source, sink, "$@ depends on $@ and executed by $@.", sink.getNode(),
-  "This regular expression", source.getNode(), "a user-provided value", regexExecution,
-  regexExecution.getName()
+select sink.getNode(), source, sink, "This regular expression depends on a $@ and executed by $@.",
+  source.getNode(), "user-provided value", regexExecution, regexExecution.getName()

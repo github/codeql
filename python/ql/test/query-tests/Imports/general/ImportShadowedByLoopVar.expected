@@ -1,1 +1,1 @@
-| imports_test.py:16:5:16:10 | module | Loop variable 'module' shadows an import |
+| imports_test.py:16:5:16:10 | module | Loop variable 'module' shadows an import. |

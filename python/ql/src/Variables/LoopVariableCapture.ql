@@ -44,4 +44,4 @@ predicate escaping_capturing_looping_construct(CallableExpr capturing, AstNode l
 
 from CallableExpr capturing, AstNode loop, Variable var
 where escaping_capturing_looping_construct(capturing, loop, var)
-select capturing, "Capture of loop variable '$@'", loop, var.getId()
+select capturing, "Capture of loop variable $@.", loop, var.getId()
