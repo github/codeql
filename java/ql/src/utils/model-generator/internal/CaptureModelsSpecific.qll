@@ -143,7 +143,7 @@ string asPartialNegativeModel(TargetApiSpecific api) {
   )
 }
 
-private predicate isPrimitiveTypeUsedForBulkData(J::Type t) {
+predicate isPrimitiveTypeUsedForBulkData(J::Type t) {
   t.hasName(["byte", "char", "Byte", "Character"])
 }
 
@@ -177,7 +177,7 @@ predicate isRelevantType(J::Type t) {
  */
 string qualifierString() { result = "Argument[-1]" }
 
-string parameterAccess(J::Parameter p) {
+private string parameterAccess(J::Parameter p) {
   if
     p.getType() instanceof J::Array and
     not isPrimitiveTypeUsedForBulkData(p.getType().(J::Array).getElementType())

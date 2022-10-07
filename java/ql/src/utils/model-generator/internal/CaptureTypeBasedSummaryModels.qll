@@ -5,33 +5,55 @@ private import CaptureModelsSpecific as Specific
 private import CaptureModels
 
 /**
- * A type representing classes that has a method which returns an iterator.
+ * A type representing class types of instantiations of class types
+ * that has a method which returns an iterator.
  */
 private class IterableType extends Class {
   private Type elementType;
 
   IterableType() {
-    exists(Method m, Type return | m.getDeclaringType() = this |
+    exists(Method m, Type return, Type t | m.getDeclaringType() = t |
       return = m.getReturnType() and
       return.getName().matches("Iterator%") and
-      elementType = return.(ParameterizedType).getTypeArgument(0)
+      elementType = return.(ParameterizedType).getTypeArgument(0) and
+      (this = t or instantiates(this, t, _, _))
     )
   }
 
   /**
    * Returns the iterator element type of `this`.
+   * TODO: Improve this as it doesn't return the correct type instantiations.
    */
   Type getElementType() { result = elementType }
 }
 
 /**
+ * Holds if type `bound` is an upper bound for type `t` or equal to `t`.
+ */
+private predicate isEffectivelyUpperBound(Type t, Type bound) {
+  t = bound or
+  t.(Wildcard).getUpperBound().getType() = bound
+}
+
+/**
+ * Holds if type `bound` is a lower bound for type `t` or equal to `t`.
+ */
+private predicate isEffectivelyLowerBound(Type t, Type bound) {
+  t = bound or
+  t.(Wildcard).getLowerBound().getType() = bound
+}
+
+/**
  * Holds if `t` is a container like type of `tv` (eg. `List<T>`).
+ * Note that collections are covariant in their element type.
  */
 private predicate genericContainerType(RefType t, TypeVariable tv) {
-  (
-    t.(ContainerType).getElementType() = tv
+  exists(Type et |
+    et = t.(ContainerType).getElementType()
     or
-    t.(IterableType).getElementType() = tv
+    et = t.(IterableType).getElementType()
+  |
+    isEffectivelyUpperBound(et, tv)
   )
 }
 
@@ -50,19 +72,33 @@ private predicate localTypeParameter(Callable callable, TypeVariable tv) {
   callable.(GenericCallable).getATypeParameter() = tv
 }
 
+private string parameterAccess(Parameter p) {
+  exists(Type t | t = p.getType() |
+    if
+      t instanceof Array and
+      not Specific::isPrimitiveTypeUsedForBulkData(p.getType().(Array).getElementType())
+    then result = "Argument[" + p.getPosition() + "].ArrayElement"
+    else
+      if t instanceof ContainerType or t instanceof IterableType
+      then result = "Argument[" + p.getPosition() + "].Element"
+      else result = "Argument[" + p.getPosition() + "]"
+  )
+}
+
 /**
  * Holds if `callable` has a type parameter `tv` or container parameterized over type `tv`.
  */
 private predicate parameter(Callable callable, string input, TypeVariable tv) {
-  exists(Parameter p |
-    input = Specific::parameterAccess(p) and
+  exists(Parameter p, Type pt |
+    input = parameterAccess(p) and
     p = callable.getAParameter() and
+    pt = p.getType() and
     (
       // Parameter of type tv
-      p.getType() = tv
+      isEffectivelyUpperBound(pt, tv)
       or
       // Parameter is a container of type tv
-      genericContainerType(p.getType(), tv)
+      genericContainerType(pt, tv)
     )
   )
 }
@@ -80,6 +116,7 @@ private string getSyntheticField(TypeVariable tv) {
  */
 private string implicit(Callable callable, TypeVariable tv) {
   classTypeParameter(callable, tv) and
+  not callable.isStatic() and
   exists(string access |
     if genericContainerType(callable.getDeclaringType(), tv)
     then access = ".Element"
@@ -113,11 +150,9 @@ private class Function extends ParameterizedType {
    * Note that functions are contravariant in their parameter types.
    */
   Type getParameterType(int position) {
-    exists(Type t | fi.getRunMethod().getParameterType(position) = getTypeReplacement(t) |
-      (
-        result = t or
-        result = t.(Wildcard).getLowerBound().getType()
-      )
+    exists(Type t |
+      fi.getRunMethod().getParameterType(position) = getTypeReplacement(t) and
+      isEffectivelyLowerBound(t, result)
     )
   }
 
@@ -126,11 +161,9 @@ private class Function extends ParameterizedType {
    * Note that functions are covariant in their return type.
    */
   Type getReturnType() {
-    exists(Type t | fi.getRunMethod().getReturnType() = getTypeReplacement(t) |
-      (
-        result = t or
-        result = t.(Wildcard).getUpperBound().getType()
-      )
+    exists(Type t |
+      fi.getRunMethod().getReturnType() = getTypeReplacement(t) and
+      isEffectivelyUpperBound(t, result)
     )
   }
 }

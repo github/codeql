@@ -64,6 +64,7 @@ private string getSyntheticField(TypeParameter tp) {
  */
 private string implicit(DotNet::Callable callable, TypeParameter tp) {
   classTypeParameter(callable, tp) and
+  not callable.(Modifiable).isStatic() and
   exists(string access |
     if genericCollectionType(callable.getDeclaringType(), tp)
     then access = ".Element"
