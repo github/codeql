@@ -241,7 +241,7 @@ if args.single_version:
         compile_embeddable(args.single_version)
     else:
         compile_standalone(args.single_version)
-elif args.single_version_embeddable != None:
+elif args.single_version_embeddable == True:
     print("--single-version-embeddable requires --single-version", file=sys.stderr)
     sys.exit(1)
 elif args.many:
