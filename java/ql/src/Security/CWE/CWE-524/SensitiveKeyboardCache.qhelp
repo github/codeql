@@ -29,8 +29,8 @@ should be used to ensure that the input does not get stored in the keyboard cach
   OWASP Mobile Application Security Testing Guide: <a href="https://github.com/OWASP/owasp-mastg/blob/b7a93a2e5e0557cc9a12e55fc3f6675f6986bb86/Document/0x05d-Testing-Data-Storage.md#determining-whether-the-keyboard-cache-is-disabled-for-text-input-fields-mstg-storage-5">Determining Whether the Keyboard Cache Is Disabled for Text Input Fields</a>.
 </li>
 <li>
-  Android Developers: <a href="https://developer.android.com/reference/android/widget/TextView#attr_android:inputType"> <code>android:inputType</code> attribute documentation.</a>
-<li>
+  Android Developers: <a href="https://developer.android.com/reference/android/widget/TextView#attr_android:inputType">android:inputType attribute documentation.</a>
+</li>
 
 </references>
 </qhelp>
