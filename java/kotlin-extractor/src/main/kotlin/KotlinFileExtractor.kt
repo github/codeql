@@ -356,7 +356,7 @@ open class KotlinFileExtractor(
 
     // `argsIncludingOuterClasses` can be null to describe a raw generic type.
     // For non-generic types it will be zero-length list.
-    fun extractNonPrivateMemberPrototypes(c: IrClass, argsIncludingOuterClasses: List<IrTypeArgument>?, id: Label<out DbClassorinterface>) {
+    private fun extractNonPrivateMemberPrototypes(c: IrClass, argsIncludingOuterClasses: List<IrTypeArgument>?, id: Label<out DbClassorinterface>) {
         with("member prototypes", c) {
             val typeParamSubstitution =
                 when (argsIncludingOuterClasses) {
