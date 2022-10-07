@@ -506,6 +506,18 @@ module API {
 
   /**
    * A read of a subscript that is connected to the API graph.
+   *
+   * This can be used to reason about the index of subscripts.
+   * For the code
+   * ```python
+   * x = foo[bar]
+   * y = foo[baz]
+   * ```
+   * there wil be subscript edges from `foo` to both `foo[bar]` and `foo[baz]`,
+   * and there will be index edges from `foo` to both `bar` and `baz`.
+   * There will be a separate `SubscriptReadNode` for `foo[bar]` (and one for `foo[baz]`),
+   * and the member predicates `getObject` and `getIndex` will return nodes
+   * consistent with that particular read.
    */
   class SubscriptReadNode extends DataFlow::Node {
     API::Node subscripted;
@@ -525,7 +537,17 @@ module API {
   /**
    * A write to a subscript that is connected to the API graph.
    *
-   * The member predicate `getValue` is guaranteed to exist and be unique to this write.
+   * This can be used to reason about the index and written values of subscripts.
+   * For the code
+   * ```python
+   * foo[bar] = x
+   * foo[baz] = y
+   * ```
+   * there wil be subscript edges from `foo` to both `x` and `y`,
+   * and there will be index edges from `foo` to both `bar` and `baz`.
+   * There will be a separate `SubscriptWriteNode` for `x` (and one for `y`),
+   * and the member predicates `getObject`, `getIndex`, and `getValue` will return nodes
+   * consistent with that particular write.
    */
   class SubscriptWriteNode extends DataFlow::Node {
     API::Node subscripted;
