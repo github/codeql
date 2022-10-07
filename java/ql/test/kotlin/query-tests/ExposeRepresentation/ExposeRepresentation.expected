@@ -1,0 +1,1 @@
+| ExposesRep.kt:2:5:2:49 | getStrings | getStrings exposes the internal representation stored in field strings. The value may be modified $@. | User.kt:3:12:3:18 | User.kt:3:12:3:18 | after this call to getStrings |
