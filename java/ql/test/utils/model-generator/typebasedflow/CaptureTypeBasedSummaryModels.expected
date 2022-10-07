@@ -7,6 +7,8 @@
 | p;Stream;true;collect;(Supplier,BiConsumer,BiConsumer);;Argument[0].ReturnValue;Argument[2].Parameter[0];value;generated |
 | p;Stream;true;collect;(Supplier,BiConsumer,BiConsumer);;Argument[0].ReturnValue;Argument[2].Parameter[1];value;generated |
 | p;Stream;true;collect;(Supplier,BiConsumer,BiConsumer);;Argument[0].ReturnValue;ReturnValue;value;generated |
+| p;Stream;true;concat;(Stream,Stream);;Argument[0].Element;ReturnValue.Element;value;generated |
+| p;Stream;true;concat;(Stream,Stream);;Argument[1].Element;ReturnValue.Element;value;generated |
 | p;Stream;true;distinct;();;Argument[-1].Element;ReturnValue.Element;value;generated |
 | p;Stream;true;iterator;();;Argument[-1].Element;ReturnValue.Element;value;generated |
 | p;TypeBasedCollection;true;addManyT;(List);;Argument[0].Element;Argument[-1].Element;value;generated |
