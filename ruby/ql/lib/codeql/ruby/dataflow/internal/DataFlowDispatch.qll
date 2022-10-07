@@ -736,6 +736,10 @@ private predicate singletonMethodOnModule(MethodBase method, string name, Module
   )
 }
 
+/**
+ * Holds if `method` is a singleton method named `name`, defined on module
+ * `m`, or any transitive base class of `m`.
+ */
 pragma[nomagic]
 private MethodBase lookupSingletonMethod(Module m, string name) {
   singletonMethodOnModule(result, name, m)
