@@ -108,13 +108,13 @@ edges
 | tst.js:29:39:29:41 | str | tst.js:29:28:29:42 | JSON.parse(str) |
 | tst.js:29:39:29:41 | str | tst.js:29:28:29:42 | JSON.parse(str) |
 #select
-| routes.js:2:23:2:30 | req.body | routes.js:2:23:2:30 | req.body | routes.js:2:23:2:30 | req.body | Template object depends on $@. | routes.js:2:23:2:30 | req.body | a user-provided value |
-| tst2.js:7:28:7:40 | bodyParameter | tst2.js:6:25:6:32 | req.body | tst2.js:7:28:7:40 | bodyParameter | Template object depends on $@. | tst2.js:6:25:6:32 | req.body | a user-provided value |
-| tst2.js:27:28:27:40 | bodyParameter | tst2.js:26:25:26:32 | req.body | tst2.js:27:28:27:40 | bodyParameter | Template object depends on $@. | tst2.js:26:25:26:32 | req.body | a user-provided value |
-| tst2.js:35:28:35:40 | bodyParameter | tst2.js:34:25:34:32 | req.body | tst2.js:35:28:35:40 | bodyParameter | Template object depends on $@. | tst2.js:34:25:34:32 | req.body | a user-provided value |
-| tst2.js:43:28:43:40 | bodyParameter | tst2.js:42:25:42:32 | req.body | tst2.js:43:28:43:40 | bodyParameter | Template object depends on $@. | tst2.js:42:25:42:32 | req.body | a user-provided value |
-| tst2.js:52:28:52:40 | bodyParameter | tst2.js:51:25:51:32 | req.body | tst2.js:52:28:52:40 | bodyParameter | Template object depends on $@. | tst2.js:51:25:51:32 | req.body | a user-provided value |
-| tst.js:10:28:10:40 | bodyParameter | tst.js:7:25:7:32 | req.body | tst.js:10:28:10:40 | bodyParameter | Template object depends on $@. | tst.js:7:25:7:32 | req.body | a user-provided value |
-| tst.js:11:28:11:41 | queryParameter | tst.js:8:26:8:49 | req.que ... rameter | tst.js:11:28:11:41 | queryParameter | Template object depends on $@. | tst.js:8:26:8:49 | req.que ... rameter | a user-provided value |
-| tst.js:24:28:24:30 | obj | tst.js:8:26:8:49 | req.que ... rameter | tst.js:24:28:24:30 | obj | Template object depends on $@. | tst.js:8:26:8:49 | req.que ... rameter | a user-provided value |
-| tst.js:29:28:29:42 | JSON.parse(str) | tst.js:8:26:8:49 | req.que ... rameter | tst.js:29:28:29:42 | JSON.parse(str) | Template object depends on $@. | tst.js:8:26:8:49 | req.que ... rameter | a user-provided value |
+| routes.js:2:23:2:30 | req.body | routes.js:2:23:2:30 | req.body | routes.js:2:23:2:30 | req.body | Template object depends on a $@. | routes.js:2:23:2:30 | req.body | user-provided value |
+| tst2.js:7:28:7:40 | bodyParameter | tst2.js:6:25:6:32 | req.body | tst2.js:7:28:7:40 | bodyParameter | Template object depends on a $@. | tst2.js:6:25:6:32 | req.body | user-provided value |
+| tst2.js:27:28:27:40 | bodyParameter | tst2.js:26:25:26:32 | req.body | tst2.js:27:28:27:40 | bodyParameter | Template object depends on a $@. | tst2.js:26:25:26:32 | req.body | user-provided value |
+| tst2.js:35:28:35:40 | bodyParameter | tst2.js:34:25:34:32 | req.body | tst2.js:35:28:35:40 | bodyParameter | Template object depends on a $@. | tst2.js:34:25:34:32 | req.body | user-provided value |
+| tst2.js:43:28:43:40 | bodyParameter | tst2.js:42:25:42:32 | req.body | tst2.js:43:28:43:40 | bodyParameter | Template object depends on a $@. | tst2.js:42:25:42:32 | req.body | user-provided value |
+| tst2.js:52:28:52:40 | bodyParameter | tst2.js:51:25:51:32 | req.body | tst2.js:52:28:52:40 | bodyParameter | Template object depends on a $@. | tst2.js:51:25:51:32 | req.body | user-provided value |
+| tst.js:10:28:10:40 | bodyParameter | tst.js:7:25:7:32 | req.body | tst.js:10:28:10:40 | bodyParameter | Template object depends on a $@. | tst.js:7:25:7:32 | req.body | user-provided value |
+| tst.js:11:28:11:41 | queryParameter | tst.js:8:26:8:49 | req.que ... rameter | tst.js:11:28:11:41 | queryParameter | Template object depends on a $@. | tst.js:8:26:8:49 | req.que ... rameter | user-provided value |
+| tst.js:24:28:24:30 | obj | tst.js:8:26:8:49 | req.que ... rameter | tst.js:24:28:24:30 | obj | Template object depends on a $@. | tst.js:8:26:8:49 | req.que ... rameter | user-provided value |
+| tst.js:29:28:29:42 | JSON.parse(str) | tst.js:8:26:8:49 | req.que ... rameter | tst.js:29:28:29:42 | JSON.parse(str) | Template object depends on a $@. | tst.js:8:26:8:49 | req.que ... rameter | user-provided value |

@@ -18,4 +18,4 @@ where
   vd1.getBindingPattern().getAVariable() = v and
   vd2.getBindingPattern().getAVariable() = v and
   i < j
-select vd2, "Variable " + v.getName() + " has already been declared $@.", vd1, "here"
+select vd2, "Variable " + v.getName() + " has already $@.", vd1, "been previously declared"

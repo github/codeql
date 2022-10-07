@@ -16,5 +16,5 @@ import DataFlow::PathGraph
 
 from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink
 where cfg.hasFlowPath(source, sink)
-select sink.getNode(), source, sink, "Outbound network request depends on $@", source.getNode(),
+select sink.getNode(), source, sink, "Outbound network request depends on $@.", source.getNode(),
   "file data"
