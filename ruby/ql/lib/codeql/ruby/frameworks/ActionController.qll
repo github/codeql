@@ -392,7 +392,7 @@ private module ParamsSummaries {
    */
   private class ParamsInstance extends DataFlow::Node {
     ParamsInstance() {
-      this.asExpr().getExpr() instanceof ParamsCall
+      this.asExpr().getExpr() instanceof Rails::ParamsCall
       or
       this =
         any(DataFlow::CallNode call |
