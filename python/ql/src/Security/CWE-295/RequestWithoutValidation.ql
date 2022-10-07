@@ -24,4 +24,4 @@ where
   // value from.
   if disablingNode = origin then ending = "." else ending = " by $@."
 select request, "This request may run without certificate validation because $@" + ending,
-  disablingNode, "the request is disabled", origin, "this value"
+  disablingNode, "it is disabled", origin, "this value"

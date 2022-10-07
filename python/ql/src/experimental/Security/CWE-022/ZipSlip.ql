@@ -19,5 +19,5 @@ import DataFlow::PathGraph
 from ZipSlipConfig config, DataFlow::PathNode source, DataFlow::PathNode sink
 where config.hasFlowPath(source, sink)
 select source.getNode(), source, sink,
-  "Unsanitized archive entry, which may contain '..', is used in a $@.", sink.getNode(),
+  "This unsanitized archive entry, which may contain '..', is used in a $@.", sink.getNode(),
   "file system operation"

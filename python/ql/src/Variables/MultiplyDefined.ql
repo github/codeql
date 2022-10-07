@@ -67,5 +67,5 @@ where
   forall(Name el | el = asgn1.getParentNode().(Tuple).getAnElt() | multiply_defined(el, _, _)) and
   not uninteresting_definition(asgn1)
 select asgn1,
-  "This assignment to '" + v.getId() + "' is unnecessary as $@ before this value is used.", asgn2,
-  "it is redefined"
+  "This assignment to '" + v.getId() + "' is unnecessary as it is $@ before this value is used.",
+  asgn2, "redefined"
