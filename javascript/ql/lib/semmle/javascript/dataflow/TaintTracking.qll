@@ -712,39 +712,29 @@ module TaintTracking {
   }
 
   /**
+   * Gets a local source of any part of the input to the given stringification `call`.
+   */
+  private DataFlow::Node getAJsonLocalInput(JsonStringifyCall call) {
+    result = call.getInput()
+    or
+    exists(DataFlow::SourceNode source | source = getAJsonLocalInput(call).getALocalSource() |
+      result = source.getAPropertyWrite().getRhs()
+      or
+      result = source.(DataFlow::ObjectLiteralNode).getASpreadProperty()
+      or
+      result = source.(DataFlow::ArrayCreationNode).getASpreadArgument()
+    )
+  }
+
+  /**
    * A taint propagating data flow edge arising from JSON unparsing.
    */
   private class JsonStringifyTaintStep extends SharedTaintStep {
     override predicate serializeStep(DataFlow::Node pred, DataFlow::Node succ) {
-      exists(JsonStringifyCall call, DataFlow::Node arg |
-        arg = call.getArgument(0) and
-        this.findInObject(arg.asExpr(), pred.asExpr()) and
+      exists(JsonStringifyCall call |
+        pred = getAJsonLocalInput(call) and
         succ = call
       )
-    }
-
-    // find target in root object recursively
-    private predicate findInObject(Expr root, Expr target) {
-      // base case
-      root = target
-      or
-      // when root is Object
-      exists(Property property |
-        root instanceof ObjectExpr and
-        property = root.(ObjectExpr).getAProperty() and
-        (
-          this.findInObject(property.getNameExpr(), target) or
-          this.findInObject(property.getInit(), target)
-        )
-      )
-      or
-      // when root is Array
-      root instanceof ArrayExpr and
-      this.findInObject(root.(ArrayExpr).getAChildExpr(), target)
-      or
-      // when root is VarRef
-      root instanceof VarRef and
-      this.findInObject(root.(VarRef).getAVariable().getAnAssignedExpr(), target)
     }
   }
 
