@@ -28,7 +28,6 @@ import DataFlow::PathGraph
 //   sink.getNode(), "size"
 from DataFlow::PathNode source, DataFlow::PathNode sink
 where
-  //hasInsufficientKeySize2(source, sink)
   exists(AsymmetricKeyTrackingConfiguration config1 | config1.hasFlowPath(source, sink)) or
   exists(AsymmetricECCKeyTrackingConfiguration config2 | config2.hasFlowPath(source, sink)) or
   exists(SymmetricKeyTrackingConfiguration config3 | config3.hasFlowPath(source, sink))

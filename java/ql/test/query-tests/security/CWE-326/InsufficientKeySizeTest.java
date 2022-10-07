@@ -1,5 +1,6 @@
 import java.security.KeyPairGenerator;
 import java.security.spec.ECGenParameterSpec;
+import java.security.spec.RSAKeyGenParameterSpec;
 import javax.crypto.KeyGenerator;
 
 public class InsufficientKeySizeTest {
@@ -27,6 +28,16 @@ public class InsufficientKeySizeTest {
             // GOOD: Key size is no less than 2048
             KeyPairGenerator keyPairGen2 = KeyPairGenerator.getInstance("RSA");
             keyPairGen2.initialize(2048); // Safe
+
+            // test with spec
+            // BAD: Key size is less than 2048
+            KeyPairGenerator keyPairGen3 = KeyPairGenerator.getInstance("RSA");
+            RSAKeyGenParameterSpec rsaSpec = new RSAKeyGenParameterSpec(1024, null);
+            keyPairGen3.initialize(rsaSpec); // $ hasInsufficientKeySize
+
+            // BAD: Key size is less than 2048
+            KeyPairGenerator keyPairGen4 = KeyPairGenerator.getInstance("RSA");
+            keyPairGen4.initialize(new RSAKeyGenParameterSpec(1024, null)); // $ hasInsufficientKeySize
         }
 
         // DSA (Asymmetric)
@@ -145,7 +156,7 @@ public class InsufficientKeySizeTest {
             int size = 64; // test integer variable
             KeyGenerator keyGen = KeyGenerator.getInstance("AES"); // test KeyGenerator variable
             testSymmetric(size, keyGen); // test with variable as key size
-            testSymmetric2(64); // test with int constant as key size
+            testSymmetric2(64); // test with int literal as key size
          }
 
 
@@ -153,15 +164,16 @@ public class InsufficientKeySizeTest {
          {
             int size = 1024; // test integer variable
             KeyPairGenerator keyPairGen21 = KeyPairGenerator.getInstance("RSA"); // test KeyPairGenerator variable
-            testAsymmetricNonEC(size, keyPairGen21);
+            testAsymmetricNonEC(size, keyPairGen21); // test with variable as key size
+            testAsymmetricNonEC2(1024); // test with int literal as key size
          }
 
          // Test variable passed to other method(s) - Asymmetric, EC
          {
             ECGenParameterSpec ecSpec = new ECGenParameterSpec("secp112r1"); // test ECGenParameterSpec variable
             KeyPairGenerator keyPairGen22 = KeyPairGenerator.getInstance("EC"); // test KeyPairGenerator variable
-            testAsymmetricEC(ecSpec, keyPairGen22); // test with variable as key size
-            testAsymmetricNonEC2(1024); // test with int constant as key size
+            testAsymmetricEC(ecSpec, keyPairGen22);
+
          }
 
     }
