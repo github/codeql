@@ -138,6 +138,10 @@ private class Function extends ParameterizedType {
 
   Function() { fi = this.getGenericType() }
 
+  /**
+   * Gets the typevariable that is the placeholder for the type `t`
+   * used in the instantiation of `this`.
+   */
   private TypeVariable getTypeReplacement(Type t) {
     exists(int position |
       instantiates(this, fi, position, t) and
@@ -151,7 +155,7 @@ private class Function extends ParameterizedType {
    */
   Type getParameterType(int position) {
     exists(Type t |
-      fi.getRunMethod().getParameterType(position) = getTypeReplacement(t) and
+      fi.getRunMethod().getParameterType(position) = this.getTypeReplacement(t) and
       isEffectivelyLowerBound(t, result)
     )
   }
@@ -162,7 +166,7 @@ private class Function extends ParameterizedType {
    */
   Type getReturnType() {
     exists(Type t |
-      fi.getRunMethod().getReturnType() = getTypeReplacement(t) and
+      fi.getRunMethod().getReturnType() = this.getTypeReplacement(t) and
       isEffectivelyUpperBound(t, result)
     )
   }
