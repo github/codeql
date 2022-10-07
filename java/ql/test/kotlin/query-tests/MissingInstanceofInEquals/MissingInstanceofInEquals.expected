@@ -1,0 +1,1 @@
+| Test.kt:10:14:12:5 | equals | This 'equals()' method does not check argument type. |
