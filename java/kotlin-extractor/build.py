@@ -235,13 +235,19 @@ def compile_standalone(version):
             'build_standalone_' + version,
             version)
 
-compile_single_version = compile_embeddable if args.single_version_embeddable == True else compile_standalone
+
 
 if args.single_version:
-    compile_single_version(args.single_version)
+    if args.single_version_embeddable == True:
+        compile_embeddable(args.single_version)
+    else:
+        compile_standalone(args.single_version)
+elif args.single_version_embeddable != None:
+    print("--single-version-embeddable requires --single-version", file=sys.stderr)
+    sys.exit(1)
 elif args.many:
     for version in kotlin_plugin_versions.many_versions:
         compile_standalone(version)
         compile_embeddable(version)
 else:
-    compile_single_version(kotlin_plugin_versions.get_single_version())
+    compile_standalone(kotlin_plugin_versions.get_single_version())
