@@ -17,5 +17,7 @@ class UsersController < ActionController::Base
     Kernel.open("this is #{fine}") # GOOD
 
     Kernel.open("#{this_is} bad") # BAD
+
+    open("| #{this_is_an_explicit_command} foo bar") # GOOD
   end
 end
