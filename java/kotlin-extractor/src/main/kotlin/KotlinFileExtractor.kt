@@ -4731,7 +4731,7 @@ open class KotlinFileExtractor(
                        class <Anon> extends Object implements IntPredicate {
                            Function1<Integer, Boolean> <fn>;
                            public <Anon>(Function1<Integer, Boolean> <fn>) { this.<fn> = <fn>; }
-                           public Boolean accept(Integer i) { return <fn>.invoke(i); }
+                           public override Boolean accept(Integer i) { return <fn>.invoke(i); }
                        }
 
                        IntPredicate x = (IntPredicate)new <Anon>(...);
@@ -4811,6 +4811,7 @@ open class KotlinFileExtractor(
                     // the real underlying R Function<T, R>.apply(T t).
                     forceExtractFunction(samMember, classId, extractBody = false, extractMethodAndParameterTypeAccesses = true, typeSub, classTypeArgs, overriddenAttributes = OverriddenFunctionAttributes(id = ids.function, sourceLoc = tw.getLocation(e)))
 
+                    addModifiers(ids.function, "override")
                     if (st.isSuspendFunctionOrKFunction()) {
                         addModifiers(ids.function, "suspend")
                     }

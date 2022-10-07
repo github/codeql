@@ -221,25 +221,25 @@ anon_class_member_modifiers
 | funcExprs.kt:90:15:90:69 | new FunctionN<String>(...) { ... } | funcExprs.kt:90:15:90:69 | invoke | public |
 | funcExprs.kt:94:15:94:67 | new Function22<Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,String>(...) { ... } | funcExprs.kt:94:15:94:67 | invoke | override, public, suspend |
 | kFunctionInvoke.kt:8:44:8:47 | new Function1<String,Unit>(...) { ... } | kFunctionInvoke.kt:8:44:8:47 | invoke | override, public |
-| samConversion.kt:2:18:2:45 | new IntPredicate(...) { ... } | samConversion.kt:2:18:2:45 | accept | public |
+| samConversion.kt:2:18:2:45 | new IntPredicate(...) { ... } | samConversion.kt:2:18:2:45 | accept | override, public |
 | samConversion.kt:2:31:2:45 | new Function1<Integer,Boolean>(...) { ... } | samConversion.kt:2:31:2:45 | invoke | override, public |
-| samConversion.kt:4:14:4:42 | new InterfaceFn1(...) { ... } | samConversion.kt:4:14:4:42 | fn1 | public |
+| samConversion.kt:4:14:4:42 | new InterfaceFn1(...) { ... } | samConversion.kt:4:14:4:42 | fn1 | override, public |
 | samConversion.kt:4:27:4:42 | new Function2<Integer,Integer,Unit>(...) { ... } | samConversion.kt:4:27:4:42 | invoke | override, public |
-| samConversion.kt:5:14:5:32 | new InterfaceFn1(...) { ... } | samConversion.kt:5:14:5:32 | fn1 | public |
+| samConversion.kt:5:14:5:32 | new InterfaceFn1(...) { ... } | samConversion.kt:5:14:5:32 | fn1 | override, public |
 | samConversion.kt:5:27:5:31 | new Function2<Integer,Integer,Unit>(...) { ... } | samConversion.kt:5:27:5:31 | invoke | override, public |
-| samConversion.kt:7:13:7:46 | new InterfaceFnExt1(...) { ... } | samConversion.kt:7:13:7:46 | ext | public |
+| samConversion.kt:7:13:7:46 | new InterfaceFnExt1(...) { ... } | samConversion.kt:7:13:7:46 | ext | override, public |
 | samConversion.kt:7:29:7:46 | new Function2<String,Integer,Boolean>(...) { ... } | samConversion.kt:7:29:7:46 | invoke | override, public |
-| samConversion.kt:9:13:13:6 | new IntPredicate(...) { ... } | samConversion.kt:9:13:13:6 | accept | public |
+| samConversion.kt:9:13:13:6 | new IntPredicate(...) { ... } | samConversion.kt:9:13:13:6 | accept | override, public |
 | samConversion.kt:9:33:11:5 | new Function1<Integer,Boolean>(...) { ... } | samConversion.kt:9:33:11:5 | invoke | override, public |
 | samConversion.kt:11:12:13:5 | new Function1<Integer,Boolean>(...) { ... } | samConversion.kt:11:12:13:5 | invoke | override, public |
 | samConversion.kt:41:13:41:16 | new FunctionN<Boolean>(...) { ... } | samConversion.kt:41:13:41:16 | invoke | override, public |
-| samConversion.kt:42:13:42:32 | new BigArityPredicate(...) { ... } | samConversion.kt:42:13:42:32 | accept | public |
-| samConversion.kt:43:13:45:68 | new BigArityPredicate(...) { ... } | samConversion.kt:43:13:45:68 | accept | public |
+| samConversion.kt:42:13:42:32 | new BigArityPredicate(...) { ... } | samConversion.kt:42:13:42:32 | accept | override, public |
+| samConversion.kt:43:13:45:68 | new BigArityPredicate(...) { ... } | samConversion.kt:43:13:45:68 | accept | override, public |
 | samConversion.kt:43:31:45:68 | new FunctionN<Boolean>(...) { ... } | samConversion.kt:43:31:45:68 | invoke | override, public |
 | samConversion.kt:43:31:45:68 | new FunctionN<Boolean>(...) { ... } | samConversion.kt:43:31:45:68 | invoke | public |
-| samConversion.kt:46:13:46:44 | new SomePredicate<Integer>(...) { ... } | samConversion.kt:46:13:46:44 | fn | public |
+| samConversion.kt:46:13:46:44 | new SomePredicate<Integer>(...) { ... } | samConversion.kt:46:13:46:44 | fn | override, public |
 | samConversion.kt:46:32:46:44 | new Function1<Integer,Boolean>(...) { ... } | samConversion.kt:46:32:46:44 | invoke | override, public |
-| samConversion.kt:58:14:58:45 | new InterfaceFn1Sus(...) { ... } | samConversion.kt:58:14:58:45 | fn1 | public, suspend |
+| samConversion.kt:58:14:58:45 | new InterfaceFn1Sus(...) { ... } | samConversion.kt:58:14:58:45 | fn1 | override, public, suspend |
 | samConversion.kt:58:30:58:45 | new Function2<Integer,Integer,Unit>(...) { ... } | samConversion.kt:58:30:58:45 | invoke | override, public, suspend |
 nonOverrideInvoke
 | funcExprs.kt:36:29:36:117 | ...->... | funcExprs.kt:36:29:36:117 | invoke | 23 |
