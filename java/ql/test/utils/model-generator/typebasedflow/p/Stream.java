@@ -72,27 +72,23 @@ public class Stream<T> {
         throw null;
     }
 
-    // Issue with model generator. Return value is not correctly identified as a
-    // collection like type.
-    // public static <T> Stream<T> generate(Supplier<T> s) {
-    // throw null;
-    // }
+    public static <T> Stream<T> generate(Supplier<T> s) {
+        throw null;
+    }
 
-    // Issue with model generator. Return value is not correctly identified as a
-    // collection like type.
-    // public static <T> Stream<T> iterate(T seed, UnaryOperator<T> f) {
-    // throw null;
-    // }
+    // Model generator adds a couple of extra models, which can't be
+    // dismissed based on the type information.
+    public static <T> Stream<T> iterate(T seed, UnaryOperator<T> f) {
+        throw null;
+    }
 
     public Stream<T> limit(long maxSize) {
         throw null;
     }
 
-    // Issue with model generator. Return value is not correctly identified as a
-    // collection like type and also the type parameter is not correctly identified.
-    // public <R> Stream<R> map(Function<? super T, ? extends R> mapper) {
-    // throw null;
-    // }
+    public <R> Stream<R> map(Function<? super T, ? extends R> mapper) {
+        throw null;
+    }
 
     public DoubleStream mapToDouble(ToDoubleFunction<? super T> mapper) {
         throw null;
@@ -123,11 +119,9 @@ public class Stream<T> {
     // throw null;
     // }
 
-    // Issue with model generator. Return value is not correctly identified as a
-    // collection like type and also the type parameter is not correctly identified.
-    // public static <T> Stream<T> of(T t) {
-    // throw null;
-    // }
+    public static <T> Stream<T> of(T t) {
+        throw null;
+    }
 
     public Stream<T> peek(Consumer<? super T> action) {
         throw null;
