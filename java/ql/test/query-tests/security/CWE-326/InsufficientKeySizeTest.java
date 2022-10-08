@@ -1,7 +1,11 @@
+import javax.crypto.KeyGenerator;
 import java.security.KeyPairGenerator;
+
 import java.security.spec.ECGenParameterSpec;
 import java.security.spec.RSAKeyGenParameterSpec;
-import javax.crypto.KeyGenerator;
+import java.security.spec.DSAGenParameterSpec;
+import javax.crypto.spec.DHGenParameterSpec;
+
 
 public class InsufficientKeySizeTest {
     public void keySizeTesting() throws java.security.NoSuchAlgorithmException, java.security.InvalidAlgorithmParameterException {
@@ -49,6 +53,16 @@ public class InsufficientKeySizeTest {
             // GOOD: Key size is no less than 2048
             KeyPairGenerator keyPairGen4 = KeyPairGenerator.getInstance("DSA");
             keyPairGen4.initialize(2048); // Safe
+
+            // test with spec?
+            // // BAD: Key size is less than 2048
+            // KeyPairGenerator keyPairGen5 = KeyPairGenerator.getInstance("DSA");
+            // DSAGenParameterSpec dsaSpec = new DSAGenParameterSpec(1024, null);
+            // keyPairGen5.initialize(dsaSpec); // $ hasInsufficientKeySize
+
+            // // BAD: Key size is less than 2048
+            // KeyPairGenerator keyPairGen6 = KeyPairGenerator.getInstance("DSA");
+            // keyPairGen6.initialize(new DSAGenParameterSpec(1024, null)); // $ hasInsufficientKeySize
         }
 
         // DH (Asymmetric)
@@ -60,6 +74,16 @@ public class InsufficientKeySizeTest {
             // GOOD: Key size is no less than 2048
             KeyPairGenerator keyPairGen17 = KeyPairGenerator.getInstance("DH");
             keyPairGen17.initialize(2048); // Safe
+
+            // test with spec?
+            // // BAD: Key size is less than 2048
+            // KeyPairGenerator keyPairGen3 = KeyPairGenerator.getInstance("DH");
+            // DHGenParameterSpec dhSpec = new DHGenParameterSpec(1024, null);
+            // keyPairGen3.initialize(dhSpec); // $ hasInsufficientKeySize
+
+            // // BAD: Key size is less than 2048
+            // KeyPairGenerator keyPairGen4 = KeyPairGenerator.getInstance("DH");
+            // keyPairGen4.initialize(new DHGenParameterSpec(1024, null)); // $ hasInsufficientKeySize
         }
 
         // EC (Asymmetric)

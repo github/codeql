@@ -26,9 +26,17 @@ import DataFlow::PathGraph
 //   cfg2.hasFlowPath(source, sink)
 // select sink.getNode(), source, sink, "The $@ of an asymmetric key should be at least 2048 bits.",
 //   sink.getNode(), "size"
-from DataFlow::PathNode source, DataFlow::PathNode sink
-where
-  exists(AsymmetricKeyTrackingConfiguration config1 | config1.hasFlowPath(source, sink)) or
-  exists(AsymmetricECCKeyTrackingConfiguration config2 | config2.hasFlowPath(source, sink)) or
-  exists(SymmetricKeyTrackingConfiguration config3 | config3.hasFlowPath(source, sink))
-select sink.getNode(), source, sink, "This $@ is too small.", sink.getNode(), "key size"
+// * Use Below
+// from DataFlow::PathNode source, DataFlow::PathNode sink
+// where exists(AsymmetricKeyTrackingConfiguration config1 | config1.hasFlowPath(source, sink)) //or
+// //exists(AsymmetricECCKeyTrackingConfiguration config2 | config2.hasFlowPath(source, sink)) //or
+// //exists(SymmetricKeyTrackingConfiguration config3 | config3.hasFlowPath(source, sink))
+// select sink.getNode(), source, sink, "This $@ is too small, and flows to $@.", source.getNode(),
+//   "key size", sink.getNode(), "here"
+// * Use Above
+from DataFlow::Node source, DataFlow::Node sink
+where exists(AsymmetricKeyTrackingConfiguration config1 | config1.hasFlow(source, sink)) //or
+//exists(AsymmetricECCKeyTrackingConfiguration config2 | config2.hasFlowPath(source, sink)) //or
+//exists(SymmetricKeyTrackingConfiguration config3 | config3.hasFlowPath(source, sink))
+select sink, source, sink, "This $@ is too small, and flows to $@.", source, "key size", sink,
+  "here"
