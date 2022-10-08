@@ -1,4 +1,5 @@
 import semmle.code.java.security.Encryption
+import semmle.code.java.dataflow.TaintTracking2
 import semmle.code.java.dataflow.TaintTracking
 import semmle.code.java.dataflow.DataFlow
 
@@ -11,7 +12,7 @@ import semmle.code.java.dataflow.DataFlow
 /**
  * Asymmetric (RSA, DSA, DH) key length data flow tracking configuration.
  */
-class AsymmetricKeyTrackingConfiguration extends DataFlow::Configuration {
+class AsymmetricKeyTrackingConfiguration extends TaintTracking2::Configuration {
   AsymmetricKeyTrackingConfiguration() { this = "AsymmetricKeyTrackingConfiguration" }
 
   override predicate isSource(DataFlow::Node source) {
@@ -27,15 +28,25 @@ class AsymmetricKeyTrackingConfiguration extends DataFlow::Configuration {
   override predicate isSink(DataFlow::Node sink) {
     exists(MethodAccess ma, VarAccess va |
       ma.getMethod() instanceof KeyPairGeneratorInitMethod and
-      va.getVariable()
-          .getAnAssignedValue()
-          .(JavaSecurityKeyPairGenerator)
-          .getAlgoSpec()
-          .(StringLiteral)
-          .getValue()
-          .toUpperCase()
-          .matches(["RSA", "DSA", "DH"]) and
-      ma.getQualifier() = va and
+      ma.getFile().getBaseName().matches("SignatureTest.java") and
+      // va.getVariable()
+      //     .getAnAssignedValue()
+      //     .(JavaSecurityKeyPairGenerator)
+      //     .getAlgoSpec()
+      //     .(StringLiteral)
+      //     .getValue()
+      //     .toUpperCase()
+      //     .matches(["RSA", "DSA", "DH"]) and
+      // ma.getQualifier() = va and
+      exists(
+        JavaSecurityKeyPairGenerator jpg, KeyPairGeneratorInitConfiguration kpgConfig,
+        DataFlow::PathNode source, DataFlow::PathNode dest
+      |
+        jpg.getAlgoSpec().(StringLiteral).getValue().toUpperCase().matches(["RSA", "DSA", "DH"]) and
+        source.getNode().asExpr() = jpg and
+        dest.getNode().asExpr() = ma.getQualifier() and
+        kpgConfig.hasFlowPath(source, dest)
+      ) and
       sink.asExpr() = ma.getArgument(0)
     )
   }
@@ -102,12 +113,11 @@ class SymmetricKeyTrackingConfiguration extends DataFlow::Configuration {
 }
 
 // ! below doesn't work for some reason...
-predicate hasInsufficientKeySize2(DataFlow::PathNode source, DataFlow::PathNode sink) {
-  exists(AsymmetricKeyTrackingConfiguration config1 | config1.hasFlowPath(source, sink))
-  or
-  exists(SymmetricKeyTrackingConfiguration config2 | config2.hasFlowPath(source, sink))
-}
-
+// predicate hasInsufficientKeySize2(DataFlow::PathNode source, DataFlow::PathNode sink) {
+//   exists(AsymmetricKeyTrackingConfiguration config1 | config1.hasFlowPath(source, sink))
+//   or
+//   exists(SymmetricKeyTrackingConfiguration config2 | config2.hasFlowPath(source, sink))
+// }
 // ******** Need the below for the above ********
 // ! move to Encryption.qll?
 /** The Java class `java.security.spec.ECGenParameterSpec`. */
