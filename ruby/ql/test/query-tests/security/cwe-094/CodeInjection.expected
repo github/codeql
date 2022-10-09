@@ -6,6 +6,7 @@ edges
 | CodeInjection.rb:5:12:5:24 | ...[...] :  | CodeInjection.rb:29:15:29:18 | code |
 | CodeInjection.rb:5:12:5:24 | ...[...] :  | CodeInjection.rb:32:19:32:22 | code |
 | CodeInjection.rb:5:12:5:24 | ...[...] :  | CodeInjection.rb:38:24:38:27 | code :  |
+| CodeInjection.rb:5:12:5:24 | ...[...] :  | CodeInjection.rb:41:40:41:43 | code |
 | CodeInjection.rb:38:24:38:27 | code :  | CodeInjection.rb:38:10:38:28 | call to escape |
 nodes
 | CodeInjection.rb:5:12:5:17 | call to params :  | semmle.label | call to params :  |
@@ -18,6 +19,7 @@ nodes
 | CodeInjection.rb:32:19:32:22 | code | semmle.label | code |
 | CodeInjection.rb:38:10:38:28 | call to escape | semmle.label | call to escape |
 | CodeInjection.rb:38:24:38:27 | code :  | semmle.label | code :  |
+| CodeInjection.rb:41:40:41:43 | code | semmle.label | code |
 subpaths
 #select
 | CodeInjection.rb:8:10:8:13 | code | CodeInjection.rb:5:12:5:17 | call to params :  | CodeInjection.rb:8:10:8:13 | code | This code execution depends on a $@. | CodeInjection.rb:5:12:5:17 | call to params | user-provided value |
@@ -27,3 +29,4 @@ subpaths
 | CodeInjection.rb:29:15:29:18 | code | CodeInjection.rb:5:12:5:17 | call to params :  | CodeInjection.rb:29:15:29:18 | code | This code execution depends on a $@. | CodeInjection.rb:5:12:5:17 | call to params | user-provided value |
 | CodeInjection.rb:32:19:32:22 | code | CodeInjection.rb:5:12:5:17 | call to params :  | CodeInjection.rb:32:19:32:22 | code | This code execution depends on a $@. | CodeInjection.rb:5:12:5:17 | call to params | user-provided value |
 | CodeInjection.rb:38:10:38:28 | call to escape | CodeInjection.rb:5:12:5:17 | call to params :  | CodeInjection.rb:38:10:38:28 | call to escape | This code execution depends on a $@. | CodeInjection.rb:5:12:5:17 | call to params | user-provided value |
+| CodeInjection.rb:41:40:41:43 | code | CodeInjection.rb:5:12:5:17 | call to params :  | CodeInjection.rb:41:40:41:43 | code | This code execution depends on a $@. | CodeInjection.rb:5:12:5:17 | call to params | user-provided value |
