@@ -37,8 +37,8 @@ class UsersController < ActionController::Base
     # BAD
     eval(Regexp.escape(code))
 
-
-
+    # BAD
+    ActiveJob::Serializers.deserialize(code)
   end
 
   def update
