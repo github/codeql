@@ -10,7 +10,7 @@ Unfortunately, older versions were found to be vulnerable to a number of attacks
 </overview>
 <recommendation>
 
-<p>An application should use TLS 1.3. Currenlty, TLS 1.2 is also considered acceptable.</p>
+<p>An application should use TLS 1.3. Currently, TLS 1.2 is also considered acceptable.</p>
 
 </recommendation>
 <example>
