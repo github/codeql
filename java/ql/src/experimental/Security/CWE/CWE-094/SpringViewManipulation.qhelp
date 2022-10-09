@@ -8,7 +8,7 @@
       including invocation of methods available in the JVM.
     </p>
     <p>
-      An unrestricted view name manipulation vulnerability in Spring Framework could lead to attacker-controlled arbitary SpEL expressions being evaluated using attacker-controlled data, which may in turn allow an attacker to run arbitrary code.
+      An unrestricted view name manipulation vulnerability in Spring Framework could lead to attacker-controlled arbitrary SpEL expressions being evaluated using attacker-controlled data, which may in turn allow an attacker to run arbitrary code.
     </p>
     <p>
       Note: two related variants of this problem are detected by different queries, `java/spring-view-manipulation` and `java/spring-view-manipulation-implicit`. The first detects taint flow problems where the return types is always <code>String</code>. While the latter, `java/spring-view-manipulation-implicit` detects cases where the request mapping method has a non-string return type such as <code>void</code>.
