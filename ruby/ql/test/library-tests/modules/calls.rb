@@ -28,7 +28,7 @@ module M
 
     instance_m # NoMethodError
     self.instance_m # NoMethodError
-    
+
     singleton_m
     self.singleton_m
 end
@@ -44,18 +44,18 @@ class C
     include M
     instance_m # NoMethodError
     self.instance_m # NoMethodError
-    
+
     singleton_m # NoMethodError
     self.singleton_m # NoMethodError
 
     def baz
-        instance_m 
-        self.instance_m 
-        
+        instance_m
+        self.instance_m
+
         singleton_m # NoMethodError
         self.singleton_m # NoMethodError
     end
-end 
+end
 
 c = C.new
 c.baz
@@ -192,16 +192,16 @@ class Singletons
         puts "singleton_a"
         self.singleton_b
     end
-    
+
     def self.singleton_b
         puts "singleton_b"
         self.singleton_c
     end
-    
+
     def self.singleton_c
         puts "singleton_c"
     end
-    
+
     def self.singleton_d
         puts "singleton_d"
         self.singleton_a
@@ -224,7 +224,7 @@ class Singletons
         self.singleton_g
     end
 end
-  
+
 Singletons.singleton_a
 Singletons.singleton_f
 
@@ -396,6 +396,8 @@ class SingletonOverride1
     singleton2
 end
 
+SingletonOverride1.singleton1
+SingletonOverride1.singleton2
 SingletonOverride1.call_singleton1
 SingletonOverride1.call_singleton2
 
@@ -411,6 +413,8 @@ class SingletonOverride2 < SingletonOverride1
     end
 end
 
+SingletonOverride2.singleton1
+SingletonOverride2.singleton2
 SingletonOverride2.call_singleton1
 SingletonOverride2.call_singleton2
 
@@ -423,7 +427,7 @@ class ConditionalInstanceMethods
 
     def m2
         puts "ConditionalInstanceMethods#m2"
-        
+
         def m3
             puts "ConditionalInstanceMethods#m3"
 
@@ -541,3 +545,6 @@ end
 ProtectedMethodsSub.new.foo # NoMethodError
 ProtectedMethodsSub.new.bar # NoMethodError
 ProtectedMethodsSub.new.baz
+
+[C.new].each { |c| c.baz }
+["a","b","c"].each { |s| s.capitalize }

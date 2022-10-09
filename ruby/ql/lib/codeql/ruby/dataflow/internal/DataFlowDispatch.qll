@@ -389,7 +389,7 @@ private module Cached {
         // ```
         exists(DataFlow::Node sourceNode, Module m |
           flowsToMethodCall(call, sourceNode, method) and
-          singletonMethodOnModule(result, method, m)
+          result = lookupSingletonMethod(m, method)
         |
           // ```rb
           // def C.singleton; end # <- result
@@ -620,6 +620,11 @@ private predicate localFlowStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo, 
   summary.toString() = "level"
 }
 
+pragma[nomagic]
+private predicate hasAdjacentTypeCheckedReads(DataFlow::Node node) {
+  hasAdjacentTypeCheckedReads(_, _, node.asExpr(), _)
+}
+
 /**
  * We exclude steps into `self` parameters and type checked variables. For those,
  * we instead rely on the type of the enclosing module resp. the type being checked
@@ -629,12 +634,12 @@ private predicate localFlowStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo, 
 pragma[nomagic]
 private DataFlow::Node trackInstanceRec(Module tp, TypeTracker t, boolean exact, StepSummary summary) {
   exists(DataFlow::Node mid | mid = trackInstance(tp, exact, t) |
-    StepSummary::smallstep(mid, result, summary)
+    StepSummary::smallstep(mid, result, summary) and
+    not result instanceof SelfParameterNode
     or
-    localFlowStep(mid, result, summary)
-  ) and
-  not result instanceof SelfParameterNode and
-  not hasAdjacentTypeCheckedReads(_, _, result.asExpr(), _)
+    localFlowStep(mid, result, summary) and
+    not hasAdjacentTypeCheckedReads(result)
+  )
 }
 
 pragma[nomagic]
@@ -720,12 +725,35 @@ private predicate singletonMethodOnModule(MethodBase method, string name, Module
     selfInModule(object.(SelfVariableReadAccess).getVariable(), m)
   )
   or
-  flowsToSingletonMethodObject(trackModuleAccess(m), method, name)
+  exists(DataFlow::LocalSourceNode sourceNode |
+    m = resolveConstantReadAccess(sourceNode.asExpr().getExpr()) and
+    flowsToSingletonMethodObject(sourceNode, method, name)
+  )
   or
   exists(Module other |
     extendCallModule(m, other) and
     method = lookupMethod(other, name)
   )
+}
+
+/**
+ * Holds if `method` is a singleton method named `name`, defined on module
+ * `m`, or any transitive base class of `m`.
+ */
+pragma[nomagic]
+private MethodBase lookupSingletonMethod(Module m, string name) {
+  singletonMethodOnModule(result, name, m)
+  or
+  // cannot be part of `singletonMethodOnModule` because it would introduce
+  // negative recursion below
+  exists(DataFlow::LocalSourceNode sourceNode |
+    sourceNode = trackModuleAccess(m) and
+    not m = resolveConstantReadAccess(sourceNode.asExpr().getExpr()) and
+    flowsToSingletonMethodObject(sourceNode, result, name)
+  )
+  or
+  not singletonMethodOnModule(_, name, m) and
+  result = lookupSingletonMethod(m.getSuperClass(), name)
 }
 
 /**

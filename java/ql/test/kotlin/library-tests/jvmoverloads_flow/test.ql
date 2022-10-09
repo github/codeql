@@ -15,4 +15,4 @@ class Config extends DataFlow::Configuration {
 
 from Config c, DataFlow::Node source, DataFlow::Node sink
 where c.hasFlow(source, sink)
-select source, sink
+select source, sink, source.getEnclosingCallable()
