@@ -5,7 +5,7 @@
 <overview>
 <p>
 Some header files, such as those which define structures or classes, cannot be included more than once within a translation unit, as doing so would
-cause a redefinition error. Such headers must be guarded to prevent ill-effects from multiple inclusion. Simlarly, if header files include other
+cause a redefinition error. Such headers must be guarded to prevent ill-effects from multiple inclusion. Similarly, if header files include other
 header files, and this inclusion graph contains a cycle, then at least one file within the cycle must contain header guards in order to break the
 cycle. Because of cases like these, all headers should be guarded as a matter of good practice, even if they do not strictly need to be.
 </p>
