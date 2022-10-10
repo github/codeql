@@ -28,7 +28,7 @@ class AsymmetricKeyTrackingConfiguration extends TaintTracking2::Configuration {
   override predicate isSink(DataFlow::Node sink) {
     exists(MethodAccess ma, VarAccess va |
       ma.getMethod() instanceof KeyPairGeneratorInitMethod and
-      ma.getFile().getBaseName().matches("SignatureTest.java") and
+      //ma.getFile().getBaseName().matches("SignatureTest.java") and
       // va.getVariable()
       //     .getAnAssignedValue()
       //     .(JavaSecurityKeyPairGenerator)
@@ -52,10 +52,17 @@ class AsymmetricKeyTrackingConfiguration extends TaintTracking2::Configuration {
   }
 }
 
+// predicate hasInsufficientKeySize(string msg) { hasShortAsymmetricKeyPair(msg) }
+// predicate hasShortAsymmetricKeyPair(string msg) {
+//   exists(AsymmetricKeyTrackingConfiguration config1, DataFlow::Node source, DataFlow::Node sink |
+//     config1.hasFlow(source, sink)
+//   ) and
+//   msg = "Key size should be at least 2048 bits for " + "___" + " encryption."
+// }
 /**
  * Asymmetric (RSA, DSA, DH) key length data flow tracking configuration.
  */
-class AsymmetricECCKeyTrackingConfiguration extends DataFlow::Configuration {
+class AsymmetricECCKeyTrackingConfiguration extends TaintTracking2::Configuration {
   AsymmetricECCKeyTrackingConfiguration() { this = "AsymmetricECCKeyTrackingConfiguration" }
 
   override predicate isSource(DataFlow::Node source) {
@@ -71,15 +78,24 @@ class AsymmetricECCKeyTrackingConfiguration extends DataFlow::Configuration {
     exists(MethodAccess ma, VarAccess va |
       ma.getMethod() instanceof KeyPairGeneratorInitMethod and
       //ma.getArgument(0).getType() instanceof ECGenParameterSpec and // ! can generate EC with just the keysize and not the curve apparently... (based on netty/netty FP example)
-      va.getVariable()
-          .getAnAssignedValue()
-          .(JavaSecurityKeyPairGenerator)
-          .getAlgoSpec()
-          .(StringLiteral)
-          .getValue()
-          .toUpperCase()
-          .matches(["EC%"]) and
-      ma.getQualifier() = va and
+      // va.getVariable()
+      //     .getAnAssignedValue()
+      //     .(JavaSecurityKeyPairGenerator)
+      //     .getAlgoSpec()
+      //     .(StringLiteral)
+      //     .getValue()
+      //     .toUpperCase()
+      //     .matches(["EC%"]) and
+      // ma.getQualifier() = va and
+      exists(
+        JavaSecurityKeyPairGenerator jpg, KeyPairGeneratorInitConfiguration kpgConfig,
+        DataFlow::PathNode source, DataFlow::PathNode dest
+      |
+        jpg.getAlgoSpec().(StringLiteral).getValue().toUpperCase().matches("EC%") and
+        source.getNode().asExpr() = jpg and
+        dest.getNode().asExpr() = ma.getQualifier() and
+        kpgConfig.hasFlowPath(source, dest)
+      ) and
       sink.asExpr() = ma.getArgument(0)
     )
   }
@@ -88,7 +104,7 @@ class AsymmetricECCKeyTrackingConfiguration extends DataFlow::Configuration {
 /**
  * Symmetric (AES) key length data flow tracking configuration.
  */
-class SymmetricKeyTrackingConfiguration extends DataFlow::Configuration {
+class SymmetricKeyTrackingConfiguration extends TaintTracking2::Configuration {
   SymmetricKeyTrackingConfiguration() { this = "SymmetricKeyTrackingConfiguration2" }
 
   override predicate isSource(DataFlow::Node source) {
@@ -98,15 +114,24 @@ class SymmetricKeyTrackingConfiguration extends DataFlow::Configuration {
   override predicate isSink(DataFlow::Node sink) {
     exists(MethodAccess ma, VarAccess va |
       ma.getMethod() instanceof KeyGeneratorInitMethod and
-      va.getVariable()
-          .getAnAssignedValue()
-          .(JavaxCryptoKeyGenerator)
-          .getAlgoSpec()
-          .(StringLiteral)
-          .getValue()
-          .toUpperCase()
-          .matches(["AES"]) and
-      ma.getQualifier() = va and
+      // va.getVariable()
+      //     .getAnAssignedValue()
+      //     .(JavaxCryptoKeyGenerator)
+      //     .getAlgoSpec()
+      //     .(StringLiteral)
+      //     .getValue()
+      //     .toUpperCase()
+      //     .matches(["AES"]) and
+      // ma.getQualifier() = va and
+      exists(
+        JavaxCryptoKeyGenerator jcg, KeyGeneratorInitConfiguration kgConfig,
+        DataFlow::PathNode source, DataFlow::PathNode dest
+      |
+        jcg.getAlgoSpec().(StringLiteral).getValue().toUpperCase().matches("AES") and
+        source.getNode().asExpr() = jcg and
+        dest.getNode().asExpr() = ma.getQualifier() and
+        kgConfig.hasFlowPath(source, dest)
+      ) and
       sink.asExpr() = ma.getArgument(0)
     )
   }
