@@ -5,6 +5,10 @@ private import codeql.ruby.controlflow.CfgNodes
 private import codeql.ruby.dataflow.internal.tainttrackingforregexp.TaintTrackingImpl
 private import codeql.ruby.typetracking.TypeTracker
 private import codeql.ruby.ApiGraphs
+private import codeql.ruby.dataflow.internal.DataFlowPrivate as DataFlowPrivate
+private import codeql.ruby.dataflow.internal.FlowSummaryImpl as FlowSummaryImpl
+private import codeql.ruby.dataflow.FlowSummary as FlowSummary
+private import codeql.ruby.frameworks.core.String
 
 class RegExpConfiguration extends Configuration {
   RegExpConfiguration() { this = "RegExpConfiguration" }
@@ -30,6 +34,11 @@ class RegExpConfiguration extends Configuration {
       node = mce.getArgument(0) and
       mce.getReceiver() = trackRegexpType()
     )
+    or
+    // only include taint flow through `String` summaries
+    FlowSummaryImpl::Private::Steps::summaryLocalStep(_, node, false) and
+    not node.(DataFlowPrivate::SummaryNode).getSummarizedCallable() instanceof
+      String::SummarizedCallable
   }
 }
 
