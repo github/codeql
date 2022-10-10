@@ -4,8 +4,8 @@ version: 0.3.4
 suites: codeql-suites
 defaultSuiteFile: codeql-suites/javascript-atm-code-scanning.qls
 groups:
-    - javascript
-    - experimental
+  - javascript
+  - experimental
 dependencies:
-    codeql/javascript-experimental-atm-lib: "*"
-    codeql/javascript-experimental-atm-model: "0.2.0"
+  codeql/javascript-experimental-atm-lib: "*"
+  dsp-testing/javascript-experimental-atm-model: 0.2.1-2022-10-07-10h43m13s.hungry-panda-5wlwgw2p.49f6f50f04fb67286bfb3b335968a0cb683d1dd61acbfd13138bfeb101842b9f
