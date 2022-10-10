@@ -88,6 +88,7 @@ private import internal.DataFlowPublic
 private import internal.FlowSummaryImpl::Public
 private import internal.FlowSummaryImpl::Private::External
 private import internal.FlowSummaryImplSpecific
+import models
 
 /**
  * A module importing the frameworks that provide external flow data,
@@ -186,7 +187,7 @@ predicate sourceModel(string row) { any(SourceModelCsv s).row(row) }
 predicate sinkModel(string row) { any(SinkModelCsv s).row(row) }
 
 /** Holds if `row` is a summary model. */
-predicate summaryModel(string row) { any(SummaryModelCsv s).row(row) }
+predicate summaryModel(string row) { any(SummaryModelCsv s).row(row) or flowsTo(row) }
 
 /** Holds if `row` is a negative summary model. */
 predicate negativeSummaryModel(string row) { any(NegativeSummaryModelCsv s).row(row) }
