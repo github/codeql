@@ -36,8 +36,8 @@ public class InsufficientKeySizeTest {
             // test with spec
             // BAD: Key size is less than 2048
             KeyPairGenerator keyPairGen3 = KeyPairGenerator.getInstance("RSA");
-            RSAKeyGenParameterSpec rsaSpec = new RSAKeyGenParameterSpec(1024, null);
-            keyPairGen3.initialize(rsaSpec); // $ hasInsufficientKeySize
+            RSAKeyGenParameterSpec rsaSpec = new RSAKeyGenParameterSpec(1024, null); // $ hasInsufficientKeySize
+            keyPairGen3.initialize(rsaSpec);
 
             // BAD: Key size is less than 2048
             KeyPairGenerator keyPairGen4 = KeyPairGenerator.getInstance("RSA");
@@ -54,15 +54,15 @@ public class InsufficientKeySizeTest {
             KeyPairGenerator keyPairGen4 = KeyPairGenerator.getInstance("DSA");
             keyPairGen4.initialize(2048); // Safe
 
-            // test with spec?
-            // // BAD: Key size is less than 2048
-            // KeyPairGenerator keyPairGen5 = KeyPairGenerator.getInstance("DSA");
-            // DSAGenParameterSpec dsaSpec = new DSAGenParameterSpec(1024, null);
-            // keyPairGen5.initialize(dsaSpec); // $ hasInsufficientKeySize
+            // test with spec
+            // BAD: Key size is less than 2048
+            KeyPairGenerator keyPairGen5 = KeyPairGenerator.getInstance("DSA");
+            DSAGenParameterSpec dsaSpec = new DSAGenParameterSpec(1024, 0); // $ hasInsufficientKeySize
+            keyPairGen5.initialize(dsaSpec);
 
-            // // BAD: Key size is less than 2048
-            // KeyPairGenerator keyPairGen6 = KeyPairGenerator.getInstance("DSA");
-            // keyPairGen6.initialize(new DSAGenParameterSpec(1024, null)); // $ hasInsufficientKeySize
+            // BAD: Key size is less than 2048
+            KeyPairGenerator keyPairGen6 = KeyPairGenerator.getInstance("DSA");
+            keyPairGen6.initialize(new DSAGenParameterSpec(1024, 0)); // $ hasInsufficientKeySize
         }
 
         // DH (Asymmetric)
@@ -75,15 +75,15 @@ public class InsufficientKeySizeTest {
             KeyPairGenerator keyPairGen17 = KeyPairGenerator.getInstance("DH");
             keyPairGen17.initialize(2048); // Safe
 
-            // test with spec?
-            // // BAD: Key size is less than 2048
-            // KeyPairGenerator keyPairGen3 = KeyPairGenerator.getInstance("DH");
-            // DHGenParameterSpec dhSpec = new DHGenParameterSpec(1024, null);
-            // keyPairGen3.initialize(dhSpec); // $ hasInsufficientKeySize
+            // test with spec
+            // BAD: Key size is less than 2048
+            KeyPairGenerator keyPairGen3 = KeyPairGenerator.getInstance("DH");
+            DHGenParameterSpec dhSpec = new DHGenParameterSpec(1024, 0); // $ hasInsufficientKeySize
+            keyPairGen3.initialize(dhSpec);
 
-            // // BAD: Key size is less than 2048
-            // KeyPairGenerator keyPairGen4 = KeyPairGenerator.getInstance("DH");
-            // keyPairGen4.initialize(new DHGenParameterSpec(1024, null)); // $ hasInsufficientKeySize
+            // BAD: Key size is less than 2048
+            KeyPairGenerator keyPairGen4 = KeyPairGenerator.getInstance("DH");
+            keyPairGen4.initialize(new DHGenParameterSpec(1024, 0)); // $ hasInsufficientKeySize
         }
 
         // EC (Asymmetric)
@@ -91,8 +91,8 @@ public class InsufficientKeySizeTest {
         {
             // BAD: Key size is less than 256
             KeyPairGenerator keyPairGen5 = KeyPairGenerator.getInstance("EC");
-            ECGenParameterSpec ecSpec1 = new ECGenParameterSpec("secp112r1");
-            keyPairGen5.initialize(ecSpec1); // $ hasInsufficientKeySize
+            ECGenParameterSpec ecSpec1 = new ECGenParameterSpec("secp112r1"); // $ hasInsufficientKeySize
+            keyPairGen5.initialize(ecSpec1);
 
             // BAD: Key size is less than 256
             KeyPairGenerator keyPairGen6 = KeyPairGenerator.getInstance("EC");
@@ -105,18 +105,18 @@ public class InsufficientKeySizeTest {
 
             // BAD: Key size is less than 256
             KeyPairGenerator keyPairGen8 = KeyPairGenerator.getInstance("EC");
-            ECGenParameterSpec ecSpec3 = new ECGenParameterSpec("X9.62 prime192v2");
-            keyPairGen8.initialize(ecSpec3); // $ hasInsufficientKeySize
+            ECGenParameterSpec ecSpec3 = new ECGenParameterSpec("X9.62 prime192v2"); // $ hasInsufficientKeySize
+            keyPairGen8.initialize(ecSpec3);
 
             // BAD: Key size is less than 256
             KeyPairGenerator keyPairGen9 = KeyPairGenerator.getInstance("EC");
-            ECGenParameterSpec ecSpec4 = new ECGenParameterSpec("X9.62 c2tnb191v3");
-            keyPairGen9.initialize(ecSpec4); // $ hasInsufficientKeySize
+            ECGenParameterSpec ecSpec4 = new ECGenParameterSpec("X9.62 c2tnb191v3"); // $ hasInsufficientKeySize
+            keyPairGen9.initialize(ecSpec4);
 
             // BAD: Key size is less than 256
             KeyPairGenerator keyPairGen10 = KeyPairGenerator.getInstance("EC");
-            ECGenParameterSpec ecSpec5 = new ECGenParameterSpec("sect163k1");
-            keyPairGen10.initialize(ecSpec5); // $ hasInsufficientKeySize
+            ECGenParameterSpec ecSpec5 = new ECGenParameterSpec("sect163k1"); // $ hasInsufficientKeySize
+            keyPairGen10.initialize(ecSpec5);
 
             // GOOD: Key size is no less than 256
             KeyPairGenerator keyPairGen11 = KeyPairGenerator.getInstance("EC");
@@ -125,8 +125,8 @@ public class InsufficientKeySizeTest {
 
             // BAD: Key size is less than 256
             KeyPairGenerator keyPairGen12 = KeyPairGenerator.getInstance("EC");
-            ECGenParameterSpec ecSpec7 = new ECGenParameterSpec("prime192v2");
-            keyPairGen12.initialize(ecSpec7); // $ hasInsufficientKeySize
+            ECGenParameterSpec ecSpec7 = new ECGenParameterSpec("prime192v2"); // $ hasInsufficientKeySize
+            keyPairGen12.initialize(ecSpec7);
 
             // GOOD: Key size is no less than 256
             KeyPairGenerator keyPairGen13 = KeyPairGenerator.getInstance("EC");
@@ -135,8 +135,8 @@ public class InsufficientKeySizeTest {
 
             // BAD: Key size is less than 256
             KeyPairGenerator keyPairGen14 = KeyPairGenerator.getInstance("EC");
-            ECGenParameterSpec ecSpec9 = new ECGenParameterSpec("c2tnb191v1");
-            keyPairGen14.initialize(ecSpec9); // $ hasInsufficientKeySize
+            ECGenParameterSpec ecSpec9 = new ECGenParameterSpec("c2tnb191v1"); // $ hasInsufficientKeySize
+            keyPairGen14.initialize(ecSpec9);
 
             // GOOD: Key size is no less than 256
             KeyPairGenerator keyPairGen15 = KeyPairGenerator.getInstance("EC");
@@ -194,7 +194,7 @@ public class InsufficientKeySizeTest {
 
          // Test variable passed to other method(s) - Asymmetric, EC
          {
-            ECGenParameterSpec ecSpec = new ECGenParameterSpec("secp112r1"); // test ECGenParameterSpec variable
+            ECGenParameterSpec ecSpec = new ECGenParameterSpec("secp112r1"); // $ hasInsufficientKeySize // test ECGenParameterSpec variable
             KeyPairGenerator keyPairGen22 = KeyPairGenerator.getInstance("EC"); // test KeyPairGenerator variable
             testAsymmetricEC(ecSpec, keyPairGen22);
 
@@ -237,18 +237,17 @@ public class InsufficientKeySizeTest {
     public static void testAsymmetricEC(ECGenParameterSpec spec, KeyPairGenerator kpg) throws java.security.NoSuchAlgorithmException, java.security.InvalidAlgorithmParameterException {
         // BAD: Key size is less than 256
         KeyPairGenerator keyPairGen = KeyPairGenerator.getInstance("EC");
-        keyPairGen.initialize(spec); // $ hasInsufficientKeySize
+        keyPairGen.initialize(spec); // sink is now at above where `spec` variable is initialized
 
         // BAD: Key size is less than 256
-        ECGenParameterSpec ecSpec = new ECGenParameterSpec("secp112r1");
-        kpg.initialize(ecSpec); // $ hasInsufficientKeySize
+        ECGenParameterSpec ecSpec = new ECGenParameterSpec("secp112r1"); // $ hasInsufficientKeySize
+        kpg.initialize(ecSpec);
     }
 
     // ToDo testing:
-    // todo #1: add tests for keysize variable passed to specs
-    // ? todo #2: add tests with DH and DSA specs? (or do those specs not make dev specify keysize?)
+    // ? todo #1: add tests for keysize variable passed to specs - not needed if spec is sink now
     // ? todo #3: add test for retrieving a key from elsewhere?
-    // todo #4: add barrier-guard tests (see FP from OpenIdentityPlatform/OpenAM)
+    // ? todo #4: add barrier-guard tests (see FP from OpenIdentityPlatform/OpenAM)
     // ? todo #5: add tests for updated keysize variable?: e.g. keysize = 1024; keysize += 1024; so when it's used it is correctly 2048.
     // ? todo #6: consider if some flow paths for keysize variables will be too hard to track how the keysize is updated (e.g. if calling some other method to get keysize, etc....)
 }
