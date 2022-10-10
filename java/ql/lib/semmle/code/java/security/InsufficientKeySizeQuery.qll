@@ -7,7 +7,7 @@ import semmle.code.java.dataflow.DataFlow
 /**
  * Asymmetric (RSA, DSA, DH) key length data flow tracking configuration.
  */
-class AsymmetricKeyTrackingConfiguration extends TaintTracking2::Configuration {
+class AsymmetricKeyTrackingConfiguration extends DataFlow2::Configuration {
   AsymmetricKeyTrackingConfiguration() { this = "AsymmetricKeyTrackingConfiguration" }
 
   override predicate isSource(DataFlow::Node source) {
@@ -15,7 +15,7 @@ class AsymmetricKeyTrackingConfiguration extends TaintTracking2::Configuration {
     // ! also need to look into specs for DSA and DH more
     exists(ClassInstanceExpr rsaGenParamSpec |
       rsaGenParamSpec.getConstructedType() instanceof RSAGenParameterSpec and
-      rsaGenParamSpec.getArgument(0).(IntegerLiteral).getIntValue() < 2048 and
+      rsaGenParamSpec.getArgument(0).(CompileTimeConstantExpr).getIntValue() < 2048 and
       source.asExpr() = rsaGenParamSpec
     )
     or
@@ -34,7 +34,7 @@ class AsymmetricKeyTrackingConfiguration extends TaintTracking2::Configuration {
         dest.getNode().asExpr() = ma.getQualifier() and
         kpgConfig.hasFlowPath(source, dest)
       ) and
-      sink.asExpr() = ma.getArgument(0)
+      sink.asExpr() = ma.getArgument(0) // ! todo: add spec as a sink
     )
   }
 }
@@ -42,7 +42,7 @@ class AsymmetricKeyTrackingConfiguration extends TaintTracking2::Configuration {
 /**
  * Asymmetric (EC) key length data flow tracking configuration.
  */
-class AsymmetricECCKeyTrackingConfiguration extends TaintTracking2::Configuration {
+class AsymmetricECCKeyTrackingConfiguration extends DataFlow2::Configuration {
   AsymmetricECCKeyTrackingConfiguration() { this = "AsymmetricECCKeyTrackingConfiguration" }
 
   override predicate isSource(DataFlow::Node source) {
@@ -75,7 +75,7 @@ class AsymmetricECCKeyTrackingConfiguration extends TaintTracking2::Configuratio
 /**
  * Symmetric (AES) key length data flow tracking configuration.
  */
-class SymmetricKeyTrackingConfiguration extends TaintTracking2::Configuration {
+class SymmetricKeyTrackingConfiguration extends DataFlow2::Configuration {
   SymmetricKeyTrackingConfiguration() { this = "SymmetricKeyTrackingConfiguration2" }
 
   override predicate isSource(DataFlow::Node source) {
@@ -107,7 +107,7 @@ class SymmetricKeyTrackingConfiguration extends TaintTracking2::Configuration {
 // }
 // ******** Need the below models for the above configs ********
 /** Taint configuration tracking flow from a key generator to a `init` method call. */
-private class KeyGeneratorInitConfiguration extends TaintTracking::Configuration {
+private class KeyGeneratorInitConfiguration extends DataFlow::Configuration {
   KeyGeneratorInitConfiguration() { this = "KeyGeneratorInitConfiguration" }
 
   override predicate isSource(DataFlow::Node source) {
@@ -126,7 +126,7 @@ private class KeyGeneratorInitConfiguration extends TaintTracking::Configuration
  * Taint configuration tracking flow from a keypair generator to
  * an `initialize` method call.
  */
-private class KeyPairGeneratorInitConfiguration extends TaintTracking::Configuration {
+private class KeyPairGeneratorInitConfiguration extends DataFlow::Configuration {
   KeyPairGeneratorInitConfiguration() { this = "KeyPairGeneratorInitConfiguration" }
 
   override predicate isSource(DataFlow::Node source) {
