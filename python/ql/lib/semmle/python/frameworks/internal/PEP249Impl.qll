@@ -146,7 +146,7 @@ module PEP249 {
    * Note: while `execute` method on a connection is not part of PEP249, if it is used, we
    * recognize it as an alias for constructing a cursor and calling `execute` on it.
    *
-   * See https://www.python.org/dev/peps/pep-0249/#id15.
+   * See https://peps.python.org/pep-0249/#execute.
    */
   private DataFlow::TypeTrackingNode execute(DataFlow::TypeTracker t) {
     t.startInAttr("execute") and
@@ -161,11 +161,18 @@ module PEP249 {
    * Note: while `execute` method on a connection is not part of PEP249, if it is used, we
    * recognize it as an alias for constructing a cursor and calling `execute` on it.
    *
-   * See https://www.python.org/dev/peps/pep-0249/#id15.
+   * See https://peps.python.org/pep-0249/#execute.
    */
   DataFlow::Node execute() { execute(DataFlow::TypeTracker::end()).flowsTo(result) }
 
-  /** A call to the `execute` method on a cursor (or on a connection). */
+  /**
+   * A call to the `execute` method on a cursor or a connection.
+   *
+   * See https://peps.python.org/pep-0249/#execute
+   *
+   * Note: While `execute` method on a connection is not part of PEP249, if it is used, we
+   * recognize it as an alias for constructing a cursor and calling `execute` on it.
+   */
   private class ExecuteCall extends SqlExecution::Range, DataFlow::CallCfgNode {
     ExecuteCall() { this.getFunction() = execute() }
 
