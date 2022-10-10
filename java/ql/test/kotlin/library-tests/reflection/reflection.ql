@@ -86,7 +86,7 @@ query predicate modifiers(ClassInstanceExpr e, Method m, string modifier) {
   m.hasModifier(modifier)
 }
 
-query predicate compGenerated(Element e, int i) { compiler_generated(e, i) }
+query predicate compGenerated(Element e, string reason) { reason = e.compilerGeneratedReason() }
 
 query predicate propertyReferenceOverrides(PropertyRefExpr e, Method m, string overridden) {
   e.getAnonymousClass().getAMember() = m and
