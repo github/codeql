@@ -714,10 +714,13 @@ module TaintTracking {
   /**
    * Gets a local source of any part of the input to the given stringification `call`.
    */
+  pragma[nomagic]
   private DataFlow::Node getAJsonLocalInput(JsonStringifyCall call) {
     result = call.getInput()
     or
-    exists(DataFlow::SourceNode source | source = getAJsonLocalInput(call).getALocalSource() |
+    exists(DataFlow::SourceNode source |
+      source = pragma[only_bind_out](getAJsonLocalInput(call)).getALocalSource()
+    |
       result = source.getAPropertyWrite().getRhs()
       or
       result = source.(DataFlow::ObjectLiteralNode).getASpreadProperty()
