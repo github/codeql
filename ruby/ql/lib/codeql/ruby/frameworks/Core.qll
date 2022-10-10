@@ -7,6 +7,7 @@ private import codeql.ruby.DataFlow
 private import codeql.ruby.dataflow.FlowSummary
 import core.BasicObject::BasicObject
 import core.Object::Object
+import core.Gem::Gem
 import core.Kernel::Kernel
 import core.Module
 import core.Array
