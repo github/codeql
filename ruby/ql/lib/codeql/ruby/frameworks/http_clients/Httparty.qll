@@ -53,6 +53,7 @@ class HttpartyRequest extends Http::Client::Request::Range, DataFlow::CallNode {
     result = this.getKeywordArgumentIncludeHashArgument(["verify", "verify_peer"])
   }
 
+  cached
   override predicate disablesCertificateValidation(
     DataFlow::Node disablingNode, DataFlow::Node argumentOrigin
   ) {

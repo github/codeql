@@ -4,6 +4,7 @@ private import TaintTrackingPublic
 private import codeql.swift.dataflow.DataFlow
 private import codeql.swift.dataflow.Ssa
 private import codeql.swift.controlflow.CfgNodes
+private import FlowSummaryImpl as FlowSummaryImpl
 
 /**
  * Holds if `node` should be a sanitizer in all global taint flow configurations
@@ -48,15 +49,8 @@ private module Cached {
       ae.getType().getName() = "String"
     )
     or
-    // allow flow through `URL.init`.
-    exists(CallExpr call, ClassDecl c, AbstractFunctionDecl f |
-      c.getName() = "URL" and
-      c.getAMember() = f and
-      f.getName() = ["init(string:)", "init(string:relativeTo:)"] and
-      call.getStaticTarget() = f and
-      nodeFrom.asExpr() = call.getAnArgument().getExpr() and
-      nodeTo.asExpr() = call
-    )
+    // flow through a flow summary (extension of `SummaryModelCsv`)
+    FlowSummaryImpl::Private::Steps::summaryLocalStep(nodeFrom, nodeTo, false)
   }
 
   /**

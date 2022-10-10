@@ -113,3 +113,84 @@ class OperatorNewAllocationFunction extends AllocationFunction {
     result = 1
   }
 }
+
+/**
+ * An expression that _might_ allocate memory.
+ *
+ * Unlike `AllocationExpr`, this class uses heuristics (such as a call target's
+ * name and parameters) to include additional expressions.
+ */
+abstract class HeuristicAllocationExpr extends Expr {
+  /**
+   * Gets an expression for the allocation size, if any. The actual allocation
+   * size is the value of this expression multiplied by the result of
+   * `getSizeMult()`, in bytes.
+   */
+  Expr getSizeExpr() { none() }
+
+  /**
+   * Gets a constant multiplier for the allocation size given by `getSizeExpr`,
+   * in bytes.
+   */
+  int getSizeMult() { none() }
+
+  /**
+   * Gets the size of this allocation in bytes, if it is a fixed size and that
+   * size can be determined.
+   */
+  int getSizeBytes() { none() }
+
+  /**
+   * Gets the expression for the input pointer argument to be reallocated, if
+   * this is a `realloc` function.
+   */
+  Expr getReallocPtr() { none() }
+
+  /**
+   * Gets the type of the elements that are allocated, if it can be determined.
+   */
+  Type getAllocatedElementType() { none() }
+
+  /**
+   * Whether or not this allocation requires a corresponding deallocation of
+   * some sort (most do, but `alloca` for example does not).  If it is unclear,
+   * we default to no (for example a placement `new` allocation may or may not
+   * require a corresponding `delete`).
+   */
+  predicate requiresDealloc() { any() }
+}
+
+/**
+ * An function that _might_ allocate memory.
+ *
+ * Unlike `AllocationFunction`, this class uses heuristics (such as the function's
+ * name and its parameters) to include additional functions.
+ */
+abstract class HeuristicAllocationFunction extends Function {
+  /**
+   * Gets the index of the argument for the allocation size, if any. The actual
+   * allocation size is the value of this argument multiplied by the result of
+   * `getSizeMult()`, in bytes.
+   */
+  int getSizeArg() { none() }
+
+  /**
+   * Gets the index of an argument that multiplies the allocation size given by
+   * `getSizeArg`, if any.
+   */
+  int getSizeMult() { none() }
+
+  /**
+   * Gets the index of the input pointer argument to be reallocated, if this
+   * is a `realloc` function.
+   */
+  int getReallocPtrArg() { none() }
+
+  /**
+   * Whether or not this allocation requires a corresponding deallocation of
+   * some sort (most do, but `alloca` for example does not).  If it is unclear,
+   * we default to no (for example a placement `new` allocation may or may not
+   * require a corresponding `delete`).
+   */
+  predicate requiresDealloc() { any() }
+}

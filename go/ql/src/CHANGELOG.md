@@ -1,3 +1,17 @@
+## 0.3.1
+
+No user-facing changes.
+
+## 0.3.0
+
+### Query Metadata Changes
+
+* Added the `security-severity` tag and CWE tag to the `go/insecure-hostkeycallback` query.
+
+### Minor Analysis Improvements
+
+* The alert message of many queries have been changed to make the message consistent with other languages.
+
 ## 0.2.5
 
 ## 0.2.4

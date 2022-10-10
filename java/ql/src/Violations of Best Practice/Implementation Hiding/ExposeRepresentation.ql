@@ -120,8 +120,12 @@ predicate exposesByStore(Callable c, Field f, Expr why, string whyText) {
 
 from Callable c, Field f, Expr why, string whyText
 where
-  exposesByReturn(c, f, why, whyText) or
-  exposesByStore(c, f, why, whyText)
+  (
+    exposesByReturn(c, f, why, whyText) or
+    exposesByStore(c, f, why, whyText)
+  ) and
+  // Kotlin properties expose internal representation, but it's not accidental, so ignore them
+  not exists(Property p | p.getBackingField() = f)
 select c,
   c.getName() + " exposes the internal representation stored in field " + f.getName() +
     ". The value may be modified $@.", why.getLocation(), whyText

@@ -14,6 +14,9 @@ class Module extends TModule {
   /** Gets the super class of this module, if any. */
   Module getSuperClass() { result = getSuperClass(this) }
 
+  /** Gets an immediate sub class of this module, if any. */
+  Module getASubClass() { this = getSuperClass(result) }
+
   /** Gets a `prepend`ed module. */
   Module getAPrependedModule() { result = getAPrependedModule(this) }
 
@@ -30,6 +33,13 @@ class Module extends TModule {
     or
     exists(Namespace n | this = TUnresolved(n) and result = "...::" + n.toString())
   }
+
+  /**
+   * Gets the qualified name of this module, if any.
+   *
+   * Only modules that can be resolved will have a qualified name.
+   */
+  final string getQualifiedName() { this = TResolved(result) }
 
   /** Gets the location of this module. */
   Location getLocation() {

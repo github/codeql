@@ -10,6 +10,7 @@ import org.jetbrains.kotlin.ir.IrElement
 import org.jetbrains.kotlin.ir.declarations.*
 import org.jetbrains.kotlin.ir.expressions.IrBody
 import org.jetbrains.kotlin.ir.expressions.IrExpression
+import org.jetbrains.kotlin.ir.util.isAnonymousObject
 import org.jetbrains.kotlin.ir.util.parentClassOrNull
 import org.jetbrains.kotlin.kdoc.psi.api.KDoc
 import org.jetbrains.kotlin.lexer.KtTokens
@@ -126,6 +127,10 @@ class CommentExtractor(private val fileExtractor: KotlinFileExtractor, private v
                     // local functions are not named globally, so we need to get them from the local function label cache
                     label = "local function ${element.name.asString()}"
                     fileExtractor.getExistingLocallyVisibleFunctionLabel(element)
+                } else if (element is IrClass && element.isAnonymousObject) {
+                    // anonymous objects are not named globally, so we need to get them from the cache
+                    label = "anonymous class ${element.name.asString()}"
+                    fileExtractor.getExistingAnonymousClassLabel(element)
                 }
                 else {
                     label = getLabelForNamedElement(element) ?: return null
@@ -140,7 +145,12 @@ class CommentExtractor(private val fileExtractor: KotlinFileExtractor, private v
 
             private fun getLabelForNamedElement(element: IrElement) : String? {
                 when (element) {
-                    is IrClass -> return fileExtractor.getClassLabel(element, listOf()).classLabel
+                    is IrClass ->
+                        return if (element.isAnonymousObject) {
+                            null
+                        } else {
+                            fileExtractor.getClassLabel(element, listOf()).classLabel
+                        }
                     is IrTypeParameter -> return fileExtractor.getTypeParameterLabel(element)
                     is IrFunction -> {
                         return if (element.isLocalFunction()) {

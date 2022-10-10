@@ -1,3 +1,22 @@
+## 0.4.1
+
+### Minor Analysis Improvements
+
+* The `rb/xxe` query has been updated to add the following sinks for XML external entity expansion:
+    1. Calls to parse XML using `LibXML` when its `default_substitute_entities` option is enabled.
+    2. Uses of the Rails methods `ActiveSupport::XmlMini.parse`, `Hash.from_xml`, and `Hash.from_trusted_xml` when `ActiveSupport::XmlMini` is configured to use `LibXML` as its backend, and its `default_substitute_entities` option is enabled.
+
+## 0.4.0
+
+### New Queries
+
+* Added a new query, `rb/hardcoded-data-interpreted-as-code`, to detect cases where hardcoded data is executed as code, a technique associated with backdoors.
+
+### Minor Analysis Improvements
+
+* The `rb/unsafe-deserialization` query now includes alerts for user-controlled data passed to `Hash.from_trusted_xml`, since that method can deserialize YAML embedded in the XML, which in turn can result in deserialization of arbitrary objects.
+* The alert message of many queries have been changed to make the message consistent with other languages.
+
 ## 0.3.4
 
 ## 0.3.3

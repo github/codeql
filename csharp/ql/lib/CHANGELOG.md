@@ -1,3 +1,21 @@
+## 0.4.1
+
+### Minor Analysis Improvements
+
+* `DateTime` expressions are now considered simple type sanitizers. This affects a wide range of security queries.
+* ASP.NET Core controller definition has been made more precise. The amount of introduced taint sources or eliminated false positives should be low though, since the most common pattern is to derive all user defined ASP.NET Core controllers from the standard Controller class, which is not affected. 
+
+## 0.4.0
+
+### Deprecated APIs
+
+* Some classes/modules with upper-case acronyms in their name have been renamed to follow our style-guide. 
+  The old name still exists as a deprecated alias.
+
+### Bug Fixes
+
+* Fixed an issue in the taint tracking analysis where implicit reads were not allowed by default in sinks or additional taint steps that used flow states.
+
 ## 0.3.5
 
 ## 0.3.4

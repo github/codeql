@@ -175,10 +175,19 @@ private module DispatchImpl {
    * restricted to those `call`s for which a context might make a difference.
    */
   DataFlowCallable viableImplInCallContext(NonDelegateDataFlowCall call, DataFlowCall ctx) {
-    result.getUnderlyingCallable() =
-      call.getDispatchCall()
-          .getADynamicTargetInCallContext(ctx.(NonDelegateDataFlowCall).getDispatchCall())
-          .getUnboundDeclaration()
+    exists(DispatchCall dc | dc = call.getDispatchCall() |
+      result.getUnderlyingCallable() =
+        getCallableForDataFlow(dc.getADynamicTargetInCallContext(ctx.(NonDelegateDataFlowCall)
+                .getDispatchCall()).getUnboundDeclaration())
+      or
+      exists(Callable c, DataFlowCallable encl |
+        result.asSummarizedCallable() = c and
+        mayBenefitFromCallContext(call, encl) and
+        encl = ctx.getARuntimeTarget() and
+        c = dc.getAStaticTarget().getUnboundDeclaration() and
+        not c instanceof RuntimeCallable
+      )
+    )
   }
 }
 

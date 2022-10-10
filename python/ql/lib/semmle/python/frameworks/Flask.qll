@@ -171,6 +171,22 @@ module Flask {
       override DataFlow::Node getMimetypeOrContentTypeArg() { none() }
     }
 
+    /**
+     * A call to `flask.jsonify` function. This creates a JSON response.
+     *
+     * See
+     * - https://flask.palletsprojects.com/en/2.2.x/api/#flask.json.jsonify
+     */
+    private class FlaskJsonifyCall extends InstanceSource, DataFlow::CallCfgNode {
+      FlaskJsonifyCall() { this = API::moduleImport("flask").getMember("jsonify").getACall() }
+
+      override DataFlow::Node getBody() { result in [this.getArg(_), this.getArgByName(_)] }
+
+      override string getMimetypeDefault() { result = "application/json" }
+
+      override DataFlow::Node getMimetypeOrContentTypeArg() { none() }
+    }
+
     /** Gets a reference to an instance of `flask.Response`. */
     private DataFlow::TypeTrackingNode instance(DataFlow::TypeTracker t) {
       t.start() and
@@ -338,13 +354,7 @@ module Flask {
    * See https://flask.palletsprojects.com/en/1.1.x/api/#flask.Request
    */
   private class FlaskRequestSource extends RemoteFlowSource::Range {
-    FlaskRequestSource() {
-      this = request().getAValueReachableFromSource() and
-      not any(Import imp).contains(this.asExpr()) and
-      not exists(ControlFlowNode def | this.asVar().getSourceVariable().hasDefiningNode(def) |
-        any(Import imp).contains(def.getNode())
-      )
-    }
+    FlaskRequestSource() { this = request().asSource() }
 
     override string getSourceType() { result = "flask.request" }
   }
@@ -408,22 +418,20 @@ module Flask {
     }
   }
 
+  private API::Node requestFileStorage() {
+    // TODO: This approach for identifying member-access is very adhoc, and we should
+    // be able to do something more structured for providing modeling of the members
+    // of a container-object.
+    result = request().getMember("files").getASubscript()
+    or
+    result = request().getMember("files").getMember("get").getReturn()
+    or
+    result = request().getMember("files").getMember("getlist").getReturn().getASubscript()
+  }
+
   /** An `FileStorage` instance that originates from a flask request. */
   private class FlaskRequestFileStorageInstances extends Werkzeug::FileStorage::InstanceSource {
-    FlaskRequestFileStorageInstances() {
-      // TODO: This approach for identifying member-access is very adhoc, and we should
-      // be able to do something more structured for providing modeling of the members
-      // of a container-object.
-      exists(API::Node files | files = request().getMember("files") |
-        this.asCfgNode().(SubscriptNode).getObject() =
-          files.getAValueReachableFromSource().asCfgNode()
-        or
-        this = files.getMember("get").getACall()
-        or
-        this.asCfgNode().(SubscriptNode).getObject() =
-          files.getMember("getlist").getReturn().getAValueReachableFromSource().asCfgNode()
-      )
-    }
+    FlaskRequestFileStorageInstances() { this = requestFileStorage().asSource() }
   }
 
   /** An `Headers` instance that originates from a flask request. */

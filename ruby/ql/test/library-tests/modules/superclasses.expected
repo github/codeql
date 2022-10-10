@@ -1,7 +1,7 @@
-#-----| BasicObject
-
 #-----| Class
 #-----|  -> Module
+
+#-----| BasicObject
 
 #-----| Complex
 #-----|  -> Numeric
@@ -48,45 +48,62 @@ calls.rb:
 #  105| Module
 #-----|  -> Object
 
-#  112| Object
+#  115| Object
 #-----|  -> BasicObject
 
-#  117| Hash
+#  120| Hash
 #-----|  -> Object
 
-#  122| Array
+#  125| Array
 #-----|  -> Object
 
-#  162| S
+#  165| S
 #-----|  -> Object
 
-#  168| A
+#  171| A
 #-----|  -> B
 #-----|  -> S
 
-#  173| B
+#  176| B
 #-----|  -> S
 
-#  187| Singletons
+#  190| Singletons
 #-----|  -> Object
 
-#  307| SelfNew
+#  310| SelfNew
 #-----|  -> Object
 
-#  322| C1
+#  325| C1
 #-----|  -> Object
 
-#  328| C2
+#  331| C2
 #-----|  -> C1
 
-#  334| C3
+#  337| C3
 #-----|  -> C2
 
-#  374| SingletonOverride1
+#  377| SingletonOverride1
 #-----|  -> Object
 
-#  399| SingletonOverride2
+#  404| SingletonOverride2
 #-----|  -> SingletonOverride1
+
+#  421| ConditionalInstanceMethods
+#-----|  -> Object
+
+#  484| ExtendSingletonMethod
+
+#  494| ExtendSingletonMethod2
+
+#  500| ExtendSingletonMethod3
+
+#  513| ProtectedMethodInModule
+
+#  519| ProtectedMethods
+#-----|  -> Object
+
+#  538| ProtectedMethodsSub
+#-----|  -> ProtectedMethods
 
 hello.rb:
 #    1| EnglishWords
@@ -178,10 +195,10 @@ private.rb:
 #    1| E
 #-----|  -> Object
 
-#   42| F
+#   62| F
 
-#   62| PrivateOverride1
+#   82| PrivateOverride1
 #-----|  -> Object
 
-#   76| PrivateOverride2
+#   96| PrivateOverride2
 #-----|  -> PrivateOverride1

@@ -1,6 +1,7 @@
 private import codeql.swift.generated.decl.TypeDecl
 private import codeql.swift.generated.type.Type
 private import codeql.swift.elements.type.AnyGenericType
+private import swift
 
 class TypeDecl extends TypeDeclBase {
   override string toString() { result = this.getName() }
@@ -12,4 +13,23 @@ class TypeDecl extends TypeDeclBase {
   TypeDecl getDerivedTypeDecl(int i) { result.getBaseTypeDecl(i) = this }
 
   TypeDecl getADerivedTypeDecl() { result = this.getDerivedTypeDecl(_) }
+
+  /**
+   * Gets the full name of this `TypeDecl`. For example in:
+   * ```swift
+   * struct A {
+   *   struct B {
+   *     // ...
+   *   }
+   * }
+   * ```
+   * The name and full name of `A` is `A`. The name of `B` is `B`, but the
+   * full name of `B` is `A.B`.
+   */
+  string getFullName() {
+    not this.getEnclosingDecl() instanceof TypeDecl and
+    result = this.getName()
+    or
+    result = this.getEnclosingDecl().(TypeDecl).getFullName() + "." + this.getName()
+  }
 }

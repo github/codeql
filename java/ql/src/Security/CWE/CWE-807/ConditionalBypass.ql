@@ -25,5 +25,5 @@ where
   sink.getNode().asExpr() = e and
   conf.hasFlowPath(source, sink)
 select m, source, sink,
-  "Sensitive method may not be executed depending on $@, which flows from $@.", e, "this condition",
-  source.getNode(), "user input"
+  "Sensitive method may not be executed depending on a $@, which flows from $@.", e,
+  "this condition", source.getNode(), "user-controlled value"

@@ -16,5 +16,4 @@ import DataFlow::PathGraph
 
 from DataFlow::PathNode source, DataFlow::PathNode sink, DisabledRevocationCheckingConfig config
 where config.hasFlowPath(source, sink)
-select source.getNode(), source, sink, "Revocation checking is disabled $@.", source.getNode(),
-  "here"
+select source.getNode(), source, sink, "This disables revocation checking."
