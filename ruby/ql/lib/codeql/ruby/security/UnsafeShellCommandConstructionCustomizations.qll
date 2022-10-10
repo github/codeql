@@ -11,6 +11,9 @@ private import codeql.ruby.frameworks.core.Gem::Gem as Gem
 private import codeql.ruby.AST as Ast
 private import codeql.ruby.Concepts as Concepts
 
+/**
+ * Module containing sources, sinks, and sanitizers for shell command constructed from library input.
+ */
 module UnsafeShellCommandConstruction {
   /** A source for shell command constructed from library input vulnerabilities. */
   abstract class Source extends DataFlow::Node { }
