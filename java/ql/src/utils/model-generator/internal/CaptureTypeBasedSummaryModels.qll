@@ -52,6 +52,8 @@ private predicate genericContainerType(RefType t, TypeVariable tv) {
     et = t.(ContainerType).getElementType()
     or
     et = t.(IterableType).getElementType()
+    or
+    et = t.(Array).getElementType()
   |
     isEffectivelyUpperBound(et, tv)
   )
@@ -72,17 +74,25 @@ private predicate localTypeParameter(Callable callable, TypeVariable tv) {
   callable.(GenericCallable).getATypeParameter() = tv
 }
 
+/**
+ * Gets the access path postfix for `t`.
+ */
+private string getAccessPath(Type t) {
+  if
+    t instanceof Array and
+    not Specific::isPrimitiveTypeUsedForBulkData(t.(Array).getElementType())
+  then result = ".ArrayElement"
+  else
+    if t instanceof ContainerType or t instanceof IterableType
+    then result = ".Element"
+    else result = ""
+}
+
+/**
+ * Gets the access path for parameter `p`.
+ */
 private string parameterAccess(Parameter p) {
-  exists(Type t | t = p.getType() |
-    if
-      t instanceof Array and
-      not Specific::isPrimitiveTypeUsedForBulkData(p.getType().(Array).getElementType())
-    then result = "Argument[" + p.getPosition() + "].ArrayElement"
-    else
-      if t instanceof ContainerType or t instanceof IterableType
-      then result = "Argument[" + p.getPosition() + "].Element"
-      else result = "Argument[" + p.getPosition() + "]"
-  )
+  result = "Argument[" + p.getPosition() + "]" + getAccessPath(p.getType())
 }
 
 /**
@@ -117,9 +127,10 @@ private string getSyntheticField(TypeVariable tv) {
 private string implicit(Callable callable, TypeVariable tv) {
   classTypeParameter(callable, tv) and
   not callable.isStatic() and
-  exists(string access |
-    if genericContainerType(callable.getDeclaringType(), tv)
-    then access = ".Element"
+  exists(string access, Type decl |
+    decl = callable.getDeclaringType() and
+    if genericContainerType(decl, tv)
+    then access = getAccessPath(decl)
     else access = getSyntheticField(tv)
   |
     result = Specific::qualifierString() + access
@@ -194,7 +205,7 @@ bindingset[callable]
 private string getAccess(Callable callable, Type return, TypeVariable tv) {
   return = tv and result = ""
   or
-  genericContainerType(return, tv) and result = ".Element"
+  genericContainerType(return, tv) and result = getAccessPath(return)
   or
   not genericContainerType(return, tv) and
   (
