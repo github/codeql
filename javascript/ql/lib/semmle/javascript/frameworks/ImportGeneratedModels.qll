@@ -3,7 +3,6 @@
  */
 
 private import minimongo.Model
-private import mongodb.Model
 private import mssql.Model
 private import mysql.Model
 private import pg.Model

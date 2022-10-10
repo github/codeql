@@ -7,3 +7,5 @@ upgrades: upgrades
 library: true
 dependencies:
   codeql/ssa: 0.0.1
+dataExtensions:
+  - codeql/ruby/frameworks/**/model.yml

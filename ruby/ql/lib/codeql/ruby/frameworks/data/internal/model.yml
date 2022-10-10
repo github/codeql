@@ -1,0 +1,26 @@
+extensions:
+  # Contribute empty datas set to avoid errors about an undefined extensionals
+  - addsTo:
+      pack: codeql/ruby-all
+      extensible: internal_sourceModel
+    data: []
+
+  - addsTo:
+      pack: codeql/ruby-all
+      extensible: internal_sinkModel
+    data: []
+
+  - addsTo:
+      pack: codeql/ruby-all
+      extensible: internal_summaryModel
+    data: []
+
+  - addsTo:
+      pack: codeql/ruby-all
+      extensible: internal_typeModel
+    data: []
+
+  - addsTo:
+      pack: codeql/ruby-all
+      extensible: internal_typeVariableModel
+    data: []

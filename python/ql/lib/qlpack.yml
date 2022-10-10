@@ -5,3 +5,5 @@ dbscheme: semmlecode.python.dbscheme
 extractor: python
 library: true
 upgrades: upgrades
+dataExtensions:
+  - semmle/python/frameworks/**/model.yml

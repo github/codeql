@@ -75,6 +75,7 @@ private module API = Specific::API;
 private module DataFlow = Specific::DataFlow;
 
 private import Specific::AccessPathSyntax
+private import ApiGraphModelsExtensions as Extensions
 
 /** Module containing hooks for providing input data to be interpreted as a model. */
 module ModelInput {
@@ -240,6 +241,8 @@ predicate sourceModel(string package, string type, string path, string kind) {
     row.splitAt(";", 2) = path and
     row.splitAt(";", 3) = kind
   )
+  or
+  Extensions::internal_sourceModel(package, type, path, kind)
 }
 
 /** Holds if a sink model exists for the given parameters. */
@@ -251,6 +254,8 @@ private predicate sinkModel(string package, string type, string path, string kin
     row.splitAt(";", 2) = path and
     row.splitAt(";", 3) = kind
   )
+  or
+  Extensions::internal_sinkModel(package, type, path, kind)
 }
 
 /** Holds if a summary model `row` exists for the given parameters. */
@@ -266,6 +271,8 @@ private predicate summaryModel(
     row.splitAt(";", 4) = output and
     row.splitAt(";", 5) = kind
   )
+  or
+  Extensions::internal_summaryModel(package, type, path, input, output, kind)
 }
 
 /** Holds if a type model exists for the given parameters. */
@@ -280,6 +287,8 @@ private predicate typeModel(
     row.splitAt(";", 3) = type2 and
     row.splitAt(";", 4) = path
   )
+  or
+  Extensions::internal_typeModel(package1, type1, package2, type2, path)
 }
 
 /** Holds if a type variable model exists for the given parameters. */
@@ -289,6 +298,8 @@ private predicate typeVariableModel(string name, string path) {
     row.splitAt(";", 0) = name and
     row.splitAt(";", 1) = path
   )
+  or
+  Extensions::internal_typeVariableModel(name, path)
 }
 
 /**
