@@ -14,9 +14,11 @@
 import java
 import semmle.code.java.security.InsufficientKeySizeQuery
 
+// * Original:
 //import DataFlow::PathGraph
 // from Expr e, string msg
 // where hasInsufficientKeySize(e, msg)
+// * Test data-flow config with just Asymmetric:
 // select e, msg
 // from
 //   AsymmetricKeyTrackingConfiguration cfg, DataFlow::PathNode source, DataFlow::PathNode sink,
@@ -26,19 +28,17 @@ import semmle.code.java.security.InsufficientKeySizeQuery
 //   cfg2.hasFlowPath(source, sink)
 // select sink.getNode(), source, sink, "The $@ of an asymmetric key should be at least 2048 bits.",
 //   sink.getNode(), "size"
-// * Use Below
+// * Data-Flow path-graph with All configs: (but doesn't track algo name properly...)
 // from DataFlow::PathNode source, DataFlow::PathNode sink
 // where exists(AsymmetricKeyTrackingConfiguration config1 | config1.hasFlowPath(source, sink)) //or
 // //exists(AsymmetricECCKeyTrackingConfiguration config2 | config2.hasFlowPath(source, sink)) //or
 // //exists(SymmetricKeyTrackingConfiguration config3 | config3.hasFlowPath(source, sink))
 // select sink.getNode(), source, sink, "This $@ is too small, and flows to $@.", source.getNode(),
 //   "key size", sink.getNode(), "here"
-// * Use Above
-// * Use Below for taint-tracking with kpg
+// * Taint-tracking with kpg to track algo names
 from DataFlow::Node source, DataFlow::Node sink
 where
   exists(AsymmetricKeyTrackingConfiguration config1 | config1.hasFlow(source, sink)) or
   exists(AsymmetricECCKeyTrackingConfiguration config2 | config2.hasFlow(source, sink)) or
   exists(SymmetricKeyTrackingConfiguration config3 | config3.hasFlow(source, sink))
 select sink, "This $@ is too small and creates a key $@.", source, "key size", sink, "here"
-// * Use Above for taint-tracking with kpg
