@@ -243,4 +243,12 @@ public class InsufficientKeySizeTest {
         ECGenParameterSpec ecSpec = new ECGenParameterSpec("secp112r1");
         kpg.initialize(ecSpec); // $ hasInsufficientKeySize
     }
+
+    // ToDo testing:
+    // todo #1: add tests for keysize variable passed to specs
+    // ? todo #2: add tests with DH and DSA specs? (or do those specs not make dev specify keysize?)
+    // ? todo #3: add test for retrieving a key from elsewhere?
+    // todo #4: add barrier-guard tests (see FP from OpenIdentityPlatform/OpenAM)
+    // ? todo #5: add tests for updated keysize variable?: e.g. keysize = 1024; keysize += 1024; so when it's used it is correctly 2048.
+    // ? todo #6: consider if some flow paths for keysize variables will be too hard to track how the keysize is updated (e.g. if calling some other method to get keysize, etc....)
 }
