@@ -45,8 +45,11 @@ predicate simpleLocalFlowStep = DataFlowPrivate::simpleLocalFlowStepForTypetrack
 
 predicate jumpStep = DataFlowPrivate::jumpStepSharedWithTypeTracker/2;
 
-/** Holds if there is a level step from `pred` to `succ`. */
-predicate levelStep(Node pred, Node succ) { none() }
+/** Holds if there is a level step from `nodeFrom` to `nodeTo`, which may depend on the call graph. */
+predicate levelStepCall(Node pred, Node succ) { none() }
+
+/** Holds if there is a level step from `nodeFrom` to `nodeTo`, which does not depend on the call graph. */
+predicate levelStepNoCall(Node nodeFrom, Node nodeTo) { none() }
 
 /**
  * Gets the name of a possible piece of content. For Python, this is currently only attribute names,
