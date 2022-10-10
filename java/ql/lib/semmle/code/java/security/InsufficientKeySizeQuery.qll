@@ -60,7 +60,7 @@ class AsymmetricKeyTrackingConfiguration extends TaintTracking2::Configuration {
 //   msg = "Key size should be at least 2048 bits for " + "___" + " encryption."
 // }
 /**
- * Asymmetric (RSA, DSA, DH) key length data flow tracking configuration.
+ * Asymmetric (EC) key length data flow tracking configuration.
  */
 class AsymmetricECCKeyTrackingConfiguration extends TaintTracking2::Configuration {
   AsymmetricECCKeyTrackingConfiguration() { this = "AsymmetricECCKeyTrackingConfiguration" }
