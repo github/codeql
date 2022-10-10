@@ -34,6 +34,7 @@ class TyphoeusHttpRequest extends Http::Client::Request::Range, DataFlow::CallNo
     result = this.getKeywordArgumentIncludeHashArgument("ssl_verifypeer")
   }
 
+  cached
   override predicate disablesCertificateValidation(
     DataFlow::Node disablingNode, DataFlow::Node argumentOrigin
   ) {

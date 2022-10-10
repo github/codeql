@@ -27,6 +27,7 @@ module Pathname {
    * Every `PathnameInstance` is considered to be a `FileNameSource`.
    */
   class PathnameInstance extends FileNameSource {
+    cached
     PathnameInstance() { any(PathnameConfiguration c).hasFlowTo(this) }
   }
 
