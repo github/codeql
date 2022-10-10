@@ -15,9 +15,9 @@ import semmle.code.cpp.valuenumbering.GlobalValueNumbering
 import semmle.code.cpp.controlflow.Guards
 
 /** Holds if function `fn` can return a value equal to value `val` */
-predicate mayBeReturnValue(Function fn, Expr val) {
+predicate mayBeReturnValue(Function fn, float val) {
   exists(Expr tmpExp, ReturnStmt rs |
-    tmpExp.getValue().toFloat() = val.getValue().toFloat() and
+    tmpExp.getValue().toFloat() = val and
     rs.getEnclosingFunction() = fn and
     (
       globalValueNumber(rs.getExpr()) = globalValueNumber(tmpExp)
@@ -39,7 +39,7 @@ predicate mayBeReturnValue(Function fn, Expr val) {
 
 /** Holds if function `fn` can return a value equal zero */
 predicate mayBeReturnZero(Function fn) {
-  exists(Expr zr | zr.getValue().toFloat() = 0 and mayBeReturnValue(fn, zr))
+  mayBeReturnValue(fn, 0)
   or
   fn.hasName([
       "iswalpha", "iswlower", "iswprint", "iswspace", "iswblank", "iswupper", "iswcntrl",
@@ -101,7 +101,7 @@ predicate compareFunctionWithValue(Expr guardExp, Function compArg, Expr valArg)
       if valArg.getValue().toFloat() = 0
       then
         exists(NotExpr ne, IfStmt ifne |
-          globalValueNumber(ne.getOperand()) = globalValueNumber(compArg.getACallToThisFunction()) and
+          ne.getOperand() = globalValueNumber(compArg.getACallToThisFunction()).getAnExpr() and
           ifne.getCondition() = ne and
           ifne.getThen().getAChild*() = guardExp
         )
@@ -152,7 +152,7 @@ predicate compareExprWithValue(Expr guardExp, Expr compArg, Expr valArg) {
       if valArg.getValue().toFloat() = 0
       then
         exists(NotExpr ne, IfStmt ifne |
-          globalValueNumber(ne.getOperand()) = globalValueNumber(compArg) and
+          ne.getOperand() = globalValueNumber(compArg).getAnExpr() and
           ifne.getCondition() = ne and
           ifne.getThen().getAChild*() = guardExp
         )
@@ -222,10 +222,8 @@ where
       changeInt = 0
       or
       // Denominator can be sum or difference.
-      exists(Expr changeExpr |
-        mayBeReturnValue(fn, changeExpr) and
-        changeInt = getValueOperand(div.getRV(), findVal, changeExpr)
-      )
+      changeInt = getValueOperand(div.getRV(), findVal, _) and
+      mayBeReturnValue(fn, changeInt)
     ) and
     exp = div and
     msg =
@@ -249,19 +247,15 @@ where
           changeInt2 = 0
           or
           // Denominator can be sum or difference.
-          exists(Expr changeExpr |
-            mayBeReturnValue(fn, changeExpr) and
-            changeInt = getValueOperand(divFc.getArgument(posArg), findVal, changeExpr) and
-            changeInt2 = 0
-          )
+          changeInt = getValueOperand(divFc.getArgument(posArg), findVal, _) and
+          mayBeReturnValue(fn, changeInt) and
+          changeInt2 = 0
         )
         or
         // Look for a situation where the difference or subtraction is considered as an argument, and it can be used in the same way.
-        exists(Expr changeExpr |
-          changeInt = getValueOperand(div.getRV(), divVal, changeExpr) and
-          changeInt2 = changeInt and
-          mayBeReturnValue(fn, changeExpr)
-        ) and
+        changeInt = getValueOperand(div.getRV(), divVal, _) and
+        changeInt2 = changeInt and
+        mayBeReturnValue(fn, changeInt) and
         divFc.getArgument(posArg) = findVal
       ) and
       checkConditions2(div, divVal, changeInt2) and
