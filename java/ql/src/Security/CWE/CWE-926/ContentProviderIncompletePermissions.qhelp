@@ -16,7 +16,7 @@
 </overview>
 
 <recommendation>
-  <p>To prevent permission bypass, <code>provider</code> elements should either
+  <p>To prevent permission bypass, you should create <code>provider</code> elements that either
   specify both the <code>android:readPermission</code>
   and <code>android:writePermission</code> attributes, or specify
   the <code>android:permission</code> attribute.
@@ -26,13 +26,13 @@
 <example>
 
   <p>In the following two (bad) examples, the provider is configured with only
-  read or write permissions.</p>
+  read or write permissions. This allows a malicious application to bypass the permission check by requesting access to the unrestricted operation.</p>
 
   <sample src="ContentProviderIncompletePermissionsReadOnly.xml"/>
 
   <sample src="ContentProviderIncompletePermissionsWriteOnly.xml"/>
 
-  <p>In the following (good) examples, the provider is configured with full permissions.</p>
+  <p>In the following (good) examples, the provider is configured with full permissions, protecting it from a permissions bypass.</p>
 
   <sample src="ContentProviderIncompletePermissionsReadWrite.xml"/>
 
