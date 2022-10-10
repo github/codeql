@@ -1,6 +1,6 @@
 ---
 dependencies:
-  codeql/javascript-experimental-atm-model:
-    version: 0.2.0
+  dsp-testing/javascript-experimental-atm-model:
+    version: 0.2.1-2022-10-07-10h42m59s.magenta-napkin-xzd2gmt5.4451e0807bee557d2b87d7e0bb70e26377857aff621f34afbfd881f102036ae1
 compiled: false
 lockVersion: 1.0.0
