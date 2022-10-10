@@ -254,9 +254,23 @@ open class KotlinFileExtractor(
         }
     }
 
+    fun extractClassInstance(classLabel: Label<out DbClassorinterface>, c: IrClass, argsIncludingOuterClasses: List<IrTypeArgument>?, shouldExtractOutline: Boolean, shouldExtractDetails: Boolean) {
+        DeclarationStackAdjuster(c).use {
+            if (shouldExtractOutline) {
+                extractClassWithoutMembers(c, argsIncludingOuterClasses)
+            }
+
+            if (shouldExtractDetails) {
+                val supertypeMode = if (argsIncludingOuterClasses == null) ExtractSupertypesMode.Raw else ExtractSupertypesMode.Specialised(argsIncludingOuterClasses)
+                extractClassSupertypes(c, classLabel, supertypeMode, true)
+                extractNonPrivateMemberPrototypes(c, argsIncludingOuterClasses, classLabel)
+            }
+        }
+    }
+
     // `argsIncludingOuterClasses` can be null to describe a raw generic type.
     // For non-generic types it will be zero-length list.
-    fun extractClassInstance(c: IrClass, argsIncludingOuterClasses: List<IrTypeArgument>?): Label<out DbClassorinterface> {
+    private fun extractClassWithoutMembers(c: IrClass, argsIncludingOuterClasses: List<IrTypeArgument>?): Label<out DbClassorinterface> {
         with("class instance", c) {
             if (argsIncludingOuterClasses?.isEmpty() == true) {
                 logger.error("Instance without type arguments: " + c.name.asString())
@@ -342,7 +356,7 @@ open class KotlinFileExtractor(
 
     // `argsIncludingOuterClasses` can be null to describe a raw generic type.
     // For non-generic types it will be zero-length list.
-    fun extractNonPrivateMemberPrototypes(c: IrClass, argsIncludingOuterClasses: List<IrTypeArgument>?, id: Label<out DbClassorinterface>) {
+    private fun extractNonPrivateMemberPrototypes(c: IrClass, argsIncludingOuterClasses: List<IrTypeArgument>?, id: Label<out DbClassorinterface>) {
         with("member prototypes", c) {
             val typeParamSubstitution =
                 when (argsIncludingOuterClasses) {

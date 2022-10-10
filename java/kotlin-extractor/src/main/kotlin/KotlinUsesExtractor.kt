@@ -411,16 +411,9 @@ open class KotlinUsesExtractor(
         if (replacedArgsIncludingOuterClasses == null || replacedArgsIncludingOuterClasses.isNotEmpty()) {
             // If this is a generic type instantiation or a raw type then it has no
             // source entity, so we need to extract it here
-            val extractorWithCSource by lazy { this.withFileOfClass(replacedClass) }
-
-            if (!instanceSeenBefore) {
-                extractorWithCSource.extractClassInstance(replacedClass, replacedArgsIncludingOuterClasses)
-            }
-
-            if (inReceiverContext && tw.lm.genericSpecialisationsExtracted.add(classLabelResult.classLabel)) {
-                val supertypeMode = if (replacedArgsIncludingOuterClasses == null) ExtractSupertypesMode.Raw else ExtractSupertypesMode.Specialised(replacedArgsIncludingOuterClasses)
-                extractorWithCSource.extractClassSupertypes(replacedClass, classLabel, supertypeMode, true)
-                extractorWithCSource.extractNonPrivateMemberPrototypes(replacedClass, replacedArgsIncludingOuterClasses, classLabel)
+            val shouldExtractClassDetails = inReceiverContext && tw.lm.genericSpecialisationsExtracted.add(classLabelResult.classLabel)
+            if (!instanceSeenBefore || shouldExtractClassDetails) {
+                this.withFileOfClass(replacedClass).extractClassInstance(classLabel, replacedClass, replacedArgsIncludingOuterClasses, !instanceSeenBefore, shouldExtractClassDetails)
             }
         }
 
