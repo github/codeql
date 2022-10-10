@@ -843,7 +843,7 @@ open class KotlinFileExtractor(
                 f.realOverrideTarget.let { it != f && isKotlinDefinedInterface(it.parentClassOrNull) }
 
     private fun makeInterfaceForwarder(f: IrFunction, parentId: Label<out DbReftype>, extractBody: Boolean, extractMethodAndParameterTypeAccesses: Boolean, typeSubstitution: TypeSubstitution?, classTypeArgsIncludingOuterClasses: List<IrTypeArgument>?) =
-        forceExtractFunction(f, parentId, extractBody = false, extractMethodAndParameterTypeAccesses, typeSubstitution, classTypeArgsIncludingOuterClasses).also { functionId ->
+        forceExtractFunction(f, parentId, extractBody = false, extractMethodAndParameterTypeAccesses, typeSubstitution, classTypeArgsIncludingOuterClasses, overriddenAttributes = OverriddenFunctionAttributes(visibility = DescriptorVisibilities.PUBLIC)).also { functionId ->
             tw.writeCompiler_generated(functionId, CompilerGeneratedKinds.INTERFACE_FORWARDER.kind)
             if (extractBody) {
                 val realFunctionLocId = tw.getLocation(f)
@@ -1189,7 +1189,7 @@ open class KotlinFileExtractor(
                     extractBody(body, id)
                 }
 
-                extractVisibility(f, id, f.visibility)
+                extractVisibility(f, id, overriddenAttributes?.visibility ?: f.visibility)
 
                 if (f.isInline) {
                     addModifiers(id, "inline")
@@ -5401,7 +5401,9 @@ open class KotlinFileExtractor(
         val sourceLoc: Label<DbLocation>? = null,
         val valueParameters: List<IrValueParameter>? = null,
         val typeParameters: List<IrTypeParameter>? = null,
-        val isStatic: Boolean? = null)
+        val isStatic: Boolean? = null,
+        val visibility: DescriptorVisibility? = null,
+    )
 
     private fun peekDeclStackAsDeclarationParent(elementToReportOn: IrElement): IrDeclarationParent? {
         val trapWriter = tw
