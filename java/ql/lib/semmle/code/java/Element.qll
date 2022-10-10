@@ -65,6 +65,8 @@ class Element extends @element, Top {
       i = 8 and result = "Proxy static method for a @JvmStatic-annotated function or property"
       or
       i = 9 and result = "Forwarder for a @JvmOverloads-annotated function"
+      or
+      i = 10 and result = "Forwarder for Kotlin calls that need default arguments filling in"
     )
   }
 }

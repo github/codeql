@@ -42,7 +42,7 @@ module WeakHashingConfig {
         call.getAnArgument().getExpr() = this.asExpr() and
         call.getStaticTarget() = func and
         func.getName().matches(["hash(%", "update(%"]) and
-        algorithm = func.getEnclosingDecl().(StructDecl).getName() and
+        algorithm = func.getEnclosingDecl().(ClassOrStructDecl).getName() and
         algorithm = ["MD5", "SHA1"]
       )
     }

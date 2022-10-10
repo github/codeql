@@ -361,19 +361,7 @@ private class SummaryModelCsvBase extends SummaryModelCsv {
         "java.net;URI;false;toURL;;;Argument[-1];ReturnValue;taint;manual",
         "java.net;URI;false;toString;;;Argument[-1];ReturnValue;taint;manual",
         "java.net;URI;false;toAsciiString;;;Argument[-1];ReturnValue;taint;manual",
-        "java.io;File;true;toURI;;;Argument[-1];ReturnValue;taint;manual",
-        "java.io;File;true;toPath;;;Argument[-1];ReturnValue;taint;manual",
-        "java.io;File;true;getAbsoluteFile;;;Argument[-1];ReturnValue;taint;manual",
-        "java.io;File;true;getCanonicalFile;;;Argument[-1];ReturnValue;taint;manual",
-        "java.io;File;true;getAbsolutePath;;;Argument[-1];ReturnValue;taint;manual",
-        "java.io;File;true;getCanonicalPath;;;Argument[-1];ReturnValue;taint;manual",
         "java.nio;ByteBuffer;false;array;();;Argument[-1];ReturnValue;taint;manual",
-        "java.nio.file;Path;true;normalize;;;Argument[-1];ReturnValue;taint;manual",
-        "java.nio.file;Path;true;resolve;;;Argument[-1..0];ReturnValue;taint;manual",
-        "java.nio.file;Path;false;toFile;;;Argument[-1];ReturnValue;taint;manual",
-        "java.nio.file;Path;true;toString;;;Argument[-1];ReturnValue;taint;manual",
-        "java.nio.file;Path;true;toUri;;;Argument[-1];ReturnValue;taint;manual",
-        "java.nio.file;Paths;true;get;;;Argument[0..1];ReturnValue;taint;manual",
         "java.io;BufferedReader;true;readLine;;;Argument[-1];ReturnValue;taint;manual",
         "java.io;Reader;true;read;();;Argument[-1];ReturnValue;taint;manual",
         // arg to return
@@ -400,8 +388,6 @@ private class SummaryModelCsvBase extends SummaryModelCsv {
         // arg to arg
         "java.lang;System;false;arraycopy;;;Argument[0];Argument[2];taint;manual",
         // constructor flow
-        "java.io;File;false;File;;;Argument[0];Argument[-1];taint;manual",
-        "java.io;File;false;File;;;Argument[1];Argument[-1];taint;manual",
         "java.net;URI;false;URI;(String);;Argument[0];Argument[-1];taint;manual",
         "java.net;URL;false;URL;(String);;Argument[0];Argument[-1];taint;manual",
         "javax.xml.transform.stream;StreamSource;false;StreamSource;;;Argument[0];Argument[-1];taint;manual",

@@ -8,8 +8,20 @@ private import codeql.ruby.controlflow.CfgNodes
 private import codeql.ruby.DataFlow
 private import codeql.ruby.dataflow.RemoteFlowSources
 private import codeql.ruby.ApiGraphs
-private import codeql.ruby.frameworks.ActionView
 private import codeql.ruby.frameworks.ActionDispatch
+private import codeql.ruby.frameworks.ActionView
+private import codeql.ruby.frameworks.Rails
+private import codeql.ruby.frameworks.internal.Rails
+
+/**
+ * DEPRECATED: Import `codeql.ruby.frameworks.Rails` and use `Rails::ParamsCall` instead.
+ */
+deprecated class ParamsCall = Rails::ParamsCall;
+
+/**
+ * DEPRECATED: Import `codeql.ruby.frameworks.Rails` and use `Rails::CookiesCall` instead.
+ */
+deprecated class CookiesCall = Rails::CookiesCall;
 
 /**
  * A `ClassDeclaration` for a class that extends `ActionController::Base`.
@@ -72,7 +84,7 @@ class ActionControllerActionMethod extends Method, Http::Server::RequestHandler:
   override string getFramework() { result = "ActionController" }
 
   /** Gets a call to render from within this method. */
-  RenderCall getARenderCall() { result.getParent+() = this }
+  Rails::RenderCall getARenderCall() { result.getParent+() = this }
 
   /**
    * Gets the controller class containing this method.
@@ -120,27 +132,13 @@ private class ActionControllerContextCall extends MethodCall {
 }
 
 /**
- * A call to the `params` method to fetch the request parameters.
- */
-abstract class ParamsCall extends MethodCall {
-  ParamsCall() { this.getMethodName() = "params" }
-}
-
-/**
  * A `RemoteFlowSource::Range` to represent accessing the
  * ActionController parameters available via the `params` method.
  */
 class ParamsSource extends Http::Server::RequestInputAccess::Range {
-  ParamsSource() { this.asExpr().getExpr() instanceof ParamsCall }
+  ParamsSource() { this.asExpr().getExpr() instanceof Rails::ParamsCall }
 
   override string getSourceType() { result = "ActionController::Metal#params" }
-}
-
-/**
- * A call to the `cookies` method to fetch the request parameters.
- */
-abstract class CookiesCall extends MethodCall {
-  CookiesCall() { this.getMethodName() = "cookies" }
 }
 
 /**
@@ -148,33 +146,44 @@ abstract class CookiesCall extends MethodCall {
  * ActionController parameters available via the `cookies` method.
  */
 class CookiesSource extends Http::Server::RequestInputAccess::Range {
-  CookiesSource() { this.asExpr().getExpr() instanceof CookiesCall }
+  CookiesSource() { this.asExpr().getExpr() instanceof Rails::CookiesCall }
 
   override string getSourceType() { result = "ActionController::Metal#cookies" }
 }
 
 /** A call to `cookies` from within a controller. */
-private class ActionControllerCookiesCall extends ActionControllerContextCall, CookiesCall { }
+private class ActionControllerCookiesCall extends ActionControllerContextCall, CookiesCallImpl {
+  ActionControllerCookiesCall() { this.getMethodName() = "cookies" }
+}
 
 /** A call to `params` from within a controller. */
-private class ActionControllerParamsCall extends ActionControllerContextCall, ParamsCall { }
+private class ActionControllerParamsCall extends ActionControllerContextCall, ParamsCallImpl {
+  ActionControllerParamsCall() { this.getMethodName() = "params" }
+}
 
 /** A call to `render` from within a controller. */
-private class ActionControllerRenderCall extends ActionControllerContextCall, RenderCall { }
+private class ActionControllerRenderCall extends ActionControllerContextCall, RenderCallImpl {
+  ActionControllerRenderCall() { this.getMethodName() = "render" }
+}
 
 /** A call to `render_to` from within a controller. */
-private class ActionControllerRenderToCall extends ActionControllerContextCall, RenderToCall { }
+private class ActionControllerRenderToCall extends ActionControllerContextCall, RenderToCallImpl {
+  ActionControllerRenderToCall() { this.getMethodName() = ["render_to_body", "render_to_string"] }
+}
 
 /** A call to `html_safe` from within a controller. */
-private class ActionControllerHtmlSafeCall extends HtmlSafeCall {
+private class ActionControllerHtmlSafeCall extends HtmlSafeCallImpl {
   ActionControllerHtmlSafeCall() {
+    this.getMethodName() = "html_safe" and
     this.getEnclosingModule() instanceof ActionControllerControllerClass
   }
 }
 
 /** A call to `html_escape` from within a controller. */
-private class ActionControllerHtmlEscapeCall extends HtmlEscapeCall {
+private class ActionControllerHtmlEscapeCall extends HtmlEscapeCallImpl {
   ActionControllerHtmlEscapeCall() {
+    // "h" is aliased to "html_escape" in ActiveSupport
+    this.getMethodName() = ["html_escape", "html_escape_once", "h", "sanitize"] and
     this.getEnclosingModule() instanceof ActionControllerControllerClass
   }
 }
@@ -291,7 +300,7 @@ ActionControllerControllerClass getAssociatedControllerClass(ErbFile f) {
   // template file, `fp`. In this case, `f` inherits the associated
   // controller classes from `fp`.
   f.isPartial() and
-  exists(RenderCall r, ErbFile fp |
+  exists(Rails::RenderCall r, ErbFile fp |
     r.getLocation().getFile() = fp and
     r.getTemplateFile() = f and
     result = getAssociatedControllerClass(fp)
@@ -372,4 +381,124 @@ private class SendFile extends FileSystemAccess::Range, DataFlow::CallNode {
   }
 
   override DataFlow::Node getAPathArgument() { result = this.getArgument(0) }
+}
+
+private module ParamsSummaries {
+  private import codeql.ruby.dataflow.FlowSummary
+
+  /**
+   * An instance of `ActionController::Parameters`, including those returned
+   * from method calls on other instances.
+   */
+  private class ParamsInstance extends DataFlow::Node {
+    ParamsInstance() {
+      this.asExpr().getExpr() instanceof Rails::ParamsCall
+      or
+      this =
+        any(DataFlow::CallNode call |
+          call.getReceiver() instanceof ParamsInstance and
+          call.getMethodName() = paramsMethodReturningParamsInstance()
+        )
+      or
+      exists(ParamsInstance prev | prev.(DataFlow::LocalSourceNode).flowsTo(this))
+    }
+  }
+
+  /**
+   * Methods on `ActionController::Parameters` that return an instance of
+   * `ActionController::Parameters`.
+   */
+  string paramsMethodReturningParamsInstance() {
+    result =
+      [
+        "concat", "concat!", "compact_blank", "deep_dup", "deep_transform_keys", "delete_if",
+        // dig doesn't always return a Parameters instance, but it will if the
+        // given key refers to a nested hash parameter.
+        "dig", "each", "each_key", "each_pair", "each_value", "except", "keep_if", "merge",
+        "merge!", "permit", "reject", "reject!", "reverse_merge", "reverse_merge!", "select",
+        "select!", "slice", "slice!", "transform_keys", "transform_keys!", "transform_values",
+        "transform_values!", "with_defaults", "with_defaults!"
+      ]
+  }
+
+  /**
+   * Methods on `ActionController::Parameters` that propagate taint from
+   * receiver to return value.
+   */
+  string methodReturnsTaintFromSelf() {
+    result =
+      [
+        "as_json", "permit", "require", "required", "deep_dup", "deep_transform_keys",
+        "deep_transform_keys!", "delete_if", "extract!", "keep_if", "select", "select!", "reject",
+        "reject!", "to_h", "to_hash", "to_query", "to_param", "to_unsafe_h", "to_unsafe_hash",
+        "transform_keys", "transform_keys!", "transform_values", "transform_values!", "values_at"
+      ]
+  }
+
+  /**
+   * A flow summary for methods on `ActionController::Parameters` which
+   * propagate taint from receiver to return value.
+   */
+  private class MethodsReturningParamsInstanceSummary extends SummarizedCallable {
+    MethodsReturningParamsInstanceSummary() { this = "ActionController::Parameters#<various>" }
+
+    override MethodCall getACall() {
+      any(ParamsInstance i).asExpr().getExpr() = result.getReceiver() and
+      result.getMethodName() = methodReturnsTaintFromSelf()
+    }
+
+    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+      input = "Argument[self]" and
+      output = "ReturnValue" and
+      preservesValue = false
+    }
+  }
+
+  /**
+   * `#merge`
+   * Returns a new ActionController::Parameters with all keys from other_hash merged into current hash.
+   * `#reverse_merge`
+   * `#with_defaults`
+   * Returns a new ActionController::Parameters with all keys from current hash merged into other_hash.
+   */
+  private class MergeSummary extends SummarizedCallable {
+    MergeSummary() { this = "ActionController::Parameters#merge" }
+
+    override MethodCall getACall() {
+      result.getMethodName() = ["merge", "reverse_merge", "with_defaults"] and
+      exists(ParamsInstance i |
+        i.asExpr().getExpr() = [result.getReceiver(), result.getArgument(0)]
+      )
+    }
+
+    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+      input = ["Argument[self]", "Argument[0]"] and
+      output = "ReturnValue" and
+      preservesValue = false
+    }
+  }
+
+  /**
+   * `#merge!`
+   * Returns current ActionController::Parameters instance with current hash merged into other_hash.
+   * `#reverse_merge!`
+   * `#with_defaults!`
+   * Returns a new ActionController::Parameters with all keys from current hash merged into other_hash.
+   */
+  private class MergeBangSummary extends SummarizedCallable {
+    MergeBangSummary() { this = "ActionController::Parameters#merge!" }
+
+    override MethodCall getACall() {
+      result.getMethodName() = ["merge!", "reverse_merge!", "with_defaults!"] and
+      exists(ParamsInstance i |
+        i.asExpr().getExpr() = [result.getReceiver(), result.getArgument(0)]
+      )
+    }
+
+    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+      input = ["Argument[self]", "Argument[0]"] and
+      output = ["ReturnValue", "Argument[self]"] and
+      preservesValue = false
+    }
+  }
 }

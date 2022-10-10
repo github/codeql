@@ -8,7 +8,28 @@ private import codeql.ruby.Concepts
 private import codeql.ruby.controlflow.CfgNodes
 private import codeql.ruby.DataFlow
 private import codeql.ruby.dataflow.RemoteFlowSources
-private import ActionController
+private import codeql.ruby.frameworks.internal.Rails
+private import codeql.ruby.frameworks.Rails
+
+/**
+ * DEPRECATED: Import `codeql.ruby.frameworks.Rails` and use `Rails::HtmlSafeCall` instead.
+ */
+deprecated class HtmlSafeCall = Rails::HtmlSafeCall;
+
+/**
+ * DEPRECATED: Import `codeql.ruby.frameworks.Rails` and use `Rails::HtmlEscapeCall` instead.
+ */
+deprecated class HtmlEscapeCall = Rails::HtmlEscapeCall;
+
+/**
+ * DEPRECATED: Import `codeql.ruby.frameworks.Rails` and use `Rails::RenderCall` instead.
+ */
+deprecated class RenderCall = Rails::RenderCall;
+
+/**
+ * DEPRECATED: Import `codeql.ruby.frameworks.Rails` and use `Rails::RenderToCall` instead.
+ */
+deprecated class RenderToCall = Rails::RenderToCall;
 
 /**
  * Holds if this AST node is in a context where `ActionView` methods are available.
@@ -18,33 +39,16 @@ predicate inActionViewContext(AstNode n) {
   n.getLocation().getFile() instanceof ErbFile
 }
 
-/**
- * A method call on a string to mark it as HTML safe for Rails.
- * Strings marked as such will not be automatically escaped when inserted into
- * HTML.
- */
-abstract class HtmlSafeCall extends MethodCall {
-  HtmlSafeCall() { this.getMethodName() = "html_safe" }
-}
-
-// A call to `html_safe` from within a template.
-private class ActionViewHtmlSafeCall extends HtmlSafeCall {
-  ActionViewHtmlSafeCall() { inActionViewContext(this) }
-}
-
-/**
- * A call to a method named "html_escape", "html_escape_once", or "h".
- */
-abstract class HtmlEscapeCall extends MethodCall {
-  // "h" is aliased to "html_escape" in ActiveSupport
-  HtmlEscapeCall() { this.getMethodName() = ["html_escape", "html_escape_once", "h", "sanitize"] }
+/** A call to `html_safe` from within a template. */
+private class ActionViewHtmlSafeCall extends HtmlSafeCallImpl {
+  ActionViewHtmlSafeCall() { this.getMethodName() = "html_safe" and inActionViewContext(this) }
 }
 
 /**
  * A call to a Rails method that escapes HTML.
  */
 class RailsHtmlEscaping extends Escaping::Range, DataFlow::CallNode {
-  RailsHtmlEscaping() { this.asExpr().getExpr() instanceof HtmlEscapeCall }
+  RailsHtmlEscaping() { this.asExpr().getExpr() instanceof Rails::HtmlEscapeCall }
 
   override DataFlow::Node getAnInput() { result = this.getArgument(0) }
 
@@ -53,12 +57,16 @@ class RailsHtmlEscaping extends Escaping::Range, DataFlow::CallNode {
   override string getKind() { result = Escaping::getHtmlKind() }
 }
 
-// A call to `html_escape` from within a template.
-private class ActionViewHtmlEscapeCall extends HtmlEscapeCall {
-  ActionViewHtmlEscapeCall() { inActionViewContext(this) }
+/** A call to `html_escape` from within a template. */
+private class ActionViewHtmlEscapeCall extends HtmlEscapeCallImpl {
+  ActionViewHtmlEscapeCall() {
+    // "h" is aliased to "html_escape" in ActiveSupport
+    this.getMethodName() = ["html_escape", "html_escape_once", "h", "sanitize"] and
+    inActionViewContext(this)
+  }
 }
 
-// A call in a context where some commonly used `ActionView` methods are available.
+/** A call in a context where some commonly used `ActionView` methods are available. */
 private class ActionViewContextCall extends MethodCall {
   ActionViewContextCall() {
     this.getReceiver() instanceof SelfVariableAccess and
@@ -76,51 +84,14 @@ class RawCall extends ActionViewContextCall {
   RawCall() { this.getMethodName() = "raw" }
 }
 
-// A call to the `params` method within the context of a template.
-private class ActionViewParamsCall extends ActionViewContextCall, ParamsCall { }
+/** A call to the `params` method within the context of a template. */
+private class ActionViewParamsCall extends ActionViewContextCall, ParamsCallImpl {
+  ActionViewParamsCall() { this.getMethodName() = "params" }
+}
 
 // A call to the `cookies` method within the context of a template.
-private class ActionViewCookiesCall extends ActionViewContextCall, CookiesCall { }
-
-/**
- * A call to a `render` method that will populate the response body with the
- * rendered content.
- */
-abstract class RenderCall extends MethodCall {
-  RenderCall() { this.getMethodName() = "render" }
-
-  private Expr getTemplatePathArgument() {
-    // TODO: support other ways of specifying paths (e.g. `file`)
-    result = [this.getKeywordArgument(["partial", "template", "action"]), this.getArgument(0)]
-  }
-
-  private string getTemplatePathValue() {
-    result = this.getTemplatePathArgument().getConstantValue().getStringlikeValue()
-  }
-
-  // everything up to and including the final slash, but ignoring any leading slash
-  private string getSubPath() {
-    result = this.getTemplatePathValue().regexpCapture("^/?(.*/)?(?:[^/]*?)$", 1)
-  }
-
-  // everything after the final slash, or the whole string if there is no slash
-  private string getBaseName() {
-    result = this.getTemplatePathValue().regexpCapture("^/?(?:.*/)?([^/]*?)$", 1)
-  }
-
-  /**
-   * Gets the template file to be rendered by this call, if any.
-   */
-  ErbFile getTemplateFile() {
-    result.getTemplateName() = this.getBaseName() and
-    result.getRelativePath().matches("%app/views/" + this.getSubPath() + "%")
-  }
-
-  /**
-   * Get the local variables passed as context to the renderer
-   */
-  HashLiteral getLocals() { result = this.getKeywordArgument("locals") }
-  // TODO: implicit renders in controller actions
+private class ActionViewCookiesCall extends ActionViewContextCall, CookiesCallImpl {
+  ActionViewCookiesCall() { this.getMethodName() = "cookies" }
 }
 
 /**
@@ -129,8 +100,8 @@ abstract class RenderCall extends MethodCall {
  */
 private class RenderCallAsHttpResponse extends DataFlow::CallNode, Http::Server::HttpResponse::Range {
   RenderCallAsHttpResponse() {
-    this.asExpr().getExpr() instanceof RenderCall or
-    this.asExpr().getExpr() instanceof RenderToCall
+    this.asExpr().getExpr() instanceof Rails::RenderCall or
+    this.asExpr().getExpr() instanceof Rails::RenderToCall
   }
 
   // `render` is a very polymorphic method - all of these are valid calls:
@@ -172,17 +143,14 @@ private class RenderCallAsHttpResponse extends DataFlow::CallNode, Http::Server:
 }
 
 /** A call to the `render` method within the context of a template. */
-private class ActionViewRenderCall extends RenderCall, ActionViewContextCall { }
-
-/**
- * A render call that does not automatically set the HTTP response body.
- */
-abstract class RenderToCall extends MethodCall {
-  RenderToCall() { this.getMethodName() = ["render_to_body", "render_to_string"] }
+private class ActionViewRenderCall extends ActionViewContextCall, RenderCallImpl {
+  ActionViewRenderCall() { this.getMethodName() = "render" }
 }
 
-// A call to `render_to` from within a template.
-private class ActionViewRenderToCall extends ActionViewContextCall, RenderToCall { }
+/** A call to `render_to` from within a template. */
+private class ActionViewRenderToCall extends ActionViewContextCall, RenderToCallImpl {
+  ActionViewRenderToCall() { this.getMethodName() = ["render_to_body", "render_to_string"] }
+}
 
 /**
  * A call to the ActionView `link_to` helper method.
@@ -224,16 +192,18 @@ module ActionView {
    * Action view helper methods which are XSS sinks.
    */
   module Helpers {
+    abstract private class RawHelperCallImpl extends MethodCall {
+      abstract Expr getRawArgument();
+    }
+
     /**
      * A call to an ActionView helper which renders its argument without escaping.
      * The argument should be treated as an XSS sink. In the documentation for
      * classes in this module, the vulnerable argument is named `x`.
      */
-    abstract class RawHelperCall extends MethodCall {
-      /**
-       * Get an argument which is rendered without escaping.
-       */
-      abstract Expr getRawArgument();
+    class RawHelperCall extends MethodCall instanceof RawHelperCallImpl {
+      /** Gets an argument that is rendered without escaping. */
+      Expr getRawArgument() { result = super.getRawArgument() }
     }
 
     /**
@@ -241,7 +211,7 @@ module ActionView {
      *
      * `simple_format(x, y, sanitize: false)`.
      */
-    private class SimpleFormat extends ActionViewContextCall, RawHelperCall {
+    private class SimpleFormat extends ActionViewContextCall, RawHelperCallImpl {
       SimpleFormat() {
         this.getMethodName() = "simple_format" and
         this.getKeywordArgument("sanitize").getConstantValue().isBoolean(false)
@@ -255,7 +225,7 @@ module ActionView {
      *
      * `truncate(x, escape: false)`.
      */
-    private class Truncate extends ActionViewContextCall, RawHelperCall {
+    private class Truncate extends ActionViewContextCall, RawHelperCallImpl {
       Truncate() {
         this.getMethodName() = "truncate" and
         this.getKeywordArgument("escape").getConstantValue().isBoolean(false)
@@ -269,7 +239,7 @@ module ActionView {
      *
      * `highlight(x, y, sanitize: false)`.
      */
-    private class Highlight extends ActionViewContextCall, RawHelperCall {
+    private class Highlight extends ActionViewContextCall, RawHelperCallImpl {
       Highlight() {
         this.getMethodName() = "highlight" and
         this.getKeywordArgument("sanitize").getConstantValue().isBoolean(false)
@@ -283,7 +253,7 @@ module ActionView {
      *
      * `javascript_tag(x)`.
      */
-    private class JavascriptTag extends ActionViewContextCall, RawHelperCall {
+    private class JavascriptTag extends ActionViewContextCall, RawHelperCallImpl {
       JavascriptTag() { this.getMethodName() = "javascript_tag" }
 
       override Expr getRawArgument() { result = this.getArgument(0) }
@@ -294,7 +264,7 @@ module ActionView {
      *
      * `content_tag(x, x, y, false)`.
      */
-    private class ContentTag extends ActionViewContextCall, RawHelperCall {
+    private class ContentTag extends ActionViewContextCall, RawHelperCallImpl {
       ContentTag() {
         this.getMethodName() = "content_tag" and
         this.getArgument(3).getConstantValue().isBoolean(false)
@@ -308,7 +278,7 @@ module ActionView {
      *
      * `tag(x, x, y, false)`.
      */
-    private class Tag extends ActionViewContextCall, RawHelperCall {
+    private class Tag extends ActionViewContextCall, RawHelperCallImpl {
       Tag() {
         this.getMethodName() = "tag" and
         this.getArgument(3).getConstantValue().isBoolean(false)
@@ -322,7 +292,7 @@ module ActionView {
      *
      * `tag.h1(x, escape: false)`.
      */
-    private class TagMethod extends MethodCall, RawHelperCall {
+    private class TagMethod extends MethodCall, RawHelperCallImpl {
       TagMethod() {
         inActionViewContext(this) and
         this.getReceiver().(MethodCall).getMethodName() = "tag" and

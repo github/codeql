@@ -85,7 +85,10 @@ private module Cached {
       op.getAnOperand() = nodeFrom.asExpr() and
       not op.getExpr() =
         any(Expr e |
+          // included in normal data-flow
           e instanceof AssignExpr or
+          e instanceof BinaryLogicalOperation or
+          // has flow summary
           e instanceof SplatExpr
         )
     )

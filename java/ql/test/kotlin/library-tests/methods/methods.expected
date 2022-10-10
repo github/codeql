@@ -5,6 +5,7 @@ methods
 | dataClass.kt:1:1:1:47 | DataClass | dataClass.kt:0:0:0:0 | component1 | component1() | public | Compiler generated |
 | dataClass.kt:1:1:1:47 | DataClass | dataClass.kt:0:0:0:0 | component2 | component2() | public | Compiler generated |
 | dataClass.kt:1:1:1:47 | DataClass | dataClass.kt:0:0:0:0 | copy | copy(int,java.lang.String) | public | Compiler generated |
+| dataClass.kt:1:1:1:47 | DataClass | dataClass.kt:0:0:0:0 | copy$default | copy$default(DataClass,int,java.lang.String,int,java.lang.Object) | public, static | Compiler generated |
 | dataClass.kt:1:1:1:47 | DataClass | dataClass.kt:0:0:0:0 | equals | equals(java.lang.Object) | override, public | Compiler generated |
 | dataClass.kt:1:1:1:47 | DataClass | dataClass.kt:0:0:0:0 | hashCode | hashCode() | override, public | Compiler generated |
 | dataClass.kt:1:1:1:47 | DataClass | dataClass.kt:0:0:0:0 | toString | toString() | override, public | Compiler generated |
