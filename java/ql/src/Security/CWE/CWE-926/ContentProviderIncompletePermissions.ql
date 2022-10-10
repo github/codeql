@@ -1,6 +1,6 @@
 /**
  * @name Missing read or write permission in a content provider
- * @description Android content providers which do not configure both read and write permissions can allow permission bypass
+ * @description Android content providers which do not configure both read and write permissions can allow permission bypass.
  * @kind problem
  * @problem.severity warning
  * @security-severity 8.2
