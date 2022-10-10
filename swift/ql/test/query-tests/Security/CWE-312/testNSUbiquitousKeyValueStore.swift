@@ -11,7 +11,7 @@ class NSUbiquitousKeyValueStore : NSObject
         return NSUbiquitousKeyValueStore()
     }
 
-	func set(_ value: Any?, forKey key: String) {}
+	func set(_ anObject: Any?, forKey aKey: String) {}
 }
 
 func encrypt(_ data: String) -> String { return data }

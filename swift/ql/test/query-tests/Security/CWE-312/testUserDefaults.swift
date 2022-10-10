@@ -11,7 +11,7 @@ class UserDefaults : NSObject
         return UserDefaults()
     }
 
-	func set(_ value: Any?, forKey key: String) {}
+	func set(_ value: Any?, forKey defaultName: String) {}
 }
 
 func encrypt(_ data: String) -> String { return data }
