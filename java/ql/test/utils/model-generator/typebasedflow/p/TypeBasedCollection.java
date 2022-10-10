@@ -6,18 +6,16 @@ import java.util.ArrayList;
 public class TypeBasedCollection<T> extends ArrayList<T> {
 
     public void addT(T x) {
-        throw null;
     }
 
     public void addManyT(List<T> xs) {
-        throw null;
     }
 
     public T firstT() {
-        throw null;
+        return null;
     }
 
     public List<T> getManyT() {
-        throw null;
+        return null;
     }
 }
