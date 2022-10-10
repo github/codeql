@@ -186,7 +186,7 @@ private module Cached {
     jumpStep(nodeFrom, nodeTo) and
     summary = JumpStep()
     or
-    levelStep(nodeFrom, nodeTo) and
+    levelStepNoCall(nodeFrom, nodeTo) and
     summary = LevelStep()
     or
     exists(TypeTrackerContent content |
@@ -216,6 +216,9 @@ private module Cached {
     or
     returnStep(nodeFrom, nodeTo) and
     summary = ReturnStep()
+    or
+    levelStepCall(nodeFrom, nodeTo) and
+    summary = LevelStep()
   }
 }
 
