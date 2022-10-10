@@ -1,4 +1,4 @@
 ---
 category: minorAnalysis
 ---
-* Improved taint tracking behavior when the `JSON.stringify` method called. Previously, `JsonStringifyTaintStep` detects only if the source is equal to an argument. Now, it can detect the case that the argument is object and source is located in its property.
+* Improved taint tracking through `JSON.stringify` in cases where a tainted value is stored somewhere in the input object.
