@@ -224,6 +224,21 @@ predicate basicStoreStep(Node nodeFrom, Node nodeTo, DataFlow::ContentSet conten
  * is a post-update node that should be treated as a local source node.
  */
 predicate storeStepIntoSourceNode(Node nodeFrom, Node nodeTo, DataFlow::ContentSet contents) {
+  // Instance variable assignment, `@var = src`
+  nodeTo.(DataFlow::PostUpdateNode).getPreUpdateNode().asExpr() =
+    any(ExprNodes::InstanceVariableWriteAccessCfgNode var |
+      exists(ExprNodes::AssignExprCfgNode assign |
+        var = assign.getLhs() and
+        nodeFrom.asExpr() = assign.getRhs()
+      |
+        contents
+            .isSingleton(DataFlowPublic::Content::getAttributeName(var.getExpr()
+                    .getVariable()
+                    .getName()
+                    .suffix(1)))
+      )
+    ).getReceiver()
+  or
   // TODO: support SetterMethodCall inside TuplePattern
   exists(ExprNodes::MethodCallCfgNode call |
     contents

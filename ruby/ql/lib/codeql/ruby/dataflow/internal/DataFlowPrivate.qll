@@ -429,7 +429,10 @@ private module Cached {
       )
     } or
     // Only used by type-tracking
-    TAttributeName(string name) { name = any(SetterMethodCall c).getTargetName() }
+    TAttributeName(string name) {
+      name = any(SetterMethodCall c).getTargetName() or
+      name = any(InstanceVariable var).getName().suffix(1)
+    }
 
   /**
    * Holds if `e` is an `ExprNode` that may be returned by a call to `c`.
