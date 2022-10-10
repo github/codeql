@@ -522,7 +522,8 @@ module API {
       or
       exists(TypeTrackerSpecific::TypeTrackerContent c |
         TypeTrackerSpecific::basicLoadStep(node, ref, c) and
-        lbl = Label::content(c.getAStoreContent())
+        lbl = Label::content(c.getAStoreContent()) and
+        not c.isSingleton(any(DataFlow::Content::AttributeNameContent k))
       )
       // note: method calls are not handled here as there is no DataFlow::Node for the intermediate MkMethodAccessNode API node
     }
