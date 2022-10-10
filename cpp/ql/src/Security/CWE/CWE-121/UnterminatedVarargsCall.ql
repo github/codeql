@@ -67,11 +67,7 @@ class VarargsFunction extends Function {
     not exists(FunctionCall fc, int index | this.nonTrailingVarArgValue(fc, index) = result)
   }
 
-  predicate isWhitelisted() {
-    this.hasGlobalName("open") or
-    this.hasGlobalName("fcntl") or
-    this.hasGlobalName("ptrace")
-  }
+  predicate isWhitelisted() { this.hasGlobalName(["open", "fcntl", "ptrace", "mremap"]) }
 }
 
 from VarargsFunction f, FunctionCall fc, string terminator, int cnt, int totalCount
