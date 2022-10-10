@@ -344,7 +344,7 @@ module SqlConstruction {
  * A data-flow node that executes SQL statements.
  *
  * If the context of interest is such that merely constructing an SQL statement
- * would be valuabe to report, then consider using `SqlConstruction`.
+ * would be valuable to report, then consider using `SqlConstruction`.
  *
  * Extend this class to refine existing API models. If you want to model new APIs,
  * extend `SqlExecution::Range` instead.
@@ -360,7 +360,7 @@ module SqlExecution {
    * A data-flow node that executes SQL statements.
    *
    * If the context of interest is such that merely constructing an SQL statement
-   * would be valuabe to report, then consider using `SqlConstruction`.
+   * would be valuable to report, then consider using `SqlConstruction`.
    *
    * Extend this class to model new APIs. If you want to refine existing API models,
    * extend `SqlExecution` instead.
@@ -465,7 +465,7 @@ module XML {
    * A data-flow node that executes a xpath expression.
    *
    * If the context of interest is such that merely constructing an XPath expression
-   * would be valuabe to report, then consider using `XPathConstruction`.
+   * would be valuable to report, then consider using `XPathConstruction`.
    *
    * Extend this class to refine existing API models. If you want to model new APIs,
    * extend `XPathExecution::Range` instead.
@@ -487,7 +487,7 @@ module XML {
      * A data-flow node that executes a XPath expression.
      *
      * If the context of interest is such that merely constructing an XPath expression
-     * would be valuabe to report, then consider using `XPathConstruction`.
+     * would be valuable to report, then consider using `XPathConstruction`.
      *
      * Extend this class to model new APIs. If you want to refine existing API models,
      * extend `XPathExecution` instead.
