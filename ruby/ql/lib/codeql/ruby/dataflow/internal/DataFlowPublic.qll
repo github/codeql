@@ -147,6 +147,9 @@ class ExprNode extends Node, TExprNode {
 class ParameterNode extends Node, TParameterNode instanceof ParameterNodeImpl {
   /** Gets the parameter corresponding to this node, if any. */
   final Parameter getParameter() { result = super.getParameter() }
+
+  /** Gets the name of the parameter, if any. */
+  final string getName() { result = this.getParameter().(NamedParameter).getName() }
 }
 
 /**
