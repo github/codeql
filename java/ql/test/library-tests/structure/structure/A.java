@@ -7,7 +7,7 @@ public class A {
 	int y;
 	class MemberClass { }
 	void m() {
-		class LocalClass { int n; }
+		class LocalClass { int n; void localClassMethod() { class DoublyLocalClass { void doublyLocalClassMethod() { } } } }
 		m();
 	}
 }

@@ -79,7 +79,10 @@ class Element extends @element, Top {
 private predicate hasChildElement(Element parent, Element e) {
   cupackage(e, parent)
   or
-  enclInReftype(e, parent)
+  enclInReftype(e, parent) and
+  not e instanceof LocalClassOrInterface
+  or
+  e.(LocalClassOrInterface).getLocalTypeDeclStmt().getEnclosingCallable() = parent
   or
   not enclInReftype(e, _) and
   e.(Class).getCompilationUnit() = parent
