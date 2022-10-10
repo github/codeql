@@ -159,8 +159,8 @@ public class Stream<T> {
         return null;
     }
 
-    // Issue with model generator - no models are generated.
-    // public <A> A[] toArray(IntFunction<A[]> generator) {
-    // throw null;
-    // }
+    // Models will only be partial correct as there is no mentioning of the type T.
+    public <A> A[] toArray(IntFunction<A[]> generator) {
+        return null;
+    }
 }
