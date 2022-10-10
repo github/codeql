@@ -614,3 +614,19 @@ end
 SingletonA.call_call_singleton1
 SingletonB.call_call_singleton1
 SingletonC.call_call_singleton1
+
+module Included
+    def foo
+        self.bar
+    end
+    def bar
+    end
+end
+
+class IncludesIncluded
+    include Included
+    def bar
+        super
+    end
+end
+

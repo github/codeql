@@ -190,13 +190,10 @@ private Block yieldCall(RelevantCall call) {
 }
 
 pragma[nomagic]
-private predicate superCall(RelevantCall call, Module superClass, string method) {
+private predicate superCall(RelevantCall call, Module cls, string method) {
   call.getExpr() instanceof SuperCall and
-  exists(Module tp |
-    tp = call.getExpr().getEnclosingModule().getModule() and
-    superClass = tp.getSuperClass() and
-    method = call.getExpr().getEnclosingMethod().getName()
-  )
+  cls = call.getExpr().getEnclosingModule().getModule() and
+  method = call.getExpr().getEnclosingMethod().getName()
 }
 
 /** Holds if `self` belongs to module `m`. */
@@ -464,9 +461,9 @@ private module Cached {
       )
     )
     or
-    exists(Module superClass, string method |
-      superCall(call, superClass, method) and
-      result = lookupMethod(superClass, method)
+    exists(Module cls, string method |
+      superCall(call, cls, method) and
+      result = lookupMethod(cls.getAnImmediateAncestor(), method)
     )
     or
     result = yieldCall(call)
