@@ -5,7 +5,7 @@ private import CaptureModelsSpecific as Specific
 private import CaptureModels
 
 /**
- * A type representing class types of instantiations of class types
+ * A type representing instantiations of class types
  * that has a method which returns an iterator.
  */
 private class IterableType extends Class {
@@ -49,11 +49,11 @@ private predicate isEffectivelyLowerBound(Type t, Type bound) {
  */
 private predicate genericContainerType(RefType t, TypeVariable tv) {
   exists(Type et |
-    et = t.(ContainerType).getElementType()
-    or
-    et = t.(IterableType).getElementType()
-    or
-    et = t.(Array).getElementType()
+    et =
+      [
+        t.(ContainerType).getElementType(), t.(IterableType).getElementType(),
+        t.(Array).getElementType()
+      ]
   |
     isEffectivelyUpperBound(et, tv)
   )
