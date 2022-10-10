@@ -1,7 +1,7 @@
 Framework name,URL,Package prefixes
 Java Standard Library,,java.*
 Java extensions,,javax.* jakarta.*
-Kotlin Standard Library,,kotlin.*
+Kotlin Standard Library,,kotlin*
 Android,,android.*
 Android extensions,,androidx.*
 Apache Commons Collections,https://commons.apache.org/proper/commons-collections/,org.apache.commons.collections org.apache.commons.collections4
