@@ -639,7 +639,10 @@ module API {
       isUse(src) and
       t.start()
       or
-      exists(TypeTracker t2 | result = trackUseNode(src, t2).track(t2, t))
+      exists(TypeTracker t2 |
+        result = trackUseNode(src, t2).track(t2, t) and
+        not result instanceof DataFlowPrivate::SelfParameterNode
+      )
     }
 
     /**
@@ -658,7 +661,11 @@ module API {
       isDef(rhs) and
       result = rhs.getALocalSource()
       or
-      exists(TypeBackTracker t2 | result = trackDefNode(rhs, t2).backtrack(t2, t))
+      exists(TypeBackTracker t2, DataFlow::LocalSourceNode mid |
+        mid = trackDefNode(rhs, t2) and
+        not mid instanceof DataFlowPrivate::SelfParameterNode and
+        result = mid.backtrack(t2, t)
+      )
     }
 
     /** Gets a data flow node reaching the RHS of the given def node. */
