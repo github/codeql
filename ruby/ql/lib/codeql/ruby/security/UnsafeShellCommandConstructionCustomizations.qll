@@ -43,28 +43,22 @@ module UnsafeShellCommandConstruction {
     abstract DataFlow::Node getCommandExecution();
   }
 
-  /** A dataflow-configuration for tracking flow from various string constructions to places where those strings are executed as shell commands. */
-  class TrackSystemCommand extends DataFlow2::Configuration {
-    TrackSystemCommand() { this = "StringConcatAsSink::TrackSystemCommand" }
-
-    override predicate isSource(DataFlow::Node source) {
-      source instanceof TaintedFormat::PrintfStyleCall
-      or
-      source.asExpr().getExpr() =
-        any(Ast::StringLiteral lit |
-          lit.getComponent(_) instanceof Ast::StringInterpolationComponent
-        )
-    }
-
-    override predicate isSink(DataFlow::Node sink) {
-      exists(Concepts::SystemCommandExecution s | s.isShellInterpreted(sink))
-    }
-  }
-
   /** Holds if the string constructed at `source` is executed at `shellExec` */
   predicate isUsedAsShellCommand(DataFlow::Node source, Concepts::SystemCommandExecution shellExec) {
-    any(TrackSystemCommand conf)
-        .hasFlow(source, any(DataFlow::Node arg | shellExec.isShellInterpreted(arg)))
+    source = backtrackShellExec(TypeTracker::TypeBackTracker::end(), shellExec)
+  }
+
+  import codeql.ruby.typetracking.TypeTracker as TypeTracker
+
+  private DataFlow::LocalSourceNode backtrackShellExec(
+    TypeTracker::TypeBackTracker t, Concepts::SystemCommandExecution shellExec
+  ) {
+    t.start() and
+    result = any(DataFlow::Node n | shellExec.isShellInterpreted(n)).getALocalSource()
+    or
+    exists(TypeTracker::TypeBackTracker t2 |
+      result = backtrackShellExec(t2, shellExec).backtrack(t2, t)
+    )
   }
 
   /**
