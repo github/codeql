@@ -26,7 +26,7 @@ private module Sendgrid {
   }
 
   /** Gets a reference to a `SendGridAPIClient` instance call with `send` or `post`. */
-  private DataFlow::CallCfgNode sendgridApiSendCall() {
+  private API::CallNode sendgridApiSendCall() {
     result = sendgridApiClient().getMember("send").getACall()
     or
     result =
@@ -62,7 +62,7 @@ private module Sendgrid {
    * * `getFrom()`'s result would be `"from@example.com"`.
    * * `getSubject()`'s result would be `"Sending with SendGrid is Fun"`.
    */
-  private class SendGridMail extends DataFlow::CallCfgNode, EmailSender::Range {
+  private class SendGridMail extends API::CallNode, EmailSender::Range {
     SendGridMail() { this = sendgridApiSendCall() }
 
     private DataFlow::CallCfgNode getMailCall() {
@@ -118,40 +118,28 @@ private module Sendgrid {
       or
       result = this.sendgridWrite("html_content")
       or
-      exists(KeyValuePair content, Dict generalDict, KeyValuePair typePair, KeyValuePair valuePair |
-        content.getKey().(StrConst).getText() = "content" and
-        content.getValue().(List).getAnElt() = generalDict and
-        // declare KeyValuePairs keys and values
-        typePair.getKey().(StrConst).getText() = "type" and
-        typePair.getValue().(StrConst).getText() = ["text/html", "text/x-amp-html"] and
-        valuePair.getKey().(StrConst).getText() = "value" and
-        result.asExpr() = valuePair.getValue() and
-        // correlate generalDict with previously set KeyValuePairs
-        generalDict.getAnItem() in [typePair, valuePair] and
-        [this.getArg(0), this.getArgByName("request_body")].getALocalSource().asExpr() =
-          any(Dict d | d.getAnItem() = content)
+      exists(API::Node contentElement |
+        contentElement =
+          this.getKeywordParameter("request_body").getSubscript("content").getASubscript()
+      |
+        contentElement.getSubscript("type").getAValueReachingSink().asExpr().(StrConst).getText() =
+          ["text/html", "text/x-amp-html"] and
+        result = contentElement.getSubscript("value").getAValueReachingSink()
       )
       or
-      exists(KeyValuePair footer, Dict generalDict, KeyValuePair enablePair, KeyValuePair htmlPair |
-        footer.getKey().(StrConst).getText() = ["footer", "subscription_tracking"] and
-        footer.getValue() = generalDict and
-        // check footer is enabled
-        enablePair.getKey().(StrConst).getText() = "enable" and
-        exists(enablePair.getValue().(True)) and
-        // get html content
-        htmlPair.getKey().(StrConst).getText() = "html" and
-        result.asExpr() = htmlPair.getValue() and
-        // correlate generalDict with previously set KeyValuePairs
-        generalDict.getAnItem() in [enablePair, htmlPair] and
-        exists(KeyValuePair k |
-          k.getKey() =
-            [this.getArg(0), this.getArgByName("request_body")]
-                .getALocalSource()
-                .asExpr()
-                .(Dict)
-                .getAKey() and
-          k.getValue() = any(Dict d | d.getAKey() = footer.getKey())
-        )
+      exists(API::Node html |
+        html =
+          this.getKeywordParameter("request_body")
+              .getSubscript("tracking_settings")
+              .getSubscript("subscription_tracking")
+        or
+        html =
+          this.getKeywordParameter("request_body")
+              .getSubscript("mail_settings")
+              .getSubscript("footer")
+      |
+        html.getSubscript("enable").getAValueReachingSink().asExpr() instanceof True and
+        result = html.getSubscript("html").getAValueReachingSink()
       )
     }
 
