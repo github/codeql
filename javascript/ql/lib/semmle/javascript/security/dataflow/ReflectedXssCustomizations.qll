@@ -29,6 +29,19 @@ module ReflectedXss {
   }
 
   /**
+   * DEPRECATED: Gets a HeaderDefinition that defines a XSS safe content-type for `send`.
+   */
+  deprecated Http::HeaderDefinition getANonHtmlHeaderDefinition(Http::ResponseSendArgument send) {
+    exists(Http::RouteHandler h |
+      send.getRouteHandler() = h and
+      result = xssSafeContentTypeHeader(h)
+    |
+      // The HeaderDefinition affects a response sent at `send`.
+      headerAffects(result, send)
+    )
+  }
+
+  /**
    * Gets a HeaderDefinition that defines a XSS safe content-type for `send`.
    */
   Http::HeaderDefinition getAXssSafeHeaderDefinition(Http::ResponseSendArgument send) {
@@ -42,7 +55,7 @@ module ReflectedXss {
   }
 
   /**
-   * A content-type that may lead to javascript code being executed in the browser.
+   * Gets a content-type that may lead to javascript code being executed in the browser.
    * ref: https://portswigger.net/web-security/cross-site-scripting/cheat-sheet#content-types
    */
   string xssUnsafeContentType() {
@@ -52,6 +65,16 @@ module ReflectedXss {
         "text/xsl", "application/vnd.wap.xhtml+xml", "text/rdf", "application/rdf+xml",
         "application/mathml+xml", "text/vtt", "text/cache-manifest"
       ]
+  }
+
+  /**
+   * DEPRECATED: Holds if `h` may send a response with a content type that is safe for XSS.
+   */
+  deprecated Http::HeaderDefinition nonHtmlContentTypeHeader(Http::RouteHandler h) {
+    result = h.getAResponseHeader("content-type") and
+    not exists(string tp | result.defines("content-type", tp) |
+      tp.toLowerCase().matches(xssUnsafeContentType() + "%")
+    )
   }
 
   /**
