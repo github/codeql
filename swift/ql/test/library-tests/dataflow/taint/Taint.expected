@@ -1,5 +1,37 @@
 edges
-| file://:0:0:0:0 | [summary] to write: argument 1.parameter 0 in dataTask(with:completionHandler:) :  | url.swift:67:61:67:61 | data :  |
+| file://:0:0:0:0 | [summary] to write: argument 1.parameter 0 in dataTask(with:completionHandler:) :  | url.swift:102:61:102:61 | data :  |
+| file://:0:0:0:0 | [summary] to write: return (return).absoluteURL in init(string:) :  | file://:0:0:0:0 | [summary] to write: return (return) in init(string:) [absoluteURL] :  |
+| file://:0:0:0:0 | [summary] to write: return (return).absoluteURL in init(string:) :  | file://:0:0:0:0 | [summary] to write: return (return) in init(string:) [absoluteURL] :  |
+| file://:0:0:0:0 | [summary] to write: return (return).baseURL in init(string:) :  | file://:0:0:0:0 | [summary] to write: return (return) in init(string:) [baseURL] :  |
+| file://:0:0:0:0 | [summary] to write: return (return).baseURL in init(string:) :  | file://:0:0:0:0 | [summary] to write: return (return) in init(string:) [baseURL] :  |
+| file://:0:0:0:0 | [summary] to write: return (return).fragment in init(string:) :  | file://:0:0:0:0 | [summary] to write: return (return) in init(string:) [fragment] :  |
+| file://:0:0:0:0 | [summary] to write: return (return).fragment in init(string:) :  | file://:0:0:0:0 | [summary] to write: return (return) in init(string:) [fragment] :  |
+| file://:0:0:0:0 | [summary] to write: return (return).host in init(string:) :  | file://:0:0:0:0 | [summary] to write: return (return) in init(string:) [host] :  |
+| file://:0:0:0:0 | [summary] to write: return (return).host in init(string:) :  | file://:0:0:0:0 | [summary] to write: return (return) in init(string:) [host] :  |
+| file://:0:0:0:0 | [summary] to write: return (return).lastPathComponent in init(string:) :  | file://:0:0:0:0 | [summary] to write: return (return) in init(string:) [lastPathComponent] :  |
+| file://:0:0:0:0 | [summary] to write: return (return).lastPathComponent in init(string:) :  | file://:0:0:0:0 | [summary] to write: return (return) in init(string:) [lastPathComponent] :  |
+| file://:0:0:0:0 | [summary] to write: return (return).password in init(string:) :  | file://:0:0:0:0 | [summary] to write: return (return) in init(string:) [password] :  |
+| file://:0:0:0:0 | [summary] to write: return (return).password in init(string:) :  | file://:0:0:0:0 | [summary] to write: return (return) in init(string:) [password] :  |
+| file://:0:0:0:0 | [summary] to write: return (return).path in init(string:) :  | file://:0:0:0:0 | [summary] to write: return (return) in init(string:) [path] :  |
+| file://:0:0:0:0 | [summary] to write: return (return).path in init(string:) :  | file://:0:0:0:0 | [summary] to write: return (return) in init(string:) [path] :  |
+| file://:0:0:0:0 | [summary] to write: return (return).pathExtension in init(string:) :  | file://:0:0:0:0 | [summary] to write: return (return) in init(string:) [pathExtension] :  |
+| file://:0:0:0:0 | [summary] to write: return (return).pathExtension in init(string:) :  | file://:0:0:0:0 | [summary] to write: return (return) in init(string:) [pathExtension] :  |
+| file://:0:0:0:0 | [summary] to write: return (return).port in init(string:) :  | file://:0:0:0:0 | [summary] to write: return (return) in init(string:) [port] :  |
+| file://:0:0:0:0 | [summary] to write: return (return).port in init(string:) :  | file://:0:0:0:0 | [summary] to write: return (return) in init(string:) [port] :  |
+| file://:0:0:0:0 | [summary] to write: return (return).query in init(string:) :  | file://:0:0:0:0 | [summary] to write: return (return) in init(string:) [query] :  |
+| file://:0:0:0:0 | [summary] to write: return (return).query in init(string:) :  | file://:0:0:0:0 | [summary] to write: return (return) in init(string:) [query] :  |
+| file://:0:0:0:0 | [summary] to write: return (return).relativePath in init(string:) :  | file://:0:0:0:0 | [summary] to write: return (return) in init(string:) [relativePath] :  |
+| file://:0:0:0:0 | [summary] to write: return (return).relativePath in init(string:) :  | file://:0:0:0:0 | [summary] to write: return (return) in init(string:) [relativePath] :  |
+| file://:0:0:0:0 | [summary] to write: return (return).relativeString in init(string:) :  | file://:0:0:0:0 | [summary] to write: return (return) in init(string:) [relativeString] :  |
+| file://:0:0:0:0 | [summary] to write: return (return).relativeString in init(string:) :  | file://:0:0:0:0 | [summary] to write: return (return) in init(string:) [relativeString] :  |
+| file://:0:0:0:0 | [summary] to write: return (return).scheme in init(string:) :  | file://:0:0:0:0 | [summary] to write: return (return) in init(string:) [scheme] :  |
+| file://:0:0:0:0 | [summary] to write: return (return).scheme in init(string:) :  | file://:0:0:0:0 | [summary] to write: return (return) in init(string:) [scheme] :  |
+| file://:0:0:0:0 | [summary] to write: return (return).standardized in init(string:) :  | file://:0:0:0:0 | [summary] to write: return (return) in init(string:) [standardized] :  |
+| file://:0:0:0:0 | [summary] to write: return (return).standardized in init(string:) :  | file://:0:0:0:0 | [summary] to write: return (return) in init(string:) [standardized] :  |
+| file://:0:0:0:0 | [summary] to write: return (return).standardizedFileURL in init(string:) :  | file://:0:0:0:0 | [summary] to write: return (return) in init(string:) [standardizedFileURL] :  |
+| file://:0:0:0:0 | [summary] to write: return (return).standardizedFileURL in init(string:) :  | file://:0:0:0:0 | [summary] to write: return (return) in init(string:) [standardizedFileURL] :  |
+| file://:0:0:0:0 | [summary] to write: return (return).user in init(string:) :  | file://:0:0:0:0 | [summary] to write: return (return) in init(string:) [user] :  |
+| file://:0:0:0:0 | [summary] to write: return (return).user in init(string:) :  | file://:0:0:0:0 | [summary] to write: return (return) in init(string:) [user] :  |
 | string.swift:5:11:5:18 | call to source() :  | string.swift:7:13:7:13 | "..." |
 | string.swift:5:11:5:18 | call to source() :  | string.swift:9:13:9:13 | "..." |
 | string.swift:5:11:5:18 | call to source() :  | string.swift:11:13:11:13 | "..." |
@@ -16,45 +48,196 @@ edges
 | try.swift:15:17:15:24 | call to source() :  | try.swift:15:12:15:24 | try! ... |
 | try.swift:18:18:18:25 | call to source() :  | try.swift:18:12:18:27 | ...! |
 | url.swift:8:2:8:25 | [summary param] 0 in init(string:) :  | file://:0:0:0:0 | [summary] to write: return (return) in init(string:) :  |
+| url.swift:8:2:8:25 | [summary param] 0 in init(string:) :  | file://:0:0:0:0 | [summary] to write: return (return).absoluteURL in init(string:) :  |
+| url.swift:8:2:8:25 | [summary param] 0 in init(string:) :  | file://:0:0:0:0 | [summary] to write: return (return).baseURL in init(string:) :  |
+| url.swift:8:2:8:25 | [summary param] 0 in init(string:) :  | file://:0:0:0:0 | [summary] to write: return (return).fragment in init(string:) :  |
+| url.swift:8:2:8:25 | [summary param] 0 in init(string:) :  | file://:0:0:0:0 | [summary] to write: return (return).host in init(string:) :  |
+| url.swift:8:2:8:25 | [summary param] 0 in init(string:) :  | file://:0:0:0:0 | [summary] to write: return (return).lastPathComponent in init(string:) :  |
+| url.swift:8:2:8:25 | [summary param] 0 in init(string:) :  | file://:0:0:0:0 | [summary] to write: return (return).password in init(string:) :  |
+| url.swift:8:2:8:25 | [summary param] 0 in init(string:) :  | file://:0:0:0:0 | [summary] to write: return (return).path in init(string:) :  |
+| url.swift:8:2:8:25 | [summary param] 0 in init(string:) :  | file://:0:0:0:0 | [summary] to write: return (return).pathExtension in init(string:) :  |
+| url.swift:8:2:8:25 | [summary param] 0 in init(string:) :  | file://:0:0:0:0 | [summary] to write: return (return).port in init(string:) :  |
+| url.swift:8:2:8:25 | [summary param] 0 in init(string:) :  | file://:0:0:0:0 | [summary] to write: return (return).query in init(string:) :  |
+| url.swift:8:2:8:25 | [summary param] 0 in init(string:) :  | file://:0:0:0:0 | [summary] to write: return (return).relativePath in init(string:) :  |
+| url.swift:8:2:8:25 | [summary param] 0 in init(string:) :  | file://:0:0:0:0 | [summary] to write: return (return).relativeString in init(string:) :  |
+| url.swift:8:2:8:25 | [summary param] 0 in init(string:) :  | file://:0:0:0:0 | [summary] to write: return (return).scheme in init(string:) :  |
+| url.swift:8:2:8:25 | [summary param] 0 in init(string:) :  | file://:0:0:0:0 | [summary] to write: return (return).standardized in init(string:) :  |
+| url.swift:8:2:8:25 | [summary param] 0 in init(string:) :  | file://:0:0:0:0 | [summary] to write: return (return).standardizedFileURL in init(string:) :  |
+| url.swift:8:2:8:25 | [summary param] 0 in init(string:) :  | file://:0:0:0:0 | [summary] to write: return (return).user in init(string:) :  |
 | url.swift:8:8:8:16 | string :  | file://:0:0:0:0 | [summary] to write: return (return) in init(string:) :  |
+| url.swift:8:8:8:16 | string :  | file://:0:0:0:0 | [summary] to write: return (return).absoluteURL in init(string:) :  |
+| url.swift:8:8:8:16 | string :  | file://:0:0:0:0 | [summary] to write: return (return).baseURL in init(string:) :  |
+| url.swift:8:8:8:16 | string :  | file://:0:0:0:0 | [summary] to write: return (return).fragment in init(string:) :  |
+| url.swift:8:8:8:16 | string :  | file://:0:0:0:0 | [summary] to write: return (return).host in init(string:) :  |
+| url.swift:8:8:8:16 | string :  | file://:0:0:0:0 | [summary] to write: return (return).lastPathComponent in init(string:) :  |
+| url.swift:8:8:8:16 | string :  | file://:0:0:0:0 | [summary] to write: return (return).password in init(string:) :  |
+| url.swift:8:8:8:16 | string :  | file://:0:0:0:0 | [summary] to write: return (return).path in init(string:) :  |
+| url.swift:8:8:8:16 | string :  | file://:0:0:0:0 | [summary] to write: return (return).pathExtension in init(string:) :  |
+| url.swift:8:8:8:16 | string :  | file://:0:0:0:0 | [summary] to write: return (return).port in init(string:) :  |
+| url.swift:8:8:8:16 | string :  | file://:0:0:0:0 | [summary] to write: return (return).query in init(string:) :  |
+| url.swift:8:8:8:16 | string :  | file://:0:0:0:0 | [summary] to write: return (return).relativePath in init(string:) :  |
+| url.swift:8:8:8:16 | string :  | file://:0:0:0:0 | [summary] to write: return (return).relativeString in init(string:) :  |
+| url.swift:8:8:8:16 | string :  | file://:0:0:0:0 | [summary] to write: return (return).scheme in init(string:) :  |
+| url.swift:8:8:8:16 | string :  | file://:0:0:0:0 | [summary] to write: return (return).standardized in init(string:) :  |
+| url.swift:8:8:8:16 | string :  | file://:0:0:0:0 | [summary] to write: return (return).standardizedFileURL in init(string:) :  |
+| url.swift:8:8:8:16 | string :  | file://:0:0:0:0 | [summary] to write: return (return).user in init(string:) :  |
 | url.swift:9:2:9:43 | [summary param] 0 in init(string:relativeTo:) :  | file://:0:0:0:0 | [summary] to write: return (return) in init(string:relativeTo:) :  |
 | url.swift:9:2:9:43 | [summary param] 1 in init(string:relativeTo:) :  | file://:0:0:0:0 | [summary] to write: return (return) in init(string:relativeTo:) :  |
 | url.swift:9:8:9:16 | string :  | file://:0:0:0:0 | [summary] to write: return (return) in init(string:relativeTo:) :  |
 | url.swift:9:24:9:39 | relativeTo :  | file://:0:0:0:0 | [summary] to write: return (return) in init(string:relativeTo:) :  |
-| url.swift:26:2:29:55 | [summary param] 0 in dataTask(with:completionHandler:) :  | file://:0:0:0:0 | [summary] to write: argument 1.parameter 0 in dataTask(with:completionHandler:) :  |
-| url.swift:27:5:27:15 | url :  | file://:0:0:0:0 | [summary] to write: argument 1.parameter 0 in dataTask(with:completionHandler:) :  |
-| url.swift:39:16:39:23 | call to source() :  | url.swift:41:31:41:31 | tainted :  |
-| url.swift:39:16:39:23 | call to source() :  | url.swift:47:24:47:24 | tainted :  |
-| url.swift:39:16:39:23 | call to source() :  | url.swift:64:28:64:28 | tainted :  |
-| url.swift:41:19:41:38 | call to init(string:) :  | url.swift:44:12:44:12 | urlTainted |
-| url.swift:41:19:41:38 | call to init(string:) :  | url.swift:49:43:49:43 | urlTainted :  |
-| url.swift:41:19:41:38 | call to init(string:) :  | url.swift:67:46:67:46 | urlTainted :  |
-| url.swift:41:31:41:31 | tainted :  | url.swift:8:2:8:25 | [summary param] 0 in init(string:) :  |
-| url.swift:41:31:41:31 | tainted :  | url.swift:8:8:8:16 | string :  |
-| url.swift:41:31:41:31 | tainted :  | url.swift:41:19:41:38 | call to init(string:) :  |
-| url.swift:47:12:47:48 | call to init(string:relativeTo:) :  | url.swift:47:12:47:49 | ...! |
-| url.swift:47:24:47:24 | tainted :  | url.swift:9:2:9:43 | [summary param] 0 in init(string:relativeTo:) :  |
-| url.swift:47:24:47:24 | tainted :  | url.swift:9:8:9:16 | string :  |
-| url.swift:47:24:47:24 | tainted :  | url.swift:47:12:47:48 | call to init(string:relativeTo:) :  |
-| url.swift:49:12:49:53 | call to init(string:relativeTo:) :  | url.swift:49:12:49:54 | ...! |
-| url.swift:49:43:49:43 | urlTainted :  | url.swift:9:2:9:43 | [summary param] 1 in init(string:relativeTo:) :  |
-| url.swift:49:43:49:43 | urlTainted :  | url.swift:9:24:9:39 | relativeTo :  |
-| url.swift:49:43:49:43 | urlTainted :  | url.swift:49:12:49:53 | call to init(string:relativeTo:) :  |
-| url.swift:64:16:64:35 | call to init(string:) :  | url.swift:65:12:65:12 | ...! |
-| url.swift:64:28:64:28 | tainted :  | url.swift:8:2:8:25 | [summary param] 0 in init(string:) :  |
-| url.swift:64:28:64:28 | tainted :  | url.swift:8:8:8:16 | string :  |
-| url.swift:64:28:64:28 | tainted :  | url.swift:64:16:64:35 | call to init(string:) :  |
-| url.swift:67:46:67:46 | urlTainted :  | url.swift:26:2:29:55 | [summary param] 0 in dataTask(with:completionHandler:) :  |
-| url.swift:67:46:67:46 | urlTainted :  | url.swift:27:5:27:15 | url :  |
-| url.swift:67:61:67:61 | data :  | url.swift:68:15:68:19 | ...! |
+| url.swift:43:2:46:55 | [summary param] 0 in dataTask(with:completionHandler:) :  | file://:0:0:0:0 | [summary] to write: argument 1.parameter 0 in dataTask(with:completionHandler:) :  |
+| url.swift:44:5:44:15 | url :  | file://:0:0:0:0 | [summary] to write: argument 1.parameter 0 in dataTask(with:completionHandler:) :  |
+| url.swift:57:16:57:23 | call to source() :  | url.swift:59:31:59:31 | tainted :  |
+| url.swift:57:16:57:23 | call to source() :  | url.swift:82:24:82:24 | tainted :  |
+| url.swift:57:16:57:23 | call to source() :  | url.swift:99:28:99:28 | tainted :  |
+| url.swift:59:19:59:38 | call to init(string:) :  | url.swift:62:12:62:12 | urlTainted |
+| url.swift:59:19:59:38 | call to init(string:) :  | url.swift:84:43:84:43 | urlTainted :  |
+| url.swift:59:19:59:38 | call to init(string:) :  | url.swift:102:46:102:46 | urlTainted :  |
+| url.swift:59:19:59:38 | call to init(string:) [absoluteURL] :  | url.swift:63:12:63:12 | urlTainted [absoluteURL] :  |
+| url.swift:59:19:59:38 | call to init(string:) [baseURL] :  | url.swift:64:12:64:12 | urlTainted [baseURL] :  |
+| url.swift:59:19:59:38 | call to init(string:) [fragment] :  | url.swift:65:15:65:15 | urlTainted [fragment] :  |
+| url.swift:59:19:59:38 | call to init(string:) [host] :  | url.swift:66:15:66:15 | urlTainted [host] :  |
+| url.swift:59:19:59:38 | call to init(string:) [lastPathComponent] :  | url.swift:67:15:67:15 | urlTainted [lastPathComponent] :  |
+| url.swift:59:19:59:38 | call to init(string:) [password] :  | url.swift:79:15:79:15 | urlTainted [password] :  |
+| url.swift:59:19:59:38 | call to init(string:) [pathExtension] :  | url.swift:70:15:70:15 | urlTainted [pathExtension] :  |
+| url.swift:59:19:59:38 | call to init(string:) [path] :  | url.swift:68:15:68:15 | urlTainted [path] :  |
+| url.swift:59:19:59:38 | call to init(string:) [port] :  | url.swift:71:12:71:12 | urlTainted [port] :  |
+| url.swift:59:19:59:38 | call to init(string:) [query] :  | url.swift:72:15:72:15 | urlTainted [query] :  |
+| url.swift:59:19:59:38 | call to init(string:) [relativePath] :  | url.swift:73:15:73:15 | urlTainted [relativePath] :  |
+| url.swift:59:19:59:38 | call to init(string:) [relativeString] :  | url.swift:74:15:74:15 | urlTainted [relativeString] :  |
+| url.swift:59:19:59:38 | call to init(string:) [scheme] :  | url.swift:75:15:75:15 | urlTainted [scheme] :  |
+| url.swift:59:19:59:38 | call to init(string:) [standardizedFileURL] :  | url.swift:77:12:77:12 | urlTainted [standardizedFileURL] :  |
+| url.swift:59:19:59:38 | call to init(string:) [standardized] :  | url.swift:76:15:76:15 | urlTainted [standardized] :  |
+| url.swift:59:19:59:38 | call to init(string:) [user] :  | url.swift:78:15:78:15 | urlTainted [user] :  |
+| url.swift:59:31:59:31 | tainted :  | url.swift:8:2:8:25 | [summary param] 0 in init(string:) :  |
+| url.swift:59:31:59:31 | tainted :  | url.swift:8:8:8:16 | string :  |
+| url.swift:59:31:59:31 | tainted :  | url.swift:59:19:59:38 | call to init(string:) :  |
+| url.swift:59:31:59:31 | tainted :  | url.swift:59:19:59:38 | call to init(string:) [absoluteURL] :  |
+| url.swift:59:31:59:31 | tainted :  | url.swift:59:19:59:38 | call to init(string:) [baseURL] :  |
+| url.swift:59:31:59:31 | tainted :  | url.swift:59:19:59:38 | call to init(string:) [fragment] :  |
+| url.swift:59:31:59:31 | tainted :  | url.swift:59:19:59:38 | call to init(string:) [host] :  |
+| url.swift:59:31:59:31 | tainted :  | url.swift:59:19:59:38 | call to init(string:) [lastPathComponent] :  |
+| url.swift:59:31:59:31 | tainted :  | url.swift:59:19:59:38 | call to init(string:) [password] :  |
+| url.swift:59:31:59:31 | tainted :  | url.swift:59:19:59:38 | call to init(string:) [pathExtension] :  |
+| url.swift:59:31:59:31 | tainted :  | url.swift:59:19:59:38 | call to init(string:) [path] :  |
+| url.swift:59:31:59:31 | tainted :  | url.swift:59:19:59:38 | call to init(string:) [port] :  |
+| url.swift:59:31:59:31 | tainted :  | url.swift:59:19:59:38 | call to init(string:) [query] :  |
+| url.swift:59:31:59:31 | tainted :  | url.swift:59:19:59:38 | call to init(string:) [relativePath] :  |
+| url.swift:59:31:59:31 | tainted :  | url.swift:59:19:59:38 | call to init(string:) [relativeString] :  |
+| url.swift:59:31:59:31 | tainted :  | url.swift:59:19:59:38 | call to init(string:) [scheme] :  |
+| url.swift:59:31:59:31 | tainted :  | url.swift:59:19:59:38 | call to init(string:) [standardizedFileURL] :  |
+| url.swift:59:31:59:31 | tainted :  | url.swift:59:19:59:38 | call to init(string:) [standardized] :  |
+| url.swift:59:31:59:31 | tainted :  | url.swift:59:19:59:38 | call to init(string:) [user] :  |
+| url.swift:63:12:63:12 | urlTainted [absoluteURL] :  | url.swift:63:12:63:23 | .absoluteURL |
+| url.swift:64:12:64:12 | urlTainted [baseURL] :  | url.swift:64:12:64:23 | .baseURL |
+| url.swift:65:15:65:15 | urlTainted [fragment] :  | url.swift:65:15:65:26 | .fragment :  |
+| url.swift:65:15:65:26 | .fragment :  | url.swift:65:15:65:34 | ...! |
+| url.swift:66:15:66:15 | urlTainted [host] :  | url.swift:66:15:66:26 | .host :  |
+| url.swift:66:15:66:26 | .host :  | url.swift:66:15:66:30 | ...! |
+| url.swift:67:15:67:15 | urlTainted [lastPathComponent] :  | url.swift:67:15:67:26 | .lastPathComponent |
+| url.swift:68:15:68:15 | urlTainted [path] :  | url.swift:68:15:68:26 | .path |
+| url.swift:70:15:70:15 | urlTainted [pathExtension] :  | url.swift:70:15:70:26 | .pathExtension |
+| url.swift:71:12:71:12 | urlTainted [port] :  | url.swift:71:12:71:23 | .port :  |
+| url.swift:71:12:71:23 | .port :  | url.swift:71:12:71:27 | ...! |
+| url.swift:72:15:72:15 | urlTainted [query] :  | url.swift:72:15:72:26 | .query :  |
+| url.swift:72:15:72:26 | .query :  | url.swift:72:15:72:31 | ...! |
+| url.swift:73:15:73:15 | urlTainted [relativePath] :  | url.swift:73:15:73:26 | .relativePath |
+| url.swift:74:15:74:15 | urlTainted [relativeString] :  | url.swift:74:15:74:26 | .relativeString |
+| url.swift:75:15:75:15 | urlTainted [scheme] :  | url.swift:75:15:75:26 | .scheme :  |
+| url.swift:75:15:75:26 | .scheme :  | url.swift:75:15:75:32 | ...! |
+| url.swift:76:15:76:15 | urlTainted [standardized] :  | url.swift:76:15:76:26 | .standardized |
+| url.swift:77:12:77:12 | urlTainted [standardizedFileURL] :  | url.swift:77:12:77:23 | .standardizedFileURL |
+| url.swift:78:15:78:15 | urlTainted [user] :  | url.swift:78:15:78:26 | .user :  |
+| url.swift:78:15:78:26 | .user :  | url.swift:78:15:78:30 | ...! |
+| url.swift:79:15:79:15 | urlTainted [password] :  | url.swift:79:15:79:26 | .password :  |
+| url.swift:79:15:79:26 | .password :  | url.swift:79:15:79:34 | ...! |
+| url.swift:82:12:82:48 | call to init(string:relativeTo:) :  | url.swift:82:12:82:49 | ...! |
+| url.swift:82:24:82:24 | tainted :  | url.swift:9:2:9:43 | [summary param] 0 in init(string:relativeTo:) :  |
+| url.swift:82:24:82:24 | tainted :  | url.swift:9:8:9:16 | string :  |
+| url.swift:82:24:82:24 | tainted :  | url.swift:82:12:82:48 | call to init(string:relativeTo:) :  |
+| url.swift:84:12:84:53 | call to init(string:relativeTo:) :  | url.swift:84:12:84:54 | ...! |
+| url.swift:84:43:84:43 | urlTainted :  | url.swift:9:2:9:43 | [summary param] 1 in init(string:relativeTo:) :  |
+| url.swift:84:43:84:43 | urlTainted :  | url.swift:9:24:9:39 | relativeTo :  |
+| url.swift:84:43:84:43 | urlTainted :  | url.swift:84:12:84:53 | call to init(string:relativeTo:) :  |
+| url.swift:99:16:99:35 | call to init(string:) :  | url.swift:100:12:100:12 | ...! |
+| url.swift:99:28:99:28 | tainted :  | url.swift:8:2:8:25 | [summary param] 0 in init(string:) :  |
+| url.swift:99:28:99:28 | tainted :  | url.swift:8:8:8:16 | string :  |
+| url.swift:99:28:99:28 | tainted :  | url.swift:99:16:99:35 | call to init(string:) :  |
+| url.swift:102:46:102:46 | urlTainted :  | url.swift:43:2:46:55 | [summary param] 0 in dataTask(with:completionHandler:) :  |
+| url.swift:102:46:102:46 | urlTainted :  | url.swift:44:5:44:15 | url :  |
+| url.swift:102:61:102:61 | data :  | url.swift:103:15:103:19 | ...! |
 nodes
 | file://:0:0:0:0 | [summary] to write: argument 1.parameter 0 in dataTask(with:completionHandler:) :  | semmle.label | [summary] to write: argument 1.parameter 0 in dataTask(with:completionHandler:) :  |
 | file://:0:0:0:0 | [summary] to write: return (return) in init(string:) :  | semmle.label | [summary] to write: return (return) in init(string:) :  |
 | file://:0:0:0:0 | [summary] to write: return (return) in init(string:) :  | semmle.label | [summary] to write: return (return) in init(string:) :  |
+| file://:0:0:0:0 | [summary] to write: return (return) in init(string:) [absoluteURL] :  | semmle.label | [summary] to write: return (return) in init(string:) [absoluteURL] :  |
+| file://:0:0:0:0 | [summary] to write: return (return) in init(string:) [absoluteURL] :  | semmle.label | [summary] to write: return (return) in init(string:) [absoluteURL] :  |
+| file://:0:0:0:0 | [summary] to write: return (return) in init(string:) [baseURL] :  | semmle.label | [summary] to write: return (return) in init(string:) [baseURL] :  |
+| file://:0:0:0:0 | [summary] to write: return (return) in init(string:) [baseURL] :  | semmle.label | [summary] to write: return (return) in init(string:) [baseURL] :  |
+| file://:0:0:0:0 | [summary] to write: return (return) in init(string:) [fragment] :  | semmle.label | [summary] to write: return (return) in init(string:) [fragment] :  |
+| file://:0:0:0:0 | [summary] to write: return (return) in init(string:) [fragment] :  | semmle.label | [summary] to write: return (return) in init(string:) [fragment] :  |
+| file://:0:0:0:0 | [summary] to write: return (return) in init(string:) [host] :  | semmle.label | [summary] to write: return (return) in init(string:) [host] :  |
+| file://:0:0:0:0 | [summary] to write: return (return) in init(string:) [host] :  | semmle.label | [summary] to write: return (return) in init(string:) [host] :  |
+| file://:0:0:0:0 | [summary] to write: return (return) in init(string:) [lastPathComponent] :  | semmle.label | [summary] to write: return (return) in init(string:) [lastPathComponent] :  |
+| file://:0:0:0:0 | [summary] to write: return (return) in init(string:) [lastPathComponent] :  | semmle.label | [summary] to write: return (return) in init(string:) [lastPathComponent] :  |
+| file://:0:0:0:0 | [summary] to write: return (return) in init(string:) [password] :  | semmle.label | [summary] to write: return (return) in init(string:) [password] :  |
+| file://:0:0:0:0 | [summary] to write: return (return) in init(string:) [password] :  | semmle.label | [summary] to write: return (return) in init(string:) [password] :  |
+| file://:0:0:0:0 | [summary] to write: return (return) in init(string:) [pathExtension] :  | semmle.label | [summary] to write: return (return) in init(string:) [pathExtension] :  |
+| file://:0:0:0:0 | [summary] to write: return (return) in init(string:) [pathExtension] :  | semmle.label | [summary] to write: return (return) in init(string:) [pathExtension] :  |
+| file://:0:0:0:0 | [summary] to write: return (return) in init(string:) [path] :  | semmle.label | [summary] to write: return (return) in init(string:) [path] :  |
+| file://:0:0:0:0 | [summary] to write: return (return) in init(string:) [path] :  | semmle.label | [summary] to write: return (return) in init(string:) [path] :  |
+| file://:0:0:0:0 | [summary] to write: return (return) in init(string:) [port] :  | semmle.label | [summary] to write: return (return) in init(string:) [port] :  |
+| file://:0:0:0:0 | [summary] to write: return (return) in init(string:) [port] :  | semmle.label | [summary] to write: return (return) in init(string:) [port] :  |
+| file://:0:0:0:0 | [summary] to write: return (return) in init(string:) [query] :  | semmle.label | [summary] to write: return (return) in init(string:) [query] :  |
+| file://:0:0:0:0 | [summary] to write: return (return) in init(string:) [query] :  | semmle.label | [summary] to write: return (return) in init(string:) [query] :  |
+| file://:0:0:0:0 | [summary] to write: return (return) in init(string:) [relativePath] :  | semmle.label | [summary] to write: return (return) in init(string:) [relativePath] :  |
+| file://:0:0:0:0 | [summary] to write: return (return) in init(string:) [relativePath] :  | semmle.label | [summary] to write: return (return) in init(string:) [relativePath] :  |
+| file://:0:0:0:0 | [summary] to write: return (return) in init(string:) [relativeString] :  | semmle.label | [summary] to write: return (return) in init(string:) [relativeString] :  |
+| file://:0:0:0:0 | [summary] to write: return (return) in init(string:) [relativeString] :  | semmle.label | [summary] to write: return (return) in init(string:) [relativeString] :  |
+| file://:0:0:0:0 | [summary] to write: return (return) in init(string:) [scheme] :  | semmle.label | [summary] to write: return (return) in init(string:) [scheme] :  |
+| file://:0:0:0:0 | [summary] to write: return (return) in init(string:) [scheme] :  | semmle.label | [summary] to write: return (return) in init(string:) [scheme] :  |
+| file://:0:0:0:0 | [summary] to write: return (return) in init(string:) [standardizedFileURL] :  | semmle.label | [summary] to write: return (return) in init(string:) [standardizedFileURL] :  |
+| file://:0:0:0:0 | [summary] to write: return (return) in init(string:) [standardizedFileURL] :  | semmle.label | [summary] to write: return (return) in init(string:) [standardizedFileURL] :  |
+| file://:0:0:0:0 | [summary] to write: return (return) in init(string:) [standardized] :  | semmle.label | [summary] to write: return (return) in init(string:) [standardized] :  |
+| file://:0:0:0:0 | [summary] to write: return (return) in init(string:) [standardized] :  | semmle.label | [summary] to write: return (return) in init(string:) [standardized] :  |
+| file://:0:0:0:0 | [summary] to write: return (return) in init(string:) [user] :  | semmle.label | [summary] to write: return (return) in init(string:) [user] :  |
+| file://:0:0:0:0 | [summary] to write: return (return) in init(string:) [user] :  | semmle.label | [summary] to write: return (return) in init(string:) [user] :  |
 | file://:0:0:0:0 | [summary] to write: return (return) in init(string:relativeTo:) :  | semmle.label | [summary] to write: return (return) in init(string:relativeTo:) :  |
 | file://:0:0:0:0 | [summary] to write: return (return) in init(string:relativeTo:) :  | semmle.label | [summary] to write: return (return) in init(string:relativeTo:) :  |
 | file://:0:0:0:0 | [summary] to write: return (return) in init(string:relativeTo:) :  | semmle.label | [summary] to write: return (return) in init(string:relativeTo:) :  |
 | file://:0:0:0:0 | [summary] to write: return (return) in init(string:relativeTo:) :  | semmle.label | [summary] to write: return (return) in init(string:relativeTo:) :  |
+| file://:0:0:0:0 | [summary] to write: return (return).absoluteURL in init(string:) :  | semmle.label | [summary] to write: return (return).absoluteURL in init(string:) :  |
+| file://:0:0:0:0 | [summary] to write: return (return).absoluteURL in init(string:) :  | semmle.label | [summary] to write: return (return).absoluteURL in init(string:) :  |
+| file://:0:0:0:0 | [summary] to write: return (return).baseURL in init(string:) :  | semmle.label | [summary] to write: return (return).baseURL in init(string:) :  |
+| file://:0:0:0:0 | [summary] to write: return (return).baseURL in init(string:) :  | semmle.label | [summary] to write: return (return).baseURL in init(string:) :  |
+| file://:0:0:0:0 | [summary] to write: return (return).fragment in init(string:) :  | semmle.label | [summary] to write: return (return).fragment in init(string:) :  |
+| file://:0:0:0:0 | [summary] to write: return (return).fragment in init(string:) :  | semmle.label | [summary] to write: return (return).fragment in init(string:) :  |
+| file://:0:0:0:0 | [summary] to write: return (return).host in init(string:) :  | semmle.label | [summary] to write: return (return).host in init(string:) :  |
+| file://:0:0:0:0 | [summary] to write: return (return).host in init(string:) :  | semmle.label | [summary] to write: return (return).host in init(string:) :  |
+| file://:0:0:0:0 | [summary] to write: return (return).lastPathComponent in init(string:) :  | semmle.label | [summary] to write: return (return).lastPathComponent in init(string:) :  |
+| file://:0:0:0:0 | [summary] to write: return (return).lastPathComponent in init(string:) :  | semmle.label | [summary] to write: return (return).lastPathComponent in init(string:) :  |
+| file://:0:0:0:0 | [summary] to write: return (return).password in init(string:) :  | semmle.label | [summary] to write: return (return).password in init(string:) :  |
+| file://:0:0:0:0 | [summary] to write: return (return).password in init(string:) :  | semmle.label | [summary] to write: return (return).password in init(string:) :  |
+| file://:0:0:0:0 | [summary] to write: return (return).path in init(string:) :  | semmle.label | [summary] to write: return (return).path in init(string:) :  |
+| file://:0:0:0:0 | [summary] to write: return (return).path in init(string:) :  | semmle.label | [summary] to write: return (return).path in init(string:) :  |
+| file://:0:0:0:0 | [summary] to write: return (return).pathExtension in init(string:) :  | semmle.label | [summary] to write: return (return).pathExtension in init(string:) :  |
+| file://:0:0:0:0 | [summary] to write: return (return).pathExtension in init(string:) :  | semmle.label | [summary] to write: return (return).pathExtension in init(string:) :  |
+| file://:0:0:0:0 | [summary] to write: return (return).port in init(string:) :  | semmle.label | [summary] to write: return (return).port in init(string:) :  |
+| file://:0:0:0:0 | [summary] to write: return (return).port in init(string:) :  | semmle.label | [summary] to write: return (return).port in init(string:) :  |
+| file://:0:0:0:0 | [summary] to write: return (return).query in init(string:) :  | semmle.label | [summary] to write: return (return).query in init(string:) :  |
+| file://:0:0:0:0 | [summary] to write: return (return).query in init(string:) :  | semmle.label | [summary] to write: return (return).query in init(string:) :  |
+| file://:0:0:0:0 | [summary] to write: return (return).relativePath in init(string:) :  | semmle.label | [summary] to write: return (return).relativePath in init(string:) :  |
+| file://:0:0:0:0 | [summary] to write: return (return).relativePath in init(string:) :  | semmle.label | [summary] to write: return (return).relativePath in init(string:) :  |
+| file://:0:0:0:0 | [summary] to write: return (return).relativeString in init(string:) :  | semmle.label | [summary] to write: return (return).relativeString in init(string:) :  |
+| file://:0:0:0:0 | [summary] to write: return (return).relativeString in init(string:) :  | semmle.label | [summary] to write: return (return).relativeString in init(string:) :  |
+| file://:0:0:0:0 | [summary] to write: return (return).scheme in init(string:) :  | semmle.label | [summary] to write: return (return).scheme in init(string:) :  |
+| file://:0:0:0:0 | [summary] to write: return (return).scheme in init(string:) :  | semmle.label | [summary] to write: return (return).scheme in init(string:) :  |
+| file://:0:0:0:0 | [summary] to write: return (return).standardized in init(string:) :  | semmle.label | [summary] to write: return (return).standardized in init(string:) :  |
+| file://:0:0:0:0 | [summary] to write: return (return).standardized in init(string:) :  | semmle.label | [summary] to write: return (return).standardized in init(string:) :  |
+| file://:0:0:0:0 | [summary] to write: return (return).standardizedFileURL in init(string:) :  | semmle.label | [summary] to write: return (return).standardizedFileURL in init(string:) :  |
+| file://:0:0:0:0 | [summary] to write: return (return).standardizedFileURL in init(string:) :  | semmle.label | [summary] to write: return (return).standardizedFileURL in init(string:) :  |
+| file://:0:0:0:0 | [summary] to write: return (return).user in init(string:) :  | semmle.label | [summary] to write: return (return).user in init(string:) :  |
+| file://:0:0:0:0 | [summary] to write: return (return).user in init(string:) :  | semmle.label | [summary] to write: return (return).user in init(string:) :  |
 | string.swift:5:11:5:18 | call to source() :  | semmle.label | call to source() :  |
 | string.swift:7:13:7:13 | "..." | semmle.label | "..." |
 | string.swift:9:13:9:13 | "..." | semmle.label | "..." |
@@ -83,33 +266,120 @@ nodes
 | url.swift:9:2:9:43 | [summary param] 1 in init(string:relativeTo:) :  | semmle.label | [summary param] 1 in init(string:relativeTo:) :  |
 | url.swift:9:8:9:16 | string :  | semmle.label | string :  |
 | url.swift:9:24:9:39 | relativeTo :  | semmle.label | relativeTo :  |
-| url.swift:26:2:29:55 | [summary param] 0 in dataTask(with:completionHandler:) :  | semmle.label | [summary param] 0 in dataTask(with:completionHandler:) :  |
-| url.swift:27:5:27:15 | url :  | semmle.label | url :  |
-| url.swift:39:16:39:23 | call to source() :  | semmle.label | call to source() :  |
-| url.swift:41:19:41:38 | call to init(string:) :  | semmle.label | call to init(string:) :  |
-| url.swift:41:31:41:31 | tainted :  | semmle.label | tainted :  |
-| url.swift:44:12:44:12 | urlTainted | semmle.label | urlTainted |
-| url.swift:47:12:47:48 | call to init(string:relativeTo:) :  | semmle.label | call to init(string:relativeTo:) :  |
-| url.swift:47:12:47:49 | ...! | semmle.label | ...! |
-| url.swift:47:24:47:24 | tainted :  | semmle.label | tainted :  |
-| url.swift:49:12:49:53 | call to init(string:relativeTo:) :  | semmle.label | call to init(string:relativeTo:) :  |
-| url.swift:49:12:49:54 | ...! | semmle.label | ...! |
-| url.swift:49:43:49:43 | urlTainted :  | semmle.label | urlTainted :  |
-| url.swift:64:16:64:35 | call to init(string:) :  | semmle.label | call to init(string:) :  |
-| url.swift:64:28:64:28 | tainted :  | semmle.label | tainted :  |
-| url.swift:65:12:65:12 | ...! | semmle.label | ...! |
-| url.swift:67:46:67:46 | urlTainted :  | semmle.label | urlTainted :  |
-| url.swift:67:61:67:61 | data :  | semmle.label | data :  |
-| url.swift:68:15:68:19 | ...! | semmle.label | ...! |
+| url.swift:43:2:46:55 | [summary param] 0 in dataTask(with:completionHandler:) :  | semmle.label | [summary param] 0 in dataTask(with:completionHandler:) :  |
+| url.swift:44:5:44:15 | url :  | semmle.label | url :  |
+| url.swift:57:16:57:23 | call to source() :  | semmle.label | call to source() :  |
+| url.swift:59:19:59:38 | call to init(string:) :  | semmle.label | call to init(string:) :  |
+| url.swift:59:19:59:38 | call to init(string:) [absoluteURL] :  | semmle.label | call to init(string:) [absoluteURL] :  |
+| url.swift:59:19:59:38 | call to init(string:) [baseURL] :  | semmle.label | call to init(string:) [baseURL] :  |
+| url.swift:59:19:59:38 | call to init(string:) [fragment] :  | semmle.label | call to init(string:) [fragment] :  |
+| url.swift:59:19:59:38 | call to init(string:) [host] :  | semmle.label | call to init(string:) [host] :  |
+| url.swift:59:19:59:38 | call to init(string:) [lastPathComponent] :  | semmle.label | call to init(string:) [lastPathComponent] :  |
+| url.swift:59:19:59:38 | call to init(string:) [password] :  | semmle.label | call to init(string:) [password] :  |
+| url.swift:59:19:59:38 | call to init(string:) [pathExtension] :  | semmle.label | call to init(string:) [pathExtension] :  |
+| url.swift:59:19:59:38 | call to init(string:) [path] :  | semmle.label | call to init(string:) [path] :  |
+| url.swift:59:19:59:38 | call to init(string:) [port] :  | semmle.label | call to init(string:) [port] :  |
+| url.swift:59:19:59:38 | call to init(string:) [query] :  | semmle.label | call to init(string:) [query] :  |
+| url.swift:59:19:59:38 | call to init(string:) [relativePath] :  | semmle.label | call to init(string:) [relativePath] :  |
+| url.swift:59:19:59:38 | call to init(string:) [relativeString] :  | semmle.label | call to init(string:) [relativeString] :  |
+| url.swift:59:19:59:38 | call to init(string:) [scheme] :  | semmle.label | call to init(string:) [scheme] :  |
+| url.swift:59:19:59:38 | call to init(string:) [standardizedFileURL] :  | semmle.label | call to init(string:) [standardizedFileURL] :  |
+| url.swift:59:19:59:38 | call to init(string:) [standardized] :  | semmle.label | call to init(string:) [standardized] :  |
+| url.swift:59:19:59:38 | call to init(string:) [user] :  | semmle.label | call to init(string:) [user] :  |
+| url.swift:59:31:59:31 | tainted :  | semmle.label | tainted :  |
+| url.swift:62:12:62:12 | urlTainted | semmle.label | urlTainted |
+| url.swift:63:12:63:12 | urlTainted [absoluteURL] :  | semmle.label | urlTainted [absoluteURL] :  |
+| url.swift:63:12:63:23 | .absoluteURL | semmle.label | .absoluteURL |
+| url.swift:64:12:64:12 | urlTainted [baseURL] :  | semmle.label | urlTainted [baseURL] :  |
+| url.swift:64:12:64:23 | .baseURL | semmle.label | .baseURL |
+| url.swift:65:15:65:15 | urlTainted [fragment] :  | semmle.label | urlTainted [fragment] :  |
+| url.swift:65:15:65:26 | .fragment :  | semmle.label | .fragment :  |
+| url.swift:65:15:65:34 | ...! | semmle.label | ...! |
+| url.swift:66:15:66:15 | urlTainted [host] :  | semmle.label | urlTainted [host] :  |
+| url.swift:66:15:66:26 | .host :  | semmle.label | .host :  |
+| url.swift:66:15:66:30 | ...! | semmle.label | ...! |
+| url.swift:67:15:67:15 | urlTainted [lastPathComponent] :  | semmle.label | urlTainted [lastPathComponent] :  |
+| url.swift:67:15:67:26 | .lastPathComponent | semmle.label | .lastPathComponent |
+| url.swift:68:15:68:15 | urlTainted [path] :  | semmle.label | urlTainted [path] :  |
+| url.swift:68:15:68:26 | .path | semmle.label | .path |
+| url.swift:70:15:70:15 | urlTainted [pathExtension] :  | semmle.label | urlTainted [pathExtension] :  |
+| url.swift:70:15:70:26 | .pathExtension | semmle.label | .pathExtension |
+| url.swift:71:12:71:12 | urlTainted [port] :  | semmle.label | urlTainted [port] :  |
+| url.swift:71:12:71:23 | .port :  | semmle.label | .port :  |
+| url.swift:71:12:71:27 | ...! | semmle.label | ...! |
+| url.swift:72:15:72:15 | urlTainted [query] :  | semmle.label | urlTainted [query] :  |
+| url.swift:72:15:72:26 | .query :  | semmle.label | .query :  |
+| url.swift:72:15:72:31 | ...! | semmle.label | ...! |
+| url.swift:73:15:73:15 | urlTainted [relativePath] :  | semmle.label | urlTainted [relativePath] :  |
+| url.swift:73:15:73:26 | .relativePath | semmle.label | .relativePath |
+| url.swift:74:15:74:15 | urlTainted [relativeString] :  | semmle.label | urlTainted [relativeString] :  |
+| url.swift:74:15:74:26 | .relativeString | semmle.label | .relativeString |
+| url.swift:75:15:75:15 | urlTainted [scheme] :  | semmle.label | urlTainted [scheme] :  |
+| url.swift:75:15:75:26 | .scheme :  | semmle.label | .scheme :  |
+| url.swift:75:15:75:32 | ...! | semmle.label | ...! |
+| url.swift:76:15:76:15 | urlTainted [standardized] :  | semmle.label | urlTainted [standardized] :  |
+| url.swift:76:15:76:26 | .standardized | semmle.label | .standardized |
+| url.swift:77:12:77:12 | urlTainted [standardizedFileURL] :  | semmle.label | urlTainted [standardizedFileURL] :  |
+| url.swift:77:12:77:23 | .standardizedFileURL | semmle.label | .standardizedFileURL |
+| url.swift:78:15:78:15 | urlTainted [user] :  | semmle.label | urlTainted [user] :  |
+| url.swift:78:15:78:26 | .user :  | semmle.label | .user :  |
+| url.swift:78:15:78:30 | ...! | semmle.label | ...! |
+| url.swift:79:15:79:15 | urlTainted [password] :  | semmle.label | urlTainted [password] :  |
+| url.swift:79:15:79:26 | .password :  | semmle.label | .password :  |
+| url.swift:79:15:79:34 | ...! | semmle.label | ...! |
+| url.swift:82:12:82:48 | call to init(string:relativeTo:) :  | semmle.label | call to init(string:relativeTo:) :  |
+| url.swift:82:12:82:49 | ...! | semmle.label | ...! |
+| url.swift:82:24:82:24 | tainted :  | semmle.label | tainted :  |
+| url.swift:84:12:84:53 | call to init(string:relativeTo:) :  | semmle.label | call to init(string:relativeTo:) :  |
+| url.swift:84:12:84:54 | ...! | semmle.label | ...! |
+| url.swift:84:43:84:43 | urlTainted :  | semmle.label | urlTainted :  |
+| url.swift:99:16:99:35 | call to init(string:) :  | semmle.label | call to init(string:) :  |
+| url.swift:99:28:99:28 | tainted :  | semmle.label | tainted :  |
+| url.swift:100:12:100:12 | ...! | semmle.label | ...! |
+| url.swift:102:46:102:46 | urlTainted :  | semmle.label | urlTainted :  |
+| url.swift:102:61:102:61 | data :  | semmle.label | data :  |
+| url.swift:103:15:103:19 | ...! | semmle.label | ...! |
 subpaths
-| url.swift:41:31:41:31 | tainted :  | url.swift:8:2:8:25 | [summary param] 0 in init(string:) :  | file://:0:0:0:0 | [summary] to write: return (return) in init(string:) :  | url.swift:41:19:41:38 | call to init(string:) :  |
-| url.swift:41:31:41:31 | tainted :  | url.swift:8:8:8:16 | string :  | file://:0:0:0:0 | [summary] to write: return (return) in init(string:) :  | url.swift:41:19:41:38 | call to init(string:) :  |
-| url.swift:47:24:47:24 | tainted :  | url.swift:9:2:9:43 | [summary param] 0 in init(string:relativeTo:) :  | file://:0:0:0:0 | [summary] to write: return (return) in init(string:relativeTo:) :  | url.swift:47:12:47:48 | call to init(string:relativeTo:) :  |
-| url.swift:47:24:47:24 | tainted :  | url.swift:9:8:9:16 | string :  | file://:0:0:0:0 | [summary] to write: return (return) in init(string:relativeTo:) :  | url.swift:47:12:47:48 | call to init(string:relativeTo:) :  |
-| url.swift:49:43:49:43 | urlTainted :  | url.swift:9:2:9:43 | [summary param] 1 in init(string:relativeTo:) :  | file://:0:0:0:0 | [summary] to write: return (return) in init(string:relativeTo:) :  | url.swift:49:12:49:53 | call to init(string:relativeTo:) :  |
-| url.swift:49:43:49:43 | urlTainted :  | url.swift:9:24:9:39 | relativeTo :  | file://:0:0:0:0 | [summary] to write: return (return) in init(string:relativeTo:) :  | url.swift:49:12:49:53 | call to init(string:relativeTo:) :  |
-| url.swift:64:28:64:28 | tainted :  | url.swift:8:2:8:25 | [summary param] 0 in init(string:) :  | file://:0:0:0:0 | [summary] to write: return (return) in init(string:) :  | url.swift:64:16:64:35 | call to init(string:) :  |
-| url.swift:64:28:64:28 | tainted :  | url.swift:8:8:8:16 | string :  | file://:0:0:0:0 | [summary] to write: return (return) in init(string:) :  | url.swift:64:16:64:35 | call to init(string:) :  |
+| url.swift:59:31:59:31 | tainted :  | url.swift:8:2:8:25 | [summary param] 0 in init(string:) :  | file://:0:0:0:0 | [summary] to write: return (return) in init(string:) :  | url.swift:59:19:59:38 | call to init(string:) :  |
+| url.swift:59:31:59:31 | tainted :  | url.swift:8:2:8:25 | [summary param] 0 in init(string:) :  | file://:0:0:0:0 | [summary] to write: return (return) in init(string:) [absoluteURL] :  | url.swift:59:19:59:38 | call to init(string:) [absoluteURL] :  |
+| url.swift:59:31:59:31 | tainted :  | url.swift:8:2:8:25 | [summary param] 0 in init(string:) :  | file://:0:0:0:0 | [summary] to write: return (return) in init(string:) [baseURL] :  | url.swift:59:19:59:38 | call to init(string:) [baseURL] :  |
+| url.swift:59:31:59:31 | tainted :  | url.swift:8:2:8:25 | [summary param] 0 in init(string:) :  | file://:0:0:0:0 | [summary] to write: return (return) in init(string:) [fragment] :  | url.swift:59:19:59:38 | call to init(string:) [fragment] :  |
+| url.swift:59:31:59:31 | tainted :  | url.swift:8:2:8:25 | [summary param] 0 in init(string:) :  | file://:0:0:0:0 | [summary] to write: return (return) in init(string:) [host] :  | url.swift:59:19:59:38 | call to init(string:) [host] :  |
+| url.swift:59:31:59:31 | tainted :  | url.swift:8:2:8:25 | [summary param] 0 in init(string:) :  | file://:0:0:0:0 | [summary] to write: return (return) in init(string:) [lastPathComponent] :  | url.swift:59:19:59:38 | call to init(string:) [lastPathComponent] :  |
+| url.swift:59:31:59:31 | tainted :  | url.swift:8:2:8:25 | [summary param] 0 in init(string:) :  | file://:0:0:0:0 | [summary] to write: return (return) in init(string:) [password] :  | url.swift:59:19:59:38 | call to init(string:) [password] :  |
+| url.swift:59:31:59:31 | tainted :  | url.swift:8:2:8:25 | [summary param] 0 in init(string:) :  | file://:0:0:0:0 | [summary] to write: return (return) in init(string:) [pathExtension] :  | url.swift:59:19:59:38 | call to init(string:) [pathExtension] :  |
+| url.swift:59:31:59:31 | tainted :  | url.swift:8:2:8:25 | [summary param] 0 in init(string:) :  | file://:0:0:0:0 | [summary] to write: return (return) in init(string:) [path] :  | url.swift:59:19:59:38 | call to init(string:) [path] :  |
+| url.swift:59:31:59:31 | tainted :  | url.swift:8:2:8:25 | [summary param] 0 in init(string:) :  | file://:0:0:0:0 | [summary] to write: return (return) in init(string:) [port] :  | url.swift:59:19:59:38 | call to init(string:) [port] :  |
+| url.swift:59:31:59:31 | tainted :  | url.swift:8:2:8:25 | [summary param] 0 in init(string:) :  | file://:0:0:0:0 | [summary] to write: return (return) in init(string:) [query] :  | url.swift:59:19:59:38 | call to init(string:) [query] :  |
+| url.swift:59:31:59:31 | tainted :  | url.swift:8:2:8:25 | [summary param] 0 in init(string:) :  | file://:0:0:0:0 | [summary] to write: return (return) in init(string:) [relativePath] :  | url.swift:59:19:59:38 | call to init(string:) [relativePath] :  |
+| url.swift:59:31:59:31 | tainted :  | url.swift:8:2:8:25 | [summary param] 0 in init(string:) :  | file://:0:0:0:0 | [summary] to write: return (return) in init(string:) [relativeString] :  | url.swift:59:19:59:38 | call to init(string:) [relativeString] :  |
+| url.swift:59:31:59:31 | tainted :  | url.swift:8:2:8:25 | [summary param] 0 in init(string:) :  | file://:0:0:0:0 | [summary] to write: return (return) in init(string:) [scheme] :  | url.swift:59:19:59:38 | call to init(string:) [scheme] :  |
+| url.swift:59:31:59:31 | tainted :  | url.swift:8:2:8:25 | [summary param] 0 in init(string:) :  | file://:0:0:0:0 | [summary] to write: return (return) in init(string:) [standardizedFileURL] :  | url.swift:59:19:59:38 | call to init(string:) [standardizedFileURL] :  |
+| url.swift:59:31:59:31 | tainted :  | url.swift:8:2:8:25 | [summary param] 0 in init(string:) :  | file://:0:0:0:0 | [summary] to write: return (return) in init(string:) [standardized] :  | url.swift:59:19:59:38 | call to init(string:) [standardized] :  |
+| url.swift:59:31:59:31 | tainted :  | url.swift:8:2:8:25 | [summary param] 0 in init(string:) :  | file://:0:0:0:0 | [summary] to write: return (return) in init(string:) [user] :  | url.swift:59:19:59:38 | call to init(string:) [user] :  |
+| url.swift:59:31:59:31 | tainted :  | url.swift:8:8:8:16 | string :  | file://:0:0:0:0 | [summary] to write: return (return) in init(string:) :  | url.swift:59:19:59:38 | call to init(string:) :  |
+| url.swift:59:31:59:31 | tainted :  | url.swift:8:8:8:16 | string :  | file://:0:0:0:0 | [summary] to write: return (return) in init(string:) [absoluteURL] :  | url.swift:59:19:59:38 | call to init(string:) [absoluteURL] :  |
+| url.swift:59:31:59:31 | tainted :  | url.swift:8:8:8:16 | string :  | file://:0:0:0:0 | [summary] to write: return (return) in init(string:) [baseURL] :  | url.swift:59:19:59:38 | call to init(string:) [baseURL] :  |
+| url.swift:59:31:59:31 | tainted :  | url.swift:8:8:8:16 | string :  | file://:0:0:0:0 | [summary] to write: return (return) in init(string:) [fragment] :  | url.swift:59:19:59:38 | call to init(string:) [fragment] :  |
+| url.swift:59:31:59:31 | tainted :  | url.swift:8:8:8:16 | string :  | file://:0:0:0:0 | [summary] to write: return (return) in init(string:) [host] :  | url.swift:59:19:59:38 | call to init(string:) [host] :  |
+| url.swift:59:31:59:31 | tainted :  | url.swift:8:8:8:16 | string :  | file://:0:0:0:0 | [summary] to write: return (return) in init(string:) [lastPathComponent] :  | url.swift:59:19:59:38 | call to init(string:) [lastPathComponent] :  |
+| url.swift:59:31:59:31 | tainted :  | url.swift:8:8:8:16 | string :  | file://:0:0:0:0 | [summary] to write: return (return) in init(string:) [password] :  | url.swift:59:19:59:38 | call to init(string:) [password] :  |
+| url.swift:59:31:59:31 | tainted :  | url.swift:8:8:8:16 | string :  | file://:0:0:0:0 | [summary] to write: return (return) in init(string:) [pathExtension] :  | url.swift:59:19:59:38 | call to init(string:) [pathExtension] :  |
+| url.swift:59:31:59:31 | tainted :  | url.swift:8:8:8:16 | string :  | file://:0:0:0:0 | [summary] to write: return (return) in init(string:) [path] :  | url.swift:59:19:59:38 | call to init(string:) [path] :  |
+| url.swift:59:31:59:31 | tainted :  | url.swift:8:8:8:16 | string :  | file://:0:0:0:0 | [summary] to write: return (return) in init(string:) [port] :  | url.swift:59:19:59:38 | call to init(string:) [port] :  |
+| url.swift:59:31:59:31 | tainted :  | url.swift:8:8:8:16 | string :  | file://:0:0:0:0 | [summary] to write: return (return) in init(string:) [query] :  | url.swift:59:19:59:38 | call to init(string:) [query] :  |
+| url.swift:59:31:59:31 | tainted :  | url.swift:8:8:8:16 | string :  | file://:0:0:0:0 | [summary] to write: return (return) in init(string:) [relativePath] :  | url.swift:59:19:59:38 | call to init(string:) [relativePath] :  |
+| url.swift:59:31:59:31 | tainted :  | url.swift:8:8:8:16 | string :  | file://:0:0:0:0 | [summary] to write: return (return) in init(string:) [relativeString] :  | url.swift:59:19:59:38 | call to init(string:) [relativeString] :  |
+| url.swift:59:31:59:31 | tainted :  | url.swift:8:8:8:16 | string :  | file://:0:0:0:0 | [summary] to write: return (return) in init(string:) [scheme] :  | url.swift:59:19:59:38 | call to init(string:) [scheme] :  |
+| url.swift:59:31:59:31 | tainted :  | url.swift:8:8:8:16 | string :  | file://:0:0:0:0 | [summary] to write: return (return) in init(string:) [standardizedFileURL] :  | url.swift:59:19:59:38 | call to init(string:) [standardizedFileURL] :  |
+| url.swift:59:31:59:31 | tainted :  | url.swift:8:8:8:16 | string :  | file://:0:0:0:0 | [summary] to write: return (return) in init(string:) [standardized] :  | url.swift:59:19:59:38 | call to init(string:) [standardized] :  |
+| url.swift:59:31:59:31 | tainted :  | url.swift:8:8:8:16 | string :  | file://:0:0:0:0 | [summary] to write: return (return) in init(string:) [user] :  | url.swift:59:19:59:38 | call to init(string:) [user] :  |
+| url.swift:82:24:82:24 | tainted :  | url.swift:9:2:9:43 | [summary param] 0 in init(string:relativeTo:) :  | file://:0:0:0:0 | [summary] to write: return (return) in init(string:relativeTo:) :  | url.swift:82:12:82:48 | call to init(string:relativeTo:) :  |
+| url.swift:82:24:82:24 | tainted :  | url.swift:9:8:9:16 | string :  | file://:0:0:0:0 | [summary] to write: return (return) in init(string:relativeTo:) :  | url.swift:82:12:82:48 | call to init(string:relativeTo:) :  |
+| url.swift:84:43:84:43 | urlTainted :  | url.swift:9:2:9:43 | [summary param] 1 in init(string:relativeTo:) :  | file://:0:0:0:0 | [summary] to write: return (return) in init(string:relativeTo:) :  | url.swift:84:12:84:53 | call to init(string:relativeTo:) :  |
+| url.swift:84:43:84:43 | urlTainted :  | url.swift:9:24:9:39 | relativeTo :  | file://:0:0:0:0 | [summary] to write: return (return) in init(string:relativeTo:) :  | url.swift:84:12:84:53 | call to init(string:relativeTo:) :  |
+| url.swift:99:28:99:28 | tainted :  | url.swift:8:2:8:25 | [summary param] 0 in init(string:) :  | file://:0:0:0:0 | [summary] to write: return (return) in init(string:) :  | url.swift:99:16:99:35 | call to init(string:) :  |
+| url.swift:99:28:99:28 | tainted :  | url.swift:8:8:8:16 | string :  | file://:0:0:0:0 | [summary] to write: return (return) in init(string:) :  | url.swift:99:16:99:35 | call to init(string:) :  |
 #select
 | string.swift:7:13:7:13 | "..." | string.swift:5:11:5:18 | call to source() :  | string.swift:7:13:7:13 | "..." | result |
 | string.swift:9:13:9:13 | "..." | string.swift:5:11:5:18 | call to source() :  | string.swift:9:13:9:13 | "..." | result |
@@ -126,8 +396,24 @@ subpaths
 | try.swift:9:13:9:24 | try ... | try.swift:9:17:9:24 | call to source() :  | try.swift:9:13:9:24 | try ... | result |
 | try.swift:15:12:15:24 | try! ... | try.swift:15:17:15:24 | call to source() :  | try.swift:15:12:15:24 | try! ... | result |
 | try.swift:18:12:18:27 | ...! | try.swift:18:18:18:25 | call to source() :  | try.swift:18:12:18:27 | ...! | result |
-| url.swift:44:12:44:12 | urlTainted | url.swift:39:16:39:23 | call to source() :  | url.swift:44:12:44:12 | urlTainted | result |
-| url.swift:47:12:47:49 | ...! | url.swift:39:16:39:23 | call to source() :  | url.swift:47:12:47:49 | ...! | result |
-| url.swift:49:12:49:54 | ...! | url.swift:39:16:39:23 | call to source() :  | url.swift:49:12:49:54 | ...! | result |
-| url.swift:65:12:65:12 | ...! | url.swift:39:16:39:23 | call to source() :  | url.swift:65:12:65:12 | ...! | result |
-| url.swift:68:15:68:19 | ...! | url.swift:39:16:39:23 | call to source() :  | url.swift:68:15:68:19 | ...! | result |
+| url.swift:62:12:62:12 | urlTainted | url.swift:57:16:57:23 | call to source() :  | url.swift:62:12:62:12 | urlTainted | result |
+| url.swift:63:12:63:23 | .absoluteURL | url.swift:57:16:57:23 | call to source() :  | url.swift:63:12:63:23 | .absoluteURL | result |
+| url.swift:64:12:64:23 | .baseURL | url.swift:57:16:57:23 | call to source() :  | url.swift:64:12:64:23 | .baseURL | result |
+| url.swift:65:15:65:34 | ...! | url.swift:57:16:57:23 | call to source() :  | url.swift:65:15:65:34 | ...! | result |
+| url.swift:66:15:66:30 | ...! | url.swift:57:16:57:23 | call to source() :  | url.swift:66:15:66:30 | ...! | result |
+| url.swift:67:15:67:26 | .lastPathComponent | url.swift:57:16:57:23 | call to source() :  | url.swift:67:15:67:26 | .lastPathComponent | result |
+| url.swift:68:15:68:26 | .path | url.swift:57:16:57:23 | call to source() :  | url.swift:68:15:68:26 | .path | result |
+| url.swift:70:15:70:26 | .pathExtension | url.swift:57:16:57:23 | call to source() :  | url.swift:70:15:70:26 | .pathExtension | result |
+| url.swift:71:12:71:27 | ...! | url.swift:57:16:57:23 | call to source() :  | url.swift:71:12:71:27 | ...! | result |
+| url.swift:72:15:72:31 | ...! | url.swift:57:16:57:23 | call to source() :  | url.swift:72:15:72:31 | ...! | result |
+| url.swift:73:15:73:26 | .relativePath | url.swift:57:16:57:23 | call to source() :  | url.swift:73:15:73:26 | .relativePath | result |
+| url.swift:74:15:74:26 | .relativeString | url.swift:57:16:57:23 | call to source() :  | url.swift:74:15:74:26 | .relativeString | result |
+| url.swift:75:15:75:32 | ...! | url.swift:57:16:57:23 | call to source() :  | url.swift:75:15:75:32 | ...! | result |
+| url.swift:76:15:76:26 | .standardized | url.swift:57:16:57:23 | call to source() :  | url.swift:76:15:76:26 | .standardized | result |
+| url.swift:77:12:77:23 | .standardizedFileURL | url.swift:57:16:57:23 | call to source() :  | url.swift:77:12:77:23 | .standardizedFileURL | result |
+| url.swift:78:15:78:30 | ...! | url.swift:57:16:57:23 | call to source() :  | url.swift:78:15:78:30 | ...! | result |
+| url.swift:79:15:79:34 | ...! | url.swift:57:16:57:23 | call to source() :  | url.swift:79:15:79:34 | ...! | result |
+| url.swift:82:12:82:49 | ...! | url.swift:57:16:57:23 | call to source() :  | url.swift:82:12:82:49 | ...! | result |
+| url.swift:84:12:84:54 | ...! | url.swift:57:16:57:23 | call to source() :  | url.swift:84:12:84:54 | ...! | result |
+| url.swift:100:12:100:12 | ...! | url.swift:57:16:57:23 | call to source() :  | url.swift:100:12:100:12 | ...! | result |
+| url.swift:103:15:103:19 | ...! | url.swift:57:16:57:23 | call to source() :  | url.swift:103:15:103:19 | ...! | result |
