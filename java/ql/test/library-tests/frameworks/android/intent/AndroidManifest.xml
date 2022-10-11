@@ -18,5 +18,30 @@
             android:exported="false">
         </activity>
 
+        <activity
+            android:name=".TestStartActivityToGetIntent.SafeActivity"
+            android:exported="false">
+        </activity>
+
+        <service
+            android:name=".TestStartServiceToGetIntent.SomeService"
+            android:exported="false">
+        </service>
+
+        <service
+            android:name=".TestStartServiceToGetIntent.SafeService"
+            android:exported="false">
+        </service>
+
+        <receiver
+            android:name=".TestStartBroadcastReceiverToGetIntent.SomeBroadcastReceiver"
+            android:exported="false">
+        </receiver>
+
+        <receiver
+            android:name=".TestStartBroadcastReceiverToGetIntent.SafeBroadcastReceiver"
+            android:exported="false">
+        </receiver>
+
     </application>
 </manifest>

@@ -14,10 +14,12 @@ private import semmle.python.frameworks.Stdlib
 private import semmle.python.frameworks.internal.InstanceTaintStepsHelper
 
 /**
+ * INTERNAL: Do not use.
+ *
  * Provides models for the `tornado` PyPI package.
  * See https://www.tornadoweb.org/en/stable/.
  */
-private module Tornado {
+module Tornado {
   /**
    * Provides models for the `tornado.httputil.HTTPHeaders` class
    *
@@ -126,8 +128,7 @@ private module Tornado {
         abstract class InstanceSource extends DataFlow::LocalSourceNode { }
 
         /** The `self` parameter in a method on the `tornado.web.RequestHandler` class or any subclass. */
-        private class SelfParam extends InstanceSource, RemoteFlowSource::Range,
-          DataFlow::ParameterNode {
+        class SelfParam extends InstanceSource, RemoteFlowSource::Range, DataFlow::ParameterNode {
           SelfParam() {
             exists(RequestHandlerClass cls | cls.getAMethod().getArg(0) = this.getParameter())
           }
