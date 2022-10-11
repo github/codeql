@@ -29,12 +29,12 @@ module ReflectedXss {
   }
 
   /**
-   * DEPRECATED: Gets a HeaderDefinition that defines a XSS safe content-type for `send`.
+   * DEPRECATED: Gets a HeaderDefinition that defines a non-html safe content-type for `send`.
    */
   deprecated Http::HeaderDefinition getANonHtmlHeaderDefinition(Http::ResponseSendArgument send) {
     exists(Http::RouteHandler h |
       send.getRouteHandler() = h and
-      result = xssSafeContentTypeHeader(h)
+      result = nonHtmlContentTypeHeader(h)
     |
       // The HeaderDefinition affects a response sent at `send`.
       headerAffects(result, send)
@@ -72,9 +72,7 @@ module ReflectedXss {
    */
   deprecated Http::HeaderDefinition nonHtmlContentTypeHeader(Http::RouteHandler h) {
     result = h.getAResponseHeader("content-type") and
-    not exists(string tp | result.defines("content-type", tp) |
-      tp.toLowerCase().matches(xssUnsafeContentType() + "%")
-    )
+    not exists(string tp | result.defines("content-type", tp) | tp.regexpMatch("(?i).*html.*"))
   }
 
   /**
