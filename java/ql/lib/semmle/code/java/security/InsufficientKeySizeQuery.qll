@@ -1,9 +1,11 @@
+/** Provides classes and predicates related to insufficient key sizes in Java. */
+
 import semmle.code.java.security.Encryption
 import semmle.code.java.dataflow.DataFlow
 import semmle.code.java.dataflow.DataFlow2
 
 /**
- * Asymmetric (RSA, DSA, DH) key length data flow tracking configuration.
+ * An Asymmetric (RSA, DSA, DH) key length data flow tracking configuration.
  */
 class AsymmetricNonECKeyTrackingConfiguration extends DataFlow2::Configuration {
   AsymmetricNonECKeyTrackingConfiguration() { this = "AsymmetricNonECKeyTrackingConfiguration" }
@@ -29,24 +31,24 @@ class AsymmetricNonECKeyTrackingConfiguration extends DataFlow2::Configuration {
     or
     // TODO: combine below three for less duplicated code
     exists(ClassInstanceExpr rsaKeyGenParamSpec |
-      rsaKeyGenParamSpec.getConstructedType() instanceof RSAKeyGenParameterSpec and
+      rsaKeyGenParamSpec.getConstructedType() instanceof RsaKeyGenParameterSpec and
       sink.asExpr() = rsaKeyGenParamSpec.getArgument(0)
     )
     or
     exists(ClassInstanceExpr dsaGenParamSpec |
-      dsaGenParamSpec.getConstructedType() instanceof DSAGenParameterSpec and
+      dsaGenParamSpec.getConstructedType() instanceof DsaGenParameterSpec and
       sink.asExpr() = dsaGenParamSpec.getArgument(0)
     )
     or
     exists(ClassInstanceExpr dhGenParamSpec |
-      dhGenParamSpec.getConstructedType() instanceof DHGenParameterSpec and
+      dhGenParamSpec.getConstructedType() instanceof DhGenParameterSpec and
       sink.asExpr() = dhGenParamSpec.getArgument(0)
     )
   }
 }
 
 /**
- * Asymmetric (EC) key length data flow tracking configuration.
+ * An Asymmetric (EC) key length data flow tracking configuration.
  */
 class AsymmetricECKeyTrackingConfiguration extends DataFlow2::Configuration {
   AsymmetricECKeyTrackingConfiguration() { this = "AsymmetricECKeyTrackingConfiguration" }
@@ -72,7 +74,7 @@ class AsymmetricECKeyTrackingConfiguration extends DataFlow2::Configuration {
     )
     or
     exists(ClassInstanceExpr ecGenParamSpec |
-      ecGenParamSpec.getConstructedType() instanceof ECGenParameterSpec and
+      ecGenParamSpec.getConstructedType() instanceof EcGenParameterSpec and
       //getECKeySize(ecGenParamSpec.getArgument(0).(StringLiteral).getValue()) < 256 and
       sink.asExpr() = ecGenParamSpec.getArgument(0)
     )
@@ -80,7 +82,7 @@ class AsymmetricECKeyTrackingConfiguration extends DataFlow2::Configuration {
 }
 
 /**
- * Symmetric (AES) key length data flow tracking configuration.
+ * A Symmetric (AES) key length data flow tracking configuration.
  */
 class SymmetricKeyTrackingConfiguration extends DataFlow2::Configuration {
   SymmetricKeyTrackingConfiguration() { this = "SymmetricKeyTrackingConfiguration" }
@@ -96,7 +98,7 @@ class SymmetricKeyTrackingConfiguration extends DataFlow2::Configuration {
         JavaxCryptoKeyGenerator jcg, KeyGeneratorInitConfiguration kgConfig,
         DataFlow::PathNode source, DataFlow::PathNode dest
       |
-        jcg.getAlgoSpec().(StringLiteral).getValue().toUpperCase().matches("AES") and
+        jcg.getAlgoSpec().(StringLiteral).getValue().toUpperCase() = "AES" and
         source.getNode().asExpr() = jcg and
         dest.getNode().asExpr() = ma.getQualifier() and
         kgConfig.hasFlowPath(source, dest)
@@ -108,7 +110,7 @@ class SymmetricKeyTrackingConfiguration extends DataFlow2::Configuration {
 
 // ********************** Need the below models for the above configs **********************
 // todo: move some/all of below to Encryption.qll or elsewhere?
-/** Data flow configuration tracking flow from a key generator to an `init` method call. */
+/** A data flow configuration tracking flow from a key generator to an `init` method call. */
 private class KeyGeneratorInitConfiguration extends DataFlow::Configuration {
   KeyGeneratorInitConfiguration() { this = "KeyGeneratorInitConfiguration" }
 
@@ -124,7 +126,7 @@ private class KeyGeneratorInitConfiguration extends DataFlow::Configuration {
   }
 }
 
-/** Data flow configuration tracking flow from a keypair generator to an `initialize` method call. */
+/** A data flow configuration tracking flow from a keypair generator to an `initialize` method call. */
 private class KeyPairGeneratorInitConfiguration extends DataFlow::Configuration {
   KeyPairGeneratorInitConfiguration() { this = "KeyPairGeneratorInitConfiguration" }
 
@@ -141,23 +143,23 @@ private class KeyPairGeneratorInitConfiguration extends DataFlow::Configuration 
 }
 
 /** The Java class `java.security.spec.ECGenParameterSpec`. */
-private class ECGenParameterSpec extends RefType {
-  ECGenParameterSpec() { this.hasQualifiedName("java.security.spec", "ECGenParameterSpec") }
+private class EcGenParameterSpec extends RefType {
+  EcGenParameterSpec() { this.hasQualifiedName("java.security.spec", "ECGenParameterSpec") }
 }
 
 /** The Java class `java.security.spec.RSAKeyGenParameterSpec`. */
-private class RSAKeyGenParameterSpec extends RefType {
-  RSAKeyGenParameterSpec() { this.hasQualifiedName("java.security.spec", "RSAKeyGenParameterSpec") }
+private class RsaKeyGenParameterSpec extends RefType {
+  RsaKeyGenParameterSpec() { this.hasQualifiedName("java.security.spec", "RSAKeyGenParameterSpec") }
 }
 
 /** The Java class `java.security.spec.DSAGenParameterSpec`. */
-private class DSAGenParameterSpec extends RefType {
-  DSAGenParameterSpec() { this.hasQualifiedName("java.security.spec", "DSAGenParameterSpec") }
+private class DsaGenParameterSpec extends RefType {
+  DsaGenParameterSpec() { this.hasQualifiedName("java.security.spec", "DSAGenParameterSpec") }
 }
 
 /** The Java class `javax.crypto.spec.DHGenParameterSpec`. */
-private class DHGenParameterSpec extends RefType {
-  DHGenParameterSpec() { this.hasQualifiedName("javax.crypto.spec", "DHGenParameterSpec") }
+private class DhGenParameterSpec extends RefType {
+  DhGenParameterSpec() { this.hasQualifiedName("javax.crypto.spec", "DHGenParameterSpec") }
 }
 
 /** The `init` method declared in `javax.crypto.KeyGenerator`. */
@@ -190,6 +192,7 @@ private int getECKeySize(string algorithm) {
 }
 // ******* DATAFLOW ABOVE *************************************************************************
 // TODO:
+// todo #0: look into use of specs without keygens; should spec not be a sink in these cases?
 // todo #1: make representation of source that can be shared across the configs
 // todo #2: make representation of sink that can be shared across the configs
 // todo #3: make list of algo names more easily reusable (either as constant-type variable at top of file, or model as own class to share, etc.)
