@@ -208,7 +208,7 @@ public class InsufficientKeySizeTest {
         keyGen.init(keySize); // $ hasInsufficientKeySize
 
         // BAD: Key size is less than 2048
-        kg.init(64); // $ hasInsufficientKeySize
+        kg.init(64); // $ MISSING: hasInsufficientKeySize
     }
 
     //! refactor this to use expected-value tag and combine with above method
@@ -224,7 +224,7 @@ public class InsufficientKeySizeTest {
         keyPairGen.initialize(keySize); // $ hasInsufficientKeySize
 
         // BAD: Key size is less than 2048
-        kpg.initialize(1024); // $ hasInsufficientKeySize
+        kpg.initialize(1024); // $ MISSING: hasInsufficientKeySize
     }
 
     //! refactor this to use expected-value tag and combine with above method

@@ -15,17 +15,19 @@ class AsymmetricNonECKeyTrackingConfiguration extends DataFlow2::Configuration {
   }
 
   override predicate isSink(DataFlow::Node sink) {
-    exists(MethodAccess ma |
+    exists(MethodAccess ma, JavaSecurityKeyPairGenerator jpg |
       ma.getMethod() instanceof KeyPairGeneratorInitMethod and
-      exists(
-        JavaSecurityKeyPairGenerator jpg, KeyPairGeneratorInitConfiguration kpgConfig,
-        DataFlow::PathNode source, DataFlow::PathNode dest
-      |
-        jpg.getAlgoSpec().(StringLiteral).getValue().toUpperCase().matches(["RSA", "DSA", "DH"]) and
-        source.getNode().asExpr() = jpg and
-        dest.getNode().asExpr() = ma.getQualifier() and
-        kpgConfig.hasFlowPath(source, dest)
-      ) and
+      jpg.getAlgoSpec().(StringLiteral).getValue().toUpperCase().matches(["RSA", "DSA", "DH"]) and
+      DataFlow::localExprFlow(jpg, ma.getQualifier()) and
+      // exists(
+      //   JavaSecurityKeyPairGenerator jpg, KeyPairGeneratorInitConfiguration kpgConfig,
+      //   DataFlow::PathNode source, DataFlow::PathNode dest
+      // |
+      //   jpg.getAlgoSpec().(StringLiteral).getValue().toUpperCase().matches(["RSA", "DSA", "DH"]) and
+      //   source.getNode().asExpr() = jpg and
+      //   dest.getNode().asExpr() = ma.getQualifier() and
+      //   kpgConfig.hasFlowPath(source, dest)
+      // ) and
       sink.asExpr() = ma.getArgument(0)
     )
     or
@@ -59,17 +61,19 @@ class AsymmetricECKeyTrackingConfiguration extends DataFlow2::Configuration {
   }
 
   override predicate isSink(DataFlow::Node sink) {
-    exists(MethodAccess ma |
+    exists(MethodAccess ma, JavaSecurityKeyPairGenerator jpg |
       ma.getMethod() instanceof KeyPairGeneratorInitMethod and
-      exists(
-        JavaSecurityKeyPairGenerator jpg, KeyPairGeneratorInitConfiguration kpgConfig,
-        DataFlow::PathNode source, DataFlow::PathNode dest
-      |
-        jpg.getAlgoSpec().(StringLiteral).getValue().toUpperCase().matches("EC%") and
-        source.getNode().asExpr() = jpg and
-        dest.getNode().asExpr() = ma.getQualifier() and
-        kpgConfig.hasFlowPath(source, dest)
-      ) and
+      jpg.getAlgoSpec().(StringLiteral).getValue().toUpperCase().matches("EC%") and
+      DataFlow::localExprFlow(jpg, ma.getQualifier()) and
+      // exists(
+      //   JavaSecurityKeyPairGenerator jpg, KeyPairGeneratorInitConfiguration kpgConfig,
+      //   DataFlow::PathNode source, DataFlow::PathNode dest
+      // |
+      //   jpg.getAlgoSpec().(StringLiteral).getValue().toUpperCase().matches("EC%") and
+      //   source.getNode().asExpr() = jpg and
+      //   dest.getNode().asExpr() = ma.getQualifier() and
+      //   kpgConfig.hasFlowPath(source, dest)
+      // ) and
       sink.asExpr() = ma.getArgument(0)
     )
     or
@@ -92,17 +96,19 @@ class SymmetricKeyTrackingConfiguration extends DataFlow2::Configuration {
   }
 
   override predicate isSink(DataFlow::Node sink) {
-    exists(MethodAccess ma |
+    exists(MethodAccess ma, JavaxCryptoKeyGenerator jcg |
       ma.getMethod() instanceof KeyGeneratorInitMethod and
-      exists(
-        JavaxCryptoKeyGenerator jcg, KeyGeneratorInitConfiguration kgConfig,
-        DataFlow::PathNode source, DataFlow::PathNode dest
-      |
-        jcg.getAlgoSpec().(StringLiteral).getValue().toUpperCase() = "AES" and
-        source.getNode().asExpr() = jcg and
-        dest.getNode().asExpr() = ma.getQualifier() and
-        kgConfig.hasFlowPath(source, dest)
-      ) and
+      jcg.getAlgoSpec().(StringLiteral).getValue().toUpperCase() = "AES" and
+      DataFlow::localExprFlow(jcg, ma.getQualifier()) and
+      // exists(
+      //   JavaxCryptoKeyGenerator jcg, KeyGeneratorInitConfiguration kgConfig,
+      //   DataFlow::PathNode source, DataFlow::PathNode dest
+      // |
+      //   jcg.getAlgoSpec().(StringLiteral).getValue().toUpperCase() = "AES" and
+      //   source.getNode().asExpr() = jcg and
+      //   dest.getNode().asExpr() = ma.getQualifier() and
+      //   kgConfig.hasFlowPath(source, dest)
+      // ) and
       sink.asExpr() = ma.getArgument(0)
     )
   }
@@ -110,38 +116,32 @@ class SymmetricKeyTrackingConfiguration extends DataFlow2::Configuration {
 
 // ********************** Need the below models for the above configs **********************
 // todo: move some/all of below to Encryption.qll or elsewhere?
-/** A data flow configuration tracking flow from a key generator to an `init` method call. */
-private class KeyGeneratorInitConfiguration extends DataFlow::Configuration {
-  KeyGeneratorInitConfiguration() { this = "KeyGeneratorInitConfiguration" }
-
-  override predicate isSource(DataFlow::Node source) {
-    source.asExpr() instanceof JavaxCryptoKeyGenerator
-  }
-
-  override predicate isSink(DataFlow::Node sink) {
-    exists(MethodAccess ma |
-      ma.getMethod() instanceof KeyGeneratorInitMethod and
-      sink.asExpr() = ma.getQualifier()
-    )
-  }
-}
-
-/** A data flow configuration tracking flow from a keypair generator to an `initialize` method call. */
-private class KeyPairGeneratorInitConfiguration extends DataFlow::Configuration {
-  KeyPairGeneratorInitConfiguration() { this = "KeyPairGeneratorInitConfiguration" }
-
-  override predicate isSource(DataFlow::Node source) {
-    source.asExpr() instanceof JavaSecurityKeyPairGenerator
-  }
-
-  override predicate isSink(DataFlow::Node sink) {
-    exists(MethodAccess ma |
-      ma.getMethod() instanceof KeyPairGeneratorInitMethod and
-      sink.asExpr() = ma.getQualifier()
-    )
-  }
-}
-
+// /** A data flow configuration tracking flow from a key generator to an `init` method call. */
+// private class KeyGeneratorInitConfiguration extends DataFlow::Configuration {
+//   KeyGeneratorInitConfiguration() { this = "KeyGeneratorInitConfiguration" }
+//   override predicate isSource(DataFlow::Node source) {
+//     source.asExpr() instanceof JavaxCryptoKeyGenerator
+//   }
+//   override predicate isSink(DataFlow::Node sink) {
+//     exists(MethodAccess ma |
+//       ma.getMethod() instanceof KeyGeneratorInitMethod and
+//       sink.asExpr() = ma.getQualifier()
+//     )
+//   }
+// }
+// /** A data flow configuration tracking flow from a keypair generator to an `initialize` method call. */
+// private class KeyPairGeneratorInitConfiguration extends DataFlow::Configuration {
+//   KeyPairGeneratorInitConfiguration() { this = "KeyPairGeneratorInitConfiguration" }
+//   override predicate isSource(DataFlow::Node source) {
+//     source.asExpr() instanceof JavaSecurityKeyPairGenerator
+//   }
+//   override predicate isSink(DataFlow::Node sink) {
+//     exists(MethodAccess ma |
+//       ma.getMethod() instanceof KeyPairGeneratorInitMethod and
+//       sink.asExpr() = ma.getQualifier()
+//     )
+//   }
+// }
 /** The Java class `java.security.spec.ECGenParameterSpec`. */
 private class EcGenParameterSpec extends RefType {
   EcGenParameterSpec() { this.hasQualifiedName("java.security.spec", "ECGenParameterSpec") }
