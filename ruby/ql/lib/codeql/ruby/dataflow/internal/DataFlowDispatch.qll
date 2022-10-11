@@ -389,7 +389,7 @@ private module Cached {
         // ```
         exists(DataFlow::Node sourceNode, Module m |
           flowsToMethodCall(call, sourceNode, method) and
-          singletonMethodOnModule(result, method, m)
+          result = lookupSingletonMethod(m, method)
         |
           // ```rb
           // def C.singleton; end # <- result
@@ -725,12 +725,35 @@ private predicate singletonMethodOnModule(MethodBase method, string name, Module
     selfInModule(object.(SelfVariableReadAccess).getVariable(), m)
   )
   or
-  flowsToSingletonMethodObject(trackModuleAccess(m), method, name)
+  exists(DataFlow::LocalSourceNode sourceNode |
+    m = resolveConstantReadAccess(sourceNode.asExpr().getExpr()) and
+    flowsToSingletonMethodObject(sourceNode, method, name)
+  )
   or
   exists(Module other |
     extendCallModule(m, other) and
     method = lookupMethod(other, name)
   )
+}
+
+/**
+ * Holds if `method` is a singleton method named `name`, defined on module
+ * `m`, or any transitive base class of `m`.
+ */
+pragma[nomagic]
+private MethodBase lookupSingletonMethod(Module m, string name) {
+  singletonMethodOnModule(result, name, m)
+  or
+  // cannot be part of `singletonMethodOnModule` because it would introduce
+  // negative recursion below
+  exists(DataFlow::LocalSourceNode sourceNode |
+    sourceNode = trackModuleAccess(m) and
+    not m = resolveConstantReadAccess(sourceNode.asExpr().getExpr()) and
+    flowsToSingletonMethodObject(sourceNode, result, name)
+  )
+  or
+  not singletonMethodOnModule(_, name, m) and
+  result = lookupSingletonMethod(m.getSuperClass(), name)
 }
 
 /**
