@@ -1,1 +1,0 @@
-| Test.kt:6:20:6:23 | invoke | Method new KMutableProperty1<C,Integer>(...) { ... }.invoke(..) could be confused with overloaded method $@, since dispatch depends on static types. | file:///usr/local/Cellar/kotlin/1.7.0/libexec/lib/kotlin-stdlib.jar/kotlin/jvm/internal/MutablePropertyReference1.class:0:0:0:0 | invoke | MutablePropertyReference1.invoke |

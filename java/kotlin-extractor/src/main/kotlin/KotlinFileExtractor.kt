@@ -4211,9 +4211,11 @@ open class KotlinFileExtractor(
              *       this.dispatchReceiver = dispatchReceiver
              *   }
              *
-             *   fun get(): R { return this.dispatchReceiver.FN1() }
+             *   override fun get(): R { return this.dispatchReceiver.FN1() }
              *
-             *   fun set(a0: R): Unit { return this.dispatchReceiver.FN2(a0) }
+             *   override fun set(a0: R): Unit { return this.dispatchReceiver.FN2(a0) }
+             *
+             *   override fun invoke(): R { return this.get() }
              * }
              * ```
              *
@@ -4251,8 +4253,8 @@ open class KotlinFileExtractor(
             )
 
             val declarationParent = peekDeclStackAsDeclarationParent(propertyReferenceExpr) ?: return
-            val prefix = if (kPropertyClass.owner.name.asString().startsWith("KMutableProperty")) "Mutable" else ""
-            val baseClass = pluginContext.referenceClass(FqName("kotlin.jvm.internal.${prefix}PropertyReference${kPropertyType.arguments.size - 1}"))?.owner?.typeWith()
+            // The base class could be `Any`. `PropertyReference` is used to keep symmetry with function references.
+            val baseClass = pluginContext.referenceClass(FqName("kotlin.jvm.internal.PropertyReference"))?.owner?.typeWith()
                 ?: pluginContext.irBuiltIns.anyType
 
             val classId = extractGeneratedClass(ids, listOf(baseClass, kPropertyType), locId, propertyReferenceExpr, declarationParent)
