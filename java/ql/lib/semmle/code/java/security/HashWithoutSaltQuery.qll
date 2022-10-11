@@ -61,6 +61,8 @@ class PasswordToHashConfig extends TaintTracking::Configuration {
   }
 
   override predicate isSanitizer(DataFlow::Node node) { node.asExpr() instanceof ConcatSanitizer }
+
+  override predicate isSanitizerIn(DataFlow::Node node) { this.isSource(node) }
 }
 
 /** Holds if a password variable flows to the argument `e` of a hashing method without being concatenated with a salt. */
@@ -119,7 +121,10 @@ private DataFlow::Node getArg(MethodAccess ma, int arg) {
 
 /** Gets the `arg`th parameter of `m`, where -1 is the qualifier, or a field read of the qualifier. */
 private DataFlow::Node getParam(Method m, int arg) {
-  result.(DataFlow::ParameterNode).isParameterOf(m, arg)
+  result.asParameter() = m.getParameter(arg)
+  or
+  arg = -1 and
+  result.(DataFlow::InstanceParameterNode).getCallable() = m
   or
   arg = -1 and
   exists(FieldRead fr |
