@@ -20,8 +20,6 @@ class LinesOfCode(
     fun linesOfCodeInFile(id: Label<DbFile>) {
         val ktFile = psi2Ir.getKtFile(file)
         if (ktFile == null) {
-            logger.warnElement("Cannot find PSI for file", file)
-            println("No KtFile")
             return
         }
         linesOfCodeInPsi(id, ktFile, file)
@@ -30,8 +28,6 @@ class LinesOfCode(
     fun linesOfCodeInDeclaration(d: IrDeclaration, id: Label<out DbSourceline>) {
         val p = psi2Ir.findPsiElement(d, file)
         if (p == null) {
-            logger.warnElement("Cannot find PSI for declaration: " + d.javaClass, d)
-            println("No p")
             return
         }
         linesOfCodeInPsi(id, p, d)
