@@ -25,13 +25,13 @@ module ReflectedXss {
    * is to prevent us from flagging plain-text or JSON responses as vulnerable.
    */
   class HttpResponseSink extends Sink instanceof Http::ResponseSendArgument {
-    HttpResponseSink() { not exists(getAXSSSafeHeaderDefinition(this)) }
+    HttpResponseSink() { not exists(getAXssSafeHeaderDefinition(this)) }
   }
 
   /**
    * Gets a HeaderDefinition that defines a XSS safe content-type for `send`.
    */
-  Http::HeaderDefinition getAXSSSafeHeaderDefinition(Http::ResponseSendArgument send) {
+  Http::HeaderDefinition getAXssSafeHeaderDefinition(Http::ResponseSendArgument send) {
     exists(Http::RouteHandler h |
       send.getRouteHandler() = h and
       result = xssSafeContentTypeHeader(h)
