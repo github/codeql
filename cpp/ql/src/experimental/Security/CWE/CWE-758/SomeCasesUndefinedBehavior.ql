@@ -117,7 +117,7 @@ predicate lengthMayBeEquealZero(FunctionCall fc) {
         erttmp.getEnclosingStmt() instanceof ReturnStmt and
         ftmp.getTarget().getEntryPoint().getASuccessor*() = erttmp and
         (
-          thisFunctionFread(etmp.(FunctionCall), erttmp)
+          thisFunctionFread(etmp, erttmp)
           or
           erttmp.getValue() = "0"
           or
