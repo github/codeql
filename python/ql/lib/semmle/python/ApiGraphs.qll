@@ -520,16 +520,16 @@ module API {
    * consistent with that particular read.
    */
   class SubscriptReadNode extends DataFlow::Node {
-    API::Node subscripted;
+    API::Node object;
 
-    SubscriptReadNode() { this = subscripted.getASubscript().asSource() }
+    SubscriptReadNode() { this = object.getASubscript().asSource() }
 
-    /** Gets an API node for the object being subscripted. */
-    API::Node getObject() { result = subscripted }
+    /** Gets an API node for the object being object. */
+    API::Node getObject() { result = object }
 
     /** Gets an API node representing the index of this read. */
     API::Node getIndex() {
-      result = subscripted.getIndex() and
+      result = object.getIndex() and
       result.asSink().asCfgNode() = this.asCfgNode().(PY::SubscriptNode).getIndex()
     }
   }
@@ -550,20 +550,31 @@ module API {
    * consistent with that particular write.
    */
   class SubscriptWriteNode extends DataFlow::Node {
-    API::Node subscripted;
+    API::Node object;
 
-    SubscriptWriteNode() { this = subscripted.getASubscript().asSink() }
+    SubscriptWriteNode() { this = object.getASubscript().asSink() }
 
     /** Gets an API node for the object being subscripted. */
-    API::Node getObject() { result = subscripted }
+    API::Node getObject() { result = object }
 
     /** Gets an API node representing the index of this write. */
     API::Node getIndex() {
-      result = subscripted.getIndex() and
-      exists(PY::SubscriptNode subscriptNode |
-        subscriptNode.(PY::DefinitionNode).getValue() = this.asCfgNode() and
-        result.asSink().asCfgNode() = subscriptNode.getIndex() and
-        subscriptNode.getObject() = subscripted.getAValueReachableFromSource().asCfgNode()
+      result = object.getIndex() and
+      (
+        exists(PY::SubscriptNode subscriptNode |
+          subscriptNode.(PY::DefinitionNode).getValue() = this.asCfgNode() and
+          result.asSink().asCfgNode() = subscriptNode.getIndex() and
+          subscriptNode.getObject() = object.getAValueReachableFromSource().asCfgNode()
+        )
+        or
+        // dictionary literals
+        exists(PY::Dict dict, PY::KeyValuePair item |
+          dict.getItem(_) = item and
+          object.getAValueReachingSink().asCfgNode().getNode() = dict
+        |
+          result.getAValueReachingSink().asCfgNode().getNode() = item.getKey() and
+          this.asCfgNode().getNode() = item.getValue()
+        )
       )
     }
 
@@ -803,6 +814,12 @@ module API {
           // from `"key"` to `{ "key": x }`
           rhs.(DataFlow::ExprNode).getNode().getNode() = item.getKey() and
           lbl = Label::index()
+        )
+        or
+        // list literals, from `x` to `[x]`
+        exists(PY::List list | list = pred.(DataFlow::ExprNode).getNode().getNode() |
+          rhs.(DataFlow::ExprNode).getNode().getNode() = list.getAnElt() and
+          lbl = Label::subscript()
         )
         or
         exists(PY::CallableExpr fn | fn = pred.(DataFlow::ExprNode).getNode().getNode() |
