@@ -46,7 +46,7 @@ predicate simpleLocalFlowStep = DataFlowPrivate::simpleLocalFlowStepForTypetrack
 predicate jumpStep = DataFlowPrivate::jumpStepSharedWithTypeTracker/2;
 
 /** Holds if there is a level step from `nodeFrom` to `nodeTo`, which may depend on the call graph. */
-predicate levelStepCall(Node pred, Node succ) { none() }
+predicate levelStepCall(Node nodeFrom, Node nodeTo) { none() }
 
 /** Holds if there is a level step from `nodeFrom` to `nodeTo`, which does not depend on the call graph. */
 predicate levelStepNoCall(Node nodeFrom, Node nodeTo) { none() }
