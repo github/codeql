@@ -14,6 +14,8 @@ edges
 | file://:0:0:0:0 | [summary] to write: return (return).password in init(string:) :  | file://:0:0:0:0 | [summary] to write: return (return) in init(string:) [password] :  |
 | file://:0:0:0:0 | [summary] to write: return (return).path in init(string:) :  | file://:0:0:0:0 | [summary] to write: return (return) in init(string:) [path] :  |
 | file://:0:0:0:0 | [summary] to write: return (return).path in init(string:) :  | file://:0:0:0:0 | [summary] to write: return (return) in init(string:) [path] :  |
+| file://:0:0:0:0 | [summary] to write: return (return).pathComponents in init(string:) :  | file://:0:0:0:0 | [summary] to write: return (return) in init(string:) [pathComponents] :  |
+| file://:0:0:0:0 | [summary] to write: return (return).pathComponents in init(string:) :  | file://:0:0:0:0 | [summary] to write: return (return) in init(string:) [pathComponents] :  |
 | file://:0:0:0:0 | [summary] to write: return (return).pathExtension in init(string:) :  | file://:0:0:0:0 | [summary] to write: return (return) in init(string:) [pathExtension] :  |
 | file://:0:0:0:0 | [summary] to write: return (return).pathExtension in init(string:) :  | file://:0:0:0:0 | [summary] to write: return (return) in init(string:) [pathExtension] :  |
 | file://:0:0:0:0 | [summary] to write: return (return).port in init(string:) :  | file://:0:0:0:0 | [summary] to write: return (return) in init(string:) [port] :  |
@@ -55,6 +57,7 @@ edges
 | url.swift:8:2:8:25 | [summary param] 0 in init(string:) :  | file://:0:0:0:0 | [summary] to write: return (return).lastPathComponent in init(string:) :  |
 | url.swift:8:2:8:25 | [summary param] 0 in init(string:) :  | file://:0:0:0:0 | [summary] to write: return (return).password in init(string:) :  |
 | url.swift:8:2:8:25 | [summary param] 0 in init(string:) :  | file://:0:0:0:0 | [summary] to write: return (return).path in init(string:) :  |
+| url.swift:8:2:8:25 | [summary param] 0 in init(string:) :  | file://:0:0:0:0 | [summary] to write: return (return).pathComponents in init(string:) :  |
 | url.swift:8:2:8:25 | [summary param] 0 in init(string:) :  | file://:0:0:0:0 | [summary] to write: return (return).pathExtension in init(string:) :  |
 | url.swift:8:2:8:25 | [summary param] 0 in init(string:) :  | file://:0:0:0:0 | [summary] to write: return (return).port in init(string:) :  |
 | url.swift:8:2:8:25 | [summary param] 0 in init(string:) :  | file://:0:0:0:0 | [summary] to write: return (return).query in init(string:) :  |
@@ -72,6 +75,7 @@ edges
 | url.swift:8:8:8:16 | string :  | file://:0:0:0:0 | [summary] to write: return (return).lastPathComponent in init(string:) :  |
 | url.swift:8:8:8:16 | string :  | file://:0:0:0:0 | [summary] to write: return (return).password in init(string:) :  |
 | url.swift:8:8:8:16 | string :  | file://:0:0:0:0 | [summary] to write: return (return).path in init(string:) :  |
+| url.swift:8:8:8:16 | string :  | file://:0:0:0:0 | [summary] to write: return (return).pathComponents in init(string:) :  |
 | url.swift:8:8:8:16 | string :  | file://:0:0:0:0 | [summary] to write: return (return).pathExtension in init(string:) :  |
 | url.swift:8:8:8:16 | string :  | file://:0:0:0:0 | [summary] to write: return (return).port in init(string:) :  |
 | url.swift:8:8:8:16 | string :  | file://:0:0:0:0 | [summary] to write: return (return).query in init(string:) :  |
@@ -99,6 +103,7 @@ edges
 | url.swift:59:19:59:38 | call to init(string:) [host] :  | url.swift:66:15:66:15 | urlTainted [host] :  |
 | url.swift:59:19:59:38 | call to init(string:) [lastPathComponent] :  | url.swift:67:15:67:15 | urlTainted [lastPathComponent] :  |
 | url.swift:59:19:59:38 | call to init(string:) [password] :  | url.swift:79:15:79:15 | urlTainted [password] :  |
+| url.swift:59:19:59:38 | call to init(string:) [pathComponents] :  | url.swift:69:15:69:15 | urlTainted [pathComponents] :  |
 | url.swift:59:19:59:38 | call to init(string:) [pathExtension] :  | url.swift:70:15:70:15 | urlTainted [pathExtension] :  |
 | url.swift:59:19:59:38 | call to init(string:) [path] :  | url.swift:68:15:68:15 | urlTainted [path] :  |
 | url.swift:59:19:59:38 | call to init(string:) [port] :  | url.swift:71:12:71:12 | urlTainted [port] :  |
@@ -118,6 +123,7 @@ edges
 | url.swift:59:31:59:31 | tainted :  | url.swift:59:19:59:38 | call to init(string:) [host] :  |
 | url.swift:59:31:59:31 | tainted :  | url.swift:59:19:59:38 | call to init(string:) [lastPathComponent] :  |
 | url.swift:59:31:59:31 | tainted :  | url.swift:59:19:59:38 | call to init(string:) [password] :  |
+| url.swift:59:31:59:31 | tainted :  | url.swift:59:19:59:38 | call to init(string:) [pathComponents] :  |
 | url.swift:59:31:59:31 | tainted :  | url.swift:59:19:59:38 | call to init(string:) [pathExtension] :  |
 | url.swift:59:31:59:31 | tainted :  | url.swift:59:19:59:38 | call to init(string:) [path] :  |
 | url.swift:59:31:59:31 | tainted :  | url.swift:59:19:59:38 | call to init(string:) [port] :  |
@@ -136,6 +142,8 @@ edges
 | url.swift:66:15:66:26 | .host :  | url.swift:66:15:66:30 | ...! |
 | url.swift:67:15:67:15 | urlTainted [lastPathComponent] :  | url.swift:67:15:67:26 | .lastPathComponent |
 | url.swift:68:15:68:15 | urlTainted [path] :  | url.swift:68:15:68:26 | .path |
+| url.swift:69:15:69:15 | urlTainted [pathComponents] :  | url.swift:69:15:69:26 | .pathComponents :  |
+| url.swift:69:15:69:26 | .pathComponents :  | url.swift:69:15:69:42 | ...[...] |
 | url.swift:70:15:70:15 | urlTainted [pathExtension] :  | url.swift:70:15:70:26 | .pathExtension |
 | url.swift:71:12:71:12 | urlTainted [port] :  | url.swift:71:12:71:23 | .port :  |
 | url.swift:71:12:71:23 | .port :  | url.swift:71:12:71:27 | ...! |
@@ -182,6 +190,8 @@ nodes
 | file://:0:0:0:0 | [summary] to write: return (return) in init(string:) [lastPathComponent] :  | semmle.label | [summary] to write: return (return) in init(string:) [lastPathComponent] :  |
 | file://:0:0:0:0 | [summary] to write: return (return) in init(string:) [password] :  | semmle.label | [summary] to write: return (return) in init(string:) [password] :  |
 | file://:0:0:0:0 | [summary] to write: return (return) in init(string:) [password] :  | semmle.label | [summary] to write: return (return) in init(string:) [password] :  |
+| file://:0:0:0:0 | [summary] to write: return (return) in init(string:) [pathComponents] :  | semmle.label | [summary] to write: return (return) in init(string:) [pathComponents] :  |
+| file://:0:0:0:0 | [summary] to write: return (return) in init(string:) [pathComponents] :  | semmle.label | [summary] to write: return (return) in init(string:) [pathComponents] :  |
 | file://:0:0:0:0 | [summary] to write: return (return) in init(string:) [pathExtension] :  | semmle.label | [summary] to write: return (return) in init(string:) [pathExtension] :  |
 | file://:0:0:0:0 | [summary] to write: return (return) in init(string:) [pathExtension] :  | semmle.label | [summary] to write: return (return) in init(string:) [pathExtension] :  |
 | file://:0:0:0:0 | [summary] to write: return (return) in init(string:) [path] :  | semmle.label | [summary] to write: return (return) in init(string:) [path] :  |
@@ -220,6 +230,8 @@ nodes
 | file://:0:0:0:0 | [summary] to write: return (return).password in init(string:) :  | semmle.label | [summary] to write: return (return).password in init(string:) :  |
 | file://:0:0:0:0 | [summary] to write: return (return).path in init(string:) :  | semmle.label | [summary] to write: return (return).path in init(string:) :  |
 | file://:0:0:0:0 | [summary] to write: return (return).path in init(string:) :  | semmle.label | [summary] to write: return (return).path in init(string:) :  |
+| file://:0:0:0:0 | [summary] to write: return (return).pathComponents in init(string:) :  | semmle.label | [summary] to write: return (return).pathComponents in init(string:) :  |
+| file://:0:0:0:0 | [summary] to write: return (return).pathComponents in init(string:) :  | semmle.label | [summary] to write: return (return).pathComponents in init(string:) :  |
 | file://:0:0:0:0 | [summary] to write: return (return).pathExtension in init(string:) :  | semmle.label | [summary] to write: return (return).pathExtension in init(string:) :  |
 | file://:0:0:0:0 | [summary] to write: return (return).pathExtension in init(string:) :  | semmle.label | [summary] to write: return (return).pathExtension in init(string:) :  |
 | file://:0:0:0:0 | [summary] to write: return (return).port in init(string:) :  | semmle.label | [summary] to write: return (return).port in init(string:) :  |
@@ -276,6 +288,7 @@ nodes
 | url.swift:59:19:59:38 | call to init(string:) [host] :  | semmle.label | call to init(string:) [host] :  |
 | url.swift:59:19:59:38 | call to init(string:) [lastPathComponent] :  | semmle.label | call to init(string:) [lastPathComponent] :  |
 | url.swift:59:19:59:38 | call to init(string:) [password] :  | semmle.label | call to init(string:) [password] :  |
+| url.swift:59:19:59:38 | call to init(string:) [pathComponents] :  | semmle.label | call to init(string:) [pathComponents] :  |
 | url.swift:59:19:59:38 | call to init(string:) [pathExtension] :  | semmle.label | call to init(string:) [pathExtension] :  |
 | url.swift:59:19:59:38 | call to init(string:) [path] :  | semmle.label | call to init(string:) [path] :  |
 | url.swift:59:19:59:38 | call to init(string:) [port] :  | semmle.label | call to init(string:) [port] :  |
@@ -302,6 +315,9 @@ nodes
 | url.swift:67:15:67:26 | .lastPathComponent | semmle.label | .lastPathComponent |
 | url.swift:68:15:68:15 | urlTainted [path] :  | semmle.label | urlTainted [path] :  |
 | url.swift:68:15:68:26 | .path | semmle.label | .path |
+| url.swift:69:15:69:15 | urlTainted [pathComponents] :  | semmle.label | urlTainted [pathComponents] :  |
+| url.swift:69:15:69:26 | .pathComponents :  | semmle.label | .pathComponents :  |
+| url.swift:69:15:69:42 | ...[...] | semmle.label | ...[...] |
 | url.swift:70:15:70:15 | urlTainted [pathExtension] :  | semmle.label | urlTainted [pathExtension] :  |
 | url.swift:70:15:70:26 | .pathExtension | semmle.label | .pathExtension |
 | url.swift:71:12:71:12 | urlTainted [port] :  | semmle.label | urlTainted [port] :  |
@@ -347,6 +363,7 @@ subpaths
 | url.swift:59:31:59:31 | tainted :  | url.swift:8:2:8:25 | [summary param] 0 in init(string:) :  | file://:0:0:0:0 | [summary] to write: return (return) in init(string:) [host] :  | url.swift:59:19:59:38 | call to init(string:) [host] :  |
 | url.swift:59:31:59:31 | tainted :  | url.swift:8:2:8:25 | [summary param] 0 in init(string:) :  | file://:0:0:0:0 | [summary] to write: return (return) in init(string:) [lastPathComponent] :  | url.swift:59:19:59:38 | call to init(string:) [lastPathComponent] :  |
 | url.swift:59:31:59:31 | tainted :  | url.swift:8:2:8:25 | [summary param] 0 in init(string:) :  | file://:0:0:0:0 | [summary] to write: return (return) in init(string:) [password] :  | url.swift:59:19:59:38 | call to init(string:) [password] :  |
+| url.swift:59:31:59:31 | tainted :  | url.swift:8:2:8:25 | [summary param] 0 in init(string:) :  | file://:0:0:0:0 | [summary] to write: return (return) in init(string:) [pathComponents] :  | url.swift:59:19:59:38 | call to init(string:) [pathComponents] :  |
 | url.swift:59:31:59:31 | tainted :  | url.swift:8:2:8:25 | [summary param] 0 in init(string:) :  | file://:0:0:0:0 | [summary] to write: return (return) in init(string:) [pathExtension] :  | url.swift:59:19:59:38 | call to init(string:) [pathExtension] :  |
 | url.swift:59:31:59:31 | tainted :  | url.swift:8:2:8:25 | [summary param] 0 in init(string:) :  | file://:0:0:0:0 | [summary] to write: return (return) in init(string:) [path] :  | url.swift:59:19:59:38 | call to init(string:) [path] :  |
 | url.swift:59:31:59:31 | tainted :  | url.swift:8:2:8:25 | [summary param] 0 in init(string:) :  | file://:0:0:0:0 | [summary] to write: return (return) in init(string:) [port] :  | url.swift:59:19:59:38 | call to init(string:) [port] :  |
@@ -364,6 +381,7 @@ subpaths
 | url.swift:59:31:59:31 | tainted :  | url.swift:8:8:8:16 | string :  | file://:0:0:0:0 | [summary] to write: return (return) in init(string:) [host] :  | url.swift:59:19:59:38 | call to init(string:) [host] :  |
 | url.swift:59:31:59:31 | tainted :  | url.swift:8:8:8:16 | string :  | file://:0:0:0:0 | [summary] to write: return (return) in init(string:) [lastPathComponent] :  | url.swift:59:19:59:38 | call to init(string:) [lastPathComponent] :  |
 | url.swift:59:31:59:31 | tainted :  | url.swift:8:8:8:16 | string :  | file://:0:0:0:0 | [summary] to write: return (return) in init(string:) [password] :  | url.swift:59:19:59:38 | call to init(string:) [password] :  |
+| url.swift:59:31:59:31 | tainted :  | url.swift:8:8:8:16 | string :  | file://:0:0:0:0 | [summary] to write: return (return) in init(string:) [pathComponents] :  | url.swift:59:19:59:38 | call to init(string:) [pathComponents] :  |
 | url.swift:59:31:59:31 | tainted :  | url.swift:8:8:8:16 | string :  | file://:0:0:0:0 | [summary] to write: return (return) in init(string:) [pathExtension] :  | url.swift:59:19:59:38 | call to init(string:) [pathExtension] :  |
 | url.swift:59:31:59:31 | tainted :  | url.swift:8:8:8:16 | string :  | file://:0:0:0:0 | [summary] to write: return (return) in init(string:) [path] :  | url.swift:59:19:59:38 | call to init(string:) [path] :  |
 | url.swift:59:31:59:31 | tainted :  | url.swift:8:8:8:16 | string :  | file://:0:0:0:0 | [summary] to write: return (return) in init(string:) [port] :  | url.swift:59:19:59:38 | call to init(string:) [port] :  |
@@ -403,6 +421,7 @@ subpaths
 | url.swift:66:15:66:30 | ...! | url.swift:57:16:57:23 | call to source() :  | url.swift:66:15:66:30 | ...! | result |
 | url.swift:67:15:67:26 | .lastPathComponent | url.swift:57:16:57:23 | call to source() :  | url.swift:67:15:67:26 | .lastPathComponent | result |
 | url.swift:68:15:68:26 | .path | url.swift:57:16:57:23 | call to source() :  | url.swift:68:15:68:26 | .path | result |
+| url.swift:69:15:69:42 | ...[...] | url.swift:57:16:57:23 | call to source() :  | url.swift:69:15:69:42 | ...[...] | result |
 | url.swift:70:15:70:26 | .pathExtension | url.swift:57:16:57:23 | call to source() :  | url.swift:70:15:70:26 | .pathExtension | result |
 | url.swift:71:12:71:27 | ...! | url.swift:57:16:57:23 | call to source() :  | url.swift:71:12:71:27 | ...! | result |
 | url.swift:72:15:72:31 | ...! | url.swift:57:16:57:23 | call to source() :  | url.swift:72:15:72:31 | ...! | result |
