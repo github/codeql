@@ -29,7 +29,7 @@ module ReflectedXss {
   }
 
   /**
-   * DEPRECATED: Gets a HeaderDefinition that defines a non-html safe content-type for `send`.
+   * DEPRECATED: Gets a HeaderDefinition that defines a non-html content-type for `send`.
    */
   deprecated Http::HeaderDefinition getANonHtmlHeaderDefinition(Http::ResponseSendArgument send) {
     exists(Http::RouteHandler h |
