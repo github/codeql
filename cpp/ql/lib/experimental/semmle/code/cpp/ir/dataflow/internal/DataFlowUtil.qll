@@ -232,6 +232,12 @@ class Node extends TIRDataFlowNode {
   Parameter asParameter() { result = asParameter(0) }
 
   /**
+   * Gets the uninitialized local variable corresponding to this node, if
+   * any.
+   */
+  LocalVariable asUninitialized() { result = this.(UninitializedNode).getLocalVariable() }
+
+  /**
    * Gets the positional parameter corresponding to the node that represents
    * the value of the parameter after `index` number of loads, if any. For
    * example, in:
@@ -664,6 +670,25 @@ class IndirectOperand extends Node, TIndirectOperand {
   override string toStringImpl() {
     result = instructionNode(this.getOperand().getDef()).toStringImpl() + " indirection"
   }
+}
+
+/**
+ * The value of an uninitialized local variable, viewed as a node in a data
+ * flow graph.
+ */
+class UninitializedNode extends Node {
+  LocalVariable v;
+
+  UninitializedNode() {
+    exists(Ssa::Def def |
+      def.getDefiningInstruction() instanceof UninitializedInstruction and
+      Ssa::nodeToDefOrUse(this, def) and
+      v = def.getSourceVariable().getBaseVariable().(Ssa::BaseIRVariable).getIRVariable().getAst()
+    )
+  }
+
+  /** Gets the uninitialized local variable corresponding to this node. */
+  LocalVariable getLocalVariable() { result = v }
 }
 
 /**
