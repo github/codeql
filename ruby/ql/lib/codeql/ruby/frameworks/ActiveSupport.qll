@@ -146,22 +146,16 @@ module ActiveSupport {
   private class PathnameTypeSummary extends ModelInput::TypeModelCsv {
     override predicate row(string row) {
       // package1;type1;package2;type2;path
-      row =
-        [
-          // Pathname#existence : Pathname
-          ";Pathname;;Pathname;Method[existence].ReturnValue",
-        ]
+      // Pathname#existence : Pathname
+      row = ";Pathname;;Pathname;Method[existence].ReturnValue"
     }
   }
 
   /** Taint flow summaries for extensions to the `Pathname` module. */
   private class PathnameTaintSummary extends ModelInput::SummaryModelCsv {
     override predicate row(string row) {
-      row =
-        [
-          // Pathname#existence
-          ";Pathname;Method[existence];Argument[self];ReturnValue;taint",
-        ]
+      // Pathname#existence
+      row = ";Pathname;Method[existence];Argument[self];ReturnValue;taint"
     }
   }
 
