@@ -97,15 +97,6 @@ predicate compareFunctionWithValue(Expr guardExp, Function compArg, Expr valArg)
       or
       gc.ensuresLt(valArg, globalValueNumber(compArg.getACallToThisFunction()).getAnExpr(), 0,
         guardExp.getBasicBlock(), false)
-      or
-      if valArg.getValue().toFloat() = 0
-      then
-        exists(NotExpr ne, IfStmt ifne |
-          ne.getOperand() = globalValueNumber(compArg.getACallToThisFunction()).getAnExpr() and
-          ifne.getCondition() = ne and
-          ifne.getThen().getAChild*() = guardExp
-        )
-      else none()
     )
     or
     exists(Expr exp |
@@ -117,6 +108,13 @@ predicate compareFunctionWithValue(Expr guardExp, Function compArg, Expr valArg)
       gc.ensuresLt(exp, globalValueNumber(compArg.getACallToThisFunction()).getAnExpr(), 0,
         guardExp.getBasicBlock(), true)
     )
+  )
+  or
+  valArg.getValue().toFloat() = 0 and
+  exists(NotExpr ne, IfStmt ifne |
+    ne.getOperand() = globalValueNumber(compArg.getACallToThisFunction()).getAnExpr() and
+    ifne.getCondition() = ne and
+    ifne.getThen().getAChild*() = guardExp
   )
 }
 
@@ -148,15 +146,6 @@ predicate compareExprWithValue(Expr guardExp, Expr compArg, Expr valArg) {
       or
       gc.ensuresLt(valArg, globalValueNumber(compArg).getAnExpr(), 0, guardExp.getBasicBlock(),
         false)
-      or
-      if valArg.getValue().toFloat() = 0
-      then
-        exists(NotExpr ne, IfStmt ifne |
-          ne.getOperand() = globalValueNumber(compArg).getAnExpr() and
-          ifne.getCondition() = ne and
-          ifne.getThen().getAChild*() = guardExp
-        )
-      else none()
     )
     or
     exists(Expr exp |
@@ -166,6 +155,13 @@ predicate compareExprWithValue(Expr guardExp, Expr compArg, Expr valArg) {
       exp.getValue().toFloat() < valArg.getValue().toFloat() and
       gc.ensuresLt(exp, globalValueNumber(compArg).getAnExpr(), 0, guardExp.getBasicBlock(), true)
     )
+  )
+  or
+  valArg.getValue().toFloat() = 0 and
+  exists(NotExpr ne, IfStmt ifne |
+    ne.getOperand() = globalValueNumber(compArg).getAnExpr() and
+    ifne.getCondition() = ne and
+    ifne.getThen().getAChild*() = guardExp
   )
 }
 
