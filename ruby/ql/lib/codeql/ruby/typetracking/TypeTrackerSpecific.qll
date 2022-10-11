@@ -120,12 +120,44 @@ private MethodBase getAMethod(ModuleBase mod, boolean instance) {
   if result instanceof SingletonMethod then instance = false else instance = true
   or
   exists(SingletonClass cls |
-    cls.getValue().(SelfVariableAccess).getCfgScope() = mod and
+    cls.getValue().(SelfVariableAccess).getVariable().getDeclaringScope() = mod and
     result = cls.getAMethod().(Method) and
     instance = false
   )
 }
 
+private predicate hasOwnAttributeModifier(ModuleBase mod, string modifierName, string symbolName) {
+  exists(MethodCall call |
+    call.getReceiver().(SelfVariableAccess).getCfgScope() = mod and
+    call.getMethodName() = modifierName and
+    modifierName = ["attr_reader", "attr_writer", "attr_accessor"] and
+    symbolName = call.getArgument(0).getConstantValue().getSymbol()
+  )
+  or
+  none()
+}
+
+private predicate hasAttributeModifier(
+  ModuleBase mod, boolean instance, string modifierName, string symbolName
+) {
+  instance = true and
+  hasOwnAttributeModifier(mod, modifierName, symbolName)
+  or
+  instance = false and
+  exists(SingletonClass cls |
+    hasOwnAttributeModifier(cls, modifierName, symbolName) and
+    cls.getValue().(SelfVariableAccess).getVariable().getDeclaringScope() = mod
+  )
+}
+
+// pragma[nomagic]
+// private predicate hasAttributeReader(ModuleBase mod, boolean instance, string fieldName) {
+//   hasAttributeModifier(mod, instance, ["attr_reader", "attr_accessor"], fieldName)
+// }
+// pragma[nomagic]
+// private predicate hasAttributeWriter(ModuleBase mod, boolean instance, string fieldName) {
+//   hasAttributeModifier(mod, instance, ["attr_writer", "attr_accessor"], fieldName)
+// }
 /**
  * Gets a value flowing into `field` in `mod`, with `instance` indicating if it's
  * a field on an instance of `mod` (as opposed to the module object itself).
@@ -133,7 +165,7 @@ private MethodBase getAMethod(ModuleBase mod, boolean instance) {
 pragma[nomagic]
 private Node fieldPredecessor(ModuleBase mod, boolean instance, string field) {
   exists(InstanceVariableWriteAccess access, AssignExpr assign |
-    access.getReceiver().getCfgScope() = getAMethod(mod, instance) and
+    access.getReceiver().getVariable().getDeclaringScope() = getAMethod(mod, instance) and
     field = access.getVariable().getName() and
     assign.getLeftOperand() = access and
     result.asExpr().getExpr() = assign.getRightOperand()
@@ -147,7 +179,7 @@ private Node fieldPredecessor(ModuleBase mod, boolean instance, string field) {
 pragma[nomagic]
 private Node fieldSuccessor(ModuleBase mod, boolean instance, string field) {
   exists(InstanceVariableReadAccess access |
-    access.getReceiver().getCfgScope() = getAMethod(mod, instance) and
+    access.getReceiver().getVariable().getDeclaringScope() = getAMethod(mod, instance) and
     result.asExpr().getExpr() = access and
     field = access.getVariable().getName()
   )
