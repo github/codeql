@@ -231,7 +231,7 @@ open class KotlinFileExtractor(
                             // default java visibility (top level)
                         }
                         JavaVisibilities.ProtectedAndPackage -> {
-                            // default java visibility (member level)
+                            addModifiers(id, "protected")
                         }
                         else -> logger.errorElement("Unexpected delegated visibility: $v", elementForLocation)
                     }
