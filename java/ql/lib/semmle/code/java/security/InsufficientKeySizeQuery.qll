@@ -159,7 +159,7 @@ private predicate hasShortAsymmetricKeyPair(Expr e, string msg, string type) {
 }
 
 /**
- * Holds if a DSA `KeyPairGenerator` initialized by `ma` uses an insufficient key size.
+ * Holds if a DSA `KeyPairGenerator` initialized by `e` uses an insufficient key size.
  *
  * `msg` provides a human-readable description of the problem.
  */
@@ -169,7 +169,7 @@ private predicate hasShortDsaKeyPair(Expr e, string msg) {
 }
 
 /**
- * Holds if a RSA `KeyPairGenerator` initialized by `ma` uses an insufficient key size.
+ * Holds if a RSA `KeyPairGenerator` initialized by `e` uses an insufficient key size.
  *
  * `msg` provides a human-readable description of the problem.
  */
@@ -178,7 +178,7 @@ private predicate hasShortRsaKeyPair(Expr e, string msg) {
 }
 
 /**
- * Holds if an EC `KeyPairGenerator` initialized by `ma` uses an insufficient key size.
+ * Holds if an EC `KeyPairGenerator` initialized by `e` uses an insufficient key size.
  *
  * `msg` provides a human-readable description of the problem.
  */
