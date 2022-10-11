@@ -3,7 +3,7 @@
  * @description Using cryptographic algorithms with too small of a key size can
  *              allow an attacker to compromise security.
  * @kind problem
- * @problem.severity error
+ * @problem.severity warning
  * @security-severity 7.5
  * @precision high
  * @id java/insufficient-key-size

@@ -4,9 +4,7 @@ import semmle.code.java.security.Encryption
 import semmle.code.java.dataflow.DataFlow
 import semmle.code.java.dataflow.DataFlow2
 
-/**
- * An Asymmetric (RSA, DSA, DH) key length data flow tracking configuration.
- */
+/** An Asymmetric (RSA, DSA, DH) key length data flow tracking configuration. */
 class AsymmetricNonECKeyTrackingConfiguration extends DataFlow2::Configuration {
   AsymmetricNonECKeyTrackingConfiguration() { this = "AsymmetricNonECKeyTrackingConfiguration" }
 
@@ -47,9 +45,7 @@ class AsymmetricNonECKeyTrackingConfiguration extends DataFlow2::Configuration {
   }
 }
 
-/**
- * An Asymmetric (EC) key length data flow tracking configuration.
- */
+/** An Asymmetric (EC) key length data flow tracking configuration. */
 class AsymmetricECKeyTrackingConfiguration extends DataFlow2::Configuration {
   AsymmetricECKeyTrackingConfiguration() { this = "AsymmetricECKeyTrackingConfiguration" }
 
@@ -81,9 +77,7 @@ class AsymmetricECKeyTrackingConfiguration extends DataFlow2::Configuration {
   }
 }
 
-/**
- * A Symmetric (AES) key length data flow tracking configuration.
- */
+/** A Symmetric (AES) key length data flow tracking configuration. */
 class SymmetricKeyTrackingConfiguration extends DataFlow2::Configuration {
   SymmetricKeyTrackingConfiguration() { this = "SymmetricKeyTrackingConfiguration" }
 
