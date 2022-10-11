@@ -519,7 +519,7 @@ module API {
    * and the member predicates `getObject` and `getIndex` will return nodes
    * consistent with that particular read.
    */
-  class SubscriptReadNode extends DataFlow::Node {
+  private class SubscriptReadNode extends DataFlow::Node {
     API::Node object;
 
     SubscriptReadNode() { this = object.getASubscript().asSource() }
@@ -549,7 +549,7 @@ module API {
    * and the member predicates `getObject`, `getIndex`, and `getValue` will return nodes
    * consistent with that particular write.
    */
-  class SubscriptWriteNode extends DataFlow::Node {
+  private class SubscriptWriteNode extends DataFlow::Node {
     API::Node object;
 
     SubscriptWriteNode() { this = object.getASubscript().asSink() }
