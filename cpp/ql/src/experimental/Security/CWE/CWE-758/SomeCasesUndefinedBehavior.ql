@@ -113,22 +113,24 @@ predicate lengthMayBeEquealZero(FunctionCall fc) {
     (
       globalValueNumber(fc.getArgument(0)) = globalValueNumber(ftmp) and
       // Function can return zero.
-      exists(Expr erttmp, Expr etmp |
+      exists(Expr erttmp |
         erttmp.getEnclosingStmt() instanceof ReturnStmt and
         ftmp.getTarget().getEntryPoint().getASuccessor*() = erttmp and
         (
-          thisFunctionFread(etmp, erttmp)
-          or
           erttmp.getValue() = "0"
           or
-          etmp.(AssignExpr).getLValue().(VariableAccess).getTarget() =
-            erttmp.(VariableAccess).getTarget() and
-          etmp.(AssignExpr).getRValue().getValue() = "0" and
-          not exists(VariableAccess vatmp |
-            vatmp.getTarget() = erttmp.(VariableAccess).getTarget() and
-            vatmp.getEnclosingStmt() != etmp.getEnclosingStmt() and
-            vatmp.getEnclosingStmt() != erttmp.getEnclosingStmt() and
-            etmp.getASuccessor+() = vatmp
+          exists(Expr etmp |
+            thisFunctionFread(etmp, erttmp)
+            or
+            etmp.(AssignExpr).getLValue().(VariableAccess).getTarget() =
+              erttmp.(VariableAccess).getTarget() and
+            etmp.(AssignExpr).getRValue().getValue() = "0" and
+            not exists(VariableAccess vatmp |
+              vatmp.getTarget() = erttmp.(VariableAccess).getTarget() and
+              vatmp.getEnclosingStmt() != etmp.getEnclosingStmt() and
+              vatmp.getEnclosingStmt() != erttmp.getEnclosingStmt() and
+              etmp.getASuccessor+() = vatmp
+            )
           )
         )
       )
