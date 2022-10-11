@@ -297,14 +297,14 @@ class TypeBasedFlowTargetApi extends Specific::TargetApiSpecific {
    * Gets the string representation of all type based summaries for `this`
    * inspired by the Theorems for Free approach.
    *
-   * Examples could be (see C# pseudo code below)
-   * (1) `Get` returns a value of type `T`. We assume that the returned
+   * Examples could be (see Java pseudo code below)
+   * (1) `get` returns a value of type `T`. We assume that the returned
    *     value was fetched from a (synthetic) field.
-   * (2) `Set` consumes a value of type `T`. We assume that the value is stored in
+   * (2) `set` consumes a value of type `T`. We assume that the value is stored in
    *     a (synthetic) field.
-   * (3) `Apply<S>` is assumed to apply the provided function to a value stored in
+   * (3) `apply<S>` is assumed to apply the provided function to a value stored in
    *     a (synthetic) field and return the result.
-   * (4) `Apply<S1,S2>` is assumed to apply the provided function to provided value
+   * (4) `apply<S1,S2>` is assumed to apply the provided function to provided value
    *     and return the result.
    * ```java
    * public class MyGeneric<T> {
