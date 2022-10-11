@@ -25,16 +25,16 @@ module ReflectedXss {
    * is to prevent us from flagging plain-text or JSON responses as vulnerable.
    */
   class HttpResponseSink extends Sink instanceof Http::ResponseSendArgument {
-    HttpResponseSink() { not exists(getANonHtmlHeaderDefinition(this)) }
+    HttpResponseSink() { not exists(getAXSSSafeHeaderDefinition(this)) }
   }
 
   /**
-   * Gets a HeaderDefinition that defines a non-html content-type for `send`.
+   * Gets a HeaderDefinition that defines a XSS safe content-type for `send`.
    */
-  Http::HeaderDefinition getANonHtmlHeaderDefinition(Http::ResponseSendArgument send) {
+  Http::HeaderDefinition getAXSSSafeHeaderDefinition(Http::ResponseSendArgument send) {
     exists(Http::RouteHandler h |
       send.getRouteHandler() = h and
-      result = nonHtmlContentTypeHeader(h)
+      result = xssSafeContentTypeHeader(h)
     |
       // The HeaderDefinition affects a response sent at `send`.
       headerAffects(result, send)
@@ -42,11 +42,26 @@ module ReflectedXss {
   }
 
   /**
-   * Holds if `h` may send a response with a content type other than HTML.
+   * A content-type that may lead to javascript code being executed in the browser.
+   * ref: https://portswigger.net/web-security/cross-site-scripting/cheat-sheet#content-types
    */
-  Http::HeaderDefinition nonHtmlContentTypeHeader(Http::RouteHandler h) {
+  string xssUnsafeContentType() {
+    result =
+      [
+        "text/html", "application/xhtml+xml", "application/xml", "text/xml", "image/svg+xml",
+        "text/xsl", "application/vnd.wap.xhtml+xml", "text/rdf", "application/rdf+xml",
+        "application/mathml+xml", "text/vtt", "text/cache-manifest"
+      ]
+  }
+
+  /**
+   * Holds if `h` may send a response with a content type that is safe for XSS.
+   */
+  Http::HeaderDefinition xssSafeContentTypeHeader(Http::RouteHandler h) {
     result = h.getAResponseHeader("content-type") and
-    not exists(string tp | result.defines("content-type", tp) | tp.regexpMatch("(?i).*html.*"))
+    not exists(string tp | result.defines("content-type", tp) |
+      tp.toLowerCase().matches(xssUnsafeContentType() + "%")
+    )
   }
 
   /**
