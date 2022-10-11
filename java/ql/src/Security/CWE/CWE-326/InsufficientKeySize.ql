@@ -19,4 +19,4 @@ where
   exists(AsymmetricNonECKeyTrackingConfiguration config1 | config1.hasFlow(source, sink)) or
   exists(AsymmetricECKeyTrackingConfiguration config2 | config2.hasFlow(source, sink)) or
   exists(SymmetricKeyTrackingConfiguration config3 | config3.hasFlow(source, sink))
-select sink, "This $@ is too small and creates a key $@.", source, "key size", sink, "here"
+select sink, "This $@ is too small.", source, "key size"
