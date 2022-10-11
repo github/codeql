@@ -25,28 +25,15 @@ class RemoteFlowSourceReach extends TaintTracking::Configuration {
   }
 
   override predicate isSink(DataFlow::Node node) {
-    not node.getLocation().getFile() instanceof IgnoredFile and
-    (
-      node instanceof RemoteFlowSource
-      or
-      this.isAdditionalFlowStep(_, node)
-    ) and
-    // In september 2021 we changed how we do taint-propagation for method calls (mostly
-    // relating to modeled frameworks/libraries). We used to do `obj -> obj.meth` and
-    // `obj.meth -> obj.meth()` in two separate steps, and now do them in one
-    // `obj -> obj.meth()`. To be able to compare the overall reach between these two
-    // version, we don't want this query to alert us to the fact that we no longer taint
-    // the node in the middle (since that is just noise).
-    // see https://github.com/github/codeql/pull/6349
+    not node.getLocation().getFile() instanceof IgnoredFile
+    // We could try to reduce the number of sinks in this configuration, by only
+    // allowing something that is on one end of a localFlowStep, readStep or storeStep,
+    // however, it's a brittle solution that requires us to remember to update this file
+    // if/when adding something new to the data-flow library.
     //
-    // We should be able to remove the following few lines of code once we don't care to
-    // compare with the old (before September 2021) way of doing taint-propagation for
-    // method calls.
-    not exists(DataFlow::MethodCallNode c |
-      node = c.getFunction() and
-      this.isAdditionalFlowStep(c.getObject(), node) and
-      this.isAdditionalFlowStep(node, c)
-    )
+    // From testing on a few projects, trying to reduce the number of nodes, we only
+    // gain a reduction in the range of 40%, and while that's nice, it doesn't seem
+    // worth it to me for a meta query.
   }
 }
 

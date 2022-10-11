@@ -396,6 +396,8 @@ class SingletonOverride1
     singleton2
 end
 
+SingletonOverride1.singleton1
+SingletonOverride1.singleton2
 SingletonOverride1.call_singleton1
 SingletonOverride1.call_singleton2
 
@@ -411,6 +413,8 @@ class SingletonOverride2 < SingletonOverride1
     end
 end
 
+SingletonOverride2.singleton1
+SingletonOverride2.singleton2
 SingletonOverride2.call_singleton1
 SingletonOverride2.call_singleton2
 
