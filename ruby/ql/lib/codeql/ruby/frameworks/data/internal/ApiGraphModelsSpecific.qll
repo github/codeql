@@ -19,8 +19,7 @@
  * ```
  */
 
-private import ruby
-private import codeql.ruby.DataFlow
+private import codeql.ruby.AST
 private import codeql.ruby.dataflow.internal.DataFlowPrivate as DataFlowPrivate
 private import ApiGraphModels
 
@@ -29,8 +28,10 @@ class Unit = DataFlowPrivate::Unit;
 // Re-export libraries needed by ApiGraphModels.qll
 import codeql.ruby.ApiGraphs
 import codeql.ruby.dataflow.internal.AccessPathSyntax as AccessPathSyntax
+import codeql.ruby.DataFlow::DataFlow as DataFlow
 private import AccessPathSyntax
 private import codeql.ruby.dataflow.internal.FlowSummaryImplSpecific as FlowSummaryImplSpecific
+private import codeql.ruby.dataflow.internal.FlowSummaryImpl::Public
 private import codeql.ruby.dataflow.internal.DataFlowDispatch as DataFlowDispatch
 
 /**
@@ -40,7 +41,7 @@ private import codeql.ruby.dataflow.internal.DataFlowDispatch as DataFlowDispatc
  */
 bindingset[package]
 predicate isPackageUsed(string package) {
-  // For now everything is modelled as an access path starting at any top-level, so the package name has no effect.
+  // For now everything is modeled as an access path starting at any top-level, so the package name has no effect.
   //
   // We allow an arbitrary package name so that the model can record the name of the package in case it's needed in the future.
   //
@@ -55,12 +56,6 @@ predicate isPackageUsed(string package) {
 /** Gets a Ruby-specific interpretation of the `(package, type, path)` tuple after resolving the first `n` access path tokens. */
 bindingset[package, type, path]
 API::Node getExtraNodeFromPath(string package, string type, AccessPath path, int n) {
-  isRelevantFullPath(package, type, path) and
-  exists(package) and // Allow any package name, see `isPackageUsed`.
-  type = "" and
-  n = 0 and
-  result = API::root()
-  or
   // A row of form `;any;Method[foo]` should match any method named `foo`.
   exists(package) and
   type = "any" and
@@ -69,6 +64,13 @@ API::Node getExtraNodeFromPath(string package, string type, AccessPath path, int
     methodMatchedByName(path, entry.getName()) and
     result = entry.getANode()
   )
+}
+
+/** Gets a Ruby-specific interpretation of the `(package, type)` tuple. */
+API::Node getExtraNodeFromType(string package, string type) {
+  isRelevantFullPath(package, type, _) and // Allow any package name, see `isPackageUsed`.
+  type = "" and
+  result = API::root()
 }
 
 /**
@@ -115,11 +117,13 @@ API::Node getExtraSuccessorFromNode(API::Node node, AccessPathToken token) {
   or
   token.getName() = "Parameter" and
   result =
-    node.getASuccessor(API::Label::getLabelFromArgumentPosition(FlowSummaryImplSpecific::parseParamBody(token
+    node.getASuccessor(API::Label::getLabelFromParameterPosition(FlowSummaryImplSpecific::parseArgBody(token
               .getAnArgument())))
-  // Note: The "Element" token is not implemented yet, as it ultimately requires type-tracking and
-  // API graphs to be aware of the steps involving Element contributed by the standard library model.
-  // Type-tracking cannot summarize function calls on its own, so it doesn't benefit from synthesized callables.
+  or
+  exists(DataFlow::ContentSet contents |
+    SummaryComponent::content(contents) = FlowSummaryImplSpecific::interpretComponentSpecific(token) and
+    result = node.getContents(contents)
+  )
 }
 
 /**
@@ -129,7 +133,7 @@ bindingset[token]
 API::Node getExtraSuccessorFromInvoke(InvokeNode node, AccessPathToken token) {
   token.getName() = "Argument" and
   result =
-    node.getASuccessor(API::Label::getLabelFromParameterPosition(FlowSummaryImplSpecific::parseArgBody(token
+    node.getASuccessor(API::Label::getLabelFromArgumentPosition(FlowSummaryImplSpecific::parseParamBody(token
               .getAnArgument())))
 }
 
@@ -159,7 +163,7 @@ InvokeNode getAnInvocationOf(API::Node node) { result = node }
  */
 bindingset[name]
 predicate isExtraValidTokenNameInIdentifyingAccessPath(string name) {
-  name = ["Member", "Method", "Instance", "WithBlock", "WithoutBlock"]
+  name = ["Member", "Method", "Instance", "WithBlock", "WithoutBlock", "Element", "Field"]
 }
 
 /**
@@ -176,12 +180,12 @@ predicate isExtraValidNoArgumentTokenInIdentifyingAccessPath(string name) {
  */
 bindingset[name, argument]
 predicate isExtraValidTokenArgumentInIdentifyingAccessPath(string name, string argument) {
-  name = ["Member", "Method"] and
+  name = ["Member", "Method", "Element", "Field"] and
   exists(argument)
   or
   name = ["Argument", "Parameter"] and
   (
-    argument = ["self", "block"]
+    argument = ["self", "block", "any", "any-named"]
     or
     argument.regexpMatch("\\w+:") // keyword argument
   )

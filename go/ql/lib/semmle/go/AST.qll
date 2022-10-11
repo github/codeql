@@ -28,12 +28,12 @@ class AstNode extends @node, Locatable {
   /**
    * Gets a child node of this node.
    */
-  AstNode getAChild() { result = getChild(_) }
+  AstNode getAChild() { result = this.getChild(_) }
 
   /**
    * Gets the number of child nodes of this node.
    */
-  int getNumChild() { result = count(getAChild()) }
+  int getNumChild() { result = count(this.getAChild()) }
 
   /**
    * Gets a child with the given index and of the given kind, if one exists.
@@ -63,7 +63,7 @@ class AstNode extends @node, Locatable {
   AstNode getUniquelyNumberedChild(int index) {
     result =
       rank[index + 1](AstNode child, string kind, int i |
-        child = getChildOfKind(kind, i)
+        child = this.getChildOfKind(kind, i)
       |
         child order by kind, i
       )
@@ -74,17 +74,17 @@ class AstNode extends @node, Locatable {
 
   /** Gets the parent node of this AST node, but without crossing function boundaries. */
   private AstNode parentInSameFunction() {
-    result = getParent() and
+    result = this.getParent() and
     not this instanceof FuncDef
   }
 
   /** Gets the innermost function definition to which this AST node belongs, if any. */
-  FuncDef getEnclosingFunction() { result = getParent().parentInSameFunction*() }
+  FuncDef getEnclosingFunction() { result = this.getParent().parentInSameFunction*() }
 
   /**
    * Gets a comma-separated list of the names of the primary CodeQL classes to which this element belongs.
    */
-  final string getPrimaryQlClasses() { result = concat(getAPrimaryQlClass(), ",") }
+  final string getPrimaryQlClasses() { result = concat(this.getAPrimaryQlClass(), ",") }
 
   /**
    * Gets the name of a primary CodeQL class to which this node belongs.
@@ -116,12 +116,12 @@ class ExprParent extends @exprparent, AstNode {
   /**
    * Gets an expression that is a child node of this node in the AST.
    */
-  Expr getAChildExpr() { result = getChildExpr(_) }
+  Expr getAChildExpr() { result = this.getChildExpr(_) }
 
   /**
    * Gets the number of child expressions of this node.
    */
-  int getNumChildExpr() { result = count(getAChildExpr()) }
+  int getNumChildExpr() { result = count(this.getAChildExpr()) }
 }
 
 /**
@@ -139,12 +139,12 @@ class GoModExprParent extends @modexprparent, AstNode {
   /**
    * Gets an expression that is a child node of this node in the AST.
    */
-  GoModExpr getAChildGoModExpr() { result = getChildGoModExpr(_) }
+  GoModExpr getAChildGoModExpr() { result = this.getChildGoModExpr(_) }
 
   /**
    * Gets the number of child expressions of this node.
    */
-  int getNumChildGoModExpr() { result = count(getAChildGoModExpr()) }
+  int getNumChildGoModExpr() { result = count(this.getAChildGoModExpr()) }
 }
 
 /**
@@ -162,12 +162,12 @@ class StmtParent extends @stmtparent, AstNode {
   /**
    * Gets a statement that is a child node of this node in the AST.
    */
-  Stmt getAChildStmt() { result = getChildStmt(_) }
+  Stmt getAChildStmt() { result = this.getChildStmt(_) }
 
   /**
    * Gets the number of child statements of this node.
    */
-  int getNumChildStmt() { result = count(getAChildStmt()) }
+  int getNumChildStmt() { result = count(this.getAChildStmt()) }
 }
 
 /**
@@ -185,12 +185,12 @@ class DeclParent extends @declparent, AstNode {
   /**
    * Gets a child declaration of this node in the AST.
    */
-  Decl getADecl() { result = getDecl(_) }
+  Decl getADecl() { result = this.getDecl(_) }
 
   /**
    * Gets the number of child declarations of this node.
    */
-  int getNumDecl() { result = count(getADecl()) }
+  int getNumDecl() { result = count(this.getADecl()) }
 }
 
 /**
@@ -208,12 +208,12 @@ class FieldParent extends @fieldparent, AstNode {
   /**
    * Gets a child field of this node in the AST.
    */
-  FieldBase getAField() { result = getField(_) }
+  FieldBase getAField() { result = this.getField(_) }
 
   /**
    * Gets the number of child fields of this node.
    */
-  int getNumFields() { result = count(getAField()) }
+  int getNumFields() { result = count(this.getAField()) }
 }
 
 /**

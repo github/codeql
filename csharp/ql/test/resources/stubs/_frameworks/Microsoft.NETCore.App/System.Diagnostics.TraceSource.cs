@@ -4,7 +4,7 @@ namespace System
 {
     namespace Diagnostics
     {
-        // Generated from `System.Diagnostics.BooleanSwitch` in `System.Diagnostics.TraceSource, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Diagnostics.BooleanSwitch` in `System.Diagnostics.TraceSource, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class BooleanSwitch : System.Diagnostics.Switch
         {
             public BooleanSwitch(string displayName, string description) : base(default(string), default(string)) => throw null;
@@ -13,7 +13,7 @@ namespace System
             protected override void OnValueChanged() => throw null;
         }
 
-        // Generated from `System.Diagnostics.CorrelationManager` in `System.Diagnostics.TraceSource, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Diagnostics.CorrelationManager` in `System.Diagnostics.TraceSource, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class CorrelationManager
         {
             public System.Guid ActivityId { get => throw null; set => throw null; }
@@ -23,7 +23,7 @@ namespace System
             public void StopLogicalOperation() => throw null;
         }
 
-        // Generated from `System.Diagnostics.DefaultTraceListener` in `System.Diagnostics.TraceSource, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Diagnostics.DefaultTraceListener` in `System.Diagnostics.TraceSource, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class DefaultTraceListener : System.Diagnostics.TraceListener
         {
             public bool AssertUiEnabled { get => throw null; set => throw null; }
@@ -35,7 +35,7 @@ namespace System
             public override void WriteLine(string message) => throw null;
         }
 
-        // Generated from `System.Diagnostics.EventTypeFilter` in `System.Diagnostics.TraceSource, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Diagnostics.EventTypeFilter` in `System.Diagnostics.TraceSource, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class EventTypeFilter : System.Diagnostics.TraceFilter
         {
             public System.Diagnostics.SourceLevels EventType { get => throw null; set => throw null; }
@@ -43,7 +43,7 @@ namespace System
             public override bool ShouldTrace(System.Diagnostics.TraceEventCache cache, string source, System.Diagnostics.TraceEventType eventType, int id, string formatOrMessage, object[] args, object data1, object[] data) => throw null;
         }
 
-        // Generated from `System.Diagnostics.SourceFilter` in `System.Diagnostics.TraceSource, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Diagnostics.SourceFilter` in `System.Diagnostics.TraceSource, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class SourceFilter : System.Diagnostics.TraceFilter
         {
             public override bool ShouldTrace(System.Diagnostics.TraceEventCache cache, string source, System.Diagnostics.TraceEventType eventType, int id, string formatOrMessage, object[] args, object data1, object[] data) => throw null;
@@ -51,21 +51,21 @@ namespace System
             public SourceFilter(string source) => throw null;
         }
 
-        // Generated from `System.Diagnostics.SourceLevels` in `System.Diagnostics.TraceSource, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Diagnostics.SourceLevels` in `System.Diagnostics.TraceSource, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         [System.Flags]
-        public enum SourceLevels
+        public enum SourceLevels : int
         {
-            ActivityTracing,
-            All,
-            Critical,
-            Error,
-            Information,
-            Off,
-            Verbose,
-            Warning,
+            ActivityTracing = 65280,
+            All = -1,
+            Critical = 1,
+            Error = 3,
+            Information = 15,
+            Off = 0,
+            Verbose = 31,
+            Warning = 7,
         }
 
-        // Generated from `System.Diagnostics.SourceSwitch` in `System.Diagnostics.TraceSource, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Diagnostics.SourceSwitch` in `System.Diagnostics.TraceSource, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class SourceSwitch : System.Diagnostics.Switch
         {
             public System.Diagnostics.SourceLevels Level { get => throw null; set => throw null; }
@@ -75,7 +75,7 @@ namespace System
             public SourceSwitch(string displayName, string defaultSwitchValue) : base(default(string), default(string)) => throw null;
         }
 
-        // Generated from `System.Diagnostics.Switch` in `System.Diagnostics.TraceSource, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Diagnostics.Switch` in `System.Diagnostics.TraceSource, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public abstract class Switch
         {
             public System.Collections.Specialized.StringDictionary Attributes { get => throw null; }
@@ -90,7 +90,7 @@ namespace System
             protected string Value { get => throw null; set => throw null; }
         }
 
-        // Generated from `System.Diagnostics.SwitchAttribute` in `System.Diagnostics.TraceSource, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Diagnostics.SwitchAttribute` in `System.Diagnostics.TraceSource, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class SwitchAttribute : System.Attribute
         {
             public static System.Diagnostics.SwitchAttribute[] GetAll(System.Reflection.Assembly assembly) => throw null;
@@ -100,14 +100,14 @@ namespace System
             public System.Type SwitchType { get => throw null; set => throw null; }
         }
 
-        // Generated from `System.Diagnostics.SwitchLevelAttribute` in `System.Diagnostics.TraceSource, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Diagnostics.SwitchLevelAttribute` in `System.Diagnostics.TraceSource, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class SwitchLevelAttribute : System.Attribute
         {
             public SwitchLevelAttribute(System.Type switchLevelType) => throw null;
             public System.Type SwitchLevelType { get => throw null; set => throw null; }
         }
 
-        // Generated from `System.Diagnostics.Trace` in `System.Diagnostics.TraceSource, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Diagnostics.Trace` in `System.Diagnostics.TraceSource, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class Trace
         {
             public static void Assert(bool condition) => throw null;
@@ -150,7 +150,7 @@ namespace System
             public static void WriteLineIf(bool condition, string message, string category) => throw null;
         }
 
-        // Generated from `System.Diagnostics.TraceEventCache` in `System.Diagnostics.TraceSource, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Diagnostics.TraceEventCache` in `System.Diagnostics.TraceSource, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class TraceEventCache
         {
             public string Callstack { get => throw null; }
@@ -162,39 +162,39 @@ namespace System
             public TraceEventCache() => throw null;
         }
 
-        // Generated from `System.Diagnostics.TraceEventType` in `System.Diagnostics.TraceSource, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum TraceEventType
+        // Generated from `System.Diagnostics.TraceEventType` in `System.Diagnostics.TraceSource, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        public enum TraceEventType : int
         {
-            Critical,
-            Error,
-            Information,
-            Resume,
-            Start,
-            Stop,
-            Suspend,
-            Transfer,
-            Verbose,
-            Warning,
+            Critical = 1,
+            Error = 2,
+            Information = 8,
+            Resume = 2048,
+            Start = 256,
+            Stop = 512,
+            Suspend = 1024,
+            Transfer = 4096,
+            Verbose = 16,
+            Warning = 4,
         }
 
-        // Generated from `System.Diagnostics.TraceFilter` in `System.Diagnostics.TraceSource, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Diagnostics.TraceFilter` in `System.Diagnostics.TraceSource, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public abstract class TraceFilter
         {
             public abstract bool ShouldTrace(System.Diagnostics.TraceEventCache cache, string source, System.Diagnostics.TraceEventType eventType, int id, string formatOrMessage, object[] args, object data1, object[] data);
             protected TraceFilter() => throw null;
         }
 
-        // Generated from `System.Diagnostics.TraceLevel` in `System.Diagnostics.TraceSource, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-        public enum TraceLevel
+        // Generated from `System.Diagnostics.TraceLevel` in `System.Diagnostics.TraceSource, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        public enum TraceLevel : int
         {
-            Error,
-            Info,
-            Off,
-            Verbose,
-            Warning,
+            Error = 1,
+            Info = 3,
+            Off = 0,
+            Verbose = 4,
+            Warning = 2,
         }
 
-        // Generated from `System.Diagnostics.TraceListener` in `System.Diagnostics.TraceSource, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Diagnostics.TraceListener` in `System.Diagnostics.TraceSource, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public abstract class TraceListener : System.MarshalByRefObject, System.IDisposable
         {
             public System.Collections.Specialized.StringDictionary Attributes { get => throw null; }
@@ -231,7 +231,7 @@ namespace System
             public virtual void WriteLine(string message, string category) => throw null;
         }
 
-        // Generated from `System.Diagnostics.TraceListenerCollection` in `System.Diagnostics.TraceSource, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Diagnostics.TraceListenerCollection` in `System.Diagnostics.TraceSource, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class TraceListenerCollection : System.Collections.ICollection, System.Collections.IEnumerable, System.Collections.IList
         {
             public int Add(System.Diagnostics.TraceListener listener) => throw null;
@@ -262,20 +262,20 @@ namespace System
             object System.Collections.ICollection.SyncRoot { get => throw null; }
         }
 
-        // Generated from `System.Diagnostics.TraceOptions` in `System.Diagnostics.TraceSource, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Diagnostics.TraceOptions` in `System.Diagnostics.TraceSource, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         [System.Flags]
-        public enum TraceOptions
+        public enum TraceOptions : int
         {
-            Callstack,
-            DateTime,
-            LogicalOperationStack,
-            None,
-            ProcessId,
-            ThreadId,
-            Timestamp,
+            Callstack = 32,
+            DateTime = 2,
+            LogicalOperationStack = 1,
+            None = 0,
+            ProcessId = 8,
+            ThreadId = 16,
+            Timestamp = 4,
         }
 
-        // Generated from `System.Diagnostics.TraceSource` in `System.Diagnostics.TraceSource, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Diagnostics.TraceSource` in `System.Diagnostics.TraceSource, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class TraceSource
         {
             public System.Collections.Specialized.StringDictionary Attributes { get => throw null; }
@@ -297,7 +297,7 @@ namespace System
             public void TraceTransfer(int id, string message, System.Guid relatedActivityId) => throw null;
         }
 
-        // Generated from `System.Diagnostics.TraceSwitch` in `System.Diagnostics.TraceSource, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+        // Generated from `System.Diagnostics.TraceSwitch` in `System.Diagnostics.TraceSource, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class TraceSwitch : System.Diagnostics.Switch
         {
             public System.Diagnostics.TraceLevel Level { get => throw null; set => throw null; }

@@ -1,4 +1,4 @@
 import Microsoft.SAL
 
-from SALAnnotation a
+from SalAnnotation a
 select a, a.getDeclaration()

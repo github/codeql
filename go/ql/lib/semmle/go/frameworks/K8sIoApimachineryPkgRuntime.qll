@@ -43,8 +43,8 @@ module K8sIoApimachineryPkgRuntime {
     }
   }
 
-  private class DeepCopyJSON extends TaintTracking::FunctionModel {
-    DeepCopyJSON() { this.hasQualifiedName(packagePath(), ["DeepCopyJSON", "DeepCopyJSONValue"]) }
+  private class DeepCopyJson extends TaintTracking::FunctionModel {
+    DeepCopyJson() { this.hasQualifiedName(packagePath(), ["DeepCopyJSON", "DeepCopyJSONValue"]) }
 
     override predicate hasTaintFlow(DataFlow::FunctionInput inp, DataFlow::FunctionOutput outp) {
       inp.isParameter(0) and outp.isResult()

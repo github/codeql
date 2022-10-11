@@ -38,5 +38,5 @@ where
   sc = switch.getASwitchCase() and
   tooLong(sc) and
   switchCaseLength(sc, lines)
-select switch, "Switch has at least one case that is too long: $@", sc,
+select switch, "Switch has at least one case that is too long: $@.", sc,
   sc.getExpr().toString() + " (" + lines.toString() + " lines)"

@@ -42,6 +42,8 @@ callsWithNoArguments
 | cfg.rb:200:1:200:32 | call to times |
 | cfg.rb:202:1:202:35 | call to times |
 | cfg.rb:205:1:205:3 | call to foo |
+| cfg.rb:208:3:210:5 | call to reject |
+| cfg.rb:209:5:209:13 | call to nil? |
 | desugar.rb:6:3:6:7 | call to foo |
 | desugar.rb:10:3:10:7 | call to foo |
 | desugar.rb:14:3:14:7 | call to foo |

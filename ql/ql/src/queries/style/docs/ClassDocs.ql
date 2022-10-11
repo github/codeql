@@ -22,5 +22,6 @@ predicate badStyle(string s) {
 from Class c
 where
   badStyle(c.getQLDoc().getContents()) and
-  not c.isPrivate()
+  not c.isPrivate() and
+  not c.hasAnnotation("deprecated")
 select c.getQLDoc(), "The QLDoc for a class should start with 'A', 'An', or 'The'."

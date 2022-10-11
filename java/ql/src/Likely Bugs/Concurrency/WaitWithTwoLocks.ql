@@ -27,4 +27,4 @@ where
   ma.getMethod().getDeclaringType().hasQualifiedName("java.lang", "Object") and
   ma.getEnclosingStmt().getEnclosingStmt*() = synch and
   synch.getEnclosingStmt+() instanceof Synched
-select ma, "wait() with two locks held."
+select ma, "This calls 'Object.wait()' with two locks held."

@@ -49,3 +49,12 @@ fun fn(boo: Boolean) {
 fun interface SomePredicate<T> {
     fun fn(i: T): Boolean
 }
+
+fun interface InterfaceFn1Sus {
+    suspend fun fn1(i: Int, j: Int)
+}
+
+suspend fun test() {
+    val i0 = InterfaceFn1Sus { a, b -> Unit }
+    i0.fn1(1,2)
+}

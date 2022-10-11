@@ -1,3 +1,0 @@
-| Sources;NewSources;false;WrapConsoleReadKey;();;ReturnValue;generated:local |
-| Sources;NewSources;false;WrapConsoleReadLine;();;ReturnValue;generated:local |
-| Sources;NewSources;false;WrapConsoleReadLineAndProcees;(System.String);;ReturnValue;generated:local |

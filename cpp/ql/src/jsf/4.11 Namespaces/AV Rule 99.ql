@@ -26,4 +26,4 @@ from Namespace ns, File rep
 where
   exists(ns.getParentNamespace().getParentNamespace().getParentNamespace()) and
   namespaceRepresentative(ns, rep)
-select rep, "AV Rule 99: namespace " + ns.toString() + " is nested more than two levels deep"
+select rep, "AV Rule 99: namespace " + ns.toString() + " is nested more than two levels deep."

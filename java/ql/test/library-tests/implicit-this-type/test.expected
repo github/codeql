@@ -1,0 +1,20 @@
+| Test.java:7:5:7:29 | m(...) | Test.java:7:7:7:28 | "direct implicit this" | Gen.class:0:0:0:0 | m | Gen.class:0:0:0:0 | Gen<String> |
+| Test.java:8:5:8:34 | m(...) | Test.java:8:12:8:33 | "direct explicit this" | Gen.class:0:0:0:0 | m | Gen.class:0:0:0:0 | Gen<String> |
+| Test.java:13:7:13:42 | m(...) | Test.java:13:9:13:41 | "direct implicit this from inner" | Gen.class:0:0:0:0 | m | Gen.class:0:0:0:0 | Gen<String> |
+| Test.java:14:7:14:55 | m(...) | Test.java:14:22:14:54 | "direct explicit this from inner" | Gen.class:0:0:0:0 | m | Gen.class:0:0:0:0 | Gen<String> |
+| Test.java:21:9:21:44 | m(...) | Test.java:21:11:21:43 | "direct implicit this from local" | Gen.class:0:0:0:0 | m | Gen.class:0:0:0:0 | Gen<String> |
+| Test.java:22:9:22:57 | m(...) | Test.java:22:24:22:56 | "direct explicit this from local" | Gen.class:0:0:0:0 | m | Gen.class:0:0:0:0 | Gen<String> |
+| Test.java:30:5:30:46 | m(...) | Test.java:30:10:30:45 | "direct implicit this (generic sub)" | Gen.class:0:0:0:0 | m | Gen.class:0:0:0:0 | Gen<S> |
+| Test.java:31:5:31:51 | m(...) | Test.java:31:15:31:50 | "direct explicit this (generic sub)" | Gen.class:0:0:0:0 | m | Gen.class:0:0:0:0 | Gen<S> |
+| Test.java:36:7:36:59 | m(...) | Test.java:36:12:36:58 | "direct implicit this from inner (generic sub)" | Gen.class:0:0:0:0 | m | Gen.class:0:0:0:0 | Gen<S> |
+| Test.java:37:7:37:71 | m(...) | Test.java:37:24:37:70 | "direct explicit this from inner (generic sub)" | Gen.class:0:0:0:0 | m | Gen.class:0:0:0:0 | Gen<S> |
+| Test.java:46:5:46:31 | m(...) | Test.java:46:7:46:30 | "indirect implicit this" | Gen.class:0:0:0:0 | m | Gen.class:0:0:0:0 | Gen<String> |
+| Test.java:47:5:47:36 | m(...) | Test.java:47:12:47:35 | "indirect explicit this" | Gen.class:0:0:0:0 | m | Gen.class:0:0:0:0 | Gen<String> |
+| Test.java:52:7:52:44 | m(...) | Test.java:52:9:52:43 | "indirect implicit this from inner" | Gen.class:0:0:0:0 | m | Gen.class:0:0:0:0 | Gen<String> |
+| Test.java:53:7:53:64 | m(...) | Test.java:53:29:53:63 | "indirect explicit this from inner" | Gen.class:0:0:0:0 | m | Gen.class:0:0:0:0 | Gen<String> |
+| Test.java:60:5:60:48 | m(...) | Test.java:60:10:60:47 | "indirect implicit this (generic sub)" | Gen.class:0:0:0:0 | m | Gen.class:0:0:0:0 | Gen<R> |
+| Test.java:61:5:61:53 | m(...) | Test.java:61:15:61:52 | "indirect explicit this (generic sub)" | Gen.class:0:0:0:0 | m | Gen.class:0:0:0:0 | Gen<R> |
+| Test.java:66:7:66:61 | m(...) | Test.java:66:12:66:60 | "indirect implicit this from inner (generic sub)" | Gen.class:0:0:0:0 | m | Gen.class:0:0:0:0 | Gen<R> |
+| Test.java:67:7:67:80 | m(...) | Test.java:67:31:67:79 | "indirect explicit this from inner (generic sub)" | Gen.class:0:0:0:0 | m | Gen.class:0:0:0:0 | Gen<R> |
+| Test.java:79:7:79:52 | m(...) | Test.java:79:9:79:51 | "direct implicit this, from inner to inner" | UninvolvedOuter$InnerGen.class:0:0:0:0 | m | UninvolvedOuter$InnerGen.class:0:0:0:0 | InnerGen<String> |
+| Test.java:80:7:80:57 | m(...) | Test.java:80:14:80:56 | "direct explicit this, from inner to inner" | UninvolvedOuter$InnerGen.class:0:0:0:0 | m | UninvolvedOuter$InnerGen.class:0:0:0:0 | InnerGen<String> |

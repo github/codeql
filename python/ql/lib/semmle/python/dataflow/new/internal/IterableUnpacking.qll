@@ -244,7 +244,7 @@ class UnpackingAssignmentSequenceTarget extends UnpackingAssignmentTarget instan
  */
 predicate iterableUnpackingAssignmentFlowStep(Node nodeFrom, Node nodeTo) {
   exists(AssignmentTarget target |
-    nodeFrom.asExpr() = target.getValue() and
+    nodeFrom.(CfgNode).getNode().getNode() = target.getValue() and
     nodeTo = TIterableSequenceNode(target)
   )
 }
@@ -255,7 +255,7 @@ predicate iterableUnpackingAssignmentFlowStep(Node nodeFrom, Node nodeTo) {
  */
 predicate iterableUnpackingForReadStep(CfgNode nodeFrom, Content c, Node nodeTo) {
   exists(ForTarget target |
-    nodeFrom.asExpr() = target.getSource() and
+    nodeFrom.getNode().getNode() = target.getSource() and
     target instanceof SequenceNode and
     nodeTo = TIterableSequenceNode(target)
   ) and
@@ -273,7 +273,7 @@ predicate iterableUnpackingForReadStep(CfgNode nodeFrom, Content c, Node nodeTo)
 predicate iterableUnpackingTupleFlowStep(Node nodeFrom, Node nodeTo) {
   exists(UnpackingAssignmentSequenceTarget target |
     nodeFrom = TIterableSequenceNode(target) and
-    nodeTo.asCfgNode() = target
+    nodeTo.(CfgNode).getNode() = target
   )
 }
 
@@ -305,7 +305,7 @@ predicate iterableUnpackingConvertingReadStep(Node nodeFrom, Content c, Node nod
 predicate iterableUnpackingConvertingStoreStep(Node nodeFrom, Content c, Node nodeTo) {
   exists(UnpackingAssignmentSequenceTarget target |
     nodeFrom = TIterableElementNode(target) and
-    nodeTo.asCfgNode() = target and
+    nodeTo.(CfgNode).getNode() = target and
     exists(int index | exists(target.getElement(index)) |
       c.(TupleElementContent).getIndex() = index
     )
@@ -331,7 +331,7 @@ predicate iterableUnpackingElementReadStep(Node nodeFrom, Content c, Node nodeTo
     not exists(target.getAnElement().(StarredNode)) and
     starIndex = -1
   |
-    nodeFrom.asCfgNode() = target and
+    nodeFrom.(CfgNode).getNode() = target and
     element = target.getElement(index) and
     (
       if starIndex = -1 or index < starIndex

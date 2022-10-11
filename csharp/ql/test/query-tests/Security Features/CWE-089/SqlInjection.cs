@@ -84,6 +84,17 @@ namespace Test
                 var result = new DataSet();
                 adapter.Fill(result);
             }
+
+            // BAD: Text from a local textbox
+            using (var connection = new SqlConnection(connectionString))
+            {
+                var queryString = "SELECT ITEM,PRICE FROM PRODUCT WHERE ITEM_CATEGORY='"
+                  + box1.Text + "' ORDER BY PRICE";
+                var cmd = new SqlCommand(queryString);
+                var adapter = new SqlDataAdapter(cmd);
+                var result = new DataSet();
+                adapter.Fill(result);
+            }
         }
 
         System.Windows.Forms.TextBox box1;

@@ -118,7 +118,11 @@ class Synthesis extends TSynthesis {
 private class Desugared extends AstNode {
   Desugared() { this = any(AstNode sugar).getDesugared() }
 
-  AstNode getADescendant() { result = this.getAChild*() }
+  AstNode getADescendant() {
+    result = this
+    or
+    result = this.getADescendant().getAChild()
+  }
 }
 
 /**
@@ -132,7 +136,10 @@ int desugarLevel(AstNode n) { result = count(Desugared desugared | n = desugared
  * Holds if `n` appears in a context that is desugared. That is, a
  * transitive, reflexive parent of `n` is a desugared node.
  */
-predicate isInDesugeredContext(AstNode n) { n = any(AstNode sugar).getDesugared().getAChild*() }
+predicate isInDesugaredContext(AstNode n) {
+  n = any(AstNode sugar).getDesugared() or
+  n = any(AstNode mid | isInDesugaredContext(mid)).getAChild()
+}
 
 /**
  * Holds if `n` is a node that only exists as a result of desugaring some
@@ -141,7 +148,7 @@ predicate isInDesugeredContext(AstNode n) { n = any(AstNode sugar).getDesugared(
 predicate isDesugarNode(AstNode n) {
   n = any(AstNode sugar).getDesugared()
   or
-  isInDesugeredContext(n) and
+  isInDesugaredContext(n) and
   forall(AstNode parent | parent = n.getParent() | parent.isSynthesized())
 }
 
@@ -210,6 +217,38 @@ private module ImplicitSelfSynthesis {
       regularMethodCallSelfSynthesis(parent, i, child)
     }
   }
+
+  pragma[nomagic]
+  private AstNode instanceVarAccessSynthParentStar(InstanceVariableAccess var) {
+    result = var
+    or
+    instanceVarAccessSynthParentStar(var) = getSynthChild(result, _)
+  }
+
+  /**
+   * Gets the `SelfKind` for instance variable access `var`. This is based on the
+   * "owner" of `var`; for real nodes this is the node itself, for synthetic nodes
+   * this is the closest parent that is a real node.
+   */
+  pragma[nomagic]
+  private SelfKind getSelfKind(InstanceVariableAccess var) {
+    exists(Ruby::AstNode owner |
+      owner = toGenerated(instanceVarAccessSynthParentStar(var)) and
+      result = SelfKind(TSelfVariable(scopeOf(owner).getEnclosingSelfScope()))
+    )
+  }
+
+  pragma[nomagic]
+  private predicate instanceVariableSelfSynthesis(InstanceVariableAccess var, int i, Child child) {
+    child = SynthChild(getSelfKind(var)) and
+    i = 0
+  }
+
+  private class InstanceVariableSelfSynthesis extends Synthesis {
+    final override predicate child(AstNode parent, int i, Child child) {
+      instanceVariableSelfSynthesis(parent, i, child)
+    }
+  }
 }
 
 private module SetterDesugar {
@@ -223,8 +262,11 @@ private module SetterDesugar {
     MethodCall getMethodCall() { result = mc }
 
     pragma[nomagic]
-    MethodCallKind getCallKind(boolean setter, int arity) {
-      result = MethodCallKind(mc.getMethodName(), setter, arity)
+    private string getMethodName() { result = mc.getMethodName() }
+
+    pragma[nomagic]
+    MethodCallKind getCallKind(int arity) {
+      result = MethodCallKind(this.getMethodName(), true, arity)
     }
 
     pragma[nomagic]
@@ -250,7 +292,7 @@ private module SetterDesugar {
       exists(AstNode seq | seq = TStmtSequenceSynth(sae, -1) |
         parent = seq and
         i = 0 and
-        child = SynthChild(sae.getCallKind(true, sae.getNumberOfArguments() + 1))
+        child = SynthChild(sae.getCallKind(sae.getNumberOfArguments() + 1))
         or
         exists(AstNode call | call = TMethodCallSynth(seq, 0, _, _, _) |
           parent = call and
@@ -461,8 +503,11 @@ private module AssignOperationDesugar {
     MethodCall getMethodCall() { result = mc }
 
     pragma[nomagic]
+    private string getMethodName() { result = mc.getMethodName() }
+
+    pragma[nomagic]
     MethodCallKind getCallKind(boolean setter, int arity) {
-      result = MethodCallKind(mc.getMethodName(), setter, arity)
+      result = MethodCallKind(this.getMethodName(), setter, arity)
     }
 
     pragma[nomagic]

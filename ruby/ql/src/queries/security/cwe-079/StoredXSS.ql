@@ -12,11 +12,11 @@
  *       external/cwe/cwe-116
  */
 
-import ruby
+import codeql.ruby.AST
 import codeql.ruby.security.StoredXSSQuery
 import DataFlow::PathGraph
 
 from StoredXss::Configuration config, DataFlow::PathNode source, DataFlow::PathNode sink
 where config.hasFlowPath(source, sink)
-select sink.getNode(), source, sink, "Cross-site scripting vulnerability due to $@",
+select sink.getNode(), source, sink, "Stored cross-site scripting vulnerability due to $@.",
   source.getNode(), "stored value"

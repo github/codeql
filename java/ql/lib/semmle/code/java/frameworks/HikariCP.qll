@@ -10,8 +10,8 @@ private class SsrfSinkCsv extends SinkModelCsv {
     row =
       [
         //"package;type;overrides;name;signature;ext;spec;kind"
-        "com.zaxxer.hikari;HikariConfig;false;HikariConfig;(Properties);;Argument[0];jdbc-url",
-        "com.zaxxer.hikari;HikariConfig;false;setJdbcUrl;(String);;Argument[0];jdbc-url"
+        "com.zaxxer.hikari;HikariConfig;false;HikariConfig;(Properties);;Argument[0];jdbc-url;manual",
+        "com.zaxxer.hikari;HikariConfig;false;setJdbcUrl;(String);;Argument[0];jdbc-url;manual"
       ]
   }
 }

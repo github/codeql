@@ -1,0 +1,7 @@
+| a.kt:0:0:0:0 | <fn> | has body |
+| a.kt:2:5:2:16 | f1 | has body |
+| b.kt:0:0:0:0 | <fn> | has body |
+| c.kt:0:0:0:0 | <fn> | has body |
+| d.kt:0:0:0:0 | <clinit> | has body |
+| e.kt:0:0:0:0 | <fn_ArrayListAdd> | has body |
+| e.kt:0:0:0:0 | <fn_LinkedHashMap> | has body |

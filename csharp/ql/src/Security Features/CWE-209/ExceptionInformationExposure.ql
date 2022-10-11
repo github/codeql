@@ -28,13 +28,6 @@ class TaintTrackingConfiguration extends TaintTracking::Configuration {
     exists(Expr exceptionExpr |
       // Writing an exception directly is bad
       source.asExpr() = exceptionExpr
-      or
-      // Writing an exception property is bad
-      source.asExpr().(PropertyAccess).getQualifier() = exceptionExpr
-      or
-      // Writing the result of ToString is bad
-      source.asExpr() =
-        any(MethodCall mc | mc.getQualifier() = exceptionExpr and mc.getTarget().hasName("ToString"))
     |
       // Expr has type `System.Exception`.
       exceptionExpr.getType().(RefType).getABaseType*() instanceof SystemExceptionClass and
@@ -47,16 +40,29 @@ class TaintTrackingConfiguration extends TaintTracking::Configuration {
     )
   }
 
+  override predicate isAdditionalTaintStep(DataFlow::Node source, DataFlow::Node sink) {
+    sink.asExpr() =
+      any(MethodCall mc |
+        source.asExpr() = mc.getQualifier() and
+        mc.getTarget().hasName("ToString") and
+        mc.getQualifier().getType().(RefType).getABaseType*() instanceof SystemExceptionClass
+      )
+  }
+
   override predicate isSink(DataFlow::Node sink) { sink instanceof RemoteFlowSink }
 
   override predicate isSanitizer(DataFlow::Node sanitizer) {
     // Do not flow through Message
     sanitizer.asExpr() = any(SystemExceptionClass se).getProperty("Message").getAnAccess()
   }
+
+  override predicate isSanitizerIn(DataFlow::Node sanitizer) {
+    // Do not flow through Message
+    sanitizer.asExpr().getType().(RefType).getABaseType*() instanceof SystemExceptionClass
+  }
 }
 
 from TaintTrackingConfiguration c, DataFlow::PathNode source, DataFlow::PathNode sink
 where c.hasFlowPath(source, sink)
-select sink.getNode(), source, sink,
-  "Exception information from $@ flows to here, and is exposed to the user.", source.getNode(),
-  source.toString()
+select sink.getNode(), source, sink, "This information exposed to the user depends on $@.",
+  source.getNode(), "exception information"

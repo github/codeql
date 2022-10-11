@@ -32,4 +32,4 @@ where
     baseElement(e.getType(), cl) and // only interested in arrays with classes
     not compatible(f.getParameter(i).getUnspecifiedType(), e.getUnspecifiedType())
   )
-select e, "AV Rule 96: Arrays shall not be teated polymorphically"
+select e, "AV Rule 96: Arrays shall not be teated polymorphically."

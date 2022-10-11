@@ -44,7 +44,7 @@ private module RuamelYaml {
           API::moduleImport("ruamel")
               .getMember("yaml")
               .getMember(["SafeLoader", "BaseLoader", "CSafeLoader", "CBaseLoader"])
-              .getAUse()
+              .getAValueReachableFromSource()
       )
     }
 

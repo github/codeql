@@ -1,4 +1,4 @@
-private import ruby
+private import codeql.ruby.AST
 private import codeql.ruby.DataFlow
 private import codeql.ruby.Concepts
 private import codeql.ruby.Frameworks
@@ -22,9 +22,16 @@ module CodeInjection {
   abstract class Sink extends DataFlow::Node { }
 
   /**
+   * A sanitizer for "Code injection" vulnerabilities.
+   */
+  abstract class Sanitizer extends DataFlow::Node { }
+
+  /**
+   * DEPRECATED: Use `Sanitizer` instead.
+   *
    * A sanitizer guard for "Code injection" vulnerabilities.
    */
-  abstract class SanitizerGuard extends DataFlow::BarrierGuard { }
+  abstract deprecated class SanitizerGuard extends DataFlow::BarrierGuard { }
 
   /**
    * A source of remote user input, considered as a flow source.

@@ -10,7 +10,7 @@
  * @precision low
  */
 
-import ruby
+import codeql.ruby.AST
 import codeql.ruby.dataflow.SSA
 
 class RelevantParameterVariable extends LocalVariable {
@@ -24,4 +24,4 @@ class RelevantParameterVariable extends LocalVariable {
 
 from RelevantParameterVariable v
 where not exists(Ssa::WriteDefinition def | def.getWriteAccess() = v.getDefiningAccess())
-select v, "Unused parameter."
+select v, "The parameter '" + v.getName() + "' is never used."

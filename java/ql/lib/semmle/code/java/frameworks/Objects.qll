@@ -8,11 +8,11 @@ private class ObjectsSummaryCsv extends SummaryModelCsv {
     row =
       [
         //`namespace; type; subtypes; name; signature; ext; input; output; kind`
-        "java.util;Objects;false;requireNonNull;;;Argument[0];ReturnValue;value",
-        "java.util;Objects;false;requireNonNullElse;;;Argument[0];ReturnValue;value",
-        "java.util;Objects;false;requireNonNullElse;;;Argument[1];ReturnValue;value",
-        "java.util;Objects;false;requireNonNullElseGet;;;Argument[0];ReturnValue;value",
-        "java.util;Objects;false;toString;;;Argument[1];ReturnValue;value"
+        "java.util;Objects;false;requireNonNull;;;Argument[0];ReturnValue;value;manual",
+        "java.util;Objects;false;requireNonNullElse;;;Argument[0];ReturnValue;value;manual",
+        "java.util;Objects;false;requireNonNullElse;;;Argument[1];ReturnValue;value;manual",
+        "java.util;Objects;false;requireNonNullElseGet;;;Argument[0];ReturnValue;value;manual",
+        "java.util;Objects;false;toString;;;Argument[1];ReturnValue;value;manual"
       ]
   }
 }

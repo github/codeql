@@ -22,4 +22,15 @@ open class X {
     fun fn3() {
         class localClass {}
     }
+
+    inline fun fn4(noinline f: () -> Unit) { }
+    inline fun fn5(crossinline f: () -> Unit) { }
+}
+
+public class LateInit {
+    private lateinit var test0: LateInit
+
+    fun fn() {
+        lateinit var test1: LateInit
+    }
 }

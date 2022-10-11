@@ -74,7 +74,7 @@ module IndirectCommandInjection {
         ].getMember("parse").getACall()
       or
       // `require('commander').myCmdArgumentName`
-      this = commander().getAMember().getAnImmediateUse()
+      this = commander().getAMember().asSource()
       or
       // `require('commander').opt()` => `{a: ..., b: ...}`
       this = commander().getMember("opts").getACall()

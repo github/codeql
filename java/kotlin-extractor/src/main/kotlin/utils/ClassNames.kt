@@ -1,5 +1,6 @@
 package com.github.codeql
 
+import com.github.codeql.utils.getJvmName
 import com.intellij.openapi.vfs.StandardFileSystems
 import org.jetbrains.kotlin.load.java.sources.JavaSourceElement
 import org.jetbrains.kotlin.load.java.structure.impl.classFiles.BinaryJavaClass
@@ -18,17 +19,19 @@ import org.jetbrains.kotlin.load.kotlin.JvmPackagePartSource
 // and declarations within them into the parent class' JLS 13.1 name as
 // specified above, followed by a `$` separator and then the short name
 // for `that`.
+private fun getName(d: IrDeclarationWithName) = (d as? IrAnnotationContainer)?.let { getJvmName(it) } ?: d.name.asString()
+
 fun getIrDeclBinaryName(that: IrDeclaration): String {
   val shortName = when(that) {
-      is IrDeclarationWithName -> that.name.asString()
+      is IrDeclarationWithName -> getName(that)
       else -> "(unknown-name)"
   }
   val internalName = StringBuilder(shortName);
   generateSequence(that.parent) { (it as? IrDeclaration)?.parent }
       .forEach {
           when (it) {
-              is IrClass -> internalName.insert(0, it.name.asString() + "$")
-              is IrPackageFragment -> it.fqName.asString().takeIf { it.isNotEmpty() }?.let { internalName.insert(0, "$it.") }
+              is IrClass -> internalName.insert(0, getName(it) + "$")
+              is IrPackageFragment -> it.fqName.asString().takeIf { fqName -> fqName.isNotEmpty() }?.let { fqName -> internalName.insert(0, "$fqName.") }
           }
       }
   return internalName.toString()
@@ -65,7 +68,7 @@ fun getIrClassVirtualFile(irClass: IrClass): VirtualFile? {
     return null
 }
 
-fun getRawIrClassBinaryPath(irClass: IrClass) =
+private fun getRawIrClassBinaryPath(irClass: IrClass) =
     getIrClassVirtualFile(irClass)?.let {
         val path = it.path
         if(it.fileSystem.protocol == StandardFileSystems.JRT_PROTOCOL)

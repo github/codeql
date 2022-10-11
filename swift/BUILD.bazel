@@ -4,16 +4,22 @@ load("//:defs.bzl", "codeql_platform")
 load("//misc/bazel:pkg_runfiles.bzl", "pkg_runfiles")
 
 filegroup(
-    name = "dbscheme",
-    srcs = ["ql/lib/swift.dbscheme"],
-    visibility = ["//visibility:public"],
+    name = "schema",
+    srcs = ["schema.py"],
+    visibility = ["//swift:__subpackages__"],
+)
+
+filegroup(
+    name = "schema_includes",
+    srcs = glob(["*.dbscheme"]),
+    visibility = ["//swift:__subpackages__"],
 )
 
 pkg_files(
     name = "dbscheme_files",
     srcs = [
         "ql/lib/swift.dbscheme.stats",
-        ":dbscheme",
+        "//swift/extractor/trap:generated_dbscheme",
     ],
 )
 

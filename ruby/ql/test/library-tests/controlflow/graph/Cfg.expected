@@ -1423,8 +1423,11 @@ cfg.html.erb:
 #    5| @title
 #-----|  -> self
 
-#    5| enter cfg.html.erb
+#    5| self
 #-----|  -> @title
+
+#    5| enter cfg.html.erb
+#-----|  -> self
 
 #    5| exit cfg.html.erb
 
@@ -2690,10 +2693,13 @@ cfg.rb:
 #-----|  -> ... > ...
 
 #  115| C
-#-----|  -> @field
+#-----|  -> self
 
 #  116| @field
 #-----|  -> 42
+
+#  116| self
+#-----|  -> @field
 
 #  116| ... = ...
 #-----|  -> @@static_field
@@ -3643,7 +3649,7 @@ cfg.rb:
 #-----|  -> call to foo
 
 #  205| ...
-#-----|  -> exit cfg.rb (normal)
+#-----|  -> filter_nil
 
 #  205| call to bar
 #-----|  -> if ...
@@ -3680,6 +3686,52 @@ cfg.rb:
 
 #  205| x
 #-----|  -> exit { ... } (normal)
+
+#  207| enter filter_nil
+#-----|  -> list
+
+#  207| exit filter_nil
+
+#  207| exit filter_nil (normal)
+#-----|  -> exit filter_nil
+
+#  207| filter_nil
+#-----|  -> exit cfg.rb (normal)
+
+#  207| list
+#-----|  -> list
+
+#  208| list
+#-----|  -> do ... end
+
+#  208| call to reject
+#-----|  -> exit filter_nil (normal)
+
+#  208| do ... end
+#-----|  -> call to reject
+
+#  208| enter do ... end
+#-----|  -> elem
+
+#  208| exit do ... end
+
+#  208| exit do ... end (normal)
+#-----|  -> exit do ... end
+
+#  208| elem
+#-----|  -> *
+
+#  208| *
+#-----|  -> **
+
+#  208| **
+#-----|  -> elem
+
+#  209| elem
+#-----|  -> call to nil?
+
+#  209| call to nil?
+#-----|  -> exit do ... end (normal)
 
 desugar.rb:
 #    1| enter m1
@@ -4194,22 +4246,31 @@ desugar.rb:
 #-----|  -> call to []
 
 #   29| X
-#-----|  -> @x
+#-----|  -> self
 
 #   30| @x
 #-----|  -> 1
 
-#   30| ... = ...
+#   30| self
 #-----|  -> @x
+
+#   30| ... = ...
+#-----|  -> self
 
 #   30| 1
 #-----|  -> ... = ...
 
 #   31| @x
-#-----|  -> @x
+#-----|  -> self
 
 #   31| @x
 #-----|  -> 2
+
+#   31| self
+#-----|  -> @x
+
+#   31| self
+#-----|  -> @x
 
 #   31| ... = ...
 #-----|  -> @@y

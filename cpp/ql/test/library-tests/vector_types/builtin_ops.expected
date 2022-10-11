@@ -1,2 +1,4 @@
+| vector_types2.cpp:10:15:10:42 | __builtin_shuffle |
+| vector_types2.cpp:11:15:11:45 | __builtin_shuffle |
 | vector_types.cpp:31:13:31:49 | __builtin_shufflevector |
 | vector_types.cpp:58:10:58:52 | __builtin_convertvector |

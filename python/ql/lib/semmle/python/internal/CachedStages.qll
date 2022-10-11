@@ -121,7 +121,7 @@ module Stages {
       or
       exists(any(NewDataFlow::TypeTracker t).append(_))
       or
-      exists(any(API::Node n).getAMember().getAUse())
+      exists(any(API::Node n).getAMember().getAValueReachableFromSource())
     }
   }
 

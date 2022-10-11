@@ -525,6 +525,7 @@ public class View implements AccessibilityEventSource, Drawable.Callback, KeyEve
     public static int AUTOFILL_TYPE_NONE = 0;
     public static int AUTOFILL_TYPE_TEXT = 0;
     public static int AUTOFILL_TYPE_TOGGLE = 0;
+    public static int DRAG_FLAG_ACCESSIBILITY_ACTION = 0;
     public static int DRAG_FLAG_GLOBAL = 0;
     public static int DRAG_FLAG_GLOBAL_PERSISTABLE_URI_PERMISSION = 0;
     public static int DRAG_FLAG_GLOBAL_PREFIX_URI_PERMISSION = 0;

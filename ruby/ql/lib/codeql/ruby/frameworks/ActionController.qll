@@ -7,10 +7,21 @@ private import codeql.ruby.Concepts
 private import codeql.ruby.controlflow.CfgNodes
 private import codeql.ruby.DataFlow
 private import codeql.ruby.dataflow.RemoteFlowSources
-private import codeql.ruby.ast.internal.Module
 private import codeql.ruby.ApiGraphs
-private import ActionView
 private import codeql.ruby.frameworks.ActionDispatch
+private import codeql.ruby.frameworks.ActionView
+private import codeql.ruby.frameworks.Rails
+private import codeql.ruby.frameworks.internal.Rails
+
+/**
+ * DEPRECATED: Import `codeql.ruby.frameworks.Rails` and use `Rails::ParamsCall` instead.
+ */
+deprecated class ParamsCall = Rails::ParamsCall;
+
+/**
+ * DEPRECATED: Import `codeql.ruby.frameworks.Rails` and use `Rails::CookiesCall` instead.
+ */
+deprecated class CookiesCall = Rails::CookiesCall;
 
 /**
  * A `ClassDeclaration` for a class that extends `ActionController::Base`.
@@ -32,8 +43,13 @@ class ActionControllerControllerClass extends ClassDeclaration {
         API::getTopLevelMember("ActionController").getMember("Base"),
         // In Rails applications `ApplicationController` typically extends `ActionController::Base`, but we
         // treat it separately in case the `ApplicationController` definition is not in the database.
-        API::getTopLevelMember("ApplicationController")
-      ].getASubclass().getAUse().asExpr().getExpr()
+        API::getTopLevelMember("ApplicationController"),
+        // ActionController::Metal technically doesn't contain all of the
+        // methods available in Base, such as those for rendering views.
+        // However we prefer to be over-sensitive in this case in order to find
+        // more results.
+        API::getTopLevelMember("ActionController").getMember("Metal")
+      ].getASubclass().getAValueReachableFromSource().asExpr().getExpr()
   }
 
   /**
@@ -46,7 +62,7 @@ class ActionControllerControllerClass extends ClassDeclaration {
  * A public instance method defined within an `ActionController` controller class.
  * This may be the target of a route handler, if such a route is defined.
  */
-class ActionControllerActionMethod extends Method, HTTP::Server::RequestHandler::Range {
+class ActionControllerActionMethod extends Method, Http::Server::RequestHandler::Range {
   private ActionControllerControllerClass controllerClass;
 
   ActionControllerActionMethod() { this = controllerClass.getAMethod() and not this.isPrivate() }
@@ -68,7 +84,7 @@ class ActionControllerActionMethod extends Method, HTTP::Server::RequestHandler:
   override string getFramework() { result = "ActionController" }
 
   /** Gets a call to render from within this method. */
-  RenderCall getARenderCall() { result.getParent+() = this }
+  Rails::RenderCall getARenderCall() { result.getParent+() = this }
 
   /**
    * Gets the controller class containing this method.
@@ -83,7 +99,7 @@ class ActionControllerActionMethod extends Method, HTTP::Server::RequestHandler:
    * Gets a route to this handler, if one exists.
    * May return multiple results.
    */
-  ActionDispatch::Route getARoute() {
+  ActionDispatch::Routing::Route getARoute() {
     exists(string name |
       isRoute(result, name, controllerClass) and
       isActionControllerMethod(this, name, controllerClass)
@@ -93,10 +109,10 @@ class ActionControllerActionMethod extends Method, HTTP::Server::RequestHandler:
 
 pragma[nomagic]
 private predicate isRoute(
-  ActionDispatch::Route route, string name, ActionControllerControllerClass controllerClass
+  ActionDispatch::Routing::Route route, string name, ActionControllerControllerClass controllerClass
 ) {
   route.getController() + "_controller" =
-    ActionDispatch::underscore(namespaceDeclaration(controllerClass)) and
+    ActionDispatch::Routing::underscore(controllerClass.getAQualifiedName()) and
   name = route.getAction()
 }
 
@@ -116,61 +132,58 @@ private class ActionControllerContextCall extends MethodCall {
 }
 
 /**
- * A call to the `params` method to fetch the request parameters.
- */
-abstract class ParamsCall extends MethodCall {
-  ParamsCall() { this.getMethodName() = "params" }
-}
-
-/**
  * A `RemoteFlowSource::Range` to represent accessing the
  * ActionController parameters available via the `params` method.
  */
-class ParamsSource extends HTTP::Server::RequestInputAccess::Range {
-  ParamsSource() { this.asExpr().getExpr() instanceof ParamsCall }
+class ParamsSource extends Http::Server::RequestInputAccess::Range {
+  ParamsSource() { this.asExpr().getExpr() instanceof Rails::ParamsCall }
 
   override string getSourceType() { result = "ActionController::Metal#params" }
-}
-
-/**
- * A call to the `cookies` method to fetch the request parameters.
- */
-abstract class CookiesCall extends MethodCall {
-  CookiesCall() { this.getMethodName() = "cookies" }
 }
 
 /**
  * A `RemoteFlowSource::Range` to represent accessing the
  * ActionController parameters available via the `cookies` method.
  */
-class CookiesSource extends HTTP::Server::RequestInputAccess::Range {
-  CookiesSource() { this.asExpr().getExpr() instanceof CookiesCall }
+class CookiesSource extends Http::Server::RequestInputAccess::Range {
+  CookiesSource() { this.asExpr().getExpr() instanceof Rails::CookiesCall }
 
   override string getSourceType() { result = "ActionController::Metal#cookies" }
 }
 
-// A call to `cookies` from within a controller.
-private class ActionControllerCookiesCall extends ActionControllerContextCall, CookiesCall { }
+/** A call to `cookies` from within a controller. */
+private class ActionControllerCookiesCall extends ActionControllerContextCall, CookiesCallImpl {
+  ActionControllerCookiesCall() { this.getMethodName() = "cookies" }
+}
 
-// A call to `params` from within a controller.
-private class ActionControllerParamsCall extends ActionControllerContextCall, ParamsCall { }
+/** A call to `params` from within a controller. */
+private class ActionControllerParamsCall extends ActionControllerContextCall, ParamsCallImpl {
+  ActionControllerParamsCall() { this.getMethodName() = "params" }
+}
 
-// A call to `render` from within a controller.
-private class ActionControllerRenderCall extends ActionControllerContextCall, RenderCall { }
+/** A call to `render` from within a controller. */
+private class ActionControllerRenderCall extends ActionControllerContextCall, RenderCallImpl {
+  ActionControllerRenderCall() { this.getMethodName() = "render" }
+}
 
-// A call to `render_to` from within a controller.
-private class ActionControllerRenderToCall extends ActionControllerContextCall, RenderToCall { }
+/** A call to `render_to` from within a controller. */
+private class ActionControllerRenderToCall extends ActionControllerContextCall, RenderToCallImpl {
+  ActionControllerRenderToCall() { this.getMethodName() = ["render_to_body", "render_to_string"] }
+}
 
-// A call to `html_safe` from within a controller.
-private class ActionControllerHtmlSafeCall extends HtmlSafeCall {
+/** A call to `html_safe` from within a controller. */
+private class ActionControllerHtmlSafeCall extends HtmlSafeCallImpl {
   ActionControllerHtmlSafeCall() {
+    this.getMethodName() = "html_safe" and
     this.getEnclosingModule() instanceof ActionControllerControllerClass
   }
 }
 
-// A call to `html_escape` from within a controller.
-private class ActionControllerHtmlEscapeCall extends HtmlEscapeCall {
+/** A call to `html_escape` from within a controller. */
+private class ActionControllerHtmlEscapeCall extends HtmlEscapeCallImpl {
   ActionControllerHtmlEscapeCall() {
+    // "h" is aliased to "html_escape" in ActiveSupport
+    this.getMethodName() = ["html_escape", "html_escape_once", "h", "sanitize"] and
     this.getEnclosingModule() instanceof ActionControllerControllerClass
   }
 }
@@ -180,25 +193,38 @@ private class ActionControllerHtmlEscapeCall extends HtmlEscapeCall {
  * specific URL/path or to a different action in this controller.
  */
 class RedirectToCall extends ActionControllerContextCall {
-  RedirectToCall() { this.getMethodName() = "redirect_to" }
+  RedirectToCall() {
+    this.getMethodName() = ["redirect_to", "redirect_back", "redirect_back_or_to"]
+  }
 
   /** Gets the `Expr` representing the URL to redirect to, if any */
-  Expr getRedirectUrl() { result = this.getArgument(0) }
+  Expr getRedirectUrl() {
+    this.getMethodName() = "redirect_back" and result = this.getKeywordArgument("fallback_location")
+    or
+    this.getMethodName() = ["redirect_to", "redirect_back_or_to"] and result = this.getArgument(0)
+  }
 
   /** Gets the `ActionControllerActionMethod` to redirect to, if any */
   ActionControllerActionMethod getRedirectActionMethod() {
-    exists(string methodName |
-      this.getKeywordArgument("action").getConstantValue().isStringlikeValue(methodName) and
-      methodName = result.getName() and
-      result.getEnclosingModule() = this.getControllerClass()
-    )
+    this.getKeywordArgument("action").getConstantValue().isStringlikeValue(result.getName()) and
+    result.getEnclosingModule() = this.getControllerClass()
+  }
+
+  /**
+   * Holds if this method call allows a redirect to an external host.
+   */
+  predicate allowsExternalRedirect() {
+    // Unless the option allow_other_host is explicitly set to false, assume that external redirects are allowed.
+    // TODO: Take into account `config.action_controller.raise_on_open_redirects`.
+    // TODO: Take into account that this option defaults to false in Rails 7.
+    not this.getKeywordArgument("allow_other_host").getConstantValue().isBoolean(false)
   }
 }
 
 /**
  * A call to the `redirect_to` method, as an `HttpRedirectResponse`.
  */
-class ActionControllerRedirectResponse extends HTTP::Server::HttpRedirectResponse::Range {
+class ActionControllerRedirectResponse extends Http::Server::HttpRedirectResponse::Range {
   RedirectToCall redirectToCall;
 
   ActionControllerRedirectResponse() { this.asExpr().getExpr() = redirectToCall }
@@ -274,7 +300,7 @@ ActionControllerControllerClass getAssociatedControllerClass(ErbFile f) {
   // template file, `fp`. In this case, `f` inherits the associated
   // controller classes from `fp`.
   f.isPartial() and
-  exists(RenderCall r, ErbFile fp |
+  exists(Rails::RenderCall r, ErbFile fp |
     r.getLocation().getFile() = fp and
     r.getTemplateFile() = f and
     result = getAssociatedControllerClass(fp)
@@ -310,7 +336,7 @@ predicate controllerTemplateFile(ActionControllerControllerClass cls, ErbFile te
  * `skip_before_action :verify_authenticity_token` to disable CSRF authenticity
  * token protection.
  */
-class ActionControllerSkipForgeryProtectionCall extends CSRFProtectionSetting::Range {
+class ActionControllerSkipForgeryProtectionCall extends CsrfProtectionSetting::Range {
   ActionControllerSkipForgeryProtectionCall() {
     exists(MethodCall call | call = this.asExpr().getExpr() |
       call.getMethodName() = "skip_forgery_protection"
@@ -326,7 +352,7 @@ class ActionControllerSkipForgeryProtectionCall extends CSRFProtectionSetting::R
 /**
  * A call to `protect_from_forgery`.
  */
-private class ActionControllerProtectFromForgeryCall extends CSRFProtectionSetting::Range {
+private class ActionControllerProtectFromForgeryCall extends CsrfProtectionSetting::Range {
   private ActionControllerContextCall callExpr;
 
   ActionControllerProtectFromForgeryCall() {
@@ -342,5 +368,137 @@ private class ActionControllerProtectFromForgeryCall extends CSRFProtectionSetti
   // in some scenarios.
   override boolean getVerificationSetting() {
     if this.getWithValueText() = "exception" then result = true else result = false
+  }
+}
+
+/**
+ * A call to `send_file`, which sends the file at the given path to the client.
+ */
+private class SendFile extends FileSystemAccess::Range, DataFlow::CallNode {
+  SendFile() {
+    this.asExpr().getExpr() instanceof ActionControllerContextCall and
+    this.getMethodName() = "send_file"
+  }
+
+  override DataFlow::Node getAPathArgument() { result = this.getArgument(0) }
+}
+
+private module ParamsSummaries {
+  private import codeql.ruby.dataflow.FlowSummary
+
+  /**
+   * An instance of `ActionController::Parameters`, including those returned
+   * from method calls on other instances.
+   */
+  private class ParamsInstance extends DataFlow::Node {
+    ParamsInstance() {
+      this.asExpr().getExpr() instanceof Rails::ParamsCall
+      or
+      this =
+        any(DataFlow::CallNode call |
+          call.getReceiver() instanceof ParamsInstance and
+          call.getMethodName() = paramsMethodReturningParamsInstance()
+        )
+      or
+      exists(ParamsInstance prev | prev.(DataFlow::LocalSourceNode).flowsTo(this))
+    }
+  }
+
+  /**
+   * Methods on `ActionController::Parameters` that return an instance of
+   * `ActionController::Parameters`.
+   */
+  string paramsMethodReturningParamsInstance() {
+    result =
+      [
+        "concat", "concat!", "compact_blank", "deep_dup", "deep_transform_keys", "delete_if",
+        // dig doesn't always return a Parameters instance, but it will if the
+        // given key refers to a nested hash parameter.
+        "dig", "each", "each_key", "each_pair", "each_value", "except", "keep_if", "merge",
+        "merge!", "permit", "reject", "reject!", "reverse_merge", "reverse_merge!", "select",
+        "select!", "slice", "slice!", "transform_keys", "transform_keys!", "transform_values",
+        "transform_values!", "with_defaults", "with_defaults!"
+      ]
+  }
+
+  /**
+   * Methods on `ActionController::Parameters` that propagate taint from
+   * receiver to return value.
+   */
+  string methodReturnsTaintFromSelf() {
+    result =
+      [
+        "as_json", "permit", "require", "required", "deep_dup", "deep_transform_keys",
+        "deep_transform_keys!", "delete_if", "extract!", "keep_if", "select", "select!", "reject",
+        "reject!", "to_h", "to_hash", "to_query", "to_param", "to_unsafe_h", "to_unsafe_hash",
+        "transform_keys", "transform_keys!", "transform_values", "transform_values!", "values_at"
+      ]
+  }
+
+  /**
+   * A flow summary for methods on `ActionController::Parameters` which
+   * propagate taint from receiver to return value.
+   */
+  private class MethodsReturningParamsInstanceSummary extends SummarizedCallable {
+    MethodsReturningParamsInstanceSummary() { this = "ActionController::Parameters#<various>" }
+
+    override MethodCall getACall() {
+      any(ParamsInstance i).asExpr().getExpr() = result.getReceiver() and
+      result.getMethodName() = methodReturnsTaintFromSelf()
+    }
+
+    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+      input = "Argument[self]" and
+      output = "ReturnValue" and
+      preservesValue = false
+    }
+  }
+
+  /**
+   * `#merge`
+   * Returns a new ActionController::Parameters with all keys from other_hash merged into current hash.
+   * `#reverse_merge`
+   * `#with_defaults`
+   * Returns a new ActionController::Parameters with all keys from current hash merged into other_hash.
+   */
+  private class MergeSummary extends SummarizedCallable {
+    MergeSummary() { this = "ActionController::Parameters#merge" }
+
+    override MethodCall getACall() {
+      result.getMethodName() = ["merge", "reverse_merge", "with_defaults"] and
+      exists(ParamsInstance i |
+        i.asExpr().getExpr() = [result.getReceiver(), result.getArgument(0)]
+      )
+    }
+
+    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+      input = ["Argument[self]", "Argument[0]"] and
+      output = "ReturnValue" and
+      preservesValue = false
+    }
+  }
+
+  /**
+   * `#merge!`
+   * Returns current ActionController::Parameters instance with current hash merged into other_hash.
+   * `#reverse_merge!`
+   * `#with_defaults!`
+   * Returns a new ActionController::Parameters with all keys from current hash merged into other_hash.
+   */
+  private class MergeBangSummary extends SummarizedCallable {
+    MergeBangSummary() { this = "ActionController::Parameters#merge!" }
+
+    override MethodCall getACall() {
+      result.getMethodName() = ["merge!", "reverse_merge!", "with_defaults!"] and
+      exists(ParamsInstance i |
+        i.asExpr().getExpr() = [result.getReceiver(), result.getArgument(0)]
+      )
+    }
+
+    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+      input = ["Argument[self]", "Argument[0]"] and
+      output = ["ReturnValue", "Argument[self]"] and
+      preservesValue = false
+    }
   }
 }

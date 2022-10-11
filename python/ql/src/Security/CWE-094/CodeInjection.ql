@@ -20,5 +20,5 @@ import DataFlow::PathGraph
 
 from Configuration config, DataFlow::PathNode source, DataFlow::PathNode sink
 where config.hasFlowPath(source, sink)
-select sink.getNode(), source, sink, "$@ flows to here and is interpreted as code.",
-  source.getNode(), "A user-provided value"
+select sink.getNode(), source, sink, "This code execution depends on a $@.", source.getNode(),
+  "user-provided value"

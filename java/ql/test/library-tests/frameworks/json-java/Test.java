@@ -50,315 +50,315 @@ public class Test {
 	public void test() {
 
 		{
-			// "org.json;CDL;false;rowToJSONArray;;;Argument[0];ReturnValue;taint"
+			// "org.json;CDL;false;rowToJSONArray;;;Argument[0];ReturnValue;taint;manual"
 			JSONArray out = null;
 			JSONTokener in = (JSONTokener)source();
 			out = CDL.rowToJSONArray(in);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;CDL;false;rowToJSONObject;;;Argument[0..1];ReturnValue;taint"
+			// "org.json;CDL;false;rowToJSONObject;;;Argument[0..1];ReturnValue;taint;manual"
 			JSONObject out = null;
 			JSONTokener in = (JSONTokener)source();
 			out = CDL.rowToJSONObject(null, in);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;CDL;false;rowToJSONObject;;;Argument[0..1];ReturnValue;taint"
+			// "org.json;CDL;false;rowToJSONObject;;;Argument[0..1];ReturnValue;taint;manual"
 			JSONObject out = null;
 			JSONArray in = (JSONArray)source();
 			out = CDL.rowToJSONObject(in, null);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;CDL;false;rowToString;;;Argument[0];ReturnValue;taint"
+			// "org.json;CDL;false;rowToString;;;Argument[0];ReturnValue;taint;manual"
 			String out = null;
 			JSONArray in = (JSONArray)source();
 			out = CDL.rowToString(in);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;CDL;false;toJSONArray;;;Argument[0..1];ReturnValue;taint"
+			// "org.json;CDL;false;toJSONArray;;;Argument[0..1];ReturnValue;taint;manual"
 			JSONArray out = null;
 			String in = (String)source();
 			out = CDL.toJSONArray(in);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;CDL;false;toJSONArray;;;Argument[0..1];ReturnValue;taint"
+			// "org.json;CDL;false;toJSONArray;;;Argument[0..1];ReturnValue;taint;manual"
 			JSONArray out = null;
 			String in = (String)source();
 			out = CDL.toJSONArray((JSONArray)null, in);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;CDL;false;toJSONArray;;;Argument[0..1];ReturnValue;taint"
+			// "org.json;CDL;false;toJSONArray;;;Argument[0..1];ReturnValue;taint;manual"
 			JSONArray out = null;
 			JSONTokener in = (JSONTokener)source();
 			out = CDL.toJSONArray(in);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;CDL;false;toJSONArray;;;Argument[0..1];ReturnValue;taint"
+			// "org.json;CDL;false;toJSONArray;;;Argument[0..1];ReturnValue;taint;manual"
 			JSONArray out = null;
 			JSONTokener in = (JSONTokener)source();
 			out = CDL.toJSONArray((JSONArray)null, in);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;CDL;false;toJSONArray;;;Argument[0..1];ReturnValue;taint"
+			// "org.json;CDL;false;toJSONArray;;;Argument[0..1];ReturnValue;taint;manual"
 			JSONArray out = null;
 			JSONArray in = (JSONArray)source();
 			out = CDL.toJSONArray(in, (String)null);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;CDL;false;toJSONArray;;;Argument[0..1];ReturnValue;taint"
+			// "org.json;CDL;false;toJSONArray;;;Argument[0..1];ReturnValue;taint;manual"
 			JSONArray out = null;
 			JSONArray in = (JSONArray)source();
 			out = CDL.toJSONArray(in, (JSONTokener)null);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;CDL;false;toString;;;Argument[0..1];ReturnValue;taint"
+			// "org.json;CDL;false;toString;;;Argument[0..1];ReturnValue;taint;manual"
 			String out = null;
 			JSONArray in = (JSONArray)source();
 			out = CDL.toString(null, in);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;CDL;false;toString;;;Argument[0..1];ReturnValue;taint"
+			// "org.json;CDL;false;toString;;;Argument[0..1];ReturnValue;taint;manual"
 			String out = null;
 			JSONArray in = (JSONArray)source();
 			out = CDL.toString(in, null);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;CDL;false;toString;;;Argument[0..1];ReturnValue;taint"
+			// "org.json;CDL;false;toString;;;Argument[0..1];ReturnValue;taint;manual"
 			String out = null;
 			JSONArray in = (JSONArray)source();
 			out = CDL.toString(in);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;Cookie;false;escape;;;Argument[0];ReturnValue;taint"
+			// "org.json;Cookie;false;escape;;;Argument[0];ReturnValue;taint;manual"
 			String out = null;
 			String in = (String)source();
 			out = Cookie.escape(in);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;Cookie;false;toJSONObject;;;Argument[0];ReturnValue;taint"
+			// "org.json;Cookie;false;toJSONObject;;;Argument[0];ReturnValue;taint;manual"
 			JSONObject out = null;
 			String in = (String)source();
 			out = Cookie.toJSONObject(in);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;Cookie;false;toString;;;Argument[0];ReturnValue;taint"
+			// "org.json;Cookie;false;toString;;;Argument[0];ReturnValue;taint;manual"
 			String out = null;
 			JSONObject in = (JSONObject)source();
 			out = Cookie.toString(in);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;Cookie;false;unescape;;;Argument[0];ReturnValue;taint"
+			// "org.json;Cookie;false;unescape;;;Argument[0];ReturnValue;taint;manual"
 			String out = null;
 			String in = (String)source();
 			out = Cookie.unescape(in);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;CookieList;false;toJSONObject;;;Argument[0];ReturnValue;taint"
+			// "org.json;CookieList;false;toJSONObject;;;Argument[0];ReturnValue;taint;manual"
 			JSONObject out = null;
 			String in = (String)source();
 			out = CookieList.toJSONObject(in);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;CookieList;false;toString;;;Argument[0];ReturnValue;taint"
+			// "org.json;CookieList;false;toString;;;Argument[0];ReturnValue;taint;manual"
 			String out = null;
 			JSONObject in = (JSONObject)source();
 			out = CookieList.toString(in);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;HTTP;false;toJSONObject;;;Argument[0];ReturnValue;taint"
+			// "org.json;HTTP;false;toJSONObject;;;Argument[0];ReturnValue;taint;manual"
 			JSONObject out = null;
 			String in = (String)source();
 			out = HTTP.toJSONObject(in);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;HTTP;false;toString;;;Argument[0];ReturnValue;taint"
+			// "org.json;HTTP;false;toString;;;Argument[0];ReturnValue;taint;manual"
 			String out = null;
 			JSONObject in = (JSONObject)source();
 			out = HTTP.toString(in);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;HTTPTokener;false;HTTPTokener;;;Argument[0];Argument[-1];taint"
+			// "org.json;HTTPTokener;false;HTTPTokener;;;Argument[0];Argument[-1];taint;manual"
 			HTTPTokener out = null;
 			String in = (String)source();
 			out = new HTTPTokener(in);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;HTTPTokener;false;nextToken;;;Argument[-1];ReturnValue;taint"
+			// "org.json;HTTPTokener;false;nextToken;;;Argument[-1];ReturnValue;taint;manual"
 			String out = null;
 			HTTPTokener in = (HTTPTokener)source();
 			out = in.nextToken();
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONArray;false;JSONArray;(Collection);;Element of Argument[0];Argument[-1];taint"
+			// "org.json;JSONArray;false;JSONArray;(Collection);;Element of Argument[0];Argument[-1];taint;manual"
 			JSONArray out = null;
 			Collection in = (Collection)newWithElement(source());
 			out = new JSONArray(in);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONArray;false;JSONArray;(Iterable);;Element of Argument[0];Argument[-1];taint"
+			// "org.json;JSONArray;false;JSONArray;(Iterable);;Element of Argument[0];Argument[-1];taint;manual"
 			JSONArray out = null;
 			Iterable in = (Iterable)newWithElement(source());
 			out = new JSONArray(in);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONArray;false;JSONArray;(JSONArray);;Argument[0];Argument[-1];taint"
+			// "org.json;JSONArray;false;JSONArray;(JSONArray);;Argument[0];Argument[-1];taint;manual"
 			JSONArray out = null;
 			JSONArray in = (JSONArray)source();
 			out = new JSONArray(in);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONArray;false;JSONArray;(JSONTokener);;Argument[0];Argument[-1];taint"
+			// "org.json;JSONArray;false;JSONArray;(JSONTokener);;Argument[0];Argument[-1];taint;manual"
 			JSONArray out = null;
 			JSONTokener in = (JSONTokener)source();
 			out = new JSONArray(in);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONArray;false;JSONArray;(Object);;ArrayElement of Argument[0];Argument[-1];taint"
+			// "org.json;JSONArray;false;JSONArray;(Object);;ArrayElement of Argument[0];Argument[-1];taint;manual"
 			JSONArray out = null;
 			Object in = (Object)newWithArrayElement(source());
 			out = new JSONArray(in);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONArray;false;JSONArray;(String);;Argument[0];Argument[-1];taint"
+			// "org.json;JSONArray;false;JSONArray;(String);;Argument[0];Argument[-1];taint;manual"
 			JSONArray out = null;
 			String in = (String)source();
 			out = new JSONArray(in);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONArray;false;get;;;Argument[-1];ReturnValue;taint"
+			// "org.json;JSONArray;false;get;;;Argument[-1];ReturnValue;taint;manual"
 			Object out = null;
 			JSONArray in = (JSONArray)source();
 			out = in.get(0);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONArray;false;getBigDecimal;;;Argument[-1];ReturnValue;taint"
+			// "org.json;JSONArray;false;getBigDecimal;;;Argument[-1];ReturnValue;taint;manual"
 			BigDecimal out = null;
 			JSONArray in = (JSONArray)source();
 			out = in.getBigDecimal(0);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONArray;false;getBigInteger;;;Argument[-1];ReturnValue;taint"
+			// "org.json;JSONArray;false;getBigInteger;;;Argument[-1];ReturnValue;taint;manual"
 			BigInteger out = null;
 			JSONArray in = (JSONArray)source();
 			out = in.getBigInteger(0);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONArray;false;getBoolean;;;Argument[-1];ReturnValue;taint"
+			// "org.json;JSONArray;false;getBoolean;;;Argument[-1];ReturnValue;taint;manual"
 			boolean out = false;
 			JSONArray in = (JSONArray)source();
 			out = in.getBoolean(0);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONArray;false;getDouble;;;Argument[-1];ReturnValue;taint"
+			// "org.json;JSONArray;false;getDouble;;;Argument[-1];ReturnValue;taint;manual"
 			double out = 0.0;
 			JSONArray in = (JSONArray)source();
 			out = in.getDouble(0);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONArray;false;getEnum;;;Argument[-1];ReturnValue;taint"
+			// "org.json;JSONArray;false;getEnum;;;Argument[-1];ReturnValue;taint;manual"
 			Enum out = null;
 			JSONArray in = (JSONArray)source();
 			out = in.getEnum(null, 0);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONArray;false;getFloat;;;Argument[-1];ReturnValue;taint"
+			// "org.json;JSONArray;false;getFloat;;;Argument[-1];ReturnValue;taint;manual"
 			float out = 0.0f;
 			JSONArray in = (JSONArray)source();
 			out = in.getFloat(0);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONArray;false;getInt;;;Argument[-1];ReturnValue;taint"
+			// "org.json;JSONArray;false;getInt;;;Argument[-1];ReturnValue;taint;manual"
 			int out = 0;
 			JSONArray in = (JSONArray)source();
 			out = in.getInt(0);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONArray;false;getJSONArray;;;Argument[-1];ReturnValue;taint"
+			// "org.json;JSONArray;false;getJSONArray;;;Argument[-1];ReturnValue;taint;manual"
 			JSONArray out = null;
 			JSONArray in = (JSONArray)source();
 			out = in.getJSONArray(0);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONArray;false;getJSONObject;;;Argument[-1];ReturnValue;taint"
+			// "org.json;JSONArray;false;getJSONObject;;;Argument[-1];ReturnValue;taint;manual"
 			JSONObject out = null;
 			JSONArray in = (JSONArray)source();
 			out = in.getJSONObject(0);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONArray;false;getLong;;;Argument[-1];ReturnValue;taint"
+			// "org.json;JSONArray;false;getLong;;;Argument[-1];ReturnValue;taint;manual"
 			long out = 0L;
 			JSONArray in = (JSONArray)source();
 			out = in.getLong(0);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONArray;false;getNumber;;;Argument[-1];ReturnValue;taint"
+			// "org.json;JSONArray;false;getNumber;;;Argument[-1];ReturnValue;taint;manual"
 			Number out = null;
 			JSONArray in = (JSONArray)source();
 			out = in.getNumber(0);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONArray;false;getString;;;Argument[-1];ReturnValue;taint"
+			// "org.json;JSONArray;false;getString;;;Argument[-1];ReturnValue;taint;manual"
 			String out = null;
 			JSONArray in = (JSONArray)source();
 			out = in.getString(0);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONArray;false;iterator;;;Argument[-1];Element of ReturnValue;taint"
+			// "org.json;JSONArray;false;iterator;;;Argument[-1];Element of ReturnValue;taint;manual"
 			Iterator out = null;
 			JSONArray in = (JSONArray)source();
 			out = in.iterator();
 			sink(getElement(out)); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONArray;false;join;;;Argument[-1];ReturnValue;taint"
+			// "org.json;JSONArray;false;join;;;Argument[-1];ReturnValue;taint;manual"
 			String out = null;
 			JSONArray in = (JSONArray)source();
 			out = in.join(null);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONArray;false;join;;;Argument[0];ReturnValue;taint"
+			// "org.json;JSONArray;false;join;;;Argument[0];ReturnValue;taint;manual"
 			String out = null;
 			String in = (String)source();
 			JSONArray instance = null;
@@ -366,21 +366,21 @@ public class Test {
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONArray;false;opt;;;Argument[-1];ReturnValue;taint"
+			// "org.json;JSONArray;false;opt;;;Argument[-1];ReturnValue;taint;manual"
 			Object out = null;
 			JSONArray in = (JSONArray)source();
 			out = in.opt(0);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONArray;false;optBigDecimal;;;Argument[-1];ReturnValue;taint"
+			// "org.json;JSONArray;false;optBigDecimal;;;Argument[-1];ReturnValue;taint;manual"
 			BigDecimal out = null;
 			JSONArray in = (JSONArray)source();
 			out = in.optBigDecimal(0, null);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONArray;false;optBigDecimal;;;Argument[1];ReturnValue;value"
+			// "org.json;JSONArray;false;optBigDecimal;;;Argument[1];ReturnValue;value;manual"
 			BigDecimal out = null;
 			BigDecimal in = (BigDecimal)source();
 			JSONArray instance = null;
@@ -388,14 +388,14 @@ public class Test {
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "org.json;JSONArray;false;optBigInteger;;;Argument[-1];ReturnValue;taint"
+			// "org.json;JSONArray;false;optBigInteger;;;Argument[-1];ReturnValue;taint;manual"
 			BigInteger out = null;
 			JSONArray in = (JSONArray)source();
 			out = in.optBigInteger(0, null);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONArray;false;optBigInteger;;;Argument[1];ReturnValue;value"
+			// "org.json;JSONArray;false;optBigInteger;;;Argument[1];ReturnValue;value;manual"
 			BigInteger out = null;
 			BigInteger in = (BigInteger)source();
 			JSONArray instance = null;
@@ -403,21 +403,21 @@ public class Test {
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "org.json;JSONArray;false;optBoolean;;;Argument[-1];ReturnValue;taint"
+			// "org.json;JSONArray;false;optBoolean;;;Argument[-1];ReturnValue;taint;manual"
 			boolean out = false;
 			JSONArray in = (JSONArray)source();
 			out = in.optBoolean(0, false);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONArray;false;optBoolean;;;Argument[-1];ReturnValue;taint"
+			// "org.json;JSONArray;false;optBoolean;;;Argument[-1];ReturnValue;taint;manual"
 			boolean out = false;
 			JSONArray in = (JSONArray)source();
 			out = in.optBoolean(0);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONArray;false;optBoolean;;;Argument[1];ReturnValue;value"
+			// "org.json;JSONArray;false;optBoolean;;;Argument[1];ReturnValue;value;manual"
 			boolean out = false;
 			boolean in = (boolean)source();
 			JSONArray instance = null;
@@ -425,21 +425,21 @@ public class Test {
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "org.json;JSONArray;false;optDouble;;;Argument[-1];ReturnValue;taint"
+			// "org.json;JSONArray;false;optDouble;;;Argument[-1];ReturnValue;taint;manual"
 			double out = 0.0;
 			JSONArray in = (JSONArray)source();
 			out = in.optDouble(0, 0.0);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONArray;false;optDouble;;;Argument[-1];ReturnValue;taint"
+			// "org.json;JSONArray;false;optDouble;;;Argument[-1];ReturnValue;taint;manual"
 			double out = 0.0;
 			JSONArray in = (JSONArray)source();
 			out = in.optDouble(0);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONArray;false;optDouble;;;Argument[1];ReturnValue;value"
+			// "org.json;JSONArray;false;optDouble;;;Argument[1];ReturnValue;value;manual"
 			double out = 0.0;
 			double in = (double)source();
 			JSONArray instance = null;
@@ -447,21 +447,21 @@ public class Test {
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "org.json;JSONArray;false;optEnum;;;Argument[-1];ReturnValue;taint"
+			// "org.json;JSONArray;false;optEnum;;;Argument[-1];ReturnValue;taint;manual"
 			Enum out = null;
 			JSONArray in = (JSONArray)source();
 			out = in.optEnum(null, 0, null);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONArray;false;optEnum;;;Argument[-1];ReturnValue;taint"
+			// "org.json;JSONArray;false;optEnum;;;Argument[-1];ReturnValue;taint;manual"
 			Enum out = null;
 			JSONArray in = (JSONArray)source();
 			out = in.optEnum(null, 0);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONArray;false;optEnum;;;Argument[2];ReturnValue;value"
+			// "org.json;JSONArray;false;optEnum;;;Argument[2];ReturnValue;value;manual"
 			Enum out = null;
 			Enum in = (Enum)source();
 			JSONArray instance = null;
@@ -469,21 +469,21 @@ public class Test {
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "org.json;JSONArray;false;optFloat;;;Argument[-1];ReturnValue;taint"
+			// "org.json;JSONArray;false;optFloat;;;Argument[-1];ReturnValue;taint;manual"
 			float out = 0.0f;
 			JSONArray in = (JSONArray)source();
 			out = in.optFloat(0, 0.0f);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONArray;false;optFloat;;;Argument[-1];ReturnValue;taint"
+			// "org.json;JSONArray;false;optFloat;;;Argument[-1];ReturnValue;taint;manual"
 			float out = 0.0f;
 			JSONArray in = (JSONArray)source();
 			out = in.optFloat(0);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONArray;false;optFloat;;;Argument[1];ReturnValue;value"
+			// "org.json;JSONArray;false;optFloat;;;Argument[1];ReturnValue;value;manual"
 			float out = 0.0f;
 			float in = (float)source();
 			JSONArray instance = null;
@@ -491,21 +491,21 @@ public class Test {
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "org.json;JSONArray;false;optInt;;;Argument[-1];ReturnValue;taint"
+			// "org.json;JSONArray;false;optInt;;;Argument[-1];ReturnValue;taint;manual"
 			int out = 0;
 			JSONArray in = (JSONArray)source();
 			out = in.optInt(0, 0);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONArray;false;optInt;;;Argument[-1];ReturnValue;taint"
+			// "org.json;JSONArray;false;optInt;;;Argument[-1];ReturnValue;taint;manual"
 			int out = 0;
 			JSONArray in = (JSONArray)source();
 			out = in.optInt(0);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONArray;false;optInt;;;Argument[1];ReturnValue;value"
+			// "org.json;JSONArray;false;optInt;;;Argument[1];ReturnValue;value;manual"
 			int out = 0;
 			int in = (int)source();
 			JSONArray instance = null;
@@ -513,35 +513,35 @@ public class Test {
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "org.json;JSONArray;false;optJSONArray;;;Argument[-1];ReturnValue;taint"
+			// "org.json;JSONArray;false;optJSONArray;;;Argument[-1];ReturnValue;taint;manual"
 			JSONArray out = null;
 			JSONArray in = (JSONArray)source();
 			out = in.optJSONArray(0);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONArray;false;optJSONObject;;;Argument[-1];ReturnValue;taint"
+			// "org.json;JSONArray;false;optJSONObject;;;Argument[-1];ReturnValue;taint;manual"
 			JSONObject out = null;
 			JSONArray in = (JSONArray)source();
 			out = in.optJSONObject(0);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONArray;false;optLong;;;Argument[-1];ReturnValue;taint"
+			// "org.json;JSONArray;false;optLong;;;Argument[-1];ReturnValue;taint;manual"
 			long out = 0L;
 			JSONArray in = (JSONArray)source();
 			out = in.optLong(0, 0L);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONArray;false;optLong;;;Argument[-1];ReturnValue;taint"
+			// "org.json;JSONArray;false;optLong;;;Argument[-1];ReturnValue;taint;manual"
 			long out = 0L;
 			JSONArray in = (JSONArray)source();
 			out = in.optLong(0);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONArray;false;optLong;;;Argument[1];ReturnValue;value"
+			// "org.json;JSONArray;false;optLong;;;Argument[1];ReturnValue;value;manual"
 			long out = 0L;
 			long in = (long)source();
 			JSONArray instance = null;
@@ -549,21 +549,21 @@ public class Test {
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "org.json;JSONArray;false;optNumber;;;Argument[-1];ReturnValue;taint"
+			// "org.json;JSONArray;false;optNumber;;;Argument[-1];ReturnValue;taint;manual"
 			Number out = null;
 			JSONArray in = (JSONArray)source();
 			out = in.optNumber(0, null);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONArray;false;optNumber;;;Argument[-1];ReturnValue;taint"
+			// "org.json;JSONArray;false;optNumber;;;Argument[-1];ReturnValue;taint;manual"
 			Number out = null;
 			JSONArray in = (JSONArray)source();
 			out = in.optNumber(0);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONArray;false;optNumber;;;Argument[1];ReturnValue;value"
+			// "org.json;JSONArray;false;optNumber;;;Argument[1];ReturnValue;value;manual"
 			Number out = null;
 			Number in = (Number)source();
 			JSONArray instance = null;
@@ -571,35 +571,35 @@ public class Test {
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "org.json;JSONArray;false;optQuery;;;Argument[-1];ReturnValue;taint"
+			// "org.json;JSONArray;false;optQuery;;;Argument[-1];ReturnValue;taint;manual"
 			Object out = null;
 			JSONArray in = (JSONArray)source();
 			out = in.optQuery((String)null);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONArray;false;optQuery;;;Argument[-1];ReturnValue;taint"
+			// "org.json;JSONArray;false;optQuery;;;Argument[-1];ReturnValue;taint;manual"
 			Object out = null;
 			JSONArray in = (JSONArray)source();
 			out = in.optQuery((JSONPointer)null);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONArray;false;optString;;;Argument[-1];ReturnValue;taint"
+			// "org.json;JSONArray;false;optString;;;Argument[-1];ReturnValue;taint;manual"
 			String out = null;
 			JSONArray in = (JSONArray)source();
 			out = in.optString(0, null);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONArray;false;optString;;;Argument[-1];ReturnValue;taint"
+			// "org.json;JSONArray;false;optString;;;Argument[-1];ReturnValue;taint;manual"
 			String out = null;
 			JSONArray in = (JSONArray)source();
 			out = in.optString(0);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONArray;false;optString;;;Argument[1];ReturnValue;value"
+			// "org.json;JSONArray;false;optString;;;Argument[1];ReturnValue;value;manual"
 			String out = null;
 			String in = (String)source();
 			JSONArray instance = null;
@@ -607,329 +607,329 @@ public class Test {
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "org.json;JSONArray;false;put;(Collection);;Element of Argument[0];Argument[-1];taint"
+			// "org.json;JSONArray;false;put;(Collection);;Element of Argument[0];Argument[-1];taint;manual"
 			JSONArray out = null;
 			Collection in = (Collection)newWithElement(source());
 			out.put(in);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONArray;false;put;(Map);;MapKey of Argument[0];Argument[-1];taint"
+			// "org.json;JSONArray;false;put;(Map);;MapKey of Argument[0];Argument[-1];taint;manual"
 			JSONArray out = null;
 			Map in = (Map)newWithMapKey(source());
 			out.put(in);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONArray;false;put;(Map);;MapValue of Argument[0];Argument[-1];taint"
+			// "org.json;JSONArray;false;put;(Map);;MapValue of Argument[0];Argument[-1];taint;manual"
 			JSONArray out = null;
 			Map in = (Map)newWithMapValue(source());
 			out.put(in);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONArray;false;put;(Object);;Argument[0];Argument[-1];taint"
+			// "org.json;JSONArray;false;put;(Object);;Argument[0];Argument[-1];taint;manual"
 			JSONArray out = null;
 			Object in = (Object)source();
 			out.put(in);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONArray;false;put;(boolean);;Argument[0];Argument[-1];taint"
+			// "org.json;JSONArray;false;put;(boolean);;Argument[0];Argument[-1];taint;manual"
 			JSONArray out = null;
 			boolean in = (boolean)source();
 			out.put(in);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONArray;false;put;(double);;Argument[0];Argument[-1];taint"
+			// "org.json;JSONArray;false;put;(double);;Argument[0];Argument[-1];taint;manual"
 			JSONArray out = null;
 			double in = (double)source();
 			out.put(in);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONArray;false;put;(float);;Argument[0];Argument[-1];taint"
+			// "org.json;JSONArray;false;put;(float);;Argument[0];Argument[-1];taint;manual"
 			JSONArray out = null;
 			float in = (float)source();
 			out.put(in);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONArray;false;put;(int);;Argument[0];Argument[-1];taint"
+			// "org.json;JSONArray;false;put;(int);;Argument[0];Argument[-1];taint;manual"
 			JSONArray out = null;
 			int in = (int)source();
 			out.put(in);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONArray;false;put;(int,Collection);;Element of Argument[1];Argument[-1];taint"
+			// "org.json;JSONArray;false;put;(int,Collection);;Element of Argument[1];Argument[-1];taint;manual"
 			JSONArray out = null;
 			Collection in = (Collection)newWithElement(source());
 			out.put(0, in);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONArray;false;put;(int,Map);;MapKey of Argument[1];Argument[-1];taint"
+			// "org.json;JSONArray;false;put;(int,Map);;MapKey of Argument[1];Argument[-1];taint;manual"
 			JSONArray out = null;
 			Map in = (Map)newWithMapKey(source());
 			out.put(0, in);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONArray;false;put;(int,Map);;MapValue of Argument[1];Argument[-1];taint"
+			// "org.json;JSONArray;false;put;(int,Map);;MapValue of Argument[1];Argument[-1];taint;manual"
 			JSONArray out = null;
 			Map in = (Map)newWithMapValue(source());
 			out.put(0, in);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONArray;false;put;(int,Object);;Argument[1];Argument[-1];taint"
+			// "org.json;JSONArray;false;put;(int,Object);;Argument[1];Argument[-1];taint;manual"
 			JSONArray out = null;
 			Object in = (Object)source();
 			out.put(0, in);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONArray;false;put;(int,boolean);;Argument[1];Argument[-1];taint"
+			// "org.json;JSONArray;false;put;(int,boolean);;Argument[1];Argument[-1];taint;manual"
 			JSONArray out = null;
 			boolean in = (boolean)source();
 			out.put(0, in);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONArray;false;put;(int,double);;Argument[1];Argument[-1];taint"
+			// "org.json;JSONArray;false;put;(int,double);;Argument[1];Argument[-1];taint;manual"
 			JSONArray out = null;
 			double in = (double)source();
 			out.put(0, in);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONArray;false;put;(int,float);;Argument[1];Argument[-1];taint"
+			// "org.json;JSONArray;false;put;(int,float);;Argument[1];Argument[-1];taint;manual"
 			JSONArray out = null;
 			float in = (float)source();
 			out.put(0, in);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONArray;false;put;(int,int);;Argument[1];Argument[-1];taint"
+			// "org.json;JSONArray;false;put;(int,int);;Argument[1];Argument[-1];taint;manual"
 			JSONArray out = null;
 			int in = (int)source();
 			out.put(0, in);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONArray;false;put;(int,long);;Argument[1];Argument[-1];taint"
+			// "org.json;JSONArray;false;put;(int,long);;Argument[1];Argument[-1];taint;manual"
 			JSONArray out = null;
 			long in = (long)source();
 			out.put(0, in);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONArray;false;put;(long);;Argument[0];Argument[-1];taint"
+			// "org.json;JSONArray;false;put;(long);;Argument[0];Argument[-1];taint;manual"
 			JSONArray out = null;
 			long in = (long)source();
 			out.put(in);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONArray;false;put;;;Argument[-1];ReturnValue;value"
+			// "org.json;JSONArray;false;put;;;Argument[-1];ReturnValue;value;manual"
 			JSONArray out = null;
 			JSONArray in = (JSONArray)source();
 			out = in.put(false);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "org.json;JSONArray;false;put;;;Argument[-1];ReturnValue;value"
+			// "org.json;JSONArray;false;put;;;Argument[-1];ReturnValue;value;manual"
 			JSONArray out = null;
 			JSONArray in = (JSONArray)source();
 			out = in.put(0L);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "org.json;JSONArray;false;put;;;Argument[-1];ReturnValue;value"
+			// "org.json;JSONArray;false;put;;;Argument[-1];ReturnValue;value;manual"
 			JSONArray out = null;
 			JSONArray in = (JSONArray)source();
 			out = in.put(0.0f);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "org.json;JSONArray;false;put;;;Argument[-1];ReturnValue;value"
+			// "org.json;JSONArray;false;put;;;Argument[-1];ReturnValue;value;manual"
 			JSONArray out = null;
 			JSONArray in = (JSONArray)source();
 			out = in.put(0.0);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "org.json;JSONArray;false;put;;;Argument[-1];ReturnValue;value"
+			// "org.json;JSONArray;false;put;;;Argument[-1];ReturnValue;value;manual"
 			JSONArray out = null;
 			JSONArray in = (JSONArray)source();
 			out = in.put(0, false);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "org.json;JSONArray;false;put;;;Argument[-1];ReturnValue;value"
+			// "org.json;JSONArray;false;put;;;Argument[-1];ReturnValue;value;manual"
 			JSONArray out = null;
 			JSONArray in = (JSONArray)source();
 			out = in.put(0, 0L);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "org.json;JSONArray;false;put;;;Argument[-1];ReturnValue;value"
+			// "org.json;JSONArray;false;put;;;Argument[-1];ReturnValue;value;manual"
 			JSONArray out = null;
 			JSONArray in = (JSONArray)source();
 			out = in.put(0, 0.0f);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "org.json;JSONArray;false;put;;;Argument[-1];ReturnValue;value"
+			// "org.json;JSONArray;false;put;;;Argument[-1];ReturnValue;value;manual"
 			JSONArray out = null;
 			JSONArray in = (JSONArray)source();
 			out = in.put(0, 0.0);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "org.json;JSONArray;false;put;;;Argument[-1];ReturnValue;value"
+			// "org.json;JSONArray;false;put;;;Argument[-1];ReturnValue;value;manual"
 			JSONArray out = null;
 			JSONArray in = (JSONArray)source();
 			out = in.put(0, 0);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "org.json;JSONArray;false;put;;;Argument[-1];ReturnValue;value"
+			// "org.json;JSONArray;false;put;;;Argument[-1];ReturnValue;value;manual"
 			JSONArray out = null;
 			JSONArray in = (JSONArray)source();
 			out = in.put(0, (Object)null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "org.json;JSONArray;false;put;;;Argument[-1];ReturnValue;value"
+			// "org.json;JSONArray;false;put;;;Argument[-1];ReturnValue;value;manual"
 			JSONArray out = null;
 			JSONArray in = (JSONArray)source();
 			out = in.put(0, (Map)null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "org.json;JSONArray;false;put;;;Argument[-1];ReturnValue;value"
+			// "org.json;JSONArray;false;put;;;Argument[-1];ReturnValue;value;manual"
 			JSONArray out = null;
 			JSONArray in = (JSONArray)source();
 			out = in.put(0, (Collection)null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "org.json;JSONArray;false;put;;;Argument[-1];ReturnValue;value"
+			// "org.json;JSONArray;false;put;;;Argument[-1];ReturnValue;value;manual"
 			JSONArray out = null;
 			JSONArray in = (JSONArray)source();
 			out = in.put(0);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "org.json;JSONArray;false;put;;;Argument[-1];ReturnValue;value"
+			// "org.json;JSONArray;false;put;;;Argument[-1];ReturnValue;value;manual"
 			JSONArray out = null;
 			JSONArray in = (JSONArray)source();
 			out = in.put((Object)null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "org.json;JSONArray;false;put;;;Argument[-1];ReturnValue;value"
+			// "org.json;JSONArray;false;put;;;Argument[-1];ReturnValue;value;manual"
 			JSONArray out = null;
 			JSONArray in = (JSONArray)source();
 			out = in.put((Map)null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "org.json;JSONArray;false;put;;;Argument[-1];ReturnValue;value"
+			// "org.json;JSONArray;false;put;;;Argument[-1];ReturnValue;value;manual"
 			JSONArray out = null;
 			JSONArray in = (JSONArray)source();
 			out = in.put((Collection)null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "org.json;JSONArray;false;putAll;(Collection);;Element of Argument[0];Argument[-1];taint"
+			// "org.json;JSONArray;false;putAll;(Collection);;Element of Argument[0];Argument[-1];taint;manual"
 			JSONArray out = null;
 			Collection in = (Collection)newWithElement(source());
 			out.putAll(in);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONArray;false;putAll;(Iterable);;Element of Argument[0];Argument[-1];taint"
+			// "org.json;JSONArray;false;putAll;(Iterable);;Element of Argument[0];Argument[-1];taint;manual"
 			JSONArray out = null;
 			Iterable in = (Iterable)newWithElement(source());
 			out.putAll(in);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONArray;false;putAll;(JSONArray);;Argument[0];Argument[-1];taint"
+			// "org.json;JSONArray;false;putAll;(JSONArray);;Argument[0];Argument[-1];taint;manual"
 			JSONArray out = null;
 			JSONArray in = (JSONArray)source();
 			out.putAll(in);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONArray;false;putAll;(Object);;Argument[0];Argument[-1];taint"
+			// "org.json;JSONArray;false;putAll;(Object);;Argument[0];Argument[-1];taint;manual"
 			JSONArray out = null;
 			Object in = (Object)source();
 			out.putAll(in);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONArray;false;putAll;;;Argument[-1];ReturnValue;value"
+			// "org.json;JSONArray;false;putAll;;;Argument[-1];ReturnValue;value;manual"
 			JSONArray out = null;
 			JSONArray in = (JSONArray)source();
 			out = in.putAll((Object)null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "org.json;JSONArray;false;putAll;;;Argument[-1];ReturnValue;value"
+			// "org.json;JSONArray;false;putAll;;;Argument[-1];ReturnValue;value;manual"
 			JSONArray out = null;
 			JSONArray in = (JSONArray)source();
 			out = in.putAll((JSONArray)null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "org.json;JSONArray;false;putAll;;;Argument[-1];ReturnValue;value"
+			// "org.json;JSONArray;false;putAll;;;Argument[-1];ReturnValue;value;manual"
 			JSONArray out = null;
 			JSONArray in = (JSONArray)source();
 			out = in.putAll((Iterable)null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "org.json;JSONArray;false;putAll;;;Argument[-1];ReturnValue;value"
+			// "org.json;JSONArray;false;putAll;;;Argument[-1];ReturnValue;value;manual"
 			JSONArray out = null;
 			JSONArray in = (JSONArray)source();
 			out = in.putAll((Collection)null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "org.json;JSONArray;false;query;;;Argument[-1];ReturnValue;taint"
+			// "org.json;JSONArray;false;query;;;Argument[-1];ReturnValue;taint;manual"
 			Object out = null;
 			JSONArray in = (JSONArray)source();
 			out = in.query((String)null);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONArray;false;query;;;Argument[-1];ReturnValue;taint"
+			// "org.json;JSONArray;false;query;;;Argument[-1];ReturnValue;taint;manual"
 			Object out = null;
 			JSONArray in = (JSONArray)source();
 			out = in.query((JSONPointer)null);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONArray;false;remove;;;Argument[-1];ReturnValue;taint"
+			// "org.json;JSONArray;false;remove;;;Argument[-1];ReturnValue;taint;manual"
 			Object out = null;
 			JSONArray in = (JSONArray)source();
 			out = in.remove(0);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONArray;false;toJSONObject;;;Argument[-1];ReturnValue;taint"
+			// "org.json;JSONArray;false;toJSONObject;;;Argument[-1];ReturnValue;taint;manual"
 			JSONObject out = null;
 			JSONArray in = (JSONArray)source();
 			out = in.toJSONObject(null);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONArray;false;toJSONObject;;;Argument[0];ReturnValue;taint"
+			// "org.json;JSONArray;false;toJSONObject;;;Argument[0];ReturnValue;taint;manual"
 			JSONObject out = null;
 			JSONArray in = (JSONArray)source();
 			JSONArray instance = null;
@@ -937,7 +937,7 @@ public class Test {
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONArray;false;toString;;;Argument[0];ReturnValue;taint"
+			// "org.json;JSONArray;false;toString;;;Argument[0];ReturnValue;taint;manual"
 			String out = null;
 			int in = (int)source();
 			JSONArray instance = null;
@@ -945,21 +945,21 @@ public class Test {
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONArray;false;write;;;Argument[-1];Argument[0];taint"
+			// "org.json;JSONArray;false;write;;;Argument[-1];Argument[0];taint;manual"
 			Writer out = null;
 			JSONArray in = (JSONArray)source();
 			in.write(out, 0, 0);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONArray;false;write;;;Argument[-1];Argument[0];taint"
+			// "org.json;JSONArray;false;write;;;Argument[-1];Argument[0];taint;manual"
 			Writer out = null;
 			JSONArray in = (JSONArray)source();
 			in.write(out);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONArray;false;write;;;Argument[0];ReturnValue;value"
+			// "org.json;JSONArray;false;write;;;Argument[0];ReturnValue;value;manual"
 			Writer out = null;
 			Writer in = (Writer)source();
 			JSONArray instance = null;
@@ -967,7 +967,7 @@ public class Test {
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "org.json;JSONArray;false;write;;;Argument[0];ReturnValue;value"
+			// "org.json;JSONArray;false;write;;;Argument[0];ReturnValue;value;manual"
 			Writer out = null;
 			Writer in = (Writer)source();
 			JSONArray instance = null;
@@ -975,357 +975,357 @@ public class Test {
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "org.json;JSONML;false;toJSONArray;;;Argument[0];ReturnValue;taint"
+			// "org.json;JSONML;false;toJSONArray;;;Argument[0];ReturnValue;taint;manual"
 			JSONArray out = null;
 			XMLTokener in = (XMLTokener)source();
 			out = JSONML.toJSONArray(in, false);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONML;false;toJSONArray;;;Argument[0];ReturnValue;taint"
+			// "org.json;JSONML;false;toJSONArray;;;Argument[0];ReturnValue;taint;manual"
 			JSONArray out = null;
 			XMLTokener in = (XMLTokener)source();
 			out = JSONML.toJSONArray(in);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONML;false;toJSONArray;;;Argument[0];ReturnValue;taint"
+			// "org.json;JSONML;false;toJSONArray;;;Argument[0];ReturnValue;taint;manual"
 			JSONArray out = null;
 			String in = (String)source();
 			out = JSONML.toJSONArray(in, false);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONML;false;toJSONArray;;;Argument[0];ReturnValue;taint"
+			// "org.json;JSONML;false;toJSONArray;;;Argument[0];ReturnValue;taint;manual"
 			JSONArray out = null;
 			String in = (String)source();
 			out = JSONML.toJSONArray(in);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONML;false;toJSONObject;;;Argument[0];ReturnValue;taint"
+			// "org.json;JSONML;false;toJSONObject;;;Argument[0];ReturnValue;taint;manual"
 			JSONObject out = null;
 			XMLTokener in = (XMLTokener)source();
 			out = JSONML.toJSONObject(in, false);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONML;false;toJSONObject;;;Argument[0];ReturnValue;taint"
+			// "org.json;JSONML;false;toJSONObject;;;Argument[0];ReturnValue;taint;manual"
 			JSONObject out = null;
 			XMLTokener in = (XMLTokener)source();
 			out = JSONML.toJSONObject(in);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONML;false;toJSONObject;;;Argument[0];ReturnValue;taint"
+			// "org.json;JSONML;false;toJSONObject;;;Argument[0];ReturnValue;taint;manual"
 			JSONObject out = null;
 			String in = (String)source();
 			out = JSONML.toJSONObject(in, false);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONML;false;toJSONObject;;;Argument[0];ReturnValue;taint"
+			// "org.json;JSONML;false;toJSONObject;;;Argument[0];ReturnValue;taint;manual"
 			JSONObject out = null;
 			String in = (String)source();
 			out = JSONML.toJSONObject(in);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONML;false;toString;;;Argument[0];ReturnValue;taint"
+			// "org.json;JSONML;false;toString;;;Argument[0];ReturnValue;taint;manual"
 			String out = null;
 			JSONObject in = (JSONObject)source();
 			out = JSONML.toString(in);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONML;false;toString;;;Argument[0];ReturnValue;taint"
+			// "org.json;JSONML;false;toString;;;Argument[0];ReturnValue;taint;manual"
 			String out = null;
 			JSONArray in = (JSONArray)source();
 			out = JSONML.toString(in);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONObject;false;JSONObject;(JSONObject,String[]);;Argument[0];Argument[-1];taint"
+			// "org.json;JSONObject;false;JSONObject;(JSONObject,String[]);;Argument[0];Argument[-1];taint;manual"
 			JSONObject out = null;
 			JSONObject in = (JSONObject)source();
 			out = new JSONObject(in, (String[])null);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONObject;false;JSONObject;(JSONObject,String[]);;ArrayElement of Argument[1];Argument[-1];taint"
+			// "org.json;JSONObject;false;JSONObject;(JSONObject,String[]);;ArrayElement of Argument[1];Argument[-1];taint;manual"
 			JSONObject out = null;
 			String[] in = (String[])newWithArrayElement(source());
 			out = new JSONObject((JSONObject)null, in);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONObject;false;JSONObject;(JSONTokener);;Argument[0];Argument[-1];taint"
+			// "org.json;JSONObject;false;JSONObject;(JSONTokener);;Argument[0];Argument[-1];taint;manual"
 			JSONObject out = null;
 			JSONTokener in = (JSONTokener)source();
 			out = new JSONObject(in);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONObject;false;JSONObject;(Map);;MapKey of Argument[0];Argument[-1];taint"
+			// "org.json;JSONObject;false;JSONObject;(Map);;MapKey of Argument[0];Argument[-1];taint;manual"
 			JSONObject out = null;
 			Map in = (Map)newWithMapKey(source());
 			out = new JSONObject(in);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONObject;false;JSONObject;(Map);;MapValue of Argument[0];Argument[-1];taint"
+			// "org.json;JSONObject;false;JSONObject;(Map);;MapValue of Argument[0];Argument[-1];taint;manual"
 			JSONObject out = null;
 			Map in = (Map)newWithMapValue(source());
 			out = new JSONObject(in);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONObject;false;JSONObject;(Object);;Argument[0];Argument[-1];taint"
+			// "org.json;JSONObject;false;JSONObject;(Object);;Argument[0];Argument[-1];taint;manual"
 			JSONObject out = null;
 			Object in = (Object)source();
 			out = new JSONObject(in);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONObject;false;JSONObject;(Object,String[]);;Argument[0];Argument[-1];taint"
+			// "org.json;JSONObject;false;JSONObject;(Object,String[]);;Argument[0];Argument[-1];taint;manual"
 			JSONObject out = null;
 			Object in = (Object)source();
 			out = new JSONObject(in, (String[])null);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONObject;false;JSONObject;(Object,String[]);;ArrayElement of Argument[1];Argument[-1];taint"
+			// "org.json;JSONObject;false;JSONObject;(Object,String[]);;ArrayElement of Argument[1];Argument[-1];taint;manual"
 			JSONObject out = null;
 			String[] in = (String[])newWithArrayElement(source());
 			out = new JSONObject((Object)null, in);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONObject;false;JSONObject;(String);;Argument[0];Argument[-1];taint"
+			// "org.json;JSONObject;false;JSONObject;(String);;Argument[0];Argument[-1];taint;manual"
 			JSONObject out = null;
 			String in = (String)source();
 			out = new JSONObject(in);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONObject;false;JSONObject;(String,Locale);;Argument[0];Argument[-1];taint"
+			// "org.json;JSONObject;false;JSONObject;(String,Locale);;Argument[0];Argument[-1];taint;manual"
 			JSONObject out = null;
 			String in = (String)source();
 			out = new JSONObject(in, (Locale)null);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONObject;false;accumulate;;;Argument[-1];ReturnValue;value"
+			// "org.json;JSONObject;false;accumulate;;;Argument[-1];ReturnValue;value;manual"
 			JSONObject out = null;
 			JSONObject in = (JSONObject)source();
 			out = in.accumulate(null, null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "org.json;JSONObject;false;accumulate;;;Argument[0..1];Argument[-1];taint"
+			// "org.json;JSONObject;false;accumulate;;;Argument[0..1];Argument[-1];taint;manual"
 			JSONObject out = null;
 			String in = (String)source();
 			out.accumulate(in, null);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONObject;false;accumulate;;;Argument[0..1];Argument[-1];taint"
+			// "org.json;JSONObject;false;accumulate;;;Argument[0..1];Argument[-1];taint;manual"
 			JSONObject out = null;
 			Object in = (Object)source();
 			out.accumulate(null, in);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONObject;false;append;;;Argument[-1];ReturnValue;value"
+			// "org.json;JSONObject;false;append;;;Argument[-1];ReturnValue;value;manual"
 			JSONObject out = null;
 			JSONObject in = (JSONObject)source();
 			out = in.append(null, null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "org.json;JSONObject;false;append;;;Argument[0..1];Argument[-1];taint"
+			// "org.json;JSONObject;false;append;;;Argument[0..1];Argument[-1];taint;manual"
 			JSONObject out = null;
 			String in = (String)source();
 			out.append(in, null);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONObject;false;append;;;Argument[0..1];Argument[-1];taint"
+			// "org.json;JSONObject;false;append;;;Argument[0..1];Argument[-1];taint;manual"
 			JSONObject out = null;
 			Object in = (Object)source();
 			out.append(null, in);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONObject;false;doubleToString;;;Argument[0];ReturnValue;taint"
+			// "org.json;JSONObject;false;doubleToString;;;Argument[0];ReturnValue;taint;manual"
 			String out = null;
 			double in = (double)source();
 			out = JSONObject.doubleToString(in);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONObject;false;get;;;Argument[-1];ReturnValue;taint"
+			// "org.json;JSONObject;false;get;;;Argument[-1];ReturnValue;taint;manual"
 			Object out = null;
 			JSONObject in = (JSONObject)source();
 			out = in.get(null);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONObject;false;getBigDecimal;;;Argument[-1];ReturnValue;taint"
+			// "org.json;JSONObject;false;getBigDecimal;;;Argument[-1];ReturnValue;taint;manual"
 			BigDecimal out = null;
 			JSONObject in = (JSONObject)source();
 			out = in.getBigDecimal(null);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONObject;false;getBigInteger;;;Argument[-1];ReturnValue;taint"
+			// "org.json;JSONObject;false;getBigInteger;;;Argument[-1];ReturnValue;taint;manual"
 			BigInteger out = null;
 			JSONObject in = (JSONObject)source();
 			out = in.getBigInteger(null);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONObject;false;getBoolean;;;Argument[-1];ReturnValue;taint"
+			// "org.json;JSONObject;false;getBoolean;;;Argument[-1];ReturnValue;taint;manual"
 			boolean out = false;
 			JSONObject in = (JSONObject)source();
 			out = in.getBoolean(null);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONObject;false;getDouble;;;Argument[-1];ReturnValue;taint"
+			// "org.json;JSONObject;false;getDouble;;;Argument[-1];ReturnValue;taint;manual"
 			double out = 0.0;
 			JSONObject in = (JSONObject)source();
 			out = in.getDouble(null);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONObject;false;getEnum;;;Argument[-1];ReturnValue;taint"
+			// "org.json;JSONObject;false;getEnum;;;Argument[-1];ReturnValue;taint;manual"
 			Enum out = null;
 			JSONObject in = (JSONObject)source();
 			out = in.getEnum(null, null);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONObject;false;getFloat;;;Argument[-1];ReturnValue;taint"
+			// "org.json;JSONObject;false;getFloat;;;Argument[-1];ReturnValue;taint;manual"
 			float out = 0.0f;
 			JSONObject in = (JSONObject)source();
 			out = in.getFloat(null);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONObject;false;getInt;;;Argument[-1];ReturnValue;taint"
+			// "org.json;JSONObject;false;getInt;;;Argument[-1];ReturnValue;taint;manual"
 			int out = 0;
 			JSONObject in = (JSONObject)source();
 			out = in.getInt(null);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONObject;false;getJSONArray;;;Argument[-1];ReturnValue;taint"
+			// "org.json;JSONObject;false;getJSONArray;;;Argument[-1];ReturnValue;taint;manual"
 			JSONArray out = null;
 			JSONObject in = (JSONObject)source();
 			out = in.getJSONArray(null);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONObject;false;getJSONObject;;;Argument[-1];ReturnValue;taint"
+			// "org.json;JSONObject;false;getJSONObject;;;Argument[-1];ReturnValue;taint;manual"
 			JSONObject out = null;
 			JSONObject in = (JSONObject)source();
 			out = in.getJSONObject(null);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONObject;false;getLong;;;Argument[-1];ReturnValue;taint"
+			// "org.json;JSONObject;false;getLong;;;Argument[-1];ReturnValue;taint;manual"
 			long out = 0L;
 			JSONObject in = (JSONObject)source();
 			out = in.getLong(null);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONObject;false;getNames;;;Argument[0];ArrayElement of ReturnValue;taint"
+			// "org.json;JSONObject;false;getNames;;;Argument[0];ArrayElement of ReturnValue;taint;manual"
 			String[] out = null;
 			Object in = (Object)source();
 			out = JSONObject.getNames(in);
 			sink(getArrayElement(out)); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONObject;false;getNames;;;Argument[0];ArrayElement of ReturnValue;taint"
+			// "org.json;JSONObject;false;getNames;;;Argument[0];ArrayElement of ReturnValue;taint;manual"
 			String[] out = null;
 			JSONObject in = (JSONObject)source();
 			out = JSONObject.getNames(in);
 			sink(getArrayElement(out)); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONObject;false;getNumber;;;Argument[-1];ReturnValue;taint"
+			// "org.json;JSONObject;false;getNumber;;;Argument[-1];ReturnValue;taint;manual"
 			Number out = null;
 			JSONObject in = (JSONObject)source();
 			out = in.getNumber(null);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONObject;false;getString;;;Argument[-1];ReturnValue;taint"
+			// "org.json;JSONObject;false;getString;;;Argument[-1];ReturnValue;taint;manual"
 			String out = null;
 			JSONObject in = (JSONObject)source();
 			out = in.getString(null);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONObject;false;increment;;;Argument[-1];ReturnValue;value"
+			// "org.json;JSONObject;false;increment;;;Argument[-1];ReturnValue;value;manual"
 			JSONObject out = null;
 			JSONObject in = (JSONObject)source();
 			out = in.increment(null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "org.json;JSONObject;false;increment;;;Argument[0];Argument[-1];taint"
+			// "org.json;JSONObject;false;increment;;;Argument[0];Argument[-1];taint;manual"
 			JSONObject out = null;
 			String in = (String)source();
 			out.increment(in);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONObject;false;keySet;;;Argument[-1];Element of ReturnValue;taint"
+			// "org.json;JSONObject;false;keySet;;;Argument[-1];Element of ReturnValue;taint;manual"
 			Set out = null;
 			JSONObject in = (JSONObject)source();
 			out = in.keySet();
 			sink(getElement(out)); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONObject;false;keys;;;Argument[-1];Element of ReturnValue;taint"
+			// "org.json;JSONObject;false;keys;;;Argument[-1];Element of ReturnValue;taint;manual"
 			Iterator out = null;
 			JSONObject in = (JSONObject)source();
 			out = in.keys();
 			sink(getElement(out)); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONObject;false;names;;;Argument[-1];ReturnValue;taint"
+			// "org.json;JSONObject;false;names;;;Argument[-1];ReturnValue;taint;manual"
 			JSONArray out = null;
 			JSONObject in = (JSONObject)source();
 			out = in.names();
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONObject;false;numberToString;;;Argument[0];ReturnValue;taint"
+			// "org.json;JSONObject;false;numberToString;;;Argument[0];ReturnValue;taint;manual"
 			String out = null;
 			Number in = (Number)source();
 			out = JSONObject.numberToString(in);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONObject;false;opt;;;Argument[-1];ReturnValue;taint"
+			// "org.json;JSONObject;false;opt;;;Argument[-1];ReturnValue;taint;manual"
 			Object out = null;
 			JSONObject in = (JSONObject)source();
 			out = in.opt(null);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONObject;false;optBigDecimal;;;Argument[-1];ReturnValue;taint"
+			// "org.json;JSONObject;false;optBigDecimal;;;Argument[-1];ReturnValue;taint;manual"
 			BigDecimal out = null;
 			JSONObject in = (JSONObject)source();
 			out = in.optBigDecimal(null, null);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONObject;false;optBigDecimal;;;Argument[1];ReturnValue;value"
+			// "org.json;JSONObject;false;optBigDecimal;;;Argument[1];ReturnValue;value;manual"
 			BigDecimal out = null;
 			BigDecimal in = (BigDecimal)source();
 			JSONObject instance = null;
@@ -1333,14 +1333,14 @@ public class Test {
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "org.json;JSONObject;false;optBigInteger;;;Argument[-1];ReturnValue;taint"
+			// "org.json;JSONObject;false;optBigInteger;;;Argument[-1];ReturnValue;taint;manual"
 			BigInteger out = null;
 			JSONObject in = (JSONObject)source();
 			out = in.optBigInteger(null, null);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONObject;false;optBigInteger;;;Argument[1];ReturnValue;value"
+			// "org.json;JSONObject;false;optBigInteger;;;Argument[1];ReturnValue;value;manual"
 			BigInteger out = null;
 			BigInteger in = (BigInteger)source();
 			JSONObject instance = null;
@@ -1348,21 +1348,21 @@ public class Test {
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "org.json;JSONObject;false;optBoolean;;;Argument[-1];ReturnValue;taint"
+			// "org.json;JSONObject;false;optBoolean;;;Argument[-1];ReturnValue;taint;manual"
 			boolean out = false;
 			JSONObject in = (JSONObject)source();
 			out = in.optBoolean(null, false);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONObject;false;optBoolean;;;Argument[-1];ReturnValue;taint"
+			// "org.json;JSONObject;false;optBoolean;;;Argument[-1];ReturnValue;taint;manual"
 			boolean out = false;
 			JSONObject in = (JSONObject)source();
 			out = in.optBoolean(null);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONObject;false;optBoolean;;;Argument[1];ReturnValue;value"
+			// "org.json;JSONObject;false;optBoolean;;;Argument[1];ReturnValue;value;manual"
 			boolean out = false;
 			boolean in = (boolean)source();
 			JSONObject instance = null;
@@ -1370,21 +1370,21 @@ public class Test {
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "org.json;JSONObject;false;optDouble;;;Argument[-1];ReturnValue;taint"
+			// "org.json;JSONObject;false;optDouble;;;Argument[-1];ReturnValue;taint;manual"
 			double out = 0.0;
 			JSONObject in = (JSONObject)source();
 			out = in.optDouble(null, 0.0);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONObject;false;optDouble;;;Argument[-1];ReturnValue;taint"
+			// "org.json;JSONObject;false;optDouble;;;Argument[-1];ReturnValue;taint;manual"
 			double out = 0.0;
 			JSONObject in = (JSONObject)source();
 			out = in.optDouble(null);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONObject;false;optDouble;;;Argument[1];ReturnValue;value"
+			// "org.json;JSONObject;false;optDouble;;;Argument[1];ReturnValue;value;manual"
 			double out = 0.0;
 			double in = (double)source();
 			JSONObject instance = null;
@@ -1392,21 +1392,21 @@ public class Test {
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "org.json;JSONObject;false;optEnum;;;Argument[-1];ReturnValue;taint"
+			// "org.json;JSONObject;false;optEnum;;;Argument[-1];ReturnValue;taint;manual"
 			Enum out = null;
 			JSONObject in = (JSONObject)source();
 			out = in.optEnum(null, null, null);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONObject;false;optEnum;;;Argument[-1];ReturnValue;taint"
+			// "org.json;JSONObject;false;optEnum;;;Argument[-1];ReturnValue;taint;manual"
 			Enum out = null;
 			JSONObject in = (JSONObject)source();
 			out = in.optEnum(null, null);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONObject;false;optEnum;;;Argument[2];ReturnValue;value"
+			// "org.json;JSONObject;false;optEnum;;;Argument[2];ReturnValue;value;manual"
 			Enum out = null;
 			Enum in = (Enum)source();
 			JSONObject instance = null;
@@ -1414,21 +1414,21 @@ public class Test {
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "org.json;JSONObject;false;optFloat;;;Argument[-1];ReturnValue;taint"
+			// "org.json;JSONObject;false;optFloat;;;Argument[-1];ReturnValue;taint;manual"
 			float out = 0.0f;
 			JSONObject in = (JSONObject)source();
 			out = in.optFloat(null, 0.0f);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONObject;false;optFloat;;;Argument[-1];ReturnValue;taint"
+			// "org.json;JSONObject;false;optFloat;;;Argument[-1];ReturnValue;taint;manual"
 			float out = 0.0f;
 			JSONObject in = (JSONObject)source();
 			out = in.optFloat(null);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONObject;false;optFloat;;;Argument[1];ReturnValue;value"
+			// "org.json;JSONObject;false;optFloat;;;Argument[1];ReturnValue;value;manual"
 			float out = 0.0f;
 			float in = (float)source();
 			JSONObject instance = null;
@@ -1436,21 +1436,21 @@ public class Test {
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "org.json;JSONObject;false;optInt;;;Argument[-1];ReturnValue;taint"
+			// "org.json;JSONObject;false;optInt;;;Argument[-1];ReturnValue;taint;manual"
 			int out = 0;
 			JSONObject in = (JSONObject)source();
 			out = in.optInt(null, 0);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONObject;false;optInt;;;Argument[-1];ReturnValue;taint"
+			// "org.json;JSONObject;false;optInt;;;Argument[-1];ReturnValue;taint;manual"
 			int out = 0;
 			JSONObject in = (JSONObject)source();
 			out = in.optInt(null);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONObject;false;optInt;;;Argument[1];ReturnValue;value"
+			// "org.json;JSONObject;false;optInt;;;Argument[1];ReturnValue;value;manual"
 			int out = 0;
 			int in = (int)source();
 			JSONObject instance = null;
@@ -1458,35 +1458,35 @@ public class Test {
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "org.json;JSONObject;false;optJSONArray;;;Argument[-1];ReturnValue;taint"
+			// "org.json;JSONObject;false;optJSONArray;;;Argument[-1];ReturnValue;taint;manual"
 			JSONArray out = null;
 			JSONObject in = (JSONObject)source();
 			out = in.optJSONArray(null);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONObject;false;optJSONObject;;;Argument[-1];ReturnValue;taint"
+			// "org.json;JSONObject;false;optJSONObject;;;Argument[-1];ReturnValue;taint;manual"
 			JSONObject out = null;
 			JSONObject in = (JSONObject)source();
 			out = in.optJSONObject(null);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONObject;false;optLong;;;Argument[-1];ReturnValue;taint"
+			// "org.json;JSONObject;false;optLong;;;Argument[-1];ReturnValue;taint;manual"
 			long out = 0L;
 			JSONObject in = (JSONObject)source();
 			out = in.optLong(null, 0L);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONObject;false;optLong;;;Argument[-1];ReturnValue;taint"
+			// "org.json;JSONObject;false;optLong;;;Argument[-1];ReturnValue;taint;manual"
 			long out = 0L;
 			JSONObject in = (JSONObject)source();
 			out = in.optLong(null);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONObject;false;optLong;;;Argument[1];ReturnValue;value"
+			// "org.json;JSONObject;false;optLong;;;Argument[1];ReturnValue;value;manual"
 			long out = 0L;
 			long in = (long)source();
 			JSONObject instance = null;
@@ -1494,21 +1494,21 @@ public class Test {
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "org.json;JSONObject;false;optNumber;;;Argument[-1];ReturnValue;taint"
+			// "org.json;JSONObject;false;optNumber;;;Argument[-1];ReturnValue;taint;manual"
 			Number out = null;
 			JSONObject in = (JSONObject)source();
 			out = in.optNumber(null, null);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONObject;false;optNumber;;;Argument[-1];ReturnValue;taint"
+			// "org.json;JSONObject;false;optNumber;;;Argument[-1];ReturnValue;taint;manual"
 			Number out = null;
 			JSONObject in = (JSONObject)source();
 			out = in.optNumber(null);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONObject;false;optNumber;;;Argument[1];ReturnValue;value"
+			// "org.json;JSONObject;false;optNumber;;;Argument[1];ReturnValue;value;manual"
 			Number out = null;
 			Number in = (Number)source();
 			JSONObject instance = null;
@@ -1516,35 +1516,35 @@ public class Test {
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "org.json;JSONObject;false;optQuery;;;Argument[-1];ReturnValue;taint"
+			// "org.json;JSONObject;false;optQuery;;;Argument[-1];ReturnValue;taint;manual"
 			Object out = null;
 			JSONObject in = (JSONObject)source();
 			out = in.optQuery((String)null);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONObject;false;optQuery;;;Argument[-1];ReturnValue;taint"
+			// "org.json;JSONObject;false;optQuery;;;Argument[-1];ReturnValue;taint;manual"
 			Object out = null;
 			JSONObject in = (JSONObject)source();
 			out = in.optQuery((JSONPointer)null);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONObject;false;optString;;;Argument[-1];ReturnValue;taint"
+			// "org.json;JSONObject;false;optString;;;Argument[-1];ReturnValue;taint;manual"
 			String out = null;
 			JSONObject in = (JSONObject)source();
 			out = in.optString(null, null);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONObject;false;optString;;;Argument[-1];ReturnValue;taint"
+			// "org.json;JSONObject;false;optString;;;Argument[-1];ReturnValue;taint;manual"
 			String out = null;
 			JSONObject in = (JSONObject)source();
 			out = in.optString(null);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONObject;false;optString;;;Argument[1];ReturnValue;value"
+			// "org.json;JSONObject;false;optString;;;Argument[1];ReturnValue;value;manual"
 			String out = null;
 			String in = (String)source();
 			JSONObject instance = null;
@@ -1552,336 +1552,336 @@ public class Test {
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "org.json;JSONObject;false;put;(String,Collection);;Argument[0];Argument[-1];taint"
+			// "org.json;JSONObject;false;put;(String,Collection);;Argument[0];Argument[-1];taint;manual"
 			JSONObject out = null;
 			String in = (String)source();
 			out.put(in, (Collection)null);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONObject;false;put;(String,Collection);;Element of Argument[1];Argument[-1];taint"
+			// "org.json;JSONObject;false;put;(String,Collection);;Element of Argument[1];Argument[-1];taint;manual"
 			JSONObject out = null;
 			Collection in = (Collection)newWithElement(source());
 			out.put((String)null, in);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONObject;false;put;(String,Map);;Argument[0];Argument[-1];taint"
+			// "org.json;JSONObject;false;put;(String,Map);;Argument[0];Argument[-1];taint;manual"
 			JSONObject out = null;
 			String in = (String)source();
 			out.put(in, (Map)null);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONObject;false;put;(String,Map);;MapKey of Argument[1];Argument[-1];taint"
+			// "org.json;JSONObject;false;put;(String,Map);;MapKey of Argument[1];Argument[-1];taint;manual"
 			JSONObject out = null;
 			Map in = (Map)newWithMapKey(source());
 			out.put((String)null, in);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONObject;false;put;(String,Map);;MapValue of Argument[1];Argument[-1];taint"
+			// "org.json;JSONObject;false;put;(String,Map);;MapValue of Argument[1];Argument[-1];taint;manual"
 			JSONObject out = null;
 			Map in = (Map)newWithMapValue(source());
 			out.put((String)null, in);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONObject;false;put;(String,Object);;Argument[0];Argument[-1];taint"
+			// "org.json;JSONObject;false;put;(String,Object);;Argument[0];Argument[-1];taint;manual"
 			JSONObject out = null;
 			String in = (String)source();
 			out.put(in, (Object)null);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONObject;false;put;(String,Object);;Argument[1];Argument[-1];taint"
+			// "org.json;JSONObject;false;put;(String,Object);;Argument[1];Argument[-1];taint;manual"
 			JSONObject out = null;
 			Object in = (Object)source();
 			out.put((String)null, in);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONObject;false;put;(String,boolean);;Argument[0];Argument[-1];taint"
+			// "org.json;JSONObject;false;put;(String,boolean);;Argument[0];Argument[-1];taint;manual"
 			JSONObject out = null;
 			String in = (String)source();
 			out.put(in, false);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONObject;false;put;(String,boolean);;Argument[1];Argument[-1];taint"
+			// "org.json;JSONObject;false;put;(String,boolean);;Argument[1];Argument[-1];taint;manual"
 			JSONObject out = null;
 			boolean in = (boolean)source();
 			out.put((String)null, in);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONObject;false;put;(String,double);;Argument[0];Argument[-1];taint"
+			// "org.json;JSONObject;false;put;(String,double);;Argument[0];Argument[-1];taint;manual"
 			JSONObject out = null;
 			String in = (String)source();
 			out.put(in, 0.0);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONObject;false;put;(String,double);;Argument[1];Argument[-1];taint"
+			// "org.json;JSONObject;false;put;(String,double);;Argument[1];Argument[-1];taint;manual"
 			JSONObject out = null;
 			double in = (double)source();
 			out.put((String)null, in);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONObject;false;put;(String,float);;Argument[0];Argument[-1];taint"
+			// "org.json;JSONObject;false;put;(String,float);;Argument[0];Argument[-1];taint;manual"
 			JSONObject out = null;
 			String in = (String)source();
 			out.put(in, 0.0f);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONObject;false;put;(String,float);;Argument[1];Argument[-1];taint"
+			// "org.json;JSONObject;false;put;(String,float);;Argument[1];Argument[-1];taint;manual"
 			JSONObject out = null;
 			float in = (float)source();
 			out.put((String)null, in);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONObject;false;put;(String,int);;Argument[0];Argument[-1];taint"
+			// "org.json;JSONObject;false;put;(String,int);;Argument[0];Argument[-1];taint;manual"
 			JSONObject out = null;
 			String in = (String)source();
 			out.put(in, 0);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONObject;false;put;(String,int);;Argument[1];Argument[-1];taint"
+			// "org.json;JSONObject;false;put;(String,int);;Argument[1];Argument[-1];taint;manual"
 			JSONObject out = null;
 			int in = (int)source();
 			out.put((String)null, in);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONObject;false;put;(String,long);;Argument[0];Argument[-1];taint"
+			// "org.json;JSONObject;false;put;(String,long);;Argument[0];Argument[-1];taint;manual"
 			JSONObject out = null;
 			String in = (String)source();
 			out.put(in, 0L);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONObject;false;put;(String,long);;Argument[1];Argument[-1];taint"
+			// "org.json;JSONObject;false;put;(String,long);;Argument[1];Argument[-1];taint;manual"
 			JSONObject out = null;
 			long in = (long)source();
 			out.put((String)null, in);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONObject;false;put;;;Argument[-1];ReturnValue;value"
+			// "org.json;JSONObject;false;put;;;Argument[-1];ReturnValue;value;manual"
 			JSONObject out = null;
 			JSONObject in = (JSONObject)source();
 			out = in.put((String)null, false);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "org.json;JSONObject;false;put;;;Argument[-1];ReturnValue;value"
+			// "org.json;JSONObject;false;put;;;Argument[-1];ReturnValue;value;manual"
 			JSONObject out = null;
 			JSONObject in = (JSONObject)source();
 			out = in.put((String)null, 0L);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "org.json;JSONObject;false;put;;;Argument[-1];ReturnValue;value"
+			// "org.json;JSONObject;false;put;;;Argument[-1];ReturnValue;value;manual"
 			JSONObject out = null;
 			JSONObject in = (JSONObject)source();
 			out = in.put((String)null, 0.0f);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "org.json;JSONObject;false;put;;;Argument[-1];ReturnValue;value"
+			// "org.json;JSONObject;false;put;;;Argument[-1];ReturnValue;value;manual"
 			JSONObject out = null;
 			JSONObject in = (JSONObject)source();
 			out = in.put((String)null, 0.0);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "org.json;JSONObject;false;put;;;Argument[-1];ReturnValue;value"
+			// "org.json;JSONObject;false;put;;;Argument[-1];ReturnValue;value;manual"
 			JSONObject out = null;
 			JSONObject in = (JSONObject)source();
 			out = in.put((String)null, 0);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "org.json;JSONObject;false;put;;;Argument[-1];ReturnValue;value"
+			// "org.json;JSONObject;false;put;;;Argument[-1];ReturnValue;value;manual"
 			JSONObject out = null;
 			JSONObject in = (JSONObject)source();
 			out = in.put((String)null, (Object)null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "org.json;JSONObject;false;put;;;Argument[-1];ReturnValue;value"
+			// "org.json;JSONObject;false;put;;;Argument[-1];ReturnValue;value;manual"
 			JSONObject out = null;
 			JSONObject in = (JSONObject)source();
 			out = in.put((String)null, (Map)null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "org.json;JSONObject;false;put;;;Argument[-1];ReturnValue;value"
+			// "org.json;JSONObject;false;put;;;Argument[-1];ReturnValue;value;manual"
 			JSONObject out = null;
 			JSONObject in = (JSONObject)source();
 			out = in.put((String)null, (Collection)null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "org.json;JSONObject;false;putOnce;;;Argument[-1];ReturnValue;value"
+			// "org.json;JSONObject;false;putOnce;;;Argument[-1];ReturnValue;value;manual"
 			JSONObject out = null;
 			JSONObject in = (JSONObject)source();
 			out = in.putOnce(null, null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "org.json;JSONObject;false;putOnce;;;Argument[0..1];Argument[-1];taint"
+			// "org.json;JSONObject;false;putOnce;;;Argument[0..1];Argument[-1];taint;manual"
 			JSONObject out = null;
 			String in = (String)source();
 			out.putOnce(in, null);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONObject;false;putOnce;;;Argument[0..1];Argument[-1];taint"
+			// "org.json;JSONObject;false;putOnce;;;Argument[0..1];Argument[-1];taint;manual"
 			JSONObject out = null;
 			Object in = (Object)source();
 			out.putOnce(null, in);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONObject;false;putOpt;;;Argument[-1];ReturnValue;value"
+			// "org.json;JSONObject;false;putOpt;;;Argument[-1];ReturnValue;value;manual"
 			JSONObject out = null;
 			JSONObject in = (JSONObject)source();
 			out = in.putOpt(null, null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "org.json;JSONObject;false;putOpt;;;Argument[0..1];Argument[-1];taint"
+			// "org.json;JSONObject;false;putOpt;;;Argument[0..1];Argument[-1];taint;manual"
 			JSONObject out = null;
 			String in = (String)source();
 			out.putOpt(in, null);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONObject;false;putOpt;;;Argument[0..1];Argument[-1];taint"
+			// "org.json;JSONObject;false;putOpt;;;Argument[0..1];Argument[-1];taint;manual"
 			JSONObject out = null;
 			Object in = (Object)source();
 			out.putOpt(null, in);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONObject;false;query;;;Argument[-1];ReturnValue;taint"
+			// "org.json;JSONObject;false;query;;;Argument[-1];ReturnValue;taint;manual"
 			Object out = null;
 			JSONObject in = (JSONObject)source();
 			out = in.query((String)null);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONObject;false;query;;;Argument[-1];ReturnValue;taint"
+			// "org.json;JSONObject;false;query;;;Argument[-1];ReturnValue;taint;manual"
 			Object out = null;
 			JSONObject in = (JSONObject)source();
 			out = in.query((JSONPointer)null);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONObject;false;quote;(String);;Argument[0];ReturnValue;taint"
+			// "org.json;JSONObject;false;quote;(String);;Argument[0];ReturnValue;taint;manual"
 			String out = null;
 			String in = (String)source();
 			out = JSONObject.quote(in);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONObject;false;quote;(String,Writer);;Argument[0];Argument[1];taint"
+			// "org.json;JSONObject;false;quote;(String,Writer);;Argument[0];Argument[1];taint;manual"
 			Writer out = null;
 			String in = (String)source();
 			JSONObject.quote(in, out);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONObject;false;quote;(String,Writer);;Argument[1];ReturnValue;value"
+			// "org.json;JSONObject;false;quote;(String,Writer);;Argument[1];ReturnValue;value;manual"
 			Writer out = null;
 			Writer in = (Writer)source();
 			out = JSONObject.quote(null, in);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "org.json;JSONObject;false;remove;;;Argument[-1];ReturnValue;taint"
+			// "org.json;JSONObject;false;remove;;;Argument[-1];ReturnValue;taint;manual"
 			Object out = null;
 			JSONObject in = (JSONObject)source();
 			out = in.remove(null);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONObject;false;stringToValue;;;Argument[0];ReturnValue;taint"
+			// "org.json;JSONObject;false;stringToValue;;;Argument[0];ReturnValue;taint;manual"
 			Object out = null;
 			String in = (String)source();
 			out = JSONObject.stringToValue(in);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONObject;false;toJSONArray;;;Argument[-1];ReturnValue;taint"
+			// "org.json;JSONObject;false;toJSONArray;;;Argument[-1];ReturnValue;taint;manual"
 			JSONArray out = null;
 			JSONObject in = (JSONObject)source();
 			out = in.toJSONArray(null);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONObject;false;toMap;;;Argument[-1];MapKey of ReturnValue;taint"
+			// "org.json;JSONObject;false;toMap;;;Argument[-1];MapKey of ReturnValue;taint;manual"
 			Map out = null;
 			JSONObject in = (JSONObject)source();
 			out = in.toMap();
 			sink(getMapKey(out)); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONObject;false;toMap;;;Argument[-1];MapValue of ReturnValue;taint"
+			// "org.json;JSONObject;false;toMap;;;Argument[-1];MapValue of ReturnValue;taint;manual"
 			Map out = null;
 			JSONObject in = (JSONObject)source();
 			out = in.toMap();
 			sink(getMapValue(out)); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONObject;false;toString;;;Argument[-1];ReturnValue;taint"
+			// "org.json;JSONObject;false;toString;;;Argument[-1];ReturnValue;taint;manual"
 			String out = null;
 			JSONObject in = (JSONObject)source();
 			out = in.toString(0);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONObject;false;toString;;;Argument[-1];ReturnValue;taint"
+			// "org.json;JSONObject;false;toString;;;Argument[-1];ReturnValue;taint;manual"
 			String out = null;
 			JSONObject in = (JSONObject)source();
 			out = in.toString();
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONObject;false;valueToString;;;Argument[0];ReturnValue;taint"
+			// "org.json;JSONObject;false;valueToString;;;Argument[0];ReturnValue;taint;manual"
 			String out = null;
 			Object in = (Object)source();
 			out = JSONObject.valueToString(in);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONObject;false;wrap;;;Argument[0];ReturnValue;taint"
+			// "org.json;JSONObject;false;wrap;;;Argument[0];ReturnValue;taint;manual"
 			Object out = null;
 			Object in = (Object)source();
 			out = JSONObject.wrap(in);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONObject;false;write;;;Argument[-1];Argument[0];taint"
+			// "org.json;JSONObject;false;write;;;Argument[-1];Argument[0];taint;manual"
 			Writer out = null;
 			JSONObject in = (JSONObject)source();
 			in.write(out, 0, 0);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONObject;false;write;;;Argument[-1];Argument[0];taint"
+			// "org.json;JSONObject;false;write;;;Argument[-1];Argument[0];taint;manual"
 			Writer out = null;
 			JSONObject in = (JSONObject)source();
 			in.write(out);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONObject;false;write;;;Argument[0];ReturnValue;value"
+			// "org.json;JSONObject;false;write;;;Argument[0];ReturnValue;value;manual"
 			Writer out = null;
 			Writer in = (Writer)source();
 			JSONObject instance = null;
@@ -1889,7 +1889,7 @@ public class Test {
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "org.json;JSONObject;false;write;;;Argument[0];ReturnValue;value"
+			// "org.json;JSONObject;false;write;;;Argument[0];ReturnValue;value;manual"
 			Writer out = null;
 			Writer in = (Writer)source();
 			JSONObject instance = null;
@@ -1897,56 +1897,56 @@ public class Test {
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "org.json;JSONPointer$Builder;false;append;;;Argument[-1];ReturnValue;value"
+			// "org.json;JSONPointer$Builder;false;append;;;Argument[-1];ReturnValue;value;manual"
 			JSONPointer.Builder out = null;
 			JSONPointer.Builder in = (JSONPointer.Builder)source();
 			out = in.append(0);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "org.json;JSONPointer$Builder;false;append;;;Argument[-1];ReturnValue;value"
+			// "org.json;JSONPointer$Builder;false;append;;;Argument[-1];ReturnValue;value;manual"
 			JSONPointer.Builder out = null;
 			JSONPointer.Builder in = (JSONPointer.Builder)source();
 			out = in.append((String)null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "org.json;JSONPointer$Builder;false;append;;;Argument[0];Argument[-1];taint"
+			// "org.json;JSONPointer$Builder;false;append;;;Argument[0];Argument[-1];taint;manual"
 			JSONPointer.Builder out = null;
 			int in = (int)source();
 			out.append(in);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONPointer$Builder;false;append;;;Argument[0];Argument[-1];taint"
+			// "org.json;JSONPointer$Builder;false;append;;;Argument[0];Argument[-1];taint;manual"
 			JSONPointer.Builder out = null;
 			String in = (String)source();
 			out.append(in);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONPointer$Builder;false;build;;;Argument[-1];ReturnValue;taint"
+			// "org.json;JSONPointer$Builder;false;build;;;Argument[-1];ReturnValue;taint;manual"
 			JSONPointer out = null;
 			JSONPointer.Builder in = (JSONPointer.Builder)source();
 			out = in.build();
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONPointer;false;JSONPointer;(List);;Element of Argument[0];Argument[-1];taint"
+			// "org.json;JSONPointer;false;JSONPointer;(List);;Element of Argument[0];Argument[-1];taint;manual"
 			JSONPointer out = null;
 			List in = (List)newWithElement(source());
 			out = new JSONPointer(in);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONPointer;false;JSONPointer;(String);;Argument[0];Argument[-1];taint"
+			// "org.json;JSONPointer;false;JSONPointer;(String);;Argument[0];Argument[-1];taint;manual"
 			JSONPointer out = null;
 			String in = (String)source();
 			out = new JSONPointer(in);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONPointer;false;queryFrom;;;Argument[0];ReturnValue;taint"
+			// "org.json;JSONPointer;false;queryFrom;;;Argument[0];ReturnValue;taint;manual"
 			Object out = null;
 			Object in = (Object)source();
 			JSONPointer instance = null;
@@ -1954,112 +1954,112 @@ public class Test {
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONPointer;false;toString;;;Argument[-1];ReturnValue;taint"
+			// "org.json;JSONPointer;false;toString;;;Argument[-1];ReturnValue;taint;manual"
 			String out = null;
 			JSONPointer in = (JSONPointer)source();
 			out = in.toString();
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONPointer;false;toURIFragment;;;Argument[-1];ReturnValue;taint"
+			// "org.json;JSONPointer;false;toURIFragment;;;Argument[-1];ReturnValue;taint;manual"
 			String out = null;
 			JSONPointer in = (JSONPointer)source();
 			out = in.toURIFragment();
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONString;true;toJSONString;;;Argument[-1];ReturnValue;taint"
+			// "org.json;JSONString;true;toJSONString;;;Argument[-1];ReturnValue;taint;manual"
 			String out = null;
 			JSONString in = (JSONString)source();
 			out = in.toJSONString();
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONStringer;false;toString;;;Argument[-1];ReturnValue;taint"
+			// "org.json;JSONStringer;false;toString;;;Argument[-1];ReturnValue;taint;manual"
 			String out = null;
 			JSONStringer in = (JSONStringer)source();
 			out = in.toString();
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONTokener;true;JSONTokener;;;Argument[0];Argument[-1];taint"
+			// "org.json;JSONTokener;true;JSONTokener;;;Argument[0];Argument[-1];taint;manual"
 			JSONTokener out = null;
 			String in = (String)source();
 			out = new JSONTokener(in);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONTokener;true;JSONTokener;;;Argument[0];Argument[-1];taint"
+			// "org.json;JSONTokener;true;JSONTokener;;;Argument[0];Argument[-1];taint;manual"
 			JSONTokener out = null;
 			Reader in = (Reader)source();
 			out = new JSONTokener(in);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONTokener;true;JSONTokener;;;Argument[0];Argument[-1];taint"
+			// "org.json;JSONTokener;true;JSONTokener;;;Argument[0];Argument[-1];taint;manual"
 			JSONTokener out = null;
 			InputStream in = (InputStream)source();
 			out = new JSONTokener(in);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONTokener;true;next;;;Argument[-1];ReturnValue;taint"
+			// "org.json;JSONTokener;true;next;;;Argument[-1];ReturnValue;taint;manual"
 			char out = 'a';
 			JSONTokener in = (JSONTokener)source();
 			out = in.next();
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONTokener;true;next;;;Argument[-1];ReturnValue;taint"
+			// "org.json;JSONTokener;true;next;;;Argument[-1];ReturnValue;taint;manual"
 			char out = 'a';
 			JSONTokener in = (JSONTokener)source();
 			out = in.next('a');
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONTokener;true;next;;;Argument[-1];ReturnValue;taint"
+			// "org.json;JSONTokener;true;next;;;Argument[-1];ReturnValue;taint;manual"
 			String out = null;
 			JSONTokener in = (JSONTokener)source();
 			out = in.next(0);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONTokener;true;nextClean;;;Argument[-1];ReturnValue;taint"
+			// "org.json;JSONTokener;true;nextClean;;;Argument[-1];ReturnValue;taint;manual"
 			char out = 'a';
 			JSONTokener in = (JSONTokener)source();
 			out = in.nextClean();
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONTokener;true;nextString;;;Argument[-1];ReturnValue;taint"
+			// "org.json;JSONTokener;true;nextString;;;Argument[-1];ReturnValue;taint;manual"
 			String out = null;
 			JSONTokener in = (JSONTokener)source();
 			out = in.nextString('a');
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONTokener;true;nextTo;;;Argument[-1];ReturnValue;taint"
+			// "org.json;JSONTokener;true;nextTo;;;Argument[-1];ReturnValue;taint;manual"
 			String out = null;
 			JSONTokener in = (JSONTokener)source();
 			out = in.nextTo((String)null);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONTokener;true;nextTo;;;Argument[-1];ReturnValue;taint"
+			// "org.json;JSONTokener;true;nextTo;;;Argument[-1];ReturnValue;taint;manual"
 			String out = null;
 			JSONTokener in = (JSONTokener)source();
 			out = in.nextTo('a');
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONTokener;true;nextValue;;;Argument[-1];ReturnValue;taint"
+			// "org.json;JSONTokener;true;nextValue;;;Argument[-1];ReturnValue;taint;manual"
 			Object out = null;
 			JSONTokener in = (JSONTokener)source();
 			out = in.nextValue();
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONTokener;true;syntaxError;;;Argument[0..1];ReturnValue;taint"
+			// "org.json;JSONTokener;true;syntaxError;;;Argument[0..1];ReturnValue;taint;manual"
 			JSONException out = null;
 			Throwable in = (Throwable)source();
 			JSONTokener instance = null;
@@ -2067,7 +2067,7 @@ public class Test {
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONTokener;true;syntaxError;;;Argument[0..1];ReturnValue;taint"
+			// "org.json;JSONTokener;true;syntaxError;;;Argument[0..1];ReturnValue;taint;manual"
 			JSONException out = null;
 			String in = (String)source();
 			JSONTokener instance = null;
@@ -2075,7 +2075,7 @@ public class Test {
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONTokener;true;syntaxError;;;Argument[0..1];ReturnValue;taint"
+			// "org.json;JSONTokener;true;syntaxError;;;Argument[0..1];ReturnValue;taint;manual"
 			JSONException out = null;
 			String in = (String)source();
 			JSONTokener instance = null;
@@ -2083,301 +2083,301 @@ public class Test {
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONTokener;true;toString;;;Argument[-1];ReturnValue;taint"
+			// "org.json;JSONTokener;true;toString;;;Argument[-1];ReturnValue;taint;manual"
 			String out = null;
 			JSONTokener in = (JSONTokener)source();
 			out = in.toString();
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONWriter;true;array;;;Argument[-1];ReturnValue;value"
+			// "org.json;JSONWriter;true;array;;;Argument[-1];ReturnValue;value;manual"
 			JSONWriter out = null;
 			JSONWriter in = (JSONWriter)source();
 			out = in.array();
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "org.json;JSONWriter;true;endArray;;;Argument[-1];ReturnValue;value"
+			// "org.json;JSONWriter;true;endArray;;;Argument[-1];ReturnValue;value;manual"
 			JSONWriter out = null;
 			JSONWriter in = (JSONWriter)source();
 			out = in.endArray();
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "org.json;JSONWriter;true;endObject;;;Argument[-1];ReturnValue;value"
+			// "org.json;JSONWriter;true;endObject;;;Argument[-1];ReturnValue;value;manual"
 			JSONWriter out = null;
 			JSONWriter in = (JSONWriter)source();
 			out = in.endObject();
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "org.json;JSONWriter;true;key;;;Argument[-1];ReturnValue;value"
+			// "org.json;JSONWriter;true;key;;;Argument[-1];ReturnValue;value;manual"
 			JSONWriter out = null;
 			JSONWriter in = (JSONWriter)source();
 			out = in.key(null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "org.json;JSONWriter;true;key;;;Argument[0];Argument[-1];taint"
+			// "org.json;JSONWriter;true;key;;;Argument[0];Argument[-1];taint;manual"
 			JSONWriter out = null;
 			String in = (String)source();
 			out.key(in);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONWriter;true;object;;;Argument[-1];ReturnValue;value"
+			// "org.json;JSONWriter;true;object;;;Argument[-1];ReturnValue;value;manual"
 			JSONWriter out = null;
 			JSONWriter in = (JSONWriter)source();
 			out = in.object();
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "org.json;JSONWriter;true;value;;;Argument[-1];ReturnValue;value"
+			// "org.json;JSONWriter;true;value;;;Argument[-1];ReturnValue;value;manual"
 			JSONWriter out = null;
 			JSONWriter in = (JSONWriter)source();
 			out = in.value(false);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "org.json;JSONWriter;true;value;;;Argument[-1];ReturnValue;value"
+			// "org.json;JSONWriter;true;value;;;Argument[-1];ReturnValue;value;manual"
 			JSONWriter out = null;
 			JSONWriter in = (JSONWriter)source();
 			out = in.value(0L);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "org.json;JSONWriter;true;value;;;Argument[-1];ReturnValue;value"
+			// "org.json;JSONWriter;true;value;;;Argument[-1];ReturnValue;value;manual"
 			JSONWriter out = null;
 			JSONWriter in = (JSONWriter)source();
 			out = in.value(0.0);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "org.json;JSONWriter;true;value;;;Argument[-1];ReturnValue;value"
+			// "org.json;JSONWriter;true;value;;;Argument[-1];ReturnValue;value;manual"
 			JSONWriter out = null;
 			JSONWriter in = (JSONWriter)source();
 			out = in.value((Object)null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "org.json;JSONWriter;true;value;;;Argument[0];Argument[-1];taint"
+			// "org.json;JSONWriter;true;value;;;Argument[0];Argument[-1];taint;manual"
 			JSONWriter out = null;
 			long in = (long)source();
 			out.value(in);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONWriter;true;value;;;Argument[0];Argument[-1];taint"
+			// "org.json;JSONWriter;true;value;;;Argument[0];Argument[-1];taint;manual"
 			JSONWriter out = null;
 			double in = (double)source();
 			out.value(in);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONWriter;true;value;;;Argument[0];Argument[-1];taint"
+			// "org.json;JSONWriter;true;value;;;Argument[0];Argument[-1];taint;manual"
 			JSONWriter out = null;
 			boolean in = (boolean)source();
 			out.value(in);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONWriter;true;value;;;Argument[0];Argument[-1];taint"
+			// "org.json;JSONWriter;true;value;;;Argument[0];Argument[-1];taint;manual"
 			JSONWriter out = null;
 			Object in = (Object)source();
 			out.value(in);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;JSONWriter;true;valueToString;;;Argument[0];ReturnValue;taint"
+			// "org.json;JSONWriter;true;valueToString;;;Argument[0];ReturnValue;taint;manual"
 			String out = null;
 			Object in = (Object)source();
 			out = JSONWriter.valueToString(in);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;Property;false;toJSONObject;;;MapKey of Argument[0];ReturnValue;taint"
+			// "org.json;Property;false;toJSONObject;;;MapKey of Argument[0];ReturnValue;taint;manual"
 			JSONObject out = null;
 			Properties in = (Properties)newWithMapKey(source());
 			out = Property.toJSONObject(in);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;Property;false;toJSONObject;;;MapValue of Argument[0];ReturnValue;taint"
+			// "org.json;Property;false;toJSONObject;;;MapValue of Argument[0];ReturnValue;taint;manual"
 			JSONObject out = null;
 			Properties in = (Properties)newWithMapValue(source());
 			out = Property.toJSONObject(in);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;Property;false;toProperties;;;Argument[0];MapKey of ReturnValue;taint"
+			// "org.json;Property;false;toProperties;;;Argument[0];MapKey of ReturnValue;taint;manual"
 			Properties out = null;
 			JSONObject in = (JSONObject)source();
 			out = Property.toProperties(in);
 			sink(getMapKey(out)); // $ hasTaintFlow
 		}
 		{
-			// "org.json;Property;false;toProperties;;;Argument[0];MapValue of ReturnValue;taint"
+			// "org.json;Property;false;toProperties;;;Argument[0];MapValue of ReturnValue;taint;manual"
 			Properties out = null;
 			JSONObject in = (JSONObject)source();
 			out = Property.toProperties(in);
 			sink(getMapValue(out)); // $ hasTaintFlow
 		}
 		{
-			// "org.json;XML;false;escape;;;Argument[0];ReturnValue;taint"
+			// "org.json;XML;false;escape;;;Argument[0];ReturnValue;taint;manual"
 			String out = null;
 			String in = (String)source();
 			out = XML.escape(in);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;XML;false;stringToValue;;;Argument[0];ReturnValue;taint"
+			// "org.json;XML;false;stringToValue;;;Argument[0];ReturnValue;taint;manual"
 			Object out = null;
 			String in = (String)source();
 			out = XML.stringToValue(in, null);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;XML;false;stringToValue;;;Argument[0];ReturnValue;taint"
+			// "org.json;XML;false;stringToValue;;;Argument[0];ReturnValue;taint;manual"
 			Object out = null;
 			String in = (String)source();
 			out = XML.stringToValue(in);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;XML;false;toJSONObject;;;Argument[0];ReturnValue;taint"
+			// "org.json;XML;false;toJSONObject;;;Argument[0];ReturnValue;taint;manual"
 			JSONObject out = null;
 			String in = (String)source();
 			out = XML.toJSONObject(in, false);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;XML;false;toJSONObject;;;Argument[0];ReturnValue;taint"
+			// "org.json;XML;false;toJSONObject;;;Argument[0];ReturnValue;taint;manual"
 			JSONObject out = null;
 			String in = (String)source();
 			out = XML.toJSONObject(in, (XMLParserConfiguration)null);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;XML;false;toJSONObject;;;Argument[0];ReturnValue;taint"
+			// "org.json;XML;false;toJSONObject;;;Argument[0];ReturnValue;taint;manual"
 			JSONObject out = null;
 			String in = (String)source();
 			out = XML.toJSONObject(in);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;XML;false;toJSONObject;;;Argument[0];ReturnValue;taint"
+			// "org.json;XML;false;toJSONObject;;;Argument[0];ReturnValue;taint;manual"
 			JSONObject out = null;
 			Reader in = (Reader)source();
 			out = XML.toJSONObject(in, false);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;XML;false;toJSONObject;;;Argument[0];ReturnValue;taint"
+			// "org.json;XML;false;toJSONObject;;;Argument[0];ReturnValue;taint;manual"
 			JSONObject out = null;
 			Reader in = (Reader)source();
 			out = XML.toJSONObject(in, (XMLParserConfiguration)null);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;XML;false;toJSONObject;;;Argument[0];ReturnValue;taint"
+			// "org.json;XML;false;toJSONObject;;;Argument[0];ReturnValue;taint;manual"
 			JSONObject out = null;
 			Reader in = (Reader)source();
 			out = XML.toJSONObject(in);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;XML;false;toString;;;Argument[0..1];ReturnValue;taint"
+			// "org.json;XML;false;toString;;;Argument[0..1];ReturnValue;taint;manual"
 			String out = null;
 			String in = (String)source();
 			out = XML.toString(null, in, null);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;XML;false;toString;;;Argument[0..1];ReturnValue;taint"
+			// "org.json;XML;false;toString;;;Argument[0..1];ReturnValue;taint;manual"
 			String out = null;
 			String in = (String)source();
 			out = XML.toString(null, in);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;XML;false;toString;;;Argument[0..1];ReturnValue;taint"
+			// "org.json;XML;false;toString;;;Argument[0..1];ReturnValue;taint;manual"
 			String out = null;
 			Object in = (Object)source();
 			out = XML.toString(in, null, null);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;XML;false;toString;;;Argument[0..1];ReturnValue;taint"
+			// "org.json;XML;false;toString;;;Argument[0..1];ReturnValue;taint;manual"
 			String out = null;
 			Object in = (Object)source();
 			out = XML.toString(in, null);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;XML;false;toString;;;Argument[0..1];ReturnValue;taint"
+			// "org.json;XML;false;toString;;;Argument[0..1];ReturnValue;taint;manual"
 			String out = null;
 			Object in = (Object)source();
 			out = XML.toString(in);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;XML;false;unescape;;;Argument[0];ReturnValue;taint"
+			// "org.json;XML;false;unescape;;;Argument[0];ReturnValue;taint;manual"
 			String out = null;
 			String in = (String)source();
 			out = XML.unescape(in);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;XMLTokener;false;XMLTokener;;;Argument[0];Argument[-1];taint"
+			// "org.json;XMLTokener;false;XMLTokener;;;Argument[0];Argument[-1];taint;manual"
 			XMLTokener out = null;
 			String in = (String)source();
 			out = new XMLTokener(in);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;XMLTokener;false;XMLTokener;;;Argument[0];Argument[-1];taint"
+			// "org.json;XMLTokener;false;XMLTokener;;;Argument[0];Argument[-1];taint;manual"
 			XMLTokener out = null;
 			Reader in = (Reader)source();
 			out = new XMLTokener(in);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;XMLTokener;false;nextCDATA;;;Argument[-1];ReturnValue;taint"
+			// "org.json;XMLTokener;false;nextCDATA;;;Argument[-1];ReturnValue;taint;manual"
 			String out = null;
 			XMLTokener in = (XMLTokener)source();
 			out = in.nextCDATA();
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;XMLTokener;false;nextContent;;;Argument[-1];ReturnValue;taint"
+			// "org.json;XMLTokener;false;nextContent;;;Argument[-1];ReturnValue;taint;manual"
 			Object out = null;
 			XMLTokener in = (XMLTokener)source();
 			out = in.nextContent();
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;XMLTokener;false;nextEntity;;;Argument[-1];ReturnValue;taint"
+			// "org.json;XMLTokener;false;nextEntity;;;Argument[-1];ReturnValue;taint;manual"
 			Object out = null;
 			XMLTokener in = (XMLTokener)source();
 			out = in.nextEntity('a');
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;XMLTokener;false;nextMeta;;;Argument[-1];ReturnValue;taint"
+			// "org.json;XMLTokener;false;nextMeta;;;Argument[-1];ReturnValue;taint;manual"
 			Object out = null;
 			XMLTokener in = (XMLTokener)source();
 			out = in.nextMeta();
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;XMLTokener;false;nextToken;;;Argument[-1];ReturnValue;taint"
+			// "org.json;XMLTokener;false;nextToken;;;Argument[-1];ReturnValue;taint;manual"
 			Object out = null;
 			XMLTokener in = (XMLTokener)source();
 			out = in.nextToken();
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.json;XMLXsiTypeConverter;true;convert;;;Argument[0];ReturnValue;taint"
+			// "org.json;XMLXsiTypeConverter;true;convert;;;Argument[0];ReturnValue;taint;manual"
 			Object out = null;
 			String in = (String)source();
 			XMLXsiTypeConverter instance = null;

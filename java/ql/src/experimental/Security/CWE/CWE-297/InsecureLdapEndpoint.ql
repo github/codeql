@@ -87,7 +87,7 @@ predicate isTestMethod(MethodAccess ma) {
 }
 
 /** Holds if `MethodAccess` ma disables SSL endpoint check. */
-predicate isInsecureSSLEndpoint(MethodAccess ma) {
+predicate isInsecureSslEndpoint(MethodAccess ma) {
   (
     ma.getMethod() instanceof SetSystemPropertyMethod and
     isPropertyDisableLdapEndpointId(ma.getArgument(0)) and
@@ -105,6 +105,6 @@ predicate isInsecureSSLEndpoint(MethodAccess ma) {
 
 from MethodAccess ma
 where
-  isInsecureSSLEndpoint(ma) and
+  isInsecureSslEndpoint(ma) and
   not isTestMethod(ma)
-select ma, "LDAPS configuration allows insecure endpoint identification"
+select ma, "LDAPS configuration allows insecure endpoint identification."

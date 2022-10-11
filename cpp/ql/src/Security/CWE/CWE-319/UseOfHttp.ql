@@ -97,4 +97,4 @@ from
 where
   config.hasFlowPath(source, sink) and
   str = source.getNode().asExpr()
-select str, source, sink, "A URL may be constructed with the HTTP protocol."
+select str, source, sink, "This URL may be constructed with the HTTP protocol."

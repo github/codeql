@@ -73,8 +73,8 @@ void test5_6_init() {
 void test5_6() {
 	test5_6_init();
 
-	g_p1->parse(*g_data); // GOOD
-	g_p2->parse(*g_data); // BAD (parser not correctly configured) [NOT DETECTED]
+	g_p1->parse(*g_data); // GOOD [FALSE POSITIVE]
+	g_p2->parse(*g_data); // BAD (parser not correctly configured)
 }
 
 void test5_7(DOMImplementationLS *impl, InputSource &data) {

@@ -14,4 +14,4 @@ import codeql_ql.style.AcronymsShouldBeCamelCaseQuery
 
 from string name, AstNode node
 where shouldBePascalCased(name, node, _)
-select node, "Acronyms in " + name + " should be PascalCase/camelCase"
+select node, "Acronyms in " + name + " should be PascalCase/camelCase."

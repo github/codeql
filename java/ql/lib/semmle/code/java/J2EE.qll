@@ -19,32 +19,44 @@ class EnterpriseBean extends RefType {
 }
 
 /** A local EJB home interface. */
-class LocalEJBHomeInterface extends Interface {
-  LocalEJBHomeInterface() {
+class LocalEjbHomeInterface extends Interface {
+  LocalEjbHomeInterface() {
     exists(Interface i | i.hasQualifiedName("javax.ejb", "EJBLocalHome") | this.hasSupertype+(i))
   }
 }
 
+/** DEPRECATED: Alias for LocalEjbHomeInterface */
+deprecated class LocalEJBHomeInterface = LocalEjbHomeInterface;
+
 /** A remote EJB home interface. */
-class RemoteEJBHomeInterface extends Interface {
-  RemoteEJBHomeInterface() {
+class RemoteEjbHomeInterface extends Interface {
+  RemoteEjbHomeInterface() {
     exists(Interface i | i.hasQualifiedName("javax.ejb", "EJBHome") | this.hasSupertype+(i))
   }
 }
 
+/** DEPRECATED: Alias for RemoteEjbHomeInterface */
+deprecated class RemoteEJBHomeInterface = RemoteEjbHomeInterface;
+
 /** A local EJB interface. */
-class LocalEJBInterface extends Interface {
-  LocalEJBInterface() {
+class LocalEjbInterface extends Interface {
+  LocalEjbInterface() {
     exists(Interface i | i.hasQualifiedName("javax.ejb", "EJBLocalObject") | this.hasSupertype+(i))
   }
 }
 
+/** DEPRECATED: Alias for LocalEjbInterface */
+deprecated class LocalEJBInterface = LocalEjbInterface;
+
 /** A remote EJB interface. */
-class RemoteEJBInterface extends Interface {
-  RemoteEJBInterface() {
+class RemoteEjbInterface extends Interface {
+  RemoteEjbInterface() {
     exists(Interface i | i.hasQualifiedName("javax.ejb", "EJBObject") | this.hasSupertype+(i))
   }
 }
+
+/** DEPRECATED: Alias for RemoteEjbInterface */
+deprecated class RemoteEJBInterface = RemoteEjbInterface;
 
 /** A message bean. */
 class MessageBean extends Class {

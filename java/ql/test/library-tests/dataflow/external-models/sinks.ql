@@ -8,11 +8,11 @@ class SinkModelTest extends SinkModelCsv {
     row =
       [
         //`namespace; type; subtypes; name; signature; ext; input; kind`
-        "my.qltest;B;false;sink1;(Object);;Argument[0];qltest",
-        "my.qltest;B;false;sinkMethod;();;ReturnValue;qltest",
-        "my.qltest;B$Tag;false;;;Annotated;ReturnValue;qltest-retval",
-        "my.qltest;B$Tag;false;;;Annotated;Argument;qltest-arg",
-        "my.qltest;B$Tag;false;;;Annotated;;qltest-nospec"
+        "my.qltest;B;false;sink1;(Object);;Argument[0];qltest;manual",
+        "my.qltest;B;false;sinkMethod;();;ReturnValue;qltest;manual",
+        "my.qltest;B$Tag;false;;;Annotated;ReturnValue;qltest-retval;manual",
+        "my.qltest;B$Tag;false;;;Annotated;Argument;qltest-arg;manual",
+        "my.qltest;B$Tag;false;;;Annotated;;qltest-nospec;manual"
       ]
   }
 }

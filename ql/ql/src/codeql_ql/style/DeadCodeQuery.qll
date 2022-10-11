@@ -83,6 +83,8 @@ private AstNode aliveStep(AstNode prev) {
   //
   // The recursive cases.
   //
+  result = prev.(Import).getModuleExpr()
+  or
   result.getEnclosingPredicate() = prev
   or
   result = prev.(Call).getTarget()
@@ -164,6 +166,12 @@ private AstNode aliveStep(AstNode prev) {
   result = prev.(Annotation).getAChild()
   or
   result = prev.(Predicate).getReturnType().getDeclaration()
+  or
+  // a module parameter is alive is the module is alive
+  prev.(Module).hasParameter(_, _, result)
+  or
+  // the implements of a module
+  result = prev.(Module).getImplements(_)
 }
 
 private AstNode deprecated() {
@@ -197,7 +205,7 @@ private AstNode classUnion() {
 
 private AstNode benign() {
   not result.getLocation().getFile().getExtension() = ["ql", "qll"] or // ignore dbscheme files
-  result instanceof BlockComment or
+  result instanceof Comment or
   not exists(result.toString()) or // <- invalid code
   // cached-stages pattern
   result.(Module).getAMember().(ClasslessPredicate).getName() = "forceStage" or

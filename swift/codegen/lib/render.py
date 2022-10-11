@@ -28,18 +28,23 @@ class Renderer:
 
         `data` must have a `template` attribute denoting which template to use from the template directory.
 
-        If the file is unchanged, then no write is performed (and `done_something` remains unchanged)
-
-        If `guard_base` is provided, it must be a path at the root of `output` and a header guard will be injected in
-        the template based off of the relative path of `output` in `guard_base`
+        Optionally, `data` can also have an `extensions` attribute denoting list of file extensions: they will all be
+        appended to the template name with an underscore and be generated in turn.
         """
         mnemonic = type(data).__name__
         output.parent.mkdir(parents=True, exist_ok=True)
-        data = self._r.render_name(data.template, data, generator=self._generator)
-        with open(output, "w") as out:
-            out.write(data)
-        log.debug(f"generated {mnemonic} {output.name}")
-        self.written.add(output)
+        extensions = getattr(data, "extensions", [None])
+        for ext in extensions:
+            output_filename = output
+            template = data.template
+            if ext:
+                output_filename = output_filename.with_suffix(f".{ext}")
+                template += f"_{ext}"
+            contents = self._r.render_name(template, data, generator=self._generator)
+            with open(output_filename, "w") as out:
+                out.write(contents)
+            log.debug(f"{mnemonic}: generated {output.name}")
+            self.written.add(output_filename)
 
     def cleanup(self, existing):
         """ Remove files in `existing` for which no `render` has been called """

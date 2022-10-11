@@ -1,3 +1,107 @@
+## 0.4.1
+
+### New Queries
+
+* Added a new query, `java/android/webview-debugging-enabled`, to detect instances of WebView debugging being enabled in production builds.
+
+### Minor Analysis Improvements
+
+* The alert message of many queries have been changed to better follow the style guide and make the message consistent with other languages.
+* `PathSanitizer.qll` has been promoted from experimental to the main query pack. This sanitizer was originally [submitted as part of an experimental query by @luchua-bc](https://github.com/github/codeql/pull/7286).
+* The queries `java/path-injection`, `java/path-injection-local` and `java/zipslip` now use the sanitizers provided by `PathSanitizer.qll`.
+
+## 0.4.0
+
+### New Queries
+
+* The query "Server-side template injection" (`java/server-side-template-injection`) has been promoted from experimental to the main query pack. This query was originally [submitted as an experimental query by @porcupineyhairs](https://github.com/github/codeql/pull/5935).
+* Added a new query, `java/android/backup-enabled`, to detect if Android applications allow backups.
+
+### Query Metadata Changes
+
+* Removed the `@security-severity` tag from several queries not in the `Security/` folder that also had missing `security` tags.
+
+### Minor Analysis Improvements
+
+* The Java extractor now populates the `Method` relating to a `MethodAccess` consistently for calls using an explicit and implicit `this` qualifier. Previously if the method `foo` was inherited from a specialised generic type `ParentType<String>`, then an explicit call `this.foo()` would yield a `MethodAccess` whose `getMethod()` accessor returned the bound method `ParentType<String>.foo`, whereas an implicitly-qualified `foo()` `MethodAccess`'s `getMethod()` would return the unbound method `ParentType.foo`. Now both scenarios produce a bound method. This means that all data-flow queries may return more results where a relevant path transits a call to such an implicitly-qualified call to a member method with a bound generic type, while queries that inspect the result of `MethodAccess.getMethod()` may need to tolerate bound generic methods in more circumstances. The queries `java/iterator-remove-failure`, `java/non-static-nested-class`, `java/internal-representation-exposure`, `java/subtle-inherited-call` and `java/deprecated-call` have been amended to properly handle calls to bound generic methods, and in some instances may now produce more results in the explicit-`this` case as well.
+* Added taint model for arguments of `java.net.URI` constructors to the queries `java/path-injection` and `java/path-injection-local`.
+* Added new sinks related to Android's `AlarmManager` to the query `java/android/implicit-pendingintents`.
+* The alert message of many queries have been changed to make the message consistent with other languages.
+
+## 0.3.4
+
+## 0.3.3
+
+### New Queries
+
+* Added a new query, `java/android/implicitly-exported-component`, to detect if components are implicitly exported in the Android manifest.
+* A new query "Use of RSA algorithm without OAEP" (`java/rsa-without-oaep`) has been added. This query finds uses of RSA encryption that don't use the OAEP scheme.
+* Added a new query, `java/android/debuggable-attribute-enabled`, to detect if the `android:debuggable` attribute is enabled in the Android manifest.
+* The query "Using a static initialization vector for encryption" (`java/static-initialization-vector`) has been promoted from experimental to the main query pack. This query was originally [submitted as an experimental query by @artem-smotrakov](https://github.com/github/codeql/pull/6357).
+* A new query `java/partial-path-traversal` finds partial path traversal vulnerabilities resulting from incorrectly using 
+`String#startsWith` to compare canonical paths. 
+* Added a new query, `java/suspicious-regexp-range`, to detect character ranges in regular expressions that seem to match 
+  too many characters.
+
+### Query Metadata Changes
+
+* The queries `java/redos` and `java/polynomial-redos` now have a tag for CWE-1333. 
+
+### Minor Analysis Improvements
+
+* The query `java/static-initialization-vector` no longer requires a `Cipher` object to be initialized with `ENCRYPT_MODE` to be considered a valid sink. Also, several new sanitizers were added.
+* Improved sanitizers for `java/sensitive-log`, which removes some false positives and improves performance a bit.
+
+## 0.3.2
+
+### New Queries
+
+* A new query "Android `WebView` that accepts all certificates" (`java/improper-webview-certificate-validation`) has been added. This query finds implementations of `WebViewClient`s that accept all certificates in the case of an SSL error.
+
+### Major Analysis Improvements
+
+* The query `java/sensitive-log` has been improved to no longer report results that are effectively duplicates due to one source flowing to another source.
+
+### Minor Analysis Improvements
+
+* The query `java/path-injection` now recognises vulnerable APIs defined using the `SinkModelCsv` class with the `create-file` type. Out of the box this includes Apache Commons-IO functions, as well as any user-defined sinks.
+
+## 0.3.1
+
+## 0.3.0
+
+### Breaking Changes
+
+* Contextual queries and the query libraries they depend on have been moved to the `codeql/java-all` package.
+
+### New Queries
+
+* A new query "Improper verification of intent by broadcast receiver" (`java/improper-intent-verification`) has been added. 
+  This query finds instances of Android `BroadcastReceiver`s that don't verify the action string of received intents when registered
+  to receive system intents.
+
+## 0.2.0
+
+### Minor Analysis Improvements
+
+* The query `java/log-injection` now reports problems at the source (user-controlled data) instead of at the ultimate logging call. This was changed because user functions that wrap the ultimate logging call could result in most alerts being reported in an uninformative location.
+
+## 0.1.4
+
+## 0.1.3
+
+### New Queries
+
+* Two new queries "Inefficient regular expression" (`java/redos`) and "Polynomial regular expression used on uncontrolled data" (`java/polynomial-redos`) have been added.
+These queries help find instances of Regular Expression Denial of Service vulnerabilities. 
+
+### Minor Analysis Improvements
+
+* Query `java/sensitive-log` has received several improvements.
+  * It no longer considers usernames as sensitive information.
+  * The conditions to consider a variable a constant (and therefore exclude it as user-provided sensitive information) have been tightened.
+  * A sanitizer has been added to handle certain elements introduced by a Kotlin compiler plugin that have deceptive names.
+
 ## 0.1.2
 
 ### Query Metadata Changes
@@ -39,7 +143,7 @@ this respect.
 
 ### Minor Analysis Improvements
 
-* Updated "Local information disclosure in a temporary directory" (`java/local-temp-file-or-directory-information-disclosure`) to remove false-positives when OS is properly used as logical guard.
+ * Updated "Local information disclosure in a temporary directory" (`java/local-temp-file-or-directory-information-disclosure`) to remove false-positives when OS is properly used as logical guard.
 
 ## 0.0.11
 

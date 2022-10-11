@@ -15,7 +15,7 @@ class BraceBlockReal extends BraceBlock, TBraceBlockReal {
     toGenerated(result) = g.getParameters().getChild(n)
   }
 
-  final override Stmt getStmt(int i) { toGenerated(result) = g.getChild(i) }
+  final override Stmt getStmt(int i) { toGenerated(result) = g.getBody().getChild(i) }
 }
 
 /**

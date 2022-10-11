@@ -48,10 +48,10 @@ private module FastApi {
    *
    * See https://fastapi.tiangolo.com/tutorial/first-steps/#define-a-path-operation-decorator
    */
-  private class FastApiRouteSetup extends HTTP::Server::RouteSetup::Range, DataFlow::CallCfgNode {
+  private class FastApiRouteSetup extends Http::Server::RouteSetup::Range, DataFlow::CallCfgNode {
     FastApiRouteSetup() {
       exists(string routeAddingMethod |
-        routeAddingMethod = HTTP::httpVerbLower()
+        routeAddingMethod = Http::httpVerbLower()
         or
         routeAddingMethod in ["api_route", "websocket"]
       |
@@ -90,7 +90,8 @@ private module FastApi {
   private class PydanticModelRequestHandlerParam extends Pydantic::BaseModel::InstanceSource,
     DataFlow::ParameterNode {
     PydanticModelRequestHandlerParam() {
-      this.getParameter().getAnnotation() = Pydantic::BaseModel::subclassRef().getAUse().asExpr() and
+      this.getParameter().getAnnotation() =
+        Pydantic::BaseModel::subclassRef().getAValueReachableFromSource().asExpr() and
       any(FastApiRouteSetup rs).getARequestHandler().getArgByName(_) = this.getParameter()
     }
   }
@@ -104,7 +105,8 @@ private module FastApi {
   private class WebSocketRequestHandlerParam extends Starlette::WebSocket::InstanceSource,
     DataFlow::ParameterNode {
     WebSocketRequestHandlerParam() {
-      this.getParameter().getAnnotation() = Starlette::WebSocket::classRef().getAUse().asExpr() and
+      this.getParameter().getAnnotation() =
+        Starlette::WebSocket::classRef().getAValueReachableFromSource().asExpr() and
       any(FastApiRouteSetup rs).getARequestHandler().getArgByName(_) = this.getParameter()
     }
   }
@@ -165,8 +167,8 @@ private module FastApi {
       // user-defined subclasses
       exists(Class cls, API::Node base |
         base = getModeledResponseClass(_).getASubclass*() and
-        cls.getABase() = base.getAUse().asExpr() and
-        responseClass.getAnImmediateUse().asExpr() = cls.getParent()
+        cls.getABase() = base.getAValueReachableFromSource().asExpr() and
+        responseClass.asSource().asExpr() = cls.getParent()
       |
         exists(Assign assign | assign = cls.getAStmt() |
           assign.getATarget().(Name).getId() = "media_type" and
@@ -193,7 +195,7 @@ private module FastApi {
     abstract class InstanceSource extends DataFlow::LocalSourceNode { }
 
     /** A direct instantiation of a response class. */
-    private class ResponseInstantiation extends InstanceSource, HTTP::Server::HttpResponse::Range,
+    private class ResponseInstantiation extends InstanceSource, Http::Server::HttpResponse::Range,
       DataFlow::CallCfgNode {
       API::Node baseApiNode;
       API::Node responseClass;
@@ -221,7 +223,7 @@ private module FastApi {
      * A direct instantiation of a redirect response.
      */
     private class RedirectResponseInstantiation extends ResponseInstantiation,
-      HTTP::Server::HttpRedirectResponse::Range {
+      Http::Server::HttpRedirectResponse::Range {
       RedirectResponseInstantiation() { baseApiNode = getModeledResponseClass("RedirectResponse") }
 
       override DataFlow::Node getRedirectLocation() {
@@ -243,7 +245,7 @@ private module FastApi {
     /**
      * An implicit response from a return of FastAPI request handler.
      */
-    private class FastApiRequestHandlerReturn extends HTTP::Server::HttpResponse::Range,
+    private class FastApiRequestHandlerReturn extends Http::Server::HttpResponse::Range,
       DataFlow::CfgNode {
       FastApiRouteSetup routeSetup;
 
@@ -257,7 +259,7 @@ private module FastApi {
 
       override string getMimetypeDefault() {
         exists(API::Node responseClass |
-          responseClass.getAUse() = routeSetup.getResponseClassArg() and
+          responseClass.getAValueReachableFromSource() = routeSetup.getResponseClassArg() and
           result = getDefaultMimeType(responseClass)
         )
         or
@@ -274,7 +276,7 @@ private module FastApi {
       FileSystemAccess::Range {
       FastApiRequestHandlerFileResponseReturn() {
         exists(API::Node responseClass |
-          responseClass.getAUse() = routeSetup.getResponseClassArg() and
+          responseClass.getAValueReachableFromSource() = routeSetup.getResponseClassArg() and
           responseClass = getModeledResponseClass("FileResponse").getASubclass*()
         )
       }
@@ -289,10 +291,10 @@ private module FastApi {
      * `response_class` set to a `RedirectResponse`.
      */
     private class FastApiRequestHandlerRedirectReturn extends FastApiRequestHandlerReturn,
-      HTTP::Server::HttpRedirectResponse::Range {
+      Http::Server::HttpRedirectResponse::Range {
       FastApiRequestHandlerRedirectReturn() {
         exists(API::Node responseClass |
-          responseClass.getAUse() = routeSetup.getResponseClassArg() and
+          responseClass.getAValueReachableFromSource() = routeSetup.getResponseClassArg() and
           responseClass = getModeledResponseClass("RedirectResponse").getASubclass*()
         )
       }
@@ -311,7 +313,7 @@ private module FastApi {
     class RequestHandlerParam extends InstanceSource, DataFlow::ParameterNode {
       RequestHandlerParam() {
         this.getParameter().getAnnotation() =
-          getModeledResponseClass(_).getASubclass*().getAUse().asExpr() and
+          getModeledResponseClass(_).getASubclass*().getAValueReachableFromSource().asExpr() and
         any(FastApiRouteSetup rs).getARequestHandler().getArgByName(_) = this.getParameter()
       }
     }
@@ -330,7 +332,7 @@ private module FastApi {
     /**
      * A call to `set_cookie` on a FastAPI Response.
      */
-    private class SetCookieCall extends HTTP::Server::CookieWrite::Range, DataFlow::MethodCallNode {
+    private class SetCookieCall extends Http::Server::CookieWrite::Range, DataFlow::MethodCallNode {
       SetCookieCall() { this.calls(instance(), "set_cookie") }
 
       override DataFlow::Node getHeaderArg() { none() }
@@ -346,7 +348,7 @@ private module FastApi {
      * A call to `append` on a `headers` of a FastAPI Response, with the `Set-Cookie`
      * header-key.
      */
-    private class HeadersAppendCookie extends HTTP::Server::CookieWrite::Range,
+    private class HeadersAppendCookie extends Http::Server::CookieWrite::Range,
       DataFlow::MethodCallNode {
       HeadersAppendCookie() {
         exists(DataFlow::AttrRead headers, DataFlow::Node keyArg |

@@ -10,7 +10,7 @@
  * @precision low
  */
 
-import ruby
+import codeql.ruby.AST
 import codeql.ruby.Concepts
 import codeql.ruby.DataFlow
 import DataFlow::PathGraph
@@ -63,5 +63,6 @@ from
   DataFlow::PathNode source, DataFlow::PathNode sink, PermissivePermissionsConfig conf,
   FileSystemPermissionModification mod
 where conf.hasFlowPath(source, sink) and mod.getAPermissionNode() = sink.getNode()
-select source.getNode(), source, sink, "Overly permissive mask in $@ sets file to $@.", mod,
-  mod.toString(), source.getNode(), source.getNode().toString()
+select source.getNode(), source, sink,
+  "This overly permissive mask used in $@ allows read or write access to others.", mod,
+  mod.toString()

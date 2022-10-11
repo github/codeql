@@ -14,24 +14,24 @@
 import python
 import semmle.python.Concepts
 
-predicate relevantSetting(HTTP::Server::CsrfProtectionSetting s) {
+predicate relevantSetting(Http::Server::CsrfProtectionSetting s) {
   // rule out test code as this is a common place to turn off CSRF protection.
   // We don't use normal `TestScope` to find test files, since we also want to match
   // a settings file such as `.../integration-tests/settings.py`
   not s.getLocation().getFile().getAbsolutePath().matches("%test%")
 }
 
-predicate vulnerableSetting(HTTP::Server::CsrfProtectionSetting s) {
+predicate vulnerableSetting(Http::Server::CsrfProtectionSetting s) {
   s.getVerificationSetting() = false and
-  not exists(HTTP::Server::CsrfLocalProtectionSetting p | p.csrfEnabled()) and
+  not exists(Http::Server::CsrfLocalProtectionSetting p | p.csrfEnabled()) and
   relevantSetting(s)
 }
 
-from HTTP::Server::CsrfProtectionSetting setting
+from Http::Server::CsrfProtectionSetting setting
 where
   vulnerableSetting(setting) and
   // We have seen examples of dummy projects with vulnerable settings alongside a main
   // project with a protecting settings file. We want to rule out this scenario, so we
   // require all non-test settings to be vulnerable.
-  forall(HTTP::Server::CsrfProtectionSetting s | relevantSetting(s) | vulnerableSetting(s))
+  forall(Http::Server::CsrfProtectionSetting s | relevantSetting(s) | vulnerableSetting(s))
 select setting, "Potential CSRF vulnerability due to forgery protection being disabled or weakened."

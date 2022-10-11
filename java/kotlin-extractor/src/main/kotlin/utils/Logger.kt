@@ -207,20 +207,6 @@ open class LoggerBase(val logCounter: LogCounter) {
 }
 
 open class Logger(val loggerBase: LoggerBase, open val tw: TrapWriter) {
-    private fun getDiagnosticLocation(): String? {
-        val st = Exception().stackTrace
-        for(x in st) {
-            when(x.className) {
-                "com.github.codeql.Logger",
-                "com.github.codeql.FileLogger" -> {}
-                else -> {
-                    return x.toString()
-                }
-            }
-        }
-        return null
-    }
-
     fun flush() {
         tw.flush()
         loggerBase.flush()
@@ -240,7 +226,7 @@ open class Logger(val loggerBase: LoggerBase, open val tw: TrapWriter) {
         loggerBase.info(tw, msg)
     }
 
-    fun warn(msg: String, extraInfo: String?) {
+    private fun warn(msg: String, extraInfo: String?) {
         loggerBase.warn(tw, msg, extraInfo)
     }
     fun warn(msg: String, exn: Throwable) {
@@ -250,7 +236,7 @@ open class Logger(val loggerBase: LoggerBase, open val tw: TrapWriter) {
         warn(msg, null)
     }
 
-    fun error(msg: String, extraInfo: String?) {
+    private fun error(msg: String, extraInfo: String?) {
         loggerBase.error(tw, msg, extraInfo)
     }
     fun error(msg: String) {
@@ -262,15 +248,15 @@ open class Logger(val loggerBase: LoggerBase, open val tw: TrapWriter) {
 }
 
 class FileLogger(loggerBase: LoggerBase, override val tw: FileTrapWriter): Logger(loggerBase, tw) {
-    fun warnElement(msg: String, element: IrElement) {
+    fun warnElement(msg: String, element: IrElement, exn: Throwable? = null) {
         val locationString = tw.getLocationString(element)
         val mkLocationId = { tw.getLocation(element) }
-        loggerBase.diagnostic(tw, Severity.Warn, msg, null, locationString, mkLocationId)
+        loggerBase.diagnostic(tw, Severity.Warn, msg, exn?.stackTraceToString(), locationString, mkLocationId)
     }
 
-    fun errorElement(msg: String, element: IrElement) {
+    fun errorElement(msg: String, element: IrElement, exn: Throwable? = null) {
         val locationString = tw.getLocationString(element)
         val mkLocationId = { tw.getLocation(element) }
-        loggerBase.diagnostic(tw, Severity.Error, msg, null, locationString, mkLocationId)
+        loggerBase.diagnostic(tw, Severity.Error, msg, exn?.stackTraceToString(), locationString, mkLocationId)
     }
 }

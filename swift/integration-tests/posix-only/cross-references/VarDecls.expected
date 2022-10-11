@@ -1,0 +1,9 @@
+| Sources/cross-references/lib.swift:4:5:4:5 | self |
+| Sources/cross-references/lib.swift:5:5:5:5 | self |
+| Sources/cross-references/lib.swift:10:5:10:5 | X |
+| Sources/cross-references/lib.swift:14:8:14:8 | self |
+| Sources/cross-references/lib.swift:17:16:17:19 | v |
+| Sources/cross-references/lib.swift:22:16:22:19 | v |
+| Sources/cross-references/lib.swift:27:8:27:13 | lhs |
+| Sources/cross-references/lib.swift:27:18:27:23 | rhs |
+| Sources/cross-references/main.swift:11:8:11:8 | self |

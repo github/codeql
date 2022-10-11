@@ -1,3 +1,37 @@
+## 0.3.1
+
+No user-facing changes.
+
+## 0.3.0
+
+### Query Metadata Changes
+
+* Added the `security-severity` tag and CWE tag to the `go/insecure-hostkeycallback` query.
+
+### Minor Analysis Improvements
+
+* The alert message of many queries have been changed to make the message consistent with other languages.
+
+## 0.2.5
+
+## 0.2.4
+
+## 0.2.3
+
+### Minor Analysis Improvements
+
+* The query `go/path-injection` no longer considers user-controlled numeric or boolean-typed data as potentially dangerous.
+
+## 0.2.2
+
+## 0.2.1
+
+## 0.2.0
+
+## 0.1.4
+
+## 0.1.3
+
 ## 0.1.2
 
 ## 0.1.1

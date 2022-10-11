@@ -141,17 +141,18 @@ private module Lxml {
           // resolve_entities has default True
           not exists(this.getArgByName("resolve_entities"))
           or
-          this.getKeywordParameter("resolve_entities").getAValueReachingRhs().asExpr() = any(True t)
+          this.getKeywordParameter("resolve_entities").getAValueReachingSink().asExpr() =
+            any(True t)
         )
         or
         kind.isXmlBomb() and
-        this.getKeywordParameter("huge_tree").getAValueReachingRhs().asExpr() = any(True t) and
-        not this.getKeywordParameter("resolve_entities").getAValueReachingRhs().asExpr() =
+        this.getKeywordParameter("huge_tree").getAValueReachingSink().asExpr() = any(True t) and
+        not this.getKeywordParameter("resolve_entities").getAValueReachingSink().asExpr() =
           any(False t)
         or
         kind.isDtdRetrieval() and
-        this.getKeywordParameter("load_dtd").getAValueReachingRhs().asExpr() = any(True t) and
-        this.getKeywordParameter("no_network").getAValueReachingRhs().asExpr() = any(False t)
+        this.getKeywordParameter("load_dtd").getAValueReachingSink().asExpr() = any(True t) and
+        this.getKeywordParameter("no_network").getAValueReachingSink().asExpr() = any(False t)
       }
     }
 
@@ -318,11 +319,11 @@ private module Lxml {
       kind.isXxe()
       or
       kind.isXmlBomb() and
-      this.getKeywordParameter("huge_tree").getAValueReachingRhs().asExpr() = any(True t)
+      this.getKeywordParameter("huge_tree").getAValueReachingSink().asExpr() = any(True t)
       or
       kind.isDtdRetrieval() and
-      this.getKeywordParameter("load_dtd").getAValueReachingRhs().asExpr() = any(True t) and
-      this.getKeywordParameter("no_network").getAValueReachingRhs().asExpr() = any(False t)
+      this.getKeywordParameter("load_dtd").getAValueReachingSink().asExpr() = any(True t) and
+      this.getKeywordParameter("no_network").getAValueReachingSink().asExpr() = any(False t)
     }
 
     override predicate mayExecuteInput() { none() }

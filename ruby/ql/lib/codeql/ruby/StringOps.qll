@@ -2,7 +2,7 @@
  * Provides classes and predicates for reasoning about string-manipulating expressions.
  */
 
-private import ruby
+private import codeql.ruby.AST
 private import codeql.ruby.DataFlow
 private import codeql.ruby.controlflow.CfgNodes
 private import InclusionTests

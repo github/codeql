@@ -43,4 +43,4 @@ where
   unused_local(unused, v) and
   // If unused is part of a tuple, count it as unused if all elements of that tuple are unused.
   forall(Name el | el = unused.getParentNode().(Tuple).getAnElt() | unused_local(el, _))
-select unused, "The value assigned to local variable '" + v.getId() + "' is never used."
+select unused, "Variable " + v.getId() + " is not used."

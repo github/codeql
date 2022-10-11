@@ -10,7 +10,7 @@
  */
 
 import javascript
-private import Declarations
+private import Declarations.Declarations
 
 from Variable v, TopLevel tl, VarDecl decl, VarDecl redecl
 where

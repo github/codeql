@@ -1,0 +1,32 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>Fetching data in a WebView without restricting the base URL may allow an attacker to access sensitive local data, for example using <code>file://</code>. Data can then be extracted from the software using the URL of a machine under the attackers control. More generally, an attacker may use a URL under their control as part of a cross-site scripting attack.</p>
+
+</overview>
+<recommendation>
+
+<p>When loading HTML into a web view, always set the <code>baseURL</code> to an appropriate URL that you control, or to <code>about:blank</code>. Do not use <code>nil</code>, as this does not restrict URLs that can be resolved. Also do not use a <code>baseURL</code> that could itself be controlled by an attacker.</p>
+
+</recommendation>
+<example>
+
+<p>In the following example, a call to <code>UIWebView.loadHTMLString</code> has the <code>baseURL</code> set to <code>nil</code>, which does not restrict URLs that can be resolved from within the web page.</p>
+
+<sample src="UnsafeWebViewFetchBad.swift" />
+
+<p>To fix the problem, we set the <code>baseURL</code> to <code>about:blank</code>. This ensures that an attacker cannot resolve URLs that point to the local file system, or to web servers under their control.</p>
+
+<sample src="UnsafeWebViewFetchGood.swift" />
+
+</example>
+<references>
+
+<li>
+  <a href="https://www.allysonomalley.com/2018/12/03/ios-bug-hunting-web-view-xss/">iOS Bug Hunting - Web View XSS</a>
+</li>
+
+</references>
+</qhelp>

@@ -11,7 +11,7 @@
  *       statement
  */
 
-import ruby
+import codeql.ruby.AST
 
 from IfExpr i
 where not exists(i.getThen().getAChild())

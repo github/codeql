@@ -73,8 +73,12 @@ abstract class Configuration extends string {
   /** Holds if data flow out of `node` is prohibited. */
   predicate isBarrierOut(Node node) { none() }
 
-  /** Holds if data flow through nodes guarded by `guard` is prohibited. */
-  predicate isBarrierGuard(BarrierGuard guard) { none() }
+  /**
+   * DEPRECATED: Use `isBarrier` and `BarrierGuard` module instead.
+   *
+   * Holds if data flow through nodes guarded by `guard` is prohibited.
+   */
+  deprecated predicate isBarrierGuard(BarrierGuard guard) { none() }
 
   /**
    * Holds if the additional flow step from `node1` to `node2` must be taken
@@ -289,6 +293,20 @@ private predicate outBarrier(NodeEx node, Configuration config) {
   )
 }
 
+/** A bridge class to access the deprecated `isBarrierGuard`. */
+private class BarrierGuardGuardedNodeBridge extends Unit {
+  abstract predicate guardedNode(Node n, Configuration config);
+}
+
+private class BarrierGuardGuardedNode extends BarrierGuardGuardedNodeBridge {
+  deprecated override predicate guardedNode(Node n, Configuration config) {
+    exists(BarrierGuard g |
+      config.isBarrierGuard(g) and
+      n = g.getAGuardedNode()
+    )
+  }
+}
+
 pragma[nomagic]
 private predicate fullBarrier(NodeEx node, Configuration config) {
   exists(Node n | node.asNode() = n |
@@ -300,10 +318,7 @@ private predicate fullBarrier(NodeEx node, Configuration config) {
     config.isBarrierOut(n) and
     not config.isSink(n)
     or
-    exists(BarrierGuard g |
-      config.isBarrierGuard(g) and
-      n = g.getAGuardedNode()
-    )
+    any(BarrierGuardGuardedNodeBridge b).guardedNode(n, config)
   )
 }
 

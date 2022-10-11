@@ -305,11 +305,12 @@ hasLocation(#20096,#20097)
 enclosing_stmt(#20096,#20092)
 expr_containers(#20096,#20001)
 #20098=*
-exprs(#20098,79,#20096,0,"M")
+exprs(#20098,103,#20096,0,"M")
 hasLocation(#20098,#20052)
 enclosing_stmt(#20098,#20092)
 expr_containers(#20098,#20001)
 literals("M","M",#20098)
+namespacebind(#20098,#20069)
 bind(#20098,#20066)
 #20099=*
 exprs(#20099,0,#20096,1,"N")

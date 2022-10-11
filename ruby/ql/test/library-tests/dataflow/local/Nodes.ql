@@ -1,4 +1,4 @@
-import ruby
+import codeql.ruby.AST
 import codeql.ruby.dataflow.internal.DataFlowPrivate
 import codeql.ruby.dataflow.internal.DataFlowDispatch
 

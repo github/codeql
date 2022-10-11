@@ -12,5 +12,5 @@ import cpp
 
 from Class c
 where c.fromSource()
-select c as Class, c.getMetrics().getAfferentCoupling() as AfferentCoupling,
-  c.getMetrics().getEfferentSourceCoupling() as EfferentCoupling order by AfferentCoupling desc
+select c as class_, c.getMetrics().getAfferentCoupling() as afferentCoupling,
+  c.getMetrics().getEfferentSourceCoupling() as efferentCoupling order by afferentCoupling desc

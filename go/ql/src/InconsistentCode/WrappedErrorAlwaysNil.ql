@@ -18,19 +18,15 @@ string packagePath() { result = package("github.com/pkg/errors", "") }
 /**
  * An equality test which guarantees that an expression is always `nil`.
  */
-class NilTestGuard extends DataFlow::BarrierGuard, DataFlow::EqualityTestNode {
-  DataFlow::Node otherNode;
-
-  NilTestGuard() {
-    this.getAnOperand() = Builtin::nil().getARead() and
-    otherNode = this.getAnOperand() and
-    not otherNode = Builtin::nil().getARead()
-  }
-
-  override predicate checks(Expr e, boolean outcome) {
+predicate nilTestGuard(DataFlow::Node g, Expr e, boolean outcome) {
+  exists(DataFlow::EqualityTestNode eq, DataFlow::Node otherNode |
+    g = eq and
+    eq.getAnOperand() = Builtin::nil().getARead() and
+    otherNode = eq.getAnOperand() and
+    not otherNode = Builtin::nil().getARead() and
     e = otherNode.asExpr() and
-    outcome = this.getPolarity()
-  }
+    outcome = eq.getPolarity()
+  )
 }
 
 /** Gets a use of a local variable that has the value `nil`. */
@@ -63,6 +59,6 @@ where
     // if ok2, _ := f2(input); !ok2 {
     // 	return errors.Wrap(err, "")
     // }
-    n = any(NilTestGuard ntg).getAGuardedNode()
+    n = DataFlow::BarrierGuard<nilTestGuard/3>::getABarrierNode()
   )
-select n, "The first argument to 'errors.Wrap' is always nil"
+select n, "The first argument to 'errors.Wrap' is always nil."

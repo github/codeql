@@ -224,6 +224,14 @@ private module CachedSteps {
       or
       arg = invk.(DataFlow::PropWrite).getRhs() and
       parm = DataFlow::parameterNode(f.getParameter(0))
+      or
+      calls(invk, f) and
+      exists(MethodCallExpr apply |
+        invk = DataFlow::reflectiveCallNode(apply) and
+        apply.getMethodName() = "apply" and
+        arg = apply.getArgument(1).flow()
+      ) and
+      parm.(DataFlow::ReflectiveParametersNode).getFunction() = f
     )
     or
     exists(DataFlow::Node callback, int i, Parameter p, Function target |

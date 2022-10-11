@@ -53,16 +53,16 @@ private class JsonParserFluentMethods extends SummaryModelCsv {
   override predicate row(string s) {
     s =
       [
-        "jodd.json;JsonParser;false;allowAllClasses;;;Argument[-1];ReturnValue;value",
-        "jodd.json;JsonParser;false;allowClass;;;Argument[-1];ReturnValue;value",
-        "jodd.json;JsonParser;false;lazy;;;Argument[-1];ReturnValue;value",
-        "jodd.json;JsonParser;false;looseMode;;;Argument[-1];ReturnValue;value",
-        "jodd.json;JsonParser;false;map;;;Argument[-1];ReturnValue;value",
-        "jodd.json;JsonParser;false;setClassMetadataName;;;Argument[-1];ReturnValue;value",
-        "jodd.json;JsonParser;false;strictTypes;;;Argument[-1];ReturnValue;value",
-        "jodd.json;JsonParser;false;useAltPaths;;;Argument[-1];ReturnValue;value",
-        "jodd.json;JsonParser;false;withClassMetadata;;;Argument[-1];ReturnValue;value",
-        "jodd.json;JsonParser;false;withValueConverter;;;Argument[-1];ReturnValue;value"
+        "jodd.json;JsonParser;false;allowAllClasses;;;Argument[-1];ReturnValue;value;manual",
+        "jodd.json;JsonParser;false;allowClass;;;Argument[-1];ReturnValue;value;manual",
+        "jodd.json;JsonParser;false;lazy;;;Argument[-1];ReturnValue;value;manual",
+        "jodd.json;JsonParser;false;looseMode;;;Argument[-1];ReturnValue;value;manual",
+        "jodd.json;JsonParser;false;map;;;Argument[-1];ReturnValue;value;manual",
+        "jodd.json;JsonParser;false;setClassMetadataName;;;Argument[-1];ReturnValue;value;manual",
+        "jodd.json;JsonParser;false;strictTypes;;;Argument[-1];ReturnValue;value;manual",
+        "jodd.json;JsonParser;false;useAltPaths;;;Argument[-1];ReturnValue;value;manual",
+        "jodd.json;JsonParser;false;withClassMetadata;;;Argument[-1];ReturnValue;value;manual",
+        "jodd.json;JsonParser;false;withValueConverter;;;Argument[-1];ReturnValue;value;manual"
       ]
   }
 }

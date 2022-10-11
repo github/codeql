@@ -21,14 +21,14 @@ padding = b"\0"*padding_len
 cipher = AES.new(key, AES.MODE_CBC, iv=iv)
 # using separate .encrypt calls on individual lines does not work
 whole_plantext = secret_message + padding
-encrypted = cipher.encrypt(whole_plantext) # $ CryptographicOperation CryptographicOperationAlgorithm=AES CryptographicOperationInput=whole_plantext
+encrypted = cipher.encrypt(whole_plantext) # $ CryptographicOperation CryptographicOperationAlgorithm=AES CryptographicOperationInput=whole_plantext CryptographicOperationBlockMode=CBC
 
 print("encrypted={}".format(encrypted))
 
 print()
 
 cipher = AES.new(key, AES.MODE_CBC, iv=iv)
-decrypted = cipher.decrypt(encrypted) # $ CryptographicOperation CryptographicOperationAlgorithm=AES CryptographicOperationInput=encrypted
+decrypted = cipher.decrypt(encrypted) # $ CryptographicOperation CryptographicOperationAlgorithm=AES CryptographicOperationInput=encrypted CryptographicOperationBlockMode=CBC
 
 decrypted = decrypted[:-padding_len]
 

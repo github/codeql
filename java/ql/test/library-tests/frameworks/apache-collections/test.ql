@@ -6,8 +6,8 @@ class SummaryModelTest extends SummaryModelCsv {
     row =
       [
         //"package;type;overrides;name;signature;ext;inputspec;outputspec;kind",
-        "generatedtest;Test;false;newRBWithMapValue;;;Argument[0];ReturnValue.MapValue;value",
-        "generatedtest;Test;false;newRBWithMapKey;;;Argument[0];ReturnValue.MapKey;value"
+        "generatedtest;Test;false;newRBWithMapValue;;;Argument[0];ReturnValue.MapValue;value;manual",
+        "generatedtest;Test;false;newRBWithMapKey;;;Argument[0];ReturnValue.MapKey;value;manual"
       ]
   }
 }

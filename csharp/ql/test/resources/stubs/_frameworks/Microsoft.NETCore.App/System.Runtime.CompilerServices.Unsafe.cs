@@ -6,13 +6,15 @@ namespace System
     {
         namespace CompilerServices
         {
-            // Generated from `System.Runtime.CompilerServices.Unsafe` in `System.Runtime.CompilerServices.Unsafe, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            // Generated from `System.Runtime.CompilerServices.Unsafe` in `System.Runtime.CompilerServices.Unsafe, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public static class Unsafe
             {
                 unsafe public static void* Add<T>(void* source, int elementOffset) => throw null;
                 public static T Add<T>(ref T source, System.IntPtr elementOffset) => throw null;
+                public static T Add<T>(ref T source, System.UIntPtr elementOffset) => throw null;
                 public static T Add<T>(ref T source, int elementOffset) => throw null;
                 public static T AddByteOffset<T>(ref T source, System.IntPtr byteOffset) => throw null;
+                public static T AddByteOffset<T>(ref T source, System.UIntPtr byteOffset) => throw null;
                 public static bool AreSame<T>(ref T left, ref T right) => throw null;
                 public static T As<T>(object o) where T : class => throw null;
                 public static TTo As<TFrom, TTo>(ref TFrom source) => throw null;
@@ -41,8 +43,10 @@ namespace System
                 public static void SkipInit<T>(out T value) => throw null;
                 unsafe public static void* Subtract<T>(void* source, int elementOffset) => throw null;
                 public static T Subtract<T>(ref T source, System.IntPtr elementOffset) => throw null;
+                public static T Subtract<T>(ref T source, System.UIntPtr elementOffset) => throw null;
                 public static T Subtract<T>(ref T source, int elementOffset) => throw null;
                 public static T SubtractByteOffset<T>(ref T source, System.IntPtr byteOffset) => throw null;
+                public static T SubtractByteOffset<T>(ref T source, System.UIntPtr byteOffset) => throw null;
                 public static T Unbox<T>(object box) where T : struct => throw null;
                 unsafe public static void Write<T>(void* destination, T value) => throw null;
                 unsafe public static void WriteUnaligned<T>(void* destination, T value) => throw null;

@@ -5,7 +5,7 @@
 import XML
 
 /** An XML element that represents an Ant target. */
-class AntTarget extends XMLElement {
+class AntTarget extends XmlElement {
   AntTarget() { super.getName() = "target" }
 
   /** Gets the name of this Ant target. */

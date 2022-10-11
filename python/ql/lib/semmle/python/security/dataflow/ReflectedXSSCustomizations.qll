@@ -32,9 +32,11 @@ module ReflectedXss {
   abstract class Sanitizer extends DataFlow::Node { }
 
   /**
+   * DEPRECATED: Use `Sanitizer` instead.
+   *
    * A sanitizer guard for "reflected server-side cross-site scripting" vulnerabilities.
    */
-  abstract class SanitizerGuard extends DataFlow::BarrierGuard { }
+  abstract deprecated class SanitizerGuard extends DataFlow::BarrierGuard { }
 
   /**
    * A source of remote user input, considered as a flow source.
@@ -46,7 +48,7 @@ module ReflectedXss {
    */
   class ServerHttpResponseBodyAsSink extends Sink {
     ServerHttpResponseBodyAsSink() {
-      exists(HTTP::Server::HttpResponse response |
+      exists(Http::Server::HttpResponse response |
         response.getMimetype().toLowerCase() = "text/html" and
         this = response.getBody()
       )
@@ -72,7 +74,7 @@ module ReflectedXss {
   /**
    * A comparison with a constant string, considered as a sanitizer-guard.
    */
-  class StringConstCompareAsSanitizerGuard extends SanitizerGuard, StringConstCompare { }
+  class StringConstCompareAsSanitizerGuard extends Sanitizer, StringConstCompareBarrier { }
 }
 
 /** DEPRECATED: Alias for ReflectedXss */

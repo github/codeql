@@ -3,7 +3,7 @@ import semmle.code.java.frameworks.spring.SpringBeanFile
 import semmle.code.java.frameworks.spring.SpringBean
 
 /** A common superclass for all Spring XML elements. */
-class SpringXmlElement extends XMLElement {
+class SpringXmlElement extends XmlElement {
   SpringXmlElement() { this.getFile() instanceof SpringBeanFile }
 
   /** Gets a child of this Spring XML element. */

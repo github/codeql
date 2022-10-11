@@ -1816,4 +1816,74 @@ void switch_initialization(int x) {
     }
 }
 
+int global_1;
+
+int global_2 = 1;
+
+const int global_3 = 2;
+
+constructor_only global_4(1);
+
+constructor_only global_5 = constructor_only(2);
+
+char *global_string = "global string";
+
+int global_6 = global_2;
+
+namespace block_assignment {
+    class A {
+        enum {} e[1];
+        virtual void f();
+    };
+    
+    struct B : A {
+        B(A *);
+    };
+
+    void foo() {
+        B v(0);
+        v = 0;
+    }
+}
+
+void magicvars() {
+    const char *pf = __PRETTY_FUNCTION__;
+    const char *strfunc = __func__;
+}
+
+namespace missing_declaration_entries {
+    struct S {};
+
+    template<typename A, typename B> struct pair{};
+
+    template<typename T> struct Bar1 {
+        typedef S* pointer;
+
+        void* missing_type_decl_entry(pointer p) {
+            typedef pair<pointer, bool> _Res;
+            return p;
+        }
+    };
+
+    void test1() {
+        Bar1<int> b;
+        b.missing_type_decl_entry(nullptr);
+    }
+
+    template<typename T> struct Bar2 {
+
+        int two_missing_variable_declaration_entries() {
+            int x[10], y[10];
+            *x = 10;
+            *y = 10;
+            return *x + *y;
+        }
+    };
+
+    void test2() {
+        Bar2<int> b;
+        b.two_missing_variable_declaration_entries();
+    }
+}
+
 // semmle-extractor-options: -std=c++17 --clang

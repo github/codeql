@@ -68,17 +68,17 @@ private class JFinalControllerSource extends SourceModelCsv {
     row =
       [
         "com.jfinal.core;Controller;true;getCookie" + ["", "Object", "Objects", "ToInt", "ToLong"] +
-          ";;;ReturnValue;remote",
-        "com.jfinal.core;Controller;true;getFile" + ["", "s"] + ";;;ReturnValue;remote",
-        "com.jfinal.core;Controller;true;getHeader;;;ReturnValue;remote",
-        "com.jfinal.core;Controller;true;getKv;;;ReturnValue;remote",
+          ";;;ReturnValue;remote;manual",
+        "com.jfinal.core;Controller;true;getFile" + ["", "s"] + ";;;ReturnValue;remote;manual",
+        "com.jfinal.core;Controller;true;getHeader;;;ReturnValue;remote;manual",
+        "com.jfinal.core;Controller;true;getKv;;;ReturnValue;remote;manual",
         "com.jfinal.core;Controller;true;getPara" +
           [
             "", "Map", "ToBoolean", "ToDate", "ToInt", "ToLong", "Values", "ValuesToInt",
             "ValuesToLong"
-          ] + ";;;ReturnValue;remote",
+          ] + ";;;ReturnValue;remote;manual",
         "com.jfinal.core;Controller;true;get" + ["", "Int", "Long", "Boolean", "Date"] +
-          ";;;ReturnValue;remote"
+          ";;;ReturnValue;remote;manual"
       ]
   }
 }

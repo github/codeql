@@ -42,10 +42,6 @@ module ServerSideRequestForgery {
       super.isSanitizerOut(node) or
       node instanceof SanitizerEdge
     }
-
-    override predicate isSanitizerGuard(DataFlow::BarrierGuard guard) {
-      super.isSanitizerGuard(guard) or guard instanceof SanitizerGuard
-    }
   }
 
   /** A data flow source for request forgery vulnerabilities. */
@@ -70,11 +66,6 @@ module ServerSideRequestForgery {
   abstract class SanitizerEdge extends DataFlow::Node { }
 
   /**
-   * A sanitizer guard for request forgery vulnerabilities.
-   */
-  abstract class SanitizerGuard extends DataFlow::BarrierGuard { }
-
-  /**
    * An user controlled input, considered as a flow source for request forgery.
    */
   class UntrustedFlowAsSource extends Source instanceof UntrustedFlowSource { }
@@ -83,7 +74,7 @@ module ServerSideRequestForgery {
    * The URL of an HTTP request, viewed as a sink for request forgery.
    */
   private class ClientRequestUrlAsSink extends Sink {
-    HTTP::ClientRequest request;
+    Http::ClientRequest request;
 
     ClientRequestUrlAsSink() { this = request.getUrl() }
 
@@ -118,22 +109,25 @@ module ServerSideRequestForgery {
    *
    * This is overapproximate: we do not attempt to reason about the correctness of the regexp.
    */
-  class RegexpCheckAsBarrierGuard extends RegexpCheck, SanitizerGuard { }
+  class RegexpCheckAsBarrierGuard extends RegexpCheckBarrier, Sanitizer { }
+
+  private predicate equalityAsSanitizerGuard(DataFlow::Node g, Expr e, boolean outcome) {
+    exists(DataFlow::Node url, DataFlow::EqualityTestNode eq |
+      g = eq and
+      exists(eq.getAnOperand().getStringValue()) and
+      url = eq.getAnOperand() and
+      e = url.asExpr() and
+      outcome = eq.getPolarity()
+    )
+  }
 
   /**
    * An equality check comparing a data-flow node against a constant string, considered as
    * a barrier guard for sanitizing untrusted URLs.
    */
-  class EqualityAsSanitizerGuard extends SanitizerGuard, DataFlow::EqualityTestNode {
-    DataFlow::Node url;
-
+  class EqualityAsSanitizerGuard extends Sanitizer {
     EqualityAsSanitizerGuard() {
-      exists(this.getAnOperand().getStringValue()) and
-      url = this.getAnOperand()
-    }
-
-    override predicate checks(Expr e, boolean outcome) {
-      e = url.asExpr() and outcome = this.getPolarity()
+      this = DataFlow::BarrierGuard<equalityAsSanitizerGuard/3>::getABarrierNode()
     }
   }
 
@@ -158,7 +152,5 @@ module ServerSideRequestForgery {
    * The method Var of package validator is a sanitizer guard only if the check
    * of the error binding exists, and the tag to check is one of "alpha", "alphanum", "alphaunicode", "alphanumunicode", "number", "numeric".
    */
-  class ValidatorAsSanitizer extends SanitizerGuard instanceof ValidatorVarCheck {
-    override predicate checks(Expr e, boolean branch) { this.checks(e, branch) }
-  }
+  class ValidatorAsSanitizer extends Sanitizer, ValidatorVarCheckBarrier { }
 }

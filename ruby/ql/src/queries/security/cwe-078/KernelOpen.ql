@@ -14,7 +14,7 @@
  *       external/cwe/cwe-073
  */
 
-import ruby
+import codeql.ruby.AST
 import codeql.ruby.ApiGraphs
 import codeql.ruby.frameworks.core.Kernel::Kernel
 import codeql.ruby.TaintTracking
@@ -59,9 +59,9 @@ class Configuration extends TaintTracking::Configuration {
     exists(IOReadCall c | c.getArgument(0) = sink)
   }
 
-  override predicate isSanitizerGuard(DataFlow::BarrierGuard guard) {
-    guard instanceof StringConstCompare or
-    guard instanceof StringConstArrayInclusionCall
+  override predicate isSanitizer(DataFlow::Node node) {
+    node instanceof StringConstCompareBarrier or
+    node instanceof StringConstArrayInclusionCallBarrier
   }
 }
 
@@ -71,7 +71,7 @@ from
 where
   config.hasFlowPath(source, sink) and
   sourceNode = source.getNode() and
-  call.asExpr().getExpr().(MethodCall).getArgument(0) = sink.getNode().asExpr().getExpr()
+  call.getArgument(0) = sink.getNode()
 select sink.getNode(), source, sink,
-  "This call to " + call.(Replacement).getFrom() +
-    " depends on a user-provided value. Replace it with " + call.(Replacement).getTo() + "."
+  "This call to " + call.(Replacement).getFrom() + " depends on a $@. Replace it with " +
+    call.(Replacement).getTo() + ".", source.getNode(), "user-provided value"

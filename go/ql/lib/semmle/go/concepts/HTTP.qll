@@ -5,7 +5,7 @@
 import go
 
 /** Provides classes for modeling HTTP-related APIs. */
-module HTTP {
+module Http {
   /** Provides a class for modeling new HTTP response-writer APIs. */
   module ResponseWriter {
     /**
@@ -31,11 +31,7 @@ module HTTP {
    * Extend this class to refine existing API models. If you want to model new APIs,
    * extend `HTTP::ResponseWriter::Range` instead.
    */
-  class ResponseWriter extends Variable {
-    ResponseWriter::Range self;
-
-    ResponseWriter() { this = self }
-
+  class ResponseWriter extends Variable instanceof ResponseWriter::Range {
     /** Gets the body that is written in this HTTP response. */
     ResponseBody getBody() { result.getResponseWriter() = this }
 
@@ -47,8 +43,8 @@ module HTTP {
 
     /** Gets a data-flow node that is a use of this response writer. */
     DataFlow::Node getANode() {
-      result = self.getANode() or
-      result.(DataFlow::PostUpdateNode).getPreUpdateNode() = self.getANode()
+      result = super.getANode() or
+      result.(DataFlow::PostUpdateNode).getPreUpdateNode() = super.getANode()
     }
   }
 
@@ -100,19 +96,15 @@ module HTTP {
    * Extend this class to refine existing API models. If you want to model new APIs,
    * extend `HTTP::HeaderWrite::Range` instead.
    */
-  class HeaderWrite extends DataFlow::ExprNode {
-    HeaderWrite::Range self;
-
-    HeaderWrite() { this = self }
-
+  class HeaderWrite extends DataFlow::ExprNode instanceof HeaderWrite::Range {
     /** Gets the (lower-case) name of a header set by this definition. */
-    string getHeaderName() { result = self.getHeaderName() }
+    string getHeaderName() { result = super.getHeaderName() }
 
     /** Gets the value of the header set by this definition. */
-    string getHeaderValue() { result = self.getHeaderValue() }
+    string getHeaderValue() { result = super.getHeaderValue() }
 
     /** Holds if this header write defines the header `header`. */
-    predicate definesHeader(string header, string value) { self.definesHeader(header, value) }
+    predicate definesHeader(string header, string value) { super.definesHeader(header, value) }
 
     /**
      * Gets the node representing the name of the header defined by this write.
@@ -121,13 +113,13 @@ module HTTP {
      * sets the `Content-Type` header) may not have such a node, so callers should use
      * `getHeaderName` in preference to this method).
      */
-    DataFlow::Node getName() { result = self.getName() }
+    DataFlow::Node getName() { result = super.getName() }
 
     /** Gets the node representing the value of the header defined by this write. */
-    DataFlow::Node getValue() { result = self.getValue() }
+    DataFlow::Node getValue() { result = super.getValue() }
 
     /** Gets the response writer associated with this header write, if any. */
-    ResponseWriter getResponseWriter() { result = self.getResponseWriter() }
+    ResponseWriter getResponseWriter() { result = super.getResponseWriter() }
   }
 
   /** A data-flow node whose value is written to an HTTP header. */
@@ -171,11 +163,7 @@ module HTTP {
    * Extend this class to refine existing API models. If you want to model new APIs,
    * extend `HTTP::RequestBody::Range` instead.
    */
-  class RequestBody extends DataFlow::Node {
-    RequestBody::Range self;
-
-    RequestBody() { this = self }
-  }
+  class RequestBody extends DataFlow::Node instanceof RequestBody::Range { }
 
   /** Provides a class for modeling new HTTP response-body APIs. */
   module ResponseBody {
@@ -191,7 +179,7 @@ module HTTP {
 
       /** Gets a content-type associated with this body. */
       string getAContentType() {
-        exists(HTTP::HeaderWrite hw | hw = this.getResponseWriter().getAHeaderWrite() |
+        exists(Http::HeaderWrite hw | hw = this.getResponseWriter().getAHeaderWrite() |
           hw.getHeaderName() = "content-type" and
           result = hw.getHeaderValue()
         )
@@ -201,7 +189,7 @@ module HTTP {
 
       /** Gets a dataflow node for a content-type associated with this body. */
       DataFlow::Node getAContentTypeNode() {
-        exists(HTTP::HeaderWrite hw | hw = this.getResponseWriter().getAHeaderWrite() |
+        exists(Http::HeaderWrite hw | hw = this.getResponseWriter().getAHeaderWrite() |
           hw.getHeaderName() = "content-type" and
           result = hw.getValue()
         )
@@ -215,19 +203,15 @@ module HTTP {
    * Extend this class to refine existing API models. If you want to model new APIs,
    * extend `HTTP::ResponseBody::Range` instead.
    */
-  class ResponseBody extends DataFlow::Node {
-    ResponseBody::Range self;
-
-    ResponseBody() { this = self }
-
+  class ResponseBody extends DataFlow::Node instanceof ResponseBody::Range {
     /** Gets the response writer associated with this header write, if any. */
-    ResponseWriter getResponseWriter() { result = self.getResponseWriter() }
+    ResponseWriter getResponseWriter() { result = super.getResponseWriter() }
 
     /** Gets a content-type associated with this body. */
-    string getAContentType() { result = self.getAContentType() }
+    string getAContentType() { result = super.getAContentType() }
 
     /** Gets a dataflow node for a content-type associated with this body. */
-    DataFlow::Node getAContentTypeNode() { result = self.getAContentTypeNode() }
+    DataFlow::Node getAContentTypeNode() { result = super.getAContentTypeNode() }
   }
 
   /** Provides a class for modeling new HTTP template response-body APIs. */
@@ -250,13 +234,9 @@ module HTTP {
    * Extend this class to refine existing API models. If you want to model new APIs,
    * extend `HTTP::TemplateResponseBody::Range` instead.
    */
-  class TemplateResponseBody extends ResponseBody {
-    override TemplateResponseBody::Range self;
-
-    TemplateResponseBody() { this = self }
-
+  class TemplateResponseBody extends ResponseBody instanceof TemplateResponseBody::Range {
     /** Gets the read of the variable inside the template where this value is read. */
-    HtmlTemplate::TemplateRead getRead() { result = self.getRead() }
+    HtmlTemplate::TemplateRead getRead() { result = super.getRead() }
   }
 
   /** Provides a class for modeling new HTTP client request APIs. */
@@ -285,15 +265,11 @@ module HTTP {
    * Extend this class to refine existing API models. If you want to model new APIs,
    * extend `HTTP::ClientRequest::Range` instead.
    */
-  class ClientRequest extends DataFlow::Node {
-    ClientRequest::Range self;
-
-    ClientRequest() { this = self }
-
+  class ClientRequest extends DataFlow::Node instanceof ClientRequest::Range {
     /**
      * Gets the URL of the request.
      */
-    DataFlow::Node getUrl() { result = self.getUrl() }
+    DataFlow::Node getUrl() { result = super.getUrl() }
   }
 
   /** Provides a class for modeling new HTTP redirect APIs. */
@@ -337,16 +313,12 @@ module HTTP {
    * Extend this class to refine existing API models. If you want to model new APIs,
    * extend `HTTP::Redirect::Range` instead.
    */
-  class Redirect extends DataFlow::Node {
-    Redirect::Range self;
-
-    Redirect() { this = self }
-
+  class Redirect extends DataFlow::Node instanceof Redirect::Range {
     /** Gets the data-flow node representing the URL being redirected to. */
-    DataFlow::Node getUrl() { result = self.getUrl() }
+    DataFlow::Node getUrl() { result = super.getUrl() }
 
     /** Gets the response writer that this redirect is sent on, if any. */
-    ResponseWriter getResponseWriter() { result = self.getResponseWriter() }
+    ResponseWriter getResponseWriter() { result = super.getResponseWriter() }
   }
 
   /** Provides a class for modeling new HTTP handler APIs. */
@@ -369,12 +341,11 @@ module HTTP {
    * Extend this class to refine existing API models. If you want to model new APIs,
    * extend `HTTP::RequestHandler::Range` instead.
    */
-  class RequestHandler extends DataFlow::Node {
-    RequestHandler::Range self;
-
-    RequestHandler() { this = self }
-
+  class RequestHandler extends DataFlow::Node instanceof RequestHandler::Range {
     /** Gets a node that is used in a check that is tested before this handler is run. */
-    predicate guardedBy(DataFlow::Node check) { self.guardedBy(check) }
+    predicate guardedBy(DataFlow::Node check) { super.guardedBy(check) }
   }
 }
+
+/** DEPRECATED: Alias for Http */
+deprecated module HTTP = Http;

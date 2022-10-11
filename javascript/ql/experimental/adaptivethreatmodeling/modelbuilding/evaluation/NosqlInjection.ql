@@ -5,7 +5,8 @@
  * evaluation pipeline.
  */
 
-import semmle.javascript.security.dataflow.NosqlInjection
+import javascript
+import semmle.javascript.security.dataflow.NosqlInjectionQuery as NosqlInjection
 import EndToEndEvaluation as EndToEndEvaluation
 
 from

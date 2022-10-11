@@ -57,3 +57,5 @@
 | Test.cs:34:18:34:18 | i | Test.cs:34:25:34:25 | SSA phi(i) | Test.cs:34:33:34:35 | SSA def(i) |
 | Test.cs:46:29:46:32 | out | Test.cs:56:9:56:19 | SSA phi(out) | Test.cs:50:13:50:20 | SSA def(out) |
 | Test.cs:46:29:46:32 | out | Test.cs:56:9:56:19 | SSA phi(out) | Test.cs:54:13:54:20 | SSA def(out) |
+| Test.cs:78:13:78:13 | x | Test.cs:113:9:116:9 | SSA phi(x) | Test.cs:78:13:78:17 | SSA def(x) |
+| Test.cs:78:13:78:13 | x | Test.cs:113:9:116:9 | SSA phi(x) | Test.cs:108:13:108:17 | SSA def(x) |

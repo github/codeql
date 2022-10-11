@@ -51,4 +51,4 @@ where
   incrementBoolType(exp) or
   revertSignBoolType(exp) or
   assignBoolType(exp)
-select exp, "this expression needs attention"
+select exp, "This expression needs attention."

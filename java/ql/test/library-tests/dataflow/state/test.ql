@@ -1,5 +1,5 @@
 import java
-import semmle.code.java.dataflow.DataFlow
+import semmle.code.java.dataflow.TaintTracking
 import TestUtilities.InlineExpectationsTest
 import DataFlow
 
@@ -39,16 +39,16 @@ predicate step(Node n1, Node n2, string s1, string s2) {
 
 predicate checkNode(Node n) { n.asExpr().(Argument).getCall().getCallee().hasName("check") }
 
-class Conf extends Configuration {
+class Conf extends TaintTracking::Configuration {
   Conf() { this = "qltest:state" }
 
   override predicate isSource(Node n, FlowState s) { src(n, s) }
 
   override predicate isSink(Node n, FlowState s) { sink(n, s) }
 
-  override predicate isBarrier(Node n, FlowState s) { bar(n, s) }
+  override predicate isSanitizer(Node n, FlowState s) { bar(n, s) }
 
-  override predicate isAdditionalFlowStep(Node n1, FlowState s1, Node n2, FlowState s2) {
+  override predicate isAdditionalTaintStep(Node n1, FlowState s1, Node n2, FlowState s2) {
     step(n1, n2, s1, s2)
   }
 

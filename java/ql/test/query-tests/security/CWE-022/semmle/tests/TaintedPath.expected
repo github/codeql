@@ -8,6 +8,12 @@ edges
 | Test.java:79:74:79:97 | getInputStream(...) : ServletInputStream | Test.java:79:52:79:98 | new InputStreamReader(...) : InputStreamReader |
 | Test.java:80:31:80:32 | br : BufferedReader | Test.java:80:31:80:43 | readLine(...) : String |
 | Test.java:80:31:80:43 | readLine(...) : String | Test.java:82:67:82:81 | ... + ... |
+| Test.java:88:17:88:37 | getHostName(...) : String | Test.java:90:26:90:29 | temp |
+| Test.java:95:14:95:34 | getHostName(...) : String | Test.java:97:12:97:33 | new URI(...) |
+| Test.java:95:14:95:34 | getHostName(...) : String | Test.java:98:12:98:33 | new URI(...) |
+| Test.java:95:14:95:34 | getHostName(...) : String | Test.java:99:12:99:33 | new URI(...) |
+| Test.java:95:14:95:34 | getHostName(...) : String | Test.java:100:12:100:45 | new URI(...) |
+| Test.java:95:14:95:34 | getHostName(...) : String | Test.java:101:12:101:54 | new URI(...) |
 nodes
 | Test.java:19:18:19:38 | getHostName(...) : String | semmle.label | getHostName(...) : String |
 | Test.java:24:20:24:23 | temp | semmle.label | temp |
@@ -20,10 +26,24 @@ nodes
 | Test.java:80:31:80:32 | br : BufferedReader | semmle.label | br : BufferedReader |
 | Test.java:80:31:80:43 | readLine(...) : String | semmle.label | readLine(...) : String |
 | Test.java:82:67:82:81 | ... + ... | semmle.label | ... + ... |
+| Test.java:88:17:88:37 | getHostName(...) : String | semmle.label | getHostName(...) : String |
+| Test.java:90:26:90:29 | temp | semmle.label | temp |
+| Test.java:95:14:95:34 | getHostName(...) : String | semmle.label | getHostName(...) : String |
+| Test.java:97:12:97:33 | new URI(...) | semmle.label | new URI(...) |
+| Test.java:98:12:98:33 | new URI(...) | semmle.label | new URI(...) |
+| Test.java:99:12:99:33 | new URI(...) | semmle.label | new URI(...) |
+| Test.java:100:12:100:45 | new URI(...) | semmle.label | new URI(...) |
+| Test.java:101:12:101:54 | new URI(...) | semmle.label | new URI(...) |
 subpaths
 #select
-| Test.java:24:11:24:24 | new File(...) | Test.java:19:18:19:38 | getHostName(...) : String | Test.java:24:20:24:23 | temp | $@ flows to here and is used in a path. | Test.java:19:18:19:38 | getHostName(...) | User-provided value |
-| Test.java:27:11:27:25 | get(...) | Test.java:19:18:19:38 | getHostName(...) : String | Test.java:27:21:27:24 | temp | $@ flows to here and is used in a path. | Test.java:19:18:19:38 | getHostName(...) | User-provided value |
-| Test.java:30:11:30:48 | getPath(...) | Test.java:19:18:19:38 | getHostName(...) : String | Test.java:30:44:30:47 | temp | $@ flows to here and is used in a path. | Test.java:19:18:19:38 | getHostName(...) | User-provided value |
-| Test.java:34:12:34:25 | new File(...) | Test.java:19:18:19:38 | getHostName(...) : String | Test.java:34:21:34:24 | temp | $@ flows to here and is used in a path. | Test.java:19:18:19:38 | getHostName(...) | User-provided value |
-| Test.java:82:52:82:88 | new FileWriter(...) | Test.java:79:74:79:97 | getInputStream(...) : ServletInputStream | Test.java:82:67:82:81 | ... + ... | $@ flows to here and is used in a path. | Test.java:79:74:79:97 | getInputStream(...) | User-provided value |
+| Test.java:24:11:24:24 | new File(...) | Test.java:19:18:19:38 | getHostName(...) : String | Test.java:24:20:24:23 | temp | This path depends on a $@. | Test.java:19:18:19:38 | getHostName(...) | user-provided value |
+| Test.java:27:11:27:25 | get(...) | Test.java:19:18:19:38 | getHostName(...) : String | Test.java:27:21:27:24 | temp | This path depends on a $@. | Test.java:19:18:19:38 | getHostName(...) | user-provided value |
+| Test.java:30:11:30:48 | getPath(...) | Test.java:19:18:19:38 | getHostName(...) : String | Test.java:30:44:30:47 | temp | This path depends on a $@. | Test.java:19:18:19:38 | getHostName(...) | user-provided value |
+| Test.java:34:12:34:25 | new File(...) | Test.java:19:18:19:38 | getHostName(...) : String | Test.java:34:21:34:24 | temp | This path depends on a $@. | Test.java:19:18:19:38 | getHostName(...) | user-provided value |
+| Test.java:82:52:82:88 | new FileWriter(...) | Test.java:79:74:79:97 | getInputStream(...) : ServletInputStream | Test.java:82:67:82:81 | ... + ... | This path depends on a $@. | Test.java:79:74:79:97 | getInputStream(...) | user-provided value |
+| Test.java:90:26:90:29 | temp | Test.java:88:17:88:37 | getHostName(...) : String | Test.java:90:26:90:29 | temp | This path depends on a $@. | Test.java:88:17:88:37 | getHostName(...) | user-provided value |
+| Test.java:97:3:97:34 | new File(...) | Test.java:95:14:95:34 | getHostName(...) : String | Test.java:97:12:97:33 | new URI(...) | This path depends on a $@. | Test.java:95:14:95:34 | getHostName(...) | user-provided value |
+| Test.java:98:3:98:34 | new File(...) | Test.java:95:14:95:34 | getHostName(...) : String | Test.java:98:12:98:33 | new URI(...) | This path depends on a $@. | Test.java:95:14:95:34 | getHostName(...) | user-provided value |
+| Test.java:99:3:99:34 | new File(...) | Test.java:95:14:95:34 | getHostName(...) : String | Test.java:99:12:99:33 | new URI(...) | This path depends on a $@. | Test.java:95:14:95:34 | getHostName(...) | user-provided value |
+| Test.java:100:3:100:46 | new File(...) | Test.java:95:14:95:34 | getHostName(...) : String | Test.java:100:12:100:45 | new URI(...) | This path depends on a $@. | Test.java:95:14:95:34 | getHostName(...) | user-provided value |
+| Test.java:101:3:101:55 | new File(...) | Test.java:95:14:95:34 | getHostName(...) : String | Test.java:101:12:101:54 | new URI(...) | This path depends on a $@. | Test.java:95:14:95:34 | getHostName(...) | user-provided value |

@@ -88,7 +88,7 @@ Function reachableFromAsyncCallback() {
  * The main predicate of this query: used for both result display and path computation.
  */
 predicate main(
-  HTTP::RouteHandler rh, AsyncSentinelCall async, AsyncCallback cb, LikelyExceptionThrower thrower
+  Http::RouteHandler rh, AsyncSentinelCall async, AsyncCallback cb, LikelyExceptionThrower thrower
 ) {
   async.getAsyncCallee() = cb and
   rh.getAstNode() = invokesCallbackThatThrowsUncaughtException(async, thrower)
@@ -180,7 +180,7 @@ query predicate nodes(AstNode node) {
 }
 
 from
-  HTTP::RouteHandler rh, AsyncSentinelCall async, DataFlow::Node callbackArg, AsyncCallback cb,
+  Http::RouteHandler rh, AsyncSentinelCall async, DataFlow::Node callbackArg, AsyncCallback cb,
   ExprOrStmt crasher
 where
   main(rh, async, cb, crasher) and

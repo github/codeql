@@ -1,0 +1,7 @@
+## 0.0.2
+
+No user-facing changes.
+
+## 0.0.1
+
+* Initial release. Extracted common SSA code into a library pack to share code between languages.

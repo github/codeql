@@ -1,0 +1,6 @@
+package com.github.codeql.utils.versions
+
+import org.jetbrains.kotlin.ir.declarations.IrClass
+import org.jetbrains.kotlin.backend.common.ir.createImplicitParameterDeclarationWithWrappedDescriptor
+
+fun IrClass.createImplicitParameterDeclarationWithWrappedDescriptor() = this.createImplicitParameterDeclarationWithWrappedDescriptor()

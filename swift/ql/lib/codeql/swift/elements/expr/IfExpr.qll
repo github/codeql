@@ -8,4 +8,6 @@ class IfExpr extends IfExprBase {
     b = false and
     result = this.getElseExpr()
   }
+
+  override string toString() { result = "... ? ... : ..." }
 }

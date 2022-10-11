@@ -1,0 +1,23 @@
+<!DOCTYPE qhelp PUBLIC
+"-//Semmle//qhelp//EN"
+"qhelp.dtd">
+<qhelp>
+  <overview>
+    <p>
+      Manually checking the HTTP request verb inside of a controller method can lead to
+      CSRF bypass if GET or HEAD requests are handled improperly.
+    </p>
+  </overview>
+  <recommendation>
+    <p>
+      It is better to use different controller methods for each resource/http verb combination
+      and configure the Rails routes in your application to call them accordingly.
+    </p>
+  </recommendation>
+  
+  <references>
+    <li>
+      See https://guides.rubyonrails.org/routing.html for more information.
+    </li>
+  </references>
+</qhelp>

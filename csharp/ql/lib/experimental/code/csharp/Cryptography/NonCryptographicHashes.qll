@@ -13,7 +13,7 @@ private import semmle.code.csharp.dataflow.TaintTracking2
 predicate maybeANonCryptogrphicHash(Callable callable, Variable v, Expr xor, Expr mul, LoopStmt loop) {
   callable = loop.getEnclosingCallable() and
   (
-    maybeUsedInFNVFunction(v, xor, mul, loop) or
+    maybeUsedInFnvFunction(v, xor, mul, loop) or
     maybeUsedInElfHashFunction(v, xor, mul, loop)
   )
 }
@@ -23,7 +23,7 @@ predicate maybeANonCryptogrphicHash(Callable callable, Variable v, Expr xor, Exp
  * where there is a loop statement `loop` where the variable `v` is used in an xor `xor` expression
  * followed by a multiplication `mul` expression.
  */
-predicate maybeUsedInFNVFunction(Variable v, Operation xor, Operation mul, LoopStmt loop) {
+predicate maybeUsedInFnvFunction(Variable v, Operation xor, Operation mul, LoopStmt loop) {
   exists(Expr e1, Expr e2 |
     e1.getAChild*() = v.getAnAccess() and
     e2.getAChild*() = v.getAnAccess() and
@@ -36,6 +36,9 @@ predicate maybeUsedInFNVFunction(Variable v, Operation xor, Operation mul, LoopS
   loop.getAChild*() = mul.getEnclosingStmt() and
   loop.getAChild*() = xor.getEnclosingStmt()
 }
+
+/** DEPRECATED: Alias for maybeUsedInFnvFunction */
+deprecated predicate maybeUsedInFNVFunction = maybeUsedInFnvFunction/4;
 
 /**
  * Holds if the arguments are used in a way that resembles an Elf-Hash hash function

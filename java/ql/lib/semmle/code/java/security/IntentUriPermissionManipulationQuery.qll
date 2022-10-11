@@ -24,7 +24,7 @@ class IntentUriPermissionManipulationConf extends TaintTracking::Configuration {
     barrier instanceof IntentUriPermissionManipulationSanitizer
   }
 
-  override predicate isSanitizerGuard(DataFlow::BarrierGuard guard) {
+  deprecated override predicate isSanitizerGuard(DataFlow::BarrierGuard guard) {
     guard instanceof IntentUriPermissionManipulationGuard
   }
 

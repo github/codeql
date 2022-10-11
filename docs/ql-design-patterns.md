@@ -31,13 +31,9 @@ Applying the `::Range` pattern yields the following:
  * Extend this class to refine existing API models. If you want to model new APIs,
  * extend `MySpecialExpr::Range` instead.
  */
-class MySpecialExpr extends Expr {
-  MySpecialExpr::Range range;
-
-  MySpecialExpr() { this = range }
-
+class MySpecialExpr extends Expr instanceof MySpecialExpr::Range {
   /** <QLDoc...> */
-  int memberPredicate() { result = range.memberPredicate() }
+  int memberPredicate() { result = super.memberPredicate() }
 }
 
 /** Provides a class for modeling new <...> APIs. */
@@ -56,22 +52,18 @@ module MySpecialExpr {
 ```
 Now, a concrete subclass can derive from `MySpecialExpr::Range` if it wants to extend the set of values in `MySpecialExpr`, and it will be required to implement the abstract `memberPredicate()`. Conversely, if it wants to refine `MySpecialExpr` and override `memberPredicate` for all extensions, it can do so by deriving from `MySpecialExpr` directly.
 
-The key element of the pattern is to provide a field of type `MySpecialExpr::Range`, equating it to `this` in the characteristic predicate of `MySpecialExpr`. In member predicates, we can use either `this` or `range`, depending on which type has the API we need.
-
 </details>
-
-Note that in some libraries, the `range` field is in fact called `self`. While we do recommend using `range` for consistency, the name of the field does not matter (and using `range` avoids confusion in contexts like Python analysis that has strong usage of `self`).
 
 ### Rationale
 
-Let's use an example from the Go libraries: https://github.com/github/codeql-go/blob/2ba9bbfd8ba1818b5ee9f6009c86a605189c9ef3/ql/src/semmle/go/Concepts.qll#L119-L157
+Let's use an example from the Python libraries: https://github.com/github/codeql/blob/46751e515c40c6b4c9b61758cc840eec1894a624/python/ql/lib/semmle/python/Concepts.qll#L601-L683
 
-`EscapeFunction`, as the name suggests, models various APIs that escape meta-characters. It has a member-predicate `kind()` that tells you what sort of escaping the modelled function does. For example, if the result of that predicate is `"js"`, then this means that the escaping function is meant to make things safe to embed inside JavaScript.
-`EscapeFunction::Range` is subclassed to model various APIs, and `kind()` is implemented accordingly.
-But we can also subclass `EscapeFunction` to, as in the above example, talk about all JS-escaping functions.
+`Escaping`, as the name suggests, models various APIs that escape meta-characters. It has a member-predicate `getKind()` that tells you what sort of escaping the modeled function does. For example, if the result of that predicate is `"html"`, then this means that the escaping function is meant to make things safe to embed inside HTML.
+`Escaping::Range` is subclassed to model various APIs, and `kind()` is implemented accordingly (this typically happens in library models).
+But we can also subclass `Escaping`, as in the above example, where `HtmlEscaping` represents all HTML-escaping functions.
 
 You can, of course, do the same without the `::Range` pattern, but it's a little cumbersome:
-If you only had an `abstract class EscapeFunction { ... }`, then `JsEscapeFunction` would need to be implemented in a slightly tricky way to prevent it from extending `EscapeFunction` (instead of refining it). You would have to give it a charpred `this instanceof EscapeFunction`, which looks useless but isn't. And additionally, you'd have to provide trivial `none()` overrides of all the abstract predicates defined in `EscapeFunction`. This is all pretty awkward, and we can avoid it by distinguishing between `EscapeFunction` and `EscapeFunction::Range`.
+If you only had an `abstract class Escaping { ... }`, then `HtmlEscaping` would need to be implemented in a slightly tricky way to prevent it from extending `Escaping` (instead of refining it). You would have to give it a charpred `this instanceof Escaping`, which looks useless but isn't. And additionally, you'd have to provide trivial `none()` overrides of all the abstract predicates defined in `Escaping`. This is all pretty awkward, and we can avoid it by distinguishing between `Escaping` and `Escaping::Range`.
 
 
 ## Importing all subclasses of a class

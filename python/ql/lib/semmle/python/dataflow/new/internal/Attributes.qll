@@ -40,7 +40,7 @@ abstract class AttrRef extends Node {
     or
     exists(LocalSourceNode nodeFrom |
       nodeFrom.flowsTo(this.getAttributeNameExpr()) and
-      attrName = nodeFrom.asExpr().(StrConst).getText()
+      attrName = nodeFrom.(CfgNode).getNode().getNode().(StrConst).getText()
     )
   }
 
@@ -50,6 +50,9 @@ abstract class AttrRef extends Node {
    * better results.
    */
   abstract string getAttributeName();
+
+  /** Holds if a name could not be determined for this attribute. */
+  predicate unknownAttribute() { not exists(this.getAttributeName()) }
 }
 
 /**
@@ -70,9 +73,7 @@ abstract class AttrWrite extends AttrRef {
  * ```
  * Also gives access to the `value` being written, by extending `DefinitionNode`.
  */
-private class AttributeAssignmentNode extends DefinitionNode, AttrNode {
-  override ControlFlowNode getValue() { result = DefinitionNode.super.getValue() }
-}
+private class AttributeAssignmentNode extends DefinitionNode, AttrNode { }
 
 /** A simple attribute assignment: `object.attr = value`. */
 private class AttributeAssignmentAsAttrWrite extends AttrWrite, CfgNode {
@@ -177,7 +178,7 @@ private class SetAttrCallAsAttrWrite extends AttrWrite, CfgNode {
   override ExprNode getAttributeNameExpr() { result.asCfgNode() = node.getName() }
 
   override string getAttributeName() {
-    result = this.getAttributeNameExpr().asExpr().(StrConst).getText()
+    result = this.getAttributeNameExpr().(CfgNode).getNode().getNode().(StrConst).getText()
   }
 }
 
@@ -253,7 +254,7 @@ private class GetAttrCallAsAttrRead extends AttrRead, CfgNode {
   override ExprNode getAttributeNameExpr() { result.asCfgNode() = node.getName() }
 
   override string getAttributeName() {
-    result = this.getAttributeNameExpr().asExpr().(StrConst).getText()
+    result = this.getAttributeNameExpr().(CfgNode).getNode().getNode().(StrConst).getText()
   }
 }
 

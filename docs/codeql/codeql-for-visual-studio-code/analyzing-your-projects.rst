@@ -14,12 +14,12 @@ To analyze a project, you need to add a :ref:`CodeQL database <codeql-database>`
 
 #. Open the CodeQL Databases view in the sidebar.
 
-#. Hover over the **Databases** title bar and click the appropriate icon to add your database. You can add a database from a local ZIP archive or folder, from a public URL, or from a project slug or URL on LGTM.com.
+#. Hover over the **Databases** title bar and click the appropriate icon to add your database. You can add a database from a local ZIP archive or folder, from a public URL, or from a project's URL on GitHub.com.
 
    .. image:: ../images/codeql-for-visual-studio-code/choose-database.png
       :width: 350
       :alt: Choose a database to analyze
-   
+
    For more information about obtaining a local database, see below.
 
 #. Once you've chosen a database, it is displayed in the Databases view. To see the menu options for interacting with a database, right-click an entry in the list. You can select multiple databases using **Ctrl/Cmd+click**.
@@ -27,23 +27,23 @@ To analyze a project, you need to add a :ref:`CodeQL database <codeql-database>`
 Obtaining a local database
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-If you have a CodeQL database saved locally, as an unarchived folder or as a ZIP file, you can add it to Visual Studio Code. There are several ways to obtain a local CodeQL database. 
+If you have a CodeQL database saved locally, as an unarchived folder or as a ZIP file, you can add it to Visual Studio Code. There are several ways to obtain a local CodeQL database.
 
 - To create a database with the CodeQL CLI, see ":ref:`Creating CodeQL databases <creating-codeql-databases>`."
-
-- .. include:: ../reusables/download-lgtm-database.rst
 
 - To analyze a test database, add a ``.testproj`` folder to the Databases view.
   Test databases (that is, folders with a ``.testproj`` extension) are generated when you run regression tests on custom queries using the :ref:`CodeQL CLI <codeql-cli>`.
   If a query fails a regression test, you may want to analyze the test database in Visual Studio Code to debug the failure.
-   
-  For more information about running query tests, see ":ref:`Testing custom queries <testing-custom-queries>`" in the CodeQL CLI help.  
+
+  For more information about running query tests, see ":ref:`Testing custom queries <testing-custom-queries>`" in the CodeQL CLI help.
+
+.. include:: ../reusables/download-github-database.rst
 
 Running a query
 ------------------------
 
 The `CodeQL repository <https://github.com/github/codeql>`__ on GitHub contains lots of example queries.
-If you have that folder (or a different QL pack) available in your workspace, you can access existing queries under ``<language>/ql/src/<category>``, for example ``java/ql/src/Likely Bugs``.
+If you have that folder (or a different CodeQL pack) available in your workspace, you can access existing queries under ``<language>/ql/src/<category>``, for example ``java/ql/src/Likely Bugs``.
 
 #. Open a query (``.ql``) file. It is displayed in the editor, with IntelliSense features such as syntax highlighting and autocomplete suggestions.
 #. Right-click in the query window and select **CodeQL: Run Query**. (Alternatively, run the command from the Command Palette.)
@@ -77,7 +77,7 @@ To run the query, use **CodeQL: Run Query**.
 
 You can see all quick queries that you've run in the current session in the Query History view. Click an entry to see the exact text of the quick query that produced the results.
 
-Once you're happy with your quick query, you should save it in a QL pack so you can access it later. For more information, see ":ref:`About QL packs <about-ql-packs>`."
+Once you're happy with your quick query, you should save it in a CodeQL pack so you can access it later. For more information, see ":ref:`About CodeQL packs <about-codeql-packs>`."
 
 .. _running-a-specific-part-of-a-query-or-library:
 
@@ -87,7 +87,7 @@ Running a specific part of a query or library
 This is helpful if you're debugging a query or library and you want to locate the part that is wrong.
 Instead of using **CodeQL: Run Query** to run the whole query (the :ref:`select clause <select-clauses>` and any :ref:`query predicates <query-predicates>`), you can use **CodeQL: Quick Evaluation** to run a specific part of a ``.ql`` or ``.qll`` file.
 
-**CodeQL: Quick Evaluation** evaluates a code snippet (instead of the whole query) and displays results of that selection in the Results view. 
+**CodeQL: Quick Evaluation** evaluates a code snippet (instead of the whole query) and displays results of that selection in the Results view.
 Possible targets for quick evaluation include:
 
 - Selecting the name of a CodeQL entity (such as a :ref:`class <classes>` or :ref:`predicate <predicates>`) to evaluate that entity.

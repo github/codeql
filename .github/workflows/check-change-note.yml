@@ -10,6 +10,7 @@ on:
       - "*/ql/lib/**/*.qll"
       - "!**/experimental/**"
       - "!ql/**"
+      - "!swift/**"
       - ".github/workflows/check-change-note.yml"
 
 jobs:
