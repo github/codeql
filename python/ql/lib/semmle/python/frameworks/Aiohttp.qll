@@ -621,15 +621,12 @@ module AiohttpWebModel {
     DataFlow::Node value;
 
     AiohttpResponseCookieSubscriptWrite() {
-      exists(SubscriptNode subscript |
+      exists(API::Node i |
+        value = aiohttpResponseInstance().getMember("cookies").getSubscriptAt(i).asSink() and
+        index = i.asSink() and
         // To give `this` a value, we need to choose between either LHS or RHS,
-        // and just go with the LHS
-        this.asCfgNode() = subscript
-      |
-        subscript.getObject() =
-          aiohttpResponseInstance().getMember("cookies").getAValueReachableFromSource().asCfgNode() and
-        value.asCfgNode() = subscript.(DefinitionNode).getValue() and
-        index.asCfgNode() = subscript.getIndex()
+        // and just go with the RHS as it is readily available
+        this = value
       )
     }
 
