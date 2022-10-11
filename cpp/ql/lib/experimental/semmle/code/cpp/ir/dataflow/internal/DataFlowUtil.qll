@@ -891,7 +891,7 @@ abstract class PostUpdateNode extends Node {
    */
   abstract Node getPreUpdateNode();
 
-  final override Type getType() { result = this.getPreUpdateNode().getType() }
+  final override DataFlowType getType() { result = this.getPreUpdateNode().getType() }
 }
 
 /**
