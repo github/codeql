@@ -1,3 +1,4 @@
+require "active_job"
 require "base64"
 require "json"
 require "oj"
