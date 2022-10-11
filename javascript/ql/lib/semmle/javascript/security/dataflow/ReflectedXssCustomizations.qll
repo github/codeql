@@ -68,7 +68,7 @@ module ReflectedXss {
   }
 
   /**
-   * DEPRECATED: Holds if `h` may send a response with a content type that is safe for XSS.
+   * DEPRECATED: Holds if `h` may send a response with a content type other than HTML.
    */
   deprecated Http::HeaderDefinition nonHtmlContentTypeHeader(Http::RouteHandler h) {
     result = h.getAResponseHeader("content-type") and
