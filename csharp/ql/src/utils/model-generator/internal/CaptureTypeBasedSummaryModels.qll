@@ -189,7 +189,7 @@ class TypeBasedFlowTargetApi extends Specific::TargetApiSpecific {
    * Gets the string representation of all type based summaries for `this`
    * inspired by the Theorems for Free approach.
    *
-   * Examples could be (see C# psuedo code below)
+   * Examples could be (see C# pseudo code below)
    * (1) `Get` returns a value of type `T`. We assume that the returned
    *     value was fetched from a (synthetic) field.
    * (2) `Set` consumes a value of type `T`. We assume that the value is stored in
