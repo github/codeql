@@ -2,8 +2,6 @@
 
 import codeql.ruby.AST
 import codeql.ruby.DataFlow
-private import codeql.ruby.frameworks.data.ModelsAsData
-private import codeql.ruby.ApiGraphs
 private import internal.FlowSummaryImpl as Impl
 private import internal.DataFlowDispatch
 private import internal.DataFlowPrivate
@@ -11,6 +9,7 @@ private import internal.DataFlowPrivate
 // import all instances below
 private module Summaries {
   private import codeql.ruby.Frameworks
+  private import codeql.ruby.frameworks.data.ModelsAsData
 }
 
 class SummaryComponent = Impl::Public::SummaryComponent;
@@ -144,33 +143,3 @@ abstract class SimpleSummarizedCallable extends SummarizedCallable {
 }
 
 class RequiredSummaryComponentStack = Impl::Public::RequiredSummaryComponentStack;
-
-private class SummarizedCallableFromModel extends SummarizedCallable {
-  string package;
-  string type;
-  string path;
-
-  SummarizedCallableFromModel() {
-    ModelOutput::relevantSummaryModel(package, type, path, _, _, _) and
-    this = package + ";" + type + ";" + path
-  }
-
-  override Call getACall() {
-    exists(API::MethodAccessNode base |
-      ModelOutput::resolvedSummaryBase(package, type, path, base) and
-      result = base.getCallNode().asExpr().getExpr()
-    )
-  }
-
-  override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
-    exists(string kind |
-      ModelOutput::relevantSummaryModel(package, type, path, input, output, kind)
-    |
-      kind = "value" and
-      preservesValue = true
-      or
-      kind = "taint" and
-      preservesValue = false
-    )
-  }
-}
