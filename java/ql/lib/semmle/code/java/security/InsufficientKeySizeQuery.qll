@@ -2,12 +2,11 @@
 
 import semmle.code.java.security.Encryption
 import semmle.code.java.dataflow.DataFlow
-import semmle.code.java.dataflow.DataFlow2
 
 /**
  * An Asymmetric (RSA, DSA, DH) key length data flow tracking configuration.
  */
-class AsymmetricNonECKeyTrackingConfiguration extends DataFlow2::Configuration {
+class AsymmetricNonECKeyTrackingConfiguration extends DataFlow::Configuration {
   AsymmetricNonECKeyTrackingConfiguration() { this = "AsymmetricNonECKeyTrackingConfiguration" }
 
   override predicate isSource(DataFlow::Node source) {
@@ -52,7 +51,7 @@ class AsymmetricNonECKeyTrackingConfiguration extends DataFlow2::Configuration {
 /**
  * An Asymmetric (EC) key length data flow tracking configuration.
  */
-class AsymmetricECKeyTrackingConfiguration extends DataFlow2::Configuration {
+class AsymmetricECKeyTrackingConfiguration extends DataFlow::Configuration {
   AsymmetricECKeyTrackingConfiguration() { this = "AsymmetricECKeyTrackingConfiguration" }
 
   override predicate isSource(DataFlow::Node source) {
@@ -88,7 +87,7 @@ class AsymmetricECKeyTrackingConfiguration extends DataFlow2::Configuration {
 /**
  * A Symmetric (AES) key length data flow tracking configuration.
  */
-class SymmetricKeyTrackingConfiguration extends DataFlow2::Configuration {
+class SymmetricKeyTrackingConfiguration extends DataFlow::Configuration {
   SymmetricKeyTrackingConfiguration() { this = "SymmetricKeyTrackingConfiguration" }
 
   override predicate isSource(DataFlow::Node source) {
