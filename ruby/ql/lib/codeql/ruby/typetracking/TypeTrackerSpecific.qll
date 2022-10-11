@@ -102,7 +102,67 @@ private predicate summarizedLocalStep(Node nodeFrom, Node nodeTo) {
 }
 
 /** Holds if there is a level step from `nodeFrom` to `nodeTo`. */
-predicate levelStep(Node nodeFrom, Node nodeTo) { summarizedLocalStep(nodeFrom, nodeTo) }
+predicate levelStep(Node nodeFrom, Node nodeTo) {
+  summarizedLocalStep(nodeFrom, nodeTo)
+  or
+  localFieldStep(nodeFrom, nodeTo)
+}
+
+/**
+ * Gets a method of `mod`, with `instance` indicating if this is an instance method.
+ *
+ * Does not take inheritance or the various forms of inclusion into account.
+ */
+pragma[nomagic]
+private MethodBase getAMethod(ModuleBase mod, boolean instance) {
+  not mod instanceof SingletonClass and
+  result = mod.getAMethod() and
+  if result instanceof SingletonMethod then instance = false else instance = true
+  or
+  exists(SingletonClass cls |
+    cls.getValue().(SelfVariableAccess).getCfgScope() = mod and
+    result = cls.getAMethod().(Method) and
+    instance = false
+  )
+}
+
+/**
+ * Gets a value flowing into `field` in `mod`, with `instance` indicating if it's
+ * a field on an instance of `mod` (as opposed to the module object itself).
+ */
+pragma[nomagic]
+private Node fieldPredecessor(ModuleBase mod, boolean instance, string field) {
+  exists(InstanceVariableWriteAccess access, AssignExpr assign |
+    access.getReceiver().getCfgScope() = getAMethod(mod, instance) and
+    field = access.getVariable().getName() and
+    assign.getLeftOperand() = access and
+    result.asExpr().getExpr() = assign.getRightOperand()
+  )
+}
+
+/**
+ * Gets a reference to `field` in `mod`, with `instance` indicating if it's
+ * a field on an instance of `mod` (as opposed to the module object itself).
+ */
+pragma[nomagic]
+private Node fieldSuccessor(ModuleBase mod, boolean instance, string field) {
+  exists(InstanceVariableReadAccess access |
+    access.getReceiver().getCfgScope() = getAMethod(mod, instance) and
+    result.asExpr().getExpr() = access and
+    field = access.getVariable().getName()
+  )
+}
+
+/**
+ * Holds if `pred -> succ` should be used a level step, from a field assignment to
+ * a read within the same class.
+ */
+private predicate localFieldStep(Node pred, Node succ) {
+  exists(ModuleBase mod, boolean instance, string field |
+    pred = fieldPredecessor(mod, instance, field) and
+    succ = fieldSuccessor(mod, instance, field)
+  )
+}
 
 pragma[noinline]
 private predicate argumentPositionMatch(
@@ -325,9 +385,18 @@ private predicate hasStoreSummary(
   SummarizedCallable callable, DataFlow::ContentSet contents, SummaryComponentStack input,
   SummaryComponentStack output
 ) {
-  callable.propagatesFlow(input, push(SummaryComponent::content(contents), output), true) and
   not isNonLocal(input.head()) and
-  not isNonLocal(output.head())
+  not isNonLocal(output.head()) and
+  (
+    callable.propagatesFlow(input, push(SummaryComponent::content(contents), output), true)
+    or
+    // Allow the input to start with an arbitrary WithoutContent[X].
+    // Since type-tracking only tracks one content deep, and we're about to store into another content,
+    // we're already preventing the input from being in a content.
+    callable
+        .propagatesFlow(push(SummaryComponent::withoutContent(_), input),
+          push(SummaryComponent::content(contents), output), true)
+  )
 }
 
 pragma[nomagic]
@@ -460,6 +529,9 @@ private predicate dependsOnSummaryComponentStack(
     callable.propagatesFlow(stack, _, true)
     or
     callable.propagatesFlow(_, stack, true)
+    or
+    // include store summaries as they may skip an initial step at the input
+    hasStoreSummary(callable, _, stack, _)
   )
   or
   dependsOnSummaryComponentStackCons(callable, _, stack)
