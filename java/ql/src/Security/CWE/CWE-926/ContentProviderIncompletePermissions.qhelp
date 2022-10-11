@@ -3,7 +3,11 @@
   "qhelp.dtd">
 <qhelp>
 <overview>
-<p>The Android manifest file contains <code>provider</code> elements that you should use to specify the explicit permissions an application requires to access a resource using that provider. 
+<p>The Android manifest file specifies the content providers for the application
+using <code>provider</code> elements. The <code>provider</code> element
+specifies the explicit permissions an application requires in order to access a
+resource using that provider.
+
   You specify the permissions using
   the <code>android:readPermission</code>, <code>android:writePermission</code>,
   or <code>android:permission</code> attributes. 
