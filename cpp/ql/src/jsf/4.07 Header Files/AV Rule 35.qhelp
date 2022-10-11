@@ -10,7 +10,7 @@ header files, and this inclusion graph contains a cycle, then at least one file 
 cycle. Because of cases like these, all headers should be guarded as a matter of good practice, even if they do not strictly need to be.
 </p>
 <p>
-Furthermore, most modern compilers contain optimisations which are triggered by header guards. If the header guard strictly conforms to the pattern
+Furthermore, most modern compilers contain optimizations which are triggered by header guards. If the header guard strictly conforms to the pattern
 that compilers expect, then inclusions of that header other than the first have absolutely no effect: the file isn't re-read from disk, nor is it
 re-tokenised or re-preprocessed. This can result in a noticeable, albeit minor, improvement to compilation time.
 </p>
