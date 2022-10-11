@@ -196,12 +196,16 @@ private class MessageDigestUsedOnceConfig extends DataFlow2::Configuration {
   }
 
   override predicate isBarrier(DataFlow::Node node, DataFlow::FlowState state) {
-    // Updating with a password sanitizes later nodes from being Empty
+    // Updating with a password prevents later nodes from being Empty
     exists(DataFlow::Node updated |
       messageDigestFlowStep(updated, _, true) and
       DataFlow::localFlowStep(updated, node) and
       state instanceof MessageDigestEmpty
     )
+    or
+    // Updating with a password prevents that node from being considered unsalted
+    messageDigestFlowStep(node, _, true) and
+    state instanceof MessageDigestUnsalted
   }
 
   override predicate allowImplicitRead(DataFlow::Node node, DataFlow::ContentSet c) {
