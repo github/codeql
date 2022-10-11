@@ -42,6 +42,14 @@ module ReflectedXss {
   }
 
   /**
+   * DEPRECATED: Holds if `h` may send a response with a content type other than HTML.
+   */
+  deprecated Http::HeaderDefinition nonHtmlContentTypeHeader(Http::RouteHandler h) {
+    result = h.getAResponseHeader("content-type") and
+    not exists(string tp | result.defines("content-type", tp) | tp.regexpMatch("(?i).*html.*"))
+  }
+
+  /**
    * Gets a HeaderDefinition that defines a XSS safe content-type for `send`.
    */
   Http::HeaderDefinition getAXssSafeHeaderDefinition(Http::ResponseSendArgument send) {
@@ -65,14 +73,6 @@ module ReflectedXss {
         "text/xsl", "application/vnd.wap.xhtml+xml", "text/rdf", "application/rdf+xml",
         "application/mathml+xml", "text/vtt", "text/cache-manifest"
       ]
-  }
-
-  /**
-   * DEPRECATED: Holds if `h` may send a response with a content type other than HTML.
-   */
-  deprecated Http::HeaderDefinition nonHtmlContentTypeHeader(Http::RouteHandler h) {
-    result = h.getAResponseHeader("content-type") and
-    not exists(string tp | result.defines("content-type", tp) | tp.regexpMatch("(?i).*html.*"))
   }
 
   /**
