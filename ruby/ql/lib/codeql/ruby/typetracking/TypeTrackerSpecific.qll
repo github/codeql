@@ -120,7 +120,7 @@ private MethodBase getAMethod(ModuleBase mod, boolean instance) {
   if result instanceof SingletonMethod then instance = false else instance = true
   or
   exists(SingletonClass cls |
-    cls.getValue().(SelfVariableAccess).getCfgScope() = mod and
+    cls.getValue().(SelfVariableAccess).getVariable().getDeclaringScope() = mod and
     result = cls.getAMethod().(Method) and
     instance = false
   )
@@ -133,7 +133,7 @@ private MethodBase getAMethod(ModuleBase mod, boolean instance) {
 pragma[nomagic]
 private Node fieldPredecessor(ModuleBase mod, boolean instance, string field) {
   exists(InstanceVariableWriteAccess access, AssignExpr assign |
-    access.getReceiver().getCfgScope() = getAMethod(mod, instance) and
+    access.getReceiver().getVariable().getDeclaringScope() = getAMethod(mod, instance) and
     field = access.getVariable().getName() and
     assign.getLeftOperand() = access and
     result.asExpr().getExpr() = assign.getRightOperand()
@@ -147,7 +147,7 @@ private Node fieldPredecessor(ModuleBase mod, boolean instance, string field) {
 pragma[nomagic]
 private Node fieldSuccessor(ModuleBase mod, boolean instance, string field) {
   exists(InstanceVariableReadAccess access |
-    access.getReceiver().getCfgScope() = getAMethod(mod, instance) and
+    access.getReceiver().getVariable().getDeclaringScope() = getAMethod(mod, instance) and
     result.asExpr().getExpr() = access and
     field = access.getVariable().getName()
   )
