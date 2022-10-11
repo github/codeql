@@ -139,6 +139,8 @@ class ParamsSource extends Http::Server::RequestInputAccess::Range {
   ParamsSource() { this.asExpr().getExpr() instanceof Rails::ParamsCall }
 
   override string getSourceType() { result = "ActionController::Metal#params" }
+
+  override Http::Server::RequestInputKind getKind() { result = Http::Server::parameterInputKind() }
 }
 
 /**
@@ -149,6 +151,8 @@ class CookiesSource extends Http::Server::RequestInputAccess::Range {
   CookiesSource() { this.asExpr().getExpr() instanceof Rails::CookiesCall }
 
   override string getSourceType() { result = "ActionController::Metal#cookies" }
+
+  override Http::Server::RequestInputKind getKind() { result = Http::Server::cookieInputKind() }
 }
 
 /** A call to `cookies` from within a controller. */
@@ -199,11 +203,17 @@ private module Request {
           "filtered_parameters"
         ]
     }
+
+    override Http::Server::RequestInputKind getKind() {
+      result = Http::Server::parameterInputKind()
+    }
   }
 
   /** A method call on `request` which returns part or all of the request path. */
   private class PathCall extends RequestInputAccess {
     PathCall() { this.getMethodName() = ["path", "filtered_path"] }
+
+    override Http::Server::RequestInputKind getKind() { result = Http::Server::urlInputKind() }
   }
 
   /** A method call on `request` which returns a specific request header. */
@@ -221,6 +231,8 @@ private module Request {
       this.getMethodName() = ["get_header", "fetch_header"] and
       this.getArgument(0).asExpr().getExpr().getConstantValue().getString().regexpMatch("^HTTP_.+")
     }
+
+    override Http::Server::RequestInputKind getKind() { result = Http::Server::headerInputKind() }
   }
 
   // TODO: each_header
@@ -236,6 +248,8 @@ private module Request {
           "forwarded_host", "port", "forwarded_port"
         ]
     }
+
+    override Http::Server::RequestInputKind getKind() { result = Http::Server::headerInputKind() }
   }
 
   /**
@@ -247,11 +261,15 @@ private module Request {
       this.getMethodName() =
         ["media_type", "media_type", "media_type_params", "content_charset", "base_url"]
     }
+
+    override Http::Server::RequestInputKind getKind() { result = Http::Server::headerInputKind() }
   }
 
   /** A method call on `request` which returns the request body. */
   private class BodyCall extends RequestInputAccess {
     BodyCall() { this.getMethodName() = ["body", "raw_post"] }
+
+    override Http::Server::RequestInputKind getKind() { result = Http::Server::bodyInputKind() }
   }
 
   /** A method call on `request` which returns the rack env. */
@@ -260,6 +278,8 @@ private module Request {
       this.getMethodName() = ["env", "filtered_env"] and
       this.getArgument(0).asExpr().getExpr().getConstantValue().getString().regexpMatch("^HTTP_.+")
     }
+
+    override Http::Server::RequestInputKind getKind() { result = Http::Server::headerInputKind() }
   }
 }
 

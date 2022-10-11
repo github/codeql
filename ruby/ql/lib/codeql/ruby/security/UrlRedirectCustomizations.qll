@@ -50,7 +50,9 @@ module UrlRedirect {
   /**
    * A source of remote user input, considered as a flow source.
    */
-  class RemoteFlowSourceAsSource extends Source, RemoteFlowSource { }
+  class HttpRequestInputAccessAsSource extends Source, Http::Server::RequestInputAccess {
+    HttpRequestInputAccessAsSource() { this.isThirdPartyControllable() }
+  }
 
   /**
    * A HTTP redirect response, considered as a flow sink.
