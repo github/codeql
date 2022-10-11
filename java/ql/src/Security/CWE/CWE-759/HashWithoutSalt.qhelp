@@ -21,9 +21,5 @@
       DZone:
       <a href="https://dzone.com/articles/a-look-at-java-cryptography">A Look at Java Cryptography</a>
     </li>
-    <li>
-      CWE:
-      <a href="https://cwe.mitre.org/data/definitions/759.html">CWE-759: Use of a One-Way Hash without a Salt</a>
-    </li>
   </references>
 </qhelp>
