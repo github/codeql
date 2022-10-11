@@ -605,13 +605,28 @@ private PointerType getGLValueType(Type t, int indirectionIndex) {
 }
 
 bindingset[isGLValue]
-private DataFlowType getType0(Type t, int indirectionIndex, boolean isGLValue) {
+private DataFlowType getTypeImpl(Type t, int indirectionIndex, boolean isGLValue) {
   if isGLValue = true
   then
     result = getGLValueType(t, indirectionIndex)
     or
-    // If the `PointerType` with the correct base type isn't in the database we cannot
-    // return a correct type. So instead we'll return a value that has "one indirection too little".
+    // Ideally, the above case would cover all glvalue cases. However, consider the case where
+    // the database consists only of:
+    // ```
+    // void test() {
+    //   int* x;
+    //   x = nullptr;
+    // }
+    // ```
+    // and we want to compute the type of `*x` in the assignment `x = nullptr`. Here, `x` is an lvalue
+    // of type int* (which morally is an int**). So when we call `getTypeImpl` it will be with the
+    // parameters:
+    // - t = int*
+    // - indirectionIndex = 1 (when we want to model the dataflow node corresponding to *x)
+    // - isGLValue = true
+    // In this case, `getTypeImpl(t, indirectionIndex, isGLValue)` should give back `int**`. In this
+    // case, however, `int**` does not exist in the database. So instead we return int* (which is
+    // wrong, but at least we have a type).
     not exists(getGLValueType(t, indirectionIndex)) and
     result = stripPointers(t, indirectionIndex - 1)
   else result = stripPointers(t, indirectionIndex)
@@ -640,7 +655,7 @@ class IndirectOperand extends Node, TIndirectOperand {
 
   override DataFlowType getType() {
     exists(boolean isGLValue | if operand.isGLValue() then isGLValue = true else isGLValue = false |
-      result = getType0(operand.getType().getUnspecifiedType(), indirectionIndex, isGLValue)
+      result = getTypeImpl(operand.getType().getUnspecifiedType(), indirectionIndex, isGLValue)
     )
   }
 
@@ -674,7 +689,7 @@ class IndirectInstruction extends Node, TIndirectInstruction {
 
   override DataFlowType getType() {
     exists(boolean isGLValue | if instr.isGLValue() then isGLValue = true else isGLValue = false |
-      result = getType0(instr.getResultType().getUnspecifiedType(), indirectionIndex, isGLValue)
+      result = getTypeImpl(instr.getResultType().getUnspecifiedType(), indirectionIndex, isGLValue)
     )
   }
 
