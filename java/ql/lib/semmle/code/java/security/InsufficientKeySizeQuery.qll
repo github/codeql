@@ -142,9 +142,14 @@ private predicate hasShortAsymmetricKeyPair(Expr e, string msg, string type) {
     or
     exists(ClassInstanceExpr genParamSpec |
       (
-        genParamSpec.getConstructedType() instanceof RsaKeyGenParameterSpec or
-        genParamSpec.getConstructedType() instanceof DsaGenParameterSpec or
-        genParamSpec.getConstructedType() instanceof DhGenParameterSpec
+        genParamSpec.getConstructedType() instanceof RsaKeyGenParameterSpec and
+        type = "RSA"
+        or
+        genParamSpec.getConstructedType() instanceof DsaGenParameterSpec and
+        type = "DSA"
+        or
+        genParamSpec.getConstructedType() instanceof DhGenParameterSpec and
+        type = "DH"
       ) and
       genParamSpec.getArgument(0).(CompileTimeConstantExpr).getIntValue() < 2048 and
       genParamSpec = e
