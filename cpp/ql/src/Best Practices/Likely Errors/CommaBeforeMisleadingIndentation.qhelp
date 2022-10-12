@@ -31,4 +31,9 @@ This example shows three different ways of writing the same code. The first exam
 <sample src="CommaBeforeMisleadingIndentation.cpp" />
 </example>
 
+<references>
+<li>Wikipedia: <a href="https://en.wikipedia.org/wiki/Comma_operator">Comma operator</a></li>
+<li>Wikipedia: <a href="https://en.wikipedia.org/wiki/Indentation_style#Tabs,_spaces,_and_size_of_indentations">Indentation style &mdash; Tabs, spaces, and size of indentations</a></li>
+</references>
+
 </qhelp>
