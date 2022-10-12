@@ -205,12 +205,12 @@ module ArgumentPassing {
         result = TCfgNode(call.getArgByName(unbind_string(argName)))
       )
       or
-      // a synthezised argument passed to the starred parameter (at position -1)
+      // a synthesized argument passed to the starred parameter (at position -1)
       callable.getScope().hasVarArg() and
       paramN = -1 and
       result = TPosOverflowNode(call, callable)
       or
-      // a synthezised argument passed to the doubly starred parameter (at position -2)
+      // a synthesized argument passed to the doubly starred parameter (at position -2)
       callable.getScope().hasKwArg() and
       paramN = -2 and
       result = TKwOverflowNode(call, callable)

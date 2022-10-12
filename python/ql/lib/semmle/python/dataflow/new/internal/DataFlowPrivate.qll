@@ -668,7 +668,7 @@ predicate attributeStoreStep(Node nodeFrom, AttributeContent c, PostUpdateNode n
 }
 
 /**
- * Holds if `nodeFrom` flows into the synthezised positional overflow argument (`nodeTo`)
+ * Holds if `nodeFrom` flows into the synthesized positional overflow argument (`nodeTo`)
  * at the position indicated by `c`.
  */
 predicate posOverflowStoreStep(CfgNode nodeFrom, TupleElementContent c, Node nodeTo) {
@@ -680,7 +680,7 @@ predicate posOverflowStoreStep(CfgNode nodeFrom, TupleElementContent c, Node nod
 }
 
 /**
- * Holds if `nodeFrom` flows into the synthezised keyword overflow argument (`nodeTo`)
+ * Holds if `nodeFrom` flows into the synthesized keyword overflow argument (`nodeTo`)
  * at the key indicated by `c`.
  */
 predicate kwOverflowStoreStep(CfgNode nodeFrom, DictionaryElementContent c, Node nodeTo) {
@@ -814,7 +814,7 @@ predicate attributeReadStep(Node nodeFrom, AttributeContent c, AttrRead nodeTo) 
 
 /**
  * Holds if `nodeFrom` is a dictionary argument being unpacked and `nodeTo` is the
- * synthezised unpacked argument with the name indicated by `c`.
+ * synthesized unpacked argument with the name indicated by `c`.
  */
 predicate kwUnpackReadStep(CfgNode nodeFrom, DictionaryElementContent c, Node nodeTo) {
   exists(CallNode call, CallableValue callable, string name |
