@@ -179,17 +179,15 @@ class NegativeSummaryModelCsv extends Unit {
   abstract predicate row(string row);
 }
 
-/** Holds if `row` is a source model. */
-predicate sourceModel(string row) { any(SourceModelCsv s).row(row) }
+private predicate sourceModelInternal(string row) { any(SourceModelCsv s).row(row) }
 
-/** Holds if `row` is a sink model. */
-predicate sinkModel(string row) { any(SinkModelCsv s).row(row) }
+private predicate summaryModelInternal(string row) { any(SummaryModelCsv s).row(row) }
 
-/** Holds if `row` is a summary model. */
-predicate summaryModel(string row) { any(SummaryModelCsv s).row(row) }
+private predicate sinkModelInternal(string row) { any(SinkModelCsv s).row(row) }
 
-/** Holds if `row` is a negative summary model. */
-predicate negativeSummaryModel(string row) { any(NegativeSummaryModelCsv s).row(row) }
+private predicate negativeSummaryModelInternal(string row) {
+  any(NegativeSummaryModelCsv s).row(row)
+}
 
 /** Holds if a source model exists for the given parameters. */
 predicate sourceModel(
@@ -197,7 +195,7 @@ predicate sourceModel(
   string output, string kind, string provenance
 ) {
   exists(string row |
-    sourceModel(row) and
+    sourceModelInternal(row) and
     row.splitAt(";", 0) = namespace and
     row.splitAt(";", 1) = type and
     row.splitAt(";", 2) = subtypes.toString() and
@@ -211,13 +209,33 @@ predicate sourceModel(
   )
 }
 
+/** Holds if `row` is a source model. */
+predicate sourceModel(string row) {
+  exists(
+    string namespace, string type, boolean subtypes, string name, string signature, string ext,
+    string output, string kind, string provenance
+  |
+    sourceModel(namespace, type, subtypes, name, signature, ext, output, kind, provenance) and
+    row =
+      namespace + ";" //
+        + type + ";" //
+        + subtypes.toString() + ";" //
+        + name + ";" //
+        + signature + ";" //
+        + ext + ";" //
+        + output + ";" //
+        + kind + ";" //
+        + provenance
+  )
+}
+
 /** Holds if a sink model exists for the given parameters. */
 predicate sinkModel(
   string namespace, string type, boolean subtypes, string name, string signature, string ext,
   string input, string kind, string provenance
 ) {
   exists(string row |
-    sinkModel(row) and
+    sinkModelInternal(row) and
     row.splitAt(";", 0) = namespace and
     row.splitAt(";", 1) = type and
     row.splitAt(";", 2) = subtypes.toString() and
@@ -231,13 +249,33 @@ predicate sinkModel(
   )
 }
 
+/** Holds if `row` is a sink model. */
+predicate sinkModel(string row) {
+  exists(
+    string namespace, string type, boolean subtypes, string name, string signature, string ext,
+    string input, string kind, string provenance
+  |
+    sinkModel(namespace, type, subtypes, name, signature, ext, input, kind, provenance) and
+    row =
+      namespace + ";" //
+        + type + ";" //
+        + subtypes.toString() + ";" //
+        + name + ";" //
+        + signature + ";" //
+        + ext + ";" //
+        + input + ";" //
+        + kind + ";" //
+        + provenance
+  )
+}
+
 /** Holds if a summary model exists for the given parameters. */
 predicate summaryModel(
   string namespace, string type, boolean subtypes, string name, string signature, string ext,
   string input, string output, string kind, string provenance
 ) {
   exists(string row |
-    summaryModel(row) and
+    summaryModelInternal(row) and
     row.splitAt(";", 0) = namespace and
     row.splitAt(";", 1) = type and
     row.splitAt(";", 2) = subtypes.toString() and
@@ -252,17 +290,51 @@ predicate summaryModel(
   )
 }
 
+/** Holds if `row` is a summary model. */
+predicate summaryModel(string row) {
+  exists(
+    string namespace, string type, boolean subtypes, string name, string signature, string ext,
+    string input, string output, string kind, string provenance
+  |
+    summaryModel(namespace, type, subtypes, name, signature, ext, input, output, kind, provenance) and
+    row =
+      namespace + ";" //
+        + type + ";" //
+        + subtypes.toString() + ";" //
+        + name + ";" //
+        + signature + ";" //
+        + ext + ";" //
+        + input + ";" //
+        + output + ";" //
+        + kind + ";" //
+        + provenance
+  )
+}
+
 /** Holds if a summary model exists indicating there is no flow for the given parameters. */
 predicate negativeSummaryModel(
   string namespace, string type, string name, string signature, string provenance
 ) {
   exists(string row |
-    negativeSummaryModel(row) and
+    negativeSummaryModelInternal(row) and
     row.splitAt(";", 0) = namespace and
     row.splitAt(";", 1) = type and
     row.splitAt(";", 2) = name and
     row.splitAt(";", 3) = signature and
     row.splitAt(";", 4) = provenance
+  )
+}
+
+/** Holds if `row` is a negative summary model. */
+predicate negativeSummaryModel(string row) {
+  exists(string namespace, string type, string name, string signature, string provenance |
+    negativeSummaryModel(namespace, type, name, signature, provenance) and
+    row =
+      namespace + ";" //
+        + type + ";" //
+        + name + ";" //
+        + signature + ";" //
+        + provenance
   )
 }
 
@@ -355,21 +427,18 @@ module CsvValidation {
   }
 
   private string getInvalidModelKind() {
-    exists(string row, string kind | summaryModel(row) |
-      kind = row.splitAt(";", 8) and
+    exists(string kind | summaryModel(_, _, _, _, _, _, _, _, kind, _) |
       not kind = ["taint", "value"] and
       result = "Invalid kind \"" + kind + "\" in summary model."
     )
     or
-    exists(string row, string kind | sinkModel(row) |
-      kind = row.splitAt(";", 7) and
+    exists(string kind | sinkModel(_, _, _, _, _, _, _, kind, _) |
       not kind = ["code", "sql", "xss", "remote", "html"] and
       not kind.matches("encryption-%") and
       result = "Invalid kind \"" + kind + "\" in sink model."
     )
     or
-    exists(string row, string kind | sourceModel(row) |
-      kind = row.splitAt(";", 7) and
+    exists(string kind | sourceModel(_, _, _, _, _, _, _, kind, _) |
       not kind = ["local", "file"] and
       result = "Invalid kind \"" + kind + "\" in source model."
     )
@@ -377,11 +446,11 @@ module CsvValidation {
 
   private string getInvalidModelSubtype() {
     exists(string pred, string row |
-      sourceModel(row) and pred = "source"
+      sourceModelInternal(row) and pred = "source"
       or
-      sinkModel(row) and pred = "sink"
+      sinkModelInternal(row) and pred = "sink"
       or
-      summaryModel(row) and pred = "summary"
+      summaryModelInternal(row) and pred = "summary"
     |
       exists(string b |
         b = row.splitAt(";", 2) and
@@ -393,13 +462,13 @@ module CsvValidation {
 
   private string getInvalidModelColumnCount() {
     exists(string pred, string row, int expect |
-      sourceModel(row) and expect = 9 and pred = "source"
+      sourceModelInternal(row) and expect = 9 and pred = "source"
       or
-      sinkModel(row) and expect = 9 and pred = "sink"
+      sinkModelInternal(row) and expect = 9 and pred = "sink"
       or
-      summaryModel(row) and expect = 10 and pred = "summary"
+      summaryModelInternal(row) and expect = 10 and pred = "summary"
       or
-      negativeSummaryModel(row) and expect = 5 and pred = "negative summary"
+      negativeSummaryModelInternal(row) and expect = 5 and pred = "negative summary"
     |
       exists(int cols |
         cols = 1 + max(int n | exists(row.splitAt(";", n))) and
