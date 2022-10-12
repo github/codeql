@@ -19,7 +19,7 @@ from DataFlow::PathNode source, DataFlow::PathNode sink
 where
   //exists(KeyTrackingConfiguration config1 | config1.hasFlowPath(source, sink))
   //or
-  exists(AsymmetricNonECKeyTrackingConfiguration config1 | config1.hasFlowPath(source, sink)) or
-  exists(AsymmetricECKeyTrackingConfiguration config2 | config2.hasFlowPath(source, sink)) or
-  exists(SymmetricKeyTrackingConfiguration config3 | config3.hasFlowPath(source, sink))
+  exists(AsymmetricNonECKeyTrackingConfiguration cfg | cfg.hasFlowPath(source, sink)) or
+  exists(AsymmetricECKeyTrackingConfiguration cfg | cfg.hasFlowPath(source, sink)) or
+  exists(SymmetricKeyTrackingConfiguration cfg | cfg.hasFlowPath(source, sink))
 select sink.getNode(), source, sink, "This $@ is too small.", source.getNode(), "key size"
