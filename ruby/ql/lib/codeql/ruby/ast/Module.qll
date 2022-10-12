@@ -63,6 +63,33 @@ class Module extends TModule {
           loc.getStartColumn()
       )
   }
+
+  /** Gets a constant or `self` access that refers to this module. */
+  private Expr getAnImmediateReferenceBase() {
+    resolveConstantReadAccess(result) = this
+    or
+    result.(SelfVariableAccess).getVariable() = this.getADeclaration().getModuleSelfVariable()
+  }
+
+  /** Gets a singleton class that augments this module object. */
+  SingletonClass getASingletonClass() { result.getValue() = this.getAnImmediateReferenceBase() }
+
+  /**
+   * Gets a singleton method on this module, either declared as a singleton method
+   * or an instance method on a singleton class.
+   */
+  MethodBase getASingletonMethod() {
+    result.(SingletonMethod).getObject() = this.getAnImmediateReferenceBase()
+    or
+    result = this.getASingletonClass().getAMethod().(Method)
+  }
+
+  /** Gets a constant or `self` access that refers to this module. */
+  Expr getAnImmediateReference() {
+    result = this.getAnImmediateReferenceBase()
+    or
+    result.(SelfVariableAccess).getVariable().getDeclaringScope() = this.getASingletonMethod()
+  }
 }
 
 /**
@@ -141,6 +168,13 @@ class ModuleBase extends BodyStmt, Scope, TModuleBase {
 
   /** Gets the representation of the run-time value of this module or class. */
   Module getModule() { none() }
+
+  /**
+   * Gets the `self` variable in the module-level scope.
+   *
+   * Does not include the `self` variable from any of the methods in the module.
+   */
+  SelfVariable getModuleSelfVariable() { result.getDeclaringScope() = this }
 }
 
 /**
