@@ -188,16 +188,3 @@ private class SystemCollectionsQueueFlowModelCsv extends SummaryModelCsv {
       ]
   }
 }
-
-/** Data flow for `System.Collections.Stack`. */
-private class SystemCollectionsStackFlowModelCsv extends SummaryModelCsv {
-  override predicate row(string row) {
-    row =
-      [
-        "System.Collections;Stack;false;Clear;();;Argument[this].WithoutElement;Argument[this];value;manual",
-        "System.Collections;Stack;false;Clone;();;Argument[0].Element;ReturnValue.Element;value;manual",
-        "System.Collections;Stack;false;Peek;();;Argument[this].Element;ReturnValue;value;manual",
-        "System.Collections;Stack;false;Pop;();;Argument[this].Element;ReturnValue;value;manual",
-      ]
-  }
-}
