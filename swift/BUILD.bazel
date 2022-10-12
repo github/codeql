@@ -31,6 +31,13 @@ pkg_files(
 )
 
 pkg_files(
+    name = "autobuild",
+    srcs = ["tools/autobuild.sh"],
+    attributes = pkg_attributes(mode = "0755"),
+    prefix = "tools",
+)
+
+pkg_files(
     name = "tracing-config",
     srcs = ["tools/tracing-config.lua"],
     prefix = "tools",
@@ -48,6 +55,7 @@ pkg_filegroup(
         ":manifest",
         ":qltest",
         ":tracing-config",
+        ":autobuild",
     ],
     visibility = ["//visibility:public"],
 )
@@ -55,6 +63,12 @@ pkg_filegroup(
 pkg_runfiles(
     name = "extractor",
     srcs = ["//swift/extractor"],
+    prefix = "tools/" + codeql_platform,
+)
+
+pkg_runfiles(
+    name = "xcode-autobuilder",
+    srcs = ["//swift/xcode-autobuilder"],
     prefix = "tools/" + codeql_platform,
 )
 
@@ -70,6 +84,7 @@ pkg_filegroup(
     srcs = [
         ":extractor",
         ":swift-test-sdk-arch",
+        ":xcode-autobuilder",
     ],
     visibility = ["//visibility:public"],
 )
