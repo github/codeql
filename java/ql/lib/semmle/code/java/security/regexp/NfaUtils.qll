@@ -1029,7 +1029,7 @@ module ReDoSPruning<isCandidateSig/2 isCandidate> {
    * as the suffix "X" will cause both the regular expressions to be rejected.
    *
    * The string `w` is repeated any number of times because it needs to be
-   * infinitely repeatedable for the attack to work.
+   * infinitely repeatable for the attack to work.
    * For the regular expression `/((ab)+)*abab/` the accepting state is not reachable from the fork
    * using epsilon transitions. But any attempt at repeating `w` will end in a state that accepts all suffixes.
    */
