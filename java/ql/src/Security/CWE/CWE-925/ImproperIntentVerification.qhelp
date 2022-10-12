@@ -26,7 +26,7 @@ Otherwise, a third-party application could impersonate the system this way to ca
 
 <recommendation>
 <p>
-In the <code>onReceive</code> method of a <code>BroadcastReciever</code>, the action of the received Intent should be checked. The following code demonstrates this.
+In the <code>onReceive</code> method of a <code>BroadcastReceiver</code>, the action of the received Intent should be checked. The following code demonstrates this.
 </p>
 <sample src="Good.java" />
 </recommendation>

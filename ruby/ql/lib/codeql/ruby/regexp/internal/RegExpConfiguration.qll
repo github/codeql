@@ -1,10 +1,15 @@
 private import codeql.ruby.Regexp
-private import codeql.ruby.ast.Literal as Ast
+private import codeql.ruby.AST as Ast
+private import codeql.ruby.CFG
 private import codeql.ruby.DataFlow
 private import codeql.ruby.controlflow.CfgNodes
-private import codeql.ruby.dataflow.internal.tainttrackingforregexp.TaintTrackingImpl
+private import codeql.ruby.dataflow.internal.DataFlowImplForRegExp
 private import codeql.ruby.typetracking.TypeTracker
 private import codeql.ruby.ApiGraphs
+private import codeql.ruby.dataflow.internal.DataFlowPrivate as DataFlowPrivate
+private import codeql.ruby.dataflow.internal.FlowSummaryImpl as FlowSummaryImpl
+private import codeql.ruby.dataflow.FlowSummary as FlowSummary
+private import codeql.ruby.frameworks.core.String
 
 class RegExpConfiguration extends Configuration {
   RegExpConfiguration() { this = "RegExpConfiguration" }
@@ -20,7 +25,7 @@ class RegExpConfiguration extends Configuration {
 
   override predicate isSink(DataFlow::Node sink) { sink instanceof RegExpInterpretation::Range }
 
-  override predicate isSanitizer(DataFlow::Node node) {
+  override predicate isBarrier(DataFlow::Node node) {
     exists(DataFlow::CallNode mce | mce.getMethodName() = ["match", "match?"] |
       // receiver of https://ruby-doc.org/core-2.4.0/String.html#method-i-match
       node = mce.getReceiver() and
@@ -30,6 +35,24 @@ class RegExpConfiguration extends Configuration {
       node = mce.getArgument(0) and
       mce.getReceiver() = trackRegexpType()
     )
+  }
+
+  override predicate isAdditionalFlowStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
+    // include taint flow through `String` summaries,
+    FlowSummaryImpl::Private::Steps::summaryLocalStep(nodeFrom, nodeTo, false) and
+    nodeFrom.(DataFlowPrivate::SummaryNode).getSummarizedCallable() instanceof
+      String::SummarizedCallable
+    or
+    // string concatenations, and
+    exists(CfgNodes::ExprNodes::OperationCfgNode op |
+      op = nodeTo.asExpr() and
+      op.getAnOperand() = nodeFrom.asExpr() and
+      op.getExpr().(Ast::BinaryOperation).getOperator() = "+"
+    )
+    or
+    // string interpolations
+    nodeFrom.asExpr() =
+      nodeTo.asExpr().(CfgNodes::ExprNodes::StringlikeLiteralCfgNode).getAComponent()
   }
 }
 

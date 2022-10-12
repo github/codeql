@@ -229,7 +229,9 @@ class SummaryCall extends DataFlowCall, TSummaryCall {
 cached
 private module Cached {
   cached
-  newtype TDataFlowCallable = TDataFlowFunc(CfgScope scope)
+  newtype TDataFlowCallable =
+    TDataFlowFunc(CfgScope scope) or
+    TSummarizedCallable(FlowSummary::SummarizedCallable c)
 
   /** Gets a viable run-time target for the call `call`. */
   cached
@@ -241,6 +243,8 @@ private module Cached {
     result = TDataFlowFunc(call.(PropertySetterCall).getAccessorDecl())
     or
     result = TDataFlowFunc(call.(PropertyObserverCall).getAccessorDecl())
+    or
+    result = TSummarizedCallable(call.asCall().getStaticTarget())
   }
 
   cached

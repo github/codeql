@@ -275,3 +275,20 @@ fun callToEnumValues() {
     enumValues<Color>()
     getEnumValues<Color>()
 }
+
+fun unaryExprs(i: Int, d: Double) {
+    -i
+    +i
+    -d
+    +d
+    var i0 = 1
+    val i1 = 1
+    i0++
+    ++i0
+    i0--
+    --i0
+    i0.inc()
+    i0.dec()
+    i1.inc()
+    i1.dec()
+}

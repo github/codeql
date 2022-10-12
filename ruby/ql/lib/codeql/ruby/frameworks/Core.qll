@@ -58,7 +58,7 @@ class SubshellHeredocExecution extends SystemCommandExecution::Range {
 private class SplatSummary extends SummarizedCallable {
   SplatSummary() { this = "*(splat)" }
 
-  override SplatExpr getACall() { any() }
+  override SplatExpr getACallSimple() { any() }
 
   override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
     (
@@ -77,7 +77,7 @@ private class SplatSummary extends SummarizedCallable {
 private class HashSplatSummary extends SummarizedCallable {
   HashSplatSummary() { this = "**(hash-splat)" }
 
-  override HashSplatExpr getACall() { any() }
+  override HashSplatExpr getACallSimple() { any() }
 
   override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
     input = "Argument[self].WithElement[any]" and

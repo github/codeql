@@ -36,7 +36,7 @@ private module SourceVariables {
 
     override string toString() { result = var.toString() }
 
-    override DataFlowType getType() { result = var.getIRType() }
+    override DataFlowType getType() { result = var.getType() }
   }
 
   class BaseCallVariable extends BaseSourceVariable, TBaseCallVariable {
@@ -48,7 +48,7 @@ private module SourceVariables {
 
     override string toString() { result = call.toString() }
 
-    override DataFlowType getType() { result = call.getResultIRType() }
+    override DataFlowType getType() { result = call.getResultType() }
   }
 
   private newtype TSourceVariable =

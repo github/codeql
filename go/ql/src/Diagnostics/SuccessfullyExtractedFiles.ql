@@ -3,6 +3,7 @@
  * @name Successfully analyzed files
  * @description List all files that were successfully extracted.
  * @kind diagnostic
+ * @tags successfully-extracted-files
  */
 
 import go

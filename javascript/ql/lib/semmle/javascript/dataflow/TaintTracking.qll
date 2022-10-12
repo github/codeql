@@ -712,12 +712,30 @@ module TaintTracking {
   }
 
   /**
+   * Gets a local source of any part of the input to the given stringification `call`.
+   */
+  pragma[nomagic]
+  private DataFlow::Node getAJsonLocalInput(JsonStringifyCall call) {
+    result = call.getInput()
+    or
+    exists(DataFlow::SourceNode source |
+      source = pragma[only_bind_out](getAJsonLocalInput(call)).getALocalSource()
+    |
+      result = source.getAPropertyWrite().getRhs()
+      or
+      result = source.(DataFlow::ObjectLiteralNode).getASpreadProperty()
+      or
+      result = source.(DataFlow::ArrayCreationNode).getASpreadArgument()
+    )
+  }
+
+  /**
    * A taint propagating data flow edge arising from JSON unparsing.
    */
   private class JsonStringifyTaintStep extends SharedTaintStep {
     override predicate serializeStep(DataFlow::Node pred, DataFlow::Node succ) {
       exists(JsonStringifyCall call |
-        pred = call.getArgument(0) and
+        pred = getAJsonLocalInput(call) and
         succ = call
       )
     }

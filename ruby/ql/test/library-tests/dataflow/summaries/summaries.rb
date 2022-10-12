@@ -77,6 +77,7 @@ Foo.startInNamedParameter(->(foo:) {
 })
 
 a = ["elem0", source("elem1"), source("elem2")]
+d = a
 a[rand()] = source("elem3")
 sink(a.readElementOne(1)) # $ hasValueFlow=elem1 $ hasValueFlow=elem3
 sink(a.readExactlyElementOne(1)) # $ hasValueFlow=elem1
@@ -99,6 +100,12 @@ a.withoutElementOne()
 sink(a[0])
 sink(a[1])
 sink(a[2]) # $ hasValueFlow=elem2
+d[3] = source("elem3")
+d.withoutElementOneAndTwo()
+sink(d[0])
+sink(d[1])
+sink(d[2])
+sink(d[3]) # $ hasValueFlow=elem3
 
 x = Foo.new
 x.set_value(source("attr"))

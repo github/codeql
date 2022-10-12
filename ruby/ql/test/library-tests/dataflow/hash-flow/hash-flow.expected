@@ -102,7 +102,6 @@ edges
 | hash_flow.rb:185:9:185:12 | hash [element :a] :  | hash_flow.rb:185:9:185:23 | call to delete :  |
 | hash_flow.rb:185:9:185:23 | call to delete :  | hash_flow.rb:186:10:186:10 | a |
 | hash_flow.rb:194:15:194:25 | call to taint :  | hash_flow.rb:197:9:197:12 | hash [element :a] :  |
-| hash_flow.rb:194:15:194:25 | call to taint :  | hash_flow.rb:202:10:202:13 | hash [element :a] :  |
 | hash_flow.rb:197:9:197:12 | [post] hash [element :a] :  | hash_flow.rb:202:10:202:13 | hash [element :a] :  |
 | hash_flow.rb:197:9:197:12 | hash [element :a] :  | hash_flow.rb:197:9:197:12 | [post] hash [element :a] :  |
 | hash_flow.rb:197:9:197:12 | hash [element :a] :  | hash_flow.rb:197:9:200:7 | call to delete_if [element :a] :  |
@@ -307,7 +306,6 @@ edges
 | hash_flow.rb:477:29:477:33 | value :  | hash_flow.rb:479:14:479:18 | value |
 | hash_flow.rb:482:10:482:10 | b [element :a] :  | hash_flow.rb:482:10:482:14 | ...[...] |
 | hash_flow.rb:489:15:489:25 | call to taint :  | hash_flow.rb:492:9:492:12 | hash [element :a] :  |
-| hash_flow.rb:489:15:489:25 | call to taint :  | hash_flow.rb:498:10:498:13 | hash [element :a] :  |
 | hash_flow.rb:492:9:492:12 | [post] hash [element :a] :  | hash_flow.rb:498:10:498:13 | hash [element :a] :  |
 | hash_flow.rb:492:9:492:12 | hash [element :a] :  | hash_flow.rb:492:9:492:12 | [post] hash [element :a] :  |
 | hash_flow.rb:492:9:492:12 | hash [element :a] :  | hash_flow.rb:492:9:496:7 | call to reject! [element :a] :  |

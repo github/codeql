@@ -38,13 +38,12 @@ private module Cached {
     TVariableNode(Variable var) or
     TPostFieldUpdateNode(FieldAddress operand, int indirectionIndex) {
       indirectionIndex =
-        [0 .. Ssa::countIndirectionsForCppType(operand.getObjectAddress().getResultLanguageType()) -
-            1]
+        [1 .. Ssa::countIndirectionsForCppType(operand.getObjectAddress().getResultLanguageType())]
     } or
     TSsaPhiNode(Ssa::PhiNode phi) or
     TIndirectArgumentOutNode(ArgumentOperand operand, int indirectionIndex) {
       Ssa::isModifiableByCall(operand) and
-      indirectionIndex = [0 .. Ssa::countIndirectionsForCppType(operand.getLanguageType()) - 1]
+      indirectionIndex = [1 .. Ssa::countIndirectionsForCppType(operand.getLanguageType())]
     } or
     TIndirectOperand(Operand op, int indirectionIndex) {
       Ssa::hasIndirectOperand(op, indirectionIndex)
@@ -113,7 +112,7 @@ class Node extends TIRDataFlowNode {
   Declaration getFunction() { none() } // overridden in subclasses
 
   /** Gets the type of this node. */
-  IRType getType() { none() } // overridden in subclasses
+  DataFlowType getType() { none() } // overridden in subclasses
 
   /** Gets the instruction corresponding to this node, if any. */
   Instruction asInstruction() { result = this.(InstructionNode).getInstruction() }
@@ -233,6 +232,12 @@ class Node extends TIRDataFlowNode {
   Parameter asParameter() { result = asParameter(0) }
 
   /**
+   * Gets the uninitialized local variable corresponding to this node, if
+   * any.
+   */
+  LocalVariable asUninitialized() { result = this.(UninitializedNode).getLocalVariable() }
+
+  /**
    * Gets the positional parameter corresponding to the node that represents
    * the value of the parameter after `index` number of loads, if any. For
    * example, in:
@@ -273,7 +278,7 @@ class Node extends TIRDataFlowNode {
   /**
    * Gets an upper bound on the type of this node.
    */
-  IRType getTypeBound() { result = this.getType() }
+  DataFlowType getTypeBound() { result = this.getType() }
 
   /** Gets the location of this element. */
   cached
@@ -322,7 +327,7 @@ class InstructionNode extends Node, TInstructionNode {
 
   override Declaration getFunction() { result = instr.getEnclosingFunction() }
 
-  override IRType getType() { result = instr.getResultIRType() }
+  override DataFlowType getType() { result = instr.getResultType() }
 
   final override Location getLocationImpl() { result = instr.getLocation() }
 
@@ -348,11 +353,30 @@ class OperandNode extends Node, TOperandNode {
 
   override Declaration getFunction() { result = op.getUse().getEnclosingFunction() }
 
-  override IRType getType() { result = op.getIRType() }
+  override DataFlowType getType() { result = op.getType() }
 
   final override Location getLocationImpl() { result = op.getLocation() }
 
   override string toStringImpl() { result = this.getOperand().toString() }
+}
+
+/**
+ * Returns `t`, but stripped of the `n` outermost pointers, references, etc.
+ *
+ * For example, `stripPointers(int*&, 2)` is `int` and `stripPointers(int*, 0)` is `int*`.
+ */
+private Type stripPointers(Type t, int n) {
+  result = t and n = 0
+  or
+  result = stripPointers(t.(PointerType).getBaseType(), n - 1)
+  or
+  result = stripPointers(t.(ArrayType).getBaseType(), n - 1)
+  or
+  result = stripPointers(t.(ReferenceType).getBaseType(), n - 1)
+  or
+  result = stripPointers(t.(PointerToMemberType).getBaseType(), n - 1)
+  or
+  result = stripPointers(t.(FunctionPointerIshType).getBaseType(), n - 1)
 }
 
 /**
@@ -370,8 +394,6 @@ class PostFieldUpdateNode extends TPostFieldUpdateNode, PartialDefinitionNode {
 
   override Declaration getEnclosingCallable() { result = this.getFunction() }
 
-  override IRType getType() { result = fieldAddress.getIRType() }
-
   FieldAddress getFieldAddress() { result = fieldAddress }
 
   Field getUpdatedField() { result = fieldAddress.getField() }
@@ -379,10 +401,8 @@ class PostFieldUpdateNode extends TPostFieldUpdateNode, PartialDefinitionNode {
   int getIndirectionIndex() { result = indirectionIndex }
 
   override Node getPreUpdateNode() {
-    // + 1 because we're storing into an lvalue, and the original node should be the rvalue of
-    // the same address.
     hasOperandAndIndex(result, pragma[only_bind_into](fieldAddress).getObjectAddressOperand(),
-      indirectionIndex + 1)
+      indirectionIndex)
   }
 
   override Expr getDefinedExpr() {
@@ -411,7 +431,7 @@ class SsaPhiNode extends Node, TSsaPhiNode {
 
   override Declaration getFunction() { result = phi.getBasicBlock().getEnclosingFunction() }
 
-  override IRType getType() { result instanceof IRVoidType }
+  override DataFlowType getType() { result = this.getAnInput().getType() }
 
   final override Location getLocationImpl() { result = phi.getBasicBlock().getLocation() }
 
@@ -454,8 +474,6 @@ class SideEffectOperandNode extends Node, IndirectOperand {
 
   override Function getFunction() { result = call.getEnclosingFunction() }
 
-  override IRType getType() { result instanceof IRVoidType }
-
   Expr getArgument() { result = call.getArgument(argumentIndex).getUnconvertedResultExpression() }
 }
 
@@ -477,8 +495,6 @@ class IndirectParameterNode extends Node, IndirectInstruction {
   override Declaration getEnclosingCallable() { result = this.getFunction() }
 
   override Function getFunction() { result = this.getInstruction().getEnclosingFunction() }
-
-  override IRType getType() { result instanceof IRVoidType }
 
   override string toStringImpl() {
     result = this.getParameter().toString() + " indirection"
@@ -504,8 +520,6 @@ class IndirectReturnNode extends IndirectOperand {
   Operand getAddressOperand() { result = operand }
 
   override Declaration getEnclosingCallable() { result = this.getFunction() }
-
-  override IRType getType() { result instanceof IRVoidType }
 }
 
 /**
@@ -536,9 +550,7 @@ class IndirectArgumentOutNode extends Node, TIndirectArgumentOutNode, PostUpdate
 
   override Function getFunction() { result = this.getCallInstruction().getEnclosingFunction() }
 
-  override IRType getType() { result instanceof IRVoidType }
-
-  override Node getPreUpdateNode() { hasOperandAndIndex(result, operand, indirectionIndex + 1) }
+  override Node getPreUpdateNode() { hasOperandAndIndex(result, operand, indirectionIndex) }
 
   override string toStringImpl() {
     // This string should be unique enough to be helpful but common enough to
@@ -594,6 +606,38 @@ class IndirectReturnOutNode extends Node {
   int getIndirectionIndex() { result = indirectionIndex }
 }
 
+private PointerType getGLValueType(Type t, int indirectionIndex) {
+  result.getBaseType() = stripPointers(t, indirectionIndex - 1)
+}
+
+bindingset[isGLValue]
+private DataFlowType getTypeImpl(Type t, int indirectionIndex, boolean isGLValue) {
+  if isGLValue = true
+  then
+    result = getGLValueType(t, indirectionIndex)
+    or
+    // Ideally, the above case would cover all glvalue cases. However, consider the case where
+    // the database consists only of:
+    // ```
+    // void test() {
+    //   int* x;
+    //   x = nullptr;
+    // }
+    // ```
+    // and we want to compute the type of `*x` in the assignment `x = nullptr`. Here, `x` is an lvalue
+    // of type int* (which morally is an int**). So when we call `getTypeImpl` it will be with the
+    // parameters:
+    // - t = int*
+    // - indirectionIndex = 1 (when we want to model the dataflow node corresponding to *x)
+    // - isGLValue = true
+    // In this case, `getTypeImpl(t, indirectionIndex, isGLValue)` should give back `int**`. In this
+    // case, however, `int**` does not exist in the database. So instead we return int* (which is
+    // wrong, but at least we have a type).
+    not exists(getGLValueType(t, indirectionIndex)) and
+    result = stripPointers(t, indirectionIndex - 1)
+  else result = stripPointers(t, indirectionIndex)
+}
+
 /**
  * INTERNAL: Do not use.
  *
@@ -615,13 +659,36 @@ class IndirectOperand extends Node, TIndirectOperand {
 
   override Declaration getEnclosingCallable() { result = this.getFunction() }
 
-  override IRType getType() { result = this.getOperand().getIRType() }
+  override DataFlowType getType() {
+    exists(boolean isGLValue | if operand.isGLValue() then isGLValue = true else isGLValue = false |
+      result = getTypeImpl(operand.getType().getUnspecifiedType(), indirectionIndex, isGLValue)
+    )
+  }
 
   final override Location getLocationImpl() { result = this.getOperand().getLocation() }
 
   override string toStringImpl() {
     result = instructionNode(this.getOperand().getDef()).toStringImpl() + " indirection"
   }
+}
+
+/**
+ * The value of an uninitialized local variable, viewed as a node in a data
+ * flow graph.
+ */
+class UninitializedNode extends Node {
+  LocalVariable v;
+
+  UninitializedNode() {
+    exists(Ssa::Def def |
+      def.getDefiningInstruction() instanceof UninitializedInstruction and
+      Ssa::nodeToDefOrUse(this, def) and
+      v = def.getSourceVariable().getBaseVariable().(Ssa::BaseIRVariable).getIRVariable().getAst()
+    )
+  }
+
+  /** Gets the uninitialized local variable corresponding to this node. */
+  LocalVariable getLocalVariable() { result = v }
 }
 
 /**
@@ -645,7 +712,11 @@ class IndirectInstruction extends Node, TIndirectInstruction {
 
   override Declaration getEnclosingCallable() { result = this.getFunction() }
 
-  override IRType getType() { result = this.getInstruction().getResultIRType() }
+  override DataFlowType getType() {
+    exists(boolean isGLValue | if instr.isGLValue() then isGLValue = true else isGLValue = false |
+      result = getTypeImpl(instr.getResultType().getUnspecifiedType(), indirectionIndex, isGLValue)
+    )
+  }
 
   final override Location getLocationImpl() { result = this.getInstruction().getLocation() }
 
@@ -859,6 +930,8 @@ abstract class PostUpdateNode extends Node {
    * Gets the node before the state update.
    */
   abstract Node getPreUpdateNode();
+
+  final override DataFlowType getType() { result = this.getPreUpdateNode().getType() }
 }
 
 /**
@@ -922,7 +995,7 @@ class VariableNode extends Node, TVariableNode {
     result = v
   }
 
-  override IRType getType() { result.getCanonicalLanguageType().hasUnspecifiedType(v.getType(), _) }
+  override DataFlowType getType() { result = v.getType() }
 
   final override Location getLocationImpl() { result = v.getLocation() }
 
@@ -1075,7 +1148,7 @@ predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo) {
       store.getDestinationAddressOperand() = address
     )
     or
-    Ssa::outNodeHasAddressAndIndex(nodeFrom, address, indirectionIndex - 1)
+    Ssa::outNodeHasAddressAndIndex(nodeFrom, address, indirectionIndex)
   )
 }
 

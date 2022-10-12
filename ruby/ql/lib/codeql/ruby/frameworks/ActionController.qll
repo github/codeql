@@ -382,3 +382,123 @@ private class SendFile extends FileSystemAccess::Range, DataFlow::CallNode {
 
   override DataFlow::Node getAPathArgument() { result = this.getArgument(0) }
 }
+
+private module ParamsSummaries {
+  private import codeql.ruby.dataflow.FlowSummary
+
+  /**
+   * An instance of `ActionController::Parameters`, including those returned
+   * from method calls on other instances.
+   */
+  private class ParamsInstance extends DataFlow::Node {
+    ParamsInstance() {
+      this.asExpr().getExpr() instanceof Rails::ParamsCall
+      or
+      this =
+        any(DataFlow::CallNode call |
+          call.getReceiver() instanceof ParamsInstance and
+          call.getMethodName() = paramsMethodReturningParamsInstance()
+        )
+      or
+      exists(ParamsInstance prev | prev.(DataFlow::LocalSourceNode).flowsTo(this))
+    }
+  }
+
+  /**
+   * Methods on `ActionController::Parameters` that return an instance of
+   * `ActionController::Parameters`.
+   */
+  string paramsMethodReturningParamsInstance() {
+    result =
+      [
+        "concat", "concat!", "compact_blank", "deep_dup", "deep_transform_keys", "delete_if",
+        // dig doesn't always return a Parameters instance, but it will if the
+        // given key refers to a nested hash parameter.
+        "dig", "each", "each_key", "each_pair", "each_value", "except", "keep_if", "merge",
+        "merge!", "permit", "reject", "reject!", "reverse_merge", "reverse_merge!", "select",
+        "select!", "slice", "slice!", "transform_keys", "transform_keys!", "transform_values",
+        "transform_values!", "with_defaults", "with_defaults!"
+      ]
+  }
+
+  /**
+   * Methods on `ActionController::Parameters` that propagate taint from
+   * receiver to return value.
+   */
+  string methodReturnsTaintFromSelf() {
+    result =
+      [
+        "as_json", "permit", "require", "required", "deep_dup", "deep_transform_keys",
+        "deep_transform_keys!", "delete_if", "extract!", "keep_if", "select", "select!", "reject",
+        "reject!", "to_h", "to_hash", "to_query", "to_param", "to_unsafe_h", "to_unsafe_hash",
+        "transform_keys", "transform_keys!", "transform_values", "transform_values!", "values_at"
+      ]
+  }
+
+  /**
+   * A flow summary for methods on `ActionController::Parameters` which
+   * propagate taint from receiver to return value.
+   */
+  private class MethodsReturningParamsInstanceSummary extends SummarizedCallable {
+    MethodsReturningParamsInstanceSummary() { this = "ActionController::Parameters#<various>" }
+
+    override MethodCall getACall() {
+      any(ParamsInstance i).asExpr().getExpr() = result.getReceiver() and
+      result.getMethodName() = methodReturnsTaintFromSelf()
+    }
+
+    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+      input = "Argument[self]" and
+      output = "ReturnValue" and
+      preservesValue = false
+    }
+  }
+
+  /**
+   * `#merge`
+   * Returns a new ActionController::Parameters with all keys from other_hash merged into current hash.
+   * `#reverse_merge`
+   * `#with_defaults`
+   * Returns a new ActionController::Parameters with all keys from current hash merged into other_hash.
+   */
+  private class MergeSummary extends SummarizedCallable {
+    MergeSummary() { this = "ActionController::Parameters#merge" }
+
+    override MethodCall getACall() {
+      result.getMethodName() = ["merge", "reverse_merge", "with_defaults"] and
+      exists(ParamsInstance i |
+        i.asExpr().getExpr() = [result.getReceiver(), result.getArgument(0)]
+      )
+    }
+
+    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+      input = ["Argument[self]", "Argument[0]"] and
+      output = "ReturnValue" and
+      preservesValue = false
+    }
+  }
+
+  /**
+   * `#merge!`
+   * Returns current ActionController::Parameters instance with current hash merged into other_hash.
+   * `#reverse_merge!`
+   * `#with_defaults!`
+   * Returns a new ActionController::Parameters with all keys from current hash merged into other_hash.
+   */
+  private class MergeBangSummary extends SummarizedCallable {
+    MergeBangSummary() { this = "ActionController::Parameters#merge!" }
+
+    override MethodCall getACall() {
+      result.getMethodName() = ["merge!", "reverse_merge!", "with_defaults!"] and
+      exists(ParamsInstance i |
+        i.asExpr().getExpr() = [result.getReceiver(), result.getArgument(0)]
+      )
+    }
+
+    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+      input = ["Argument[self]", "Argument[0]"] and
+      output = ["ReturnValue", "Argument[self]"] and
+      preservesValue = false
+    }
+  }
+}
