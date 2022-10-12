@@ -2720,7 +2720,7 @@ private module StdlibPrivate {
 
   /**
    * A hashing operation from the `hashlib` package using one of the predefined classes
-   * (such as `hashlib.md5`), by calling its' `update` mehtod.
+   * (such as `hashlib.md5`), by calling its' `update` method.
    */
   class HashlibHashClassUpdateCall extends HashlibGenericHashOperation {
     HashlibHashClassUpdateCall() { this = hashClass.getReturn().getMember("update").getACall() }
