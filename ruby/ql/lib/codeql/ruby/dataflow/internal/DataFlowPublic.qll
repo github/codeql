@@ -174,6 +174,13 @@ class LocalSourceNode extends Node {
    */
   pragma[inline]
   LocalSourceNode backtrack(TypeBackTracker t2, TypeBackTracker t) { t2 = t.step(result, this) }
+
+  /**
+   * Gets a node to which data may flow from this node in zero or
+   * more local data-flow steps.
+   */
+  pragma[inline]
+  Node getALocalUse() { hasLocalSource(result, this) }
 }
 
 /**
