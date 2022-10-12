@@ -54,6 +54,32 @@ class Node extends TNode {
    * Gets a data flow node to which data may flow from this node in one local step.
    */
   Node getASuccessor() { localFlowStep(this, result) }
+
+  /** Gets the constant value of this expression, if any. */
+  ConstantValue getConstantValue() { result = asExpr().getExpr().getConstantValue() }
+
+  /**
+   * Gets the callable corresponding to this block, lambda expression, or call to `proc` or `lambda`.
+   *
+   * For example, gets the callable in each of the following cases:
+   * ```rb
+   * { |x| x }        # block expression
+   * ->(x) { x }      # lambda expression
+   * proc { |x| x }   # call to 'proc'
+   * lambda { |x| x } # call to 'lambda'
+   * ```
+   */
+  pragma[noinline]
+  CallableNode asCallable() {
+    result = this
+    or
+    exists(CallNode call |
+      call.getReceiver().asExpr().getExpr() instanceof SelfVariableAccess and
+      call.getMethodName() = ["proc", "lambda"] and
+      call.getBlock() = result and
+      this = call
+    )
+  }
 }
 
 /** A data-flow node corresponding to a call in the control-flow graph. */
@@ -181,6 +207,12 @@ class LocalSourceNode extends Node {
    */
   pragma[inline]
   Node getALocalUse() { hasLocalSource(result, this) }
+
+  /** Gets a method call where this node flows to the receiver. */
+  CallNode getAMethodCall() { Cached::hasMethodCall(this, result, _) }
+
+  /** Gets a call to a method named `name`, where this node flows to the receiver. */
+  CallNode getAMethodCall(string name) { Cached::hasMethodCall(this, result, name) }
 }
 
 /**
@@ -200,17 +232,37 @@ class PostUpdateNode extends Node instanceof PostUpdateNodeImpl {
 }
 
 cached
-private predicate hasLocalSource(Node sink, Node source) {
-  // Declaring `source` to be a `SourceNode` currently causes a redundant check in the
-  // recursive case, so instead we check it explicitly here.
-  source = sink and
-  source instanceof LocalSourceNode
-  or
-  exists(Node mid |
-    hasLocalSource(mid, source) and
-    localFlowStepTypeTracker(mid, sink)
-  )
+private module Cached {
+  cached
+  predicate hasLocalSource(Node sink, Node source) {
+    // Declaring `source` to be a `SourceNode` currently causes a redundant check in the
+    // recursive case, so instead we check it explicitly here.
+    source = sink and
+    source instanceof LocalSourceNode
+    or
+    exists(Node mid |
+      hasLocalSource(mid, source) and
+      localFlowStepTypeTracker(mid, sink)
+    )
+  }
+
+  cached
+  predicate hasMethodCall(LocalSourceNode source, CallNode call, string name) {
+    source.flowsTo(call.getReceiver()) and
+    call.getMethodName() = name
+  }
+
+  cached
+  predicate hasYieldCall(BlockParameterNode block, CallNode yield) {
+    exists(MethodBase method, YieldCall call |
+      block.getMethod() = method and
+      call.getEnclosingMethod() = method and
+      yield.asExpr().getExpr() = call
+    )
+  }
 }
+
+private import Cached
 
 /** Gets a node corresponding to expression `e`. */
 ExprNode exprNode(CfgNodes::ExprCfgNode e) { result.getExprNode() = e }
@@ -604,8 +656,209 @@ class ModuleNode instanceof Module {
   /** Gets the location of this module. */
   final Location getLocation() { result = super.getLocation() }
 
+  /**
+   * Gets `self` in a declaration of this module.
+   *
+   * This only gets `self` at the module level, not inside any (singleton) method.
+   */
+  LocalSourceNode getModuleLevelSelf() {
+    result.(SsaDefinitionNode).getVariable() = super.getADeclaration().getModuleSelfVariable()
+  }
+
+  /**
+   * Gets `self` in the module declaration or in one of its singleton methods.
+   *
+   * Does not take inheritance into account.
+   */
+  LocalSourceNode getAModuleSelf() {
+    result = this.getModuleLevelSelf()
+    or
+    result = this.getASingletonMethod().getSelfParameter()
+  }
+
+  /**
+   * Gets a call to method `name` on `self` in the module-level scope of this module (not in a method).
+   *
+   * For example,
+   * ```rb
+   * module M
+   *   include A  # getAModuleLevelCall("include")
+   *   foo :bar   # getAModuleLevelCall("foo")
+   * end
+   * ```
+   */
+  CallNode getAModuleLevelCall(string name) {
+    result = this.getModuleLevelSelf().getAMethodCall(name) and
+    not this.getQualifiedName() = "Object" // do not include top-levels
+  }
+
   /** Gets a constant or `self` variable that refers to this module. */
   LocalSourceNode getAnImmediateReference() {
     result.asExpr().getExpr() = super.getAnImmediateReference()
   }
+
+  /**
+   * Gets a singleton method declared in this module (or in a singleton class
+   * augmenting this module).
+   *
+   * Does not take inheritance into account.
+   */
+  MethodNode getASingletonMethod() { result.asMethod() = super.getASingletonMethod() }
+
+  /**
+   * Gets the singleton method named `name` declared in this module (or in a singleton class
+   * augmenting this module).
+   *
+   * Does not take inheritance into account.
+   */
+  MethodNode getSingletonMethod(string name) {
+    result = this.getASingletonMethod() and
+    result.getMethodName() = name
+  }
+
+  /**
+   * Gets an instance method declared in this module.
+   *
+   * Does not take inheritance into account.
+   */
+  MethodNode getAnInstanceMethod() {
+    result.asMethod() = this.getADeclaration().getAMethod().(Method)
+  }
+
+  /**
+   * Gets an instance method named `name` declared in this module.
+   *
+   * Does not take inheritance into account.
+   */
+  MethodNode getInstanceMethod(string name) {
+    result = this.getAnInstanceMethod() and
+    result.getMethodName() = name
+  }
+
+  /**
+   * Gets the `self` parameter of an instance method declared in this module.
+   *
+   * Does not take inheritance into account.
+   */
+  ParameterNode getAnInstanceSelf() {
+    result = TSelfParameterNode(this.getAnInstanceMethod().asMethod())
+  }
+
+  private InstanceVariableAccess getAnInstanceVariableAccess(string name) {
+    exists(InstanceVariable v |
+      v.getDeclaringScope() = this.getAnInstanceMethod().asMethod() and
+      v.getName() = name and
+      result.getVariable() = v
+    )
+  }
+
+  /**
+   * Gets an access to the instance variable `name` in this module.
+   *
+   * Does not take inheritance into account.
+   */
+  LocalSourceNode getAnInstanceVariableRead(string name) {
+    result.asExpr().getExpr() = this.getAnInstanceVariableAccess(name).(InstanceVariableReadAccess)
+  }
+
+  /**
+   * Gets the right-hand side of an assignment to the instance variable `name` in this module.
+   *
+   * Does not take inheritance into account.
+   */
+  Node getAnInstanceVariableWriteValue(string name) {
+    exists(Assignment assignment |
+      assignment.getLeftOperand() = this.getAnInstanceVariableAccess(name) and
+      result.asExpr().getExpr() = assignment.getRightOperand()
+    )
+  }
+}
+
+/**
+ * A representation of a run-time class.
+ */
+class ClassNode extends ModuleNode {
+  ClassNode() { isClass() }
+}
+
+/**
+ * A data flow node corresponding to a method, block, or lambda expression.
+ */
+class CallableNode extends ExprNode {
+  private Callable callable;
+
+  CallableNode() { this.asExpr().getExpr() = callable }
+
+  /** Gets the underlying AST node as a `Callable`. */
+  Callable asCallableAstNode() { result = callable }
+
+  private ParameterPosition getParameterPosition(ParameterNodeImpl node) {
+    node.isSourceParameterOf(callable, result)
+  }
+
+  /** Gets the `n`th positional parameter. */
+  ParameterNode getParameter(int n) { getParameterPosition(result).isPositional(n) }
+
+  /** Gets the keyword parameter of the given name. */
+  ParameterNode getKeywordParameter(string name) { getParameterPosition(result).isKeyword(name) }
+
+  /** Gets the `self` parameter of this callable, if any. */
+  ParameterNode getSelfParameter() { getParameterPosition(result).isSelf() }
+
+  /**
+   * Gets the `hash-splat` parameter. This is a synthetic parameter holding
+   * a hash object with entries for each keyword argument passed to the function.
+   */
+  ParameterNode getHashSplatParameter() { getParameterPosition(result).isHashSplat() }
+
+  /**
+   * Gets the block parameter of this method, if any.
+   */
+  ParameterNode getBlockParameter() { getParameterPosition(result).isBlock() }
+
+  /**
+   * Gets a `yield` in this method call or `.call` on the block parameter.
+   */
+  CallNode getABlockCall() {
+    hasYieldCall(getBlockParameter(), result)
+    or
+    result = getBlockParameter().getAMethodCall("call")
+  }
+
+  /**
+   * Gets the canonical return node from this callable.
+   *
+   * Each callable has exactly one such node, and its location may not correspond
+   * to any particular return site - consider using `getAReturningNode` to get nodes
+   * whose locations correspond to return sites.
+   */
+  Node getReturn() { result.(SynthReturnNode).getCfgScope() = callable }
+
+  /**
+   * Gets a data flow node whose value is about to be returned by this callable.
+   */
+  Node getAReturningNode() { result = this.getReturn().(SynthReturnNode).getAnInput() }
+}
+
+/**
+ * A data flow node corresponding to a method (possibly a singleton method).
+ */
+class MethodNode extends CallableNode {
+  MethodNode() { super.asCallableAstNode() instanceof MethodBase }
+
+  /** Gets the underlying AST node for this method. */
+  MethodBase asMethod() { result = this.asCallableAstNode() }
+
+  /** Gets the name of this method. */
+  string getMethodName() { result = asMethod().getName() }
+}
+
+/**
+ * A data flow node corresponding to a block argument.
+ */
+class BlockNode extends CallableNode {
+  BlockNode() { super.asCallableAstNode() instanceof Block }
+
+  /** Gets the underlying AST node for this block. */
+  Block asBlock() { result = this.asCallableAstNode() }
 }
