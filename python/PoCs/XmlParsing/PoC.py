@@ -699,7 +699,7 @@ class TestExpat:
 
         assert char_data_recv == []
 
-        # there might be ways to make it vuln, but I did not investigate futher.
+        # there might be ways to make it vuln, but I did not investigate further.
 
     @staticmethod
     def test_dtd():
@@ -711,4 +711,4 @@ class TestExpat:
         parser.Parse(dtd_retrieval, True)
         assert hit_dtd == False
 
-        # there might be ways to make it vuln, but I did not investigate futher.
+        # there might be ways to make it vuln, but I did not investigate further.
