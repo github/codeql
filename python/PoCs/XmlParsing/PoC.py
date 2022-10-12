@@ -82,7 +82,7 @@ predefined_entity_xml = """<?xml version="1.0"?>
 # other setup
 
 # we set up local Flask application so we can tests whether loading external resources
-# works (such as SSRF from DTD-retrival works)
+# works (such as SSRF from DTD-retrieval works)
 app = Flask(__name__)
 
 @app.route("/alive")
