@@ -59,8 +59,8 @@ predicate matchesEpsilon(RegExpTerm t) {
 /**
  * A lookahead/lookbehind that matches the empty string.
  */
-class EmptyPositiveSubPatttern extends RegExpSubPattern {
-  EmptyPositiveSubPatttern() {
+class EmptyPositiveSubPattern extends RegExpSubPattern {
+  EmptyPositiveSubPattern() {
     (
       this instanceof RegExpPositiveLookahead
       or
@@ -69,6 +69,9 @@ class EmptyPositiveSubPatttern extends RegExpSubPattern {
     matchesEpsilon(this.getOperand())
   }
 }
+
+/** DEPRECATED: Use `EmptyPositiveSubPattern` instead. */
+deprecated class EmptyPositiveSubPatttern = EmptyPositiveSubPattern;
 
 /**
  * A branch in a disjunction that is the root node in a literal, or a literal
@@ -697,9 +700,7 @@ predicate delta(State q1, EdgeLabel lbl, State q2) {
     lbl = Epsilon() and q2 = Accept(getRoot(dollar))
   )
   or
-  exists(EmptyPositiveSubPatttern empty | q1 = before(empty) |
-    lbl = Epsilon() and q2 = after(empty)
-  )
+  exists(EmptyPositiveSubPattern empty | q1 = before(empty) | lbl = Epsilon() and q2 = after(empty))
 }
 
 /**
