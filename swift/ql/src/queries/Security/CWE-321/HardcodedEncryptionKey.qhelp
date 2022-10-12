@@ -7,7 +7,7 @@
   </overview>
 
   <recommendation>
-    <p>Use a randomly generated key material to initialize the encryption cipher.</p>
+    <p>Use randomly generated key material to initialize the encryption cipher.</p>
   </recommendation>
 
   <example>
