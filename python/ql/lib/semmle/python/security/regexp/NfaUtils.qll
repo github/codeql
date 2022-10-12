@@ -334,7 +334,7 @@ private module CharacterClasses {
     )
   }
 
-  private string lowercaseLetter() { result = "abdcefghijklmnopqrstuvwxyz".charAt(_) }
+  private string lowercaseLetter() { result = "abcdefghijklmnopqrstuvwxyz".charAt(_) }
 
   private string upperCaseLetter() { result = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".charAt(_) }
 
