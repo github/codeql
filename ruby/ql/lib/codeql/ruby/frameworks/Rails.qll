@@ -71,6 +71,21 @@ module Rails {
 
   /** A render call that does not automatically set the HTTP response body. */
   class RenderToCall extends MethodCall instanceof RenderToCallImpl { }
+
+  /**
+   * A `render` call seen as a file system access.
+   */
+  private class RenderAsFileSystemAccess extends FileSystemAccess::Range, DataFlow::CallNode {
+    RenderAsFileSystemAccess() {
+      exists(MethodCall call | this.asExpr().getExpr() = call |
+        call instanceof RenderCall
+        or
+        call instanceof RenderToCall
+      )
+    }
+
+    override DataFlow::Node getAPathArgument() { result = this.getKeywordArgument("file") }
+  }
 }
 
 /**
