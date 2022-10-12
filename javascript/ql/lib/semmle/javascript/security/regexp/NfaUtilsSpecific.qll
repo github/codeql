@@ -5,7 +5,7 @@
 import javascript
 
 /**
- * Holds if `term` is an ecape class representing e.g. `\d`.
+ * Holds if `term` is an escape class representing e.g. `\d`.
  * `clazz` is which character class it represents, e.g. "d" for `\d`.
  */
 predicate isEscapeClass(RegExpTerm term, string clazz) {
