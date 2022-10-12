@@ -63,7 +63,7 @@ newtype TNode =
     // self parameter when used implicitly in `super()`
     exists(Class cls, Function func, ParameterDefinition def |
       func = cls.getAMethod() and
-      not hasStaticmethodDecorator(func) and
+      not isStaticmethod(func) and
       // this matches what we do in ExtractedParameterNode
       def.getDefiningNode() = node and
       def.getParameter() = func.getArg(0)
