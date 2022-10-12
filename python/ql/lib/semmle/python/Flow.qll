@@ -931,7 +931,7 @@ class NameConstantNode extends NameNode {
 
   }
 
-/** A control flow node correspoinding to a starred expression, `*a`. */
+/** A control flow node corresponding to a starred expression, `*a`. */
 class StarredNode extends ControlFlowNode {
   StarredNode() { toAst(this) instanceof Starred }
 
