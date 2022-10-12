@@ -735,6 +735,9 @@ class SummaryNode extends NodeImpl, TSummaryNode {
 
   SummaryNode() { this = TSummaryNode(c, state) }
 
+  /** Gets the summarized callable that this node belongs to. */
+  FlowSummaryImpl::Public::SummarizedCallable getSummarizedCallable() { result = c }
+
   override CfgScope getCfgScope() { none() }
 
   override DataFlowCallable getEnclosingCallable() { result.asLibraryCallable() = c }

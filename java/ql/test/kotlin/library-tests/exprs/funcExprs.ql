@@ -19,8 +19,13 @@ query predicate memberRefExprs(MemberRefExpr e, Method m, string signature, Anon
   e.getAnonymousClass() = an
 }
 
-query predicate modifiers(LambdaExpr le, Method m, string modifiers) {
+query predicate lambda_modifiers(LambdaExpr le, Method m, string modifiers) {
   le.getAnonymousClass().getAMethod() = m and
+  modifiers = concat(string s | m.hasModifier(s) | s, ", ")
+}
+
+query predicate anon_class_member_modifiers(AnonymousClass ac, Method m, string modifiers) {
+  ac.getAMethod() = m and
   modifiers = concat(string s | m.hasModifier(s) | s, ", ")
 }
 

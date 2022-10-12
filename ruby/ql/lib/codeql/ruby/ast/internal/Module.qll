@@ -486,12 +486,15 @@ private import ResolveImpl
  * methods evaluate the block in the context of some other module/class instead of
  * the enclosing one.
  */
-private ModuleBase enclosingModule(AstNode node) { result = parent*(node).getParent() }
-
-private AstNode parent(AstNode n) {
-  result = n.getParent() and
-  not result instanceof ModuleBase and
-  not result instanceof Block
+private ModuleBase enclosingModule(AstNode node) {
+  result = node.getParent()
+  or
+  exists(AstNode mid |
+    result = enclosingModule(mid) and
+    mid = node.getParent() and
+    not mid instanceof ModuleBase and
+    not mid instanceof Block
+  )
 }
 
 private Module getAncestors(Module m) {

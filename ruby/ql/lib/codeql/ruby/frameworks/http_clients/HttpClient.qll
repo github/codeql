@@ -61,6 +61,7 @@ class HttpClientRequest extends Http::Client::Request::Range, DataFlow::CallNode
           .getArgument(0)
   }
 
+  cached
   override predicate disablesCertificateValidation(
     DataFlow::Node disablingNode, DataFlow::Node argumentOrigin
   ) {

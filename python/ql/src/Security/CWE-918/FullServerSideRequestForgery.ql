@@ -21,5 +21,5 @@ where
   request = sink.getNode().(Sink).getRequest() and
   fullConfig.hasFlowPath(source, sink) and
   fullyControlledRequest(request)
-select request, source, sink, "The full URL of this request depends on $@.", source.getNode(),
-  "a user-provided value"
+select request, source, sink, "The full URL of this request depends on a $@.", source.getNode(),
+  "user-provided value"

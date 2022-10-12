@@ -49,6 +49,12 @@ private module Cached {
       ae.getType().getName() = "String"
     )
     or
+    // flow through a subscript access
+    exists(SubscriptExpr se |
+      se.getBase() = nodeFrom.asExpr() and
+      se = nodeTo.asExpr()
+    )
+    or
     // flow through a flow summary (extension of `SummaryModelCsv`)
     FlowSummaryImpl::Private::Steps::summaryLocalStep(nodeFrom, nodeTo, false)
   }

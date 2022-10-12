@@ -1165,3 +1165,138 @@ test.kt:
 #  161|             -1: [VarAccess] p0
 #  161|             0: [VarAccess] p1
 #  161|             1: [VarAccess] p2
+#  165|   15: [Class,GenericType,ParameterizedType] TestGenericUsedWithinDefaultValue
+#-----|     -2: (Generic Parameters)
+#  165|       0: [TypeVariable] T
+#  165|     1: [Constructor] TestGenericUsedWithinDefaultValue
+#  165|       5: [BlockStmt] { ... }
+#  165|         0: [SuperConstructorInvocationStmt] super(...)
+#  165|         1: [BlockStmt] { ... }
+#  171|     2: [Method] f
+#  171|       3: [TypeAccess] Unit
+#-----|       4: (Parameters)
+#  171|         0: [Parameter] x
+#  171|           0: [TypeAccess] int
+#  171|         1: [Parameter] y
+#  171|           0: [TypeAccess] String
+#  171|       5: [BlockStmt] { ... }
+#  171|     3: [Method] f$default
+#  171|       3: [TypeAccess] Unit
+#-----|       4: (Parameters)
+#  171|         0: [Parameter] p0
+#  171|           0: [TypeAccess] TestGenericUsedWithinDefaultValue<>
+#  171|         1: [Parameter] p1
+#  171|           0: [TypeAccess] int
+#  171|         2: [Parameter] p2
+#  171|           0: [TypeAccess] String
+#  171|         3: [Parameter] p3
+#  171|           0: [TypeAccess] int
+#  171|         4: [Parameter] p4
+#  171|           0: [TypeAccess] Object
+#  171|       5: [BlockStmt] { ... }
+#  171|         0: [IfStmt] if (...)
+#  171|           0: [EQExpr] ... == ...
+#  171|             0: [AndBitwiseExpr] ... & ...
+#  171|               0: [IntegerLiteral] 2
+#  171|               1: [VarAccess] p3
+#  171|             1: [IntegerLiteral] 0
+#  171|           1: [ExprStmt] <Expr>;
+#  171|             0: [AssignExpr] ...=...
+#  171|               0: [VarAccess] p2
+#  171|               1: [MethodAccess] ident(...)
+#  171|                 -1: [ClassInstanceExpr] new TestGenericUsedWithinDefaultValue<String>(...)
+#  171|                   -3: [TypeAccess] TestGenericUsedWithinDefaultValue<String>
+#  171|                     0: [TypeAccess] String
+#  171|                 0: [StringLiteral] Hello world
+#  171|         1: [ReturnStmt] return ...
+#  171|           0: [MethodAccess] f(...)
+#  171|             -1: [VarAccess] p0
+#  171|             0: [VarAccess] p1
+#  171|             1: [VarAccess] p2
+#  173|     4: [Method] ident
+#  173|       3: [TypeAccess] T
+#-----|       4: (Parameters)
+#  173|         0: [Parameter] t
+#  173|           0: [TypeAccess] T
+#  173|       5: [BlockStmt] { ... }
+#  173|         0: [ReturnStmt] return ...
+#  173|           0: [VarAccess] t
+#  177|   17: [Class] TestOverloadsWithDefaults
+#  177|     1: [Constructor] TestOverloadsWithDefaults
+#  177|       5: [BlockStmt] { ... }
+#  177|         0: [SuperConstructorInvocationStmt] super(...)
+#  177|         1: [BlockStmt] { ... }
+#  179|     2: [Method] f
+#  179|       3: [TypeAccess] Unit
+#-----|       4: (Parameters)
+#  179|         0: [Parameter] x
+#  179|           0: [TypeAccess] int
+#  179|         1: [Parameter] y
+#  179|           0: [TypeAccess] String
+#  179|       5: [BlockStmt] { ... }
+#  179|     3: [Method] f$default
+#  179|       3: [TypeAccess] Unit
+#-----|       4: (Parameters)
+#  179|         0: [Parameter] p0
+#  179|           0: [TypeAccess] TestOverloadsWithDefaults
+#  179|         1: [Parameter] p1
+#  179|           0: [TypeAccess] int
+#  179|         2: [Parameter] p2
+#  179|           0: [TypeAccess] String
+#  179|         3: [Parameter] p3
+#  179|           0: [TypeAccess] int
+#  179|         4: [Parameter] p4
+#  179|           0: [TypeAccess] Object
+#  179|       5: [BlockStmt] { ... }
+#  179|         0: [IfStmt] if (...)
+#  179|           0: [EQExpr] ... == ...
+#  179|             0: [AndBitwiseExpr] ... & ...
+#  179|               0: [IntegerLiteral] 2
+#  179|               1: [VarAccess] p3
+#  179|             1: [IntegerLiteral] 0
+#  179|           1: [ExprStmt] <Expr>;
+#  179|             0: [AssignExpr] ...=...
+#  179|               0: [VarAccess] p2
+#  179|               1: [StringLiteral] Hello world
+#  179|         1: [ReturnStmt] return ...
+#  179|           0: [MethodAccess] f(...)
+#  179|             -1: [VarAccess] p0
+#  179|             0: [VarAccess] p1
+#  179|             1: [VarAccess] p2
+#  180|     4: [Method] f
+#  180|       3: [TypeAccess] Unit
+#-----|       4: (Parameters)
+#  180|         0: [Parameter] z
+#  180|           0: [TypeAccess] String
+#  180|         1: [Parameter] w
+#  180|           0: [TypeAccess] int
+#  180|       5: [BlockStmt] { ... }
+#  180|     5: [Method] f$default
+#  180|       3: [TypeAccess] Unit
+#-----|       4: (Parameters)
+#  180|         0: [Parameter] p0
+#  180|           0: [TypeAccess] TestOverloadsWithDefaults
+#  180|         1: [Parameter] p1
+#  180|           0: [TypeAccess] String
+#  180|         2: [Parameter] p2
+#  180|           0: [TypeAccess] int
+#  180|         3: [Parameter] p3
+#  180|           0: [TypeAccess] int
+#  180|         4: [Parameter] p4
+#  180|           0: [TypeAccess] Object
+#  180|       5: [BlockStmt] { ... }
+#  180|         0: [IfStmt] if (...)
+#  180|           0: [EQExpr] ... == ...
+#  180|             0: [AndBitwiseExpr] ... & ...
+#  180|               0: [IntegerLiteral] 2
+#  180|               1: [VarAccess] p3
+#  180|             1: [IntegerLiteral] 0
+#  180|           1: [ExprStmt] <Expr>;
+#  180|             0: [AssignExpr] ...=...
+#  180|               0: [VarAccess] p2
+#  180|               1: [IntegerLiteral] 0
+#  180|         1: [ReturnStmt] return ...
+#  180|           0: [MethodAccess] f(...)
+#  180|             -1: [VarAccess] p0
+#  180|             0: [VarAccess] p1
+#  180|             1: [VarAccess] p2

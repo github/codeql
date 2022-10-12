@@ -163,7 +163,9 @@ abstract class Configuration extends string {
   /**
    * Holds if data may flow from some source to `sink` for this configuration.
    */
-  predicate hasFlowTo(Node sink) { this.hasFlow(_, sink) }
+  predicate hasFlowTo(Node sink) {
+    sink = any(PathNodeSink n | this = n.getConfiguration()).getNodeEx().asNode()
+  }
 
   /**
    * Holds if data may flow from some source to `sink` for this configuration.
@@ -2925,10 +2927,15 @@ abstract private class PathNodeImpl extends PathNode {
     result = this.getASuccessorImpl()
   }
 
-  final PathNodeImpl getANonHiddenSuccessor() {
-    result = this.getASuccessorImpl().getASuccessorIfHidden*() and
-    not this.isHidden() and
+  pragma[nomagic]
+  private PathNodeImpl getANonHiddenSuccessor0() {
+    result = this.getASuccessorIfHidden*() and
     not result.isHidden()
+  }
+
+  final PathNodeImpl getANonHiddenSuccessor() {
+    result = this.getASuccessorImpl().getANonHiddenSuccessor0() and
+    not this.isHidden()
   }
 
   abstract NodeEx getNodeEx();

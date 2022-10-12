@@ -161,3 +161,22 @@ class VisibilityTests {
   private fun i(x: Int, y: Int = 0) = x + y
 
 }
+
+class TestGenericUsedWithinDefaultValue<T> {
+
+  // This tests parameter erasure works properly: we should notice that here the type variable T
+  // isn't used in the specialisation TestGenericUsedWithinDefaultValue<String>, but it can be
+  // cited in contexts like "the signature of the source declaration of 'TestGenericUsedWithinDefaultValue<String>.f(String)' is 'f(T)'",
+  // not 'f(Object)' as we might mistakenly conclude if we're inappropriately erasing 'T'.
+  fun f(x: Int, y: String = TestGenericUsedWithinDefaultValue<String>().ident("Hello world")) { }
+
+  fun ident(t: T) = t
+
+}
+
+class TestOverloadsWithDefaults {
+
+  fun f(x: Int, y: String = "Hello world") { }
+  fun f(z: String, w: Int = 0) { }
+
+}

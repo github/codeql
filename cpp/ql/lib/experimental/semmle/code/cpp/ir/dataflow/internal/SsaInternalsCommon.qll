@@ -11,7 +11,9 @@ private import DataFlowUtil
  * corresponding `(Indirect)OperandNode`.
  */
 predicate ignoreOperand(Operand operand) {
-  operand = any(Instruction instr | ignoreInstruction(instr)).getAnOperand()
+  operand = any(Instruction instr | ignoreInstruction(instr)).getAnOperand() or
+  operand = any(Instruction instr | ignoreInstruction(instr)).getAUse() or
+  operand instanceof MemoryOperand
 }
 
 /**

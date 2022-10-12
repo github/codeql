@@ -78,6 +78,7 @@ private import internal.FlowSummaryImplSpecific
  * ensuring that they are visible to the taint tracking / data flow library.
  */
 private module Frameworks {
+  private import codeql.swift.frameworks.StandardLibrary.CustomUrlSchemes
   private import codeql.swift.frameworks.StandardLibrary.String
   private import codeql.swift.frameworks.StandardLibrary.Url
   private import codeql.swift.frameworks.StandardLibrary.UrlSession
