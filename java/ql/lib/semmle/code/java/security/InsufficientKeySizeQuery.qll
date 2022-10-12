@@ -1,148 +1,43 @@
-/** Provides classes and predicates related to insufficient key sizes in Java. */
+/** Provides data flow configurations to be used in queries related to insufficient key sizes. */
 
 import semmle.code.java.security.Encryption
 import semmle.code.java.dataflow.DataFlow
 import semmle.code.java.dataflow.TaintTracking
+import semmle.code.java.security.InsufficientKeySize
 
 /**
- * An Asymmetric (RSA, DSA, DH) key length data flow tracking configuration.
+ * A data flow configuration for tracking non-elliptic curve asymmetric algorithms
+ * (RSA, DSA, and DH) key sizes.
  */
 class AsymmetricNonECKeyTrackingConfiguration extends DataFlow::Configuration {
   AsymmetricNonECKeyTrackingConfiguration() { this = "AsymmetricNonECKeyTrackingConfiguration" }
 
-  override predicate isSource(DataFlow::Node source) {
-    source.asExpr().(IntegerLiteral).getIntValue() < 2048
-  }
+  override predicate isSource(DataFlow::Node source) { source instanceof AsymmetricNonECSource }
 
-  override predicate isSink(DataFlow::Node sink) {
-    exists(MethodAccess ma, JavaSecurityKeyPairGenerator jpg |
-      ma.getMethod() instanceof KeyPairGeneratorInitMethod and
-      jpg.getAlgoSpec().(StringLiteral).getValue().toUpperCase().matches(["RSA", "DSA", "DH"]) and
-      DataFlow::localExprFlow(jpg, ma.getQualifier()) and
-      sink.asExpr() = ma.getArgument(0)
-    )
-    or
-    // TODO: combine below three for less duplicated code
-    exists(ClassInstanceExpr rsaKeyGenParamSpec |
-      rsaKeyGenParamSpec.getConstructedType() instanceof RsaKeyGenParameterSpec and
-      sink.asExpr() = rsaKeyGenParamSpec.getArgument(0)
-    )
-    or
-    exists(ClassInstanceExpr dsaGenParamSpec |
-      dsaGenParamSpec.getConstructedType() instanceof DsaGenParameterSpec and
-      sink.asExpr() = dsaGenParamSpec.getArgument(0)
-    )
-    or
-    exists(ClassInstanceExpr dhGenParamSpec |
-      dhGenParamSpec.getConstructedType() instanceof DhGenParameterSpec and
-      sink.asExpr() = dhGenParamSpec.getArgument(0)
-    )
-  }
+  override predicate isSink(DataFlow::Node sink) { sink instanceof AsymmetricNonECSink }
 }
 
 /**
- * An Asymmetric (EC) key length data flow tracking configuration.
+ * A data flow configuration for tracking elliptic curve (EC) asymmetric
+ * algorithm key sizes.
  */
 class AsymmetricECKeyTrackingConfiguration extends DataFlow::Configuration {
   AsymmetricECKeyTrackingConfiguration() { this = "AsymmetricECKeyTrackingConfiguration" }
 
-  override predicate isSource(DataFlow::Node source) {
-    source.asExpr().(IntegerLiteral).getIntValue() < 256 or
-    getECKeySize(source.asExpr().(StringLiteral).getValue()) < 256 // need this for the cases when the key size is embedded in the curve name.
-  }
+  override predicate isSource(DataFlow::Node source) { source instanceof AsymmetricECSource }
 
-  override predicate isSink(DataFlow::Node sink) {
-    exists(MethodAccess ma, JavaSecurityKeyPairGenerator jpg |
-      ma.getMethod() instanceof KeyPairGeneratorInitMethod and
-      jpg.getAlgoSpec().(StringLiteral).getValue().toUpperCase().matches("EC%") and
-      DataFlow::localExprFlow(jpg, ma.getQualifier()) and
-      sink.asExpr() = ma.getArgument(0)
-    )
-    or
-    exists(ClassInstanceExpr ecGenParamSpec |
-      ecGenParamSpec.getConstructedType() instanceof EcGenParameterSpec and
-      sink.asExpr() = ecGenParamSpec.getArgument(0)
-    )
-  }
+  override predicate isSink(DataFlow::Node sink) { sink instanceof AsymmetricECSink }
 }
 
-/**
- * A Symmetric (AES) key length data flow tracking configuration.
- */
+/** A data flow configuration for tracking symmetric algorithm (AES) key sizes. */
 class SymmetricKeyTrackingConfiguration extends DataFlow::Configuration {
   SymmetricKeyTrackingConfiguration() { this = "SymmetricKeyTrackingConfiguration" }
 
-  override predicate isSource(DataFlow::Node source) {
-    source.asExpr().(IntegerLiteral).getIntValue() < 128
-  }
+  override predicate isSource(DataFlow::Node source) { source instanceof SymmetricSource }
 
-  override predicate isSink(DataFlow::Node sink) {
-    exists(MethodAccess ma, JavaxCryptoKeyGenerator jcg |
-      ma.getMethod() instanceof KeyGeneratorInitMethod and
-      jcg.getAlgoSpec().(StringLiteral).getValue().toUpperCase() = "AES" and
-      DataFlow::localExprFlow(jcg, ma.getQualifier()) and
-      sink.asExpr() = ma.getArgument(0)
-    )
-  }
+  override predicate isSink(DataFlow::Node sink) { sink instanceof SymmetricSink }
 }
-
-// ********************** Need the below models for the above configs **********************
-// todo: move some/all of below to Encryption.qll or elsewhere?
-/** The Java class `java.security.spec.ECGenParameterSpec`. */
-private class EcGenParameterSpec extends RefType {
-  EcGenParameterSpec() { this.hasQualifiedName("java.security.spec", "ECGenParameterSpec") }
-}
-
-/** The Java class `java.security.spec.RSAKeyGenParameterSpec`. */
-private class RsaKeyGenParameterSpec extends RefType {
-  RsaKeyGenParameterSpec() { this.hasQualifiedName("java.security.spec", "RSAKeyGenParameterSpec") }
-}
-
-/** The Java class `java.security.spec.DSAGenParameterSpec`. */
-private class DsaGenParameterSpec extends RefType {
-  DsaGenParameterSpec() { this.hasQualifiedName("java.security.spec", "DSAGenParameterSpec") }
-}
-
-/** The Java class `javax.crypto.spec.DHGenParameterSpec`. */
-private class DhGenParameterSpec extends RefType {
-  DhGenParameterSpec() { this.hasQualifiedName("javax.crypto.spec", "DHGenParameterSpec") }
-}
-
-/** The `init` method declared in `javax.crypto.KeyGenerator`. */
-private class KeyGeneratorInitMethod extends Method {
-  KeyGeneratorInitMethod() {
-    this.getDeclaringType() instanceof KeyGenerator and
-    this.hasName("init")
-  }
-}
-
-/** The `initialize` method declared in `java.security.KeyPairGenerator`. */
-private class KeyPairGeneratorInitMethod extends Method {
-  KeyPairGeneratorInitMethod() {
-    this.getDeclaringType() instanceof KeyPairGenerator and
-    this.hasName("initialize")
-  }
-}
-
-/** Returns the key size in the EC algorithm string */
-bindingset[algorithm]
-private int getECKeySize(string algorithm) {
-  algorithm.matches("sec%") and // specification such as "secp256r1"
-  result = algorithm.regexpCapture("sec[p|t](\\d+)[a-zA-Z].*", 1).toInt()
-  or
-  algorithm.matches("X9.62%") and //specification such as "X9.62 prime192v2"
-  result = algorithm.regexpCapture("X9\\.62 .*[a-zA-Z](\\d+)[a-zA-Z].*", 1).toInt()
-  or
-  (algorithm.matches("prime%") or algorithm.matches("c2tnb%")) and //specification such as "prime192v2"
-  result = algorithm.regexpCapture(".*[a-zA-Z](\\d+)[a-zA-Z].*", 1).toInt()
-}
-// ******* DATAFLOW ABOVE *************************************************************************
-// TODO:
-// todo #0: look into use of specs without keygens; should spec not be a sink in these cases?
-// todo #1: make representation of source that can be shared across the configs
-// todo #2: make representation of sink that can be shared across the configs
-// todo #3: make list of algo names more easily reusable (either as constant-type variable at top of file, or model as own class to share, etc.)
-// todo #4: refactor to be more like the Python (or C#) version? (or not possible because of lack of DataFlow::Node for void method in Java?)
+// ******* 3 DATAFLOW CONFIGS ABOVE *************************************************************************
 // ******* SINGLE CONFIG ATTEMPT BELOW *************************************************************************
 // /**
 //  * A key length data flow tracking configuration.

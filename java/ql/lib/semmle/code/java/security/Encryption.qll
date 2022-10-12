@@ -83,9 +83,25 @@ class KeyGenerator extends RefType {
   KeyGenerator() { this.hasQualifiedName("javax.crypto", "KeyGenerator") }
 }
 
+/** The `init` method declared in `javax.crypto.KeyGenerator`. */
+class KeyGeneratorInitMethod extends Method {
+  KeyGeneratorInitMethod() {
+    this.getDeclaringType() instanceof KeyGenerator and
+    this.hasName("init")
+  }
+}
+
 /** The Java class `java.security.KeyPairGenerator`. */
 class KeyPairGenerator extends RefType {
   KeyPairGenerator() { this.hasQualifiedName("java.security", "KeyPairGenerator") }
+}
+
+/** The `initialize` method declared in `java.security.KeyPairGenerator`. */
+class KeyPairGeneratorInitMethod extends Method {
+  KeyPairGeneratorInitMethod() {
+    this.getDeclaringType() instanceof KeyPairGenerator and
+    this.hasName("initialize")
+  }
 }
 
 /** The `verify` method of the class `javax.net.ssl.HostnameVerifier`. */
@@ -307,6 +323,12 @@ class JavaxCryptoSecretKey extends JavaxCryptoAlgoSpec {
   }
 }
 
+// TODO: consider extending JavaxCryptoAlgoSpec as above does; will need to override getAlgoSpec() method
+/** The Java class `javax.crypto.spec.DHGenParameterSpec`. */
+class DhGenParameterSpec extends RefType {
+  DhGenParameterSpec() { this.hasQualifiedName("javax.crypto.spec", "DHGenParameterSpec") }
+}
+
 class JavaxCryptoKeyGenerator extends JavaxCryptoAlgoSpec {
   JavaxCryptoKeyGenerator() {
     exists(Method m | m.getAReference() = this |
@@ -365,6 +387,24 @@ class JavaSecuritySignature extends JavaSecurityAlgoSpec {
   }
 
   override Expr getAlgoSpec() { result = this.(ConstructorCall).getArgument(0) }
+}
+
+// TODO: consider extending JavaSecurityAlgoSpec as above does; will need to override getAlgoSpec() method
+/** The Java class `java.security.spec.ECGenParameterSpec`. */
+class EcGenParameterSpec extends RefType {
+  EcGenParameterSpec() { this.hasQualifiedName("java.security.spec", "ECGenParameterSpec") }
+}
+
+// TODO: consider extending JavaSecurityAlgoSpec as above does; will need to override getAlgoSpec() method
+/** The Java class `java.security.spec.RSAKeyGenParameterSpec`. */
+class RsaKeyGenParameterSpec extends RefType {
+  RsaKeyGenParameterSpec() { this.hasQualifiedName("java.security.spec", "RSAKeyGenParameterSpec") }
+}
+
+// TODO: consider extending JavaSecurityAlgoSpec as above does; will need to override getAlgoSpec() method
+/** The Java class `java.security.spec.DSAGenParameterSpec`. */
+class DsaGenParameterSpec extends RefType {
+  DsaGenParameterSpec() { this.hasQualifiedName("java.security.spec", "DSAGenParameterSpec") }
 }
 
 /** A method call to the Java class `java.security.KeyPairGenerator`. */
