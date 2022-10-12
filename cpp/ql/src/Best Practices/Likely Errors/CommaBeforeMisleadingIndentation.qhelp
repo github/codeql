@@ -26,7 +26,7 @@ Use whitespace consistently to communicate your coding intentions. Where possibl
 
 <example>
 <p>
-This example shows three different ways of writing the same code. The first example contains a comma instead of a semicolon which means that the final line is part of the <code>if</code> statement, even though the indentation suggests that it is intended to be separate. The second example looks different put is functionally the same as the first example. It is more likely that the developer intended to write the third example.
+This example shows three different ways of writing the same code. The first example contains a comma instead of a semicolon which means that the final line is part of the <code>if</code> statement, even though the indentation suggests that it is intended to be separate. The second example looks different but is functionally the same as the first example. It is more likely that the developer intended to write the third example.
 </p>
 <sample src="CommaBeforeMisleadingIndentation.cpp" />
 </example>
