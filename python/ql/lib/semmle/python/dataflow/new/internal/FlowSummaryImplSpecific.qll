@@ -20,7 +20,7 @@
  * `getCallable` is set to `none()`. The member predicate `ExtractedDataFlowCall::getCallable` is _not_ the mechanism for
  * call resolution in global data flow. That mechanism is `getViableCallable`.
  * Resolving a call to a non-extracted callable goes via `LibraryCallable::getACall`, which may involve type tracking.
- * To avoid that type tracking becomes mutualy recursive with data flow, type tracking must use a call graph not including summaries.
+ * To avoid that type tracking becomes mutually recursive with data flow, type tracking must use a call graph not including summaries.
  * Type tracking sees the callgraph given by `ExtractedDataFlowCall::getACallable`.
  *
  * We do not support summaries of special methods via the special methods framework,
