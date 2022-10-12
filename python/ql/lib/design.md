@@ -1,7 +1,7 @@
 # The Python libraries
 
 The Python libraries are a collection of libraries for analysing Python code.
-Everythng can be imported by importing `python.qll`.
+Everything can be imported by importing `python.qll`.
 
 ## The analysis layers
 
