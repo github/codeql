@@ -312,6 +312,11 @@ class Node extends TIRDataFlowNode {
   }
 }
 
+/** Gets a user-friendly name for `instr`. */
+private string getPrettyInstructionName(Instruction instr) {
+  result = instr.(VariableInstruction).getAstVariable().getName()
+}
+
 /**
  * An instruction, viewed as a node in a data flow graph.
  */
@@ -332,10 +337,17 @@ class InstructionNode extends Node, TInstructionNode {
   final override Location getLocationImpl() { result = instr.getLocation() }
 
   override string toStringImpl() {
-    // This predicate is overridden in subclasses. This default implementation
-    // does not use `Instruction.toString` because that's expensive to compute.
+    result = getPrettyInstructionName(instr)
+    or
+    not exists(getPrettyInstructionName(instr)) and
+    // We don't use `Instruction.toString` because that's expensive to compute.
     result = this.getInstruction().getOpcode().toString()
   }
+}
+
+/** Gets a user-friendly name for `operand`. */
+private string getPrettyOperandName(Operand operand) {
+  result = getPrettyInstructionName(operand.getDef())
 }
 
 /**
@@ -357,7 +369,12 @@ class OperandNode extends Node, TOperandNode {
 
   final override Location getLocationImpl() { result = op.getLocation() }
 
-  override string toStringImpl() { result = this.getOperand().toString() }
+  override string toStringImpl() {
+    result = getPrettyOperandName(op)
+    or
+    not exists(getPrettyOperandName(op)) and
+    result = this.getOperand().toString()
+  }
 }
 
 /**
