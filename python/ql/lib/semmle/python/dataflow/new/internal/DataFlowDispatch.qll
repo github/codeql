@@ -197,7 +197,11 @@ predicate isClassmethod(Function func) {
   or
   exists(Class cls |
     cls.getAMethod() = func and
-    func.getName() = "__new__"
+    func.getName() in [
+        "__new__", // https://docs.python.org/3.10/reference/datamodel.html#object.__new__
+        "__init_subclass__", // https://docs.python.org/3.10/reference/datamodel.html#object.__init_subclass__
+        "__class_getitem__", // https://docs.python.org/3.10/reference/datamodel.html#object.__class_getitem__
+      ]
   )
 }
 
