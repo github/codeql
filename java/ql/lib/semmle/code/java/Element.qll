@@ -82,7 +82,15 @@ private predicate hasChildElement(Element parent, Element e) {
   enclInReftype(e, parent) and
   not e instanceof LocalClassOrInterface
   or
-  e.(LocalClassOrInterface).getLocalTypeDeclStmt().getEnclosingCallable() = parent
+  // Reasoning: any specialised instance of a local class is supposed to belong to the general
+  // case of its enclosing method because we don't instantiate specialised variants of either generic
+  // functions or function bodies, and therefore the local class cannot be specialised with respect
+  // to its enclosing reftypes.
+  e.(LocalClassOrInterface)
+      .getSourceDeclaration()
+      .(LocalClassOrInterface)
+      .getLocalTypeDeclStmt()
+      .getEnclosingCallable() = parent
   or
   not enclInReftype(e, _) and
   e.(Class).getCompilationUnit() = parent
