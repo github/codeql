@@ -52,7 +52,7 @@
  * Note that an empty access path means that the value we are tracking flows directly to the element.
  *
  *
- * The `TIterableSequence(sequence)` is at this point superflous but becomes useful when handling recursive
+ * The `TIterableSequence(sequence)` is at this point superfluous but becomes useful when handling recursive
  * structures in the LHS, where `sequence` is some internal sequence node. We can have a uniform treatment
  * by always having these two synthetic nodes. So we transfer to (or, in the recursive case, read into)
  * `TIterableSequence(sequence)`, from which we take a read step to `TIterableElement(sequence)` and then a
