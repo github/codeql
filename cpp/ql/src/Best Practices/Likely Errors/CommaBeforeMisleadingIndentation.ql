@@ -50,4 +50,4 @@ where
   not isParenthesized(ce) and
   leftLoc.getEndLine() < rightLoc.getStartLine() and
   leftLoc.getStartColumn() > rightLoc.getStartColumn()
-select right, "The indentation level may be misleading (for some tab sizes)."
+select right, "The indentation level may be misleading for some tab sizes."
