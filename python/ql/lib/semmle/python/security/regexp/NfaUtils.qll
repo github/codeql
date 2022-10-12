@@ -136,7 +136,7 @@ private predicate isCanonicalTerm(RelevantRegExpTerm term, string str) {
 }
 
 /**
- * Gets a string reperesentation of the flags used with the regular expression.
+ * Gets a string representation of the flags used with the regular expression.
  * Only the flags that are relevant for the canonicalization are included.
  */
 string getCanonicalizationFlags(RegExpTerm root) {
