@@ -54,7 +54,7 @@ module ModificationOfParameterWithDefault {
    */
   abstract class MustBeNonEmpty extends DataFlow::Node { }
 
-  /** Gets the truthiness (non emptyness) of the default of `p` if that value is mutable */
+  /** Gets the truthiness (non emptiness) of the default of `p` if that value is mutable */
   private boolean mutableDefaultValue(Parameter p) {
     exists(Dict d | p.getDefault() = d |
       exists(d.getAKey()) and result = true
