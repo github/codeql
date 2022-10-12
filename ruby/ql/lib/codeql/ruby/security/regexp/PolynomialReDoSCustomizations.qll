@@ -106,6 +106,14 @@ module PolynomialReDoS {
             regexp.asExpr() = call.getReceiver() and
             this.asExpr() = call.getArgument(0)
           )
+          or
+          // a case-when statement
+          exists(CfgNodes::ExprNodes::CaseExprCfgNode caseWhen |
+            matchNode.asExpr() = caseWhen and
+            this.asExpr() = caseWhen.getValue() and
+            regexp.asExpr() =
+              caseWhen.getBranch(_).(CfgNodes::ExprNodes::WhenClauseCfgNode).getPattern(_)
+          )
         )
       )
     }
