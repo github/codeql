@@ -9,7 +9,7 @@
 class WithNewImpl(object):
     def __new__(cls):
         print("WithNewImpl.foo")
-        cls.foo() # $ call=cls.foo() callType=CallTypeClassMethod MISSING: arg[self]=cls
+        cls.foo() # $ call=cls.foo() callType=CallTypeClassMethod arg[self]=cls
 
     @classmethod
     def foo(cls):

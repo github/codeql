@@ -174,17 +174,30 @@ predicate parameterMatch(ParameterPosition ppos, ArgumentPosition apos) {
 // =============================================================================
 // Helper predicates
 // =============================================================================
-/** Holds if the function has a `staticmethod` decorator. */
-predicate hasStaticmethodDecorator(Function func) {
+/**
+ * Holds if the function `func` is a staticmethod -- either by having a
+ * `@staticmethod` decorator or by convention
+ * (like a `__new__` method on a class is a classmethod even without the decorator).
+ */
+predicate isStaticmethod(Function func) {
   exists(NameNode id | id.getId() = "staticmethod" and id.isGlobal() |
     func.getADecorator() = id.getNode()
   )
 }
 
-/** Holds if the function has a `classmethod` decorator. */
-predicate hasClassmethodDecorator(Function func) {
+/**
+ * Holds if the function `func` is a classmethod -- either by having a
+ * `@classmethod` decorator or by convention
+ * (like a `__new__` method on a class is a classmethod even without the decorator).
+ */
+predicate isClassmethod(Function func) {
   exists(NameNode id | id.getId() = "classmethod" and id.isGlobal() |
     func.getADecorator() = id.getNode()
+  )
+  or
+  exists(Class cls |
+    cls.getAMethod() = func and
+    func.getName() = "__new__"
   )
 }
 
@@ -309,12 +322,12 @@ class DataFlowMethod extends DataFlowFunction {
 
 /** A classmethod. */
 class DataFlowClassmethod extends DataFlowMethod {
-  DataFlowClassmethod() { hasClassmethodDecorator(func) }
+  DataFlowClassmethod() { isClassmethod(func) }
 }
 
 /** A staticmethod. */
 class DataFlowStaticmethod extends DataFlowMethod, DataFlowFunction {
-  DataFlowStaticmethod() { hasStaticmethodDecorator(func) }
+  DataFlowStaticmethod() { isStaticmethod(func) }
 
   override int positionalOffset() { result = 0 }
 
@@ -457,8 +470,8 @@ private TypeTrackingNode selfTracker(TypeTracker t, Class classWithMethod) {
   t.start() and
   exists(Function func |
     func = classWithMethod.getAMethod() and
-    not hasStaticmethodDecorator(func) and
-    not hasClassmethodDecorator(func)
+    not isStaticmethod(func) and
+    not isClassmethod(func)
   |
     result.asExpr() = func.getArg(0)
   )
@@ -482,7 +495,7 @@ private TypeTrackingNode clsTracker(TypeTracker t, Class classWithMethod) {
   (
     exists(Function func |
       func = classWithMethod.getAMethod() and
-      hasClassmethodDecorator(func)
+      isClassmethod(func)
     |
       result.asExpr() = func.getArg(0)
     )
@@ -507,7 +520,7 @@ Node clsTracker(Class classWithMethod) {
  * call happened in the method `func` (either a method or a classmethod).
  */
 private TypeTrackingNode superCallNoArgumentTracker(TypeTracker t, Function func) {
-  not hasStaticmethodDecorator(func) and
+  not isStaticmethod(func) and
   t.start() and
   exists(CallCfgNode call | result = call |
     call = getSuperCall() and
@@ -884,22 +897,22 @@ private module MethodCalls {
         or
         self = selfTracker(_)
       ) and
-      not hasStaticmethodDecorator(target) and
-      not hasClassmethodDecorator(target)
+      not isStaticmethod(target) and
+      not isClassmethod(target)
       or
       // method as plain function call
       type instanceof CallTypeMethodAsPlainFunction and
       self = classTracker(_) and
-      not hasStaticmethodDecorator(target) and
-      not hasClassmethodDecorator(target)
+      not isStaticmethod(target) and
+      not isClassmethod(target)
       or
       // staticmethod call
       type instanceof CallTypeStaticMethod and
-      hasStaticmethodDecorator(target)
+      isStaticmethod(target)
       or
       // classmethod call
       type instanceof CallTypeClassMethod and
-      hasClassmethodDecorator(target)
+      isClassmethod(target)
     )
   }
 }
