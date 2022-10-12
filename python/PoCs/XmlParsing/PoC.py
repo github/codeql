@@ -187,7 +187,7 @@ class TestSax():
 
     @staticmethod
     @expects_timeout
-    def test_quardratic_blowup_allowed_by_default():
+    def test_quadratic_blowup_allowed_by_default():
         parser = xml.sax.make_parser()
         parser.parse(StringIO(quadratic_blowup))
 
@@ -263,7 +263,7 @@ class TestEtree:
 
     @staticmethod
     @expects_timeout
-    def test_quardratic_blowup_allowed_by_default():
+    def test_quadratic_blowup_allowed_by_default():
         parser = xml.etree.ElementTree.XMLParser()
         _root = xml.etree.ElementTree.fromstring(quadratic_blowup, parser=parser)
 
@@ -324,7 +324,7 @@ class TestLxml:
             assert "Detected an entity reference loop" in str(e)
 
     @staticmethod
-    def test_quardratic_blowup_disabled_by_default():
+    def test_quadratic_blowup_disabled_by_default():
         parser = lxml.etree.XMLParser()
         try:
             _root = lxml.etree.fromstring(quadratic_blowup, parser=parser)
@@ -465,7 +465,7 @@ class TestXmltodict:
         assert d == {"lolz": None}, d
 
     @staticmethod
-    def test_quardratic_blowup_disabled_by_default():
+    def test_quadratic_blowup_disabled_by_default():
         d = xmltodict.parse(quadratic_blowup)
         assert d == {"foo": None}, d
 
@@ -476,7 +476,7 @@ class TestXmltodict:
 
     @staticmethod
     @expects_timeout
-    def test_quardratic_blowup_manually_enabled():
+    def test_quadratic_blowup_manually_enabled():
         xmltodict.parse(quadratic_blowup, disable_entities=False)
 
     @staticmethod
@@ -524,7 +524,7 @@ class TestMinidom:
 
     @staticmethod
     @expects_timeout
-    def test_quardratic_blowup():
+    def test_quadratic_blowup():
         xml.dom.minidom.parseString(quadratic_blowup)
 
     @staticmethod
@@ -585,7 +585,7 @@ class TestPulldom:
 
     @staticmethod
     @expects_timeout
-    def test_quardratic_blowup():
+    def test_quadratic_blowup():
         doc = xml.dom.pulldom.parseString(quadratic_blowup)
         for event, node in doc:
             pass
@@ -670,7 +670,7 @@ class TestExpat:
 
     @staticmethod
     @expects_timeout
-    def test_quardratic_blowup():
+    def test_quadratic_blowup():
         parser = xml.parsers.expat.ParserCreate()
         parser.Parse(quadratic_blowup, True)
 
