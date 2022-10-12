@@ -20,14 +20,14 @@ import DataFlow::PathGraph
 abstract class KeySource extends Expr { }
 
 /**
- * The creation of a literal byte array.
+ * A literal byte array is a key source.
  */
 class ByteArrayLiteralSource extends KeySource {
   ByteArrayLiteralSource() { this = any(ArrayExpr arr | arr.getType().toString() = "Array<UInt8>") }
 }
 
 /**
- * Any string literal as a key source.
+ * A string literal is a key source.
  */
 class StringLiteralSource extends KeySource {
   StringLiteralSource() { this instanceof StringLiteralExpr }
