@@ -241,12 +241,6 @@ class DataFlowCallable extends TDataFlowCallable {
 
   Field asFieldScope() { this = TFieldScope(result) }
 
-  RefType getDeclaringType() {
-    result = this.asCallable().getDeclaringType() or
-    result = this.asSummarizedCallable().getDeclaringType() or
-    result = this.asFieldScope().getDeclaringType()
-  }
-
   string toString() {
     result = this.asCallable().toString() or
     result = "Synthetic: " + this.asSummarizedCallable().toString() or
