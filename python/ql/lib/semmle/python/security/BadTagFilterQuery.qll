@@ -1,5 +1,5 @@
 /**
- * Provides precicates for reasoning about bad tag filter vulnerabilities.
+ * Provides predicates for reasoning about bad tag filter vulnerabilities.
  */
 
 import regexp.RegexpMatching
