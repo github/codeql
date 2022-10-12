@@ -7,14 +7,34 @@ struct URL
 	init?(string: String, relativeTo: URL?) {}
 }
 
+struct Data {
+	init<S>(_ elements: S) { count = 0 }
+
+	var count: Int
+
+	func copyBytes(to pointer: UnsafeMutablePointer<UInt8>, count: Int) {}
+}
+
 extension String {
 	init(contentsOf: URL) throws {
-        var data = ""
+		var data = ""
 
-        // ...
+		// ...
 
-        self.init(data)
-    }
+		self.init(data)
+	}
+
+	struct Encoding {
+		var rawValue: UInt
+
+		init(rawValue: UInt) {
+			self.rawValue = rawValue
+		}
+
+		static let utf16 = Encoding(rawValue: 1)
+	}
+
+	func data(using encoding: String.Encoding, allowLossyConversion: Bool = false) -> Data? { return nil }
 }
 
 var SQLITE_OK : Int32 = 0
@@ -97,7 +117,7 @@ func sqlite3_finalize(
 
 // --- tests ---
 
-func test_sqlite3_c_api(db: OpaquePointer?) {
+func test_sqlite3_c_api(db: OpaquePointer?, buffer: UnsafeMutablePointer<UInt8>) {
 	let localString = "user"
 	let remoteString = try! String(contentsOf: URL(string: "http://example.com/")!)
 	let remoteNumber = Int(remoteString) ?? 0
@@ -107,7 +127,6 @@ func test_sqlite3_c_api(db: OpaquePointer?) {
 	let unsafeQuery3 = "SELECT * FROM users WHERE username='\(remoteString)'"
 	let safeQuery1 = "SELECT * FROM users WHERE username='\(localString)'"
 	let safeQuery2 = "SELECT * FROM users WHERE username='\(remoteNumber)'"
-	let varQuery = "SELECT * FROM users WHERE username=?"
 
 	// --- exec ---
 
@@ -118,6 +137,8 @@ func test_sqlite3_c_api(db: OpaquePointer?) {
 	let result5 = sqlite3_exec(db, safeQuery2, nil, nil, nil) // GOOD
 
 	// --- prepared statements ---
+
+	let varQuery = "SELECT * FROM users WHERE username=?"
 
 	var stmt1: OpaquePointer?
 
@@ -147,5 +168,48 @@ func test_sqlite3_c_api(db: OpaquePointer?) {
 	}
 	sqlite3_finalize(stmt3)
 
-	// TODO: use all versions v3, 16 etc.
+	// --- variant 'prepare' functions ---
+
+	var stmt4: OpaquePointer?
+
+	if (sqlite3_prepare_v2(db, unsafeQuery3, -1, &stmt4, nil) == SQLITE_OK) { // BAD
+		let result = sqlite3_step(stmt4)
+		// ...
+	}
+	sqlite3_finalize(stmt4)
+
+	var stmt5: OpaquePointer?
+
+	if (sqlite3_prepare_v3(db, unsafeQuery3, -1, 0, &stmt5, nil) == SQLITE_OK) { // BAD
+		let result = sqlite3_step(stmt5)
+		// ...
+	}
+	sqlite3_finalize(stmt5)
+
+	let data = unsafeQuery3.data(using:String.Encoding.utf16)!
+	data.copyBytes(to: buffer, count: data.count)
+
+	var stmt6: OpaquePointer?
+
+	if (sqlite3_prepare16(db, buffer, Int32(data.count), &stmt6, nil) == SQLITE_OK) { // BAD
+		let result = sqlite3_step(stmt6)
+		// ...
+	}
+	sqlite3_finalize(stmt6)
+
+	var stmt7: OpaquePointer?
+
+	if (sqlite3_prepare16_v2(db, buffer, Int32(data.count), &stmt7, nil) == SQLITE_OK) { // BAD
+		let result = sqlite3_step(stmt7)
+		// ...
+	}
+	sqlite3_finalize(stmt7)
+
+	var stmt8: OpaquePointer?
+
+	if (sqlite3_prepare16_v3(db, buffer, Int32(data.count), 0, &stmt8, nil) == SQLITE_OK) { // BAD
+		let result = sqlite3_step(stmt8)
+		// ...
+	}
+	sqlite3_finalize(stmt8)
 }

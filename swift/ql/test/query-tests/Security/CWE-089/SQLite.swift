@@ -1,40 +1,58 @@
 
 // --- stubs ---
 
+struct URL
+{
+	init?(string: String) {}
+	init?(string: String, relativeTo: URL?) {}
+}
+
+extension String {
+	init(contentsOf: URL) throws {
+		var data = ""
+
+		// ...
+
+		self.init(data)
+	}
+}
+
 public protocol Binding {}
 
 extension String: Binding {}
 
 class Statement {
-	init(_ connection: Connection, _ SQL: String) throws {}
+	fileprivate let connection: Connection
 
-	public func bind(_ values: Binding?...) -> Statement { return Statement() }
-	public func bind(_ values: [Binding?]) -> Statement { return Statement() }
-	public func bind(_ values: [String: Binding?]) -> Statement { return Statement() }
+	init(_ connection: Connection, _ SQL: String) throws { self.connection = connection}
 
-	@discardableResult public func run(_ bindings: Binding?...) throws -> Statement { return Statement() }
-	@discardableResult public func run(_ bindings: [Binding?]) throws -> Statement { return Statement() }
-	@discardableResult public func run(_ bindings: [String: Binding?]) throws -> Statement { return Statement() }
+	public func bind(_ values: Binding?...) -> Statement { return Statement(connection, "") }
+	public func bind(_ values: [Binding?]) -> Statement { return Statement(connection, "") }
+	public func bind(_ values: [String: Binding?]) -> Statement { return Statement(connection, "") }
 
-	public func scalar(_ bindings: Binding?...) throws -> Binding? { return Binding() }
-	public func scalar(_ bindings: [Binding?]) throws -> Binding? { return Binding() }
-	public func scalar(_ bindings: [String: Binding?]) throws -> Binding? { return Binding() }
+	@discardableResult public func run(_ bindings: Binding?...) throws -> Statement { return Statement(connection, "") }
+	@discardableResult public func run(_ bindings: [Binding?]) throws -> Statement { return Statement(connection, "") }
+	@discardableResult public func run(_ bindings: [String: Binding?]) throws -> Statement { return Statement(connection, "") }
+
+	public func scalar(_ bindings: Binding?...) throws -> Binding? { return nil }
+	public func scalar(_ bindings: [Binding?]) throws -> Binding? { return nil }
+	public func scalar(_ bindings: [String: Binding?]) throws -> Binding? { return nil }
 }
 
 class Connection {
 	public func execute(_ SQL: String) throws { }
 
-	public func prepare(_ statement: String, _ bindings: Binding?...) throws -> Statement { return Statement() }
-	public func prepare(_ statement: String, _ bindings: [Binding?]) throws -> Statement { return Statement() }
-	public func prepare(_ statement: String, _ bindings: [String: Binding?]) throws -> Statement { return Statement() }
+	public func prepare(_ statement: String, _ bindings: Binding?...) throws -> Statement { return Statement(self, "") }
+	public func prepare(_ statement: String, _ bindings: [Binding?]) throws -> Statement { return Statement(self, "") }
+	public func prepare(_ statement: String, _ bindings: [String: Binding?]) throws -> Statement { return Statement(self, "") }
 
-	@discardableResult public func run(_ statement: String, _ bindings: Binding?...) throws -> Statement { return Statement() }
-	@discardableResult public func run(_ statement: String, _ bindings: [Binding?]) throws -> Statement { return Statement() }
-	@discardableResult public func run(_ statement: String, _ bindings: [String: Binding?]) throws -> Statement { return Statement() }
+	@discardableResult public func run(_ statement: String, _ bindings: Binding?...) throws -> Statement { return Statement(self, "") }
+	@discardableResult public func run(_ statement: String, _ bindings: [Binding?]) throws -> Statement { return Statement(self, "") }
+	@discardableResult public func run(_ statement: String, _ bindings: [String: Binding?]) throws -> Statement { return Statement(self, "") }
 
-	public func scalar(_ statement: String, _ bindings: Binding?...) throws -> Binding? { return Binding() }
-	public func scalar(_ statement: String, _ bindings: [Binding?]) throws -> Binding? { return Binding() }
-	public func scalar(_ statement: String, _ bindings: [String: Binding?]) throws -> Binding? { return Binding() }
+	public func scalar(_ statement: String, _ bindings: Binding?...) throws -> Binding? { return nil }
+	public func scalar(_ statement: String, _ bindings: [Binding?]) throws -> Binding? { return nil }
+	public func scalar(_ statement: String, _ bindings: [String: Binding?]) throws -> Binding? { return nil }
 }
 
 // --- tests ---
@@ -49,7 +67,6 @@ func test_sqlite_swift_api(db: Connection) {
 	let unsafeQuery3 = "SELECT * FROM users WHERE username='\(remoteString)'"
 	let safeQuery1 = "SELECT * FROM users WHERE username='\(localString)'"
 	let safeQuery2 = "SELECT * FROM users WHERE username='\(remoteNumber)'"
-	let varQuery = "SELECT * FROM users WHERE username=?"
 
 	// --- execute ---
 
@@ -61,6 +78,8 @@ func test_sqlite_swift_api(db: Connection) {
 
 	// --- prepared statements ---
 
+	let varQuery = "SELECT * FROM users WHERE username=?"
+
 	let stmt1 = try db.prepare(unsafeQuery3) // BAD
 	try stmt1.run()
 
@@ -70,5 +89,45 @@ func test_sqlite_swift_api(db: Connection) {
 	let stmt3 = try db.prepare(varQuery, remoteString) // GOOD
 	try stmt3.run()
 
-	// TODO: test all versions of prepare, run, scalar on Connection and Statement
+	let stmt4 = Statement(db, localString) // GOOD
+	stmt4.run()
+
+	let stmt5 = Statement(db, remoteString) // BAD
+	stmt5.run()
+
+	// --- more variants ---
+
+	let stmt6 = try db.prepare(unsafeQuery1, "") // BAD
+	try stmt6.run()
+
+	let stmt7 = try db.prepare(unsafeQuery1, [""]) // BAD
+	try stmt7.run()
+
+	let stmt8 = try db.prepare(unsafeQuery1, ["username": ""]) // BAD
+	try stmt8.run()
+
+	db.run(unsafeQuery1, "") // BAD
+
+	db.run(unsafeQuery1, [""]) // BAD
+
+	db.run(unsafeQuery1, ["username": ""]) // BAD
+
+	db.scalar(unsafeQuery1, "") // BAD
+
+	db.scalar(unsafeQuery1, [""]) // BAD
+
+	db.scalar(unsafeQuery1, ["username": ""]) // BAD
+
+	let stmt9 = try db.prepare(varQuery) // GOOD
+	stmt9.bind(remoteString)
+	stmt9.bind([remoteString])
+	stmt9.bind(["username": remoteString])
+	try stmt9.run(remoteString)
+	try stmt9.run([remoteString])
+	try stmt9.run(["username": remoteString])
+	try stmt9.scalar(remoteString)
+	try stmt9.scalar([remoteString])
+	try stmt9.scalar(["username": remoteString])
+
+	Statement(db, remoteString).run() // BAD
 }
