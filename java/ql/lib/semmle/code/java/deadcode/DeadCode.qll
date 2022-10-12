@@ -307,6 +307,12 @@ class RootdefCallable extends Callable {
     or
     // Exclude generated callables, such as `...$default` ones extracted from Kotlin code.
     this.isCompilerGenerated()
+    or
+    // Exclude Kotlin serialization constructors.
+    this.(Constructor)
+        .getParameterType(this.getNumberOfParameters() - 1)
+        .(RefType)
+        .hasQualifiedName("kotlinx.serialization.internal", "SerializationConstructorMarker")
   }
 }
 
