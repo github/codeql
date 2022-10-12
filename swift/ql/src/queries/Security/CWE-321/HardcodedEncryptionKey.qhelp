@@ -3,7 +3,7 @@
   "qhelp.dtd">
 <qhelp>
   <overview>
-    <p>Hardcoded keys should not be used for creating encryption ciphers. Data encrypted using hardcoded keys are more vulnerable to the possiblity of recovering them.</p>
+    <p>Hardcoded keys should not be used for creating encryption ciphers. Data encrypted using hardcoded keys are more vulnerable to the possibility of recovering them.</p>
   </overview>
 
   <recommendation>

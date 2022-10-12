@@ -1,6 +1,6 @@
 /**
  * @name Hard-coded encryption key
- * @description Using hardcoded keys for encryption is not secure, because potential attacker can easiy guess them.
+ * @description Using hardcoded keys for encryption is not secure, because potential attackers can easily guess them.
  * @kind path-problem
  * @problem.severity error
  * @security-severity 8.1
@@ -29,9 +29,7 @@ class ByteArrayLiteralSource extends KeySource {
 /**
  * A string literal is a key source.
  */
-class StringLiteralSource extends KeySource {
-  StringLiteralSource() { this instanceof StringLiteralExpr }
-}
+class StringLiteralSource extends KeySource instanceof StringLiteralExpr { }
 
 /**
  * A class for all ways to set a key.
