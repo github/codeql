@@ -116,7 +116,7 @@ private string getACredentialRegex() {
 }
 
 class HardcodedCredentialsConfiguration extends TaintTracking::Configuration {
-  HardcodedCredentialsConfiguration() { this = "Hardcoded coredentials configuration" }
+  HardcodedCredentialsConfiguration() { this = "Hardcoded credentials configuration" }
 
   override predicate isSource(TaintTracking::Source source) {
     source instanceof HardcodedValueSource
