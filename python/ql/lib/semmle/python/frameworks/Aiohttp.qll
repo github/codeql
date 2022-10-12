@@ -45,7 +45,7 @@ module AiohttpWebModel {
   }
 
   /** Gets a reference to an `aiohttp.web.UrlDispatcher` instance. */
-  API::Node urlDispathcerInstance() {
+  API::Node urlDispatcherInstance() {
     result = API::moduleImport("aiohttp").getMember("web").getMember("UrlDispatcher").getReturn()
     or
     result = applicationInstance().getMember("router")
@@ -170,7 +170,7 @@ module AiohttpWebModel {
         funcName = "route" and
         routeArgsStart = 1
       |
-        this = urlDispathcerInstance().getMember("add_" + funcName).getACall()
+        this = urlDispatcherInstance().getMember("add_" + funcName).getACall()
         or
         this = API::moduleImport("aiohttp").getMember("web").getMember(funcName).getACall()
       )
