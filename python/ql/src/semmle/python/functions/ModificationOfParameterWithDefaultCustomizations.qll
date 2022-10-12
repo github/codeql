@@ -33,7 +33,7 @@ module ModificationOfParameterWithDefault {
    * should determine if the node (which is perhaps about to be modified)
    * can be the default value or not.
    *
-   * In this query we do not track the default value exactly, but rather wheter
+   * In this query we do not track the default value exactly, but rather whether
    * it is empty or not (see `Source`).
    *
    * This is the extension point for determining that a node must be empty and
@@ -46,7 +46,7 @@ module ModificationOfParameterWithDefault {
    * should determine if the node (which is perhaps about to be modified)
    * can be the default value or not.
    *
-   * In this query we do not track the default value exactly, but rather wheter
+   * In this query we do not track the default value exactly, but rather whether
    * it is empty or not (see `Source`).
    *
    * This is the extension point for determining that a node must be non-empty
