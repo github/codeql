@@ -13,7 +13,7 @@
  * Having both extracted and non-extracted callables means that we now have three types of calls:
  * - Extracted calls to extracted callables, either `NormalCall` or `SpecialCall`. These are handled by standard data flow.
  * - Extracted calls to non-extracted callables, `LibraryCall`. These are handled by loking up the relevant summary when the
- *   global data flwo graph is connected up via `getViableCallable`.
+ *   global data flow graph is connected up via `getViableCallable`.
  * - Non-extracted calls, `SummaryCall`. These are synthesised by the flow summary framework.
  *
  * The first two can be referred to as `ExtractedDataFlowCall`. In fact, `LibraryCall` is a subclass of `NormalCall`, where
