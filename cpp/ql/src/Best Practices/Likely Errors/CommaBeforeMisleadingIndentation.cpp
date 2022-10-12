@@ -1,5 +1,5 @@
 /*
- * Here, the comma should have been a semicolon:
+ * In this example, the developer intended to use a semicolon but accidentally used a comma:
  */
 
 enum privileges entitlements = NONE;
@@ -10,7 +10,7 @@ if (is_admin)
 restrict_privileges(entitlements);
 
 /*
- * This is misleading, because the code is unexpectedly equivalent to:
+ * The use of a comma means that the first example is equivalent to this second example:
  */
 
 enum privileges entitlements = NONE;
@@ -21,7 +21,7 @@ if (is_admin) {
 }
 
 /*
- * Whereas the following code was probably intended:
+ * The indentation of the first example suggests that the developer probably intended the following code:
  */
 
 enum privileges entitlements = NONE;

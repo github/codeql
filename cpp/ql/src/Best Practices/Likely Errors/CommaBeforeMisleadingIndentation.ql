@@ -1,6 +1,6 @@
 /**
  * @name Comma before misleading indentation
- * @description The expressions before and after the comma operator can be misread because of an unusual difference in start columns.
+ * @description If expressions before and after a comma operator use different indentation, it is easy to misread the purpose of the code.
  * @kind problem
  * @id cpp/comma-before-misleading-indentation
  * @problem.severity warning
