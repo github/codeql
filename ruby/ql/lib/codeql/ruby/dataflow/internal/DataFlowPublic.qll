@@ -566,3 +566,46 @@ abstract deprecated class BarrierGuard extends CfgNodes::ExprCfgNode {
     result.asExpr() = this.getAMaybeGuardedCapturedDef().getARead()
   }
 }
+
+/**
+ * A representation of a run-time module or class.
+ *
+ * This is equivalent to the type `Ast::Module` but provides data-flow specific methods.
+ */
+class ModuleNode instanceof Module {
+  /** Gets a declaration of this module, if any. */
+  final ModuleBase getADeclaration() { result = super.getADeclaration() }
+
+  /** Gets the super class of this module, if any. */
+  final ModuleNode getSuperClass() { result = super.getSuperClass() }
+
+  /** Gets an immediate sub class of this module, if any. */
+  final ModuleNode getASubClass() { result = super.getASubClass() }
+
+  /** Gets a `prepend`ed module. */
+  final ModuleNode getAPrependedModule() { result = super.getAPrependedModule() }
+
+  /** Gets an `include`d module. */
+  final ModuleNode getAnIncludedModule() { result = super.getAnIncludedModule() }
+
+  /** Holds if this module is a class. */
+  predicate isClass() { super.isClass() }
+
+  /** Gets a textual representation of this module. */
+  final string toString() { result = super.toString() }
+
+  /**
+   * Gets the qualified name of this module, if any.
+   *
+   * Only modules that can be resolved will have a qualified name.
+   */
+  final string getQualifiedName() { result = super.getQualifiedName() }
+
+  /** Gets the location of this module. */
+  final Location getLocation() { result = super.getLocation() }
+
+  /** Gets a constant or `self` variable that refers to this module. */
+  LocalSourceNode getAnImmediateReference() {
+    result.asExpr().getExpr() = super.getAnImmediateReference()
+  }
+}
