@@ -4,97 +4,6 @@ import semmle.code.java.security.Encryption
 import semmle.code.java.dataflow.DataFlow
 import semmle.code.java.dataflow.TaintTracking
 
-//import semmle.code.java.dataflow.internal.DataFlowImplCommonPublic
-//import semmle.code.java.dataflow.FlowSources
-//import semmle.code.java.dataflow.internal.DataFlowNodes
-/**
- * A key length data flow tracking configuration.
- */
-class KeyTrackingConfiguration extends DataFlow::Configuration {
-  KeyTrackingConfiguration() { this = "KeyTrackingConfiguration" }
-
-  override predicate isSource(DataFlow::Node source, DataFlow::FlowState state) {
-    //state instanceof DataFlow::FlowStateEmpty and
-    // SYMMETRIC
-    source.asExpr().(IntegerLiteral).getIntValue() < 128 and state = "128"
-    or
-    // ASYMMETRIC
-    source.asExpr().(IntegerLiteral).getIntValue() < 2048 and state = "2048"
-    or
-    source.asExpr().(IntegerLiteral).getIntValue() < 256 and state = "256"
-    or
-    getECKeySize(source.asExpr().(StringLiteral).getValue()) < 256 and state = "256" // need this for the cases when the key size is embedded in the curve name.
-  }
-
-  override predicate isSink(DataFlow::Node sink, DataFlow::FlowState state) {
-    // SYMMETRIC
-    exists(MethodAccess ma, JavaxCryptoKeyGenerator jcg |
-      ma.getMethod() instanceof KeyGeneratorInitMethod and
-      jcg.getAlgoSpec().(StringLiteral).getValue().toUpperCase() = "AES" and
-      DataFlow::localExprFlow(jcg, ma.getQualifier()) and
-      sink.asExpr() = ma.getArgument(0) and
-      state = "128"
-    )
-    or
-    // ASYMMETRIC
-    exists(MethodAccess ma, JavaSecurityKeyPairGenerator jpg |
-      ma.getMethod() instanceof KeyPairGeneratorInitMethod and
-      (
-        jpg.getAlgoSpec().(StringLiteral).getValue().toUpperCase().matches(["RSA", "DSA", "DH"]) and
-        DataFlow::localExprFlow(jpg, ma.getQualifier()) and
-        sink.asExpr() = ma.getArgument(0) and
-        //ma.getArgument(0).(LocalSourceNode).flowsTo(sink) and
-        //ma.getArgument(0).(CompileTimeConstantExpr).getIntValue() < 2048 and
-        state = "2048"
-      )
-      or
-      jpg.getAlgoSpec().(StringLiteral).getValue().toUpperCase().matches("EC%") and
-      DataFlow::localExprFlow(jpg, ma.getQualifier()) and
-      sink.asExpr() = ma.getArgument(0) and
-      //ma.getArgument(0).(CompileTimeConstantExpr).getIntValue() < 256 and
-      state = "256"
-    )
-    or
-    // TODO: combine below three for less duplicated code
-    exists(ClassInstanceExpr rsaKeyGenParamSpec |
-      rsaKeyGenParamSpec.getConstructedType() instanceof RsaKeyGenParameterSpec and
-      sink.asExpr() = rsaKeyGenParamSpec.getArgument(0) and
-      state = "2048"
-    )
-    or
-    exists(ClassInstanceExpr dsaGenParamSpec |
-      dsaGenParamSpec.getConstructedType() instanceof DsaGenParameterSpec and
-      sink.asExpr() = dsaGenParamSpec.getArgument(0) and
-      state = "2048"
-    )
-    or
-    exists(ClassInstanceExpr dhGenParamSpec |
-      dhGenParamSpec.getConstructedType() instanceof DhGenParameterSpec and
-      sink.asExpr() = dhGenParamSpec.getArgument(0) and
-      state = "2048"
-    )
-    or
-    exists(ClassInstanceExpr ecGenParamSpec |
-      ecGenParamSpec.getConstructedType() instanceof EcGenParameterSpec and
-      sink.asExpr() = ecGenParamSpec.getArgument(0) and
-      state = "256"
-    )
-  }
-
-  // ! FlowStates seem to work without even including a step like the below... hmmm
-  override predicate isAdditionalFlowStep(
-    DataFlow::Node node1, DataFlow::FlowState state1, DataFlow::Node node2,
-    DataFlow::FlowState state2
-  ) {
-    exists(IntegerLiteral intLiteral |
-      state1 = "" and
-      state2 = intLiteral.toString() and
-      node1.asExpr() = intLiteral and
-      node2.asExpr() = intLiteral
-    )
-  }
-}
-
 /**
  * An Asymmetric (RSA, DSA, DH) key length data flow tracking configuration.
  */
@@ -110,15 +19,6 @@ class AsymmetricNonECKeyTrackingConfiguration extends DataFlow::Configuration {
       ma.getMethod() instanceof KeyPairGeneratorInitMethod and
       jpg.getAlgoSpec().(StringLiteral).getValue().toUpperCase().matches(["RSA", "DSA", "DH"]) and
       DataFlow::localExprFlow(jpg, ma.getQualifier()) and
-      // exists(
-      //   JavaSecurityKeyPairGenerator jpg, KeyPairGeneratorInitConfiguration kpgConfig,
-      //   DataFlow::PathNode source, DataFlow::PathNode dest
-      // |
-      //   jpg.getAlgoSpec().(StringLiteral).getValue().toUpperCase().matches(["RSA", "DSA", "DH"]) and
-      //   source.getNode().asExpr() = jpg and
-      //   dest.getNode().asExpr() = ma.getQualifier() and
-      //   kpgConfig.hasFlowPath(source, dest)
-      // ) and
       sink.asExpr() = ma.getArgument(0)
     )
     or
@@ -156,21 +56,11 @@ class AsymmetricECKeyTrackingConfiguration extends DataFlow::Configuration {
       ma.getMethod() instanceof KeyPairGeneratorInitMethod and
       jpg.getAlgoSpec().(StringLiteral).getValue().toUpperCase().matches("EC%") and
       DataFlow::localExprFlow(jpg, ma.getQualifier()) and
-      // exists(
-      //   JavaSecurityKeyPairGenerator jpg, KeyPairGeneratorInitConfiguration kpgConfig,
-      //   DataFlow::PathNode source, DataFlow::PathNode dest
-      // |
-      //   jpg.getAlgoSpec().(StringLiteral).getValue().toUpperCase().matches("EC%") and
-      //   source.getNode().asExpr() = jpg and
-      //   dest.getNode().asExpr() = ma.getQualifier() and
-      //   kpgConfig.hasFlowPath(source, dest)
-      // ) and
       sink.asExpr() = ma.getArgument(0)
     )
     or
     exists(ClassInstanceExpr ecGenParamSpec |
       ecGenParamSpec.getConstructedType() instanceof EcGenParameterSpec and
-      //getECKeySize(ecGenParamSpec.getArgument(0).(StringLiteral).getValue()) < 256 and
       sink.asExpr() = ecGenParamSpec.getArgument(0)
     )
   }
@@ -191,15 +81,6 @@ class SymmetricKeyTrackingConfiguration extends DataFlow::Configuration {
       ma.getMethod() instanceof KeyGeneratorInitMethod and
       jcg.getAlgoSpec().(StringLiteral).getValue().toUpperCase() = "AES" and
       DataFlow::localExprFlow(jcg, ma.getQualifier()) and
-      // exists(
-      //   JavaxCryptoKeyGenerator jcg, KeyGeneratorInitConfiguration kgConfig,
-      //   DataFlow::PathNode source, DataFlow::PathNode dest
-      // |
-      //   jcg.getAlgoSpec().(StringLiteral).getValue().toUpperCase() = "AES" and
-      //   source.getNode().asExpr() = jcg and
-      //   dest.getNode().asExpr() = ma.getQualifier() and
-      //   kgConfig.hasFlowPath(source, dest)
-      // ) and
       sink.asExpr() = ma.getArgument(0)
     )
   }
@@ -207,32 +88,6 @@ class SymmetricKeyTrackingConfiguration extends DataFlow::Configuration {
 
 // ********************** Need the below models for the above configs **********************
 // todo: move some/all of below to Encryption.qll or elsewhere?
-// /** A data flow configuration tracking flow from a key generator to an `init` method call. */
-// private class KeyGeneratorInitConfiguration extends DataFlow::Configuration {
-//   KeyGeneratorInitConfiguration() { this = "KeyGeneratorInitConfiguration" }
-//   override predicate isSource(DataFlow::Node source) {
-//     source.asExpr() instanceof JavaxCryptoKeyGenerator
-//   }
-//   override predicate isSink(DataFlow::Node sink) {
-//     exists(MethodAccess ma |
-//       ma.getMethod() instanceof KeyGeneratorInitMethod and
-//       sink.asExpr() = ma.getQualifier()
-//     )
-//   }
-// }
-// /** A data flow configuration tracking flow from a keypair generator to an `initialize` method call. */
-// private class KeyPairGeneratorInitConfiguration extends DataFlow::Configuration {
-//   KeyPairGeneratorInitConfiguration() { this = "KeyPairGeneratorInitConfiguration" }
-//   override predicate isSource(DataFlow::Node source) {
-//     source.asExpr() instanceof JavaSecurityKeyPairGenerator
-//   }
-//   override predicate isSink(DataFlow::Node sink) {
-//     exists(MethodAccess ma |
-//       ma.getMethod() instanceof KeyPairGeneratorInitMethod and
-//       sink.asExpr() = ma.getQualifier()
-//     )
-//   }
-// }
 /** The Java class `java.security.spec.ECGenParameterSpec`. */
 private class EcGenParameterSpec extends RefType {
   EcGenParameterSpec() { this.hasQualifiedName("java.security.spec", "ECGenParameterSpec") }
@@ -288,3 +143,88 @@ private int getECKeySize(string algorithm) {
 // todo #2: make representation of sink that can be shared across the configs
 // todo #3: make list of algo names more easily reusable (either as constant-type variable at top of file, or model as own class to share, etc.)
 // todo #4: refactor to be more like the Python (or C#) version? (or not possible because of lack of DataFlow::Node for void method in Java?)
+// ******* SINGLE CONFIG ATTEMPT BELOW *************************************************************************
+// /**
+//  * A key length data flow tracking configuration.
+//  */
+// class KeyTrackingConfiguration extends DataFlow::Configuration {
+//   KeyTrackingConfiguration() { this = "KeyTrackingConfiguration" }
+//   override predicate isSource(DataFlow::Node source, DataFlow::FlowState state) {
+//     //state instanceof DataFlow::FlowStateEmpty and
+//     // SYMMETRIC
+//     source.asExpr().(IntegerLiteral).getIntValue() < 128 and state = "128"
+//     or
+//     // ASYMMETRIC
+//     source.asExpr().(IntegerLiteral).getIntValue() < 2048 and state = "2048"
+//     or
+//     source.asExpr().(IntegerLiteral).getIntValue() < 256 and state = "256"
+//     or
+//     getECKeySize(source.asExpr().(StringLiteral).getValue()) < 256 and state = "256" // need this for the cases when the key size is embedded in the curve name.
+//   }
+//   override predicate isSink(DataFlow::Node sink, DataFlow::FlowState state) {
+//     // SYMMETRIC
+//     exists(MethodAccess ma, JavaxCryptoKeyGenerator jcg |
+//       ma.getMethod() instanceof KeyGeneratorInitMethod and
+//       jcg.getAlgoSpec().(StringLiteral).getValue().toUpperCase() = "AES" and
+//       DataFlow::localExprFlow(jcg, ma.getQualifier()) and
+//       sink.asExpr() = ma.getArgument(0) and
+//       state = "128"
+//     )
+//     or
+//     // ASYMMETRIC
+//     exists(MethodAccess ma, JavaSecurityKeyPairGenerator jpg |
+//       ma.getMethod() instanceof KeyPairGeneratorInitMethod and
+//       (
+//         jpg.getAlgoSpec().(StringLiteral).getValue().toUpperCase().matches(["RSA", "DSA", "DH"]) and
+//         DataFlow::localExprFlow(jpg, ma.getQualifier()) and
+//         sink.asExpr() = ma.getArgument(0) and
+//         //ma.getArgument(0).(LocalSourceNode).flowsTo(sink) and
+//         //ma.getArgument(0).(CompileTimeConstantExpr).getIntValue() < 2048 and
+//         state = "2048"
+//       )
+//       or
+//       jpg.getAlgoSpec().(StringLiteral).getValue().toUpperCase().matches("EC%") and
+//       DataFlow::localExprFlow(jpg, ma.getQualifier()) and
+//       sink.asExpr() = ma.getArgument(0) and
+//       //ma.getArgument(0).(CompileTimeConstantExpr).getIntValue() < 256 and
+//       state = "256"
+//     )
+//     or
+//     // TODO: combine below three for less duplicated code
+//     exists(ClassInstanceExpr rsaKeyGenParamSpec |
+//       rsaKeyGenParamSpec.getConstructedType() instanceof RsaKeyGenParameterSpec and
+//       sink.asExpr() = rsaKeyGenParamSpec.getArgument(0) and
+//       state = "2048"
+//     )
+//     or
+//     exists(ClassInstanceExpr dsaGenParamSpec |
+//       dsaGenParamSpec.getConstructedType() instanceof DsaGenParameterSpec and
+//       sink.asExpr() = dsaGenParamSpec.getArgument(0) and
+//       state = "2048"
+//     )
+//     or
+//     exists(ClassInstanceExpr dhGenParamSpec |
+//       dhGenParamSpec.getConstructedType() instanceof DhGenParameterSpec and
+//       sink.asExpr() = dhGenParamSpec.getArgument(0) and
+//       state = "2048"
+//     )
+//     or
+//     exists(ClassInstanceExpr ecGenParamSpec |
+//       ecGenParamSpec.getConstructedType() instanceof EcGenParameterSpec and
+//       sink.asExpr() = ecGenParamSpec.getArgument(0) and
+//       state = "256"
+//     )
+//   }
+//   // ! FlowStates seem to work without even including a step like the below... hmmm
+//   override predicate isAdditionalFlowStep(
+//     DataFlow::Node node1, DataFlow::FlowState state1, DataFlow::Node node2,
+//     DataFlow::FlowState state2
+//   ) {
+//     exists(IntegerLiteral intLiteral |
+//       state1 = "" and
+//       state2 = intLiteral.toString() and
+//       node1.asExpr() = intLiteral and
+//       node2.asExpr() = intLiteral
+//     )
+//   }
+// }
