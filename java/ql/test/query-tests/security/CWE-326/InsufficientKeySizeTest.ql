@@ -1,6 +1,7 @@
 import java
 import TestUtilities.InlineExpectationsTest
 import semmle.code.java.security.InsufficientKeySizeQuery
+import DataFlow::PathGraph
 
 class InsufficientKeySizeTest extends InlineExpectationsTest {
   InsufficientKeySizeTest() { this = "InsufficientKeySize" }
@@ -9,13 +10,15 @@ class InsufficientKeySizeTest extends InlineExpectationsTest {
 
   override predicate hasActualResult(Location location, string element, string tag, string value) {
     tag = "hasInsufficientKeySize" and
-    exists(DataFlow::Node source, DataFlow::Node sink |
-      exists(AsymmetricNonECKeyTrackingConfiguration config1 | config1.hasFlow(source, sink)) or
-      exists(AsymmetricECKeyTrackingConfiguration config2 | config2.hasFlow(source, sink)) or
-      exists(SymmetricKeyTrackingConfiguration config3 | config3.hasFlow(source, sink))
+    exists(DataFlow::PathNode source, DataFlow::PathNode sink |
+      exists(AsymmetricKeyTrackingConfiguration config1 | config1.hasFlowPath(source, sink))
+      or
+      // exists(AsymmetricNonECKeyTrackingConfiguration config1 | config1.hasFlowPath(source, sink)) or
+      // exists(AsymmetricECKeyTrackingConfiguration config2 | config2.hasFlowPath(source, sink)) or
+      exists(SymmetricKeyTrackingConfiguration config3 | config3.hasFlowPath(source, sink))
     |
-      sink.getLocation() = location and
-      element = sink.toString() and
+      sink.getNode().getLocation() = location and
+      element = sink.getNode().toString() and
       value = ""
     )
   }

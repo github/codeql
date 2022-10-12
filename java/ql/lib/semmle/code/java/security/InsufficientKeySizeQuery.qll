@@ -2,6 +2,84 @@
 
 import semmle.code.java.security.Encryption
 import semmle.code.java.dataflow.DataFlow
+import semmle.code.java.dataflow.TaintTracking
+
+//import semmle.code.java.dataflow.internal.DataFlowImplCommonPublic
+//import semmle.code.java.dataflow.FlowSources
+//import semmle.code.java.dataflow.internal.DataFlowNodes
+/**
+ * An Asymmetric (RSA, DSA, DH) key length data flow tracking configuration.
+ */
+class AsymmetricKeyTrackingConfiguration extends DataFlow::Configuration {
+  AsymmetricKeyTrackingConfiguration() { this = "AsymmetricKeyTrackingConfiguration" }
+
+  override predicate isSource(DataFlow::Node source, DataFlow::FlowState state) {
+    //state instanceof DataFlow::FlowStateEmpty and
+    source.asExpr().(IntegerLiteral).getIntValue() < 2048 and state = "2048"
+    or
+    source.asExpr().(IntegerLiteral).getIntValue() < 256 and state = "256"
+    or
+    getECKeySize(source.asExpr().(StringLiteral).getValue()) < 256 and state = "256" // need this for the cases when the key size is embedded in the curve name.
+  }
+
+  override predicate isSink(DataFlow::Node sink, DataFlow::FlowState state) {
+    exists(MethodAccess ma, JavaSecurityKeyPairGenerator jpg |
+      ma.getMethod() instanceof KeyPairGeneratorInitMethod and
+      (
+        jpg.getAlgoSpec().(StringLiteral).getValue().toUpperCase().matches(["RSA", "DSA", "DH"]) and
+        DataFlow::localExprFlow(jpg, ma.getQualifier()) and
+        sink.asExpr() = ma.getArgument(0) and
+        //ma.getArgument(0).(LocalSourceNode).flowsTo(sink) and
+        //ma.getArgument(0).(CompileTimeConstantExpr).getIntValue() < 2048 and
+        state = "2048"
+      )
+      or
+      jpg.getAlgoSpec().(StringLiteral).getValue().toUpperCase().matches("EC%") and
+      DataFlow::localExprFlow(jpg, ma.getQualifier()) and
+      sink.asExpr() = ma.getArgument(0) and
+      //ma.getArgument(0).(CompileTimeConstantExpr).getIntValue() < 256 and
+      state = "256"
+    )
+    or
+    // TODO: combine below three for less duplicated code
+    exists(ClassInstanceExpr rsaKeyGenParamSpec |
+      rsaKeyGenParamSpec.getConstructedType() instanceof RsaKeyGenParameterSpec and
+      sink.asExpr() = rsaKeyGenParamSpec.getArgument(0) and
+      state = "2048"
+    )
+    or
+    exists(ClassInstanceExpr dsaGenParamSpec |
+      dsaGenParamSpec.getConstructedType() instanceof DsaGenParameterSpec and
+      sink.asExpr() = dsaGenParamSpec.getArgument(0) and
+      state = "2048"
+    )
+    or
+    exists(ClassInstanceExpr dhGenParamSpec |
+      dhGenParamSpec.getConstructedType() instanceof DhGenParameterSpec and
+      sink.asExpr() = dhGenParamSpec.getArgument(0) and
+      state = "2048"
+    )
+    or
+    exists(ClassInstanceExpr ecGenParamSpec |
+      ecGenParamSpec.getConstructedType() instanceof EcGenParameterSpec and
+      sink.asExpr() = ecGenParamSpec.getArgument(0) and
+      state = "256"
+    )
+  }
+
+  override predicate isAdditionalFlowStep(
+    DataFlow::Node node1, DataFlow::FlowState state1, DataFlow::Node node2,
+    DataFlow::FlowState state2
+  ) {
+    exists(IntegerLiteral intLiteral |
+      state1 = "" and
+      state2 = intLiteral.toString() and
+      node1.asExpr() = intLiteral and
+      node2.asExpr() = intLiteral
+      //intLiteral.toString().toInt() = 64 // test viability of this craziness
+    )
+  }
+}
 
 /**
  * An Asymmetric (RSA, DSA, DH) key length data flow tracking configuration.
