@@ -23,7 +23,7 @@ abstract class KeySource extends Expr { }
  * A literal byte array is a key source.
  */
 class ByteArrayLiteralSource extends KeySource {
-  ByteArrayLiteralSource() { this = any(ArrayExpr arr | arr.getType().toString() = "Array<UInt8>") }
+  ByteArrayLiteralSource() { this = any(ArrayExpr arr | arr.getType().getName() = "Array<UInt8>") }
 }
 
 /**
