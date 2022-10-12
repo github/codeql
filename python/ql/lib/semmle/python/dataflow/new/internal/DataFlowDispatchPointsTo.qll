@@ -769,7 +769,7 @@ DataFlowCallable viableCallable(ExtractedDataFlowCall call) {
   // A call to a library callable with a flow summary
   // In this situation we can not resolve the callable from the call,
   // as that would make data flow depend on type tracking.
-  // Instead we reolve the call from the summary.
+  // Instead we resolve the call from the summary.
   exists(LibraryCallable callable |
     result = TLibraryCallable(callable) and
     call.getNode() = callable.getACall().getNode()
