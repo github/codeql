@@ -46,7 +46,7 @@ module SummaryComponent {
 
   /**
    * Gets a summary component that represents an element in a collection at a specific
-   * known index `cv`, or an uknown index.
+   * known index `cv`, or an unknown index.
    */
   SummaryComponent elementKnownOrUnknown(ConstantValue cv) {
     result = SC::content(TKnownOrUnknownElementContent(TKnownElementContent(cv)))
