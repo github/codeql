@@ -95,20 +95,18 @@ func sqlite3_finalize(
 		_ pStmt: OpaquePointer?
 	) -> Int32 { return SQLITE_OK }
 
-func sanitize(_ string: String) -> String { return string }
-
 // --- tests ---
 
 func test_sqlite3_c_api(db: OpaquePointer?) {
 	let localString = "user"
 	let remoteString = try! String(contentsOf: URL(string: "http://example.com/")!)
-	let sanitizedString = sanitize(remoteString)
+	let remoteNumber = Int(remoteString) ?? 0
 
 	let unsafeQuery1 = remoteString
 	let unsafeQuery2 = "SELECT * FROM users WHERE username='" + remoteString + "'"
 	let unsafeQuery3 = "SELECT * FROM users WHERE username='\(remoteString)'"
 	let safeQuery1 = "SELECT * FROM users WHERE username='\(localString)'"
-	let safeQuery2 = "SELECT * FROM users WHERE username='\(sanitizedString)'"
+	let safeQuery2 = "SELECT * FROM users WHERE username='\(remoteNumber)'"
 	let varQuery = "SELECT * FROM users WHERE username=?"
 
 	// --- exec ---
@@ -117,7 +115,7 @@ func test_sqlite3_c_api(db: OpaquePointer?) {
 	let result2 = sqlite3_exec(db, unsafeQuery2, nil, nil, nil) // BAD
 	let result3 = sqlite3_exec(db, unsafeQuery3, nil, nil, nil) // BAD
 	let result4 = sqlite3_exec(db, safeQuery1, nil, nil, nil) // GOOD
-	let result5 = sqlite3_exec(db, safeQuery2, nil, nil, nil) // GOOD (sanitized)
+	let result5 = sqlite3_exec(db, safeQuery2, nil, nil, nil) // GOOD
 
 	// --- prepared statements ---
 
@@ -142,22 +140,12 @@ func test_sqlite3_c_api(db: OpaquePointer?) {
 	var stmt3: OpaquePointer?
 
 	if (sqlite3_prepare(db, varQuery, -1, &stmt3, nil) == SQLITE_OK) { // GOOD
-		if (sqlite3_bind_text(stmt3, 1, sanitizedString, -1, SQLITE_TRANSIENT) == SQLITE_OK) { // GOOD
+		if (sqlite3_bind_text(stmt3, 1, remoteString, -1, SQLITE_TRANSIENT) == SQLITE_OK) { // GOOD
 			let result = sqlite3_step(stmt3)
 			// ...
 		}
 	}
 	sqlite3_finalize(stmt3)
-
-	var stmt4: OpaquePointer?
-
-	if (sqlite3_prepare_v2(db, varQuery, -1, &stmt4, nil) == SQLITE_OK) { // GOOD
-		if (sqlite3_bind_text(stmt4, 1, remoteString, -1, SQLITE_TRANSIENT) == SQLITE_OK) { // GOOD???
-			let result = sqlite3_step(stmt4)
-			// ...
-		}
-	}
-	sqlite3_finalize(stmt4)
 
 	// TODO: use all versions v3, 16 etc.
 }

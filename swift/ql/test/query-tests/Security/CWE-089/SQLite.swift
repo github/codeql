@@ -37,20 +37,18 @@ class Connection {
 	public func scalar(_ statement: String, _ bindings: [String: Binding?]) throws -> Binding? { return Binding() }
 }
 
-func sanitize(_ string: String) -> String { return string }
-
 // --- tests ---
 
 func test_sqlite_swift_api(db: Connection) {
 	let localString = "user"
 	let remoteString = try! String(contentsOf: URL(string: "http://example.com/")!)
-	let sanitizedString = sanitize(remoteString)
+	let remoteNumber = Int(remoteString) ?? 0
 
 	let unsafeQuery1 = remoteString
 	let unsafeQuery2 = "SELECT * FROM users WHERE username='" + remoteString + "'"
 	let unsafeQuery3 = "SELECT * FROM users WHERE username='\(remoteString)'"
 	let safeQuery1 = "SELECT * FROM users WHERE username='\(localString)'"
-	let safeQuery2 = "SELECT * FROM users WHERE username='\(sanitizedString)'"
+	let safeQuery2 = "SELECT * FROM users WHERE username='\(remoteNumber)'"
 	let varQuery = "SELECT * FROM users WHERE username=?"
 
 	// --- execute ---
@@ -59,7 +57,7 @@ func test_sqlite_swift_api(db: Connection) {
 	try db.execute(unsafeQuery2) // BAD
 	try db.execute(unsafeQuery3) // BAD
 	try db.execute(safeQuery1) // GOOD
-	try db.execute(safeQuery2) // GOOD (sanitized)
+	try db.execute(safeQuery2) // GOOD
 
 	// --- prepared statements ---
 
@@ -69,11 +67,8 @@ func test_sqlite_swift_api(db: Connection) {
 	let stmt2 = try db.prepare(varQuery, localString) // GOOD
 	try stmt2.run()
 
-	let stmt3 = try db.prepare(varQuery, sanitizedString) // GOOD
+	let stmt3 = try db.prepare(varQuery, remoteString) // GOOD
 	try stmt3.run()
-
-	let stmt4 = try db.prepare(varQuery, remoteString) // GOOD???
-	try stmt4.run()
 
 	// TODO: test all versions of prepare, run, scalar on Connection and Statement
 }
