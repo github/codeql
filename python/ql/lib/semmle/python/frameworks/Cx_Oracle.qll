@@ -21,9 +21,6 @@ private import semmle.python.frameworks.PEP249
  * - https://pypi.org/project/cx-Oracle/
  */
 private module Cx_Oracle {
-  // ---------------------------------------------------------------------------
-  // Cx_Oracle
-  // ---------------------------------------------------------------------------
   /**
    * A model for Cx_Oracle as a module that implements PEP 249, providing ways to execute SQL statements
    * against a database.

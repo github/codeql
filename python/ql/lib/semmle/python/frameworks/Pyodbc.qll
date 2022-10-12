@@ -21,9 +21,6 @@ private import semmle.python.frameworks.PEP249
  * - https://pypi.org/project/pyodbc/
  */
 private module Pyodbc {
-  // ---------------------------------------------------------------------------
-  // Pyodbc
-  // ---------------------------------------------------------------------------
   /**
    * A model for Pyodbc as a module that implements PEP 249, providing ways to execute SQL statements
    * against a database.

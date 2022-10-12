@@ -21,9 +21,6 @@ private import semmle.python.frameworks.PEP249
  * - https://pypi.org/project/phoenixdb/
  */
 private module Phoenixdb {
-  // ---------------------------------------------------------------------------
-  // Phoenixdb
-  // ---------------------------------------------------------------------------
   /**
    * A model for Phoenixdb as a module that implements PEP 249, providing ways to execute SQL statements
    * against a database.
