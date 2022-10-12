@@ -15,7 +15,7 @@ The analysis is built up in layers. the stack looks like this:
 
 ## Avoiding non-monotonic recursion
 
-Given the many interactivg layers, it is imprtant to decide which predicates are allowed to be mutually recursive in order to avoid non-monotonic recursion when negation is used to express the predicates.
+Given the many interactivg layers, it is important to decide which predicates are allowed to be mutually recursive in order to avoid non-monotonic recursion when negation is used to express the predicates.
 As an example, we have defined local source as those whcih do not receive local flow. This means that the local flow relation is not allowed to be recursive with anything depending on local sources.
 
 Some particular reatrictions to keep in mind:
