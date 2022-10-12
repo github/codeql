@@ -144,7 +144,7 @@ private class GraphqlResolvableClass extends ClassDeclaration {
  *
  * ```rb
  * module Mutation
- *   class NameAnInstrument < BaseMutationn
+ *   class NameAnInstrument < BaseMutation
  *     argument :instrument_uuid, Types::Uuid,
  *              required: true,
  *              loads: ::Instrument,
@@ -188,7 +188,7 @@ class GraphqlResolveMethod extends Method, Http::Server::RequestHandler::Range {
  *
  * ```rb
  * module Mutation
- *   class NameAnInstrument < BaseMutationn
+ *   class NameAnInstrument < BaseMutation
  *     argument :instrument_uuid, Types::Uuid,
  *              required: true,
  *              loads: ::Instrument,
