@@ -11,10 +11,12 @@ abstract class InsufficientKeySizeSink extends DataFlow::Node { }
 
 // TODO: Consider if below 3 sources should be private and if it's possible to only use InsufficientKeySizeSource in the configs
 // TODO: add QLDocs if keeping non-private
+/** A source for an insufficient key size (asymmetric-non-ec). */
 class AsymmetricNonECSource extends InsufficientKeySizeSource {
   AsymmetricNonECSource() { getNodeIntValue(this) < 2048 }
 }
 
+/** A source for an insufficient key size (asymmetric-ec). */
 class AsymmetricECSource extends InsufficientKeySizeSource {
   AsymmetricECSource() {
     getNodeIntValue(this) < 256 or
@@ -22,6 +24,7 @@ class AsymmetricECSource extends InsufficientKeySizeSource {
   }
 }
 
+/** A source for an insufficient key size (symmetric). */
 class SymmetricSource extends InsufficientKeySizeSource {
   SymmetricSource() { getNodeIntValue(this) < 128 }
 }
@@ -46,6 +49,7 @@ private int getECKeySize(string algorithm) {
 
 // TODO: Consider if below 3 sinks should be private and if it's possible to only use InsufficientKeySizeSink in the configs
 // TODO: add QLDocs if keeping non-private
+/** A sink for an insufficient key size (asymmetric-non-ec). */
 class AsymmetricNonECSink extends InsufficientKeySizeSink {
   AsymmetricNonECSink() {
     hasKeySizeInInitMethod(this, "asymmetric-non-ec")
@@ -63,6 +67,7 @@ private class AsymmetricNonECSpec extends RefType {
   }
 }
 
+/** A sink for an insufficient key size (asymmetric-ec). */
 class AsymmetricECSink extends InsufficientKeySizeSink {
   AsymmetricECSink() {
     hasKeySizeInInitMethod(this, "asymmetric-ec")
@@ -71,6 +76,7 @@ class AsymmetricECSink extends InsufficientKeySizeSink {
   }
 }
 
+/** A sink for an insufficient key size (symmetric). */
 class SymmetricSink extends InsufficientKeySizeSink {
   SymmetricSink() { hasKeySizeInInitMethod(this, "symmetric") }
 }
