@@ -8,13 +8,17 @@ import semmle.code.java.dataflow.TaintTracking
 //import semmle.code.java.dataflow.FlowSources
 //import semmle.code.java.dataflow.internal.DataFlowNodes
 /**
- * An Asymmetric (RSA, DSA, DH) key length data flow tracking configuration.
+ * A key length data flow tracking configuration.
  */
-class AsymmetricKeyTrackingConfiguration extends DataFlow::Configuration {
-  AsymmetricKeyTrackingConfiguration() { this = "AsymmetricKeyTrackingConfiguration" }
+class KeyTrackingConfiguration extends DataFlow::Configuration {
+  KeyTrackingConfiguration() { this = "KeyTrackingConfiguration" }
 
   override predicate isSource(DataFlow::Node source, DataFlow::FlowState state) {
     //state instanceof DataFlow::FlowStateEmpty and
+    // SYMMETRIC
+    source.asExpr().(IntegerLiteral).getIntValue() < 128 and state = "128"
+    or
+    // ASYMMETRIC
     source.asExpr().(IntegerLiteral).getIntValue() < 2048 and state = "2048"
     or
     source.asExpr().(IntegerLiteral).getIntValue() < 256 and state = "256"
@@ -23,6 +27,16 @@ class AsymmetricKeyTrackingConfiguration extends DataFlow::Configuration {
   }
 
   override predicate isSink(DataFlow::Node sink, DataFlow::FlowState state) {
+    // SYMMETRIC
+    exists(MethodAccess ma, JavaxCryptoKeyGenerator jcg |
+      ma.getMethod() instanceof KeyGeneratorInitMethod and
+      jcg.getAlgoSpec().(StringLiteral).getValue().toUpperCase() = "AES" and
+      DataFlow::localExprFlow(jcg, ma.getQualifier()) and
+      sink.asExpr() = ma.getArgument(0) and
+      state = "128"
+    )
+    or
+    // ASYMMETRIC
     exists(MethodAccess ma, JavaSecurityKeyPairGenerator jpg |
       ma.getMethod() instanceof KeyPairGeneratorInitMethod and
       (
@@ -67,6 +81,7 @@ class AsymmetricKeyTrackingConfiguration extends DataFlow::Configuration {
     )
   }
 
+  // ! FlowStates seem to work without even including a step like the below... hmmm
   override predicate isAdditionalFlowStep(
     DataFlow::Node node1, DataFlow::FlowState state1, DataFlow::Node node2,
     DataFlow::FlowState state2
@@ -76,7 +91,6 @@ class AsymmetricKeyTrackingConfiguration extends DataFlow::Configuration {
       state2 = intLiteral.toString() and
       node1.asExpr() = intLiteral and
       node2.asExpr() = intLiteral
-      //intLiteral.toString().toInt() = 64 // test viability of this craziness
     )
   }
 }
