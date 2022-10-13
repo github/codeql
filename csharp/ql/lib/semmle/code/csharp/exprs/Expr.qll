@@ -192,7 +192,7 @@ class Operation extends Expr, @op_expr {
 }
 
 /**
- * A unary operation. Either a unary arithemtic operation
+ * A unary operation. Either a unary arithmetic operation
  * (`UnaryArithmeticOperation`), a unary bitwise operation
  * (`UnaryBitwiseOperation`), a `sizeof` operation (`SizeofExpr`), a pointer
  * indirection operation (`PointerIndirectionExpr`), an address-of operation
@@ -206,7 +206,7 @@ class UnaryOperation extends Operation, @un_op {
 }
 
 /**
- * A binary operation. Either a binary arithemtic operation
+ * A binary operation. Either a binary arithmetic operation
  * (`BinaryArithmeticOperation`), a binary bitwise operation
  * (`BinaryBitwiseOperation`), a comparison operation (`ComparisonOperation`),
  * or a binary logical operation (`BinaryLogicalOperation`).
