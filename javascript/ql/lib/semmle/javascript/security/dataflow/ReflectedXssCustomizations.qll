@@ -97,6 +97,7 @@ module ReflectedXss {
       // There is no dominating header, and `header` is non-local.
       not isLocalHeaderDefinition(header) and
       not exists(Http::HeaderDefinition dominatingHeader |
+        dominatingHeader.getAHeaderName() = "content-type" and
         dominatingHeader.getBasicBlock().(ReachableBasicBlock).dominates(sender.getBasicBlock())
       )
     )
