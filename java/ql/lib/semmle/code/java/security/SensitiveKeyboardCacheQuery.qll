@@ -2,24 +2,23 @@
 
 import java
 import semmle.code.java.security.SensitiveActions
+import semmle.code.xml.AndroidManifest
 
 /** An Android Layout XML file. */
-class AndroidLayoutXmlFile extends XmlFile {
-  AndroidLayoutXmlFile() { this.getAbsolutePath().matches("%/res/layout/%.xml") }
+private class AndroidLayoutXmlFile extends XmlFile {
+  AndroidLayoutXmlFile() { this.getRelativePath().matches("%/res/layout/%.xml") }
 }
 
 /** An XML element that represents an editable text field. */
 class AndroidEditableXmlElement extends XmlElement {
-  XmlAttribute inputType;
-  XmlAttribute id;
+  AndroidXmlAttribute inputType;
+  AndroidXmlAttribute id;
 
   AndroidEditableXmlElement() {
     this.getFile() instanceof AndroidLayoutXmlFile and
     inputType = this.getAnAttribute() and
-    inputType.getNamespace().getPrefix() = "android" and
     inputType.getName() = "inputType" and
     id = this.getAnAttribute() and
-    id.getNamespace().getPrefix() = "android" and
     id.getName() = "id"
   }
 

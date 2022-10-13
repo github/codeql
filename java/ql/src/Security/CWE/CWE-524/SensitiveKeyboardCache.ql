@@ -7,7 +7,7 @@
  * @id java/android/sensitive-keyboard-cache
  * @tags security
  *       external/cwe/cwe-524
- * @precision high
+ * @precision medium
  */
 
 import java
