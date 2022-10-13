@@ -1,1 +1,1 @@
-queries/Security/CWE-089/SqlTainted.ql
+queries/Security/CWE-089/SqlInjection.ql
