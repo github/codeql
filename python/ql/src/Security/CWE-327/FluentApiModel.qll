@@ -88,7 +88,7 @@ predicate unsafe_connection_creation_with_context(
 }
 
 /**
- * Holds if `conectionCreation` marks the creation of a connection witout reference to a context
+ * Holds if `conectionCreation` marks the creation of a connection without reference to a context
  * and allowing `insecure_version`.
  */
 predicate unsafe_connection_creation_without_context(
