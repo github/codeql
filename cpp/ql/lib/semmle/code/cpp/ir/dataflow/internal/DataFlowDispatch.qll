@@ -1,8 +1,8 @@
 private import cpp
 private import semmle.code.cpp.ir.IR
 private import semmle.code.cpp.ir.dataflow.DataFlow
-private import semmle.code.cpp.ir.dataflow.internal.DataFlowPrivate
-private import semmle.code.cpp.ir.dataflow.internal.DataFlowUtil
+private import DataFlowPrivate
+private import DataFlowUtil
 private import DataFlowImplCommon as DataFlowImplCommon
 
 /**

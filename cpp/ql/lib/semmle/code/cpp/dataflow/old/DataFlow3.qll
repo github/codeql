@@ -6,7 +6,15 @@
  * `DataFlow2::Configuration`, a `DataFlow3::Configuration`, or a
  * `DataFlow4::Configuration`.
  *
- * See `semmle.code.cpp.dataflow.DataFlow` for the full documentation.
+ * See `semmle.code.cpp.ir.dataflow.DataFlow` for the full documentation.
  */
 
-import semmle.code.cpp.ir.dataflow.DataFlow3
+import cpp
+
+/**
+ * Provides classes for performing local (intra-procedural) and
+ * global (inter-procedural) data flow analyses.
+ */
+module DataFlow {
+  import semmle.code.cpp.dataflow.old.internal.DataFlowImpl3
+}

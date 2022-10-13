@@ -282,7 +282,7 @@ private module Cached {
   cached
   predicate additionalTaintStep(DataFlow::Node n1, DataFlow::Node n2) {
     exists(CallInstruction call, Function func, FunctionInput modelIn, FunctionOutput modelOut |
-      n1.asOperand() = callInput(call, modelIn) and
+      n1 = callInput(call, modelIn) and
       (
         func.(TaintFunction).hasTaintFlow(modelIn, modelOut)
         or

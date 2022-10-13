@@ -1,5 +1,5 @@
 /**
- * Provides a `TaintTracking2` module, which is a copy of the `TaintTracking`
+ * Provides a `TaintTracking3` module, which is a copy of the `TaintTracking`
  * module. Use this class when data-flow configurations or taint-tracking
  * configurations must depend on each other. Two classes extending
  * `DataFlow::Configuration` should never depend on each other, but one of them
@@ -11,4 +11,4 @@
  * See `semmle.code.cpp.dataflow.TaintTracking` for the full documentation.
  */
 
-import semmle.code.cpp.ir.dataflow.TaintTracking2
+import semmle.code.cpp.ir.dataflow.TaintTracking3
