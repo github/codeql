@@ -1,1 +1,48 @@
-| TODO |
+edges
+nodes
+subpaths
+#select
+| SQLite.swift:29:86:29:86 |  |
+| SQLite.swift:30:85:30:85 |  |
+| SQLite.swift:31:93:31:93 |  |
+| SQLite.swift:33:113:33:113 |  |
+| SQLite.swift:34:112:34:112 |  |
+| SQLite.swift:35:120:35:120 |  |
+| SQLite.swift:45:113:45:113 |  |
+| SQLite.swift:46:112:46:112 |  |
+| SQLite.swift:47:120:47:120 |  |
+| SQLite.swift:49:128:49:128 |  |
+| SQLite.swift:50:127:50:127 |  |
+| SQLite.swift:51:135:51:135 |  |
+| SQLite.swift:73:17:73:17 | unsafeQuery1 |
+| SQLite.swift:74:17:74:17 | unsafeQuery2 |
+| SQLite.swift:75:17:75:17 | unsafeQuery3 |
+| SQLite.swift:76:17:76:17 | safeQuery1 |
+| SQLite.swift:77:17:77:17 | safeQuery2 |
+| SQLite.swift:83:29:83:29 | unsafeQuery3 |
+| SQLite.swift:86:29:86:29 | varQuery |
+| SQLite.swift:89:29:89:29 | varQuery |
+| SQLite.swift:92:28:92:28 | localString |
+| SQLite.swift:95:28:95:28 | remoteString |
+| SQLite.swift:100:29:100:29 | unsafeQuery1 |
+| SQLite.swift:103:29:103:29 | unsafeQuery1 |
+| SQLite.swift:106:29:106:29 | unsafeQuery1 |
+| SQLite.swift:109:9:109:9 | unsafeQuery1 |
+| SQLite.swift:111:9:111:9 | unsafeQuery1 |
+| SQLite.swift:113:9:113:9 | unsafeQuery1 |
+| SQLite.swift:115:12:115:12 | unsafeQuery1 |
+| SQLite.swift:117:12:117:12 | unsafeQuery1 |
+| SQLite.swift:119:12:119:12 | unsafeQuery1 |
+| SQLite.swift:121:29:121:29 | varQuery |
+| SQLite.swift:132:16:132:16 | remoteString |
+| sqlite3_c_api.swift:133:33:133:33 | (UnsafePointer<CChar>) ... |
+| sqlite3_c_api.swift:134:33:134:33 | (UnsafePointer<CChar>) ... |
+| sqlite3_c_api.swift:135:33:135:33 | (UnsafePointer<CChar>) ... |
+| sqlite3_c_api.swift:136:33:136:33 | (UnsafePointer<CChar>) ... |
+| sqlite3_c_api.swift:137:33:137:33 | (UnsafePointer<CChar>) ... |
+| sqlite3_c_api.swift:145:26:145:26 | (UnsafePointer<CChar>) ... |
+| sqlite3_c_api.swift:153:26:153:26 | (UnsafePointer<CChar>) ... |
+| sqlite3_c_api.swift:163:26:163:26 | (UnsafePointer<CChar>) ... |
+| sqlite3_c_api.swift:175:29:175:29 | (UnsafePointer<CChar>) ... |
+| sqlite3_c_api.swift:194:28:194:28 | buffer |
+| sqlite3_c_api.swift:202:31:202:31 | buffer |
