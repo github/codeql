@@ -1,7 +1,7 @@
 /**
  * @id cpp/wrong-uint-access
  * @name Wrong Uint
- * @descripion Access an array of size lower than 256 with a uint16.
+ * @description Access an array of size lower than 256 with a uint16.
  * @kind problem
  * @problem.severity recommendation
  * @tags efficiency
