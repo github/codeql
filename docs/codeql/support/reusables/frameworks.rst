@@ -226,6 +226,7 @@ and the CodeQL library pack ``codeql/python-all`` (`changelog <https://github.co
    mysql-connector, Database
    MySQL-python, Database
    mysqlclient, Database
+   oracledb, Database
    phoenixdb, Database
    psycopg2, Database
    pyodbc, Database

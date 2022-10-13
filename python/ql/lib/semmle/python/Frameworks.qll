@@ -34,6 +34,7 @@ private import semmle.python.frameworks.MarkupSafe
 private import semmle.python.frameworks.Multidict
 private import semmle.python.frameworks.Mysql
 private import semmle.python.frameworks.MySQLdb
+private import semmle.python.frameworks.Oracledb
 private import semmle.python.frameworks.Peewee
 private import semmle.python.frameworks.Phoenixdb
 private import semmle.python.frameworks.Psycopg2
