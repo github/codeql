@@ -3,7 +3,7 @@
   "qhelp.dtd">
 <qhelp>
 <overview>
-<p>This metric calculates the lack of cohesion of a type using a method propposed by Chidamber and 
+<p>This metric calculates the lack of cohesion of a type using a method proposed by Chidamber and 
 Kemerer in their paper <em>Towards a metrics suite for object oriented design</em>. Most well 
 designed types will have methods that access the same fields. If methods access disjoint subsets 
 of the classes fields it is an indication the class may have multiple responsibilities.</p>
