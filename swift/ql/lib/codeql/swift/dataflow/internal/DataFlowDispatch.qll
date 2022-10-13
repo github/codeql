@@ -71,7 +71,7 @@ newtype TDataFlowCall =
   TNormalCall(ApplyExprCfgNode call) or
   TPropertyGetterCall(PropertyGetterCfgNode getter) or
   TPropertySetterCall(PropertySetterCfgNode setter) or
-  TPropertyObserverCall(PropertyObserverCfgNode obserer) or
+  TPropertyObserverCall(PropertyObserverCfgNode observer) or
   TSummaryCall(FlowSummaryImpl::Public::SummarizedCallable c, Node receiver) {
     FlowSummaryImpl::Private::summaryCallbackRange(c, receiver)
   }
