@@ -76,20 +76,28 @@ predicate simpleLocalFlowStep = DataFlowPrivate::localFlowStepTypeTracker/2;
  */
 predicate jumpStep = DataFlowPrivate::jumpStep/2;
 
-/**
- * Holds if there is a summarized local flow step from `nodeFrom` to `nodeTo`,
- * because there is direct flow from a parameter to a return. That is, summarized
- * steps are not applied recursively.
- */
+/** Holds if there is direct flow from `param` to a return. */
 pragma[nomagic]
-private predicate summarizedLocalStep(Node nodeFrom, Node nodeTo) {
-  exists(DataFlowPublic::ParameterNode param, DataFlowPrivate::ReturningNode returnNode |
+private predicate flowThrough(DataFlowPublic::ParameterNode param) {
+  exists(DataFlowPrivate::ReturningNode returnNode |
     DataFlowPrivate::LocalFlow::getParameterDefNode(param.getParameter())
         .(TypeTrackingNode)
-        .flowsTo(returnNode) and
+        .flowsTo(returnNode)
+  )
+}
+
+/** Holds if there is a level step from `nodeFrom` to `nodeTo`, which may depend on the call graph. */
+pragma[nomagic]
+predicate levelStepCall(Node nodeFrom, Node nodeTo) {
+  exists(DataFlowPublic::ParameterNode param |
+    flowThrough(param) and
     callStep(nodeTo.asExpr(), nodeFrom, param)
   )
-  or
+}
+
+/** Holds if there is a level step from `nodeFrom` to `nodeTo`, which does not depend on the call graph. */
+pragma[nomagic]
+predicate levelStepNoCall(Node nodeFrom, Node nodeTo) {
   exists(
     SummarizedCallable callable, DataFlowPublic::CallNode call, SummaryComponentStack input,
     SummaryComponentStack output
@@ -99,11 +107,6 @@ private predicate summarizedLocalStep(Node nodeFrom, Node nodeTo) {
     nodeFrom = evaluateSummaryComponentStackLocal(callable, call, input) and
     nodeTo = evaluateSummaryComponentStackLocal(callable, call, output)
   )
-}
-
-/** Holds if there is a level step from `nodeFrom` to `nodeTo`. */
-predicate levelStep(Node nodeFrom, Node nodeTo) {
-  summarizedLocalStep(nodeFrom, nodeTo)
   or
   localFieldStep(nodeFrom, nodeTo)
 }
@@ -120,7 +123,7 @@ private MethodBase getAMethod(ModuleBase mod, boolean instance) {
   if result instanceof SingletonMethod then instance = false else instance = true
   or
   exists(SingletonClass cls |
-    cls.getValue().(SelfVariableAccess).getCfgScope() = mod and
+    cls.getValue().(SelfVariableAccess).getVariable().getDeclaringScope() = mod and
     result = cls.getAMethod().(Method) and
     instance = false
   )
@@ -133,7 +136,7 @@ private MethodBase getAMethod(ModuleBase mod, boolean instance) {
 pragma[nomagic]
 private Node fieldPredecessor(ModuleBase mod, boolean instance, string field) {
   exists(InstanceVariableWriteAccess access, AssignExpr assign |
-    access.getReceiver().getCfgScope() = getAMethod(mod, instance) and
+    access.getReceiver().getVariable().getDeclaringScope() = getAMethod(mod, instance) and
     field = access.getVariable().getName() and
     assign.getLeftOperand() = access and
     result.asExpr().getExpr() = assign.getRightOperand()
@@ -147,7 +150,7 @@ private Node fieldPredecessor(ModuleBase mod, boolean instance, string field) {
 pragma[nomagic]
 private Node fieldSuccessor(ModuleBase mod, boolean instance, string field) {
   exists(InstanceVariableReadAccess access |
-    access.getReceiver().getCfgScope() = getAMethod(mod, instance) and
+    access.getReceiver().getVariable().getDeclaringScope() = getAMethod(mod, instance) and
     result.asExpr().getExpr() = access and
     field = access.getVariable().getName()
   )

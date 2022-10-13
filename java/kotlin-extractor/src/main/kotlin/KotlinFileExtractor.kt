@@ -231,7 +231,7 @@ open class KotlinFileExtractor(
                             // default java visibility (top level)
                         }
                         JavaVisibilities.ProtectedAndPackage -> {
-                            // default java visibility (member level)
+                            addModifiers(id, "protected")
                         }
                         else -> logger.errorElement("Unexpected delegated visibility: $v", elementForLocation)
                     }
@@ -1251,6 +1251,10 @@ open class KotlinFileExtractor(
                 }
 
                 extractVisibility(p, id, p.visibility)
+
+                if (p.isLateinit) {
+                    addModifiers(id, "lateinit")
+                }
             }
         }
     }
@@ -1405,6 +1409,9 @@ open class KotlinFileExtractor(
             }
             if (!v.isVar) {
                 addModifiers(varId, "final")
+            }
+            if (v.isLateinit) {
+                addModifiers(varId, "lateinit")
             }
         }
     }

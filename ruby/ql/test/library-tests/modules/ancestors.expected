@@ -120,6 +120,13 @@ hello.rb:
 #   18| HelloWorld
 #-----| super -> Greeting
 
+instance_fields.rb:
+#   11| A_target
+#-----| super -> Object
+
+#   26| B_target
+#-----| super -> Object
+
 modules.rb:
 #    1| Empty
 

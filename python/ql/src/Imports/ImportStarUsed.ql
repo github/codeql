@@ -13,4 +13,4 @@
 import python
 
 from ImportStar i
-select i, "Using 'from ... import *' pollutes the namespace"
+select i, "Using 'from ... import *' pollutes the namespace."

@@ -229,6 +229,8 @@ and the CodeQL library pack ``codeql/python-all`` (`changelog <https://github.co
    phoenixdb, Database
    psycopg2, Database
    pyodbc, Database
+   pymssql, Database
+   PyMySQL, Database
    sqlite3, Database
    Flask-SQLAlchemy, Database ORM
    peewee, Database ORM

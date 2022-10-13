@@ -40,6 +40,8 @@ getModule
 | hello.rb:1:1:8:3 | EnglishWords |
 | hello.rb:11:1:16:3 | Greeting |
 | hello.rb:18:1:22:3 | HelloWorld |
+| instance_fields.rb:11:1:14:3 | A_target |
+| instance_fields.rb:26:1:29:3 | B_target |
 | modules.rb:1:1:2:3 | Empty |
 | modules.rb:4:1:24:3 | Foo |
 | modules.rb:5:3:14:5 | Foo::Bar |
@@ -87,6 +89,7 @@ getADeclaration
 | calls.rb:115:1:118:3 | Object | calls.rb:1:1:550:40 | calls.rb |
 | calls.rb:115:1:118:3 | Object | calls.rb:115:1:118:3 | Object |
 | calls.rb:115:1:118:3 | Object | hello.rb:1:1:22:3 | hello.rb |
+| calls.rb:115:1:118:3 | Object | instance_fields.rb:1:1:29:4 | instance_fields.rb |
 | calls.rb:115:1:118:3 | Object | modules.rb:1:1:129:4 | modules.rb |
 | calls.rb:115:1:118:3 | Object | modules_rec.rb:1:1:11:26 | modules_rec.rb |
 | calls.rb:115:1:118:3 | Object | private.rb:1:1:105:40 | private.rb |
@@ -94,8 +97,10 @@ getADeclaration
 | calls.rb:125:1:138:3 | Array | calls.rb:125:1:138:3 | Array |
 | calls.rb:165:1:169:3 | S | calls.rb:165:1:169:3 | S |
 | calls.rb:171:1:174:3 | A | calls.rb:171:1:174:3 | A |
+| calls.rb:171:1:174:3 | A | instance_fields.rb:1:1:10:3 | A |
 | calls.rb:171:1:174:3 | A | modules_rec.rb:7:1:9:3 | A |
 | calls.rb:176:1:179:3 | B | calls.rb:176:1:179:3 | B |
+| calls.rb:176:1:179:3 | B | instance_fields.rb:16:1:25:3 | B |
 | calls.rb:190:1:226:3 | Singletons | calls.rb:190:1:226:3 | Singletons |
 | calls.rb:310:1:321:3 | SelfNew | calls.rb:310:1:321:3 | SelfNew |
 | calls.rb:325:1:329:3 | C1 | calls.rb:325:1:329:3 | C1 |
@@ -113,6 +118,8 @@ getADeclaration
 | hello.rb:1:1:8:3 | EnglishWords | hello.rb:1:1:8:3 | EnglishWords |
 | hello.rb:11:1:16:3 | Greeting | hello.rb:11:1:16:3 | Greeting |
 | hello.rb:18:1:22:3 | HelloWorld | hello.rb:18:1:22:3 | HelloWorld |
+| instance_fields.rb:11:1:14:3 | A_target | instance_fields.rb:11:1:14:3 | A_target |
+| instance_fields.rb:26:1:29:3 | B_target | instance_fields.rb:26:1:29:3 | B_target |
 | modules.rb:1:1:2:3 | Empty | modules.rb:1:1:2:3 | Empty |
 | modules.rb:4:1:24:3 | Foo | modules.rb:4:1:24:3 | Foo |
 | modules.rb:4:1:24:3 | Foo | modules.rb:26:1:35:3 | Foo |
@@ -185,6 +192,8 @@ getSuperClass
 | file://:0:0:0:0 | TrueClass | calls.rb:115:1:118:3 | Object |
 | hello.rb:11:1:16:3 | Greeting | calls.rb:115:1:118:3 | Object |
 | hello.rb:18:1:22:3 | HelloWorld | hello.rb:11:1:16:3 | Greeting |
+| instance_fields.rb:11:1:14:3 | A_target | calls.rb:115:1:118:3 | Object |
+| instance_fields.rb:26:1:29:3 | B_target | calls.rb:115:1:118:3 | Object |
 | modules.rb:6:5:7:7 | Foo::Bar::ClassInFooBar | calls.rb:115:1:118:3 | Object |
 | modules.rb:19:3:20:5 | Foo::ClassInFoo | calls.rb:115:1:118:3 | Object |
 | modules.rb:30:3:31:5 | Foo::ClassInAnotherDefinitionOfFoo | calls.rb:115:1:118:3 | Object |
@@ -299,6 +308,8 @@ resolveConstantReadAccess
 | calls.rb:550:1:550:13 | Array | Array |
 | hello.rb:12:13:12:24 | EnglishWords | EnglishWords |
 | hello.rb:18:20:18:27 | Greeting | Greeting |
+| instance_fields.rb:4:22:4:31 | A_target | A_target |
+| instance_fields.rb:19:22:19:31 | B_target | B_target |
 | modules.rb:48:8:48:10 | Foo | Foo |
 | modules.rb:66:11:66:14 | Foo1 | Test::Foo1 |
 | modules.rb:72:11:72:14 | Foo2 | Test::Foo2::Foo2 |
@@ -364,6 +375,10 @@ resolveConstantWriteAccess
 | hello.rb:1:1:8:3 | EnglishWords | EnglishWords |
 | hello.rb:11:1:16:3 | Greeting | Greeting |
 | hello.rb:18:1:22:3 | HelloWorld | HelloWorld |
+| instance_fields.rb:1:1:10:3 | A | A |
+| instance_fields.rb:11:1:14:3 | A_target | A_target |
+| instance_fields.rb:16:1:25:3 | B | B |
+| instance_fields.rb:26:1:29:3 | B_target | B_target |
 | modules.rb:1:1:2:3 | Empty | Empty |
 | modules.rb:4:1:24:3 | Foo | Foo |
 | modules.rb:5:3:14:5 | Bar | Foo::Bar |
@@ -1366,6 +1381,36 @@ enclosingModule
 | hello.rb:20:30:20:34 | self | hello.rb:18:1:22:3 | HelloWorld |
 | hello.rb:20:38:20:40 | "!" | hello.rb:18:1:22:3 | HelloWorld |
 | hello.rb:20:39:20:39 | ! | hello.rb:18:1:22:3 | HelloWorld |
+| instance_fields.rb:1:1:10:3 | A | instance_fields.rb:1:1:29:4 | instance_fields.rb |
+| instance_fields.rb:2:5:9:7 | class << ... | instance_fields.rb:1:1:10:3 | A |
+| instance_fields.rb:2:14:2:17 | self | instance_fields.rb:1:1:10:3 | A |
+| instance_fields.rb:3:9:5:11 | create | instance_fields.rb:2:5:9:7 | class << ... |
+| instance_fields.rb:4:13:4:18 | @field | instance_fields.rb:2:5:9:7 | class << ... |
+| instance_fields.rb:4:13:4:18 | self | instance_fields.rb:2:5:9:7 | class << ... |
+| instance_fields.rb:4:13:4:35 | ... = ... | instance_fields.rb:2:5:9:7 | class << ... |
+| instance_fields.rb:4:22:4:31 | A_target | instance_fields.rb:2:5:9:7 | class << ... |
+| instance_fields.rb:4:22:4:35 | call to new | instance_fields.rb:2:5:9:7 | class << ... |
+| instance_fields.rb:6:9:8:11 | use | instance_fields.rb:2:5:9:7 | class << ... |
+| instance_fields.rb:7:13:7:18 | @field | instance_fields.rb:2:5:9:7 | class << ... |
+| instance_fields.rb:7:13:7:18 | self | instance_fields.rb:2:5:9:7 | class << ... |
+| instance_fields.rb:7:13:7:25 | call to target | instance_fields.rb:2:5:9:7 | class << ... |
+| instance_fields.rb:11:1:14:3 | A_target | instance_fields.rb:1:1:29:4 | instance_fields.rb |
+| instance_fields.rb:12:5:13:7 | target | instance_fields.rb:11:1:14:3 | A_target |
+| instance_fields.rb:16:1:25:3 | B | instance_fields.rb:1:1:29:4 | instance_fields.rb |
+| instance_fields.rb:17:5:24:7 | class << ... | instance_fields.rb:16:1:25:3 | B |
+| instance_fields.rb:17:14:17:17 | self | instance_fields.rb:16:1:25:3 | B |
+| instance_fields.rb:18:9:20:11 | create | instance_fields.rb:17:5:24:7 | class << ... |
+| instance_fields.rb:19:13:19:18 | @field | instance_fields.rb:17:5:24:7 | class << ... |
+| instance_fields.rb:19:13:19:18 | self | instance_fields.rb:17:5:24:7 | class << ... |
+| instance_fields.rb:19:13:19:35 | ... = ... | instance_fields.rb:17:5:24:7 | class << ... |
+| instance_fields.rb:19:22:19:31 | B_target | instance_fields.rb:17:5:24:7 | class << ... |
+| instance_fields.rb:19:22:19:35 | call to new | instance_fields.rb:17:5:24:7 | class << ... |
+| instance_fields.rb:21:9:23:11 | use | instance_fields.rb:17:5:24:7 | class << ... |
+| instance_fields.rb:22:13:22:18 | @field | instance_fields.rb:17:5:24:7 | class << ... |
+| instance_fields.rb:22:13:22:18 | self | instance_fields.rb:17:5:24:7 | class << ... |
+| instance_fields.rb:22:13:22:25 | call to target | instance_fields.rb:17:5:24:7 | class << ... |
+| instance_fields.rb:26:1:29:3 | B_target | instance_fields.rb:1:1:29:4 | instance_fields.rb |
+| instance_fields.rb:27:5:28:7 | target | instance_fields.rb:26:1:29:3 | B_target |
 | modules.rb:1:1:2:3 | Empty | modules.rb:1:1:129:4 | modules.rb |
 | modules.rb:4:1:24:3 | Foo | modules.rb:1:1:129:4 | modules.rb |
 | modules.rb:5:3:14:5 | Bar | modules.rb:4:1:24:3 | Foo |

@@ -41,7 +41,7 @@ Node callOutput(CallInstruction call, FunctionOutput output) {
   // The side effect of a call on the value pointed to by an argument or qualifier
   exists(int index, int indirectionIndex |
     result.(IndirectArgumentOutNode).getArgumentIndex() = index and
-    result.(IndirectArgumentOutNode).getIndirectionIndex() + 1 = indirectionIndex and
+    result.(IndirectArgumentOutNode).getIndirectionIndex() = indirectionIndex and
     result.(IndirectArgumentOutNode).getCallInstruction() = call and
     output.isParameterDerefOrQualifierObject(index, indirectionIndex)
   )
