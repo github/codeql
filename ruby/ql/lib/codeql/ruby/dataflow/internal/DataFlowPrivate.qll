@@ -1165,8 +1165,8 @@ private module PostUpdateNodes {
     ExprPostUpdateNode() { this = TExprPostUpdateNode(e) }
 
     override ExprNode getPreUpdateNode() {
-      // For compund arguments, such as `m(if b then x else y)`, we want the leaf nodes
-      // `[post] x` and `[post] y` to have two pre-update nodes: (1) the compund argument,
+      // For compound arguments, such as `m(if b then x else y)`, we want the leaf nodes
+      // `[post] x` and `[post] y` to have two pre-update nodes: (1) the compound argument,
       // `if b then x else y`; and the (2) the underlying expressions; `x` and `y`,
       // respectively.
       //

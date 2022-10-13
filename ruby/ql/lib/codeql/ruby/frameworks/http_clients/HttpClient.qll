@@ -25,7 +25,7 @@ class HttpClientRequest extends Http::Client::Request::Range, DataFlow::CallNode
       [
         // One-off requests
         API::getTopLevelMember("HTTPClient"),
-        // Conncection re-use
+        // Connection re-use
         API::getTopLevelMember("HTTPClient").getInstance()
       ] and
     requestNode = connectionNode.getReturn(method) and

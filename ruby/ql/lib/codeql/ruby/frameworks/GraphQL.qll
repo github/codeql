@@ -120,7 +120,7 @@ class GraphqlSchemaObjectClass extends ClassDeclaration {
  * `GraphQL::Schema::RelayClassicMutation` or
  * `GraphQL::Schema::Resolver`.
  *
- * Both of these classes have an overrideable `resolve` instance
+ * Both of these classes have an overridable `resolve` instance
  * method which can receive user input in order to resolve a query or mutation.
  */
 private class GraphqlResolvableClass extends ClassDeclaration {
@@ -144,7 +144,7 @@ private class GraphqlResolvableClass extends ClassDeclaration {
  *
  * ```rb
  * module Mutation
- *   class NameAnInstrument < BaseMutationn
+ *   class NameAnInstrument < BaseMutation
  *     argument :instrument_uuid, Types::Uuid,
  *              required: true,
  *              loads: ::Instrument,
@@ -188,7 +188,7 @@ class GraphqlResolveMethod extends Method, Http::Server::RequestHandler::Range {
  *
  * ```rb
  * module Mutation
- *   class NameAnInstrument < BaseMutationn
+ *   class NameAnInstrument < BaseMutation
  *     argument :instrument_uuid, Types::Uuid,
  *              required: true,
  *              loads: ::Instrument,
