@@ -887,7 +887,7 @@ class ThisParameterNode extends ParameterNode, InstructionNode {
 }
 
 pragma[noinline]
-private predicate indirectPostionHasArgumentIndexAndIndex(
+private predicate indirectPositionHasArgumentIndexAndIndex(
   IndirectionPosition pos, int argumentIndex, int indirectionIndex
 ) {
   pos.getArgumentIndex() = argumentIndex and
@@ -907,7 +907,7 @@ class ParameterIndirectionNode extends ParameterNode instanceof IndirectParamete
   override predicate isParameterOf(Function f, ParameterPosition pos) {
     IndirectParameterNode.super.getEnclosingCallable() = f and
     exists(int argumentIndex, int indirectionIndex |
-      indirectPostionHasArgumentIndexAndIndex(pos, argumentIndex, indirectionIndex) and
+      indirectPositionHasArgumentIndexAndIndex(pos, argumentIndex, indirectionIndex) and
       indirectParameterNodeHasArgumentIndexAndIndex(this, argumentIndex, indirectionIndex)
     )
   }
