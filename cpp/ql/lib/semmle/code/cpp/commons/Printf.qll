@@ -76,7 +76,7 @@ class TypeBoundsAnalysis extends BufferWriteEstimationReason, TTypeBoundsAnalysi
 
 /**
  * The estimation comes from non trivial bounds found via actual flow analysis,
- * but a widening aproximation might have been used for variables in loops.
+ * but a widening approximation might have been used for variables in loops.
  * For example
  * ```
  * for (int i = 0; i < 10; ++i) {
