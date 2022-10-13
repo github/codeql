@@ -3,11 +3,7 @@
  *
  * See
  * - https://github.com/mkleehammer/pyodbc/wiki
-<<<<<<< HEAD
- * - https://pypi.org/project/pyodbc/ 
-=======
  * - https://pypi.org/project/pyodbc/
->>>>>>> 5352eb77cc (Add python cx_oracle, phoenixdb, pyodbc models)
  */
 
 private import python
