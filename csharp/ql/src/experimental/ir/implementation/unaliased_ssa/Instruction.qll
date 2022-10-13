@@ -742,7 +742,7 @@ class NoOpInstruction extends Instruction {
  * The `ReturnInstruction` for a function will have a control-flow successor edge to a block
  * containing the `ExitFunction` instruction for that function.
  *
- * There are two differet return instructions: `ReturnValueInstruction`, for returning a value from
+ * There are two different return instructions: `ReturnValueInstruction`, for returning a value from
  * a non-`void`-returning function, and `ReturnVoidInstruction`, for returning from a
  * `void`-returning function.
  */
