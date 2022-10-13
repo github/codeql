@@ -126,7 +126,7 @@ module SuccessorTypes {
    * }
    * ```
    *
-   * has a control flow graph containing macthing successors:
+   * has a control flow graph containing matching successors:
    *
    * ```
    *      switch
