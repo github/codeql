@@ -114,7 +114,7 @@ module ActiveSupport {
       }
 
       private string getExtractComponent(MethodCall mc, int i) {
-        mc.getMethodName() = ["extract!"] and
+        mc.getMethodName() = "extract!" and
         result = DataFlow::Content::getKnownElementIndex(mc.getArgument(i)).serialize()
       }
 
