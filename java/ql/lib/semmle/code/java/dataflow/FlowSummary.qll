@@ -114,8 +114,10 @@ class SummarizedCallableBase extends TSummarizedCallableBase {
     this instanceof TSyntheticCallable
   }
 
+  /** Gets this callable cast as a `Callable`. */
   Callable asCallable() { this = TSimpleCallable(result) }
 
+  /** Gets this callable cast as a `SyntheticCallable`. */
   SyntheticCallable asSyntheticCallable() { this = TSyntheticCallable(result) }
 
   /** Gets a call that targets this callable. */
