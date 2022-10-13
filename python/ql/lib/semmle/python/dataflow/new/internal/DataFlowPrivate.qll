@@ -453,6 +453,8 @@ predicate jumpStep(Node nodeFrom, Node nodeTo) {
   jumpStepSharedWithTypeTracker(nodeFrom, nodeTo)
   or
   jumpStepNotSharedWithTypeTracker(nodeFrom, nodeTo)
+  or
+  FlowSummaryImpl::Private::Steps::summaryJumpStep(nodeFrom, nodeTo)
 }
 
 /**

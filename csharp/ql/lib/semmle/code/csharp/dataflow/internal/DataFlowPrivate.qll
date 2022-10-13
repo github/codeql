@@ -1581,6 +1581,8 @@ predicate jumpStep(Node pred, Node succ) {
     jrk.getTarget() = call.getATarget(_) and
     succ = getAnOutNode(call, jrk.getTargetReturnKind())
   )
+  or
+  FlowSummaryImpl::Private::Steps::summaryJumpStep(pred, succ)
 }
 
 private class StoreStepConfiguration extends ControlFlowReachabilityConfiguration {
