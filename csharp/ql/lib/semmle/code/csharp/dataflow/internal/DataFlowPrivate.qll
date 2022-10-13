@@ -702,7 +702,7 @@ private predicate arrayStore(Expr e, Expr src, Expr a, boolean postUpdate) {
   e = a and
   postUpdate = false
   or
-  // Member initalizer, `new C { Array = { [i] = src } }`
+  // Member initializer, `new C { Array = { [i] = src } }`
   exists(MemberInitializer mi |
     mi = a.(ObjectInitializer).getAMemberInitializer() and
     mi.getLValue() instanceof ArrayAccess and
