@@ -13,6 +13,7 @@
 import swift
 import codeql.swift.dataflow.DataFlow
 import codeql.swift.dataflow.TaintTracking
+import codeql.swift.dataflow.FlowSources
 import DataFlow::PathGraph
 
 /**
@@ -65,5 +66,18 @@ class SQLiteSwiftSqlSink extends SqlSink {
   }
 }
 
-from SqlSink s
-select s
+/**
+ * A taint configuration for tainted data that reaches an SQL sink.
+ */
+class SqlInjectionConfig extends TaintTracking::Configuration {
+  SqlInjectionConfig() { this = "SqlInjectionConfig" }
+
+  override predicate isSource(DataFlow::Node node) { node instanceof RemoteFlowSource }
+
+  override predicate isSink(DataFlow::Node node) { node instanceof SqlSink }
+}
+
+from SqlInjectionConfig config, DataFlow::PathNode sourceNode, DataFlow::PathNode sinkNode
+where config.hasFlowPath(sourceNode, sinkNode)
+select sinkNode.getNode(), sourceNode, sinkNode, "This SQL query depends on a $@.",
+  sourceNode.getNode(), "user-provided value"
