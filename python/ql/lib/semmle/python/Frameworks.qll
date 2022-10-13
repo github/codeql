@@ -57,6 +57,3 @@ private import semmle.python.frameworks.Urllib3
 private import semmle.python.frameworks.Yaml
 private import semmle.python.frameworks.Yarl
 private import semmle.python.frameworks.Xmltodict
-private import semmle.python.frameworks.Cx_Oracle
-private import semmle.python.frameworks.Phoenixdb
-private import semmle.python.frameworks.Pyodbc
