@@ -1331,7 +1331,7 @@ class CheckedConvertOrThrowInstruction extends UnaryInstruction {
  *
  * If the operand holds a null address, the result is a null address.
  *
- * This instruction is used to represent `dyanmic_cast<void*>` in C++, which returns the pointer to
+ * This instruction is used to represent `dynamic_cast<void*>` in C++, which returns the pointer to
  * the most-derived object.
  */
 class CompleteObjectAddressInstruction extends UnaryInstruction {
