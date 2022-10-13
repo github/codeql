@@ -5,7 +5,6 @@ private import semmle.code.cpp.models.interfaces.DataFlow
 private import semmle.code.cpp.models.interfaces.SideEffect
 private import DataFlowUtil
 private import DataFlowPrivate
-private import semmle.code.cpp.models.Models
 
 /**
  * Holds if taint propagates from `nodeFrom` to `nodeTo` in exactly one local
@@ -133,7 +132,7 @@ predicate defaultImplicitTaintRead(DataFlow::Node node, DataFlow::Content c) { n
 predicate defaultTaintSanitizer(DataFlow::Node node) { none() }
 
 /**
- * Holds if taint can flow from `instrIn` to `instrOut` through a call to a
+ * Holds if taint can flow from `nodeIn` to `nodeOut` through a call to a
  * modeled function.
  */
 predicate modeledTaintStep(DataFlow::Node nodeIn, DataFlow::Node nodeOut) {
