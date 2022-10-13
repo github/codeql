@@ -20,9 +20,15 @@
 | test.cpp:68:28:68:33 | call to getenv | test.cpp:68:28:68:33 | call to getenv |
 | test.cpp:68:28:68:33 | call to getenv | test.cpp:68:28:68:46 | (const char *)... |
 | test.cpp:68:28:68:33 | call to getenv | test.cpp:70:18:70:25 | userName |
+| test.cpp:68:28:68:33 | call to getenv | test.cpp:71:12:71:15 | array to pointer conversion |
+| test.cpp:68:28:68:33 | call to getenv | test.cpp:71:12:71:15 | copy |
 | test.cpp:75:20:75:25 | call to getenv | test.cpp:75:15:75:18 | call to atoi |
 | test.cpp:75:20:75:25 | call to getenv | test.cpp:75:20:75:25 | call to getenv |
 | test.cpp:75:20:75:25 | call to getenv | test.cpp:75:20:75:45 | (const char *)... |
+| test.cpp:75:20:75:25 | call to getenv | test.cpp:76:9:76:11 | len |
+| test.cpp:75:20:75:25 | call to getenv | test.cpp:77:36:77:38 | (unsigned long)... |
+| test.cpp:75:20:75:25 | call to getenv | test.cpp:77:36:77:38 | len |
+| test.cpp:75:20:75:25 | call to getenv | test.cpp:77:36:77:55 | ... * ... |
 | test.cpp:83:28:83:33 | call to getenv | test.cpp:83:28:83:33 | call to getenv |
 | test.cpp:83:28:83:33 | call to getenv | test.cpp:83:28:83:46 | (const char *)... |
 | test.cpp:83:28:83:33 | call to getenv | test.cpp:86:15:86:22 | userName |

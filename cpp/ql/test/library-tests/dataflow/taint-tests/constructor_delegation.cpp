@@ -34,14 +34,14 @@ void test_inits()
 	MyDerivedValue v11(true, source());
 
 	sink(v1.x);
-	sink(v2.x); // $ ast,ir
+	sink(v2.x); // $ ir
 	sink(v3.x);
-	sink(v4.x); // $ ir MISSING: ast
+	sink(v4.x); // $ ir
 	sink(v5.x);
-	sink(v6.x); // $ ir MISSING: ast
-	sink(v7.x); // $ ir MISSING: ast
+	sink(v6.x); // $ ir
+	sink(v7.x); // $ ir
 	sink(v8.x);
 	sink(v9.x);
 	sink(v10.x);
-	sink(v11.x); // $ ir MISSING: ast
+	sink(v11.x); // $ ir
 }

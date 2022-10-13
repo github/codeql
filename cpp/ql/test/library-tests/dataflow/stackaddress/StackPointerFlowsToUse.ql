@@ -1,5 +1,5 @@
 import cpp
-import semmle.code.cpp.dataflow.StackAddress
+import semmle.code.cpp.dataflow.old.StackAddress
 
 from FunctionCall call, Expr use, Type useType, Expr source, boolean isLocal
 where
