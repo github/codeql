@@ -74,7 +74,7 @@ class KotlinExtractorExtension(
             // First, if we can find our log directory, then let's try
             // making a log file there:
             val extractorLogDir = System.getenv("CODEQL_EXTRACTOR_JAVA_LOG_DIR")
-            if (extractorLogDir != null || extractorLogDir != "") {
+            if (extractorLogDir != null && extractorLogDir != "") {
                 // We use a slightly different filename pattern compared
                 // to normal logs. Just the existence of a `-top` log is
                 // a sign that something's gone very wrong.
@@ -296,7 +296,9 @@ private fun doFile(
         context.clear()
     }
 
-    val dbSrcFilePath = Paths.get("$dbSrcDir/$srcFilePath")
+    val srcFileRelativePath = srcFilePath.replace(':', '_')
+
+    val dbSrcFilePath = Paths.get("$dbSrcDir/$srcFileRelativePath")
     val dbSrcDirPath = dbSrcFilePath.parent
     Files.createDirectories(dbSrcDirPath)
     val srcTmpFile = File.createTempFile(dbSrcFilePath.fileName.toString() + ".", ".src.tmp", dbSrcDirPath.toFile())
@@ -305,7 +307,7 @@ private fun doFile(
     }
     srcTmpFile.renameTo(dbSrcFilePath.toFile())
 
-    val trapFileName = "$dbTrapDir/$srcFilePath.trap"
+    val trapFileName = "$dbTrapDir/$srcFileRelativePath.trap"
     val trapFileWriter = getTrapFileWriter(compression, logger, trapFileName)
 
     if (checkTrapIdentical || !trapFileWriter.exists()) {
