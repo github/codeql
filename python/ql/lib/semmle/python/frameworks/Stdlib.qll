@@ -2403,7 +2403,7 @@ private module StdlibPrivate {
 
   /**
    * Gets a name of a constructor for a `pathlib.Path` object.
-   * We include the pure paths, as they can be "exported" (say with `as_posix`) and then used to acces the underlying file system.
+   * We include the pure paths, as they can be "exported" (say with `as_posix`) and then used to access the underlying file system.
    */
   private string pathlibPathConstructor() {
     result in ["Path", "PurePath", "PurePosixPath", "PureWindowsPath", "PosixPath", "WindowsPath"]
