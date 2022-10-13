@@ -21,9 +21,30 @@ class B
         def use
             @field.target
         end
+        def return
+            @field
+        end
     end
 end
 class B_target
     def target
     end
 end
+
+class C
+    class << self
+        def set value
+            @field = value
+        end
+        def get
+            @field
+        end
+    end
+end
+class C_target
+    def target
+    end
+end
+
+C.set ::C_target.new
+C.get.target

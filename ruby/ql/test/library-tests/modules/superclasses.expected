@@ -118,7 +118,10 @@ instance_fields.rb:
 #   11| A_target
 #-----|  -> Object
 
-#   26| B_target
+#   29| B_target
+#-----|  -> Object
+
+#   44| C_target
 #-----|  -> Object
 
 modules.rb:

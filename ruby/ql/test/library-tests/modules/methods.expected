@@ -48,7 +48,8 @@ getMethod
 | hello.rb:11:1:16:3 | Greeting | message | hello.rb:13:5:15:7 | message |
 | hello.rb:18:1:22:3 | HelloWorld | message | hello.rb:19:5:21:7 | message |
 | instance_fields.rb:11:1:14:3 | A_target | target | instance_fields.rb:12:5:13:7 | target |
-| instance_fields.rb:26:1:29:3 | B_target | target | instance_fields.rb:27:5:28:7 | target |
+| instance_fields.rb:29:1:32:3 | B_target | target | instance_fields.rb:30:5:31:7 | target |
+| instance_fields.rb:44:1:47:3 | C_target | target | instance_fields.rb:45:5:46:7 | target |
 | modules.rb:4:1:24:3 | Foo | method_in_another_definition_of_foo | modules.rb:27:3:28:5 | method_in_another_definition_of_foo |
 | modules.rb:4:1:24:3 | Foo | method_in_foo | modules.rb:16:3:17:5 | method_in_foo |
 | modules.rb:5:3:14:5 | Foo::Bar | method_in_another_definition_of_foo_bar | modules.rb:52:3:53:5 | method_in_another_definition_of_foo_bar |
@@ -436,10 +437,14 @@ lookupMethod
 | instance_fields.rb:11:1:14:3 | A_target | puts | calls.rb:102:5:102:30 | puts |
 | instance_fields.rb:11:1:14:3 | A_target | target | instance_fields.rb:12:5:13:7 | target |
 | instance_fields.rb:11:1:14:3 | A_target | to_s | calls.rb:172:5:173:7 | to_s |
-| instance_fields.rb:26:1:29:3 | B_target | new | calls.rb:117:5:117:16 | new |
-| instance_fields.rb:26:1:29:3 | B_target | puts | calls.rb:102:5:102:30 | puts |
-| instance_fields.rb:26:1:29:3 | B_target | target | instance_fields.rb:27:5:28:7 | target |
-| instance_fields.rb:26:1:29:3 | B_target | to_s | calls.rb:172:5:173:7 | to_s |
+| instance_fields.rb:29:1:32:3 | B_target | new | calls.rb:117:5:117:16 | new |
+| instance_fields.rb:29:1:32:3 | B_target | puts | calls.rb:102:5:102:30 | puts |
+| instance_fields.rb:29:1:32:3 | B_target | target | instance_fields.rb:30:5:31:7 | target |
+| instance_fields.rb:29:1:32:3 | B_target | to_s | calls.rb:172:5:173:7 | to_s |
+| instance_fields.rb:44:1:47:3 | C_target | new | calls.rb:117:5:117:16 | new |
+| instance_fields.rb:44:1:47:3 | C_target | puts | calls.rb:102:5:102:30 | puts |
+| instance_fields.rb:44:1:47:3 | C_target | target | instance_fields.rb:45:5:46:7 | target |
+| instance_fields.rb:44:1:47:3 | C_target | to_s | calls.rb:172:5:173:7 | to_s |
 | modules.rb:4:1:24:3 | Foo | method_in_another_definition_of_foo | modules.rb:27:3:28:5 | method_in_another_definition_of_foo |
 | modules.rb:4:1:24:3 | Foo | method_in_foo | modules.rb:16:3:17:5 | method_in_foo |
 | modules.rb:5:3:14:5 | Foo::Bar | method_in_another_definition_of_foo_bar | modules.rb:52:3:53:5 | method_in_another_definition_of_foo_bar |
@@ -878,6 +883,16 @@ enclosingMethod
 | instance_fields.rb:22:13:22:18 | @field | instance_fields.rb:21:9:23:11 | use |
 | instance_fields.rb:22:13:22:18 | self | instance_fields.rb:21:9:23:11 | use |
 | instance_fields.rb:22:13:22:25 | call to target | instance_fields.rb:21:9:23:11 | use |
+| instance_fields.rb:25:13:25:18 | @field | instance_fields.rb:24:9:26:11 | return |
+| instance_fields.rb:25:13:25:18 | self | instance_fields.rb:24:9:26:11 | return |
+| instance_fields.rb:36:17:36:21 | value | instance_fields.rb:36:9:38:11 | set |
+| instance_fields.rb:36:17:36:21 | value | instance_fields.rb:36:9:38:11 | set |
+| instance_fields.rb:37:13:37:18 | @field | instance_fields.rb:36:9:38:11 | set |
+| instance_fields.rb:37:13:37:18 | self | instance_fields.rb:36:9:38:11 | set |
+| instance_fields.rb:37:13:37:26 | ... = ... | instance_fields.rb:36:9:38:11 | set |
+| instance_fields.rb:37:22:37:26 | value | instance_fields.rb:36:9:38:11 | set |
+| instance_fields.rb:40:13:40:18 | @field | instance_fields.rb:39:9:41:11 | get |
+| instance_fields.rb:40:13:40:18 | self | instance_fields.rb:39:9:41:11 | get |
 | private.rb:84:7:84:32 | call to puts | private.rb:83:11:85:5 | m1 |
 | private.rb:84:7:84:32 | self | private.rb:83:11:85:5 | m1 |
 | private.rb:84:12:84:32 | "PrivateOverride1#m1" | private.rb:83:11:85:5 | m1 |

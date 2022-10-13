@@ -222,7 +222,10 @@ getTarget
 | instance_fields.rb:4:22:4:35 | call to new | calls.rb:117:5:117:16 | new |
 | instance_fields.rb:7:13:7:25 | call to target | instance_fields.rb:12:5:13:7 | target |
 | instance_fields.rb:19:22:19:35 | call to new | calls.rb:117:5:117:16 | new |
-| instance_fields.rb:22:13:22:25 | call to target | instance_fields.rb:27:5:28:7 | target |
+| instance_fields.rb:22:13:22:25 | call to target | instance_fields.rb:30:5:31:7 | target |
+| instance_fields.rb:49:1:49:20 | call to set | instance_fields.rb:36:9:38:11 | set |
+| instance_fields.rb:49:7:49:20 | call to new | calls.rb:117:5:117:16 | new |
+| instance_fields.rb:50:1:50:5 | call to get | instance_fields.rb:39:9:41:11 | get |
 | modules.rb:12:5:12:26 | call to puts | calls.rb:102:5:102:30 | puts |
 | modules.rb:22:3:22:19 | call to puts | calls.rb:102:5:102:30 | puts |
 | modules.rb:33:3:33:25 | call to puts | calls.rb:102:5:102:30 | puts |
@@ -337,6 +340,7 @@ unresolvedCall
 | hello.rb:20:16:20:26 | ... + ... |
 | hello.rb:20:16:20:34 | ... + ... |
 | hello.rb:20:16:20:40 | ... + ... |
+| instance_fields.rb:50:1:50:12 | call to target |
 | modules_rec.rb:11:1:11:9 | call to prepend |
 | private.rb:23:3:24:5 | call to private_class_method |
 | private.rb:28:3:28:32 | call to private_class_method |
@@ -444,7 +448,11 @@ publicMethod
 | instance_fields.rb:12:5:13:7 | target |
 | instance_fields.rb:18:9:20:11 | create |
 | instance_fields.rb:21:9:23:11 | use |
-| instance_fields.rb:27:5:28:7 | target |
+| instance_fields.rb:24:9:26:11 | return |
+| instance_fields.rb:30:5:31:7 | target |
+| instance_fields.rb:36:9:38:11 | set |
+| instance_fields.rb:39:9:41:11 | get |
+| instance_fields.rb:45:5:46:7 | target |
 | modules.rb:9:5:10:7 | method_in_foo_bar |
 | modules.rb:16:3:17:5 | method_in_foo |
 | modules.rb:27:3:28:5 | method_in_another_definition_of_foo |
