@@ -265,6 +265,7 @@ httpInputAccesses
 | action_controller/params_flow.rb:144:10:144:15 | call to params | ActionController::Metal#params |
 | action_controller/params_flow.rb:145:32:145:37 | call to params | ActionController::Metal#params |
 | action_controller/params_flow.rb:148:22:148:27 | call to params | ActionController::Metal#params |
+| action_mailer/mailer.rb:3:10:3:15 | call to params | ActionController::Metal#params |
 | active_record/ActiveRecord.rb:28:30:28:35 | call to params | ActionController::Metal#params |
 | active_record/ActiveRecord.rb:29:29:29:34 | call to params | ActionController::Metal#params |
 | active_record/ActiveRecord.rb:30:31:30:36 | call to params | ActionController::Metal#params |
