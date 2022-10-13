@@ -96,18 +96,20 @@ private predicate hasKeySizeInInitMethod(DataFlow::Node node, string typeFlag) {
       jcaSpec instanceof JavaSecurityKeyPairGenerator and typeFlag.matches("asymmetric%")
     ) and
     (
-      jcaSpec.getAlgoSpec().(StringLiteral).getValue().toUpperCase() = "AES" and
-      typeFlag = "symmetric"
+      getAlgoName(jcaSpec) = "AES" and typeFlag = "symmetric"
       or
-      jcaSpec.getAlgoSpec().(StringLiteral).getValue().toUpperCase().matches(["RSA", "DSA", "DH"]) and
-      typeFlag = "asymmetric-non-ec"
+      getAlgoName(jcaSpec).matches(["RSA", "DSA", "DH"]) and typeFlag = "asymmetric-non-ec"
       or
-      jcaSpec.getAlgoSpec().(StringLiteral).getValue().toUpperCase().matches("EC%") and
-      typeFlag = "asymmetric-ec"
+      getAlgoName(jcaSpec).matches("EC%") and typeFlag = "asymmetric-ec"
     ) and
     DataFlow::localExprFlow(jcaSpec, ma.getQualifier()) and
     node.asExpr() = ma.getArgument(0)
   )
+}
+
+// TODO: this predicate is just a poc for more code condensing; redo this
+private string getAlgoName(JavaxCryptoAlgoSpec jca) {
+  result = jca.getAlgoSpec().(StringLiteral).getValue().toUpperCase()
 }
 
 // TODO: rethink the predicate name; also think about whether this could/should be a class instead; or a predicate within the sink class so can do sink.predicate()...
