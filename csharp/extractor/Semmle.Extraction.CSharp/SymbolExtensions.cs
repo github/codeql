@@ -80,8 +80,8 @@ namespace Semmle.Extraction.CSharp
         public static IEnumerable<string> GetSourceLevelModifiers(this ISymbol symbol)
         {
             var methodModifiers = symbol.GetModifiers<Microsoft.CodeAnalysis.CSharp.Syntax.BaseMethodDeclarationSyntax>(md => md.Modifiers);
-            var typeModifers = symbol.GetModifiers<Microsoft.CodeAnalysis.CSharp.Syntax.TypeDeclarationSyntax>(cd => cd.Modifiers);
-            return methodModifiers.Concat(typeModifers).Select(m => m.Text);
+            var typeModifiers = symbol.GetModifiers<Microsoft.CodeAnalysis.CSharp.Syntax.TypeDeclarationSyntax>(cd => cd.Modifiers);
+            return methodModifiers.Concat(typeModifiers).Select(m => m.Text);
         }
 
         /// <summary>
