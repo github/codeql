@@ -59,7 +59,7 @@
  * store step to `sequence`.
  *
  * This allows the unknown content from the RHS to be read into `TIterableElement(sequence)` and tuple content
- * to then be stored into `sequence`. If the content is already tuple content, this inderection creates crosstalk
+ * to then be stored into `sequence`. If the content is already tuple content, this indirection creates crosstalk
  * between indices. Therefore, tuple content is never read into `TIterableElement(sequence)`; it is instead
  * transferred directly from `TIterableSequence(sequence)` to `sequence` via a flow step. Such a flow step will
  * also transfer other content, but only tuple content is further read from `sequence` into its elements.
