@@ -6432,6 +6432,120 @@ samConversion.kt:
 #   59|             -1: [VarAccess] i0
 #   59|             0: [IntegerLiteral] 1
 #   59|             1: [IntegerLiteral] 2
+#   74|     6: [Method] propertyRefsTest
+#   74|       3: [TypeAccess] Unit
+#-----|       4: (Parameters)
+#   74|         0: [Parameter] prt
+#   74|           0: [TypeAccess] PropertyRefsTest
+#   74|       5: [BlockStmt] { ... }
+#   75|         0: [LocalVariableDeclStmt] var ...;
+#   75|           1: [LocalVariableDeclExpr] test1
+#   75|             0: [CastExpr] (...)...
+#   75|               0: [TypeAccess] IntGetter
+#   75|               1: [ClassInstanceExpr] new (...)
+#   75|                 -4: [AnonymousClass] new IntGetter(...) { ... }
+#   75|                   1: [Constructor] 
+#-----|                     4: (Parameters)
+#   75|                       0: [Parameter] <fn>
+#   75|                     5: [BlockStmt] { ... }
+#   75|                       0: [SuperConstructorInvocationStmt] super(...)
+#   75|                       1: [ExprStmt] <Expr>;
+#   75|                         0: [AssignExpr] ...=...
+#   75|                           0: [VarAccess] this.<fn>
+#   75|                             -1: [ThisAccess] this
+#   75|                           1: [VarAccess] <fn>
+#   75|                   2: [FieldDeclaration] Function0<Integer> <fn>;
+#   75|                     -1: [TypeAccess] Function0<Integer>
+#   75|                       0: [TypeAccess] Integer
+#   75|                   3: [Method] f
+#   75|                     3: [TypeAccess] int
+#   75|                     5: [BlockStmt] { ... }
+#   75|                       0: [ReturnStmt] return ...
+#   75|                         0: [MethodAccess] invoke(...)
+#   75|                           -1: [VarAccess] <fn>
+#   75|                 -3: [TypeAccess] IntGetter
+#   75|                 0: [PropertyRefExpr] ...::...
+#   75|                   -4: [AnonymousClass] new KProperty0<Integer>(...) { ... }
+#   75|                     1: [Constructor] 
+#-----|                       4: (Parameters)
+#   75|                         0: [Parameter] <dispatchReceiver>
+#   75|                       5: [BlockStmt] { ... }
+#   75|                         0: [SuperConstructorInvocationStmt] super(...)
+#   75|                         1: [ExprStmt] <Expr>;
+#   75|                           0: [AssignExpr] ...=...
+#   75|                             0: [VarAccess] this.<dispatchReceiver>
+#   75|                               -1: [ThisAccess] this
+#   75|                             1: [VarAccess] <dispatchReceiver>
+#   75|                     2: [FieldDeclaration] PropertyRefsTest <dispatchReceiver>;
+#   75|                       -1: [TypeAccess] PropertyRefsTest
+#   75|                     3: [Method] get
+#   75|                       5: [BlockStmt] { ... }
+#   75|                         0: [ReturnStmt] return ...
+#   75|                           0: [MethodAccess] getX(...)
+#   75|                             -1: [VarAccess] this.<dispatchReceiver>
+#   75|                               -1: [ThisAccess] this
+#   75|                     4: [Method] invoke
+#   75|                       5: [BlockStmt] { ... }
+#   75|                         0: [ReturnStmt] return ...
+#   75|                           0: [MethodAccess] get(...)
+#   75|                             -1: [ThisAccess] this
+#   75|                   -3: [TypeAccess] KProperty0<Integer>
+#   75|                     0: [TypeAccess] Integer
+#   75|                   0: [VarAccess] prt
+#   76|         1: [LocalVariableDeclStmt] var ...;
+#   76|           1: [LocalVariableDeclExpr] test2
+#   76|             0: [CastExpr] (...)...
+#   76|               0: [TypeAccess] PropertyRefsGetter
+#   76|               1: [ClassInstanceExpr] new (...)
+#   76|                 -4: [AnonymousClass] new PropertyRefsGetter(...) { ... }
+#   76|                   1: [Constructor] 
+#-----|                     4: (Parameters)
+#   76|                       0: [Parameter] <fn>
+#   76|                     5: [BlockStmt] { ... }
+#   76|                       0: [SuperConstructorInvocationStmt] super(...)
+#   76|                       1: [ExprStmt] <Expr>;
+#   76|                         0: [AssignExpr] ...=...
+#   76|                           0: [VarAccess] this.<fn>
+#   76|                             -1: [ThisAccess] this
+#   76|                           1: [VarAccess] <fn>
+#   76|                   2: [FieldDeclaration] Function1<PropertyRefsTest,Integer> <fn>;
+#   76|                     -1: [TypeAccess] Function1<PropertyRefsTest,Integer>
+#   76|                       0: [TypeAccess] PropertyRefsTest
+#   76|                       1: [TypeAccess] Integer
+#   76|                   3: [Method] f
+#   76|                     3: [TypeAccess] int
+#-----|                     4: (Parameters)
+#   76|                       0: [Parameter] prt
+#   76|                         0: [TypeAccess] PropertyRefsTest
+#   76|                     5: [BlockStmt] { ... }
+#   76|                       0: [ReturnStmt] return ...
+#   76|                         0: [MethodAccess] invoke(...)
+#   76|                           -1: [VarAccess] <fn>
+#   76|                           0: [VarAccess] prt
+#   76|                 -3: [TypeAccess] PropertyRefsGetter
+#   76|                 0: [PropertyRefExpr] ...::...
+#   76|                   -4: [AnonymousClass] new KProperty1<PropertyRefsTest,Integer>(...) { ... }
+#   76|                     1: [Constructor] 
+#   76|                       5: [BlockStmt] { ... }
+#   76|                         0: [SuperConstructorInvocationStmt] super(...)
+#   76|                     2: [Method] get
+#-----|                       4: (Parameters)
+#   76|                         0: [Parameter] a0
+#   76|                       5: [BlockStmt] { ... }
+#   76|                         0: [ReturnStmt] return ...
+#   76|                           0: [MethodAccess] getX(...)
+#   76|                             -1: [VarAccess] a0
+#   76|                     3: [Method] invoke
+#-----|                       4: (Parameters)
+#   76|                         0: [Parameter] a0
+#   76|                       5: [BlockStmt] { ... }
+#   76|                         0: [ReturnStmt] return ...
+#   76|                           0: [MethodAccess] get(...)
+#   76|                             -1: [ThisAccess] this
+#   76|                             0: [VarAccess] a0
+#   76|                   -3: [TypeAccess] KProperty1<PropertyRefsTest,Integer>
+#   76|                     0: [TypeAccess] PropertyRefsTest
+#   76|                     1: [TypeAccess] Integer
 #   16|   2: [Interface] IntPredicate
 #   17|     1: [Method] accept
 #   17|       3: [TypeAccess] boolean
@@ -6520,6 +6634,32 @@ samConversion.kt:
 #   54|           0: [TypeAccess] int
 #   54|         1: [Parameter] j
 #   54|           0: [TypeAccess] int
+#   62|   8: [Class] PropertyRefsTest
+#   62|     1: [Constructor] PropertyRefsTest
+#   62|       5: [BlockStmt] { ... }
+#   62|         0: [SuperConstructorInvocationStmt] super(...)
+#   62|         1: [BlockStmt] { ... }
+#   63|           0: [ExprStmt] <Expr>;
+#   63|             0: [KtInitializerAssignExpr] ...=...
+#   63|               0: [VarAccess] x
+#   63|     2: [Method] getX
+#   63|       3: [TypeAccess] int
+#   63|       5: [BlockStmt] { ... }
+#   63|         0: [ReturnStmt] return ...
+#   63|           0: [VarAccess] this.x
+#   63|             -1: [ThisAccess] this
+#   63|     3: [FieldDeclaration] int x;
+#   63|       -1: [TypeAccess] int
+#   63|       0: [IntegerLiteral] 1
+#   66|   9: [Interface] PropertyRefsGetter
+#   67|     1: [Method] f
+#   67|       3: [TypeAccess] int
+#-----|       4: (Parameters)
+#   67|         0: [Parameter] prt
+#   67|           0: [TypeAccess] PropertyRefsTest
+#   70|   10: [Interface] IntGetter
+#   71|     1: [Method] f
+#   71|       3: [TypeAccess] int
 whenExpr.kt:
 #    0| [CompilationUnit] whenExpr
 #    0|   1: [Class] WhenExprKt
