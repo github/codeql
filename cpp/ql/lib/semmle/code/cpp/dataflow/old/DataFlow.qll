@@ -14,4 +14,12 @@
  * `DataFlow::Node`.
  */
 
-import semmle.code.cpp.ir.dataflow.DataFlow
+import cpp
+
+/**
+ * Provides classes for performing local (intra-procedural) and
+ * global (inter-procedural) data flow analyses.
+ */
+module DataFlow {
+  import semmle.code.cpp.dataflow.old.internal.DataFlowImpl
+}
