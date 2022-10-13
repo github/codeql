@@ -124,6 +124,7 @@ reflection.kt:
 #   97|                 1: [Constructor] 
 #   97|                   5: [BlockStmt] { ... }
 #   97|                     0: [SuperConstructorInvocationStmt] super(...)
+#   97|                       0: [IntegerLiteral] 1
 #   97|                 2: [Method] invoke
 #-----|                   4: (Parameters)
 #   97|                     0: [Parameter] a0
@@ -148,6 +149,7 @@ reflection.kt:
 #   98|                 1: [Constructor] 
 #   98|                   5: [BlockStmt] { ... }
 #   98|                     0: [SuperConstructorInvocationStmt] super(...)
+#   98|                       0: [IntegerLiteral] 1
 #   98|                 2: [Method] invoke
 #-----|                   4: (Parameters)
 #   98|                     0: [Parameter] a0
@@ -175,6 +177,7 @@ reflection.kt:
 #   99|                     0: [Parameter] <dispatchReceiver>
 #   99|                   5: [BlockStmt] { ... }
 #   99|                     0: [SuperConstructorInvocationStmt] super(...)
+#   99|                       0: [IntegerLiteral] 1
 #   99|                     1: [ExprStmt] <Expr>;
 #   99|                       0: [AssignExpr] ...=...
 #   99|                         0: [VarAccess] this.<dispatchReceiver>
@@ -274,6 +277,7 @@ reflection.kt:
 #  126|                       1: [Constructor] 
 #  126|                         5: [BlockStmt] { ... }
 #  126|                           0: [SuperConstructorInvocationStmt] super(...)
+#  126|                             0: [IntegerLiteral] 0
 #  126|                       2: [Method] invoke
 #  126|                         5: [BlockStmt] { ... }
 #  126|                           0: [ReturnStmt] return ...
@@ -296,6 +300,7 @@ reflection.kt:
 #    7|                 1: [Constructor] 
 #    7|                   5: [BlockStmt] { ... }
 #    7|                     0: [SuperConstructorInvocationStmt] super(...)
+#    7|                       0: [IntegerLiteral] 2
 #    7|                 2: [Method] invoke
 #-----|                   4: (Parameters)
 #    7|                     0: [Parameter] a0
@@ -362,6 +367,7 @@ reflection.kt:
 #   14|                     0: [Parameter] <dispatchReceiver>
 #   14|                   5: [BlockStmt] { ... }
 #   14|                     0: [SuperConstructorInvocationStmt] super(...)
+#   14|                       0: [IntegerLiteral] 1
 #   14|                     1: [ExprStmt] <Expr>;
 #   14|                       0: [AssignExpr] ...=...
 #   14|                         0: [VarAccess] this.<dispatchReceiver>
@@ -473,6 +479,7 @@ reflection.kt:
 #   21|                     0: [Parameter] <dispatchReceiver>
 #   21|                   5: [BlockStmt] { ... }
 #   21|                     0: [SuperConstructorInvocationStmt] super(...)
+#   21|                       0: [IntegerLiteral] 2
 #   21|                     1: [ExprStmt] <Expr>;
 #   21|                       0: [AssignExpr] ...=...
 #   21|                         0: [VarAccess] this.<dispatchReceiver>
@@ -678,6 +685,7 @@ reflection.kt:
 #   60|                 1: [Constructor] 
 #   60|                   5: [BlockStmt] { ... }
 #   60|                     0: [SuperConstructorInvocationStmt] super(...)
+#   60|                       0: [IntegerLiteral] 2
 #   60|                 2: [Method] invoke
 #-----|                   4: (Parameters)
 #   60|                     0: [Parameter] a0
@@ -702,6 +710,7 @@ reflection.kt:
 #   61|                     0: [Parameter] <dispatchReceiver>
 #   61|                   5: [BlockStmt] { ... }
 #   61|                     0: [SuperConstructorInvocationStmt] super(...)
+#   61|                       0: [IntegerLiteral] 1
 #   61|                     1: [ExprStmt] <Expr>;
 #   61|                       0: [AssignExpr] ...=...
 #   61|                         0: [VarAccess] this.<dispatchReceiver>
@@ -733,6 +742,7 @@ reflection.kt:
 #   62|                 1: [Constructor] 
 #   62|                   5: [BlockStmt] { ... }
 #   62|                     0: [SuperConstructorInvocationStmt] super(...)
+#   62|                       0: [IntegerLiteral] 1
 #   62|                 2: [Method] invoke
 #-----|                   4: (Parameters)
 #   62|                     0: [Parameter] a0
@@ -756,6 +766,7 @@ reflection.kt:
 #   63|                     0: [Parameter] <extensionReceiver>
 #   63|                   5: [BlockStmt] { ... }
 #   63|                     0: [SuperConstructorInvocationStmt] super(...)
+#   63|                       0: [IntegerLiteral] 0
 #   63|                     1: [ExprStmt] <Expr>;
 #   63|                       0: [AssignExpr] ...=...
 #   63|                         0: [VarAccess] this.<extensionReceiver>
@@ -785,6 +796,7 @@ reflection.kt:
 #   64|                 1: [Constructor] 
 #   64|                   5: [BlockStmt] { ... }
 #   64|                     0: [SuperConstructorInvocationStmt] super(...)
+#   64|                       0: [IntegerLiteral] 1
 #   64|                 2: [Method] invoke
 #-----|                   4: (Parameters)
 #   64|                     0: [Parameter] a0
@@ -807,6 +819,7 @@ reflection.kt:
 #   65|                     0: [Parameter] <extensionReceiver>
 #   65|                   5: [BlockStmt] { ... }
 #   65|                     0: [SuperConstructorInvocationStmt] super(...)
+#   65|                       0: [IntegerLiteral] 0
 #   65|                     1: [ExprStmt] <Expr>;
 #   65|                       0: [AssignExpr] ...=...
 #   65|                         0: [VarAccess] this.<extensionReceiver>
@@ -1077,6 +1090,7 @@ reflection.kt:
 #   90|                     0: [Parameter] <dispatchReceiver>
 #   90|                   5: [BlockStmt] { ... }
 #   90|                     0: [SuperConstructorInvocationStmt] super(...)
+#   90|                       0: [IntegerLiteral] 1
 #   90|                     1: [ExprStmt] <Expr>;
 #   90|                       0: [AssignExpr] ...=...
 #   90|                         0: [VarAccess] this.<dispatchReceiver>
@@ -1210,6 +1224,7 @@ reflection.kt:
 #  116|                 1: [Constructor] 
 #  116|                   5: [BlockStmt] { ... }
 #  116|                     0: [SuperConstructorInvocationStmt] super(...)
+#  116|                       0: [IntegerLiteral] 1
 #  116|                 2: [Method] invoke
 #-----|                   4: (Parameters)
 #  116|                     0: [Parameter] a0
