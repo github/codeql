@@ -64,7 +64,7 @@ private module Cached {
     or
     instr = reusedPhiInstruction(_) and
     // Check that the phi instruction is *not* degenerate, but we can't use
-    // getDegeneratePhiOperand in the first stage with phi instyructions
+    // getDegeneratePhiOperand in the first stage with phi instructions
     not exists(
       unique(OldIR::PhiInputOperand operand |
         operand = instr.(OldIR::PhiInstruction).getAnInputOperand() and
