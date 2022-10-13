@@ -43,5 +43,10 @@ class FooController < ActionController::Base
     when regex 
       puts "foo"
     end
+
+    case name # NOT GOOD
+    in /^\s+|\s+$/ then 
+      puts "foo"
+    end
   end
 end
