@@ -74,7 +74,11 @@ predicate simpleLocalFlowStep = DataFlowPrivate::localFlowStepTypeTracker/2;
 /**
  * Holds if data can flow from `node1` to `node2` in a way that discards call contexts.
  */
-predicate jumpStep = DataFlowPrivate::jumpStep/2;
+predicate jumpStep(Node nodeFrom, Node nodeTo) {
+  DataFlowPrivate::jumpStep(nodeFrom, nodeTo)
+  or
+  jumpFieldStep(nodeFrom, nodeTo)
+}
 
 /** Holds if there is direct flow from `param` to a return. */
 pragma[nomagic]
@@ -107,8 +111,6 @@ predicate levelStepNoCall(Node nodeFrom, Node nodeTo) {
     nodeFrom = evaluateSummaryComponentStackLocal(callable, call, input) and
     nodeTo = evaluateSummaryComponentStackLocal(callable, call, output)
   )
-  or
-  localFieldStep(nodeFrom, nodeTo)
 }
 
 /**
@@ -157,10 +159,10 @@ private Node fieldSuccessor(ModuleBase mod, boolean instance, string field) {
 }
 
 /**
- * Holds if `pred -> succ` should be used a level step, from a field assignment to
+ * Holds if `pred -> succ` should be used as a jump step, from a field assignment to
  * a read within the same class.
  */
-private predicate localFieldStep(Node pred, Node succ) {
+private predicate jumpFieldStep(Node pred, Node succ) {
   exists(ModuleBase mod, boolean instance, string field |
     pred = fieldPredecessor(mod, instance, field) and
     succ = fieldSuccessor(mod, instance, field)

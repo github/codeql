@@ -16,15 +16,18 @@ track
 | type_tracker.rb:2:5:5:7 | self in field= | type tracker with call steps | type_tracker.rb:7:5:9:7 | self in field |
 | type_tracker.rb:2:5:5:7 | self in field= | type tracker without call steps | type_tracker.rb:2:5:5:7 | self in field= |
 | type_tracker.rb:2:16:2:18 | val | type tracker with call steps | type_tracker.rb:2:16:2:18 | val |
-| type_tracker.rb:2:16:2:18 | val | type tracker with call steps | type_tracker.rb:8:9:8:14 | @field |
 | type_tracker.rb:2:16:2:18 | val | type tracker without call steps | type_tracker.rb:2:5:5:7 | return return in field= |
 | type_tracker.rb:2:16:2:18 | val | type tracker without call steps | type_tracker.rb:2:16:2:18 | val |
 | type_tracker.rb:2:16:2:18 | val | type tracker without call steps | type_tracker.rb:2:16:2:18 | val |
 | type_tracker.rb:2:16:2:18 | val | type tracker without call steps | type_tracker.rb:2:16:2:18 | val |
 | type_tracker.rb:2:16:2:18 | val | type tracker without call steps | type_tracker.rb:3:14:3:23 | call to field |
+| type_tracker.rb:2:16:2:18 | val | type tracker without call steps | type_tracker.rb:3:14:3:23 | call to field |
+| type_tracker.rb:2:16:2:18 | val | type tracker without call steps | type_tracker.rb:7:5:9:7 | return return in field |
 | type_tracker.rb:2:16:2:18 | val | type tracker without call steps | type_tracker.rb:7:5:9:7 | return return in field |
 | type_tracker.rb:2:16:2:18 | val | type tracker without call steps | type_tracker.rb:8:9:8:14 | @field |
+| type_tracker.rb:2:16:2:18 | val | type tracker without call steps | type_tracker.rb:8:9:8:14 | @field |
 | type_tracker.rb:2:16:2:18 | val | type tracker without call steps | type_tracker.rb:14:5:14:13 | call to field= |
+| type_tracker.rb:2:16:2:18 | val | type tracker without call steps | type_tracker.rb:15:10:15:18 | call to field |
 | type_tracker.rb:2:16:2:18 | val | type tracker without call steps | type_tracker.rb:15:10:15:18 | call to field |
 | type_tracker.rb:3:9:3:23 | call to puts | type tracker without call steps | type_tracker.rb:3:9:3:23 | call to puts |
 | type_tracker.rb:3:14:3:23 | call to field | type tracker without call steps | type_tracker.rb:3:14:3:23 | call to field |
@@ -60,9 +63,11 @@ track
 | type_tracker.rb:14:5:14:13 | call to field= | type tracker without call steps | type_tracker.rb:14:5:14:13 | call to field= |
 | type_tracker.rb:14:17:14:23 | "hello" | type tracker with call steps | type_tracker.rb:2:16:2:18 | val |
 | type_tracker.rb:14:17:14:23 | "hello" | type tracker with call steps | type_tracker.rb:2:16:2:18 | val |
-| type_tracker.rb:14:17:14:23 | "hello" | type tracker with call steps | type_tracker.rb:8:9:8:14 | @field |
 | type_tracker.rb:14:17:14:23 | "hello" | type tracker with call steps with content attribute field | type_tracker.rb:7:5:9:7 | self (field) |
 | type_tracker.rb:14:17:14:23 | "hello" | type tracker with call steps with content attribute field | type_tracker.rb:7:5:9:7 | self in field |
+| type_tracker.rb:14:17:14:23 | "hello" | type tracker without call steps | type_tracker.rb:3:14:3:23 | call to field |
+| type_tracker.rb:14:17:14:23 | "hello" | type tracker without call steps | type_tracker.rb:7:5:9:7 | return return in field |
+| type_tracker.rb:14:17:14:23 | "hello" | type tracker without call steps | type_tracker.rb:8:9:8:14 | @field |
 | type_tracker.rb:14:17:14:23 | "hello" | type tracker without call steps | type_tracker.rb:14:5:14:13 | call to field= |
 | type_tracker.rb:14:17:14:23 | "hello" | type tracker without call steps | type_tracker.rb:14:17:14:23 | "hello" |
 | type_tracker.rb:14:17:14:23 | "hello" | type tracker without call steps | type_tracker.rb:15:10:15:18 | call to field |
@@ -375,14 +380,17 @@ trackEnd
 | type_tracker.rb:2:16:2:18 | val | type_tracker.rb:2:16:2:18 | val |
 | type_tracker.rb:2:16:2:18 | val | type_tracker.rb:2:16:2:18 | val |
 | type_tracker.rb:2:16:2:18 | val | type_tracker.rb:3:14:3:23 | call to field |
+| type_tracker.rb:2:16:2:18 | val | type_tracker.rb:3:14:3:23 | call to field |
 | type_tracker.rb:2:16:2:18 | val | type_tracker.rb:4:9:4:20 | ... = ... |
 | type_tracker.rb:2:16:2:18 | val | type_tracker.rb:4:9:4:20 | ... = ... |
 | type_tracker.rb:2:16:2:18 | val | type_tracker.rb:4:18:4:20 | val |
 | type_tracker.rb:2:16:2:18 | val | type_tracker.rb:4:18:4:20 | val |
 | type_tracker.rb:2:16:2:18 | val | type_tracker.rb:7:5:9:7 | return return in field |
+| type_tracker.rb:2:16:2:18 | val | type_tracker.rb:7:5:9:7 | return return in field |
 | type_tracker.rb:2:16:2:18 | val | type_tracker.rb:8:9:8:14 | @field |
 | type_tracker.rb:2:16:2:18 | val | type_tracker.rb:8:9:8:14 | @field |
 | type_tracker.rb:2:16:2:18 | val | type_tracker.rb:14:5:14:13 | call to field= |
+| type_tracker.rb:2:16:2:18 | val | type_tracker.rb:15:10:15:18 | call to field |
 | type_tracker.rb:2:16:2:18 | val | type_tracker.rb:15:10:15:18 | call to field |
 | type_tracker.rb:3:9:3:23 | call to puts | type_tracker.rb:3:9:3:23 | call to puts |
 | type_tracker.rb:3:14:3:23 | call to field | type_tracker.rb:3:14:3:23 | call to field |
@@ -433,8 +441,10 @@ trackEnd
 | type_tracker.rb:14:5:14:13 | call to field= | type_tracker.rb:14:5:14:13 | call to field= |
 | type_tracker.rb:14:17:14:23 | "hello" | type_tracker.rb:2:16:2:18 | val |
 | type_tracker.rb:14:17:14:23 | "hello" | type_tracker.rb:2:16:2:18 | val |
+| type_tracker.rb:14:17:14:23 | "hello" | type_tracker.rb:3:14:3:23 | call to field |
 | type_tracker.rb:14:17:14:23 | "hello" | type_tracker.rb:4:9:4:20 | ... = ... |
 | type_tracker.rb:14:17:14:23 | "hello" | type_tracker.rb:4:18:4:20 | val |
+| type_tracker.rb:14:17:14:23 | "hello" | type_tracker.rb:7:5:9:7 | return return in field |
 | type_tracker.rb:14:17:14:23 | "hello" | type_tracker.rb:8:9:8:14 | @field |
 | type_tracker.rb:14:17:14:23 | "hello" | type_tracker.rb:14:5:14:13 | __synth__0 |
 | type_tracker.rb:14:17:14:23 | "hello" | type_tracker.rb:14:5:14:13 | call to field= |
