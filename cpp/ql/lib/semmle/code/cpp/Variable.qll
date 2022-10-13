@@ -144,7 +144,7 @@ class Variable extends Declaration, @variable {
    * `Variable.getInitializer()` to get the variable's initializer,
    * or use `Variable.getAnAssignedValue()` to get an expression that
    * is the right-hand side of an assignment or an initialization of
-   * the varible.
+   * the variable.
    */
   Assignment getAnAssignment() { result.getLValue() = this.getAnAccess() }
 
