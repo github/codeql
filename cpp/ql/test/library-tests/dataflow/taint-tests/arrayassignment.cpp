@@ -13,10 +13,10 @@ void test_pointer_deref_assignment()
 
 	*p_x = source();
 
-	sink(x); // $ MISSING: ast,ir
-	sink(*p_x); // $ ast,ir
-	sink(*p2_x); // $ MISSING: ast,ir
-	sink(r_x); // $ MISSING: ast,ir
+	sink(x); // $ MISSING: ir
+	sink(*p_x); // $ ir
+	sink(*p2_x); // $ MISSING: ir
+	sink(r_x); // $ MISSING: ir
 }
 
 void test_reference_deref_assignment()
@@ -28,10 +28,10 @@ void test_reference_deref_assignment()
 
 	r_x = source();
 
-	sink(x); // $ MISSING: ast,ir
-	sink(*p_x); // $ MISSING: ast,ir
-	sink(r_x); // $ ast,ir
-	sink(r2_x); // $ MISSING: ast,ir
+	sink(x); // $ MISSING: ir
+	sink(*p_x); // $ MISSING: ir
+	sink(r_x); // $ ir
+	sink(r2_x); // $ MISSING: ir
 }
 
 class MyInt
@@ -53,8 +53,8 @@ void test_myint_member_assignment()
 
 	mi.i = source();
 
-	sink(mi); // $ MISSING: ast,ir
-	sink(mi.get()); // $ ast MISSING: ir
+	sink(mi); // $ MISSING: ir
+	sink(mi.get()); // $ ir
 }
 
 void test_myint_method_assignment()
@@ -63,8 +63,8 @@ void test_myint_method_assignment()
 
 	mi.get() = source();
 
-	sink(mi); // $ ir MISSING: ast
-	sink(mi.get()); // $ ast MISSING: ir
+	sink(mi); // $ MISSING: ir
+	sink(mi.get()); // $ MISSING: ir
 }
 
 void test_myint_overloaded_assignment()
@@ -74,10 +74,10 @@ void test_myint_overloaded_assignment()
 	mi = source();
 	mi2 = mi;
 
-	sink(mi); // $ MISSING: ast,ir
-	sink(mi.get()); // $ MISSING: ast,ir
-	sink(mi2); // $ MISSING: ast,ir
-	sink(mi2.get()); // $ MISSING: ast,ir
+	sink(mi); // $ MISSING: ir
+	sink(mi.get()); // $ MISSING: ir
+	sink(mi2); // $ MISSING: ir
+	sink(mi2.get()); // $ MISSING: ir
 }
 
 class MyArray
@@ -98,7 +98,7 @@ void test_myarray_member_assignment()
 
 	ma.values[0] = source();
 
-	sink(ma.values[0]); // $ ast,ir
+	sink(ma.values[0]); // $ ir
 }
 
 void test_myarray_method_assignment()
@@ -107,7 +107,7 @@ void test_myarray_method_assignment()
 
 	ma.get(0) = source();
 
-	sink(ma.get(0)); // $ MISSING: ast,ir
+	sink(ma.get(0)); // $ MISSING: ir
 }
 
 void test_myarray_overloaded_assignment()
@@ -117,8 +117,8 @@ void test_myarray_overloaded_assignment()
 	ma[0] = source();
 	ma2 = ma;
 
-	sink(ma[0]); // $ MISSING: ast,ir
-	sink(ma2[0]); // $ MISSING: ast,ir
+	sink(ma[0]); // $ MISSING: ir
+	sink(ma2[0]); // $ MISSING: ir
 }
 
 void sink(int *);
@@ -132,16 +132,16 @@ void test_array_reference_assignment()
 	int *ptr2, *ptr3;
 
 	ref1 = source();
-	sink(ref1); // $ ast,ir
-	sink(arr1[5]); // $ MISSING: ast,ir
+	sink(ref1); // $ ir
+	sink(arr1[5]); // $ MISSING: ir
 
 	ptr2 = &(arr2[5]);
 	*ptr2 = source();
-	sink(*ptr2); // $ ast,ir
-	sink(arr2[5]); // $ MISSING: ast,ir
+	sink(*ptr2); // $ ir
+	sink(arr2[5]); // $ MISSING: ir
 
 	ptr3 = arr3;
 	ptr3[5] = source();
-	sink(ptr3[5]); // $ ast,ir
-	sink(arr3[5]); // $ MISSING: ast,ir
+	sink(ptr3[5]); // $ ir
+	sink(arr3[5]); // $ MISSING: ir
 }

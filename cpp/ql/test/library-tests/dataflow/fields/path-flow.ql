@@ -2,7 +2,7 @@
  * @kind path-problem
  */
 
-import semmle.code.cpp.dataflow.DataFlow
+import semmle.code.cpp.dataflow.old.DataFlow2
 import ASTConfiguration
 import DataFlow::PathGraph
 
