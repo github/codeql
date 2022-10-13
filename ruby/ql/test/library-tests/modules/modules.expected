@@ -73,11 +73,11 @@ getModule
 | modules.rb:116:7:117:9 | XX::YY |
 | modules.rb:123:1:124:3 | Test::Foo1::Bar::Baz |
 | modules_rec.rb:1:1:2:3 | B::A |
-| modules_rec.rb:4:1:5:3 | A::B |
 | private.rb:1:1:49:3 | E |
 | private.rb:62:1:80:3 | F |
 | private.rb:82:1:94:3 | PrivateOverride1 |
 | private.rb:96:1:102:3 | PrivateOverride2 |
+| toplevel_self_singleton.rb:2:5:5:7 | A::B |
 getADeclaration
 | calls.rb:21:1:34:3 | M | calls.rb:21:1:34:3 | M |
 | calls.rb:43:1:58:3 | C | calls.rb:43:1:58:3 | C |
@@ -93,12 +93,14 @@ getADeclaration
 | calls.rb:115:1:118:3 | Object | modules.rb:1:1:129:4 | modules.rb |
 | calls.rb:115:1:118:3 | Object | modules_rec.rb:1:1:11:26 | modules_rec.rb |
 | calls.rb:115:1:118:3 | Object | private.rb:1:1:105:40 | private.rb |
+| calls.rb:115:1:118:3 | Object | toplevel_self_singleton.rb:1:1:12:4 | toplevel_self_singleton.rb |
 | calls.rb:120:1:123:3 | Hash | calls.rb:120:1:123:3 | Hash |
 | calls.rb:125:1:138:3 | Array | calls.rb:125:1:138:3 | Array |
 | calls.rb:165:1:169:3 | S | calls.rb:165:1:169:3 | S |
 | calls.rb:171:1:174:3 | A | calls.rb:171:1:174:3 | A |
 | calls.rb:171:1:174:3 | A | instance_fields.rb:1:1:10:3 | A |
 | calls.rb:171:1:174:3 | A | modules_rec.rb:7:1:9:3 | A |
+| calls.rb:171:1:174:3 | A | toplevel_self_singleton.rb:1:1:6:3 | A |
 | calls.rb:176:1:179:3 | B | calls.rb:176:1:179:3 | B |
 | calls.rb:176:1:179:3 | B | instance_fields.rb:16:1:25:3 | B |
 | calls.rb:190:1:226:3 | Singletons | calls.rb:190:1:226:3 | Singletons |
@@ -154,11 +156,12 @@ getADeclaration
 | modules.rb:116:7:117:9 | XX::YY | modules.rb:116:7:117:9 | YY |
 | modules.rb:123:1:124:3 | Test::Foo1::Bar::Baz | modules.rb:123:1:124:3 | Baz |
 | modules_rec.rb:1:1:2:3 | B::A | modules_rec.rb:1:1:2:3 | A |
-| modules_rec.rb:4:1:5:3 | A::B | modules_rec.rb:4:1:5:3 | B |
 | private.rb:1:1:49:3 | E | private.rb:1:1:49:3 | E |
 | private.rb:62:1:80:3 | F | private.rb:62:1:80:3 | F |
 | private.rb:82:1:94:3 | PrivateOverride1 | private.rb:82:1:94:3 | PrivateOverride1 |
 | private.rb:96:1:102:3 | PrivateOverride2 | private.rb:96:1:102:3 | PrivateOverride2 |
+| toplevel_self_singleton.rb:2:5:5:7 | A::B | modules_rec.rb:4:1:5:3 | B |
+| toplevel_self_singleton.rb:2:5:5:7 | A::B | toplevel_self_singleton.rb:2:5:5:7 | B |
 getSuperClass
 | calls.rb:43:1:58:3 | C | calls.rb:115:1:118:3 | Object |
 | calls.rb:65:1:69:3 | D | calls.rb:43:1:58:3 | C |
@@ -204,13 +207,13 @@ getSuperClass
 | modules.rb:112:1:113:3 | YY | calls.rb:115:1:118:3 | Object |
 | modules.rb:116:7:117:9 | XX::YY | modules.rb:112:1:113:3 | YY |
 | modules_rec.rb:1:1:2:3 | B::A | calls.rb:115:1:118:3 | Object |
-| modules_rec.rb:4:1:5:3 | A::B | calls.rb:115:1:118:3 | Object |
 | private.rb:1:1:49:3 | E | calls.rb:115:1:118:3 | Object |
 | private.rb:82:1:94:3 | PrivateOverride1 | calls.rb:115:1:118:3 | Object |
 | private.rb:96:1:102:3 | PrivateOverride2 | private.rb:82:1:94:3 | PrivateOverride1 |
+| toplevel_self_singleton.rb:2:5:5:7 | A::B | calls.rb:115:1:118:3 | Object |
 getAPrependedModule
 | calls.rb:115:1:118:3 | Object | calls.rb:171:1:174:3 | A |
-| calls.rb:171:1:174:3 | A | modules_rec.rb:4:1:5:3 | A::B |
+| calls.rb:171:1:174:3 | A | toplevel_self_singleton.rb:2:5:5:7 | A::B |
 | modules.rb:101:1:105:3 | PrependTest | modules.rb:63:1:81:3 | Test |
 getAnIncludedModule
 | calls.rb:43:1:58:3 | C | calls.rb:21:1:34:3 | M |
@@ -429,6 +432,8 @@ resolveConstantWriteAccess
 | private.rb:62:1:80:3 | F | F |
 | private.rb:82:1:94:3 | PrivateOverride1 | PrivateOverride1 |
 | private.rb:96:1:102:3 | PrivateOverride2 | PrivateOverride2 |
+| toplevel_self_singleton.rb:1:1:6:3 | A | A |
+| toplevel_self_singleton.rb:2:5:5:7 | B | A::B |
 enclosingModule
 | calls.rb:1:1:3:3 | foo | calls.rb:1:1:550:40 | calls.rb |
 | calls.rb:2:5:2:14 | call to puts | calls.rb:1:1:550:40 | calls.rb |
@@ -1645,3 +1650,13 @@ enclosingModule
 | private.rb:105:1:105:16 | PrivateOverride2 | private.rb:1:1:105:40 | private.rb |
 | private.rb:105:1:105:20 | call to new | private.rb:1:1:105:40 | private.rb |
 | private.rb:105:1:105:23 | call to m1 | private.rb:1:1:105:40 | private.rb |
+| toplevel_self_singleton.rb:1:1:6:3 | A | toplevel_self_singleton.rb:1:1:12:4 | toplevel_self_singleton.rb |
+| toplevel_self_singleton.rb:2:5:5:7 | B | toplevel_self_singleton.rb:1:1:6:3 | A |
+| toplevel_self_singleton.rb:3:9:4:11 | ab_singleton_method | toplevel_self_singleton.rb:2:5:5:7 | B |
+| toplevel_self_singleton.rb:3:13:3:16 | self | toplevel_self_singleton.rb:2:5:5:7 | B |
+| toplevel_self_singleton.rb:8:1:12:3 | call to do_something | toplevel_self_singleton.rb:1:1:12:4 | toplevel_self_singleton.rb |
+| toplevel_self_singleton.rb:8:1:12:3 | self | toplevel_self_singleton.rb:1:1:12:4 | toplevel_self_singleton.rb |
+| toplevel_self_singleton.rb:8:14:12:3 | do ... end | toplevel_self_singleton.rb:1:1:12:4 | toplevel_self_singleton.rb |
+| toplevel_self_singleton.rb:9:5:11:7 | method_in_block | toplevel_self_singleton.rb:1:1:12:4 | toplevel_self_singleton.rb |
+| toplevel_self_singleton.rb:10:9:10:27 | call to ab_singleton_method | toplevel_self_singleton.rb:1:1:12:4 | toplevel_self_singleton.rb |
+| toplevel_self_singleton.rb:10:9:10:27 | self | toplevel_self_singleton.rb:1:1:12:4 | toplevel_self_singleton.rb |
