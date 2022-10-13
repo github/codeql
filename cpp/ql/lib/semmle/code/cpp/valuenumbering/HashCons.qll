@@ -104,7 +104,7 @@ private newtype HC_Alloc =
   HC_HasAlloc(HashCons hc) { mk_HasAlloc(hc, _) }
 
 /**
- * Used to implement optional extent expression on `new[]` exprtessions
+ * Used to implement optional extent expression on `new[]` expressions
  */
 private newtype HC_Extent =
   HC_NoExtent() or
