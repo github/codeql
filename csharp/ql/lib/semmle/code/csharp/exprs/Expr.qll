@@ -776,7 +776,7 @@ class SizeofExpr extends UnaryOperation, @sizeof_expr {
  * struct A {
  *   public void M() { }
  *
- *   unsafe int DirectDerefence() {
+ *   unsafe int DirectDereference() {
  *     int n = 10;
  *     int *pn = &n;
  *     return *pn;
@@ -788,7 +788,7 @@ class SizeofExpr extends UnaryOperation, @sizeof_expr {
  *     pa->M();
  *   }
  *
- *   unsafe void ArrayDerefence() {
+ *   unsafe void ArrayDereference() {
  *     char* cp = stackalloc char[10];
  *     cp[1] = 'a';
  *   }
@@ -813,7 +813,7 @@ class PointerIndirectionExpr extends UnaryOperation, @pointer_indirection_expr {
  *
  * ```csharp
  * class A {
- *   unsafe int DirectDerefence() {
+ *   unsafe int DirectDereference() {
  *     int n = 10;
  *     int *pn = &n;
  *     return *pn;
