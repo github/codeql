@@ -173,7 +173,7 @@ class Variable extends Declaration, @variable {
   }
 
   /**
-   * Holds if this variable is declated as part of a structured binding
+   * Holds if this variable is declared as part of a structured binding
    * declaration. For example, `x` in `auto [x, y] = ...`.
    */
   predicate isStructuredBinding() { is_structured_binding(underlyingElement(this)) }
