@@ -459,7 +459,7 @@ predicate jumpStep(Node nodeFrom, Node nodeTo) {
  * Set of jumpSteps that are shared with type-tracker implementation.
  *
  * For ORM modeling we want to add jumpsteps to global dataflow, but since these are
- * based on type-trackers, it's important that these new ORM jumsteps are not used in
+ * based on type-trackers, it's important that these new ORM jumpsteps are not used in
  * the type-trackers as well, as that would make evaluation of type-tracking recursive
  * with the new jumpsteps.
  *
@@ -485,7 +485,7 @@ predicate jumpStepSharedWithTypeTracker(Node nodeFrom, Node nodeTo) {
  * Set of jumpSteps that are NOT shared with type-tracker implementation.
  *
  * For ORM modeling we want to add jumpsteps to global dataflow, but since these are
- * based on type-trackers, it's important that these new ORM jumsteps are not used in
+ * based on type-trackers, it's important that these new ORM jumpsteps are not used in
  * the type-trackers as well, as that would make evaluation of type-tracking recursive
  * with the new jumpsteps.
  *
