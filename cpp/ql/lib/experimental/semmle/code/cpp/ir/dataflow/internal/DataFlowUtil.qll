@@ -746,7 +746,7 @@ predicate exprNodeShouldBeOperand(Node node, Expr e) {
 
 /**
  * Holds if `load` is a `LoadInstruction` that is the result of evaluating `e`
- * and `node` is an `IndirctOperandNode` that should map `node.asExpr()` to `e`.
+ * and `node` is an `IndirectOperandNode` that should map `node.asExpr()` to `e`.
  *
  * We map `e` to `node.asExpr()` when `node` semantically represents the
  * same value as `load`. A subsequent flow step will flow `node` to
