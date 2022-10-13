@@ -94,7 +94,7 @@ private predicate isBooleanConstant(ControlFlowElement n, boolean value) {
   mustHaveBooleanCompletion(n) and
   value = n.asAstNode().(BooleanLiteralExpr).getValue()
   or
-  // Boolean consants hidden inside conversions are also
+  // Boolean constants hidden inside conversions are also
   // constants that resolve to the same value.
   exists(ControlFlowElement parent |
     parent.asAstNode() = n.asAstNode().getResolveStep() and
