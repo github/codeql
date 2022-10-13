@@ -96,6 +96,7 @@ module HeuristicNames {
    * Gets a regular expression that identifies strings that may indicate the presence of data
    * that is hashed or encrypted, and hence rendered non-sensitive, or contains special characters
    * suggesting nouns within the string do not represent the meaning of the whole string (e.g. a URL or a SQL query).
+   *`@` is not considered to be a special character as it may appear in the names of class or instance variables.
    *
    * We also filter out common words like `certain` and `concert`, since otherwise these could
    * be matched by the certificate regular expressions. Same for `accountable` (account), or
@@ -103,7 +104,7 @@ module HeuristicNames {
    */
   string notSensitiveRegexp() {
     result =
-      "(?is).*([^\\w$.-]|redact|censor|obfuscate|hash|md5|sha|random|((?<!un)(en))?(crypt|code)|certain|concert|secretar|accountant|accountab).*"
+      "(?is).*([^\\w$.-@]|redact|censor|obfuscate|hash|md5|sha|random|((?<!un)(en))?(crypt|code)|certain|concert|secretar|accountant|accountab).*"
   }
 
   /**
