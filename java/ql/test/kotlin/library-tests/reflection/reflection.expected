@@ -51,7 +51,13 @@ functionReferences
 | reflection.kt:98:14:98:17 | ...::... | reflection.kt:98:14:98:17 | invoke | reflection.kt:94:1:94:24 | fn |
 | reflection.kt:99:14:99:29 | ...::... | reflection.kt:99:14:99:29 | invoke | file://<external>/Class2$Inner.class:0:0:0:0 | Inner<String> |
 | reflection.kt:116:40:116:44 | ...::... | reflection.kt:116:40:116:44 | invoke | reflection.kt:115:9:115:27 | fn1 |
-| reflection.kt:126:9:126:13 | ...::... | reflection.kt:126:9:126:13 | invoke | reflection.kt:121:1:121:13 | fn1 |
+| reflection.kt:126:9:126:13 | ...::... | reflection.kt:126:9:126:13 | invoke | reflection.kt:126:9:126:13 | fn1 |
+| reflection.kt:134:21:134:40 | ...::... | reflection.kt:134:21:134:40 | invoke | reflection.kt:134:21:134:40 | takesOptionalParam |
+| reflection.kt:144:21:144:41 | ...::... | reflection.kt:144:21:144:41 | invoke | reflection.kt:144:21:144:41 | takesOptionalParam |
+| reflection.kt:145:32:145:70 | ...::... | reflection.kt:145:32:145:70 | invoke | reflection.kt:145:32:145:70 | takesOptionalParam |
+| reflection.kt:153:21:153:44 | ...::... | reflection.kt:153:21:153:44 | invoke | reflection.kt:153:21:153:44 | extTakesOptionalParam |
+| reflection.kt:154:33:154:61 | ...::... | reflection.kt:154:33:154:61 | invoke | reflection.kt:154:33:154:61 | extTakesOptionalParam |
+| reflection.kt:162:25:162:45 | ...::... | reflection.kt:162:25:162:45 | invoke | reflection.kt:162:25:162:45 | <init> |
 propertyGetReferences
 | reflection.kt:10:38:10:42 | ...::... | reflection.kt:10:38:10:42 | get | reflection.kt:33:9:33:23 | getP0 |
 | reflection.kt:15:35:15:41 | ...::... | reflection.kt:15:35:15:41 | get | reflection.kt:33:9:33:23 | getP0 |
@@ -115,7 +121,20 @@ callsInsideInvocationMethods
 | reflection.kt:109:17:109:27 | ...::... | reflection.kt:109:17:109:27 | new KMutableProperty0<Integer>(...) { ... } | reflection.kt:109:17:109:27 | set | reflection.kt:109:17:109:27 | setProp1(...) | Base1.setProp1 |
 | reflection.kt:116:40:116:44 | ...::... | reflection.kt:116:40:116:44 | new Function1<Integer,Unit>(...) { ... } | reflection.kt:116:40:116:44 | invoke | reflection.kt:116:40:116:44 | fn1(...) | LocalFn$.fn1 |
 | reflection.kt:116:40:116:44 | ...::... | reflection.kt:116:40:116:44 | new Function1<Integer,Unit>(...) { ... } | reflection.kt:116:40:116:44 | invoke | reflection.kt:116:40:116:44 | new (...) | LocalFn$. |
-| reflection.kt:126:9:126:13 | ...::... | reflection.kt:126:9:126:13 | new Function0<Unit>(...) { ... } | reflection.kt:126:9:126:13 | invoke | reflection.kt:126:9:126:13 | fn1(...) | ReflectionKt.fn1 |
+| reflection.kt:126:9:126:13 | ...::... | reflection.kt:126:9:126:13 | new Function0<Unit>(...) { ... } | reflection.kt:126:9:126:13 | invoke | reflection.kt:126:9:126:13 | fn1(...) | ReflectionKt$.fn1 |
+| reflection.kt:126:9:126:13 | ...::... | reflection.kt:126:9:126:13 | new Function0<Unit>(...) { ... } | reflection.kt:126:9:126:13 | invoke | reflection.kt:126:9:126:13 | new (...) | ReflectionKt$. |
+| reflection.kt:134:21:134:40 | ...::... | reflection.kt:134:21:134:40 | new Function1<Integer,Integer>(...) { ... } | reflection.kt:134:21:134:40 | invoke | reflection.kt:134:21:134:40 | new (...) | ReflectionKt$. |
+| reflection.kt:134:21:134:40 | ...::... | reflection.kt:134:21:134:40 | new Function1<Integer,Integer>(...) { ... } | reflection.kt:134:21:134:40 | invoke | reflection.kt:134:21:134:40 | takesOptionalParam(...) | ReflectionKt$.takesOptionalParam |
+| reflection.kt:144:21:144:41 | ...::... | reflection.kt:144:21:144:41 | new Function1<Integer,Integer>(...) { ... } | reflection.kt:144:21:144:41 | invoke | reflection.kt:144:21:144:41 | new (...) | ReflectionKt$. |
+| reflection.kt:144:21:144:41 | ...::... | reflection.kt:144:21:144:41 | new Function1<Integer,Integer>(...) { ... } | reflection.kt:144:21:144:41 | invoke | reflection.kt:144:21:144:41 | takesOptionalParam(...) | ReflectionKt$.takesOptionalParam |
+| reflection.kt:145:32:145:70 | ...::... | reflection.kt:145:32:145:70 | new Function2<MemberOptionalsTest,Integer,Integer>(...) { ... } | reflection.kt:145:32:145:70 | invoke | reflection.kt:145:32:145:70 | new (...) | ReflectionKt$. |
+| reflection.kt:145:32:145:70 | ...::... | reflection.kt:145:32:145:70 | new Function2<MemberOptionalsTest,Integer,Integer>(...) { ... } | reflection.kt:145:32:145:70 | invoke | reflection.kt:145:32:145:70 | takesOptionalParam(...) | ReflectionKt$.takesOptionalParam |
+| reflection.kt:153:21:153:44 | ...::... | reflection.kt:153:21:153:44 | new Function1<Integer,Integer>(...) { ... } | reflection.kt:153:21:153:44 | invoke | reflection.kt:153:21:153:44 | extTakesOptionalParam(...) | ReflectionKt$.extTakesOptionalParam |
+| reflection.kt:153:21:153:44 | ...::... | reflection.kt:153:21:153:44 | new Function1<Integer,Integer>(...) { ... } | reflection.kt:153:21:153:44 | invoke | reflection.kt:153:21:153:44 | new (...) | ReflectionKt$. |
+| reflection.kt:154:33:154:61 | ...::... | reflection.kt:154:33:154:61 | new Function2<String,Integer,Integer>(...) { ... } | reflection.kt:154:33:154:61 | invoke | reflection.kt:154:33:154:61 | extTakesOptionalParam(...) | ReflectionKt$.extTakesOptionalParam |
+| reflection.kt:154:33:154:61 | ...::... | reflection.kt:154:33:154:61 | new Function2<String,Integer,Integer>(...) { ... } | reflection.kt:154:33:154:61 | invoke | reflection.kt:154:33:154:61 | new (...) | ReflectionKt$. |
+| reflection.kt:162:25:162:45 | ...::... | reflection.kt:162:25:162:45 | new Function1<Integer,ConstructorOptional>(...) { ... } | reflection.kt:162:25:162:45 | invoke | reflection.kt:162:25:162:45 | <init>(...) | ReflectionKt$.<init> |
+| reflection.kt:162:25:162:45 | ...::... | reflection.kt:162:25:162:45 | new Function1<Integer,ConstructorOptional>(...) { ... } | reflection.kt:162:25:162:45 | invoke | reflection.kt:162:25:162:45 | new (...) | ReflectionKt$. |
 fieldAccessInsideInvocationMethods
 | reflection.kt:14:38:14:44 | ...::... | reflection.kt:14:38:14:44 | new Function1<C,Integer>(...) { ... } | reflection.kt:14:38:14:44 | invoke | reflection.kt:14:38:14:44 | this.<dispatchReceiver> |
 | reflection.kt:15:35:15:41 | ...::... | reflection.kt:15:35:15:41 | new KProperty0<Integer>(...) { ... } | reflection.kt:15:35:15:41 | get | reflection.kt:15:35:15:41 | this.<dispatchReceiver> |
@@ -138,6 +157,8 @@ fieldAccessInsideInvocationMethods
 | reflection.kt:99:14:99:29 | ...::... | reflection.kt:99:14:99:29 | new Function1<String,Inner<String>>(...) { ... } | reflection.kt:99:14:99:29 | invoke | reflection.kt:99:14:99:29 | this.<dispatchReceiver> |
 | reflection.kt:109:17:109:27 | ...::... | reflection.kt:109:17:109:27 | new KMutableProperty0<Integer>(...) { ... } | reflection.kt:109:17:109:27 | get | reflection.kt:109:17:109:27 | this.<dispatchReceiver> |
 | reflection.kt:109:17:109:27 | ...::... | reflection.kt:109:17:109:27 | new KMutableProperty0<Integer>(...) { ... } | reflection.kt:109:17:109:27 | set | reflection.kt:109:17:109:27 | this.<dispatchReceiver> |
+| reflection.kt:144:21:144:41 | ...::... | reflection.kt:144:21:144:41 | new Function1<Integer,Integer>(...) { ... } | reflection.kt:144:21:144:41 | invoke | reflection.kt:144:21:144:41 | this.<extensionReceiver> |
+| reflection.kt:153:21:153:44 | ...::... | reflection.kt:153:21:153:44 | new Function1<Integer,Integer>(...) { ... } | reflection.kt:153:21:153:44 | invoke | reflection.kt:153:21:153:44 | this.<extensionReceiver> |
 modifiers
 | reflection.kt:7:49:7:54 | ...::... | reflection.kt:7:49:7:54 | invoke | override |
 | reflection.kt:7:49:7:54 | ...::... | reflection.kt:7:49:7:54 | invoke | public |
@@ -229,6 +250,18 @@ modifiers
 | reflection.kt:116:40:116:44 | ...::... | reflection.kt:116:40:116:44 | invoke | public |
 | reflection.kt:126:9:126:13 | ...::... | reflection.kt:126:9:126:13 | invoke | override |
 | reflection.kt:126:9:126:13 | ...::... | reflection.kt:126:9:126:13 | invoke | public |
+| reflection.kt:134:21:134:40 | ...::... | reflection.kt:134:21:134:40 | invoke | override |
+| reflection.kt:134:21:134:40 | ...::... | reflection.kt:134:21:134:40 | invoke | public |
+| reflection.kt:144:21:144:41 | ...::... | reflection.kt:144:21:144:41 | invoke | override |
+| reflection.kt:144:21:144:41 | ...::... | reflection.kt:144:21:144:41 | invoke | public |
+| reflection.kt:145:32:145:70 | ...::... | reflection.kt:145:32:145:70 | invoke | override |
+| reflection.kt:145:32:145:70 | ...::... | reflection.kt:145:32:145:70 | invoke | public |
+| reflection.kt:153:21:153:44 | ...::... | reflection.kt:153:21:153:44 | invoke | override |
+| reflection.kt:153:21:153:44 | ...::... | reflection.kt:153:21:153:44 | invoke | public |
+| reflection.kt:154:33:154:61 | ...::... | reflection.kt:154:33:154:61 | invoke | override |
+| reflection.kt:154:33:154:61 | ...::... | reflection.kt:154:33:154:61 | invoke | public |
+| reflection.kt:162:25:162:45 | ...::... | reflection.kt:162:25:162:45 | invoke | override |
+| reflection.kt:162:25:162:45 | ...::... | reflection.kt:162:25:162:45 | invoke | public |
 compGenerated
 | file://<external>/Class2.class:0:0:0:0 | getValue | 3 |
 | file://<external>/Class2.class:0:0:0:0 | getValue | 3 |
@@ -243,6 +276,16 @@ compGenerated
 | reflection.kt:105:18:105:31 | getProp1 | 3 |
 | reflection.kt:105:18:105:31 | setProp1 | 3 |
 | reflection.kt:126:9:126:13 |  | 1 |
+| reflection.kt:131:1:131:50 | takesOptionalParam$default | 10 |
+| reflection.kt:134:21:134:40 |  | 1 |
+| reflection.kt:140:5:140:54 | takesOptionalParam$default | 10 |
+| reflection.kt:144:21:144:41 |  | 1 |
+| reflection.kt:145:32:145:70 |  | 1 |
+| reflection.kt:150:1:150:60 | extTakesOptionalParam$default | 10 |
+| reflection.kt:153:21:153:44 |  | 1 |
+| reflection.kt:154:33:154:61 |  | 1 |
+| reflection.kt:157:1:157:49 | ConstructorOptional | 10 |
+| reflection.kt:162:25:162:45 |  | 1 |
 propertyReferenceOverrides
 | reflection.kt:10:38:10:42 | ...::... | reflection.kt:10:38:10:42 | get | kotlin.reflect.KProperty1<C,Integer>.get(Reflection.C) |
 | reflection.kt:10:38:10:42 | ...::... | reflection.kt:10:38:10:42 | invoke | kotlin.jvm.functions.Function1<C,Integer>.invoke(Reflection.C) |

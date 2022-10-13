@@ -4389,10 +4389,16 @@ open class KotlinFileExtractor(
         callable: Label<out DbCallable>
     ) {
         with("function reference", functionReferenceExpr) {
-            val target = functionReferenceExpr.reflectionTarget ?: run {
-                logger.warnElement("Expected to find reflection target for function reference. Using underlying symbol instead.", functionReferenceExpr)
-                functionReferenceExpr.symbol
-            }
+            val target =
+                if (functionReferenceExpr.origin == IrStatementOrigin.ADAPTED_FUNCTION_REFERENCE)
+                    // For an adaptation (e.g. to adjust the number or type of arguments or results), the symbol field points at the adapter while `.reflectionTarget` points at the source-level target.
+                    functionReferenceExpr.symbol
+                else
+                    // TODO: Consider whether we could always target the symbol
+                    functionReferenceExpr.reflectionTarget ?: run {
+                        logger.warnElement("Expected to find reflection target for function reference. Using underlying symbol instead.", functionReferenceExpr)
+                        functionReferenceExpr.symbol
+                    }
 
             /*
              * Extract generated class:
