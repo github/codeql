@@ -2,7 +2,7 @@
 <qhelp>
 <overview>
 <p>
-Sensitive information such as user passwords should not be transmitted within the query string of the requested URL.
+Sensitive information such as passwords should not be transmitted within the query string of the requested URL.
 Sensitive information within URLs may be logged in various locations, including the user's browser, the web server,
 and any proxy servers between the two endpoints. URLs may also be displayed on-screen, bookmarked
 or emailed around by users. They may be disclosed to third parties via the Referer header when any off-site links are
