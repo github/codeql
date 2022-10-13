@@ -99,8 +99,8 @@ private newtype TSummarizedCallableBase =
   TSyntheticCallable(SyntheticCallable c)
 
 /**
- * A callable with a flow summary. This is either a regular `Callable` or a
- * `SyntheticCallable`.
+ * A callable that may have a flow summary. This is either a regular `Callable`
+ * or a `SyntheticCallable`.
  */
 class SummarizedCallableBase extends TSummarizedCallableBase {
   /** Gets a textual representation of this callable. */
@@ -149,9 +149,9 @@ class SummarizedCallableBase extends TSummarizedCallableBase {
   Type getReturnType() {
     result = this.asCallable().getReturnType()
     or
-    result = this.asSyntheticCallable().getReturnType()
-    or
     exists(SyntheticCallable sc | sc = this.asSyntheticCallable() |
+      result = sc.getReturnType()
+      or
       not exists(sc.getReturnType()) and
       result instanceof TypeObject
     )
@@ -161,10 +161,10 @@ class SummarizedCallableBase extends TSummarizedCallableBase {
 class SummarizedCallable = Impl::Public::SummarizedCallable;
 
 /**
- * An adaptor class to add the flow summaries specified on `SyntheticCallable`
+ * An adapter class to add the flow summaries specified on `SyntheticCallable`
  * to `SummarizedCallable`.
  */
-private class SummarizedSyntheticCallableAdaptor extends SummarizedCallable, TSyntheticCallable {
+private class SummarizedSyntheticCallableAdapter extends SummarizedCallable, TSyntheticCallable {
   override predicate propagatesFlow(
     SummaryComponentStack input, SummaryComponentStack output, boolean preservesValue
   ) {
