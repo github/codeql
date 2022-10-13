@@ -1,6 +1,6 @@
 /**
  * @name Usage of unsupported external library API
- * @description A call to an unsuppported external library API.
+ * @description A call to an unsupported external library API.
  * @kind problem
  * @problem.severity recommendation
  * @tags meta
