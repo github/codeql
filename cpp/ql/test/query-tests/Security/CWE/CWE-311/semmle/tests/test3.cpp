@@ -156,7 +156,7 @@ void test_taint(const char *password)
 
 		strncpy(buffer, password, 16);
 		buffer[15] = 0;
-		send(val(), buffer, 16, val()); // BAD: `password` is (partially) sent plaintext
+		send(val(), buffer, 16, val()); // BAD: `password` is (partially) sent plaintext [NOT DETECTED]
 	}
 }
 
@@ -178,7 +178,7 @@ void test_decrypt()
 	{
 		char password[256];
 
-		recv(val(), password, 256, val()); // GOOD: password is encrypted
+		recv(val(), password, 256, val()); // GOOD: password is encrypted [FALSE POSITIVE]
 		password[255] = 0;
 
 		decrypt_inplace(password); // proof that `password` was in fact encrypted
@@ -207,7 +207,7 @@ void test_decrypt()
 		encrypt_inplace(password); // proof that `password` is in fact encrypted
 		password[255] = 0;
 
-		send(val(), password, strlen(password), val()); // GOOD: password is encrypted
+		send(val(), password, strlen(password), val()); // GOOD: password is encrypted [FALSE POSITIVE]
 	}
 
 	{
@@ -287,7 +287,7 @@ void target2(char *data)
 
 void target3(char *data)
 {
-	send(val(), data, strlen(data), val()); // BAD: data is a plaintext password [NOT DETECTED]
+	send(val(), data, strlen(data), val()); // BAD: data is a plaintext password
 }
 
 void target4(char *data)
@@ -524,13 +524,13 @@ void tests2(person_info *pi)
 		char buffer[1024];
 
 		snprintf(buffer, 1024, "lat = %f\n", pi->my_latitude);
-		send(val(), buffer, strlen(buffer), val()); // BAD
+		send(val(), buffer, strlen(buffer), val()); // BAD [NOT DETECTED]
 	}
 	{
 		char buffer[1024];
 
 		snprintf(buffer, 1024, "long = %f\n", pi->home_longitude);
-		send(val(), buffer, strlen(buffer), val()); // BAD
+		send(val(), buffer, strlen(buffer), val()); // BAD [NOT DETECTED]
 	}
 	{
 		char buffer[1024];
