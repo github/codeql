@@ -13,16 +13,18 @@ private import CoreKnowledge as CoreKnowledge
 private import StandardEndpointFilters as StandardEndpointFilters
 
 private module Labels {
-  class LabelledEndpoint extends DataFlow::Node {
-    abstract string getLabel();
+  newtype TEndpointLabel = TLegacyEndpoint()
+
+  class EndpointLabel extends TEndpointLabel {
+    abstract string getLabel(DataFlow::Node n);
+
+    abstract string toString();
   }
 
-  class LegacyLabel extends LabelledEndpoint {
-    string label;
+  class LegacyLabel extends EndpointLabel, TLegacyEndpoint {
+    override string getLabel(DataFlow::Node n) { legacyLabel(n, result) }
 
-    LegacyLabel() { legacyLabel(this, label) }
-
-    override string getLabel() { result = label }
+    string toString() { result = "LegacyLabel" }
   }
 
   predicate legacyLabel(DataFlow::Node n, string label) {
@@ -36,6 +38,6 @@ private module Labels {
   }
 }
 
-string getAnEndpointLabel(DataFlow::Node n) { result = n.(Labels::LabelledEndpoint).getLabel() }
+string getAnEndpointLabel(DataFlow::Node n) { result = any(Labels::EndpointLabel l).getLabel(n) }
 
 DataFlow::Node getALabeledEndpoint(string label) { getAnEndpointLabel(result) = label }
