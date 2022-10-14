@@ -13,9 +13,9 @@ private import CoreKnowledge as CoreKnowledge
 
 /**
  * DEPRECATED: use StandardEndpointLabels instead.
- * 
+ *
  * Provides a set of reasons why a given data flow node should be excluded as a sink candidate.
- * */
+ */
 string getAReasonSinkExcluded(DataFlow::Node n) {
   isArgumentToModeledFunction(n) and result = "argument to modeled function"
   or

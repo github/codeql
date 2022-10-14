@@ -29,16 +29,22 @@ module Labels {
 
   class LikelyExternalLibraryCallEndpointLabel extends EndpointLabel,
     TLikelyExternalLibraryCallEndpointLabel {
-    override DataFlow::Node aNode() { result = StandardEndpointFilters::getALikelyExternalLibraryCall() }
+    override DataFlow::Node aNode() {
+      result = StandardEndpointFilters::getALikelyExternalLibraryCall()
+    }
 
     override string getLabel() { result = "legacy/likely-external-library-call" }
   }
 
   class FlowsToArgumentOfLikelyExternalLibraryCallEndpointLabel extends EndpointLabel,
     TFlowsToArgumentOfLikelyExternalLibraryCallEndpointLabel {
-    override DataFlow::Node aNode() { StandardEndpointFilters::flowsToArgumentOfLikelyExternalLibraryCall(result) }
+    override DataFlow::Node aNode() {
+      StandardEndpointFilters::flowsToArgumentOfLikelyExternalLibraryCall(result)
+    }
 
-    override string getLabel() { result = "legacy/flows-to-argument-of-likely-external-library-call" }
+    override string getLabel() {
+      result = "legacy/flows-to-argument-of-likely-external-library-call"
+    }
   }
 
   class ReasonSinkExcludedEndpointLabel extends EndpointLabel, TReasonSinkExcludedEndpointLabel {
@@ -46,7 +52,11 @@ module Labels {
       result = any(DataFlow::Node n | exists(StandardEndpointFilters::getAReasonSinkExcluded(n)))
     }
 
-    override string getLabel() { result = "legacy/reason-sink-excluded/"+StandardEndpointFilters::getAReasonSinkExcluded(any(DataFlow::Node n)) }
+    override string getLabel() {
+      result =
+        "legacy/reason-sink-excluded/" +
+          StandardEndpointFilters::getAReasonSinkExcluded(any(DataFlow::Node n))
+    }
   }
 }
 
