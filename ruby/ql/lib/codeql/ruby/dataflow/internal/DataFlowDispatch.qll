@@ -413,7 +413,8 @@ private module Cached {
           //   end
           // end
           // ```
-          selfInMethod(sourceNode.(SsaSelfDefinitionNode).getVariable(), _, m.getSuperClass*())
+          selfInMethod(sourceNode.(SsaSelfDefinitionNode).getVariable(), any(SingletonMethod sm),
+            m.getSuperClass*())
         )
       )
       or
