@@ -312,10 +312,7 @@ class DataFlowPlainFunction extends DataFlowFunction {
 class DataFlowMethod extends DataFlowFunction {
   Class cls;
 
-  DataFlowMethod() {
-    cls.getAMethod() = func and
-    not isStaticmethod(func)
-  }
+  DataFlowMethod() { cls.getAMethod() = func }
 
   /** Gets the class this function is a method of. */
   Class getClass() { result = cls }
@@ -329,17 +326,20 @@ class DataFlowMethod extends DataFlowFunction {
   }
 }
 
+/** A classmethod. */
+class DataFlowClassmethod extends DataFlowMethod {
+  DataFlowClassmethod() { isClassmethod(func) }
+}
+
 /** A staticmethod. */
-class DataFlowStaticmethod extends DataFlowFunction {
-  Class cls;
+class DataFlowStaticmethod extends DataFlowMethod, DataFlowFunction {
+  DataFlowStaticmethod() { isStaticmethod(func) }
 
-  DataFlowStaticmethod() {
-    cls.getAMethod() = func and
-    isStaticmethod(func)
+  override int positionalOffset() { result = 0 }
+
+  override ParameterNode getParameter(ParameterPosition ppos) {
+    result = DataFlowFunction.super.getParameter(ppos)
   }
-
-  /** Gets the class this function is a staticmethod of. */
-  Class getClass() { result = cls }
 }
 
 /**
