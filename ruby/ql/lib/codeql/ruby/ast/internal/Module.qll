@@ -138,8 +138,25 @@ private module Cached {
   cached
   string resolveConstantWrite(ConstantWriteAccess c) { result = resolveConstantWriteAccess(c) }
 
+  /**
+   * Gets a method named `name` that is available in module `m`. This includes methods
+   * that are included/prepended into `m` and methods available on base classes of `m`.
+   */
   cached
   Method lookupMethod(Module m, string name) { TMethod(result) = lookupMethodOrConst(m, name) }
+
+  /**
+   * Gets a method named `name` that is available in a sub class of module `m`. This
+   * includes methods that are included/prepended into any of the sub classes of `m`,
+   * but not methods inherited from base classes.
+   */
+  cached
+  Method lookupMethodInSubClasses(Module m, string name) {
+    exists(Module sub | sub.getSuperClass() = m |
+      TMethod(result) = lookupMethodOrConst0(sub, name) or
+      result = lookupMethodInSubClasses(sub, name)
+    )
+  }
 
   cached
   Expr lookupConst(Module m, string name) {
