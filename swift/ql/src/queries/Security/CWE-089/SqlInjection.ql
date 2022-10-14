@@ -79,5 +79,5 @@ class SqlInjectionConfig extends TaintTracking::Configuration {
 
 from SqlInjectionConfig config, DataFlow::PathNode sourceNode, DataFlow::PathNode sinkNode
 where config.hasFlowPath(sourceNode, sinkNode)
-select sinkNode.getNode(), sourceNode, sinkNode, "This query depends on $@.",
-  sourceNode.getNode(), "a user-provided value"
+select sinkNode.getNode(), sourceNode, sinkNode, "This query depends on a $@.",
+  sourceNode.getNode(), "user-provided value"
