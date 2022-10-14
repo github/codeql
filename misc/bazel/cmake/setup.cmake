@@ -1,4 +1,9 @@
-option(BUILD_SHARED_LIBS "" 0)
+option(BUILD_SHARED_LIBS "Build and use shared libraries" 0)
+option(CREATE_COMPILATION_DATABASE_LINK "Create compilation database link. Implies CMAKE_EXPORT_COMPILE_COMMANDS" 1)
+
+if (CREATE_COMPILATION_DATABASE_LINK)
+    set(CMAKE_EXPORT_COMPILE_COMMANDS 1)
+endif ()
 
 macro(bazel)
     execute_process(COMMAND bazel ${ARGN} COMMAND_ERROR_IS_FATAL ANY OUTPUT_STRIP_TRAILING_WHITESPACE)
@@ -20,6 +25,6 @@ foreach (target ${BAZEL_GENERATE_CMAKE_TARGETS})
     include(${BAZEL_WORKSPACE}/bazel-bin/${target}.cmake)
 endforeach ()
 
-if (CMAKE_EXPORT_COMPILE_COMMANDS)
+if (CREATE_COMPILATION_DATABASE_LINK)
     file(CREATE_LINK ${PROJECT_BINARY_DIR}/compile_commands.json ${PROJECT_SOURCE_DIR}/compile_commands.json SYMBOLIC)
 endif ()
