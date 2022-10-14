@@ -21,5 +21,5 @@ foreach (target ${BAZEL_GENERATE_CMAKE_TARGETS})
 endforeach ()
 
 if (CMAKE_EXPORT_COMPILE_COMMANDS)
-    file(CREATE_LINK ${PROJECT_BINARY_DIR}/compile_commands.json ${PROJECT_SOURCE_DIR}/compile_commands.json)
+    file(CREATE_LINK ${PROJECT_BINARY_DIR}/compile_commands.json ${PROJECT_SOURCE_DIR}/compile_commands.json SYMBOLIC)
 endif ()
