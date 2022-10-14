@@ -220,4 +220,4 @@ toplevel_self_singleton.rb:
 #    2| A::B
 #-----|  -> Object
 
-#   23| Good
+#   24| Good
