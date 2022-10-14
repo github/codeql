@@ -1,6 +1,3 @@
-htmlSafeCalls
-| app/views/foo/bars/show.html.erb:23:3:23:25 | call to html_safe |
-| app/views/foo/bars/show.html.erb:27:3:27:25 | call to html_safe |
 rawCalls
 | app/views/foo/bars/_widget.html.erb:1:5:1:21 | call to raw |
 | app/views/foo/bars/_widget.html.erb:2:5:2:20 | call to raw |
