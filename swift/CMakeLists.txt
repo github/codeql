@@ -12,3 +12,5 @@ set(CMAKE_CXX_COMPILER clang++)
 project(codeql)
 
 include(../misc/bazel/cmake/setup.cmake)
+
+include_generated(//swift/extractor:cmake)

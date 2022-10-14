@@ -15,16 +15,13 @@ bazel(info output_base OUTPUT_VARIABLE BAZEL_OUTPUT_BASE)
 string(REPLACE "-" "_" BAZEL_EXEC_ROOT ${PROJECT_NAME})
 set(BAZEL_EXEC_ROOT ${BAZEL_OUTPUT_BASE}/execroot/${BAZEL_EXEC_ROOT})
 
-bazel(query "kind(generate_cmake, //...)" OUTPUT_VARIABLE BAZEL_GENERATE_CMAKE_TARGETS)
-string(REPLACE "\n" ";" BAZEL_GENERATE_CMAKE_TARGETS "${BAZEL_GENERATE_CMAKE_TARGETS}")
-bazel(build ${BAZEL_GENERATE_CMAKE_TARGETS})
-
-string(REPLACE "//" "" BAZEL_GENERATE_CMAKE_TARGETS "${BAZEL_GENERATE_CMAKE_TARGETS}")
-string(REPLACE ":" "/" BAZEL_GENERATE_CMAKE_TARGETS "${BAZEL_GENERATE_CMAKE_TARGETS}")
-
-foreach (target ${BAZEL_GENERATE_CMAKE_TARGETS})
-    include(${BAZEL_WORKSPACE}/bazel-bin/${target}.cmake)
-endforeach ()
+macro(include_generated BAZEL_TARGET)
+    bazel(build ${BAZEL_TARGET})
+    string(REPLACE "@" "/external/" BAZEL_TARGET_PATH ${BAZEL_TARGET})
+    string(REPLACE "//" "/" BAZEL_TARGET_PATH ${BAZEL_TARGET_PATH})
+    string(REPLACE ":" "/" BAZEL_TARGET_PATH ${BAZEL_TARGET_PATH})
+    include(${BAZEL_WORKSPACE}/bazel-bin${BAZEL_TARGET_PATH}.cmake)
+endmacro()
 
 if (CREATE_COMPILATION_DATABASE_LINK)
     file(CREATE_LINK ${PROJECT_BINARY_DIR}/compile_commands.json ${PROJECT_SOURCE_DIR}/compile_commands.json SYMBOLIC)
