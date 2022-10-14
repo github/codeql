@@ -413,10 +413,10 @@ private module Cached {
           //   end
           // end
           // ```
-          exists(Module target |
+          exists(Module target, MethodBase caller |
             target = m.getSuperClass*() and
-            selfInMethod(sourceNode.(SsaSelfDefinitionNode).getVariable(), any(SingletonMethod sm),
-              target) and
+            selfInMethod(sourceNode.(SsaSelfDefinitionNode).getVariable(), caller, target) and
+            singletonMethod(caller, _, _) and
             // Singleton methods declared in a block in the top-level may spuriously end up being seen as singleton
             // methods on Object, if the block is actually evaluated in the context of another class.
             // The 'self' inside such a singleton method could then be any class, leading to self-calls
