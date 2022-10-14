@@ -394,7 +394,7 @@ private module ResolveImpl {
 
   /**
    * The qualified names of the ancestors of a class/module. The ancestors should be an ordered list
-   * of the ancestores of `prepend`ed modules, the module itself , the ancestors or `include`d modules
+   * of the ancestors of `prepend`ed modules, the module itself , the ancestors or `include`d modules
    * and the ancestors of the super class. The priority value only distinguishes the kind of ancestor,
    * it does not order the ancestors within a group of the same kind. This is an over-approximation, however,
    * computing the precise order is tricky because it depends on the evaluation/file loading order.

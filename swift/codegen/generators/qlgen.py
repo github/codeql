@@ -230,18 +230,18 @@ def _partition(l, pred):
     return map(list, _partition_iter(l, pred))
 
 
-def _is_in_qltest_collapsed_hierachy(cls: schema.Class, lookup: typing.Dict[str, schema.Class]):
-    return "qltest_collapse_hierarchy" in cls.pragmas or _is_under_qltest_collapsed_hierachy(cls, lookup)
+def _is_in_qltest_collapsed_hierarchy(cls: schema.Class, lookup: typing.Dict[str, schema.Class]):
+    return "qltest_collapse_hierarchy" in cls.pragmas or _is_under_qltest_collapsed_hierarchy(cls, lookup)
 
 
-def _is_under_qltest_collapsed_hierachy(cls: schema.Class, lookup: typing.Dict[str, schema.Class]):
+def _is_under_qltest_collapsed_hierarchy(cls: schema.Class, lookup: typing.Dict[str, schema.Class]):
     return "qltest_uncollapse_hierarchy" not in cls.pragmas and any(
-        _is_in_qltest_collapsed_hierachy(lookup[b], lookup) for b in cls.bases)
+        _is_in_qltest_collapsed_hierarchy(lookup[b], lookup) for b in cls.bases)
 
 
 def _should_skip_qltest(cls: schema.Class, lookup: typing.Dict[str, schema.Class]):
     return "qltest_skip" in cls.pragmas or not (
-        cls.final or "qltest_collapse_hierarchy" in cls.pragmas) or _is_under_qltest_collapsed_hierachy(
+        cls.final or "qltest_collapse_hierarchy" in cls.pragmas) or _is_under_qltest_collapsed_hierarchy(
         cls, lookup)
 
 
