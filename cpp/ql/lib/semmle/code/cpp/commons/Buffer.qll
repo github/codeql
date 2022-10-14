@@ -25,10 +25,22 @@ predicate memberMayBeVarSize(Class c, MemberVariable v) {
 }
 
 /**
- * Get the size in bytes of the buffer pointed to by an expression (if this can be determined).
+ * Gets the expression associated with `n`. Unlike `n.asExpr()` this also gets the
+ * expression underlying an indirect dataflow node.
  */
-language[monotonicAggregates]
-int getBufferSize(Expr bufferExpr, Element why) {
+private Expr getExpr(DataFlow::Node n) {
+  result = [n.asExpr(), n.asIndirectArgument(), n.asIndirectArgument()]
+}
+
+private DataFlow::Node exprNode(Expr e) { e = getExpr(result) }
+
+/**
+ * Holds if `bufferExpr` is an allocation-like expression.
+ *
+ * This includes both actual allocations, as well as various operations that return a pointer to
+ * stack-allocated objects.
+ */
+private int isSource(Expr bufferExpr, Element why) {
   exists(Variable bufferVar | bufferVar = bufferExpr.(VariableAccess).getTarget() |
     // buffer is a fixed size array
     result = bufferVar.getUnspecifiedType().(ArrayType).getSize() and
@@ -46,41 +58,11 @@ int getBufferSize(Expr bufferExpr, Element why) {
     ) and
     result = why.(Expr).getType().(ArrayType).getSize() and
     not exists(bufferVar.getUnspecifiedType().(ArrayType).getSize())
-    or
-    exists(Class parentClass, VariableAccess parentPtr, int bufferSize |
-      // buffer is the parentPtr->bufferVar of a 'variable size struct'
-      memberMayBeVarSize(parentClass, bufferVar) and
-      why = bufferVar and
-      parentPtr = bufferExpr.(VariableAccess).getQualifier() and
-      parentPtr.getTarget().getUnspecifiedType().(PointerType).getBaseType() = parentClass and
-      (
-        if exists(bufferVar.getType().getSize())
-        then bufferSize = bufferVar.getType().getSize()
-        else bufferSize = 0
-      ) and
-      result = getBufferSize(parentPtr, _) + bufferSize - parentClass.getSize()
-    )
   )
   or
   // buffer is a fixed size dynamic allocation
   result = bufferExpr.(AllocationExpr).getSizeBytes() and
   why = bufferExpr
-  or
-  exists(DataFlow::ExprNode bufferExprNode |
-    // dataflow (all sources must be the same size)
-    bufferExprNode = DataFlow::exprNode(bufferExpr) and
-    result =
-      unique(Expr def |
-        DataFlow::localFlowStep(DataFlow::exprNode(def), bufferExprNode)
-      |
-        getBufferSize(def, _)
-      ) and
-    // find reason
-    exists(Expr def | DataFlow::localFlowStep(DataFlow::exprNode(def), bufferExprNode) |
-      why = def or
-      exists(getBufferSize(def, why))
-    )
-  )
   or
   exists(Type bufferType |
     // buffer is the address of a variable
@@ -98,5 +80,44 @@ int getBufferSize(Expr bufferExpr, Element why) {
     why = bufferExpr.(AddressOfExpr).getAddressable() and
     bufferType.getAMemberVariable() = why and
     result = bufferType.getSize()
+  )
+}
+
+/**
+ * Holds if `e2` is an expression that is derived from `e1` such that if `e1[n]` is a
+ * well-defined expression for some number `n`, then `e2[n + delta]` is also a well-defined
+ * expression.
+ */
+private predicate step(Expr e1, Expr e2, int delta) {
+  exists(Variable bufferVar, Class parentClass, VariableAccess parentPtr, int bufferSize |
+    e1 = parentPtr
+  |
+    bufferVar = e2.(VariableAccess).getTarget() and
+    // buffer is the parentPtr->bufferVar of a 'variable size struct'
+    memberMayBeVarSize(parentClass, bufferVar) and
+    parentPtr = e2.(VariableAccess).getQualifier() and
+    parentPtr.getTarget().getUnspecifiedType().(PointerType).getBaseType() = parentClass and
+    (
+      if exists(bufferVar.getType().getSize())
+      then bufferSize = bufferVar.getType().getSize()
+      else bufferSize = 0
+    ) and
+    delta = bufferSize - parentClass.getSize()
+  )
+  or
+  DataFlow::localFlowStep+(exprNode(e1), exprNode(e2)) and
+  delta = 0
+}
+
+/**
+ * Get the size in bytes of the buffer pointed to by an expression (if this can be determined).
+ */
+int getBufferSize(Expr bufferExpr, Element why) {
+  result = isSource(bufferExpr, why)
+  or
+  exists(Expr e0, int delta, int size |
+    size = getBufferSize(e0, why) and
+    delta = unique(int cand | step(e0, bufferExpr, cand) | cand) and
+    result = size + delta
   )
 }
