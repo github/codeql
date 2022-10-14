@@ -413,8 +413,17 @@ private module Cached {
           //   end
           // end
           // ```
-          selfInMethod(sourceNode.(SsaSelfDefinitionNode).getVariable(), any(SingletonMethod sm),
-            m.getSuperClass*())
+          exists(Module target |
+            target = m.getSuperClass*() and
+            selfInMethod(sourceNode.(SsaSelfDefinitionNode).getVariable(), any(SingletonMethod sm),
+              target) and
+            // Singleton methods declared in a block in the top-level may spuriously end up being seen as singleton
+            // methods on Object, if the block is actually evaluated in the context of another class.
+            // The 'self' inside such a singleton method could then be any class, leading to self-calls
+            // being resolved to arbitrary singleton methods.
+            // To remedy this, we do not allow following super-classes all the way to Object.
+            not (m != target and target = TResolved("Object"))
+          )
         )
       )
       or
