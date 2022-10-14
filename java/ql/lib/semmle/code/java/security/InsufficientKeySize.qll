@@ -3,12 +3,10 @@
 private import semmle.code.java.security.Encryption
 private import semmle.code.java.dataflow.DataFlow
 
-// TODO: only update key sizes (and key size strings) in one place in the code
 /** A source for an insufficient key size. */
 abstract class InsufficientKeySizeSource extends DataFlow::Node {
   /** Holds if this source has the specified `state`. */
   predicate hasState(DataFlow::FlowState state) { state instanceof DataFlow::FlowStateEmpty }
-  //int getIntValue() { result = this.asExpr().(IntegerLiteral).getIntValue() }
 }
 
 /** A sink for an insufficient key size. */
@@ -109,35 +107,6 @@ private class SymmetricSink extends InsufficientKeySizeSink {
   override predicate hasState(DataFlow::FlowState state) { state = "128" }
 }
 
-// TODO: rethink the predicate name; also think about whether this could/should be a class instead; or a predicate within the sink class so can do sink.predicate()...
-// TODO: can prbly re-work way using the typeFlag to be better and less repetitive
-// private predicate hasKeySizeInInitMethod(DataFlow::Node node, string typeFlag) {
-//   exists(MethodAccess ma, JavaxCryptoAlgoSpec jcaSpec |
-//     (
-//       ma.getMethod() instanceof KeyGeneratorInitMethod and typeFlag = "symmetric"
-//       or
-//       ma.getMethod() instanceof KeyPairGeneratorInitMethod and typeFlag.matches("asymmetric%")
-//     ) and
-//     (
-//       jcaSpec instanceof JavaxCryptoKeyGenerator and typeFlag = "symmetric"
-//       or
-//       jcaSpec instanceof JavaSecurityKeyPairGenerator and typeFlag.matches("asymmetric%")
-//     ) and
-//     (
-//       getAlgoName(jcaSpec) = "AES" and typeFlag = "symmetric"
-//       or
-//       getAlgoName(jcaSpec).matches(["RSA", "DSA", "DH"]) and typeFlag = "asymmetric-non-ec"
-//       or
-//       getAlgoName(jcaSpec).matches("EC%") and typeFlag = "asymmetric-ec"
-//     ) and
-//     DataFlow::localExprFlow(jcaSpec, ma.getQualifier()) and
-//     node.asExpr() = ma.getArgument(0)
-//   )
-// }
-// // TODO: this predicate is just a poc for more code condensing; redo this
-// private string getAlgoName(JavaxCryptoAlgoSpec jca) {
-//   result = jca.getAlgoSpec().(StringLiteral).getValue().toUpperCase()
-// }
 abstract class InitMethodAccess extends MethodAccess {
   Argument getKeySizeArg() { result = this.getArgument(0) }
 }
@@ -168,20 +137,6 @@ class SymmKeyGen extends KeyGen {
   override Expr getAlgoSpec() { result = this.(MethodAccess).getArgument(0) }
 }
 
-// TODO: rethink the predicate name; also think about whether this could/should be a class instead; or a predicate within the sink class so can do sink.predicate()...
-// TODO: can prbly re-work way using the typeFlag to be better and less repetitive...
-// private predicate hasKeySizeInSpec(DataFlow::Node node, string typeFlag) {
-//   exists(ClassInstanceExpr paramSpec |
-//     (
-//       paramSpec.getConstructedType() instanceof AsymmetricNonEcSpec and
-//       typeFlag = "asymmetric-non-ec"
-//       or
-//       paramSpec.getConstructedType() instanceof EcGenParameterSpec and
-//       typeFlag = "asymmetric-ec"
-//     ) and
-//     node.asExpr() = paramSpec.getArgument(0)
-//   )
-// }
 // ! use below instead of/in above?? (actually I don't think I need any of this, can just use AsymmetricNonEcSpec and EcGenParameterSpec directly???)
 // Algo spec
 abstract class AsymmetricAlgoSpec extends ClassInstanceExpr {
@@ -202,3 +157,5 @@ class AsymmetricEcSpec extends AsymmetricAlgoSpec {
 // TODO:
 // todo #0: look into use of specs without keygen objects; should spec not be a sink in these cases?
 // todo #3: make list of algo names more easily reusable (either as constant-type variable at top of file, or model as own class to share, etc.)
+// todo: add barrier guard for !=0 conditional case
+// todo: only update key sizes (and key size strings) in one place in the code

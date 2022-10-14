@@ -5,10 +5,7 @@ import semmle.code.java.dataflow.DataFlow
 import semmle.code.java.dataflow.TaintTracking
 import semmle.code.java.security.InsufficientKeySize
 
-/**
- * A data flow configuration for tracking non-elliptic curve asymmetric algorithm
- * (RSA, DSA, and DH) key sizes.
- */
+/** A data flow configuration for tracking key sizes used in cryptographic algorithms. */
 class KeySizeConfiguration extends DataFlow::Configuration {
   KeySizeConfiguration() { this = "KeySizeConfiguration" }
 
