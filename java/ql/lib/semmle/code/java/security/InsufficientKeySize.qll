@@ -8,6 +8,7 @@ private import semmle.code.java.dataflow.DataFlow
 abstract class InsufficientKeySizeSource extends DataFlow::Node {
   /** Holds if this source has the specified `state`. */
   predicate hasState(DataFlow::FlowState state) { state instanceof DataFlow::FlowStateEmpty }
+  //int getIntValue() { result = this.asExpr().(IntegerLiteral).getIntValue() }
 }
 
 /** A sink for an insufficient key size. */
@@ -17,17 +18,17 @@ abstract class InsufficientKeySizeSink extends DataFlow::Node {
 }
 
 /** A source for an insufficient key size (asymmetric-non-ec: RSA, DSA, DH). */
-private class AsymmetricNonECSource extends InsufficientKeySizeSource {
-  AsymmetricNonECSource() { getNodeIntValue(this) < 2048 }
+private class AsymmetricNonEcSource extends InsufficientKeySizeSource {
+  AsymmetricNonEcSource() { getNodeIntValue(this) < 2048 }
 
   override predicate hasState(DataFlow::FlowState state) { state = "2048" }
 }
 
 /** A source for an insufficient key size (asymmetric-ec: EC%). */
-private class AsymmetricECSource extends InsufficientKeySizeSource {
-  AsymmetricECSource() {
+private class AsymmetricEcSource extends InsufficientKeySizeSource {
+  AsymmetricEcSource() {
     getNodeIntValue(this) < 256 or
-    getECKeySize(this.asExpr().(StringLiteral).getValue()) < 256 // for cases when the key size is embedded in the curve name
+    getEcKeySize(this.asExpr().(StringLiteral).getValue()) < 256 // for cases when the key size is embedded in the curve name
   }
 
   override predicate hasState(DataFlow::FlowState state) { state = "256" }
@@ -40,7 +41,6 @@ private class SymmetricSource extends InsufficientKeySizeSource {
   override predicate hasState(DataFlow::FlowState state) { state = "128" }
 }
 
-// TODO: use `typeFlag` like with sinks below to include the size numbers in this predicate?
 private int getNodeIntValue(DataFlow::Node node) {
   result = node.asExpr().(IntegerLiteral).getIntValue()
 }
@@ -48,7 +48,7 @@ private int getNodeIntValue(DataFlow::Node node) {
 // TODO: check if any other regex should be added based on some MRVA results.
 /** Returns the key size in the EC algorithm string */
 bindingset[algorithm]
-private int getECKeySize(string algorithm) {
+private int getEcKeySize(string algorithm) {
   algorithm.matches("sec%") and // specification such as "secp256r1"
   result = algorithm.regexpCapture("sec[p|t](\\d+)[a-zA-Z].*", 1).toInt()
   or
@@ -60,30 +60,36 @@ private int getECKeySize(string algorithm) {
 }
 
 /** A sink for an insufficient key size (asymmetric-non-ec). */
-private class AsymmetricNonECSink extends InsufficientKeySizeSink {
-  AsymmetricNonECSink() {
-    hasKeySizeInInitMethod(this, "asymmetric-non-ec")
+private class AsymmetricNonEcSink extends InsufficientKeySizeSink {
+  AsymmetricNonEcSink() {
+    // hasKeySizeInInitMethod(this, "asymmetric-non-ec")
+    // or
+    //hasKeySizeInSpec(this, "asymmetric-non-ec")
+    exists(AsymmInitMethodAccess ma, AsymmKeyGen kg |
+      kg.getAlgoName().matches(["RSA", "DSA", "DH"]) and
+      DataFlow::localExprFlow(kg, ma.getQualifier()) and
+      this.asExpr() = ma.getKeySizeArg()
+    )
     or
-    hasKeySizeInSpec(this)
+    exists(AsymmetricNonEcSpec s | this.asExpr() = s.getKeySizeArg())
   }
 
   override predicate hasState(DataFlow::FlowState state) { state = "2048" }
 }
 
-private class AsymmetricNonECSpec extends RefType {
-  AsymmetricNonECSpec() {
-    this instanceof RsaKeyGenParameterSpec or
-    this instanceof DsaGenParameterSpec or
-    this instanceof DhGenParameterSpec
-  }
-}
-
 /** A sink for an insufficient key size (asymmetric-ec). */
-private class AsymmetricECSink extends InsufficientKeySizeSink {
-  AsymmetricECSink() {
-    hasKeySizeInInitMethod(this, "asymmetric-ec")
+private class AsymmetricEcSink extends InsufficientKeySizeSink {
+  AsymmetricEcSink() {
+    // hasKeySizeInInitMethod(this, "asymmetric-ec")
+    // or
+    //hasKeySizeInSpec(this, "asymmetric-ec")
+    exists(AsymmInitMethodAccess ma, AsymmKeyGen kg |
+      kg.getAlgoName().matches("EC%") and
+      DataFlow::localExprFlow(kg, ma.getQualifier()) and
+      this.asExpr() = ma.getKeySizeArg()
+    )
     or
-    hasKeySizeInSpec(this)
+    exists(AsymmetricEcSpec s | this.asExpr() = s.getKeySizeArg())
   }
 
   override predicate hasState(DataFlow::FlowState state) { state = "256" }
@@ -91,65 +97,107 @@ private class AsymmetricECSink extends InsufficientKeySizeSink {
 
 /** A sink for an insufficient key size (symmetric). */
 private class SymmetricSink extends InsufficientKeySizeSink {
-  SymmetricSink() { hasKeySizeInInitMethod(this, "symmetric") }
+  SymmetricSink() {
+    //hasKeySizeInInitMethod(this, "symmetric")
+    exists(SymmInitMethodAccess ma, SymmKeyGen kg |
+      kg.getAlgoName() = "AES" and
+      DataFlow::localExprFlow(kg, ma.getQualifier()) and
+      this.asExpr() = ma.getKeySizeArg()
+    )
+  }
 
   override predicate hasState(DataFlow::FlowState state) { state = "128" }
 }
 
 // TODO: rethink the predicate name; also think about whether this could/should be a class instead; or a predicate within the sink class so can do sink.predicate()...
 // TODO: can prbly re-work way using the typeFlag to be better and less repetitive
-private predicate hasKeySizeInInitMethod(DataFlow::Node node, string typeFlag) {
-  exists(MethodAccess ma, JavaxCryptoAlgoSpec jcaSpec |
-    (
-      ma.getMethod() instanceof KeyGeneratorInitMethod and typeFlag = "symmetric"
-      or
-      ma.getMethod() instanceof KeyPairGeneratorInitMethod and typeFlag.matches("asymmetric%")
-    ) and
-    (
-      jcaSpec instanceof JavaxCryptoKeyGenerator and typeFlag = "symmetric"
-      or
-      jcaSpec instanceof JavaSecurityKeyPairGenerator and typeFlag.matches("asymmetric%")
-    ) and
-    (
-      getAlgoName(jcaSpec) = "AES" and typeFlag = "symmetric"
-      or
-      getAlgoName(jcaSpec).matches(["RSA", "DSA", "DH"]) and typeFlag = "asymmetric-non-ec"
-      or
-      getAlgoName(jcaSpec).matches("EC%") and typeFlag = "asymmetric-ec"
-    ) and
-    DataFlow::localExprFlow(jcaSpec, ma.getQualifier()) and
-    node.asExpr() = ma.getArgument(0)
-  )
+// private predicate hasKeySizeInInitMethod(DataFlow::Node node, string typeFlag) {
+//   exists(MethodAccess ma, JavaxCryptoAlgoSpec jcaSpec |
+//     (
+//       ma.getMethod() instanceof KeyGeneratorInitMethod and typeFlag = "symmetric"
+//       or
+//       ma.getMethod() instanceof KeyPairGeneratorInitMethod and typeFlag.matches("asymmetric%")
+//     ) and
+//     (
+//       jcaSpec instanceof JavaxCryptoKeyGenerator and typeFlag = "symmetric"
+//       or
+//       jcaSpec instanceof JavaSecurityKeyPairGenerator and typeFlag.matches("asymmetric%")
+//     ) and
+//     (
+//       getAlgoName(jcaSpec) = "AES" and typeFlag = "symmetric"
+//       or
+//       getAlgoName(jcaSpec).matches(["RSA", "DSA", "DH"]) and typeFlag = "asymmetric-non-ec"
+//       or
+//       getAlgoName(jcaSpec).matches("EC%") and typeFlag = "asymmetric-ec"
+//     ) and
+//     DataFlow::localExprFlow(jcaSpec, ma.getQualifier()) and
+//     node.asExpr() = ma.getArgument(0)
+//   )
+// }
+// // TODO: this predicate is just a poc for more code condensing; redo this
+// private string getAlgoName(JavaxCryptoAlgoSpec jca) {
+//   result = jca.getAlgoSpec().(StringLiteral).getValue().toUpperCase()
+// }
+abstract class InitMethodAccess extends MethodAccess {
+  Argument getKeySizeArg() { result = this.getArgument(0) }
 }
 
-// TODO: this predicate is just a poc for more code condensing; redo this
-private string getAlgoName(JavaxCryptoAlgoSpec jca) {
-  result = jca.getAlgoSpec().(StringLiteral).getValue().toUpperCase()
+class AsymmInitMethodAccess extends InitMethodAccess {
+  AsymmInitMethodAccess() { this.getMethod() instanceof KeyPairGeneratorInitMethod }
+}
+
+class SymmInitMethodAccess extends InitMethodAccess {
+  SymmInitMethodAccess() { this.getMethod() instanceof KeyGeneratorInitMethod }
+}
+
+abstract class KeyGen extends JavaxCryptoAlgoSpec {
+  string getAlgoName() { result = this.getAlgoSpec().(StringLiteral).getValue().toUpperCase() }
+}
+
+class AsymmKeyGen extends KeyGen {
+  AsymmKeyGen() { this instanceof JavaSecurityKeyPairGenerator }
+
+  // ! this override is repetitive...
+  override Expr getAlgoSpec() { result = this.(MethodAccess).getArgument(0) }
+}
+
+class SymmKeyGen extends KeyGen {
+  SymmKeyGen() { this instanceof JavaxCryptoKeyGenerator }
+
+  // ! this override is repetitive...
+  override Expr getAlgoSpec() { result = this.(MethodAccess).getArgument(0) }
 }
 
 // TODO: rethink the predicate name; also think about whether this could/should be a class instead; or a predicate within the sink class so can do sink.predicate()...
 // TODO: can prbly re-work way using the typeFlag to be better and less repetitive...
-private predicate hasKeySizeInSpec(DataFlow::Node node) {
-  exists(ClassInstanceExpr paramSpec |
-    (
-      paramSpec.getConstructedType() instanceof AsymmetricNonECSpec //and
-      or
-      //typeFlag = "asymmetric-non-ec"
-      paramSpec.getConstructedType() instanceof EcGenParameterSpec //and
-      //typeFlag = "asymmetric-ec"
-    ) and
-    node.asExpr() = paramSpec.getArgument(0)
-  )
+// private predicate hasKeySizeInSpec(DataFlow::Node node, string typeFlag) {
+//   exists(ClassInstanceExpr paramSpec |
+//     (
+//       paramSpec.getConstructedType() instanceof AsymmetricNonEcSpec and
+//       typeFlag = "asymmetric-non-ec"
+//       or
+//       paramSpec.getConstructedType() instanceof EcGenParameterSpec and
+//       typeFlag = "asymmetric-ec"
+//     ) and
+//     node.asExpr() = paramSpec.getArgument(0)
+//   )
+// }
+// ! use below instead of/in above?? (actually I don't think I need any of this, can just use AsymmetricNonEcSpec and EcGenParameterSpec directly???)
+// Algo spec
+abstract class AsymmetricAlgoSpec extends ClassInstanceExpr {
+  Argument getKeySizeArg() { result = this.getArgument(0) }
 }
 
-// ! use below instead of/in above??
-class Spec extends ClassInstanceExpr {
-  Spec() {
-    this.getConstructedType() instanceof AsymmetricNonECSpec or
-    this.getConstructedType() instanceof EcGenParameterSpec
+class AsymmetricNonEcSpec extends AsymmetricAlgoSpec {
+  AsymmetricNonEcSpec() {
+    this.getConstructedType() instanceof RsaKeyGenParameterSpec or
+    this.getConstructedType() instanceof DsaGenParameterSpec or
+    this.getConstructedType() instanceof DhGenParameterSpec
   }
+}
 
-  Argument getKeySizeArg() { result = this.getArgument(0) }
+class AsymmetricEcSpec extends AsymmetricAlgoSpec {
+  AsymmetricEcSpec() { this.getConstructedType() instanceof EcGenParameterSpec }
 }
 // TODO:
 // todo #0: look into use of specs without keygen objects; should spec not be a sink in these cases?
