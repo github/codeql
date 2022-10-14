@@ -1,31 +1,3 @@
-def m_deep_merge(x)
-    h1 = { a: source("a") }
-    h2 = { b: source("b") }
-    x = h1.deep_merge(h2)
-
-    sink x[:a] # $ hasValueFlow=a
-    sink x[:b] # $ hasValueFlow=b
-end
-
-m_deep_merge(:c)
-
-def m_deep_merge!
-    h1 = { a: source("a") }
-    h2 = { b: source("b") }
-    x = h1.deep_merge!(h2)
-
-    sink x[:a] # $ hasValueFlow=a
-    sink x[:b] # $ hasValueFlow=b
-
-    sink h1[:a] # $ hasValueFlow=a
-    sink h1[:b] # $ hasValueFlow=b
-
-    sink h2[:a]
-    sink h2[:b] # $ hasValueFlow=b
-end
-
-m_deep_merge!()
-
 def m_stringify_keys
     h = { a: source("a") }
     x = h.stringify_keys
