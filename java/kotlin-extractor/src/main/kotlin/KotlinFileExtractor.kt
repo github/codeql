@@ -583,12 +583,7 @@ open class KotlinFileExtractor(
             var parent: IrDeclarationParent? = declarationParent
             while (parent != null) {
                 if (parent is IrClass) {
-                    val parentId =
-                        if (parent.isAnonymousObject) {
-                            useAnonymousClass(parent).javaResult.id.cast<DbClass>()
-                        } else {
-                            useClassInstance(parent, parentClassTypeArguments).typeResult.id
-                        }
+                    val parentId = useClassInstance(parent, parentClassTypeArguments).typeResult.id
                     tw.writeEnclInReftype(innerId, parentId)
                     if (innerClass != null && innerClass.isCompanion) {
                         // If we are a companion then our parent has a
@@ -866,7 +861,7 @@ open class KotlinFileExtractor(
                     extractTypeAccess(useType(paramType), locId, paramId, -1)
             }
         }
-        val paramsSignature = allParamTypeResults.joinToString(separator = ",", prefix = "(", postfix = ")") { it.javaResult.signature }
+        val paramsSignature = allParamTypeResults.joinToString(separator = ",", prefix = "(", postfix = ")") { signatureOrWarn(it.javaResult, f) }
         val shortName = getDefaultsMethodName(f)
 
         if (f.symbol is IrConstructorSymbol) {
@@ -1076,6 +1071,9 @@ open class KotlinFileExtractor(
         }
     }
 
+    private fun signatureOrWarn(t: TypeResult<*>, associatedElement: IrElement) =
+        t.signature ?: "<signature unavailable>".also { logger.warnElement("Needed a signature for a type that doesn't have one", associatedElement) }
+
     private fun forceExtractFunction(f: IrFunction, parentId: Label<out DbReftype>, extractBody: Boolean, extractMethodAndParameterTypeAccesses: Boolean, typeSubstitution: TypeSubstitution?, classTypeArgsIncludingOuterClasses: List<IrTypeArgument>?, extractOrigin: Boolean = true, overriddenAttributes: OverriddenFunctionAttributes? = null): Label<out DbCallable>  {
         with("function", f) {
             DeclarationStackAdjuster(f, overriddenAttributes).use {
@@ -1112,7 +1110,7 @@ open class KotlinFileExtractor(
                     paramTypes
                 }
 
-                val paramsSignature = allParamTypes.joinToString(separator = ",", prefix = "(", postfix = ")") { it.javaResult.signature }
+                val paramsSignature = allParamTypes.joinToString(separator = ",", prefix = "(", postfix = ")") { signatureOrWarn(it.javaResult, f) }
 
                 val adjustedReturnType = addJavaLoweringWildcards(getAdjustedReturnType(f), false, (javaCallable as? JavaMethod)?.returnType)
                 val substReturnType = typeSubstitution?.let { it(adjustedReturnType, TypeContext.RETURN, pluginContext) } ?: adjustedReturnType
@@ -2933,20 +2931,8 @@ open class KotlinFileExtractor(
             logger.errorElement("Constructor call has non-simple type ${eType.javaClass}", e)
             return
         }
+        val type = useType(eType)
         val isAnonymous = eType.isAnonymous
-        val type: TypeResults = if (isAnonymous) {
-            if (e.typeArgumentsCount > 0) {
-                logger.warnElement("Unexpected type arguments (${e.typeArgumentsCount}) for anonymous class constructor call", e)
-            }
-            val c = eType.classifier.owner
-            if (c !is IrClass) {
-                logger.errorElement("Anonymous constructor call type not a class (${c.javaClass})", e)
-                return
-            }
-            useAnonymousClass(c)
-        } else {
-            useType(eType)
-        }
         val locId = tw.getLocation(e)
         val valueArgs = (0 until e.valueArgumentsCount).map { e.getValueArgument(it) }
         // For now, don't try to use default methods for enum constructor calls,
@@ -2963,7 +2949,7 @@ open class KotlinFileExtractor(
         }
 
         if (isAnonymous) {
-            tw.writeIsAnonymClass(type.javaResult.id.cast<DbClass>(), id)
+            tw.writeIsAnonymClass(type.javaResult.id.cast(), id)
         }
 
         val dr = e.dispatchReceiver
@@ -4614,7 +4600,7 @@ open class KotlinFileExtractor(
             Pair(paramId, paramType)
         }
 
-        val paramsSignature = parameters.joinToString(separator = ",", prefix = "(", postfix = ")") { it.second.javaResult.signature }
+        val paramsSignature = parameters.joinToString(separator = ",", prefix = "(", postfix = ")") { signatureOrWarn(it.second.javaResult, declarationStack.peek().first) }
 
         val rt = useType(returnType, TypeContext.RETURN)
         tw.writeMethods(methodId, name, "$name$paramsSignature", rt.javaResult.id, parentId, methodId)

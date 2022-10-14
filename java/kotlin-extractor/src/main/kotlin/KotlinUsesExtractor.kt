@@ -210,10 +210,6 @@ open class KotlinUsesExtractor(
     // `typeArgs` can be null to describe a raw generic type.
     // For non-generic types it will be zero-length list.
     fun useClassInstance(c: IrClass, typeArgs: List<IrTypeArgument>?, inReceiverContext: Boolean = false): UseClassInstanceResult {
-        if (c.isAnonymousObject) {
-            logger.error("Unexpected access to anonymous class instance")
-        }
-
         val substituteClass = getJavaEquivalentClass(c)
 
         val extractClass = substituteClass ?: c
@@ -418,10 +414,11 @@ open class KotlinUsesExtractor(
         }
 
         val fqName = replacedClass.fqNameWhenAvailable
-        val signature = if (fqName == null) {
+        val signature = if (replacedClass.isAnonymousObject) {
+            null
+        } else if (fqName == null) {
             logger.error("Unable to find signature/fqName for ${replacedClass.name}")
-            // TODO: Should we return null here instead?
-            "<no signature available>"
+            null
         } else {
             fqName.asString()
         }
@@ -497,16 +494,6 @@ open class KotlinUsesExtractor(
     // `args` can be null to describe a raw generic type.
     // For non-generic types it will be zero-length list.
     fun useSimpleTypeClass(c: IrClass, args: List<IrTypeArgument>?, hasQuestionMark: Boolean): TypeResults {
-        if (c.isAnonymousObject) {
-            args?.let {
-                if (it.isNotEmpty() && !isUnspecialised(c, it, logger)) {
-                    logger.error("Unexpected specialised instance of generic anonymous class")
-                }
-            }
-
-            return useAnonymousClass(c)
-        }
-
         val classInstanceResult = useClassInstance(c, args)
         val javaClassId = classInstanceResult.typeResult.id
         val kotlinQualClassName = getUnquotedClassLabel(c, args).classLabel
@@ -795,7 +782,7 @@ open class KotlinUsesExtractor(
                     extractFileClass(dp)
                 }
             is IrClass ->
-                if (classTypeArguments != null && !dp.isAnonymousObject) {
+                if (classTypeArguments != null) {
                     useClassInstance(dp, classTypeArguments, inReceiverContext).typeResult.id
                 } else {
                     val replacedType = tryReplaceParcelizeRawType(dp)
@@ -1411,20 +1398,24 @@ open class KotlinUsesExtractor(
     private fun getUnquotedClassLabel(c: IrClass, argsIncludingOuterClasses: List<IrTypeArgument>?): ClassLabelResults {
         val pkg = c.packageFqName?.asString() ?: ""
         val cls = c.name.asString()
-        val label = when (val parent = c.parent) {
-            is IrClass -> {
-                "${getUnquotedClassLabel(parent, listOf()).classLabel}\$$cls"
-            }
-            is IrFunction -> {
-                "{${useFunction<DbMethod>(parent)}}.$cls"
-            }
-            is IrField -> {
-                "{${useField(parent)}}.$cls"
-            }
-            else -> {
-                if (pkg.isEmpty()) cls else "$pkg.$cls"
-            }
-        }
+        val label =
+            if (c.isAnonymousObject)
+                "{${useAnonymousClass(c).javaResult.id}}"
+            else
+                when (val parent = c.parent) {
+                    is IrClass -> {
+                        "${getUnquotedClassLabel(parent, listOf()).classLabel}\$$cls"
+                    }
+                    is IrFunction -> {
+                        "{${useFunction<DbMethod>(parent)}}.$cls"
+                    }
+                    is IrField -> {
+                        "{${useField(parent)}}.$cls"
+                    }
+                    else -> {
+                        if (pkg.isEmpty()) cls else "$pkg.$cls"
+                    }
+                }
 
         val reorderedArgs = orderTypeArgsLeftToRight(c, argsIncludingOuterClasses)
         val typeArgLabels = reorderedArgs?.map { getTypeArgumentLabel(it) }
@@ -1435,20 +1426,17 @@ open class KotlinUsesExtractor(
                 ""
             else
                 typeArgLabels.takeLast(c.typeParameters.size).joinToString(prefix = "<", postfix = ">", separator = ",") { it.shortName }
+        val shortNamePrefix = if (c.isAnonymousObject) "" else cls
 
         return ClassLabelResults(
             label + (typeArgLabels?.joinToString(separator = "") { ";{${it.id}}" } ?: "<>"),
-            cls + typeArgsShortName
+            shortNamePrefix + typeArgsShortName
         )
     }
 
     // `args` can be null to describe a raw generic type.
     // For non-generic types it will be zero-length list.
     fun getClassLabel(c: IrClass, argsIncludingOuterClasses: List<IrTypeArgument>?): ClassLabelResults {
-        if (c.isAnonymousObject) {
-            logger.error("Label generation should not be requested for an anonymous class")
-        }
-
         val unquotedLabel = getUnquotedClassLabel(c, argsIncludingOuterClasses)
         return ClassLabelResults(
             "@\"class;${unquotedLabel.classLabel}\"",
@@ -1456,10 +1444,6 @@ open class KotlinUsesExtractor(
     }
 
     fun useClassSource(c: IrClass): Label<out DbClassorinterface> {
-        if (c.isAnonymousObject) {
-            return useAnonymousClass(c).javaResult.id.cast<DbClass>()
-        }
-
         // For source classes, the label doesn't include any type arguments
         val classTypeResult = addClassLabel(c, listOf())
         return classTypeResult.id

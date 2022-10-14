@@ -14,6 +14,11 @@ open class A<T>(t: T) {
     override val x = t
   }
 
+  fun privateUser(x: A<String>, y: A<CharSequence>) {
+    val a = x.privateAnonType.x
+    val b = y.privateAnonType.x
+  }
+
 }
 
 fun user(x: A<String>)  = x.anonType.x
