@@ -24,7 +24,7 @@ private module Labels {
   class LegacyLabel extends EndpointLabel, TLegacyEndpoint {
     override string getLabel(DataFlow::Node n) { legacyLabel(n, result) }
 
-    string toString() { result = "LegacyLabel" }
+    override string toString() { result = "LegacyLabel" }
   }
 
   predicate legacyLabel(DataFlow::Node n, string label) {
