@@ -226,7 +226,7 @@ private module Request {
         [
           "authorization", "script_name", "path_info", "user_agent", "referer", "referrer",
           "host_authority", "content_type", "host", "hostname", "accept_encoding",
-          "accept_language", "if_none_match", "if_none_match_etags"
+          "accept_language", "if_none_match", "if_none_match_etags", "content_mime_type"
         ]
       or
       // Request headers are prefixed with `HTTP_` to distinguish them from
@@ -261,8 +261,7 @@ private module Request {
    */
   private class HeaderTaintedCall extends RequestInputAccess {
     HeaderTaintedCall() {
-      this.getMethodName() =
-        ["media_type", "media_type", "media_type_params", "content_charset", "base_url"]
+      this.getMethodName() = ["media_type", "media_type_params", "content_charset", "base_url"]
     }
 
     override Http::Server::RequestInputKind getKind() { result = Http::Server::headerInputKind() }
@@ -275,14 +274,28 @@ private module Request {
     override Http::Server::RequestInputKind getKind() { result = Http::Server::bodyInputKind() }
   }
 
-  /** A method call on `request` which returns the rack env. */
-  private class EnvCall extends RequestInputAccess {
-    EnvCall() {
-      this.getMethodName() = ["env", "filtered_env"] and
+  /**
+   * A method call on `request` which returns the rack env.
+   * This is a hash containing all the information about the request. Values
+   * under keys starting with `HTTP_` are user-controlled.
+   */
+  private class EnvCall extends RequestMethodCall {
+    EnvCall() { this.getMethodName() = ["env", "filtered_env"] }
+  }
+
+  /**
+   * A read of a user-controlled parameter from the request env.
+   */
+  private class EnvHttpAccess extends DataFlow::CallNode, Http::Server::RequestInputAccess::Range {
+    EnvHttpAccess() {
+      any(EnvCall c).(DataFlow::LocalSourceNode).flowsTo(this.getReceiver()) and
+      this.getMethodName() = "[]" and
       this.getArgument(0).asExpr().getExpr().getConstantValue().getString().regexpMatch("^HTTP_.+")
     }
 
     override Http::Server::RequestInputKind getKind() { result = Http::Server::headerInputKind() }
+
+    override string getSourceType() { result = "ActionDispatch::Request#env[]" }
   }
 }
 
