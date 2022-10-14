@@ -51,4 +51,4 @@ prop.arg2 = 43
 del prop.arg2
 
 f = prop.func_prop
-f() # $ SPURIOUS: tt=Prop.func_prop MISSING: tt=func
+f() # $ MISSING: tt=func

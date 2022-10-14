@@ -205,6 +205,13 @@ predicate isClassmethod(Function func) {
   )
 }
 
+/** Holds if the function `func` has a `property` decorator. */
+predicate hasPropertyDecorator(Function func) {
+  exists(NameNode id | id.getId() = "property" and id.isGlobal() |
+    func.getADecorator() = id.getNode()
+  )
+}
+
 // =============================================================================
 // Callables
 // =============================================================================
@@ -251,7 +258,11 @@ abstract class DataFlowCallable extends TDataFlowCallable {
 abstract class DataFlowFunction extends DataFlowCallable, TFunction {
   Function func;
 
-  DataFlowFunction() { this = TFunction(func) }
+  DataFlowFunction() {
+    this = TFunction(func) and
+    // TODO: Handle @property decorators
+    not hasPropertyDecorator(func)
+  }
 
   override string toString() { result = func.toString() }
 
