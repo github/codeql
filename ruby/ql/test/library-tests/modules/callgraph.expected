@@ -356,6 +356,8 @@ unresolvedCall
 | toplevel_self_singleton.rb:13:9:13:27 | call to ab_singleton_method |
 | toplevel_self_singleton.rb:17:12:21:1 | call to new |
 | toplevel_self_singleton.rb:19:9:19:27 | call to ab_singleton_method |
+| toplevel_self_singleton.rb:29:13:29:19 | call to call_me |
+| toplevel_self_singleton.rb:30:13:30:20 | call to call_you |
 privateMethod
 | calls.rb:1:1:3:3 | foo |
 | calls.rb:39:1:41:3 | call_instance_m |
@@ -472,6 +474,8 @@ publicMethod
 | toplevel_self_singleton.rb:3:9:4:11 | ab_singleton_method |
 | toplevel_self_singleton.rb:12:5:14:7 | method_in_block |
 | toplevel_self_singleton.rb:18:5:20:7 | method_in_struct |
+| toplevel_self_singleton.rb:25:9:26:11 | call_me |
+| toplevel_self_singleton.rb:28:9:31:11 | call_you |
 protectedMethod
 | calls.rb:514:15:516:7 | foo |
 | calls.rb:522:15:524:7 | bar |

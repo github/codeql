@@ -19,3 +19,15 @@ MyStruct = Struct.new(:foo, :bar) {
         ab_singleton_method # should not resolve to anything
     end
 }
+
+module Good
+    class << self
+        def call_me
+        end
+
+        def call_you
+            call_me
+            call_you
+        end
+    end
+end
