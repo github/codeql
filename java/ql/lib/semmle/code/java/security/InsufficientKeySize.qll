@@ -3,7 +3,7 @@
 private import semmle.code.java.security.Encryption
 private import semmle.code.java.dataflow.DataFlow
 
-// TODO: only update key sizes (and key size strings in one place in the code)
+// TODO: only update key sizes (and key size strings) in one place in the code
 /** A source for an insufficient key size. */
 abstract class InsufficientKeySizeSource extends DataFlow::Node {
   /** Holds if this source has the specified `state`. */
@@ -64,7 +64,7 @@ private class AsymmetricNonECSink extends InsufficientKeySizeSink {
   AsymmetricNonECSink() {
     hasKeySizeInInitMethod(this, "asymmetric-non-ec")
     or
-    hasKeySizeInSpec(this, "asymmetric-non-ec")
+    hasKeySizeInSpec(this)
   }
 
   override predicate hasState(DataFlow::FlowState state) { state = "2048" }
@@ -83,7 +83,7 @@ private class AsymmetricECSink extends InsufficientKeySizeSink {
   AsymmetricECSink() {
     hasKeySizeInInitMethod(this, "asymmetric-ec")
     or
-    hasKeySizeInSpec(this, "asymmetric-ec")
+    hasKeySizeInSpec(this)
   }
 
   override predicate hasState(DataFlow::FlowState state) { state = "256" }
@@ -129,20 +129,28 @@ private string getAlgoName(JavaxCryptoAlgoSpec jca) {
 
 // TODO: rethink the predicate name; also think about whether this could/should be a class instead; or a predicate within the sink class so can do sink.predicate()...
 // TODO: can prbly re-work way using the typeFlag to be better and less repetitive...
-private predicate hasKeySizeInSpec(DataFlow::Node node, string typeFlag) {
+private predicate hasKeySizeInSpec(DataFlow::Node node) {
   exists(ClassInstanceExpr paramSpec |
     (
-      paramSpec.getConstructedType() instanceof AsymmetricNonECSpec and
-      typeFlag = "asymmetric-non-ec"
+      paramSpec.getConstructedType() instanceof AsymmetricNonECSpec //and
       or
-      paramSpec.getConstructedType() instanceof EcGenParameterSpec and
-      typeFlag = "asymmetric-ec"
+      //typeFlag = "asymmetric-non-ec"
+      paramSpec.getConstructedType() instanceof EcGenParameterSpec //and
+      //typeFlag = "asymmetric-ec"
     ) and
     node.asExpr() = paramSpec.getArgument(0)
   )
 }
 
-class SpecWithKeySize extends RefType { }
+// ! use below instead of/in above??
+class Spec extends ClassInstanceExpr {
+  Spec() {
+    this.getConstructedType() instanceof AsymmetricNonECSpec or
+    this.getConstructedType() instanceof EcGenParameterSpec
+  }
+
+  Argument getKeySizeArg() { result = this.getArgument(0) }
+}
 // TODO:
 // todo #0: look into use of specs without keygen objects; should spec not be a sink in these cases?
 // todo #3: make list of algo names more easily reusable (either as constant-type variable at top of file, or model as own class to share, etc.)
