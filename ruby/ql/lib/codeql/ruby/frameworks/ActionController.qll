@@ -211,7 +211,10 @@ private module Request {
 
   /** A method call on `request` which returns part or all of the request path. */
   private class PathCall extends RequestInputAccess {
-    PathCall() { this.getMethodName() = ["path", "filtered_path"] }
+    PathCall() {
+      this.getMethodName() =
+        ["path", "filtered_path", "fullpath", "original_fullpath", "original_url", "url"]
+    }
 
     override Http::Server::RequestInputKind getKind() { result = Http::Server::urlInputKind() }
   }
