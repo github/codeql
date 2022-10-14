@@ -9,7 +9,7 @@ private import semmle.javascript.heuristics.SyntacticHeuristics
 private import semmle.javascript.security.dataflow.NosqlInjectionCustomizations
 import AdaptiveThreatModeling
 private import CoreKnowledge as CoreKnowledge
-private import StandardEndpointFilters as StandardEndpointFilters
+private import StandardEndpointLabels as StandardEndpointLabels
 
 module SinkEndpointFilter {
   /**
@@ -19,7 +19,7 @@ module SinkEndpointFilter {
    * effective sink.
    */
   string getAReasonSinkExcluded(DataFlow::Node sinkCandidate) {
-    result = StandardEndpointFilters::getAReasonSinkExcluded(sinkCandidate)
+    "legacy/reason-sink-excluded/" + result = StandardEndpointLabels::getAnEndpointLabel(sinkCandidate)
     or
     exists(DataFlow::CallNode call | sinkCandidate = call.getAnArgument() |
       // additional databases accesses that aren't modeled yet
@@ -49,6 +49,8 @@ module SinkEndpointFilter {
       result = "receiver is a HTTP response expression"
     )
     or
+    // TODO move this comment, and update it, when improving the endpoint filters.
+    //
     // Require NoSQL injection sink candidates to be (a) direct arguments to external library calls
     // or (b) heuristic sinks for NoSQL injection.
     //
@@ -77,7 +79,7 @@ module SinkEndpointFilter {
     // `codeql/javascript/ql/src/semmle/javascript/heuristics/AdditionalSinks.qll`.
     // We can't reuse the class because importing that file would cause us to treat these
     // heuristic sinks as known sinks.
-    not sinkCandidate = StandardEndpointFilters::getALikelyExternalLibraryCall().getAnArgument() and
+    not sinkCandidate = StandardEndpointLabels::getALabeledEndpoint("legacy/likely-external-library-call").(DataFlow::CallNode).getAnArgument() and
     not (
       isAssignedToOrConcatenatedWith(sinkCandidate, "(?i)(nosql|query)") or
       isArgTo(sinkCandidate, "(?i)(query)")
