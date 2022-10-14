@@ -1,2 +1,3 @@
+let unsafeQuery = "SELECT * FROM users WHERE username='\(userControlledString)'" // BAD
 
-TODO
+try db.execute(unsafeQuery)

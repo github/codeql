@@ -1,2 +1,4 @@
+let safeQuery = "SELECT * FROM users WHERE username=?"
 
-TODO
+let stmt = try db.prepare(safeQuery, userControlledString) // GOOD
+try stmt2.run()
