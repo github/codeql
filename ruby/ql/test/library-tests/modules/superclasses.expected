@@ -105,6 +105,15 @@ calls.rb:
 #  538| ProtectedMethodsSub
 #-----|  -> ProtectedMethods
 
+#  552| SingletonUpCall_Base
+#-----|  -> Object
+
+#  556| SingletonUpCall_Sub
+#-----|  -> SingletonUpCall_Base
+
+#  564| SingletonUpCall_SubSub
+#-----|  -> SingletonUpCall_Sub
+
 hello.rb:
 #    1| EnglishWords
 
@@ -195,9 +204,6 @@ modules_rec.rb:
 #    1| B::A
 #-----|  -> Object
 
-#    4| A::B
-#-----|  -> Object
-
 private.rb:
 #    1| E
 #-----|  -> Object
@@ -209,3 +215,9 @@ private.rb:
 
 #   96| PrivateOverride2
 #-----|  -> PrivateOverride1
+
+toplevel_self_singleton.rb:
+#    2| A::B
+#-----|  -> Object
+
+#   24| Good

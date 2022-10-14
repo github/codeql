@@ -548,3 +548,22 @@ ProtectedMethodsSub.new.baz
 
 [C.new].each { |c| c.baz }
 ["a","b","c"].each { |s| s.capitalize }
+
+class SingletonUpCall_Base
+    def self.singleton
+    end
+end
+class SingletonUpCall_Sub < SingletonUpCall_Base
+    singleton
+    singleton2 # should not resolve
+    def self.mid_method
+        singleton
+        singleton2 # should resolve
+    end
+end
+class SingletonUpCall_SubSub < SingletonUpCall_Sub
+    def self.singleton2
+    end
+
+    mid_method
+end

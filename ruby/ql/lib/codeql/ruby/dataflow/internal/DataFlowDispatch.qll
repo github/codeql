@@ -368,14 +368,24 @@ private module Cached {
   }
 
   /**
-   * Holds if a `self` access may be the receiver of `call` inside some method, where
+   * Holds if a `self` access may be the receiver of `call` inside some singleton method, where
    * that method belongs to `m` or one of `m`'s transitive super classes.
    */
   pragma[nomagic]
-  private predicate selfInMethodFlowsToMethodCallReceiver(RelevantCall call, Module m, string method) {
-    exists(SsaSelfDefinitionNode self |
+  private predicate selfInSingletonMethodFlowsToMethodCallReceiver(
+    RelevantCall call, Module m, string method
+  ) {
+    exists(SsaSelfDefinitionNode self, Module target, MethodBase caller |
       flowsToMethodCallReceiver(call, self, method) and
-      selfInMethod(self.getVariable(), _, m.getSuperClass*())
+      target = m.getSuperClass*() and
+      selfInMethod(self.getVariable(), caller, target) and
+      singletonMethod(caller, _, _) and
+      // Singleton methods declared in a block in the top-level may spuriously end up being seen as singleton
+      // methods on Object, if the block is actually evaluated in the context of another class.
+      // The 'self' inside such a singleton method could then be any class, leading to self-calls
+      // being resolved to arbitrary singleton methods.
+      // To remedy this, we do not allow following super-classes all the way to Object.
+      not (m != target and target = TResolved("Object"))
     )
   }
 
@@ -454,7 +464,7 @@ private module Cached {
         //   end
         // end
         // ```
-        selfInMethodFlowsToMethodCallReceiver(call, m, method)
+        selfInSingletonMethodFlowsToMethodCallReceiver(call, m, method)
       )
     )
     or

@@ -8,7 +8,6 @@ getTarget
 | calls.rb:17:1:17:8 | call to bar | calls.rb:13:1:15:3 | bar |
 | calls.rb:19:1:19:8 | call to foo | calls.rb:1:1:3:3 | foo |
 | calls.rb:19:1:19:8 | call to foo | calls.rb:85:1:89:3 | foo |
-| calls.rb:23:9:23:19 | call to singleton_m | calls.rb:25:5:27:7 | singleton_m |
 | calls.rb:32:5:32:15 | call to singleton_m | calls.rb:25:5:27:7 | singleton_m |
 | calls.rb:33:5:33:20 | call to singleton_m | calls.rb:25:5:27:7 | singleton_m |
 | calls.rb:37:1:37:13 | call to singleton_m | calls.rb:25:5:27:7 | singleton_m |
@@ -77,7 +76,6 @@ getTarget
 | calls.rb:224:9:224:24 | call to singleton_g | calls.rb:236:1:238:3 | singleton_g |
 | calls.rb:224:9:224:24 | call to singleton_g | calls.rb:243:1:245:3 | singleton_g |
 | calls.rb:224:9:224:24 | call to singleton_g | calls.rb:251:5:253:7 | singleton_g |
-| calls.rb:224:9:224:24 | call to singleton_g | calls.rb:267:1:269:3 | singleton_g |
 | calls.rb:228:1:228:22 | call to singleton_a | calls.rb:191:5:194:7 | singleton_a |
 | calls.rb:229:1:229:22 | call to singleton_f | calls.rb:218:9:220:11 | singleton_f |
 | calls.rb:231:6:231:19 | call to new | calls.rb:117:5:117:16 | new |
@@ -215,6 +213,10 @@ getTarget
 | calls.rb:549:2:549:6 | call to new | calls.rb:117:5:117:16 | new |
 | calls.rb:549:20:549:24 | call to baz | calls.rb:51:5:57:7 | baz |
 | calls.rb:550:26:550:37 | call to capitalize | calls.rb:97:5:97:23 | capitalize |
+| calls.rb:557:5:557:13 | call to singleton | calls.rb:553:5:554:7 | singleton |
+| calls.rb:560:9:560:17 | call to singleton | calls.rb:553:5:554:7 | singleton |
+| calls.rb:561:9:561:18 | call to singleton2 | calls.rb:565:5:566:7 | singleton2 |
+| calls.rb:568:5:568:14 | call to mid_method | calls.rb:559:5:562:7 | mid_method |
 | hello.rb:12:5:12:24 | call to include | calls.rb:108:5:110:7 | include |
 | hello.rb:14:16:14:20 | call to hello | hello.rb:2:5:4:7 | hello |
 | hello.rb:20:16:20:20 | call to super | hello.rb:13:5:15:7 | message |
@@ -263,7 +265,10 @@ getTarget
 | private.rb:104:1:104:20 | call to new | calls.rb:117:5:117:16 | new |
 | private.rb:104:1:104:28 | call to call_m1 | private.rb:91:3:93:5 | call_m1 |
 | private.rb:105:1:105:20 | call to new | calls.rb:117:5:117:16 | new |
+| toplevel_self_singleton.rb:30:13:30:19 | call to call_me | toplevel_self_singleton.rb:26:9:27:11 | call_me |
+| toplevel_self_singleton.rb:31:13:31:20 | call to call_you | toplevel_self_singleton.rb:29:9:32:11 | call_you |
 unresolvedCall
+| calls.rb:23:9:23:19 | call to singleton_m |
 | calls.rb:26:9:26:18 | call to instance_m |
 | calls.rb:29:5:29:14 | call to instance_m |
 | calls.rb:30:5:30:19 | call to instance_m |
@@ -334,6 +339,7 @@ unresolvedCall
 | calls.rb:549:1:549:26 | call to each |
 | calls.rb:550:1:550:13 | call to [] |
 | calls.rb:550:1:550:39 | call to each |
+| calls.rb:558:5:558:14 | call to singleton2 |
 | hello.rb:20:16:20:26 | ... + ... |
 | hello.rb:20:16:20:34 | ... + ... |
 | hello.rb:20:16:20:40 | ... + ... |
@@ -347,6 +353,11 @@ unresolvedCall
 | private.rb:57:1:57:14 | call to private4 |
 | private.rb:100:7:100:29 | call to m1 |
 | private.rb:105:1:105:23 | call to m1 |
+| toplevel_self_singleton.rb:8:1:16:3 | call to do_something |
+| toplevel_self_singleton.rb:10:9:10:27 | call to ab_singleton_method |
+| toplevel_self_singleton.rb:14:9:14:27 | call to ab_singleton_method |
+| toplevel_self_singleton.rb:18:12:22:1 | call to new |
+| toplevel_self_singleton.rb:20:9:20:27 | call to ab_singleton_method |
 privateMethod
 | calls.rb:1:1:3:3 | foo |
 | calls.rb:39:1:41:3 | call_instance_m |
@@ -377,6 +388,7 @@ privateMethod
 | private.rb:83:11:85:5 | m1 |
 | private.rb:87:11:89:5 | m2 |
 | private.rb:97:11:101:5 | m1 |
+| toplevel_self_singleton.rb:9:5:11:7 | method_in_block |
 publicMethod
 | calls.rb:7:1:9:3 | bar |
 | calls.rb:13:1:15:3 | bar |
@@ -435,6 +447,9 @@ publicMethod
 | calls.rb:485:5:487:7 | singleton |
 | calls.rb:526:5:531:7 | baz |
 | calls.rb:539:5:542:7 | baz |
+| calls.rb:553:5:554:7 | singleton |
+| calls.rb:559:5:562:7 | mid_method |
+| calls.rb:565:5:566:7 | singleton2 |
 | hello.rb:2:5:4:7 | hello |
 | hello.rb:5:5:7:7 | world |
 | hello.rb:13:5:15:7 | message |
@@ -456,6 +471,11 @@ publicMethod
 | private.rb:38:3:39:5 | public3 |
 | private.rb:66:3:67:5 | public |
 | private.rb:91:3:93:5 | call_m1 |
+| toplevel_self_singleton.rb:3:9:4:11 | ab_singleton_method |
+| toplevel_self_singleton.rb:13:5:15:7 | method_in_block |
+| toplevel_self_singleton.rb:19:5:21:7 | method_in_struct |
+| toplevel_self_singleton.rb:26:9:27:11 | call_me |
+| toplevel_self_singleton.rb:29:9:32:11 | call_you |
 protectedMethod
 | calls.rb:514:15:516:7 | foo |
 | calls.rb:522:15:524:7 | bar |
