@@ -7,7 +7,9 @@ CmakeInfo = provider(
         "hdrs": "",
         "srcs": "",
         "deps": "",
+        "system_includes": "",
         "includes": "",
+        "quote_includes": "",
         "stripped_includes": "",
         "imported_static_libs": "",
         "imported_dynamic_libs": "",
@@ -44,6 +46,10 @@ def _file_kind(file):
     if ext in ("so", "dylib"):
         return "dynamic_lib"
     return None
+
+def _get_includes(includes):
+    # see strip prefix comment below to understand why we are skipping virtual includes here
+    return [_cmake_path(i) for i in includes.to_list() if "/_virtual_includes/" not in i]
 
 def _cmake_aspect_impl(target, ctx):
     if not ctx.rule.kind.startswith("cc_"):
@@ -82,18 +88,17 @@ def _cmake_aspect_impl(target, ctx):
     linkopts += [ctx.expand_make_variables("linkopts", o, {}) for o in ctx.rule.attr.linkopts]
 
     compilation_ctx = target[CcInfo].compilation_context
-    includes = compilation_ctx.system_includes.to_list()
-    includes += compilation_ctx.includes.to_list()
-    includes += compilation_ctx.quote_includes.to_list()
-    includes += [opt[2:] for opt in copts if opt.startswith("-I")]
+    system_includes = _get_includes(compilation_ctx.system_includes)
+
+    # move -I copts to includes
+    includes = _get_includes(compilation_ctx.includes) + [_cmake_path(opt[2:]) for opt in copts if opt.startswith("-I")]
+    copts = [opt for opt in copts if not opt.startswith("-I")]
+    quote_includes = _get_includes(compilation_ctx.quote_includes)
 
     # strip prefix is special, as in bazel it creates a _virtual_includes directory with symlinks
     # as we want to avoid relying on bazel having done that, we must undo that mechanism
     # also for some reason cmake fails to propagate these with target_include_directories,
     # so we propagate them ourselvels by using the stripped_includes field
-    # also, including '.' on macOS creates a conflict between a `version` file at the root of the
-    # workspace and a standard library, so we skip that (and hardcode an `-iquote .` in setup.cmake)
-    includes = [_cmake_path(i) for i in includes if not ("/_virtual_includes/" in i or (is_macos and i == "."))]
     stripped_includes = []
     if getattr(ctx.rule.attr, "strip_include_prefix", ""):
         prefix = ctx.rule.attr.strip_include_prefix.strip("/")
@@ -108,7 +113,6 @@ def _cmake_aspect_impl(target, ctx):
                 "${BAZEL_EXEC_ROOT}/%s/%s" % (ctx.var["BINDIR"], prefix),  # generated
             ]
 
-    copts = [opt for opt in copts if not opt.startswith("-I")]
     deps = [dep[CmakeInfo] for dep in deps if CmakeInfo in dep]
 
     # by the book this should be done with depsets, but so far the performance implication is negligible
@@ -127,6 +131,8 @@ def _cmake_aspect_impl(target, ctx):
             srcs = srcs,
             deps = [dep for dep in deps if dep.name != None],
             includes = includes,
+            system_includes = system_includes,
+            quote_includes = quote_includes,
             stripped_includes = stripped_includes,
             imported_static_libs = static_libs,
             imported_dynamic_libs = dynamic_libs,
@@ -145,7 +151,7 @@ cmake_aspect = aspect(
     fragments = ["cpp"],
 )
 
-def _map_cmake_info(info):
+def _map_cmake_info(info, is_windows):
     args = " ".join([info.name, info.modifier] + info.hdrs + info.srcs).strip()
     commands = [
         "add_%s(%s)" % (info.kind, args),
@@ -180,6 +186,19 @@ def _map_cmake_info(info):
         commands += [
             "target_include_directories(%s %s %s)" % (info.name, info.modifier or "PUBLIC", " ".join(info.includes)),
         ]
+    if info.system_includes:
+        commands += [
+            "target_include_directories(%s SYSTEM %s %s)" % (info.name, info.modifier or "PUBLIC", " ".join(info.system_includes)),
+        ]
+    if info.quote_includes:
+        if is_windows:
+            commands += [
+                "target_include_directories(%s %s %s)" % (info.name, info.modifier or "PUBLIC", " ".join(info.quote_includes)),
+            ]
+        else:
+            commands += [
+                "target_compile_options(%s %s %s)" % (info.name, info.modifier or "PUBLIC", " ".join(["-iquote%s" % i for i in info.quote_includes])),
+            ]
     if info.copts and info.modifier != "INTERFACE":
         commands += [
             "target_compile_options(%s PRIVATE %s)" % (info.name, " ".join(info.copts)),
@@ -219,8 +238,10 @@ def _generate_cmake_impl(ctx):
                 inputs += info.inputs
                 infos[info.name] = info
 
+    is_windows = ctx.target_platform_has_constraint(ctx.attr._windows[platform_common.ConstraintValueInfo])
+
     for info in infos.values():
-        commands += _map_cmake_info(info)
+        commands += _map_cmake_info(info, is_windows)
         commands.append("")
 
     for include in ctx.attr.includes:
@@ -246,5 +267,6 @@ generate_cmake = rule(
     attrs = {
         "targets": attr.label_list(aspects = [cmake_aspect]),
         "includes": attr.label_list(providers = [GeneratedCmakeFiles]),
+        "_windows": attr.label(default = "@platforms//os:windows"),
     },
 )
