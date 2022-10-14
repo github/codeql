@@ -1,15 +1,17 @@
-def m_deep_merge
-    h1 = { a: source "a" }
-    h2 = { b: source "b" }
+def m_deep_merge(x)
+    h1 = { a: source("a") }
+    h2 = { b: source("b") }
     x = h1.deep_merge(h2)
 
     sink x[:a] # $ hasValueFlow=a
     sink x[:b] # $ hasValueFlow=b
 end
 
+m_deep_merge(:c)
+
 def m_deep_merge!
-    h1 = { a: source "a" }
-    h2 = { b: source "b" }
+    h1 = { a: source("a") }
+    h2 = { b: source("b") }
     x = h1.deep_merge!(h2)
 
     sink x[:a] # $ hasValueFlow=a
@@ -22,44 +24,58 @@ def m_deep_merge!
     sink h2[:b] # $ hasValueFlow=b
 end
 
+m_deep_merge!()
+
 def m_stringify_keys
-    h = { a: source "a" }
+    h = { a: source("a") }
     x = h.stringify_keys
     sink x[:a] # $hasValueFlow=a
 end
 
+m_stringify_keys()
+
 def m_to_options
-    h = { a: taint "a" }
+    h = { a: source("a") }
     x = h.to_options
-    sink x[:a] # $hasTaintFlow=a
+    sink x[:a] # $hasValueFlow=a
 end
+
+m_to_options()
 
 def m_symbolize_keys
-    h = { a: taint "a" }
+    h = { a: source("a") }
     x = h.symbolize_keys
-    sink x[:a] # $hasTaintFlow=a
+    sink x[:a] # $hasValueFlow=a
 end
+
+m_symbolize_keys()
 
 def m_deep_stringify_keys
-    h = { a: taint "a" }
+    h = { a: source("a") }
     x = h.deep_stringify_keys
-    sink x[:a] # $hasTaintFlow=a
+    sink x[:a] # $hasValueFlow=a
 end
+
+m_deep_stringify_keys()
 
 def m_deep_symbolize_keys
-    h = { a: taint "a" }
+    h = { a: source("a") }
     x = h.deep_symbolize_keys
-    sink x[:a] # $hasTaintFlow=a
+    sink x[:a] # $hasValueFlow=a
 end
+
+m_deep_symbolize_keys()
 
 def m_with_indifferent_access
-    h = { a: taint "a" }
+    h = { a: source("a") }
     x = h.with_indifferent_access
-    sink x[:a] # $hasTaintFlow=a
+    sink x[:a] # $hasValueFlow=a
 end
 
+m_with_indifferent_access()
+
 def m_extract!(x)
-    h = { a: taint "a", b: taint "b", c: "c", d: taint "d" }
+    h = { a: taint("a"), b: taint("b"), c: "c", d: taint("d") }
     x = h.extract!(:a, x, :b)
 
     sink h[:a]

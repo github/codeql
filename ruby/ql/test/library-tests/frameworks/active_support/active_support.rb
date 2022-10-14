@@ -276,6 +276,7 @@ def m_pathname_existence
   sink y # $hasTaintFlow=a
   z = y.existence
   sink z # $hasTaintFlow=a
+end
 
 def m_presence
   x = source "a"
