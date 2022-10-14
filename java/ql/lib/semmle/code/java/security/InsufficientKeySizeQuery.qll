@@ -1,8 +1,6 @@
 /** Provides data flow configurations to be used in queries related to insufficient key sizes. */
 
-import semmle.code.java.security.Encryption
 import semmle.code.java.dataflow.DataFlow
-import semmle.code.java.dataflow.TaintTracking
 import semmle.code.java.security.InsufficientKeySize
 
 /** A data flow configuration for tracking key sizes used in cryptographic algorithms. */

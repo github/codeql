@@ -16,9 +16,6 @@ import semmle.code.java.security.InsufficientKeySizeQuery
 import DataFlow::PathGraph
 
 from DataFlow::PathNode source, DataFlow::PathNode sink
-where exists(KeySizeConfiguration config1 | config1.hasFlowPath(source, sink))
-//or
-// exists(AsymmetricNonECKeyTrackingConfiguration cfg | cfg.hasFlowPath(source, sink)) or
-// exists(AsymmetricECKeyTrackingConfiguration cfg | cfg.hasFlowPath(source, sink)) or
-// exists(SymmetricKeyTrackingConfiguration cfg | cfg.hasFlowPath(source, sink))
-select sink.getNode(), source, sink, "This $@ is too small.", source.getNode(), "key size"
+where exists(KeySizeConfiguration cfg | cfg.hasFlowPath(source, sink))
+select sink.getNode(), source, sink, "This $@ is less than the recommended key size.",
+  source.getNode(), "key size"
