@@ -36,6 +36,7 @@ import kotlin.collections.ArrayList
 open class KotlinFileExtractor(
     override val logger: FileLogger,
     override val tw: FileTrapWriter,
+    val linesOfCode: LinesOfCode?,
     val filePath: String,
     dependencyCollector: OdasaOutput.TrapFileManager?,
     externalClassExtractor: ExternalDeclExtractor,
@@ -91,6 +92,8 @@ open class KotlinFileExtractor(
             if (!declarationStack.isEmpty()) {
                 logger.errorElement("Declaration stack is not empty after processing the file", file)
             }
+
+            linesOfCode?.linesOfCodeInFile(id)
         }
     }
 
@@ -471,6 +474,8 @@ open class KotlinFileExtractor(
 
                 extractClassModifiers(c, id)
                 extractClassSupertypes(c, id, inReceiverContext = true) // inReceiverContext = true is specified to force extraction of member prototypes of base types
+
+                linesOfCode?.linesOfCodeInDeclaration(c, id)
 
                 return id
             }
@@ -1147,6 +1152,8 @@ open class KotlinFileExtractor(
                 if (f.isSuspend) {
                     addModifiers(id, "suspend")
                 }
+
+                linesOfCode?.linesOfCodeInDeclaration(f, id)
 
                 return id
             }
