@@ -228,3 +228,5 @@ private.rb:
 toplevel_self_singleton.rb:
 #    2| A::B
 #-----| super -> Object
+
+#   23| Good

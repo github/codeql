@@ -949,3 +949,7 @@ enclosingMethod
 | toplevel_self_singleton.rb:13:9:13:27 | self | toplevel_self_singleton.rb:12:5:14:7 | method_in_block |
 | toplevel_self_singleton.rb:19:9:19:27 | call to ab_singleton_method | toplevel_self_singleton.rb:18:5:20:7 | method_in_struct |
 | toplevel_self_singleton.rb:19:9:19:27 | self | toplevel_self_singleton.rb:18:5:20:7 | method_in_struct |
+| toplevel_self_singleton.rb:29:13:29:19 | call to call_me | toplevel_self_singleton.rb:28:9:31:11 | call_you |
+| toplevel_self_singleton.rb:29:13:29:19 | self | toplevel_self_singleton.rb:28:9:31:11 | call_you |
+| toplevel_self_singleton.rb:30:13:30:20 | call to call_you | toplevel_self_singleton.rb:28:9:31:11 | call_you |
+| toplevel_self_singleton.rb:30:13:30:20 | self | toplevel_self_singleton.rb:28:9:31:11 | call_you |

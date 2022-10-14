@@ -81,6 +81,7 @@ getModule
 | private.rb:82:1:94:3 | PrivateOverride1 |
 | private.rb:96:1:102:3 | PrivateOverride2 |
 | toplevel_self_singleton.rb:2:5:5:7 | A::B |
+| toplevel_self_singleton.rb:23:1:33:3 | Good |
 getADeclaration
 | calls.rb:21:1:34:3 | M | calls.rb:21:1:34:3 | M |
 | calls.rb:43:1:58:3 | C | calls.rb:43:1:58:3 | C |
@@ -96,7 +97,7 @@ getADeclaration
 | calls.rb:115:1:118:3 | Object | modules.rb:1:1:129:4 | modules.rb |
 | calls.rb:115:1:118:3 | Object | modules_rec.rb:1:1:11:26 | modules_rec.rb |
 | calls.rb:115:1:118:3 | Object | private.rb:1:1:105:40 | private.rb |
-| calls.rb:115:1:118:3 | Object | toplevel_self_singleton.rb:1:1:21:2 | toplevel_self_singleton.rb |
+| calls.rb:115:1:118:3 | Object | toplevel_self_singleton.rb:1:1:33:4 | toplevel_self_singleton.rb |
 | calls.rb:120:1:123:3 | Hash | calls.rb:120:1:123:3 | Hash |
 | calls.rb:125:1:138:3 | Array | calls.rb:125:1:138:3 | Array |
 | calls.rb:165:1:169:3 | S | calls.rb:165:1:169:3 | S |
@@ -168,6 +169,7 @@ getADeclaration
 | private.rb:96:1:102:3 | PrivateOverride2 | private.rb:96:1:102:3 | PrivateOverride2 |
 | toplevel_self_singleton.rb:2:5:5:7 | A::B | modules_rec.rb:4:1:5:3 | B |
 | toplevel_self_singleton.rb:2:5:5:7 | A::B | toplevel_self_singleton.rb:2:5:5:7 | B |
+| toplevel_self_singleton.rb:23:1:33:3 | Good | toplevel_self_singleton.rb:23:1:33:3 | Good |
 getSuperClass
 | calls.rb:43:1:58:3 | C | calls.rb:115:1:118:3 | Object |
 | calls.rb:65:1:69:3 | D | calls.rb:43:1:58:3 | C |
@@ -449,6 +451,7 @@ resolveConstantWriteAccess
 | toplevel_self_singleton.rb:1:1:6:3 | A | A |
 | toplevel_self_singleton.rb:2:5:5:7 | B | A::B |
 | toplevel_self_singleton.rb:17:1:17:8 | MyStruct | MyStruct |
+| toplevel_self_singleton.rb:23:1:33:3 | Good | Good |
 enclosingModule
 | calls.rb:1:1:3:3 | foo | calls.rb:1:1:569:4 | calls.rb |
 | calls.rb:2:5:2:14 | call to puts | calls.rb:1:1:569:4 | calls.rb |
@@ -1686,30 +1689,39 @@ enclosingModule
 | private.rb:105:1:105:16 | PrivateOverride2 | private.rb:1:1:105:40 | private.rb |
 | private.rb:105:1:105:20 | call to new | private.rb:1:1:105:40 | private.rb |
 | private.rb:105:1:105:23 | call to m1 | private.rb:1:1:105:40 | private.rb |
-| toplevel_self_singleton.rb:1:1:6:3 | A | toplevel_self_singleton.rb:1:1:21:2 | toplevel_self_singleton.rb |
+| toplevel_self_singleton.rb:1:1:6:3 | A | toplevel_self_singleton.rb:1:1:33:4 | toplevel_self_singleton.rb |
 | toplevel_self_singleton.rb:2:5:5:7 | B | toplevel_self_singleton.rb:1:1:6:3 | A |
 | toplevel_self_singleton.rb:3:9:4:11 | ab_singleton_method | toplevel_self_singleton.rb:2:5:5:7 | B |
 | toplevel_self_singleton.rb:3:13:3:16 | self | toplevel_self_singleton.rb:2:5:5:7 | B |
-| toplevel_self_singleton.rb:8:1:15:3 | call to do_something | toplevel_self_singleton.rb:1:1:21:2 | toplevel_self_singleton.rb |
-| toplevel_self_singleton.rb:8:1:15:3 | self | toplevel_self_singleton.rb:1:1:21:2 | toplevel_self_singleton.rb |
-| toplevel_self_singleton.rb:8:14:15:3 | do ... end | toplevel_self_singleton.rb:1:1:21:2 | toplevel_self_singleton.rb |
-| toplevel_self_singleton.rb:9:5:11:7 | method_in_block | toplevel_self_singleton.rb:1:1:21:2 | toplevel_self_singleton.rb |
-| toplevel_self_singleton.rb:10:9:10:27 | call to ab_singleton_method | toplevel_self_singleton.rb:1:1:21:2 | toplevel_self_singleton.rb |
-| toplevel_self_singleton.rb:10:9:10:27 | self | toplevel_self_singleton.rb:1:1:21:2 | toplevel_self_singleton.rb |
-| toplevel_self_singleton.rb:12:5:14:7 | method_in_block | toplevel_self_singleton.rb:1:1:21:2 | toplevel_self_singleton.rb |
-| toplevel_self_singleton.rb:12:9:12:12 | (no string representation) | toplevel_self_singleton.rb:1:1:21:2 | toplevel_self_singleton.rb |
-| toplevel_self_singleton.rb:13:9:13:27 | call to ab_singleton_method | toplevel_self_singleton.rb:1:1:21:2 | toplevel_self_singleton.rb |
-| toplevel_self_singleton.rb:13:9:13:27 | self | toplevel_self_singleton.rb:1:1:21:2 | toplevel_self_singleton.rb |
-| toplevel_self_singleton.rb:17:1:17:8 | MyStruct | toplevel_self_singleton.rb:1:1:21:2 | toplevel_self_singleton.rb |
-| toplevel_self_singleton.rb:17:1:21:1 | ... = ... | toplevel_self_singleton.rb:1:1:21:2 | toplevel_self_singleton.rb |
-| toplevel_self_singleton.rb:17:12:17:17 | Struct | toplevel_self_singleton.rb:1:1:21:2 | toplevel_self_singleton.rb |
-| toplevel_self_singleton.rb:17:12:21:1 | call to new | toplevel_self_singleton.rb:1:1:21:2 | toplevel_self_singleton.rb |
-| toplevel_self_singleton.rb:17:23:17:26 | :foo | toplevel_self_singleton.rb:1:1:21:2 | toplevel_self_singleton.rb |
-| toplevel_self_singleton.rb:17:23:17:26 | foo | toplevel_self_singleton.rb:1:1:21:2 | toplevel_self_singleton.rb |
-| toplevel_self_singleton.rb:17:29:17:32 | :bar | toplevel_self_singleton.rb:1:1:21:2 | toplevel_self_singleton.rb |
-| toplevel_self_singleton.rb:17:29:17:32 | bar | toplevel_self_singleton.rb:1:1:21:2 | toplevel_self_singleton.rb |
-| toplevel_self_singleton.rb:17:35:21:1 | { ... } | toplevel_self_singleton.rb:1:1:21:2 | toplevel_self_singleton.rb |
-| toplevel_self_singleton.rb:18:5:20:7 | method_in_struct | toplevel_self_singleton.rb:1:1:21:2 | toplevel_self_singleton.rb |
-| toplevel_self_singleton.rb:18:9:18:12 | (no string representation) | toplevel_self_singleton.rb:1:1:21:2 | toplevel_self_singleton.rb |
-| toplevel_self_singleton.rb:19:9:19:27 | call to ab_singleton_method | toplevel_self_singleton.rb:1:1:21:2 | toplevel_self_singleton.rb |
-| toplevel_self_singleton.rb:19:9:19:27 | self | toplevel_self_singleton.rb:1:1:21:2 | toplevel_self_singleton.rb |
+| toplevel_self_singleton.rb:8:1:15:3 | call to do_something | toplevel_self_singleton.rb:1:1:33:4 | toplevel_self_singleton.rb |
+| toplevel_self_singleton.rb:8:1:15:3 | self | toplevel_self_singleton.rb:1:1:33:4 | toplevel_self_singleton.rb |
+| toplevel_self_singleton.rb:8:14:15:3 | do ... end | toplevel_self_singleton.rb:1:1:33:4 | toplevel_self_singleton.rb |
+| toplevel_self_singleton.rb:9:5:11:7 | method_in_block | toplevel_self_singleton.rb:1:1:33:4 | toplevel_self_singleton.rb |
+| toplevel_self_singleton.rb:10:9:10:27 | call to ab_singleton_method | toplevel_self_singleton.rb:1:1:33:4 | toplevel_self_singleton.rb |
+| toplevel_self_singleton.rb:10:9:10:27 | self | toplevel_self_singleton.rb:1:1:33:4 | toplevel_self_singleton.rb |
+| toplevel_self_singleton.rb:12:5:14:7 | method_in_block | toplevel_self_singleton.rb:1:1:33:4 | toplevel_self_singleton.rb |
+| toplevel_self_singleton.rb:12:9:12:12 | (no string representation) | toplevel_self_singleton.rb:1:1:33:4 | toplevel_self_singleton.rb |
+| toplevel_self_singleton.rb:13:9:13:27 | call to ab_singleton_method | toplevel_self_singleton.rb:1:1:33:4 | toplevel_self_singleton.rb |
+| toplevel_self_singleton.rb:13:9:13:27 | self | toplevel_self_singleton.rb:1:1:33:4 | toplevel_self_singleton.rb |
+| toplevel_self_singleton.rb:17:1:17:8 | MyStruct | toplevel_self_singleton.rb:1:1:33:4 | toplevel_self_singleton.rb |
+| toplevel_self_singleton.rb:17:1:21:1 | ... = ... | toplevel_self_singleton.rb:1:1:33:4 | toplevel_self_singleton.rb |
+| toplevel_self_singleton.rb:17:12:17:17 | Struct | toplevel_self_singleton.rb:1:1:33:4 | toplevel_self_singleton.rb |
+| toplevel_self_singleton.rb:17:12:21:1 | call to new | toplevel_self_singleton.rb:1:1:33:4 | toplevel_self_singleton.rb |
+| toplevel_self_singleton.rb:17:23:17:26 | :foo | toplevel_self_singleton.rb:1:1:33:4 | toplevel_self_singleton.rb |
+| toplevel_self_singleton.rb:17:23:17:26 | foo | toplevel_self_singleton.rb:1:1:33:4 | toplevel_self_singleton.rb |
+| toplevel_self_singleton.rb:17:29:17:32 | :bar | toplevel_self_singleton.rb:1:1:33:4 | toplevel_self_singleton.rb |
+| toplevel_self_singleton.rb:17:29:17:32 | bar | toplevel_self_singleton.rb:1:1:33:4 | toplevel_self_singleton.rb |
+| toplevel_self_singleton.rb:17:35:21:1 | { ... } | toplevel_self_singleton.rb:1:1:33:4 | toplevel_self_singleton.rb |
+| toplevel_self_singleton.rb:18:5:20:7 | method_in_struct | toplevel_self_singleton.rb:1:1:33:4 | toplevel_self_singleton.rb |
+| toplevel_self_singleton.rb:18:9:18:12 | (no string representation) | toplevel_self_singleton.rb:1:1:33:4 | toplevel_self_singleton.rb |
+| toplevel_self_singleton.rb:19:9:19:27 | call to ab_singleton_method | toplevel_self_singleton.rb:1:1:33:4 | toplevel_self_singleton.rb |
+| toplevel_self_singleton.rb:19:9:19:27 | self | toplevel_self_singleton.rb:1:1:33:4 | toplevel_self_singleton.rb |
+| toplevel_self_singleton.rb:23:1:33:3 | Good | toplevel_self_singleton.rb:1:1:33:4 | toplevel_self_singleton.rb |
+| toplevel_self_singleton.rb:24:5:32:7 | class << ... | toplevel_self_singleton.rb:23:1:33:3 | Good |
+| toplevel_self_singleton.rb:24:14:24:17 | self | toplevel_self_singleton.rb:23:1:33:3 | Good |
+| toplevel_self_singleton.rb:25:9:26:11 | call_me | toplevel_self_singleton.rb:24:5:32:7 | class << ... |
+| toplevel_self_singleton.rb:28:9:31:11 | call_you | toplevel_self_singleton.rb:24:5:32:7 | class << ... |
+| toplevel_self_singleton.rb:29:13:29:19 | call to call_me | toplevel_self_singleton.rb:24:5:32:7 | class << ... |
+| toplevel_self_singleton.rb:29:13:29:19 | self | toplevel_self_singleton.rb:24:5:32:7 | class << ... |
+| toplevel_self_singleton.rb:30:13:30:20 | call to call_you | toplevel_self_singleton.rb:24:5:32:7 | class << ... |
+| toplevel_self_singleton.rb:30:13:30:20 | self | toplevel_self_singleton.rb:24:5:32:7 | class << ... |
