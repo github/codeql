@@ -24,15 +24,6 @@ import semmle.code.cpp.security.FlowSources
 import semmle.code.cpp.models.implementations.Strcat
 import DataFlow::PathGraph
 
-Expr sinkAsArgumentIndirection(DataFlow::Node sink) {
-  result =
-    sink.asOperand()
-        .(SideEffectOperand)
-        .getAddressOperand()
-        .getAnyDef()
-        .getUnconvertedResultExpression()
-}
-
 /**
  * Holds if `fst` is a string that is used in a format or concatenation function resulting in `snd`,
  * and is *not* placed at the start of the resulting string. This indicates that the author did not
@@ -41,7 +32,7 @@ Expr sinkAsArgumentIndirection(DataFlow::Node sink) {
  */
 predicate interestingConcatenation(DataFlow::Node fst, DataFlow::Node snd) {
   exists(FormattingFunctionCall call, int index, FormatLiteral literal |
-    sinkAsArgumentIndirection(fst) = call.getConversionArgument(index) and
+    fst.asIndirectArgument() = call.getConversionArgument(index) and
     snd.asDefiningArgument() = call.getOutputArgument(false) and
     literal = call.getFormat() and
     not literal.getConvSpecOffset(index) = 0 and
@@ -49,21 +40,18 @@ predicate interestingConcatenation(DataFlow::Node fst, DataFlow::Node snd) {
   )
   or
   // strcat and friends
-  exists(StrcatFunction strcatFunc, CallInstruction call, ReadSideEffectInstruction rse |
-    call.getStaticCallTarget() = strcatFunc and
-    rse.getArgumentDef() = call.getArgument(strcatFunc.getParamSrc()) and
-    fst.asOperand() = rse.getSideEffectOperand() and
-    snd.asInstruction().(WriteSideEffectInstruction).getDestinationAddress() =
-      call.getArgument(strcatFunc.getParamDest())
+  exists(StrcatFunction strcatFunc, Call call |
+    call.getTarget() = strcatFunc and
+    fst.asIndirectArgument() = call.getArgument(strcatFunc.getParamSrc()) and
+    snd.asDefiningArgument() = call.getArgument(strcatFunc.getParamDest())
   )
   or
-  exists(CallInstruction call, Operator op, ReadSideEffectInstruction rse |
-    call.getStaticCallTarget() = op and
+  exists(Call call, Operator op |
+    call.getTarget() = op and
     op.hasQualifiedName("std", "operator+") and
     op.getType().(UserType).hasQualifiedName("std", "basic_string") and
-    call.getArgument(1) = rse.getArgumentOperand().getAnyDef() and // left operand
-    fst.asOperand() = rse.getSideEffectOperand() and
-    call = snd.asInstruction()
+    fst.asIndirectArgument() = call.getArgument(1) and // left operand
+    call = snd.asInstruction().getUnconvertedResultExpression()
   )
 }
 
@@ -91,6 +79,11 @@ class ExecState extends DataFlow::FlowState {
   }
 }
 
+predicate isSinkImpl(DataFlow::Node sink, Expr command, string callChain) {
+  command = sink.asIndirectArgument() and
+  shellCommand(command, callChain)
+}
+
 /**
  * A `TaintTracking` configuration that's used to find the relevant `ExecState`s for a
  * given sink. This avoids a cartesian product between all sinks and all `ExecState`s in
@@ -103,9 +96,7 @@ class ExecStateConfiguration extends TaintTracking2::Configuration {
     exists(ExecState state | state.getSndNode() = source)
   }
 
-  override predicate isSink(DataFlow::Node sink) {
-    shellCommand(sinkAsArgumentIndirection(sink), _)
-  }
+  override predicate isSink(DataFlow::Node sink) { isSinkImpl(sink, _, _) }
 
   override predicate isSanitizerOut(DataFlow::Node node) {
     isSink(node, _) // Prevent duplicates along a call chain, since `shellCommand` will include wrappers
@@ -150,13 +141,13 @@ class ExecTaintConfiguration extends TaintTracking::Configuration {
 
 from
   ExecTaintConfiguration conf, DataFlow::PathNode sourceNode, DataFlow::PathNode sinkNode,
-  string taintCause, string callChain, DataFlow::Node concatResult
+  string taintCause, string callChain, DataFlow::Node concatResult, Expr command
 where
   conf.hasFlowPath(sourceNode, sinkNode) and
   taintCause = sourceNode.getNode().(FlowSource).getSourceType() and
-  shellCommand(sinkAsArgumentIndirection(sinkNode.getNode()), callChain) and
+  isSinkImpl(sinkNode.getNode(), command, callChain) and
   concatResult = sinkNode.getState().(ExecState).getSndNode()
-select sinkAsArgumentIndirection(sinkNode.getNode()), sourceNode, sinkNode,
+select command, sourceNode, sinkNode,
   "This argument to an OS command is derived from $@, dangerously concatenated into $@, and then passed to "
     + callChain + ".", sourceNode, "user input (" + taintCause + ")", concatResult,
   concatResult.toString()
