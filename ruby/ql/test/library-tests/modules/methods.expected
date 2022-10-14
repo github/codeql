@@ -899,3 +899,7 @@ enclosingMethod
 | private.rb:100:7:100:29 | call to m1 | private.rb:97:11:101:5 | m1 |
 | toplevel_self_singleton.rb:10:9:10:27 | call to ab_singleton_method | toplevel_self_singleton.rb:9:5:11:7 | method_in_block |
 | toplevel_self_singleton.rb:10:9:10:27 | self | toplevel_self_singleton.rb:9:5:11:7 | method_in_block |
+| toplevel_self_singleton.rb:13:9:13:27 | call to ab_singleton_method | toplevel_self_singleton.rb:12:5:14:7 | method_in_block |
+| toplevel_self_singleton.rb:13:9:13:27 | self | toplevel_self_singleton.rb:12:5:14:7 | method_in_block |
+| toplevel_self_singleton.rb:19:9:19:27 | call to ab_singleton_method | toplevel_self_singleton.rb:18:5:20:7 | method_in_struct |
+| toplevel_self_singleton.rb:19:9:19:27 | self | toplevel_self_singleton.rb:18:5:20:7 | method_in_struct |

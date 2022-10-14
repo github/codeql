@@ -261,6 +261,8 @@ getTarget
 | private.rb:104:1:104:20 | call to new | calls.rb:117:5:117:16 | new |
 | private.rb:104:1:104:28 | call to call_m1 | private.rb:91:3:93:5 | call_m1 |
 | private.rb:105:1:105:20 | call to new | calls.rb:117:5:117:16 | new |
+| toplevel_self_singleton.rb:13:9:13:27 | call to ab_singleton_method | toplevel_self_singleton.rb:3:9:4:11 | ab_singleton_method |
+| toplevel_self_singleton.rb:19:9:19:27 | call to ab_singleton_method | toplevel_self_singleton.rb:3:9:4:11 | ab_singleton_method |
 unresolvedCall
 | calls.rb:23:9:23:19 | call to singleton_m |
 | calls.rb:26:9:26:18 | call to instance_m |
@@ -346,8 +348,9 @@ unresolvedCall
 | private.rb:57:1:57:14 | call to private4 |
 | private.rb:100:7:100:29 | call to m1 |
 | private.rb:105:1:105:23 | call to m1 |
-| toplevel_self_singleton.rb:8:1:12:3 | call to do_something |
+| toplevel_self_singleton.rb:8:1:15:3 | call to do_something |
 | toplevel_self_singleton.rb:10:9:10:27 | call to ab_singleton_method |
+| toplevel_self_singleton.rb:17:12:21:1 | call to new |
 privateMethod
 | calls.rb:1:1:3:3 | foo |
 | calls.rb:39:1:41:3 | call_instance_m |
@@ -459,6 +462,8 @@ publicMethod
 | private.rb:66:3:67:5 | public |
 | private.rb:91:3:93:5 | call_m1 |
 | toplevel_self_singleton.rb:3:9:4:11 | ab_singleton_method |
+| toplevel_self_singleton.rb:12:5:14:7 | method_in_block |
+| toplevel_self_singleton.rb:18:5:20:7 | method_in_struct |
 protectedMethod
 | calls.rb:514:15:516:7 | foo |
 | calls.rb:522:15:524:7 | bar |

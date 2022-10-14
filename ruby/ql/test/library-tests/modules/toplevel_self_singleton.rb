@@ -9,4 +9,13 @@ do_something do
     def method_in_block
         ab_singleton_method # should not resolve to anything
     end
+    def self.method_in_block
+        ab_singleton_method # should not resolve to anything
+    end
 end
+
+MyStruct = Struct.new(:foo, :bar) {
+    def self.method_in_struct
+        ab_singleton_method # should not resolve to anything
+    end
+}
