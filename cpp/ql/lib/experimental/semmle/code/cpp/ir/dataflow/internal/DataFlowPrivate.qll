@@ -137,7 +137,7 @@ private newtype TReturnKind =
     exists(IndirectReturnNode return, ReturnIndirectionInstruction returnInd |
       returnInd.hasIndex(argumentIndex) and
       return.getAddressOperand() = returnInd.getSourceAddressOperand() and
-      indirectionIndex = return.getIndirectionIndex() - 1 // We subtract one because the return loads the value.
+      indirectionIndex = return.getIndirectionIndex()
     )
   }
 
@@ -197,7 +197,7 @@ class ReturnIndirectionNode extends IndirectReturnNode, ReturnNode {
     exists(int argumentIndex, ReturnIndirectionInstruction returnInd |
       returnInd.hasIndex(argumentIndex) and
       this.getAddressOperand() = returnInd.getSourceAddressOperand() and
-      result = TIndirectReturnKind(argumentIndex, this.getIndirectionIndex() - 1) and
+      result = TIndirectReturnKind(argumentIndex, this.getIndirectionIndex()) and
       hasNonInitializeParameterDef(returnInd.getIRVariable())
     )
     or
@@ -365,7 +365,7 @@ predicate jumpStep(Node n1, Node n2) {
 predicate storeStep(Node node1, Content c, PostFieldUpdateNode node2) {
   exists(int indirectionIndex1, int numberOfLoads, StoreInstruction store |
     nodeHasInstruction(node1, store, pragma[only_bind_into](indirectionIndex1)) and
-    node2.getIndirectionIndex() = 0 and
+    node2.getIndirectionIndex() = 1 and
     numberOfLoadsFromOperand(node2.getFieldAddress(), store.getDestinationAddressOperand(),
       numberOfLoads)
   |
@@ -465,20 +465,20 @@ predicate clearsContent(Node n, Content c) {
 predicate expectsContent(Node n, ContentSet c) { none() }
 
 /** Gets the type of `n` used for type pruning. */
-IRType getNodeType(Node n) {
+DataFlowType getNodeType(Node n) {
   suppressUnusedNode(n) and
-  result instanceof IRVoidType // stub implementation
+  result instanceof VoidType // stub implementation
 }
 
 /** Gets a string representation of a type returned by `getNodeType`. */
-string ppReprType(IRType t) { none() } // stub implementation
+string ppReprType(DataFlowType t) { none() } // stub implementation
 
 /**
  * Holds if `t1` and `t2` are compatible, that is, whether data can flow from
  * a node of type `t1` to a node of type `t2`.
  */
 pragma[inline]
-predicate compatibleTypes(IRType t1, IRType t2) {
+predicate compatibleTypes(DataFlowType t1, DataFlowType t2) {
   any() // stub implementation
 }
 
@@ -502,7 +502,7 @@ class DataFlowCallable = Cpp::Declaration;
 
 class DataFlowExpr = Expr;
 
-class DataFlowType = IRType;
+class DataFlowType = Type;
 
 /** A function call relevant for data flow. */
 class DataFlowCall extends CallInstruction {

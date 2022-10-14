@@ -75,7 +75,7 @@ import java
 private import semmle.code.java.dataflow.DataFlow::DataFlow
 private import internal.DataFlowPrivate
 private import internal.FlowSummaryImpl::Private::External
-private import internal.FlowSummaryImplSpecific
+private import internal.FlowSummaryImplSpecific as FlowSummaryImplSpecific
 private import internal.AccessPathSyntax
 private import FlowSummary
 
@@ -834,7 +834,7 @@ private module Cached {
    */
   cached
   predicate sourceNode(Node node, string kind) {
-    exists(InterpretNode n | isSourceNode(n, kind) and n.asNode() = node)
+    exists(FlowSummaryImplSpecific::InterpretNode n | isSourceNode(n, kind) and n.asNode() = node)
   }
 
   /**
@@ -843,7 +843,7 @@ private module Cached {
    */
   cached
   predicate sinkNode(Node node, string kind) {
-    exists(InterpretNode n | isSinkNode(n, kind) and n.asNode() = node)
+    exists(FlowSummaryImplSpecific::InterpretNode n | isSinkNode(n, kind) and n.asNode() = node)
   }
 }
 

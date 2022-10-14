@@ -54,6 +54,7 @@ class RestClientHttpRequest extends Http::Client::Request::Range, DataFlow::Call
     )
   }
 
+  cached
   override predicate disablesCertificateValidation(
     DataFlow::Node disablingNode, DataFlow::Node argumentOrigin
   ) {

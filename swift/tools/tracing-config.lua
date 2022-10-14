@@ -12,7 +12,7 @@ function RegisterExtractorPack(id)
       return nil
     end
 
-    -- removes upsupported CLI arg including the following how_many args
+    -- removes unsupported CLI arg including the following how_many args
     function strip_unsupported_arg(args, arg, how_many)
       local index = indexOf(args, arg)
       if index then

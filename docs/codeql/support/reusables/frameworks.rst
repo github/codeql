@@ -221,11 +221,17 @@ and the CodeQL library pack ``codeql/python-all`` (`changelog <https://github.co
    aiopg, Database
    asyncpg, Database
    clickhouse-driver, Database
+   cx_Oracle, Database
    mysql-connector-python, Database
    mysql-connector, Database
    MySQL-python, Database
    mysqlclient, Database
+   oracledb, Database
+   phoenixdb, Database
    psycopg2, Database
+   pyodbc, Database
+   pymssql, Database
+   PyMySQL, Database
    sqlite3, Database
    Flask-SQLAlchemy, Database ORM
    peewee, Database ORM

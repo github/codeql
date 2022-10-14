@@ -1,0 +1,39 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+If the expression after the comma operator starts at an earlier column than the expression before the comma, then
+this suspicious indentation possibly indicates a logic error, caused by a typo that may escape visual inspection.
+</p>
+<warning>
+This query has medium precision because CodeQL currently does not distinguish between tabs and spaces in whitespace.
+If a file contains mixed tabs and spaces, alerts may highlight code that is correctly indented for one value of tab size but not for other tab sizes.
+</warning>
+</overview>
+
+<recommendation>
+<p>
+To ensure that your code is easy to read and review, use standard indentation around the comma operator. Always begin the right-hand-side operand at the same level of
+indentation (column number) as the left-hand-side operand. This makes it easier for other developers to see the intended behavior of your code.
+</p>
+<p>
+Use whitespace consistently to communicate your coding intentions. Where possible, avoid mixing tabs and spaces within a file. If you need to mix them, use them consistently.
+</p>
+</recommendation>
+
+<example>
+<p>
+This example shows three different ways of writing the same code. The first example contains a comma instead of a semicolon which means that the final line is part of the <code>if</code> statement, even though the indentation suggests that it is intended to be separate. The second example looks different but is functionally the same as the first example. It is more likely that the developer intended to write the third example.
+</p>
+<sample src="CommaBeforeMisleadingIndentation.cpp" />
+</example>
+
+<references>
+<li>Wikipedia: <a href="https://en.wikipedia.org/wiki/Comma_operator">Comma operator</a></li>
+<li>Wikipedia: <a href="https://en.wikipedia.org/wiki/Indentation_style#Tabs,_spaces,_and_size_of_indentations">Indentation style &mdash; Tabs, spaces, and size of indentations</a></li>
+</references>
+
+</qhelp>

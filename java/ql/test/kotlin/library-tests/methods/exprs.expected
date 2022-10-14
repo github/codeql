@@ -226,6 +226,10 @@
 | enumClass.kt:0:0:0:0 | EnumClass | TypeAccess |
 | enumClass.kt:0:0:0:0 | EnumClass | TypeAccess |
 | enumClass.kt:0:0:0:0 | EnumClass[] | TypeAccess |
+| enumClass.kt:0:0:0:0 | EnumWithFunctions | TypeAccess |
+| enumClass.kt:0:0:0:0 | EnumWithFunctions | TypeAccess |
+| enumClass.kt:0:0:0:0 | EnumWithFunctions[] | TypeAccess |
+| enumClass.kt:0:0:0:0 | String | TypeAccess |
 | enumClass.kt:0:0:0:0 | String | TypeAccess |
 | enumClass.kt:1:1:4:1 | Enum<EnumClass> | TypeAccess |
 | enumClass.kt:1:1:4:1 | EnumClass | TypeAccess |
@@ -252,6 +256,33 @@
 | enumClass.kt:3:5:3:12 | EnumClass.enum2 | VarAccess |
 | enumClass.kt:3:5:3:12 | new EnumClass(...) | ClassInstanceExpr |
 | enumClass.kt:3:11:3:11 | 1 | IntegerLiteral |
+| enumClass.kt:6:1:16:1 | Enum<EnumWithFunctions> | TypeAccess |
+| enumClass.kt:6:1:16:1 | EnumWithFunctions | TypeAccess |
+| enumClass.kt:6:1:16:1 | new Enum(...) | ClassInstanceExpr |
+| enumClass.kt:8:3:11:4 | ...=... | KtInitializerAssignExpr |
+| enumClass.kt:8:3:11:4 | <implicit coercion to unit> | ImplicitCoercionToUnitExpr |
+| enumClass.kt:8:3:11:4 | EnumWithFunctions | TypeAccess |
+| enumClass.kt:8:3:11:4 | EnumWithFunctions | TypeAccess |
+| enumClass.kt:8:3:11:4 | EnumWithFunctions | TypeAccess |
+| enumClass.kt:8:3:11:4 | EnumWithFunctions.VAL | VarAccess |
+| enumClass.kt:8:3:11:4 | Unit | TypeAccess |
+| enumClass.kt:8:3:11:4 | VAL | TypeAccess |
+| enumClass.kt:8:3:11:4 | new EnumWithFunctions(...) | ClassInstanceExpr |
+| enumClass.kt:8:3:11:4 | new VAL(...) | ClassInstanceExpr |
+| enumClass.kt:9:14:9:30 | int | TypeAccess |
+| enumClass.kt:9:20:9:25 | int | TypeAccess |
+| enumClass.kt:9:30:9:30 | i | VarAccess |
+| enumClass.kt:10:14:10:42 | int | TypeAccess |
+| enumClass.kt:10:20:10:25 | int | TypeAccess |
+| enumClass.kt:10:30:10:33 | this | ThisAccess |
+| enumClass.kt:10:30:10:42 | ... + ... | AddExpr |
+| enumClass.kt:10:35:10:38 | f(...) | MethodAccess |
+| enumClass.kt:10:37:10:37 | i | VarAccess |
+| enumClass.kt:10:42:10:42 | i | VarAccess |
+| enumClass.kt:13:12:13:29 | int | TypeAccess |
+| enumClass.kt:13:18:13:23 | int | TypeAccess |
+| enumClass.kt:14:12:14:29 | int | TypeAccess |
+| enumClass.kt:14:18:14:23 | int | TypeAccess |
 | methods2.kt:4:1:5:1 | Unit | TypeAccess |
 | methods2.kt:4:26:4:31 | int | TypeAccess |
 | methods2.kt:4:34:4:39 | int | TypeAccess |

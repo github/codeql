@@ -70,6 +70,7 @@ class ExconHttpRequest extends Http::Client::Request::Range, DataFlow::CallNode 
     )
   }
 
+  cached
   override predicate disablesCertificateValidation(
     DataFlow::Node disablingNode, DataFlow::Node argumentOrigin
   ) {

@@ -219,6 +219,10 @@ getTarget
 | hello.rb:14:16:14:20 | call to hello | hello.rb:2:5:4:7 | hello |
 | hello.rb:20:16:20:20 | call to super | hello.rb:13:5:15:7 | message |
 | hello.rb:20:30:20:34 | call to world | hello.rb:5:5:7:7 | world |
+| instance_fields.rb:4:22:4:35 | call to new | calls.rb:117:5:117:16 | new |
+| instance_fields.rb:7:13:7:25 | call to target | instance_fields.rb:12:5:13:7 | target |
+| instance_fields.rb:19:22:19:35 | call to new | calls.rb:117:5:117:16 | new |
+| instance_fields.rb:22:13:22:25 | call to target | instance_fields.rb:27:5:28:7 | target |
 | modules.rb:12:5:12:26 | call to puts | calls.rb:102:5:102:30 | puts |
 | modules.rb:22:3:22:19 | call to puts | calls.rb:102:5:102:30 | puts |
 | modules.rb:33:3:33:25 | call to puts | calls.rb:102:5:102:30 | puts |
@@ -435,6 +439,12 @@ publicMethod
 | hello.rb:5:5:7:7 | world |
 | hello.rb:13:5:15:7 | message |
 | hello.rb:19:5:21:7 | message |
+| instance_fields.rb:3:9:5:11 | create |
+| instance_fields.rb:6:9:8:11 | use |
+| instance_fields.rb:12:5:13:7 | target |
+| instance_fields.rb:18:9:20:11 | create |
+| instance_fields.rb:21:9:23:11 | use |
+| instance_fields.rb:27:5:28:7 | target |
 | modules.rb:9:5:10:7 | method_in_foo_bar |
 | modules.rb:16:3:17:5 | method_in_foo |
 | modules.rb:27:3:28:5 | method_in_another_definition_of_foo |

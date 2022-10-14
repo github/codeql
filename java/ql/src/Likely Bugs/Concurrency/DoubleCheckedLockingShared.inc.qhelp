@@ -62,7 +62,7 @@ runtime.
 <p>
 The code above should be rewritten to both use <code>volatile</code> and finish
 all initialization before <code>f</code> is updated. Additionally, a local
-variable can be used to avoid reading the field more times than neccessary.
+variable can be used to avoid reading the field more times than necessary.
 </p>
 <sample src="DoubleCheckedLockingGood.java"/>
 
