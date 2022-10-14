@@ -84,6 +84,13 @@ private predicate writesProperty(DataFlow::Node node, string name) {
   node.(DataFlow::CallNode).getArgument(0).asExpr().getConstantValue().isStringlikeValue(name)
 }
 
+/**
+ * Instance and class variable names are reported with their respective `@`
+ * and `@@` prefixes. This predicate strips these prefixes.
+ */
+bindingset[name]
+private string unprefixedVariableName(string name) { result = name.regexpReplaceAll("^@*", "") }
+
 /** A write to a variable or property that might contain sensitive data. */
 private class BasicSensitiveWrite extends SensitiveWrite {
   SensitiveDataClassification classification;
@@ -104,7 +111,7 @@ private class BasicSensitiveWrite extends SensitiveWrite {
        */
 
       writesProperty(this, name) and
-      nameIndicatesSensitiveData(name, classification)
+      nameIndicatesSensitiveData(unprefixedVariableName(name), classification)
     )
   }
 
@@ -116,7 +123,9 @@ private class BasicSensitiveWrite extends SensitiveWrite {
 private class BasicSensitiveVariableAccess extends SensitiveVariableAccess {
   SensitiveDataClassification classification;
 
-  BasicSensitiveVariableAccess() { nameIndicatesSensitiveData(name, classification) }
+  BasicSensitiveVariableAccess() {
+    nameIndicatesSensitiveData(unprefixedVariableName(name), classification)
+  }
 
   override SensitiveDataClassification getClassification() { result = classification }
 }
