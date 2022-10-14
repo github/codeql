@@ -9,7 +9,7 @@ gitroot = subprocess.check_output(["git", "rev-parse", "--show-toplevel"]).decod
 madpath = os.path.join(gitroot, "misc/scripts/models-as-data/")
 sys.path.append(madpath)
 
-import generate_flow_model as model
+import generate_flow_model_extensions as model
 
 language = "csharp"
 model.Generator.make(language).run()
