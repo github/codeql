@@ -444,7 +444,7 @@ module Http {
     }
 
     /**
-     * A data flow node that writes data to a header in a HTTP response.
+     * A data flow node that writes data to a header in an HTTP response.
      *
      * Extend this class to refine existing API models. If you want to model new APIs,
      * extend `HeaderWriteAccess::Range` instead.
@@ -460,7 +460,7 @@ module Http {
     /** Provides a class for modeling new HTTP header writes. */
     module HeaderWriteAccess {
       /**
-       * A data flow node that writes data to the a header in a HTTP response.
+       * A data flow node that writes data to the header in an HTTP response.
        *
        * Extend this class to model new APIs. If you want to refine existing API models,
        * extend `HeaderWriteAccess` instead.
