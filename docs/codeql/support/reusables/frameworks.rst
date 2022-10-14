@@ -271,5 +271,5 @@ and the CodeQL library pack ``codeql/ruby-all`` (`changelog <https://github.com/
    rest-client, HTTP client
    Ruby on Rails, Web framework
    rubyzip, Compression library
-   typohoeus, HTTP client
+   typhoeus, HTTP client
 
