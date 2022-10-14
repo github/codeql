@@ -290,6 +290,26 @@ module Http {
       }
     }
 
+    /** A kind of request input. */
+    class RequestInputKind extends string {
+      RequestInputKind() { this = ["parameter", "header", "body", "url", "cookie"] }
+    }
+
+    /** Input from the parameters of a request. */
+    RequestInputKind parameterInputKind() { result = "parameter" }
+
+    /** Input from the headers of a request. */
+    RequestInputKind headerInputKind() { result = "header" }
+
+    /** Input from the body of a request. */
+    RequestInputKind bodyInputKind() { result = "body" }
+
+    /** Input from the URL of a request. */
+    RequestInputKind urlInputKind() { result = "url" }
+
+    /** Input from the cookies of a request. */
+    RequestInputKind cookieInputKind() { result = "cookie" }
+
     /**
      * An access to a user-controlled HTTP request input. For example, the URL or body of a request.
      * Instances of this class automatically become `RemoteFlowSource`s.
@@ -304,6 +324,32 @@ module Http {
        * This is typically the name of the method that gives rise to this input.
        */
       string getSourceType() { result = super.getSourceType() }
+
+      /**
+       * Gets the kind of the accessed input,
+       * Can be one of "parameter", "header", "body", "url", "cookie".
+       */
+      RequestInputKind getKind() { result = super.getKind() }
+
+      /**
+       * Holds if this part of the request may be controlled by a third party,
+       * that is, an agent other than the one who sent the request.
+       *
+       * This is true for the URL, query parameters, and request body.
+       * These can be controlled by a malicious third party in the following scenarios:
+       *
+       * - The user clicks a malicious link or is otherwise redirected to a malicious URL.
+       * - The user visits a web site that initiates a form submission or AJAX request on their behalf.
+       *
+       * In these cases, the request is technically sent from the user's browser, but
+       * the user is not in direct control of the URL or POST body.
+       *
+       * Headers are never considered third-party controllable by this predicate, although the
+       * third party does have some control over the the Referer and Origin headers.
+       */
+      predicate isThirdPartyControllable() {
+        this.getKind() = [parameterInputKind(), urlInputKind(), bodyInputKind()]
+      }
     }
 
     /** Provides a class for modeling new HTTP request inputs. */
@@ -321,6 +367,12 @@ module Http {
          * This is typically the name of the method that gives rise to this input.
          */
         abstract string getSourceType();
+
+        /**
+         * Gets the kind of the accessed input,
+         * Can be one of "parameter", "header", "body", "url", "cookie".
+         */
+        abstract RequestInputKind getKind();
       }
     }
 
@@ -387,6 +439,8 @@ module Http {
       RoutedParameter() { this.getParameter() = handler.getARoutedParameter() }
 
       override string getSourceType() { result = handler.getFramework() + " RoutedParameter" }
+
+      override RequestInputKind getKind() { result = parameterInputKind() }
     }
 
     /**

@@ -312,9 +312,11 @@ module ReflectedXss {
   deprecated predicate isAdditionalXSSTaintStep = isAdditionalXssTaintStep/2;
 
   /**
-   * A source of remote user input, considered as a flow source.
+   * A HTTP request input, considered as a flow source.
    */
-  class RemoteFlowSourceAsSource extends Source, RemoteFlowSource { }
+  class HttpRequestInputAccessAsSource extends Source, Http::Server::RequestInputAccess {
+    HttpRequestInputAccessAsSource() { this.isThirdPartyControllable() }
+  }
 }
 
 /** DEPRECATED: Alias for ReflectedXss */
