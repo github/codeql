@@ -516,8 +516,11 @@ private class ActionControllerProtectFromForgeryCall extends CsrfProtectionSetti
  */
 private class SendFile extends FileSystemAccess::Range, DataFlow::CallNode {
   SendFile() {
-    this.asExpr().getExpr() instanceof ActionControllerContextCall and
-    this.getMethodName() = "send_file"
+    this.getMethodName() = "send_file" and
+    (
+      this.asExpr().getExpr() instanceof ActionControllerContextCall or
+      this.getReceiver().asExpr().getExpr() instanceof Response::ResponseCall
+    )
   }
 
   override DataFlow::Node getAPathArgument() { result = this.getArgument(0) }
@@ -640,5 +643,96 @@ private module ParamsSummaries {
       output = ["ReturnValue", "Argument[self]"] and
       preservesValue = false
     }
+  }
+}
+
+/**
+ * Provides modeling for `ActionDispatch::Response`, which represents an HTTP
+ * response.
+ */
+private module Response {
+  class ResponseCall extends ActionControllerContextCall {
+    ResponseCall() { this.getMethodName() = "response" }
+  }
+
+  class BodyWrite extends DataFlow::CallNode, Http::Server::HttpResponse::Range {
+    BodyWrite() {
+      this.getReceiver().asExpr().getExpr() instanceof ResponseCall and
+      this.getMethodName() = "body="
+    }
+
+    override DataFlow::Node getBody() { result = this.getArgument(0) }
+
+    override DataFlow::Node getMimetypeOrContentTypeArg() { none() }
+
+    override string getMimetypeDefault() { result = "text/http" }
+  }
+
+  class SendFileCall extends DataFlow::CallNode, Http::Server::HttpResponse::Range {
+    SendFileCall() {
+      this.getReceiver().asExpr().getExpr() instanceof ResponseCall and
+      this.getMethodName() = "send_file"
+    }
+
+    override DataFlow::Node getBody() { result = this.getArgument(0) }
+
+    override DataFlow::Node getMimetypeOrContentTypeArg() { none() }
+
+    override string getMimetypeDefault() { result = "application/octet-stream" }
+  }
+
+  class HeaderWrite extends DataFlow::CallNode, Http::Server::HeaderWriteAccess::Range {
+    HeaderWrite() {
+      // response.header[key] = val
+      // response.headers[key] = val
+      exists(MethodCall headerCall |
+        headerCall.getMethodName() = ["header", "headers"] and
+        headerCall.getReceiver() instanceof ResponseCall
+      |
+        this.getReceiver().asExpr().getExpr() = headerCall and
+        this.getMethodName() = "[]="
+      )
+      or
+      // response.set_header(key) = val
+      // response[header] = val
+      // response.add_header(key, val)
+      this.getReceiver().asExpr().getExpr() instanceof ResponseCall and
+      this.getMethodName() = ["set_header", "[]=", "add_header"]
+    }
+
+    override string getName() {
+      result = this.getArgument(0).asExpr().getConstantValue().getString()
+    }
+
+    override DataFlow::Node getValue() { result = this.getArgument(1) }
+  }
+
+  class SpecificHeaderWrite extends DataFlow::CallNode, Http::Server::HeaderWriteAccess::Range {
+    SpecificHeaderWrite() {
+      // response.<method> = val
+      this.getReceiver().asExpr().getExpr() instanceof ResponseCall and
+      this.getMethodName() =
+        [
+          "location=", "cache_control=", "_cache_control=", "etag=", "charset=", "content_type=",
+          "date=", "last_modified=", "weak_etag=", "strong_etag="
+        ]
+    }
+
+    override string getName() {
+      this.getMethodName() = "location=" and result = "location"
+      or
+      this.getMethodName() = ["_cache_control=", "cache_control="] and result = "cache-control"
+      or
+      this.getMethodName() = ["etag=", "weak_etag=", "strong_etag="] and result = "etag"
+      or
+      // sets the charset part of the content-type header
+      this.getMethodName() = ["charset=", "content_type="] and result = "content-type"
+      or
+      this.getMethodName() = "date=" and result = "date"
+      or
+      this.getMethodName() = "last_modified=" and result = "last-modified"
+    }
+
+    override DataFlow::Node getValue() { result = this.getArgument(0) }
   }
 }
