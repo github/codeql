@@ -19,4 +19,5 @@ swift_cc_binary(
 generate_cmake(
     name = "cmake",
     targets = [":extractor"],
+    visibility = ["//visibility:public"],
 )
