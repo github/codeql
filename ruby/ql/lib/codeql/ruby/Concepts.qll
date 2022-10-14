@@ -381,6 +381,7 @@ module Http {
         /**
          * Gets the kind of the accessed input,
          * Can be one of "parameter", "header", "body", "url", "cookie".
+         */
         abstract RequestInputKind getKind();
       }
     }
