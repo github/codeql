@@ -21,6 +21,7 @@ class BarsController < ApplicationController
     @safe_foo = "safe_foo"
     @html_escaped = ERB::Util.html_escape(params[:text])
     @header_escaped = ERB::Util.html_escape(cookies[:foo]) # OK - cookies not controllable by 3rd party
+    response.header["content-type"] = params[:content_type]
     render "foo/bars/show", locals: { display_text: dt, safe_text: "hello" }
   end
 end
