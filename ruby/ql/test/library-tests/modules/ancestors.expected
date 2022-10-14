@@ -110,6 +110,15 @@ calls.rb:
 #  538| ProtectedMethodsSub
 #-----| super -> ProtectedMethods
 
+#  552| SingletonUpCall_Base
+#-----| super -> Object
+
+#  556| SingletonUpCall_Sub
+#-----| super -> SingletonUpCall_Base
+
+#  564| SingletonUpCall_SubSub
+#-----| super -> SingletonUpCall_Sub
+
 hello.rb:
 #    1| EnglishWords
 
