@@ -1,10 +1,10 @@
 /**
- * @name TODO
- * @description TODO
+ * @name SQL query built from user-controlled sources
+ * @description Building a SQL query from user-controlled sources is vulnerable to insertion of malicious SQL code by the user.
  * @kind path-problem
- * @problem.severity TODO
- * @security-severity TODO
- * @precision TODO
+ * @problem.severity error
+ * @security-severity 8.8
+ * @precision high
  * @id swift/sql-injection
  * @tags security
  *       external/cwe/cwe-089
@@ -79,5 +79,5 @@ class SqlInjectionConfig extends TaintTracking::Configuration {
 
 from SqlInjectionConfig config, DataFlow::PathNode sourceNode, DataFlow::PathNode sinkNode
 where config.hasFlowPath(sourceNode, sinkNode)
-select sinkNode.getNode(), sourceNode, sinkNode, "This SQL query depends on a $@.",
-  sourceNode.getNode(), "user-provided value"
+select sinkNode.getNode(), sourceNode, sinkNode, "This SQL query depends on $@.",
+  sourceNode.getNode(), "a user-provided value"
