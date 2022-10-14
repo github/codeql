@@ -1,6 +1,8 @@
 private import codeql.ruby.AST
 private import codeql.ruby.frameworks.ActionController
 private import codeql.ruby.frameworks.Rails
+private import codeql.ruby.frameworks.ActionView
+private import codeql.ruby.Concepts
 
 query predicate actionControllerControllerClasses(ActionControllerControllerClass cls) { any() }
 
@@ -9,6 +11,10 @@ query predicate actionControllerActionMethods(ActionControllerActionMethod m) { 
 query predicate paramsCalls(Rails::ParamsCall c) { any() }
 
 query predicate paramsSources(ParamsSource src) { any() }
+
+query predicate httpInputAccesses(Http::Server::RequestInputAccess a, string sourceType) {
+  sourceType = a.getSourceType()
+}
 
 query predicate cookiesCalls(Rails::CookiesCall c) { any() }
 
