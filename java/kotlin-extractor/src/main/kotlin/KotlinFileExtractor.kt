@@ -120,11 +120,7 @@ open class KotlinFileExtractor(
     }
 
     private fun shouldExtractDecl(declaration: IrDeclaration, extractPrivateMembers: Boolean) =
-        extractPrivateMembers ||
-        when(declaration) {
-            is IrDeclarationWithVisibility -> declaration.visibility.let { it != DescriptorVisibilities.PRIVATE && it != DescriptorVisibilities.PRIVATE_TO_THIS }
-            else -> true
-        }
+        extractPrivateMembers || !isPrivate(declaration)
 
     fun extractDeclaration(declaration: IrDeclaration, extractPrivateMembers: Boolean, extractFunctionBodies: Boolean) {
         with("declaration", declaration) {
@@ -357,23 +353,37 @@ open class KotlinFileExtractor(
         }
     }
 
+    private fun makeTypeParamSubstitution(c: IrClass, argsIncludingOuterClasses: List<IrTypeArgument>?) =
+        when (argsIncludingOuterClasses) {
+            null -> { x: IrType, _: TypeContext, _: IrPluginContext -> x.toRawType() }
+            else -> makeGenericSubstitutionFunction(c, argsIncludingOuterClasses)
+        }
+
+    fun extractDeclarationPrototype(d: IrDeclaration, parentId: Label<out DbReftype>, argsIncludingOuterClasses: List<IrTypeArgument>?, typeParamSubstitutionQ: TypeSubstitution? = null) {
+        val typeParamSubstitution = typeParamSubstitutionQ ?:
+            when(val parent = d.parent) {
+                is IrClass -> makeTypeParamSubstitution(parent, argsIncludingOuterClasses)
+                else -> {
+                    logger.warnElement("Unable to extract prototype of local declaration", d)
+                    return
+                }
+            }
+        when (d) {
+            is IrFunction -> extractFunction(d, parentId, extractBody = false, extractMethodAndParameterTypeAccesses = false, typeParamSubstitution, argsIncludingOuterClasses)
+            is IrProperty -> extractProperty(d, parentId, extractBackingField = false, extractFunctionBodies = false, extractPrivateMembers = false, typeParamSubstitution, argsIncludingOuterClasses)
+            else -> {}
+        }
+    }
+
     // `argsIncludingOuterClasses` can be null to describe a raw generic type.
     // For non-generic types it will be zero-length list.
     private fun extractNonPrivateMemberPrototypes(c: IrClass, argsIncludingOuterClasses: List<IrTypeArgument>?, id: Label<out DbClassorinterface>) {
         with("member prototypes", c) {
-            val typeParamSubstitution =
-                when (argsIncludingOuterClasses) {
-                    null -> { x: IrType, _: TypeContext, _: IrPluginContext -> x.toRawType() }
-                    else -> makeGenericSubstitutionFunction(c, argsIncludingOuterClasses)
-                }
+            val typeParamSubstitution = makeTypeParamSubstitution(c, argsIncludingOuterClasses)
 
             c.declarations.map {
                 if (shouldExtractDecl(it, false)) {
-                    when(it) {
-                        is IrFunction -> extractFunction(it, id, extractBody = false, extractMethodAndParameterTypeAccesses = false, typeParamSubstitution, argsIncludingOuterClasses)
-                        is IrProperty -> extractProperty(it, id, extractBackingField = false, extractFunctionBodies = false, extractPrivateMembers = false, typeParamSubstitution, argsIncludingOuterClasses)
-                        else -> {}
-                    }
+                    extractDeclarationPrototype(it, id, argsIncludingOuterClasses, typeParamSubstitution)
                 }
             }
         }
