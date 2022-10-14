@@ -1,6 +1,5 @@
 import java
 import TestUtilities.InlineFlowTest
-import semmle.code.java.dataflow.ExternalFlow
 import CsvValidation
 
 class SummaryModelTest extends SummaryModelCsv {
