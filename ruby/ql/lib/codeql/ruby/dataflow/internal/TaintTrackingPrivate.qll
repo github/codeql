@@ -62,6 +62,8 @@ private CfgNodes::ExprNodes::VariableWriteAccessCfgNode variablesInPattern(
 
 cached
 private module Cached {
+  private import codeql.ruby.dataflow.FlowSteps as FlowSteps
+
   cached
   predicate forceCachingInSameStage() { any() }
 
@@ -98,6 +100,8 @@ private module Cached {
       nodeTo.asExpr().(CfgNodes::ExprNodes::StringlikeLiteralCfgNode).getAComponent()
     or
     FlowSummaryImpl::Private::Steps::summaryLocalStep(nodeFrom, nodeTo, false)
+    or
+    any(FlowSteps::AdditionalTaintStep s).step(nodeFrom, nodeTo)
     or
     // Although flow through collections is modeled precisely using stores/reads, we still
     // allow flow out of a _tainted_ collection. This is needed in order to support taint-
