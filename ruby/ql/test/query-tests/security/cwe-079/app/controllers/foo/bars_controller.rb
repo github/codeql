@@ -25,4 +25,9 @@ class BarsController < ApplicationController
     response.header["x-customer-header"] = params[:bar] # OK - header not relevant to XSS
     render "foo/bars/show", locals: { display_text: dt, safe_text: "hello" }
   end
+
+  def make_safe_html
+    str = params[:user_name]
+    str.html_safe
+  end
 end

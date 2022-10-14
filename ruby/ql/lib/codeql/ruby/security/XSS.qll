@@ -62,10 +62,7 @@ private module Shared {
    */
   class HtmlSafeCallAsSink extends Sink {
     HtmlSafeCallAsSink() {
-      exists(Rails::HtmlSafeCall c, ErbOutputDirective d |
-        this.asExpr().getExpr() = c.getReceiver() and
-        c = d.getTerminalStmt()
-      )
+      this = any(DataFlow::CallNode call | call.getMethodName() = "html_safe").getReceiver()
     }
   }
 
