@@ -98,3 +98,10 @@ filemd5 = Digest::MD5.file 'testfile'
 filemd5.hexdigest
 
 Digest("MD5").hexdigest('foo') # BAD: weak hash algorithm
+
+sha1 = OpenSSL::Digest.new('SHA1')
+sha1.digest 'message' # BAD: weak hash algorithm
+sha1 << 'message' # << is an alias for update
+
+OpenSSL::Digest.digest('SHA1', "abc") # BAD: weak hash algorithm
+OpenSSL::Digest.digest('SHA3-512', "abc") # GOOD: strong hash algorithm

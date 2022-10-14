@@ -24,3 +24,6 @@
 | broken_crypto.rb:90:1:90:17 | ... << ... | The cryptographic algorithm MD5 is broken or weak, and should not be used. |
 | broken_crypto.rb:95:1:95:34 | call to bubblebabble | The cryptographic algorithm MD5 is broken or weak, and should not be used. |
 | broken_crypto.rb:97:11:97:37 | call to file | The cryptographic algorithm MD5 is broken or weak, and should not be used. |
+| broken_crypto.rb:103:1:103:21 | call to digest | The cryptographic algorithm SHA1 is broken or weak, and should not be used. |
+| broken_crypto.rb:104:1:104:17 | ... << ... | The cryptographic algorithm SHA1 is broken or weak, and should not be used. |
+| broken_crypto.rb:106:1:106:37 | call to digest | The cryptographic algorithm SHA1 is broken or weak, and should not be used. |
