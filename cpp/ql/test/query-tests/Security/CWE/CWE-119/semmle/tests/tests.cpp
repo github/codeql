@@ -482,7 +482,7 @@ void test18()
 	while (*p3 != 0) {
 		p3 = update(p3);
 	}
-	p3[-1] = 0; // GOOD
+	p3[-1] = 0; // GOOD [FALSE POSITIVE]
 
 	p4[-1] = 0; // BAD: underrun write
 	p4++;
@@ -492,7 +492,7 @@ void test18()
 	while (*p5 != 0) {
 		p5 = update(p5);
 	}
-	p5[-1] = 0; // GOOD
+	p5[-1] = 0; // GOOD [FALSE POSITIVE]
 }
 
 void test19(bool b)
@@ -517,7 +517,7 @@ void test19(bool b)
 	if (b)
 	{
 		memset(p1, 0, 20); // BAD
-		memset(p2, 0, 20); // GOOD
+		memset(p2, 0, 20); // GOOD [FALSE POSITIVE]
 		memset(p3, 0, 20); // GOOD
 	}
 }
