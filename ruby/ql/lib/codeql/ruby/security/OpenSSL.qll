@@ -582,7 +582,7 @@ private class CipherOperation extends Cryptography::CryptographicOperation::Rang
   }
 }
 
-/** Predicates and classes modelling the `OpenSSL::Digest` module */
+/** Predicates and classes modeling the `OpenSSL::Digest` module */
 private module Digest {
   private import codeql.ruby.ApiGraphs
 
