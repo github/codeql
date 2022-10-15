@@ -213,6 +213,69 @@ class LocalSourceNode extends Node {
 
   /** Gets a call to a method named `name`, where this node flows to the receiver. */
   CallNode getAMethodCall(string name) { Cached::hasMethodCall(this, result, name) }
+
+  /** Gets a call `obj.name` with no arguments, where this node flows to `obj`. */
+  CallNode getAnAttributeRead(string name) {
+    result = this.getAMethodCall(name) and
+    result.getNumberOfArguments() = 0
+  }
+
+  /**
+   * Gets a value assigned to `name` on this object, such as the `x` in `obj.name = x`.
+   *
+   * Concretely, this gets the argument of any call to `name=` where this node flows to the receiver.
+   */
+  Node getAnAttributeWriteValue(string name) {
+    result = this.getAMethodCall(name + "=").getArgument(0)
+  }
+
+  /**
+   * Gets an access to an element on this node, such as `obj[key]`.
+   *
+   * Concretely this gets a call to `[]` with 1 argument, where this node flows to the receiver.
+   */
+  CallNode getAnElementRead() {
+    result = this.getAMethodCall("[]") and result.getNumberOfArguments() = 1
+  }
+
+  /**
+   * Gets an access to the element `key` on this node, such as `obj[:key]`.
+   *
+   * Concretely this gets a call to `[]` where this node flows to the receiver
+   * and the first and only argument has the constant value `key`.
+   */
+  CallNode getAnElementRead(ConstantValue key) {
+    result = this.getAnElementRead() and
+    key = result.getArgument(0).getConstantValue()
+  }
+
+  /**
+   * Gets a value stored as an element on this node, such as the `x` in `obj[key] = x`.
+   *
+   * Concretely, this gets the second argument from any call to `[]=` where this node flows to the receiver.
+   */
+  Node getAnElementWriteValue() {
+    exists(CallNode call |
+      call = this.getAMethodCall("[]=") and
+      call.getNumberOfArguments() = 2 and
+      result = call.getArgument(1)
+    )
+  }
+
+  /**
+   * Gets the `x` in `obj[key] = x`, where this node flows to `obj`.
+   *
+   * Concretely, this gets the second argument from any call to `[]=` where this node flows to the receiver
+   * and the first argument has constant value `key`.
+   */
+  Node getAnElementWriteValue(ConstantValue key) {
+    exists(CallNode call |
+      call = this.getAMethodCall("[]=") and
+      call.getNumberOfArguments() = 2 and
+      call.getArgument(0).getConstantValue() = key and
+      result = call.getArgument(1)
+    )
+  }
 }
 
 /**
