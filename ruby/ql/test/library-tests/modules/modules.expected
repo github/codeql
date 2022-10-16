@@ -1701,7 +1701,7 @@ enclosingModule
 | toplevel_self_singleton.rb:10:9:10:27 | self | toplevel_self_singleton.rb:1:1:34:4 | toplevel_self_singleton.rb |
 | toplevel_self_singleton.rb:12:5:12:7 | obj | toplevel_self_singleton.rb:1:1:34:4 | toplevel_self_singleton.rb |
 | toplevel_self_singleton.rb:12:5:12:12 | ... = ... | toplevel_self_singleton.rb:1:1:34:4 | toplevel_self_singleton.rb |
-| toplevel_self_singleton.rb:12:9:12:12 | (no string representation) | toplevel_self_singleton.rb:1:1:34:4 | toplevel_self_singleton.rb |
+| toplevel_self_singleton.rb:12:9:12:12 | self | toplevel_self_singleton.rb:1:1:34:4 | toplevel_self_singleton.rb |
 | toplevel_self_singleton.rb:13:5:15:7 | method_in_block | toplevel_self_singleton.rb:1:1:34:4 | toplevel_self_singleton.rb |
 | toplevel_self_singleton.rb:13:9:13:11 | obj | toplevel_self_singleton.rb:1:1:34:4 | toplevel_self_singleton.rb |
 | toplevel_self_singleton.rb:14:9:14:27 | call to ab_singleton_method | toplevel_self_singleton.rb:1:1:34:4 | toplevel_self_singleton.rb |
@@ -1716,7 +1716,7 @@ enclosingModule
 | toplevel_self_singleton.rb:18:29:18:32 | bar | toplevel_self_singleton.rb:1:1:34:4 | toplevel_self_singleton.rb |
 | toplevel_self_singleton.rb:18:35:22:1 | { ... } | toplevel_self_singleton.rb:1:1:34:4 | toplevel_self_singleton.rb |
 | toplevel_self_singleton.rb:19:5:21:7 | method_in_struct | toplevel_self_singleton.rb:1:1:34:4 | toplevel_self_singleton.rb |
-| toplevel_self_singleton.rb:19:9:19:12 | (no string representation) | toplevel_self_singleton.rb:1:1:34:4 | toplevel_self_singleton.rb |
+| toplevel_self_singleton.rb:19:9:19:12 | self | toplevel_self_singleton.rb:1:1:34:4 | toplevel_self_singleton.rb |
 | toplevel_self_singleton.rb:20:9:20:27 | call to ab_singleton_method | toplevel_self_singleton.rb:1:1:34:4 | toplevel_self_singleton.rb |
 | toplevel_self_singleton.rb:20:9:20:27 | self | toplevel_self_singleton.rb:1:1:34:4 | toplevel_self_singleton.rb |
 | toplevel_self_singleton.rb:24:1:34:3 | Good | toplevel_self_singleton.rb:1:1:34:4 | toplevel_self_singleton.rb |
