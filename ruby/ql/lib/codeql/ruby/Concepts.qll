@@ -474,8 +474,8 @@ module Http {
      * extend `HeaderWriteAccess::Range` instead.
      */
     class HeaderWriteAccess extends DataFlow::Node instanceof HeaderWriteAccess::Range {
-      /** Gets the name of the header that is written to. */
-      string getName() { result = super.getName() }
+      /** Gets the (lower case) name of the header that is written to. */
+      string getName() { result = super.getName().toLowerCase() }
 
       /** Gets the value that is written to the header. */
       DataFlow::Node getValue() { result = super.getValue() }

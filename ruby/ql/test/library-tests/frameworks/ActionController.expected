@@ -371,11 +371,11 @@ controllerTemplateFiles
 | app/controllers/foo/bars_controller.rb:3:1:46:3 | BarsController | app/views/foo/bars/_widget.html.erb:0:0:0:0 | app/views/foo/bars/_widget.html.erb |
 | app/controllers/foo/bars_controller.rb:3:1:46:3 | BarsController | app/views/foo/bars/show.html.erb:0:0:0:0 | app/views/foo/bars/show.html.erb |
 headerWriteAccesses
-| app/controllers/comments_controller.rb:15:5:15:35 | call to []= | Content-Type | app/controllers/comments_controller.rb:15:39:15:49 | ... = ... |
-| app/controllers/comments_controller.rb:16:5:16:46 | call to set_header | Content-Length | app/controllers/comments_controller.rb:16:43:16:45 | 100 |
-| app/controllers/comments_controller.rb:17:5:17:39 | call to []= | X-Custom-Header | app/controllers/comments_controller.rb:17:43:17:46 | ... = ... |
-| app/controllers/comments_controller.rb:18:5:18:39 | call to []= | X-Another-Custom-Header | app/controllers/comments_controller.rb:18:43:18:47 | ... = ... |
-| app/controllers/comments_controller.rb:19:5:19:49 | call to add_header | X-Yet-Another | app/controllers/comments_controller.rb:19:42:19:49 | "indeed" |
+| app/controllers/comments_controller.rb:15:5:15:35 | call to []= | content-type | app/controllers/comments_controller.rb:15:39:15:49 | ... = ... |
+| app/controllers/comments_controller.rb:16:5:16:46 | call to set_header | content-length | app/controllers/comments_controller.rb:16:43:16:45 | 100 |
+| app/controllers/comments_controller.rb:17:5:17:39 | call to []= | x-custom-header | app/controllers/comments_controller.rb:17:43:17:46 | ... = ... |
+| app/controllers/comments_controller.rb:18:5:18:39 | call to []= | x-another-custom-header | app/controllers/comments_controller.rb:18:43:18:47 | ... = ... |
+| app/controllers/comments_controller.rb:19:5:19:49 | call to add_header | x-yet-another | app/controllers/comments_controller.rb:19:42:19:49 | "indeed" |
 | app/controllers/comments_controller.rb:25:5:25:21 | call to location= | location | app/controllers/comments_controller.rb:25:25:25:36 | ... = ... |
 | app/controllers/comments_controller.rb:26:5:26:26 | call to cache_control= | cache-control | app/controllers/comments_controller.rb:26:30:26:36 | ... = ... |
 | app/controllers/comments_controller.rb:27:5:27:27 | call to _cache_control= | cache-control | app/controllers/comments_controller.rb:27:31:27:37 | ... = ... |
