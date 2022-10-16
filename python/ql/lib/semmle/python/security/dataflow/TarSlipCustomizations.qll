@@ -9,6 +9,7 @@ private import semmle.python.dataflow.new.DataFlow
 private import semmle.python.Concepts
 private import semmle.python.dataflow.new.BarrierGuards
 private import semmle.python.ApiGraphs
+private import semmle.python.dataflow.new.internal.Attributes
 
 /**
  * Provides default sources, sinks and sanitizers for detecting
@@ -32,11 +33,44 @@ module TarSlip {
   abstract class Sanitizer extends DataFlow::Node { }
 
   /**
+   * Handle those three cases of Tarfile opens:
+   *  - `tarfile.open()`
+   *  - `tarfile.TarFile()`
+   *  - `MKtarfile.Tarfile.open()`
+   */
+  class TarfileOpens extends API::Node {
+    TarfileOpens() {
+      this in [
+          API::moduleImport("tarfile").getMember(["open", "TarFile"]),
+          API::moduleImport("tarfile").getMember("TarFile").getASubclass().getMember("open")
+        ]
+    }
+
+    override string toString() { result = "TarfileOpens" }
+  }
+
+  /**
+   * Handle the previous three cases, plus the use of `closing` in the previous cases
+   */
+  class AllTarfileOpens extends API::CallNode {
+    AllTarfileOpens() {
+      exists(TarfileOpens tfo | this = tfo.getACall())
+      or
+      exists(API::Node closing, Node arg, TarfileOpens tfo |
+        closing = API::moduleImport("contextlib").getMember("closing") and
+        this = closing.getACall() and
+        arg = this.getArg(0) and
+        arg = tfo.getACall()
+      )
+    }
+  }
+
+  /**
    * A call to `tarfile.open`, considered as a flow source.
    */
   class TarfileOpen extends Source {
     TarfileOpen() {
-      this = API::moduleImport("tarfile").getMember("open").getACall() and
+      this instanceof AllTarfileOpens and
       // If argument refers to a string object, then it's a hardcoded path and
       // this tarfile is safe.
       not this.(DataFlow::CallCfgNode).getArg(0).getALocalSource().asExpr() instanceof StrConst and
@@ -58,20 +92,36 @@ module TarSlip {
   /**
    * A sink capturing method calls to `extractall`.
    *
-   * For a call to `file.extractall` without arguments, `file` is considered a sink.
+   * For a call to `file.extractall` without `members` argument, `file` is considered a sink.
    */
-  class ExtractAllSink extends Sink {
-    ExtractAllSink() {
-      exists(DataFlow::CallCfgNode call |
-        call =
-          API::moduleImport("tarfile")
-              .getMember("open")
-              .getReturn()
-              .getMember("extractall")
-              .getACall() and
-        not exists(call.getArg(_)) and
-        not exists(call.getArgByName(_)) and
-        this = call.(DataFlow::MethodCallNode).getObject()
+  class ExtractAllwoMembersSink extends Sink {
+    ExtractAllwoMembersSink() {
+      exists(AllTarfileOpens atfo, MethodCallNode call |
+        call = atfo.getReturn().getMember("extractall").getACall() and
+        not exists(Node arg | arg = call.getArgByName("members")) and
+        this = call.getObject()
+      )
+    }
+  }
+
+    /**
+   * A sink capturing method calls to `extractall`.
+   *
+   * For a call to `file.extractall` with `members` argument, `file` is considered a sink.
+   */
+  class ExtractAllwMembersSink extends Sink {
+    ExtractAllwMembersSink() {
+      exists(AllTarfileOpens atfo, MethodCallNode call, Node arg |
+        call = atfo.getReturn().getMember("extractall").getACall() and
+        arg = call.getArgByName("members") and
+        if
+          arg.asCfgNode() instanceof NameConstantNode or
+          arg.asCfgNode() instanceof ListNode
+        then this = call.getObject()
+        else
+          if arg.(MethodCallNode).getMethodName() = "getmembers"
+          then this = arg.(MethodCallNode).getObject()
+          else this = call.getArgByName("members")
       )
     }
   }
@@ -81,10 +131,20 @@ module TarSlip {
    */
   class ExtractSink extends Sink {
     ExtractSink() {
-      exists(DataFlow::CallCfgNode call |
-        call =
-          API::moduleImport("tarfile").getMember("open").getReturn().getMember("extract").getACall() and
-        this = call.getArg(0)
+      exists(AllTarfileOpens atfo |
+        this = atfo.getReturn().getMember("extract").getACall().getArg(0)
+      )
+    }
+  }
+
+  /**
+   * An argument to `_extract_member` is considered a sink.
+   */
+  class ExtractMemberSink extends Sink {
+    ExtractMemberSink() {
+      exists(MethodCallNode call, AllTarfileOpens atfo |
+        call = atfo.getReturn().getMember("_extract_member").getACall() and
+        call.getArg(1).(AttrRead).accesses(this, "name")
       )
     }
   }
