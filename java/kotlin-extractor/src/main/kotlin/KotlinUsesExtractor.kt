@@ -462,7 +462,7 @@ open class KotlinUsesExtractor(
         }
     }
 
-    fun useAnonymousClass(c: IrClass) =
+    private fun useAnonymousClass(c: IrClass) =
         tw.lm.anonymousTypeMapping.getOrPut(c) {
             TypeResults(
                 TypeResult(tw.getFreshIdLabel<DbClass>(), "", ""),
