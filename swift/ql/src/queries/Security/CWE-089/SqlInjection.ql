@@ -31,9 +31,9 @@ class CApiSqlSink extends SqlSink {
       f.getName() =
         [
           "sqlite3_exec(_:_:_:_:_:)", "sqlite3_prepare(_:_:_:_:_:)",
-          "sqlite3_prepare_v2(_:_:_:_:_:)", "sqlite3_prepare_v3(_:_:_:_:_:)",
+          "sqlite3_prepare_v2(_:_:_:_:_:)", "sqlite3_prepare_v3(_:_:_:_:_:_:)",
           "sqlite3_prepare16(_:_:_:_:_:)", "sqlite3_prepare16_v2(_:_:_:_:_:)",
-          "sqlite3_prepare16_v3(_:_:_:_:_:)"
+          "sqlite3_prepare16_v3(_:_:_:_:_:_:)"
         ] and
       call.getStaticTarget() = f and
       call.getArgument(1).getExpr() = this.asExpr()

@@ -180,7 +180,7 @@ func test_sqlite3_c_api(db: OpaquePointer?, buffer: UnsafeMutablePointer<UInt8>)
 
 	var stmt5: OpaquePointer?
 
-	if (sqlite3_prepare_v3(db, unsafeQuery3, -1, 0, &stmt5, nil) == SQLITE_OK) { // BAD [NOT DETECTED]
+	if (sqlite3_prepare_v3(db, unsafeQuery3, -1, 0, &stmt5, nil) == SQLITE_OK) { // BAD
 		let result = sqlite3_step(stmt5)
 		// ...
 	}

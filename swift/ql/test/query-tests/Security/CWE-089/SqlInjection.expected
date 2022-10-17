@@ -19,6 +19,7 @@ edges
 | sqlite3_c_api.swift:122:26:122:80 | call to init(contentsOf:) :  | sqlite3_c_api.swift:135:33:135:33 | unsafeQuery3 |
 | sqlite3_c_api.swift:122:26:122:80 | call to init(contentsOf:) :  | sqlite3_c_api.swift:145:26:145:26 | unsafeQuery3 |
 | sqlite3_c_api.swift:122:26:122:80 | call to init(contentsOf:) :  | sqlite3_c_api.swift:175:29:175:29 | unsafeQuery3 |
+| sqlite3_c_api.swift:122:26:122:80 | call to init(contentsOf:) :  | sqlite3_c_api.swift:183:29:183:29 | unsafeQuery3 |
 nodes
 | SQLite.swift:62:26:62:80 | call to init(contentsOf:) :  | semmle.label | call to init(contentsOf:) :  |
 | SQLite.swift:73:17:73:17 | unsafeQuery1 | semmle.label | unsafeQuery1 |
@@ -42,6 +43,7 @@ nodes
 | sqlite3_c_api.swift:135:33:135:33 | unsafeQuery3 | semmle.label | unsafeQuery3 |
 | sqlite3_c_api.swift:145:26:145:26 | unsafeQuery3 | semmle.label | unsafeQuery3 |
 | sqlite3_c_api.swift:175:29:175:29 | unsafeQuery3 | semmle.label | unsafeQuery3 |
+| sqlite3_c_api.swift:183:29:183:29 | unsafeQuery3 | semmle.label | unsafeQuery3 |
 subpaths
 #select
 | SQLite.swift:73:17:73:17 | unsafeQuery1 | SQLite.swift:62:26:62:80 | call to init(contentsOf:) :  | SQLite.swift:73:17:73:17 | unsafeQuery1 | This query depends on a $@. | SQLite.swift:62:26:62:80 | call to init(contentsOf:) | user-provided value |
@@ -64,3 +66,4 @@ subpaths
 | sqlite3_c_api.swift:135:33:135:33 | unsafeQuery3 | sqlite3_c_api.swift:122:26:122:80 | call to init(contentsOf:) :  | sqlite3_c_api.swift:135:33:135:33 | unsafeQuery3 | This query depends on a $@. | sqlite3_c_api.swift:122:26:122:80 | call to init(contentsOf:) | user-provided value |
 | sqlite3_c_api.swift:145:26:145:26 | unsafeQuery3 | sqlite3_c_api.swift:122:26:122:80 | call to init(contentsOf:) :  | sqlite3_c_api.swift:145:26:145:26 | unsafeQuery3 | This query depends on a $@. | sqlite3_c_api.swift:122:26:122:80 | call to init(contentsOf:) | user-provided value |
 | sqlite3_c_api.swift:175:29:175:29 | unsafeQuery3 | sqlite3_c_api.swift:122:26:122:80 | call to init(contentsOf:) :  | sqlite3_c_api.swift:175:29:175:29 | unsafeQuery3 | This query depends on a $@. | sqlite3_c_api.swift:122:26:122:80 | call to init(contentsOf:) | user-provided value |
+| sqlite3_c_api.swift:183:29:183:29 | unsafeQuery3 | sqlite3_c_api.swift:122:26:122:80 | call to init(contentsOf:) :  | sqlite3_c_api.swift:183:29:183:29 | unsafeQuery3 | This query depends on a $@. | sqlite3_c_api.swift:122:26:122:80 | call to init(contentsOf:) | user-provided value |
