@@ -1071,8 +1071,13 @@ open class KotlinFileExtractor(
         }
     }
 
-    private fun signatureOrWarn(t: TypeResult<*>, associatedElement: IrElement) =
-        t.signature ?: "<signature unavailable>".also { logger.warnElement("Needed a signature for a type that doesn't have one", associatedElement) }
+    private fun signatureOrWarn(t: TypeResult<*>, associatedElement: IrElement?) =
+        t.signature ?: "<signature unavailable>".also {
+            if (associatedElement != null)
+                logger.warnElement("Needed a signature for a type that doesn't have one", associatedElement)
+            else
+                logger.warn("Needed a signature for a type that doesn't have one")
+        }
 
     private fun forceExtractFunction(f: IrFunction, parentId: Label<out DbReftype>, extractBody: Boolean, extractMethodAndParameterTypeAccesses: Boolean, typeSubstitution: TypeSubstitution?, classTypeArgsIncludingOuterClasses: List<IrTypeArgument>?, extractOrigin: Boolean = true, overriddenAttributes: OverriddenFunctionAttributes? = null): Label<out DbCallable>  {
         with("function", f) {
@@ -4600,7 +4605,7 @@ open class KotlinFileExtractor(
             Pair(paramId, paramType)
         }
 
-        val paramsSignature = parameters.joinToString(separator = ",", prefix = "(", postfix = ")") { signatureOrWarn(it.second.javaResult, declarationStack.peek().first) }
+        val paramsSignature = parameters.joinToString(separator = ",", prefix = "(", postfix = ")") { signatureOrWarn(it.second.javaResult, declarationStack.tryPeek()?.first) }
 
         val rt = useType(returnType, TypeContext.RETURN)
         tw.writeMethods(methodId, name, "$name$paramsSignature", rt.javaResult.id, parentId, methodId)
@@ -5315,6 +5320,8 @@ open class KotlinFileExtractor(
         fun isEmpty() = stack.isEmpty()
 
         fun peek() = stack.peek()
+
+        fun tryPeek() = if (stack.isEmpty()) null else stack.peek()
 
         fun findOverriddenAttributes(f: IrFunction) =
             stack.lastOrNull { it.first == f } ?.second

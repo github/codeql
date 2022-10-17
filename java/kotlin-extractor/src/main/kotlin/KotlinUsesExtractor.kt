@@ -1323,24 +1323,27 @@ open class KotlinUsesExtractor(
         }
         val javaFun = kotlinFunctionToJavaEquivalent(f, noReplace)
         val label = getFunctionLabel(javaFun, parentId, classTypeArgsIncludingOuterClasses)
-        var labelSeenBefore = true
         val id: Label<T> = tw.getLabelFor(label) {
-            labelSeenBefore = false
+            extractPrivateSpecialisedDeclaration(f, classTypeArgsIncludingOuterClasses)
         }
         if (isExternalDeclaration(javaFun)) {
             extractFunctionLaterIfExternalFileMember(javaFun)
             extractExternalEnclosingClassLater(javaFun)
-        } else if (!labelSeenBefore && classTypeArgsIncludingOuterClasses?.size != 0 && isPrivate(f)) {
-            // Private function call against a raw or instantiated generic class -- extract the prototype here, since the on-demand route via
-            // the class label only extracts the public interface. Note guarding this by `labelSeenBefore` is vital because `extractDeclarationPrototype`
-            // will call this function.
-            if (this is KotlinFileExtractor) {
-                useDeclarationParent(f.parent, false, classTypeArgsIncludingOuterClasses, inReceiverContext = true)?.let {
-                    this.extractDeclarationPrototype(f, it.cast(), classTypeArgsIncludingOuterClasses)
+        }
+        return id
+    }
+
+    private fun extractPrivateSpecialisedDeclaration(d: IrDeclaration, classTypeArgsIncludingOuterClasses: List<IrTypeArgument>?) {
+        // Note here `classTypeArgsIncludingOuterClasses` being null doesn't signify a raw receiver type but rather that no type args were supplied.
+        // This is because a call to a private method can only be observed inside Kotlin code, and Kotlin can't represent raw types.
+        if (this is KotlinFileExtractor && isPrivate(d) && classTypeArgsIncludingOuterClasses != null && classTypeArgsIncludingOuterClasses.isNotEmpty()) {
+            d.parent.let {
+                when(it) {
+                    is IrClass -> this.extractDeclarationPrototype(d, useClassInstance(it, classTypeArgsIncludingOuterClasses).typeResult.id, classTypeArgsIncludingOuterClasses)
+                    else -> logger.warnElement("Unable to extract specialised declaration that isn't a member of a class", d)
                 }
             }
         }
-        return id
     }
 
     fun getTypeArgumentLabel(
@@ -1688,18 +1691,10 @@ open class KotlinUsesExtractor(
         }
     }
 
-    fun useProperty(p: IrProperty, parentId: Label<out DbElement>, classTypeArgsIncludingOuterClasses: List<IrTypeArgument>?): Label<out DbKt_property> =
-        tw.getLabelFor<DbKt_property>(getPropertyLabel(p, parentId, classTypeArgsIncludingOuterClasses)).also {
+    fun useProperty(p: IrProperty, parentId: Label<out DbElement>, classTypeArgsIncludingOuterClasses: List<IrTypeArgument>?) =
+        tw.getLabelFor<DbKt_property>(getPropertyLabel(p, parentId, classTypeArgsIncludingOuterClasses)) {
             extractPropertyLaterIfExternalFileMember(p)
-            if (classTypeArgsIncludingOuterClasses?.size != 0 && isPrivate(p)) {
-                // Raw or constructed private property usage -- extract the prototype here, since the on-demand route via
-                // the class label only extracts the public interface.
-                if (this is KotlinFileExtractor) {
-                    useDeclarationParent(p.parent, false, classTypeArgsIncludingOuterClasses, inReceiverContext = true)?.let {
-                        this.extractDeclarationPrototype(p, it.cast(), classTypeArgsIncludingOuterClasses)
-                    }
-                }
-            }
+            extractPrivateSpecialisedDeclaration(p, classTypeArgsIncludingOuterClasses)
         }
 
     fun getEnumEntryLabel(ee: IrEnumEntry): String {
