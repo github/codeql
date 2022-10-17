@@ -1,0 +1,16 @@
+edges
+| impl/unsafeCode.rb:2:12:2:17 | target :  | impl/unsafeCode.rb:3:17:3:25 | #{...} |
+| impl/unsafeCode.rb:7:12:7:12 | x :  | impl/unsafeCode.rb:8:30:8:30 | x |
+| impl/unsafeCode.rb:12:12:12:12 | x :  | impl/unsafeCode.rb:13:33:13:33 | x |
+nodes
+| impl/unsafeCode.rb:2:12:2:17 | target :  | semmle.label | target :  |
+| impl/unsafeCode.rb:3:17:3:25 | #{...} | semmle.label | #{...} |
+| impl/unsafeCode.rb:7:12:7:12 | x :  | semmle.label | x :  |
+| impl/unsafeCode.rb:8:30:8:30 | x | semmle.label | x |
+| impl/unsafeCode.rb:12:12:12:12 | x :  | semmle.label | x :  |
+| impl/unsafeCode.rb:13:33:13:33 | x | semmle.label | x |
+subpaths
+#select
+| impl/unsafeCode.rb:3:17:3:25 | #{...} | impl/unsafeCode.rb:2:12:2:17 | target :  | impl/unsafeCode.rb:3:17:3:25 | #{...} | This string interpolation which depends on $@ is later $@. | impl/unsafeCode.rb:2:12:2:17 | target | library input | impl/unsafeCode.rb:3:5:3:27 | call to eval | interpreted as code |
+| impl/unsafeCode.rb:8:30:8:30 | x | impl/unsafeCode.rb:7:12:7:12 | x :  | impl/unsafeCode.rb:8:30:8:30 | x | This string format which depends on $@ is later $@. | impl/unsafeCode.rb:7:12:7:12 | x | library input | impl/unsafeCode.rb:8:5:8:32 | call to eval | interpreted as code |
+| impl/unsafeCode.rb:13:33:13:33 | x | impl/unsafeCode.rb:12:12:12:12 | x :  | impl/unsafeCode.rb:13:33:13:33 | x | This string format which depends on $@ is later $@. | impl/unsafeCode.rb:12:12:12:12 | x | library input | impl/unsafeCode.rb:13:5:13:35 | call to eval | interpreted as code |
