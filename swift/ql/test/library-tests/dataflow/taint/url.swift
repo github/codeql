@@ -20,7 +20,7 @@ struct URL
 	var relativePath: String { get {return ""} }
 	var relativeString: String { get {return ""} }
 	var scheme: String? { get {return nil} }
-	var standardized: String { get {return ""} }
+	var standardized: URL { get {return URL(string: "")!} }
 	var standardizedFileURL: URL { get {return URL(string: "")!} }
 	var user: String? { get {return nil} }
 	var password: String? { get {return nil} }
@@ -61,7 +61,8 @@ func taintThroughURL() {
 	sink(arg: urlClean)
 	sink(arg: urlTainted) // $ tainted=57
 	sink(arg: urlTainted.absoluteURL) // $ tainted=57
-	sink(arg: urlTainted.baseURL) // $ tainted=57
+	sink(arg: urlTainted.baseURL) // $ Safe
+	// Fields
 	sink(string: urlTainted.fragment!) // $ tainted=57
 	sink(string: urlTainted.host!) // $ tainted=57
 	sink(string: urlTainted.lastPathComponent) // $ tainted=57
@@ -73,7 +74,7 @@ func taintThroughURL() {
 	sink(string: urlTainted.relativePath) // $ tainted=57
 	sink(string: urlTainted.relativeString) // $ tainted=57
 	sink(string: urlTainted.scheme!) // $ tainted=57
-	sink(string: urlTainted.standardized) // $ tainted=57
+	sink(arg: urlTainted.standardized) // $ tainted=57
 	sink(arg: urlTainted.standardizedFileURL) // $ tainted=57
 	sink(string: urlTainted.user!) // $ tainted=57
 	sink(string: urlTainted.password!) // $ tainted=57
@@ -81,7 +82,24 @@ func taintThroughURL() {
 	sink(arg: URL(string: clean, relativeTo: nil)!)
 	sink(arg: URL(string: tainted, relativeTo: nil)!) // $ tainted=57
 	sink(arg: URL(string: clean, relativeTo: urlClean)!)
-	sink(arg: URL(string: clean, relativeTo: urlTainted)!) // $ tainted=57
+	// Fields (assuming `clean` was a relative path instead of a full URL)
+	sink(arg: URL(string: clean, relativeTo: urlTainted)!.absoluteURL) // $ tainted=57
+	sink(arg: URL(string: clean, relativeTo: urlTainted)!.baseURL) // $ tainted=57
+	sink(string: URL(string: clean, relativeTo: urlTainted)!.fragment!) // Safe
+	sink(string: URL(string: clean, relativeTo: urlTainted)!.host!) // $ tainted=57
+	sink(string: URL(string: clean, relativeTo: urlTainted)!.lastPathComponent) // Safe
+	sink(string: URL(string: clean, relativeTo: urlTainted)!.path) // Safe
+	sink(string: URL(string: clean, relativeTo: urlTainted)!.pathComponents[0]) // Safe
+	sink(string: URL(string: clean, relativeTo: urlTainted)!.pathExtension) // Safe
+	sink(int: URL(string: clean, relativeTo: urlTainted)!.port!) // $ tainted=57
+	sink(string: URL(string: clean, relativeTo: urlTainted)!.query!) // Safe
+	sink(string: URL(string: clean, relativeTo: urlTainted)!.relativePath) // Safe
+	sink(string: URL(string: clean, relativeTo: urlTainted)!.relativeString) // Safe
+	sink(string: URL(string: clean, relativeTo: urlTainted)!.scheme!) // $ tainted=57
+	sink(arg: URL(string: clean, relativeTo: urlTainted)!.standardized) // $ tainted=57
+	sink(arg: URL(string: clean, relativeTo: urlTainted)!.standardizedFileURL) // $ tainted=57
+	sink(string: URL(string: clean, relativeTo: urlTainted)!.user!) // $ tainted=57
+	sink(string: URL(string: clean, relativeTo: urlTainted)!.password!) // $ tainted=57
 
 	if let x = URL(string: clean) {
 		sink(arg: x)
