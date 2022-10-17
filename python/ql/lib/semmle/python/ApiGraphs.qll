@@ -769,6 +769,7 @@ module API {
         // list literals, from `x` to `[x]`
         // TODO: once convenient, this should be done at a higher level than the AST,
         // at least at the CFG layer, to take splitting into account.
+        // Also consider `SequenceNode for generality.
         exists(PY::List list | list = pred.(DataFlow::ExprNode).getNode().getNode() |
           rhs.(DataFlow::ExprNode).getNode().getNode() = list.getAnElt() and
           lbl = Label::subscript()
