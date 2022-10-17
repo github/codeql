@@ -165,6 +165,7 @@ class ClassTester:
 
     class_name: str
     properties: List[PropertyForTest] = field(default_factory=list)
+    show_ql_class: bool = False
 
 
 @dataclass

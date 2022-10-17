@@ -7,4 +7,4 @@ where
   toBeTested(x) and
   not x.isUnknown() and
   getSubExpr = x.getSubExpr()
-select x, "getSubExpr:", getSubExpr
+select x, x.getPrimaryQlClasses(), "getSubExpr:", getSubExpr
