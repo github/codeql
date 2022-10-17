@@ -212,12 +212,7 @@ private module Settings {
   private class LiteralSetting extends Setting {
     ConstantValue value;
 
-    LiteralSetting() {
-      exists(DataFlow::LocalSourceNode lsn |
-        lsn.asExpr().getConstantValue() = value and
-        lsn.flowsTo(this.getArgument(0))
-      )
-    }
+    LiteralSetting() { value = this.getArgument(0).getALocalSource().getConstantValue() }
 
     string getValueText() { result = value.toString() }
 
