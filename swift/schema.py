@@ -310,6 +310,7 @@ class IfExpr(Expr):
     then_expr: Expr | child
     else_expr: Expr | child
 
+@qltest.collapse_hierarchy
 class ImplicitConversionExpr(Expr):
     sub_expr: Expr | child
 

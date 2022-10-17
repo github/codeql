@@ -95,7 +95,6 @@ class ExprVisitor : public AstVisitorBase<ExprVisitor> {
   void fillAbstractClosureExpr(const swift::AbstractClosureExpr& expr,
                                codeql::AbstractClosureExpr& entry);
   TrapLabel<ArgumentTag> emitArgument(const swift::Argument& arg);
-
   void emitExplicitCastExpr(swift::ExplicitCastExpr* expr, TrapLabel<ExplicitCastExprTag> label);
   void fillIdentityExpr(const swift::IdentityExpr& expr, codeql::IdentityExpr& entry);
   void emitAnyTryExpr(swift::AnyTryExpr* expr, TrapLabel<AnyTryExprTag> label);

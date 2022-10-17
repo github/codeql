@@ -58,8 +58,8 @@ DEFINE_TRANSLATE_CHECKER(TypeRepr, , )
 #include "swift/AST/TypeReprNodes.def"
 }  // namespace detail
 
-// we want to override the define_visit swift visitor behaviour of chaining calls to immediate
-// superclasses by define_visit and instead provide our own TBD define_visit (using the exact type).
+// we want to override the default swift visitor behaviour of chaining calls to immediate
+// superclasses by default and instead provide our own TBD default (using the exact type).
 // Moreover, if the implementation class has translate##CLASS##KIND (that uses generated C++
 // classes), for the class of for a parent thereof, we want to use that. We detect that by using the
 // type traits HasTranslate##CLASS##KIND defined above

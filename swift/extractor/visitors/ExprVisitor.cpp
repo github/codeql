@@ -618,6 +618,4 @@ codeql::UnresolvedPatternExpr ExprVisitor::translateUnresolvedPatternExpr(
   entry.sub_pattern = dispatcher_.fetchLabel(expr.getSubPattern());
   return entry;
 }
-
-static_assert(detail::HasTranslateUnresolvedPatternExpr<ExprVisitor>::value);
 }  // namespace codeql
