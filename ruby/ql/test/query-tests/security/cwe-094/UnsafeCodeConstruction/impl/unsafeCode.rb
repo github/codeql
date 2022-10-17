@@ -16,4 +16,8 @@ class Foobar
   def indirect_eval(x)
     eval(x) # OK - no construction.
   end
+
+  def send_stuff(x)
+    foo.send("foo_#{x}") # OK - attacker cannot control entire string.
+  end
 end

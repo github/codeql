@@ -47,7 +47,8 @@ module UnsafeCodeConstruction {
     TypeTracker::TypeBackTracker t, Concepts::CodeExecution codeExec
   ) {
     t.start() and
-    result = codeExec.getCode().getALocalSource()
+    result = codeExec.getCode().getALocalSource() and
+    codeExec.runsArbitraryCode() // methods like `Object.send` is benign here, because of the string-construction the attacker cannot control the entire method name
     or
     exists(TypeTracker::TypeBackTracker t2 |
       result = getANodeExecutedAsCode(t2, codeExec).backtrack(t2, t)
