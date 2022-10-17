@@ -30,7 +30,7 @@
 <example>
 <p>
   This example shows two ways of opening a file using a <code>ContentResolver</code>. In the first case, externally-provided
-  data coming from an intent is directly used in the file-reading operation, allowing an attacker to provide a URI
+  data from an intent is used directly in the file-reading operation. This allows an attacker to provide a URI
   of the form <code>/data/data/(vulnerable app package)/(private file)</code> to trick the application into reading it and
   copying it to the external storage. In the second case, the URI is validated before being used, making sure it does not reference
   any internal application files.

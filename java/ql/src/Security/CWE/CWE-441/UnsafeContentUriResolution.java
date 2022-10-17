@@ -10,7 +10,7 @@ public class Example extends Activity {
             InputStream is = contentResolver.openInputStream(uri);
             copyToExternalCache(is);
         }
-        // BAD: input Uri is not normalized, and check can be bypassed with ".." characters
+        // BAD: input URI is not normalized, and check can be bypassed with ".." characters
         {
             ContentResolver contentResolver = getContentResolver();
             Uri uri = (Uri) getIntent().getParcelableExtra("URI_EXTRA");
@@ -20,7 +20,7 @@ public class Example extends Activity {
             InputStream is = contentResolver.openInputStream(uri);
             copyToExternalCache(is);
         }
-        // GOOD: URI gets properly validated to avoid access to internal files
+        // GOOD: URI is properly validated to block access to internal files
         {
             ContentResolver contentResolver = getContentResolver();
             Uri uri = (Uri) getIntent().getParcelableExtra("URI_EXTRA");
