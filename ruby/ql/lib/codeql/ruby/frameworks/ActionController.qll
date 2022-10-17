@@ -234,7 +234,7 @@ private module Request {
       // Request headers are prefixed with `HTTP_` to distinguish them from
       // "headers" supplied by Rack middleware.
       this.getMethodName() = ["get_header", "fetch_header"] and
-      this.getArgument(0).asExpr().getExpr().getConstantValue().getString().regexpMatch("^HTTP_.+")
+      this.getArgument(0).getConstantValue().getString().regexpMatch("^HTTP_.+")
     }
 
     override Http::Server::RequestInputKind getKind() { result = Http::Server::headerInputKind() }
@@ -292,7 +292,7 @@ private module Request {
     EnvHttpAccess() {
       any(EnvCall c).(DataFlow::LocalSourceNode).flowsTo(this.getReceiver()) and
       this.getMethodName() = "[]" and
-      this.getArgument(0).asExpr().getExpr().getConstantValue().getString().regexpMatch("^HTTP_.+")
+      this.getArgument(0).getConstantValue().getString().regexpMatch("^HTTP_.+")
     }
 
     override Http::Server::RequestInputKind getKind() { result = Http::Server::headerInputKind() }
