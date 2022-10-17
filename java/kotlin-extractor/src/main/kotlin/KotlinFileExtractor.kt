@@ -5045,7 +5045,10 @@ open class KotlinFileExtractor(
                         return
                     }
 
-                    if (!st.isFunctionOrKFunction() && !st.isSuspendFunctionOrKFunction()) {
+                    fun IrSimpleType.isKProperty() =
+                        classFqName?.asString()?.startsWith("kotlin.reflect.KProperty") == true
+
+                    if (!st.isFunctionOrKFunction() && !st.isSuspendFunctionOrKFunction() && !st.isKProperty()) {
                         logger.errorElement("Expected to find expression with function type in SAM conversion.", e)
                         return
                     }
