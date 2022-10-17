@@ -100,7 +100,7 @@ private string getNodeProperty(DataFlow::Node node, string key) {
   or
   // Is there partial flow from a source to this node?
   // This property will only be emitted if partial flow is enabled by overriding
-  // `DataFlow::Configration::explorationLimit()`.
+  // `DataFlow::Configuration::explorationLimit()`.
   key = "pflow" and
   result =
     strictconcat(DataFlow::PartialPathNode sourceNode, DataFlow::PartialPathNode destNode, int dist,
