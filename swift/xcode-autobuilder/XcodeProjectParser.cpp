@@ -32,10 +32,10 @@ struct CFKeyValues {
 static std::string stringValue(CFDictionaryRef dict, CFStringRef key) {
   auto cfValue = (CFStringRef)CFDictionaryGetValue(dict, key);
   if (cfValue) {
-    auto length = CFStringGetLength(cfValue);
-    std::string s(length, '\0');
-    if (CFStringGetCString(cfValue, s.data(), length + 1, kCFStringEncodingUTF8)) {
-      return s;
+    const int bufferSize = 256;
+    char buf[bufferSize];
+    if (CFStringGetCString(cfValue, buf, bufferSize, kCFStringEncodingUTF8)) {
+      return {buf};
     }
   }
   return {};
