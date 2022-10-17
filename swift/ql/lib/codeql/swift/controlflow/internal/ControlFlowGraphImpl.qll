@@ -1074,7 +1074,7 @@ module Exprs {
 
     /**
      * The control-flow for assignments where the left-hand side has
-     * direct-to-implmentation-access semantics.
+     * direct-to-implementation-access semantics.
      */
     class PropertyAssignExpr extends AssignExprTree {
       AccessorDecl accessorDecl;

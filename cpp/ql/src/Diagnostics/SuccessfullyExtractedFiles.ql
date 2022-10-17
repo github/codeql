@@ -3,6 +3,7 @@
  * @description Lists all files in the source code directory that were extracted without encountering a problem in the file.
  * @kind diagnostic
  * @id cpp/diagnostics/successfully-extracted-files
+ * @tags successfully-extracted-files
  */
 
 import cpp

@@ -76,7 +76,7 @@ class StateTuple extends TStateTuple {
   StateTuple() { this = MkStateTuple(q1, q2, q3) }
 
   /**
-   * Gest a string repesentation of this tuple.
+   * Gest a string representation of this tuple.
    */
   string toString() { result = "(" + q1 + ", " + q2 + ", " + q3 + ")" }
 

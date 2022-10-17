@@ -77,7 +77,6 @@
 %>
 
 <%# BAD: Indirect to a database value without escaping %>
-<%# TODO: we do not detect that `display_name` can return a DB field %>
 <%= @user.display_name.html_safe %>
 
 <%# BAD: Indirect to a database value without escaping %>

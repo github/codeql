@@ -12,7 +12,7 @@ The user should check the return value of `scanf` and related functions and chec
 </p>
 </recommendation>
 <example>
-<p>The first first example below is correct, as value of `i` is only read once it is checked that `scanf` has read one item. The second example is incorrect, as the return value of `scanf` is not checked, and as `scanf` might have failed to read any item before returning.</p>
+<p>The first example below is correct, as value of `i` is only read once it is checked that `scanf` has read one item. The second example is incorrect, as the return value of `scanf` is not checked, and as `scanf` might have failed to read any item before returning.</p>
 <sample src="ImproperCheckReturnValueScanf.cpp" />
 
 </example>

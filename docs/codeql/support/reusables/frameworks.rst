@@ -221,11 +221,17 @@ and the CodeQL library pack ``codeql/python-all`` (`changelog <https://github.co
    aiopg, Database
    asyncpg, Database
    clickhouse-driver, Database
+   cx_Oracle, Database
    mysql-connector-python, Database
    mysql-connector, Database
    MySQL-python, Database
    mysqlclient, Database
+   oracledb, Database
+   phoenixdb, Database
    psycopg2, Database
+   pyodbc, Database
+   pymssql, Database
+   PyMySQL, Database
    sqlite3, Database
    Flask-SQLAlchemy, Database ORM
    peewee, Database ORM
@@ -239,3 +245,19 @@ and the CodeQL library pack ``codeql/python-all`` (`changelog <https://github.co
    libxml2, XML processing library
    lxml, XML processing library
    xmltodict, XML processing library
+
+
+Ruby built-in support
+====================================
+
+Provided by the current versions of the
+CodeQL query pack ``codeql/ruby-queries`` (`changelog <https://github.com/github/codeql/tree/codeql-cli/latest/ruby/ql/src/CHANGELOG.md>`__, `source <https://github.com/github/codeql/tree/codeql-cli/latest/ruby/ql/src>`__)
+and the CodeQL library pack ``codeql/ruby-all`` (`changelog <https://github.com/github/codeql/tree/codeql-cli/latest/ruby/ql/lib/CHANGELOG.md>`__, `source <https://github.com/github/codeql/tree/codeql-cli/latest/ruby/ql/lib>`__).
+
+.. csv-table::
+   :header-rows: 1
+   :class: fullWidthTable
+   :widths: auto
+
+   Name, Category
+   Ruby on Rails, Web framework

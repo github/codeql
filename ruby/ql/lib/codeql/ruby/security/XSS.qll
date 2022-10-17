@@ -10,6 +10,7 @@ private import codeql.ruby.Concepts
 private import codeql.ruby.Frameworks
 private import codeql.ruby.frameworks.ActionController
 private import codeql.ruby.frameworks.ActionView
+private import codeql.ruby.frameworks.Rails
 private import codeql.ruby.dataflow.RemoteFlowSources
 private import codeql.ruby.dataflow.BarrierGuards
 private import codeql.ruby.dataflow.internal.DataFlowDispatch
@@ -61,7 +62,7 @@ private module Shared {
    */
   class HtmlSafeCallAsSink extends Sink {
     HtmlSafeCallAsSink() {
-      exists(HtmlSafeCall c, ErbOutputDirective d |
+      exists(Rails::HtmlSafeCall c, ErbOutputDirective d |
         this.asExpr().getExpr() = c.getReceiver() and
         c = d.getTerminalStmt()
       )
@@ -159,7 +160,7 @@ private module Shared {
    */
   pragma[noinline]
   private predicate renderCallLocals(string hashKey, Expr value, ErbFile erb) {
-    exists(RenderCall call, Pair kvPair |
+    exists(Rails::RenderCall call, Pair kvPair |
       call.getLocals().getAKeyValuePair() = kvPair and
       kvPair.getValue() = value and
       kvPair.getKey().getConstantValue().isStringlikeValue(hashKey) and
@@ -311,9 +312,11 @@ module ReflectedXss {
   deprecated predicate isAdditionalXSSTaintStep = isAdditionalXssTaintStep/2;
 
   /**
-   * A source of remote user input, considered as a flow source.
+   * A HTTP request input, considered as a flow source.
    */
-  class RemoteFlowSourceAsSource extends Source, RemoteFlowSource { }
+  class HttpRequestInputAccessAsSource extends Source, Http::Server::RequestInputAccess {
+    HttpRequestInputAccessAsSource() { this.isThirdPartyControllable() }
+  }
 }
 
 /** DEPRECATED: Alias for ReflectedXss */

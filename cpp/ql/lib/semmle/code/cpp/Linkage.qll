@@ -1,5 +1,5 @@
 /**
- * Proivdes the `LinkTarget` class representing linker invocations during the build process.
+ * Provides the `LinkTarget` class representing linker invocations during the build process.
  */
 
 import semmle.code.cpp.Class

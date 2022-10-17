@@ -84,6 +84,9 @@ private class GraphqlSchemaResolverClass extends ClassDeclaration {
   }
 }
 
+/** Gets an HTTP method that is supported for querying a GraphQL server. */
+private string getASupportedHttpMethod() { result = ["get", "post"] }
+
 /**
  * A `ClassDeclaration` for a class that extends `GraphQL::Schema::Object`.
  * For example,
@@ -120,7 +123,7 @@ class GraphqlSchemaObjectClass extends ClassDeclaration {
  * `GraphQL::Schema::RelayClassicMutation` or
  * `GraphQL::Schema::Resolver`.
  *
- * Both of these classes have an overrideable `resolve` instance
+ * Both of these classes have an overridable `resolve` instance
  * method which can receive user input in order to resolve a query or mutation.
  */
 private class GraphqlResolvableClass extends ClassDeclaration {
@@ -144,7 +147,7 @@ private class GraphqlResolvableClass extends ClassDeclaration {
  *
  * ```rb
  * module Mutation
- *   class NameAnInstrument < BaseMutationn
+ *   class NameAnInstrument < BaseMutation
  *     argument :instrument_uuid, Types::Uuid,
  *              required: true,
  *              loads: ::Instrument,
@@ -172,6 +175,8 @@ class GraphqlResolveMethod extends Method, Http::Server::RequestHandler::Range {
 
   override string getFramework() { result = "GraphQL" }
 
+  override string getAnHttpMethod() { result = getASupportedHttpMethod() }
+
   /** Gets the mutation class containing this method. */
   GraphqlResolvableClass getMutationClass() { result = resolvableClass }
 }
@@ -188,7 +193,7 @@ class GraphqlResolveMethod extends Method, Http::Server::RequestHandler::Range {
  *
  * ```rb
  * module Mutation
- *   class NameAnInstrument < BaseMutationn
+ *   class NameAnInstrument < BaseMutation
  *     argument :instrument_uuid, Types::Uuid,
  *              required: true,
  *              loads: ::Instrument,
@@ -218,6 +223,8 @@ class GraphqlLoadMethod extends Method, Http::Server::RequestHandler::Range {
   override Parameter getARoutedParameter() { result = this.getAParameter() }
 
   override string getFramework() { result = "GraphQL" }
+
+  override string getAnHttpMethod() { result = getASupportedHttpMethod() }
 
   /** Gets the mutation class containing this method. */
   GraphqlResolvableClass getMutationClass() { result = resolvableClass }
@@ -387,6 +394,8 @@ class GraphqlFieldResolutionMethod extends Method, Http::Server::RequestHandler:
   }
 
   override string getFramework() { result = "GraphQL" }
+
+  override string getAnHttpMethod() { result = getASupportedHttpMethod() }
 
   /** Gets the class containing this method. */
   GraphqlSchemaObjectClass getGraphqlClass() { result = schemaObjectClass }

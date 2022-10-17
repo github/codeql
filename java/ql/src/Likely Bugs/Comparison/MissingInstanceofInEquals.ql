@@ -30,6 +30,8 @@ predicate hasTypeTest(Variable v) {
   or
   any(SafeCastExpr sce).getExpr() = v.getAnAccess()
   or
+  any(ClassExpr c).getExpr() = v.getAnAccess()
+  or
   exists(MethodAccess ma |
     ma.getMethod().getName() = "getClass" and
     ma.getQualifier() = v.getAnAccess()

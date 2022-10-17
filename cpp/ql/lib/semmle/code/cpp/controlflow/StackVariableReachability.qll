@@ -149,7 +149,7 @@ private predicate bbLoopEntryConditionAlwaysTrueAt(BasicBlock bb, int i, Control
 /**
  * Basic block `pred` contains all or part of the condition belonging to a loop,
  * and there is an edge from `pred` to `succ` that concludes the condition.
- * If the edge corrseponds with the loop condition being found to be `true`, then
+ * If the edge corresponds with the loop condition being found to be `true`, then
  * `skipsLoop` is `false`.  Otherwise the edge corresponds with the loop condition
  * being found to be `false` and `skipsLoop` is `true`.  Non-concluding edges
  * within a complex loop condition are not matched by this predicate.

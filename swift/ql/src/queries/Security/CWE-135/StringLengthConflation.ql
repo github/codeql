@@ -99,7 +99,7 @@ class StringLengthConflationConfiguration extends DataFlow::Configuration {
     |
       (
         // arguments to method calls...
-        exists(string className, ClassDecl c |
+        exists(string className, ClassOrStructDecl c |
           (
             // `NSRange.init`
             className = "NSRange" and
@@ -127,7 +127,7 @@ class StringLengthConflationConfiguration extends DataFlow::Configuration {
             paramName = "at"
           ) and
           c.getName() = className and
-          c.getABaseTypeDecl*().(ClassDecl).getAMember() = funcDecl and
+          c.getABaseTypeDecl*().(ClassOrStructDecl).getAMember() = funcDecl and
           call.getStaticTarget() = funcDecl and
           flowstate = "NSString"
         )

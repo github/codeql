@@ -581,3 +581,49 @@ private class CipherOperation extends Cryptography::CryptographicOperation::Rang
     result = cipherNode.getCipherMode().getBlockMode()
   }
 }
+
+/** Predicates and classes modeling the `OpenSSL::Digest` module */
+private module Digest {
+  private import codeql.ruby.ApiGraphs
+
+  /** A call that hashes some input using a hashing algorithm from the `OpenSSL::Digest` module. */
+  private class DigestCall extends Cryptography::CryptographicOperation::Range instanceof DataFlow::CallNode {
+    Cryptography::HashingAlgorithm algo;
+
+    DigestCall() {
+      exists(API::MethodAccessNode call |
+        call = API::getTopLevelMember("OpenSSL").getMember("Digest").getMethod("new")
+      |
+        this = call.getReturn().getAMethodCall(["digest", "update", "<<"]) and
+        algo.matchesName(call.getCallNode()
+              .getArgument(0)
+              .asExpr()
+              .getExpr()
+              .getConstantValue()
+              .getString())
+      )
+    }
+
+    override Cryptography::HashingAlgorithm getAlgorithm() { result = algo }
+
+    override DataFlow::Node getAnInput() { result = super.getArgument(0) }
+
+    override Cryptography::BlockMode getBlockMode() { none() }
+  }
+
+  /** A call to `OpenSSL::Digest.digest` that hashes input directly without constructing a digest instance. */
+  private class DigestCallDirect extends Cryptography::CryptographicOperation::Range instanceof DataFlow::CallNode {
+    Cryptography::HashingAlgorithm algo;
+
+    DigestCallDirect() {
+      this = API::getTopLevelMember("OpenSSL").getMember("Digest").getMethod("digest").getCallNode() and
+      algo.matchesName(this.getArgument(0).asExpr().getExpr().getConstantValue().getString())
+    }
+
+    override Cryptography::HashingAlgorithm getAlgorithm() { result = algo }
+
+    override DataFlow::Node getAnInput() { result = super.getArgument(1) }
+
+    override Cryptography::BlockMode getBlockMode() { none() }
+  }
+}

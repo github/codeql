@@ -2,12 +2,9 @@ failures
 edges
 | hash_flow.rb:11:15:11:24 | call to taint :  | hash_flow.rb:22:10:22:13 | hash [element :a] :  |
 | hash_flow.rb:13:12:13:21 | call to taint :  | hash_flow.rb:24:10:24:13 | hash [element :c] :  |
-| hash_flow.rb:15:9:15:23 | Pair [pair e] :  | hash_flow.rb:26:10:26:13 | hash [element e] :  |
-| hash_flow.rb:15:14:15:23 | call to taint :  | hash_flow.rb:15:9:15:23 | Pair [pair e] :  |
-| hash_flow.rb:17:9:17:25 | Pair [pair g] :  | hash_flow.rb:28:10:28:13 | hash [element g] :  |
-| hash_flow.rb:17:16:17:25 | call to taint :  | hash_flow.rb:17:9:17:25 | Pair [pair g] :  |
-| hash_flow.rb:19:9:19:23 | Pair [pair 0] :  | hash_flow.rb:30:10:30:13 | hash [element 0] :  |
-| hash_flow.rb:19:14:19:23 | call to taint :  | hash_flow.rb:19:9:19:23 | Pair [pair 0] :  |
+| hash_flow.rb:15:14:15:23 | call to taint :  | hash_flow.rb:26:10:26:13 | hash [element e] :  |
+| hash_flow.rb:17:16:17:25 | call to taint :  | hash_flow.rb:28:10:28:13 | hash [element g] :  |
+| hash_flow.rb:19:14:19:23 | call to taint :  | hash_flow.rb:30:10:30:13 | hash [element 0] :  |
 | hash_flow.rb:22:10:22:13 | hash [element :a] :  | hash_flow.rb:22:10:22:17 | ...[...] |
 | hash_flow.rb:24:10:24:13 | hash [element :c] :  | hash_flow.rb:24:10:24:17 | ...[...] |
 | hash_flow.rb:26:10:26:13 | hash [element e] :  | hash_flow.rb:26:10:26:18 | ...[...] |
@@ -56,12 +53,10 @@ edges
 | hash_flow.rb:68:22:68:31 | call to taint :  | hash_flow.rb:68:13:68:39 | ...[...] [element :a] :  |
 | hash_flow.rb:69:10:69:14 | hash4 [element :a] :  | hash_flow.rb:69:10:69:18 | ...[...] |
 | hash_flow.rb:72:13:72:45 | ...[...] [element a] :  | hash_flow.rb:73:10:73:14 | hash5 [element a] :  |
-| hash_flow.rb:72:18:72:34 | Pair [pair a] :  | hash_flow.rb:72:13:72:45 | ...[...] [element a] :  |
-| hash_flow.rb:72:25:72:34 | call to taint :  | hash_flow.rb:72:18:72:34 | Pair [pair a] :  |
+| hash_flow.rb:72:25:72:34 | call to taint :  | hash_flow.rb:72:13:72:45 | ...[...] [element a] :  |
 | hash_flow.rb:73:10:73:14 | hash5 [element a] :  | hash_flow.rb:73:10:73:19 | ...[...] |
 | hash_flow.rb:76:13:76:47 | ...[...] [element a] :  | hash_flow.rb:77:10:77:14 | hash6 [element a] :  |
-| hash_flow.rb:76:19:76:35 | Pair [pair a] :  | hash_flow.rb:76:13:76:47 | ...[...] [element a] :  |
-| hash_flow.rb:76:26:76:35 | call to taint :  | hash_flow.rb:76:19:76:35 | Pair [pair a] :  |
+| hash_flow.rb:76:26:76:35 | call to taint :  | hash_flow.rb:76:13:76:47 | ...[...] [element a] :  |
 | hash_flow.rb:77:10:77:14 | hash6 [element a] :  | hash_flow.rb:77:10:77:19 | ...[...] |
 | hash_flow.rb:84:13:84:42 | call to [] [element :a] :  | hash_flow.rb:85:10:85:14 | hash1 [element :a] :  |
 | hash_flow.rb:84:26:84:35 | call to taint :  | hash_flow.rb:84:13:84:42 | call to [] [element :a] :  |
@@ -107,7 +102,6 @@ edges
 | hash_flow.rb:185:9:185:12 | hash [element :a] :  | hash_flow.rb:185:9:185:23 | call to delete :  |
 | hash_flow.rb:185:9:185:23 | call to delete :  | hash_flow.rb:186:10:186:10 | a |
 | hash_flow.rb:194:15:194:25 | call to taint :  | hash_flow.rb:197:9:197:12 | hash [element :a] :  |
-| hash_flow.rb:194:15:194:25 | call to taint :  | hash_flow.rb:202:10:202:13 | hash [element :a] :  |
 | hash_flow.rb:197:9:197:12 | [post] hash [element :a] :  | hash_flow.rb:202:10:202:13 | hash [element :a] :  |
 | hash_flow.rb:197:9:197:12 | hash [element :a] :  | hash_flow.rb:197:9:197:12 | [post] hash [element :a] :  |
 | hash_flow.rb:197:9:197:12 | hash [element :a] :  | hash_flow.rb:197:9:200:7 | call to delete_if [element :a] :  |
@@ -312,7 +306,6 @@ edges
 | hash_flow.rb:477:29:477:33 | value :  | hash_flow.rb:479:14:479:18 | value |
 | hash_flow.rb:482:10:482:10 | b [element :a] :  | hash_flow.rb:482:10:482:14 | ...[...] |
 | hash_flow.rb:489:15:489:25 | call to taint :  | hash_flow.rb:492:9:492:12 | hash [element :a] :  |
-| hash_flow.rb:489:15:489:25 | call to taint :  | hash_flow.rb:498:10:498:13 | hash [element :a] :  |
 | hash_flow.rb:492:9:492:12 | [post] hash [element :a] :  | hash_flow.rb:498:10:498:13 | hash [element :a] :  |
 | hash_flow.rb:492:9:492:12 | hash [element :a] :  | hash_flow.rb:492:9:492:12 | [post] hash [element :a] :  |
 | hash_flow.rb:492:9:492:12 | hash [element :a] :  | hash_flow.rb:492:9:496:7 | call to reject! [element :a] :  |
@@ -533,11 +526,8 @@ edges
 nodes
 | hash_flow.rb:11:15:11:24 | call to taint :  | semmle.label | call to taint :  |
 | hash_flow.rb:13:12:13:21 | call to taint :  | semmle.label | call to taint :  |
-| hash_flow.rb:15:9:15:23 | Pair [pair e] :  | semmle.label | Pair [pair e] :  |
 | hash_flow.rb:15:14:15:23 | call to taint :  | semmle.label | call to taint :  |
-| hash_flow.rb:17:9:17:25 | Pair [pair g] :  | semmle.label | Pair [pair g] :  |
 | hash_flow.rb:17:16:17:25 | call to taint :  | semmle.label | call to taint :  |
-| hash_flow.rb:19:9:19:23 | Pair [pair 0] :  | semmle.label | Pair [pair 0] :  |
 | hash_flow.rb:19:14:19:23 | call to taint :  | semmle.label | call to taint :  |
 | hash_flow.rb:22:10:22:13 | hash [element :a] :  | semmle.label | hash [element :a] :  |
 | hash_flow.rb:22:10:22:17 | ...[...] | semmle.label | ...[...] |
@@ -599,12 +589,10 @@ nodes
 | hash_flow.rb:69:10:69:14 | hash4 [element :a] :  | semmle.label | hash4 [element :a] :  |
 | hash_flow.rb:69:10:69:18 | ...[...] | semmle.label | ...[...] |
 | hash_flow.rb:72:13:72:45 | ...[...] [element a] :  | semmle.label | ...[...] [element a] :  |
-| hash_flow.rb:72:18:72:34 | Pair [pair a] :  | semmle.label | Pair [pair a] :  |
 | hash_flow.rb:72:25:72:34 | call to taint :  | semmle.label | call to taint :  |
 | hash_flow.rb:73:10:73:14 | hash5 [element a] :  | semmle.label | hash5 [element a] :  |
 | hash_flow.rb:73:10:73:19 | ...[...] | semmle.label | ...[...] |
 | hash_flow.rb:76:13:76:47 | ...[...] [element a] :  | semmle.label | ...[...] [element a] :  |
-| hash_flow.rb:76:19:76:35 | Pair [pair a] :  | semmle.label | Pair [pair a] :  |
 | hash_flow.rb:76:26:76:35 | call to taint :  | semmle.label | call to taint :  |
 | hash_flow.rb:77:10:77:14 | hash6 [element a] :  | semmle.label | hash6 [element a] :  |
 | hash_flow.rb:77:10:77:19 | ...[...] | semmle.label | ...[...] |

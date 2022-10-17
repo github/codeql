@@ -185,7 +185,7 @@ private module Cached {
   /**
    * Holds if `source` is a `LocalSourceNode` that can reach `sink` via local flow steps.
    *
-   * The slightly backwards parametering ordering is to force correct indexing.
+   * The slightly backwards parameter ordering is to force correct indexing.
    */
   cached
   predicate hasLocalSource(Node sink, LocalSourceNode source) {
