@@ -4,6 +4,7 @@ swift_cc_binary(
     name = "xcode-autobuilder",
     srcs = glob([
         "*.cpp",
+        "*.h",
     ]),
     visibility = ["//swift:__pkg__"],
     linkopts = [
