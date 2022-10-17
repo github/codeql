@@ -8,4 +8,15 @@ class Location extends LocationBase {
     el = getEndLine() and
     ec = getEndColumn()
   }
+
+  /**
+   * Gets a textual representation of this location.
+   */
+  override string toString() {
+    exists(string filePath, int startLine, int startColumn, int endLine, int endColumn |
+      this.hasLocationInfo(filePath, startLine, startColumn, endLine, endColumn)
+    |
+      toUrl(filePath, startLine, startColumn, endLine, endColumn, result)
+    )
+  }
 }
