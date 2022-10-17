@@ -93,3 +93,19 @@ private class StringLiteralFormatStep extends AdditionalTaintStep {
     pred.asExpr() = succ.asExpr().(CfgNodes::ExprNodes::StringlikeLiteralCfgNode).getAComponent()
   }
 }
+
+/**
+ * A taint propagating data flow edge arising from string formatting.
+ */
+private class StringFormattingTaintStep extends AdditionalTaintStep {
+  override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
+    exists(PrintfStyleCall call |
+      call.returnsFormatted() and
+      succ = call
+    |
+      pred = call.getFormatString()
+      or
+      pred = call.getFormatArgument(_)
+    )
+  }
+}

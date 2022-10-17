@@ -81,3 +81,8 @@
 
 <%# BAD: Indirect to a database value without escaping %>
 <%= @other_user_raw_name.html_safe %>
+
+<%# BAD: Kernel.sprintf is a taint-step %>
+<%=
+  sprintf("%s", @user.handle).html_safe
+%>
