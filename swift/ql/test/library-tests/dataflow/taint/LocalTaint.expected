@@ -125,4 +125,5 @@
 | string.swift:39:29:39:29 | < | string.swift:39:13:39:29 | ... .+(_:_:) ... |
 | subscript.swift:13:10:13:17 | call to source() | subscript.swift:13:10:13:20 | ...[...] |
 | subscript.swift:14:10:14:18 | call to source2() | subscript.swift:14:10:14:21 | ...[...] |
-| url.swift:69:15:69:26 | .pathComponents | url.swift:69:15:69:42 | ...[...] |
+| url.swift:70:15:70:26 | .pathComponents | url.swift:70:15:70:42 | ...[...] |
+| url.swift:92:15:92:59 | .pathComponents | url.swift:92:15:92:75 | ...[...] |
