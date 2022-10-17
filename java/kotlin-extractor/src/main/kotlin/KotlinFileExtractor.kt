@@ -2442,7 +2442,7 @@ open class KotlinFileExtractor(
                         }
                     }
                     tw.writeExprsKotlinType(id, type.kotlinResult.id)
-                    if (target.name.asString() == "inv" && (c.type.isByte() || c.type.isShort()))
+                    if (isFunction(target, "kotlin", "Byte or Short", { it == "Byte" || it == "Short" }, "inv"))
                         unaryopReceiver(id, c.extensionReceiver, "Extension receiver")
                     else
                         unaryopDisp(id)
