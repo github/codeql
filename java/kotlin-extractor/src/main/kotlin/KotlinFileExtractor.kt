@@ -4389,10 +4389,16 @@ open class KotlinFileExtractor(
         callable: Label<out DbCallable>
     ) {
         with("function reference", functionReferenceExpr) {
-            val target = functionReferenceExpr.reflectionTarget ?: run {
-                logger.warnElement("Expected to find reflection target for function reference. Using underlying symbol instead.", functionReferenceExpr)
-                functionReferenceExpr.symbol
-            }
+            val target =
+                if (functionReferenceExpr.origin == IrStatementOrigin.ADAPTED_FUNCTION_REFERENCE)
+                    // For an adaptation (e.g. to adjust the number or type of arguments or results), the symbol field points at the adapter while `.reflectionTarget` points at the source-level target.
+                    functionReferenceExpr.symbol
+                else
+                    // TODO: Consider whether we could always target the symbol
+                    functionReferenceExpr.reflectionTarget ?: run {
+                        logger.warnElement("Expected to find reflection target for function reference. Using underlying symbol instead.", functionReferenceExpr)
+                        functionReferenceExpr.symbol
+                    }
 
             /*
              * Extract generated class:
@@ -4496,7 +4502,10 @@ open class KotlinFileExtractor(
                 val baseClass = pluginContext.referenceClass(FqName("kotlin.jvm.internal.FunctionReference"))?.owner?.typeWith()
                     ?: pluginContext.irBuiltIns.anyType
 
-                val classId = extractGeneratedClass(ids, listOf(baseClass, fnInterfaceType), locId, functionReferenceExpr, declarationParent)
+                val classId = extractGeneratedClass(ids, listOf(baseClass, fnInterfaceType), locId, functionReferenceExpr, declarationParent, { it.valueParameters.size == 1 }) {
+                    // The argument to FunctionReference's constructor is the function arity.
+                    extractConstantInteger(type.arguments.size - 1, locId, it, 0, ids.constructor, it)
+                }
 
                 helper.extractReceiverField()
 
@@ -5236,7 +5245,9 @@ open class KotlinFileExtractor(
         superTypes: List<IrType>,
         locId: Label<DbLocation>,
         elementToReportOn: IrElement,
-        declarationParent: IrDeclarationParent
+        declarationParent: IrDeclarationParent,
+        superConstructorSelector: (IrFunction) -> Boolean = { it.valueParameters.isEmpty() },
+        extractSuperconstructorArgs: (Label<DbSuperconstructorinvocationstmt>) -> Unit = {}
     ): Label<out DbClass> {
         // Write class
         val id = ids.type.javaResult.id.cast<DbClass>()
@@ -5261,7 +5272,7 @@ open class KotlinFileExtractor(
         if (baseClass == null) {
             logger.warnElement("Cannot find base class", elementToReportOn)
         } else {
-            val baseConstructor = baseClass.owner.declarations.findSubType<IrFunction> { it.symbol is IrConstructorSymbol }
+            val baseConstructor = baseClass.owner.declarations.findSubType<IrFunction> { it.symbol is IrConstructorSymbol && superConstructorSelector(it) }
             if (baseConstructor == null) {
                 logger.warnElement("Cannot find base constructor", elementToReportOn)
             } else {
@@ -5272,6 +5283,7 @@ open class KotlinFileExtractor(
 
                 tw.writeHasLocation(superCallId, locId)
                 tw.writeCallableBinding(superCallId.cast<DbCaller>(), baseConstructorId)
+                extractSuperconstructorArgs(superCallId)
             }
         }
 
@@ -5285,7 +5297,7 @@ open class KotlinFileExtractor(
     }
 
     /**
-     * Extracts the class around a local function or a lambda.
+     * Extracts the class around a local function or a lambda. The superclass must have a no-arg constructor.
      */
     private fun extractGeneratedClass(localFunction: IrFunction, superTypes: List<IrType>) : Label<out DbClass> {
         with("generated class", localFunction) {

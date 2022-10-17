@@ -4139,6 +4139,7 @@ funcExprs.kt:
 #   38|                     0: [Parameter] <dispatchReceiver>
 #   38|                   5: [BlockStmt] { ... }
 #   38|                     0: [SuperConstructorInvocationStmt] super(...)
+#   38|                       0: [IntegerLiteral] 0
 #   38|                     1: [ExprStmt] <Expr>;
 #   38|                       0: [AssignExpr] ...=...
 #   38|                         0: [VarAccess] this.<dispatchReceiver>
@@ -4166,6 +4167,7 @@ funcExprs.kt:
 #   39|                     0: [Parameter] <dispatchReceiver>
 #   39|                   5: [BlockStmt] { ... }
 #   39|                     0: [SuperConstructorInvocationStmt] super(...)
+#   39|                       0: [IntegerLiteral] 0
 #   39|                     1: [ExprStmt] <Expr>;
 #   39|                       0: [AssignExpr] ...=...
 #   39|                         0: [VarAccess] this.<dispatchReceiver>
@@ -4193,6 +4195,7 @@ funcExprs.kt:
 #   40|                     0: [Parameter] <dispatchReceiver>
 #   40|                   5: [BlockStmt] { ... }
 #   40|                     0: [SuperConstructorInvocationStmt] super(...)
+#   40|                       0: [IntegerLiteral] 1
 #   40|                     1: [ExprStmt] <Expr>;
 #   40|                       0: [AssignExpr] ...=...
 #   40|                         0: [VarAccess] this.<dispatchReceiver>
@@ -4223,6 +4226,7 @@ funcExprs.kt:
 #   41|                 1: [Constructor] 
 #   41|                   5: [BlockStmt] { ... }
 #   41|                     0: [SuperConstructorInvocationStmt] super(...)
+#   41|                       0: [IntegerLiteral] 2
 #   41|                 2: [Method] invoke
 #-----|                   4: (Parameters)
 #   41|                     0: [Parameter] a0
@@ -4247,6 +4251,7 @@ funcExprs.kt:
 #   42|                     0: [Parameter] <extensionReceiver>
 #   42|                   5: [BlockStmt] { ... }
 #   42|                     0: [SuperConstructorInvocationStmt] super(...)
+#   42|                       0: [IntegerLiteral] 1
 #   42|                     1: [ExprStmt] <Expr>;
 #   42|                       0: [AssignExpr] ...=...
 #   42|                         0: [VarAccess] this.<extensionReceiver>
@@ -4277,6 +4282,7 @@ funcExprs.kt:
 #   43|                 1: [Constructor] 
 #   43|                   5: [BlockStmt] { ... }
 #   43|                     0: [SuperConstructorInvocationStmt] super(...)
+#   43|                       0: [IntegerLiteral] 2
 #   43|                 2: [Method] invoke
 #-----|                   4: (Parameters)
 #   43|                     0: [Parameter] a0
@@ -4302,6 +4308,7 @@ funcExprs.kt:
 #   44|                     0: [Parameter] <dispatchReceiver>
 #   44|                   5: [BlockStmt] { ... }
 #   44|                     0: [SuperConstructorInvocationStmt] super(...)
+#   44|                       0: [IntegerLiteral] 22
 #   44|                     1: [ExprStmt] <Expr>;
 #   44|                       0: [AssignExpr] ...=...
 #   44|                         0: [VarAccess] this.<dispatchReceiver>
@@ -4397,6 +4404,7 @@ funcExprs.kt:
 #   45|                     0: [Parameter] <dispatchReceiver>
 #   45|                   5: [BlockStmt] { ... }
 #   45|                     0: [SuperConstructorInvocationStmt] super(...)
+#   45|                       0: [IntegerLiteral] 23
 #   45|                     1: [ExprStmt] <Expr>;
 #   45|                       0: [AssignExpr] ...=...
 #   45|                         0: [VarAccess] this.<dispatchReceiver>
@@ -4540,6 +4548,7 @@ funcExprs.kt:
 #   46|                 1: [Constructor] 
 #   46|                   5: [BlockStmt] { ... }
 #   46|                     0: [SuperConstructorInvocationStmt] super(...)
+#   46|                       0: [IntegerLiteral] 24
 #   46|                 2: [Method] invoke
 #-----|                   4: (Parameters)
 #   46|                     0: [Parameter] a0
@@ -4686,6 +4695,7 @@ funcExprs.kt:
 #   49|                 1: [Constructor] 
 #   49|                   5: [BlockStmt] { ... }
 #   49|                     0: [SuperConstructorInvocationStmt] super(...)
+#   49|                       0: [IntegerLiteral] 0
 #   49|                 2: [Method] invoke
 #   49|                   5: [BlockStmt] { ... }
 #   49|                     0: [ReturnStmt] return ...
@@ -4703,6 +4713,7 @@ funcExprs.kt:
 #   51|                 1: [Constructor] 
 #   51|                   5: [BlockStmt] { ... }
 #   51|                     0: [SuperConstructorInvocationStmt] super(...)
+#   51|                       0: [IntegerLiteral] 0
 #   51|                 2: [Method] invoke
 #   51|                   5: [BlockStmt] { ... }
 #   51|                     0: [ReturnStmt] return ...
@@ -5316,6 +5327,7 @@ kFunctionInvoke.kt:
 #    8|                     0: [Parameter] <dispatchReceiver>
 #    8|                   5: [BlockStmt] { ... }
 #    8|                     0: [SuperConstructorInvocationStmt] super(...)
+#    8|                       0: [IntegerLiteral] 1
 #    8|                     1: [ExprStmt] <Expr>;
 #    8|                       0: [AssignExpr] ...=...
 #    8|                         0: [VarAccess] this.<dispatchReceiver>
@@ -5594,6 +5606,7 @@ samConversion.kt:
 #    5|                     1: [Constructor] 
 #    5|                       5: [BlockStmt] { ... }
 #    5|                         0: [SuperConstructorInvocationStmt] super(...)
+#    5|                           0: [IntegerLiteral] 2
 #    5|                     2: [Method] invoke
 #-----|                       4: (Parameters)
 #    5|                         0: [Parameter] a0
@@ -5815,6 +5828,7 @@ samConversion.kt:
 #   41|                 1: [Constructor] 
 #   41|                   5: [BlockStmt] { ... }
 #   41|                     0: [SuperConstructorInvocationStmt] super(...)
+#   41|                       0: [IntegerLiteral] 23
 #   41|                 2: [Method] invoke
 #-----|                   4: (Parameters)
 #   41|                     0: [Parameter] a0
