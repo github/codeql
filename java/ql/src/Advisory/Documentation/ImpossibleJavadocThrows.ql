@@ -11,15 +11,9 @@
 
 import java
 
-ClassOrInterface getTaggedType(ThrowsTag tag) {
+RefType getTaggedType(ThrowsTag tag) {
   result.hasName(tag.getExceptionName()) and
-  result = tag.getFile().(CompilationUnit).getATypeInScope()
-}
-
-predicate canThrow(Callable callable, Class exception) {
-  exception instanceof UncheckedThrowableType
-  or
-  callable.getAnException().getType().getADescendant() = exception
+  exists(ImportType i | i.getFile() = tag.getFile() | i.getImportedType() = result)
 }
 
 // Uses ClassOrInterface as type for thrownType to also cover case where erroneously an interface
@@ -28,7 +22,8 @@ from ThrowsTag throwsTag, ClassOrInterface thrownType, Callable docMethod
 where
   getTaggedType(throwsTag) = thrownType and
   docMethod.getDoc().getJavadoc().getAChild*() = throwsTag and
-  not canThrow(docMethod, thrownType)
+  not thrownType instanceof UncheckedThrowableType and
+  not docMethod.getAnException().getType().getADescendant() = thrownType
 select throwsTag,
   "Javadoc for " + docMethod + " claims to throw " + thrownType.getName() +
     " but this is impossible."

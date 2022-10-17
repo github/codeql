@@ -123,17 +123,5 @@
 | string.swift:39:13:39:19 | ... .+(_:_:) ... | string.swift:39:13:39:29 | ... .+(_:_:) ... |
 | string.swift:39:19:39:19 | tainted | string.swift:39:13:39:19 | ... .+(_:_:) ... |
 | string.swift:39:29:39:29 | < | string.swift:39:13:39:29 | ... .+(_:_:) ... |
-| url.swift:14:29:14:29 | clean | url.swift:14:17:14:34 | call to init(string:) |
-| url.swift:15:31:15:31 | tainted | url.swift:15:19:15:38 | call to init(string:) |
-| url.swift:20:24:20:24 | clean | url.swift:20:12:20:46 | call to init(string:relativeTo:) |
-| url.swift:20:43:20:43 | nil | url.swift:20:12:20:46 | call to init(string:relativeTo:) |
-| url.swift:21:24:21:24 | tainted | url.swift:21:12:21:48 | call to init(string:relativeTo:) |
-| url.swift:21:45:21:45 | nil | url.swift:21:12:21:48 | call to init(string:relativeTo:) |
-| url.swift:22:24:22:24 | clean | url.swift:22:12:22:51 | call to init(string:relativeTo:) |
-| url.swift:22:43:22:43 | urlClean | url.swift:22:12:22:51 | call to init(string:relativeTo:) |
-| url.swift:23:24:23:24 | clean | url.swift:23:12:23:53 | call to init(string:relativeTo:) |
-| url.swift:23:43:23:43 | urlTainted | url.swift:23:12:23:53 | call to init(string:relativeTo:) |
-| url.swift:25:25:25:25 | clean | url.swift:25:13:25:30 | call to init(string:) |
-| url.swift:29:25:29:25 | tainted | url.swift:29:13:29:32 | call to init(string:) |
-| url.swift:34:26:34:26 | clean | url.swift:34:14:34:31 | call to init(string:) |
-| url.swift:38:28:38:28 | tainted | url.swift:38:16:38:35 | call to init(string:) |
+| subscript.swift:13:10:13:17 | call to source() | subscript.swift:13:10:13:20 | ...[...] |
+| subscript.swift:14:10:14:18 | call to source2() | subscript.swift:14:10:14:21 | ...[...] |

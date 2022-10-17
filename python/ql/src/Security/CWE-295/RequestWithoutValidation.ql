@@ -22,6 +22,6 @@ where
   // certificate validation, for example in `requests.get(..., verify=arg)`, `arg` would
   // be the `disablingNode`, and the `origin` would be the place were `arg` got its
   // value from.
-  if disablingNode = origin then ending = "." else ending = " by the value from $@."
-select request, "This request may run without certificate validation because it is $@" + ending,
-  disablingNode, "disabled here", origin, "here"
+  if disablingNode = origin then ending = "." else ending = " by $@."
+select request, "This request may run without certificate validation because $@" + ending,
+  disablingNode, "it is disabled", origin, "this value"

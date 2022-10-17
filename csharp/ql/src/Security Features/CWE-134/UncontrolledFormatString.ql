@@ -31,7 +31,13 @@ class FormatStringConfiguration extends TaintTracking::Configuration {
   }
 }
 
+string getSourceType(DataFlow::Node node) {
+  result = node.(RemoteFlowSource).getSourceType()
+  or
+  result = node.(LocalFlowSource).getSourceType()
+}
+
 from FormatStringConfiguration config, DataFlow::PathNode source, DataFlow::PathNode sink
 where config.hasFlowPath(source, sink)
-select sink.getNode(), source, sink, "$@ flows to here and is used as a format string.",
-  source.getNode(), source.getNode().toString()
+select sink.getNode(), source, sink, "This format string depends on $@.", source.getNode(),
+  ("this" + getSourceType(source.getNode()))

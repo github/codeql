@@ -230,18 +230,18 @@ def _partition(l, pred):
     return map(list, _partition_iter(l, pred))
 
 
-def _is_in_qltest_collapsed_hierachy(cls: schema.Class, lookup: typing.Dict[str, schema.Class]):
-    return "qltest_collapse_hierarchy" in cls.pragmas or _is_under_qltest_collapsed_hierachy(cls, lookup)
+def _is_in_qltest_collapsed_hierarchy(cls: schema.Class, lookup: typing.Dict[str, schema.Class]):
+    return "qltest_collapse_hierarchy" in cls.pragmas or _is_under_qltest_collapsed_hierarchy(cls, lookup)
 
 
-def _is_under_qltest_collapsed_hierachy(cls: schema.Class, lookup: typing.Dict[str, schema.Class]):
+def _is_under_qltest_collapsed_hierarchy(cls: schema.Class, lookup: typing.Dict[str, schema.Class]):
     return "qltest_uncollapse_hierarchy" not in cls.pragmas and any(
-        _is_in_qltest_collapsed_hierachy(lookup[b], lookup) for b in cls.bases)
+        _is_in_qltest_collapsed_hierarchy(lookup[b], lookup) for b in cls.bases)
 
 
 def _should_skip_qltest(cls: schema.Class, lookup: typing.Dict[str, schema.Class]):
     return "qltest_skip" in cls.pragmas or not (
-        cls.final or "qltest_collapse_hierarchy" in cls.pragmas) or _is_under_qltest_collapsed_hierachy(
+        cls.final or "qltest_collapse_hierarchy" in cls.pragmas) or _is_under_qltest_collapsed_hierarchy(
         cls, lookup)
 
 
@@ -304,7 +304,10 @@ def generate(opts, renderer):
         total_props, partial_props = _partition(_get_all_properties_to_be_tested(c, data.classes),
                                                 lambda p: p.is_single or p.is_predicate)
         renderer.render(ql.ClassTester(class_name=c.name,
-                                       properties=total_props), test_dir / f"{c.name}.ql")
+                                       properties=total_props,
+                                       # in case of collapsed hierarchies we want to see the actual QL class in results
+                                       show_ql_class="qltest_collapse_hierarchy" in c.pragmas),
+                        test_dir / f"{c.name}.ql")
         for p in partial_props:
             renderer.render(ql.PropertyTester(class_name=c.name,
                                               property=p), test_dir / f"{c.name}_{p.getter}.ql")

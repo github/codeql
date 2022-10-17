@@ -676,7 +676,9 @@ private class SelfVariableAccessReal extends SelfVariableAccessImpl, TSelfReal {
   private SelfVariable var;
 
   SelfVariableAccessReal() {
-    exists(Ruby::Self self | this = TSelfReal(self) and var = TSelfVariable(scopeOf(self)))
+    exists(Ruby::Self self |
+      this = TSelfReal(self) and var = TSelfVariable(scopeOf(self).getEnclosingSelfScope())
+    )
   }
 
   final override SelfVariable getVariableImpl() { result = var }

@@ -1,7 +1,7 @@
 import sys
 import random
 
-# hmm, annoying that you have to keep names unique accross files :|
+# hmm, annoying that you have to keep names unique across files :|
 # since I like to use foo and bar ALL the time :D
 
 # name:rd_foo

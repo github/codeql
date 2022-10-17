@@ -10,6 +10,7 @@ private import codeql.ruby.Concepts
 private import codeql.ruby.Frameworks
 private import codeql.ruby.frameworks.ActionController
 private import codeql.ruby.frameworks.ActionView
+private import codeql.ruby.frameworks.Rails
 private import codeql.ruby.dataflow.RemoteFlowSources
 private import codeql.ruby.dataflow.BarrierGuards
 private import codeql.ruby.dataflow.internal.DataFlowDispatch
@@ -61,7 +62,7 @@ private module Shared {
    */
   class HtmlSafeCallAsSink extends Sink {
     HtmlSafeCallAsSink() {
-      exists(HtmlSafeCall c, ErbOutputDirective d |
+      exists(Rails::HtmlSafeCall c, ErbOutputDirective d |
         this.asExpr().getExpr() = c.getReceiver() and
         c = d.getTerminalStmt()
       )
@@ -76,12 +77,42 @@ private module Shared {
   }
 
   /**
+   * An argument to an ActionView helper method which is not escaped,
+   * considered as a flow sink.
+   */
+  class RawHelperCallArgumentAsSink extends Sink {
+    RawHelperCallArgumentAsSink() {
+      exists(ErbOutputDirective d, ActionView::Helpers::RawHelperCall c |
+        d.getTerminalStmt() = c and this.asExpr().getExpr() = c.getRawArgument()
+      )
+    }
+  }
+
+  /**
+   * An argument that is used to construct the `src` attribute of a `<script>`
+   * tag.
+   */
+  class ArgumentInterpretedAsUrlAsSink extends Sink, ErbOutputMethodCallArgumentNode,
+    ActionView::ArgumentInterpretedAsUrl { }
+
+  /**
    * A argument to a call to the `link_to` method, which does not expect
    * unsanitized user-input, considered as a flow sink.
    */
   class LinkToCallArgumentAsSink extends Sink, ErbOutputMethodCallArgumentNode {
     LinkToCallArgumentAsSink() {
       this.asExpr().getExpr() = this.getCall().(LinkToCall).getPathArgument()
+    }
+  }
+
+  /** A write to an HTTP response header, considered as a flow sink. */
+  class HeaderWriteAsSink extends Sink {
+    HeaderWriteAsSink() {
+      exists(Http::Server::HeaderWriteAccess a |
+        a.getName() = ["content-type", "access-control-allow-origin"]
+      |
+        this = a.getValue()
+      )
     }
   }
 
@@ -140,7 +171,7 @@ private module Shared {
    */
   pragma[noinline]
   private predicate renderCallLocals(string hashKey, Expr value, ErbFile erb) {
-    exists(RenderCall call, Pair kvPair |
+    exists(Rails::RenderCall call, Pair kvPair |
       call.getLocals().getAKeyValuePair() = kvPair and
       kvPair.getValue() = value and
       kvPair.getKey().getConstantValue().isStringlikeValue(hashKey) and
@@ -292,9 +323,11 @@ module ReflectedXss {
   deprecated predicate isAdditionalXSSTaintStep = isAdditionalXssTaintStep/2;
 
   /**
-   * A source of remote user input, considered as a flow source.
+   * A HTTP request input, considered as a flow source.
    */
-  class RemoteFlowSourceAsSource extends Source, RemoteFlowSource { }
+  class HttpRequestInputAccessAsSource extends Source, Http::Server::RequestInputAccess {
+    HttpRequestInputAccessAsSource() { this.isThirdPartyControllable() }
+  }
 }
 
 /** DEPRECATED: Alias for ReflectedXss */

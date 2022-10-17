@@ -44,7 +44,7 @@ class ReturnStackAllocatedMemoryConfig extends MustFlowConfiguration {
     // Holds if `sink` is a node that represents the `StoreInstruction` that is subsequently used in
     // a `ReturnValueInstruction`.
     // We use the `StoreInstruction` instead of the instruction that defines the
-    // `ReturnValueInstruction`'s source value oprand because the former has better location information.
+    // `ReturnValueInstruction`'s source value operand because the former has better location information.
     exists(StoreInstruction store |
       store.getDestinationAddress().(VariableAddressInstruction).getIRVariable() instanceof
         IRReturnVariable and

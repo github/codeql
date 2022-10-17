@@ -944,6 +944,7 @@ local_anonymous.kt:
 #   21|                 1: [Constructor] 
 #   21|                   5: [BlockStmt] { ... }
 #   21|                     0: [SuperConstructorInvocationStmt] super(...)
+#   21|                       0: [IntegerLiteral] 1
 #   21|                 2: [Method] invoke
 #-----|                   4: (Parameters)
 #   21|                     0: [Parameter] a0

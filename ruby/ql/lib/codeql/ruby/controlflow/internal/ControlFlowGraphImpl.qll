@@ -139,10 +139,16 @@ module Trees {
   abstract private class NonDefaultValueParameterTree extends ControlFlowTree, NamedParameter {
     final override predicate first(AstNode first) {
       this.getDefiningAccess().(ControlFlowTree).first(first)
+      or
+      not exists(this.getDefiningAccess()) and first = this
     }
 
     final override predicate last(AstNode last, Completion c) {
       this.getDefiningAccess().(ControlFlowTree).last(last, c)
+      or
+      not exists(this.getDefiningAccess()) and
+      last = this and
+      c.isValidFor(this)
     }
 
     override predicate propagatesAbnormal(AstNode child) {

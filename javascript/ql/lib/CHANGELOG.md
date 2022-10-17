@@ -1,3 +1,10 @@
+## 0.3.1
+
+### Minor Analysis Improvements
+
+- Several of the SQL and NoSQL library models have improved, leading to more results for the `js/sql-injection` query,
+  and in some cases the `js/missing-rate-limiting` query.
+
 ## 0.3.0
 
 ### Breaking Changes

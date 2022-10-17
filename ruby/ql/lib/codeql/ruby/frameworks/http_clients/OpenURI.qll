@@ -42,6 +42,7 @@ class OpenUriRequest extends Http::Client::Request::Range, DataFlow::CallNode {
     result = this.getKeywordArgumentIncludeHashArgument("ssl_verify_mode")
   }
 
+  cached
   override predicate disablesCertificateValidation(
     DataFlow::Node disablingNode, DataFlow::Node argumentOrigin
   ) {
@@ -91,6 +92,7 @@ class OpenUriKernelOpenRequest extends Http::Client::Request::Range, DataFlow::C
     )
   }
 
+  cached
   override predicate disablesCertificateValidation(
     DataFlow::Node disablingNode, DataFlow::Node argumentOrigin
   ) {

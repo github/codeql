@@ -295,26 +295,6 @@ module Content {
     result = getElementContent(e.getConstantValue()).(KnownElementContent).getIndex()
   }
 
-  /** A value in a pair with a known or unknown key. */
-  class PairValueContent extends Content, TPairValueContent { }
-
-  /** A value in a pair with a known key. */
-  class KnownPairValueContent extends PairValueContent, TKnownPairValueContent {
-    private ConstantValue key;
-
-    KnownPairValueContent() { this = TKnownPairValueContent(key) }
-
-    /** Gets the index in the collection. */
-    ConstantValue getIndex() { result = key }
-
-    override string toString() { result = "pair " + key }
-  }
-
-  /** A value in a pair with an unknown key. */
-  class UnknownPairValueContent extends PairValueContent, TUnknownPairValueContent {
-    override string toString() { result = "pair" }
-  }
-
   /**
    * A value stored behind a getter/setter pair.
    *

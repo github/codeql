@@ -10,7 +10,6 @@ private import codeql.ruby.AST
 private import codeql.ruby.DataFlow
 private import codeql.ruby.typetracking.TypeTracker
 private import codeql.ruby.typetracking.TypeTrackerSpecific as TypeTrackerSpecific
-private import codeql.ruby.ast.internal.Module
 private import codeql.ruby.controlflow.CfgNodes
 private import codeql.ruby.dataflow.internal.DataFlowPrivate as DataFlowPrivate
 private import codeql.ruby.dataflow.internal.DataFlowDispatch as DataFlowDispatch
@@ -204,7 +203,7 @@ module API {
     /**
      * Gets a node representing a call to `method` on the receiver represented by this node.
      */
-    Node getMethod(string method) {
+    MethodAccessNode getMethod(string method) {
       result = this.getASubclass().getASuccessor(Label::method(method))
     }
 
@@ -482,7 +481,7 @@ module API {
       MkDef(DataFlow::Node nd) { isDef(nd) }
 
     private string resolveTopLevel(ConstantReadAccess read) {
-      TResolved(result) = resolveConstantReadAccess(read) and
+      result = read.getModule().getQualifiedName() and
       not result.matches("%::%")
     }
 
@@ -523,7 +522,8 @@ module API {
       or
       exists(TypeTrackerSpecific::TypeTrackerContent c |
         TypeTrackerSpecific::basicLoadStep(node, ref, c) and
-        lbl = Label::content(c.getAStoreContent())
+        lbl = Label::content(c.getAStoreContent()) and
+        not c.isSingleton(any(DataFlow::Content::AttributeNameContent k))
       )
       // note: method calls are not handled here as there is no DataFlow::Node for the intermediate MkMethodAccessNode API node
     }
@@ -639,7 +639,10 @@ module API {
       isUse(src) and
       t.start()
       or
-      exists(TypeTracker t2 | result = trackUseNode(src, t2).track(t2, t))
+      exists(TypeTracker t2 |
+        result = trackUseNode(src, t2).track(t2, t) and
+        not result instanceof DataFlowPrivate::SelfParameterNode
+      )
     }
 
     /**
@@ -658,7 +661,11 @@ module API {
       isDef(rhs) and
       result = rhs.getALocalSource()
       or
-      exists(TypeBackTracker t2 | result = trackDefNode(rhs, t2).backtrack(t2, t))
+      exists(TypeBackTracker t2, DataFlow::LocalSourceNode mid |
+        mid = trackDefNode(rhs, t2) and
+        not mid instanceof DataFlowPrivate::SelfParameterNode and
+        result = mid.backtrack(t2, t)
+      )
     }
 
     /** Gets a data flow node reaching the RHS of the given def node. */
@@ -706,7 +713,7 @@ module API {
       exists(ClassDeclaration c, DataFlow::Node a, DataFlow::Node b |
         use(pred, a) and
         use(succ, b) and
-        resolveConstant(b.asExpr().getExpr()) = resolveConstantWriteAccess(c) and
+        b.asExpr().getExpr().(ConstantReadAccess).getAQualifiedName() = c.getAQualifiedName() and
         pragma[only_bind_into](c).getSuperclassExpr() = a.asExpr().getExpr() and
         lbl = Label::subclass()
       )
@@ -891,7 +898,7 @@ module API {
     /** Gets the `subclass` edge label. */
     LabelSubclass subclass() { any() }
 
-    /** Gets the label representing the given keword argument/parameter. */
+    /** Gets the label representing the given keyword argument/parameter. */
     LabelKeywordParameter keywordParameter(string name) { result.getName() = name }
 
     /** Gets the label representing the `n`th positional argument/parameter. */

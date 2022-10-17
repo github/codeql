@@ -3649,7 +3649,7 @@ cfg.rb:
 #-----|  -> call to foo
 
 #  205| ...
-#-----|  -> exit cfg.rb (normal)
+#-----|  -> filter_nil
 
 #  205| call to bar
 #-----|  -> if ...
@@ -3686,6 +3686,81 @@ cfg.rb:
 
 #  205| x
 #-----|  -> exit { ... } (normal)
+
+#  207| enter filter_nil
+#-----|  -> list
+
+#  207| exit filter_nil
+
+#  207| exit filter_nil (normal)
+#-----|  -> exit filter_nil
+
+#  207| filter_nil
+#-----|  -> self
+
+#  207| list
+#-----|  -> list
+
+#  208| list
+#-----|  -> do ... end
+
+#  208| call to reject
+#-----|  -> exit filter_nil (normal)
+
+#  208| do ... end
+#-----|  -> call to reject
+
+#  208| enter do ... end
+#-----|  -> elem
+
+#  208| exit do ... end
+
+#  208| exit do ... end (normal)
+#-----|  -> exit do ... end
+
+#  208| elem
+#-----|  -> *
+
+#  208| *
+#-----|  -> **
+
+#  208| **
+#-----|  -> elem
+
+#  209| elem
+#-----|  -> call to nil?
+
+#  209| call to nil?
+#-----|  -> exit do ... end (normal)
+
+#  213| call to do_something
+#-----|  -> exit cfg.rb (normal)
+
+#  213| self
+#-----|  -> do ... end
+
+#  213| do ... end
+#-----|  -> call to do_something
+
+#  213| enter do ... end
+#-----|  -> self
+
+#  213| exit do ... end
+
+#  213| exit do ... end (normal)
+#-----|  -> exit do ... end
+
+#  214| self
+#-----|  -> call to something
+
+#  214| call to something
+#-----|  -> self
+
+#  215| call to something_else
+#-----|  -> exit do ... end (normal)
+
+#  215| self
+#-----|  -> call to something_else
 
 desugar.rb:
 #    1| enter m1
