@@ -2,7 +2,7 @@
  * Provides classes for modeling string formatting libraries.
  */
 
-private import codeql.ruby.ast.Call
+private import codeql.ruby.AST as Ast
 private import codeql.ruby.DataFlow
 private import codeql.ruby.ApiGraphs
 private import codeql.ruby.frameworks.core.IO
@@ -33,7 +33,7 @@ class KernelPrintfCall extends PrintfStyleCall {
   KernelPrintfCall() {
     this = API::getTopLevelMember("Kernel").getAMethodCall("printf")
     or
-    this.asExpr().getExpr() instanceof UnknownMethodCall and
+    this.asExpr().getExpr() instanceof Ast::UnknownMethodCall and
     this.getMethodName() = "printf"
   }
 
@@ -60,7 +60,7 @@ class KernelSprintfCall extends PrintfStyleCall {
   KernelSprintfCall() {
     this = API::getTopLevelMember("Kernel").getAMethodCall("sprintf")
     or
-    this.asExpr().getExpr() instanceof UnknownMethodCall and
+    this.asExpr().getExpr() instanceof Ast::UnknownMethodCall and
     this.getMethodName() = "sprintf"
   }
 
@@ -76,6 +76,28 @@ class IOPrintfCall extends PrintfStyleCall {
   }
 
   override predicate returnsFormatted() { none() }
+}
+
+/**
+ * A call to `String#%`.
+ */
+class StringPercentCall extends PrintfStyleCall {
+  StringPercentCall() { this.getMethodName() = "%" }
+
+  override DataFlow::Node getFormatString() { result = this.getReceiver() }
+
+  override DataFlow::Node getFormatArgument(int n) {
+    exists(DataFlow::CallNode arrCall |
+      arrCall = this.getArgument(0) and arrCall.getMethodName() = "[]"
+    |
+      n = -2 and // -2 is indicates that the index does not make sense in this context
+      result = arrCall.getKeywordArgument(_)
+      or
+      result = arrCall.getArgument(n)
+    )
+  }
+
+  override predicate returnsFormatted() { any() }
 }
 
 private import codeql.ruby.dataflow.FlowSteps
