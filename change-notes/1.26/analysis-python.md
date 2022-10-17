@@ -35,5 +35,3 @@ The following changes in version 1.26 affect Python analysis in all applications
 * Improved modelling of security-related standard library modules, such as `os`, `popen2`, `platform`, and `base64`.
 * The original versions of the updated queries have been preserved [here](https://github.com/github/codeql/tree/main/python/ql/src/experimental/Security-old-dataflow).
 * Added taint tracking support for string formatting through f-strings.
-* Added more sinks and sources for TarSlip vulnerability. 
- - `TarSlipCustomizations.qll`
