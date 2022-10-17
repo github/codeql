@@ -8,20 +8,19 @@
   object. <code>ContentResolver</code>s communicate with an instance of a class that implements the 
   <code>ContentProvider</code> interface via URIs with the <code>content://</code> scheme.
 
-  The authority part (the first path segment) of the URI passed as parameter to the <code>ContentResolver</code> 
+  The authority part (the first path segment) of the URI, passed as parameter to the <code>ContentResolver</code>, 
   determines which content provider is contacted for the operation. Specific operations that act on files also
   support the <code>file://</code> scheme, in which case the local filesystem is queried instead.
 
-  If an external component, like a malicious or compromised application, controls the URI that is used in a
+  If an external component, like a malicious or compromised application, controls the URI for a
   <code>ContentResolver</code> operation, it can trick the vulnerable application into accessing its own private
-  files or non-exported content providers. Depending on what the vulnerable application does after accessing the file,
-  the attacking application might get access to the file by forcing it to be copied to a public directory like the
-  external storage, or tamper with it by making the application overwrite it with unexpected data.
+  files or non-exported content providers. The attacking application might be able to get access to the file by forcing it to be copied to a public directory, like
+  external storage, or tamper with the contents by making the application overwrite the file with unexpected data.
 </p>
 </overview>
 <recommendation>
 <p>
-  If possible, avoid using externally-provided data to determine URIs used by a <code>ContentResolver</code>.
+  If possible, avoid using externally-provided data to determine the URI for a <code>ContentResolver</code> to use.
   If that is not an option, validate that the incoming URI can only reference trusted components, like an allow list
   of content providers and/or applications, or alternatively make sure that the URI does not reference private
   directories like <code>/data/</code>.
