@@ -201,8 +201,6 @@ edges
 | string_flow.rb:240:9:240:19 | call to scan [element] :  | string_flow.rb:242:10:242:10 | b [element] :  |
 | string_flow.rb:241:10:241:10 | b [element] :  | string_flow.rb:241:10:241:13 | ...[...] |
 | string_flow.rb:242:10:242:10 | b [element] :  | string_flow.rb:242:10:242:13 | ...[...] |
-| string_flow.rb:246:5:246:18 | ... = ... :  | string_flow.rb:250:26:250:26 | a :  |
-| string_flow.rb:246:9:246:18 | call to source :  | string_flow.rb:246:5:246:18 | ... = ... :  |
 | string_flow.rb:246:9:246:18 | call to source :  | string_flow.rb:247:10:247:10 | a :  |
 | string_flow.rb:246:9:246:18 | call to source :  | string_flow.rb:248:20:248:20 | a :  |
 | string_flow.rb:246:9:246:18 | call to source :  | string_flow.rb:249:5:249:5 | a :  |
@@ -211,14 +209,14 @@ edges
 | string_flow.rb:247:10:247:10 | a :  | string_flow.rb:247:10:247:21 | call to scrub |
 | string_flow.rb:248:20:248:20 | a :  | string_flow.rb:248:10:248:21 | call to scrub |
 | string_flow.rb:249:5:249:5 | a :  | string_flow.rb:249:16:249:16 | x :  |
+| string_flow.rb:249:5:249:5 | a :  | string_flow.rb:250:26:250:26 | a :  |
 | string_flow.rb:249:16:249:16 | x :  | string_flow.rb:249:24:249:24 | x |
 | string_flow.rb:250:26:250:26 | a :  | string_flow.rb:250:10:250:28 | call to scrub |
 | string_flow.rb:252:10:252:10 | a :  | string_flow.rb:252:10:252:22 | call to scrub! |
 | string_flow.rb:253:21:253:21 | a :  | string_flow.rb:253:10:253:22 | call to scrub! |
-| string_flow.rb:255:5:255:18 | ... = ... :  | string_flow.rb:258:27:258:27 | a :  |
-| string_flow.rb:255:9:255:18 | call to source :  | string_flow.rb:255:5:255:18 | ... = ... :  |
 | string_flow.rb:255:9:255:18 | call to source :  | string_flow.rb:256:5:256:5 | a :  |
 | string_flow.rb:256:5:256:5 | a :  | string_flow.rb:256:17:256:17 | x :  |
+| string_flow.rb:256:5:256:5 | a :  | string_flow.rb:258:27:258:27 | a :  |
 | string_flow.rb:256:17:256:17 | x :  | string_flow.rb:256:25:256:25 | x |
 | string_flow.rb:258:27:258:27 | a :  | string_flow.rb:258:10:258:29 | call to scrub! |
 | string_flow.rb:262:9:262:18 | call to source :  | string_flow.rb:263:10:263:10 | a :  |
@@ -527,7 +525,6 @@ nodes
 | string_flow.rb:241:10:241:13 | ...[...] | semmle.label | ...[...] |
 | string_flow.rb:242:10:242:10 | b [element] :  | semmle.label | b [element] :  |
 | string_flow.rb:242:10:242:13 | ...[...] | semmle.label | ...[...] |
-| string_flow.rb:246:5:246:18 | ... = ... :  | semmle.label | ... = ... :  |
 | string_flow.rb:246:9:246:18 | call to source :  | semmle.label | call to source :  |
 | string_flow.rb:247:10:247:10 | a :  | semmle.label | a :  |
 | string_flow.rb:247:10:247:21 | call to scrub | semmle.label | call to scrub |
@@ -542,7 +539,6 @@ nodes
 | string_flow.rb:252:10:252:22 | call to scrub! | semmle.label | call to scrub! |
 | string_flow.rb:253:10:253:22 | call to scrub! | semmle.label | call to scrub! |
 | string_flow.rb:253:21:253:21 | a :  | semmle.label | a :  |
-| string_flow.rb:255:5:255:18 | ... = ... :  | semmle.label | ... = ... :  |
 | string_flow.rb:255:9:255:18 | call to source :  | semmle.label | call to source :  |
 | string_flow.rb:256:5:256:5 | a :  | semmle.label | a :  |
 | string_flow.rb:256:17:256:17 | x :  | semmle.label | x :  |

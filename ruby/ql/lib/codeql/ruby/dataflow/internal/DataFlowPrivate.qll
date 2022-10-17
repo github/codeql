@@ -71,6 +71,22 @@ CfgNodes::ExprCfgNode getAPostUpdateNodeForArg(Argument arg) {
   not exists(getALastEvalNode(result))
 }
 
+/**
+ * Gets the data-flow node referencing SSA definition `def` at index `i` in basic
+ * block `bb`. The node is either the definition itself, or a read of the
+ * definition.
+ */
+Node getSsaRefNode(Ssa::Definition def, BasicBlock bb, int i) {
+  def = result.(SsaDefinitionNode).getDefinition() and
+  def.definesAt(_, bb, i)
+  or
+  exists(CfgNodes::ExprCfgNode e |
+    e = result.asExpr() and
+    e = bb.getNode(i) and
+    e = def.getARead()
+  )
+}
+
 /** Provides predicates related to local data flow. */
 module LocalFlow {
   private import codeql.ruby.dataflow.internal.SsaImpl
@@ -102,6 +118,15 @@ module LocalFlow {
     )
   }
 
+  // /**
+  //  * Holds if `nodeFrom` is a node for SSA definition `def`, which can reach `next`.
+  //  */
+  // private predicate localFlowSsaInput(Node nodeFrom, Ssa::Definition def, Ssa::Definition next) {
+  //   exists(BasicBlock bb, int i |
+  //     lastRefBeforeRedef(def, bb, i, next) and
+  //     nodeFrom = getSsaRefNode(def, bb, i)
+  //   )
+  // }
   /** Gets the SSA definition node corresponding to parameter `p`. */
   SsaDefinitionNode getParameterDefNode(NamedParameter p) {
     exists(BasicBlock bb, int i |
@@ -168,18 +193,15 @@ module LocalFlow {
       // Flow into phi node from definition
       exists(Ssa::PhiNode phi |
         localFlowSsaInputFromDef(nodeFrom, def, phi) and
-        phi = nodeTo.(SsaDefinitionNode).getDefinition() and
-        def = phi.getAnInput()
+        phi = nodeTo.(SsaDefinitionNode).getDefinition()
       )
+      // or
+      // // Flow into uncertain SSA definition
+      // exists(SsaImpl::UncertainWriteDefinition uncertain |
+      //   localFlowSsaInput(nodeFrom, def, uncertain) and
+      //   uncertain = nodeTo.(SsaDefinitionNode).getDefinition()
+      // )
     )
-    // TODO
-    // or
-    // // Flow into uncertain SSA definition
-    // exists(LocalFlow::UncertainExplicitSsaDefinition uncertain |
-    //   localFlowSsaInput(nodeFrom, def, uncertain) and
-    //   uncertain = nodeTo.(SsaDefinitionNode).getDefinition() and
-    //   def = uncertain.getPriorDefinition()
-    // )
   }
 
   predicate localFlowStepCommon(Node nodeFrom, Node nodeTo) {
@@ -1077,16 +1099,41 @@ private module OutNodes {
 
 import OutNodes
 
-predicate jumpStep(Node pred, Node succ) {
-  SsaImpl::captureFlowIn(_, pred.(SsaDefinitionNode).getDefinition(),
-    succ.(SsaDefinitionNode).getDefinition())
-  or
+private predicate jumpStepCommon(Node pred, Node succ) {
+  // Flow out of a method directly via a captured variable
   SsaImpl::captureFlowOut(_, pred.(SsaDefinitionNode).getDefinition(),
     succ.(SsaDefinitionNode).getDefinition())
   or
   succ.asExpr().getExpr().(ConstantReadAccess).getValue() = pred.asExpr().getExpr()
   or
   FlowSummaryImpl::Private::Steps::summaryJumpStep(pred, succ)
+}
+
+predicate jumpStep(Node pred, Node succ) {
+  jumpStepCommon(pred, succ)
+  or
+  // Flow into a method via a captured variable
+  exists(Ssa::Definition def, BasicBlock bb, int i |
+    SsaImpl::captureFlowIn(_, def, bb, i, succ.(SsaDefinitionNode).getDefinition()) and
+    [pred, pred.(PostUpdateNode).getPreUpdateNode()] = getSsaRefNode(def, bb, i)
+  )
+  or
+  // Flow out of a method via content on a captured variable
+  exists(CfgNodes::ExprNodes::LocalVariableReadAccessCfgNode inner |
+    inner = pred.(PostUpdateNode).getPreUpdateNode().asExpr()
+  |
+    SsaImpl::captureContentFlowOut(_, inner, succ.asExpr())
+    or
+    SsaImpl::captureContentFlowOutPhi(_, inner, succ.(SsaDefinitionNode).getDefinition())
+  )
+}
+
+predicate jumpStepTypeTracker(Node nodeFrom, Node nodeTo) {
+  jumpStepCommon(nodeFrom, nodeTo)
+  or
+  // Flow into a method directly via a captured variable
+  SsaImpl::captureFlowIn(_, nodeFrom.(SsaDefinitionNode).getDefinition(), _, _,
+    nodeTo.(SsaDefinitionNode).getDefinition())
 }
 
 private ContentSet getKeywordContent(string name) {

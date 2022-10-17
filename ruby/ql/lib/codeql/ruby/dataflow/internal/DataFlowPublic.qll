@@ -661,7 +661,7 @@ module BarrierGuard<guardChecksSig/3 guardChecks> {
     |
       def.getARead() = testedNode and
       guardChecks(g, testedNode, branch) and
-      SsaImpl::captureFlowIn(call, def, result) and
+      SsaImpl::captureFlowIn(call, def, _, _, result) and
       guardControlsBlock(g, call.getBasicBlock(), branch) and
       result.getBasicBlock().getScope() = call.getExpr().(MethodCall).getBlock()
     )
@@ -726,7 +726,7 @@ abstract deprecated class BarrierGuard extends CfgNodes::ExprCfgNode {
     |
       def.getARead() = testedNode and
       this.checks(testedNode, branch) and
-      SsaImpl::captureFlowIn(call, def, result) and
+      SsaImpl::captureFlowIn(call, def, _, _, result) and
       this.controlsBlock(call.getBasicBlock(), branch) and
       result.getBasicBlock().getScope() = call.getExpr().(MethodCall).getBlock()
     )
