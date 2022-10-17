@@ -109,7 +109,7 @@ module LocalFlow {
    * Holds if `nodeFrom` is a parameter node, and `nodeTo` is a corresponding SSA node.
    */
   predicate localFlowSsaParamInput(Node nodeFrom, Node nodeTo) {
-    nodeTo = getParameterDefNode(nodeFrom.(ParameterNode).getParameter())
+    nodeTo = getParameterDefNode(nodeFrom.(ParameterNodeImpl).getParameter())
     or
     nodeTo = getSelfParameterDefNode(nodeFrom.(SelfParameterNode).getMethod())
   }
@@ -299,7 +299,7 @@ private module Cached {
   predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo) {
     LocalFlow::localFlowStepCommon(nodeFrom, nodeTo)
     or
-    defaultValueFlow(nodeTo.(ParameterNode).getParameter(), nodeFrom)
+    defaultValueFlow(nodeTo.(ParameterNodeImpl).getParameter(), nodeFrom)
     or
     LocalFlow::localFlowSsaParamInput(nodeFrom, nodeTo)
     or
@@ -316,7 +316,7 @@ private module Cached {
   predicate localFlowStepImpl(Node nodeFrom, Node nodeTo) {
     LocalFlow::localFlowStepCommon(nodeFrom, nodeTo)
     or
-    defaultValueFlow(nodeTo.(ParameterNode).getParameter(), nodeFrom)
+    defaultValueFlow(nodeTo.(ParameterNodeImpl).getParameter(), nodeFrom)
     or
     LocalFlow::localFlowSsaParamInput(nodeFrom, nodeTo)
     or
@@ -366,7 +366,7 @@ private module Cached {
 
   cached
   predicate isLocalSourceNode(Node n) {
-    n instanceof ParameterNode
+    n instanceof TParameterNode
     or
     // Expressions that can't be reached from another entry definition or expression
     n instanceof ExprNode and
