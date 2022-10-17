@@ -55,14 +55,20 @@ predicate underscoreMacro(Expr e) {
 /**
  * Holds if `t` cannot hold a character array, directly or indirectly.
  */
-predicate cannotContainString(Type t) {
-  t.getUnspecifiedType() instanceof BuiltInType
-  or
-  t.getUnspecifiedType() instanceof IntegralOrEnumType
+predicate cannotContainString(Type t, boolean isIndirect) {
+  isIndirect = false and
+  (
+    t.getUnspecifiedType() instanceof BuiltInType or
+    t.getUnspecifiedType() instanceof IntegralOrEnumType
+  )
 }
 
-predicate isNonConst(DataFlow::Node node) {
-  exists(Expr e | e = node.asExpr() |
+predicate isNonConst(DataFlow::Node node, boolean isIndirect) {
+  exists(Expr e |
+    e = node.asExpr() and isIndirect = false
+    or
+    e = node.asIndirectExpr() and isIndirect = true
+  |
     exists(FunctionCall fc | fc = e |
       not (
         whitelistFunction(fc.getTarget(), _) or
@@ -106,22 +112,28 @@ predicate isNonConst(DataFlow::Node node) {
     )
   )
   or
-  node instanceof DataFlow::DefinitionByReferenceNode
+  node instanceof DataFlow::DefinitionByReferenceNode and
+  isIndirect = true
 }
 
 pragma[noinline]
 predicate isSanitizerNode(DataFlow::Node node) {
   underscoreMacro(node.asExpr())
   or
-  cannotContainString(node.getType())
+  not exists(node.asIndirectExpr()) and
+  not exists(node.asDefiningArgument()) and
+  cannotContainString(node.getType(), false)
 }
 
 class NonConstFlow extends TaintTracking::Configuration {
   NonConstFlow() { this = "NonConstFlow" }
 
   override predicate isSource(DataFlow::Node source) {
-    isNonConst(source) and
-    not cannotContainString(source.getType())
+    exists(boolean isIndirect, Type t |
+      isNonConst(source, isIndirect) and
+      t = source.getType() and
+      not cannotContainString(t, isIndirect)
+    )
   }
 
   override predicate isSink(DataFlow::Node sink) {
