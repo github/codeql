@@ -7,4 +7,4 @@ where
   toBeTested(x) and
   not x.isUnknown() and
   getName = x.getName()
-select x, "getName:", getName
+select x, x.getPrimaryQlClasses(), "getName:", getName
