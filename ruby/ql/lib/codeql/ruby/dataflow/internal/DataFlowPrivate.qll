@@ -1003,6 +1003,8 @@ predicate jumpStep(Node pred, Node succ) {
     succ.(SsaDefinitionNode).getDefinition())
   or
   succ.asExpr().getExpr().(ConstantReadAccess).getValue() = pred.asExpr().getExpr()
+  or
+  FlowSummaryImpl::Private::Steps::summaryJumpStep(pred, succ)
 }
 
 private ContentSet getKeywordContent(string name) {

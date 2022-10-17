@@ -3,7 +3,7 @@
  * @name Untrusted network-to-host usage
  * @description Using the result of a network-to-host byte order function, such as ntohl, as an
  *              array bound or length value without checking it may result in buffer overflows or
- *              other vulnerabilties.
+ *              other vulnerabilities.
  * @kind problem
  * @problem.severity error
  */

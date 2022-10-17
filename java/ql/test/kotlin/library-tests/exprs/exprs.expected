@@ -4028,6 +4028,72 @@
 | samConversion.kt:59:8:59:15 | fn1(...) | samConversion.kt:57:9:60:1 | test | MethodAccess |
 | samConversion.kt:59:12:59:12 | 1 | samConversion.kt:57:9:60:1 | test | IntegerLiteral |
 | samConversion.kt:59:14:59:14 | 2 | samConversion.kt:57:9:60:1 | test | IntegerLiteral |
+| samConversion.kt:63:5:63:13 | ...=... | samConversion.kt:62:1:64:1 | PropertyRefsTest | KtInitializerAssignExpr |
+| samConversion.kt:63:5:63:13 | int | file://:0:0:0:0 | <none> | TypeAccess |
+| samConversion.kt:63:5:63:13 | int | file://:0:0:0:0 | <none> | TypeAccess |
+| samConversion.kt:63:5:63:13 | this | samConversion.kt:63:5:63:13 | getX | ThisAccess |
+| samConversion.kt:63:5:63:13 | this.x | samConversion.kt:63:5:63:13 | getX | VarAccess |
+| samConversion.kt:63:5:63:13 | x | samConversion.kt:62:1:64:1 | PropertyRefsTest | VarAccess |
+| samConversion.kt:63:13:63:13 | 1 | samConversion.kt:62:1:64:1 | PropertyRefsTest | IntegerLiteral |
+| samConversion.kt:67:5:67:37 | int | file://:0:0:0:0 | <none> | TypeAccess |
+| samConversion.kt:67:11:67:31 | PropertyRefsTest | file://:0:0:0:0 | <none> | TypeAccess |
+| samConversion.kt:71:5:71:16 | int | file://:0:0:0:0 | <none> | TypeAccess |
+| samConversion.kt:74:1:77:1 | Unit | file://:0:0:0:0 | <none> | TypeAccess |
+| samConversion.kt:74:22:74:42 | PropertyRefsTest | file://:0:0:0:0 | <none> | TypeAccess |
+| samConversion.kt:75:5:75:33 | test1 | samConversion.kt:74:1:77:1 | propertyRefsTest | LocalVariableDeclExpr |
+| samConversion.kt:75:17:75:33 | (...)... | samConversion.kt:74:1:77:1 | propertyRefsTest | CastExpr |
+| samConversion.kt:75:17:75:33 | ...=... | samConversion.kt:75:17:75:33 |  | AssignExpr |
+| samConversion.kt:75:17:75:33 | <fn> | samConversion.kt:75:17:75:33 |  | VarAccess |
+| samConversion.kt:75:17:75:33 | <fn> | samConversion.kt:75:17:75:33 | f | VarAccess |
+| samConversion.kt:75:17:75:33 | Function0<Integer> | file://:0:0:0:0 | <none> | TypeAccess |
+| samConversion.kt:75:17:75:33 | IntGetter | samConversion.kt:74:1:77:1 | propertyRefsTest | TypeAccess |
+| samConversion.kt:75:17:75:33 | IntGetter | samConversion.kt:74:1:77:1 | propertyRefsTest | TypeAccess |
+| samConversion.kt:75:17:75:33 | Integer | file://:0:0:0:0 | <none> | TypeAccess |
+| samConversion.kt:75:17:75:33 | int | file://:0:0:0:0 | <none> | TypeAccess |
+| samConversion.kt:75:17:75:33 | invoke(...) | samConversion.kt:75:17:75:33 | f | MethodAccess |
+| samConversion.kt:75:17:75:33 | new (...) | samConversion.kt:74:1:77:1 | propertyRefsTest | ClassInstanceExpr |
+| samConversion.kt:75:17:75:33 | this | samConversion.kt:75:17:75:33 |  | ThisAccess |
+| samConversion.kt:75:17:75:33 | this.<fn> | samConversion.kt:75:17:75:33 |  | VarAccess |
+| samConversion.kt:75:27:75:29 | prt | samConversion.kt:74:1:77:1 | propertyRefsTest | VarAccess |
+| samConversion.kt:75:27:75:32 | ...::... | samConversion.kt:74:1:77:1 | propertyRefsTest | PropertyRefExpr |
+| samConversion.kt:75:27:75:32 | ...=... | samConversion.kt:75:27:75:32 |  | AssignExpr |
+| samConversion.kt:75:27:75:32 | <dispatchReceiver> | samConversion.kt:75:27:75:32 |  | VarAccess |
+| samConversion.kt:75:27:75:32 | Integer | samConversion.kt:74:1:77:1 | propertyRefsTest | TypeAccess |
+| samConversion.kt:75:27:75:32 | KProperty0<Integer> | samConversion.kt:74:1:77:1 | propertyRefsTest | TypeAccess |
+| samConversion.kt:75:27:75:32 | PropertyRefsTest | file://:0:0:0:0 | <none> | TypeAccess |
+| samConversion.kt:75:27:75:32 | get(...) | samConversion.kt:75:27:75:32 | invoke | MethodAccess |
+| samConversion.kt:75:27:75:32 | getX(...) | samConversion.kt:75:27:75:32 | get | MethodAccess |
+| samConversion.kt:75:27:75:32 | this | samConversion.kt:75:27:75:32 |  | ThisAccess |
+| samConversion.kt:75:27:75:32 | this | samConversion.kt:75:27:75:32 | get | ThisAccess |
+| samConversion.kt:75:27:75:32 | this | samConversion.kt:75:27:75:32 | invoke | ThisAccess |
+| samConversion.kt:75:27:75:32 | this.<dispatchReceiver> | samConversion.kt:75:27:75:32 |  | VarAccess |
+| samConversion.kt:75:27:75:32 | this.<dispatchReceiver> | samConversion.kt:75:27:75:32 | get | VarAccess |
+| samConversion.kt:76:5:76:55 | test2 | samConversion.kt:74:1:77:1 | propertyRefsTest | LocalVariableDeclExpr |
+| samConversion.kt:76:17:76:55 | (...)... | samConversion.kt:74:1:77:1 | propertyRefsTest | CastExpr |
+| samConversion.kt:76:17:76:55 | ...=... | samConversion.kt:76:17:76:55 |  | AssignExpr |
+| samConversion.kt:76:17:76:55 | <fn> | samConversion.kt:76:17:76:55 |  | VarAccess |
+| samConversion.kt:76:17:76:55 | <fn> | samConversion.kt:76:17:76:55 | f | VarAccess |
+| samConversion.kt:76:17:76:55 | Function1<PropertyRefsTest,Integer> | file://:0:0:0:0 | <none> | TypeAccess |
+| samConversion.kt:76:17:76:55 | Integer | file://:0:0:0:0 | <none> | TypeAccess |
+| samConversion.kt:76:17:76:55 | PropertyRefsGetter | samConversion.kt:74:1:77:1 | propertyRefsTest | TypeAccess |
+| samConversion.kt:76:17:76:55 | PropertyRefsGetter | samConversion.kt:74:1:77:1 | propertyRefsTest | TypeAccess |
+| samConversion.kt:76:17:76:55 | PropertyRefsTest | file://:0:0:0:0 | <none> | TypeAccess |
+| samConversion.kt:76:17:76:55 | PropertyRefsTest | file://:0:0:0:0 | <none> | TypeAccess |
+| samConversion.kt:76:17:76:55 | int | file://:0:0:0:0 | <none> | TypeAccess |
+| samConversion.kt:76:17:76:55 | invoke(...) | samConversion.kt:76:17:76:55 | f | MethodAccess |
+| samConversion.kt:76:17:76:55 | new (...) | samConversion.kt:74:1:77:1 | propertyRefsTest | ClassInstanceExpr |
+| samConversion.kt:76:17:76:55 | prt | samConversion.kt:76:17:76:55 | f | VarAccess |
+| samConversion.kt:76:17:76:55 | this | samConversion.kt:76:17:76:55 |  | ThisAccess |
+| samConversion.kt:76:17:76:55 | this.<fn> | samConversion.kt:76:17:76:55 |  | VarAccess |
+| samConversion.kt:76:36:76:54 | ...::... | samConversion.kt:74:1:77:1 | propertyRefsTest | PropertyRefExpr |
+| samConversion.kt:76:36:76:54 | Integer | samConversion.kt:74:1:77:1 | propertyRefsTest | TypeAccess |
+| samConversion.kt:76:36:76:54 | KProperty1<PropertyRefsTest,Integer> | samConversion.kt:74:1:77:1 | propertyRefsTest | TypeAccess |
+| samConversion.kt:76:36:76:54 | PropertyRefsTest | samConversion.kt:74:1:77:1 | propertyRefsTest | TypeAccess |
+| samConversion.kt:76:36:76:54 | a0 | samConversion.kt:76:36:76:54 | get | VarAccess |
+| samConversion.kt:76:36:76:54 | a0 | samConversion.kt:76:36:76:54 | invoke | VarAccess |
+| samConversion.kt:76:36:76:54 | get(...) | samConversion.kt:76:36:76:54 | invoke | MethodAccess |
+| samConversion.kt:76:36:76:54 | getX(...) | samConversion.kt:76:36:76:54 | get | MethodAccess |
+| samConversion.kt:76:36:76:54 | this | samConversion.kt:76:36:76:54 | invoke | ThisAccess |
 | whenExpr.kt:1:1:9:1 | int | file://:0:0:0:0 | <none> | TypeAccess |
 | whenExpr.kt:1:14:1:19 | int | file://:0:0:0:0 | <none> | TypeAccess |
 | whenExpr.kt:2:10:8:3 | <Stmt> | whenExpr.kt:1:1:9:1 | testWhen | StmtExpr |

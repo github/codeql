@@ -211,7 +211,7 @@ module API {
      * Gets a node representing the `i`th parameter of the function represented by this node.
      *
      * This predicate may have multiple results when there are multiple invocations of this API component.
-     * Consider using `getAnInvocation()` if there is a need to distingiush between individual calls.
+     * Consider using `getAnInvocation()` if there is a need to distinguish between individual calls.
      */
     Node getParameter(int i) { result = this.getASuccessor(Label::parameter(i)) }
 
@@ -219,7 +219,7 @@ module API {
      * Gets the node representing the keyword parameter `name` of the function represented by this node.
      *
      * This predicate may have multiple results when there are multiple invocations of this API component.
-     * Consider using `getAnInvocation()` if there is a need to distingiush between individual calls.
+     * Consider using `getAnInvocation()` if there is a need to distinguish between individual calls.
      */
     Node getKeywordParameter(string name) {
       result = this.getASuccessor(Label::keywordParameter(name))
