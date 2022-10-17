@@ -69,15 +69,16 @@ Import statements
 Each query generally contains one or more ``import`` statements, which define the :ref:`libraries <library-modules>` or :ref:`modules <modules>` to import into the query. Libraries and modules provide a way of grouping together related :ref:`types <types>`, :ref:`predicates <predicates>`, and other modules. The contents of each library or module that you import can then be accessed by the query. 
 Our `open source repository on GitHub <https://github.com/github/codeql>`__ contains the standard CodeQL libraries for each supported language.   
 
-When writing your own alert queries, you would typically import the standard library for the language of the project that you are querying, using ``import`` followed by a language:
+When writing your own alert queries, you would typically import the standard library for the language of the project that you are querying. For more information about importing the standard CodeQL libraries, see the CodeQL library guides:
 
-- C/C++: ``cpp``
-- C#: ``csharp``
-- Go: ``go``
-- Java: ``java``
-- JavaScript/TypeScript: ``javascript``
-- Python: ``python``
-- Ruby: ``ruby``
+- :ref:`CodeQL library guide for C and C++ <codeql-library-for-cpp>`
+- :ref:`CodeQL library guide for C# <codeql-library-for-csharp>`
+- :ref:`CodeQL library guide for Go <codeql-library-for-go>`
+- :ref:`CodeQL library guide for Java <codeql-library-for-java>`
+- :ref:`CodeQL library guide for JavaScript <codeql-library-for-javascript>`
+- :ref:`CodeQL library guide for Python <codeql-library-for-python>`
+- :ref:`CodeQL library guide for Ruby <codeql-library-for-ruby>`
+- :ref:`CodeQL library guide for TypeScript <codeql-library-for-typescript>`
 
 There are also libraries containing commonly used predicates, types, and other modules associated with different analyses, including data flow, control flow, and taint-tracking. In order to calculate path graphs, path queries require you to import a data flow library into the query file. For more information, see ":doc:`Creating path queries <creating-path-queries>`."
 
