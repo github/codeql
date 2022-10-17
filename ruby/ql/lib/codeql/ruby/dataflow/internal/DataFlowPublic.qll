@@ -440,15 +440,24 @@ signature predicate guardChecksSig(CfgNodes::ExprCfgNode g, CfgNode e, boolean b
  * in data flow and taint tracking.
  */
 module BarrierGuard<guardChecksSig/3 guardChecks> {
+  pragma[nomagic]
+  private predicate guardChecksSsaDef(CfgNodes::ExprCfgNode g, boolean branch, Ssa::Definition def) {
+    guardChecks(g, def.getARead(), branch)
+  }
+
+  pragma[nomagic]
+  private predicate guardControlsSsaDef(
+    CfgNodes::ExprCfgNode g, boolean branch, Ssa::Definition def, Node n
+  ) {
+    def.getARead() = n.asExpr() and
+    guardControlsBlock(g, n.asExpr().getBasicBlock(), branch)
+  }
+
   /** Gets a node that is safely guarded by the given guard check. */
   Node getABarrierNode() {
-    exists(
-      CfgNodes::ExprCfgNode g, boolean branch, CfgNodes::ExprCfgNode testedNode, Ssa::Definition def
-    |
-      def.getARead() = testedNode and
-      def.getARead() = result.asExpr() and
-      guardChecks(g, testedNode, branch) and
-      guardControlsBlock(g, result.asExpr().getBasicBlock(), branch)
+    exists(CfgNodes::ExprCfgNode g, boolean branch, Ssa::Definition def |
+      guardChecksSsaDef(g, branch, def) and
+      guardControlsSsaDef(g, branch, def, result)
     )
     or
     result.asExpr() = getAMaybeGuardedCapturedDef().getARead()
