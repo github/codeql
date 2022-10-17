@@ -23,7 +23,7 @@ private class DigestCall extends Cryptography::CryptographicOperation::Range ins
     or
     this = digest(algo).getAMethodCall("file") // it's directly hashing the contents of a file, but that's close enough for us.
     or
-    this = digest(algo).getMethod("new").getReturn().getAMethodCall(["digest", "update", "<<"])
+    this = digest(algo).getInstance().getAMethodCall(["digest", "update", "<<"])
   }
 
   override Cryptography::HashingAlgorithm getAlgorithm() { result = algo }
