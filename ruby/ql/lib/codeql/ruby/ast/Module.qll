@@ -213,6 +213,14 @@ class ModuleBase extends BodyStmt, Scope, TModuleBase {
    * Does not include the `self` variable from any of the methods in the module.
    */
   SelfVariable getModuleSelfVariable() { result.getDeclaringScope() = this }
+
+  /** Gets the nearest enclosing `Namespace` or `Toplevel`, possibly this module itself. */
+  Namespace getNamespaceOrToplevel() {
+    result = this
+    or
+    not this instanceof Namespace and
+    result = this.getEnclosingModule().getNamespaceOrToplevel()
+  }
 }
 
 /**
