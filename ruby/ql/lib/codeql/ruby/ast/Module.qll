@@ -90,6 +90,44 @@ class Module extends TModule {
     or
     result.(SelfVariableAccess).getVariable().getDeclaringScope() = this.getASingletonMethod()
   }
+
+  pragma[nomagic]
+  private string getEnclosingModuleName() {
+    exists(string qname |
+      qname = this.getQualifiedName() and
+      result = qname.regexpReplaceAll("::[^:]*$", "") and
+      qname != result
+    )
+  }
+
+  pragma[nomagic]
+  private string getOwnModuleName() {
+    result = this.getQualifiedName().regexpReplaceAll("^.*::", "")
+  }
+
+  /**
+   * Gets the enclosing module, as it appears in the qualified name of this module.
+   *
+   * For example, the canonical enclosing module of `A::B` is `A`, and `A` itself has no canonical enclosing module.
+   */
+  pragma[nomagic]
+  Module getCanonicalEnclosingModule() { result.getQualifiedName() = this.getEnclosingModuleName() }
+
+  /**
+   * Gets a module named `name` declared inside this one (not aliased), provided
+   * that such a module is defined or reopened in the current codebase.
+   *
+   * For example, for `A::B` the canonical nested module named `C` would be `A::B::C`.
+   *
+   * Note that this is not the same as constant lookup. If `A::B::C` would resolve to a
+   * module whose qualified name is not `A::B::C`, then it will not be found by
+   * this predicate.
+   */
+  pragma[nomagic]
+  Module getCanonicalNestedModule(string name) {
+    result.getCanonicalEnclosingModule() = this and
+    result.getOwnModuleName() = name
+  }
 }
 
 /**
