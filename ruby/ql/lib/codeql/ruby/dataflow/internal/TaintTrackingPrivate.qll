@@ -95,10 +95,6 @@ private module Cached {
         )
     )
     or
-    // string interpolation of `nodeFrom` into `nodeTo`
-    nodeFrom.asExpr() =
-      nodeTo.asExpr().(CfgNodes::ExprNodes::StringlikeLiteralCfgNode).getAComponent()
-    or
     FlowSummaryImpl::Private::Steps::summaryLocalStep(nodeFrom, nodeTo, false)
     or
     any(FlowSteps::AdditionalTaintStep s).step(nodeFrom, nodeTo)

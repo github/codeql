@@ -11,7 +11,9 @@ private class Unit = DFPrivate::Unit;
  * A module importing the frameworks that implement additional flow steps,
  * ensuring that they are visible to the taint tracking library.
  */
-private module Frameworks { }
+private module Frameworks {
+  import codeql.ruby.frameworks.StringFormatters
+}
 
 /**
  * A unit class for adding additional taint steps.

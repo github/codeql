@@ -77,3 +77,19 @@ class IOPrintfCall extends PrintfStyleCall {
 
   override predicate returnsFormatted() { none() }
 }
+
+private import codeql.ruby.dataflow.FlowSteps
+private import codeql.ruby.CFG
+
+/**
+ * A step for string interpolation of `pred` into `succ`.
+ * E.g.
+ * ```rb
+ * succ = "foo #{pred} bar"
+ * ```
+ */
+private class StringLiteralFormatStep extends AdditionalTaintStep {
+  override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
+    pred.asExpr() = succ.asExpr().(CfgNodes::ExprNodes::StringlikeLiteralCfgNode).getAComponent()
+  }
+}
