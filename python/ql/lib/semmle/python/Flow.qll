@@ -125,7 +125,7 @@ class ControlFlowNode extends @py_flow_node {
   /** Gets a textual representation of this element. */
   cached
   string toString() {
-    Stages::DataFlow::ref() and
+    Stages::PointsTo::ref() and
     exists(Scope s | s.getEntryNode() = this | result = "Entry node for " + s.toString())
     or
     exists(Scope s | s.getANormalExit() = this | result = "Exit node for " + s.toString())
