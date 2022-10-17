@@ -29,10 +29,11 @@
 </recommendation>
 <example>
 <p>
-  This example shows two ways of opening a file using a <code>ContentResolver</code>. In the first case, externally-provided
+  This example shows three ways of opening a file using a <code>ContentResolver</code>. In the first case, externally-provided
   data from an intent is used directly in the file-reading operation. This allows an attacker to provide a URI
   of the form <code>/data/data/(vulnerable app package)/(private file)</code> to trick the application into reading it and
-  copying it to the external storage. In the second case, the URI is validated before being used, making sure it does not reference
+  copying it to the external storage. In the second case, an insufficient check is performed on the externally-provided URI, still
+  leaving room for exploitation. In the third case, the URI is correctly validated before being used, making sure it does not reference
   any internal application files.
 </p>
 <sample src="UnsafeContentUriResolution.java" />
