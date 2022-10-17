@@ -12,5 +12,6 @@ query predicate oldStyleBarrierGuards(
 
 query predicate newStyleBarrierGuards(DataFlow::Node n) {
   n instanceof StringConstCompareBarrier or
-  n instanceof StringConstArrayInclusionCallBarrier
+  n instanceof StringConstArrayInclusionCallBarrier or
+  n instanceof StringConstCaseCompareBarrier
 }

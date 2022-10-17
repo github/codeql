@@ -102,3 +102,10 @@ if bars.include?(foo)
 else
     foo
 end
+
+case foo
+when "foo"
+    foo
+else
+    foo
+end

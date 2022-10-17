@@ -8,7 +8,7 @@ private import codeql.ruby.dataflow.SSA
 private import codeql.ruby.ast.internal.Constant
 private import codeql.ruby.InclusionTests
 
-private predicate stringConstCompare(CfgNodes::ExprCfgNode g, CfgNode e, boolean branch) {
+private predicate stringConstCompare(CfgNodes::AstCfgNode g, CfgNode e, boolean branch) {
   exists(CfgNodes::ExprNodes::ComparisonOperationCfgNode c |
     c = g and
     exists(CfgNodes::ExprNodes::StringLiteralCfgNode strLitNode |
@@ -72,7 +72,7 @@ deprecated class StringConstCompare extends DataFlow::BarrierGuard,
   }
 }
 
-private predicate stringConstArrayInclusionCall(CfgNodes::ExprCfgNode g, CfgNode e, boolean branch) {
+private predicate stringConstArrayInclusionCall(CfgNodes::AstCfgNode g, CfgNode e, boolean branch) {
   exists(InclusionTest t |
     t.asExpr() = g and
     e = t.getContainedNode().asExpr() and
@@ -131,4 +131,42 @@ deprecated class StringConstArrayInclusionCall extends DataFlow::BarrierGuard,
   StringConstArrayInclusionCall() { stringConstArrayInclusionCall(this, checkedNode, true) }
 
   override predicate checks(CfgNode expr, boolean branch) { expr = checkedNode and branch = true }
+}
+
+/**
+ * A validation of a value by comparing with a constant string via a `case`
+ * expression. For example:
+ *
+ * ```rb
+ * name = params[:user_name]
+ * case name
+ * when "alice"
+ *   User.find_by("username = #{name}")
+ * end
+ * ```
+ */
+class StringConstCaseCompareBarrier extends DataFlow::Node {
+  StringConstCaseCompareBarrier() {
+    this = DataFlow::BarrierGuard<stringConstCaseCompare/3>::getABarrierNode()
+  }
+}
+
+/**
+ * Implements the logic for `StringConstCaseCompareBarrier`.
+ */
+private predicate stringConstCaseCompare(
+  CfgNodes::AstCfgNode guard, CfgNode testedNode, boolean branch
+) {
+  exists(CfgNodes::ExprNodes::CaseExprCfgNode case |
+    case.getValue() = testedNode and
+    exists(
+      CfgNodes::ExprNodes::WhenClauseCfgNode branchNode,
+      CfgNodes::ExprNodes::StringLiteralCfgNode strLitNode
+    |
+      guard = strLitNode and
+      branchNode = case.getBranch(_) and
+      branchNode.getPattern(_) = strLitNode and
+      branch = true
+    )
+  )
 }
