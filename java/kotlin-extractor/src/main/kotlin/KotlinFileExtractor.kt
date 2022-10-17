@@ -2613,8 +2613,12 @@ open class KotlinFileExtractor(
                         || isBuiltinCallKotlin(c, "byteArrayOf")
                         || isBuiltinCallKotlin(c, "booleanArrayOf") -> {
 
-                    // TODO: is there any reason not to always use getArrayElementType?
-                    val elementType = if (isBuiltinCallKotlin(c, "arrayOf")) {
+
+                    val isPrimitiveArrayCreation = !isBuiltinCallKotlin(c, "arrayOf")
+                    val elementType = if (isPrimitiveArrayCreation) {
+                        c.type.getArrayElementType(pluginContext.irBuiltIns)
+                    } else {
+                        // TODO: is there any reason not to always use getArrayElementType?
                         if (c.typeArgumentsCount == 1) {
                             c.getTypeArgument(0).also {
                                 if (it == null) {
@@ -2625,8 +2629,6 @@ open class KotlinFileExtractor(
                             logger.errorElement("Expected to find one type argument in arrayOf call", c)
                             null
                         }
-                    } else {
-                        c.type.getArrayElementType(pluginContext.irBuiltIns)
                     }
 
                     val arg = if (c.valueArgumentsCount == 1) c.getValueArgument(0) else {
@@ -2639,7 +2641,7 @@ open class KotlinFileExtractor(
                         }
                     }
 
-                    extractArrayCreation(arg, c.type, elementType, c, parent, idx, callable, enclosingStmt)
+                    extractArrayCreation(arg, c.type, elementType, isPrimitiveArrayCreation, c, parent, idx, callable, enclosingStmt)
                 }
                 isBuiltinCall(c, "<get-java>", "kotlin.jvm") -> {
                     // Special case for KClass<*>.java, which is used in the Parcelize plugin. In normal cases, this is already rewritten to the property referenced below:
@@ -2825,7 +2827,7 @@ open class KotlinFileExtractor(
         }
     }
 
-    private fun extractArrayCreation(elementList: IrVararg?, resultType: IrType, elementType: IrType?, locElement: IrElement, parent: Label<out DbExprparent>, idx: Int, enclosingCallable: Label<out DbCallable>, enclosingStmt: Label<out DbStmt>) {
+    private fun extractArrayCreation(elementList: IrVararg?, resultType: IrType, elementType: IrType?, allowPrimitiveElementType: Boolean, locElement: IrElement, parent: Label<out DbExprparent>, idx: Int, enclosingCallable: Label<out DbCallable>, enclosingStmt: Label<out DbStmt>) {
         // If this is [someType]ArrayOf(*x), x, otherwise null
         val clonedArray = elementList?.let {
             if (it.elements.size == 1) {
@@ -2852,7 +2854,8 @@ open class KotlinFileExtractor(
             tw.writeCallableEnclosingExpr(id, enclosingCallable)
 
             if (elementType != null) {
-                extractTypeAccessRecursive(elementType, locId, id, -1, enclosingCallable, enclosingStmt, TypeContext.GENERIC_ARGUMENT)
+                val typeContext = if (allowPrimitiveElementType) TypeContext.OTHER else TypeContext.GENERIC_ARGUMENT
+                extractTypeAccessRecursive(elementType, locId, id, -1, enclosingCallable, enclosingStmt, typeContext)
             }
 
             if (elementList != null) {
@@ -3657,7 +3660,7 @@ open class KotlinFileExtractor(
                     // This AST element can also occur as a collection literal in an annotation class, such as
                     // annotation class Ann(val strings: Array<String> = [])
                     val exprParent = parent.expr(e, callable)
-                    extractArrayCreation(e, e.type, e.varargElementType, e, exprParent.parent, exprParent.idx, callable, exprParent.enclosingStmt)
+                    extractArrayCreation(e, e.type, e.varargElementType, true, e, exprParent.parent, exprParent.idx, callable, exprParent.enclosingStmt)
                 }
                 is IrGetObjectValue -> {
                     // For `object MyObject { ... }`, the .class has an
