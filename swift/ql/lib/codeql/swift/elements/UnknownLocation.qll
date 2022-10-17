@@ -12,4 +12,6 @@ class UnknownLocation extends UnknownLocationBase {
   override int getEndLine() { result = 0 }
 
   override int getEndColumn() { result = 0 }
+
+  override string toString() { result = "UnknownLocation" }
 }
