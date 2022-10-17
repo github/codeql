@@ -366,7 +366,7 @@ private module Cached {
 
   cached
   predicate isLocalSourceNode(Node n) {
-    n instanceof ParameterNode
+    n instanceof TParameterNode
     or
     // Expressions that can't be reached from another entry definition or expression
     n instanceof ExprNode and
