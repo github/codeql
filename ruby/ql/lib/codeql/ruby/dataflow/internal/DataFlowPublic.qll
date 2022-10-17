@@ -857,6 +857,25 @@ class ModuleNode instanceof Module {
    * from ancestors.
    */
   MethodNode getAnInstanceMethod() { result = this.getInstanceMethod(_) }
+
+  /**
+   * Gets the enclosing module, as it appears in the qualified name of this module.
+   *
+   * For example, the canonical enclosing module of `A::B` is `A`, and `A` itself has no canonical enclosing module.
+   */
+  ModuleNode getCanonicalEnclosingModule() { result = super.getCanonicalEnclosingModule() }
+
+  /**
+   * Gets a module named `name` declared inside this one (not aliased), provided
+   * that such a module is defined or reopened in the current codebase.
+   *
+   * For example, for `A::B` the canonical nested module named `C` would be `A::B::C`.
+   *
+   * Note that this is not the same as constant lookup. If `A::B::C` would resolve to a
+   * module whose qualified name is not `A::B::C`, then it will not be found by
+   * this predicate.
+   */
+  ModuleNode getCanonicalNestedModule(string name) { result = super.getCanonicalNestedModule(name) }
 }
 
 /**
