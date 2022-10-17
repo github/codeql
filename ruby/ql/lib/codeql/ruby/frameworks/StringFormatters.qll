@@ -21,6 +21,9 @@ abstract class PrintfStyleCall extends DataFlow::CallNode {
    * Gets then `n`th formatted argument of this call.
    */
   DataFlow::Node getFormatArgument(int n) { n >= 0 and result = this.getArgument(n + 1) }
+
+  /** Holds if this call returns the formatted string. */
+  predicate returnsFormatted() { any() }
 }
 
 /**
@@ -46,6 +49,8 @@ class KernelPrintfCall extends PrintfStyleCall {
     then result = this.getArgument(0)
     else result = this.getArgument([0, 1])
   }
+
+  override predicate returnsFormatted() { none() }
 }
 
 /**
@@ -58,6 +63,8 @@ class KernelSprintfCall extends PrintfStyleCall {
     this.asExpr().getExpr() instanceof UnknownMethodCall and
     this.getMethodName() = "sprintf"
   }
+
+  override predicate returnsFormatted() { any() }
 }
 
 /**
@@ -67,4 +74,6 @@ class IOPrintfCall extends PrintfStyleCall {
   IOPrintfCall() {
     this.getReceiver() instanceof IO::IOInstance and this.getMethodName() = "printf"
   }
+
+  override predicate returnsFormatted() { none() }
 }
