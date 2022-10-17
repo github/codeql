@@ -164,10 +164,6 @@ module ImportResolution {
     )
   }
 
-  Module getModule(DataFlow::CfgNode node) {
-    exists(ModuleValue mv |
-      node.getNode().pointsTo(mv) and
-      result = mv.getScope()
   Module getModuleImportedByImportStar(ImportStar i) {
     isPreferredModuleForName(result.getFile(), i.getImportedModuleName())
   }
@@ -288,4 +284,5 @@ module ImportResolution {
     )
   }
 
+  Module getModule(DataFlow::CfgNode node) { node = getModuleReference(result) }
 }
