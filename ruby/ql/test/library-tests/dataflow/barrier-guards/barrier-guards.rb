@@ -120,3 +120,74 @@ if not x then
 else
     bars
 end
+
+case foo
+when "foo"
+    foo
+else
+    foo
+end
+
+case foo
+when "foo"
+    foo
+when "bar"
+    foo
+end
+
+case foo
+when "foo", "bar" # not recognised
+    foo
+when "baz", "quux" # not recognised
+    foo
+else
+    foo
+end
+
+case foo
+when *["foo", "bar"]
+    foo
+end
+
+case foo
+when *%w[foo bar]
+    foo
+end
+
+case foo
+when *FOO
+    foo
+end
+
+case foo
+when *foos
+    foo
+end
+
+case foo
+when *["foo", x] # not a guard - includes non-constant element `x`
+    foo
+end
+
+case foo
+when "foo", x # not a guard - includes non-constant element `x`
+    foo
+end
+
+foo_and_x = ["foo", x]
+
+case foo
+when *foo_and_x # not a guard - includes non-constant element `x`
+    foo
+end
+
+FOO_AND_X = ["foo", x]
+
+case foo
+when *FOO_AND_X # not a guard - includes non-constant element `x`
+    foo
+end
+
+if foo == "foo" or foo == "bar" # not recognised
+    foo
+end
