@@ -8,11 +8,11 @@ class Location extends LocationBase {
    * Holds if this location is described by `path`, `startLine`, `startColumn`, `endLine` and `endColumn`.
    */
   predicate hasLocationInfo(string path, int startLine, int startColumn, int endLine, int endColumn) {
-    path = getFile().getFullName() and
-    startLine = getStartLine() and
-    startColumn = getStartColumn() and
-    endLine = getEndLine() and
-    endColumn = getEndColumn()
+    path = this.getFile().getFullName() and
+    startLine = this.getStartLine() and
+    startColumn = this.getStartColumn() and
+    endLine = this.getEndLine() and
+    endColumn = this.getEndColumn()
   }
 
   /**
