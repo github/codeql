@@ -371,6 +371,21 @@ predicate ssaFlow(Node nodeFrom, Node nodeTo) {
   )
 }
 
+/**
+ * Holds if `use` is a use of `sv` and is a next adjacent use of `phi` in
+ * index `i1` in basic block `bb1`.
+ *
+ * This predicate exists to prevent an early join of `adjacentDefRead` with `definesAt`.
+ */
+pragma[nomagic]
+private predicate fromPhiNodeToUse(PhiNode phi, SourceVariable sv, IRBlock bb1, int i1, UseOrPhi use) {
+  exists(IRBlock bb2, int i2 |
+    use.asDefOrUse().hasIndexInBlock(bb2, i2, sv) and
+    adjacentDefRead(pragma[only_bind_into](phi), pragma[only_bind_into](bb1),
+      pragma[only_bind_into](i1), pragma[only_bind_into](bb2), pragma[only_bind_into](i2))
+  )
+}
+
 /** Holds if `nodeTo` receives flow from the phi node `nodeFrom`. */
 predicate fromPhiNode(SsaPhiNode nodeFrom, Node nodeTo) {
   exists(PhiNode phi, SourceVariable sv, IRBlock bb1, int i1, UseOrPhi use |
@@ -378,10 +393,7 @@ predicate fromPhiNode(SsaPhiNode nodeFrom, Node nodeTo) {
     phi.definesAt(sv, bb1, i1) and
     useToNode(use, nodeTo)
   |
-    exists(IRBlock bb2, int i2 |
-      use.asDefOrUse().hasIndexInBlock(bb2, i2, sv) and
-      adjacentDefRead(phi, bb1, i1, bb2, i2)
-    )
+    fromPhiNodeToUse(phi, sv, bb1, i1, use)
     or
     exists(PhiNode phiTo |
       lastRefRedef(phi, _, _, phiTo) and
