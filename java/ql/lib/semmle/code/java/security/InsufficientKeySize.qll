@@ -124,7 +124,7 @@ private class SymmetricInitMethodAccess extends KeyGenInitMethodAccess {
 }
 
 /** An instance of a key generator. */
-abstract class KeyGeneratorObject extends JavaxCryptoAlgoSpec {
+abstract class KeyGeneratorObject extends CryptoAlgoSpec {
   string getAlgoName() { result = this.getAlgoSpec().(StringLiteral).getValue().toUpperCase() }
 }
 

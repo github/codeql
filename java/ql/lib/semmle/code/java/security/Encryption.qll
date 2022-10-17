@@ -323,20 +323,21 @@ class JavaxCryptoSecretKey extends JavaxCryptoAlgoSpec {
   }
 }
 
-/** The Java class `javax.crypto.spec.DHGenParameterSpec`. */
-class DhGenParameterSpec extends RefType {
-  DhGenParameterSpec() { this.hasQualifiedName("javax.crypto.spec", "DHGenParameterSpec") }
-}
-
 class JavaxCryptoKeyGenerator extends JavaxCryptoAlgoSpec {
   JavaxCryptoKeyGenerator() {
+    exists(Constructor c | c.getAReference() = this | c.getDeclaringType() instanceof KeyGenerator)
+    or
     exists(Method m | m.getAReference() = this |
       m.getDeclaringType() instanceof KeyGenerator and
       m.getName() = "getInstance"
     )
   }
 
-  override Expr getAlgoSpec() { result = this.(MethodAccess).getArgument(0) }
+  override Expr getAlgoSpec() {
+    exists(Call c | c = this |
+      if c.getNumArgument() = 3 then result = c.getArgument(2) else result = c.getArgument(0)
+    )
+  }
 }
 
 class JavaxCryptoKeyAgreement extends JavaxCryptoAlgoSpec {
@@ -388,29 +389,41 @@ class JavaSecuritySignature extends JavaSecurityAlgoSpec {
   override Expr getAlgoSpec() { result = this.(ConstructorCall).getArgument(0) }
 }
 
-/** The Java class `java.security.spec.ECGenParameterSpec`. */
-class EcGenParameterSpec extends RefType {
-  EcGenParameterSpec() { this.hasQualifiedName("java.security.spec", "ECGenParameterSpec") }
-}
-
-/** The Java class `java.security.spec.RSAKeyGenParameterSpec`. */
-class RsaKeyGenParameterSpec extends RefType {
-  RsaKeyGenParameterSpec() { this.hasQualifiedName("java.security.spec", "RSAKeyGenParameterSpec") }
-}
-
-/** The Java class `java.security.spec.DSAGenParameterSpec`. */
-class DsaGenParameterSpec extends RefType {
-  DsaGenParameterSpec() { this.hasQualifiedName("java.security.spec", "DSAGenParameterSpec") }
-}
-
 /** A method call to the Java class `java.security.KeyPairGenerator`. */
-class JavaSecurityKeyPairGenerator extends JavaxCryptoAlgoSpec {
+class JavaSecurityKeyPairGenerator extends JavaSecurityAlgoSpec {
   JavaSecurityKeyPairGenerator() {
+    exists(Constructor c | c.getAReference() = this |
+      c.getDeclaringType() instanceof KeyPairGenerator
+    )
+    or
     exists(Method m | m.getAReference() = this |
       m.getDeclaringType() instanceof KeyPairGenerator and
       m.getName() = "getInstance"
     )
   }
 
-  override Expr getAlgoSpec() { result = this.(MethodAccess).getArgument(0) }
+  override Expr getAlgoSpec() { result = this.(Call).getArgument(0) }
+}
+
+/** The Java interface `java.security.spec.AlgorithmParameterSpec` */
+abstract class AlgorithmParameterSpec extends RefType { }
+
+/** The Java class `java.security.spec.ECGenParameterSpec`. */
+class EcGenParameterSpec extends AlgorithmParameterSpec {
+  EcGenParameterSpec() { this.hasQualifiedName("java.security.spec", "ECGenParameterSpec") }
+}
+
+/** The Java class `java.security.spec.RSAKeyGenParameterSpec`. */
+class RsaKeyGenParameterSpec extends AlgorithmParameterSpec {
+  RsaKeyGenParameterSpec() { this.hasQualifiedName("java.security.spec", "RSAKeyGenParameterSpec") }
+}
+
+/** The Java class `java.security.spec.DSAGenParameterSpec`. */
+class DsaGenParameterSpec extends AlgorithmParameterSpec {
+  DsaGenParameterSpec() { this.hasQualifiedName("java.security.spec", "DSAGenParameterSpec") }
+}
+
+/** The Java class `javax.crypto.spec.DHGenParameterSpec`. */
+class DhGenParameterSpec extends AlgorithmParameterSpec {
+  DhGenParameterSpec() { this.hasQualifiedName("javax.crypto.spec", "DHGenParameterSpec") }
 }
