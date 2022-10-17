@@ -36,8 +36,8 @@ actionDispatchRoutes
 actionDispatchControllerMethods
 | app/config/routes.rb:2:3:8:5 | call to resources | app/controllers/posts_controller.rb:2:3:3:5 | index |
 | app/config/routes.rb:2:3:8:5 | call to resources | app/controllers/posts_controller.rb:5:3:6:5 | show |
-| app/config/routes.rb:3:5:6:7 | call to resources | app/controllers/comments_controller.rb:2:3:10:5 | index |
-| app/config/routes.rb:3:5:6:7 | call to resources | app/controllers/comments_controller.rb:12:3:13:5 | show |
+| app/config/routes.rb:3:5:6:7 | call to resources | app/controllers/comments_controller.rb:2:3:36:5 | index |
+| app/config/routes.rb:3:5:6:7 | call to resources | app/controllers/comments_controller.rb:38:3:39:5 | show |
 | app/config/routes.rb:7:5:7:37 | call to post | app/controllers/posts_controller.rb:8:3:9:5 | upvote |
 | app/config/routes.rb:27:3:27:48 | call to match | app/controllers/photos_controller.rb:2:3:3:5 | show |
 | app/config/routes.rb:28:3:28:50 | call to match | app/controllers/photos_controller.rb:2:3:3:5 | show |

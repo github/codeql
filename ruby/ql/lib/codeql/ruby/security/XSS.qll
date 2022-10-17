@@ -105,6 +105,17 @@ private module Shared {
     }
   }
 
+  /** A write to an HTTP response header, considered as a flow sink. */
+  class HeaderWriteAsSink extends Sink {
+    HeaderWriteAsSink() {
+      exists(Http::Server::HeaderWriteAccess a |
+        a.getName() = ["content-type", "access-control-allow-origin"]
+      |
+        this = a.getValue()
+      )
+    }
+  }
+
   /**
    * An HTML escaping, considered as a sanitizer.
    */
