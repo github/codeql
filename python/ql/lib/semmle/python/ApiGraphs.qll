@@ -754,15 +754,21 @@ module API {
           dict.getItem(_) = item
         |
           // from `x` to `{ "key": x }`
+          // TODO: once convenient, this should be done at a higher level than the AST,
+          // at least at the CFG layer, to take splitting into account.
           rhs.(DataFlow::ExprNode).getNode().getNode() = item.getValue() and
           lbl = Label::subscript()
           or
           // from `"key"` to `{ "key": x }`
+          // TODO: once convenient, this should be done at a higher level than the AST,
+          // at least at the CFG layer, to take splitting into account.
           rhs.(DataFlow::ExprNode).getNode().getNode() = item.getKey() and
           lbl = Label::index()
         )
         or
         // list literals, from `x` to `[x]`
+        // TODO: once convenient, this should be done at a higher level than the AST,
+        // at least at the CFG layer, to take splitting into account.
         exists(PY::List list | list = pred.(DataFlow::ExprNode).getNode().getNode() |
           rhs.(DataFlow::ExprNode).getNode().getNode() = list.getAnElt() and
           lbl = Label::subscript()
