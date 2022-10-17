@@ -2449,7 +2449,10 @@ open class KotlinFileExtractor(
                         }
                     }
                     tw.writeExprsKotlinType(id, type.kotlinResult.id)
-                    unaryopDisp(id)
+                    if (isFunction(target, "kotlin", "Byte or Short", { it == "Byte" || it == "Short" }, "inv"))
+                        unaryopReceiver(id, c.extensionReceiver, "Extension receiver")
+                    else
+                        unaryopDisp(id)
                 }
                 // We need to handle all the builtin operators defines in BuiltInOperatorNames in
                 //     compiler/ir/ir.tree/src/org/jetbrains/kotlin/ir/IrBuiltIns.kt
