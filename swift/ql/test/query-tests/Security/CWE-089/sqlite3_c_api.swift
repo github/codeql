@@ -130,9 +130,9 @@ func test_sqlite3_c_api(db: OpaquePointer?, buffer: UnsafeMutablePointer<UInt8>)
 
 	// --- exec ---
 
-	let result1 = sqlite3_exec(db, unsafeQuery1, nil, nil, nil) // BAD [NOT DETECTED]
-	let result2 = sqlite3_exec(db, unsafeQuery2, nil, nil, nil) // BAD [NOT DETECTED]
-	let result3 = sqlite3_exec(db, unsafeQuery3, nil, nil, nil) // BAD [NOT DETECTED]
+	let result1 = sqlite3_exec(db, unsafeQuery1, nil, nil, nil) // BAD
+	let result2 = sqlite3_exec(db, unsafeQuery2, nil, nil, nil) // BAD
+	let result3 = sqlite3_exec(db, unsafeQuery3, nil, nil, nil) // BAD
 	let result4 = sqlite3_exec(db, safeQuery1, nil, nil, nil) // GOOD
 	let result5 = sqlite3_exec(db, safeQuery2, nil, nil, nil) // GOOD
 
@@ -142,7 +142,7 @@ func test_sqlite3_c_api(db: OpaquePointer?, buffer: UnsafeMutablePointer<UInt8>)
 
 	var stmt1: OpaquePointer?
 
-	if (sqlite3_prepare(db, unsafeQuery3, -1, &stmt1, nil) == SQLITE_OK) { // BAD [NOT DETECTED]
+	if (sqlite3_prepare(db, unsafeQuery3, -1, &stmt1, nil) == SQLITE_OK) { // BAD
 		let result = sqlite3_step(stmt1)
 		// ...
 	}
@@ -172,7 +172,7 @@ func test_sqlite3_c_api(db: OpaquePointer?, buffer: UnsafeMutablePointer<UInt8>)
 
 	var stmt4: OpaquePointer?
 
-	if (sqlite3_prepare_v2(db, unsafeQuery3, -1, &stmt4, nil) == SQLITE_OK) { // BAD [NOT DETECTED]
+	if (sqlite3_prepare_v2(db, unsafeQuery3, -1, &stmt4, nil) == SQLITE_OK) { // BAD
 		let result = sqlite3_step(stmt4)
 		// ...
 	}
