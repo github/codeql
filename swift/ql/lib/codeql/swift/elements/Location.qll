@@ -1,12 +1,18 @@
 private import codeql.swift.generated.Location
 
+/**
+ * A location of a program element.
+ */
 class Location extends LocationBase {
-  predicate hasLocationInfo(string path, int sl, int sc, int el, int ec) {
+  /**
+   * Holds if this location is described by `path`, `startLine`, `startColumn`, `endLine` and `endColumn`.
+   */
+  predicate hasLocationInfo(string path, int startLine, int startColumn, int endLine, int endColumn) {
     path = getFile().getFullName() and
-    sl = getStartLine() and
-    sc = getStartColumn() and
-    el = getEndLine() and
-    ec = getEndColumn()
+    startLine = getStartLine() and
+    startColumn = getStartColumn() and
+    endLine = getEndLine() and
+    endColumn = getEndColumn()
   }
 
   /**

@@ -2,6 +2,9 @@ private import codeql.swift.generated.UnknownLocation
 private import codeql.swift.elements.UnknownFile
 private import codeql.swift.elements.File
 
+/**
+ * A `Location` that is given to something that is not associated with any position in the source code.
+ */
 class UnknownLocation extends UnknownLocationBase {
   override File getImmediateFile() { result instanceof UnknownFile }
 
