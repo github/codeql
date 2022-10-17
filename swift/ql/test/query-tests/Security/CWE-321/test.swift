@@ -88,6 +88,7 @@ func getRandomArray() -> Array<UInt8> {
 
 func test() {
 	let key: Array<UInt8> = [0x2a, 0x3a, 0x80, 0x05, 0xaf, 0x46, 0x58, 0x2d, 0x66, 0x52, 0x10, 0xae, 0x86, 0xd3, 0x8e, 0x8f]
+	let key2 = getConstantArray()
 	let keyString = getConstantString()
 
 	let randomArray = getRandomArray()
@@ -102,8 +103,8 @@ func test() {
 	let ivString = String(cString: iv)
 
 	// AES test cases
-	let ab1 = AES(key: key, blockMode: blockMode, padding: padding) // BAD
-	let ab2 = AES(key: key, blockMode: blockMode) // BAD
+	let ab1 = AES(key: key2, blockMode: blockMode, padding: padding) // BAD [NOT DETECTED]
+	let ab2 = AES(key: key2, blockMode: blockMode) // BAD [NOT DETECTED]
 	let ab3 = AES(key: keyString, iv: ivString) // BAD
 	let ab4 = AES(key: keyString, iv: ivString, padding: padding) // BAD
 
