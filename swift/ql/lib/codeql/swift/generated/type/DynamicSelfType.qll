@@ -7,6 +7,10 @@ module Generated {
   class DynamicSelfType extends Synth::TDynamicSelfType, Type {
     override string getAPrimaryQlClass() { result = "DynamicSelfType" }
 
+    /**
+     * Gets the static self type.
+     * This is taken from the "hidden" AST and should only be used to be overridden by classes.
+     */
     Type getImmediateStaticSelfType() {
       result =
         Synth::convertTypeFromRaw(Synth::convertDynamicSelfTypeToRaw(this)
@@ -14,6 +18,9 @@ module Generated {
               .getStaticSelfType())
     }
 
+    /**
+     * Gets the static self type.
+     */
     final Type getStaticSelfType() { result = getImmediateStaticSelfType().resolve() }
   }
 }

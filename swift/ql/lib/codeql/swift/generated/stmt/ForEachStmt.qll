@@ -10,6 +10,10 @@ module Generated {
   class ForEachStmt extends Synth::TForEachStmt, LabeledStmt {
     override string getAPrimaryQlClass() { result = "ForEachStmt" }
 
+    /**
+     * Gets the pattern.
+     * This is taken from the "hidden" AST and should only be used to be overridden by classes.
+     */
     Pattern getImmediatePattern() {
       result =
         Synth::convertPatternFromRaw(Synth::convertForEachStmtToRaw(this)
@@ -17,8 +21,15 @@ module Generated {
               .getPattern())
     }
 
+    /**
+     * Gets the pattern.
+     */
     final Pattern getPattern() { result = getImmediatePattern().resolve() }
 
+    /**
+     * Gets the sequence.
+     * This is taken from the "hidden" AST and should only be used to be overridden by classes.
+     */
     Expr getImmediateSequence() {
       result =
         Synth::convertExprFromRaw(Synth::convertForEachStmtToRaw(this)
@@ -26,17 +37,34 @@ module Generated {
               .getSequence())
     }
 
+    /**
+     * Gets the sequence.
+     */
     final Expr getSequence() { result = getImmediateSequence().resolve() }
 
+    /**
+     * Gets the where, if it exists.
+     * This is taken from the "hidden" AST and should only be used to be overridden by classes.
+     */
     Expr getImmediateWhere() {
       result =
         Synth::convertExprFromRaw(Synth::convertForEachStmtToRaw(this).(Raw::ForEachStmt).getWhere())
     }
 
+    /**
+     * Gets the where, if it exists.
+     */
     final Expr getWhere() { result = getImmediateWhere().resolve() }
 
+    /**
+     * Holds if `getWhere()` exists.
+     */
     final predicate hasWhere() { exists(getWhere()) }
 
+    /**
+     * Gets the body.
+     * This is taken from the "hidden" AST and should only be used to be overridden by classes.
+     */
     BraceStmt getImmediateBody() {
       result =
         Synth::convertBraceStmtFromRaw(Synth::convertForEachStmtToRaw(this)
@@ -44,6 +72,9 @@ module Generated {
               .getBody())
     }
 
+    /**
+     * Gets the body.
+     */
     final BraceStmt getBody() { result = getImmediateBody().resolve() }
   }
 }

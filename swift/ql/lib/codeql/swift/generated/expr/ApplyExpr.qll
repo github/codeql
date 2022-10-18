@@ -6,13 +6,24 @@ import codeql.swift.elements.expr.Expr
 
 module Generated {
   class ApplyExpr extends Synth::TApplyExpr, Expr {
+    /**
+     * Gets the function.
+     * This is taken from the "hidden" AST and should only be used to be overridden by classes.
+     */
     Expr getImmediateFunction() {
       result =
         Synth::convertExprFromRaw(Synth::convertApplyExprToRaw(this).(Raw::ApplyExpr).getFunction())
     }
 
+    /**
+     * Gets the function.
+     */
     final Expr getFunction() { result = getImmediateFunction().resolve() }
 
+    /**
+     * Gets the `index`th argument.
+     * This is taken from the "hidden" AST and should only be used to be overridden by classes.
+     */
     Argument getImmediateArgument(int index) {
       result =
         Synth::convertArgumentFromRaw(Synth::convertApplyExprToRaw(this)
@@ -20,10 +31,19 @@ module Generated {
               .getArgument(index))
     }
 
+    /**
+     * Gets the `index`th argument.
+     */
     final Argument getArgument(int index) { result = getImmediateArgument(index).resolve() }
 
+    /**
+     * Gets any of the arguments.
+     */
     final Argument getAnArgument() { result = getArgument(_) }
 
+    /**
+     * Gets the number of arguments.
+     */
     final int getNumberOfArguments() { result = count(getAnArgument()) }
   }
 }

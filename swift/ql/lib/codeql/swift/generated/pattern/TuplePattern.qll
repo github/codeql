@@ -7,6 +7,10 @@ module Generated {
   class TuplePattern extends Synth::TTuplePattern, Pattern {
     override string getAPrimaryQlClass() { result = "TuplePattern" }
 
+    /**
+     * Gets the `index`th element.
+     * This is taken from the "hidden" AST and should only be used to be overridden by classes.
+     */
     Pattern getImmediateElement(int index) {
       result =
         Synth::convertPatternFromRaw(Synth::convertTuplePatternToRaw(this)
@@ -14,10 +18,19 @@ module Generated {
               .getElement(index))
     }
 
+    /**
+     * Gets the `index`th element.
+     */
     final Pattern getElement(int index) { result = getImmediateElement(index).resolve() }
 
+    /**
+     * Gets any of the elements.
+     */
     final Pattern getAnElement() { result = getElement(_) }
 
+    /**
+     * Gets the number of elements.
+     */
     final int getNumberOfElements() { result = count(getAnElement()) }
   }
 }

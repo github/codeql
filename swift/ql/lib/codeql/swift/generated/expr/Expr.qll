@@ -9,12 +9,22 @@ module Generated {
    * The base class for all expressions in Swift.
    */
   class Expr extends Synth::TExpr, AstNode {
+    /**
+     * Gets the type, if it exists.
+     * This is taken from the "hidden" AST and should only be used to be overridden by classes.
+     */
     Type getImmediateType() {
       result = Synth::convertTypeFromRaw(Synth::convertExprToRaw(this).(Raw::Expr).getType())
     }
 
+    /**
+     * Gets the type, if it exists.
+     */
     final Type getType() { result = getImmediateType().resolve() }
 
+    /**
+     * Holds if `getType()` exists.
+     */
     final predicate hasType() { exists(getType()) }
   }
 }

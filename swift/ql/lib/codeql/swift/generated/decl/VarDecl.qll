@@ -8,14 +8,28 @@ import codeql.swift.elements.type.Type
 
 module Generated {
   class VarDecl extends Synth::TVarDecl, AbstractStorageDecl {
+    /**
+     * Gets the name.
+     */
     string getName() { result = Synth::convertVarDeclToRaw(this).(Raw::VarDecl).getName() }
 
+    /**
+     * Gets the type.
+     * This is taken from the "hidden" AST and should only be used to be overridden by classes.
+     */
     Type getImmediateType() {
       result = Synth::convertTypeFromRaw(Synth::convertVarDeclToRaw(this).(Raw::VarDecl).getType())
     }
 
+    /**
+     * Gets the type.
+     */
     final Type getType() { result = getImmediateType().resolve() }
 
+    /**
+     * Gets the attached property wrapper type, if it exists.
+     * This is taken from the "hidden" AST and should only be used to be overridden by classes.
+     */
     Type getImmediateAttachedPropertyWrapperType() {
       result =
         Synth::convertTypeFromRaw(Synth::convertVarDeclToRaw(this)
@@ -23,12 +37,22 @@ module Generated {
               .getAttachedPropertyWrapperType())
     }
 
+    /**
+     * Gets the attached property wrapper type, if it exists.
+     */
     final Type getAttachedPropertyWrapperType() {
       result = getImmediateAttachedPropertyWrapperType().resolve()
     }
 
+    /**
+     * Holds if `getAttachedPropertyWrapperType()` exists.
+     */
     final predicate hasAttachedPropertyWrapperType() { exists(getAttachedPropertyWrapperType()) }
 
+    /**
+     * Gets the parent pattern, if it exists.
+     * This is taken from the "hidden" AST and should only be used to be overridden by classes.
+     */
     Pattern getImmediateParentPattern() {
       result =
         Synth::convertPatternFromRaw(Synth::convertVarDeclToRaw(this)
@@ -36,10 +60,20 @@ module Generated {
               .getParentPattern())
     }
 
+    /**
+     * Gets the parent pattern, if it exists.
+     */
     final Pattern getParentPattern() { result = getImmediateParentPattern().resolve() }
 
+    /**
+     * Holds if `getParentPattern()` exists.
+     */
     final predicate hasParentPattern() { exists(getParentPattern()) }
 
+    /**
+     * Gets the parent initializer, if it exists.
+     * This is taken from the "hidden" AST and should only be used to be overridden by classes.
+     */
     Expr getImmediateParentInitializer() {
       result =
         Synth::convertExprFromRaw(Synth::convertVarDeclToRaw(this)
@@ -47,8 +81,14 @@ module Generated {
               .getParentInitializer())
     }
 
+    /**
+     * Gets the parent initializer, if it exists.
+     */
     final Expr getParentInitializer() { result = getImmediateParentInitializer().resolve() }
 
+    /**
+     * Holds if `getParentInitializer()` exists.
+     */
     final predicate hasParentInitializer() { exists(getParentInitializer()) }
   }
 }

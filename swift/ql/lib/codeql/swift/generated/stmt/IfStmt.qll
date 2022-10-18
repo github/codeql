@@ -8,18 +8,35 @@ module Generated {
   class IfStmt extends Synth::TIfStmt, LabeledConditionalStmt {
     override string getAPrimaryQlClass() { result = "IfStmt" }
 
+    /**
+     * Gets the then.
+     * This is taken from the "hidden" AST and should only be used to be overridden by classes.
+     */
     Stmt getImmediateThen() {
       result = Synth::convertStmtFromRaw(Synth::convertIfStmtToRaw(this).(Raw::IfStmt).getThen())
     }
 
+    /**
+     * Gets the then.
+     */
     final Stmt getThen() { result = getImmediateThen().resolve() }
 
+    /**
+     * Gets the else, if it exists.
+     * This is taken from the "hidden" AST and should only be used to be overridden by classes.
+     */
     Stmt getImmediateElse() {
       result = Synth::convertStmtFromRaw(Synth::convertIfStmtToRaw(this).(Raw::IfStmt).getElse())
     }
 
+    /**
+     * Gets the else, if it exists.
+     */
     final Stmt getElse() { result = getImmediateElse().resolve() }
 
+    /**
+     * Holds if `getElse()` exists.
+     */
     final predicate hasElse() { exists(getElse()) }
   }
 }

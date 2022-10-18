@@ -7,6 +7,10 @@ module Generated {
   class DotSyntaxBaseIgnoredExpr extends Synth::TDotSyntaxBaseIgnoredExpr, Expr {
     override string getAPrimaryQlClass() { result = "DotSyntaxBaseIgnoredExpr" }
 
+    /**
+     * Gets the qualifier.
+     * This is taken from the "hidden" AST and should only be used to be overridden by classes.
+     */
     Expr getImmediateQualifier() {
       result =
         Synth::convertExprFromRaw(Synth::convertDotSyntaxBaseIgnoredExprToRaw(this)
@@ -14,8 +18,15 @@ module Generated {
               .getQualifier())
     }
 
+    /**
+     * Gets the qualifier.
+     */
     final Expr getQualifier() { result = getImmediateQualifier().resolve() }
 
+    /**
+     * Gets the sub expr.
+     * This is taken from the "hidden" AST and should only be used to be overridden by classes.
+     */
     Expr getImmediateSubExpr() {
       result =
         Synth::convertExprFromRaw(Synth::convertDotSyntaxBaseIgnoredExprToRaw(this)
@@ -23,6 +34,9 @@ module Generated {
               .getSubExpr())
     }
 
+    /**
+     * Gets the sub expr.
+     */
     final Expr getSubExpr() { result = getImmediateSubExpr().resolve() }
   }
 }

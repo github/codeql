@@ -8,11 +8,18 @@ module Generated {
   class DeferStmt extends Synth::TDeferStmt, Stmt {
     override string getAPrimaryQlClass() { result = "DeferStmt" }
 
+    /**
+     * Gets the body.
+     * This is taken from the "hidden" AST and should only be used to be overridden by classes.
+     */
     BraceStmt getImmediateBody() {
       result =
         Synth::convertBraceStmtFromRaw(Synth::convertDeferStmtToRaw(this).(Raw::DeferStmt).getBody())
     }
 
+    /**
+     * Gets the body.
+     */
     final BraceStmt getBody() { result = getImmediateBody().resolve() }
   }
 }

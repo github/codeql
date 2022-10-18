@@ -6,21 +6,40 @@ import codeql.swift.elements.File
 
 module Generated {
   class Location extends Synth::TLocation, Element {
+    /**
+     * Gets the file.
+     * This is taken from the "hidden" AST and should only be used to be overridden by classes.
+     */
     File getImmediateFile() {
       result =
         Synth::convertFileFromRaw(Synth::convertLocationToRaw(this).(Raw::Location).getFile())
     }
 
+    /**
+     * Gets the file.
+     */
     final File getFile() { result = getImmediateFile().resolve() }
 
+    /**
+     * Gets the start line.
+     */
     int getStartLine() { result = Synth::convertLocationToRaw(this).(Raw::Location).getStartLine() }
 
+    /**
+     * Gets the start column.
+     */
     int getStartColumn() {
       result = Synth::convertLocationToRaw(this).(Raw::Location).getStartColumn()
     }
 
+    /**
+     * Gets the end line.
+     */
     int getEndLine() { result = Synth::convertLocationToRaw(this).(Raw::Location).getEndLine() }
 
+    /**
+     * Gets the end column.
+     */
     int getEndColumn() { result = Synth::convertLocationToRaw(this).(Raw::Location).getEndColumn() }
   }
 }

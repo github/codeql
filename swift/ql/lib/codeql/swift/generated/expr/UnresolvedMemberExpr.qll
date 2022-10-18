@@ -8,6 +8,9 @@ module Generated {
   class UnresolvedMemberExpr extends Synth::TUnresolvedMemberExpr, Expr, UnresolvedElement {
     override string getAPrimaryQlClass() { result = "UnresolvedMemberExpr" }
 
+    /**
+     * Gets the name.
+     */
     string getName() {
       result = Synth::convertUnresolvedMemberExprToRaw(this).(Raw::UnresolvedMemberExpr).getName()
     }

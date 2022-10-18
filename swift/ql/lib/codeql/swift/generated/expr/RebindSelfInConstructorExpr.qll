@@ -8,6 +8,10 @@ module Generated {
   class RebindSelfInConstructorExpr extends Synth::TRebindSelfInConstructorExpr, Expr {
     override string getAPrimaryQlClass() { result = "RebindSelfInConstructorExpr" }
 
+    /**
+     * Gets the sub expr.
+     * This is taken from the "hidden" AST and should only be used to be overridden by classes.
+     */
     Expr getImmediateSubExpr() {
       result =
         Synth::convertExprFromRaw(Synth::convertRebindSelfInConstructorExprToRaw(this)
@@ -15,8 +19,15 @@ module Generated {
               .getSubExpr())
     }
 
+    /**
+     * Gets the sub expr.
+     */
     final Expr getSubExpr() { result = getImmediateSubExpr().resolve() }
 
+    /**
+     * Gets the self.
+     * This is taken from the "hidden" AST and should only be used to be overridden by classes.
+     */
     VarDecl getImmediateSelf() {
       result =
         Synth::convertVarDeclFromRaw(Synth::convertRebindSelfInConstructorExprToRaw(this)
@@ -24,6 +35,9 @@ module Generated {
               .getSelf())
     }
 
+    /**
+     * Gets the self.
+     */
     final VarDecl getSelf() { result = getImmediateSelf().resolve() }
   }
 }

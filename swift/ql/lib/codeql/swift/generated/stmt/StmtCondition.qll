@@ -8,6 +8,10 @@ module Generated {
   class StmtCondition extends Synth::TStmtCondition, AstNode {
     override string getAPrimaryQlClass() { result = "StmtCondition" }
 
+    /**
+     * Gets the `index`th element.
+     * This is taken from the "hidden" AST and should only be used to be overridden by classes.
+     */
     ConditionElement getImmediateElement(int index) {
       result =
         Synth::convertConditionElementFromRaw(Synth::convertStmtConditionToRaw(this)
@@ -15,10 +19,19 @@ module Generated {
               .getElement(index))
     }
 
+    /**
+     * Gets the `index`th element.
+     */
     final ConditionElement getElement(int index) { result = getImmediateElement(index).resolve() }
 
+    /**
+     * Gets any of the elements.
+     */
     final ConditionElement getAnElement() { result = getElement(_) }
 
+    /**
+     * Gets the number of elements.
+     */
     final int getNumberOfElements() { result = count(getAnElement()) }
   }
 }

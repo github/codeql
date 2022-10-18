@@ -8,6 +8,10 @@ module Generated {
   class TypedPattern extends Synth::TTypedPattern, Pattern {
     override string getAPrimaryQlClass() { result = "TypedPattern" }
 
+    /**
+     * Gets the sub pattern.
+     * This is taken from the "hidden" AST and should only be used to be overridden by classes.
+     */
     Pattern getImmediateSubPattern() {
       result =
         Synth::convertPatternFromRaw(Synth::convertTypedPatternToRaw(this)
@@ -15,8 +19,15 @@ module Generated {
               .getSubPattern())
     }
 
+    /**
+     * Gets the sub pattern.
+     */
     final Pattern getSubPattern() { result = getImmediateSubPattern().resolve() }
 
+    /**
+     * Gets the type repr, if it exists.
+     * This is taken from the "hidden" AST and should only be used to be overridden by classes.
+     */
     TypeRepr getImmediateTypeRepr() {
       result =
         Synth::convertTypeReprFromRaw(Synth::convertTypedPatternToRaw(this)
@@ -24,8 +35,14 @@ module Generated {
               .getTypeRepr())
     }
 
+    /**
+     * Gets the type repr, if it exists.
+     */
     final TypeRepr getTypeRepr() { result = getImmediateTypeRepr().resolve() }
 
+    /**
+     * Holds if `getTypeRepr()` exists.
+     */
     final predicate hasTypeRepr() { exists(getTypeRepr()) }
   }
 }

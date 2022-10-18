@@ -8,11 +8,18 @@ module Generated {
   class DoStmt extends Synth::TDoStmt, LabeledStmt {
     override string getAPrimaryQlClass() { result = "DoStmt" }
 
+    /**
+     * Gets the body.
+     * This is taken from the "hidden" AST and should only be used to be overridden by classes.
+     */
     BraceStmt getImmediateBody() {
       result =
         Synth::convertBraceStmtFromRaw(Synth::convertDoStmtToRaw(this).(Raw::DoStmt).getBody())
     }
 
+    /**
+     * Gets the body.
+     */
     final BraceStmt getBody() { result = getImmediateBody().resolve() }
   }
 }

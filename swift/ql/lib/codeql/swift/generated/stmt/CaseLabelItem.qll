@@ -9,6 +9,10 @@ module Generated {
   class CaseLabelItem extends Synth::TCaseLabelItem, AstNode {
     override string getAPrimaryQlClass() { result = "CaseLabelItem" }
 
+    /**
+     * Gets the pattern.
+     * This is taken from the "hidden" AST and should only be used to be overridden by classes.
+     */
     Pattern getImmediatePattern() {
       result =
         Synth::convertPatternFromRaw(Synth::convertCaseLabelItemToRaw(this)
@@ -16,8 +20,15 @@ module Generated {
               .getPattern())
     }
 
+    /**
+     * Gets the pattern.
+     */
     final Pattern getPattern() { result = getImmediatePattern().resolve() }
 
+    /**
+     * Gets the guard, if it exists.
+     * This is taken from the "hidden" AST and should only be used to be overridden by classes.
+     */
     Expr getImmediateGuard() {
       result =
         Synth::convertExprFromRaw(Synth::convertCaseLabelItemToRaw(this)
@@ -25,8 +36,14 @@ module Generated {
               .getGuard())
     }
 
+    /**
+     * Gets the guard, if it exists.
+     */
     final Expr getGuard() { result = getImmediateGuard().resolve() }
 
+    /**
+     * Holds if `getGuard()` exists.
+     */
     final predicate hasGuard() { exists(getGuard()) }
   }
 }

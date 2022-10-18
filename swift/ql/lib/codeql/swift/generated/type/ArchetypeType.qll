@@ -7,6 +7,10 @@ import codeql.swift.elements.type.Type
 
 module Generated {
   class ArchetypeType extends Synth::TArchetypeType, SubstitutableType {
+    /**
+     * Gets the interface type.
+     * This is taken from the "hidden" AST and should only be used to be overridden by classes.
+     */
     Type getImmediateInterfaceType() {
       result =
         Synth::convertTypeFromRaw(Synth::convertArchetypeTypeToRaw(this)
@@ -14,8 +18,15 @@ module Generated {
               .getInterfaceType())
     }
 
+    /**
+     * Gets the interface type.
+     */
     final Type getInterfaceType() { result = getImmediateInterfaceType().resolve() }
 
+    /**
+     * Gets the superclass, if it exists.
+     * This is taken from the "hidden" AST and should only be used to be overridden by classes.
+     */
     Type getImmediateSuperclass() {
       result =
         Synth::convertTypeFromRaw(Synth::convertArchetypeTypeToRaw(this)
@@ -23,10 +34,20 @@ module Generated {
               .getSuperclass())
     }
 
+    /**
+     * Gets the superclass, if it exists.
+     */
     final Type getSuperclass() { result = getImmediateSuperclass().resolve() }
 
+    /**
+     * Holds if `getSuperclass()` exists.
+     */
     final predicate hasSuperclass() { exists(getSuperclass()) }
 
+    /**
+     * Gets the `index`th protocol.
+     * This is taken from the "hidden" AST and should only be used to be overridden by classes.
+     */
     ProtocolDecl getImmediateProtocol(int index) {
       result =
         Synth::convertProtocolDeclFromRaw(Synth::convertArchetypeTypeToRaw(this)
@@ -34,10 +55,19 @@ module Generated {
               .getProtocol(index))
     }
 
+    /**
+     * Gets the `index`th protocol.
+     */
     final ProtocolDecl getProtocol(int index) { result = getImmediateProtocol(index).resolve() }
 
+    /**
+     * Gets any of the protocols.
+     */
     final ProtocolDecl getAProtocol() { result = getProtocol(_) }
 
+    /**
+     * Gets the number of protocols.
+     */
     final int getNumberOfProtocols() { result = count(getAProtocol()) }
   }
 }

@@ -8,6 +8,10 @@ module Generated {
   class IsPattern extends Synth::TIsPattern, Pattern {
     override string getAPrimaryQlClass() { result = "IsPattern" }
 
+    /**
+     * Gets the cast type repr, if it exists.
+     * This is taken from the "hidden" AST and should only be used to be overridden by classes.
+     */
     TypeRepr getImmediateCastTypeRepr() {
       result =
         Synth::convertTypeReprFromRaw(Synth::convertIsPatternToRaw(this)
@@ -15,10 +19,20 @@ module Generated {
               .getCastTypeRepr())
     }
 
+    /**
+     * Gets the cast type repr, if it exists.
+     */
     final TypeRepr getCastTypeRepr() { result = getImmediateCastTypeRepr().resolve() }
 
+    /**
+     * Holds if `getCastTypeRepr()` exists.
+     */
     final predicate hasCastTypeRepr() { exists(getCastTypeRepr()) }
 
+    /**
+     * Gets the sub pattern, if it exists.
+     * This is taken from the "hidden" AST and should only be used to be overridden by classes.
+     */
     Pattern getImmediateSubPattern() {
       result =
         Synth::convertPatternFromRaw(Synth::convertIsPatternToRaw(this)
@@ -26,8 +40,14 @@ module Generated {
               .getSubPattern())
     }
 
+    /**
+     * Gets the sub pattern, if it exists.
+     */
     final Pattern getSubPattern() { result = getImmediateSubPattern().resolve() }
 
+    /**
+     * Holds if `getSubPattern()` exists.
+     */
     final predicate hasSubPattern() { exists(getSubPattern()) }
   }
 }

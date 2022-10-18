@@ -5,6 +5,10 @@ import codeql.swift.elements.expr.Expr
 
 module Generated {
   class IdentityExpr extends Synth::TIdentityExpr, Expr {
+    /**
+     * Gets the sub expr.
+     * This is taken from the "hidden" AST and should only be used to be overridden by classes.
+     */
     Expr getImmediateSubExpr() {
       result =
         Synth::convertExprFromRaw(Synth::convertIdentityExprToRaw(this)
@@ -12,6 +16,9 @@ module Generated {
               .getSubExpr())
     }
 
+    /**
+     * Gets the sub expr.
+     */
     final Expr getSubExpr() { result = getImmediateSubExpr().resolve() }
   }
 }

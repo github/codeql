@@ -6,20 +6,37 @@ import codeql.swift.elements.expr.Expr
 
 module Generated {
   class LookupExpr extends Synth::TLookupExpr, Expr {
+    /**
+     * Gets the base.
+     * This is taken from the "hidden" AST and should only be used to be overridden by classes.
+     */
     Expr getImmediateBase() {
       result =
         Synth::convertExprFromRaw(Synth::convertLookupExprToRaw(this).(Raw::LookupExpr).getBase())
     }
 
+    /**
+     * Gets the base.
+     */
     final Expr getBase() { result = getImmediateBase().resolve() }
 
+    /**
+     * Gets the member, if it exists.
+     * This is taken from the "hidden" AST and should only be used to be overridden by classes.
+     */
     Decl getImmediateMember() {
       result =
         Synth::convertDeclFromRaw(Synth::convertLookupExprToRaw(this).(Raw::LookupExpr).getMember())
     }
 
+    /**
+     * Gets the member, if it exists.
+     */
     final Decl getMember() { result = getImmediateMember().resolve() }
 
+    /**
+     * Holds if `getMember()` exists.
+     */
     final predicate hasMember() { exists(getMember()) }
   }
 }

@@ -8,13 +8,23 @@ module Generated {
   class Argument extends Synth::TArgument, Locatable {
     override string getAPrimaryQlClass() { result = "Argument" }
 
+    /**
+     * Gets the label.
+     */
     string getLabel() { result = Synth::convertArgumentToRaw(this).(Raw::Argument).getLabel() }
 
+    /**
+     * Gets the expr.
+     * This is taken from the "hidden" AST and should only be used to be overridden by classes.
+     */
     Expr getImmediateExpr() {
       result =
         Synth::convertExprFromRaw(Synth::convertArgumentToRaw(this).(Raw::Argument).getExpr())
     }
 
+    /**
+     * Gets the expr.
+     */
     final Expr getExpr() { result = getImmediateExpr().resolve() }
   }
 }

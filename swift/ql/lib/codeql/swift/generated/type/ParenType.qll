@@ -8,11 +8,18 @@ module Generated {
   class ParenType extends Synth::TParenType, SugarType {
     override string getAPrimaryQlClass() { result = "ParenType" }
 
+    /**
+     * Gets the type.
+     * This is taken from the "hidden" AST and should only be used to be overridden by classes.
+     */
     Type getImmediateType() {
       result =
         Synth::convertTypeFromRaw(Synth::convertParenTypeToRaw(this).(Raw::ParenType).getType())
     }
 
+    /**
+     * Gets the type.
+     */
     final Type getType() { result = getImmediateType().resolve() }
   }
 }

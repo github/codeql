@@ -6,6 +6,10 @@ import codeql.swift.elements.decl.ValueDecl
 
 module Generated {
   class AbstractStorageDecl extends Synth::TAbstractStorageDecl, ValueDecl {
+    /**
+     * Gets the `index`th accessor decl.
+     * This is taken from the "hidden" AST and should only be used to be overridden by classes.
+     */
     AccessorDecl getImmediateAccessorDecl(int index) {
       result =
         Synth::convertAccessorDeclFromRaw(Synth::convertAbstractStorageDeclToRaw(this)
@@ -13,12 +17,21 @@ module Generated {
               .getAccessorDecl(index))
     }
 
+    /**
+     * Gets the `index`th accessor decl.
+     */
     final AccessorDecl getAccessorDecl(int index) {
       result = getImmediateAccessorDecl(index).resolve()
     }
 
+    /**
+     * Gets any of the accessor decls.
+     */
     final AccessorDecl getAnAccessorDecl() { result = getAccessorDecl(_) }
 
+    /**
+     * Gets the number of accessor decls.
+     */
     final int getNumberOfAccessorDecls() { result = count(getAnAccessorDecl()) }
   }
 }

@@ -7,6 +7,10 @@ module Generated {
   class OptionalEvaluationExpr extends Synth::TOptionalEvaluationExpr, Expr {
     override string getAPrimaryQlClass() { result = "OptionalEvaluationExpr" }
 
+    /**
+     * Gets the sub expr.
+     * This is taken from the "hidden" AST and should only be used to be overridden by classes.
+     */
     Expr getImmediateSubExpr() {
       result =
         Synth::convertExprFromRaw(Synth::convertOptionalEvaluationExprToRaw(this)
@@ -14,6 +18,9 @@ module Generated {
               .getSubExpr())
     }
 
+    /**
+     * Gets the sub expr.
+     */
     final Expr getSubExpr() { result = getImmediateSubExpr().resolve() }
   }
 }

@@ -8,6 +8,10 @@ module Generated {
   class OpenExistentialExpr extends Synth::TOpenExistentialExpr, Expr {
     override string getAPrimaryQlClass() { result = "OpenExistentialExpr" }
 
+    /**
+     * Gets the sub expr.
+     * This is taken from the "hidden" AST and should only be used to be overridden by classes.
+     */
     Expr getImmediateSubExpr() {
       result =
         Synth::convertExprFromRaw(Synth::convertOpenExistentialExprToRaw(this)
@@ -15,8 +19,15 @@ module Generated {
               .getSubExpr())
     }
 
+    /**
+     * Gets the sub expr.
+     */
     final Expr getSubExpr() { result = getImmediateSubExpr().resolve() }
 
+    /**
+     * Gets the existential.
+     * This is taken from the "hidden" AST and should only be used to be overridden by classes.
+     */
     Expr getImmediateExistential() {
       result =
         Synth::convertExprFromRaw(Synth::convertOpenExistentialExprToRaw(this)
@@ -24,8 +35,15 @@ module Generated {
               .getExistential())
     }
 
+    /**
+     * Gets the existential.
+     */
     final Expr getExistential() { result = getImmediateExistential().resolve() }
 
+    /**
+     * Gets the opaque expr.
+     * This is taken from the "hidden" AST and should only be used to be overridden by classes.
+     */
     OpaqueValueExpr getImmediateOpaqueExpr() {
       result =
         Synth::convertOpaqueValueExprFromRaw(Synth::convertOpenExistentialExprToRaw(this)
@@ -33,6 +51,9 @@ module Generated {
               .getOpaqueExpr())
     }
 
+    /**
+     * Gets the opaque expr.
+     */
     final OpaqueValueExpr getOpaqueExpr() { result = getImmediateOpaqueExpr().resolve() }
   }
 }

@@ -7,6 +7,10 @@ module Generated {
   class ExistentialType extends Synth::TExistentialType, Type {
     override string getAPrimaryQlClass() { result = "ExistentialType" }
 
+    /**
+     * Gets the constraint.
+     * This is taken from the "hidden" AST and should only be used to be overridden by classes.
+     */
     Type getImmediateConstraint() {
       result =
         Synth::convertTypeFromRaw(Synth::convertExistentialTypeToRaw(this)
@@ -14,6 +18,9 @@ module Generated {
               .getConstraint())
     }
 
+    /**
+     * Gets the constraint.
+     */
     final Type getConstraint() { result = getImmediateConstraint().resolve() }
   }
 }

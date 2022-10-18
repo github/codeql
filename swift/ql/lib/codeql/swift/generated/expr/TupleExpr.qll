@@ -7,6 +7,10 @@ module Generated {
   class TupleExpr extends Synth::TTupleExpr, Expr {
     override string getAPrimaryQlClass() { result = "TupleExpr" }
 
+    /**
+     * Gets the `index`th element.
+     * This is taken from the "hidden" AST and should only be used to be overridden by classes.
+     */
     Expr getImmediateElement(int index) {
       result =
         Synth::convertExprFromRaw(Synth::convertTupleExprToRaw(this)
@@ -14,10 +18,19 @@ module Generated {
               .getElement(index))
     }
 
+    /**
+     * Gets the `index`th element.
+     */
     final Expr getElement(int index) { result = getImmediateElement(index).resolve() }
 
+    /**
+     * Gets any of the elements.
+     */
     final Expr getAnElement() { result = getElement(_) }
 
+    /**
+     * Gets the number of elements.
+     */
     final int getNumberOfElements() { result = count(getAnElement()) }
   }
 }

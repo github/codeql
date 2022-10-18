@@ -9,13 +9,24 @@ module Generated {
   class CaseStmt extends Synth::TCaseStmt, Stmt {
     override string getAPrimaryQlClass() { result = "CaseStmt" }
 
+    /**
+     * Gets the body.
+     * This is taken from the "hidden" AST and should only be used to be overridden by classes.
+     */
     Stmt getImmediateBody() {
       result =
         Synth::convertStmtFromRaw(Synth::convertCaseStmtToRaw(this).(Raw::CaseStmt).getBody())
     }
 
+    /**
+     * Gets the body.
+     */
     final Stmt getBody() { result = getImmediateBody().resolve() }
 
+    /**
+     * Gets the `index`th label.
+     * This is taken from the "hidden" AST and should only be used to be overridden by classes.
+     */
     CaseLabelItem getImmediateLabel(int index) {
       result =
         Synth::convertCaseLabelItemFromRaw(Synth::convertCaseStmtToRaw(this)
@@ -23,12 +34,25 @@ module Generated {
               .getLabel(index))
     }
 
+    /**
+     * Gets the `index`th label.
+     */
     final CaseLabelItem getLabel(int index) { result = getImmediateLabel(index).resolve() }
 
+    /**
+     * Gets any of the labels.
+     */
     final CaseLabelItem getALabel() { result = getLabel(_) }
 
+    /**
+     * Gets the number of labels.
+     */
     final int getNumberOfLabels() { result = count(getALabel()) }
 
+    /**
+     * Gets the `index`th variable.
+     * This is taken from the "hidden" AST and should only be used to be overridden by classes.
+     */
     VarDecl getImmediateVariable(int index) {
       result =
         Synth::convertVarDeclFromRaw(Synth::convertCaseStmtToRaw(this)
@@ -36,10 +60,19 @@ module Generated {
               .getVariable(index))
     }
 
+    /**
+     * Gets the `index`th variable.
+     */
     final VarDecl getVariable(int index) { result = getImmediateVariable(index).resolve() }
 
+    /**
+     * Gets any of the variables.
+     */
     final VarDecl getAVariable() { result = getVariable(_) }
 
+    /**
+     * Gets the number of variables.
+     */
     final int getNumberOfVariables() { result = count(getAVariable()) }
   }
 }

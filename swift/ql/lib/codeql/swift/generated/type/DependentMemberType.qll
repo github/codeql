@@ -8,6 +8,10 @@ module Generated {
   class DependentMemberType extends Synth::TDependentMemberType, Type {
     override string getAPrimaryQlClass() { result = "DependentMemberType" }
 
+    /**
+     * Gets the basetype.
+     * This is taken from the "hidden" AST and should only be used to be overridden by classes.
+     */
     Type getImmediateBaseType() {
       result =
         Synth::convertTypeFromRaw(Synth::convertDependentMemberTypeToRaw(this)
@@ -15,8 +19,15 @@ module Generated {
               .getBaseType())
     }
 
+    /**
+     * Gets the basetype.
+     */
     final Type getBaseType() { result = getImmediateBaseType().resolve() }
 
+    /**
+     * Gets the associated type decl.
+     * This is taken from the "hidden" AST and should only be used to be overridden by classes.
+     */
     AssociatedTypeDecl getImmediateAssociatedTypeDecl() {
       result =
         Synth::convertAssociatedTypeDeclFromRaw(Synth::convertDependentMemberTypeToRaw(this)
@@ -24,6 +35,9 @@ module Generated {
               .getAssociatedTypeDecl())
     }
 
+    /**
+     * Gets the associated type decl.
+     */
     final AssociatedTypeDecl getAssociatedTypeDecl() {
       result = getImmediateAssociatedTypeDecl().resolve()
     }

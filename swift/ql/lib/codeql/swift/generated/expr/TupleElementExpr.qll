@@ -7,6 +7,10 @@ module Generated {
   class TupleElementExpr extends Synth::TTupleElementExpr, Expr {
     override string getAPrimaryQlClass() { result = "TupleElementExpr" }
 
+    /**
+     * Gets the sub expr.
+     * This is taken from the "hidden" AST and should only be used to be overridden by classes.
+     */
     Expr getImmediateSubExpr() {
       result =
         Synth::convertExprFromRaw(Synth::convertTupleElementExprToRaw(this)
@@ -14,8 +18,14 @@ module Generated {
               .getSubExpr())
     }
 
+    /**
+     * Gets the sub expr.
+     */
     final Expr getSubExpr() { result = getImmediateSubExpr().resolve() }
 
+    /**
+     * Gets the index.
+     */
     int getIndex() {
       result = Synth::convertTupleElementExprToRaw(this).(Raw::TupleElementExpr).getIndex()
     }

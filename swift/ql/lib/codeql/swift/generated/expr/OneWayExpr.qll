@@ -7,11 +7,18 @@ module Generated {
   class OneWayExpr extends Synth::TOneWayExpr, Expr {
     override string getAPrimaryQlClass() { result = "OneWayExpr" }
 
+    /**
+     * Gets the sub expr.
+     * This is taken from the "hidden" AST and should only be used to be overridden by classes.
+     */
     Expr getImmediateSubExpr() {
       result =
         Synth::convertExprFromRaw(Synth::convertOneWayExprToRaw(this).(Raw::OneWayExpr).getSubExpr())
     }
 
+    /**
+     * Gets the sub expr.
+     */
     final Expr getSubExpr() { result = getImmediateSubExpr().resolve() }
   }
 }

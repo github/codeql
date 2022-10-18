@@ -6,6 +6,10 @@ import codeql.swift.elements.type.Type
 
 module Generated {
   class AnyGenericType extends Synth::TAnyGenericType, Type {
+    /**
+     * Gets the parent, if it exists.
+     * This is taken from the "hidden" AST and should only be used to be overridden by classes.
+     */
     Type getImmediateParent() {
       result =
         Synth::convertTypeFromRaw(Synth::convertAnyGenericTypeToRaw(this)
@@ -13,10 +17,20 @@ module Generated {
               .getParent())
     }
 
+    /**
+     * Gets the parent, if it exists.
+     */
     final Type getParent() { result = getImmediateParent().resolve() }
 
+    /**
+     * Holds if `getParent()` exists.
+     */
     final predicate hasParent() { exists(getParent()) }
 
+    /**
+     * Gets the declaration.
+     * This is taken from the "hidden" AST and should only be used to be overridden by classes.
+     */
     Decl getImmediateDeclaration() {
       result =
         Synth::convertDeclFromRaw(Synth::convertAnyGenericTypeToRaw(this)
@@ -24,6 +38,9 @@ module Generated {
               .getDeclaration())
     }
 
+    /**
+     * Gets the declaration.
+     */
     final Decl getDeclaration() { result = getImmediateDeclaration().resolve() }
   }
 }

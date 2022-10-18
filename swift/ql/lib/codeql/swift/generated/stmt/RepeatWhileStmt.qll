@@ -9,6 +9,10 @@ module Generated {
   class RepeatWhileStmt extends Synth::TRepeatWhileStmt, LabeledStmt {
     override string getAPrimaryQlClass() { result = "RepeatWhileStmt" }
 
+    /**
+     * Gets the condition.
+     * This is taken from the "hidden" AST and should only be used to be overridden by classes.
+     */
     Expr getImmediateCondition() {
       result =
         Synth::convertExprFromRaw(Synth::convertRepeatWhileStmtToRaw(this)
@@ -16,8 +20,15 @@ module Generated {
               .getCondition())
     }
 
+    /**
+     * Gets the condition.
+     */
     final Expr getCondition() { result = getImmediateCondition().resolve() }
 
+    /**
+     * Gets the body.
+     * This is taken from the "hidden" AST and should only be used to be overridden by classes.
+     */
     Stmt getImmediateBody() {
       result =
         Synth::convertStmtFromRaw(Synth::convertRepeatWhileStmtToRaw(this)
@@ -25,6 +36,9 @@ module Generated {
               .getBody())
     }
 
+    /**
+     * Gets the body.
+     */
     final Stmt getBody() { result = getImmediateBody().resolve() }
   }
 }

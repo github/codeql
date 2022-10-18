@@ -5,6 +5,10 @@ import codeql.swift.elements.type.Type
 
 module Generated {
   class AnyFunctionType extends Synth::TAnyFunctionType, Type {
+    /**
+     * Gets the result.
+     * This is taken from the "hidden" AST and should only be used to be overridden by classes.
+     */
     Type getImmediateResult() {
       result =
         Synth::convertTypeFromRaw(Synth::convertAnyFunctionTypeToRaw(this)
@@ -12,8 +16,15 @@ module Generated {
               .getResult())
     }
 
+    /**
+     * Gets the result.
+     */
     final Type getResult() { result = getImmediateResult().resolve() }
 
+    /**
+     * Gets the `index`th param type.
+     * This is taken from the "hidden" AST and should only be used to be overridden by classes.
+     */
     Type getImmediateParamType(int index) {
       result =
         Synth::convertTypeFromRaw(Synth::convertAnyFunctionTypeToRaw(this)
@@ -21,18 +32,36 @@ module Generated {
               .getParamType(index))
     }
 
+    /**
+     * Gets the `index`th param type.
+     */
     final Type getParamType(int index) { result = getImmediateParamType(index).resolve() }
 
+    /**
+     * Gets any of the param types.
+     */
     final Type getAParamType() { result = getParamType(_) }
 
+    /**
+     * Gets the number of param types.
+     */
     final int getNumberOfParamTypes() { result = count(getAParamType()) }
 
+    /**
+     * Gets the `index`th param label.
+     */
     string getParamLabel(int index) {
       result = Synth::convertAnyFunctionTypeToRaw(this).(Raw::AnyFunctionType).getParamLabel(index)
     }
 
+    /**
+     * Gets any of the param labels.
+     */
     final string getAParamLabel() { result = getParamLabel(_) }
 
+    /**
+     * Gets the number of param labels.
+     */
     final int getNumberOfParamLabels() { result = count(getAParamLabel()) }
 
     predicate isThrowing() {

@@ -9,6 +9,10 @@ module Generated {
   class PatternBindingDecl extends Synth::TPatternBindingDecl, Decl {
     override string getAPrimaryQlClass() { result = "PatternBindingDecl" }
 
+    /**
+     * Gets the `index`th init, if it exists.
+     * This is taken from the "hidden" AST and should only be used to be overridden by classes.
+     */
     Expr getImmediateInit(int index) {
       result =
         Synth::convertExprFromRaw(Synth::convertPatternBindingDeclToRaw(this)
@@ -16,12 +20,25 @@ module Generated {
               .getInit(index))
     }
 
+    /**
+     * Gets the `index`th init, if it exists.
+     */
     final Expr getInit(int index) { result = getImmediateInit(index).resolve() }
 
+    /**
+     * Holds if `getInit(index)` exists.
+     */
     final predicate hasInit(int index) { exists(getInit(index)) }
 
+    /**
+     * Gets any of the inits.
+     */
     final Expr getAnInit() { result = getInit(_) }
 
+    /**
+     * Gets the `index`th pattern.
+     * This is taken from the "hidden" AST and should only be used to be overridden by classes.
+     */
     Pattern getImmediatePattern(int index) {
       result =
         Synth::convertPatternFromRaw(Synth::convertPatternBindingDeclToRaw(this)
@@ -29,10 +46,19 @@ module Generated {
               .getPattern(index))
     }
 
+    /**
+     * Gets the `index`th pattern.
+     */
     final Pattern getPattern(int index) { result = getImmediatePattern(index).resolve() }
 
+    /**
+     * Gets any of the patterns.
+     */
     final Pattern getAPattern() { result = getPattern(_) }
 
+    /**
+     * Gets the number of patterns.
+     */
     final int getNumberOfPatterns() { result = count(getAPattern()) }
   }
 }

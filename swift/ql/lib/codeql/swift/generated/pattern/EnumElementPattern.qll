@@ -8,6 +8,10 @@ module Generated {
   class EnumElementPattern extends Synth::TEnumElementPattern, Pattern {
     override string getAPrimaryQlClass() { result = "EnumElementPattern" }
 
+    /**
+     * Gets the element.
+     * This is taken from the "hidden" AST and should only be used to be overridden by classes.
+     */
     EnumElementDecl getImmediateElement() {
       result =
         Synth::convertEnumElementDeclFromRaw(Synth::convertEnumElementPatternToRaw(this)
@@ -15,8 +19,15 @@ module Generated {
               .getElement())
     }
 
+    /**
+     * Gets the element.
+     */
     final EnumElementDecl getElement() { result = getImmediateElement().resolve() }
 
+    /**
+     * Gets the sub pattern, if it exists.
+     * This is taken from the "hidden" AST and should only be used to be overridden by classes.
+     */
     Pattern getImmediateSubPattern() {
       result =
         Synth::convertPatternFromRaw(Synth::convertEnumElementPatternToRaw(this)
@@ -24,8 +35,14 @@ module Generated {
               .getSubPattern())
     }
 
+    /**
+     * Gets the sub pattern, if it exists.
+     */
     final Pattern getSubPattern() { result = getImmediateSubPattern().resolve() }
 
+    /**
+     * Holds if `getSubPattern()` exists.
+     */
     final predicate hasSubPattern() { exists(getSubPattern()) }
   }
 }

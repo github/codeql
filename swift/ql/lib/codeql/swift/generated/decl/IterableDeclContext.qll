@@ -6,6 +6,10 @@ import codeql.swift.elements.Element
 
 module Generated {
   class IterableDeclContext extends Synth::TIterableDeclContext, Element {
+    /**
+     * Gets the `index`th member.
+     * This is taken from the "hidden" AST and should only be used to be overridden by classes.
+     */
     Decl getImmediateMember(int index) {
       result =
         Synth::convertDeclFromRaw(Synth::convertIterableDeclContextToRaw(this)
@@ -13,10 +17,19 @@ module Generated {
               .getMember(index))
     }
 
+    /**
+     * Gets the `index`th member.
+     */
     final Decl getMember(int index) { result = getImmediateMember(index).resolve() }
 
+    /**
+     * Gets any of the members.
+     */
     final Decl getAMember() { result = getMember(_) }
 
+    /**
+     * Gets the number of members.
+     */
     final int getNumberOfMembers() { result = count(getAMember()) }
   }
 }

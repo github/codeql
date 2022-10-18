@@ -8,6 +8,10 @@ module Generated {
   class YieldStmt extends Synth::TYieldStmt, Stmt {
     override string getAPrimaryQlClass() { result = "YieldStmt" }
 
+    /**
+     * Gets the `index`th result.
+     * This is taken from the "hidden" AST and should only be used to be overridden by classes.
+     */
     Expr getImmediateResult(int index) {
       result =
         Synth::convertExprFromRaw(Synth::convertYieldStmtToRaw(this)
@@ -15,10 +19,19 @@ module Generated {
               .getResult(index))
     }
 
+    /**
+     * Gets the `index`th result.
+     */
     final Expr getResult(int index) { result = getImmediateResult(index).resolve() }
 
+    /**
+     * Gets any of the results.
+     */
     final Expr getAResult() { result = getResult(_) }
 
+    /**
+     * Gets the number of results.
+     */
     final int getNumberOfResults() { result = count(getAResult()) }
   }
 }

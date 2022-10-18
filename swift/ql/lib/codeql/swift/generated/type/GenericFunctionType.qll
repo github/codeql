@@ -8,6 +8,10 @@ module Generated {
   class GenericFunctionType extends Synth::TGenericFunctionType, AnyFunctionType {
     override string getAPrimaryQlClass() { result = "GenericFunctionType" }
 
+    /**
+     * Gets the `index`th generic param.
+     * This is taken from the "hidden" AST and should only be used to be overridden by classes.
+     */
     GenericTypeParamType getImmediateGenericParam(int index) {
       result =
         Synth::convertGenericTypeParamTypeFromRaw(Synth::convertGenericFunctionTypeToRaw(this)
@@ -15,12 +19,21 @@ module Generated {
               .getGenericParam(index))
     }
 
+    /**
+     * Gets the `index`th generic param.
+     */
     final GenericTypeParamType getGenericParam(int index) {
       result = getImmediateGenericParam(index).resolve()
     }
 
+    /**
+     * Gets any of the generic params.
+     */
     final GenericTypeParamType getAGenericParam() { result = getGenericParam(_) }
 
+    /**
+     * Gets the number of generic params.
+     */
     final int getNumberOfGenericParams() { result = count(getAGenericParam()) }
   }
 }

@@ -8,6 +8,10 @@ module Generated {
   class ExprPattern extends Synth::TExprPattern, Pattern {
     override string getAPrimaryQlClass() { result = "ExprPattern" }
 
+    /**
+     * Gets the sub expr.
+     * This is taken from the "hidden" AST and should only be used to be overridden by classes.
+     */
     Expr getImmediateSubExpr() {
       result =
         Synth::convertExprFromRaw(Synth::convertExprPatternToRaw(this)
@@ -15,6 +19,9 @@ module Generated {
               .getSubExpr())
     }
 
+    /**
+     * Gets the sub expr.
+     */
     final Expr getSubExpr() { result = getImmediateSubExpr().resolve() }
   }
 }

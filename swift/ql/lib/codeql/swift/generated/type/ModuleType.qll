@@ -8,6 +8,10 @@ module Generated {
   class ModuleType extends Synth::TModuleType, Type {
     override string getAPrimaryQlClass() { result = "ModuleType" }
 
+    /**
+     * Gets the module.
+     * This is taken from the "hidden" AST and should only be used to be overridden by classes.
+     */
     ModuleDecl getImmediateModule() {
       result =
         Synth::convertModuleDeclFromRaw(Synth::convertModuleTypeToRaw(this)
@@ -15,6 +19,9 @@ module Generated {
               .getModule())
     }
 
+    /**
+     * Gets the module.
+     */
     final ModuleDecl getModule() { result = getImmediateModule().resolve() }
   }
 }

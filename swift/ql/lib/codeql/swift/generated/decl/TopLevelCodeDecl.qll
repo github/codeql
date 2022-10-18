@@ -8,6 +8,10 @@ module Generated {
   class TopLevelCodeDecl extends Synth::TTopLevelCodeDecl, Decl {
     override string getAPrimaryQlClass() { result = "TopLevelCodeDecl" }
 
+    /**
+     * Gets the body.
+     * This is taken from the "hidden" AST and should only be used to be overridden by classes.
+     */
     BraceStmt getImmediateBody() {
       result =
         Synth::convertBraceStmtFromRaw(Synth::convertTopLevelCodeDeclToRaw(this)
@@ -15,6 +19,9 @@ module Generated {
               .getBody())
     }
 
+    /**
+     * Gets the body.
+     */
     final BraceStmt getBody() { result = getImmediateBody().resolve() }
   }
 }

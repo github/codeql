@@ -8,6 +8,10 @@ module Generated {
   class TypeAliasType extends Synth::TTypeAliasType, SugarType {
     override string getAPrimaryQlClass() { result = "TypeAliasType" }
 
+    /**
+     * Gets the decl.
+     * This is taken from the "hidden" AST and should only be used to be overridden by classes.
+     */
     TypeAliasDecl getImmediateDecl() {
       result =
         Synth::convertTypeAliasDeclFromRaw(Synth::convertTypeAliasTypeToRaw(this)
@@ -15,6 +19,9 @@ module Generated {
               .getDecl())
     }
 
+    /**
+     * Gets the decl.
+     */
     final TypeAliasDecl getDecl() { result = getImmediateDecl().resolve() }
   }
 }

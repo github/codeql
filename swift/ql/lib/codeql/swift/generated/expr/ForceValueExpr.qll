@@ -7,6 +7,10 @@ module Generated {
   class ForceValueExpr extends Synth::TForceValueExpr, Expr {
     override string getAPrimaryQlClass() { result = "ForceValueExpr" }
 
+    /**
+     * Gets the sub expr.
+     * This is taken from the "hidden" AST and should only be used to be overridden by classes.
+     */
     Expr getImmediateSubExpr() {
       result =
         Synth::convertExprFromRaw(Synth::convertForceValueExprToRaw(this)
@@ -14,6 +18,9 @@ module Generated {
               .getSubExpr())
     }
 
+    /**
+     * Gets the sub expr.
+     */
     final Expr getSubExpr() { result = getImmediateSubExpr().resolve() }
   }
 }

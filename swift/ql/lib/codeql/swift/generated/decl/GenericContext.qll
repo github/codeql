@@ -6,6 +6,10 @@ import codeql.swift.elements.decl.GenericTypeParamDecl
 
 module Generated {
   class GenericContext extends Synth::TGenericContext, Element {
+    /**
+     * Gets the `index`th generic type param.
+     * This is taken from the "hidden" AST and should only be used to be overridden by classes.
+     */
     GenericTypeParamDecl getImmediateGenericTypeParam(int index) {
       result =
         Synth::convertGenericTypeParamDeclFromRaw(Synth::convertGenericContextToRaw(this)
@@ -13,12 +17,21 @@ module Generated {
               .getGenericTypeParam(index))
     }
 
+    /**
+     * Gets the `index`th generic type param.
+     */
     final GenericTypeParamDecl getGenericTypeParam(int index) {
       result = getImmediateGenericTypeParam(index).resolve()
     }
 
+    /**
+     * Gets any of the generic type params.
+     */
     final GenericTypeParamDecl getAGenericTypeParam() { result = getGenericTypeParam(_) }
 
+    /**
+     * Gets the number of generic type params.
+     */
     final int getNumberOfGenericTypeParams() { result = count(getAGenericTypeParam()) }
   }
 }

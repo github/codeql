@@ -9,27 +9,51 @@ module Generated {
   class TapExpr extends Synth::TTapExpr, Expr {
     override string getAPrimaryQlClass() { result = "TapExpr" }
 
+    /**
+     * Gets the sub expr, if it exists.
+     * This is taken from the "hidden" AST and should only be used to be overridden by classes.
+     */
     Expr getImmediateSubExpr() {
       result =
         Synth::convertExprFromRaw(Synth::convertTapExprToRaw(this).(Raw::TapExpr).getSubExpr())
     }
 
+    /**
+     * Gets the sub expr, if it exists.
+     */
     final Expr getSubExpr() { result = getImmediateSubExpr().resolve() }
 
+    /**
+     * Holds if `getSubExpr()` exists.
+     */
     final predicate hasSubExpr() { exists(getSubExpr()) }
 
+    /**
+     * Gets the body.
+     * This is taken from the "hidden" AST and should only be used to be overridden by classes.
+     */
     BraceStmt getImmediateBody() {
       result =
         Synth::convertBraceStmtFromRaw(Synth::convertTapExprToRaw(this).(Raw::TapExpr).getBody())
     }
 
+    /**
+     * Gets the body.
+     */
     final BraceStmt getBody() { result = getImmediateBody().resolve() }
 
+    /**
+     * Gets the var.
+     * This is taken from the "hidden" AST and should only be used to be overridden by classes.
+     */
     VarDecl getImmediateVar() {
       result =
         Synth::convertVarDeclFromRaw(Synth::convertTapExprToRaw(this).(Raw::TapExpr).getVar())
     }
 
+    /**
+     * Gets the var.
+     */
     final VarDecl getVar() { result = getImmediateVar().resolve() }
   }
 }

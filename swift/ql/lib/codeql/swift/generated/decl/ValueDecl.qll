@@ -6,6 +6,10 @@ import codeql.swift.elements.type.Type
 
 module Generated {
   class ValueDecl extends Synth::TValueDecl, Decl {
+    /**
+     * Gets the interface type.
+     * This is taken from the "hidden" AST and should only be used to be overridden by classes.
+     */
     Type getImmediateInterfaceType() {
       result =
         Synth::convertTypeFromRaw(Synth::convertValueDeclToRaw(this)
@@ -13,6 +17,9 @@ module Generated {
               .getInterfaceType())
     }
 
+    /**
+     * Gets the interface type.
+     */
     final Type getInterfaceType() { result = getImmediateInterfaceType().resolve() }
   }
 }

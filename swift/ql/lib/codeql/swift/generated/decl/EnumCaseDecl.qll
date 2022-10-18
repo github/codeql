@@ -8,6 +8,10 @@ module Generated {
   class EnumCaseDecl extends Synth::TEnumCaseDecl, Decl {
     override string getAPrimaryQlClass() { result = "EnumCaseDecl" }
 
+    /**
+     * Gets the `index`th element.
+     * This is taken from the "hidden" AST and should only be used to be overridden by classes.
+     */
     EnumElementDecl getImmediateElement(int index) {
       result =
         Synth::convertEnumElementDeclFromRaw(Synth::convertEnumCaseDeclToRaw(this)
@@ -15,10 +19,19 @@ module Generated {
               .getElement(index))
     }
 
+    /**
+     * Gets the `index`th element.
+     */
     final EnumElementDecl getElement(int index) { result = getImmediateElement(index).resolve() }
 
+    /**
+     * Gets any of the elements.
+     */
     final EnumElementDecl getAnElement() { result = getElement(_) }
 
+    /**
+     * Gets the number of elements.
+     */
     final int getNumberOfElements() { result = count(getAnElement()) }
   }
 }

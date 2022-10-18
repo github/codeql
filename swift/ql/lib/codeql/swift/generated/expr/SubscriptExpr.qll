@@ -8,6 +8,10 @@ module Generated {
   class SubscriptExpr extends Synth::TSubscriptExpr, LookupExpr {
     override string getAPrimaryQlClass() { result = "SubscriptExpr" }
 
+    /**
+     * Gets the `index`th argument.
+     * This is taken from the "hidden" AST and should only be used to be overridden by classes.
+     */
     Argument getImmediateArgument(int index) {
       result =
         Synth::convertArgumentFromRaw(Synth::convertSubscriptExprToRaw(this)
@@ -15,10 +19,19 @@ module Generated {
               .getArgument(index))
     }
 
+    /**
+     * Gets the `index`th argument.
+     */
     final Argument getArgument(int index) { result = getImmediateArgument(index).resolve() }
 
+    /**
+     * Gets any of the arguments.
+     */
     final Argument getAnArgument() { result = getArgument(_) }
 
+    /**
+     * Gets the number of arguments.
+     */
     final int getNumberOfArguments() { result = count(getAnArgument()) }
 
     predicate hasDirectToStorageSemantics() {

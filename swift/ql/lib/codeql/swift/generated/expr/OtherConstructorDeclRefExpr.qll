@@ -8,6 +8,10 @@ module Generated {
   class OtherConstructorDeclRefExpr extends Synth::TOtherConstructorDeclRefExpr, Expr {
     override string getAPrimaryQlClass() { result = "OtherConstructorDeclRefExpr" }
 
+    /**
+     * Gets the constructor decl.
+     * This is taken from the "hidden" AST and should only be used to be overridden by classes.
+     */
     ConstructorDecl getImmediateConstructorDecl() {
       result =
         Synth::convertConstructorDeclFromRaw(Synth::convertOtherConstructorDeclRefExprToRaw(this)
@@ -15,6 +19,9 @@ module Generated {
               .getConstructorDecl())
     }
 
+    /**
+     * Gets the constructor decl.
+     */
     final ConstructorDecl getConstructorDecl() { result = getImmediateConstructorDecl().resolve() }
   }
 }

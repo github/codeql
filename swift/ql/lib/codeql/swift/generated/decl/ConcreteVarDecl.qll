@@ -7,6 +7,9 @@ module Generated {
   class ConcreteVarDecl extends Synth::TConcreteVarDecl, VarDecl {
     override string getAPrimaryQlClass() { result = "ConcreteVarDecl" }
 
+    /**
+     * Gets the introducer int.
+     */
     int getIntroducerInt() {
       result = Synth::convertConcreteVarDeclToRaw(this).(Raw::ConcreteVarDecl).getIntroducerInt()
     }

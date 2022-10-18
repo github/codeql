@@ -10,6 +10,10 @@ module Generated {
   class SubscriptDecl extends Synth::TSubscriptDecl, AbstractStorageDecl, GenericContext {
     override string getAPrimaryQlClass() { result = "SubscriptDecl" }
 
+    /**
+     * Gets the `index`th param.
+     * This is taken from the "hidden" AST and should only be used to be overridden by classes.
+     */
     ParamDecl getImmediateParam(int index) {
       result =
         Synth::convertParamDeclFromRaw(Synth::convertSubscriptDeclToRaw(this)
@@ -17,12 +21,25 @@ module Generated {
               .getParam(index))
     }
 
+    /**
+     * Gets the `index`th param.
+     */
     final ParamDecl getParam(int index) { result = getImmediateParam(index).resolve() }
 
+    /**
+     * Gets any of the params.
+     */
     final ParamDecl getAParam() { result = getParam(_) }
 
+    /**
+     * Gets the number of params.
+     */
     final int getNumberOfParams() { result = count(getAParam()) }
 
+    /**
+     * Gets the element type.
+     * This is taken from the "hidden" AST and should only be used to be overridden by classes.
+     */
     Type getImmediateElementType() {
       result =
         Synth::convertTypeFromRaw(Synth::convertSubscriptDeclToRaw(this)
@@ -30,6 +47,9 @@ module Generated {
               .getElementType())
     }
 
+    /**
+     * Gets the element type.
+     */
     final Type getElementType() { result = getImmediateElementType().resolve() }
   }
 }

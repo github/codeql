@@ -8,6 +8,10 @@ module Generated {
   class SuperRefExpr extends Synth::TSuperRefExpr, Expr {
     override string getAPrimaryQlClass() { result = "SuperRefExpr" }
 
+    /**
+     * Gets the self.
+     * This is taken from the "hidden" AST and should only be used to be overridden by classes.
+     */
     VarDecl getImmediateSelf() {
       result =
         Synth::convertVarDeclFromRaw(Synth::convertSuperRefExprToRaw(this)
@@ -15,6 +19,9 @@ module Generated {
               .getSelf())
     }
 
+    /**
+     * Gets the self.
+     */
     final VarDecl getSelf() { result = getImmediateSelf().resolve() }
   }
 }

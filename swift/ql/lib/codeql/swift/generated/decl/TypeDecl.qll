@@ -6,8 +6,15 @@ import codeql.swift.elements.decl.ValueDecl
 
 module Generated {
   class TypeDecl extends Synth::TTypeDecl, ValueDecl {
+    /**
+     * Gets the name.
+     */
     string getName() { result = Synth::convertTypeDeclToRaw(this).(Raw::TypeDecl).getName() }
 
+    /**
+     * Gets the `index`th base type.
+     * This is taken from the "hidden" AST and should only be used to be overridden by classes.
+     */
     Type getImmediateBaseType(int index) {
       result =
         Synth::convertTypeFromRaw(Synth::convertTypeDeclToRaw(this)
@@ -15,10 +22,19 @@ module Generated {
               .getBaseType(index))
     }
 
+    /**
+     * Gets the `index`th base type.
+     */
     final Type getBaseType(int index) { result = getImmediateBaseType(index).resolve() }
 
+    /**
+     * Gets any of the base types.
+     */
     final Type getABaseType() { result = getBaseType(_) }
 
+    /**
+     * Gets the number of base types.
+     */
     final int getNumberOfBaseTypes() { result = count(getABaseType()) }
   }
 }

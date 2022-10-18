@@ -6,6 +6,10 @@ import codeql.swift.elements.type.Type
 
 module Generated {
   class UnarySyntaxSugarType extends Synth::TUnarySyntaxSugarType, SyntaxSugarType {
+    /**
+     * Gets the base type.
+     * This is taken from the "hidden" AST and should only be used to be overridden by classes.
+     */
     Type getImmediateBaseType() {
       result =
         Synth::convertTypeFromRaw(Synth::convertUnarySyntaxSugarTypeToRaw(this)
@@ -13,6 +17,9 @@ module Generated {
               .getBaseType())
     }
 
+    /**
+     * Gets the base type.
+     */
     final Type getBaseType() { result = getImmediateBaseType().resolve() }
   }
 }

@@ -8,10 +8,17 @@ module Generated {
   class EnumElementDecl extends Synth::TEnumElementDecl, ValueDecl {
     override string getAPrimaryQlClass() { result = "EnumElementDecl" }
 
+    /**
+     * Gets the name.
+     */
     string getName() {
       result = Synth::convertEnumElementDeclToRaw(this).(Raw::EnumElementDecl).getName()
     }
 
+    /**
+     * Gets the `index`th param.
+     * This is taken from the "hidden" AST and should only be used to be overridden by classes.
+     */
     ParamDecl getImmediateParam(int index) {
       result =
         Synth::convertParamDeclFromRaw(Synth::convertEnumElementDeclToRaw(this)
@@ -19,10 +26,19 @@ module Generated {
               .getParam(index))
     }
 
+    /**
+     * Gets the `index`th param.
+     */
     final ParamDecl getParam(int index) { result = getImmediateParam(index).resolve() }
 
+    /**
+     * Gets any of the params.
+     */
     final ParamDecl getAParam() { result = getParam(_) }
 
+    /**
+     * Gets the number of params.
+     */
     final int getNumberOfParams() { result = count(getAParam()) }
   }
 }

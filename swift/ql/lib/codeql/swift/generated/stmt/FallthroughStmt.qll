@@ -8,6 +8,10 @@ module Generated {
   class FallthroughStmt extends Synth::TFallthroughStmt, Stmt {
     override string getAPrimaryQlClass() { result = "FallthroughStmt" }
 
+    /**
+     * Gets the fallthrough source.
+     * This is taken from the "hidden" AST and should only be used to be overridden by classes.
+     */
     CaseStmt getImmediateFallthroughSource() {
       result =
         Synth::convertCaseStmtFromRaw(Synth::convertFallthroughStmtToRaw(this)
@@ -15,8 +19,15 @@ module Generated {
               .getFallthroughSource())
     }
 
+    /**
+     * Gets the fallthrough source.
+     */
     final CaseStmt getFallthroughSource() { result = getImmediateFallthroughSource().resolve() }
 
+    /**
+     * Gets the fallthrough dest.
+     * This is taken from the "hidden" AST and should only be used to be overridden by classes.
+     */
     CaseStmt getImmediateFallthroughDest() {
       result =
         Synth::convertCaseStmtFromRaw(Synth::convertFallthroughStmtToRaw(this)
@@ -24,6 +35,9 @@ module Generated {
               .getFallthroughDest())
     }
 
+    /**
+     * Gets the fallthrough dest.
+     */
     final CaseStmt getFallthroughDest() { result = getImmediateFallthroughDest().resolve() }
   }
 }

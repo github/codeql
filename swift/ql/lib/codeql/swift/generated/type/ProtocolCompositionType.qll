@@ -7,6 +7,10 @@ module Generated {
   class ProtocolCompositionType extends Synth::TProtocolCompositionType, Type {
     override string getAPrimaryQlClass() { result = "ProtocolCompositionType" }
 
+    /**
+     * Gets the `index`th member.
+     * This is taken from the "hidden" AST and should only be used to be overridden by classes.
+     */
     Type getImmediateMember(int index) {
       result =
         Synth::convertTypeFromRaw(Synth::convertProtocolCompositionTypeToRaw(this)
@@ -14,10 +18,19 @@ module Generated {
               .getMember(index))
     }
 
+    /**
+     * Gets the `index`th member.
+     */
     final Type getMember(int index) { result = getImmediateMember(index).resolve() }
 
+    /**
+     * Gets any of the members.
+     */
     final Type getAMember() { result = getMember(_) }
 
+    /**
+     * Gets the number of members.
+     */
     final int getNumberOfMembers() { result = count(getAMember()) }
   }
 }

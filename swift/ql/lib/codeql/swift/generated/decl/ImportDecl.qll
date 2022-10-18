@@ -11,6 +11,10 @@ module Generated {
 
     predicate isExported() { Synth::convertImportDeclToRaw(this).(Raw::ImportDecl).isExported() }
 
+    /**
+     * Gets the imported module, if it exists.
+     * This is taken from the "hidden" AST and should only be used to be overridden by classes.
+     */
     ModuleDecl getImmediateImportedModule() {
       result =
         Synth::convertModuleDeclFromRaw(Synth::convertImportDeclToRaw(this)
@@ -18,10 +22,20 @@ module Generated {
               .getImportedModule())
     }
 
+    /**
+     * Gets the imported module, if it exists.
+     */
     final ModuleDecl getImportedModule() { result = getImmediateImportedModule().resolve() }
 
+    /**
+     * Holds if `getImportedModule()` exists.
+     */
     final predicate hasImportedModule() { exists(getImportedModule()) }
 
+    /**
+     * Gets the `index`th declaration.
+     * This is taken from the "hidden" AST and should only be used to be overridden by classes.
+     */
     ValueDecl getImmediateDeclaration(int index) {
       result =
         Synth::convertValueDeclFromRaw(Synth::convertImportDeclToRaw(this)
@@ -29,10 +43,19 @@ module Generated {
               .getDeclaration(index))
     }
 
+    /**
+     * Gets the `index`th declaration.
+     */
     final ValueDecl getDeclaration(int index) { result = getImmediateDeclaration(index).resolve() }
 
+    /**
+     * Gets any of the declarations.
+     */
     final ValueDecl getADeclaration() { result = getDeclaration(_) }
 
+    /**
+     * Gets the number of declarations.
+     */
     final int getNumberOfDeclarations() { result = count(getADeclaration()) }
   }
 }

@@ -7,6 +7,10 @@ module Generated {
   class DynamicTypeExpr extends Synth::TDynamicTypeExpr, Expr {
     override string getAPrimaryQlClass() { result = "DynamicTypeExpr" }
 
+    /**
+     * Gets the base.
+     * This is taken from the "hidden" AST and should only be used to be overridden by classes.
+     */
     Expr getImmediateBase() {
       result =
         Synth::convertExprFromRaw(Synth::convertDynamicTypeExprToRaw(this)
@@ -14,6 +18,9 @@ module Generated {
               .getBase())
     }
 
+    /**
+     * Gets the base.
+     */
     final Expr getBase() { result = getImmediateBase().resolve() }
   }
 }

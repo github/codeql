@@ -7,6 +7,9 @@ module Generated {
   class BooleanLiteralExpr extends Synth::TBooleanLiteralExpr, BuiltinLiteralExpr {
     override string getAPrimaryQlClass() { result = "BooleanLiteralExpr" }
 
+    /**
+     * Gets the value.
+     */
     boolean getValue() {
       result = Synth::convertBooleanLiteralExprToRaw(this).(Raw::BooleanLiteralExpr).getValue()
     }

@@ -6,6 +6,10 @@ import codeql.swift.elements.stmt.StmtCondition
 
 module Generated {
   class LabeledConditionalStmt extends Synth::TLabeledConditionalStmt, LabeledStmt {
+    /**
+     * Gets the condition.
+     * This is taken from the "hidden" AST and should only be used to be overridden by classes.
+     */
     StmtCondition getImmediateCondition() {
       result =
         Synth::convertStmtConditionFromRaw(Synth::convertLabeledConditionalStmtToRaw(this)
@@ -13,6 +17,9 @@ module Generated {
               .getCondition())
     }
 
+    /**
+     * Gets the condition.
+     */
     final StmtCondition getCondition() { result = getImmediateCondition().resolve() }
   }
 }

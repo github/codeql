@@ -8,6 +8,10 @@ module Generated {
   class ObjCSelectorExpr extends Synth::TObjCSelectorExpr, Expr {
     override string getAPrimaryQlClass() { result = "ObjCSelectorExpr" }
 
+    /**
+     * Gets the sub expr.
+     * This is taken from the "hidden" AST and should only be used to be overridden by classes.
+     */
     Expr getImmediateSubExpr() {
       result =
         Synth::convertExprFromRaw(Synth::convertObjCSelectorExprToRaw(this)
@@ -15,8 +19,15 @@ module Generated {
               .getSubExpr())
     }
 
+    /**
+     * Gets the sub expr.
+     */
     final Expr getSubExpr() { result = getImmediateSubExpr().resolve() }
 
+    /**
+     * Gets the method.
+     * This is taken from the "hidden" AST and should only be used to be overridden by classes.
+     */
     AbstractFunctionDecl getImmediateMethod() {
       result =
         Synth::convertAbstractFunctionDeclFromRaw(Synth::convertObjCSelectorExprToRaw(this)
@@ -24,6 +35,9 @@ module Generated {
               .getMethod())
     }
 
+    /**
+     * Gets the method.
+     */
     final AbstractFunctionDecl getMethod() { result = getImmediateMethod().resolve() }
   }
 }

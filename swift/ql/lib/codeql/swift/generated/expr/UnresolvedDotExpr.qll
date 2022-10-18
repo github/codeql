@@ -8,6 +8,10 @@ module Generated {
   class UnresolvedDotExpr extends Synth::TUnresolvedDotExpr, Expr, UnresolvedElement {
     override string getAPrimaryQlClass() { result = "UnresolvedDotExpr" }
 
+    /**
+     * Gets the base.
+     * This is taken from the "hidden" AST and should only be used to be overridden by classes.
+     */
     Expr getImmediateBase() {
       result =
         Synth::convertExprFromRaw(Synth::convertUnresolvedDotExprToRaw(this)
@@ -15,8 +19,14 @@ module Generated {
               .getBase())
     }
 
+    /**
+     * Gets the base.
+     */
     final Expr getBase() { result = getImmediateBase().resolve() }
 
+    /**
+     * Gets the name.
+     */
     string getName() {
       result = Synth::convertUnresolvedDotExprToRaw(this).(Raw::UnresolvedDotExpr).getName()
     }

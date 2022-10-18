@@ -8,11 +8,18 @@ module Generated {
   class WhileStmt extends Synth::TWhileStmt, LabeledConditionalStmt {
     override string getAPrimaryQlClass() { result = "WhileStmt" }
 
+    /**
+     * Gets the body.
+     * This is taken from the "hidden" AST and should only be used to be overridden by classes.
+     */
     Stmt getImmediateBody() {
       result =
         Synth::convertStmtFromRaw(Synth::convertWhileStmtToRaw(this).(Raw::WhileStmt).getBody())
     }
 
+    /**
+     * Gets the body.
+     */
     final Stmt getBody() { result = getImmediateBody().resolve() }
   }
 }

@@ -14,15 +14,38 @@ module Generated {
    */
   {{/has_doc}}
   class {{name}} extends Synth::T{{name}}{{#bases}}, {{.}}{{/bases}} {
-    {{#root}}
+  {{#root}}
+    /**
+     * Gets the string representation of this element.
+     */
     string toString() { none() } // overridden by subclasses
 
+    /**
+     * Gets the name of a primary CodeQL class to which this element belongs.
+     *
+     * This is the most precise syntactic category to which they belong; for
+     * example, `CallExpr` is a primary class, but `ApplyExpr` is not.
+     *
+     * There might be some corner cases when this returns multiple classes, or none.
+     */
     string getAPrimaryQlClass() { none() } // overridden by subclasses
 
+    /**
+     * Gets a comma-separated list of the names of the primary CodeQL classes to which this element belongs.
+     */
     final string getPrimaryQlClasses() { result = concat(this.getAPrimaryQlClass(), ",") }
 
+    /**
+     * Gets the most immediate element that should substitute this element in the explicit AST, if any.
+     * Classes can override this to indicate this node should be in the "hidden" AST, mostly reserved
+     * for conversions and syntactic sugar nodes like parentheses.
+     */
     {{name}} getResolveStep() { none() } // overridden by subclasses
 
+    /**
+     * Gets the element that should substitute this element in the explicit AST, applying `getResolveStep`
+     * transitively.
+     */
     final {{name}} resolve() {
       not exists(getResolveStep()) and result = this
       or
@@ -35,6 +58,10 @@ module Generated {
     {{#properties}}
 
     {{#type_is_class}}
+    /**
+     * Gets the {{#is_repeated}}`index`th {{/is_repeated}}{{doc_name}}{{#is_optional}}, if it exists{{/is_optional}}.
+     * This is taken from the "hidden" AST and should only be used to be overridden by classes.
+     */
     {{type}} getImmediate{{singular}}({{#is_repeated}}int index{{/is_repeated}}) {
       {{^ipa}}
       result = Synth::convert{{type}}FromRaw(Synth::convert{{name}}ToRaw(this){{^root}}.(Raw::{{name}}){{/root}}.{{getter}}({{#is_repeated}}index{{/is_repeated}}))
@@ -44,12 +71,41 @@ module Generated {
       {{/ipa}}
     }
 
+    /**
+     * Gets the {{#is_repeated}}`index`th {{/is_repeated}}{{doc_name}}{{#is_optional}}, if it exists{{/is_optional}}.
+    {{#has_doc}}
+     *
+    {{#doc}}
+     * {{.}}
+    {{/doc}}
+    {{/has_doc}}
+     */
     final {{type}} {{getter}}({{#is_repeated}}int index{{/is_repeated}}) {
       result = getImmediate{{singular}}({{#is_repeated}}index{{/is_repeated}}).resolve()
     }
 
     {{/type_is_class}}
     {{^type_is_class}}
+    {{^is_predicate}}
+    /**
+     * Gets the {{#is_repeated}}`index`th {{/is_repeated}}{{doc_name}}{{#is_optional}}, if it exists{{/is_optional}}.
+    {{#has_doc}}
+     *
+    {{#doc}}
+     * {{.}}
+    {{/doc}}
+    {{/has_doc}}
+     */
+    {{/is_predicate}}
+    {{#is_predicate}}
+    {{#has_doc}}
+    /**
+    {{#doc}}
+     * {{.}}
+    {{/doc}}
+     */
+    {{/has_doc}}
+    {{/is_predicate}}
     {{type}} {{getter}}({{#is_repeated}}int index{{/is_repeated}}) {
       {{^ipa}}
       {{^is_predicate}}result = {{/is_predicate}}Synth::convert{{name}}ToRaw(this){{^root}}.(Raw::{{name}}){{/root}}.{{getter}}({{#is_repeated}}index{{/is_repeated}})
@@ -61,17 +117,26 @@ module Generated {
 
     {{/type_is_class}}
     {{#is_optional}}
+    /**
+     * Holds if `{{getter}}({{#is_repeated}}index{{/is_repeated}})` exists.
+     */
     final predicate has{{singular}}({{#is_repeated}}int index{{/is_repeated}}) {
       exists({{getter}}({{#is_repeated}}index{{/is_repeated}}))
     }
     {{/is_optional}}
     {{#is_repeated}}
 
+    /**
+     * Gets any of the {{doc_name_plural}}.
+     */
     final {{type}} {{indefinite_getter}}() {
       result = {{getter}}(_)
     }
     {{^is_optional}}
 
+    /**
+     * Gets the number of {{doc_name_plural}}.
+     */
     final int getNumberOf{{plural}}() {
       result = count({{indefinite_getter}}())
     }

@@ -8,6 +8,10 @@ module Generated {
   class IfConfigDecl extends Synth::TIfConfigDecl, Decl {
     override string getAPrimaryQlClass() { result = "IfConfigDecl" }
 
+    /**
+     * Gets the `index`th active element.
+     * This is taken from the "hidden" AST and should only be used to be overridden by classes.
+     */
     AstNode getImmediateActiveElement(int index) {
       result =
         Synth::convertAstNodeFromRaw(Synth::convertIfConfigDeclToRaw(this)
@@ -15,12 +19,21 @@ module Generated {
               .getActiveElement(index))
     }
 
+    /**
+     * Gets the `index`th active element.
+     */
     final AstNode getActiveElement(int index) {
       result = getImmediateActiveElement(index).resolve()
     }
 
+    /**
+     * Gets any of the active elements.
+     */
     final AstNode getAnActiveElement() { result = getActiveElement(_) }
 
+    /**
+     * Gets the number of active elements.
+     */
     final int getNumberOfActiveElements() { result = count(getAnActiveElement()) }
   }
 }

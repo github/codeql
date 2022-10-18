@@ -7,6 +7,10 @@ module Generated {
   class InOutType extends Synth::TInOutType, Type {
     override string getAPrimaryQlClass() { result = "InOutType" }
 
+    /**
+     * Gets the object type.
+     * This is taken from the "hidden" AST and should only be used to be overridden by classes.
+     */
     Type getImmediateObjectType() {
       result =
         Synth::convertTypeFromRaw(Synth::convertInOutTypeToRaw(this)
@@ -14,6 +18,9 @@ module Generated {
               .getObjectType())
     }
 
+    /**
+     * Gets the object type.
+     */
     final Type getObjectType() { result = getImmediateObjectType().resolve() }
   }
 }

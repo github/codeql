@@ -8,11 +8,18 @@ module Generated {
   class GuardStmt extends Synth::TGuardStmt, LabeledConditionalStmt {
     override string getAPrimaryQlClass() { result = "GuardStmt" }
 
+    /**
+     * Gets the body.
+     * This is taken from the "hidden" AST and should only be used to be overridden by classes.
+     */
     BraceStmt getImmediateBody() {
       result =
         Synth::convertBraceStmtFromRaw(Synth::convertGuardStmtToRaw(this).(Raw::GuardStmt).getBody())
     }
 
+    /**
+     * Gets the body.
+     */
     final BraceStmt getBody() { result = getImmediateBody().resolve() }
   }
 }

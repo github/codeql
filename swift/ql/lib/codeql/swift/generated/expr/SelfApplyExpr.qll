@@ -6,6 +6,10 @@ import codeql.swift.elements.expr.Expr
 
 module Generated {
   class SelfApplyExpr extends Synth::TSelfApplyExpr, ApplyExpr {
+    /**
+     * Gets the base.
+     * This is taken from the "hidden" AST and should only be used to be overridden by classes.
+     */
     Expr getImmediateBase() {
       result =
         Synth::convertExprFromRaw(Synth::convertSelfApplyExprToRaw(this)
@@ -13,6 +17,9 @@ module Generated {
               .getBase())
     }
 
+    /**
+     * Gets the base.
+     */
     final Expr getBase() { result = getImmediateBase().resolve() }
   }
 }

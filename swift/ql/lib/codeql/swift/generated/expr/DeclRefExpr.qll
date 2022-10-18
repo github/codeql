@@ -9,13 +9,24 @@ module Generated {
   class DeclRefExpr extends Synth::TDeclRefExpr, Expr {
     override string getAPrimaryQlClass() { result = "DeclRefExpr" }
 
+    /**
+     * Gets the decl.
+     * This is taken from the "hidden" AST and should only be used to be overridden by classes.
+     */
     Decl getImmediateDecl() {
       result =
         Synth::convertDeclFromRaw(Synth::convertDeclRefExprToRaw(this).(Raw::DeclRefExpr).getDecl())
     }
 
+    /**
+     * Gets the decl.
+     */
     final Decl getDecl() { result = getImmediateDecl().resolve() }
 
+    /**
+     * Gets the `index`th replacement type.
+     * This is taken from the "hidden" AST and should only be used to be overridden by classes.
+     */
     Type getImmediateReplacementType(int index) {
       result =
         Synth::convertTypeFromRaw(Synth::convertDeclRefExprToRaw(this)
@@ -23,12 +34,21 @@ module Generated {
               .getReplacementType(index))
     }
 
+    /**
+     * Gets the `index`th replacement type.
+     */
     final Type getReplacementType(int index) {
       result = getImmediateReplacementType(index).resolve()
     }
 
+    /**
+     * Gets any of the replacement types.
+     */
     final Type getAReplacementType() { result = getReplacementType(_) }
 
+    /**
+     * Gets the number of replacement types.
+     */
     final int getNumberOfReplacementTypes() { result = count(getAReplacementType()) }
 
     predicate hasDirectToStorageSemantics() {

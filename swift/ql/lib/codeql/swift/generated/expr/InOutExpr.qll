@@ -7,11 +7,18 @@ module Generated {
   class InOutExpr extends Synth::TInOutExpr, Expr {
     override string getAPrimaryQlClass() { result = "InOutExpr" }
 
+    /**
+     * Gets the sub expr.
+     * This is taken from the "hidden" AST and should only be used to be overridden by classes.
+     */
     Expr getImmediateSubExpr() {
       result =
         Synth::convertExprFromRaw(Synth::convertInOutExprToRaw(this).(Raw::InOutExpr).getSubExpr())
     }
 
+    /**
+     * Gets the sub expr.
+     */
     final Expr getSubExpr() { result = getImmediateSubExpr().resolve() }
   }
 }

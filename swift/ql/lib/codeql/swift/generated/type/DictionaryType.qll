@@ -8,6 +8,10 @@ module Generated {
   class DictionaryType extends Synth::TDictionaryType, SyntaxSugarType {
     override string getAPrimaryQlClass() { result = "DictionaryType" }
 
+    /**
+     * Gets the key type.
+     * This is taken from the "hidden" AST and should only be used to be overridden by classes.
+     */
     Type getImmediateKeyType() {
       result =
         Synth::convertTypeFromRaw(Synth::convertDictionaryTypeToRaw(this)
@@ -15,8 +19,15 @@ module Generated {
               .getKeyType())
     }
 
+    /**
+     * Gets the key type.
+     */
     final Type getKeyType() { result = getImmediateKeyType().resolve() }
 
+    /**
+     * Gets the value type.
+     * This is taken from the "hidden" AST and should only be used to be overridden by classes.
+     */
     Type getImmediateValueType() {
       result =
         Synth::convertTypeFromRaw(Synth::convertDictionaryTypeToRaw(this)
@@ -24,6 +35,9 @@ module Generated {
               .getValueType())
     }
 
+    /**
+     * Gets the value type.
+     */
     final Type getValueType() { result = getImmediateValueType().resolve() }
   }
 }

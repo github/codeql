@@ -7,12 +7,22 @@ module Generated {
   class ContinueStmt extends Synth::TContinueStmt, Stmt {
     override string getAPrimaryQlClass() { result = "ContinueStmt" }
 
+    /**
+     * Gets the target name, if it exists.
+     */
     string getTargetName() {
       result = Synth::convertContinueStmtToRaw(this).(Raw::ContinueStmt).getTargetName()
     }
 
+    /**
+     * Holds if `getTargetName()` exists.
+     */
     final predicate hasTargetName() { exists(getTargetName()) }
 
+    /**
+     * Gets the target, if it exists.
+     * This is taken from the "hidden" AST and should only be used to be overridden by classes.
+     */
     Stmt getImmediateTarget() {
       result =
         Synth::convertStmtFromRaw(Synth::convertContinueStmtToRaw(this)
@@ -20,8 +30,14 @@ module Generated {
               .getTarget())
     }
 
+    /**
+     * Gets the target, if it exists.
+     */
     final Stmt getTarget() { result = getImmediateTarget().resolve() }
 
+    /**
+     * Holds if `getTarget()` exists.
+     */
     final predicate hasTarget() { exists(getTarget()) }
   }
 }

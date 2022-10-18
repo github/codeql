@@ -9,13 +9,24 @@ module Generated {
   class SwitchStmt extends Synth::TSwitchStmt, LabeledStmt {
     override string getAPrimaryQlClass() { result = "SwitchStmt" }
 
+    /**
+     * Gets the expr.
+     * This is taken from the "hidden" AST and should only be used to be overridden by classes.
+     */
     Expr getImmediateExpr() {
       result =
         Synth::convertExprFromRaw(Synth::convertSwitchStmtToRaw(this).(Raw::SwitchStmt).getExpr())
     }
 
+    /**
+     * Gets the expr.
+     */
     final Expr getExpr() { result = getImmediateExpr().resolve() }
 
+    /**
+     * Gets the `index`th case.
+     * This is taken from the "hidden" AST and should only be used to be overridden by classes.
+     */
     CaseStmt getImmediateCase(int index) {
       result =
         Synth::convertCaseStmtFromRaw(Synth::convertSwitchStmtToRaw(this)
@@ -23,10 +34,19 @@ module Generated {
               .getCase(index))
     }
 
+    /**
+     * Gets the `index`th case.
+     */
     final CaseStmt getCase(int index) { result = getImmediateCase(index).resolve() }
 
+    /**
+     * Gets any of the cases.
+     */
     final CaseStmt getACase() { result = getCase(_) }
 
+    /**
+     * Gets the number of cases.
+     */
     final int getNumberOfCases() { result = count(getACase()) }
   }
 }

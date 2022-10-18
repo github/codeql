@@ -6,11 +6,18 @@ import codeql.swift.elements.decl.ModuleDecl
 
 module Generated {
   class Decl extends Synth::TDecl, AstNode {
+    /**
+     * Gets the module.
+     * This is taken from the "hidden" AST and should only be used to be overridden by classes.
+     */
     ModuleDecl getImmediateModule() {
       result =
         Synth::convertModuleDeclFromRaw(Synth::convertDeclToRaw(this).(Raw::Decl).getModule())
     }
 
+    /**
+     * Gets the module.
+     */
     final ModuleDecl getModule() { result = getImmediateModule().resolve() }
   }
 }

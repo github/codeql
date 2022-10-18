@@ -7,6 +7,10 @@ module Generated {
   class BindingPattern extends Synth::TBindingPattern, Pattern {
     override string getAPrimaryQlClass() { result = "BindingPattern" }
 
+    /**
+     * Gets the sub pattern.
+     * This is taken from the "hidden" AST and should only be used to be overridden by classes.
+     */
     Pattern getImmediateSubPattern() {
       result =
         Synth::convertPatternFromRaw(Synth::convertBindingPatternToRaw(this)
@@ -14,6 +18,9 @@ module Generated {
               .getSubPattern())
     }
 
+    /**
+     * Gets the sub pattern.
+     */
     final Pattern getSubPattern() { result = getImmediateSubPattern().resolve() }
   }
 }
