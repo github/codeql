@@ -53,13 +53,13 @@ module Labels {
         this = TLegacyReasonSinkExcludedEndpointLabel(inner) and
         inner = StandardEndpointFilters::getAReasonSinkExcluded(n)
       |
-        result = "legacy/reason-sink-excluded/" + inner
+        result = inner
       )
     }
 
     override string toString() {
       exists(string inner | this = TLegacyReasonSinkExcludedEndpointLabel(inner) |
-        result = "legacy/reason-sink/excluded/" + inner
+        result = "TLegacyReasonSinkExcludedEndpointLabel(" + inner + ")"
       )
     }
   }
