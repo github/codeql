@@ -23,6 +23,20 @@ class Module extends TModule {
   /** Gets an `include`d module. */
   Module getAnIncludedModule() { result = getAnIncludedModule(this) }
 
+  /** Gets the super class or an included or prepended module. */
+  Module getADirectAncestor() {
+    result = [this.getSuperClass(), this.getAPrependedModule(), this.getAnIncludedModule()]
+  }
+
+  /** Gets a direct subclass or module including or prepending this one. */
+  Module getADirectDescendent() { this = result.getADirectAncestor() }
+
+  /** Gets a module that is transitively subclassed, included, or prepended by this module. */
+  Module getAnAncestor() { result = this.getADirectAncestor*() }
+
+  /** Gets a module that transitively subclasses, includes, or prepends this module. */
+  Module getADescendent() { result = this.getADirectDescendent*() }
+
   /** Holds if this module is a class. */
   pragma[noinline]
   predicate isClass() {
