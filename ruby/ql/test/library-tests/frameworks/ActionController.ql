@@ -3,6 +3,7 @@ private import codeql.ruby.frameworks.ActionController
 private import codeql.ruby.frameworks.Rails
 private import codeql.ruby.frameworks.ActionView
 private import codeql.ruby.Concepts
+private import codeql.ruby.DataFlow
 
 query predicate actionControllerControllerClasses(ActionControllerControllerClass cls) { any() }
 
@@ -30,4 +31,10 @@ query predicate getAssociatedControllerClasses(ActionControllerControllerClass c
 
 query predicate controllerTemplateFiles(ActionControllerControllerClass cls, ErbFile templateFile) {
   controllerTemplateFile(cls, templateFile)
+}
+
+query predicate headerWriteAccesses(
+  Http::Server::HeaderWriteAccess a, string name, DataFlow::Node value
+) {
+  name = a.getName() and value = a.getValue()
 }

@@ -26,6 +26,9 @@ getModule
 | calls.rb:513:1:517:3 | ProtectedMethodInModule |
 | calls.rb:519:1:532:3 | ProtectedMethods |
 | calls.rb:538:1:543:3 | ProtectedMethodsSub |
+| calls.rb:552:1:555:3 | SingletonUpCall_Base |
+| calls.rb:556:1:563:3 | SingletonUpCall_Sub |
+| calls.rb:564:1:569:3 | SingletonUpCall_SubSub |
 | file://:0:0:0:0 | BasicObject |
 | file://:0:0:0:0 | Class |
 | file://:0:0:0:0 | Complex |
@@ -73,11 +76,12 @@ getModule
 | modules.rb:116:7:117:9 | XX::YY |
 | modules.rb:123:1:124:3 | Test::Foo1::Bar::Baz |
 | modules_rec.rb:1:1:2:3 | B::A |
-| modules_rec.rb:4:1:5:3 | A::B |
 | private.rb:1:1:49:3 | E |
 | private.rb:62:1:80:3 | F |
 | private.rb:82:1:94:3 | PrivateOverride1 |
 | private.rb:96:1:102:3 | PrivateOverride2 |
+| toplevel_self_singleton.rb:2:5:5:7 | A::B |
+| toplevel_self_singleton.rb:24:1:34:3 | Good |
 getADeclaration
 | calls.rb:21:1:34:3 | M | calls.rb:21:1:34:3 | M |
 | calls.rb:43:1:58:3 | C | calls.rb:43:1:58:3 | C |
@@ -86,19 +90,21 @@ getADeclaration
 | calls.rb:96:1:98:3 | String | calls.rb:96:1:98:3 | String |
 | calls.rb:100:1:103:3 | Kernel | calls.rb:100:1:103:3 | Kernel |
 | calls.rb:105:1:113:3 | Module | calls.rb:105:1:113:3 | Module |
-| calls.rb:115:1:118:3 | Object | calls.rb:1:1:550:40 | calls.rb |
+| calls.rb:115:1:118:3 | Object | calls.rb:1:1:569:4 | calls.rb |
 | calls.rb:115:1:118:3 | Object | calls.rb:115:1:118:3 | Object |
 | calls.rb:115:1:118:3 | Object | hello.rb:1:1:22:3 | hello.rb |
 | calls.rb:115:1:118:3 | Object | instance_fields.rb:1:1:29:4 | instance_fields.rb |
 | calls.rb:115:1:118:3 | Object | modules.rb:1:1:129:4 | modules.rb |
 | calls.rb:115:1:118:3 | Object | modules_rec.rb:1:1:11:26 | modules_rec.rb |
 | calls.rb:115:1:118:3 | Object | private.rb:1:1:105:40 | private.rb |
+| calls.rb:115:1:118:3 | Object | toplevel_self_singleton.rb:1:1:34:4 | toplevel_self_singleton.rb |
 | calls.rb:120:1:123:3 | Hash | calls.rb:120:1:123:3 | Hash |
 | calls.rb:125:1:138:3 | Array | calls.rb:125:1:138:3 | Array |
 | calls.rb:165:1:169:3 | S | calls.rb:165:1:169:3 | S |
 | calls.rb:171:1:174:3 | A | calls.rb:171:1:174:3 | A |
 | calls.rb:171:1:174:3 | A | instance_fields.rb:1:1:10:3 | A |
 | calls.rb:171:1:174:3 | A | modules_rec.rb:7:1:9:3 | A |
+| calls.rb:171:1:174:3 | A | toplevel_self_singleton.rb:1:1:6:3 | A |
 | calls.rb:176:1:179:3 | B | calls.rb:176:1:179:3 | B |
 | calls.rb:176:1:179:3 | B | instance_fields.rb:16:1:25:3 | B |
 | calls.rb:190:1:226:3 | Singletons | calls.rb:190:1:226:3 | Singletons |
@@ -115,6 +121,9 @@ getADeclaration
 | calls.rb:513:1:517:3 | ProtectedMethodInModule | calls.rb:513:1:517:3 | ProtectedMethodInModule |
 | calls.rb:519:1:532:3 | ProtectedMethods | calls.rb:519:1:532:3 | ProtectedMethods |
 | calls.rb:538:1:543:3 | ProtectedMethodsSub | calls.rb:538:1:543:3 | ProtectedMethodsSub |
+| calls.rb:552:1:555:3 | SingletonUpCall_Base | calls.rb:552:1:555:3 | SingletonUpCall_Base |
+| calls.rb:556:1:563:3 | SingletonUpCall_Sub | calls.rb:556:1:563:3 | SingletonUpCall_Sub |
+| calls.rb:564:1:569:3 | SingletonUpCall_SubSub | calls.rb:564:1:569:3 | SingletonUpCall_SubSub |
 | hello.rb:1:1:8:3 | EnglishWords | hello.rb:1:1:8:3 | EnglishWords |
 | hello.rb:11:1:16:3 | Greeting | hello.rb:11:1:16:3 | Greeting |
 | hello.rb:18:1:22:3 | HelloWorld | hello.rb:18:1:22:3 | HelloWorld |
@@ -154,11 +163,13 @@ getADeclaration
 | modules.rb:116:7:117:9 | XX::YY | modules.rb:116:7:117:9 | YY |
 | modules.rb:123:1:124:3 | Test::Foo1::Bar::Baz | modules.rb:123:1:124:3 | Baz |
 | modules_rec.rb:1:1:2:3 | B::A | modules_rec.rb:1:1:2:3 | A |
-| modules_rec.rb:4:1:5:3 | A::B | modules_rec.rb:4:1:5:3 | B |
 | private.rb:1:1:49:3 | E | private.rb:1:1:49:3 | E |
 | private.rb:62:1:80:3 | F | private.rb:62:1:80:3 | F |
 | private.rb:82:1:94:3 | PrivateOverride1 | private.rb:82:1:94:3 | PrivateOverride1 |
 | private.rb:96:1:102:3 | PrivateOverride2 | private.rb:96:1:102:3 | PrivateOverride2 |
+| toplevel_self_singleton.rb:2:5:5:7 | A::B | modules_rec.rb:4:1:5:3 | B |
+| toplevel_self_singleton.rb:2:5:5:7 | A::B | toplevel_self_singleton.rb:2:5:5:7 | B |
+| toplevel_self_singleton.rb:24:1:34:3 | Good | toplevel_self_singleton.rb:24:1:34:3 | Good |
 getSuperClass
 | calls.rb:43:1:58:3 | C | calls.rb:115:1:118:3 | Object |
 | calls.rb:65:1:69:3 | D | calls.rb:43:1:58:3 | C |
@@ -182,6 +193,9 @@ getSuperClass
 | calls.rb:421:1:449:3 | ConditionalInstanceMethods | calls.rb:115:1:118:3 | Object |
 | calls.rb:519:1:532:3 | ProtectedMethods | calls.rb:115:1:118:3 | Object |
 | calls.rb:538:1:543:3 | ProtectedMethodsSub | calls.rb:519:1:532:3 | ProtectedMethods |
+| calls.rb:552:1:555:3 | SingletonUpCall_Base | calls.rb:115:1:118:3 | Object |
+| calls.rb:556:1:563:3 | SingletonUpCall_Sub | calls.rb:552:1:555:3 | SingletonUpCall_Base |
+| calls.rb:564:1:569:3 | SingletonUpCall_SubSub | calls.rb:556:1:563:3 | SingletonUpCall_Sub |
 | file://:0:0:0:0 | Class | calls.rb:105:1:113:3 | Module |
 | file://:0:0:0:0 | Complex | file://:0:0:0:0 | Numeric |
 | file://:0:0:0:0 | FalseClass | calls.rb:115:1:118:3 | Object |
@@ -204,13 +218,13 @@ getSuperClass
 | modules.rb:112:1:113:3 | YY | calls.rb:115:1:118:3 | Object |
 | modules.rb:116:7:117:9 | XX::YY | modules.rb:112:1:113:3 | YY |
 | modules_rec.rb:1:1:2:3 | B::A | calls.rb:115:1:118:3 | Object |
-| modules_rec.rb:4:1:5:3 | A::B | calls.rb:115:1:118:3 | Object |
 | private.rb:1:1:49:3 | E | calls.rb:115:1:118:3 | Object |
 | private.rb:82:1:94:3 | PrivateOverride1 | calls.rb:115:1:118:3 | Object |
 | private.rb:96:1:102:3 | PrivateOverride2 | private.rb:82:1:94:3 | PrivateOverride1 |
+| toplevel_self_singleton.rb:2:5:5:7 | A::B | calls.rb:115:1:118:3 | Object |
 getAPrependedModule
 | calls.rb:115:1:118:3 | Object | calls.rb:171:1:174:3 | A |
-| calls.rb:171:1:174:3 | A | modules_rec.rb:4:1:5:3 | A::B |
+| calls.rb:171:1:174:3 | A | toplevel_self_singleton.rb:2:5:5:7 | A::B |
 | modules.rb:101:1:105:3 | PrependTest | modules.rb:63:1:81:3 | Test |
 getAnIncludedModule
 | calls.rb:43:1:58:3 | C | calls.rb:21:1:34:3 | M |
@@ -306,6 +320,8 @@ resolveConstantReadAccess
 | calls.rb:549:1:549:7 | Array | Array |
 | calls.rb:549:2:549:2 | C | C |
 | calls.rb:550:1:550:13 | Array | Array |
+| calls.rb:556:29:556:48 | SingletonUpCall_Base | SingletonUpCall_Base |
+| calls.rb:564:32:564:50 | SingletonUpCall_Sub | SingletonUpCall_Sub |
 | hello.rb:12:13:12:24 | EnglishWords | EnglishWords |
 | hello.rb:18:20:18:27 | Greeting | Greeting |
 | instance_fields.rb:4:22:4:31 | A_target | A_target |
@@ -372,6 +388,9 @@ resolveConstantWriteAccess
 | calls.rb:513:1:517:3 | ProtectedMethodInModule | ProtectedMethodInModule |
 | calls.rb:519:1:532:3 | ProtectedMethods | ProtectedMethods |
 | calls.rb:538:1:543:3 | ProtectedMethodsSub | ProtectedMethodsSub |
+| calls.rb:552:1:555:3 | SingletonUpCall_Base | SingletonUpCall_Base |
+| calls.rb:556:1:563:3 | SingletonUpCall_Sub | SingletonUpCall_Sub |
+| calls.rb:564:1:569:3 | SingletonUpCall_SubSub | SingletonUpCall_SubSub |
 | hello.rb:1:1:8:3 | EnglishWords | EnglishWords |
 | hello.rb:11:1:16:3 | Greeting | Greeting |
 | hello.rb:18:1:22:3 | HelloWorld | HelloWorld |
@@ -429,33 +448,37 @@ resolveConstantWriteAccess
 | private.rb:62:1:80:3 | F | F |
 | private.rb:82:1:94:3 | PrivateOverride1 | PrivateOverride1 |
 | private.rb:96:1:102:3 | PrivateOverride2 | PrivateOverride2 |
+| toplevel_self_singleton.rb:1:1:6:3 | A | A |
+| toplevel_self_singleton.rb:2:5:5:7 | B | A::B |
+| toplevel_self_singleton.rb:18:1:18:8 | MyStruct | MyStruct |
+| toplevel_self_singleton.rb:24:1:34:3 | Good | Good |
 enclosingModule
-| calls.rb:1:1:3:3 | foo | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:2:5:2:14 | call to puts | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:2:5:2:14 | self | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:2:10:2:14 | "foo" | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:2:11:2:13 | foo | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:5:1:5:3 | call to foo | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:5:1:5:3 | self | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:7:1:9:3 | bar | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:7:5:7:8 | self | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:8:5:8:15 | call to puts | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:8:5:8:15 | self | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:8:10:8:15 | "bar1" | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:8:11:8:14 | bar1 | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:11:1:11:4 | self | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:11:1:11:8 | call to bar | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:13:1:15:3 | bar | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:13:5:13:8 | self | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:14:5:14:15 | call to puts | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:14:5:14:15 | self | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:14:10:14:15 | "bar2" | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:14:11:14:14 | bar2 | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:17:1:17:4 | self | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:17:1:17:8 | call to bar | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:19:1:19:4 | self | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:19:1:19:8 | call to foo | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:21:1:34:3 | M | calls.rb:1:1:550:40 | calls.rb |
+| calls.rb:1:1:3:3 | foo | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:2:5:2:14 | call to puts | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:2:5:2:14 | self | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:2:10:2:14 | "foo" | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:2:11:2:13 | foo | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:5:1:5:3 | call to foo | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:5:1:5:3 | self | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:7:1:9:3 | bar | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:7:5:7:8 | self | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:8:5:8:15 | call to puts | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:8:5:8:15 | self | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:8:10:8:15 | "bar1" | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:8:11:8:14 | bar1 | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:11:1:11:4 | self | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:11:1:11:8 | call to bar | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:13:1:15:3 | bar | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:13:5:13:8 | self | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:14:5:14:15 | call to puts | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:14:5:14:15 | self | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:14:10:14:15 | "bar2" | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:14:11:14:14 | bar2 | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:17:1:17:4 | self | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:17:1:17:8 | call to bar | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:19:1:19:4 | self | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:19:1:19:8 | call to foo | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:21:1:34:3 | M | calls.rb:1:1:569:4 | calls.rb |
 | calls.rb:22:5:24:7 | instance_m | calls.rb:21:1:34:3 | M |
 | calls.rb:23:9:23:19 | call to singleton_m | calls.rb:21:1:34:3 | M |
 | calls.rb:23:9:23:19 | self | calls.rb:21:1:34:3 | M |
@@ -471,14 +494,14 @@ enclosingModule
 | calls.rb:32:5:32:15 | self | calls.rb:21:1:34:3 | M |
 | calls.rb:33:5:33:8 | self | calls.rb:21:1:34:3 | M |
 | calls.rb:33:5:33:20 | call to singleton_m | calls.rb:21:1:34:3 | M |
-| calls.rb:36:1:36:1 | M | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:36:1:36:12 | call to instance_m | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:37:1:37:1 | M | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:37:1:37:13 | call to singleton_m | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:39:1:41:3 | call_instance_m | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:40:5:40:14 | call to instance_m | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:40:5:40:14 | self | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:43:1:58:3 | C | calls.rb:1:1:550:40 | calls.rb |
+| calls.rb:36:1:36:1 | M | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:36:1:36:12 | call to instance_m | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:37:1:37:1 | M | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:37:1:37:13 | call to singleton_m | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:39:1:41:3 | call_instance_m | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:40:5:40:14 | call to instance_m | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:40:5:40:14 | self | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:43:1:58:3 | C | calls.rb:1:1:569:4 | calls.rb |
 | calls.rb:44:5:44:13 | call to include | calls.rb:43:1:58:3 | C |
 | calls.rb:44:5:44:13 | self | calls.rb:43:1:58:3 | C |
 | calls.rb:44:13:44:13 | M | calls.rb:43:1:58:3 | C |
@@ -499,66 +522,66 @@ enclosingModule
 | calls.rb:55:9:55:19 | self | calls.rb:43:1:58:3 | C |
 | calls.rb:56:9:56:12 | self | calls.rb:43:1:58:3 | C |
 | calls.rb:56:9:56:24 | call to singleton_m | calls.rb:43:1:58:3 | C |
-| calls.rb:60:1:60:1 | c | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:60:1:60:9 | ... = ... | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:60:5:60:5 | C | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:60:5:60:9 | call to new | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:61:1:61:1 | c | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:61:1:61:5 | call to baz | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:62:1:62:1 | c | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:62:1:62:13 | call to singleton_m | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:63:1:63:1 | c | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:63:1:63:12 | call to instance_m | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:65:1:69:3 | D | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:65:11:65:11 | C | calls.rb:1:1:550:40 | calls.rb |
+| calls.rb:60:1:60:1 | c | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:60:1:60:9 | ... = ... | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:60:5:60:5 | C | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:60:5:60:9 | call to new | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:61:1:61:1 | c | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:61:1:61:5 | call to baz | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:62:1:62:1 | c | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:62:1:62:13 | call to singleton_m | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:63:1:63:1 | c | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:63:1:63:12 | call to instance_m | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:65:1:69:3 | D | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:65:11:65:11 | C | calls.rb:1:1:569:4 | calls.rb |
 | calls.rb:66:5:68:7 | baz | calls.rb:65:1:69:3 | D |
 | calls.rb:67:9:67:13 | call to super | calls.rb:65:1:69:3 | D |
-| calls.rb:71:1:71:1 | d | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:71:1:71:9 | ... = ... | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:71:5:71:5 | D | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:71:5:71:9 | call to new | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:72:1:72:1 | d | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:72:1:72:5 | call to baz | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:73:1:73:1 | d | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:73:1:73:13 | call to singleton_m | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:74:1:74:1 | d | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:74:1:74:12 | call to instance_m | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:76:1:79:3 | optional_arg | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:76:18:76:18 | a | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:76:18:76:18 | a | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:76:22:76:22 | 4 | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:76:25:76:25 | b | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:76:25:76:25 | b | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:76:28:76:28 | 5 | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:77:5:77:5 | a | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:77:5:77:16 | call to bit_length | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:78:5:78:5 | b | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:78:5:78:16 | call to bit_length | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:81:1:83:3 | call_block | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:82:5:82:11 | yield ... | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:82:11:82:11 | 1 | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:85:1:89:3 | foo | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:86:5:86:7 | var | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:86:5:86:18 | ... = ... | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:86:11:86:14 | Hash | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:86:11:86:18 | call to new | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:87:5:87:7 | var | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:87:5:87:10 | ...[...] | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:87:9:87:9 | 1 | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:88:5:88:29 | call to call_block | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:88:5:88:29 | self | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:88:16:88:29 | { ... } | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:88:19:88:19 | x | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:88:19:88:19 | x | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:88:22:88:24 | var | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:88:22:88:27 | ...[...] | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:88:26:88:26 | x | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:91:1:94:3 | Integer | calls.rb:1:1:550:40 | calls.rb |
+| calls.rb:71:1:71:1 | d | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:71:1:71:9 | ... = ... | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:71:5:71:5 | D | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:71:5:71:9 | call to new | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:72:1:72:1 | d | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:72:1:72:5 | call to baz | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:73:1:73:1 | d | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:73:1:73:13 | call to singleton_m | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:74:1:74:1 | d | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:74:1:74:12 | call to instance_m | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:76:1:79:3 | optional_arg | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:76:18:76:18 | a | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:76:18:76:18 | a | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:76:22:76:22 | 4 | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:76:25:76:25 | b | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:76:25:76:25 | b | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:76:28:76:28 | 5 | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:77:5:77:5 | a | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:77:5:77:16 | call to bit_length | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:78:5:78:5 | b | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:78:5:78:16 | call to bit_length | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:81:1:83:3 | call_block | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:82:5:82:11 | yield ... | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:82:11:82:11 | 1 | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:85:1:89:3 | foo | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:86:5:86:7 | var | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:86:5:86:18 | ... = ... | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:86:11:86:14 | Hash | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:86:11:86:18 | call to new | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:87:5:87:7 | var | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:87:5:87:10 | ...[...] | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:87:9:87:9 | 1 | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:88:5:88:29 | call to call_block | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:88:5:88:29 | self | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:88:16:88:29 | { ... } | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:88:19:88:19 | x | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:88:19:88:19 | x | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:88:22:88:24 | var | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:88:22:88:27 | ...[...] | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:88:26:88:26 | x | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:91:1:94:3 | Integer | calls.rb:1:1:569:4 | calls.rb |
 | calls.rb:92:5:92:23 | bit_length | calls.rb:91:1:94:3 | Integer |
 | calls.rb:93:5:93:16 | abs | calls.rb:91:1:94:3 | Integer |
-| calls.rb:96:1:98:3 | String | calls.rb:1:1:550:40 | calls.rb |
+| calls.rb:96:1:98:3 | String | calls.rb:1:1:569:4 | calls.rb |
 | calls.rb:97:5:97:23 | capitalize | calls.rb:96:1:98:3 | String |
-| calls.rb:100:1:103:3 | Kernel | calls.rb:1:1:550:40 | calls.rb |
+| calls.rb:100:1:103:3 | Kernel | calls.rb:1:1:569:4 | calls.rb |
 | calls.rb:101:5:101:25 | alias ... | calls.rb:100:1:103:3 | Kernel |
 | calls.rb:101:11:101:19 | :old_puts | calls.rb:100:1:103:3 | Kernel |
 | calls.rb:101:11:101:19 | old_puts | calls.rb:100:1:103:3 | Kernel |
@@ -570,7 +593,7 @@ enclosingModule
 | calls.rb:102:17:102:26 | call to old_puts | calls.rb:100:1:103:3 | Kernel |
 | calls.rb:102:17:102:26 | self | calls.rb:100:1:103:3 | Kernel |
 | calls.rb:102:26:102:26 | x | calls.rb:100:1:103:3 | Kernel |
-| calls.rb:105:1:113:3 | Module | calls.rb:1:1:550:40 | calls.rb |
+| calls.rb:105:1:113:3 | Module | calls.rb:1:1:569:4 | calls.rb |
 | calls.rb:106:5:106:31 | alias ... | calls.rb:105:1:113:3 | Module |
 | calls.rb:106:11:106:22 | :old_include | calls.rb:105:1:113:3 | Module |
 | calls.rb:106:11:106:22 | old_include | calls.rb:105:1:113:3 | Module |
@@ -585,13 +608,13 @@ enclosingModule
 | calls.rb:109:21:109:21 | x | calls.rb:105:1:113:3 | Module |
 | calls.rb:111:5:111:20 | prepend | calls.rb:105:1:113:3 | Module |
 | calls.rb:112:5:112:20 | private | calls.rb:105:1:113:3 | Module |
-| calls.rb:115:1:118:3 | Object | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:115:16:115:21 | Module | calls.rb:1:1:550:40 | calls.rb |
+| calls.rb:115:1:118:3 | Object | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:115:16:115:21 | Module | calls.rb:1:1:569:4 | calls.rb |
 | calls.rb:116:5:116:18 | call to include | calls.rb:115:1:118:3 | Object |
 | calls.rb:116:5:116:18 | self | calls.rb:115:1:118:3 | Object |
 | calls.rb:116:13:116:18 | Kernel | calls.rb:115:1:118:3 | Object |
 | calls.rb:117:5:117:16 | new | calls.rb:115:1:118:3 | Object |
-| calls.rb:120:1:123:3 | Hash | calls.rb:1:1:550:40 | calls.rb |
+| calls.rb:120:1:123:3 | Hash | calls.rb:1:1:569:4 | calls.rb |
 | calls.rb:121:5:121:25 | alias ... | calls.rb:120:1:123:3 | Hash |
 | calls.rb:121:11:121:21 | :old_lookup | calls.rb:120:1:123:3 | Hash |
 | calls.rb:121:11:121:21 | old_lookup | calls.rb:120:1:123:3 | Hash |
@@ -603,7 +626,7 @@ enclosingModule
 | calls.rb:122:15:122:27 | call to old_lookup | calls.rb:120:1:123:3 | Hash |
 | calls.rb:122:15:122:27 | self | calls.rb:120:1:123:3 | Hash |
 | calls.rb:122:26:122:26 | x | calls.rb:120:1:123:3 | Hash |
-| calls.rb:125:1:138:3 | Array | calls.rb:1:1:550:40 | calls.rb |
+| calls.rb:125:1:138:3 | Array | calls.rb:1:1:569:4 | calls.rb |
 | calls.rb:126:3:126:23 | alias ... | calls.rb:125:1:138:3 | Array |
 | calls.rb:126:9:126:19 | :old_lookup | calls.rb:125:1:138:3 | Array |
 | calls.rb:126:9:126:19 | old_lookup | calls.rb:125:1:138:3 | Array |
@@ -639,130 +662,130 @@ enclosingModule
 | calls.rb:135:9:135:14 | ... = ... | calls.rb:125:1:138:3 | Array |
 | calls.rb:135:11:135:12 | ... + ... | calls.rb:125:1:138:3 | Array |
 | calls.rb:135:14:135:14 | 1 | calls.rb:125:1:138:3 | Array |
-| calls.rb:140:1:142:3 | funny | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:141:5:141:20 | yield ... | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:141:11:141:20 | "prefix: " | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:141:12:141:19 | prefix:  | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:144:1:144:30 | call to funny | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:144:1:144:30 | self | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:144:7:144:30 | { ... } | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:144:10:144:10 | i | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:144:10:144:10 | i | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:144:13:144:29 | call to puts | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:144:13:144:29 | self | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:144:18:144:18 | i | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:144:18:144:29 | call to capitalize | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:146:1:146:3 | "a" | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:146:1:146:14 | call to capitalize | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:146:2:146:2 | a | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:147:1:147:1 | 1 | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:147:1:147:12 | call to bit_length | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:148:1:148:1 | 1 | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:148:1:148:5 | call to abs | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:150:1:150:13 | Array | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:150:1:150:13 | [...] | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:150:1:150:13 | call to [] | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:150:1:150:62 | call to foreach | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:150:2:150:4 | "a" | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:150:3:150:3 | a | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:150:6:150:8 | "b" | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:150:7:150:7 | b | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:150:10:150:12 | "c" | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:150:11:150:11 | c | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:150:23:150:62 | { ... } | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:150:26:150:26 | i | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:150:26:150:26 | i | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:150:29:150:29 | v | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:150:29:150:29 | v | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:150:32:150:61 | call to puts | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:150:32:150:61 | self | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:150:37:150:61 | "#{...} -> #{...}" | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:150:38:150:41 | #{...} | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:150:40:150:40 | i | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:150:42:150:45 |  ->  | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:150:46:150:60 | #{...} | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:150:48:150:48 | v | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:150:48:150:59 | call to capitalize | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:152:1:152:7 | Array | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:152:1:152:7 | [...] | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:152:1:152:7 | call to [] | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:152:1:152:35 | call to foreach | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:152:2:152:2 | 1 | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:152:4:152:4 | 2 | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:152:6:152:6 | 3 | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:152:17:152:35 | { ... } | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:152:20:152:20 | i | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:152:20:152:20 | i | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:152:23:152:23 | i | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:152:23:152:34 | call to bit_length | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:154:1:154:7 | Array | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:154:1:154:7 | [...] | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:154:1:154:7 | call to [] | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:154:1:154:40 | call to foreach | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:154:2:154:2 | 1 | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:154:4:154:4 | 2 | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:154:6:154:6 | 3 | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:154:17:154:40 | { ... } | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:154:20:154:20 | i | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:154:20:154:20 | i | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:154:23:154:39 | call to puts | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:154:23:154:39 | self | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:154:28:154:28 | i | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:154:28:154:39 | call to capitalize | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:156:1:156:8 | Array | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:156:1:156:8 | [...] | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:156:1:156:8 | call to [] | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:156:1:156:37 | call to foreach | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:156:2:156:2 | 1 | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:156:4:156:5 | - ... | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:156:5:156:5 | 2 | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:156:7:156:7 | 3 | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:156:18:156:37 | { ... } | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:156:21:156:21 | _ | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:156:21:156:21 | _ | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:156:24:156:24 | v | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:156:24:156:24 | v | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:156:27:156:36 | call to puts | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:156:27:156:36 | self | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:156:32:156:32 | v | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:156:32:156:36 | call to abs | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:158:1:160:3 | indirect | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:158:14:158:15 | &b | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:158:15:158:15 | b | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:159:5:159:17 | call to call_block | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:159:5:159:17 | self | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:159:16:159:17 | &... | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:159:17:159:17 | b | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:162:1:162:28 | call to indirect | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:162:1:162:28 | self | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:162:10:162:28 | { ... } | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:162:13:162:13 | i | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:162:13:162:13 | i | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:162:16:162:16 | i | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:162:16:162:27 | call to bit_length | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:165:1:169:3 | S | calls.rb:1:1:550:40 | calls.rb |
+| calls.rb:140:1:142:3 | funny | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:141:5:141:20 | yield ... | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:141:11:141:20 | "prefix: " | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:141:12:141:19 | prefix:  | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:144:1:144:30 | call to funny | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:144:1:144:30 | self | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:144:7:144:30 | { ... } | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:144:10:144:10 | i | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:144:10:144:10 | i | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:144:13:144:29 | call to puts | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:144:13:144:29 | self | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:144:18:144:18 | i | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:144:18:144:29 | call to capitalize | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:146:1:146:3 | "a" | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:146:1:146:14 | call to capitalize | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:146:2:146:2 | a | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:147:1:147:1 | 1 | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:147:1:147:12 | call to bit_length | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:148:1:148:1 | 1 | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:148:1:148:5 | call to abs | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:150:1:150:13 | Array | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:150:1:150:13 | [...] | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:150:1:150:13 | call to [] | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:150:1:150:62 | call to foreach | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:150:2:150:4 | "a" | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:150:3:150:3 | a | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:150:6:150:8 | "b" | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:150:7:150:7 | b | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:150:10:150:12 | "c" | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:150:11:150:11 | c | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:150:23:150:62 | { ... } | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:150:26:150:26 | i | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:150:26:150:26 | i | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:150:29:150:29 | v | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:150:29:150:29 | v | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:150:32:150:61 | call to puts | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:150:32:150:61 | self | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:150:37:150:61 | "#{...} -> #{...}" | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:150:38:150:41 | #{...} | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:150:40:150:40 | i | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:150:42:150:45 |  ->  | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:150:46:150:60 | #{...} | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:150:48:150:48 | v | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:150:48:150:59 | call to capitalize | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:152:1:152:7 | Array | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:152:1:152:7 | [...] | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:152:1:152:7 | call to [] | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:152:1:152:35 | call to foreach | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:152:2:152:2 | 1 | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:152:4:152:4 | 2 | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:152:6:152:6 | 3 | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:152:17:152:35 | { ... } | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:152:20:152:20 | i | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:152:20:152:20 | i | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:152:23:152:23 | i | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:152:23:152:34 | call to bit_length | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:154:1:154:7 | Array | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:154:1:154:7 | [...] | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:154:1:154:7 | call to [] | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:154:1:154:40 | call to foreach | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:154:2:154:2 | 1 | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:154:4:154:4 | 2 | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:154:6:154:6 | 3 | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:154:17:154:40 | { ... } | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:154:20:154:20 | i | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:154:20:154:20 | i | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:154:23:154:39 | call to puts | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:154:23:154:39 | self | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:154:28:154:28 | i | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:154:28:154:39 | call to capitalize | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:156:1:156:8 | Array | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:156:1:156:8 | [...] | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:156:1:156:8 | call to [] | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:156:1:156:37 | call to foreach | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:156:2:156:2 | 1 | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:156:4:156:5 | - ... | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:156:5:156:5 | 2 | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:156:7:156:7 | 3 | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:156:18:156:37 | { ... } | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:156:21:156:21 | _ | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:156:21:156:21 | _ | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:156:24:156:24 | v | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:156:24:156:24 | v | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:156:27:156:36 | call to puts | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:156:27:156:36 | self | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:156:32:156:32 | v | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:156:32:156:36 | call to abs | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:158:1:160:3 | indirect | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:158:14:158:15 | &b | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:158:15:158:15 | b | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:159:5:159:17 | call to call_block | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:159:5:159:17 | self | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:159:16:159:17 | &... | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:159:17:159:17 | b | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:162:1:162:28 | call to indirect | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:162:1:162:28 | self | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:162:10:162:28 | { ... } | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:162:13:162:13 | i | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:162:13:162:13 | i | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:162:16:162:16 | i | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:162:16:162:27 | call to bit_length | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:165:1:169:3 | S | calls.rb:1:1:569:4 | calls.rb |
 | calls.rb:166:5:168:7 | s_method | calls.rb:165:1:169:3 | S |
 | calls.rb:167:9:167:12 | self | calls.rb:165:1:169:3 | S |
 | calls.rb:167:9:167:17 | call to to_s | calls.rb:165:1:169:3 | S |
-| calls.rb:171:1:174:3 | A | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:171:11:171:11 | S | calls.rb:1:1:550:40 | calls.rb |
+| calls.rb:171:1:174:3 | A | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:171:11:171:11 | S | calls.rb:1:1:569:4 | calls.rb |
 | calls.rb:172:5:173:7 | to_s | calls.rb:171:1:174:3 | A |
-| calls.rb:176:1:179:3 | B | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:176:11:176:11 | S | calls.rb:1:1:550:40 | calls.rb |
+| calls.rb:176:1:179:3 | B | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:176:11:176:11 | S | calls.rb:1:1:569:4 | calls.rb |
 | calls.rb:177:5:178:7 | to_s | calls.rb:176:1:179:3 | B |
-| calls.rb:181:1:181:1 | S | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:181:1:181:5 | call to new | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:181:1:181:14 | call to s_method | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:182:1:182:1 | A | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:182:1:182:5 | call to new | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:182:1:182:14 | call to s_method | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:183:1:183:1 | B | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:183:1:183:5 | call to new | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:183:1:183:14 | call to s_method | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:185:1:186:3 | private_on_main | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:188:1:188:15 | call to private_on_main | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:188:1:188:15 | self | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:190:1:226:3 | Singletons | calls.rb:1:1:550:40 | calls.rb |
+| calls.rb:181:1:181:1 | S | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:181:1:181:5 | call to new | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:181:1:181:14 | call to s_method | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:182:1:182:1 | A | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:182:1:182:5 | call to new | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:182:1:182:14 | call to s_method | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:183:1:183:1 | B | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:183:1:183:5 | call to new | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:183:1:183:14 | call to s_method | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:185:1:186:3 | private_on_main | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:188:1:188:15 | call to private_on_main | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:188:1:188:15 | self | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:190:1:226:3 | Singletons | calls.rb:1:1:569:4 | calls.rb |
 | calls.rb:191:5:194:7 | singleton_a | calls.rb:190:1:226:3 | Singletons |
 | calls.rb:191:9:191:12 | self | calls.rb:190:1:226:3 | Singletons |
 | calls.rb:192:9:192:26 | call to puts | calls.rb:190:1:226:3 | Singletons |
@@ -812,126 +835,126 @@ enclosingModule
 | calls.rb:223:5:225:7 | call_singleton_g | calls.rb:190:1:226:3 | Singletons |
 | calls.rb:224:9:224:12 | self | calls.rb:190:1:226:3 | Singletons |
 | calls.rb:224:9:224:24 | call to singleton_g | calls.rb:190:1:226:3 | Singletons |
-| calls.rb:228:1:228:10 | Singletons | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:228:1:228:22 | call to singleton_a | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:229:1:229:10 | Singletons | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:229:1:229:22 | call to singleton_f | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:231:1:231:2 | c1 | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:231:1:231:19 | ... = ... | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:231:6:231:15 | Singletons | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:231:6:231:19 | call to new | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:233:1:233:2 | c1 | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:233:1:233:11 | call to instance | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:234:1:234:2 | c1 | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:234:1:234:14 | call to singleton_e | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:236:1:238:3 | singleton_g | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:236:5:236:6 | c1 | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:237:5:237:24 | call to puts | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:237:5:237:24 | self | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:237:10:237:24 | "singleton_g_1" | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:237:11:237:23 | singleton_g_1 | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:240:1:240:2 | c1 | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:240:1:240:14 | call to singleton_g | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:241:1:241:2 | c1 | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:241:1:241:19 | call to call_singleton_g | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:243:1:245:3 | singleton_g | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:243:5:243:6 | c1 | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:244:5:244:24 | call to puts | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:244:5:244:24 | self | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:244:10:244:24 | "singleton_g_2" | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:244:11:244:23 | singleton_g_2 | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:247:1:247:2 | c1 | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:247:1:247:14 | call to singleton_g | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:248:1:248:2 | c1 | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:248:1:248:19 | call to call_singleton_g | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:250:1:254:3 | class << ... | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:250:10:250:11 | c1 | calls.rb:1:1:550:40 | calls.rb |
+| calls.rb:228:1:228:10 | Singletons | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:228:1:228:22 | call to singleton_a | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:229:1:229:10 | Singletons | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:229:1:229:22 | call to singleton_f | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:231:1:231:2 | c1 | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:231:1:231:19 | ... = ... | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:231:6:231:15 | Singletons | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:231:6:231:19 | call to new | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:233:1:233:2 | c1 | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:233:1:233:11 | call to instance | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:234:1:234:2 | c1 | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:234:1:234:14 | call to singleton_e | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:236:1:238:3 | singleton_g | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:236:5:236:6 | c1 | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:237:5:237:24 | call to puts | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:237:5:237:24 | self | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:237:10:237:24 | "singleton_g_1" | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:237:11:237:23 | singleton_g_1 | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:240:1:240:2 | c1 | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:240:1:240:14 | call to singleton_g | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:241:1:241:2 | c1 | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:241:1:241:19 | call to call_singleton_g | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:243:1:245:3 | singleton_g | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:243:5:243:6 | c1 | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:244:5:244:24 | call to puts | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:244:5:244:24 | self | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:244:10:244:24 | "singleton_g_2" | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:244:11:244:23 | singleton_g_2 | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:247:1:247:2 | c1 | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:247:1:247:14 | call to singleton_g | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:248:1:248:2 | c1 | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:248:1:248:19 | call to call_singleton_g | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:250:1:254:3 | class << ... | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:250:10:250:11 | c1 | calls.rb:1:1:569:4 | calls.rb |
 | calls.rb:251:5:253:7 | singleton_g | calls.rb:250:1:254:3 | class << ... |
 | calls.rb:252:9:252:28 | call to puts | calls.rb:250:1:254:3 | class << ... |
 | calls.rb:252:9:252:28 | self | calls.rb:250:1:254:3 | class << ... |
 | calls.rb:252:14:252:28 | "singleton_g_3" | calls.rb:250:1:254:3 | class << ... |
 | calls.rb:252:15:252:27 | singleton_g_3 | calls.rb:250:1:254:3 | class << ... |
-| calls.rb:256:1:256:2 | c1 | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:256:1:256:14 | call to singleton_g | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:257:1:257:2 | c1 | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:257:1:257:19 | call to call_singleton_g | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:259:1:259:2 | c2 | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:259:1:259:19 | ... = ... | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:259:6:259:15 | Singletons | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:259:6:259:19 | call to new | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:260:1:260:2 | c2 | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:260:1:260:14 | call to singleton_e | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:261:1:261:2 | c2 | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:261:1:261:14 | call to singleton_g | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:263:1:263:4 | self | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:263:1:263:8 | call to new | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:265:1:265:16 | call to puts | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:265:1:265:16 | self | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:265:6:265:16 | "top-level" | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:265:7:265:15 | top-level | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:267:1:269:3 | singleton_g | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:267:5:267:14 | Singletons | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:268:5:268:22 | call to puts | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:268:5:268:22 | self | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:268:10:268:22 | "singleton_g" | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:268:11:268:21 | singleton_g | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:271:1:271:10 | Singletons | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:271:1:271:22 | call to singleton_g | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:272:1:272:2 | c1 | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:272:1:272:14 | call to singleton_g | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:273:1:273:2 | c1 | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:273:1:273:19 | call to call_singleton_g | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:274:1:274:2 | c2 | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:274:1:274:14 | call to singleton_g | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:275:1:275:2 | c3 | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:275:1:275:19 | ... = ... | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:275:6:275:15 | Singletons | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:275:6:275:19 | call to new | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:276:1:276:2 | c3 | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:276:1:276:14 | call to singleton_g | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:278:1:286:3 | create | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:278:12:278:15 | type | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:278:12:278:15 | type | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:279:5:279:8 | type | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:279:5:279:12 | call to new | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:279:5:279:21 | call to instance | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:281:5:283:7 | singleton_h | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:281:9:281:12 | type | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:282:9:282:26 | call to puts | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:282:9:282:26 | self | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:282:14:282:26 | "singleton_h" | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:282:15:282:25 | singleton_h | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:285:5:285:8 | type | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:285:5:285:20 | call to singleton_h | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:288:1:288:17 | call to create | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:288:1:288:17 | self | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:288:8:288:17 | Singletons | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:289:1:289:10 | Singletons | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:289:1:289:22 | call to singleton_h | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:291:1:291:1 | x | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:291:1:291:14 | ... = ... | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:291:5:291:14 | Singletons | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:293:1:297:3 | class << ... | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:293:10:293:10 | x | calls.rb:1:1:550:40 | calls.rb |
+| calls.rb:256:1:256:2 | c1 | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:256:1:256:14 | call to singleton_g | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:257:1:257:2 | c1 | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:257:1:257:19 | call to call_singleton_g | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:259:1:259:2 | c2 | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:259:1:259:19 | ... = ... | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:259:6:259:15 | Singletons | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:259:6:259:19 | call to new | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:260:1:260:2 | c2 | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:260:1:260:14 | call to singleton_e | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:261:1:261:2 | c2 | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:261:1:261:14 | call to singleton_g | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:263:1:263:4 | self | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:263:1:263:8 | call to new | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:265:1:265:16 | call to puts | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:265:1:265:16 | self | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:265:6:265:16 | "top-level" | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:265:7:265:15 | top-level | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:267:1:269:3 | singleton_g | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:267:5:267:14 | Singletons | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:268:5:268:22 | call to puts | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:268:5:268:22 | self | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:268:10:268:22 | "singleton_g" | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:268:11:268:21 | singleton_g | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:271:1:271:10 | Singletons | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:271:1:271:22 | call to singleton_g | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:272:1:272:2 | c1 | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:272:1:272:14 | call to singleton_g | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:273:1:273:2 | c1 | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:273:1:273:19 | call to call_singleton_g | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:274:1:274:2 | c2 | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:274:1:274:14 | call to singleton_g | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:275:1:275:2 | c3 | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:275:1:275:19 | ... = ... | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:275:6:275:15 | Singletons | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:275:6:275:19 | call to new | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:276:1:276:2 | c3 | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:276:1:276:14 | call to singleton_g | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:278:1:286:3 | create | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:278:12:278:15 | type | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:278:12:278:15 | type | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:279:5:279:8 | type | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:279:5:279:12 | call to new | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:279:5:279:21 | call to instance | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:281:5:283:7 | singleton_h | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:281:9:281:12 | type | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:282:9:282:26 | call to puts | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:282:9:282:26 | self | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:282:14:282:26 | "singleton_h" | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:282:15:282:25 | singleton_h | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:285:5:285:8 | type | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:285:5:285:20 | call to singleton_h | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:288:1:288:17 | call to create | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:288:1:288:17 | self | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:288:8:288:17 | Singletons | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:289:1:289:10 | Singletons | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:289:1:289:22 | call to singleton_h | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:291:1:291:1 | x | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:291:1:291:14 | ... = ... | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:291:5:291:14 | Singletons | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:293:1:297:3 | class << ... | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:293:10:293:10 | x | calls.rb:1:1:569:4 | calls.rb |
 | calls.rb:294:5:296:7 | singleton_i | calls.rb:293:1:297:3 | class << ... |
 | calls.rb:295:9:295:26 | call to puts | calls.rb:293:1:297:3 | class << ... |
 | calls.rb:295:9:295:26 | self | calls.rb:293:1:297:3 | class << ... |
 | calls.rb:295:14:295:26 | "singleton_i" | calls.rb:293:1:297:3 | class << ... |
 | calls.rb:295:15:295:25 | singleton_i | calls.rb:293:1:297:3 | class << ... |
-| calls.rb:299:1:299:1 | x | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:299:1:299:13 | call to singleton_i | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:300:1:300:10 | Singletons | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:300:1:300:22 | call to singleton_i | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:302:1:306:3 | class << ... | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:302:10:302:19 | Singletons | calls.rb:1:1:550:40 | calls.rb |
+| calls.rb:299:1:299:1 | x | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:299:1:299:13 | call to singleton_i | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:300:1:300:10 | Singletons | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:300:1:300:22 | call to singleton_i | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:302:1:306:3 | class << ... | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:302:10:302:19 | Singletons | calls.rb:1:1:569:4 | calls.rb |
 | calls.rb:303:5:305:7 | singleton_j | calls.rb:302:1:306:3 | class << ... |
 | calls.rb:304:9:304:26 | call to puts | calls.rb:302:1:306:3 | class << ... |
 | calls.rb:304:9:304:26 | self | calls.rb:302:1:306:3 | class << ... |
 | calls.rb:304:14:304:26 | "singleton_j" | calls.rb:302:1:306:3 | class << ... |
 | calls.rb:304:15:304:25 | singleton_j | calls.rb:302:1:306:3 | class << ... |
-| calls.rb:308:1:308:10 | Singletons | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:308:1:308:22 | call to singleton_j | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:310:1:321:3 | SelfNew | calls.rb:1:1:550:40 | calls.rb |
+| calls.rb:308:1:308:10 | Singletons | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:308:1:308:22 | call to singleton_j | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:310:1:321:3 | SelfNew | calls.rb:1:1:569:4 | calls.rb |
 | calls.rb:311:5:314:7 | instance | calls.rb:310:1:321:3 | SelfNew |
 | calls.rb:312:9:312:31 | call to puts | calls.rb:310:1:321:3 | SelfNew |
 | calls.rb:312:9:312:31 | self | calls.rb:310:1:321:3 | SelfNew |
@@ -948,110 +971,110 @@ enclosingModule
 | calls.rb:320:5:320:7 | call to new | calls.rb:310:1:321:3 | SelfNew |
 | calls.rb:320:5:320:7 | self | calls.rb:310:1:321:3 | SelfNew |
 | calls.rb:320:5:320:16 | call to instance | calls.rb:310:1:321:3 | SelfNew |
-| calls.rb:323:1:323:7 | SelfNew | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:323:1:323:17 | call to singleton | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:325:1:329:3 | C1 | calls.rb:1:1:550:40 | calls.rb |
+| calls.rb:323:1:323:7 | SelfNew | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:323:1:323:17 | call to singleton | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:325:1:329:3 | C1 | calls.rb:1:1:569:4 | calls.rb |
 | calls.rb:326:5:328:7 | instance | calls.rb:325:1:329:3 | C1 |
 | calls.rb:327:9:327:26 | call to puts | calls.rb:325:1:329:3 | C1 |
 | calls.rb:327:9:327:26 | self | calls.rb:325:1:329:3 | C1 |
 | calls.rb:327:14:327:26 | "C1#instance" | calls.rb:325:1:329:3 | C1 |
 | calls.rb:327:15:327:25 | C1#instance | calls.rb:325:1:329:3 | C1 |
-| calls.rb:331:1:335:3 | C2 | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:331:12:331:13 | C1 | calls.rb:1:1:550:40 | calls.rb |
+| calls.rb:331:1:335:3 | C2 | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:331:12:331:13 | C1 | calls.rb:1:1:569:4 | calls.rb |
 | calls.rb:332:5:334:7 | instance | calls.rb:331:1:335:3 | C2 |
 | calls.rb:333:9:333:26 | call to puts | calls.rb:331:1:335:3 | C2 |
 | calls.rb:333:9:333:26 | self | calls.rb:331:1:335:3 | C2 |
 | calls.rb:333:14:333:26 | "C2#instance" | calls.rb:331:1:335:3 | C2 |
 | calls.rb:333:15:333:25 | C2#instance | calls.rb:331:1:335:3 | C2 |
-| calls.rb:337:1:341:3 | C3 | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:337:12:337:13 | C2 | calls.rb:1:1:550:40 | calls.rb |
+| calls.rb:337:1:341:3 | C3 | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:337:12:337:13 | C2 | calls.rb:1:1:569:4 | calls.rb |
 | calls.rb:338:5:340:7 | instance | calls.rb:337:1:341:3 | C3 |
 | calls.rb:339:9:339:26 | call to puts | calls.rb:337:1:341:3 | C3 |
 | calls.rb:339:9:339:26 | self | calls.rb:337:1:341:3 | C3 |
 | calls.rb:339:14:339:26 | "C3#instance" | calls.rb:337:1:341:3 | C3 |
 | calls.rb:339:15:339:25 | C3#instance | calls.rb:337:1:341:3 | C3 |
-| calls.rb:343:1:359:3 | pattern_dispatch | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:343:22:343:22 | x | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:343:22:343:22 | x | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:344:5:352:7 | case ... | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:344:10:344:10 | x | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:345:5:346:18 | when ... | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:345:10:345:11 | C3 | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:345:12:346:18 | then ... | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:346:9:346:9 | x | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:346:9:346:18 | call to instance | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:347:5:348:18 | when ... | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:347:10:347:11 | C2 | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:347:12:348:18 | then ... | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:348:9:348:9 | x | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:348:9:348:18 | call to instance | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:349:5:350:18 | when ... | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:349:10:349:11 | C1 | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:349:12:350:18 | then ... | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:350:9:350:9 | x | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:350:9:350:18 | call to instance | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:351:5:351:8 | else ... | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:354:5:358:7 | case ... | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:354:10:354:10 | x | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:355:9:355:29 | in ... then ... | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:355:12:355:13 | C3 | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:355:15:355:29 | then ... | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:355:20:355:20 | x | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:355:20:355:29 | call to instance | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:356:9:356:36 | in ... then ... | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:356:12:356:13 | C2 | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:356:12:356:19 | ... => ... | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:356:18:356:19 | c2 | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:356:21:356:36 | then ... | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:356:26:356:27 | c2 | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:356:26:356:36 | call to instance | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:357:9:357:36 | in ... then ... | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:357:12:357:13 | C1 | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:357:12:357:19 | ... => ... | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:357:18:357:19 | c1 | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:357:21:357:36 | then ... | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:357:26:357:27 | c1 | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:357:26:357:36 | call to instance | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:361:1:361:2 | c1 | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:361:1:361:11 | ... = ... | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:361:6:361:7 | C1 | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:361:6:361:11 | call to new | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:362:1:362:2 | c1 | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:362:1:362:11 | call to instance | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:363:1:363:25 | call to pattern_dispatch | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:363:1:363:25 | self | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:363:18:363:25 | ( ... ) | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:363:19:363:20 | C1 | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:363:19:363:24 | call to new | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:364:1:364:25 | call to pattern_dispatch | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:364:1:364:25 | self | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:364:18:364:25 | ( ... ) | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:364:19:364:20 | C2 | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:364:19:364:24 | call to new | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:365:1:365:25 | call to pattern_dispatch | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:365:1:365:25 | self | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:365:18:365:25 | ( ... ) | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:365:19:365:20 | C3 | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:365:19:365:24 | call to new | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:367:1:371:3 | add_singleton | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:367:19:367:19 | x | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:367:19:367:19 | x | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:368:5:370:7 | instance | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:368:9:368:9 | x | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:369:9:369:28 | call to puts | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:369:9:369:28 | self | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:369:14:369:28 | "instance_on x" | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:369:15:369:27 | instance_on x | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:373:1:373:2 | c3 | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:373:1:373:11 | ... = ... | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:373:6:373:7 | C1 | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:373:6:373:11 | call to new | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:374:1:374:16 | call to add_singleton | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:374:1:374:16 | self | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:374:15:374:16 | c3 | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:375:1:375:2 | c3 | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:375:1:375:11 | call to instance | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:377:1:397:3 | SingletonOverride1 | calls.rb:1:1:550:40 | calls.rb |
+| calls.rb:343:1:359:3 | pattern_dispatch | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:343:22:343:22 | x | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:343:22:343:22 | x | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:344:5:352:7 | case ... | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:344:10:344:10 | x | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:345:5:346:18 | when ... | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:345:10:345:11 | C3 | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:345:12:346:18 | then ... | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:346:9:346:9 | x | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:346:9:346:18 | call to instance | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:347:5:348:18 | when ... | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:347:10:347:11 | C2 | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:347:12:348:18 | then ... | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:348:9:348:9 | x | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:348:9:348:18 | call to instance | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:349:5:350:18 | when ... | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:349:10:349:11 | C1 | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:349:12:350:18 | then ... | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:350:9:350:9 | x | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:350:9:350:18 | call to instance | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:351:5:351:8 | else ... | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:354:5:358:7 | case ... | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:354:10:354:10 | x | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:355:9:355:29 | in ... then ... | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:355:12:355:13 | C3 | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:355:15:355:29 | then ... | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:355:20:355:20 | x | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:355:20:355:29 | call to instance | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:356:9:356:36 | in ... then ... | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:356:12:356:13 | C2 | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:356:12:356:19 | ... => ... | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:356:18:356:19 | c2 | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:356:21:356:36 | then ... | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:356:26:356:27 | c2 | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:356:26:356:36 | call to instance | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:357:9:357:36 | in ... then ... | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:357:12:357:13 | C1 | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:357:12:357:19 | ... => ... | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:357:18:357:19 | c1 | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:357:21:357:36 | then ... | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:357:26:357:27 | c1 | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:357:26:357:36 | call to instance | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:361:1:361:2 | c1 | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:361:1:361:11 | ... = ... | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:361:6:361:7 | C1 | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:361:6:361:11 | call to new | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:362:1:362:2 | c1 | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:362:1:362:11 | call to instance | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:363:1:363:25 | call to pattern_dispatch | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:363:1:363:25 | self | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:363:18:363:25 | ( ... ) | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:363:19:363:20 | C1 | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:363:19:363:24 | call to new | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:364:1:364:25 | call to pattern_dispatch | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:364:1:364:25 | self | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:364:18:364:25 | ( ... ) | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:364:19:364:20 | C2 | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:364:19:364:24 | call to new | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:365:1:365:25 | call to pattern_dispatch | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:365:1:365:25 | self | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:365:18:365:25 | ( ... ) | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:365:19:365:20 | C3 | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:365:19:365:24 | call to new | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:367:1:371:3 | add_singleton | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:367:19:367:19 | x | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:367:19:367:19 | x | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:368:5:370:7 | instance | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:368:9:368:9 | x | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:369:9:369:28 | call to puts | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:369:9:369:28 | self | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:369:14:369:28 | "instance_on x" | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:369:15:369:27 | instance_on x | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:373:1:373:2 | c3 | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:373:1:373:11 | ... = ... | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:373:6:373:7 | C1 | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:373:6:373:11 | call to new | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:374:1:374:16 | call to add_singleton | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:374:1:374:16 | self | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:374:15:374:16 | c3 | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:375:1:375:2 | c3 | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:375:1:375:11 | call to instance | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:377:1:397:3 | SingletonOverride1 | calls.rb:1:1:569:4 | calls.rb |
 | calls.rb:378:5:386:7 | class << ... | calls.rb:377:1:397:3 | SingletonOverride1 |
 | calls.rb:378:14:378:17 | self | calls.rb:377:1:397:3 | SingletonOverride1 |
 | calls.rb:379:9:381:11 | singleton1 | calls.rb:378:5:386:7 | class << ... |
@@ -1074,16 +1097,16 @@ enclosingModule
 | calls.rb:393:9:393:18 | self | calls.rb:377:1:397:3 | SingletonOverride1 |
 | calls.rb:396:5:396:14 | call to singleton2 | calls.rb:377:1:397:3 | SingletonOverride1 |
 | calls.rb:396:5:396:14 | self | calls.rb:377:1:397:3 | SingletonOverride1 |
-| calls.rb:399:1:399:18 | SingletonOverride1 | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:399:1:399:29 | call to singleton1 | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:400:1:400:18 | SingletonOverride1 | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:400:1:400:29 | call to singleton2 | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:401:1:401:18 | SingletonOverride1 | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:401:1:401:34 | call to call_singleton1 | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:402:1:402:18 | SingletonOverride1 | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:402:1:402:34 | call to call_singleton2 | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:404:1:414:3 | SingletonOverride2 | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:404:28:404:45 | SingletonOverride1 | calls.rb:1:1:550:40 | calls.rb |
+| calls.rb:399:1:399:18 | SingletonOverride1 | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:399:1:399:29 | call to singleton1 | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:400:1:400:18 | SingletonOverride1 | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:400:1:400:29 | call to singleton2 | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:401:1:401:18 | SingletonOverride1 | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:401:1:401:34 | call to call_singleton1 | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:402:1:402:18 | SingletonOverride1 | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:402:1:402:34 | call to call_singleton2 | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:404:1:414:3 | SingletonOverride2 | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:404:28:404:45 | SingletonOverride1 | calls.rb:1:1:569:4 | calls.rb |
 | calls.rb:405:5:409:7 | class << ... | calls.rb:404:1:414:3 | SingletonOverride2 |
 | calls.rb:405:14:405:17 | self | calls.rb:404:1:414:3 | SingletonOverride2 |
 | calls.rb:406:9:408:11 | singleton1 | calls.rb:405:5:409:7 | class << ... |
@@ -1097,15 +1120,15 @@ enclosingModule
 | calls.rb:412:9:412:44 | self | calls.rb:404:1:414:3 | SingletonOverride2 |
 | calls.rb:412:14:412:44 | "SingletonOverride2#singleton2" | calls.rb:404:1:414:3 | SingletonOverride2 |
 | calls.rb:412:15:412:43 | SingletonOverride2#singleton2 | calls.rb:404:1:414:3 | SingletonOverride2 |
-| calls.rb:416:1:416:18 | SingletonOverride2 | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:416:1:416:29 | call to singleton1 | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:417:1:417:18 | SingletonOverride2 | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:417:1:417:29 | call to singleton2 | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:418:1:418:18 | SingletonOverride2 | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:418:1:418:34 | call to call_singleton1 | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:419:1:419:18 | SingletonOverride2 | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:419:1:419:34 | call to call_singleton2 | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:421:1:449:3 | ConditionalInstanceMethods | calls.rb:1:1:550:40 | calls.rb |
+| calls.rb:416:1:416:18 | SingletonOverride2 | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:416:1:416:29 | call to singleton1 | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:417:1:417:18 | SingletonOverride2 | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:417:1:417:29 | call to singleton2 | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:418:1:418:18 | SingletonOverride2 | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:418:1:418:34 | call to call_singleton1 | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:419:1:419:18 | SingletonOverride2 | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:419:1:419:34 | call to call_singleton2 | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:421:1:449:3 | ConditionalInstanceMethods | calls.rb:1:1:569:4 | calls.rb |
 | calls.rb:422:5:426:7 | if ... | calls.rb:421:1:449:3 | ConditionalInstanceMethods |
 | calls.rb:422:8:422:13 | call to rand | calls.rb:421:1:449:3 | ConditionalInstanceMethods |
 | calls.rb:422:8:422:13 | self | calls.rb:421:1:449:3 | ConditionalInstanceMethods |
@@ -1150,91 +1173,91 @@ enclosingModule
 | calls.rb:445:17:445:40 | self | calls.rb:421:1:449:3 | ConditionalInstanceMethods |
 | calls.rb:445:22:445:40 | "AnonymousClass#m5" | calls.rb:421:1:449:3 | ConditionalInstanceMethods |
 | calls.rb:445:23:445:39 | AnonymousClass#m5 | calls.rb:421:1:449:3 | ConditionalInstanceMethods |
-| calls.rb:451:1:451:26 | ConditionalInstanceMethods | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:451:1:451:30 | call to new | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:451:1:451:33 | call to m1 | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:452:1:452:26 | ConditionalInstanceMethods | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:452:1:452:30 | call to new | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:452:1:452:33 | call to m3 | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:453:1:453:26 | ConditionalInstanceMethods | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:453:1:453:30 | call to new | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:453:1:453:33 | call to m2 | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:454:1:454:26 | ConditionalInstanceMethods | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:454:1:454:30 | call to new | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:454:1:454:33 | call to m3 | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:455:1:455:26 | ConditionalInstanceMethods | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:455:1:455:30 | call to new | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:455:1:455:33 | call to m4 | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:456:1:456:26 | ConditionalInstanceMethods | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:456:1:456:30 | call to new | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:456:1:456:33 | call to m5 | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:458:1:458:23 | EsotericInstanceMethods | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:458:1:476:3 | ... = ... | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:458:27:458:31 | Class | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:458:27:476:3 | call to new | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:458:37:476:3 | do ... end | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:459:5:459:11 | Array | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:459:5:459:11 | [...] | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:459:5:459:11 | call to [] | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:459:5:463:7 | call to each | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:459:6:459:6 | 0 | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:459:8:459:8 | 1 | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:459:10:459:10 | 2 | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:459:18:463:7 | do ... end | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:460:9:462:11 | foo | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:461:13:461:22 | call to puts | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:461:13:461:22 | self | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:461:18:461:22 | "foo" | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:461:19:461:21 | foo | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:465:5:465:9 | Class | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:465:5:469:7 | call to new | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:465:5:469:11 | call to new | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:465:5:469:15 | call to bar | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:465:15:469:7 | do ... end | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:466:9:468:11 | bar | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:467:13:467:22 | call to puts | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:467:13:467:22 | self | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:467:18:467:22 | "bar" | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:467:19:467:21 | bar | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:471:5:471:11 | Array | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:471:5:471:11 | [...] | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:471:5:471:11 | call to [] | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:471:5:475:7 | call to each | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:471:6:471:6 | 0 | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:471:8:471:8 | 1 | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:471:10:471:10 | 2 | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:471:18:475:7 | do ... end | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:471:22:471:22 | i | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:471:22:471:22 | i | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:472:9:474:11 | call to define_method | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:472:9:474:11 | self | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:472:23:472:32 | "baz_#{...}" | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:472:24:472:27 | baz_ | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:472:28:472:31 | #{...} | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:472:30:472:30 | i | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:472:35:474:11 | do ... end | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:473:13:473:27 | call to puts | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:473:13:473:27 | self | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:473:18:473:27 | "baz_#{...}" | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:473:19:473:22 | baz_ | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:473:23:473:26 | #{...} | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:473:25:473:25 | i | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:478:1:478:23 | EsotericInstanceMethods | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:478:1:478:27 | call to new | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:478:1:478:31 | call to foo | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:479:1:479:23 | EsotericInstanceMethods | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:479:1:479:27 | call to new | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:479:1:479:31 | call to bar | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:480:1:480:23 | EsotericInstanceMethods | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:480:1:480:27 | call to new | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:480:1:480:33 | call to baz_0 | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:481:1:481:23 | EsotericInstanceMethods | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:481:1:481:27 | call to new | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:481:1:481:33 | call to baz_1 | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:482:1:482:23 | EsotericInstanceMethods | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:482:1:482:27 | call to new | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:482:1:482:33 | call to baz_2 | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:484:1:490:3 | ExtendSingletonMethod | calls.rb:1:1:550:40 | calls.rb |
+| calls.rb:451:1:451:26 | ConditionalInstanceMethods | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:451:1:451:30 | call to new | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:451:1:451:33 | call to m1 | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:452:1:452:26 | ConditionalInstanceMethods | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:452:1:452:30 | call to new | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:452:1:452:33 | call to m3 | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:453:1:453:26 | ConditionalInstanceMethods | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:453:1:453:30 | call to new | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:453:1:453:33 | call to m2 | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:454:1:454:26 | ConditionalInstanceMethods | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:454:1:454:30 | call to new | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:454:1:454:33 | call to m3 | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:455:1:455:26 | ConditionalInstanceMethods | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:455:1:455:30 | call to new | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:455:1:455:33 | call to m4 | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:456:1:456:26 | ConditionalInstanceMethods | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:456:1:456:30 | call to new | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:456:1:456:33 | call to m5 | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:458:1:458:23 | EsotericInstanceMethods | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:458:1:476:3 | ... = ... | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:458:27:458:31 | Class | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:458:27:476:3 | call to new | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:458:37:476:3 | do ... end | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:459:5:459:11 | Array | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:459:5:459:11 | [...] | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:459:5:459:11 | call to [] | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:459:5:463:7 | call to each | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:459:6:459:6 | 0 | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:459:8:459:8 | 1 | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:459:10:459:10 | 2 | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:459:18:463:7 | do ... end | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:460:9:462:11 | foo | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:461:13:461:22 | call to puts | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:461:13:461:22 | self | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:461:18:461:22 | "foo" | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:461:19:461:21 | foo | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:465:5:465:9 | Class | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:465:5:469:7 | call to new | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:465:5:469:11 | call to new | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:465:5:469:15 | call to bar | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:465:15:469:7 | do ... end | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:466:9:468:11 | bar | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:467:13:467:22 | call to puts | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:467:13:467:22 | self | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:467:18:467:22 | "bar" | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:467:19:467:21 | bar | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:471:5:471:11 | Array | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:471:5:471:11 | [...] | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:471:5:471:11 | call to [] | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:471:5:475:7 | call to each | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:471:6:471:6 | 0 | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:471:8:471:8 | 1 | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:471:10:471:10 | 2 | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:471:18:475:7 | do ... end | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:471:22:471:22 | i | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:471:22:471:22 | i | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:472:9:474:11 | call to define_method | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:472:9:474:11 | self | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:472:23:472:32 | "baz_#{...}" | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:472:24:472:27 | baz_ | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:472:28:472:31 | #{...} | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:472:30:472:30 | i | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:472:35:474:11 | do ... end | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:473:13:473:27 | call to puts | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:473:13:473:27 | self | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:473:18:473:27 | "baz_#{...}" | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:473:19:473:22 | baz_ | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:473:23:473:26 | #{...} | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:473:25:473:25 | i | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:478:1:478:23 | EsotericInstanceMethods | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:478:1:478:27 | call to new | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:478:1:478:31 | call to foo | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:479:1:479:23 | EsotericInstanceMethods | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:479:1:479:27 | call to new | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:479:1:479:31 | call to bar | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:480:1:480:23 | EsotericInstanceMethods | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:480:1:480:27 | call to new | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:480:1:480:33 | call to baz_0 | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:481:1:481:23 | EsotericInstanceMethods | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:481:1:481:27 | call to new | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:481:1:481:33 | call to baz_1 | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:482:1:482:23 | EsotericInstanceMethods | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:482:1:482:27 | call to new | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:482:1:482:33 | call to baz_2 | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:484:1:490:3 | ExtendSingletonMethod | calls.rb:1:1:569:4 | calls.rb |
 | calls.rb:485:5:487:7 | singleton | calls.rb:484:1:490:3 | ExtendSingletonMethod |
 | calls.rb:486:9:486:46 | call to puts | calls.rb:484:1:490:3 | ExtendSingletonMethod |
 | calls.rb:486:9:486:46 | self | calls.rb:484:1:490:3 | ExtendSingletonMethod |
@@ -1243,32 +1266,32 @@ enclosingModule
 | calls.rb:489:5:489:15 | call to extend | calls.rb:484:1:490:3 | ExtendSingletonMethod |
 | calls.rb:489:5:489:15 | self | calls.rb:484:1:490:3 | ExtendSingletonMethod |
 | calls.rb:489:12:489:15 | self | calls.rb:484:1:490:3 | ExtendSingletonMethod |
-| calls.rb:492:1:492:21 | ExtendSingletonMethod | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:492:1:492:31 | call to singleton | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:494:1:496:3 | ExtendSingletonMethod2 | calls.rb:1:1:550:40 | calls.rb |
+| calls.rb:492:1:492:21 | ExtendSingletonMethod | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:492:1:492:31 | call to singleton | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:494:1:496:3 | ExtendSingletonMethod2 | calls.rb:1:1:569:4 | calls.rb |
 | calls.rb:495:5:495:32 | call to extend | calls.rb:494:1:496:3 | ExtendSingletonMethod2 |
 | calls.rb:495:5:495:32 | self | calls.rb:494:1:496:3 | ExtendSingletonMethod2 |
 | calls.rb:495:12:495:32 | ExtendSingletonMethod | calls.rb:494:1:496:3 | ExtendSingletonMethod2 |
-| calls.rb:498:1:498:22 | ExtendSingletonMethod2 | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:498:1:498:32 | call to singleton | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:500:1:501:3 | ExtendSingletonMethod3 | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:503:1:503:22 | ExtendSingletonMethod3 | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:503:1:503:51 | call to extend | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:503:31:503:51 | ExtendSingletonMethod | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:505:1:505:22 | ExtendSingletonMethod3 | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:505:1:505:32 | call to singleton | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:507:1:507:3 | foo | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:507:1:507:13 | ... = ... | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:507:7:507:13 | "hello" | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:507:8:507:12 | hello | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:508:1:508:3 | foo | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:508:1:508:13 | call to singleton | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:509:1:509:3 | foo | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:509:1:509:32 | call to extend | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:509:12:509:32 | ExtendSingletonMethod | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:511:1:511:3 | foo | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:511:1:511:13 | call to singleton | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:513:1:517:3 | ProtectedMethodInModule | calls.rb:1:1:550:40 | calls.rb |
+| calls.rb:498:1:498:22 | ExtendSingletonMethod2 | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:498:1:498:32 | call to singleton | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:500:1:501:3 | ExtendSingletonMethod3 | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:503:1:503:22 | ExtendSingletonMethod3 | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:503:1:503:51 | call to extend | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:503:31:503:51 | ExtendSingletonMethod | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:505:1:505:22 | ExtendSingletonMethod3 | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:505:1:505:32 | call to singleton | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:507:1:507:3 | foo | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:507:1:507:13 | ... = ... | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:507:7:507:13 | "hello" | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:507:8:507:12 | hello | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:508:1:508:3 | foo | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:508:1:508:13 | call to singleton | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:509:1:509:3 | foo | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:509:1:509:32 | call to extend | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:509:12:509:32 | ExtendSingletonMethod | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:511:1:511:3 | foo | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:511:1:511:13 | call to singleton | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:513:1:517:3 | ProtectedMethodInModule | calls.rb:1:1:569:4 | calls.rb |
 | calls.rb:514:5:516:7 | call to protected | calls.rb:513:1:517:3 | ProtectedMethodInModule |
 | calls.rb:514:5:516:7 | self | calls.rb:513:1:517:3 | ProtectedMethodInModule |
 | calls.rb:514:15:516:7 | foo | calls.rb:513:1:517:3 | ProtectedMethodInModule |
@@ -1276,7 +1299,7 @@ enclosingModule
 | calls.rb:515:9:515:42 | self | calls.rb:513:1:517:3 | ProtectedMethodInModule |
 | calls.rb:515:14:515:42 | "ProtectedMethodInModule#foo" | calls.rb:513:1:517:3 | ProtectedMethodInModule |
 | calls.rb:515:15:515:41 | ProtectedMethodInModule#foo | calls.rb:513:1:517:3 | ProtectedMethodInModule |
-| calls.rb:519:1:532:3 | ProtectedMethods | calls.rb:1:1:550:40 | calls.rb |
+| calls.rb:519:1:532:3 | ProtectedMethods | calls.rb:1:1:569:4 | calls.rb |
 | calls.rb:520:5:520:35 | call to include | calls.rb:519:1:532:3 | ProtectedMethods |
 | calls.rb:520:5:520:35 | self | calls.rb:519:1:532:3 | ProtectedMethods |
 | calls.rb:520:13:520:35 | ProtectedMethodInModule | calls.rb:519:1:532:3 | ProtectedMethods |
@@ -1298,58 +1321,79 @@ enclosingModule
 | calls.rb:530:9:530:24 | ProtectedMethods | calls.rb:519:1:532:3 | ProtectedMethods |
 | calls.rb:530:9:530:28 | call to new | calls.rb:519:1:532:3 | ProtectedMethods |
 | calls.rb:530:9:530:32 | call to bar | calls.rb:519:1:532:3 | ProtectedMethods |
-| calls.rb:534:1:534:16 | ProtectedMethods | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:534:1:534:20 | call to new | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:534:1:534:24 | call to foo | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:535:1:535:16 | ProtectedMethods | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:535:1:535:20 | call to new | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:535:1:535:24 | call to bar | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:536:1:536:16 | ProtectedMethods | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:536:1:536:20 | call to new | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:536:1:536:24 | call to baz | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:538:1:543:3 | ProtectedMethodsSub | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:538:29:538:44 | ProtectedMethods | calls.rb:1:1:550:40 | calls.rb |
+| calls.rb:534:1:534:16 | ProtectedMethods | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:534:1:534:20 | call to new | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:534:1:534:24 | call to foo | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:535:1:535:16 | ProtectedMethods | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:535:1:535:20 | call to new | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:535:1:535:24 | call to bar | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:536:1:536:16 | ProtectedMethods | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:536:1:536:20 | call to new | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:536:1:536:24 | call to baz | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:538:1:543:3 | ProtectedMethodsSub | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:538:29:538:44 | ProtectedMethods | calls.rb:1:1:569:4 | calls.rb |
 | calls.rb:539:5:542:7 | baz | calls.rb:538:1:543:3 | ProtectedMethodsSub |
 | calls.rb:540:9:540:11 | call to foo | calls.rb:538:1:543:3 | ProtectedMethodsSub |
 | calls.rb:540:9:540:11 | self | calls.rb:538:1:543:3 | ProtectedMethodsSub |
 | calls.rb:541:9:541:27 | ProtectedMethodsSub | calls.rb:538:1:543:3 | ProtectedMethodsSub |
 | calls.rb:541:9:541:31 | call to new | calls.rb:538:1:543:3 | ProtectedMethodsSub |
 | calls.rb:541:9:541:35 | call to foo | calls.rb:538:1:543:3 | ProtectedMethodsSub |
-| calls.rb:545:1:545:19 | ProtectedMethodsSub | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:545:1:545:23 | call to new | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:545:1:545:27 | call to foo | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:546:1:546:19 | ProtectedMethodsSub | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:546:1:546:23 | call to new | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:546:1:546:27 | call to bar | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:547:1:547:19 | ProtectedMethodsSub | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:547:1:547:23 | call to new | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:547:1:547:27 | call to baz | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:549:1:549:7 | Array | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:549:1:549:7 | [...] | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:549:1:549:7 | call to [] | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:549:1:549:26 | call to each | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:549:2:549:2 | C | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:549:2:549:6 | call to new | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:549:14:549:26 | { ... } | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:549:17:549:17 | c | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:549:17:549:17 | c | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:549:20:549:20 | c | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:549:20:549:24 | call to baz | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:550:1:550:13 | Array | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:550:1:550:13 | [...] | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:550:1:550:13 | call to [] | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:550:1:550:39 | call to each | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:550:2:550:4 | "a" | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:550:3:550:3 | a | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:550:6:550:8 | "b" | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:550:7:550:7 | b | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:550:10:550:12 | "c" | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:550:11:550:11 | c | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:550:20:550:39 | { ... } | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:550:23:550:23 | s | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:550:23:550:23 | s | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:550:26:550:26 | s | calls.rb:1:1:550:40 | calls.rb |
-| calls.rb:550:26:550:37 | call to capitalize | calls.rb:1:1:550:40 | calls.rb |
+| calls.rb:545:1:545:19 | ProtectedMethodsSub | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:545:1:545:23 | call to new | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:545:1:545:27 | call to foo | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:546:1:546:19 | ProtectedMethodsSub | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:546:1:546:23 | call to new | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:546:1:546:27 | call to bar | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:547:1:547:19 | ProtectedMethodsSub | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:547:1:547:23 | call to new | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:547:1:547:27 | call to baz | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:549:1:549:7 | Array | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:549:1:549:7 | [...] | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:549:1:549:7 | call to [] | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:549:1:549:26 | call to each | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:549:2:549:2 | C | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:549:2:549:6 | call to new | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:549:14:549:26 | { ... } | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:549:17:549:17 | c | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:549:17:549:17 | c | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:549:20:549:20 | c | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:549:20:549:24 | call to baz | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:550:1:550:13 | Array | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:550:1:550:13 | [...] | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:550:1:550:13 | call to [] | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:550:1:550:39 | call to each | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:550:2:550:4 | "a" | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:550:3:550:3 | a | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:550:6:550:8 | "b" | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:550:7:550:7 | b | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:550:10:550:12 | "c" | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:550:11:550:11 | c | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:550:20:550:39 | { ... } | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:550:23:550:23 | s | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:550:23:550:23 | s | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:550:26:550:26 | s | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:550:26:550:37 | call to capitalize | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:552:1:555:3 | SingletonUpCall_Base | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:553:5:554:7 | singleton | calls.rb:552:1:555:3 | SingletonUpCall_Base |
+| calls.rb:553:9:553:12 | self | calls.rb:552:1:555:3 | SingletonUpCall_Base |
+| calls.rb:556:1:563:3 | SingletonUpCall_Sub | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:556:29:556:48 | SingletonUpCall_Base | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:557:5:557:13 | call to singleton | calls.rb:556:1:563:3 | SingletonUpCall_Sub |
+| calls.rb:557:5:557:13 | self | calls.rb:556:1:563:3 | SingletonUpCall_Sub |
+| calls.rb:558:5:558:14 | call to singleton2 | calls.rb:556:1:563:3 | SingletonUpCall_Sub |
+| calls.rb:558:5:558:14 | self | calls.rb:556:1:563:3 | SingletonUpCall_Sub |
+| calls.rb:559:5:562:7 | mid_method | calls.rb:556:1:563:3 | SingletonUpCall_Sub |
+| calls.rb:559:9:559:12 | self | calls.rb:556:1:563:3 | SingletonUpCall_Sub |
+| calls.rb:560:9:560:17 | call to singleton | calls.rb:556:1:563:3 | SingletonUpCall_Sub |
+| calls.rb:560:9:560:17 | self | calls.rb:556:1:563:3 | SingletonUpCall_Sub |
+| calls.rb:561:9:561:18 | call to singleton2 | calls.rb:556:1:563:3 | SingletonUpCall_Sub |
+| calls.rb:561:9:561:18 | self | calls.rb:556:1:563:3 | SingletonUpCall_Sub |
+| calls.rb:564:1:569:3 | SingletonUpCall_SubSub | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:564:32:564:50 | SingletonUpCall_Sub | calls.rb:1:1:569:4 | calls.rb |
+| calls.rb:565:5:566:7 | singleton2 | calls.rb:564:1:569:3 | SingletonUpCall_SubSub |
+| calls.rb:565:9:565:12 | self | calls.rb:564:1:569:3 | SingletonUpCall_SubSub |
+| calls.rb:568:5:568:14 | call to mid_method | calls.rb:564:1:569:3 | SingletonUpCall_SubSub |
+| calls.rb:568:5:568:14 | self | calls.rb:564:1:569:3 | SingletonUpCall_SubSub |
 | hello.rb:1:1:8:3 | EnglishWords | hello.rb:1:1:22:3 | hello.rb |
 | hello.rb:2:5:4:7 | hello | hello.rb:1:1:8:3 | EnglishWords |
 | hello.rb:3:9:3:22 | return | hello.rb:1:1:8:3 | EnglishWords |
@@ -1645,3 +1689,42 @@ enclosingModule
 | private.rb:105:1:105:16 | PrivateOverride2 | private.rb:1:1:105:40 | private.rb |
 | private.rb:105:1:105:20 | call to new | private.rb:1:1:105:40 | private.rb |
 | private.rb:105:1:105:23 | call to m1 | private.rb:1:1:105:40 | private.rb |
+| toplevel_self_singleton.rb:1:1:6:3 | A | toplevel_self_singleton.rb:1:1:34:4 | toplevel_self_singleton.rb |
+| toplevel_self_singleton.rb:2:5:5:7 | B | toplevel_self_singleton.rb:1:1:6:3 | A |
+| toplevel_self_singleton.rb:3:9:4:11 | ab_singleton_method | toplevel_self_singleton.rb:2:5:5:7 | B |
+| toplevel_self_singleton.rb:3:13:3:16 | self | toplevel_self_singleton.rb:2:5:5:7 | B |
+| toplevel_self_singleton.rb:8:1:16:3 | call to do_something | toplevel_self_singleton.rb:1:1:34:4 | toplevel_self_singleton.rb |
+| toplevel_self_singleton.rb:8:1:16:3 | self | toplevel_self_singleton.rb:1:1:34:4 | toplevel_self_singleton.rb |
+| toplevel_self_singleton.rb:8:14:16:3 | do ... end | toplevel_self_singleton.rb:1:1:34:4 | toplevel_self_singleton.rb |
+| toplevel_self_singleton.rb:9:5:11:7 | method_in_block | toplevel_self_singleton.rb:1:1:34:4 | toplevel_self_singleton.rb |
+| toplevel_self_singleton.rb:10:9:10:27 | call to ab_singleton_method | toplevel_self_singleton.rb:1:1:34:4 | toplevel_self_singleton.rb |
+| toplevel_self_singleton.rb:10:9:10:27 | self | toplevel_self_singleton.rb:1:1:34:4 | toplevel_self_singleton.rb |
+| toplevel_self_singleton.rb:12:5:12:7 | obj | toplevel_self_singleton.rb:1:1:34:4 | toplevel_self_singleton.rb |
+| toplevel_self_singleton.rb:12:5:12:12 | ... = ... | toplevel_self_singleton.rb:1:1:34:4 | toplevel_self_singleton.rb |
+| toplevel_self_singleton.rb:12:9:12:12 | self | toplevel_self_singleton.rb:1:1:34:4 | toplevel_self_singleton.rb |
+| toplevel_self_singleton.rb:13:5:15:7 | method_in_block | toplevel_self_singleton.rb:1:1:34:4 | toplevel_self_singleton.rb |
+| toplevel_self_singleton.rb:13:9:13:11 | obj | toplevel_self_singleton.rb:1:1:34:4 | toplevel_self_singleton.rb |
+| toplevel_self_singleton.rb:14:9:14:27 | call to ab_singleton_method | toplevel_self_singleton.rb:1:1:34:4 | toplevel_self_singleton.rb |
+| toplevel_self_singleton.rb:14:9:14:27 | self | toplevel_self_singleton.rb:1:1:34:4 | toplevel_self_singleton.rb |
+| toplevel_self_singleton.rb:18:1:18:8 | MyStruct | toplevel_self_singleton.rb:1:1:34:4 | toplevel_self_singleton.rb |
+| toplevel_self_singleton.rb:18:1:22:1 | ... = ... | toplevel_self_singleton.rb:1:1:34:4 | toplevel_self_singleton.rb |
+| toplevel_self_singleton.rb:18:12:18:17 | Struct | toplevel_self_singleton.rb:1:1:34:4 | toplevel_self_singleton.rb |
+| toplevel_self_singleton.rb:18:12:22:1 | call to new | toplevel_self_singleton.rb:1:1:34:4 | toplevel_self_singleton.rb |
+| toplevel_self_singleton.rb:18:23:18:26 | :foo | toplevel_self_singleton.rb:1:1:34:4 | toplevel_self_singleton.rb |
+| toplevel_self_singleton.rb:18:23:18:26 | foo | toplevel_self_singleton.rb:1:1:34:4 | toplevel_self_singleton.rb |
+| toplevel_self_singleton.rb:18:29:18:32 | :bar | toplevel_self_singleton.rb:1:1:34:4 | toplevel_self_singleton.rb |
+| toplevel_self_singleton.rb:18:29:18:32 | bar | toplevel_self_singleton.rb:1:1:34:4 | toplevel_self_singleton.rb |
+| toplevel_self_singleton.rb:18:35:22:1 | { ... } | toplevel_self_singleton.rb:1:1:34:4 | toplevel_self_singleton.rb |
+| toplevel_self_singleton.rb:19:5:21:7 | method_in_struct | toplevel_self_singleton.rb:1:1:34:4 | toplevel_self_singleton.rb |
+| toplevel_self_singleton.rb:19:9:19:12 | self | toplevel_self_singleton.rb:1:1:34:4 | toplevel_self_singleton.rb |
+| toplevel_self_singleton.rb:20:9:20:27 | call to ab_singleton_method | toplevel_self_singleton.rb:1:1:34:4 | toplevel_self_singleton.rb |
+| toplevel_self_singleton.rb:20:9:20:27 | self | toplevel_self_singleton.rb:1:1:34:4 | toplevel_self_singleton.rb |
+| toplevel_self_singleton.rb:24:1:34:3 | Good | toplevel_self_singleton.rb:1:1:34:4 | toplevel_self_singleton.rb |
+| toplevel_self_singleton.rb:25:5:33:7 | class << ... | toplevel_self_singleton.rb:24:1:34:3 | Good |
+| toplevel_self_singleton.rb:25:14:25:17 | self | toplevel_self_singleton.rb:24:1:34:3 | Good |
+| toplevel_self_singleton.rb:26:9:27:11 | call_me | toplevel_self_singleton.rb:25:5:33:7 | class << ... |
+| toplevel_self_singleton.rb:29:9:32:11 | call_you | toplevel_self_singleton.rb:25:5:33:7 | class << ... |
+| toplevel_self_singleton.rb:30:13:30:19 | call to call_me | toplevel_self_singleton.rb:25:5:33:7 | class << ... |
+| toplevel_self_singleton.rb:30:13:30:19 | self | toplevel_self_singleton.rb:25:5:33:7 | class << ... |
+| toplevel_self_singleton.rb:31:13:31:20 | call to call_you | toplevel_self_singleton.rb:25:5:33:7 | class << ... |
+| toplevel_self_singleton.rb:31:13:31:20 | self | toplevel_self_singleton.rb:25:5:33:7 | class << ... |

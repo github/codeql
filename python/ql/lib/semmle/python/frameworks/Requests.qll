@@ -113,7 +113,7 @@ private module Requests {
       ClassInstantiation() { this = classRef().getACall() }
     }
 
-    /** Return value from making a reuqest. */
+    /** Return value from making a request. */
     private class RequestReturnValue extends InstanceSource, DataFlow::Node {
       RequestReturnValue() { this = any(OutgoingRequestCall c) }
     }

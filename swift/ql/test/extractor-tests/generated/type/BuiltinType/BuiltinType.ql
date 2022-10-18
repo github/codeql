@@ -8,4 +8,4 @@ where
   not x.isUnknown() and
   getName = x.getName() and
   getCanonicalType = x.getCanonicalType()
-select x, "getName:", getName, "getCanonicalType:", getCanonicalType
+select x, x.getPrimaryQlClasses(), "getName:", getName, "getCanonicalType:", getCanonicalType

@@ -250,6 +250,11 @@ module Http {
 
       /** Gets a string that identifies the framework used for this route setup. */
       string getFramework() { result = super.getFramework() }
+
+      /**
+       * Gets the HTTP method name, in lowercase, that this handler will respond to.
+       */
+      string getHttpMethod() { result = super.getHttpMethod() }
     }
 
     /** Provides a class for modeling new HTTP routing APIs. */
@@ -287,6 +292,11 @@ module Http {
 
         /** Gets a string that identifies the framework used for this route setup. */
         abstract string getFramework();
+
+        /**
+         * Gets the HTTP method name, in all caps, that this handler will respond to.
+         */
+        abstract string getHttpMethod();
       }
     }
 
@@ -395,6 +405,12 @@ module Http {
 
       /** Gets a string that identifies the framework used for this route setup. */
       string getFramework() { result = super.getFramework() }
+
+      /**
+       * Gets an HTTP method name, in all caps, that this handler will respond to.
+       * Handlers can potentially respond to multiple HTTP methods.
+       */
+      string getAnHttpMethod() { result = super.getAnHttpMethod() }
     }
 
     /** Provides a class for modeling new HTTP request handlers. */
@@ -416,6 +432,12 @@ module Http {
 
         /** Gets a string that identifies the framework used for this request handler. */
         abstract string getFramework();
+
+        /**
+         * Gets an HTTP method name, in all caps, that this handler will respond to.
+         * Handlers can potentially respond to multiple HTTP methods.
+         */
+        abstract string getAnHttpMethod();
       }
     }
 
@@ -430,6 +452,8 @@ module Http {
       }
 
       override string getFramework() { result = rs.getFramework() }
+
+      override string getAnHttpMethod() { result = rs.getHttpMethod() }
     }
 
     /** A parameter that will receive parts of the url when handling an incoming request. */
@@ -441,6 +465,37 @@ module Http {
       override string getSourceType() { result = handler.getFramework() + " RoutedParameter" }
 
       override RequestInputKind getKind() { result = parameterInputKind() }
+    }
+
+    /**
+     * A data flow node that writes data to a header in an HTTP response.
+     *
+     * Extend this class to refine existing API models. If you want to model new APIs,
+     * extend `HeaderWriteAccess::Range` instead.
+     */
+    class HeaderWriteAccess extends DataFlow::Node instanceof HeaderWriteAccess::Range {
+      /** Gets the (lower case) name of the header that is written to. */
+      string getName() { result = super.getName().toLowerCase() }
+
+      /** Gets the value that is written to the header. */
+      DataFlow::Node getValue() { result = super.getValue() }
+    }
+
+    /** Provides a class for modeling new HTTP header writes. */
+    module HeaderWriteAccess {
+      /**
+       * A data flow node that writes data to the header in an HTTP response.
+       *
+       * Extend this class to model new APIs. If you want to refine existing API models,
+       * extend `HeaderWriteAccess` instead.
+       */
+      abstract class Range extends DataFlow::Node {
+        /** Gets the name of the header that is written to. */
+        abstract string getName();
+
+        /** Gets the value that is written to the header. */
+        abstract DataFlow::Node getValue();
+      }
     }
 
     /**

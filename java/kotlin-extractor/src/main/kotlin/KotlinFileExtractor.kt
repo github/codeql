@@ -36,6 +36,7 @@ import kotlin.collections.ArrayList
 open class KotlinFileExtractor(
     override val logger: FileLogger,
     override val tw: FileTrapWriter,
+    val linesOfCode: LinesOfCode?,
     val filePath: String,
     dependencyCollector: OdasaOutput.TrapFileManager?,
     externalClassExtractor: ExternalDeclExtractor,
@@ -91,6 +92,8 @@ open class KotlinFileExtractor(
             if (!declarationStack.isEmpty()) {
                 logger.errorElement("Declaration stack is not empty after processing the file", file)
             }
+
+            linesOfCode?.linesOfCodeInFile(id)
         }
     }
 
@@ -201,6 +204,16 @@ open class KotlinFileExtractor(
                         tw.writeTypeBounds(it, useType(boundWithWildcards).javaResult.id.cast<DbReftype>(), boundIdx, id)
                     }
                 }
+            }
+
+            if (tp.isReified) {
+                addModifiers(id, "reified")
+            }
+
+            if (tp.variance == Variance.IN_VARIANCE) {
+                addModifiers(id, "in")
+            } else if (tp.variance == Variance.OUT_VARIANCE) {
+                addModifiers(id, "out")
             }
 
             return id
@@ -471,6 +484,8 @@ open class KotlinFileExtractor(
 
                 extractClassModifiers(c, id)
                 extractClassSupertypes(c, id, inReceiverContext = true) // inReceiverContext = true is specified to force extraction of member prototypes of base types
+
+                linesOfCode?.linesOfCodeInDeclaration(c, id)
 
                 return id
             }
@@ -1147,6 +1162,8 @@ open class KotlinFileExtractor(
                 if (f.isSuspend) {
                     addModifiers(id, "suspend")
                 }
+
+                linesOfCode?.linesOfCodeInDeclaration(f, id)
 
                 return id
             }
@@ -2442,7 +2459,10 @@ open class KotlinFileExtractor(
                         }
                     }
                     tw.writeExprsKotlinType(id, type.kotlinResult.id)
-                    unaryopDisp(id)
+                    if (isFunction(target, "kotlin", "Byte or Short", { it == "Byte" || it == "Short" }, "inv"))
+                        unaryopReceiver(id, c.extensionReceiver, "Extension receiver")
+                    else
+                        unaryopDisp(id)
                 }
                 // We need to handle all the builtin operators defines in BuiltInOperatorNames in
                 //     compiler/ir/ir.tree/src/org/jetbrains/kotlin/ir/IrBuiltIns.kt
@@ -4236,9 +4256,11 @@ open class KotlinFileExtractor(
              *       this.dispatchReceiver = dispatchReceiver
              *   }
              *
-             *   fun get(): R { return this.dispatchReceiver.FN1() }
+             *   override fun get(): R { return this.dispatchReceiver.FN1() }
              *
-             *   fun set(a0: R): Unit { return this.dispatchReceiver.FN2(a0) }
+             *   override fun set(a0: R): Unit { return this.dispatchReceiver.FN2(a0) }
+             *
+             *   override fun invoke(): R { return this.get() }
              * }
              * ```
              *
@@ -4276,8 +4298,8 @@ open class KotlinFileExtractor(
             )
 
             val declarationParent = peekDeclStackAsDeclarationParent(propertyReferenceExpr) ?: return
-            val prefix = if (kPropertyClass.owner.name.asString().startsWith("KMutableProperty")) "Mutable" else ""
-            val baseClass = pluginContext.referenceClass(FqName("kotlin.jvm.internal.${prefix}PropertyReference${kPropertyType.arguments.size - 1}"))?.owner?.typeWith()
+            // The base class could be `Any`. `PropertyReference` is used to keep symmetry with function references.
+            val baseClass = pluginContext.referenceClass(FqName("kotlin.jvm.internal.PropertyReference"))?.owner?.typeWith()
                 ?: pluginContext.irBuiltIns.anyType
 
             val classId = extractGeneratedClass(ids, listOf(baseClass, kPropertyType), locId, propertyReferenceExpr, declarationParent)
@@ -4380,10 +4402,16 @@ open class KotlinFileExtractor(
         callable: Label<out DbCallable>
     ) {
         with("function reference", functionReferenceExpr) {
-            val target = functionReferenceExpr.reflectionTarget ?: run {
-                logger.warnElement("Expected to find reflection target for function reference. Using underlying symbol instead.", functionReferenceExpr)
-                functionReferenceExpr.symbol
-            }
+            val target =
+                if (functionReferenceExpr.origin == IrStatementOrigin.ADAPTED_FUNCTION_REFERENCE)
+                    // For an adaptation (e.g. to adjust the number or type of arguments or results), the symbol field points at the adapter while `.reflectionTarget` points at the source-level target.
+                    functionReferenceExpr.symbol
+                else
+                    // TODO: Consider whether we could always target the symbol
+                    functionReferenceExpr.reflectionTarget ?: run {
+                        logger.warnElement("Expected to find reflection target for function reference. Using underlying symbol instead.", functionReferenceExpr)
+                        functionReferenceExpr.symbol
+                    }
 
             /*
              * Extract generated class:
@@ -4487,7 +4515,10 @@ open class KotlinFileExtractor(
                 val baseClass = pluginContext.referenceClass(FqName("kotlin.jvm.internal.FunctionReference"))?.owner?.typeWith()
                     ?: pluginContext.irBuiltIns.anyType
 
-                val classId = extractGeneratedClass(ids, listOf(baseClass, fnInterfaceType), locId, functionReferenceExpr, declarationParent)
+                val classId = extractGeneratedClass(ids, listOf(baseClass, fnInterfaceType), locId, functionReferenceExpr, declarationParent, { it.valueParameters.size == 1 }) {
+                    // The argument to FunctionReference's constructor is the function arity.
+                    extractConstantInteger(type.arguments.size - 1, locId, it, 0, ids.constructor, it)
+                }
 
                 helper.extractReceiverField()
 
@@ -5036,7 +5067,10 @@ open class KotlinFileExtractor(
                         return
                     }
 
-                    if (!st.isFunctionOrKFunction() && !st.isSuspendFunctionOrKFunction()) {
+                    fun IrSimpleType.isKProperty() =
+                        classFqName?.asString()?.startsWith("kotlin.reflect.KProperty") == true
+
+                    if (!st.isFunctionOrKFunction() && !st.isSuspendFunctionOrKFunction() && !st.isKProperty()) {
                         logger.errorElement("Expected to find expression with function type in SAM conversion.", e)
                         return
                     }
@@ -5224,7 +5258,9 @@ open class KotlinFileExtractor(
         superTypes: List<IrType>,
         locId: Label<DbLocation>,
         elementToReportOn: IrElement,
-        declarationParent: IrDeclarationParent
+        declarationParent: IrDeclarationParent,
+        superConstructorSelector: (IrFunction) -> Boolean = { it.valueParameters.isEmpty() },
+        extractSuperconstructorArgs: (Label<DbSuperconstructorinvocationstmt>) -> Unit = {}
     ): Label<out DbClass> {
         // Write class
         val id = ids.type.javaResult.id.cast<DbClass>()
@@ -5249,7 +5285,7 @@ open class KotlinFileExtractor(
         if (baseClass == null) {
             logger.warnElement("Cannot find base class", elementToReportOn)
         } else {
-            val baseConstructor = baseClass.owner.declarations.findSubType<IrFunction> { it.symbol is IrConstructorSymbol }
+            val baseConstructor = baseClass.owner.declarations.findSubType<IrFunction> { it.symbol is IrConstructorSymbol && superConstructorSelector(it) }
             if (baseConstructor == null) {
                 logger.warnElement("Cannot find base constructor", elementToReportOn)
             } else {
@@ -5260,6 +5296,7 @@ open class KotlinFileExtractor(
 
                 tw.writeHasLocation(superCallId, locId)
                 tw.writeCallableBinding(superCallId.cast<DbCaller>(), baseConstructorId)
+                extractSuperconstructorArgs(superCallId)
             }
         }
 
@@ -5273,7 +5310,7 @@ open class KotlinFileExtractor(
     }
 
     /**
-     * Extracts the class around a local function or a lambda.
+     * Extracts the class around a local function or a lambda. The superclass must have a no-arg constructor.
      */
     private fun extractGeneratedClass(localFunction: IrFunction, superTypes: List<IrType>) : Label<out DbClass> {
         with("generated class", localFunction) {

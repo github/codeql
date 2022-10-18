@@ -6,7 +6,7 @@ actionControllerControllerClasses
 | active_record/ActiveRecord.rb:66:1:98:3 | BazController |
 | active_record/ActiveRecord.rb:100:1:108:3 | AnnotatedController |
 | active_storage/active_storage.rb:39:1:45:3 | PostsController |
-| app/controllers/comments_controller.rb:1:1:14:3 | CommentsController |
+| app/controllers/comments_controller.rb:1:1:40:3 | CommentsController |
 | app/controllers/foo/bars_controller.rb:3:1:46:3 | BarsController |
 | app/controllers/photos_controller.rb:1:1:4:3 | PhotosController |
 | app/controllers/posts_controller.rb:1:1:10:3 | PostsController |
@@ -61,8 +61,8 @@ actionControllerActionMethods
 | active_record/ActiveRecord.rb:101:3:103:5 | index |
 | active_record/ActiveRecord.rb:105:3:107:5 | unsafe_action |
 | active_storage/active_storage.rb:40:3:44:5 | create |
-| app/controllers/comments_controller.rb:2:3:10:5 | index |
-| app/controllers/comments_controller.rb:12:3:13:5 | show |
+| app/controllers/comments_controller.rb:2:3:36:5 | index |
+| app/controllers/comments_controller.rb:38:3:39:5 | show |
 | app/controllers/foo/bars_controller.rb:5:3:7:5 | index |
 | app/controllers/foo/bars_controller.rb:9:3:18:5 | show_debug |
 | app/controllers/foo/bars_controller.rb:20:3:24:5 | show |
@@ -370,3 +370,19 @@ getAssociatedControllerClasses
 controllerTemplateFiles
 | app/controllers/foo/bars_controller.rb:3:1:46:3 | BarsController | app/views/foo/bars/_widget.html.erb:0:0:0:0 | app/views/foo/bars/_widget.html.erb |
 | app/controllers/foo/bars_controller.rb:3:1:46:3 | BarsController | app/views/foo/bars/show.html.erb:0:0:0:0 | app/views/foo/bars/show.html.erb |
+headerWriteAccesses
+| app/controllers/comments_controller.rb:15:5:15:35 | call to []= | content-type | app/controllers/comments_controller.rb:15:39:15:49 | ... = ... |
+| app/controllers/comments_controller.rb:16:5:16:46 | call to set_header | content-length | app/controllers/comments_controller.rb:16:43:16:45 | 100 |
+| app/controllers/comments_controller.rb:17:5:17:39 | call to []= | x-custom-header | app/controllers/comments_controller.rb:17:43:17:46 | ... = ... |
+| app/controllers/comments_controller.rb:18:5:18:39 | call to []= | x-another-custom-header | app/controllers/comments_controller.rb:18:43:18:47 | ... = ... |
+| app/controllers/comments_controller.rb:19:5:19:49 | call to add_header | x-yet-another | app/controllers/comments_controller.rb:19:42:19:49 | "indeed" |
+| app/controllers/comments_controller.rb:25:5:25:21 | call to location= | location | app/controllers/comments_controller.rb:25:25:25:36 | ... = ... |
+| app/controllers/comments_controller.rb:26:5:26:26 | call to cache_control= | cache-control | app/controllers/comments_controller.rb:26:30:26:36 | ... = ... |
+| app/controllers/comments_controller.rb:27:5:27:27 | call to _cache_control= | cache-control | app/controllers/comments_controller.rb:27:31:27:37 | ... = ... |
+| app/controllers/comments_controller.rb:28:5:28:17 | call to etag= | etag | app/controllers/comments_controller.rb:28:21:28:27 | ... = ... |
+| app/controllers/comments_controller.rb:29:5:29:20 | call to charset= | content-type | app/controllers/comments_controller.rb:29:24:29:30 | ... = ... |
+| app/controllers/comments_controller.rb:30:5:30:25 | call to content_type= | content-type | app/controllers/comments_controller.rb:30:29:30:35 | ... = ... |
+| app/controllers/comments_controller.rb:32:5:32:17 | call to date= | date | app/controllers/comments_controller.rb:32:21:32:30 | ... = ... |
+| app/controllers/comments_controller.rb:33:5:33:26 | call to last_modified= | last-modified | app/controllers/comments_controller.rb:33:30:33:43 | ... = ... |
+| app/controllers/comments_controller.rb:34:5:34:22 | call to weak_etag= | etag | app/controllers/comments_controller.rb:34:26:34:32 | ... = ... |
+| app/controllers/comments_controller.rb:35:5:35:24 | call to strong_etag= | etag | app/controllers/comments_controller.rb:35:28:35:34 | ... = ... |

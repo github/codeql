@@ -390,6 +390,48 @@ lookupMethod
 | calls.rb:538:1:543:3 | ProtectedMethodsSub | private_on_main | calls.rb:185:1:186:3 | private_on_main |
 | calls.rb:538:1:543:3 | ProtectedMethodsSub | puts | calls.rb:102:5:102:30 | puts |
 | calls.rb:538:1:543:3 | ProtectedMethodsSub | to_s | calls.rb:172:5:173:7 | to_s |
+| calls.rb:552:1:555:3 | SingletonUpCall_Base | add_singleton | calls.rb:367:1:371:3 | add_singleton |
+| calls.rb:552:1:555:3 | SingletonUpCall_Base | call_block | calls.rb:81:1:83:3 | call_block |
+| calls.rb:552:1:555:3 | SingletonUpCall_Base | call_instance_m | calls.rb:39:1:41:3 | call_instance_m |
+| calls.rb:552:1:555:3 | SingletonUpCall_Base | create | calls.rb:278:1:286:3 | create |
+| calls.rb:552:1:555:3 | SingletonUpCall_Base | foo | calls.rb:1:1:3:3 | foo |
+| calls.rb:552:1:555:3 | SingletonUpCall_Base | foo | calls.rb:85:1:89:3 | foo |
+| calls.rb:552:1:555:3 | SingletonUpCall_Base | funny | calls.rb:140:1:142:3 | funny |
+| calls.rb:552:1:555:3 | SingletonUpCall_Base | indirect | calls.rb:158:1:160:3 | indirect |
+| calls.rb:552:1:555:3 | SingletonUpCall_Base | new | calls.rb:117:5:117:16 | new |
+| calls.rb:552:1:555:3 | SingletonUpCall_Base | optional_arg | calls.rb:76:1:79:3 | optional_arg |
+| calls.rb:552:1:555:3 | SingletonUpCall_Base | pattern_dispatch | calls.rb:343:1:359:3 | pattern_dispatch |
+| calls.rb:552:1:555:3 | SingletonUpCall_Base | private_on_main | calls.rb:185:1:186:3 | private_on_main |
+| calls.rb:552:1:555:3 | SingletonUpCall_Base | puts | calls.rb:102:5:102:30 | puts |
+| calls.rb:552:1:555:3 | SingletonUpCall_Base | to_s | calls.rb:172:5:173:7 | to_s |
+| calls.rb:556:1:563:3 | SingletonUpCall_Sub | add_singleton | calls.rb:367:1:371:3 | add_singleton |
+| calls.rb:556:1:563:3 | SingletonUpCall_Sub | call_block | calls.rb:81:1:83:3 | call_block |
+| calls.rb:556:1:563:3 | SingletonUpCall_Sub | call_instance_m | calls.rb:39:1:41:3 | call_instance_m |
+| calls.rb:556:1:563:3 | SingletonUpCall_Sub | create | calls.rb:278:1:286:3 | create |
+| calls.rb:556:1:563:3 | SingletonUpCall_Sub | foo | calls.rb:1:1:3:3 | foo |
+| calls.rb:556:1:563:3 | SingletonUpCall_Sub | foo | calls.rb:85:1:89:3 | foo |
+| calls.rb:556:1:563:3 | SingletonUpCall_Sub | funny | calls.rb:140:1:142:3 | funny |
+| calls.rb:556:1:563:3 | SingletonUpCall_Sub | indirect | calls.rb:158:1:160:3 | indirect |
+| calls.rb:556:1:563:3 | SingletonUpCall_Sub | new | calls.rb:117:5:117:16 | new |
+| calls.rb:556:1:563:3 | SingletonUpCall_Sub | optional_arg | calls.rb:76:1:79:3 | optional_arg |
+| calls.rb:556:1:563:3 | SingletonUpCall_Sub | pattern_dispatch | calls.rb:343:1:359:3 | pattern_dispatch |
+| calls.rb:556:1:563:3 | SingletonUpCall_Sub | private_on_main | calls.rb:185:1:186:3 | private_on_main |
+| calls.rb:556:1:563:3 | SingletonUpCall_Sub | puts | calls.rb:102:5:102:30 | puts |
+| calls.rb:556:1:563:3 | SingletonUpCall_Sub | to_s | calls.rb:172:5:173:7 | to_s |
+| calls.rb:564:1:569:3 | SingletonUpCall_SubSub | add_singleton | calls.rb:367:1:371:3 | add_singleton |
+| calls.rb:564:1:569:3 | SingletonUpCall_SubSub | call_block | calls.rb:81:1:83:3 | call_block |
+| calls.rb:564:1:569:3 | SingletonUpCall_SubSub | call_instance_m | calls.rb:39:1:41:3 | call_instance_m |
+| calls.rb:564:1:569:3 | SingletonUpCall_SubSub | create | calls.rb:278:1:286:3 | create |
+| calls.rb:564:1:569:3 | SingletonUpCall_SubSub | foo | calls.rb:1:1:3:3 | foo |
+| calls.rb:564:1:569:3 | SingletonUpCall_SubSub | foo | calls.rb:85:1:89:3 | foo |
+| calls.rb:564:1:569:3 | SingletonUpCall_SubSub | funny | calls.rb:140:1:142:3 | funny |
+| calls.rb:564:1:569:3 | SingletonUpCall_SubSub | indirect | calls.rb:158:1:160:3 | indirect |
+| calls.rb:564:1:569:3 | SingletonUpCall_SubSub | new | calls.rb:117:5:117:16 | new |
+| calls.rb:564:1:569:3 | SingletonUpCall_SubSub | optional_arg | calls.rb:76:1:79:3 | optional_arg |
+| calls.rb:564:1:569:3 | SingletonUpCall_SubSub | pattern_dispatch | calls.rb:343:1:359:3 | pattern_dispatch |
+| calls.rb:564:1:569:3 | SingletonUpCall_SubSub | private_on_main | calls.rb:185:1:186:3 | private_on_main |
+| calls.rb:564:1:569:3 | SingletonUpCall_SubSub | puts | calls.rb:102:5:102:30 | puts |
+| calls.rb:564:1:569:3 | SingletonUpCall_SubSub | to_s | calls.rb:172:5:173:7 | to_s |
 | file://:0:0:0:0 | Class | include | calls.rb:108:5:110:7 | include |
 | file://:0:0:0:0 | Class | module_eval | calls.rb:107:5:107:24 | module_eval |
 | file://:0:0:0:0 | Class | new | calls.rb:117:5:117:16 | new |
@@ -476,9 +518,6 @@ lookupMethod
 | modules_rec.rb:1:1:2:3 | B::A | new | calls.rb:117:5:117:16 | new |
 | modules_rec.rb:1:1:2:3 | B::A | puts | calls.rb:102:5:102:30 | puts |
 | modules_rec.rb:1:1:2:3 | B::A | to_s | calls.rb:172:5:173:7 | to_s |
-| modules_rec.rb:4:1:5:3 | A::B | new | calls.rb:117:5:117:16 | new |
-| modules_rec.rb:4:1:5:3 | A::B | puts | calls.rb:102:5:102:30 | puts |
-| modules_rec.rb:4:1:5:3 | A::B | to_s | calls.rb:172:5:173:7 | to_s |
 | private.rb:1:1:49:3 | E | new | calls.rb:117:5:117:16 | new |
 | private.rb:1:1:49:3 | E | private1 | private.rb:2:11:3:5 | private1 |
 | private.rb:1:1:49:3 | E | private2 | private.rb:8:3:9:5 | private2 |
@@ -511,6 +550,9 @@ lookupMethod
 | private.rb:96:1:102:3 | PrivateOverride2 | private_on_main | private.rb:51:1:52:3 | private_on_main |
 | private.rb:96:1:102:3 | PrivateOverride2 | puts | calls.rb:102:5:102:30 | puts |
 | private.rb:96:1:102:3 | PrivateOverride2 | to_s | calls.rb:172:5:173:7 | to_s |
+| toplevel_self_singleton.rb:2:5:5:7 | A::B | new | calls.rb:117:5:117:16 | new |
+| toplevel_self_singleton.rb:2:5:5:7 | A::B | puts | calls.rb:102:5:102:30 | puts |
+| toplevel_self_singleton.rb:2:5:5:7 | A::B | to_s | calls.rb:172:5:173:7 | to_s |
 enclosingMethod
 | calls.rb:2:5:2:14 | call to puts | calls.rb:1:1:3:3 | foo |
 | calls.rb:2:5:2:14 | self | calls.rb:1:1:3:3 | foo |
@@ -842,6 +884,10 @@ enclosingMethod
 | calls.rb:541:9:541:27 | ProtectedMethodsSub | calls.rb:539:5:542:7 | baz |
 | calls.rb:541:9:541:31 | call to new | calls.rb:539:5:542:7 | baz |
 | calls.rb:541:9:541:35 | call to foo | calls.rb:539:5:542:7 | baz |
+| calls.rb:560:9:560:17 | call to singleton | calls.rb:559:5:562:7 | mid_method |
+| calls.rb:560:9:560:17 | self | calls.rb:559:5:562:7 | mid_method |
+| calls.rb:561:9:561:18 | call to singleton2 | calls.rb:559:5:562:7 | mid_method |
+| calls.rb:561:9:561:18 | self | calls.rb:559:5:562:7 | mid_method |
 | hello.rb:3:9:3:22 | return | hello.rb:2:5:4:7 | hello |
 | hello.rb:3:16:3:22 | "hello" | hello.rb:2:5:4:7 | hello |
 | hello.rb:3:17:3:21 | hello | hello.rb:2:5:4:7 | hello |
@@ -897,3 +943,13 @@ enclosingMethod
 | private.rb:100:7:100:22 | PrivateOverride1 | private.rb:97:11:101:5 | m1 |
 | private.rb:100:7:100:26 | call to new | private.rb:97:11:101:5 | m1 |
 | private.rb:100:7:100:29 | call to m1 | private.rb:97:11:101:5 | m1 |
+| toplevel_self_singleton.rb:10:9:10:27 | call to ab_singleton_method | toplevel_self_singleton.rb:9:5:11:7 | method_in_block |
+| toplevel_self_singleton.rb:10:9:10:27 | self | toplevel_self_singleton.rb:9:5:11:7 | method_in_block |
+| toplevel_self_singleton.rb:14:9:14:27 | call to ab_singleton_method | toplevel_self_singleton.rb:13:5:15:7 | method_in_block |
+| toplevel_self_singleton.rb:14:9:14:27 | self | toplevel_self_singleton.rb:13:5:15:7 | method_in_block |
+| toplevel_self_singleton.rb:20:9:20:27 | call to ab_singleton_method | toplevel_self_singleton.rb:19:5:21:7 | method_in_struct |
+| toplevel_self_singleton.rb:20:9:20:27 | self | toplevel_self_singleton.rb:19:5:21:7 | method_in_struct |
+| toplevel_self_singleton.rb:30:13:30:19 | call to call_me | toplevel_self_singleton.rb:29:9:32:11 | call_you |
+| toplevel_self_singleton.rb:30:13:30:19 | self | toplevel_self_singleton.rb:29:9:32:11 | call_you |
+| toplevel_self_singleton.rb:31:13:31:20 | call to call_you | toplevel_self_singleton.rb:29:9:32:11 | call_you |
+| toplevel_self_singleton.rb:31:13:31:20 | self | toplevel_self_singleton.rb:29:9:32:11 | call_you |

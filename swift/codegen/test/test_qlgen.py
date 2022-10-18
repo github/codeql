@@ -584,7 +584,7 @@ def test_test_class_hierarchy_collapse(opts, generate_tests):
         schema.Class("D2", bases=["Base"], derived={"D3"}, properties=[schema.SingleProperty("y", "string")]),
         schema.Class("D3", bases=["D2"], properties=[schema.SingleProperty("z", "string")]),
     ]) == {
-        "Base/Base.ql": ql.ClassTester(class_name="Base"),
+        "Base/Base.ql": ql.ClassTester(class_name="Base", show_ql_class=True),
     }
 
 
@@ -598,7 +598,7 @@ def test_test_class_hierarchy_uncollapse(opts, generate_tests):
         schema.Class("D3", bases=["D2"]),
         schema.Class("D4", bases=["D2"]),
     ]) == {
-        "Base/Base.ql": ql.ClassTester(class_name="Base"),
+        "Base/Base.ql": ql.ClassTester(class_name="Base", show_ql_class=True),
         "D3/D3.ql": ql.ClassTester(class_name="D3"),
         "D4/D4.ql": ql.ClassTester(class_name="D4"),
     }
@@ -613,7 +613,7 @@ def test_test_class_hierarchy_uncollapse_at_final(opts, generate_tests):
         schema.Class("D2", bases=["Base"], derived={"D3"}),
         schema.Class("D3", bases=["D2"], pragmas=["qltest_uncollapse_hierarchy", "bar"]),
     ]) == {
-        "Base/Base.ql": ql.ClassTester(class_name="Base"),
+        "Base/Base.ql": ql.ClassTester(class_name="Base", show_ql_class=True),
         "D3/D3.ql": ql.ClassTester(class_name="D3"),
     }
 
