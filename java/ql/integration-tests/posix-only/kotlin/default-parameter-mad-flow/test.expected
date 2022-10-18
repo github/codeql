@@ -1,0 +1,66 @@
+edges
+| user.kt:7:32:7:39 | source(...) : Number | user.kt:7:8:7:43 | new ConstructorWithDefaults(...) |
+| user.kt:8:32:8:39 | source(...) : Number | user.kt:8:8:8:40 | new ConstructorWithDefaults(...) |
+| user.kt:10:29:10:36 | source(...) : Number | user.kt:10:8:10:40 | topLevelWithDefaults(...) |
+| user.kt:11:29:11:36 | source(...) : Number | user.kt:11:8:11:37 | topLevelWithDefaults$default(...) |
+| user.kt:13:44:13:51 | source(...) : Number | user.kt:13:22:13:55 | extensionWithDefaults(...) |
+| user.kt:14:44:14:51 | source(...) : Number | user.kt:14:22:14:52 | extensionWithDefaults$default(...) |
+| user.kt:16:29:16:36 | source(...) : Number | user.kt:16:10:16:40 | memberWithDefaults(...) |
+| user.kt:17:29:17:36 | source(...) : Number | user.kt:17:10:17:37 | memberWithDefaults$default(...) |
+| user.kt:20:52:20:59 | source(...) : Number | user.kt:20:24:20:63 | extensionMemberWithDefaults(...) |
+| user.kt:21:52:21:59 | source(...) : Number | user.kt:21:24:21:60 | extensionMemberWithDefaults$default(...) |
+| user.kt:26:23:26:24 | st [post update] : SomeToken | user.kt:27:10:27:11 | st |
+| user.kt:32:38:32:39 | st [post update] : SomeToken | user.kt:33:10:33:11 | st |
+| user.kt:38:29:38:30 | st [post update] : SomeToken | user.kt:39:10:39:11 | st |
+nodes
+| user.kt:7:8:7:43 | new ConstructorWithDefaults(...) | semmle.label | new ConstructorWithDefaults(...) |
+| user.kt:7:32:7:39 | source(...) : Number | semmle.label | source(...) : Number |
+| user.kt:8:8:8:40 | new ConstructorWithDefaults(...) | semmle.label | new ConstructorWithDefaults(...) |
+| user.kt:8:32:8:39 | source(...) : Number | semmle.label | source(...) : Number |
+| user.kt:10:8:10:40 | topLevelWithDefaults(...) | semmle.label | topLevelWithDefaults(...) |
+| user.kt:10:29:10:36 | source(...) : Number | semmle.label | source(...) : Number |
+| user.kt:11:8:11:37 | topLevelWithDefaults$default(...) | semmle.label | topLevelWithDefaults$default(...) |
+| user.kt:11:29:11:36 | source(...) : Number | semmle.label | source(...) : Number |
+| user.kt:13:22:13:55 | extensionWithDefaults(...) | semmle.label | extensionWithDefaults(...) |
+| user.kt:13:44:13:51 | source(...) : Number | semmle.label | source(...) : Number |
+| user.kt:14:22:14:52 | extensionWithDefaults$default(...) | semmle.label | extensionWithDefaults$default(...) |
+| user.kt:14:44:14:51 | source(...) : Number | semmle.label | source(...) : Number |
+| user.kt:16:10:16:40 | memberWithDefaults(...) | semmle.label | memberWithDefaults(...) |
+| user.kt:16:29:16:36 | source(...) : Number | semmle.label | source(...) : Number |
+| user.kt:17:10:17:37 | memberWithDefaults$default(...) | semmle.label | memberWithDefaults$default(...) |
+| user.kt:17:29:17:36 | source(...) : Number | semmle.label | source(...) : Number |
+| user.kt:20:24:20:63 | extensionMemberWithDefaults(...) | semmle.label | extensionMemberWithDefaults(...) |
+| user.kt:20:52:20:59 | source(...) : Number | semmle.label | source(...) : Number |
+| user.kt:21:24:21:60 | extensionMemberWithDefaults$default(...) | semmle.label | extensionMemberWithDefaults$default(...) |
+| user.kt:21:52:21:59 | source(...) : Number | semmle.label | source(...) : Number |
+| user.kt:26:23:26:24 | st [post update] : SomeToken | semmle.label | st [post update] : SomeToken |
+| user.kt:27:10:27:11 | st | semmle.label | st |
+| user.kt:32:38:32:39 | st [post update] : SomeToken | semmle.label | st [post update] : SomeToken |
+| user.kt:33:10:33:11 | st | semmle.label | st |
+| user.kt:38:29:38:30 | st [post update] : SomeToken | semmle.label | st [post update] : SomeToken |
+| user.kt:39:10:39:11 | st | semmle.label | st |
+| user.kt:42:13:42:20 | source(...) | semmle.label | source(...) |
+| user.kt:43:16:43:23 | source(...) | semmle.label | source(...) |
+| user.kt:44:31:44:38 | source(...) | semmle.label | source(...) |
+| user.kt:45:20:45:27 | source(...) | semmle.label | source(...) |
+| user.kt:47:39:47:46 | source(...) | semmle.label | source(...) |
+subpaths
+#select
+| user.kt:7:32:7:39 | source(...) : Number | user.kt:7:32:7:39 | source(...) : Number | user.kt:7:8:7:43 | new ConstructorWithDefaults(...) | flow path |
+| user.kt:8:32:8:39 | source(...) : Number | user.kt:8:32:8:39 | source(...) : Number | user.kt:8:8:8:40 | new ConstructorWithDefaults(...) | flow path |
+| user.kt:10:29:10:36 | source(...) : Number | user.kt:10:29:10:36 | source(...) : Number | user.kt:10:8:10:40 | topLevelWithDefaults(...) | flow path |
+| user.kt:11:29:11:36 | source(...) : Number | user.kt:11:29:11:36 | source(...) : Number | user.kt:11:8:11:37 | topLevelWithDefaults$default(...) | flow path |
+| user.kt:13:44:13:51 | source(...) : Number | user.kt:13:44:13:51 | source(...) : Number | user.kt:13:22:13:55 | extensionWithDefaults(...) | flow path |
+| user.kt:14:44:14:51 | source(...) : Number | user.kt:14:44:14:51 | source(...) : Number | user.kt:14:22:14:52 | extensionWithDefaults$default(...) | flow path |
+| user.kt:16:29:16:36 | source(...) : Number | user.kt:16:29:16:36 | source(...) : Number | user.kt:16:10:16:40 | memberWithDefaults(...) | flow path |
+| user.kt:17:29:17:36 | source(...) : Number | user.kt:17:29:17:36 | source(...) : Number | user.kt:17:10:17:37 | memberWithDefaults$default(...) | flow path |
+| user.kt:20:52:20:59 | source(...) : Number | user.kt:20:52:20:59 | source(...) : Number | user.kt:20:24:20:63 | extensionMemberWithDefaults(...) | flow path |
+| user.kt:21:52:21:59 | source(...) : Number | user.kt:21:52:21:59 | source(...) : Number | user.kt:21:24:21:60 | extensionMemberWithDefaults$default(...) | flow path |
+| user.kt:26:23:26:24 | st [post update] : SomeToken | user.kt:26:23:26:24 | st [post update] : SomeToken | user.kt:27:10:27:11 | st | flow path |
+| user.kt:32:38:32:39 | st [post update] : SomeToken | user.kt:32:38:32:39 | st [post update] : SomeToken | user.kt:33:10:33:11 | st | flow path |
+| user.kt:38:29:38:30 | st [post update] : SomeToken | user.kt:38:29:38:30 | st [post update] : SomeToken | user.kt:39:10:39:11 | st | flow path |
+| user.kt:42:13:42:20 | source(...) | user.kt:42:13:42:20 | source(...) | user.kt:42:13:42:20 | source(...) | flow path |
+| user.kt:43:16:43:23 | source(...) | user.kt:43:16:43:23 | source(...) | user.kt:43:16:43:23 | source(...) | flow path |
+| user.kt:44:31:44:38 | source(...) | user.kt:44:31:44:38 | source(...) | user.kt:44:31:44:38 | source(...) | flow path |
+| user.kt:45:20:45:27 | source(...) | user.kt:45:20:45:27 | source(...) | user.kt:45:20:45:27 | source(...) | flow path |
+| user.kt:47:39:47:46 | source(...) | user.kt:47:39:47:46 | source(...) | user.kt:47:39:47:46 | source(...) | flow path |
