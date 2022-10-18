@@ -4,33 +4,35 @@ private import codeql.swift.generated.Raw
 import codeql.swift.elements.expr.Expr
 import codeql.swift.elements.expr.OpaqueValueExpr
 
-class MakeTemporarilyEscapableExprBase extends Synth::TMakeTemporarilyEscapableExpr, Expr {
-  override string getAPrimaryQlClass() { result = "MakeTemporarilyEscapableExpr" }
+module Generated {
+  class MakeTemporarilyEscapableExpr extends Synth::TMakeTemporarilyEscapableExpr, Expr {
+    override string getAPrimaryQlClass() { result = "MakeTemporarilyEscapableExpr" }
 
-  OpaqueValueExpr getImmediateEscapingClosure() {
-    result =
-      Synth::convertOpaqueValueExprFromRaw(Synth::convertMakeTemporarilyEscapableExprToRaw(this)
-            .(Raw::MakeTemporarilyEscapableExpr)
-            .getEscapingClosure())
+    OpaqueValueExpr getImmediateEscapingClosure() {
+      result =
+        Synth::convertOpaqueValueExprFromRaw(Synth::convertMakeTemporarilyEscapableExprToRaw(this)
+              .(Raw::MakeTemporarilyEscapableExpr)
+              .getEscapingClosure())
+    }
+
+    final OpaqueValueExpr getEscapingClosure() { result = getImmediateEscapingClosure().resolve() }
+
+    Expr getImmediateNonescapingClosure() {
+      result =
+        Synth::convertExprFromRaw(Synth::convertMakeTemporarilyEscapableExprToRaw(this)
+              .(Raw::MakeTemporarilyEscapableExpr)
+              .getNonescapingClosure())
+    }
+
+    final Expr getNonescapingClosure() { result = getImmediateNonescapingClosure().resolve() }
+
+    Expr getImmediateSubExpr() {
+      result =
+        Synth::convertExprFromRaw(Synth::convertMakeTemporarilyEscapableExprToRaw(this)
+              .(Raw::MakeTemporarilyEscapableExpr)
+              .getSubExpr())
+    }
+
+    final Expr getSubExpr() { result = getImmediateSubExpr().resolve() }
   }
-
-  final OpaqueValueExpr getEscapingClosure() { result = getImmediateEscapingClosure().resolve() }
-
-  Expr getImmediateNonescapingClosure() {
-    result =
-      Synth::convertExprFromRaw(Synth::convertMakeTemporarilyEscapableExprToRaw(this)
-            .(Raw::MakeTemporarilyEscapableExpr)
-            .getNonescapingClosure())
-  }
-
-  final Expr getNonescapingClosure() { result = getImmediateNonescapingClosure().resolve() }
-
-  Expr getImmediateSubExpr() {
-    result =
-      Synth::convertExprFromRaw(Synth::convertMakeTemporarilyEscapableExprToRaw(this)
-            .(Raw::MakeTemporarilyEscapableExpr)
-            .getSubExpr())
-  }
-
-  final Expr getSubExpr() { result = getImmediateSubExpr().resolve() }
 }

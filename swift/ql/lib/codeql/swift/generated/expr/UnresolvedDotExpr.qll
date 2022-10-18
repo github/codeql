@@ -4,19 +4,21 @@ private import codeql.swift.generated.Raw
 import codeql.swift.elements.expr.Expr
 import codeql.swift.elements.UnresolvedElement
 
-class UnresolvedDotExprBase extends Synth::TUnresolvedDotExpr, Expr, UnresolvedElement {
-  override string getAPrimaryQlClass() { result = "UnresolvedDotExpr" }
+module Generated {
+  class UnresolvedDotExpr extends Synth::TUnresolvedDotExpr, Expr, UnresolvedElement {
+    override string getAPrimaryQlClass() { result = "UnresolvedDotExpr" }
 
-  Expr getImmediateBase() {
-    result =
-      Synth::convertExprFromRaw(Synth::convertUnresolvedDotExprToRaw(this)
-            .(Raw::UnresolvedDotExpr)
-            .getBase())
-  }
+    Expr getImmediateBase() {
+      result =
+        Synth::convertExprFromRaw(Synth::convertUnresolvedDotExprToRaw(this)
+              .(Raw::UnresolvedDotExpr)
+              .getBase())
+    }
 
-  final Expr getBase() { result = getImmediateBase().resolve() }
+    final Expr getBase() { result = getImmediateBase().resolve() }
 
-  string getName() {
-    result = Synth::convertUnresolvedDotExprToRaw(this).(Raw::UnresolvedDotExpr).getName()
+    string getName() {
+      result = Synth::convertUnresolvedDotExprToRaw(this).(Raw::UnresolvedDotExpr).getName()
+    }
   }
 }

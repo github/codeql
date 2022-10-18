@@ -4,15 +4,17 @@ private import codeql.swift.generated.Raw
 import codeql.swift.elements.Element
 import codeql.swift.elements.Location
 
-class LocatableBase extends Synth::TLocatable, Element {
-  Location getImmediateLocation() {
-    result =
-      Synth::convertLocationFromRaw(Synth::convertLocatableToRaw(this)
-            .(Raw::Locatable)
-            .getLocation())
+module Generated {
+  class Locatable extends Synth::TLocatable, Element {
+    Location getImmediateLocation() {
+      result =
+        Synth::convertLocationFromRaw(Synth::convertLocatableToRaw(this)
+              .(Raw::Locatable)
+              .getLocation())
+    }
+
+    final Location getLocation() { result = getImmediateLocation().resolve() }
+
+    final predicate hasLocation() { exists(getLocation()) }
   }
-
-  final Location getLocation() { result = getImmediateLocation().resolve() }
-
-  final predicate hasLocation() { exists(getLocation()) }
 }

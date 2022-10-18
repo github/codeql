@@ -4,19 +4,21 @@ private import codeql.swift.generated.Raw
 import codeql.swift.elements.decl.OperatorDecl
 import codeql.swift.elements.decl.PrecedenceGroupDecl
 
-class InfixOperatorDeclBase extends Synth::TInfixOperatorDecl, OperatorDecl {
-  override string getAPrimaryQlClass() { result = "InfixOperatorDecl" }
+module Generated {
+  class InfixOperatorDecl extends Synth::TInfixOperatorDecl, OperatorDecl {
+    override string getAPrimaryQlClass() { result = "InfixOperatorDecl" }
 
-  PrecedenceGroupDecl getImmediatePrecedenceGroup() {
-    result =
-      Synth::convertPrecedenceGroupDeclFromRaw(Synth::convertInfixOperatorDeclToRaw(this)
-            .(Raw::InfixOperatorDecl)
-            .getPrecedenceGroup())
+    PrecedenceGroupDecl getImmediatePrecedenceGroup() {
+      result =
+        Synth::convertPrecedenceGroupDeclFromRaw(Synth::convertInfixOperatorDeclToRaw(this)
+              .(Raw::InfixOperatorDecl)
+              .getPrecedenceGroup())
+    }
+
+    final PrecedenceGroupDecl getPrecedenceGroup() {
+      result = getImmediatePrecedenceGroup().resolve()
+    }
+
+    final predicate hasPrecedenceGroup() { exists(getPrecedenceGroup()) }
   }
-
-  final PrecedenceGroupDecl getPrecedenceGroup() {
-    result = getImmediatePrecedenceGroup().resolve()
-  }
-
-  final predicate hasPrecedenceGroup() { exists(getPrecedenceGroup()) }
 }

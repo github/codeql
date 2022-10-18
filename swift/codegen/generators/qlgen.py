@@ -157,10 +157,12 @@ def get_types_used_by(cls: ql.Class) -> typing.Iterable[str]:
 
 
 def get_classes_used_by(cls: ql.Class) -> typing.List[str]:
-    return sorted(set(t for t in get_types_used_by(cls) if t[0].isupper()))
+    ret = sorted(set(t for t in get_types_used_by(cls) if t[0].isupper() and t != cls.name))
+    print(cls.name, ret)
+    return ret
 
 
-_generated_stub_re = re.compile(r"\n*private import .*\n+class \w+ extends \w+ \{[ \n]?\}", re.MULTILINE)
+_generated_stub_re = re.compile(r"\n*private import .*\n+class \w+ extends Generated::\w+ \{[ \n]?\}", re.MULTILINE)
 
 
 def _is_generated_stub(file: pathlib.Path) -> bool:

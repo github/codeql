@@ -4,19 +4,21 @@ private import codeql.swift.generated.Raw
 import codeql.swift.elements.decl.Decl
 import codeql.swift.elements.decl.EnumElementDecl
 
-class EnumCaseDeclBase extends Synth::TEnumCaseDecl, Decl {
-  override string getAPrimaryQlClass() { result = "EnumCaseDecl" }
+module Generated {
+  class EnumCaseDecl extends Synth::TEnumCaseDecl, Decl {
+    override string getAPrimaryQlClass() { result = "EnumCaseDecl" }
 
-  EnumElementDecl getImmediateElement(int index) {
-    result =
-      Synth::convertEnumElementDeclFromRaw(Synth::convertEnumCaseDeclToRaw(this)
-            .(Raw::EnumCaseDecl)
-            .getElement(index))
+    EnumElementDecl getImmediateElement(int index) {
+      result =
+        Synth::convertEnumElementDeclFromRaw(Synth::convertEnumCaseDeclToRaw(this)
+              .(Raw::EnumCaseDecl)
+              .getElement(index))
+    }
+
+    final EnumElementDecl getElement(int index) { result = getImmediateElement(index).resolve() }
+
+    final EnumElementDecl getAnElement() { result = getElement(_) }
+
+    final int getNumberOfElements() { result = count(getAnElement()) }
   }
-
-  final EnumElementDecl getElement(int index) { result = getImmediateElement(index).resolve() }
-
-  final EnumElementDecl getAnElement() { result = getElement(_) }
-
-  final int getNumberOfElements() { result = count(getAnElement()) }
 }

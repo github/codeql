@@ -3,6 +3,8 @@ private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
 import codeql.swift.elements.type.Type
 
-class SilBoxTypeBase extends Synth::TSilBoxType, Type {
-  override string getAPrimaryQlClass() { result = "SilBoxType" }
+module Generated {
+  class SilBoxType extends Synth::TSilBoxType, Type {
+    override string getAPrimaryQlClass() { result = "SilBoxType" }
+  }
 }
