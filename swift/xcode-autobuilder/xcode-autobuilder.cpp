@@ -1,6 +1,4 @@
 #include <iostream>
-#include <unordered_map>
-#include <unordered_set>
 #include <vector>
 #include <filesystem>
 #include "swift/xcode-autobuilder/XcodeTarget.h"
@@ -15,7 +13,7 @@ struct CLIArgs {
   bool dryRun;
 };
 
-static void autobuild(CLIArgs args) {
+static void autobuild(const CLIArgs& args) {
   auto targets = collectTargets(args.workingDir);
 
   // Filter out non-application/framework targets

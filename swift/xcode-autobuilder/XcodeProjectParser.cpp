@@ -1,5 +1,6 @@
 #include "swift/xcode-autobuilder/XcodeProjectParser.h"
 #include "swift/xcode-autobuilder/XcodeWorkspaceParser.h"
+#include "swift/xcode-autobuilder/CFHelpers.h"
 
 #include <iostream>
 #include <filesystem>
@@ -15,31 +16,6 @@ struct TargetData {
   std::string project;
   std::string type;
 };
-
-struct CFKeyValues {
-  static CFKeyValues fromDictionary(CFDictionaryRef dict) {
-    auto size = CFDictionaryGetCount(dict);
-    CFKeyValues ret(size);
-    CFDictionaryGetKeysAndValues(dict, ret.keys.data(), ret.values.data());
-    return ret;
-  }
-  explicit CFKeyValues(size_t size) : size(size), keys(size), values(size) {}
-  size_t size;
-  std::vector<const void*> keys;
-  std::vector<const void*> values;
-};
-
-static std::string stringValue(CFDictionaryRef dict, CFStringRef key) {
-  auto cfValue = (CFStringRef)CFDictionaryGetValue(dict, key);
-  if (cfValue) {
-    const int bufferSize = 256;
-    char buf[bufferSize];
-    if (CFStringGetCString(cfValue, buf, bufferSize, kCFStringEncodingUTF8)) {
-      return {buf};
-    }
-  }
-  return {};
-}
 
 typedef std::unordered_map<std::string, CFDictionaryRef> Targets;
 typedef std::unordered_map<std::string, std::vector<std::string>> Dependencies;
@@ -57,7 +33,7 @@ static size_t totalFilesCount(const std::string& target,
 }
 
 static bool objectIsTarget(CFDictionaryRef object) {
-  auto isa = (CFStringRef)CFDictionaryGetValue(object, CFSTR("isa"));
+  auto isa = cf_string_ref(CFDictionaryGetValue(object, CFSTR("isa")));
   if (isa) {
     for (auto target :
          {CFSTR("PBXAggregateTarget"), CFSTR("PBXNativeTarget"), CFSTR("PBXLegacyTarget")}) {
@@ -77,9 +53,9 @@ static void mapTargetsToSourceFiles(CFDictionaryRef objects,
 
   auto kv = CFKeyValues::fromDictionary(objects);
   for (size_t i = 0; i < kv.size; i++) {
-    auto object = (CFDictionaryRef)kv.values[i];
+    auto object = cf_dictionary_ref(kv.values[i]);
     if (objectIsTarget(object)) {
-      auto name = stringValue(object, CFSTR("name"));
+      auto name = stringValueForKey(object, CFSTR("name"));
       dependencies[name] = {};
       buildFiles[name] = {};
       targets.emplace(name, object);
@@ -87,18 +63,18 @@ static void mapTargetsToSourceFiles(CFDictionaryRef objects,
   }
 
   for (auto& [targetName, targetObject] : targets) {
-    auto deps = (CFArrayRef)CFDictionaryGetValue(targetObject, CFSTR("dependencies"));
+    auto deps = cf_array_ref(CFDictionaryGetValue(targetObject, CFSTR("dependencies")));
     auto size = CFArrayGetCount(deps);
     for (CFIndex i = 0; i < size; i++) {
-      auto dependencyID = (CFStringRef)CFArrayGetValueAtIndex(deps, i);
-      auto dependency = (CFDictionaryRef)CFDictionaryGetValue(objects, dependencyID);
-      auto targetID = (CFStringRef)CFDictionaryGetValue(dependency, CFSTR("target"));
+      auto dependencyID = cf_string_ref(CFArrayGetValueAtIndex(deps, i));
+      auto dependency = cf_dictionary_ref(CFDictionaryGetValue(objects, dependencyID));
+      auto targetID = cf_string_ref(CFDictionaryGetValue(dependency, CFSTR("target")));
       if (!targetID) {
         // Skipping non-targets (e.g., productRef)
         continue;
       }
-      auto targetDependency = (CFDictionaryRef)CFDictionaryGetValue(objects, targetID);
-      auto dependencyName = stringValue(targetDependency, CFSTR("name"));
+      auto targetDependency = cf_dictionary_ref(CFDictionaryGetValue(objects, targetID));
+      auto dependencyName = stringValueForKey(targetDependency, CFSTR("name"));
       if (!dependencyName.empty()) {
         dependencies[targetName].push_back(dependencyName);
       }
@@ -106,37 +82,37 @@ static void mapTargetsToSourceFiles(CFDictionaryRef objects,
   }
 
   for (auto& [targetName, targetObject] : targets) {
-    auto buildPhases = (CFArrayRef)CFDictionaryGetValue(targetObject, CFSTR("buildPhases"));
+    auto buildPhases = cf_array_ref(CFDictionaryGetValue(targetObject, CFSTR("buildPhases")));
     auto buildPhaseCount = CFArrayGetCount(buildPhases);
     for (CFIndex buildPhaseIndex = 0; buildPhaseIndex < buildPhaseCount; buildPhaseIndex++) {
-      auto buildPhaseID = (CFStringRef)CFArrayGetValueAtIndex(buildPhases, buildPhaseIndex);
-      auto buildPhase = (CFDictionaryRef)CFDictionaryGetValue(objects, buildPhaseID);
-      auto fileRefs = (CFArrayRef)CFDictionaryGetValue(buildPhase, CFSTR("files"));
+      auto buildPhaseID = cf_string_ref(CFArrayGetValueAtIndex(buildPhases, buildPhaseIndex));
+      auto buildPhase = cf_dictionary_ref(CFDictionaryGetValue(objects, buildPhaseID));
+      auto fileRefs = cf_array_ref(CFDictionaryGetValue(buildPhase, CFSTR("files")));
       if (!fileRefs) {
         continue;
       }
       auto fileRefsCount = CFArrayGetCount(fileRefs);
       for (CFIndex fileRefIndex = 0; fileRefIndex < fileRefsCount; fileRefIndex++) {
-        auto fileRefID = (CFStringRef)CFArrayGetValueAtIndex(fileRefs, fileRefIndex);
-        auto fileRef = (CFDictionaryRef)CFDictionaryGetValue(objects, fileRefID);
-        auto fileID = (CFStringRef)CFDictionaryGetValue(fileRef, CFSTR("fileRef"));
+        auto fileRefID = cf_string_ref(CFArrayGetValueAtIndex(fileRefs, fileRefIndex));
+        auto fileRef = cf_dictionary_ref(CFDictionaryGetValue(objects, fileRefID));
+        auto fileID = cf_string_ref(CFDictionaryGetValue(fileRef, CFSTR("fileRef")));
         if (!fileID) {
           // FileRef is not a reference to a file (e.g., PBXBuildFile)
           continue;
         }
-        auto file = (CFDictionaryRef)CFDictionaryGetValue(objects, fileID);
+        auto file = cf_dictionary_ref(CFDictionaryGetValue(objects, fileID));
         if (!file) {
           // Sometimes the references file belongs to another project, which is not present for
           // various reasons
           continue;
         }
-        auto isa = stringValue(file, CFSTR("isa"));
+        auto isa = stringValueForKey(file, CFSTR("isa"));
         if (isa != "PBXFileReference") {
           // Skipping anything that is not a 'file', e.g. PBXVariantGroup
           continue;
         }
-        auto fileType = stringValue(file, CFSTR("lastKnownFileType"));
-        auto path = stringValue(file, CFSTR("path"));
+        auto fileType = stringValueForKey(file, CFSTR("lastKnownFileType"));
+        auto path = stringValueForKey(file, CFSTR("path"));
         if (fileType == "sourcecode.swift" && !path.empty()) {
           buildFiles[targetName].emplace_back(path, file);
         }
@@ -161,15 +137,13 @@ static CFDictionaryRef xcodeProjectObjects(const std::string& xcodeProject) {
   CFErrorRef error = nullptr;
   auto plist = CFPropertyListCreateWithData(allocator, data, 0, nullptr, &error);
   if (error) {
-    auto description = CFCopyDescription(error);
-    std::cerr << "[xcode autobuilder] Cannot read Xcode project: "
-              << CFStringGetCStringPtr(description, kCFStringEncodingUTF8) << ": " << pbxproj
-              << "\n";
-    CFRelease(description);
+    std::cerr << "[xcode autobuilder] Cannot read Xcode project: ";
+    CFShow(error);
+    std::cerr << ": " << pbxproj << "\n";
     return CFDictionaryCreate(allocator, nullptr, nullptr, 0, nullptr, nullptr);
   }
 
-  return (CFDictionaryRef)CFDictionaryGetValue((CFDictionaryRef)plist, CFSTR("objects"));
+  return cf_dictionary_ref(CFDictionaryGetValue((CFDictionaryRef)plist, CFSTR("objects")));
 }
 
 // Maps each target to the number of Swift source files it contains transitively
@@ -200,8 +174,8 @@ static std::vector<std::pair<std::string, std::string>> readTargets(const std::s
   for (size_t i = 0; i < kv.size; i++) {
     auto object = (CFDictionaryRef)kv.values[i];
     if (objectIsTarget(object)) {
-      auto name = stringValue(object, CFSTR("name"));
-      auto type = stringValue(object, CFSTR("productType"));
+      auto name = stringValueForKey(object, CFSTR("name"));
+      auto type = stringValueForKey(object, CFSTR("productType"));
       targets.emplace_back(name, type.empty() ? "<unknown_target_type>" : type);
     }
   }
