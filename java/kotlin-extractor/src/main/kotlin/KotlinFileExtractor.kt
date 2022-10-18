@@ -733,6 +733,8 @@ open class KotlinFileExtractor(
                 val locId = tw.getWholeFileLocation()
                 tw.writeHasLocation(clinitId, locId)
 
+                addModifiers(clinitId, "static")
+
                 // add and return body block:
                 Pair(extractBlockBody(clinitId, locId), clinitId)
             }
