@@ -138,7 +138,7 @@ module Restify {
   /**
    * An access to a header on a Restify request.
    */
-  private class RequestHeaderAccess extends Http::RequestHeaderAccess {
+  private class RequestHeaderAccess extends Http::RequestHeaderAccess instanceof DataFlow::MethodCallNode {
     RouteHandler rh;
 
     RequestHeaderAccess() {
@@ -150,7 +150,7 @@ module Restify {
     }
 
     override string getAHeaderName() {
-      result = this.(DataFlow::MethodCallNode).getArgument(0).getStringValue().toLowerCase()
+      super.getArgument(0).mayHaveStringValue(any(string s | s.toLowerCase() = result))
     }
 
     override RouteHandler getRouteHandler() { result = rh }
@@ -185,9 +185,8 @@ module Restify {
     /**
      * Gets a reference to the multiple headers object that is to be set.
      */
-    private DataFlow::SourceNode getAHeaderSource() {
-      this.getArgument(0).getALocalSource() instanceof DataFlow::ObjectLiteralNode and
-      result.flowsTo(this.getArgument(0))
+    private DataFlow::ObjectLiteralNode getAHeaderSource() {
+      result = this.getArgument(0).getALocalSource()
     }
 
     override predicate definesHeaderValue(string headerName, DataFlow::Node headerValue) {
@@ -198,9 +197,7 @@ module Restify {
     }
 
     override DataFlow::Node getNameNode() {
-      exists(DataFlow::PropWrite write | this.getAHeaderSource().getAPropertyWrite() = write |
-        result = write.getPropertyNameExpr().flow()
-      )
+      result = this.getAHeaderSource().getAPropertyWrite().getPropertyNameExpr().flow()
     }
 
     override RouteHandler getRouteHandler() { this.getReceiver() = result.getAResponseNode() }
@@ -265,34 +262,29 @@ module Restify {
           .hasPropertyWrite("formatters", formatters)
     }
 
-    DataFlow::SourceNode getAFormatterHandler() { formatters.hasPropertyWrite(_, result) }
+    DataFlow::FunctionNode getAFormatterHandler() { formatters.hasPropertyWrite(_, result) }
   }
 
   /**
    * A Restify route handler.
    */
   class FormatterHandler extends Http::Servers::StandardRouteHandler, DataFlow::FunctionNode {
-    Function function;
-
-    FormatterHandler() {
-      function = astNode and
-      any(FormatterSetup setup).getAFormatterHandler() = this
-    }
+    FormatterHandler() { any(FormatterSetup setup).getAFormatterHandler() = this }
 
     /**
      * Gets the parameter of the formatter handler that contains the request object.
      */
-    Parameter getRequestParameter() { result = function.getParameter(0) }
+    DataFlow::ParameterNode getRequestParameter() { result = this.getParameter(0) }
 
     /**
      * Gets the parameter of the formatter handler that contains the response object.
      */
-    Parameter getResponseParameter() { result = function.getParameter(1) }
+    DataFlow::ParameterNode getResponseParameter() { result = this.getParameter(1) }
 
     /**
      * Gets the parameter of the formatter handler that contains the body object.
      */
-    Parameter getBodyParameter() { result = function.getParameter(2) }
+    DataFlow::ParameterNode getBodyParameter() { result = this.getParameter(2) }
   }
 
   /**
@@ -302,7 +294,7 @@ module Restify {
   private class FormatterRequestSource extends Http::Servers::RequestSource {
     FormatterHandler fh;
 
-    FormatterRequestSource() { this = DataFlow::parameterNode(fh.getRequestParameter()) }
+    FormatterRequestSource() { this = fh.getRequestParameter() }
 
     /**
      * Gets the formatter handler that handles this request.
@@ -317,7 +309,7 @@ module Restify {
   private class FormatterResponseSource extends Http::Servers::ResponseSource {
     FormatterHandler fh;
 
-    FormatterResponseSource() { this = DataFlow::parameterNode(fh.getResponseParameter()) }
+    FormatterResponseSource() { this = fh.getResponseParameter() }
 
     /**
      * Gets the route handler that provides this response.
@@ -362,10 +354,7 @@ module Restify {
       result = this.getArgument(1)
       or
       this.getNumArgument() = 2 and
-      this.getArgument(0)
-          .getALocalSource()
-          .(DataFlow::ObjectLiteralNode)
-          .hasPropertyWrite("hostname", result)
+      this.getArgument(0).getALocalSource().hasPropertyWrite("hostname", result)
       or
       this.getNumArgument() = 2 and
       result = this.getArgument(0)

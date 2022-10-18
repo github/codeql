@@ -26,6 +26,9 @@ passingPositiveTests
 | PASSED | handler | src/index.js:192:39:192:61 | // test ... handler |
 | PASSED | handler | src/index.js:194:49:194:71 | // test ... handler |
 | PASSED | handler | src/index.js:198:65:198:87 | // test ... handler |
+| PASSED | headerDefinition | src/index.js:104:46:104:70 | // test ... inition |
+| PASSED | headerDefinition | src/index.js:122:44:122:68 | // test ... inition |
+| PASSED | headerDefinition | src/index.js:143:44:143:68 | // test ... inition |
 | PASSED | redirectSink | src/index.js:78:32:78:60 | // test ... ectSink |
 | PASSED | redirectSink | src/index.js:87:45:87:73 | // test ... ectSink |
 | PASSED | redirectSink | src/index.js:88:40:88:68 | // test ... ectSink |

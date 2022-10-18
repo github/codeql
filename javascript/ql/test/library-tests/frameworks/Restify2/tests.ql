@@ -33,6 +33,15 @@ query predicate passingPositiveTests(string res, string expectation, InlineTest 
   res = "PASSED" and
   t.hasPositiveTest(expectation) and
   (
+    expectation = "headerDefinition" and
+    exists(Http::HeaderDefinition n | t.inNode(n))
+    or
+    expectation = "cookieDefinition" and
+    exists(Http::CookieDefinition n | t.inNode(n))
+    or
+    expectation = "templateInstantiation" and
+    exists(Templating::TemplateInstantiation::Range n | t.inNode(n))
+    or
     expectation = "source" and
     exists(RemoteFlowSource n | t.inNode(n))
     or
@@ -74,6 +83,15 @@ query predicate failingPositiveTests(string res, string expectation, InlineTest 
   res = "FAILED" and
   t.hasPositiveTest(expectation) and
   (
+    expectation = "headerDefinition" and
+    not exists(Http::HeaderDefinition n | t.inNode(n))
+    or
+    expectation = "cookieDefinition" and
+    not exists(Http::CookieDefinition n | t.inNode(n))
+    or
+    expectation = "templateInstantiation" and
+    not exists(Templating::TemplateInstantiation::Range n | t.inNode(n))
+    or
     expectation = "source" and
     not exists(RemoteFlowSource n | t.inNode(n))
     or
@@ -115,6 +133,15 @@ query predicate passingNegativeTests(string res, string expectation, InlineTest 
   res = "PASSED" and
   t.hasNegativeTest(expectation) and
   (
+    expectation = "!headerDefinition" and
+    not exists(Http::HeaderDefinition n | t.inNode(n))
+    or
+    expectation = "!cookieDefinition" and
+    not exists(Http::CookieDefinition n | t.inNode(n))
+    or
+    expectation = "!templateInstantiation" and
+    not exists(Templating::TemplateInstantiation::Range n | t.inNode(n))
+    or
     expectation = "!source" and
     not exists(RemoteFlowSource n | t.inNode(n))
     or
@@ -156,6 +183,15 @@ query predicate failingNegativeTests(string res, string expectation, InlineTest 
   res = "FAILED" and
   t.hasNegativeTest(expectation) and
   (
+    expectation = "!headerDefinition" and
+    exists(Http::HeaderDefinition n | t.inNode(n))
+    or
+    expectation = "!cookieDefinition" and
+    exists(Http::CookieDefinition n | t.inNode(n))
+    or
+    expectation = "!templateInstantiation" and
+    exists(Templating::TemplateInstantiation::Range n | t.inNode(n))
+    or
     expectation = "!source" and
     exists(RemoteFlowSource n | t.inNode(n))
     or
@@ -192,3 +228,4 @@ query predicate failingNegativeTests(string res, string expectation, InlineTest 
     exists(RequestForgery::Sink n | t.inNode(n))
   )
 }
+

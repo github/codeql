@@ -101,7 +101,7 @@ server.get('/foo', // test: setup
     return next();
   },
   function(req, res, next) { // test: handler
-    res.header("Content-Type", "text/html");
+    res.header("Content-Type", "text/html"); // test: headerDefinition
     res.send(req.someData); // test: stackTraceExposureSink, xssSink, xss
     return next();
   }
@@ -119,7 +119,7 @@ server.get('/foo2', // test: setup
 );
 
 function xss(req, res, next) { // test: handler
-  res.header("Content-Type", "text/html");
+  res.header("Content-Type", "text/html"); // test: headerDefinition
   res.send('hello ' + req.query.name); // test: source, stackTraceExposureSink, xssSink, xss
   next();
 }
@@ -140,7 +140,7 @@ function xss2(req, res, next) { // test: handler
 });
 
 function xss3(req, res, next) { // test: handler
-  res.header("Content-Type", "text/html");
+  res.header("Content-Type", "text/html"); // test: headerDefinition
   res.send('hello ' + req.header("foo")); // test: source, stackTraceExposureSink, xssSink, !xss
   next();
 }

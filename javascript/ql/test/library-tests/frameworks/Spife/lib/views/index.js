@@ -54,7 +54,7 @@ function redirect(req, context) { // test: handler
   return reply.redirect(context.get('redirect_url')) // test: redirectSink, source, stackTraceExposureSink
 }
 function raw2(req, context) { // test: handler
-  return reply.cookie({ "test": req.query.name }, "test", req.query.name, { "httpOnly": false, "secure": false }) // test: source, cleartextStorageSink, stackTraceExposureSink
+  return reply.cookie({ "test": req.query.name }, "test", req.query.name, { "httpOnly": false, "secure": false }) // test: source, cleartextStorageSink, stackTraceExposureSink, cookieDefinition
 }
 
 function test1(req, context) { // test: handler
@@ -62,9 +62,9 @@ function test1(req, context) { // test: handler
     case 'json':
       return { "some": req.query.name } // test: source, stackTraceExposureSink
     case 'html':
-      return reply.header('<p>' + req.query.name + '</p>', 'content-type', 'text/html') // test: source, xssSink, stackTraceExposureSink, xss
+      return reply.header('<p>' + req.query.name + '</p>', 'content-type', 'text/html') // test: source, xssSink, stackTraceExposureSink, xss, headerDefinition
     case 'plain':
-      return reply.header('<p>' + req.query.name + '</p>', { 'content-type': 'text/plain' }) // test: source, stackTraceExposureSink, !xssSink, !xss
+      return reply.header('<p>' + req.query.name + '</p>', { 'content-type': 'text/plain' }) // test: source, stackTraceExposureSink, !xssSink, !xss, headerDefinition
   }
   return 'well, I guess you just want plaintext.'
 }
@@ -74,7 +74,7 @@ function test2(req, context) { // test: handler
     case 'json':
       return { "some": req.query.name } // test: source, stackTraceExposureSink
     case 'html':
-      return reply.header('<p>' + req.query.name + '</p>', { 'content-type': 'text/plain' }) // test: source, stackTraceExposureSink, !xssSink, !xss
+      return reply.header('<p>' + req.query.name + '</p>', { 'content-type': 'text/plain' }) // test: source, stackTraceExposureSink, !xssSink, !xss, headerDefinition
   }
   return 'well, I guess you just want plaintext.'
 }
@@ -104,7 +104,7 @@ function test6(req, context) { // test: handler
   if (message.contains('foo')) {
     return reply(message, 200, { 'npm-notice': message }) // test: stackTraceExposureSink, !xssSink, !xss
   } else {
-    return reply(message, 200, { 'npm-notice': message, 'content-type': 'text/html' }) // test: stackTraceExposureSink, xssSink, xss
+    return reply(message, 200, { 'npm-notice': message, 'content-type': 'text/html' }) // test: stackTraceExposureSink, xssSink, xss, headerDefinition
   }
 }
 
