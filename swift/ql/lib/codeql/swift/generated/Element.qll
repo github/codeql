@@ -10,9 +10,9 @@ module Generated {
 
     final string getPrimaryQlClasses() { result = concat(this.getAPrimaryQlClass(), ",") }
 
-    Generated::Element getResolveStep() { none() } // overridden by subclasses
+    Element getResolveStep() { none() } // overridden by subclasses
 
-    final Generated::Element resolve() {
+    final Element resolve() {
       not exists(getResolveStep()) and result = this
       or
       result = getResolveStep().resolve()
