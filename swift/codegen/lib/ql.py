@@ -38,6 +38,9 @@ class Property:
     is_predicate: bool = False
     prev_child: Optional[str] = None
     qltest_skip: bool = False
+    doc: List[str] = field(default_factory=list)
+    doc_name: Optional[str] = None
+    doc_name_plural: Optional[str] = None
 
     def __post_init__(self):
         if self.tableparams:

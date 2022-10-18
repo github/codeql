@@ -55,6 +55,11 @@ class NoClasses(Error):
     pass
 
 
+def _humanize(s):
+    ret = inflection.humanize(s)
+    return re.sub(r"^\w", lambda m: m[0].lower(), ret)
+
+
 def get_ql_property(cls: schema.Class, prop: schema.Property, prev_child: str = "") -> ql.Property:
     args = dict(
         type=prop.type if not prop.is_predicate else "predicate",
@@ -62,12 +67,14 @@ def get_ql_property(cls: schema.Class, prop: schema.Property, prev_child: str = 
         prev_child=prev_child if prop.is_child else None,
         is_optional=prop.is_optional,
         is_predicate=prop.is_predicate,
+        doc=prop.doc,
     )
     if prop.is_single:
         args.update(
             singular=inflection.camelize(prop.name),
             tablename=inflection.tableize(cls.name),
             tableparams=["this"] + ["result" if p is prop else "_" for p in cls.properties if p.is_single],
+            doc_name=_humanize(prop.name),
         )
     elif prop.is_repeated:
         args.update(
@@ -75,12 +82,15 @@ def get_ql_property(cls: schema.Class, prop: schema.Property, prev_child: str = 
             plural=inflection.pluralize(inflection.camelize(prop.name)),
             tablename=inflection.tableize(f"{cls.name}_{prop.name}"),
             tableparams=["this", "index", "result"],
+            doc_name=_humanize(inflection.singularize(prop.name)),
+            doc_name_plural=_humanize(inflection.pluralize(prop.name))
         )
     elif prop.is_optional:
         args.update(
             singular=inflection.camelize(prop.name),
             tablename=inflection.tableize(f"{cls.name}_{prop.name}"),
             tableparams=["this", "result"],
+            doc_name=_humanize(prop.name),
         )
     elif prop.is_predicate:
         args.update(

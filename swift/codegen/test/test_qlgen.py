@@ -190,7 +190,7 @@ def test_single_property(generate_classes):
                          ql.Class(name="MyObject", final=True,
                                   properties=[
                                       ql.Property(singular="Foo", type="bar", tablename="my_objects",
-                                                  tableparams=["this", "result"]),
+                                                  tableparams=["this", "result"], doc_name="foo"),
                                   ])),
     }
 
@@ -200,13 +200,13 @@ def test_children(generate_classes):
         schema.Class("FakeRoot"),
         schema.Class("MyObject", properties=[
             schema.SingleProperty("a", "int"),
-            schema.SingleProperty("child1", "int", is_child=True),
-            schema.RepeatedProperty("b", "int"),
-            schema.RepeatedProperty("child2", "int", is_child=True),
+            schema.SingleProperty("child_1", "int", is_child=True),
+            schema.RepeatedProperty("bs", "int"),
+            schema.RepeatedProperty("children", "int", is_child=True),
             schema.OptionalProperty("c", "int"),
-            schema.OptionalProperty("child3", "int", is_child=True),
+            schema.OptionalProperty("child_3", "int", is_child=True),
             schema.RepeatedOptionalProperty("d", "int"),
-            schema.RepeatedOptionalProperty("child4", "int", is_child=True),
+            schema.RepeatedOptionalProperty("child_4", "int", is_child=True),
         ]),
     ]) == {
         "FakeRoot.qll": (ql.Stub(name="FakeRoot", base_import=gen_import_prefix + "FakeRoot"),
@@ -215,27 +215,31 @@ def test_children(generate_classes):
                          ql.Class(name="MyObject", final=True,
                                   properties=[
                                       ql.Property(singular="A", type="int", tablename="my_objects",
-                                                  tableparams=["this", "result", "_"]),
+                                                  tableparams=["this", "result", "_"], doc_name="a"),
                                       ql.Property(singular="Child1", type="int", tablename="my_objects",
-                                                  tableparams=["this", "_", "result"], prev_child=""),
+                                                  tableparams=["this", "_", "result"], prev_child="",
+                                                  doc_name="child 1"),
                                       ql.Property(singular="B", plural="Bs", type="int",
                                                   tablename="my_object_bs",
-                                                  tableparams=["this", "index", "result"]),
-                                      ql.Property(singular="Child2", plural="Child2s", type="int",
-                                                  tablename="my_object_child2s",
-                                                  tableparams=["this", "index", "result"], prev_child="Child1"),
+                                                  tableparams=["this", "index", "result"],
+                                                  doc_name="b", doc_name_plural="bs"),
+                                      ql.Property(singular="Child", plural="Children", type="int",
+                                                  tablename="my_object_children",
+                                                  tableparams=["this", "index", "result"], prev_child="Child1",
+                                                  doc_name="child", doc_name_plural="children"),
                                       ql.Property(singular="C", type="int", tablename="my_object_cs",
-                                                  tableparams=["this", "result"], is_optional=True),
-                                      ql.Property(singular="Child3", type="int", tablename="my_object_child3s",
+                                                  tableparams=["this", "result"], is_optional=True, doc_name="c"),
+                                      ql.Property(singular="Child3", type="int", tablename="my_object_child_3s",
                                                   tableparams=["this", "result"], is_optional=True,
-                                                  prev_child="Child2"),
+                                                  prev_child="Child", doc_name="child 3"),
                                       ql.Property(singular="D", plural="Ds", type="int",
                                                   tablename="my_object_ds",
-                                                  tableparams=["this", "index", "result"], is_optional=True),
-                                      ql.Property(singular="Child4", plural="Child4s", type="int",
-                                                  tablename="my_object_child4s",
                                                   tableparams=["this", "index", "result"], is_optional=True,
-                                                  prev_child="Child3"),
+                                                  doc_name="d", doc_name_plural="ds"),
+                                      ql.Property(singular="Child4", plural="Child4s", type="int",
+                                                  tablename="my_object_child_4s",
+                                                  tableparams=["this", "index", "result"], is_optional=True,
+                                                  prev_child="Child3", doc_name="child 4", doc_name_plural="child 4s"),
                                   ])),
     }
 
@@ -252,11 +256,11 @@ def test_single_properties(generate_classes):
                          ql.Class(name="MyObject", final=True,
                                   properties=[
                                       ql.Property(singular="One", type="x", tablename="my_objects",
-                                                  tableparams=["this", "result", "_", "_"]),
+                                                  tableparams=["this", "result", "_", "_"], doc_name="one"),
                                       ql.Property(singular="Two", type="y", tablename="my_objects",
-                                                  tableparams=["this", "_", "result", "_"]),
+                                                  tableparams=["this", "_", "result", "_"], doc_name="two"),
                                       ql.Property(singular="Three", type="z", tablename="my_objects",
-                                                  tableparams=["this", "_", "_", "result"]),
+                                                  tableparams=["this", "_", "_", "result"], doc_name="three"),
                                   ])),
     }
 
@@ -274,7 +278,7 @@ def test_optional_property(generate_classes, is_child, prev_child):
                          ql.Class(name="MyObject", final=True, properties=[
                              ql.Property(singular="Foo", type="bar", tablename="my_object_foos",
                                          tableparams=["this", "result"],
-                                         is_optional=True, prev_child=prev_child),
+                                         is_optional=True, prev_child=prev_child, doc_name="foo"),
                          ])),
     }
 
@@ -291,7 +295,8 @@ def test_repeated_property(generate_classes, is_child, prev_child):
         "MyObject.qll": (ql.Stub(name="MyObject", base_import=gen_import_prefix + "MyObject"),
                          ql.Class(name="MyObject", final=True, properties=[
                              ql.Property(singular="Foo", plural="Foos", type="bar", tablename="my_object_foos",
-                                         tableparams=["this", "index", "result"], prev_child=prev_child),
+                                         tableparams=["this", "index", "result"], prev_child=prev_child,
+                                         doc_name="foo", doc_name_plural="foos"),
                          ])),
     }
 
@@ -310,7 +315,7 @@ def test_repeated_optional_property(generate_classes, is_child, prev_child):
                          ql.Class(name="MyObject", final=True, properties=[
                              ql.Property(singular="Foo", plural="Foos", type="bar", tablename="my_object_foos",
                                          tableparams=["this", "index", "result"], is_optional=True,
-                                         prev_child=prev_child),
+                                         prev_child=prev_child, doc_name="foo", doc_name_plural="foos"),
                          ])),
     }
 
@@ -323,8 +328,7 @@ def test_predicate_property(generate_classes):
         "MyObject.qll": (ql.Stub(name="MyObject", base_import=gen_import_prefix + "MyObject"),
                          ql.Class(name="MyObject", final=True, properties=[
                              ql.Property(singular="isFoo", type="predicate", tablename="my_object_is_foo",
-                                         tableparams=["this"],
-                                         is_predicate=True),
+                                         tableparams=["this"], is_predicate=True),
                          ])),
     }
 
@@ -342,7 +346,7 @@ def test_single_class_property(generate_classes, is_child, prev_child):
                 ql.Property(singular="Foo", type="Bar", tablename="my_objects",
                             tableparams=[
                                 "this", "result"],
-                            prev_child=prev_child),
+                            prev_child=prev_child, doc_name="foo"),
             ],
         )),
         "Bar.qll": (ql.Stub(name="Bar", base_import=gen_import_prefix + "Bar"),
@@ -626,6 +630,22 @@ def test_test_class_hierarchy_uncollapse_at_final(opts, generate_tests):
     ]) == {
         "Base/Base.ql": ql.ClassTester(class_name="Base", show_ql_class=True),
         "D3/D3.ql": ql.ClassTester(class_name="D3"),
+    }
+
+
+def test_property_doc(generate_classes):
+    doc = ["Lorem", "Ipsum"]
+    assert generate_classes([
+        schema.Class("MyObject", properties=[
+            schema.SingleProperty("foo", "bar", doc=doc),
+        ]),
+    ]) == {
+        "MyObject.qll": (ql.Stub(name="MyObject", base_import=gen_import_prefix + "MyObject"),
+                         ql.Class(name="MyObject", final=True,
+                                  properties=[
+                                      ql.Property(singular="Foo", type="bar", tablename="my_objects",
+                                                  tableparams=["this", "result"], doc_name="foo", doc=doc),
+                                  ])),
     }
 
 
