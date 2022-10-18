@@ -2,6 +2,7 @@ from typing import Callable as _Callable, Union as _Union
 from functools import singledispatch as _singledispatch
 from swift.codegen.lib import schema as _schema
 import inspect as _inspect
+from dataclasses import dataclass as _dataclass
 
 
 class _ChildModifier(_schema.PropertyModifier):
@@ -9,6 +10,14 @@ class _ChildModifier(_schema.PropertyModifier):
         if prop.type is None or prop.type[0].islower():
             raise _schema.Error("Non-class properties cannot be children")
         prop.is_child = True
+
+
+@_dataclass
+class _DescModifier(_schema.PropertyModifier):
+    description: str
+
+    def modify(self, prop: _schema.Property):
+        prop.doc = _schema.split_doc(self.description)
 
 
 def include(source: str):
@@ -97,6 +106,7 @@ optional = _TypeModifier(_Optionalizer())
 list = _TypeModifier(_Listifier())
 
 child = _ChildModifier()
+desc = _DescModifier
 
 qltest = _Namespace(
     skip=_Pragma("qltest_skip"),
