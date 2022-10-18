@@ -1,5 +1,4 @@
 import java
-
 import semmle.code.xml.AndroidManifest
 
 from AndroidActivityAliasXmlElement alias

@@ -151,7 +151,7 @@ class AndroidActivityAliasXmlElement extends AndroidComponentXmlElement {
     exists(AndroidXmlAttribute attr |
       attr = this.getAnAttribute() and attr.getName() = "targetActivity"
     |
-      result = getResolvedIdentifier(attr)
+      result = this.getResolvedIdentifier(attr)
     )
   }
 
@@ -319,7 +319,7 @@ class AndroidComponentXmlElement extends XmlElement {
    */
   string getResolvedComponentName() {
     exists(AndroidXmlAttribute attr | attr = this.getAnAttribute() and attr.getName() = "name" |
-      result = getResolvedIdentifier(attr)
+      result = this.getResolvedIdentifier(attr)
     )
   }
 
