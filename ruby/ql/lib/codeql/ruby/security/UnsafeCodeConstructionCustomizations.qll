@@ -19,7 +19,10 @@ module UnsafeCodeConstruction {
 
   /** An input parameter to a gem seen as a source. */
   private class LibraryInputAsSource extends Source instanceof DataFlow::ParameterNode {
-    LibraryInputAsSource() { this = Gem::getALibraryInput() }
+    LibraryInputAsSource() {
+      this = Gem::getALibraryInput() and
+      not this.getName() = "code"
+    }
   }
 
   /** A sink for code constructed from library input vulnerabilities. */

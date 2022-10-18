@@ -20,4 +20,8 @@ class Foobar
   def send_stuff(x)
     foo.send("foo_#{x}") # OK - attacker cannot control entire string.
   end
+
+  def named_code(code)
+    foo.send("def \n #{code} \n end") # OK - parameter is named code
+  end
 end
