@@ -139,7 +139,7 @@ class ParamDecl(VarDecl):
 class Callable(Element):
     self_param: optional[ParamDecl] | child
     params: list[ParamDecl] | child
-    body: optional["BraceStmt"] | child
+    body: optional["BraceStmt"] | child | desc("The body is absent within protocol declarations.")
 
 class AbstractFunctionDecl(GenericContext, ValueDecl, Callable):
     name: string
@@ -903,7 +903,8 @@ class FunctionType(AnyFunctionType):
     pass
 
 class GenericFunctionType(AnyFunctionType):
-    generic_params: list["GenericTypeParamType"]
+    """ The type of a generic function with type parameters """
+    generic_params: list["GenericTypeParamType"] | docname("generic parameters")
 
 class GenericTypeParamType(SubstitutableType):
     pass

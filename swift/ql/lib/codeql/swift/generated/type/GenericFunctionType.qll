@@ -5,11 +5,14 @@ import codeql.swift.elements.type.AnyFunctionType
 import codeql.swift.elements.type.GenericTypeParamType
 
 module Generated {
+  /**
+   * The type of a generic function with type parameters
+   */
   class GenericFunctionType extends Synth::TGenericFunctionType, AnyFunctionType {
     override string getAPrimaryQlClass() { result = "GenericFunctionType" }
 
     /**
-     * Gets the `index`th generic param.
+     * Gets the `index`th generic parameter.
      * This is taken from the "hidden" AST and should only be used to be overridden by classes.
      */
     GenericTypeParamType getImmediateGenericParam(int index) {
@@ -20,19 +23,19 @@ module Generated {
     }
 
     /**
-     * Gets the `index`th generic param.
+     * Gets the `index`th generic parameter.
      */
     final GenericTypeParamType getGenericParam(int index) {
       result = getImmediateGenericParam(index).resolve()
     }
 
     /**
-     * Gets any of the generic params.
+     * Gets any of the generic parameters.
      */
     final GenericTypeParamType getAGenericParam() { result = getGenericParam(_) }
 
     /**
-     * Gets the number of generic params.
+     * Gets the number of generic parameters.
      */
     final int getNumberOfGenericParams() { result = count(getAGenericParam()) }
   }

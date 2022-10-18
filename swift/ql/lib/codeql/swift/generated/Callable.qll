@@ -65,6 +65,8 @@ module Generated {
 
     /**
      * Gets the body, if it exists.
+     *
+     * The body is absent within protocol declarations.
      */
     final BraceStmt getBody() { result = getImmediateBody().resolve() }
 
