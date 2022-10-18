@@ -21,3 +21,7 @@ newStyleBarrierGuards
 | barrier-guards.rb:83:5:83:7 | foo |
 | barrier-guards.rb:91:5:91:7 | foo |
 | barrier-guards.rb:108:5:108:7 | foo |
+| barrier-guards.rb:115:5:115:7 | foo |
+| barrier-guards.rb:117:5:117:7 | foo |
+| barrier-guards.rb:122:5:122:7 | foo |
+| barrier-guards.rb:124:5:124:7 | foo |

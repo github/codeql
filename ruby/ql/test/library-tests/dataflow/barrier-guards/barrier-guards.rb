@@ -109,3 +109,41 @@ when "foo"
 else
     foo
 end
+
+case foo
+when "foo"
+    foo
+when "bar"
+    foo
+end
+
+case foo
+when "foo", "bar"
+    foo
+when "baz", "quux"
+    foo
+else
+    foo
+end
+
+# not recognized as a guard
+case foo
+when *["foo", "bar"]
+    foo
+end
+
+FOOS = ["foo", "bar"]
+
+# not recognized as a guard
+case foo
+when *FOOS
+    foo
+end
+
+foos = ["foo", "bar"]
+
+# not recognized as a guard
+case foo
+when *foos
+    foo
+end
