@@ -1,4 +1,5 @@
 load("//swift:rules.bzl", "swift_cc_binary")
+load("//misc/bazel/cmake:cmake.bzl", "generate_cmake")
 
 swift_cc_binary(
     name = "xcode-autobuilder",
@@ -11,4 +12,10 @@ swift_cc_binary(
         "-lxml2",
         "-framework CoreFoundation",
     ],
+)
+
+generate_cmake(
+    name = "cmake",
+    targets = [":xcode-autobuilder"],
+    visibility = ["//visibility:public"],
 )
