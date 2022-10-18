@@ -96,4 +96,13 @@ abstract class Modifiable extends Element {
 
   /** Holds if this element has a `lateinit` modifier. */
   predicate isLateinit() { this.hasModifier("lateinit") }
+
+  /** Holds if this element has a `reified` modifier. */
+  predicate isReified() { this.hasModifier("reified") }
+
+  /** Holds if this element has an `in` modifier. */
+  predicate isIn() { this.hasModifier("in") }
+
+  /** Holds if this element has an `out` modifier. */
+  predicate isOut() { this.hasModifier("out") }
 }

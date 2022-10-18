@@ -206,6 +206,16 @@ open class KotlinFileExtractor(
                 }
             }
 
+            if (tp.isReified) {
+                addModifiers(id, "reified")
+            }
+
+            if (tp.variance == Variance.IN_VARIANCE) {
+                addModifiers(id, "in")
+            } else if (tp.variance == Variance.OUT_VARIANCE) {
+                addModifiers(id, "out")
+            }
+
             return id
         }
     }
