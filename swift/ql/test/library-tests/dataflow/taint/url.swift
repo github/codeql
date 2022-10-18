@@ -60,9 +60,9 @@ func taintThroughURL() {
 
 	sink(arg: urlClean)
 	sink(arg: urlTainted) // $ tainted=57
-	sink(arg: urlTainted.absoluteURL) // $ tainted=57
-	sink(arg: urlTainted.baseURL) // $ Safe
 	// Fields
+	sink(arg: urlTainted.absoluteURL) // $ tainted=57
+	sink(arg: urlTainted.baseURL) // $ SPURIOUS: $ tainted=57
 	sink(string: urlTainted.fragment!) // $ tainted=57
 	sink(string: urlTainted.host!) // $ tainted=57
 	sink(string: urlTainted.lastPathComponent) // $ tainted=57
@@ -85,16 +85,16 @@ func taintThroughURL() {
 	// Fields (assuming `clean` was a relative path instead of a full URL)
 	sink(arg: URL(string: clean, relativeTo: urlTainted)!.absoluteURL) // $ tainted=57
 	sink(arg: URL(string: clean, relativeTo: urlTainted)!.baseURL) // $ tainted=57
-	sink(string: URL(string: clean, relativeTo: urlTainted)!.fragment!) // Safe
+	sink(string: URL(string: clean, relativeTo: urlTainted)!.fragment!) // $ SPURIOUS: $ tainted=57
 	sink(string: URL(string: clean, relativeTo: urlTainted)!.host!) // $ tainted=57
-	sink(string: URL(string: clean, relativeTo: urlTainted)!.lastPathComponent) // Safe
-	sink(string: URL(string: clean, relativeTo: urlTainted)!.path) // Safe
-	sink(string: URL(string: clean, relativeTo: urlTainted)!.pathComponents[0]) // Safe
-	sink(string: URL(string: clean, relativeTo: urlTainted)!.pathExtension) // Safe
+	sink(string: URL(string: clean, relativeTo: urlTainted)!.lastPathComponent) // $ SPURIOUS: $ tainted=57
+	sink(string: URL(string: clean, relativeTo: urlTainted)!.path) // $ SPURIOUS: $ tainted=57
+	sink(string: URL(string: clean, relativeTo: urlTainted)!.pathComponents[0]) // $ SPURIOUS: $ tainted=57
+	sink(string: URL(string: clean, relativeTo: urlTainted)!.pathExtension) // $ SPURIOUS: $ tainted=57
 	sink(int: URL(string: clean, relativeTo: urlTainted)!.port!) // $ tainted=57
-	sink(string: URL(string: clean, relativeTo: urlTainted)!.query!) // Safe
-	sink(string: URL(string: clean, relativeTo: urlTainted)!.relativePath) // Safe
-	sink(string: URL(string: clean, relativeTo: urlTainted)!.relativeString) // Safe
+	sink(string: URL(string: clean, relativeTo: urlTainted)!.query!) // $ SPURIOUS: $ tainted=57
+	sink(string: URL(string: clean, relativeTo: urlTainted)!.relativePath) // $ SPURIOUS: $ tainted=57
+	sink(string: URL(string: clean, relativeTo: urlTainted)!.relativeString) // $ SPURIOUS: $ tainted=57
 	sink(string: URL(string: clean, relativeTo: urlTainted)!.scheme!) // $ tainted=57
 	sink(arg: URL(string: clean, relativeTo: urlTainted)!.standardized) // $ tainted=57
 	sink(arg: URL(string: clean, relativeTo: urlTainted)!.standardizedFileURL) // $ tainted=57
