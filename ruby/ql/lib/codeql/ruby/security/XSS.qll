@@ -339,14 +339,13 @@ private module OrmTracking {
 
     override predicate isSource(DataFlow2::Node source) { source instanceof OrmInstantiation }
 
-    // Select any call node and narrow down later
-    override predicate isSink(DataFlow2::Node sink) { sink instanceof DataFlow2::CallNode }
+    // Select any call receiver and narrow down later
+    override predicate isSink(DataFlow2::Node sink) {
+      sink = any(DataFlow2::CallNode c).getReceiver()
+    }
 
     override predicate isAdditionalFlowStep(DataFlow2::Node node1, DataFlow2::Node node2) {
       Shared::isAdditionalXssFlowStep(node1, node2)
-      or
-      // Propagate flow through arbitrary method calls
-      node2.(DataFlow2::CallNode).getReceiver() = node1
     }
   }
 }
@@ -379,10 +378,9 @@ module StoredXss {
 
   private class OrmFieldAsSource extends Source instanceof DataFlow2::CallNode {
     OrmFieldAsSource() {
-      exists(OrmTracking::Configuration subConfig, DataFlow2::CallNode subSrc, MethodCall call |
-        subConfig.hasFlow(subSrc, this) and
-        call = this.asExpr().getExpr() and
-        subSrc.(OrmInstantiation).methodCallMayAccessField(call.getMethodName())
+      exists(OrmTracking::Configuration subConfig, DataFlow2::CallNode subSrc |
+        subConfig.hasFlow(subSrc, this.getReceiver()) and
+        subSrc.(OrmInstantiation).methodCallMayAccessField(this.getMethodName())
       )
     }
   }
