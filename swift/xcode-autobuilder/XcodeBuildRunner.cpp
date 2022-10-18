@@ -52,11 +52,10 @@ void buildTarget(Target& target, bool dryRun) {
   argv.push_back("CODE_SIGNING_ALLOWED=NO");
 
   if (dryRun) {
-    std::string s;
     for (auto& arg : argv) {
-      s += arg + " ";
+      std::cout << arg + " ";
     }
-    std::cout << s << "\n";
+    std::cout << "\n";
   } else {
     if (!exec(argv)) {
       std::cerr << "Build failed\n";
