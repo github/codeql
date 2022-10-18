@@ -3,13 +3,15 @@ private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
 import codeql.swift.elements.type.Type
 
-class ReferenceStorageTypeBase extends Synth::TReferenceStorageType, Type {
-  Type getImmediateReferentType() {
-    result =
-      Synth::convertTypeFromRaw(Synth::convertReferenceStorageTypeToRaw(this)
-            .(Raw::ReferenceStorageType)
-            .getReferentType())
-  }
+module Generated {
+  class ReferenceStorageType extends Synth::TReferenceStorageType, Type {
+    Type getImmediateReferentType() {
+      result =
+        Synth::convertTypeFromRaw(Synth::convertReferenceStorageTypeToRaw(this)
+              .(Raw::ReferenceStorageType)
+              .getReferentType())
+    }
 
-  final Type getReferentType() { result = getImmediateReferentType().resolve() }
+    final Type getReferentType() { result = getImmediateReferentType().resolve() }
+  }
 }

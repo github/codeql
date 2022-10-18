@@ -2,14 +2,16 @@
 private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
 import codeql.swift.elements.Element
-import codeql.swift.elements.type.Type
 
-class TypeBase extends Synth::TType, Element {
-  string getName() { result = Synth::convertTypeToRaw(this).(Raw::Type).getName() }
+module Generated {
+  class Type extends Synth::TType, Element {
+    string getName() { result = Synth::convertTypeToRaw(this).(Raw::Type).getName() }
 
-  Type getImmediateCanonicalType() {
-    result = Synth::convertTypeFromRaw(Synth::convertTypeToRaw(this).(Raw::Type).getCanonicalType())
+    Type getImmediateCanonicalType() {
+      result =
+        Synth::convertTypeFromRaw(Synth::convertTypeToRaw(this).(Raw::Type).getCanonicalType())
+    }
+
+    final Type getCanonicalType() { result = getImmediateCanonicalType().resolve() }
   }
-
-  final Type getCanonicalType() { result = getImmediateCanonicalType().resolve() }
 }

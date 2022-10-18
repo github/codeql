@@ -3,6 +3,8 @@ private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
 import codeql.swift.elements.decl.Decl
 
-class PrecedenceGroupDeclBase extends Synth::TPrecedenceGroupDecl, Decl {
-  override string getAPrimaryQlClass() { result = "PrecedenceGroupDecl" }
+module Generated {
+  class PrecedenceGroupDecl extends Synth::TPrecedenceGroupDecl, Decl {
+    override string getAPrimaryQlClass() { result = "PrecedenceGroupDecl" }
+  }
 }

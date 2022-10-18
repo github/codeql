@@ -3,13 +3,15 @@ private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
 import codeql.swift.elements.expr.Expr
 
-class OneWayExprBase extends Synth::TOneWayExpr, Expr {
-  override string getAPrimaryQlClass() { result = "OneWayExpr" }
+module Generated {
+  class OneWayExpr extends Synth::TOneWayExpr, Expr {
+    override string getAPrimaryQlClass() { result = "OneWayExpr" }
 
-  Expr getImmediateSubExpr() {
-    result =
-      Synth::convertExprFromRaw(Synth::convertOneWayExprToRaw(this).(Raw::OneWayExpr).getSubExpr())
+    Expr getImmediateSubExpr() {
+      result =
+        Synth::convertExprFromRaw(Synth::convertOneWayExprToRaw(this).(Raw::OneWayExpr).getSubExpr())
+    }
+
+    final Expr getSubExpr() { result = getImmediateSubExpr().resolve() }
   }
-
-  final Expr getSubExpr() { result = getImmediateSubExpr().resolve() }
 }

@@ -3,15 +3,17 @@ private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
 import codeql.swift.elements.expr.Expr
 
-class BindOptionalExprBase extends Synth::TBindOptionalExpr, Expr {
-  override string getAPrimaryQlClass() { result = "BindOptionalExpr" }
+module Generated {
+  class BindOptionalExpr extends Synth::TBindOptionalExpr, Expr {
+    override string getAPrimaryQlClass() { result = "BindOptionalExpr" }
 
-  Expr getImmediateSubExpr() {
-    result =
-      Synth::convertExprFromRaw(Synth::convertBindOptionalExprToRaw(this)
-            .(Raw::BindOptionalExpr)
-            .getSubExpr())
+    Expr getImmediateSubExpr() {
+      result =
+        Synth::convertExprFromRaw(Synth::convertBindOptionalExprToRaw(this)
+              .(Raw::BindOptionalExpr)
+              .getSubExpr())
+    }
+
+    final Expr getSubExpr() { result = getImmediateSubExpr().resolve() }
   }
-
-  final Expr getSubExpr() { result = getImmediateSubExpr().resolve() }
 }

@@ -3,4 +3,6 @@ private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
 import codeql.swift.elements.expr.Expr
 
-class CollectionExprBase extends Synth::TCollectionExpr, Expr { }
+module Generated {
+  class CollectionExpr extends Synth::TCollectionExpr, Expr { }
+}
