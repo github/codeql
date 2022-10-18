@@ -1,5 +1,5 @@
 private import codeql.swift.generated.decl.TypeDecl
-private import codeql.swift.generated.type.Type
+private import codeql.swift.elements.type.Type
 private import codeql.swift.elements.type.AnyGenericType
 private import swift
 
