@@ -12,6 +12,7 @@ swift_cc_binary(
         "-lxml2",
         "-framework CoreFoundation",
     ],
+    target_compatible_with = ["@platforms//os:macos"],
 )
 
 generate_cmake(

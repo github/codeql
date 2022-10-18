@@ -24,15 +24,8 @@ pkg_files(
 )
 
 pkg_files(
-    name = "qltest",
-    srcs = ["tools/qltest.sh"],
-    attributes = pkg_attributes(mode = "0755"),
-    prefix = "tools",
-)
-
-pkg_files(
-    name = "autobuild",
-    srcs = ["tools/autobuild.sh"],
+    name = "scripts",
+    srcs = ["tools/qltest.sh", "tools/autobuild.sh"],
     attributes = pkg_attributes(mode = "0755"),
     prefix = "tools",
 )
@@ -53,9 +46,8 @@ pkg_filegroup(
     srcs = [
         ":dbscheme_files",
         ":manifest",
-        ":qltest",
         ":tracing-config",
-        ":autobuild",
+        ":scripts",
     ],
     visibility = ["//visibility:public"],
 )
