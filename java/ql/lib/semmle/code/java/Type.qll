@@ -1,6 +1,6 @@
 /**
  * Provides classes and predicates for working with Java types.
- *
+ * 
  * Types can be primitive types (`PrimitiveType`), array types (`Array`), or reference
  * types (`RefType`), where the latter are either classes (`Class`) or interfaces
  * (`Interface`).
