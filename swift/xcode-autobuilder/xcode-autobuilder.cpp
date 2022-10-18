@@ -3,11 +3,9 @@
 #include <unordered_set>
 #include <vector>
 #include <filesystem>
-#include "XcodeTarget.h"
-#include "XcodeBuildRunner.h"
-#include "XcodeProjectParser.h"
-
-#include <CoreFoundation/CoreFoundation.h>
+#include "swift/xcode-autobuilder/XcodeTarget.h"
+#include "swift/xcode-autobuilder/XcodeBuildRunner.h"
+#include "swift/xcode-autobuilder/XcodeProjectParser.h"
 
 static const char* Application = "com.apple.product-type.application";
 static const char* Framework = "com.apple.product-type.framework";

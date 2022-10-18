@@ -1,5 +1,5 @@
-#include "XcodeProjectParser.h"
-#include "XcodeWorkspaceParser.h"
+#include "swift/xcode-autobuilder/XcodeProjectParser.h"
+#include "swift/xcode-autobuilder/XcodeWorkspaceParser.h"
 
 #include <iostream>
 #include <filesystem>

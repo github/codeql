@@ -1,5 +1,5 @@
 #pragma once
 
-#include "XcodeTarget.h"
+#include "swift/xcode-autobuilder/XcodeTarget.h"
 
 void buildTarget(Target& target, bool dryRun);

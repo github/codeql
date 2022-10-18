@@ -1,7 +1,7 @@
 #include <libxml/tree.h>
 #include <libxml/parser.h>
 #include <iostream>
-#include "XcodeWorkspaceParser.h"
+#include "swift/xcode-autobuilder/XcodeWorkspaceParser.h"
 
 /*
 Extracts FileRef locations from an XML of the following form:

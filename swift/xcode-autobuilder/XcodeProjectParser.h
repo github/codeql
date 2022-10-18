@@ -1,6 +1,6 @@
 #pragma once
 
-#include "XcodeTarget.h"
+#include "swift/xcode-autobuilder/XcodeTarget.h"
 #include <vector>
 #include <string>
 
