@@ -119,15 +119,15 @@ func test_sqlite_swift_api(db: Connection) {
 	db.scalar(unsafeQuery1, ["username": ""]) // BAD
 
 	let stmt9 = try db.prepare(varQuery) // GOOD
-	stmt9.bind(remoteString)
-	stmt9.bind([remoteString])
-	stmt9.bind(["username": remoteString])
-	try stmt9.run(remoteString)
-	try stmt9.run([remoteString])
-	try stmt9.run(["username": remoteString])
-	try stmt9.scalar(remoteString)
-	try stmt9.scalar([remoteString])
-	try stmt9.scalar(["username": remoteString])
+	stmt9.bind(remoteString) // GOOD
+	stmt9.bind([remoteString]) // GOOD
+	stmt9.bind(["username": remoteString]) // GOOD
+	try stmt9.run(remoteString) // GOOD
+	try stmt9.run([remoteString]) // GOOD
+	try stmt9.run(["username": remoteString]) // GOOD
+	try stmt9.scalar(remoteString) // GOOD
+	try stmt9.scalar([remoteString]) // GOOD
+	try stmt9.scalar(["username": remoteString]) // GOOD
 
 	Statement(db, remoteString).run() // BAD
 }
