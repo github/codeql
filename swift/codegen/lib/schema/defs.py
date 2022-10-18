@@ -1,5 +1,4 @@
-from typing import Callable as _Callable, Union as _Union
-from functools import singledispatch as _singledispatch
+from typing import Callable as _Callable
 from swift.codegen.lib import schema as _schema
 import inspect as _inspect
 from dataclasses import dataclass as _dataclass
@@ -10,6 +9,16 @@ class _ChildModifier(_schema.PropertyModifier):
         if prop.type is None or prop.type[0].islower():
             raise _schema.Error("Non-class properties cannot be children")
         prop.is_child = True
+
+
+@_dataclass
+class _DocnameModifier(_schema.PropertyModifier):
+    doc_name: str
+
+    def modify(self, prop: _schema.Property):
+        if prop.is_predicate:
+            raise _schema.Error("Predicates cannot have a doc name")
+        prop.doc_name = self.doc_name
 
 
 @_dataclass
@@ -106,6 +115,7 @@ optional = _TypeModifier(_Optionalizer())
 list = _TypeModifier(_Listifier())
 
 child = _ChildModifier()
+docname = _DocnameModifier
 desc = _DescModifier
 
 qltest = _Namespace(

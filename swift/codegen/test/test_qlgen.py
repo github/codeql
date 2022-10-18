@@ -649,5 +649,40 @@ def test_property_doc(generate_classes):
     }
 
 
+def test_property_doc_name_override(generate_classes):
+    assert generate_classes([
+        schema.Class("MyObject", properties=[
+            schema.SingleProperty("foo", "bar", doc_name="baz")]),
+    ]) == {
+        "MyObject.qll": (ql.Stub(name="MyObject", base_import=gen_import_prefix + "MyObject"),
+                         ql.Class(name="MyObject", final=True,
+                                  properties=[
+                                      ql.Property(singular="Foo", type="bar", tablename="my_objects",
+                                                  tableparams=["this", "result"], doc_name="baz"),
+                                  ])),
+    }
+
+
+def test_repeated_property_doc_name_override(generate_classes):
+    assert generate_classes([
+        schema.Class("MyObject", properties=[
+            schema.RepeatedProperty("x", "int", doc_name="children"),
+            schema.RepeatedOptionalProperty("y", "int", doc_name="child")]),
+    ]) == {
+        "MyObject.qll": (ql.Stub(name="MyObject", base_import=gen_import_prefix + "MyObject"),
+                         ql.Class(name="MyObject", final=True,
+                                  properties=[
+                                      ql.Property(singular="X", plural="Xes", type="int",
+                                                  tablename="my_object_xes",
+                                                  tableparams=["this", "index", "result"],
+                                                  doc_name="child", doc_name_plural="children"),
+                                      ql.Property(singular="Y", plural="Ys", type="int",
+                                                  tablename="my_object_ies", is_optional=True,
+                                                  tableparams=["this", "index", "result"],
+                                                  doc_name="child", doc_name_plural="children"),
+                                  ])),
+    }
+
+
 if __name__ == '__main__':
     sys.exit(pytest.main([__file__] + sys.argv[1:]))

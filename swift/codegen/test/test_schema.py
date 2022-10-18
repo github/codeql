@@ -542,5 +542,25 @@ def test_property_docstring_indent():
     }
 
 
+def test_property_doc_name_override():
+    @schema.load
+    class data:
+        class A:
+            x: int | defs.docname("y")
+
+    assert data.classes == {
+        'A': schema.Class('A', properties=[
+            schema.SingleProperty('x', 'int', doc_name="y")]),
+    }
+
+
+def test_predicate_cannot_have_doc_name_override():
+    with pytest.raises(schema.Error):
+        @schema.load
+        class data:
+            class A:
+                x: defs.predicate | defs.docname("y")
+
+
 if __name__ == '__main__':
     sys.exit(pytest.main([__file__] + sys.argv[1:]))
