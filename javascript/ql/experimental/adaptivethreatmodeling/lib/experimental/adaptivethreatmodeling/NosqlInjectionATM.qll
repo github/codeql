@@ -19,8 +19,9 @@ module SinkEndpointFilter {
    * effective sink.
    */
   string getAReasonSinkExcluded(DataFlow::Node sinkCandidate) {
-    "legacy/reason-sink-excluded/" + result =
-      StandardEndpointLabels::getAnEndpointLabel(sinkCandidate)
+    result =
+      any(StandardEndpointLabels::Labels::LegacyReasonSinkExcludedEndpointLabel l)
+          .getLabel(sinkCandidate)
     or
     exists(DataFlow::CallNode call | sinkCandidate = call.getAnArgument() |
       // additional databases accesses that aren't modeled yet

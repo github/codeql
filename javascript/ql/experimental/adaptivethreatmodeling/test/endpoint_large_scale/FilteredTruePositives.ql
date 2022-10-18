@@ -25,7 +25,9 @@ import experimental.adaptivethreatmodeling.XssATM as XssAtm
 query predicate nosqlFilteredTruePositives(DataFlow::Node endpoint, string reason) {
   endpoint instanceof NosqlInjection::Sink and
   reason = NosqlInjectionAtm::SinkEndpointFilter::getAReasonSinkExcluded(endpoint) and
-  not reason = ["argument to modeled function", "modeled sink", "modeled database access"]
+  not reason
+      .matches("%" + ["argument to modeled function", "modeled sink", "modeled database access"] +
+          "%")
 }
 
 query predicate sqlFilteredTruePositives(DataFlow::Node endpoint, string reason) {

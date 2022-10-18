@@ -12,8 +12,21 @@ private import semmle.javascript.heuristics.SyntacticHeuristics
 private import CoreKnowledge as CoreKnowledge
 private import StandardEndpointFilters as StandardEndpointFilters
 
-private module Labels {
-  newtype TEndpointLabel = TLegacyEndpoint()
+module Labels {
+  private newtype TEndpointLabel =
+    TLegacyEndpointLabel() or
+    TLegacyReasonSinkExcludedEndpointLabel(string innerReason) {
+      innerReason =
+        [
+          "argument to modeled function", //
+          "argument to sinkless library", //
+          "sanitizer", //
+          "predicate", //
+          "hash", //
+          "numeric", //
+          "in " + ["externs", "generated", "library", "test"] + " file" //
+        ]
+    }
 
   class EndpointLabel extends TEndpointLabel {
     abstract string getLabel(DataFlow::Node n);
@@ -21,20 +34,34 @@ private module Labels {
     abstract string toString();
   }
 
-  class LegacyLabel extends EndpointLabel, TLegacyEndpoint {
-    override string getLabel(DataFlow::Node n) { legacyLabel(n, result) }
+  class LegacyEndpointLabel extends EndpointLabel, TLegacyEndpointLabel {
+    override string getLabel(DataFlow::Node n) {
+      n = StandardEndpointFilters::getALikelyExternalLibraryCall() and
+      result = "legacy/likely-external-library-call"
+      or
+      StandardEndpointFilters::flowsToArgumentOfLikelyExternalLibraryCall(n) and
+      result = "legacy/flows-to-argument-of-likely-external-library-call"
+    }
 
     override string toString() { result = "LegacyLabel" }
   }
 
-  predicate legacyLabel(DataFlow::Node n, string label) {
-    n = StandardEndpointFilters::getALikelyExternalLibraryCall() and
-    label = "legacy/likely-external-library-call"
-    or
-    StandardEndpointFilters::flowsToArgumentOfLikelyExternalLibraryCall(n) and
-    label = "legacy/flows-to-argument-of-likely-external-library-call"
-    or
-    label = "legacy/reason-sink-excluded/" + StandardEndpointFilters::getAReasonSinkExcluded(n)
+  class LegacyReasonSinkExcludedEndpointLabel extends EndpointLabel,
+    TLegacyReasonSinkExcludedEndpointLabel {
+    override string getLabel(DataFlow::Node n) {
+      exists(string inner |
+        this = TLegacyReasonSinkExcludedEndpointLabel(inner) and
+        inner = StandardEndpointFilters::getAReasonSinkExcluded(n)
+      |
+        result = "legacy/reason-sink-excluded/" + inner
+      )
+    }
+
+    override string toString() {
+      exists(string inner | this = TLegacyReasonSinkExcludedEndpointLabel(inner) |
+        result = "legacy/reason-sink/excluded/" + inner
+      )
+    }
   }
 }
 
