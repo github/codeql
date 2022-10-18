@@ -1753,7 +1753,7 @@ open class KotlinFileExtractor(
     private fun extractsDefaultsCall(
         syntacticCallTarget: IrFunction,
         locId: Label<DbLocation>,
-        callsite: IrCall,
+        resultType: IrType,
         enclosingCallable: Label<out DbCallable>,
         callsiteParent: Label<out DbExprparent>,
         childIdx: Int,
@@ -1768,7 +1768,7 @@ open class KotlinFileExtractor(
             useFunction<DbCallable>(callTarget)
         }
         val defaultMethodLabel = getDefaultsMethodLabel(callTarget)
-        val id = extractMethodAccessWithoutArgs(callsite.type, locId, enclosingCallable, callsiteParent, childIdx, enclosingStmt, defaultMethodLabel)
+        val id = extractMethodAccessWithoutArgs(resultType, locId, enclosingCallable, callsiteParent, childIdx, enclosingStmt, defaultMethodLabel)
 
         if (callTarget.isLocalFunction()) {
             extractTypeAccess(getLocallyVisibleFunctionLabels(callTarget).type, locId, id, -1, enclosingCallable, enclosingStmt)
@@ -1871,7 +1871,8 @@ open class KotlinFileExtractor(
 
     fun extractRawMethodAccess(
         syntacticCallTarget: IrFunction,
-        callsite: IrCall,
+        locElement: IrElement,
+        resultType: IrType,
         enclosingCallable: Label<out DbCallable>,
         callsiteParent: Label<out DbExprparent>,
         childIdx: Int,
@@ -1883,13 +1884,13 @@ open class KotlinFileExtractor(
         extractClassTypeArguments: Boolean = false,
         superQualifierSymbol: IrClassSymbol? = null) {
 
-        val locId = tw.getLocation(callsite)
+        val locId = tw.getLocation(locElement)
 
         if (valueArguments.any { it == null }) {
             extractsDefaultsCall(
                 syntacticCallTarget,
                 locId,
-                callsite,
+                resultType,
                 enclosingCallable,
                 callsiteParent,
                 childIdx,
@@ -1902,7 +1903,7 @@ open class KotlinFileExtractor(
             extractRawMethodAccess(
                 syntacticCallTarget,
                 locId,
-                callsite.type,
+                resultType,
                 enclosingCallable,
                 callsiteParent,
                 childIdx,
@@ -2233,7 +2234,7 @@ open class KotlinFileExtractor(
                     return
                 }
 
-                extractRawMethodAccess(syntacticCallTarget, c, callable, parent, idx, enclosingStmt, (0 until c.valueArgumentsCount).map { c.getValueArgument(it) }, c.dispatchReceiver, c.extensionReceiver, typeArgs, extractClassTypeArguments, c.superQualifierSymbol)
+                extractRawMethodAccess(syntacticCallTarget, c, c.type, callable, parent, idx, enclosingStmt, (0 until c.valueArgumentsCount).map { c.getValueArgument(it) }, c.dispatchReceiver, c.extensionReceiver, typeArgs, extractClassTypeArguments, c.superQualifierSymbol)
             }
 
             fun extractSpecialEnumFunction(fnName: String){
@@ -2337,7 +2338,7 @@ open class KotlinFileExtractor(
                 }
                 isFunction(target, "kotlin", "String", "plus", true) -> {
                     findJdkIntrinsicOrWarn("stringPlus", c)?.let { stringPlusFn ->
-                        extractRawMethodAccess(stringPlusFn, c, callable, parent, idx, enclosingStmt, listOf(c.extensionReceiver, c.getValueArgument(0)), null, null)
+                        extractRawMethodAccess(stringPlusFn, c, c.type, callable, parent, idx, enclosingStmt, listOf(c.extensionReceiver, c.getValueArgument(0)), null, null)
                     }
                 }
                 isNumericFunction(target, listOf("plus", "minus", "times", "div", "rem", "and", "or", "xor", "shl", "shr", "ushr")) -> {
@@ -2582,7 +2583,7 @@ open class KotlinFileExtractor(
                 }
                 isFunction(target, "kotlin", "Any", "toString", true) -> {
                     stringValueOfObjectMethod?.let {
-                        extractRawMethodAccess(it, c, callable, parent, idx, enclosingStmt, listOf(c.extensionReceiver), null, null)
+                        extractRawMethodAccess(it, c, c.type, callable, parent, idx, enclosingStmt, listOf(c.extensionReceiver), null, null)
                     }
                 }
                 isBuiltinCallKotlin(c, "enumValues") -> {
@@ -2632,6 +2633,24 @@ open class KotlinFileExtractor(
                         || isBuiltinCallKotlin(c, "byteArrayOf")
                         || isBuiltinCallKotlin(c, "booleanArrayOf") -> {
 
+
+                    val isPrimitiveArrayCreation = !isBuiltinCallKotlin(c, "arrayOf")
+                    val elementType = if (isPrimitiveArrayCreation) {
+                        c.type.getArrayElementType(pluginContext.irBuiltIns)
+                    } else {
+                        // TODO: is there any reason not to always use getArrayElementType?
+                        if (c.typeArgumentsCount == 1) {
+                            c.getTypeArgument(0).also {
+                                if (it == null) {
+                                    logger.errorElement("Type argument missing in an arrayOf call", c)
+                                }
+                            }
+                        } else {
+                            logger.errorElement("Expected to find one type argument in arrayOf call", c)
+                            null
+                        }
+                    }
+
                     val arg = if (c.valueArgumentsCount == 1) c.getValueArgument(0) else {
                         logger.errorElement("Expected to find only one (vararg) argument in ${c.symbol.owner.name.asString()} call", c)
                         null
@@ -2642,59 +2661,7 @@ open class KotlinFileExtractor(
                         }
                     }
 
-                    // If this is [someType]ArrayOf(*x), x, otherwise null
-                    val clonedArray = arg?.let {
-                        if (arg.elements.size == 1) {
-                            val onlyElement = arg.elements[0]
-                            if (onlyElement is IrSpreadElement)
-                                onlyElement.expression
-                            else null
-                        } else null
-                    }
-
-                    if (clonedArray != null) {
-                        // This is an array clone: extract is as a call to java.lang.Object.clone
-                        objectCloneMethod?.let {
-                            extractRawMethodAccess(it, c, callable, parent, idx, enclosingStmt, listOf(), clonedArray, null)
-                        }
-                    } else {
-                        // This is array creation: extract it as a call to new ArrayType[] { ... }
-                        val id = tw.getFreshIdLabel<DbArraycreationexpr>()
-                        val type = useType(c.type)
-                        tw.writeExprs_arraycreationexpr(id, type.javaResult.id, parent, idx)
-                        tw.writeExprsKotlinType(id, type.kotlinResult.id)
-                        val locId = tw.getLocation(c)
-                        tw.writeHasLocation(id, locId)
-                        tw.writeCallableEnclosingExpr(id, callable)
-
-                        if (isBuiltinCallKotlin(c, "arrayOf")) {
-                            if (c.typeArgumentsCount == 1) {
-                                val typeArgument = c.getTypeArgument(0)
-                                if (typeArgument == null) {
-                                    logger.errorElement("Type argument missing in an arrayOf call", c)
-                                } else {
-                                    extractTypeAccessRecursive(typeArgument, locId, id, -1, callable, enclosingStmt, TypeContext.GENERIC_ARGUMENT)
-                                }
-                            } else {
-                                logger.errorElement("Expected to find one type argument in arrayOf call", c )
-                            }
-                        } else {
-                            val elementType = c.type.getArrayElementType(pluginContext.irBuiltIns)
-                            extractTypeAccessRecursive(elementType, locId, id, -1, callable, enclosingStmt)
-                        }
-
-                        arg?.let {
-                            val initId = tw.getFreshIdLabel<DbArrayinit>()
-                            tw.writeExprs_arrayinit(initId, type.javaResult.id, id, -2)
-                            tw.writeExprsKotlinType(initId, type.kotlinResult.id)
-                            tw.writeHasLocation(initId, locId)
-                            tw.writeCallableEnclosingExpr(initId, callable)
-                            tw.writeStatementEnclosingExpr(initId, enclosingStmt)
-                            it.elements.forEachIndexed { i, arg -> extractVarargElement(arg, callable, initId, i, enclosingStmt) }
-
-                            extractConstantInteger(it.elements.size, locId, id, 0, callable, enclosingStmt)
-                        }
-                    }
+                    extractArrayCreation(arg, c.type, elementType, isPrimitiveArrayCreation, c, parent, idx, callable, enclosingStmt)
                 }
                 isBuiltinCall(c, "<get-java>", "kotlin.jvm") -> {
                     // Special case for KClass<*>.java, which is used in the Parcelize plugin. In normal cases, this is already rewritten to the property referenced below:
@@ -2714,7 +2681,7 @@ open class KotlinFileExtractor(
                         val argType = (ext.type as? IrSimpleType)?.arguments?.firstOrNull()?.typeOrNull
                         val typeArguments = if (argType == null) listOf() else listOf(argType)
 
-                        extractRawMethodAccess(getter, c, callable, parent, idx, enclosingStmt, listOf(), null, ext, typeArguments)
+                        extractRawMethodAccess(getter, c, c.type, callable, parent, idx, enclosingStmt, listOf(), null, ext, typeArguments)
                     }
                 }
                 isFunction(target, "kotlin", "(some array type)", { isArrayType(it) }, "iterator") -> {
@@ -2745,7 +2712,7 @@ open class KotlinFileExtractor(
                                         else -> pluginContext.irBuiltIns.anyNType
                                     }
                                 }
-                                extractRawMethodAccess(iteratorFn, c, callable, parent, idx, enclosingStmt, listOf(c.dispatchReceiver), null, null, typeArgs)
+                                extractRawMethodAccess(iteratorFn, c, c.type, callable, parent, idx, enclosingStmt, listOf(c.dispatchReceiver), null, null, typeArgs)
                             }
                         }
                     }
@@ -2834,6 +2801,7 @@ open class KotlinFileExtractor(
                         extractRawMethodAccess(
                             realCallee,
                             c,
+                            c.type,
                             callable,
                             parent,
                             idx,
@@ -2861,6 +2829,7 @@ open class KotlinFileExtractor(
                         extractRawMethodAccess(
                             realCallee,
                             c,
+                            c.type,
                             callable,
                             parent,
                             idx,
@@ -2874,6 +2843,51 @@ open class KotlinFileExtractor(
                 else -> {
                     extractMethodAccess(target, true, true)
                 }
+            }
+        }
+    }
+
+    private fun extractArrayCreation(elementList: IrVararg?, resultType: IrType, elementType: IrType?, allowPrimitiveElementType: Boolean, locElement: IrElement, parent: Label<out DbExprparent>, idx: Int, enclosingCallable: Label<out DbCallable>, enclosingStmt: Label<out DbStmt>) {
+        // If this is [someType]ArrayOf(*x), x, otherwise null
+        val clonedArray = elementList?.let {
+            if (it.elements.size == 1) {
+                val onlyElement = it.elements[0]
+                if (onlyElement is IrSpreadElement)
+                    onlyElement.expression
+                else null
+            } else null
+        }
+
+        if (clonedArray != null) {
+            // This is an array clone: extract is as a call to java.lang.Object.clone
+            objectCloneMethod?.let {
+                extractRawMethodAccess(it, locElement, resultType, enclosingCallable, parent, idx, enclosingStmt, listOf(), clonedArray, null)
+            }
+        } else {
+            // This is array creation: extract it as a call to new ArrayType[] { ... }
+            val id = tw.getFreshIdLabel<DbArraycreationexpr>()
+            val type = useType(resultType)
+            tw.writeExprs_arraycreationexpr(id, type.javaResult.id, parent, idx)
+            tw.writeExprsKotlinType(id, type.kotlinResult.id)
+            val locId = tw.getLocation(locElement)
+            tw.writeHasLocation(id, locId)
+            tw.writeCallableEnclosingExpr(id, enclosingCallable)
+
+            if (elementType != null) {
+                val typeContext = if (allowPrimitiveElementType) TypeContext.OTHER else TypeContext.GENERIC_ARGUMENT
+                extractTypeAccessRecursive(elementType, locId, id, -1, enclosingCallable, enclosingStmt, typeContext)
+            }
+
+            if (elementList != null) {
+                val initId = tw.getFreshIdLabel<DbArrayinit>()
+                tw.writeExprs_arrayinit(initId, type.javaResult.id, id, -2)
+                tw.writeExprsKotlinType(initId, type.kotlinResult.id)
+                tw.writeHasLocation(initId, locId)
+                tw.writeCallableEnclosingExpr(initId, enclosingCallable)
+                tw.writeStatementEnclosingExpr(initId, enclosingStmt)
+                elementList.elements.forEachIndexed { i, arg -> extractVarargElement(arg, enclosingCallable, initId, i, enclosingStmt) }
+
+                extractConstantInteger(elementList.elements.size, locId, id, 0, enclosingCallable, enclosingStmt)
             }
         }
     }
@@ -3661,14 +3675,12 @@ open class KotlinFileExtractor(
                     extractTypeOperatorCall(e, callable, exprParent.parent, exprParent.idx, exprParent.enclosingStmt)
                 }
                 is IrVararg -> {
-                    var spread = e.elements.getOrNull(0) as? IrSpreadElement
-                    if (spread == null || e.elements.size != 1) {
-                        logger.errorElement("Unexpected IrVararg", e)
-                        return
-                    }
                     // There are lowered IR cases when the vararg expression is not within a call, such as
-                    // val temp0 = [*expr]
-                    extractExpression(spread.expression, callable, parent)
+                    // val temp0 = [*expr].
+                    // This AST element can also occur as a collection literal in an annotation class, such as
+                    // annotation class Ann(val strings: Array<String> = [])
+                    val exprParent = parent.expr(e, callable)
+                    extractArrayCreation(e, e.type, e.varargElementType, true, e, exprParent.parent, exprParent.idx, callable, exprParent.enclosingStmt)
                 }
                 is IrGetObjectValue -> {
                     // For `object MyObject { ... }`, the .class has an
