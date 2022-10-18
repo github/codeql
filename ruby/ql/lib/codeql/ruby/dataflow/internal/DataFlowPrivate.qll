@@ -327,7 +327,12 @@ private module Cached {
     FlowSummaryImpl::Private::Steps::summaryThroughStepValue(nodeFrom, nodeTo, _)
   }
 
-  /** This is the local flow predicate that is used in type tracking. */
+  /**
+   * This is the local flow predicate that is used in type tracking.
+   *
+   * This needs to exclude `localFlowSsaParamInput` due to a performance trick
+   * in type tracking, where such steps are treated as call steps.
+   */
   cached
   predicate localFlowStepTypeTracker(Node nodeFrom, Node nodeTo) {
     LocalFlow::localFlowStepCommon(nodeFrom, nodeTo)
