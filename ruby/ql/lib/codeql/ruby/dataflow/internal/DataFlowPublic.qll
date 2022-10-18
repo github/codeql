@@ -151,6 +151,29 @@ class CallNode extends LocalSourceNode, ExprNode {
 }
 
 /**
+ * A call to a setter method.
+ *
+ * For example,
+ * ```rb
+ * self.foo = 10
+ * a[0] = 10
+ * ```
+ */
+class SetterCallNode extends CallNode {
+  SetterCallNode() { asExpr().getExpr() instanceof SetterMethodCall }
+
+  /**
+   * Gets the name of the method being called without the trailing `=`. For example, in the following
+   * two statements the target name is `value`:
+   * ```rb
+   * foo.value=(1)
+   * foo.value = 1
+   * ```
+   */
+  final string getTargetName() { result = asExpr().getExpr().(SetterMethodCall).getTargetName() }
+}
+
+/**
  * An expression, viewed as a node in a data flow graph.
  *
  * Note that because of control-flow splitting, one `Expr` may correspond
