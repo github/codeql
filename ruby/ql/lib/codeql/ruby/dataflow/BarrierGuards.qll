@@ -8,9 +8,9 @@ private import codeql.ruby.dataflow.SSA
 private import codeql.ruby.ast.internal.Constant
 private import codeql.ruby.InclusionTests
 
-private predicate stringConstCompare(CfgNodes::AstCfgNode g, CfgNode e, boolean branch) {
+private predicate stringConstCompare(CfgNodes::AstCfgNode guard, CfgNode testedNode, boolean branch) {
   exists(CfgNodes::ExprNodes::ComparisonOperationCfgNode c |
-    c = g and
+    c = guard and
     exists(CfgNodes::ExprNodes::StringLiteralCfgNode strLitNode |
       c.getExpr() instanceof EqExpr and branch = true
       or
@@ -18,9 +18,9 @@ private predicate stringConstCompare(CfgNodes::AstCfgNode g, CfgNode e, boolean 
       or
       c.getExpr() instanceof NEExpr and branch = false
     |
-      c.getLeftOperand() = strLitNode and c.getRightOperand() = e
+      c.getLeftOperand() = strLitNode and c.getRightOperand() = testedNode
       or
-      c.getLeftOperand() = e and c.getRightOperand() = strLitNode
+      c.getLeftOperand() = testedNode and c.getRightOperand() = strLitNode
     )
   )
 }
@@ -72,10 +72,12 @@ deprecated class StringConstCompare extends DataFlow::BarrierGuard,
   }
 }
 
-private predicate stringConstArrayInclusionCall(CfgNodes::AstCfgNode g, CfgNode e, boolean branch) {
+private predicate stringConstArrayInclusionCall(
+  CfgNodes::AstCfgNode guard, CfgNode testedNode, boolean branch
+) {
   exists(InclusionTest t |
-    t.asExpr() = g and
-    e = t.getContainedNode().asExpr() and
+    t.asExpr() = guard and
+    testedNode = t.getContainedNode().asExpr() and
     branch = t.getPolarity()
   |
     exists(ExprNodes::ArrayLiteralCfgNode arr |
