@@ -470,14 +470,6 @@ open class KotlinUsesExtractor(
             )
         }
 
-    fun getExistingAnonymousClassLabel(c: IrClass): Label<out DbType>? {
-        if (!c.isAnonymousObject){
-            return null
-        }
-
-        return tw.lm.anonymousTypeMapping[c]?.javaResult?.id
-    }
-
     fun fakeKotlinType(): Label<out DbKt_type> {
         val fakeKotlinPackageId: Label<DbPackage> = tw.getLabelFor("@\"FakeKotlinPackage\"", {
             tw.writePackages(it, "fake.kotlin")
