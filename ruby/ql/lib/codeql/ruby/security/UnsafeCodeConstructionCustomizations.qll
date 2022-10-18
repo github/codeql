@@ -64,11 +64,12 @@ module UnsafeCodeConstruction {
    */
   class StringFormatAsSink extends Sink {
     Concepts::CodeExecution s;
-    Ast::StringLiteral lit;
 
     StringFormatAsSink() {
-      any(DataFlow::Node n | n.asExpr().getExpr() = lit) = getANodeExecutedAsCode(s) and
-      this.asExpr().getExpr() = lit.getComponent(_)
+      exists(Ast::StringLiteral lit |
+        any(DataFlow::Node n | n.asExpr().getExpr() = lit) = getANodeExecutedAsCode(s) and
+        this.asExpr().getExpr() = lit.getComponent(_)
+      )
     }
 
     override DataFlow::Node getCodeSink() { result = s }
@@ -84,11 +85,12 @@ module UnsafeCodeConstruction {
    */
   class TaintedFormatStringAsSink extends Sink {
     Concepts::CodeExecution s;
-    TaintedFormat::PrintfStyleCall call;
 
     TaintedFormatStringAsSink() {
-      call = getANodeExecutedAsCode(s) and
-      this = [call.getFormatArgument(_), call.getFormatString()]
+      exists(TaintedFormat::PrintfStyleCall call |
+        call = getANodeExecutedAsCode(s) and
+        this = [call.getFormatArgument(_), call.getFormatString()]
+      )
     }
 
     override DataFlow::Node getCodeSink() { result = s }
