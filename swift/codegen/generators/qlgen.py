@@ -109,6 +109,7 @@ def get_ql_class(cls: schema.Class, lookup: typing.Dict[str, schema.Class]):
         properties=properties,
         dir=pathlib.Path(cls.group or ""),
         ipa=bool(cls.ipa),
+        doc=cls.doc,
         **pragmas,
     )
 

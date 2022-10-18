@@ -68,6 +68,7 @@ class Decl(AstNode):
 
 @group("expr")
 class Expr(AstNode):
+    """The base class for all expressions in Swift."""
     type: optional[Type]
 
 @group("pattern")

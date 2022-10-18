@@ -5,6 +5,9 @@ import codeql.swift.elements.AstNode
 import codeql.swift.elements.type.Type
 
 module Generated {
+  /**
+   * The base class for all expressions in Swift.
+   */
   class Expr extends Synth::TExpr, AstNode {
     Type getImmediateType() {
       result = Synth::convertTypeFromRaw(Synth::convertExprToRaw(this).(Raw::Expr).getType())

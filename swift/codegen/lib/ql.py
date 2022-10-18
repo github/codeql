@@ -70,6 +70,10 @@ class Property:
     def is_child(self):
         return self.prev_child is not None
 
+    @property
+    def has_doc(self) -> bool:
+        return bool(self.doc)
+
 
 @dataclass
 class Base:
@@ -94,6 +98,7 @@ class Class:
     qltest_collapse_hierarchy: bool = False
     qltest_uncollapse_hierarchy: bool = False
     ipa: bool = False
+    doc: List[str] = field(default_factory=list)
 
     def __post_init__(self):
         self.bases = [Base(str(b), str(prev)) for b, prev in zip(self.bases, itertools.chain([""], self.bases))]
@@ -119,6 +124,10 @@ class Class:
     @property
     def last_base(self) -> str:
         return self.bases[-1].base if self.bases else ""
+
+    @property
+    def has_doc(self) -> bool:
+        return bool(self.doc)
 
 
 @dataclass

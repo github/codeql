@@ -6,6 +6,13 @@ import {{.}}
 {{/imports}}
 
 module Generated {
+  {{#has_doc}}
+  /**
+  {{#doc}}
+   * {{.}}
+  {{/doc}}
+   */
+  {{/has_doc}}
   class {{name}} extends Synth::T{{name}}{{#bases}}, {{.}}{{/bases}} {
     {{#root}}
     string toString() { none() } // overridden by subclasses

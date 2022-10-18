@@ -350,6 +350,16 @@ def test_single_class_property(generate_classes, is_child, prev_child):
     }
 
 
+def test_class_with_doc(generate_classes):
+    doc = ["Very important class.", "Very."]
+    assert generate_classes([
+        schema.Class("A", doc=doc),
+    ]) == {
+        "A.qll": (ql.Stub(name="A", base_import=gen_import_prefix + "A"),
+                  ql.Class(name="A", final=True, doc=doc)),
+    }
+
+
 def test_class_dir(generate_classes):
     dir = "another/rel/path"
     assert generate_classes([
