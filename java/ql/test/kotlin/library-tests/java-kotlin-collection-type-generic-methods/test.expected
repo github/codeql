@@ -416,8 +416,6 @@ methodWithDuplicate
 | Map<String,String> | replaceAll | BiFunction<? super String,? super String,? extends String> |
 | MutableCollection | add | E |
 | MutableCollection | addAll | Collection<? extends E> |
-| MutableCollection | contains | Object |
-| MutableCollection | containsAll | Collection<?> |
 | MutableCollection | forEach | Consumer<? super E> |
 | MutableCollection | remove | Object |
 | MutableCollection | removeAll | Collection<?> |
@@ -428,12 +426,7 @@ methodWithDuplicate
 | MutableList | add | int |
 | MutableList | addAll | Collection<? extends E> |
 | MutableList | addAll | int |
-| MutableList | contains | Object |
-| MutableList | containsAll | Collection<?> |
 | MutableList | forEach | Consumer<? super E> |
-| MutableList | get | int |
-| MutableList | indexOf | Object |
-| MutableList | lastIndexOf | Object |
 | MutableList | listIterator | int |
 | MutableList | remove | Object |
 | MutableList | remove | int |
@@ -452,10 +445,7 @@ methodWithDuplicate
 | MutableMap | computeIfAbsent | K |
 | MutableMap | computeIfPresent | BiFunction<? super K,? super V,? extends V> |
 | MutableMap | computeIfPresent | K |
-| MutableMap | containsKey | Object |
-| MutableMap | containsValue | Object |
 | MutableMap | forEach | BiConsumer<? super K,? super V> |
-| MutableMap | get | Object |
 | MutableMap | getOrDefault | Object |
 | MutableMap | getOrDefault | V |
 | MutableMap | merge | BiFunction<? super V,? super V,? extends V> |

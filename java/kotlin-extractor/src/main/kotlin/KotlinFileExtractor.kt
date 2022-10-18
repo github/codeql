@@ -840,7 +840,7 @@ open class KotlinFileExtractor(
         // there to allow default method usage in Java < 8, but this is hopefully niche.
         !pluginContext.languageVersionSettings.getFlag(JvmAnalysisFlags.jvmDefaultMode).forAllMethodsWithBody &&
                 f.parentClassOrNull?.origin != IrDeclarationOrigin.IR_EXTERNAL_JAVA_DECLARATION_STUB &&
-                f.realOverrideTarget.let { it != f && isKotlinDefinedInterface(it.parentClassOrNull) }
+                f.realOverrideTarget.let { it != f && (it as? IrSimpleFunction)?.modality != Modality.ABSTRACT && isKotlinDefinedInterface(it.parentClassOrNull) }
 
     private fun makeInterfaceForwarder(f: IrFunction, parentId: Label<out DbReftype>, extractBody: Boolean, extractMethodAndParameterTypeAccesses: Boolean, typeSubstitution: TypeSubstitution?, classTypeArgsIncludingOuterClasses: List<IrTypeArgument>?) =
         forceExtractFunction(f, parentId, extractBody = false, extractMethodAndParameterTypeAccesses, typeSubstitution, classTypeArgsIncludingOuterClasses, overriddenAttributes = OverriddenFunctionAttributes(visibility = DescriptorVisibilities.PUBLIC)).also { functionId ->
