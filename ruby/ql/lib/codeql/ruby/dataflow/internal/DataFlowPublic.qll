@@ -303,9 +303,11 @@ private module Cached {
     source = sink and
     source instanceof LocalSourceNode
     or
-    exists(Node mid |
-      hasLocalSource(mid, source) and
+    exists(Node mid | hasLocalSource(mid, source) |
       localFlowStepTypeTracker(mid, sink)
+      or
+      // Explicitly include the SSA param input step as type-tracking omits this step.
+      LocalFlow::localFlowSsaParamInput(mid, sink)
     )
   }
 
