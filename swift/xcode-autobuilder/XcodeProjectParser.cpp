@@ -133,7 +133,7 @@ static CFDictionaryRef xcodeProjectObjects(const std::string& xcodeProject) {
   }
   std::ifstream ifs(pbxproj, std::ios::in);
   std::string content((std::istreambuf_iterator<char>(ifs)), (std::istreambuf_iterator<char>()));
-  auto data = CFDataCreate(allocator, (UInt8*)content.data(), content.size());
+  auto data = CFDataCreate(allocator, reinterpret_cast<UInt8*>(content.data()), content.size());
   CFErrorRef error = nullptr;
   auto plist = CFPropertyListCreateWithData(allocator, data, 0, nullptr, &error);
   if (error) {
