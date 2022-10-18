@@ -703,6 +703,17 @@ class ModuleNode instanceof Module {
   /** Gets an `include`d module. */
   final ModuleNode getAnIncludedModule() { result = super.getAnIncludedModule() }
 
+  /** Gets the super class or an included or prepended module. */
+  final ModuleNode getADirectAncestor() { result = super.getADirectAncestor() }
+
+  /** Gets a direct subclass or module including or prepending this one. */
+  final ModuleNode getADirectDescendent() { result = super.getADirectDescendent() }
+
+  /** Gets a module that is transitively subclassed, included, or prepended by this module. */
+  final ModuleNode getAnAncestor() { result = super.getAnAncestor() }
+
+  /** Gets a module that transitively subclasses, includes, or prepends this module. */
+  final ModuleNode getADescendent() { result = super.getADescendent() }
   /** Holds if this module is a class. */
   predicate isClass() { super.isClass() }
 
