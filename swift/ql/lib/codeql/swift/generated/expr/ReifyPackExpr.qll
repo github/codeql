@@ -3,6 +3,8 @@ private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
 import codeql.swift.elements.expr.ImplicitConversionExpr
 
-class ReifyPackExprBase extends Synth::TReifyPackExpr, ImplicitConversionExpr {
-  override string getAPrimaryQlClass() { result = "ReifyPackExpr" }
+module Generated {
+  class ReifyPackExpr extends Synth::TReifyPackExpr, ImplicitConversionExpr {
+    override string getAPrimaryQlClass() { result = "ReifyPackExpr" }
+  }
 }

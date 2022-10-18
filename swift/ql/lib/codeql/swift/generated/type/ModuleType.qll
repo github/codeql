@@ -4,15 +4,17 @@ private import codeql.swift.generated.Raw
 import codeql.swift.elements.decl.ModuleDecl
 import codeql.swift.elements.type.Type
 
-class ModuleTypeBase extends Synth::TModuleType, Type {
-  override string getAPrimaryQlClass() { result = "ModuleType" }
+module Generated {
+  class ModuleType extends Synth::TModuleType, Type {
+    override string getAPrimaryQlClass() { result = "ModuleType" }
 
-  ModuleDecl getImmediateModule() {
-    result =
-      Synth::convertModuleDeclFromRaw(Synth::convertModuleTypeToRaw(this)
-            .(Raw::ModuleType)
-            .getModule())
+    ModuleDecl getImmediateModule() {
+      result =
+        Synth::convertModuleDeclFromRaw(Synth::convertModuleTypeToRaw(this)
+              .(Raw::ModuleType)
+              .getModule())
+    }
+
+    final ModuleDecl getModule() { result = getImmediateModule().resolve() }
   }
-
-  final ModuleDecl getModule() { result = getImmediateModule().resolve() }
 }

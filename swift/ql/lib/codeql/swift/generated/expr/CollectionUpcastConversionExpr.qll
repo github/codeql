@@ -3,7 +3,9 @@ private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
 import codeql.swift.elements.expr.ImplicitConversionExpr
 
-class CollectionUpcastConversionExprBase extends Synth::TCollectionUpcastConversionExpr,
-  ImplicitConversionExpr {
-  override string getAPrimaryQlClass() { result = "CollectionUpcastConversionExpr" }
+module Generated {
+  class CollectionUpcastConversionExpr extends Synth::TCollectionUpcastConversionExpr,
+    ImplicitConversionExpr {
+    override string getAPrimaryQlClass() { result = "CollectionUpcastConversionExpr" }
+  }
 }

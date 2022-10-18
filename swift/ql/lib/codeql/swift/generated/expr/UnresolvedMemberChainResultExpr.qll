@@ -4,7 +4,9 @@ private import codeql.swift.generated.Raw
 import codeql.swift.elements.expr.IdentityExpr
 import codeql.swift.elements.UnresolvedElement
 
-class UnresolvedMemberChainResultExprBase extends Synth::TUnresolvedMemberChainResultExpr,
-  IdentityExpr, UnresolvedElement {
-  override string getAPrimaryQlClass() { result = "UnresolvedMemberChainResultExpr" }
+module Generated {
+  class UnresolvedMemberChainResultExpr extends Synth::TUnresolvedMemberChainResultExpr,
+    IdentityExpr, UnresolvedElement {
+    override string getAPrimaryQlClass() { result = "UnresolvedMemberChainResultExpr" }
+  }
 }

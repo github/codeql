@@ -3,6 +3,8 @@ private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
 import codeql.swift.elements.expr.IdentityExpr
 
-class DotSelfExprBase extends Synth::TDotSelfExpr, IdentityExpr {
-  override string getAPrimaryQlClass() { result = "DotSelfExpr" }
+module Generated {
+  class DotSelfExpr extends Synth::TDotSelfExpr, IdentityExpr {
+    override string getAPrimaryQlClass() { result = "DotSelfExpr" }
+  }
 }

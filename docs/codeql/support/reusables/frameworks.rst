@@ -260,4 +260,16 @@ and the CodeQL library pack ``codeql/ruby-all`` (`changelog <https://github.com/
    :widths: auto
 
    Name, Category
+   excon, HTTP client
+   faraday, HTTP client
+   http_client, HTTP client
+   httparty, HTTP client
+   libxml-ruby, XML processing library
+   nokogiri, XML processing library
+   open-uri, HTTP client
+   posix-spawn, Utility library
+   rest-client, HTTP client
    Ruby on Rails, Web framework
+   rubyzip, Compression library
+   typhoeus, HTTP client
+

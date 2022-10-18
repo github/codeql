@@ -425,7 +425,7 @@ def test_non_empty_cleanup(opts, generate, renderer):
     test_c = opts.ql_test_output / "B.txt"
     write(ql_a)
     write(ql_b)
-    write(stub_a, "// generated\nprivate import bla\n\nclass foo extends bar {\n}\n")
+    write(stub_a, "// generated\nprivate import bla\n\nclass foo extends Generated::bar {\n}\n")
     write(stub_b, "bar\n")
     write(test_a)
     write(test_b)
@@ -437,7 +437,7 @@ def test_non_empty_cleanup(opts, generate, renderer):
 
 def test_modified_stub_still_generated(qlgen_opts, renderer):
     stub = qlgen_opts.ql_stub_output / "A.qll"
-    write(stub, "// generated\nprivate import bla\n\nclass foo extends bar, baz {\n}\n")
+    write(stub, "// generated\nprivate import bla\n\nclass foo extends Generated::bar, baz {\n}\n")
     with pytest.raises(qlgen.ModifiedStubMarkedAsGeneratedError):
         run_generation(qlgen.generate, qlgen_opts, renderer)
 
@@ -445,7 +445,8 @@ def test_modified_stub_still_generated(qlgen_opts, renderer):
 def test_extended_stub_still_generated(qlgen_opts, renderer):
     stub = qlgen_opts.ql_stub_output / "A.qll"
     write(stub,
-          "// generated\nprivate import bla\n\nclass foo extends bar {\n}\n\nclass other {\n  other() { none() }\n}")
+          "// generated\nprivate import bla\n\nclass foo extends Generated::bar {\n}\n\n"
+          "class other {\n  other() { none() }\n}")
     with pytest.raises(qlgen.ModifiedStubMarkedAsGeneratedError):
         run_generation(qlgen.generate, qlgen_opts, renderer)
 

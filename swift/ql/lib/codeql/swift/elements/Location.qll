@@ -3,7 +3,7 @@ private import codeql.swift.generated.Location
 /**
  * A location of a program element.
  */
-class Location extends LocationBase {
+class Location extends Generated::Location {
   /**
    * Holds if this location is described by `path`, `startLine`, `startColumn`, `endLine` and `endColumn`.
    */
