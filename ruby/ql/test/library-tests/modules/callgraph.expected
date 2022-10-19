@@ -160,7 +160,6 @@ getTarget
 | calls.rb:406:9:406:18 | call to singleton2 | calls.rb:401:5:403:7 | singleton2 |
 | calls.rb:406:9:406:18 | call to singleton2 | calls.rb:431:5:433:7 | singleton2 |
 | calls.rb:408:13:408:22 | call to singleton2 | calls.rb:401:5:403:7 | singleton2 |
-| calls.rb:408:13:408:22 | call to singleton2 | calls.rb:431:5:433:7 | singleton2 |
 | calls.rb:412:5:412:14 | call to singleton2 | calls.rb:401:5:403:7 | singleton2 |
 | calls.rb:415:9:415:43 | call to puts | calls.rb:111:5:111:30 | puts |
 | calls.rb:419:1:419:29 | call to singleton1 | calls.rb:388:9:390:11 | singleton1 |

@@ -405,7 +405,7 @@ class SingletonOverride1
     def self.call_singleton2
         singleton2
         [0, 1, 2].each do
-            singleton2
+            singleton2 # for performance reasons, we are currently only able to resolve this to `SingletonOverride1.singleton2`
         end
     end
 
