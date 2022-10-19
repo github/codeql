@@ -124,12 +124,15 @@ private class SymmetricSink extends InsufficientKeySizeSink {
 
 // ********************** SINKS HELPER CLASSES & PREDICATES **********************
 /** A call to a method that initializes a key generator. */
-abstract class KeyGenInitMethodAccess extends MethodAccess {
+abstract private class KeyGenInitMethodAccess extends MethodAccess {
   /** Gets the `keysize` argument of this call. */
   Argument getKeySizeArg() { result = this.getArgument(0) }
 }
 
-/** A call to the `initialize` method declared in `java.security.KeyPairGenerator`. */
+/**
+ * A call to the `initialize` method declared in `java.security.KeyPairGenerator`
+ * or to the `init` method declared in `java.security.AlgorithmParameterGenerator`.
+ */
 private class AsymmetricInitMethodAccess extends KeyGenInitMethodAccess {
   AsymmetricInitMethodAccess() {
     this.getMethod() instanceof KeyPairGeneratorInitMethod or
@@ -143,11 +146,14 @@ private class SymmetricInitMethodAccess extends KeyGenInitMethodAccess {
 }
 
 /** An instance of a key generator. */
-abstract class KeyGeneratorObject extends CryptoAlgoSpec {
+abstract private class KeyGeneratorObject extends CryptoAlgoSpec {
   string getAlgoName() { result = this.getAlgoSpec().(StringLiteral).getValue().toUpperCase() }
 }
 
-/** An instance of a `java.security.KeyPairGenerator`. */
+/**
+ * An instance of a `java.security.KeyPairGenerator`
+ * or of a `java.security.AlgorithmParameterGenerator`.
+ */
 private class AsymmetricKeyGenerator extends KeyGeneratorObject {
   AsymmetricKeyGenerator() {
     this instanceof JavaSecurityKeyPairGenerator or
@@ -165,7 +171,7 @@ private class SymmetricKeyGenerator extends KeyGeneratorObject {
 }
 
 /** An instance of an algorithm specification. */
-abstract class AlgoSpec extends ClassInstanceExpr {
+abstract private class AlgoSpec extends ClassInstanceExpr {
   Argument getKeySizeArg() { result = this.getArgument(0) }
 }
 
