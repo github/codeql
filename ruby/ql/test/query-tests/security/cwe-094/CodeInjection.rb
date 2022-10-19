@@ -72,3 +72,11 @@ class Bar
     true
   end
 end
+
+class UsersController < ActionController::Base
+  def create
+    code = params[:code]
+
+    obj().send(code, "foo"); # BAD
+  end
+end
