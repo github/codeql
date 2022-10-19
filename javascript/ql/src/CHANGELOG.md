@@ -1,3 +1,21 @@
+## 0.4.1
+
+No user-facing changes.
+
+## 0.4.0
+
+### Minor Analysis Improvements
+
+* Improved how the JavaScript parser handles ambiguities between plain JavaScript and dialects such as Flow and E4X that use the same file extension. The parser now prefers plain JavaScript if possible, falling back to dialects only if the source code can not be parsed as plain JavaScript. Previously, there were rare cases where parsing would fail because the parser would erroneously attempt to parse dialect-specific syntax in a regular JavaScript file.
+- The `js/regexp/always-matches` query will no longer report an empty regular expression as always
+  matching, as this is often the intended behavior.
+* The alert message of many queries have been changed to make the message consistent with other languages.
+
+### Bug Fixes
+
+- Fixed a bug in the `js/type-confusion-through-parameter-tampering` query that would cause it to ignore
+  sanitizers in branching conditions. The query should now report fewer false positives.
+
 ## 0.3.4
 
 ## 0.3.3
@@ -105,7 +123,7 @@
 
 ### New Queries
 
-* A new query, `js/unsafe-code-construction`, has been added to the query suite, highlighting libraries that may leave clients vulnerable to arbitary code execution.
+* A new query, `js/unsafe-code-construction`, has been added to the query suite, highlighting libraries that may leave clients vulnerable to arbitrary code execution.
   The query is not run by default.
 * A new query `js/file-system-race` has been added. The query detects when there is time between a file being checked and used. The query is not run by default.
 * A new query `js/jwt-missing-verification` has been added. The query detects applications that don't verify JWT tokens.

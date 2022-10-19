@@ -61,4 +61,4 @@ where
     // }
     n = DataFlow::BarrierGuard<nilTestGuard/3>::getABarrierNode()
   )
-select n, "The first argument to 'errors.Wrap' is always nil"
+select n, "The first argument to 'errors.Wrap' is always nil."

@@ -23,7 +23,7 @@ namespace Semmle.Extraction.CSharp.Entities
             trapFile.modifiers(Label, Symbol);
         }
 
-        public static string AccessbilityModifier(Accessibility access)
+        public static string AccessibilityModifier(Accessibility access)
         {
             switch (access)
             {
@@ -48,7 +48,7 @@ namespace Semmle.Extraction.CSharp.Entities
                 case Accessibility.Public:
                 case Accessibility.Protected:
                 case Accessibility.Internal:
-                    HasModifier(cx, trapFile, type, Modifier.AccessbilityModifier(access));
+                    HasModifier(cx, trapFile, type, Modifier.AccessibilityModifier(access));
                     break;
                 case Accessibility.NotApplicable:
                     break;
@@ -131,7 +131,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public static Modifier Create(Context cx, Accessibility access)
         {
-            var modifier = AccessbilityModifier(access);
+            var modifier = AccessibilityModifier(access);
             return ModifierFactory.Instance.CreateEntity(cx, (typeof(Modifier), modifier), modifier);
         }
 

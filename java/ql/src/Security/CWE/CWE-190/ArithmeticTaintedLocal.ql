@@ -47,5 +47,5 @@ where
   underflowSink(exp, sink.getNode().asExpr()) and
   effect = "underflow"
 select exp, source, sink,
-  "$@ flows to here and is used in arithmetic, potentially causing an " + effect + ".",
-  source.getNode(), "User-provided value"
+  "This arithmetic expression depends on a $@, potentially causing an " + effect + ".",
+  source.getNode(), "user-provided value"

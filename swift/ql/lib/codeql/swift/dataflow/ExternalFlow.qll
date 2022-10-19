@@ -78,7 +78,10 @@ private import internal.FlowSummaryImplSpecific
  * ensuring that they are visible to the taint tracking / data flow library.
  */
 private module Frameworks {
+  private import codeql.swift.frameworks.StandardLibrary.CustomUrlSchemes
   private import codeql.swift.frameworks.StandardLibrary.String
+  private import codeql.swift.frameworks.StandardLibrary.Url
+  private import codeql.swift.frameworks.StandardLibrary.UrlSession
 }
 
 /**
@@ -409,8 +412,10 @@ pragma[nomagic]
 private Element interpretElement0(
   string namespace, string type, boolean subtypes, string name, string signature
 ) {
+  elementSpec(namespace, type, subtypes, name, signature, _) and
   namespace = "" and // TODO: Fill out when we properly extract modules.
   (
+    // Non-member functions
     exists(AbstractFunctionDecl func |
       func.getName() = name and
       type = "" and
@@ -420,12 +425,27 @@ private Element interpretElement0(
       result = func
     )
     or
+    // Member functions
     exists(NominalType nomType, IterableDeclContext decl, MethodDecl method |
       method.getName() = name and
       method = decl.getAMember() and
-      nomType.getName() = type and
+      nomType.getFullName() = type and
       matchesSignature(method, signature) and
       result = method
+    |
+      subtypes = true and
+      getDeclType(decl) = nomType.getADerivedType*()
+      or
+      subtypes = false and
+      getDeclType(decl) = nomType
+    )
+    or
+    signature = "" and
+    exists(NominalType nomType, IterableDeclContext decl, FieldDecl field |
+      field.getName() = name and
+      field = decl.getAMember() and
+      nomType.getFullName() = type and
+      result = field
     |
       subtypes = true and
       getDeclType(decl) = nomType.getADerivedType*()
@@ -446,11 +466,18 @@ Element interpretElement(
   )
 }
 
-/**
- * Holds if `c` has a `generated` summary.
- */
-predicate hasSummary(SummarizedCallable c, boolean generated) {
-  summaryElement(c, _, _, _, generated)
+private predicate parseField(AccessPathToken c, Content::FieldContent f) {
+  exists(string fieldRegex, string name |
+    c.getName() = "Field" and
+    fieldRegex = "^([^.]+)$" and
+    name = c.getAnArgument().regexpCapture(fieldRegex, 1) and
+    f.getField().getName() = name
+  )
+}
+
+/** Holds if the specification component parses as a `Content`. */
+predicate parseContent(AccessPathToken component, Content content) {
+  parseField(component, content)
 }
 
 cached

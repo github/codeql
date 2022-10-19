@@ -1,3 +1,20 @@
+## 0.4.1
+
+### Minor Analysis Improvements
+
+* The alert message of many queries have been changed to better follow the style guide and make the message consistent with other languages.
+
+## 0.4.0
+
+### New Queries
+
+* Added a new medium-precision query, `cpp/missing-check-scanf`, which detects `scanf` output variables that are used without a proper return-value check to see that they were actually written. A variation of this query was originally contributed as an [experimental query by @ihsinme](https://github.com/github/codeql/pull/8246).
+
+### Minor Analysis Improvements
+
+* Modernizations from "Cleartext storage of sensitive information in buffer" (`cpp/cleartext-storage-buffer`) have been ported to the "Cleartext storage of sensitive information in file" (`cpp/cleartext-storage-file`), "Cleartext transmission of sensitive information" (`cpp/cleartext-transmission`) and "Cleartext storage of sensitive information in an SQLite database" (`cpp/cleartext-storage-database`) queries. These changes may result in more correct results and fewer false positive results from these queries.
+* The alert message of many queries have been changed to make the message consistent with other languages.
+
 ## 0.3.4
 
 ## 0.3.3
@@ -108,7 +125,7 @@
 
 * The `security` tag has been added to the `cpp/return-stack-allocated-memory` query. As a result, its results will now appear by default.
 * The "Uncontrolled data in arithmetic expression" (cpp/uncontrolled-arithmetic) query has been enhanced to reduce false positive results and its @precision increased to high.
-* A new `cpp/very-likely-overruning-write` query has been added to the default query suite for C/C++. The query reports some results that were formerly flagged by `cpp/overruning-write`.
+* A new `cpp/very-likely-overrunning-write` query has been added to the default query suite for C/C++. The query reports some results that were formerly flagged by `cpp/overrunning-write`.
 
 ### Minor Analysis Improvements
 

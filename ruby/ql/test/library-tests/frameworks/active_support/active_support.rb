@@ -134,3 +134,70 @@ def m_including
     sink b[2] # $ hasValueFlow=3 $ hasValueFlow=4
     sink b[3] # $ hasValueFlow=3 $ hasValueFlow=4
 end
+
+def m_safe_buffer_new
+  x = source "a"
+  y = ActionView::SafeBuffer.new(x)
+  sink y # $hasTaintFlow=a
+end
+
+def m_safe_buffer_safe_concat_retval
+  x = ActionView::SafeBuffer.new("a")
+  b = source "b"
+  y = x.safe_concat(b)
+  sink y # $hasTaintFlow=b
+end
+
+def m_safe_buffer_safe_concat_self
+  x = ActionView::SafeBuffer.new("a")
+  b = source "b"
+  x.safe_concat(b)
+  sink x # $hasTaintFlow=b
+end
+
+def m_safe_buffer_concat
+  a = source "a"
+  b = source "b"
+  x = ActionView::SafeBuffer.new(a)
+  y = x.concat(b)
+  sink y # $hasTaintFlow=a
+end
+
+def m_safe_buffer_insert
+  a = source "a"
+  b = source "b"
+  x = ActionView::SafeBuffer.new(a)
+  y = x.insert(i, b)
+  sink y # $hasTaintFlow=a
+end
+
+def m_safe_buffer_prepend
+  a = source "a"
+  b = source "b"
+  x = ActionView::SafeBuffer.new(a)
+  y = x.prepend(b)
+  sink y # $hasTaintFlow=a
+end
+
+def m_safe_buffer_to_s
+  a = source "a"
+  x = ActionView::SafeBuffer.new(a)
+  y = x.to_s
+  sink y # $hasTaintFlow=a
+end
+
+def m_safe_buffer_to_param
+  a = source "a"
+  x = ActionView::SafeBuffer.new(a)
+  y = x.to_param
+  sink y # $hasTaintFlow=a
+end
+
+def m_pathname_existence
+  a = source "a"
+  x = Pathname.new(a)
+  y = x.existence
+  sink y # $hasTaintFlow=a
+  z = y.existence
+  sink z # $hasTaintFlow=a
+end

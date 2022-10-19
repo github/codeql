@@ -42,7 +42,7 @@ func NSMakeRange(_ loc: Int, _ len: Int) -> NSRange { return NSRange(location: l
 func test(s: String) {
     let ns = NSString(string: s)
     let nms = NSMutableString(string: s)
- 
+
     print("'\(s)'")
     print("count \(s.count) length \(ns.length)")
     print("utf8.count \(s.utf8.count) utf16.count \(s.utf16.count) unicodeScalars.count \(s.unicodeScalars.count)")
@@ -57,7 +57,7 @@ func test(s: String) {
     print("String.Index '\(ix1.encodedOffset)' / '\(ix2.encodedOffset)' '\(ix3.encodedOffset)' '\(ix4.encodedOffset)' '\(ix5.encodedOffset)'")
 
     let ix6 = s.index(s.startIndex, offsetBy: s.count / 2) // GOOD
-    let ix7 = s.index(s.startIndex, offsetBy: ns.length / 2) // BAD: NSString length used in String.Index [NOT DETECTED]
+    let ix7 = s.index(s.startIndex, offsetBy: ns.length / 2) // BAD: NSString length used in String.Index
     print("index '\(ix6.encodedOffset)' / '\(ix7.encodedOffset)'")
 
     var ix8 = s.startIndex

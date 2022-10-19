@@ -3,4 +3,6 @@ private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
 import codeql.swift.elements.type.Type
 
-class BuiltinTypeBase extends Synth::TBuiltinType, Type { }
+module Generated {
+  class BuiltinType extends Synth::TBuiltinType, Type { }
+}

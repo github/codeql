@@ -25,14 +25,28 @@ class CastToPointerArithFlow extends DataFlow::Configuration {
 
   override predicate isSource(DataFlow::Node node) {
     not node.asExpr() instanceof Conversion and
-    introducesNewField(node.asExpr().getType().(DerivedType).getBaseType(),
-      node.asExpr().getConversion*().getType().(DerivedType).getBaseType())
+    exists(Type baseType1, Type baseType2 |
+      hasBaseType(node.asExpr(), baseType1) and
+      hasBaseType(node.asExpr().getConversion*(), baseType2) and
+      introducesNewField(baseType1, baseType2)
+    )
   }
 
   override predicate isSink(DataFlow::Node node) {
     exists(PointerAddExpr pae | pae.getAnOperand() = node.asExpr()) or
     exists(ArrayExpr ae | ae.getArrayBase() = node.asExpr())
   }
+}
+
+/**
+ * Holds if the type of `e` is a `DerivedType` with `base` as its base type.
+ *
+ * This predicate ensures that joins go from `e` to `base` instead
+ * of the other way around.
+ */
+pragma[inline]
+predicate hasBaseType(Expr e, Type base) {
+  pragma[only_bind_into](base) = e.getType().(DerivedType).getBaseType()
 }
 
 /**
@@ -55,5 +69,5 @@ where
   cfg.hasFlowPath(source, sink) and
   source.getNode().asExpr().getFullyConverted().getUnspecifiedType() =
     sink.getNode().asExpr().getFullyConverted().getUnspecifiedType()
-select sink, source, sink,
-  "Pointer arithmetic here may be done with the wrong type because of the cast $@.", source, "here"
+select sink, source, sink, "This pointer arithmetic may be done with the wrong type because of $@.",
+  source, "this cast"

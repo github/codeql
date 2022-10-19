@@ -17,4 +17,5 @@ private import semmle.code.java.dataflow.Nullness
 
 from VarAccess access, SsaSourceVariable var
 where alwaysNullDeref(var, access)
-select access, "Variable $@ is always null here.", var.getVariable(), var.getVariable().getName()
+select access, "Variable $@ is always null at this dereference.", var.getVariable(),
+  var.getVariable().getName()

@@ -24,5 +24,5 @@ where
   not alwaysNullDeref(var, access) and
   // Kotlin enforces this already:
   not access.getLocation().getFile().isKotlinSourceFile()
-select access, "Variable $@ may be null here " + msg + ".", var.getVariable(),
+select access, "Variable $@ may be null at this access " + msg + ".", var.getVariable(),
   var.getVariable().getName(), reason, "this"

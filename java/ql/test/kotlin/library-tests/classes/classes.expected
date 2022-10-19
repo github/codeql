@@ -39,6 +39,8 @@
 | classes.kt:141:13:145:13 | Cl1 | Cl0$Cl1 | final, private |
 | classes.kt:150:1:156:1 | Cl00 | Cl00 | final, public |
 | classes.kt:151:5:155:5 | Cl01 | Cl00$Cl01 | final, public |
+| classes.kt:159:5:159:14 | X | ClassesKt$X | final, private |
+| classes.kt:162:13:162:22 | new Object(...) { ... } | <anonymous class> | final, private |
 | generic_anonymous.kt:0:0:0:0 | Generic_anonymousKt | Generic_anonymousKt | final, public |
 | generic_anonymous.kt:1:1:9:1 | Generic | Generic | final, private |
 | generic_anonymous.kt:3:19:5:3 | new Object(...) { ... } | <anonymous class> | final, private |

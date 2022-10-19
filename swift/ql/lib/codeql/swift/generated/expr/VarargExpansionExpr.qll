@@ -3,15 +3,17 @@ private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
 import codeql.swift.elements.expr.Expr
 
-class VarargExpansionExprBase extends Synth::TVarargExpansionExpr, Expr {
-  override string getAPrimaryQlClass() { result = "VarargExpansionExpr" }
+module Generated {
+  class VarargExpansionExpr extends Synth::TVarargExpansionExpr, Expr {
+    override string getAPrimaryQlClass() { result = "VarargExpansionExpr" }
 
-  Expr getImmediateSubExpr() {
-    result =
-      Synth::convertExprFromRaw(Synth::convertVarargExpansionExprToRaw(this)
-            .(Raw::VarargExpansionExpr)
-            .getSubExpr())
+    Expr getImmediateSubExpr() {
+      result =
+        Synth::convertExprFromRaw(Synth::convertVarargExpansionExprToRaw(this)
+              .(Raw::VarargExpansionExpr)
+              .getSubExpr())
+    }
+
+    final Expr getSubExpr() { result = getImmediateSubExpr().resolve() }
   }
-
-  final Expr getSubExpr() { result = getImmediateSubExpr().resolve() }
 }

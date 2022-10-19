@@ -106,4 +106,5 @@ where
   else multiCatchMsg = ""
 select try.getCatchClause(second),
   "This catch-clause is unreachable" + multiCatchMsg + "; it is masked $@.",
-  try.getCatchClause(first), "here for exceptions of type '" + masking.getName() + "'"
+  try.getCatchClause(first),
+  "by a previous catch-clause for exceptions of type '" + masking.getName() + "'"

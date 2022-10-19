@@ -3,6 +3,8 @@ private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
 import codeql.swift.elements.expr.ImplicitConversionExpr
 
-class UnderlyingToOpaqueExprBase extends Synth::TUnderlyingToOpaqueExpr, ImplicitConversionExpr {
-  override string getAPrimaryQlClass() { result = "UnderlyingToOpaqueExpr" }
+module Generated {
+  class UnderlyingToOpaqueExpr extends Synth::TUnderlyingToOpaqueExpr, ImplicitConversionExpr {
+    override string getAPrimaryQlClass() { result = "UnderlyingToOpaqueExpr" }
+  }
 }

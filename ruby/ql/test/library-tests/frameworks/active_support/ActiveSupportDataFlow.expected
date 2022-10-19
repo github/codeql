@@ -102,6 +102,48 @@ edges
 | active_support.rb:134:10:134:10 | b [element] :  | active_support.rb:134:10:134:13 | ...[...] |
 | active_support.rb:135:10:135:10 | b [element] :  | active_support.rb:135:10:135:13 | ...[...] |
 | active_support.rb:135:10:135:10 | b [element] :  | active_support.rb:135:10:135:13 | ...[...] |
+| active_support.rb:139:7:139:16 | call to source :  | active_support.rb:140:34:140:34 | x :  |
+| active_support.rb:140:7:140:35 | call to new :  | active_support.rb:141:8:141:8 | y |
+| active_support.rb:140:34:140:34 | x :  | active_support.rb:140:7:140:35 | call to new :  |
+| active_support.rb:146:7:146:16 | call to source :  | active_support.rb:147:21:147:21 | b :  |
+| active_support.rb:147:7:147:22 | call to safe_concat :  | active_support.rb:148:8:148:8 | y |
+| active_support.rb:147:21:147:21 | b :  | active_support.rb:147:7:147:22 | call to safe_concat :  |
+| active_support.rb:153:7:153:16 | call to source :  | active_support.rb:154:17:154:17 | b :  |
+| active_support.rb:154:3:154:3 | [post] x :  | active_support.rb:155:8:155:8 | x |
+| active_support.rb:154:17:154:17 | b :  | active_support.rb:154:3:154:3 | [post] x :  |
+| active_support.rb:159:7:159:16 | call to source :  | active_support.rb:161:34:161:34 | a :  |
+| active_support.rb:161:7:161:35 | call to new :  | active_support.rb:162:7:162:7 | x :  |
+| active_support.rb:161:34:161:34 | a :  | active_support.rb:161:7:161:35 | call to new :  |
+| active_support.rb:162:7:162:7 | x :  | active_support.rb:162:7:162:17 | call to concat :  |
+| active_support.rb:162:7:162:17 | call to concat :  | active_support.rb:163:8:163:8 | y |
+| active_support.rb:167:7:167:16 | call to source :  | active_support.rb:169:34:169:34 | a :  |
+| active_support.rb:169:7:169:35 | call to new :  | active_support.rb:170:7:170:7 | x :  |
+| active_support.rb:169:34:169:34 | a :  | active_support.rb:169:7:169:35 | call to new :  |
+| active_support.rb:170:7:170:7 | x :  | active_support.rb:170:7:170:20 | call to insert :  |
+| active_support.rb:170:7:170:20 | call to insert :  | active_support.rb:171:8:171:8 | y |
+| active_support.rb:175:7:175:16 | call to source :  | active_support.rb:177:34:177:34 | a :  |
+| active_support.rb:177:7:177:35 | call to new :  | active_support.rb:178:7:178:7 | x :  |
+| active_support.rb:177:34:177:34 | a :  | active_support.rb:177:7:177:35 | call to new :  |
+| active_support.rb:178:7:178:7 | x :  | active_support.rb:178:7:178:18 | call to prepend :  |
+| active_support.rb:178:7:178:18 | call to prepend :  | active_support.rb:179:8:179:8 | y |
+| active_support.rb:183:7:183:16 | call to source :  | active_support.rb:184:34:184:34 | a :  |
+| active_support.rb:184:7:184:35 | call to new :  | active_support.rb:185:7:185:7 | x :  |
+| active_support.rb:184:34:184:34 | a :  | active_support.rb:184:7:184:35 | call to new :  |
+| active_support.rb:185:7:185:7 | x :  | active_support.rb:185:7:185:12 | call to to_s :  |
+| active_support.rb:185:7:185:12 | call to to_s :  | active_support.rb:186:8:186:8 | y |
+| active_support.rb:190:7:190:16 | call to source :  | active_support.rb:191:34:191:34 | a :  |
+| active_support.rb:191:7:191:35 | call to new :  | active_support.rb:192:7:192:7 | x :  |
+| active_support.rb:191:34:191:34 | a :  | active_support.rb:191:7:191:35 | call to new :  |
+| active_support.rb:192:7:192:7 | x :  | active_support.rb:192:7:192:16 | call to to_param :  |
+| active_support.rb:192:7:192:16 | call to to_param :  | active_support.rb:193:8:193:8 | y |
+| active_support.rb:197:7:197:16 | call to source :  | active_support.rb:198:20:198:20 | a :  |
+| active_support.rb:198:7:198:21 | call to new :  | active_support.rb:199:7:199:7 | x :  |
+| active_support.rb:198:20:198:20 | a :  | active_support.rb:198:7:198:21 | call to new :  |
+| active_support.rb:199:7:199:7 | x :  | active_support.rb:199:7:199:17 | call to existence :  |
+| active_support.rb:199:7:199:17 | call to existence :  | active_support.rb:200:8:200:8 | y |
+| active_support.rb:199:7:199:17 | call to existence :  | active_support.rb:201:7:201:7 | y :  |
+| active_support.rb:201:7:201:7 | y :  | active_support.rb:201:7:201:17 | call to existence :  |
+| active_support.rb:201:7:201:17 | call to existence :  | active_support.rb:202:8:202:8 | z |
 nodes
 | active_support.rb:9:9:9:18 | call to source :  | semmle.label | call to source :  |
 | active_support.rb:10:10:10:10 | x :  | semmle.label | x :  |
@@ -234,6 +276,57 @@ nodes
 | active_support.rb:135:10:135:10 | b [element] :  | semmle.label | b [element] :  |
 | active_support.rb:135:10:135:13 | ...[...] | semmle.label | ...[...] |
 | active_support.rb:135:10:135:13 | ...[...] | semmle.label | ...[...] |
+| active_support.rb:139:7:139:16 | call to source :  | semmle.label | call to source :  |
+| active_support.rb:140:7:140:35 | call to new :  | semmle.label | call to new :  |
+| active_support.rb:140:34:140:34 | x :  | semmle.label | x :  |
+| active_support.rb:141:8:141:8 | y | semmle.label | y |
+| active_support.rb:146:7:146:16 | call to source :  | semmle.label | call to source :  |
+| active_support.rb:147:7:147:22 | call to safe_concat :  | semmle.label | call to safe_concat :  |
+| active_support.rb:147:21:147:21 | b :  | semmle.label | b :  |
+| active_support.rb:148:8:148:8 | y | semmle.label | y |
+| active_support.rb:153:7:153:16 | call to source :  | semmle.label | call to source :  |
+| active_support.rb:154:3:154:3 | [post] x :  | semmle.label | [post] x :  |
+| active_support.rb:154:17:154:17 | b :  | semmle.label | b :  |
+| active_support.rb:155:8:155:8 | x | semmle.label | x |
+| active_support.rb:159:7:159:16 | call to source :  | semmle.label | call to source :  |
+| active_support.rb:161:7:161:35 | call to new :  | semmle.label | call to new :  |
+| active_support.rb:161:34:161:34 | a :  | semmle.label | a :  |
+| active_support.rb:162:7:162:7 | x :  | semmle.label | x :  |
+| active_support.rb:162:7:162:17 | call to concat :  | semmle.label | call to concat :  |
+| active_support.rb:163:8:163:8 | y | semmle.label | y |
+| active_support.rb:167:7:167:16 | call to source :  | semmle.label | call to source :  |
+| active_support.rb:169:7:169:35 | call to new :  | semmle.label | call to new :  |
+| active_support.rb:169:34:169:34 | a :  | semmle.label | a :  |
+| active_support.rb:170:7:170:7 | x :  | semmle.label | x :  |
+| active_support.rb:170:7:170:20 | call to insert :  | semmle.label | call to insert :  |
+| active_support.rb:171:8:171:8 | y | semmle.label | y |
+| active_support.rb:175:7:175:16 | call to source :  | semmle.label | call to source :  |
+| active_support.rb:177:7:177:35 | call to new :  | semmle.label | call to new :  |
+| active_support.rb:177:34:177:34 | a :  | semmle.label | a :  |
+| active_support.rb:178:7:178:7 | x :  | semmle.label | x :  |
+| active_support.rb:178:7:178:18 | call to prepend :  | semmle.label | call to prepend :  |
+| active_support.rb:179:8:179:8 | y | semmle.label | y |
+| active_support.rb:183:7:183:16 | call to source :  | semmle.label | call to source :  |
+| active_support.rb:184:7:184:35 | call to new :  | semmle.label | call to new :  |
+| active_support.rb:184:34:184:34 | a :  | semmle.label | a :  |
+| active_support.rb:185:7:185:7 | x :  | semmle.label | x :  |
+| active_support.rb:185:7:185:12 | call to to_s :  | semmle.label | call to to_s :  |
+| active_support.rb:186:8:186:8 | y | semmle.label | y |
+| active_support.rb:190:7:190:16 | call to source :  | semmle.label | call to source :  |
+| active_support.rb:191:7:191:35 | call to new :  | semmle.label | call to new :  |
+| active_support.rb:191:34:191:34 | a :  | semmle.label | a :  |
+| active_support.rb:192:7:192:7 | x :  | semmle.label | x :  |
+| active_support.rb:192:7:192:16 | call to to_param :  | semmle.label | call to to_param :  |
+| active_support.rb:193:8:193:8 | y | semmle.label | y |
+| active_support.rb:197:7:197:16 | call to source :  | semmle.label | call to source :  |
+| active_support.rb:198:7:198:21 | call to new :  | semmle.label | call to new :  |
+| active_support.rb:198:20:198:20 | a :  | semmle.label | a :  |
+| active_support.rb:199:7:199:7 | x :  | semmle.label | x :  |
+| active_support.rb:199:7:199:17 | call to existence :  | semmle.label | call to existence :  |
+| active_support.rb:200:8:200:8 | y | semmle.label | y |
+| active_support.rb:201:7:201:7 | y :  | semmle.label | y :  |
+| active_support.rb:201:7:201:17 | call to existence :  | semmle.label | call to existence :  |
+| active_support.rb:202:8:202:8 | z | semmle.label | z |
 subpaths
 #select
 | active_support.rb:106:10:106:13 | ...[...] | active_support.rb:104:10:104:17 | call to source :  | active_support.rb:106:10:106:13 | ...[...] | $@ | active_support.rb:104:10:104:17 | call to source :  | call to source :  |

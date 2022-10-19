@@ -12,37 +12,66 @@
 | clinit.kt:3:1:3:24 | int | TypeAccess |
 | clinit.kt:3:1:3:24 | int | TypeAccess |
 | clinit.kt:3:24:3:24 | 0 | IntegerLiteral |
+| dataClass.kt:0:0:0:0 | 0 | IntegerLiteral |
+| dataClass.kt:0:0:0:0 | 0 | IntegerLiteral |
+| dataClass.kt:0:0:0:0 | 1 | IntegerLiteral |
+| dataClass.kt:0:0:0:0 | 2 | IntegerLiteral |
 | dataClass.kt:0:0:0:0 | 31 | IntegerLiteral |
 | dataClass.kt:0:0:0:0 | "..." | StringTemplateExpr |
 | dataClass.kt:0:0:0:0 | (...)... | CastExpr |
 | dataClass.kt:0:0:0:0 | ) | StringLiteral |
 | dataClass.kt:0:0:0:0 | ,  | StringLiteral |
 | dataClass.kt:0:0:0:0 | ... !is ... | NotInstanceOfExpr |
+| dataClass.kt:0:0:0:0 | ... & ... | AndBitwiseExpr |
+| dataClass.kt:0:0:0:0 | ... & ... | AndBitwiseExpr |
 | dataClass.kt:0:0:0:0 | ... (value not-equals) ... | ValueNEExpr |
 | dataClass.kt:0:0:0:0 | ... (value not-equals) ... | ValueNEExpr |
+| dataClass.kt:0:0:0:0 | ... * ... | MulExpr |
+| dataClass.kt:0:0:0:0 | ... + ... | AddExpr |
+| dataClass.kt:0:0:0:0 | ... == ... | EQExpr |
+| dataClass.kt:0:0:0:0 | ... == ... | EQExpr |
 | dataClass.kt:0:0:0:0 | ... == ... | EQExpr |
 | dataClass.kt:0:0:0:0 | ...=... | AssignExpr |
+| dataClass.kt:0:0:0:0 | ...=... | AssignExpr |
+| dataClass.kt:0:0:0:0 | ...=... | AssignExpr |
+| dataClass.kt:0:0:0:0 | DataClass | TypeAccess |
+| dataClass.kt:0:0:0:0 | DataClass | TypeAccess |
 | dataClass.kt:0:0:0:0 | DataClass | TypeAccess |
 | dataClass.kt:0:0:0:0 | DataClass | TypeAccess |
 | dataClass.kt:0:0:0:0 | DataClass | TypeAccess |
 | dataClass.kt:0:0:0:0 | DataClass | TypeAccess |
 | dataClass.kt:0:0:0:0 | DataClass( | StringLiteral |
 | dataClass.kt:0:0:0:0 | Object | TypeAccess |
+| dataClass.kt:0:0:0:0 | Object | TypeAccess |
+| dataClass.kt:0:0:0:0 | String | TypeAccess |
 | dataClass.kt:0:0:0:0 | String | TypeAccess |
 | dataClass.kt:0:0:0:0 | String | TypeAccess |
 | dataClass.kt:0:0:0:0 | boolean | TypeAccess |
+| dataClass.kt:0:0:0:0 | copy(...) | MethodAccess |
 | dataClass.kt:0:0:0:0 | false | BooleanLiteral |
 | dataClass.kt:0:0:0:0 | false | BooleanLiteral |
 | dataClass.kt:0:0:0:0 | false | BooleanLiteral |
 | dataClass.kt:0:0:0:0 | hashCode(...) | MethodAccess |
 | dataClass.kt:0:0:0:0 | hashCode(...) | MethodAccess |
+| dataClass.kt:0:0:0:0 | int | TypeAccess |
+| dataClass.kt:0:0:0:0 | int | TypeAccess |
 | dataClass.kt:0:0:0:0 | int | TypeAccess |
 | dataClass.kt:0:0:0:0 | int | TypeAccess |
 | dataClass.kt:0:0:0:0 | new DataClass(...) | ClassInstanceExpr |
 | dataClass.kt:0:0:0:0 | other | VarAccess |
 | dataClass.kt:0:0:0:0 | other | VarAccess |
 | dataClass.kt:0:0:0:0 | other | VarAccess |
-| dataClass.kt:0:0:0:0 | plus(...) | MethodAccess |
+| dataClass.kt:0:0:0:0 | p0 | VarAccess |
+| dataClass.kt:0:0:0:0 | p0 | VarAccess |
+| dataClass.kt:0:0:0:0 | p0 | VarAccess |
+| dataClass.kt:0:0:0:0 | p0.x | VarAccess |
+| dataClass.kt:0:0:0:0 | p0.y | VarAccess |
+| dataClass.kt:0:0:0:0 | p1 | VarAccess |
+| dataClass.kt:0:0:0:0 | p1 | VarAccess |
+| dataClass.kt:0:0:0:0 | p2 | VarAccess |
+| dataClass.kt:0:0:0:0 | p2 | VarAccess |
+| dataClass.kt:0:0:0:0 | p3 | VarAccess |
+| dataClass.kt:0:0:0:0 | p3 | VarAccess |
 | dataClass.kt:0:0:0:0 | result | LocalVariableDeclExpr |
 | dataClass.kt:0:0:0:0 | result | VarAccess |
 | dataClass.kt:0:0:0:0 | result | VarAccess |
@@ -64,7 +93,6 @@
 | dataClass.kt:0:0:0:0 | this.y | VarAccess |
 | dataClass.kt:0:0:0:0 | this.y | VarAccess |
 | dataClass.kt:0:0:0:0 | this.y | VarAccess |
-| dataClass.kt:0:0:0:0 | times(...) | MethodAccess |
 | dataClass.kt:0:0:0:0 | tmp0_other_with_cast | LocalVariableDeclExpr |
 | dataClass.kt:0:0:0:0 | tmp0_other_with_cast | VarAccess |
 | dataClass.kt:0:0:0:0 | tmp0_other_with_cast | VarAccess |
@@ -198,9 +226,13 @@
 | enumClass.kt:0:0:0:0 | EnumClass | TypeAccess |
 | enumClass.kt:0:0:0:0 | EnumClass | TypeAccess |
 | enumClass.kt:0:0:0:0 | EnumClass[] | TypeAccess |
+| enumClass.kt:0:0:0:0 | EnumWithFunctions | TypeAccess |
+| enumClass.kt:0:0:0:0 | EnumWithFunctions | TypeAccess |
+| enumClass.kt:0:0:0:0 | EnumWithFunctions[] | TypeAccess |
 | enumClass.kt:0:0:0:0 | String | TypeAccess |
+| enumClass.kt:0:0:0:0 | String | TypeAccess |
+| enumClass.kt:1:1:4:1 | Enum<EnumClass> | TypeAccess |
 | enumClass.kt:1:1:4:1 | EnumClass | TypeAccess |
-| enumClass.kt:1:1:4:1 | Unit | TypeAccess |
 | enumClass.kt:1:1:4:1 | new Enum(...) | ClassInstanceExpr |
 | enumClass.kt:1:22:1:31 | ...=... | KtInitializerAssignExpr |
 | enumClass.kt:1:22:1:31 | int | TypeAccess |
@@ -224,6 +256,33 @@
 | enumClass.kt:3:5:3:12 | EnumClass.enum2 | VarAccess |
 | enumClass.kt:3:5:3:12 | new EnumClass(...) | ClassInstanceExpr |
 | enumClass.kt:3:11:3:11 | 1 | IntegerLiteral |
+| enumClass.kt:6:1:16:1 | Enum<EnumWithFunctions> | TypeAccess |
+| enumClass.kt:6:1:16:1 | EnumWithFunctions | TypeAccess |
+| enumClass.kt:6:1:16:1 | new Enum(...) | ClassInstanceExpr |
+| enumClass.kt:8:3:11:4 | ...=... | KtInitializerAssignExpr |
+| enumClass.kt:8:3:11:4 | <implicit coercion to unit> | ImplicitCoercionToUnitExpr |
+| enumClass.kt:8:3:11:4 | EnumWithFunctions | TypeAccess |
+| enumClass.kt:8:3:11:4 | EnumWithFunctions | TypeAccess |
+| enumClass.kt:8:3:11:4 | EnumWithFunctions | TypeAccess |
+| enumClass.kt:8:3:11:4 | EnumWithFunctions.VAL | VarAccess |
+| enumClass.kt:8:3:11:4 | Unit | TypeAccess |
+| enumClass.kt:8:3:11:4 | VAL | TypeAccess |
+| enumClass.kt:8:3:11:4 | new EnumWithFunctions(...) | ClassInstanceExpr |
+| enumClass.kt:8:3:11:4 | new VAL(...) | ClassInstanceExpr |
+| enumClass.kt:9:14:9:30 | int | TypeAccess |
+| enumClass.kt:9:20:9:25 | int | TypeAccess |
+| enumClass.kt:9:30:9:30 | i | VarAccess |
+| enumClass.kt:10:14:10:42 | int | TypeAccess |
+| enumClass.kt:10:20:10:25 | int | TypeAccess |
+| enumClass.kt:10:30:10:33 | this | ThisAccess |
+| enumClass.kt:10:30:10:42 | ... + ... | AddExpr |
+| enumClass.kt:10:35:10:38 | f(...) | MethodAccess |
+| enumClass.kt:10:37:10:37 | i | VarAccess |
+| enumClass.kt:10:42:10:42 | i | VarAccess |
+| enumClass.kt:13:12:13:29 | int | TypeAccess |
+| enumClass.kt:13:18:13:23 | int | TypeAccess |
+| enumClass.kt:14:12:14:29 | int | TypeAccess |
+| enumClass.kt:14:18:14:23 | int | TypeAccess |
 | methods2.kt:4:1:5:1 | Unit | TypeAccess |
 | methods2.kt:4:26:4:31 | int | TypeAccess |
 | methods2.kt:4:34:4:39 | int | TypeAccess |

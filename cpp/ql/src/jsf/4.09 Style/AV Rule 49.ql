@@ -24,5 +24,5 @@ where
   w.isDefiniteAcronym() and
   not w.isUppercase()
 select d,
-  "AV Rule 49:  acronyms in identifiers will be uppercase. Incorrect case for acronym " +
+  "AV Rule 49: acronyms in identifiers will be uppercase. Incorrect case for acronym " +
     w.toString() + "."

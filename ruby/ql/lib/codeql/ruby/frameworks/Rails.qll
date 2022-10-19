@@ -5,13 +5,91 @@
 private import codeql.ruby.AST
 private import codeql.ruby.Concepts
 private import codeql.ruby.DataFlow
-private import codeql.ruby.frameworks.ActionController
-private import codeql.ruby.frameworks.ActionView
 private import codeql.ruby.frameworks.ActiveRecord
 private import codeql.ruby.frameworks.ActiveStorage
-private import codeql.ruby.ast.internal.Module
+private import codeql.ruby.frameworks.internal.Rails
 private import codeql.ruby.ApiGraphs
 private import codeql.ruby.security.OpenSSL
+
+/**
+ * Provides classes for working with Rails.
+ */
+module Rails {
+  /**
+   * DEPRECATED: Any call to `html_safe` is considered an XSS sink.
+   * A method call on a string to mark it as HTML safe for Rails. Strings marked
+   * as such will not be automatically escaped when inserted into HTML.
+   */
+  deprecated class HtmlSafeCall extends MethodCall {
+    HtmlSafeCall() { this.getMethodName() = "html_safe" }
+  }
+
+  /** A call to a Rails method to escape HTML. */
+  class HtmlEscapeCall extends MethodCall instanceof HtmlEscapeCallImpl { }
+
+  /** A call to fetch the request parameters in a Rails app. */
+  class ParamsCall extends MethodCall instanceof ParamsCallImpl { }
+
+  /** A call to fetch the request cookies in a Rails app. */
+  class CookiesCall extends MethodCall instanceof CookiesCallImpl { }
+
+  /**
+   * A call to a render method that will populate the response body with the
+   * rendered content.
+   */
+  class RenderCall extends MethodCall instanceof RenderCallImpl {
+    private Expr getTemplatePathArgument() {
+      // TODO: support other ways of specifying paths (e.g. `file`)
+      result = [this.getKeywordArgument(["partial", "template", "action"]), this.getArgument(0)]
+    }
+
+    private string getTemplatePathValue() {
+      result = this.getTemplatePathArgument().getConstantValue().getStringlikeValue()
+    }
+
+    // everything up to and including the final slash, but ignoring any leading slash
+    private string getSubPath() {
+      result = this.getTemplatePathValue().regexpCapture("^/?(.*/)?(?:[^/]*?)$", 1)
+    }
+
+    // everything after the final slash, or the whole string if there is no slash
+    private string getBaseName() {
+      result = this.getTemplatePathValue().regexpCapture("^/?(?:.*/)?([^/]*?)$", 1)
+    }
+
+    /**
+     * Gets the template file to be rendered by this call, if any.
+     */
+    ErbFile getTemplateFile() {
+      result.getTemplateName() = this.getBaseName() and
+      result.getRelativePath().matches("%app/views/" + this.getSubPath() + "%")
+    }
+
+    /**
+     * Get the local variables passed as context to the renderer
+     */
+    HashLiteral getLocals() { result = this.getKeywordArgument("locals") }
+    // TODO: implicit renders in controller actions
+  }
+
+  /** A render call that does not automatically set the HTTP response body. */
+  class RenderToCall extends MethodCall instanceof RenderToCallImpl { }
+
+  /**
+   * A `render` call seen as a file system access.
+   */
+  private class RenderAsFileSystemAccess extends FileSystemAccess::Range, DataFlow::CallNode {
+    RenderAsFileSystemAccess() {
+      exists(MethodCall call | this.asExpr().getExpr() = call |
+        call instanceof RenderCall
+        or
+        call instanceof RenderToCall
+      )
+    }
+
+    override DataFlow::Node getAPathArgument() { result = this.getKeywordArgument("file") }
+  }
+}
 
 /**
  * A reference to either `Rails::Railtie`, `Rails::Engine`, or `Rails::Application`.
@@ -29,7 +107,7 @@ private class RailtieClass extends ClassDeclaration {
   RailtieClass() {
     this.getSuperclassExpr() instanceof RailtieClassAccess or
     exists(RailtieClass other |
-      other.getModule() = resolveConstantReadAccess(this.getSuperclassExpr())
+      other.getModule() = this.getSuperclassExpr().(ConstantReadAccess).getModule()
     )
   }
 }
@@ -41,7 +119,7 @@ private DataFlow::CallNode getAConfigureCallNode() {
   // `Rails::Application.configure`
   exists(ConstantReadAccess read, RailtieClass cls |
     read = result.getReceiver().asExpr().getExpr() and
-    resolveConstantReadAccess(read) = cls.getModule() and
+    read.getModule() = cls.getModule() and
     result.asExpr().getExpr().(MethodCall).getMethodName() = "configure"
   )
 }

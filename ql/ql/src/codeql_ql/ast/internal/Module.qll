@@ -271,7 +271,7 @@ private module Cached {
 
   pragma[noinline]
   private predicate resolveModuleRefHelper(TypeRef me, ContainerOrModule enclosing, string name) {
-    // The scope is all enclosing modules, the immidiatly containing folder, not the parent folders.
+    // The scope is all enclosing modules, the immediately containing folder, not the parent folders.
     enclosing = getEnclosingModuleNoFolderStep*(getStartModule(me)) and
     name = [me.(ModuleExpr).getName(), me.(TypeExpr).getClassName()] and
     not exists(me.(ModuleExpr).getQualifier()) and
@@ -313,7 +313,7 @@ private predicate definesModule(
     m = TModule(any(Module mod | public = getPublicBool(mod)))
   )
   or
-  // signature module in a paramertized module
+  // signature module in a parameterized module
   exists(Module mod, SignatureExpr sig, TypeRef ty, int i |
     mod = container.asModule() and
     mod.hasParameter(i, name, sig) and
@@ -389,6 +389,7 @@ module ModConsistency {
     ) >= 2 and
     // paramerized modules are not treated nicely, so we ignore them here.
     not i.getResolvedModule().getEnclosing*().asModule().hasParameter(_, _, _) and
+    not i.getResolvedModule().asModule().hasAnnotation("signature") and
     not i.getLocation()
         .getFile()
         .getAbsolutePath()

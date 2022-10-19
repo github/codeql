@@ -5,37 +5,39 @@ import codeql.swift.elements.stmt.BraceStmt
 import codeql.swift.elements.Element
 import codeql.swift.elements.decl.ParamDecl
 
-class CallableBase extends Synth::TCallable, Element {
-  ParamDecl getImmediateSelfParam() {
-    result =
-      Synth::convertParamDeclFromRaw(Synth::convertCallableToRaw(this)
-            .(Raw::Callable)
-            .getSelfParam())
+module Generated {
+  class Callable extends Synth::TCallable, Element {
+    ParamDecl getImmediateSelfParam() {
+      result =
+        Synth::convertParamDeclFromRaw(Synth::convertCallableToRaw(this)
+              .(Raw::Callable)
+              .getSelfParam())
+    }
+
+    final ParamDecl getSelfParam() { result = getImmediateSelfParam().resolve() }
+
+    final predicate hasSelfParam() { exists(getSelfParam()) }
+
+    ParamDecl getImmediateParam(int index) {
+      result =
+        Synth::convertParamDeclFromRaw(Synth::convertCallableToRaw(this)
+              .(Raw::Callable)
+              .getParam(index))
+    }
+
+    final ParamDecl getParam(int index) { result = getImmediateParam(index).resolve() }
+
+    final ParamDecl getAParam() { result = getParam(_) }
+
+    final int getNumberOfParams() { result = count(getAParam()) }
+
+    BraceStmt getImmediateBody() {
+      result =
+        Synth::convertBraceStmtFromRaw(Synth::convertCallableToRaw(this).(Raw::Callable).getBody())
+    }
+
+    final BraceStmt getBody() { result = getImmediateBody().resolve() }
+
+    final predicate hasBody() { exists(getBody()) }
   }
-
-  final ParamDecl getSelfParam() { result = getImmediateSelfParam().resolve() }
-
-  final predicate hasSelfParam() { exists(getSelfParam()) }
-
-  ParamDecl getImmediateParam(int index) {
-    result =
-      Synth::convertParamDeclFromRaw(Synth::convertCallableToRaw(this)
-            .(Raw::Callable)
-            .getParam(index))
-  }
-
-  final ParamDecl getParam(int index) { result = getImmediateParam(index).resolve() }
-
-  final ParamDecl getAParam() { result = getParam(_) }
-
-  final int getNumberOfParams() { result = count(getAParam()) }
-
-  BraceStmt getImmediateBody() {
-    result =
-      Synth::convertBraceStmtFromRaw(Synth::convertCallableToRaw(this).(Raw::Callable).getBody())
-  }
-
-  final BraceStmt getBody() { result = getImmediateBody().resolve() }
-
-  final predicate hasBody() { exists(getBody()) }
 }

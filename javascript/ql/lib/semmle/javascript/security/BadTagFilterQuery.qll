@@ -1,5 +1,5 @@
 /**
- * Provides precicates for reasoning about bad tag filter vulnerabilities.
+ * Provides predicates for reasoning about bad tag filter vulnerabilities.
  */
 
 import regexp.RegexpMatching
@@ -65,7 +65,7 @@ predicate isBadRegexpFilter(HtmlMatchingRegExp regexp, string msg) {
   regexp.matches("<!-- foo --!>") and
   exists(int a, int b | a != b |
     regexp.fillsCaptureGroup("<!-- foo -->", a) and
-    // <!-- foo --> might be ambigously parsed (matching both capture groups), and that is ok here.
+    // <!-- foo --> might be ambiguously parsed (matching both capture groups), and that is ok here.
     regexp.fillsCaptureGroup("<!-- foo --!>", b) and
     not regexp.fillsCaptureGroup("<!-- foo --!>", a) and
     msg =
@@ -87,7 +87,7 @@ predicate isBadRegexpFilter(HtmlMatchingRegExp regexp, string msg) {
     not regexp.fillsCaptureGroup("<script>", group) and
     msg =
       "This regular expression only parses --> (capture group " + group +
-        ") and not --!> as a HTML comment end tag."
+        ") and not --!> as an HTML comment end tag."
   )
   or
   regexp.matches("<!-- foo -->") and

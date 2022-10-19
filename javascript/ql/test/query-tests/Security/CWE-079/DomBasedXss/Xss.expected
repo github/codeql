@@ -431,6 +431,22 @@ nodes
 | jquery.js:34:5:34:25 | '<b>' + ...  '</b>' |
 | jquery.js:34:5:34:25 | '<b>' + ...  '</b>' |
 | jquery.js:34:13:34:16 | hash |
+| json-stringify.jsx:5:9:5:36 | locale |
+| json-stringify.jsx:5:9:5:36 | locale |
+| json-stringify.jsx:5:18:5:36 | req.param("locale") |
+| json-stringify.jsx:5:18:5:36 | req.param("locale") |
+| json-stringify.jsx:5:18:5:36 | req.param("locale") |
+| json-stringify.jsx:11:16:11:58 | `https: ... ocale}` |
+| json-stringify.jsx:11:51:11:56 | locale |
+| json-stringify.jsx:19:16:19:63 | `https: ... ocale}` |
+| json-stringify.jsx:19:56:19:61 | locale |
+| json-stringify.jsx:31:40:31:61 | JSON.st ... locale) |
+| json-stringify.jsx:31:40:31:61 | JSON.st ... locale) |
+| json-stringify.jsx:31:40:31:61 | JSON.st ... locale) |
+| json-stringify.jsx:31:55:31:60 | locale |
+| json-stringify.jsx:31:55:31:60 | locale |
+| json-stringify.jsx:35:40:35:61 | JSON.st ... jsonLD) |
+| json-stringify.jsx:35:40:35:61 | JSON.st ... jsonLD) |
 | jwt-server.js:7:9:7:35 | taint |
 | jwt-server.js:7:9:7:35 | taint |
 | jwt-server.js:7:17:7:35 | req.param("wobble") |
@@ -1509,6 +1525,24 @@ edges
 | jquery.js:28:5:28:26 | window. ... .search | jquery.js:28:5:28:43 | window. ... ?', '') |
 | jquery.js:34:13:34:16 | hash | jquery.js:34:5:34:25 | '<b>' + ...  '</b>' |
 | jquery.js:34:13:34:16 | hash | jquery.js:34:5:34:25 | '<b>' + ...  '</b>' |
+| json-stringify.jsx:5:9:5:36 | locale | json-stringify.jsx:11:51:11:56 | locale |
+| json-stringify.jsx:5:9:5:36 | locale | json-stringify.jsx:19:56:19:61 | locale |
+| json-stringify.jsx:5:9:5:36 | locale | json-stringify.jsx:31:55:31:60 | locale |
+| json-stringify.jsx:5:9:5:36 | locale | json-stringify.jsx:31:55:31:60 | locale |
+| json-stringify.jsx:5:18:5:36 | req.param("locale") | json-stringify.jsx:5:9:5:36 | locale |
+| json-stringify.jsx:5:18:5:36 | req.param("locale") | json-stringify.jsx:5:9:5:36 | locale |
+| json-stringify.jsx:5:18:5:36 | req.param("locale") | json-stringify.jsx:5:9:5:36 | locale |
+| json-stringify.jsx:5:18:5:36 | req.param("locale") | json-stringify.jsx:5:9:5:36 | locale |
+| json-stringify.jsx:11:16:11:58 | `https: ... ocale}` | json-stringify.jsx:35:40:35:61 | JSON.st ... jsonLD) |
+| json-stringify.jsx:11:16:11:58 | `https: ... ocale}` | json-stringify.jsx:35:40:35:61 | JSON.st ... jsonLD) |
+| json-stringify.jsx:11:51:11:56 | locale | json-stringify.jsx:11:16:11:58 | `https: ... ocale}` |
+| json-stringify.jsx:19:16:19:63 | `https: ... ocale}` | json-stringify.jsx:35:40:35:61 | JSON.st ... jsonLD) |
+| json-stringify.jsx:19:16:19:63 | `https: ... ocale}` | json-stringify.jsx:35:40:35:61 | JSON.st ... jsonLD) |
+| json-stringify.jsx:19:56:19:61 | locale | json-stringify.jsx:19:16:19:63 | `https: ... ocale}` |
+| json-stringify.jsx:31:55:31:60 | locale | json-stringify.jsx:31:40:31:61 | JSON.st ... locale) |
+| json-stringify.jsx:31:55:31:60 | locale | json-stringify.jsx:31:40:31:61 | JSON.st ... locale) |
+| json-stringify.jsx:31:55:31:60 | locale | json-stringify.jsx:31:40:31:61 | JSON.st ... locale) |
+| json-stringify.jsx:31:55:31:60 | locale | json-stringify.jsx:31:40:31:61 | JSON.st ... locale) |
 | jwt-server.js:7:9:7:35 | taint | jwt-server.js:9:16:9:20 | taint |
 | jwt-server.js:7:9:7:35 | taint | jwt-server.js:9:16:9:20 | taint |
 | jwt-server.js:7:17:7:35 | req.param("wobble") | jwt-server.js:7:9:7:35 | taint |
@@ -2241,6 +2275,8 @@ edges
 | jquery.js:27:5:27:25 | hash.re ... #', '') | jquery.js:18:14:18:33 | window.location.hash | jquery.js:27:5:27:25 | hash.re ... #', '') | Cross-site scripting vulnerability due to $@. | jquery.js:18:14:18:33 | window.location.hash | user-provided value |
 | jquery.js:28:5:28:43 | window. ... ?', '') | jquery.js:28:5:28:26 | window. ... .search | jquery.js:28:5:28:43 | window. ... ?', '') | Cross-site scripting vulnerability due to $@. | jquery.js:28:5:28:26 | window. ... .search | user-provided value |
 | jquery.js:34:5:34:25 | '<b>' + ...  '</b>' | jquery.js:18:14:18:33 | window.location.hash | jquery.js:34:5:34:25 | '<b>' + ...  '</b>' | Cross-site scripting vulnerability due to $@. | jquery.js:18:14:18:33 | window.location.hash | user-provided value |
+| json-stringify.jsx:31:40:31:61 | JSON.st ... locale) | json-stringify.jsx:5:18:5:36 | req.param("locale") | json-stringify.jsx:31:40:31:61 | JSON.st ... locale) | Cross-site scripting vulnerability due to $@. | json-stringify.jsx:5:18:5:36 | req.param("locale") | user-provided value |
+| json-stringify.jsx:35:40:35:61 | JSON.st ... jsonLD) | json-stringify.jsx:5:18:5:36 | req.param("locale") | json-stringify.jsx:35:40:35:61 | JSON.st ... jsonLD) | Cross-site scripting vulnerability due to $@. | json-stringify.jsx:5:18:5:36 | req.param("locale") | user-provided value |
 | jwt-server.js:11:19:11:29 | decoded.foo | jwt-server.js:7:17:7:35 | req.param("wobble") | jwt-server.js:11:19:11:29 | decoded.foo | Cross-site scripting vulnerability due to $@. | jwt-server.js:7:17:7:35 | req.param("wobble") | user-provided value |
 | nodemailer.js:13:11:13:69 | `Hi, yo ... sage}.` | nodemailer.js:13:50:13:66 | req.query.message | nodemailer.js:13:11:13:69 | `Hi, yo ... sage}.` | HTML injection vulnerability due to $@. | nodemailer.js:13:50:13:66 | req.query.message | user-provided value |
 | optionalSanitizer.js:6:18:6:23 | target | optionalSanitizer.js:2:16:2:39 | documen ... .search | optionalSanitizer.js:6:18:6:23 | target | Cross-site scripting vulnerability due to $@. | optionalSanitizer.js:2:16:2:39 | documen ... .search | user-provided value |

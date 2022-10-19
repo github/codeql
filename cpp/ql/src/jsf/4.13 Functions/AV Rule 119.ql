@@ -14,4 +14,4 @@ from Function f
 where
   f.fromSource() and
   f.calls+(f)
-select f, "Functions shall not call theselves, either directly or indirectly"
+select f, "Functions shall not call themselves, either directly or indirectly."

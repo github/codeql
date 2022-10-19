@@ -1,10 +1,29 @@
+## 0.4.1
+
+### Minor Analysis Improvements
+
+* The `rb/xxe` query has been updated to add the following sinks for XML external entity expansion:
+    1. Calls to parse XML using `LibXML` when its `default_substitute_entities` option is enabled.
+    2. Uses of the Rails methods `ActiveSupport::XmlMini.parse`, `Hash.from_xml`, and `Hash.from_trusted_xml` when `ActiveSupport::XmlMini` is configured to use `LibXML` as its backend, and its `default_substitute_entities` option is enabled.
+
+## 0.4.0
+
+### New Queries
+
+* Added a new query, `rb/hardcoded-data-interpreted-as-code`, to detect cases where hardcoded data is executed as code, a technique associated with backdoors.
+
+### Minor Analysis Improvements
+
+* The `rb/unsafe-deserialization` query now includes alerts for user-controlled data passed to `Hash.from_trusted_xml`, since that method can deserialize YAML embedded in the XML, which in turn can result in deserialization of arbitrary objects.
+* The alert message of many queries have been changed to make the message consistent with other languages.
+
 ## 0.3.4
 
 ## 0.3.3
 
 ### New Queries
 
-* Added a new query, `rb/log-inection`, to detect cases where a malicious user may be able to forge log entries.
+* Added a new query, `rb/log-injection`, to detect cases where a malicious user may be able to forge log entries.
 * Added a new query, `rb/incomplete-multi-character-sanitization`. The query
   finds string transformations that do not replace all occurrences of a
   multi-character substring.
@@ -100,7 +119,7 @@
 ### New Queries
 
 * A new query (`rb/request-forgery`) has been added. The query finds HTTP requests made with user-controlled URLs.
-* A new query (`rb/csrf-protection-disabled`) has been added. The query finds cases where cross-site forgery protection is explictly disabled.
+* A new query (`rb/csrf-protection-disabled`) has been added. The query finds cases where cross-site forgery protection is explicitly disabled.
 
 ### Query Metadata Changes
 

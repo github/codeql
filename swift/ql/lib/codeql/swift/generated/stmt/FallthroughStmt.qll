@@ -4,24 +4,26 @@ private import codeql.swift.generated.Raw
 import codeql.swift.elements.stmt.CaseStmt
 import codeql.swift.elements.stmt.Stmt
 
-class FallthroughStmtBase extends Synth::TFallthroughStmt, Stmt {
-  override string getAPrimaryQlClass() { result = "FallthroughStmt" }
+module Generated {
+  class FallthroughStmt extends Synth::TFallthroughStmt, Stmt {
+    override string getAPrimaryQlClass() { result = "FallthroughStmt" }
 
-  CaseStmt getImmediateFallthroughSource() {
-    result =
-      Synth::convertCaseStmtFromRaw(Synth::convertFallthroughStmtToRaw(this)
-            .(Raw::FallthroughStmt)
-            .getFallthroughSource())
+    CaseStmt getImmediateFallthroughSource() {
+      result =
+        Synth::convertCaseStmtFromRaw(Synth::convertFallthroughStmtToRaw(this)
+              .(Raw::FallthroughStmt)
+              .getFallthroughSource())
+    }
+
+    final CaseStmt getFallthroughSource() { result = getImmediateFallthroughSource().resolve() }
+
+    CaseStmt getImmediateFallthroughDest() {
+      result =
+        Synth::convertCaseStmtFromRaw(Synth::convertFallthroughStmtToRaw(this)
+              .(Raw::FallthroughStmt)
+              .getFallthroughDest())
+    }
+
+    final CaseStmt getFallthroughDest() { result = getImmediateFallthroughDest().resolve() }
   }
-
-  final CaseStmt getFallthroughSource() { result = getImmediateFallthroughSource().resolve() }
-
-  CaseStmt getImmediateFallthroughDest() {
-    result =
-      Synth::convertCaseStmtFromRaw(Synth::convertFallthroughStmtToRaw(this)
-            .(Raw::FallthroughStmt)
-            .getFallthroughDest())
-  }
-
-  final CaseStmt getFallthroughDest() { result = getImmediateFallthroughDest().resolve() }
 }

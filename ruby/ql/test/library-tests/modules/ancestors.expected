@@ -1,7 +1,7 @@
-#-----| BasicObject
-
 #-----| Class
 #-----| super -> Module
+
+#-----| BasicObject
 
 #-----| Complex
 #-----| super -> Numeric
@@ -49,48 +49,75 @@ calls.rb:
 #  105| Module
 #-----| super -> Object
 
-#  112| Object
+#  115| Object
 #-----| super -> BasicObject
 #-----| include -> Kernel
 #-----| prepend -> A
 
-#  117| Hash
+#  120| Hash
 #-----| super -> Object
 
-#  122| Array
+#  125| Array
 #-----| super -> Object
 
-#  162| S
+#  165| S
 #-----| super -> Object
 
-#  168| A
+#  171| A
 #-----| super -> S
 #-----| super -> B
 #-----| prepend -> A::B
 
-#  173| B
+#  176| B
 #-----| super -> S
 
-#  187| Singletons
+#  190| Singletons
 #-----| super -> Object
 
-#  307| SelfNew
+#  310| SelfNew
 #-----| super -> Object
 
-#  322| C1
+#  325| C1
 #-----| super -> Object
 
-#  328| C2
+#  331| C2
 #-----| super -> C1
 
-#  334| C3
+#  337| C3
 #-----| super -> C2
 
-#  374| SingletonOverride1
+#  377| SingletonOverride1
 #-----| super -> Object
 
-#  399| SingletonOverride2
+#  404| SingletonOverride2
 #-----| super -> SingletonOverride1
+
+#  421| ConditionalInstanceMethods
+#-----| super -> Object
+
+#  484| ExtendSingletonMethod
+
+#  494| ExtendSingletonMethod2
+
+#  500| ExtendSingletonMethod3
+
+#  513| ProtectedMethodInModule
+
+#  519| ProtectedMethods
+#-----| super -> Object
+#-----| include -> ProtectedMethodInModule
+
+#  538| ProtectedMethodsSub
+#-----| super -> ProtectedMethods
+
+#  552| SingletonUpCall_Base
+#-----| super -> Object
+
+#  556| SingletonUpCall_Sub
+#-----| super -> SingletonUpCall_Base
+
+#  564| SingletonUpCall_SubSub
+#-----| super -> SingletonUpCall_Sub
 
 hello.rb:
 #    1| EnglishWords
@@ -101,6 +128,13 @@ hello.rb:
 
 #   18| HelloWorld
 #-----| super -> Greeting
+
+instance_fields.rb:
+#   11| A_target
+#-----| super -> Object
+
+#   26| B_target
+#-----| super -> Object
 
 modules.rb:
 #    1| Empty
@@ -179,17 +213,20 @@ modules_rec.rb:
 #    1| B::A
 #-----| super -> Object
 
-#    4| A::B
-#-----| super -> Object
-
 private.rb:
 #    1| E
 #-----| super -> Object
 
-#   42| F
+#   62| F
 
-#   62| PrivateOverride1
+#   82| PrivateOverride1
 #-----| super -> Object
 
-#   76| PrivateOverride2
+#   96| PrivateOverride2
 #-----| super -> PrivateOverride1
+
+toplevel_self_singleton.rb:
+#    2| A::B
+#-----| super -> Object
+
+#   24| Good

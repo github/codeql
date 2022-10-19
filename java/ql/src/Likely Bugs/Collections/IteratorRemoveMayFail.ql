@@ -72,5 +72,5 @@ where
   remove.getCallee().hasName("remove") and
   iterOfSpecialCollection(remove.getQualifier(), scc)
 select remove,
-  "This call may fail when iterating over the collection created $@, since it does not support element removal.",
-  scc, "here"
+  "This call may fail when iterating over $@, since it does not support element removal.", scc,
+  "the collection"

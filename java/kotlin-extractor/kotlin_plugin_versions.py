@@ -46,10 +46,10 @@ def get_single_version(fakeVersionOutput = None):
     if len(matching_minor_versions) == 0:
         raise Exception(f'Cannot find a matching minor version for kotlinc version {current_version} (got {versionOutput}; know about {str(many_versions)})')
 
-    matching_minor_versions.sort()
+    matching_minor_versions.sort(reverse = True)
 
     for version in matching_minor_versions:
-        if version >= current_version:
+        if version <= current_version:
             return version_tuple_to_string(version)
 
     return version_tuple_to_string(matching_minor_versions[-1])

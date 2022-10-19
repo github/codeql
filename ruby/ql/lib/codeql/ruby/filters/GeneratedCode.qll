@@ -6,7 +6,7 @@ private import codeql.ruby.ast.internal.TreeSitter
 /** A source file that contains generated code. */
 abstract class GeneratedCodeFile extends RubyFile { }
 
-/** A file contining comments suggesting it contains generated code. */
+/** A file continuing comments suggesting it contains generated code. */
 class GeneratedCommentFile extends GeneratedCodeFile {
   GeneratedCommentFile() { this = any(GeneratedCodeComment c).getLocation().getFile() }
 }

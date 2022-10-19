@@ -167,4 +167,14 @@ module Kernel {
 
     override DataFlow::Node getCode() { result = this.getArgument(0) }
   }
+
+  private class TapSummary extends SimpleSummarizedCallable {
+    TapSummary() { this = "tap" }
+
+    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+      input = "Argument[self]" and
+      output = ["ReturnValue", "Argument[block].Parameter[0]"] and
+      preservesValue = true
+    }
+  }
 }

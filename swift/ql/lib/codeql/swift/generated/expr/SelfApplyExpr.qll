@@ -4,13 +4,15 @@ private import codeql.swift.generated.Raw
 import codeql.swift.elements.expr.ApplyExpr
 import codeql.swift.elements.expr.Expr
 
-class SelfApplyExprBase extends Synth::TSelfApplyExpr, ApplyExpr {
-  Expr getImmediateBase() {
-    result =
-      Synth::convertExprFromRaw(Synth::convertSelfApplyExprToRaw(this)
-            .(Raw::SelfApplyExpr)
-            .getBase())
-  }
+module Generated {
+  class SelfApplyExpr extends Synth::TSelfApplyExpr, ApplyExpr {
+    Expr getImmediateBase() {
+      result =
+        Synth::convertExprFromRaw(Synth::convertSelfApplyExprToRaw(this)
+              .(Raw::SelfApplyExpr)
+              .getBase())
+    }
 
-  final Expr getBase() { result = getImmediateBase().resolve() }
+    final Expr getBase() { result = getImmediateBase().resolve() }
+  }
 }

@@ -26,11 +26,8 @@ private module Ldap {
     API::Node ldapInitialize() { result = ldap().getMember("initialize") }
 
     /** Gets a reference to a `ldap` operation. */
-    private DataFlow::TypeTrackingNode ldapOperation(DataFlow::TypeTracker t) {
-      t.start() and
-      result.(DataFlow::AttrRead).getObject().getALocalSource() = ldapInitialize().getACall()
-      or
-      exists(DataFlow::TypeTracker t2 | result = ldapOperation(t2).track(t2, t))
+    private API::Node ldapOperation(string name) {
+      result = ldapInitialize().getReturn().getMember(name)
     }
 
     /**
@@ -44,24 +41,13 @@ private module Ldap {
       }
     }
 
-    /** Gets a reference to a `ldap` operation. */
-    private DataFlow::Node ldapOperation() {
-      ldapOperation(DataFlow::TypeTracker::end()).flowsTo(result)
-    }
-
-    /** Gets a reference to a `ldap` query. */
-    private DataFlow::Node ldapQuery() {
-      result = ldapOperation() and
-      result.(DataFlow::AttrRead).getAttributeName() instanceof Ldap2QueryMethods
-    }
-
     /**
      * A class to find `ldap` methods executing a query.
      *
      * See `LDAP2QueryMethods`
      */
     private class Ldap2Query extends DataFlow::CallCfgNode, LdapQuery::Range {
-      Ldap2Query() { this.getFunction() = ldapQuery() }
+      Ldap2Query() { this = ldapOperation(any(Ldap2QueryMethods m)).getACall() }
 
       override DataFlow::Node getQuery() {
         result in [this.getArg(0), this.getArg(2), this.getArgByName("filterstr")]
@@ -82,12 +68,6 @@ private module Ldap {
       }
     }
 
-    /** Gets a reference to a `ldap` bind. */
-    private DataFlow::Node ldapBind() {
-      result = ldapOperation() and
-      result.(DataFlow::AttrRead).getAttributeName() instanceof Ldap2BindMethods
-    }
-
     /**List of SSL-demanding options */
     private class LdapSslOptions extends DataFlow::Node {
       LdapSslOptions() {
@@ -101,7 +81,7 @@ private module Ldap {
      * See `LDAP2BindMethods`
      */
     private class Ldap2Bind extends DataFlow::CallCfgNode, LdapBind::Range {
-      Ldap2Bind() { this.getFunction() = ldapBind() }
+      Ldap2Bind() { this = ldapOperation(any(Ldap2BindMethods m)).getACall() }
 
       override DataFlow::Node getPassword() {
         result in [this.getArg(1), this.getArgByName("cred")]

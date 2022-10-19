@@ -85,7 +85,7 @@ else
     foo
 end
 
-if foos.index(foo)r == nil
+if foos.index(foo) == nil
     foo
 else
     foo

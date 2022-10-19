@@ -1,7 +1,7 @@
 
 // --- stubs ---
 
-class URL
+struct URL
 {
 	init?(string: String) {}
 	init?(string: String, relativeTo: URL?) {}

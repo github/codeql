@@ -18,7 +18,7 @@
      <recommendation>
 
           <p>
-               Generating a cryptograhically secure secret key during application initialization and using this generated key for future JWT signing requests can prevent this vulnerability.
+               Generating a cryptographically secure secret key during application initialization and using this generated key for future JWT signing requests can prevent this vulnerability.
           </p>
 
      </recommendation>

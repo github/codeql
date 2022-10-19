@@ -18,4 +18,4 @@ from WriteConfig b, DataFlow::PathNode source, DataFlow::PathNode sink
 where b.hasFlowPath(source, sink)
 select sink.getNode(), source, sink,
   "This write into the external location '" + sink.getNode() +
-    "' may contain unencrypted data from $@", source, "this source."
+    "' may contain unencrypted data from $@.", source, "this source of private data."

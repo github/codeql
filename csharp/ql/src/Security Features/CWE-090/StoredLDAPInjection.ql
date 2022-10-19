@@ -22,5 +22,5 @@ class StoredTaintTrackingConfiguration extends TaintTrackingConfiguration {
 
 from StoredTaintTrackingConfiguration c, DataFlow::PathNode source, DataFlow::PathNode sink
 where c.hasFlowPath(source, sink)
-select sink.getNode(), source, sink, "$@ flows to here and is used in an LDAP query.",
-  source.getNode(), "Stored user-provided value"
+select sink.getNode(), source, sink, "This LDAP query depends on a $@.", source.getNode(),
+  "stored (potentially user-provided) value"

@@ -52,14 +52,14 @@
  * Note that an empty access path means that the value we are tracking flows directly to the element.
  *
  *
- * The `TIterableSequence(sequence)` is at this point superflous but becomes useful when handling recursive
+ * The `TIterableSequence(sequence)` is at this point superfluous but becomes useful when handling recursive
  * structures in the LHS, where `sequence` is some internal sequence node. We can have a uniform treatment
  * by always having these two synthetic nodes. So we transfer to (or, in the recursive case, read into)
  * `TIterableSequence(sequence)`, from which we take a read step to `TIterableElement(sequence)` and then a
  * store step to `sequence`.
  *
  * This allows the unknown content from the RHS to be read into `TIterableElement(sequence)` and tuple content
- * to then be stored into `sequence`. If the content is already tuple content, this inderection creates crosstalk
+ * to then be stored into `sequence`. If the content is already tuple content, this indirection creates crosstalk
  * between indices. Therefore, tuple content is never read into `TIterableElement(sequence)`; it is instead
  * transferred directly from `TIterableSequence(sequence)` to `sequence` via a flow step. Such a flow step will
  * also transfer other content, but only tuple content is further read from `sequence` into its elements.

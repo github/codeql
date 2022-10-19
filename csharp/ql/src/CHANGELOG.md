@@ -1,3 +1,16 @@
+## 0.4.1
+
+### Minor Analysis Improvements
+
+* The alert message of many queries have been changed to better follow the style guide and make the message consistent with other languages.
+
+## 0.4.0
+
+### Minor Analysis Improvements
+
+* A new extractor option has been introduced for disabling CIL extraction. Either pass `-Ocil=false` to the `codeql` CLI or set the environment variable `CODEQL_EXTRACTOR_CSHARP_OPTION_CIL=false`.
+* The alert message of many queries have been changed to make the message consistent with other languages.
+
 ## 0.3.4
 
 ## 0.3.3

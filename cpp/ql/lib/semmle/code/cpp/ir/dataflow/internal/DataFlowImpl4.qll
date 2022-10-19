@@ -163,7 +163,9 @@ abstract class Configuration extends string {
   /**
    * Holds if data may flow from some source to `sink` for this configuration.
    */
-  predicate hasFlowTo(Node sink) { this.hasFlow(_, sink) }
+  predicate hasFlowTo(Node sink) {
+    sink = any(PathNodeSink n | this = n.getConfiguration()).getNodeEx().asNode()
+  }
 
   /**
    * Holds if data may flow from some source to `sink` for this configuration.
@@ -559,12 +561,15 @@ pragma[nomagic]
 private predicate notExpectsContent(NodeEx n) { not expectsContentCached(n.asNode(), _) }
 
 pragma[nomagic]
+private predicate hasReadStep(Content c, Configuration config) { read(_, c, _, config) }
+
+pragma[nomagic]
 private predicate store(
   NodeEx node1, TypedContent tc, NodeEx node2, DataFlowType contentType, Configuration config
 ) {
   store(pragma[only_bind_into](node1.asNode()), tc, pragma[only_bind_into](node2.asNode()),
     contentType) and
-  read(_, tc.getContent(), _, config) and
+  hasReadStep(tc.getContent(), config) and
   stepFilter(node1, node2, config)
 }
 
@@ -598,13 +603,9 @@ private predicate hasSinkCallCtx(Configuration config) {
 }
 
 private module Stage1 implements StageSig {
-  class ApApprox = Unit;
-
   class Ap = Unit;
 
-  class ApOption = Unit;
-
-  class Cc = boolean;
+  private class Cc = boolean;
 
   /* Begin: Stage 1 logic. */
   /**
@@ -613,7 +614,7 @@ private module Stage1 implements StageSig {
    * The Boolean `cc` records whether the node is reached through an
    * argument in a call.
    */
-  predicate fwdFlow(NodeEx node, Cc cc, Configuration config) {
+  private predicate fwdFlow(NodeEx node, Cc cc, Configuration config) {
     sourceNode(node, _, config) and
     if hasSourceCallCtx(config) then cc = true else cc = false
     or
@@ -753,7 +754,7 @@ private module Stage1 implements StageSig {
    * the enclosing callable in order to reach a sink.
    */
   pragma[nomagic]
-  predicate revFlow(NodeEx node, boolean toReturn, Configuration config) {
+  private predicate revFlow(NodeEx node, boolean toReturn, Configuration config) {
     revFlow0(node, toReturn, config) and
     fwdFlow(node, config)
   }
@@ -837,13 +838,13 @@ private module Stage1 implements StageSig {
    * by `revFlow`.
    */
   pragma[nomagic]
-  predicate revFlowIsReadAndStored(Content c, Configuration conf) {
+  additional predicate revFlowIsReadAndStored(Content c, Configuration conf) {
     revFlowConsCand(c, conf) and
     revFlowStore(c, _, _, conf)
   }
 
   pragma[nomagic]
-  predicate viableReturnPosOutNodeCandFwd1(
+  additional predicate viableReturnPosOutNodeCandFwd1(
     DataFlowCall call, ReturnPosition pos, NodeEx out, Configuration config
   ) {
     fwdFlowReturnPosition(pos, _, config) and
@@ -859,7 +860,7 @@ private module Stage1 implements StageSig {
   }
 
   pragma[nomagic]
-  predicate viableParamArgNodeCandFwd1(
+  additional predicate viableParamArgNodeCandFwd1(
     DataFlowCall call, ParamNodeEx p, ArgNodeEx arg, Configuration config
   ) {
     viableParamArgEx(call, p, arg) and
@@ -906,7 +907,7 @@ private module Stage1 implements StageSig {
     )
   }
 
-  predicate revFlowState(FlowState state, Configuration config) {
+  additional predicate revFlowState(FlowState state, Configuration config) {
     exists(NodeEx node |
       sinkNode(node, state, config) and
       revFlow(node, _, pragma[only_bind_into](config)) and
@@ -998,7 +999,7 @@ private module Stage1 implements StageSig {
     )
   }
 
-  predicate stats(
+  additional predicate stats(
     boolean fwd, int nodes, int fields, int conscand, int states, int tuples, Configuration config
   ) {
     fwd = true and
@@ -1259,7 +1260,7 @@ private module MkStage<StageSig PrevStage> {
      * argument.
      */
     pragma[nomagic]
-    predicate fwdFlow(
+    additional predicate fwdFlow(
       NodeEx node, FlowState state, Cc cc, ApOption argAp, Ap ap, Configuration config
     ) {
       fwdFlow0(node, state, cc, argAp, ap, config) and
@@ -1483,7 +1484,7 @@ private module MkStage<StageSig PrevStage> {
      * the access path of the returned value.
      */
     pragma[nomagic]
-    predicate revFlow(
+    additional predicate revFlow(
       NodeEx node, FlowState state, boolean toReturn, ApOption returnAp, Ap ap, Configuration config
     ) {
       revFlow0(node, state, toReturn, returnAp, ap, config) and
@@ -1661,7 +1662,7 @@ private module MkStage<StageSig PrevStage> {
       )
     }
 
-    predicate revFlow(NodeEx node, FlowState state, Configuration config) {
+    additional predicate revFlow(NodeEx node, FlowState state, Configuration config) {
       revFlow(node, state, _, _, _, config)
     }
 
@@ -1674,11 +1675,13 @@ private module MkStage<StageSig PrevStage> {
 
     // use an alias as a workaround for bad functionality-induced joins
     pragma[nomagic]
-    predicate revFlowAlias(NodeEx node, Configuration config) { revFlow(node, _, _, _, _, config) }
+    additional predicate revFlowAlias(NodeEx node, Configuration config) {
+      revFlow(node, _, _, _, _, config)
+    }
 
     // use an alias as a workaround for bad functionality-induced joins
     pragma[nomagic]
-    predicate revFlowAlias(NodeEx node, FlowState state, Ap ap, Configuration config) {
+    additional predicate revFlowAlias(NodeEx node, FlowState state, Ap ap, Configuration config) {
       revFlow(node, state, ap, config)
     }
 
@@ -1699,7 +1702,7 @@ private module MkStage<StageSig PrevStage> {
       )
     }
 
-    predicate consCand(TypedContent tc, Ap ap, Configuration config) {
+    additional predicate consCand(TypedContent tc, Ap ap, Configuration config) {
       revConsCand(tc, ap, config) and
       validAp(ap, config)
     }
@@ -1741,7 +1744,7 @@ private module MkStage<StageSig PrevStage> {
       )
     }
 
-    predicate stats(
+    additional predicate stats(
       boolean fwd, int nodes, int fields, int conscand, int states, int tuples, Configuration config
     ) {
       fwd = true and
@@ -2926,10 +2929,15 @@ abstract private class PathNodeImpl extends PathNode {
     result = this.getASuccessorImpl()
   }
 
-  final PathNodeImpl getANonHiddenSuccessor() {
-    result = this.getASuccessorImpl().getASuccessorIfHidden*() and
-    not this.isHidden() and
+  pragma[nomagic]
+  private PathNodeImpl getANonHiddenSuccessor0() {
+    result = this.getASuccessorIfHidden*() and
     not result.isHidden()
+  }
+
+  final PathNodeImpl getANonHiddenSuccessor() {
+    result = this.getASuccessorImpl().getANonHiddenSuccessor0() and
+    not this.isHidden()
   }
 
   abstract NodeEx getNodeEx();

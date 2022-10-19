@@ -4,13 +4,15 @@ private import codeql.swift.generated.Raw
 import codeql.swift.elements.stmt.LabeledConditionalStmt
 import codeql.swift.elements.stmt.Stmt
 
-class WhileStmtBase extends Synth::TWhileStmt, LabeledConditionalStmt {
-  override string getAPrimaryQlClass() { result = "WhileStmt" }
+module Generated {
+  class WhileStmt extends Synth::TWhileStmt, LabeledConditionalStmt {
+    override string getAPrimaryQlClass() { result = "WhileStmt" }
 
-  Stmt getImmediateBody() {
-    result =
-      Synth::convertStmtFromRaw(Synth::convertWhileStmtToRaw(this).(Raw::WhileStmt).getBody())
+    Stmt getImmediateBody() {
+      result =
+        Synth::convertStmtFromRaw(Synth::convertWhileStmtToRaw(this).(Raw::WhileStmt).getBody())
+    }
+
+    final Stmt getBody() { result = getImmediateBody().resolve() }
   }
-
-  final Stmt getBody() { result = getImmediateBody().resolve() }
 }

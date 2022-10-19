@@ -44,5 +44,5 @@ where
   w.getASource() = sinkNode.getNode().asExpr() and
   dest = w.getDest()
 select w, sourceNode, sinkNode,
-  "This write into buffer '" + dest.toString() + "' may contain unencrypted data from $@", source,
+  "This write into buffer '" + dest.toString() + "' may contain unencrypted data from $@.", source,
   "user input (" + source.getSourceType() + ")"

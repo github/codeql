@@ -18,4 +18,5 @@ import DataFlow::PathGraph
 
 from DataFlow::PathNode source, DataFlow::PathNode sink, SpelInjectionConfig conf
 where conf.hasFlowPath(source, sink)
-select sink.getNode(), source, sink, "SpEL injection from $@.", source.getNode(), "this user input"
+select sink.getNode(), source, sink, "SpEL expression depends on a $@.", source.getNode(),
+  "user-provided value"

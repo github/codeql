@@ -33,3 +33,16 @@ static void f6(void);
 static void f5(void) { f6(); }
 static void f6(void) { f5(); }
 
+// f7 and f8 are reachable from `function_caller` 
+static int f7() { return 1; } // GOOD
+static void f8() { } // GOOD
+
+void function_caller()
+{
+	auto my_lambda = []() {
+		return f7();
+	}();
+
+	f8();
+}
+
