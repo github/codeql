@@ -69,13 +69,13 @@ passingNegativeTests
 | PASSED | !xss | lib/views/index.js:67:94:67:166 | // test ... inition |
 | PASSED | !xss | lib/views/index.js:77:94:77:166 | // test ... inition |
 | PASSED | !xss | lib/views/index.js:83:49:83:103 | // test ... k, !xss |
+| PASSED | !xss | lib/views/index.js:90:57:90:103 | // test ... k, !xss |
 | PASSED | !xss | lib/views/index.js:97:30:97:76 | // test ... k, !xss |
+| PASSED | !xss | lib/views/index.js:105:59:105:105 | // test ... k, !xss |
 | PASSED | !xssSink | lib/views/index.js:67:94:67:166 | // test ... inition |
 | PASSED | !xssSink | lib/views/index.js:77:94:77:166 | // test ... inition |
 | PASSED | !xssSink | lib/views/index.js:83:49:83:103 | // test ... k, !xss |
+| PASSED | !xssSink | lib/views/index.js:90:57:90:103 | // test ... k, !xss |
 | PASSED | !xssSink | lib/views/index.js:97:30:97:76 | // test ... k, !xss |
+| PASSED | !xssSink | lib/views/index.js:105:59:105:105 | // test ... k, !xss |
 failingNegativeTests
-| FAILED | !xss | lib/views/index.js:90:57:90:103 | // test ... k, !xss |
-| FAILED | !xss | lib/views/index.js:105:59:105:105 | // test ... k, !xss |
-| FAILED | !xssSink | lib/views/index.js:90:57:90:103 | // test ... k, !xss |
-| FAILED | !xssSink | lib/views/index.js:105:59:105:105 | // test ... k, !xss |
