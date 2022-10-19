@@ -228,4 +228,3 @@ query predicate failingNegativeTests(string res, string expectation, InlineTest 
     exists(RequestForgery::Sink n | t.inNode(n))
   )
 }
-
