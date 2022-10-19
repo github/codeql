@@ -271,7 +271,7 @@ private module Cached {
 
   pragma[noinline]
   private predicate resolveModuleRefHelper(TypeRef me, ContainerOrModule enclosing, string name) {
-    // The scope is all enclosing modules, the immidiatly containing folder, not the parent folders.
+    // The scope is all enclosing modules, the immediately containing folder, not the parent folders.
     enclosing = getEnclosingModuleNoFolderStep*(getStartModule(me)) and
     name = [me.(ModuleExpr).getName(), me.(TypeExpr).getClassName()] and
     not exists(me.(ModuleExpr).getQualifier()) and
