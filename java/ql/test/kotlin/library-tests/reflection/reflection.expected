@@ -263,15 +263,12 @@ modifiers
 | reflection.kt:162:25:162:45 | ...::... | reflection.kt:162:25:162:45 | invoke | override |
 | reflection.kt:162:25:162:45 | ...::... | reflection.kt:162:25:162:45 | invoke | public |
 compGenerated
-| file://<external>/CharIterator.class:0:0:0:0 | forEachRemaining | Forwarder for a Kotlin class inheriting an interface default method |
 | file://<external>/CharProgression.class:0:0:0:0 | forEach | Forwarder for a Kotlin class inheriting an interface default method |
 | file://<external>/CharProgression.class:0:0:0:0 | spliterator | Forwarder for a Kotlin class inheriting an interface default method |
 | file://<external>/CharRange.class:0:0:0:0 | forEach | Forwarder for a Kotlin class inheriting an interface default method |
 | file://<external>/CharRange.class:0:0:0:0 | spliterator | Forwarder for a Kotlin class inheriting an interface default method |
 | file://<external>/Class2.class:0:0:0:0 | getValue | Default property accessor |
 | file://<external>/Class2.class:0:0:0:0 | getValue | Default property accessor |
-| file://<external>/Collection.class:0:0:0:0 | forEach | Forwarder for a Kotlin class inheriting an interface default method |
-| file://<external>/IntIterator.class:0:0:0:0 | forEachRemaining | Forwarder for a Kotlin class inheriting an interface default method |
 | file://<external>/IntProgression.class:0:0:0:0 | forEach | Forwarder for a Kotlin class inheriting an interface default method |
 | file://<external>/IntProgression.class:0:0:0:0 | spliterator | Forwarder for a Kotlin class inheriting an interface default method |
 | file://<external>/IntRange.class:0:0:0:0 | forEach | Forwarder for a Kotlin class inheriting an interface default method |
@@ -280,43 +277,10 @@ compGenerated
 | file://<external>/KTypeProjection.class:0:0:0:0 | copy$default | Forwarder for Kotlin calls that need default arguments filling in |
 | file://<external>/KTypeProjection.class:0:0:0:0 | covariant | Proxy static method for a @JvmStatic-annotated function or property |
 | file://<external>/KTypeProjection.class:0:0:0:0 | invariant | Proxy static method for a @JvmStatic-annotated function or property |
-| file://<external>/List.class:0:0:0:0 | forEach | Forwarder for a Kotlin class inheriting an interface default method |
-| file://<external>/List.class:0:0:0:0 | parallelStream | Forwarder for a Kotlin class inheriting an interface default method |
-| file://<external>/List.class:0:0:0:0 | stream | Forwarder for a Kotlin class inheriting an interface default method |
-| file://<external>/List.class:0:0:0:0 | toArray | Forwarder for a Kotlin class inheriting an interface default method |
-| file://<external>/ListIterator.class:0:0:0:0 | forEachRemaining | Forwarder for a Kotlin class inheriting an interface default method |
-| file://<external>/LongIterator.class:0:0:0:0 | forEachRemaining | Forwarder for a Kotlin class inheriting an interface default method |
 | file://<external>/LongProgression.class:0:0:0:0 | forEach | Forwarder for a Kotlin class inheriting an interface default method |
 | file://<external>/LongProgression.class:0:0:0:0 | spliterator | Forwarder for a Kotlin class inheriting an interface default method |
 | file://<external>/LongRange.class:0:0:0:0 | forEach | Forwarder for a Kotlin class inheriting an interface default method |
 | file://<external>/LongRange.class:0:0:0:0 | spliterator | Forwarder for a Kotlin class inheriting an interface default method |
-| file://<external>/MutableCollection.class:0:0:0:0 | forEach | Forwarder for a Kotlin class inheriting an interface default method |
-| file://<external>/MutableCollection.class:0:0:0:0 | parallelStream | Forwarder for a Kotlin class inheriting an interface default method |
-| file://<external>/MutableCollection.class:0:0:0:0 | spliterator | Forwarder for a Kotlin class inheriting an interface default method |
-| file://<external>/MutableCollection.class:0:0:0:0 | stream | Forwarder for a Kotlin class inheriting an interface default method |
-| file://<external>/MutableCollection.class:0:0:0:0 | toArray | Forwarder for a Kotlin class inheriting an interface default method |
-| file://<external>/MutableIterable.class:0:0:0:0 | forEach | Forwarder for a Kotlin class inheriting an interface default method |
-| file://<external>/MutableIterable.class:0:0:0:0 | spliterator | Forwarder for a Kotlin class inheriting an interface default method |
-| file://<external>/MutableIterator.class:0:0:0:0 | forEachRemaining | Forwarder for a Kotlin class inheriting an interface default method |
-| file://<external>/MutableList.class:0:0:0:0 | forEach | Forwarder for a Kotlin class inheriting an interface default method |
-| file://<external>/MutableList.class:0:0:0:0 | parallelStream | Forwarder for a Kotlin class inheriting an interface default method |
-| file://<external>/MutableList.class:0:0:0:0 | removeIf | Forwarder for a Kotlin class inheriting an interface default method |
-| file://<external>/MutableList.class:0:0:0:0 | spliterator | Forwarder for a Kotlin class inheriting an interface default method |
-| file://<external>/MutableList.class:0:0:0:0 | stream | Forwarder for a Kotlin class inheriting an interface default method |
-| file://<external>/MutableList.class:0:0:0:0 | toArray | Forwarder for a Kotlin class inheriting an interface default method |
-| file://<external>/MutableListIterator.class:0:0:0:0 | forEachRemaining | Forwarder for a Kotlin class inheriting an interface default method |
-| file://<external>/MutableMap.class:0:0:0:0 | forEach | Forwarder for a Kotlin class inheriting an interface default method |
-| file://<external>/MutableMap.class:0:0:0:0 | getOrDefault | Forwarder for a Kotlin class inheriting an interface default method |
-| file://<external>/MutableSet.class:0:0:0:0 | forEach | Forwarder for a Kotlin class inheriting an interface default method |
-| file://<external>/MutableSet.class:0:0:0:0 | parallelStream | Forwarder for a Kotlin class inheriting an interface default method |
-| file://<external>/MutableSet.class:0:0:0:0 | removeIf | Forwarder for a Kotlin class inheriting an interface default method |
-| file://<external>/MutableSet.class:0:0:0:0 | spliterator | Forwarder for a Kotlin class inheriting an interface default method |
-| file://<external>/MutableSet.class:0:0:0:0 | stream | Forwarder for a Kotlin class inheriting an interface default method |
-| file://<external>/MutableSet.class:0:0:0:0 | toArray | Forwarder for a Kotlin class inheriting an interface default method |
-| file://<external>/Set.class:0:0:0:0 | forEach | Forwarder for a Kotlin class inheriting an interface default method |
-| file://<external>/Set.class:0:0:0:0 | parallelStream | Forwarder for a Kotlin class inheriting an interface default method |
-| file://<external>/Set.class:0:0:0:0 | stream | Forwarder for a Kotlin class inheriting an interface default method |
-| file://<external>/Set.class:0:0:0:0 | toArray | Forwarder for a Kotlin class inheriting an interface default method |
 | file://<external>/String.class:0:0:0:0 | isEmpty | Forwarder for a Kotlin class inheriting an interface default method |
 | reflection.kt:33:9:33:23 | getP0 | Default property accessor |
 | reflection.kt:34:9:34:23 | getP1 | Default property accessor |

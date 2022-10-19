@@ -839,7 +839,7 @@ open class KotlinFileExtractor(
         // (NB. kotlinc's actual implementation strategy is different -- it makes an inner class called InterfaceWithDefault$DefaultImpls and stores the default methods
         // there to allow default method usage in Java < 8, but this is hopefully niche.
         !pluginContext.languageVersionSettings.getFlag(JvmAnalysisFlags.jvmDefaultMode).forAllMethodsWithBody &&
-                f.parentClassOrNull?.origin != IrDeclarationOrigin.IR_EXTERNAL_JAVA_DECLARATION_STUB &&
+                f.parentClassOrNull.let { it != null && it.origin != IrDeclarationOrigin.IR_EXTERNAL_JAVA_DECLARATION_STUB && it.modality != Modality.ABSTRACT } &&
                 f.realOverrideTarget.let { it != f && (it as? IrSimpleFunction)?.modality != Modality.ABSTRACT && isKotlinDefinedInterface(it.parentClassOrNull) }
 
     private fun makeInterfaceForwarder(f: IrFunction, parentId: Label<out DbReftype>, extractBody: Boolean, extractMethodAndParameterTypeAccesses: Boolean, typeSubstitution: TypeSubstitution?, classTypeArgsIncludingOuterClasses: List<IrTypeArgument>?) =
@@ -848,7 +848,15 @@ open class KotlinFileExtractor(
             if (extractBody) {
                 val realFunctionLocId = tw.getLocation(f)
                 val inheritedDefaultFunction = f.realOverrideTarget
-                val defaultDefiningInterfaceType = (inheritedDefaultFunction.parentClassOrNull ?: return functionId).typeWith()
+                val directlyInheritedSymbol =
+                    when(f) {
+                        is IrSimpleFunction ->
+                            f.overriddenSymbols.find { it.owner === inheritedDefaultFunction }
+                                ?: f.overriddenSymbols.find { it.owner.realOverrideTarget === inheritedDefaultFunction }
+                                ?: inheritedDefaultFunction.symbol
+                        else -> inheritedDefaultFunction.symbol // This is strictly invalid, since we shouldn't use A.super.f(...) where A may not be a direct supertype, but this path should also be unreachable.
+                    }
+                val defaultDefiningInterfaceType = (directlyInheritedSymbol.owner.parentClassOrNull ?: return functionId).typeWith()
 
                 extractExpressionBody(functionId, realFunctionLocId).also { returnId ->
                     extractRawMethodAccess(

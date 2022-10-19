@@ -10,3 +10,7 @@ interface Test {
 }
 
 class Real : Test { }
+
+interface MiddleInterface : Test { }
+
+class RealIndirect : MiddleInterface { }
