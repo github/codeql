@@ -17,7 +17,7 @@ import codeql.swift.dataflow.FlowSources
 import DataFlow::PathGraph
 
 /**
- * A `DataFlow::Node` that is a sink for an SQL string to be executed.
+ * A `DataFlow::Node` that is a sink for a SQL string to be executed.
  */
 abstract class SqlSink extends DataFlow::Node { }
 
@@ -67,7 +67,7 @@ class SQLiteSwiftSqlSink extends SqlSink {
 }
 
 /**
- * A taint configuration for tainted data that reaches an SQL sink.
+ * A taint configuration for tainted data that reaches a SQL sink.
  */
 class SqlInjectionConfig extends TaintTracking::Configuration {
   SqlInjectionConfig() { this = "SqlInjectionConfig" }
