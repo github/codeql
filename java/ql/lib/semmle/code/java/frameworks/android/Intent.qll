@@ -4,7 +4,7 @@ private import semmle.code.java.dataflow.DataFlow
 private import semmle.code.java.dataflow.ExternalFlow
 private import semmle.code.java.dataflow.FlowSteps
 private import semmle.code.java.dataflow.FlowSummary
-private import semmle.code.java.dataflow.internal.BaseSSA as BaseSSA
+private import semmle.code.java.dataflow.internal.BaseSSA as BaseSsa
 
 /** The class `android.content.Intent`. */
 class TypeIntent extends Class {
@@ -269,7 +269,7 @@ private predicate reaches(Expr src, Argument arg) {
   any(StartComponentMethodAccess ma).getIntentArg() = arg and
   src = arg
   or
-  exists(Expr mid, BaseSSA::BaseSsaVariable ssa, BaseSSA::BaseSsaUpdate upd |
+  exists(Expr mid, BaseSsa::BaseSsaVariable ssa, BaseSsa::BaseSsaUpdate upd |
     reaches(mid, arg) and
     mid = ssa.getAUse() and
     upd = ssa.getAnUltimateLocalDefinition() and
@@ -383,7 +383,7 @@ private class ActivityIntentSyntheticGlobal extends SummaryComponent::SyntheticG
 
 private class RequiredComponentStackForStartActivities extends RequiredSummaryComponentStack {
   override predicate required(SummaryComponent head, SummaryComponentStack tail) {
-    head = SummaryComponent::element() and
+    head = SummaryComponent::arrayElement() and
     tail = SummaryComponentStack::argument(0)
   }
 }
