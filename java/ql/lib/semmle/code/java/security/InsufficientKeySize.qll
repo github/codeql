@@ -61,7 +61,7 @@ private int getNodeIntValue(DataFlow::Node node) {
   result = node.asExpr().(IntegerLiteral).getIntValue()
 }
 
-/** Returns the key size from an EC algorithm curve name string */
+/** Returns the key size from an EC algorithm's curve name string */
 bindingset[algorithm]
 private int getEcKeySize(string algorithm) {
   algorithm.matches("sec%") and // specification such as "secp256r1"
@@ -145,8 +145,9 @@ private class SymmetricInitMethodAccess extends KeyGenInitMethodAccess {
   SymmetricInitMethodAccess() { this.getMethod() instanceof KeyGeneratorInitMethod }
 }
 
-/** An instance of a key generator. */
-abstract private class KeyGeneratorObject extends CryptoAlgoSpec {
+/** An instance of a generator that specifies an encryption algorithm. */
+abstract private class AlgoGeneratorObject extends CryptoAlgoSpec {
+  /** Returns an uppercase string representing the algorithm name specified by this generator object. */
   string getAlgoName() { result = this.getAlgoSpec().(StringLiteral).getValue().toUpperCase() }
 }
 
@@ -154,7 +155,7 @@ abstract private class KeyGeneratorObject extends CryptoAlgoSpec {
  * An instance of a `java.security.KeyPairGenerator`
  * or of a `java.security.AlgorithmParameterGenerator`.
  */
-private class AsymmetricKeyGenerator extends KeyGeneratorObject {
+private class AsymmetricKeyGenerator extends AlgoGeneratorObject {
   AsymmetricKeyGenerator() {
     this instanceof JavaSecurityKeyPairGenerator or
     this instanceof JavaSecurityAlgoParamGenerator
@@ -164,7 +165,7 @@ private class AsymmetricKeyGenerator extends KeyGeneratorObject {
 }
 
 /** An instance of a `javax.crypto.KeyGenerator`. */
-private class SymmetricKeyGenerator extends KeyGeneratorObject {
+private class SymmetricKeyGenerator extends AlgoGeneratorObject {
   SymmetricKeyGenerator() { this instanceof JavaxCryptoKeyGenerator }
 
   override Expr getAlgoSpec() { result = this.getAlgoSpec() }

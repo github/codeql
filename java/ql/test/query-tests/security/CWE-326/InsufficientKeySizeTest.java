@@ -44,6 +44,7 @@ public class InsufficientKeySizeTest {
             KeyPairGenerator keyPairGen2 = KeyPairGenerator.getInstance("RSA");
             keyPairGen2.initialize(2048); // Safe: Key size is no less than 2048
 
+            /* Test spec */
             KeyPairGenerator keyPairGen3 = KeyPairGenerator.getInstance("RSA");
             RSAKeyGenParameterSpec rsaSpec = new RSAKeyGenParameterSpec(1024, null); // $ hasInsufficientKeySize
             keyPairGen3.initialize(rsaSpec);
@@ -80,6 +81,7 @@ public class InsufficientKeySizeTest {
             KeyPairGenerator keyPairGen2 = KeyPairGenerator.getInstance("DSA");
             keyPairGen2.initialize(2048); // Safe: Key size is no less than 2048
 
+            /* Test spec */
             KeyPairGenerator keyPairGen3 = KeyPairGenerator.getInstance("DSA");
             DSAGenParameterSpec dsaSpec = new DSAGenParameterSpec(1024, 0); // $ hasInsufficientKeySize
             keyPairGen3.initialize(dsaSpec);
@@ -101,6 +103,7 @@ public class InsufficientKeySizeTest {
             KeyPairGenerator keyPairGen2 = KeyPairGenerator.getInstance("DH");
             keyPairGen2.initialize(2048); // Safe: Key size is no less than 2048
 
+            /* Test spec */
             KeyPairGenerator keyPairGen3 = KeyPairGenerator.getInstance("DH");
             DHGenParameterSpec dhSpec = new DHGenParameterSpec(1024, 0); // $ hasInsufficientKeySize
             keyPairGen3.initialize(dhSpec);

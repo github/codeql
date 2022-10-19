@@ -6,20 +6,19 @@
     <overview>
         <p>Modern encryption relies on the computational infeasibility of breaking a cipher and decoding its
         message without the key. As computational power increases, the ability to break ciphers grows, and key
-        sizes need to become larger as a result. Encryption algorithms that use too small of a key size are
+        sizes need to become larger as a result. Cryptographic algorithms that use too small of a key size are
         vulnerable to brute force attacks, which can reveal sensitive data.</p>
     </overview>
 
     <recommendation>
-        <p>Use a key of the recommended size or larger. The key size should be at least 2048 bits for RSA or
-        DSA encryption, 256 bits for elliptic curve (EC) encryption, and 128 bits for symmetric encryption,
-        such as AES.</p>
+        <p>Use a key of the recommended size or larger. The key size should be at least 128 bits for AES encryption,
+        256 bits for elliptic-curve cryptography (ECC), and 2048 bits for RSA, DSA, or DH encryption.</p>
     </recommendation>
 
     <example>
 
           <p>
-               The following code uses encryption with insufficient key sizes.
+               The following code uses cryptographic algorithms with insufficient key sizes.
           </p>
 
           <sample src="InsufficientKeySizeBad.java" />
@@ -28,12 +27,6 @@
                To fix the code, change the key sizes to be the recommended size or
                larger for each algorithm.
           </p>
-
-          <!-- <p>
-               In the example below, the key sizes are set correctly.
-          </p>
-
-          <sample src="InsufficientKeySizeGood.java" /> -->
 
      </example>
 
@@ -45,22 +38,6 @@
         <li>
             Wikipedia: <a href="https://en.wikipedia.org/wiki/Strong_cryptography">Strong cryptography</a>.
         </li>
-        <!-- <li>
-            Wikipedia:
-            <a href="https://en.wikipedia.org/wiki/RSA_(cryptosystem)">RSA (cryptosystem)</a>.
-        </li>
-        <li>
-            Wikipedia:
-            <a href="https://en.wikipedia.org/wiki/Digital_Signature_Algorithm">Digital Signature Algorithm</a>.
-        </li>
-        <li>
-            Wikipedia:
-            <a href="https://en.wikipedia.org/wiki/Elliptic-curve_cryptography">Elliptic-curve cryptography</a>.
-        </li>
-        <li>
-            Wikipedia:
-            <a href="https://en.wikipedia.org/wiki/Advanced_Encryption_Standard">Advanced Encryption Standard</a>.
-        </li> -->
         <li>
             OWASP: <a href="https://cheatsheetseries.owasp.org/cheatsheets/Cryptographic_Storage_Cheat_Sheet.html#algorithms">
             Cryptographic Storage Cheat Sheet</a>.

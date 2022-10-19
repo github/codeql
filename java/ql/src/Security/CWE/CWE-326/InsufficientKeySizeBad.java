@@ -1,16 +1,15 @@
     KeyPairGenerator keyPairGen1 = KeyPairGenerator.getInstance("RSA");
-    // BAD: Key size is less than 2048
-    keyPairGen1.initialize(1024);
+    keyPairGen1.initialize(1024); // BAD: Key size is less than 2048
 
     KeyPairGenerator keyPairGen2 = KeyPairGenerator.getInstance("DSA");
-    // BAD: Key size is less than 2048
-    keyPairGen2.initialize(1024);
+    keyPairGen2.initialize(1024); // BAD: Key size is less than 2048
 
-    KeyPairGenerator keyPairGen3 = KeyPairGenerator.getInstance("EC");
-    // BAD: Key size is less than 256
-    ECGenParameterSpec ecSpec1 = new ECGenParameterSpec("secp112r1");
-    keyPairGen3.initialize(ecSpec1);
+    KeyPairGenerator keyPairGen3 = KeyPairGenerator.getInstance("DH");
+    keyPairGen3.initialize(1024); // BAD: Key size is less than 2048
+
+    KeyPairGenerator keyPairGen4 = KeyPairGenerator.getInstance("EC");
+    ECGenParameterSpec ecSpec = new ECGenParameterSpec("secp112r1"); // BAD: Key size is less than 256
+    keyPairGen4.initialize(ecSpec);
 
     KeyGenerator keyGen = KeyGenerator.getInstance("AES");
-    // BAD: Key size is less than 128
-    keyGen.init(64);
+    keyGen.init(64); // BAD: Key size is less than 128
