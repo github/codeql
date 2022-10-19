@@ -2629,6 +2629,7 @@ private predicate evalUnfold(AccessPathApprox apa, boolean unfold, Configuration
 /**
  * Gets the number of `AccessPath`s that correspond to `apa`.
  */
+pragma[assume_small_delta]
 private int countAps(AccessPathApprox apa, Configuration config) {
   evalUnfold(apa, false, config) and
   result = 1 and
@@ -2647,6 +2648,7 @@ private int countAps(AccessPathApprox apa, Configuration config) {
  * that it is expanded to a precise head-tail representation.
  */
 language[monotonicAggregates]
+pragma[assume_small_delta]
 private int countPotentialAps(AccessPathApprox apa, Configuration config) {
   apa instanceof AccessPathApproxNil and result = 1
   or
@@ -2681,6 +2683,7 @@ private newtype TAccessPath =
   }
 
 private newtype TPathNode =
+  pragma[assume_small_delta]
   TPathNodeMid(
     NodeEx node, FlowState state, CallContext cc, SummaryCtx sc, AccessPath ap, Configuration config
   ) {
@@ -2778,6 +2781,7 @@ private class AccessPathCons extends AccessPath, TAccessPathCons {
 
   override AccessPathFrontHead getFront() { result = TFrontHead(head) }
 
+  pragma[assume_small_delta]
   override AccessPathApproxCons getApprox() {
     result = TConsNil(head, tail.(AccessPathNil).getType())
     or
@@ -2786,6 +2790,7 @@ private class AccessPathCons extends AccessPath, TAccessPathCons {
     result = TCons1(head, this.length())
   }
 
+  pragma[assume_small_delta]
   override int length() { result = 1 + tail.length() }
 
   private string toStringImpl(boolean needsSuffix) {
@@ -3155,6 +3160,7 @@ private predicate pathNode(
  * Holds if data may flow from `mid` to `node`. The last step in or out of
  * a callable is recorded by `cc`.
  */
+pragma[assume_small_delta]
 pragma[nomagic]
 private predicate pathStep(
   PathNodeMid mid, NodeEx node, FlowState state, CallContext cc, SummaryCtx sc, AccessPath ap
