@@ -325,19 +325,13 @@ class JavaxCryptoSecretKey extends JavaxCryptoAlgoSpec {
 
 class JavaxCryptoKeyGenerator extends JavaxCryptoAlgoSpec {
   JavaxCryptoKeyGenerator() {
-    exists(Constructor c | c.getAReference() = this | c.getDeclaringType() instanceof KeyGenerator)
-    or
     exists(Method m | m.getAReference() = this |
       m.getDeclaringType() instanceof KeyGenerator and
       m.getName() = "getInstance"
     )
   }
 
-  override Expr getAlgoSpec() {
-    exists(Call c | c = this |
-      if c.getNumArgument() = 3 then result = c.getArgument(2) else result = c.getArgument(0)
-    )
-  }
+  override Expr getAlgoSpec() { result = this.(MethodAccess).getArgument(0) }
 }
 
 class JavaxCryptoKeyAgreement extends JavaxCryptoAlgoSpec {
@@ -392,17 +386,13 @@ class JavaSecuritySignature extends JavaSecurityAlgoSpec {
 /** An instance of a `java.security.KeyPairGenerator`. */
 class JavaSecurityKeyPairGenerator extends JavaSecurityAlgoSpec {
   JavaSecurityKeyPairGenerator() {
-    exists(Constructor c | c.getAReference() = this |
-      c.getDeclaringType() instanceof KeyPairGenerator
-    )
-    or
     exists(Method m | m.getAReference() = this |
       m.getDeclaringType() instanceof KeyPairGenerator and
       m.getName() = "getInstance"
     )
   }
 
-  override Expr getAlgoSpec() { result = this.(Call).getArgument(0) }
+  override Expr getAlgoSpec() { result = this.(MethodAccess).getArgument(0) }
 }
 
 /** The Java class `java.security.AlgorithmParameterGenerator`. */
@@ -423,21 +413,13 @@ class AlgoParamGeneratorInitMethod extends Method {
 /** An instance of a `java.security.AlgorithmParameterGenerator`. */
 class JavaSecurityAlgoParamGenerator extends JavaSecurityAlgoSpec {
   JavaSecurityAlgoParamGenerator() {
-    exists(Constructor c | c.getAReference() = this |
-      c.getDeclaringType() instanceof AlgorithmParameterGenerator
-    )
-    or
     exists(Method m | m.getAReference() = this |
       m.getDeclaringType() instanceof AlgorithmParameterGenerator and
       m.getName() = "getInstance"
     )
   }
 
-  override Expr getAlgoSpec() {
-    exists(Call c | c = this |
-      if c.getNumArgument() = 3 then result = c.getArgument(2) else result = c.getArgument(0)
-    )
-  }
+  override Expr getAlgoSpec() { result = this.(MethodAccess).getArgument(0) }
 }
 
 /** The Java interface `java.security.spec.AlgorithmParameterSpec` */

@@ -1,5 +1,6 @@
 import javax.crypto.KeyGenerator;
 import java.security.KeyPairGenerator;
+import java.security.AlgorithmParameterGenerator;
 
 import java.security.spec.ECGenParameterSpec;
 import java.security.spec.RSAKeyGenParameterSpec;
@@ -30,8 +31,8 @@ public class InsufficientKeySizeTest {
             keyGen4.init(size2); // $ hasInsufficientKeySize
 
             /* Test variables passed to another method */
-            KeyGenerator keyGen = KeyGenerator.getInstance("AES"); // MISSING: test KeyGenerator variable as argument
-            testSymmetricVariable(size2, keyGen); // test with variable as key size
+            KeyGenerator keyGen5 = KeyGenerator.getInstance("AES"); // MISSING: test KeyGenerator variable as argument
+            testSymmetricVariable(size2, keyGen5); // test with variable as key size
             testSymmetricInt(64); // test with int literal as key size
         }
 
@@ -62,9 +63,13 @@ public class InsufficientKeySizeTest {
             keyPairGen6.initialize(size2); // $ hasInsufficientKeySize
 
             /* Test variables passed to another method */
-            KeyPairGenerator keyPairGen = KeyPairGenerator.getInstance("RSA"); // MISSING: test KeyGenerator variable as argument
-            testAsymmetricNonEcVariable(size2, keyPairGen); // test with variable as key size
+            KeyPairGenerator keyPairGen7 = KeyPairGenerator.getInstance("RSA"); // MISSING: test KeyGenerator variable as argument
+            testAsymmetricNonEcVariable(size2, keyPairGen7); // test with variable as key size
             testAsymmetricNonEcInt(1024); // test with int literal as key size
+
+            /* Test getting key size as return value of another method */
+            KeyPairGenerator keyPairGen8 = KeyPairGenerator.getInstance("RSA");
+            keyPairGen8.initialize(getRSAKeySize()); // $ hasInsufficientKeySize
         }
 
         // DSA (Asymmetric): minimum recommended key size is 2048
@@ -82,6 +87,10 @@ public class InsufficientKeySizeTest {
 
             KeyPairGenerator keyPairGen4 = KeyPairGenerator.getInstance("DSA");
             keyPairGen4.initialize(new DSAGenParameterSpec(1024, 0)); // $ hasInsufficientKeySize
+
+            /* Test `AlgorithmParameterGenerator` */
+            AlgorithmParameterGenerator paramGen = AlgorithmParameterGenerator.getInstance("DSA");
+            paramGen.init(1024); // $ hasInsufficientKeySize
         }
 
         // DH (Asymmetric): minimum recommended key size is 2048
@@ -99,6 +108,10 @@ public class InsufficientKeySizeTest {
 
             KeyPairGenerator keyPairGen4 = KeyPairGenerator.getInstance("DH");
             keyPairGen4.initialize(new DHGenParameterSpec(1024, 0)); // $ hasInsufficientKeySize
+
+            /* Test `AlgorithmParameterGenerator` */
+            AlgorithmParameterGenerator paramGen = AlgorithmParameterGenerator.getInstance("DH");
+            paramGen.init(1024); // $ hasInsufficientKeySize
         }
 
         // EC (Asymmetric): minimum recommended key size is 256
@@ -153,8 +166,11 @@ public class InsufficientKeySizeTest {
 
             /* Test variables passed to another method */
             ECGenParameterSpec ecSpec = new ECGenParameterSpec("secp112r1"); // $ hasInsufficientKeySize
+            testAsymmetricEcSpecVariable(ecSpec); // test spec as an argument
+            int size = 128;
             KeyPairGenerator keyPairGen = KeyPairGenerator.getInstance("EC"); // MISSING: test KeyGenerator variable as argument
-            testAsymmetricEC(ecSpec, keyPairGen); // test spec as an argument
+            testAsymmetricEcIntVariable(size, keyPairGen); // test with variable as key size
+            testAsymmetricEcIntLiteral(128); // test with int literal as key size
         }
     }
 
@@ -180,27 +196,21 @@ public class InsufficientKeySizeTest {
         keyPairGen.initialize(keySize); // $ hasInsufficientKeySize
     }
 
-    public static void testAsymmetricEcVariable(ECGenParameterSpec spec, KeyPairGenerator kpg) throws java.security.NoSuchAlgorithmException, java.security.InvalidAlgorithmParameterException {
+    public static void testAsymmetricEcSpecVariable(ECGenParameterSpec spec) throws java.security.NoSuchAlgorithmException, java.security.InvalidAlgorithmParameterException {
         KeyPairGenerator keyPairGen = KeyPairGenerator.getInstance("EC");
         keyPairGen.initialize(spec); // sink is above where `spec` variable is initialized
-
-        ECGenParameterSpec ecSpec = new ECGenParameterSpec("secp112r1"); // $ hasInsufficientKeySize
-        kpg.initialize(ecSpec); // MISSING: test KeyGenerator variable as argument
     }
 
-    public static void testAsymmetricEcInt(int keySize) throws java.security.NoSuchAlgorithmException, java.security.InvalidAlgorithmParameterException {
+    public static void testAsymmetricEcIntVariable(int keySize, KeyPairGenerator kpg) throws java.security.NoSuchAlgorithmException, java.security.InvalidAlgorithmParameterException {
+        KeyPairGenerator keyPairGen = KeyPairGenerator.getInstance("EC");
+        keyPairGen.initialize(keySize); // $ hasInsufficientKeySize
+        kpg.initialize(128); // $ MISSING: hasInsufficientKeySize
+    }
+
+    public static void testAsymmetricEcIntLiteral(int keySize) throws java.security.NoSuchAlgorithmException, java.security.InvalidAlgorithmParameterException {
         KeyPairGenerator keyPairGen = KeyPairGenerator.getInstance("EC");
         keyPairGen.initialize(keySize); // $ hasInsufficientKeySize
     }
 
-    // public static void testVariable(int keySize, KeyGenerator kg) throws java.security.NoSuchAlgorithmException, java.security.InvalidAlgorithmParameterException {
-    //     KeyGenerator keyGen = KeyGenerator.getInstance("AES");
-    //     keyGen.init(keySize); // $ hasInsufficientKeySize
-
-    //     // BAD: Key size is less than 2048
-    //     kg.init(64); // $ MISSING: hasInsufficientKeySize
-    // }
-
-    // public static void testInt(int keySize, KeyGenerator kg) throws java.security.NoSuchAlgorithmException, java.security.InvalidAlgorithmParameterException {
-    // }
+    public int getRSAKeySize(){ return 1024; }
 }
