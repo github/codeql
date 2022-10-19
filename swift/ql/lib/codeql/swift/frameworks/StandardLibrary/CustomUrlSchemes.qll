@@ -48,7 +48,7 @@ private class ApllicationWithLaunchOptionsFunc extends FuncDecl {
 
 private class LaunchOptionsUrlVarDecl extends VarDecl {
   LaunchOptionsUrlVarDecl() {
-    this.getEnclosingDecl().(StructDecl).getName() = "UIApplication.LaunchOptionsKey" and
+    this.getEnclosingDecl().(StructDecl).getFullName() = "UIApplication.LaunchOptionsKey" and
     this.getName() = "url"
   }
 }
