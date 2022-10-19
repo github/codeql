@@ -1,14 +1,21 @@
-py_test(
-    name = 'hello-autobuilder-test',
-    size = "small",
-    srcs = ['autobuild_tester.py'],
-    main = 'autobuild_tester.py',
-    data = [
-        "//swift/xcode-autobuilder",
-        'hello-autobuilder',
-    ] + glob(['hello-autobuilder/**/*'], exclude = ['**/*.actual']),
-    args = [
-      '$(location //swift/xcode-autobuilder)',
-      '$(location hello-autobuilder)',
-    ]
+[
+    py_test(
+        name = test_dir + '-test',
+        size = "small",
+        srcs = ['autobuild_tester.py'],
+        main = 'autobuild_tester.py',
+        data = [
+            "//swift/xcode-autobuilder",
+            test_dir,
+        ] + glob([test_dir + '/**/*']),
+        args = [
+          '$(location //swift/xcode-autobuilder)',
+          '$(location %s)' % test_dir,
+        ]
+    )
+    for test_dir in glob(["*"], exclude_directories=0, exclude=['*.*', '.*'])
+]
+
+test_suite(
+  name='tests'
 )

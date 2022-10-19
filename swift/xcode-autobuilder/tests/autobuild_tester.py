@@ -11,8 +11,6 @@ test_dir = pathlib.Path(sys.argv[2])
 expected = test_dir / 'commands.expected'
 actual = pathlib.Path('commands.actual')
 
-print(os.getcwd())
-
 with open(actual, 'wb') as out:
     ret = subprocess.run([str(autobuilder), '-dry-run', '.'], capture_output=True, check=True, cwd=test_dir)
     for line in ret.stdout.splitlines():
