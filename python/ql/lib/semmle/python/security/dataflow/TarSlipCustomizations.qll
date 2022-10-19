@@ -90,8 +90,8 @@ module TarSlip {
    *
    * For a call to `file.extractall` without `members` argument, `file` is considered a sink.
    */
-  class ExtractAllwoMembersSink extends Sink {
-    ExtractAllwoMembersSink() {
+  class ExtractAllWithoutMembersSink extends Sink {
+    ExtractAllWithoutMembersSink() {
       exists(AllTarfileOpens atfo, MethodCallNode call |
         call = atfo.getReturn().getMember("extractall").getACall() and
         not exists(Node arg | arg = call.getArgByName("members")) and
