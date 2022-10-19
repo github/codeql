@@ -78,5 +78,7 @@ class UsersController < ActionController::Base
     code = params[:code]
 
     obj().send(code, "foo"); # BAD
+
+    obj().send("prefix_" + code + "_suffix", "foo"); # GOOD - but still flagged by this query
   end
 end
