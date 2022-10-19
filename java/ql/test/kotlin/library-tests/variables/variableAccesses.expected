@@ -14,6 +14,11 @@ varAcc
 | variables.kt:30:9:30:9 | this |
 | variables.kt:32:9:32:12 | this |
 | variables.kt:33:9:33:12 | this |
+| variables.kt:52:31:52:31 | f |
+| variables.kt:58:17:58:17 | c |
+| variables.kt:59:17:59:17 | d |
+| variables.kt:65:17:65:17 | e |
+| variables.kt:66:17:66:17 | f |
 extensionReceiverAcc
 | variables.kt:29:9:29:9 | this |
 | variables.kt:30:9:30:9 | this |

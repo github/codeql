@@ -48,3 +48,21 @@ class C3 {
         }
     }
 }
+
+fun fn0(f: Function0<Unit>) = f()
+
+fun fn1() {
+    var c = true
+    val d = true
+    fn0 {
+        println(c)
+        println(d)
+    }
+
+    var e = true
+    val f = true
+    fun fn2() {
+        println(e)
+        println(f)
+    }
+}

@@ -2,12 +2,29 @@ isFinal
 | variables.kt:6:9:6:26 | int local1 | final |
 | variables.kt:8:9:8:26 | int local2 | non-final |
 | variables.kt:10:9:10:26 | int local3 | final |
+| variables.kt:55:5:55:16 | boolean c | non-final |
+| variables.kt:56:5:56:16 | boolean d | final |
+| variables.kt:62:5:62:16 | boolean e | non-final |
+| variables.kt:63:5:63:16 | boolean f | final |
 compileTimeConstant
 | variables.kt:3:5:3:21 | prop |
 | variables.kt:3:5:3:21 | this.prop |
 | variables.kt:7:17:7:22 | local1 |
 | variables.kt:15:1:15:21 | VariablesKt.topLevel |
 | variables.kt:15:1:15:21 | VariablesKt.topLevel |
+| variables.kt:59:17:59:17 | d |
+| variables.kt:66:17:66:17 | f |
+isCaptured
+| variables.kt:6:9:6:26 | int local1 | not captured |
+| variables.kt:8:9:8:26 | int local2 | not captured |
+| variables.kt:10:9:10:26 | int local3 | not captured |
+| variables.kt:55:5:55:16 | boolean c | captured |
+| variables.kt:56:5:56:16 | boolean d | not captured |
+| variables.kt:62:5:62:16 | boolean e | captured |
+| variables.kt:63:5:63:16 | boolean f | not captured |
+varCaptured
+| variables.kt:55:5:55:16 | boolean c | variables.kt:57:9:60:5 | invoke |
+| variables.kt:62:5:62:16 | boolean e | variables.kt:64:5:67:5 | fn2 |
 #select
 | variables.kt:3:5:3:21 | prop | int | variables.kt:3:21:3:21 | 1 |
 | variables.kt:5:20:5:29 | param | int | file://:0:0:0:0 | <none> |
@@ -18,3 +35,8 @@ compileTimeConstant
 | variables.kt:21:11:21:18 | o | C1 | file://:0:0:0:0 | <none> |
 | variables.kt:21:11:21:18 | o | C1 | variables.kt:21:11:21:18 | o |
 | variables.kt:28:9:28:10 | <this> | C1 | file://:0:0:0:0 | <none> |
+| variables.kt:52:9:52:26 | f | Function0<Unit> | file://:0:0:0:0 | <none> |
+| variables.kt:55:5:55:16 | boolean c | boolean | variables.kt:55:13:55:16 | true |
+| variables.kt:56:5:56:16 | boolean d | boolean | variables.kt:56:13:56:16 | true |
+| variables.kt:62:5:62:16 | boolean e | boolean | variables.kt:62:13:62:16 | true |
+| variables.kt:63:5:63:16 | boolean f | boolean | variables.kt:63:13:63:16 | true |

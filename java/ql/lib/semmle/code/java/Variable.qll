@@ -61,6 +61,18 @@ class LocalVariableDecl extends @localvar, LocalScopeVariable {
   override Expr getInitializer() { result = this.getDeclExpr().getInit() }
 
   override string getAPrimaryQlClass() { result = "LocalVariableDecl" }
+
+  /** Holds if this non-final variable is captured by a nested callable. */
+  predicate isCaptured() {
+    not this.(Modifiable).isFinal() and exists(this.getACapturingCallable())
+  }
+
+  /** Gets a callable that captures this non-final variable, if any. */
+  Callable getACapturingCallable() {
+    not this.(Modifiable).isFinal() and
+    result = this.getAnAccess().getEnclosingCallable() and
+    result != this.getCallable()
+  }
 }
 
 /** A formal parameter of a callable. */

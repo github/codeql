@@ -84,6 +84,9 @@ where
     not fa.getField().isFinal() and
     fa.getParent*() = cond
   ) and
-  not exists(ArrayAccess aa | aa.getParent*() = cond)
+  not exists(ArrayAccess aa | aa.getParent*() = cond) and
+  not exists(RValue use |
+    use.getParent*() = cond and use.getVariable().(LocalVariableDecl).isCaptured()
+  )
 select cond, "$@ might not terminate, as this loop condition is constant within the loop.", loop,
   "Loop"
