@@ -39,7 +39,13 @@ module CodeInjection {
   /**
    * A sanitizer for "Code injection" vulnerabilities.
    */
-  abstract class Sanitizer extends DataFlow::Node { }
+  abstract class Sanitizer extends DataFlow::Node {
+    /**
+     * Gets a flow state for which this is a sanitizer.
+     * Sanitizes all states if the result is empty.
+     */
+    DataFlow::FlowState getAFlowState() { none() }
+  }
 
   /**
    * DEPRECATED: Use `Sanitizer` instead.
@@ -67,5 +73,25 @@ module CodeInjection {
       then result = [FlowState::substring(), FlowState::full()] // If it runs immediately, then it's always vulnerable.
       else result = FlowState::full() // If it "just" loads something, then it's only vulnerable if the attacker controls the entire string.
     }
+  }
+
+  private import codeql.ruby.AST as Ast
+
+  /**
+   * A string-concatenation that sanitizes the `full()` state.
+   */
+  class StringConcatenationSanitizer extends Sanitizer {
+    StringConcatenationSanitizer() {
+      // string concatenations sanitize the `full` state, as an attacker no longer controls the entire string
+      exists(Ast::AstNode str |
+        str instanceof Ast::StringLiteral
+        or
+        str instanceof Ast::AddExpr
+      |
+        this.asExpr().getExpr() = str
+      )
+    }
+
+    override DataFlow::FlowState getAFlowState() { result = FlowState::full() }
   }
 }

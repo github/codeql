@@ -9,7 +9,6 @@ import codeql.ruby.DataFlow
 import codeql.ruby.TaintTracking
 import CodeInjectionCustomizations::CodeInjection
 import codeql.ruby.dataflow.BarrierGuards
-private import codeql.ruby.AST as Ast
 
 /**
  * A taint-tracking configuration for detecting "Code injection" vulnerabilities.
@@ -26,21 +25,15 @@ class Configuration extends TaintTracking::Configuration {
   }
 
   override predicate isSanitizer(DataFlow::Node node) {
-    node instanceof Sanitizer or
-    node instanceof StringConstCompareBarrier or
+    node instanceof Sanitizer and not exists(node.(Sanitizer).getAFlowState())
+    or
+    node instanceof StringConstCompareBarrier
+    or
     node instanceof StringConstArrayInclusionCallBarrier
   }
 
   override predicate isSanitizer(DataFlow::Node node, DataFlow::FlowState state) {
-    // string concatenations sanitize the `full` state, as an attacker no longer controls the entire string
-    exists(Ast::AstNode str |
-      str instanceof Ast::StringLiteral
-      or
-      str instanceof Ast::AddExpr
-    |
-      node.asExpr().getExpr() = str and
-      state = FlowState::full()
-    )
+    node.(Sanitizer).getAFlowState() = state
   }
 
   deprecated override predicate isSanitizerGuard(DataFlow::BarrierGuard guard) {
