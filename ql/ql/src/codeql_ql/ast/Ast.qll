@@ -853,7 +853,7 @@ class Class extends TClass, TypeDeclaration, ModuleDeclaration {
   override string getName() { result = cls.getName().getValue() }
 
   /**
-   * Gets the charateristic predicate for this class.
+   * Gets the characteristic predicate for this class.
    */
   CharPred getCharPred() { toQL(result) = cls.getChild(_).(QL::ClassMember).getChild(_) }
 
