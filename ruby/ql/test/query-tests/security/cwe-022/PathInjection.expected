@@ -39,6 +39,10 @@ edges
 | tainted_path.rb:71:12:71:53 | call to new :  | tainted_path.rb:72:15:72:18 | path |
 | tainted_path.rb:71:40:71:45 | call to params :  | tainted_path.rb:71:40:71:52 | ...[...] :  |
 | tainted_path.rb:71:40:71:52 | ...[...] :  | tainted_path.rb:71:12:71:53 | call to new :  |
+| tainted_path.rb:77:12:77:53 | call to new :  | tainted_path.rb:78:19:78:22 | path |
+| tainted_path.rb:77:12:77:53 | call to new :  | tainted_path.rb:79:14:79:17 | path |
+| tainted_path.rb:77:40:77:45 | call to params :  | tainted_path.rb:77:40:77:52 | ...[...] :  |
+| tainted_path.rb:77:40:77:52 | ...[...] :  | tainted_path.rb:77:12:77:53 | call to new :  |
 nodes
 | ArchiveApiPathTraversal.rb:5:26:5:31 | call to params :  | semmle.label | call to params :  |
 | ArchiveApiPathTraversal.rb:5:26:5:42 | ...[...] :  | semmle.label | ...[...] :  |
@@ -93,6 +97,11 @@ nodes
 | tainted_path.rb:71:40:71:45 | call to params :  | semmle.label | call to params :  |
 | tainted_path.rb:71:40:71:52 | ...[...] :  | semmle.label | ...[...] :  |
 | tainted_path.rb:72:15:72:18 | path | semmle.label | path |
+| tainted_path.rb:77:12:77:53 | call to new :  | semmle.label | call to new :  |
+| tainted_path.rb:77:40:77:45 | call to params :  | semmle.label | call to params :  |
+| tainted_path.rb:77:40:77:52 | ...[...] :  | semmle.label | ...[...] :  |
+| tainted_path.rb:78:19:78:22 | path | semmle.label | path |
+| tainted_path.rb:79:14:79:17 | path | semmle.label | path |
 subpaths
 #select
 | ArchiveApiPathTraversal.rb:59:21:59:36 | destination_file | ArchiveApiPathTraversal.rb:5:26:5:31 | call to params :  | ArchiveApiPathTraversal.rb:59:21:59:36 | destination_file | This path depends on a $@. | ArchiveApiPathTraversal.rb:5:26:5:31 | call to params | user-provided value |
@@ -108,3 +117,5 @@ subpaths
 | tainted_path.rb:48:26:48:29 | path | tainted_path.rb:47:43:47:48 | call to params :  | tainted_path.rb:48:26:48:29 | path | This path depends on a $@. | tainted_path.rb:47:43:47:48 | call to params | user-provided value |
 | tainted_path.rb:60:26:60:29 | path | tainted_path.rb:59:40:59:45 | call to params :  | tainted_path.rb:60:26:60:29 | path | This path depends on a $@. | tainted_path.rb:59:40:59:45 | call to params | user-provided value |
 | tainted_path.rb:72:15:72:18 | path | tainted_path.rb:71:40:71:45 | call to params :  | tainted_path.rb:72:15:72:18 | path | This path depends on a $@. | tainted_path.rb:71:40:71:45 | call to params | user-provided value |
+| tainted_path.rb:78:19:78:22 | path | tainted_path.rb:77:40:77:45 | call to params :  | tainted_path.rb:78:19:78:22 | path | This path depends on a $@. | tainted_path.rb:77:40:77:45 | call to params | user-provided value |
+| tainted_path.rb:79:14:79:17 | path | tainted_path.rb:77:40:77:45 | call to params :  | tainted_path.rb:79:14:79:17 | path | This path depends on a $@. | tainted_path.rb:77:40:77:45 | call to params | user-provided value |
