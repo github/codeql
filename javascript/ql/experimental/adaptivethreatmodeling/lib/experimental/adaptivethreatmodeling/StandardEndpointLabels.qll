@@ -29,7 +29,8 @@ module Labels {
     } or
     TLegacyModeledDbAccess() or
     TLegacyModeledSink() or
-    TLegacyModeledStepSource()
+    TLegacyModeledStepSource() or
+    TLegacyModeledHttp(string kind) { kind = ["request", "response"] }
 
   class EndpointLabel extends TEndpointLabel {
     abstract string getLabel(DataFlow::Node n);
@@ -62,24 +63,27 @@ module Labels {
 
     override string toString() {
       exists(string inner | this = TLegacyReasonSinkExcludedEndpointLabel(inner) |
-        result = "TLegacyReasonSinkExcludedEndpointLabel(" + inner + ")"
+        result = "LegacyReasonSinkExcludedEndpointLabel(" + inner + ")"
       )
     }
   }
 
-  class LegacyModeledDbAccess extends EndpointLabel, TLegacyModeledDbAccess {
+  class LegacyModeledDbAccessEndpointLabel extends EndpointLabel, TLegacyModeledDbAccess {
     override string getLabel(DataFlow::Node n) {
       exists(DataFlow::CallNode call | n = call.getAnArgument() |
         call.(DataFlow::MethodCallNode).getMethodName() =
           ["create", "createCollection", "createIndexes"] and
         result = "legacy/modeled/db-access/matches database access call heuristic"
+        or
+        call instanceof DatabaseAccess and
+        result = "legacy/modeled/db-access"
       )
     }
 
     override string toString() { result = "LegacyModeledDbAccessEndpointLabel" }
   }
 
-  class LegacyModeledSink extends Labels::EndpointLabel, TLegacyModeledSink {
+  class LegacyModeledSinkEndpointLabel extends Labels::EndpointLabel, TLegacyModeledSink {
     override string getLabel(DataFlow::Node n) {
       CoreKnowledge::isArgumentToKnownLibrarySinkFunction(n) and
       result = "modeled sink"
@@ -88,13 +92,31 @@ module Labels {
     override string toString() { result = "LegacyModeledSinkEndpointLabel" }
   }
 
-  class LegacyModeledStepSource extends Labels::EndpointLabel, TLegacyModeledStepSource {
+  class LegacyModeledStepSourceEndpointLabel extends Labels::EndpointLabel, TLegacyModeledStepSource {
     override string getLabel(DataFlow::Node n) {
       CoreKnowledge::isKnownStepSrc(n) and
       result = "legacy/modeled/step-source"
     }
 
     override string toString() { result = "LegacyModeledStepSourceEndpointLabel" }
+  }
+
+  class LegacyModeledHttpEndpointLabel extends Labels::EndpointLabel, TLegacyModeledHttp {
+    string kind;
+
+    LegacyModeledHttpEndpointLabel() { this = TLegacyModeledHttp(kind) }
+
+    override string getLabel(DataFlow::Node n) {
+      exists(DataFlow::CallNode call | n = call.getAnArgument() |
+        call.getReceiver() instanceof Http::RequestNode and
+        result = "legacy/modeled/http/request"
+        or
+        call.getReceiver() instanceof Http::ResponseNode and
+        result = "legacy/modeled/http/response"
+      )
+    }
+
+    override string toString() { result = "LegacyModeledHttpEndpointLabel(" + kind + ")" }
   }
 }
 

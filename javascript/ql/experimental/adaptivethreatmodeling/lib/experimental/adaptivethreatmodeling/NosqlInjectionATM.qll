@@ -21,28 +21,12 @@ module SinkEndpointFilter {
   string getAReasonSinkExcluded(DataFlow::Node sinkCandidate) {
     result =
       any(StandardEndpointLabels::Labels::EndpointLabel l |
-        l.toString().matches("%" + [
-          "LegacyReasonSinkExcludedEndpointLabel", //
-          "LegacyModeledDbAccess", //
-          "LegacyModeledSink", //
-          "LegacyModeledStepSourceEndpointLabel", //
-        ] + "%")
+        l instanceof StandardEndpointLabels::Labels::LegacyReasonSinkExcludedEndpointLabel or
+        l instanceof StandardEndpointLabels::Labels::LegacyModeledDbAccessEndpointLabel or
+        l instanceof StandardEndpointLabels::Labels::LegacyModeledSinkEndpointLabel or
+        l instanceof StandardEndpointLabels::Labels::LegacyModeledStepSourceEndpointLabel or
+        l instanceof StandardEndpointLabels::Labels::LegacyModeledHttpEndpointLabel
       ).getLabel(sinkCandidate)
-    or
-    exists(DataFlow::CallNode call | sinkCandidate = call.getAnArgument() |
-      // Remove modeled database calls. Arguments to modeled calls are very likely to be modeled
-      // as sinks if they are true positives. Therefore arguments that are not modeled as sinks
-      // are unlikely to be true positives.
-      call instanceof DatabaseAccess and
-      result = "modeled database access"
-      or
-      // Remove calls to APIs that aren't relevant to NoSQL injection
-      call.getReceiver() instanceof Http::RequestNode and
-      result = "receiver is a HTTP request expression"
-      or
-      call.getReceiver() instanceof Http::ResponseNode and
-      result = "receiver is a HTTP response expression"
-    )
     or
     // TODO move this comment, and update it, when improving the endpoint filters.
     //
