@@ -1,9 +1,9 @@
 /**
- * @name Insufficient key size used with a cryptographic algorithm
- * @description Using cryptographic algorithms with too small of a key size can
+ * @name Use of a cryptographic algorithm with insufficient key size
+ * @description Using cryptographic algorithms with too small a key size can
  *              allow an attacker to compromise security.
  * @kind path-problem
- * @problem.severity error
+ * @problem.severity warning
  * @security-severity 7.5
  * @precision high
  * @id java/insufficient-key-size
@@ -17,5 +17,6 @@ import DataFlow::PathGraph
 
 from DataFlow::PathNode source, DataFlow::PathNode sink
 where exists(KeySizeConfiguration cfg | cfg.hasFlowPath(source, sink))
-select sink.getNode(), source, sink, "This $@ is less than the recommended key size.",
+select sink.getNode(), source, sink,
+  "This $@ is less than the recommended key size of " + source.getState() + " bits.",
   source.getNode(), "key size"
