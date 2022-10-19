@@ -97,6 +97,7 @@ class Configuration extends TaintTracking::Configuration {
     exists(AttrRead attr, MethodCallNode call |
       attr.accesses(nodeFrom, "getmembers") and
       nodeFrom = call.getObject() and
+      nodeFrom instanceof AllTarfileOpens and
       nodeTo = call
     )
     or
