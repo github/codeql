@@ -5,14 +5,14 @@
 <overview>
 
 <p>
-If a database query (such as a SQL query) is built from user-provided data without sufficient sanitization, a user may be able to run malicious database queries.
+If a database query (such as a SQL query) is built from user-provided data without sufficient sanitization, a user may be able to run malicious database queries. An attacker can craft the part of the query they control to change the overall meaning of the query.
 </p>
 
 </overview>
 <recommendation>
 
 <p>
-Most database connector libraries offer a way of safely embedding untrusted data into a query by means of query parameters or prepared statements. Use these features rather than building queries by string concatenation.
+Most database connector libraries offer a way of safely embedding untrusted data into a query by means of query parameters or prepared statements. Use these features rather than building queries by string concatenation or similar methods without sufficient sanitization.
 </p>
 
 </recommendation>
@@ -23,7 +23,7 @@ Most database connector libraries offer a way of safely embedding untrusted data
 
 <sample src="SqlInjectionBad.swift" />
 
-<p>A better way to do this is with a prepared statement, binding <code>userControlledString</code> to a parameter of that statement. An attacker who controls the contents of that parameter cannot 'break out' and change the overall meaning of the SQL query.
+<p>A better way to do this is with a prepared statement, binding <code>userControlledString</code> to a parameter of that statement. An attacker who controls the contents of that parameter cannot change the overall meaning of the query.
 </p>
 
 <sample src="SqlInjectionGood.swift" />
