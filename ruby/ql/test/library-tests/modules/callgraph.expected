@@ -148,6 +148,8 @@ getTarget
 | calls.rb:384:13:384:22 | call to singleton1 | calls.rb:379:9:381:11 | singleton1 |
 | calls.rb:384:13:384:22 | call to singleton1 | calls.rb:414:9:416:11 | singleton1 |
 | calls.rb:388:13:388:20 | call to new | calls.rb:117:5:117:16 | new |
+| calls.rb:388:13:388:30 | call to instance1 | calls.rb:402:5:404:7 | instance1 |
+| calls.rb:388:13:388:30 | call to instance1 | calls.rb:423:5:425:7 | instance1 |
 | calls.rb:393:9:393:44 | call to puts | calls.rb:102:5:102:30 | puts |
 | calls.rb:397:9:397:18 | call to singleton2 | calls.rb:392:5:394:7 | singleton2 |
 | calls.rb:397:9:397:18 | call to singleton2 | calls.rb:419:5:421:7 | singleton2 |
@@ -226,11 +228,7 @@ getTarget
 | calls.rb:592:9:592:23 | call to call_singleton1 | calls.rb:587:5:589:7 | call_singleton1 |
 | calls.rb:592:9:592:23 | call to call_singleton1 | calls.rb:600:5:602:7 | call_singleton1 |
 | calls.rb:592:9:592:23 | call to call_singleton1 | calls.rb:609:5:611:7 | call_singleton1 |
-| calls.rb:601:9:601:18 | call to singleton1 | calls.rb:584:5:585:7 | singleton1 |
 | calls.rb:601:9:601:18 | call to singleton1 | calls.rb:597:5:598:7 | singleton1 |
-| calls.rb:601:9:601:18 | call to singleton1 | calls.rb:606:5:607:7 | singleton1 |
-| calls.rb:610:9:610:18 | call to singleton1 | calls.rb:584:5:585:7 | singleton1 |
-| calls.rb:610:9:610:18 | call to singleton1 | calls.rb:597:5:598:7 | singleton1 |
 | calls.rb:610:9:610:18 | call to singleton1 | calls.rb:606:5:607:7 | singleton1 |
 | calls.rb:614:1:614:31 | call to call_call_singleton1 | calls.rb:591:5:593:7 | call_call_singleton1 |
 | calls.rb:615:1:615:31 | call to call_call_singleton1 | calls.rb:591:5:593:7 | call_call_singleton1 |
@@ -319,7 +317,6 @@ unresolvedCall
 | calls.rb:274:1:274:14 | call to singleton_g |
 | calls.rb:276:1:276:14 | call to singleton_g |
 | calls.rb:313:9:313:20 | call to instance |
-| calls.rb:388:13:388:30 | call to instance1 |
 | calls.rb:434:8:434:13 | call to rand |
 | calls.rb:434:8:434:17 | ... > ... |
 | calls.rb:451:9:451:10 | call to m3 |
