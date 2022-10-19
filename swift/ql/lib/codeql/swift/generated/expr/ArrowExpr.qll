@@ -3,6 +3,8 @@ private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
 import codeql.swift.elements.expr.Expr
 
-class ArrowExprBase extends Synth::TArrowExpr, Expr {
-  override string getAPrimaryQlClass() { result = "ArrowExpr" }
+module Generated {
+  class ArrowExpr extends Synth::TArrowExpr, Expr {
+    override string getAPrimaryQlClass() { result = "ArrowExpr" }
+  }
 }

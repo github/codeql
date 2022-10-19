@@ -5,7 +5,7 @@
 import javascript
 
 /**
- * Holds if `term` is an ecape class representing e.g. `\d`.
+ * Holds if `term` is an escape class representing e.g. `\d`.
  * `clazz` is which character class it represents, e.g. "d" for `\d`.
  */
 predicate isEscapeClass(RegExpTerm term, string clazz) {
@@ -20,13 +20,13 @@ predicate isPossessive(RegExpQuantifier term) { none() }
 
 /**
  * Holds if the regex that `term` is part of is used in a way that ignores any leading prefix of the input it's matched against.
- * Not yet implemented for Javascript.
+ * Not yet implemented for JavaScript.
  */
 predicate matchesAnyPrefix(RegExpTerm term) { any() }
 
 /**
  * Holds if the regex that `term` is part of is used in a way that ignores any trailing suffix of the input it's matched against.
- * Not yet implemented for Javascript.
+ * Not yet implemented for JavaScript.
  */
 predicate matchesAnySuffix(RegExpTerm term) { any() }
 

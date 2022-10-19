@@ -3,6 +3,8 @@ private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
 import codeql.swift.elements.type.BuiltinType
 
-class BuiltinNativeObjectTypeBase extends Synth::TBuiltinNativeObjectType, BuiltinType {
-  override string getAPrimaryQlClass() { result = "BuiltinNativeObjectType" }
+module Generated {
+  class BuiltinNativeObjectType extends Synth::TBuiltinNativeObjectType, BuiltinType {
+    override string getAPrimaryQlClass() { result = "BuiltinNativeObjectType" }
+  }
 }

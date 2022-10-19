@@ -1,6 +1,6 @@
 /**
  * @name Security sensitive JsonWebTokenHandler validations are disabled
- * @description Check if secruity sensitive token validations for `JsonWebTokenHandler` are being disabled.
+ * @description Check if security sensitive token validations for `JsonWebTokenHandler` are being disabled.
  * @kind problem
  * @tags security
  *       JsonWebTokenHandler

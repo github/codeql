@@ -24,10 +24,10 @@ module Ssa {
     }
 
     /** Gets a first read of this SSA definition. */
-    final ReadAccess getAFirstRead() { result = SsaImpl::getAFirstRead(this) }
+    deprecated final ReadAccess getAFirstRead() { result = SsaImpl::getAFirstRead(this) }
 
     /** Holds if `first` and `second` are adjacent reads of this SSA definition. */
-    final predicate hasAdjacentReads(ReadAccess first, ReadAccess second) {
+    deprecated final predicate hasAdjacentReads(ReadAccess first, ReadAccess second) {
       SsaImpl::hasAdjacentReads(this, first, second)
     }
 
@@ -58,8 +58,9 @@ module Ssa {
      * index `i` in basic block `bb` can reach this phi node without going through
      * other references.
      */
-    final predicate hasLastInputRef(Definition def, BasicBlock bb, int i) {
-      SsaImpl::hasLastInputRef(this, def, bb, i)
+    deprecated final predicate hasLastInputRef(Definition def, BasicBlock bb, int i) {
+      SsaImpl::lastRefRedef(def, bb, i, this) and
+      def = SsaImpl::getAPhiInput(this)
     }
   }
 }

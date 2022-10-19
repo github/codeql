@@ -564,8 +564,6 @@ edges
 | array_flow.rb:334:10:334:10 | a [element] :  | array_flow.rb:334:10:334:13 | ...[...] |
 | array_flow.rb:338:16:338:25 | call to source :  | array_flow.rb:339:9:339:9 | a [element 2] :  |
 | array_flow.rb:338:16:338:25 | call to source :  | array_flow.rb:339:9:339:9 | a [element 2] :  |
-| array_flow.rb:338:16:338:25 | call to source :  | array_flow.rb:345:10:345:10 | a [element 2] :  |
-| array_flow.rb:338:16:338:25 | call to source :  | array_flow.rb:345:10:345:10 | a [element 2] :  |
 | array_flow.rb:339:9:339:9 | [post] a [element] :  | array_flow.rb:343:10:343:10 | a [element] :  |
 | array_flow.rb:339:9:339:9 | [post] a [element] :  | array_flow.rb:343:10:343:10 | a [element] :  |
 | array_flow.rb:339:9:339:9 | [post] a [element] :  | array_flow.rb:344:10:344:10 | a [element] :  |
@@ -588,8 +586,6 @@ edges
 | array_flow.rb:343:10:343:10 | a [element] :  | array_flow.rb:343:10:343:13 | ...[...] |
 | array_flow.rb:344:10:344:10 | a [element] :  | array_flow.rb:344:10:344:13 | ...[...] |
 | array_flow.rb:344:10:344:10 | a [element] :  | array_flow.rb:344:10:344:13 | ...[...] |
-| array_flow.rb:345:10:345:10 | a [element 2] :  | array_flow.rb:345:10:345:13 | ...[...] |
-| array_flow.rb:345:10:345:10 | a [element 2] :  | array_flow.rb:345:10:345:13 | ...[...] |
 | array_flow.rb:345:10:345:10 | a [element] :  | array_flow.rb:345:10:345:13 | ...[...] |
 | array_flow.rb:345:10:345:10 | a [element] :  | array_flow.rb:345:10:345:13 | ...[...] |
 | array_flow.rb:349:16:349:25 | call to source :  | array_flow.rb:350:9:350:9 | a [element 2] :  |
@@ -4098,8 +4094,6 @@ nodes
 | array_flow.rb:344:10:344:10 | a [element] :  | semmle.label | a [element] :  |
 | array_flow.rb:344:10:344:13 | ...[...] | semmle.label | ...[...] |
 | array_flow.rb:344:10:344:13 | ...[...] | semmle.label | ...[...] |
-| array_flow.rb:345:10:345:10 | a [element 2] :  | semmle.label | a [element 2] :  |
-| array_flow.rb:345:10:345:10 | a [element 2] :  | semmle.label | a [element 2] :  |
 | array_flow.rb:345:10:345:10 | a [element] :  | semmle.label | a [element] :  |
 | array_flow.rb:345:10:345:10 | a [element] :  | semmle.label | a [element] :  |
 | array_flow.rb:345:10:345:13 | ...[...] | semmle.label | ...[...] |

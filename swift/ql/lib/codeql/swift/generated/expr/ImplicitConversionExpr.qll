@@ -3,13 +3,15 @@ private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
 import codeql.swift.elements.expr.Expr
 
-class ImplicitConversionExprBase extends Synth::TImplicitConversionExpr, Expr {
-  Expr getImmediateSubExpr() {
-    result =
-      Synth::convertExprFromRaw(Synth::convertImplicitConversionExprToRaw(this)
-            .(Raw::ImplicitConversionExpr)
-            .getSubExpr())
-  }
+module Generated {
+  class ImplicitConversionExpr extends Synth::TImplicitConversionExpr, Expr {
+    Expr getImmediateSubExpr() {
+      result =
+        Synth::convertExprFromRaw(Synth::convertImplicitConversionExprToRaw(this)
+              .(Raw::ImplicitConversionExpr)
+              .getSubExpr())
+    }
 
-  final Expr getSubExpr() { result = getImmediateSubExpr().resolve() }
+    final Expr getSubExpr() { result = getImmediateSubExpr().resolve() }
+  }
 }

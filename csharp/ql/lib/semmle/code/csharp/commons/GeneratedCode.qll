@@ -44,7 +44,7 @@ class GeneratedNamespaceFile extends GeneratedCodeFile {
   }
 }
 
-/** A file contining comments suggesting it contains generated code. */
+/** A file continuing comments suggesting it contains generated code. */
 class GeneratedCommentFile extends GeneratedCodeFile {
   GeneratedCommentFile() { this = any(GeneratedCodeComment c).getLocation().getFile() }
 }

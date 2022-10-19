@@ -3,6 +3,8 @@ private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
 import codeql.swift.elements.File
 
-class DbFileBase extends Synth::TDbFile, File {
-  override string getAPrimaryQlClass() { result = "DbFile" }
+module Generated {
+  class DbFile extends Synth::TDbFile, File {
+    override string getAPrimaryQlClass() { result = "DbFile" }
+  }
 }

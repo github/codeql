@@ -76,7 +76,7 @@ class TypeBoundsAnalysis extends BufferWriteEstimationReason, TTypeBoundsAnalysi
 
 /**
  * The estimation comes from non trivial bounds found via actual flow analysis,
- * but a widening aproximation might have been used for variables in loops.
+ * but a widening approximation might have been used for variables in loops.
  * For example
  * ```
  * for (int i = 0; i < 10; ++i) {
@@ -141,7 +141,7 @@ class AttributeFormattingFunction extends FormattingFunction {
  *  - `""` is a `vprintf` variant, `outputParamIndex` is `-1`.
  *  - `"f"` is a `vfprintf` variant, `outputParamIndex` indicates the output stream parameter.
  *  - `"s"` is a `vsprintf` variant, `outputParamIndex` indicates the output buffer parameter.
- *  - `"?"` if the type cannot be deteremined.  `outputParamIndex` is `-1`.
+ *  - `"?"` if the type cannot be determined.  `outputParamIndex` is `-1`.
  */
 predicate primitiveVariadicFormatter(
   TopLevelFunction f, string type, int formatParamIndex, int outputParamIndex
@@ -198,7 +198,7 @@ private predicate callsVariadicFormatter(
  *  - `""` is a `vprintf` variant, `outputParamIndex` is `-1`.
  *  - `"f"` is a `vfprintf` variant, `outputParamIndex` indicates the output stream parameter.
  *  - `"s"` is a `vsprintf` variant, `outputParamIndex` indicates the output buffer parameter.
- *  - `"?"` if the type cannot be deteremined.  `outputParamIndex` is `-1`.
+ *  - `"?"` if the type cannot be determined.  `outputParamIndex` is `-1`.
  */
 predicate variadicFormatter(Function f, string type, int formatParamIndex, int outputParamIndex) {
   primitiveVariadicFormatter(f, type, formatParamIndex, outputParamIndex)

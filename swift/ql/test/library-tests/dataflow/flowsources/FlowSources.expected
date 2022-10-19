@@ -1,0 +1,8 @@
+| customurlschemes.swift:17:44:17:54 | url | external |
+| customurlschemes.swift:20:52:20:68 | url | external |
+| customurlschemes.swift:23:52:23:62 | url | external |
+| string.swift:27:21:27:21 | call to init(contentsOf:) | external |
+| string.swift:27:21:27:44 | call to init(contentsOf:) | external |
+| url.swift:53:15:53:19 | .resourceBytes | external |
+| url.swift:60:15:60:19 | .lines | external |
+| url.swift:67:16:67:22 | .lines | external |

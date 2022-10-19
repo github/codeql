@@ -154,4 +154,5 @@ class HardcodedCredentialsConfiguration extends DataFlow::Configuration {
 
 from DataFlow::PathNode source, DataFlow::PathNode sink, HardcodedCredentialsConfiguration conf
 where conf.hasFlowPath(source, sink)
-select source.getNode(), source, sink, "Use of $@.", source.getNode(), "hardcoded credentials"
+select source.getNode(), source, sink, "This hardcoded value is $@.", sink.getNode(),
+  "used as credentials"

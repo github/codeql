@@ -3,6 +3,8 @@ private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
 import codeql.swift.elements.expr.CheckedCastExpr
 
-class IsExprBase extends Synth::TIsExpr, CheckedCastExpr {
-  override string getAPrimaryQlClass() { result = "IsExpr" }
+module Generated {
+  class IsExpr extends Synth::TIsExpr, CheckedCastExpr {
+    override string getAPrimaryQlClass() { result = "IsExpr" }
+  }
 }

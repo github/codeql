@@ -4,7 +4,7 @@
  */
 
 import RegExpConfiguration
-import codeql.ruby.dataflow.internal.DataFlowImplForLibraries
+import codeql.ruby.dataflow.internal.DataFlowImplForRegExp
 import PathGraph
 
 from RegExpConfiguration c, PathNode source, PathNode sink

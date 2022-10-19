@@ -803,14 +803,14 @@ private module CapturedVariableImpl {
    * Holds if `c` is a relevant part of the call graph for
    * `updatesCapturedVariable` based on following edges in forward direction.
    */
-  private predicate reachbleFromSource(Callable c) {
+  private predicate reachableFromSource(Callable c) {
     source(_, _, _, c, _)
     or
-    exists(Callable mid | reachbleFromSource(mid) | callEdge(mid, c))
+    exists(Callable mid | reachableFromSource(mid) | callEdge(mid, c))
   }
 
   private predicate sink(Callable c, CapturedWrittenLocalScopeVariable captured) {
-    reachbleFromSource(c) and
+    reachableFromSource(c) and
     relevantDefinition(c, captured, _)
   }
 
@@ -932,14 +932,14 @@ private module CapturedVariableLivenessImpl {
    * Holds if `c` is a relevant part of the call graph for
    * `readsCapturedVariable` based on following edges in forward direction.
    */
-  private predicate reachbleFromSource(Callable c) {
+  private predicate reachableFromSource(Callable c) {
     source(_, _, _, c, _)
     or
-    exists(Callable mid | reachbleFromSource(mid) | callEdge(mid, c))
+    exists(Callable mid | reachableFromSource(mid) | callEdge(mid, c))
   }
 
   private predicate sink(Callable c, CapturedReadLocalScopeVariable captured) {
-    reachbleFromSource(c) and
+    reachableFromSource(c) and
     capturerReads(c, captured)
   }
 

@@ -14,7 +14,46 @@ private module Cached {
     ReturnStep() or
     StoreStep(TypeTrackerContent content) { basicStoreStep(_, _, content) } or
     LoadStep(TypeTrackerContent content) { basicLoadStep(_, _, content) } or
+    LoadStoreStep(TypeTrackerContent load, TypeTrackerContent store) {
+      basicLoadStoreStep(_, _, load, store)
+    } or
+    WithContent(ContentFilter filter) { basicWithContentStep(_, _, filter) } or
+    WithoutContent(ContentFilter filter) { basicWithoutContentStep(_, _, filter) } or
     JumpStep()
+
+  cached
+  newtype TTypeTracker =
+    MkTypeTracker(Boolean hasCall, OptionalTypeTrackerContent content) {
+      content = noContent()
+      or
+      // Restrict `content` to those that might eventually match a load.
+      // We can't rely on `basicStoreStep` since `startInContent` might be used with
+      // a content that has no corresponding store.
+      exists(TypeTrackerContent loadContents |
+        (
+          basicLoadStep(_, _, loadContents)
+          or
+          basicLoadStoreStep(_, _, loadContents, _)
+        ) and
+        compatibleContents(content, loadContents)
+      )
+    }
+
+  cached
+  newtype TTypeBackTracker =
+    MkTypeBackTracker(Boolean hasReturn, OptionalTypeTrackerContent content) {
+      content = noContent()
+      or
+      // As in MkTypeTracker, restrict `content` to those that might eventually match a store.
+      exists(TypeTrackerContent storeContent |
+        (
+          basicStoreStep(_, _, storeContent)
+          or
+          basicLoadStoreStep(_, _, _, storeContent)
+        ) and
+        compatibleContents(storeContent, content)
+      )
+    }
 
   pragma[nomagic]
   private TypeTracker noContentTypeTracker(boolean hasCall) {
@@ -35,6 +74,14 @@ private module Cached {
       or
       step = JumpStep() and
       result = MkTypeTracker(false, currentContents)
+      or
+      exists(ContentFilter filter | result = tt |
+        step = WithContent(filter) and
+        currentContents = filter.getAMatchingContent()
+        or
+        step = WithoutContent(filter) and
+        not currentContents = filter.getAMatchingContent()
+      )
     )
     or
     exists(TypeTrackerContent storeContents, boolean hasCall |
@@ -48,6 +95,16 @@ private module Cached {
       step = StoreStep(pragma[only_bind_into](storeContents)) and
       tt = noContentTypeTracker(hasCall) and
       result = MkTypeTracker(hasCall, storeContents)
+    )
+    or
+    exists(
+      TypeTrackerContent currentContent, TypeTrackerContent store, TypeTrackerContent load,
+      boolean hasCall
+    |
+      step = LoadStoreStep(pragma[only_bind_into](load), pragma[only_bind_into](store)) and
+      compatibleContents(pragma[only_bind_into](currentContent), load) and
+      tt = MkTypeTracker(pragma[only_bind_into](hasCall), currentContent) and
+      result = MkTypeTracker(pragma[only_bind_out](hasCall), store)
     )
   }
 
@@ -70,6 +127,14 @@ private module Cached {
       or
       step = JumpStep() and
       result = MkTypeBackTracker(false, content)
+      or
+      exists(ContentFilter filter | result = tbt |
+        step = WithContent(filter) and
+        content = filter.getAMatchingContent()
+        or
+        step = WithoutContent(filter) and
+        not content = filter.getAMatchingContent()
+      )
     )
     or
     exists(TypeTrackerContent loadContents, boolean hasReturn |
@@ -83,6 +148,16 @@ private module Cached {
       step = LoadStep(pragma[only_bind_into](loadContents)) and
       tbt = noContentTypeBackTracker(hasReturn) and
       result = MkTypeBackTracker(hasReturn, loadContents)
+    )
+    or
+    exists(
+      TypeTrackerContent currentContent, TypeTrackerContent store, TypeTrackerContent load,
+      boolean hasCall
+    |
+      step = LoadStoreStep(pragma[only_bind_into](load), pragma[only_bind_into](store)) and
+      compatibleContents(store, pragma[only_bind_into](currentContent)) and
+      tbt = MkTypeBackTracker(pragma[only_bind_into](hasCall), currentContent) and
+      result = MkTypeBackTracker(pragma[only_bind_out](hasCall), load)
     )
   }
 
@@ -105,9 +180,92 @@ private module Cached {
   predicate stepCall(TypeTrackingNode nodeFrom, TypeTrackingNode nodeTo, StepSummary summary) {
     exists(Node mid | nodeFrom.flowsTo(mid) and smallstepCall(mid, nodeTo, summary))
   }
+
+  cached
+  predicate smallstepNoCall(Node nodeFrom, TypeTrackingNode nodeTo, StepSummary summary) {
+    jumpStep(nodeFrom, nodeTo) and
+    summary = JumpStep()
+    or
+    levelStepNoCall(nodeFrom, nodeTo) and
+    summary = LevelStep()
+    or
+    exists(TypeTrackerContent content |
+      flowsToStoreStep(nodeFrom, nodeTo, content) and
+      summary = StoreStep(content)
+      or
+      basicLoadStep(nodeFrom, nodeTo, content) and summary = LoadStep(content)
+    )
+    or
+    exists(TypeTrackerContent loadContent, TypeTrackerContent storeContent |
+      flowsToLoadStoreStep(nodeFrom, nodeTo, loadContent, storeContent) and
+      summary = LoadStoreStep(loadContent, storeContent)
+    )
+    or
+    exists(ContentFilter filter |
+      basicWithContentStep(nodeFrom, nodeTo, filter) and
+      summary = WithContent(filter)
+      or
+      basicWithoutContentStep(nodeFrom, nodeTo, filter) and
+      summary = WithoutContent(filter)
+    )
+  }
+
+  cached
+  predicate smallstepCall(Node nodeFrom, TypeTrackingNode nodeTo, StepSummary summary) {
+    callStep(nodeFrom, nodeTo) and summary = CallStep()
+    or
+    returnStep(nodeFrom, nodeTo) and
+    summary = ReturnStep()
+    or
+    levelStepCall(nodeFrom, nodeTo) and
+    summary = LevelStep()
+  }
 }
 
 private import Cached
+
+/**
+ * Holds if `nodeFrom` is being written to the `content` of the object in `nodeTo`.
+ *
+ * Note that `nodeTo` will always be a local source node that flows to the place where the content
+ * is written in `basicStoreStep`. This may lead to the flow of information going "back in time"
+ * from the point of view of the execution of the program.
+ *
+ * For instance, if we interpret attribute writes in Python as writing to content with the same
+ * name as the attribute and consider the following snippet
+ *
+ * ```python
+ * def foo(y):
+ *    x = Foo()
+ *    bar(x)
+ *    x.attr = y
+ *    baz(x)
+ *
+ * def bar(x):
+ *    z = x.attr
+ * ```
+ * for the attribute write `x.attr = y`, we will have `content` being the literal string `"attr"`,
+ * `nodeFrom` will be `y`, and `nodeTo` will be the object `Foo()` created on the first line of the
+ * function. This means we will track the fact that `x.attr` can have the type of `y` into the
+ * assignment to `z` inside `bar`, even though this attribute write happens _after_ `bar` is called.
+ */
+private predicate flowsToStoreStep(
+  Node nodeFrom, TypeTrackingNode nodeTo, TypeTrackerContent content
+) {
+  exists(Node obj | nodeTo.flowsTo(obj) and basicStoreStep(nodeFrom, obj, content))
+}
+
+/**
+ * Holds if `loadContent` is loaded from `nodeFrom` and written to `storeContent` of `nodeTo`.
+ */
+private predicate flowsToLoadStoreStep(
+  Node nodeFrom, TypeTrackingNode nodeTo, TypeTrackerContent loadContent,
+  TypeTrackerContent storeContent
+) {
+  exists(Node obj |
+    nodeTo.flowsTo(obj) and basicLoadStoreStep(nodeFrom, obj, loadContent, storeContent)
+  )
+}
 
 /**
  * INTERNAL: Use `TypeTracker` or `TypeBackTracker` instead.
@@ -127,32 +285,13 @@ class StepSummary extends TStepSummary {
     or
     exists(TypeTrackerContent content | this = LoadStep(content) | result = "load " + content)
     or
+    exists(TypeTrackerContent load, TypeTrackerContent store |
+      this = LoadStoreStep(load, store) and
+      result = "load-store " + load + " -> " + store
+    )
+    or
     this instanceof JumpStep and result = "jump"
   }
-}
-
-pragma[noinline]
-private predicate smallstepNoCall(Node nodeFrom, TypeTrackingNode nodeTo, StepSummary summary) {
-  jumpStep(nodeFrom, nodeTo) and
-  summary = JumpStep()
-  or
-  levelStep(nodeFrom, nodeTo) and
-  summary = LevelStep()
-  or
-  exists(TypeTrackerContent content |
-    StepSummary::localSourceStoreStep(nodeFrom, nodeTo, content) and
-    summary = StoreStep(content)
-    or
-    basicLoadStep(nodeFrom, nodeTo, content) and summary = LoadStep(content)
-  )
-}
-
-pragma[noinline]
-private predicate smallstepCall(Node nodeFrom, TypeTrackingNode nodeTo, StepSummary summary) {
-  callStep(nodeFrom, nodeTo) and summary = CallStep()
-  or
-  returnStep(nodeFrom, nodeTo) and
-  summary = ReturnStep()
 }
 
 /** Provides predicates for updating step summaries (`StepSummary`s). */
@@ -188,48 +327,8 @@ module StepSummary {
     smallstepCall(nodeFrom, nodeTo, summary)
   }
 
-  /**
-   * Holds if `nodeFrom` is being written to the `content` of the object in `nodeTo`.
-   *
-   * Note that `nodeTo` will always be a local source node that flows to the place where the content
-   * is written in `basicStoreStep`. This may lead to the flow of information going "back in time"
-   * from the point of view of the execution of the program.
-   *
-   * For instance, if we interpret attribute writes in Python as writing to content with the same
-   * name as the attribute and consider the following snippet
-   *
-   * ```python
-   * def foo(y):
-   *    x = Foo()
-   *    bar(x)
-   *    x.attr = y
-   *    baz(x)
-   *
-   * def bar(x):
-   *    z = x.attr
-   * ```
-   * for the attribute write `x.attr = y`, we will have `content` being the literal string `"attr"`,
-   * `nodeFrom` will be `y`, and `nodeTo` will be the object `Foo()` created on the first line of the
-   * function. This means we will track the fact that `x.attr` can have the type of `y` into the
-   * assignment to `z` inside `bar`, even though this attribute write happens _after_ `bar` is called.
-   */
-  predicate localSourceStoreStep(Node nodeFrom, TypeTrackingNode nodeTo, TypeTrackerContent content) {
-    exists(Node obj | nodeTo.flowsTo(obj) and basicStoreStep(nodeFrom, obj, content))
-  }
+  deprecated predicate localSourceStoreStep = flowsToStoreStep/3;
 }
-
-private newtype TTypeTracker =
-  MkTypeTracker(Boolean hasCall, OptionalTypeTrackerContent content) {
-    content = noContent()
-    or
-    // Restrict `content` to those that might eventually match a load.
-    // We can't rely on `basicStoreStep` since `startInContent` might be used with
-    // a content that has no corresponding store.
-    exists(TypeTrackerContent loadContents |
-      basicLoadStep(_, _, loadContents) and
-      compatibleContents(content, loadContents)
-    )
-  }
 
 /**
  * A summary of the steps needed to track a value to a given dataflow node.
@@ -381,17 +480,6 @@ module TypeTracker {
    */
   TypeTracker end() { result.end() }
 }
-
-private newtype TTypeBackTracker =
-  MkTypeBackTracker(Boolean hasReturn, OptionalTypeTrackerContent content) {
-    content = noContent()
-    or
-    // As in MkTypeTracker, restrict `content` to those that might eventually match a store.
-    exists(TypeTrackerContent storeContent |
-      basicStoreStep(_, _, storeContent) and
-      compatibleContents(storeContent, content)
-    )
-  }
 
 /**
  * A summary of the steps needed to back-track a use of a value to a given dataflow node.

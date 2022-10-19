@@ -136,7 +136,7 @@ class Property extends DotNet::Property, DeclarationWithGetSetAccessors, @proper
    * }
    * ```
    *
-   * Note that this information is only avaiable for properties in source
+   * Note that this information is only available for properties in source
    * code.
    */
   predicate isAutoImplemented() {

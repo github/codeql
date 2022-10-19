@@ -31,5 +31,6 @@ where
     )
   ) and
   (if clz = implClz then extraMsg = "." else extraMsg = " of any class between it and $@.")
-select clz, "The field $@ declared in $@ is not used in the characteristic predicate" + extraMsg,
-  field, field.getName(), clz, clz.getName(), implClz, implClz.getName()
+select clz,
+  "This class declares the $@ but does not bind it in the characteristic predicate" + extraMsg,
+  field, "field " + field.getName(), implClz, implClz.getName()

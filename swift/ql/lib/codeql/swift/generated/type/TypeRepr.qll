@@ -4,12 +4,15 @@ private import codeql.swift.generated.Raw
 import codeql.swift.elements.AstNode
 import codeql.swift.elements.type.Type
 
-class TypeReprBase extends Synth::TTypeRepr, AstNode {
-  override string getAPrimaryQlClass() { result = "TypeRepr" }
+module Generated {
+  class TypeRepr extends Synth::TTypeRepr, AstNode {
+    override string getAPrimaryQlClass() { result = "TypeRepr" }
 
-  Type getImmediateType() {
-    result = Synth::convertTypeFromRaw(Synth::convertTypeReprToRaw(this).(Raw::TypeRepr).getType())
+    Type getImmediateType() {
+      result =
+        Synth::convertTypeFromRaw(Synth::convertTypeReprToRaw(this).(Raw::TypeRepr).getType())
+    }
+
+    final Type getType() { result = getImmediateType().resolve() }
   }
-
-  final Type getType() { result = getImmediateType().resolve() }
 }

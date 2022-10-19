@@ -4,26 +4,28 @@ private import codeql.swift.generated.Raw
 import codeql.swift.elements.decl.AssociatedTypeDecl
 import codeql.swift.elements.type.Type
 
-class DependentMemberTypeBase extends Synth::TDependentMemberType, Type {
-  override string getAPrimaryQlClass() { result = "DependentMemberType" }
+module Generated {
+  class DependentMemberType extends Synth::TDependentMemberType, Type {
+    override string getAPrimaryQlClass() { result = "DependentMemberType" }
 
-  Type getImmediateBaseType() {
-    result =
-      Synth::convertTypeFromRaw(Synth::convertDependentMemberTypeToRaw(this)
-            .(Raw::DependentMemberType)
-            .getBaseType())
-  }
+    Type getImmediateBaseType() {
+      result =
+        Synth::convertTypeFromRaw(Synth::convertDependentMemberTypeToRaw(this)
+              .(Raw::DependentMemberType)
+              .getBaseType())
+    }
 
-  final Type getBaseType() { result = getImmediateBaseType().resolve() }
+    final Type getBaseType() { result = getImmediateBaseType().resolve() }
 
-  AssociatedTypeDecl getImmediateAssociatedTypeDecl() {
-    result =
-      Synth::convertAssociatedTypeDeclFromRaw(Synth::convertDependentMemberTypeToRaw(this)
-            .(Raw::DependentMemberType)
-            .getAssociatedTypeDecl())
-  }
+    AssociatedTypeDecl getImmediateAssociatedTypeDecl() {
+      result =
+        Synth::convertAssociatedTypeDeclFromRaw(Synth::convertDependentMemberTypeToRaw(this)
+              .(Raw::DependentMemberType)
+              .getAssociatedTypeDecl())
+    }
 
-  final AssociatedTypeDecl getAssociatedTypeDecl() {
-    result = getImmediateAssociatedTypeDecl().resolve()
+    final AssociatedTypeDecl getAssociatedTypeDecl() {
+      result = getImmediateAssociatedTypeDecl().resolve()
+    }
   }
 }

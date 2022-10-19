@@ -16,3 +16,12 @@ where
   c.getSourceDeclaration().fromSource() and
   superType = c.getASupertype()
 select c, superType
+
+query predicate extendsOrImplements(ClassOrInterface c, Type superType, string kind) {
+  c.getSourceDeclaration().fromSource() and
+  (
+    extendsReftype(c, superType) and kind = "extends"
+    or
+    implInterface(c, superType) and kind = "implements"
+  )
+}

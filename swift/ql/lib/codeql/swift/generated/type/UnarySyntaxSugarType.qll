@@ -4,13 +4,15 @@ private import codeql.swift.generated.Raw
 import codeql.swift.elements.type.SyntaxSugarType
 import codeql.swift.elements.type.Type
 
-class UnarySyntaxSugarTypeBase extends Synth::TUnarySyntaxSugarType, SyntaxSugarType {
-  Type getImmediateBaseType() {
-    result =
-      Synth::convertTypeFromRaw(Synth::convertUnarySyntaxSugarTypeToRaw(this)
-            .(Raw::UnarySyntaxSugarType)
-            .getBaseType())
-  }
+module Generated {
+  class UnarySyntaxSugarType extends Synth::TUnarySyntaxSugarType, SyntaxSugarType {
+    Type getImmediateBaseType() {
+      result =
+        Synth::convertTypeFromRaw(Synth::convertUnarySyntaxSugarTypeToRaw(this)
+              .(Raw::UnarySyntaxSugarType)
+              .getBaseType())
+    }
 
-  final Type getBaseType() { result = getImmediateBaseType().resolve() }
+    final Type getBaseType() { result = getImmediateBaseType().resolve() }
+  }
 }

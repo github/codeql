@@ -250,6 +250,11 @@ module Http {
 
       /** Gets a string that identifies the framework used for this route setup. */
       string getFramework() { result = super.getFramework() }
+
+      /**
+       * Gets the HTTP method name, in lowercase, that this handler will respond to.
+       */
+      string getHttpMethod() { result = super.getHttpMethod() }
     }
 
     /** Provides a class for modeling new HTTP routing APIs. */
@@ -287,8 +292,33 @@ module Http {
 
         /** Gets a string that identifies the framework used for this route setup. */
         abstract string getFramework();
+
+        /**
+         * Gets the HTTP method name, in all caps, that this handler will respond to.
+         */
+        abstract string getHttpMethod();
       }
     }
+
+    /** A kind of request input. */
+    class RequestInputKind extends string {
+      RequestInputKind() { this = ["parameter", "header", "body", "url", "cookie"] }
+    }
+
+    /** Input from the parameters of a request. */
+    RequestInputKind parameterInputKind() { result = "parameter" }
+
+    /** Input from the headers of a request. */
+    RequestInputKind headerInputKind() { result = "header" }
+
+    /** Input from the body of a request. */
+    RequestInputKind bodyInputKind() { result = "body" }
+
+    /** Input from the URL of a request. */
+    RequestInputKind urlInputKind() { result = "url" }
+
+    /** Input from the cookies of a request. */
+    RequestInputKind cookieInputKind() { result = "cookie" }
 
     /**
      * An access to a user-controlled HTTP request input. For example, the URL or body of a request.
@@ -304,6 +334,32 @@ module Http {
        * This is typically the name of the method that gives rise to this input.
        */
       string getSourceType() { result = super.getSourceType() }
+
+      /**
+       * Gets the kind of the accessed input,
+       * Can be one of "parameter", "header", "body", "url", "cookie".
+       */
+      RequestInputKind getKind() { result = super.getKind() }
+
+      /**
+       * Holds if this part of the request may be controlled by a third party,
+       * that is, an agent other than the one who sent the request.
+       *
+       * This is true for the URL, query parameters, and request body.
+       * These can be controlled by a malicious third party in the following scenarios:
+       *
+       * - The user clicks a malicious link or is otherwise redirected to a malicious URL.
+       * - The user visits a web site that initiates a form submission or AJAX request on their behalf.
+       *
+       * In these cases, the request is technically sent from the user's browser, but
+       * the user is not in direct control of the URL or POST body.
+       *
+       * Headers are never considered third-party controllable by this predicate, although the
+       * third party does have some control over the the Referer and Origin headers.
+       */
+      predicate isThirdPartyControllable() {
+        this.getKind() = [parameterInputKind(), urlInputKind(), bodyInputKind()]
+      }
     }
 
     /** Provides a class for modeling new HTTP request inputs. */
@@ -321,6 +377,12 @@ module Http {
          * This is typically the name of the method that gives rise to this input.
          */
         abstract string getSourceType();
+
+        /**
+         * Gets the kind of the accessed input,
+         * Can be one of "parameter", "header", "body", "url", "cookie".
+         */
+        abstract RequestInputKind getKind();
       }
     }
 
@@ -343,6 +405,12 @@ module Http {
 
       /** Gets a string that identifies the framework used for this route setup. */
       string getFramework() { result = super.getFramework() }
+
+      /**
+       * Gets an HTTP method name, in all caps, that this handler will respond to.
+       * Handlers can potentially respond to multiple HTTP methods.
+       */
+      string getAnHttpMethod() { result = super.getAnHttpMethod() }
     }
 
     /** Provides a class for modeling new HTTP request handlers. */
@@ -364,6 +432,12 @@ module Http {
 
         /** Gets a string that identifies the framework used for this request handler. */
         abstract string getFramework();
+
+        /**
+         * Gets an HTTP method name, in all caps, that this handler will respond to.
+         * Handlers can potentially respond to multiple HTTP methods.
+         */
+        abstract string getAnHttpMethod();
       }
     }
 
@@ -378,6 +452,8 @@ module Http {
       }
 
       override string getFramework() { result = rs.getFramework() }
+
+      override string getAnHttpMethod() { result = rs.getHttpMethod() }
     }
 
     /** A parameter that will receive parts of the url when handling an incoming request. */
@@ -387,6 +463,39 @@ module Http {
       RoutedParameter() { this.getParameter() = handler.getARoutedParameter() }
 
       override string getSourceType() { result = handler.getFramework() + " RoutedParameter" }
+
+      override RequestInputKind getKind() { result = parameterInputKind() }
+    }
+
+    /**
+     * A data flow node that writes data to a header in an HTTP response.
+     *
+     * Extend this class to refine existing API models. If you want to model new APIs,
+     * extend `HeaderWriteAccess::Range` instead.
+     */
+    class HeaderWriteAccess extends DataFlow::Node instanceof HeaderWriteAccess::Range {
+      /** Gets the (lower case) name of the header that is written to. */
+      string getName() { result = super.getName().toLowerCase() }
+
+      /** Gets the value that is written to the header. */
+      DataFlow::Node getValue() { result = super.getValue() }
+    }
+
+    /** Provides a class for modeling new HTTP header writes. */
+    module HeaderWriteAccess {
+      /**
+       * A data flow node that writes data to the header in an HTTP response.
+       *
+       * Extend this class to model new APIs. If you want to refine existing API models,
+       * extend `HeaderWriteAccess` instead.
+       */
+      abstract class Range extends DataFlow::Node {
+        /** Gets the name of the header that is written to. */
+        abstract string getName();
+
+        /** Gets the value that is written to the header. */
+        abstract DataFlow::Node getValue();
+      }
     }
 
     /**

@@ -77,3 +77,31 @@ OpenSSL::Cipher::RC4.new
 OpenSSL::Cipher::RC4.new '40'
 # BAD: weak encryption algorithm
 OpenSSL::Cipher::RC4.new 'hmac-md5'
+
+Digest::MD5.hexdigest('foo') # BAD: weak hash algorithm
+Digest::SHA256.hexdigest('foo') # GOOD: strong hash algorithm
+
+Digest::MD5.base64digest('foo') # BAD: weak hash algorithm
+
+md5 = Digest::MD5.new
+md5.digest 'message' # BAD: weak hash algorithm
+
+md5.update 'message1' # BAD: weak hash algorithm
+md5 << 'message2' # << is an alias for update
+
+sha256 = Digest::SHA256.new
+sha256.digest 'message' # GOOD: strong hash algorithm
+
+Digest::MD5.bubblebabble 'message' # BAD: weak hash algorithm
+
+filemd5 = Digest::MD5.file 'testfile'
+filemd5.hexdigest
+
+Digest("MD5").hexdigest('foo') # BAD: weak hash algorithm
+
+sha1 = OpenSSL::Digest.new('SHA1')
+sha1.digest 'message' # BAD: weak hash algorithm
+sha1 << 'message' # << is an alias for update
+
+OpenSSL::Digest.digest('SHA1', "abc") # BAD: weak hash algorithm
+OpenSSL::Digest.digest('SHA3-512', "abc") # GOOD: strong hash algorithm

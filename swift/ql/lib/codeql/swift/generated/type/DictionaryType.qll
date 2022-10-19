@@ -4,24 +4,26 @@ private import codeql.swift.generated.Raw
 import codeql.swift.elements.type.SyntaxSugarType
 import codeql.swift.elements.type.Type
 
-class DictionaryTypeBase extends Synth::TDictionaryType, SyntaxSugarType {
-  override string getAPrimaryQlClass() { result = "DictionaryType" }
+module Generated {
+  class DictionaryType extends Synth::TDictionaryType, SyntaxSugarType {
+    override string getAPrimaryQlClass() { result = "DictionaryType" }
 
-  Type getImmediateKeyType() {
-    result =
-      Synth::convertTypeFromRaw(Synth::convertDictionaryTypeToRaw(this)
-            .(Raw::DictionaryType)
-            .getKeyType())
+    Type getImmediateKeyType() {
+      result =
+        Synth::convertTypeFromRaw(Synth::convertDictionaryTypeToRaw(this)
+              .(Raw::DictionaryType)
+              .getKeyType())
+    }
+
+    final Type getKeyType() { result = getImmediateKeyType().resolve() }
+
+    Type getImmediateValueType() {
+      result =
+        Synth::convertTypeFromRaw(Synth::convertDictionaryTypeToRaw(this)
+              .(Raw::DictionaryType)
+              .getValueType())
+    }
+
+    final Type getValueType() { result = getImmediateValueType().resolve() }
   }
-
-  final Type getKeyType() { result = getImmediateKeyType().resolve() }
-
-  Type getImmediateValueType() {
-    result =
-      Synth::convertTypeFromRaw(Synth::convertDictionaryTypeToRaw(this)
-            .(Raw::DictionaryType)
-            .getValueType())
-  }
-
-  final Type getValueType() { result = getImmediateValueType().resolve() }
 }

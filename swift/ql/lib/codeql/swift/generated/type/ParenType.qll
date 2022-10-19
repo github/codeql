@@ -4,13 +4,15 @@ private import codeql.swift.generated.Raw
 import codeql.swift.elements.type.SugarType
 import codeql.swift.elements.type.Type
 
-class ParenTypeBase extends Synth::TParenType, SugarType {
-  override string getAPrimaryQlClass() { result = "ParenType" }
+module Generated {
+  class ParenType extends Synth::TParenType, SugarType {
+    override string getAPrimaryQlClass() { result = "ParenType" }
 
-  Type getImmediateType() {
-    result =
-      Synth::convertTypeFromRaw(Synth::convertParenTypeToRaw(this).(Raw::ParenType).getType())
+    Type getImmediateType() {
+      result =
+        Synth::convertTypeFromRaw(Synth::convertParenTypeToRaw(this).(Raw::ParenType).getType())
+    }
+
+    final Type getType() { result = getImmediateType().resolve() }
   }
-
-  final Type getType() { result = getImmediateType().resolve() }
 }
