@@ -7,7 +7,7 @@ swift_cc_binary(
         "*.cpp",
         "*.h",
     ]),
-    visibility = ["//swift:__pkg__"],
+    visibility = ["//swift:__subpackages__"],
     linkopts = [
         "-lxml2",
         "-framework CoreFoundation",
