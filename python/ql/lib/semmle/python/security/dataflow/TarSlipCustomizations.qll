@@ -66,7 +66,7 @@ module TarSlip {
    */
   class TarfileOpen extends Source {
     TarfileOpen() {
-      this instanceof AllTarfileOpens and
+      this = tarfileOpen().getACall()
       // If argument refers to a string object, then it's a hardcoded path and
       // this tarfile is safe.
       not this.(DataFlow::CallCfgNode).getArg(0).getALocalSource().asExpr() instanceof StrConst and
