@@ -3,12 +3,14 @@ private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
 import codeql.swift.elements.type.AnyBuiltinIntegerType
 
-class BuiltinIntegerTypeBase extends Synth::TBuiltinIntegerType, AnyBuiltinIntegerType {
-  override string getAPrimaryQlClass() { result = "BuiltinIntegerType" }
+module Generated {
+  class BuiltinIntegerType extends Synth::TBuiltinIntegerType, AnyBuiltinIntegerType {
+    override string getAPrimaryQlClass() { result = "BuiltinIntegerType" }
 
-  int getWidth() {
-    result = Synth::convertBuiltinIntegerTypeToRaw(this).(Raw::BuiltinIntegerType).getWidth()
+    int getWidth() {
+      result = Synth::convertBuiltinIntegerTypeToRaw(this).(Raw::BuiltinIntegerType).getWidth()
+    }
+
+    final predicate hasWidth() { exists(getWidth()) }
   }
-
-  final predicate hasWidth() { exists(getWidth()) }
 }

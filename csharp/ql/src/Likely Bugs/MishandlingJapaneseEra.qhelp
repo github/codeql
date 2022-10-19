@@ -9,7 +9,7 @@
   </p>
 </overview>
 <recommendation>
-  <p>Use speific era when creating DateTime and DateTimeOffset structs from previously stored date in Japanese calendar</p>
+  <p>Use specific era when creating DateTime and DateTimeOffset structs from previously stored date in Japanese calendar</p>
   <p>Don't store dates in Japanese format</p>
   <p>Don't use hard-coded era start date for date calculations converting dates from Japanese date format</p>
   <p>Use <code>JapaneseCalendar</code> class for date formatting only</p>

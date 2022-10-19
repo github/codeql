@@ -1,7 +1,7 @@
 private import codeql.swift.generated.expr.BinaryExpr
 private import codeql.swift.elements.expr.Expr
 
-class BinaryExpr extends BinaryExprBase {
+class BinaryExpr extends Generated::BinaryExpr {
   Expr getLeftOperand() { result = this.getArgument(0).getExpr() }
 
   Expr getRightOperand() { result = this.getArgument(1).getExpr() }

@@ -5,27 +5,31 @@ import codeql.swift.elements.stmt.BraceStmt
 import codeql.swift.elements.expr.Expr
 import codeql.swift.elements.decl.VarDecl
 
-class TapExprBase extends Synth::TTapExpr, Expr {
-  override string getAPrimaryQlClass() { result = "TapExpr" }
+module Generated {
+  class TapExpr extends Synth::TTapExpr, Expr {
+    override string getAPrimaryQlClass() { result = "TapExpr" }
 
-  Expr getImmediateSubExpr() {
-    result = Synth::convertExprFromRaw(Synth::convertTapExprToRaw(this).(Raw::TapExpr).getSubExpr())
+    Expr getImmediateSubExpr() {
+      result =
+        Synth::convertExprFromRaw(Synth::convertTapExprToRaw(this).(Raw::TapExpr).getSubExpr())
+    }
+
+    final Expr getSubExpr() { result = getImmediateSubExpr().resolve() }
+
+    final predicate hasSubExpr() { exists(getSubExpr()) }
+
+    BraceStmt getImmediateBody() {
+      result =
+        Synth::convertBraceStmtFromRaw(Synth::convertTapExprToRaw(this).(Raw::TapExpr).getBody())
+    }
+
+    final BraceStmt getBody() { result = getImmediateBody().resolve() }
+
+    VarDecl getImmediateVar() {
+      result =
+        Synth::convertVarDeclFromRaw(Synth::convertTapExprToRaw(this).(Raw::TapExpr).getVar())
+    }
+
+    final VarDecl getVar() { result = getImmediateVar().resolve() }
   }
-
-  final Expr getSubExpr() { result = getImmediateSubExpr().resolve() }
-
-  final predicate hasSubExpr() { exists(getSubExpr()) }
-
-  BraceStmt getImmediateBody() {
-    result =
-      Synth::convertBraceStmtFromRaw(Synth::convertTapExprToRaw(this).(Raw::TapExpr).getBody())
-  }
-
-  final BraceStmt getBody() { result = getImmediateBody().resolve() }
-
-  VarDecl getImmediateVar() {
-    result = Synth::convertVarDeclFromRaw(Synth::convertTapExprToRaw(this).(Raw::TapExpr).getVar())
-  }
-
-  final VarDecl getVar() { result = getImmediateVar().resolve() }
 }

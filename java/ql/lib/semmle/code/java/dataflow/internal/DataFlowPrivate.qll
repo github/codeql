@@ -83,6 +83,8 @@ predicate jumpStep(Node node1, Node node2) {
   or
   any(AdditionalValueStep a).step(node1, node2) and
   node1.getEnclosingCallable() != node2.getEnclosingCallable()
+  or
+  FlowSummaryImpl::Private::Steps::summaryJumpStep(node1, node2)
 }
 
 /**
@@ -240,12 +242,6 @@ class DataFlowCallable extends TDataFlowCallable {
   SummarizedCallable asSummarizedCallable() { this = TSummarizedCallable(result) }
 
   Field asFieldScope() { this = TFieldScope(result) }
-
-  RefType getDeclaringType() {
-    result = this.asCallable().getDeclaringType() or
-    result = this.asSummarizedCallable().getDeclaringType() or
-    result = this.asFieldScope().getDeclaringType()
-  }
 
   string toString() {
     result = this.asCallable().toString() or

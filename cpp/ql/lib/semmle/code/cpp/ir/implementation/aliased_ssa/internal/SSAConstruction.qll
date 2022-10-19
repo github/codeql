@@ -64,7 +64,7 @@ private module Cached {
     or
     instr = reusedPhiInstruction(_) and
     // Check that the phi instruction is *not* degenerate, but we can't use
-    // getDegeneratePhiOperand in the first stage with phi instyructions
+    // getDegeneratePhiOperand in the first stage with phi instructions
     not exists(
       unique(OldIR::PhiInputOperand operand |
         operand = instr.(OldIR::PhiInstruction).getAnInputOperand() and
@@ -718,7 +718,7 @@ module DefUse {
   }
 
   /**
-   * Gets the rank index of a hyphothetical use one instruction past the end of
+   * Gets the rank index of a hypothetical use one instruction past the end of
    * the block. This index can be used to determine if a definition reaches the
    * end of the block, even if the definition is the last instruction in the
    * block.

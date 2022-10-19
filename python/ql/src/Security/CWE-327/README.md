@@ -14,7 +14,7 @@ This should be kept up to date; the world is moving fast and protocols are being
     > Deprecated since version 3.7: Since Python 3.2 and 2.7.9, it is recommended to use the `SSLContext.wrap_socket()` instead of `wrap_socket()`. The top-level function is limited and creates an insecure client socket without server name indication or hostname matching.
 - Default constructors are fine, a fluent API is used to constrain possible protocols later.
 
-## Current recomendation
+## Current recommendation
 
 TLS 1.2 or TLS 1.3
 

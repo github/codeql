@@ -1,3 +1,9 @@
+## 0.4.1
+
+### Minor Analysis Improvements
+
+* Added external flow sources for the intents received in exported Android services.
+
 ## 0.4.0
 
 ### Breaking Changes

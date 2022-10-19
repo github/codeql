@@ -3,15 +3,17 @@ private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
 import codeql.swift.elements.pattern.Pattern
 
-class BindingPatternBase extends Synth::TBindingPattern, Pattern {
-  override string getAPrimaryQlClass() { result = "BindingPattern" }
+module Generated {
+  class BindingPattern extends Synth::TBindingPattern, Pattern {
+    override string getAPrimaryQlClass() { result = "BindingPattern" }
 
-  Pattern getImmediateSubPattern() {
-    result =
-      Synth::convertPatternFromRaw(Synth::convertBindingPatternToRaw(this)
-            .(Raw::BindingPattern)
-            .getSubPattern())
+    Pattern getImmediateSubPattern() {
+      result =
+        Synth::convertPatternFromRaw(Synth::convertBindingPatternToRaw(this)
+              .(Raw::BindingPattern)
+              .getSubPattern())
+    }
+
+    final Pattern getSubPattern() { result = getImmediateSubPattern().resolve() }
   }
-
-  final Pattern getSubPattern() { result = getImmediateSubPattern().resolve() }
 }

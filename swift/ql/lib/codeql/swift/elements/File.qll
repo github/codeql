@@ -1,6 +1,6 @@
 private import codeql.swift.generated.File
 
-class File extends FileBase {
+class File extends Generated::File {
   /** toString */
   override string toString() { result = this.getAbsolutePath() }
 

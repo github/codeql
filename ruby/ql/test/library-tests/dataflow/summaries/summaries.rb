@@ -77,6 +77,7 @@ Foo.startInNamedParameter(->(foo:) {
 })
 
 a = ["elem0", source("elem1"), source("elem2")]
+d = a
 a[rand()] = source("elem3")
 sink(a.readElementOne(1)) # $ hasValueFlow=elem1 $ hasValueFlow=elem3
 sink(a.readExactlyElementOne(1)) # $ hasValueFlow=elem1
@@ -99,6 +100,12 @@ a.withoutElementOne()
 sink(a[0])
 sink(a[1])
 sink(a[2]) # $ hasValueFlow=elem2
+d[3] = source("elem3")
+d.withoutElementOneAndTwo()
+sink(d[0])
+sink(d[1])
+sink(d[2])
+sink(d[3]) # $ hasValueFlow=elem3
 
 x = Foo.new
 x.set_value(source("attr"))
@@ -134,3 +141,12 @@ Alias::Foo.method(tainted) # $ hasValueFlow=tainted
 Alias::Bar.method(tainted) # $ hasValueFlow=tainted
 Something::Foo.method(tainted)
 Alias::Something.method(tainted)
+
+Foo.getSinks()[0].mySink(tainted) # $ hasValueFlow=tainted
+Foo.arraySink(tainted)
+Foo.arraySink([tainted]) # $ hasValueFlow=tainted
+
+Foo.secondArrayElementIsSink([tainted, "safe", "safe"])
+Foo.secondArrayElementIsSink(["safe", tainted, "safe"]) # $ hasValueFlow=tainted
+Foo.secondArrayElementIsSink(["safe", "safe", tainted])
+Foo.secondArrayElementIsSink([tainted] * 10) # $ MISSING: hasValueFlow=tainted

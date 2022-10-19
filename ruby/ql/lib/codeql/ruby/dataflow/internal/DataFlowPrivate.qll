@@ -181,6 +181,12 @@ module LocalFlow {
         ) and
         nodeFrom.asExpr() = for.getValue()
       )
+    or
+    nodeTo.asExpr() =
+      any(CfgNodes::ExprNodes::BinaryOperationCfgNode op |
+        op.getExpr() instanceof BinaryLogicalOperation and
+        nodeFrom.asExpr() = op.getAnOperand()
+      )
   }
 }
 
@@ -271,6 +277,8 @@ private module Cached {
     } or
     TSynthHashSplatArgumentNode(CfgNodes::ExprNodes::CallCfgNode c) {
       exists(Argument arg | arg.isArgumentOf(c, any(ArgumentPosition pos | pos.isKeyword(_))))
+      or
+      c.getAnArgument() instanceof CfgNodes::ExprNodes::PairCfgNode
     }
 
   class TParameterNode =
@@ -358,8 +366,7 @@ private module Cached {
 
   cached
   predicate isLocalSourceNode(Node n) {
-    n instanceof ParameterNode and
-    not n instanceof SynthHashSplatParameterNode
+    n instanceof ParameterNode
     or
     // Expressions that can't be reached from another entry definition or expression
     n instanceof ExprNode and
@@ -373,28 +380,38 @@ private module Cached {
     n instanceof SynthReturnNode
     or
     // Needed for stores in type tracking
-    TypeTrackerSpecific::basicStoreStep(_, n, _)
+    TypeTrackerSpecific::storeStepIntoSourceNode(_, n, _)
   }
 
   cached
-  newtype TContentSet =
+  newtype TOptionalContentSet =
     TSingletonContent(Content c) or
     TAnyElementContent() or
     TKnownOrUnknownElementContent(Content::KnownElementContent c) or
     TElementLowerBoundContent(int lower, boolean includeUnknown) {
       FlowSummaryImplSpecific::ParsePositions::isParsedElementLowerBoundPosition(_, includeUnknown,
         lower)
-    }
+    } or
+    TNoContentSet() // Only used by type-tracking
+
+  cached
+  class TContentSet =
+    TSingletonContent or TAnyElementContent or TKnownOrUnknownElementContent or
+        TElementLowerBoundContent;
+
+  private predicate trackKnownValue(ConstantValue cv) {
+    not cv.isFloat(_) and
+    not cv.isComplex(_, _) and
+    (
+      not cv.isInt(_) or
+      cv.getInt() in [0 .. 10]
+    )
+  }
 
   cached
   newtype TContent =
-    TKnownElementContent(ConstantValue cv) {
-      not cv.isInt(_) or
-      cv.getInt() in [0 .. 10]
-    } or
+    TKnownElementContent(ConstantValue cv) { trackKnownValue(cv) } or
     TUnknownElementContent() or
-    TKnownPairValueContent(ConstantValue cv) or
-    TUnknownPairValueContent() or
     TFieldContent(string name) {
       name = any(InstanceVariable v).getName()
       or
@@ -410,7 +427,9 @@ private module Cached {
       |
         name = [input, output].regexpFind("(?<=(^|\\.)Field\\[)[^\\]]+(?=\\])", _, _).trim()
       )
-    }
+    } or
+    // Only used by type-tracking
+    TAttributeName(string name) { name = any(SetterMethodCall c).getTargetName() }
 
   /**
    * Holds if `e` is an `ExprNode` that may be returned by a call to `c`.
@@ -428,8 +447,6 @@ private module Cached {
 }
 
 class TElementContent = TKnownElementContent or TUnknownElementContent;
-
-class TPairValueContent = TKnownPairValueContent or TUnknownPairValueContent;
 
 import Cached
 
@@ -718,6 +735,9 @@ class SummaryNode extends NodeImpl, TSummaryNode {
 
   SummaryNode() { this = TSummaryNode(c, state) }
 
+  /** Gets the summarized callable that this node belongs to. */
+  FlowSummaryImpl::Public::SummarizedCallable getSummarizedCallable() { result = c }
+
   override CfgScope getCfgScope() { none() }
 
   override DataFlowCallable getEnclosingCallable() { result.asLibraryCallable() = c }
@@ -983,12 +1003,39 @@ predicate jumpStep(Node pred, Node succ) {
     succ.(SsaDefinitionNode).getDefinition())
   or
   succ.asExpr().getExpr().(ConstantReadAccess).getValue() = pred.asExpr().getExpr()
+  or
+  FlowSummaryImpl::Private::Steps::summaryJumpStep(pred, succ)
 }
 
 private ContentSet getKeywordContent(string name) {
   exists(ConstantValue::ConstantSymbolValue key |
     result.isSingleton(TKnownElementContent(key)) and
     key.isSymbol(name)
+  )
+}
+
+/**
+ * Subset of `storeStep` that should be shared with type-tracking.
+ */
+predicate storeStepCommon(Node node1, ContentSet c, Node node2) {
+  // Wrap all key-value arguments in a synthesized hash-splat argument node
+  exists(CfgNodes::ExprNodes::CallCfgNode call | node2 = TSynthHashSplatArgumentNode(call) |
+    // symbol key
+    exists(ArgumentPosition keywordPos, string name |
+      node1.asExpr().(Argument).isArgumentOf(call, keywordPos) and
+      keywordPos.isKeyword(name) and
+      c = getKeywordContent(name)
+    )
+    or
+    // non-symbol key
+    exists(CfgNodes::ExprNodes::PairCfgNode pair, CfgNodes::ExprCfgNode key, ConstantValue cv |
+      node1.asExpr() = pair.getValue() and
+      pair = call.getAnArgument() and
+      key = pair.getKey() and
+      cv = key.getConstantValue() and
+      not cv.isSymbol(_) and
+      c.isSingleton(TKnownElementContent(cv))
+    )
   )
 }
 
@@ -1022,32 +1069,7 @@ predicate storeStep(Node node1, ContentSet c, Node node2) {
   or
   FlowSummaryImpl::Private::Steps::summaryStoreStep(node1, c, node2)
   or
-  // Needed for pairs passed into method calls where the key is not a symbol,
-  // that is, where it is not a keyword argument.
-  node2.asExpr() =
-    any(CfgNodes::ExprNodes::PairCfgNode pair |
-      exists(CfgNodes::ExprCfgNode key |
-        key = pair.getKey() and
-        pair.getValue() = node1.asExpr()
-      |
-        exists(ConstantValue cv |
-          cv = key.getConstantValue() and
-          not cv.isSymbol(_) and // handled as a keyword argument
-          c.isSingleton(TKnownPairValueContent(cv))
-        )
-        or
-        not exists(key.getConstantValue()) and
-        c.isSingleton(TUnknownPairValueContent())
-      )
-    )
-  or
-  // Wrap all keyword arguments in a synthesized hash-splat argument node
-  exists(CfgNodes::ExprNodes::CallCfgNode call, ArgumentPosition keywordPos, string name |
-    node2 = TSynthHashSplatArgumentNode(call) and
-    node1.asExpr().(Argument).isArgumentOf(call, keywordPos) and
-    keywordPos.isKeyword(name) and
-    c = getKeywordContent(name)
-  )
+  storeStepCommon(node1, c, node2)
 }
 
 /**
@@ -1145,8 +1167,8 @@ private module PostUpdateNodes {
     ExprPostUpdateNode() { this = TExprPostUpdateNode(e) }
 
     override ExprNode getPreUpdateNode() {
-      // For compund arguments, such as `m(if b then x else y)`, we want the leaf nodes
-      // `[post] x` and `[post] y` to have two pre-update nodes: (1) the compund argument,
+      // For compound arguments, such as `m(if b then x else y)`, we want the leaf nodes
+      // `[post] x` and `[post] y` to have two pre-update nodes: (1) the compound argument,
       // `if b then x else y`; and the (2) the underlying expressions; `x` and `y`,
       // respectively.
       //

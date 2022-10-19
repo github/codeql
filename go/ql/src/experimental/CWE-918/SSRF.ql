@@ -19,4 +19,4 @@ from
 where
   cfg.hasFlowPath(source, sink) and
   request = sink.getNode().(ServerSideRequestForgery::Sink).getARequest()
-select request, source, sink, "The URL of this request depends on a user-provided value"
+select request, source, sink, "The URL of this request depends on a user-provided value."

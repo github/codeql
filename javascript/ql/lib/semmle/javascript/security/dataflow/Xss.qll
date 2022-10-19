@@ -65,7 +65,7 @@ module Shared {
   private import semmle.javascript.security.dataflow.IncompleteHtmlAttributeSanitizationCustomizations::IncompleteHtmlAttributeSanitization as IncompleteHtml
 
   /**
-   * A guard that checks if a string can contain quotes, which is a guard for strings that are inside a HTML attribute.
+   * A guard that checks if a string can contain quotes, which is a guard for strings that are inside an HTML attribute.
    */
   abstract class QuoteGuard extends TaintTracking::SanitizerGuardNode, StringOps::Includes {
     QuoteGuard() {

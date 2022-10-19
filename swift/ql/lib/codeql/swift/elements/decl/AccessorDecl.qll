@@ -10,7 +10,7 @@ private predicate isKnownAccessorKind(AccessorDecl decl, string kind) {
   decl.isDidSet() and kind = "didSet"
 }
 
-class AccessorDecl extends AccessorDeclBase {
+class AccessorDecl extends Generated::AccessorDecl {
   predicate isPropertyObserver() {
     this instanceof WillSetObserver or this instanceof DidSetObserver
   }

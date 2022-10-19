@@ -1,6 +1,6 @@
 private import codeql.swift.generated.expr.SubscriptExpr
 
-class SubscriptExpr extends SubscriptExprBase {
+class SubscriptExpr extends Generated::SubscriptExpr {
   Argument getFirstArgument() {
     exists(int i |
       result = this.getArgument(i) and

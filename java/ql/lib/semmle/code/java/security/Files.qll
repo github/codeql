@@ -70,3 +70,29 @@ private class WriteFileSinkModels extends SinkModelCsv {
       ]
   }
 }
+
+private class FileSummaryModels extends SummaryModelCsv {
+  override predicate row(string row) {
+    row =
+      [
+        "java.io;File;false;File;;;Argument[0];Argument[-1];taint;manual",
+        "java.io;File;false;File;;;Argument[1];Argument[-1];taint;manual",
+        "java.io;File;true;getAbsoluteFile;;;Argument[-1];ReturnValue;taint;manual",
+        "java.io;File;true;getAbsolutePath;;;Argument[-1];ReturnValue;taint;manual",
+        "java.io;File;true;getCanonicalFile;;;Argument[-1];ReturnValue;taint;manual",
+        "java.io;File;true;getCanonicalPath;;;Argument[-1];ReturnValue;taint;manual",
+        "java.io;File;true;toPath;;;Argument[-1];ReturnValue;taint;manual",
+        "java.io;File;true;toString;;;Argument[-1];ReturnValue;taint;manual",
+        "java.io;File;true;toURI;;;Argument[-1];ReturnValue;taint;manual",
+        "java.nio.file;Path;true;normalize;;;Argument[-1];ReturnValue;taint;manual",
+        "java.nio.file;Path;true;resolve;;;Argument[-1..0];ReturnValue;taint;manual",
+        "java.nio.file;Path;true;toAbsolutePath;;;Argument[-1];ReturnValue;taint;manual",
+        "java.nio.file;Path;false;toFile;;;Argument[-1];ReturnValue;taint;manual",
+        "java.nio.file;Path;true;toString;;;Argument[-1];ReturnValue;taint;manual",
+        "java.nio.file;Path;true;toUri;;;Argument[-1];ReturnValue;taint;manual",
+        "java.nio.file;Paths;true;get;;;Argument[0..1];ReturnValue;taint;manual",
+        "java.nio.file;FileSystem;true;getPath;;;Argument[0];ReturnValue;taint;manual",
+        "java.nio.file;FileSystem;true;getRootDirectories;;;Argument[0];ReturnValue;taint;manual"
+      ]
+  }
+}

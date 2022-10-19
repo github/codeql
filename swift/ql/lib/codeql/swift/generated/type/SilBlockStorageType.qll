@@ -3,6 +3,8 @@ private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
 import codeql.swift.elements.type.Type
 
-class SilBlockStorageTypeBase extends Synth::TSilBlockStorageType, Type {
-  override string getAPrimaryQlClass() { result = "SilBlockStorageType" }
+module Generated {
+  class SilBlockStorageType extends Synth::TSilBlockStorageType, Type {
+    override string getAPrimaryQlClass() { result = "SilBlockStorageType" }
+  }
 }

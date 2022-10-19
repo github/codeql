@@ -304,6 +304,15 @@ class RootdefCallable extends Callable {
     this.getAnAnnotation() instanceof OverrideAnnotation
     or
     this.hasModifier("override")
+    or
+    // Exclude generated callables, such as `...$default` ones extracted from Kotlin code.
+    this.isCompilerGenerated()
+    or
+    // Exclude Kotlin serialization constructors.
+    this.(Constructor)
+        .getParameterType(this.getNumberOfParameters() - 1)
+        .(RefType)
+        .hasQualifiedName("kotlinx.serialization.internal", "SerializationConstructorMarker")
   }
 }
 

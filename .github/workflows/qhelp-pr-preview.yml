@@ -27,7 +27,7 @@ on:
       - main
       - "rc/*"
     paths:
-      - "ruby/**/*.qhelp"
+      - "**/*.qhelp"
 
 jobs:
   qhelp:
@@ -52,7 +52,7 @@ jobs:
         id: changes
         run: |
           (git diff -z --name-only --diff-filter=ACMRT HEAD~1 HEAD | grep -z '.qhelp$' | grep -z -v '.inc.qhelp';
-           git diff -z --name-only --diff-filter=ACMRT HEAD~1 HEAD | grep -z '.inc.qhelp$' | xargs --null -rn1 basename | xargs --null -rn1 git grep -z -l) |
+           git diff -z --name-only --diff-filter=ACMRT HEAD~1 HEAD | grep -z '.inc.qhelp$' | xargs --null -rn1 basename -z | xargs --null -rn1 git grep -z -l) |
            grep -z '.qhelp$' | grep -z -v '^-' | sort -z -u > "${RUNNER_TEMP}/paths.txt"
 
       - name: QHelp preview

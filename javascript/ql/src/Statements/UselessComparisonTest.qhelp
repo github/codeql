@@ -17,7 +17,7 @@ longer needed, remove it.
 </p>
 
 <p>
-If the check is needed to guard against <code>NaN</code> values, insert a comment explaning the possibility of <code>NaN</code>.
+If the check is needed to guard against <code>NaN</code> values, insert a comment explaining the possibility of <code>NaN</code>.
 </p>
 
 </recommendation>

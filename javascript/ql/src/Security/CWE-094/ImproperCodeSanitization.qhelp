@@ -12,7 +12,7 @@
 
   <recommendation>
     <p>
-      If using <code>JSON.stringify</code> or a HTML sanitizer to sanitize a string inserted into 
+      If using <code>JSON.stringify</code> or an HTML sanitizer to sanitize a string inserted into 
       JavaScript code, then make sure to perform additional sanitization or remove potentially
       dangerous characters. 
     </p>

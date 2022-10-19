@@ -34,6 +34,13 @@ class Module extends TModule {
     exists(Namespace n | this = TUnresolved(n) and result = "...::" + n.toString())
   }
 
+  /**
+   * Gets the qualified name of this module, if any.
+   *
+   * Only modules that can be resolved will have a qualified name.
+   */
+  final string getQualifiedName() { this = TResolved(result) }
+
   /** Gets the location of this module. */
   Location getLocation() {
     exists(Namespace n | this = TUnresolved(n) and result = n.getLocation())

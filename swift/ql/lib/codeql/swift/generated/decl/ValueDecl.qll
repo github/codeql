@@ -4,13 +4,15 @@ private import codeql.swift.generated.Raw
 import codeql.swift.elements.decl.Decl
 import codeql.swift.elements.type.Type
 
-class ValueDeclBase extends Synth::TValueDecl, Decl {
-  Type getImmediateInterfaceType() {
-    result =
-      Synth::convertTypeFromRaw(Synth::convertValueDeclToRaw(this)
-            .(Raw::ValueDecl)
-            .getInterfaceType())
-  }
+module Generated {
+  class ValueDecl extends Synth::TValueDecl, Decl {
+    Type getImmediateInterfaceType() {
+      result =
+        Synth::convertTypeFromRaw(Synth::convertValueDeclToRaw(this)
+              .(Raw::ValueDecl)
+              .getInterfaceType())
+    }
 
-  final Type getInterfaceType() { result = getImmediateInterfaceType().resolve() }
+    final Type getInterfaceType() { result = getImmediateInterfaceType().resolve() }
+  }
 }

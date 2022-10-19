@@ -8,6 +8,8 @@ private import codeql.ruby.ApiGraphs
 private import codeql.ruby.CFG
 private import codeql.ruby.DataFlow
 private import codeql.ruby.dataflow.RemoteFlowSources
+private import codeql.ruby.frameworks.ActiveJob
+private import codeql.ruby.frameworks.core.Module
 
 module UnsafeDeserialization {
   /**
@@ -48,12 +50,13 @@ module UnsafeDeserialization {
   }
 
   /**
-   * An argument in a call to `YAML.load`, considered a sink for unsafe
-   * deserialization.
+   * An argument in a call to `YAML.load`, considered a sink
+   * for unsafe deserialization. The `YAML` module is an alias of `Psych` in
+   * recent versions of Ruby.
    */
   class YamlLoadArgument extends Sink {
     YamlLoadArgument() {
-      this = API::getTopLevelMember("YAML").getAMethodCall("load").getArgument(0)
+      this = API::getTopLevelMember(["YAML", "Psych"]).getAMethodCall("load").getArgument(0)
     }
   }
 
@@ -197,5 +200,28 @@ module UnsafeDeserialization {
       fromNode = callNode.getArgument(0) and
       toNode = callNode
     )
+  }
+
+  /**
+   * A argument in a call to `Module.const_get`, considered as a sink for unsafe
+   * deserialization.
+   *
+   * Calls to `Module.const_get` can return arbitrary classes which can then be
+   * instantiated.
+   */
+  class ConstGetCallArgument extends Sink {
+    ConstGetCallArgument() { this = any(Module::ModuleConstGetCallCodeExecution c).getCode() }
+  }
+
+  /**
+   * A argument in a call to `ActiveJob::Serializers.deserialize`, considered as
+   * a sink for unsafe deserialization.
+   *
+   * This is roughly equivalent to a call to `Module.const_get`.
+   */
+  class ActiveJobSerializersDeserializeArgument extends Sink {
+    ActiveJobSerializersDeserializeArgument() {
+      this = any(ActiveJob::Serializers::DeserializeCall c).getCode()
+    }
   }
 }

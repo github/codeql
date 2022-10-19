@@ -20,16 +20,18 @@ class DataFlowNode extends @cil_dataflow_node {
    * Holds if this node flows to `sink` in one step.
    * `tt` is the tainting that occurs during this step.
    */
-  predicate getALocalFlowSucc(DataFlowNode sink, TaintType tt) {
+  deprecated predicate getALocalFlowSucc(DataFlowNode sink, TaintType tt) {
     localExactStep(this, sink) and tt = TExactValue()
     or
     localTaintStep(this, sink) and tt = TTaintedValue()
   }
 
-  private predicate flowsToStep(DataFlowNode sink) { this.getALocalFlowSucc(sink, TExactValue()) }
+  deprecated private predicate flowsToStep(DataFlowNode sink) {
+    this.getALocalFlowSucc(sink, TExactValue())
+  }
 
   /** Holds if this node flows to `sink` in zero or more steps. */
-  predicate flowsTo(DataFlowNode sink) { this.flowsToStep*(sink) }
+  deprecated predicate flowsTo(DataFlowNode sink) { this.flowsToStep*(sink) }
 
   /** Gets the method that contains this dataflow node. */
   Method getMethod() { none() }
@@ -38,12 +40,12 @@ class DataFlowNode extends @cil_dataflow_node {
   Location getLocation() { none() }
 }
 
-private newtype TTaintType =
+deprecated private newtype TTaintType =
   TExactValue() or
   TTaintedValue()
 
 /** Describes how data is tainted. */
-class TaintType extends TTaintType {
+deprecated class TaintType extends TTaintType {
   string toString() {
     this = TExactValue() and result = "exact"
     or
@@ -52,12 +54,12 @@ class TaintType extends TTaintType {
 }
 
 /** A taint type where the data is untainted. */
-class Untainted extends TaintType, TExactValue { }
+deprecated class Untainted extends TaintType, TExactValue { }
 
 /** A taint type where the data is tainted. */
-class Tainted extends TaintType, TTaintedValue { }
+deprecated class Tainted extends TaintType, TTaintedValue { }
 
-private predicate localFlowPhiInput(DataFlowNode input, Ssa::PhiNode phi) {
+deprecated private predicate localFlowPhiInput(DataFlowNode input, Ssa::PhiNode phi) {
   exists(Ssa::Definition def, BasicBlock bb, int i | phi.hasLastInputRef(def, bb, i) |
     def.definesAt(_, bb, i) and
     input = def.getVariableUpdate().getSource()
@@ -76,7 +78,7 @@ private predicate localFlowPhiInput(DataFlowNode input, Ssa::PhiNode phi) {
   )
 }
 
-private predicate localExactStep(DataFlowNode src, DataFlowNode sink) {
+deprecated private predicate localExactStep(DataFlowNode src, DataFlowNode sink) {
   src = sink.(Opcodes::Dup).getAnOperand()
   or
   exists(Ssa::Definition def, VariableUpdate vu |
@@ -103,7 +105,7 @@ private predicate localExactStep(DataFlowNode src, DataFlowNode sink) {
   src = sink.(ConditionalBranch).getAnOperand()
 }
 
-private predicate localTaintStep(DataFlowNode src, DataFlowNode sink) {
+deprecated private predicate localTaintStep(DataFlowNode src, DataFlowNode sink) {
   src = sink.(BinaryArithmeticExpr).getAnOperand() or
   src = sink.(Opcodes::Neg).getOperand() or
   src = sink.(UnaryBitwiseOperation).getOperand()

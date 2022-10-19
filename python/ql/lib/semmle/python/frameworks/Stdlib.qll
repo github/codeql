@@ -2403,7 +2403,7 @@ private module StdlibPrivate {
 
   /**
    * Gets a name of a constructor for a `pathlib.Path` object.
-   * We include the pure paths, as they can be "exported" (say with `as_posix`) and then used to acces the underlying file system.
+   * We include the pure paths, as they can be "exported" (say with `as_posix`) and then used to access the underlying file system.
    */
   private string pathlibPathConstructor() {
     result in ["Path", "PurePath", "PurePosixPath", "PureWindowsPath", "PosixPath", "WindowsPath"]
@@ -2510,11 +2510,11 @@ private module StdlibPrivate {
   /** A file system access from a `pathlib.Path` method call. */
   private class PathlibFileAccess extends FileSystemAccess::Range, DataFlow::CallCfgNode {
     DataFlow::AttrRead fileAccess;
-    string attrbuteName;
+    string attributeName;
 
     PathlibFileAccess() {
-      attrbuteName = fileAccess.getAttributeName() and
-      attrbuteName in [
+      attributeName = fileAccess.getAttributeName() and
+      attributeName in [
           "stat", "chmod", "exists", "expanduser", "glob", "group", "is_dir", "is_file", "is_mount",
           "is_symlink", "is_socket", "is_fifo", "is_block_device", "is_char_device", "iter_dir",
           "lchmod", "lstat", "mkdir", "open", "owner", "read_bytes", "read_text", "readlink",
@@ -2530,14 +2530,14 @@ private module StdlibPrivate {
 
   /** A file system write from a `pathlib.Path` method call. */
   private class PathlibFileWrites extends PathlibFileAccess, FileSystemWriteAccess::Range {
-    PathlibFileWrites() { attrbuteName in ["write_bytes", "write_text"] }
+    PathlibFileWrites() { attributeName in ["write_bytes", "write_text"] }
 
     override DataFlow::Node getADataNode() { result in [this.getArg(0), this.getArgByName("data")] }
   }
 
   /** A call to the `open` method on a `pathlib.Path` instance. */
   private class PathLibOpenCall extends PathlibFileAccess, Stdlib::FileLikeObject::InstanceSource {
-    PathLibOpenCall() { attrbuteName = "open" }
+    PathLibOpenCall() { attributeName = "open" }
   }
 
   /**
@@ -2549,7 +2549,7 @@ private module StdlibPrivate {
    * - https://docs.python.org/3/library/pathlib.html#pathlib.Path.symlink_to
    */
   private class PathLibLinkToCall extends PathlibFileAccess, API::CallNode {
-    PathLibLinkToCall() { attrbuteName in ["link_to", "hardlink_to", "symlink_to"] }
+    PathLibLinkToCall() { attributeName in ["link_to", "hardlink_to", "symlink_to"] }
 
     override DataFlow::Node getAPathArgument() {
       result = super.getAPathArgument()
@@ -2566,7 +2566,7 @@ private module StdlibPrivate {
    * - https://docs.python.org/3/library/pathlib.html#pathlib.Path.rename
    */
   private class PathLibReplaceCall extends PathlibFileAccess, API::CallNode {
-    PathLibReplaceCall() { attrbuteName in ["replace", "rename"] }
+    PathLibReplaceCall() { attributeName in ["replace", "rename"] }
 
     override DataFlow::Node getAPathArgument() {
       result = super.getAPathArgument()
@@ -2581,7 +2581,7 @@ private module StdlibPrivate {
    * See https://docs.python.org/3/library/pathlib.html#pathlib.Path.samefile
    */
   private class PathLibSameFileCall extends PathlibFileAccess, API::CallNode {
-    PathLibSameFileCall() { attrbuteName = "samefile" }
+    PathLibSameFileCall() { attributeName = "samefile" }
 
     override DataFlow::Node getAPathArgument() {
       result = super.getAPathArgument()
@@ -2720,7 +2720,7 @@ private module StdlibPrivate {
 
   /**
    * A hashing operation from the `hashlib` package using one of the predefined classes
-   * (such as `hashlib.md5`), by calling its' `update` mehtod.
+   * (such as `hashlib.md5`), by calling its' `update` method.
    */
   class HashlibHashClassUpdateCall extends HashlibGenericHashOperation {
     HashlibHashClassUpdateCall() { this = hashClass.getReturn().getMember("update").getACall() }
@@ -2826,25 +2826,14 @@ private module StdlibPrivate {
     override string getName() { result = "re." + method }
   }
 
-  /** Helper module for tracking compiled regexes. */
-  private module CompiledRegexes {
-    private DataFlow::TypeTrackingNode compiledRegex(DataFlow::TypeTracker t, DataFlow::Node regex) {
-      t.start() and
-      result = API::moduleImport("re").getMember("compile").getACall() and
-      regex in [
-          result.(DataFlow::CallCfgNode).getArg(0),
-          result.(DataFlow::CallCfgNode).getArgByName("pattern")
-        ]
-      or
-      exists(DataFlow::TypeTracker t2 | result = compiledRegex(t2, regex).track(t2, t))
-    }
-
-    DataFlow::Node compiledRegex(DataFlow::Node regex) {
-      compiledRegex(DataFlow::TypeTracker::end(), regex).flowsTo(result)
-    }
+  API::Node compiledRegex(API::Node regex) {
+    exists(API::CallNode compilation |
+      compilation = API::moduleImport("re").getMember("compile").getACall()
+    |
+      result = compilation.getReturn() and
+      regex = compilation.getParameter(0, "pattern")
+    )
   }
-
-  private import CompiledRegexes
 
   /**
    * A call on compiled regular expression (obtained via `re.compile`) executing a
@@ -2870,7 +2859,11 @@ private module StdlibPrivate {
     DataFlow::Node regexNode;
     RegexExecutionMethod method;
 
-    CompiledRegexExecution() { this.calls(compiledRegex(regexNode), method) }
+    CompiledRegexExecution() {
+      exists(API::Node regex | regexNode = regex.asSink() |
+        this.calls(compiledRegex(regex).getAValueReachableFromSource(), method)
+      )
+    }
 
     override DataFlow::Node getRegex() { result = regexNode }
 

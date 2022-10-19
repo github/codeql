@@ -22,5 +22,5 @@ class StoredTaintTrackingConfiguration extends SqlInjection::TaintTrackingConfig
 
 from StoredTaintTrackingConfiguration c, DataFlow::PathNode source, DataFlow::PathNode sink
 where c.hasFlowPath(source, sink)
-select sink.getNode(), source, sink, "$@ flows to here and is used in an SQL query.",
-  source.getNode(), "Stored user-provided value"
+select sink.getNode(), source, sink, "This SQL query depends on a $@.", source.getNode(),
+  "stored user-provided value"

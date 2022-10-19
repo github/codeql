@@ -9,16 +9,11 @@
 import java
 import ExternalApi
 
-private predicate getRelevantUsages(ExternalApi api, int usages) {
+private predicate relevant(ExternalApi api) {
   not api.isUninteresting() and
-  api.isSink() and
-  usages =
-    strictcount(Call c |
-      c.getCallee().getSourceDeclaration() = api and
-      not c.getFile() instanceof GeneratedFile
-    )
+  api.isSink()
 }
 
-from ExternalApi api, int usages
-where Results<getRelevantUsages/2>::restrict(api, usages)
-select api.getApiName() as apiname, usages order by usages desc
+from string apiName, int usages
+where Results<relevant/1>::restrict(apiName, usages)
+select apiName, usages order by usages desc

@@ -308,7 +308,7 @@ class SwiftDispatcher {
 
   static FilePath getFilePath(llvm::StringRef path) {
     // TODO: this needs more testing
-    // TODO: check canonicaliztion of names on a case insensitive filesystems
+    // TODO: check canonicalization of names on a case insensitive filesystems
     // TODO: make symlink resolution conditional on CODEQL_PRESERVE_SYMLINKS=true
     llvm::SmallString<PATH_MAX> realPath;
     if (std::error_code ec = llvm::sys::fs::real_path(path, realPath)) {

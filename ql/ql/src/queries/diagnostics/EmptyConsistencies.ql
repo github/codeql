@@ -5,7 +5,7 @@
  * @kind problem
  * @problem.severity warning
  * @precision very-high
- * @id ql/diagnostics/empty-consitencies
+ * @id ql/diagnostics/empty-consistencies
  */
 
 import ql
