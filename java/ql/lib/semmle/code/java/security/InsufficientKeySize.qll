@@ -18,32 +18,45 @@ abstract class InsufficientKeySizeSink extends DataFlow::Node {
 // *********************************** SOURCES ***********************************
 /** A source for an insufficient key size used in RSA, DSA, and DH algorithms. */
 private class AsymmetricNonEcSource extends InsufficientKeySizeSource {
-  AsymmetricNonEcSource() { getNodeIntValue(this) < 2048 }
+  AsymmetricNonEcSource() { getNodeIntValue(this) < getMinAsymNonEcKeySize() }
 
-  override predicate hasState(DataFlow::FlowState state) { state = "2048" }
+  override predicate hasState(DataFlow::FlowState state) {
+    state = getMinAsymNonEcKeySize().toString()
+  }
 }
 
 /** A source for an insufficient key size used in elliptic curve (EC) algorithms. */
 private class AsymmetricEcSource extends InsufficientKeySizeSource {
   AsymmetricEcSource() {
-    getNodeIntValue(this) < 256
+    getNodeIntValue(this) < getMinAsymEcKeySize()
     or
     // the below is needed for cases when the key size is embedded in the curve name
-    getEcKeySize(this.asExpr().(StringLiteral).getValue()) < 256
+    getEcKeySize(this.asExpr().(StringLiteral).getValue()) < getMinAsymEcKeySize()
   }
 
-  override predicate hasState(DataFlow::FlowState state) { state = "256" }
+  override predicate hasState(DataFlow::FlowState state) {
+    state = getMinAsymEcKeySize().toString()
+  }
 }
 
 /** A source for an insufficient key size used in AES algorithms. */
 private class SymmetricSource extends InsufficientKeySizeSource {
-  SymmetricSource() { getNodeIntValue(this) < 128 }
+  SymmetricSource() { getNodeIntValue(this) < getMinSymKeySize() }
 
-  override predicate hasState(DataFlow::FlowState state) { state = "128" }
+  override predicate hasState(DataFlow::FlowState state) { state = getMinSymKeySize().toString() }
 }
 
 // ************************** SOURCES HELPER PREDICATES **************************
-/** Returns the integer value of a given Node. */
+/** Returns the minimum recommended key size for RSA, DSA, and DH algorithms. */
+private int getMinAsymNonEcKeySize() { result = 2048 }
+
+/** Returns the minimum recommended key size for elliptic curve (EC) algorithms. */
+private int getMinAsymEcKeySize() { result = 256 }
+
+/** Returns the minimum recommended key size for AES algorithms. */
+private int getMinSymKeySize() { result = 128 }
+
+/** Returns the integer value of a given DataFlow::Node. */
 private int getNodeIntValue(DataFlow::Node node) {
   result = node.asExpr().(IntegerLiteral).getIntValue()
 }
@@ -74,7 +87,9 @@ private class AsymmetricNonEcSink extends InsufficientKeySizeSink {
     exists(AsymmetricNonEcSpec spec | this.asExpr() = spec.getKeySizeArg())
   }
 
-  override predicate hasState(DataFlow::FlowState state) { state = "2048" }
+  override predicate hasState(DataFlow::FlowState state) {
+    state = getMinAsymNonEcKeySize().toString()
+  }
 }
 
 /** A sink for an insufficient key size used in elliptic curve (EC) algorithms. */
@@ -89,13 +104,14 @@ private class AsymmetricEcSink extends InsufficientKeySizeSink {
     exists(AsymmetricEcSpec s | this.asExpr() = s.getKeySizeArg())
   }
 
-  override predicate hasState(DataFlow::FlowState state) { state = "256" }
+  override predicate hasState(DataFlow::FlowState state) {
+    state = getMinAsymEcKeySize().toString()
+  }
 }
 
 /** A sink for an insufficient key size used in AES algorithms. */
 private class SymmetricSink extends InsufficientKeySizeSink {
   SymmetricSink() {
-    //hasKeySizeInInitMethod(this, "symmetric")
     exists(SymmetricInitMethodAccess ma, SymmetricKeyGenerator kg |
       kg.getAlgoName() = "AES" and
       DataFlow::localExprFlow(kg, ma.getQualifier()) and
@@ -103,7 +119,7 @@ private class SymmetricSink extends InsufficientKeySizeSink {
     )
   }
 
-  override predicate hasState(DataFlow::FlowState state) { state = "128" }
+  override predicate hasState(DataFlow::FlowState state) { state = getMinSymKeySize().toString() }
 }
 
 // ********************** SINKS HELPER CLASSES & PREDICATES **********************
