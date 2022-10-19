@@ -55,7 +55,7 @@ class AllTarfileOpens extends API::CallNode {
 class Configuration extends TaintTracking::Configuration {
   Configuration() { this = "TarSlip" }
 
-  override predicate isSource(DataFlow::Node source) { source instanceof AllTarfileOpens }
+  override predicate isSource(DataFlow::Node source) { source = tarfileOpen().getACall() }
 
   override predicate isSink(DataFlow::Node sink) {
     // A sink capturing method calls to `extractall` without `members` argument.
@@ -98,6 +98,13 @@ class Configuration extends TaintTracking::Configuration {
       attr.accesses(nodeFrom, "getmembers") and
       nodeFrom = call.getObject() and
       nodeTo = call
+    )
+    or
+    exists(DataFlow::CallCfgNode closing |
+      closing = API::moduleImport("contextlib").getMember("closing").getACall() and
+      nodeFrom = closing.getArg(0) and
+      nodeFrom = tarfileOpen().getACall() and
+      nodeTo = closing
     )
   }
 }
