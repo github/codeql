@@ -25,10 +25,9 @@ module SinkEndpointFilter {
     or
     result = any(StandardEndpointLabels::Labels::LegacyModeledDbAccess l).getLabel(sinkCandidate)
     or
+    result = any(StandardEndpointLabels::Labels::LegacyModeledSink l).getLabel(sinkCandidate)
+    or
     exists(DataFlow::CallNode call | sinkCandidate = call.getAnArgument() |
-      CoreKnowledge::isArgumentToKnownLibrarySinkFunction(sinkCandidate) and
-      result = "modeled sink"
-      or
       // Remove common kinds of unlikely sinks
       CoreKnowledge::isKnownStepSrc(sinkCandidate) and
       result = "predecessor in a modeled flow step"

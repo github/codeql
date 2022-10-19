@@ -27,7 +27,8 @@ module Labels {
           "in " + ["externs", "generated", "library", "test"] + " file" //
         ]
     } or
-    TLegacyModeledDbAccess()
+    TLegacyModeledDbAccess() or
+    TLegacyModeledSink()
 
   class EndpointLabel extends TEndpointLabel {
     abstract string getLabel(DataFlow::Node n);
@@ -75,6 +76,15 @@ module Labels {
     }
 
     override string toString() { result = "LegacyModeledDbAccess" }
+  }
+
+  class LegacyModeledSink extends Labels::EndpointLabel, TLegacyModeledSink {
+    override string getLabel(DataFlow::Node n) {
+      CoreKnowledge::isArgumentToKnownLibrarySinkFunction(n) and
+      result = "modeled sink"
+    }
+
+    override string toString() { result = "LegacyModeledSink" }
   }
 }
 
