@@ -1,0 +1,25 @@
+name: "Swift: Run Autobuilder Tests"
+
+on:
+  pull_request:
+    paths:
+      - "swift/xcode-autobuilder/**"
+      - "misc/bazel/**"
+      - "*.bazel*"
+      - .github/workflows/swift-autobuilder.yml
+    branches:
+      - main
+
+jobs:
+  integration-tests:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: bazelbuild/setup-bazelisk@v2
+      - uses: actions/setup-python@v3
+      - name: Build the Xcode autobuilder
+        run: |
+          bazel build //swift/xcode-autobuilder
+      - name: Test the Xcode autobuilder
+        run: |
+          bazel test //swift/xcode-autobuilder/tests
