@@ -188,7 +188,7 @@ module FileUtils {
  */
 module Dir {
   /**
-   * A call methods on `Dir` that operates on a path as it's first argument, and produces file-names.
+   * A call to a method on `Dir` that operates on a path as its first argument, and produces file-names.
    * Considered as a `FileNameSource` and a `FileSystemAccess`.
    */
   class DirGlob extends FileSystemAccess::Range, FileNameSource instanceof DataFlow::CallNode {
@@ -202,7 +202,7 @@ module Dir {
   }
 
   /**
-   * A call to a method in `Dir` which operates on a path as it's first argument, considered as a `FileSystemAccess`.
+   * A call to a method on `Dir` that operates on a path as its first argument, considered as a `FileSystemAccess`.
    */
   class DirPathAccess extends FileSystemAccess::Range, DataFlow::CallNode {
     DirPathAccess() {
