@@ -43,7 +43,7 @@ module Labels {
       result = "legacy/flows-to-argument-of-likely-external-library-call"
     }
 
-    override string toString() { result = "LegacyLabel" }
+    override string toString() { result = "LegacyEndpointLabel" }
   }
 
   class LegacyReasonSinkExcludedEndpointLabel extends EndpointLabel,
@@ -59,7 +59,7 @@ module Labels {
 
     override string toString() {
       exists(string inner | this = TLegacyReasonSinkExcludedEndpointLabel(inner) |
-        result = "TLegacyReasonSinkExcludedEndpointLabel(" + inner + ")"
+        result = "legacy/reason-sink-excluded/" + inner
       )
     }
   }
