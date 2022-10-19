@@ -26,7 +26,8 @@ module Labels {
           "numeric", //
           "in " + ["externs", "generated", "library", "test"] + " file" //
         ]
-    }
+    } or
+    TLegacyModeledDbAccess()
 
   class EndpointLabel extends TEndpointLabel {
     abstract string getLabel(DataFlow::Node n);
@@ -59,9 +60,21 @@ module Labels {
 
     override string toString() {
       exists(string inner | this = TLegacyReasonSinkExcludedEndpointLabel(inner) |
-        result = "legacy/reason-sink-excluded/" + inner
+        result = "TLegacyReasonSinkExcludedEndpointLabel(" + inner + ")"
       )
     }
+  }
+
+  class LegacyModeledDbAccess extends EndpointLabel, TLegacyModeledDbAccess {
+    override string getLabel(DataFlow::Node n) {
+      exists(DataFlow::CallNode call | n = call.getAnArgument() |
+        call.(DataFlow::MethodCallNode).getMethodName() =
+          ["create", "createCollection", "createIndexes"] and
+        result = "legacy/modeled/db-access/matches database access call heuristic"
+      )
+    }
+
+    override string toString() { result = "LegacyModeledDbAccess" }
   }
 }
 

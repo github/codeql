@@ -23,13 +23,9 @@ module SinkEndpointFilter {
       any(StandardEndpointLabels::Labels::LegacyReasonSinkExcludedEndpointLabel l)
           .getLabel(sinkCandidate)
     or
+    result = any(StandardEndpointLabels::Labels::LegacyModeledDbAccess l).getLabel(sinkCandidate)
+    or
     exists(DataFlow::CallNode call | sinkCandidate = call.getAnArgument() |
-      // additional databases accesses that aren't modeled yet
-      call.(DataFlow::MethodCallNode).getMethodName() =
-        ["create", "createCollection", "createIndexes"] and
-      result = "matches database access call heuristic"
-      or
-      // Remove modeled sinks
       CoreKnowledge::isArgumentToKnownLibrarySinkFunction(sinkCandidate) and
       result = "modeled sink"
       or
