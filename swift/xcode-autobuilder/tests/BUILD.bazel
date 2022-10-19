@@ -1,0 +1,14 @@
+py_test(
+    name = 'hello-autobuilder-test',
+    size = "small",
+    srcs = ['autobuild_tester.py'],
+    main = 'autobuild_tester.py',
+    data = [
+        "//swift/xcode-autobuilder",
+        'hello-autobuilder',
+    ] + glob(['hello-autobuilder/**/*'], exclude = ['**/*.actual']),
+    args = [
+      '$(location //swift/xcode-autobuilder)',
+      '$(location hello-autobuilder)',
+    ]
+)
