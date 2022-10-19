@@ -55,10 +55,18 @@ class C
         singleton_m # NoMethodError
         self.singleton_m # NoMethodError
     end
+
+    def call_baz
+        baz
+        [0, 1, 2].each do
+            baz
+        end
+    end
 end
 
 c = C.new
 c.baz
+c.call_baz
 c.singleton_m # NoMethodError
 c.instance_m
 
@@ -70,6 +78,7 @@ end
 
 d = D.new
 d.baz
+d.call_baz
 d.singleton_m # NoMethodError
 d.instance_m
 
@@ -395,6 +404,9 @@ class SingletonOverride1
 
     def self.call_singleton2
         singleton2
+        [0, 1, 2].each do
+            singleton2
+        end
     end
 
     singleton2

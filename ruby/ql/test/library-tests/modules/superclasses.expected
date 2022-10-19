@@ -34,93 +34,93 @@ calls.rb:
 #   43| C
 #-----|  -> Object
 
-#   65| D
+#   73| D
 #-----|  -> C
 
-#   91| Integer
+#  100| Integer
 #-----|  -> Numeric
 
-#   96| String
+#  105| String
 #-----|  -> Object
 
-#  100| Kernel
+#  109| Kernel
 
-#  105| Module
+#  114| Module
 #-----|  -> Object
 
-#  115| Object
+#  124| Object
 #-----|  -> BasicObject
 
-#  120| Hash
+#  129| Hash
 #-----|  -> Object
 
-#  125| Array
+#  134| Array
 #-----|  -> Object
 
-#  165| S
+#  174| S
 #-----|  -> Object
 
-#  171| A
+#  180| A
 #-----|  -> B
 #-----|  -> S
 
-#  176| B
+#  185| B
 #-----|  -> S
 
-#  190| Singletons
+#  199| Singletons
 #-----|  -> Object
 
-#  310| SelfNew
+#  319| SelfNew
 #-----|  -> Object
 
-#  325| C1
+#  334| C1
 #-----|  -> Object
 
-#  331| C2
+#  340| C2
 #-----|  -> C1
 
-#  337| C3
+#  346| C3
 #-----|  -> C2
 
-#  377| SingletonOverride1
+#  386| SingletonOverride1
 #-----|  -> Object
 
-#  412| SingletonOverride2
+#  424| SingletonOverride2
 #-----|  -> SingletonOverride1
 
-#  433| ConditionalInstanceMethods
+#  445| ConditionalInstanceMethods
 #-----|  -> Object
 
-#  496| ExtendSingletonMethod
+#  508| ExtendSingletonMethod
 
-#  506| ExtendSingletonMethod2
+#  518| ExtendSingletonMethod2
 
-#  512| ExtendSingletonMethod3
+#  524| ExtendSingletonMethod3
 
-#  525| ProtectedMethodInModule
+#  537| ProtectedMethodInModule
 
-#  531| ProtectedMethods
+#  543| ProtectedMethods
 #-----|  -> Object
 
-#  550| ProtectedMethodsSub
+#  562| ProtectedMethodsSub
 #-----|  -> ProtectedMethods
 
-#  564| SingletonUpCall_Base
+#  576| SingletonUpCall_Base
 #-----|  -> Object
 
-#  568| SingletonUpCall_Sub
+#  580| SingletonUpCall_Sub
 #-----|  -> SingletonUpCall_Base
 
-#  576| SingletonUpCall_SubSub
+#  588| SingletonUpCall_SubSub
 #-----|  -> SingletonUpCall_Sub
 
-#  583| SingletonA
+#  595| SingletonA
 #-----|  -> Object
 
-#  596| SingletonB
+#  608| SingletonB
 #-----|  -> SingletonA
 
-#  605| SingletonC
+#  617| SingletonC
 #-----|  -> SingletonA
 
 hello.rb:

@@ -35,97 +35,97 @@ calls.rb:
 #-----| include -> M
 #-----| super -> Object
 
-#   65| D
+#   73| D
 #-----| super -> C
 
-#   91| Integer
+#  100| Integer
 #-----| super -> Numeric
 
-#   96| String
+#  105| String
 #-----| super -> Object
 
-#  100| Kernel
+#  109| Kernel
 
-#  105| Module
+#  114| Module
 #-----| super -> Object
 
-#  115| Object
+#  124| Object
 #-----| super -> BasicObject
 #-----| include -> Kernel
 #-----| prepend -> A
 
-#  120| Hash
+#  129| Hash
 #-----| super -> Object
 
-#  125| Array
+#  134| Array
 #-----| super -> Object
 
-#  165| S
+#  174| S
 #-----| super -> Object
 
-#  171| A
+#  180| A
 #-----| super -> S
 #-----| super -> B
 #-----| prepend -> A::B
 
-#  176| B
+#  185| B
 #-----| super -> S
 
-#  190| Singletons
+#  199| Singletons
 #-----| super -> Object
 
-#  310| SelfNew
+#  319| SelfNew
 #-----| super -> Object
 
-#  325| C1
+#  334| C1
 #-----| super -> Object
 
-#  331| C2
+#  340| C2
 #-----| super -> C1
 
-#  337| C3
+#  346| C3
 #-----| super -> C2
 
-#  377| SingletonOverride1
+#  386| SingletonOverride1
 #-----| super -> Object
 
-#  412| SingletonOverride2
+#  424| SingletonOverride2
 #-----| super -> SingletonOverride1
 
-#  433| ConditionalInstanceMethods
+#  445| ConditionalInstanceMethods
 #-----| super -> Object
 
-#  496| ExtendSingletonMethod
+#  508| ExtendSingletonMethod
 
-#  506| ExtendSingletonMethod2
+#  518| ExtendSingletonMethod2
 
-#  512| ExtendSingletonMethod3
+#  524| ExtendSingletonMethod3
 
-#  525| ProtectedMethodInModule
+#  537| ProtectedMethodInModule
 
-#  531| ProtectedMethods
+#  543| ProtectedMethods
 #-----| super -> Object
 #-----| include -> ProtectedMethodInModule
 
-#  550| ProtectedMethodsSub
+#  562| ProtectedMethodsSub
 #-----| super -> ProtectedMethods
 
-#  564| SingletonUpCall_Base
+#  576| SingletonUpCall_Base
 #-----| super -> Object
 
-#  568| SingletonUpCall_Sub
+#  580| SingletonUpCall_Sub
 #-----| super -> SingletonUpCall_Base
 
-#  576| SingletonUpCall_SubSub
+#  588| SingletonUpCall_SubSub
 #-----| super -> SingletonUpCall_Sub
 
-#  583| SingletonA
+#  595| SingletonA
 #-----| super -> Object
 
-#  596| SingletonB
+#  608| SingletonB
 #-----| super -> SingletonA
 
-#  605| SingletonC
+#  617| SingletonC
 #-----| super -> SingletonA
 
 hello.rb:
