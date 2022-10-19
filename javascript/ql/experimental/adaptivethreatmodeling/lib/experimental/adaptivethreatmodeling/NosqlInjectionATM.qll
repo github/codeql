@@ -20,18 +20,16 @@ module SinkEndpointFilter {
    */
   string getAReasonSinkExcluded(DataFlow::Node sinkCandidate) {
     result =
-      any(StandardEndpointLabels::Labels::LegacyReasonSinkExcludedEndpointLabel l)
-          .getLabel(sinkCandidate)
-    or
-    result = any(StandardEndpointLabels::Labels::LegacyModeledDbAccess l).getLabel(sinkCandidate)
-    or
-    result = any(StandardEndpointLabels::Labels::LegacyModeledSink l).getLabel(sinkCandidate)
+      any(StandardEndpointLabels::Labels::EndpointLabel l |
+        l.toString().matches("%" + [
+          "LegacyReasonSinkExcludedEndpointLabel", //
+          "LegacyModeledDbAccess", //
+          "LegacyModeledSink", //
+          "LegacyModeledStepSourceEndpointLabel", //
+        ] + "%")
+      ).getLabel(sinkCandidate)
     or
     exists(DataFlow::CallNode call | sinkCandidate = call.getAnArgument() |
-      // Remove common kinds of unlikely sinks
-      CoreKnowledge::isKnownStepSrc(sinkCandidate) and
-      result = "predecessor in a modeled flow step"
-      or
       // Remove modeled database calls. Arguments to modeled calls are very likely to be modeled
       // as sinks if they are true positives. Therefore arguments that are not modeled as sinks
       // are unlikely to be true positives.

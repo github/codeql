@@ -28,7 +28,8 @@ module Labels {
         ]
     } or
     TLegacyModeledDbAccess() or
-    TLegacyModeledSink()
+    TLegacyModeledSink() or
+    TLegacyModeledStepSource()
 
   class EndpointLabel extends TEndpointLabel {
     abstract string getLabel(DataFlow::Node n);
@@ -75,7 +76,7 @@ module Labels {
       )
     }
 
-    override string toString() { result = "LegacyModeledDbAccess" }
+    override string toString() { result = "LegacyModeledDbAccessEndpointLabel" }
   }
 
   class LegacyModeledSink extends Labels::EndpointLabel, TLegacyModeledSink {
@@ -84,7 +85,16 @@ module Labels {
       result = "modeled sink"
     }
 
-    override string toString() { result = "LegacyModeledSink" }
+    override string toString() { result = "LegacyModeledSinkEndpointLabel" }
+  }
+
+  class LegacyModeledStepSource extends Labels::EndpointLabel, TLegacyModeledStepSource {
+    override string getLabel(DataFlow::Node n) {
+      CoreKnowledge::isKnownStepSrc(n) and
+      result = "legacy/modeled/step-source"
+    }
+
+    override string toString() { result = "LegacyModeledStepSourceEndpointLabel" }
   }
 }
 
