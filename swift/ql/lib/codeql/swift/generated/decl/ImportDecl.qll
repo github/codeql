@@ -13,7 +13,7 @@ module Generated {
 
     /**
      * Gets the imported module, if it exists.
-     * This is taken from the "hidden" AST and should only be used to be overridden by classes.
+     * This includes nodes from the "hidden" AST and can be used to be overridden by subclasses.
      */
     ModuleDecl getImmediateImportedModule() {
       result =
@@ -33,8 +33,8 @@ module Generated {
     final predicate hasImportedModule() { exists(getImportedModule()) }
 
     /**
-     * Gets the `index`th declaration.
-     * This is taken from the "hidden" AST and should only be used to be overridden by classes.
+     * Gets the `index`th declaration (0-based).
+     * This includes nodes from the "hidden" AST and can be used to be overridden by subclasses.
      */
     ValueDecl getImmediateDeclaration(int index) {
       result =
@@ -44,7 +44,7 @@ module Generated {
     }
 
     /**
-     * Gets the `index`th declaration.
+     * Gets the `index`th declaration (0-based).
      */
     final ValueDecl getDeclaration(int index) { result = getImmediateDeclaration(index).resolve() }
 

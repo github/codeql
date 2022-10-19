@@ -9,7 +9,7 @@ module Generated {
   class Callable extends Synth::TCallable, Element {
     /**
      * Gets the self param, if it exists.
-     * This is taken from the "hidden" AST and should only be used to be overridden by classes.
+     * This includes nodes from the "hidden" AST and can be used to be overridden by subclasses.
      */
     ParamDecl getImmediateSelfParam() {
       result =
@@ -29,8 +29,8 @@ module Generated {
     final predicate hasSelfParam() { exists(getSelfParam()) }
 
     /**
-     * Gets the `index`th param.
-     * This is taken from the "hidden" AST and should only be used to be overridden by classes.
+     * Gets the `index`th param (0-based).
+     * This includes nodes from the "hidden" AST and can be used to be overridden by subclasses.
      */
     ParamDecl getImmediateParam(int index) {
       result =
@@ -40,7 +40,7 @@ module Generated {
     }
 
     /**
-     * Gets the `index`th param.
+     * Gets the `index`th param (0-based).
      */
     final ParamDecl getParam(int index) { result = getImmediateParam(index).resolve() }
 
@@ -56,7 +56,7 @@ module Generated {
 
     /**
      * Gets the body, if it exists.
-     * This is taken from the "hidden" AST and should only be used to be overridden by classes.
+     * This includes nodes from the "hidden" AST and can be used to be overridden by subclasses.
      */
     BraceStmt getImmediateBody() {
       result =
@@ -65,7 +65,6 @@ module Generated {
 
     /**
      * Gets the body, if it exists.
-     *
      * The body is absent within protocol declarations.
      */
     final BraceStmt getBody() { result = getImmediateBody().resolve() }

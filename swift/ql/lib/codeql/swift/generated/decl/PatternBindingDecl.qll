@@ -10,8 +10,8 @@ module Generated {
     override string getAPrimaryQlClass() { result = "PatternBindingDecl" }
 
     /**
-     * Gets the `index`th init, if it exists.
-     * This is taken from the "hidden" AST and should only be used to be overridden by classes.
+     * Gets the `index`th init (0-based), if it exists.
+     * This includes nodes from the "hidden" AST and can be used to be overridden by subclasses.
      */
     Expr getImmediateInit(int index) {
       result =
@@ -21,7 +21,7 @@ module Generated {
     }
 
     /**
-     * Gets the `index`th init, if it exists.
+     * Gets the `index`th init (0-based), if it exists.
      */
     final Expr getInit(int index) { result = getImmediateInit(index).resolve() }
 
@@ -36,8 +36,8 @@ module Generated {
     final Expr getAnInit() { result = getInit(_) }
 
     /**
-     * Gets the `index`th pattern.
-     * This is taken from the "hidden" AST and should only be used to be overridden by classes.
+     * Gets the `index`th pattern (0-based).
+     * This includes nodes from the "hidden" AST and can be used to be overridden by subclasses.
      */
     Pattern getImmediatePattern(int index) {
       result =
@@ -47,7 +47,7 @@ module Generated {
     }
 
     /**
-     * Gets the `index`th pattern.
+     * Gets the `index`th pattern (0-based).
      */
     final Pattern getPattern(int index) { result = getImmediatePattern(index).resolve() }
 

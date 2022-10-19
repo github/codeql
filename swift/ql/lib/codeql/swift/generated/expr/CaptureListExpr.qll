@@ -10,8 +10,8 @@ module Generated {
     override string getAPrimaryQlClass() { result = "CaptureListExpr" }
 
     /**
-     * Gets the `index`th binding decl.
-     * This is taken from the "hidden" AST and should only be used to be overridden by classes.
+     * Gets the `index`th binding decl (0-based).
+     * This includes nodes from the "hidden" AST and can be used to be overridden by subclasses.
      */
     PatternBindingDecl getImmediateBindingDecl(int index) {
       result =
@@ -21,7 +21,7 @@ module Generated {
     }
 
     /**
-     * Gets the `index`th binding decl.
+     * Gets the `index`th binding decl (0-based).
      */
     final PatternBindingDecl getBindingDecl(int index) {
       result = getImmediateBindingDecl(index).resolve()
@@ -39,7 +39,7 @@ module Generated {
 
     /**
      * Gets the closure body.
-     * This is taken from the "hidden" AST and should only be used to be overridden by classes.
+     * This includes nodes from the "hidden" AST and can be used to be overridden by subclasses.
      */
     ClosureExpr getImmediateClosureBody() {
       result =

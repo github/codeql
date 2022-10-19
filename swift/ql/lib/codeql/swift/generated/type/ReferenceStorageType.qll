@@ -7,7 +7,7 @@ module Generated {
   class ReferenceStorageType extends Synth::TReferenceStorageType, Type {
     /**
      * Gets the referent type.
-     * This is taken from the "hidden" AST and should only be used to be overridden by classes.
+     * This includes nodes from the "hidden" AST and can be used to be overridden by subclasses.
      */
     Type getImmediateReferentType() {
       result =

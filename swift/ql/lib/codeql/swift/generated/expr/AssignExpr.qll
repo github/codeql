@@ -9,7 +9,7 @@ module Generated {
 
     /**
      * Gets the dest.
-     * This is taken from the "hidden" AST and should only be used to be overridden by classes.
+     * This includes nodes from the "hidden" AST and can be used to be overridden by subclasses.
      */
     Expr getImmediateDest() {
       result =
@@ -23,7 +23,7 @@ module Generated {
 
     /**
      * Gets the source.
-     * This is taken from the "hidden" AST and should only be used to be overridden by classes.
+     * This includes nodes from the "hidden" AST and can be used to be overridden by subclasses.
      */
     Expr getImmediateSource() {
       result =

@@ -8,7 +8,7 @@ module Generated {
   class ApplyExpr extends Synth::TApplyExpr, Expr {
     /**
      * Gets the function.
-     * This is taken from the "hidden" AST and should only be used to be overridden by classes.
+     * This includes nodes from the "hidden" AST and can be used to be overridden by subclasses.
      */
     Expr getImmediateFunction() {
       result =
@@ -21,8 +21,8 @@ module Generated {
     final Expr getFunction() { result = getImmediateFunction().resolve() }
 
     /**
-     * Gets the `index`th argument.
-     * This is taken from the "hidden" AST and should only be used to be overridden by classes.
+     * Gets the `index`th argument (0-based).
+     * This includes nodes from the "hidden" AST and can be used to be overridden by subclasses.
      */
     Argument getImmediateArgument(int index) {
       result =
@@ -32,7 +32,7 @@ module Generated {
     }
 
     /**
-     * Gets the `index`th argument.
+     * Gets the `index`th argument (0-based).
      */
     final Argument getArgument(int index) { result = getImmediateArgument(index).resolve() }
 

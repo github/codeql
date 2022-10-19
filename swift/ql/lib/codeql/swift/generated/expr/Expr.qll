@@ -11,7 +11,7 @@ module Generated {
   class Expr extends Synth::TExpr, AstNode {
     /**
      * Gets the type, if it exists.
-     * This is taken from the "hidden" AST and should only be used to be overridden by classes.
+     * This includes nodes from the "hidden" AST and can be used to be overridden by subclasses.
      */
     Type getImmediateType() {
       result = Synth::convertTypeFromRaw(Synth::convertExprToRaw(this).(Raw::Expr).getType())

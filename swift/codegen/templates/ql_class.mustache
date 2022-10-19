@@ -59,8 +59,7 @@ module Generated {
 
     {{#type_is_class}}
     /**
-     * Gets the {{#is_repeated}}`index`th {{/is_repeated}}{{doc_name}}{{#is_optional}}, if it exists{{/is_optional}}.
-     * This is taken from the "hidden" AST and should only be used to be overridden by classes.
+     * {{>ql_property_doc}}     * This includes nodes from the "hidden" AST and can be used to be overridden by subclasses.
      */
     {{type}} getImmediate{{singular}}({{#is_repeated}}int index{{/is_repeated}}) {
       {{^ipa}}
@@ -72,11 +71,7 @@ module Generated {
     }
 
     /**
-     * Gets the {{#is_repeated}}`index`th {{/is_repeated}}{{doc_name}}{{#is_optional}}, if it exists{{/is_optional}}.
-    {{#has_doc}}
-     *
-    {{#doc}}
-     * {{.}}
+     * {{>ql_property_doc}}{{#has_doc}}{{#doc}}     * {{.}}
     {{/doc}}
     {{/has_doc}}
      */
@@ -88,11 +83,7 @@ module Generated {
     {{^type_is_class}}
     {{^is_predicate}}
     /**
-     * Gets the {{#is_repeated}}`index`th {{/is_repeated}}{{doc_name}}{{#is_optional}}, if it exists{{/is_optional}}.
-    {{#has_doc}}
-     *
-    {{#doc}}
-     * {{.}}
+     * {{>ql_property_doc}}{{#has_doc}}{{#doc}}     * {{.}}
     {{/doc}}
     {{/has_doc}}
      */

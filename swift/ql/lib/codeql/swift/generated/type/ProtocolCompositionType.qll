@@ -8,8 +8,8 @@ module Generated {
     override string getAPrimaryQlClass() { result = "ProtocolCompositionType" }
 
     /**
-     * Gets the `index`th member.
-     * This is taken from the "hidden" AST and should only be used to be overridden by classes.
+     * Gets the `index`th member (0-based).
+     * This includes nodes from the "hidden" AST and can be used to be overridden by subclasses.
      */
     Type getImmediateMember(int index) {
       result =
@@ -19,7 +19,7 @@ module Generated {
     }
 
     /**
-     * Gets the `index`th member.
+     * Gets the `index`th member (0-based).
      */
     final Type getMember(int index) { result = getImmediateMember(index).resolve() }
 

@@ -7,7 +7,7 @@ module Generated {
   class AnyFunctionType extends Synth::TAnyFunctionType, Type {
     /**
      * Gets the result.
-     * This is taken from the "hidden" AST and should only be used to be overridden by classes.
+     * This includes nodes from the "hidden" AST and can be used to be overridden by subclasses.
      */
     Type getImmediateResult() {
       result =
@@ -22,8 +22,8 @@ module Generated {
     final Type getResult() { result = getImmediateResult().resolve() }
 
     /**
-     * Gets the `index`th param type.
-     * This is taken from the "hidden" AST and should only be used to be overridden by classes.
+     * Gets the `index`th param type (0-based).
+     * This includes nodes from the "hidden" AST and can be used to be overridden by subclasses.
      */
     Type getImmediateParamType(int index) {
       result =
@@ -33,7 +33,7 @@ module Generated {
     }
 
     /**
-     * Gets the `index`th param type.
+     * Gets the `index`th param type (0-based).
      */
     final Type getParamType(int index) { result = getImmediateParamType(index).resolve() }
 
@@ -48,7 +48,7 @@ module Generated {
     final int getNumberOfParamTypes() { result = count(getAParamType()) }
 
     /**
-     * Gets the `index`th param label.
+     * Gets the `index`th param label (0-based).
      */
     string getParamLabel(int index) {
       result = Synth::convertAnyFunctionTypeToRaw(this).(Raw::AnyFunctionType).getParamLabel(index)

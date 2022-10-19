@@ -15,7 +15,7 @@ module Generated {
 
     /**
      * Gets the type.
-     * This is taken from the "hidden" AST and should only be used to be overridden by classes.
+     * This includes nodes from the "hidden" AST and can be used to be overridden by subclasses.
      */
     Type getImmediateType() {
       result = Synth::convertTypeFromRaw(Synth::convertVarDeclToRaw(this).(Raw::VarDecl).getType())
@@ -28,7 +28,7 @@ module Generated {
 
     /**
      * Gets the attached property wrapper type, if it exists.
-     * This is taken from the "hidden" AST and should only be used to be overridden by classes.
+     * This includes nodes from the "hidden" AST and can be used to be overridden by subclasses.
      */
     Type getImmediateAttachedPropertyWrapperType() {
       result =
@@ -51,7 +51,7 @@ module Generated {
 
     /**
      * Gets the parent pattern, if it exists.
-     * This is taken from the "hidden" AST and should only be used to be overridden by classes.
+     * This includes nodes from the "hidden" AST and can be used to be overridden by subclasses.
      */
     Pattern getImmediateParentPattern() {
       result =
@@ -72,7 +72,7 @@ module Generated {
 
     /**
      * Gets the parent initializer, if it exists.
-     * This is taken from the "hidden" AST and should only be used to be overridden by classes.
+     * This includes nodes from the "hidden" AST and can be used to be overridden by subclasses.
      */
     Expr getImmediateParentInitializer() {
       result =

@@ -10,7 +10,7 @@ module Generated {
 
     /**
      * Gets the escaping closure.
-     * This is taken from the "hidden" AST and should only be used to be overridden by classes.
+     * This includes nodes from the "hidden" AST and can be used to be overridden by subclasses.
      */
     OpaqueValueExpr getImmediateEscapingClosure() {
       result =
@@ -26,7 +26,7 @@ module Generated {
 
     /**
      * Gets the nonescaping closure.
-     * This is taken from the "hidden" AST and should only be used to be overridden by classes.
+     * This includes nodes from the "hidden" AST and can be used to be overridden by subclasses.
      */
     Expr getImmediateNonescapingClosure() {
       result =
@@ -42,7 +42,7 @@ module Generated {
 
     /**
      * Gets the sub expr.
-     * This is taken from the "hidden" AST and should only be used to be overridden by classes.
+     * This includes nodes from the "hidden" AST and can be used to be overridden by subclasses.
      */
     Expr getImmediateSubExpr() {
       result =

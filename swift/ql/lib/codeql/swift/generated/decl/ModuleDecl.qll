@@ -16,8 +16,8 @@ module Generated {
     }
 
     /**
-     * Gets the `index`th imported module.
-     * This is taken from the "hidden" AST and should only be used to be overridden by classes.
+     * Gets the `index`th imported module (0-based).
+     * This includes nodes from the "hidden" AST and can be used to be overridden by subclasses.
      */
     ModuleDecl getImmediateImportedModule(int index) {
       result =
@@ -27,7 +27,7 @@ module Generated {
     }
 
     /**
-     * Gets the `index`th imported module.
+     * Gets the `index`th imported module (0-based).
      */
     final ModuleDecl getImportedModule(int index) {
       result = getImmediateImportedModule(index).resolve()
@@ -44,8 +44,8 @@ module Generated {
     final int getNumberOfImportedModules() { result = count(getAnImportedModule()) }
 
     /**
-     * Gets the `index`th exported module.
-     * This is taken from the "hidden" AST and should only be used to be overridden by classes.
+     * Gets the `index`th exported module (0-based).
+     * This includes nodes from the "hidden" AST and can be used to be overridden by subclasses.
      */
     ModuleDecl getImmediateExportedModule(int index) {
       result =
@@ -55,7 +55,7 @@ module Generated {
     }
 
     /**
-     * Gets the `index`th exported module.
+     * Gets the `index`th exported module (0-based).
      */
     final ModuleDecl getExportedModule(int index) {
       result = getImmediateExportedModule(index).resolve()

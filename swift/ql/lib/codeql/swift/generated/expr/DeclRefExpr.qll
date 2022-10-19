@@ -11,7 +11,7 @@ module Generated {
 
     /**
      * Gets the decl.
-     * This is taken from the "hidden" AST and should only be used to be overridden by classes.
+     * This includes nodes from the "hidden" AST and can be used to be overridden by subclasses.
      */
     Decl getImmediateDecl() {
       result =
@@ -24,8 +24,8 @@ module Generated {
     final Decl getDecl() { result = getImmediateDecl().resolve() }
 
     /**
-     * Gets the `index`th replacement type.
-     * This is taken from the "hidden" AST and should only be used to be overridden by classes.
+     * Gets the `index`th replacement type (0-based).
+     * This includes nodes from the "hidden" AST and can be used to be overridden by subclasses.
      */
     Type getImmediateReplacementType(int index) {
       result =
@@ -35,7 +35,7 @@ module Generated {
     }
 
     /**
-     * Gets the `index`th replacement type.
+     * Gets the `index`th replacement type (0-based).
      */
     final Type getReplacementType(int index) {
       result = getImmediateReplacementType(index).resolve()

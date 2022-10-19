@@ -10,7 +10,7 @@ module Generated {
 
     /**
      * Gets the sub expr.
-     * This is taken from the "hidden" AST and should only be used to be overridden by classes.
+     * This includes nodes from the "hidden" AST and can be used to be overridden by subclasses.
      */
     Expr getImmediateSubExpr() {
       result =
@@ -26,7 +26,7 @@ module Generated {
 
     /**
      * Gets the method.
-     * This is taken from the "hidden" AST and should only be used to be overridden by classes.
+     * This includes nodes from the "hidden" AST and can be used to be overridden by subclasses.
      */
     AbstractFunctionDecl getImmediateMethod() {
       result =

@@ -10,7 +10,7 @@ module Generated {
 
     /**
      * Gets the basetype.
-     * This is taken from the "hidden" AST and should only be used to be overridden by classes.
+     * This includes nodes from the "hidden" AST and can be used to be overridden by subclasses.
      */
     Type getImmediateBaseType() {
       result =
@@ -26,7 +26,7 @@ module Generated {
 
     /**
      * Gets the associated type decl.
-     * This is taken from the "hidden" AST and should only be used to be overridden by classes.
+     * This includes nodes from the "hidden" AST and can be used to be overridden by subclasses.
      */
     AssociatedTypeDecl getImmediateAssociatedTypeDecl() {
       result =

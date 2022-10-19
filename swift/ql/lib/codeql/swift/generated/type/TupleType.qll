@@ -8,8 +8,8 @@ module Generated {
     override string getAPrimaryQlClass() { result = "TupleType" }
 
     /**
-     * Gets the `index`th type.
-     * This is taken from the "hidden" AST and should only be used to be overridden by classes.
+     * Gets the `index`th type (0-based).
+     * This includes nodes from the "hidden" AST and can be used to be overridden by subclasses.
      */
     Type getImmediateType(int index) {
       result =
@@ -17,7 +17,7 @@ module Generated {
     }
 
     /**
-     * Gets the `index`th type.
+     * Gets the `index`th type (0-based).
      */
     final Type getType(int index) { result = getImmediateType(index).resolve() }
 
@@ -32,7 +32,7 @@ module Generated {
     final int getNumberOfTypes() { result = count(getAType()) }
 
     /**
-     * Gets the `index`th name.
+     * Gets the `index`th name (0-based).
      */
     string getName(int index) {
       result = Synth::convertTupleTypeToRaw(this).(Raw::TupleType).getName(index)

@@ -12,8 +12,8 @@ module Generated {
     override string getAPrimaryQlClass() { result = "GenericFunctionType" }
 
     /**
-     * Gets the `index`th generic parameter.
-     * This is taken from the "hidden" AST and should only be used to be overridden by classes.
+     * Gets the `index`th generic parameter (0-based).
+     * This includes nodes from the "hidden" AST and can be used to be overridden by subclasses.
      */
     GenericTypeParamType getImmediateGenericParam(int index) {
       result =
@@ -23,7 +23,7 @@ module Generated {
     }
 
     /**
-     * Gets the `index`th generic parameter.
+     * Gets the `index`th generic parameter (0-based).
      */
     final GenericTypeParamType getGenericParam(int index) {
       result = getImmediateGenericParam(index).resolve()

@@ -9,8 +9,8 @@ module Generated {
     override string getAPrimaryQlClass() { result = "BraceStmt" }
 
     /**
-     * Gets the `index`th element.
-     * This is taken from the "hidden" AST and should only be used to be overridden by classes.
+     * Gets the `index`th element (0-based).
+     * This includes nodes from the "hidden" AST and can be used to be overridden by subclasses.
      */
     AstNode getImmediateElement(int index) {
       result =
@@ -20,7 +20,7 @@ module Generated {
     }
 
     /**
-     * Gets the `index`th element.
+     * Gets the `index`th element (0-based).
      */
     final AstNode getElement(int index) { result = getImmediateElement(index).resolve() }
 

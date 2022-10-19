@@ -9,8 +9,8 @@ module Generated {
     override string getAPrimaryQlClass() { result = "YieldStmt" }
 
     /**
-     * Gets the `index`th result.
-     * This is taken from the "hidden" AST and should only be used to be overridden by classes.
+     * Gets the `index`th result (0-based).
+     * This includes nodes from the "hidden" AST and can be used to be overridden by subclasses.
      */
     Expr getImmediateResult(int index) {
       result =
@@ -20,7 +20,7 @@ module Generated {
     }
 
     /**
-     * Gets the `index`th result.
+     * Gets the `index`th result (0-based).
      */
     final Expr getResult(int index) { result = getImmediateResult(index).resolve() }
 

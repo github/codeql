@@ -7,8 +7,8 @@ import codeql.swift.elements.decl.GenericTypeParamDecl
 module Generated {
   class GenericContext extends Synth::TGenericContext, Element {
     /**
-     * Gets the `index`th generic type param.
-     * This is taken from the "hidden" AST and should only be used to be overridden by classes.
+     * Gets the `index`th generic type param (0-based).
+     * This includes nodes from the "hidden" AST and can be used to be overridden by subclasses.
      */
     GenericTypeParamDecl getImmediateGenericTypeParam(int index) {
       result =
@@ -18,7 +18,7 @@ module Generated {
     }
 
     /**
-     * Gets the `index`th generic type param.
+     * Gets the `index`th generic type param (0-based).
      */
     final GenericTypeParamDecl getGenericTypeParam(int index) {
       result = getImmediateGenericTypeParam(index).resolve()

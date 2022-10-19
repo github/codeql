@@ -11,7 +11,7 @@ module Generated {
 
     /**
      * Gets the expr.
-     * This is taken from the "hidden" AST and should only be used to be overridden by classes.
+     * This includes nodes from the "hidden" AST and can be used to be overridden by subclasses.
      */
     Expr getImmediateExpr() {
       result =
@@ -24,8 +24,8 @@ module Generated {
     final Expr getExpr() { result = getImmediateExpr().resolve() }
 
     /**
-     * Gets the `index`th case.
-     * This is taken from the "hidden" AST and should only be used to be overridden by classes.
+     * Gets the `index`th case (0-based).
+     * This includes nodes from the "hidden" AST and can be used to be overridden by subclasses.
      */
     CaseStmt getImmediateCase(int index) {
       result =
@@ -35,7 +35,7 @@ module Generated {
     }
 
     /**
-     * Gets the `index`th case.
+     * Gets the `index`th case (0-based).
      */
     final CaseStmt getCase(int index) { result = getImmediateCase(index).resolve() }
 

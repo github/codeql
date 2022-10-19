@@ -12,7 +12,7 @@ module Generated {
 
     /**
      * Gets the interpolation expr, if it exists.
-     * This is taken from the "hidden" AST and should only be used to be overridden by classes.
+     * This includes nodes from the "hidden" AST and can be used to be overridden by subclasses.
      */
     OpaqueValueExpr getImmediateInterpolationExpr() {
       result =
@@ -35,7 +35,7 @@ module Generated {
 
     /**
      * Gets the interpolation count expr, if it exists.
-     * This is taken from the "hidden" AST and should only be used to be overridden by classes.
+     * This includes nodes from the "hidden" AST and can be used to be overridden by subclasses.
      */
     Expr getImmediateInterpolationCountExpr() {
       result =
@@ -58,7 +58,7 @@ module Generated {
 
     /**
      * Gets the literal capacity expr, if it exists.
-     * This is taken from the "hidden" AST and should only be used to be overridden by classes.
+     * This includes nodes from the "hidden" AST and can be used to be overridden by subclasses.
      */
     Expr getImmediateLiteralCapacityExpr() {
       result =
@@ -79,7 +79,7 @@ module Generated {
 
     /**
      * Gets the appending expr, if it exists.
-     * This is taken from the "hidden" AST and should only be used to be overridden by classes.
+     * This includes nodes from the "hidden" AST and can be used to be overridden by subclasses.
      */
     TapExpr getImmediateAppendingExpr() {
       result =

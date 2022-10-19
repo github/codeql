@@ -11,7 +11,7 @@ module Generated {
 
     /**
      * Gets the body.
-     * This is taken from the "hidden" AST and should only be used to be overridden by classes.
+     * This includes nodes from the "hidden" AST and can be used to be overridden by subclasses.
      */
     Stmt getImmediateBody() {
       result =
@@ -24,8 +24,8 @@ module Generated {
     final Stmt getBody() { result = getImmediateBody().resolve() }
 
     /**
-     * Gets the `index`th label.
-     * This is taken from the "hidden" AST and should only be used to be overridden by classes.
+     * Gets the `index`th label (0-based).
+     * This includes nodes from the "hidden" AST and can be used to be overridden by subclasses.
      */
     CaseLabelItem getImmediateLabel(int index) {
       result =
@@ -35,7 +35,7 @@ module Generated {
     }
 
     /**
-     * Gets the `index`th label.
+     * Gets the `index`th label (0-based).
      */
     final CaseLabelItem getLabel(int index) { result = getImmediateLabel(index).resolve() }
 
@@ -50,8 +50,8 @@ module Generated {
     final int getNumberOfLabels() { result = count(getALabel()) }
 
     /**
-     * Gets the `index`th variable.
-     * This is taken from the "hidden" AST and should only be used to be overridden by classes.
+     * Gets the `index`th variable (0-based).
+     * This includes nodes from the "hidden" AST and can be used to be overridden by subclasses.
      */
     VarDecl getImmediateVariable(int index) {
       result =
@@ -61,7 +61,7 @@ module Generated {
     }
 
     /**
-     * Gets the `index`th variable.
+     * Gets the `index`th variable (0-based).
      */
     final VarDecl getVariable(int index) { result = getImmediateVariable(index).resolve() }
 

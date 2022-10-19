@@ -10,7 +10,7 @@ module Generated {
 
     /**
      * Gets the then.
-     * This is taken from the "hidden" AST and should only be used to be overridden by classes.
+     * This includes nodes from the "hidden" AST and can be used to be overridden by subclasses.
      */
     Stmt getImmediateThen() {
       result = Synth::convertStmtFromRaw(Synth::convertIfStmtToRaw(this).(Raw::IfStmt).getThen())
@@ -23,7 +23,7 @@ module Generated {
 
     /**
      * Gets the else, if it exists.
-     * This is taken from the "hidden" AST and should only be used to be overridden by classes.
+     * This includes nodes from the "hidden" AST and can be used to be overridden by subclasses.
      */
     Stmt getImmediateElse() {
       result = Synth::convertStmtFromRaw(Synth::convertIfStmtToRaw(this).(Raw::IfStmt).getElse())

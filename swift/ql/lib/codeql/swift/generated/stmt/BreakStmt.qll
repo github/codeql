@@ -21,7 +21,7 @@ module Generated {
 
     /**
      * Gets the target, if it exists.
-     * This is taken from the "hidden" AST and should only be used to be overridden by classes.
+     * This includes nodes from the "hidden" AST and can be used to be overridden by subclasses.
      */
     Stmt getImmediateTarget() {
       result =

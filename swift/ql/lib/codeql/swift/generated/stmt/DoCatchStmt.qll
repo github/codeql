@@ -11,7 +11,7 @@ module Generated {
 
     /**
      * Gets the body.
-     * This is taken from the "hidden" AST and should only be used to be overridden by classes.
+     * This includes nodes from the "hidden" AST and can be used to be overridden by subclasses.
      */
     Stmt getImmediateBody() {
       result =
@@ -24,8 +24,8 @@ module Generated {
     final Stmt getBody() { result = getImmediateBody().resolve() }
 
     /**
-     * Gets the `index`th catch.
-     * This is taken from the "hidden" AST and should only be used to be overridden by classes.
+     * Gets the `index`th catch (0-based).
+     * This includes nodes from the "hidden" AST and can be used to be overridden by subclasses.
      */
     CaseStmt getImmediateCatch(int index) {
       result =
@@ -35,7 +35,7 @@ module Generated {
     }
 
     /**
-     * Gets the `index`th catch.
+     * Gets the `index`th catch (0-based).
      */
     final CaseStmt getCatch(int index) { result = getImmediateCatch(index).resolve() }
 

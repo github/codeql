@@ -7,8 +7,8 @@ import codeql.swift.elements.type.Type
 module Generated {
   class BoundGenericType extends Synth::TBoundGenericType, NominalOrBoundGenericNominalType {
     /**
-     * Gets the `index`th arg type.
-     * This is taken from the "hidden" AST and should only be used to be overridden by classes.
+     * Gets the `index`th arg type (0-based).
+     * This includes nodes from the "hidden" AST and can be used to be overridden by subclasses.
      */
     Type getImmediateArgType(int index) {
       result =
@@ -18,7 +18,7 @@ module Generated {
     }
 
     /**
-     * Gets the `index`th arg type.
+     * Gets the `index`th arg type (0-based).
      */
     final Type getArgType(int index) { result = getImmediateArgType(index).resolve() }
 

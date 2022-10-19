@@ -12,8 +12,8 @@ module Generated {
     string getName() { result = Synth::convertTypeDeclToRaw(this).(Raw::TypeDecl).getName() }
 
     /**
-     * Gets the `index`th base type.
-     * This is taken from the "hidden" AST and should only be used to be overridden by classes.
+     * Gets the `index`th base type (0-based).
+     * This includes nodes from the "hidden" AST and can be used to be overridden by subclasses.
      */
     Type getImmediateBaseType(int index) {
       result =
@@ -23,7 +23,7 @@ module Generated {
     }
 
     /**
-     * Gets the `index`th base type.
+     * Gets the `index`th base type (0-based).
      */
     final Type getBaseType(int index) { result = getImmediateBaseType(index).resolve() }
 

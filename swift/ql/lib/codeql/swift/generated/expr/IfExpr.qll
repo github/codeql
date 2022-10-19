@@ -9,7 +9,7 @@ module Generated {
 
     /**
      * Gets the condition.
-     * This is taken from the "hidden" AST and should only be used to be overridden by classes.
+     * This includes nodes from the "hidden" AST and can be used to be overridden by subclasses.
      */
     Expr getImmediateCondition() {
       result =
@@ -23,7 +23,7 @@ module Generated {
 
     /**
      * Gets the then expr.
-     * This is taken from the "hidden" AST and should only be used to be overridden by classes.
+     * This includes nodes from the "hidden" AST and can be used to be overridden by subclasses.
      */
     Expr getImmediateThenExpr() {
       result =
@@ -37,7 +37,7 @@ module Generated {
 
     /**
      * Gets the else expr.
-     * This is taken from the "hidden" AST and should only be used to be overridden by classes.
+     * This includes nodes from the "hidden" AST and can be used to be overridden by subclasses.
      */
     Expr getImmediateElseExpr() {
       result =

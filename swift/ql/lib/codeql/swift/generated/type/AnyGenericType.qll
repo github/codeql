@@ -8,7 +8,7 @@ module Generated {
   class AnyGenericType extends Synth::TAnyGenericType, Type {
     /**
      * Gets the parent, if it exists.
-     * This is taken from the "hidden" AST and should only be used to be overridden by classes.
+     * This includes nodes from the "hidden" AST and can be used to be overridden by subclasses.
      */
     Type getImmediateParent() {
       result =
@@ -29,7 +29,7 @@ module Generated {
 
     /**
      * Gets the declaration.
-     * This is taken from the "hidden" AST and should only be used to be overridden by classes.
+     * This includes nodes from the "hidden" AST and can be used to be overridden by subclasses.
      */
     Decl getImmediateDeclaration() {
       result =

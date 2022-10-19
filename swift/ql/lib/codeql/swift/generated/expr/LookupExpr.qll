@@ -8,7 +8,7 @@ module Generated {
   class LookupExpr extends Synth::TLookupExpr, Expr {
     /**
      * Gets the base.
-     * This is taken from the "hidden" AST and should only be used to be overridden by classes.
+     * This includes nodes from the "hidden" AST and can be used to be overridden by subclasses.
      */
     Expr getImmediateBase() {
       result =
@@ -22,7 +22,7 @@ module Generated {
 
     /**
      * Gets the member, if it exists.
-     * This is taken from the "hidden" AST and should only be used to be overridden by classes.
+     * This includes nodes from the "hidden" AST and can be used to be overridden by subclasses.
      */
     Decl getImmediateMember() {
       result =
