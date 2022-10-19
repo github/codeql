@@ -79,6 +79,8 @@ class UsersController < ActionController::Base
 
     obj().send(code, "foo"); # BAD
 
-    obj().send("prefix_" + code + "_suffix", "foo"); # GOOD - but still flagged by this query
+    obj().send("prefix_" + code + "_suffix", "foo"); # GOOD
+
+    obj().send("prefix_#{code}_suffix", "foo"); # GOOD
   end
 end
