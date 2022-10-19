@@ -18,12 +18,12 @@ Most database connector libraries offer a way of safely embedding untrusted data
 </recommendation>
 <example>
 
-<p>In the following example, a SQL query is prepared using string interpolation to directly include a user-controlled value <code>userControlledString</code> in the query. An attacker could craft the part they control to change the overall meaning of the SQL query.
+<p>In the following example, a SQL query is prepared using string interpolation to directly include a user-controlled value <code>userControlledString</code> in the query. An attacker could craft <code>userControlledString</code> in such a way as to change the overall meaning of the SQL query.
 </p>
 
 <sample src="SqlInjectionBad.swift" />
 
-<p>A better way to do this is with a prepared statement, binding <code>userControlledString</code> to a parameter of that statement. An attacker who controls the contents of that parameter cannot change the overall meaning of the query.
+<p>A better way to do this is with a prepared statement, binding <code>userControlledString</code> to a parameter of that statement. An attacker who controls <code>userControlledString</code> now cannot change the overall meaning of the query.
 </p>
 
 <sample src="SqlInjectionGood.swift" />
