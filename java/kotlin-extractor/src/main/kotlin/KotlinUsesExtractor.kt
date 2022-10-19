@@ -944,7 +944,7 @@ open class KotlinUsesExtractor(
 
 
     private val jvmWildcardAnnotation = FqName("kotlin.jvm.JvmWildcard")
-    private val jvmWildcardSuppressionAnnotaton = FqName("kotlin.jvm.JvmSuppressWildcards")
+    private val jvmWildcardSuppressionAnnotation = FqName("kotlin.jvm.JvmSuppressWildcards")
 
     private fun arrayExtendsAdditionAllowed(t: IrSimpleType): Boolean =
         // Note the array special case includes Array<*>, which does permit adding `? extends ...` (making `? extends Object[]` in that case)
@@ -977,7 +977,7 @@ open class KotlinUsesExtractor(
         when {
             t.hasAnnotation(jvmWildcardAnnotation) -> true
             !addByDefault -> false
-            t.hasAnnotation(jvmWildcardSuppressionAnnotaton) -> false
+            t.hasAnnotation(jvmWildcardSuppressionAnnotation) -> false
             v == Variance.IN_VARIANCE -> !(t.isNullableAny() || t.isAny())
             v == Variance.OUT_VARIANCE -> extendsAdditionAllowed(t)
             else -> false
@@ -1225,9 +1225,9 @@ open class KotlinUsesExtractor(
     }
 
     fun hasWildcardSuppressionAnnotation(d: IrDeclaration) =
-        d.hasAnnotation(jvmWildcardSuppressionAnnotaton) ||
+        d.hasAnnotation(jvmWildcardSuppressionAnnotation) ||
         // Note not using `parentsWithSelf` as that only works if `d` is an IrDeclarationParent
-        d.parents.any { (it as? IrAnnotationContainer)?.hasAnnotation(jvmWildcardSuppressionAnnotaton) == true }
+        d.parents.any { (it as? IrAnnotationContainer)?.hasAnnotation(jvmWildcardSuppressionAnnotation) == true }
 
     /**
      * Class to hold labels for generated classes around local functions, lambdas, function references, and property references.
