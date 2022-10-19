@@ -81,3 +81,6 @@
 
 <%# BAD: Indirect to a database value without escaping %>
 <%= @other_user_raw_name.html_safe %>
+
+<%# GOOD: The `foo.bar.baz` is not recognized as a source %>
+<%= @other_user_raw_name.foo.bar.baz.html_safe %>
