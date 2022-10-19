@@ -2507,10 +2507,10 @@ module YAML {
   deprecated class YAMLNode = YamlNode;
 
   /** A YAML comment. */
-  class YamlComment extends TYamlCommemt, YamlNode {
+  class YamlComment extends TYamlComment, YamlNode {
     Yaml::Comment yamlcomment;
 
-    YamlComment() { this = TYamlCommemt(yamlcomment) }
+    YamlComment() { this = TYamlComment(yamlcomment) }
 
     override string getAPrimaryQlClass() { result = "YamlComment" }
   }
