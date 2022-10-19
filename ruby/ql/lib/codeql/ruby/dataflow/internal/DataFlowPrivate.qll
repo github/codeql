@@ -246,6 +246,7 @@ private module Cached {
       )
     } or
     TSsaDefinitionNode(Ssa::Definition def) or
+    TCapturedVariableNode(LocalVariable v) { v.isCaptured() } or
     TNormalParameterNode(Parameter p) {
       p instanceof SimpleParameter or
       p instanceof OptionalParameter or
@@ -343,16 +344,14 @@ private module Cached {
     )
     or
     LocalFlow::localSsaFlowStepUseUse(_, nodeFrom, nodeTo)
+    or
+    flowInsensitiveCaptureStep(nodeFrom, nodeTo)
   }
 
   private predicate entrySsaDefinition(SsaDefinitionNode n) {
     n = LocalFlow::getParameterDefNode(_)
     or
-    exists(Ssa::Definition def | def = n.getDefinition() |
-      def instanceof Ssa::SelfDefinition
-      or
-      def instanceof Ssa::CapturedEntryDefinition
-    )
+    n.getDefinition() instanceof Ssa::SelfDefinition
   }
 
   pragma[nomagic]
@@ -505,6 +504,26 @@ class SsaSelfDefinitionNode extends LocalSourceNode, SsaDefinitionNode {
 
   /** Gets the scope in which the `self` variable is declared. */
   Scope getSelfScope() { result = self.getDeclaringScope() }
+}
+
+/** A data flow node representing a captured variable. */
+class CapturedVariableNode extends NodeImpl, TCapturedVariableNode {
+  private LocalVariable variable;
+
+  CapturedVariableNode() { this = TCapturedVariableNode(variable) }
+
+  /** Gets the captured variable represented by this node. */
+  LocalVariable getVariable() { result = variable }
+
+  override CfgScope getCfgScope() {
+    result = variable.getDeclaringScope().(Stmt).getCfgScope()
+    or
+    result = variable.getDeclaringScope().(Toplevel)
+  }
+
+  override Location getLocationImpl() { result = variable.getLocation() }
+
+  override string toStringImpl() { result = "captured " + variable.getName() }
 }
 
 /**
@@ -1010,6 +1029,33 @@ predicate jumpStep(Node pred, Node succ) {
   succ.asExpr().getExpr().(ConstantReadAccess).getValue() = pred.asExpr().getExpr()
   or
   FlowSummaryImpl::Private::Steps::summaryJumpStep(pred, succ)
+}
+
+/**
+ * Holds if `pred -> succ` is a step to or from a `CapturedVariableNode`.
+ *
+ * Taken together, these steps can be used to model flow through captured variables in a flow-insensitive manner.
+ */
+predicate flowInsensitiveCaptureStep(Node pred, Node succ) {
+  exists(CapturedVariableNode flowInsensitiveNode, SsaDefinitionNode ssa |
+    flowInsensitiveNode.getVariable() = ssa.getVariable()
+  |
+    // Ideally we should divide these into reads from the heap and writes to the heap,
+    // but this isn't easy right now. So we just connect all SSA definitions.
+    pred = flowInsensitiveNode and
+    succ = ssa
+    or
+    pred = ssa and
+    succ = flowInsensitiveNode
+  )
+  or
+  // Ensure captured parameters are connected to the CapturedVariableNode.
+  // If a parameter has no use in its declaring scope, it will not have an SSA entry definition.
+  exists(LocalVariable variable | succ.(CapturedVariableNode).getVariable() = variable |
+    pred.(ParameterNodeImpl).getParameter().(NamedParameter).getVariable() = variable
+    or
+    pred.(SelfParameterNode).getSelfVariable() = variable
+  )
 }
 
 private ContentSet getKeywordContent(string name) {
