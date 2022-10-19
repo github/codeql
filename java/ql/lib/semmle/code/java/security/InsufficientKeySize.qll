@@ -131,7 +131,10 @@ abstract class KeyGenInitMethodAccess extends MethodAccess {
 
 /** A call to the `initialize` method declared in `java.security.KeyPairGenerator`. */
 private class AsymmetricInitMethodAccess extends KeyGenInitMethodAccess {
-  AsymmetricInitMethodAccess() { this.getMethod() instanceof KeyPairGeneratorInitMethod }
+  AsymmetricInitMethodAccess() {
+    this.getMethod() instanceof KeyPairGeneratorInitMethod or
+    this.getMethod() instanceof AlgoParamGeneratorInitMethod
+  }
 }
 
 /** A call to the `init` method declared in `javax.crypto.KeyGenerator`. */
@@ -146,16 +149,19 @@ abstract class KeyGeneratorObject extends CryptoAlgoSpec {
 
 /** An instance of a `java.security.KeyPairGenerator`. */
 private class AsymmetricKeyGenerator extends KeyGeneratorObject {
-  AsymmetricKeyGenerator() { this instanceof JavaSecurityKeyPairGenerator }
+  AsymmetricKeyGenerator() {
+    this instanceof JavaSecurityKeyPairGenerator or
+    this instanceof JavaSecurityAlgoParamGenerator
+  }
 
-  override Expr getAlgoSpec() { result = this.(MethodAccess).getArgument(0) }
+  override Expr getAlgoSpec() { result = this.getAlgoSpec() }
 }
 
 /** An instance of a `javax.crypto.KeyGenerator`. */
 private class SymmetricKeyGenerator extends KeyGeneratorObject {
   SymmetricKeyGenerator() { this instanceof JavaxCryptoKeyGenerator }
 
-  override Expr getAlgoSpec() { result = this.(MethodAccess).getArgument(0) }
+  override Expr getAlgoSpec() { result = this.getAlgoSpec() }
 }
 
 /** An instance of an algorithm specification. */

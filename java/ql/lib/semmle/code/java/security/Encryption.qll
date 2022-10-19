@@ -389,7 +389,7 @@ class JavaSecuritySignature extends JavaSecurityAlgoSpec {
   override Expr getAlgoSpec() { result = this.(ConstructorCall).getArgument(0) }
 }
 
-/** A method call to the Java class `java.security.KeyPairGenerator`. */
+/** An instance of a `java.security.KeyPairGenerator`. */
 class JavaSecurityKeyPairGenerator extends JavaSecurityAlgoSpec {
   JavaSecurityKeyPairGenerator() {
     exists(Constructor c | c.getAReference() = this |
@@ -403,6 +403,41 @@ class JavaSecurityKeyPairGenerator extends JavaSecurityAlgoSpec {
   }
 
   override Expr getAlgoSpec() { result = this.(Call).getArgument(0) }
+}
+
+/** The Java class `java.security.AlgorithmParameterGenerator`. */
+class AlgorithmParameterGenerator extends RefType {
+  AlgorithmParameterGenerator() {
+    this.hasQualifiedName("java.security", "AlgorithmParameterGenerator")
+  }
+}
+
+/** The `init` method declared in `java.security.AlgorithmParameterGenerator`. */
+class AlgoParamGeneratorInitMethod extends Method {
+  AlgoParamGeneratorInitMethod() {
+    this.getDeclaringType() instanceof AlgorithmParameterGenerator and
+    this.hasName("init")
+  }
+}
+
+/** An instance of a `java.security.AlgorithmParameterGenerator`. */
+class JavaSecurityAlgoParamGenerator extends JavaSecurityAlgoSpec {
+  JavaSecurityAlgoParamGenerator() {
+    exists(Constructor c | c.getAReference() = this |
+      c.getDeclaringType() instanceof AlgorithmParameterGenerator
+    )
+    or
+    exists(Method m | m.getAReference() = this |
+      m.getDeclaringType() instanceof AlgorithmParameterGenerator and
+      m.getName() = "getInstance"
+    )
+  }
+
+  override Expr getAlgoSpec() {
+    exists(Call c | c = this |
+      if c.getNumArgument() = 3 then result = c.getArgument(2) else result = c.getArgument(0)
+    )
+  }
 }
 
 /** The Java interface `java.security.spec.AlgorithmParameterSpec` */
