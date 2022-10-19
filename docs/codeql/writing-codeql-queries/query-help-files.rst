@@ -16,10 +16,7 @@ For more information about how to write useful query help in a style that is con
    You can access the query help for CodeQL queries by visiting `CodeQL query help <https://codeql.github.com/codeql-query-help>`__.
    You can also access the raw query help files in the `GitHub repository <https://github.com/github/codeql>`__.
    For example, see the `JavaScript security queries <https://github.com/github/codeql/tree/main/javascript/ql/src/Security>`__ and `C/C++ critical queries <https://github.com/github/codeql/tree/main/cpp/ql/src/Critical>`__. 
-   
-   For queries run by default on LGTM, there are several different ways to access the query help. For further information, see `Where do I see the query help for a query on LGTM? <https://lgtm.com/help/lgtm/query-help#where-query-help-in-lgtm>`__ in the LGTM user help.
-   
-
+      
 Overview
 ========
 

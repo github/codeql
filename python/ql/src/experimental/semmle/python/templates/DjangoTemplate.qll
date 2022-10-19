@@ -7,7 +7,7 @@ import experimental.semmle.python.templates.SSTISink
 deprecated ClassValue theDjangoTemplateClass() { result = Value::named("django.template.Template") }
 
 /**
- * A sink representng `django.template.Template` class instantiation argument.
+ * A sink representing `django.template.Template` class instantiation argument.
  *
  *  from django.template import Template
  *  template = Template(`sink`)
@@ -26,7 +26,7 @@ deprecated class DjangoTemplateTemplateSink extends SSTISink {
 }
 // TODO (intentionally commented out QLDoc, since qlformat will delete those lines otherwise)
 // /**
-//  * Sinks representng the django.template.Template class instantiation.
+//  * Sinks representing the django.template.Template class instantiation.
 //  *
 //  *  from django.template import engines
 //  *

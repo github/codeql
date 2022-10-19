@@ -3,6 +3,8 @@ private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
 import codeql.swift.elements.decl.GenericTypeDecl
 
-class OpaqueTypeDeclBase extends Synth::TOpaqueTypeDecl, GenericTypeDecl {
-  override string getAPrimaryQlClass() { result = "OpaqueTypeDecl" }
+module Generated {
+  class OpaqueTypeDecl extends Synth::TOpaqueTypeDecl, GenericTypeDecl {
+    override string getAPrimaryQlClass() { result = "OpaqueTypeDecl" }
+  }
 }

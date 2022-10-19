@@ -1,3 +1,5 @@
+require 'active_job'
+
 class UsersController < ActionController::Base
   def create
     code = params[:code]
@@ -22,18 +24,21 @@ class UsersController < ActionController::Base
 
     # GOOD
     Bar.class_eval(code)
-    
+
     # BAD
     const_get(code)
-    
+
     # BAD
     Foo.const_get(code)
-    
+
     # GOOD
     Bar.const_get(code)
 
     # BAD
     eval(Regexp.escape(code))
+
+    # BAD
+    ActiveJob::Serializers.deserialize(code)
   end
 
   def update
@@ -62,7 +67,7 @@ class Bar
   def self.class_eval(x)
     true
   end
-  
+
   def self.const_get(x)
     true
   end

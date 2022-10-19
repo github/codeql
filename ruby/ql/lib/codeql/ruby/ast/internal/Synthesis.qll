@@ -118,7 +118,11 @@ class Synthesis extends TSynthesis {
 private class Desugared extends AstNode {
   Desugared() { this = any(AstNode sugar).getDesugared() }
 
-  AstNode getADescendant() { result = this.getAChild*() }
+  AstNode getADescendant() {
+    result = this
+    or
+    result = this.getADescendant().getAChild()
+  }
 }
 
 /**
@@ -132,7 +136,10 @@ int desugarLevel(AstNode n) { result = count(Desugared desugared | n = desugared
  * Holds if `n` appears in a context that is desugared. That is, a
  * transitive, reflexive parent of `n` is a desugared node.
  */
-predicate isInDesugaredContext(AstNode n) { n = any(AstNode sugar).getDesugared().getAChild*() }
+predicate isInDesugaredContext(AstNode n) {
+  n = any(AstNode sugar).getDesugared() or
+  n = any(AstNode mid | isInDesugaredContext(mid)).getAChild()
+}
 
 /**
  * Holds if `n` is a node that only exists as a result of desugaring some

@@ -4,17 +4,21 @@ private import codeql.swift.generated.Raw
 import codeql.swift.elements.type.Type
 import codeql.swift.elements.decl.ValueDecl
 
-class TypeDeclBase extends Synth::TTypeDecl, ValueDecl {
-  string getName() { result = Synth::convertTypeDeclToRaw(this).(Raw::TypeDecl).getName() }
+module Generated {
+  class TypeDecl extends Synth::TTypeDecl, ValueDecl {
+    string getName() { result = Synth::convertTypeDeclToRaw(this).(Raw::TypeDecl).getName() }
 
-  Type getImmediateBaseType(int index) {
-    result =
-      Synth::convertTypeFromRaw(Synth::convertTypeDeclToRaw(this).(Raw::TypeDecl).getBaseType(index))
+    Type getImmediateBaseType(int index) {
+      result =
+        Synth::convertTypeFromRaw(Synth::convertTypeDeclToRaw(this)
+              .(Raw::TypeDecl)
+              .getBaseType(index))
+    }
+
+    final Type getBaseType(int index) { result = getImmediateBaseType(index).resolve() }
+
+    final Type getABaseType() { result = getBaseType(_) }
+
+    final int getNumberOfBaseTypes() { result = count(getABaseType()) }
   }
-
-  final Type getBaseType(int index) { result = getImmediateBaseType(index).resolve() }
-
-  final Type getABaseType() { result = getBaseType(_) }
-
-  final int getNumberOfBaseTypes() { result = count(getABaseType()) }
 }

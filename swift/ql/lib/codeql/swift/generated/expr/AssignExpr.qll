@@ -3,20 +3,22 @@ private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
 import codeql.swift.elements.expr.Expr
 
-class AssignExprBase extends Synth::TAssignExpr, Expr {
-  override string getAPrimaryQlClass() { result = "AssignExpr" }
+module Generated {
+  class AssignExpr extends Synth::TAssignExpr, Expr {
+    override string getAPrimaryQlClass() { result = "AssignExpr" }
 
-  Expr getImmediateDest() {
-    result =
-      Synth::convertExprFromRaw(Synth::convertAssignExprToRaw(this).(Raw::AssignExpr).getDest())
+    Expr getImmediateDest() {
+      result =
+        Synth::convertExprFromRaw(Synth::convertAssignExprToRaw(this).(Raw::AssignExpr).getDest())
+    }
+
+    final Expr getDest() { result = getImmediateDest().resolve() }
+
+    Expr getImmediateSource() {
+      result =
+        Synth::convertExprFromRaw(Synth::convertAssignExprToRaw(this).(Raw::AssignExpr).getSource())
+    }
+
+    final Expr getSource() { result = getImmediateSource().resolve() }
   }
-
-  final Expr getDest() { result = getImmediateDest().resolve() }
-
-  Expr getImmediateSource() {
-    result =
-      Synth::convertExprFromRaw(Synth::convertAssignExprToRaw(this).(Raw::AssignExpr).getSource())
-  }
-
-  final Expr getSource() { result = getImmediateSource().resolve() }
 }

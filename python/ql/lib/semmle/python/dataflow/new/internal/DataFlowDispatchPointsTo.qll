@@ -205,12 +205,12 @@ module ArgumentPassing {
         result = TCfgNode(call.getArgByName(unbind_string(argName)))
       )
       or
-      // a synthezised argument passed to the starred parameter (at position -1)
+      // a synthesized argument passed to the starred parameter (at position -1)
       callable.getScope().hasVarArg() and
       paramN = -1 and
       result = TPosOverflowNode(call, callable)
       or
-      // a synthezised argument passed to the doubly starred parameter (at position -2)
+      // a synthesized argument passed to the doubly starred parameter (at position -2)
       callable.getScope().hasKwArg() and
       paramN = -2 and
       result = TKwOverflowNode(call, callable)
@@ -769,7 +769,7 @@ DataFlowCallable viableCallable(ExtractedDataFlowCall call) {
   // A call to a library callable with a flow summary
   // In this situation we can not resolve the callable from the call,
   // as that would make data flow depend on type tracking.
-  // Instead we reolve the call from the summary.
+  // Instead we resolve the call from the summary.
   exists(LibraryCallable callable |
     result = TLibraryCallable(callable) and
     call.getNode() = callable.getACall().getNode()

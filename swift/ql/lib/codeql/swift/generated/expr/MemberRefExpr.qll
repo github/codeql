@@ -3,18 +3,22 @@ private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
 import codeql.swift.elements.expr.LookupExpr
 
-class MemberRefExprBase extends Synth::TMemberRefExpr, LookupExpr {
-  override string getAPrimaryQlClass() { result = "MemberRefExpr" }
+module Generated {
+  class MemberRefExpr extends Synth::TMemberRefExpr, LookupExpr {
+    override string getAPrimaryQlClass() { result = "MemberRefExpr" }
 
-  predicate hasDirectToStorageSemantics() {
-    Synth::convertMemberRefExprToRaw(this).(Raw::MemberRefExpr).hasDirectToStorageSemantics()
-  }
+    predicate hasDirectToStorageSemantics() {
+      Synth::convertMemberRefExprToRaw(this).(Raw::MemberRefExpr).hasDirectToStorageSemantics()
+    }
 
-  predicate hasDirectToImplementationSemantics() {
-    Synth::convertMemberRefExprToRaw(this).(Raw::MemberRefExpr).hasDirectToImplementationSemantics()
-  }
+    predicate hasDirectToImplementationSemantics() {
+      Synth::convertMemberRefExprToRaw(this)
+          .(Raw::MemberRefExpr)
+          .hasDirectToImplementationSemantics()
+    }
 
-  predicate hasOrdinarySemantics() {
-    Synth::convertMemberRefExprToRaw(this).(Raw::MemberRefExpr).hasOrdinarySemantics()
+    predicate hasOrdinarySemantics() {
+      Synth::convertMemberRefExprToRaw(this).(Raw::MemberRefExpr).hasOrdinarySemantics()
+    }
   }
 }

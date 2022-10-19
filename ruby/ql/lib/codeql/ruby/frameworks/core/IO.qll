@@ -95,7 +95,7 @@ module IO {
    * popen([env,] cmd, mode="r" [, opt]) -> io
    * popen([env,] cmd, mode="r" [, opt]) {|io| block } -> obj
    * ```
-   * `IO.popen` does different things based on the the value of `cmd`:
+   * `IO.popen` does different things based on the value of `cmd`:
    * ```
    * "-"                                      : fork
    * commandline                              : command line string which is passed to a shell

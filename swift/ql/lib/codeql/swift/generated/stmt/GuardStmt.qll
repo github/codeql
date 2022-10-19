@@ -4,13 +4,15 @@ private import codeql.swift.generated.Raw
 import codeql.swift.elements.stmt.BraceStmt
 import codeql.swift.elements.stmt.LabeledConditionalStmt
 
-class GuardStmtBase extends Synth::TGuardStmt, LabeledConditionalStmt {
-  override string getAPrimaryQlClass() { result = "GuardStmt" }
+module Generated {
+  class GuardStmt extends Synth::TGuardStmt, LabeledConditionalStmt {
+    override string getAPrimaryQlClass() { result = "GuardStmt" }
 
-  BraceStmt getImmediateBody() {
-    result =
-      Synth::convertBraceStmtFromRaw(Synth::convertGuardStmtToRaw(this).(Raw::GuardStmt).getBody())
+    BraceStmt getImmediateBody() {
+      result =
+        Synth::convertBraceStmtFromRaw(Synth::convertGuardStmtToRaw(this).(Raw::GuardStmt).getBody())
+    }
+
+    final BraceStmt getBody() { result = getImmediateBody().resolve() }
   }
-
-  final BraceStmt getBody() { result = getImmediateBody().resolve() }
 }

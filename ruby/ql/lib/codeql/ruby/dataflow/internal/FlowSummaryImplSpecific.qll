@@ -44,6 +44,9 @@ DataFlowType getCallbackParameterType(DataFlowType t, ArgumentPosition pos) { an
  */
 DataFlowType getCallbackReturnType(DataFlowType t, ReturnKind rk) { any() }
 
+/** Gets the type of synthetic global `sg`. */
+DataFlowType getSyntheticGlobalType(SummaryComponent::SyntheticGlobal sg) { any() }
+
 /**
  * Holds if an external flow summary exists for `c` with input specification
  * `input`, output specification `output`, kind `kind`, and a flag `generated`
@@ -134,16 +137,6 @@ SummaryComponent interpretComponentSpecific(AccessPathToken c) {
     FlowSummary::SummaryComponent::content(cs) =
       interpretElementArg(c.getAnArgument("WithoutElement")) and
     result = FlowSummary::SummaryComponent::withoutContent(cs)
-  )
-  or
-  exists(string arg | arg = c.getAnArgument("PairValue") |
-    arg = "?" and
-    result = FlowSummary::SummaryComponent::pairValueUnknown()
-    or
-    exists(ConstantValue cv |
-      result = FlowSummary::SummaryComponent::pairValueKnown(cv) and
-      cv.serialize() = arg
-    )
   )
 }
 

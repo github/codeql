@@ -172,7 +172,7 @@ deprecated module UnaliasedSSAOperands = UnaliasedSsaOperands;
 
 /**
  * Provides wrappers for the constructors of each branch of `TOperand` that is used by the
- * asliased SSA stage.
+ * aliased SSA stage.
  * These wrappers are not parameterized because it is not possible to invoke an IPA constructor via
  * a class alias.
  */

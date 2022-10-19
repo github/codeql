@@ -3,6 +3,8 @@ private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
 import codeql.swift.elements.expr.DynamicLookupExpr
 
-class DynamicSubscriptExprBase extends Synth::TDynamicSubscriptExpr, DynamicLookupExpr {
-  override string getAPrimaryQlClass() { result = "DynamicSubscriptExpr" }
+module Generated {
+  class DynamicSubscriptExpr extends Synth::TDynamicSubscriptExpr, DynamicLookupExpr {
+    override string getAPrimaryQlClass() { result = "DynamicSubscriptExpr" }
+  }
 }

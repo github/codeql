@@ -1,4 +1,4 @@
-.. codeql-library-for-ruby:
+.. _codeql-library-for-ruby:
 
 CodeQL library for Ruby
 =======================

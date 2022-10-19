@@ -65,7 +65,7 @@ class ConstantValue extends TConstantValue {
   /** Holds if this is the string value `s`. */
   predicate isString(string s) { s = this.getString() }
 
-  /** Gets the symbol value (exluding the `:` prefix), if this is a symbol. */
+  /** Gets the symbol value (excluding the `:` prefix), if this is a symbol. */
   string getSymbol() { this = TSymbol(result) }
 
   /** Holds if this is the symbol value `:s`. */

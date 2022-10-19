@@ -58,3 +58,20 @@ suspend fun test() {
     val i0 = InterfaceFn1Sus { a, b -> Unit }
     i0.fn1(1,2)
 }
+
+class PropertyRefsTest {
+    val x = 1
+}
+
+fun interface PropertyRefsGetter {
+    fun f(prt: PropertyRefsTest): Int
+}
+
+fun interface IntGetter {
+    fun f(): Int
+}
+
+fun propertyRefsTest(prt: PropertyRefsTest) {
+    val test1 = IntGetter(prt::x)
+    val test2 = PropertyRefsGetter(PropertyRefsTest::x)
+}

@@ -3,4 +3,6 @@ private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
 import codeql.swift.elements.decl.TypeDecl
 
-class AbstractTypeParamDeclBase extends Synth::TAbstractTypeParamDecl, TypeDecl { }
+module Generated {
+  class AbstractTypeParamDecl extends Synth::TAbstractTypeParamDecl, TypeDecl { }
+}

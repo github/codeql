@@ -4,19 +4,21 @@ private import codeql.swift.generated.Raw
 import codeql.swift.elements.Element
 import codeql.swift.elements.decl.GenericTypeParamDecl
 
-class GenericContextBase extends Synth::TGenericContext, Element {
-  GenericTypeParamDecl getImmediateGenericTypeParam(int index) {
-    result =
-      Synth::convertGenericTypeParamDeclFromRaw(Synth::convertGenericContextToRaw(this)
-            .(Raw::GenericContext)
-            .getGenericTypeParam(index))
+module Generated {
+  class GenericContext extends Synth::TGenericContext, Element {
+    GenericTypeParamDecl getImmediateGenericTypeParam(int index) {
+      result =
+        Synth::convertGenericTypeParamDeclFromRaw(Synth::convertGenericContextToRaw(this)
+              .(Raw::GenericContext)
+              .getGenericTypeParam(index))
+    }
+
+    final GenericTypeParamDecl getGenericTypeParam(int index) {
+      result = getImmediateGenericTypeParam(index).resolve()
+    }
+
+    final GenericTypeParamDecl getAGenericTypeParam() { result = getGenericTypeParam(_) }
+
+    final int getNumberOfGenericTypeParams() { result = count(getAGenericTypeParam()) }
   }
-
-  final GenericTypeParamDecl getGenericTypeParam(int index) {
-    result = getImmediateGenericTypeParam(index).resolve()
-  }
-
-  final GenericTypeParamDecl getAGenericTypeParam() { result = getGenericTypeParam(_) }
-
-  final int getNumberOfGenericTypeParams() { result = count(getAGenericTypeParam()) }
 }

@@ -138,8 +138,25 @@ private module Cached {
   cached
   string resolveConstantWrite(ConstantWriteAccess c) { result = resolveConstantWriteAccess(c) }
 
+  /**
+   * Gets a method named `name` that is available in module `m`. This includes methods
+   * that are included/prepended into `m` and methods available on base classes of `m`.
+   */
   cached
   Method lookupMethod(Module m, string name) { TMethod(result) = lookupMethodOrConst(m, name) }
+
+  /**
+   * Gets a method named `name` that is available in a sub class of module `m`. This
+   * includes methods that are included/prepended into any of the sub classes of `m`,
+   * but not methods inherited from base classes.
+   */
+  cached
+  Method lookupMethodInSubClasses(Module m, string name) {
+    exists(Module sub | sub.getSuperClass() = m |
+      TMethod(result) = lookupMethodOrConst0(sub, name) or
+      result = lookupMethodInSubClasses(sub, name)
+    )
+  }
 
   cached
   Expr lookupConst(Module m, string name) {
@@ -394,7 +411,7 @@ private module ResolveImpl {
 
   /**
    * The qualified names of the ancestors of a class/module. The ancestors should be an ordered list
-   * of the ancestores of `prepend`ed modules, the module itself , the ancestors or `include`d modules
+   * of the ancestors of `prepend`ed modules, the module itself , the ancestors or `include`d modules
    * and the ancestors of the super class. The priority value only distinguishes the kind of ancestor,
    * it does not order the ancestors within a group of the same kind. This is an over-approximation, however,
    * computing the precise order is tricky because it depends on the evaluation/file loading order.
@@ -486,12 +503,15 @@ private import ResolveImpl
  * methods evaluate the block in the context of some other module/class instead of
  * the enclosing one.
  */
-private ModuleBase enclosingModule(AstNode node) { result = parent*(node).getParent() }
-
-private AstNode parent(AstNode n) {
-  result = n.getParent() and
-  not result instanceof ModuleBase and
-  not result instanceof Block
+private ModuleBase enclosingModule(AstNode node) {
+  result = node.getParent()
+  or
+  exists(AstNode mid |
+    result = enclosingModule(mid) and
+    mid = node.getParent() and
+    not mid instanceof ModuleBase and
+    not mid instanceof Block
+  )
 }
 
 private Module getAncestors(Module m) {

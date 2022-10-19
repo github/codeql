@@ -463,11 +463,7 @@ module Private {
       c.asSummarizedCallable() = sc and pos = pos_
     }
 
-    Type getTypeImpl() {
-      result = sc.getParameter(pos_).getType()
-      or
-      pos_ = -1 and result = sc.getDeclaringType()
-    }
+    Type getTypeImpl() { result = sc.getParameterType(pos_) }
   }
 }
 

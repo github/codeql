@@ -3,15 +3,17 @@ private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
 import codeql.swift.elements.type.Type
 
-class DynamicSelfTypeBase extends Synth::TDynamicSelfType, Type {
-  override string getAPrimaryQlClass() { result = "DynamicSelfType" }
+module Generated {
+  class DynamicSelfType extends Synth::TDynamicSelfType, Type {
+    override string getAPrimaryQlClass() { result = "DynamicSelfType" }
 
-  Type getImmediateStaticSelfType() {
-    result =
-      Synth::convertTypeFromRaw(Synth::convertDynamicSelfTypeToRaw(this)
-            .(Raw::DynamicSelfType)
-            .getStaticSelfType())
+    Type getImmediateStaticSelfType() {
+      result =
+        Synth::convertTypeFromRaw(Synth::convertDynamicSelfTypeToRaw(this)
+              .(Raw::DynamicSelfType)
+              .getStaticSelfType())
+    }
+
+    final Type getStaticSelfType() { result = getImmediateStaticSelfType().resolve() }
   }
-
-  final Type getStaticSelfType() { result = getImmediateStaticSelfType().resolve() }
 }

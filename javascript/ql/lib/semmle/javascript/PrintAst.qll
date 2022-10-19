@@ -161,7 +161,7 @@ private module PrintJavaScript {
   /**
    * A print node representing an `ASTNode`.
    *
-   * Provides a default implemention that works for some (but not all) ASTNode's.
+   * Provides a default implementation that works for some (but not all) ASTNode's.
    * More specific subclasses can override this class to get more specific behavior.
    *
    * The more specific subclasses are mostly used aggregate the children of the `ASTNode`.

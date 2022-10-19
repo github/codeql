@@ -30,7 +30,7 @@ When the allow list contains only a single host key then the function <code>Fixe
 </recommendation>
 
 <example>
-<p>The following example shows the use of <code>InsecureIgnoreHostKey</code> and an insecure host key callback implemention commonly used in non-production code.</p>
+<p>The following example shows the use of <code>InsecureIgnoreHostKey</code> and an insecure host key callback implementation commonly used in non-production code.</p>
 
 <sample src="InsecureHostKeyCallbackExample.go" />
 

@@ -292,7 +292,7 @@ deprecated predicate duplicateFiles(File f, File other, int percent) {
 }
 
 /**
- * DEPRECATED: Information on duplciate classes is no longer available.
+ * DEPRECATED: Information on duplicate classes is no longer available.
  *
  * Holds if most member functions of `c` (`numDup` out of `total`) are
  * duplicates of member functions in `other`.
@@ -313,7 +313,7 @@ deprecated predicate mostlyDuplicateClassBase(Class c, Class other, int numDup, 
 }
 
 /**
- * DEPRECATED: Information on duplciate classes is no longer available.
+ * DEPRECATED: Information on duplicate classes is no longer available.
  *
  * Holds if most member functions of `c` are duplicates of member functions in
  * `other`. Provides the human-readable `message` to describe the amount of

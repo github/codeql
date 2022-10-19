@@ -22,10 +22,10 @@ def bad1():
 def good1():
     csv_data = request.args.get('csv')
     csvWriter = csv.writer(open("test.csv", "wt"))
-    csvWriter.writerow(santize_for_csv(csv_data))
+    csvWriter.writerow(sanitize_for_csv(csv_data))
     return "good1"
 
-def santize_for_csv(data: str| List[str] | List[List[str]]):
+def sanitize_for_csv(data: str| List[str] | List[List[str]]):
     def sanitize(item):
         return "'" + item
 

@@ -671,7 +671,7 @@ module ClientRequest {
     }
 
     /**
-     * Gets the response type corresponding to `getReponse()` but not
+     * Gets the response type corresponding to `getResponse()` but not
      * for explicitly typed calls like `getResponseJson()`.
      */
     string getAssignedResponseType() {

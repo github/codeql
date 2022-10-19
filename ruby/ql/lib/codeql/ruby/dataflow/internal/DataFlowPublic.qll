@@ -295,34 +295,6 @@ module Content {
     result = getElementContent(e.getConstantValue()).(KnownElementContent).getIndex()
   }
 
-  /** A value in a pair with a known or unknown key. */
-  class PairValueContent extends Content, TPairValueContent { }
-
-  /** A value in a pair with a known key. */
-  class KnownPairValueContent extends PairValueContent, TKnownPairValueContent {
-    private ConstantValue key;
-
-    KnownPairValueContent() { this = TKnownPairValueContent(key) }
-
-    /** Gets the index in the collection. */
-    ConstantValue getIndex() { result = key }
-
-    override string toString() { result = "pair " + key }
-  }
-
-  /** A value in a pair with an unknown key. */
-  class UnknownPairValueContent extends PairValueContent, TUnknownPairValueContent {
-    override string toString() { result = "pair" }
-  }
-
-  /** Gets the content representing a value in a pair corresponding to constant value `cv`. */
-  PairValueContent getPairValueContent(ConstantValue cv) {
-    result = TKnownPairValueContent(cv)
-    or
-    not exists(TKnownPairValueContent(cv)) and
-    result = TUnknownPairValueContent()
-  }
-
   /**
    * A value stored behind a getter/setter pair.
    *
@@ -468,15 +440,24 @@ signature predicate guardChecksSig(CfgNodes::ExprCfgNode g, CfgNode e, boolean b
  * in data flow and taint tracking.
  */
 module BarrierGuard<guardChecksSig/3 guardChecks> {
+  pragma[nomagic]
+  private predicate guardChecksSsaDef(CfgNodes::ExprCfgNode g, boolean branch, Ssa::Definition def) {
+    guardChecks(g, def.getARead(), branch)
+  }
+
+  pragma[nomagic]
+  private predicate guardControlsSsaDef(
+    CfgNodes::ExprCfgNode g, boolean branch, Ssa::Definition def, Node n
+  ) {
+    def.getARead() = n.asExpr() and
+    guardControlsBlock(g, n.asExpr().getBasicBlock(), branch)
+  }
+
   /** Gets a node that is safely guarded by the given guard check. */
   Node getABarrierNode() {
-    exists(
-      CfgNodes::ExprCfgNode g, boolean branch, CfgNodes::ExprCfgNode testedNode, Ssa::Definition def
-    |
-      def.getARead() = testedNode and
-      def.getARead() = result.asExpr() and
-      guardChecks(g, testedNode, branch) and
-      guardControlsBlock(g, result.asExpr().getBasicBlock(), branch)
+    exists(CfgNodes::ExprCfgNode g, boolean branch, Ssa::Definition def |
+      guardChecksSsaDef(g, branch, def) and
+      guardControlsSsaDef(g, branch, def, result)
     )
     or
     result.asExpr() = getAMaybeGuardedCapturedDef().getARead()

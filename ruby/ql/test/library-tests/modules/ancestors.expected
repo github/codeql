@@ -89,22 +89,35 @@ calls.rb:
 #  377| SingletonOverride1
 #-----| super -> Object
 
-#  402| SingletonOverride2
+#  404| SingletonOverride2
 #-----| super -> SingletonOverride1
 
-#  417| ConditionalInstanceMethods
+#  421| ConditionalInstanceMethods
 #-----| super -> Object
 
-#  480| ExtendSingletonMethod
+#  484| ExtendSingletonMethod
 
-#  490| ProtectedMethodInModule
+#  494| ExtendSingletonMethod2
 
-#  496| ProtectedMethods
+#  500| ExtendSingletonMethod3
+
+#  513| ProtectedMethodInModule
+
+#  519| ProtectedMethods
 #-----| super -> Object
 #-----| include -> ProtectedMethodInModule
 
-#  515| ProtectedMethodsSub
+#  538| ProtectedMethodsSub
 #-----| super -> ProtectedMethods
+
+#  552| SingletonUpCall_Base
+#-----| super -> Object
+
+#  556| SingletonUpCall_Sub
+#-----| super -> SingletonUpCall_Base
+
+#  564| SingletonUpCall_SubSub
+#-----| super -> SingletonUpCall_Sub
 
 hello.rb:
 #    1| EnglishWords
@@ -115,6 +128,13 @@ hello.rb:
 
 #   18| HelloWorld
 #-----| super -> Greeting
+
+instance_fields.rb:
+#   11| A_target
+#-----| super -> Object
+
+#   26| B_target
+#-----| super -> Object
 
 modules.rb:
 #    1| Empty
@@ -193,9 +213,6 @@ modules_rec.rb:
 #    1| B::A
 #-----| super -> Object
 
-#    4| A::B
-#-----| super -> Object
-
 private.rb:
 #    1| E
 #-----| super -> Object
@@ -207,3 +224,9 @@ private.rb:
 
 #   96| PrivateOverride2
 #-----| super -> PrivateOverride1
+
+toplevel_self_singleton.rb:
+#    2| A::B
+#-----| super -> Object
+
+#   24| Good

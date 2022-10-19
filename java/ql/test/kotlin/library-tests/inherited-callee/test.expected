@@ -7,4 +7,4 @@
 | Test.kt:24:7:24:15 | equals(...) | equals | Object |
 | Test.kt:25:7:25:16 | hashCode(...) | hashCode | Object |
 | Test.kt:26:7:26:17 | inheritMe(...) | inheritMe | TestKt |
-| Test.kt:28:9:28:35 | inheritedInterfaceMethodK(...) | inheritedInterfaceMethodK | ParentIf |
+| Test.kt:28:9:28:35 | inheritedInterfaceMethodK(...) | inheritedInterfaceMethodK | ParentIfK |

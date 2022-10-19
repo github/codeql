@@ -3,10 +3,9 @@
 private import codeql.ruby.AST
 private import codeql.ruby.ApiGraphs
 private import codeql.ruby.Concepts
-private import codeql.ruby.DataFlow
 private import codeql.ruby.dataflow.FlowSummary
-private import codeql.ruby.dataflow.internal.DataFlowDispatch
 private import codeql.ruby.frameworks.data.ModelsAsData
+private import codeql.ruby.dataflow.internal.DataFlowImplForPathname
 
 /**
  * Modeling of the `Pathname` class from the Ruby standard library.
@@ -27,31 +26,35 @@ module Pathname {
    *
    * Every `PathnameInstance` is considered to be a `FileNameSource`.
    */
-  class PathnameInstance extends FileNameSource, DataFlow::Node {
-    PathnameInstance() { this = pathnameInstance() }
+  class PathnameInstance extends FileNameSource {
+    cached
+    PathnameInstance() { any(PathnameConfiguration c).hasFlowTo(this) }
   }
 
-  private DataFlow::Node pathnameInstance() {
-    // A call to `Pathname.new`.
-    result = API::getTopLevelMember("Pathname").getAnInstantiation()
-    or
-    // Class methods on `Pathname` that return a new `Pathname`.
-    result = API::getTopLevelMember("Pathname").getAMethodCall(["getwd", "pwd",])
-    or
-    // Instance methods on `Pathname` that return a new `Pathname`.
-    exists(DataFlow::CallNode c | result = c |
-      c.getReceiver() = pathnameInstance() and
-      c.getMethodName() =
-        [
-          "+", "/", "basename", "cleanpath", "expand_path", "join", "realpath",
-          "relative_path_from", "sub", "sub_ext", "to_path"
-        ]
-    )
-    or
-    exists(DataFlow::Node inst |
-      inst = pathnameInstance() and
-      inst.(DataFlow::LocalSourceNode).flowsTo(result)
-    )
+  private class PathnameConfiguration extends Configuration {
+    PathnameConfiguration() { this = "PathnameConfiguration" }
+
+    override predicate isSource(DataFlow::Node source) {
+      // A call to `Pathname.new`.
+      source = API::getTopLevelMember("Pathname").getAnInstantiation()
+      or
+      // Class methods on `Pathname` that return a new `Pathname`.
+      source = API::getTopLevelMember("Pathname").getAMethodCall(["getwd", "pwd",])
+    }
+
+    override predicate isSink(DataFlow::Node sink) { any() }
+
+    override predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
+      node2 =
+        any(DataFlow::CallNode c |
+          c.getReceiver() = node1 and
+          c.getMethodName() =
+            [
+              "+", "/", "basename", "cleanpath", "expand_path", "join", "realpath",
+              "relative_path_from", "sub", "sub_ext", "to_path"
+            ]
+        )
+    }
   }
 
   /** A call where the receiver is a `Pathname`. */

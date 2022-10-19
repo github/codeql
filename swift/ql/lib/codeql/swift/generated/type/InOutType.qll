@@ -3,13 +3,17 @@ private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
 import codeql.swift.elements.type.Type
 
-class InOutTypeBase extends Synth::TInOutType, Type {
-  override string getAPrimaryQlClass() { result = "InOutType" }
+module Generated {
+  class InOutType extends Synth::TInOutType, Type {
+    override string getAPrimaryQlClass() { result = "InOutType" }
 
-  Type getImmediateObjectType() {
-    result =
-      Synth::convertTypeFromRaw(Synth::convertInOutTypeToRaw(this).(Raw::InOutType).getObjectType())
+    Type getImmediateObjectType() {
+      result =
+        Synth::convertTypeFromRaw(Synth::convertInOutTypeToRaw(this)
+              .(Raw::InOutType)
+              .getObjectType())
+    }
+
+    final Type getObjectType() { result = getImmediateObjectType().resolve() }
   }
-
-  final Type getObjectType() { result = getImmediateObjectType().resolve() }
 }
