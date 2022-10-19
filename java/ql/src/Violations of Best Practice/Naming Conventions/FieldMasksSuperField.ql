@@ -31,6 +31,6 @@ where
   not exists(VarAccess va | va.getVariable() = masked | va.getQualifier() instanceof SuperAccess) and
   type.fromSource() and
   // Exclude live literal variables, which is generated code.
-  not exists(LiveLiteral l | masking.getInitializer() = l)
+  not masking.getInitializer() instanceof LiveLiteral
 select masking, "This field shadows another field called $@ in a superclass.", masked,
   masked.getName()
