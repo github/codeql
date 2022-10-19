@@ -20,7 +20,7 @@ class SystemSecurityCryptographyClass extends Class {
 }
 
 /** Data flow for `System.Security.Cryptography.AsnEncodedDataCollection`. */
-private class SystemSecurityCryptographyAsnEncondedDataCollectionFlowModelCsv extends SummaryModelCsv {
+private class SystemSecurityCryptographyAsnEncodedDataCollectionFlowModelCsv extends SummaryModelCsv {
   override predicate row(string row) {
     row =
       [
