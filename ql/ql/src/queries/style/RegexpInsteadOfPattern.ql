@@ -33,5 +33,5 @@ where
   c.getArgument(0) = arg and
   arg.getValue().regexpMatch(getALikelyRegExpPattern())
 select c,
-  "Argument \"$@\" looks like a reguar expression, but will be interpreted as a SQL 'LIKE' pattern.",
+  "Argument \"$@\" looks like a regular expression, but will be interpreted as a SQL 'LIKE' pattern.",
   arg, arg.getValue()
