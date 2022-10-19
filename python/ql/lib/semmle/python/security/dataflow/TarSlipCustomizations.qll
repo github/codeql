@@ -38,15 +38,11 @@ module TarSlip {
    *  - `tarfile.TarFile()`
    *  - `MKtarfile.Tarfile.open()`
    */
-  class TarfileOpens extends API::Node {
-    TarfileOpens() {
-      this in [
+  API::Node tarfileOpen() {
+      result in [
           API::moduleImport("tarfile").getMember(["open", "TarFile"]),
           API::moduleImport("tarfile").getMember("TarFile").getASubclass().getMember("open")
         ]
-    }
-
-    override string toString() { result = "TarfileOpens" }
   }
 
   /**
