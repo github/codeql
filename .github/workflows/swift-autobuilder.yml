@@ -1,4 +1,4 @@
-name: "Swift: Run Autobuilder Tests"
+name: "Swift: Build and test Xcode autobuilder"
 
 on:
   pull_request:
@@ -11,7 +11,7 @@ on:
       - main
 
 jobs:
-  integration-tests:
+  autobuilder:
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v3
