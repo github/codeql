@@ -3,7 +3,7 @@
  * @description The `matches` builtin predicate takes a special pattern format as an input, not a regular expression.
  * @kind problem
  * @problem.severity warning
- * @id ql/rexexp-pattern
+ * @id ql/regex-pattern
  * @precision medium
  */
 
