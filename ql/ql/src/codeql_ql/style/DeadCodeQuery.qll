@@ -249,7 +249,7 @@ private AstNode queryable() {
 
 /**
  * Gets an AstNode that does not affect any query result.
- * Is interresting as an quick-eval target to investigate dead code.
+ * Is interesting as an quick-eval target to investigate dead code.
  * (It is intentional that this predicate is a result of this predicate).
  */
 AstNode unQueryable(string msg) {
