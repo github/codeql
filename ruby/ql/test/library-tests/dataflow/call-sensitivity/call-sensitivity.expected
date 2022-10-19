@@ -1,8 +1,4 @@
 failures
-| call_sensitivity.rb:71:10:71:10 | x | Unexpected result: hasValueFlow=22 |
-| call_sensitivity.rb:71:10:71:10 | x | Unexpected result: hasValueFlow=23 |
-| call_sensitivity.rb:71:10:71:10 | x | Unexpected result: hasValueFlow=24 |
-| call_sensitivity.rb:71:10:71:10 | x | Unexpected result: hasValueFlow=25 |
 edges
 | call_sensitivity.rb:9:7:9:13 | call to taint :  | call_sensitivity.rb:9:6:9:14 | ( ... ) |
 | call_sensitivity.rb:9:7:9:13 | call to taint :  | call_sensitivity.rb:9:6:9:14 | ( ... ) |
@@ -70,6 +66,10 @@ edges
 | call_sensitivity.rb:70:30:70:30 | x :  | call_sensitivity.rb:71:10:71:10 | x |
 | call_sensitivity.rb:74:30:74:30 | x :  | call_sensitivity.rb:75:23:75:23 | x :  |
 | call_sensitivity.rb:74:30:74:30 | x :  | call_sensitivity.rb:75:23:75:23 | x :  |
+| call_sensitivity.rb:74:30:74:30 | x :  | call_sensitivity.rb:75:23:75:23 | x :  |
+| call_sensitivity.rb:74:30:74:30 | x :  | call_sensitivity.rb:75:23:75:23 | x :  |
+| call_sensitivity.rb:75:23:75:23 | x :  | call_sensitivity.rb:70:30:70:30 | x :  |
+| call_sensitivity.rb:75:23:75:23 | x :  | call_sensitivity.rb:70:30:70:30 | x :  |
 | call_sensitivity.rb:75:23:75:23 | x :  | call_sensitivity.rb:70:30:70:30 | x :  |
 | call_sensitivity.rb:75:23:75:23 | x :  | call_sensitivity.rb:70:30:70:30 | x :  |
 | call_sensitivity.rb:78:35:78:35 | x :  | call_sensitivity.rb:79:28:79:28 | x :  |
@@ -78,6 +78,10 @@ edges
 | call_sensitivity.rb:79:28:79:28 | x :  | call_sensitivity.rb:74:30:74:30 | x :  |
 | call_sensitivity.rb:82:33:82:33 | y :  | call_sensitivity.rb:83:25:83:25 | y :  |
 | call_sensitivity.rb:82:33:82:33 | y :  | call_sensitivity.rb:83:25:83:25 | y :  |
+| call_sensitivity.rb:82:33:82:33 | y :  | call_sensitivity.rb:83:25:83:25 | y :  |
+| call_sensitivity.rb:82:33:82:33 | y :  | call_sensitivity.rb:83:25:83:25 | y :  |
+| call_sensitivity.rb:83:25:83:25 | y :  | call_sensitivity.rb:70:30:70:30 | x :  |
+| call_sensitivity.rb:83:25:83:25 | y :  | call_sensitivity.rb:70:30:70:30 | x :  |
 | call_sensitivity.rb:83:25:83:25 | y :  | call_sensitivity.rb:70:30:70:30 | x :  |
 | call_sensitivity.rb:83:25:83:25 | y :  | call_sensitivity.rb:70:30:70:30 | x :  |
 | call_sensitivity.rb:86:35:86:35 | x :  | call_sensitivity.rb:87:34:87:34 | x :  |
@@ -100,22 +104,6 @@ edges
 | call_sensitivity.rb:99:24:99:32 | call to taint :  | call_sensitivity.rb:82:33:82:33 | y :  |
 | call_sensitivity.rb:100:26:100:33 | call to taint :  | call_sensitivity.rb:86:35:86:35 | x :  |
 | call_sensitivity.rb:100:26:100:33 | call to taint :  | call_sensitivity.rb:86:35:86:35 | x :  |
-| call_sensitivity.rb:119:35:119:35 | x :  | call_sensitivity.rb:120:28:120:28 | x :  |
-| call_sensitivity.rb:119:35:119:35 | x :  | call_sensitivity.rb:120:28:120:28 | x :  |
-| call_sensitivity.rb:120:28:120:28 | x :  | call_sensitivity.rb:74:30:74:30 | x :  |
-| call_sensitivity.rb:120:28:120:28 | x :  | call_sensitivity.rb:74:30:74:30 | x :  |
-| call_sensitivity.rb:123:35:123:35 | x :  | call_sensitivity.rb:124:34:124:34 | x :  |
-| call_sensitivity.rb:123:35:123:35 | x :  | call_sensitivity.rb:124:34:124:34 | x :  |
-| call_sensitivity.rb:124:34:124:34 | x :  | call_sensitivity.rb:82:33:82:33 | y :  |
-| call_sensitivity.rb:124:34:124:34 | x :  | call_sensitivity.rb:82:33:82:33 | y :  |
-| call_sensitivity.rb:134:21:134:28 | call to taint :  | call_sensitivity.rb:74:30:74:30 | x :  |
-| call_sensitivity.rb:134:21:134:28 | call to taint :  | call_sensitivity.rb:74:30:74:30 | x :  |
-| call_sensitivity.rb:135:26:135:33 | call to taint :  | call_sensitivity.rb:119:35:119:35 | x :  |
-| call_sensitivity.rb:135:26:135:33 | call to taint :  | call_sensitivity.rb:119:35:119:35 | x :  |
-| call_sensitivity.rb:136:24:136:32 | call to taint :  | call_sensitivity.rb:82:33:82:33 | y :  |
-| call_sensitivity.rb:136:24:136:32 | call to taint :  | call_sensitivity.rb:82:33:82:33 | y :  |
-| call_sensitivity.rb:137:26:137:33 | call to taint :  | call_sensitivity.rb:123:35:123:35 | x :  |
-| call_sensitivity.rb:137:26:137:33 | call to taint :  | call_sensitivity.rb:123:35:123:35 | x :  |
 nodes
 | call_sensitivity.rb:9:6:9:14 | ( ... ) | semmle.label | ( ... ) |
 | call_sensitivity.rb:9:6:9:14 | ( ... ) | semmle.label | ( ... ) |
@@ -197,6 +185,10 @@ nodes
 | call_sensitivity.rb:71:10:71:10 | x | semmle.label | x |
 | call_sensitivity.rb:74:30:74:30 | x :  | semmle.label | x :  |
 | call_sensitivity.rb:74:30:74:30 | x :  | semmle.label | x :  |
+| call_sensitivity.rb:74:30:74:30 | x :  | semmle.label | x :  |
+| call_sensitivity.rb:74:30:74:30 | x :  | semmle.label | x :  |
+| call_sensitivity.rb:75:23:75:23 | x :  | semmle.label | x :  |
+| call_sensitivity.rb:75:23:75:23 | x :  | semmle.label | x :  |
 | call_sensitivity.rb:75:23:75:23 | x :  | semmle.label | x :  |
 | call_sensitivity.rb:75:23:75:23 | x :  | semmle.label | x :  |
 | call_sensitivity.rb:78:35:78:35 | x :  | semmle.label | x :  |
@@ -205,6 +197,10 @@ nodes
 | call_sensitivity.rb:79:28:79:28 | x :  | semmle.label | x :  |
 | call_sensitivity.rb:82:33:82:33 | y :  | semmle.label | y :  |
 | call_sensitivity.rb:82:33:82:33 | y :  | semmle.label | y :  |
+| call_sensitivity.rb:82:33:82:33 | y :  | semmle.label | y :  |
+| call_sensitivity.rb:82:33:82:33 | y :  | semmle.label | y :  |
+| call_sensitivity.rb:83:25:83:25 | y :  | semmle.label | y :  |
+| call_sensitivity.rb:83:25:83:25 | y :  | semmle.label | y :  |
 | call_sensitivity.rb:83:25:83:25 | y :  | semmle.label | y :  |
 | call_sensitivity.rb:83:25:83:25 | y :  | semmle.label | y :  |
 | call_sensitivity.rb:86:35:86:35 | x :  | semmle.label | x :  |
@@ -227,22 +223,6 @@ nodes
 | call_sensitivity.rb:99:24:99:32 | call to taint :  | semmle.label | call to taint :  |
 | call_sensitivity.rb:100:26:100:33 | call to taint :  | semmle.label | call to taint :  |
 | call_sensitivity.rb:100:26:100:33 | call to taint :  | semmle.label | call to taint :  |
-| call_sensitivity.rb:119:35:119:35 | x :  | semmle.label | x :  |
-| call_sensitivity.rb:119:35:119:35 | x :  | semmle.label | x :  |
-| call_sensitivity.rb:120:28:120:28 | x :  | semmle.label | x :  |
-| call_sensitivity.rb:120:28:120:28 | x :  | semmle.label | x :  |
-| call_sensitivity.rb:123:35:123:35 | x :  | semmle.label | x :  |
-| call_sensitivity.rb:123:35:123:35 | x :  | semmle.label | x :  |
-| call_sensitivity.rb:124:34:124:34 | x :  | semmle.label | x :  |
-| call_sensitivity.rb:124:34:124:34 | x :  | semmle.label | x :  |
-| call_sensitivity.rb:134:21:134:28 | call to taint :  | semmle.label | call to taint :  |
-| call_sensitivity.rb:134:21:134:28 | call to taint :  | semmle.label | call to taint :  |
-| call_sensitivity.rb:135:26:135:33 | call to taint :  | semmle.label | call to taint :  |
-| call_sensitivity.rb:135:26:135:33 | call to taint :  | semmle.label | call to taint :  |
-| call_sensitivity.rb:136:24:136:32 | call to taint :  | semmle.label | call to taint :  |
-| call_sensitivity.rb:136:24:136:32 | call to taint :  | semmle.label | call to taint :  |
-| call_sensitivity.rb:137:26:137:33 | call to taint :  | semmle.label | call to taint :  |
-| call_sensitivity.rb:137:26:137:33 | call to taint :  | semmle.label | call to taint :  |
 subpaths
 #select
 | call_sensitivity.rb:9:6:9:14 | ( ... ) | call_sensitivity.rb:9:7:9:13 | call to taint :  | call_sensitivity.rb:9:6:9:14 | ( ... ) | $@ | call_sensitivity.rb:9:7:9:13 | call to taint :  | call to taint :  |
@@ -258,18 +238,20 @@ subpaths
 | call_sensitivity.rb:71:10:71:10 | x | call_sensitivity.rb:98:26:98:33 | call to taint :  | call_sensitivity.rb:71:10:71:10 | x | $@ | call_sensitivity.rb:98:26:98:33 | call to taint :  | call to taint :  |
 | call_sensitivity.rb:71:10:71:10 | x | call_sensitivity.rb:99:24:99:32 | call to taint :  | call_sensitivity.rb:71:10:71:10 | x | $@ | call_sensitivity.rb:99:24:99:32 | call to taint :  | call to taint :  |
 | call_sensitivity.rb:71:10:71:10 | x | call_sensitivity.rb:100:26:100:33 | call to taint :  | call_sensitivity.rb:71:10:71:10 | x | $@ | call_sensitivity.rb:100:26:100:33 | call to taint :  | call to taint :  |
-| call_sensitivity.rb:71:10:71:10 | x | call_sensitivity.rb:134:21:134:28 | call to taint :  | call_sensitivity.rb:71:10:71:10 | x | $@ | call_sensitivity.rb:134:21:134:28 | call to taint :  | call to taint :  |
-| call_sensitivity.rb:71:10:71:10 | x | call_sensitivity.rb:135:26:135:33 | call to taint :  | call_sensitivity.rb:71:10:71:10 | x | $@ | call_sensitivity.rb:135:26:135:33 | call to taint :  | call to taint :  |
-| call_sensitivity.rb:71:10:71:10 | x | call_sensitivity.rb:136:24:136:32 | call to taint :  | call_sensitivity.rb:71:10:71:10 | x | $@ | call_sensitivity.rb:136:24:136:32 | call to taint :  | call to taint :  |
-| call_sensitivity.rb:71:10:71:10 | x | call_sensitivity.rb:137:26:137:33 | call to taint :  | call_sensitivity.rb:71:10:71:10 | x | $@ | call_sensitivity.rb:137:26:137:33 | call to taint :  | call to taint :  |
 mayBenefitFromCallContext
 | call_sensitivity.rb:51:5:51:10 | call to sink | call_sensitivity.rb:50:3:52:5 | method1 |
 | call_sensitivity.rb:55:5:55:13 | call to method1 | call_sensitivity.rb:54:3:56:5 | method2 |
 | call_sensitivity.rb:59:5:59:18 | call to method2 | call_sensitivity.rb:58:3:60:5 | call_method2 |
 | call_sensitivity.rb:63:5:63:16 | call to method1 | call_sensitivity.rb:62:3:64:5 | method3 |
 | call_sensitivity.rb:67:5:67:25 | call to method3 | call_sensitivity.rb:66:3:68:5 | call_method3 |
+| call_sensitivity.rb:75:5:75:23 | call to singleton_method1 | call_sensitivity.rb:74:3:76:5 | singleton_method2 |
+| call_sensitivity.rb:79:5:79:28 | call to singleton_method2 | call_sensitivity.rb:78:3:80:5 | call_singleton_method2 |
+| call_sensitivity.rb:83:5:83:26 | call to singleton_method1 | call_sensitivity.rb:82:3:84:5 | singleton_method3 |
+| call_sensitivity.rb:87:5:87:35 | call to singleton_method3 | call_sensitivity.rb:86:3:88:5 | call_singleton_method3 |
 | call_sensitivity.rb:112:5:112:18 | call to method2 | call_sensitivity.rb:111:3:113:5 | call_method2 |
 | call_sensitivity.rb:116:5:116:25 | call to method3 | call_sensitivity.rb:115:3:117:5 | call_method3 |
+| call_sensitivity.rb:120:5:120:28 | call to singleton_method2 | call_sensitivity.rb:119:3:121:5 | call_singleton_method2 |
+| call_sensitivity.rb:124:5:124:35 | call to singleton_method3 | call_sensitivity.rb:123:3:125:5 | call_singleton_method3 |
 viableImplInCallContext
 | call_sensitivity.rb:51:5:51:10 | call to sink | call_sensitivity.rb:55:5:55:13 | call to method1 | call_sensitivity.rb:5:1:7:3 | sink |
 | call_sensitivity.rb:51:5:51:10 | call to sink | call_sensitivity.rb:63:5:63:16 | call to method1 | call_sensitivity.rb:5:1:7:3 | sink |
@@ -288,19 +270,13 @@ viableImplInCallContext
 | call_sensitivity.rb:75:5:75:23 | call to singleton_method1 | call_sensitivity.rb:79:5:79:28 | call to singleton_method2 | call_sensitivity.rb:70:3:72:5 | singleton_method1 |
 | call_sensitivity.rb:75:5:75:23 | call to singleton_method1 | call_sensitivity.rb:79:5:79:28 | call to singleton_method2 | call_sensitivity.rb:107:3:109:5 | singleton_method1 |
 | call_sensitivity.rb:75:5:75:23 | call to singleton_method1 | call_sensitivity.rb:97:1:97:29 | call to singleton_method2 | call_sensitivity.rb:70:3:72:5 | singleton_method1 |
-| call_sensitivity.rb:75:5:75:23 | call to singleton_method1 | call_sensitivity.rb:97:1:97:29 | call to singleton_method2 | call_sensitivity.rb:107:3:109:5 | singleton_method1 |
-| call_sensitivity.rb:75:5:75:23 | call to singleton_method1 | call_sensitivity.rb:120:5:120:28 | call to singleton_method2 | call_sensitivity.rb:70:3:72:5 | singleton_method1 |
 | call_sensitivity.rb:75:5:75:23 | call to singleton_method1 | call_sensitivity.rb:120:5:120:28 | call to singleton_method2 | call_sensitivity.rb:107:3:109:5 | singleton_method1 |
-| call_sensitivity.rb:75:5:75:23 | call to singleton_method1 | call_sensitivity.rb:134:1:134:29 | call to singleton_method2 | call_sensitivity.rb:70:3:72:5 | singleton_method1 |
 | call_sensitivity.rb:75:5:75:23 | call to singleton_method1 | call_sensitivity.rb:134:1:134:29 | call to singleton_method2 | call_sensitivity.rb:107:3:109:5 | singleton_method1 |
 | call_sensitivity.rb:79:5:79:28 | call to singleton_method2 | call_sensitivity.rb:98:1:98:34 | call to call_singleton_method2 | call_sensitivity.rb:74:3:76:5 | singleton_method2 |
 | call_sensitivity.rb:83:5:83:26 | call to singleton_method1 | call_sensitivity.rb:87:5:87:35 | call to singleton_method3 | call_sensitivity.rb:70:3:72:5 | singleton_method1 |
 | call_sensitivity.rb:83:5:83:26 | call to singleton_method1 | call_sensitivity.rb:87:5:87:35 | call to singleton_method3 | call_sensitivity.rb:107:3:109:5 | singleton_method1 |
 | call_sensitivity.rb:83:5:83:26 | call to singleton_method1 | call_sensitivity.rb:99:1:99:33 | call to singleton_method3 | call_sensitivity.rb:70:3:72:5 | singleton_method1 |
-| call_sensitivity.rb:83:5:83:26 | call to singleton_method1 | call_sensitivity.rb:99:1:99:33 | call to singleton_method3 | call_sensitivity.rb:107:3:109:5 | singleton_method1 |
-| call_sensitivity.rb:83:5:83:26 | call to singleton_method1 | call_sensitivity.rb:124:5:124:35 | call to singleton_method3 | call_sensitivity.rb:70:3:72:5 | singleton_method1 |
 | call_sensitivity.rb:83:5:83:26 | call to singleton_method1 | call_sensitivity.rb:124:5:124:35 | call to singleton_method3 | call_sensitivity.rb:107:3:109:5 | singleton_method1 |
-| call_sensitivity.rb:83:5:83:26 | call to singleton_method1 | call_sensitivity.rb:136:1:136:33 | call to singleton_method3 | call_sensitivity.rb:70:3:72:5 | singleton_method1 |
 | call_sensitivity.rb:83:5:83:26 | call to singleton_method1 | call_sensitivity.rb:136:1:136:33 | call to singleton_method3 | call_sensitivity.rb:107:3:109:5 | singleton_method1 |
 | call_sensitivity.rb:87:5:87:35 | call to singleton_method3 | call_sensitivity.rb:100:1:100:34 | call to call_singleton_method3 | call_sensitivity.rb:82:3:84:5 | singleton_method3 |
 | call_sensitivity.rb:112:5:112:18 | call to method2 | call_sensitivity.rb:130:1:130:24 | call to call_method2 | call_sensitivity.rb:54:3:56:5 | method2 |
