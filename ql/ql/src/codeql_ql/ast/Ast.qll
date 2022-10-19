@@ -1009,7 +1009,7 @@ class NewTypeBranch extends TNewTypeBranch, Predicate, TypeDeclaration {
 class Call extends TCall, Expr, Formula {
   /** Gets the `i`th argument of this call. */
   Expr getArgument(int i) {
-    none() // overridden in sublcasses.
+    none() // overridden in subclasses.
   }
 
   /** Gets an argument of this call, if any. */
