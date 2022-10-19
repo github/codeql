@@ -676,7 +676,7 @@ generic_anonymous.kt:
 #    7|           0: [MethodAccess] getMember(...)
 #    7|             -1: [MethodAccess] getX$private(...)
 #    7|               -1: [ThisAccess] this
-#   15|   3: [Class,GenericType,ParameterizedType] Outer
+#   15|   4: [Class,GenericType,ParameterizedType] Outer
 #-----|     -2: (Generic Parameters)
 #   15|       0: [TypeVariable] T0
 #   15|     6: [Constructor] Outer
