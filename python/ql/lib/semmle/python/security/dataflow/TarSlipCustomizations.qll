@@ -127,9 +127,7 @@ module TarSlip {
    */
   class ExtractSink extends Sink {
     ExtractSink() {
-      exists(AllTarfileOpens atfo |
-        this = atfo.getReturn().getMember("extract").getACall().getArg(0)
-      )
+      this = tarfileOpen().getReturn().getMember("extract").getACall().getArg(0)
     }
   }
 
