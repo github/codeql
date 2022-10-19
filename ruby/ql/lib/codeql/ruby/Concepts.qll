@@ -701,6 +701,9 @@ module SystemCommandExecution {
 class CodeExecution extends DataFlow::Node instanceof CodeExecution::Range {
   /** Gets the argument that specifies the code to be executed. */
   DataFlow::Node getCode() { result = super.getCode() }
+
+  /** Holds if this execution immediately runs the input as code, as opposed to loading some code using the input as a "path". */
+  predicate runsImmediately() { super.runsImmediately() }
 }
 
 /** Provides a class for modeling new dynamic code execution APIs. */
@@ -714,6 +717,9 @@ module CodeExecution {
   abstract class Range extends DataFlow::Node {
     /** Gets the argument that specifies the code to be executed. */
     abstract DataFlow::Node getCode();
+
+    /** Holds if this execution immediately runs the input as code, as opposed to loading some code using the input as a "path". */
+    predicate runsImmediately() { any() }
   }
 }
 
