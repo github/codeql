@@ -313,7 +313,7 @@ private predicate definesModule(
     m = TModule(any(Module mod | public = getPublicBool(mod)))
   )
   or
-  // signature module in a paramertized module
+  // signature module in a parameterized module
   exists(Module mod, SignatureExpr sig, TypeRef ty, int i |
     mod = container.asModule() and
     mod.hasParameter(i, name, sig) and
