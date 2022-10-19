@@ -3,9 +3,11 @@ package com.github.codeql.comments
 import com.github.codeql.*
 import com.github.codeql.utils.IrVisitorLookup
 import com.github.codeql.utils.isLocalFunction
-import com.github.codeql.utils.versions.Psi2Ir
+import com.github.codeql.utils.versions.getPsi2Ir
+import com.github.codeql.utils.versions.Psi2IrFacade
 import com.intellij.psi.PsiComment
 import com.intellij.psi.PsiElement
+import org.jetbrains.kotlin.config.KotlinCompilerVersion
 import org.jetbrains.kotlin.ir.IrElement
 import org.jetbrains.kotlin.ir.declarations.*
 import org.jetbrains.kotlin.ir.expressions.IrBody
@@ -21,18 +23,23 @@ import org.jetbrains.kotlin.psi.psiUtil.startOffset
 class CommentExtractor(private val fileExtractor: KotlinFileExtractor, private val file: IrFile, private val fileLabel: Label<out DbFile>) {
     private val tw = fileExtractor.tw
     private val logger = fileExtractor.logger
-    private val psi2Ir = Psi2Ir(logger)
-    private val ktFile = psi2Ir.getKtFile(file)
 
     fun extract() {
+        val psi2Ir = getPsi2Ir(logger)
+        if (psi2Ir == null) {
+            logger.warn("Comments will not be extracted as Kotlin version is too old (${KotlinCompilerVersion.getVersion()})")
+            return
+        }
+        val ktFile = psi2Ir.getKtFile(file)
         if (ktFile == null) {
             logger.warn("Comments are not being processed in ${file.path}.")
-        } else {
-            ktFile.accept(commentVisitor)
+            return
         }
+        val commentVisitor = mkCommentVisitor(psi2Ir)
+        ktFile.accept(commentVisitor)
     }
 
-    private val commentVisitor =
+    private fun mkCommentVisitor(psi2Ir: Psi2IrFacade): KtVisitor<Unit, Unit> =
         object : KtVisitor<Unit, Unit>() {
             override fun visitElement(element: PsiElement) {
                 element.acceptChildren(this)
