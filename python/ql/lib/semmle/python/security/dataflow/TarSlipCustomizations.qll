@@ -107,8 +107,8 @@ module TarSlip {
    * a the `members` argument contains a NameConstant as None, a List or call to the method `getmembers`.
    * Otherwise, the argument of `members` is considered a sink.  
    */
-  class ExtractAllwMembersSink extends Sink {
-    ExtractAllwMembersSink() {
+  class ExtractAllwithMembersSink extends Sink {
+    ExtractAllwithMembersSink() {
       exists(AllTarfileOpens atfo, MethodCallNode call, Node arg |
         call = atfo.getReturn().getMember("extractall").getACall() and
         arg = call.getArgByName("members") and
