@@ -75,7 +75,7 @@ private AstNode alive() {
   or
   result instanceof TopLevel // toplevel is always alive.
   or
-  // recurisve cases
+  // recursive cases
   result = aliveStep(alive())
 }
 
@@ -243,7 +243,7 @@ private AstNode queryable() {
   or
   result instanceof TopLevel // toplevel is always alive.
   or
-  // recurisve cases
+  // recursive cases
   result = aliveStep(queryable())
 }
 
