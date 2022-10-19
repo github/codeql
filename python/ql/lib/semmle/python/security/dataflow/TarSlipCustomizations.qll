@@ -101,9 +101,11 @@ module TarSlip {
   }
 
     /**
-   * A sink capturing method calls to `extractall`.
+   * A sink capturing method calls to `extractall` with `members` arguments.
    *
-   * For a call to `file.extractall` with `members` argument, `file` is considered a sink.
+   * For a call to `file.extractall` with `members` argument, `file` is considered a sink if not
+   * a the `members` argument contains a NameConstant as None, a List or call to the method `getmembers`.
+   * Otherwise, the argument of `members` is considered a sink.  
    */
   class ExtractAllwMembersSink extends Sink {
     ExtractAllwMembersSink() {
