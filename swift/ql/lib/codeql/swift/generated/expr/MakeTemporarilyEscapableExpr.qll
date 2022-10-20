@@ -9,8 +9,9 @@ module Generated {
     override string getAPrimaryQlClass() { result = "MakeTemporarilyEscapableExpr" }
 
     /**
-     * Gets the escaping closure.
-     * This includes nodes from the "hidden" AST and can be used to be overridden by subclasses.
+     * Gets the escaping closure of this make temporarily escapable expression.
+     *
+     * This includes nodes from the "hidden" AST.
      */
     OpaqueValueExpr getImmediateEscapingClosure() {
       result =
@@ -20,13 +21,14 @@ module Generated {
     }
 
     /**
-     * Gets the escaping closure.
+     * Gets the escaping closure of this make temporarily escapable expression.
      */
     final OpaqueValueExpr getEscapingClosure() { result = getImmediateEscapingClosure().resolve() }
 
     /**
-     * Gets the nonescaping closure.
-     * This includes nodes from the "hidden" AST and can be used to be overridden by subclasses.
+     * Gets the nonescaping closure of this make temporarily escapable expression.
+     *
+     * This includes nodes from the "hidden" AST.
      */
     Expr getImmediateNonescapingClosure() {
       result =
@@ -36,13 +38,14 @@ module Generated {
     }
 
     /**
-     * Gets the nonescaping closure.
+     * Gets the nonescaping closure of this make temporarily escapable expression.
      */
     final Expr getNonescapingClosure() { result = getImmediateNonescapingClosure().resolve() }
 
     /**
-     * Gets the sub expr.
-     * This includes nodes from the "hidden" AST and can be used to be overridden by subclasses.
+     * Gets the sub expression of this make temporarily escapable expression.
+     *
+     * This includes nodes from the "hidden" AST.
      */
     Expr getImmediateSubExpr() {
       result =
@@ -52,7 +55,7 @@ module Generated {
     }
 
     /**
-     * Gets the sub expr.
+     * Gets the sub expression of this make temporarily escapable expression.
      */
     final Expr getSubExpr() { result = getImmediateSubExpr().resolve() }
   }

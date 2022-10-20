@@ -9,8 +9,9 @@ module Generated {
     override string getAPrimaryQlClass() { result = "IfConfigDecl" }
 
     /**
-     * Gets the `index`th active element (0-based).
-     * This includes nodes from the "hidden" AST and can be used to be overridden by subclasses.
+     * Gets the `index`th active element of this if config declaration (0-based).
+     *
+     * This includes nodes from the "hidden" AST.
      */
     AstNode getImmediateActiveElement(int index) {
       result =
@@ -20,19 +21,19 @@ module Generated {
     }
 
     /**
-     * Gets the `index`th active element (0-based).
+     * Gets the `index`th active element of this if config declaration (0-based).
      */
     final AstNode getActiveElement(int index) {
       result = getImmediateActiveElement(index).resolve()
     }
 
     /**
-     * Gets any of the active elements.
+     * Gets any of the active elements of this if config declaration.
      */
     final AstNode getAnActiveElement() { result = getActiveElement(_) }
 
     /**
-     * Gets the number of active elements.
+     * Gets the number of active elements of this if config declaration.
      */
     final int getNumberOfActiveElements() { result = count(getAnActiveElement()) }
   }

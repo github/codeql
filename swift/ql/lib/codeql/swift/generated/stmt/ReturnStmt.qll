@@ -9,8 +9,9 @@ module Generated {
     override string getAPrimaryQlClass() { result = "ReturnStmt" }
 
     /**
-     * Gets the result, if it exists.
-     * This includes nodes from the "hidden" AST and can be used to be overridden by subclasses.
+     * Gets the result of this return statement, if it exists.
+     *
+     * This includes nodes from the "hidden" AST.
      */
     Expr getImmediateResult() {
       result =
@@ -18,7 +19,7 @@ module Generated {
     }
 
     /**
-     * Gets the result, if it exists.
+     * Gets the result of this return statement, if it exists.
      */
     final Expr getResult() { result = getImmediateResult().resolve() }
 

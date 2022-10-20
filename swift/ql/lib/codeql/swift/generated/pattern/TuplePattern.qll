@@ -8,8 +8,9 @@ module Generated {
     override string getAPrimaryQlClass() { result = "TuplePattern" }
 
     /**
-     * Gets the `index`th element (0-based).
-     * This includes nodes from the "hidden" AST and can be used to be overridden by subclasses.
+     * Gets the `index`th element of this tuple pattern (0-based).
+     *
+     * This includes nodes from the "hidden" AST.
      */
     Pattern getImmediateElement(int index) {
       result =
@@ -19,17 +20,17 @@ module Generated {
     }
 
     /**
-     * Gets the `index`th element (0-based).
+     * Gets the `index`th element of this tuple pattern (0-based).
      */
     final Pattern getElement(int index) { result = getImmediateElement(index).resolve() }
 
     /**
-     * Gets any of the elements.
+     * Gets any of the elements of this tuple pattern.
      */
     final Pattern getAnElement() { result = getElement(_) }
 
     /**
-     * Gets the number of elements.
+     * Gets the number of elements of this tuple pattern.
      */
     final int getNumberOfElements() { result = count(getAnElement()) }
   }

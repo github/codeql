@@ -9,8 +9,9 @@ module Generated {
     override string getAPrimaryQlClass() { result = "TypeExpr" }
 
     /**
-     * Gets the type repr, if it exists.
-     * This includes nodes from the "hidden" AST and can be used to be overridden by subclasses.
+     * Gets the type representation of this type expression, if it exists.
+     *
+     * This includes nodes from the "hidden" AST.
      */
     TypeRepr getImmediateTypeRepr() {
       result =
@@ -20,7 +21,7 @@ module Generated {
     }
 
     /**
-     * Gets the type repr, if it exists.
+     * Gets the type representation of this type expression, if it exists.
      */
     final TypeRepr getTypeRepr() { result = getImmediateTypeRepr().resolve() }
 

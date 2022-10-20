@@ -8,7 +8,7 @@ module Generated {
     override string getAPrimaryQlClass() { result = "BuiltinIntegerType" }
 
     /**
-     * Gets the width, if it exists.
+     * Gets the width of this builtin integer type, if it exists.
      */
     int getWidth() {
       result = Synth::convertBuiltinIntegerTypeToRaw(this).(Raw::BuiltinIntegerType).getWidth()

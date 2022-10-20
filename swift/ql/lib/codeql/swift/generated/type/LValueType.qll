@@ -8,8 +8,9 @@ module Generated {
     override string getAPrimaryQlClass() { result = "LValueType" }
 
     /**
-     * Gets the object type.
-     * This includes nodes from the "hidden" AST and can be used to be overridden by subclasses.
+     * Gets the object type of this l value type.
+     *
+     * This includes nodes from the "hidden" AST.
      */
     Type getImmediateObjectType() {
       result =
@@ -19,7 +20,7 @@ module Generated {
     }
 
     /**
-     * Gets the object type.
+     * Gets the object type of this l value type.
      */
     final Type getObjectType() { result = getImmediateObjectType().resolve() }
   }

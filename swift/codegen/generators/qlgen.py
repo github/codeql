@@ -55,9 +55,49 @@ class NoClasses(Error):
     pass
 
 
-def _humanize(s):
+abbreviations = {
+    "expr": "expression",
+    "arg": "argument",
+    "stmt": "statement",
+    "decl": "declaration",
+    "repr": "representation",
+    "param": "parameter",
+}
+
+abbreviations.update({f"{k}s": f"{v}s" for k, v in abbreviations.items()})
+
+_abbreviations_re = re.compile("|".join(fr"\b{abbr}\b" for abbr in abbreviations))
+
+
+def _humanize(s: str) -> str:
     ret = inflection.humanize(s)
-    return re.sub(r"^\w", lambda m: m[0].lower(), ret)
+    ret = ret[0].lower() + ret[1:]
+    ret = _abbreviations_re.sub(lambda m: abbreviations[m[0]], ret)
+    return ret
+
+
+_format_re = re.compile(r"\{(\w+)\}")
+
+
+def _get_doc(cls: schema.Class, prop: schema.Property, plural=None):
+    if prop.doc:
+        if plural is None:
+            # for consistency, ignore format in non repeated properties
+            return _format_re.sub(lambda m: m[1], prop.doc)
+        format = prop.doc
+        nouns = [m[1] for m in _format_re.finditer(prop.doc)]
+        if not nouns:
+            noun, _, rest = prop.doc.partition(" ")
+            format = f"{{{noun}}} {rest}"
+            nouns = [noun]
+        transform = inflection.pluralize if plural else inflection.singularize
+        return format.format(**{noun: transform(noun) for noun in nouns})
+
+    prop_name = _humanize(prop.name)
+    class_name = _humanize(inflection.underscore(cls.name))
+    if plural is not None:
+        prop_name = inflection.pluralize(prop_name) if plural else inflection.singularize(prop_name)
+    return f"{prop_name} of this {class_name}"
 
 
 def get_ql_property(cls: schema.Class, prop: schema.Property, prev_child: str = "") -> ql.Property:
@@ -67,14 +107,14 @@ def get_ql_property(cls: schema.Class, prop: schema.Property, prev_child: str = 
         prev_child=prev_child if prop.is_child else None,
         is_optional=prop.is_optional,
         is_predicate=prop.is_predicate,
-        description=prop.description,
+        description=prop.description
     )
     if prop.is_single:
         args.update(
             singular=inflection.camelize(prop.name),
             tablename=inflection.tableize(cls.name),
             tableparams=["this"] + ["result" if p is prop else "_" for p in cls.properties if p.is_single],
-            doc=_humanize(prop.doc or prop.name),
+            doc=_get_doc(cls, prop),
         )
     elif prop.is_repeated:
         args.update(
@@ -82,15 +122,15 @@ def get_ql_property(cls: schema.Class, prop: schema.Property, prev_child: str = 
             plural=inflection.pluralize(inflection.camelize(prop.name)),
             tablename=inflection.tableize(f"{cls.name}_{prop.name}"),
             tableparams=["this", "index", "result"],
-            doc=_humanize(inflection.singularize(prop.doc or prop.name)),
-            doc_plural=_humanize(inflection.pluralize(prop.doc or prop.name))
+            doc=_get_doc(cls, prop, plural=False),
+            doc_plural=_get_doc(cls, prop, plural=True),
         )
     elif prop.is_optional:
         args.update(
             singular=inflection.camelize(prop.name),
             tablename=inflection.tableize(f"{cls.name}_{prop.name}"),
             tableparams=["this", "result"],
-            doc=_humanize(prop.doc or prop.name),
+            doc=_get_doc(cls, prop),
         )
     elif prop.is_predicate:
         args.update(

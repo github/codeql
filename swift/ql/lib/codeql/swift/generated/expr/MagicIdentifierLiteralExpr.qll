@@ -8,7 +8,7 @@ module Generated {
     override string getAPrimaryQlClass() { result = "MagicIdentifierLiteralExpr" }
 
     /**
-     * Gets the kind.
+     * Gets the kind of this magic identifier literal expression.
      */
     string getKind() {
       result =

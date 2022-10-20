@@ -9,8 +9,9 @@ module Generated {
     override string getAPrimaryQlClass() { result = "ParenType" }
 
     /**
-     * Gets the type.
-     * This includes nodes from the "hidden" AST and can be used to be overridden by subclasses.
+     * Gets the type of this paren type.
+     *
+     * This includes nodes from the "hidden" AST.
      */
     Type getImmediateType() {
       result =
@@ -18,7 +19,7 @@ module Generated {
     }
 
     /**
-     * Gets the type.
+     * Gets the type of this paren type.
      */
     final Type getType() { result = getImmediateType().resolve() }
   }

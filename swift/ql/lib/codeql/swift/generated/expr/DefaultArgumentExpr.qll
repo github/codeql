@@ -9,8 +9,9 @@ module Generated {
     override string getAPrimaryQlClass() { result = "DefaultArgumentExpr" }
 
     /**
-     * Gets the param decl.
-     * This includes nodes from the "hidden" AST and can be used to be overridden by subclasses.
+     * Gets the parameter declaration of this default argument expression.
+     *
+     * This includes nodes from the "hidden" AST.
      */
     ParamDecl getImmediateParamDecl() {
       result =
@@ -20,12 +21,12 @@ module Generated {
     }
 
     /**
-     * Gets the param decl.
+     * Gets the parameter declaration of this default argument expression.
      */
     final ParamDecl getParamDecl() { result = getImmediateParamDecl().resolve() }
 
     /**
-     * Gets the param index.
+     * Gets the parameter index of this default argument expression.
      */
     int getParamIndex() {
       result =
@@ -33,8 +34,9 @@ module Generated {
     }
 
     /**
-     * Gets the caller side default, if it exists.
-     * This includes nodes from the "hidden" AST and can be used to be overridden by subclasses.
+     * Gets the caller side default of this default argument expression, if it exists.
+     *
+     * This includes nodes from the "hidden" AST.
      */
     Expr getImmediateCallerSideDefault() {
       result =
@@ -44,7 +46,7 @@ module Generated {
     }
 
     /**
-     * Gets the caller side default, if it exists.
+     * Gets the caller side default of this default argument expression, if it exists.
      */
     final Expr getCallerSideDefault() { result = getImmediateCallerSideDefault().resolve() }
 

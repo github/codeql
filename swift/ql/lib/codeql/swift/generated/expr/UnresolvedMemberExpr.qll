@@ -9,7 +9,7 @@ module Generated {
     override string getAPrimaryQlClass() { result = "UnresolvedMemberExpr" }
 
     /**
-     * Gets the name.
+     * Gets the name of this unresolved member expression.
      */
     string getName() {
       result = Synth::convertUnresolvedMemberExprToRaw(this).(Raw::UnresolvedMemberExpr).getName()

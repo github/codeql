@@ -7,8 +7,9 @@ import codeql.swift.elements.type.Type
 module Generated {
   class UnarySyntaxSugarType extends Synth::TUnarySyntaxSugarType, SyntaxSugarType {
     /**
-     * Gets the base type.
-     * This includes nodes from the "hidden" AST and can be used to be overridden by subclasses.
+     * Gets the base type of this unary syntax sugar type.
+     *
+     * This includes nodes from the "hidden" AST.
      */
     Type getImmediateBaseType() {
       result =
@@ -18,7 +19,7 @@ module Generated {
     }
 
     /**
-     * Gets the base type.
+     * Gets the base type of this unary syntax sugar type.
      */
     final Type getBaseType() { result = getImmediateBaseType().resolve() }
   }

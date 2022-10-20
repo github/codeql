@@ -9,8 +9,9 @@ module Generated {
     override string getAPrimaryQlClass() { result = "StmtCondition" }
 
     /**
-     * Gets the `index`th element (0-based).
-     * This includes nodes from the "hidden" AST and can be used to be overridden by subclasses.
+     * Gets the `index`th element of this statement condition (0-based).
+     *
+     * This includes nodes from the "hidden" AST.
      */
     ConditionElement getImmediateElement(int index) {
       result =
@@ -20,17 +21,17 @@ module Generated {
     }
 
     /**
-     * Gets the `index`th element (0-based).
+     * Gets the `index`th element of this statement condition (0-based).
      */
     final ConditionElement getElement(int index) { result = getImmediateElement(index).resolve() }
 
     /**
-     * Gets any of the elements.
+     * Gets any of the elements of this statement condition.
      */
     final ConditionElement getAnElement() { result = getElement(_) }
 
     /**
-     * Gets the number of elements.
+     * Gets the number of elements of this statement condition.
      */
     final int getNumberOfElements() { result = count(getAnElement()) }
   }

@@ -7,8 +7,9 @@ import codeql.swift.elements.type.Type
 module Generated {
   class BoundGenericType extends Synth::TBoundGenericType, NominalOrBoundGenericNominalType {
     /**
-     * Gets the `index`th arg type (0-based).
-     * This includes nodes from the "hidden" AST and can be used to be overridden by subclasses.
+     * Gets the `index`th argument type of this bound generic type (0-based).
+     *
+     * This includes nodes from the "hidden" AST.
      */
     Type getImmediateArgType(int index) {
       result =
@@ -18,17 +19,17 @@ module Generated {
     }
 
     /**
-     * Gets the `index`th arg type (0-based).
+     * Gets the `index`th argument type of this bound generic type (0-based).
      */
     final Type getArgType(int index) { result = getImmediateArgType(index).resolve() }
 
     /**
-     * Gets any of the arg types.
+     * Gets any of the argument types of this bound generic type.
      */
     final Type getAnArgType() { result = getArgType(_) }
 
     /**
-     * Gets the number of arg types.
+     * Gets the number of argument types of this bound generic type.
      */
     final int getNumberOfArgTypes() { result = count(getAnArgType()) }
   }

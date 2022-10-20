@@ -9,8 +9,9 @@ module Generated {
     override string getAPrimaryQlClass() { result = "GuardStmt" }
 
     /**
-     * Gets the body.
-     * This includes nodes from the "hidden" AST and can be used to be overridden by subclasses.
+     * Gets the body of this guard statement.
+     *
+     * This includes nodes from the "hidden" AST.
      */
     BraceStmt getImmediateBody() {
       result =
@@ -18,7 +19,7 @@ module Generated {
     }
 
     /**
-     * Gets the body.
+     * Gets the body of this guard statement.
      */
     final BraceStmt getBody() { result = getImmediateBody().resolve() }
   }

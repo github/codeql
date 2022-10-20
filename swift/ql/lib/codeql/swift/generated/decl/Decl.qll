@@ -7,8 +7,9 @@ import codeql.swift.elements.decl.ModuleDecl
 module Generated {
   class Decl extends Synth::TDecl, AstNode {
     /**
-     * Gets the module.
-     * This includes nodes from the "hidden" AST and can be used to be overridden by subclasses.
+     * Gets the module of this declaration.
+     *
+     * This includes nodes from the "hidden" AST.
      */
     ModuleDecl getImmediateModule() {
       result =
@@ -16,7 +17,7 @@ module Generated {
     }
 
     /**
-     * Gets the module.
+     * Gets the module of this declaration.
      */
     final ModuleDecl getModule() { result = getImmediateModule().resolve() }
   }

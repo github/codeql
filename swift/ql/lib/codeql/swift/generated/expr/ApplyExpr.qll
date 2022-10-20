@@ -7,8 +7,9 @@ import codeql.swift.elements.expr.Expr
 module Generated {
   class ApplyExpr extends Synth::TApplyExpr, Expr {
     /**
-     * Gets the function.
-     * This includes nodes from the "hidden" AST and can be used to be overridden by subclasses.
+     * Gets the function being applied.
+     *
+     * This includes nodes from the "hidden" AST.
      */
     Expr getImmediateFunction() {
       result =
@@ -16,13 +17,14 @@ module Generated {
     }
 
     /**
-     * Gets the function.
+     * Gets the function being applied.
      */
     final Expr getFunction() { result = getImmediateFunction().resolve() }
 
     /**
-     * Gets the `index`th argument (0-based).
-     * This includes nodes from the "hidden" AST and can be used to be overridden by subclasses.
+     * Gets the `index`th argument passed to the applied function (0-based).
+     *
+     * This includes nodes from the "hidden" AST.
      */
     Argument getImmediateArgument(int index) {
       result =
@@ -32,17 +34,17 @@ module Generated {
     }
 
     /**
-     * Gets the `index`th argument (0-based).
+     * Gets the `index`th argument passed to the applied function (0-based).
      */
     final Argument getArgument(int index) { result = getImmediateArgument(index).resolve() }
 
     /**
-     * Gets any of the arguments.
+     * Gets any of the arguments passed to the applied function.
      */
     final Argument getAnArgument() { result = getArgument(_) }
 
     /**
-     * Gets the number of arguments.
+     * Gets the number of arguments passed to the applied function.
      */
     final int getNumberOfArguments() { result = count(getAnArgument()) }
   }

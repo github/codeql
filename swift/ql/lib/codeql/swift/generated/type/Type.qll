@@ -6,13 +6,14 @@ import codeql.swift.elements.Element
 module Generated {
   class Type extends Synth::TType, Element {
     /**
-     * Gets the name.
+     * Gets the name of this type.
      */
     string getName() { result = Synth::convertTypeToRaw(this).(Raw::Type).getName() }
 
     /**
-     * Gets the canonical type.
-     * This includes nodes from the "hidden" AST and can be used to be overridden by subclasses.
+     * Gets the canonical type of this type.
+     *
+     * This includes nodes from the "hidden" AST.
      */
     Type getImmediateCanonicalType() {
       result =
@@ -20,7 +21,7 @@ module Generated {
     }
 
     /**
-     * Gets the canonical type.
+     * Gets the canonical type of this type.
      */
     final Type getCanonicalType() { result = getImmediateCanonicalType().resolve() }
   }

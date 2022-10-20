@@ -8,8 +8,9 @@ module Generated {
     override string getAPrimaryQlClass() { result = "OptionalEvaluationExpr" }
 
     /**
-     * Gets the sub expr.
-     * This includes nodes from the "hidden" AST and can be used to be overridden by subclasses.
+     * Gets the sub expression of this optional evaluation expression.
+     *
+     * This includes nodes from the "hidden" AST.
      */
     Expr getImmediateSubExpr() {
       result =
@@ -19,7 +20,7 @@ module Generated {
     }
 
     /**
-     * Gets the sub expr.
+     * Gets the sub expression of this optional evaluation expression.
      */
     final Expr getSubExpr() { result = getImmediateSubExpr().resolve() }
   }

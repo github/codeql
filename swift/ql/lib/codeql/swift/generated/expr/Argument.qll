@@ -9,13 +9,14 @@ module Generated {
     override string getAPrimaryQlClass() { result = "Argument" }
 
     /**
-     * Gets the label.
+     * Gets the label of this argument.
      */
     string getLabel() { result = Synth::convertArgumentToRaw(this).(Raw::Argument).getLabel() }
 
     /**
-     * Gets the expr.
-     * This includes nodes from the "hidden" AST and can be used to be overridden by subclasses.
+     * Gets the expression of this argument.
+     *
+     * This includes nodes from the "hidden" AST.
      */
     Expr getImmediateExpr() {
       result =
@@ -23,7 +24,7 @@ module Generated {
     }
 
     /**
-     * Gets the expr.
+     * Gets the expression of this argument.
      */
     final Expr getExpr() { result = getImmediateExpr().resolve() }
   }

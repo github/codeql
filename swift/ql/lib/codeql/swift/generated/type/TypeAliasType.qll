@@ -9,8 +9,9 @@ module Generated {
     override string getAPrimaryQlClass() { result = "TypeAliasType" }
 
     /**
-     * Gets the decl.
-     * This includes nodes from the "hidden" AST and can be used to be overridden by subclasses.
+     * Gets the declaration of this type alias type.
+     *
+     * This includes nodes from the "hidden" AST.
      */
     TypeAliasDecl getImmediateDecl() {
       result =
@@ -20,7 +21,7 @@ module Generated {
     }
 
     /**
-     * Gets the decl.
+     * Gets the declaration of this type alias type.
      */
     final TypeAliasDecl getDecl() { result = getImmediateDecl().resolve() }
   }

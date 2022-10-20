@@ -9,8 +9,9 @@ module Generated {
     override string getAPrimaryQlClass() { result = "FallthroughStmt" }
 
     /**
-     * Gets the fallthrough source.
-     * This includes nodes from the "hidden" AST and can be used to be overridden by subclasses.
+     * Gets the fallthrough source of this fallthrough statement.
+     *
+     * This includes nodes from the "hidden" AST.
      */
     CaseStmt getImmediateFallthroughSource() {
       result =
@@ -20,13 +21,14 @@ module Generated {
     }
 
     /**
-     * Gets the fallthrough source.
+     * Gets the fallthrough source of this fallthrough statement.
      */
     final CaseStmt getFallthroughSource() { result = getImmediateFallthroughSource().resolve() }
 
     /**
-     * Gets the fallthrough dest.
-     * This includes nodes from the "hidden" AST and can be used to be overridden by subclasses.
+     * Gets the fallthrough dest of this fallthrough statement.
+     *
+     * This includes nodes from the "hidden" AST.
      */
     CaseStmt getImmediateFallthroughDest() {
       result =
@@ -36,7 +38,7 @@ module Generated {
     }
 
     /**
-     * Gets the fallthrough dest.
+     * Gets the fallthrough dest of this fallthrough statement.
      */
     final CaseStmt getFallthroughDest() { result = getImmediateFallthroughDest().resolve() }
   }

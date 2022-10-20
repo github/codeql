@@ -8,8 +8,9 @@ import codeql.swift.elements.type.Type
 module Generated {
   class NominalTypeDecl extends Synth::TNominalTypeDecl, GenericTypeDecl, IterableDeclContext {
     /**
-     * Gets the type.
-     * This includes nodes from the "hidden" AST and can be used to be overridden by subclasses.
+     * Gets the type of this nominal type declaration.
+     *
+     * This includes nodes from the "hidden" AST.
      */
     Type getImmediateType() {
       result =
@@ -19,7 +20,7 @@ module Generated {
     }
 
     /**
-     * Gets the type.
+     * Gets the type of this nominal type declaration.
      */
     final Type getType() { result = getImmediateType().resolve() }
   }

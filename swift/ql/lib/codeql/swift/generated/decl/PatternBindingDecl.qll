@@ -10,8 +10,9 @@ module Generated {
     override string getAPrimaryQlClass() { result = "PatternBindingDecl" }
 
     /**
-     * Gets the `index`th init (0-based), if it exists.
-     * This includes nodes from the "hidden" AST and can be used to be overridden by subclasses.
+     * Gets the `index`th init of this pattern binding declaration (0-based), if it exists.
+     *
+     * This includes nodes from the "hidden" AST.
      */
     Expr getImmediateInit(int index) {
       result =
@@ -21,7 +22,7 @@ module Generated {
     }
 
     /**
-     * Gets the `index`th init (0-based), if it exists.
+     * Gets the `index`th init of this pattern binding declaration (0-based), if it exists.
      */
     final Expr getInit(int index) { result = getImmediateInit(index).resolve() }
 
@@ -31,13 +32,14 @@ module Generated {
     final predicate hasInit(int index) { exists(getInit(index)) }
 
     /**
-     * Gets any of the inits.
+     * Gets any of the inits of this pattern binding declaration.
      */
     final Expr getAnInit() { result = getInit(_) }
 
     /**
-     * Gets the `index`th pattern (0-based).
-     * This includes nodes from the "hidden" AST and can be used to be overridden by subclasses.
+     * Gets the `index`th pattern of this pattern binding declaration (0-based).
+     *
+     * This includes nodes from the "hidden" AST.
      */
     Pattern getImmediatePattern(int index) {
       result =
@@ -47,17 +49,17 @@ module Generated {
     }
 
     /**
-     * Gets the `index`th pattern (0-based).
+     * Gets the `index`th pattern of this pattern binding declaration (0-based).
      */
     final Pattern getPattern(int index) { result = getImmediatePattern(index).resolve() }
 
     /**
-     * Gets any of the patterns.
+     * Gets any of the patterns of this pattern binding declaration.
      */
     final Pattern getAPattern() { result = getPattern(_) }
 
     /**
-     * Gets the number of patterns.
+     * Gets the number of patterns of this pattern binding declaration.
      */
     final int getNumberOfPatterns() { result = count(getAPattern()) }
   }

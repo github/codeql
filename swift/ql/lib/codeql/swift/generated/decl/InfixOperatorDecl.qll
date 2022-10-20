@@ -9,8 +9,9 @@ module Generated {
     override string getAPrimaryQlClass() { result = "InfixOperatorDecl" }
 
     /**
-     * Gets the precedence group, if it exists.
-     * This includes nodes from the "hidden" AST and can be used to be overridden by subclasses.
+     * Gets the precedence group of this infix operator declaration, if it exists.
+     *
+     * This includes nodes from the "hidden" AST.
      */
     PrecedenceGroupDecl getImmediatePrecedenceGroup() {
       result =
@@ -20,7 +21,7 @@ module Generated {
     }
 
     /**
-     * Gets the precedence group, if it exists.
+     * Gets the precedence group of this infix operator declaration, if it exists.
      */
     final PrecedenceGroupDecl getPrecedenceGroup() {
       result = getImmediatePrecedenceGroup().resolve()

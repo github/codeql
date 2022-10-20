@@ -7,8 +7,9 @@ import codeql.swift.elements.expr.Expr
 module Generated {
   class LookupExpr extends Synth::TLookupExpr, Expr {
     /**
-     * Gets the base.
-     * This includes nodes from the "hidden" AST and can be used to be overridden by subclasses.
+     * Gets the base of this lookup expression.
+     *
+     * This includes nodes from the "hidden" AST.
      */
     Expr getImmediateBase() {
       result =
@@ -16,13 +17,14 @@ module Generated {
     }
 
     /**
-     * Gets the base.
+     * Gets the base of this lookup expression.
      */
     final Expr getBase() { result = getImmediateBase().resolve() }
 
     /**
-     * Gets the member, if it exists.
-     * This includes nodes from the "hidden" AST and can be used to be overridden by subclasses.
+     * Gets the member of this lookup expression, if it exists.
+     *
+     * This includes nodes from the "hidden" AST.
      */
     Decl getImmediateMember() {
       result =
@@ -30,7 +32,7 @@ module Generated {
     }
 
     /**
-     * Gets the member, if it exists.
+     * Gets the member of this lookup expression, if it exists.
      */
     final Decl getMember() { result = getImmediateMember().resolve() }
 

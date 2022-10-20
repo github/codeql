@@ -8,7 +8,7 @@ module Generated {
     override string getAPrimaryQlClass() { result = "ContinueStmt" }
 
     /**
-     * Gets the target name, if it exists.
+     * Gets the target name of this continue statement, if it exists.
      */
     string getTargetName() {
       result = Synth::convertContinueStmtToRaw(this).(Raw::ContinueStmt).getTargetName()
@@ -20,8 +20,9 @@ module Generated {
     final predicate hasTargetName() { exists(getTargetName()) }
 
     /**
-     * Gets the target, if it exists.
-     * This includes nodes from the "hidden" AST and can be used to be overridden by subclasses.
+     * Gets the target of this continue statement, if it exists.
+     *
+     * This includes nodes from the "hidden" AST.
      */
     Stmt getImmediateTarget() {
       result =
@@ -31,7 +32,7 @@ module Generated {
     }
 
     /**
-     * Gets the target, if it exists.
+     * Gets the target of this continue statement, if it exists.
      */
     final Stmt getTarget() { result = getImmediateTarget().resolve() }
 

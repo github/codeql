@@ -9,8 +9,9 @@ module Generated {
     override string getAPrimaryQlClass() { result = "TypedPattern" }
 
     /**
-     * Gets the sub pattern.
-     * This includes nodes from the "hidden" AST and can be used to be overridden by subclasses.
+     * Gets the sub pattern of this typed pattern.
+     *
+     * This includes nodes from the "hidden" AST.
      */
     Pattern getImmediateSubPattern() {
       result =
@@ -20,13 +21,14 @@ module Generated {
     }
 
     /**
-     * Gets the sub pattern.
+     * Gets the sub pattern of this typed pattern.
      */
     final Pattern getSubPattern() { result = getImmediateSubPattern().resolve() }
 
     /**
-     * Gets the type repr, if it exists.
-     * This includes nodes from the "hidden" AST and can be used to be overridden by subclasses.
+     * Gets the type representation of this typed pattern, if it exists.
+     *
+     * This includes nodes from the "hidden" AST.
      */
     TypeRepr getImmediateTypeRepr() {
       result =
@@ -36,7 +38,7 @@ module Generated {
     }
 
     /**
-     * Gets the type repr, if it exists.
+     * Gets the type representation of this typed pattern, if it exists.
      */
     final TypeRepr getTypeRepr() { result = getImmediateTypeRepr().resolve() }
 

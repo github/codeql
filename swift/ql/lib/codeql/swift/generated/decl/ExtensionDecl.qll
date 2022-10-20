@@ -11,8 +11,9 @@ module Generated {
     override string getAPrimaryQlClass() { result = "ExtensionDecl" }
 
     /**
-     * Gets the extended type decl.
-     * This includes nodes from the "hidden" AST and can be used to be overridden by subclasses.
+     * Gets the extended type declaration of this extension declaration.
+     *
+     * This includes nodes from the "hidden" AST.
      */
     NominalTypeDecl getImmediateExtendedTypeDecl() {
       result =
@@ -22,7 +23,7 @@ module Generated {
     }
 
     /**
-     * Gets the extended type decl.
+     * Gets the extended type declaration of this extension declaration.
      */
     final NominalTypeDecl getExtendedTypeDecl() {
       result = getImmediateExtendedTypeDecl().resolve()

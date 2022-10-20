@@ -8,8 +8,9 @@ module Generated {
     override string getAPrimaryQlClass() { result = "IfExpr" }
 
     /**
-     * Gets the condition.
-     * This includes nodes from the "hidden" AST and can be used to be overridden by subclasses.
+     * Gets the condition of this if expression.
+     *
+     * This includes nodes from the "hidden" AST.
      */
     Expr getImmediateCondition() {
       result =
@@ -17,13 +18,14 @@ module Generated {
     }
 
     /**
-     * Gets the condition.
+     * Gets the condition of this if expression.
      */
     final Expr getCondition() { result = getImmediateCondition().resolve() }
 
     /**
-     * Gets the then expr.
-     * This includes nodes from the "hidden" AST and can be used to be overridden by subclasses.
+     * Gets the then expression of this if expression.
+     *
+     * This includes nodes from the "hidden" AST.
      */
     Expr getImmediateThenExpr() {
       result =
@@ -31,13 +33,14 @@ module Generated {
     }
 
     /**
-     * Gets the then expr.
+     * Gets the then expression of this if expression.
      */
     final Expr getThenExpr() { result = getImmediateThenExpr().resolve() }
 
     /**
-     * Gets the else expr.
-     * This includes nodes from the "hidden" AST and can be used to be overridden by subclasses.
+     * Gets the else expression of this if expression.
+     *
+     * This includes nodes from the "hidden" AST.
      */
     Expr getImmediateElseExpr() {
       result =
@@ -45,7 +48,7 @@ module Generated {
     }
 
     /**
-     * Gets the else expr.
+     * Gets the else expression of this if expression.
      */
     final Expr getElseExpr() { result = getImmediateElseExpr().resolve() }
   }

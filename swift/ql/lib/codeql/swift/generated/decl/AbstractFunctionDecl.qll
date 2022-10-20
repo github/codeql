@@ -9,7 +9,7 @@ module Generated {
   class AbstractFunctionDecl extends Synth::TAbstractFunctionDecl, GenericContext, ValueDecl,
     Callable {
     /**
-     * Gets the name.
+     * Gets the name of this function.
      */
     string getName() {
       result = Synth::convertAbstractFunctionDeclToRaw(this).(Raw::AbstractFunctionDecl).getName()

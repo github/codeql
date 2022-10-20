@@ -9,8 +9,9 @@ module Generated {
     override string getAPrimaryQlClass() { result = "WhileStmt" }
 
     /**
-     * Gets the body.
-     * This includes nodes from the "hidden" AST and can be used to be overridden by subclasses.
+     * Gets the body of this while statement.
+     *
+     * This includes nodes from the "hidden" AST.
      */
     Stmt getImmediateBody() {
       result =
@@ -18,7 +19,7 @@ module Generated {
     }
 
     /**
-     * Gets the body.
+     * Gets the body of this while statement.
      */
     final Stmt getBody() { result = getImmediateBody().resolve() }
   }

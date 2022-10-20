@@ -10,8 +10,9 @@ module Generated {
     override string getAPrimaryQlClass() { result = "CaseLabelItem" }
 
     /**
-     * Gets the pattern.
-     * This includes nodes from the "hidden" AST and can be used to be overridden by subclasses.
+     * Gets the pattern of this case label item.
+     *
+     * This includes nodes from the "hidden" AST.
      */
     Pattern getImmediatePattern() {
       result =
@@ -21,13 +22,14 @@ module Generated {
     }
 
     /**
-     * Gets the pattern.
+     * Gets the pattern of this case label item.
      */
     final Pattern getPattern() { result = getImmediatePattern().resolve() }
 
     /**
-     * Gets the guard, if it exists.
-     * This includes nodes from the "hidden" AST and can be used to be overridden by subclasses.
+     * Gets the guard of this case label item, if it exists.
+     *
+     * This includes nodes from the "hidden" AST.
      */
     Expr getImmediateGuard() {
       result =
@@ -37,7 +39,7 @@ module Generated {
     }
 
     /**
-     * Gets the guard, if it exists.
+     * Gets the guard of this case label item, if it exists.
      */
     final Expr getGuard() { result = getImmediateGuard().resolve() }
 

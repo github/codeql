@@ -7,8 +7,9 @@ import codeql.swift.elements.type.Type
 module Generated {
   class ValueDecl extends Synth::TValueDecl, Decl {
     /**
-     * Gets the interface type.
-     * This includes nodes from the "hidden" AST and can be used to be overridden by subclasses.
+     * Gets the interface type of this value declaration.
+     *
+     * This includes nodes from the "hidden" AST.
      */
     Type getImmediateInterfaceType() {
       result =
@@ -18,7 +19,7 @@ module Generated {
     }
 
     /**
-     * Gets the interface type.
+     * Gets the interface type of this value declaration.
      */
     final Type getInterfaceType() { result = getImmediateInterfaceType().resolve() }
   }

@@ -8,8 +8,9 @@ import codeql.swift.elements.decl.ParamDecl
 module Generated {
   class Callable extends Synth::TCallable, Element {
     /**
-     * Gets the self param, if it exists.
-     * This includes nodes from the "hidden" AST and can be used to be overridden by subclasses.
+     * Gets the self parameter of this callable, if it exists.
+     *
+     * This includes nodes from the "hidden" AST.
      */
     ParamDecl getImmediateSelfParam() {
       result =
@@ -19,7 +20,7 @@ module Generated {
     }
 
     /**
-     * Gets the self param, if it exists.
+     * Gets the self parameter of this callable, if it exists.
      */
     final ParamDecl getSelfParam() { result = getImmediateSelfParam().resolve() }
 
@@ -29,8 +30,9 @@ module Generated {
     final predicate hasSelfParam() { exists(getSelfParam()) }
 
     /**
-     * Gets the `index`th param (0-based).
-     * This includes nodes from the "hidden" AST and can be used to be overridden by subclasses.
+     * Gets the `index`th parameter of this callable (0-based).
+     *
+     * This includes nodes from the "hidden" AST.
      */
     ParamDecl getImmediateParam(int index) {
       result =
@@ -40,23 +42,24 @@ module Generated {
     }
 
     /**
-     * Gets the `index`th param (0-based).
+     * Gets the `index`th parameter of this callable (0-based).
      */
     final ParamDecl getParam(int index) { result = getImmediateParam(index).resolve() }
 
     /**
-     * Gets any of the params.
+     * Gets any of the parameters of this callable.
      */
     final ParamDecl getAParam() { result = getParam(_) }
 
     /**
-     * Gets the number of params.
+     * Gets the number of parameters of this callable.
      */
     final int getNumberOfParams() { result = count(getAParam()) }
 
     /**
-     * Gets the body, if it exists.
-     * This includes nodes from the "hidden" AST and can be used to be overridden by subclasses.
+     * Gets the body of this callable, if it exists.
+     *
+     * This includes nodes from the "hidden" AST.
      */
     BraceStmt getImmediateBody() {
       result =
@@ -64,7 +67,7 @@ module Generated {
     }
 
     /**
-     * Gets the body, if it exists.
+     * Gets the body of this callable, if it exists.
      * The body is absent within protocol declarations.
      */
     final BraceStmt getBody() { result = getImmediateBody().resolve() }

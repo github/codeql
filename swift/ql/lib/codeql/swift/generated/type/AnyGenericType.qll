@@ -7,8 +7,9 @@ import codeql.swift.elements.type.Type
 module Generated {
   class AnyGenericType extends Synth::TAnyGenericType, Type {
     /**
-     * Gets the parent, if it exists.
-     * This includes nodes from the "hidden" AST and can be used to be overridden by subclasses.
+     * Gets the parent of this any generic type, if it exists.
+     *
+     * This includes nodes from the "hidden" AST.
      */
     Type getImmediateParent() {
       result =
@@ -18,7 +19,7 @@ module Generated {
     }
 
     /**
-     * Gets the parent, if it exists.
+     * Gets the parent of this any generic type, if it exists.
      */
     final Type getParent() { result = getImmediateParent().resolve() }
 
@@ -28,8 +29,9 @@ module Generated {
     final predicate hasParent() { exists(getParent()) }
 
     /**
-     * Gets the declaration.
-     * This includes nodes from the "hidden" AST and can be used to be overridden by subclasses.
+     * Gets the declaration of this any generic type.
+     *
+     * This includes nodes from the "hidden" AST.
      */
     Decl getImmediateDeclaration() {
       result =
@@ -39,7 +41,7 @@ module Generated {
     }
 
     /**
-     * Gets the declaration.
+     * Gets the declaration of this any generic type.
      */
     final Decl getDeclaration() { result = getImmediateDeclaration().resolve() }
   }

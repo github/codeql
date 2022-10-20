@@ -8,8 +8,9 @@ module Generated {
     override string getAPrimaryQlClass() { result = "TupleElementExpr" }
 
     /**
-     * Gets the sub expr.
-     * This includes nodes from the "hidden" AST and can be used to be overridden by subclasses.
+     * Gets the sub expression of this tuple element expression.
+     *
+     * This includes nodes from the "hidden" AST.
      */
     Expr getImmediateSubExpr() {
       result =
@@ -19,12 +20,12 @@ module Generated {
     }
 
     /**
-     * Gets the sub expr.
+     * Gets the sub expression of this tuple element expression.
      */
     final Expr getSubExpr() { result = getImmediateSubExpr().resolve() }
 
     /**
-     * Gets the index.
+     * Gets the index of this tuple element expression.
      */
     int getIndex() {
       result = Synth::convertTupleElementExprToRaw(this).(Raw::TupleElementExpr).getIndex()

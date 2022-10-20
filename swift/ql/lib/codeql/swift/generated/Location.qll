@@ -7,8 +7,9 @@ import codeql.swift.elements.File
 module Generated {
   class Location extends Synth::TLocation, Element {
     /**
-     * Gets the file.
-     * This includes nodes from the "hidden" AST and can be used to be overridden by subclasses.
+     * Gets the file of this location.
+     *
+     * This includes nodes from the "hidden" AST.
      */
     File getImmediateFile() {
       result =
@@ -16,29 +17,29 @@ module Generated {
     }
 
     /**
-     * Gets the file.
+     * Gets the file of this location.
      */
     final File getFile() { result = getImmediateFile().resolve() }
 
     /**
-     * Gets the start line.
+     * Gets the start line of this location.
      */
     int getStartLine() { result = Synth::convertLocationToRaw(this).(Raw::Location).getStartLine() }
 
     /**
-     * Gets the start column.
+     * Gets the start column of this location.
      */
     int getStartColumn() {
       result = Synth::convertLocationToRaw(this).(Raw::Location).getStartColumn()
     }
 
     /**
-     * Gets the end line.
+     * Gets the end line of this location.
      */
     int getEndLine() { result = Synth::convertLocationToRaw(this).(Raw::Location).getEndLine() }
 
     /**
-     * Gets the end column.
+     * Gets the end column of this location.
      */
     int getEndColumn() { result = Synth::convertLocationToRaw(this).(Raw::Location).getEndColumn() }
   }

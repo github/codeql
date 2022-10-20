@@ -10,8 +10,9 @@ module Generated {
     override string getAPrimaryQlClass() { result = "DoCatchStmt" }
 
     /**
-     * Gets the body.
-     * This includes nodes from the "hidden" AST and can be used to be overridden by subclasses.
+     * Gets the body of this do catch statement.
+     *
+     * This includes nodes from the "hidden" AST.
      */
     Stmt getImmediateBody() {
       result =
@@ -19,13 +20,14 @@ module Generated {
     }
 
     /**
-     * Gets the body.
+     * Gets the body of this do catch statement.
      */
     final Stmt getBody() { result = getImmediateBody().resolve() }
 
     /**
-     * Gets the `index`th catch (0-based).
-     * This includes nodes from the "hidden" AST and can be used to be overridden by subclasses.
+     * Gets the `index`th catch of this do catch statement (0-based).
+     *
+     * This includes nodes from the "hidden" AST.
      */
     CaseStmt getImmediateCatch(int index) {
       result =
@@ -35,17 +37,17 @@ module Generated {
     }
 
     /**
-     * Gets the `index`th catch (0-based).
+     * Gets the `index`th catch of this do catch statement (0-based).
      */
     final CaseStmt getCatch(int index) { result = getImmediateCatch(index).resolve() }
 
     /**
-     * Gets any of the catches.
+     * Gets any of the catches of this do catch statement.
      */
     final CaseStmt getACatch() { result = getCatch(_) }
 
     /**
-     * Gets the number of catches.
+     * Gets the number of catches of this do catch statement.
      */
     final int getNumberOfCatches() { result = count(getACatch()) }
   }

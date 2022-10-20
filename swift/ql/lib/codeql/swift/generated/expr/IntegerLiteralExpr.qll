@@ -8,7 +8,7 @@ module Generated {
     override string getAPrimaryQlClass() { result = "IntegerLiteralExpr" }
 
     /**
-     * Gets the string value.
+     * Gets the string value of this integer literal expression.
      */
     string getStringValue() {
       result =

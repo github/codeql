@@ -6,8 +6,9 @@ import codeql.swift.elements.expr.Expr
 module Generated {
   class ExplicitCastExpr extends Synth::TExplicitCastExpr, Expr {
     /**
-     * Gets the sub expr.
-     * This includes nodes from the "hidden" AST and can be used to be overridden by subclasses.
+     * Gets the sub expression of this explicit cast expression.
+     *
+     * This includes nodes from the "hidden" AST.
      */
     Expr getImmediateSubExpr() {
       result =
@@ -17,7 +18,7 @@ module Generated {
     }
 
     /**
-     * Gets the sub expr.
+     * Gets the sub expression of this explicit cast expression.
      */
     final Expr getSubExpr() { result = getImmediateSubExpr().resolve() }
   }

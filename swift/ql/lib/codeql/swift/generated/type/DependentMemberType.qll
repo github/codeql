@@ -9,8 +9,9 @@ module Generated {
     override string getAPrimaryQlClass() { result = "DependentMemberType" }
 
     /**
-     * Gets the basetype.
-     * This includes nodes from the "hidden" AST and can be used to be overridden by subclasses.
+     * Gets the basetype of this dependent member type.
+     *
+     * This includes nodes from the "hidden" AST.
      */
     Type getImmediateBaseType() {
       result =
@@ -20,13 +21,14 @@ module Generated {
     }
 
     /**
-     * Gets the basetype.
+     * Gets the basetype of this dependent member type.
      */
     final Type getBaseType() { result = getImmediateBaseType().resolve() }
 
     /**
-     * Gets the associated type decl.
-     * This includes nodes from the "hidden" AST and can be used to be overridden by subclasses.
+     * Gets the associated type declaration of this dependent member type.
+     *
+     * This includes nodes from the "hidden" AST.
      */
     AssociatedTypeDecl getImmediateAssociatedTypeDecl() {
       result =
@@ -36,7 +38,7 @@ module Generated {
     }
 
     /**
-     * Gets the associated type decl.
+     * Gets the associated type declaration of this dependent member type.
      */
     final AssociatedTypeDecl getAssociatedTypeDecl() {
       result = getImmediateAssociatedTypeDecl().resolve()

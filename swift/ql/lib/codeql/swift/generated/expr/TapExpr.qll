@@ -10,8 +10,9 @@ module Generated {
     override string getAPrimaryQlClass() { result = "TapExpr" }
 
     /**
-     * Gets the sub expr, if it exists.
-     * This includes nodes from the "hidden" AST and can be used to be overridden by subclasses.
+     * Gets the sub expression of this tap expression, if it exists.
+     *
+     * This includes nodes from the "hidden" AST.
      */
     Expr getImmediateSubExpr() {
       result =
@@ -19,7 +20,7 @@ module Generated {
     }
 
     /**
-     * Gets the sub expr, if it exists.
+     * Gets the sub expression of this tap expression, if it exists.
      */
     final Expr getSubExpr() { result = getImmediateSubExpr().resolve() }
 
@@ -29,8 +30,9 @@ module Generated {
     final predicate hasSubExpr() { exists(getSubExpr()) }
 
     /**
-     * Gets the body.
-     * This includes nodes from the "hidden" AST and can be used to be overridden by subclasses.
+     * Gets the body of this tap expression.
+     *
+     * This includes nodes from the "hidden" AST.
      */
     BraceStmt getImmediateBody() {
       result =
@@ -38,13 +40,14 @@ module Generated {
     }
 
     /**
-     * Gets the body.
+     * Gets the body of this tap expression.
      */
     final BraceStmt getBody() { result = getImmediateBody().resolve() }
 
     /**
-     * Gets the var.
-     * This includes nodes from the "hidden" AST and can be used to be overridden by subclasses.
+     * Gets the var of this tap expression.
+     *
+     * This includes nodes from the "hidden" AST.
      */
     VarDecl getImmediateVar() {
       result =
@@ -52,7 +55,7 @@ module Generated {
     }
 
     /**
-     * Gets the var.
+     * Gets the var of this tap expression.
      */
     final VarDecl getVar() { result = getImmediateVar().resolve() }
   }

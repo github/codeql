@@ -9,8 +9,9 @@ module Generated {
     override string getAPrimaryQlClass() { result = "KeyPathExpr" }
 
     /**
-     * Gets the root, if it exists.
-     * This includes nodes from the "hidden" AST and can be used to be overridden by subclasses.
+     * Gets the root of this key path expression, if it exists.
+     *
+     * This includes nodes from the "hidden" AST.
      */
     TypeRepr getImmediateRoot() {
       result =
@@ -20,7 +21,7 @@ module Generated {
     }
 
     /**
-     * Gets the root, if it exists.
+     * Gets the root of this key path expression, if it exists.
      */
     final TypeRepr getRoot() { result = getImmediateRoot().resolve() }
 
@@ -30,8 +31,9 @@ module Generated {
     final predicate hasRoot() { exists(getRoot()) }
 
     /**
-     * Gets the parsed path, if it exists.
-     * This includes nodes from the "hidden" AST and can be used to be overridden by subclasses.
+     * Gets the parsed path of this key path expression, if it exists.
+     *
+     * This includes nodes from the "hidden" AST.
      */
     Expr getImmediateParsedPath() {
       result =
@@ -41,7 +43,7 @@ module Generated {
     }
 
     /**
-     * Gets the parsed path, if it exists.
+     * Gets the parsed path of this key path expression, if it exists.
      */
     final Expr getParsedPath() { result = getImmediateParsedPath().resolve() }
 

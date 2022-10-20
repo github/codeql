@@ -6,8 +6,9 @@ import codeql.swift.elements.type.Type
 module Generated {
   class AnyFunctionType extends Synth::TAnyFunctionType, Type {
     /**
-     * Gets the result.
-     * This includes nodes from the "hidden" AST and can be used to be overridden by subclasses.
+     * Gets the result of this any function type.
+     *
+     * This includes nodes from the "hidden" AST.
      */
     Type getImmediateResult() {
       result =
@@ -17,13 +18,14 @@ module Generated {
     }
 
     /**
-     * Gets the result.
+     * Gets the result of this any function type.
      */
     final Type getResult() { result = getImmediateResult().resolve() }
 
     /**
-     * Gets the `index`th param type (0-based).
-     * This includes nodes from the "hidden" AST and can be used to be overridden by subclasses.
+     * Gets the `index`th parameter type of this any function type (0-based).
+     *
+     * This includes nodes from the "hidden" AST.
      */
     Type getImmediateParamType(int index) {
       result =
@@ -33,34 +35,34 @@ module Generated {
     }
 
     /**
-     * Gets the `index`th param type (0-based).
+     * Gets the `index`th parameter type of this any function type (0-based).
      */
     final Type getParamType(int index) { result = getImmediateParamType(index).resolve() }
 
     /**
-     * Gets any of the param types.
+     * Gets any of the parameter types of this any function type.
      */
     final Type getAParamType() { result = getParamType(_) }
 
     /**
-     * Gets the number of param types.
+     * Gets the number of parameter types of this any function type.
      */
     final int getNumberOfParamTypes() { result = count(getAParamType()) }
 
     /**
-     * Gets the `index`th param label (0-based).
+     * Gets the `index`th parameter label of this any function type (0-based).
      */
     string getParamLabel(int index) {
       result = Synth::convertAnyFunctionTypeToRaw(this).(Raw::AnyFunctionType).getParamLabel(index)
     }
 
     /**
-     * Gets any of the param labels.
+     * Gets any of the parameter labels of this any function type.
      */
     final string getAParamLabel() { result = getParamLabel(_) }
 
     /**
-     * Gets the number of param labels.
+     * Gets the number of parameter labels of this any function type.
      */
     final int getNumberOfParamLabels() { result = count(getAParamLabel()) }
 

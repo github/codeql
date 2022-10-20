@@ -11,8 +11,9 @@ module Generated {
     override string getAPrimaryQlClass() { result = "ForEachStmt" }
 
     /**
-     * Gets the pattern.
-     * This includes nodes from the "hidden" AST and can be used to be overridden by subclasses.
+     * Gets the pattern of this for each statement.
+     *
+     * This includes nodes from the "hidden" AST.
      */
     Pattern getImmediatePattern() {
       result =
@@ -22,13 +23,14 @@ module Generated {
     }
 
     /**
-     * Gets the pattern.
+     * Gets the pattern of this for each statement.
      */
     final Pattern getPattern() { result = getImmediatePattern().resolve() }
 
     /**
-     * Gets the sequence.
-     * This includes nodes from the "hidden" AST and can be used to be overridden by subclasses.
+     * Gets the sequence of this for each statement.
+     *
+     * This includes nodes from the "hidden" AST.
      */
     Expr getImmediateSequence() {
       result =
@@ -38,13 +40,14 @@ module Generated {
     }
 
     /**
-     * Gets the sequence.
+     * Gets the sequence of this for each statement.
      */
     final Expr getSequence() { result = getImmediateSequence().resolve() }
 
     /**
-     * Gets the where, if it exists.
-     * This includes nodes from the "hidden" AST and can be used to be overridden by subclasses.
+     * Gets the where of this for each statement, if it exists.
+     *
+     * This includes nodes from the "hidden" AST.
      */
     Expr getImmediateWhere() {
       result =
@@ -52,7 +55,7 @@ module Generated {
     }
 
     /**
-     * Gets the where, if it exists.
+     * Gets the where of this for each statement, if it exists.
      */
     final Expr getWhere() { result = getImmediateWhere().resolve() }
 
@@ -62,8 +65,9 @@ module Generated {
     final predicate hasWhere() { exists(getWhere()) }
 
     /**
-     * Gets the body.
-     * This includes nodes from the "hidden" AST and can be used to be overridden by subclasses.
+     * Gets the body of this for each statement.
+     *
+     * This includes nodes from the "hidden" AST.
      */
     BraceStmt getImmediateBody() {
       result =
@@ -73,7 +77,7 @@ module Generated {
     }
 
     /**
-     * Gets the body.
+     * Gets the body of this for each statement.
      */
     final BraceStmt getBody() { result = getImmediateBody().resolve() }
   }

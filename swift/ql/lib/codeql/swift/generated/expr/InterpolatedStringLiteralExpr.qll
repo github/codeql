@@ -11,8 +11,9 @@ module Generated {
     override string getAPrimaryQlClass() { result = "InterpolatedStringLiteralExpr" }
 
     /**
-     * Gets the interpolation expr, if it exists.
-     * This includes nodes from the "hidden" AST and can be used to be overridden by subclasses.
+     * Gets the interpolation expression of this interpolated string literal expression, if it exists.
+     *
+     * This includes nodes from the "hidden" AST.
      */
     OpaqueValueExpr getImmediateInterpolationExpr() {
       result =
@@ -22,7 +23,7 @@ module Generated {
     }
 
     /**
-     * Gets the interpolation expr, if it exists.
+     * Gets the interpolation expression of this interpolated string literal expression, if it exists.
      */
     final OpaqueValueExpr getInterpolationExpr() {
       result = getImmediateInterpolationExpr().resolve()
@@ -34,8 +35,9 @@ module Generated {
     final predicate hasInterpolationExpr() { exists(getInterpolationExpr()) }
 
     /**
-     * Gets the interpolation count expr, if it exists.
-     * This includes nodes from the "hidden" AST and can be used to be overridden by subclasses.
+     * Gets the interpolation count expression of this interpolated string literal expression, if it exists.
+     *
+     * This includes nodes from the "hidden" AST.
      */
     Expr getImmediateInterpolationCountExpr() {
       result =
@@ -45,7 +47,7 @@ module Generated {
     }
 
     /**
-     * Gets the interpolation count expr, if it exists.
+     * Gets the interpolation count expression of this interpolated string literal expression, if it exists.
      */
     final Expr getInterpolationCountExpr() {
       result = getImmediateInterpolationCountExpr().resolve()
@@ -57,8 +59,9 @@ module Generated {
     final predicate hasInterpolationCountExpr() { exists(getInterpolationCountExpr()) }
 
     /**
-     * Gets the literal capacity expr, if it exists.
-     * This includes nodes from the "hidden" AST and can be used to be overridden by subclasses.
+     * Gets the literal capacity expression of this interpolated string literal expression, if it exists.
+     *
+     * This includes nodes from the "hidden" AST.
      */
     Expr getImmediateLiteralCapacityExpr() {
       result =
@@ -68,7 +71,7 @@ module Generated {
     }
 
     /**
-     * Gets the literal capacity expr, if it exists.
+     * Gets the literal capacity expression of this interpolated string literal expression, if it exists.
      */
     final Expr getLiteralCapacityExpr() { result = getImmediateLiteralCapacityExpr().resolve() }
 
@@ -78,8 +81,9 @@ module Generated {
     final predicate hasLiteralCapacityExpr() { exists(getLiteralCapacityExpr()) }
 
     /**
-     * Gets the appending expr, if it exists.
-     * This includes nodes from the "hidden" AST and can be used to be overridden by subclasses.
+     * Gets the appending expression of this interpolated string literal expression, if it exists.
+     *
+     * This includes nodes from the "hidden" AST.
      */
     TapExpr getImmediateAppendingExpr() {
       result =
@@ -89,7 +93,7 @@ module Generated {
     }
 
     /**
-     * Gets the appending expr, if it exists.
+     * Gets the appending expression of this interpolated string literal expression, if it exists.
      */
     final TapExpr getAppendingExpr() { result = getImmediateAppendingExpr().resolve() }
 

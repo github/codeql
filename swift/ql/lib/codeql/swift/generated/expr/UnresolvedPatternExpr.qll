@@ -10,8 +10,9 @@ module Generated {
     override string getAPrimaryQlClass() { result = "UnresolvedPatternExpr" }
 
     /**
-     * Gets the sub pattern.
-     * This includes nodes from the "hidden" AST and can be used to be overridden by subclasses.
+     * Gets the sub pattern of this unresolved pattern expression.
+     *
+     * This includes nodes from the "hidden" AST.
      */
     Pattern getImmediateSubPattern() {
       result =
@@ -21,7 +22,7 @@ module Generated {
     }
 
     /**
-     * Gets the sub pattern.
+     * Gets the sub pattern of this unresolved pattern expression.
      */
     final Pattern getSubPattern() { result = getImmediateSubPattern().resolve() }
   }

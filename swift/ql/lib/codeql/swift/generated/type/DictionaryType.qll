@@ -9,8 +9,9 @@ module Generated {
     override string getAPrimaryQlClass() { result = "DictionaryType" }
 
     /**
-     * Gets the key type.
-     * This includes nodes from the "hidden" AST and can be used to be overridden by subclasses.
+     * Gets the key type of this dictionary type.
+     *
+     * This includes nodes from the "hidden" AST.
      */
     Type getImmediateKeyType() {
       result =
@@ -20,13 +21,14 @@ module Generated {
     }
 
     /**
-     * Gets the key type.
+     * Gets the key type of this dictionary type.
      */
     final Type getKeyType() { result = getImmediateKeyType().resolve() }
 
     /**
-     * Gets the value type.
-     * This includes nodes from the "hidden" AST and can be used to be overridden by subclasses.
+     * Gets the value type of this dictionary type.
+     *
+     * This includes nodes from the "hidden" AST.
      */
     Type getImmediateValueType() {
       result =
@@ -36,7 +38,7 @@ module Generated {
     }
 
     /**
-     * Gets the value type.
+     * Gets the value type of this dictionary type.
      */
     final Type getValueType() { result = getImmediateValueType().resolve() }
   }

@@ -8,8 +8,9 @@ module Generated {
     override string getAPrimaryQlClass() { result = "DynamicSelfType" }
 
     /**
-     * Gets the static self type.
-     * This includes nodes from the "hidden" AST and can be used to be overridden by subclasses.
+     * Gets the static self type of this dynamic self type.
+     *
+     * This includes nodes from the "hidden" AST.
      */
     Type getImmediateStaticSelfType() {
       result =
@@ -19,7 +20,7 @@ module Generated {
     }
 
     /**
-     * Gets the static self type.
+     * Gets the static self type of this dynamic self type.
      */
     final Type getStaticSelfType() { result = getImmediateStaticSelfType().resolve() }
   }

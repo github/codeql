@@ -9,8 +9,9 @@ module Generated {
     override string getAPrimaryQlClass() { result = "YieldStmt" }
 
     /**
-     * Gets the `index`th result (0-based).
-     * This includes nodes from the "hidden" AST and can be used to be overridden by subclasses.
+     * Gets the `index`th result of this yield statement (0-based).
+     *
+     * This includes nodes from the "hidden" AST.
      */
     Expr getImmediateResult(int index) {
       result =
@@ -20,17 +21,17 @@ module Generated {
     }
 
     /**
-     * Gets the `index`th result (0-based).
+     * Gets the `index`th result of this yield statement (0-based).
      */
     final Expr getResult(int index) { result = getImmediateResult(index).resolve() }
 
     /**
-     * Gets any of the results.
+     * Gets any of the results of this yield statement.
      */
     final Expr getAResult() { result = getResult(_) }
 
     /**
-     * Gets the number of results.
+     * Gets the number of results of this yield statement.
      */
     final int getNumberOfResults() { result = count(getAResult()) }
   }

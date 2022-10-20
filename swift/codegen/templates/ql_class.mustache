@@ -59,7 +59,8 @@ module Generated {
 
     {{#type_is_class}}
     /**
-     * {{>ql_property_doc}}     * This includes nodes from the "hidden" AST and can be used to be overridden by subclasses.
+     * {{>ql_property_doc}}     *
+     * This includes nodes from the "hidden" AST.
      */
     {{type}} getImmediate{{singular}}({{#is_repeated}}int index{{/is_repeated}}) {
       {{^ipa}}

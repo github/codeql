@@ -16,8 +16,9 @@ module Generated {
     }
 
     /**
-     * Gets the `index`th imported module (0-based).
-     * This includes nodes from the "hidden" AST and can be used to be overridden by subclasses.
+     * Gets the `index`th imported module of this module declaration (0-based).
+     *
+     * This includes nodes from the "hidden" AST.
      */
     ModuleDecl getImmediateImportedModule(int index) {
       result =
@@ -27,25 +28,26 @@ module Generated {
     }
 
     /**
-     * Gets the `index`th imported module (0-based).
+     * Gets the `index`th imported module of this module declaration (0-based).
      */
     final ModuleDecl getImportedModule(int index) {
       result = getImmediateImportedModule(index).resolve()
     }
 
     /**
-     * Gets any of the imported modules.
+     * Gets any of the imported modules of this module declaration.
      */
     final ModuleDecl getAnImportedModule() { result = getImportedModule(_) }
 
     /**
-     * Gets the number of imported modules.
+     * Gets the number of imported modules of this module declaration.
      */
     final int getNumberOfImportedModules() { result = count(getAnImportedModule()) }
 
     /**
-     * Gets the `index`th exported module (0-based).
-     * This includes nodes from the "hidden" AST and can be used to be overridden by subclasses.
+     * Gets the `index`th exported module of this module declaration (0-based).
+     *
+     * This includes nodes from the "hidden" AST.
      */
     ModuleDecl getImmediateExportedModule(int index) {
       result =
@@ -55,19 +57,19 @@ module Generated {
     }
 
     /**
-     * Gets the `index`th exported module (0-based).
+     * Gets the `index`th exported module of this module declaration (0-based).
      */
     final ModuleDecl getExportedModule(int index) {
       result = getImmediateExportedModule(index).resolve()
     }
 
     /**
-     * Gets any of the exported modules.
+     * Gets any of the exported modules of this module declaration.
      */
     final ModuleDecl getAnExportedModule() { result = getExportedModule(_) }
 
     /**
-     * Gets the number of exported modules.
+     * Gets the number of exported modules of this module declaration.
      */
     final int getNumberOfExportedModules() { result = count(getAnExportedModule()) }
   }

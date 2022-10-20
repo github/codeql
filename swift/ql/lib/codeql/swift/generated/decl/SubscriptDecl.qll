@@ -11,8 +11,9 @@ module Generated {
     override string getAPrimaryQlClass() { result = "SubscriptDecl" }
 
     /**
-     * Gets the `index`th param (0-based).
-     * This includes nodes from the "hidden" AST and can be used to be overridden by subclasses.
+     * Gets the `index`th parameter of this subscript declaration (0-based).
+     *
+     * This includes nodes from the "hidden" AST.
      */
     ParamDecl getImmediateParam(int index) {
       result =
@@ -22,23 +23,24 @@ module Generated {
     }
 
     /**
-     * Gets the `index`th param (0-based).
+     * Gets the `index`th parameter of this subscript declaration (0-based).
      */
     final ParamDecl getParam(int index) { result = getImmediateParam(index).resolve() }
 
     /**
-     * Gets any of the params.
+     * Gets any of the parameters of this subscript declaration.
      */
     final ParamDecl getAParam() { result = getParam(_) }
 
     /**
-     * Gets the number of params.
+     * Gets the number of parameters of this subscript declaration.
      */
     final int getNumberOfParams() { result = count(getAParam()) }
 
     /**
-     * Gets the element type.
-     * This includes nodes from the "hidden" AST and can be used to be overridden by subclasses.
+     * Gets the element type of this subscript declaration.
+     *
+     * This includes nodes from the "hidden" AST.
      */
     Type getImmediateElementType() {
       result =
@@ -48,7 +50,7 @@ module Generated {
     }
 
     /**
-     * Gets the element type.
+     * Gets the element type of this subscript declaration.
      */
     final Type getElementType() { result = getImmediateElementType().resolve() }
   }

@@ -10,8 +10,9 @@ module Generated {
     override string getAPrimaryQlClass() { result = "SwitchStmt" }
 
     /**
-     * Gets the expr.
-     * This includes nodes from the "hidden" AST and can be used to be overridden by subclasses.
+     * Gets the expression of this switch statement.
+     *
+     * This includes nodes from the "hidden" AST.
      */
     Expr getImmediateExpr() {
       result =
@@ -19,13 +20,14 @@ module Generated {
     }
 
     /**
-     * Gets the expr.
+     * Gets the expression of this switch statement.
      */
     final Expr getExpr() { result = getImmediateExpr().resolve() }
 
     /**
-     * Gets the `index`th case (0-based).
-     * This includes nodes from the "hidden" AST and can be used to be overridden by subclasses.
+     * Gets the `index`th case of this switch statement (0-based).
+     *
+     * This includes nodes from the "hidden" AST.
      */
     CaseStmt getImmediateCase(int index) {
       result =
@@ -35,17 +37,17 @@ module Generated {
     }
 
     /**
-     * Gets the `index`th case (0-based).
+     * Gets the `index`th case of this switch statement (0-based).
      */
     final CaseStmt getCase(int index) { result = getImmediateCase(index).resolve() }
 
     /**
-     * Gets any of the cases.
+     * Gets any of the cases of this switch statement.
      */
     final CaseStmt getACase() { result = getCase(_) }
 
     /**
-     * Gets the number of cases.
+     * Gets the number of cases of this switch statement.
      */
     final int getNumberOfCases() { result = count(getACase()) }
   }

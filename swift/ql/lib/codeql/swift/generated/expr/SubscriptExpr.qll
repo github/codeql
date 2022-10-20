@@ -9,8 +9,9 @@ module Generated {
     override string getAPrimaryQlClass() { result = "SubscriptExpr" }
 
     /**
-     * Gets the `index`th argument (0-based).
-     * This includes nodes from the "hidden" AST and can be used to be overridden by subclasses.
+     * Gets the `index`th argument of this subscript expression (0-based).
+     *
+     * This includes nodes from the "hidden" AST.
      */
     Argument getImmediateArgument(int index) {
       result =
@@ -20,17 +21,17 @@ module Generated {
     }
 
     /**
-     * Gets the `index`th argument (0-based).
+     * Gets the `index`th argument of this subscript expression (0-based).
      */
     final Argument getArgument(int index) { result = getImmediateArgument(index).resolve() }
 
     /**
-     * Gets any of the arguments.
+     * Gets any of the arguments of this subscript expression.
      */
     final Argument getAnArgument() { result = getArgument(_) }
 
     /**
-     * Gets the number of arguments.
+     * Gets the number of arguments of this subscript expression.
      */
     final int getNumberOfArguments() { result = count(getAnArgument()) }
 

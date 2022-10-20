@@ -7,8 +7,9 @@ import codeql.swift.elements.stmt.StmtCondition
 module Generated {
   class LabeledConditionalStmt extends Synth::TLabeledConditionalStmt, LabeledStmt {
     /**
-     * Gets the condition.
-     * This includes nodes from the "hidden" AST and can be used to be overridden by subclasses.
+     * Gets the condition of this labeled conditional statement.
+     *
+     * This includes nodes from the "hidden" AST.
      */
     StmtCondition getImmediateCondition() {
       result =
@@ -18,7 +19,7 @@ module Generated {
     }
 
     /**
-     * Gets the condition.
+     * Gets the condition of this labeled conditional statement.
      */
     final StmtCondition getCondition() { result = getImmediateCondition().resolve() }
   }

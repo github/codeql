@@ -8,8 +8,9 @@ module Generated {
     override string getAPrimaryQlClass() { result = "ExistentialType" }
 
     /**
-     * Gets the constraint.
-     * This includes nodes from the "hidden" AST and can be used to be overridden by subclasses.
+     * Gets the constraint of this existential type.
+     *
+     * This includes nodes from the "hidden" AST.
      */
     Type getImmediateConstraint() {
       result =
@@ -19,7 +20,7 @@ module Generated {
     }
 
     /**
-     * Gets the constraint.
+     * Gets the constraint of this existential type.
      */
     final Type getConstraint() { result = getImmediateConstraint().resolve() }
   }

@@ -8,8 +8,9 @@ module Generated {
     override string getAPrimaryQlClass() { result = "AssignExpr" }
 
     /**
-     * Gets the dest.
-     * This includes nodes from the "hidden" AST and can be used to be overridden by subclasses.
+     * Gets the dest of this assign expression.
+     *
+     * This includes nodes from the "hidden" AST.
      */
     Expr getImmediateDest() {
       result =
@@ -17,13 +18,14 @@ module Generated {
     }
 
     /**
-     * Gets the dest.
+     * Gets the dest of this assign expression.
      */
     final Expr getDest() { result = getImmediateDest().resolve() }
 
     /**
-     * Gets the source.
-     * This includes nodes from the "hidden" AST and can be used to be overridden by subclasses.
+     * Gets the source of this assign expression.
+     *
+     * This includes nodes from the "hidden" AST.
      */
     Expr getImmediateSource() {
       result =
@@ -31,7 +33,7 @@ module Generated {
     }
 
     /**
-     * Gets the source.
+     * Gets the source of this assign expression.
      */
     final Expr getSource() { result = getImmediateSource().resolve() }
   }

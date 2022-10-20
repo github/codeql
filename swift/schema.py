@@ -35,7 +35,7 @@ class Location(Element):
 
 @qltest.skip
 class Locatable(Element):
-    location: optional[Location] | cpp.skip
+    location: optional[Location] | cpp.skip | doc("location associated with this element in the code")
 
 class Comment(Locatable):
     text: string
@@ -142,7 +142,7 @@ class Callable(Element):
     body: optional["BraceStmt"] | child | desc("The body is absent within protocol declarations.")
 
 class AbstractFunctionDecl(GenericContext, ValueDecl, Callable):
-    name: string
+    name: string | doc("name of this function")
 
 class EnumElementDecl(ValueDecl):
     name: string
@@ -241,8 +241,8 @@ class AppliedPropertyWrapperExpr(Expr):
     pass
 
 class ApplyExpr(Expr):
-    function: Expr | child
-    arguments: list[Argument] | child
+    function: Expr | child | doc("function being applied")
+    arguments: list[Argument] | child | doc("arguments passed to the applied function")
 
 class ArrowExpr(Expr):
     pass
@@ -904,7 +904,7 @@ class FunctionType(AnyFunctionType):
 
 class GenericFunctionType(AnyFunctionType):
     """ The type of a generic function with type parameters """
-    generic_params: list["GenericTypeParamType"] | doc("generic parameters")
+    generic_params: list["GenericTypeParamType"] | doc("type {parameters} of this generic type")
 
 class GenericTypeParamType(SubstitutableType):
     pass

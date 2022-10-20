@@ -8,7 +8,7 @@ module Generated {
     override string getAPrimaryQlClass() { result = "BooleanLiteralExpr" }
 
     /**
-     * Gets the value.
+     * Gets the value of this boolean literal expression.
      */
     boolean getValue() {
       result = Synth::convertBooleanLiteralExprToRaw(this).(Raw::BooleanLiteralExpr).getValue()

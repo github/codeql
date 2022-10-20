@@ -8,8 +8,9 @@ module Generated {
     override string getAPrimaryQlClass() { result = "ProtocolCompositionType" }
 
     /**
-     * Gets the `index`th member (0-based).
-     * This includes nodes from the "hidden" AST and can be used to be overridden by subclasses.
+     * Gets the `index`th member of this protocol composition type (0-based).
+     *
+     * This includes nodes from the "hidden" AST.
      */
     Type getImmediateMember(int index) {
       result =
@@ -19,17 +20,17 @@ module Generated {
     }
 
     /**
-     * Gets the `index`th member (0-based).
+     * Gets the `index`th member of this protocol composition type (0-based).
      */
     final Type getMember(int index) { result = getImmediateMember(index).resolve() }
 
     /**
-     * Gets any of the members.
+     * Gets any of the members of this protocol composition type.
      */
     final Type getAMember() { result = getMember(_) }
 
     /**
-     * Gets the number of members.
+     * Gets the number of members of this protocol composition type.
      */
     final int getNumberOfMembers() { result = count(getAMember()) }
   }

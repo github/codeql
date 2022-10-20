@@ -8,7 +8,7 @@ module Generated {
     override string getAPrimaryQlClass() { result = "Comment" }
 
     /**
-     * Gets the text.
+     * Gets the text of this comment.
      */
     string getText() { result = Synth::convertCommentToRaw(this).(Raw::Comment).getText() }
   }

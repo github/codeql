@@ -10,8 +10,9 @@ module Generated {
     override string getAPrimaryQlClass() { result = "ConditionElement" }
 
     /**
-     * Gets the boolean, if it exists.
-     * This includes nodes from the "hidden" AST and can be used to be overridden by subclasses.
+     * Gets the boolean of this condition element, if it exists.
+     *
+     * This includes nodes from the "hidden" AST.
      */
     Expr getImmediateBoolean() {
       result =
@@ -21,7 +22,7 @@ module Generated {
     }
 
     /**
-     * Gets the boolean, if it exists.
+     * Gets the boolean of this condition element, if it exists.
      */
     final Expr getBoolean() { result = getImmediateBoolean().resolve() }
 
@@ -31,8 +32,9 @@ module Generated {
     final predicate hasBoolean() { exists(getBoolean()) }
 
     /**
-     * Gets the pattern, if it exists.
-     * This includes nodes from the "hidden" AST and can be used to be overridden by subclasses.
+     * Gets the pattern of this condition element, if it exists.
+     *
+     * This includes nodes from the "hidden" AST.
      */
     Pattern getImmediatePattern() {
       result =
@@ -42,7 +44,7 @@ module Generated {
     }
 
     /**
-     * Gets the pattern, if it exists.
+     * Gets the pattern of this condition element, if it exists.
      */
     final Pattern getPattern() { result = getImmediatePattern().resolve() }
 
@@ -52,8 +54,9 @@ module Generated {
     final predicate hasPattern() { exists(getPattern()) }
 
     /**
-     * Gets the initializer, if it exists.
-     * This includes nodes from the "hidden" AST and can be used to be overridden by subclasses.
+     * Gets the initializer of this condition element, if it exists.
+     *
+     * This includes nodes from the "hidden" AST.
      */
     Expr getImmediateInitializer() {
       result =
@@ -63,7 +66,7 @@ module Generated {
     }
 
     /**
-     * Gets the initializer, if it exists.
+     * Gets the initializer of this condition element, if it exists.
      */
     final Expr getInitializer() { result = getImmediateInitializer().resolve() }
 

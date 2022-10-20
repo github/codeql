@@ -10,8 +10,9 @@ module Generated {
     override string getAPrimaryQlClass() { result = "RepeatWhileStmt" }
 
     /**
-     * Gets the condition.
-     * This includes nodes from the "hidden" AST and can be used to be overridden by subclasses.
+     * Gets the condition of this repeat while statement.
+     *
+     * This includes nodes from the "hidden" AST.
      */
     Expr getImmediateCondition() {
       result =
@@ -21,13 +22,14 @@ module Generated {
     }
 
     /**
-     * Gets the condition.
+     * Gets the condition of this repeat while statement.
      */
     final Expr getCondition() { result = getImmediateCondition().resolve() }
 
     /**
-     * Gets the body.
-     * This includes nodes from the "hidden" AST and can be used to be overridden by subclasses.
+     * Gets the body of this repeat while statement.
+     *
+     * This includes nodes from the "hidden" AST.
      */
     Stmt getImmediateBody() {
       result =
@@ -37,7 +39,7 @@ module Generated {
     }
 
     /**
-     * Gets the body.
+     * Gets the body of this repeat while statement.
      */
     final Stmt getBody() { result = getImmediateBody().resolve() }
   }

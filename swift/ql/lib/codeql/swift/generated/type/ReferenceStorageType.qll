@@ -6,8 +6,9 @@ import codeql.swift.elements.type.Type
 module Generated {
   class ReferenceStorageType extends Synth::TReferenceStorageType, Type {
     /**
-     * Gets the referent type.
-     * This includes nodes from the "hidden" AST and can be used to be overridden by subclasses.
+     * Gets the referent type of this reference storage type.
+     *
+     * This includes nodes from the "hidden" AST.
      */
     Type getImmediateReferentType() {
       result =
@@ -17,7 +18,7 @@ module Generated {
     }
 
     /**
-     * Gets the referent type.
+     * Gets the referent type of this reference storage type.
      */
     final Type getReferentType() { result = getImmediateReferentType().resolve() }
   }

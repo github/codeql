@@ -10,8 +10,9 @@ module Generated {
     override string getAPrimaryQlClass() { result = "CaseStmt" }
 
     /**
-     * Gets the body.
-     * This includes nodes from the "hidden" AST and can be used to be overridden by subclasses.
+     * Gets the body of this case statement.
+     *
+     * This includes nodes from the "hidden" AST.
      */
     Stmt getImmediateBody() {
       result =
@@ -19,13 +20,14 @@ module Generated {
     }
 
     /**
-     * Gets the body.
+     * Gets the body of this case statement.
      */
     final Stmt getBody() { result = getImmediateBody().resolve() }
 
     /**
-     * Gets the `index`th label (0-based).
-     * This includes nodes from the "hidden" AST and can be used to be overridden by subclasses.
+     * Gets the `index`th label of this case statement (0-based).
+     *
+     * This includes nodes from the "hidden" AST.
      */
     CaseLabelItem getImmediateLabel(int index) {
       result =
@@ -35,23 +37,24 @@ module Generated {
     }
 
     /**
-     * Gets the `index`th label (0-based).
+     * Gets the `index`th label of this case statement (0-based).
      */
     final CaseLabelItem getLabel(int index) { result = getImmediateLabel(index).resolve() }
 
     /**
-     * Gets any of the labels.
+     * Gets any of the labels of this case statement.
      */
     final CaseLabelItem getALabel() { result = getLabel(_) }
 
     /**
-     * Gets the number of labels.
+     * Gets the number of labels of this case statement.
      */
     final int getNumberOfLabels() { result = count(getALabel()) }
 
     /**
-     * Gets the `index`th variable (0-based).
-     * This includes nodes from the "hidden" AST and can be used to be overridden by subclasses.
+     * Gets the `index`th variable of this case statement (0-based).
+     *
+     * This includes nodes from the "hidden" AST.
      */
     VarDecl getImmediateVariable(int index) {
       result =
@@ -61,17 +64,17 @@ module Generated {
     }
 
     /**
-     * Gets the `index`th variable (0-based).
+     * Gets the `index`th variable of this case statement (0-based).
      */
     final VarDecl getVariable(int index) { result = getImmediateVariable(index).resolve() }
 
     /**
-     * Gets any of the variables.
+     * Gets any of the variables of this case statement.
      */
     final VarDecl getAVariable() { result = getVariable(_) }
 
     /**
-     * Gets the number of variables.
+     * Gets the number of variables of this case statement.
      */
     final int getNumberOfVariables() { result = count(getAVariable()) }
   }

@@ -7,8 +7,9 @@ import codeql.swift.elements.Location
 module Generated {
   class Locatable extends Synth::TLocatable, Element {
     /**
-     * Gets the location, if it exists.
-     * This includes nodes from the "hidden" AST and can be used to be overridden by subclasses.
+     * Gets the location associated with this element in the code, if it exists.
+     *
+     * This includes nodes from the "hidden" AST.
      */
     Location getImmediateLocation() {
       result =
@@ -18,7 +19,7 @@ module Generated {
     }
 
     /**
-     * Gets the location, if it exists.
+     * Gets the location associated with this element in the code, if it exists.
      */
     final Location getLocation() { result = getImmediateLocation().resolve() }
 

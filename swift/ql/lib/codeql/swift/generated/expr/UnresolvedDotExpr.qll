@@ -9,8 +9,9 @@ module Generated {
     override string getAPrimaryQlClass() { result = "UnresolvedDotExpr" }
 
     /**
-     * Gets the base.
-     * This includes nodes from the "hidden" AST and can be used to be overridden by subclasses.
+     * Gets the base of this unresolved dot expression.
+     *
+     * This includes nodes from the "hidden" AST.
      */
     Expr getImmediateBase() {
       result =
@@ -20,12 +21,12 @@ module Generated {
     }
 
     /**
-     * Gets the base.
+     * Gets the base of this unresolved dot expression.
      */
     final Expr getBase() { result = getImmediateBase().resolve() }
 
     /**
-     * Gets the name.
+     * Gets the name of this unresolved dot expression.
      */
     string getName() {
       result = Synth::convertUnresolvedDotExprToRaw(this).(Raw::UnresolvedDotExpr).getName()

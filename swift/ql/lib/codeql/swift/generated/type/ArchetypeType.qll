@@ -8,8 +8,9 @@ import codeql.swift.elements.type.Type
 module Generated {
   class ArchetypeType extends Synth::TArchetypeType, SubstitutableType {
     /**
-     * Gets the interface type.
-     * This includes nodes from the "hidden" AST and can be used to be overridden by subclasses.
+     * Gets the interface type of this archetype type.
+     *
+     * This includes nodes from the "hidden" AST.
      */
     Type getImmediateInterfaceType() {
       result =
@@ -19,13 +20,14 @@ module Generated {
     }
 
     /**
-     * Gets the interface type.
+     * Gets the interface type of this archetype type.
      */
     final Type getInterfaceType() { result = getImmediateInterfaceType().resolve() }
 
     /**
-     * Gets the superclass, if it exists.
-     * This includes nodes from the "hidden" AST and can be used to be overridden by subclasses.
+     * Gets the superclass of this archetype type, if it exists.
+     *
+     * This includes nodes from the "hidden" AST.
      */
     Type getImmediateSuperclass() {
       result =
@@ -35,7 +37,7 @@ module Generated {
     }
 
     /**
-     * Gets the superclass, if it exists.
+     * Gets the superclass of this archetype type, if it exists.
      */
     final Type getSuperclass() { result = getImmediateSuperclass().resolve() }
 
@@ -45,8 +47,9 @@ module Generated {
     final predicate hasSuperclass() { exists(getSuperclass()) }
 
     /**
-     * Gets the `index`th protocol (0-based).
-     * This includes nodes from the "hidden" AST and can be used to be overridden by subclasses.
+     * Gets the `index`th protocol of this archetype type (0-based).
+     *
+     * This includes nodes from the "hidden" AST.
      */
     ProtocolDecl getImmediateProtocol(int index) {
       result =
@@ -56,17 +59,17 @@ module Generated {
     }
 
     /**
-     * Gets the `index`th protocol (0-based).
+     * Gets the `index`th protocol of this archetype type (0-based).
      */
     final ProtocolDecl getProtocol(int index) { result = getImmediateProtocol(index).resolve() }
 
     /**
-     * Gets any of the protocols.
+     * Gets any of the protocols of this archetype type.
      */
     final ProtocolDecl getAProtocol() { result = getProtocol(_) }
 
     /**
-     * Gets the number of protocols.
+     * Gets the number of protocols of this archetype type.
      */
     final int getNumberOfProtocols() { result = count(getAProtocol()) }
   }

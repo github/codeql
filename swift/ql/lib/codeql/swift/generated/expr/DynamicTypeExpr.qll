@@ -8,8 +8,9 @@ module Generated {
     override string getAPrimaryQlClass() { result = "DynamicTypeExpr" }
 
     /**
-     * Gets the base.
-     * This includes nodes from the "hidden" AST and can be used to be overridden by subclasses.
+     * Gets the base of this dynamic type expression.
+     *
+     * This includes nodes from the "hidden" AST.
      */
     Expr getImmediateBase() {
       result =
@@ -19,7 +20,7 @@ module Generated {
     }
 
     /**
-     * Gets the base.
+     * Gets the base of this dynamic type expression.
      */
     final Expr getBase() { result = getImmediateBase().resolve() }
   }

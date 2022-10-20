@@ -9,28 +9,30 @@ module Generated {
     override string getAPrimaryQlClass() { result = "IfStmt" }
 
     /**
-     * Gets the then.
-     * This includes nodes from the "hidden" AST and can be used to be overridden by subclasses.
+     * Gets the then of this if statement.
+     *
+     * This includes nodes from the "hidden" AST.
      */
     Stmt getImmediateThen() {
       result = Synth::convertStmtFromRaw(Synth::convertIfStmtToRaw(this).(Raw::IfStmt).getThen())
     }
 
     /**
-     * Gets the then.
+     * Gets the then of this if statement.
      */
     final Stmt getThen() { result = getImmediateThen().resolve() }
 
     /**
-     * Gets the else, if it exists.
-     * This includes nodes from the "hidden" AST and can be used to be overridden by subclasses.
+     * Gets the else of this if statement, if it exists.
+     *
+     * This includes nodes from the "hidden" AST.
      */
     Stmt getImmediateElse() {
       result = Synth::convertStmtFromRaw(Synth::convertIfStmtToRaw(this).(Raw::IfStmt).getElse())
     }
 
     /**
-     * Gets the else, if it exists.
+     * Gets the else of this if statement, if it exists.
      */
     final Stmt getElse() { result = getImmediateElse().resolve() }
 

@@ -9,8 +9,9 @@ module Generated {
     override string getAPrimaryQlClass() { result = "IsPattern" }
 
     /**
-     * Gets the cast type repr, if it exists.
-     * This includes nodes from the "hidden" AST and can be used to be overridden by subclasses.
+     * Gets the cast type representation of this is pattern, if it exists.
+     *
+     * This includes nodes from the "hidden" AST.
      */
     TypeRepr getImmediateCastTypeRepr() {
       result =
@@ -20,7 +21,7 @@ module Generated {
     }
 
     /**
-     * Gets the cast type repr, if it exists.
+     * Gets the cast type representation of this is pattern, if it exists.
      */
     final TypeRepr getCastTypeRepr() { result = getImmediateCastTypeRepr().resolve() }
 
@@ -30,8 +31,9 @@ module Generated {
     final predicate hasCastTypeRepr() { exists(getCastTypeRepr()) }
 
     /**
-     * Gets the sub pattern, if it exists.
-     * This includes nodes from the "hidden" AST and can be used to be overridden by subclasses.
+     * Gets the sub pattern of this is pattern, if it exists.
+     *
+     * This includes nodes from the "hidden" AST.
      */
     Pattern getImmediateSubPattern() {
       result =
@@ -41,7 +43,7 @@ module Generated {
     }
 
     /**
-     * Gets the sub pattern, if it exists.
+     * Gets the sub pattern of this is pattern, if it exists.
      */
     final Pattern getSubPattern() { result = getImmediateSubPattern().resolve() }
 

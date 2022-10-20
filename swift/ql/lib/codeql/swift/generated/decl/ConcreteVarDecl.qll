@@ -8,7 +8,7 @@ module Generated {
     override string getAPrimaryQlClass() { result = "ConcreteVarDecl" }
 
     /**
-     * Gets the introducer int.
+     * Gets the introducer int of this concrete var declaration.
      */
     int getIntroducerInt() {
       result = Synth::convertConcreteVarDeclToRaw(this).(Raw::ConcreteVarDecl).getIntroducerInt()

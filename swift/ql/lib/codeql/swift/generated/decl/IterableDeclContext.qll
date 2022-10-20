@@ -7,8 +7,9 @@ import codeql.swift.elements.Element
 module Generated {
   class IterableDeclContext extends Synth::TIterableDeclContext, Element {
     /**
-     * Gets the `index`th member (0-based).
-     * This includes nodes from the "hidden" AST and can be used to be overridden by subclasses.
+     * Gets the `index`th member of this iterable declaration context (0-based).
+     *
+     * This includes nodes from the "hidden" AST.
      */
     Decl getImmediateMember(int index) {
       result =
@@ -18,17 +19,17 @@ module Generated {
     }
 
     /**
-     * Gets the `index`th member (0-based).
+     * Gets the `index`th member of this iterable declaration context (0-based).
      */
     final Decl getMember(int index) { result = getImmediateMember(index).resolve() }
 
     /**
-     * Gets any of the members.
+     * Gets any of the members of this iterable declaration context.
      */
     final Decl getAMember() { result = getMember(_) }
 
     /**
-     * Gets the number of members.
+     * Gets the number of members of this iterable declaration context.
      */
     final int getNumberOfMembers() { result = count(getAMember()) }
   }

@@ -9,8 +9,9 @@ module Generated {
     override string getAPrimaryQlClass() { result = "ObjCSelectorExpr" }
 
     /**
-     * Gets the sub expr.
-     * This includes nodes from the "hidden" AST and can be used to be overridden by subclasses.
+     * Gets the sub expression of this obj c selector expression.
+     *
+     * This includes nodes from the "hidden" AST.
      */
     Expr getImmediateSubExpr() {
       result =
@@ -20,13 +21,14 @@ module Generated {
     }
 
     /**
-     * Gets the sub expr.
+     * Gets the sub expression of this obj c selector expression.
      */
     final Expr getSubExpr() { result = getImmediateSubExpr().resolve() }
 
     /**
-     * Gets the method.
-     * This includes nodes from the "hidden" AST and can be used to be overridden by subclasses.
+     * Gets the method of this obj c selector expression.
+     *
+     * This includes nodes from the "hidden" AST.
      */
     AbstractFunctionDecl getImmediateMethod() {
       result =
@@ -36,7 +38,7 @@ module Generated {
     }
 
     /**
-     * Gets the method.
+     * Gets the method of this obj c selector expression.
      */
     final AbstractFunctionDecl getMethod() { result = getImmediateMethod().resolve() }
   }

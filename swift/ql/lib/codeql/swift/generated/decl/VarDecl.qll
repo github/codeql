@@ -9,26 +9,28 @@ import codeql.swift.elements.type.Type
 module Generated {
   class VarDecl extends Synth::TVarDecl, AbstractStorageDecl {
     /**
-     * Gets the name.
+     * Gets the name of this var declaration.
      */
     string getName() { result = Synth::convertVarDeclToRaw(this).(Raw::VarDecl).getName() }
 
     /**
-     * Gets the type.
-     * This includes nodes from the "hidden" AST and can be used to be overridden by subclasses.
+     * Gets the type of this var declaration.
+     *
+     * This includes nodes from the "hidden" AST.
      */
     Type getImmediateType() {
       result = Synth::convertTypeFromRaw(Synth::convertVarDeclToRaw(this).(Raw::VarDecl).getType())
     }
 
     /**
-     * Gets the type.
+     * Gets the type of this var declaration.
      */
     final Type getType() { result = getImmediateType().resolve() }
 
     /**
-     * Gets the attached property wrapper type, if it exists.
-     * This includes nodes from the "hidden" AST and can be used to be overridden by subclasses.
+     * Gets the attached property wrapper type of this var declaration, if it exists.
+     *
+     * This includes nodes from the "hidden" AST.
      */
     Type getImmediateAttachedPropertyWrapperType() {
       result =
@@ -38,7 +40,7 @@ module Generated {
     }
 
     /**
-     * Gets the attached property wrapper type, if it exists.
+     * Gets the attached property wrapper type of this var declaration, if it exists.
      */
     final Type getAttachedPropertyWrapperType() {
       result = getImmediateAttachedPropertyWrapperType().resolve()
@@ -50,8 +52,9 @@ module Generated {
     final predicate hasAttachedPropertyWrapperType() { exists(getAttachedPropertyWrapperType()) }
 
     /**
-     * Gets the parent pattern, if it exists.
-     * This includes nodes from the "hidden" AST and can be used to be overridden by subclasses.
+     * Gets the parent pattern of this var declaration, if it exists.
+     *
+     * This includes nodes from the "hidden" AST.
      */
     Pattern getImmediateParentPattern() {
       result =
@@ -61,7 +64,7 @@ module Generated {
     }
 
     /**
-     * Gets the parent pattern, if it exists.
+     * Gets the parent pattern of this var declaration, if it exists.
      */
     final Pattern getParentPattern() { result = getImmediateParentPattern().resolve() }
 
@@ -71,8 +74,9 @@ module Generated {
     final predicate hasParentPattern() { exists(getParentPattern()) }
 
     /**
-     * Gets the parent initializer, if it exists.
-     * This includes nodes from the "hidden" AST and can be used to be overridden by subclasses.
+     * Gets the parent initializer of this var declaration, if it exists.
+     *
+     * This includes nodes from the "hidden" AST.
      */
     Expr getImmediateParentInitializer() {
       result =
@@ -82,7 +86,7 @@ module Generated {
     }
 
     /**
-     * Gets the parent initializer, if it exists.
+     * Gets the parent initializer of this var declaration, if it exists.
      */
     final Expr getParentInitializer() { result = getImmediateParentInitializer().resolve() }
 

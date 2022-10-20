@@ -9,8 +9,9 @@ module Generated {
     override string getAPrimaryQlClass() { result = "EnumElementPattern" }
 
     /**
-     * Gets the element.
-     * This includes nodes from the "hidden" AST and can be used to be overridden by subclasses.
+     * Gets the element of this enum element pattern.
+     *
+     * This includes nodes from the "hidden" AST.
      */
     EnumElementDecl getImmediateElement() {
       result =
@@ -20,13 +21,14 @@ module Generated {
     }
 
     /**
-     * Gets the element.
+     * Gets the element of this enum element pattern.
      */
     final EnumElementDecl getElement() { result = getImmediateElement().resolve() }
 
     /**
-     * Gets the sub pattern, if it exists.
-     * This includes nodes from the "hidden" AST and can be used to be overridden by subclasses.
+     * Gets the sub pattern of this enum element pattern, if it exists.
+     *
+     * This includes nodes from the "hidden" AST.
      */
     Pattern getImmediateSubPattern() {
       result =
@@ -36,7 +38,7 @@ module Generated {
     }
 
     /**
-     * Gets the sub pattern, if it exists.
+     * Gets the sub pattern of this enum element pattern, if it exists.
      */
     final Pattern getSubPattern() { result = getImmediateSubPattern().resolve() }
 

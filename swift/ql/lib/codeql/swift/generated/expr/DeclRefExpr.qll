@@ -10,8 +10,9 @@ module Generated {
     override string getAPrimaryQlClass() { result = "DeclRefExpr" }
 
     /**
-     * Gets the decl.
-     * This includes nodes from the "hidden" AST and can be used to be overridden by subclasses.
+     * Gets the declaration of this declaration ref expression.
+     *
+     * This includes nodes from the "hidden" AST.
      */
     Decl getImmediateDecl() {
       result =
@@ -19,13 +20,14 @@ module Generated {
     }
 
     /**
-     * Gets the decl.
+     * Gets the declaration of this declaration ref expression.
      */
     final Decl getDecl() { result = getImmediateDecl().resolve() }
 
     /**
-     * Gets the `index`th replacement type (0-based).
-     * This includes nodes from the "hidden" AST and can be used to be overridden by subclasses.
+     * Gets the `index`th replacement type of this declaration ref expression (0-based).
+     *
+     * This includes nodes from the "hidden" AST.
      */
     Type getImmediateReplacementType(int index) {
       result =
@@ -35,19 +37,19 @@ module Generated {
     }
 
     /**
-     * Gets the `index`th replacement type (0-based).
+     * Gets the `index`th replacement type of this declaration ref expression (0-based).
      */
     final Type getReplacementType(int index) {
       result = getImmediateReplacementType(index).resolve()
     }
 
     /**
-     * Gets any of the replacement types.
+     * Gets any of the replacement types of this declaration ref expression.
      */
     final Type getAReplacementType() { result = getReplacementType(_) }
 
     /**
-     * Gets the number of replacement types.
+     * Gets the number of replacement types of this declaration ref expression.
      */
     final int getNumberOfReplacementTypes() { result = count(getAReplacementType()) }
 

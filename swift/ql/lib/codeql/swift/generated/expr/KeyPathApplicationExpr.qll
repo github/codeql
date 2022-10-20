@@ -8,8 +8,9 @@ module Generated {
     override string getAPrimaryQlClass() { result = "KeyPathApplicationExpr" }
 
     /**
-     * Gets the base.
-     * This includes nodes from the "hidden" AST and can be used to be overridden by subclasses.
+     * Gets the base of this key path application expression.
+     *
+     * This includes nodes from the "hidden" AST.
      */
     Expr getImmediateBase() {
       result =
@@ -19,13 +20,14 @@ module Generated {
     }
 
     /**
-     * Gets the base.
+     * Gets the base of this key path application expression.
      */
     final Expr getBase() { result = getImmediateBase().resolve() }
 
     /**
-     * Gets the key path.
-     * This includes nodes from the "hidden" AST and can be used to be overridden by subclasses.
+     * Gets the key path of this key path application expression.
+     *
+     * This includes nodes from the "hidden" AST.
      */
     Expr getImmediateKeyPath() {
       result =
@@ -35,7 +37,7 @@ module Generated {
     }
 
     /**
-     * Gets the key path.
+     * Gets the key path of this key path application expression.
      */
     final Expr getKeyPath() { result = getImmediateKeyPath().resolve() }
   }

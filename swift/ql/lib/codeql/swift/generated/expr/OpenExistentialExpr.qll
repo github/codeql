@@ -9,8 +9,9 @@ module Generated {
     override string getAPrimaryQlClass() { result = "OpenExistentialExpr" }
 
     /**
-     * Gets the sub expr.
-     * This includes nodes from the "hidden" AST and can be used to be overridden by subclasses.
+     * Gets the sub expression of this open existential expression.
+     *
+     * This includes nodes from the "hidden" AST.
      */
     Expr getImmediateSubExpr() {
       result =
@@ -20,13 +21,14 @@ module Generated {
     }
 
     /**
-     * Gets the sub expr.
+     * Gets the sub expression of this open existential expression.
      */
     final Expr getSubExpr() { result = getImmediateSubExpr().resolve() }
 
     /**
-     * Gets the existential.
-     * This includes nodes from the "hidden" AST and can be used to be overridden by subclasses.
+     * Gets the existential of this open existential expression.
+     *
+     * This includes nodes from the "hidden" AST.
      */
     Expr getImmediateExistential() {
       result =
@@ -36,13 +38,14 @@ module Generated {
     }
 
     /**
-     * Gets the existential.
+     * Gets the existential of this open existential expression.
      */
     final Expr getExistential() { result = getImmediateExistential().resolve() }
 
     /**
-     * Gets the opaque expr.
-     * This includes nodes from the "hidden" AST and can be used to be overridden by subclasses.
+     * Gets the opaque expression of this open existential expression.
+     *
+     * This includes nodes from the "hidden" AST.
      */
     OpaqueValueExpr getImmediateOpaqueExpr() {
       result =
@@ -52,7 +55,7 @@ module Generated {
     }
 
     /**
-     * Gets the opaque expr.
+     * Gets the opaque expression of this open existential expression.
      */
     final OpaqueValueExpr getOpaqueExpr() { result = getImmediateOpaqueExpr().resolve() }
   }

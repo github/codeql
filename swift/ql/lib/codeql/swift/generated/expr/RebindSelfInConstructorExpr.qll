@@ -9,8 +9,9 @@ module Generated {
     override string getAPrimaryQlClass() { result = "RebindSelfInConstructorExpr" }
 
     /**
-     * Gets the sub expr.
-     * This includes nodes from the "hidden" AST and can be used to be overridden by subclasses.
+     * Gets the sub expression of this rebind self in constructor expression.
+     *
+     * This includes nodes from the "hidden" AST.
      */
     Expr getImmediateSubExpr() {
       result =
@@ -20,13 +21,14 @@ module Generated {
     }
 
     /**
-     * Gets the sub expr.
+     * Gets the sub expression of this rebind self in constructor expression.
      */
     final Expr getSubExpr() { result = getImmediateSubExpr().resolve() }
 
     /**
-     * Gets the self.
-     * This includes nodes from the "hidden" AST and can be used to be overridden by subclasses.
+     * Gets the self of this rebind self in constructor expression.
+     *
+     * This includes nodes from the "hidden" AST.
      */
     VarDecl getImmediateSelf() {
       result =
@@ -36,7 +38,7 @@ module Generated {
     }
 
     /**
-     * Gets the self.
+     * Gets the self of this rebind self in constructor expression.
      */
     final VarDecl getSelf() { result = getImmediateSelf().resolve() }
   }

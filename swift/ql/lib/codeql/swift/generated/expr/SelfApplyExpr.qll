@@ -7,8 +7,9 @@ import codeql.swift.elements.expr.Expr
 module Generated {
   class SelfApplyExpr extends Synth::TSelfApplyExpr, ApplyExpr {
     /**
-     * Gets the base.
-     * This includes nodes from the "hidden" AST and can be used to be overridden by subclasses.
+     * Gets the base of this self apply expression.
+     *
+     * This includes nodes from the "hidden" AST.
      */
     Expr getImmediateBase() {
       result =
@@ -18,7 +19,7 @@ module Generated {
     }
 
     /**
-     * Gets the base.
+     * Gets the base of this self apply expression.
      */
     final Expr getBase() { result = getImmediateBase().resolve() }
   }

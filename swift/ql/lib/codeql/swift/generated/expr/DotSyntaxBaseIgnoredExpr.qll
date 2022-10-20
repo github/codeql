@@ -8,8 +8,9 @@ module Generated {
     override string getAPrimaryQlClass() { result = "DotSyntaxBaseIgnoredExpr" }
 
     /**
-     * Gets the qualifier.
-     * This includes nodes from the "hidden" AST and can be used to be overridden by subclasses.
+     * Gets the qualifier of this dot syntax base ignored expression.
+     *
+     * This includes nodes from the "hidden" AST.
      */
     Expr getImmediateQualifier() {
       result =
@@ -19,13 +20,14 @@ module Generated {
     }
 
     /**
-     * Gets the qualifier.
+     * Gets the qualifier of this dot syntax base ignored expression.
      */
     final Expr getQualifier() { result = getImmediateQualifier().resolve() }
 
     /**
-     * Gets the sub expr.
-     * This includes nodes from the "hidden" AST and can be used to be overridden by subclasses.
+     * Gets the sub expression of this dot syntax base ignored expression.
+     *
+     * This includes nodes from the "hidden" AST.
      */
     Expr getImmediateSubExpr() {
       result =
@@ -35,7 +37,7 @@ module Generated {
     }
 
     /**
-     * Gets the sub expr.
+     * Gets the sub expression of this dot syntax base ignored expression.
      */
     final Expr getSubExpr() { result = getImmediateSubExpr().resolve() }
   }

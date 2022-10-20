@@ -8,7 +8,7 @@ module Generated {
     override string getAPrimaryQlClass() { result = "NamedPattern" }
 
     /**
-     * Gets the name.
+     * Gets the name of this named pattern.
      */
     string getName() {
       result = Synth::convertNamedPatternToRaw(this).(Raw::NamedPattern).getName()
