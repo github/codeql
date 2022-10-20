@@ -381,6 +381,32 @@ def test_potential_crosstalk_same_class(cond=True):
     SINK_F(objx2.x)
 
 
+class NewTest(object):
+    def __new__(cls, arg):
+        cls.foo = arg
+        return super().__new__(cls) # $ unresolved_call=super().__new__(..)
+
+@expects(4) # $ unresolved_call=expects(..) unresolved_call=expects(..)(..)
+def test__new__():
+    # we want to make sure that we DON'T pass the synthetic pre-update node for
+    # the class instance to __new__, like we do for __init__.
+    nt = NewTest(SOURCE)
+    # the __new__ implementation sets the foo attribute on THE CLASS itself. The
+    # attribute lookup on the class instance will go to the class itself when the
+    # attribute isn't defined on the class instance, so we will actually see `nt.foo`
+    # contain the source, but the point of this test is that we should see identical
+    # behavior between NewTest.foo and nt.foo, which we dont!
+    #
+    # Also note that we currently (October 2022) dont' model writes to classes very
+    # well.
+
+    SINK(NewTest.foo) # $ MISSING: flow="SOURCE, l:-10 -> NewTest.foo"
+    SINK(nt.foo) # $ flow="SOURCE, l:-11 -> nt.foo"
+
+    NewTest.foo = NONSOURCE
+    SINK_F(NewTest.foo)
+    SINK_F(nt.foo) # $ SPURIOUS: flow="SOURCE, l:-15 -> nt.foo"
+
 # ------------------------------------------------------------------------------
 # Global scope
 # ------------------------------------------------------------------------------
